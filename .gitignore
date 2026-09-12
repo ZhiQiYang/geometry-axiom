@@ -1,0 +1,17 @@
+# 允許清單制:預設全忽略,只收 geometry 專案檔
+/*
+!/.gitignore
+!/current_geometry.c
+!/*.scene
+!/tests/
+!/geometry-web/
+!/geometry-guide/
+!/公理層.md
+!/geometry-model-v2.md
+*.exe
+*.obj
+*.svg
+*.bak
+__pycache__/
+build.log
+nul

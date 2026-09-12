@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>角材三視圖 · Web 介面</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden;
+    font: 14px/1.5 "Segoe UI", "Microsoft JhengHei", sans-serif; }
+  body { display: flex; flex-direction: column; }
+  #topbar { display: flex; gap: 8px; align-items: center; padding: 6px 10px;
+    background: #ececec; border-bottom: 1px solid #cfcfcf; flex: 0 0 auto; }
+  #topbar .sp { flex: 1; }
+  #topbar .hint { color: #666; font-size: 12px; }
+  #cv { flex: 1; display: block; background: #fff; cursor: crosshair; }
+  #bar { flex: 0 0 auto; background: #ececec; border-top: 1px solid #cfcfcf;
+    padding: 4px 8px 6px; }
+  #bar .row { display: flex; gap: 8px; align-items: center; }
+  #bar .row + .row { margin-top: 4px; }
+  #status { flex: 3; min-height: 1.4em; white-space: nowrap; overflow: hidden; }
+  #hovertxt { flex: 2; color: #555; white-space: nowrap; overflow: hidden; }
+  #cmd { flex: 1; font: inherit; padding: 4px 8px; border: 1px solid #aaa; }
+  button { font: inherit; padding: 4px 12px; }
+  select { font: inherit; padding: 3px 6px; max-width: 240px; }
+  svg text { user-select: none; }
+</style>
+</head>
+<body>
+<div id="topbar">
+  <button id="btnOpen">開啟場景檔…</button>
+  <input id="file" type="file" accept=".scene" hidden>
+  <select id="sceneList"></select>
+  <button id="btnScene">載入所選</button>
+  <button id="btnZoom">縮放重置</button>
+  <span class="sp"></span>
+  <span class="hint">左鍵點選／拖參考線 · 中鍵平移 · 滾輪縮放 — 幾何由 web_bridge.exe（C）計算</span>
+</div>
+<svg id="cv"><g id="world"></g><g id="overlay"></g></svg>
+<div id="bar">
+  <div class="row"><span id="status"></span><span id="hovertxt"></span></div>
+  <div class="row">
+    <input id="cmd" placeholder="指令：boundary｜placement｜surface(合體)｜space｜guide｜timber｜place on 面id at u v｜at-guides 線1 線2｜move 線id offset｜reset" autocomplete="off">
+    <button id="btnEx">載入範例</button>
+    <button id="btnClear">清空</button>
+  </div>
+</div>
+<script>
+"use strict";
+const SVGNS = "http://www.w3.org/2000/svg";
+const $ = id => document.getElementById(id);
+const cv = $("cv"), world = $("world"), overlay = $("overlay");
+const statusEl = $("status"), hoverEl = $("hovertxt");
+
+/* DrawStyle 外觀表：與 STYLE_SPEC + SVG 後端的 CSS 同一份值。 */
+const STYLE = [
+  { line:"#bbbbbb", fill:"#ffffff", w:1 },                      /* FRAME */
+  { line:"#222222", text:150, bold:true },                      /* TITLE */
+  { line:"#3366cc", fill:"#dbe9ff", fop:.6,  w:1.5 },           /* SURFACE */
+  { line:"#3366cc", w:1.5 },                                    /* EDGE */
+  { line:"#333333", text:110, anchor:"middle", mid:true },      /* LABEL */
+  { line:"#cc3333", w:1, dash:"60 30" },                        /* GUIDE */
+  { line:"#b03030", text:110, anchor:"start", halo:true },      /* GUIDE_LABEL */
+  { line:"#a06000", fill:"#ffd27f", fop:.5,  w:1.5 },           /* TIMBER_FACE */
+  { line:"#a06000", fill:"#f5b94a", fop:.85, w:1.5 },           /* TIMBER_FACE_NEAR */
+  { line:"#7a4a00", text:110, bold:true, anchor:"middle",
+    mid:true, halo:true },                                      /* TIMBER_LABEL */
+  { line:"#e02080", w:2.5 },                                    /* HOVER */
+];
+
+let layout = null;          /* 最近一次 render 的版面（mm 空間） */
+let zoom = 1, panX = 0, panY = 0;
+let selected = null;        /* 點選的 pick 結果 {ops} */
+let panning = null;         /* 中鍵平移狀態 */
+let dragging = null;        /* 參考線拖曳 {guide, view} */
+let pickSeq = 0;
+
+/* ---- 通訊 ---- */
+async function api(cmd) {
+  const r = await fetch("/api", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ cmd })
+  });
+  return r.json();
+}
+function setStatus(t) { statusEl.textContent = t; }
+function setHover(t) { hoverEl.textContent = t; }
+
+/* ---- 視圖變換（對應 gdi_frame_transform + gdi_view_transform） ---- */
+function fit() {
+  const r = cv.getBoundingClientRect(), M = 16;
+  if (!layout) return { s: 1, ox: 0, oy: 0 };
+  const s = Math.min((r.width - 2*M) / layout.w, (r.height - 2*M) / layout.h);
+  return { s, ox: (r.width - layout.w*s)/2, oy: (r.height - layout.h*s)/2 };
+}
+function transform() {
+  const f = fit();
+  return { s: f.s * zoom, ox: f.ox * zoom + panX, oy: f.oy * zoom + panY };
+}
+function applyTransform() {
+  const t = transform();
+  world.setAttribute("transform", `translate(${t.ox},${t.oy}) scale(${t.s})`);
+}
+/* 螢幕 px → 視圖編號 + 視圖內 mm（對應 gdi_screen_to_view） */
+function screenToView(px, py) {
+  if (!layout) return null;
+  const r = cv.getBoundingClientRect(), t = transform();
+  const x = px - r.left, y = py - r.top;
+  for (let v = 0; v < 3; v++) {
+    const b = layout.views[v].bounds, L = layout.views[v];
+    const x0 = t.ox + (b[0]+L.tx)*t.s, x1 = t.ox + (b[2]+L.tx)*t.s;
+    const y0 = t.oy + (b[1]+L.ty)*t.s, y1 = t.oy + (b[3]+L.ty)*t.s;
+    if (x < x0 || x > x1 || y < y0 || y > y1) continue;
+    return { v, x: Math.round((x-t.ox)/t.s - L.tx),
+             y: Math.round((y-t.oy)/t.s - L.ty),
+             r: Math.round(8/t.s + .5) };
+  }
+  return null;
+}
+
+/* ---- ops 重放：DrawTarget 呼叫流 → SVG 元素 ---- */
+function el(name, attrs, parent) {
+  const e = document.createElementNS(SVGNS, name);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  parent.appendChild(e);
+  return e;
+}
+function replay(ops, root) {
+  let g = root;
+  for (const o of ops) {
+    const st = STYLE[o.s];
+    if (o.op === "begin") {
+      g = el("g", { transform: `translate(${o.tx},${o.ty})` }, root);
+    } else if (o.op === "end") {
+      g = root;
+    } else if (o.op === "rect") {
+      el("rect", { x:o.x0, y:o.y0, width:o.x1-o.x0, height:o.y1-o.y0,
+        fill: st.fill || "none", "fill-opacity": st.fop ?? 1,
+        stroke: st.line, "stroke-width": st.w,
+        "vector-effect": "non-scaling-stroke" }, g);
+    } else if (o.op === "poly") {
+      el("polygon", { points: o.p.join(" "), "stroke-linejoin": "round",
+        fill: st.fill || "none", "fill-opacity": st.fop ?? 1,
+        stroke: st.line, "stroke-width": st.w,
+        "vector-effect": "non-scaling-stroke" }, g);
+    } else if (o.op === "line") {
+      el("line", { x1:o.x0, y1:o.y0, x2:o.x1, y2:o.y1,
+        stroke: st.line, "stroke-width": st.w,
+        "stroke-dasharray": st.dash || "none",
+        "vector-effect": "non-scaling-stroke" }, g);
+    } else if (o.op === "text") {
+      const t = el("text", { x:o.x, y:o.y, fill: st.line,
+        "font-size": st.text, "font-weight": st.bold ? "bold" : "normal",
+        "text-anchor": st.anchor || "start" }, g);
+      if (st.mid) t.setAttribute("dominant-baseline", "middle");
+      if (st.halo) { t.setAttribute("paint-order", "stroke");
+        t.setAttribute("stroke", "#fff"); t.setAttribute("stroke-width", 30);
+        t.setAttribute("stroke-linejoin", "round"); }
+      if (o.rot) t.setAttribute("transform", `rotate(${o.rot} ${o.x} ${o.y})`);
+      t.textContent = o.t;
+    }
+  }
+}
+
+/* ---- 重繪 ---- */
+async function render() {
+  const r = await api("render");
+  if (!r.ok) { layout = null; world.textContent = ""; setStatus("✗ " + (r.error || "場景沒有可畫的表面")); return; }
+  layout = r.layout;
+  world.textContent = "";
+  replay(r.ops, world);
+  applyTransform();
+}
+
+/* ---- 拾取（hover / 點選共用） ---- */
+async function pickAt(sv) {
+  const r = await api(`pick ${sv.v} ${sv.x} ${sv.y} ${sv.r}`);
+  return r;
+}
+function showOverlay(ops) {
+  overlay.textContent = "";
+  if (ops && ops.length) replay(ops, world === overlay.parentNode ? world : overlay);
+}
+/* hover 與 selected 都要畫在同一個 mm 空間 → 放 world 內尾端最簡單。 */
+
+async function refreshHover(sv) {
+  const seq = ++pickSeq;
+  const p = await pickAt(sv);
+  if (seq !== pickSeq) return;            /* 滑鼠還在動，丟掉舊結果 */
+  setHover(p.desc || "");
+  /* 點選的優先；沒有才用 hover 的（同 gdi_paint）。 */
+  overlay.textContent = "";
+  const show = selected ? selected.hover : p.hover;
+  if (show && show.length) replay(show, overlay);
+}
+
+/* ---- 事件 ---- */
+cv.addEventListener("pointermove", async e => {
+  if (panning) {
+    panX += e.clientX - panning.x; panY += e.clientY - panning.y;
+    panning = { x: e.clientX, y: e.clientY };
+    applyTransform();
+    return;
+  }
+  const sv = screenToView(e.clientX, e.clientY);
+  if (dragging) {
+    if (!sv || sv.v !== dragging.view) return;
+    const r = await api(`drag ${dragging.guide} ${sv.v} ${sv.x} ${sv.y}`);
+    if (r.ok) {
+      await render();
+      /* 拖曳中線保持高亮（同 GDI：refresh 清掉互動態後補回）。 */
+      selected = { hover: null };
+      const p = await pickAt(sv);
+      setHover(p.desc || "");
+      overlay.textContent = "";
+      if (p.hover && p.hover.length) replay(p.hover, overlay);
+    }
+    return;
+  }
+  if (!sv) { setHover(""); if (!selected) overlay.textContent = ""; return; }
+  refreshHover(sv);
+});
+
+cv.addEventListener("pointerdown", async e => {
+  if (e.button === 1) {                     /* 中鍵平移 */
+    panning = { x: e.clientX, y: e.clientY };
+    e.preventDefault();
+    return;
+  }
+  if (e.button !== 0) return;
+  const sv = screenToView(e.clientX, e.clientY);
+  if (!sv) return;
+  /* 先抓 pointer 再問 bridge：pointer 只在按住期間有效，await 之後可能已放開。 */
+  cv.setPointerCapture(e.pointerId);
+  const p = await pickAt(sv);
+  if (p.guide >= 0) {                       /* 拖到參考線 */
+    dragging = { guide: p.guide, view: sv.v };
+    return;
+  }
+  selected = p.none ? null : p;             /* 點選角材面（或點空清除） */
+  overlay.textContent = "";
+  if (selected && selected.hover) replay(selected.hover, overlay);
+  if (p.timber >= 0) setStatus(p.desc);
+});
+cv.addEventListener("pointerup", e => {
+  if (e.button === 1) panning = null;
+  if (e.button === 0 && dragging) { dragging = null; }
+});
+cv.addEventListener("pointercancel", () => { panning = null; dragging = null; });
+cv.addEventListener("wheel", e => {
+  e.preventDefault();
+  const r = cv.getBoundingClientRect();
+  const px = e.clientX - r.left, py = e.clientY - r.top;
+  const t = transform();
+  const k = e.deltaY < 0 ? 1.15 : 1/1.15;
+  zoom *= k;
+  const t2 = transform();
+  /* 讓游標下的世界點不動：調 pan 補回平移差。 */
+  const f = fit();
+  panX = px - (px - t.ox) * (t2.s / t.s) - f.ox * zoom;
+  panY = py - (py - t.oy) * (t2.s / t.s) - f.oy * zoom;
+  applyTransform();
+}, { passive: false });
+
+/* ---- 指令列與按鈕 ---- */
+$("cmd").addEventListener("keydown", async e => {
+  if (e.key !== "Enter") return;
+  const text = e.target.value;
+  const r = await api("line " + text);
+  if (r.ok) { setStatus("✓ 已套用"); e.target.value = ""; selected = null; render(); }
+  else setStatus("✗ " + (r.error || ""));
+});
+$("btnClear").onclick = async () => {
+  await api("line reset"); selected = null;
+  setStatus("✓ 已清空"); render();
+};
+$("btnEx").onclick = async () => {
+  const sel = $("sceneList");
+  const path = sel.value || "";
+  const r = await api("loadfile " + (path || "room_a.scene"));
+  if (r.ok) { setStatus("✓ 已載入 " + (sel.selectedOptions[0]?.text || "範例")); selected = null; render(); }
+  else setStatus("✗ " + (r.error || ""));
+};
+$("btnScene").onclick = $("btnEx").onclick;
+$("btnOpen").onclick = () => $("file").click();
+$("file").addEventListener("change", async e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = await fetch("/upload", { method: "POST", body: await f.text() }).then(x => x.json());
+  if (r.ok) { setStatus("✓ 已載入 " + f.name); selected = null; render(); }
+  else setStatus("✗ " + (r.error || ""));
+  e.target.value = "";
+});
+$("btnZoom").onclick = () => { zoom = 1; panX = panY = 0; applyTransform(); };
+window.addEventListener("resize", applyTransform);
+
+/* ---- 啟動 ---- */
+(async () => {
+  try {
+    const scenes = await fetch("/scenes").then(r => r.json());
+    const sel = $("sceneList");
+    for (const s of scenes) {
+      const o = document.createElement("option");
+      o.value = s.path; o.textContent = s.name;
+      if (s.name === "room_a.scene") o.selected = true;
+      sel.appendChild(o);
+    }
+  } catch {}
+  setStatus("指令：boundary｜placement｜space｜guide｜timber｜place on 面id at u v｜at-guides 線1 線2｜move 線id offset｜reset");
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# 封閉房間範例：4000 x 3000 x 2500 的六面盒。
+# 每片面的法向都朝外（U x V = N 自動保證）；space 動詞把它們綁成一個空間。
+
+# surface id origin x y z u 軸 v 軸 outline u,v u,v u,v u,v
+surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000   # 天花板（法向 +Z）
+surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000   # 地板（法向 -Z：+y x +x = -z）
+surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500   # y=0 牆（法向 -Y）
+surface 4 origin 0    3000 0    u +z v +x outline 0,0 2500,0 2500,4000 0,4000   # y=3000 牆（法向 +Y）
+surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000   # x=0 牆（法向 -X）
+surface 6 origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500   # x=4000 牆（法向 +X）
+
+# space id boundary 面id x 2~8
+space 1 boundary 1 2 3 4 5 6
+
+# 天花板上一支角材（同 room_a）
+guide 1 1 u 300
+guide 2 1 v 500
+timber 1 1800 27 33
+place 1 on 1 at-guides 1 2 +u +n

@@ -1,0 +1,13 @@
+# 另一個房間：3000 × 4000 的天花板，高 2400，放兩支角材
+surface 7 origin 0 0 2400 u +x v +y outline 0,0 3000,0 3000,4000 0,4000
+
+guide 1 7 u 600
+guide 2 7 v 400
+
+# 第一支：沿 +U，放在兩條參考線的交點
+timber 1 2000 27 33
+place 1 on 7 at-guides 1 2 +u +n
+
+# 第二支：沿 +V，直接給錨點座標
+timber 2 1500 45 45
+place 2 on 7 at 2400 800 +v +n

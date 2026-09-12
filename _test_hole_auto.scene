@@ -1,0 +1,10 @@
+# 孔邊當擋面：中線 u=2000 穿過柱孔，through 選下半段
+# 預期：跨距 [0,1200]，終點頂在孔邊（孔邊預設 FIXED）→ 長度 1200
+
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1800,1200 2200,1200 2200,1800 1800,1800
+
+grid 1 on 1 u 2000
+
+timber 1 20 20
+
+place 1 on 1 at-grid 1 u 0 through 600 +v +n

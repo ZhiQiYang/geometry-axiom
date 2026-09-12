@@ -1,0 +1,5 @@
+# 格線壓邊:u=0 當中線,寬 27 → cross [-13,14] 越界 → 無合法區間拒絕
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+grid 1 on 1 u 0
+timber 1 27 33
+place 1 on 1 at-grid 1 u 0 +v +n

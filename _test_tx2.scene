@@ -1,0 +1,5 @@
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+timber 1 1000 27 33
+place 1 on 1 at 500 300 +u +n
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000 hole 2000,1000 2600,1000 2600,1600 2000,1600

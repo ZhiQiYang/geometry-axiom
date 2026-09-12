@@ -1,0 +1,4 @@
+# at-edge 方向錯:e1 是直立邊(沿 V),角材寫 +u(沿 U)→ 不平行 → 拒絕
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 1 27 33
+place 1 on 1 at-edge e1 +u +n

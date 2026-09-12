@@ -1,0 +1,17 @@
+# 房間 A 的天花板：與 main() 內建的硬編場景同一組幾何
+# 一行一筆，# 之後是註解。座標單位 = 1 mm。
+
+# surface id origin x y z u 軸 v 軸 outline u,v u,v u,v u,v
+#   合體簡寫：邊界面 + 承載面一起建。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+
+# guide id 承載面id 方向 offset
+guide 1 1 u 300
+guide 2 1 v 500
+
+# timber id 長度 A尺寸 B尺寸
+timber 1 1800 27 33
+
+# place 角材id on 承載面id at-guides 線1 線2 長度方向 深度側
+#   也可以寫 place 1 on 1 at 500 300 +u +n 直接給錨點
+place 1 on 1 at-guides 1 2 +u +n

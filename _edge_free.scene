@@ -1,0 +1,8 @@
+# FREE 邊不能當 auto 擋面:e1(u=4000)標 FREE
+# 中線 u=2000 沿 +v,兩端 v=0(FIXED)、v=3000(FIXED)… 這裡 e1 其實是 ⊥ 端面方向的邊
+# 改測:沿 u 放,終點 u=4000 是 FREE 邊 → 應拒絕
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000 fixity F X F F
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+grid 1 on 1 v 1500
+timber 1 27 33
+place 1 on 1 at-grid 1 v 0 +u +n

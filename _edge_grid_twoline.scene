@@ -1,0 +1,8 @@
+# grid 兩行宣告:第一行 u 座標、第二行 v 座標
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+grid 1 on 1 u 1000 3000
+grid 1 on 1 v 800 2200
+timber 1 27 33
+timber 2 27 33
+place 1 on 1 at-grid 1 u 0 +v +n
+place 2 on 1 at-grid 1 v 1 through 2000 +u +n
