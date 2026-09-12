@@ -33,6 +33,17 @@
   <select id="sceneList"></select>
   <button id="btnScene">載入所選</button>
   <button id="btnZoom">縮放重置</button>
+  <select id="tool">
+    <option value="view">檢視／選取</option>
+    <option value="rect">▭ 拉矩形建面</option>
+    <option value="poly">⬠ 畫多邊形建面</option>
+    <option value="hole">▨ 挖矩形孔</option>
+    <option value="edit">✥ 編輯邊界</option>
+  </select>
+  <select id="workSurf"></select>
+  <input id="newZ" type="number" value="0" step="100"
+         style="width:76px" title="新平面高度 z（mm）" hidden>
+  <button id="btnExport">匯出 .scene</button>
   <span class="sp"></span>
   <span class="hint">左鍵點選／拖參考線 · 中鍵平移 · 滾輪縮放 — 幾何由 web_bridge.exe（C）計算</span>
 </div>
@@ -102,6 +113,7 @@ function transform() {
 function applyTransform() {
   const t = transform();
   world.setAttribute("transform", `translate(${t.ox},${t.oy}) scale(${t.s})`);
+  overlay.setAttribute("transform", `translate(${t.ox},${t.oy}) scale(${t.s})`);
 }
 /* 螢幕 px → 視圖編號 + 視圖內 mm（對應 gdi_screen_to_view） */
 function screenToView(px, py) {
@@ -170,6 +182,7 @@ async function render() {
   if (!r.ok) { layout = null; world.textContent = ""; setStatus("✗ " + (r.error || "場景沒有可畫的表面")); return; }
   layout = r.layout;
   world.textContent = "";
+  previewG = null;
   replay(r.ops, world);
   applyTransform();
 }
@@ -205,6 +218,7 @@ cv.addEventListener("pointermove", async e => {
     return;
   }
   const sv = screenToView(e.clientX, e.clientY);
+  if (tool !== "view") { if (sv) canvasMove(e, sv); return; }
   if (dragging) {
     if (!sv || sv.v !== dragging.view) return;
     const r = await api(`drag ${dragging.guide} ${sv.v} ${sv.x} ${sv.y}`);
@@ -234,6 +248,7 @@ cv.addEventListener("pointerdown", async e => {
   if (!sv) return;
   /* 先抓 pointer 再問 bridge：pointer 只在按住期間有效，await 之後可能已放開。 */
   cv.setPointerCapture(e.pointerId);
+  if (tool !== "view") { canvasDown(e, sv); return; }
   const p = await pickAt(sv);
   if (p.guide >= 0) {                       /* 拖到參考線 */
     dragging = { guide: p.guide, view: sv.v };
@@ -244,9 +259,13 @@ cv.addEventListener("pointerdown", async e => {
   if (selected && selected.hover) replay(selected.hover, overlay);
   if (p.timber >= 0) setStatus(p.desc);
 });
-cv.addEventListener("pointerup", e => {
+cv.addEventListener("pointerup", async e => {
   if (e.button === 1) panning = null;
   if (e.button === 0 && dragging) { dragging = null; }
+  if (tool !== "view" && e.button === 0) {
+    const sv = screenToView(e.clientX, e.clientY);
+    await canvasUp(e, sv);
+  }
 });
 cv.addEventListener("pointercancel", () => { panning = null; dragging = null; });
 cv.addEventListener("wheel", e => {
@@ -264,23 +283,335 @@ cv.addEventListener("wheel", e => {
   applyTransform();
 }, { passive: false });
 
+/* ================= 畫布：建立／編輯空間邊界面 =================
+ * 原則：畫布動作 = 產生 DSL 行丟進 line 指令；
+ * 世界狀態永遠在 bridge，公理守門員照舊把關（拒絕就留在原狀）。
+ * ============================================================ */
+
+const AXIS_WORD = {
+  "1,0,0":"+x", "-1,0,0":"-x", "0,1,0":"+y",
+  "0,-1,0":"-y", "0,0,1":"+z", "0,0,-1":"-z"
+};
+
+let tool = "view";
+let workSurfaces = [];        /* /surfaces 快取 */
+let drawPts = [];             /* 多邊形進行中的 uv 頂點 */
+let rectStart = null;         /* 矩形起點 {u,v} */
+let editLoops = null;         /* 編輯中邊界 loops（[{verts,fixity}]） */
+let editBid = 0;
+let editDrag = null;          /* {loop,index,kind} */
+let affineCache = {};         /* "v:sid" → uv↔view-mm 仿射映射 */
+let previewG = null;
+
+/* uv↔view-mm 仿射映射：取 3 個 proj 樣本解出（C 端永遠是計算來源）。 */
+async function uvMapFor(v, sid) {
+  const key = v + ":" + sid;
+  if (affineCache[key]) return affineCache[key];
+  const [p00, p10, p01] = await Promise.all([
+    api(`proj ${v} 0 0 ${sid}`),
+    api(`proj ${v} 1000 0 ${sid}`),
+    api(`proj ${v} 0 1000 ${sid}`)
+  ]);
+  if (!p00.ok || !p10.ok || !p01.ok) return null;
+  const m = {
+    ox: p00.x, oy: p00.y,
+    ax: (p10.x - p00.x) / 1000, ay: (p10.y - p00.y) / 1000,
+    bx: (p01.x - p00.x) / 1000, by: (p01.y - p00.y) / 1000
+  };
+  m.det = m.ax * m.by - m.ay * m.bx;
+  if (!m.det) return null;                    /* 這視圖看不到這面 */
+  affineCache[key] = m;
+  return m;
+}
+function mapUv(m, u, v) {
+  return { x: m.ox + u * m.ax + v * m.bx, y: m.oy + u * m.ay + v * m.by };
+}
+function unmapView(m, x, y) {
+  const dx = x - m.ox, dy = y - m.oy;
+  return {
+    u: Math.round((dx * m.by - m.bx * dy) / m.det),
+    v: Math.round((m.ax * dy - dx * m.ay) / m.det)
+  };
+}
+
+/* 目前選的工作面：既有承載面，或「新水平面 z=…」（只在俯視圖畫）。 */
+function curSurf() {
+  const sel = $("workSurf").value;
+  if (sel === "new") {
+    return { id: 0, boundary: 0,
+             origin: [0, 0, (+$("newZ").value) || 0],
+             u: [1, 0, 0], v: [0, 1, 0], isNew: true };
+  }
+  return workSurfaces.find(s => s.id === +sel) || null;
+}
+
+/* 工作面的 uv 映射：新水平面在俯視圖(索引 2)就是恆等映射。 */
+async function uvMap(v) {
+  const s = curSurf();
+  if (!s) return null;
+  if (s.isNew) {
+    return v === 2 ? { ox: 0, oy: 0, ax: 1, ay: 0, bx: 0, by: 1, det: 1 }
+                   : null;
+  }
+  return uvMapFor(v, s.id);
+}
+
+function previewClear() {
+  if (previewG) { previewG.remove(); previewG = null; }
+}
+function previewIn(v) {
+  previewClear();
+  const L = layout.views[v];
+  previewG = el("g", { transform: `translate(${L.tx},${L.ty})` }, world);
+}
+function previewPoly(m, pts, close) {
+  const pp = pts.map(p => mapUv(m, p[0], p[1]));
+  el(close ? "polygon" : "polyline",
+     { points: pp.map(p => `${p.x},${p.y}`).join(" "),
+       fill: close ? "rgba(51,102,204,.15)" : "none",
+       stroke: "#c0392b", "stroke-width": 1.5, "stroke-dasharray": "8 4",
+       "vector-effect": "non-scaling-stroke" }, previewG);
+  for (const p of pp) {
+    el("circle", { cx: p.x, cy: p.y, r: 4, fill: "#c0392b" }, previewG);
+  }
+}
+
+function vertsStr(pts) { return pts.map(p => `${p[0]},${p[1]}`).join(" "); }
+function fixityStr(fx) { return fx.map(f => f ? "F" : "X").join(" "); }
+
+async function emitLine(text) {
+  const r = await api("line " + text);
+  if (r.ok) {
+    setStatus("✓ " + text);
+    drawPts = []; rectStart = null; previewClear();
+    selected = null;
+    await render(); await refreshSurfaces();
+  } else {
+    setStatus("✗ " + (r.error || ""));
+  }
+  return r.ok;
+}
+
+/* 在選定平面上建新「surface」（boundary + placement 合體一行）。 */
+async function emitNewSurface(pts) {
+  const ids = await api("newid");
+  const s = curSurf();
+  if (!s) { setStatus("✗ 沒有選工作面"); return false; }
+  const nid = Math.max(ids.boundary, ids.placement);
+  const o = s.origin;
+  const line = `surface ${nid} origin ${o[0]} ${o[1]} ${o[2]} ` +
+    `u ${AXIS_WORD[s.u.join()]} v ${AXIS_WORD[s.v.join()]} ` +
+    `outline ${vertsStr(pts)}`;
+  return emitLine(line);
+}
+
+/* 邊界面整體重宣告（含孔與 fixity）——交易式，失敗會回退。 */
+async function emitBoundary(bid, loops) {
+  let s = `boundary ${bid} outline ` + vertsStr(loops[0].verts);
+  if (loops[0].fixity.some(f => !f)) s += " fixity " + fixityStr(loops[0].fixity);
+  for (let i = 1; i < loops.length; ++i) {
+    s += " hole " + vertsStr(loops[i].verts);
+    if (loops[i].fixity.some(f => !f)) s += " fixity " + fixityStr(loops[i].fixity);
+  }
+  return emitLine(s);
+}
+
+async function refreshSurfaces() {
+  const r = await api("surfaces");
+  if (!r.ok) return;
+  workSurfaces = r.surfaces;
+  const sel = $("workSurf"), keep = sel.value;
+  sel.textContent = "";
+  for (const s of workSurfaces) {
+    const o = document.createElement("option");
+    o.value = s.id;
+    o.textContent = `面 ${s.id}（z=${s.origin[2]}${s.boundary ? " 有邊界" : " 無邊界"}）`;
+    sel.appendChild(o);
+  }
+  const nw = document.createElement("option");
+  nw.value = "new"; nw.textContent = "＋新水平面";
+  sel.appendChild(nw);
+  sel.value = [...sel.options].some(o => o.value === keep) ? keep : sel.value;
+  $("newZ").hidden = sel.value !== "new";
+  if (tool === "edit") await enterEdit();
+}
+
+/* ---- 編輯工具 ---- */
+async function enterEdit() {
+  editLoops = null; editBid = 0; editDrag = null; previewClear();
+  const s = curSurf();
+  if (!s || s.isNew || !s.boundary) {
+    setStatus("編輯：選一片有邊界面的工作面（下拉選單）");
+    return;
+  }
+  const b = await api("boundary " + s.boundary);
+  if (!b.ok) { setStatus("✗ " + (b.error || "")); return; }
+  editLoops = b.loops; editBid = s.boundary;
+  setStatus(`編輯邊界 ${editBid}：拖頂點拉角、拖邊平移；完成即重宣告`);
+  await drawEditHandles();
+}
+
+async function drawEditHandles() {
+  if (!editLoops) return;
+  for (let v = 0; v < 3; ++v) {
+    const m = await uvMap(v);
+    if (!m) continue;
+    previewClear();                       /* 手柄畫在命中的那個視圖 */
+    previewIn(v);
+    for (const loop of editLoops) {
+      previewPoly(m, loop.verts, true);
+    }
+    return;
+  }
+}
+
+/* 頂點拉角：鄰邊保持正交（鄰點共享座標跟著動）。 */
+function applyVertexEdit(pts, i, uv) {
+  const n = pts.length;
+  const prev = pts[(i - 1 + n) % n], next = pts[(i + 1) % n], cur = pts[i];
+  if (prev[1] === cur[1]) prev[1] = uv.v;   /* prev→cur 是水平邊 */
+  else                    prev[0] = uv.u;
+  if (next[0] === cur[0]) next[0] = uv.u;   /* cur→next 是直立邊 */
+  else                    next[1] = uv.v;
+  cur[0] = uv.u; cur[1] = uv.v;
+}
+function applyEdgeEdit(pts, i, uv) {
+  const a = pts[i], b = pts[(i + 1) % pts.length];
+  if (a[1] === b[1]) { a[1] = b[1] = uv.v; } else { a[0] = b[0] = uv.u; }
+}
+
+/* ---- 畫布滑鼠流程 ---- */
+async function canvasDown(e, sv) {
+  const m = await uvMap(sv.v);
+  if (!m) { setStatus("這個視圖看不到工作面（換俯視圖或換工作面）"); return; }
+  const uv = unmapView(m, sv.x, sv.y);
+
+  if (tool === "rect" || tool === "hole") {
+    rectStart = uv; previewIn(sv.v); previewPoly(m, [[uv.u, uv.v], [uv.u, uv.v]], true);
+  } else if (tool === "poly") {
+    /* 軸鎖：新點與上一點水平或垂直對齊（取主軸）。 */
+    if (drawPts.length) {
+      const p = drawPts[drawPts.length - 1];
+      if (Math.abs(uv.u - p[0]) >= Math.abs(uv.v - p[1])) uv.v = p[1];
+      else uv.u = p[0];
+    }
+    /* 點回起點附近 = 閉合。 */
+    if (drawPts.length >= 3) {
+      const q = mapUv(m, drawPts[0][0], drawPts[0][1]);
+      if (Math.hypot(q.x - sv.x, q.y - sv.y) <= sv.r) {
+        const pts = drawPts; drawPts = []; previewClear();
+        await emitNewSurface(pts); return;
+      }
+    }
+    drawPts.push([uv.u, uv.v]);
+    previewIn(sv.v); previewPoly(m, [...drawPts, [uv.u, uv.v]], false);
+  } else if (tool === "edit" && editLoops) {
+    const s = curSurf();
+    const h = await api(`bhit ${editBid} ${uv.u} ${uv.v} ${sv.r}`);
+    if (!h.ok) return;
+    editDrag = { loop: h.loop, index: h.index, kind: h.kind,
+                 loops: editLoops.map(l => ({ verts: l.verts.map(p => [...p]),
+                                            fixity: [...l.fixity] })) };
+    previewIn(sv.v);
+  }
+}
+
+async function canvasMove(e, sv) {
+  if (tool === "view") return;
+  const m = await uvMap(sv.v);
+  if (!m) return;
+  const uv = unmapView(m, sv.x, sv.y);
+
+  if ((tool === "rect" || tool === "hole") && rectStart) {
+    const u0 = Math.min(rectStart.u, uv.u), u1 = Math.max(rectStart.u, uv.u);
+    const v0 = Math.min(rectStart.v, uv.v), v1 = Math.max(rectStart.v, uv.v);
+    previewIn(sv.v);
+    previewPoly(m, [[u0, v0], [u1, v0], [u1, v1], [u0, v1]], true);
+  } else if (tool === "poly" && drawPts.length) {
+    const p = drawPts[drawPts.length - 1];
+    const lock = { u: uv.u, v: uv.v };
+    if (Math.abs(uv.u - p[0]) >= Math.abs(uv.v - p[1])) lock.v = p[1];
+    else lock.u = p[0];
+    previewIn(sv.v); previewPoly(m, [...drawPts, [lock.u, lock.v]], false);
+  } else if (tool === "edit" && editDrag) {
+    const pts = editDrag.loops[editDrag.loop + 1].verts;
+    if (editDrag.kind === "vertex") applyVertexEdit(pts, editDrag.index, uv);
+    else applyEdgeEdit(pts, editDrag.index, uv);
+    previewIn(sv.v);
+    for (const loop of editDrag.loops) previewPoly(m, loop.verts, true);
+  }
+}
+
+async function canvasUp(e, sv) {
+  if ((tool === "rect" || tool === "hole") && rectStart && sv) {
+    const m = await uvMap(sv.v);
+    const uv = m ? unmapView(m, sv.x, sv.y) : null;
+    const st = rectStart; rectStart = null; previewClear();
+    if (!uv || st.u === uv.u || st.v === uv.v) return;
+    const u0 = Math.min(st.u, uv.u), u1 = Math.max(st.u, uv.u);
+    const v0 = Math.min(st.v, uv.v), v1 = Math.max(st.v, uv.v);
+    const pts = [[u0, v0], [u1, v0], [u1, v1], [u0, v1]];
+    if (tool === "rect") {
+      await emitNewSurface(pts);
+    } else {
+      /* 挖孔：把矩形當新孔併進工作面的邊界，整體重宣告。 */
+      const s = curSurf();
+      if (!s || !s.boundary) { setStatus("✗ 挖孔要有邊界面的工作面"); return; }
+      const b = await api("boundary " + s.boundary);
+      if (!b.ok) return;
+      b.loops.push({ verts: pts, fixity: pts.map(() => 1) });
+      await emitBoundary(s.boundary, b.loops);
+    }
+  } else if (tool === "edit" && editDrag) {
+    const loops = editDrag.loops; editDrag = null;
+    if (await emitBoundary(editBid, loops)) { await enterEdit(); }
+  }
+}
+
+$("tool").addEventListener("change", async () => {
+  tool = $("tool").value;
+  drawPts = []; rectStart = null; editDrag = null; previewClear();
+  if (tool === "edit") await enterEdit();
+  else if (tool === "rect" || tool === "poly") setStatus("在工作面上拉／點出範圍");
+  else if (tool === "hole") setStatus("在工作面邊界內拉一個矩形當孔");
+  else setStatus("");
+});
+$("workSurf").addEventListener("change", async () => {
+  $("newZ").hidden = $("workSurf").value !== "new";
+  if (tool === "edit") await enterEdit();
+});
+$("btnExport").onclick = async () => {
+  const r = await api("dump");
+  if (!r.ok) { setStatus("✗ " + (r.error || "")); return; }
+  const blob = new Blob([r.text], { type: "text/plain;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "canvas_export.scene";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setStatus("✓ 已匯出 canvas_export.scene");
+};
+window.addEventListener("keydown", e => {
+  if (e.key === "Escape") { drawPts = []; rectStart = null; editDrag = null; previewClear(); }
+});
+
 /* ---- 指令列與按鈕 ---- */
 $("cmd").addEventListener("keydown", async e => {
   if (e.key !== "Enter") return;
   const text = e.target.value;
   const r = await api("line " + text);
-  if (r.ok) { setStatus("✓ 已套用"); e.target.value = ""; selected = null; render(); }
+  if (r.ok) { setStatus("✓ 已套用"); e.target.value = ""; selected = null; render(); refreshSurfaces(); }
   else setStatus("✗ " + (r.error || ""));
 });
 $("btnClear").onclick = async () => {
   await api("line reset"); selected = null;
-  setStatus("✓ 已清空"); render();
+  setStatus("✓ 已清空"); render(); refreshSurfaces();
 };
 $("btnEx").onclick = async () => {
   const sel = $("sceneList");
   const path = sel.value || "";
   const r = await api("loadfile " + (path || "room_a.scene"));
-  if (r.ok) { setStatus("✓ 已載入 " + (sel.selectedOptions[0]?.text || "範例")); selected = null; render(); }
+  if (r.ok) { setStatus("✓ 已載入 " + (sel.selectedOptions[0]?.text || "範例")); selected = null; render(); refreshSurfaces(); }
   else setStatus("✗ " + (r.error || ""));
 };
 $("btnScene").onclick = $("btnEx").onclick;
@@ -289,7 +620,7 @@ $("file").addEventListener("change", async e => {
   const f = e.target.files[0];
   if (!f) return;
   const r = await fetch("/upload", { method: "POST", body: await f.text() }).then(x => x.json());
-  if (r.ok) { setStatus("✓ 已載入 " + f.name); selected = null; render(); }
+  if (r.ok) { setStatus("✓ 已載入 " + f.name); selected = null; render(); refreshSurfaces(); }
   else setStatus("✗ " + (r.error || ""));
   e.target.value = "";
 });
@@ -310,6 +641,7 @@ window.addEventListener("resize", applyTransform);
   } catch {}
   setStatus("指令：boundary｜placement｜space｜guide｜timber｜place on 面id at u v｜at-guides 線1 線2｜move 線id offset｜reset");
   render();
+  refreshSurfaces();
 })();
 </script>
 </body>

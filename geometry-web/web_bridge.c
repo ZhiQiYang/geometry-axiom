@@ -294,6 +294,160 @@ static void cmd_loadfile(const char *path)
     }
 }
 
+/* ---- 畫布指令 ---- */
+
+/* uv <view> <x> <y> <surface_id>：視圖 mm → 該承載面 uv（容差反解）。 */
+static void cmd_uv(int v, Coord x, Coord y, uint32_t sid)
+{
+    const PlacementSurface *surface = world_find_placement(&g_world, sid);
+    SurfacePoint2 uv;
+
+    if (v < 0 || v >= VIEW_COUNT || surface == NULL ||
+        !view_unproject_on_surface_near(
+            &VIEW_FRAMES[v], surface, (ViewPoint2){ x, y }, &uv)) {
+        fputs("{\"ok\":false}\n", stdout);
+        return;
+    }
+    printf("{\"ok\":true,\"u\":%lld,\"v\":%lld}\n",
+           (long long)uv.u, (long long)uv.v);
+}
+
+/* proj <view> <u> <v> <surface_id>：承載面 uv → 視圖 mm（編輯手柄用）。 */
+static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
+{
+    const PlacementSurface *surface = world_find_placement(&g_world, sid);
+
+    if (v < 0 || v >= VIEW_COUNT || surface == NULL) {
+        fputs("{\"ok\":false}\n", stdout);
+        return;
+    }
+    Point3 p = surface_point_to_room(surface, u, vv, 0);
+    ViewPoint2 q = view_project(&VIEW_FRAMES[v], p);
+    printf("{\"ok\":true,\"x\":%lld,\"y\":%lld}\n",
+           (long long)q.x, (long long)q.y);
+}
+
+/* newid：各類物件目前最大 id + 1（畫布產生新物件用）。 */
+static void cmd_newid(void)
+{
+    uint32_t mb = 0, mp = 0, mg = 0, mgr = 0, mt = 0, ms = 0;
+
+    for (size_t i = 0; i < g_world.boundary_count; ++i)
+        if (g_world.boundaries[i].id > mb) mb = g_world.boundaries[i].id;
+    for (size_t i = 0; i < g_world.placement_count; ++i)
+        if (g_world.placements[i].id > mp) mp = g_world.placements[i].id;
+    for (size_t i = 0; i < g_world.guide_count; ++i)
+        if (g_world.guides[i].id > mg) mg = g_world.guides[i].id;
+    for (size_t i = 0; i < g_world.grid_count; ++i)
+        if (g_world.grids[i].id > mgr) mgr = g_world.grids[i].id;
+    for (size_t i = 0; i < g_world.timber_count; ++i)
+        if (g_world.timbers[i].id > mt) mt = g_world.timbers[i].id;
+    for (size_t i = 0; i < g_world.space_count; ++i)
+        if (g_world.spaces[i].id > ms) ms = g_world.spaces[i].id;
+
+    printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
+           "\"grid\":%u,\"timber\":%u,\"space\":%u}\n",
+           mb + 1, mp + 1, mg + 1, mgr + 1, mt + 1, ms + 1);
+}
+
+/* surfaces：列出承載面（畫布的「工作面」選擇器）。 */
+static void cmd_surfaces(void)
+{
+    fputs("{\"ok\":true,\"surfaces\":[", stdout);
+    for (size_t i = 0; i < g_world.placement_count; ++i) {
+        const PlacementSurface *p = &g_world.placements[i];
+        if (i) putchar(',');
+        printf("{\"id\":%u,\"boundary\":%u,"
+               "\"origin\":[%lld,%lld,%lld],"
+               "\"u\":[%lld,%lld,%lld],\"v\":[%lld,%lld,%lld]}",
+               (unsigned)p->id, (unsigned)p->boundary_id,
+               (long long)p->frame.origin.x, (long long)p->frame.origin.y,
+               (long long)p->frame.origin.z,
+               (long long)p->frame.axis_u.x, (long long)p->frame.axis_u.y,
+               (long long)p->frame.axis_u.z,
+               (long long)p->frame.axis_v.x, (long long)p->frame.axis_v.y,
+               (long long)p->frame.axis_v.z);
+    }
+    fputs("]}\n", stdout);
+}
+
+/* boundary <id>：回傳環頂點與 fixity（編輯手柄資料）。 */
+static void cmd_boundary(uint32_t id)
+{
+    const SpaceBoundarySurface *b = world_find_boundary(&g_world, id);
+
+    if (b == NULL) {
+        fputs("{\"ok\":false,\"error\":\"邊界面不存在\"}\n", stdout);
+        return;
+    }
+
+    fputs("{\"ok\":true,\"loops\":[", stdout);
+    for (int li = -1; li < (int)b->hole_count; ++li) {
+        const PolygonLoop2 *loop = li < 0 ? &b->outline : &b->holes[li];
+        if (li >= 0) putchar(',');
+        fputs("{\"verts\":[", stdout);
+        for (size_t i = 0; i < loop->count; ++i) {
+            if (i) putchar(',');
+            printf("[%lld,%lld]", (long long)loop->v[i].u,
+                   (long long)loop->v[i].v);
+        }
+        fputs("],\"fixity\":[", stdout);
+        for (size_t i = 0; i < loop->count; ++i) {
+            if (i) putchar(',');
+            putchar(loop->fixity[i] == EDGE_FREE ? '0' : '1');
+        }
+        fputs("]}", stdout);
+    }
+    fputs("]}\n", stdout);
+}
+
+/* bhit <boundary_id> <u> <v> <r>：邊界頂點/邊命中（編輯拖曳用）。 */
+static void cmd_bhit(uint32_t id, Coord u, Coord v, Coord r)
+{
+    const SpaceBoundarySurface *b = world_find_boundary(&g_world, id);
+    BoundaryHit hit;
+
+    if (!boundary_pick_point(b, (SurfacePoint2){ u, v }, r, &hit)) {
+        fputs("{\"ok\":false}\n", stdout);
+        return;
+    }
+    printf("{\"ok\":true,\"kind\":\"%s\",\"loop\":%d,\"index\":%d}\n",
+           hit.kind == BOUNDARY_HIT_VERTEX ? "vertex" : "edge",
+           hit.loop, hit.index);
+}
+
+/* dump：World → 可重放 DSL 文本（存檔/匯出）。 */
+static void cmd_dump(void)
+{
+    FILE *tmp = tmpfile();
+
+    if (tmp == NULL) {
+        fputs("{\"ok\":false,\"error\":\"暫存檔失敗\"}\n", stdout);
+        return;
+    }
+    world_dump_dsl(&g_world, tmp);
+    fflush(tmp);
+    rewind(tmp);
+
+    fputs("{\"ok\":true,\"text\":", stdout);
+    char buf[2048];
+    /* JSON 字串逐段輸出，先寫開頭引號。 */
+    putchar('"');
+    while (fgets(buf, sizeof buf, tmp) != NULL) {
+        for (const char *p = buf; *p; ++p) {
+            switch (*p) {
+            case '"':  fputs("\\\"", stdout); break;
+            case '\\': fputs("\\\\", stdout); break;
+            case '\n': fputs("\\n", stdout);  break;
+            case '\r': break;
+            default:   putchar(*p);
+            }
+        }
+    }
+    fputs("\"}\n", stdout);
+    fclose(tmp);
+}
+
 int main(void)
 {
     _setmode(_fileno(stdout), _O_BINARY);
@@ -338,6 +492,35 @@ int main(void)
             } else {
                 fputs("{\"ok\":false,\"error\":\"drag 用法：drag idx v x y\"}\n", stdout);
             }
+        } else if (strcmp(line, "uv") == 0 && arg != NULL) {
+            int v; long long x, y, sid;
+            if (sscanf(arg, "%d %lld %lld %lld", &v, &x, &y, &sid) == 4) {
+                cmd_uv(v, (Coord)x, (Coord)y, (uint32_t)sid);
+            } else {
+                fputs("{\"ok\":false}\n", stdout);
+            }
+        } else if (strcmp(line, "proj") == 0 && arg != NULL) {
+            int v; long long u, vv, sid;
+            if (sscanf(arg, "%d %lld %lld %lld", &v, &u, &vv, &sid) == 4) {
+                cmd_proj(v, (Coord)u, (Coord)vv, (uint32_t)sid);
+            } else {
+                fputs("{\"ok\":false}\n", stdout);
+            }
+        } else if (strcmp(line, "bhit") == 0 && arg != NULL) {
+            long long bid, u, v, r;
+            if (sscanf(arg, "%lld %lld %lld %lld", &bid, &u, &v, &r) == 4) {
+                cmd_bhit((uint32_t)bid, (Coord)u, (Coord)v, (Coord)r);
+            } else {
+                fputs("{\"ok\":false}\n", stdout);
+            }
+        } else if (strcmp(line, "boundary") == 0 && arg != NULL) {
+            cmd_boundary((uint32_t)strtoul(arg, NULL, 10));
+        } else if (strcmp(line, "newid") == 0) {
+            cmd_newid();
+        } else if (strcmp(line, "surfaces") == 0) {
+            cmd_surfaces();
+        } else if (strcmp(line, "dump") == 0) {
+            cmd_dump();
         } else {
             fputs("{\"ok\":false,\"error\":\"不認得的橋接指令\"}\n", stdout);
         }

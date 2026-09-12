@@ -1,6 +1,6 @@
 #include <errno.h>
-#include <errno.h>
 #include <inttypes.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -2731,6 +2731,116 @@ static bool view_unproject_on_surface(
 }
 
 /*
+ * 容差反解：給畫布輸入用。滑鼠座標不一定落在整數 uv 上，
+ * 四捨五入到最近的整數座標；det == 0（該視圖看不到這面）仍失敗。
+ */
+static bool view_unproject_on_surface_near(
+    const ViewFrame *view,
+    const PlacementSurface *surface,
+    ViewPoint2 p,
+    SurfacePoint2 *out_uv
+)
+{
+    Coord a = vector_dot(surface->frame.axis_u, view->right);
+    Coord b = vector_dot(surface->frame.axis_v, view->right);
+    Coord c = vector_dot(surface->frame.axis_u, view->down);
+    Coord d = vector_dot(surface->frame.axis_v, view->down);
+    Coord e = p.x - point_along(surface->frame.origin, view->right);
+    Coord f = p.y - point_along(surface->frame.origin, view->down);
+    Coord det = a * d - b * c;
+
+    if (det == 0) {
+        return false;
+    }
+
+    double u_num = (double)(e * d - b * f);
+    double v_num = (double)(a * f - e * c);
+
+    out_uv->u = (Coord)llround(u_num / (double)det);
+    out_uv->v = (Coord)llround(v_num / (double)det);
+    return true;
+}
+
+/* ---- 畫布編輯用的邊界命中判定 ---- */
+
+typedef enum {
+    BOUNDARY_HIT_NONE,
+    BOUNDARY_HIT_VERTEX,
+    BOUNDARY_HIT_EDGE
+} BoundaryHitKind;
+
+typedef struct {
+    BoundaryHitKind kind;
+    int loop;          /* -1 = 外輪廓,0.. = 孔 index */
+    int index;         /* 頂點 index 或邊 index（邊 i = v[i]→v[i+1]） */
+    Coord dist;        /* 命中點到目標的距離（mm，對角線用 max 範數） */
+} BoundaryHit;
+
+/* 點到軸平行線段的距離（Chebyshev，夠命中判定用）。 */
+static Coord dist_point_segment_axis(SurfacePoint2 p, SurfacePoint2 a, SurfacePoint2 b)
+{
+    Coord du, dv;
+
+    if (a.u == b.u) {
+        du = p.u - a.u;
+        Coord lo = coord_min(a.v, b.v), hi = coord_max(a.v, b.v);
+        dv = p.v < lo ? lo - p.v : p.v > hi ? p.v - hi : 0;
+    } else {
+        dv = p.v - a.v;
+        Coord lo = coord_min(a.u, b.u), hi = coord_max(a.u, b.u);
+        du = p.u < lo ? lo - p.u : p.u > hi ? p.u - hi : 0;
+    }
+
+    return du > dv ? du : dv;
+}
+
+/*
+ * 在邊界面上找離 uv 最近的頂點或邊（r = 拾取半徑 mm）。
+ * 頂點優先於邊；同類取最近者。所有環（外輪廓 + 孔）一起比。
+ */
+static bool boundary_pick_point(
+    const SpaceBoundarySurface *b,
+    SurfacePoint2 uv,
+    Coord radius,
+    BoundaryHit *out
+)
+{
+    BoundaryHit best = { BOUNDARY_HIT_NONE, -1, -1, radius + 1 };
+
+    if (b == NULL) {
+        return false;
+    }
+
+    for (int li = -1; li < (int)b->hole_count; ++li) {
+        const PolygonLoop2 *loop = li < 0 ? &b->outline : &b->holes[li];
+
+        for (size_t i = 0; i < loop->count; ++i) {
+            SurfacePoint2 a = loop->v[i];
+            Coord dv = llabs(uv.u - a.u) > llabs(uv.v - a.v)
+                ? llabs(uv.u - a.u) : llabs(uv.v - a.v);
+
+            if (dv <= radius && dv < best.dist) {
+                best = (BoundaryHit){
+                    BOUNDARY_HIT_VERTEX, li, (int)i, dv };
+            }
+        }
+
+        for (size_t i = 0; i < loop->count; ++i) {
+            Coord de = dist_point_segment_axis(
+                uv, loop->v[i], loop->v[(i + 1) % loop->count]);
+
+            if (de <= radius && best.kind != BOUNDARY_HIT_VERTEX &&
+                de < best.dist) {
+                best = (BoundaryHit){ BOUNDARY_HIT_EDGE, li, (int)i, de };
+            }
+        }
+    }
+
+    *out = best;
+    return best.kind != BOUNDARY_HIT_NONE;
+}
+
+/*
  * 在某一個視圖中，找 view_mm 點命中的物件。
  * 面畫在參考線之上，所以先挑面；同處多個命中取最後畫的（最近的）。
  */
@@ -3491,6 +3601,29 @@ static void gdi_text(void *ctx, ViewPoint2 at, DrawStyle style, const char *utf8
 #define IDM_ZOOM_RESET   202
 #define IDM_EXIT         203
 
+/* 畫布工具與工作面選擇；IDM_WORK_BASE+i = 第 i 個承載面。 */
+#define IDM_TOOL_VIEW    210
+#define IDM_TOOL_RECT    211
+#define IDM_TOOL_POLY    212
+#define IDM_TOOL_HOLE    213
+#define IDM_TOOL_EDIT    214
+#define IDM_EXPORT_SCENE 215
+#define IDM_WORK_BASE    300   /* 300.. 承載面；398/399 = 新水平面 z=0/2500 */
+#define IDM_WORK_NEW_Z0  398
+#define IDM_WORK_NEW_Z1  399
+
+/* 畫布工具：檢視之外的模式全部只產生 DSL 行（見下方畫布層）。 */
+typedef enum {
+    TOOL_VIEW = 0,
+    TOOL_RECT,          /* 拉矩形建面 */
+    TOOL_POLY,          /* 逐點畫正交多邊形建面 */
+    TOOL_HOLE,          /* 拉矩形挖孔（併進工作面的邊界） */
+    TOOL_EDIT           /* 拖頂點／邊編輯工作面的邊界 */
+} CanvasTool;
+
+static const char *axis_word(Vector3 axis);
+static void world_dump_dsl(const World *world, FILE *out);
+
 /* 輸入列的 Enter 送給主視窗的自訂訊息。 */
 #define WM_APP_APPLY_INPUT  (WM_APP + 1)
 
@@ -3520,6 +3653,21 @@ typedef struct {
     HWND hover_label;
     int input_line_no;
 
+    /* 畫布工具態（TOOL_*）；互動態，不是場景內容。 */
+    int canvas_tool;
+    uint32_t work_placement;    /* 工作面 placement id；0 = 新水平面 */
+    Coord work_plane_z;
+    uint32_t edit_boundary;     /* TOOL_EDIT 作用的邊界面 id */
+    int draw_view;              /* 進行中繪製所在視圖；-1 = 無 */
+    SurfacePoint2 draw_pts[POLY_MAX_VERTICES];
+    size_t draw_count;
+    bool draw_down;
+    SurfacePoint2 draw_start, draw_cur;
+    BoundaryHit edit_hit;
+    bool edit_down;
+    SpaceBoundarySurface edit_work;   /* 編輯中的邊界副本 */
+    HMENU surf_menu;
+
     /* 離屏緩衝與 GDI 物件快取：尺寸不變就整幀重用，不再每幀重建。 */
     HDC mem_dc;
     HBITMAP mem_bitmap;
@@ -3528,6 +3676,11 @@ typedef struct {
     int mem_h;
     GdiObjectCache objects;
 } GdiApp;
+
+/* 畫布層定義在下方；app_refresh／gdi_paint 要先看到原型。 */
+static void gdi_draw_canvas_preview(HDC dc, RECT draw, GdiApp *app);
+static void gdi_rebuild_surf_menu(GdiApp *app);
+static void gdi_enter_edit(GdiApp *app);
 
 /* 函式集合固定，只有 ctx 每次重畫才綁。 */
 static const DrawTarget GDI_TARGET = {
@@ -3615,6 +3768,9 @@ static void gdi_paint(HDC dc, RECT client, GdiApp *app)
     if (show != NULL) {
         scene_draw_pick(&target, &app->layout, &app->scene, show);
     }
+
+    /* 畫布工具的進行中預覽（矩形／多邊形／編輯手柄），壓在最上層。 */
+    gdi_draw_canvas_preview(dc, draw, app);
 }
 
 /* 釋放 GdiApp 持有的全部 GDI 資源：離屏緩衝 + 物件快取。 */
@@ -3646,6 +3802,16 @@ static void app_refresh(GdiApp *app, HWND window)
     app->hover = SCENE_PICK_NONE;
     app->selected = SCENE_PICK_NONE;
     app->drag_guide = -1;
+    gdi_rebuild_surf_menu(app);
+    /* 工作面被刪掉時回退到第一片；編輯工具的目標也跟著重取。 */
+    if (app->work_placement != 0 &&
+        world_find_placement(app->world, app->work_placement) == NULL) {
+        app->work_placement = app->world->placement_count > 0
+            ? app->world->placements[0].id : 0;
+    }
+    if (app->canvas_tool == TOOL_EDIT) {
+        gdi_enter_edit(app);
+    }
     InvalidateRect(window, NULL, FALSE);
 }
 
@@ -3863,6 +4029,427 @@ static void gdi_layout_input_bar(HWND window, GdiApp *app)
                w - 80, h - 34, 72, 26, TRUE);
 }
 
+/* ============================================================
+ * 畫布工具（GDI）：在畫布中建立／編輯空間邊界面
+ *
+ * 與 web 版同一份規則：畫布動作只是「產生 DSL 行」丟進
+ * interactive_apply_line——世界狀態仍是唯一事實來源，
+ * 公理守門員照舊把關，拒絕就留在原狀。
+ * ============================================================ */
+
+/* 工作面的承載面：既有 placement，或堆疊上的臨時水平面（新平面）。 */
+static const PlacementSurface *canvas_work_surface(
+    const GdiApp *app, PlacementSurface *tmp
+)
+{
+    if (app->work_placement == 0) {
+        memset(tmp, 0, sizeof *tmp);
+        tmp->frame.origin = (Point3){ 0, 0, app->work_plane_z };
+        tmp->frame.axis_u = (Vector3){ 1, 0, 0 };
+        tmp->frame.axis_v = (Vector3){ 0, 1, 0 };
+        tmp->frame.normal = (Vector3){ 0, 0, 1 };
+        return tmp;
+    }
+    return world_find_placement(app->world, app->work_placement);
+}
+
+/* 目前最大 boundary/placement id + 1（畫布產生新物件用）。 */
+static uint32_t canvas_next_id(const GdiApp *app)
+{
+    uint32_t m = 0;
+    for (size_t i = 0; i < app->world->boundary_count; ++i)
+        if (app->world->boundaries[i].id > m) m = app->world->boundaries[i].id;
+    for (size_t i = 0; i < app->world->placement_count; ++i)
+        if (app->world->placements[i].id > m) m = app->world->placements[i].id;
+    return m + 1;
+}
+
+/* 一個環 → 「u,v u,v … [fixity …]」寫入字串緩衝；回傳寫入後位置。 */
+static char *canvas_fmt_loop(char *p, char *end, const PolygonLoop2 *loop)
+{
+    for (size_t i = 0; i < loop->count; ++i) {
+        p += snprintf(p, (size_t)(end - p), "%s%lld,%lld",
+                      i ? " " : "",
+                      (long long)loop->v[i].u, (long long)loop->v[i].v);
+    }
+    bool any_free = false;
+    for (size_t i = 0; i < loop->count; ++i) {
+        if (loop->fixity[i] == EDGE_FREE) { any_free = true; break; }
+    }
+    if (any_free) {
+        p += snprintf(p, (size_t)(end - p), " fixity");
+        for (size_t i = 0; i < loop->count; ++i) {
+            p += snprintf(p, (size_t)(end - p), " %c",
+                          loop->fixity[i] == EDGE_FREE ? 'X' : 'F');
+        }
+    }
+    return p;
+}
+
+/* 在選定平面上建新 surface（boundary + placement 合體一行）。 */
+static void canvas_emit_new_surface(
+    GdiApp *app, HWND window,
+    const PlacementSurface *plane,
+    const SurfacePoint2 *pts, size_t count
+)
+{
+    char line[SCENE_MAX_LINE];
+    char *p = line, *end = line + sizeof line;
+
+    p += snprintf(p, (size_t)(end - p),
+                  "surface %u origin %lld %lld %lld u %s v %s outline ",
+                  (unsigned)canvas_next_id(app),
+                  (long long)plane->frame.origin.x,
+                  (long long)plane->frame.origin.y,
+                  (long long)plane->frame.origin.z,
+                  axis_word(plane->frame.axis_u),
+                  axis_word(plane->frame.axis_v));
+    for (size_t i = 0; i < count; ++i) {
+        p += snprintf(p, (size_t)(end - p), "%s%lld,%lld",
+                      i ? " " : "", (long long)pts[i].u, (long long)pts[i].v);
+    }
+    interactive_apply_line(app, window, line);
+}
+
+/* 邊界面整體重宣告（編輯拖曳、挖孔都走這條；交易式，失敗回退）。 */
+static void canvas_emit_boundary(
+    GdiApp *app, HWND window, const SpaceBoundarySurface *b
+)
+{
+    char line[SCENE_MAX_LINE];
+    char *p = line, *end = line + sizeof line;
+
+    p += snprintf(p, (size_t)(end - p),
+                  "boundary %u outline ", (unsigned)b->id);
+    p = canvas_fmt_loop(p, end, &b->outline);
+    for (size_t h = 0; h < b->hole_count; ++h) {
+        p += snprintf(p, (size_t)(end - p), " hole ");
+        p = canvas_fmt_loop(p, end, &b->holes[h]);
+    }
+    interactive_apply_line(app, window, line);
+}
+
+/* 畫布互動態歸零（工具切換、Esc、場景載入時呼叫）。 */
+static void canvas_reset_drawing(GdiApp *app)
+{
+    app->draw_count = 0;
+    app->draw_down = false;
+    app->edit_down = false;
+    app->draw_view = -1;
+}
+
+/* 進入編輯工具：鎖定工作面的邊界面。 */
+static void gdi_enter_edit(GdiApp *app)
+{
+    const PlacementSurface *ws =
+        world_find_placement(app->world, app->work_placement);
+    const SpaceBoundarySurface *b =
+        ws != NULL ? world_find_boundary(app->world, ws->boundary_id) : NULL;
+    app->edit_boundary = b != NULL ? b->id : 0;
+    app->edit_down = false;
+    app->draw_view = -1;
+}
+
+/* 頂點拉角：鄰邊保持正交（鄰點共享座標跟著動）——與 web 版同一套。 */
+static void canvas_apply_vertex_edit(PolygonLoop2 *loop, size_t i, SurfacePoint2 uv)
+{
+    size_t n = loop->count;
+    SurfacePoint2 *prev = &loop->v[(i + n - 1) % n];
+    SurfacePoint2 *next = &loop->v[(i + 1) % n];
+    SurfacePoint2 *cur = &loop->v[i];
+
+    if (prev->v == cur->v) prev->v = uv.v; else prev->u = uv.u;
+    if (next->u == cur->u) next->u = uv.u; else next->v = uv.v;
+    *cur = uv;
+}
+static void canvas_apply_edge_edit(PolygonLoop2 *loop, size_t i, SurfacePoint2 uv)
+{
+    SurfacePoint2 *a = &loop->v[i], *b = &loop->v[(i + 1) % loop->count];
+    if (a->v == b->v) { a->v = b->v = uv.v; } else { a->u = b->u = uv.u; }
+}
+
+/* 預覽：uv 多邊形畫到某視圖（紅虛線 + 頂點手柄）。 */
+static void gdi_preview_loop(
+    HDC dc, const GdiContext *g, const ViewFrame *view,
+    const PlacementSurface *plane, const PolygonLoop2 *loop, bool handles
+)
+{
+    POINT pxy[POLY_MAX_VERTICES];
+
+    for (size_t i = 0; i < loop->count; ++i) {
+        ViewPoint2 q = view_project(view,
+            surface_point_to_room(plane, loop->v[i].u, loop->v[i].v, 0));
+        pxy[i] = gdi_to_pixel(g, q);
+    }
+    Polygon(dc, pxy, (int)loop->count);
+    if (handles) {
+        for (size_t i = 0; i < loop->count; ++i) {
+            RECT hr = { pxy[i].x - 4, pxy[i].y - 4,
+                        pxy[i].x + 4, pxy[i].y + 4 };
+            FrameRect(dc, &hr, (HBRUSH)GetStockObject(BLACK_BRUSH));
+        }
+    }
+}
+
+/* 進行中的矩形／多邊形／編輯中邊界，壓在圖層最上。 */
+static void gdi_draw_canvas_preview(HDC dc, RECT draw, GdiApp *app)
+{
+    if (app->canvas_tool == TOOL_VIEW) {
+        return;
+    }
+
+    PlacementSurface tmp;
+    const PlacementSurface *plane = canvas_work_surface(app, &tmp);
+    if (plane == NULL) {
+        return;
+    }
+
+    HPEN pen = CreatePen(PS_DASH, 1, RGB(0xc0, 0x39, 0x2b));
+    HGDIOBJ old_pen = SelectObject(dc, pen);
+    HGDIOBJ old_brush = SelectObject(dc, GetStockObject(NULL_BRUSH));
+
+    GdiContext g = {
+        .dc = dc, .tx = 0, .ty = 0, .objects = &app->objects
+    };
+    gdi_view_transform(app, draw, &g.scale, &g.origin_x, &g.origin_y);
+
+    if (app->canvas_tool == TOOL_EDIT && app->edit_boundary != 0) {
+        /* 手柄在所有看得見這面的視圖都畫（編輯不限起始視圖）。 */
+        const SpaceBoundarySurface *b = app->edit_down
+            ? &app->edit_work
+            : world_find_boundary(app->world, app->edit_boundary);
+        for (int v = 0; v < VIEW_COUNT && b != NULL; ++v) {
+            SurfacePoint2 probe;
+            if (!view_unproject_on_surface_near(&VIEW_FRAMES[v], plane,
+                    (ViewPoint2){ 0, 0 }, &probe)) {
+                continue;   /* det = 0：此視圖看這面是線 */
+            }
+            g.tx = app->layout.tx[v];
+            g.ty = app->layout.ty[v];
+            for (int li = -1; li < (int)b->hole_count; ++li) {
+                gdi_preview_loop(dc, &g, &VIEW_FRAMES[v], plane,
+                    li < 0 ? &b->outline : &b->holes[li], true);
+            }
+        }
+    } else if (app->draw_view >= 0) {
+        int v = app->draw_view;
+        g.tx = app->layout.tx[v];
+        g.ty = app->layout.ty[v];
+
+        if (app->draw_down) {
+            Coord u0 = coord_min(app->draw_start.u, app->draw_cur.u);
+            Coord u1 = coord_max(app->draw_start.u, app->draw_cur.u);
+            Coord v0 = coord_min(app->draw_start.v, app->draw_cur.v);
+            Coord v1 = coord_max(app->draw_start.v, app->draw_cur.v);
+            PolygonLoop2 r = { 0 };
+            r.v[0] = (SurfacePoint2){ u0, v0 };
+            r.v[1] = (SurfacePoint2){ u1, v0 };
+            r.v[2] = (SurfacePoint2){ u1, v1 };
+            r.v[3] = (SurfacePoint2){ u0, v1 };
+            r.count = 4;
+            gdi_preview_loop(dc, &g, &VIEW_FRAMES[v], plane, &r, false);
+        } else if (app->canvas_tool == TOOL_POLY && app->draw_count > 0) {
+            POINT pxy[POLY_MAX_VERTICES];
+            size_t n = app->draw_count;
+            for (size_t i = 0; i < n; ++i) {
+                ViewPoint2 q = view_project(&VIEW_FRAMES[v],
+                    surface_point_to_room(plane,
+                        app->draw_pts[i].u, app->draw_pts[i].v, 0));
+                pxy[i] = gdi_to_pixel(&g, q);
+            }
+            ViewPoint2 q = view_project(&VIEW_FRAMES[v],
+                surface_point_to_room(plane,
+                    app->draw_cur.u, app->draw_cur.v, 0));
+            pxy[n] = gdi_to_pixel(&g, q);
+            Polyline(dc, pxy, (int)n + 1);
+        }
+    }
+
+    SelectObject(dc, old_brush);
+    SelectObject(dc, old_pen);
+    DeleteObject(pen);
+}
+
+/* ---- 畫布滑鼠流程 ---- */
+static void gdi_canvas_down(
+    GdiApp *app, HWND window, int v, ViewPoint2 mm, Coord radius
+)
+{
+    PlacementSurface tmp;
+    const PlacementSurface *plane = canvas_work_surface(app, &tmp);
+    SurfacePoint2 uv;
+
+    if (plane == NULL ||
+        !view_unproject_on_surface_near(&VIEW_FRAMES[v], plane, mm, &uv)) {
+        gdi_set_status(app, "這個視圖看不到工作面（換視圖或換工作面）");
+        return;
+    }
+
+    if (app->canvas_tool == TOOL_RECT || app->canvas_tool == TOOL_HOLE) {
+        app->draw_down = true;
+        app->draw_view = v;
+        app->draw_start = app->draw_cur = uv;
+        SetCapture(window);
+    } else if (app->canvas_tool == TOOL_POLY) {
+        /* 軸鎖：新點與上一點水平或垂直對齊（取主軸）。 */
+        if (app->draw_count > 0) {
+            SurfacePoint2 p = app->draw_pts[app->draw_count - 1];
+            Coord du = uv.u - p.u, dv = uv.v - p.v;
+            if (du < 0) du = -du;
+            if (dv < 0) dv = -dv;
+            if (du >= dv) uv.v = p.v; else uv.u = p.u;
+        }
+        /* 點回起點附近 = 閉合送出。 */
+        if (app->draw_count >= 3) {
+            SurfacePoint2 p0 = app->draw_pts[0];
+            Coord du = uv.u - p0.u, dv = uv.v - p0.v;
+            if (du < 0) du = -du;
+            if (dv < 0) dv = -dv;
+            if (du <= radius && dv <= radius) {
+                canvas_emit_new_surface(
+                    app, window, plane, app->draw_pts, app->draw_count);
+                canvas_reset_drawing(app);
+                return;
+            }
+        }
+        if (app->draw_count < POLY_MAX_VERTICES) {
+            app->draw_pts[app->draw_count++] = uv;
+            app->draw_cur = uv;
+            app->draw_view = v;
+        }
+    } else if (app->canvas_tool == TOOL_EDIT && app->edit_boundary != 0) {
+        const SpaceBoundarySurface *b =
+            world_find_boundary(app->world, app->edit_boundary);
+        BoundaryHit hit;
+        if (b == NULL || !boundary_pick_point(b, uv, radius, &hit)) {
+            return;
+        }
+        app->edit_work = *b;
+        app->edit_hit = hit;
+        app->edit_down = true;
+        app->draw_view = v;
+        SetCapture(window);
+    }
+    InvalidateRect(window, NULL, FALSE);
+}
+
+static void gdi_canvas_move(GdiApp *app, HWND window, int v, ViewPoint2 mm)
+{
+    if (app->draw_view >= 0 && v != app->draw_view) {
+        return;   /* 進行中的繪製鎖在起始視圖 */
+    }
+
+    PlacementSurface tmp;
+    const PlacementSurface *plane = canvas_work_surface(app, &tmp);
+    SurfacePoint2 uv;
+
+    if (plane == NULL ||
+        !view_unproject_on_surface_near(&VIEW_FRAMES[v], plane, mm, &uv)) {
+        return;
+    }
+
+    if (app->draw_down) {
+        app->draw_cur = uv;
+    } else if (app->canvas_tool == TOOL_POLY && app->draw_count > 0) {
+        SurfacePoint2 lock = uv;
+        SurfacePoint2 p = app->draw_pts[app->draw_count - 1];
+        Coord du = uv.u - p.u, dv = uv.v - p.v;
+        if (du < 0) du = -du;
+        if (dv < 0) dv = -dv;
+        if (du >= dv) lock.v = p.v; else lock.u = p.u;
+        app->draw_cur = lock;
+    } else if (app->edit_down) {
+        PolygonLoop2 *loop = app->edit_hit.loop < 0
+            ? &app->edit_work.outline
+            : &app->edit_work.holes[app->edit_hit.loop];
+        if (app->edit_hit.kind == BOUNDARY_HIT_VERTEX) {
+            canvas_apply_vertex_edit(loop, (size_t)app->edit_hit.index, uv);
+        } else {
+            canvas_apply_edge_edit(loop, (size_t)app->edit_hit.index, uv);
+        }
+    } else {
+        return;
+    }
+    InvalidateRect(window, NULL, FALSE);
+}
+
+static void gdi_canvas_up(GdiApp *app, HWND window, int v, ViewPoint2 mm)
+{
+    if (app->draw_down) {
+        app->draw_down = false;
+        ReleaseCapture();
+        if (v == app->draw_view) {
+            PlacementSurface tmp;
+            const PlacementSurface *plane = canvas_work_surface(app, &tmp);
+            SurfacePoint2 uv;
+            if (plane != NULL &&
+                view_unproject_on_surface_near(
+                    &VIEW_FRAMES[v], plane, mm, &uv) &&
+                uv.u != app->draw_start.u && uv.v != app->draw_start.v) {
+                Coord u0 = coord_min(app->draw_start.u, uv.u);
+                Coord u1 = coord_max(app->draw_start.u, uv.u);
+                Coord v0 = coord_min(app->draw_start.v, uv.v);
+                Coord v1 = coord_max(app->draw_start.v, uv.v);
+                SurfacePoint2 pts[4] = {
+                    { u0, v0 }, { u1, v0 }, { u1, v1 }, { u0, v1 }
+                };
+                if (app->canvas_tool == TOOL_RECT) {
+                    canvas_emit_new_surface(app, window, plane, pts, 4);
+                } else {
+                    /* 挖孔：矩形當新孔併進工作面的邊界，整體重宣告。 */
+                    const PlacementSurface *ws =
+                        world_find_placement(app->world, app->work_placement);
+                    const SpaceBoundarySurface *b = ws != NULL
+                        ? world_find_boundary(app->world, ws->boundary_id)
+                        : NULL;
+                    if (b == NULL || b->hole_count >= POLY_MAX_HOLES) {
+                        gdi_set_status(app, "✗ 挖孔要有邊界面的工作面（且孔數未滿）");
+                    } else {
+                        SpaceBoundarySurface nb = *b;
+                        PolygonLoop2 *h = &nb.holes[nb.hole_count++];
+                        memcpy(h->v, pts, sizeof pts);
+                        h->count = 4;
+                        for (int i = 0; i < 4; ++i) h->fixity[i] = EDGE_FIXED;
+                        canvas_emit_boundary(app, window, &nb);
+                    }
+                }
+            }
+        }
+        app->draw_view = -1;
+        InvalidateRect(window, NULL, FALSE);
+    } else if (app->edit_down) {
+        app->edit_down = false;
+        ReleaseCapture();
+        canvas_emit_boundary(app, window, &app->edit_work);
+        InvalidateRect(window, NULL, FALSE);
+    }
+}
+
+/* 工作面子功能表：refresh 時依 world 重建（承載面增減會反映在這裡）。 */
+static void gdi_rebuild_surf_menu(GdiApp *app)
+{
+    if (app->surf_menu == NULL) {
+        return;
+    }
+    while (GetMenuItemCount(app->surf_menu) > 0) {
+        DeleteMenu(app->surf_menu, 0, MF_BYPOSITION);
+    }
+    for (size_t i = 0; i < app->world->placement_count; ++i) {
+        const PlacementSurface *p = &app->world->placements[i];
+        WCHAR label[96];
+        swprintf(label, 96, L"面 %u（z=%lld%hs）",
+                 (unsigned)p->id, (long long)p->frame.origin.z,
+                 p->boundary_id != 0 ? " 有邊界" : " 無邊界");
+        AppendMenuW(app->surf_menu, MF_STRING,
+                    (UINT_PTR)(IDM_WORK_BASE + i), label);
+    }
+    if (app->world->placement_count > 0) {
+        AppendMenuW(app->surf_menu, MF_SEPARATOR, 0, NULL);
+    }
+    AppendMenuW(app->surf_menu, MF_STRING, IDM_WORK_NEW_Z0, L"＋新水平面 z=0");
+    AppendMenuW(app->surf_menu, MF_STRING, IDM_WORK_NEW_Z1, L"＋新水平面 z=2500");
+}
+
 static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
 {
     GdiApp *app = (GdiApp *)GetWindowLongPtrW(window, GWLP_USERDATA);
@@ -4045,6 +4632,80 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                 DestroyWindow(window);
                 return 0;
             }
+
+            if (LOWORD(wparam) >= IDM_TOOL_VIEW &&
+                LOWORD(wparam) <= IDM_TOOL_EDIT) {
+                app->canvas_tool = (int)LOWORD(wparam) - IDM_TOOL_VIEW;
+                canvas_reset_drawing(app);
+                CheckMenuRadioItem(GetMenu(window), IDM_TOOL_VIEW,
+                                   IDM_TOOL_EDIT, LOWORD(wparam),
+                                   MF_BYCOMMAND);
+                if (app->canvas_tool == TOOL_EDIT) {
+                    gdi_enter_edit(app);
+                }
+                {
+                    static const char *hint[] = {
+                        "", "在工作面上拉出一個矩形",
+                        "逐點點出正交多邊形（點回起點閉合、Esc 取消）",
+                        "在工作面邊界內拉一個矩形當孔",
+                        "拖頂點拉角、拖邊平移；放開即重宣告"
+                    };
+                    gdi_set_status(app, hint[app->canvas_tool]);
+                }
+                InvalidateRect(window, NULL, FALSE);
+                return 0;
+            }
+
+            if (LOWORD(wparam) >= IDM_WORK_BASE &&
+                LOWORD(wparam) < IDM_WORK_NEW_Z0 &&
+                (size_t)(LOWORD(wparam) - IDM_WORK_BASE) <
+                    app->world->placement_count) {
+                app->work_placement =
+                    app->world->placements[LOWORD(wparam) - IDM_WORK_BASE].id;
+                canvas_reset_drawing(app);
+                if (app->canvas_tool == TOOL_EDIT) gdi_enter_edit(app);
+                InvalidateRect(window, NULL, FALSE);
+                return 0;
+            }
+
+            if (LOWORD(wparam) == IDM_WORK_NEW_Z0 ||
+                LOWORD(wparam) == IDM_WORK_NEW_Z1) {
+                app->work_placement = 0;
+                app->work_plane_z =
+                    LOWORD(wparam) == IDM_WORK_NEW_Z0 ? 0 : 2500;
+                canvas_reset_drawing(app);
+                InvalidateRect(window, NULL, FALSE);
+                return 0;
+            }
+
+            if (LOWORD(wparam) == IDM_EXPORT_SCENE) {
+                WCHAR wpath[512] = L"canvas_export.scene";
+                char path[512 * 4];
+                OPENFILENAMEW ofn = { 0 };
+
+                ofn.lStructSize = sizeof ofn;
+                ofn.hwndOwner = window;
+                ofn.lpstrFile = wpath;
+                ofn.nMaxFile = 512;
+                ofn.lpstrFilter = L"場景檔 (*.scene) *.scene 所有檔案 *.* ";
+                ofn.lpstrTitle = L"匯出場景檔";
+                ofn.Flags = OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
+                ofn.lpstrDefExt = L"scene";
+
+                if (GetSaveFileNameW(&ofn) &&
+                    WideCharToMultiByte(CP_UTF8, 0, wpath, -1,
+                                        path, sizeof path, NULL, NULL) > 1) {
+                    FILE *f = fopen(path, "wb");
+                    if (f != NULL) {
+                        world_dump_dsl(app->world, f);
+                        fclose(f);
+                        gdi_set_status(app, "✓ 已匯出 .scene");
+                    } else {
+                        gdi_set_status(app, "✗ 無法寫入檔案");
+                    }
+                }
+                return 0;
+            }
             return 0;
 
         case WM_MOUSEMOVE: {
@@ -4068,6 +4729,13 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
             int v;
             ViewPoint2 mm;
             Coord radius;
+
+            if (app->canvas_tool != TOOL_VIEW) {
+                if (gdi_screen_to_view(window, app, px, py, &v, &mm, &radius)) {
+                    gdi_canvas_move(app, window, v, mm);
+                }
+                return 0;
+            }
 
             /* 拖曳中：游標反解回「這條線所屬的」表面 (u,v)，clamp 進範圍後改 offset。 */
             if (app->drag_guide >= 0) {
@@ -4164,6 +4832,11 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                 return 0;
             }
 
+            if (app->canvas_tool != TOOL_VIEW) {
+                gdi_canvas_down(app, window, v, mm, radius);
+                return 0;
+            }
+
             ScenePick p =
                 scene_pick_at(&app->scene, &VIEW_FRAMES[v], v, mm, radius);
 
@@ -4189,13 +4862,26 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
             return 0;
         }
 
-        case WM_LBUTTONUP:
+        case WM_LBUTTONUP: {
+            if (app != NULL && app->canvas_tool != TOOL_VIEW) {
+                int v; ViewPoint2 mm; Coord radius;
+                if (gdi_screen_to_view(window, app,
+                        (short)LOWORD(lparam), (short)HIWORD(lparam),
+                        &v, &mm, &radius)) {
+                    gdi_canvas_up(app, window, v, mm);
+                } else {
+                    gdi_canvas_up(app, window, -1, (ViewPoint2){ 0, 0 });
+                }
+                ReleaseCapture();
+                return 0;
+            }
             if (app != NULL && app->drag_guide >= 0) {
                 app->drag_guide = -1;
                 ReleaseCapture();
                 InvalidateRect(window, NULL, FALSE);
             }
             return 0;
+        }
 
         case WM_MBUTTONDOWN:
             if (app != NULL && app->has_layout) {
@@ -4259,7 +4945,13 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
         case WM_KEYDOWN:
             if (wparam == VK_ESCAPE) {
                 /* 兩段式：有互動態先取消，沒有才關視窗。 */
-                if (app != NULL && app->panning) {
+                if (app != NULL &&
+                    (app->draw_down || app->edit_down ||
+                     app->draw_count > 0)) {
+                    canvas_reset_drawing(app);
+                    ReleaseCapture();
+                    InvalidateRect(window, NULL, FALSE);
+                } else if (app != NULL && app->panning) {
                     app->panning = false;
                     ReleaseCapture();
                 } else if (app != NULL && app->drag_guide >= 0) {
@@ -4325,15 +5017,28 @@ static bool gdi_show_three_views(World *world)
     HMENU menu = CreateMenu();
     HMENU file_menu = CreatePopupMenu();
     HMENU view_menu = CreatePopupMenu();
+    HMENU canvas_menu = CreatePopupMenu();
 
     AppendMenuW(file_menu, MF_STRING, IDM_OPEN_SCENE, L"開啟場景檔…\tCtrl+O");
     AppendMenuW(file_menu, MF_STRING, IDC_BTN_EXAMPLE, L"載入範例\tCtrl+E");
     AppendMenuW(file_menu, MF_STRING, IDC_BTN_CLEAR, L"清空");
     AppendMenuW(file_menu, MF_SEPARATOR, 0, NULL);
+    AppendMenuW(file_menu, MF_STRING, IDM_EXPORT_SCENE, L"匯出 .scene…");
+    AppendMenuW(file_menu, MF_SEPARATOR, 0, NULL);
     AppendMenuW(file_menu, MF_STRING, IDM_EXIT, L"結束");
     AppendMenuW(view_menu, MF_STRING, IDM_ZOOM_RESET, L"重設視圖\tCtrl+0");
+    AppendMenuW(canvas_menu, MF_STRING, IDM_TOOL_VIEW, L"檢視／選取");
+    AppendMenuW(canvas_menu, MF_STRING, IDM_TOOL_RECT, L"▭ 拉矩形建面");
+    AppendMenuW(canvas_menu, MF_STRING, IDM_TOOL_POLY, L"⬠ 畫多邊形建面");
+    AppendMenuW(canvas_menu, MF_STRING, IDM_TOOL_HOLE, L"▨ 挖矩形孔");
+    AppendMenuW(canvas_menu, MF_STRING, IDM_TOOL_EDIT, L"✥ 編輯邊界");
+    AppendMenuW(canvas_menu, MF_SEPARATOR, 0, NULL);
+    app.surf_menu = CreatePopupMenu();
+    AppendMenuW(canvas_menu, MF_POPUP, (UINT_PTR)app.surf_menu, L"工作面");
     AppendMenuW(menu, MF_POPUP, (UINT_PTR)file_menu, L"檔案(&F)");
     AppendMenuW(menu, MF_POPUP, (UINT_PTR)view_menu, L"檢視(&V)");
+    AppendMenuW(menu, MF_POPUP, (UINT_PTR)canvas_menu, L"畫布(&C)");
+    gdi_rebuild_surf_menu(&app);
 
     HWND window = CreateWindowW(
         wc.lpszClassName,
@@ -7342,6 +8047,201 @@ static bool apply_reset_line(
 
     *world = (World){ 0 };
     return true;
+}
+
+/* ============================================================
+ * world_dump_dsl：把 World 序列化回 DSL 文本（畫布存檔/匯出用）
+ *
+ *   原則：輸出是「可重放」的規範形——重放後得到同一個 World。
+ *   - at-guides 的錨點在 place 當下已凍結（R2），dump 成等價的 at u v。
+ *   - 物件順序依依賴鏈：boundary → placement → guide → grid
+ *     → timber → place → space。
+ * ============================================================ */
+
+static const char *axis_word(Vector3 axis)
+{
+    for (size_t i = 0; i < sizeof(AXIS_WORDS) / sizeof(AXIS_WORDS[0]); ++i) {
+        if (AXIS_WORDS[i].axis.x == axis.x &&
+            AXIS_WORDS[i].axis.y == axis.y &&
+            AXIS_WORDS[i].axis.z == axis.z) {
+            return AXIS_WORDS[i].word;
+        }
+    }
+    return "+x";   /* 公理保證軸恆為六向之一；走到這是內部錯誤 */
+}
+
+static const char *length_dir_word(int dir)
+{
+    switch (dir) {
+        case SURFACE_DIRECTION_POS_U: return "+u";
+        case SURFACE_DIRECTION_NEG_U: return "-u";
+        case SURFACE_DIRECTION_POS_V: return "+v";
+        case SURFACE_DIRECTION_NEG_V: return "-v";
+        default:                      return "+u";
+    }
+}
+
+static const char *depth_side_word(int side)
+{
+    return side == SURFACE_DEPTH_POSITIVE_NORMAL ? "+n" : "-n";
+}
+
+/* 一個環的「頂點串 + 必要的 fixity 子句」（全 FIXED 時省略）。 */
+static void dump_loop(FILE *out, const PolygonLoop2 *loop)
+{
+    for (size_t i = 0; i < loop->count; ++i) {
+        fprintf(out, "%s%lld,%lld",
+                i ? " " : "",
+                (long long)loop->v[i].u, (long long)loop->v[i].v);
+    }
+
+    bool any_free = false;
+    for (size_t i = 0; i < loop->count; ++i) {
+        if (loop->fixity[i] == EDGE_FREE) {
+            any_free = true;
+            break;
+        }
+    }
+    if (!any_free) {
+        return;
+    }
+
+    fputs(" fixity", out);
+    for (size_t i = 0; i < loop->count; ++i) {
+        fputs(loop->fixity[i] == EDGE_FREE ? " X" : " F", out);
+    }
+}
+
+static void world_dump_dsl(const World *world, FILE *out)
+{
+    for (size_t i = 0; i < world->boundary_count; ++i) {
+        const SpaceBoundarySurface *b = &world->boundaries[i];
+
+        fprintf(out, "boundary %u outline ", (unsigned)b->id);
+        dump_loop(out, &b->outline);
+
+        for (size_t h = 0; h < b->hole_count; ++h) {
+            fputs(" hole ", out);
+            dump_loop(out, &b->holes[h]);
+        }
+        fputc('\n', out);
+    }
+
+    for (size_t i = 0; i < world->placement_count; ++i) {
+        const PlacementSurface *p = &world->placements[i];
+
+        fprintf(out, "placement %u ", (unsigned)p->id);
+        if (p->boundary_id != 0) {
+            fprintf(out, "on boundary %u ", (unsigned)p->boundary_id);
+        }
+        fprintf(out, "origin %lld %lld %lld u %s v %s",
+                (long long)p->frame.origin.x,
+                (long long)p->frame.origin.y,
+                (long long)p->frame.origin.z,
+                axis_word(p->frame.axis_u),
+                axis_word(p->frame.axis_v));
+        if (p->boundary_id == 0) {
+            fprintf(out, " rect %lld %lld %lld %lld",
+                    (long long)p->rect.min_u, (long long)p->rect.min_v,
+                    (long long)p->rect.max_u, (long long)p->rect.max_v);
+        }
+        fputc('\n', out);
+    }
+
+    for (size_t i = 0; i < world->guide_count; ++i) {
+        const GuideLine *g = &world->guides[i];
+
+        fprintf(out, "guide %u %u %s %lld\n",
+                (unsigned)g->id, (unsigned)g->placement_id,
+                g->direction == GUIDE_ALONG_U ? "u" : "v",
+                (long long)g->offset);
+    }
+
+    for (size_t i = 0; i < world->grid_count; ++i) {
+        const ReferenceGrid *g = &world->grids[i];
+
+        if (g->u_count > 0) {
+            fprintf(out, "grid %u on %u u", (unsigned)g->id,
+                    (unsigned)g->placement_id);
+            for (size_t k = 0; k < g->u_count; ++k) {
+                fprintf(out, " %lld", (long long)g->u_coords[k]);
+            }
+            fputc('\n', out);
+        }
+        if (g->v_count > 0) {
+            fprintf(out, "grid %u on %u v", (unsigned)g->id,
+                    (unsigned)g->placement_id);
+            for (size_t k = 0; k < g->v_count; ++k) {
+                fprintf(out, " %lld", (long long)g->v_coords[k]);
+            }
+            fputc('\n', out);
+        }
+    }
+
+    for (size_t i = 0; i < world->timber_count; ++i) {
+        const Timber *t = &world->timbers[i];
+
+        if (t->auto_length) {
+            fprintf(out, "timber %u %lld %lld\n",
+                    (unsigned)t->id,
+                    (long long)t->size_a, (long long)t->size_b);
+        } else {
+            fprintf(out, "timber %u %lld %lld %lld\n",
+                    (unsigned)t->id, (long long)t->length,
+                    (long long)t->size_a, (long long)t->size_b);
+        }
+    }
+
+    for (size_t i = 0; i < world->timber_count; ++i) {
+        const Timber *t = &world->timbers[i];
+        const TimberAnchor *a = &world->anchors[i];
+
+        if (!t->placed) {
+            continue;
+        }
+
+        fprintf(out, "place %u on %u ", (unsigned)t->id,
+                (unsigned)a->placement_id);
+
+        switch (a->anchor_kind) {
+            case ANCHOR_AT_GRID:
+                fprintf(out, "at-grid %u %s %d",
+                        (unsigned)a->ref_grid,
+                        a->ref_grid_axis == 0 ? "u" : "v",
+                        a->ref_grid_index);
+                break;
+            case ANCHOR_AT_EDGE:
+                if (a->ref_hole < 0) {
+                    fprintf(out, "at-edge e%d", a->ref_edge);
+                } else {
+                    fprintf(out, "at-edge h%de%d", a->ref_hole, a->ref_edge);
+                }
+                break;
+            default:
+                /* ANCHOR_AT / ANCHOR_AT_GUIDES：凍結點用 at 表達（R2）。 */
+                fprintf(out, "at %lld %lld",
+                        (long long)a->uv.u, (long long)a->uv.v);
+                break;
+        }
+
+        if (a->has_through) {
+            fprintf(out, " through %lld", (long long)a->through);
+        }
+
+        fprintf(out, " %s %s\n",
+                length_dir_word(a->length_direction),
+                depth_side_word(a->depth_side));
+    }
+
+    for (size_t i = 0; i < world->space_count; ++i) {
+        const Space *s = &world->spaces[i];
+
+        fprintf(out, "space %u boundary", (unsigned)s->id);
+        for (size_t k = 0; k < s->boundary_count; ++k) {
+            fprintf(out, " %u", (unsigned)s->boundaries[k]);
+        }
+        fputc('\n', out);
+    }
 }
 
 /*
