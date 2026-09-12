@@ -1,0 +1,8 @@
+# M22 殺手：auto 跨距終點頂到 FREE 孔邊。
+# 放置路徑的自由邊檢查只掃外輪廓；孔邊 FREE 只有 pick_stop 的
+# fixity 檢查在擋——拿掉它這支料就會被誤放。
+# through 600 選 [0,1200]，終點 v=1200 = 孔 e0（標 FREE）。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1800,1200 2200,1200 2200,1800 1800,1800 fixity X F F F
+grid 1 on 1 u 2000
+timber 1 20 20
+place 1 on 1 at-grid 1 u 0 through 600 +v +n

@@ -1,0 +1,202 @@
+{
+  "M01": {
+    "desc": "邊上判定:含端點改嚴格(端點不在邊上)",
+    "verdict": "survived",
+    "why": ""
+  },
+  "M02": {
+    "desc": "射線半開區間 [v_min,v_max) 改 (v_min,v_max)",
+    "verdict": "killed",
+    "why": "_test_lshape.scene                 FAIL 錯誤不符: 期望含「沒有擋面」實得「D:\\knowledgebase\\_test_lshape.scene:17: auto 跨距推導失敗：中線上沒有任何合法跨距」"
+  },
+  "M03": {
+    "desc": "射線只數直立邊 -> 改數水平邊",
+    "verdict": "killed",
+    "why": "ceiling-a.scene                    FAIL 應接受但拒絕: D:\\knowledgebase\\ceiling-a.scene:17: 這兩條參考線不相交（方向相同、不同面，或交點在有效區域外）"
+  },
+  "M04": {
+    "desc": "奇偶判定反轉(內外互換)",
+    "verdict": "killed",
+    "why": "ceiling-a.scene                    FAIL 應接受但拒絕: D:\\knowledgebase\\ceiling-a.scene:17: 這兩條參考線不相交（方向相同、不同面，或交點在有效區域外）"
+  },
+  "M05": {
+    "desc": "直立邊在矩形邊界上也算穿入(<= 改 <)",
+    "verdict": "killed",
+    "why": "_test_fixed.scene                  FAIL 應接受但拒絕: D:\\knowledgebase\\_test_fixed.scene:4: 放不上去：錨點在有效範圍外、A0 面跨出邊界或孔，或端面頂到自由邊"
+  },
+  "M06": {
+    "desc": "水平邊在矩形邊界上也算穿入(<= 改 <)",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:14: auto 跨距推導失敗：中線上沒有任何合法跨距"
+  },
+  "M07": {
+    "desc": "直立邊 v 區間零長度接觸也算穿入(< 改 <=)",
+    "verdict": "killed",
+    "why": "_test_lshape.scene                 FAIL 錯誤不符: 期望含「沒有擋面」實得「D:\\knowledgebase\\_test_lshape.scene:17: auto 跨距推導失敗：中線上沒有任何合法跨距」"
+  },
+  "M08": {
+    "desc": "拿掉「環邊不得穿矩形內部」檢查",
+    "verdict": "killed",
+    "why": "_mut_notch_straddle.scene          FAIL 應拒絕但接受 (L=['1600'])"
+  },
+  "M09": {
+    "desc": "孔 bbox 邊界相接也當相交(<= 改 <)",
+    "verdict": "survived",
+    "why": ""
+  },
+  "M10": {
+    "desc": "孔頂點嚴格在矩形內 -> 含邊界(> 改 >=)",
+    "verdict": "survived",
+    "why": ""
+  },
+  "M11": {
+    "desc": "孔罩住矩形判定:inside==4 改 inside==0(罩住反而放行)",
+    "verdict": "killed",
+    "why": "_test_hole_auto.scene              FAIL 應接受但拒絕: D:\\knowledgebase\\_test_hole_auto.scene:10: 放不上去：錨點在有效範圍外、A0 面跨出邊界或孔，或端面頂到自由邊"
+  },
+  "M12": {
+    "desc": "正面積重疊:端點相接也算重疊(> 改 >=)",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:16: auto 跨距推導失敗：中線上沒有任何合法跨距"
+  },
+  "M13": {
+    "desc": "碰撞只看同承載面 -> 看不同承載面(!= 改 ==)",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:16: auto 跨距推導失敗：跨距起點擋面歧義"
+  },
+  "M14": {
+    "desc": "只收垂直邊 -> 只收平行邊(along_v 分支)",
+    "verdict": "killed",
+    "why": "_test_hole_auto.scene              FAIL 應接受但拒絕: D:\\knowledgebase\\_test_hole_auto.scene:10: auto 跨距推導失敗：跨距起點沒有擋面（端面懸空）"
+  },
+  "M15": {
+    "desc": "角材側面涵蓋範圍用錯軸(u 範圍改成 v 範圍)",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:16: auto 跨距推導失敗：跨距起點沒有擋面（端面懸空）"
+  },
+  "M16": {
+    "desc": "擋面涵蓋檢查:丟掉 hi 側檢查(半寬也算涵蓋)",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:15: auto 跨距推導失敗：跨距起點擋面歧義"
+  },
+  "M17": {
+    "desc": "擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:14: auto 跨距推導失敗：跨距起點沒有擋面（端面懸空）"
+  },
+  "M18": {
+    "desc": "重驗擋面:FREE 邊也算合法(!= 改 ==)",
+    "verdict": "killed",
+    "why": "_mut_reval_free_hole.scene         FAIL 應拒絕但接受 (L=['600'])"
+  },
+  "M19": {
+    "desc": "through 選段:邊界座標不算在區間內(<= 改 <)",
+    "verdict": "killed",
+    "why": "_mut_through_boundary.scene        FAIL 應接受但拒絕: D:\\knowledgebase\\_mut_through_boundary.scene:6: auto 跨距推導失敗：through 座標不在任何合法跨距內"
+  },
+  "M20": {
+    "desc": "拿掉「起點必須有擋面」檢查(懸空端放行)",
+    "verdict": "killed",
+    "why": "_test_lshape.scene                 FAIL 錯誤不符: 期望含「沒有擋面」實得「(無錯誤訊息)」"
+  },
+  "M21": {
+    "desc": "拿掉「終點必須有擋面」檢查",
+    "verdict": "killed",
+    "why": "_edge_straddle.scene               FAIL 應拒絕但接受 (L=['1200'])"
+  },
+  "M22": {
+    "desc": "拿掉 FREE 擋面拒絕",
+    "verdict": "killed",
+    "why": "_mut_free_hole_end.scene           FAIL 應拒絕但接受 (L=['1200'])"
+  },
+  "M23": {
+    "desc": "擋面歧義放行(hits>1 不拒絕)",
+    "verdict": "survived",
+    "why": ""
+  },
+  "M24": {
+    "desc": "at-edge 接觸範圍:端點相接也算重疊(< 改 <=)",
+    "verdict": "killed",
+    "why": "_mut_edge_touch_only.scene         FAIL 應拒絕但接受 (L=['1500', '2500'])"
+  },
+  "M25": {
+    "desc": "跨距歧義放行:多區間自動選第一段",
+    "verdict": "killed",
+    "why": "_test_ambiguous.scene              FAIL 應拒絕但接受 (L=['1200'])"
+  },
+  "M26": {
+    "desc": "錨角選錯邊(min/max 對調)",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:14: 放不上去：錨點在有效範圍外、A0 面跨出邊界或孔，或端面頂到自由邊"
+  },
+  "M27": {
+    "desc": "深度側反轉:角材往面下長",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:16: auto 跨距推導失敗：跨距歧義： [0,2960] [2980,3000]"
+  },
+  "M28": {
+    "desc": "奇數寬多的 1mm 改放 -cross 側",
+    "verdict": "killed",
+    "why": "_edge_grid_twoline.scene           FAIL 長度不符: 期望 [3000, 2986] 實得 [3000, 2987]"
+  },
+  "M29": {
+    "desc": "外輪廓材料側反轉(footprint 長到面外)",
+    "verdict": "killed",
+    "why": "_demo_ceiling.scene                FAIL 應接受但拒絕: D:\\knowledgebase\\_demo_ceiling.scene:28: auto 跨距推導失敗：中線上沒有任何合法跨距"
+  },
+  "M30": {
+    "desc": "孔邊材料側反轉(footprint 長進孔裡)",
+    "verdict": "killed",
+    "why": "_edge_hole_anchor.scene            FAIL 應接受但拒絕: D:\\knowledgebase\\_edge_hole_anchor.scene:14: auto 跨距推導失敗：有合法跨距但都不接觸引用的邊"
+  },
+  "M31": {
+    "desc": "格線座標遞增改非嚴格(<= 改 <)",
+    "verdict": "killed",
+    "why": "_mut_grid_dup.scene                FAIL 應拒絕但接受 (L=['3000'])"
+  },
+  "M32": {
+    "desc": "格線座標上界改成嚴格(壓邊界的格線拒絕)",
+    "verdict": "killed",
+    "why": "_edge_grid_at_border.scene         FAIL 錯誤不符: 期望含「沒有任何合法跨距」實得「D:\\knowledgebase\\_edge_grid_at_border.scene:3: grid 座標不合法：要嚴格遞增、且落在承載面外接範圍內」"
+  },
+  "M33": {
+    "desc": "at-grid 軸向守門員反轉",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:16: 格線座標軸必須與角材長度方向垂直（u 座標線配 ±v，v 座標線配 ±u）"
+  },
+  "M34": {
+    "desc": "at-edge 平行守門員反轉",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:14: at-edge 的邊必須與角材長度方向平行"
+  },
+  "M35": {
+    "desc": "明寫長度允許 L=0(<= 改 <)",
+    "verdict": "killed",
+    "why": "_mut_zero_len.scene                FAIL 錯誤不符: 期望含「大於 0」實得「D:\\knowledgebase\\_mut_zero_len.scene:5: 角材參數無法推導 footprint」"
+  },
+  "M36": {
+    "desc": "重驗跳過 auto 端點擋面檢查",
+    "verdict": "killed",
+    "why": "_mut_reval_free_hole.scene         FAIL 應拒絕但接受 (L=['600'])"
+  },
+  "M37": {
+    "desc": "碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)",
+    "verdict": "killed",
+    "why": "_test_tx2.scene                    FAIL 應接受但拒絕: D:\\knowledgebase\\_test_tx2.scene:5: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）"
+  },
+  "M38": {
+    "desc": "at-edge 邊參照:孔索引 <0 也放行(hole<0 檢查拿掉)",
+    "verdict": "killed",
+    "why": "_mut_neg_hole_ref.scene            FAIL 應拒絕但接受 (L=['4000'])"
+  },
+  "M39": {
+    "desc": "切點去重用 < 不去重(零長 cell 出現)",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:14: auto 跨距推導失敗：中線上沒有任何合法跨距"
+  },
+  "M40": {
+    "desc": "有效 cell 判定拿掉碰撞(只查包含)",
+    "verdict": "killed",
+    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\_test_grid.scene:16: auto 跨距推導失敗：跨距起點擋面歧義"
+  }
+}

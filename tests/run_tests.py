@@ -78,6 +78,21 @@ TESTS = [
     # M19:through 恰落在區間端點(閉區間才算選中)
     {"scene": "_mut_through_boundary.scene", "expect": "accept",
      "lengths": [1200]},
+    # M22:auto 終點頂到 FREE 孔邊(放置路徑只查外輪廓,擋不住的)
+    {"scene": "_mut_free_hole_end.scene", "expect": "reject",
+     "error": "自由邊"},
+    # M24:at-edge 唯一合法區間與邊範圍只有端點相接 → 不算接觸
+    {"scene": "_mut_edge_touch_only.scene", "expect": "reject",
+     "error": "不接觸引用的邊"},
+    # M31:格線座標重複 → 嚴格遞增檢查
+    {"scene": "_mut_grid_dup.scene", "expect": "reject",
+     "error": "嚴格遞增"},
+    # M35:明寫 L=0 → 宣告時拒絕(訊息與下游「放不上去」不同)
+    {"scene": "_mut_zero_len.scene", "expect": "reject",
+     "error": "大於 0"},
+    # M38:負孔索引 -1 是外輪廓哨兵,放行會被當 e0 誤放
+    {"scene": "_mut_neg_hole_ref.scene", "expect": "reject",
+     "error": "邊參照"},
 ]
 
 LEN_RE = re.compile(r"L=(\d+)")
