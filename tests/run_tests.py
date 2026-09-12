@@ -67,6 +67,17 @@ TESTS = [
      "error": "邊界面輪廓不合法"},
     {"scene": "_edge_upper_seg.scene", "expect": "accept",
      "lengths": [4000, 4000, 1173]},
+
+    # ---- 變異測試殺手(對應 tests/mutate.py 的存活變異) ----
+    # M08:輪廓邊穿矩形內部,四角皆在內、頂點在邊上 → 只剩邊穿入檢查能擋
+    {"scene": "_mut_notch_straddle.scene", "expect": "reject",
+     "error": "放不上去"},
+    # M18/M36:重宣告把 auto 兩端的孔邊擋面翻 FREE → 重驗應退
+    {"scene": "_mut_reval_free_hole.scene", "expect": "reject",
+     "error": "重宣告後有物件失效"},
+    # M19:through 恰落在區間端點(閉區間才算選中)
+    {"scene": "_mut_through_boundary.scene", "expect": "accept",
+     "lengths": [1200]},
 ]
 
 LEN_RE = re.compile(r"L=(\d+)")

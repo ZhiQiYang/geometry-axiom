@@ -1,0 +1,9 @@
+# M18/M36 殺手：auto 角材兩端擋面都是孔邊（FIXED 時放好），
+# 重宣告邊界把這兩條孔邊翻成 FREE → 重驗應失敗、整筆回退。
+# （放置路徑的自由邊檢查只看外輪廓，孔邊 fixity 只有重驗在管。）
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000 hole 1800,800 2200,800 2200,1200 1800,1200 hole 1800,1800 2200,1800 2200,2200 1800,2200
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+grid 1 on 1 u 2000
+timber 1 20 20
+place 1 on 1 at-grid 1 u 0 through 1500 +v +n
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000 hole 1800,800 2200,800 2200,1200 1800,1200 fixity F F X F hole 1800,1800 2200,1800 2200,2200 1800,2200 fixity X F F F

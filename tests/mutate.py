@@ -195,7 +195,8 @@ def main() -> int:
         MUT_SRC.write_text(src.replace(m["old"], m["new"], 1),
                            encoding="utf-8", newline="\n")
 
-        build = run_cmd(["cmd", "/c", "_cl.bat _mutant.c _mut.exe"],
+        build = run_cmd(["cmd", "/c",
+                         str(HERE / "_cl.bat") + " _mutant.c _mut.exe"],
                         cwd=HERE, timeout=180)
         if not MUT_EXE.exists() or build.returncode != 0:
             results[m["id"]] = {
