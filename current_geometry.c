@@ -2782,11 +2782,11 @@ static Coord dist_point_segment_axis(SurfacePoint2 p, SurfacePoint2 a, SurfacePo
     Coord du, dv;
 
     if (a.u == b.u) {
-        du = p.u - a.u;
+        du = p.u - a.u; if (du < 0) du = -du;
         Coord lo = coord_min(a.v, b.v), hi = coord_max(a.v, b.v);
         dv = p.v < lo ? lo - p.v : p.v > hi ? p.v - hi : 0;
     } else {
-        dv = p.v - a.v;
+        dv = p.v - a.v; if (dv < 0) dv = -dv;
         Coord lo = coord_min(a.u, b.u), hi = coord_max(a.u, b.u);
         du = p.u < lo ? lo - p.u : p.u > hi ? p.u - hi : 0;
     }

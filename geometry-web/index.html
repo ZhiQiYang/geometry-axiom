@@ -543,7 +543,8 @@ async function canvasMove(e, sv) {
 }
 
 async function canvasUp(e, sv) {
-  if ((tool === "rect" || tool === "hole") && rectStart && sv) {
+  if ((tool === "rect" || tool === "hole") && rectStart) {
+    if (!sv) { rectStart = null; previewClear(); return; }
     const m = await uvMap(sv.v);
     const uv = m ? unmapView(m, sv.x, sv.y) : null;
     const st = rectStart; rectStart = null; previewClear();
@@ -565,6 +566,7 @@ async function canvasUp(e, sv) {
   } else if (tool === "edit" && editDrag) {
     const loops = editDrag.loops; editDrag = null;
     if (await emitBoundary(editBid, loops)) { await enterEdit(); }
+    else { await drawEditHandles(); }
   }
 }
 
