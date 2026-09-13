@@ -29,7 +29,16 @@ const ICON_PATHS = {
   vertex: '<circle cx="5" cy="18" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="17" r="2"/><path d="m6.1 16.3 4.8-9.5M13.5 6.4l4.3 8.9M7 18h10"/>',
   line: '<path d="M4 18 20 6"/><circle cx="4" cy="18" r="1.8"/><circle cx="20" cy="6" r="1.8"/>',
   rectangle: '<rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="m4 5 16 14M20 5 4 19"/>',
-  trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"/>'
+  trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"/>',
+  guide: '<path d="M4 20 20 4"/><path d="M4 20h16M4 20V4" stroke-dasharray="2 3"/>',
+  hole: '<rect x="4" y="5" width="16" height="14" rx="1.5"/><rect x="9" y="9" width="6" height="6" fill="currentColor" stroke="none"/>',
+  notch: '<path d="M4 19V5h16v14h-6v-5h-4v5z"/>',
+  timber: '<rect x="3" y="8" width="18" height="8" rx="1"/><path d="M8 8v8M16 8v8"/>',
+  redraw: '<path d="M4 8a8 8 0 0 1 14.5 3M20 16a8 8 0 0 1-14.5-3"/><path d="M18.5 4v7h-7M5.5 20v-7h7"/>',
+  column: '<rect x="7" y="4" width="10" height="10"/><path d="M7 14v6M17 14v6M4 20h16"/>',
+  beam: '<path d="M3 9h18v6H3z"/><path d="M3 12h18"/>',
+  grid: '<path d="M4 4v16M12 4v16M20 4v16M4 8h16M4 16h16"/>',
+  folder: '<path d="M3.5 6.5h6l2 2.5h9v10.5h-17z"/>'
 };
 function icon(name) {
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">${ICON_PATHS[name] || ""}</svg>`;
@@ -624,6 +633,10 @@ window.addEventListener("keydown", async e => {
     return;
   }
   if (e.key === "Escape") {
+    /* 開著的下拉選單 → 先收 */
+    if (document.querySelector(".menu-pop:not([hidden])")) {
+      closeMenus(); return;
+    }
     /* 對話框優先：Esc 關閉對話框 */
     if (!$("box6Dialog").hidden || !$("memberDialog").hidden ||
         !$("shapeDialog").hidden || !$("notchDialog").hidden ||
@@ -693,7 +706,7 @@ window.addEventListener("keydown", async e => {
     const k = e.key;
     if (k === " ") { oc.spacePan = true; ocCursor(); e.preventDefault(); return; }
     if (k === "/") { e.preventDefault(); $("searchInput").focus(); return; }
-    const km = { v: "select", h: "pan" };
+    const km = { v: "select", h: "pan", r: "rect", p: "poly" };
     if (km[k.toLowerCase()]) { setOcTool(km[k.toLowerCase()]); return; }
     if (k.toLowerCase() === "f") {
       const all = [...oc.faces, ...oc.spaces];
@@ -729,14 +742,42 @@ $("btnClear").onclick = async () => {
   else { setStatus("✗ " + (r.error || "")); toast(r.error || "清空失敗"); }
   refreshActive();
 };
-$("btnEx").onclick = async () => {
-  const sel = $("sceneList");
-  const path = sel.value || "";
+/* 場景/檔案下拉選單(S2):#sceneList 為品牌旁選單,#fileMenu 為頂列檔案選單 */
+let curScene = { path: "room_a.scene", name: "room_a.scene" };
+function markSceneItem() {
+  for (const b of document.querySelectorAll("#sceneMenuPop .scene-item"))
+    b.classList.toggle("active", b.dataset.path === curScene.path);
+}
+async function loadScene(path, name) {
   const r = await api("loadfile " + (path || "room_a.scene"));
-  if (r.ok) { setStatus("✓ 已載入 " + (sel.selectedOptions[0]?.text || "範例")); selected = null; refreshActive(); }
-  else { setStatus("✗ " + (r.error || "")); toast(r.error || "載入失敗"); }
-};
-$("btnScene").onclick = $("btnEx").onclick;
+  if (r.ok) {
+    curScene = { path: path || "room_a.scene", name };
+    $("sceneMenuLabel").textContent = name;
+    markSceneItem();
+    setStatus("✓ 已載入 " + name); selected = null; refreshActive();
+  } else { setStatus("✗ " + (r.error || "")); toast(r.error || "載入失敗"); }
+}
+function closeMenus() {
+  for (const m of document.querySelectorAll(".menu-pop")) m.hidden = true;
+}
+function bindMenu(btnId, popId) {
+  $(btnId).addEventListener("click", e => {
+    e.stopPropagation();
+    const open = $(popId).hidden;
+    closeMenus();
+    $(popId).hidden = !open;
+  });
+}
+bindMenu("sceneMenuBtn", "sceneMenuPop");
+bindMenu("fileMenuBtn", "fileMenuPop");
+document.addEventListener("pointerdown", e => {
+  if (!e.target.closest || !e.target.closest(".menu")) closeMenus();
+});
+document.addEventListener("click", e => {
+  if (e.target.closest && e.target.closest(".menu-item")) closeMenus();
+});
+$("btnEx").onclick = () => loadScene("room_a.scene", "room_a.scene");
+$("btnScene").onclick = () => loadScene(curScene.path, curScene.name);
 $("btnOpen").onclick = () => $("file").click();
 $("file").addEventListener("change", async e => {
   const f = e.target.files[0];
@@ -3001,7 +3042,7 @@ function renderObjectList() {
   for (const f of oc.faces) {
     if (!oc.showFace || !ocMatchSearch(f)) continue;
     const name = f.kind === "placement" ? `placement ${f.id}` : `面 ${f.id}`;
-    rows.push({ kind: f.kind, id: f.id, name,
+    rows.push({ kind: f.kind, id: f.id, name, placed: !!f.placed,
       sub: f.kind === "placement" ? "自帶矩形"
                                   : (f.placed ? "已放置" : "游離") });
   }
@@ -3012,13 +3053,13 @@ function renderObjectList() {
   }
   for (const c of oc.columns) {
     if (!oc.showColumn || !ocMatchSearch(c)) continue;
-    rows.push({ kind: "column", id: c.id, name: `柱 ${c.id}`,
+    rows.push({ kind: "column", id: c.id, name: `柱 ${c.id}`, space: c.space,
       sub: (c.space ? `空間 ${c.space}` : "游離") +
            ` · ${c.box[3] - c.box[0]}×${c.box[4] - c.box[1]}` });
   }
   for (const b of oc.beams) {
     if (!oc.showBeam || !ocMatchSearch(b)) continue;
-    rows.push({ kind: "beam", id: b.id, name: `樑 ${b.id}`,
+    rows.push({ kind: "beam", id: b.id, name: `樑 ${b.id}`, space: b.space,
       sub: (b.space ? `空間 ${b.space}` : "游離") + ` · ${b.axis} 向` });
   }
   $("objectCountBadge").textContent = rows.length;
@@ -3028,10 +3069,15 @@ function renderObjectList() {
     row.dataset.kind = r.kind; row.dataset.id = r.id;
     if (oc.sel && oc.sel.kind === r.kind && oc.sel.id === r.id)
       row.classList.add("selected");
+    const free = (r.kind === "boundary" && !r.placed) ||
+      ((r.kind === "column" || r.kind === "beam") && !r.space);
     row.innerHTML =
-      `<span class="row-icon">${icon(r.kind === "space" ? "space" : "face")}</span>` +
-      `<span class="row-main"><span class="row-name">${r.name}</span>` +
-      `<span class="row-sub">${r.sub}</span></span>`;
+      `<span class="row-icon ${r.kind}">${icon(
+        r.kind === "space" ? "space" : r.kind === "column" ? "column" :
+        r.kind === "beam" ? "beam" : "face")}</span>` +
+      `<span class="row-copy"><strong>${r.name}</strong>` +
+      `<small>${r.sub}</small></span>` +
+      (free ? `<span class="row-badge">游離</span>` : "");
     row.addEventListener("click", () => {
       selectObject(r.kind, r.id);
       centerOnNode(r.kind, r.id);
@@ -3586,12 +3632,14 @@ fevp.addEventListener("wheel", e => {
   feApply();
 }, { passive: false });
 
-$("btnObj").addEventListener("click", async () => {
-  view3 = !view3;
+async function setView3(on) {
+  if (on === view3) return;
+  view3 = on;
   oc.on = !view3;
   cv.toggleAttribute("hidden", !view3);
   $("viewToolbar").toggleAttribute("hidden", !view3);
-  $("btnObj").innerHTML = icon("layers") + (view3 ? "物件畫布" : "三視圖");
+  $("btnObj").classList.toggle("active", view3);
+  $("btnCanvasView").classList.toggle("active", !view3);
   if (view3) {
     $("objectWorkspace").hidden = true;
     if (oc.focus) { oc.focus = null; oc.stack = []; oc.edit = null; drawObjects(); }
@@ -3602,7 +3650,9 @@ $("btnObj").addEventListener("click", async () => {
     setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白拖曳平移 · 滾輪縮放");
     await renderObjects();
   }
-});
+}
+$("btnObj").addEventListener("click", () => setView3(!view3));
+$("btnCanvasView").addEventListener("click", () => setView3(false));
 $("btnBack").addEventListener("click", leaveFocus);
 $("btnNewRect").addEventListener("click", () => setOcTool("rect"));
 $("btnNewPoly").addEventListener("click", () => setOcTool("poly"));
@@ -3628,13 +3678,30 @@ $("btnHole2").addEventListener("click", () => {
 (async () => {
   try {
     const scenes = await fetch("/scenes").then(r => r.json());
-    const sel = $("sceneList");
+    const pop = $("sceneMenuPop");
     for (const s of scenes) {
-      const o = document.createElement("option");
-      o.value = s.path; o.textContent = s.name;
-      if (s.name === "room_a.scene") o.selected = true;
-      sel.appendChild(o);
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "menu-item scene-item";
+      b.dataset.path = s.path; b.textContent = s.name;
+      b.addEventListener("click", () => loadScene(s.path, s.name));
+      pop.appendChild(b);
+      if (s.name === "room_a.scene")
+        curScene = { path: s.path, name: s.name };
     }
+    const sep = document.createElement("hr"); sep.className = "menu-sep";
+    pop.appendChild(sep);
+    const openIt = document.createElement("button");
+    openIt.type = "button"; openIt.className = "menu-item";
+    openIt.innerHTML = icon("upload") + "<span>開啟 .scene…</span>";
+    openIt.addEventListener("click", () => $("file").click());
+    pop.appendChild(openIt);
+    const exIt = document.createElement("button");
+    exIt.type = "button"; exIt.className = "menu-item";
+    exIt.textContent = "載入範例";
+    exIt.addEventListener("click", () => loadScene("room_a.scene", "room_a.scene"));
+    pop.appendChild(exIt);
+    $("sceneMenuLabel").textContent = curScene.name;
+    markSceneItem();
   } catch {}
   hydrateIcons();
   ocApply();

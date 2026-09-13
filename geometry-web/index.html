@@ -18,37 +18,52 @@
         <strong>構形 Canvas</strong>
         <small>語意物件無限畫布</small>
       </span>
+      <div id="sceneList" class="menu">
+        <button id="sceneMenuBtn" class="scene-menu-btn" type="button" aria-haspopup="menu">
+          <span id="sceneMenuLabel">範例場景</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+        </button>
+        <div id="sceneMenuPop" class="menu-pop" role="menu" hidden></div>
+      </div>
     </div>
 
     <nav class="tool-group" aria-label="畫布工具">
       <button class="tool-button active" type="button" data-tool="select" title="選取/移動 (V)">
-        <span data-icon="pointer"></span><span>選取</span>
+        <span data-icon="pointer"></span><span>選取</span><kbd>V</kbd>
       </button>
       <button class="tool-button" type="button" data-tool="pan" title="平移 (H 或空白鍵)">
-        <span data-icon="hand"></span><span>平移</span>
+        <span data-icon="hand"></span><span>平移</span><kbd>H</kbd>
       </button>
-      <span class="toolbar-separator" aria-hidden="true"></span>
       <button class="tool-button" type="button" data-tool="rect" title="＋面·矩形（畫布拖曳）">
-        <span data-icon="rectangle"></span><span>面·矩形</span>
+        <span data-icon="rectangle"></span><span>面·矩形</span><kbd>R</kbd>
       </button>
       <button class="tool-button" type="button" data-tool="poly" title="＋面·多邊形（逐點閉合）">
-        <span data-icon="vertex"></span><span>面·多邊形</span>
+        <span data-icon="vertex"></span><span>面·多邊形</span><kbd>P</kbd>
       </button>
     </nav>
 
     <div class="top-actions">
-      <label class="search-control" title="搜尋物件">
-        <span data-icon="search"></span>
-        <input id="searchInput" type="search" placeholder="搜尋物件…" autocomplete="off">
-        <kbd>/</kbd>
-      </label>
       <button id="btnUndo" class="icon-button" type="button" title="復原 (Ctrl+Z)" aria-label="復原"><span data-icon="undo"></span></button>
       <button id="btnRedo" class="icon-button" type="button" title="重做 (Ctrl+Y)" aria-label="重做"><span data-icon="redo"></span></button>
-      <button id="btnObj" class="secondary-button" type="button" title="開/關三視圖總覽"><span data-icon="layers"></span>三視圖</button>
-      <button id="btnZoom" class="icon-button" type="button" title="顯示全部 (F)" aria-label="顯示全部"><span data-icon="fit"></span></button>
-      <select id="sceneList" title="場景檔範例"></select>
-      <button id="btnScene" class="secondary-button" type="button">載入所選</button>
-      <button id="btnOpen" class="secondary-button" type="button"><span data-icon="upload"></span>開啟…</button>
+      <span class="toolbar-separator" aria-hidden="true"></span>
+      <div id="viewSwitch" class="segmented" role="group" aria-label="視圖切換">
+        <button id="btnCanvasView" class="seg active" type="button">物件畫布</button>
+        <button id="btnObj" class="seg" type="button" title="開/關三視圖總覽"><span data-icon="layers"></span>三視圖</button>
+      </div>
+      <span class="toolbar-separator" aria-hidden="true"></span>
+      <div id="fileMenu" class="menu">
+        <button id="fileMenuBtn" class="secondary-button" type="button" aria-haspopup="menu">
+          <span>檔案</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+        </button>
+        <div id="fileMenuPop" class="menu-pop" role="menu" hidden>
+          <button id="btnOpen" class="menu-item" type="button"><span data-icon="upload"></span>開啟 .scene…</button>
+          <button id="btnScene" class="menu-item" type="button">載入所選場景</button>
+          <button id="btnEx" class="menu-item" type="button">載入範例</button>
+          <hr class="menu-sep">
+          <button id="btnClear" class="menu-item" type="button">清空</button>
+        </div>
+      </div>
       <input id="file" type="file" accept=".scene" hidden>
       <button id="btnExport" class="primary-button" type="button"><span data-icon="download"></span>匯出 .scene</button>
     </div>
@@ -56,6 +71,13 @@
 
   <main class="workspace">
     <aside class="sidebar sidebar-left" aria-label="物件庫">
+      <div class="sidebar-search">
+        <label class="search-control" title="搜尋物件">
+          <span data-icon="search"></span>
+          <input id="searchInput" type="search" placeholder="搜尋物件(名稱或 id)" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+      </div>
       <section class="sidebar-section create-section">
         <div class="section-heading">
           <div>
@@ -166,6 +188,7 @@
         <button id="zoomLevelButton" class="zoom-level" type="button" title="回到 100%">100%</button>
         <button id="zoomInButton" class="icon-button" type="button" title="放大" aria-label="放大"><span data-icon="plus"></span></button>
         <span class="toolbar-separator vertical"></span>
+        <button id="btnZoom" class="icon-button" type="button" title="顯示全部 (F)" aria-label="顯示全部"><span data-icon="fit"></span></button>
         <button id="homeButton" class="icon-button" type="button" title="回到原點" aria-label="回到原點"><span data-icon="home"></span></button>
       </div>
 
@@ -193,8 +216,6 @@
     </div>
     <div class="status-right">
       <input id="cmd" placeholder="指令：boundary｜placement｜surface｜space｜guide｜timber｜place｜move｜reset" autocomplete="off">
-      <button id="btnEx" type="button">載入範例</button>
-      <button id="btnClear" type="button">清空</button>
     </div>
   </footer>
 </div>

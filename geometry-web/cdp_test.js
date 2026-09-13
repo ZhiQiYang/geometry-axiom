@@ -81,19 +81,19 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await sleep(500);
 
   console.log("=== 1. Phase 1 版面檢查點(§6) ===");
-  /* (a) #app 三列:58 / 1fr / 28 */
+  /* (a) #app 三列:56 / 1fr / 32 */
   const rows = await eval_(`(()=>{const app=document.getElementById("app");
     const kids=[...app.children];return {n:kids.length,
       cls:kids.map(k=>k.className.split(" ")[0]).join(","),
       h:kids.map(k=>Math.round(k.getBoundingClientRect().height))}})()`);
   console.log("app rows:", JSON.stringify(rows),
-    rows.n === 3 && rows.h[0] === 58 && rows.h[2] === 28 ? "✓ 三列殼" : "✗");
-  /* (b) .workspace 三欄:左 242 / 中 1fr / 右 326 */
+    rows.n === 3 && rows.h[0] === 56 && rows.h[2] === 32 ? "✓ 三列殼" : "✗");
+  /* (b) .workspace 三欄:左 260 / 中 1fr / 右 320 */
   const cols = await eval_(`(()=>{const w=document.querySelector(".workspace");
     const k=[...w.children];return {n:k.length,
       w:k.map(c=>Math.round(c.getBoundingClientRect().width))}})()`);
   console.log("workspace cols:", JSON.stringify(cols),
-    cols.n === 3 && cols.w[0] === 242 && cols.w[2] === 326 ? "✓ 三欄" : "✗");
+    cols.n === 3 && cols.w[0] === 260 && cols.w[2] === 320 ? "✓ 三欄" : "✗");
   /* (c) topbar 子層序:brand → tool-group → top-actions */
   const tb = await eval_(`[...document.querySelector(".topbar").children].map(c=>c.className.split(" ")[0]).join(",")`);
   console.log("topbar order:", tb,
@@ -109,6 +109,49 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const sb = await eval_(`(()=>{const sb=document.querySelector(".statusbar");
     return !!(sb.querySelector("#status") && sb.querySelector("#cmd"))})()`);
   console.log("statusbar:", sb ? "✓ status/cmd 在狀態列" : "✗");
+  /* (f) A1 防溢出:.top-actions 右緣 ≤ viewport、左緣 > .tool-group 右緣(1382 與 1160) */
+  for (const w of [1382, 1160]) {
+    await send("Emulation.setDeviceMetricsOverride",
+      { width: w, height: 804, deviceScaleFactor: 1, mobile: false });
+    await sleep(350);
+    const ov = await eval_(`(()=>{
+      const ta=document.querySelector(".top-actions").getBoundingClientRect();
+      const tg=document.querySelector(".tool-group").getBoundingClientRect();
+      return {taR:Math.round(ta.right),taL:Math.round(ta.left),tgR:Math.round(tg.right),iw:innerWidth}})()`);
+    console.log(`防溢出@${w}:`, JSON.stringify(ov),
+      ov.taR <= ov.iw && ov.taL > ov.tgR ? "✓" : "✗");
+  }
+  await send("Emulation.setDeviceMetricsOverride",
+    { width: 1382, height: 804, deviceScaleFactor: 1, mobile: false });
+  await sleep(300);
+  /* (g) S2 結構:搜尋在左欄;fileMenu 含四鈕;viewSwitch 含 btnObj */
+  const s2 = await eval_(`({
+    searchInSide: !!document.querySelector(".sidebar-left #searchInput"),
+    fileKids: ["btnOpen","btnScene","btnEx","btnClear"].every(id=>
+      document.getElementById("fileMenu").contains(document.getElementById(id))),
+    vsHasObj: document.getElementById("viewSwitch").contains(document.getElementById("btnObj")),
+    zoomInCtl: document.querySelector(".canvas-controls").contains(document.getElementById("btnZoom")),
+    kbd: document.querySelectorAll(".tool-group kbd").length
+  })`);
+  console.log("S2 結構:", JSON.stringify(s2),
+    s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd >= 4 ? "✓" : "✗");
+  /* (h) A2 清單樣式:.row-copy > strong + small */
+  await eval_(`renderObjects()`); await sleep(400);
+  const rowCk = await eval_(`(()=>{const r=document.querySelector(".object-row .row-copy strong");
+    return r ? getComputedStyle(r).fontSize : null})()`);
+  console.log("清單樣式 row-copy strong:", rowCk,
+    rowCk && parseFloat(rowCk) >= 12 ? "✓" : "✗");
+  /* (i) E8:800px 寬進面內工作區,工具列仍有不少於 5 顆可見鈕 */
+  await send("Emulation.setDeviceMetricsOverride",
+    { width: 800, height: 600, deviceScaleFactor: 1, mobile: false });
+  await eval_(`enterFocus("face",1)`); await sleep(600);
+  const e8 = await eval_(`[...document.querySelectorAll("#faceWorkspaceTools .workspace-tool")]
+    .filter(b=>b.getBoundingClientRect().width>0).length`);
+  console.log("E8 800px 面內工具鈕:", e8, e8 >= 5 ? "✓" : "✗");
+  await eval_(`leaveFocus()`); await sleep(300);
+  await send("Emulation.setDeviceMetricsOverride",
+    { width: 1382, height: 804, deviceScaleFactor: 1, mobile: false });
+  await sleep(300);
   /* 截圖存檔 */
   const shot = await send("Page.captureScreenshot", { format: "png" });
   require("fs").mkdirSync("docs/screens", { recursive: true });

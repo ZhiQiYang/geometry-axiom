@@ -21,9 +21,10 @@
 | `#focusBar` | 工作區返回列 | `hidden` 切換檢查 |
 | `#status` | 狀態列文字(在 `.statusbar` 內) | 中文文案比對(改文案必同步改測試) |
 | `#cmd` | 指令輸入(在 `.statusbar` 內) | 存在性檢查 |
-| `#btnObj` | 三視圖總覽開關(D1:開/關覆層) | `.click()`、rect |
+| `#btnObj` | 三視圖鍵(`#viewSwitch` segmented 內,click=toggle 覆層) | `.click()`、rect |
+| `#btnCanvasView` | `#viewSwitch` 的物件畫布鍵 | `.click()` |
 | `#btnUndo` / `#btnRedo` | 復原/重做 | `.click()` |
-| `#btnZoom` | 縮放重置/fit-all | `.click()` |
+| `#btnZoom` | fit-all(已移入 `.canvas-controls`) | `.click()` |
 | `#btnNewRect` | ＋面·矩形 | `.click()` |
 | `#btnNewPoly` | ＋面·多邊形 | `.click()` |
 | `#btnNewSpace` | ＋空間 | `.click()` |
@@ -35,7 +36,9 @@
 | `#emptyState` | 空狀態插圖 | `hidden` 切換檢查 |
 | `#snapToggle` / `#gridToggle` | 吸附/格線開關 | `checked` |
 | `#zoomInButton` / `#zoomOutButton` / `#zoomLevelButton` / `#homeButton` | 縮放控制 | `.click()` |
-| `#searchInput` | 搜尋框(過濾卡片與清單) | `input` 事件驅動 `oc.search` |
+| `#searchInput` | 搜尋框(左欄頂 `.sidebar-search` 內) | `input` 事件驅動 `oc.search` |
+| `#fileMenu` / `#fileMenuPop` | 檔案選單(含 `#btnOpen #btnScene #btnEx #btnClear`) | `hidden`、`.click()` |
+| `#sceneList` / `#sceneMenuBtn` / `#sceneMenuPop` / `#sceneMenuLabel` | 場景選單(品牌旁;`.scene-item[data-path]` 載入) | `hidden`、`.click()` |
 | `#minimap` | 小地圖 canvas | `pointerdown` 導航;`oc.mmTf` 座標換算 |
 | `#toastRegion` | toast 容器 | `.toast` 子元素計數 |
 | `#objectWorkspace` | 面內/空間工作區覆層(fixed, z45) | `hidden` 切換檢查 |
@@ -115,6 +118,19 @@
 - `space 1 boundary 10 11`(經 `#cmd`,成員須為已放置 surface)→ `#edgeGroup .edge-path` = 2、label 全為 `contains`
 - `searchInput` 輸入「面 1」→ `.ocard` 剩 1 張、`.object-row` 剩 1 列(詞邊界,不命中「面 10」)
 - 面卡/空間卡為原型 node 視覺:header 圓點+名稱+副標、preview、footer;空間卡有六槽佔用格
+
+## UI/UX Phase 1(A1/A2/S1/E8,cdp_test §1)
+
+- `#app` 三列:topbar 56px / workspace 1fr / statusbar 32px;`.workspace` 三欄 260 / 1fr / 320。
+- 頂列三段:`.brand`(含 `#sceneList` 場景選單)→ `.tool-group`(`[data-tool]` 鈕含 `<kbd>` V/H/R/P)→ `.top-actions`(右群 5 件:`#btnUndo #btnRedo` + `#viewSwitch` + `#fileMenu` + `#btnExport`)。
+- `#viewSwitch` segmented:`.seg` 鈕 `#btnCanvasView`(物件畫布)與 `#btnObj`(三視圖,toggle 語意不變);`.active` 標目前視圖。
+- `#fileMenu` > `#fileMenuPop` 內含 `#btnOpen #btnScene #btnEx #btnClear`(`.menu-item`);`.menu-pop` 開關由 `bindMenu`/`closeMenus` 控。
+- `#sceneList` 不再是 `<select>`:`#sceneMenuBtn`(顯示 `#sceneMenuLabel` 目前場景)+ `#sceneMenuPop`(`.scene-item[data-path]` 各場景 + 開啟/載入範例)。
+- `#searchInput` 移到 `.sidebar-left > .sidebar-search`;`#btnZoom` 移到 `.canvas-controls`。
+- A1 防溢出:`.top-actions` 右緣 ≤ viewport 且左緣 > `.tool-group` 右緣(1382/1160 皆斷)。
+- 物件列:`.object-row > .row-icon.{face|space|column|beam} + .row-copy > strong(12.5/600)+small(11) + (.row-badge 游離)`。
+- E8:800px 下 `#faceWorkspaceTools .workspace-tool` 可見鈕 ≥5(橫向捲動而非消失)。
+- 主畫布快捷鍵增 R(矩形)/P(多邊形)。
 
 ## Phase 1 版面檢查點(cdp_test §1,五項)
 
