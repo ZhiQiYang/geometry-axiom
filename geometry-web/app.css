@@ -106,6 +106,8 @@ svg { display: block; }
 .type-icon svg { width: 17px; height: 17px; }
 .type-icon.face { background: var(--face-soft); color: var(--face); }
 .type-icon.space { background: var(--space-soft); color: var(--space); }
+.type-icon.column { background: #ececec; color: #5a5a5a; }
+.type-icon.beam { background: #ececec; color: #4a4a4a; }
 .section-label-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
 .section-label { color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .075em; }
 .filter-row { display: grid; grid-template-columns: 15px 8px 1fr auto; align-items: center; gap: 8px; min-height: 30px; color: #495366; font-size: 11.5px; cursor: pointer; }
@@ -113,6 +115,8 @@ svg { display: block; }
 .filter-row .dot { width: 7px; height: 7px; border-radius: 50%; }
 .dot.face { background: var(--face); }
 .dot.space { background: var(--space); }
+.dot.column { background: #5a5a5a; }
+.dot.beam { background: #4a4a4a; }
 .filter-row strong { min-width: 20px; padding: 1px 6px; border-radius: 9px; background: var(--panel-muted); color: var(--muted); font-size: 9.5px; text-align: center; }
 .object-tree-section { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .count-badge { min-width: 22px; padding: 1px 7px; border-radius: 10px; background: var(--panel-muted); color: var(--muted); font-size: 10px; text-align: center; }

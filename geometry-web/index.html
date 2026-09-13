@@ -80,6 +80,14 @@
             <span class="type-icon space"><span data-icon="layers"></span></span>
             <span><strong>快速六面盒</strong><small>W·D·H 一次建好</small></span>
           </button>
+          <button id="btnNewColumn" type="button" class="quick-create">
+            <span class="type-icon column"><span data-icon="rectangle"></span></span>
+            <span><strong>＋柱</strong><small>RC 柱 w×d</small></span>
+          </button>
+          <button id="btnNewBeam" type="button" class="quick-create">
+            <span class="type-icon beam"><span data-icon="layers"></span></span>
+            <span><strong>＋樑</strong><small>RC 樑 w×d</small></span>
+          </button>
         </div>
       </section>
 
@@ -89,6 +97,8 @@
         </div>
         <label class="filter-row"><input type="checkbox" data-filter-type="face" checked><span class="dot face"></span><span>面</span><strong id="faceCount">0</strong></label>
         <label class="filter-row"><input type="checkbox" data-filter-type="space" checked><span class="dot space"></span><span>空間</span><strong id="spaceCount">0</strong></label>
+        <label class="filter-row"><input type="checkbox" data-filter-type="column" checked><span class="dot column"></span><span>柱</span><strong id="columnCount">0</strong></label>
+        <label class="filter-row"><input type="checkbox" data-filter-type="beam" checked><span class="dot beam"></span><span>樑</span><strong id="beamCount">0</strong></label>
       </section>
 
       <section class="sidebar-section object-tree-section">
@@ -338,6 +348,39 @@
   <footer class="dialog-footer">
     <button id="shapeCancel" class="btn" type="button">取消</button>
     <button id="shapeSubmit" class="primary-button" type="button"><span>套用</span></button>
+  </footer>
+</section>
+
+<section id="rcDialog" class="dialog" role="dialog" aria-modal="true" hidden>
+  <header class="dialog-header">
+    <div><span class="dialog-eyebrow">RC 構件</span><h2 id="rcTitle">建立柱</h2></div>
+    <button id="rcClose" class="dialog-close text-button" type="button">✕</button>
+  </header>
+  <div class="dialog-body">
+    <div id="rcPresets" class="member-check-list"></div>
+    <div class="place-form">
+      <label>寬 w (mm)<input id="rcW" type="number" step="1" value="500"></label>
+      <label>深 d (mm)<input id="rcD" type="number" step="1" value="500"></label>
+      <label>所屬空間<select id="rcSpace"><option value="0">（游離）</option></select></label>
+    </div>
+    <div class="place-form" id="rcColFields">
+      <label>足跡 x (mm)<input id="rcX" type="number" step="1" value="0"></label>
+      <label>足跡 y (mm)<input id="rcY" type="number" step="1" value="0"></label>
+      <label>z0(留空=空間下界)<input id="rcZ0" type="number" step="1" placeholder="自動"></label>
+      <label>z1(留空=空間上界)<input id="rcZ1" type="number" step="1" placeholder="自動"></label>
+    </div>
+    <div class="place-form" id="rcBeamFields" hidden>
+      <label>走向軸<select id="rcAxis"><option value="x">沿 x</option><option value="y">沿 y</option></select></label>
+      <label>from (mm)<input id="rcA" type="number" step="1" value="0"></label>
+      <label>to (mm)<input id="rcB" type="number" step="1" value="4000"></label>
+      <label>at 中線 c (mm)<input id="rcC" type="number" step="1" value="1500"></label>
+      <label>top(留空=空間上界)<input id="rcTop" type="number" step="1" placeholder="自動"></label>
+    </div>
+    <div class="face-help" id="rcHint"></div>
+  </div>
+  <footer class="dialog-footer">
+    <button id="rcCancel" class="btn" type="button">取消</button>
+    <button id="rcSubmit" class="primary-button" type="button"><span>建立</span></button>
   </footer>
 </section>
 

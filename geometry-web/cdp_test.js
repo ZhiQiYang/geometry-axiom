@@ -940,6 +940,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const sn = await eval_(`(async()=>{
     await api("line reset");
     await api("line boundary 1 outline 0,0 300,0 300,100 100,100 100,300 0,300");
+    oc.focus = null; oc.stack = [];         /* 前段已在面 1,勿再推疊 */
     await renderObjects();
     await enterFocus("face", 1);
     feSetTool("select");
@@ -955,6 +956,113 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     "| snapTo:", sn.snap, "| 吸附後 v:", sn.movedY);
   await eval_(`leaveFocus()`);
   await sleep(300);
+
+  console.log("=== P11. RC 柱樑一等物件(RC Phase 4)===");
+  await eval_(`(async()=>{
+    await api("line reset");
+    for (const ln of [
+      "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+      "placement 1 on boundary 1 origin 0 0 2500 u +x v +y",
+      "boundary 2 outline 0,0 3000,0 3000,4000 0,4000",
+      "placement 2 on boundary 2 origin 0 0 0 u +y v +x",
+      "space 1 boundary 1 2",
+    ]) await api("line " + ln);
+    await renderObjects();
+  })()`);
+  await sleep(700);
+  /* ＋柱:對話框 → 選空間 → 建立 */
+  await eval_(`document.getElementById("btnNewColumn").click()`);
+  await sleep(300);
+  console.log("rcDialog:", await eval_(
+    `!document.getElementById("rcDialog").hidden ? "✓ 開啟" : "✗"`));
+  await eval_(`(()=>{
+    document.getElementById("rcSpace").value = "1";
+    document.getElementById("rcX").value = "500";
+    document.getElementById("rcY").value = "500";
+  })()`);
+  await eval_(`document.getElementById("rcSubmit").click()`);
+  await sleep(1000);
+  const colObj = await eval_(`api("objects").then(r=>r.columns)`);
+  console.log("柱建立:", colObj.length === 1 && colObj[0].space === 1
+    ? `✓ id=${colObj[0].id} z=${colObj[0].box[2]}~${colObj[0].box[5]}`
+    : "✗ " + JSON.stringify(colObj));
+  const colCard = await eval_(`(()=>{
+    const c = document.querySelector('.ocard[data-kind="column"]');
+    if (!c) return null;
+    const r = c.getBoundingClientRect();
+    return {x: r.left + r.width/2, y: r.top + r.height/2};
+  })()`);
+  console.log("柱卡片:", colCard ? "✓" : "✗");
+  /* 拖卡片 → canvas-pos 持久化 */
+  if (colCard) {
+    await drag(colCard.x, colCard.y, colCard.x + 130, colCard.y + 80);
+    await sleep(800);
+    const dragR = await eval_(`api("objects").then(r=>({
+      has: r.columns[0] && r.columns[0].hasPos }))`);
+    const dumpPos = await eval_(
+      `api("dump").then(d=>/canvas-pos column/.test(d.text))`);
+    console.log("拖卡片→canvas-pos:", dragR.has && dumpPos ? "✓" : "✗",
+      "| dump 有記錄:", dumpPos);
+  }
+  /* 空間→柱 障礙連線 */
+  const rcEdgeLabels = await eval_(
+    `[...document.querySelectorAll("#edgeGroup .edge-label")].map(t=>t.textContent).join(",")`);
+  console.log("障礙連線:", /障礙·柱/.test(rcEdgeLabels) ? `✓ ${rcEdgeLabels}` : `✗ ${rcEdgeLabels}`);
+  /* ＋樑 */
+  await eval_(`document.getElementById("btnNewBeam").click()`);
+  await sleep(300);
+  await eval_(`(()=>{
+    document.getElementById("rcSpace").value = "1";
+    document.getElementById("rcA").value = "0";
+    document.getElementById("rcB").value = "4000";
+    document.getElementById("rcC").value = "1500";
+  })()`);
+  await eval_(`document.getElementById("rcSubmit").click()`);
+  await sleep(1000);
+  const beamObj = await eval_(`api("objects").then(r=>r.beams)`);
+  console.log("樑建立:", beamObj.length === 1 && beamObj[0].box[5] === 2500
+    ? `✓ top=${beamObj[0].box[5]}` : "✗ " + JSON.stringify(beamObj));
+  console.log("樑卡片:", await eval_(
+    `!!document.querySelector('.ocard[data-kind="beam"]') ? "✓" : "✗"`));
+  /* 搜尋「柱」命中柱卡 */
+  await eval_(`(()=>{ const s=document.getElementById("searchInput");
+    s.value="柱"; s.dispatchEvent(new Event("input")); })()`);
+  await sleep(400);
+  const srch = await eval_(`(()=>{
+    const cards=[...document.querySelectorAll("#cardLayer .ocard")];
+    return {n:cards.length, kind:cards[0] && cards[0].dataset.kind};
+  })()`);
+  console.log("搜尋柱:", srch.n === 1 && srch.kind === "column" ? "✓" : `✗ ${JSON.stringify(srch)}`);
+  await eval_(`(()=>{ const s=document.getElementById("searchInput");
+    s.value=""; s.dispatchEvent(new Event("input")); })()`);
+  await sleep(400);
+  /* 檢視器表單 → 重宣告 */
+  await eval_(`selectObject("column", ${colObj[0].id})`);
+  await sleep(500);
+  console.log("檢視器表單:", await eval_(
+    `!!document.getElementById("rcfX") ? "✓" : "✗"`));
+  await eval_(`document.getElementById("rcfX").value = "800"`);
+  await eval_(`document.getElementById("rcfApply").click()`);
+  await sleep(900);
+  const movedX = await eval_(`api("objects").then(r=>r.columns[0].box[0])`);
+  console.log("表單重宣告 x→800:", movedX === 800 ? "✓" : `✗ ${movedX}`);
+  /* 雙擊柱卡 → 只開只開檢視器(🔒 Q10) */
+  const cc = await eval_(`(()=>{
+    const c = document.querySelector('.ocard[data-kind="column"]');
+    const r = c.getBoundingClientRect();
+    return {x: r.left + r.width/2, y: r.top + r.height/2};
+  })()`);
+  await dblclick(cc.x, cc.y);
+  await sleep(700);
+  const dbl = await eval_(`({f:oc.focus, s:oc.sel && oc.sel.kind})`);
+  console.log("雙擊只開檢視器:", dbl.f === null && dbl.s === "column" ? "✓" : `✗ ${JSON.stringify(dbl)}`);
+  /* 刪除 → 卡片消失 */
+  await eval_(`window.confirm = () => true`);
+  await eval_(`document.getElementById("inspDelete").click()`);
+  await sleep(900);
+  const gone = await eval_(`api("objects").then(r=>r.columns.length === 0)`);
+  const cardGone = await eval_(`!document.querySelector('.ocard[data-kind="column"]')`);
+  console.log("刪除→卡片消失:", gone && cardGone ? "✓" : `✗ obj=${gone} card=${cardGone}`);
 
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);

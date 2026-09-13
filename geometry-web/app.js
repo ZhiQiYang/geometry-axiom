@@ -758,10 +758,10 @@ const oc = {
   panX: 0, panY: 0, zoom: 1,
   tool: "select",         /* select | pan */
   sel: null,              /* 選取 {kind,id} */
-  showFace: true, showSpace: true,
+  showFace: true, showSpace: true, showColumn: true, showBeam: true,
   search: "",             /* 搜尋過濾字串 */
   surfs: [],              /* /surfaces 快照(法向→空間六槽) */
-  faces: [], spaces: [],
+  faces: [], spaces: [], columns: [], beams: [],
   stack: [],              // 焦點堆疊：世界 → 空間 → 面
   focus: null,            // null | {t:'space'|'face', id}
   bmap: {},               // boundary id → loops（縮圖 + 編輯）
@@ -934,27 +934,98 @@ function spaceCard(s) {
   return g;
 }
 
+/* RC 構件卡(B-3):柱 = 足跡矩形 + 高度標註;樑 = 跨度條帶 + 寬×深標註。 */
+function rcCard(o, kind) {
+  const isCol = kind === "column";
+  const g = el("g", { class: "ocard", "data-kind": kind, "data-id": o.id,
+                      transform: `translate(${o.cx},${o.cy})`, cursor: "pointer" });
+  el("rect", { class: "ocard-frame", x: 0, y: 0, width: OC_W, height: OC_H, rx: 10,
+               fill: "#ffffff", stroke: "#dfe4eb", "stroke-width": 1.4 }, g);
+  el("circle", { cx: 14, cy: 16, r: 4.5, fill: isCol ? "#5a5a5a" : "#4a4a4a" }, g);
+  const t = el("text", { x: 26, y: 15, "font-size": 11.5, fill: "#1d2634",
+                         "font-weight": 700 }, g);
+  t.textContent = (isCol ? "柱 " : "樑 ") + o.id;
+  const sub = el("text", { x: 26, y: 28, "font-size": 9, fill: "#8b93a3" }, g);
+  sub.textContent = o.space ? `空間 ${o.space} 的障礙物` : "游離構件";
+  if (!o.space) {
+    el("rect", { x: OC_W - 44, y: 8, width: 36, height: 14, rx: 7,
+                 fill: "#fdf3e3", stroke: "#ecd9b5" }, g);
+    const tag = el("text", { x: OC_W - 26, y: 18, "font-size": 8, fill: "#a06a18",
+                             "text-anchor": "middle", "font-weight": 650 }, g);
+    tag.textContent = "游離";
+  }
+  el("line", { x1: 0, y1: 34, x2: OC_W, y2: 34, stroke: "#e8ebf0", "stroke-width": 1 }, g);
+
+  /* preview:box = [xlo,ylo,zlo,xhi,yhi,zhi];平面足跡畫在預覽框裡 */
+  const pvX = 10, pvY = 40, pvW = OC_W - 20, pvH = OC_H - 76;
+  el("rect", { x: pvX, y: pvY, width: pvW, height: pvH, rx: 6,
+               fill: "#f7f9fb", stroke: "#edf0f5" }, g);
+  const fw = Math.max(1, o.box[3] - o.box[0]), fd = Math.max(1, o.box[4] - o.box[1]);
+  const k = Math.min((pvW - 26) / fw, (pvH - 26) / fd);
+  const ox = pvX + (pvW - fw * k) / 2 - o.box[0] * k;
+  const oy = pvY + (pvH - fd * k) / 2 - o.box[1] * k;
+  if (isCol) {
+    el("rect", { x: o.box[0] * k + ox, y: o.box[1] * k + oy,
+                 width: fw * k, height: fd * k,
+                 fill: "#c8c8c8", fillOpacity: .75, stroke: "#5a5a5a",
+                 "stroke-width": 1.4 }, g);
+    const lab = el("text", { x: pvX + pvW / 2, y: pvY + pvH - 4,
+      "font-size": 9, fill: "#5a5a5a", "text-anchor": "middle" }, g);
+    lab.textContent = `h=${o.box[5] - o.box[2]}`;
+  } else {
+    /* 樑:沿走向軸拉長的條帶 */
+    el("rect", { x: o.box[0] * k + ox, y: o.box[1] * k + oy,
+                 width: fw * k, height: fd * k,
+                 fill: "#9e9e9e", fillOpacity: .75, stroke: "#4a4a4a",
+                 "stroke-width": 1.4 }, g);
+    const lab = el("text", { x: pvX + pvW / 2, y: pvY + pvH - 4,
+      "font-size": 9, fill: "#4a4a4a", "text-anchor": "middle" }, g);
+    lab.textContent = `${o.axis} 向 · 頂 ${o.box[5]}`;
+  }
+
+  el("line", { x1: 0, y1: OC_H - 30, x2: OC_W, y2: OC_H - 30,
+               stroke: "#e8ebf0", "stroke-width": 1 }, g);
+  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 8.5, fill: "#687487" }, g);
+  ft.textContent = isCol
+    ? `${fw}×${fd} mm · z ${o.box[2]}~${o.box[5]}`
+    : `跨 ${o.axis === "x" ? fw : fd} · ${o.axis === "x" ? fd : fw}×${o.box[5] - o.box[2]}`;
+  return g;
+}
+
 /* ---- 渲染 ---- */
 async function renderObjects() {
   const seq = ++ocSeq;
   const r = await api("objects");
   if (!r.ok || seq !== ocSeq) return;
   oc.faces = r.faces; oc.spaces = r.spaces;
+  oc.columns = r.columns || []; oc.beams = r.beams || [];
   oc.bmap = {};
   const sf = await api("surfaces");
   oc.surfs = (sf && sf.ok) ? sf.surfaces : [];
 
-  /* 沒有畫布座標的物件：自動排格並立刻持久化。 */
+  /* 沒有畫布座標的物件：自動排格並立刻持久化。
+     跳過已佔用的格位——否則新卡會疊在既有卡片上。 */
+  const occupied = new Set();
+  for (const o of ocAllObjects()) {
+    if (o.hasPos) occupied.add(o.cx + "," + o.cy);
+  }
   let slot = 0;
   const homeless = [...oc.faces.filter(f => !f.hasPos),
-                    ...oc.spaces.filter(s => !s.hasPos)];
+                    ...oc.spaces.filter(s => !s.hasPos),
+                    ...oc.columns.filter(c => !c.hasPos),
+                    ...oc.beams.filter(b => !b.hasPos)];
   for (const o of homeless) {
-    o.cx = 60 + (slot % 4) * 300;
-    o.cy = 60 + Math.floor(slot / 4) * 240;
+    let cx, cy;
+    do {
+      cx = 60 + (slot % 4) * 300;
+      cy = 60 + Math.floor(slot / 4) * 240;
+      ++slot;
+    } while (occupied.has(cx + "," + cy));
+    occupied.add(cx + "," + cy);
+    o.cx = cx; o.cy = cy;
     o.hasPos = true;
-    ++slot;
     const kind = o.members ? "space" : o.kind;
-    api(`line canvas-pos ${kind} ${o.id} ${o.cx} ${o.cy}`);   /* 靜默 */
+    api(`line canvas-pos ${kind} ${o.id} ${cx} ${cy}`);   /* 靜默 */
   }
 
   /* 面卡縮圖需要的邊界資料一次取齊。 */
@@ -983,6 +1054,11 @@ function drawObjects() {
     (!inSpace || inSpace.has(f.id)) && oc.showFace && matchQ(f));
   const visSpaces = inSpace ? [] :
     oc.spaces.filter(s => oc.showSpace && matchQ(s));
+  /* 空間焦點下:柱樑卡顯示屬於該空間的構件 */
+  const visCols = oc.columns.filter(c =>
+    (!inSpace || c.space === oc.focus.id) && oc.showColumn && matchQ(c));
+  const visBeams = oc.beams.filter(b =>
+    (!inSpace || b.space === oc.focus.id) && oc.showBeam && matchQ(b));
 
   for (const f of visFaces) {
     const c = faceCard(f);
@@ -996,17 +1072,33 @@ function drawObjects() {
       c.classList.add("selected");
     cl.appendChild(c);
   }
-  drawOcEdges(eg, visSpaces, visFaces);
+  for (const o of visCols) {
+    const c = rcCard(o, "column");
+    if (oc.sel && oc.sel.kind === "column" && oc.sel.id === o.id)
+      c.classList.add("selected");
+    cl.appendChild(c);
+  }
+  for (const o of visBeams) {
+    const c = rcCard(o, "beam");
+    if (oc.sel && oc.sel.kind === "beam" && oc.sel.id === o.id)
+      c.classList.add("selected");
+    cl.appendChild(c);
+  }
+  drawOcEdges(eg, visSpaces, visFaces, visCols, visBeams);
   drawCrumb();
   renderObjectList();
   renderInspector();
   drawMinimap();
-  $("emptyState").hidden = (oc.faces.length + oc.spaces.length) > 0 || !!oc.focus;
+  $("emptyState").hidden =
+    (oc.faces.length + oc.spaces.length +
+     oc.columns.length + oc.beams.length) > 0 || !!oc.focus;
 }
 
 /* ---- 搜尋比對:名稱 / id / kind ---- */
 function ocCardName(o) {
   if (o.members) return `空間 ${o.id}`;
+  if (o.kind === "column") return `柱 ${o.id}`;
+  if (o.kind === "beam") return `樑 ${o.id}`;
   return (o.kind === "placement" ? `placement ${o.id}` : `面 ${o.id}`);
 }
 function ocMatchSearch(o) {
@@ -1049,20 +1141,25 @@ function relGeom(a, b) {          /* a=space card, b=face card */
   const mid = { x: (st.x + en.x) / 2, y: (st.y + en.y) / 2 };
   return { mid, d: `M${st.x} ${st.y} C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${en.x} ${en.y}` };
 }
-function drawOcEdges(eg, spaces, faces) {
+function drawOcEdges(eg, spaces, faces, cols = [], beams = []) {
+  const containsEdge = (s, target, label) => {
+    const g = relGeom(cardBox(s), cardBox(target));
+    const gi = el("g", { class: "edge-group-item" }, eg);
+    el("path", { class: "edge-path", d: g.d }, gi);
+    const lw = Math.min(150, Math.max(46, label.length * 11 + 20));
+    el("rect", { class: "edge-label-bg", x: g.mid.x - lw / 2, y: g.mid.y - 10,
+                 width: lw, height: 20, rx: 7 }, gi);
+    const t = el("text", { class: "edge-label", x: g.mid.x, y: g.mid.y + .5 }, gi);
+    t.textContent = label;
+  };
   for (const s of spaces) {
     for (const m of s.members) {
       const f = faces.find(x => x.kind === "boundary" && x.id === m);
-      if (!f) continue;
-      const g = relGeom(cardBox(s), cardBox(f));
-      const gi = el("g", { class: "edge-group-item" }, eg);
-      el("path", { class: "edge-path", d: g.d }, gi);
-      const lw = Math.min(150, Math.max(46, "contains".length * 11 + 20));
-      el("rect", { class: "edge-label-bg", x: g.mid.x - lw / 2, y: g.mid.y - 10,
-                   width: lw, height: 20, rx: 7 }, gi);
-      const t = el("text", { class: "edge-label", x: g.mid.x, y: g.mid.y + .5 }, gi);
-      t.textContent = "contains";
+      if (f) containsEdge(s, f, "contains");
     }
+    /* 空間 → 柱樑障礙物連線(B-3,虛線語意=障礙物非成員) */
+    for (const c of cols) if (c.space === s.id) containsEdge(s, c, "障礙·柱");
+    for (const b of beams) if (b.space === s.id) containsEdge(s, b, "障礙·樑");
   }
 }
 
@@ -1082,7 +1179,8 @@ function drawMinimap() {
   const vr = ocv.getBoundingClientRect();
   const vb = { minX: -oc.panX / oc.zoom, minY: -oc.panY / oc.zoom,
     maxX: (vr.width - oc.panX) / oc.zoom, maxY: (vr.height - oc.panY) / oc.zoom };
-  const nodes = [...oc.faces, ...(oc.focus ? [] : oc.spaces)];
+  const nodes = [...oc.faces, ...(oc.focus ? [] : oc.spaces),
+                 ...oc.columns, ...oc.beams];
   if (!nodes.length && !oc.focus) return;
   const allMinX = Math.min(vb.minX, ...nodes.map(n => n.cx));
   const allMinY = Math.min(vb.minY, ...nodes.map(n => n.cy));
@@ -1415,6 +1513,7 @@ function closeDialogs() {
   $("memberDialog").hidden = true;
   $("shapeDialog").hidden = true;
   $("notchDialog").hidden = true;
+  $("rcDialog").hidden = true;
   fe.notch = null;
 }
 $("modalBackdrop").addEventListener("click", closeDialogs);
@@ -1426,6 +1525,8 @@ $("shapeClose").addEventListener("click", closeDialogs);
 $("shapeCancel").addEventListener("click", closeDialogs);
 $("notchClose").addEventListener("click", closeDialogs);
 $("notchCancel").addEventListener("click", closeDialogs);
+$("rcClose").addEventListener("click", closeDialogs);
+$("rcCancel").addEventListener("click", closeDialogs);
 $("notchSubmit").addEventListener("click", async () => {
   await feInsertNotch();
   if (!fe.notch) closeDialogs();   /* feInsertNotch 失敗保留上下文供修正 */
@@ -2485,8 +2586,13 @@ function selectObject(kind, id) {
   renderObjectList();
   renderInspector();
 }
+function ocAllObjects() {
+  return [...oc.faces, ...oc.spaces, ...oc.columns, ...oc.beams];
+}
 function ocFind(kind, id) {
   if (kind === "space") return oc.spaces.find(s => s.id === id) || null;
+  if (kind === "column") return oc.columns.find(c => c.id === id) || null;
+  if (kind === "beam") return oc.beams.find(b => b.id === id) || null;
   return oc.faces.find(f => f.kind === kind && f.id === id) || null;
 }
 function cardCenter(kind, id) {
@@ -2520,6 +2626,17 @@ function renderObjectList() {
     rows.push({ kind: "space", id: s.id, name: `空間 ${s.id}`,
       sub: `${s.closed ? "封閉" : "開放"} · ${s.members.length} 個邊界面` });
   }
+  for (const c of oc.columns) {
+    if (!oc.showColumn || !ocMatchSearch(c)) continue;
+    rows.push({ kind: "column", id: c.id, name: `柱 ${c.id}`,
+      sub: (c.space ? `空間 ${c.space}` : "游離") +
+           ` · ${c.box[3] - c.box[0]}×${c.box[4] - c.box[1]}` });
+  }
+  for (const b of oc.beams) {
+    if (!oc.showBeam || !ocMatchSearch(b)) continue;
+    rows.push({ kind: "beam", id: b.id, name: `樑 ${b.id}`,
+      sub: (b.space ? `空間 ${b.space}` : "游離") + ` · ${b.axis} 向` });
+  }
   $("objectCountBadge").textContent = rows.length;
   for (const r of rows) {
     const row = document.createElement("div");
@@ -2537,12 +2654,16 @@ function renderObjectList() {
     });
     row.addEventListener("dblclick", () => {
       if (r.kind === "placement") setStatus("自帶矩形面沒有邊界可編輯");
+      else if (r.kind === "column" || r.kind === "beam")
+        selectObject(r.kind, r.id);      /* Q10:柱樑雙擊只開檢視器 */
       else enterFocus(r.kind === "space" ? "space" : "face", r.id);
     });
     list.appendChild(row);
   }
   $("faceCount").textContent = oc.faces.length;
   $("spaceCount").textContent = oc.spaces.length;
+  $("columnCount").textContent = oc.columns.length;
+  $("beamCount").textContent = oc.beams.length;
 }
 /* 右欄檢視器 */
 function renderInspector() {
@@ -2554,6 +2675,11 @@ function renderInspector() {
   if (!sel) { pane.innerHTML = ""; return; }
   const o = ocFind(sel.kind, sel.id);
   pane.textContent = "";
+  /* RC 構件檢視器(B-3):欄位表單 → DSL 重宣告(交易式);雙擊也只到這裡(Q10)。 */
+  if (sel.kind === "column" || sel.kind === "beam") {
+    renderRcInspector(pane, sel.kind, o);
+    return;
+  }
   const name = sel.kind === "space" ? `空間 ${o.id}`
     : sel.kind === "placement" ? `placement ${o.id}` : `面 ${o.id}`;
   const state = sel.kind === "space"
@@ -2596,10 +2722,69 @@ function renderInspector() {
     deleteObject(sel.kind, sel.id));
 }
 
+/* RC 柱/樑檢視器:box=[xlo,ylo,zlo,xhi,yhi,zhi] → 欄位表單;
+   套用 = 同 id 重宣告(apply_column/beam 交易式重綁,I8)。 */
+function renderRcInspector(pane, kind, o) {
+  const isCol = kind === "column";
+  const spaceOpts = `<option value="0"${o.space ? "" : " selected"}>（游離）</option>` +
+    oc.spaces.map(s => `<option value="${s.id}"${o.space === s.id ? " selected" : ""}>空間 ${s.id}</option>`).join("");
+  const fields = isCol
+    ? `<div class="kv"><span>足跡 x/y</span><b><input id="rcfX" type="number" step="1" value="${o.box[0]}" style="width:70px"> <input id="rcfY" type="number" step="1" value="${o.box[1]}" style="width:70px"></b></div>` +
+      `<div class="kv"><span>寬×深</span><b><input id="rcfW" type="number" step="1" value="${o.box[3] - o.box[0]}" style="width:60px">×<input id="rcfD" type="number" step="1" value="${o.box[4] - o.box[1]}" style="width:60px"></b></div>` +
+      `<div class="kv"><span>z0 / z1</span><b><input id="rcfZ0" type="number" step="1" value="${o.box[2]}" style="width:70px"> / <input id="rcfZ1" type="number" step="1" value="${o.box[5]}" style="width:70px"></b></div>`
+    : `<div class="kv"><span>走向軸</span><b><select id="rcfAxis"><option value="x"${o.axis === "x" ? " selected" : ""}>沿 x</option><option value="y"${o.axis === "y" ? " selected" : ""}>沿 y</option></select></b></div>` +
+      `<div class="kv"><span>from / to</span><b><input id="rcfA" type="number" step="1" value="${o.axis === "x" ? o.box[0] : o.box[1]}" style="width:70px"> / <input id="rcfB" type="number" step="1" value="${o.axis === "x" ? o.box[3] : o.box[4]}" style="width:70px"></b></div>` +
+      `<div class="kv"><span>中線 c</span><b><input id="rcfC" type="number" step="1" value="${o.axis === "x" ? Math.round((o.box[1] + o.box[4]) / 2) : Math.round((o.box[0] + o.box[3]) / 2)}" style="width:70px"></b></div>` +
+      `<div class="kv"><span>寬×深</span><b><input id="rcfW" type="number" step="1" value="${o.axis === "x" ? o.box[4] - o.box[1] : o.box[3] - o.box[0]}" style="width:60px">×<input id="rcfD" type="number" step="1" value="${o.box[5] - o.box[2]}" style="width:60px"></b></div>` +
+      `<div class="kv"><span>top</span><b><input id="rcfTop" type="number" step="1" value="${o.box[5]}" style="width:70px"></b></div>`;
+  pane.innerHTML =
+    `<div class="inspector-block"><div class="ib-title">${isCol ? "柱" : "樑"} ${o.id}` +
+    `<span class="tag">${kind}</span></div>` +
+    `<div class="kv"><span>id</span><b>${o.id}</b></div>` +
+    `<div class="kv"><span>狀態</span><b>${o.space ? `空間 ${o.space} 的障礙物` : "游離"}</b></div>` +
+    `<div class="kv"><span>box</span><b>${o.box.join(", ")}</b></div>` +
+    `</div>` +
+    `<div class="inspector-block"><div class="ib-title">尺寸與歸屬</div>` +
+    `<div class="kv"><span>所屬空間</span><b><select id="rcfSpace">${spaceOpts}</select></b></div>` +
+    fields +
+    `<div class="btn-col"><button class="btn" id="rcfApply"><i data-icon="edit"></i><span>套用（重宣告）</span></button></div>` +
+    `</div>` +
+    `<div class="inspector-block"><div class="ib-title">操作</div>` +
+    `<div class="btn-col">` +
+    `<button class="btn" id="inspLocate"><i data-icon="locate"></i><span>定位卡片</span></button>` +
+    `<button class="btn danger" id="inspDelete"><i data-icon="trash"></i><span>刪除</span></button>` +
+    `</div></div>`;
+  hydrateIcons(pane);
+  const num = id => { const el = pane.querySelector("#" + id); return el && el.value !== "" ? +el.value : null; };
+  pane.querySelector("#rcfApply").addEventListener("click", async () => {
+    const sid = +pane.querySelector("#rcfSpace").value;
+    const inPart = sid ? ` in ${sid}` : "";
+    let line;
+    if (isCol) {
+      const x = num("rcfX"), y = num("rcfY"), w = num("rcfW"), d = num("rcfD"),
+            z0 = num("rcfZ0"), z1 = num("rcfZ1");
+      if ([x, y, w, d, z0, z1].some(v => v === null)) { setStatus("欄位不能留空"); return; }
+      line = `column ${o.id}${inPart} at ${x} ${y} size ${w} ${d} z ${z0} ${z1}`;
+    } else {
+      const ax = pane.querySelector("#rcfAxis").value;
+      const a = num("rcfA"), b = num("rcfB"), c = num("rcfC"),
+            w = num("rcfW"), d = num("rcfD"), top = num("rcfTop");
+      if ([a, b, c, w, d, top].some(v => v === null)) { setStatus("欄位不能留空"); return; }
+      line = `beam ${o.id}${inPart} along ${ax} from ${a} to ${b} at ${c} width ${w} depth ${d} top ${top}`;
+    }
+    if (await mutate([line])) await renderObjects();
+  });
+  pane.querySelector("#inspLocate").addEventListener("click", () =>
+    centerOnNode(kind, o.id));
+  pane.querySelector("#inspDelete").addEventListener("click", () =>
+    deleteObject(kind, o.id));
+}
+
 /* 刪除（Q1）：delete <kind> <id> 走核心交易重驗。
    surface 合體面（boundary 卡）先刪承載面再刪邊界面——兩行經 mutate 交易。 */
 async function deleteObject(kind, id) {
   const name = kind === "space" ? `空間 ${id}`
+    : kind === "column" ? `柱 ${id}` : kind === "beam" ? `樑 ${id}`
     : kind === "placement" ? `placement ${id}` : `面 ${id}`;
   if (!confirm(`刪除 ${name}？（可用 Ctrl+Z 復原）`)) return;
   let lines;
@@ -2626,6 +2811,11 @@ ocv.addEventListener("dblclick", e => {
       `.ocard[data-kind="${oc.sel.kind}"][data-id="${oc.sel.id}"]`));
   if (!card || card.dataset.kind === "placement") {
     if (card) setStatus("自帶矩形面沒有邊界可編輯");
+    return;
+  }
+  /* Q10:柱樑雙擊只開檢視器,無工作區 */
+  if (card.dataset.kind === "column" || card.dataset.kind === "beam") {
+    selectObject(card.dataset.kind, parseInt(card.dataset.id, 10));
     return;
   }
   enterFocus(card.dataset.kind === "space" ? "space" : "face",
@@ -2660,7 +2850,7 @@ ocv.addEventListener("pointermove", e => {
   if (oc.card) {
     const dx = pt.x - oc.card.sx, dy = pt.y - oc.card.sy;
     if (Math.abs(dx) + Math.abs(dy) > 3) oc.card.moved = true;
-    const o = [...oc.faces, ...oc.spaces]
+    const o = ocAllObjects()
       .find(o => o.id === oc.card.id &&
                  (o.members ? "space" : o.kind) === oc.card.kind);
     if (o) {
@@ -2690,7 +2880,7 @@ ocv.addEventListener("pointerup", async e => {
         c.ny = Math.round(c.ny / 20) * 20;
       }
       await api(`line canvas-pos ${kind} ${c.id} ${Math.round(c.nx)} ${Math.round(c.ny)}`);
-      const o = [...oc.faces, ...oc.spaces]
+      const o = ocAllObjects()
         .find(o => o.id === c.id && (o.members ? "space" : o.kind) === kind);
       if (o) { o.cx = Math.round(c.nx); o.cy = Math.round(c.ny); }
       drawObjects();
@@ -2779,6 +2969,8 @@ for (const cb of document.querySelectorAll("[data-filter-type]")) {
   cb.addEventListener("change", () => {
     oc.showFace = document.querySelector('[data-filter-type="face"]').checked;
     oc.showSpace = document.querySelector('[data-filter-type="space"]').checked;
+    oc.showColumn = document.querySelector('[data-filter-type="column"]').checked;
+    oc.showBeam = document.querySelector('[data-filter-type="beam"]').checked;
     drawObjects();
   });
 }
@@ -2835,6 +3027,64 @@ $("btnBox6").addEventListener("click", () => {
   $("box6Dialog").hidden = false;
 });
 $("box6Submit").addEventListener("click", submitBox6);
+/* ---- RC 柱/樑建立對話框(B-3,🔒 R4 預設尺寸 + 自訂) ---- */
+const RC_COL_PRESETS = [500, 600, 700, 800];
+const RC_BEAM_PRESETS = [[300, 500], [350, 600], [400, 700]];
+let rcKind = "column";
+function openRcDialog(kind) {
+  rcKind = kind;
+  const isCol = kind === "column";
+  $("rcTitle").textContent = isCol ? "建立 RC 柱" : "建立 RC 樑";
+  $("rcColFields").hidden = !isCol;
+  $("rcBeamFields").hidden = isCol;
+  $("rcHint").textContent = isCol
+    ? "at x y = 足跡左下角;屬空間時 z 留空由 ±Z 槽推導,游離則必填。"
+    : "at c = 垂直於走向的中線座標;top 留空由空間 +Z 槽推導,游離必填。";
+  const pr = $("rcPresets"); pr.textContent = "";
+  for (const p of isCol ? RC_COL_PRESETS : RC_BEAM_PRESETS) {
+    const lab = document.createElement("label");
+    lab.className = "member-check-row";
+    const w = isCol ? p : p[0], d = isCol ? p : p[1];
+    lab.innerHTML = `<input type="radio" name="rcPreset"><span>${w} × ${d}</span>`;
+    lab.querySelector("input").addEventListener("change", () => {
+      $("rcW").value = w; $("rcD").value = d;
+    });
+    pr.appendChild(lab);
+  }
+  const sp = $("rcSpace");
+  sp.innerHTML = `<option value="0">（游離）</option>` +
+    oc.spaces.map(s => `<option value="${s.id}">空間 ${s.id}</option>`).join("");
+  $("modalBackdrop").hidden = false;
+  $("rcDialog").hidden = false;
+}
+$("btnNewColumn").addEventListener("click", () => openRcDialog("column"));
+$("btnNewBeam").addEventListener("click", () => openRcDialog("beam"));
+$("rcSubmit").addEventListener("click", async () => {
+  const isCol = rcKind === "column";
+  const ids = await api("newid");
+  const id = isCol ? ids.column : ids.beam;
+  const sid = +$("rcSpace").value;
+  const inPart = sid ? ` in ${sid}` : "";
+  const w = +$("rcW").value, d = +$("rcD").value;
+  let line;
+  if (isCol) {
+    const x = +$("rcX").value, y = +$("rcY").value;
+    const z0 = $("rcZ0").value, z1 = $("rcZ1").value;
+    const zPart = (z0 !== "" && z1 !== "") ? ` z ${+z0} ${+z1}` : "";
+    line = `column ${id}${inPart} at ${x} ${y} size ${w} ${d}${zPart}`;
+  } else {
+    const ax = $("rcAxis").value;
+    const a = +$("rcA").value, b = +$("rcB").value, c = +$("rcC").value;
+    const top = $("rcTop").value;
+    const topPart = top !== "" ? ` top ${+top}` : "";
+    line = `beam ${id}${inPart} along ${ax} from ${a} to ${b} at ${c} width ${w} depth ${d}${topPart}`;
+  }
+  if (await mutate([line])) {
+    $("rcDialog").hidden = true;
+    $("modalBackdrop").hidden = true;
+    await renderObjects();
+  }
+});
 /* ---- 面內工作區事件 ---- */
 for (const b of document.querySelectorAll("[data-face-tool]"))
   b.addEventListener("click", () => feSetTool(b.dataset.faceTool));
