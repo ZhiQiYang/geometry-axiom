@@ -161,6 +161,16 @@ static void describe_pick(const Scene *scene, const World *world,
     buf[0] = '\0';
     if (p == NULL || scene_pick_is_none(p)) return;
 
+    if (p->column >= 0 && p->column < (int)scene->column_count) {
+        snprintf(buf, cap, "柱%" PRIu32,
+                 scene->columns[p->column].id);
+        return;
+    }
+    if (p->beam >= 0 && p->beam < (int)scene->beam_count) {
+        snprintf(buf, cap, "樑%" PRIu32,
+                 scene->beams[p->beam].id);
+        return;
+    }
     if (p->timber >= 0 && p->timber < (int)scene->timber_count) {
         snprintf(buf, cap, "角材%" PRIu32 " %s",
                  scene->timbers[p->timber].id, timber_face_name(p->face));
@@ -227,8 +237,9 @@ static void cmd_pick(int v, Coord x, Coord y, Coord r)
     printf("{\"ok\":true,\"none\":%s,\"desc\":",
            scene_pick_is_none(&p) ? "true" : "false");
     js_string(desc);
-    printf(",\"guide\":%d,\"timber\":%d,\"face\":%d,\"hover\":[",
-           p.guide, p.timber, (int)p.face);
+    printf(",\"guide\":%d,\"timber\":%d,\"face\":%d,"
+           "\"column\":%d,\"beam\":%d,\"hover\":[",
+           p.guide, p.timber, (int)p.face, p.column, p.beam);
 
     if (has_layout && !scene_pick_is_none(&p)) {
         JsonOps j = { 0 };
@@ -338,6 +349,7 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
 static void cmd_newid(void)
 {
     uint32_t mb = 0, mp = 0, mg = 0, mgr = 0, mt = 0, ms = 0;
+    uint32_t mc = 0, mbm = 0;
 
     for (size_t i = 0; i < g_world.boundary_count; ++i)
         if (g_world.boundaries[i].id > mb) mb = g_world.boundaries[i].id;
@@ -351,10 +363,15 @@ static void cmd_newid(void)
         if (g_world.timbers[i].id > mt) mt = g_world.timbers[i].id;
     for (size_t i = 0; i < g_world.space_count; ++i)
         if (g_world.spaces[i].id > ms) ms = g_world.spaces[i].id;
+    for (size_t i = 0; i < g_world.column_count; ++i)
+        if (g_world.columns[i].id > mc) mc = g_world.columns[i].id;
+    for (size_t i = 0; i < g_world.beam_count; ++i)
+        if (g_world.beams[i].id > mbm) mbm = g_world.beams[i].id;
 
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
-           "\"grid\":%u,\"timber\":%u,\"space\":%u}\n",
-           mb + 1, mp + 1, mg + 1, mgr + 1, mt + 1, ms + 1);
+           "\"grid\":%u,\"timber\":%u,\"space\":%u,"
+           "\"column\":%u,\"beam\":%u}\n",
+           mb + 1, mp + 1, mg + 1, mgr + 1, mt + 1, ms + 1, mc + 1, mbm + 1);
 }
 
 /* surfaces：列出承載面（畫布的「工作面」選擇器）。 */
@@ -519,6 +536,37 @@ static void cmd_objects(void)
         }
         printf("],\"closed\":%s,", s->closed ? "true" : "false");
         cpos_json(CANVAS_POS_SPACE, s->id);
+        putchar('}');
+    }
+
+    fputs("],\"columns\":[", stdout);
+
+    for (size_t i = 0; i < g_world.column_count; ++i) {
+        const RcColumn *c = &g_world.columns[i];
+
+        if (i) putchar(',');
+        printf("{\"kind\":\"column\",\"id\":%u,\"space\":%u,"
+               "\"box\":[%lld,%lld,%lld,%lld,%lld,%lld],",
+               (unsigned)c->id, (unsigned)c->space_id,
+               (long long)c->x_lo, (long long)c->y_lo, (long long)c->z_lo,
+               (long long)c->x_hi, (long long)c->y_hi, (long long)c->z_hi);
+        cpos_json(CANVAS_POS_COLUMN, c->id);
+        putchar('}');
+    }
+
+    fputs("],\"beams\":[", stdout);
+
+    for (size_t i = 0; i < g_world.beam_count; ++i) {
+        const RcBeam *b = &g_world.beams[i];
+
+        if (i) putchar(',');
+        printf("{\"kind\":\"beam\",\"id\":%u,\"space\":%u,\"axis\":\"%c\","
+               "\"box\":[%lld,%lld,%lld,%lld,%lld,%lld],",
+               (unsigned)b->id, (unsigned)b->space_id,
+               b->axis == 0 ? 'x' : 'y',
+               (long long)b->x_lo, (long long)b->y_lo, (long long)b->z_lo,
+               (long long)b->x_hi, (long long)b->y_hi, (long long)b->z_hi);
+        cpos_json(CANVAS_POS_BEAM, b->id);
         putchar('}');
     }
 

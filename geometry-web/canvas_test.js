@@ -227,6 +227,75 @@ function check(name, cond, detail="") {
   check("物件層 dump 可重放", replayOk2);
   const dB = (await api("dump")).text;
   check("物件層 round-trip 相同", dA === dB, "\n---原---\n" + dA + "\n---重放---\n" + dB);
+  /* K. RC 柱/樑(B-2):建立、z/top 推導、拒絕路徑、delete 脫鉤、round-trip */
+  console.log("== K. RC 柱/樑 ==");
+  await api("line reset");
+  const room = [
+    "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+    "placement 1 on boundary 1 origin 0 0 2500 u +x v +y",   /* 天花 +Z */
+    "boundary 2 outline 0,0 3000,0 3000,4000 0,4000",
+    "placement 2 on boundary 2 origin 0 0 0 u +y v +x",      /* 地板 -Z */
+    "boundary 3 outline 0,0 4000,0 4000,2500 0,2500",
+    "placement 3 on boundary 3 origin 0 0 0 u +x v +z",      /* 牆 y=0 -Y */
+    "boundary 4 outline 0,0 2500,0 2500,4000 0,4000",
+    "placement 4 on boundary 4 origin 0 3000 0 u +z v +x",   /* 牆 y=3000 +Y */
+    "boundary 5 outline 0,0 2500,0 2500,3000 0,3000",
+    "placement 5 on boundary 5 origin 0 0 0 u +z v +y",      /* 牆 x=0 -X */
+    "boundary 6 outline 0,0 3000,0 3000,2500 0,2500",
+    "placement 6 on boundary 6 origin 4000 0 0 u +y v +z",   /* 牆 x=4000 +X */
+    "space 1 boundary 1 2 3 4 5 6",
+  ];
+  let roomOk = true;
+  for (const ln of room) if (!(await api("line " + ln)).ok) roomOk = false;
+  check("六面盒空間", roomOk);
+  const nidK = await api("newid");
+  check("newid 含 column/beam", nidK.column >= 1 && nidK.beam >= 1);
+  check("柱 z 推導成功",
+        (await api(`line column ${nidK.column} in 1 at 1000 800 size 500 500`)).ok);
+  const dK1 = (await api("dump")).text;
+  check("推導 z=0~2500 寫進 dump", /column \d+ in 1 at 1000 800 size 500 500 z 0 2500/.test(dK1), dK1);
+  check("樑 top 推導成功",
+        (await api(`line beam ${nidK.beam} in 1 along x from 0 to 4000 at 1500 width 300 depth 500`)).ok);
+  const dK2 = (await api("dump")).text;
+  check("推導 top=2500 寫進 dump", /beam \d+ in 1 along x from 0 to 4000 at 1500 width 300 depth 500 top 2500/.test(dK2), dK2);
+  check("游離柱無 z 拒絕", !(await api("line column 90 at 5000 5000 size 400 400")).ok);
+  check("游離柱明寫 z 成立", (await api("line column 90 at 5000 5000 size 400 400 z 0 2600")).ok);
+  check("游離樑無 top 拒絕", !(await api("line beam 90 along x from 0 to 1000 at 500 width 300 depth 500")).ok);
+  check("游離樑明寫 top 成立", (await api("line beam 90 along x from 0 to 1000 at 500 width 300 depth 500 top 2600")).ok);
+  check("柱-柱重疊拒絕", !(await api("line column 91 in 1 at 1100 900 size 500 500")).ok);
+  check("柱足跡越界拒絕", !(await api("line column 91 in 1 at 3800 2800 size 500 500")).ok);
+  check("樑非法軸拒絕", !(await api("line beam 91 in 1 along z from 0 to 100 at 100 width 300 depth 500")).ok);
+  check("in 不存在空間拒絕", !(await api("line column 92 in 99 at 100 100 size 300 300")).ok);
+  const obK = await api("objects");
+  check("objects 列柱樑",
+        obK.ok && obK.columns.length === 2 && obK.beams.length === 2 &&
+        obK.columns[0].box.length === 6, JSON.stringify(obK.columns));
+  check("canvas-pos 柱", (await api(`line canvas-pos column ${nidK.column} 700 60`)).ok);
+  check("canvas-pos 樑", (await api(`line canvas-pos beam ${nidK.beam} 900 60`)).ok);
+  const obK2 = await api("objects");
+  const colK = obK2.columns.find(c => c.id === nidK.column);
+  check("柱卡座標落地", colK && colK.hasPos && colK.cx === 700, JSON.stringify(colK));
+  /* 三視圖 render:柱/樑的投影矩形要出現在 ops(style 13/14) */
+  const rdK = await api("render");
+  const rcOps = (rdK.ops || []).filter(o => o.s === 13 || o.s === 14);
+  check("三視圖有柱/樑投影", rcOps.length >= 2, `rc ops=${rcOps.length}`);
+  /* delete 語意 */
+  check("刪柱", (await api(`line delete column ${nidK.column}`)).ok);
+  const obK3 = await api("objects");
+  check("刪後柱消失", obK3.columns.length === 1);
+  check("刪空間→柱樑脫鉤", (await api("line delete space 1")).ok);
+  const dK3 = (await api("dump")).text;
+  check("脫鉤後柱變游離", /column 90 at 5000 5000/.test(dK3) && !/column \d+ in 1 /.test(dK3), dK3);
+  check("脫鉤後樑變游離", !/beam \d+ in 1 /.test(dK3), dK3);
+  /* dump round-trip(含柱樑) */
+  await api("line reset");
+  let replayK = true;
+  for (const l of dK3.trim().split("\n")) {
+    if (!(await api("line " + l)).ok) replayK = false;
+  }
+  check("柱樑 dump 可重放", replayK);
+  check("柱樑 round-trip 相同", (await api("dump")).text === dK3);
+
   await api("default");
 
   console.log(`\n${pass} pass / ${fail} fail`);

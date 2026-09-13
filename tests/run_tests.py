@@ -93,6 +93,20 @@ TESTS = [
     # M38:負孔索引 -1 是外輪廓哨兵,放行會被當 e0 誤放
     {"scene": "_mut_neg_hole_ref.scene", "expect": "reject",
      "error": "邊參照"},
+
+    # ---- RC 柱/樑(D13/D14、I15–I17、R11)----
+    # 柱-柱面積相交 → I15 重驗拒絕
+    {"scene": "_mut_col_overlap.scene", "expect": "reject",
+     "error": "柱宣告後有物件失效"},
+    # 柱足跡越出空間平面範圍 → I15
+    {"scene": "_mut_col_outside.scene", "expect": "reject",
+     "error": "柱宣告後有物件失效"},
+    # 樑走向軸非水平 → D14 解析層拒絕
+    {"scene": "_mut_beam_diag.scene", "expect": "reject",
+     "error": "走向軸"},
+    # 游離柱不明寫 z → R11 不猜
+    {"scene": "_mut_col_noz.scene", "expect": "reject",
+     "error": "游離柱"},
 ]
 
 LEN_RE = re.compile(r"L=(\d+)")

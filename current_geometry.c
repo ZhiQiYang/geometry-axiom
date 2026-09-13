@@ -2001,6 +2001,28 @@ typedef struct {
     bool closed;                /* 六個方向槽位全滿 */
 } Space;
 
+/* ---- RC 柱/樑（公理 D13/D14）----
+ *
+ *   房間座標的軸對齊方塊（AABB），是空間的障礙物、不是成員面。
+ *   本層只存資料；對邊界面的投影一律推導（obstacles）＋明確套用，
+ *   不自動裁切。
+ *
+ *   RcBeam.axis：0 = 沿 x，1 = 沿 y（語法保證軸平行，I16）。
+ *   z_hi 一律是實值：省略 top/z 時由所屬空間 ±Z 槽推導後凍結存入。
+ */
+typedef struct {
+    uint32_t id;
+    uint32_t space_id;          /* 0 = 游離 */
+    Coord x_lo, x_hi, y_lo, y_hi, z_lo, z_hi;
+} RcColumn;
+
+typedef struct {
+    uint32_t id;
+    uint32_t space_id;          /* 0 = 游離 */
+    int axis;                   /* 0 = 沿 x，1 = 沿 y */
+    Coord x_lo, x_hi, y_lo, y_hi, z_lo, z_hi;
+} RcBeam;
+
 /* 一張圖要畫的所有東西；全部只是引用，不複製。 */
 typedef struct {
     const PlacementSurface *placements;
@@ -2015,6 +2037,10 @@ typedef struct {
     size_t grid_count;
     const Timber *timbers;
     size_t timber_count;
+    const RcColumn *columns;
+    size_t column_count;
+    const RcBeam *beams;
+    size_t beam_count;
 } Scene;
 
 static const PlacementSurface *scene_find_placement(
@@ -2073,6 +2099,8 @@ typedef enum {
     STYLE_TIMBER_FACE_NEAR,
     STYLE_TIMBER_LABEL,
     STYLE_HOVER,
+    STYLE_RC_COLUMN,
+    STYLE_RC_BEAM,
     STYLE_COUNT
 } DrawStyle;
 
@@ -2108,7 +2136,9 @@ static const StyleSpec STYLE_SPEC[STYLE_COUNT] = {
     [STYLE_TIMBER_FACE]      = { "#a06000", "#ffd27f", "#ffe2aa", 0.5,    0, false },
     [STYLE_TIMBER_FACE_NEAR] = { "#a06000", "#ffd27f", "#f5b94a", 0.85,   0, false },
     [STYLE_TIMBER_LABEL]     = { "#7a4a00", NULL,      NULL,      1.0,  110, true  },
-    [STYLE_HOVER]            = { "#e02080", NULL,      NULL,      1.0,    0, false }
+    [STYLE_HOVER]            = { "#e02080", NULL,      NULL,      1.0,    0, false },
+    [STYLE_RC_COLUMN]        = { "#5a5a5a", "#c8c8c8", "#c8c8c8", 0.55,   0, false },
+    [STYLE_RC_BEAM]          = { "#4a4a4a", "#9e9e9e", "#9e9e9e", 0.55,   0, false }
 };
 
 /*
@@ -2346,6 +2376,36 @@ static size_t timber_project_faces(
     return face_count;
 }
 
+/* AABB 投到某視圖：取三軸區間在視圖右/下向量上的投影區間，組成四點。
+ * 退化（面積 0）回 false——那個視圖只看得見一條線，不畫也不供 pick。 */
+static bool rc_aabb_project(
+    const ViewFrame *view,
+    Coord x_lo, Coord x_hi, Coord y_lo, Coord y_hi, Coord z_lo, Coord z_hi,
+    ViewPoint2 q[4]
+)
+{
+    const Coord lo[3] = { x_lo, y_lo, z_lo };
+    const Coord hi[3] = { x_hi, y_hi, z_hi };
+    const Coord rv[3] = { view->right.x, view->right.y, view->right.z };
+    const Coord dv[3] = { view->down.x,  view->down.y,  view->down.z  };
+    Coord r_lo = 0, r_hi = 0, d_lo = 0, d_hi = 0;
+
+    for (int j = 0; j < 3; ++j) {
+        r_lo += rv[j] >= 0 ? rv[j] * lo[j] : rv[j] * hi[j];
+        r_hi += rv[j] >= 0 ? rv[j] * hi[j] : rv[j] * lo[j];
+        d_lo += dv[j] >= 0 ? dv[j] * lo[j] : dv[j] * hi[j];
+        d_hi += dv[j] >= 0 ? dv[j] * hi[j] : dv[j] * lo[j];
+    }
+    if (r_lo == r_hi || d_lo == d_hi) {
+        return false;
+    }
+    q[0] = (ViewPoint2){ r_lo, d_lo };
+    q[1] = (ViewPoint2){ r_hi, d_lo };
+    q[2] = (ViewPoint2){ r_hi, d_hi };
+    q[3] = (ViewPoint2){ r_lo, d_hi };
+    return true;
+}
+
 /* 在某一個視圖中畫出整個場景：逐片承載面（輪廓＋孔＋邊＋參考線），最後是角材。 */
 static void scene_draw_view(
     const DrawTarget *target,
@@ -2552,6 +2612,44 @@ static void scene_draw_view(
             }
         }
     }
+
+    /* 5. RC 柱/樑：AABB 在各視圖的投影矩形（B-2，直接畫方塊投影） */
+    for (size_t c = 0; c < scene->column_count; ++c) {
+        const RcColumn *col = &scene->columns[c];
+        ViewPoint2 q[4];
+
+        if (!rc_aabb_project(view, col->x_lo, col->x_hi,
+                             col->y_lo, col->y_hi,
+                             col->z_lo, col->z_hi, q)) {
+            continue;
+        }
+        scene_emit_polygon(target, bounds, q, 4, STYLE_RC_COLUMN);
+        if (target != NULL) {
+            ViewPoint2 at = {
+                (q[0].x + q[2].x) / 2, (q[0].y + q[2].y) / 2
+            };
+            snprintf(label, sizeof label, "柱%" PRIu32, col->id);
+            scene_emit_text(target, at, STYLE_LABEL, label, 0);
+        }
+    }
+    for (size_t b = 0; b < scene->beam_count; ++b) {
+        const RcBeam *bm = &scene->beams[b];
+        ViewPoint2 q[4];
+
+        if (!rc_aabb_project(view, bm->x_lo, bm->x_hi,
+                             bm->y_lo, bm->y_hi,
+                             bm->z_lo, bm->z_hi, q)) {
+            continue;
+        }
+        scene_emit_polygon(target, bounds, q, 4, STYLE_RC_BEAM);
+        if (target != NULL) {
+            ViewPoint2 at = {
+                (q[0].x + q[2].x) / 2, (q[0].y + q[2].y) / 2
+            };
+            snprintf(label, sizeof label, "樑%" PRIu32, bm->id);
+            scene_emit_text(target, at, STYLE_LABEL, label, 0);
+        }
+    }
 }
 
 /* ============================================================
@@ -2609,7 +2707,8 @@ static bool scene_compute_layout(const Scene *scene, SceneLayout *layout)
      * 沒有承載面（例如只有游離邊界面的世界）：三視圖本來就畫不出
      * 東西，回一個最小空版面，不要整個拒絕。
      */
-    if (scene->placement_count == 0) {
+    if (scene->placement_count == 0 && scene->column_count == 0 &&
+        scene->beam_count == 0) {
         for (size_t v = 0; v < VIEW_COUNT; ++v) {
             layout->bounds[v] = (ViewBounds){ 0 };
             view_bounds_pad(&layout->bounds[v], MIN_EXTENT, PAD, TITLE_STRIP);
@@ -2701,21 +2800,24 @@ typedef struct {
     int guide;              /* scene->guides 的索引 */
     int timber;             /* scene->timbers 的索引 */
     TimberFaceId face;
+    int column;             /* scene->columns 的索引 */
+    int beam;               /* scene->beams 的索引 */
 } ScenePick;
 
 static const ScenePick SCENE_PICK_NONE = {
-    -1, -1, -1, TIMBER_FACE_COUNT
+    -1, -1, -1, TIMBER_FACE_COUNT, -1, -1
 };
 
 static bool scene_pick_equal(ScenePick a, ScenePick b)
 {
     return a.view == b.view && a.guide == b.guide &&
-           a.timber == b.timber && a.face == b.face;
+           a.timber == b.timber && a.face == b.face &&
+           a.column == b.column && a.beam == b.beam;
 }
 
 static bool scene_pick_is_none(const ScenePick *p)
 {
-    return p->guide < 0 && p->timber < 0;
+    return p->guide < 0 && p->timber < 0 && p->column < 0 && p->beam < 0;
 }
 
 /*
@@ -2873,6 +2975,33 @@ static ScenePick scene_pick_at(
     ScenePick pick = SCENE_PICK_NONE;
     pick.view = view_index;
 
+    /* RC 柱樑（投影矩形內即命中；後寫的蓋前面的，與繪製順序一致） */
+    for (size_t c = 0; c < scene->column_count; ++c) {
+        const RcColumn *col = &scene->columns[c];
+        ViewPoint2 q[4];
+
+        if (rc_aabb_project(view, col->x_lo, col->x_hi,
+                            col->y_lo, col->y_hi,
+                            col->z_lo, col->z_hi, q) &&
+            view_quad_contains(q, p)) {
+            pick.column = (int)c;
+        }
+    }
+    for (size_t b = 0; b < scene->beam_count; ++b) {
+        const RcBeam *bm = &scene->beams[b];
+        ViewPoint2 q[4];
+
+        if (rc_aabb_project(view, bm->x_lo, bm->x_hi,
+                            bm->y_lo, bm->y_hi,
+                            bm->z_lo, bm->z_hi, q) &&
+            view_quad_contains(q, p)) {
+            pick.beam = (int)b;
+        }
+    }
+    if (pick.column >= 0 || pick.beam >= 0) {
+        return pick;
+    }
+
     for (size_t t = 0; t < scene->timber_count; ++t) {
         ProjectedFace faces[TIMBER_FACE_COUNT];
         size_t n =
@@ -2944,6 +3073,26 @@ static void scene_draw_pick(
 
     target->begin_view(target->ctx, layout->tx[v], layout->ty[v]);
 
+    if (pick->column >= 0 && pick->column < (int)scene->column_count) {
+        const RcColumn *col = &scene->columns[pick->column];
+        ViewPoint2 q[4];
+
+        if (rc_aabb_project(view, col->x_lo, col->x_hi,
+                            col->y_lo, col->y_hi,
+                            col->z_lo, col->z_hi, q)) {
+            target->polygon(target->ctx, q, 4, STYLE_HOVER);
+        }
+    }
+    if (pick->beam >= 0 && pick->beam < (int)scene->beam_count) {
+        const RcBeam *bm = &scene->beams[pick->beam];
+        ViewPoint2 q[4];
+
+        if (rc_aabb_project(view, bm->x_lo, bm->x_hi,
+                            bm->y_lo, bm->y_hi,
+                            bm->z_lo, bm->z_hi, q)) {
+            target->polygon(target->ctx, q, 4, STYLE_HOVER);
+        }
+    }
     if (pick->timber >= 0 && pick->timber < (int)scene->timber_count) {
         ProjectedFace faces[TIMBER_FACE_COUNT];
         size_t n = timber_project_faces(
@@ -3178,7 +3327,8 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
 #define WORLD_MAX_GRIDS       8
 #define WORLD_MAX_TIMBERS     64
 #define WORLD_MAX_SPACES      4
-#define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES)
+#define WORLD_MAX_RC          32
+#define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2)
 
 /* 一個空間最多八片邊界成員，至少兩片（子集也合法：只檢查彼此一致）。 */
 #define SPACE_MAX_MEMBERS 8
@@ -3228,7 +3378,9 @@ typedef struct {
 typedef enum {
     CANVAS_POS_BOUNDARY = 0,   /* 面卡：以邊界面 id 為鍵 */
     CANVAS_POS_PLACEMENT,      /* 自帶矩形面卡：以承載面 id 為鍵 */
-    CANVAS_POS_SPACE           /* 空間卡：以空間 id 為鍵 */
+    CANVAS_POS_SPACE,          /* 空間卡：以空間 id 為鍵 */
+    CANVAS_POS_COLUMN,         /* 柱卡：以柱 id 為鍵 */
+    CANVAS_POS_BEAM            /* 樑卡：以樑 id 為鍵 */
 } CanvasPosKind;
 
 typedef struct {
@@ -3259,6 +3411,12 @@ typedef struct World {
     Space spaces[WORLD_MAX_SPACES];
     size_t space_count;
 
+    RcColumn columns[WORLD_MAX_RC];
+    size_t column_count;
+
+    RcBeam beams[WORLD_MAX_RC];
+    size_t beam_count;
+
     CanvasPos canvas_pos[WORLD_MAX_CANVAS_POS];
     size_t canvas_pos_count;
 } World;
@@ -3269,6 +3427,8 @@ static const PlacementSurface *world_find_placement(
 static const SpaceBoundarySurface *world_find_boundary(
     const World *world, uint32_t id);
 static const Space *world_find_space(const World *world, uint32_t id);
+static const RcColumn *world_find_column(const World *world, uint32_t id);
+static const RcBeam *world_find_beam(const World *world, uint32_t id);
 static const char *scene_last_error(void);
 static int split_tokens(char *line, char *tokens[], int max_tokens);
 static bool apply_scene_line(
@@ -5354,7 +5514,11 @@ static Scene scene_from_world(const World *world)
         .grids = world->grids,
         .grid_count = world->grid_count,
         .timbers = world->timbers,
-        .timber_count = world->timber_count
+        .timber_count = world->timber_count,
+        .columns = world->columns,
+        .column_count = world->column_count,
+        .beams = world->beams,
+        .beam_count = world->beam_count
     };
 }
 
@@ -5550,6 +5714,28 @@ static const Space *world_find_space(const World *world, uint32_t id)
     for (size_t i = 0; i < world->space_count; ++i) {
         if (world->spaces[i].id == id) {
             return &world->spaces[i];
+        }
+    }
+
+    return NULL;
+}
+
+static const RcColumn *world_find_column(const World *world, uint32_t id)
+{
+    for (size_t i = 0; i < world->column_count; ++i) {
+        if (world->columns[i].id == id) {
+            return &world->columns[i];
+        }
+    }
+
+    return NULL;
+}
+
+static const RcBeam *world_find_beam(const World *world, uint32_t id)
+{
+    for (size_t i = 0; i < world->beam_count; ++i) {
+        if (world->beams[i].id == id) {
+            return &world->beams[i];
         }
     }
 
@@ -6556,6 +6742,49 @@ static bool world_revalidate(const World *world)
         if (!space_construct(
                 world, s->id, s->boundaries, s->boundary_count, &probe)) {
             return false;
+        }
+    }
+
+    /* RC 柱/樑（I15–I17）：AABB 非空、所屬空間存在、足跡 ⊆ 平面範圍。 */
+    for (size_t i = 0; i < world->column_count; ++i) {
+        const RcColumn *c = &world->columns[i];
+
+        if (!(c->x_hi > c->x_lo && c->y_hi > c->y_lo && c->z_hi > c->z_lo)) {
+            return false;
+        }
+        if (c->space_id != 0) {
+            const Space *s = world_find_space(world, c->space_id);
+            if (s == NULL) {
+                return false;
+            }
+            if (c->x_lo < s->room_min[0] || c->x_hi > s->room_max[0] ||
+                c->y_lo < s->room_min[1] || c->y_hi > s->room_max[1]) {
+                return false;   /* I15 足跡越出空間平面範圍 */
+            }
+        }
+        for (size_t j = i + 1; j < world->column_count; ++j) {
+            const RcColumn *o = &world->columns[j];
+            if (c->x_lo < o->x_hi && o->x_lo < c->x_hi &&
+                c->y_lo < o->y_hi && o->y_lo < c->y_hi) {
+                return false;   /* I15 柱-柱正面積相交（邊相接合法） */
+            }
+        }
+    }
+    for (size_t i = 0; i < world->beam_count; ++i) {
+        const RcBeam *b = &world->beams[i];
+
+        if (!(b->x_hi > b->x_lo && b->y_hi > b->y_lo && b->z_hi > b->z_lo)) {
+            return false;
+        }
+        if (b->space_id != 0) {
+            const Space *s = world_find_space(world, b->space_id);
+            if (s == NULL) {
+                return false;
+            }
+            if (b->x_lo < s->room_min[0] || b->x_hi > s->room_max[0] ||
+                b->y_lo < s->room_min[1] || b->y_hi > s->room_max[1]) {
+                return false;   /* I16 足跡越出空間平面範圍 */
+            }
         }
     }
 
@@ -8145,6 +8374,276 @@ static void world_drop_canvas_pos(World *world, int kind, uint32_t id)
     }
 }
 
+/* ---- RC 柱/樑（公理 D13/D14、I15–I17、R8）----
+ *
+ *   column id [in S] at x y size w d [z z0 z1]
+ *   beam   id [in S] along x|y from a to b at c width w depth d [top z]
+ *
+ *   兩者都是房間座標 AABB。省略 z/top → 從所屬空間 ±Z 槽推導；
+ *   游離或推不出就拒絕，不猜（R11）。同 id 重宣告 = 交易式重綁。
+ */
+
+/* 找空間某軸某向槽位面的高程；沒有該槽回 false（推不出）。 */
+static bool space_axis_bound(
+    const World *world,
+    const Space *space,
+    int axis,
+    int slot,
+    Coord *out
+)
+{
+    for (size_t i = 0; i < space->boundary_count; ++i) {
+        for (size_t p = 0; p < world->placement_count; ++p) {
+            const PlacementSurface *pl = &world->placements[p];
+
+            if (pl->boundary_id != space->boundaries[i]) {
+                continue;
+            }
+            int a = axis_index(pl->frame.normal);
+            if (a != axis) {
+                continue;
+            }
+            Coord n = a == 0 ? pl->frame.normal.x
+                    : a == 1 ? pl->frame.normal.y
+                             : pl->frame.normal.z;
+            if ((n > 0 ? 1 : 0) == slot) {
+                *out = point3_component(pl->frame.origin, axis);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+static bool apply_column_line(
+    const char *path,
+    int line_no,
+    char *tokens[],
+    int count,
+    World *world
+)
+{
+    uint32_t id, space_id = 0;
+    int i = 2;
+
+    if (!parse_u32(tokens[1], &id)) {
+        scene_error(path, line_no, "column 的 id 不是有效的整數");
+        return false;
+    }
+    if (i + 1 < count && strcmp(tokens[i], "in") == 0) {
+        if (!parse_u32(tokens[i + 1], &space_id)) {
+            scene_error(path, line_no, "in 後面的空間 id 不是有效的整數");
+            return false;
+        }
+        i += 2;
+    }
+    /* at x y size w d [z z0 z1] */
+    if (i + 6 > count || strcmp(tokens[i], "at") != 0 ||
+        strcmp(tokens[i + 3], "size") != 0) {
+        scene_error(path, line_no,
+            "column 用法：column id [in 空間] at x y size w d [z z0 z1]");
+        return false;
+    }
+    Coord x, y, w, d;
+    if (!parse_i64(tokens[i + 1], &x) || !parse_i64(tokens[i + 2], &y) ||
+        !parse_i64(tokens[i + 4], &w) || !parse_i64(tokens[i + 5], &d)) {
+        scene_error(path, line_no, "column 的座標與尺寸要是整數");
+        return false;
+    }
+    i += 6;
+    if (w <= 0 || d <= 0) {
+        scene_error(path, line_no, "柱的 w/d 要是正整數");
+        return false;
+    }
+
+    const Space *space = NULL;
+    if (space_id != 0) {
+        space = world_find_space(world, space_id);
+        if (space == NULL) {
+            scene_error(path, line_no, "in 指的空間不存在");
+            return false;
+        }
+    }
+
+    Coord z0, z1;
+    if (i + 3 == count && strcmp(tokens[i], "z") == 0) {
+        if (!parse_i64(tokens[i + 1], &z0) || !parse_i64(tokens[i + 2], &z1)) {
+            scene_error(path, line_no, "z 的兩個值要是整數");
+            return false;
+        }
+        if (z1 <= z0) {
+            scene_error(path, line_no, "z1 要大於 z0");
+            return false;
+        }
+    } else if (i == count) {
+        if (space == NULL) {
+            scene_error(path, line_no,
+                "游離柱必須明寫 z z0 z1（沒有空間可推導）");
+            return false;
+        }
+        if (!space_axis_bound(world, space, 2, 0, &z0) ||
+            !space_axis_bound(world, space, 2, 1, &z1)) {
+            scene_error(path, line_no,
+                "所屬空間 ±Z 槽沒有面，推不出柱高——請明寫 z z0 z1");
+            return false;
+        }
+    } else {
+        scene_error(path, line_no,
+            "column 用法：column id [in 空間] at x y size w d [z z0 z1]");
+        return false;
+    }
+
+    World backup = *world;
+    RcColumn col = {
+        .id = id, .space_id = space_id,
+        .x_lo = x, .x_hi = x + w,
+        .y_lo = y, .y_hi = y + d,
+        .z_lo = z0, .z_hi = z1
+    };
+
+    for (size_t k = 0; k < world->column_count; ++k) {
+        if (world->columns[k].id == id) {
+            world->columns[k] = col;
+            goto revalidate;
+        }
+    }
+    if (world->column_count == WORLD_MAX_RC) {
+        scene_error(path, line_no, "柱的數量超過上限");
+        return false;
+    }
+    world->columns[world->column_count++] = col;
+
+revalidate:
+    if (!world_revalidate(world)) {
+        *world = backup;
+        scene_error(path, line_no,
+            "柱宣告後有物件失效（足跡越界/柱-柱重疊/空間不存在）");
+        return false;
+    }
+    return true;
+}
+
+static bool apply_beam_line(
+    const char *path,
+    int line_no,
+    char *tokens[],
+    int count,
+    World *world
+)
+{
+    uint32_t id, space_id = 0;
+    int i = 2;
+
+    if (!parse_u32(tokens[1], &id)) {
+        scene_error(path, line_no, "beam 的 id 不是有效的整數");
+        return false;
+    }
+    if (i + 1 < count && strcmp(tokens[i], "in") == 0) {
+        if (!parse_u32(tokens[i + 1], &space_id)) {
+            scene_error(path, line_no, "in 後面的空間 id 不是有效的整數");
+            return false;
+        }
+        i += 2;
+    }
+    /* along x|y from a to b at c width w depth d [top z] */
+    if (i + 11 > count || strcmp(tokens[i], "along") != 0 ||
+        strcmp(tokens[i + 2], "from") != 0 ||
+        strcmp(tokens[i + 4], "to") != 0 ||
+        strcmp(tokens[i + 6], "at") != 0 ||
+        strcmp(tokens[i + 8], "width") != 0 ||
+        strcmp(tokens[i + 10], "depth") != 0) {
+        scene_error(path, line_no,
+            "beam 用法：beam id [in 空間] along x|y from a to b "
+            "at c width w depth d [top z]");
+        return false;
+    }
+    int axis;
+    if (strcmp(tokens[i + 1], "x") == 0)      axis = 0;
+    else if (strcmp(tokens[i + 1], "y") == 0) axis = 1;
+    else {
+        scene_error(path, line_no, "beam 的走向軸要是 x 或 y");
+        return false;
+    }
+    Coord a, b, c, w, d;
+    if (!parse_i64(tokens[i + 3], &a) || !parse_i64(tokens[i + 5], &b) ||
+        !parse_i64(tokens[i + 7], &c) || !parse_i64(tokens[i + 9], &w) ||
+        !parse_i64(tokens[i + 11], &d)) {
+        scene_error(path, line_no, "beam 的座標與尺寸要是整數");
+        return false;
+    }
+    i += 12;
+    if (b <= a || w <= 0 || d <= 0) {
+        scene_error(path, line_no, "樑跨度要 b>a、寬深要是正整數");
+        return false;
+    }
+
+    const Space *space = NULL;
+    if (space_id != 0) {
+        space = world_find_space(world, space_id);
+        if (space == NULL) {
+            scene_error(path, line_no, "in 指的空間不存在");
+            return false;
+        }
+    }
+
+    Coord top;
+    if (i + 2 == count && strcmp(tokens[i], "top") == 0) {
+        if (!parse_i64(tokens[i + 1], &top)) {
+            scene_error(path, line_no, "top 要是整數");
+            return false;
+        }
+    } else if (i == count) {
+        if (space == NULL) {
+            scene_error(path, line_no,
+                "游離樑必須明寫 top z（沒有空間可推導）");
+            return false;
+        }
+        if (!space_axis_bound(world, space, 2, 1, &top)) {
+            scene_error(path, line_no,
+                "所屬空間 +Z 槽沒有面，推不出樑頂——請明寫 top z");
+            return false;
+        }
+    } else {
+        scene_error(path, line_no,
+            "beam 用法：beam id [in 空間] along x|y from a to b "
+            "at c width w depth d [top z]");
+        return false;
+    }
+    /* 中心線對齊:c±w/2,奇數多的 1mm 在 +側(I13 慣例) */
+    World backup = *world;
+    RcBeam bm = { .id = id, .space_id = space_id, .axis = axis };
+    if (axis == 0) {
+        bm.x_lo = a;          bm.x_hi = b;
+        bm.y_lo = c - w / 2;  bm.y_hi = c - w / 2 + w;
+    } else {
+        bm.y_lo = a;          bm.y_hi = b;
+        bm.x_lo = c - w / 2;  bm.x_hi = c - w / 2 + w;
+    }
+    bm.z_hi = top;
+    bm.z_lo = top - d;
+
+    for (size_t k = 0; k < world->beam_count; ++k) {
+        if (world->beams[k].id == id) {
+            world->beams[k] = bm;
+            goto revalidate;
+        }
+    }
+    if (world->beam_count == WORLD_MAX_RC) {
+        scene_error(path, line_no, "樑的數量超過上限");
+        return false;
+    }
+    world->beams[world->beam_count++] = bm;
+
+revalidate:
+    if (!world_revalidate(world)) {
+        *world = backup;
+        scene_error(path, line_no,
+            "樑宣告後有物件失效（足跡越界/空間不存在）");
+        return false;
+    }
+    return true;
+}
+
 static bool apply_delete_line(
     const char *path,
     int line_no,
@@ -8308,9 +8807,48 @@ static bool apply_delete_line(
                 (world->space_count - si - 1) * sizeof world->spaces[0]);
         --world->space_count;
         world_drop_canvas_pos(world, CANVAS_POS_SPACE, id);
+        /* I17：刪空間 → 柱樑變游離，不跟著刪。 */
+        for (size_t i = 0; i < world->column_count; ++i) {
+            if (world->columns[i].space_id == id) {
+                world->columns[i].space_id = 0;
+            }
+        }
+        for (size_t i = 0; i < world->beam_count; ++i) {
+            if (world->beams[i].space_id == id) {
+                world->beams[i].space_id = 0;
+            }
+        }
+    } else if (strcmp(kind, "column") == 0) {
+        size_t ci = SIZE_MAX;
+
+        for (size_t i = 0; i < world->column_count; ++i) {
+            if (world->columns[i].id == id) ci = i;
+        }
+        if (ci == SIZE_MAX) {
+            scene_error(path, line_no, "這根柱不存在");
+            return false;
+        }
+        memmove(&world->columns[ci], &world->columns[ci + 1],
+                (world->column_count - ci - 1) * sizeof world->columns[0]);
+        --world->column_count;
+        world_drop_canvas_pos(world, CANVAS_POS_COLUMN, id);
+    } else if (strcmp(kind, "beam") == 0) {
+        size_t bi = SIZE_MAX;
+
+        for (size_t i = 0; i < world->beam_count; ++i) {
+            if (world->beams[i].id == id) bi = i;
+        }
+        if (bi == SIZE_MAX) {
+            scene_error(path, line_no, "這根樑不存在");
+            return false;
+        }
+        memmove(&world->beams[bi], &world->beams[bi + 1],
+                (world->beam_count - bi - 1) * sizeof world->beams[0]);
+        --world->beam_count;
+        world_drop_canvas_pos(world, CANVAS_POS_BEAM, id);
     } else {
         scene_error(path, line_no,
-            "delete 的類別要是 boundary / placement / guide / grid / timber / space");
+            "delete 的類別要是 boundary / placement / guide / grid / timber / space / column / beam");
         return false;
     }
 
@@ -8587,13 +9125,52 @@ static void world_dump_dsl(const World *world, FILE *out)
         fputc('\n', out);
     }
 
+    /* RC 柱/樑:z/top 一律明寫（建構時已推導凍結，重放不再推導）。 */
+    for (size_t i = 0; i < world->column_count; ++i) {
+        const RcColumn *c = &world->columns[i];
+
+        fprintf(out, "column %u ", (unsigned)c->id);
+        if (c->space_id != 0) {
+            fprintf(out, "in %u ", (unsigned)c->space_id);
+        }
+        fprintf(out, "at %lld %lld size %lld %lld z %lld %lld\n",
+                (long long)c->x_lo, (long long)c->y_lo,
+                (long long)(c->x_hi - c->x_lo),
+                (long long)(c->y_hi - c->y_lo),
+                (long long)c->z_lo, (long long)c->z_hi);
+    }
+    for (size_t i = 0; i < world->beam_count; ++i) {
+        const RcBeam *b = &world->beams[i];
+
+        fprintf(out, "beam %u ", (unsigned)b->id);
+        if (b->space_id != 0) {
+            fprintf(out, "in %u ", (unsigned)b->space_id);
+        }
+        if (b->axis == 0) {
+            fprintf(out, "along x from %lld to %lld at %lld",
+                    (long long)b->x_lo, (long long)b->x_hi,
+                    (long long)((b->y_lo + b->y_hi) / 2));
+        } else {
+            fprintf(out, "along y from %lld to %lld at %lld",
+                    (long long)b->y_lo, (long long)b->y_hi,
+                    (long long)((b->x_lo + b->x_hi) / 2));
+        }
+        fprintf(out, " width %lld depth %lld top %lld\n",
+                (long long)(b->axis == 0 ? b->y_hi - b->y_lo
+                                         : b->x_hi - b->x_lo),
+                (long long)(b->z_hi - b->z_lo),
+                (long long)b->z_hi);
+    }
+
     /* 畫布座標最後寫：它引用的物件要先存在。 */
     for (size_t i = 0; i < world->canvas_pos_count; ++i) {
         const CanvasPos *p = &world->canvas_pos[i];
 
         fprintf(out, "canvas-pos %s %u %lld %lld\n",
-                p->kind == CANVAS_POS_BOUNDARY ? "boundary" :
-                p->kind == CANVAS_POS_PLACEMENT ? "placement" : "space",
+                p->kind == CANVAS_POS_BOUNDARY  ? "boundary"  :
+                p->kind == CANVAS_POS_PLACEMENT ? "placement" :
+                p->kind == CANVAS_POS_SPACE     ? "space"     :
+                p->kind == CANVAS_POS_COLUMN    ? "column"    : "beam",
                 (unsigned)p->id, (long long)p->x, (long long)p->y);
     }
 }
@@ -8620,9 +9197,13 @@ static bool apply_canvaspos_line(
         kind = CANVAS_POS_PLACEMENT;
     } else if (strcmp(tokens[1], "space") == 0) {
         kind = CANVAS_POS_SPACE;
+    } else if (strcmp(tokens[1], "column") == 0) {
+        kind = CANVAS_POS_COLUMN;
+    } else if (strcmp(tokens[1], "beam") == 0) {
+        kind = CANVAS_POS_BEAM;
     } else {
         scene_error(path, line_no,
-            "canvas-pos 的類別要是 boundary / placement / space");
+            "canvas-pos 的類別要是 boundary / placement / space / column / beam");
         return false;
     }
 
@@ -8640,7 +9221,9 @@ static bool apply_canvaspos_line(
     bool exists =
         kind == CANVAS_POS_BOUNDARY  ? world_find_boundary(world, id)  != NULL :
         kind == CANVAS_POS_PLACEMENT ? world_find_placement(world, id) != NULL :
-                                       world_find_space(world, id)     != NULL;
+        kind == CANVAS_POS_SPACE     ? world_find_space(world, id)     != NULL :
+        kind == CANVAS_POS_COLUMN    ? world_find_column(world, id)    != NULL :
+                                       world_find_beam(world, id)      != NULL;
 
     if (!exists) {
         scene_error(path, line_no, "canvas-pos 指的物件不存在");
@@ -8730,8 +9313,19 @@ static const struct {
         apply_move_line
     },
     {
+        "column", 8, 13, false,
+        "column id [in 空間id] at x y size w d [z z0 z1]",
+        apply_column_line
+    },
+    {
+        "beam", 15, 19, false,
+        "beam id [in 空間id] along x|y from a to b at c "
+        "width w depth d [top z]",
+        apply_beam_line
+    },
+    {
         "delete", 3, 3, false,
-        "delete boundary|placement|guide|grid|timber|space id",
+        "delete boundary|placement|guide|grid|timber|space|column|beam id",
         apply_delete_line
     },
     {
@@ -8741,7 +9335,7 @@ static const struct {
     },
     {
         "canvas-pos", 5, 5, false,
-        "canvas-pos boundary|placement|space id x y",
+        "canvas-pos boundary|placement|space|column|beam id x y",
         apply_canvaspos_line
     },
     { NULL, 0, 0, false, NULL, NULL }
@@ -8773,7 +9367,8 @@ static bool apply_scene_line(const char *path, int line_no, char *tokens[], int 
     }
 
     scene_error(path, line_no,
-        "不認得的指令（boundary placement surface space guide timber place move delete reset）");
+        "不認得的指令（boundary placement surface space guide timber place "
+        "move column beam delete reset canvas-pos）");
     return false;
 }
 

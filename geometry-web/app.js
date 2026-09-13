@@ -54,6 +54,8 @@ const STYLE = [
   { line:"#7a4a00", text:110, bold:true, anchor:"middle",
     mid:true, halo:true },                                      /* TIMBER_LABEL */
   { line:"#e02080", w:2.5 },                                    /* HOVER */
+  { line:"#5a5a5a", fill:"#c8c8c8", fop:.55, w:1.5 },           /* RC_COLUMN */
+  { line:"#4a4a4a", fill:"#9e9e9e", fop:.55, w:1.5 },           /* RC_BEAM */
 ];
 
 let layout = null;          /* 最近一次 render 的版面（mm 空間） */
