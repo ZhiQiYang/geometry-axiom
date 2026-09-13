@@ -157,8 +157,9 @@ async function escUntilFree(tries = 5) {
   await connect();
   await send("Runtime.enable");
   await send("Page.enable");
-  await send("Page.navigate", { url: "http://localhost:8765/" });
+  await send("Page.navigate", { url: process.env.GEOMETRY_TEST_URL || "http://localhost:8765/" });
   await sleep(2500);
+  if (process.env.GEOMETRY_AUDIT_ONLY !== "1" || process.env.GEOMETRY_AUDIT !== "1") {
   await eval_(`api("line reset")`);
   await sleep(400);
 
@@ -436,6 +437,11 @@ async function escUntilFree(tries = 5) {
     dd = await eval_(`api("dump").then(r=>r.text)`);
     say("角材放置(放置面)", /timber /.test(dd || ""),
       `status=${await eval_(`document.getElementById("status").textContent`)}`);
+    if (process.env.GEOMETRY_AUDIT === "1") {
+      const placed = (dd || "").split("\n").find(l => /^place \d+ on \d+ at /.test(l));
+      say("Audit 角材確實有放置指令", !!placed, placed || "只有宣告，沒有 place");
+      say("Audit 角材足跡確實畫出", await eval_(`document.querySelectorAll("#faceEditorRoot .face-timber").length>0`));
+    }
     /* 角材列 ✕ 刪除(找含「角材」字樣的那一列) */
     const tDel = await eval_(`(()=>{for(const r of document.querySelectorAll("#faceLayerList .face-layer-row")){
       if(r.textContent.includes("角材")){
@@ -525,6 +531,83 @@ async function escUntilFree(tries = 5) {
           `[${p0}]→[${p1}]`);
       await pressKey("Escape"); await sleep(400);
     }
+  }
+
+  }
+
+  if (process.env.GEOMETRY_AUDIT === "1") {
+    _log("== Audit: shapes and camera state ==");
+    await escUntilFree();
+    await pressKey("f"); await sleep(300);
+    let target, hit;
+    for (let attempt = 0; attempt < 4; ++attempt) {
+      target = await ctr('.ocard[data-kind="boundary"][data-id="2"]');
+      hit = target && await eval_(`(()=>{const e=document.elementFromPoint(${target.x},${target.y});const c=e&&e.closest(".ocard");return c?{kind:c.dataset.kind,id:c.dataset.id}:null})()`);
+      if (!hit || (hit.kind === "boundary" && hit.id === "2")) break;
+      await drag(target.x, target.y, target.x + 220, target.y + 100); await sleep(400);
+    }
+    if (target) await dblclick(target.x, target.y);
+    await sleep(700);
+    const auditFace = await eval_('oc.edit && oc.edit.bid');
+    say("Audit 進入獨立面", auditFace === 2, JSON.stringify({target,hit,auditFace}));
+    if (auditFace === 2) {
+      for (const [kind, expectedArea, expectedCount] of [["L", 6000000, 6], ["U", 8000000, 8], ["T", 6000000, 8]]) {
+        await clickEl("#faceShapeButton");
+        await clickEl(`input[name="shapeKind"][value="${kind}"]`);
+        for (const [id, value] of [["shapeW", 4000], ["shapeD", 3000], ["shapeA", 1000], ["shapeB", 1000]]) await fillInput("#" + id, value);
+        await clickEl("#shapeSubmit"); await sleep(700);
+        const boundary = await eval_('api("boundary 2")');
+        const pts = boundary.loops[0].verts;
+        const area = Math.abs(pts.reduce((sum, p, i) => {
+          const q = pts[(i + 1) % pts.length]; return sum + p[0] * q[1] - q[0] * p[1];
+        }, 0)) / 2;
+        say("Audit " + kind + "形尺寸與面積", area === expectedArea && pts.length === expectedCount,
+          `vertices=${pts.length} area=${area}`);
+      }
+      const savedBoundary = JSON.stringify(await eval_('api("boundary 2")'));
+      await clickEl("#faceShapeButton");
+      await fillInput("#shapeA", 4000);
+      await clickEl("#shapeSubmit"); await sleep(400);
+      say("Audit 非法形狀拒絕且模型不變", savedBoundary === JSON.stringify(await eval_('api("boundary 2")')) && await eval_('!document.getElementById("shapeDialog").hidden'));
+      await clickEl("#shapeCancel");
+      await clickEl('[data-face-tool="select"]');
+      await pressKey("f");
+      await clickEl('[data-face-tool="redraw"]');
+      for (const [u, v] of [[1000, 1000], [2000, 1000], [2000, 2000]]) {
+        const pt = await fePt(u, v); await click(pt.x, pt.y);
+      }
+      const draft = await eval_('fe.drag && fe.drag.pts');
+      say("Audit 三點重畫草稿存在", Array.isArray(draft) && draft.length === 3, JSON.stringify(draft));
+      const vp = await eval_('(()=>{const r=document.getElementById("faceEditorSvg").getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()');
+      await midDrag(vp.x, vp.y, vp.x + 80, vp.y + 40);
+      const afterPan = await eval_('fe.drag && fe.drag.pts');
+      say("Audit 重畫中中鍵平移不得丟草稿", Array.isArray(draft) && JSON.stringify(draft) === JSON.stringify(afterPan), `before=${JSON.stringify(draft)} after=${JSON.stringify(afterPan)}`);
+      say("Audit 平移沒有改核心模型", savedBoundary === JSON.stringify(await eval_('api("boundary 2")')));
+      await clickEl('[data-face-tool="select"]');
+      for (let i = 0; i < 50; ++i) await send("Input.dispatchMouseEvent", {type:"mouseWheel", x:vp.x, y:vp.y, deltaX:0, deltaY:-120});
+      await sleep(400);
+      const atCap = await eval_('[fe.zoom,fe.panX,fe.panY]');
+      await send("Input.dispatchMouseEvent", {type:"mouseWheel", x:vp.x, y:vp.y, deltaX:0, deltaY:-120});
+      await sleep(300);
+      const afterCap = await eval_('[fe.zoom,fe.panX,fe.panY]');
+      say("Audit 縮放達上限後不得繼續平移", atCap[0] === 8 && afterCap[0] === 8 && Math.abs(atCap[1]-afterCap[1])<0.01 && Math.abs(atCap[2]-afterCap[2])<0.01,
+        `before=${JSON.stringify(atCap)} after=${JSON.stringify(afterCap)}`);
+      await pressKey("f");
+      await escUntilFree();
+    }
+    await escUntilFree();
+    await clickEl("#btnNewColumn");
+    await sleep(250);
+    say("Audit 柱對話框確實開啟", await eval_('!document.getElementById("rcDialog").hidden'));
+    await pressKey("Escape"); await sleep(250);
+    say("Audit Escape 關閉柱樑對話框", await eval_('document.getElementById("rcDialog").hidden'));
+    if (await eval_('!document.getElementById("rcDialog").hidden')) await clickEl("#rcCancel");
+    await send("Emulation.setDeviceMetricsOverride", {width:800,height:600,deviceScaleFactor:1,mobile:false});
+    await sleep(400);
+    const narrow = await eval_('(()=>{const r=document.getElementById("ocv").getBoundingClientRect();return {width:r.width,height:r.height}})()');
+    say("Audit 800px 視窗主畫布仍可操作", narrow.width > 0 && narrow.height > 0, JSON.stringify(narrow));
+    await send("Emulation.clearDeviceMetricsOverride");
+    await sleep(250);
   }
 
   _log(`\n=== 全真實游標結果:${passN} ✓ / ${failN} ✗ ===`);

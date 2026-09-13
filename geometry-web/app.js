@@ -626,7 +626,8 @@ window.addEventListener("keydown", async e => {
   if (e.key === "Escape") {
     /* 對話框優先：Esc 關閉對話框 */
     if (!$("box6Dialog").hidden || !$("memberDialog").hidden ||
-        !$("shapeDialog").hidden || !$("notchDialog").hidden) {
+        !$("shapeDialog").hidden || !$("notchDialog").hidden ||
+        !$("rcDialog").hidden) {
       closeDialogs(); return;
     }
     if (oc.on) {
@@ -635,7 +636,8 @@ window.addEventListener("keydown", async e => {
         if (fe.lenBuf) { fe.lenBuf = ""; feLenShow(); return; }
         /* 面內工作區：先取消進行中的拖曳，其次退出工具，最後返回 */
         if (fe.drag || fe.work) {
-          fe.drag = null; fe.work = null; drawFaceEditor();
+          fe.drag = null; fe.panHold = null; fe.work = null;
+          drawFaceEditor();
         } else if (fe.tool !== "select") {
           feSetTool("select");
         } else {
@@ -1263,7 +1265,7 @@ async function enterFocus(t, id) {
 async function leaveFocus() {
   oc.focus = oc.stack.pop() || null;
   oc.rect = null; oc.poly = []; oc.edit = null; oc.drawTool = null;
-  fe.drag = null; fe.work = null;
+  fe.drag = null; fe.panHold = null; fe.work = null;
   if (oc.focus && oc.focus.t === "face") {
     /* 上層仍是面工作區（巢狀）：重開 */
     oc.edit = { bid: oc.focus.id };
@@ -1291,6 +1293,7 @@ const fe = {
   tool: "select",
   panX: 0, panY: 0, zoom: 1,
   drag: null,              /* vertex/edge/guide/holeRect/guideNew/pan */
+  panHold: null,           /* 平移前暫存的點擊制草稿(redraw 等) */
   work: null,              /* 拖曳中的 loops 副本 */
   guides: [],              /* [{id, axis, off}] 由 dump 解析 */
   timbers: [],             /* [{id,u,v,dir,side,L,A,B}] 本面承載的角材 */
@@ -1336,7 +1339,7 @@ async function openFaceWorkspace(bid) {
   $("faceWorkspaceTools").hidden = false;
   $("workspaceTitle").textContent = "面 " + bid;
   $("workspaceEyebrow").textContent = "面內工作區";
-  fe.tool = "select"; fe.drag = null; fe.work = null;
+  fe.tool = "select"; fe.drag = null; fe.panHold = null; fe.work = null;
   fe.projOpen = false; fe.projViews = new Set();
   feFit(loopsBBox(oc.bmap[bid]));
   await feLoadGuides();
@@ -1841,7 +1844,8 @@ function feSetTool(t) {
     return;
   }
   if (fe.tool === "redraw" && t !== "redraw") {
-    fe.drag = null; fe.lenBuf = ""; feLenShow(); drawFaceEditor();
+    fe.drag = null; fe.panHold = null; fe.lenBuf = ""; feLenShow();
+    drawFaceEditor();
   }
   fe.tool = t;
   for (const b of document.querySelectorAll("[data-face-tool]"))
@@ -2049,6 +2053,7 @@ async function feDown(pt, ev) {
   const e = oc.edit;
   if (!e) return;
   if (fe.tool === "pan" || fe.spaceDown) {
+    fe.panHold = fe.drag || null;         /* 保留重畫草稿 */
     fe.drag = { kind: "pan", cx: ev.clientX, cy: ev.clientY };
     return;
   }
@@ -2239,8 +2244,11 @@ async function feAfterChange() {
 async function feUp(pt) {
   const e = oc.edit;
   const d = fe.drag; fe.drag = null;
-  if (!e || !d) { drawFaceEditor(); return; }
-  if (d.kind === "pan") return;
+  if (!e || !d) { fe.panHold = null; drawFaceEditor(); return; }
+  if (d.kind === "pan") {
+    if (fe.panHold) { fe.drag = fe.panHold; fe.panHold = null; }
+    return;
+  }
   if (d.kind === "redraw") { fe.drag = d; return; }   /* 點擊制,pointerup 不收草稿 */
   if (d.kind === "holeRect") {
     const w = Math.abs(d.x1 - d.x0), h = Math.abs(d.y1 - d.y0);
@@ -2520,7 +2528,7 @@ async function feApplyProj() {
   let line = `apply-proj ${e.bid} ${ids.join(" ")}`;
   if ($("feCutStrip") && $("feCutStrip").checked) line += " cut-strip";
   if (await emitLine(line)) {
-    fe.work = null; fe.drag = null;
+    fe.work = null; fe.drag = null; fe.panHold = null;
     await feLoadGuides();
     renderFaceLayers(); drawFaceEditor(); renderFaceInspector();
   }
@@ -3215,9 +3223,11 @@ ocv.addEventListener("wheel", e => {
   const r = ocv.getBoundingClientRect();
   const px = e.clientX - r.left, py = e.clientY - r.top;
   const k = e.deltaY < 0 ? 1.15 : 1 / 1.15;
-  oc.zoom = Math.max(0.02, Math.min(8, oc.zoom * k));
-  oc.panX = px - (px - oc.panX) * k;
-  oc.panY = py - (py - oc.panY) * k;
+  const nz = Math.max(0.02, Math.min(8, oc.zoom * k));
+  const ke = nz / oc.zoom;               /* 夾到邊界時 ke=1,pan 不漂移 */
+  oc.zoom = nz;
+  oc.panX = px - (px - oc.panX) * ke;
+  oc.panY = py - (py - oc.panY) * ke;
   ocApply();
 }, { passive: false });
 
@@ -3427,6 +3437,7 @@ fevp.addEventListener("pointerdown", async e => {
   if (e.button === 1) {                       /* 中鍵平移(不動資料,busy 也放行) */
     e.preventDefault();
     fevp.setPointerCapture(e.pointerId);
+    fe.panHold = fe.drag || null;             /* 保留重畫草稿 */
     fe.drag = { kind: "pan", cx: e.clientX, cy: e.clientY };
     return;
   }
@@ -3450,9 +3461,11 @@ fevp.addEventListener("wheel", e => {
   const r = $("faceEditorSvg").getBoundingClientRect();
   const px = e.clientX - r.left, py = e.clientY - r.top;
   const k = e.deltaY < 0 ? 1.15 : 1 / 1.15;
-  fe.zoom = Math.max(0.02, Math.min(8, fe.zoom * k));
-  fe.panX = px - (px - fe.panX) * k;
-  fe.panY = py - (py - fe.panY) * k;
+  const nz = Math.max(0.02, Math.min(8, fe.zoom * k));
+  const ke = nz / fe.zoom;               /* 夾到邊界時 ke=1,pan 不漂移 */
+  fe.zoom = nz;
+  fe.panX = px - (px - fe.panX) * ke;
+  fe.panY = py - (py - fe.panY) * ke;
   feApply();
 }, { passive: false });
 

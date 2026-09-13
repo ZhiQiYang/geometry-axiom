@@ -465,6 +465,51 @@ function check(name, cond, detail="") {
   check("M8b 帶上錨點拒絕", !(await api("line apply-proj 1 b3 cut-strip")).ok);
   check("M8b 世界未變", (await api("dump")).text === dM8b);
 
+  if (process.env.GEOMETRY_AUDIT === "1") {
+    console.log("== Audit: projection transactions ==");
+    check("Audit 多樑場景", await freshRoom());
+    for (const ln of [
+      "delete column 1", "delete column 2", "delete column 3",
+      "beam 1 in 1 along y from 0 to 3000 at 2800 width 300 depth 500",
+      "beam 2 in 1 along y from 0 to 3000 at 3500 width 200 depth 400",
+    ]) check("Audit setup " + ln, (await api("line " + ln)).ok);
+    const multiBefore = (await api("dump")).text;
+    const multi = await api("line apply-proj 1 b1 b2 cut-strip");
+    check("Audit 同時裁兩條互不相交樑", multi.ok, JSON.stringify(multi));
+    if (multi.ok) check("Audit 兩條樑共生成八個新面", (await api("objects")).faces.length === 14);
+    else check("Audit 多樑失敗完整回滾", (await api("dump")).text === multiBefore);
+
+    check("Audit 混合有效/無效項目場景", await freshRoom());
+    const invalidBefore = (await api("dump")).text;
+    const invalid = await api("line apply-proj 1 c1 c999");
+    check("Audit 不得靜默忽略不存在的指定項目", !invalid.ok, JSON.stringify(invalid));
+    check("Audit 無效清單世界不變", (await api("dump")).text === invalidBefore);
+
+    check("Audit 牆面投影場景", await freshRoom());
+    const topNotch = await api("line apply-proj 3 b1");
+    check("Audit 搭牆樑頂凹可套用", topNotch.ok, JSON.stringify(topNotch));
+    check("Audit 整段降牆場景", await freshRoom());
+    const dropBefore = (await api("dump")).text;
+    const topDrop = await api("line apply-proj 3 b2");
+    check("Audit 邊樑整段降牆可套用", topDrop.ok, JSON.stringify(topDrop));
+    if (!topDrop.ok) check("Audit 降牆失敗完整回滾", (await api("dump")).text === dropBefore);
+    check("Audit 貼牆柱場景", await freshRoom());
+    const side = await api("line apply-proj 5 c2");
+    check("Audit 貼牆柱拆分成功", side.ok, JSON.stringify(side));
+    const generated = (await api("surfaces")).surfaces.filter(s => s.id > 6);
+    check("Audit 柱露出面位於柱前緣x=400而非原牆x=0", generated.some(s => s.origin[0] === 400 && s.u[0] === 0 && s.v[0] === 0), JSON.stringify(generated));
+
+    for (const fixture of ["_rc_col_free.scene", "_rc_col_wall.scene", "_rc_col_corner.scene", "_rc_beam_cross.scene", "_rc_beam_edge.scene"]) {
+      const loaded = await api("loadfile " + require("path").resolve(__dirname, "..", fixture));
+      check("Audit 載入 " + fixture, loaded.ok);
+      const original = (await api("dump")).text;
+      await api("line reset");
+      let replayed = true;
+      for (const ln of original.trim().split("\n")) if (!(await api("line " + ln)).ok) replayed = false;
+      check("Audit 回讀保真 " + fixture, replayed && (await api("dump")).text === original);
+    }
+  }
+
   await api("default");
 
   console.log(`\n${pass} pass / ${fail} fail`);

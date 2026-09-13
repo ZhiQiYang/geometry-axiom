@@ -72,7 +72,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await connect();
   await send("Runtime.enable");
   await send("Page.enable");
-  await send("Page.navigate", { url: "http://localhost:8765/" });
+  await send("Page.navigate", { url: process.env.GEOMETRY_TEST_URL || "http://localhost:8765/" });
   await sleep(2500);
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   await eval_(`api("line reset")`);
@@ -112,8 +112,9 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   /* 截圖存檔 */
   const shot = await send("Page.captureScreenshot", { format: "png" });
   require("fs").mkdirSync("docs/screens", { recursive: true });
-  require("fs").writeFileSync("docs/screens/phase1-shell.png", Buffer.from((shot.result && shot.result.data) || "", "base64"));
-  console.log("screenshot: docs/screens/phase1-shell.png");
+  const screenshotPath = process.env.GEOMETRY_TEST_SCREENSHOT || "docs/screens/phase1-shell.png";
+  require("fs").writeFileSync(screenshotPath, Buffer.from((shot.result && shot.result.data) || "", "base64"));
+  console.log("screenshot:", screenshotPath);
   console.log("初始:oc.on=", await eval_(`oc.on`),
     "ocv.hidden=", await eval_(`document.getElementById("ocv").hasAttribute("hidden")`),
     "cv.hidden=", await eval_(`document.getElementById("cv").hasAttribute("hidden")`),

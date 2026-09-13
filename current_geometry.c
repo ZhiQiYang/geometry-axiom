@@ -9388,18 +9388,73 @@ static bool proj_spawn_face(
         0, 0, u_hi - u_lo, v_hi - v_lo);
 }
 
-/* 套用單一障礙項到邊界面 b(已取快照 items;world 已在交易中)。 */
+/* 半平面裁切:axis 0=u 1=v;keep -1 留 <=cut 側,+1 留 >=cut 側。
+ * 供 top_drop「整段降低」:矩形跨滿垂直向全幅時,保留側即新輪廓。
+ * 非連通/退化結果由 poly_loop_is_valid 擋下 → 整筆回滾。 */
+static bool proj_clip_half(
+    PolygonLoop2 *loop,
+    int axis,
+    Coord cut,
+    int keep
+)
+{
+    SurfacePoint2 nv[POLY_MAX_VERTICES];
+    EdgeFixity nf[POLY_MAX_VERTICES];
+    size_t m = 0, n = loop->count;
+
+    for (size_t i = 0; i < n; ++i) {
+        SurfacePoint2 a = loop->v[i];
+        SurfacePoint2 e = loop->v[(i + 1) % n];
+        Coord ca = axis ? a.v : a.u;
+        Coord ce = axis ? e.v : e.u;
+        bool ina = keep < 0 ? ca <= cut : ca >= cut;
+        bool ine = keep < 0 ? ce <= cut : ce >= cut;
+
+        if (ina) {
+            nv[m] = a; nf[m] = loop->fixity[i]; ++m;
+        }
+        if (ina != ine) {
+            /* 正交環的跨線邊必沿被裁軸;交點落在 a/e 上時不補 */
+            SurfacePoint2 x = a;
+            if (axis) x.v = cut; else x.u = cut;
+            if ((x.u != a.u || x.v != a.v) &&
+                (x.u != e.u || x.v != e.v)) {
+                nv[m] = x; nf[m] = EDGE_FIXED; ++m;
+            }
+        }
+        if (m > POLY_MAX_VERTICES) return false;
+    }
+    /* 去重相鄰同點(含首尾迴繞) */
+    size_t w = 0;
+    for (size_t i = 0; i < m; ++i) {
+        if (w > 0 && nv[w - 1].u == nv[i].u &&
+            nv[w - 1].v == nv[i].v) continue;
+        nv[w] = nv[i]; nf[w] = nf[i]; ++w;
+    }
+    if (w > 1 && nv[0].u == nv[w - 1].u &&
+        nv[0].v == nv[w - 1].v) --w;
+    if (w < 3) return false;
+    memcpy(loop->v, nv, w * sizeof(nv[0]));
+    memcpy(loop->fixity, nf, w * sizeof(nf[0]));
+    loop->count = w;
+    return poly_loop_is_valid(loop);
+}
+
+/* 套用單一障礙項到邊界面 b(已取快照 items;world 已在交易中)。
+ * out_new_bid:若本次拆分產生新片,回傳新片 boundary id,否則 0。 */
 static bool proj_apply_one(
     World *world,
     SpaceBoundarySurface *b,
     const PlacementSurface *pl,
     const FaceObstacle *it,
     bool cut_strip,
+    uint32_t *out_new_bid,
     const char *path,
     int line_no
 )
 {
     Coord u0 = it->u_lo, v0 = it->v_lo, u1 = it->u_hi, v1 = it->v_hi;
+    if (out_new_bid) *out_new_bid = 0;
 
     if (it->cls == OBSTACLE_HOLE) {
         if (b->hole_count >= POLY_MAX_HOLES) {
@@ -9423,8 +9478,46 @@ static bool proj_apply_one(
     for (int s = 0; s < 4; ++s)
         flush[s] = side_flush_outline(&b->outline, s, u0, v0, u1, v1);
 
+    if (it->cls == OBSTACLE_TOP_DROP) {
+        /* 整段降低:矩形必跨滿垂直向全幅 → 半平面裁切保留側。
+           未到端緣(非矩形輪廓等)無法判定降側 → 拒絕回滾。 */
+        Coord ob0, ob1, ob2, ob3;
+        int axis, keep;
+        Coord cut;
+        poly_bbox(&b->outline, &ob0, &ob1, &ob2, &ob3);
+        if (v0 <= ob1 && v1 >= ob3) {
+            axis = 0;
+            if (u1 >= ob2)      { cut = u0; keep = -1; }
+            else if (u0 <= ob0) { cut = u1; keep = +1; }
+            else {
+                scene_error(path, line_no,
+                    "整段降低的矩形未到輪廓端緣");
+                return false;
+            }
+        } else if (u0 <= ob0 && u1 >= ob2) {
+            axis = 1;
+            if (v1 >= ob3)      { cut = v0; keep = -1; }
+            else if (v0 <= ob1) { cut = v1; keep = +1; }
+            else {
+                scene_error(path, line_no,
+                    "整段降低的矩形未到輪廓端緣");
+                return false;
+            }
+        } else {
+            scene_error(path, line_no, "整段降低的矩形未跨滿輪廓");
+            return false;
+        }
+        if (!proj_clip_half(&b->outline, axis, cut, keep)) {
+            scene_error(path, line_no, "整段降低切法退化");
+            return false;
+        }
+        /* 降後不再滿室高 → 同 R11 退出空間成員變游離面。 */
+        proj_space_drop_member(world, b->id);
+        return true;
+    }
+
     if (it->cls == OBSTACLE_NOTCH || it->cls == OBSTACLE_CORNER ||
-        it->cls == OBSTACLE_TOP_NOTCH || it->cls == OBSTACLE_TOP_DROP) {
+        it->cls == OBSTACLE_TOP_NOTCH) {
         if (!proj_cut_run(&b->outline, flush, u0, v0, u1, v1)) {
             scene_error(path, line_no, "凹口切法退化(覆蓋弧不連續)");
             return false;
@@ -9475,6 +9568,7 @@ static bool proj_apply_one(
                 scene_error(path, line_no, "面數超過上限");
                 return false;
             }
+            if (out_new_bid) *out_new_bid = nid;
             b->outline = *keep;
             proj_redistribute_holes(b,
                 &world->boundaries[world->boundary_count - 1]);
@@ -9543,6 +9637,7 @@ static bool proj_apply_one(
             scene_error(path, line_no, "面數超過上限");
             return false;
         }
+        if (out_new_bid) *out_new_bid = nid;
         b->outline = *keep;
         proj_redistribute_holes(b,
             &world->boundaries[world->boundary_count - 1]);
@@ -9566,19 +9661,19 @@ static bool proj_apply_one(
             int ns = na == 0 ? (int)pl->frame.normal.x
                    : na == 1 ? (int)pl->frame.normal.y
                              : (int)pl->frame.normal.z;
-            /* 露出側面在牆平面上:跨向軸 = 柱跨向,縱軸 = z */
-            int ax_side = (na == 0) ? 1 : 0;
-            Coord s_lo = ax_side == 0 ? c->x_lo : c->y_lo;
-            Coord s_hi = ax_side == 0 ? c->x_hi : c->y_hi;
-            /* 框:u=跨向 v=z,normal 同牆 → u×v 要等於 normal,
-               直接讓 proj_spawn_face 的軸向組合保證(u×v=n):
-               na=1(牆法向±Y)→u=+x?不行,要視 ns 正負。
-               簡化:沿用牆框,rect=柱在牆 uv 上的露出矩形。 */
+            /* 露出側面在柱遠側緣(材料側與牆同向,normal 沿用):
+               牆 x=0(n=-X)→ x_hi;牆 x=W(n=+X)→ x_lo,y 牆同理。 */
             SurfaceFrame f = pl->frame;
+            Coord edge = ns < 0
+                ? (na == 0 ? c->x_hi : c->y_hi)
+                : (na == 0 ? c->x_lo : c->y_lo);
+            if (na == 0)      f.origin.x = edge;
+            else if (na == 1) f.origin.y = edge;
+            else              f.origin.z = edge;
+            (void)np;
             Coord fu0, fv0, fu1, fv1;
             box_project_uv(&f, c->x_lo, c->x_hi, c->y_lo, c->y_hi,
                 c->z_lo, c->z_hi, &fu0, &fv0, &fu1, &fv1);
-            (void)ax_side; (void)s_lo; (void)s_hi; (void)ns;
             /* 新面 = 同牆框 + 柱露出 uv 矩形 */
             PolygonLoop2 o;
             memset(&o, 0, sizeof(o));
@@ -9594,7 +9689,6 @@ static bool proj_apply_one(
                 scene_error(path, line_no, "面數超過上限(柱側面)");
                 return false;
             }
-            (void)np;
         }
         return true;
     }
@@ -9672,17 +9766,73 @@ static bool apply_applyproj_line(
         return false;
     }
 
+    /* 面片清單:拆分產生的新片與原片同平面同框,後續項要套到
+       含它的那片(一筆交易內多條帶的情境)。 */
+    SpaceBoundarySurface *pb[32];
+    const PlacementSurface *pp[32];
+    size_t np = 1;
+    pb[0] = b; pp[0] = pl;
+
     size_t applied = 0;
     for (size_t k = 0; k < nids; ++k) {
+        bool matched = false;
         for (size_t i = 0; i < n; ++i) {
             if (items[i].id != ids[k]) continue;
             if (types[k] >= 0 && items[i].is_beam != types[k]) continue;
-            if (!proj_apply_one(world, b, pl, &items[i], cut_strip,
-                    path, line_no)) {
+            matched = true;
+            /* 選片:矩形應只與一片接觸;橫跨拆分線=無法歸屬,拒絕。 */
+            SpaceBoundarySurface *tb = NULL;
+            const PlacementSurface *tpl = NULL;
+            for (size_t j = 0; j < np; ++j) {
+                ObstacleClass pc;
+                Coord t0, t1, t2, t3;
+                if (!classify_rect_outline(&pb[j]->outline,
+                        items[i].u_lo, items[i].v_lo,
+                        items[i].u_hi, items[i].v_hi,
+                        &pc, &t0, &t1, &t2, &t3)) continue;
+                if (tb != NULL) {
+                    *world = backup;
+                    scene_error(path, line_no,
+                        "投影項橫跨拆分線，無法歸屬單一面片");
+                    return false;
+                }
+                tb = pb[j]; tpl = pp[j];
+            }
+            if (tb == NULL) {
+                *world = backup;
+                scene_error(path, line_no,
+                    "投影項不與任何面片接觸");
+                return false;
+            }
+            uint32_t new_bid = 0;
+            if (!proj_apply_one(world, tb, tpl, &items[i], cut_strip,
+                    &new_bid, path, line_no)) {
                 *world = backup;
                 return false;
             }
             ++applied;
+            if (new_bid != 0 && np < 32) {
+                pb[np] = NULL; pp[np] = NULL;
+                for (size_t j = 0; j < world->boundary_count; ++j) {
+                    if (world->boundaries[j].id == new_bid) {
+                        pb[np] = &world->boundaries[j];
+                        break;
+                    }
+                }
+                for (size_t j = 0; j < world->placement_count; ++j) {
+                    if (world->placements[j].boundary_id == new_bid) {
+                        pp[np] = &world->placements[j];
+                        break;
+                    }
+                }
+                if (pb[np] != NULL && pp[np] != NULL) ++np;
+            }
+        }
+        if (!matched) {
+            *world = backup;
+            scene_error(path, line_no,
+                "apply-proj 的項目在此面上不存在（整筆拒絕）");
+            return false;
         }
     }
     if (applied == 0) {
