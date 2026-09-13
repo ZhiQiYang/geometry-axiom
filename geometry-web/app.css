@@ -831,3 +831,10 @@ svg text { user-select: none; }
 .member-check-row:hover { background: var(--panel-muted); }
 .member-check-row small { margin-left: auto; color: var(--muted); }
 .member-check-row input:disabled + span { color: var(--faint); }
+
+/* busy 互斥(§5.1):mutate 飛行中忽略所有按鈕與輸入 */
+body.oc-busy button { pointer-events: none; opacity: .45; }
+body.oc-busy input, body.oc-busy select, body.oc-busy textarea { pointer-events: none; }
+
+/* 投影面板互動(§5.5.4):可 pick 的游標提示 */
+.proj-svg { cursor: crosshair; }

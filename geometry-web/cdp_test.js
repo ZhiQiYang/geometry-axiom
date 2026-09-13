@@ -601,6 +601,65 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     objPost.f === objPre2.f && objPost.s === objPre2.s && objPost.mem === 5
       ? "✓ 已回滾(含空間成員還原)" : "✗");
 
+
+  console.log("=== P5. 鍵盤表(主畫布 v/h/f/1、/ 搜尋)===");
+  const kbR = await eval_(`(async()=>{
+    const press = k => window.dispatchEvent(new KeyboardEvent("keydown",{key:k,bubbles:true}));
+    const rel   = k => window.dispatchEvent(new KeyboardEvent("keyup",{key:k,bubbles:true}));
+    press("h"); const t1 = oc.tool;
+    press("v"); const t2 = oc.tool;
+    oc.zoom = 0.5; ocApply(); press("1"); const z1 = oc.zoom;
+    press("f"); await new Promise(r=>setTimeout(r,50));
+    press(" "); const sp = !!oc.spacePan; rel(" ");
+    press("/"); const foc = document.activeElement === searchInput;
+    searchInput.blur();
+    return {t1,t2,z1,sp,foc};
+  })()`);
+  console.log("h→", kbR.t1, "| v→", kbR.t2, "| 1→zoom", kbR.z1,
+    "| space→", kbR.sp, "| / →搜尋", kbR.foc,
+    kbR.t1==="pan" && kbR.t2==="select" && kbR.z1===1 && kbR.sp===true && kbR.foc===true ? "✓" : "✗");
+
+  /* 投影面板互動(§5.5.4):建 guide 後 hover → pick 命中 + overlay 有線 */
+  console.log("=== P5b. 空間工作區投影 hover/pick ===");
+  const projR = await eval_(`(async()=>{
+    leaveFocus();
+    if (!oc.spaces.length) return {err:"no space"};
+    /* 在一個已放置成員面上建 guide v=2000(預設視圖可見) */
+    const sid = oc.surfs[0] && oc.surfs[0].id;
+    const gid = (await api("newid")).guide;
+    await api("line guide " + gid + " " + sid + " v 2000");
+    await enterFocus("space", oc.spaces[0].id);
+    const svg = document.querySelector("#spaceProjSvg");
+    if (!svg) return {err:"no svg"};
+    /* 在三視圖各自的局部範圍內掃點,找 guide>=0 的命中座標 */
+    const views = (await api("render")).layout.views;
+    let hit = null;
+    outer:
+    for (let v = 0; v < 3; ++v) {
+      const L = views[v], b = L.bounds;
+      for (let y = b[1]; y <= b[3]; y += 250)
+        for (let x = b[0]; x <= b[2]; x += 250) {
+          const p = await api("pick " + v + " " + x + " " + y + " 20");
+          if (p.guide >= 0) { hit = {v, x, y}; break outer; }
+        }
+    }
+    if (!hit) return {err:"guide 在三視圖都掃不到"};
+    const L = views[hit.v];
+    const pt = svg.createSVGPoint();
+    pt.x = hit.x + L.tx; pt.y = hit.y + L.ty;
+    const sc = pt.matrixTransform(svg.getScreenCTM());
+    svg.dispatchEvent(new PointerEvent("pointermove",
+      {clientX: sc.x, clientY: sc.y, bubbles: true}));
+    await new Promise(r=>setTimeout(r,600));
+    const ov = svg.querySelector("g:last-child").childElementCount;
+    const hov = document.getElementById("hovertxt").textContent;
+    return {hit, ov, hov};
+  })()`);
+  console.log("proj hover:", JSON.stringify(projR),
+    projR.ov > 0 ? "✓ pick/hover 有回應" : "✗");
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

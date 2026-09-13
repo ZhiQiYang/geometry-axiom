@@ -157,7 +157,7 @@ function replay(ops, root) {
 /* ---- 重繪 ---- */
 async function render() {
   const r = await api("render");
-  if (!r.ok) { layout = null; world.textContent = ""; setStatus("✗ " + (r.error || "場景沒有可畫的表面")); return; }
+  if (!r.ok) { layout = null; world.textContent = ""; setStatus("✗ " + (r.error || "場景沒有可畫的表面")); toast(r.error || "場景沒有可畫的表面"); return; }
   layout = r.layout;
   world.textContent = "";
   previewGs = [];
@@ -362,6 +362,7 @@ function vertsStr(pts) { return pts.map(p => `${p[0]},${p[1]}`).join(" "); }
 function fixityStr(fx) { return fx.map(f => f ? "F" : "X").join(" "); }
 
 async function emitLine(text) {
+  if (oc.busy) return false;
   const r = await api("line " + text);
   if (r.ok) {
     setStatus("✓ " + text);
@@ -588,7 +589,7 @@ window.addEventListener("keydown", async e => {
       setStatus("✓ " + (cmd === "undo" ? "已復原" : "已重做"));
       if (oc.on) await renderObjects();
       else { await render(); await refreshSurfaces(); }
-    } else setStatus("✗ " + (r.error || ""));
+    } else { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); }
     return;
   }
   if (e.key === "Escape") {
@@ -620,7 +621,7 @@ window.addEventListener("keydown", async e => {
     if (tool === "edit") drawEditHandles();
     return;
   }
-  /* 面內工作區工具快捷鍵（§5.8）：v/l/r/h、f、空白暫時平移 */
+  /* 面內工作區工具快捷鍵（§5.8）：v/l/r/h、f、1、空白暫時平移 */
   if (oc.on && oc.focus && oc.focus.t === "face") {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
     const k = e.key.toLowerCase();
@@ -630,10 +631,33 @@ window.addEventListener("keydown", async e => {
     if (k === "f" && oc.edit && oc.bmap[oc.edit.bid]) {
       feFit(loopsBBox(oc.bmap[oc.edit.bid])); return;
     }
+    if (k === "1") { fe.zoom = 1; feApply(); return; }
+    return;
+  }
+  /* 主畫布快捷鍵（§5.8）：v 選取、h 平移、f 全部顯示、1 縮放 100%、
+     空白暫時平移、/ 聚焦搜尋 */
+  if (oc.on && !oc.focus) {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" ||
+        e.target.tagName === "TEXTAREA") return;
+    const k = e.key;
+    if (k === " ") { oc.spacePan = true; e.preventDefault(); return; }
+    if (k === "/") { e.preventDefault(); $("searchInput").focus(); return; }
+    const km = { v: "select", h: "pan" };
+    if (km[k.toLowerCase()]) { setOcTool(km[k.toLowerCase()]); return; }
+    if (k.toLowerCase() === "f") {
+      const all = [...oc.faces, ...oc.spaces];
+      if (all.length)
+        ocFit([Math.min(...all.map(o => o.cx)) - 40,
+               Math.min(...all.map(o => o.cy)) - 40,
+               Math.max(...all.map(o => o.cx + OC_W)) + 40,
+               Math.max(...all.map(o => o.cy + OC_H)) + 40]);
+      return;
+    }
+    if (k === "1") { oc.zoom = 1; ocApply(); return; }
   }
 });
 window.addEventListener("keyup", e => {
-  if (e.key === " ") fe.spaceDown = false;
+  if (e.key === " ") { fe.spaceDown = false; oc.spacePan = false; }
 });
 
 /* ---- 指令列與按鈕 ---- */
@@ -646,8 +670,10 @@ $("cmd").addEventListener("keydown", async e => {
   else { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); }
 });
 $("btnClear").onclick = async () => {
-  await api("line reset"); selected = null;
-  setStatus("✓ 已清空"); refreshActive();
+  const r = await api("line reset"); selected = null;
+  if (r.ok) setStatus("✓ 已清空");
+  else { setStatus("✗ " + (r.error || "")); toast(r.error || "清空失敗"); }
+  refreshActive();
 };
 $("btnEx").onclick = async () => {
   const sel = $("sceneList");
@@ -1249,11 +1275,14 @@ function renderSpaceInspector(sp) {
     `<div class="kv"><span>狀態</span><b>${sp.closed ? "closed（六面齊）" : "open（未閉合）"}</b></div>` +
     `<div class="kv"><span>成員</span><b>${sp.members.length} 面</b></div></div>` +
     `<div class="inspector-block"><div class="ib-title">方向槽位（±X/±Y/±Z）</div>` +
-    `<div class="slot-grid">` +
-    Object.keys(slots).map(k =>
-      `<div class="slot${slots[k] ? " on" : ""}"><span>${k}</span>` +
-      `<b>${slots[k] ? "佔用" : "空"}</b></div>`).join("") +
-    `</div></div>` +
+    (slots
+      ? `<div class="slot-grid">` +
+        Object.keys(slots).map(k =>
+          `<div class="slot${slots[k] ? " on" : ""}"><span>${k}</span>` +
+          `<b>${slots[k] ? "佔用" : "空"}</b></div>`).join("") +
+        `</div>`
+      : `<div class="kv"><span>成員皆無承載面，無法推導方向</span></div>`) +
+    `</div>` +
     `<div class="inspector-block"><div class="ib-title">操作</div><div class="btn-col">` +
     `<button class="btn" id="spEditMembers">編輯成員</button>` +
     `<button class="btn" id="spProjRefresh">重新整理三視圖</button>` +
@@ -1276,6 +1305,56 @@ async function renderSpaceProjection() {
   }
   svg.setAttribute("viewBox", `${x0} ${y0} ${x1 - x0} ${y1 - y0}`);
   replay(r.ops, svg);
+  /* §5.6：沿用三視圖互動——hover/pick + 參考線拖曳 */
+  const overlay = el("g", {}, svg);
+  const views = r.layout.views;
+  let gdrag = null, seq = 0;
+  /* 螢幕→SVG 局部（含 tx/ty 的版面座標）→ 找所在視圖 → 視圖局部 mm */
+  const locate = e => {
+    const lp = projLocalPoint(svg, e);
+    for (let v = 0; v < views.length; ++v) {
+      const L = views[v], b = L.bounds;
+      const x = lp.x - L.tx, y = lp.y - L.ty;
+      if (x >= b[0] - 300 && x <= b[2] + 300 &&
+          y >= b[1] - 300 && y <= b[3] + 300)
+        return { v, x: Math.round(x), y: Math.round(y) };
+    }
+    return null;
+  };
+  const repaint = async () => {
+    const rr = await api("render");
+    if (!rr.ok) return;
+    const kids = [...svg.childNodes];
+    for (const k of kids) if (k !== overlay) svg.removeChild(k);
+    replay(rr.ops, svg);
+    svg.appendChild(overlay);
+    overlay.textContent = "";
+  };
+  svg.onpointermove = async e => {
+    if (gdrag) {
+      const lp = projLocalPoint(svg, e);
+      const rr = await api(`drag ${gdrag.g} ${gdrag.v} ` +
+        `${Math.round(lp.x - views[gdrag.v].tx)} ${Math.round(lp.y - views[gdrag.v].ty)}`);
+      if (rr.ok) repaint();
+      return;
+    }
+    const loc = locate(e); if (!loc) { overlay.textContent = ""; return; }
+    const my = ++seq;
+    const p = await api(`pick ${loc.v} ${loc.x} ${loc.y} 12`);
+    if (my !== seq) return;
+    setHover(p.desc || "");
+    overlay.textContent = "";
+    if (p.hover && p.hover.length) replay(p.hover, overlay);
+  };
+  svg.onpointerdown = async e => {
+    if (e.button !== 0) return;
+    const loc = locate(e); if (!loc) return;
+    svg.setPointerCapture(e.pointerId);
+    const p = await api(`pick ${loc.v} ${loc.x} ${loc.y} 12`);
+    if (p.guide >= 0) gdrag = { g: p.guide, v: loc.v };
+  };
+  svg.onpointerup = () => { gdrag = null; };
+  svg.onpointerleave = () => { overlay.textContent = ""; gdrag = null; };
 }
 
 /* ---- 對話框：backdrop + 關閉 ---- */
@@ -1802,9 +1881,59 @@ async function feRenderProjection() {
     svg.setAttribute("class", "proj-svg");
     svg.setAttribute("viewBox", `${b[0]} ${b[1]} ${b[2] - b[0]} ${b[3] - b[1]}`);
     const g = el("g", { "data-view": String(v) }, svg);
+    const overlay = el("g", {}, svg);
+    /* 拖曳中重建整個 svg 會斷 pointer capture；repaint 只換 g 的內容。 */
+    const repaint = async () => {
+      const rr = await api("render");
+      if (!rr.ok) return;
+      const s2 = [[], [], []]; let cur = -1;
+      for (const o of rr.ops) {
+        if (o.op === "begin") { ++cur; continue; }
+        if (o.op === "end") continue;
+        if (cur >= 0) s2[cur].push(o);
+      }
+      g.textContent = ""; replay(s2[v], g);
+      overlay.textContent = "";
+    };
     replay(segs[v], g);
+    bindProjInteract(svg, v, overlay, repaint);
     box.appendChild(svg);
   }
+}
+
+/* 投影面板互動（§5.5.4）：viewBox = 視圖局部 mm，螢幕→局部直接走 CTM；
+   hover/pick 沿用 bridge `pick`，參考線拖曳走 `drag <idx> <v> <x> <y>`。 */
+function projLocalPoint(svg, e) {
+  const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  return { x: Math.round(p.x), y: Math.round(p.y) };
+}
+function bindProjInteract(svg, viewIdx, overlay, refresh) {
+  let gdrag = null, seq = 0;
+  svg.addEventListener("pointermove", async e => {
+    const lp = projLocalPoint(svg, e);
+    if (gdrag !== null) {
+      const r = await api(`drag ${gdrag} ${viewIdx} ${lp.x} ${lp.y}`);
+      if (r.ok) refresh();
+      return;
+    }
+    const my = ++seq;
+    const p = await api(`pick ${viewIdx} ${lp.x} ${lp.y} 12`);
+    if (my !== seq) return;
+    setHover(p.desc || "");
+    overlay.textContent = "";
+    if (p.hover && p.hover.length)
+      replay(p.hover.filter(o => o.op !== "begin" && o.op !== "end"), overlay);
+  });
+  svg.addEventListener("pointerdown", async e => {
+    if (e.button !== 0) return;
+    svg.setPointerCapture(e.pointerId);
+    const lp = projLocalPoint(svg, e);
+    const p = await api(`pick ${viewIdx} ${lp.x} ${lp.y} 12`);
+    if (p.guide >= 0) gdrag = p.guide;
+  });
+  svg.addEventListener("pointerup", () => { gdrag = null; });
+  svg.addEventListener("pointerleave", () => { overlay.textContent = ""; gdrag = null; });
 }
 
 /* ---- 世界層建立互動 ---- */
@@ -1893,13 +2022,13 @@ function renderObjectList() {
     if (!oc.showFace || !ocMatchSearch(f)) continue;
     const name = f.kind === "placement" ? `placement ${f.id}` : `面 ${f.id}`;
     rows.push({ kind: f.kind, id: f.id, name,
-      sub: f.kind === "placement" ? `pid ${f.pid} · ${f.bbox.join(",")}`
-                                  : `面 · ${f.bbox.join(",")}` });
+      sub: f.kind === "placement" ? "自帶矩形"
+                                  : (f.placed ? "已放置" : "游離") });
   }
   for (const s of oc.spaces) {
     if (!oc.showSpace || !ocMatchSearch(s)) continue;
     rows.push({ kind: "space", id: s.id, name: `空間 ${s.id}`,
-      sub: `空間 · ${s.members.length} 個邊界面` });
+      sub: `${s.closed ? "封閉" : "開放"} · ${s.members.length} 個邊界面` });
   }
   $("objectCountBadge").textContent = rows.length;
   for (const r of rows) {
@@ -1940,17 +2069,24 @@ function renderInspector() {
   const state = sel.kind === "space"
     ? (o.closed ? "closed" : `open · ${o.members.length} 面`)
     : (o.placed ? "已放置" : "游離");
+  const ownedBy = sel.kind !== "space"
+    ? oc.spaces.find(s => s.members.includes(o.id)) : null;
   pane.innerHTML =
     `<div class="inspector-block"><div class="ib-title">${name}` +
     `<span class="tag">${sel.kind}</span></div>` +
     `<div class="kv"><span>id</span><b>${o.id}</b></div>` +
     `<div class="kv"><span>狀態</span><b>${state}</b></div>` +
     (o.bbox ? `<div class="kv"><span>範圍</span><b>${o.bbox.join(", ")}</b></div>` : "") +
+    (ownedBy ? `<div class="kv"><span>所屬空間</span><b>空間 ${ownedBy.id}</b></div>` : "") +
+    (sel.kind === "space"
+      ? `<div class="kv"><span>成員</span><b>${o.members.length ? o.members.join(", ") : "（空）"}</b></div>` : "") +
     `</div>` +
     `<div class="inspector-block"><div class="ib-title">操作</div>` +
     `<div class="btn-col">` +
     `<button class="btn" id="inspEnter"><i data-icon="edit"></i><span>` +
     (sel.kind === "space" ? "進入空間工作區" : "進入面內工作區") + `</span></button>` +
+    (sel.kind === "space"
+      ? `<button class="btn" id="inspMembers"><i data-icon="edit"></i><span>編輯成員</span></button>` : "") +
     `<button class="btn" id="inspLocate"><i data-icon="locate"></i><span>定位卡片</span></button>` +
     `</div></div>` +
     /* 放置表單（§5.5.3a）：boundary 面才有；placement 面已是合體 */
@@ -1963,6 +2099,8 @@ function renderInspector() {
     enterFocus(sel.kind === "space" ? "space" : "face", sel.id));
   pane.querySelector("#inspLocate").addEventListener("click", () =>
     centerOnNode(sel.kind, sel.id));
+  const mb = pane.querySelector("#inspMembers");
+  if (mb) mb.addEventListener("click", () => openMemberDialog(o.id));
 }
 /* 雙擊卡片 → 進入工作區 */
 ocv.addEventListener("dblclick", e => {
@@ -1987,7 +2125,7 @@ ocv.addEventListener("pointerdown", e => {
 
   if (oc.drawTool) { objDrawDown(pt); return; }
 
-  const card = oc.tool === "pan" ? null : e.target.closest(".ocard");
+  const card = (oc.tool === "pan" || oc.spacePan) ? null : e.target.closest(".ocard");
   if (card) {
     oc.card = { el: card, kind: card.dataset.kind, id: +card.dataset.id,
                 sx: pt.x, sy: pt.y, moved: false };
@@ -2097,8 +2235,9 @@ for (const b of document.querySelectorAll("[data-tool]"))
   b.addEventListener("click", () => setOcTool(b.dataset.tool));
 /* undo / redo(§5.6) */
 async function doUndoRedo(verb) {
+  if (oc.busy) return;
   const r = await api(`line ${verb}`);
-  if (!r.ok) { setStatus(r.error); return; }
+  if (!r.ok) { setStatus(r.error); toast(r.error); return; }
   setStatus(verb === "undo" ? "✓ 已復原" : "✓ 已重做");
   await renderObjects();
 }
@@ -2159,7 +2298,9 @@ function toast(msg, type = "error") {
 }
 /* mutate:多行 DSL 交易;第 k 行失敗 → undo 前 k-1 行 + toast(§5.1) */
 async function mutate(lines) {
+  if (oc.busy) return false;
   oc.busy = true;
+  document.body.classList.add("oc-busy");
   try {
     for (let k = 0; k < lines.length; ++k) {
       const r = await api("line " + lines[k]);
@@ -2170,7 +2311,10 @@ async function mutate(lines) {
       }
     }
     return true;
-  } finally { oc.busy = false; }
+  } finally {
+    oc.busy = false;
+    document.body.classList.remove("oc-busy");
+  }
 }
 /* 快速六面盒對話框(§5.6) */
 $("btnBox6").addEventListener("click", () => {

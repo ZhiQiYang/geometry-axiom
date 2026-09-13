@@ -121,3 +121,11 @@
 
 1. 改 DOM id / class / 全域名 → 先改本表 → 同步改 cdp_test.js / canvas_test.js → 跑裁判。
 2. 新增測試依賴 → 補進本表對應小節。
+
+## Phase 5 收尾(cdp_test §P5/P5b)
+
+- 鍵盤(§5.8)實機檢查:主畫布 `v`→select、`h`→pan、`1`→`oc.zoom=1`、`f`→fit、空白→`oc.spacePan=true`、`/`→聚焦 `#searchInput`;面內 `1`→`fe.zoom=1`。
+- 投影互動:`#spaceProjSvg` 內最末 `<g>` 為 hover overlay;`#projViews .proj-svg` 末 `<g>` 同。pointermove → `pick`,按住參考線拖 → `drag`。
+- `#hovertxt` 承接 `setHover` 文案(pick 描述)。
+- 檢視器新增動態按鈕 `#inspMembers`(space 選取時),開 `#memberDialog`。
+- busy 互斥:`body.oc-busy` 期間所有 `button/input/select` 視覺停用。
