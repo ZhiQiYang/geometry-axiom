@@ -788,6 +788,77 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`leaveFocus()`);
   await sleep(300);
 
+  /* RC/多邊形 Phase 1:重畫外環 + 形狀庫 */
+  console.log("=== P9. 重畫外環與形狀庫(RC Phase 1)===");
+  const rw = await eval_(`(async()=>{
+    await api("line reset");
+    await api("line boundary 1 outline 0,0 400,0 400,300 0,300");
+    await renderObjects();
+    await enterFocus("face", 1);
+    /* L 形:6 點軸鎖,Enter 閉合 */
+    feSetTool("redraw");
+    const pts = [[50,50],[350,50],[350,150],[150,150],[150,280],[50,280]];
+    for (const p of pts)
+      await feDown({x:p[0],y:p[1]}, {target:$("faceEditorSvg"),clientX:0,clientY:0});
+    window.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
+    await new Promise(r=>setTimeout(r,300));
+    const b = await api("boundary 1");
+    const ortho = b.loops[0].verts.every((v,i,vs)=>{
+      const nx = vs[(i+1)%vs.length];
+      return v[0]===nx[0] || v[1]===nx[1];
+    });
+    return {tool:"redraw", verts:b.loops[0].verts.length, ortho,
+            fixity:b.loops[0].fixity.length};
+  })()`);
+  console.log("L 形閉合:", rw.verts === 6 ? "✓" : "✗",
+    "| 頂點:", rw.verts, "| 全正交:", rw.ortho ? "✓" : "✗",
+    "| fixity:", rw.fixity === 6 ? "✓" : "✗");
+  /* Esc 取消:畫一半按 Esc → boundary 不變 */
+  const rw2 = await eval_(`(async()=>{
+    feSetTool("redraw");
+    await feDown({x:10,y:10},{target:$("faceEditorSvg"),clientX:0,clientY:0});
+    await feDown({x:90,y:10},{target:$("faceEditorSvg"),clientX:0,clientY:0});
+    window.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape"}));
+    const b = await api("boundary 1");
+    return {verts:b.loops[0].verts.length, draft:!!fe.drag};
+  })()`);
+  console.log("Esc 取消:", rw2.verts === 6 && !rw2.draft ? "✓" : "✗",
+    "| 草稿已清:", !rw2.draft ? "✓" : "✗");
+  /* 共線點自動去除:4 點中夾一個共線 → 仍 4 頂點 */
+  const rw3 = await eval_(`(async()=>{
+    feSetTool("redraw");
+    const pts = [[0,0],[200,0],[300,0],[300,200],[0,200]];   /* 200,0 與 300,0 共線 */
+    for (const p of pts)
+      await feDown({x:p[0],y:p[1]},{target:$("faceEditorSvg"),clientX:0,clientY:0});
+    window.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
+    await new Promise(r=>setTimeout(r,300));
+    const b = await api("boundary 1");
+    return {verts:b.loops[0].verts.length};
+  })()`);
+  console.log("共線去除:", rw3.verts === 4 ? "✓" : "✗", "| 頂點:", rw3.verts);
+  /* 形狀庫:L 4000/3000/臂1000 → 6 頂點、面積 = 4000*3000-3000*2000 */
+  const rw4 = await eval_(`(async()=>{
+    feSetTool("select");
+    $("faceShapeButton").click();
+    $("shapeW").value="4000"; $("shapeD").value="3000"; $("shapeA").value="1000";
+    $("shapeSubmit").click();
+    await new Promise(r=>setTimeout(r,300));
+    const b = await api("boundary 1");
+    const vs = b.loops[0].verts;
+    let area = 0;
+    for (let i=0;i<vs.length;++i){
+      const p=vs[i], q=vs[(i+1)%vs.length];
+      area += p[0]*q[1]-q[0]*p[1];
+    }
+    return {verts:vs.length, area:Math.abs(area)/2,
+            dlg:$("shapeDialog").hidden};
+  })()`);
+  console.log("形狀庫 L:", rw4.verts === 6 ? "✓" : "✗",
+    "| 面積:", rw4.area, rw4.area === 6000000 ? "✓" : "✗",
+    "| 對話框已關:", rw4.dlg ? "✓" : "✗");
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

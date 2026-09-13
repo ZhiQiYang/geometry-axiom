@@ -66,7 +66,8 @@
 | `[data-tool]` | 頂列工具鈕(select/pan/rect/poly) | `dataset.tool`、`.active` |
 | `[data-filter-type]` | 顯示類型篩選(face/space) | `checked` 狀態 |
 | `[data-icon]` | 圖示插槽 | hydrateIcons 填充 |
-| `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/insert/timber) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
+| `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/insert/timber/redraw) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
+| `#faceShapeButton` `#shapeDialog` `#shapeW` `#shapeD` `#shapeA` `#shapeB` `shapeKind` | 形狀庫(RC P1:L/U/T 外環生成) | `.click()`、`value`、radio checked |
 | `#tbLen` `#tbA` `#tbB` `#tbDir` `#tbSide` | 角材放置參數表單(Q3) | `value` 讀寫 |
 | `#gridU` `#gridV` `#gridCreate` | 網格建立表單(Q3) | `value`、`.click()`、游離面 disabled |
 | `.face-timber` / `.face-grid-line` | 面內角材足跡/網格線(Q3) | `#faceEditorRoot` 內計數 |

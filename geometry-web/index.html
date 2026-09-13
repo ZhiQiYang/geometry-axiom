@@ -205,6 +205,8 @@
         <button type="button" class="workspace-tool" data-face-tool="hole" title="開口 (r)"><span>開口</span></button>
         <button type="button" class="workspace-tool" data-face-tool="insert" title="插入凹口 (i)"><span>凹口</span></button>
         <button type="button" class="workspace-tool" data-face-tool="timber" title="角材 (t)"><span>角材</span></button>
+        <button type="button" class="workspace-tool" data-face-tool="redraw" title="重畫外環 (e)"><span>外環</span></button>
+        <button type="button" class="workspace-tool" id="faceShapeButton" title="形狀庫"><span>形狀</span></button>
         <button type="button" class="workspace-tool" data-face-tool="pan" title="平移 (h/空白鍵)"><span>平移</span></button>
         <span class="workspace-tool-separator"></span>
         <button type="button" id="faceUndoButton" class="workspace-icon-button" title="復原 (Ctrl+Z)"><span>↶</span></button>
@@ -309,6 +311,31 @@
   <footer class="dialog-footer">
     <button id="memberCancel" class="btn" type="button">取消</button>
     <button id="memberSubmit" class="primary-button" type="button"><span>確認</span></button>
+  </footer>
+</section>
+
+<section id="shapeDialog" class="dialog" role="dialog" aria-modal="true" hidden>
+  <header class="dialog-header">
+    <div><span class="dialog-eyebrow">形狀庫</span><h2>預設外環</h2></div>
+    <button id="shapeClose" class="dialog-close text-button" type="button">✕</button>
+  </header>
+  <div class="dialog-body">
+    <div class="member-check-list">
+      <label class="member-check-row"><input type="radio" name="shapeKind" value="L" checked><span>L 形（兩臂同寬 a)</span></label>
+      <label class="member-check-row"><input type="radio" name="shapeKind" value="U"><span>U 形（槽口朝上，臂寬 a)</span></label>
+      <label class="member-check-row"><input type="radio" name="shapeKind" value="T"><span>T 形（頂深 a、肋寬 b)</span></label>
+    </div>
+    <div class="place-form">
+      <label>總寬 W (mm)<input id="shapeW" type="number" step="1" value="4000"></label>
+      <label>總深 D (mm)<input id="shapeD" type="number" step="1" value="3000"></label>
+      <label>臂寬 a (mm)<input id="shapeA" type="number" step="1" value="1000"></label>
+      <label id="shapeBRow">肋寬 b (mm)<input id="shapeB" type="number" step="1" value="1000"></label>
+    </div>
+    <div class="face-help">取代現有外環；孔保留（若落在新外環外會被核心拒絕）。</div>
+  </div>
+  <footer class="dialog-footer">
+    <button id="shapeCancel" class="btn" type="button">取消</button>
+    <button id="shapeSubmit" class="primary-button" type="button"><span>套用</span></button>
   </footer>
 </section>
 

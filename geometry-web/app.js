@@ -595,7 +595,8 @@ window.addEventListener("keydown", async e => {
   }
   if (e.key === "Escape") {
     /* 對話框優先：Esc 關閉對話框 */
-    if (!$("box6Dialog").hidden || !$("memberDialog").hidden) {
+    if (!$("box6Dialog").hidden || !$("memberDialog").hidden ||
+        !$("shapeDialog").hidden) {
       closeDialogs(); return;
     }
     if (oc.on) {
@@ -627,8 +628,10 @@ window.addEventListener("keydown", async e => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
     const k = e.key.toLowerCase();
     if (k === " ") { fe.spaceDown = true; e.preventDefault(); return; }
-    const map = { v: "select", l: "guide", r: "hole", h: "pan", i: "insert", t: "timber" };
+    const map = { v: "select", l: "guide", r: "hole", h: "pan", i: "insert",
+                  t: "timber", e: "redraw" };
     if (map[k]) { feSetTool(map[k]); return; }
+    if (k === "enter") { feRedrawClose(); return; }
     if (k === "f" && oc.edit && oc.bmap[oc.edit.bid]) {
       feFit(loopsBBox(oc.bmap[oc.edit.bid])); return;
     }
@@ -1365,12 +1368,44 @@ function closeDialogs() {
   $("modalBackdrop").hidden = true;
   $("box6Dialog").hidden = true;
   $("memberDialog").hidden = true;
+  $("shapeDialog").hidden = true;
 }
 $("modalBackdrop").addEventListener("click", closeDialogs);
 $("box6Close").addEventListener("click", closeDialogs);
 $("box6Cancel").addEventListener("click", closeDialogs);
 $("memberClose").addEventListener("click", closeDialogs);
 $("memberCancel").addEventListener("click", closeDialogs);
+$("shapeClose").addEventListener("click", closeDialogs);
+$("shapeCancel").addEventListener("click", closeDialogs);
+
+/* 形狀庫對話框(Phase 1):L/U/T 生成外環取代,孔保留、新邊全 F */
+$("faceShapeButton").addEventListener("click", () => {
+  $("modalBackdrop").hidden = false;
+  $("shapeDialog").hidden = false;
+});
+$("shapeSubmit").addEventListener("click", async () => {
+  const e = oc.edit;
+  if (!e) { closeDialogs(); return; }
+  const kind = (document.querySelector('input[name="shapeKind"]:checked') || {}).value || "L";
+  const W = Math.round(+$("shapeW").value || 0),
+        D = Math.round(+$("shapeD").value || 0),
+        a = Math.round(+$("shapeA").value || 0),
+        b = Math.round(+$("shapeB").value || 0);
+  if (W <= 0 || D <= 0 || a <= 0 || a >= Math.min(W, D)) {
+    setStatus("形狀參數:W/D/a 要是正整數且 a 小於 W、D"); return;
+  }
+  if (kind === "T" && (b <= 0 || b >= W)) {
+    setStatus("T 形:肋寬 b 要是正整數且小於 W"); return;
+  }
+  const loops = oc.bmap[e.bid].map(l =>
+    ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+  const verts = shapeOutline(kind, W, D, a, b);
+  loops[0] = { verts, fixity: verts.map(() => 1) };
+  if (await emitBoundary(e.bid, loops)) {
+    closeDialogs();
+    await feAfterChange();
+  }
+});
 
 /* 編輯成員：勾選清單 → space <id> boundary <ids…> 重宣告（§5.6） */
 function openMemberDialog(sid) {
@@ -1447,6 +1482,7 @@ function feSetTool(t) {
     setStatus("游離面沒有承載面，不能放參考線——先在檢視器「放置」");
     return;
   }
+  if (fe.tool === "redraw" && t !== "redraw") { fe.drag = null; drawFaceEditor(); }
   fe.tool = t;
   for (const b of document.querySelectorAll("[data-face-tool]"))
     b.classList.toggle("active", b.dataset.faceTool === t);
@@ -1454,7 +1490,8 @@ function feSetTool(t) {
   vp.className = "face-editor-viewport tool-" +
     ({ select: "select", guide: "referenceLine", hole: "opening", pan: "pan", insert: "insert" }[t] || t);
   $("workspaceToolStatus").textContent = "工具：" +
-    ({ select: "選取", guide: "參考線", hole: "開口", pan: "平移", insert: "凹口", timber: "角材" }[t] || t);
+    ({ select: "選取", guide: "參考線", hole: "開口", pan: "平移", insert: "凹口", timber: "角材",
+       redraw: "重畫外環" }[t] || t);
   /* 游離面：參考線工具停用 */
   const gb = document.querySelector('[data-face-tool="guide"]');
   if (gb) {
@@ -1572,6 +1609,24 @@ function drawFaceEditor() {
       width: Math.abs(fu - t2.u), height: Math.abs(fv - t2.v),
       class: "face-timber" }, root);
   }
+  /* 重畫外環草稿（Phase 1）：軸鎖折線 + 段長標註 + 起點閉合圈 */
+  const d0 = fe.drag;
+  if (d0 && d0.kind === "redraw" && d0.pts.length) {
+    const seq = d0.cur ? [...d0.pts, d0.cur] : d0.pts;
+    el("polyline", { points: seq.map(p => p.join(",")).join(" "),
+      fill: "none", class: "draft-shape" }, root);
+    for (let i = 1; i < seq.length; ++i) {
+      const a = seq[i - 1], b = seq[i];
+      el("text", { x: (a[0] + b[0]) / 2, y: (a[1] + b[1]) / 2 - 6 / z,
+        "font-size": 11 / z, "text-anchor": "middle",
+        fill: "#66758d" }, root).textContent =
+        Math.max(Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1]));
+    }
+    for (const p of d0.pts)
+      el("circle", { cx: p[0], cy: p[1], r: 4 / z, class: "face-vertex-handle" }, root);
+    el("circle", { cx: d0.pts[0][0], cy: d0.pts[0][1], r: 9 / z,
+      fill: "none", stroke: "#c4781a", "stroke-width": 2 / z }, root);
+  }
   /* 草稿 */
   const d = fe.drag;
   if (d && d.kind === "holeRect") {
@@ -1593,6 +1648,31 @@ async function feDown(pt, ev) {
   if (!e) return;
   if (fe.tool === "pan" || fe.spaceDown) {
     fe.drag = { kind: "pan", cx: ev.clientX, cy: ev.clientY };
+    return;
+  }
+  if (fe.tool === "redraw") {
+    /* Phase 1 重畫外環：點擊逐點,軸鎖(水平/垂直擇優);
+       點回起點或 Enter 閉合;Esc 取消(草稿存 fe.drag,沿用既有 Esc 第一層) */
+    const d = fe.drag && fe.drag.kind === "redraw" ? fe.drag : null;
+    if (!d) {
+      fe.drag = { kind: "redraw", pts: [[Math.round(pt.x), Math.round(pt.y)]], cur: null };
+      drawFaceEditor();
+      return;
+    }
+    /* 軸鎖:與上一點對齊較遠軸 */
+    const last = d.pts[d.pts.length - 1];
+    const q = Math.abs(pt.x - last[0]) >= Math.abs(pt.y - last[1])
+      ? [Math.round(pt.x), last[1]] : [last[0], Math.round(pt.y)];
+    /* 點回起點 → 閉合 */
+    const st = d.pts[0];
+    if (d.pts.length >= 3 &&
+        Math.abs(q[0] - st[0]) + Math.abs(q[1] - st[1]) <= Math.max(8, 12 / fe.zoom)) {
+      await feRedrawClose(); return;
+    }
+    /* 與上一點重合 = 忽略 */
+    if (q[0] === last[0] && q[1] === last[1]) return;
+    d.pts.push(q); d.cur = null;
+    drawFaceEditor();
     return;
   }
   if (fe.tool === "hole") {
@@ -1701,6 +1781,13 @@ function feMove(pt, ev) {
     feApply();
     return;
   }
+  if (d.kind === "redraw") {
+    const last = d.pts[d.pts.length - 1];
+    d.cur = Math.abs(pt.x - last[0]) >= Math.abs(pt.y - last[1])
+      ? [Math.round(pt.x), last[1]] : [last[0], Math.round(pt.y)];
+    drawFaceEditor();
+    return;
+  }
   if (d.kind === "holeRect" || d.kind === "guideNew") {
     d.x1 = pt.x; d.y1 = pt.y;
     drawFaceEditor();
@@ -1740,6 +1827,7 @@ async function feUp(pt) {
   const d = fe.drag; fe.drag = null;
   if (!e || !d) { drawFaceEditor(); return; }
   if (d.kind === "pan") return;
+  if (d.kind === "redraw") { fe.drag = d; return; }   /* 點擊制,pointerup 不收草稿 */
   if (d.kind === "holeRect") {
     const w = Math.abs(d.x1 - d.x0), h = Math.abs(d.y1 - d.y0);
     if (w < 1 || h < 1) { drawFaceEditor(); return; }
@@ -1779,6 +1867,42 @@ async function feUp(pt) {
   if (!moved) { drawFaceEditor(); return; }
   if (await emitBoundary(e.bid, work)) await feAfterChange();
   else drawFaceEditor();
+}
+
+/* Phase 1 重畫外環：去共線頂點後走 boundary 重宣告(孔保留,新邊 fixity 全 F) */
+function feDedupe(pts) {
+  const out = [];
+  for (let i = 0; i < pts.length; ++i) {
+    const a = pts[(i + pts.length - 1) % pts.length],
+          b = pts[i],
+          c = pts[(i + 1) % pts.length];
+    if ((a[0] === b[0] && b[0] === c[0]) || (a[1] === b[1] && b[1] === c[1])) continue;
+    out.push(b);
+  }
+  return out;
+}
+async function feRedrawClose() {
+  const e = oc.edit, d = fe.drag;
+  if (!e || !d || d.kind !== "redraw") return;
+  const pts = feDedupe(d.pts);
+  fe.drag = null;
+  if (pts.length < 4) { setStatus("外環至少要 4 個非共線頂點"); drawFaceEditor(); return; }
+  const loops = oc.bmap[e.bid].map(l =>
+    ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+  loops[0] = { verts: pts, fixity: pts.map(() => 1) };
+  if (await emitBoundary(e.bid, loops)) await feAfterChange();
+  else drawFaceEditor();
+}
+
+/* 形狀庫:L/U/T 生成外環(原點起),孔保留、新邊全 F */
+function shapeOutline(kind, W, D, a, b) {
+  if (kind === "L")
+    return [[0,0],[W,0],[W,a],[a,a],[a,D],[0,D]];
+  if (kind === "U")
+    return [[0,0],[W,0],[W,D],[W-a,D],[W-a,a],[a,a],[a,D],[0,D]];
+  /* T:頂部橫帶深 a、中央肋寬 b */
+  const x0 = (W - b) / 2, x1 = (W + b) / 2;
+  return [[0,0],[W,0],[W,a],[x1,a],[x1,D],[x0,D],[x0,a],[0,a]];
 }
 
 /* 左欄「面內物件」：外環 / 孔 / 參考線（§5.5.1） */
