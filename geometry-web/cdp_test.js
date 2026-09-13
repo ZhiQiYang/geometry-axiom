@@ -111,8 +111,9 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("statusbar:", sb ? "✓ status/cmd 在狀態列" : "✗");
   /* 截圖存檔 */
   const shot = await send("Page.captureScreenshot", { format: "png" });
-  require("fs").writeFileSync("phase1.png", Buffer.from((shot.result && shot.result.data) || "", "base64"));
-  console.log("screenshot: phase1.png");
+  require("fs").mkdirSync("docs/screens", { recursive: true });
+  require("fs").writeFileSync("docs/screens/phase1-shell.png", Buffer.from((shot.result && shot.result.data) || "", "base64"));
+  console.log("screenshot: docs/screens/phase1-shell.png");
   console.log("初始:oc.on=", await eval_(`oc.on`),
     "ocv.hidden=", await eval_(`document.getElementById("ocv").hasAttribute("hidden")`),
     "cv.hidden=", await eval_(`document.getElementById("cv").hasAttribute("hidden")`),
