@@ -11,6 +11,16 @@ const chrome = spawn(CHROME, [
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 let ws, mid = 0, pending = {};
 
+/* ✓/✗ 計數：所有印出的判定一律計入，exit code 依此決定。 */
+let passN = 0, failN = 0;
+const _log = console.log;
+console.log = (...args) => {
+  const s = args.join(" ");
+  passN += (s.match(/✓/g) || []).length;
+  failN += (s.match(/✗/g) || []).length;
+  _log(...args);
+};
+
 async function connect() {
   for (let i = 0; i < 40; ++i) {
     try {
@@ -274,5 +284,6 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("ocv hidden:", await eval_(`document.getElementById("ocv").hasAttribute("hidden")`));
   console.log("world children:", await eval_(`document.getElementById("world").childElementCount`));
   chrome.kill();
-  process.exit(0);
+  _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);
+  process.exit(failN > 0 ? 1 : 0);
 })().catch(e => { console.log("FATAL:", e.message); chrome.kill(); process.exit(1); });

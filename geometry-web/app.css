@@ -1,0 +1,23 @@
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden;
+    font: 14px/1.5 "Segoe UI", "Microsoft JhengHei", sans-serif; }
+  body { display: flex; flex-direction: column; }
+  #topbar { display: flex; gap: 8px; align-items: center; padding: 6px 10px;
+    background: #ececec; border-bottom: 1px solid #cfcfcf; flex: 0 0 auto; }
+  #topbar .sp { flex: 1; }
+  #topbar .hint { color: #666; font-size: 12px; }
+  [hidden] { display: none !important; }
+  #cv { flex: 1; display: block; background: #fff; cursor: crosshair; }
+  #ocv { flex: 1; display: block; background: #f7f7f2; cursor: default; }
+  .ocard:hover rect { filter: brightness(.96); }
+  #crumb { color: #36c; font-size: 13px; }
+  #bar { flex: 0 0 auto; background: #ececec; border-top: 1px solid #cfcfcf;
+    padding: 4px 8px 6px; }
+  #bar .row { display: flex; gap: 8px; align-items: center; }
+  #bar .row + .row { margin-top: 4px; }
+  #status { flex: 3; min-height: 1.4em; white-space: nowrap; overflow: hidden; }
+  #hovertxt { flex: 2; color: #555; white-space: nowrap; overflow: hidden; }
+  #cmd { flex: 1; font: inherit; padding: 4px 8px; border: 1px solid #aaa; }
+  button { font: inherit; padding: 4px 12px; }
+  select { font: inherit; padding: 3px 6px; max-width: 240px; }
+  svg text { user-select: none; }

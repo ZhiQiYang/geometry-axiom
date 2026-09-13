@@ -49,6 +49,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if self.path == "/" or self.path == "/index.html":
             self._send((HERE / "index.html").read_bytes(),
                        "text/html; charset=utf-8")
+        elif self.path == "/app.css":
+            self._send((HERE / "app.css").read_bytes(),
+                       "text/css; charset=utf-8")
+        elif self.path == "/app.js":
+            self._send((HERE / "app.js").read_bytes(),
+                       "text/javascript; charset=utf-8")
         elif self.path == "/scenes":
             items = [{"name": p.name, "path": str(p)}
                      for p in sorted(SCENE_DIR.glob("*.scene"))]
