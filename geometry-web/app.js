@@ -592,6 +592,10 @@ window.addEventListener("keydown", async e => {
     return;
   }
   if (e.key === "Escape") {
+    /* 對話框優先：Esc 關閉對話框 */
+    if (!$("box6Dialog").hidden || !$("memberDialog").hidden) {
+      closeDialogs(); return;
+    }
     if (oc.on) {
       if (oc.focus && oc.focus.t === "face") {
         /* 面內工作區：先取消進行中的拖曳，其次退出工具，最後返回 */
@@ -1079,34 +1083,34 @@ async function enterFocus(t, id) {
     drawObjects();
     return;
   } else {
-    /* 空間層：鏡頭拉近成員卡群的範圍 */
-    const mem = oc.spaces.find(s => s.id === id);
-    if (mem && mem.members.length) {
-      const fs = oc.faces.filter(f => mem.members.includes(f.id));
-      if (fs.length) {
-        ocFit([Math.min(...fs.map(f => f.cx)) - 40,
-               Math.min(...fs.map(f => f.cy)) - 40,
-               Math.max(...fs.map(f => f.cx + OC_W)) + 40,
-               Math.max(...fs.map(f => f.cy + OC_H)) + 40]);
-      }
-    }
+    await openSpaceWorkspace(id);
+    drawObjects();
+    return;
   }
-  drawObjects();
-  setStatus(t === "face" ? `面 ${id}：拖頂點/邊編輯，▨挖孔，← 返回`
-                        : `空間 ${id}：成員面清單，點面可進入編輯`);
 }
 
-function leaveFocus() {
-  const wasFace = oc.focus && oc.focus.t === "face";
+async function leaveFocus() {
   oc.focus = oc.stack.pop() || null;
   oc.rect = null; oc.poly = []; oc.edit = null; oc.drawTool = null;
-  if (wasFace && (!oc.focus || oc.focus.t !== "face")) {
+  fe.drag = null; fe.work = null;
+  if (oc.focus && oc.focus.t === "face") {
+    /* 上層仍是面工作區（巢狀）：重開 */
+    oc.edit = { bid: oc.focus.id };
+    if (!oc.bmap[oc.focus.id]) {
+      const b = await api("boundary " + oc.focus.id);
+      if (b.ok) oc.bmap[oc.focus.id] = b.loops;
+    }
+    await openFaceWorkspace(oc.focus.id);
+  } else if (oc.focus && oc.focus.t === "space") {
+    await openSpaceWorkspace(oc.focus.id);
+  } else {
     $("objectWorkspace").hidden = true;
-    fe.drag = null; fe.work = null; fe.guides = [];
+    fe.guides = [];
+    oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply();
   }
-  if (!oc.focus) { oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply(); }
   drawObjects();
-  setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白處拖曳平移 · 滾輪縮放");
+  if (!oc.focus)
+    setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白處拖曳平移 · 滾輪縮放");
 }
 
 /* ---- 面內工作區（Phase 3）：objectWorkspace 殼 + data-face-hit 直編 ----
@@ -1152,6 +1156,9 @@ function feFit(bb) {
 
 async function openFaceWorkspace(bid) {
   $("objectWorkspace").hidden = false;
+  $("faceWorkspaceLayout").hidden = false;
+  $("spaceWorkspaceLayout").hidden = true;
+  $("faceWorkspaceTools").hidden = false;
   $("workspaceTitle").textContent = "面 " + bid;
   $("workspaceEyebrow").textContent = "面內工作區";
   fe.tool = "select"; fe.drag = null; fe.work = null;
@@ -1163,6 +1170,194 @@ async function openFaceWorkspace(bid) {
   renderFaceLayers();
   renderFaceInspector();
   setStatus(`面 ${bid}：拖頂點/邊編輯 · 參考線 l · 開口 r · Esc 返回`);
+}
+
+/* ---- 空間工作區（Phase 4）：成員清單 + 面卡片格 + 檢視器 + 三視圖 ---- */
+async function openSpaceWorkspace(sid) {
+  $("objectWorkspace").hidden = false;
+  $("faceWorkspaceLayout").hidden = true;
+  $("spaceWorkspaceLayout").hidden = false;
+  $("faceWorkspaceTools").hidden = true;
+  $("workspaceTitle").textContent = "空間 " + sid;
+  $("workspaceEyebrow").textContent = "空間工作區";
+  await renderSpaceWorkspace();
+  setStatus(`空間 ${sid}：成員面清單 · 點面卡進入面編輯 · Esc 返回`);
+}
+
+async function renderSpaceWorkspace() {
+  const sid = oc.focus && oc.focus.id;
+  const sp = oc.spaces.find(s => s.id === sid);
+  if (!sp) return;
+  /* 左：成員清單 */
+  const list = $("spaceMemberList");
+  list.textContent = "";
+  $("spaceMemberCount").textContent = sp.members.length;
+  for (const bid of sp.members) {
+    const f = oc.faces.find(x => x.id === bid);
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "space-boundary-button";
+    row.innerHTML =
+      `<span class="type-icon face">▱</span>` +
+      `<span class="space-boundary-button-copy"><strong>面 ${bid}</strong>` +
+      `<small>${f ? f.bbox.join(", ") : ""}</small></span><span>›</span>`;
+    row.addEventListener("click", () => enterFocus("face", bid));
+    list.appendChild(row);
+  }
+  /* 中：成員面卡片格（preview 簡化版） */
+  const grid = $("spaceFaceGrid");
+  grid.textContent = "";
+  for (const bid of sp.members) {
+    const f = oc.faces.find(x => x.id === bid);
+    const loops = oc.bmap[bid];
+    const card = document.createElement("div");
+    card.className = "space-face-card";
+    card.innerHTML =
+      `<div class="space-face-preview"><svg></svg></div>` +
+      `<div class="space-face-card-body"><h3>面 ${bid}</h3>` +
+      `<p>${f ? f.bbox.join(" × ") : ""} · ${loops ? loops[0].verts.length + " 頂點" : "—"}</p>` +
+      `<button type="button">進入面內工作區</button></div>`;
+    const svg = card.querySelector("svg");
+    if (loops) {
+      const bb = loopsBBox(loops);
+      svg.setAttribute("viewBox",
+        `${bb[0] - 60} ${bb[1] - 60} ${bb[2] - bb[0] + 120} ${bb[3] - bb[1] + 120}`);
+      for (let li = 0; li < loops.length; ++li)
+        el("polygon", { points: loops[li].verts.map(p => p.join(",")).join(" "),
+          fill: li === 0 ? "rgba(47,143,123,.13)" : "#f8fafc",
+          stroke: "#2f8f7b", "stroke-width": 14,
+          "vector-effect": "non-scaling-stroke" }, svg);
+    }
+    card.querySelector("button").addEventListener("click", () =>
+      enterFocus("face", bid));
+    grid.appendChild(card);
+  }
+  /* 右：檢視器 + closed 槽位 + 操作 */
+  renderSpaceInspector(sp);
+  /* 中上：三視圖全開（§5.6：整個 render 結果） */
+  await renderSpaceProjection();
+}
+
+function renderSpaceInspector(sp) {
+  const pane = $("spaceInspectorContent");
+  const slots = spaceSlots(sp);
+  const slotName = { "+X": "+X", "-X": "−X", "+Y": "+Y", "-Y": "−Y", "+Z": "+Z", "-Z": "−Z" };
+  pane.innerHTML =
+    `<div class="inspector-block"><div class="ib-title">空間 ${sp.id}` +
+    `<span class="tag">${sp.closed ? "closed" : "open"}</span></div>` +
+    `<div class="kv"><span>id</span><b>${sp.id}</b></div>` +
+    `<div class="kv"><span>狀態</span><b>${sp.closed ? "closed（六面齊）" : "open（未閉合）"}</b></div>` +
+    `<div class="kv"><span>成員</span><b>${sp.members.length} 面</b></div></div>` +
+    `<div class="inspector-block"><div class="ib-title">方向槽位（±X/±Y/±Z）</div>` +
+    `<div class="slot-grid">` +
+    Object.keys(slots).map(k =>
+      `<div class="slot${slots[k] ? " on" : ""}"><span>${k}</span>` +
+      `<b>${slots[k] ? "佔用" : "空"}</b></div>`).join("") +
+    `</div></div>` +
+    `<div class="inspector-block"><div class="ib-title">操作</div><div class="btn-col">` +
+    `<button class="btn" id="spEditMembers">編輯成員</button>` +
+    `<button class="btn" id="spProjRefresh">重新整理三視圖</button>` +
+    `</div></div>`;
+  $("spEditMembers").addEventListener("click", () => openMemberDialog(sp.id));
+  $("spProjRefresh").addEventListener("click", renderSpaceProjection);
+}
+
+/* 三視圖全開：ops 的 begin/end 自帶 tx/ty,viewBox 取三視圖聯集 */
+async function renderSpaceProjection() {
+  const svg = $("spaceProjSvg");
+  svg.textContent = "";
+  const r = await api("render");
+  if (!r.ok || !r.layout) return;
+  let x0 = 1e18, y0 = 1e18, x1 = -1e18, y1 = -1e18;
+  for (const L of r.layout.views) {
+    const b = L.bounds;
+    x0 = Math.min(x0, b[0] + L.tx); y0 = Math.min(y0, b[1] + L.ty);
+    x1 = Math.max(x1, b[2] + L.tx); y1 = Math.max(y1, b[3] + L.ty);
+  }
+  svg.setAttribute("viewBox", `${x0} ${y0} ${x1 - x0} ${y1 - y0}`);
+  replay(r.ops, svg);
+}
+
+/* ---- 對話框：backdrop + 關閉 ---- */
+function closeDialogs() {
+  $("modalBackdrop").hidden = true;
+  $("box6Dialog").hidden = true;
+  $("memberDialog").hidden = true;
+}
+$("modalBackdrop").addEventListener("click", closeDialogs);
+$("box6Close").addEventListener("click", closeDialogs);
+$("box6Cancel").addEventListener("click", closeDialogs);
+$("memberClose").addEventListener("click", closeDialogs);
+$("memberCancel").addEventListener("click", closeDialogs);
+
+/* 編輯成員：勾選清單 → space <id> boundary <ids…> 重宣告（§5.6） */
+function openMemberDialog(sid) {
+  const sp = oc.spaces.find(s => s.id === sid);
+  if (!sp) return;
+  $("memberDialogTitle").textContent = `編輯空間 ${sid} 的成員`;
+  const list = $("memberCheckList");
+  list.textContent = "";
+  for (const f of oc.faces.filter(f => f.kind === "boundary")) {
+    const mine = sp.members.includes(f.id);
+    const other = oc.spaces.find(s => s.id !== sid && s.members.includes(f.id));
+    const lb = document.createElement("label");
+    lb.className = "member-check-row";
+    const dis = !f.placed || other;
+    lb.innerHTML =
+      `<input type="checkbox" value="${f.id}"${mine ? " checked" : ""}${dis ? " disabled" : ""}>` +
+      `<span>面 ${f.id}</span>` +
+      `<small>${!f.placed ? "未放置" : other ? "屬於空間 " + other.id : ""}</small>`;
+    list.appendChild(lb);
+  }
+  $("modalBackdrop").hidden = false;
+  $("memberDialog").hidden = false;
+  $("memberSubmit").onclick = async () => {
+    const ids = [...list.querySelectorAll("input:checked")]
+      .map(c => +c.value);
+    if (await emitLine(`space ${sid} boundary ${ids.join(" ")}`)) {
+      closeDialogs();
+      await renderObjects();
+      if (oc.focus && oc.focus.t === "space") await renderSpaceWorkspace();
+    }
+  };
+}
+
+/* 快速六面盒（§5.6）：W/D/H + 含地板 → mutate 6/5 行 surface + 1 行 space */
+async function submitBox6() {
+  const W = Math.round(+$("box6W").value || 0);
+  const D = Math.round(+$("box6D").value || 0);
+  const H = Math.round(+$("box6H").value || 0);
+  const floor = $("box6Floor").checked;
+  if (!(W > 0 && D > 0 && H > 0)) { toast("W / D / H 必須為正整數"); return; }
+  const ids = await api("newid");
+  const b0 = Math.max(ids.boundary, ids.placement);
+  /* room_full.scene 模板：天花 + (地板) + y=0 + y=D + x=0 + x=W */
+  const lines = [
+    `surface ${b0}     origin 0 0 ${H} u +x v +y outline 0,0 ${W},0 ${W},${D} 0,${D}`,
+    `surface ${b0 + 2} origin 0 0 0 u +x v +z outline 0,0 ${W},0 ${W},${H} 0,${H}`,
+    `surface ${b0 + 3} origin 0 ${D} 0 u +z v +x outline 0,0 ${H},0 ${H},${W} 0,${W}`,
+    `surface ${b0 + 4} origin 0 0 0 u +z v +y outline 0,0 ${H},0 ${H},${D} 0,${D}`,
+    `surface ${b0 + 5} origin ${W} 0 0 u +y v +z outline 0,0 ${D},0 ${D},${H} 0,${H}`,
+  ];
+  const mem = [b0];
+  if (floor) {
+    lines.splice(1, 0,
+      `surface ${b0 + 1} origin 0 0 0 u +y v +x outline 0,0 ${D},0 ${D},${W} 0,${W}`);
+    mem.push(b0 + 1);
+  }
+  mem.push(b0 + 2, b0 + 3, b0 + 4, b0 + 5);
+  lines.push(`space ${ids.space} boundary ${mem.join(" ")}`);
+  if (!(await mutate(lines))) return;
+  /* 7/6 個物件各送 canvas-pos 排成一排（§5.6） */
+  let x = 60;
+  for (const bid of mem) {
+    await api(`line canvas-pos boundary ${bid} ${x} 60`);
+    x += 300;
+  }
+  await api(`line canvas-pos space ${ids.space} 60 340`);
+  closeDialogs();
+  await renderObjects();
+  setStatus(`✓ 六面盒空間 ${ids.space}（${mem.length} 面${floor ? "含地板" : "無地板"}）`);
 }
 
 function feSetTool(t) {
@@ -1977,9 +2172,12 @@ async function mutate(lines) {
     return true;
   } finally { oc.busy = false; }
 }
-/* 快速六面盒:Phase 4 才做對話框 */
-$("btnBox6").addEventListener("click", () =>
-  setStatus("快速六面盒將於 Phase 4 提供"));
+/* 快速六面盒對話框(§5.6) */
+$("btnBox6").addEventListener("click", () => {
+  $("modalBackdrop").hidden = false;
+  $("box6Dialog").hidden = false;
+});
+$("box6Submit").addEventListener("click", submitBox6);
 /* ---- 面內工作區事件 ---- */
 for (const b of document.querySelectorAll("[data-face-tool]"))
   b.addEventListener("click", () => feSetTool(b.dataset.faceTool));

@@ -250,6 +250,23 @@
           <div id="faceInspectorContent"></div>
         </aside>
       </div>
+      <div id="spaceWorkspaceLayout" class="space-workspace-layout" hidden>
+        <aside class="inner-panel space-boundary-panel">
+          <section class="inner-section">
+            <div class="inner-section-title"><span>成員面</span><span id="spaceMemberCount">0</span></div>
+            <div id="spaceMemberList" class="space-boundary-list"></div>
+          </section>
+        </aside>
+        <section class="space-workspace-stage">
+          <div class="space-hero-preview" id="spaceProjWrap">
+            <svg id="spaceProjSvg"></svg>
+          </div>
+          <div id="spaceFaceGrid" class="space-face-grid"></div>
+        </section>
+        <aside class="inner-panel space-info-panel">
+          <div id="spaceInspectorContent"></div>
+        </aside>
+      </div>
     </main>
     <footer class="object-workspace-statusbar">
       <div><span id="workspaceToolStatus">工具：選取</span>
@@ -257,6 +274,41 @@
       <span id="workspaceSelectionStatus"></span></div>
     </footer>
   </section>
+
+<div id="modalBackdrop" class="modal-backdrop" hidden></div>
+
+<section id="box6Dialog" class="dialog" role="dialog" aria-modal="true" hidden>
+  <header class="dialog-header">
+    <div><span class="dialog-eyebrow">快速建立</span><h2>六面盒空間</h2></div>
+    <button id="box6Close" class="dialog-close text-button" type="button">✕</button>
+  </header>
+  <div class="dialog-body">
+    <div class="place-form">
+      <label>寬 W (mm)<input id="box6W" type="number" step="1" value="4000"></label>
+      <label>深 D (mm)<input id="box6D" type="number" step="1" value="3000"></label>
+      <label>高 H (mm)<input id="box6H" type="number" step="1" value="2500"></label>
+      <label class="face-option-row"><span>含地板</span><input id="box6Floor" type="checkbox" checked></label>
+    </div>
+  </div>
+  <footer class="dialog-footer">
+    <button id="box6Cancel" class="btn" type="button">取消</button>
+    <button id="box6Submit" class="primary-button" type="button"><span>建立</span></button>
+  </footer>
+</section>
+
+<section id="memberDialog" class="dialog" role="dialog" aria-modal="true" hidden>
+  <header class="dialog-header">
+    <div><span class="dialog-eyebrow">空間成員</span><h2 id="memberDialogTitle">編輯成員</h2></div>
+    <button id="memberClose" class="dialog-close text-button" type="button">✕</button>
+  </header>
+  <div class="dialog-body">
+    <div id="memberCheckList" class="member-check-list"></div>
+  </div>
+  <footer class="dialog-footer">
+    <button id="memberCancel" class="btn" type="button">取消</button>
+    <button id="memberSubmit" class="primary-button" type="button"><span>確認</span></button>
+  </footer>
+</section>
 
 <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
 

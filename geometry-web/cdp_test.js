@@ -505,6 +505,102 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     await sleep(400);
   } else console.log("✗ 游離面卡未出現");
 
+  /* ================= Phase 4：空間工作區 ================= */
+  /* WORLD_MAX_BOUNDARIES=8：清掉前面累積的面再測六面盒;
+     P3-6 結尾焦點可能還在面工作區,先明確退出 */
+  await eval_(`leaveFocus()`);
+  await eval_(`api("line reset")`);
+  await eval_(`renderObjects()`);
+  await sleep(600);
+  console.log("=== P4-1. 快速六面盒 4000/3000/2500 ===");
+  const objPre = await eval_(
+    `api("objects").then(r=>({f:r.faces.length,s:r.spaces.length}))`);
+  await eval_(`document.getElementById("btnBox6").click()`);
+  await sleep(300);
+  console.log("box6 dialog:", await eval_(
+    `!document.getElementById("box6Dialog").hidden ? "✓ 開啟" : "✗"`));
+  await eval_(`document.getElementById("box6Submit").click()`);
+  await sleep(1500);
+  const objBox = await eval_(
+    `api("objects").then(r=>({f:r.faces.length,s:r.spaces.length,
+      closed:r.spaces.map(x=>[x.id,x.closed,x.members.length])}))`);
+  const boxSp = objBox.closed.find(x => x[2] === 6);
+  console.log("objects:", JSON.stringify(objPre), "->", JSON.stringify(objBox));
+  console.log("六面盒:", objBox.f === objPre.f + 6 && objBox.s === objPre.s + 1 &&
+    boxSp && boxSp[1] === true ? `✓ 6面+1空間 closed:true (空間 ${boxSp && boxSp[0]})` : "✗");
+  const boxSid = boxSp && boxSp[0];
+
+  console.log("=== P4-2. 空間工作區：成員/槽位/三視圖 ===");
+  const spCard = await eval_(`(()=>{
+    const c = document.querySelector('.ocard[data-kind="space"][data-id="${boxSid}"]');
+    if (!c) return null;
+    const r = c.getBoundingClientRect();
+    return {x: r.left + r.width/2, y: r.top + r.height/2};
+  })()`);
+  if (spCard) {
+    await dblclick(spCard.x, spCard.y);
+    await sleep(1100);
+    console.log("focus:", await eval_(`JSON.stringify(oc.focus)`),
+      await eval_(`oc.focus && oc.focus.t==="space" ? "✓" : "✗"`));
+    console.log("space layout:", await eval_(
+      `!document.getElementById("spaceWorkspaceLayout").hidden ? "✓" : "✗"`));
+    const memN = await eval_(
+      `document.querySelectorAll("#spaceMemberList .space-boundary-button").length`);
+    const slotOn = await eval_(
+      `document.querySelectorAll("#spaceInspectorContent .slot.on").length`);
+    const projKids = await eval_(
+      `document.getElementById("spaceProjSvg").childElementCount`);
+    console.log("成員列:", memN, memN === 6 ? "✓" : "✗",
+      "| 槽位佔用:", slotOn, slotOn === 6 ? "✓" : "✗",
+      "| 三視圖群組:", projKids, projKids >= 3 ? "✓" : "✗");
+  } else console.log("✗ 六面盒空間卡未出現");
+
+  console.log("=== P4-3. 編輯成員：移除一面 → closed:false ===");
+  await eval_(`document.getElementById("spEditMembers").click()`);
+  await sleep(400);
+  console.log("member dialog:", await eval_(
+    `!document.getElementById("memberDialog").hidden ? "✓" : "✗"`));
+  /* 取消勾選第一個成員 */
+  await eval_(`(()=>{
+    const c = document.querySelector('#memberCheckList input:checked');
+    if (c) c.checked = false;
+  })()`);
+  await eval_(`document.getElementById("memberSubmit").click()`);
+  await sleep(1200);
+  const spAfterEdit = await eval_(
+    `api("objects").then(r=>r.spaces.find(s=>s.id===${boxSid}))`);
+  console.log("members:", spAfterEdit && spAfterEdit.members.length,
+    spAfterEdit && spAfterEdit.members.length === 5 ? "✓" : "✗",
+    "| closed:", spAfterEdit && spAfterEdit.closed,
+    spAfterEdit && spAfterEdit.closed === false ? "✓ closed:false" : "✗");
+
+  console.log("=== P4-4. Esc 回世界；mutate 第4行送錯回滾 ===");
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await sleep(400);
+  console.log("focus:", await eval_(`JSON.stringify(oc.focus)`));
+  const objPre2 = await eval_(
+    `api("objects").then(r=>({f:r.faces.length,s:r.spaces.length}))`);
+  const ids9 = await eval_(`api("newid").then(r=>r.boundary)`);
+  /* 世界已有 6/8 邊界:2 面 + 空間重宣告(收成 1 成員,真的改變狀態) + 第4行錯 + 1 */
+  const boxMem1 = await eval_(
+    `api("objects").then(r=>r.spaces.find(s=>s.id===${boxSid}).members[0])`);
+  const mutR = await eval_(`mutate([
+    "boundary ${ids9} outline 0,0 100,0 100,100 0,100",
+    "boundary ${ids9 + 1} outline 0,0 100,0 100,100 0,100",
+    "space ${boxSid} boundary ${boxMem1}",
+    "bogus_command_xyz",
+    "boundary ${ids9 + 2} outline 0,0 100,0 100,100 0,100"
+  ])`);
+  await sleep(900);
+  const objPost = await eval_(
+    `api("objects").then(r=>({f:r.faces.length,s:r.spaces.length,
+      mem:r.spaces.find(s=>s.id===${boxSid}).members.length}))`);
+  console.log("mutate 回傳:", mutR,
+    "| objects:", JSON.stringify(objPre2), "->", JSON.stringify(objPost),
+    objPost.f === objPre2.f && objPost.s === objPre2.s && objPost.mem === 5
+      ? "✓ 已回滾(含空間成員還原)" : "✗");
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

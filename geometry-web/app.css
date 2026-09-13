@@ -816,3 +816,18 @@ svg text { user-select: none; }
 
 .face-help { padding: 0 14px 12px; color: var(--muted); font-size: 9.5px; line-height: 1.6; }
 .ws-tool-primary, .object-workspace-actions .primary-button { font-size: 11px; }
+
+/* ---- Phase 4：空間槽位 / 成員勾選 ---- */
+.slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.slot { padding: 7px 8px; border: 1px solid var(--border); border-radius: 7px;
+  background: #fff; text-align: center; font-size: 9.5px; }
+.slot span { display: block; color: var(--muted); font-weight: 750; }
+.slot b { display: block; margin-top: 2px; color: var(--faint); font-weight: 600; }
+.slot.on { border-color: var(--space); background: var(--space-soft); }
+.slot.on b { color: var(--space); }
+.member-check-list { display: grid; gap: 5px; }
+.member-check-row { display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 8px; font-size: 11px; cursor: pointer; }
+.member-check-row:hover { background: var(--panel-muted); }
+.member-check-row small { margin-left: auto; color: var(--muted); }
+.member-check-row input:disabled + span { color: var(--faint); }
