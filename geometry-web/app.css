@@ -774,3 +774,45 @@ svg text { user-select: none; }
 .top-actions .search-control { width: 160px; }
 #sceneList { max-width: 150px; font: inherit; font-size: 11px;
   padding: 4px 6px; border: 1px solid var(--border); border-radius: 7px; }
+
+/* ---- Phase 3：檢視器共用塊 / fixity / 放置表單 / 投影面板 / 工作區小字 ---- */
+.inspector-block { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+.ib-title { display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  margin-bottom: 9px; font-size: 12px; font-weight: 700; color: var(--ink); }
+.ib-title .tag { padding: 1px 7px; border-radius: 9px; background: var(--panel-muted);
+  color: var(--muted); font-size: 9px; font-weight: 650; }
+.kv { display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  margin: 4px 0; font-size: 10.5px; }
+.kv span { color: var(--muted); }
+.kv b { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.btn-col { display: grid; gap: 6px; }
+.btn { min-height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px;
+  background: #fff; color: var(--ink); font-size: 11px; font-weight: 650; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.btn:hover { background: var(--panel-muted); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.text-button { padding: 2px 6px; border: 0; background: none; color: var(--accent);
+  font-size: 10.5px; font-weight: 650; cursor: pointer; }
+.text-button:hover { text-decoration: underline; }
+
+.fixity-list { display: flex; flex-wrap: wrap; gap: 5px; }
+.fixity-btn { min-width: 30px; height: 26px; padding: 0 6px; border: 1px solid var(--border);
+  border-radius: 6px; background: #fff; color: var(--muted); font-size: 10px;
+  font-weight: 700; cursor: pointer; }
+.fixity-btn.on { border-color: var(--face); background: var(--face-soft); color: var(--face); }
+
+.place-presets { display: flex; flex-wrap: wrap; gap: 2px; margin-bottom: 8px; }
+.place-form { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.place-form label { display: flex; flex-direction: column; gap: 3px;
+  color: var(--muted); font-size: 9.5px; }
+.place-form input, .place-form select { height: 28px; padding: 0 7px;
+  border: 1px solid var(--border); border-radius: 7px; background: #fff; font-size: 10.5px; }
+.place-form .btn { grid-column: 1 / -1; }
+
+.proj-checks { display: flex; gap: 12px; margin-bottom: 8px; font-size: 10.5px; }
+.proj-checks label { display: inline-flex; align-items: center; gap: 4px; }
+.proj-svg { width: 100%; max-height: 220px; margin-top: 6px;
+  border: 1px solid var(--border); border-radius: 8px; background: #f8fafc; }
+
+.face-help { padding: 0 14px 12px; color: var(--muted); font-size: 9.5px; line-height: 1.6; }
+.ws-tool-primary, .object-workspace-actions .primary-button { font-size: 11px; }

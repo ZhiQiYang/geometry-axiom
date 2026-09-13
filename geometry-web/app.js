@@ -371,6 +371,7 @@ async function emitLine(text) {
     else { await render(); await refreshSurfaces(); }
   } else {
     setStatus("✗ " + (r.error || ""));
+    toast(r.error || "指令失敗");
   }
   return r.ok;
 }
@@ -592,10 +593,19 @@ window.addEventListener("keydown", async e => {
   }
   if (e.key === "Escape") {
     if (oc.on) {
-      if (oc.rect || oc.poly.length || oc.drawTool ||
-          (oc.edit && (oc.edit.drag || oc.edit.work))) {
+      if (oc.focus && oc.focus.t === "face") {
+        /* 面內工作區：先取消進行中的拖曳，其次退出工具，最後返回 */
+        if (fe.drag || fe.work) {
+          fe.drag = null; fe.work = null; drawFaceEditor();
+        } else if (fe.tool !== "select") {
+          feSetTool("select");
+        } else {
+          leaveFocus();
+        }
+        return;
+      }
+      if (oc.rect || oc.poly.length || oc.drawTool) {
         oc.rect = null; oc.poly = []; oc.drawTool = null;
-        if (oc.edit) { oc.edit.drag = null; oc.edit.work = null; }
         drawObjects();
       } else if (oc.focus) {
         leaveFocus();
@@ -604,7 +614,22 @@ window.addEventListener("keydown", async e => {
     }
     drawPts = []; rectStart = null; editDrag = null; previewClear();
     if (tool === "edit") drawEditHandles();
+    return;
   }
+  /* 面內工作區工具快捷鍵（§5.8）：v/l/r/h、f、空白暫時平移 */
+  if (oc.on && oc.focus && oc.focus.t === "face") {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+    const k = e.key.toLowerCase();
+    if (k === " ") { fe.spaceDown = true; e.preventDefault(); return; }
+    const map = { v: "select", l: "guide", r: "hole", h: "pan" };
+    if (map[k]) { feSetTool(map[k]); return; }
+    if (k === "f" && oc.edit && oc.bmap[oc.edit.bid]) {
+      feFit(loopsBBox(oc.bmap[oc.edit.bid])); return;
+    }
+  }
+});
+window.addEventListener("keyup", e => {
+  if (e.key === " ") fe.spaceDown = false;
 });
 
 /* ---- 指令列與按鈕 ---- */
@@ -1049,8 +1074,10 @@ async function enterFocus(t, id) {
       return;
     }
     oc.bmap[id] = b.loops;
-    oc.edit = { bid: id, work: null, drag: null };
-    ocFit(loopsBBox(b.loops));
+    oc.edit = { bid: id };
+    await openFaceWorkspace(id);
+    drawObjects();
+    return;
   } else {
     /* 空間層：鏡頭拉近成員卡群的範圍 */
     const mem = oc.spaces.find(s => s.id === id);
@@ -1070,110 +1097,518 @@ async function enterFocus(t, id) {
 }
 
 function leaveFocus() {
+  const wasFace = oc.focus && oc.focus.t === "face";
   oc.focus = oc.stack.pop() || null;
   oc.rect = null; oc.poly = []; oc.edit = null; oc.drawTool = null;
+  if (wasFace && (!oc.focus || oc.focus.t !== "face")) {
+    $("objectWorkspace").hidden = true;
+    fe.drag = null; fe.work = null; fe.guides = [];
+  }
   if (!oc.focus) { oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply(); }
   drawObjects();
   setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白處拖曳平移 · 滾輪縮放");
 }
 
-/* ---- 面編輯器（2D 直編：畫布座標 = 邊界 uv） ---- */
+/* ---- 面內工作區（Phase 3）：objectWorkspace 殼 + data-face-hit 直編 ----
+   畫布座標 = 邊界 uv（C3 映射）；頂點/邊/參考線命中走 SVG 屬性，
+   拖曳套用沿用 applyVertexEdit/applyEdgeEdit（保持正交）。 */
+const fe = {
+  tool: "select",
+  panX: 0, panY: 0, zoom: 1,
+  drag: null,              /* vertex/edge/guide/holeRect/guideNew/pan */
+  work: null,              /* 拖曳中的 loops 副本 */
+  guides: [],              /* [{id, axis, off}] 由 dump 解析 */
+  spaceDown: false,
+  projOpen: false,
+  projViews: new Set(),
+};
+
+/* 承載面 id（placement id）——guide 的 sid，不是 boundary id */
+function feSurf(bid) { return oc.surfs.find(s => s.boundary === bid) || null; }
+function feSid(bid) { const s = feSurf(bid); return s ? s.id : null; }
+
+function fePoint(ev) {
+  const r = $("faceEditorSvg").getBoundingClientRect();
+  return { x: (ev.clientX - r.left - fe.panX) / fe.zoom,
+           y: (ev.clientY - r.top - fe.panY) / fe.zoom };
+}
+function feSnap(p) {
+  if (!$("faceSnapToggle").checked) return p;
+  const g = +$("faceGridSizeSelect").value || 50;
+  return { x: Math.round(p.x / g) * g, y: Math.round(p.y / g) * g };
+}
+function feApply() {
+  $("faceEditorRoot").setAttribute("transform",
+    `translate(${fe.panX},${fe.panY}) scale(${fe.zoom})`);
+}
+function feFit(bb) {
+  const r = $("faceEditorViewport").getBoundingClientRect();
+  const w = Math.max(1, bb[2] - bb[0]), h = Math.max(1, bb[3] - bb[1]);
+  fe.zoom = Math.max(.02, Math.min(r.width / w, r.height / h) * .8);
+  fe.panX = r.width / 2 - (bb[0] + bb[2]) / 2 * fe.zoom;
+  fe.panY = r.height / 2 - (bb[1] + bb[3]) / 2 * fe.zoom;
+  feApply();
+}
+
+async function openFaceWorkspace(bid) {
+  $("objectWorkspace").hidden = false;
+  $("workspaceTitle").textContent = "面 " + bid;
+  $("workspaceEyebrow").textContent = "面內工作區";
+  fe.tool = "select"; fe.drag = null; fe.work = null;
+  fe.projOpen = false; fe.projViews = new Set();
+  feFit(loopsBBox(oc.bmap[bid]));
+  await feLoadGuides();
+  feSetTool("select");
+  drawFaceEditor();
+  renderFaceLayers();
+  renderFaceInspector();
+  setStatus(`面 ${bid}：拖頂點/邊編輯 · 參考線 l · 開口 r · Esc 返回`);
+}
+
+function feSetTool(t) {
+  if (t === "guide" && !feSid(oc.edit && oc.edit.bid)) {
+    setStatus("游離面沒有承載面，不能放參考線——先在檢視器「放置」");
+    return;
+  }
+  fe.tool = t;
+  for (const b of document.querySelectorAll("[data-face-tool]"))
+    b.classList.toggle("active", b.dataset.faceTool === t);
+  const vp = $("faceEditorViewport");
+  vp.className = "face-editor-viewport tool-" +
+    ({ select: "select", guide: "referenceLine", hole: "opening", pan: "pan" }[t] || t);
+  $("workspaceToolStatus").textContent = "工具：" +
+    ({ select: "選取", guide: "參考線", hole: "開口", pan: "平移" }[t] || t);
+  /* 游離面：參考線工具停用 */
+  const gb = document.querySelector('[data-face-tool="guide"]');
+  if (gb) {
+    const free = !feSid(oc.edit && oc.edit.bid);
+    gb.disabled = free;
+    gb.title = free ? "游離面不能放參考線（先放置）" : "參考線 (l)";
+  }
+}
+
+async function feLoadGuides() {
+  fe.guides = [];
+  const bid = oc.edit && oc.edit.bid, sid = bid && feSid(bid);
+  if (!sid) return;
+  const d = await api("dump");
+  if (!d.ok || !d.text) return;
+  for (const ln of d.text.split("\n")) {
+    const m = ln.match(/^guide (\d+) (\d+) (u|v) (-?\d+)\s*$/);
+    if (m && +m[2] === sid)
+      fe.guides.push({ id: +m[1], axis: m[3], off: +m[4] });
+  }
+}
+
 function drawFaceEditor() {
   const e = oc.edit;
-  if (!e) return;
-  const loops = e.work || oc.bmap[e.bid];
+  if (!e || !oc.focus || oc.focus.t !== "face") return;
+  const loops = fe.work || oc.bmap[e.bid];
   if (!loops) return;
-  oroot.textContent = "";
-  const rr = 6 / oc.zoom;
+  const root = $("faceEditorRoot");
+  root.textContent = "";
+  const z = fe.zoom;
+  const bb = loopsBBox(loops);
+  const pad = 80 / z;
 
+  /* 格線 */
+  if ($("faceGridToggle").checked) {
+    const g = +$("faceGridSizeSelect").value || 50;
+    const x0 = Math.floor((bb[0] - pad) / g) * g, x1 = Math.ceil((bb[2] + pad) / g) * g;
+    const y0 = Math.floor((bb[1] - pad) / g) * g, y1 = Math.ceil((bb[3] + pad) / g) * g;
+    for (let x = x0; x <= x1; x += g)
+      el("line", { x1: x, y1: y0, x2: x, y2: y1, stroke: "#e6eaf0",
+        "stroke-width": 1 / z }, root);
+    for (let y = y0; y <= y1; y += g)
+      el("line", { x1: x0, y1: y, x2: x1, y2: y, stroke: "#e6eaf0",
+        "stroke-width": 1 / z }, root);
+  }
+  /* 邊命中層（畫在面底下層，寬透明線） */
+  for (let li = 0; li < loops.length; ++li) {
+    const vs = loops[li].verts;
+    for (let i = 0; i < vs.length; ++i) {
+      const a = vs[i], b = vs[(i + 1) % vs.length];
+      el("line", { x1: a[0], y1: a[1], x2: b[0], y2: b[1],
+        "data-face-hit": `e:${li}:${i}`,
+        stroke: "transparent", "stroke-width": Math.max(8, 12 / z) }, root);
+    }
+  }
   for (let li = 0; li < loops.length; ++li) {
     const lp = loops[li];
     el("polygon", { points: lp.verts.map(p => p.join(",")).join(" "),
-      fill: li === 0 ? "rgba(80,140,220,.18)" : "#f8f8f4",
-      stroke: "#357", "stroke-width": 2 / oc.zoom }, oroot);
-    for (const p of lp.verts) {
-      el("circle", { cx: p[0], cy: p[1], r: rr, fill: "#fff",
-                     stroke: "#357", "stroke-width": 1.5 / oc.zoom }, oroot);
+      fill: li === 0 ? "rgba(47,143,123,.13)" : "#f8fafc",
+      stroke: "#2f8f7b", "stroke-width": 1.7,
+      "vector-effect": "non-scaling-stroke" }, root);
+    for (let i = 0; i < lp.verts.length; ++i) {
+      el("circle", { cx: lp.verts[i][0], cy: lp.verts[i][1], r: 5 / z,
+        "data-face-hit": `v:${li}:${i}`,
+        class: "face-vertex-handle" }, root);
     }
   }
-  drawCrumb();
+  /* 參考線（虛線，跨面 bbox）；拖曳中用暫存 offset */
+  const gb = [bb[0] - pad, bb[1] - pad, bb[2] + pad, bb[3] + pad];
+  for (const g of fe.guides) {
+    const off = (fe.drag && fe.drag.kind === "guide" &&
+                 fe.drag.id === g.id && fe.drag.off != null)
+      ? fe.drag.off : g.off;
+    const seg = g.axis === "u" ? [off, gb[1], off, gb[3]]
+                               : [gb[0], off, gb[2], off];
+    el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
+      class: "face-reference-line" }, root);
+    el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
+      "data-face-hit": `g:${g.id}:${g.axis}`,
+      stroke: "transparent", "stroke-width": Math.max(8, 14 / z) }, root);
+  }
+  /* 草稿 */
+  const d = fe.drag;
+  if (d && d.kind === "holeRect") {
+    el("rect", { x: Math.min(d.x0, d.x1), y: Math.min(d.y0, d.y1),
+      width: Math.abs(d.x1 - d.x0), height: Math.abs(d.y1 - d.y0),
+      class: "draft-shape" }, root);
+  }
+  if (d && d.kind === "guideNew") {
+    const axis = Math.abs(d.x1 - d.x0) >= Math.abs(d.y1 - d.y0) ? "v" : "u";
+    const off = axis === "v" ? d.y1 : d.x1;
+    const seg = axis === "u" ? [off, gb[1], off, gb[3]] : [gb[0], off, gb[2], off];
+    el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
+      class: "draft-shape" }, root);
+  }
 }
 
-async function faceEditDown(pt) {
+function feDown(pt, ev) {
   const e = oc.edit;
   if (!e) return;
-
-  if (oc.drawTool === "hole") {
-    oc.rect = { x: pt.x, y: pt.y };
+  if (fe.tool === "pan" || fe.spaceDown) {
+    fe.drag = { kind: "pan", cx: ev.clientX, cy: ev.clientY };
     return;
   }
-
-  const r = Math.max(4, 10 / oc.zoom);
-  /* bhit 是非同步的：pointerup 可能先到。記著 pending 讓 up 等它，
-   * 否則會留下「沒放開的拖曳」卡住編輯態。 */
-  e.down = api(`bhit ${e.bid} ${Math.round(pt.x)} ${Math.round(pt.y)} ${Math.ceil(r)}`);
-  const h = await e.down;
-  e.down = null;
-  if (!h.ok) return;
-  e.drag = { loop: h.loop, index: h.index, kind: h.kind, moved: false };
-  e.work = (e.work || oc.bmap[e.bid]).map(l =>
+  if (fe.tool === "hole") {
+    fe.drag = { kind: "holeRect", x0: pt.x, y0: pt.y, x1: pt.x, y1: pt.y };
+    return;
+  }
+  if (fe.tool === "guide") {
+    if (!feSid(e.bid)) { setStatus("游離面不能放參考線——先在檢視器「放置」"); return; }
+    fe.drag = { kind: "guideNew", x0: pt.x, y0: pt.y, x1: pt.x, y1: pt.y };
+    return;
+  }
+  /* select：data-face-hit 命中 v:<loop>:<i> / e:<loop>:<i> / g:<id>:<axis> */
+  const t = ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
+  if (!t) return;
+  const [k, a, b] = t.dataset.faceHit.split(":");
+  if (k === "g") {
+    fe.drag = { kind: "guide", id: +a, axis: b, moved: false };
+    return;
+  }
+  fe.drag = { kind: k === "v" ? "vertex" : "edge",
+              loop: +a, index: +b, moved: false };
+  fe.work = (fe.work || oc.bmap[e.bid]).map(l =>
     ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
 }
 
-function faceEditMove(pt) {
-  const e = oc.edit;
-  if (!e) return;
-  if (oc.drawTool === "hole" && oc.rect) {
-    drawFaceEditor();
-    const x0 = Math.min(oc.rect.x, pt.x), y0 = Math.min(oc.rect.y, pt.y);
-    el("rect", { x: x0, y: y0, width: Math.abs(pt.x - oc.rect.x),
-      height: Math.abs(pt.y - oc.rect.y), fill: "rgba(220,120,60,.2)",
-      stroke: "#c60", "stroke-width": 2 / oc.zoom,
-      "stroke-dasharray": `${6 / oc.zoom} ${4 / oc.zoom}` }, oroot);
+function feMove(pt, ev) {
+  const d = fe.drag;
+  if (!d) return;
+  if (d.kind === "pan") {
+    fe.panX += ev.clientX - d.cx; fe.panY += ev.clientY - d.cy;
+    d.cx = ev.clientX; d.cy = ev.clientY;
+    feApply();
     return;
   }
-  if (!e.drag || !e.work) return;
-  e.drag.moved = true;
+  if (d.kind === "holeRect" || d.kind === "guideNew") {
+    d.x1 = pt.x; d.y1 = pt.y;
+    drawFaceEditor();
+    return;
+  }
+  if (d.kind === "guide") {
+    d.moved = true;
+    d.off = d.axis === "u" ? Math.round(pt.x) : Math.round(pt.y);
+    drawFaceEditor();
+    return;
+  }
+  if (!fe.work) return;
+  d.moved = true;
   const uv = { u: Math.round(pt.x), v: Math.round(pt.y) };
-  const pts = e.work[e.drag.loop + 1].verts;
-  if (e.drag.kind === "vertex") applyVertexEdit(pts, e.drag.index, uv);
-  else applyEdgeEdit(pts, e.drag.index, uv);
+  const pts = fe.work[d.loop].verts;
+  if (d.kind === "vertex") applyVertexEdit(pts, d.index, uv);
+  else applyEdgeEdit(pts, d.index, uv);
   drawFaceEditor();
 }
 
-async function faceEditUp(pt) {
-  const e = oc.edit;
-  if (!e) return;
-  if (e.down) await e.down;          /* 等還在飛的 bhit：down 比 up 晚到 */
+/* 邊界變更成功後：重拉 loops + guides + 面板 */
+async function feAfterChange() {
+  const bid = oc.edit && oc.edit.bid;
+  if (bid) {
+    delete oc.bmap[bid];
+    const b = await api("boundary " + bid);
+    if (b.ok) oc.bmap[bid] = b.loops;
+  }
+  await feLoadGuides();
+  drawFaceEditor();
+  renderFaceLayers();
+  renderFaceInspector();
+}
 
-  if (oc.drawTool === "hole" && oc.rect) {
-    const st = oc.rect; oc.rect = null;
-    if (st.x === pt.x || st.y === pt.y) return;
-    const x0 = Math.round(Math.min(st.x, pt.x)), x1 = Math.round(Math.max(st.x, pt.x));
-    const y0 = Math.round(Math.min(st.y, pt.y)), y1 = Math.round(Math.max(st.y, pt.y));
+async function feUp(pt) {
+  const e = oc.edit;
+  const d = fe.drag; fe.drag = null;
+  if (!e || !d) { drawFaceEditor(); return; }
+  if (d.kind === "pan") return;
+  if (d.kind === "holeRect") {
+    const w = Math.abs(d.x1 - d.x0), h = Math.abs(d.y1 - d.y0);
+    if (w < 1 || h < 1) { drawFaceEditor(); return; }
+    const x0 = Math.round(Math.min(d.x0, d.x1)), x1 = Math.round(Math.max(d.x0, d.x1));
+    const y0 = Math.round(Math.min(d.y0, d.y1)), y1 = Math.round(Math.max(d.y0, d.y1));
     const loops = oc.bmap[e.bid].map(l =>
       ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
     loops.push({ verts: [[x0, y0], [x1, y0], [x1, y1], [x0, y1]],
                  fixity: [1, 1, 1, 1] });
-    if (await emitBoundary(e.bid, loops)) {
-      delete oc.bmap[e.bid];
-      const b = await api("boundary " + e.bid);
-      if (b.ok) oc.bmap[e.bid] = b.loops;
-    }
-    drawFaceEditor();
+    if (await emitBoundary(e.bid, loops)) await feAfterChange();
+    else drawFaceEditor();
     return;
   }
-
-  if (e.drag) {
-    const work = e.work, moved = e.drag.moved;
-    e.drag = null; e.work = null;
-    if (!moved) return;              /* 點了一下沒拖：不算變更 */
-    if (await emitBoundary(e.bid, work)) {
-      delete oc.bmap[e.bid];
-      const b = await api("boundary " + e.bid);
-      if (b.ok) oc.bmap[e.bid] = b.loops;
-    }
+  if (d.kind === "guideNew") {
+    const dx = Math.abs(d.x1 - d.x0), dy = Math.abs(d.y1 - d.y0);
+    if (dx < 1 && dy < 1) { drawFaceEditor(); return; }
+    const axis = dx >= dy ? "v" : "u";
+    const off = Math.round(axis === "v" ? d.y1 : d.x1);
+    const sid = feSid(e.bid);
+    const ids = await api("newid");
+    if (await emitLine(`guide ${ids.guide} ${sid} ${axis} ${off}`))
+      await feLoadGuides();
     drawFaceEditor();
+    renderFaceLayers();
+    return;
+  }
+  if (d.kind === "guide") {
+    if (d.moved && await emitLine(`move ${d.id} ${d.off}`))
+      await feLoadGuides();
+    drawFaceEditor();
+    renderFaceLayers();
+    return;
+  }
+  /* vertex / edge */
+  const work = fe.work, moved = d.moved;
+  fe.work = null;
+  if (!moved) { drawFaceEditor(); return; }
+  if (await emitBoundary(e.bid, work)) await feAfterChange();
+  else drawFaceEditor();
+}
+
+/* 左欄「面內物件」：外環 / 孔 / 參考線（§5.5.1） */
+function renderFaceLayers() {
+  const e = oc.edit;
+  const list = $("faceLayerList");
+  if (!e || !list) return;
+  const loops = fe.work || oc.bmap[e.bid] || [];
+  let n = 0;
+  list.textContent = "";
+  const row = (iconTxt, name, sub) => {
+    const r = document.createElement("div");
+    r.className = "face-layer-row";
+    r.innerHTML = `<span class="face-layer-icon">${iconTxt}</span>` +
+      `<span class="face-layer-copy"><strong>${name}</strong>` +
+      `<small>${sub}</small></span>`;
+    list.appendChild(r);
+    ++n;
+  };
+  if (loops.length) {
+    const f = loops[0].fixity.filter(x => x).length;
+    row("▱", "外環", `${loops[0].verts.length} 頂點 · ${f}/${loops[0].fixity.length} 邊 F`);
+    for (let i = 1; i < loops.length; ++i) {
+      const b = loopsBBox([loops[i]]);
+      row("▨", `孔 ${i}`, `${loops[i].verts.length} 頂點 · ${b[2] - b[0]}×${b[3] - b[1]}`);
+    }
+  }
+  for (const g of fe.guides)
+    row("⌖", `參考線 ${g.id}`, `${g.axis} = ${g.off}`);
+  $("faceLayerCount").textContent = n;
+}
+
+/* 右欄檢視器（§5.5.3 + 5.5.3a 放置 + 5.5.4 投影） */
+function renderFaceInspector() {
+  const e = oc.edit;
+  const pane = $("faceInspectorContent");
+  if (!e || !pane) return;
+  const bid = e.bid;
+  const loops = oc.bmap[bid] || [];
+  const surf = feSurf(bid);
+  const bb = loops.length ? loopsBBox(loops) : null;
+  let area = 0;
+  for (let i = 0; i < loops.length; ++i) {
+    const vs = loops[i].verts;
+    for (let j = 0; j < vs.length; ++j) {
+      const a = vs[j], b = vs[(j + 1) % vs.length];
+      area += (i === 0 ? 1 : -1) * (a[0] * b[1] - b[0] * a[1]);
+    }
+  }
+  area = Math.abs(area) / 2;
+  const spaces = oc.spaces.filter(s => s.members.includes(bid));
+
+  let html = `<div class="inspector-block"><div class="ib-title">面 ${bid}` +
+    `<span class="tag">${surf ? "已放置" : "游離"}</span></div>` +
+    `<div class="kv"><span>id</span><b>${bid}</b></div>` +
+    `<div class="kv"><span>承載面</span><b>${surf ? surf.id : "—"}</b></div>`;
+  if (surf) html +=
+    `<div class="kv"><span>origin</span><b>${surf.origin.join(", ")}</b></div>` +
+    `<div class="kv"><span>u / v</span><b>${AXIS_WORD[surf.u.join()]} / ${AXIS_WORD[surf.v.join()]}</b></div>`;
+  if (bb) html += `<div class="kv"><span>bbox</span><b>${bb.join(", ")}</b></div>`;
+  html += `<div class="kv"><span>面積</span><b>${(area / 1e6).toFixed(2)} m²</b></div>` +
+    `<div class="kv"><span>所屬空間</span><b>${spaces.length ? spaces.map(s => "空間 " + s.id).join("、") : "—"}</b></div>` +
+    `</div>`;
+
+  /* fixity：每邊 F/X 切換 → 重宣告 boundary */
+  html += `<div class="inspector-block"><div class="ib-title">fixity（外環每邊）</div><div class="fixity-list">`;
+  if (loops.length) {
+    for (let i = 0; i < loops[0].verts.length; ++i) {
+      const a = loops[0].verts[i], b = loops[0].verts[(i + 1) % loops[0].verts.length];
+      const horiz = a[1] === b[1];
+      html += `<button class="fixity-btn${loops[0].fixity[i] ? " on" : ""}" ` +
+        `data-fix-edge="${i}" title="邊 ${i}（${horiz ? "水平" : "直立"}）` +
+        `（${a}→${b}）">${loops[0].fixity[i] ? "F" : "X"}</button>`;
+    }
+  }
+  html += `</div></div>`;
+  /* 放置表單（§5.5.3a：游離與已放置都可重綁） */
+  html += placeFormHTML(bid);
+  /* 投影面板（§5.5.4） */
+  html += `<div class="inspector-block"><div class="ib-title">` +
+    `<button id="projToggle" class="text-button">${fe.projOpen ? "▾" : "▸"} 投影視圖</button></div>` +
+    `<div id="projBody"${fe.projOpen ? "" : " hidden"}>` +
+    `<div class="proj-checks">` +
+    [0, 1, 2].map(v =>
+      `<label><input type="checkbox" data-proj-check="${v}"${fe.projViews.has(v) ? " checked" : ""}> ${["正面", "側面", "仰視"][v]}</label>`).join("") +
+    `</div><div id="projViews"></div></div></div>`;
+  pane.innerHTML = html;
+
+  /* 綁事件 */
+  for (const b of pane.querySelectorAll("[data-fix-edge]"))
+    b.addEventListener("click", async () => {
+      const i = +b.dataset.fixEdge;
+      const nl = oc.bmap[bid].map(l =>
+        ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+      nl[0].fixity[i] = nl[0].fixity[i] ? 0 : 1;
+      if (await emitBoundary(bid, nl)) await feAfterChange();
+    });
+  bindPlaceForm(pane, bid);
+  const pt = pane.querySelector("#projToggle");
+  pt.addEventListener("click", async () => {
+    fe.projOpen = !fe.projOpen;
+    if (fe.projOpen && !fe.projViews.size) {
+      const v = feDefaultView(bid);
+      if (v != null) fe.projViews.add(v);
+    }
+    renderFaceInspector();
+    if (fe.projOpen) await feRenderProjection();
+  });
+  for (const c of pane.querySelectorAll("[data-proj-check]"))
+    c.addEventListener("change", async () => {
+      fe.projViews = new Set(
+        [...pane.querySelectorAll("[data-proj-check]")]
+          .filter(x => x.checked).map(x => +x.dataset.projCheck));
+      await feRenderProjection();
+    });
+  if (fe.projOpen) feRenderProjection();
+}
+
+/* 放置表單（主畫布右欄與面內檢視器共用，§5.5.3a） */
+const PLACE_PRESETS = {
+  "天花":  { u: "+x", v: "+y" },
+  "地板":  { u: "+y", v: "+x" },
+  "y=0 牆": { u: "+x", v: "+z" },
+  "y=D 牆": { u: "+z", v: "+x" },
+  "x=0 牆": { u: "+z", v: "+y" },
+  "x=W 牆": { u: "+y", v: "+z" },
+};
+const AXIS_OPTS = ["+x", "-x", "+y", "-y", "+z", "-z"];
+function placeFormHTML(bid) {
+  return `<div class="inspector-block"><div class="ib-title">放置</div>` +
+    `<div class="place-presets">` +
+    Object.keys(PLACE_PRESETS).map(k =>
+      `<button class="text-button" data-place-preset="${k}">${k}</button>`).join("") +
+    `</div>` +
+    `<div class="place-form">` +
+    `<label>origin x<input id="placeOX" type="number" step="1" value="0"></label>` +
+    `<label>origin y<input id="placeOY" type="number" step="1" value="0"></label>` +
+    `<label>origin z<input id="placeOZ" type="number" step="1" value="0"></label>` +
+    `<label>u 軸<select id="placeU">${AXIS_OPTS.map(a => `<option>${a}</option>`).join("")}</select></label>` +
+    `<label>v 軸<select id="placeV">${AXIS_OPTS.map(a => `<option>${a}</option>`).join("")}</select></label>` +
+    `<button id="placeSubmit" class="btn" data-bid="${bid}">放置 / 重綁</button>` +
+    `</div></div>`;
+}
+function bindPlaceForm(pane, bid) {
+  for (const b of pane.querySelectorAll("[data-place-preset]"))
+    b.addEventListener("click", () => {
+      const p = PLACE_PRESETS[b.dataset.placePreset];
+      pane.querySelector("#placeU").value = p.u;
+      pane.querySelector("#placeV").value = p.v;
+    });
+  const sub = pane.querySelector("#placeSubmit");
+  if (!sub) return;
+  sub.addEventListener("click", async () => {
+    const q = s => pane.querySelector(s);
+    const ox = Math.round(+q("#placeOX").value || 0);
+    const oy = Math.round(+q("#placeOY").value || 0);
+    const oz = Math.round(+q("#placeOZ").value || 0);
+    const u = q("#placeU").value, v = q("#placeV").value;
+    const A = { "+x": [1, 0, 0], "-x": [-1, 0, 0], "+y": [0, 1, 0],
+                "-y": [0, -1, 0], "+z": [0, 0, 1], "-z": [0, 0, -1] };
+    if (A[u].some((c, i) => c && A[v][i])) {
+      toast("u 軸與 v 軸必須垂直"); return;
+    }
+    /* placement id：優先用 boundary id；被自帶 rect placement 占用時用 newid */
+    const cur = feSurf(bid);
+    let pid = cur ? cur.id : bid;
+    if (!cur && oc.surfs.some(s => s.id === bid)) {
+      const ids = await api("newid");
+      pid = ids.placement;
+    }
+    if (await emitLine(`placement ${pid} on boundary ${bid} ` +
+                       `origin ${ox} ${oy} ${oz} u ${u} v ${v}`)) {
+      await renderObjects();          /* placed:true + surfaces 對照 */
+      if (oc.focus && oc.focus.t === "face") {
+        feSetTool(fe.tool);
+        await feLoadGuides();
+        drawFaceEditor();
+        renderFaceLayers();
+        renderFaceInspector();
+      }
+    }
+  });
+}
+
+/* 投影面板：N=U×V 主軸 → 預設視圖（§5.5.4；2=BOTTOM 仰視） */
+function feDefaultView(bid) {
+  const s = feSurf(bid);
+  if (!s) return null;
+  const n = [s.u[1] * s.v[2] - s.u[2] * s.v[1],
+             s.u[2] * s.v[0] - s.u[0] * s.v[2],
+             s.u[0] * s.v[1] - s.u[1] * s.v[0]];
+  const a = [Math.abs(n[0]), Math.abs(n[1]), Math.abs(n[2])];
+  return a[2] >= a[0] && a[2] >= a[1] ? 2 : (a[1] >= a[0] ? 0 : 1);
+}
+async function feRenderProjection() {
+  const box = $("projViews");
+  if (!box || !fe.projOpen) return;
+  const r = await api("render");
+  if (!r.ok) { box.textContent = "（無可投影的表面）"; return; }
+  /* ops 依 begin/end 分三段：0=FRONT 1=SIDE 2=BOTTOM */
+  const segs = [[], [], []];
+  let cur = -1;
+  for (const o of r.ops) {
+    if (o.op === "begin") { ++cur; continue; }
+    if (o.op === "end") continue;
+    if (cur >= 0) segs[cur].push(o);
+  }
+  box.textContent = "";
+  const order = [...fe.projViews].sort();
+  for (const v of order) {
+    const L = r.layout.views[v], b = L.bounds;
+    const svg = document.createElementNS(SVGNS, "svg");
+    svg.setAttribute("class", "proj-svg");
+    svg.setAttribute("viewBox", `${b[0]} ${b[1]} ${b[2] - b[0]} ${b[3] - b[1]}`);
+    const g = el("g", { "data-view": String(v) }, svg);
+    replay(segs[v], g);
+    box.appendChild(svg);
   }
 }
 
@@ -1241,9 +1676,10 @@ function ocFind(kind, id) {
   return oc.faces.find(f => f.kind === kind && f.id === id) || null;
 }
 function cardCenter(kind, id) {
-  const p = oc.bmap.get(`${kind}:${id}`);
+  const o = ocFind(kind, id);
+  if (!o) return null;
   const w = kind === "space" ? SP_W : OC_W, h = kind === "space" ? SP_H : OC_H;
-  return p ? { x: p.x + w / 2, y: p.y + h / 2 } : null;
+  return { x: o.cx + w / 2, y: o.cy + h / 2 };
 }
 function centerOnNode(kind, id) {
   const c = cardCenter(kind, id);
@@ -1321,8 +1757,11 @@ function renderInspector() {
     `<button class="btn" id="inspEnter"><i data-icon="edit"></i><span>` +
     (sel.kind === "space" ? "進入空間工作區" : "進入面內工作區") + `</span></button>` +
     `<button class="btn" id="inspLocate"><i data-icon="locate"></i><span>定位卡片</span></button>` +
-    `</div></div>`;
+    `</div></div>` +
+    /* 放置表單（§5.5.3a）：boundary 面才有；placement 面已是合體 */
+    (sel.kind === "boundary" ? placeFormHTML(sel.id) : "");
   hydrateIcons(pane);
+  if (sel.kind === "boundary") bindPlaceForm(pane, sel.id);
   const be = pane.querySelector("#inspEnter");
   if (sel.kind === "placement") { be.disabled = true; be.title = "placement 面沒有邊界可編輯"; }
   else be.addEventListener("click", () =>
@@ -1351,7 +1790,6 @@ ocv.addEventListener("pointerdown", e => {
   const pt = ocToCanvas(e);
   ocv.setPointerCapture(e.pointerId);
 
-  if (oc.focus && oc.focus.t === "face") { faceEditDown(pt); return; }
   if (oc.drawTool) { objDrawDown(pt); return; }
 
   const card = oc.tool === "pan" ? null : e.target.closest(".ocard");
@@ -1386,7 +1824,6 @@ ocv.addEventListener("pointermove", e => {
     }
     return;
   }
-  if (oc.focus && oc.focus.t === "face") { faceEditMove(pt); return; }
   if (oc.drawTool === "rect" && oc.rect) { drawObjects(); drawRectPreview(pt); }
   if (oc.drawTool === "poly" && oc.poly.length) { drawObjects(); drawPolyPreview(pt); }
 });
@@ -1417,8 +1854,6 @@ ocv.addEventListener("pointerup", async e => {
     }
     return;
   }
-
-  if (oc.focus && oc.focus.t === "face") { await faceEditUp(pt); return; }
 
   if (oc.drawTool === "rect" && oc.rect) {
     const st = oc.rect; oc.rect = null;
@@ -1545,6 +1980,48 @@ async function mutate(lines) {
 /* 快速六面盒:Phase 4 才做對話框 */
 $("btnBox6").addEventListener("click", () =>
   setStatus("快速六面盒將於 Phase 4 提供"));
+/* ---- 面內工作區事件 ---- */
+for (const b of document.querySelectorAll("[data-face-tool]"))
+  b.addEventListener("click", () => feSetTool(b.dataset.faceTool));
+$("workspaceBackButton").addEventListener("click", leaveFocus);
+$("workspaceDoneButton").addEventListener("click", leaveFocus);
+$("workspaceFitButton").addEventListener("click", () => {
+  if (oc.edit && oc.bmap[oc.edit.bid]) feFit(loopsBBox(oc.bmap[oc.edit.bid]));
+});
+$("faceUndoButton").addEventListener("click", () => doUndoRedo("undo"));
+$("faceRedoButton").addEventListener("click", () => doUndoRedo("redo"));
+$("faceGridToggle").addEventListener("change", drawFaceEditor);
+$("faceGridSizeSelect").addEventListener("change", drawFaceEditor);
+$("faceSnapToggle").addEventListener("change", drawFaceEditor);
+
+const fevp = $("faceEditorViewport");
+fevp.addEventListener("pointerdown", e => {
+  if (e.button !== 0 || oc.busy) return;
+  fevp.setPointerCapture(e.pointerId);
+  feDown(feSnap(fePoint(e)), e);
+});
+fevp.addEventListener("pointermove", e => {
+  const pt = feSnap(fePoint(e));
+  $("faceCoordinateReadout").textContent =
+    `u:${Math.round(pt.x)} v:${Math.round(pt.y)}`;
+  feMove(pt, e);
+});
+fevp.addEventListener("pointerup", async e => {
+  if (fevp.hasPointerCapture(e.pointerId))
+    fevp.releasePointerCapture(e.pointerId);
+  await feUp(feSnap(fePoint(e)));
+});
+fevp.addEventListener("wheel", e => {
+  e.preventDefault();
+  const r = $("faceEditorSvg").getBoundingClientRect();
+  const px = e.clientX - r.left, py = e.clientY - r.top;
+  const k = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+  fe.zoom = Math.max(0.02, Math.min(8, fe.zoom * k));
+  fe.panX = px - (px - fe.panX) * k;
+  fe.panY = py - (py - fe.panY) * k;
+  feApply();
+}, { passive: false });
+
 $("btnObj").addEventListener("click", async () => {
   view3 = !view3;
   oc.on = !view3;
@@ -1552,7 +2029,8 @@ $("btnObj").addEventListener("click", async () => {
   $("viewToolbar").toggleAttribute("hidden", !view3);
   $("btnObj").innerHTML = icon("layers") + (view3 ? "物件畫布" : "三視圖");
   if (view3) {
-    if (oc.focus) { oc.focus = null; oc.stack = []; drawObjects(); }
+    $("objectWorkspace").hidden = true;
+    if (oc.focus) { oc.focus = null; oc.stack = []; oc.edit = null; drawObjects(); }
     setStatus("三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回");
     await render();
     await refreshSurfaces();

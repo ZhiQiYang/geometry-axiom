@@ -234,13 +234,15 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   }
 
   console.log("=== 7. 面編輯：拖一個頂點 ===");
+  console.log("workspace open:", await eval_(
+    `!document.getElementById("objectWorkspace").hidden`));
   const vtx = await eval_(`(()=>{
     if (!oc.focus || oc.focus.t !== "face" || !oc.edit) return null;
     const e = oc.edit, loops = oc.bmap[e.bid];
     if (!loops || !loops[0].verts.length) return null;
     const p = loops[0].verts[0];
-    const r = ocv.getBoundingClientRect();
-    return { x: r.left + p[0]*oc.zoom + oc.panX, y: r.top + p[1]*oc.zoom + oc.panY };
+    const r = document.getElementById("faceEditorSvg").getBoundingClientRect();
+    return { x: r.left + p[0]*fe.zoom + fe.panX, y: r.top + p[1]*fe.zoom + fe.panY };
   })()`);
   if (vtx) {
     const vBefore = await eval_(`JSON.stringify(oc.bmap[oc.edit.bid][0].verts[0])`);
@@ -358,6 +360,150 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`(()=>{const si=document.getElementById("searchInput");
     si.value="";si.dispatchEvent(new Event("input",{bubbles:true}))})()`);
   await sleep(400);
+
+  /* ================= Phase 3：面內工作區 ================= */
+  console.log("=== P3-1. 已放置面（天花 surface 20）進入工作區 ===");
+  await cmdLine("surface 20 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+  await sleep(800);
+  const card20 = await eval_(`(()=>{
+    const c = document.querySelector('.ocard[data-id="20"]');
+    if (!c) return null;
+    const r = c.getBoundingClientRect();
+    return {x: r.left + r.width/2, y: r.top + r.height/2};
+  })()`);
+  console.log("card20:", JSON.stringify(card20));
+  if (card20) {
+    await dblclick(card20.x, card20.y);
+    await sleep(1000);
+    console.log("focus:", await eval_(`JSON.stringify(oc.focus)`),
+      await eval_(`oc.focus && oc.focus.t==="face" && oc.focus.id===20 ? "✓ 進入面 20" : "✗"`));
+    console.log("workspace:", await eval_(
+      `!document.getElementById("objectWorkspace").hidden ? "✓ 開啟" : "✗ 未開啟"`));
+  }
+
+  console.log("=== P3-2. 參考線：水平拖 → guide <n> 20 v <off> ===");
+  await eval_(`document.querySelector('[data-face-tool="guide"]').click()`);
+  await sleep(300);
+  const feCtr = await eval_(`(()=>{
+    const r = document.getElementById("faceEditorViewport").getBoundingClientRect();
+    return {x: r.left + r.width/2, y: r.top + r.height/2};
+  })()`);
+  await drag(feCtr.x - 80, feCtr.y, feCtr.x + 80, feCtr.y + 4);   /* 水平拖 → v 線 */
+  await sleep(900);
+  const dump1 = await eval_(`api("dump").then(r=>r.text)`);
+  const gMatch = dump1 && dump1.match(/^guide (\d+) 20 v (-?\d+)$/m);
+  console.log("guide:", gMatch ? `✓ guide ${gMatch[1]} 20 v ${gMatch[2]}` : "✗ dump 無 guide");
+  /* 拖既有參考線 → move → offset 改變 */
+  if (gMatch) {
+    const gOff = +gMatch[2];
+    const gPt = await eval_(`(()=>{
+      const r = document.getElementById("faceEditorSvg").getBoundingClientRect();
+      return {x: r.left + 100, y: r.top + (${gOff})*fe.zoom + fe.panY};
+    })()`);
+    await eval_(`document.querySelector('[data-face-tool="select"]').click()`);
+    await sleep(200);
+    await drag(gPt.x, gPt.y, gPt.x, gPt.y + 40);                /* 垂直往下拖 40px */
+    await sleep(900);
+    const dump2 = await eval_(`api("dump").then(r=>r.text)`);
+    const g2 = dump2 && dump2.match(new RegExp("^guide " + gMatch[1] + " 20 v (-?\\d+)$", "m"));
+    console.log("guide off:", gOff, "->", g2 && g2[1],
+      g2 && +g2[1] !== gOff ? "✓ move 改變 offset" : "✗");
+  }
+
+  console.log("=== P3-3. 開口：拉矩形 → boundary 20 loops=2 ===");
+  await eval_(`document.querySelector('[data-face-tool="hole"]').click()`);
+  await sleep(200);
+  const holeBox = await eval_(`(()=>{
+    const r = document.getElementById("faceEditorSvg").getBoundingClientRect();
+    const toScr = p => ({x: r.left + p[0]*fe.zoom + fe.panX,
+                         y: r.top + p[1]*fe.zoom + fe.panY});
+    const a = toScr([500, 500]), b = toScr([1200, 1000]);
+    return {a, b};
+  })()`);
+  await drag(holeBox.a.x, holeBox.a.y, holeBox.b.x, holeBox.b.y);
+  await sleep(900);
+  const loopN = await eval_(`api("boundary 20").then(r=>r.ok ? r.loops.length : -1)`);
+  console.log("loops:", loopN, loopN === 2 ? "✓ 開口成功" : "✗");
+
+  console.log("=== P3-4. 投影面板：天花面 → 恰一個 data-view=2 ===");
+  await eval_(`document.getElementById("projToggle").click()`);
+  await sleep(1000);
+  const projN2 = await eval_(
+    `document.querySelectorAll('#projViews [data-view="2"]').length`);
+  const projAll = await eval_(
+    `document.querySelectorAll('#projViews [data-view]').length`);
+  console.log("proj groups:", projAll, "view2:", projN2,
+    projN2 === 1 && projAll === 1 ? "✓ 只顯示仰視" : "✗");
+
+  console.log("=== P3-5. 非法編輯 → toast + boundary 不變 ===");
+  const bSnap = await eval_(
+    `api("boundary 20").then(r=>JSON.stringify(r.loops))`);
+  await cmdLine("boundary 20 outline 0,0 4000,0 4000,3000 1500,1500 0,3000");
+  await sleep(900);
+  const toastN = await eval_(`document.querySelectorAll("#toastRegion .toast").length`);
+  const bAfter = await eval_(
+    `api("boundary 20").then(r=>JSON.stringify(r.loops))`);
+  console.log("toast:", toastN, toastN > 0 ? "✓" : "✗",
+    "| boundary 未變:", bSnap === bAfter ? "✓" : "✗");
+
+  console.log("=== P3-6. Esc 回世界；游離面放置表單 ===");
+  /* P3-3 把工具停在 hole;Esc 先退出工具層級,先歸零再按 Esc 才會離開工作區 */
+  await eval_(`document.querySelector('[data-face-tool="select"]').click()`);
+  await sleep(200);
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await sleep(500);
+  console.log("focus:", await eval_(`JSON.stringify(oc.focus)`));
+  /* 建游離矩形面（DSL + canvas-pos，跟 btnNewRect 同路） */
+  const ids6 = await eval_(`api("newid").then(r=>r.boundary)`);
+  await cmdLine(`boundary ${ids6} outline 0,0 500,0 500,400 0,400`);
+  await eval_(`api("line canvas-pos boundary ${ids6} 700 300")`);
+  await eval_(`renderObjects()`);
+  await sleep(900);
+  const freeCard = await eval_(`(()=>{
+    const c = document.querySelector('.ocard[data-id="${ids6}"]');
+    if (!c) return null;
+    const r = c.getBoundingClientRect();
+    return {x: r.left + r.width/2, y: r.top + r.height/2};
+  })()`);
+  if (freeCard) {
+    await dblclick(freeCard.x, freeCard.y);
+    await sleep(900);
+    const gDis = await eval_(
+      `document.querySelector('[data-face-tool="guide"]').disabled`);
+    console.log("guide 工具 disabled（游離）:", gDis ? "✓" : "✗");
+    /* 工作區檢視器放置表單：天花預設 + origin 0 0 2500 */
+    await eval_(`document.querySelector('#faceInspectorContent [data-place-preset="天花"]').click()`);
+    await eval_(`(()=>{const p=document.getElementById("faceInspectorContent");
+      p.querySelector("#placeOX").value=0; p.querySelector("#placeOY").value=0;
+      p.querySelector("#placeOZ").value=2500;})()`);
+    await eval_(`document.querySelector("#faceInspectorContent #placeSubmit").click()`);
+    await sleep(1200);
+    const placed = await eval_(
+      `api("objects").then(r=>{const f=r.faces.find(x=>x.id===${ids6});return f&&f.placed})`);
+    const surfN = await eval_(
+      `api("surfaces").then(r=>r.surfaces.filter(s=>s.boundary===${ids6}).length)`);
+    console.log("placed:", placed, placed === true ? "✓" : "✗",
+      "| surfaces:", surfN, surfN === 1 ? "✓" : "✗");
+    const gEn = await eval_(
+      `!document.querySelector('[data-face-tool="guide"]').disabled`);
+    console.log("guide 工具啟用（已放置）:", gEn ? "✓" : "✗");
+    /* 放置後拉參考線成功 */
+    await eval_(`document.querySelector('[data-face-tool="guide"]').click()`);
+    await sleep(200);
+    const fc2 = await eval_(`(()=>{
+      const r = document.getElementById("faceEditorViewport").getBoundingClientRect();
+      return {x: r.left + r.width/2, y: r.top + r.height/2};
+    })()`);
+    await drag(fc2.x - 60, fc2.y, fc2.x + 60, fc2.y + 3);
+    await sleep(900);
+    const d3 = await eval_(`api("dump").then(r=>r.text)`);
+    const g3 = d3 && d3.match(/^guide \d+ \d+ v -?\d+$/m);
+    console.log("游離→放置後參考線:", g3 ? "✓ " + g3[0] : "✗");
+    await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+    await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+    await sleep(400);
+  } else console.log("✗ 游離面卡未出現");
 
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);

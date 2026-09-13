@@ -37,7 +37,21 @@
 | `#zoomInButton` / `#zoomOutButton` / `#zoomLevelButton` / `#homeButton` | 縮放控制 | `.click()` |
 | `#searchInput` | 搜尋框(過濾卡片與清單) | `input` 事件驅動 `oc.search` |
 | `#minimap` | 小地圖 canvas | `pointerdown` 導航;`oc.mmTf` 座標換算 |
-| `#toastRegion` | toast 容器 | 存在性 |
+| `#toastRegion` | toast 容器 | `.toast` 子元素計數 |
+| `#objectWorkspace` | 面內/空間工作區覆層(fixed, z45) | `hidden` 切換檢查 |
+| `#workspaceBackButton` / `#workspaceBackLabel` / `#workspaceDoneButton` | 工作區返回 | `.click()` |
+| `#workspaceTitle` / `#workspaceEyebrow` / `#workspaceTypeIcon` | 工作區標題列 | textContent |
+| `#faceWorkspaceTools` | 面內工具列 | `[data-face-tool]` 子鈕 |
+| `#faceUndoButton` / `#faceRedoButton` / `#workspaceFitButton` | 工作區 undo/redo/fit | `.click()` |
+| `#objectWorkspaceContent` / `#faceWorkspaceLayout` | 工作區三欄容器 | 存在性 |
+| `#faceLayerList` / `#faceLayerCount` | 左欄面內物件清單 | 子列 |
+| `#faceSnapToggle` / `#faceGridToggle` / `#faceGridSizeSelect` | 吸附/格線/格距 | `checked`/`value` |
+| `#faceEditorViewport` / `#faceEditorSvg` / `#faceEditorRoot` | 面編輯器畫布 | rect 量測、pointer 事件目標 |
+| `#faceCoordinateReadout` | 游標 uv 讀數 | textContent |
+| `#faceInspectorContent` | 面內右欄檢視器 | 放置表單/投影面板掛點 |
+| `#workspaceToolStatus` / `#workspaceSelectionStatus` | 工作區狀態列 | textContent |
+| `#placeOX` / `#placeOY` / `#placeOZ` / `#placeU` / `#placeV` / `#placeSubmit` | 放置表單欄位(檢視器內,兩處共用) | `value`/`.click()` |
+| `#projToggle` / `#projBody` / `#projViews` | 投影面板 | `[data-view]` 群組計數 |
 
 ## 必須保留的 class
 
@@ -52,6 +66,14 @@
 | `[data-tool]` | 頂列工具鈕(select/pan/rect/poly) | `dataset.tool`、`.active` |
 | `[data-filter-type]` | 顯示類型篩選(face/space) | `checked` 狀態 |
 | `[data-icon]` | 圖示插槽 | hydrateIcons 填充 |
+| `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
+| `[data-face-hit]` | 面編輯器命中層(`v:<loop>:<i>`/`e:<loop>:<i>`/`g:<id>:<axis>`) | pointerdown 命中(非同步 bhit 已由它取代) |
+| `[data-place-preset]` | 放置預設鈕 | `dataset.placePreset`、`.click()` |
+| `[data-proj-check]` | 投影視圖勾選 | `checked` |
+| `[data-view]` | 投影面板視圖群組(`<g data-view="0|1|2">`) | 計數(天花面預設只有 2) |
+| `[data-fix-edge]` | fixity F/X 切換鈕 | `dataset.fixEdge`、`.click()` |
+| `.fixity-btn` / `.place-form` / `.proj-svg` / `.inspector-block` | 檢視器元件 | 存在性 |
+| `.toast` | 錯誤提示元素 | `#toastRegion` 內計數 |
 
 ## 必須保留的全域(classic script 頂層可見)
 
@@ -64,6 +86,8 @@
 | `enterFocus` | 進入工作區焦點 | 雙擊/檢視器按鈕觸發 |
 | `mutate` | 多行 DSL 交易(失敗回滾+toast) | 空間成員重宣告/六面盒使用 |
 | `toast` | 錯誤提示(bridge error 原文) | `#toastRegion` 子元素 |
+| `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews` |
+| `renderObjects` | 重拉 objects/surfaces 並重繪畫布 | 測試在送指令後手動觸發刷新 |
 
 ## 測試自注入
 

@@ -189,6 +189,75 @@
   </footer>
 </div>
 
+  <section id="objectWorkspace" class="object-workspace" aria-label="物件內部工作區" hidden>
+    <header class="object-workspace-topbar">
+      <div class="object-workspace-trail">
+        <button id="workspaceBackButton" type="button" class="workspace-back-button"><span>←</span> <span id="workspaceBackLabel">返回物件畫布</span></button>
+        <span id="workspaceTypeIcon" class="face-layer-icon">▱</span>
+        <div class="workspace-title-copy">
+          <small id="workspaceEyebrow">面內工作區</small>
+          <strong id="workspaceTitle">面</strong>
+        </div>
+      </div>
+      <nav id="faceWorkspaceTools" class="face-workspace-tools" aria-label="面內工具">
+        <button type="button" class="workspace-tool" data-face-tool="select" title="選取/拖曳 (v)"><span>選取</span></button>
+        <button type="button" class="workspace-tool" data-face-tool="guide" title="參考線 (l)"><span>參考線</span></button>
+        <button type="button" class="workspace-tool" data-face-tool="hole" title="開口 (r)"><span>開口</span></button>
+        <button type="button" class="workspace-tool" data-face-tool="pan" title="平移 (h/空白鍵)"><span>平移</span></button>
+        <span class="workspace-tool-separator"></span>
+        <button type="button" id="faceUndoButton" class="workspace-icon-button" title="復原 (Ctrl+Z)"><span>↶</span></button>
+        <button type="button" id="faceRedoButton" class="workspace-icon-button" title="重做 (Ctrl+Y)"><span>↷</span></button>
+        <span class="workspace-tool-separator"></span>
+        <button type="button" id="workspaceFitButton" class="workspace-icon-button" title="顯示全部 (f)"><span>⛶</span></button>
+      </nav>
+      <div class="object-workspace-actions">
+        <button type="button" id="workspaceDoneButton" class="primary-button" title="完成並返回 (Esc)"><span>完成並返回</span></button>
+      </div>
+    </header>
+    <main id="objectWorkspaceContent" class="object-workspace-content">
+      <div id="faceWorkspaceLayout" class="face-workspace-layout">
+        <aside class="inner-panel face-layer-panel">
+          <section class="inner-section">
+            <div class="inner-section-title"><span>面內物件</span><span id="faceLayerCount">0</span></div>
+            <div id="faceLayerList" class="face-layer-list"></div>
+          </section>
+
+<section class="inner-section">
+            <div class="inner-section-title"><span>面內畫布</span></div>
+            <div class="face-editor-options">
+              <label class="face-option-row"><span>吸附格線</span><input id="faceSnapToggle" type="checkbox" checked></label>
+              <label class="face-option-row"><span>顯示格線</span><input id="faceGridToggle" type="checkbox" checked></label>
+              <label class="face-option-row"><span>格距</span>
+                <select id="faceGridSizeSelect">
+                  <option value="10">10 mm</option>
+                  <option value="25">25 mm</option>
+                  <option value="50" selected>50 mm</option>
+                  <option value="100">100 mm</option>
+                </select>
+              </label>
+            </div>
+          </section>
+          <section class="inner-section">
+            <div class="inner-section-title"><span>說明</span></div>
+            <div class="face-help">選取 v · 參考線 l · 開口 r · 平移 h/空白 · fit f · 返回 Esc</div>
+          </section>
+        </aside>
+        <section id="faceEditorViewport" class="face-editor-viewport tool-select">
+          <svg id="faceEditorSvg" class="face-editor-svg"><g id="faceEditorRoot"></g></svg>
+          <div id="faceCoordinateReadout" class="face-coordinate-readout">u:0 v:0</div>
+        </section>
+        <aside class="inner-panel face-inspector-panel">
+          <div id="faceInspectorContent"></div>
+        </aside>
+      </div>
+    </main>
+    <footer class="object-workspace-statusbar">
+      <div><span id="workspaceToolStatus">工具：選取</span>
+      <span class="status-divider"></span>
+      <span id="workspaceSelectionStatus"></span></div>
+    </footer>
+  </section>
+
 <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
 
 <script src="app.js"></script>
