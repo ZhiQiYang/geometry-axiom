@@ -191,6 +191,44 @@ function check(name, cond, detail="") {
   check("凍結 dump round-trip 相同", d4.ok && d4.text === d3.text,
         "\n---原---\n" + d3.text + "\n---重放---\n" + (d4.text||""));
 
+  console.log("== J. 物件畫布層 ==");
+  await api("line reset");
+  check("建游離面(無承載面)",
+        (await api("line boundary 10 outline 0,0 400,0 400,300 0,300")).ok);
+  check("建空容器空間", (await api("line space 9")).ok);
+  check("canvas-pos 面", (await api("line canvas-pos boundary 10 120 80")).ok);
+  check("canvas-pos 空間", (await api("line canvas-pos space 9 500 60")).ok);
+  const ob = await api("objects");
+  check("objects 列游離面",
+        ob.ok && ob.faces.some(f => f.id === 10 && !f.placed));
+  check("objects 列空容器",
+        ob.ok && ob.spaces.some(s => s.id === 9 && s.members.length === 0 && !s.closed));
+  const f10 = ob.faces.find(f => f.id === 10);
+  check("objects 帶畫布座標", f10 && f10.hasPos && f10.cx === 120 && f10.cy === 80,
+        JSON.stringify(f10));
+  check("canvas-pos 壞目標被拒",
+        !(await api("line canvas-pos boundary 999 0 0")).ok);
+  check("canvas-pos 壞類別被拒",
+        !(await api("line canvas-pos foo 10 0 0")).ok);
+  check("放置游離面",
+        (await api("line placement 10 on boundary 10 origin 0 0 0 u +x v +y")).ok);
+  check("面入空間(重宣告)", (await api("line space 9 boundary 10")).ok);
+  const ob2 = await api("objects");
+  check("空間成員可見", ob2.ok && ob2.spaces[0].members.includes(10));
+  const dA = (await api("dump")).text;
+  check("dump 含 canvas-pos 與空間",
+        /canvas-pos boundary 10 120 80/.test(dA) && /canvas-pos space 9/.test(dA)
+        && /space 9 boundary 10/.test(dA), dA);
+  await api("line reset");
+  let replayOk2 = true;
+  for (const l of dA.trim().split("\n")) {
+    if (!(await api("line " + l)).ok) replayOk2 = false;
+  }
+  check("物件層 dump 可重放", replayOk2);
+  const dB = (await api("dump")).text;
+  check("物件層 round-trip 相同", dA === dB, "\n---原---\n" + dA + "\n---重放---\n" + dB);
+  await api("default");
+
   console.log(`\n${pass} pass / ${fail} fail`);
   process.exit(fail ? 1 : 0);
 })();

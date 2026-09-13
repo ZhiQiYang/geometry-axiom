@@ -14,6 +14,9 @@
   #topbar .sp { flex: 1; }
   #topbar .hint { color: #666; font-size: 12px; }
   #cv { flex: 1; display: block; background: #fff; cursor: crosshair; }
+  #ocv { flex: 1; display: block; background: #f7f7f2; cursor: default; }
+  .ocard:hover rect { filter: brightness(.96); }
+  #crumb { color: #36c; font-size: 13px; }
   #bar { flex: 0 0 auto; background: #ececec; border-top: 1px solid #cfcfcf;
     padding: 4px 8px 6px; }
   #bar .row { display: flex; gap: 8px; align-items: center; }
@@ -33,6 +36,7 @@
   <select id="sceneList"></select>
   <button id="btnScene">載入所選</button>
   <button id="btnZoom">縮放重置</button>
+  <button id="btnObj">▦ 物件畫布</button>
   <select id="tool">
     <option value="view">檢視／選取</option>
     <option value="rect">▭ 拉矩形建面</option>
@@ -44,10 +48,19 @@
   <input id="newZ" type="number" value="0" step="100"
          style="width:76px" title="新平面高度 z（mm）" hidden>
   <button id="btnExport">匯出 .scene</button>
+  <span id="objtools" hidden>
+    <button id="btnNewRect">＋面·矩形</button>
+    <button id="btnNewPoly">＋面·多邊形</button>
+    <button id="btnNewSpace">＋空間</button>
+    <button id="btnHole2" hidden>▨ 挖孔</button>
+    <button id="btnBack" hidden>← 返回</button>
+    <span id="crumb"></span>
+  </span>
   <span class="sp"></span>
   <span class="hint">左鍵點選／拖參考線 · 中鍵平移 · 滾輪縮放 — 幾何由 web_bridge.exe（C）計算</span>
 </div>
 <svg id="cv"><g id="world"></g><g id="overlay"></g></svg>
+<svg id="ocv" hidden><g id="oroot"></g></svg>
 <div id="bar">
   <div class="row"><span id="status"></span><span id="hovertxt"></span></div>
   <div class="row">
@@ -599,6 +612,17 @@ $("btnExport").onclick = async () => {
 };
 window.addEventListener("keydown", e => {
   if (e.key === "Escape") {
+    if (oc.on) {
+      if (oc.rect || oc.poly.length || oc.drawTool ||
+          (oc.edit && (oc.edit.drag || oc.edit.work))) {
+        oc.rect = null; oc.poly = []; oc.drawTool = null;
+        if (oc.edit) { oc.edit.drag = null; oc.edit.work = null; }
+        drawObjects();
+      } else if (oc.focus) {
+        leaveFocus();
+      }
+      return;
+    }
     drawPts = []; rectStart = null; editDrag = null; previewClear();
     if (tool === "edit") drawEditHandles();
   }
@@ -635,6 +659,490 @@ $("file").addEventListener("change", async e => {
 });
 $("btnZoom").onclick = () => { zoom = 1; panX = panY = 0; applyTransform(); };
 window.addEventListener("resize", applyTransform);
+
+/* ============================================================
+ * 物件畫布（無限畫布層）
+ * 卡片 = 世界物件的圖層呈現；拖曳只動 canvas-pos（展示中繼），
+ * 幾何永遠走 DSL line。點卡片進入：面→2D 邊界編輯、空間→成員層。
+ * ============================================================ */
+const ocv = $("ocv"), oroot = $("oroot");
+const OC_W = 200, OC_H = 150, OC_PAD = 12;
+const oc = {
+  on: false,
+  panX: 0, panY: 0, zoom: 1,
+  faces: [], spaces: [],
+  stack: [],              // 焦點堆疊：世界 → 空間 → 面
+  focus: null,            // null | {t:'space'|'face', id}
+  bmap: {},               // boundary id → loops（縮圖 + 編輯）
+  card: null,             // 卡片拖曳 {el,kind,id,sx,sy,moved}
+  pan: null,
+  rect: null,             // 矩形繪製起點 {x,y}（畫布座標）
+  poly: [],               // 多邊形繪製點列
+  drawTool: null,         // 'rect' | 'poly' | 'hole' | null
+  edit: null,             // 面編輯 {bid, work:[{verts,fixity}], drag}
+};
+let ocSeq = 0;
+
+function ocApply() {
+  oroot.setAttribute("transform",
+    `translate(${oc.panX},${oc.panY}) scale(${oc.zoom})`);
+}
+function ocToCanvas(e) {
+  const r = ocv.getBoundingClientRect();
+  return { x: (e.clientX - r.left - oc.panX) / oc.zoom,
+           y: (e.clientY - r.top  - oc.panY) / oc.zoom };
+}
+function ocFit(b) {                 /* b = [minx,miny,maxx,maxy] */
+  const r = ocv.getBoundingClientRect();
+  const w = Math.max(1, b[2] - b[0]), h = Math.max(1, b[3] - b[1]);
+  oc.zoom = Math.min(r.width / (w * 1.4), r.height / (h * 1.4));
+  oc.panX = r.width  / 2 - (b[0] + b[2]) / 2 * oc.zoom;
+  oc.panY = r.height / 2 - (b[1] + b[3]) / 2 * oc.zoom;
+  ocApply();
+}
+function loopsBBox(loops) {
+  let lo_u = Infinity, lo_v = Infinity, hi_u = -Infinity, hi_v = -Infinity;
+  for (const p of loops[0].verts) {
+    lo_u = Math.min(lo_u, p[0]); hi_u = Math.max(hi_u, p[0]);
+    lo_v = Math.min(lo_v, p[1]); hi_v = Math.max(hi_v, p[1]);
+  }
+  return [lo_u, lo_v, hi_u, hi_v];
+}
+
+/* ---- 卡片 ---- */
+function faceCard(f) {
+  const g = el("g", { class: "ocard", "data-kind": f.kind, "data-id": f.id,
+                      transform: `translate(${f.cx},${f.cy})`, cursor: "pointer" });
+  el("rect", { x: 0, y: 0, width: OC_W, height: OC_H, rx: 8,
+               fill: "#ffffff", stroke: f.placed ? "#3a7" : "#789",
+               "stroke-width": 2, "stroke-dasharray": f.placed ? "" : "7 4" }, g);
+  const t = el("text", { x: OC_PAD, y: 20, "font-size": 15, fill: "#222" }, g);
+  t.textContent = (f.kind === "boundary" ? "面 " : "矩形面 ") + f.id +
+                  (f.placed ? "（已放置）" : "（游離）");
+
+  /* 縮圖：邊界面畫外輪廓，自帶矩形畫 rect。 */
+  const bw = Math.max(1, f.bbox[2] - f.bbox[0]), bh = Math.max(1, f.bbox[3] - f.bbox[1]);
+  const k = Math.min((OC_W - 2 * OC_PAD) / bw, (OC_H - 34 - OC_PAD) / bh);
+  const th = el("g", { transform:
+    `translate(${OC_PAD - f.bbox[0] * k},${30 - f.bbox[1] * k}) scale(${k})` }, g);
+
+  if (f.kind === "boundary" && oc.bmap[f.id]) {
+    for (const lp of oc.bmap[f.id]) {
+      el("polygon", { points: lp.verts.map(p => p.join(",")).join(" "),
+        fill: "rgba(80,140,220,.25)", stroke: "#468", "stroke-width": 2 / k }, th);
+    }
+  } else {
+    el("rect", { x: f.bbox[0], y: f.bbox[1], width: bw, height: bh,
+      fill: "rgba(80,140,220,.25)", stroke: "#468", "stroke-width": 2 / k }, th);
+  }
+  return g;
+}
+
+function spaceCard(s) {
+  const g = el("g", { class: "ocard", "data-kind": "space", "data-id": s.id,
+                      transform: `translate(${s.cx},${s.cy})`, cursor: "pointer" });
+  el("rect", { x: 0, y: 0, width: 240, height: 170, rx: 10,
+               fill: "#eef3ff", stroke: "#36c", "stroke-width": 2.5 }, g);
+  const t = el("text", { x: OC_PAD, y: 22, "font-size": 16,
+                         fill: "#234", "font-weight": "bold" }, g);
+  t.textContent = `空間 ${s.id}`;
+  const m = el("text", { x: OC_PAD, y: 44, "font-size": 13, fill: "#456" }, g);
+  m.textContent = `成員面 ${s.members.length} · ${s.closed ? "封閉" : "部分"}` +
+                  (s.members.length === 0 ? "（空容器）" : "");
+  const l = el("text", { x: OC_PAD, y: 66, "font-size": 12, fill: "#789" }, g);
+  l.textContent = s.members.length ? "成員：" + s.members.join(" ")
+                                   : "點進去管理成員";
+  return g;
+}
+
+/* ---- 渲染 ---- */
+async function renderObjects() {
+  const seq = ++ocSeq;
+  const r = await api("objects");
+  if (!r.ok || seq !== ocSeq) return;
+  oc.faces = r.faces; oc.spaces = r.spaces;
+  oc.bmap = {};
+
+  /* 沒有畫布座標的物件：自動排格並立刻持久化。 */
+  let slot = 0;
+  const homeless = [...oc.faces.filter(f => !f.hasPos),
+                    ...oc.spaces.filter(s => !s.hasPos)];
+  for (const o of homeless) {
+    o.cx = 60 + (slot % 4) * 300;
+    o.cy = 60 + Math.floor(slot / 4) * 240;
+    o.hasPos = true;
+    ++slot;
+    const kind = o.members ? "space" : o.kind;
+    api(`line canvas-pos ${kind} ${o.id} ${o.cx} ${o.cy}`);   /* 靜默 */
+  }
+
+  /* 面卡縮圖需要的邊界資料一次取齊。 */
+  await Promise.all(oc.faces
+    .filter(f => f.kind === "boundary")
+    .map(async f => {
+      const b = await api("boundary " + f.id);
+      if (b.ok) oc.bmap[f.id] = b.loops;
+    }));
+  if (seq !== ocSeq) return;
+  drawObjects();
+}
+
+function drawObjects() {
+  oroot.textContent = "";
+  if (oc.focus && oc.focus.t === "face") { drawFaceEditor(); return; }
+
+  const inSpace = oc.focus && oc.focus.t === "space"
+    ? new Set((oc.spaces.find(s => s.id === oc.focus.id) || { members: [] }).members)
+    : null;
+
+  for (const f of oc.faces) {
+    if (inSpace && !inSpace.has(f.id)) continue;
+    oroot.appendChild(faceCard(f));
+  }
+  if (!inSpace) {
+    for (const s of oc.spaces) oroot.appendChild(spaceCard(s));
+  }
+  drawCrumb();
+}
+
+function drawCrumb() {
+  const parts = ["世界"];
+  for (const f of oc.stack.concat(oc.focus ? [oc.focus] : [])) {
+    if (f) parts.push(f.t === "space" ? `空間 ${f.id}` : `面 ${f.id}`);
+  }
+  $("crumb").textContent = parts.join(" ▸ ");
+  $("btnBack").hidden = !oc.focus;
+  $("btnHole2").hidden = !(oc.focus && oc.focus.t === "face");
+}
+
+/* ---- 焦點導航 ---- */
+async function enterFocus(t, id) {
+  if (oc.focus) oc.stack.push(oc.focus);
+  oc.focus = { t, id };
+  oc.rect = null; oc.poly = []; oc.edit = null; oc.drawTool = null;
+
+  if (t === "face") {
+    const b = await api("boundary " + id);
+    if (!b.ok) {
+      /* 自帶矩形面沒有邊界可編輯——退回上一層 */
+      oc.focus = oc.stack.pop() || null;
+      setStatus("這片是自帶矩形面，沒有邊界可編輯");
+      drawObjects();
+      return;
+    }
+    oc.bmap[id] = b.loops;
+    oc.edit = { bid: id, work: null, drag: null };
+    ocFit(loopsBBox(b.loops));
+  } else {
+    /* 空間層：鏡頭拉近成員卡群的範圍 */
+    const mem = oc.spaces.find(s => s.id === id);
+    if (mem && mem.members.length) {
+      const fs = oc.faces.filter(f => mem.members.includes(f.id));
+      if (fs.length) {
+        ocFit([Math.min(...fs.map(f => f.cx)) - 40,
+               Math.min(...fs.map(f => f.cy)) - 40,
+               Math.max(...fs.map(f => f.cx + OC_W)) + 40,
+               Math.max(...fs.map(f => f.cy + OC_H)) + 40]);
+      }
+    }
+  }
+  drawObjects();
+  setStatus(t === "face" ? `面 ${id}：拖頂點/邊編輯，▨挖孔，← 返回`
+                        : `空間 ${id}：成員面清單，點面可進入編輯`);
+}
+
+function leaveFocus() {
+  oc.focus = oc.stack.pop() || null;
+  oc.rect = null; oc.poly = []; oc.edit = null; oc.drawTool = null;
+  if (!oc.focus) { oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply(); }
+  drawObjects();
+  setStatus("物件畫布：拖卡片移動擺放 · 點卡片進入 · 空白處拖曳平移 · 滾輪縮放");
+}
+
+/* ---- 面編輯器（2D 直編：畫布座標 = 邊界 uv） ---- */
+function drawFaceEditor() {
+  const e = oc.edit;
+  if (!e) return;
+  const loops = e.work || oc.bmap[e.bid];
+  if (!loops) return;
+  oroot.textContent = "";
+  const rr = 6 / oc.zoom;
+
+  for (let li = 0; li < loops.length; ++li) {
+    const lp = loops[li];
+    el("polygon", { points: lp.verts.map(p => p.join(",")).join(" "),
+      fill: li === 0 ? "rgba(80,140,220,.18)" : "#f8f8f4",
+      stroke: "#357", "stroke-width": 2 / oc.zoom }, oroot);
+    for (const p of lp.verts) {
+      el("circle", { cx: p[0], cy: p[1], r: rr, fill: "#fff",
+                     stroke: "#357", "stroke-width": 1.5 / oc.zoom }, oroot);
+    }
+  }
+  drawCrumb();
+}
+
+async function faceEditDown(pt) {
+  const e = oc.edit;
+  if (!e) return;
+
+  if (oc.drawTool === "hole") {
+    oc.rect = { x: pt.x, y: pt.y };
+    return;
+  }
+
+  const r = Math.max(4, 10 / oc.zoom);
+  const h = await api(`bhit ${e.bid} ${Math.round(pt.x)} ${Math.round(pt.y)} ${Math.ceil(r)}`);
+  if (!h.ok) return;
+  e.drag = { loop: h.loop, index: h.index, kind: h.kind };
+  e.work = (e.work || oc.bmap[e.bid]).map(l =>
+    ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+}
+
+function faceEditMove(pt) {
+  const e = oc.edit;
+  if (!e) return;
+  if (oc.drawTool === "hole" && oc.rect) {
+    drawFaceEditor();
+    const x0 = Math.min(oc.rect.x, pt.x), y0 = Math.min(oc.rect.y, pt.y);
+    el("rect", { x: x0, y: y0, width: Math.abs(pt.x - oc.rect.x),
+      height: Math.abs(pt.y - oc.rect.y), fill: "rgba(220,120,60,.2)",
+      stroke: "#c60", "stroke-width": 2 / oc.zoom,
+      "stroke-dasharray": `${6 / oc.zoom} ${4 / oc.zoom}` }, oroot);
+    return;
+  }
+  if (!e.drag || !e.work) return;
+  const uv = { u: Math.round(pt.x), v: Math.round(pt.y) };
+  const pts = e.work[e.drag.loop + 1].verts;
+  if (e.drag.kind === "vertex") applyVertexEdit(pts, e.drag.index, uv);
+  else applyEdgeEdit(pts, e.drag.index, uv);
+  drawFaceEditor();
+}
+
+async function faceEditUp(pt) {
+  const e = oc.edit;
+  if (!e) return;
+
+  if (oc.drawTool === "hole" && oc.rect) {
+    const st = oc.rect; oc.rect = null;
+    if (st.x === pt.x || st.y === pt.y) return;
+    const x0 = Math.round(Math.min(st.x, pt.x)), x1 = Math.round(Math.max(st.x, pt.x));
+    const y0 = Math.round(Math.min(st.y, pt.y)), y1 = Math.round(Math.max(st.y, pt.y));
+    const loops = oc.bmap[e.bid].map(l =>
+      ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+    loops.push({ verts: [[x0, y0], [x1, y0], [x1, y1], [x0, y1]],
+                 fixity: [1, 1, 1, 1] });
+    if (await emitBoundary(e.bid, loops)) {
+      delete oc.bmap[e.bid];
+      const b = await api("boundary " + e.bid);
+      if (b.ok) oc.bmap[e.bid] = b.loops;
+    }
+    drawFaceEditor();
+    return;
+  }
+
+  if (e.drag) {
+    const work = e.work; e.drag = null; e.work = null;
+    if (await emitBoundary(e.bid, work)) {
+      delete oc.bmap[e.bid];
+      const b = await api("boundary " + e.bid);
+      if (b.ok) oc.bmap[e.bid] = b.loops;
+    }
+    drawFaceEditor();
+  }
+}
+
+/* ---- 世界層建立互動 ---- */
+function objDrawDown(pt) {
+  if (oc.drawTool === "rect") {
+    oc.rect = { x: pt.x, y: pt.y };
+  } else if (oc.drawTool === "poly") {
+    let x = pt.x, y = pt.y;
+    if (oc.poly.length) {
+      const p = oc.poly[oc.poly.length - 1];
+      if (Math.abs(x - p[0]) >= Math.abs(y - p[1])) y = p[1]; else x = p[0];
+    }
+    /* 點回起點 = 閉合（螢幕距離比較） */
+    if (oc.poly.length >= 3) {
+      const q = oc.poly[0];
+      const scr = { x: q[0] * oc.zoom + oc.panX, y: q[1] * oc.zoom + oc.panY };
+      const cur = { x: pt.x * oc.zoom + oc.panX, y: pt.y * oc.zoom + oc.panY };
+      if (Math.hypot(scr.x - cur.x, scr.y - cur.y) <= 12) {
+        objEmitFace(oc.poly);
+        oc.poly = []; oc.drawTool = null; drawObjects();
+        return;
+      }
+    }
+    oc.poly.push([Math.round(x), Math.round(y)]);
+    drawObjects();
+    drawPolyPreview(pt);
+  }
+}
+
+async function objEmitFace(pts) {
+  const ids = await api("newid");
+  const line = `boundary ${ids.boundary} outline ` + vertsStr(pts);
+  if (await emitLine(line)) {
+    const cx = Math.round(pts.reduce((a, p) => a + p[0], 0) / pts.length);
+    const cy = Math.round(pts.reduce((a, p) => a + p[1], 0) / pts.length);
+    await api(`line canvas-pos boundary ${ids.boundary} ${Math.round(cx - OC_W / 2)} ${Math.round(cy - OC_H / 2)}`);
+    await renderObjects();
+  }
+}
+
+function drawPolyPreview(pt) {
+  if (!oc.poly.length) return;
+  const p = oc.poly[oc.poly.length - 1];
+  let x = pt.x, y = pt.y;
+  if (Math.abs(x - p[0]) >= Math.abs(y - p[1])) y = p[1]; else x = p[0];
+  el("polyline", { points: [...oc.poly, [x, y]].map(q => q.join(",")).join(" "),
+    fill: "none", stroke: "#c60", "stroke-width": 2 / oc.zoom,
+    "stroke-dasharray": `${6 / oc.zoom} ${4 / oc.zoom}` }, oroot);
+}
+
+/* ---- 事件 ---- */
+ocv.addEventListener("pointerdown", e => {
+  if (!oc.on || e.button !== 0) return;
+  const pt = ocToCanvas(e);
+  ocv.setPointerCapture(e.pointerId);
+
+  if (oc.focus && oc.focus.t === "face") { faceEditDown(pt); return; }
+  if (oc.drawTool) { objDrawDown(pt); return; }
+
+  const card = e.target.closest(".ocard");
+  if (card) {
+    oc.card = { el: card, kind: card.dataset.kind, id: +card.dataset.id,
+                sx: pt.x, sy: pt.y, moved: false };
+  } else {
+    oc.pan = { sx: e.clientX, sy: e.clientY, px: oc.panX, py: oc.panY };
+  }
+});
+
+ocv.addEventListener("pointermove", e => {
+  if (!oc.on) return;
+  const pt = ocToCanvas(e);
+
+  if (oc.pan) {
+    oc.panX = oc.pan.px + (e.clientX - oc.pan.sx);
+    oc.panY = oc.pan.py + (e.clientY - oc.pan.sy);
+    ocApply();
+    return;
+  }
+  if (oc.card) {
+    const dx = pt.x - oc.card.sx, dy = pt.y - oc.card.sy;
+    if (Math.abs(dx) + Math.abs(dy) > 3) oc.card.moved = true;
+    const o = [...oc.faces, ...oc.spaces]
+      .find(o => o.id === oc.card.id &&
+                 (o.members ? "space" : o.kind) === oc.card.kind);
+    if (o) {
+      oc.card.nx = o.cx + dx; oc.card.ny = o.cy + dy;
+      oc.card.el.setAttribute("transform",
+        `translate(${oc.card.nx},${oc.card.ny})`);
+    }
+    return;
+  }
+  if (oc.focus && oc.focus.t === "face") { faceEditMove(pt); return; }
+  if (oc.drawTool === "rect" && oc.rect) { drawObjects(); drawRectPreview(pt); }
+  if (oc.drawTool === "poly" && oc.poly.length) { drawObjects(); drawPolyPreview(pt); }
+});
+
+ocv.addEventListener("pointerup", async e => {
+  if (!oc.on) return;
+  const pt = ocToCanvas(e);
+  ocv.releasePointerCapture(e.pointerId);
+
+  if (oc.pan) { oc.pan = null; return; }
+
+  if (oc.card) {
+    const c = oc.card; oc.card = null;
+    if (c.moved) {
+      const kind = c.kind;
+      await api(`line canvas-pos ${kind} ${c.id} ${Math.round(c.nx)} ${Math.round(c.ny)}`);
+      const o = [...oc.faces, ...oc.spaces]
+        .find(o => o.id === c.id && (o.members ? "space" : o.kind) === kind);
+      if (o) { o.cx = Math.round(c.nx); o.cy = Math.round(c.ny); }
+      drawObjects();
+    } else {
+      /* 點擊進入 */
+      if (c.kind === "placement") {
+        setStatus("自帶矩形面沒有邊界可編輯");
+      } else {
+        enterFocus(c.kind === "space" ? "space" : "face", c.id);
+      }
+    }
+    return;
+  }
+
+  if (oc.focus && oc.focus.t === "face") { await faceEditUp(pt); return; }
+
+  if (oc.drawTool === "rect" && oc.rect) {
+    const st = oc.rect; oc.rect = null;
+    if (st.x === pt.x || st.y === pt.y) { drawObjects(); return; }
+    const x0 = Math.round(Math.min(st.x, pt.x)), x1 = Math.round(Math.max(st.x, pt.x));
+    const y0 = Math.round(Math.min(st.y, pt.y)), y1 = Math.round(Math.max(st.y, pt.y));
+    await objEmitFace([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]);
+    oc.drawTool = null; drawObjects();
+  }
+});
+
+function drawRectPreview(pt) {
+  const x0 = Math.min(oc.rect.x, pt.x), y0 = Math.min(oc.rect.y, pt.y);
+  el("rect", { x: x0, y: y0, width: Math.abs(pt.x - oc.rect.x),
+    height: Math.abs(pt.y - oc.rect.y), fill: "rgba(80,140,220,.15)",
+    stroke: "#357", "stroke-dasharray": `${6 / oc.zoom} ${4 / oc.zoom}` }, oroot);
+}
+
+ocv.addEventListener("wheel", e => {
+  if (!oc.on) return;
+  e.preventDefault();
+  const r = ocv.getBoundingClientRect();
+  const px = e.clientX - r.left, py = e.clientY - r.top;
+  const k = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+  oc.zoom = Math.max(0.02, Math.min(8, oc.zoom * k));
+  oc.panX = px - (px - oc.panX) * k;
+  oc.panY = py - (py - oc.panY) * k;
+  ocApply();
+}, { passive: false });
+
+/* ---- 模式切換與按鈕 ---- */
+$("btnObj").addEventListener("click", () => {
+  oc.on = !oc.on;
+  ocv.hidden = !oc.on; cv.hidden = oc.on;
+  $("objtools").hidden = !oc.on;
+  $("btnObj").textContent = oc.on ? "◧ 三視圖" : "▦ 物件畫布";
+  if (oc.on) {
+    oc.focus = null; oc.stack = [];
+    setStatus("物件畫布：拖卡片移動擺放 · 點卡片進入 · 空白拖曳平移 · 滾輪縮放");
+    renderObjects();
+  } else {
+    render();
+  }
+});
+$("btnBack").addEventListener("click", leaveFocus);
+$("btnNewRect").addEventListener("click", () => {
+  oc.drawTool = "rect"; oc.poly = [];
+  setStatus("在畫布上拖出矩形 → 建立游離面");
+});
+$("btnNewPoly").addEventListener("click", () => {
+  oc.drawTool = "poly"; oc.rect = null; oc.poly = [];
+  setStatus("逐點畫正交多邊形，點回起點閉合（Esc 取消）");
+});
+$("btnNewSpace").addEventListener("click", async () => {
+  const ids = await api("newid");
+  const r = ocv.getBoundingClientRect();
+  const cx = Math.round(((r.width / 2) - oc.panX) / oc.zoom - 120);
+  const cy = Math.round(((r.height / 2) - oc.panY) / oc.zoom - 85);
+  if (await emitLine(`space ${ids.space}`)) {
+    await api(`line canvas-pos space ${ids.space} ${cx} ${cy}`);
+    await renderObjects();
+    setStatus(`✓ 空間 ${ids.space}（空容器）已建立，點進去管理成員`);
+  }
+});
+$("btnHole2").addEventListener("click", () => {
+  if (oc.focus && oc.focus.t === "face") {
+    oc.drawTool = oc.drawTool === "hole" ? null : "hole";
+    setStatus(oc.drawTool === "hole" ? "在邊界內拖出矩形孔" : "");
+  }
+});
 
 /* ---- 啟動 ---- */
 (async () => {

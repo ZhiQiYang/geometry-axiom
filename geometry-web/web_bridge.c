@@ -416,6 +416,108 @@ static void cmd_bhit(uint32_t id, Coord u, Coord v, Coord r)
            hit.loop, hit.index);
 }
 
+/* 查某物件的畫布座標；沒設過回 NULL。 */
+static const CanvasPos *find_cpos(int kind, uint32_t id)
+{
+    for (size_t i = 0; i < g_world.canvas_pos_count; ++i) {
+        const CanvasPos *p = &g_world.canvas_pos[i];
+        if (p->kind == kind && p->id == id) {
+            return p;
+        }
+    }
+    return NULL;
+}
+
+static void cpos_json(int kind, uint32_t id)
+{
+    const CanvasPos *p = find_cpos(kind, id);
+    if (p == NULL) {
+        fputs("\"cx\":0,\"cy\":0,\"hasPos\":false", stdout);
+    } else {
+        printf("\"cx\":%lld,\"cy\":%lld,\"hasPos\":true",
+               (long long)p->x, (long long)p->y);
+    }
+}
+
+/* objects：列出畫布層所有物件（面卡 + 空間卡）與畫布座標。 */
+static void cmd_objects(void)
+{
+    fputs("{\"ok\":true,\"faces\":[", stdout);
+
+    bool first = true;
+
+    for (size_t i = 0; i < g_world.boundary_count; ++i) {
+        const SpaceBoundarySurface *b = &g_world.boundaries[i];
+        Coord lo_u = 0, lo_v = 0, hi_u = 0, hi_v = 0;
+
+        if (b->outline.count > 0) {
+            lo_u = hi_u = b->outline.v[0].u;
+            lo_v = hi_v = b->outline.v[0].v;
+            for (size_t k = 1; k < b->outline.count; ++k) {
+                if (b->outline.v[k].u < lo_u) lo_u = b->outline.v[k].u;
+                if (b->outline.v[k].u > hi_u) hi_u = b->outline.v[k].u;
+                if (b->outline.v[k].v < lo_v) lo_v = b->outline.v[k].v;
+                if (b->outline.v[k].v > hi_v) hi_v = b->outline.v[k].v;
+            }
+        }
+
+        bool placed = false;
+        for (size_t p = 0; p < g_world.placement_count; ++p) {
+            if (g_world.placements[p].boundary_id == b->id) {
+                placed = true;
+                break;
+            }
+        }
+
+        if (!first) putchar(',');
+        first = false;
+        printf("{\"kind\":\"boundary\",\"id\":%u,\"placed\":%s,"
+               "\"bbox\":[%lld,%lld,%lld,%lld],",
+               (unsigned)b->id, placed ? "true" : "false",
+               (long long)lo_u, (long long)lo_v,
+               (long long)hi_u, (long long)hi_v);
+        cpos_json(CANVAS_POS_BOUNDARY, b->id);
+        putchar('}');
+    }
+
+    /* 自帶矩形（無邊界面）的承載面也是一張面卡。 */
+    for (size_t i = 0; i < g_world.placement_count; ++i) {
+        const PlacementSurface *p = &g_world.placements[i];
+
+        if (p->boundary_id != 0) {
+            continue;
+        }
+
+        if (!first) putchar(',');
+        first = false;
+        printf("{\"kind\":\"placement\",\"id\":%u,\"placed\":true,"
+               "\"bbox\":[%lld,%lld,%lld,%lld],",
+               (unsigned)p->id,
+               (long long)p->rect.min_u, (long long)p->rect.min_v,
+               (long long)p->rect.max_u, (long long)p->rect.max_v);
+        cpos_json(CANVAS_POS_PLACEMENT, p->id);
+        putchar('}');
+    }
+
+    fputs("],\"spaces\":[", stdout);
+
+    for (size_t i = 0; i < g_world.space_count; ++i) {
+        const Space *s = &g_world.spaces[i];
+
+        if (i) putchar(',');
+        printf("{\"id\":%u,\"members\":[", (unsigned)s->id);
+        for (size_t k = 0; k < s->boundary_count; ++k) {
+            if (k) putchar(',');
+            printf("%u", (unsigned)s->boundaries[k]);
+        }
+        printf("],\"closed\":%s,", s->closed ? "true" : "false");
+        cpos_json(CANVAS_POS_SPACE, s->id);
+        putchar('}');
+    }
+
+    fputs("]}\n", stdout);
+}
+
 /* dump：World → 可重放 DSL 文本（存檔/匯出）。 */
 static void cmd_dump(void)
 {
@@ -519,6 +621,8 @@ int main(void)
             cmd_newid();
         } else if (strcmp(line, "surfaces") == 0) {
             cmd_surfaces();
+        } else if (strcmp(line, "objects") == 0) {
+            cmd_objects();
         } else if (strcmp(line, "dump") == 0) {
             cmd_dump();
         } else {

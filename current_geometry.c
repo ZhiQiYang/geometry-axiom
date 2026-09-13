@@ -2601,8 +2601,32 @@ static bool scene_compute_layout(const Scene *scene, SceneLayout *layout)
     const Coord TITLE_STRIP = 140;
     const Coord GAP = 300;
 
-    if (scene == NULL || scene->placement_count == 0 || layout == NULL) {
+    if (scene == NULL || layout == NULL) {
         return false;
+    }
+
+    /*
+     * 沒有承載面（例如只有游離邊界面的世界）：三視圖本來就畫不出
+     * 東西，回一個最小空版面，不要整個拒絕。
+     */
+    if (scene->placement_count == 0) {
+        for (size_t v = 0; v < VIEW_COUNT; ++v) {
+            layout->bounds[v] = (ViewBounds){ 0 };
+            view_bounds_pad(&layout->bounds[v], MIN_EXTENT, PAD, TITLE_STRIP);
+        }
+
+        Coord w = MIN_EXTENT + PAD * 2;
+        Coord h = MIN_EXTENT + PAD * 2 + TITLE_STRIP;
+
+        layout->tx[VIEW_FRONT] = 0;
+        layout->ty[VIEW_FRONT] = 0;
+        layout->tx[VIEW_SIDE]  = w + GAP;
+        layout->ty[VIEW_SIDE]  = 0;
+        layout->tx[VIEW_BOTTOM] = 0;
+        layout->ty[VIEW_BOTTOM] = h + GAP;
+        layout->total_w = w * 2 + GAP;
+        layout->total_h = h * 2 + GAP;
+        return true;
     }
 
     for (size_t v = 0; v < VIEW_COUNT; ++v) {
@@ -3154,6 +3178,7 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
 #define WORLD_MAX_GRIDS       8
 #define WORLD_MAX_TIMBERS     64
 #define WORLD_MAX_SPACES      4
+#define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES)
 
 /* 一個空間最多八片邊界成員，至少兩片（子集也合法：只檢查彼此一致）。 */
 #define SPACE_MAX_MEMBERS 8
@@ -3196,6 +3221,22 @@ typedef struct {
     Coord through;          /* 區間選擇器（長度軸上的座標） */
 } TimberAnchor;
 
+/*
+ * 畫布座標：物件在無限畫布上的擺放位置。
+ * 純展示中繼資料——不參與任何幾何推導，只跟著 dump/讀檔走。
+ */
+typedef enum {
+    CANVAS_POS_BOUNDARY = 0,   /* 面卡：以邊界面 id 為鍵 */
+    CANVAS_POS_PLACEMENT,      /* 自帶矩形面卡：以承載面 id 為鍵 */
+    CANVAS_POS_SPACE           /* 空間卡：以空間 id 為鍵 */
+} CanvasPosKind;
+
+typedef struct {
+    int kind;                  /* CanvasPosKind */
+    uint32_t id;
+    Coord x, y;                /* 畫布座標（展示用，非幾何） */
+} CanvasPos;
+
 typedef struct World {
     SpaceBoundarySurface boundaries[WORLD_MAX_BOUNDARIES];
     size_t boundary_count;
@@ -3217,6 +3258,9 @@ typedef struct World {
 
     Space spaces[WORLD_MAX_SPACES];
     size_t space_count;
+
+    CanvasPos canvas_pos[WORLD_MAX_CANVAS_POS];
+    size_t canvas_pos_count;
 } World;
 
 static Scene scene_from_world(const World *world);
@@ -3224,6 +3268,7 @@ static const PlacementSurface *world_find_placement(
     const World *world, uint32_t id);
 static const SpaceBoundarySurface *world_find_boundary(
     const World *world, uint32_t id);
+static const Space *world_find_space(const World *world, uint32_t id);
 static const char *scene_last_error(void);
 static int split_tokens(char *line, char *tokens[], int max_tokens);
 static bool apply_scene_line(
@@ -5377,6 +5422,17 @@ static const PlacementSurface *world_find_placement(
     return NULL;
 }
 
+static const Space *world_find_space(const World *world, uint32_t id)
+{
+    for (size_t i = 0; i < world->space_count; ++i) {
+        if (world->spaces[i].id == id) {
+            return &world->spaces[i];
+        }
+    }
+
+    return NULL;
+}
+
 /* 承載面掛的邊界面；0 或未找到都回 NULL（= 自帶 rect 模式）。 */
 static const SpaceBoundarySurface *world_placement_boundary(
     const World *world,
@@ -5496,7 +5552,7 @@ static bool space_construct(
     MaybeBound ext_hi[3] = { 0 };
     bool slot_taken[3][2] = { 0 };    /* [軸][0=負法向, 1=正法向] */
 
-    if (count < 2 || count > SPACE_MAX_MEMBERS || out_space == NULL) {
+    if (count < 1 || count > SPACE_MAX_MEMBERS || out_space == NULL) {
         return false;
     }
 
@@ -6369,6 +6425,10 @@ static bool world_revalidate(const World *world)
     for (size_t i = 0; i < world->space_count; ++i) {
         const Space *s = &world->spaces[i];
         Space probe;
+
+        if (s->boundary_count == 0) {
+            continue;   /* 空容器：零成員的部分空間，恆合法 */
+        }
 
         if (!space_construct(
                 world, s->id, s->boundaries, s->boundary_count, &probe)) {
@@ -7956,10 +8016,6 @@ static bool apply_space_line(
         ++i;
     }
 
-    if (i >= count) {
-        scene_error(path, line_no, "space 需要接 boundary 面 id 清單");
-        return false;
-    }
 
     SurfaceId faces[SPACE_MAX_MEMBERS];
     size_t face_count = 0;
@@ -7978,8 +8034,12 @@ static bool apply_space_line(
 
     Space candidate;
 
-    /* 建構子本身就驗成員一致（不改 World）。 */
-    if (!space_construct(world, space_id, faces, face_count, &candidate)) {
+    if (face_count == 0) {
+        /* 空容器：零成員的部分空間，closed=false、界未釘。 */
+        candidate = (Space){ 0 };
+        candidate.id = space_id;
+    } else if (!space_construct(world, space_id, faces, face_count, &candidate)) {
+        /* 建構子本身就驗成員一致（不改 World）。 */
         scene_error(path, line_no,
             "這些面組不成一致的空間：面不存在、重複、"
             "沒有唯一承載面、佔同一方向槽位，或區間不一致");
@@ -8188,12 +8248,96 @@ static void world_dump_dsl(const World *world, FILE *out)
     for (size_t i = 0; i < world->space_count; ++i) {
         const Space *s = &world->spaces[i];
 
+        if (s->boundary_count == 0) {
+            fprintf(out, "space %u\n", (unsigned)s->id);
+            continue;
+        }
+
         fprintf(out, "space %u boundary", (unsigned)s->id);
         for (size_t k = 0; k < s->boundary_count; ++k) {
             fprintf(out, " %u", (unsigned)s->boundaries[k]);
         }
         fputc('\n', out);
     }
+
+    /* 畫布座標最後寫：它引用的物件要先存在。 */
+    for (size_t i = 0; i < world->canvas_pos_count; ++i) {
+        const CanvasPos *p = &world->canvas_pos[i];
+
+        fprintf(out, "canvas-pos %s %u %lld %lld\n",
+                p->kind == CANVAS_POS_BOUNDARY ? "boundary" :
+                p->kind == CANVAS_POS_PLACEMENT ? "placement" : "space",
+                (unsigned)p->id, (long long)p->x, (long long)p->y);
+    }
+}
+
+/*
+ * canvas-pos：設定物件在無限畫布上的擺放位置。
+ * 純展示中繼資料：只要求目標存在，不做幾何驗證；
+ * 同 (kind,id) 再宣告 = 移動卡片。
+ */
+static bool apply_canvaspos_line(
+    const char *path,
+    int line_no,
+    char *tokens[],
+    int count,
+    World *world
+)
+{
+    (void)count;
+    int kind;
+
+    if (strcmp(tokens[1], "boundary") == 0) {
+        kind = CANVAS_POS_BOUNDARY;
+    } else if (strcmp(tokens[1], "placement") == 0) {
+        kind = CANVAS_POS_PLACEMENT;
+    } else if (strcmp(tokens[1], "space") == 0) {
+        kind = CANVAS_POS_SPACE;
+    } else {
+        scene_error(path, line_no,
+            "canvas-pos 的類別要是 boundary / placement / space");
+        return false;
+    }
+
+    uint32_t id;
+    Coord x, y;
+
+    if (!parse_u32(tokens[2], &id) ||
+        !parse_i64(tokens[3], &x) ||
+        !parse_i64(tokens[4], &y)) {
+        scene_error(path, line_no, "canvas-pos 的 id / x / y 要是整數");
+        return false;
+    }
+
+    /* 畫布座標引用的是世界裡的實體，目標必須存在。 */
+    bool exists =
+        kind == CANVAS_POS_BOUNDARY  ? world_find_boundary(world, id)  != NULL :
+        kind == CANVAS_POS_PLACEMENT ? world_find_placement(world, id) != NULL :
+                                       world_find_space(world, id)     != NULL;
+
+    if (!exists) {
+        scene_error(path, line_no, "canvas-pos 指的物件不存在");
+        return false;
+    }
+
+    for (size_t i = 0; i < world->canvas_pos_count; ++i) {
+        CanvasPos *p = &world->canvas_pos[i];
+
+        if (p->kind == kind && p->id == id) {
+            p->x = x;
+            p->y = y;
+            return true;
+        }
+    }
+
+    if (world->canvas_pos_count == WORLD_MAX_CANVAS_POS) {
+        scene_error(path, line_no, "畫布座標的數量超過上限");
+        return false;
+    }
+
+    world->canvas_pos[world->canvas_pos_count++] =
+        (CanvasPos){ .kind = kind, .id = id, .x = x, .y = y };
+    return true;
 }
 
 /*
@@ -8228,8 +8372,8 @@ static const struct {
         apply_surface_combined_line
     },
     {
-        "space", 4, 4 + SPACE_MAX_MEMBERS, false,
-        "space id boundary 面id 面id [面id ...]",
+        "space", 2, 4 + SPACE_MAX_MEMBERS, false,
+        "space id [boundary 面id 面id ...]（無成員 = 空容器）",
         apply_space_line
     },
     {
@@ -8262,6 +8406,11 @@ static const struct {
         "reset", 1, 1, false,
         "reset",
         apply_reset_line
+    },
+    {
+        "canvas-pos", 5, 5, false,
+        "canvas-pos boundary|placement|space id x y",
+        apply_canvaspos_line
     },
     { NULL, 0, 0, false, NULL, NULL }
 };
@@ -8598,8 +8747,9 @@ int main(int argc, char **argv)
         world.timber_count = 1;
     }
 
-    if (world.placement_count == 0) {
-        fprintf(stderr, "場景裡沒有承載面。\n");
+    if (world.placement_count == 0 && world.boundary_count == 0 &&
+        world.space_count == 0) {
+        fprintf(stderr, "場景裡沒有任何物件。\n");
         return 1;
     }
 
