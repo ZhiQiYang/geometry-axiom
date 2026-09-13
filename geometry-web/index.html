@@ -272,8 +272,30 @@
             <div class="inner-section-title"><span>成員面</span><span id="spaceMemberCount">0</span></div>
             <div id="spaceMemberList" class="space-boundary-list"></div>
           </section>
+          <section class="inner-section">
+            <div class="inner-section-title"><span>構件（柱/樑）</span><span id="spaceRcCount">0</span></div>
+            <div id="spaceRcList" class="space-boundary-list"></div>
+            <div class="inner-section-title"><span>游離構件</span></div>
+            <div id="spaceRcFreeList" class="space-boundary-list"></div>
+          </section>
         </aside>
         <section class="space-workspace-stage">
+          <div class="space-plan-strip">
+            <div class="space-plan-head">
+              <span>平面示意</span>
+              <span class="space-plan-tools">
+                <label>柱<select id="planColSize">
+                  <option>500</option><option selected>600</option>
+                  <option>700</option><option>800</option></select>見方</label>
+                <label>樑<select id="planBeamSize">
+                  <option value="300x500">300×500</option>
+                  <option value="350x600" selected>350×600</option>
+                  <option value="400x700">400×700</option></select></label>
+                <span class="hint">點放柱 · 拖放樑</span>
+              </span>
+            </div>
+            <svg id="spacePlanSvg"></svg>
+          </div>
           <div class="space-hero-preview" id="spaceProjWrap">
             <svg id="spaceProjSvg"></svg>
           </div>

@@ -1064,6 +1064,117 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const cardGone = await eval_(`!document.querySelector('.ocard[data-kind="column"]')`);
   console.log("刪除→卡片消失:", gone && cardGone ? "✓" : `✗ obj=${gone} card=${cardGone}`);
 
+  console.log("=== P12. 空間工作區:平面示意+構件+鬼影(RC Phase 5)===");
+  /* 等前段 mutate 完全沉降,避免 emitLine 撞 oc.busy */
+  await eval_(`new Promise(r=>{const t=()=>oc.busy?setTimeout(t,60):r();t()})`);
+  await eval_(`(async()=>{
+    await api("line reset");
+    for (const ln of [
+      "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+      "placement 1 on boundary 1 origin 0 0 2500 u +x v +y",
+      "boundary 2 outline 0,0 3000,0 3000,4000 0,4000",
+      "placement 2 on boundary 2 origin 0 0 0 u +y v +x",
+      "boundary 3 outline 0,0 4000,0 4000,2500 0,2500",
+      "placement 3 on boundary 3 origin 0 0 0 u +x v +z",
+      "boundary 4 outline 0,0 2500,0 2500,4000 0,4000",
+      "placement 4 on boundary 4 origin 0 3000 0 u +z v +x",
+      "boundary 5 outline 0,0 2500,0 2500,3000 0,3000",
+      "placement 5 on boundary 5 origin 0 0 0 u +z v +y",
+      "boundary 6 outline 0,0 3000,0 3000,2500 0,2500",
+      "placement 6 on boundary 6 origin 4000 0 0 u +y v +z",
+      "space 1 boundary 1 2 3 4 5 6",
+      "column 1 in 1 at 1000 1000 size 400 400",
+      "beam 1 in 1 along y from 0 to 3000 at 2000 width 300 depth 500",
+    ]) await api("line " + ln);
+    await renderObjects();
+    await enterFocus("space", 1);
+  })()`);
+  await sleep(1000);
+  const plan0 = await eval_(`({
+    cols: document.querySelectorAll("#spacePlanSvg .space-plan-col").length,
+    beams: document.querySelectorAll("#spacePlanSvg .space-plan-beam").length,
+    mine: document.querySelectorAll("#spaceRcList .space-boundary-button").length,
+    free: document.querySelectorAll("#spaceRcFreeList .space-boundary-button").length,
+    floor: !!document.querySelector("#spacePlanSvg .space-plan-floor")
+  })`);
+  console.log("平面圖:", plan0.floor && plan0.cols === 1 && plan0.beams === 1
+    ? "✓" : `✗ ${JSON.stringify(plan0)}`);
+  console.log("構件清單:", plan0.mine === 2 && plan0.free === 0
+    ? "✓" : `✗ ${JSON.stringify(plan0)}`);
+
+  /* 點放柱:房間 (1500,500) → at 1200 200 size 600 */
+  const ptCol = await eval_(`(()=>{
+    const svg = document.getElementById("spacePlanSvg");
+    const r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+    return {x: r.left + (1500 - vb.x)/vb.width*r.width,
+            y: r.top + (500 - vb.y)/vb.height*r.height};
+  })()`);
+  await click(ptCol.x, ptCol.y);
+  await sleep(1000);
+  const colP = await eval_(`api("objects").then(r=>({
+    n: r.columns.length,
+    dom: document.querySelectorAll("#spacePlanSvg .space-plan-col").length
+  }))`);
+  console.log("點放柱:", colP.n === 2 && colP.dom === 2
+    ? "✓" : `✗ ${JSON.stringify(colP)}`);
+
+  /* 拖放樑:水平拖 → along x */
+  const bmD = await eval_(`(()=>{
+    const svg = document.getElementById("spacePlanSvg");
+    const r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+    const px = (x,y)=>({x: r.left + (x - vb.x)/vb.width*r.width,
+                       y: r.top + (y - vb.y)/vb.height*r.height});
+    return {a: px(300, 2400), b: px(2700, 2450)};
+  })()`);
+  await drag(bmD.a.x, bmD.a.y, bmD.b.x, bmD.b.y);
+  await sleep(1000);
+  const beamP = await eval_(`api("objects").then(r=>({
+    n: r.beams.length,
+    ax: r.beams[1] && r.beams[1].axis,
+    dom: document.querySelectorAll("#spacePlanSvg .space-plan-beam").length
+  }))`);
+  console.log("拖放樑:", beamP.n === 2 && beamP.ax === "x" && beamP.dom === 2
+    ? "✓" : `✗ ${JSON.stringify(beamP)}`);
+
+  /* 構件移出→游離列→收進 */
+  await eval_(`document.querySelector("#spaceRcList .space-boundary-button").click()`);
+  await sleep(900);
+  const det = await eval_(`api("objects").then(r=>({
+    sp: r.columns[0] && r.columns[0].space,
+    free: document.querySelectorAll("#spaceRcFreeList .space-boundary-button").length
+  }))`);
+  console.log("移出→游離:", det.sp === 0 && det.free === 1
+    ? "✓" : `✗ ${JSON.stringify(det)}`);
+  await eval_(`document.querySelector("#spaceRcFreeList .space-boundary-button").click()`);
+  await sleep(900);
+  const att = await eval_(`api("objects").then(r=>r.columns[0] && r.columns[0].space)`);
+  console.log("收進→空間:", att === 1 ? "✓" : `✗ ${att}`);
+
+  /* 面內鬼影:天花(面1)應有 柱×2 + 樑條帶×2 = 4 個 */
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+  await eval_(`enterFocus("face", 1)`);
+  await sleep(1000);
+  const ghost = await eval_(`({
+    n: document.querySelectorAll("#faceEditorRoot .obstacle-ghost").length,
+    cls: [...document.querySelectorAll("#faceEditorRoot .obstacle-ghost")]
+      .map(e=>e.dataset.cls).join(","),
+    rows: document.querySelectorAll("#faceLayerList .face-layer-row").length
+  })`);
+  console.log("面內鬼影:", ghost.n === 4 && ghost.cls.includes("hole")
+    && ghost.cls.includes("strip")
+    ? "✓" : `✗ ${JSON.stringify(ghost)}`);
+  /* 牆面鬼影:y=0 牆(面3)應有 樑1頂凹 + 樑2頂降 */
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+  await eval_(`enterFocus("face", 3)`);
+  await sleep(1000);
+  const ghostW = await eval_(`[...document.querySelectorAll("#faceEditorRoot .obstacle-ghost")]
+    .map(e=>e.dataset.cls).join(",")`);
+  console.log("牆面鬼影:", /top_notch/.test(ghostW) ? "✓" : `✗ ${ghostW}`);
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

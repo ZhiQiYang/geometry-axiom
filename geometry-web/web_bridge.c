@@ -440,6 +440,61 @@ static void cmd_bhit(uint32_t id, Coord u, Coord v, Coord r)
            hit.loop, hit.index);
 }
 
+static const char *obstacle_cls_name(ObstacleClass cls)
+{
+    switch (cls) {
+    case OBSTACLE_HOLE:      return "hole";
+    case OBSTACLE_NOTCH:     return "notch";
+    case OBSTACLE_CORNER:    return "corner";
+    case OBSTACLE_SPLIT:     return "split";
+    case OBSTACLE_STRIP:     return "strip";
+    case OBSTACLE_TOP_NOTCH: return "top_notch";
+    case OBSTACLE_TOP_DROP:  return "top_drop";
+    }
+    return "?";
+}
+
+/* obstacles <boundary_id>：面上柱樑的 uv 鬼影 + 接觸分類（R7/R9）。 */
+static void cmd_obstacles(uint32_t id)
+{
+    const SpaceBoundarySurface *b = world_find_boundary(&g_world, id);
+    FaceObstacle items[64];
+
+    if (b == NULL) {
+        fputs("{\"ok\":false,\"error\":\"邊界面不存在\"}\n", stdout);
+        return;
+    }
+    size_t n = world_face_obstacles(&g_world, b, items, 64);
+    if (n == SIZE_MAX) {
+        fputs("{\"ok\":false,\"error\":\"面尚未放置，無法推導障礙物\"}\n",
+              stdout);
+        return;
+    }
+
+    int n_axis = 2;
+    for (size_t p = 0; p < g_world.placement_count; ++p) {
+        if (g_world.placements[p].boundary_id == b->id) {
+            n_axis = axis_index(g_world.placements[p].frame.normal);
+            break;
+        }
+    }
+
+    printf("{\"ok\":true,\"face\":%u,\"kind\":\"%s\",\"items\":[",
+           (unsigned)b->id, n_axis == 2 ? "plan" : "elevation");
+    for (size_t i = 0; i < n; ++i) {
+        const FaceObstacle *it = &items[i];
+        if (i) putchar(',');
+        printf("{\"id\":%u,\"type\":\"%s\",\"cls\":\"%s\","
+               "\"rect\":[%lld,%lld,%lld,%lld]}",
+               (unsigned)it->id,
+               it->is_beam ? "beam" : "column",
+               obstacle_cls_name(it->cls),
+               (long long)it->u_lo, (long long)it->v_lo,
+               (long long)it->u_hi, (long long)it->v_hi);
+    }
+    fputs("]}\n", stdout);
+}
+
 /* 查某物件的畫布座標；沒設過回 NULL。 */
 static const CanvasPos *find_cpos(int kind, uint32_t id)
 {
@@ -672,6 +727,8 @@ int main(void)
             }
         } else if (strcmp(line, "boundary") == 0 && arg != NULL) {
             cmd_boundary((uint32_t)strtoul(arg, NULL, 10));
+        } else if (strcmp(line, "obstacles") == 0 && arg != NULL) {
+            cmd_obstacles((uint32_t)strtoul(arg, NULL, 10));
         } else if (strcmp(line, "newid") == 0) {
             cmd_newid();
         } else if (strcmp(line, "surfaces") == 0) {

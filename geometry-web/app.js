@@ -1355,6 +1355,9 @@ async function openSpaceWorkspace(sid) {
   $("faceWorkspaceTools").hidden = true;
   $("workspaceTitle").textContent = "空間 " + sid;
   $("workspaceEyebrow").textContent = "空間工作區";
+  /* 進工作區一律重取世界狀態——ocSeq 守衛可能讓先前排程的
+     renderObjects 被丟棄,留下過期的 oc.columns/beams。 */
+  await renderObjects();
   await renderSpaceWorkspace();
   setStatus(`空間 ${sid}：成員面清單 · 點面卡進入面編輯 · Esc 返回`);
 }
@@ -1411,6 +1414,198 @@ async function renderSpaceWorkspace() {
   renderSpaceInspector(sp);
   /* 中上：三視圖全開（§5.6：整個 render 結果） */
   await renderSpaceProjection();
+  /* 構件清單 + 平面示意（RC Phase 5） */
+  renderSpaceRc(sp);
+  renderSpacePlan(sp);
+}
+
+/* 構件清單：本空間的柱樑（可移出成游離）+ 游離柱樑（可收進） */
+function renderSpaceRc(sp) {
+  const mine = $("spaceRcList"), free = $("spaceRcFreeList");
+  if (!mine || !free) return;
+  mine.textContent = ""; free.textContent = "";
+  const CLS = { column: oc.columns, beam: oc.beams };
+  const inSpace = [], outSide = [];
+  for (const k of ["column", "beam"])
+    for (const o of CLS[k])
+      (o.space === sp.id ? inSpace : outSide).push({ k, o });
+  $("spaceRcCount").textContent = inSpace.length;
+
+  const dims = (k, o) => {
+    const b = o.box;
+    return k === "column"
+      ? `${b[3] - b[0]}×${b[4] - b[1]} h${b[5] - b[2]}`
+      : `${b[3] - b[0]}×${b[4] - b[1]} 頂${b[5]}`;
+  };
+  const redecl = (k, o, sid) => {
+    const b = o.box;
+    if (k === "column")
+      return `column ${o.id}${sid ? " in " + sid : ""} at ${b[0]} ${b[1]} ` +
+        `size ${b[3] - b[0]} ${b[4] - b[1]} z ${b[2]} ${b[5]}`;
+    const axis = o.axis || (b[3] - b[0] >= b[4] - b[1] ? "x" : "y");
+    const lo = axis === "x" ? b[0] : b[1], hi = axis === "x" ? b[3] : b[4];
+    const c0 = axis === "x" ? b[1] : b[0], c1 = axis === "x" ? b[4] : b[3];
+    const w = c1 - c0, c = c0 + Math.floor(w / 2);
+    return `beam ${o.id}${sid ? " in " + sid : ""} along ${axis} ` +
+      `from ${lo} to ${hi} at ${c} width ${w} depth ${b[5] - b[2]} top ${b[5]}`;
+  };
+  const rcRow = (k, o, label, fn) => {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "space-boundary-button";
+    row.innerHTML =
+      `<span class="type-icon ${k}">${k === "column" ? "▮" : "═"}</span>` +
+      `<span class="space-boundary-button-copy"><strong>${k === "column" ? "柱" : "樑"} ${o.id}</strong>` +
+      `<small>${dims(k, o)}</small></span><span>${label}</span>`;
+    row.addEventListener("click", fn);
+    return row;
+  };
+  for (const { k, o } of inSpace)
+    mine.appendChild(rcRow(k, o, "移出", async () => {
+      if (await emitLine(redecl(k, o, 0))) await renderSpaceWorkspace();
+    }));
+  if (!inSpace.length)
+    mine.innerHTML = `<div class="kv"><span>此空間尚無構件</span></div>`;
+  for (const { k, o } of outSide.filter(x => !x.o.space))
+    free.appendChild(rcRow(k, o, "收進", async () => {
+      if (await emitLine(redecl(k, o, sp.id))) await renderSpaceWorkspace();
+    }));
+  if (!free.children.length)
+    free.innerHTML = `<div class="kv"><span>無游離構件</span></div>`;
+}
+
+/* 平面示意圖：房間 xy 投影——地板輪廓 + 柱樑足跡；
+ * 點一下放柱（以點為中心）,拖一段放樑（主軸方向）。 */
+function renderSpacePlan(sp) {
+  const svg = $("spacePlanSvg");
+  if (!svg) return;
+  svg.textContent = "";
+
+  /* 空間 xy 範圍：成員面投影的包圍盒；地板面順便取輪廓 */
+  let x0 = 1e18, y0 = 1e18, x1 = -1e18, y1 = -1e18;
+  let floorLoop = null;
+  for (const bid of sp.members) {
+    const s = oc.surfs.find(x => x.boundary === bid);
+    const loops = oc.bmap[bid];
+    if (!s || !loops) continue;
+    const nz = s.u[0] * s.v[1] - s.u[1] * s.v[0];
+    const pts = loops[0].verts.map(([u, v]) => [
+      s.origin[0] + u * s.u[0] + v * s.v[0],
+      s.origin[1] + u * s.u[1] + v * s.v[1],
+      s.origin[2] + u * s.u[2] + v * s.v[2]]);
+    if (nz < 0 && !floorLoop) floorLoop = pts;
+    for (const p of pts) {
+      x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]);
+      y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]);
+    }
+  }
+  /* 柱樑也參與定界 */
+  const rcHere = [
+    ...oc.columns.filter(c => c.space === sp.id),
+    ...oc.beams.filter(b => b.space === sp.id)];
+  for (const o of rcHere) {
+    x0 = Math.min(x0, o.box[0]); x1 = Math.max(x1, o.box[3]);
+    y0 = Math.min(y0, o.box[1]); y1 = Math.max(y1, o.box[4]);
+  }
+  if (x0 > x1) { x0 = 0; y0 = 0; x1 = 4000; y1 = 3000; }
+  const pad = Math.max(300, (x1 - x0) * .08, (y1 - y0) * .08);
+  svg.setAttribute("viewBox",
+    `${x0 - pad} ${y0 - pad} ${x1 - x0 + 2 * pad} ${y1 - y0 + 2 * pad}`);
+
+  if (floorLoop)
+    el("polygon", { points: floorLoop.map(p => `${p[0]},${p[1]}`).join(" "),
+      class: "space-plan-floor" }, svg);
+  else
+    el("rect", { x: x0, y: y0, width: x1 - x0, height: y1 - y0,
+      class: "space-plan-floor" }, svg);
+
+  for (const c of oc.columns.filter(c => c.space === sp.id)) {
+    const b = c.box;
+    el("rect", { x: b[0], y: b[1], width: b[3] - b[0], height: b[4] - b[1],
+      class: "space-plan-col" }, svg);
+    el("text", { x: (b[0] + b[3]) / 2, y: (b[1] + b[4]) / 2,
+      "text-anchor": "middle", "dominant-baseline": "middle",
+      class: "space-plan-label" }, svg).textContent = "柱" + c.id;
+  }
+  for (const bm of oc.beams.filter(b => b.space === sp.id)) {
+    const b = bm.box;
+    el("rect", { x: b[0], y: b[1], width: b[3] - b[0], height: b[4] - b[1],
+      class: "space-plan-beam" }, svg);
+    el("text", { x: (b[0] + b[3]) / 2, y: (b[1] + b[4]) / 2,
+      "text-anchor": "middle", "dominant-baseline": "middle",
+      class: "space-plan-label" }, svg).textContent = "樑" + bm.id;
+  }
+
+  const preview = el("rect", { class: "space-plan-preview", visibility: "hidden" }, svg);
+
+  const toRoom = ev => {
+    const r = svg.getBoundingClientRect();
+    const vb = svg.viewBox.baseVal;
+    return [
+      vb.x + (ev.clientX - r.left) / Math.max(1, r.width) * vb.width,
+      vb.y + (ev.clientY - r.top) / Math.max(1, r.height) * vb.height];
+  };
+
+  let drag = null;
+  svg.onpointerdown = ev => {
+    if (ev.button !== 0) return;
+    svg.setPointerCapture(ev.pointerId);
+    drag = { p0: toRoom(ev), p1: toRoom(ev), moved: false };
+  };
+  svg.onpointermove = ev => {
+    if (!drag) return;
+    drag.p1 = toRoom(ev);
+    const dx = Math.abs(drag.p1[0] - drag.p0[0]);
+    const dy = Math.abs(drag.p1[1] - drag.p0[1]);
+    drag.moved = Math.max(dx, dy) > 60;
+    if (drag.moved) {
+      /* 樑預覽：主軸方向條帶 */
+      const [w] = $("planBeamSize").value.split("x").map(Number);
+      if (dx >= dy)
+        preview.setAttribute("x", Math.min(drag.p0[0], drag.p1[0]));
+      else
+        preview.setAttribute("x", (drag.p0[0] + drag.p1[0]) / 2 - w / 2);
+      if (dx >= dy) {
+        preview.setAttribute("y", (drag.p0[1] + drag.p1[1]) / 2 - w / 2);
+        preview.setAttribute("width", dx);
+        preview.setAttribute("height", w);
+      } else {
+        preview.setAttribute("x", (drag.p0[0] + drag.p1[0]) / 2 - w / 2);
+        preview.setAttribute("y", Math.min(drag.p0[1], drag.p1[1]));
+        preview.setAttribute("width", w);
+        preview.setAttribute("height", dy);
+      }
+      preview.setAttribute("visibility", "visible");
+    }
+  };
+  svg.onpointerup = async ev => {
+    if (!drag) return;
+    const d = drag; drag = null;
+    preview.setAttribute("visibility", "hidden");
+    const ids = await api("newid");
+    let line;
+    if (!d.moved) {
+      const s = +$("planColSize").value;
+      line = `column ${ids.column} in ${sp.id} at ` +
+        `${Math.round(d.p0[0] - s / 2)} ${Math.round(d.p0[1] - s / 2)} ` +
+        `size ${s} ${s}`;
+    } else {
+      const [w, dep] = $("planBeamSize").value.split("x").map(Number);
+      const dx = Math.abs(d.p1[0] - d.p0[0]);
+      const dy = Math.abs(d.p1[1] - d.p0[1]);
+      if (dx >= dy)
+        line = `beam ${ids.beam} in ${sp.id} along x from ` +
+          `${Math.round(Math.min(d.p0[0], d.p1[0]))} to ` +
+          `${Math.round(Math.max(d.p0[0], d.p1[0]))} at ` +
+          `${Math.round((d.p0[1] + d.p1[1]) / 2)} width ${w} depth ${dep}`;
+      else
+        line = `beam ${ids.beam} in ${sp.id} along y from ` +
+          `${Math.round(Math.min(d.p0[1], d.p1[1]))} to ` +
+          `${Math.round(Math.max(d.p0[1], d.p1[1]))} at ` +
+          `${Math.round((d.p0[0] + d.p1[0]) / 2)} width ${w} depth ${dep}`;
+    }
+    if (await emitLine(line)) await renderSpaceWorkspace();
+  };
 }
 
 function renderSpaceInspector(sp) {
@@ -1658,9 +1853,12 @@ function feSetTool(t) {
 }
 
 async function feLoadGuides() {
-  fe.guides = []; fe.timbers = []; fe.grids = [];
+  fe.guides = []; fe.timbers = []; fe.grids = []; fe.obstacles = null;
   const bid = oc.edit && oc.edit.bid, sid = bid && feSid(bid);
   if (!sid) return;
+  /* R7/R9：已放置面才有柱樑鬼影（不改 boundary） */
+  const ob = await api("obstacles " + bid);
+  if (ob.ok && ob.items && ob.items.length) fe.obstacles = ob;
   const d = await api("dump");
   if (!d.ok || !d.text) return;
   const timberDecl = {};
@@ -1764,6 +1962,22 @@ function drawFaceEditor() {
     el("rect", { x: Math.min(t2.u, fu), y: Math.min(t2.v, fv),
       width: Math.abs(fu - t2.u), height: Math.abs(fv - t2.v),
       class: "face-timber" }, root);
+  }
+  /* RC 障礙物鬼影（R7）：半透明分類矩形，只讀不改 boundary */
+  if (fe.obstacles) {
+    const CLS_ZH = { hole: "孔", notch: "凹口", corner: "角凹",
+      strip: "條帶", split: "拆分", top_notch: "頂凹", top_drop: "頂降" };
+    for (const it of fe.obstacles.items) {
+      const r = it.rect;
+      el("rect", { x: r[0], y: r[1], width: r[2] - r[0], height: r[3] - r[1],
+        class: "obstacle-ghost", "data-cls": it.cls }, root);
+      el("text", { x: (r[0] + r[2]) / 2, y: (r[1] + r[3]) / 2,
+        "font-size": 11 / z, "text-anchor": "middle",
+        "dominant-baseline": "middle",
+        class: "obstacle-ghost-label" }, root).textContent =
+        (it.type === "beam" ? "樑" : "柱") + it.id + "·" +
+        (CLS_ZH[it.cls] || it.cls);
+    }
   }
   /* 重畫外環草稿（Phase 1）：軸鎖折線 + 段長標註 + 起點閉合圈 */
   const d0 = fe.drag;
@@ -2229,6 +2443,14 @@ function renderFaceLayers() {
         await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
       }
     });
+  /* RC 障礙物鬼影：只讀列示（刪除要去物件畫布刪柱樑） */
+  if (fe.obstacles) {
+    const CLS_ZH = { hole: "孔", notch: "凹口", corner: "角凹",
+      strip: "條帶", split: "拆分", top_notch: "頂凹", top_drop: "頂降" };
+    for (const it of fe.obstacles.items)
+      row("◌", `${it.type === "beam" ? "樑" : "柱"} ${it.id} 投影`,
+        `${CLS_ZH[it.cls] || it.cls} · 鬼影`, null);
+  }
   $("faceLayerCount").textContent = n;
 }
 

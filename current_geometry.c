@@ -8644,6 +8644,303 @@ revalidate:
     return true;
 }
 
+/* ============================================================
+ * 面障礙物推導（R7/R8/R9）
+ *
+ *   obstacles <boundary_id> 把所屬空間的柱/樑投影到已放置面的
+ *   uv 空間，依「足跡與輪廓的接觸關係」單一分類：
+ *
+ *     平面面（法向 ±Z）:
+ *       柱   → hole / notch / corner / split
+ *       樑   → strip（天花）;地板不受影響
+ *     立面（法向水平）:
+ *       柱貼牆 → split;樑沿牆 → top_drop;樑搭牆 → top_notch
+ *
+ *   這只是推導出的鬼影資料，不改邊界面；apply-proj 才落地。
+ * ============================================================ */
+
+typedef enum {
+    OBSTACLE_HOLE,
+    OBSTACLE_NOTCH,
+    OBSTACLE_CORNER,
+    OBSTACLE_SPLIT,
+    OBSTACLE_STRIP,
+    OBSTACLE_TOP_NOTCH,
+    OBSTACLE_TOP_DROP
+} ObstacleClass;
+
+typedef struct {
+    uint32_t id;
+    int is_beam;
+    ObstacleClass cls;
+    Coord u_lo, v_lo, u_hi, v_hi;
+} FaceObstacle;
+
+/* 房間座標點在面框上的 uv。axis_u/axis_v 是單位軸向量。 */
+static SurfacePoint2 frame_project_uv(const SurfaceFrame *f, Point3 p)
+{
+    Point3 d = { p.x - f->origin.x, p.y - f->origin.y, p.z - f->origin.z };
+    int au = axis_index(f->axis_u);
+    int av = axis_index(f->axis_v);
+    Coord su = f->axis_u.x + f->axis_u.y + f->axis_u.z;
+    Coord sv = f->axis_v.x + f->axis_v.y + f->axis_v.z;
+    SurfacePoint2 r = {
+        point3_component(d, au) * su,
+        point3_component(d, av) * sv
+    };
+    return r;
+}
+
+/* AABB 八角投影到面框 uv 的包圍矩形。 */
+static void box_project_uv(
+    const SurfaceFrame *f,
+    Coord x_lo, Coord x_hi, Coord y_lo, Coord y_hi,
+    Coord z_lo, Coord z_hi,
+    Coord *u_lo, Coord *v_lo, Coord *u_hi, Coord *v_hi
+)
+{
+    Coord ul = INT64_MAX, uh = INT64_MIN, vl = INT64_MAX, vh = INT64_MIN;
+    for (int i = 0; i < 8; ++i) {
+        Point3 c = {
+            (i & 1) ? x_hi : x_lo,
+            (i & 2) ? y_hi : y_lo,
+            (i & 4) ? z_hi : z_lo
+        };
+        SurfacePoint2 q = frame_project_uv(f, c);
+        ul = coord_min(ul, q.u);
+        uh = coord_max(uh, q.u);
+        vl = coord_min(vl, q.v);
+        vh = coord_max(vh, q.v);
+    }
+    *u_lo = ul; *u_hi = uh; *v_lo = vl; *v_hi = vh;
+}
+
+/* R 的某側是否與輪廓某邊共線正重疊（貼邊）。 */
+static bool side_flush_outline(
+    const PolygonLoop2 *loop,
+    int side,          /* 0 left(u=u0) 1 right 2 bottom(v=v0) 3 top */
+    Coord u0, Coord v0, Coord u1, Coord v1
+)
+{
+    Coord c = (side == 0) ? u0 : (side == 1) ? u1 : (side == 2) ? v0 : v1;
+    Coord lo = (side < 2) ? v0 : u0;
+    Coord hi = (side < 2) ? v1 : u1;
+
+    for (size_t i = 0; i < loop->count; ++i) {
+        SurfacePoint2 a = loop->v[i];
+        SurfacePoint2 e = loop->v[(i + 1) % loop->count];
+        Coord elo, ehi;
+
+        if (side < 2) {
+            if (a.u != c || e.u != c) continue;
+            elo = coord_min(a.v, e.v);
+            ehi = coord_max(a.v, e.v);
+        } else {
+            if (a.v != c || e.v != c) continue;
+            elo = coord_min(a.u, e.u);
+            ehi = coord_max(a.u, e.u);
+        }
+        if (coord_min(hi, ehi) > coord_max(lo, elo)) return true;
+    }
+    return false;
+}
+
+/* 矩形與輪廓的接觸分類：R 會先被輪廓邊界線裁切到內部
+ * （直角切法，涵蓋孔/凹口/角/拆分全部案例）,再按貼邊數分類。
+ * 回傳是否有正接觸；有時 out_* 為裁切後的 uv 矩形。 */
+static bool classify_rect_outline(
+    const PolygonLoop2 *loop,
+    Coord in_u0, Coord in_v0, Coord in_u1, Coord in_v1,
+    ObstacleClass *cls,
+    Coord *out_u0, Coord *out_v0, Coord *out_u1, Coord *out_v1
+)
+{
+    Coord u0 = in_u0, v0 = in_v0, u1 = in_u1, v1 = in_v1;
+    size_t inside = 0;
+
+    {
+        SurfacePoint2 corners[4] = {
+            { u0, v0 }, { u1, v0 }, { u1, v1 }, { u0, v1 }
+        };
+        for (int i = 0; i < 4; ++i) {
+            if (poly_contains_point(loop, corners[i])) ++inside;
+        }
+    }
+    if (inside == 0) return false;
+
+    if (inside < 4) {
+        /* 矩形跨出輪廓：每條切過 R 內部的輪廓邊把 R 裁向內側。 */
+        for (size_t i = 0; i < loop->count; ++i) {
+            SurfacePoint2 a = loop->v[i];
+            SurfacePoint2 e = loop->v[(i + 1) % loop->count];
+            Coord lo, hi, mid;
+
+            if (a.u == e.u) {
+                lo = coord_min(a.v, e.v);
+                hi = coord_max(a.v, e.v);
+                if (coord_min(v1, hi) <= coord_max(v0, lo)) continue;
+                if (a.u <= u0 || a.u >= u1) continue;
+                mid = (lo + hi) / 2;
+                if (poly_contains_point(
+                        loop, (SurfacePoint2){ a.u + 1, mid }))
+                    u0 = a.u;
+                else
+                    u1 = a.u;
+            } else if (a.v == e.v) {
+                lo = coord_min(a.u, e.u);
+                hi = coord_max(a.u, e.u);
+                if (coord_min(u1, hi) <= coord_max(u0, lo)) continue;
+                if (a.v <= v0 || a.v >= v1) continue;
+                mid = (lo + hi) / 2;
+                if (poly_contains_point(
+                        loop, (SurfacePoint2){ mid, a.v + 1 }))
+                    v0 = a.v;
+                else
+                    v1 = a.v;
+            }
+        }
+        if (u0 >= u1 || v0 >= v1) return false;
+    }
+
+    {
+        int flush = 0;
+        bool f[4];
+        for (int s = 0; s < 4; ++s) {
+            f[s] = side_flush_outline(loop, s, u0, v0, u1, v1);
+            if (f[s]) ++flush;
+        }
+        if (flush == 0) {
+            *cls = OBSTACLE_HOLE;
+        } else if (flush == 1) {
+            *cls = OBSTACLE_NOTCH;
+        } else if (flush == 2) {
+            bool opposite = (f[0] && f[1]) || (f[2] && f[3]);
+            *cls = opposite ? OBSTACLE_SPLIT : OBSTACLE_CORNER;
+        } else {
+            *cls = OBSTACLE_SPLIT;
+        }
+    }
+    *out_u0 = u0; *out_v0 = v0; *out_u1 = u1; *out_v1 = v1;
+    return true;
+}
+
+/* 面的所屬空間 id（非成員回 0，對應游離柱樑）。 */
+static uint32_t world_space_of_boundary(const World *world, uint32_t bid)
+{
+    for (size_t i = 0; i < world->space_count; ++i) {
+        for (size_t m = 0; m < world->spaces[i].boundary_count; ++m) {
+            if (world->spaces[i].boundaries[m] == bid) {
+                return world->spaces[i].id;
+            }
+        }
+    }
+    return 0;
+}
+
+/* 已放置面的障礙物推導。回傳筆數；面未放置回 SIZE_MAX。 */
+static size_t world_face_obstacles(
+    const World *world,
+    const SpaceBoundarySurface *b,
+    FaceObstacle *out,
+    size_t cap
+)
+{
+    const PlacementSurface *pl = NULL;
+    for (size_t p = 0; p < world->placement_count; ++p) {
+        if (world->placements[p].boundary_id == b->id) {
+            pl = &world->placements[p];
+            break;
+        }
+    }
+    if (pl == NULL) return SIZE_MAX;
+
+    const SurfaceFrame *f = &pl->frame;
+    int n_axis = axis_index(f->normal);
+    Coord plane = point3_component(f->origin, n_axis);
+    uint32_t sid = world_space_of_boundary(world, b->id);
+    size_t n = 0;
+    Coord o_u0, o_v0, o_u1, o_v1;
+
+    poly_bbox(&b->outline, &o_u0, &o_v0, &o_u1, &o_v1);
+
+    for (size_t i = 0; i < world->column_count && n < cap; ++i) {
+        const RcColumn *c = &world->columns[i];
+        Coord u0, v0, u1, v1;
+        if (c->space_id != sid) continue;
+
+        box_project_uv(f, c->x_lo, c->x_hi, c->y_lo, c->y_hi,
+            c->z_lo, c->z_hi, &u0, &v0, &u1, &v1);
+
+        if (n_axis == 2) {
+            /* 平面面：柱足跡 vs 輪廓接觸 → hole/notch/corner/split */
+            ObstacleClass cls;
+            Coord cu0, cv0, cu1, cv1;
+            if (!classify_rect_outline(&b->outline, u0, v0, u1, v1,
+                    &cls, &cu0, &cv0, &cu1, &cv1)) continue;
+            out[n++] = (FaceObstacle){
+                c->id, 0, cls, cu0, cv0, cu1, cv1
+            };
+        } else {
+            /* 立面：柱的垂直軸區間要含牆平面才算貼牆。
+             * uv 矩形已經是柱與牆的交線投影，裁到牆範圍。 */
+            Coord nlo, nhi;
+            if (n_axis == 0) { nlo = c->x_lo; nhi = c->x_hi; }
+            else             { nlo = c->y_lo; nhi = c->y_hi; }
+            if (plane < nlo || plane > nhi) continue;
+            u0 = coord_max(u0, o_u0); u1 = coord_min(u1, o_u1);
+            v0 = coord_max(v0, o_v0); v1 = coord_min(v1, o_v1);
+            if (u0 >= u1 || v0 >= v1) continue;
+            out[n++] = (FaceObstacle){
+                c->id, 0, OBSTACLE_SPLIT, u0, v0, u1, v1
+            };
+        }
+    }
+
+    for (size_t i = 0; i < world->beam_count && n < cap; ++i) {
+        const RcBeam *bm = &world->beams[i];
+        Coord u0, v0, u1, v1;
+        if (bm->space_id != sid) continue;
+
+        box_project_uv(f, bm->x_lo, bm->x_hi, bm->y_lo, bm->y_hi,
+            bm->z_lo, bm->z_hi, &u0, &v0, &u1, &v1);
+
+        if (n_axis == 2) {
+            /* 只有法向 +Z 的天花受影響；樑要真的碰到那個高程。 */
+            if (f->normal.z <= 0) continue;
+            if (plane < bm->z_lo || plane > bm->z_hi) continue;
+            out[n++] = (FaceObstacle){
+                bm->id, 1, OBSTACLE_STRIP, u0, v0, u1, v1
+            };
+        } else {
+            Coord nlo, nhi;
+            int h_axis;      /* 牆的水平面內軸（非法向的那個） */
+            /* 樑沿法向軸的跨度要含牆平面（搭/貼牆）。 */
+            if (n_axis == 0) { nlo = bm->x_lo; nhi = bm->x_hi; }
+            else             { nlo = bm->y_lo; nhi = bm->y_hi; }
+            if (plane < nlo || plane > nhi) continue;
+            h_axis = (n_axis == 0) ? 1 : 0;
+            if (bm->axis == (uint8_t)h_axis) {
+                /* 貼牆走：頂邊整段降樑深。 */
+                u0 = coord_max(u0, o_u0); u1 = coord_min(u1, o_u1);
+                v0 = coord_max(v0, o_v0); v1 = coord_min(v1, o_v1);
+                if (u0 >= u1 || v0 >= v1) continue;
+                out[n++] = (FaceObstacle){
+                    bm->id, 1, OBSTACLE_TOP_DROP, u0, v0, u1, v1
+                };
+            } else if (bm->axis == (uint8_t)n_axis) {
+                /* 搭牆：頂邊 w×d 凹口。 */
+                u0 = coord_max(u0, o_u0); u1 = coord_min(u1, o_u1);
+                v0 = coord_max(v0, o_v0); v1 = coord_min(v1, o_v1);
+                if (u0 >= u1 || v0 >= v1) continue;
+                out[n++] = (FaceObstacle){
+                    bm->id, 1, OBSTACLE_TOP_NOTCH, u0, v0, u1, v1
+                };
+            }
+        }
+    }
+    return n;
+}
+
 static bool apply_delete_line(
     const char *path,
     int line_no,

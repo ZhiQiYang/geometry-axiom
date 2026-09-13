@@ -296,6 +296,56 @@ function check(name, cond, detail="") {
   check("柱樑 dump 可重放", replayK);
   check("柱樑 round-trip 相同", (await api("dump")).text === dK3);
 
+  /* ==== §L. obstacles 鬼影分類(R7 五種接觸,P12)==== */
+  await api("line reset");
+  let roomL = true;
+  for (const ln of room) if (!(await api("line " + ln)).ok) roomL = false;
+  check("L 六面盒重建", roomL);
+  const mkL = async l => (await api("line " + l)).ok;
+  check("L 獨立柱", await mkL("column 1 in 1 at 1000 1000 size 400 400"));
+  check("L 貼牆柱", await mkL("column 2 in 1 at 0 1500 size 400 400"));
+  check("L 角柱", await mkL("column 3 in 1 at 3600 2600 size 400 400"));
+  check("L 搭牆樑", await mkL("beam 1 in 1 along y from 0 to 3000 at 2000 width 300 depth 500"));
+  check("L 邊樑", await mkL("beam 2 in 1 along x from 0 to 4000 at 150 width 300 depth 400"));
+
+  const obL1 = await api("obstacles 1");   /* 天花 +Z */
+  const cls1 = Object.fromEntries((obL1.items || []).map(i => [i.type + i.id, i.cls]));
+  check("天花:獨立柱→孔", cls1.column1 === "hole", JSON.stringify(cls1));
+  check("天花:貼牆柱→凹口", cls1.column2 === "notch");
+  check("天花:角柱→角凹", cls1.column3 === "corner");
+  check("天花:搭牆樑→條帶", cls1.beam1 === "strip");
+  check("天花:邊樑→條帶", cls1.beam2 === "strip");
+
+  const obL2 = await api("obstacles 2");   /* 地板 -Z:樑不該出現 */
+  const cls2 = Object.fromEntries((obL2.items || []).map(i => [i.type + i.id, i.cls]));
+  check("地板:柱三分類", cls2.column1 === "hole" && cls2.column2 === "notch" &&
+        cls2.column3 === "corner", JSON.stringify(cls2));
+  check("地板:無樑影", !cls2.beam1 && !cls2.beam2);
+
+  const obL3 = await api("obstacles 3");   /* 牆 y=0 -Y */
+  const cls3 = Object.fromEntries((obL3.items || []).map(i => [i.type + i.id, i.cls]));
+  check("牆:搭牆樑→頂凹", cls3.beam1 === "top_notch", JSON.stringify(cls3));
+  check("牆:邊樑→頂降", cls3.beam2 === "top_drop");
+  check("牆:柱2 不貼牆→無項", !cls3.column2);
+
+  const obL5 = await api("obstacles 5");   /* 牆 x=0 -X:柱2 貼牆 → split */
+  const cls5 = Object.fromEntries((obL5.items || []).map(i => [i.type + i.id, i.cls]));
+  check("牆:貼牆柱→拆分", cls5.column2 === "split", JSON.stringify(cls5));
+  check("牆:邊樑端搭→頂凹", cls5.beam2 === "top_notch");
+
+  const obL6 = await api("obstacles 6");   /* 牆 x=4000 +X:柱3 角貼 → split */
+  const cls6 = Object.fromEntries((obL6.items || []).map(i => [i.type + i.id, i.cls]));
+  check("牆:角柱→拆分", cls6.column3 === "split", JSON.stringify(cls6));
+
+  /* 鬼影不改 boundary:obstacles 前後 boundary 1 的輪廓要相同 */
+  const bBefore = await api("boundary 1");
+  await api("obstacles 1");
+  const bAfter = await api("boundary 1");
+  check("鬼影不改邊界", JSON.stringify(bBefore) === JSON.stringify(bAfter));
+  /* 未放置面 → ok:false(R9) */
+  check("未放置面拒絕", !(await api("line boundary 7 outline 0,0 100,0 100,100 0,100")).ok === false ||
+        !(await api("obstacles 7")).ok);
+
   await api("default");
 
   console.log(`\n${pass} pass / ${fail} fail`);

@@ -107,6 +107,13 @@ TESTS = [
     # 游離柱不明寫 z → R11 不猜
     {"scene": "_mut_col_noz.scene", "expect": "reject",
      "error": "游離柱"},
+
+    # ---- RC 障礙物投影夾具(R7 五種接觸;分類由 bridge obstacles 驗)----
+    {"scene": "_rc_col_free.scene", "expect": "accept"},
+    {"scene": "_rc_col_wall.scene", "expect": "accept"},
+    {"scene": "_rc_col_corner.scene", "expect": "accept"},
+    {"scene": "_rc_beam_cross.scene", "expect": "accept"},
+    {"scene": "_rc_beam_edge.scene", "expect": "accept"},
 ]
 
 LEN_RE = re.compile(r"L=(\d+)")
