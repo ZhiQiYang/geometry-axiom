@@ -1281,7 +1281,7 @@ async function leaveFocus() {
   }
   drawObjects();
   if (!oc.focus)
-    setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白處拖曳平移 · 滾輪縮放");
+    setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白處/中鍵拖曳平移 · 滾輪縮放");
 }
 
 /* ---- 面內工作區（Phase 3）：objectWorkspace 殼 + data-face-hit 直編 ----
@@ -1344,7 +1344,7 @@ async function openFaceWorkspace(bid) {
   drawFaceEditor();
   renderFaceLayers();
   renderFaceInspector();
-  setStatus(`面 ${bid}：拖頂點/邊編輯 · 參考線 l · 開口 r · Esc 返回`);
+  setStatus(`面 ${bid}：拖頂點/邊編輯 · l 參考線 · r 開口 · 平移 h/中鍵/空白拖 · 滾輪縮放 · f 全圖 · 1 =100% · Esc 返回`);
 }
 
 /* ---- 空間工作區（Phase 4）：成員清單 + 面卡片格 + 檢視器 + 三視圖 ---- */
@@ -3116,7 +3116,14 @@ ocv.addEventListener("dblclick", e => {
              parseInt(card.dataset.id, 10));
 });
 ocv.addEventListener("pointerdown", e => {
-  if (!oc.on || oc.busy || e.button !== 0) return;
+  if (!oc.on) return;
+  if (e.button === 1) {                       /* 中鍵平移 */
+    e.preventDefault();
+    ocv.setPointerCapture(e.pointerId);
+    oc.pan = { sx: e.clientX, sy: e.clientY, px: oc.panX, py: oc.panY };
+    return;
+  }
+  if (oc.busy || e.button !== 0) return;
   const pt = ocToCanvas(e);
   ocv.setPointerCapture(e.pointerId);
 
@@ -3417,6 +3424,12 @@ $("faceSnapToggle").addEventListener("change", drawFaceEditor);
 
 const fevp = $("faceEditorViewport");
 fevp.addEventListener("pointerdown", async e => {
+  if (e.button === 1) {                       /* 中鍵平移(不動資料,busy 也放行) */
+    e.preventDefault();
+    fevp.setPointerCapture(e.pointerId);
+    fe.drag = { kind: "pan", cx: e.clientX, cy: e.clientY };
+    return;
+  }
   if (e.button !== 0 || oc.busy) return;
   fevp.setPointerCapture(e.pointerId);
   await feDown(feSnap(fePoint(e)), e);

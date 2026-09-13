@@ -75,6 +75,14 @@ async function drag(x0, y0, x1, y1, steps = 8) {
 async function moveTo(x, y) {
   await send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y });
 }
+/* 中鍵拖曳(平移視角):button=middle */
+async function midDrag(x0, y0, x1, y1, steps = 6) {
+  await settle();
+  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: x0, y: y0, button: "middle", clickCount: 1 });
+  for (let i = 1; i <= steps; ++i)
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: x0 + (x1 - x0) * i / steps, y: y0 + (y1 - y0) * i / steps, button: "middle" });
+  await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: x1, y: y1, button: "middle", clickCount: 1 });
+}
 async function pressKey(k, opts = {}) {
   await settle();
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: k, ...opts });
@@ -486,6 +494,38 @@ async function escUntilFree(tries = 5) {
     return {x:r.left+r.width/2,y:r.top+r.height/2}})()`);
   await click(cvp.x, cvp.y); await sleep(400);
   await clickEl("#btnObj"); await sleep(500);
+
+  /* ========== 24. 中鍵拖曳平移 ========== */
+  _log("== 中鍵平移 ==");
+  { /* 物件畫布:ocv 視區內命中點中鍵拖 → oc.pan 變 */
+    const hp = await eval_(`(()=>{const r=document.getElementById("ocv").getBoundingClientRect();
+      for(let y=r.top+80;y<r.bottom-80;y+=60)for(let x=r.left+80;x<r.right-80;x+=80){
+        const e=document.elementFromPoint(x,y);
+        if(e&&(e.id==="ocv"||(e.closest&&e.closest("#ocv"))))return{x,y};}return null})()`);
+    if (!hp) say("物件畫布中鍵拖", false, "找不到 ocv 命中點");
+    else {
+      const p0 = await eval_("[oc.panX,oc.panY]");
+      await midDrag(hp.x, hp.y, hp.x - 60, hp.y + 30); await sleep(300);
+      const p1 = await eval_("[oc.panX,oc.panY]");
+      say("物件畫布中鍵拖", Math.abs(p1[0] - p0[0] + 60) < 2 && Math.abs(p1[1] - p0[1] - 30) < 2,
+          `[${p0}]→[${p1}]`);
+    }
+  }
+  { /* 面內工作區:雙擊任一卡進去,中鍵拖 → fe.pan 變,Esc 出來 */
+    await dblclickEl(`.ocard[data-kind="boundary"]`); await sleep(700);
+    const inFe = await eval_("!!oc.edit");
+    if (!inFe) say("面內中鍵拖", false, "進不了面工作區");
+    else {
+      const vp = await eval_(`(()=>{const r=document.getElementById("faceEditorSvg").getBoundingClientRect();
+        return {x:r.left+r.width/2,y:r.top+r.height/2}})()`);
+      const p0 = await eval_("[fe.panX,fe.panY]");
+      await midDrag(vp.x, vp.y, vp.x + 80, vp.y + 40); await sleep(300);
+      const p1 = await eval_("[fe.panX,fe.panY]");
+      say("面內中鍵拖", Math.abs(p1[0] - p0[0] - 80) < 2 && Math.abs(p1[1] - p0[1] - 40) < 2,
+          `[${p0}]→[${p1}]`);
+      await pressKey("Escape"); await sleep(400);
+    }
+  }
 
   _log(`\n=== 全真實游標結果:${passN} ✓ / ${failN} ✗ ===`);
   chrome.kill();
