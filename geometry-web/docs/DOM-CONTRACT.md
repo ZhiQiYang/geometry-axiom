@@ -66,7 +66,7 @@
 | `[data-tool]` | 頂列工具鈕(select/pan/rect/poly) | `dataset.tool`、`.active` |
 | `[data-filter-type]` | 顯示類型篩選(face/space) | `checked` 狀態 |
 | `[data-icon]` | 圖示插槽 | hydrateIcons 填充 |
-| `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
+| `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/insert) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
 | `[data-face-hit]` | 面編輯器命中層(`v:<loop>:<i>`/`e:<loop>:<i>`/`g:<id>:<axis>`) | pointerdown 命中(非同步 bhit 已由它取代) |
 | `[data-place-preset]` | 放置預設鈕 | `dataset.placePreset`、`.click()` |
 | `[data-proj-check]` | 投影視圖勾選 | `checked` |

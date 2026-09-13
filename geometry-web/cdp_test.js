@@ -688,6 +688,47 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     "| guide 已刪:", delR.noGuide ? "✓" : "✗",
     "| 空間已刪:", delR.spLeft === 0 ? "✓" : "✗");
 
+  /* Q2:插入凹口——邊上點一下,頂點 4→8 且核心仍判合法 */
+  console.log("=== P7. 插入凹口(Q2)===");
+  const insR = await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100");
+    await renderObjects();
+    await enterFocus("face", 1);
+    feSetTool("insert");
+    const hit = document.querySelector('[data-face-hit="e:0:0"]');
+    const b0v = (await api("boundary 1")).loops[0].verts;
+    const mid = [(b0v[0][0]+b0v[1][0])/2, (b0v[0][1]+b0v[1][1])/2];
+    await feDown({x: mid[0], y: mid[1]}, {target: hit, clientX: 0, clientY: 0});
+    await new Promise(r=>setTimeout(r,300));
+    const b = await api("boundary 1");
+    const ortho = b.ok && b.loops[0].verts.every((v,i,vs)=>{
+      const nx = vs[(i+1)%vs.length];
+      return v[0]===nx[0] || v[1]===nx[1];
+    });
+    return {tool: fe.tool, verts: b.loops[0].verts.length,
+            fixity: b.loops[0].fixity.length, ortho};
+  })()`);
+  console.log("insert 工具:", insR.tool === "insert" ? "✓" : "✗",
+    "| 頂點 4→", insR.verts, insR.verts === 8 ? "✓" : "✗",
+    "| fixity 同步:", insR.fixity === 8 ? "✓" : "✗",
+    "| 全正交:", insR.ortho ? "✓" : "✗");
+  /* 拖凹口底部頂點加深 → 仍合法(用既有頂點拖曳路徑) */
+  const notchR = await eval_(`(async()=>{
+    feSetTool("select");
+    fe.work = (await api("boundary 1")).loops.map(l=>({verts:l.verts.map(p=>[...p]),fixity:[...l.fixity]}));
+    fe.work[0].verts[2][1] += 30;   /* 凹底左點再往下 30 */
+    fe.work[0].verts[3][1] += 30;   /* 凹底右點同步 */
+    const ok = await emitBoundary(1, fe.work);
+    fe.work = null;
+    const b1 = await api("boundary 1");
+    return {ok, verts: b1.loops[0].verts.length};
+  })()`);
+  console.log("凹口加深:", notchR.ok ? "✓" : "✗",
+    "| 頂點:", notchR.verts, notchR.verts === 8 ? "✓" : "✗");
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

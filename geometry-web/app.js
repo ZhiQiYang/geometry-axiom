@@ -627,7 +627,7 @@ window.addEventListener("keydown", async e => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
     const k = e.key.toLowerCase();
     if (k === " ") { fe.spaceDown = true; e.preventDefault(); return; }
-    const map = { v: "select", l: "guide", r: "hole", h: "pan" };
+    const map = { v: "select", l: "guide", r: "hole", h: "pan", i: "insert" };
     if (map[k]) { feSetTool(map[k]); return; }
     if (k === "f" && oc.edit && oc.bmap[oc.edit.bid]) {
       feFit(loopsBBox(oc.bmap[oc.edit.bid])); return;
@@ -1450,9 +1450,9 @@ function feSetTool(t) {
     b.classList.toggle("active", b.dataset.faceTool === t);
   const vp = $("faceEditorViewport");
   vp.className = "face-editor-viewport tool-" +
-    ({ select: "select", guide: "referenceLine", hole: "opening", pan: "pan" }[t] || t);
+    ({ select: "select", guide: "referenceLine", hole: "opening", pan: "pan", insert: "insert" }[t] || t);
   $("workspaceToolStatus").textContent = "工具：" +
-    ({ select: "選取", guide: "參考線", hole: "開口", pan: "平移" }[t] || t);
+    ({ select: "選取", guide: "參考線", hole: "開口", pan: "平移", insert: "插入頂點" }[t] || t);
   /* 游離面：參考線工具停用 */
   const gb = document.querySelector('[data-face-tool="guide"]');
   if (gb) {
@@ -1550,7 +1550,7 @@ function drawFaceEditor() {
   }
 }
 
-function feDown(pt, ev) {
+async function feDown(pt, ev) {
   const e = oc.edit;
   if (!e) return;
   if (fe.tool === "pan" || fe.spaceDown) {
@@ -1564,6 +1564,57 @@ function feDown(pt, ev) {
   if (fe.tool === "guide") {
     if (!feSid(e.bid)) { setStatus("游離面不能放參考線——先在檢視器「放置」"); return; }
     fe.drag = { kind: "guideNew", x0: pt.x, y0: pt.y, x1: pt.x, y1: pt.y };
+    return;
+  }
+  if (fe.tool === "insert") {
+    /* Q2 插入凹口：邊上點一下 → 插入一個矩形凹口（4 個 90° 轉角頂點；
+       共線單點核心會拒絕——「一次插凹口」才是合法原語，§9 Q2）。
+       寬 = 2×格距（夾進邊內）、深 = 1×格距朝面材內側；之後用頂點/邊拖曳微調。 */
+    const t = ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
+    if (!t) return;
+    const [k, a, b] = t.dataset.faceHit.split(":");
+    if (k !== "e") { setStatus("插入凹口：請點在邊上"); return; }
+    const loops = (fe.work || oc.bmap[e.bid]).map(l =>
+      ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+    const lp = loops[+a], i = +b;
+    const va = lp.verts[i], vb = lp.verts[(i + 1) % lp.verts.length];
+    const horiz = va[1] === vb[1];
+    const lo = Math.min(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
+    const hi = Math.max(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
+    if (hi - lo < 4) { setStatus("邊太短，插不下凹口"); return; }
+    const gs = +($("faceGridSizeSelect") || {}).value || 50;
+    const c = Math.round(horiz ? pt.x : pt.y);
+    const half = Math.min(gs, Math.floor((hi - lo - 2) / 2));
+    const c0 = Math.max(lo + 1, c - half), c1 = Math.min(hi - 1, c + half);
+    if (c1 <= c0) { setStatus("插入點太靠邊端"); return; }
+    /* 朝面材內側：probe 一側 5mm，在面域內就用它，否則反向 */
+    const n = horiz ? [0, 1] : [1, 0];
+    const cpt = horiz ? [c, va[1]] : [va[0], c];
+    const inFace = (x, y) => {
+      const inPoly = vs => {
+        let ins = false;
+        for (let i2 = 0, j = vs.length - 1; i2 < vs.length; j = i2++) {
+          const A = vs[i2], B = vs[j];
+          if ((A[1] > y) !== (B[1] > y) &&
+              x < (B[0] - A[0]) * (y - A[1]) / (B[1] - A[1]) + A[0]) ins = !ins;
+        }
+        return ins;
+      };
+      if (!inPoly(loops[0].verts)) return false;
+      for (let q = 1; q < loops.length; ++q)
+        if (inPoly(loops[q].verts)) return false;
+      return true;
+    };
+    const d = inFace(cpt[0] + n[0] * 5, cpt[1] + n[1] * 5) ? gs : -gs;
+    /* 邊 A→B 拆成 A→c0→in0→in1→c1→B；孔邊一樣朝面材內側凹 */
+    const e0 = horiz ? [c0, va[1]] : [va[0], c0];
+    const i0 = horiz ? [c0, va[1] + d] : [va[0] + d, c0];
+    const i1 = horiz ? [c1, va[1] + d] : [va[0] + d, c1];
+    const e1 = horiz ? [c1, va[1]] : [va[0], c1];
+    lp.verts.splice(i + 1, 0, e0, i0, i1, e1);
+    lp.fixity.splice(i + 1, 0, false, false, false, lp.fixity[i]);
+    fe.work = null;
+    if (await emitBoundary(e.bid, loops)) await feAfterChange();
     return;
   }
   /* select：data-face-hit 命中 v:<loop>:<i> / e:<loop>:<i> / g:<id>:<axis> */
@@ -2372,10 +2423,10 @@ $("faceGridSizeSelect").addEventListener("change", drawFaceEditor);
 $("faceSnapToggle").addEventListener("change", drawFaceEditor);
 
 const fevp = $("faceEditorViewport");
-fevp.addEventListener("pointerdown", e => {
+fevp.addEventListener("pointerdown", async e => {
   if (e.button !== 0 || oc.busy) return;
   fevp.setPointerCapture(e.pointerId);
-  feDown(feSnap(fePoint(e)), e);
+  await feDown(feSnap(fePoint(e)), e);
 });
 fevp.addEventListener("pointermove", e => {
   const pt = feSnap(fePoint(e));
