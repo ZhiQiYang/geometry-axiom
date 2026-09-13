@@ -554,8 +554,28 @@ body.workspace-open #app { pointer-events: none; user-select: none; }
 .face-editor-viewport.tool-select { cursor: default; }
 .face-editor-viewport.tool-vertex { cursor: crosshair; }
 .face-editor-viewport.tool-referenceLine, .face-editor-viewport.tool-opening { cursor: crosshair; }
+.face-editor-viewport.tool-insert { cursor: copy; }
+.face-editor-viewport.tool-timber { cursor: cell; }
+.face-editor-viewport.tool-redraw { cursor: crosshair; }
 .face-editor-viewport.tool-pan, .face-editor-viewport.space-pan { cursor: grab; }
 .face-editor-viewport.is-panning { cursor: grabbing; }
+/* 凹口點錯位置:所有邊短暫高亮 */
+.face-editor-viewport.fe-flash-edges .face-edge-visible { stroke: var(--danger); }
+.face-editor-viewport.fe-flash-edges .face-edge-hit { stroke: rgba(217,68,68,.28); }
+/* 參考線點選方向小選單 */
+.fe-guide-pick {
+  position: absolute; z-index: 6;
+  display: flex; gap: 4px; padding: 4px;
+  background: rgba(255,255,255,.97);
+  border: 1px solid var(--border); border-radius: 8px;
+  box-shadow: var(--shadow-md);
+}
+.fe-guide-pick button { padding: 5px 11px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--ink); font-size: 10.5px; font-weight: 650; cursor: pointer; }
+.fe-guide-pick button:hover { background: var(--panel-muted); border-color: var(--border-strong); }
+/* 必填欄位標紅 */
+input.invalid, select.invalid { border-color: var(--danger) !important; box-shadow: 0 0 0 2px rgba(217,68,68,.16); }
+/* 主畫布工具游標 */
+.canvas-viewport.tool-rect, .canvas-viewport.tool-poly { cursor: crosshair; }
 .face-editor-svg { width: 100%; height: 100%; display: block; }
 .face-editor-svg .face-boundary-fill { fill: rgba(47,143,123,.13); stroke: #2f8f7b; stroke-width: 2; vector-effect: non-scaling-stroke; }
 .face-editor-svg .face-boundary-fill.selected { fill: rgba(47,143,123,.17); }

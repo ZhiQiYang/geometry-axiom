@@ -1241,6 +1241,111 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`leaveFocus()`);
   await sleep(300);
 
+  /* ================= P14. 模式回饋 =================
+   * 任何工具在任何輸入下都要有可見反應:
+   *   切工具 → 狀態列手勢 + 浮標 + 游標類;錯誤手勢 → toast(不靜默);
+   *   Esc → 有草稿先清草稿+toast,否則一次離開工作區。 */
+  console.log("=== P14. 模式回饋(工具手勢/錯誤輸入/Esc) ===");
+  await eval_(`(async()=>{
+    await api("line reset");
+    for (const ln of [
+      "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+      "placement 1 on boundary 1 origin 0 0 2500 u +x v +y",
+    ]) await api("line " + ln);
+    await renderObjects();
+    await enterFocus("face", 1);
+  })()`);
+  await sleep(800);
+  const fbVp = await eval_(`(()=>{const r=document.getElementById("faceEditorViewport").getBoundingClientRect();
+    return {cx: r.left + r.width/2, cy: r.top + r.height/2,
+            qx: r.left + r.width*0.3, qy: r.top + r.height*0.32}})()`);
+  /* (a) 切工具:狀態列手勢 + 浮標 + 游標類 */
+  const fbTool = await eval_(`(()=>{
+    document.querySelector('[data-face-tool="guide"]').click();
+    return {status: document.getElementById("status").textContent,
+            hint: document.getElementById("faceCanvasHint").textContent,
+            hintHid: document.getElementById("faceCanvasHint").hidden,
+            cls: document.getElementById("faceEditorViewport").className};
+  })()`);
+  console.log("切參考線:狀態列手勢", fbTool.status.includes("拖曳") ? "✓" : "✗ " + fbTool.status,
+    "| 浮標", !fbTool.hintHid && fbTool.hint.includes("參考線") ? "✓" : "✗ " + fbTool.hint,
+    "| 游標類", fbTool.cls.includes("tool-referenceLine") ? "✓" : "✗ " + fbTool.cls);
+  /* (b) 參考線只點沒拖 → u/v 小選單 → 選 v → dump 出現 guide */
+  await click(fbVp.cx, fbVp.cy);
+  await sleep(400);
+  const pkShown = await eval_(`!document.getElementById("feGuidePick").hidden`);
+  console.log("參考線點一下→方向選單:", pkShown ? "✓" : "✗");
+  const pkBtn = await eval_(`(()=>{const b=document.querySelector('#feGuidePick [data-axis="v"]');
+    if(!b) return null; const r=b.getBoundingClientRect();
+    return {x:r.left+r.width/2,y:r.top+r.height/2};})()`);
+  if (pkBtn) { await click(pkBtn.x, pkBtn.y); await sleep(700); }
+  const gDump = await eval_(`api("dump").then(d=>{const m=d.text.match(/^guide (\\d+) (\\d+) v (-?\\d+)$/m);return m&&m[0]})`);
+  console.log("選 v 後建線:", gDump ? "✓ " + gDump : "✗");
+  /* (c) 開口只點沒拖 → toast「拖出矩形」 */
+  await eval_(`document.querySelector('[data-face-tool="hole"]').click()`);
+  await sleep(250);
+  await click(fbVp.qx, fbVp.qy);
+  await sleep(350);
+  const holeToast = await eval_(
+    `[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")`);
+  console.log("開口只點→toast:", holeToast.includes("拖出矩形") ? "✓" : "✗ " + holeToast);
+  /* (d) 凹口點面內 → toast + 邊高亮 */
+  await eval_(`document.querySelector('[data-face-tool="insert"]').click()`);
+  await sleep(250);
+  await click(fbVp.qx, fbVp.qy);
+  await sleep(150);
+  const insFb = await eval_(`({
+    toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|"),
+    flash: document.getElementById("faceEditorViewport").classList.contains("fe-flash-edges")})`);
+  console.log("凹口點面內→toast:", insFb.toast.includes("邊上") ? "✓" : "✗ " + insFb.toast,
+    "| 邊高亮:", insFb.flash ? "✓" : "✗");
+  /* (e) 角材 L 空白 → toast + #tbLen 標紅 */
+  await eval_(`(()=>{
+    document.querySelector('[data-face-tool="timber"]').click();
+    const tb=document.getElementById("tbLen"); if (tb) tb.value="";
+  })()`);
+  await sleep(250);
+  await click(fbVp.qx, fbVp.qy);
+  await sleep(350);
+  const tbFb = await eval_(`({
+    toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|"),
+    inv: document.getElementById("tbLen") && document.getElementById("tbLen").classList.contains("invalid")})`);
+  console.log("角材L空→toast:", tbFb.toast.includes("長度") ? "✓" : "✗ " + tbFb.toast,
+    "| tbLen標紅:", tbFb.inv ? "✓" : "✗");
+  /* (f) 狀態列綁定工具:切走後上一工具的訊息被手勢取代 */
+  const stLife = await eval_(`(()=>{
+    document.querySelector('[data-face-tool="select"]').click();
+    return document.getElementById("status").textContent;
+  })()`);
+  console.log("切回選取→狀態列=手勢:", stLife.includes("選取") ? "✓" : "✗ " + stLife);
+  /* (g) Esc 一次離開(無草稿,工具非 select 也直接走) */
+  await eval_(`document.querySelector('[data-face-tool="insert"]').click()`);
+  await sleep(200);
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await sleep(400);
+  console.log("Esc一次離開:", await eval_(`JSON.stringify(oc.focus)`) === "null" ? "✓" : "✗");
+  /* (h) 有草稿 → 第一次 Esc 清草稿+toast,再一次才離開 */
+  await eval_(`enterFocus("face", 1)`);
+  await sleep(500);
+  await eval_(`document.querySelector('[data-face-tool="redraw"]').click()`);
+  await sleep(250);
+  await click(fbVp.qx, fbVp.qy);
+  await click(fbVp.cx, fbVp.cy);
+  await sleep(300);
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await sleep(300);
+  const esc1 = await eval_(`({draft: !!fe.drag, focus: !!oc.focus,
+    toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")})`);
+  console.log("Esc清草稿:", !esc1.draft ? "✓" : "✗",
+    "| toast再按Esc:", esc1.toast.includes("再按 Esc") ? "✓" : "✗ " + esc1.toast,
+    "| 仍在工作區:", esc1.focus ? "✓" : "✗");
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await sleep(400);
+  console.log("第二次Esc離開:", await eval_(`JSON.stringify(oc.focus)`) === "null" ? "✓" : "✗");
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

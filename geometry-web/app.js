@@ -634,15 +634,17 @@ window.addEventListener("keydown", async e => {
       if (oc.focus && oc.focus.t === "face") {
         /* Phase 2:鍵入長度中 Esc 先清輸入,不取消整段 */
         if (fe.lenBuf) { fe.lenBuf = ""; feLenShow(); return; }
-        /* 面內工作區：先取消進行中的拖曳，其次退出工具，最後返回 */
+        /* 參考線方向小選單開著 → 先收 */
+        const pk = $("feGuidePick");
+        if (pk && !pk.hidden) { pk.hidden = true; return; }
+        /* 進行中草稿 → 第一次 Esc 清草稿;否則一次離開工作區 */
         if (fe.drag || fe.work) {
           fe.drag = null; fe.panHold = null; fe.work = null;
           drawFaceEditor();
-        } else if (fe.tool !== "select") {
-          feSetTool("select");
-        } else {
-          leaveFocus();
+          toast("再按 Esc 返回", "ok");
+          return;
         }
+        leaveFocus();
         return;
       }
       if (oc.rect || oc.poly.length || oc.drawTool) {
@@ -661,7 +663,7 @@ window.addEventListener("keydown", async e => {
   if (oc.on && oc.focus && oc.focus.t === "face") {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
     const k = e.key.toLowerCase();
-    if (k === " ") { fe.spaceDown = true; e.preventDefault(); return; }
+    if (k === " ") { fe.spaceDown = true; feCursor(); e.preventDefault(); return; }
     /* Phase 2 鍵入長度:重畫草稿中數字鍵累積到浮動輸入框 */
     const rd = fe.drag && fe.drag.kind === "redraw" ? fe.drag : null;
     if (rd) {
@@ -689,7 +691,7 @@ window.addEventListener("keydown", async e => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" ||
         e.target.tagName === "TEXTAREA") return;
     const k = e.key;
-    if (k === " ") { oc.spacePan = true; e.preventDefault(); return; }
+    if (k === " ") { oc.spacePan = true; ocCursor(); e.preventDefault(); return; }
     if (k === "/") { e.preventDefault(); $("searchInput").focus(); return; }
     const km = { v: "select", h: "pan" };
     if (km[k.toLowerCase()]) { setOcTool(km[k.toLowerCase()]); return; }
@@ -706,7 +708,10 @@ window.addEventListener("keydown", async e => {
   }
 });
 window.addEventListener("keyup", e => {
-  if (e.key === " ") { fe.spaceDown = false; oc.spacePan = false; }
+  if (e.key === " ") {
+    fe.spaceDown = false; oc.spacePan = false;
+    feCursor(); ocCursor();
+  }
 });
 
 /* ---- 指令列與按鈕 ---- */
@@ -1838,9 +1843,23 @@ async function submitBox6() {
   setStatus(`✓ 六面盒空間 ${ids.space}（${mem.length} 面${floor ? "含地板" : "無地板"}）`);
 }
 
+/* 工具手勢說明：切換工具時狀態列/浮標顯示,同時蓋掉上個工具的訊息 */
+const FE_TOOL_NAMES = { select: "選取", guide: "參考線", hole: "開口",
+  pan: "平移", insert: "凹口", timber: "角材", redraw: "重畫外環" };
+const FE_TOOL_TIPS = {
+  select: "選取：拖頂點/邊編輯 · 單擊邊切固定/自由",
+  guide: "參考線：水平或垂直拖曳畫線 · 點一下選方向",
+  hole: "開口：拖出矩形",
+  insert: "凹口：點在邊上",
+  timber: "角材：先填長度 L，再點面內",
+  redraw: "重畫外環：依序點頂點，回起點閉合 · Esc 取消",
+  pan: "平移：拖曳視角（中鍵/空白拖也可）",
+};
+
 function feSetTool(t) {
   if (t === "guide" && !feSid(oc.edit && oc.edit.bid)) {
     setStatus("游離面沒有承載面，不能放參考線——先在檢視器「放置」");
+    toast("游離面不能放參考線（先在檢視器「放置」)");
     return;
   }
   if (fe.tool === "redraw" && t !== "redraw") {
@@ -1848,14 +1867,21 @@ function feSetTool(t) {
     drawFaceEditor();
   }
   fe.tool = t;
+  const pk = $("feGuidePick"); if (pk) pk.hidden = true;
   for (const b of document.querySelectorAll("[data-face-tool]"))
     b.classList.toggle("active", b.dataset.faceTool === t);
   const vp = $("faceEditorViewport");
   vp.className = "face-editor-viewport tool-" +
     ({ select: "select", guide: "referenceLine", hole: "opening", pan: "pan", insert: "insert" }[t] || t);
-  $("workspaceToolStatus").textContent = "工具：" +
-    ({ select: "選取", guide: "參考線", hole: "開口", pan: "平移", insert: "凹口", timber: "角材",
-       redraw: "重畫外環" }[t] || t);
+  feCursor();
+  $("workspaceToolStatus").textContent = "工具：" + (FE_TOOL_NAMES[t] || t);
+  /* 狀態列 + 角落浮標:綁定工具生命週期,蓋掉上一工具的訊息 */
+  setStatus(FE_TOOL_TIPS[t] || ("工具：" + t));
+  const hint = $("faceCanvasHint");
+  if (hint) {
+    hint.textContent = `${FE_TOOL_NAMES[t] || t} · ${FE_TOOL_TIPS[t] || ""}`;
+    hint.hidden = false;
+  }
   /* 游離面：參考線工具停用 */
   const gb = document.querySelector('[data-face-tool="guide"]');
   if (gb) {
@@ -1863,6 +1889,46 @@ function feSetTool(t) {
     gb.disabled = free;
     gb.title = free ? "游離面不能放參考線（先放置）" : "參考線 (l)";
   }
+}
+
+/* 游標狀態:空白暫時平移 / 拖曳中 */
+function feCursor() {
+  const vp = $("faceEditorViewport");
+  if (!vp) return;
+  vp.classList.toggle("space-pan", !!fe.spaceDown);
+  vp.classList.toggle("is-panning",
+    !!(fe.drag && fe.drag.kind === "pan"));
+}
+
+/* 凹口點錯位置:所有邊短暫高亮提示 */
+function feFlashEdges() {
+  const vp = $("faceEditorViewport");
+  vp.classList.add("fe-flash-edges");
+  clearTimeout(vp._flashT);
+  vp._flashT = setTimeout(() =>
+    vp.classList.remove("fe-flash-edges"), 700);
+}
+
+/* 必填欄位標紅 + 聚焦,輸入後自動解除 */
+function feMarkInvalid(el) {
+  if (!el) return;
+  el.classList.add("invalid");
+  el.focus();
+  el.addEventListener("input",
+    () => el.classList.remove("invalid"), { once: true });
+}
+
+/* 參考線只點沒拖:u/v 方向小選單 */
+function feGuidePickShow(u, v, cx, cy) {
+  const pk = $("feGuidePick");
+  if (!pk) return;
+  const r = $("faceEditorViewport").getBoundingClientRect();
+  pk.dataset.u = Math.round(u); pk.dataset.v = Math.round(v);
+  pk.style.left = Math.max(8, Math.min((cx ?? r.left + 40) - r.left - 8,
+    r.width - 140)) + "px";
+  pk.style.top = Math.max(8, Math.min((cy ?? r.top + 40) - r.top - 44,
+    r.height - 50)) + "px";
+  pk.hidden = false;
 }
 
 async function feLoadGuides() {
@@ -2087,24 +2153,29 @@ async function feDown(pt, ev) {
     return;
   }
   if (fe.tool === "guide") {
-    if (!feSid(e.bid)) { setStatus("游離面不能放參考線——先在檢視器「放置」"); return; }
-    fe.drag = { kind: "guideNew", x0: pt.x, y0: pt.y, x1: pt.x, y1: pt.y };
+    if (!feSid(e.bid)) {
+      toast("游離面不能放參考線——先在檢視器「放置」"); return;
+    }
+    fe.drag = { kind: "guideNew", x0: pt.x, y0: pt.y, x1: pt.x, y1: pt.y,
+                cx: ev.clientX, cy: ev.clientY };
     return;
   }
   if (fe.tool === "insert") {
     /* 凹口工具：點邊開 #notchDialog 輸入 w/d,確認走 feInsertNotch。
        (Q2 語意:一次插 4 頂點矩形凹口,共線單點核心會拒絕) */
     const t = ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
-    if (!t) return;
+    if (!t || t.dataset.faceHit.split(":")[0] !== "e") {
+      feFlashEdges();
+      toast("凹口：請點在邊上"); return;
+    }
     const [k, a, b] = t.dataset.faceHit.split(":");
-    if (k !== "e") { setStatus("插入凹口：請點在邊上"); return; }
     const loops = fe.work || oc.bmap[e.bid];
     const lp = loops[+a], i = +b;
     const va = lp.verts[i], vb = lp.verts[(i + 1) % lp.verts.length];
     const horiz = va[1] === vb[1];
     const lo = Math.min(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
     const hi = Math.max(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
-    if (hi - lo < 4) { setStatus("邊太短，插不下凹口"); return; }
+    if (hi - lo < 4) { toast("邊太短，插不下凹口"); return; }
     const gs = +($("faceGridSizeSelect") || {}).value || 50;
     const half = Math.min(gs, Math.floor((hi - lo - 2) / 2));
     fe.notch = { loop: +a, i, horiz,
@@ -2120,17 +2191,22 @@ async function feDown(pt, ev) {
     /* Q3 角材：點面 = 錨點;尺寸/方向/深度讀檢視器表單,
        timber 宣告 + place 兩行走 mutate 交易。 */
     const sid = feSid(e.bid);
-    if (!sid) { setStatus("游離面不能放角材——先在檢視器「放置」"); return; }
+    if (!sid) { toast("游離面不能放角材——先在檢視器「放置」"); return; }
     const L = Math.round(+($("tbLen") || {}).value || 0);
     const A = Math.round(+($("tbA") || {}).value || 0);
     const B = Math.round(+($("tbB") || {}).value || 0);
     if (!(A > 0) || !(B > 0) || L < 0) {
-      setStatus("角材 A/B 要是正整數，L 留空 = auto"); return;
+      toast("角材 A/B 要是正整數，L 留空 = auto");
+      if (!(A > 0)) feMarkInvalid($("tbA"));
+      if (!(B > 0)) feMarkInvalid($("tbB"));
+      return;
     }
     /* 公理 O3:auto 角材(L 留空)只能 at-grid/at-edge 錨線放置;
        點擊 at 錨點必須明寫 L,否則核心必拒 */
     if (!L) {
-      setStatus("點放角材要填長度 L(auto 角材只能放格線/邊)"); return;
+      toast("點放角材要填長度 L（auto 角材只能放格線/邊）");
+      feMarkInvalid($("tbLen"));
+      return;
     }
     const dir = ($("tbDir") || {}).value || "+u";
     const side = ($("tbSide") || {}).value || "+n";
@@ -2252,7 +2328,9 @@ async function feUp(pt) {
   if (d.kind === "redraw") { fe.drag = d; return; }   /* 點擊制,pointerup 不收草稿 */
   if (d.kind === "holeRect") {
     const w = Math.abs(d.x1 - d.x0), h = Math.abs(d.y1 - d.y0);
-    if (w < 1 || h < 1) { drawFaceEditor(); return; }
+    if (w < 1 || h < 1) {
+      toast("開口：請拖出矩形"); drawFaceEditor(); return;
+    }
     const x0 = Math.round(Math.min(d.x0, d.x1)), x1 = Math.round(Math.max(d.x0, d.x1));
     const y0 = Math.round(Math.min(d.y0, d.y1)), y1 = Math.round(Math.max(d.y0, d.y1));
     const loops = oc.bmap[e.bid].map(l =>
@@ -2265,7 +2343,11 @@ async function feUp(pt) {
   }
   if (d.kind === "guideNew") {
     const dx = Math.abs(d.x1 - d.x0), dy = Math.abs(d.y1 - d.y0);
-    if (dx < 1 && dy < 1) { drawFaceEditor(); return; }
+    if (dx < 1 && dy < 1) {
+      /* 只點沒拖 → 彈 u/v 方向小選單,選後以點擊座標建線 */
+      feGuidePickShow(d.x0, d.y0, d.cx, d.cy);
+      drawFaceEditor(); return;
+    }
     const axis = dx >= dy ? "v" : "u";
     const off = Math.round(axis === "v" ? d.y1 : d.x1);
     const sid = feSid(e.bid);
@@ -3129,6 +3211,7 @@ ocv.addEventListener("pointerdown", e => {
     e.preventDefault();
     ocv.setPointerCapture(e.pointerId);
     oc.pan = { sx: e.clientX, sy: e.clientY, px: oc.panX, py: oc.panY };
+    ocCursor();
     return;
   }
   if (oc.busy || e.button !== 0) return;
@@ -3143,6 +3226,7 @@ ocv.addEventListener("pointerdown", e => {
                 sx: pt.x, sy: pt.y, moved: false };
   } else {
     oc.pan = { sx: e.clientX, sy: e.clientY, px: oc.panX, py: oc.panY };
+    ocCursor();
   }
 });
 
@@ -3178,7 +3262,7 @@ ocv.addEventListener("pointerup", async e => {
   const pt = ocToCanvas(e);
   ocv.releasePointerCapture(e.pointerId);
 
-  if (oc.pan) { oc.pan = null; return; }
+  if (oc.pan) { oc.pan = null; ocCursor(); return; }
 
   if (oc.card) {
     const c = oc.card; oc.card = null;
@@ -3202,7 +3286,9 @@ ocv.addEventListener("pointerup", async e => {
 
   if (oc.drawTool === "rect" && oc.rect) {
     const st = oc.rect; oc.rect = null;
-    if (st.x === pt.x || st.y === pt.y) { drawObjects(); return; }
+    if (st.x === pt.x || st.y === pt.y) {
+      toast("矩形：請拖出範圍"); drawObjects(); return;
+    }
     const x0 = Math.round(Math.min(st.x, pt.x)), x1 = Math.round(Math.max(st.x, pt.x));
     const y0 = Math.round(Math.min(st.y, pt.y)), y1 = Math.round(Math.max(st.y, pt.y));
     await objEmitFace([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]);
@@ -3234,16 +3320,27 @@ ocv.addEventListener("wheel", e => {
 /* ---- 模式切換與按鈕 ---- */
 let view3 = false;          /* 三視圖總覽覆層(D1:按需開啟) */
 /* 工具群:select/pan/rect/poly */
+function ocCursor() {
+  const v = $("canvasViewport");
+  if (!v) return;
+  v.classList.toggle("tool-pan", oc.tool === "pan");
+  v.classList.toggle("tool-rect", oc.drawTool === "rect");
+  v.classList.toggle("tool-poly", oc.drawTool === "poly");
+  v.classList.toggle("space-pan", !!oc.spacePan);
+  v.classList.toggle("is-panning", !!oc.pan);
+}
 function setOcTool(t) {
   oc.tool = (t === "rect" || t === "poly") ? "select" : t;
   oc.drawTool = (t === "rect" || t === "poly") ? t : "";
   oc.poly = []; oc.rect = null;
   for (const b of document.querySelectorAll("[data-tool]"))
     b.classList.toggle("active", b.dataset.tool === t);
-  const tip = { select: "", pan: "平移：拖曳畫布移動視野",
-    rect: "在畫布上拖出矩形 → 建立游離面",
-    poly: "逐點畫正交多邊形，點回起點閉合（Esc 取消）" };
-  if (tip[t]) setStatus(tip[t]);
+  ocCursor();
+  const tip = { select: "選取：點卡片選取 · 拖曳移動 · 雙擊進入",
+    pan: "平移：拖曳畫布移動視野（中鍵/空白拖也可）",
+    rect: "矩形：在畫布上拖出矩形 → 建立游離面",
+    poly: "多邊形：逐點畫正交多邊形，點回起點閉合（Esc 取消）" };
+  setStatus(tip[t] || "");
 }
 for (const b of document.querySelectorAll("[data-tool]"))
   b.addEventListener("click", () => setOcTool(b.dataset.tool));
@@ -3434,16 +3531,22 @@ $("faceSnapToggle").addEventListener("change", drawFaceEditor);
 
 const fevp = $("faceEditorViewport");
 fevp.addEventListener("pointerdown", async e => {
+  const pk = $("feGuidePick");
+  if (e.target.closest && e.target.closest("#feGuidePick"))
+    return;                                     /* 點在方向選單上 → 交給按鈕 click */
+  if (pk && !pk.hidden) pk.hidden = true;
   if (e.button === 1) {                       /* 中鍵平移(不動資料,busy 也放行) */
     e.preventDefault();
     fevp.setPointerCapture(e.pointerId);
     fe.panHold = fe.drag || null;             /* 保留重畫草稿 */
     fe.drag = { kind: "pan", cx: e.clientX, cy: e.clientY };
+    feCursor();
     return;
   }
   if (e.button !== 0 || oc.busy) return;
   fevp.setPointerCapture(e.pointerId);
   await feDown(feSnap(fePoint(e)), e);
+  feCursor();
 });
 fevp.addEventListener("pointermove", e => {
   const pt = feSnap(fePoint(e));
@@ -3455,7 +3558,21 @@ fevp.addEventListener("pointerup", async e => {
   if (fevp.hasPointerCapture(e.pointerId))
     fevp.releasePointerCapture(e.pointerId);
   await feUp(feSnap(fePoint(e)));
+  feCursor();
 });
+/* 參考線方向小選單:選 u/v 以點擊座標建線 */
+for (const b of document.querySelectorAll("#feGuidePick button"))
+  b.addEventListener("click", async () => {
+    const pk = $("feGuidePick"); pk.hidden = true;
+    const e = oc.edit, sid = e && feSid(e.bid);
+    if (!sid) return;
+    const axis = b.dataset.axis;
+    const off = Math.round(+(axis === "v" ? pk.dataset.v : pk.dataset.u));
+    const ids = await api("newid");
+    if (await emitLine(`guide ${ids.guide} ${sid} ${axis} ${off}`))
+      await feLoadGuides();
+    drawFaceEditor(); renderFaceLayers();
+  });
 fevp.addEventListener("wheel", e => {
   e.preventDefault();
   const r = $("faceEditorSvg").getBoundingClientRect();
