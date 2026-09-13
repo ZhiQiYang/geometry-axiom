@@ -700,6 +700,9 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     const b0v = (await api("boundary 1")).loops[0].verts;
     const mid = [(b0v[0][0]+b0v[1][0])/2, (b0v[0][1]+b0v[1][1])/2];
     await feDown({x: mid[0], y: mid[1]}, {target: hit, clientX: 0, clientY: 0});
+    /* Phase 2:點邊開 #notchDialog,確認才插入 */
+    const dlg = !$("notchDialog").hidden;
+    $("notchSubmit").click();
     await new Promise(r=>setTimeout(r,300));
     const b = await api("boundary 1");
     const ortho = b.ok && b.loops[0].verts.every((v,i,vs)=>{
@@ -707,9 +710,10 @@ async function drag(x0, y0, x1, y1, steps = 6) {
       return v[0]===nx[0] || v[1]===nx[1];
     });
     return {tool: fe.tool, verts: b.loops[0].verts.length,
-            fixity: b.loops[0].fixity.length, ortho};
+            fixity: b.loops[0].fixity.length, ortho, dlg};
   })()`);
   console.log("insert 工具:", insR.tool === "insert" ? "✓" : "✗",
+    "| 對話框:", insR.dlg ? "✓" : "✗",
     "| 頂點 4→", insR.verts, insR.verts === 8 ? "✓" : "✗",
     "| fixity 同步:", insR.fixity === 8 ? "✓" : "✗",
     "| 全正交:", insR.ortho ? "✓" : "✗");
@@ -856,6 +860,99 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("形狀庫 L:", rw4.verts === 6 ? "✓" : "✗",
     "| 面積:", rw4.area, rw4.area === 6000000 ? "✓" : "✗",
     "| 對話框已關:", rw4.dlg ? "✓" : "✗");
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+
+  /* RC/多邊形 Phase 2:尺寸導向編輯 */
+  console.log("=== P10. 尺寸導向編輯(RC Phase 2)===");
+  /* 鍵入長度:redraw 中數字鍵 + Enter → 下一段長度即所鍵 */
+  const tl = await eval_(`(async()=>{
+    await api("line reset");
+    await api("line boundary 1 outline 0,0 400,0 400,300 0,300");
+    await renderObjects();
+    await enterFocus("face", 1);
+    feSetTool("redraw");
+    await feDown({x:0,y:0},{target:$("faceEditorSvg"),clientX:0,clientY:0});
+    await feMove({x:500,y:3});              /* 游標朝 +u → 軸向 +u */
+    for (const ch of ["1","2","0","0"])
+      window.dispatchEvent(new KeyboardEvent("keydown",{key:ch}));
+    const bufShown = !$("feLenInput").hidden && $("feLenInput").value === "1200";
+    /* Esc 只清輸入不取消整段 */
+    window.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape"}));
+    const draftKept = !!fe.drag && fe.lenBuf === "" && $("feLenInput").hidden;
+    for (const ch of ["1","5","0","0"])
+      window.dispatchEvent(new KeyboardEvent("keydown",{key:ch}));
+    window.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
+    const last = fe.drag.pts[fe.drag.pts.length - 1];
+    return {bufShown, draftKept, last};
+  })()`);
+  console.log("鍵入長度:", tl.last[0] === 1500 && tl.last[1] === 0 ? "✓" : "✗",
+    "| 浮動框:", tl.bufShown ? "✓" : "✗",
+    "| Esc 只清輸入:", tl.draftKept ? "✓" : "✗");
+  /* 邊長清單:edge0 400→500,右半邊整串 +100x(矩形 500×300) */
+  const el1 = await eval_(`(async()=>{
+    window.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape"}));  /* 丟草稿 */
+    feSetTool("select");
+    const inp = document.querySelector('[data-edge-len="0"]');
+    inp.value = "500";
+    inp.dispatchEvent(new Event("change"));
+    await new Promise(r=>setTimeout(r,300));
+    const b = await api("boundary 1");
+    const vs = b.loops[0].verts;
+    const w = vs[1][0] - vs[0][0], h = vs[2][1] - vs[1][1];
+    return {w, h, verts: vs.length};
+  })()`);
+  console.log("邊長清單:", el1.w === 500 && el1.h === 300 ? "✓" : "✗",
+    "| 結果:", el1.w + "×" + el1.h, "| 頂點:", el1.verts);
+  /* 單擊邊切 fixity:select 點邊不動 → F→X */
+  const fx = await eval_(`(async()=>{
+    feSetTool("select");
+    const hit = document.querySelector('[data-face-hit="e:0:0"]');
+    const before = (await api("boundary 1")).loops[0].fixity[0];
+    await feDown({x:250,y:0},{target:hit,clientX:0,clientY:0});
+    await feUp({x:250,y:0},{target:hit,clientX:0,clientY:0});
+    await new Promise(r=>setTimeout(r,300));
+    const after = (await api("boundary 1")).loops[0].fixity[0];
+    return {before, after};
+  })()`);
+  console.log("點邊切 fixity:", fx.before === 1 && fx.after === 0 ? "✓" : "✗",
+    "|", fx.before, "→", fx.after);
+  /* 參數化凹口:insert 點邊 → 對話框,w=40 d=20 → 4→8 頂點 */
+  const nt = await eval_(`(async()=>{
+    feSetTool("insert");
+    const hit = document.querySelector('[data-face-hit="e:0:0"]');
+    await feDown({x:250,y:0},{target:hit,clientX:0,clientY:0});
+    const dlgOpen = !$("notchDialog").hidden;
+    $("notchW").value = "40"; $("notchD").value = "20";
+    $("notchSubmit").click();
+    await new Promise(r=>setTimeout(r,300));
+    const b = await api("boundary 1");
+    const vs = b.loops[0].verts;
+    /* 凹口深 20:找 y=20 的頂點(內側朝下) */
+    const depth = vs.filter(p => p[1] === 20).length;
+    return {dlgOpen, closed: $("notchDialog").hidden,
+            verts: vs.length, depth};
+  })()`);
+  console.log("參數化凹口:", nt.dlgOpen && nt.closed ? "✓" : "✗",
+    "| 頂點 4→", nt.verts, nt.verts === 8 ? "✓" : "✗",
+    "| 凹深 20:", nt.depth === 2 ? "✓" : "✗");
+  /* 拖邊對齊吸附:L 形拖邊經過他頂點同軸座標 → snapTo */
+  const sn = await eval_(`(async()=>{
+    await api("line reset");
+    await api("line boundary 1 outline 0,0 300,0 300,100 100,100 100,300 0,300");
+    await renderObjects();
+    await enterFocus("face", 1);
+    feSetTool("select");
+    const hit = document.querySelector('[data-face-hit="e:0:0"]');
+    await feDown({x:150,y:0},{target:hit,clientX:0,clientY:0});
+    await feMove({x:150,y:103});            /* 接近 v=100 的頂點軸 */
+    const snap = fe.drag.snapTo;
+    const movedY = fe.work[0].verts[0][1];
+    fe.work = null; fe.drag = null;         /* 不落地,只驗吸附偵測 */
+    return {snap, movedY};
+  })()`);
+  console.log("對齊吸附:", sn.snap === 100 ? "✓" : "✗",
+    "| snapTo:", sn.snap, "| 吸附後 v:", sn.movedY);
   await eval_(`leaveFocus()`);
   await sleep(300);
 

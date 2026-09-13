@@ -243,11 +243,13 @@
           </section>
           <section class="inner-section">
             <div class="inner-section-title"><span>說明</span></div>
-            <div class="face-help">選取 v · 參考線 l · 開口 r · 平移 h/空白 · fit f · 返回 Esc</div>
+            <div class="face-help">選取 v · 參考線 l · 開口 r · 凹口 i · 角材 t · 外環 e · 平移 h/空白 · fit f · 返回 Esc</div>
           </section>
         </aside>
         <section id="faceEditorViewport" class="face-editor-viewport tool-select">
           <svg id="faceEditorSvg" class="face-editor-svg"><g id="faceEditorRoot"></g></svg>
+          <input id="feLenInput" class="fe-len-input" type="text" hidden
+                 aria-label="段長 mm" readonly>
           <div id="faceCoordinateReadout" class="face-coordinate-readout">u:0 v:0</div>
         </section>
         <aside class="inner-panel face-inspector-panel">
@@ -336,6 +338,24 @@
   <footer class="dialog-footer">
     <button id="shapeCancel" class="btn" type="button">取消</button>
     <button id="shapeSubmit" class="primary-button" type="button"><span>套用</span></button>
+  </footer>
+</section>
+
+<section id="notchDialog" class="dialog" role="dialog" aria-modal="true" hidden>
+  <header class="dialog-header">
+    <div><span class="dialog-eyebrow">凹口</span><h2>插入凹口</h2></div>
+    <button id="notchClose" class="dialog-close text-button" type="button">✕</button>
+  </header>
+  <div class="dialog-body">
+    <div class="place-form">
+      <label>寬 w (mm)<input id="notchW" type="number" step="1" min="2"></label>
+      <label>深 d (mm)<input id="notchD" type="number" step="1" min="1"></label>
+    </div>
+    <div class="face-help">以點擊處置中;凹口朝面材內側,之後可用頂點/邊拖曳微調。</div>
+  </div>
+  <footer class="dialog-footer">
+    <button id="notchCancel" class="btn" type="button">取消</button>
+    <button id="notchSubmit" class="primary-button" type="button"><span>插入</span></button>
   </footer>
 </section>
 

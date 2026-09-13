@@ -853,3 +853,15 @@ body.oc-busy input, body.oc-busy select, body.oc-busy textarea { pointer-events:
   stroke-dasharray: 2 5; vector-effect: non-scaling-stroke; }
 .face-editor-svg .face-timber { fill: rgba(196,120,26,.24); stroke: #c4781a;
   stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+
+/* ---- RC Phase 2:尺寸導向編輯 ---- */
+.fe-len-input {
+  position: absolute; z-index: 5; width: 84px;
+  padding: 2px 6px; font-size: 12px; font-family: inherit;
+  background: #fff; border: 1px solid #c4781a; border-radius: 4px;
+  pointer-events: none; color: #7a4d00;
+}
+.edge-list { display: flex; flex-direction: column; gap: 4px; }
+.edge-row { display: flex; align-items: center; gap: 6px; }
+.edge-idx { min-width: 28px; font-size: 12px; color: #66758d; }
+.edge-len { width: 72px; font-size: 12px; padding: 2px 4px; }

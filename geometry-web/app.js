@@ -465,6 +465,34 @@ function applyEdgeEdit(pts, i, uv) {
   if (a[1] === b[1]) { a[1] = b[1] = uv.v; } else { a[0] = b[0] = uv.u; }
 }
 
+/* Phase 2 邊長編輯:把邊 i 的長度改為 len——沿邊方向移動 v_{i+1},
+   垂直於移動軸的邊整串 BFS 傳播;傳到錨點 v_i 代表不可能,回 false。 */
+function applyEdgeLen(pts, i, len) {
+  const n = pts.length;
+  const a = pts[i], b = pts[(i + 1) % n];
+  const horiz = a[1] === b[1];
+  const dir = horiz ? Math.sign(b[0] - a[0]) : Math.sign(b[1] - a[1]);
+  const axis = horiz ? 0 : 1;
+  const delta = (len - Math.abs(b[axis] - a[axis])) * dir;
+  if (!delta) return true;
+  const moved = new Set([(i + 1) % n]);
+  const queue = [(i + 1) % n];
+  while (queue.length) {
+    const j = queue.shift();
+    /* 檢查 j 的兩條鄰邊;垂直於移動軸的邊另一端也要動 */
+    for (const ei of [(j - 1 + n) % n, j]) {
+      const p = pts[ei], q = pts[(ei + 1) % n];
+      const edgeHoriz = p[1] === q[1];
+      if (edgeHoriz === horiz) continue;      /* 平行邊吸收長度變化 */
+      const other = (ei === j) ? (ei + 1) % n : ei;
+      if (other === i) return false;           /* 傳到錨點 → 整圈同動,放棄 */
+      if (!moved.has(other)) { moved.add(other); queue.push(other); }
+    }
+  }
+  for (const j of moved) pts[j][axis] += delta;
+  return true;
+}
+
 /* ---- 畫布滑鼠流程 ---- */
 async function canvasDown(e, sv) {
   const m = await uvMap(sv.v);
@@ -596,11 +624,13 @@ window.addEventListener("keydown", async e => {
   if (e.key === "Escape") {
     /* 對話框優先：Esc 關閉對話框 */
     if (!$("box6Dialog").hidden || !$("memberDialog").hidden ||
-        !$("shapeDialog").hidden) {
+        !$("shapeDialog").hidden || !$("notchDialog").hidden) {
       closeDialogs(); return;
     }
     if (oc.on) {
       if (oc.focus && oc.focus.t === "face") {
+        /* Phase 2:鍵入長度中 Esc 先清輸入,不取消整段 */
+        if (fe.lenBuf) { fe.lenBuf = ""; feLenShow(); return; }
         /* 面內工作區：先取消進行中的拖曳，其次退出工具，最後返回 */
         if (fe.drag || fe.work) {
           fe.drag = null; fe.work = null; drawFaceEditor();
@@ -628,6 +658,17 @@ window.addEventListener("keydown", async e => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
     const k = e.key.toLowerCase();
     if (k === " ") { fe.spaceDown = true; e.preventDefault(); return; }
+    /* Phase 2 鍵入長度:重畫草稿中數字鍵累積到浮動輸入框 */
+    const rd = fe.drag && fe.drag.kind === "redraw" ? fe.drag : null;
+    if (rd) {
+      if (/^[0-9]$/.test(e.key)) {
+        fe.lenBuf += e.key; feLenShow(); return;
+      }
+      if (e.key === "Backspace" && fe.lenBuf) {
+        fe.lenBuf = fe.lenBuf.slice(0, -1); feLenShow(); return;
+      }
+      if (k === "enter" && fe.lenBuf) { feRedrawApplyLen(); return; }
+    }
     const map = { v: "select", l: "guide", r: "hole", h: "pan", i: "insert",
                   t: "timber", e: "redraw" };
     if (map[k]) { feSetTool(map[k]); return; }
@@ -1157,6 +1198,8 @@ const fe = {
   spaceDown: false,
   projOpen: false,
   projViews: new Set(),
+  lenBuf: "",              /* Phase 2 鍵入長度暫存 */
+  notch: null,             /* Phase 2 凹口對話框待處理上下文 */
 };
 
 /* 承載面 id（placement id）——guide 的 sid，不是 boundary id */
@@ -1369,6 +1412,8 @@ function closeDialogs() {
   $("box6Dialog").hidden = true;
   $("memberDialog").hidden = true;
   $("shapeDialog").hidden = true;
+  $("notchDialog").hidden = true;
+  fe.notch = null;
 }
 $("modalBackdrop").addEventListener("click", closeDialogs);
 $("box6Close").addEventListener("click", closeDialogs);
@@ -1377,6 +1422,12 @@ $("memberClose").addEventListener("click", closeDialogs);
 $("memberCancel").addEventListener("click", closeDialogs);
 $("shapeClose").addEventListener("click", closeDialogs);
 $("shapeCancel").addEventListener("click", closeDialogs);
+$("notchClose").addEventListener("click", closeDialogs);
+$("notchCancel").addEventListener("click", closeDialogs);
+$("notchSubmit").addEventListener("click", async () => {
+  await feInsertNotch();
+  if (!fe.notch) closeDialogs();   /* feInsertNotch 失敗保留上下文供修正 */
+});
 
 /* 形狀庫對話框(Phase 1):L/U/T 生成外環取代,孔保留、新邊全 F */
 $("faceShapeButton").addEventListener("click", () => {
@@ -1482,7 +1533,9 @@ function feSetTool(t) {
     setStatus("游離面沒有承載面，不能放參考線——先在檢視器「放置」");
     return;
   }
-  if (fe.tool === "redraw" && t !== "redraw") { fe.drag = null; drawFaceEditor(); }
+  if (fe.tool === "redraw" && t !== "redraw") {
+    fe.drag = null; fe.lenBuf = ""; feLenShow(); drawFaceEditor();
+  }
   fe.tool = t;
   for (const b of document.querySelectorAll("[data-face-tool]"))
     b.classList.toggle("active", b.dataset.faceTool === t);
@@ -1641,6 +1694,26 @@ function drawFaceEditor() {
     el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
       class: "draft-shape" }, root);
   }
+  /* Phase 2 拖邊:對齊吸附參考線 + 相鄰邊即時長度 */
+  if (d && d.kind === "edge" && d.moved && fe.work) {
+    const vs = fe.work[d.loop].verts, n = vs.length;
+    const a = vs[d.index], b = vs[(d.index + 1) % n];
+    const horiz = a[1] === b[1];
+    if (d.snapTo !== null && d.snapTo !== undefined) {
+      const seg = horiz ? [gb[0], d.snapTo, gb[2], d.snapTo]
+                        : [d.snapTo, gb[1], d.snapTo, gb[3]];
+      el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
+        stroke: "#c4781a", "stroke-width": 1.5 / z,
+        "stroke-dasharray": `${6 / z} ${4 / z}` }, root);
+    }
+    for (const ei of [(d.index - 1 + n) % n, (d.index + 1) % n]) {
+      const p = vs[ei], q = vs[(ei + 1) % n];
+      el("text", { x: (p[0] + q[0]) / 2, y: (p[1] + q[1]) / 2 - 6 / z,
+        "font-size": 11 / z, "text-anchor": "middle",
+        fill: "#c4781a" }, root).textContent =
+        Math.max(Math.abs(q[0] - p[0]), Math.abs(q[1] - p[1]));
+    }
+  }
 }
 
 async function feDown(pt, ev) {
@@ -1685,15 +1758,13 @@ async function feDown(pt, ev) {
     return;
   }
   if (fe.tool === "insert") {
-    /* Q2 插入凹口：邊上點一下 → 插入一個矩形凹口（4 個 90° 轉角頂點；
-       共線單點核心會拒絕——「一次插凹口」才是合法原語，§9 Q2）。
-       寬 = 2×格距（夾進邊內）、深 = 1×格距朝面材內側；之後用頂點/邊拖曳微調。 */
+    /* 凹口工具：點邊開 #notchDialog 輸入 w/d,確認走 feInsertNotch。
+       (Q2 語意:一次插 4 頂點矩形凹口,共線單點核心會拒絕) */
     const t = ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
     if (!t) return;
     const [k, a, b] = t.dataset.faceHit.split(":");
     if (k !== "e") { setStatus("插入凹口：請點在邊上"); return; }
-    const loops = (fe.work || oc.bmap[e.bid]).map(l =>
-      ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+    const loops = fe.work || oc.bmap[e.bid];
     const lp = loops[+a], i = +b;
     const va = lp.verts[i], vb = lp.verts[(i + 1) % lp.verts.length];
     const horiz = va[1] === vb[1];
@@ -1701,38 +1772,14 @@ async function feDown(pt, ev) {
     const hi = Math.max(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
     if (hi - lo < 4) { setStatus("邊太短，插不下凹口"); return; }
     const gs = +($("faceGridSizeSelect") || {}).value || 50;
-    const c = Math.round(horiz ? pt.x : pt.y);
     const half = Math.min(gs, Math.floor((hi - lo - 2) / 2));
-    const c0 = Math.max(lo + 1, c - half), c1 = Math.min(hi - 1, c + half);
-    if (c1 <= c0) { setStatus("插入點太靠邊端"); return; }
-    /* 朝面材內側：probe 一側 5mm，在面域內就用它，否則反向 */
-    const n = horiz ? [0, 1] : [1, 0];
-    const cpt = horiz ? [c, va[1]] : [va[0], c];
-    const inFace = (x, y) => {
-      const inPoly = vs => {
-        let ins = false;
-        for (let i2 = 0, j = vs.length - 1; i2 < vs.length; j = i2++) {
-          const A = vs[i2], B = vs[j];
-          if ((A[1] > y) !== (B[1] > y) &&
-              x < (B[0] - A[0]) * (y - A[1]) / (B[1] - A[1]) + A[0]) ins = !ins;
-        }
-        return ins;
-      };
-      if (!inPoly(loops[0].verts)) return false;
-      for (let q = 1; q < loops.length; ++q)
-        if (inPoly(loops[q].verts)) return false;
-      return true;
-    };
-    const d = inFace(cpt[0] + n[0] * 5, cpt[1] + n[1] * 5) ? gs : -gs;
-    /* 邊 A→B 拆成 A→c0→in0→in1→c1→B；孔邊一樣朝面材內側凹 */
-    const e0 = horiz ? [c0, va[1]] : [va[0], c0];
-    const i0 = horiz ? [c0, va[1] + d] : [va[0] + d, c0];
-    const i1 = horiz ? [c1, va[1] + d] : [va[0] + d, c1];
-    const e1 = horiz ? [c1, va[1]] : [va[0], c1];
-    lp.verts.splice(i + 1, 0, e0, i0, i1, e1);
-    lp.fixity.splice(i + 1, 0, false, false, false, lp.fixity[i]);
-    fe.work = null;
-    if (await emitBoundary(e.bid, loops)) await feAfterChange();
+    fe.notch = { loop: +a, i, horiz,
+                 c: Math.round(horiz ? pt.x : pt.y) };
+    $("notchW").value = 2 * half;
+    $("notchD").value = gs;
+    $("modalBackdrop").hidden = false;
+    $("notchDialog").hidden = false;
+    $("notchW").focus();
     return;
   }
   if (fe.tool === "timber") {
@@ -1767,7 +1814,9 @@ async function feDown(pt, ev) {
     return;
   }
   fe.drag = { kind: k === "v" ? "vertex" : "edge",
-              loop: +a, index: +b, moved: false };
+              loop: +a, index: +b, moved: false,
+              x0: pt.x, y0: pt.y,
+              sx0: ev && ev.clientX, sy0: ev && ev.clientY };
   fe.work = (fe.work || oc.bmap[e.bid]).map(l =>
     ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
 }
@@ -1786,6 +1835,7 @@ function feMove(pt, ev) {
     d.cur = Math.abs(pt.x - last[0]) >= Math.abs(pt.y - last[1])
       ? [Math.round(pt.x), last[1]] : [last[0], Math.round(pt.y)];
     drawFaceEditor();
+    feLenShow();
     return;
   }
   if (d.kind === "holeRect" || d.kind === "guideNew") {
@@ -1800,11 +1850,41 @@ function feMove(pt, ev) {
     return;
   }
   if (!fe.work) return;
+  /* 位移閾值:<6px 螢幕位移視為單擊(Phase 2 單擊切 fixity)。
+     用未吸附的 clientX/Y:snap 開著時吸附點可能原地不動。 */
+  if (!d.moved) {
+    const dp = (ev && ev.clientX !== undefined && d.sx0 !== undefined)
+      ? Math.abs(ev.clientX - d.sx0) + Math.abs(ev.clientY - d.sy0)
+      : (Math.abs(pt.x - d.x0) + Math.abs(pt.y - d.y0)) * fe.zoom;
+    if (dp < 6) return;
+  }
   d.moved = true;
   const uv = { u: Math.round(pt.x), v: Math.round(pt.y) };
   const pts = fe.work[d.loop].verts;
   if (d.kind === "vertex") applyVertexEdit(pts, d.index, uv);
-  else applyEdgeEdit(pts, d.index, uv);
+  else {
+    /* Phase 2 拖邊對齊吸附:移動軸座標對其他頂點同軸座標吸附 */
+    const a = pts[d.index], b = pts[(d.index + 1) % pts.length];
+    const horiz = a[1] === b[1];
+    const axis = horiz ? 1 : 0;
+    const cur = horiz ? uv.v : uv.u;
+    const thr = Math.max(8, 12 / fe.zoom);
+    d.snapTo = null;
+    for (let li = 0; li < fe.work.length; ++li) {
+      for (let j = 0; j < fe.work[li].verts.length; ++j) {
+        if (li === d.loop && (j === d.index || j === (d.index + 1) % pts.length))
+          continue;
+        const c = fe.work[li].verts[j][axis];
+        if (Math.abs(c - cur) <= thr &&
+            (d.snapTo === null || Math.abs(c - cur) < Math.abs(d.snapTo - cur)))
+          d.snapTo = c;
+      }
+    }
+    if (d.snapTo !== null) {
+      if (horiz) uv.v = d.snapTo; else uv.u = d.snapTo;
+    }
+    applyEdgeEdit(pts, d.index, uv);
+  }
   drawFaceEditor();
 }
 
@@ -1864,7 +1944,16 @@ async function feUp(pt) {
   /* vertex / edge */
   const work = fe.work, moved = d.moved;
   fe.work = null;
-  if (!moved) { drawFaceEditor(); return; }
+  if (!moved) {
+    /* Phase 2 單擊邊(無位移)= 切換該邊 fixity */
+    if (d.kind === "edge" && work) {
+      work[d.loop].fixity[d.index] = work[d.loop].fixity[d.index] ? 0 : 1;
+      if (await emitBoundary(e.bid, work)) await feAfterChange();
+      else drawFaceEditor();
+      return;
+    }
+    drawFaceEditor(); return;
+  }
   if (await emitBoundary(e.bid, work)) await feAfterChange();
   else drawFaceEditor();
 }
@@ -1885,13 +1974,94 @@ async function feRedrawClose() {
   const e = oc.edit, d = fe.drag;
   if (!e || !d || d.kind !== "redraw") return;
   const pts = feDedupe(d.pts);
-  fe.drag = null;
+  fe.drag = null; fe.lenBuf = ""; feLenShow();
   if (pts.length < 4) { setStatus("外環至少要 4 個非共線頂點"); drawFaceEditor(); return; }
   const loops = oc.bmap[e.bid].map(l =>
     ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
   loops[0] = { verts: pts, fixity: pts.map(() => 1) };
   if (await emitBoundary(e.bid, loops)) await feAfterChange();
   else drawFaceEditor();
+}
+
+/* 點是否在面域內(外環內且不在任何孔內)— 凹口內側判定用 */
+function fePointInFace(loops, x, y) {
+  const inPoly = vs => {
+    let ins = false;
+    for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+      const A = vs[i], B = vs[j];
+      if ((A[1] > y) !== (B[1] > y) &&
+          x < (B[0] - A[0]) * (y - A[1]) / (B[1] - A[1]) + A[0]) ins = !ins;
+    }
+    return ins;
+  };
+  if (!inPoly(loops[0].verts)) return false;
+  for (let q = 1; q < loops.length; ++q)
+    if (inPoly(loops[q].verts)) return false;
+  return true;
+}
+
+/* Phase 2 參數化凹口:對話框確認後在此構造 4 頂點凹口 */
+async function feInsertNotch() {
+  const e = oc.edit, nt = fe.notch;
+  if (!e || !nt) return;
+  const w = Math.round(+$("notchW").value || 0);
+  const dIn = Math.round(+$("notchD").value || 0);
+  if (!(w >= 2) || !(dIn >= 1)) { setStatus("凹口 w/d 要是正整數"); return; }
+  const loops = oc.bmap[e.bid].map(l =>
+    ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+  const lp = loops[nt.loop], i = nt.i;
+  const va = lp.verts[i], vb = lp.verts[(i + 1) % lp.verts.length];
+  const horiz = nt.horiz;
+  const lo = Math.min(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
+  const hi = Math.max(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
+  if (w > hi - lo - 2) { setStatus("凹口寬度超出邊長"); return; }
+  const c0 = Math.max(lo + 1, nt.c - Math.floor(w / 2));
+  const c1 = Math.min(hi - 1, c0 + w);
+  if (c1 <= c0) { setStatus("插入點太靠邊端"); return; }
+  /* 朝面材內側:probe 一側 5mm,在面域內就用它,否則反向 */
+  const n = horiz ? [0, 1] : [1, 0];
+  const cpt = horiz ? [nt.c, va[1]] : [va[0], nt.c];
+  const d = fePointInFace(loops, cpt[0] + n[0] * 5, cpt[1] + n[1] * 5)
+    ? dIn : -dIn;
+  /* 邊 A→B 拆成 A→c0→in0→in1→c1→B;孔邊一樣朝面材內側凹 */
+  const e0 = horiz ? [c0, va[1]] : [va[0], c0];
+  const i0 = horiz ? [c0, va[1] + d] : [va[0] + d, c0];
+  const i1 = horiz ? [c1, va[1] + d] : [va[0] + d, c1];
+  const e1 = horiz ? [c1, va[1]] : [va[0], c1];
+  lp.verts.splice(i + 1, 0, e0, i0, i1, e1);
+  lp.fixity.splice(i + 1, 0, 0, 0, 0, lp.fixity[i]);
+  fe.notch = null;
+  if (await emitBoundary(e.bid, loops)) await feAfterChange();
+}
+
+/* Phase 2 鍵入長度:游標旁浮動輸入框顯示/隱藏 */
+function feLenShow() {
+  const inp = $("feLenInput");
+  if (!inp) return;
+  const d = fe.drag;
+  if (!fe.lenBuf || !d || d.kind !== "redraw") { inp.hidden = true; return; }
+  const c = d.cur || d.pts[d.pts.length - 1];
+  inp.hidden = false;
+  inp.value = fe.lenBuf;
+  inp.style.left = (c[0] * fe.zoom + fe.panX + 12) + "px";
+  inp.style.top = (c[1] * fe.zoom + fe.panY - 30) + "px";
+}
+
+/* Phase 2 鍵入長度:Enter 把 lenBuf 套成目前段長(軸向取游標側) */
+function feRedrawApplyLen() {
+  const d = fe.drag, len = Math.round(+fe.lenBuf || 0);
+  fe.lenBuf = ""; feLenShow();
+  if (!d || d.kind !== "redraw" || !(len > 0)) return;
+  const last = d.pts[d.pts.length - 1];
+  let dx = 1, dy = 0;
+  if (d.cur) {
+    const ux = d.cur[0] - last[0], uy = d.cur[1] - last[1];
+    if (Math.abs(ux) >= Math.abs(uy)) { dx = Math.sign(ux) || 1; dy = 0; }
+    else { dx = 0; dy = Math.sign(uy) || 1; }
+  }
+  d.pts.push([last[0] + dx * len, last[1] + dy * len]);
+  d.cur = null;
+  drawFaceEditor();
 }
 
 /* 形狀庫:L/U/T 生成外環(原點起),孔保留、新邊全 F */
@@ -1991,15 +2161,20 @@ function renderFaceInspector() {
     `<div class="kv"><span>所屬空間</span><b>${spaces.length ? spaces.map(s => "空間 " + s.id).join("、") : "—"}</b></div>` +
     `</div>`;
 
-  /* fixity：每邊 F/X 切換 → 重宣告 boundary */
-  html += `<div class="inspector-block"><div class="ib-title">fixity（外環每邊）</div><div class="fixity-list">`;
+  /* Phase 2 邊清單:每邊一行 = 方向 + 長度輸入 + fixity 切換 */
+  html += `<div class="inspector-block"><div class="ib-title">邊（外環）</div><div class="edge-list">`;
   if (loops.length) {
     for (let i = 0; i < loops[0].verts.length; ++i) {
       const a = loops[0].verts[i], b = loops[0].verts[(i + 1) % loops[0].verts.length];
       const horiz = a[1] === b[1];
-      html += `<button class="fixity-btn${loops[0].fixity[i] ? " on" : ""}" ` +
-        `data-fix-edge="${i}" title="邊 ${i}（${horiz ? "水平" : "直立"}）` +
-        `（${a}→${b}）">${loops[0].fixity[i] ? "F" : "X"}</button>`;
+      const len = horiz ? Math.abs(b[0] - a[0]) : Math.abs(b[1] - a[1]);
+      const arrow = horiz ? (b[0] > a[0] ? "→" : "←") : (b[1] > a[1] ? "↓" : "↑");
+      html += `<div class="edge-row"><span class="edge-idx">${i}${arrow}</span>` +
+        `<input class="edge-len" data-edge-len="${i}" type="number" ` +
+        `step="1" min="1" value="${len}">` +
+        `<button class="fixity-btn${loops[0].fixity[i] ? " on" : ""}" ` +
+        `data-fix-edge="${i}" title="邊 ${i} fixity">` +
+        `${loops[0].fixity[i] ? "F" : "X"}</button></div>`;
     }
   }
   html += `</div></div>`;
@@ -2042,6 +2217,20 @@ function renderFaceInspector() {
         ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
       nl[0].fixity[i] = nl[0].fixity[i] ? 0 : 1;
       if (await emitBoundary(bid, nl)) await feAfterChange();
+    });
+  /* Phase 2 邊長輸入:applyEdgeLen 傳播後重宣告 */
+  for (const inp of pane.querySelectorAll("[data-edge-len]"))
+    inp.addEventListener("change", async () => {
+      const i = +inp.dataset.edgeLen, len = Math.round(+inp.value);
+      if (!(len >= 1)) { setStatus("邊長要是正整數"); renderFaceInspector(); return; }
+      const nl = oc.bmap[bid].map(l =>
+        ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+      if (!applyEdgeLen(nl[0].verts, i, len)) {
+        setStatus("改這段長度會連動整圈——無法套用");
+        renderFaceInspector(); return;
+      }
+      if (await emitBoundary(bid, nl)) await feAfterChange();
+      else renderFaceInspector();
     });
   bindPlaceForm(pane, bid);
   const gc = pane.querySelector("#gridCreate");
