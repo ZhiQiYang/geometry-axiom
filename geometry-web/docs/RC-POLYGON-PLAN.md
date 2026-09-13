@@ -177,6 +177,9 @@ beam   <id> [in <space_id>] along x|y from <a> to <b> at <c> width <w> depth <d>
 
 每階段:範圍 → 裁判 → DoD。**過閘才 commit、才進下一段。**
 
+> 執行狀態(2026-09-14):Phase 1 `f7c3318` · Phase 2 `1cfd172` · Phase 3 `b068b2d` ·
+> Phase 4 `3cfc810` · Phase 5 `9fa30e2` · Phase 6 `ce02a80` — 全部過閘提交。
+
 ### Phase 1 重畫外環 + 形狀庫(純前端)
 
 - `index.html` 工具列加 `data-face-tool="redraw"`(e)+「形狀」鈕 + `#shapeDialog`;`app.js` 軸鎖畫點狀態機(預覽、長度標註、去共線、Enter/點起點閉合、Esc 取消)、形狀庫對話框。
@@ -281,8 +284,8 @@ beam   <id> [in <space>] along x|y from <a> to <b> at <c> width <w> depth <d> [t
 delete column|beam <id>
 canvas-pos column|beam <id> <x> <y>
 # newid   → + "column":N、"beam":N
-# objects → + "columns":[{"id","space","rect":[xlo,xhi,ylo,yhi,zlo,zhi],"cx","cy","hasPos"}]
-#             "beams":[同構]
+# objects → + "columns":[{"id","space","box":[xlo,ylo,zlo,xhi,yhi,zhi],"cx","cy","hasPos"}]
+#             "beams":[同構,另含 "axis":"x"|"y"]
 # obstacles <boundary_id> → {ok,face,kind:"plan"|"elevation",
 #   items:[{id,type:"column"|"beam",cls:"hole"|"notch"|"corner"|"strip"|"split"|"top_notch"|"top_drop",
 #           rect:[u0,v0,u1,v1]}]}

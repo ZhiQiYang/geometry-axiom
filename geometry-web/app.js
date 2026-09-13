@@ -1450,13 +1450,20 @@ function renderSpaceRc(sp) {
       `from ${lo} to ${hi} at ${c} width ${w} depth ${b[5] - b[2]} top ${b[5]}`;
   };
   const rcRow = (k, o, label, fn) => {
-    const row = document.createElement("button");
-    row.type = "button";
+    const row = document.createElement("div");
     row.className = "space-boundary-button";
     row.innerHTML =
       `<span class="type-icon ${k}">${k === "column" ? "▮" : "═"}</span>` +
       `<span class="space-boundary-button-copy"><strong>${k === "column" ? "柱" : "樑"} ${o.id}</strong>` +
       `<small>${dims(k, o)}</small></span><span>${label}</span>`;
+    const del = document.createElement("button");
+    del.type = "button"; del.className = "face-layer-del"; del.title = "刪除";
+    del.textContent = "✕";
+    del.addEventListener("click", async ev => {
+      ev.stopPropagation();
+      if (await emitLine(`delete ${k} ${o.id}`)) await renderSpaceWorkspace();
+    });
+    row.appendChild(del);
     row.addEventListener("click", fn);
     return row;
   };
@@ -1525,7 +1532,8 @@ function renderSpacePlan(sp) {
       class: "space-plan-col" }, svg);
     el("text", { x: (b[0] + b[3]) / 2, y: (b[1] + b[4]) / 2,
       "text-anchor": "middle", "dominant-baseline": "middle",
-      class: "space-plan-label" }, svg).textContent = "柱" + c.id;
+      class: "space-plan-label" }, svg).textContent =
+      `柱${c.id} ${b[3] - b[0]}×${b[4] - b[1]}`;
   }
   for (const bm of oc.beams.filter(b => b.space === sp.id)) {
     const b = bm.box;
@@ -1533,7 +1541,8 @@ function renderSpacePlan(sp) {
       class: "space-plan-beam" }, svg);
     el("text", { x: (b[0] + b[3]) / 2, y: (b[1] + b[4]) / 2,
       "text-anchor": "middle", "dominant-baseline": "middle",
-      class: "space-plan-label" }, svg).textContent = "樑" + bm.id;
+      class: "space-plan-label" }, svg).textContent =
+      `樑${bm.id} ${b[3] - b[0]}×${b[4] - b[1]}`;
   }
 
   const preview = el("rect", { class: "space-plan-preview", visibility: "hidden" }, svg);
@@ -1560,7 +1569,7 @@ function renderSpacePlan(sp) {
     drag.moved = Math.max(dx, dy) > 60;
     if (drag.moved) {
       /* 樑預覽：主軸方向條帶 */
-      const [w] = $("planBeamSize").value.split("x").map(Number);
+      const [w] = planBeamDims();
       if (dx >= dy)
         preview.setAttribute("x", Math.min(drag.p0[0], drag.p1[0]));
       else
@@ -1585,12 +1594,12 @@ function renderSpacePlan(sp) {
     const ids = await api("newid");
     let line;
     if (!d.moved) {
-      const s = +$("planColSize").value;
+      const s = planColSide();
       line = `column ${ids.column} in ${sp.id} at ` +
         `${Math.round(d.p0[0] - s / 2)} ${Math.round(d.p0[1] - s / 2)} ` +
         `size ${s} ${s}`;
     } else {
-      const [w, dep] = $("planBeamSize").value.split("x").map(Number);
+      const [w, dep] = planBeamDims();
       const dx = Math.abs(d.p1[0] - d.p0[0]);
       const dy = Math.abs(d.p1[1] - d.p0[1]);
       if (dx >= dy)
@@ -3333,6 +3342,28 @@ function openRcDialog(kind) {
 }
 $("btnNewColumn").addEventListener("click", () => openRcDialog("column"));
 $("btnNewBeam").addEventListener("click", () => openRcDialog("beam"));
+/* 平面示意尺寸:預設下拉 + 自訂輸入(Q3) */
+function planColSide() {
+  const sel = $("planColSize");
+  return sel && sel.value === "custom"
+    ? Math.max(50, +$("planColCustom").value || 450)
+    : +(sel ? sel.value : 600);
+}
+function planBeamDims() {
+  const sel = $("planBeamSize");
+  if (sel && sel.value === "custom")
+    return [Math.max(50, +$("planBeamW").value || 300),
+            Math.max(50, +$("planBeamD").value || 500)];
+  return sel ? sel.value.split("x").map(Number) : [350, 600];
+}
+if ($("planColSize"))
+  $("planColSize").addEventListener("change", () =>
+    $("planColCustom").hidden = $("planColSize").value !== "custom");
+if ($("planBeamSize"))
+  $("planBeamSize").addEventListener("change", () => {
+    const custom = $("planBeamSize").value === "custom";
+    $("planBeamW").hidden = $("planBeamD").hidden = !custom;
+  });
 $("rcSubmit").addEventListener("click", async () => {
   const isCol = rcKind === "column";
   const ids = await api("newid");

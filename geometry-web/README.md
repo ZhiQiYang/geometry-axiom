@@ -60,3 +60,10 @@ node cdp_test.js
 - C 端（`../current_geometry.c`、`web_bridge.c`）不在本目錄職責範圍，重構期間零改動。
 - 多行變更走 `mutate(lines)`：逐行送、失敗 undo 回滾 + toast（error 原文）。
 - 參考線：bridge 無列舉指令，由 `dump` 文本以正則 `^guide (\d+) (\d+) (u|v) (-?\d+)$` 解析；`sid` 是承載面 id。
+
+## RC 柱樑與投影套用（RC-POLYGON-PLAN）
+
+- **柱/樑是一等物件**：物件庫「＋柱」「＋樑」→ 對話框建立 → 卡片可拖、檢視器改尺寸（重宣告）、`objects` 回傳 `columns[]`/`beams[]`。DSL：`column`/`beam`（語法見 `docs/RC-POLYGON-PLAN.md` 附錄 A）。
+- **障礙物鬼影**：面內工作區呼叫 `obstacles <bid>`，把同空間柱樑投影成分類矩形（孔/凹口/角凹/條帶/拆分/頂凹/頂降），半透明顯示不改 boundary。
+- **套用投影**：圖層列勾選鬼影 + 「套用 N 項投影」→ `apply-proj <bid> <item>… [cut-strip]`，單一交易：孔入環、凹口改外環、拆分產新面（原 id 留最大片、孔隨片走、拆片退出空間成員）。快照式，與柱樑無連結。
+- **空間工作區**：平面示意圖點放柱、拖放樑、構件收/出清單；空間→柱樑畫「障礙」連線。

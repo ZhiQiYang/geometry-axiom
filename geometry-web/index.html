@@ -286,11 +286,19 @@
               <span class="space-plan-tools">
                 <label>柱<select id="planColSize">
                   <option>500</option><option selected>600</option>
-                  <option>700</option><option>800</option></select>見方</label>
+                  <option>700</option><option>800</option>
+                  <option value="custom">自訂</option></select>見方
+                  <input id="planColCustom" class="plan-custom" type="number"
+                    min="100" step="50" value="450" hidden></label>
                 <label>樑<select id="planBeamSize">
                   <option value="300x500">300×500</option>
                   <option value="350x600" selected>350×600</option>
-                  <option value="400x700">400×700</option></select></label>
+                  <option value="400x700">400×700</option>
+                  <option value="custom">自訂</option></select>
+                  <input id="planBeamW" class="plan-custom" type="number"
+                    min="100" step="50" value="300" title="寬" hidden>×<input
+                    id="planBeamD" class="plan-custom" type="number"
+                    min="100" step="50" value="500" title="深" hidden></label>
                 <span class="hint">點放柱 · 拖放樑</span>
               </span>
             </div>
