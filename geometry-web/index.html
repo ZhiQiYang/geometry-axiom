@@ -107,7 +107,21 @@
     </aside>
 
     <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
-      <svg id="ocv"><g id="oroot"></g></svg>
+      <svg id="ocv">
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#929bad"/>
+          </marker>
+          <linearGradient id="faceGrad" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#dff3ed"/><stop offset="1" stop-color="#b9ded4"/>
+          </linearGradient>
+          <pattern id="faceGridPat" width="16" height="16" patternUnits="userSpaceOnUse">
+            <path d="M16 0H0V16" fill="none" stroke="#2f8f7b" stroke-opacity=".08" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <g id="oroot"><g id="edgeGroup"></g><g id="cardLayer"></g></g>
+      </svg>
       <svg id="cv" hidden><g id="world"></g><g id="overlay"></g></svg>
 
       <div id="viewToolbar" class="view-toolbar" hidden>
@@ -145,7 +159,7 @@
         <button id="homeButton" class="icon-button" type="button" title="回到原點" aria-label="回到原點"><span data-icon="home"></span></button>
       </div>
 
-      <div class="minimap-shell" hidden>
+      <div class="minimap-shell">
         <canvas id="minimap" width="220" height="132" aria-label="畫布小地圖"></canvas>
         <span>小地圖</span>
       </div>

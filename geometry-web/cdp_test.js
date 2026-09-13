@@ -325,6 +325,40 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const fR2 = await eval_(facesN);
   console.log("redo×2:", fU2, "->", fR2, fR2 === fPreUndo ? "✓ redo 有效" : "✗");
 
+  console.log("=== 9e. contains 連線(edgeGroup) ===");
+  /* 空間成員必須是有承載面的邊界面:先用 surface 建地板+牆(區間一致),
+     再用 #cmd 送 space 1 boundary 10 11 → edgeGroup 應有 2 條邊 */
+  const cmdLine = async t => {
+    await eval_(`(()=>{const c=document.getElementById("cmd");
+      c.value=${JSON.stringify("X")}.replace("X",${JSON.stringify(t)});
+      c.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",bubbles:true}))})()`);
+    await sleep(600);
+  };
+  await cmdLine("surface 10 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000");
+  await cmdLine("surface 11 origin 0 0 0 u +x v +z outline 0,0 4000,0 4000,2500 0,2500");
+  await cmdLine("space 1 boundary 10 11");
+  await sleep(1200);
+  console.log("space members:", await eval_(
+    `api("objects").then(r=>JSON.stringify(r.spaces.map(s=>[s.id,s.members])))`));
+  const edgeN = await eval_(`document.querySelectorAll("#edgeGroup .edge-path").length`);
+  console.log("edges:", edgeN, edgeN === 2 ? "✓ contains 邊×2" : "✗");
+  console.log("edge labels:", await eval_(
+    `[...document.querySelectorAll("#edgeGroup .edge-label")].map(t=>t.textContent).join(",")`));
+
+  console.log("=== 9f. 搜尋過濾 ===");
+  const cardsAll = await eval_(`document.querySelectorAll(".ocard").length`);
+  await eval_(`(()=>{const si=document.getElementById("searchInput");
+    si.value="面 1";si.dispatchEvent(new Event("input",{bubbles:true}))})()`);
+  await sleep(600);
+  const cardsQ = await eval_(`document.querySelectorAll(".ocard").length`);
+  console.log("cards:", cardsAll, "->", cardsQ, cardsQ === 1 ? "✓ 搜尋只剩 1 張卡" : "✗");
+  const listQ = await eval_(`document.querySelectorAll("#objectList .object-row").length`);
+  console.log("list rows:", listQ, listQ === 1 ? "✓ 清單同步過濾" : "✗");
+  /* 清掉搜尋 */
+  await eval_(`(()=>{const si=document.getElementById("searchInput");
+    si.value="";si.dispatchEvent(new Event("input",{bubbles:true}))})()`);
+  await sleep(400);
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

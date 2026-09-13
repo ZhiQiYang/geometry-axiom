@@ -71,6 +71,10 @@ async function api(cmd) {
   return r.json();
 }
 function setStatus(t) { statusEl.textContent = t; }
+async function refreshActive() {
+  if (oc.on) await renderObjects();
+  else { await render(); await refreshSurfaces(); }
+}
 function setHover(t) { hoverEl.textContent = t; }
 
 /* ---- 視圖變換（對應 gdi_frame_transform + gdi_view_transform） ---- */
@@ -605,22 +609,23 @@ window.addEventListener("keydown", async e => {
 
 /* ---- 指令列與按鈕 ---- */
 $("cmd").addEventListener("keydown", async e => {
+  if (oc.busy) { e.preventDefault(); return; }
   if (e.key !== "Enter") return;
   const text = e.target.value;
   const r = await api("line " + text);
-  if (r.ok) { setStatus("✓ 已套用"); e.target.value = ""; selected = null; render(); refreshSurfaces(); }
-  else setStatus("✗ " + (r.error || ""));
+  if (r.ok) { setStatus("✓ 已套用"); e.target.value = ""; selected = null; refreshActive(); }
+  else { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); }
 });
 $("btnClear").onclick = async () => {
   await api("line reset"); selected = null;
-  setStatus("✓ 已清空"); render(); refreshSurfaces();
+  setStatus("✓ 已清空"); refreshActive();
 };
 $("btnEx").onclick = async () => {
   const sel = $("sceneList");
   const path = sel.value || "";
   const r = await api("loadfile " + (path || "room_a.scene"));
-  if (r.ok) { setStatus("✓ 已載入 " + (sel.selectedOptions[0]?.text || "範例")); selected = null; render(); refreshSurfaces(); }
-  else setStatus("✗ " + (r.error || ""));
+  if (r.ok) { setStatus("✓ 已載入 " + (sel.selectedOptions[0]?.text || "範例")); selected = null; refreshActive(); }
+  else { setStatus("✗ " + (r.error || "")); toast(r.error || "載入失敗"); }
 };
 $("btnScene").onclick = $("btnEx").onclick;
 $("btnOpen").onclick = () => $("file").click();
@@ -628,7 +633,7 @@ $("file").addEventListener("change", async e => {
   const f = e.target.files[0];
   if (!f) return;
   const r = await fetch("/upload", { method: "POST", body: await f.text() }).then(x => x.json());
-  if (r.ok) { setStatus("✓ 已載入 " + f.name); selected = null; render(); refreshSurfaces(); }
+  if (r.ok) { setStatus("✓ 已載入 " + f.name); selected = null; refreshActive(); }
   else setStatus("✗ " + (r.error || ""));
   e.target.value = "";
 });
@@ -645,12 +650,15 @@ window.addEventListener("resize", applyTransform);
  * ============================================================ */
 const ocv = $("ocv"), oroot = $("oroot");
 const OC_W = 200, OC_H = 150, OC_PAD = 12;
+const SP_W = 240, SP_H = 190;
 const oc = {
   on: true,               /* D1:物件畫布是主畫面 */
   panX: 0, panY: 0, zoom: 1,
   tool: "select",         /* select | pan */
   sel: null,              /* 選取 {kind,id} */
   showFace: true, showSpace: true,
+  search: "",             /* 搜尋過濾字串 */
+  surfs: [],              /* /surfaces 快照(法向→空間六槽) */
   faces: [], spaces: [],
   stack: [],              // 焦點堆疊：世界 → 空間 → 面
   focus: null,            // null | {t:'space'|'face', id}
@@ -672,6 +680,7 @@ function ocApply() {
   vp.style.setProperty("--pan-y", oc.panY + "px");
   vp.style.setProperty("--grid-size", (24 * oc.zoom) + "px");
   const zl = $("zoomLevelButton"); if (zl) zl.textContent = Math.round(oc.zoom * 100) + "%";
+  if (oc.faces) drawMinimap();
 }
 function ocToCanvas(e) {
   const r = ocv.getBoundingClientRect();
@@ -699,45 +708,127 @@ function loopsBBox(loops) {
 function faceCard(f) {
   const g = el("g", { class: "ocard", "data-kind": f.kind, "data-id": f.id,
                       transform: `translate(${f.cx},${f.cy})`, cursor: "pointer" });
-  el("rect", { class: "ocard-frame", x: 0, y: 0, width: OC_W, height: OC_H, rx: 8,
-               fill: "#ffffff", stroke: f.placed ? "#3a7" : "#789",
-               "stroke-width": 2, "stroke-dasharray": f.placed ? "" : "7 4" }, g);
-  const t = el("text", { x: OC_PAD, y: 20, "font-size": 15, fill: "#222" }, g);
-  t.textContent = (f.kind === "boundary" ? "面 " : "矩形面 ") + f.id +
-                  (f.placed ? "（已放置）" : "（游離）");
+  el("rect", { class: "ocard-frame", x: 0, y: 0, width: OC_W, height: OC_H, rx: 10,
+               fill: "#ffffff", stroke: "#dfe4eb", "stroke-width": 1.4 }, g);
+  /* header:型別點 + 名稱 + 副標 */
+  el("circle", { cx: 14, cy: 16, r: 4.5, fill: f.kind === "placement" ? "#c08a3e" : "#2f8f7b" }, g);
+  const t = el("text", { x: 26, y: 15, "font-size": 11.5, fill: "#1d2634",
+                         "font-weight": 700 }, g);
+  t.textContent = (f.kind === "boundary" ? "面 " : "placement ") + f.id;
+  const sub = el("text", { x: 26, y: 28, "font-size": 9, fill: "#8b93a3" }, g);
+  sub.textContent = f.kind === "placement" ? "自帶矩形 · 無邊界"
+    : (f.placed ? "boundary · 已放置" : "boundary · 游離");
+  if (!f.placed && f.kind === "boundary") {
+    el("rect", { x: OC_W - 44, y: 8, width: 36, height: 14, rx: 7,
+                 fill: "#fdf3e3", stroke: "#ecd9b5" }, g);
+    const tag = el("text", { x: OC_W - 26, y: 18, "font-size": 8, fill: "#a06a18",
+                             "text-anchor": "middle", "font-weight": 650 }, g);
+    tag.textContent = "游離";
+  }
+  if (f.kind === "placement") {
+    el("rect", { x: OC_W - 52, y: 8, width: 44, height: 14, rx: 7,
+                 fill: "#eef1f6", stroke: "#dde2ea" }, g);
+    const tag = el("text", { x: OC_W - 30, y: 18, "font-size": 8, fill: "#6b7484",
+                             "text-anchor": "middle", "font-weight": 650 }, g);
+    tag.textContent = "無邊界";
+  }
+  el("line", { x1: 0, y1: 34, x2: OC_W, y2: 34, stroke: "#e8ebf0", "stroke-width": 1 }, g);
 
-  /* 縮圖：邊界面畫外輪廓，自帶矩形畫 rect。 */
+  /* preview:previewFaceSvg 簡化版——外環+孔+頂點 */
+  const pvX = 10, pvY = 40, pvW = OC_W - 20, pvH = OC_H - 76;
+  el("rect", { x: pvX, y: pvY, width: pvW, height: pvH, rx: 6,
+               fill: "#f7f9fb", stroke: "#edf0f5" }, g);
   const bw = Math.max(1, f.bbox[2] - f.bbox[0]), bh = Math.max(1, f.bbox[3] - f.bbox[1]);
-  const k = Math.min((OC_W - 2 * OC_PAD) / bw, (OC_H - 34 - OC_PAD) / bh);
-  const th = el("g", { transform:
-    `translate(${OC_PAD - f.bbox[0] * k},${30 - f.bbox[1] * k}) scale(${k})` }, g);
-
+  const k = Math.min((pvW - 14) / bw, (pvH - 14) / bh);
+  const ox = pvX + (pvW - bw * k) / 2 - f.bbox[0] * k;
+  const oy = pvY + (pvH - bh * k) / 2 - f.bbox[1] * k;
+  const th = el("g", { transform: `translate(${ox},${oy}) scale(${k})` }, g);
   if (f.kind === "boundary" && oc.bmap[f.id]) {
-    for (const lp of oc.bmap[f.id]) {
+    const loops = oc.bmap[f.id];
+    for (let li = 0; li < loops.length; ++li) {
+      const lp = loops[li];
       el("polygon", { points: lp.verts.map(p => p.join(",")).join(" "),
-        fill: "rgba(80,140,220,.25)", stroke: "#468", "stroke-width": 2 / k }, th);
+        fill: li === 0 ? "url(#faceGrad)" : "rgba(57,140,184,.19)",
+        stroke: li === 0 ? "#2f8f7b" : "#398cb8",
+        "stroke-width": 1.4 / k, "stroke-linejoin": "round" }, th);
     }
+    for (const p of loops[0].verts)
+      el("circle", { cx: p[0], cy: p[1], r: 2.5 / k, fill: "#fff",
+                     stroke: "#2f8f7b", "stroke-width": 1 / k }, th);
   } else {
     el("rect", { x: f.bbox[0], y: f.bbox[1], width: bw, height: bh,
-      fill: "rgba(80,140,220,.25)", stroke: "#468", "stroke-width": 2 / k }, th);
+      fill: "url(#faceGrad)", stroke: "#2f8f7b",
+      "stroke-width": 1.4 / k, "stroke-linejoin": "round" }, th);
   }
+  /* footer:範圍 + 頂點數 */
+  el("line", { x1: 0, y1: OC_H - 30, x2: OC_W, y2: OC_H - 30,
+               stroke: "#e8ebf0", "stroke-width": 1 }, g);
+  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 8.5, fill: "#687487" }, g);
+  const nv = (f.kind === "boundary" && oc.bmap[f.id]) ? oc.bmap[f.id][0].verts.length : 4;
+  ft.textContent = `${bw}×${bh} mm · ${nv} 頂點`;
   return g;
 }
 
+/* 成員面法向 → 六個方向槽位佔用(§5.4 六槽示意) */
+function spaceSlots(s) {
+  const slots = { "+X": 0, "-X": 0, "+Y": 0, "-Y": 0, "+Z": 0, "-Z": 0 };
+  let known = false;
+  for (const m of s.members) {
+    const sf = oc.surfs.find(x => x.boundary === m);
+    if (!sf) continue;
+    const u = sf.u, v = sf.v;
+    const n = [u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]];
+    const ax = Math.abs(n[0]) >= Math.abs(n[1]) && Math.abs(n[0]) >= Math.abs(n[2]) ? 0
+             : Math.abs(n[1]) >= Math.abs(n[2]) ? 1 : 2;
+    const key = (n[ax] >= 0 ? "+" : "-") + "XYZ"[ax];
+    slots[key]++; known = true;
+  }
+  return known ? slots : null;
+}
 function spaceCard(s) {
   const g = el("g", { class: "ocard", "data-kind": "space", "data-id": s.id,
                       transform: `translate(${s.cx},${s.cy})`, cursor: "pointer" });
-  el("rect", { class: "ocard-frame", x: 0, y: 0, width: 240, height: 170, rx: 10,
-               fill: "#eef3ff", stroke: "#36c", "stroke-width": 2.5 }, g);
-  const t = el("text", { x: OC_PAD, y: 22, "font-size": 16,
-                         fill: "#234", "font-weight": "bold" }, g);
+  el("rect", { class: "ocard-frame", x: 0, y: 0, width: SP_W, height: SP_H, rx: 10,
+               fill: "#ffffff", stroke: "#dfe4eb", "stroke-width": 1.4 }, g);
+  el("circle", { cx: 14, cy: 16, r: 4.5, fill: "#6a5fd0" }, g);
+  const t = el("text", { x: 26, y: 15, "font-size": 11.5, fill: "#1d2634",
+                         "font-weight": 700 }, g);
   t.textContent = `空間 ${s.id}`;
-  const m = el("text", { x: OC_PAD, y: 44, "font-size": 13, fill: "#456" }, g);
-  m.textContent = `成員面 ${s.members.length} · ${s.closed ? "封閉" : "部分"}` +
-                  (s.members.length === 0 ? "（空容器）" : "");
-  const l = el("text", { x: OC_PAD, y: 66, "font-size": 12, fill: "#789" }, g);
-  l.textContent = s.members.length ? "成員：" + s.members.join(" ")
-                                   : "點進去管理成員";
+  const sub = el("text", { x: 26, y: 28, "font-size": 9, fill: "#8b93a3" }, g);
+  sub.textContent = `space · ${s.members.length} 個邊界面`;
+  el("rect", { x: SP_W - 52, y: 8, width: 44, height: 14, rx: 7,
+               fill: s.closed ? "#e3f4ec" : "#fdf3e3",
+               stroke: s.closed ? "#bfe3d0" : "#ecd9b5" }, g);
+  const tag = el("text", { x: SP_W - 30, y: 18, "font-size": 8,
+                 fill: s.closed ? "#1d7a4e" : "#a06a18",
+                 "text-anchor": "middle", "font-weight": 650 }, g);
+  tag.textContent = s.closed ? "封閉" : "開放";
+  el("line", { x1: 0, y1: 34, x2: SP_W, y2: 34, stroke: "#e8ebf0", "stroke-width": 1 }, g);
+
+  /* 六槽示意:2 列 3 行,佔用的槽上色 */
+  const slots = spaceSlots(s);
+  const keys = ["+X", "-X", "+Y", "-Y", "+Z", "-Z"];
+  const cw = (SP_W - 20 - 12) / 3, ch = 24, gy = 46;
+  for (let i = 0; i < 6; ++i) {
+    const cx = 10 + (i % 3) * (cw + 6), cy = gy + Math.floor(i / 3) * (ch + 6);
+    const used = slots ? slots[keys[i]] > 0 : false;
+    el("rect", { x: cx, y: cy, width: cw, height: ch, rx: 5,
+                 fill: used ? "#ece9fb" : "#f7f9fb",
+                 stroke: used ? "#8f83e0" : "#e4e8ef" }, g);
+    const k = el("text", { x: cx + cw / 2, y: cy + ch / 2 + 3, "font-size": 9,
+                 "text-anchor": "middle", "font-weight": 650,
+                 fill: used ? "#5b4fc4" : "#a6aebb" }, g);
+    k.textContent = keys[i] + (slots ? ` ${slots[keys[i]]}` : "");
+  }
+  /* 成員列 */
+  const mt = el("text", { x: 10, y: gy + 2 * ch + 22, "font-size": 9, fill: "#687487" }, g);
+  mt.textContent = s.members.length ? "成員面：" + s.members.join(" ")
+                                    : "空容器 · 雙擊進入管理成員";
+  el("line", { x1: 0, y1: SP_H - 30, x2: SP_W, y2: SP_H - 30,
+               stroke: "#e8ebf0", "stroke-width": 1 }, g);
+  const ft = el("text", { x: 10, y: SP_H - 11, "font-size": 8.5, fill: "#687487" }, g);
+  ft.textContent = s.closed ? "六槽齊備 · closed"
+                            : (slots ? "槽位未齊 · open" : "尚無已放置成員");
   return g;
 }
 
@@ -748,6 +839,8 @@ async function renderObjects() {
   if (!r.ok || seq !== ocSeq) return;
   oc.faces = r.faces; oc.spaces = r.spaces;
   oc.bmap = {};
+  const sf = await api("surfaces");
+  oc.surfs = (sf && sf.ok) ? sf.surfaces : [];
 
   /* 沒有畫布座標的物件：自動排格並立刻持久化。 */
   let slot = 0;
@@ -775,33 +868,159 @@ async function renderObjects() {
 
 function drawObjects() {
   oroot.textContent = "";
+  const eg = el("g", { id: "edgeGroup" }, oroot);
+  const cl = el("g", { id: "cardLayer" }, oroot);
   if (oc.focus && oc.focus.t === "face") { drawFaceEditor(); return; }
 
   const inSpace = oc.focus && oc.focus.t === "space"
     ? new Set((oc.spaces.find(s => s.id === oc.focus.id) || { members: [] }).members)
     : null;
 
-  for (const f of oc.faces) {
-    if (inSpace && !inSpace.has(f.id)) continue;
-    if (!oc.showFace) continue;
+  const matchQ = o => ocMatchSearch(o);
+  const visFaces = oc.faces.filter(f =>
+    (!inSpace || inSpace.has(f.id)) && oc.showFace && matchQ(f));
+  const visSpaces = inSpace ? [] :
+    oc.spaces.filter(s => oc.showSpace && matchQ(s));
+
+  for (const f of visFaces) {
     const c = faceCard(f);
     if (oc.sel && oc.sel.kind === f.kind && oc.sel.id === f.id)
       c.classList.add("selected");
-    oroot.appendChild(c);
+    cl.appendChild(c);
   }
-  if (!inSpace) {
-    for (const s of oc.spaces) {
-      if (!oc.showSpace) continue;
-      const c = spaceCard(s);
-      if (oc.sel && oc.sel.kind === "space" && oc.sel.id === s.id)
-        c.classList.add("selected");
-      oroot.appendChild(c);
-    }
+  for (const s of visSpaces) {
+    const c = spaceCard(s);
+    if (oc.sel && oc.sel.kind === "space" && oc.sel.id === s.id)
+      c.classList.add("selected");
+    cl.appendChild(c);
   }
+  drawOcEdges(eg, visSpaces, visFaces);
   drawCrumb();
   renderObjectList();
   renderInspector();
+  drawMinimap();
   $("emptyState").hidden = (oc.faces.length + oc.spaces.length) > 0 || !!oc.focus;
+}
+
+/* ---- 搜尋比對:名稱 / id / kind ---- */
+function ocCardName(o) {
+  if (o.members) return `空間 ${o.id}`;
+  return (o.kind === "placement" ? `placement ${o.id}` : `面 ${o.id}`);
+}
+function ocMatchSearch(o) {
+  const q = oc.search.trim();
+  if (!q) return true;
+  const name = ocCardName(o);
+  /* 查詢以數字結尾時要求詞邊界:「面 1」不命中「面 10」 */
+  const pat = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") +
+              (/\d$/.test(q) ? "(?!\\d)" : "");
+  const re = new RegExp(pat, "i");
+  return re.test(name) || String(o.id) === q ||
+         (o.kind && re.test(o.kind));
+}
+
+/* ---- contains 連線(space → member face,D3) ---- */
+function cardBox(o) {
+  const w = o.members ? SP_W : OC_W, h = o.members ? SP_H : OC_H;
+  return { x: o.cx, y: o.cy, w, h };
+}
+function nodeAnchor(node, toward) {
+  const cx = node.x + node.w / 2, cy = node.y + node.h / 2;
+  const dx = toward.x - cx, dy = toward.y - cy;
+  if (Math.abs(dx / node.w) > Math.abs(dy / node.h))
+    return { x: cx + Math.sign(dx || 1) * node.w / 2,
+             y: cy + dy * (node.w / 2 / Math.max(1, Math.abs(dx))) };
+  return { x: cx + dx * (node.h / 2 / Math.max(1, Math.abs(dy))),
+           y: cy + Math.sign(dy || 1) * node.h / 2 };
+}
+function relGeom(a, b) {          /* a=space card, b=face card */
+  const ac = { x: a.x + a.w / 2, y: a.y + a.h / 2 };
+  const bc = { x: b.x + b.w / 2, y: b.y + b.h / 2 };
+  const st = nodeAnchor(a, bc), en = nodeAnchor(b, ac);
+  const dx = en.x - st.x, dy = en.y - st.y;
+  const horiz = Math.abs(dx) >= Math.abs(dy);
+  const bend = Math.min(180, Math.max(50, Math.abs(horiz ? dx : dy) * 0.45));
+  const c1 = horiz ? { x: st.x + Math.sign(dx || 1) * bend, y: st.y }
+                   : { x: st.x, y: st.y + Math.sign(dy || 1) * bend };
+  const c2 = horiz ? { x: en.x - Math.sign(dx || 1) * bend, y: en.y }
+                   : { x: en.x, y: en.y - Math.sign(dy || 1) * bend };
+  const mid = { x: (st.x + en.x) / 2, y: (st.y + en.y) / 2 };
+  return { mid, d: `M${st.x} ${st.y} C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${en.x} ${en.y}` };
+}
+function drawOcEdges(eg, spaces, faces) {
+  for (const s of spaces) {
+    for (const m of s.members) {
+      const f = faces.find(x => x.kind === "boundary" && x.id === m);
+      if (!f) continue;
+      const g = relGeom(cardBox(s), cardBox(f));
+      const gi = el("g", { class: "edge-group-item" }, eg);
+      el("path", { class: "edge-path", d: g.d }, gi);
+      const lw = Math.min(150, Math.max(46, "contains".length * 11 + 20));
+      el("rect", { class: "edge-label-bg", x: g.mid.x - lw / 2, y: g.mid.y - 10,
+                   width: lw, height: 20, rx: 7 }, gi);
+      const t = el("text", { class: "edge-label", x: g.mid.x, y: g.mid.y + .5 }, gi);
+      t.textContent = "contains";
+    }
+  }
+}
+
+/* ---- 小地圖 ---- */
+function drawMinimap() {
+  const cvs = $("minimap"); if (!cvs || !cvs.offsetParent) return;
+  const rect = cvs.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  const dpr = window.devicePixelRatio || 1;
+  const tw = Math.round(rect.width * dpr), th = Math.round(rect.height * dpr);
+  if (cvs.width !== tw || cvs.height !== th) { cvs.width = tw; cvs.height = th; }
+  const ctx = cvs.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, rect.width, rect.height);
+  ctx.fillStyle = "#fbfcfd"; ctx.fillRect(0, 0, rect.width, rect.height);
+
+  const vr = ocv.getBoundingClientRect();
+  const vb = { minX: -oc.panX / oc.zoom, minY: -oc.panY / oc.zoom,
+    maxX: (vr.width - oc.panX) / oc.zoom, maxY: (vr.height - oc.panY) / oc.zoom };
+  const nodes = [...oc.faces, ...(oc.focus ? [] : oc.spaces)];
+  if (!nodes.length && !oc.focus) return;
+  const allMinX = Math.min(vb.minX, ...nodes.map(n => n.cx));
+  const allMinY = Math.min(vb.minY, ...nodes.map(n => n.cy));
+  const allMaxX = Math.max(vb.maxX, ...nodes.map(n => n.cx + cardBox(n).w));
+  const allMaxY = Math.max(vb.maxY, ...nodes.map(n => n.cy + cardBox(n).h));
+  const m = 100;
+  const bw = Math.max(1, allMaxX - allMinX + 2 * m), bh = Math.max(1, allMaxY - allMinY + 2 * m);
+  const pad = 7;
+  const sc = Math.min((rect.width - pad * 2) / bw, (rect.height - pad * 2) / bh);
+  const ox = (rect.width - bw * sc) / 2 - (allMinX - m) * sc;
+  const oy = (rect.height - bh * sc) / 2 - (allMinY - m) * sc;
+  const mx = x => x * sc + ox, my = y => y * sc + oy;
+  oc.mmTf = { sc, ox, oy };
+
+  /* contains 邊 */
+  ctx.lineWidth = 1; ctx.strokeStyle = "#d8dde6";
+  for (const s of oc.focus ? [] : oc.spaces)
+    for (const mem of s.members) {
+      const f = oc.faces.find(x => x.kind === "boundary" && x.id === mem);
+      if (!f) continue;
+      const a = cardBox(s), b = cardBox(f);
+      ctx.beginPath();
+      ctx.moveTo(mx(a.x + a.w / 2), my(a.y + a.h / 2));
+      ctx.lineTo(mx(b.x + b.w / 2), my(b.y + b.h / 2));
+      ctx.stroke();
+    }
+  /* 節點 */
+  for (const n of nodes) {
+    const b = cardBox(n);
+    ctx.fillStyle = n.members ? "#6a5fd0" : "#2f8f7b";
+    ctx.globalAlpha = (oc.sel && oc.sel.id === n.id && oc.sel.kind === (n.members ? "space" : n.kind)) ? 1 : .72;
+    ctx.fillRect(mx(b.x), my(b.y), Math.max(3, b.w * sc), Math.max(2, b.h * sc));
+  }
+  ctx.globalAlpha = 1;
+  /* 視域框 */
+  ctx.strokeStyle = "#4e67e8"; ctx.lineWidth = 1.2;
+  ctx.fillStyle = "rgba(78,103,232,.06)";
+  const vx = mx(vb.minX), vy = my(vb.minY);
+  const vw = Math.max(5, (vb.maxX - vb.minX) * sc), vh = Math.max(5, (vb.maxY - vb.minY) * sc);
+  ctx.fillRect(vx, vy, vw, vh); ctx.strokeRect(vx, vy, vw, vh);
 }
 
 function drawCrumb() {
@@ -1023,7 +1242,7 @@ function ocFind(kind, id) {
 }
 function cardCenter(kind, id) {
   const p = oc.bmap.get(`${kind}:${id}`);
-  const w = kind === "space" ? 240 : OC_W, h = kind === "space" ? 170 : OC_H;
+  const w = kind === "space" ? SP_W : OC_W, h = kind === "space" ? SP_H : OC_H;
   return p ? { x: p.x + w / 2, y: p.y + h / 2 } : null;
 }
 function centerOnNode(kind, id) {
@@ -1040,14 +1259,14 @@ function renderObjectList() {
   list.textContent = "";
   const rows = [];
   for (const f of oc.faces) {
-    if (!oc.showFace) continue;
+    if (!oc.showFace || !ocMatchSearch(f)) continue;
     const name = f.kind === "placement" ? `placement ${f.id}` : `面 ${f.id}`;
     rows.push({ kind: f.kind, id: f.id, name,
       sub: f.kind === "placement" ? `pid ${f.pid} · ${f.bbox.join(",")}`
                                   : `面 · ${f.bbox.join(",")}` });
   }
   for (const s of oc.spaces) {
-    if (!oc.showSpace) continue;
+    if (!oc.showSpace || !ocMatchSearch(s)) continue;
     rows.push({ kind: "space", id: s.id, name: `空間 ${s.id}`,
       sub: `空間 · ${s.members.length} 個邊界面` });
   }
@@ -1128,7 +1347,7 @@ ocv.addEventListener("dblclick", e => {
              parseInt(card.dataset.id, 10));
 });
 ocv.addEventListener("pointerdown", e => {
-  if (!oc.on || e.button !== 0) return;
+  if (!oc.on || oc.busy || e.button !== 0) return;
   const pt = ocToCanvas(e);
   ocv.setPointerCapture(e.pointerId);
 
@@ -1280,6 +1499,48 @@ for (const cb of document.querySelectorAll("[data-filter-type]")) {
     oc.showSpace = document.querySelector('[data-filter-type="space"]').checked;
     drawObjects();
   });
+}
+/* 搜尋過濾(Phase 2) */
+$("searchInput").addEventListener("input", e => {
+  oc.search = e.target.value;
+  drawObjects();
+});
+$("searchInput").addEventListener("keydown", e => e.stopPropagation());
+/* 小地圖點擊 → 平移到該點 */
+$("minimap").addEventListener("pointerdown", e => {
+  if (!oc.mmTf) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  const wx = (e.clientX - r.left - oc.mmTf.ox) / oc.mmTf.sc;
+  const wy = (e.clientY - r.top - oc.mmTf.oy) / oc.mmTf.sc;
+  const vr = ocv.getBoundingClientRect();
+  oc.panX = vr.width / 2 - wx * oc.zoom;
+  oc.panY = vr.height / 2 - wy * oc.zoom;
+  ocApply(); drawMinimap();
+});
+/* toast:bridge ok:false 的 error 原文(§5.7) */
+function toast(msg, type = "error") {
+  const t = document.createElement("div");
+  t.className = "toast " + type;
+  t.innerHTML = icon(type === "error" ? "warning" : "check") +
+    `<span></span>`;
+  t.querySelector("span").textContent = msg;
+  $("toastRegion").appendChild(t);
+  setTimeout(() => t.remove(), 3600);
+}
+/* mutate:多行 DSL 交易;第 k 行失敗 → undo 前 k-1 行 + toast(§5.1) */
+async function mutate(lines) {
+  oc.busy = true;
+  try {
+    for (let k = 0; k < lines.length; ++k) {
+      const r = await api("line " + lines[k]);
+      if (!r.ok) {
+        for (let i = 0; i < k; ++i) await api("line undo");
+        toast(r.error || "指令失敗");
+        return false;
+      }
+    }
+    return true;
+  } finally { oc.busy = false; }
 }
 /* 快速六面盒:Phase 4 才做對話框 */
 $("btnBox6").addEventListener("click", () =>
