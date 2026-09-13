@@ -627,7 +627,7 @@ window.addEventListener("keydown", async e => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
     const k = e.key.toLowerCase();
     if (k === " ") { fe.spaceDown = true; e.preventDefault(); return; }
-    const map = { v: "select", l: "guide", r: "hole", h: "pan", i: "insert" };
+    const map = { v: "select", l: "guide", r: "hole", h: "pan", i: "insert", t: "timber" };
     if (map[k]) { feSetTool(map[k]); return; }
     if (k === "f" && oc.edit && oc.bmap[oc.edit.bid]) {
       feFit(loopsBBox(oc.bmap[oc.edit.bid])); return;
@@ -1149,6 +1149,8 @@ const fe = {
   drag: null,              /* vertex/edge/guide/holeRect/guideNew/pan */
   work: null,              /* 拖曳中的 loops 副本 */
   guides: [],              /* [{id, axis, off}] 由 dump 解析 */
+  timbers: [],             /* [{id,u,v,dir,side,L,A,B}] 本面承載的角材 */
+  grids: [],               /* [{id, u:[], v:[]}] 本面網格 */
   spaceDown: false,
   projOpen: false,
   projViews: new Set(),
@@ -1452,7 +1454,7 @@ function feSetTool(t) {
   vp.className = "face-editor-viewport tool-" +
     ({ select: "select", guide: "referenceLine", hole: "opening", pan: "pan", insert: "insert" }[t] || t);
   $("workspaceToolStatus").textContent = "工具：" +
-    ({ select: "選取", guide: "參考線", hole: "開口", pan: "平移", insert: "插入頂點" }[t] || t);
+    ({ select: "選取", guide: "參考線", hole: "開口", pan: "平移", insert: "凹口", timber: "角材" }[t] || t);
   /* 游離面：參考線工具停用 */
   const gb = document.querySelector('[data-face-tool="guide"]');
   if (gb) {
@@ -1463,15 +1465,31 @@ function feSetTool(t) {
 }
 
 async function feLoadGuides() {
-  fe.guides = [];
+  fe.guides = []; fe.timbers = []; fe.grids = [];
   const bid = oc.edit && oc.edit.bid, sid = bid && feSid(bid);
   if (!sid) return;
   const d = await api("dump");
   if (!d.ok || !d.text) return;
+  const timberDecl = {};
   for (const ln of d.text.split("\n")) {
     const m = ln.match(/^guide (\d+) (\d+) (u|v) (-?\d+)\s*$/);
     if (m && +m[2] === sid)
       fe.guides.push({ id: +m[1], axis: m[3], off: +m[4] });
+    const tm = ln.match(/^timber (\d+) (\d+) (\d+) (\d+)\s*$/);
+    if (tm) timberDecl[+tm[1]] = { L: +tm[2], A: +tm[3], B: +tm[4] };
+    const ta = ln.match(/^timber (\d+) (\d+) (\d+)\s*$/);
+    if (ta && !timberDecl[+ta[1]])
+      timberDecl[+ta[1]] = { L: 0, A: +ta[2], B: +ta[3] };
+    const pm = ln.match(/^place (\d+) on (\d+) at (-?\d+) (-?\d+) ([+-][uv]) ([+-]n)\s*$/);
+    if (pm && +pm[2] === sid && timberDecl[+pm[1]])
+      fe.timbers.push({ id: +pm[1], u: +pm[3], v: +pm[4],
+                        dir: pm[5], side: pm[6], ...timberDecl[+pm[1]] });
+    const gm = ln.match(/^grid (\d+) on (\d+) (u|v) (.+)\s*$/);
+    if (gm && +gm[2] === sid) {
+      const g = fe.grids.find(x => x.id === +gm[1]) ||
+        fe.grids[fe.grids.push({ id: +gm[1], u: [], v: [] }) - 1];
+      g[gm[3]] = gm[4].trim().split(/\s+/).map(Number);
+    }
   }
 }
 
@@ -1533,6 +1551,26 @@ function drawFaceEditor() {
     el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
       "data-face-hit": `g:${g.id}:${g.axis}`,
       stroke: "transparent", "stroke-width": Math.max(8, 14 / z) }, root);
+  }
+  /* 網格（Q3）：比參考線細的點線 */
+  for (const g of fe.grids || []) {
+    for (const c of g.u)
+      el("line", { x1: c, y1: gb[1], x2: c, y2: gb[3], class: "face-grid-line" }, root);
+    for (const c of g.v)
+      el("line", { x1: gb[0], y1: c, x2: gb[2], y2: c, class: "face-grid-line" }, root);
+  }
+  /* 角材 A0 足跡（Q3）：axis_a = axis_b × axis_length 的 uv 版 */
+  for (const t2 of fe.timbers || []) {
+    const s = t2.side === "+n" ? 1 : -1;
+    const len_uv = t2.dir === "+u" ? [1, 0] : t2.dir === "-u" ? [-1, 0]
+                 : t2.dir === "+v" ? [0, 1] : [0, -1];
+    const a_uv = t2.dir === "+u" ? [0, s] : t2.dir === "-u" ? [0, -s]
+               : t2.dir === "+v" ? [-s, 0] : [s, 0];
+    const fu = t2.u + t2.L * len_uv[0] + t2.A * a_uv[0];
+    const fv = t2.v + t2.L * len_uv[1] + t2.A * a_uv[1];
+    el("rect", { x: Math.min(t2.u, fu), y: Math.min(t2.v, fv),
+      width: Math.abs(fu - t2.u), height: Math.abs(fv - t2.v),
+      class: "face-timber" }, root);
   }
   /* 草稿 */
   const d = fe.drag;
@@ -1615,6 +1653,29 @@ async function feDown(pt, ev) {
     lp.fixity.splice(i + 1, 0, false, false, false, lp.fixity[i]);
     fe.work = null;
     if (await emitBoundary(e.bid, loops)) await feAfterChange();
+    return;
+  }
+  if (fe.tool === "timber") {
+    /* Q3 角材：點面 = 錨點;尺寸/方向/深度讀檢視器表單,
+       timber 宣告 + place 兩行走 mutate 交易。 */
+    const sid = feSid(e.bid);
+    if (!sid) { setStatus("游離面不能放角材——先在檢視器「放置」"); return; }
+    const L = Math.round(+($("tbLen") || {}).value || 0);
+    const A = Math.round(+($("tbA") || {}).value || 0);
+    const B = Math.round(+($("tbB") || {}).value || 0);
+    if (!(A > 0) || !(B > 0) || L < 0) {
+      setStatus("角材 A/B 要是正整數，L 留空 = auto"); return;
+    }
+    const dir = ($("tbDir") || {}).value || "+u";
+    const side = ($("tbSide") || {}).value || "+n";
+    const ids = await api("newid");
+    const decl = L ? `timber ${ids.timber} ${L} ${A} ${B}`
+                   : `timber ${ids.timber} ${A} ${B}`;
+    const u = Math.round(pt.x), v = Math.round(pt.y);
+    if (await mutate([decl,
+        `place ${ids.timber} on ${sid} at ${u} ${v} ${dir} ${side}`])) {
+      await feLoadGuides(); drawFaceEditor(); renderFaceLayers();
+    }
     return;
   }
   /* select：data-face-hit 命中 v:<loop>:<i> / e:<loop>:<i> / g:<id>:<axis> */
@@ -1758,6 +1819,19 @@ function renderFaceLayers() {
         await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
       }
     });
+  for (const t2 of fe.timbers || [])
+    row("▤", `角材 ${t2.id}`, `${t2.L || "auto"}×${t2.A}×${t2.B} @(${t2.u},${t2.v}) ${t2.dir}${t2.side}`,
+      async () => {
+        if (await emitLine(`delete timber ${t2.id}`)) {
+          await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
+        }
+      });
+  for (const g of fe.grids || [])
+    row("╬", `網格 ${g.id}`, `u×${g.u.length} v×${g.v.length}`, async () => {
+      if (await emitLine(`delete grid ${g.id}`)) {
+        await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
+      }
+    });
   $("faceLayerCount").textContent = n;
 }
 
@@ -1807,6 +1881,25 @@ function renderFaceInspector() {
   html += `</div></div>`;
   /* 放置表單（§5.5.3a：游離與已放置都可重綁） */
   html += placeFormHTML(bid);
+  /* 角材放置參數（Q3：選「角材」工具後在面上點擊） */
+  html += `<div class="inspector-block"><div class="ib-title">角材放置</div>` +
+    `<div class="place-form">` +
+    `<label>長度 L<input id="tbLen" type="number" placeholder="auto"></label>` +
+    `<label>A<input id="tbA" type="number" value="27"></label>` +
+    `<label>B<input id="tbB" type="number" value="33"></label>` +
+    `<label>方向<select id="tbDir">` +
+    ["+u", "-u", "+v", "-v"].map(d => `<option>${d}</option>`).join("") +
+    `</select></label>` +
+    `<label>深度<select id="tbSide"><option>+n</option><option>-n</option></select></label>` +
+    `</div><div class="face-help">` +
+    (surf ? "選「角材」工具後在面上點擊放置（足跡需落在有效區域內）"
+          : "游離面：先「放置」才可放角材") + `</div></div>`;
+  /* 網格（Q3：u/v 軸座標清單，空白分隔） */
+  html += `<div class="inspector-block"><div class="ib-title">網格</div>` +
+    `<div class="place-form">` +
+    `<label>u 座標<input id="gridU" placeholder="500 1500"></label>` +
+    `<label>v 座標<input id="gridV" placeholder="300 900"></label>` +
+    `</div><button class="btn" id="gridCreate"${surf ? "" : " disabled"}>建立網格</button></div>`;
   /* 投影面板（§5.5.4） */
   html += `<div class="inspector-block"><div class="ib-title">` +
     `<button id="projToggle" class="text-button">${fe.projOpen ? "▾" : "▸"} 投影視圖</button></div>` +
@@ -1827,6 +1920,25 @@ function renderFaceInspector() {
       if (await emitBoundary(bid, nl)) await feAfterChange();
     });
   bindPlaceForm(pane, bid);
+  const gc = pane.querySelector("#gridCreate");
+  if (gc) gc.addEventListener("click", async () => {
+    const sid = feSid(bid);
+    if (!sid) return;
+    const parse = id => (($(id) || {}).value || "").trim()
+      .split(/[\s,]+/).filter(Boolean).map(Number);
+    const u = parse("gridU"), v = parse("gridV");
+    if (!u.length && !v.length) { setStatus("至少給一個 u 或 v 座標"); return; }
+    if ([...u, ...v].some(n => !Number.isInteger(n))) {
+      setStatus("網格座標要是整數"); return;
+    }
+    const ids = await api("newid");
+    let line = `grid ${ids.grid} on ${sid}`;
+    if (u.length) line += ` u ${u.join(" ")}`;
+    if (v.length) line += ` v ${v.join(" ")}`;
+    if (await emitLine(line)) {
+      await feLoadGuides(); drawFaceEditor(); renderFaceLayers();
+    }
+  });
   const pt = pane.querySelector("#projToggle");
   pt.addEventListener("click", async () => {
     fe.projOpen = !fe.projOpen;

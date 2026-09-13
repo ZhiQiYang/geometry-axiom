@@ -848,3 +848,8 @@ body.oc-busy input, body.oc-busy select, body.oc-busy textarea { pointer-events:
 }
 .face-layer-del:hover { color: #c0392b; background: #fdecea; }
 
+/* Q3：網格線與角材足跡 */
+.face-editor-svg .face-grid-line { fill: none; stroke: #b8c2d0; stroke-width: 1;
+  stroke-dasharray: 2 5; vector-effect: non-scaling-stroke; }
+.face-editor-svg .face-timber { fill: rgba(196,120,26,.24); stroke: #c4781a;
+  stroke-width: 1.6; vector-effect: non-scaling-stroke; }

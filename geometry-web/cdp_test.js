@@ -729,6 +729,65 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`leaveFocus()`);
   await sleep(300);
 
+  /* Q3:角材/網格圖形化——工具點放角材、表單建網格、圖層列刪除 */
+  console.log("=== P8. 角材與網格(Q3)===");
+  const q3R = await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+    await renderObjects();
+    await enterFocus("face", 1);
+    /* 角材:設定 L/A/B + 方向 + 深度 → timber 工具點 (500,300) */
+    $("tbLen").value = "1800"; $("tbA").value = "27"; $("tbB").value = "33";
+    $("tbDir").value = "+u"; $("tbSide").value = "+n";
+    feSetTool("timber");
+    await feDown({x: 500, y: 300}, {target: $("faceEditorSvg"), clientX: 0, clientY: 0});
+    await new Promise(r=>setTimeout(r,300));
+    const dump1 = (await api("dump")).text;
+    const hasTimber = /timber \\d+ 1800 27 33/.test(dump1) &&
+                      /place \\d+ on \\d+ at 500 300 \\+u \\+n/.test(dump1);
+    const fp = document.querySelector(".face-timber");
+    /* 網格:表單建 u 500 1500 / v 300 900 */
+    $("gridU").value = "500 1500"; $("gridV").value = "300 900";
+    $("gridCreate").click();
+    await new Promise(r=>setTimeout(r,300));
+    const dump2 = (await api("dump")).text;
+    const hasGrid = /grid \\d+ on \\d+ u 500 1500/.test(dump2) &&
+                    /grid \\d+ on \\d+ v 300 900/.test(dump2);
+    const gridLines = document.querySelectorAll(".face-grid-line").length;
+    const rows = [...document.querySelectorAll(".face-layer-row strong")]
+      .map(x => x.textContent).join("|");
+    return {hasTimber, fp: !!fp, hasGrid, gridLines, rows};
+  })()`);
+  console.log("角材放置:", q3R.hasTimber ? "✓" : "✗",
+    "| 足跡繪製:", q3R.fp ? "✓" : "✗",
+    "| 網格建立:", q3R.hasGrid ? "✓" : "✗",
+    "| 網格線數:", q3R.gridLines, q3R.gridLines === 4 ? "✓" : "✗",
+    "| 圖層列:", /角材/.test(q3R.rows) && /網格/.test(q3R.rows) ? "✓" : "✗");
+  /* 足跡越界 → 核心拒絕,toast + dump 不變 */
+  const q3b = await eval_(`(async()=>{
+    const before = (await api("dump")).text;
+    feSetTool("timber");
+    await feDown({x: 3999, y: 2999}, {target: $("faceEditorSvg"), clientX: 0, clientY: 0});
+    await new Promise(r=>setTimeout(r,300));
+    const after = (await api("dump")).text;
+    const toastShown = [...document.querySelectorAll(".toast")]
+      .map(t => t.textContent).join("|");
+    return {same: before === after, toast: toastShown};
+  })()`);
+  console.log("越界拒絕:", q3b.same ? "✓" : "✗",
+    "| toast:", q3b.toast ? "✓" : "✗");
+  /* 圖層列 ✕ 刪角材與網格 */
+  const q3c = await eval_(`(async()=>{
+    const dels = [...document.querySelectorAll(".face-layer-del")];
+    for (const b of dels) { b.click(); await new Promise(r=>setTimeout(r,200)); }
+    const dump = (await api("dump")).text;
+    return {noTimber: !/timber /.test(dump), noGrid: !/grid /.test(dump)};
+  })()`);
+  console.log("角材已刪:", q3c.noTimber ? "✓" : "✗",
+    "| 網格已刪:", q3c.noGrid ? "✓" : "✗");
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);
