@@ -13,6 +13,7 @@
     background: #ececec; border-bottom: 1px solid #cfcfcf; flex: 0 0 auto; }
   #topbar .sp { flex: 1; }
   #topbar .hint { color: #666; font-size: 12px; }
+  [hidden] { display: none !important; }
   #cv { flex: 1; display: block; background: #fff; cursor: crosshair; }
   #ocv { flex: 1; display: block; background: #f7f7f2; cursor: default; }
   .ocard:hover rect { filter: brightness(.96); }
@@ -149,7 +150,7 @@ function screenToView(px, py) {
 function el(name, attrs, parent) {
   const e = document.createElementNS(SVGNS, name);
   for (const k in attrs) e.setAttribute(k, attrs[k]);
-  parent.appendChild(e);
+  if (parent) parent.appendChild(e);
   return e;
 }
 function replay(ops, root) {
@@ -402,7 +403,8 @@ async function emitLine(text) {
     setStatus("✓ " + text);
     drawPts = []; rectStart = null; previewClear();
     selected = null;
-    await render(); await refreshSurfaces();
+    if (oc.on) await renderObjects();
+    else { await render(); await refreshSurfaces(); }
   } else {
     setStatus("✗ " + (r.error || ""));
   }
@@ -1106,7 +1108,7 @@ ocv.addEventListener("wheel", e => {
 /* ---- 模式切換與按鈕 ---- */
 $("btnObj").addEventListener("click", () => {
   oc.on = !oc.on;
-  ocv.hidden = !oc.on; cv.hidden = oc.on;
+  ocv.toggleAttribute("hidden", !oc.on); cv.toggleAttribute("hidden", oc.on);
   $("objtools").hidden = !oc.on;
   $("btnObj").textContent = oc.on ? "◧ 三視圖" : "▦ 物件畫布";
   if (oc.on) {
