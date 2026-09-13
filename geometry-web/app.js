@@ -2443,15 +2443,67 @@ function renderFaceLayers() {
         await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
       }
     });
-  /* RC 障礙物鬼影：只讀列示（刪除要去物件畫布刪柱樑） */
-  if (fe.obstacles) {
-    const CLS_ZH = { hole: "孔", notch: "凹口", corner: "角凹",
-      strip: "條帶", split: "拆分", top_notch: "頂凹", top_drop: "頂降" };
-    for (const it of fe.obstacles.items)
-      row("◌", `${it.type === "beam" ? "樑" : "柱"} ${it.id} 投影`,
-        `${CLS_ZH[it.cls] || it.cls} · 鬼影`, null);
+  /* RC 障礙物鬼影 + 套用控制（Phase 6：勾選=確認,apply-proj 交易） */
+  if (fe.obstacles && fe.obstacles.items.length) {
+    const CLS_ZH = { hole: "鑽孔", notch: "切凹口", corner: "切角凹",
+      strip: "條帶", split: "拆面", top_notch: "頂邊凹口", top_drop: "頂邊整降" };
+    for (const it of fe.obstacles.items) {
+      const r = document.createElement("div");
+      r.className = "face-layer-row fe-ob-row";
+      const cb = document.createElement("input");
+      cb.type = "checkbox"; cb.className = "fe-ob-check";
+      cb.dataset.itemId = it.id; cb.dataset.itemType = it.type;
+      cb.checked = it.cls !== "strip";   /* 條帶預設不裁,不預選 */
+      cb.addEventListener("change", feSyncObApply);
+      r.appendChild(cb);
+      const sub = it.cls === "strip"
+        ? `${CLS_ZH[it.cls]} · 勾選+裁切才生效`
+        : `${CLS_ZH[it.cls] || it.cls}`;
+      const copy = document.createElement("span");
+      copy.className = "face-layer-copy";
+      copy.innerHTML = `<strong>${it.type === "beam" ? "樑" : "柱"} ${it.id} 投影</strong>` +
+        `<small>${sub}</small>`;
+      r.appendChild(copy);
+      list.appendChild(r);
+      ++n;
+    }
+    /* 套用控制列 */
+    const ctrl = document.createElement("div");
+    ctrl.className = "fe-ob-ctrl";
+    ctrl.innerHTML =
+      `<label class="fe-ob-cut"><input type="checkbox" id="feCutStrip"> 裁切條帶</label>` +
+      `<button id="feApplyProj" class="mini-btn">套用投影</button>` +
+      `<small class="fe-ob-note">套用為快照,與柱樑無連結;拆片會改 id</small>`;
+    list.appendChild(ctrl);
+    $("feApplyProj").addEventListener("click", feApplyProj);
+    feSyncObApply();
   }
   $("faceLayerCount").textContent = n;
+}
+
+/* 勾選狀態 → 套用按鈕文案(勾選即確認清單)。 */
+function feSyncObApply() {
+  const btn = $("feApplyProj");
+  if (!btn) return;
+  const n = document.querySelectorAll(".fe-ob-check:checked").length;
+  btn.textContent = n ? `套用 ${n} 項投影` : "套用投影";
+  btn.disabled = n === 0;
+}
+
+/* apply-proj:勾選的鬼影轉成真幾何(交易式,失敗回滾)。 */
+async function feApplyProj() {
+  const e = oc.edit;
+  if (!e || !fe.obstacles) return;
+  const ids = [...document.querySelectorAll(".fe-ob-check:checked")]
+    .map(c => (c.dataset.itemType === "beam" ? "b" : "c") + c.dataset.itemId);
+  if (!ids.length) { toast("先勾選要套用的投影項"); return; }
+  let line = `apply-proj ${e.bid} ${ids.join(" ")}`;
+  if ($("feCutStrip") && $("feCutStrip").checked) line += " cut-strip";
+  if (await emitLine(line)) {
+    fe.work = null; fe.drag = null;
+    await feLoadGuides();
+    renderFaceLayers(); drawFaceEditor(); renderFaceInspector();
+  }
 }
 
 /* 右欄檢視器（§5.5.3 + 5.5.3a 放置 + 5.5.4 投影） */

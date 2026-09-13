@@ -287,9 +287,12 @@ canvas-pos column|beam <id> <x> <y>
 #   items:[{id,type:"column"|"beam",cls:"hole"|"notch"|"corner"|"strip"|"split"|"top_notch"|"top_drop",
 #           rect:[u0,v0,u1,v1]}]}
 # 套用指令(🔒 Q4,新 C 指令,整筆交易含空間成員重宣告):
-#   apply-proj <boundary_id> <item_id>… [cut-strip]
-#     item_id = obstacles 回傳的柱/樑 id;cut-strip = 對 strip 項執行裁切(🔒 Q8 預設不帶)
-#     拆分時原 id 給面積最大片(🔒 Q9),新片用對應命名空間 newid
+#   apply-proj <boundary_id> <item>… [cut-strip]
+#     item = 裸 id(柱樑皆套)或 c<id>/b<id> 型別消歧(R12:柱樑共用數值 id 空間)
+#     cut-strip = 對 strip 項執行裁切(🔒 Q8 預設不帶,套用=不動幾何)
+#     拆分時原 id 給面積最大片(🔒 Q9),新片用對應命名空間 newid;
+#     孔隨片重分配(R10);拆片/生成面退出空間成員變游離(R11)
+#     上限:條帶裁切最多 +4 面 → WORLD_MAX_BOUNDARIES/PLACEMENTS 8→16
 # dump 行序:boundary → placement → guide → grid → timber → place → space → column → beam → canvas-pos
 ```
 

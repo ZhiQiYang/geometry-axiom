@@ -1175,6 +1175,71 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`leaveFocus()`);
   await sleep(300);
 
+  console.log("=== P13. apply-proj 套用按鈕(RC Phase 6)===");
+  await eval_(`(async()=>{
+    await api("line reset");
+    for (const ln of [
+      "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+      "placement 1 on boundary 1 origin 0 0 2500 u +x v +y",
+      "boundary 2 outline 0,0 3000,0 3000,4000 0,4000",
+      "placement 2 on boundary 2 origin 0 0 0 u +y v +x",
+      "boundary 3 outline 0,0 4000,0 4000,2500 0,2500",
+      "placement 3 on boundary 3 origin 0 0 0 u +x v +z",
+      "boundary 4 outline 0,0 2500,0 2500,4000 0,4000",
+      "placement 4 on boundary 4 origin 0 3000 0 u +z v +x",
+      "boundary 5 outline 0,0 2500,0 2500,3000 0,3000",
+      "placement 5 on boundary 5 origin 0 0 0 u +z v +y",
+      "boundary 6 outline 0,0 3000,0 3000,2500 0,2500",
+      "placement 6 on boundary 6 origin 4000 0 0 u +y v +z",
+      "space 1 boundary 1 2 3 4 5 6",
+      "column 1 in 1 at 1000 1000 size 400 400",
+      "beam 1 in 1 along y from 0 to 3000 at 2000 width 300 depth 500",
+    ]) await api("line " + ln);
+    await renderObjects();
+    await enterFocus("face", 1);
+  })()`);
+  await sleep(1000);
+  const obUi = await eval_(`({
+    checks: document.querySelectorAll("#faceLayerList .fe-ob-check").length,
+    checked: document.querySelectorAll("#faceLayerList .fe-ob-check:checked").length,
+    btn: !!document.getElementById("feApplyProj"),
+    cut: !!document.getElementById("feCutStrip"),
+    btnTxt: document.getElementById("feApplyProj") &&
+      document.getElementById("feApplyProj").textContent
+  })`);
+  console.log("套用UI:", obUi.checks === 2 && obUi.checked === 1 &&
+    obUi.btn && obUi.cut ? "✓" : `✗ ${JSON.stringify(obUi)}`);
+  /* 只勾柱(預設)→ 套用 → 孔出現 */
+  await eval_(`document.getElementById("feApplyProj").click()`);
+  await sleep(1200);
+  const ap1 = await eval_(`api("boundary 1").then(b=>({
+    loops: b.loops.length, verts: b.loops[0].verts.length,
+    holeF: b.loops[1] && b.loops[1].fixity.every(f=>f)
+  }))`);
+  console.log("套用柱孔:", ap1.loops === 2 && ap1.verts === 4 && ap1.holeF
+    ? "✓" : `✗ ${JSON.stringify(ap1)}`);
+  /* 只勾樑(取消已套用的柱:重套=拒絕)+ 裁切條帶 → 套用 */
+  await eval_(`(()=>{
+    for (const c of document.querySelectorAll("#faceLayerList .fe-ob-check")) {
+      c.checked = c.dataset.itemType === "beam";
+      c.dispatchEvent(new Event("change"));
+    }
+    const cut=document.getElementById("feCutStrip");
+    if(cut) cut.checked=true;
+    document.getElementById("feApplyProj").click();
+  })()`);
+  await sleep(1500);
+  const ap2 = await eval_(`api("objects").then(r=>({
+    faces: r.faces.length,
+    sp: r.spaces[0] && r.spaces[0].members
+  }))`);
+  console.log("裁切條帶:", ap2.faces === 10 && !ap2.sp.includes(1)
+    ? "✓" : `✗ ${JSON.stringify(ap2)}`);
+  const apGhost = await eval_(`document.querySelectorAll("#faceEditorRoot .obstacle-ghost").length`);
+  console.log("保留片無殘影(柱樑都離開此片):", apGhost === 0 ? "✓" : `✗ ${apGhost}`);
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

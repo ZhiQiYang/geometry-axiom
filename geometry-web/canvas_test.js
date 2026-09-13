@@ -346,6 +346,94 @@ function check(name, cond, detail="") {
   check("未放置面拒絕", !(await api("line boundary 7 outline 0,0 100,0 100,100 0,100")).ok === false ||
         !(await api("obstacles 7")).ok);
 
+  /* ==== §M. apply-proj 套用(P13:B-1 七種分類 + 拆分/回滾)==== */
+  console.log("== M. apply-proj ==");
+  const freshRoom = async () => {
+    await api("line reset");
+    let ok = true;
+    for (const ln of room) if (!(await api("line " + ln)).ok) ok = false;
+    for (const ln of [
+      "column 1 in 1 at 1000 1000 size 400 400",
+      "column 2 in 1 at 0 1500 size 400 400",
+      "column 3 in 1 at 3600 2600 size 400 400",
+      "beam 1 in 1 along y from 0 to 3000 at 2000 width 300 depth 500",
+      "beam 2 in 1 along x from 0 to 4000 at 150 width 300 depth 400",
+    ]) if (!(await api("line " + ln)).ok) ok = false;
+    return ok;
+  };
+  check("M 六面盒+五夾具", await freshRoom());
+
+  /* M1 天花柱孔(id 1 同時套柱1孔+樑1條帶;條帶未勾=不裁→外環不變) */
+  check("M1 apply 柱孔", (await api("line apply-proj 1 1")).ok);
+  const bM1 = await api("boundary 1");
+  check("M1 孔進 boundary", bM1.ok && bM1.loops.length === 2 &&
+        bM1.loops[1].verts.length === 4, JSON.stringify(bM1.loops));
+  check("M1 條帶未裁:外環仍是 4 頂點",
+        bM1.loops[0].verts.length === 4);
+  check("M1 孔 fixity 全 F", bM1.loops[1].fixity.every(f => f));
+
+  /* M2 角柱 → 角凹(4→6 頂點) */
+  check("M2 apply 角柱", (await api("line apply-proj 1 3")).ok);
+  const bM2 = await api("boundary 1");
+  check("M2 外環 6 頂點", bM2.loops[0].verts.length === 6,
+        JSON.stringify(bM2.loops[0].verts));
+
+  /* M3 地板貼邊柱 → 凹口(4→8 頂點) */
+  check("M3 apply 貼邊柱", (await api("line apply-proj 2 2")).ok);
+  const bM3 = await api("boundary 2");
+  check("M3 外環 8 頂點", bM3.loops[0].verts.length === 8,
+        JSON.stringify(bM3.loops[0].verts));
+
+  /* M4 貼牆柱 → 牆拆分(同時套樑2 頂凹):面變多、空間成員掉 5 */
+  check("M4 apply 牆拆分", (await api("line apply-proj 5 2")).ok);
+  const obM4 = await api("objects");
+  check("M4 面數 6→8(拆片+柱側面)", obM4.faces.length === 8,
+        `faces=${obM4.faces.length}`);
+  const spM4 = obM4.spaces.find(s => s.id === 1);
+  check("M4 空間成員剔除原牆", spM4 && !spM4.members.includes(5) &&
+        spM4.members.length === 5, JSON.stringify(spM4 && spM4.members));
+  const bM4 = await api("boundary 5");
+  check("M4 原 id 留最大片", bM4.ok && bM4.loops[0].verts.length >= 4);
+  /* dump 回讀 */
+  const dM4 = (await api("dump")).text;
+  await api("line reset");
+  let rpM4 = true;
+  for (const l of dM4.trim().split("\n"))
+    if (!(await api("line " + l)).ok) rpM4 = false;
+  check("M4 dump 可重放", rpM4);
+  check("M4 round-trip 相同", (await api("dump")).text === dM4);
+
+  /* M5 條帶裁切:天花拆兩片 + 樑底 + 樑兩側 = +4 面,孔重分配 */
+  check("M5 重建", await freshRoom());
+  check("M5 apply 柱孔先落", (await api("line apply-proj 1 c1")).ok);
+  check("M5 重套同孔拒絕(快照)", !(await api("line apply-proj 1 c1")).ok);
+  check("M5 apply cut-strip", (await api("line apply-proj 1 b1 cut-strip")).ok);
+  const obM5 = await api("objects");
+  check("M5 面數 6→10", obM5.faces.length === 10,
+        `faces=${obM5.faces.length}`);
+  const spM5 = obM5.spaces.find(s => s.id === 1);
+  check("M5 天花退出空間", spM5 && !spM5.members.includes(1));
+  /* 孔(在 u<1850 片)要跟著到新片,不該留在保留片 */
+  const bM5 = await api("boundary 1");
+  check("M5 保留片無孔", bM5.ok && bM5.loops.length === 1,
+        JSON.stringify(bM5.loops && bM5.loops.length));
+  const holePiece = obM5.faces.find(f => f.id !== 1 && f.id > 6);
+  const bM5b = holePiece && await api(`boundary ${holePiece.id}`);
+  check("M5 孔隨片走", bM5b && bM5b.loops && bM5b.loops.length === 2,
+        JSON.stringify(holePiece));
+  /* render 一致性:新片+樑面照常出 ops */
+  const rdM5 = await api("render");
+  check("M5 render 有面", (rdM5.ops || []).length > 0);
+
+  /* M6 回滾:不存在的項目 id → 拒絕且世界不變 */
+  const dPre = (await api("dump")).text;
+  check("M6 壞 id 拒絕", !(await api("line apply-proj 1 99")).ok);
+  check("M6 世界未變", (await api("dump")).text === dPre);
+  /* M7 未放置面拒絕(R9) */
+  check("M7 不存在面拒絕", !(await api("line apply-proj 20 1")).ok);
+  check("M7 建未放置面", (await api("line boundary 20 outline 0,0 100,0 100,100 0,100")).ok);
+  check("M7 未放置面拒絕(R9)", !(await api("line apply-proj 20 1")).ok);
+
   await api("default");
 
   console.log(`\n${pass} pass / ${fail} fail`);
