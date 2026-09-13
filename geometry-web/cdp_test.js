@@ -1389,6 +1389,62 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await sleep(400);
   console.log("第二次Esc離開:", await eval_(`JSON.stringify(oc.focus)`) === "null" ? "✓" : "✗");
 
+  /* ================= P15. 主畫布模式回饋 E7 =================
+   * 建面工具:浮標(#canvasModeHint)+ crosshair 游標 + 狀態列頂點進度;
+   * rect 單點 → toast;Esc → 清草稿+隱浮標;select → 全還原。 */
+  console.log("=== P15. 主畫布模式回饋 E7 ===");
+  const ocPt = await eval_(`(()=>{
+    const r = document.getElementById("canvasViewport").getBoundingClientRect();
+    for (const [fx, fy] of [[0.08,0.85],[0.5,0.9],[0.9,0.85],[0.9,0.2],[0.08,0.5]]) {
+      const x = r.left + r.width*fx, y = r.top + r.height*fy;
+      const el = document.elementFromPoint(x, y);
+      if (el && el.closest("#ocv") && !el.closest(".ocard")) return {x, y};
+    }
+    return {x: r.left + r.width*0.5, y: r.top + r.height*0.9};
+  })()`);
+  /* (a) rect 工具:浮標 + crosshair */
+  await eval_(`setOcTool("rect")`);
+  await sleep(250);
+  const mh1 = await eval_(`(()=>{const h=document.getElementById("canvasModeHint");
+    return {vis:!h.hidden, txt:h.textContent,
+      cur:getComputedStyle(document.getElementById("canvasViewport")).cursor};})()`);
+  console.log("E7 rect 浮標:", mh1.vis && mh1.txt.includes("拖出範圍") ? "✓" : "✗ " + JSON.stringify(mh1),
+    "| 游標:", mh1.cur === "crosshair" ? "✓" : "✗ " + mh1.cur);
+  /* (b) rect 只點沒拖 → toast */
+  await click(ocPt.x, ocPt.y);
+  await sleep(400);
+  const mhToast = await eval_(
+    `[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")`);
+  console.log("E7 rect 單點 toast:", mhToast.includes("拖出範圍") ? "✓" : "✗ " + mhToast);
+  /* (c) poly 工具:點兩下 → 狀態列+浮標顯示頂點進度 */
+  await eval_(`setOcTool("poly")`);
+  await sleep(250);
+  await click(ocPt.x, ocPt.y);
+  await sleep(150);
+  await click(ocPt.x + 60, ocPt.y);
+  await sleep(250);
+  const mh2 = await eval_(`(()=>({
+    st: document.getElementById("status").textContent,
+    hint: document.getElementById("canvasModeHint").textContent,
+    vis: !document.getElementById("canvasModeHint").hidden}))()`);
+  console.log("E7 poly 狀態列:", mh2.st.includes("2 頂點") ? "✓" : "✗ " + mh2.st,
+    "| 浮標進度:", mh2.vis && mh2.hint.includes("2 頂點") ? "✓" : "✗ " + mh2.hint);
+  /* (d) Esc 取消 → 浮標隱藏、草稿清空 */
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await sleep(300);
+  const mh3 = await eval_(`(()=>({
+    vis: !document.getElementById("canvasModeHint").hidden,
+    tool: oc.drawTool, poly: oc.poly.length}))()`);
+  console.log("E7 Esc 清草稿:", !mh3.vis && !mh3.tool && !mh3.poly ? "✓" : "✗ " + JSON.stringify(mh3));
+  /* (e) 回選取 → 游標復原、浮標仍隱藏 */
+  await eval_(`setOcTool("select")`);
+  await sleep(200);
+  const mh4 = await eval_(`(()=>({
+    cur: getComputedStyle(document.getElementById("canvasViewport")).cursor,
+    vis: !document.getElementById("canvasModeHint").hidden}))()`);
+  console.log("E7 select 游標復原:", !mh4.vis && mh4.cur !== "crosshair" ? "✓" : "✗ " + JSON.stringify(mh4));
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

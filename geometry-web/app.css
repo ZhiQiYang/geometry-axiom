@@ -187,6 +187,8 @@ svg { display: block; }
 .canvas-viewport.tool-pan, .canvas-viewport.space-pan { cursor: grab; }
 .canvas-viewport.is-panning { cursor: grabbing; }
 .canvas-viewport.tool-connect { cursor: crosshair; }
+.canvas-viewport.tool-rect, .canvas-viewport.tool-poly { cursor: crosshair; }
+.canvas-mode-hint { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 8; padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,.95); box-shadow: var(--shadow-sm); color: var(--ink); font-size: 11.5px; font-weight: 600; pointer-events: none; white-space: nowrap; }
 .canvas-world { position: absolute; left: 0; top: 0; width: 1px; height: 1px; transform-origin: 0 0; will-change: transform; }
 .edge-layer { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; pointer-events: none; }
 .edge-path { fill: none; stroke: #929bad; stroke-width: 1.6; vector-effect: non-scaling-stroke; marker-end: url(#arrowhead); }

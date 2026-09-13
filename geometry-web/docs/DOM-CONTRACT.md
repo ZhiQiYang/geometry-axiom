@@ -55,6 +55,8 @@
 | `#workspaceToolStatus` / `#workspaceSelectionStatus` | 工作區狀態列 | textContent |
 | `#placeOX` / `#placeOY` / `#placeOZ` / `#placeU` / `#placeV` / `#placeSubmit` | 放置表單欄位(檢視器內,兩處共用) | `value`/`.click()` |
 | `#projToggle` / `#projBody` / `#projViews` | 投影面板 | `[data-view]` 群組計數 |
+| `#canvasModeHint` | 主畫布建面模式浮標(S6 新增) | `hidden`、textContent |
+| `#feGuidePick` | 面內參考線 u/v 方向小選單 | `hidden`、`[data-axis]` 鈕 |
 
 ## 必須保留的 class
 

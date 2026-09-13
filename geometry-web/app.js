@@ -662,7 +662,7 @@ window.addEventListener("keydown", async e => {
       }
       if (oc.rect || oc.poly.length || oc.drawTool) {
         oc.rect = null; oc.poly = []; oc.drawTool = null;
-        drawObjects();
+        drawObjects(); ocCursor();
       } else if (oc.focus) {
         leaveFocus();
       }
@@ -2969,13 +2969,15 @@ function objDrawDown(pt) {
       const cur = { x: pt.x * oc.zoom + oc.panX, y: pt.y * oc.zoom + oc.panY };
       if (Math.hypot(scr.x - cur.x, scr.y - cur.y) <= 12) {
         objEmitFace(oc.poly);
-        oc.poly = []; oc.drawTool = null; drawObjects();
+        oc.poly = []; oc.drawTool = null; drawObjects(); ocCursor();
         return;
       }
     }
     oc.poly.push([Math.round(x), Math.round(y)]);
+    setStatus(`多邊形：已點 ${oc.poly.length} 頂點 · 點回起點閉合(Esc 取消)`);
     drawObjects();
     drawPolyPreview(pt);
+    ocCursor();
   }
 }
 
@@ -3338,7 +3340,7 @@ ocv.addEventListener("pointerup", async e => {
     const x0 = Math.round(Math.min(st.x, pt.x)), x1 = Math.round(Math.max(st.x, pt.x));
     const y0 = Math.round(Math.min(st.y, pt.y)), y1 = Math.round(Math.max(st.y, pt.y));
     await objEmitFace([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]);
-    oc.drawTool = null; drawObjects();
+    oc.drawTool = null; drawObjects(); ocCursor();
   }
 });
 
@@ -3374,6 +3376,16 @@ function ocCursor() {
   v.classList.toggle("tool-poly", oc.drawTool === "poly");
   v.classList.toggle("space-pan", !!oc.spacePan);
   v.classList.toggle("is-panning", !!oc.pan);
+  /* E7:模式浮標——只在建面工具啟用時顯示 */
+  const mh = $("canvasModeHint");
+  if (mh) {
+    mh.hidden = !(oc.drawTool === "rect" || oc.drawTool === "poly");
+    if (oc.drawTool === "rect")
+      mh.textContent = "矩形：在畫布上拖出範圍建立游離面";
+    else if (oc.drawTool === "poly")
+      mh.textContent = "多邊形：逐點畫正交多邊形，點回起點閉合" +
+        (oc.poly.length ? `（已點 ${oc.poly.length} 頂點）` : "");
+  }
 }
 function setOcTool(t) {
   oc.tool = (t === "rect" || t === "poly") ? "select" : t;
