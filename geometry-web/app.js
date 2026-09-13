@@ -866,13 +866,17 @@ function faceCard(f) {
                          "font-weight": 700 }, g);
   t.textContent = (f.kind === "boundary" ? "面 " : "placement ") + f.id;
   const sub = el("text", { x: 26, y: 28, "font-size": 9, fill: "#8b93a3" }, g);
+  const fs = f.kind === "boundary" && f.placed ? feSurf(f.id) : null;
   sub.textContent = f.kind === "placement" ? "自帶矩形 · 無邊界"
-    : (f.placed ? "boundary · 已放置" : "boundary · 游離");
+    : (f.placed ? `已放置 · ${fs ? surfNormalLabel(fs) : ""}`
+                : "boundary · 游離");
   if (!f.placed && f.kind === "boundary") {
+    /* A8:游離徽章可點 → 檢視器捲到放置區 */
+    const bg = el("g", { "data-insp-scroll": "place", cursor: "pointer" }, g);
     el("rect", { x: OC_W - 44, y: 8, width: 36, height: 14, rx: 7,
-                 fill: "#fdf3e3", stroke: "#ecd9b5" }, g);
+                 fill: "#fdf3e3", stroke: "#ecd9b5" }, bg);
     const tag = el("text", { x: OC_W - 26, y: 18, "font-size": 8, fill: "#a06a18",
-                             "text-anchor": "middle", "font-weight": 650 }, g);
+                             "text-anchor": "middle", "font-weight": 650 }, bg);
     tag.textContent = "游離";
   }
   if (f.kind === "placement") {
@@ -2677,7 +2681,8 @@ function renderFaceInspector() {
   area = Math.abs(area) / 2;
   const spaces = oc.spaces.filter(s => s.members.includes(bid));
 
-  let html = `<div class="inspector-block"><div class="ib-title">面 ${bid}` +
+  let html = placeFlowHTML(bid) +
+    `<div class="inspector-block"><div class="ib-title">面 ${bid}` +
     `<span class="tag">${surf ? "已放置" : "游離"}</span></div>` +
     `<div class="kv"><span>id</span><b>${bid}</b></div>` +
     `<div class="kv"><span>承載面</span><b>${surf ? surf.id : "—"}</b></div>`;
@@ -2810,11 +2815,58 @@ const PLACE_PRESETS = {
   "x=W 牆": { u: "+y", v: "+z" },
 };
 const AXIS_OPTS = ["+x", "-x", "+y", "-y", "+z", "-z"];
+const AXIS_VEC = { "+x": [1, 0, 0], "-x": [-1, 0, 0], "+y": [0, 1, 0],
+                   "-y": [0, -1, 0], "+z": [0, 0, 1], "-z": [0, 0, -1] };
+/* 🔒 槽位語意:y=0=前牆 y=D=後牆 x=0=左牆 x=W=右牆 +Z=天花 -Z=地板 */
+const NORMAL_NAMES = { "+Z": "天花", "-Z": "地板", "-Y": "前牆",
+                       "+Y": "後牆", "-X": "左牆", "+X": "右牆" };
+/* u×v → 法向鍵(±X/±Y/±Z);平行或反向平行 → null */
+function axisNormalKey(u, v) {
+  const a = AXIS_VEC[u], b = AXIS_VEC[v];
+  if (!a || !b) return null;
+  const n = [a[1] * b[2] - a[2] * b[1],
+             a[2] * b[0] - a[0] * b[2],
+             a[0] * b[1] - a[1] * b[0]];
+  const ax = Math.abs(n[0]) >= Math.abs(n[1]) && Math.abs(n[0]) >= Math.abs(n[2]) ? 0
+           : Math.abs(n[1]) >= Math.abs(n[2]) ? 1 : 2;
+  return n[ax] ? (n[ax] > 0 ? "+" : "-") + "XYZ"[ax] : null;
+}
+/* 已放置面 → 法向語意標籤,如「天花 z=2500」 */
+function surfNormalLabel(s) {
+  const n = [s.u[1] * s.v[2] - s.u[2] * s.v[1],
+             s.u[2] * s.v[0] - s.u[0] * s.v[2],
+             s.u[0] * s.v[1] - s.u[1] * s.v[0]];
+  const ax = Math.abs(n[0]) >= Math.abs(n[1]) && Math.abs(n[0]) >= Math.abs(n[2]) ? 0
+           : Math.abs(n[1]) >= Math.abs(n[2]) ? 1 : 2;
+  const key = (n[ax] >= 0 ? "+" : "-") + "XYZ"[ax];
+  return `${NORMAL_NAMES[key] || key} ${"xyz"[ax]}=${s.origin[ax]}`;
+}
+/* 建面 → 放置 → 收進空間 流程條(F1) */
+function placeFlowHTML(bid) {
+  const surf = feSurf(bid);
+  const inSpace = oc.spaces.some(s => s.members.includes(bid));
+  const steps = [
+    { n: 1, label: "建面", done: true },
+    { n: 2, label: "放置", done: !!surf, cur: !surf },
+    { n: 3, label: "收進空間", done: inSpace, cur: !!surf && !inSpace },
+  ];
+  return `<div id="placeFlow" class="place-flow">` +
+    steps.map((s, i) =>
+      (i ? `<span class="pf-sep">→</span>` : "") +
+      `<span class="pf-step${s.done ? " done" : ""}${s.cur ? " current" : ""}">` +
+      `<b>${s.done ? "✓" : s.n}</b>${s.label}</span>`).join("") +
+    `</div>` +
+    (surf ? "" :
+      `<div class="pf-note">游離面：無參考線、不進三視圖、不算封閉——` +
+      `放置後才可掛網格 / 角材 / 收成員。</div>`);
+}
 function placeFormHTML(bid) {
-  return `<div class="inspector-block"><div class="ib-title">放置</div>` +
+  const surf = feSurf(bid);
+  return `<div class="inspector-block place-block"><div class="ib-title">放置</div>` +
     `<div class="place-presets">` +
-    Object.keys(PLACE_PRESETS).map(k =>
-      `<button class="text-button" data-place-preset="${k}">${k}</button>`).join("") +
+    Object.entries(PLACE_PRESETS).map(([k, p]) =>
+      `<button class="preset-card" data-place-preset="${k}">` +
+      `<b>${k}</b><small>u ${p.u} · v ${p.v}</small></button>`).join("") +
     `</div>` +
     `<div class="place-form">` +
     `<label>origin x<input id="placeOX" type="number" step="1" value="0"></label>` +
@@ -2822,8 +2874,28 @@ function placeFormHTML(bid) {
     `<label>origin z<input id="placeOZ" type="number" step="1" value="0"></label>` +
     `<label>u 軸<select id="placeU">${AXIS_OPTS.map(a => `<option>${a}</option>`).join("")}</select></label>` +
     `<label>v 軸<select id="placeV">${AXIS_OPTS.map(a => `<option>${a}</option>`).join("")}</select></label>` +
-    `<button id="placeSubmit" class="btn" data-bid="${bid}">放置 / 重綁</button>` +
-    `</div></div>`;
+    `</div>` +
+    `<div id="placeValid" class="place-valid"></div>` +
+    `<button id="placeSubmit" class="btn" data-bid="${bid}">` +
+    `${surf ? "重綁" : "放置這片面"}</button>` +
+    `</div>`;
+}
+/* u⊥v 即時驗證(A8):不通過禁用送出鈕 */
+function updatePlaceValid(pane) {
+  const el = pane.querySelector("#placeValid");
+  const uEl = pane.querySelector("#placeU"), vEl = pane.querySelector("#placeV");
+  const sub = pane.querySelector("#placeSubmit");
+  if (!el || !uEl || !vEl) return;
+  const key = axisNormalKey(uEl.value, vEl.value);
+  if (!key) {
+    el.textContent = "u 軸與 v 軸必須垂直";
+    el.className = "place-valid bad";
+    if (sub) sub.disabled = true;
+  } else {
+    el.textContent = `u ⊥ v · 法向 ${key}(${NORMAL_NAMES[key] || key})`;
+    el.className = "place-valid ok";
+    if (sub) sub.disabled = false;
+  }
 }
 function bindPlaceForm(pane, bid) {
   for (const b of pane.querySelectorAll("[data-place-preset]"))
@@ -2831,7 +2903,13 @@ function bindPlaceForm(pane, bid) {
       const p = PLACE_PRESETS[b.dataset.placePreset];
       pane.querySelector("#placeU").value = p.u;
       pane.querySelector("#placeV").value = p.v;
+      updatePlaceValid(pane);
     });
+  for (const s of ["#placeU", "#placeV"]) {
+    const el = pane.querySelector(s);
+    if (el) el.addEventListener("change", () => updatePlaceValid(pane));
+  }
+  updatePlaceValid(pane);
   const sub = pane.querySelector("#placeSubmit");
   if (!sub) return;
   sub.addEventListener("click", async () => {
@@ -2840,9 +2918,7 @@ function bindPlaceForm(pane, bid) {
     const oy = Math.round(+q("#placeOY").value || 0);
     const oz = Math.round(+q("#placeOZ").value || 0);
     const u = q("#placeU").value, v = q("#placeV").value;
-    const A = { "+x": [1, 0, 0], "-x": [-1, 0, 0], "+y": [0, 1, 0],
-                "-y": [0, -1, 0], "+z": [0, 0, 1], "-z": [0, 0, -1] };
-    if (A[u].some((c, i) => c && A[v][i])) {
+    if (AXIS_VEC[u].some((c, i) => c && AXIS_VEC[v][i])) {
       toast("u 軸與 v 軸必須垂直"); return;
     }
     /* placement id：優先用 boundary id；被自帶 rect placement 占用時用 newid */
@@ -2862,6 +2938,7 @@ function bindPlaceForm(pane, bid) {
         renderFaceLayers();
         renderFaceInspector();
       }
+      renderInspector();
     }
   });
 }
@@ -3079,8 +3156,10 @@ function renderObjectList() {
         r.kind === "beam" ? "beam" : "face")}</span>` +
       `<span class="row-copy"><strong>${r.name}</strong>` +
       `<small>${r.sub}</small></span>` +
-      (free ? `<span class="row-badge">游離</span>` : "");
-    row.addEventListener("click", () => {
+      (free ? `<span class="row-badge" data-insp-scroll="place">游離</span>` : "");
+    row.addEventListener("click", ev => {
+      if (ev.target.closest('[data-insp-scroll="place"]'))
+        oc.inspScroll = "place";
       selectObject(r.kind, r.id);
       centerOnNode(r.kind, r.id);
     });
@@ -3119,25 +3198,33 @@ function renderInspector() {
     : (o.placed ? "已放置" : "游離");
   const ownedBy = sel.kind !== "space"
     ? oc.spaces.find(s => s.members.includes(o.id)) : null;
+  const bLoops = sel.kind === "boundary" ? (oc.bmap[o.id] || []) : null;
   pane.innerHTML =
+    /* F1:建面→放置→收成員 流程條(boundary 才有) */
+    (sel.kind === "boundary" ? placeFlowHTML(sel.id) : "") +
     `<div class="inspector-block"><div class="ib-title">${name}` +
     `<span class="tag">${sel.kind}</span></div>` +
     `<div class="kv"><span>id</span><b>${o.id}</b></div>` +
     `<div class="kv"><span>狀態</span><b>${state}</b></div>` +
-    (o.bbox ? `<div class="kv"><span>範圍</span><b>${o.bbox.join(", ")}</b></div>` : "") +
+    (o.bbox ? `<div class="kv"><span>範圍</span><b>${o.bbox[0]}–${o.bbox[2]} × ${o.bbox[1]}–${o.bbox[3]}</b></div>` : "") +
+    (bLoops && bLoops.length
+      ? `<div class="kv"><span>外環</span><b>${bLoops[0].verts.length} 頂點</b></div>` +
+        `<div class="kv"><span>孔</span><b>${bLoops.length - 1}</b></div>` : "") +
     (ownedBy ? `<div class="kv"><span>所屬空間</span><b>空間 ${ownedBy.id}</b></div>` : "") +
     (sel.kind === "space"
       ? `<div class="kv"><span>成員</span><b>${o.members.length ? o.members.join(", ") : "（空）"}</b></div>` : "") +
     `</div>` +
     `<div class="inspector-block"><div class="ib-title">操作</div>` +
-    `<div class="btn-col">` +
+    `<div class="btn-row">` +
     `<button class="btn" id="inspEnter"><i data-icon="edit"></i><span>` +
     (sel.kind === "space" ? "進入空間工作區" : "進入面內工作區") + `</span></button>` +
-    (sel.kind === "space"
-      ? `<button class="btn" id="inspMembers"><i data-icon="edit"></i><span>編輯成員</span></button>` : "") +
     `<button class="btn" id="inspLocate"><i data-icon="locate"></i><span>定位卡片</span></button>` +
-    `<button class="btn danger" id="inspDelete"><i data-icon="trash"></i><span>刪除</span></button>` +
-    `</div></div>` +
+    `</div>` +
+    (sel.kind === "space"
+      ? `<button class="btn wide" id="inspMembers"><i data-icon="edit"></i><span>＋收成員</span></button>` : "") +
+    `<button class="btn danger wide" id="inspDelete"><i data-icon="trash"></i><span>` +
+    `刪除${name}（可 Ctrl+Z 復原）</span></button>` +
+    `</div>` +
     /* 放置表單（§5.5.3a）：boundary 面才有；placement 面已是合體 */
     (sel.kind === "boundary" ? placeFormHTML(sel.id) : "");
   hydrateIcons(pane);
@@ -3152,6 +3239,12 @@ function renderInspector() {
   if (mb) mb.addEventListener("click", () => openMemberDialog(o.id));
   pane.querySelector("#inspDelete").addEventListener("click", () =>
     deleteObject(sel.kind, sel.id));
+  /* A8:游離徽章點擊 → 檢視器捲到放置區 */
+  if (oc.inspScroll === "place") {
+    oc.inspScroll = null;
+    const t = pane.querySelector(".place-block") || pane.querySelector("#placeFlow");
+    if (t) t.scrollIntoView({ block: "nearest" });
+  }
 }
 
 /* RC 柱/樑檢視器:box=[xlo,ylo,zlo,xhi,yhi,zhi] → 欄位表單;
@@ -3271,7 +3364,8 @@ ocv.addEventListener("pointerdown", e => {
   const card = (oc.tool === "pan" || oc.spacePan) ? null : e.target.closest(".ocard");
   if (card) {
     oc.card = { el: card, kind: card.dataset.kind, id: +card.dataset.id,
-                sx: pt.x, sy: pt.y, moved: false };
+                sx: pt.x, sy: pt.y, moved: false,
+                scrollPlace: !!e.target.closest('[data-insp-scroll="place"]') };
   } else {
     oc.pan = { sx: e.clientX, sy: e.clientY, px: oc.panX, py: oc.panY };
     ocCursor();
@@ -3326,7 +3420,9 @@ ocv.addEventListener("pointerup", async e => {
       if (o) { o.cx = Math.round(c.nx); o.cy = Math.round(c.ny); }
       drawObjects();
     } else {
-      /* 單擊 = 選取(檢視器);雙擊 = 進入工作區(§5.4) */
+      /* 單擊 = 選取(檢視器);雙擊 = 進入工作區(§5.4);
+         游離徽章 → 順帶捲檢視器到放置區 */
+      if (c.scrollPlace) oc.inspScroll = "place";
       selectObject(c.kind === "space" ? "space" : c.kind, c.id);
     }
     return;

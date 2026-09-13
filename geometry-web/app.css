@@ -881,13 +881,45 @@ svg text { user-select: none; }
   font-weight: 700; cursor: pointer; }
 .fixity-btn.on { border-color: var(--face); background: var(--face-soft); color: var(--face); }
 
-.place-presets { display: flex; flex-wrap: wrap; gap: 2px; margin-bottom: 8px; }
+/* F1 流程條:建面 → 放置 → 收進空間 */
+.place-flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  padding: 9px 11px; margin-bottom: 8px; border: 1px solid var(--border);
+  border-radius: 10px; background: var(--panel-muted); }
+.pf-step { display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 650; color: var(--muted); }
+.pf-step b { display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%; font-size: 10px;
+  background: #e6eaf0; color: var(--muted); }
+.pf-step.done { color: var(--face); }
+.pf-step.done b { background: var(--face); color: #fff; }
+.pf-step.current { color: var(--ink); }
+.pf-step.current b { background: var(--accent); color: #fff; }
+.pf-sep { color: var(--faint); font-size: 11px; }
+.pf-note { margin: 0 0 8px; padding: 8px 11px; border-radius: 8px;
+  background: #fdf6ea; border: 1px solid #ecd9b5; color: #8a5a17;
+  font-size: 10.5px; line-height: 1.5; }
+/* A7 放置表單:預設 3×2 radio 卡 */
+.place-presets { display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 6px; margin-bottom: 8px; }
+.preset-card { display: flex; flex-direction: column; align-items: flex-start;
+  gap: 1px; min-height: 40px; padding: 6px 8px; border: 1px solid var(--border);
+  border-radius: 8px; background: #fff; cursor: pointer; text-align: left; }
+.preset-card:hover { border-color: var(--accent); background: var(--accent-soft, #eef4ff); }
+.preset-card b { font-size: 11px; font-weight: 650; color: var(--ink); }
+.preset-card small { font-size: 9.5px; color: var(--muted); }
 .place-form { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .place-form label { display: flex; flex-direction: column; gap: 3px;
   color: var(--muted); font-size: 9.5px; }
 .place-form input, .place-form select { height: 28px; padding: 0 7px;
   border: 1px solid var(--border); border-radius: 7px; background: #fff; font-size: 10.5px; }
-.place-form .btn { grid-column: 1 / -1; }
+/* A8 u⊥v 即時驗證 */
+.place-valid { margin: 7px 0 6px; padding: 6px 9px; border-radius: 7px;
+  font-size: 10.5px; font-weight: 600; }
+.place-valid.ok { background: var(--face-soft); color: var(--face); }
+.place-valid.bad { background: var(--danger-soft); color: var(--danger); }
+.btn-row { display: flex; gap: 6px; margin-bottom: 6px; }
+.btn-row .btn { flex: 1; }
+.btn.wide { width: 100%; margin-bottom: 6px; }
 
 .proj-checks { display: flex; gap: 12px; margin-bottom: 8px; font-size: 10.5px; }
 .proj-checks label { display: inline-flex; align-items: center; gap: 4px; }

@@ -57,6 +57,8 @@
 | `#projToggle` / `#projBody` / `#projViews` | 投影面板 | `[data-view]` 群組計數 |
 | `#canvasModeHint` | 主畫布建面模式浮標(S6 新增) | `hidden`、textContent |
 | `#feGuidePick` | 面內參考線 u/v 方向小選單 | `hidden`、`[data-axis]` 鈕 |
+| `#placeFlow` | 建面→放置→收成員流程條(S6 新增,兩處檢視器共用) | `.pf-step.done/.current` |
+| `#placeValid` | 放置表單 u⊥v 即時驗證(S6 新增) | textContent、`.ok/.bad` |
 
 ## 必須保留的 class
 

@@ -1445,6 +1445,93 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     vis: !document.getElementById("canvasModeHint").hidden}))()`);
   console.log("E7 select 游標復原:", !mh4.vis && mh4.cur !== "crosshair" ? "✓" : "✗ " + JSON.stringify(mh4));
 
+  /* ================= P16. 放置流程 F1/A7/A8 =================
+   * #placeFlow 三步條、#placeValid u⊥v 即時驗證、預設卡、游離徽章捲動。 */
+  console.log("=== P16. 放置流程條 + 放置表單 ===");
+  await eval_(`(async()=>{
+    await api("line reset");
+    await api("line boundary 1 outline 0,0 3000,0 3000,2400 0,2400");
+    await api("line canvas-pos boundary 1 80 80");
+    await renderObjects();
+    selectObject("boundary", 1);
+  })()`);
+  await sleep(500);
+  /* (a) 游離面:流程條存在、步1 done、步2 current、限制說明 */
+  const pf1 = await eval_(`(()=>{const f=document.getElementById("placeFlow");
+    if(!f) return null;
+    const st=[...f.querySelectorAll(".pf-step")].map(s=>s.className);
+    return {steps:st,
+      note: !!document.querySelector(".pf-note")};})()`);
+  console.log("P16 流程條:", pf1 && pf1.steps[0].includes("done")
+    && pf1.steps[1].includes("current") ? "✓ " + pf1.steps.join(",") : "✗ " + JSON.stringify(pf1),
+    "| 游離說明:", pf1 && pf1.note ? "✓" : "✗");
+  /* (b) u=+x v=+x → 禁用+錯誤訊息;u=+x v=+y → 解禁+法向 +Z */
+  await eval_(`(()=>{
+    const p=document.getElementById("inspectorContent");
+    p.querySelector("#placeU").value="+x";
+    p.querySelector("#placeV").value="+x";
+    p.querySelector("#placeV").dispatchEvent(new Event("change"));
+  })()`);
+  const pv1 = await eval_(`(()=>({
+    dis: document.querySelector("#placeSubmit").disabled,
+    txt: document.getElementById("placeValid").textContent,
+    cls: document.getElementById("placeValid").className}))()`);
+  console.log("P16 平行禁用:", pv1.dis && pv1.txt.includes("垂直") && pv1.cls.includes("bad") ? "✓" : "✗ " + JSON.stringify(pv1));
+  await eval_(`(()=>{
+    const p=document.getElementById("inspectorContent");
+    p.querySelector("#placeV").value="+y";
+    p.querySelector("#placeV").dispatchEvent(new Event("change"));
+  })()`);
+  const pv2 = await eval_(`(()=>({
+    dis: document.querySelector("#placeSubmit").disabled,
+    txt: document.getElementById("placeValid").textContent}))()`);
+  console.log("P16 垂直解禁:", !pv2.dis && pv2.txt.includes("+Z") ? "✓ " + pv2.txt : "✗ " + JSON.stringify(pv2));
+  /* (c) 預設卡「天花」→ u=+x v=+y;送出後 placed + 步3亮 + 鈕文案「重綁」 */
+  await eval_(`(()=>{
+    const b=[...document.querySelectorAll("[data-place-preset]")]
+      .find(x=>x.dataset.placePreset==="天花");
+    if(b) b.click();
+  })()`);
+  const pv3 = await eval_(`(()=>({
+    u: document.querySelector("#placeU").value,
+    v: document.querySelector("#placeV").value}))()`);
+  console.log("P16 預設卡:", pv3.u === "+x" && pv3.v === "+y" ? "✓" : "✗ " + JSON.stringify(pv3));
+  await eval_(`document.querySelector("#placeSubmit").click()`);
+  await sleep(700);
+  const pf2 = await eval_(`(()=>{const f=document.getElementById("placeFlow");
+    const o=ocFind("boundary",1);
+    return {placed: !!o && !!o.placed,
+      step3: f ? [...f.querySelectorAll(".pf-step")][2].className : "",
+      btn: document.querySelector("#placeSubmit") ? document.querySelector("#placeSubmit").textContent : ""};})()`);
+  console.log("P16 放置後:", pf2.placed ? "✓ placed" : "✗",
+    "| 步3:", pf2.step3.includes("current") || pf2.step3.includes("done") ? "✓" : "✗ " + pf2.step3,
+    "| 鈕:", pf2.btn.includes("重綁") ? "✓" : "✗ " + pf2.btn);
+  /* (d) 刪除鈕文案含 Ctrl+Z */
+  const delTxt = await eval_(`document.getElementById("inspDelete").textContent`);
+  console.log("P16 刪除文案:", delTxt.includes("Ctrl+Z") ? "✓" : "✗ " + delTxt);
+  /* (e) 游離面:清單徽章點擊 → 檢視器捲到放置區 */
+  await eval_(`(async()=>{
+    await api("line reset");
+    await api("line boundary 1 outline 0,0 2000,0 2000,1500 0,1500");
+    await api("line canvas-pos boundary 1 60 60");
+    await renderObjects();
+  })()`);
+  await sleep(500);
+  const badgePos = await eval_(`(()=>{
+    const b=[...document.querySelectorAll(".object-row .row-badge")][0];
+    if(!b) return null; const r=b.getBoundingClientRect();
+    return {x:r.left+r.width/2, y:r.top+r.height/2};})()`);
+  if (badgePos) {
+    await click(badgePos.x, badgePos.y);
+    await sleep(600);
+    const sc = await eval_(`(()=>{
+      const t=document.querySelector("#inspectorContent .place-block")
+           || document.getElementById("placeFlow");
+      if(!t) return null; const r=t.getBoundingClientRect();
+      return {top:r.top, ih:innerHeight};})()`);
+    console.log("P16 徽章捲動:", sc && sc.top >= 0 && sc.top < sc.ih ? "✓" : "✗ " + JSON.stringify(sc));
+  } else console.log("P16 徽章捲動: ✗ 找不到徽章");
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);
