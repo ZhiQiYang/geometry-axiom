@@ -479,9 +479,9 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
   <div data-panel='{"kind":"fn","name":"timber_project_faces","label":"六個面投影、去退化、依距離排序","callouts":[{"match":"distance4 \\+= point_along\\(quad\\.vertices\\[i\\], into\\);","note":"四個頂點沿視線的分量加總：越大越遠。into 在函式開頭由 right × down 算出。"},{"match":"if \\(view_quad_area2\\(pf->q\\) == 0\\) \\{","note":"退化成線的面不畫。"},{"match":"faces\\[j - 1\\]\\.distance4 < faces\\[j\\]\\.distance4","note":"依距離遞減插入排序：遠的先畫，近的後畫（畫家演算法）。繪製與滑鼠拾取共用這一份結果。"}]}'></div>
   <div data-panel='{"kind":"fn","name":"scene_draw_view","from":"/\\* 4\\. 角材","to":"^\\}$","label":"scene_draw_view 的角材段落","callouts":[{"match":"timber_project_faces\\(timber, view, bounds, faces\\);","note":"投影與排序交給上面的 helper，這裡只負責畫。"},{"match":"bool nearest = i \\+ 1 == face_count;","note":"最後一個就是最近的面，只有它拿到標籤。"}]}'></div>
   <div class="prose">
-    <p><b>兩趟走訪：</b><code>scene_draw_view</code> 的 <code>target</code> 傳 NULL 時只累積邊界、不輸出。<code>scene_compute_layout</code> 先用 NULL 跑三次量出每個視圖多大，排好版面算出平移量；之後 <code>scene_render</code> 再用真的後端跑三次。同一段畫圖程式碼不用寫兩份，而且 SVG 與視窗共用同一個版面。</p>
+    <p><b>兩趟走訪：</b><code>scene_draw_view</code> 的 <code>target</code> 傳 NULL 時只累積邊界、不輸出。<code>scene_compute_layout</code> 先用 NULL 跑三次量出每個視圖多大，排好版面算出平移量；之後 <code>scene_render</code> 再用真的後端跑三次。同一段畫圖程式碼不用寫兩份，而且 SVG 與視窗共用同一個版面。（函式開頭另有一條捷徑：世界沒有承載面時不量測，直接回一個最小空版面。）</p>
   </div>
-  <div data-panel='{"kind":"fn","name":"scene_compute_layout","from":"for \\(size_t v = 0; v < VIEW_COUNT; \\+\\+v\\) \\{","to":"layout->total_h","label":"scene_compute_layout 的量測與排版段落","callouts":[{"match":"scene_draw_view\\(NULL, &layout->bounds\\[v\\], &VIEW_FRAMES\\[v\\], scene\\);","note":"第一趟：target = NULL，只量邊界。"},{"match":"前視圖與仰視圖的畫面 x 都是房間 X","note":"對齊規則直接來自框架：畫面軸相同的兩個視圖就共用那個範圍。"},{"match":"layout->ty\\[VIEW_BOTTOM\\] = front_h \\+ GAP - bottom->min_y;","note":"第三角法：仰視圖的觀者在下方，所以放在前視圖下面。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"scene_compute_layout","from":"^    for \\(size_t v = 0; v < VIEW_COUNT; \\+\\+v\\) \\{","to":"layout->total_h","label":"scene_compute_layout 的量測與排版段落","callouts":[{"match":"scene_draw_view\\(NULL, &layout->bounds\\[v\\], &VIEW_FRAMES\\[v\\], scene\\);","note":"第一趟：target = NULL，只量邊界。"},{"match":"前視圖與仰視圖的畫面 x 都是房間 X","note":"對齊規則直接來自框架：畫面軸相同的兩個視圖就共用那個範圍。"},{"match":"layout->ty\\[VIEW_BOTTOM\\] = front_h \\+ GAP - bottom->min_y;","note":"第三角法：仰視圖的觀者在下方，所以放在前視圖下面。"}]}'></div>
   <div data-panel='{"kind":"fn","name":"emit_svg_three_views","from":"DrawTarget target = SVG_TARGET;","to":"return fclose","label":"SVG 後端：接上函式表","callouts":[{"match":"target\\.ctx = out;","note":"函式表 SVG_TARGET 是檔案層常數，只有 ctx（這次的 FILE*）每次呼叫才綁；表裡的 polygon 就是 fprintf 一個 &lt;polygon&gt;。"},{"match":"scene_render\\(&target, layout, scene\\);","note":"之後幾何層接手，SVG 後端只被動接電話。"}]}'></div>
   <figure>
     <div id="svgOut"></div>
@@ -605,15 +605,16 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
 
   <h3 style="margin:22px 0 6px">矩陣三：反解 A = P · [ U | V ]（2×2）</h3>
   <div class="prose">
-    <p>滑鼠反向查詢要把視圖座標解回表面 (u,v)：兩個未知數、兩條方程式。<code>view_unproject_on_surface</code> 裡的 a, b, c, d 不是憑空的——它們是「先變換再投影」的複合，也就是 <b>P 乘上 M 的前兩欄</b>：</p>
+    <p>滑鼠反向查詢要把視圖座標解回表面 (u,v)：兩個未知數、兩條方程式。實際動手解的是 <code>view_unproject_on_surface_near</code>——裡面的 a, b, c, d 不是憑空的，它們是「先變換再投影」的複合，也就是 <b>P 乘上 M 的前兩欄</b>：</p>
   </div>
   <div class="formula">A = [ U·right  V·right ]      det = a·d − b·c
     [ U·down   V·down  ]
 u = (e·d − b·f) / det      v = (a·f − e·c) / det     （Cramer 法則）</div>
   <div class="prose">
-    <p>兩種拒絕各有幾何意義：<code>det = 0</code> 是表面在此視圖退化成一條線（A 不可逆，解不存在）;<code>% det != 0</code> 是答案不是整數 mm——寧可拒絕也不回傳近似的 (u,v)。整數 domain 的「不猜」一路守到反解。</p>
+    <p>同一個反解拆成兩版。<code>_near</code> 是容差版，給畫布滑鼠用：Cramer 的商用 <code>llround</code> 四捨五入到最近的整數 mm，滑鼠不必剛好落在整數點上；<code>det = 0</code> 仍是表面在此視圖退化成一條線，無解。嚴格版 <code>view_unproject_on_surface</code> 先借 near 解出候選 (u,v)，再<b>代回原方程式驗算</b>——答案必須讓 a·u + b·v 恰好等於 e，差 1mm 都拒絕。整數 domain 的「不猜」一路守到反解，只是守的方式從整除檢查換成代回驗算。</p>
   </div>
-  <div data-panel='{"kind":"fn","name":"view_unproject_on_surface","label":"滑鼠 → 表面 (u,v)：2×2 反解","callouts":[{"match":"Coord det = a \\* d - b \\* c;","note":"det = 0 → 表面在此視圖是一條線，無解。"},{"match":"u_num % det != 0 || v_num % det != 0","note":"Cramer 的商必須整除——不整除的 (u,v) 不是表面上的整數點，拒絕。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"view_unproject_on_surface_near","label":"容差反解：Cramer + llround（給滑鼠）","callouts":[{"match":"Coord det = a \\* d - b \\* c;","note":"det = 0 → 表面在此視圖是一條線，無解。"},{"match":"llround\\(u_num / \\(double\\)det\\)","note":"商四捨五入到最近整數 mm——滑鼠不必精準落在整數點。幾何層唯一的浮點在這裡。"}]}'></div>
+  <div data-panel='{"kind":"fn","name":"view_unproject_on_surface","label":"嚴格版：near 解完再代回驗算","callouts":[{"match":"view_unproject_on_surface_near\\(view, surface, p, out_uv\\)","note":"先借容差版解出候選 (u,v)，det = 0 一樣當場拒絕。"},{"match":"a \\* out_uv->u \\+ b \\* out_uv->v == e","note":"代回原方程式：候選必須精確滿足才收——四捨五入產生的近似在這關被擋掉。"}]}'></div>
 
   <h3 style="margin:22px 0 6px">其餘公式一覽</h3>
   <table class="ftab">
@@ -626,7 +627,7 @@ u = (e·d − b·f) / det      v = (a·f − e·c) / det     （Cramer 法則）
     <tr><td>u = v_線.offset, v = u_線.offset</td><td><code>guide_line_intersection</code></td><td>兩條參考線交點——兩行就解完</td></tr>
     <tr><td>d₄ = Σᵢ vᵢ·into</td><td><code>timber_project_faces</code></td><td>六面依「離觀者深度」排序（painter's algorithm）</td></tr>
     <tr><td>槽位 + 區間約束</td><td><code>room_bind</code></td><td>room 一致性：每片面釘住一個法向槽位與兩個軸區間</td></tr>
-    <tr><td>px = origin + (mm + t)·scale</td><td><code>gdi_to_pixel</code></td><td>mm → 像素——全域唯一用到浮點的地方</td></tr>
+    <tr><td>px = origin + (mm + t)·scale</td><td><code>gdi_to_pixel</code></td><td>mm → 像素——全域唯二的浮點之一，另一處是上面 _near 反解的 llround</td></tr>
   </table>
 
   <div data-panel='{"kind":"fn","name":"view_quad_contains","label":"點在凸四邊形內：四邊叉積同號","callouts":[{"match":"Coord cross =","note":"每條邊的有向叉積：p 在邊的哪一側。"},{"match":"else if \\(s != sign\\)","note":"出現異號 → 點在四邊形外。叉積為 0 表示點在邊上，不算出局。"}]}'></div>
