@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#eef1f5}a{color:#4e67e8}a:hover{color:#3d54d4}</style>
+</helmet>
+<div data-screen-label="三視圖總覽" style="position:relative;width:1382px;height:804px;display:grid;grid-template-rows:58px minmax(0,1fr) 28px;font-family:Inter,'Noto Sans TC','Microsoft JhengHei',sans-serif;font-size:14px;line-height:1.45;color:#172033;background:#eef1f5;overflow:hidden">
+  <header style="display:grid;grid-template-columns:minmax(220px,1fr) auto minmax(360px,1fr);align-items:center;gap:16px;padding:0 14px;background:rgba(255,255,255,.96);border-bottom:1px solid #dfe4eb;min-width:0">
+    <div style="display:inline-flex;align-items:center;gap:10px;min-width:0">
+      <span style="width:34px;height:34px;display:grid;place-items:center;border-radius:9px;background:#1f2a44;color:#fff"><svg viewBox="0 0 32 32" style="width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M7 8.5 16 3l9 5.5v10L16 24l-9-5.5z"></path><path d="M7 8.5 16 14l9-5.5M16 14v10"></path></svg></span>
+      <span style="display:flex;flex-direction:column;min-width:0"><strong style="font-size:14px;letter-spacing:-.01em">構形 Canvas</strong><small style="font-size:10.5px;color:#6b7485;margin-top:-1px">語意物件無限畫布</small></span>
+    </div>
+    <nav style="justify-self:center;display:flex;align-items:center;gap:3px;padding:4px;border:1px solid #dfe4eb;border-radius:10px;background:#f7f8fa">
+      <button style="height:34px;padding:0 10px;border:0;border-radius:7px;background:#fff;color:#3d54d4;font-size:12px;font-weight:600;white-space:nowrap;font-family:inherit">選取</button>
+      <button style="height:34px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:#6b7485;font-size:12px;font-weight:600;white-space:nowrap;font-family:inherit">平移</button>
+      <span style="width:1px;height:20px;background:#dfe4eb;margin:0 2px"></span>
+      <button style="height:34px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:#6b7485;font-size:12px;font-weight:600;white-space:nowrap;font-family:inherit">面·矩形</button>
+      <button style="height:34px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:#6b7485;font-size:12px;font-weight:600;white-space:nowrap;font-family:inherit">面·多邊形</button>
+    </nav>
+    <div style="justify-self:end;display:flex;align-items:center;gap:7px;min-width:0;flex-wrap:nowrap;overflow:hidden;position:relative;z-index:1;background:rgba(255,255,255,.96)">
+      <label style="width:160px;flex:0 0 160px;height:34px;display:flex;align-items:center;gap:7px;padding:0 8px;border:1px solid #dfe4eb;border-radius:8px;background:#f7f8fa;color:#6b7485"><span style="flex:1;font-size:12px;color:#98a1b2">搜尋物件…</span><kbd style="padding:1px 5px;border:1px solid #dfe4eb;border-radius:5px;background:#fff;font-size:10px;color:#98a1b2;font-family:inherit">/</kbd></label>
+      <button style="flex:0 0 34px;width:34px;height:34px;border:0;background:transparent;color:#6b7485;font-size:14px">↶</button>
+      <button style="flex:0 0 34px;width:34px;height:34px;border:0;background:transparent;color:#6b7485;font-size:14px">↷</button>
+      <button style="flex:0 0 auto;height:34px;padding:0 12px;border:1px solid #dfe4eb;border-radius:8px;background:#fff;color:#3c4658;font-size:12px;font-weight:650;white-space:nowrap;font-family:inherit">物件畫布</button>
+      <button style="flex:0 0 34px;width:34px;height:34px;border:0;background:transparent;color:#6b7485;font-size:14px">⛶</button>
+      <span style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:space-between;gap:8px;width:150px;height:30px;padding:4px 6px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;font-size:11px">room_a.scene<span style="font-size:9px;color:#6b7485">▼</span></span>
+      <button style="flex:0 0 auto;height:34px;padding:0 12px;border:1px solid #dfe4eb;border-radius:8px;background:#fff;color:#3c4658;font-size:12px;font-weight:650;white-space:nowrap;font-family:inherit">載入所選</button>
+      <button style="flex:0 0 auto;height:34px;padding:0 12px;border:1px solid #dfe4eb;border-radius:8px;background:#fff;color:#3c4658;font-size:12px;font-weight:650;white-space:nowrap;font-family:inherit">開啟…</button>
+      <button style="flex:0 0 auto;height:34px;padding:0 12px;border:0;border-radius:8px;background:#4e67e8;color:#fff;font-size:12px;font-weight:650;white-space:nowrap;font-family:inherit">匯出 .scene</button>
+    </div>
+  </header>
+  <main style="min-height:0;display:grid;grid-template-columns:242px minmax(0,1fr) 326px">
+    <aside style="background:#fff;border-right:1px solid #dfe4eb;padding:16px 14px">
+      <h2 style="margin:0;font-size:13px">物件庫</h2><p style="margin:2px 0 0;font-size:10.5px;color:#6b7485">在畫布上建立物件</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px">
+        <sc-for list="{{ lib }}" as="b" hint-placeholder-count="6"><div style="display:flex;align-items:center;gap:8px;padding:9px 8px;border:1px solid #dfe4eb;border-radius:9px;background:#fff"><span style="flex:0 0 auto;width:30px;height:30px;border-radius:8px;background:{{ b.bg }}"></span><span style="min-width:0;display:flex;flex-direction:column"><strong style="font-size:11.5px">{{ b.name }}</strong><small style="font-size:9.5px;color:#6b7485">{{ b.sub }}</small></span></div></sc-for>
+      </div>
+    </aside>
+    <section style="position:relative;min-width:0;min-height:0;overflow:hidden;background:#fff;cursor:crosshair">
+      <svg viewBox="0 0 12400 5800" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+        <sc-for list="{{ views }}" as="v" hint-placeholder-count="3">
+          <g transform="{{ v.tf }}">
+            <rect x="0" y="0" width="{{ v.w }}" height="{{ v.h }}" style="fill:#fff;stroke:#bbb;stroke-width:1;vector-effect:non-scaling-stroke"></rect>
+            <sc-for list="{{ v.rects }}" as="r" hint-placeholder-count="1"><rect x="{{ r.x }}" y="{{ r.y }}" width="{{ r.w }}" height="{{ r.h }}" style="fill:#dbe9ff;fill-opacity:.6;stroke:#3366cc;stroke-width:1.5;vector-effect:non-scaling-stroke"></rect></sc-for>
+            <sc-for list="{{ v.rc }}" as="r" hint-placeholder-count="0"><rect x="{{ r.x }}" y="{{ r.y }}" width="{{ r.w }}" height="{{ r.h }}" style="fill:#c8c8c8;fill-opacity:.55;stroke:#5a5a5a;stroke-width:1.5;vector-effect:non-scaling-stroke"></rect></sc-for>
+            <sc-for list="{{ v.guides }}" as="g" hint-placeholder-count="0"><line x1="{{ g.x1 }}" y1="{{ g.y1 }}" x2="{{ g.x2 }}" y2="{{ g.y2 }}" style="stroke:#cc3333;stroke-width:1;stroke-dasharray:60 30;vector-effect:non-scaling-stroke"></line></sc-for>
+          </g>
+        </sc-for>
+      </svg>
+      <sc-for list="{{ views }}" as="v" hint-placeholder-count="3"><span style="position:absolute;left:{{ v.lx }};top:{{ v.ly }};font-size:11px;font-weight:700;color:#222">{{ v.title }}</span></sc-for>
+      <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:8;display:flex;gap:8px;align-items:center;padding:5px 10px;border:1px solid #dfe4eb;border-radius:9px;background:rgba(255,255,255,.95);box-shadow:0 1px 2px rgba(22,31,50,.06)">
+        <span style="font-size:13px;padding:3px 6px;border:1px solid #767676;border-radius:3px;background:#efefef">檢視／選取 ▾</span>
+        <span style="font-size:13px;padding:3px 6px;border:1px solid #767676;border-radius:3px;background:#efefef;max-width:240px">面 3 · z=2500 (天花) ▾</span>
+      </div>
+    </section>
+    <aside style="background:#fff;border-left:1px solid #dfe4eb">
+      <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center">
+        <div style="width:46px;height:46px;display:grid;place-items:center;border-radius:13px;background:#f7f8fa;color:#98a1b2"><svg viewBox="0 0 24 24" style="width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path></svg></div>
+        <h2 style="margin:14px 0 5px;font-size:14px">尚未選取物件</h2>
+        <p style="max-width:230px;margin:0;color:#6b7485;font-size:11px">選取畫布上的卡片或左欄清單列，這裡會顯示物件屬性與可用操作。</p>
+      </div>
+    </aside>
+  </main>
+  <footer style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 10px;border-top:1px solid #dfe4eb;background:#fbfcfd;color:#6b7485;font-size:9.5px;min-width:0">
+    <div style="display:flex;align-items:center;gap:8px;min-width:0;flex:1"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:#172033">三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回</span><span style="width:1px;height:12px;background:#dfe4eb"></span><span style="max-width:30%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">面 3 邊 1 (4000,0)→(4000,1250)</span></div>
+    <div style="display:flex;align-items:center;gap:8px;min-width:0">
+      <span style="width:340px;font-size:11px;padding:4px 8px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#757575;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block">指令：boundary｜placement｜surface｜space｜guide｜timber｜place｜move｜reset</span>
+      <button style="font-size:11px;padding:4px 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;font-family:inherit;color:#172033">載入範例</button>
+      <button style="font-size:11px;padding:4px 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;font-family:inherit;color:#172033">清空</button>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const W = 4000, D = 3000, H = 2500;
+    const views = [
+      { title: "FRONT", tf: "translate(400,600)", w: W, h: H, rects: [{ x: 0, y: 0, w: W, h: H }], rc: [{ x: 0, y: 0, w: 600, h: H }, { x: 0, y: 0, w: W, h: 600 }], guides: [{ x1: 1500, y1: 0, x2: 1500, y2: H }], lx: "3%", ly: "7%" },
+      { title: "SIDE", tf: "translate(5000,600)", w: D, h: H, rects: [{ x: 0, y: 0, w: D, h: H }], rc: [{ x: 0, y: 0, w: 600, h: H }], guides: [], lx: "40.5%", ly: "7%" },
+      { title: "BOTTOM", tf: "translate(8500,600)", w: W, h: D, rects: [{ x: 0, y: 0, w: W, h: D }, { x: 2400, y: 400, w: 500, h: 500 }], rc: [{ x: 0, y: 0, w: 600, h: 600 }, { x: 0, y: 1325, w: W, h: 350 }, { x: 1825, y: 0, w: 350, h: D }], guides: [{ x1: 1500, y1: 0, x2: 1500, y2: D }], lx: "68.5%", ly: "7%" }];
+    const lib = [
+      { name: "＋面·矩形", sub: "畫布拖曳", bg: "#e8f7f2" }, { name: "＋面·多邊形", sub: "逐點閉合", bg: "#e8f7f2" },
+      { name: "＋空間", sub: "空容器", bg: "#f0ecff" }, { name: "快速六面盒", sub: "W·D·H 一次建好", bg: "#f0ecff" },
+      { name: "＋柱", sub: "RC 柱 w×d", bg: "#ececec" }, { name: "＋樑", sub: "RC 樑 w×d", bg: "#ececec" }];
+    return { views, lib };
+  }
+}
+</script>
+</body>
+</html>

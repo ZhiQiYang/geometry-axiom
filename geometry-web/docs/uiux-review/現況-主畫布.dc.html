@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#eef1f5}
+a{color:#4e67e8}a:hover{color:#3d54d4}
+</style>
+</helmet>
+<div data-screen-label="主畫布" style="position:relative;width:1382px;height:804px;display:grid;grid-template-rows:58px minmax(0,1fr) 28px;font-family:Inter,'Noto Sans TC','Microsoft JhengHei',sans-serif;font-size:14px;line-height:1.45;color:#172033;background:#eef1f5;overflow:hidden">
+  <!-- topbar -->
+  <header style="display:grid;grid-template-columns:minmax(220px,1fr) auto minmax(360px,1fr);align-items:center;gap:16px;padding:0 14px;background:rgba(255,255,255,.96);border-bottom:1px solid #dfe4eb;z-index:20;min-width:0">
+    <div style="display:inline-flex;align-items:center;gap:10px;min-width:0">
+      <span style="width:34px;height:34px;display:grid;place-items:center;border-radius:9px;background:#1f2a44;color:#fff"><svg viewBox="0 0 32 32" style="width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M7 8.5 16 3l9 5.5v10L16 24l-9-5.5z"></path><path d="M7 8.5 16 14l9-5.5M16 14v10"></path></svg></span>
+      <span style="display:flex;flex-direction:column;min-width:0"><strong style="font-size:14px;letter-spacing:-.01em">構形 Canvas</strong><small style="font-size:10.5px;color:#6b7485;margin-top:-1px">語意物件無限畫布</small></span>
+    </div>
+    <nav style="justify-self:center;display:flex;align-items:center;gap:3px;padding:4px;border:1px solid #dfe4eb;border-radius:10px;background:#f7f8fa">
+      <button style="height:34px;padding:0 10px;border:0;border-radius:7px;background:#fff;color:#3d54d4;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:7px;box-shadow:0 1px 2px rgba(22,31,50,.06),0 1px 5px rgba(22,31,50,.04);white-space:nowrap;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M6 3.5 17.4 14l-5.2.7 2.8 5.1-2.5 1.3-2.7-5-3.8 3.5Z"></path></svg>選取</button>
+      <button style="height:34px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:#6b7485;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M7.5 11V6.8a1.4 1.4 0 0 1 2.8 0v3.4-5.6a1.4 1.4 0 0 1 2.8 0v5-4a1.4 1.4 0 0 1 2.8 0v4.6-2.4a1.4 1.4 0 0 1 2.8 0v5.1c0 4.3-2.5 7-6.6 7h-.8c-2.7 0-4.6-1.1-6.1-3L3 13.6a1.5 1.5 0 0 1 2.4-1.8Z"></path></svg>平移</button>
+      <span style="width:1px;height:20px;background:#dfe4eb;margin:0 2px"></span>
+      <button style="height:34px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:#6b7485;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><rect x="4" y="5" width="16" height="14" rx="1.5"></rect><path d="m4 5 16 14M20 5 4 19"></path></svg>面·矩形</button>
+      <button style="height:34px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:#6b7485;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><circle cx="5" cy="18" r="2"></circle><circle cx="12" cy="5" r="2"></circle><circle cx="19" cy="17" r="2"></circle><path d="m6.1 16.3 4.8-9.5M13.5 6.4l4.3 8.9M7 18h10"></path></svg>面·多邊形</button>
+    </nav>
+    <div style="justify-self:end;display:flex;align-items:center;gap:7px;min-width:0;flex-wrap:nowrap;overflow:hidden;position:relative;z-index:1;background:rgba(255,255,255,.96)">
+      <label style="width:160px;flex:0 0 160px;height:34px;display:flex;align-items:center;gap:7px;padding:0 8px;border:1px solid #dfe4eb;border-radius:8px;background:#f7f8fa;color:#6b7485"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg><span style="flex:1;min-width:0;font-size:12px;color:#98a1b2;white-space:nowrap;overflow:hidden">搜尋物件…</span><kbd style="padding:1px 5px;border:1px solid #dfe4eb;border-radius:5px;background:#fff;font-size:10px;color:#98a1b2;font-family:inherit">/</kbd></label>
+      <button title="復原" style="flex:0 0 34px;width:34px;height:34px;border:0;border-radius:8px;background:transparent;color:#6b7485;display:inline-flex;align-items:center;justify-content:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M8 7 3.5 11.5 8 16"></path><path d="M4 11.5h8.2c4.7 0 7.3 2 7.3 6.5"></path></svg></button>
+      <button title="重做" style="flex:0 0 34px;width:34px;height:34px;border:0;border-radius:8px;background:transparent;color:#6b7485;display:inline-flex;align-items:center;justify-content:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="m16 7 4.5 4.5L16 16"></path><path d="M20 11.5h-8.2c-4.7 0-7.3 2-7.3 6.5"></path></svg></button>
+      <button style="flex:0 0 auto;height:34px;padding:0 12px;border:1px solid #dfe4eb;border-radius:8px;background:#fff;color:#3c4658;font-size:12px;font-weight:650;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="m3 8 9-5 9 5-9 5z"></path><path d="m3 12 9 5 9-5M3 16l9 5 9-5"></path></svg>三視圖</button>
+      <button title="顯示全部" style="flex:0 0 34px;width:34px;height:34px;border:0;border-radius:8px;background:transparent;color:#6b7485;display:inline-flex;align-items:center;justify-content:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"></path><path d="M8 8h8v8H8z"></path></svg></button>
+      <span style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:space-between;gap:8px;width:150px;height:30px;padding:4px 6px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;font-size:11px;color:#172033">room_a.scene<span style="font-size:9px;color:#6b7485">▼</span></span>
+      <button style="flex:0 0 auto;height:34px;padding:0 12px;border:1px solid #dfe4eb;border-radius:8px;background:#fff;color:#3c4658;font-size:12px;font-weight:650;white-space:nowrap;cursor:pointer">載入所選</button>
+      <button style="flex:0 0 auto;height:34px;padding:0 12px;border:1px solid #dfe4eb;border-radius:8px;background:#fff;color:#3c4658;font-size:12px;font-weight:650;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"></path><path d="M4 19h16"></path></svg>開啟…</button>
+      <button style="flex:0 0 auto;height:34px;padding:0 12px;border:0;border-radius:8px;background:#4e67e8;color:#fff;font-size:12px;font-weight:650;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;box-shadow:0 1px 2px rgba(45,65,170,.2);cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5"></path><path d="M4 19h16"></path></svg>匯出 .scene</button>
+    </div>
+  </header>
+
+  <!-- workspace -->
+  <main style="min-height:0;display:grid;grid-template-columns:242px minmax(0,1fr) 326px">
+    <!-- left sidebar -->
+    <aside style="min-width:0;background:#fff;border-right:1px solid #dfe4eb;display:flex;flex-direction:column;overflow:hidden;z-index:10">
+      <section style="padding:16px 14px;border-bottom:1px solid #dfe4eb">
+        <div><h2 style="margin:0;font-size:13px;letter-spacing:-.01em">物件庫</h2><p style="margin:2px 0 0;font-size:10.5px;color:#6b7485">在畫布上建立物件</p></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px">
+          <button style="min-width:0;display:flex;align-items:center;gap:8px;padding:9px 8px;border:1px solid #dfe4eb;border-radius:9px;background:#fff;text-align:left;cursor:pointer;font-family:inherit"><span style="flex:0 0 auto;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#e8f7f2;color:#2f8f7b"><svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><rect x="4" y="5" width="16" height="14" rx="1.5"></rect><path d="m4 5 16 14M20 5 4 19"></path></svg></span><span style="min-width:0;display:flex;flex-direction:column"><strong style="font-size:11.5px">＋面·矩形</strong><small style="font-size:9.5px;color:#6b7485">畫布拖曳</small></span></button>
+          <button style="min-width:0;display:flex;align-items:center;gap:8px;padding:9px 8px;border:1px solid #dfe4eb;border-radius:9px;background:#fff;text-align:left;cursor:pointer;font-family:inherit"><span style="flex:0 0 auto;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#e8f7f2;color:#2f8f7b"><svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><circle cx="5" cy="18" r="2"></circle><circle cx="12" cy="5" r="2"></circle><circle cx="19" cy="17" r="2"></circle><path d="m6.1 16.3 4.8-9.5M13.5 6.4l4.3 8.9M7 18h10"></path></svg></span><span style="min-width:0;display:flex;flex-direction:column"><strong style="font-size:11.5px">＋面·多邊形</strong><small style="font-size:9.5px;color:#6b7485">逐點閉合</small></span></button>
+          <button style="min-width:0;display:flex;align-items:center;gap:8px;padding:9px 8px;border:1px solid #dfe4eb;border-radius:9px;background:#fff;text-align:left;cursor:pointer;font-family:inherit"><span style="flex:0 0 auto;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#f0ecff;color:#7557cc"><svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="m4 8 8-4 8 4-8 4z"></path><path d="m4 8 8 4 8-4v9l-8 4-8-4z"></path><path d="M12 12v9"></path></svg></span><span style="min-width:0;display:flex;flex-direction:column"><strong style="font-size:11.5px">＋空間</strong><small style="font-size:9.5px;color:#6b7485">空容器</small></span></button>
+          <button style="min-width:0;display:flex;align-items:center;gap:8px;padding:9px 8px;border:1px solid #dfe4eb;border-radius:9px;background:#fff;text-align:left;cursor:pointer;font-family:inherit"><span style="flex:0 0 auto;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#f0ecff;color:#7557cc"><svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="m3 8 9-5 9 5-9 5z"></path><path d="m3 12 9 5 9-5M3 16l9 5 9-5"></path></svg></span><span style="min-width:0;display:flex;flex-direction:column"><strong style="font-size:11.5px">快速六面盒</strong><small style="font-size:9.5px;color:#6b7485">W·D·H 一次建好</small></span></button>
+          <button style="min-width:0;display:flex;align-items:center;gap:8px;padding:9px 8px;border:1px solid #dfe4eb;border-radius:9px;background:#fff;text-align:left;cursor:pointer;font-family:inherit"><span style="flex:0 0 auto;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#ececec;color:#5a5a5a"><svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><rect x="4" y="5" width="16" height="14" rx="1.5"></rect><path d="m4 5 16 14M20 5 4 19"></path></svg></span><span style="min-width:0;display:flex;flex-direction:column"><strong style="font-size:11.5px">＋柱</strong><small style="font-size:9.5px;color:#6b7485">RC 柱 w×d</small></span></button>
+          <button style="min-width:0;display:flex;align-items:center;gap:8px;padding:9px 8px;border:1px solid #dfe4eb;border-radius:9px;background:#fff;text-align:left;cursor:pointer;font-family:inherit"><span style="flex:0 0 auto;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#ececec;color:#4a4a4a"><svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="m3 8 9-5 9 5-9 5z"></path><path d="m3 12 9 5 9-5M3 16l9 5 9-5"></path></svg></span><span style="min-width:0;display:flex;flex-direction:column"><strong style="font-size:11.5px">＋樑</strong><small style="font-size:9.5px;color:#6b7485">RC 樑 w×d</small></span></button>
+        </div>
+      </section>
+      <section style="padding:16px 14px;border-bottom:1px solid #dfe4eb">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px"><span style="color:#6b7485;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.075em">顯示類型</span></div>
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+          <label style="display:grid;grid-template-columns:15px 8px 1fr auto;align-items:center;gap:8px;min-height:30px;color:#495366;font-size:11.5px;cursor:pointer"><input type="checkbox" checked="{{ true }}" readOnly="{{ true }}" style="margin:0;accent-color:#4e67e8"><span style="width:7px;height:7px;border-radius:50%;background:{{ f.color }}"></span><span>{{ f.name }}</span><strong style="min-width:20px;padding:1px 6px;border-radius:9px;background:#f7f8fa;color:#6b7485;font-size:9.5px;text-align:center">{{ f.count }}</strong></label>
+        </sc-for>
+      </section>
+      <section style="padding:16px 14px;border-bottom:1px solid #dfe4eb;flex:1;min-height:0;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px"><span style="color:#6b7485;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.075em">所有物件</span><span style="min-width:22px;padding:1px 7px;border-radius:10px;background:#f7f8fa;color:#6b7485;font-size:10px;text-align:center">{{ total }}</span></div>
+        <div style="flex:1;min-height:0;overflow-y:auto;margin:0 -5px;padding:0 5px 12px;user-select:none">
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="2">
+            <div style="display:grid;grid-template-columns:27px minmax(0,1fr) 25px;align-items:center;gap:8px;min-height:39px;padding:4px;border-radius:8px;cursor:pointer;background:{{ r.bg }}">
+              <span style="width:27px;height:27px;display:grid;place-items:center;border-radius:7px;color:#172033"><svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="{{ r.iconPath }}"></path></svg></span>
+              <span style="min-width:0;font-size:14px;white-space:nowrap;overflow:hidden">{{ r.name }}{{ r.sub }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      <section style="padding:12px 14px">
+        <span style="color:#6b7485;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.075em">畫布</span>
+        <label style="display:flex;align-items:center;min-height:31px;font-size:11.5px;color:#495366;cursor:pointer"><span style="flex:1">格線吸附</span><span style="position:relative;width:31px;height:17px;border-radius:12px;background:#4e67e8"><span style="position:absolute;top:2px;left:16px;width:13px;height:13px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span></span></label>
+        <label style="display:flex;align-items:center;min-height:31px;font-size:11.5px;color:#495366;cursor:pointer"><span style="flex:1">顯示格線</span><span style="position:relative;width:31px;height:17px;border-radius:12px;background:#4e67e8"><span style="position:absolute;top:2px;left:16px;width:13px;height:13px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span></span></label>
+      </section>
+    </aside>
+
+    <!-- canvas viewport -->
+    <section style="position:relative;min-width:0;min-height:0;overflow:hidden;background-color:#f8fafc;background-image:linear-gradient(rgba(103,116,139,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(103,116,139,.10) 1px,transparent 1px),linear-gradient(rgba(103,116,139,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(103,116,139,.055) 1px,transparent 1px);background-size:120px 120px,120px 120px,24px 24px,24px 24px">
+      <svg style="position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible">
+        <defs>
+          <marker id="oc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:#929bad"></path></marker>
+          <linearGradient id="oc-faceGrad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#dff3ed"></stop><stop offset="1" stop-color="#b9ded4"></stop></linearGradient>
+        </defs>
+        <g>
+          <sc-for list="{{ edges }}" as="e" hint-placeholder-count="0">
+            <g><path d="{{ e.d }}" style="fill:none;stroke:#929bad;stroke-width:1.6;marker-end:url(#oc-arrow)"></path><rect x="{{ e.lx }}" y="{{ e.ly }}" width="{{ e.lw }}" height="20" rx="7" style="fill:rgba(255,255,255,.94);stroke:#d8dde5;stroke-width:1"></rect><text x="{{ e.tx }}" y="{{ e.ty }}" style="fill:#596376;font-size:10px;font-weight:650;text-anchor:middle;dominant-baseline:middle">{{ e.label }}</text></g>
+          </sc-for>
+        </g>
+        <g>
+          <sc-for list="{{ cards }}" as="c" hint-placeholder-count="0">
+            <g transform="{{ c.tf }}" style="cursor:pointer">
+              <rect x="0" y="0" width="{{ c.w }}" height="{{ c.h }}" rx="10" style="fill:#fff;stroke:{{ c.frame }};stroke-width:{{ c.frameW }}"></rect>
+              <circle cx="14" cy="16" r="4.5" style="fill:{{ c.dot }}"></circle>
+              <sc-if value="{{ c.tag }}" hint-placeholder-val="{{ false }}">
+                <rect x="{{ c.tagX }}" y="8" width="{{ c.tagW }}" height="14" rx="7" style="fill:{{ c.tagBg }};stroke:{{ c.tagBd }}"></rect>
+              </sc-if>
+              <line x1="0" y1="34" x2="{{ c.w }}" y2="34" style="stroke:#e8ebf0;stroke-width:1"></line>
+              <sc-if value="{{ c.isFace }}" hint-placeholder-val="{{ true }}">
+                <rect x="10" y="40" width="{{ c.pvW }}" height="{{ c.pvH }}" rx="6" style="fill:#f7f9fb;stroke:#edf0f5"></rect>
+                <g transform="{{ c.pvTf }}">
+                  <sc-for list="{{ c.loops }}" as="lp" hint-placeholder-count="1">
+                    <polygon points="{{ lp.points }}" style="fill:{{ lp.fill }};stroke:{{ lp.stroke }};stroke-width:{{ c.sw }};stroke-linejoin:round"></polygon>
+                  </sc-for>
+                  <sc-for list="{{ c.verts }}" as="v" hint-placeholder-count="0">
+                    <circle cx="{{ v.x }}" cy="{{ v.y }}" r="{{ c.vr }}" style="fill:#fff;stroke:#2f8f7b;stroke-width:{{ c.vsw }}"></circle>
+                  </sc-for>
+                </g>
+              </sc-if>
+              <sc-if value="{{ c.isRc }}" hint-placeholder-val="{{ false }}">
+                <rect x="10" y="40" width="{{ c.pvW }}" height="{{ c.pvH }}" rx="6" style="fill:#f7f9fb;stroke:#edf0f5"></rect>
+                <rect x="{{ c.rcX }}" y="{{ c.rcY }}" width="{{ c.rcW }}" height="{{ c.rcH }}" style="fill:{{ c.rcFill }};fill-opacity:.75;stroke:{{ c.rcStroke }};stroke-width:1.4"></rect>
+              </sc-if>
+              <sc-if value="{{ c.isSpace }}" hint-placeholder-val="{{ false }}">
+                <sc-for list="{{ c.slots }}" as="s" hint-placeholder-count="6">
+                  <rect x="{{ s.x }}" y="{{ s.y }}" width="{{ s.w }}" height="24" rx="5" style="fill:{{ s.fill }};stroke:{{ s.stroke }}"></rect>
+                </sc-for>
+              </sc-if>
+              <line x1="0" y1="{{ c.fy }}" x2="{{ c.w }}" y2="{{ c.fy }}" style="stroke:#e8ebf0;stroke-width:1"></line>
+            </g>
+          </sc-for>
+        </g>
+      </svg>
+      <!-- text overlays (SVG <text> cannot hold template holes) -->
+      <sc-for list="{{ edges }}" as="e" hint-placeholder-count="0">
+        <span style="position:absolute;left:{{ e.lxPx }};top:{{ e.lyPx }};width:{{ e.lwPx }};height:20px;display:flex;align-items:center;justify-content:center;color:#596376;font-size:10px;font-weight:650;pointer-events:none;line-height:1">{{ e.label }}</span>
+      </sc-for>
+      <sc-for list="{{ cards }}" as="c" hint-placeholder-count="0">
+        <div style="position:absolute;left:{{ c.left }};top:{{ c.top }};width:{{ c.wPx }};height:{{ c.hPx }};pointer-events:none;line-height:1">
+          <span style="position:absolute;left:26px;top:5px;font-size:11.5px;color:#1d2634;font-weight:700;white-space:nowrap">{{ c.title }}</span>
+          <span style="position:absolute;left:26px;top:20px;font-size:9px;color:#8b93a3;white-space:nowrap">{{ c.sub }}</span>
+          <sc-if value="{{ c.tag }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:{{ c.tagLeft }};top:8px;width:{{ c.tagWPx }};height:14px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:650;color:{{ c.tagFg }}">{{ c.tag }}</span></sc-if>
+          <sc-if value="{{ c.isRc }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:10px;right:10px;top:{{ c.rcLabelTop }};text-align:center;font-size:9px;color:{{ c.rcStroke }}">{{ c.rcLabel }}</span></sc-if>
+          <sc-if value="{{ c.isSpace }}" hint-placeholder-val="{{ false }}">
+            <sc-for list="{{ c.slots }}" as="s" hint-placeholder-count="0"><span style="position:absolute;left:{{ s.left }};top:{{ s.top }};width:{{ s.wPx }};height:24px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:650;color:{{ s.fg }}">{{ s.label }}</span></sc-for>
+            <span style="position:absolute;left:10px;top:{{ c.memTop }};font-size:9px;color:#687487;white-space:nowrap">{{ c.members }}</span>
+          </sc-if>
+          <span style="position:absolute;left:10px;top:{{ c.footTop }};font-size:8.5px;color:#687487;white-space:nowrap">{{ c.footer }}</span>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;pointer-events:none">
+          <div style="position:relative;width:120px;height:80px"><span style="position:absolute;display:block;width:64px;height:42px;border:1px solid #c9d1dd;border-radius:9px;background:#fff;box-shadow:0 1px 2px rgba(22,31,50,.06);left:4px;top:24px;transform:rotate(-5deg)"></span><span style="position:absolute;display:block;width:64px;height:42px;border:1px solid #c9d1dd;border-radius:9px;background:#fff;box-shadow:0 1px 2px rgba(22,31,50,.06);right:3px;top:5px;transform:rotate(5deg)"></span><span style="position:absolute;left:45px;top:38px;width:42px;height:1px;background:#4e67e8;transform:rotate(-12deg)"></span></div>
+          <h2 style="margin:15px 0 5px;font-size:18px;letter-spacing:-.025em">建立第一個領域物件</h2>
+          <p style="max-width:420px;margin:0 0 17px;color:#6b7485;font-size:12px">建立「面」或「空間」，它會以卡片出現在畫布；雙擊卡片進入物件內部編輯。</p>
+        </div>
+      </sc-if>
+
+      <div style="position:absolute;left:14px;bottom:14px;z-index:7;display:flex;align-items:center;gap:2px;padding:3px;border:1px solid #dfe4eb;border-radius:9px;background:rgba(255,255,255,.94);box-shadow:0 1px 2px rgba(22,31,50,.06)">
+        <button style="width:29px;height:29px;border:0;border-radius:8px;background:transparent;color:#6b7485;display:grid;place-items:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7"><path d="M5 12h14"></path></svg></button>
+        <button style="width:50px;height:28px;border:0;border-radius:6px;background:transparent;color:#4b5668;font-size:10px;font-weight:650;cursor:pointer;font-family:inherit">100%</button>
+        <button style="width:29px;height:29px;border:0;border-radius:8px;background:transparent;color:#6b7485;display:grid;place-items:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7"><path d="M12 5v14M5 12h14"></path></svg></button>
+        <span style="width:1px;height:22px;background:#dfe4eb;margin:0 2px"></span>
+        <button style="width:29px;height:29px;border:0;border-radius:8px;background:transparent;color:#6b7485;display:grid;place-items:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="m3.5 11 8.5-7 8.5 7"></path><path d="M5.5 10v10h13V10M9.5 20v-6h5v6"></path></svg></button>
+      </div>
+      <div style="position:absolute;right:14px;bottom:14px;z-index:7;width:166px;height:104px;border:1px solid #dfe4eb;border-radius:10px;background:rgba(255,255,255,.92);box-shadow:0 1px 2px rgba(22,31,50,.06);overflow:hidden">
+        <svg viewBox="0 0 166 104" style="width:100%;height:100%;display:block">
+          <sc-for list="{{ mini }}" as="m" hint-placeholder-count="0"><rect x="{{ m.x }}" y="{{ m.y }}" width="{{ m.w }}" height="{{ m.h }}" style="fill:{{ m.fill }}"></rect></sc-for>
+          <rect x="{{ miniView.x }}" y="{{ miniView.y }}" width="{{ miniView.w }}" height="{{ miniView.h }}" style="fill:rgba(78,103,232,.08);stroke:#4e67e8;stroke-width:1"></rect>
+        </svg>
+        <span style="position:absolute;left:7px;bottom:5px;padding:1px 4px;border-radius:4px;background:rgba(255,255,255,.82);color:#98a1b2;font-size:8px">小地圖</span>
+      </div>
+    </section>
+
+    <!-- right sidebar -->
+    <aside style="min-width:0;background:#fff;border-left:1px solid #dfe4eb;overflow-y:auto;z-index:10">
+      <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center">
+        <div style="width:46px;height:46px;display:grid;place-items:center;border-radius:13px;background:#f7f8fa;color:#98a1b2"><svg viewBox="0 0 24 24" style="width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h5"></path></svg></div>
+        <h2 style="margin:14px 0 5px;font-size:14px">尚未選取物件</h2>
+        <p style="max-width:230px;margin:0;color:#6b7485;font-size:11px">選取畫布上的卡片或左欄清單列，這裡會顯示物件屬性與可用操作。</p>
+      </div>
+    </aside>
+  </main>
+
+  <!-- statusbar -->
+  <footer style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 10px;border-top:1px solid #dfe4eb;background:#fbfcfd;color:#6b7485;font-size:9.5px;z-index:20;min-width:0">
+    <div style="display:flex;align-items:center;gap:8px;min-width:0;flex:1"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:#172033">物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白拖曳平移 · 滾輪縮放</span><span style="width:1px;height:12px;background:#dfe4eb"></span><span></span></div>
+    <div style="display:flex;align-items:center;gap:8px;min-width:0">
+      <span style="width:340px;font-size:11px;padding:4px 8px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#757575;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block">指令：boundary｜placement｜surface｜space｜guide｜timber｜place｜move｜reset</span>
+      <button style="font-size:11px;padding:4px 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;cursor:pointer;font-family:inherit;color:#172033">載入範例</button>
+      <button style="font-size:11px;padding:4px 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;cursor:pointer;font-family:inherit;color:#172033">清空</button>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;scene&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;room_a&quot;,&quot;options&quot;:[&quot;room_a&quot;,&quot;empty&quot;],&quot;tsType&quot;:&quot;'room_a'|'empty'&quot;,&quot;section&quot;:&quot;狀態&quot;}}">
+const OC_W = 200, OC_H = 150, SP_W = 240, SP_H = 190;
+const ICON = {
+  face: "m4.5 7.5 13-3 2 12-13 3z M6.5 19.5l-2-12",
+  space: "m4 8 8-4 8 4-8 4z M4 8l8 4 8-4v9l-8 4-8-4z M12 12v9"
+};
+const rect = (w, h) => [[0,0],[w,0],[w,h],[0,h]];
+const SCENE = {
+  faces: [
+    { id: 3, placed: true, cx: 60, cy: 60, loops: [rect(4000,1250), [[2400,400],[2900,400],[2900,900],[2400,900]]] },
+    { id: 4, placed: true, cx: 360, cy: 60, loops: [rect(3000,4000)] },
+    { id: 5, placed: true, cx: 660, cy: 60, loops: [rect(4000,2500)] },
+    { id: 6, placed: true, cx: 960, cy: 60, loops: [rect(4000,2500)] },
+    { id: 2, placed: false, cx: 60, cy: 300, loops: [[[0,0],[4000,0],[4000,1000],[2500,1000],[2500,3000],[1500,3000],[1500,1000],[0,1000]]] },
+    { id: 1, placed: false, cx: 400, cy: 420, loops: [[[0,0],[600,0],[600,700],[1000,700],[1000,3000],[0,3000]]] },
+    { id: 10, placed: true, cx: 60, cy: 540, loops: [rect(300,2500)] },
+    { id: 11, placed: true, cx: 360, cy: 540, loops: [rect(4000,500)] },
+    { id: 12, placed: true, cx: 660, cy: 540, loops: [rect(4000,3000)] },
+  ],
+  columns: [{ id: 1, space: 1, cx: 960, cy: 300, box: [0,0,0,600,600,2500] }],
+  beams: [
+    { id: 1, space: 1, axis: "x", cx: 360, cy: 300, box: [0,1500,2000,4000,2000,2500] },
+    { id: 2, space: 1, axis: "y", cx: 660, cy: 300, box: [1800,0,1900,2150,2912,2500] },
+  ],
+  spaces: [{ id: 1, closed: false, cx: 960, cy: 540, members: [4,5,10,11,12] }],
+};
+function bboxOf(loops) {
+  let a = Infinity, b = Infinity, c = -Infinity, d = -Infinity;
+  for (const p of loops[0]) { a = Math.min(a, p[0]); c = Math.max(c, p[0]); b = Math.min(b, p[1]); d = Math.max(d, p[1]); }
+  return [a, b, c, d];
+}
+function anchor(n, t) {
+  const cx = n.x + n.w / 2, cy = n.y + n.h / 2, dx = t.x - cx, dy = t.y - cy;
+  if (Math.abs(dx / n.w) > Math.abs(dy / n.h))
+    return { x: cx + Math.sign(dx || 1) * n.w / 2, y: cy + dy * (n.w / 2 / Math.max(1, Math.abs(dx))) };
+  return { x: cx + dx * (n.h / 2 / Math.max(1, Math.abs(dy))), y: cy + Math.sign(dy || 1) * n.h / 2 };
+}
+function edge(a, b, label) {
+  const ac = { x: a.x + a.w / 2, y: a.y + a.h / 2 }, bc = { x: b.x + b.w / 2, y: b.y + b.h / 2 };
+  const st = anchor(a, bc), en = anchor(b, ac);
+  const dx = en.x - st.x, dy = en.y - st.y, horiz = Math.abs(dx) >= Math.abs(dy);
+  const bend = Math.min(180, Math.max(50, Math.abs(horiz ? dx : dy) * .45));
+  const c1 = horiz ? { x: st.x + Math.sign(dx || 1) * bend, y: st.y } : { x: st.x, y: st.y + Math.sign(dy || 1) * bend };
+  const c2 = horiz ? { x: en.x - Math.sign(dx || 1) * bend, y: en.y } : { x: en.x, y: en.y - Math.sign(dy || 1) * bend };
+  const mx = (st.x + en.x) / 2, my = (st.y + en.y) / 2;
+  const lw = Math.min(150, Math.max(46, label.length * 11 + 20));
+  return { d: `M${st.x} ${st.y} C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${en.x} ${en.y}`, lx: mx - lw / 2, ly: my - 10, lw, tx: mx, ty: my + .5, label };
+}
+class Component extends DCLogic {
+  renderVals() {
+    const empty = (this.props.scene ?? "room_a") === "empty";
+    const S = empty ? { faces: [], columns: [], beams: [], spaces: [] } : SCENE;
+    const cards = [], boxes = {};
+    const base = (o, w, h) => ({ tf: `translate(${o.cx},${o.cy})`, w, h, frame: "#dfe4eb", frameW: 1.4, pvW: w - 20, pvH: h - 76, fy: h - 30, fty: h - 11 });
+    for (const f of S.faces) {
+      const bb = bboxOf(f.loops), bw = Math.max(1, bb[2] - bb[0]), bh = Math.max(1, bb[3] - bb[1]);
+      const c = base(f, OC_W, OC_H);
+      const k = Math.min((c.pvW - 14) / bw, (c.pvH - 14) / bh);
+      const ox = 10 + (c.pvW - bw * k) / 2 - bb[0] * k, oy = 40 + (c.pvH - bh * k) / 2 - bb[1] * k;
+      Object.assign(c, {
+        isFace: true, dot: "#2f8f7b", title: `面 ${f.id}`, sub: f.placed ? "boundary · 已放置" : "boundary · 游離",
+        tag: f.placed ? "" : "游離", tagX: OC_W - 44, tagW: 36, tagTx: OC_W - 26, tagBg: "#fdf3e3", tagBd: "#ecd9b5", tagFg: "#a06a18",
+        pvTf: `translate(${ox},${oy}) scale(${k})`, sw: 1.4 / k, vr: 2.5 / k, vsw: 1 / k,
+        loops: f.loops.map((lp, i) => ({ points: lp.map(p => p.join(",")).join(" "), fill: i === 0 ? "url(#oc-faceGrad)" : "rgba(57,140,184,.19)", stroke: i === 0 ? "#2f8f7b" : "#398cb8" })),
+        verts: f.loops[0].map(p => ({ x: p[0], y: p[1] })),
+        footer: `${bw}×${bh} mm · ${f.loops[0].length} 頂點`,
+      });
+      boxes["b" + f.id] = { x: f.cx, y: f.cy, w: OC_W, h: OC_H };
+      cards.push(c);
+    }
+    const rc = (o, kind) => {
+      const isCol = kind === "column", c = base(o, OC_W, OC_H);
+      const fw = o.box[3] - o.box[0], fd = o.box[4] - o.box[1];
+      const k = Math.min((c.pvW - 26) / fw, (c.pvH - 26) / fd);
+      const ox = 10 + (c.pvW - fw * k) / 2 - o.box[0] * k, oy = 40 + (c.pvH - fd * k) / 2 - o.box[1] * k;
+      Object.assign(c, {
+        isRc: true, dot: isCol ? "#5a5a5a" : "#4a4a4a", title: `${isCol ? "柱" : "樑"} ${o.id}`, sub: `空間 ${o.space} 的障礙物`, tag: "",
+        rcX: o.box[0] * k + ox, rcY: o.box[1] * k + oy, rcW: fw * k, rcH: fd * k, rcFill: isCol ? "#c8c8c8" : "#9e9e9e", rcStroke: isCol ? "#5a5a5a" : "#4a4a4a",
+        rcLx: 10 + c.pvW / 2, rcLy: 40 + c.pvH - 4, rcLabel: isCol ? `h=${o.box[5] - o.box[2]}` : `${o.axis} 向 · 頂 ${o.box[5]}`,
+        footer: isCol ? `${fw}×${fd} · z ${o.box[2]}–${o.box[5]}` : `跨 ${isCol ? fw : (o.axis === "x" ? fw : fd)} · ${o.axis === "x" ? fd : fw}×${o.box[5] - o.box[2]}`,
+      });
+      boxes[kind[0] + o.id] = { x: o.cx, y: o.cy, w: OC_W, h: OC_H };
+      cards.push(c);
+    };
+    S.columns.forEach(o => rc(o, "column")); S.beams.forEach(o => rc(o, "beam"));
+    for (const s of S.spaces) {
+      const c = base(s, SP_W, SP_H);
+      const keys = ["+X", "-X", "+Y", "-Y", "+Z", "-Z"], used = { "+X": 0, "-X": 1, "+Y": 1, "-Y": 1, "+Z": 0, "-Z": 1 };
+      const cw = (SP_W - 32) / 3;
+      Object.assign(c, {
+        isSpace: true, dot: "#6a5fd0", title: `空間 ${s.id}`, sub: `space · ${s.members.length} 個邊界面`,
+        tag: s.closed ? "封閉" : "開放", tagX: SP_W - 52, tagW: 44, tagTx: SP_W - 30, tagBg: s.closed ? "#e3f4ec" : "#fdf3e3", tagBd: s.closed ? "#bfe3d0" : "#ecd9b5", tagFg: s.closed ? "#1d7a4e" : "#a06a18",
+        slots: keys.map((k, i) => { const u = used[k]; const x = 10 + (i % 3) * (cw + 6), y = 46 + Math.floor(i / 3) * 30; return { x, y, w: cw, fill: u ? "#ece9fb" : "#f7f9fb", stroke: u ? "#8f83e0" : "#e4e8ef", tx: x + cw / 2, ty: y + 15, fg: u ? "#5b4fc4" : "#a6aebb", label: `${k} ${u}` }; }),
+        memY: 46 + 48 + 22, members: "成員面：" + s.members.join(" "),
+        footer: s.closed ? "六槽齊備 · closed" : "槽位未齊 · open",
+      });
+      boxes["s" + s.id] = { x: s.cx, y: s.cy, w: SP_W, h: SP_H };
+      cards.push(c);
+    }
+    const edges = [];
+    for (const s of S.spaces) {
+      for (const m of s.members) if (boxes["b" + m]) edges.push(edge(boxes["s" + s.id], boxes["b" + m], "contains"));
+      for (const o of S.columns) if (o.space === s.id) edges.push(edge(boxes["s" + s.id], boxes["c" + o.id], "障礙·柱"));
+      for (const o of S.beams) if (o.space === s.id) edges.push(edge(boxes["s" + s.id], boxes["b" + o.id] && boxes["b" + o.id].isBeam ? boxes["b" + o.id] : { x: o.cx, y: o.cy, w: OC_W, h: OC_H }, "障礙·樑"));
+    }
+    const rows = [];
+    for (const f of S.faces) rows.push({ name: `面 ${f.id}`, sub: f.placed ? "已放置" : "游離", iconPath: ICON.face, bg: "transparent" });
+    for (const s of S.spaces) rows.push({ name: `空間 ${s.id}`, sub: `${s.closed ? "封閉" : "開放"} · ${s.members.length} 個邊界面`, iconPath: ICON.space, bg: "transparent" });
+    for (const o of S.columns) rows.push({ name: `柱 ${o.id}`, sub: `空間 ${o.space} · ${o.box[3] - o.box[0]}×${o.box[4] - o.box[1]}`, iconPath: ICON.face, bg: "transparent" });
+    for (const o of S.beams) rows.push({ name: `樑 ${o.id}`, sub: `空間 ${o.space} · ${o.axis} 向`, iconPath: ICON.face, bg: "transparent" });
+    const filters = [
+      { name: "面", color: "#2f8f7b", count: S.faces.length }, { name: "空間", color: "#7557cc", count: S.spaces.length },
+      { name: "柱", color: "#5a5a5a", count: S.columns.length }, { name: "樑", color: "#4a4a4a", count: S.beams.length }];
+    const px = v => `${v}px`;
+    for (const c of cards) {
+      const m = /translate\(([-\d.]+),([-\d.]+)\)/.exec(c.tf);
+      Object.assign(c, { left: px(+m[1]), top: px(+m[2]), wPx: px(c.w), hPx: px(c.h), footTop: px(c.fy + 12), tagLeft: px(c.tagX), tagWPx: px(c.tagW), rcLabelTop: px(40 + c.pvH - 11), memTop: px(c.memY - 8) });
+      if (c.slots) for (const s of c.slots) Object.assign(s, { left: px(s.x), top: px(s.y), wPx: px(s.w) });
+    }
+    for (const e of edges) Object.assign(e, { lxPx: px(e.lx), lyPx: px(e.ly), lwPx: px(e.lw) });
+    const all = Object.values(boxes);
+    const sc = 166 / 1500, mini = all.map(b => ({ x: b.x * sc + 8, y: b.y * sc + 6, w: b.w * sc, h: b.h * sc, fill: b.w === SP_W ? "#8f83e0" : "#2f8f7b" }));
+    return { cards, edges, rows, filters, total: rows.length, isEmpty: empty, mini, miniView: { x: 8, y: 6, w: 814 * sc, h: 718 * sc } };
+  }
+}
+</script>
+</body>
+</html>
