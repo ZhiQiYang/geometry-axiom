@@ -1,22 +1,34 @@
-/* 畫布功能端到端測試：模擬 index.html 的 API 呼叫序列驅動 web_bridge。
- * 不重實作幾何——照抄前端的仿射/編輯算式,對照 bridge 的 uv/proj/bhit。
+/* 畫布功能端到端測試：透過 serve.py 的 /api HTTP 介面（或直連 bridge）。
+ * 用法：node canvas_test.js          → 走 http://localhost:8765/api
+ *       node canvas_test.js direct   → 直接 spawn web_bridge.exe
+ * 不重實作幾何——照抄前端的仿射/編輯算式，對照 bridge 的 uv/proj/bhit。
  */
 const { spawn } = require("child_process");
 
-const bridge = spawn(`"${__dirname.replace(/\//g, "\\")}\\web_bridge.exe"`, [], { shell: true });
-let buf = "", queue = [], resolveQ = [];
-bridge.stdout.on("data", d => {
-  buf += d;
-  let i;
-  while ((i = buf.indexOf("\n")) >= 0) {
-    const line = buf.slice(0, i); buf = buf.slice(i + 1);
-    try { (resolveQ.shift() || (()=>{}))(JSON.parse(line)); }
-    catch (e) { console.log("BAD JSON:", line); }
-  }
-});
-function api(cmd) {
-  bridge.stdin.write(cmd + "\n");
-  return new Promise(r => resolveQ.push(r));
+const DIRECT = process.argv.includes("direct");
+let api;
+if (DIRECT) {
+  const bridge = spawn(`"${__dirname.replace(/\//g, "\\")}\\web_bridge.exe"`,
+                       [], { shell: true });
+  let buf = "";
+  const resolveQ = [];
+  bridge.stdout.on("data", d => {
+    buf += d;
+    let i;
+    while ((i = buf.indexOf("\n")) >= 0) {
+      const line = buf.slice(0, i); buf = buf.slice(i + 1);
+      try { (resolveQ.shift() || (()=>{}))(JSON.parse(line)); }
+      catch (e) { console.log("BAD JSON:", line); }
+    }
+  });
+  api = cmd => { bridge.stdin.write(cmd + "\n");
+                 return new Promise(r => resolveQ.push(r)); };
+  process.on("exit", () => bridge.kill());
+} else {
+  api = cmd => fetch("http://localhost:8765/api", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ cmd })
+  }).then(r => r.json());
 }
 
 /* --- 抄自 index.html 的算式 --- */
@@ -38,7 +50,6 @@ const unmapView = (m,x,y) => {
            v: Math.round((m.ax*dy - dx*m.ay)/m.det) };
 };
 const vertsStr = pts => pts.map(p => `${p[0]},${p[1]}`).join(" ");
-const fixityStr = fx => fx.map(f => f ? "F" : "X").join(" ");
 function applyVertexEdit(pts, i, uv) {
   const n = pts.length, prev = pts[(i-1+n)%n], next = pts[(i+1)%n], cur = pts[i];
   if (prev[1] === cur[1]) prev[1] = uv.v; else prev[0] = uv.u;
@@ -141,10 +152,11 @@ function check(name, cond, detail="") {
   const b7 = await api(`boundary ${sid}`);
   check("拒絕後邊界未變", b7.ok && b7.loops.length === 2);
 
-  /* H. dump round-trip */
+  /* H. dump round-trip + 凍結錨點 */
   console.log("== H. dump round-trip ==");
   const d = await api("dump");
   check("dump 有內容", d.ok && d.text.includes("boundary"));
+  check("dump 的 place 一律凍結 at u v", !/at-grid|at-edge|at-guides|through/.test(d.text));
   /* 重放 */
   await api("reset");
   for (const ln of d.text.split("\n").filter(l => l.trim())) {
@@ -155,7 +167,30 @@ function check(name, cond, detail="") {
   check("重放後 dump 相同", d2.ok && d2.text === d.text,
         "\n---原---\n" + d.text + "\n---重放---\n" + (d2.text||""));
 
+  /* I. dump 凍結保真：at-grid 放角材後移動格線,dump 必須仍重放同一位置 */
+  console.log("== I. 凍結保真 ==");
+  await api("reset");
+  const setup = [
+    "line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+    "line grid 1 on 1 u 2000",
+    "line timber 1 27 33",
+    "line place 1 on 1 at-grid 1 u 0 +v +n",
+    "line grid 1 on 1 u 1500"          /* 移動參考線 → 凍結角材不該跟著走 */
+  ];
+  for (const ln of setup) await api(ln);
+  const d3 = await api("dump");
+  check("dump 後 place 是 at u v", d3.ok && /place 1 on 1 at \d+ \d+/.test(d3.text), d3.text);
+  await api("reset");
+  let replayOk = true;
+  for (const ln of d3.text.split("\n").filter(l => l.trim())) {
+    const rr = await api("line " + ln);
+    if (!rr.ok) replayOk = false;
+  }
+  check("凍結 dump 可重放", replayOk);
+  const d4 = await api("dump");
+  check("凍結 dump round-trip 相同", d4.ok && d4.text === d3.text,
+        "\n---原---\n" + d3.text + "\n---重放---\n" + (d4.text||""));
+
   console.log(`\n${pass} pass / ${fail} fail`);
-  bridge.kill();
   process.exit(fail ? 1 : 0);
 })();

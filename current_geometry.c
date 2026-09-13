@@ -2699,36 +2699,7 @@ static bool scene_pick_is_none(const ScenePick *p)
  * 兩個未知數兩條方程式。det = 0 表示表面在此視圖退化成線；
  * 除不盡表示答案不是整數 mm——兩種情形都拒絕，不猜。
  */
-static bool view_unproject_on_surface(
-    const ViewFrame *view,
-    const PlacementSurface *surface,
-    ViewPoint2 p,
-    SurfacePoint2 *out_uv
-)
-{
-    Coord a = vector_dot(surface->frame.axis_u, view->right);
-    Coord b = vector_dot(surface->frame.axis_v, view->right);
-    Coord c = vector_dot(surface->frame.axis_u, view->down);
-    Coord d = vector_dot(surface->frame.axis_v, view->down);
-    Coord e = p.x - point_along(surface->frame.origin, view->right);
-    Coord f = p.y - point_along(surface->frame.origin, view->down);
-    Coord det = a * d - b * c;
 
-    if (det == 0) {
-        return false;
-    }
-
-    Coord u_num = e * d - b * f;
-    Coord v_num = a * f - e * c;
-
-    if (u_num % det != 0 || v_num % det != 0) {
-        return false;
-    }
-
-    out_uv->u = u_num / det;
-    out_uv->v = v_num / det;
-    return true;
-}
 
 /*
  * 容差反解：給畫布輸入用。滑鼠座標不一定落在整數 uv 上，
@@ -2759,6 +2730,29 @@ static bool view_unproject_on_surface_near(
     out_uv->u = (Coord)llround(u_num / (double)det);
     out_uv->v = (Coord)llround(v_num / (double)det);
     return true;
+}
+
+/* 嚴格版：near 版反解後代回驗算，要求恰好整除（拖曳等舊路徑用）。 */
+static bool view_unproject_on_surface(
+    const ViewFrame *view,
+    const PlacementSurface *surface,
+    ViewPoint2 p,
+    SurfacePoint2 *out_uv
+)
+{
+    if (!view_unproject_on_surface_near(view, surface, p, out_uv)) {
+        return false;
+    }
+
+    Coord a = vector_dot(surface->frame.axis_u, view->right);
+    Coord b = vector_dot(surface->frame.axis_v, view->right);
+    Coord c = vector_dot(surface->frame.axis_u, view->down);
+    Coord d = vector_dot(surface->frame.axis_v, view->down);
+    Coord e = p.x - point_along(surface->frame.origin, view->right);
+    Coord f = p.y - point_along(surface->frame.origin, view->down);
+
+    return a * out_uv->u + b * out_uv->v == e &&
+           c * out_uv->u + d * out_uv->v == f;
 }
 
 /* ---- 畫布編輯用的邊界命中判定 ---- */
@@ -3623,6 +3617,7 @@ typedef enum {
 
 static const char *axis_word(Vector3 axis);
 static void world_dump_dsl(const World *world, FILE *out);
+static char *fmt_loop(char *p, char *end, const PolygonLoop2 *loop);
 
 /* 輸入列的 Enter 送給主視窗的自訂訊息。 */
 #define WM_APP_APPLY_INPUT  (WM_APP + 1)
@@ -4064,27 +4059,7 @@ static uint32_t canvas_next_id(const GdiApp *app)
     return m + 1;
 }
 
-/* 一個環 → 「u,v u,v … [fixity …]」寫入字串緩衝；回傳寫入後位置。 */
-static char *canvas_fmt_loop(char *p, char *end, const PolygonLoop2 *loop)
-{
-    for (size_t i = 0; i < loop->count; ++i) {
-        p += snprintf(p, (size_t)(end - p), "%s%lld,%lld",
-                      i ? " " : "",
-                      (long long)loop->v[i].u, (long long)loop->v[i].v);
-    }
-    bool any_free = false;
-    for (size_t i = 0; i < loop->count; ++i) {
-        if (loop->fixity[i] == EDGE_FREE) { any_free = true; break; }
-    }
-    if (any_free) {
-        p += snprintf(p, (size_t)(end - p), " fixity");
-        for (size_t i = 0; i < loop->count; ++i) {
-            p += snprintf(p, (size_t)(end - p), " %c",
-                          loop->fixity[i] == EDGE_FREE ? 'X' : 'F');
-        }
-    }
-    return p;
-}
+
 
 /* 在選定平面上建新 surface（boundary + placement 合體一行）。 */
 static void canvas_emit_new_surface(
@@ -4121,10 +4096,10 @@ static void canvas_emit_boundary(
 
     p += snprintf(p, (size_t)(end - p),
                   "boundary %u outline ", (unsigned)b->id);
-    p = canvas_fmt_loop(p, end, &b->outline);
+    p = fmt_loop(p, end, &b->outline);
     for (size_t h = 0; h < b->hole_count; ++h) {
         p += snprintf(p, (size_t)(end - p), " hole ");
-        p = canvas_fmt_loop(p, end, &b->holes[h]);
+        p = fmt_loop(p, end, &b->holes[h]);
     }
     interactive_apply_line(app, window, line);
 }
@@ -8086,30 +8061,34 @@ static const char *depth_side_word(int side)
     return side == SURFACE_DEPTH_POSITIVE_NORMAL ? "+n" : "-n";
 }
 
-/* 一個環的「頂點串 + 必要的 fixity 子句」（全 FIXED 時省略）。 */
-static void dump_loop(FILE *out, const PolygonLoop2 *loop)
+/* 一個環 → 「u,v u,v … [fixity …]」（全 FIXED 時省略 fixity 子句）。
+ * GDI 畫布產 DSL 行也用這個（canvas_emit_*）。 */
+static char *fmt_loop(char *p, char *end, const PolygonLoop2 *loop)
 {
     for (size_t i = 0; i < loop->count; ++i) {
-        fprintf(out, "%s%lld,%lld",
-                i ? " " : "",
-                (long long)loop->v[i].u, (long long)loop->v[i].v);
+        p += snprintf(p, (size_t)(end - p), "%s%lld,%lld",
+                      i ? " " : "",
+                      (long long)loop->v[i].u, (long long)loop->v[i].v);
     }
-
     bool any_free = false;
     for (size_t i = 0; i < loop->count; ++i) {
-        if (loop->fixity[i] == EDGE_FREE) {
-            any_free = true;
-            break;
+        if (loop->fixity[i] == EDGE_FREE) { any_free = true; break; }
+    }
+    if (any_free) {
+        p += snprintf(p, (size_t)(end - p), " fixity");
+        for (size_t i = 0; i < loop->count; ++i) {
+            p += snprintf(p, (size_t)(end - p), " %c",
+                          loop->fixity[i] == EDGE_FREE ? 'X' : 'F');
         }
     }
-    if (!any_free) {
-        return;
-    }
+    return p;
+}
 
-    fputs(" fixity", out);
-    for (size_t i = 0; i < loop->count; ++i) {
-        fputs(loop->fixity[i] == EDGE_FREE ? " X" : " F", out);
-    }
+static void dump_loop(FILE *out, const PolygonLoop2 *loop)
+{
+    char buf[POLY_MAX_VERTICES * 26 + 8];
+    fmt_loop(buf, buf + sizeof buf, loop);
+    fputs(buf, out);
 }
 
 static void world_dump_dsl(const World *world, FILE *out)
@@ -8181,15 +8160,11 @@ static void world_dump_dsl(const World *world, FILE *out)
     for (size_t i = 0; i < world->timber_count; ++i) {
         const Timber *t = &world->timbers[i];
 
-        if (t->auto_length) {
-            fprintf(out, "timber %u %lld %lld\n",
-                    (unsigned)t->id,
-                    (long long)t->size_a, (long long)t->size_b);
-        } else {
-            fprintf(out, "timber %u %lld %lld %lld\n",
-                    (unsigned)t->id, (long long)t->length,
-                    (long long)t->size_a, (long long)t->size_b);
-        }
+        /* auto 角材的 length 在 place 當下已凍結；dump 明寫形式，
+         * 重放不再重算（參照若被移動過，重算會得到不同的世界）。 */
+        fprintf(out, "timber %u %lld %lld %lld\n",
+                (unsigned)t->id, (long long)t->length,
+                (long long)t->size_a, (long long)t->size_b);
     }
 
     for (size_t i = 0; i < world->timber_count; ++i) {
@@ -8200,35 +8175,12 @@ static void world_dump_dsl(const World *world, FILE *out)
             continue;
         }
 
-        fprintf(out, "place %u on %u ", (unsigned)t->id,
-                (unsigned)a->placement_id);
-
-        switch (a->anchor_kind) {
-            case ANCHOR_AT_GRID:
-                fprintf(out, "at-grid %u %s %d",
-                        (unsigned)a->ref_grid,
-                        a->ref_grid_axis == 0 ? "u" : "v",
-                        a->ref_grid_index);
-                break;
-            case ANCHOR_AT_EDGE:
-                if (a->ref_hole < 0) {
-                    fprintf(out, "at-edge e%d", a->ref_edge);
-                } else {
-                    fprintf(out, "at-edge h%de%d", a->ref_hole, a->ref_edge);
-                }
-                break;
-            default:
-                /* ANCHOR_AT / ANCHOR_AT_GUIDES：凍結點用 at 表達（R2）。 */
-                fprintf(out, "at %lld %lld",
-                        (long long)a->uv.u, (long long)a->uv.v);
-                break;
-        }
-
-        if (a->has_through) {
-            fprintf(out, " through %lld", (long long)a->through);
-        }
-
-        fprintf(out, " %s %s\n",
+        /* R2：錨點在 place 當下已凍結。at-grid/at-edge 的參照形式
+         * 會在參照（格線座標、邊位置）事後移動時重放出不同位置，
+         * 一律 dump 凍結點；through 是 auto 選段器，明寫長度下無意義。 */
+        fprintf(out, "place %u on %u at %lld %lld %s %s\n",
+                (unsigned)t->id, (unsigned)a->placement_id,
+                (long long)a->uv.u, (long long)a->uv.v,
                 length_dir_word(a->length_direction),
                 depth_side_word(a->depth_side));
     }

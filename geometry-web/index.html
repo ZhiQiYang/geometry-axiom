@@ -182,7 +182,8 @@ async function render() {
   if (!r.ok) { layout = null; world.textContent = ""; setStatus("✗ " + (r.error || "場景沒有可畫的表面")); return; }
   layout = r.layout;
   world.textContent = "";
-  previewG = null;
+  previewGs = [];
+  affineCache = {};               /* 世界變了，舊的 uv↔view 映射作廢 */
   replay(r.ops, world);
   applyTransform();
 }
@@ -301,7 +302,7 @@ let editLoops = null;         /* 編輯中邊界 loops（[{verts,fixity}]） */
 let editBid = 0;
 let editDrag = null;          /* {loop,index,kind} */
 let affineCache = {};         /* "v:sid" → uv↔view-mm 仿射映射 */
-let previewG = null;
+let previewGs = [];
 
 /* uv↔view-mm 仿射映射：取 3 個 proj 樣本解出（C 端永遠是計算來源）。 */
 async function uvMapFor(v, sid) {
@@ -357,22 +358,25 @@ async function uvMap(v) {
 }
 
 function previewClear() {
-  if (previewG) { previewG.remove(); previewG = null; }
+  for (const g of previewGs) g.remove();
+  previewGs = [];
 }
+/* 回傳某視圖的預覽群組（可同時存在多個視圖的手柄）。 */
 function previewIn(v) {
-  previewClear();
   const L = layout.views[v];
-  previewG = el("g", { transform: `translate(${L.tx},${L.ty})` }, world);
+  const g = el("g", { transform: `translate(${L.tx},${L.ty})` }, world);
+  previewGs.push(g);
+  return g;
 }
-function previewPoly(m, pts, close) {
+function previewPoly(m, pts, close, g) {
   const pp = pts.map(p => mapUv(m, p[0], p[1]));
   el(close ? "polygon" : "polyline",
      { points: pp.map(p => `${p.x},${p.y}`).join(" "),
        fill: close ? "rgba(51,102,204,.15)" : "none",
        stroke: "#c0392b", "stroke-width": 1.5, "stroke-dasharray": "8 4",
-       "vector-effect": "non-scaling-stroke" }, previewG);
+       "vector-effect": "non-scaling-stroke" }, g);
   for (const p of pp) {
-    el("circle", { cx: p.x, cy: p.y, r: 4, fill: "#c0392b" }, previewG);
+    el("circle", { cx: p.x, cy: p.y, r: 4, fill: "#c0392b" }, g);
   }
 }
 
@@ -453,15 +457,14 @@ async function enterEdit() {
 
 async function drawEditHandles() {
   if (!editLoops) return;
+  previewClear();
   for (let v = 0; v < 3; ++v) {
     const m = await uvMap(v);
-    if (!m) continue;
-    previewClear();                       /* 手柄畫在命中的那個視圖 */
-    previewIn(v);
+    if (!m) continue;                     /* det=0：此視圖看這面是線 */
+    const g = previewIn(v);
     for (const loop of editLoops) {
-      previewPoly(m, loop.verts, true);
+      previewPoly(m, loop.verts, true, g);
     }
-    return;
   }
 }
 
@@ -487,7 +490,7 @@ async function canvasDown(e, sv) {
   const uv = unmapView(m, sv.x, sv.y);
 
   if (tool === "rect" || tool === "hole") {
-    rectStart = uv; previewIn(sv.v); previewPoly(m, [[uv.u, uv.v], [uv.u, uv.v]], true);
+    rectStart = uv; previewClear(); previewPoly(m, [[uv.u, uv.v], [uv.u, uv.v]], true, previewIn(sv.v));
   } else if (tool === "poly") {
     /* 軸鎖：新點與上一點水平或垂直對齊（取主軸）。 */
     if (drawPts.length) {
@@ -504,7 +507,7 @@ async function canvasDown(e, sv) {
       }
     }
     drawPts.push([uv.u, uv.v]);
-    previewIn(sv.v); previewPoly(m, [...drawPts, [uv.u, uv.v]], false);
+    previewClear(); previewPoly(m, [...drawPts, [uv.u, uv.v]], false, previewIn(sv.v));
   } else if (tool === "edit" && editLoops) {
     const s = curSurf();
     const h = await api(`bhit ${editBid} ${uv.u} ${uv.v} ${sv.r}`);
@@ -512,7 +515,7 @@ async function canvasDown(e, sv) {
     editDrag = { loop: h.loop, index: h.index, kind: h.kind,
                  loops: editLoops.map(l => ({ verts: l.verts.map(p => [...p]),
                                             fixity: [...l.fixity] })) };
-    previewIn(sv.v);
+    previewClear(); previewIn(sv.v);
   }
 }
 
@@ -525,20 +528,21 @@ async function canvasMove(e, sv) {
   if ((tool === "rect" || tool === "hole") && rectStart) {
     const u0 = Math.min(rectStart.u, uv.u), u1 = Math.max(rectStart.u, uv.u);
     const v0 = Math.min(rectStart.v, uv.v), v1 = Math.max(rectStart.v, uv.v);
-    previewIn(sv.v);
-    previewPoly(m, [[u0, v0], [u1, v0], [u1, v1], [u0, v1]], true);
+    previewClear();
+    previewPoly(m, [[u0, v0], [u1, v0], [u1, v1], [u0, v1]], true, previewIn(sv.v));
   } else if (tool === "poly" && drawPts.length) {
     const p = drawPts[drawPts.length - 1];
     const lock = { u: uv.u, v: uv.v };
     if (Math.abs(uv.u - p[0]) >= Math.abs(uv.v - p[1])) lock.v = p[1];
     else lock.u = p[0];
-    previewIn(sv.v); previewPoly(m, [...drawPts, [lock.u, lock.v]], false);
+    previewClear(); previewPoly(m, [...drawPts, [lock.u, lock.v]], false, previewIn(sv.v));
   } else if (tool === "edit" && editDrag) {
     const pts = editDrag.loops[editDrag.loop + 1].verts;
     if (editDrag.kind === "vertex") applyVertexEdit(pts, editDrag.index, uv);
     else applyEdgeEdit(pts, editDrag.index, uv);
-    previewIn(sv.v);
-    for (const loop of editDrag.loops) previewPoly(m, loop.verts, true);
+    previewClear();
+    const g = previewIn(sv.v);
+    for (const loop of editDrag.loops) previewPoly(m, loop.verts, true, g);
   }
 }
 
@@ -594,7 +598,10 @@ $("btnExport").onclick = async () => {
   setStatus("✓ 已匯出 canvas_export.scene");
 };
 window.addEventListener("keydown", e => {
-  if (e.key === "Escape") { drawPts = []; rectStart = null; editDrag = null; previewClear(); }
+  if (e.key === "Escape") {
+    drawPts = []; rectStart = null; editDrag = null; previewClear();
+    if (tool === "edit") drawEditHandles();
+  }
 });
 
 /* ---- 指令列與按鈕 ---- */
