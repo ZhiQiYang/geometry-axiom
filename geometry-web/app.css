@@ -838,3 +838,12 @@ body.oc-busy input, body.oc-busy select, body.oc-busy textarea { pointer-events:
 
 /* 投影面板互動(§5.5.4):可 pick 的游標提示 */
 .proj-svg { cursor: crosshair; }
+
+/* Q1 刪除(Q1)：檢視器危險鈕與圖層列刪除鈕 */
+.btn.danger { border-color: #efcdd2; color: var(--danger, #c0392b); }
+.btn.danger:hover { background: #fdecea; }
+.face-layer-del {
+  margin-left: auto; border: 0; background: none; color: #a6aebb;
+  cursor: pointer; font-size: 12px; padding: 2px 5px; border-radius: 4px;
+}
+.face-layer-del:hover { color: #c0392b; background: #fdecea; }

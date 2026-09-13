@@ -8118,6 +8118,210 @@ static bool apply_move_line(
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
  * 一致性由 space_construct 把關；同名 id = 交易式重宣告。 */
+/* ============================================================
+ * delete kind id：刪除指令（交易式）
+ *
+ * 語意（整份 World 快照 → 修改 → world_revalidate，失敗全數回滾）：
+ *   boundary ：還被承載面掛著就拒絕（先刪 placement）；否則移除，
+ *              並自各空間成員剔除、用剩下的成員重建空間。
+ *   placement：還被參考線 / 網格 / 已放角材引用就拒絕；否則移除。
+ *              它掛的邊界面留下來變游離面——placement 只是「放進世界」的關係。
+ *   guide    ：直接移除（角材錨點在 place 當下就解成 uv，不引用線）。
+ *   grid     ：被角材錨點 ref_grid 引用就拒絕；否則移除。
+ *   timber   ：角材與其錨點一起移除（沒有東西引用角材）。
+ *   space    ：移除（成員是參照不是持有）。
+ * 畫布座標是展示中繼資料，跟著刪除標的一起清，不算幾何引用。
+ * ============================================================ */
+static void world_drop_canvas_pos(World *world, int kind, uint32_t id)
+{
+    for (size_t i = 0; i < world->canvas_pos_count; ++i) {
+        CanvasPos *p = &world->canvas_pos[i];
+        if (p->kind == kind && p->id == id) {
+            memmove(p, p + 1,
+                    (world->canvas_pos_count - i - 1) * sizeof *p);
+            --world->canvas_pos_count;
+            return;
+        }
+    }
+}
+
+static bool apply_delete_line(
+    const char *path,
+    int line_no,
+    char *tokens[],
+    int count,
+    World *world
+)
+{
+    (void)count;
+
+    uint32_t id;
+
+    if (!parse_u32(tokens[2], &id)) {
+        scene_error(path, line_no, "delete 的 id 不是有效的整數");
+        return false;
+    }
+
+    const char *kind = tokens[1];
+    World backup = *world;
+
+    if (strcmp(kind, "boundary") == 0) {
+        size_t bi = SIZE_MAX;
+
+        for (size_t i = 0; i < world->boundary_count; ++i) {
+            if (world->boundaries[i].id == id) bi = i;
+        }
+        if (bi == SIZE_MAX) {
+            scene_error(path, line_no, "這個邊界面不存在");
+            return false;
+        }
+        for (size_t i = 0; i < world->placement_count; ++i) {
+            if (world->placements[i].boundary_id == id) {
+                scene_error(path, line_no,
+                    "這個邊界面還有承載面掛著，先刪它的承載面（placement）");
+                return false;
+            }
+        }
+        memmove(&world->boundaries[bi], &world->boundaries[bi + 1],
+                (world->boundary_count - bi - 1) *
+                sizeof world->boundaries[0]);
+        --world->boundary_count;
+        /* 空間成員是參照：剔除後用剩下的成員重建空間。 */
+        for (size_t s = 0; s < world->space_count; ++s) {
+            Space *sp = &world->spaces[s];
+            size_t w = 0;
+            for (size_t m = 0; m < sp->boundary_count; ++m) {
+                if (sp->boundaries[m] != id) {
+                    sp->boundaries[w++] = sp->boundaries[m];
+                }
+            }
+            if (w == sp->boundary_count) continue;
+            Space rebuild = { 0 };
+            if (w == 0) {
+                rebuild.id = sp->id;
+            } else if (!space_construct(world, sp->id,
+                                        sp->boundaries, w, &rebuild)) {
+                *world = backup;
+                scene_error(path, line_no, "剔除成員後空間無法重建");
+                return false;
+            }
+            *sp = rebuild;
+        }
+        world_drop_canvas_pos(world, CANVAS_POS_BOUNDARY, id);
+    } else if (strcmp(kind, "placement") == 0) {
+        size_t pi = SIZE_MAX;
+
+        for (size_t i = 0; i < world->placement_count; ++i) {
+            if (world->placements[i].id == id) pi = i;
+        }
+        if (pi == SIZE_MAX) {
+            scene_error(path, line_no, "這個承載面不存在");
+            return false;
+        }
+        for (size_t i = 0; i < world->guide_count; ++i) {
+            if (world->guides[i].placement_id == id) {
+                scene_error(path, line_no,
+                    "這個承載面還有參考線，先刪參考線（guide）");
+                return false;
+            }
+        }
+        for (size_t i = 0; i < world->grid_count; ++i) {
+            if (world->grids[i].placement_id == id) {
+                scene_error(path, line_no,
+                    "這個承載面還有網格，先刪網格（grid）");
+                return false;
+            }
+        }
+        for (size_t i = 0; i < world->timber_count; ++i) {
+            if (world->timbers[i].placed &&
+                world->anchors[i].placement_id == id) {
+                scene_error(path, line_no,
+                    "這個承載面還有已放置的角材，先刪角材（timber）");
+                return false;
+            }
+        }
+        memmove(&world->placements[pi], &world->placements[pi + 1],
+                (world->placement_count - pi - 1) *
+                sizeof world->placements[0]);
+        --world->placement_count;
+        world_drop_canvas_pos(world, CANVAS_POS_PLACEMENT, id);
+    } else if (strcmp(kind, "guide") == 0) {
+        size_t gi = SIZE_MAX;
+
+        for (size_t i = 0; i < world->guide_count; ++i) {
+            if (world->guides[i].id == id) gi = i;
+        }
+        if (gi == SIZE_MAX) {
+            scene_error(path, line_no, "這條參考線不存在");
+            return false;
+        }
+        memmove(&world->guides[gi], &world->guides[gi + 1],
+                (world->guide_count - gi - 1) * sizeof world->guides[0]);
+        --world->guide_count;
+    } else if (strcmp(kind, "grid") == 0) {
+        size_t gi = SIZE_MAX;
+
+        for (size_t i = 0; i < world->grid_count; ++i) {
+            if (world->grids[i].id == id) gi = i;
+        }
+        if (gi == SIZE_MAX) {
+            scene_error(path, line_no, "這個網格不存在");
+            return false;
+        }
+        for (size_t i = 0; i < world->timber_count; ++i) {
+            if (world->timbers[i].placed &&
+                world->anchors[i].ref_grid == id) {
+                scene_error(path, line_no,
+                    "有角材錨在這個網格上，先刪角材（timber）");
+                return false;
+            }
+        }
+        memmove(&world->grids[gi], &world->grids[gi + 1],
+                (world->grid_count - gi - 1) * sizeof world->grids[0]);
+        --world->grid_count;
+    } else if (strcmp(kind, "timber") == 0) {
+        size_t ti = SIZE_MAX;
+
+        for (size_t i = 0; i < world->timber_count; ++i) {
+            if (world->timbers[i].id == id) ti = i;
+        }
+        if (ti == SIZE_MAX) {
+            scene_error(path, line_no, "這支角材不存在");
+            return false;
+        }
+        memmove(&world->timbers[ti], &world->timbers[ti + 1],
+                (world->timber_count - ti - 1) * sizeof world->timbers[0]);
+        memmove(&world->anchors[ti], &world->anchors[ti + 1],
+                (world->timber_count - ti - 1) * sizeof world->anchors[0]);
+        --world->timber_count;
+    } else if (strcmp(kind, "space") == 0) {
+        size_t si = SIZE_MAX;
+
+        for (size_t i = 0; i < world->space_count; ++i) {
+            if (world->spaces[i].id == id) si = i;
+        }
+        if (si == SIZE_MAX) {
+            scene_error(path, line_no, "這個空間不存在");
+            return false;
+        }
+        memmove(&world->spaces[si], &world->spaces[si + 1],
+                (world->space_count - si - 1) * sizeof world->spaces[0]);
+        --world->space_count;
+        world_drop_canvas_pos(world, CANVAS_POS_SPACE, id);
+    } else {
+        scene_error(path, line_no,
+            "delete 的類別要是 boundary / placement / guide / grid / timber / space");
+        return false;
+    }
+
+    if (!world_revalidate(world)) {
+        *world = backup;
+        scene_error(path, line_no, "刪除後 World 失效，已回滾");
+        return false;
+    }
+    return true;
+}
+
 static bool apply_space_line(
     const char *path,
     int line_no,
@@ -8526,6 +8730,11 @@ static const struct {
         apply_move_line
     },
     {
+        "delete", 3, 3, false,
+        "delete boundary|placement|guide|grid|timber|space id",
+        apply_delete_line
+    },
+    {
         "reset", 1, 1, false,
         "reset",
         apply_reset_line
@@ -8564,7 +8773,7 @@ static bool apply_scene_line(const char *path, int line_no, char *tokens[], int 
     }
 
     scene_error(path, line_no,
-        "不認得的指令（boundary placement surface space guide timber place move reset）");
+        "不認得的指令（boundary placement surface space guide timber place move delete reset）");
     return false;
 }
 

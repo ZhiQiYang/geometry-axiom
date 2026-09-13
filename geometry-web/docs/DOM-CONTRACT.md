@@ -129,3 +129,9 @@
 - `#hovertxt` 承接 `setHover` 文案(pick 描述)。
 - 檢視器新增動態按鈕 `#inspMembers`(space 選取時),開 `#memberDialog`。
 - busy 互斥:`body.oc-busy` 期間所有 `button/input/select` 視覺停用。
+
+## Q1 delete(cdp_test §P6)
+
+- DSL:`delete boundary|placement|guide|grid|timber|space <id>`(line 指令,核心交易重驗)。
+- 檢視器動態鈕 `#inspDelete` → `deleteObject(kind,id)`(全域);surface 對先 `delete placement` 再 `delete boundary` 經 mutate。
+- 面內圖層列參考線列有 `.face-layer-del` ✕ 鈕 → `emitLine("delete guide <id>")`。

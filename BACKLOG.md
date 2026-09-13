@@ -457,7 +457,7 @@
 > 來源:`geometry-web/docs/UI-REDESIGN-PLAN.md` §9 決策佇列 + 實作期間發現的 bridge 缺口。
 > 這批全部屬 C 端(current_geometry.c / web_bridge.c)工單,UI 端已按「沒有就不做」處理。
 
-### WEB-001 新增 `delete <kind> <id>` 指令(§9 Q1)
+### WEB-001 ✅ 已完成(2026-09-13,Q1 拍板做) `delete <kind> <id>`
 - **內容**:刪除邊界面 / 參考線 / 空間成員關係,走既有交易重驗路徑。目前 UI 無法刪除任何物件,只能靠 undo。
 - **驗收**:`delete boundary <id>` 後 `objects` 面數 -1;被刪面若為某空間成員,該空間 `closed` 正確重算;失敗(依他物引用)時回滾。
 - **檔案**:`current_geometry.c`(指令表 + 交易)、`web_bridge.c`。

@@ -28,7 +28,8 @@ const ICON_PATHS = {
   edit: '<path d="M4 20h4l11-11-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
   vertex: '<circle cx="5" cy="18" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="17" r="2"/><path d="m6.1 16.3 4.8-9.5M13.5 6.4l4.3 8.9M7 18h10"/>',
   line: '<path d="M4 18 20 6"/><circle cx="4" cy="18" r="1.8"/><circle cx="20" cy="6" r="1.8"/>',
-  rectangle: '<rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="m4 5 16 14M20 5 4 19"/>'
+  rectangle: '<rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="m4 5 16 14M20 5 4 19"/>',
+  trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"/>'
 };
 function icon(name) {
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">${ICON_PATHS[name] || ""}</svg>`;
@@ -1676,12 +1677,19 @@ function renderFaceLayers() {
   const loops = fe.work || oc.bmap[e.bid] || [];
   let n = 0;
   list.textContent = "";
-  const row = (iconTxt, name, sub) => {
+  const row = (iconTxt, name, sub, onDel) => {
     const r = document.createElement("div");
     r.className = "face-layer-row";
     r.innerHTML = `<span class="face-layer-icon">${iconTxt}</span>` +
       `<span class="face-layer-copy"><strong>${name}</strong>` +
       `<small>${sub}</small></span>`;
+    if (onDel) {
+      const b = document.createElement("button");
+      b.className = "face-layer-del"; b.title = "刪除";
+      b.textContent = "✕";
+      b.addEventListener("click", onDel);
+      r.appendChild(b);
+    }
     list.appendChild(r);
     ++n;
   };
@@ -1694,7 +1702,11 @@ function renderFaceLayers() {
     }
   }
   for (const g of fe.guides)
-    row("⌖", `參考線 ${g.id}`, `${g.axis} = ${g.off}`);
+    row("⌖", `參考線 ${g.id}`, `${g.axis} = ${g.off}`, async () => {
+      if (await emitLine(`delete guide ${g.id}`)) {
+        await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
+      }
+    });
   $("faceLayerCount").textContent = n;
 }
 
@@ -2088,6 +2100,7 @@ function renderInspector() {
     (sel.kind === "space"
       ? `<button class="btn" id="inspMembers"><i data-icon="edit"></i><span>編輯成員</span></button>` : "") +
     `<button class="btn" id="inspLocate"><i data-icon="locate"></i><span>定位卡片</span></button>` +
+    `<button class="btn danger" id="inspDelete"><i data-icon="trash"></i><span>刪除</span></button>` +
     `</div></div>` +
     /* 放置表單（§5.5.3a）：boundary 面才有；placement 面已是合體 */
     (sel.kind === "boundary" ? placeFormHTML(sel.id) : "");
@@ -2101,6 +2114,28 @@ function renderInspector() {
     centerOnNode(sel.kind, sel.id));
   const mb = pane.querySelector("#inspMembers");
   if (mb) mb.addEventListener("click", () => openMemberDialog(o.id));
+  pane.querySelector("#inspDelete").addEventListener("click", () =>
+    deleteObject(sel.kind, sel.id));
+}
+
+/* 刪除（Q1）：delete <kind> <id> 走核心交易重驗。
+   surface 合體面（boundary 卡）先刪承載面再刪邊界面——兩行經 mutate 交易。 */
+async function deleteObject(kind, id) {
+  const name = kind === "space" ? `空間 ${id}`
+    : kind === "placement" ? `placement ${id}` : `面 ${id}`;
+  if (!confirm(`刪除 ${name}？（可用 Ctrl+Z 復原）`)) return;
+  let lines;
+  if (kind === "boundary") {
+    const pl = oc.surfs.find(s => s.boundary === id);
+    lines = pl ? [`delete placement ${pl.id}`, `delete boundary ${id}`]
+               : [`delete boundary ${id}`];
+  } else {
+    lines = [`delete ${kind} ${id}`];
+  }
+  if (await mutate(lines)) {
+    oc.sel = null;
+    if (oc.focus) leaveFocus(); else await renderObjects();
+  }
 }
 /* 雙擊卡片 → 進入工作區 */
 ocv.addEventListener("dblclick", e => {

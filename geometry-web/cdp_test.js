@@ -661,6 +661,33 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`leaveFocus()`);
   await sleep(300);
 
+  /* Q1:delete 指令——拒絕路徑 + UI 刪除鈕交易 + guide 刪除 */
+  console.log("=== P6. delete(Q1)===");
+  const delR = await eval_(`(async()=>{
+    await api("line reset");
+    window.confirm = () => true;
+    await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 100,0 100,100 0,100");
+    const refuse = await api("line delete boundary 1");
+    await deleteObject("boundary", 1);           /* 檢視器路徑:先 placement 再 boundary */
+    const after1 = (await api("objects")).faces.length;
+    /* guide:面內圖層列 ✕ 路徑 = emitLine("delete guide id") */
+    await api("line surface 2 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100");
+    const gid = (await api("newid")).guide;
+    await emitLine("guide " + gid + " 2 v 50");
+    await emitLine("delete guide " + gid);
+    const noGuide = !(await api("dump")).text.includes("guide " + gid);
+    /* space */
+    await api("line space 9");
+    await deleteObject("space", 9);
+    const spLeft = (await api("objects")).spaces.length;
+    return {refuse: refuse.ok, msg: refuse.error,
+            after1, noGuide, spLeft};
+  })()`);
+  console.log("boundary 拒絕:", !delR.refuse ? "✓" : "✗", delR.msg || "",
+    "| 刪除後面數:", delR.after1, delR.after1 === 0 ? "✓" : "✗",
+    "| guide 已刪:", delR.noGuide ? "✓" : "✗",
+    "| 空間已刪:", delR.spLeft === 0 ? "✓" : "✗");
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);
