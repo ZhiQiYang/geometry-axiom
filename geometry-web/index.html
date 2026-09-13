@@ -3,49 +3,180 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>角材三視圖 · Web 介面</title>
+<meta name="color-scheme" content="light">
+<title>構形 Canvas · 角材幾何</title>
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
-<div id="topbar">
-  <button id="btnOpen">開啟場景檔…</button>
-  <input id="file" type="file" accept=".scene" hidden>
-  <select id="sceneList"></select>
-  <button id="btnScene">載入所選</button>
-  <button id="btnZoom">縮放重置</button>
-  <button id="btnObj">▦ 物件畫布</button>
-  <select id="tool">
-    <option value="view">檢視／選取</option>
-    <option value="rect">▭ 拉矩形建面</option>
-    <option value="poly">⬠ 畫多邊形建面</option>
-    <option value="hole">▨ 挖矩形孔</option>
-    <option value="edit">✥ 編輯邊界</option>
-  </select>
-  <select id="workSurf"></select>
-  <input id="newZ" type="number" value="0" step="100"
-         style="width:76px" title="新平面高度 z（mm）" hidden>
-  <button id="btnExport">匯出 .scene</button>
-  <span id="objtools" hidden>
-    <button id="btnNewRect">＋面·矩形</button>
-    <button id="btnNewPoly">＋面·多邊形</button>
-    <button id="btnNewSpace">＋空間</button>
-    <button id="btnHole2" hidden>▨ 挖孔</button>
-    <button id="btnBack" hidden>← 返回</button>
-    <span id="crumb"></span>
-  </span>
-  <span class="sp"></span>
-  <span class="hint">左鍵點選／拖參考線 · 中鍵平移 · 滾輪縮放 — 幾何由 web_bridge.exe（C）計算</span>
+<div id="app" class="app-shell">
+  <header class="topbar">
+    <div class="brand" aria-label="構形 Canvas">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M7 8.5 16 3l9 5.5v10L16 24l-9-5.5z"/><path d="M7 8.5 16 14l9-5.5M16 14v10"/></svg>
+      </span>
+      <span class="brand-copy">
+        <strong>構形 Canvas</strong>
+        <small>語意物件無限畫布</small>
+      </span>
+    </div>
+
+    <nav class="tool-group" aria-label="畫布工具">
+      <button class="tool-button active" type="button" data-tool="select" title="選取/移動 (V)">
+        <span data-icon="pointer"></span><span>選取</span>
+      </button>
+      <button class="tool-button" type="button" data-tool="pan" title="平移 (H 或空白鍵)">
+        <span data-icon="hand"></span><span>平移</span>
+      </button>
+      <span class="toolbar-separator" aria-hidden="true"></span>
+      <button class="tool-button" type="button" data-tool="rect" title="＋面·矩形（畫布拖曳）">
+        <span data-icon="rectangle"></span><span>面·矩形</span>
+      </button>
+      <button class="tool-button" type="button" data-tool="poly" title="＋面·多邊形（逐點閉合）">
+        <span data-icon="vertex"></span><span>面·多邊形</span>
+      </button>
+    </nav>
+
+    <div class="top-actions">
+      <label class="search-control" title="搜尋物件">
+        <span data-icon="search"></span>
+        <input id="searchInput" type="search" placeholder="搜尋物件…" autocomplete="off">
+        <kbd>/</kbd>
+      </label>
+      <button id="btnUndo" class="icon-button" type="button" title="復原 (Ctrl+Z)" aria-label="復原"><span data-icon="undo"></span></button>
+      <button id="btnRedo" class="icon-button" type="button" title="重做 (Ctrl+Y)" aria-label="重做"><span data-icon="redo"></span></button>
+      <button id="btnObj" class="secondary-button" type="button" title="開/關三視圖總覽"><span data-icon="layers"></span>三視圖</button>
+      <button id="btnZoom" class="icon-button" type="button" title="顯示全部 (F)" aria-label="顯示全部"><span data-icon="fit"></span></button>
+      <select id="sceneList" title="場景檔範例"></select>
+      <button id="btnScene" class="secondary-button" type="button">載入所選</button>
+      <button id="btnOpen" class="secondary-button" type="button"><span data-icon="upload"></span>開啟…</button>
+      <input id="file" type="file" accept=".scene" hidden>
+      <button id="btnExport" class="primary-button" type="button"><span data-icon="download"></span>匯出 .scene</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="sidebar sidebar-left" aria-label="物件庫">
+      <section class="sidebar-section create-section">
+        <div class="section-heading">
+          <div>
+            <h2>物件庫</h2>
+            <p>在畫布上建立物件</p>
+          </div>
+        </div>
+        <div class="quick-create-grid">
+          <button id="btnNewRect" type="button" class="quick-create">
+            <span class="type-icon face"><span data-icon="rectangle"></span></span>
+            <span><strong>＋面·矩形</strong><small>畫布拖曳</small></span>
+          </button>
+          <button id="btnNewPoly" type="button" class="quick-create">
+            <span class="type-icon face"><span data-icon="vertex"></span></span>
+            <span><strong>＋面·多邊形</strong><small>逐點閉合</small></span>
+          </button>
+          <button id="btnNewSpace" type="button" class="quick-create">
+            <span class="type-icon space"><span data-icon="space"></span></span>
+            <span><strong>＋空間</strong><small>空容器</small></span>
+          </button>
+          <button id="btnBox6" type="button" class="quick-create">
+            <span class="type-icon space"><span data-icon="layers"></span></span>
+            <span><strong>快速六面盒</strong><small>W·D·H 一次建好</small></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="sidebar-section filter-section">
+        <div class="section-label-row">
+          <span class="section-label">顯示類型</span>
+        </div>
+        <label class="filter-row"><input type="checkbox" data-filter-type="face" checked><span class="dot face"></span><span>面</span><strong id="faceCount">0</strong></label>
+        <label class="filter-row"><input type="checkbox" data-filter-type="space" checked><span class="dot space"></span><span>空間</span><strong id="spaceCount">0</strong></label>
+      </section>
+
+      <section class="sidebar-section object-tree-section">
+        <div class="section-label-row">
+          <span class="section-label">所有物件</span>
+          <span id="objectCountBadge" class="count-badge">0</span>
+        </div>
+        <div id="objectList" class="object-list" role="list"></div>
+      </section>
+
+      <section class="sidebar-section canvas-options-section">
+        <span class="section-label">畫布</span>
+        <label class="switch-row"><span>格線吸附</span><input id="snapToggle" type="checkbox" checked><span class="switch-ui"></span></label>
+        <label class="switch-row"><span>顯示格線</span><input id="gridToggle" type="checkbox" checked><span class="switch-ui"></span></label>
+      </section>
+    </aside>
+
+    <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
+      <svg id="ocv"><g id="oroot"></g></svg>
+      <svg id="cv" hidden><g id="world"></g><g id="overlay"></g></svg>
+
+      <div id="viewToolbar" class="view-toolbar" hidden>
+        <select id="tool">
+          <option value="view">檢視／選取</option>
+          <option value="rect">▭ 拉矩形建面</option>
+          <option value="poly">⬠ 畫多邊形建面</option>
+          <option value="hole">▨ 挖矩形孔</option>
+          <option value="edit">✥ 編輯邊界</option>
+        </select>
+        <select id="workSurf"></select>
+        <input id="newZ" type="number" value="0" step="100"
+               style="width:76px" title="新平面高度 z（mm）" hidden>
+      </div>
+
+      <div id="focusBar" class="focus-bar" hidden>
+        <button id="btnBack" type="button">← 返回</button>
+        <span id="crumb"></span>
+        <button id="btnHole2" type="button">▨ 挖孔</button>
+      </div>
+
+      <div id="emptyState" class="empty-state" hidden>
+        <div class="empty-illustration" aria-hidden="true">
+          <span class="empty-tile tile-a"></span><span class="empty-tile tile-b"></span><span class="empty-line"></span>
+        </div>
+        <h2>建立第一個領域物件</h2>
+        <p>建立「面」或「空間」，它會以卡片出現在畫布；雙擊卡片進入物件內部編輯。</p>
+      </div>
+
+      <div class="canvas-controls" aria-label="縮放控制">
+        <button id="zoomOutButton" class="icon-button" type="button" title="縮小" aria-label="縮小"><span data-icon="minus"></span></button>
+        <button id="zoomLevelButton" class="zoom-level" type="button" title="回到 100%">100%</button>
+        <button id="zoomInButton" class="icon-button" type="button" title="放大" aria-label="放大"><span data-icon="plus"></span></button>
+        <span class="toolbar-separator vertical"></span>
+        <button id="homeButton" class="icon-button" type="button" title="回到原點" aria-label="回到原點"><span data-icon="home"></span></button>
+      </div>
+
+      <div class="minimap-shell" hidden>
+        <canvas id="minimap" width="220" height="132" aria-label="畫布小地圖"></canvas>
+        <span>小地圖</span>
+      </div>
+    </section>
+
+    <aside class="sidebar sidebar-right" aria-label="物件檢查器">
+      <div id="inspectorEmpty" class="inspector-empty">
+        <div class="inspector-empty-icon"><span data-icon="inspect"></span></div>
+        <h2>尚未選取物件</h2>
+        <p>選取畫布上的卡片或左欄清單列，這裡會顯示物件屬性與可用操作。</p>
+      </div>
+      <div id="inspectorContent" class="inspector-content" hidden></div>
+    </aside>
+  </main>
+
+  <footer class="statusbar">
+    <div class="status-left">
+      <span id="status"></span>
+      <span class="status-divider"></span>
+      <span id="hovertxt"></span>
+    </div>
+    <div class="status-right">
+      <input id="cmd" placeholder="指令：boundary｜placement｜surface｜space｜guide｜timber｜place｜move｜reset" autocomplete="off">
+      <button id="btnEx" type="button">載入範例</button>
+      <button id="btnClear" type="button">清空</button>
+    </div>
+  </footer>
 </div>
-<svg id="cv"><g id="world"></g><g id="overlay"></g></svg>
-<svg id="ocv" hidden><g id="oroot"></g></svg>
-<div id="bar">
-  <div class="row"><span id="status"></span><span id="hovertxt"></span></div>
-  <div class="row">
-    <input id="cmd" placeholder="指令：boundary｜placement｜surface(合體)｜space｜guide｜timber｜place on 面id at u v｜at-guides 線1 線2｜move 線id offset｜reset" autocomplete="off">
-    <button id="btnEx">載入範例</button>
-    <button id="btnClear">清空</button>
-  </div>
-</div>
+
+<div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
 <script src="app.js"></script>
 </body>
 </html>

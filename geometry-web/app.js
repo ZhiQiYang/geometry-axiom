@@ -4,6 +4,39 @@ const $ = id => document.getElementById(id);
 const cv = $("cv"), world = $("world"), overlay = $("overlay");
 const statusEl = $("status"), hoverEl = $("hovertxt");
 
+/* SVG icon 集(取自原型,只用到的保留) */
+const ICON_PATHS = {
+  pointer: '<path d="M6 3.5 17.4 14l-5.2.7 2.8 5.1-2.5 1.3-2.7-5-3.8 3.5Z"/>',
+  hand: '<path d="M7.5 11V6.8a1.4 1.4 0 0 1 2.8 0v3.4-5.6a1.4 1.4 0 0 1 2.8 0v5-4a1.4 1.4 0 0 1 2.8 0v4.6-2.4a1.4 1.4 0 0 1 2.8 0v5.1c0 4.3-2.5 7-6.6 7h-.8c-2.7 0-4.6-1.1-6.1-3L3 13.6a1.5 1.5 0 0 1 2.4-1.8Z"/>',
+  undo: '<path d="M8 7 3.5 11.5 8 16"/><path d="M4 11.5h8.2c4.7 0 7.3 2 7.3 6.5"/>',
+  redo: '<path d="m16 7 4.5 4.5L16 16"/><path d="M20 11.5h-8.2c-4.7 0-7.3 2-7.3 6.5"/>',
+  search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/>',
+  fit: '<path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"/><path d="M8 8h8v8H8z"/>',
+  download: '<path d="M12 3v12M7.5 10.5 12 15l4.5-4.5"/><path d="M4 19h16"/>',
+  upload: '<path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M4 19h16"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  minus: '<path d="M5 12h14"/>',
+  face: '<path d="m4.5 7.5 13-3 2 12-13 3z"/><path d="m6.5 19.5-2-12"/>',
+  space: '<path d="m4 8 8-4 8 4-8 4z"/><path d="m4 8 8 4 8-4v9l-8 4-8-4z"/><path d="M12 12v9"/>',
+  home: '<path d="m3.5 11 8.5-7 8.5 7"/><path d="M5.5 10v10h13V10M9.5 20v-6h5v6"/>',
+  inspect: '<path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/>',
+  eye: '<path d="M2.8 12s3.5-6 9.2-6 9.2 6 9.2 6-3.5 6-9.2 6-9.2-6 9.2-6 9.2-6Z"/><circle cx="12" cy="12" r="2.5"/>',
+  locate: '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+  arrowLeft: '<path d="M19 12H5M10 7l-5 5 5 5"/>',
+  arrowRight: '<path d="M5 12h14M14 7l5 5-5 5"/>',
+  layers: '<path d="m3 8 9-5 9 5-9 5z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/>',
+  edit: '<path d="M4 20h4l11-11-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
+  vertex: '<circle cx="5" cy="18" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="17" r="2"/><path d="m6.1 16.3 4.8-9.5M13.5 6.4l4.3 8.9M7 18h10"/>',
+  line: '<path d="M4 18 20 6"/><circle cx="4" cy="18" r="1.8"/><circle cx="20" cy="6" r="1.8"/>',
+  rectangle: '<rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="m4 5 16 14M20 5 4 19"/>'
+};
+function icon(name) {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">${ICON_PATHS[name] || ""}</svg>`;
+}
+function hydrateIcons(root = document) {
+  for (const slot of root.querySelectorAll("[data-icon]")) slot.innerHTML = icon(slot.dataset.icon);
+}
+
 /* DrawStyle 外觀表：與 STYLE_SPEC + SVG 後端的 CSS 同一份值。 */
 const STYLE = [
   { line:"#bbbbbb", fill:"#ffffff", w:1 },                      /* FRAME */
@@ -599,7 +632,10 @@ $("file").addEventListener("change", async e => {
   else setStatus("✗ " + (r.error || ""));
   e.target.value = "";
 });
-$("btnZoom").onclick = () => { zoom = 1; panX = panY = 0; applyTransform(); };
+$("btnZoom").addEventListener("click", () => {
+  if (!oc.on) { zoom = 1; panX = 0; panY = 0; applyTransform(); return; }
+  ocFit();
+});
 window.addEventListener("resize", applyTransform);
 
 /* ============================================================
@@ -610,8 +646,11 @@ window.addEventListener("resize", applyTransform);
 const ocv = $("ocv"), oroot = $("oroot");
 const OC_W = 200, OC_H = 150, OC_PAD = 12;
 const oc = {
-  on: false,
+  on: true,               /* D1:物件畫布是主畫面 */
   panX: 0, panY: 0, zoom: 1,
+  tool: "select",         /* select | pan */
+  sel: null,              /* 選取 {kind,id} */
+  showFace: true, showSpace: true,
   faces: [], spaces: [],
   stack: [],              // 焦點堆疊：世界 → 空間 → 面
   focus: null,            // null | {t:'space'|'face', id}
@@ -628,6 +667,11 @@ let ocSeq = 0;
 function ocApply() {
   oroot.setAttribute("transform",
     `translate(${oc.panX},${oc.panY}) scale(${oc.zoom})`);
+  const vp = $("canvasViewport");
+  vp.style.setProperty("--pan-x", oc.panX + "px");
+  vp.style.setProperty("--pan-y", oc.panY + "px");
+  vp.style.setProperty("--grid-size", (24 * oc.zoom) + "px");
+  const zl = $("zoomLevelButton"); if (zl) zl.textContent = Math.round(oc.zoom * 100) + "%";
 }
 function ocToCanvas(e) {
   const r = ocv.getBoundingClientRect();
@@ -655,7 +699,7 @@ function loopsBBox(loops) {
 function faceCard(f) {
   const g = el("g", { class: "ocard", "data-kind": f.kind, "data-id": f.id,
                       transform: `translate(${f.cx},${f.cy})`, cursor: "pointer" });
-  el("rect", { x: 0, y: 0, width: OC_W, height: OC_H, rx: 8,
+  el("rect", { class: "ocard-frame", x: 0, y: 0, width: OC_W, height: OC_H, rx: 8,
                fill: "#ffffff", stroke: f.placed ? "#3a7" : "#789",
                "stroke-width": 2, "stroke-dasharray": f.placed ? "" : "7 4" }, g);
   const t = el("text", { x: OC_PAD, y: 20, "font-size": 15, fill: "#222" }, g);
@@ -683,7 +727,7 @@ function faceCard(f) {
 function spaceCard(s) {
   const g = el("g", { class: "ocard", "data-kind": "space", "data-id": s.id,
                       transform: `translate(${s.cx},${s.cy})`, cursor: "pointer" });
-  el("rect", { x: 0, y: 0, width: 240, height: 170, rx: 10,
+  el("rect", { class: "ocard-frame", x: 0, y: 0, width: 240, height: 170, rx: 10,
                fill: "#eef3ff", stroke: "#36c", "stroke-width": 2.5 }, g);
   const t = el("text", { x: OC_PAD, y: 22, "font-size": 16,
                          fill: "#234", "font-weight": "bold" }, g);
@@ -739,12 +783,25 @@ function drawObjects() {
 
   for (const f of oc.faces) {
     if (inSpace && !inSpace.has(f.id)) continue;
-    oroot.appendChild(faceCard(f));
+    if (!oc.showFace) continue;
+    const c = faceCard(f);
+    if (oc.sel && oc.sel.kind === f.kind && oc.sel.id === f.id)
+      c.classList.add("selected");
+    oroot.appendChild(c);
   }
   if (!inSpace) {
-    for (const s of oc.spaces) oroot.appendChild(spaceCard(s));
+    for (const s of oc.spaces) {
+      if (!oc.showSpace) continue;
+      const c = spaceCard(s);
+      if (oc.sel && oc.sel.kind === "space" && oc.sel.id === s.id)
+        c.classList.add("selected");
+      oroot.appendChild(c);
+    }
   }
   drawCrumb();
+  renderObjectList();
+  renderInspector();
+  $("emptyState").hidden = (oc.faces.length + oc.spaces.length) > 0 || !!oc.focus;
 }
 
 function drawCrumb() {
@@ -753,7 +810,7 @@ function drawCrumb() {
     if (f) parts.push(f.t === "space" ? `空間 ${f.id}` : `面 ${f.id}`);
   }
   $("crumb").textContent = parts.join(" ▸ ");
-  $("btnBack").hidden = !oc.focus;
+  $("focusBar").hidden = !oc.focus;
   $("btnHole2").hidden = !(oc.focus && oc.focus.t === "face");
 }
 
@@ -798,7 +855,7 @@ function leaveFocus() {
   oc.rect = null; oc.poly = []; oc.edit = null; oc.drawTool = null;
   if (!oc.focus) { oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply(); }
   drawObjects();
-  setStatus("物件畫布：拖卡片移動擺放 · 點卡片進入 · 空白處拖曳平移 · 滾輪縮放");
+  setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白處拖曳平移 · 滾輪縮放");
 }
 
 /* ---- 面編輯器（2D 直編：畫布座標 = 邊界 uv） ---- */
@@ -950,6 +1007,126 @@ function drawPolyPreview(pt) {
 }
 
 /* ---- 事件 ---- */
+/* ── 選取與檢視器(Phase 1) ── */
+function selectObject(kind, id) {
+  oc.sel = { kind, id };
+  /* 重新套 selected class,不重抓 world */
+  for (const c of oroot.querySelectorAll(".ocard")) c.classList.remove("selected");
+  const cc = oroot.querySelector(`.ocard[data-kind="${kind}"][data-id="${id}"]`);
+  if (cc) cc.classList.add("selected");
+  renderObjectList();
+  renderInspector();
+}
+function ocFind(kind, id) {
+  if (kind === "space") return oc.spaces.find(s => s.id === id) || null;
+  return oc.faces.find(f => f.kind === kind && f.id === id) || null;
+}
+function cardCenter(kind, id) {
+  const p = oc.bmap.get(`${kind}:${id}`);
+  const w = kind === "space" ? 240 : OC_W, h = kind === "space" ? 170 : OC_H;
+  return p ? { x: p.x + w / 2, y: p.y + h / 2 } : null;
+}
+function centerOnNode(kind, id) {
+  const c = cardCenter(kind, id);
+  if (!c) return;
+  const r = ocv.getBoundingClientRect();
+  oc.panX = r.width / 2 - c.x * oc.zoom;
+  oc.panY = r.height / 2 - c.y * oc.zoom;
+  ocApply();
+}
+/* 左欄物件清單 */
+function renderObjectList() {
+  const list = $("objectList"); if (!list) return;
+  list.textContent = "";
+  const rows = [];
+  for (const f of oc.faces) {
+    if (!oc.showFace) continue;
+    const name = f.kind === "placement" ? `placement ${f.id}` : `面 ${f.id}`;
+    rows.push({ kind: f.kind, id: f.id, name,
+      sub: f.kind === "placement" ? `pid ${f.pid} · ${f.bbox.join(",")}`
+                                  : `面 · ${f.bbox.join(",")}` });
+  }
+  for (const s of oc.spaces) {
+    if (!oc.showSpace) continue;
+    rows.push({ kind: "space", id: s.id, name: `空間 ${s.id}`,
+      sub: `空間 · ${s.members.length} 個邊界面` });
+  }
+  $("objectCountBadge").textContent = rows.length;
+  for (const r of rows) {
+    const row = document.createElement("div");
+    row.className = "object-row";
+    row.dataset.kind = r.kind; row.dataset.id = r.id;
+    if (oc.sel && oc.sel.kind === r.kind && oc.sel.id === r.id)
+      row.classList.add("selected");
+    row.innerHTML =
+      `<span class="row-icon">${icon(r.kind === "space" ? "space" : "face")}</span>` +
+      `<span class="row-main"><span class="row-name">${r.name}</span>` +
+      `<span class="row-sub">${r.sub}</span></span>`;
+    row.addEventListener("click", () => {
+      selectObject(r.kind, r.id);
+      centerOnNode(r.kind, r.id);
+    });
+    row.addEventListener("dblclick", () => {
+      if (r.kind === "placement") setStatus("自帶矩形面沒有邊界可編輯");
+      else enterFocus(r.kind === "space" ? "space" : "face", r.id);
+    });
+    list.appendChild(row);
+  }
+  $("faceCount").textContent = oc.faces.length;
+  $("spaceCount").textContent = oc.spaces.length;
+}
+/* 右欄檢視器 */
+function renderInspector() {
+  const pane = $("inspectorContent"); if (!pane) return;
+  const empty = $("inspectorEmpty");
+  const sel = oc.sel && ocFind(oc.sel.kind, oc.sel.id) ? oc.sel : null;
+  if (empty) empty.hidden = !!sel;
+  pane.hidden = !sel;
+  if (!sel) { pane.innerHTML = ""; return; }
+  const o = ocFind(sel.kind, sel.id);
+  pane.textContent = "";
+  const name = sel.kind === "space" ? `空間 ${o.id}`
+    : sel.kind === "placement" ? `placement ${o.id}` : `面 ${o.id}`;
+  const state = sel.kind === "space"
+    ? (o.closed ? "closed" : `open · ${o.members.length} 面`)
+    : (o.placed ? "已放置" : "游離");
+  pane.innerHTML =
+    `<div class="inspector-block"><div class="ib-title">${name}` +
+    `<span class="tag">${sel.kind}</span></div>` +
+    `<div class="kv"><span>id</span><b>${o.id}</b></div>` +
+    `<div class="kv"><span>狀態</span><b>${state}</b></div>` +
+    (o.bbox ? `<div class="kv"><span>範圍</span><b>${o.bbox.join(", ")}</b></div>` : "") +
+    `</div>` +
+    `<div class="inspector-block"><div class="ib-title">操作</div>` +
+    `<div class="btn-col">` +
+    `<button class="btn" id="inspEnter"><i data-icon="edit"></i><span>` +
+    (sel.kind === "space" ? "進入空間工作區" : "進入面內工作區") + `</span></button>` +
+    `<button class="btn" id="inspLocate"><i data-icon="locate"></i><span>定位卡片</span></button>` +
+    `</div></div>`;
+  hydrateIcons(pane);
+  const be = pane.querySelector("#inspEnter");
+  if (sel.kind === "placement") { be.disabled = true; be.title = "placement 面沒有邊界可編輯"; }
+  else be.addEventListener("click", () =>
+    enterFocus(sel.kind === "space" ? "space" : "face", sel.id));
+  pane.querySelector("#inspLocate").addEventListener("click", () =>
+    centerOnNode(sel.kind, sel.id));
+}
+/* 雙擊卡片 → 進入工作區 */
+ocv.addEventListener("dblclick", e => {
+  if (!oc.on) return;
+  /* setPointerCapture 會把相容滑鼠事件的 target 重定向到 ocv,
+     用 elementFromPoint 取真實命中;oc.sel 作後援。 */
+  const hit = document.elementFromPoint(e.clientX, e.clientY);
+  const card = (hit && hit.closest(".ocard")) ||
+    (oc.sel && oroot.querySelector(
+      `.ocard[data-kind="${oc.sel.kind}"][data-id="${oc.sel.id}"]`));
+  if (!card || card.dataset.kind === "placement") {
+    if (card) setStatus("自帶矩形面沒有邊界可編輯");
+    return;
+  }
+  enterFocus(card.dataset.kind === "space" ? "space" : "face",
+             parseInt(card.dataset.id, 10));
+});
 ocv.addEventListener("pointerdown", e => {
   if (!oc.on || e.button !== 0) return;
   const pt = ocToCanvas(e);
@@ -958,7 +1135,7 @@ ocv.addEventListener("pointerdown", e => {
   if (oc.focus && oc.focus.t === "face") { faceEditDown(pt); return; }
   if (oc.drawTool) { objDrawDown(pt); return; }
 
-  const card = e.target.closest(".ocard");
+  const card = oc.tool === "pan" ? null : e.target.closest(".ocard");
   if (card) {
     oc.card = { el: card, kind: card.dataset.kind, id: +card.dataset.id,
                 sx: pt.x, sy: pt.y, moved: false };
@@ -1006,18 +1183,18 @@ ocv.addEventListener("pointerup", async e => {
     const c = oc.card; oc.card = null;
     if (c.moved) {
       const kind = c.kind;
+      if ($("snapToggle").checked) {
+        c.nx = Math.round(c.nx / 20) * 20;
+        c.ny = Math.round(c.ny / 20) * 20;
+      }
       await api(`line canvas-pos ${kind} ${c.id} ${Math.round(c.nx)} ${Math.round(c.ny)}`);
       const o = [...oc.faces, ...oc.spaces]
         .find(o => o.id === c.id && (o.members ? "space" : o.kind) === kind);
       if (o) { o.cx = Math.round(c.nx); o.cy = Math.round(c.ny); }
       drawObjects();
     } else {
-      /* 點擊進入 */
-      if (c.kind === "placement") {
-        setStatus("自帶矩形面沒有邊界可編輯");
-      } else {
-        enterFocus(c.kind === "space" ? "space" : "face", c.id);
-      }
+      /* 單擊 = 選取(檢視器);雙擊 = 進入工作區(§5.4) */
+      selectObject(c.kind === "space" ? "space" : c.kind, c.id);
     }
     return;
   }
@@ -1054,28 +1231,78 @@ ocv.addEventListener("wheel", e => {
 }, { passive: false });
 
 /* ---- 模式切換與按鈕 ---- */
-$("btnObj").addEventListener("click", () => {
-  oc.on = !oc.on;
-  ocv.toggleAttribute("hidden", !oc.on); cv.toggleAttribute("hidden", oc.on);
-  $("objtools").hidden = !oc.on;
-  $("btnObj").textContent = oc.on ? "◧ 三視圖" : "▦ 物件畫布";
-  if (oc.on) {
-    oc.focus = null; oc.stack = [];
-    setStatus("物件畫布：拖卡片移動擺放 · 點卡片進入 · 空白拖曳平移 · 滾輪縮放");
-    renderObjects();
+let view3 = false;          /* 三視圖總覽覆層(D1:按需開啟) */
+/* 工具群:select/pan/rect/poly */
+function setOcTool(t) {
+  oc.tool = (t === "rect" || t === "poly") ? "select" : t;
+  oc.drawTool = (t === "rect" || t === "poly") ? t : "";
+  oc.poly = []; oc.rect = null;
+  for (const b of document.querySelectorAll("[data-tool]"))
+    b.classList.toggle("active", b.dataset.tool === t);
+  const tip = { select: "", pan: "平移：拖曳畫布移動視野",
+    rect: "在畫布上拖出矩形 → 建立游離面",
+    poly: "逐點畫正交多邊形，點回起點閉合（Esc 取消）" };
+  if (tip[t]) setStatus(tip[t]);
+}
+for (const b of document.querySelectorAll("[data-tool]"))
+  b.addEventListener("click", () => setOcTool(b.dataset.tool));
+/* undo / redo(§5.6) */
+async function doUndoRedo(verb) {
+  const r = await api(`line ${verb}`);
+  if (!r.ok) { setStatus(r.error); return; }
+  setStatus(verb === "undo" ? "✓ 已復原" : "✓ 已重做");
+  await renderObjects();
+}
+$("btnUndo").addEventListener("click", () => doUndoRedo("undo"));
+$("btnRedo").addEventListener("click", () => doUndoRedo("redo"));
+/* 縮放控制 */
+function ocZoomAt(f, px, py) {
+  const r = ocv.getBoundingClientRect();
+  const c = ocToCanvas(px ?? r.width / 2, py ?? r.height / 2);
+  oc.zoom = Math.min(4, Math.max(0.05, oc.zoom * f));
+  oc.panX = (px ?? r.width / 2) - c.x * oc.zoom;
+  oc.panY = (py ?? r.height / 2) - c.y * oc.zoom;
+  ocApply();
+}
+$("zoomInButton").addEventListener("click", () => ocZoomAt(1.25));
+$("zoomOutButton").addEventListener("click", () => ocZoomAt(0.8));
+$("homeButton").addEventListener("click", () => {
+  oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply();
+});
+$("zoomLevelButton").addEventListener("click", () => { oc.zoom = 1; ocApply(); });
+/* 吸附 / 格線 */
+$("gridToggle").addEventListener("change", e =>
+  $("canvasViewport").classList.toggle("show-grid", e.target.checked));
+/* 篩選 */
+for (const cb of document.querySelectorAll("[data-filter-type]")) {
+  cb.addEventListener("change", () => {
+    oc.showFace = document.querySelector('[data-filter-type="face"]').checked;
+    oc.showSpace = document.querySelector('[data-filter-type="space"]').checked;
+    drawObjects();
+  });
+}
+/* 快速六面盒:Phase 4 才做對話框 */
+$("btnBox6").addEventListener("click", () =>
+  setStatus("快速六面盒將於 Phase 4 提供"));
+$("btnObj").addEventListener("click", async () => {
+  view3 = !view3;
+  oc.on = !view3;
+  cv.toggleAttribute("hidden", !view3);
+  $("viewToolbar").toggleAttribute("hidden", !view3);
+  $("btnObj").innerHTML = icon("layers") + (view3 ? "物件畫布" : "三視圖");
+  if (view3) {
+    if (oc.focus) { oc.focus = null; oc.stack = []; drawObjects(); }
+    setStatus("三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回");
+    await render();
+    await refreshSurfaces();
   } else {
-    render();
+    setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白拖曳平移 · 滾輪縮放");
+    await renderObjects();
   }
 });
 $("btnBack").addEventListener("click", leaveFocus);
-$("btnNewRect").addEventListener("click", () => {
-  oc.drawTool = "rect"; oc.poly = [];
-  setStatus("在畫布上拖出矩形 → 建立游離面");
-});
-$("btnNewPoly").addEventListener("click", () => {
-  oc.drawTool = "poly"; oc.rect = null; oc.poly = [];
-  setStatus("逐點畫正交多邊形，點回起點閉合（Esc 取消）");
-});
+$("btnNewRect").addEventListener("click", () => setOcTool("rect"));
+$("btnNewPoly").addEventListener("click", () => setOcTool("poly"));
 $("btnNewSpace").addEventListener("click", async () => {
   const ids = await api("newid");
   const r = ocv.getBoundingClientRect();
@@ -1106,7 +1333,9 @@ $("btnHole2").addEventListener("click", () => {
       sel.appendChild(o);
     }
   } catch {}
-  setStatus("指令：boundary｜placement｜space｜guide｜timber｜place on 面id at u v｜at-guides 線1 線2｜move 線id offset｜reset");
-  render();
+  hydrateIcons();
+  ocApply();
+  setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白拖曳平移 · 滾輪縮放");
+  renderObjects();
   refreshSurfaces();
 })();

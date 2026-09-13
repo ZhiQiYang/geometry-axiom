@@ -56,6 +56,11 @@ async function click(x, y) {
   for (const [type, btn] of [["mousePressed", "left"], ["mouseReleased", "left"]])
     await send("Input.dispatchMouseEvent", { type, x, y, button: btn, clickCount: 1 });
 }
+async function dblclick(x, y) {
+  for (const n of [1, 2])
+    for (const type of ["mousePressed", "mouseReleased"])
+      await send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: n });
+}
 async function drag(x0, y0, x1, y1, steps = 6) {
   await send("Input.dispatchMouseEvent", { type: "mousePressed", x: x0, y: y0, button: "left", clickCount: 1 });
   for (let i = 1; i <= steps; ++i)
@@ -75,23 +80,59 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`api("line canvas-pos boundary 1 60 60")`);
   await sleep(500);
 
-  console.log("=== 1. 頁面狀態 ===");
-  console.log("world children:", await eval_(`document.getElementById("world").childElementCount`));
-  console.log("ocv.hidden:", await eval_(`document.getElementById("ocv").hidden`));
-  console.log("cv.hidden:", await eval_(`document.getElementById("cv").hidden`));
+  console.log("=== 1. Phase 1 版面檢查點(§6) ===");
+  /* (a) #app 三列:58 / 1fr / 28 */
+  const rows = await eval_(`(()=>{const app=document.getElementById("app");
+    const kids=[...app.children];return {n:kids.length,
+      cls:kids.map(k=>k.className.split(" ")[0]).join(","),
+      h:kids.map(k=>Math.round(k.getBoundingClientRect().height))}})()`);
+  console.log("app rows:", JSON.stringify(rows),
+    rows.n === 3 && rows.h[0] === 58 && rows.h[2] === 28 ? "✓ 三列殼" : "✗");
+  /* (b) .workspace 三欄:左 242 / 中 1fr / 右 326 */
+  const cols = await eval_(`(()=>{const w=document.querySelector(".workspace");
+    const k=[...w.children];return {n:k.length,
+      w:k.map(c=>Math.round(c.getBoundingClientRect().width))}})()`);
+  console.log("workspace cols:", JSON.stringify(cols),
+    cols.n === 3 && cols.w[0] === 242 && cols.w[2] === 326 ? "✓ 三欄" : "✗");
+  /* (c) topbar 子層序:brand → tool-group → top-actions */
+  const tb = await eval_(`[...document.querySelector(".topbar").children].map(c=>c.className.split(" ")[0]).join(",")`);
+  console.log("topbar order:", tb,
+    tb === "brand,tool-group,top-actions" ? "✓ 頂列順序" : "✗");
+  /* (d) #ocv 在 #canvasViewport 內且同大小(誤差≤2px) */
+  const fit = await eval_(`(()=>{const v=document.getElementById("canvasViewport").getBoundingClientRect();
+    const o=document.getElementById("ocv").getBoundingClientRect();
+    return {dv:Math.abs(v.left-o.left)+Math.abs(v.top-o.top),
+            ds:Math.abs(v.width-o.width)+Math.abs(v.height-o.height)}})()`);
+  console.log("ocv fit:", JSON.stringify(fit),
+    fit.dv <= 2 && fit.ds <= 2 ? "✓ ocv 鋪滿 viewport" : "✗");
+  /* (e) #status 與 #cmd 都在 .statusbar 裡 */
+  const sb = await eval_(`(()=>{const sb=document.querySelector(".statusbar");
+    return !!(sb.querySelector("#status") && sb.querySelector("#cmd"))})()`);
+  console.log("statusbar:", sb ? "✓ status/cmd 在狀態列" : "✗");
+  /* 截圖存檔 */
+  const shot = await send("Page.captureScreenshot", { format: "png" });
+  require("fs").writeFileSync("phase1.png", Buffer.from((shot.result && shot.result.data) || "", "base64"));
+  console.log("screenshot: phase1.png");
+  console.log("初始:oc.on=", await eval_(`oc.on`),
+    "ocv.hidden=", await eval_(`document.getElementById("ocv").hasAttribute("hidden")`),
+    "cv.hidden=", await eval_(`document.getElementById("cv").hasAttribute("hidden")`),
+    "cards=", await eval_(`document.querySelectorAll(".ocard").length`));
 
-  console.log("=== 2. 點「物件畫布」鈕 ===");
-  console.log("viewport:", await eval_(`innerWidth + "x" + innerHeight`));
+  console.log("=== 2. 三視圖覆層開/關 ===");
   const btnRect = await eval_(`(()=>{const r=document.getElementById("btnObj").getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()`);
   await click(btnRect.x, btnRect.y);
-  await sleep(1200);
-  for (const id of ["topbar", "cv", "ocv"])
-    console.log(id + " rect:", await eval_(`JSON.stringify(document.getElementById("${id}").getBoundingClientRect())`));
-  console.log("elementFromPoint 640,350:", await eval_(`(()=>{const e=document.elementFromPoint(640,350);return e?e.tagName+"#"+e.id+"."+(e.getAttribute("class")||""):"null"})()`));
-  console.log("ocv.hidden after:", await eval_(`document.getElementById("ocv").hidden`));
-  console.log("cv.hidden after:", await eval_(`document.getElementById("cv").hidden`));
+  await sleep(1000);
+  const v3on = await eval_(`({cv:document.getElementById("cv").hasAttribute("hidden"),
+    vt:document.getElementById("viewToolbar").hasAttribute("hidden"),on:oc.on,
+    world:document.getElementById("world").childElementCount})`);
+  console.log("view3 open:", JSON.stringify(v3on),
+    !v3on.cv && !v3on.vt && !v3on.on ? "✓ 三視圖開啟" : "✗");
+  await click(btnRect.x, btnRect.y);
+  await sleep(1000);
+  const v3off = await eval_(`({cv:document.getElementById("cv").hasAttribute("hidden"),on:oc.on})`);
+  console.log("view3 close:", JSON.stringify(v3off),
+    v3off.cv && v3off.on ? "✓ 返回物件畫布" : "✗");
   console.log("cards:", await eval_(`document.querySelectorAll(".ocard").length`));
-  console.log("oc.on:", await eval_(`oc.on`));
 
   console.log("=== 3. 拖曳空白處（pan） ===");
   const ocvRect = await eval_(`JSON.stringify(document.getElementById("ocv").getBoundingClientRect())`);
@@ -169,7 +210,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
                 posBefore !== posAfter ? "✓ 拖卡片有效" : "✗ 拖卡片無效");
   }
 
-  console.log("=== 6. 點新建游離面卡（不移動）→ 進入面編輯 ===");
+  console.log("=== 6. 點卡=選取(檢視器);雙擊=進入面編輯 ===");
   const cardPt = await eval_(`(()=>{
     const cards = [...document.querySelectorAll(".ocard")];
     const c = cards[cards.length - 1];   /* 最後建的游離面 */
@@ -180,6 +221,13 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("card pt:", JSON.stringify(cardPt));
   if (cardPt) {
     await click(cardPt.x, cardPt.y);
+    await sleep(600);
+    const sel = await eval_(`JSON.stringify(oc.sel)`);
+    console.log("click sel:", sel,
+      JSON.parse(sel) ? "✓ 單擊選取" : "✗",
+      "| inspector hidden:", await eval_(`document.getElementById("inspectorContent").hidden`));
+    console.log("focus(應為 null):", await eval_(`JSON.stringify(oc.focus)`));
+    await dblclick(cardPt.x, cardPt.y);
     await sleep(1000);
     console.log("focus:", await eval_(`JSON.stringify(oc.focus)`));
     console.log("status:", await eval_(`document.getElementById("status").textContent`));
@@ -227,7 +275,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     return {x: r.left + r.width/2, y: r.top + r.height/2};
   })()`);
   if (spPt) {
-    await click(spPt.x, spPt.y);
+    await dblclick(spPt.x, spPt.y);
     await sleep(800);
     console.log("focus:", await eval_(`JSON.stringify(oc.focus)`),
                 await eval_(`oc.focus && oc.focus.t === "space" ? "✓" : "✗"`));
@@ -277,11 +325,10 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const fR2 = await eval_(facesN);
   console.log("redo×2:", fU2, "->", fR2, fR2 === fPreUndo ? "✓ redo 有效" : "✗");
 
-  console.log("=== 10. 切回三視圖 ===");
+  console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);
   console.log("cv hidden:", await eval_(`document.getElementById("cv").hasAttribute("hidden")`));
-  console.log("ocv hidden:", await eval_(`document.getElementById("ocv").hasAttribute("hidden")`));
   console.log("world children:", await eval_(`document.getElementById("world").childElementCount`));
   chrome.kill();
   _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);
