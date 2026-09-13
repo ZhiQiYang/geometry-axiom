@@ -434,6 +434,37 @@ function check(name, cond, detail="") {
   check("M7 建未放置面", (await api("line boundary 20 outline 0,0 100,0 100,100 0,100")).ok);
   check("M7 未放置面拒絕(R9)", !(await api("line apply-proj 20 1")).ok);
 
+  /* M8 拆分時承載面輔助資料跟著含錨點的那片走(R13):
+     天花(u=x 0-4000, v=y 0-3000)被 x=2800±150 的樑條帶裁切 →
+     保留片 u<2650(id 1 留最大片),新片 u>2950(新 id)。
+     錨在新片的 guide/grid/timber 要改掛新承載面;
+     錨在移除帶的 guide → 整筆拒絕回滾。 */
+  check("M8 重建", await freshRoom());
+  check("M8 建樑(x=2800)", (await api(
+        "line beam 3 in 1 along y from 0 to 3000 at 2800 width 300 depth 500")).ok);
+  let auxOk = true;
+  for (const ln of [
+    "guide 1 1 v 3500",        /* 固定 u=3500 → 只在新片 */
+    "guide 2 1 u 1500",        /* 固定 v=1500 → 兩片都合法 → 留原片 */
+    "grid 1 on 1 u 3500 v 1500",/* u 座標 3500 → 只在新片 */
+    "timber 1 400 27 33",
+    "place 1 on 1 at 3500 1500 +u +n",  /* 錨點 (3500,1500) → 新片 */
+  ]) if (!(await api("line " + ln)).ok) { auxOk = false; console.log("  M8 aux fail:", ln); }
+  check("M8 輔助資料就緒", auxOk);
+  check("M8 apply cut-strip", (await api("line apply-proj 1 b3 cut-strip")).ok);
+  const dM8 = (await api("dump")).text;
+  check("M8 新片 guide 改掛", /guide 1 7 v 3500/.test(dM8), dM8);
+  check("M8 兩棲 guide 留原片", /guide 2 1 u 1500/.test(dM8), dM8);
+  check("M8 網格改掛新片", /grid 1 on 7/.test(dM8), dM8);
+  check("M8 角材改掛新片", /place 1 on 7 at 3500 1500/.test(dM8), dM8);
+  /* M8b 錨在移除帶(u=2800)的 guide → 整筆拒絕,世界不變 */
+  check("M8b 重建", await freshRoom() &&
+        (await api("line beam 3 in 1 along y from 0 to 3000 at 2800 width 300 depth 500")).ok &&
+        (await api("line guide 1 1 v 2800")).ok);
+  const dM8b = (await api("dump")).text;
+  check("M8b 帶上錨點拒絕", !(await api("line apply-proj 1 b3 cut-strip")).ok);
+  check("M8b 世界未變", (await api("dump")).text === dM8b);
+
   await api("default");
 
   console.log(`\n${pass} pass / ${fail} fail`);

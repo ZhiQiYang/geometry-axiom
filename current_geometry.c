@@ -9286,6 +9286,70 @@ static void proj_space_drop_member(World *world, uint32_t bid)
     }
 }
 
+/*
+ * 拆面後,掛在原承載面上的參考線/網格/角材要跟著含其錨點的
+ * 那片走(與孔重新分配同一條「資料跟材料走」規則):
+ *   - 只在保留片合法 → 留原 placement;
+ *   - 只在新片合法 → 改掛新 placement;
+ *   - 兩片都合法 → 留原片(對使用者資料最少驚訝);
+ *   - 兩片都不含(錨點落在被移除的條帶區)→ 回報 false,
+ *     由 apply-proj 交易整筆回滾,不靜默丟資料。
+ * new_b 必須是剛由 proj_add_surface 追加的那片(取 placement
+ * 用陣列尾)。
+ */
+static bool proj_rebind_aux(
+    World *world,
+    const PlacementSurface *old_pl,
+    const SpaceBoundarySurface *keep_b,
+    const SpaceBoundarySurface *new_b,
+    SurfaceId new_pl_id
+)
+{
+    const PlacementSurface *new_pl =
+        &world->placements[world->placement_count - 1];
+
+    for (size_t i = 0; i < world->guide_count; ++i) {
+        GuideLine *g = &world->guides[i];
+        if (g->placement_id != old_pl->id) continue;
+        bool k = guide_offset_in_range(old_pl, keep_b,
+                    g->direction, g->offset);
+        bool n = guide_offset_in_range(new_pl, new_b,
+                    g->direction, g->offset);
+        if (n && !k) {
+            g->placement_id = new_pl_id;
+        } else if (!k && !n) {
+            return false;
+        }
+    }
+    for (size_t i = 0; i < world->grid_count; ++i) {
+        ReferenceGrid *g = &world->grids[i];
+        if (g->placement_id != old_pl->id) continue;
+        /* grid_is_valid 會先查 placement_id 對得上 placement——
+           用暫時改掛的副本測新片。 */
+        ReferenceGrid tmp = *g;
+        tmp.placement_id = new_pl_id;
+        bool k = grid_is_valid(g, old_pl, keep_b);
+        bool n = grid_is_valid(&tmp, new_pl, new_b);
+        if (n && !k) {
+            g->placement_id = new_pl_id;
+        } else if (!k && !n) {
+            return false;
+        }
+    }
+    for (size_t i = 0; i < world->timber_count; ++i) {
+        TimberAnchor *a = &world->anchors[i];
+        if (a->placement_id != old_pl->id) continue;
+        bool k = poly_contains_point(&keep_b->outline, a->uv);
+        bool n = poly_contains_point(&new_b->outline, a->uv);
+        if (n && !k) {
+            a->placement_id = new_pl_id;
+        } else if (!k && !n) {
+            return false;
+        }
+    }
+    return true;
+}
+
 /* 生成面:房間座標矩形 → 自備框(法向朝外)建 boundary+placement。
  *   axis_a/axis_b = 面上兩軸的軸索引(0/1/2);normal 由 u×v 定。 */
 static bool proj_spawn_face(
@@ -9414,6 +9478,13 @@ static bool proj_apply_one(
             b->outline = *keep;
             proj_redistribute_holes(b,
                 &world->boundaries[world->boundary_count - 1]);
+            if (!proj_rebind_aux(world, pl, b,
+                    &world->boundaries[world->boundary_count - 1],
+                    nid)) {
+                scene_error(path, line_no,
+                    "拆分後參考線/網格/角材失去承載面");
+                return false;
+            }
             proj_space_drop_member(world, b->id);
         } else {
             if (!proj_cut_run(&b->outline, sf, cu0, cv0, cu1, cv1)) {
@@ -9475,6 +9546,13 @@ static bool proj_apply_one(
         b->outline = *keep;
         proj_redistribute_holes(b,
             &world->boundaries[world->boundary_count - 1]);
+        if (!proj_rebind_aux(world, pl, b,
+                &world->boundaries[world->boundary_count - 1],
+                nid)) {
+            scene_error(path, line_no,
+                "拆分後參考線/網格/角材失去承載面");
+            return false;
+        }
         proj_space_drop_member(world, b->id);
 
         /* 立面貼牆柱:柱露出側面生成新立面(同牆平面/法向) */

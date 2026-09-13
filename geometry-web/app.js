@@ -1931,7 +1931,10 @@ function drawFaceEditor() {
     el("polygon", { points: lp.verts.map(p => p.join(",")).join(" "),
       fill: li === 0 ? "rgba(47,143,123,.13)" : "#f8fafc",
       stroke: "#2f8f7b", "stroke-width": 1.7,
-      "vector-effect": "non-scaling-stroke" }, root);
+      "vector-effect": "non-scaling-stroke",
+      /* 面體不吃事件：底下的透明邊命中線要接得到點擊
+         (邊中點恰在 polygon 邊界上,不關掉會被面蓋住,邊永遠點不到) */
+      "pointer-events": "none" }, root);
     for (let i = 0; i < lp.verts.length; ++i) {
       el("circle", { cx: lp.verts[i][0], cy: lp.verts[i][1], r: 5 / z,
         "data-face-hit": `v:${li}:${i}`,
@@ -2118,6 +2121,11 @@ async function feDown(pt, ev) {
     const B = Math.round(+($("tbB") || {}).value || 0);
     if (!(A > 0) || !(B > 0) || L < 0) {
       setStatus("角材 A/B 要是正整數，L 留空 = auto"); return;
+    }
+    /* 公理 O3:auto 角材(L 留空)只能 at-grid/at-edge 錨線放置;
+       點擊 at 錨點必須明寫 L,否則核心必拒 */
+    if (!L) {
+      setStatus("點放角材要填長度 L(auto 角材只能放格線/邊)"); return;
     }
     const dir = ($("tbDir") || {}).value || "+u";
     const side = ($("tbSide") || {}).value || "+n";
@@ -2349,11 +2357,14 @@ async function feInsertNotch() {
   const cpt = horiz ? [nt.c, va[1]] : [va[0], nt.c];
   const d = fePointInFace(loops, cpt[0] + n[0] * 5, cpt[1] + n[1] * 5)
     ? dIn : -dIn;
-  /* 邊 A→B 拆成 A→c0→in0→in1→c1→B;孔邊一樣朝面材內側凹 */
-  const e0 = horiz ? [c0, va[1]] : [va[0], c0];
-  const i0 = horiz ? [c0, va[1] + d] : [va[0] + d, c0];
-  const i1 = horiz ? [c1, va[1] + d] : [va[0] + d, c1];
-  const e1 = horiz ? [c1, va[1]] : [va[0], c1];
+  /* 邊 A→B 拆成 A→ca→in0→in1→cb→B;孔邊一樣朝面材內側凹。
+     ca/cb 依邊的走向排序:反向邊(hi→lo)先遇到 c1 */
+  const fwd = horiz ? (vb[0] > va[0]) : (vb[1] > va[1]);
+  const ca = fwd ? c0 : c1, cb = fwd ? c1 : c0;
+  const e0 = horiz ? [ca, va[1]] : [va[0], ca];
+  const i0 = horiz ? [ca, va[1] + d] : [va[0] + d, ca];
+  const i1 = horiz ? [cb, va[1] + d] : [va[0] + d, cb];
+  const e1 = horiz ? [cb, va[1]] : [va[0], cb];
   lp.verts.splice(i + 1, 0, e0, i0, i1, e1);
   lp.fixity.splice(i + 1, 0, 0, 0, 0, lp.fixity[i]);
   fe.notch = null;

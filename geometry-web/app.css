@@ -861,6 +861,9 @@ svg text { user-select: none; }
 /* busy 互斥(§5.1):mutate 飛行中忽略所有按鈕與輸入 */
 body.oc-busy button { pointer-events: none; opacity: .45; }
 body.oc-busy input, body.oc-busy select, body.oc-busy textarea { pointer-events: none; }
+/* div 型可點列（構件列/圖層列）busy 時一樣要擋,否則點了被 emitLine 靜默丟棄 */
+body.oc-busy .space-boundary-button,
+body.oc-busy .face-layer-row { pointer-events: none; opacity: .45; }
 
 /* 投影面板互動(§5.5.4):可 pick 的游標提示 */
 .proj-svg { cursor: crosshair; }
