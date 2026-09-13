@@ -179,7 +179,8 @@ static void cmd_render(void)
     Scene scene = scene_from_world(&g_world);
     SceneLayout layout;
 
-    if (scene.placement_count == 0 || !scene_compute_layout(&scene, &layout)) {
+    /* 空世界/純游離面世界：scene_compute_layout 會回最小空版面。 */
+    if (!scene_compute_layout(&scene, &layout)) {
         fputs("{\"ok\":false,\"error\":\"場景沒有可畫的表面\"}\n", stdout);
         return;
     }
