@@ -131,7 +131,8 @@ static bool feed_line(const char *path, int line_no, const char *text, World *wo
     int count = split_tokens(line, tokens, SCENE_MAX_TOKENS);
     if (count <= 0) return true;   /* 空行／純註解：不算錯 */
 
-    return apply_scene_line(path, line_no, tokens, count, world);
+    /* undo/redo 攔截 + 變更前記快照，都在共享核心裡。 */
+    return apply_interactive_tokens(path, line_no, tokens, count, world);
 }
 
 /* 內建預設 = room_a.scene 的內容，走同一條解析路。 */
@@ -149,6 +150,7 @@ static bool world_default(World *world)
     for (size_t i = 0; i < sizeof(DEFAULT_SCENE) / sizeof(DEFAULT_SCENE[0]); ++i) {
         if (!feed_line("<內建>", (int)i + 1, DEFAULT_SCENE[i], world)) return false;
     }
+    history_clear();   /* 啟動載入不是使用者操作，不該被 undo */
     return true;
 }
 
@@ -285,10 +287,14 @@ static void cmd_line(const char *text)
 
 static void cmd_loadfile(const char *path)
 {
-    memset(&g_world, 0, sizeof g_world);   /* 同 gdi_load_scene_file：先 reset */
+    /* 先記快照：失敗時世界不動，成功時載入本身可以 undo。 */
+    World before = g_world;
+    memset(&g_world, 0, sizeof g_world);
     if (parse_scene_file(path, &g_world)) {
+        history_record(&before);
         fputs("{\"ok\":true}\n", stdout);
     } else {
+        g_world = before;
         fputs("{\"ok\":false,\"error\":", stdout);
         js_string(scene_last_error());
         fputs("}\n", stdout);

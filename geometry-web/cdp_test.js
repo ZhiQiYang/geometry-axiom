@@ -244,6 +244,29 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("faces:", fb2, "->", fa2, fa2 > fb2 ? "✓ 多邊形建面成功" : "✗ 失敗");
   console.log("status:", await eval_(`document.getElementById("status").textContent`));
 
+  console.log("=== 9d. Ctrl+Z 復原 / Ctrl+Y 重做 ===");
+  /* 最後兩步變更：boundary 3 建立 + 自動 canvas-pos。undo 兩次才回到面消失。 */
+  const facesN = `oc.faces.length`;
+  const fPreUndo = await eval_(facesN);
+  const key = async (k, code, vk) => {
+    await send("Input.dispatchKeyEvent", { type: "keyDown", key: k, code, modifiers: 2, windowsVirtualKeyCode: vk });
+    await send("Input.dispatchKeyEvent", { type: "keyUp", key: k, code, modifiers: 2, windowsVirtualKeyCode: vk });
+  };
+  await key("z", "KeyZ", 90); await sleep(800);
+  const fU1 = await eval_(facesN);
+  const st1 = await eval_(`document.getElementById("status").textContent`);
+  console.log("undo1 api faces:", await eval_(`api("objects").then(r=>r.faces.length)`));
+  await key("z", "KeyZ", 90); await sleep(800);
+  const fU2 = await eval_(facesN);
+  console.log("undo2 api faces:", await eval_(`api("objects").then(r=>r.faces.length)`));
+  const st2 = await eval_(`document.getElementById("status").textContent`);
+  console.log("undo×2:", fPreUndo, "->", fU1, "->", fU2,
+              fU2 === fPreUndo - 1 ? "✓ undo 有效" : "✗", "|", st1, "|", st2);
+  await key("y", "KeyY", 89); await sleep(800);
+  await key("y", "KeyY", 89); await sleep(800);
+  const fR2 = await eval_(facesN);
+  console.log("redo×2:", fU2, "->", fR2, fR2 === fPreUndo ? "✓ redo 有效" : "✗");
+
   console.log("=== 10. 切回三視圖 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);

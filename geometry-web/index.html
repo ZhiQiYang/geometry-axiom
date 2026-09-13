@@ -612,7 +612,20 @@ $("btnExport").onclick = async () => {
   URL.revokeObjectURL(a.href);
   setStatus("✓ 已匯出 canvas_export.scene");
 };
-window.addEventListener("keydown", e => {
+window.addEventListener("keydown", async e => {
+  /* Ctrl+Z 復原 / Ctrl+Y・Ctrl+Shift+Z 重做（輸入框裡讓給原生編輯）。 */
+  if (e.ctrlKey && !e.altKey && (e.key === "z" || e.key === "y" || e.key === "Z" || e.key === "Y")) {
+    if (e.target.tagName === "INPUT") return;
+    e.preventDefault();
+    const cmd = (e.key === "y" || e.key === "Y" || e.shiftKey) ? "redo" : "undo";
+    const r = await api("line " + cmd);
+    if (r.ok) {
+      setStatus("✓ " + (cmd === "undo" ? "已復原" : "已重做"));
+      if (oc.on) await renderObjects();
+      else { await render(); await refreshSurfaces(); }
+    } else setStatus("✗ " + (r.error || ""));
+    return;
+  }
   if (e.key === "Escape") {
     if (oc.on) {
       if (oc.rect || oc.poly.length || oc.drawTool ||
@@ -893,9 +906,13 @@ async function faceEditDown(pt) {
   }
 
   const r = Math.max(4, 10 / oc.zoom);
-  const h = await api(`bhit ${e.bid} ${Math.round(pt.x)} ${Math.round(pt.y)} ${Math.ceil(r)}`);
+  /* bhit 是非同步的：pointerup 可能先到。記著 pending 讓 up 等它，
+   * 否則會留下「沒放開的拖曳」卡住編輯態。 */
+  e.down = api(`bhit ${e.bid} ${Math.round(pt.x)} ${Math.round(pt.y)} ${Math.ceil(r)}`);
+  const h = await e.down;
+  e.down = null;
   if (!h.ok) return;
-  e.drag = { loop: h.loop, index: h.index, kind: h.kind };
+  e.drag = { loop: h.loop, index: h.index, kind: h.kind, moved: false };
   e.work = (e.work || oc.bmap[e.bid]).map(l =>
     ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
 }
@@ -913,6 +930,7 @@ function faceEditMove(pt) {
     return;
   }
   if (!e.drag || !e.work) return;
+  e.drag.moved = true;
   const uv = { u: Math.round(pt.x), v: Math.round(pt.y) };
   const pts = e.work[e.drag.loop + 1].verts;
   if (e.drag.kind === "vertex") applyVertexEdit(pts, e.drag.index, uv);
@@ -923,6 +941,7 @@ function faceEditMove(pt) {
 async function faceEditUp(pt) {
   const e = oc.edit;
   if (!e) return;
+  if (e.down) await e.down;          /* 等還在飛的 bhit：down 比 up 晚到 */
 
   if (oc.drawTool === "hole" && oc.rect) {
     const st = oc.rect; oc.rect = null;
@@ -943,7 +962,9 @@ async function faceEditUp(pt) {
   }
 
   if (e.drag) {
-    const work = e.work; e.drag = null; e.work = null;
+    const work = e.work, moved = e.drag.moved;
+    e.drag = null; e.work = null;
+    if (!moved) return;              /* 點了一下沒拖：不算變更 */
     if (await emitBoundary(e.bid, work)) {
       delete oc.bmap[e.bid];
       const b = await api("boundary " + e.bid);

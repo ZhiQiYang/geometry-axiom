@@ -3273,6 +3273,109 @@ static const char *scene_last_error(void);
 static int split_tokens(char *line, char *tokens[], int max_tokens);
 static bool apply_scene_line(
     const char *path, int line_no, char *tokens[], int count, World *world);
+
+/* ---- 復原/重做：World 是 POD，memcpy 即快照 ----
+ * undo/redo 是 session 層指令，不進 .scene 檔格式；
+ * 由互動入口（interactive_apply_line / web feed_line）攔截。
+ */
+static void scene_error(const char *path, int line_no, const char *message);
+
+#define HISTORY_MAX 32
+static World g_hist_undo[HISTORY_MAX];
+static int   g_hist_undo_n;
+static World g_hist_redo[HISTORY_MAX];
+static int   g_hist_redo_n;
+
+/* 變更成功前呼叫：把現況壓入 undo 疊並清掉 redo。 */
+static void history_record(const World *w)
+{
+    if (g_hist_undo_n >= HISTORY_MAX) {
+        memmove(&g_hist_undo[0], &g_hist_undo[1],
+                sizeof(World) * (HISTORY_MAX - 1));
+        --g_hist_undo_n;
+    }
+    g_hist_undo[g_hist_undo_n++] = *w;
+    g_hist_redo_n = 0;
+}
+
+/* 檔案載入/啟動載入後呼叫：那些不是使用者操作，不該被 undo。 */
+static void history_clear(void)
+{
+    g_hist_undo_n = 0;
+    g_hist_redo_n = 0;
+}
+
+/* apply 失敗時呼叫：剛記的快照作廢（世界沒變）。 */
+static void history_unrecord(void)
+{
+    if (g_hist_undo_n > 0) {
+        --g_hist_undo_n;
+    }
+}
+
+static bool history_undo(World *w)
+{
+    if (g_hist_undo_n <= 0) {
+        return false;
+    }
+    if (g_hist_redo_n >= HISTORY_MAX) {
+        memmove(&g_hist_redo[0], &g_hist_redo[1],
+                sizeof(World) * (HISTORY_MAX - 1));
+        --g_hist_redo_n;
+    }
+    g_hist_redo[g_hist_redo_n++] = *w;
+    *w = g_hist_undo[--g_hist_undo_n];
+    return true;
+}
+
+static bool history_redo(World *w)
+{
+    if (g_hist_redo_n <= 0) {
+        return false;
+    }
+    if (g_hist_undo_n >= HISTORY_MAX) {
+        memmove(&g_hist_undo[0], &g_hist_undo[1],
+                sizeof(World) * (HISTORY_MAX - 1));
+        --g_hist_undo_n;
+    }
+    g_hist_undo[g_hist_undo_n++] = *w;
+    *w = g_hist_redo[--g_hist_redo_n];
+    return true;
+}
+
+/* 互動入口共用：undo/redo 攔截 + 變更前記快照（失敗自動取消）。
+ * 回傳值同 apply_scene_line。 */
+static bool apply_interactive_tokens(
+    const char *path, int line_no, char *tokens[], int count, World *world)
+{
+    if (count == 1 && strcmp(tokens[0], "undo") == 0) {
+        if (history_undo(world)) {
+            return true;
+        }
+        scene_error(path, line_no, "沒有可復原的操作");
+        return false;
+    }
+    if (count == 1 && strcmp(tokens[0], "redo") == 0) {
+        if (history_redo(world)) {
+            return true;
+        }
+        scene_error(path, line_no, "沒有可重做的操作");
+        return false;
+    }
+    /* canvas-pos 是展示中繼資料：不記歷史也不清 redo,
+     * 否則 renderObjects 的自動排位會把 undo 掉的擺放寫回來。 */
+    if (strcmp(tokens[0], "canvas-pos") == 0) {
+        return apply_scene_line(path, line_no, tokens, count, world);
+    }
+
+    history_record(world);
+    if (apply_scene_line(path, line_no, tokens, count, world)) {
+        return true;
+    }
+    history_unrecord();
+    return false;
+}
+
 static bool parse_scene_file(const char *path, World *out_world);
 
 /* ============================================================
@@ -3639,6 +3742,8 @@ static void gdi_text(void *ctx, ViewPoint2 at, DrawStyle style, const char *utf8
 #define IDM_OPEN_SCENE   201
 #define IDM_ZOOM_RESET   202
 #define IDM_EXIT         203
+#define IDM_UNDO         204
+#define IDM_REDO         205
 
 /* 畫布工具與工作面選擇；IDM_WORK_BASE+i = 第 i 個承載面。 */
 #define IDM_TOOL_VIEW    210
@@ -3904,14 +4009,18 @@ static void interactive_apply_line(GdiApp *app, HWND window, const char *text);
  */
 static void gdi_load_scene_file(GdiApp *app, HWND window, const char *path, const char *name)
 {
-    interactive_apply_line(app, window, "reset");
+    /* 快照式載入：失敗世界不動，成功則整步可 undo。 */
+    World before = *app->world;
+    memset(app->world, 0, sizeof *app->world);
 
     if (parse_scene_file(path, app->world)) {
+        history_record(&before);
         app_refresh(app, window);
         char msg[320];
         snprintf(msg, sizeof msg, "✓ 已載入 %s", name);
         gdi_set_status(app, msg);
     } else {
+        *app->world = before;   /* 解析失敗：還原，不留半殘世界 */
         char msg[320];
         snprintf(msg, sizeof msg, "✗ %s", scene_last_error());
         gdi_set_status(app, msg);
@@ -3950,6 +4059,7 @@ static void gdi_open_scene_dialog(GdiApp *app, HWND window)
  * 切 token → apply_scene_line → 守門員。接受就刷新畫面，
  * 拒絕就把解析層給的理由顯示在狀態列。
  */
+
 static void interactive_apply_line(GdiApp *app, HWND window, const char *text)
 {
     char line[SCENE_MAX_LINE];
@@ -3972,7 +4082,7 @@ static void interactive_apply_line(GdiApp *app, HWND window, const char *text)
 
     ++app->input_line_no;
 
-    if (apply_scene_line("<輸入>", app->input_line_no, tokens, count, app->world)) {
+    if (apply_interactive_tokens("<輸入>", app->input_line_no, tokens, count, app->world)) {
         app_refresh(app, window);
         gdi_set_status(app, "✓ 已套用");
         SetWindowTextW(app->input_edit, L"");
@@ -4648,6 +4758,16 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                 return 0;
             }
 
+            if (LOWORD(wparam) == IDM_UNDO) {
+                interactive_apply_line(app, window, "undo");
+                return 0;
+            }
+
+            if (LOWORD(wparam) == IDM_REDO) {
+                interactive_apply_line(app, window, "redo");
+                return 0;
+            }
+
             if (LOWORD(wparam) == IDM_EXIT) {
                 DestroyWindow(window);
                 return 0;
@@ -5076,9 +5196,12 @@ static bool gdi_show_three_views(World *world)
     ACCEL accel[] = {
         { FVIRTKEY | FCONTROL, 'O', IDM_OPEN_SCENE },
         { FVIRTKEY | FCONTROL, 'E', IDC_BTN_EXAMPLE },
-        { FVIRTKEY | FCONTROL, '0', IDM_ZOOM_RESET }
+        { FVIRTKEY | FCONTROL, '0', IDM_ZOOM_RESET },
+        { FVIRTKEY | FCONTROL, 'Z', IDM_UNDO },
+        { FVIRTKEY | FCONTROL, 'Y', IDM_REDO },
+        { FVIRTKEY | FCONTROL | FSHIFT, 'Z', IDM_REDO }
     };
-    HACCEL haccel = CreateAcceleratorTableW(accel, 3);
+    HACCEL haccel = CreateAcceleratorTableW(accel, 6);
 
     MSG msg;
 
