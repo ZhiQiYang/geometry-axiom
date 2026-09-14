@@ -96,6 +96,17 @@ TESTS = [
     {"scene": "_mut_neg_hole_ref.scene", "expect": "reject",
      "error": "邊參照"},
 
+    # ---- 角色主支軸(GEO-091、D17/I21)----
+    # 同面第二支 primary 換軸 → V_PRIMARY_AXIS
+    {"scene": "_role_axis_second_primary.scene", "expect": "reject",
+     "error": "V_PRIMARY_AXIS"},
+    # boundary 先落地定軸(⊥),再放與它平行的 primary → V_PRIMARY_AXIS
+    {"scene": "_role_axis_boundary_first.scene", "expect": "reject",
+     "error": "V_PRIMARY_AXIS"},
+    # 刪掉唯一 primary 後軸由 boundary 推得(不回未定義)→ V_PRIMARY_AXIS
+    {"scene": "_role_axis_fallback.scene", "expect": "reject",
+     "error": "V_PRIMARY_AXIS"},
+
     # ---- RC 柱/樑(D13/D14、I15–I17、R11)----
     # 柱-柱面積相交 → I15 重驗拒絕
     {"scene": "_mut_col_overlap.scene", "expect": "reject",

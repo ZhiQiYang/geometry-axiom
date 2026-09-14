@@ -1,0 +1,12 @@
+# D17/I21:boundary 先落地定義主支軸(取其長度軸的垂直向);
+# 再放與 boundary 平行的 primary → 拒絕(V_PRIMARY_AXIS)。
+# 角材 1 沿 u → 主支軸 = v;角材 2 沿 u 會使 boundary 與主支軸平行。
+
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+
+timber 1 27 33 role boundary
+place 1 on 1 at-edge e0 +u +n
+
+timber 2 2000 27 33 role primary
+place 2 on 1 at 1000 500 +u +n

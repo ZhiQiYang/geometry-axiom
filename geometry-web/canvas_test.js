@@ -644,6 +644,49 @@ function check(name, cond, detail="") {
   check("R6 含角色 round-trip 相同",
         (await api("dump")).text === dR);
 
+  /* S. 主支軸一致（GEO-091、D17/I21）:
+     軸未定義放 secondary → 拒絕;同面第二支 primary 換軸 → 拒絕;
+     boundary 定軸後放平行 primary → 拒絕,放垂直 secondary → 接受;
+     刪掉唯一 primary 後軸由 boundary 推得,不回未定義。 */
+  console.log("== S. 主支軸一致（GEO-091）==");
+  await api("reset");
+  await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+  await api("line timber 1 500 27 33 role secondary");
+  check("S1 軸未定義放 secondary 拒絕",
+        !(await api("line place 1 on 1 at 1000 500 +u +n")).ok);
+
+  await api("line timber 2 500 27 33 role primary");
+  check("S2 首支 primary 定軸",
+        (await api("line place 2 on 1 at 500 1000 +u +n")).ok === true);
+  await api("line timber 3 500 27 33 role primary");
+  check("S3 第二支 primary 換軸拒絕",
+        !(await api("line place 3 on 1 at 3000 2000 +v +n")).ok);
+
+  await api("reset");
+  await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+  await api("line timber 1 27 33 role boundary");
+  check("S4 boundary 落地定軸",
+        (await api("line place 1 on 1 at-edge e0 +u +n")).ok === true);
+  await api("line timber 2 800 27 33 role primary");
+  check("S5 與 boundary 平行的 primary 拒絕",
+        !(await api("line place 2 on 1 at 1000 500 +u +n")).ok);
+  await api("line timber 3 500 27 33 role secondary");
+  check("S6 垂直主支軸的 secondary 接受",
+        (await api("line place 3 on 1 at 1500 500 +u +n")).ok === true);
+
+  await api("reset");
+  await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+  await api("line timber 1 27 33 role boundary");
+  await api("line place 1 on 1 at-edge e0 +u +n");
+  await api("line timber 2 1000 27 33 role primary");
+  check("S7 primary 沿 boundary 垂直向接受",
+        (await api("line place 2 on 1 at 500 500 +v +n")).ok === true);
+  check("S8 刪掉唯一 primary",
+        (await api("line delete timber 2")).ok === true);
+  await api("line timber 3 800 27 33 role primary");
+  check("S9 刪後軸仍由 boundary 推得",
+        !(await api("line place 3 on 1 at 1000 500 +u +n")).ok);
+
   await api("default");
 
   console.log(`\n${pass} pass / ${fail} fail`);

@@ -6705,6 +6705,135 @@ static SpanStatus resolve_auto_span(
     return SPAN_OK;
 }
 
+/*
+ * D17/I21 主支軸一致:推導承載面的主支軸,驗證角色-方向關係。
+ *
+ *   primary 全同軸 → 該軸即主支軸;
+ *   無 primary 有 boundary → 主支軸 = boundary 長度軸的垂直向;
+ *   兩者皆無 → 未定義(第一支 primary/boundary 落地即定義,
+ *   此支不做方向檢查);未定義時不得有 secondary(副支必須
+ *   在主支之後)。
+ *
+ * boundary/secondary 的長度軸必須垂直於主支軸(面內只有
+ * u/v 兩軸,平行 = 同軸 → 拒絕)。custom 不參與本檢查——
+ * 它的 priority 只用於 I19 的數值比較,沒有方向義務。
+ *
+ * extra/extra_along_v:place 路徑在落料前先驗,那支料尚未進
+ * world->anchors,由參數補上;world_revalidate 傳 NULL。
+ */
+static bool surface_primary_axis_check(
+    const World *world,
+    SurfaceId placement_id,
+    const Timber *extra,
+    bool extra_along_v,
+    char *err,
+    size_t err_size
+)
+{
+    bool has_primary = false, has_boundary = false;
+    int primary_axis = -1, boundary_axis = -1;   /* 0 = 沿 u,1 = 沿 v */
+    TimberId primary_id = 0;
+
+    /* 第一遍:定軸。primary 優先推導,其次 boundary 的垂直向。 */
+    for (size_t i = 0; i <= world->timber_count; ++i) {
+        const Timber *t;
+        int axis;
+
+        if (i < world->timber_count) {
+            const TimberAnchor *a;
+
+            t = &world->timbers[i];
+            if (!t->placed) continue;
+            a = &world->anchors[i];
+            if (a->placement_id != placement_id) continue;
+            axis =
+                a->length_direction == SURFACE_DIRECTION_POS_V ||
+                a->length_direction == SURFACE_DIRECTION_NEG_V ? 1 : 0;
+        } else {
+            if (extra == NULL) break;
+            t = extra;
+            axis = extra_along_v ? 1 : 0;
+        }
+
+        if (t->role == TIMBER_ROLE_PRIMARY) {
+            if (!has_primary) {
+                has_primary = true;
+                primary_axis = axis;
+                primary_id = t->id;
+            } else if (axis != primary_axis) {
+                if (err != NULL) {
+                    snprintf(err, err_size,
+                        "V_PRIMARY_AXIS:同面 primary 長度軸不唯一"
+                        "（角材 %u 沿 %c,角材 %u 沿 %c）",
+                        primary_id, primary_axis ? 'v' : 'u',
+                        t->id, axis ? 'v' : 'u');
+                }
+                return false;
+            }
+        } else if (t->role == TIMBER_ROLE_BOUNDARY && !has_boundary) {
+            has_boundary = true;
+            boundary_axis = axis;
+        }
+    }
+
+    int axis = has_primary ? primary_axis
+             : has_boundary ? 1 - boundary_axis
+             : -1;
+
+    /* 第二遍:boundary/secondary 不得與主支軸平行;
+       主支軸未定義時不得有 secondary。 */
+    for (size_t i = 0; i <= world->timber_count; ++i) {
+        const Timber *t;
+        int t_axis;
+
+        if (i < world->timber_count) {
+            const TimberAnchor *a;
+
+            t = &world->timbers[i];
+            if (!t->placed) continue;
+            a = &world->anchors[i];
+            if (a->placement_id != placement_id) continue;
+            t_axis =
+                a->length_direction == SURFACE_DIRECTION_POS_V ||
+                a->length_direction == SURFACE_DIRECTION_NEG_V ? 1 : 0;
+        } else {
+            if (extra == NULL) break;
+            t = extra;
+            t_axis = extra_along_v ? 1 : 0;
+        }
+
+        if (t->role != TIMBER_ROLE_BOUNDARY &&
+            t->role != TIMBER_ROLE_SECONDARY) {
+            continue;
+        }
+
+        if (axis == -1) {
+            if (t->role == TIMBER_ROLE_SECONDARY) {
+                if (err != NULL) {
+                    snprintf(err, err_size,
+                        "V_PRIMARY_AXIS:主支軸未定義,"
+                        "secondary（角材 %u）必須在主支之後", t->id);
+                }
+                return false;
+            }
+            continue;   /* boundary 落地即定義主支軸 */
+        }
+
+        if (t_axis == axis) {
+            if (err != NULL) {
+                snprintf(err, err_size,
+                    "V_PRIMARY_AXIS:角材 %u（%s）長度軸沿 %c,"
+                    "與主支軸平行——boundary/secondary 必須垂直於主支軸",
+                    t->id, timber_role_name(t->role),
+                    axis ? 'v' : 'u');
+            }
+            return false;
+        }
+    }
+
+    return true;
+}
+
 static bool world_revalidate(const World *world);
 
 static bool world_replace_object(
@@ -6877,6 +7006,15 @@ static bool world_revalidate(const World *world)
                     fj.min_u, fj.min_v, fj.max_u, fj.max_v)) {
                 return false;
             }
+        }
+    }
+
+    /* D17/I21：每片承載面推導主支軸,驗證角色-方向一致。 */
+    for (size_t i = 0; i < world->placement_count; ++i) {
+        if (!surface_primary_axis_check(
+                world, world->placements[i].id, NULL, false,
+                NULL, 0)) {
+            return false;
         }
     }
 
@@ -8478,6 +8616,18 @@ static bool apply_place_line(
         scene_error(path, line_no,
             "角材與同承載面上的已放角材正面積重疊");
         return false;
+    }
+
+    /* D17/I21：同面主支軸一致——含這支待放料一起驗。 */
+    {
+        char axis_err[200] = "";
+
+        if (!surface_primary_axis_check(
+                world, placement_id, timber, along_v,
+                axis_err, sizeof axis_err)) {
+            scene_error(path, line_no, axis_err);
+            return false;
+        }
     }
 
     if (!timber_place_a0_on_surface(

@@ -1,0 +1,11 @@
+# D17/I21:同面第二支 primary 換軸 → 拒絕(V_PRIMARY_AXIS)
+# 角材 1 沿 u 定主支軸 = u;角材 2 沿 v → primary 軸不唯一。
+
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+
+timber 1 2000 27 33 role primary
+place 1 on 1 at 500 500 +u +n
+
+timber 2 1000 27 33 role primary
+place 2 on 1 at 3000 1000 +v +n
