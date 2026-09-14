@@ -553,6 +553,58 @@ function check(name, cond, detail="") {
     check("N3 偽造 Host → 403", n3d === 403, "status=" + n3d);
   }
 
+  /* ==== §U. undo 歷史語義(Bugfix 2026-09-14,L1+L2)==== */
+  console.log("== U. undo 歷史語義 ==");
+  await api("default");
+
+  /* U1 L1:canvas-pos 是展示中繼資料,不進歷史——undo/redo 不得把卡片擺位倒回去 */
+  await api("line boundary 2 outline 0,0 100,0 100,100 0,100");
+  await api("line boundary 3 outline 200,0 300,0 300,100 200,100");
+  await api("line canvas-pos boundary 2 777 333");
+  await api("line undo");      /* 退掉 boundary 3;面2 的擺位應保留 */
+  const u1o = await api("objects");
+  const u1f = u1o.faces.find(f => f.id === 2);
+  check("U1 undo 保留 canvas-pos",
+        u1f && u1f.hasPos === true && u1f.cx === 777 && u1f.cy === 333,
+        JSON.stringify(u1f));
+  await api("line canvas-pos boundary 2 555 111");   /* undo 後又拖 */
+  await api("line redo");                            /* boundary 3 回來 */
+  const u1o2 = await api("objects");
+  const u1f2 = u1o2.faces.find(f => f.id === 2);
+  check("U1b redo 保留 canvas-pos",
+        u1f2 && u1f2.hasPos === true && u1f2.cx === 555 && u1f2.cy === 111,
+        JSON.stringify(u1f2));
+
+  /* U2 L2:history-begin/end 把多行收成一步歷史 */
+  await api("default");
+  const u2b = await api("objects");
+  await api("line history-begin");
+  await api("line boundary 5 outline 0,0 50,0 50,50 0,50");
+  await api("line boundary 6 outline 60,0 110,0 110,50 60,50");
+  await api("line boundary 7 outline 120,0 170,0 170,50 120,50");
+  await api("line history-end");
+  const u2c = await api("objects");
+  check("U2 群組建 3 面", u2c.faces.length === u2b.faces.length + 3,
+        `${u2c.faces.length} vs ${u2b.faces.length}`);
+  await api("line undo");
+  check("U2 一次 undo 全退",
+        (await api("objects")).faces.length === u2b.faces.length);
+  await api("line redo");
+  check("U2 一次 redo 全回",
+        (await api("objects")).faces.length === u2b.faces.length + 3);
+
+  /* U3 L2:群組第 2 行失敗 → 整組回滾,世界與群組前逐字相同,不留歷史 */
+  await api("default");        /* world_default 內 history_clear,歷史歸零 */
+  const d0 = (await api("dump")).text;
+  await api("line history-begin");
+  check("U3 群組內首行成功",
+        (await api("line boundary 8 outline 0,0 50,0 50,50 0,50")).ok === true);
+  check("U3 群組內壞行回絕",
+        (await api("line boundary 8 bogus")).ok === false);
+  check("U3 失敗群組世界復原", (await api("dump")).text === d0);
+  const u3u = await api("line undo");
+  check("U3 失敗群組不留歷史", u3u.ok === false, JSON.stringify(u3u));
+
   await api("default");
 
   console.log(`\n${pass} pass / ${fail} fail`);

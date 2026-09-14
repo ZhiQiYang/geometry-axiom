@@ -713,6 +713,7 @@ window.addEventListener("keydown", async e => {
   if (e.ctrlKey && !e.altKey && (e.key === "z" || e.key === "y" || e.key === "Z" || e.key === "Y")) {
     if (e.target.tagName === "INPUT") return;
     e.preventDefault();
+    if (oc.busy) { toast("操作進行中,請稍候"); return; }
     const cmd = (e.key === "y" || e.key === "Y" || e.shiftKey) ? "redo" : "undo";
     const r = await api("line " + cmd);
     if (r.ok) {
@@ -819,6 +820,7 @@ $("cmd").addEventListener("keydown", async e => {
   else { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); }
 });
 $("btnClear").onclick = async () => {
+  if (oc.busy) { toast("操作進行中,請稍候"); return; }
   const r = await api("line reset"); selected = null;
   if (r.ok) setStatus("✓ 已清空");
   else { setStatus("✗ " + (r.error || "")); toast(r.error || "清空失敗"); }
@@ -839,6 +841,7 @@ function resetSceneFocus() {
   $("objectWorkspace").hidden = true;
 }
 async function loadScene(path, name) {
+  if (oc.busy) { toast("操作進行中,請稍候"); return; }
   if (!path) { setStatus("沒有可重載的場景檔"); return; }
   const r = await api("loadfile " + path);
   if (r.ok) {
@@ -3792,7 +3795,7 @@ for (const b of document.querySelectorAll("[data-tool]"))
   b.addEventListener("click", () => setOcTool(b.dataset.tool));
 /* undo / redo(§5.6) */
 async function doUndoRedo(verb) {
-  if (oc.busy) return;
+  if (oc.busy) { toast("操作進行中,請稍候"); return; }
   const r = await api(`line ${verb}`);
   if (!r.ok) { setStatus(r.error); toast(r.error); return; }
   setStatus(verb === "undo" ? "✓ 已復原" : "✓ 已重做");
@@ -3884,21 +3887,30 @@ function toast(msg, type = "error") {
   /* 🔒 成功 toast 停 2000ms,錯誤維持 3600ms */
   setTimeout(() => t.remove(), type === "ok" ? 2000 : 3600);
 }
-/* mutate:多行 DSL 交易;第 k 行失敗 → undo 前 k-1 行 + toast(§5.1) */
+/* mutate:多行 DSL 交易——history 群組 = 一步 undo(§5.1);
+   群組內任一行失敗,核心自動整組回滾;abort 冪等驗證回滾。 */
 async function mutate(lines) {
   if (oc.busy) return false;
   oc.busy = true;
   document.body.classList.add("oc-busy");
   try {
+    const b = await api("line history-begin");
+    if (!b.ok) { toast(b.error || "指令失敗"); return false; }
     for (let k = 0; k < lines.length; ++k) {
       const r = await api("line " + lines[k]);
       if (!r.ok) {
-        for (let i = 0; i < k; ++i) await api("line undo");
+        const ab = await api("line history-abort");
+        if (!ab.ok) toast("回滾失敗,狀態可能不一致");
         toast(r.error || "指令失敗");
         return false;
       }
     }
+    const e = await api("line history-end");
+    if (!e.ok) { toast(e.error || "指令失敗"); return false; }
     return true;
+  } catch (err) {
+    try { await api("line history-abort"); } catch (_) { }
+    throw err;
   } finally {
     oc.busy = false;
     document.body.classList.remove("oc-busy");

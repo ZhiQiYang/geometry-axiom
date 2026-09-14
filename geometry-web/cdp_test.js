@@ -1965,6 +1965,26 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("BF2 換場景清焦點:", JSON.stringify(fpre), "→", JSON.stringify(fpost),
     fpre.focus === "face" && fpost.focus === null && fpost.wsHidden === true &&
     fpost.guides === 0 && fpost.stack === 0 ? "✓" : "✗");
+
+  /* ================= BF3. undo 群組(L2) ================= */
+  console.log("=== BF3. undo 群組 ===");
+  /* 六面盒是 mutate 多行交易 → 一次 Ctrl+Z 應全退 */
+  await eval_(`api("line reset")`);
+  await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
+  await eval_(`renderObjects()`);
+  await sleep(600);
+  const bf3pre = await eval_(`api("objects").then(r=>r.faces.length)`);
+  await eval_(`document.getElementById("btnBox6").click()`);
+  await sleep(300);
+  await eval_(`document.getElementById("box6Submit").click()`);
+  await sleep(1500);
+  const bf3mid = await eval_(`api("objects").then(r=>r.faces.length)`);
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "z", code: "KeyZ", modifiers: 2, windowsVirtualKeyCode: 90 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "z", code: "KeyZ", modifiers: 2, windowsVirtualKeyCode: 90 });
+  await sleep(1200);
+  const bf3post = await eval_(`api("objects").then(r=>r.faces.length)`);
+  console.log("BF3 六面盒一次 Ctrl+Z 全退:", bf3pre, "→", bf3mid, "→", bf3post,
+    bf3mid === bf3pre + 6 && bf3post === bf3pre ? "✓" : "✗");
   chrome.kill();
   _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);
   process.exit(failN > 0 ? 1 : 0);

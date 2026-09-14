@@ -3446,6 +3446,12 @@ static int   g_hist_undo_n;
 static World g_hist_redo[HISTORY_MAX];
 static int   g_hist_redo_n;
 
+/* L2 歷史群組:history-begin 時的世界快照;群組內各行不各自記歷史,
+ * end 時整組算一步;任一行失敗 → 整組回到 begin 前,不留半套用。 */
+static bool  g_hist_grouping;
+static bool  g_hist_group_dirty;
+static World g_hist_group_base;
+
 /* 變更成功前呼叫：把現況壓入 undo 疊並清掉 redo。 */
 static void history_record(const World *w)
 {
@@ -3463,6 +3469,8 @@ static void history_clear(void)
 {
     g_hist_undo_n = 0;
     g_hist_redo_n = 0;
+    g_hist_grouping = false;
+    g_hist_group_dirty = false;
 }
 
 /* apply 失敗時呼叫：剛記的快照作廢（世界沒變）。 */
@@ -3470,6 +3478,51 @@ static void history_unrecord(void)
 {
     if (g_hist_undo_n > 0) {
         --g_hist_undo_n;
+    }
+}
+
+/* canvas-pos 目標物件是否存在——L1 還原時過濾還原後已消失的殘留位。 */
+static bool world_canvas_target_exists(const World *w, int kind, uint32_t id)
+{
+    return
+        kind == CANVAS_POS_BOUNDARY  ? world_find_boundary(w, id)  != NULL :
+        kind == CANVAS_POS_PLACEMENT ? world_find_placement(w, id) != NULL :
+        kind == CANVAS_POS_SPACE     ? world_find_space(w, id)     != NULL :
+        kind == CANVAS_POS_COLUMN    ? world_find_column(w, id)    != NULL :
+                                       world_find_beam(w, id)      != NULL;
+}
+
+/* L1:canvas-pos 是展示中繼資料,不進歷史。
+ * 還原快照後,還原前仍存在的物件保留使用者當下的擺位;
+ * 只存在於快照的物件(刪除後復活)沿用快照位;
+ * 還原後已不存在的物件,其殘留位丟棄。 */
+static void history_restore_world(World *w, const World *snap)
+{
+    CanvasPos cur[WORLD_MAX_CANVAS_POS];
+    size_t cur_n = w->canvas_pos_count;
+
+    if (cur_n > 0) {
+        memcpy(cur, w->canvas_pos, cur_n * sizeof *cur);
+    }
+    *w = *snap;
+
+    for (size_t i = 0; i < cur_n; ++i) {
+        const CanvasPos *cp = &cur[i];
+        size_t j;
+
+        if (!world_canvas_target_exists(w, cp->kind, cp->id)) continue;
+        for (j = 0; j < w->canvas_pos_count; ++j) {
+            if (w->canvas_pos[j].kind == cp->kind &&
+                w->canvas_pos[j].id == cp->id) {
+                w->canvas_pos[j].x = cp->x;
+                w->canvas_pos[j].y = cp->y;
+                break;
+            }
+        }
+        if (j == w->canvas_pos_count &&
+            w->canvas_pos_count < WORLD_MAX_CANVAS_POS) {
+            w->canvas_pos[w->canvas_pos_count++] = *cp;
+        }
     }
 }
 
@@ -3484,7 +3537,7 @@ static bool history_undo(World *w)
         --g_hist_redo_n;
     }
     g_hist_redo[g_hist_redo_n++] = *w;
-    *w = g_hist_undo[--g_hist_undo_n];
+    history_restore_world(w, &g_hist_undo[--g_hist_undo_n]);
     return true;
 }
 
@@ -3499,16 +3552,60 @@ static bool history_redo(World *w)
         --g_hist_undo_n;
     }
     g_hist_undo[g_hist_undo_n++] = *w;
-    *w = g_hist_redo[--g_hist_redo_n];
+    history_restore_world(w, &g_hist_redo[--g_hist_redo_n]);
     return true;
 }
 
-/* 互動入口共用：undo/redo 攔截 + 變更前記快照（失敗自動取消）。
+/* 群組內任一行失敗:回到 begin 前快照並關閉群組,不留半套用。 */
+static void history_group_rollback(World *world)
+{
+    *world = g_hist_group_base;
+    g_hist_grouping = false;
+    g_hist_group_dirty = false;
+}
+
+/* 互動入口共用：undo/redo・歷史群組攔截 + 變更前記快照（失敗自動取消）。
  * 回傳值同 apply_scene_line。 */
 static bool apply_interactive_tokens(
     const char *path, int line_no, char *tokens[], int count, World *world)
 {
+    /* L2 群組控制是 session 層指令,不進 .scene 檔格式。 */
+    if (count == 1 && strcmp(tokens[0], "history-begin") == 0) {
+        if (g_hist_grouping) {
+            scene_error(path, line_no, "已有進行中的歷史群組");
+            return false;
+        }
+        g_hist_group_base = *world;
+        g_hist_grouping = true;
+        g_hist_group_dirty = false;
+        return true;
+    }
+    if (count == 1 && strcmp(tokens[0], "history-end") == 0) {
+        if (!g_hist_grouping) {
+            scene_error(path, line_no, "沒有進行中的歷史群組");
+            return false;
+        }
+        g_hist_grouping = false;
+        /* 整組算一步:把 begin 時的世界推入 undo 疊;沒變更就不記。 */
+        if (g_hist_group_dirty) {
+            history_record(&g_hist_group_base);
+        }
+        g_hist_group_dirty = false;
+        return true;
+    }
+    if (count == 1 && strcmp(tokens[0], "history-abort") == 0) {
+        /* 冪等:群組可能已因壞行自動回滾,abort 仍回 ok。 */
+        if (g_hist_grouping) {
+            history_group_rollback(world);
+        }
+        return true;
+    }
     if (count == 1 && strcmp(tokens[0], "undo") == 0) {
+        if (g_hist_grouping) {
+            scene_error(path, line_no, "歷史群組進行中,不能 undo");
+            history_group_rollback(world);
+            return false;
+        }
         if (history_undo(world)) {
             return true;
         }
@@ -3516,6 +3613,11 @@ static bool apply_interactive_tokens(
         return false;
     }
     if (count == 1 && strcmp(tokens[0], "redo") == 0) {
+        if (g_hist_grouping) {
+            scene_error(path, line_no, "歷史群組進行中,不能 redo");
+            history_group_rollback(world);
+            return false;
+        }
         if (history_redo(world)) {
             return true;
         }
@@ -3528,9 +3630,16 @@ static bool apply_interactive_tokens(
         return apply_scene_line(path, line_no, tokens, count, world);
     }
 
-    history_record(world);
+    if (!g_hist_grouping) {
+        history_record(world);
+    }
     if (apply_scene_line(path, line_no, tokens, count, world)) {
+        if (g_hist_grouping) g_hist_group_dirty = true;
         return true;
+    }
+    if (g_hist_grouping) {
+        history_group_rollback(world);
+        return false;
     }
     history_unrecord();
     return false;
