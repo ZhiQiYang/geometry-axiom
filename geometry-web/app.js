@@ -82,7 +82,21 @@ async function api(cmd) {
   });
   return r.json();
 }
-function setStatus(t) { statusEl.textContent = t; }
+function setStatus(t) {
+  statusEl.textContent = t;
+  /* 🔒 成功訊息同步發 .toast.ok(2000ms) */
+  if (typeof t === "string" && t.startsWith("✓"))
+    toast(t.replace(/^✓\s*/, ""), "ok");
+}
+/* A6:狀態列右側物件摘要 */
+function updateStatusSummary() {
+  const el = $("statusSummary"); if (!el || !oc.faces) return;
+  const n = oc.faces.length + oc.spaces.length + oc.columns.length + oc.beams.length;
+  const open = oc.spaces.filter(s => !s.closed).length;
+  const free = oc.faces.filter(f => f.kind === "boundary" && !f.placed).length +
+    oc.columns.filter(c => !c.space).length + oc.beams.filter(b => !b.space).length;
+  el.textContent = `${n} 物件 · ${open} 空間開放 · ${free} 游離`;
+}
 async function refreshActive() {
   if (oc.on) await renderObjects();
   else { await render(); await refreshSurfaces(); }
@@ -799,8 +813,10 @@ window.addEventListener("resize", applyTransform);
  * 幾何永遠走 DSL line。點卡片進入：面→2D 邊界編輯、空間→成員層。
  * ============================================================ */
 const ocv = $("ocv"), oroot = $("oroot");
-const OC_W = 200, OC_H = 150, OC_PAD = 12;
-const SP_W = 240, SP_H = 190;
+const OC_W = 200, OC_H = 156, OC_PAD = 12;
+const SP_W = 240, SP_H = 196;
+/* A4:zoom < 0.75 卡片只留標題列(🔒 compact 門檻) */
+const OC_COMPACT_ZOOM = 0.75;
 const oc = {
   on: true,               /* D1:物件畫布是主畫面 */
   panX: 0, panY: 0, zoom: 1,
@@ -830,6 +846,9 @@ function ocApply() {
   vp.style.setProperty("--pan-y", oc.panY + "px");
   vp.style.setProperty("--grid-size", (24 * oc.zoom) + "px");
   const zl = $("zoomLevelButton"); if (zl) zl.textContent = Math.round(oc.zoom * 100) + "%";
+  const comp = oc.zoom < OC_COMPACT_ZOOM;
+  if (oroot) for (const c of oroot.querySelectorAll(".ocard"))
+    c.classList.toggle("compact", comp);
   if (oc.faces) drawMinimap();
 }
 function ocToCanvas(e) {
@@ -888,15 +907,17 @@ function faceCard(f) {
   }
   el("line", { x1: 0, y1: 34, x2: OC_W, y2: 34, stroke: "#e8ebf0", "stroke-width": 1 }, g);
 
+  /* A4:compact 模式(zoom<0.75)只留標題列——其餘進 body 群組 */
+  const body = el("g", { class: "ocard-body" }, g);
   /* preview:previewFaceSvg 簡化版——外環+孔+頂點 */
   const pvX = 10, pvY = 40, pvW = OC_W - 20, pvH = OC_H - 76;
   el("rect", { x: pvX, y: pvY, width: pvW, height: pvH, rx: 6,
-               fill: "#f7f9fb", stroke: "#edf0f5" }, g);
+               fill: "#f7f9fb", stroke: "#edf0f5" }, body);
   const bw = Math.max(1, f.bbox[2] - f.bbox[0]), bh = Math.max(1, f.bbox[3] - f.bbox[1]);
   const k = Math.min((pvW - 14) / bw, (pvH - 14) / bh);
   const ox = pvX + (pvW - bw * k) / 2 - f.bbox[0] * k;
   const oy = pvY + (pvH - bh * k) / 2 - f.bbox[1] * k;
-  const th = el("g", { transform: `translate(${ox},${oy}) scale(${k})` }, g);
+  const th = el("g", { transform: `translate(${ox},${oy}) scale(${k})` }, body);
   if (f.kind === "boundary" && oc.bmap[f.id]) {
     const loops = oc.bmap[f.id];
     for (let li = 0; li < loops.length; ++li) {
@@ -916,8 +937,8 @@ function faceCard(f) {
   }
   /* footer:範圍 + 頂點數 */
   el("line", { x1: 0, y1: OC_H - 30, x2: OC_W, y2: OC_H - 30,
-               stroke: "#e8ebf0", "stroke-width": 1 }, g);
-  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 8.5, fill: "#687487" }, g);
+               stroke: "#e8ebf0", "stroke-width": 1 }, body);
+  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 8.5, fill: "#687487" }, body);
   const nv = (f.kind === "boundary" && oc.bmap[f.id]) ? oc.bmap[f.id][0].verts.length : 4;
   ft.textContent = `${bw}×${bh} mm · ${nv} 頂點`;
   return g;
@@ -959,30 +980,40 @@ function spaceCard(s) {
   tag.textContent = s.closed ? "封閉" : "開放";
   el("line", { x1: 0, y1: 34, x2: SP_W, y2: 34, stroke: "#e8ebf0", "stroke-width": 1 }, g);
 
-  /* 六槽示意:2 列 3 行,佔用的槽上色 */
+  /* 六槽示意:2 列 3 行,語意名+軸向副標(🔒 方位命名),佔用的槽上色 */
+  const body = el("g", { class: "ocard-body" }, g);
   const slots = spaceSlots(s);
-  const keys = ["+X", "-X", "+Y", "-Y", "+Z", "-Z"];
-  const cw = (SP_W - 20 - 12) / 3, ch = 24, gy = 46;
+  const slotMeta = [["+Z", "天花"], ["-Z", "地板"], ["-Y", "前牆"],
+                    ["+Y", "後牆"], ["-X", "左牆"], ["+X", "右牆"]];
+  const missing = [];
+  const cw = (SP_W - 20 - 12) / 3, ch = 26, gy = 44;
   for (let i = 0; i < 6; ++i) {
+    const [key, label] = slotMeta[i];
     const cx = 10 + (i % 3) * (cw + 6), cy = gy + Math.floor(i / 3) * (ch + 6);
-    const used = slots ? slots[keys[i]] > 0 : false;
+    const used = slots ? slots[key] > 0 : false;
+    if (!used) missing.push(label);
     el("rect", { x: cx, y: cy, width: cw, height: ch, rx: 5,
                  fill: used ? "#ece9fb" : "#f7f9fb",
-                 stroke: used ? "#8f83e0" : "#e4e8ef" }, g);
-    const k = el("text", { x: cx + cw / 2, y: cy + ch / 2 + 3, "font-size": 9,
+                 stroke: used ? "#8f83e0" : "#e4e8ef" }, body);
+    const k = el("text", { x: cx + cw / 2, y: cy + 11, "font-size": 9.5,
                  "text-anchor": "middle", "font-weight": 650,
-                 fill: used ? "#5b4fc4" : "#a6aebb" }, g);
-    k.textContent = keys[i] + (slots ? ` ${slots[keys[i]]}` : "");
+                 fill: used ? "#5b4fc4" : "#a6aebb" }, body);
+    k.textContent = label;
+    const ax = el("text", { x: cx + cw / 2, y: cy + 21, "font-size": 7.5,
+                  "text-anchor": "middle",
+                  fill: used ? "#8f83e0" : "#c3c9d4" }, body);
+    ax.textContent = key + (slots && used ? ` ×${slots[key]}` : "");
   }
   /* 成員列 */
-  const mt = el("text", { x: 10, y: gy + 2 * ch + 22, "font-size": 9, fill: "#687487" }, g);
+  const mt = el("text", { x: 10, y: gy + 2 * ch + 24, "font-size": 9, fill: "#687487" }, body);
   mt.textContent = s.members.length ? "成員面：" + s.members.join(" ")
                                     : "空容器 · 雙擊進入管理成員";
   el("line", { x1: 0, y1: SP_H - 30, x2: SP_W, y2: SP_H - 30,
-               stroke: "#e8ebf0", "stroke-width": 1 }, g);
-  const ft = el("text", { x: 10, y: SP_H - 11, "font-size": 8.5, fill: "#687487" }, g);
-  ft.textContent = s.closed ? "六槽齊備 · closed"
-                            : (slots ? "槽位未齊 · open" : "尚無已放置成員");
+               stroke: "#e8ebf0", "stroke-width": 1 }, body);
+  const ft = el("text", { x: 10, y: SP_H - 11, "font-size": 8.5, fill: "#687487" }, body);
+  ft.textContent = s.closed ? "封閉 · 六槽齊備"
+    : (missing.length === 6 && !s.members.length ? "開放 · 尚無已放置成員"
+       : `開放 · 缺 ${missing.join("、")}`);
   return g;
 }
 
@@ -1008,10 +1039,11 @@ function rcCard(o, kind) {
   }
   el("line", { x1: 0, y1: 34, x2: OC_W, y2: 34, stroke: "#e8ebf0", "stroke-width": 1 }, g);
 
+  const body = el("g", { class: "ocard-body" }, g);
   /* preview:box = [xlo,ylo,zlo,xhi,yhi,zhi];平面足跡畫在預覽框裡 */
   const pvX = 10, pvY = 40, pvW = OC_W - 20, pvH = OC_H - 76;
   el("rect", { x: pvX, y: pvY, width: pvW, height: pvH, rx: 6,
-               fill: "#f7f9fb", stroke: "#edf0f5" }, g);
+               fill: "#f7f9fb", stroke: "#edf0f5" }, body);
   const fw = Math.max(1, o.box[3] - o.box[0]), fd = Math.max(1, o.box[4] - o.box[1]);
   const k = Math.min((pvW - 26) / fw, (pvH - 26) / fd);
   const ox = pvX + (pvW - fw * k) / 2 - o.box[0] * k;
@@ -1020,24 +1052,24 @@ function rcCard(o, kind) {
     el("rect", { x: o.box[0] * k + ox, y: o.box[1] * k + oy,
                  width: fw * k, height: fd * k,
                  fill: "#c8c8c8", fillOpacity: .75, stroke: "#5a5a5a",
-                 "stroke-width": 1.4 }, g);
+                 "stroke-width": 1.4 }, body);
     const lab = el("text", { x: pvX + pvW / 2, y: pvY + pvH - 4,
-      "font-size": 9, fill: "#5a5a5a", "text-anchor": "middle" }, g);
+      "font-size": 9, fill: "#5a5a5a", "text-anchor": "middle" }, body);
     lab.textContent = `h=${o.box[5] - o.box[2]}`;
   } else {
     /* 樑:沿走向軸拉長的條帶 */
     el("rect", { x: o.box[0] * k + ox, y: o.box[1] * k + oy,
                  width: fw * k, height: fd * k,
                  fill: "#9e9e9e", fillOpacity: .75, stroke: "#4a4a4a",
-                 "stroke-width": 1.4 }, g);
+                 "stroke-width": 1.4 }, body);
     const lab = el("text", { x: pvX + pvW / 2, y: pvY + pvH - 4,
-      "font-size": 9, fill: "#4a4a4a", "text-anchor": "middle" }, g);
+      "font-size": 9, fill: "#4a4a4a", "text-anchor": "middle" }, body);
     lab.textContent = `${o.axis} 向 · 頂 ${o.box[5]}`;
   }
 
   el("line", { x1: 0, y1: OC_H - 30, x2: OC_W, y2: OC_H - 30,
-               stroke: "#e8ebf0", "stroke-width": 1 }, g);
-  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 8.5, fill: "#687487" }, g);
+               stroke: "#e8ebf0", "stroke-width": 1 }, body);
+  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 8.5, fill: "#687487" }, body);
   ft.textContent = isCol
     ? `${fw}×${fd} mm · z ${o.box[2]}~${o.box[5]}`
     : `跨 ${o.axis === "x" ? fw : fd} · ${o.axis === "x" ? fd : fw}×${o.box[5] - o.box[2]}`;
@@ -1194,11 +1226,14 @@ function relGeom(a, b) {          /* a=space card, b=face card */
   return { mid, d: `M${st.x} ${st.y} C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${en.x} ${en.y}` };
 }
 function drawOcEdges(eg, spaces, faces, cols = [], beams = []) {
-  const containsEdge = (s, target, label) => {
+  /* A5:包含=實線灰、障礙=虛線琥珀;標籤全中文 */
+  const containsEdge = (s, target, label, obstacle) => {
     const g = relGeom(cardBox(s), cardBox(target));
-    const gi = el("g", { class: "edge-group-item" }, eg);
-    el("path", { class: "edge-path", d: g.d }, gi);
-    const lw = Math.min(150, Math.max(46, label.length * 11 + 20));
+    const gi = el("g", { class: "edge-group-item" +
+      (obstacle ? " edge-obstacle" : " edge-contains") }, eg);
+    el("path", { class: "edge-path", d: g.d,
+      "stroke-dasharray": obstacle ? "6 4" : "none" }, gi);
+    const lw = Math.min(150, Math.max(46, label.length * 13 + 20));
     el("rect", { class: "edge-label-bg", x: g.mid.x - lw / 2, y: g.mid.y - 10,
                  width: lw, height: 20, rx: 7 }, gi);
     const t = el("text", { class: "edge-label", x: g.mid.x, y: g.mid.y + .5 }, gi);
@@ -1207,11 +1242,11 @@ function drawOcEdges(eg, spaces, faces, cols = [], beams = []) {
   for (const s of spaces) {
     for (const m of s.members) {
       const f = faces.find(x => x.kind === "boundary" && x.id === m);
-      if (f) containsEdge(s, f, "contains");
+      if (f) containsEdge(s, f, "包含", false);
     }
     /* 空間 → 柱樑障礙物連線(B-3,虛線語意=障礙物非成員) */
-    for (const c of cols) if (c.space === s.id) containsEdge(s, c, "障礙·柱");
-    for (const b of beams) if (b.space === s.id) containsEdge(s, b, "障礙·樑");
+    for (const c of cols) if (c.space === s.id) containsEdge(s, c, "障礙", true);
+    for (const b of beams) if (b.space === s.id) containsEdge(s, b, "障礙", true);
   }
 }
 
@@ -3175,6 +3210,7 @@ function renderObjectList() {
   $("spaceCount").textContent = oc.spaces.length;
   $("columnCount").textContent = oc.columns.length;
   $("beamCount").textContent = oc.beams.length;
+  updateStatusSummary();
 }
 /* 右欄檢視器 */
 function renderInspector() {
@@ -3410,7 +3446,7 @@ ocv.addEventListener("pointerup", async e => {
     const c = oc.card; oc.card = null;
     if (c.moved) {
       const kind = c.kind;
-      if ($("snapToggle").checked) {
+      if ($("snapToggle").classList.contains("on")) {
         c.nx = Math.round(c.nx / 20) * 20;
         c.ny = Math.round(c.ny / 20) * 20;
       }
@@ -3523,19 +3559,46 @@ $("homeButton").addEventListener("click", () => {
   oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply();
 });
 $("zoomLevelButton").addEventListener("click", () => { oc.zoom = 1; ocApply(); });
-/* 吸附 / 格線 */
-$("gridToggle").addEventListener("change", e =>
-  $("canvasViewport").classList.toggle("show-grid", e.target.checked));
-/* 篩選 */
-for (const cb of document.querySelectorAll("[data-filter-type]")) {
-  cb.addEventListener("change", () => {
-    oc.showFace = document.querySelector('[data-filter-type="face"]').checked;
-    oc.showSpace = document.querySelector('[data-filter-type="space"]').checked;
-    oc.showColumn = document.querySelector('[data-filter-type="column"]').checked;
-    oc.showBeam = document.querySelector('[data-filter-type="beam"]').checked;
-    drawObjects();
+/* 吸附 / 格線(aria-pressed 按鈕,A3) */
+for (const id of ["snapToggle", "gridToggle"]) {
+  $(id).addEventListener("click", () => {
+    const b = $(id), on = !b.classList.contains("on");
+    b.classList.toggle("on", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    if (id === "gridToggle")
+      $("canvasViewport").classList.toggle("show-grid", on);
   });
 }
+/* 篩選 chips(A3:aria-pressed + 計數徽章) */
+function applyFilterChips() {
+  for (const b of document.querySelectorAll("[data-filter-type]")) {
+    const on = b.getAttribute("aria-pressed") === "true";
+    b.classList.toggle("off", !on);
+  }
+  oc.showFace = document.querySelector('[data-filter-type="face"]').getAttribute("aria-pressed") === "true";
+  oc.showSpace = document.querySelector('[data-filter-type="space"]').getAttribute("aria-pressed") === "true";
+  oc.showColumn = document.querySelector('[data-filter-type="column"]').getAttribute("aria-pressed") === "true";
+  oc.showBeam = document.querySelector('[data-filter-type="beam"]').getAttribute("aria-pressed") === "true";
+  drawObjects();
+}
+for (const b of document.querySelectorAll("[data-filter-type]"))
+  b.addEventListener("click", () => {
+    b.setAttribute("aria-pressed",
+      b.getAttribute("aria-pressed") === "true" ? "false" : "true");
+    applyFilterChips();
+  });
+$("filterAll").addEventListener("click", () => {
+  for (const b of document.querySelectorAll("[data-filter-type]"))
+    b.setAttribute("aria-pressed", "true");
+  applyFilterChips();
+});
+/* 小地圖收合 */
+$("minimapToggle").addEventListener("click", () => {
+  const sh = document.querySelector(".minimap-shell");
+  const collapsed = sh.classList.toggle("collapsed");
+  $("minimapToggle").textContent = collapsed ? "▴" : "▾";
+  $("minimapToggle").title = collapsed ? "展開小地圖" : "收合小地圖";
+});
 /* 搜尋過濾(Phase 2) */
 $("searchInput").addEventListener("input", e => {
   oc.search = e.target.value;
@@ -3561,7 +3624,8 @@ function toast(msg, type = "error") {
     `<span></span>`;
   t.querySelector("span").textContent = msg;
   $("toastRegion").appendChild(t);
-  setTimeout(() => t.remove(), 3600);
+  /* 🔒 成功 toast 停 2000ms,錯誤維持 3600ms */
+  setTimeout(() => t.remove(), type === "ok" ? 2000 : 3600);
 }
 /* mutate:多行 DSL 交易;第 k 行失敗 → undo 前 k-1 行 + toast(§5.1) */
 async function mutate(lines) {

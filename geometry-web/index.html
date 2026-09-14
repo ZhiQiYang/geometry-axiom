@@ -86,29 +86,29 @@
           </div>
         </div>
         <div class="quick-create-grid">
-          <button id="btnNewRect" type="button" class="quick-create">
-            <span class="type-icon face"><span data-icon="rectangle"></span></span>
-            <span><strong>＋面·矩形</strong><small>畫布拖曳</small></span>
-          </button>
-          <button id="btnNewPoly" type="button" class="quick-create">
-            <span class="type-icon face"><span data-icon="vertex"></span></span>
-            <span><strong>＋面·多邊形</strong><small>逐點閉合</small></span>
-          </button>
-          <button id="btnNewSpace" type="button" class="quick-create">
-            <span class="type-icon space"><span data-icon="space"></span></span>
-            <span><strong>＋空間</strong><small>空容器</small></span>
-          </button>
-          <button id="btnBox6" type="button" class="quick-create">
+          <button id="btnBox6" type="button" class="quick-create suggested" title="快速六面盒:W·D·H 一次建好(建議起點)">
             <span class="type-icon space"><span data-icon="layers"></span></span>
-            <span><strong>快速六面盒</strong><small>W·D·H 一次建好</small></span>
+            <span><strong>六面盒</strong><small>建議起點</small></span>
           </button>
-          <button id="btnNewColumn" type="button" class="quick-create">
+          <button id="btnNewRect" type="button" class="quick-create" title="＋面·矩形:畫布拖曳">
+            <span class="type-icon face"><span data-icon="rectangle"></span></span>
+            <span><strong>面·矩形</strong><small>畫布拖曳</small></span>
+          </button>
+          <button id="btnNewPoly" type="button" class="quick-create" title="＋面·多邊形:逐點閉合">
+            <span class="type-icon face"><span data-icon="vertex"></span></span>
+            <span><strong>面·多邊形</strong><small>逐點閉合</small></span>
+          </button>
+          <button id="btnNewSpace" type="button" class="quick-create" title="＋空間:空容器">
+            <span class="type-icon space"><span data-icon="space"></span></span>
+            <span><strong>空間</strong><small>空容器</small></span>
+          </button>
+          <button id="btnNewColumn" type="button" class="quick-create" title="＋柱:RC 柱 w×d">
             <span class="type-icon column"><span data-icon="rectangle"></span></span>
-            <span><strong>＋柱</strong><small>RC 柱 w×d</small></span>
+            <span><strong>柱</strong><small>RC 柱 w×d</small></span>
           </button>
-          <button id="btnNewBeam" type="button" class="quick-create">
+          <button id="btnNewBeam" type="button" class="quick-create" title="＋樑:RC 樑 w×d">
             <span class="type-icon beam"><span data-icon="layers"></span></span>
-            <span><strong>＋樑</strong><small>RC 樑 w×d</small></span>
+            <span><strong>樑</strong><small>RC 樑 w×d</small></span>
           </button>
         </div>
       </section>
@@ -116,11 +116,14 @@
       <section class="sidebar-section filter-section">
         <div class="section-label-row">
           <span class="section-label">顯示類型</span>
+          <button id="filterAll" class="chip-reset" type="button">全部顯示</button>
         </div>
-        <label class="filter-row"><input type="checkbox" data-filter-type="face" checked><span class="dot face"></span><span>面</span><strong id="faceCount">0</strong></label>
-        <label class="filter-row"><input type="checkbox" data-filter-type="space" checked><span class="dot space"></span><span>空間</span><strong id="spaceCount">0</strong></label>
-        <label class="filter-row"><input type="checkbox" data-filter-type="column" checked><span class="dot column"></span><span>柱</span><strong id="columnCount">0</strong></label>
-        <label class="filter-row"><input type="checkbox" data-filter-type="beam" checked><span class="dot beam"></span><span>樑</span><strong id="beamCount">0</strong></label>
+        <div class="chip-row">
+          <button class="chip" type="button" data-filter-type="face" aria-pressed="true"><span class="dot face"></span>面<strong id="faceCount">0</strong></button>
+          <button class="chip" type="button" data-filter-type="space" aria-pressed="true"><span class="dot space"></span>空間<strong id="spaceCount">0</strong></button>
+          <button class="chip" type="button" data-filter-type="column" aria-pressed="true"><span class="dot column"></span>柱<strong id="columnCount">0</strong></button>
+          <button class="chip" type="button" data-filter-type="beam" aria-pressed="true"><span class="dot beam"></span>樑<strong id="beamCount">0</strong></button>
+        </div>
       </section>
 
       <section class="sidebar-section object-tree-section">
@@ -131,11 +134,6 @@
         <div id="objectList" class="object-list" role="list"></div>
       </section>
 
-      <section class="sidebar-section canvas-options-section">
-        <span class="section-label">畫布</span>
-        <label class="switch-row"><span>格線吸附</span><input id="snapToggle" type="checkbox" checked><span class="switch-ui"></span></label>
-        <label class="switch-row"><span>顯示格線</span><input id="gridToggle" type="checkbox" checked><span class="switch-ui"></span></label>
-      </section>
     </aside>
 
     <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
@@ -191,10 +189,14 @@
         <span class="toolbar-separator vertical"></span>
         <button id="btnZoom" class="icon-button" type="button" title="顯示全部 (F)" aria-label="顯示全部"><span data-icon="fit"></span></button>
         <button id="homeButton" class="icon-button" type="button" title="回到原點" aria-label="回到原點"><span data-icon="home"></span></button>
+        <span class="toolbar-separator vertical"></span>
+        <button id="snapToggle" class="mini-toggle on" type="button" aria-pressed="true" title="格線吸附">吸</button>
+        <button id="gridToggle" class="mini-toggle on" type="button" aria-pressed="true" title="顯示格線">格</button>
       </div>
 
       <div class="minimap-shell">
-        <canvas id="minimap" width="220" height="132" aria-label="畫布小地圖"></canvas>
+        <button id="minimapToggle" class="minimap-toggle" type="button" title="收合小地圖" aria-label="收合小地圖">▾</button>
+        <canvas id="minimap" width="150" height="96" aria-label="畫布小地圖"></canvas>
         <span>小地圖</span>
       </div>
     </section>
@@ -216,7 +218,8 @@
       <span id="hovertxt"></span>
     </div>
     <div class="status-right">
-      <input id="cmd" placeholder="指令：boundary｜placement｜surface｜space｜guide｜timber｜place｜move｜reset" autocomplete="off">
+      <span id="statusSummary" class="status-summary"></span>
+      <input id="cmd" placeholder="› boundary｜placement｜surface｜space｜guide｜timber｜place｜move｜reset" autocomplete="off">
     </div>
   </footer>
 </div>

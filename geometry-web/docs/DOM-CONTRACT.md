@@ -34,7 +34,10 @@
 | `#objectCountBadge` / `#faceCount` / `#spaceCount` | 數量徽標 | textContent |
 | `#inspectorContent` / `#inspectorEmpty` | 右欄檢視器 | `hidden` 切換檢查 |
 | `#emptyState` | 空狀態插圖 | `hidden` 切換檢查 |
-| `#snapToggle` / `#gridToggle` | 吸附/格線開關 | `checked` |
+| `#snapToggle` / `#gridToggle` | 吸附/格線開關(`.canvas-controls` 內 `.mini-toggle` 鈕) | `.on` class、`aria-pressed` |
+| `#filterAll` | 篩選 chips「全部顯示」(S6 新增) | `.click()` |
+| `#minimapToggle` | 小地圖收合鈕(S6 新增) | `.click()`、`.minimap-shell.collapsed` |
+| `#statusSummary` | 狀態列右側物件摘要(S6 新增) | textContent |
 | `#zoomInButton` / `#zoomOutButton` / `#zoomLevelButton` / `#homeButton` | 縮放控制 | `.click()` |
 | `#searchInput` | 搜尋框(左欄頂 `.sidebar-search` 內) | `input` 事件驅動 `oc.search` |
 | `#fileMenu` / `#fileMenuPop` | 檔案選單(含 `#btnOpen #btnScene #btnEx #btnClear`) | `hidden`、`.click()` |
@@ -59,6 +62,7 @@
 | `#feGuidePick` | 面內參考線 u/v 方向小選單 | `hidden`、`[data-axis]` 鈕 |
 | `#placeFlow` | 建面→放置→收成員流程條(S6 新增,兩處檢視器共用) | `.pf-step.done/.current` |
 | `#placeValid` | 放置表單 u⊥v 即時驗證(S6 新增) | textContent、`.ok/.bad` |
+| `[data-filter-type]` | 顯示類型篩選 chips(button,`aria-pressed`) | `aria-pressed`、`.click()` |
 
 ## 必須保留的 class
 

@@ -1051,7 +1051,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   /* 空間→柱 障礙連線 */
   const rcEdgeLabels = await eval_(
     `[...document.querySelectorAll("#edgeGroup .edge-label")].map(t=>t.textContent).join(",")`);
-  console.log("障礙連線:", /障礙·柱/.test(rcEdgeLabels) ? `✓ ${rcEdgeLabels}` : `✗ ${rcEdgeLabels}`);
+  console.log("障礙連線:", /障礙/.test(rcEdgeLabels) ? `✓ ${rcEdgeLabels}` : `✗ ${rcEdgeLabels}`);
   /* ＋樑 */
   await eval_(`document.getElementById("btnNewBeam").click()`);
   await sleep(300);
@@ -1531,6 +1531,90 @@ async function drag(x0, y0, x1, y1, steps = 6) {
       return {top:r.top, ih:innerHeight};})()`);
     console.log("P16 徽章捲動:", sc && sc.top >= 0 && sc.top < sc.ih ? "✓" : "✗ " + JSON.stringify(sc));
   } else console.log("P16 徽章捲動: ✗ 找不到徽章");
+
+  /* ================= P17. 主畫布其餘 A3-A6 A9-A11 F2 ================= */
+  console.log("=== P17. 主畫布其餘 ===");
+  /* (a) 物件庫:6 鈕 ≥50px、首格 btnBox6+建議起點 */
+  const qc = await eval_(`(()=>{
+    const g=[...document.querySelectorAll(".quick-create")];
+    return {n:g.length, minH:Math.round(Math.min(...g.map(b=>b.getBoundingClientRect().height))),
+      first:g[0].id, sug:g[0].textContent};})()`);
+  console.log("P17 物件庫:", qc.n === 6 && qc.minH >= 50 && qc.first === "btnBox6"
+    && qc.sug.includes("建議起點") ? "✓" : "✗ " + JSON.stringify(qc));
+  /* (b) chips:關柱 → showColumn=false + aria-pressed;全部顯示還原 */
+  await eval_(`document.querySelector('[data-filter-type="column"]').click()`);
+  await sleep(300);
+  const ch1 = await eval_(`(()=>({sc:oc.showColumn,
+    ap:document.querySelector('[data-filter-type="column"]').getAttribute("aria-pressed")}))()`);
+  console.log("P17 chip關柱:", !ch1.sc && ch1.ap === "false" ? "✓" : "✗ " + JSON.stringify(ch1));
+  await eval_(`document.getElementById("filterAll").click()`);
+  await sleep(300);
+  const ch2 = await eval_(`oc.showColumn && oc.showFace && oc.showSpace && oc.showBeam`);
+  console.log("P17 全部顯示:", ch2 ? "✓" : "✗");
+  /* (c) compact:zoom 0.5 → .ocard.compact;1.0 → 無 */
+  await eval_(`oc.zoom=0.5; ocApply()`);
+  await sleep(250);
+  const cp1 = await eval_(`document.querySelectorAll(".ocard.compact").length`);
+  await eval_(`oc.zoom=1; ocApply()`);
+  await sleep(250);
+  const cp2 = await eval_(`document.querySelectorAll(".ocard.compact").length`);
+  console.log("P17 compact:", cp1 > 0 && cp2 === 0 ? "✓" : `✗ ${cp1}/${cp2}`);
+  /* (d) 邊樣式:包含實線 + 障礙虛線 + 中文標籤 */
+  await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 10 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000");
+    await api("line surface 11 origin 0 0 0 u +x v +z outline 0,0 4000,0 4000,2500 0,2500");
+    await api("line space 1 boundary 10 11");
+    await api("line column 1 in 1 at 1000 800 size 400 400 z 0 2500");
+    await api("line canvas-pos space 1 60 60");
+    await renderObjects();
+  })()`);
+  await sleep(600);
+  const ed = await eval_(`(()=>{
+    const items=[...document.querySelectorAll("#edgeGroup .edge-group-item")];
+    return {n:items.length,
+      dash:items.map(i=>i.querySelector(".edge-path").getAttribute("stroke-dasharray")),
+      labels:[...document.querySelectorAll("#edgeGroup .edge-label")].map(t=>t.textContent)};})()`);
+  console.log("P17 連線:", ed.n >= 2 && ed.dash.includes("6 4") && ed.dash.includes("none")
+    && ed.labels.includes("包含") && ed.labels.includes("障礙")
+    ? "✓ " + ed.labels.join(",") : "✗ " + JSON.stringify(ed));
+  /* (e) 空間卡語意槽 + footer 缺 */
+  const sl = await eval_(`(()=>{
+    const c=document.querySelector('.ocard[data-kind="space"]');
+    return c ? c.textContent : "";})()`);
+  console.log("P17 槽位語意:", sl.includes("天花") && !/\+X \d/.test(sl) ? "✓" : "✗ " + sl.slice(0, 100));
+  console.log("P17 footer缺:", sl.includes("缺") ? "✓" : "✗ " + sl.slice(-40));
+  /* (f) statusbar 32px + 摘要含物件 + 成功 toast.ok */
+  const stb = await eval_(`(()=>({
+    h:getComputedStyle(document.querySelector(".statusbar")).height,
+    sum:document.getElementById("statusSummary").textContent}))()`);
+  console.log("P17 狀態列:", stb.h === "32px" && stb.sum.includes("物件") ? "✓ " + stb.sum : "✗ " + JSON.stringify(stb));
+  await eval_(`(async()=>{
+    await emitLine("boundary 99 outline 0,0 500,0 500,400 0,400");
+    await renderObjects();
+  })()`);
+  await sleep(400);
+  const okN = await eval_(`document.querySelectorAll("#toastRegion .toast.ok").length`);
+  console.log("P17 成功toast:", okN >= 1 ? "✓" : "✗");
+  /* (g) snap/grid 鈕在 canvas-controls + aria-pressed;minimap 150+收合鈕 */
+  const ctl = await eval_(`(()=>{
+    const cc=document.querySelector(".canvas-controls");
+    const st=document.getElementById("snapToggle"), gt=document.getElementById("gridToggle");
+    const mm=document.querySelector(".minimap-shell");
+    return {inCc: cc.contains(st) && cc.contains(gt),
+      ap: st.getAttribute("aria-pressed") + "/" + gt.getAttribute("aria-pressed"),
+      w: Math.round(mm.getBoundingClientRect().width),
+      tog: !!document.getElementById("minimapToggle")};})()`);
+  console.log("P17 畫布控制:", ctl.inCc && ctl.ap === "true/true" && ctl.w === 150 && ctl.tog
+    ? "✓" : "✗ " + JSON.stringify(ctl));
+  /* (h) gridToggle 關 → show-grid 消失;開回 */
+  await eval_(`document.getElementById("gridToggle").click()`);
+  await sleep(150);
+  const g1 = await eval_(`document.getElementById("canvasViewport").classList.contains("show-grid")`);
+  await eval_(`document.getElementById("gridToggle").click()`);
+  await sleep(150);
+  const g2 = await eval_(`document.getElementById("canvasViewport").classList.contains("show-grid")`);
+  console.log("P17 格線切換:", !g1 && g2 ? "✓" : "✗");
 
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);

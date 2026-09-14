@@ -356,7 +356,7 @@ async function escUntilFree(tries = 5) {
   await insertText(""); await sleep(100);
   await eval_(`(()=>{const s=document.getElementById("searchInput");s.value="";s.dispatchEvent(new Event("input"));s.blur();return true})()`);
   await sleep(300);
-  const fcb = await ctr(`input[data-filter-type="column"]`);
+  const fcb = await ctr(`button[data-filter-type="column"]`);
   await click(fcb.x, fcb.y); await sleep(400);
   const colVis = await eval_(`[...document.querySelectorAll('.ocard[data-kind="column"]')].filter(c=>!c.classList.contains("type-hidden")).length`);
   say("篩選關柱", colVis === 0, `visible=${colVis}`);
