@@ -670,6 +670,15 @@ int main(void)
     char line[4096];
     while (fgets(line, sizeof line, stdin) != NULL) {
         size_t n = strlen(line);
+        /* 超長行：fgets 讀滿緩衝卻沒吃到換行 → 整行丟棄，
+         * 殘段吞到換行/EOF,恰好回一行錯誤 JSON(不拆成兩次指令)。 */
+        if (n == sizeof line - 1 && line[n - 1] != '\n') {
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF) { }
+            fputs("{\"ok\":false,\"error\":\"指令超過單行上限\"}\n", stdout);
+            fflush(stdout);
+            continue;
+        }
         while (n > 0 && (line[n - 1] == '\n' || line[n - 1] == '\r')) line[--n] = '\0';
         if (n == 0) continue;
 

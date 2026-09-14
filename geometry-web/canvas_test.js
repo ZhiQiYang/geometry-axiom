@@ -510,6 +510,49 @@ function check(name, cond, detail="") {
     }
   }
 
+  /* ==== §N. 協定防護(Bugfix 2026-09-14,僅 http 模式)==== */
+  if (!DIRECT) {
+    console.log("== N. 協定防護 ==");
+    /* N1:cmd 含換行 → serve.py 直接拒絕,不送 bridge;
+       之後 dump/newid 回應仍一一對得上(無錯位) */
+    const n1 = await api("objects\nobjects");
+    check("N1 含換行 cmd 拒絕", n1.ok === false && !!n1.error, JSON.stringify(n1));
+    check("N1b 含 \\r cmd 拒絕", (await api("objects\robjects")).ok === false);
+    const dN = await api("dump");
+    check("N1 dump 仍對得上", dN.ok === true && typeof dN.text === "string");
+    const idN = await api("newid");
+    check("N1 newid 仍對得上", idN.ok === true && idN.boundary >= 1);
+
+    /* N2:超過 bridge 4096 緩衝的單行 → 伺服器先擋 */
+    const n2 = await api("line " + "x".repeat(5000));
+    check("N2 5000 bytes cmd 拒絕", n2.ok === false && !!n2.error, JSON.stringify(n2));
+    check("N2 後續 newid 正常", (await api("newid")).ok === true);
+
+    /* N3:Origin/Host 白名單(L3) */
+    const post = (path, headers, body) => fetch("http://localhost:8765" + path, {
+      method: "POST", headers, body
+    });
+    const n3a = await post("/api", { "Content-Type": "application/json",
+      "Origin": "http://evil.example" }, JSON.stringify({ cmd: "newid" }));
+    check("N3 惡意 Origin → 403", n3a.status === 403, "status=" + n3a.status);
+    const n3b = await post("/api", { "Content-Type": "application/json",
+      "Origin": "http://localhost:8765" }, JSON.stringify({ cmd: "newid" }));
+    check("N3 本機 Origin → 200", n3b.status === 200 && (await n3b.json()).ok === true);
+    const n3c = await post("/api", { "Content-Type": "application/json" },
+      JSON.stringify({ cmd: "newid" }));
+    check("N3 無 Origin 放行", n3c.status === 200 && (await n3c.json()).ok === true);
+    /* Host 偽造:fetch 禁改 Host,走 http.request */
+    const n3d = await new Promise(res => {
+      const rq = require("http").request(
+        { host: "127.0.0.1", port: 8765, path: "/api", method: "POST",
+          headers: { "Content-Type": "application/json", "Host": "evil.example" } },
+        r => { r.resume(); res(r.statusCode); });
+      rq.on("error", () => res(0));
+      rq.end(JSON.stringify({ cmd: "newid" }));
+    });
+    check("N3 偽造 Host → 403", n3d === 403, "status=" + n3d);
+  }
+
   await api("default");
 
   console.log(`\n${pass} pass / ${fail} fail`);

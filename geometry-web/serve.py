@@ -34,6 +34,19 @@ def ask_bridge(cmd: str) -> bytes:
         return bridge.stdout.readline()
 
 
+# bridge stdin 緩衝 4096 bytes：fgets 上限 4095 字元含換行，
+# 所以指令本體最多 4094 bytes，超過會被截斷造成回應錯位。
+BRIDGE_MAX_CMD = 4094
+# L3 跨站防護：只收本機來源；無 Origin 的 curl/腳本照常放行。
+LOCAL_ORIGINS = {f"http://127.0.0.1:{PORT}", f"http://localhost:{PORT}"}
+LOCAL_HOSTS = {"127.0.0.1", "localhost"}
+
+
+def err_json(msg: str) -> bytes:
+    return json.dumps({"ok": False, "error": msg},
+                      ensure_ascii=False).encode("utf-8")
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):  # 靜音
         pass
@@ -62,12 +75,40 @@ class Handler(http.server.BaseHTTPRequestHandler):
         else:
             self.send_error(404)
 
+    def _local_only(self) -> bool:
+        """L3：跨站 POST 一律 403；回傳 True = 已拒絕。"""
+        origin = self.headers.get("Origin")
+        if origin is not None and origin not in LOCAL_ORIGINS:
+            self.send_error(403)
+            return True
+        host = self.headers.get("Host")
+        if host is not None and host.rsplit(":", 1)[0] not in LOCAL_HOSTS:
+            self.send_error(403)
+            return True
+        return False
+
     def do_POST(self):
+        if self._local_only():
+            return
         length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(length)
 
         if self.path == "/api":
-            cmd = json.loads(body.decode("utf-8"))["cmd"]
+            try:
+                cmd = json.loads(body.decode("utf-8"))["cmd"]
+            except (ValueError, KeyError, UnicodeDecodeError):
+                self._send(err_json("bad request"))
+                return
+            if not isinstance(cmd, str):
+                self._send(err_json("bad request"))
+                return
+            # 含換行的 cmd 會被拆成多行送進 bridge → 回應錯位；直接拒絕。
+            if "\n" in cmd or "\r" in cmd:
+                self._send(err_json("指令不得含換行"))
+                return
+            if len(cmd.encode("utf-8")) > BRIDGE_MAX_CMD:
+                self._send(err_json("指令超過單行上限"))
+                return
             self._send(ask_bridge(cmd))
         elif self.path == "/upload":
             # 瀏覽器開檔 = 拿到內容而非路徑：寫暫存檔走 parse_scene_file 同一條路。
