@@ -798,15 +798,7 @@ window.addEventListener("keydown", async e => {
     if (k === "/") { e.preventDefault(); $("searchInput").focus(); return; }
     const km = { v: "select", h: "pan", r: "rect", p: "poly" };
     if (km[k.toLowerCase()]) { setOcTool(km[k.toLowerCase()]); return; }
-    if (k.toLowerCase() === "f") {
-      const all = [...oc.faces, ...oc.spaces];
-      if (all.length)
-        ocFit([Math.min(...all.map(o => o.cx)) - 40,
-               Math.min(...all.map(o => o.cy)) - 40,
-               Math.max(...all.map(o => o.cx + OC_W)) + 40,
-               Math.max(...all.map(o => o.cy + OC_H)) + 40]);
-      return;
-    }
+    if (k.toLowerCase() === "f") { ocFitAll(); return; }
     if (k === "1") { oc.zoom = 1; ocApply(); return; }
   }
 });
@@ -833,15 +825,25 @@ $("btnClear").onclick = async () => {
   refreshActive();
 };
 /* 場景/檔案下拉選單(S2):#sceneList 為品牌旁選單,#fileMenu 為頂列檔案選單 */
-let curScene = { path: "room_a.scene", name: "room_a.scene" };
+let curScene = { path: "", name: "內建示範" };   /* 啟動世界=內建場景,無對應檔案 */
 function markSceneItem() {
   for (const b of document.querySelectorAll("#sceneMenuPop .scene-item"))
     b.classList.toggle("active", b.dataset.path === curScene.path);
 }
+/* 換場景前清工作區焦點與面面內快取——舊場景的 guide/timber 殘影會誤刪新場景同號物件 */
+function resetSceneFocus() {
+  oc.focus = null; oc.stack = []; oc.edit = null;
+  oc.rect = null; oc.poly = []; oc.drawTool = null; oc.bmap = {};
+  fe.drag = null; fe.panHold = null; fe.work = null;
+  fe.guides = []; fe.timbers = []; fe.grids = []; fe.obstacles = null;
+  $("objectWorkspace").hidden = true;
+}
 async function loadScene(path, name) {
-  const r = await api("loadfile " + (path || "room_a.scene"));
+  if (!path) { setStatus("沒有可重載的場景檔"); return; }
+  const r = await api("loadfile " + path);
   if (r.ok) {
-    curScene = { path: path || "room_a.scene", name };
+    resetSceneFocus();
+    curScene = { path, name };
     $("sceneMenuLabel").textContent = name;
     markSceneItem();
     setStatus("✓ 已載入 " + name); selected = null; refreshActive();
@@ -873,13 +875,20 @@ $("file").addEventListener("change", async e => {
   const f = e.target.files[0];
   if (!f) return;
   const r = await fetch("/upload", { method: "POST", body: await f.text() }).then(x => x.json());
-  if (r.ok) { setStatus("✓ 已載入 " + f.name); selected = null; refreshActive(); }
+  if (r.ok) {
+    resetSceneFocus();
+    /* serve.py 回傳暫存檔路徑:curScene 指向它,「重新載入場景」才會載回剛上傳的內容 */
+    curScene = { path: r.path || "", name: f.name };
+    $("sceneMenuLabel").textContent = f.name;
+    markSceneItem();
+    setStatus("✓ 已載入 " + f.name); selected = null; refreshActive();
+  }
   else setStatus("✗ " + (r.error || ""));
   e.target.value = "";
 });
 $("btnZoom").addEventListener("click", () => {
   if (!oc.on) { zoom = 1; panX = 0; panY = 0; applyTransform(); return; }
-  ocFit();
+  ocFitAll();
 });
 window.addEventListener("resize", applyTransform);
 
@@ -927,10 +936,20 @@ function ocApply() {
     c.classList.toggle("compact", comp);
   if (oc.faces) drawMinimap();
 }
+function ocToCanvasPx(x, y) {       /* 元素局部 px → 畫布座標 */
+  return { x: (x - oc.panX) / oc.zoom, y: (y - oc.panY) / oc.zoom };
+}
 function ocToCanvas(e) {
   const r = ocv.getBoundingClientRect();
-  return { x: (e.clientX - r.left - oc.panX) / oc.zoom,
-           y: (e.clientY - r.top  - oc.panY) / oc.zoom };
+  return ocToCanvasPx(e.clientX - r.left, e.clientY - r.top);
+}
+function ocFitAll() {               /* 與 f 快捷鍵同一組 bbox:全部卡片 */
+  const all = [...oc.faces, ...oc.spaces];
+  if (all.length)
+    ocFit([Math.min(...all.map(o => o.cx)) - 40,
+           Math.min(...all.map(o => o.cy)) - 40,
+           Math.max(...all.map(o => o.cx + OC_W)) + 40,
+           Math.max(...all.map(o => o.cy + OC_H)) + 40]);
 }
 function ocFit(b) {                 /* b = [minx,miny,maxx,maxy] */
   const r = ocv.getBoundingClientRect();
@@ -3784,10 +3803,11 @@ $("btnRedo").addEventListener("click", () => doUndoRedo("redo"));
 /* 縮放控制 */
 function ocZoomAt(f, px, py) {
   const r = ocv.getBoundingClientRect();
-  const c = ocToCanvas(px ?? r.width / 2, py ?? r.height / 2);
+  const lx = px ?? r.width / 2, ly = py ?? r.height / 2;
+  const c = ocToCanvasPx(lx, ly);
   oc.zoom = Math.min(4, Math.max(0.05, oc.zoom * f));
-  oc.panX = (px ?? r.width / 2) - c.x * oc.zoom;
-  oc.panY = (py ?? r.height / 2) - c.y * oc.zoom;
+  oc.panX = lx - c.x * oc.zoom;
+  oc.panY = ly - c.y * oc.zoom;
   ocApply();
 }
 $("zoomInButton").addEventListener("click", () => ocZoomAt(1.25));

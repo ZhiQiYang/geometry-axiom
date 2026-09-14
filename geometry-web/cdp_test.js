@@ -13,6 +13,7 @@ let ws, mid = 0, pending = {};
 
 /* ✓/✗ 計數：所有印出的判定一律計入，exit code 依此決定。 */
 let passN = 0, failN = 0;
+let excN = 0;            /* Runtime.exceptionThrown 計數(BF2 驗收用) */
 const _log = console.log;
 console.log = (...args) => {
   const s = args.join(" ");
@@ -34,8 +35,10 @@ async function connect() {
           if (m.id && pending[m.id]) { pending[m.id](m); delete pending[m.id]; }
           else if (m.method === "Runtime.consoleAPICalled")
             console.log("[console]", m.params.args.map(a => a.value ?? a.description).join(" "));
-          else if (m.method === "Runtime.exceptionThrown")
+          else if (m.method === "Runtime.exceptionThrown") {
+            excN++;
             console.log("[EXCEPTION]", JSON.stringify(m.params.exceptionDetails.exception?.description || m.params));
+          }
         };
         return;
       }
@@ -1906,6 +1909,62 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await sleep(800);
   console.log("cv hidden:", await eval_(`document.getElementById("cv").hasAttribute("hidden")`));
   console.log("world children:", await eval_(`document.getElementById("world").childElementCount`));
+
+  /* ================= Bugfix 2026-09-14 ================= */
+  console.log("=== BF2. 一按就壞/會丟資料 ===");
+  await eval_(`document.getElementById("btnCanvasView").click()`);
+  await eval_(`api("line reset")`);
+  await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
+  await eval_(`api("line canvas-pos boundary 1 60 60")`);
+  await eval_(`renderObjects()`);
+  await sleep(800);
+  /* (a) 「顯示全部」:ocFit() 無參數曾是 TypeError → 例外計數不得增加 */
+  const exc0 = excN;
+  await eval_(`document.getElementById("btnZoom").click()`);
+  await sleep(500);
+  console.log("BF2 btnZoom 無例外:", excN === exc0 ? "✓" : "✗ exc=" + (excN - exc0));
+  /* (b) 放大鈕曾把 transform 變 NaN → 畫布消失 */
+  await eval_(`document.getElementById("zoomInButton").click()`);
+  await sleep(400);
+  const tf = await eval_(`document.getElementById("oroot").getAttribute("transform")`);
+  console.log("BF2 zoom transform:", tf, tf && !/NaN/.test(tf) ? "✓" : "✗");
+  /* (c) /upload 後 curScene/標籤同步;btnScene 載回上傳內容,不載回 room_a */
+  const fsB = require("fs"), osB = require("os"), pathB = require("path");
+  const up = pathB.join(osB.tmpdir(), "verify-upload-bf.scene");
+  fsB.writeFileSync(up, "boundary 1 outline 0,0 111,0 111,222 0,222\n");
+  const doc = await send("DOM.getDocument");
+  const fnode = await send("DOM.querySelector", { nodeId: doc.result.root.nodeId, selector: "#file" });
+  await send("DOM.setFileInputFiles", { files: [up], nodeId: fnode.result.nodeId });
+  await sleep(1500);
+  const up1 = await eval_(`(async()=>({name:curScene.name,
+    label:document.getElementById("sceneMenuLabel").textContent,
+    mark:(await api("dump")).text.includes("111,222")}))()`);
+  console.log("BF2 upload curScene:", JSON.stringify(up1),
+    up1.name === "verify-upload-bf.scene" && up1.mark ? "✓" : "✗");
+  await eval_(`document.getElementById("btnScene").click()`);
+  await sleep(1500);
+  const up2 = await eval_(`(async()=>{const t=(await api("dump")).text;
+    return {mark:t.includes("111,222"),roomA:t.includes("guide 1 1 u 300")}})()`);
+  console.log("BF2 btnScene 不載回 room_a:", JSON.stringify(up2),
+    up2.mark && !up2.roomA ? "✓" : "✗");
+  /* (d) 換場景清焦點:enterFocus → loadScene → focus null、工作區關閉 */
+  await eval_(`api("line reset")`);
+  await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
+  await eval_(`api("line placement 1 on boundary 1 origin 0 0 2500 u +x v +y")`);
+  await eval_(`api("line canvas-pos boundary 1 60 60")`);
+  await eval_(`renderObjects()`);
+  await sleep(800);
+  await eval_(`enterFocus("face",1)`);
+  await sleep(800);
+  const fpre = await eval_(`({focus:oc.focus && oc.focus.t,g:fe.guides.length})`);
+  await eval_(`loadScene("D:/knowledgebase/room_a.scene","room_a.scene")`);
+  await sleep(1800);
+  const fpost = await eval_(`({focus:oc.focus,
+    wsHidden:document.getElementById("objectWorkspace").hidden,
+    guides:fe.guides.length,stack:oc.stack.length})`);
+  console.log("BF2 換場景清焦點:", JSON.stringify(fpre), "→", JSON.stringify(fpost),
+    fpre.focus === "face" && fpost.focus === null && fpost.wsHidden === true &&
+    fpost.guides === 0 && fpost.stack === 0 ? "✓" : "✗");
   chrome.kill();
   _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);
   process.exit(failN > 0 ? 1 : 0);

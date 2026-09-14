@@ -116,7 +116,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     "wb", suffix=".scene", delete=False) as f:
                 f.write(body)
                 tmp = f.name
-            self._send(ask_bridge("loadfile " + tmp))
+            resp = ask_bridge("loadfile " + tmp)
+            # 回傳暫存檔路徑,前端 curScene 指到它,「重新載入場景」載回剛上傳的內容。
+            try:
+                merged = json.loads(resp.decode("utf-8"))
+                merged["path"] = tmp
+                self._send(json.dumps(merged, ensure_ascii=False).encode("utf-8"))
+            except (ValueError, UnicodeDecodeError):
+                self._send(resp)
         else:
             self.send_error(404)
 
