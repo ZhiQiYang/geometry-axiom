@@ -177,7 +177,7 @@ geometry-web/
 ### 5.7 對話框與回饋
 
 - 對話框只留:快速六面盒、編輯空間成員、載入範例(可用 select 取代)。原型的 objectDialog/viewDialog/relationDialog 三者的殼可重用,內容全換。
-- toast:所有 bridge `ok:false` 的 `error` 原文;成功操作不 toast(狀態列顯示)。
+- toast:所有 bridge `ok:false` 的 `error` 原文;~~成功操作不 toast~~(**作廢**:UIUX-FIX-PLAN.md Q2 改為成功訊息同時發 `.toast.ok` 2000ms,錯誤 toast 3600ms)。
 - 狀態列 `#status` 文案沿用既有(cdp_test 比對中文),改文案必須同步改測試。
 
 ### 5.8 鍵盤
@@ -262,7 +262,7 @@ cd /d/knowledgebase/geometry-web && node cdp_test.js
 1. 視圖索引(current_geometry.c:1959-1975):0=FRONT(X 右、Z 上,看向 −Y)、1=SIDE(Y 右、Z 上)、2=BOTTOM(X 右、Y 下,仰視)。index.html:352/363 註解寫「俯視」是錯的。
 2. `render` 的 ops 座標**未含** `tx/ty`;三視圖總覽要自己 translate,單視圖不要加。
 3. `guide` / `timber` 重宣告同 id 會被**拒絕**(7252 / 7346);參考線位置改用 `move`,不能重發 guide。
-4. DSL **沒有 delete**;`undo` 是唯一反悔手段。
+4. ~~DSL **沒有 delete**;`undo` 是唯一反悔手段~~(**作廢**:§9 Q1 已做 `delete <kind> <id>` 交易重驗,commit `551e416`)。
 5. 核心只收正交多邊形;頂點拖曳要用既有 `applyVertexEdit`(連動相鄰邊),不能自由移點。
 6. `surface N` 合體 = boundary N + placement N 兩個物件同 id;`placement … on boundary M` 時 id 可不同。guide 的面 id 是 placement id。
 7. `objects` 的 `kind:"placement"` 面沒有 boundary,不能進面內編輯。

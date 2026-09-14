@@ -8,7 +8,7 @@
 
 | id | 用途 | 測試依賴點 |
 |---|---|---|
-| `#app` | 三列殼(.app-shell) | 子層數/高度量測(58/1fr/28) |
+| `#app` | 三列殼(.app-shell) | 子層數/高度量測(56/1fr/32) |
 | `#cv` | 三視圖 SVG(覆層,z-index 5) | `hasAttribute("hidden")` 切換檢查、rect 量測 |
 | `#world` | `#cv` 內容群組 | `childElementCount` |
 | `#overlay` | `#cv` 疊層 | 繪圖預覽層 |
@@ -79,6 +79,13 @@
 | `.rc-acts` / `.rc-act` | 構件列 hover 動作鈕(C4) | `.click()` |
 | `.space-member-thumb` | 成員列內嵌縮圖(C1,替代已移除的 `#spaceFaceGrid`) | svg 子元素 |
 | `text[data-fs0]` | 三視圖文字反比縮放基準(D3;`v3FixText` 依 `transform().s` 換算 mm 字級,螢幕 px 恆定) | `font-size` 屬性 |
+| `#box6Dialog` / `#box6Submit` / `#box6W` / `#box6D` / `#box6H` / `#box6Floor` | 快速六面盒對話框 | `hidden`、`.click()`、`value`/`checked` |
+| `#memberDialog` / `#memberCheckList` / `#memberSubmit` / `#memberDialogTitle` | 編輯空間成員對話框 | `hidden`、`.click()`、勾選列 |
+| `#spEditMembers` | 空間檢視器動態鈕(非靜態 DOM) | `.click()` 開 `#memberDialog` |
+| `#spaceWorkspaceLayout` | 空間工作區三欄容器(`#faceWorkspaceLayout` 互斥顯隱) | `hidden` 切換檢查 |
+| `#spaceMemberList` | 空間工作區左欄成員列 | 子列計數 |
+| `#spaceInspectorContent` | 空間工作區右欄檢視器(六槽列掛點) | 存在性 |
+| `#rcErr` | RC 對話框表單內錯誤提示(BF4:驗證失敗顯示) | `hidden`、textContent |
 
 ### 已移除(Phase 6)
 
@@ -133,6 +140,7 @@
 | 名稱 | 用途 |
 |---|---|
 | `window.__pd` | cdp_test 注入的 pointerdown 探針(測試端自掛,非產品碼) |
+| `window.__apiLog` | cdp_test 包裝 `api` 記錄送出的 cmd(驗證「不送指令」類斷言,非產品碼) |
 
 ## `#status` 文案比對點(cdp_test 引用的中文)
 
@@ -163,8 +171,8 @@
 
 ## Phase 1 版面檢查點(cdp_test §1,五項)
 
-1. `#app` 三列:topbar 58px / workspace 1fr / statusbar 28px
-2. `.workspace` 三欄:左 242px / 中 1fr / 右 326px
+1. `#app` 三列:topbar 56px / workspace 1fr / statusbar 32px
+2. `.workspace` 三欄:左 260px / 中 1fr / 右 320px
 3. `.topbar` 子層序:brand → tool-group → top-actions
 4. `#ocv` 在 `#canvasViewport` 內且同大小(誤差 ≤2px)
 5. `#status`、`#cmd` 都在 `.statusbar` 裡;另存 `phase1.png` 截圖
@@ -210,6 +218,6 @@
 
 - DSL:`apply-proj <boundary_id> <item>… [cut-strip]`;item = 裸 id(柱樑皆套)或 `c<id>`/`b<id>` 型別消歧(R12);單一交易,任何一步失敗全回滾。
 - 圖層列 `#faceLayerList` 的鬼影列改為 `.fe-ob-row` + 勾選框 `.fe-ob-check[data-item-id][data-item-type]`;`strip` 項預設不勾(🔒 Q8 不裁)。
-- 控制列 `.fe-ob-ctrl`:`#feCutStrip`(裁切條帶)+ `#feApplyProj`(文案隨勾數變「套用 N 項投影」,0 勾 disabled)+ `.fe-ob-note` 快照說明。
+- 控制卡 `#feApplyCard`(動態插入,灰底):`.fe-ob-cut > #feCutStrip`(裁切條帶)+ `#feApplyProj`(文案隨勾數變「套用 N 項投影」,0 勾 disabled)+ `.fe-ob-note` 快照說明。
 - `feApplyProj()`(全域)送 `apply-proj`,成功後 `fe.work` 清空、`feLoadGuides`+`renderFaceLayers`+`renderFaceInspector` 重繪;失敗保留草稿(核心已回滾)。
 - 語意:拆分=原 id 留最大面積片+其餘新 id+孔隨片走(R10);拆片/生成面退出空間成員變游離(R11);重套已存在的孔=退化拒絕(快照無連結,R8)。
