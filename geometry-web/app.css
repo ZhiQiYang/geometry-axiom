@@ -231,7 +231,7 @@ svg { display: block; }
 .preview-stage svg { width: 100%; height: 100%; min-height: 90px; }
 .preview-metrics { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 6px; }
 .preview-metric { min-width: 0; padding: 6px 7px; border-radius: 7px; background: var(--panel-muted); }
-.preview-metric span { display: block; color: var(--muted); font-size: 8.5px; }
+.preview-metric span { display: block; color: var(--muted); font-size: 11px; }
 .preview-metric strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; font-size: 11px; }
 .node-footer { flex: 0 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px 10px; border-top: 1px solid #e8ebf0; background: #fbfcfd; }
 .node-action { height: 28px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; border-radius: 7px; background: transparent; color: #4f5a6d; font-size: 11px; font-weight: 650; cursor: pointer; }
@@ -300,7 +300,7 @@ svg { display: block; }
 .relation-direction svg { width: 13px; height: 13px; }
 .relation-copy { min-width: 0; display: flex; flex-direction: column; }
 .relation-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
-.relation-copy small { font-size: 8.5px; color: var(--muted); }
+.relation-copy small { font-size: 11px; color: var(--muted); }
 .relation-delete { width: 23px; height: 23px; display: grid; place-items: center; border-radius: 6px; background: transparent; color: var(--faint); cursor: pointer; }
 .relation-delete:hover { background: var(--danger-soft); color: var(--danger); }
 .relation-delete svg { width: 12px; height: 12px; }
@@ -310,7 +310,7 @@ svg { display: block; }
 .boundary-list { display: grid; gap: 5px; }
 .boundary-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 6px 7px; border-radius: 7px; background: var(--panel-muted); }
 .boundary-row span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
-.boundary-row button { padding: 3px 6px; border-radius: 5px; background: white; color: var(--accent); font-size: 8.5px; font-weight: 650; cursor: pointer; }
+.boundary-row button { padding: 3px 6px; border-radius: 5px; background: white; color: var(--accent); font-size: 11px; font-weight: 650; cursor: pointer; }
 
 .statusbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 10px; border-top: 1px solid var(--border); background: #fbfcfd; color: var(--muted); font-size: 11.5px; z-index: 20; }
 .status-summary { color: var(--muted); font-size: 11px; white-space: nowrap; }
@@ -381,7 +381,7 @@ svg { display: block; }
 .endpoint-card .type-icon svg { width: 15px; height: 15px; }
 .endpoint-card span:last-child { min-width: 0; display: flex; flex-direction: column; }
 .endpoint-card strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
-.endpoint-card small { font-size: 8.5px; color: var(--muted); }
+.endpoint-card small { font-size: 11px; color: var(--muted); }
 .endpoint-arrow { display: grid; place-items: center; color: var(--muted); }
 .endpoint-arrow svg { width: 18px; height: 18px; }
 /* toast-region:bottom 需壓在小地圖(right 14/bottom 14、高 96)上方,固定值 14+96+8=118 起算 */
@@ -572,7 +572,7 @@ body.workspace-open #app { pointer-events: none; user-select: none; }
 .face-layer-copy { min-width: 0; display: flex; flex-direction: column; }
 .face-layer-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
 .face-layer-copy small { color: var(--muted); font-size: 11px; }
-.face-layer-count { min-width: 20px; padding: 1px 6px; border-radius: 9px; background: #fff; color: var(--muted); font-size: 8.5px; text-align: center; }
+.face-layer-count { min-width: 20px; padding: 1px 6px; border-radius: 9px; background: #fff; color: var(--muted); font-size: 11px; text-align: center; }
 .face-add-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .face-add-button {
   min-width: 0;
@@ -711,7 +711,7 @@ input.invalid, select.invalid { border-color: var(--danger) !important; box-shad
 .workspace-name-row button { height: 34px; padding: 0 9px; border-radius: 8px; background: var(--face); color: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
 .workspace-property-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .workspace-property-card { min-width: 0; padding: 8px; border-radius: 8px; background: var(--panel-muted); }
-.workspace-property-card span { display: block; color: var(--muted); font-size: 8.5px; }
+.workspace-property-card span { display: block; color: var(--muted); font-size: 11px; }
 .workspace-property-card strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px; font-size: 11px; }
 .selection-card { padding: 10px; border: 1px solid var(--border); border-radius: 9px; background: #fff; }
 .selection-card-header { display: flex; align-items: center; gap: 8px; }
@@ -719,7 +719,7 @@ input.invalid, select.invalid { border-color: var(--danger) !important; box-shad
 .selection-card-header svg { width: 15px; height: 15px; }
 .selection-card-header div { min-width: 0; display: flex; flex-direction: column; }
 .selection-card-header strong { font-size: 11px; }
-.selection-card-header small { color: var(--muted); font-size: 8.5px; }
+.selection-card-header small { color: var(--muted); font-size: 11px; }
 .selection-data-list { display: grid; gap: 6px; margin: 10px 0 0; }
 .selection-data-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 11px; }
 .selection-data-row span { color: var(--muted); }
@@ -758,23 +758,24 @@ input.invalid, select.invalid { border-color: var(--danger) !important; box-shad
 .space-boundary-button .type-icon { width: 31px; height: 31px; }
 .space-boundary-button-copy { min-width: 0; display: flex; flex-direction: column; }
 .space-boundary-button-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
-.space-boundary-button-copy small { color: var(--muted); font-size: 8.5px; }
+.space-boundary-button-copy small { color: var(--muted); font-size: 11px; }
 .space-boundary-button > svg { width: 14px; height: 14px; color: var(--faint); }
-.space-workspace-stage { min-width: 0; min-height: 0; overflow: auto; padding: 26px; background: #f8fafc; }
-.space-hero-preview { max-width: 760px; height: 330px; margin: 0 auto 20px; overflow: hidden; border: 1px solid var(--border); border-radius: 13px; background: #fff; box-shadow: var(--shadow-sm); }
-.space-hero-preview svg { width: 100%; height: 100%; }
+/* C1:舞台 Tab 內容區 flex 佔滿可用高度,不留固定高留白、不出捲軸 */
+.space-workspace-stage { min-width: 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; padding: 20px; background: #f8fafc; }
+.space-hero-preview { flex: 1; min-height: 0; margin: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 13px; background: #fff; box-shadow: var(--shadow-sm); }
+.space-hero-preview svg { display: block; width: 100%; height: 100%; }
 
 /* RC Phase 5:平面示意圖（點放柱·拖放樑） */
-.space-plan-strip { max-width: 760px; margin: 0 auto 16px;
+.space-plan-strip { flex: 1; min-height: 0; margin: 0; display: flex; flex-direction: column;
   border: 1px solid var(--border); border-radius: 13px; background: #fff;
   box-shadow: var(--shadow-sm); overflow: hidden; }
-.space-plan-head { display: flex; align-items: center; justify-content: space-between;
+.space-plan-head { flex: none; display: flex; align-items: center; justify-content: space-between;
   padding: 8px 14px; font-size: 13px; font-weight: 600; color: var(--ink);
   border-bottom: 1px solid var(--border); }
 .space-plan-tools { display: flex; gap: 10px; align-items: center; font-weight: 400; }
 .space-plan-tools select { font: inherit; margin-left: 4px; }
 .space-plan-tools .hint { color: var(--muted); font-size: 12px; }
-#spacePlanSvg { display: block; width: 100%; height: 200px; cursor: crosshair; }
+#spacePlanSvg { display: block; width: 100%; flex: 1; min-height: 0; cursor: crosshair; }
 .space-plan-floor { fill: rgba(47,143,123,.10); stroke: #2f8f7b;
   stroke-width: 2; vector-effect: non-scaling-stroke; }
 .space-plan-col { fill: rgba(196,120,26,.45); stroke: #a35d08;
@@ -1116,7 +1117,8 @@ body.oc-busy .face-layer-row { pointer-events: none; opacity: .45; }
   color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; }
 .ss-tab:hover { color: var(--ink); }
 .ss-tab.active { color: #2f6fd0; border-bottom-color: #2f6fd0; font-weight: 600; }
-.ss-pane { min-height: 0; }
+.ss-pane { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.ss-pane[hidden] { display: none; }
 /* C1:成員列縮圖 */
 .space-member-thumb { width: 36px; height: 28px; flex: none;
   border: 1px solid var(--border); border-radius: 6px; background: #f7f9fb;

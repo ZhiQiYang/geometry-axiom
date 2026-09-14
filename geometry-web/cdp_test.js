@@ -2150,6 +2150,152 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     return {mid, after};})()`);
   console.log("P20 busy指示:", p20busy.mid === false && p20busy.after === true
     ? "✓" : `✗ ${JSON.stringify(p20busy)}`);
+  /* (j) §S1 全域最小字級 11px:主畫布／面內／空間工作區三畫面全掃描,
+     不得有任何可見元素 computed font-size < 11px。
+     排除:①未顯示元素(如空的 .toast-region)因寬高為 0 自然排除,不需另立白名單;
+     ②SVG 命名空間下畫布繪製的 <text>/<tspan>(卡片副標、狀態膠囊「游離/無邊界」、
+     空間卡槽位軸標、面內原點座標標註)——這些數值由 §S2 明文另訂
+     (「副標 10.5＋狀態膠囊 10.5」),不屬 §S1『元件最小 11px』規範對象,
+     此處明文排除、非隨意放寬。 */
+  await eval_(`window.__scanMinFont = () => {
+    let min = Infinity, sel = "";
+    for (const el of document.querySelectorAll("body *")) {
+      if (el.namespaceURI === "http://www.w3.org/2000/svg") continue;
+      const cs = getComputedStyle(el);
+      if (cs.display === "none" || cs.visibility === "hidden") continue;
+      const r = el.getBoundingClientRect();
+      if (r.width === 0 || r.height === 0) continue;
+      const fs = parseFloat(cs.fontSize);
+      if (fs && fs < min) { min = fs;
+        sel = (el.id ? "#" + el.id : "") + (el.className ? "." + String(el.className).split(" ")[0] : "") || el.tagName; }
+    }
+    return {min, sel};
+  }`);
+  const p20fontMain = await eval_(`__scanMinFont()`);
+  await eval_(`enterFocus("face", 1)`);
+  await sleep(500);
+  const p20fontFace = await eval_(`__scanMinFont()`);
+  await eval_(`(async()=>{ await leaveFocus(); await enterFocus("space", 1); })()`);
+  await sleep(500);
+  const p20fontSpace = await eval_(`__scanMinFont()`);
+  const p20fontAll = [["主畫布", p20fontMain], ["面內", p20fontFace], ["空間工作區", p20fontSpace]];
+  const p20fontBad = p20fontAll.filter(([, v]) => !(v.min >= 11));
+  console.log("P20 全域最小字級≥11px:", p20fontBad.length === 0
+    ? `✓ ${p20fontAll.map(([n, v]) => `${n}=${v.min}`).join(" ")}`
+    : `✗ ${p20fontBad.map(([n, v]) => `${n}: min=${v.min}px @ ${v.sel}`).join("; ")}`);
+  /* (k) B-icon:.space-member-thumb 無承載面(bmap 缺失)時走 icon("rectangle")
+     SVG 佔位,不留 ▱▨⌖▤╬ 等 Unicode 圖示字元。目前處於空間 1 工作區
+     (成員 1 2 皆已放置、bmap 皆有值),故先人為刪除成員 2 的 bmap 條目
+     模擬「無承載面資料」情形,重繪縮圖列後檢查該格內容。 */
+  const p20thumb = await eval_(`(async()=>{
+    delete oc.bmap[2];
+    await renderSpaceWorkspace();
+    const rows = [...document.querySelectorAll(".space-member-thumb")];
+    return {n: rows.length,
+      bad: rows.some(t => /[▱▨⌖▤╬]/.test(t.textContent)),
+      svgN: rows.filter(t => t.querySelector("svg")).length};})()`);
+  console.log("P20 space-member-thumb無殘留Unicode圖示:", p20thumb.n >= 1 && !p20thumb.bad && p20thumb.svgN === p20thumb.n
+    ? `✓ n=${p20thumb.n} svgN=${p20thumb.svgN}` : `✗ ${JSON.stringify(p20thumb)}`);
+  await eval_(`leaveFocus()`);
+  await sleep(400);
+
+  /* ================= P21. 對抗審查漂移修正(C1 C3 C4 D2) =================
+   * 對應 audit-CD.md 揪出的 PARTIAL 項:C1 佔滿高度、C3 空槽直達放置、
+   * C4 移出/收進鈕熱區、D2 縮放列移左下。斷言要咬住「修前」的錯誤做法。 */
+  console.log("=== P21. 對抗審查漂移修正(空間工作區/三視圖) ===");
+  /* (a) C1:空間工作區「平面示意」舞台內容高度 ≥ 可用高度 85%,且無捲軸 */
+  await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+    await api("line space 1 boundary 1");
+    await api("line canvas-pos space 1 60 60");
+    await renderObjects();
+    await enterFocus("space", 1);
+  })()`);
+  await sleep(600);
+  const p21c1 = await eval_(`(()=>{
+    const stage = document.querySelector(".space-workspace-stage");
+    const strip = document.querySelector(".space-plan-strip");
+    if (!stage || !strip) return null;
+    const sr = stage.getBoundingClientRect(), cr = strip.getBoundingClientRect();
+    return { ratio: +(cr.height / sr.height).toFixed(3),
+      overflow: stage.scrollHeight > stage.clientHeight + 2,
+      sh: Math.round(sr.height), ch: Math.round(cr.height) };
+  })()`);
+  console.log("P21 C1 舞台佔滿高度:", p21c1 && p21c1.ratio >= 0.85 && !p21c1.overflow
+    ? `✓ ratio=${p21c1.ratio} h=${p21c1.ch}/${p21c1.sh}` : `✗ ${JSON.stringify(p21c1)}`);
+
+  /* (b) C3:空槽點擊直達放置——帶入槽位對應預設 u/v,且選中的是預期的游離面 */
+  await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+    await api("line space 1 boundary 1");
+    await api("line boundary 10 outline 0,0 400,0 400,300 0,300");
+    await api("line canvas-pos space 1 60 60");
+    await api("line canvas-pos boundary 10 400 60");
+    await renderObjects();
+    await enterFocus("space", 1);
+  })()`);
+  await sleep(600);
+  const p21c3click = await eval_(`(()=>{
+    const b = [...document.querySelectorAll(".slot-empty")]
+      .find(x => x.dataset.slotLabel === "地板");
+    if (!b) return false;
+    b.click();
+    return true;
+  })()`);
+  await sleep(700);
+  const p21c3 = await eval_(`(()=>{
+    const p = document.getElementById("faceInspectorContent");
+    const u = p && p.querySelector("#placeU"), v = p && p.querySelector("#placeV");
+    return { clicked: true, focus: oc.focus && JSON.parse(JSON.stringify(oc.focus)),
+      u: u && u.value, v: v && v.value };
+  })()`);
+  console.log("P21 C3 空槽直達放置:",
+    p21c3click && p21c3.focus && p21c3.focus.t === "face" && p21c3.focus.id === 10 &&
+    p21c3.u === "+y" && p21c3.v === "+x"
+      ? `✓ face=${p21c3.focus.id} u=${p21c3.u} v=${p21c3.v}` : `✗ ${JSON.stringify(p21c3)}`);
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+
+  /* (c) C4:構件列「移出/收進」鈕熱區 ≥28px,與旁邊 ✕ 一致
+     柱需落在一個有地板足跡的空間內才會生效,否則核心回「空間不存在」。 */
+  await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000");
+    await api("line space 1 boundary 1");
+    await api("line canvas-pos space 1 60 60");
+    await api("line column 5 in 1 at 0 0 size 600 600 z 0 2500");
+    await renderObjects();
+    await enterFocus("space", 1);
+  })()`);
+  await sleep(600);
+  const p21c4 = await eval_(`(()=>{
+    const b = document.querySelector(".rc-act");
+    return b ? Math.round(b.getBoundingClientRect().height) : null;
+  })()`);
+  console.log("P21 C4 rc-act熱區≥28:", p21c4 !== null && p21c4 >= 28
+    ? `✓ h=${p21c4}` : `✗ ${JSON.stringify(p21c4)}`);
+  await eval_(`leaveFocus()`);
+  await sleep(300);
+
+  /* (d) D2:三視圖縮放列獨立於左下,不在 #viewToolbar 內 */
+  await eval_(`document.getElementById("btnObj").click()`);
+  await sleep(600);
+  const p21d2 = await eval_(`(()=>{
+    const canvas = document.getElementById("canvasViewport").getBoundingClientRect();
+    const bar = document.querySelector(".v3-zoom");
+    if (!bar) return null;
+    const bb = bar.getBoundingClientRect();
+    return { left: Math.round(bb.left - canvas.left),
+      bottom: Math.round(canvas.bottom - bb.bottom),
+      inToolbar: !!bar.closest("#viewToolbar") };
+  })()`);
+  console.log("P21 D2 縮放列移左下:",
+    p21d2 && p21d2.left < 100 && p21d2.bottom < 60 && !p21d2.inToolbar
+      ? `✓ ${JSON.stringify(p21d2)}` : `✗ ${JSON.stringify(p21d2)}`);
+  await eval_(`document.getElementById("btnObj").click()`);
+  await sleep(300);
 
   chrome.kill();
   _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);

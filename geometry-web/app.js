@@ -1612,7 +1612,7 @@ async function renderSpaceWorkspace() {
           stroke: "#2f8f7b", "stroke-width": 40,
           "vector-effect": "non-scaling-stroke" }, svg);
       thumb.appendChild(svg);
-    } else thumb.textContent = "▱";
+    } else thumb.innerHTML = icon("rectangle");
     row.addEventListener("click", () => enterFocus("face", bid));
     list.appendChild(row);
   }
