@@ -268,7 +268,7 @@ beam   <id> [in <space_id>] along x|y from <a> to <b> at <c> width <w> depth <d>
 ## 10. 交辦 prompt(拍板後直接貼)
 
 ```
-繼續執行 D:\knowledgebase\geometry-web\docs\RC-POLYGON-PLAN.md 的 Phase <N>。
+繼續執行 D:\knowledgebase\geometry\geometry-web\docs\RC-POLYGON-PLAN.md 的 Phase <N>。
 先讀該檔 §0、§2、§3、§5、§6 Phase <N>、§7、§8、附錄 A/B;原始碼用 sed -n 分段讀。
 規則:真相在 bridge;新 DSL 指令要完成 §0-2 全清單;沒寫的設計取捨不做、寫進 §9 停手;
 每階段裁判沒過不得宣告完成。完成後回報 ≤60 行。

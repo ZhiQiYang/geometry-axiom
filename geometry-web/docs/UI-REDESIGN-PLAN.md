@@ -287,7 +287,7 @@ cd /d/knowledgebase/geometry-web && node cdp_test.js
 ## 10. 交辦 prompt(直接貼給實作 agent)
 
 ```
-你要執行 D:\knowledgebase\geometry-web\docs\UI-REDESIGN-PLAN.md 的 Phase <N>。
+你要執行 D:\knowledgebase\geometry\geometry-web\docs\UI-REDESIGN-PLAN.md 的 Phase <N>。
 先讀該檔 §0、§2、§3、§5、§6 的 Phase <N>、§7、§8,再讀附錄 A/B/C;原始碼用 sed -n 分段讀。
 規則:C 端零改動;真相在 bridge;沒寫的設計取捨不做、寫進 §9 停手;每階段裁判沒過不得宣告完成。
 完成後回報 ≤60 行:改了哪些檔(檔名:行號範圍)、裁判輸出摘要(pass/fail 數與失敗項)、未做/卡住的項目與原因。

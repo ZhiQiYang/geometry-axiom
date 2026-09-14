@@ -1957,7 +1957,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`enterFocus("face",1)`);
   await sleep(800);
   const fpre = await eval_(`({focus:oc.focus && oc.focus.t,g:fe.guides.length})`);
-  await eval_(`loadScene("D:/knowledgebase/room_a.scene","room_a.scene")`);
+  await eval_(`loadScene("D:/knowledgebase/geometry/room_a.scene","room_a.scene")`);
   await sleep(1800);
   const fpost = await eval_(`({focus:oc.focus,
     wsHidden:document.getElementById("objectWorkspace").hidden,
