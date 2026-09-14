@@ -1242,15 +1242,20 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     await renderObjects();
     await enterFocus("face", 1);
   })()`);
-  await sleep(1000);
-  const obUi = await eval_(`({
-    checks: document.querySelectorAll("#faceLayerList .fe-ob-check").length,
-    checked: document.querySelectorAll("#faceLayerList .fe-ob-check:checked").length,
-    btn: !!document.getElementById("feApplyProj"),
-    cut: !!document.getElementById("feCutStrip"),
-    btnTxt: document.getElementById("feApplyProj") &&
-      document.getElementById("feApplyProj").textContent
-  })`);
+  /* 投影清單是 obstacles 查詢後才渲染:輪詢到 2 個勾選框為止(最多 4.5s),不靠固定 sleep */
+  let obUi = null;
+  for (let i = 0; i < 15; ++i) {
+    await sleep(300);
+    obUi = await eval_(`({
+      checks: document.querySelectorAll("#faceLayerList .fe-ob-check").length,
+      checked: document.querySelectorAll("#faceLayerList .fe-ob-check:checked").length,
+      btn: !!document.getElementById("feApplyProj"),
+      cut: !!document.getElementById("feCutStrip"),
+      btnTxt: document.getElementById("feApplyProj") &&
+        document.getElementById("feApplyProj").textContent
+    })`);
+    if (obUi.checks === 2 && obUi.btn && obUi.cut) break;
+  }
   console.log("套用UI:", obUi.checks === 2 && obUi.checked === 1 &&
     obUi.btn && obUi.cut ? "✓" : `✗ ${JSON.stringify(obUi)}`);
   /* 只勾柱(預設)→ 套用 → 孔出現 */

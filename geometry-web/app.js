@@ -960,7 +960,7 @@ function faceCard(f) {
   const t = el("text", { x: 26, y: 15, "font-size": 11.5, fill: "#1d2634",
                          "font-weight": 700 }, g);
   t.textContent = (f.kind === "boundary" ? "面 " : "placement ") + f.id;
-  const sub = el("text", { x: 26, y: 28, "font-size": 9, fill: "#8b93a3" }, g);
+  const sub = el("text", { x: 26, y: 28, "font-size": 10.5, fill: "#8b93a3" }, g);
   const fs = f.kind === "boundary" && f.placed ? feSurf(f.id) : null;
   sub.textContent = f.kind === "placement" ? "自帶矩形 · 無邊界"
     : (f.placed ? `已放置 · ${fs ? surfNormalLabel(fs) : ""}`
@@ -970,14 +970,14 @@ function faceCard(f) {
     const bg = el("g", { "data-insp-scroll": "place", cursor: "pointer" }, g);
     el("rect", { x: OC_W - 44, y: 8, width: 36, height: 14, rx: 7,
                  fill: "#fdf3e3", stroke: "#ecd9b5" }, bg);
-    const tag = el("text", { x: OC_W - 26, y: 18, "font-size": 8, fill: "#a06a18",
+    const tag = el("text", { x: OC_W - 26, y: 18, "font-size": 10.5, fill: "#a06a18",
                              "text-anchor": "middle", "font-weight": 650 }, bg);
     tag.textContent = "游離";
   }
   if (f.kind === "placement") {
     el("rect", { x: OC_W - 52, y: 8, width: 44, height: 14, rx: 7,
                  fill: "#eef1f6", stroke: "#dde2ea" }, g);
-    const tag = el("text", { x: OC_W - 30, y: 18, "font-size": 8, fill: "#6b7484",
+    const tag = el("text", { x: OC_W - 30, y: 18, "font-size": 10.5, fill: "#6b7484",
                              "text-anchor": "middle", "font-weight": 650 }, g);
     tag.textContent = "無邊界";
   }
@@ -1014,7 +1014,7 @@ function faceCard(f) {
   /* footer:範圍 + 頂點數 */
   el("line", { x1: 0, y1: OC_H - 30, x2: OC_W, y2: OC_H - 30,
                stroke: "#e8ebf0", "stroke-width": 1 }, body);
-  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 8.5, fill: "#687487" }, body);
+  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 11, fill: "#687487" }, body);
   const nv = (f.kind === "boundary" && oc.bmap[f.id]) ? oc.bmap[f.id][0].verts.length : 4;
   ft.textContent = `${bw}×${bh} mm · ${nv} 頂點`;
   return g;
@@ -1045,12 +1045,12 @@ function spaceCard(s) {
   const t = el("text", { x: 26, y: 15, "font-size": 11.5, fill: "#1d2634",
                          "font-weight": 700 }, g);
   t.textContent = `空間 ${s.id}`;
-  const sub = el("text", { x: 26, y: 28, "font-size": 9, fill: "#8b93a3" }, g);
+  const sub = el("text", { x: 26, y: 28, "font-size": 10.5, fill: "#8b93a3" }, g);
   sub.textContent = `space · ${s.members.length} 個邊界面`;
   el("rect", { x: SP_W - 52, y: 8, width: 44, height: 14, rx: 7,
                fill: s.closed ? "#e3f4ec" : "#fdf3e3",
                stroke: s.closed ? "#bfe3d0" : "#ecd9b5" }, g);
-  const tag = el("text", { x: SP_W - 30, y: 18, "font-size": 8,
+  const tag = el("text", { x: SP_W - 30, y: 18, "font-size": 10.5,
                  fill: s.closed ? "#1d7a4e" : "#a06a18",
                  "text-anchor": "middle", "font-weight": 650 }, g);
   tag.textContent = s.closed ? "封閉" : "開放";
@@ -1071,22 +1071,22 @@ function spaceCard(s) {
     el("rect", { x: cx, y: cy, width: cw, height: ch, rx: 5,
                  fill: used ? "#ece9fb" : "#f7f9fb",
                  stroke: used ? "#8f83e0" : "#e4e8ef" }, body);
-    const k = el("text", { x: cx + cw / 2, y: cy + 11, "font-size": 9.5,
+    const k = el("text", { x: cx + cw / 2, y: cy + 11, "font-size": 11,
                  "text-anchor": "middle", "font-weight": 650,
                  fill: used ? "#5b4fc4" : "#a6aebb" }, body);
     k.textContent = label;
-    const ax = el("text", { x: cx + cw / 2, y: cy + 21, "font-size": 7.5,
+    const ax = el("text", { x: cx + cw / 2, y: cy + 21, "font-size": 10.5,
                   "text-anchor": "middle",
                   fill: used ? "#8f83e0" : "#c3c9d4" }, body);
     ax.textContent = key + (slots && used ? ` ×${slots[key]}` : "");
   }
   /* 成員列 */
-  const mt = el("text", { x: 10, y: gy + 2 * ch + 24, "font-size": 9, fill: "#687487" }, body);
+  const mt = el("text", { x: 10, y: gy + 2 * ch + 24, "font-size": 11, fill: "#687487" }, body);
   mt.textContent = s.members.length ? "成員面：" + s.members.join(" ")
                                     : "空容器 · 雙擊進入管理成員";
   el("line", { x1: 0, y1: SP_H - 30, x2: SP_W, y2: SP_H - 30,
                stroke: "#e8ebf0", "stroke-width": 1 }, body);
-  const ft = el("text", { x: 10, y: SP_H - 11, "font-size": 8.5, fill: "#687487" }, body);
+  const ft = el("text", { x: 10, y: SP_H - 11, "font-size": 11, fill: "#687487" }, body);
   ft.textContent = s.closed ? "封閉 · 六槽齊備"
     : (missing.length === 6 && !s.members.length ? "開放 · 尚無已放置成員"
        : `開放 · 缺 ${missing.join("、")}`);
@@ -1104,12 +1104,12 @@ function rcCard(o, kind) {
   const t = el("text", { x: 26, y: 15, "font-size": 11.5, fill: "#1d2634",
                          "font-weight": 700 }, g);
   t.textContent = (isCol ? "柱 " : "樑 ") + o.id;
-  const sub = el("text", { x: 26, y: 28, "font-size": 9, fill: "#8b93a3" }, g);
+  const sub = el("text", { x: 26, y: 28, "font-size": 10.5, fill: "#8b93a3" }, g);
   sub.textContent = o.space ? `空間 ${o.space} 的障礙物` : "游離構件";
   if (!o.space) {
     el("rect", { x: OC_W - 44, y: 8, width: 36, height: 14, rx: 7,
                  fill: "#fdf3e3", stroke: "#ecd9b5" }, g);
-    const tag = el("text", { x: OC_W - 26, y: 18, "font-size": 8, fill: "#a06a18",
+    const tag = el("text", { x: OC_W - 26, y: 18, "font-size": 10.5, fill: "#a06a18",
                              "text-anchor": "middle", "font-weight": 650 }, g);
     tag.textContent = "游離";
   }
@@ -1130,7 +1130,7 @@ function rcCard(o, kind) {
                  fill: "#c8c8c8", fillOpacity: .75, stroke: "#5a5a5a",
                  "stroke-width": 1.4 }, body);
     const lab = el("text", { x: pvX + pvW / 2, y: pvY + pvH - 4,
-      "font-size": 9, fill: "#5a5a5a", "text-anchor": "middle" }, body);
+      "font-size": 11, fill: "#5a5a5a", "text-anchor": "middle" }, body);
     lab.textContent = `h=${o.box[5] - o.box[2]}`;
   } else {
     /* 樑:沿走向軸拉長的條帶 */
@@ -1139,13 +1139,13 @@ function rcCard(o, kind) {
                  fill: "#9e9e9e", fillOpacity: .75, stroke: "#4a4a4a",
                  "stroke-width": 1.4 }, body);
     const lab = el("text", { x: pvX + pvW / 2, y: pvY + pvH - 4,
-      "font-size": 9, fill: "#4a4a4a", "text-anchor": "middle" }, body);
+      "font-size": 11, fill: "#4a4a4a", "text-anchor": "middle" }, body);
     lab.textContent = `${o.axis} 向 · 頂 ${o.box[5]}`;
   }
 
   el("line", { x1: 0, y1: OC_H - 30, x2: OC_W, y2: OC_H - 30,
                stroke: "#e8ebf0", "stroke-width": 1 }, body);
-  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 8.5, fill: "#687487" }, body);
+  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 11, fill: "#687487" }, body);
   ft.textContent = isCol
     ? `${fw}×${fd} mm · z ${o.box[2]}~${o.box[5]}`
     : `跨 ${o.axis === "x" ? fw : fd} · ${o.axis === "x" ? fd : fw}×${o.box[5] - o.box[2]}`;
