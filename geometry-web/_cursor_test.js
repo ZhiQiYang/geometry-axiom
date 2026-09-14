@@ -275,6 +275,8 @@ async function escUntilFree(tries = 5) {
   }
 
   /* ========== 13. 檢視器邊長清單:改邊 0 長度 ========== */
+  /* B2:邊表在「屬性」頁——timber 工具剛把檢視器切到角材頁,先切回 */
+  await clickEl(`[data-fi-tab="prop"]`); await sleep(300);
   const edgeSel = `#faceInspectorContent input[data-edge-len="0"]`;
   const hasEdgeInp = await eval_(`!!document.querySelector(${JSON.stringify(edgeSel)})`);
   if (hasEdgeInp) {
@@ -429,9 +431,9 @@ async function escUntilFree(tries = 5) {
     await drag(gp.x, gp.y, gp2.x, gp2.y); await sleep(900);
     let dd = await eval_(`api("dump").then(r=>r.text)`);
     say("拖參考線(放置面)", /guide \d+ \d+ [uv] \d+/.test(dd || ""));
-    /* 角材:t 工具點面心(公理 O3:點放要明寫 L) */
+    /* 角材:t 工具點面心(公理 O3:點放要明寫 L;B2:先切工具開角材頁再填 L) */
+    await clickEl(`[data-face-tool="timber"]`); await sleep(350);
     await fillInput("#tbLen", 1200);
-    await clickEl(`[data-face-tool="timber"]`); await sleep(250);
     const tp = await fePt(ctrUv[0], ctrUv[1]);
     await click(tp.x, tp.y); await sleep(900);
     dd = await eval_(`api("dump").then(r=>r.text)`);
@@ -453,7 +455,8 @@ async function escUntilFree(tries = 5) {
       dd = await eval_(`api("dump").then(r=>r.text)`);
       say("圖層列 ✕ 刪角材", !/timber /.test(dd || ""));
     } else say("圖層列 ✕ 刪角材", false, "無角材列");
-    /* 網格:填 u/v → 建立 */
+    /* 網格:先切「網格」頁(B2 分頁),填 u/v → 建立 */
+    await clickEl(`[data-fi-tab="grid"]`); await sleep(300);
     await fillInput("#gridU", "500");
     await fillInput("#gridV", "500");
     await clickEl("#gridCreate"); await sleep(900);

@@ -1310,8 +1310,9 @@ async function drag(x0, y0, x1, y1, steps = 6) {
             hintHid: document.getElementById("faceCanvasHint").hidden,
             cls: document.getElementById("faceEditorViewport").className};
   })()`);
+  /* B6:浮標只給多步工具(redraw),單發工具看狀態列 */
   console.log("切參考線:狀態列手勢", fbTool.status.includes("拖曳") ? "✓" : "✗ " + fbTool.status,
-    "| 浮標", !fbTool.hintHid && fbTool.hint.includes("參考線") ? "✓" : "✗ " + fbTool.hint,
+    "| 浮標隱藏(B6)", fbTool.hintHid ? "✓" : "✗",
     "| 游標類", fbTool.cls.includes("tool-referenceLine") ? "✓" : "✗ " + fbTool.cls);
   /* (b) 參考線只點沒拖 → u/v 小選單 → 選 v → dump 出現 guide */
   await click(fbVp.cx, fbVp.cy);
@@ -1615,6 +1616,138 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await sleep(150);
   const g2 = await eval_(`document.getElementById("canvasViewport").classList.contains("show-grid")`);
   console.log("P17 格線切換:", !g1 && g2 ? "✓" : "✗");
+
+  /* ================= P18. 面內工作區 B1-B9 =================
+   * B1 工具鈕 icon+kbd、說明區移除;B2 分頁;B3 邊表;B4 zoom 適應格線;
+   * B5 標註;B6 浮標限定;B7 #feApplyCard;B8 讀數;B9 麵包屑+膠囊。 */
+  console.log("=== P18. 面內工作區 B1-B9 ===");
+  await eval_(`(async()=>{
+    await api("line reset");
+    for (const ln of [
+      "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+      "surface 2 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000",
+      "space 1 boundary 1 2",
+      "column 1 in 1 at 1000 800 size 400 400 z 0 2500",
+      "boundary 3 outline 0,0 500,0 500,400 0,400",
+    ]) await api("line " + ln);
+    await renderObjects();
+    await enterFocus("face", 1);
+  })()`);
+  await sleep(900);
+  /* (1) B1:工具鈕皆含 svg+kbd;說明區塊不存在 */
+  const b1 = await eval_(`(()=>{
+    const btns=[...document.querySelectorAll("[data-face-tool]")];
+    const panel=document.querySelector(".face-layer-panel");
+    return {n:btns.length,
+      ok:btns.every(b=>b.querySelector("svg")&&b.querySelector("kbd")),
+      noHelp:!panel.textContent.includes("說明")};})()`);
+  console.log("P18 B1 工具icon+kbd:", b1.n >= 7 && b1.ok ? "✓" : `✗ n=${b1.n} ok=${b1.ok}`,
+    "| 說明區已移除:", b1.noHelp ? "✓" : "✗");
+  /* (2) B2:三頁;切角材 → tbLen 可見 */
+  const b2 = await eval_(`(()=>{
+    const tabs=[...document.querySelectorAll("[data-fi-tab]")].map(t=>t.dataset.fiTab);
+    document.querySelector('[data-fi-tab="timber"]').click();
+    const tb=document.getElementById("tbLen");
+    return {tabs, vis: !!tb && tb.offsetParent !== null};})()`);
+  console.log("P18 B2 三頁:", b2.tabs.join() === "prop,timber,grid" ? "✓" : "✗ " + b2.tabs,
+    "| 角材頁tbLen可見:", b2.vis ? "✓" : "✗");
+  /* (3) B3:邊表方向文字+mm+segmented */
+  const b3 = await eval_(`(()=>{
+    document.querySelector('[data-fi-tab="prop"]').click();
+    const rows=[...document.querySelectorAll(".edge-row")];
+    return {n:rows.length,
+      dir:rows.every(r=>/[→←↓↑]/.test(r.querySelector(".edge-dir").textContent)),
+      mm:rows.every(r=>r.querySelector(".edge-mm").textContent.trim()==="mm"),
+      seg:rows.every(r=>r.querySelectorAll(".fixity-btn").length===2),
+      title:document.querySelector(".ib-sub") && document.querySelector(".ib-sub").textContent};})()`);
+  console.log("P18 B3 邊表:", b3.n === 4 && b3.dir && b3.mm && b3.seg
+    ? "✓" : `✗ ${JSON.stringify(b3)}`, "| 標題:", (b3.title||"").includes("固定") ? "✓" : "✗");
+  /* (4) B4:zoom 0.17 → 螢幕格距≥24px、格線<60;zoom 2 → 檔位變小 */
+  const b4a = await eval_(`(()=>{
+    fe.zoom=0.17; feApplyZoom();
+    const xs=[...document.querySelectorAll(".fe-grid-line")]
+      .filter(l=>l.getAttribute("x1")===l.getAttribute("x2"))
+      .map(l=>+l.getAttribute("x1")).sort((a,b)=>a-b);
+    const uniq=[...new Set(xs)];
+    let min=Infinity;
+    for(let i=1;i<uniq.length;++i) min=Math.min(min,uniq[i]-uniq[i-1]);
+    return {n:document.querySelectorAll(".fe-grid-line").length,
+      gap:min*fe.zoom};})()`);
+  console.log("P18 B4 zoom0.17:", b4a.gap >= 24 && b4a.n < 60
+    ? `✓ gap=${b4a.gap.toFixed(1)}px n=${b4a.n}` : `✗ ${JSON.stringify(b4a)}`);
+  const b4b = await eval_(`(()=>{
+    fe.zoom=2; feApplyZoom();
+    const xs=[...document.querySelectorAll(".fe-grid-line")]
+      .filter(l=>l.getAttribute("x1")===l.getAttribute("x2"))
+      .map(l=>+l.getAttribute("x1")).sort((a,b)=>a-b);
+    const uniq=[...new Set(xs)];
+    return uniq.length>1?uniq[1]-uniq[0]:0;})()`);
+  console.log("P18 B4 zoom2檔位變小:", b4b === 25 ? "✓ g=25" : `✗ g=${b4b}`);
+  /* (5) B5:邊長標註 + 原點標 */
+  const b5 = await eval_(`(()=>{
+    const dims=[...document.querySelectorAll(".fe-edge-dim")];
+    const texts=[...document.querySelectorAll("#faceEditorRoot text")].map(t=>t.textContent);
+    return {dimN:dims.length, dimOk:dims.every(d=>/^\\d+$/.test(d.textContent)),
+      origin:texts.some(t=>t.includes("0,0 · u→ v↓")),
+      guide:texts.some(t=>/^[uv] = -?\\d+$/.test(t))};})()`);
+  console.log("P18 B5 邊長標註:", b5.dimN >= 4 && b5.dimOk ? `✓ n=${b5.dimN}` : `✗ ${JSON.stringify(b5)}`,
+    "| 原點標:", b5.origin ? "✓" : "✗");
+  /* (6) B6:select 隱藏、redraw 顯示 */
+  const b6a = await eval_(`(()=>{
+    document.querySelector('[data-face-tool="select"]').click();
+    return document.getElementById("faceCanvasHint").hidden;})()`);
+  await sleep(200);
+  const b6b = await eval_(`(()=>{
+    document.querySelector('[data-face-tool="redraw"]').click();
+    return {h:document.getElementById("faceCanvasHint").hidden,
+      t:document.getElementById("faceCanvasHint").textContent};})()`);
+  console.log("P18 B6 浮標:select隱藏", b6a ? "✓" : "✗",
+    "| redraw顯示", !b6b.h && b6b.t.includes("外環") ? "✓" : `✗ h=${b6b.h}`);
+  await eval_(`document.querySelector('[data-face-tool="select"]').click()`);
+  /* (7) B7:#feApplyCard + feCutStrip/feApplyProj;無 #b48 */
+  const b7 = await eval_(`(()=>{
+    const card=document.getElementById("feApplyCard");
+    return {card:!!card,
+      cut:card&&!!card.querySelector("#feCutStrip"),
+      ap:card&&!!card.querySelector("#feApplyProj"),
+      b48:!document.getElementById("b48"),
+      noOld:!document.querySelector(".fe-ob-ctrl")};})()`);
+  console.log("P18 B7 套用卡:", b7.card && b7.cut && b7.ap && b7.b48 && b7.noOld
+    ? "✓" : "✗ " + JSON.stringify(b7));
+  /* (8) B8:讀數格式 u N v N mm(指位移動後) */
+  const b8vp = await eval_(`(()=>{const r=document.getElementById("faceEditorViewport").getBoundingClientRect();
+    return {x:r.left+r.width/2,y:r.top+r.height/2};})()`);
+  await send("Input.dispatchMouseEvent", { type:"mouseMoved", x:b8vp.x, y:b8vp.y });
+  await sleep(250);
+  const b8 = await eval_(`document.getElementById("faceCoordinateReadout").textContent`);
+  console.log("P18 B8 讀數:", /^u \d+ v \d+ mm$/.test(b8) ? `✓ ${b8}` : `✗ ${b8}`);
+  /* (9) B9:麵包屑「空間 1 / 面 」+ 天花膠囊;游離面→游離 */
+  const b9a = await eval_(`({
+    eb:document.getElementById("workspaceEyebrow").textContent,
+    cap:document.getElementById("workspacePlaceTag").textContent,
+    capCls:document.getElementById("workspacePlaceTag").className,
+    back:document.getElementById("workspaceBackLabel").textContent})`);
+  if (b9a && b9a.__err) console.log("P18 B9 麵包屑: ✗ eval", b9a.__err);
+  else console.log("P18 B9 麵包屑:", b9a.eb.includes("空間 1 / 面 ") ? "✓ " + b9a.eb : `✗ ${b9a.eb}`,
+    "| 天花膠囊:", b9a.cap.includes("天花") ? "✓ " + b9a.cap : `✗ ${b9a.cap}`,
+    "| 返回:", b9a.back.includes("物件畫布") ? "✓" : "✗");
+  /* (10) 游離面:角材頁停用說明 + 游離膠囊 */
+  await eval_(`enterFocus("face", 3)`);
+  await sleep(700);
+  const b9b = await eval_(`(()=>{
+    document.querySelector('[data-fi-tab="timber"]').click();
+    return {note:!!document.querySelector('[data-fi-pane="timber"] .fi-note'),
+      cap:document.getElementById("workspacePlaceTag").textContent,
+      tbDis:document.getElementById("tbLen").disabled};})()`);
+  console.log("P18 游離停用說明:", b9b.note && b9b.tbDis ? "✓" : "✗ " + JSON.stringify(b9b),
+    "| 游離膠囊:", b9b.cap.includes("游離") ? "✓" : "✗ " + b9b.cap);
+  /* (11) 狀態列右側快捷鍵 L/R/Esc */
+  const b11 = await eval_(`(()=>{
+    const ks=[...document.querySelectorAll(".ws-kbd-hints kbd")].map(k=>k.textContent);
+    return {L:ks.includes("L"),R:ks.includes("R"),Esc:ks.includes("Esc")};})()`);
+  console.log("P18 快捷鍵列:", b11.L && b11.R && b11.Esc ? "✓" : "✗ " + JSON.stringify(b11));
+  await eval_(`(async()=>{ if(oc.focus) await leaveFocus(); })()`);
+  await sleep(400);
 
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
