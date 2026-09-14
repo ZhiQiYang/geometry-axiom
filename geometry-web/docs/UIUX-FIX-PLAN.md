@@ -243,3 +243,48 @@
 - C 端、bridge、DSL 一律不動。
 - 深色模式、rename、localStorage、拖曳排序等不在審查清單內的功能。
 - `_cursor_test.js` 只在既有斷言因 DOM 位移需調時改(改座標/選擇器,不弱化斷言)。
+
+---
+
+## Bugfix 2026-09-14(13 缺陷修復,使用者拍板 🔒)
+
+> 立案 2026-09-14。依兩輪獨立驗證的審查結果修 13 個缺陷(協定層 3 + 前端 10)。
+> 每階段:先加會咬住錯誤的測試 → 修 → `canvas_test direct` 與 `cdp_test` 雙綠 → 一個 commit。
+> 本節為決策 SSOT;之後產出前後逐條對照,不靜默改動。
+> **C 端例外範圍**:僅 `../current_geometry.c` 的 undo/redo/history 相關函式可動;其餘 C 端邏輯不碰。
+
+### L1 undo/redo 與 canvas-pos 🔒
+
+- C 端修:`history_undo`/`history_redo` 還原 World 快照後,把**還原前**的 `canvas_pos`/`canvas_pos_count` 複製回去。
+- 依據:canvas-pos 本來就不入歷史(`apply_interactive_tokens` 跳過記快照,current_geometry.c:3525-3529),所以 undo/redo 也不該把它倒回快照值。
+- 不採前端重送方案。
+
+### L2 undo 粒度=交易分組 🔒
+
+- C 端 history 加群組機制:`line history-begin` / `line history-end` / `line history-abort` 三條 DSL 橋接指令,於 `apply_interactive_tokens` 攔截。
+- `mutate()` 的多行 = 一步;undo/redo 整組進退。
+- 群組內某行失敗 → 核心自動復原起點快照並關閉群組,整組回滾且不留半套用;`history-abort` 供主動放棄。
+- 群組中 `undo`/`redo`/`history-begin` → ok:false;`history-end`/`history-abort` 無群組 → ok:false。
+- 六面盒必須 1 次 Ctrl+Z 全退。
+
+### L3 serve.py 跨站防護 🔒
+
+- POST 時 `Origin` 存在且不是 `http://127.0.0.1:<port>` / `http://localhost:<port>` → 403。
+- `Host` 主機名非 `127.0.0.1`/`localhost` → 403。
+- 無 `Origin` 的請求(curl、測試腳本)照常放行;不要求自訂 header。
+
+### 階段對照
+
+| 階段 | 範圍 | 驗收 |
+|---|---|---|
+| 1 協定層 | `serve.py`、`web_bridge.c` | cmd 含 \r\n→ok:false;超長→整行丟棄恰回一行;Origin/Host 檢查;canvas_test §N |
+| 2 一按就壞 | `app.js`(+`serve.py` upload 回 path) | btnZoom 無例外;zoom 無 NaN;upload 後 curScene 正確;換場景清焦點 |
+| 3 undo | `current_geometry.c`、`app.js` | L1 pos 保留;群組一步進退;失敗整組回滾;busy 守衛 |
+| 4 功能錯誤 | `app.js` | toRoom 用 getScreenCTM;六面盒跳格;面內 undo 刷新;RC 表單驗證;Esc 輸入框守衛 |
+| 5 文件 | DOM-CONTRACT/README/UI-REDESIGN-PLAN | 尺寸矛盾、.fe-ob-ctrl、8 id、鍵盤清單、upload 位置、canvas-pos 描述 |
+
+### Esc 三段式決定 🔒
+
+README §5.8 原寫「取消草稿→退出工具→返回」與實作不符。決定:**改文件為實際行為**——
+實作階梯是「輸入框焦點不攔截 → 收選單 → 關對話框 → 清鍵入長度 → 收方向小選單 → 清草稿 → 離開工作區」,
+不新增「退工具」一階(會改變 cdp_test:495/548 依賴的既有行為)。

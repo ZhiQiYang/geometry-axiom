@@ -57,7 +57,7 @@ node cdp_test.js
 
 ## 架構約定
 
-- C 端（`../current_geometry.c`、`web_bridge.c`）不在本目錄職責範圍，重構期間零改動。
+- C 端（`../current_geometry.c`、`web_bridge.c`）改動須重跑 `build.bat` 並過兩套測試。
 - 多行變更走 `mutate(lines)`：逐行送、失敗 undo 回滾 + toast（error 原文）。
 - 參考線：bridge 無列舉指令，由 `dump` 文本以正則 `^guide (\d+) (\d+) (u|v) (-?\d+)$` 解析；`sid` 是承載面 id。
 
