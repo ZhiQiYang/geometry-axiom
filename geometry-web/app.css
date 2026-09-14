@@ -956,6 +956,7 @@ svg text { user-select: none; }
   border: 1px solid var(--border); border-radius: 8px; background: #f8fafc; }
 
 .face-help { padding: 0 14px 12px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+#rcErr { color: var(--danger); font-weight: 600; }
 .ws-tool-primary, .object-workspace-actions .primary-button { font-size: 11px; }
 
 /* ---- Phase 4：空間槽位 / 成員勾選 ---- */

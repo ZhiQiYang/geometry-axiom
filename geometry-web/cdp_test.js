@@ -1149,12 +1149,13 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("構件清單:", plan0.mine === 2 && plan0.free === 0
     ? "✓" : `✗ ${JSON.stringify(plan0)}`);
 
-  /* 點放柱:房間 (1500,500) → at 1200 200 size 600 */
+  /* 點放柱:房間 (1500,500) → at 1200 200 size 600;
+     房間→螢幕走 CTM(preserveAspectRatio letterbox 也算進去) */
   const ptCol = await eval_(`(()=>{
     const svg = document.getElementById("spacePlanSvg");
-    const r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
-    return {x: r.left + (1500 - vb.x)/vb.width*r.width,
-            y: r.top + (500 - vb.y)/vb.height*r.height};
+    const pt = svg.createSVGPoint(); pt.x = 1500; pt.y = 500;
+    const p = pt.matrixTransform(svg.getScreenCTM());
+    return {x: p.x, y: p.y};
   })()`);
   await click(ptCol.x, ptCol.y);
   await sleep(1000);
@@ -1165,12 +1166,11 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("點放柱:", colP.n === 2 && colP.dom === 2
     ? "✓" : `✗ ${JSON.stringify(colP)}`);
 
-  /* 拖放樑:水平拖 → along x */
+  /* 拖放樑:水平拖 → along x;房間→螢幕走 CTM */
   const bmD = await eval_(`(()=>{
     const svg = document.getElementById("spacePlanSvg");
-    const r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
-    const px = (x,y)=>({x: r.left + (x - vb.x)/vb.width*r.width,
-                       y: r.top + (y - vb.y)/vb.height*r.height});
+    const px = (x,y)=>{ const pt = svg.createSVGPoint(); pt.x = x; pt.y = y;
+      const p = pt.matrixTransform(svg.getScreenCTM()); return {x: p.x, y: p.y}; };
     return {a: px(300, 2400), b: px(2700, 2450)};
   })()`);
   await drag(bmD.a.x, bmD.a.y, bmD.b.x, bmD.b.y);
@@ -1985,6 +1985,88 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const bf3post = await eval_(`api("objects").then(r=>r.faces.length)`);
   console.log("BF3 六面盒一次 Ctrl+Z 全退:", bf3pre, "→", bf3mid, "→", bf3post,
     bf3mid === bf3pre + 6 && bf3post === bf3pre ? "✓" : "✗");
+
+  /* ================= BF4. 其餘功能錯誤 ================= */
+  console.log("=== BF4. 功能錯誤 ===");
+  await eval_(`window.__apiLog = []; { const _a = api;
+    api = c => { __apiLog.push(c); return _a(c); }; }`);
+  /* (b) 六面盒排版避讓:既有卡佔 (60,60) 時,新卡不得同座標 */
+  await eval_(`api("line reset")`);
+  await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
+  await eval_(`api("line canvas-pos boundary 1 60 60")`);
+  await eval_(`renderObjects()`); await sleep(500);
+  await eval_(`document.getElementById("btnBox6").click()`); await sleep(300);
+  await eval_(`document.getElementById("box6Submit").click()`); await sleep(1500);
+  const bf4dup = await eval_(`api("dump").then(r => {
+    const seen = {}, dups = [];
+    for (const l of r.text.split("\\n")) {
+      const m = l.match(/^canvas-pos \\S+ \\d+ (-?\\d+) (-?\\d+)$/);
+      if (m) { const k = m[1] + "," + m[2]; if (seen[k]) dups.push(k); seen[k] = 1; }
+    }
+    return dups; })`);
+  console.log("BF4 六面盒排版無重疊:", JSON.stringify(bf4dup),
+    bf4dup.length === 0 ? "✓" : "✗");
+  /* (a) 空間示意圖 toRoom:點地板左上角內側 2px → 映射點(柱中心)應在角 100mm 內 */
+  const bf4sp = await eval_(`api("objects").then(r => r.spaces[0] && r.spaces[0].id)`);
+  await eval_(`enterFocus("space", ${bf4sp})`); await sleep(1000);
+  const bf4pt = await eval_(`(() => {
+    const f = document.querySelector("#spacePlanSvg .space-plan-floor");
+    if (!f) return null;
+    const r = f.getBoundingClientRect();
+    return { x: r.x + 2, y: r.y + 2 }; })()`);
+  await eval_(`window.__apiLog.length = 0`);
+  if (bf4pt) await click(bf4pt.x, bf4pt.y);
+  await sleep(1000);
+  const bf4line = await eval_(`__apiLog.find(c => c.indexOf("column") >= 0) || ""`);
+  const bf4m = /at (-?\d+) (-?\d+)/.exec(bf4line);
+  /* at x y = 映射點 - 半柱邊(600/2=300);還原映射點驗證 ≈ 房角 (0,0) */
+  const bf4px = bf4m && +bf4m[1] + 300, bf4py = bf4m && +bf4m[2] + 300;
+  console.log("BF4 平面點放柱映射:", bf4line, "→ 映射點", bf4px + "," + bf4py,
+    bf4m && Math.abs(bf4px) < 100 && Math.abs(bf4py) < 100 ? "✓" : "✗");
+  /* (c) 面內 undo 刷新:刪 guide → 面內復原 → fe.guides 與 dump 一致 */
+  await eval_(`leaveFocus()`); await sleep(400);
+  await eval_(`api("line reset")`);
+  await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
+  await eval_(`api("line placement 1 on boundary 1 origin 0 0 2500 u +x v +y")`);
+  await eval_(`api("line guide 1 1 u 500")`);
+  await eval_(`api("line guide 2 1 v 700")`);
+  await eval_(`renderObjects()`); await sleep(500);
+  await eval_(`enterFocus("face",1)`); await sleep(800);
+  await eval_(`api("line delete guide 2")`);
+  await eval_(`feLoadGuides()`);            /* 同 UI 刪除後的快取狀態=1 */
+  await eval_(`document.getElementById("faceUndoButton").click()`); await sleep(1200);
+  const bf4g = await eval_(`(async () => ({ fe: fe.guides.length,
+    dump: (await api("dump")).text.split("\\n").filter(l => /^guide /.test(l)).length }))()`);
+  console.log("BF4 面內 undo 刷新:", JSON.stringify(bf4g),
+    bf4g.fe === 2 && bf4g.dump === 2 ? "✓" : "✗");
+  /* (e) Esc 在輸入框不關工作區:聚焦 .edge-len 按 Esc → 工作區仍開 */
+  await eval_(`fiShowTab("prop")`); await sleep(300);
+  const bf4hasLen = await eval_(`(() => {
+    const i = document.querySelector(".edge-len");
+    if (i) { i.focus(); } return !!i && document.activeElement === i; })()`);
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await sleep(600);
+  const bf4ws = await eval_(`document.getElementById("objectWorkspace").hidden`);
+  console.log("BF4 Esc 輸入框不關工作區:", "focused=" + bf4hasLen, "wsHidden=" + bf4ws,
+    bf4ws === false && bf4hasLen ? "✓" : "✗");
+  /* (d) RC 表單驗證:x 留空 → 不送 column;w 留空 → 不送任何 line + 表單提示 */
+  await eval_(`leaveFocus()`); await sleep(400);
+  await eval_(`window.__apiLog.length = 0`);
+  await eval_(`document.getElementById("btnNewColumn").click()`); await sleep(300);
+  await eval_(`document.getElementById("rcX").value = ""`);
+  await eval_(`document.getElementById("rcSubmit").click()`); await sleep(500);
+  const bf4rc1 = await eval_(`__apiLog.filter(c => c.startsWith("line") || c === "newid")`);
+  console.log("BF4 RC 空 x 不送指令:", JSON.stringify(bf4rc1),
+    bf4rc1.length === 0 ? "✓" : "✗");
+  await eval_(`window.__apiLog.length = 0;
+    document.getElementById("rcW").value = ""; document.getElementById("rcX").value = "0"`);
+  await eval_(`document.getElementById("rcSubmit").click()`); await sleep(500);
+  const bf4rc2 = await eval_(`__apiLog.filter(c => c.startsWith("line") || c === "newid")`);
+  const bf4err = await eval_(`!document.getElementById("rcErr").hidden`);
+  console.log("BF4 RC 空 w 不送+表單提示:", JSON.stringify(bf4rc2),
+    bf4rc2.length === 0 && bf4err ? "✓" : "✗");
+  await eval_(`document.getElementById("rcCancel").click()`);
   chrome.kill();
   _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);
   process.exit(failN > 0 ? 1 : 0);

@@ -724,6 +724,9 @@ window.addEventListener("keydown", async e => {
     return;
   }
   if (e.key === "Escape") {
+    /* 輸入框裡的 Esc 留給原生編輯(取消輸入),不關工作區/對話框 */
+    const etag = e.target.tagName;
+    if (etag === "INPUT" || etag === "SELECT" || etag === "TEXTAREA") return;
     /* 開著的下拉選單 → 先收 */
     if (document.querySelector(".menu-pop:not([hidden])")) {
       closeMenus(); return;
@@ -1767,12 +1770,12 @@ function renderSpacePlan(sp) {
 
   const preview = el("rect", { class: "space-plan-preview", visibility: "hidden" }, svg);
 
+  /* 螢幕→房間 mm:走 CTM(preserveAspectRatio letterbox 也算進去),
+     手動 viewBox 攤滿換算在寬高比不同時會偏數百 mm。 */
   const toRoom = ev => {
-    const r = svg.getBoundingClientRect();
-    const vb = svg.viewBox.baseVal;
-    return [
-      vb.x + (ev.clientX - r.left) / Math.max(1, r.width) * vb.width,
-      vb.y + (ev.clientY - r.top) / Math.max(1, r.height) * vb.height];
+    const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+    const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    return [p.x, p.y];
   };
 
   let drag = null;
@@ -2078,13 +2081,29 @@ async function submitBox6() {
   mem.push(b0 + 2, b0 + 3, b0 + 4, b0 + 5);
   lines.push(`space ${ids.space} boundary ${mem.join(" ")}`);
   if (!(await mutate(lines))) return;
-  /* 7/6 個物件各送 canvas-pos 排成一排（§5.6） */
-  let x = 60;
-  for (const bid of mem) {
-    await api(`line canvas-pos boundary ${bid} ${x} 60`);
-    x += 300;
+  /* 7/6 個物件排格,跳過已佔用格位——與 renderObjects 的自動排位同邏輯,
+     否則新卡會疊在既有卡片上(§5.6) */
+  const occupied = new Set();
+  for (const o of ocAllObjects()) {
+    if (o.hasPos) occupied.add(o.cx + "," + o.cy);
   }
-  await api(`line canvas-pos space ${ids.space} 60 340`);
+  let slot = 0;
+  const takeCell = () => {
+    let cx, cy;
+    do {
+      cx = 60 + (slot % 4) * 300;
+      cy = 60 + Math.floor(slot / 4) * 240;
+      ++slot;
+    } while (occupied.has(cx + "," + cy));
+    occupied.add(cx + "," + cy);
+    return [cx, cy];
+  };
+  for (const bid of mem) {
+    const [cx, cy] = takeCell();
+    await api(`line canvas-pos boundary ${bid} ${cx} ${cy}`);
+  }
+  const [sx, sy] = takeCell();
+  await api(`line canvas-pos space ${ids.space} ${sx} ${sy}`);
   closeDialogs();
   await renderObjects();
   setStatus(`✓ 六面盒空間 ${ids.space}（${mem.length} 面${floor ? "含地板" : "無地板"}）`);
@@ -3800,6 +3819,9 @@ async function doUndoRedo(verb) {
   if (!r.ok) { setStatus(r.error); toast(r.error); return; }
   setStatus(verb === "undo" ? "✓ 已復原" : "✓ 已重做");
   await renderObjects();
+  /* 面內焦點:undo/redo 後 guide/timber/grid 快取與面板要重拉,
+     否則刪掉的參考線復原後圖層與 dump 對不上 */
+  if (oc.focus && oc.focus.t === "face") await feAfterChange();
 }
 $("btnUndo").addEventListener("click", () => doUndoRedo("undo"));
 $("btnRedo").addEventListener("click", () => doUndoRedo("redo"));
@@ -3978,25 +4000,56 @@ if ($("planBeamSize"))
   });
 $("rcSubmit").addEventListener("click", async () => {
   const isCol = rcKind === "column";
-  const ids = await api("newid");
-  const id = isCol ? ids.column : ids.beam;
+  const err = (m, el) => {
+    $("rcErr").textContent = m; $("rcErr").hidden = false;
+    feMarkInvalid(el);
+  };
+  $("rcErr").hidden = true;
+  /* 必填整數:空字串/非整數 → null(空值不得靜默變 0) */
+  const intVal = id => {
+    const s = $(id).value.trim();
+    return s !== "" && /^-?\d+$/.test(s) ? +s : null;
+  };
+  /* 可空整數:undefined=未填,false=壞值 */
+  const optInt = id => {
+    const s = $(id).value.trim();
+    return s === "" ? undefined : (/^-?\d+$/.test(s) ? +s : false);
+  };
+  /* 先驗證再送:不通過連 newid 都不送 */
+  const w = intVal("rcW"), d = intVal("rcD");
+  if (!(w > 0)) { err("寬 w 要是正整數", $("rcW")); return; }
+  if (!(d > 0)) { err("深 d 要是正整數", $("rcD")); return; }
   const sid = +$("rcSpace").value;
   const inPart = sid ? ` in ${sid}` : "";
-  const w = +$("rcW").value, d = +$("rcD").value;
-  let line;
+  let make;
   if (isCol) {
-    const x = +$("rcX").value, y = +$("rcY").value;
-    const z0 = $("rcZ0").value, z1 = $("rcZ1").value;
-    const zPart = (z0 !== "" && z1 !== "") ? ` z ${+z0} ${+z1}` : "";
-    line = `column ${id}${inPart} at ${x} ${y} size ${w} ${d}${zPart}`;
+    const x = intVal("rcX"), y = intVal("rcY");
+    if (x === null) { err("足跡 x 要填整數", $("rcX")); return; }
+    if (y === null) { err("足跡 y 要填整數", $("rcY")); return; }
+    const z0 = optInt("rcZ0"), z1 = optInt("rcZ1");
+    if (z0 === false || z1 === false) {
+      err("z0 / z1 要留空或填整數", $(z0 === false ? "rcZ0" : "rcZ1")); return;
+    }
+    if ((z0 === undefined) !== (z1 === undefined)) {
+      err("z0 / z1 要一起留空或一起填", $(z0 === undefined ? "rcZ0" : "rcZ1"));
+      return;
+    }
+    const zPart = z0 !== undefined ? ` z ${z0} ${z1}` : "";
+    make = id => `column ${id}${inPart} at ${x} ${y} size ${w} ${d}${zPart}`;
   } else {
-    const ax = $("rcAxis").value;
-    const a = +$("rcA").value, b = +$("rcB").value, c = +$("rcC").value;
-    const top = $("rcTop").value;
-    const topPart = top !== "" ? ` top ${+top}` : "";
-    line = `beam ${id}${inPart} along ${ax} from ${a} to ${b} at ${c} width ${w} depth ${d}${topPart}`;
+    const a = intVal("rcA"), b = intVal("rcB"), c = intVal("rcC");
+    if (a === null) { err("from 要填整數", $("rcA")); return; }
+    if (b === null) { err("to 要填整數", $("rcB")); return; }
+    if (c === null) { err("at 中線 c 要填整數", $("rcC")); return; }
+    const top = optInt("rcTop");
+    if (top === false) { err("top 要留空或填整數", $("rcTop")); return; }
+    const topPart = top !== undefined ? ` top ${top}` : "";
+    make = id => `beam ${id}${inPart} along ${$("rcAxis").value} ` +
+      `from ${a} to ${b} at ${c} width ${w} depth ${d}${topPart}`;
   }
-  if (await mutate([line])) {
+  const ids = await api("newid");
+  const id = isCol ? ids.column : ids.beam;
+  if (await mutate([make(id)])) {
     $("rcDialog").hidden = true;
     $("modalBackdrop").hidden = true;
     await renderObjects();
