@@ -1729,14 +1729,14 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await sleep(250);
   const b8 = await eval_(`document.getElementById("faceCoordinateReadout").textContent`);
   console.log("P18 B8 讀數:", /^u \d+ v \d+ mm$/.test(b8) ? `✓ ${b8}` : `✗ ${b8}`);
-  /* (9) B9:麵包屑「空間 1 / 面 」+ 天花膠囊;游離面→游離 */
+  /* (9) B9:麵包屑完整格式「空間 1 / ● 面 1」(UI-REVIEW-SPEC §S3,非子字串)+ 天花膠囊;游離面→游離 */
   const b9a = await eval_(`({
     eb:document.getElementById("workspaceEyebrow").textContent,
     cap:document.getElementById("workspacePlaceTag").textContent,
     capCls:document.getElementById("workspacePlaceTag").className,
     back:document.getElementById("workspaceBackLabel").textContent})`);
   if (b9a && b9a.__err) console.log("P18 B9 麵包屑: ✗ eval", b9a.__err);
-  else console.log("P18 B9 麵包屑:", b9a.eb.includes("空間 1 / 面 ") ? "✓ " + b9a.eb : `✗ ${b9a.eb}`,
+  else console.log("P18 B9 麵包屑:", b9a.eb === "空間 1 / ● 面 1" ? "✓ " + b9a.eb : `✗ ${b9a.eb}`,
     "| 天花膠囊:", b9a.cap.includes("天花") ? "✓ " + b9a.cap : `✗ ${b9a.cap}`,
     "| 返回:", b9a.back.includes("物件畫布") ? "✓" : "✗");
   /* (10) 游離面:角材頁停用說明 + 游離膠囊 */
@@ -2067,6 +2067,90 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("BF4 RC 空 w 不送+表單提示:", JSON.stringify(bf4rc2),
     bf4rc2.length === 0 && bf4err ? "✓" : "✗");
   await eval_(`document.getElementById("rcCancel").click()`);
+
+  /* ================= P20. 對抗審查漂移修正(A3 A4 A9 A10/A11 B1 B3 + toast/busy) =================
+   * 對應 audit-A.md/audit-B.md 揪出的假完成項:斷言要咬住「修前」的錯誤做法。 */
+  console.log("=== P20. 對抗審查漂移修正 ===");
+  /* (a) A3:物件庫改 3 欄(repeat(3,1fr)),不是原 2 欄 */
+  const p20a3 = await eval_(`getComputedStyle(document.querySelector(".quick-create-grid")).gridTemplateColumns`);
+  const p20a3n = (p20a3 || "").trim().split(/\s+/).filter(Boolean).length;
+  console.log("P20 A3 quick-create 3欄:", p20a3n === 3 ? `✓ ${p20a3}` : `✗ n=${p20a3n} (${p20a3})`);
+  /* (b) A10/A11:minimapToggle 熱區 ≥28×28(原 20×20) */
+  const p20a10 = await eval_(`(()=>{const r=document.getElementById("minimapToggle").getBoundingClientRect();
+    return {w:Math.round(r.width),h:Math.round(r.height)};})()`);
+  console.log("P20 A10 minimapToggle熱區≥28:", p20a10.w >= 28 && p20a10.h >= 28
+    ? `✓ ${p20a10.w}×${p20a10.h}` : `✗ ${JSON.stringify(p20a10)}`);
+  /* (c) toast 避讓小地圖:.toast-region bottom ≥ 118(14+96+8),原 42 會被小地圖蓋住 */
+  const p20tr = await eval_(`parseFloat(getComputedStyle(document.querySelector(".toast-region")).bottom)`);
+  console.log("P20 toast避讓小地圖:", p20tr >= 118 ? `✓ bottom=${p20tr}px` : `✗ bottom=${p20tr}px`);
+  /* (d) 建物件:free 面(boundary 3)+ space(1,由已放置 boundary 1/2 組成,帶 guide)供 A4/B1/B3 用 */
+  await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+    await api("line surface 2 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000");
+    await api("line space 1 boundary 1 2");
+    await api("line guide 1 1 u 500");
+    await api("line boundary 3 outline 0,0 500,0 500,400 0,400");
+    await api("line canvas-pos boundary 3 500 60");
+    await api("line canvas-pos space 1 60 60");
+    await renderObjects();
+  })()`);
+  await sleep(700);
+  /* (e) A4:faceCard()/spaceCard() 卡片標題 font-size 12.5(原 11.5) */
+  const p20a4 = await eval_(`(()=>{
+    const fc = document.querySelector('.ocard[data-kind="boundary"] text');
+    const sc = document.querySelector('.ocard[data-kind="space"] text');
+    return {f: fc && fc.getAttribute("font-size"), s: sc && sc.getAttribute("font-size")};})()`);
+  console.log("P20 A4 卡片標題12.5:", p20a4.f === "12.5" && p20a4.s === "12.5"
+    ? "✓" : `✗ ${JSON.stringify(p20a4)}`);
+  /* (f) A9:成功 toast 的 .toast.ok svg 著色 = --face(原無 .toast.ok 規則) */
+  await eval_(`(async()=>{ await emitLine("boundary 77 outline 0,0 300,0 300,300 0,300"); await renderObjects(); })()`);
+  await sleep(400);
+  const p20a9 = await eval_(`(()=>{
+    const svg = document.querySelector("#toastRegion .toast.ok svg");
+    if (!svg) return null;
+    const got = getComputedStyle(svg).color;
+    const probe = document.createElement("span");
+    probe.style.color = "var(--face)";
+    document.body.appendChild(probe);
+    const want = getComputedStyle(probe).color;
+    probe.remove();
+    return {got, want};})()`);
+  console.log("P20 A9 toast.ok著色:", p20a9 && p20a9.got === p20a9.want
+    ? `✓ ${p20a9.got}` : `✗ ${JSON.stringify(p20a9)}`);
+  /* (g) B1:面內圖層列 .face-layer-icon 一律 svg,不含 ▱▨⌖▤╬ 純文字 */
+  await eval_(`enterFocus("face", 1)`);
+  await sleep(700);
+  await eval_(`fiShowTab("prop")`);
+  await sleep(200);
+  /* 範圍限定 #faceLayerList(renderFaceLayers() 的圖層列),避開 #workspaceTypeIcon
+     這個同名 class 但語意無關的頂列型別圖示(index.html 靜態標記,非 B1 範圍) */
+  const p20b1 = await eval_(`(()=>{
+    const icons = [...document.querySelectorAll("#faceLayerList .face-layer-icon")];
+    return {n: icons.length,
+      svgN: icons.filter(i => i.querySelector("svg")).length,
+      bad: icons.some(i => /[▱▨⌖▤╬]/.test(i.textContent))};})()`);
+  console.log("P20 B1 圖層列SVG圖示:", p20b1.n >= 1 && p20b1.svgN === p20b1.n && !p20b1.bad
+    ? `✓ n=${p20b1.n}` : `✗ ${JSON.stringify(p20b1)}`);
+  /* (h) B3:.fixity-btn.seg 熱區高度 ≥28(原 22) */
+  const p20b3 = await eval_(`(()=>{
+    const btns = [...document.querySelectorAll(".fixity-btn.seg")];
+    return {n: btns.length,
+      minH: btns.length ? Math.min(...btns.map(b => b.getBoundingClientRect().height)) : 0};})()`);
+  console.log("P20 B3 fixity-btn熱區≥28:", p20b3.n >= 1 && p20b3.minH >= 28
+    ? `✓ n=${p20b3.n} minH=${p20b3.minH}` : `✗ ${JSON.stringify(p20b3)}`);
+  await eval_(`leaveFocus()`);
+  await sleep(400);
+  /* (i) busy 進度指示:#busyIndicator 在 mutate() 飛行中可見,結束隱藏 */
+  const p20busy = await eval_(`(async () => {
+    const p = mutate(["boundary 555 outline 0,0 10,0 10,10 0,10"]);
+    const mid = document.getElementById("busyIndicator").hidden;
+    await p;
+    const after = document.getElementById("busyIndicator").hidden;
+    return {mid, after};})()`);
+  console.log("P20 busy指示:", p20busy.mid === false && p20busy.after === true
+    ? "✓" : `✗ ${JSON.stringify(p20busy)}`);
+
   chrome.kill();
   _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);
   process.exit(failN > 0 ? 1 : 0);

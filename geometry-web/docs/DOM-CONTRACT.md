@@ -38,6 +38,7 @@
 | `#filterAll` | 篩選 chips「全部顯示」(S6 新增) | `.click()` |
 | `#minimapToggle` | 小地圖收合鈕(S6 新增) | `.click()`、`.minimap-shell.collapsed` |
 | `#statusSummary` | 狀態列右側物件摘要(S6 新增) | textContent |
+| `#busyIndicator` | 狀態列左側 busy 進度指示(spinner+「套用中…」,§P20 新增) | `hidden`(`mutate()` 飛行中顯示、結束隱藏) |
 | `#zoomInButton` / `#zoomOutButton` / `#zoomLevelButton` / `#homeButton` | 縮放控制 | `.click()` |
 | `#searchInput` | 搜尋框(左欄頂 `.sidebar-search` 內) | `input` 事件驅動 `oc.search` |
 | `#fileMenu` / `#fileMenuPop` | 檔案選單(含 `#btnOpen #btnScene #btnEx #btnClear`) | `hidden`、`.click()` |
@@ -74,9 +75,9 @@
 | `#v3Panel` / `[data-v3-view]` / `[data-v3-layer]` | 三視圖左欄:視圖+圖層勾選(D1) | `hidden`、`checked` |
 | `#v3PickPanel` / `#v3PickInfo` / `#v3HoverInfo` | 三視圖右欄:pick 結果+游標位置(D1) | textContent |
 | `.v3-seg` / `[data-v3-tool]` | 三視圖工具 segmented(D2;`#tool` 保留為 `.v3-native-select` 隱藏相容) | `.active`、`.click()` |
-| `.v3-zoom` / `#v3ZoomOut` `#v3ZoomLevel` `#v3ZoomIn` `#v3ZoomFit` | 三視圖縮放列(D2) | `.click()`、百分比 |
-| `.slot-row` / `.slot-face` / `.slot-empty` | 空間六槽列(C3 語意名+軸向副標;空槽放置鈕) | `.on`、`.click()` |
-| `.rc-acts` / `.rc-act` | 構件列 hover 動作鈕(C4) | `.click()` |
+| `#v3ZoomBar` / `.v3-zoom` / `#v3ZoomOut` `#v3ZoomLevel` `#v3ZoomIn` `#v3ZoomFit` | 三視圖獨立左下縮放列(D2 修正:移出 `#viewToolbar`,樣式沿用 `.canvas-controls`;主畫布左下縮放列/小地圖在 `body.v3-mode` 下讓位) | `hidden` 切換、rect 左下位置、`.click()`、百分比 |
+| `.slot-row` / `.slot-face` / `.slot-empty` | 空間六槽列(C3 語意名+軸向副標;空槽放置鈕。`data-slot-preset` 存 `PLACE_PRESETS` 鍵、`data-slot-label` 存中文方位名,點擊帶入該槽 u/v 預設並選取對應游離面) | `.on`、`.click()` |
+| `.rc-acts` / `.rc-act` | 構件列 hover 動作鈕(C4;`.rc-act` `min-height:28px` 與旁邊 `.face-layer-del` ✕ 熱區一致) | `.click()`、`getBoundingClientRect().height` |
 | `.space-member-thumb` | 成員列內嵌縮圖(C1,替代已移除的 `#spaceFaceGrid`) | svg 子元素 |
 | `text[data-fs0]` | 三視圖文字反比縮放基準(D3;`v3FixText` 依 `transform().s` 換算 mm 字級,螢幕 px 恆定) | `font-size` 屬性 |
 | `#box6Dialog` / `#box6Submit` / `#box6W` / `#box6D` / `#box6H` / `#box6Floor` | 快速六面盒對話框 | `hidden`、`.click()`、`value`/`checked` |
@@ -221,3 +222,15 @@
 - 控制卡 `#feApplyCard`(動態插入,灰底):`.fe-ob-cut > #feCutStrip`(裁切條帶)+ `#feApplyProj`(文案隨勾數變「套用 N 項投影」,0 勾 disabled)+ `.fe-ob-note` 快照說明。
 - `feApplyProj()`(全域)送 `apply-proj`,成功後 `fe.work` 清空、`feLoadGuides`+`renderFaceLayers`+`renderFaceInspector` 重繪;失敗保留草稿(核心已回滾)。
 - 語意:拆分=原 id 留最大面積片+其餘新 id+孔隨片走(R10);拆片/生成面退出空間成員變游離(R11);重套已存在的孔=退化拒絕(快照無連結,R8)。
+
+## 對抗審查漂移修正(cdp_test §P20)
+
+- A3:`.quick-create-grid` 改 `repeat(3,1fr)`(3 欄 × 2 列,原為 2 欄 × 3 列)。
+- A4:`faceCard()`/`spaceCard()` 卡片標題 `font-size` 11.5 → 12.5(S1 token)。
+- A9:`.toast.ok svg` 新增著色 `color: var(--face)`(比照 `.toast.error svg`)。
+- A10/A11:`#minimapToggle` 熱區 20×20 → 28×28。
+- B1:`renderFaceLayers()` 圖層列 `.face-layer-icon` 改用 `icon("rectangle"/"hole"/"guide"/"timber"/"grid")` SVG,不再塞 ▱▨⌖▤╬ 純文字。
+- B3:`.fixity-btn` 高度 26→28;`.fixity-btn.seg` 26×22→28×28。
+- B9:`workspaceEyebrow` 麵包屑補 §S3 格式的 `●` 分隔點,完整格式「空間 N / ● 面 M」。
+- toast 避讓小地圖:`.toast-region` `bottom` 42px → 122px(壓在 `.minimap-shell` right14/bottom14/高96 之上,≥118)。
+- busy 進度指示:`#busyIndicator`(狀態列左側,spinner+「套用中…」)——`mutate()` 飛行中 `hidden=false`,結束 `hidden=true`;不改變既有 `body.oc-busy` 按鈕停用機制。

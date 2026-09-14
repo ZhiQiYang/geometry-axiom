@@ -189,12 +189,6 @@
         <label class="v3-surf-label">工作面 <select id="workSurf"></select></label>
         <input id="newZ" type="number" value="0" step="100"
                style="width:76px" title="新平面高度 z（mm）" hidden>
-        <span class="v3-zoom" role="group" aria-label="三視圖縮放">
-          <button id="v3ZoomOut" class="icon-button" type="button" title="縮小">−</button>
-          <button id="v3ZoomLevel" class="zoom-level" type="button" title="回到 100%">100%</button>
-          <button id="v3ZoomIn" class="icon-button" type="button" title="放大">＋</button>
-          <button id="v3ZoomFit" class="icon-button" type="button" title="顯示全部">⛶</button>
-        </span>
       </div>
 
       <div id="focusBar" class="focus-bar" hidden>
@@ -223,6 +217,16 @@
         <button id="gridToggle" class="mini-toggle on" type="button" aria-pressed="true" title="顯示格線">格</button>
       </div>
 
+      <!-- D2:三視圖獨立左下縮放列(樣式沿用主畫布 .canvas-controls),與 #viewToolbar 分離 -->
+      <div id="v3ZoomBar" class="canvas-controls" aria-label="三視圖縮放控制" hidden>
+        <span class="v3-zoom" role="group" aria-label="三視圖縮放">
+          <button id="v3ZoomOut" class="icon-button" type="button" title="縮小">−</button>
+          <button id="v3ZoomLevel" class="zoom-level" type="button" title="回到 100%">100%</button>
+          <button id="v3ZoomIn" class="icon-button" type="button" title="放大">＋</button>
+          <button id="v3ZoomFit" class="icon-button" type="button" title="顯示全部">⛶</button>
+        </span>
+      </div>
+
       <div class="minimap-shell">
         <button id="minimapToggle" class="minimap-toggle" type="button" title="收合小地圖" aria-label="收合小地圖">▾</button>
         <canvas id="minimap" width="150" height="96" aria-label="畫布小地圖"></canvas>
@@ -248,6 +252,7 @@
 
   <footer class="statusbar">
     <div class="status-left">
+      <span id="busyIndicator" hidden><span class="busy-spinner"></span>套用中…</span>
       <span id="status"></span>
       <span class="status-divider"></span>
       <span id="hovertxt"></span>

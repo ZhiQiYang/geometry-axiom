@@ -982,7 +982,8 @@ function faceCard(f) {
                fill: "#ffffff", stroke: "#dfe4eb", "stroke-width": 1.4 }, g);
   /* header:型別點 + 名稱 + 副標 */
   el("circle", { cx: 14, cy: 16, r: 4.5, fill: f.kind === "placement" ? "#c08a3e" : "#2f8f7b" }, g);
-  const t = el("text", { x: 26, y: 15, "font-size": 11.5, fill: "#1d2634",
+  /* A4:卡片標題字級 12.5(S1 全域 token) */
+  const t = el("text", { x: 26, y: 15, "font-size": 12.5, fill: "#1d2634",
                          "font-weight": 700 }, g);
   t.textContent = (f.kind === "boundary" ? "面 " : "placement ") + f.id;
   const sub = el("text", { x: 26, y: 28, "font-size": 10.5, fill: "#8b93a3" }, g);
@@ -1067,7 +1068,8 @@ function spaceCard(s) {
   el("rect", { class: "ocard-frame", x: 0, y: 0, width: SP_W, height: SP_H, rx: 10,
                fill: "#ffffff", stroke: "#dfe4eb", "stroke-width": 1.4 }, g);
   el("circle", { cx: 14, cy: 16, r: 4.5, fill: "#6a5fd0" }, g);
-  const t = el("text", { x: 26, y: 15, "font-size": 11.5, fill: "#1d2634",
+  /* A4:卡片標題字級 12.5,與 faceCard() 同步(S1 全域 token) */
+  const t = el("text", { x: 26, y: 15, "font-size": 12.5, fill: "#1d2634",
                          "font-weight": 700 }, g);
   t.textContent = `空間 ${s.id}`;
   const sub = el("text", { x: 26, y: 28, "font-size": 10.5, fill: "#8b93a3" }, g);
@@ -1542,10 +1544,10 @@ async function openFaceWorkspace(bid) {
   $("spaceWorkspaceLayout").hidden = true;
   $("faceWorkspaceTools").hidden = false;
   $("workspaceTitle").textContent = "面 " + bid;
-  /* B9:麵包屑「空間 N / 面 M」+ 放置膠囊 */
+  /* B9:麵包屑「空間 N / ● 面 M」(UI-REVIEW-SPEC §S3)+ 放置膠囊 */
   const owner = oc.spaces.find(s => s.members.includes(bid));
   $("workspaceEyebrow").textContent =
-    (owner ? `空間 ${owner.id} / ` : "") + `面 ${bid}`;
+    (owner ? `空間 ${owner.id} / ● ` : "") + `面 ${bid}`;
   const surf = feSurf(bid);
   const tag = $("workspacePlaceTag");
   if (tag) {
@@ -1869,14 +1871,15 @@ function renderSpaceInspector(sp) {
     `<small class="ib-sub">法向方位</small></div>` +
     (slots
       ? `<div class="slot-list">` +
-        slotMeta.map(([key, label, axSub]) => {
+        slotMeta.map(([key, label, axSub, presetName]) => {
           const mb = slotMember[key];
           return `<div class="slot slot-row${mb ? " on" : ""}">` +
             `<span class="slot-name">${label}</span>` +
             `<span class="slot-axis">${axSub}</span>` +
             (mb
               ? `<button class="slot-face" data-slot-face="${mb}">面 ${mb} ›</button>`
-              : `<button class="slot-empty" data-slot-preset="${label}">＋放置一片面到這裡</button>`) +
+              : `<button class="slot-empty" data-slot-preset="${presetName}" ` +
+                `data-slot-label="${label}">＋放置一片面到這裡</button>`) +
             `</div>`;
         }).join("") + `</div>`
       : `<div class="kv"><span>成員皆無承載面，無法推導方向</span></div>`) +
@@ -1885,19 +1888,38 @@ function renderSpaceInspector(sp) {
     `<button class="btn" id="spEditMembers">編輯成員</button>` +
     `</div></div>`;
   $("spEditMembers").addEventListener("click", () => openMemberDialog(sp.id));
-  /* 佔用槽 → 進該面;空槽 → 找游離面進面內工作區(帶預設提示) */
+  /* 佔用槽 → 進該面;空槽 → 找游離面(未放置的邊界面)直達放置區,
+     預設帶入該槽對應方位(Q4 六預設表);多個游離面時取清單第一個(最早建立)並在狀態列說明。 */
   for (const b of pane.querySelectorAll("[data-slot-face]"))
     b.addEventListener("click", () => enterFocus("face", +b.dataset.slotFace));
   for (const b of pane.querySelectorAll("[data-slot-preset]")) {
     b.addEventListener("click", async () => {
-      const free = oc.faces.find(f => f.kind === "boundary" &&
-        !sp.members.includes(f.id));
-      if (free) {
-        await enterFocus("face", free.id);
-        toast(`在「屬性」頁選「${b.dataset.slotPreset}」預設,放到 ${sp.id} 的這個槽位`);
-      } else {
+      const presetName = b.dataset.slotPreset, label = b.dataset.slotLabel;
+      const freeList = oc.faces.filter(f => f.kind === "boundary" && !f.placed);
+      if (!freeList.length) {
         toast("先建立一片邊界面(物件庫「面·矩形」),再放進這個槽位");
+        for (const id of ["btnNewRect", "btnNewPoly"]) {
+          const el = $(id);
+          if (!el) continue;
+          el.classList.add("entry-hl");
+          setTimeout(() => el.classList.remove("entry-hl"), 2400);
+        }
+        return;
       }
+      const target = freeList[0];
+      await enterFocus("face", target.id);
+      const p2 = $("faceInspectorContent");
+      const preset = PLACE_PRESETS[presetName];
+      if (p2 && preset) {
+        const uEl = p2.querySelector("#placeU"), vEl = p2.querySelector("#placeV");
+        if (uEl && vEl) {
+          uEl.value = preset.u; vEl.value = preset.v;
+          updatePlaceValid(p2);
+        }
+      }
+      setStatus(freeList.length > 1
+        ? `槽位「${label}」：${freeList.length} 個游離面中已選第 1 個（面 ${target.id}），已帶入「${label}」預設 u/v`
+        : `槽位「${label}」：已選游離面 ${target.id}，已帶入「${label}」預設 u/v`);
     });
   }
 }
@@ -2849,16 +2871,17 @@ function renderFaceLayers() {
   if (loops.length) {
     group("邊界");
     const f = loops[0].fixity.filter(x => x).length;
-    row("▱", "外環", `${loops[0].verts.length} 頂點 · ${f}/${loops[0].fixity.length} 邊 F`);
+    /* B1:一律 ICON_PATHS SVG,不用系統字型 Unicode 字元 */
+    row(icon("rectangle"), "外環", `${loops[0].verts.length} 頂點 · ${f}/${loops[0].fixity.length} 邊 F`);
     for (let i = 1; i < loops.length; ++i) {
       const b = loopsBBox([loops[i]]);
-      row("▨", `孔 ${i}`, `${loops[i].verts.length} 頂點 · ${b[2] - b[0]}×${b[3] - b[1]}`);
+      row(icon("hole"), `孔 ${i}`, `${loops[i].verts.length} 頂點 · ${b[2] - b[0]}×${b[3] - b[1]}`);
     }
   }
   if (fe.guides.length) {
     group("參考線");
     for (const g of fe.guides)
-      row("⌖", `參考線 ${g.id}`, `${g.axis} = ${g.off}`, async () => {
+      row(icon("guide"), `參考線 ${g.id}`, `${g.axis} = ${g.off}`, async () => {
         if (await emitLine(`delete guide ${g.id}`)) {
           await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
         }
@@ -2867,7 +2890,7 @@ function renderFaceLayers() {
   if ((fe.timbers || []).length) {
     group("角材");
     for (const t2 of fe.timbers)
-      row("▤", `角材 ${t2.id}`, `${t2.L || "auto"}×${t2.A}×${t2.B} @(${t2.u},${t2.v}) ${t2.dir}${t2.side}`,
+      row(icon("timber"), `角材 ${t2.id}`, `${t2.L || "auto"}×${t2.A}×${t2.B} @(${t2.u},${t2.v}) ${t2.dir}${t2.side}`,
         async () => {
           if (await emitLine(`delete timber ${t2.id}`)) {
             await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
@@ -2877,7 +2900,7 @@ function renderFaceLayers() {
   if ((fe.grids || []).length) {
     group("網格");
     for (const g of fe.grids)
-      row("╬", `網格 ${g.id}`, `u×${g.u.length} v×${g.v.length}`, async () => {
+      row(icon("grid"), `網格 ${g.id}`, `u×${g.u.length} v×${g.v.length}`, async () => {
         if (await emitLine(`delete grid ${g.id}`)) {
           await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
         }
@@ -3915,6 +3938,8 @@ async function mutate(lines) {
   if (oc.busy) return false;
   oc.busy = true;
   document.body.classList.add("oc-busy");
+  const busyEl = $("busyIndicator");
+  if (busyEl) busyEl.hidden = false;
   try {
     const b = await api("line history-begin");
     if (!b.ok) { toast(b.error || "指令失敗"); return false; }
@@ -3936,6 +3961,7 @@ async function mutate(lines) {
   } finally {
     oc.busy = false;
     document.body.classList.remove("oc-busy");
+    if (busyEl) busyEl.hidden = true;
   }
 }
 /* 快速六面盒對話框(§5.6) */
@@ -4154,6 +4180,7 @@ async function setView3(on) {
   oc.on = !view3;
   cv.toggleAttribute("hidden", !view3);
   $("viewToolbar").toggleAttribute("hidden", !view3);
+  $("v3ZoomBar").toggleAttribute("hidden", !view3);
   $("btnObj").classList.toggle("active", view3);
   $("btnCanvasView").classList.toggle("active", !view3);
   /* D1(Q1):三視圖開啟時左欄換「視視圖+圖層」、右欄換 pick 結果 */
