@@ -4,9 +4,9 @@
 
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 
-timber 1 2000 20 20
-timber 2 2000 20 20
-timber 3 1000 20 20
+timber 1 2000 20 20 role primary
+timber 2 2000 20 20 role primary
+timber 3 1000 20 20 role primary
 
 place 1 on 1 at 100 100 +u +n
 place 2 on 1 at 2000 100 +u +n

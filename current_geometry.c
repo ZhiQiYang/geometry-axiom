@@ -1448,12 +1448,34 @@ typedef enum {
     SURFACE_DEPTH_NEGATIVE_NORMAL
 } SurfaceDepthSide;
 
+/*
+ * D15 角材角色與裁切優先級（cut priority）：數字越小越優先——
+ * 空間邊界（外輪廓邊、孔邊、柱面）= 0、boundary 邊界材 = 1、
+ * primary 主支 = 2、secondary 副支 = 3、custom 由 priority N（N≥1）明寫。
+ * custom 的 priority 只參與 I19 的數值比較，不取得任何角色專屬義務。
+ */
+typedef enum {
+    TIMBER_ROLE_BOUNDARY = 0,
+    TIMBER_ROLE_PRIMARY,
+    TIMBER_ROLE_SECONDARY,
+    TIMBER_ROLE_CUSTOM
+} TimberRole;
+
 typedef struct {
     TimberId id;
 
     Coord length;
     Coord size_a;
     Coord size_b;
+
+    /*
+     * D15：角色是宣告；「是否真的在邊界上」是推導（R18），
+     * 兩者不一致 = 拒絕，不改宣告去遷就幾何。
+     * cut_priority 是生效值：非 custom 由角色決定（1/2/3），
+     * custom 用宣告的 N。
+     */
+    TimberRole role;
+    Coord cut_priority;
 
     /*
      * true = auto 角材（timber id A B）：length 不是輸入，
@@ -1473,6 +1495,17 @@ typedef struct {
     Vector3 axis_b;
 } Timber;
 
+static const char *timber_role_name(TimberRole role)
+{
+    switch (role) {
+        case TIMBER_ROLE_BOUNDARY:  return "boundary";
+        case TIMBER_ROLE_PRIMARY:   return "primary";
+        case TIMBER_ROLE_SECONDARY: return "secondary";
+        case TIMBER_ROLE_CUSTOM:    return "custom";
+        default:                    return "?";
+    }
+}
+
 /* Construct 一支完整角材，但此時尚未放進空間邊界面。 */
 static bool timber_construct(
     TimberId id,
@@ -1480,6 +1513,8 @@ static bool timber_construct(
     Coord size_a,
     Coord size_b,
     bool auto_length,
+    TimberRole role,
+    Coord custom_priority,
     Timber *out_timber
 )
 {
@@ -1487,7 +1522,8 @@ static bool timber_construct(
         size_a <= 0 ||
         size_b <= 0 ||
         (!auto_length && length <= 0) ||
-        (auto_length && length != 0)) {
+        (auto_length && length != 0) ||
+        (role == TIMBER_ROLE_CUSTOM && custom_priority < 1)) {
         return false;
     }
 
@@ -1498,6 +1534,10 @@ static bool timber_construct(
         .size_b = size_b,
         .auto_length = auto_length,
         .placed = false,
+        .role = role,
+        .cut_priority = role == TIMBER_ROLE_CUSTOM
+            ? custom_priority
+            : (Coord)role + 1,
 
         /* 尚未放置前，先使用標準局部框架。 */
         .origin = { 0, 0, 0 },
@@ -7650,22 +7690,79 @@ static bool apply_timber_line(
         return false;
     }
 
-    uint32_t id;
-    Coord length = 0, size_a, size_b;
+    /*
+     * D15/I18：timber id [L] A B role <角色> [priority N]。
+     * role 關鍵字的位置分出兩種長度模式：
+     *   auto  = timber id A B role …（tokens[4]）
+     *   明寫  = timber id L A B role …（tokens[5]）
+     */
     bool auto_length;
+    int role_idx;
 
-    if (count == 5) {
+    if (count >= 5 && strcmp(tokens[4], "role") == 0) {
+        auto_length = true;
+        role_idx = 4;
+    } else if (count >= 6 && strcmp(tokens[5], "role") == 0) {
         auto_length = false;
-        if (!parse_u32(tokens[1], &id) ||
-            !parse_i64(tokens[2], &length) ||
-            !parse_i64(tokens[3], &size_a) ||
-            !parse_i64(tokens[4], &size_b)) {
+        role_idx = 5;
+    } else {
+        scene_error(path, line_no,
+            "timber 需要 role 子句：timber id [長度] A尺寸 B尺寸 "
+            "role boundary|primary|secondary|custom [priority N]");
+        return false;
+    }
+
+    if (count < role_idx + 2) {
+        scene_error(path, line_no, "role 後面要接角色名");
+        return false;
+    }
+
+    TimberRole role;
+    Coord custom_priority = 0;
+    int tail;
+
+    if (strcmp(tokens[role_idx + 1], "boundary") == 0) {
+        role = TIMBER_ROLE_BOUNDARY;
+    } else if (strcmp(tokens[role_idx + 1], "primary") == 0) {
+        role = TIMBER_ROLE_PRIMARY;
+    } else if (strcmp(tokens[role_idx + 1], "secondary") == 0) {
+        role = TIMBER_ROLE_SECONDARY;
+    } else if (strcmp(tokens[role_idx + 1], "custom") == 0) {
+        role = TIMBER_ROLE_CUSTOM;
+    } else {
+        scene_error(path, line_no,
+            "role 只能是 boundary、primary、secondary 或 custom");
+        return false;
+    }
+
+    if (role == TIMBER_ROLE_CUSTOM) {
+        if (count < role_idx + 4 ||
+            strcmp(tokens[role_idx + 2], "priority") != 0 ||
+            !parse_i64(tokens[role_idx + 3], &custom_priority) ||
+            custom_priority < 1) {
             scene_error(path, line_no,
-                "timber 需要：id 長度 A尺寸 B尺寸（都是整數）");
+                "custom 角色需要 priority N（N 是 ≥1 的整數）");
             return false;
         }
-    } else if (count == 4) {
-        auto_length = true;
+        tail = role_idx + 4;
+    } else {
+        if (count > role_idx + 2 &&
+            strcmp(tokens[role_idx + 2], "priority") == 0) {
+            scene_error(path, line_no, "priority 只能配 custom 角色");
+            return false;
+        }
+        tail = role_idx + 2;
+    }
+
+    if (count != tail) {
+        scene_error(path, line_no, "timber 行有多餘欄位");
+        return false;
+    }
+
+    uint32_t id;
+    Coord length = 0, size_a, size_b;
+
+    if (auto_length) {
         if (!parse_u32(tokens[1], &id) ||
             !parse_i64(tokens[2], &size_a) ||
             !parse_i64(tokens[3], &size_b)) {
@@ -7674,9 +7771,14 @@ static bool apply_timber_line(
             return false;
         }
     } else {
-        scene_error(path, line_no,
-            "timber 需要：id 長度 A尺寸 B尺寸，或 id A尺寸 B尺寸（auto）");
-        return false;
+        if (!parse_u32(tokens[1], &id) ||
+            !parse_i64(tokens[2], &length) ||
+            !parse_i64(tokens[3], &size_a) ||
+            !parse_i64(tokens[4], &size_b)) {
+            scene_error(path, line_no,
+                "timber 需要：id 長度 A尺寸 B尺寸（都是整數）");
+            return false;
+        }
     }
 
     for (size_t i = 0; i < world->timber_count; ++i) {
@@ -7687,6 +7789,7 @@ static bool apply_timber_line(
     }
 
     if (!timber_construct(id, length, size_a, size_b, auto_length,
+            role, custom_priority,
             &world->timbers[world->timber_count])) {
         scene_error(path, line_no, "角材的長度與 A/B 尺寸都要大於 0");
         return false;
@@ -10403,10 +10506,16 @@ static void world_dump_dsl(const World *world, FILE *out)
         const Timber *t = &world->timbers[i];
 
         /* auto 角材的 length 在 place 當下已凍結；dump 明寫形式，
-         * 重放不再重算（參照若被移動過，重算會得到不同的世界）。 */
-        fprintf(out, "timber %u %lld %lld %lld\n",
+         * 重放不再重算（參照若被移動過，重算會得到不同的世界）。
+         * D15：角色是宣告的一部分，priority 只隨 custom 輸出（I18）。 */
+        fprintf(out, "timber %u %lld %lld %lld role %s",
                 (unsigned)t->id, (long long)t->length,
-                (long long)t->size_a, (long long)t->size_b);
+                (long long)t->size_a, (long long)t->size_b,
+                timber_role_name(t->role));
+        if (t->role == TIMBER_ROLE_CUSTOM) {
+            fprintf(out, " priority %lld", (long long)t->cut_priority);
+        }
+        fputc('\n', out);
     }
 
     for (size_t i = 0; i < world->timber_count; ++i) {
@@ -10614,8 +10723,9 @@ static const struct {
         apply_grid_line
     },
     {
-        "timber", 4, 5, false,
-        "timber id 長度 A尺寸 B尺寸（或 id A尺寸 B尺寸 = auto）",
+        "timber", 4, 9, false,
+        "timber id [長度] A尺寸 B尺寸 "
+        "role boundary|primary|secondary|custom [priority N]",
         apply_timber_line
     },
     {
@@ -10950,6 +11060,8 @@ int main(int argc, char **argv)
                 27,
                 33,
                 false,
+                TIMBER_ROLE_PRIMARY,
+                0,
                 &world.timbers[0]
             )) {
             fprintf(stderr, "無法 Construct 角材。\n");

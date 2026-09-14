@@ -140,7 +140,7 @@ static const char *DEFAULT_SCENE[] = {
     "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
     "guide 1 1 u 300",
     "guide 2 1 v 500",
-    "timber 1 1800 27 33",
+    "timber 1 1800 27 33 role primary",
     "place 1 on 1 at-guides 1 2 +u +n",
 };
 

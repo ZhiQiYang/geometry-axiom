@@ -7,9 +7,9 @@ surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 
 grid 1 on 1 u 2000
 
-timber 1 20 20
-timber 2 20 20
-timber 3 20 20
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+timber 3 20 20 role primary
 
 place 1 on 1 at-edge e0 +u +n
 place 2 on 1 at-edge e2 +u +n

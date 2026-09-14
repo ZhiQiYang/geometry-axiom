@@ -2240,11 +2240,11 @@ async function feLoadGuides() {
     const m = ln.match(/^guide (\d+) (\d+) (u|v) (-?\d+)\s*$/);
     if (m && +m[2] === sid)
       fe.guides.push({ id: +m[1], axis: m[3], off: +m[4] });
-    const tm = ln.match(/^timber (\d+) (\d+) (\d+) (\d+)\s*$/);
-    if (tm) timberDecl[+tm[1]] = { L: +tm[2], A: +tm[3], B: +tm[4] };
-    const ta = ln.match(/^timber (\d+) (\d+) (\d+)\s*$/);
+    const tm = ln.match(/^timber (\d+) (\d+) (\d+) (\d+) role (\w+)( priority \d+)?\s*$/);
+    if (tm) timberDecl[+tm[1]] = { L: +tm[2], A: +tm[3], B: +tm[4], role: tm[5] };
+    const ta = ln.match(/^timber (\d+) (\d+) (\d+) role (\w+)( priority \d+)?\s*$/);
     if (ta && !timberDecl[+ta[1]])
-      timberDecl[+ta[1]] = { L: 0, A: +ta[2], B: +ta[3] };
+      timberDecl[+ta[1]] = { L: 0, A: +ta[2], B: +ta[3], role: ta[4] };
     const pm = ln.match(/^place (\d+) on (\d+) at (-?\d+) (-?\d+) ([+-][uv]) ([+-]n)\s*$/);
     if (pm && +pm[2] === sid && timberDecl[+pm[1]])
       fe.timbers.push({ id: +pm[1], u: +pm[3], v: +pm[4],
@@ -2546,9 +2546,18 @@ async function feDown(pt, ev) {
     }
     const dir = ($("tbDir") || {}).value || "+u";
     const side = ($("tbSide") || {}).value || "+n";
+    const role = ($("tbRole") || {}).value || "primary";
+    const pri = Math.round(+($("tbPri") || {}).value || 0);
+    if (role === "custom" && !(pri >= 1)) {
+      toast("custom 角色要填 priority（≥1 的整數）");
+      feMarkInvalid($("tbPri"));
+      return;
+    }
     const ids = await api("newid");
-    const decl = L ? `timber ${ids.timber} ${L} ${A} ${B}`
-                   : `timber ${ids.timber} ${A} ${B}`;
+    const decl = (L ? `timber ${ids.timber} ${L} ${A} ${B}`
+                    : `timber ${ids.timber} ${A} ${B}`) +
+                 ` role ${role}` +
+                 (role === "custom" ? ` priority ${pri}` : "");
     const u = Math.round(pt.x), v = Math.round(pt.y);
     if (await mutate([decl,
         `place ${ids.timber} on ${sid} at ${u} ${v} ${dir} ${side}`])) {
@@ -3062,6 +3071,12 @@ function renderFaceInspector() {
     ["+u", "-u", "+v", "-v"].map(d => `<option>${d}</option>`).join("") +
     `</select></label>` +
     `<label>深度<select id="tbSide"${surf ? "" : " disabled"}><option>+n</option><option>-n</option></select></label>` +
+    `<label>角色<select id="tbRole"${surf ? "" : " disabled"}>` +
+    [["primary", "primary 主支"], ["boundary", "boundary 邊界材"],
+     ["secondary", "secondary 副支"], ["custom", "custom 自訂"]]
+      .map(([v, t]) => `<option value="${v}">${t}</option>`).join("") +
+    `</select></label>` +
+    `<label id="tbPriLabel" hidden>priority<input id="tbPri" type="number" value="3"${surf ? "" : " disabled"}></label>` +
     `</div><div class="face-help">` +
     (surf ? "選「角材」工具後在面上點擊放置（足跡需落在有效區域內）"
           : "游離面：先「放置」才可放角材") + `</div></div></div>`;
@@ -3102,6 +3117,12 @@ function renderFaceInspector() {
       else renderFaceInspector();
     });
   bindPlaceForm(pane, bid);
+  /* GEO-090:priority 欄只在 custom 角色時顯示 */
+  const tbRole = pane.querySelector("#tbRole");
+  if (tbRole) tbRole.addEventListener("change", () => {
+    const pl = pane.querySelector("#tbPriLabel");
+    if (pl) pl.hidden = tbRole.value !== "custom";
+  });
   const gc = pane.querySelector("#gridCreate");
   if (gc) gc.addEventListener("click", async () => {
     const sid = feSid(bid);

@@ -2,5 +2,5 @@
 # 貼它放沿 u 的料 → footprint v∈[1000,1027](材料側=+v)
 # 接觸範圍 u∈[2000,4000];span 向左延伸到 u=0 頂 e5 → L=4000
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 2000,0 2000,1000 4000,1000 4000,3000 0,3000
-timber 1 27 33
+timber 1 27 33 role boundary
 place 1 on 1 at-edge e2 +u +n

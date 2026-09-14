@@ -794,7 +794,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     await feDown({x: 500, y: 300}, {target: $("faceEditorSvg"), clientX: 0, clientY: 0});
     await new Promise(r=>setTimeout(r,300));
     const dump1 = (await api("dump")).text;
-    const hasTimber = /timber \\d+ 1800 27 33/.test(dump1) &&
+    const hasTimber = /timber \\d+ 1800 27 33 role \\w+/.test(dump1) &&
                       /place \\d+ on \\d+ at 500 300 \\+u \\+n/.test(dump1);
     const fp = document.querySelector(".face-timber");
     /* 網格:表單建 u 500 1500 / v 300 900 */

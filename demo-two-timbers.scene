@@ -5,9 +5,9 @@ guide 1 7 u 600
 guide 2 7 v 400
 
 # 第一支：沿 +U，放在兩條參考線的交點
-timber 1 2000 27 33
+timber 1 2000 27 33 role primary
 place 1 on 7 at-guides 1 2 +u +n
 
 # 第二支：沿 +V，直接給錨點座標
-timber 2 1500 45 45
+timber 2 1500 45 45 role secondary
 place 2 on 7 at 2400 800 +v +n

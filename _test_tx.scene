@@ -1,7 +1,7 @@
 # 交易測試：先放好角材，再重宣告邊界面把角材位置挖孔 → 應拒絕且保留舊狀態
 boundary 1 outline 0,0 4000,0 4000,3000 0,3000
 placement 1 on boundary 1 origin 0 0 2500 u +x v +y
-timber 1 1000 27 33
+timber 1 1000 27 33 role primary
 place 1 on 1 at 500 300 +u +n
 
 # 重宣告：把角材 A0 的位置挖成孔 → 角材失效 → 整筆應被拒絕

@@ -3,9 +3,9 @@
 # auto 沿 v 放 u=1500:下頂主支1側面(1020)上頂主支2側面(2000)→ L=980
 placement 1 origin 0 0 2500 u +x v +y rect 0 0 4000 3000
 grid 1 on 1 u 1500
-timber 1 3000 20 20
-timber 2 3000 20 20
-timber 3 27 33
+timber 1 3000 20 20 role primary
+timber 2 3000 20 20 role primary
+timber 3 27 33 role secondary
 place 1 on 1 at 500 1000 +u +n
 place 2 on 1 at 500 2000 +u +n
 place 3 on 1 at-grid 1 u 0 through 1500 +v +n

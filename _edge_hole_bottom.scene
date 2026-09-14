@@ -1,5 +1,5 @@
 # 孔下緣當錨:h0e0(v=1200,u∈[1800,2200])材料側在下 → footprint v∈[1173,1200]
 # 沿 u 放:被孔 u∈[1800,2200] 擋 → span [0,1800](向左直到 e3)
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1800,1200 2200,1200 2200,1800 1800,1800
-timber 1 27 33
+timber 1 27 33 role primary
 place 1 on 1 at-edge h0e0 through 1000 -u +n

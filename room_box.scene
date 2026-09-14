@@ -12,8 +12,8 @@ guide 3 2 u 800
 guide 4 2 v 2000
 
 # timber id 長度 A尺寸 B尺寸
-timber 1 1800 27 33
-timber 2 1600 27 33
+timber 1 1800 27 33 role primary
+timber 2 1600 27 33 role primary
 
 # space id boundary 面id x 2~8：這兩片彼此一致（共用 x 區間，牆頂貼齊天花）
 space 1 boundary 1 2

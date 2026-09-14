@@ -40,8 +40,10 @@ TESTS = [
     {"scene": "_test_hole_auto.scene", "expect": "accept", "lengths": [1200]},
     {"scene": "_test_ambiguous.scene", "expect": "reject", "error": "跨距歧義"},
     {"scene": "_test_collide.scene", "expect": "reject", "error": "正面積重疊"},
+    # GEO-090 角色遷移:e1/e3 沿主支軸的料是邊界主支(primary),層級 1 先落地
+    # 整條蓋到牆(R19(d)),層級 2 被兩端層級 1 佔掉的料寬裁短(R19(c))。
     {"scene": "_demo_ceiling.scene", "expect": "accept",
-     "lengths": [4000, 2973, 3973, 2946, 2946, 2946, 1173]},
+     "lengths": [4000, 2946, 4000, 2946, 2946, 2946, 1173]},
 
     # ---- 邊界條件案例 ----
     {"scene": "_edge_axis_violation.scene", "expect": "reject", "error": "垂直"},

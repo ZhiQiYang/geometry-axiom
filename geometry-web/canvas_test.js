@@ -173,7 +173,7 @@ function check(name, cond, detail="") {
   const setup = [
     "line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
     "line grid 1 on 1 u 2000",
-    "line timber 1 27 33",
+    "line timber 1 27 33 role primary",
     "line place 1 on 1 at-grid 1 u 0 +v +n",
     "line grid 1 on 1 u 1500"          /* 移動參考線 → 凍結角材不該跟著走 */
   ];
@@ -447,7 +447,7 @@ function check(name, cond, detail="") {
     "guide 1 1 v 3500",        /* 固定 u=3500 → 只在新片 */
     "guide 2 1 u 1500",        /* 固定 v=1500 → 兩片都合法 → 留原片 */
     "grid 1 on 1 u 3500 v 1500",/* u 座標 3500 → 只在新片 */
-    "timber 1 400 27 33",
+    "timber 1 400 27 33 role primary",
     "place 1 on 1 at 3500 1500 +u +n",  /* 錨點 (3500,1500) → 新片 */
   ]) if (!(await api("line " + ln)).ok) { auxOk = false; console.log("  M8 aux fail:", ln); }
   check("M8 輔助資料就緒", auxOk);
@@ -604,6 +604,45 @@ function check(name, cond, detail="") {
   check("U3 失敗群組世界復原", (await api("dump")).text === d0);
   const u3u = await api("line undo");
   check("U3 失敗群組不留歷史", u3u.ok === false, JSON.stringify(u3u));
+
+  /* R. timber role 子句（GEO-090、I18）：
+     無 role / custom 無 priority / priority 配非 custom → 拒絕;
+     合法宣告後 dump 帶角色,重放 round-trip 逐字相同。 */
+  console.log("== R. 角色子句（GEO-090）==");
+  await api("reset");
+  check("R1 無 role 拒絕",
+        !(await api("line timber 9 27 33")).ok);
+  check("R1b 明寫無 role 拒絕",
+        !(await api("line timber 9 1800 27 33")).ok);
+  check("R2 custom 無 priority 拒絕",
+        !(await api("line timber 9 27 33 role custom")).ok);
+  check("R3 priority 配非 custom 拒絕",
+        !(await api("line timber 9 27 33 role primary priority 2")).ok);
+  check("R3b 不認得角色拒絕",
+        !(await api("line timber 9 27 33 role foo")).ok);
+  check("R3c priority 0 拒絕",
+        !(await api("line timber 9 27 33 role custom priority 0")).ok);
+  check("R3d 壞行後世界無角材",
+        !(await api("dump")).text.includes("timber"));
+  for (const ln of [
+    "line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+    "line timber 1 1800 27 33 role primary",
+    "line place 1 on 1 at 500 300 +u +n",
+    "line timber 2 20 20 20 role custom priority 4",
+    "line place 2 on 1 at 1000 2000 +v +n",
+  ]) await api(ln);
+  const dR = (await api("dump")).text;
+  check("R4 dump 含角色",
+        /timber 1 1800 27 33 role primary/.test(dR) &&
+        /timber 2 20 20 20 role custom priority 4/.test(dR), dR);
+  await api("reset");
+  let okR = true;
+  for (const ln of dR.split("\n").filter(l => l.trim())) {
+    if (!(await api("line " + ln)).ok) okR = false;
+  }
+  check("R5 含角色 dump 可重放", okR);
+  check("R6 含角色 round-trip 相同",
+        (await api("dump")).text === dR);
 
   await api("default");
 

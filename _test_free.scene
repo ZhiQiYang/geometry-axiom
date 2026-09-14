@@ -1,5 +1,5 @@
 # 自由邊測試：u=4000 那邊標 FREE，端面頂到它應被拒絕
 boundary 1 outline 0,0 4000,0 4000,3000 0,3000 fixity F X F F
 placement 1 on boundary 1 origin 0 0 2500 u +x v +y
-timber 1 4000 27 33
+timber 1 4000 27 33 role primary
 place 1 on 1 at 0 1000 +u +n

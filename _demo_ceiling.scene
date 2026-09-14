@@ -1,12 +1,16 @@
 # ============================================================
 # 天花骨架範例:4000×3000 房間,柱位 u∈[1800,2200] × v∈[1200,1800]
-# 全用 auto 角材:四周一圈邊界材 + 三支主支對格線
+# 全用 auto 角材:兩支邊界材(⊥主支軸)+ 兩支邊界主支(∥主支軸)+ 三支主支對格線
+#
+# D15–D17 角色分工:e0/e2 沿 u 走 ⊥ 主支軸(v)→ boundary;
+# e1/e3 沿 v 走 ∥ 主支軸 → primary(邊界主支)。
+# 層級 1 先落地整條蓋到牆,層級 2 後放被兩端層級 1 佔掉的料寬裁短(R19(c)(d))。
 #
 # 預期推導:
 #   邊界材1 (e0, v=0 貼下緣):   u∈[0,4000]    L=4000
-#   邊界材2 (e1, u=4000 貼右緣): v∈[27,3000]  L=2973 (被邊界材1擋)
-#   邊界材3 (e2, v=3000 貼上緣): u∈[0,3973]   L=3973 (被邊界材2擋)
-#   邊界材4 (e3, u=0 貼左緣):   v∈[27,2973]  L=2946 (被1、3擋)
+#   邊界材3 (e2, v=3000 貼上緣): u∈[0,4000]   L=4000
+#   邊界主支2 (e1, u=4000 貼右緣):v∈[27,2973]  L=2946 (被1、3擋)
+#   邊界主支4 (e3, u=0 貼左緣):  v∈[27,2973]  L=2946 (被1、3擋)
 #   主支5 (格線 u=1200):        v∈[27,2973]  L=2946
 #   主支6 (格線 u=2800):        v∈[27,2973]  L=2946
 #   主支7 (格線 u=2000 穿柱位):  through 600 選下段 v∈[27,1200] L=1173
@@ -16,17 +20,17 @@ surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 180
 
 grid 1 on 1 u 1200 2000 2800
 
-timber 1 27 33
-timber 2 27 33
-timber 3 27 33
-timber 4 27 33
-timber 5 27 33
-timber 6 27 33
-timber 7 27 33
+timber 1 27 33 role boundary
+timber 2 27 33 role primary
+timber 3 27 33 role boundary
+timber 4 27 33 role primary
+timber 5 27 33 role primary
+timber 6 27 33 role primary
+timber 7 27 33 role primary
 
 place 1 on 1 at-edge e0 +u +n
-place 2 on 1 at-edge e1 +v +n
 place 3 on 1 at-edge e2 -u +n
+place 2 on 1 at-edge e1 +v +n
 place 4 on 1 at-edge e3 +v +n
 place 5 on 1 at-grid 1 u 0 +v +n
 place 6 on 1 at-grid 1 u 2 +v +n
