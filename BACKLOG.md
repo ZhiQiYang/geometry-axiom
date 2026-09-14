@@ -486,3 +486,58 @@
 - **檔案**:`current_geometry.c`。
 - **測試**:四邊各插一次 + 撞孔案例 + undo。
 - **相依**:無。**估時 2h**。
+
+---
+
+## 第 9 流：構件層級（公理層 D15–D17、I18–I22、R18–R20；2026-09-15 立）
+
+> 來源：TimberScript Core Charter §2a 與拍板清單，形式化為「層級是段的性質」（D16）。
+> 工單順序即依賴順序；每張都以公理層條文為驗收基準，條文與實作不一致時**改實作**。
+
+### GEO-090 ⚡ `timber` 加 `role` 子句 + 場景檔遷移
+- **內容**：`apply_timber_line` 解析 `role boundary|primary|secondary|custom [priority N]`（D15）；`Timber` 加 `role`/`cut_priority` 欄位；`world_dump_dsl` 輸出；沒 role / custom 沒 priority / priority 配非 custom → 拒絕（I18）。所有 `*.scene` 夾具與 web 六面盒模板、canvas_test/cdp_test 內嵌的 `timber` 行全部補角色。
+- **驗收**：舊夾具不補角色時 parse 拒絕且訊息指名行號；補完後 dump→loadfile→dump 逐字相同；`newid`/`objects`/`delete` 不受影響。
+- **檔案**：`current_geometry.c`（apply_timber_line 7640、dump 8316 附近）、`geometry-web/web_bridge.c`、`*.scene`、`geometry-web/app.js` 角材表單。
+- **測試**：canvas_test 加「無 role 拒絕」「custom 無 priority 拒絕」「dump round-trip」。
+- **相依**：無。**估時 2h**。
+
+### GEO-091 主支軸一致（D17、I21）
+- **內容**：`world_revalidate` 與 `apply_place_line` 內推導承載面主支軸（全部 primary 長度軸唯一；無 primary 時取 boundary 的垂直方向）；boundary/secondary 與主支軸平行 → `V_PRIMARY_AXIS`。
+- **驗收**：同面第二支 primary 換軸 → 拒絕；先放 boundary 再放與它平行的 primary → 拒絕；刪掉唯一 primary 後軸由 boundary 推得。
+- **檔案**：`current_geometry.c`。
+- **測試**：夾具 `_role_axis_*.scene` 三個 + canvas_test。
+- **相依**：GEO-090。**估時 1.5h**。
+
+### GEO-092 端面優先序與延伸段（I19、I22）
+- **內容**：`resolve_auto_span`（6436）與明寫放置的端面檢查：每個端面所頂擋面的擁有者優先級必須 < 自己（外輪廓/孔邊/柱面 = 0；轉角兩支 boundary 互頂例外）；違反 → `V_CUT_PRIORITY`。boundary 的固定段/延伸段切分（D16）：延伸段端面豁免 I19；延伸段側面作擋面時以優先級 2 計；非 boundary 角材不得有超出定位邊的段。
+- **驗收**：主支端面頂 RC → 拒絕；副支端面頂 RC → 拒絕；主支端面頂副支側面 → 拒絕；L 形內邊 boundary 延伸過凹角停在長主支側面 → 接受且長主支 footprint 不變；同一支延伸段被主支端面頂 → 拒絕、被副支頂 → 接受；凸角處延伸 → 因 I5 出界拒絕（不需新錯誤碼）。
+- **檔案**：`current_geometry.c`（collect_stop_faces 6244、resolve_auto_span 6436、apply_place_line 7979）。
+- **測試**：夾具 `_role_priority_*.scene` 六個（對應上列驗收）+ 變異殺手（把 boundary 改 primary 必須被拒）。
+- **相依**：GEO-090、GEO-091。**估時 3h**。
+
+### GEO-093 邊界材整條覆蓋 + 角色衍生屬性（I20、R18）
+- **內容**：R18 的 `onBoundary` / `coversEdge` / `boundaryEdge` 純幾何推導（只看外輪廓、不看孔邊、不看錨法）；I20：boundary 的固定段 ⊇ 邊區間、邊為 FIXED 外輪廓邊且 ⊥ 主支軸，否則 `V_BOUNDARY_ROLE`（訊息含料件、邊索引、覆蓋長度/邊長）；secondary 必 onBoundary=false。bridge `objects` 的 timbers 與 `dump` 註解一併輸出三個屬性。
+- **驗收**：用 `through` 貼齊邊的料 onBoundary=true；at-edge 放卻被裁短的料 coversEdge=false 且若宣告 boundary → 拒絕；孔邊上的料 onBoundary=false；`objects` 回傳欄位存在。
+- **檔案**：`current_geometry.c`、`web_bridge.c`。
+- **測試**：夾具 `_role_cover_*.scene` 四個 + canvas_test 讀 objects 欄位。
+- **相依**：GEO-092。**估時 2.5h**。
+
+### GEO-094 連坐重驗（R20）+ 變異測試
+- **內容**：刪除/移動/重宣告任一角材後同面全部角材重驗 I19–I22 與 R18，任一不過整筆回滾。補變異測試 M41–M50：各拿掉一條不變量的檢查，對應殺手夾具必須能抓到。
+- **驗收**：刪掉被延伸段頂住的長主支 → 延伸段失去擋面 → 整筆拒絕（不留半成品）；`_run_tests_cmd.py` 全綠。
+- **檔案**：`current_geometry.c`、`tests/`。
+- **測試**：如上。
+- **相依**：GEO-093。**估時 2h**。
+
+### GEO-095 web UI：角色與層級可見
+- **內容**：面內「角材」分頁的表單加角色選單（預設 primary；custom 顯示 priority 欄）；面內圖層列與卡片顯示角色徽章與 onBoundary/coversEdge；`V_CUT_PRIORITY`/`V_BOUNDARY_ROLE`/`V_PRIMARY_AXIS` 的 toast 原文顯示並高亮相關兩支料；DOM-CONTRACT 補新 id。
+- **驗收**：cdp_test 新段：放 boundary→primary→secondary 各一支成功；放與主支軸平行的 boundary → toast 且畫面高亮；L 形延伸案例在 UI 內可完成。
+- **檔案**：`geometry-web/app.js`、`app.css`、`index.html`、`cdp_test.js`、`docs/DOM-CONTRACT.md`。
+- **測試**：cdp_test。
+- **相依**：GEO-093。**估時 2.5h**。
+
+### GEO-096 ⚡ 導讀與文件同步
+- **內容**：`make_guide.py` 補「構件層級」章節（D15–D17、I18–I22、R18–R20 對應原始碼面板）、重跑、`check_panels.py` 全過；`geometry-model-v2.md` 補一節說明與 TimberScript Charter 的對應與差異（段框架取代延伸例外）。
+- **驗收**：check_panels unresolved: none；導讀頁能點到 `apply_timber_line` 的 role 解析與 `V_CUT_PRIORITY` 判定處。
+- **檔案**：`geometry-guide/make_guide.py`、`geometry-model-v2.md`。
+- **相依**：GEO-090～094。**估時 1.5h**。
