@@ -118,6 +118,46 @@ function applyTransform() {
   const t = transform();
   world.setAttribute("transform", `translate(${t.ox},${t.oy}) scale(${t.s})`);
   overlay.setAttribute("transform", `translate(${t.ox},${t.oy}) scale(${t.s})`);
+  const zl = $("v3ZoomLevel");
+  if (zl) zl.textContent = Math.round(zoom * 100) + "%";
+  v3FixText(t.s);
+}
+/* D3:TITLE/LABEL 反比縮放——螢幕 px 字級不變(zoom 0.5/2 都可讀)。
+   replay 時記 data-fs0(目標 px);這裡換算回 mm 字級。 */
+function v3FixText(scale) {
+  for (const tx of world.querySelectorAll("text[data-fs0]"))
+    tx.setAttribute("font-size", (+tx.dataset.fs0 / scale).toFixed(1));
+}
+/* D1:視圖/圖層過濾——begin/end 區塊序對應 layout.views 序;
+   圖層=STYLE 索引分組(面/參考線/角材/柱樑,其餘常駐)。 */
+const V3_LAYER_STYLES = { face: [2, 3, 4, 5], guide: [7, 8],
+                          timber: [9, 10, 11], rc: [13, 14] };
+function v3ViewsOn() {
+  return [0, 1, 2].filter(v => {
+    const c = document.querySelector(`[data-v3-view="${v}"]`);
+    return !c || c.checked;
+  });
+}
+function v3LayersOn() {
+  const on = new Set([...document.querySelectorAll("[data-v3-layer]")]
+    .filter(c => c.checked).map(c => c.dataset.v3Layer));
+  return s => {
+    for (const [k, arr] of Object.entries(V3_LAYER_STYLES))
+      if (arr.includes(s)) return on.has(k);
+    return true;
+  };
+}
+function v3FilterOps(ops) {
+  const views = v3ViewsOn(), allow = v3LayersOn();
+  const out = [];
+  let vi = -1, keep = true;
+  for (const o of ops) {
+    if (o.op === "begin") { ++vi; keep = views.includes(vi); }
+    if (!keep) continue;
+    if (o.op !== "begin" && o.op !== "end" && !allow(o.s)) continue;
+    out.push(o);
+  }
+  return out;
 }
 /* 螢幕 px → 視圖編號 + 視圖內 mm（對應 gdi_screen_to_view） */
 function screenToView(px, py) {
@@ -170,6 +210,8 @@ function replay(ops, root) {
       const t = el("text", { x:o.x, y:o.y, fill: st.line,
         "font-size": st.text, "font-weight": st.bold ? "bold" : "normal",
         "text-anchor": st.anchor || "start" }, g);
+      /* D3:反比縮放基準 px(TITLE 15 / 其餘 11) */
+      t.setAttribute("data-fs0", o.s === 1 ? 15 : 11);
       if (st.mid) t.setAttribute("dominant-baseline", "middle");
       if (st.halo) { t.setAttribute("paint-order", "stroke");
         t.setAttribute("stroke", "#fff"); t.setAttribute("stroke-width", 30);
@@ -188,7 +230,7 @@ async function render() {
   world.textContent = "";
   previewGs = [];
   affineCache = {};               /* 世界變了，舊的 uv↔view 映射作廢 */
-  replay(r.ops, world);
+  replay(v3FilterOps(r.ops), world);
   applyTransform();
 }
 
@@ -208,6 +250,10 @@ async function refreshHover(sv) {
   const p = await pickAt(sv);
   if (seq !== pickSeq) return;            /* 滑鼠還在動，丟掉舊結果 */
   setHover(p.desc || "");
+  /* D1:右欄 pick 面板 */
+  const hi = $("v3HoverInfo");
+  if (hi) hi.textContent = p.desc ||
+    (sv ? `視圖 ${sv.v + 1} · ${sv.x}, ${sv.y}` : "—");
   /* 點選的優先；沒有才用 hover 的（同 gdi_paint）。 */
   overlay.textContent = "";
   const show = selected ? selected.hover : p.hover;
@@ -263,6 +309,10 @@ cv.addEventListener("pointerdown", async e => {
   overlay.textContent = "";
   if (selected && selected.hover) replay(selected.hover, overlay);
   if (p.timber >= 0) setStatus(p.desc);
+  /* D1:右欄 pick 結果 */
+  const pi = $("v3PickInfo");
+  if (pi) pi.textContent = selected ? (p.desc || "已選取")
+    : "未選取物件（點選面/角材/參考線）";
 });
 cv.addEventListener("pointerup", async e => {
   if (e.button === 1) panning = null;
@@ -609,14 +659,40 @@ async function canvasUp(e, sv) {
   }
 }
 
-$("tool").addEventListener("change", async () => {
-  tool = $("tool").value;
+async function v3SetTool(t) {
+  tool = t;
+  $("tool").value = t;
+  for (const b of document.querySelectorAll("[data-v3-tool]"))
+    b.classList.toggle("active", b.dataset.v3Tool === t);
   drawPts = []; rectStart = null; editDrag = null; previewClear();
   if (tool === "edit") await enterEdit();
   else if (tool === "rect" || tool === "poly") setStatus("在工作面上拉／點出範圍");
   else if (tool === "hole") setStatus("在工作面邊界內拉一個矩形當孔");
   else setStatus("");
-});
+}
+$("tool").addEventListener("change", () => v3SetTool($("tool").value));
+/* D2:segmented 工具鈕 → 同步 #tool(保留 select 相容) */
+for (const b of document.querySelectorAll("[data-v3-tool]"))
+  b.addEventListener("click", () => v3SetTool(b.dataset.v3Tool));
+/* D2:三視圖縮放列 */
+const v3ZoomStep = k => {
+  const r = cv.getBoundingClientRect();
+  const px = r.width / 2, py = r.height / 2;
+  const t = transform();
+  zoom = Math.max(0.05, Math.min(20, zoom * k));
+  const t2 = transform();
+  const f = fit();
+  panX = px - (px - t.ox) * (t2.s / t.s) - f.ox * zoom;
+  panY = py - (py - t.oy) * (t2.s / t.s) - f.oy * zoom;
+  applyTransform();
+};
+$("v3ZoomOut").addEventListener("click", () => v3ZoomStep(1 / 1.25));
+$("v3ZoomIn").addEventListener("click", () => v3ZoomStep(1.25));
+$("v3ZoomLevel").addEventListener("click", () => { zoom = 1; panX = panY = 0; applyTransform(); });
+$("v3ZoomFit").addEventListener("click", () => { zoom = 1; panX = panY = 0; applyTransform(); });
+/* D1:視圖/圖層勾選 → 重放過濾後的 ops */
+for (const c of document.querySelectorAll("[data-v3-view],[data-v3-layer]"))
+  c.addEventListener("change", () => { if (view3) render(); });
 $("workSurf").addEventListener("change", async () => {
   $("newZ").hidden = $("workSurf").value !== "new";
   if (tool === "edit") await enterEdit();
@@ -1121,6 +1197,8 @@ async function renderObjects() {
     }));
   if (seq !== ocSeq) return;
   drawObjects();
+  /* C5:任何 mutate 成功後,空間工作區(含三視圖投影)自動重繪 */
+  if (oc.focus && oc.focus.t === "space") await renderSpaceWorkspace();
 }
 
 function drawObjects() {
@@ -1481,49 +1559,35 @@ async function renderSpaceWorkspace() {
   const sid = oc.focus && oc.focus.id;
   const sp = oc.spaces.find(s => s.id === sid);
   if (!sp) return;
-  /* 左：成員清單 */
+  /* 左：成員清單(C1:列內縮圖,點擊進面內工作區) */
   const list = $("spaceMemberList");
   list.textContent = "";
   $("spaceMemberCount").textContent = sp.members.length;
   for (const bid of sp.members) {
     const f = oc.faces.find(x => x.id === bid);
+    const loops = oc.bmap[bid];
     const row = document.createElement("button");
     row.type = "button";
     row.className = "space-boundary-button";
     row.innerHTML =
-      `<span class="type-icon face">▱</span>` +
+      `<span class="space-member-thumb"></span>` +
       `<span class="space-boundary-button-copy"><strong>面 ${bid}</strong>` +
-      `<small>${f ? f.bbox.join(", ") : ""}</small></span><span>›</span>`;
-    row.addEventListener("click", () => enterFocus("face", bid));
-    list.appendChild(row);
-  }
-  /* 中：成員面卡片格（preview 簡化版） */
-  const grid = $("spaceFaceGrid");
-  grid.textContent = "";
-  for (const bid of sp.members) {
-    const f = oc.faces.find(x => x.id === bid);
-    const loops = oc.bmap[bid];
-    const card = document.createElement("div");
-    card.className = "space-face-card";
-    card.innerHTML =
-      `<div class="space-face-preview"><svg></svg></div>` +
-      `<div class="space-face-card-body"><h3>面 ${bid}</h3>` +
-      `<p>${f ? f.bbox.join(" × ") : ""} · ${loops ? loops[0].verts.length + " 頂點" : "—"}</p>` +
-      `<button type="button">進入面內工作區</button></div>`;
-    const svg = card.querySelector("svg");
-    if (loops) {
+      `<small>${f ? f.bbox.join(", ") : ""} · ${feSurf(bid) ? surfNormalLabel(feSurf(bid)) : "游離"}</small></span><span>›</span>`;
+    const thumb = row.querySelector(".space-member-thumb");
+    if (loops && loops.length) {
       const bb = loopsBBox(loops);
+      const svg = document.createElementNS(SVGNS, "svg");
       svg.setAttribute("viewBox",
-        `${bb[0] - 60} ${bb[1] - 60} ${bb[2] - bb[0] + 120} ${bb[3] - bb[1] + 120}`);
+        `${bb[0] - 80} ${bb[1] - 80} ${bb[2] - bb[0] + 160} ${bb[3] - bb[1] + 160}`);
       for (let li = 0; li < loops.length; ++li)
         el("polygon", { points: loops[li].verts.map(p => p.join(",")).join(" "),
-          fill: li === 0 ? "rgba(47,143,123,.13)" : "#f8fafc",
-          stroke: "#2f8f7b", "stroke-width": 14,
+          fill: li === 0 ? "rgba(47,143,123,.16)" : "#f8fafc",
+          stroke: "#2f8f7b", "stroke-width": 40,
           "vector-effect": "non-scaling-stroke" }, svg);
-    }
-    card.querySelector("button").addEventListener("click", () =>
-      enterFocus("face", bid));
-    grid.appendChild(card);
+      thumb.appendChild(svg);
+    } else thumb.textContent = "▱";
+    row.addEventListener("click", () => enterFocus("face", bid));
+    list.appendChild(row);
   }
   /* 右：檢視器 + closed 槽位 + 操作 */
   renderSpaceInspector(sp);
@@ -1533,6 +1597,15 @@ async function renderSpaceWorkspace() {
   renderSpaceRc(sp);
   renderSpacePlan(sp);
 }
+
+/* C1:空間舞台分頁(平面示意|三視圖) */
+for (const t of document.querySelectorAll("#spaceStageTabs [data-ss-tab]"))
+  t.addEventListener("click", () => {
+    for (const x of document.querySelectorAll("#spaceStageTabs [data-ss-tab]"))
+      x.classList.toggle("active", x === t);
+    for (const p of document.querySelectorAll("[data-ss-pane]"))
+      p.hidden = p.dataset.ssPane !== t.dataset.ssTab;
+  });
 
 /* 構件清單：本空間的柱樑（可移出成游離）+ 游離柱樑（可收進） */
 function renderSpaceRc(sp) {
@@ -1564,21 +1637,31 @@ function renderSpaceRc(sp) {
     return `beam ${o.id}${sid ? " in " + sid : ""} along ${axis} ` +
       `from ${lo} to ${hi} at ${c} width ${w} depth ${b[5] - b[2]} top ${b[5]}`;
   };
+  /* C4:hover 顯示動作鈕;刪除→toast 提示可 Ctrl+Z 復原 */
   const rcRow = (k, o, label, fn) => {
     const row = document.createElement("div");
-    row.className = "space-boundary-button";
+    row.className = "space-boundary-button rc-row";
     row.innerHTML =
       `<span class="type-icon ${k}">${k === "column" ? "▮" : "═"}</span>` +
       `<span class="space-boundary-button-copy"><strong>${k === "column" ? "柱" : "樑"} ${o.id}</strong>` +
-      `<small>${dims(k, o)}</small></span><span>${label}</span>`;
+      `<small>${dims(k, o)}</small></span>`;
+    const acts = document.createElement("span");
+    acts.className = "rc-acts";
+    const act = document.createElement("button");
+    act.type = "button"; act.className = "rc-act"; act.textContent = label;
+    act.addEventListener("click", async ev => { ev.stopPropagation(); await fn(); });
     const del = document.createElement("button");
     del.type = "button"; del.className = "face-layer-del"; del.title = "刪除";
     del.textContent = "✕";
     del.addEventListener("click", async ev => {
       ev.stopPropagation();
-      if (await emitLine(`delete ${k} ${o.id}`)) await renderSpaceWorkspace();
+      if (await emitLine(`delete ${k} ${o.id}`)) {
+        toast(`${k === "column" ? "柱" : "樑"} ${o.id} 已刪除,可 Ctrl+Z 復原`);
+        await renderSpaceWorkspace();
+      }
     });
-    row.appendChild(del);
+    acts.appendChild(act); acts.appendChild(del);
+    row.appendChild(acts);
     row.addEventListener("click", fn);
     return row;
   };
@@ -1732,31 +1815,66 @@ function renderSpacePlan(sp) {
   };
 }
 
+/* C3:六槽語意名+軸向副標;空槽「＋放置一片面到這裡」→ 進游離面帶入對應預設 */
 function renderSpaceInspector(sp) {
   const pane = $("spaceInspectorContent");
   const slots = spaceSlots(sp);
-  const slotName = { "+X": "+X", "-X": "−X", "+Y": "+Y", "-Y": "−Y", "+Z": "+Z", "-Z": "−Z" };
+  /* 🔒 方位命名 + 對應放置預設名 */
+  const slotMeta = [["+Z", "天花", "+z 向上", "天花"],
+    ["-Z", "地板", "−z 向下", "地板"],
+    ["-Y", "前牆", "y=0", "y=0 牆"],
+    ["+Y", "後牆", "y=D", "y=D 牆"],
+    ["-X", "左牆", "x=0", "x=0 牆"],
+    ["+X", "右牆", "x=W", "x=W 牆"]];
+  /* 每槽的佔用成員(成員承載面法向 = 槽鍵) */
+  const slotMember = {};
+  for (const m of sp.members) {
+    const sf = oc.surfs.find(x => x.boundary === m);
+    if (!sf) continue;
+    const key = axisNormalKey(AXIS_WORD[sf.u.join()], AXIS_WORD[sf.v.join()]);
+    if (key) slotMember[key] = m;
+  }
   pane.innerHTML =
     `<div class="inspector-block"><div class="ib-title">空間 ${sp.id}` +
     `<span class="tag">${sp.closed ? "closed" : "open"}</span></div>` +
     `<div class="kv"><span>id</span><b>${sp.id}</b></div>` +
     `<div class="kv"><span>狀態</span><b>${sp.closed ? "closed（六面齊）" : "open（未閉合）"}</b></div>` +
     `<div class="kv"><span>成員</span><b>${sp.members.length} 面</b></div></div>` +
-    `<div class="inspector-block"><div class="ib-title">方向槽位（±X/±Y/±Z）</div>` +
+    `<div class="inspector-block"><div class="ib-title">六面槽位` +
+    `<small class="ib-sub">法向方位</small></div>` +
     (slots
-      ? `<div class="slot-grid">` +
-        Object.keys(slots).map(k =>
-          `<div class="slot${slots[k] ? " on" : ""}"><span>${k}</span>` +
-          `<b>${slots[k] ? "佔用" : "空"}</b></div>`).join("") +
-        `</div>`
+      ? `<div class="slot-list">` +
+        slotMeta.map(([key, label, axSub]) => {
+          const mb = slotMember[key];
+          return `<div class="slot slot-row${mb ? " on" : ""}">` +
+            `<span class="slot-name">${label}</span>` +
+            `<span class="slot-axis">${axSub}</span>` +
+            (mb
+              ? `<button class="slot-face" data-slot-face="${mb}">面 ${mb} ›</button>`
+              : `<button class="slot-empty" data-slot-preset="${label}">＋放置一片面到這裡</button>`) +
+            `</div>`;
+        }).join("") + `</div>`
       : `<div class="kv"><span>成員皆無承載面，無法推導方向</span></div>`) +
     `</div>` +
     `<div class="inspector-block"><div class="ib-title">操作</div><div class="btn-col">` +
     `<button class="btn" id="spEditMembers">編輯成員</button>` +
-    `<button class="btn" id="spProjRefresh">重新整理三視圖</button>` +
     `</div></div>`;
   $("spEditMembers").addEventListener("click", () => openMemberDialog(sp.id));
-  $("spProjRefresh").addEventListener("click", renderSpaceProjection);
+  /* 佔用槽 → 進該面;空槽 → 找游離面進面內工作區(帶預設提示) */
+  for (const b of pane.querySelectorAll("[data-slot-face]"))
+    b.addEventListener("click", () => enterFocus("face", +b.dataset.slotFace));
+  for (const b of pane.querySelectorAll("[data-slot-preset]")) {
+    b.addEventListener("click", async () => {
+      const free = oc.faces.find(f => f.kind === "boundary" &&
+        !sp.members.includes(f.id));
+      if (free) {
+        await enterFocus("face", free.id);
+        toast(`在「屬性」頁選「${b.dataset.slotPreset}」預設,放到 ${sp.id} 的這個槽位`);
+      } else {
+        toast("先建立一片邊界面(物件庫「面·矩形」),再放進這個槽位");
+      }
+    });
+  }
 }
 
 /* 三視圖全開：ops 的 begin/end 自帶 tx/ty,viewBox 取三視圖聯集 */
@@ -3953,13 +4071,20 @@ async function setView3(on) {
   $("viewToolbar").toggleAttribute("hidden", !view3);
   $("btnObj").classList.toggle("active", view3);
   $("btnCanvasView").classList.toggle("active", !view3);
+  /* D1(Q1):三視圖開啟時左欄換「視視圖+圖層」、右欄換 pick 結果 */
+  document.body.classList.toggle("v3-mode", view3);
+  const v3p = $("v3Panel"); if (v3p) v3p.hidden = !view3;
+  const pk = $("v3PickPanel"); if (pk) pk.hidden = !view3;
   if (view3) {
+    $("inspectorEmpty").hidden = true;
+    $("inspectorContent").hidden = true;
     $("objectWorkspace").hidden = true;
     if (oc.focus) { oc.focus = null; oc.stack = []; oc.edit = null; drawObjects(); }
     setStatus("三視圖總覽：左鍵點選/拖參考線 · 滾輪縮放 · 「物件畫布」返回");
     await render();
     await refreshSurfaces();
   } else {
+    $("inspectorEmpty").hidden = false;
     setStatus("物件畫布：拖卡片移動擺放 · 雙擊卡片進入 · 空白拖曳平移 · 滾輪縮放");
     await renderObjects();
   }

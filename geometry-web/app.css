@@ -1093,3 +1093,85 @@ body.oc-busy .face-layer-row { pointer-events: none; opacity: .45; }
 .place-capsule.free { background: #fdf0e4; color: #a35d08;
   border: 1px solid #f0d9b5; }
 .plan-custom { width: 52px; font-size: 12px; }
+
+/* ================= Phase 6:空間工作區 + 三視圖 ================= */
+/* C1:舞台分頁 */
+.ss-tabs { display: flex; gap: 2px; max-width: 760px; margin: 0 auto 12px;
+  border-bottom: 1px solid var(--border); }
+.ss-tab { padding: 7px 16px; font-size: 12.5px; border: none; background: none;
+  color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; }
+.ss-tab:hover { color: var(--ink); }
+.ss-tab.active { color: #2f6fd0; border-bottom-color: #2f6fd0; font-weight: 600; }
+.ss-pane { min-height: 0; }
+/* C1:成員列縮圖 */
+.space-member-thumb { width: 36px; height: 28px; flex: none;
+  border: 1px solid var(--border); border-radius: 6px; background: #f7f9fb;
+  display: grid; place-items: center; overflow: hidden;
+  color: var(--muted); font-size: 13px; }
+.space-member-thumb svg { width: 100%; height: 100%; }
+/* C2:平面示意 chip 下拉 */
+.plan-chip { display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12px; color: var(--ink); padding: 3px 8px;
+  border: 1px solid var(--border); border-radius: 999px; background: #fff; }
+.plan-chip select { border: none; background: none; font: inherit;
+  color: var(--ink); cursor: pointer; }
+.plan-chip .plan-custom { width: 52px; font-size: 12px; }
+/* C3:六槽清單 */
+.slot-list { display: flex; flex-direction: column; gap: 4px; }
+.slot-row { display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px; border: 1px solid var(--border); border-radius: 8px;
+  background: #fff; }
+.slot-row.on { border-color: #8f83e0; background: #f4f2fd; }
+.slot-name { font-size: 12.5px; font-weight: 650; color: var(--ink);
+  min-width: 40px; }
+.slot-axis { font-size: 10.5px; color: var(--muted); flex: 1; }
+.slot-face { font-size: 11.5px; color: #2f6fd0; border: none;
+  background: none; cursor: pointer; padding: 2px 6px; border-radius: 5px; }
+.slot-face:hover { background: #e8effb; }
+.slot-empty { font-size: 11.5px; color: #a35d08; border: 1px dashed #e0c48d;
+  background: #fdf8ee; cursor: pointer; padding: 3px 8px; border-radius: 6px; }
+.slot-empty:hover { background: #f8ecd4; }
+/* C4:構件列 hover 動作鈕 */
+.rc-row { position: relative; }
+.rc-acts { display: inline-flex; align-items: center; gap: 4px;
+  margin-left: auto; opacity: 0; transition: opacity .12s; }
+.rc-row:hover .rc-acts, .rc-acts:focus-within { opacity: 1; }
+.rc-act { font-size: 11px; padding: 3px 8px; border: 1px solid var(--border);
+  border-radius: 6px; background: #fff; color: #2f6fd0; cursor: pointer; }
+.rc-act:hover { background: #e8effb; border-color: #b8cdf0; }
+/* D1:三視圖左右欄切換 */
+body.v3-mode .sidebar-left > *:not(#v3Panel) { display: none; }
+body.v3-mode .sidebar-right > *:not(#v3PickPanel) { display: none; }
+#v3Panel { display: flex; flex-direction: column; gap: 6px; }
+#v3Panel[hidden] { display: none; }
+.v3-check-col { display: flex; flex-direction: column; gap: 5px;
+  font-size: 12.5px; color: var(--ink); padding: 2px 2px 8px; }
+.v3-check-col label { display: flex; align-items: center; gap: 6px;
+  cursor: pointer; }
+.v3-pick-panel { display: flex; flex-direction: column; gap: 8px;
+  padding: 10px; }
+.v3-pick-panel[hidden] { display: none; }
+.v3-pick-info { font-size: 12px; color: var(--ink); background: #f7f9fb;
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px;
+  min-height: 34px; }
+.v3-hover-info { color: var(--muted); font-size: 11.5px; min-height: 22px; }
+/* D2:segmented 工具 + 縮放列 */
+.v3-seg { display: inline-flex; flex: none; border: 1px solid var(--border);
+  border-radius: 7px; overflow: hidden; background: #fff; }
+.v3-seg-btn { flex: none; white-space: nowrap; border: none; background: none; font-size: 12px;
+  padding: 5px 10px; color: var(--muted); cursor: pointer; }
+.v3-seg-btn + .v3-seg-btn { border-left: 1px solid var(--border); }
+.v3-seg-btn.active { background: #2f6fd0; color: #fff; }
+.v3-native-select { position: absolute; width: 1px; height: 1px;
+  opacity: 0; pointer-events: none; }
+.v3-surf-label { display: inline-flex; flex: none; align-items: center; gap: 4px;
+  white-space: nowrap;
+  font-size: 12px; color: var(--muted); }
+.v3-zoom { display: inline-flex; align-items: center; gap: 2px;
+  margin-left: 6px; }
+.v3-zoom .icon-button, .v3-zoom .zoom-level { min-width: 26px; height: 24px;
+  border: none; background: none; border-radius: 5px; font-size: 12px;
+  color: var(--muted); cursor: pointer; }
+.v3-zoom .zoom-level { min-width: 42px; font-size: 11px; font-weight: 600; }
+.v3-zoom .icon-button:hover, .v3-zoom .zoom-level:hover {
+  background: var(--panel-muted); }

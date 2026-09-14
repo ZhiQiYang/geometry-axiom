@@ -134,6 +134,22 @@
         <div id="objectList" class="object-list" role="list"></div>
       </section>
 
+      <section id="v3Panel" class="sidebar-section v3-panel" hidden aria-label="三視圖視圖與圖層">
+        <div class="section-label-row"><span class="section-label">視圖</span></div>
+        <div class="v3-check-col">
+          <label><input type="checkbox" data-v3-view="0" checked> 正面</label>
+          <label><input type="checkbox" data-v3-view="1" checked> 側面</label>
+          <label><input type="checkbox" data-v3-view="2" checked> 仰視</label>
+        </div>
+        <div class="section-label-row"><span class="section-label">圖層</span></div>
+        <div class="v3-check-col">
+          <label><input type="checkbox" data-v3-layer="face" checked> 面</label>
+          <label><input type="checkbox" data-v3-layer="guide" checked> 參考線</label>
+          <label><input type="checkbox" data-v3-layer="timber" checked> 角材</label>
+          <label><input type="checkbox" data-v3-layer="rc" checked> 柱樑</label>
+        </div>
+      </section>
+
     </aside>
 
     <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
@@ -156,16 +172,29 @@
       <svg id="cv" hidden><g id="world"></g><g id="overlay"></g></svg>
 
       <div id="viewToolbar" class="view-toolbar" hidden>
-        <select id="tool">
+        <div class="v3-seg" role="group" aria-label="三視圖工具">
+          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="檢視／選取">檢視</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="rect" title="拉矩形建面">▭ 矩形</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="poly" title="畫多邊形建面">⬠ 多邊形</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="挖矩形孔">▨ 挖孔</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="edit" title="編輯邊界">✥ 編輯</button>
+        </div>
+        <select id="tool" class="v3-native-select" aria-hidden="true" tabindex="-1">
           <option value="view">檢視／選取</option>
           <option value="rect">▭ 拉矩形建面</option>
           <option value="poly">⬠ 畫多邊形建面</option>
           <option value="hole">▨ 挖矩形孔</option>
           <option value="edit">✥ 編輯邊界</option>
         </select>
-        <select id="workSurf"></select>
+        <label class="v3-surf-label">工作面 <select id="workSurf"></select></label>
         <input id="newZ" type="number" value="0" step="100"
                style="width:76px" title="新平面高度 z（mm）" hidden>
+        <span class="v3-zoom" role="group" aria-label="三視圖縮放">
+          <button id="v3ZoomOut" class="icon-button" type="button" title="縮小">−</button>
+          <button id="v3ZoomLevel" class="zoom-level" type="button" title="回到 100%">100%</button>
+          <button id="v3ZoomIn" class="icon-button" type="button" title="放大">＋</button>
+          <button id="v3ZoomFit" class="icon-button" type="button" title="顯示全部">⛶</button>
+        </span>
       </div>
 
       <div id="focusBar" class="focus-bar" hidden>
@@ -208,6 +237,12 @@
         <p>選取畫布上的卡片或左欄清單列，這裡會顯示物件屬性與可用操作。</p>
       </div>
       <div id="inspectorContent" class="inspector-content" hidden></div>
+      <div id="v3PickPanel" class="v3-pick-panel" hidden>
+        <div class="section-label-row"><span class="section-label">選取結果</span></div>
+        <div id="v3PickInfo" class="v3-pick-info">在三視圖上點選物件，這裡顯示結果。</div>
+        <div class="section-label-row"><span class="section-label">游標位置</span></div>
+        <div id="v3HoverInfo" class="v3-pick-info v3-hover-info">—</div>
+      </div>
     </aside>
   </main>
 
@@ -313,34 +348,40 @@
           </section>
         </aside>
         <section class="space-workspace-stage">
-          <div class="space-plan-strip">
-            <div class="space-plan-head">
-              <span>平面示意</span>
-              <span class="space-plan-tools">
-                <label>柱<select id="planColSize">
-                  <option>500</option><option selected>600</option>
-                  <option>700</option><option>800</option>
-                  <option value="custom">自訂</option></select>見方
-                  <input id="planColCustom" class="plan-custom" type="number"
-                    min="100" step="50" value="450" hidden></label>
-                <label>樑<select id="planBeamSize">
-                  <option value="300x500">300×500</option>
-                  <option value="350x600" selected>350×600</option>
-                  <option value="400x700">400×700</option>
-                  <option value="custom">自訂</option></select>
-                  <input id="planBeamW" class="plan-custom" type="number"
-                    min="100" step="50" value="300" title="寬" hidden>×<input
-                    id="planBeamD" class="plan-custom" type="number"
-                    min="100" step="50" value="500" title="深" hidden></label>
-                <span class="hint">點放柱 · 拖放樑</span>
-              </span>
+          <nav id="spaceStageTabs" class="ss-tabs" aria-label="空間舞台分頁">
+            <button type="button" class="ss-tab active" data-ss-tab="plan">平面示意</button>
+            <button type="button" class="ss-tab" data-ss-tab="proj">三視圖</button>
+          </nav>
+          <div data-ss-pane="plan" class="ss-pane">
+            <div class="space-plan-strip">
+              <div class="space-plan-head">
+                <span title="點放柱 · 拖放樑">平面示意</span>
+                <span class="space-plan-tools">
+                  <label class="plan-chip" title="點一下放柱（見方 mm）">柱<select id="planColSize">
+                    <option>500</option><option selected>600</option>
+                    <option>700</option><option>800</option>
+                    <option value="custom">自訂</option></select>
+                    <input id="planColCustom" class="plan-custom" type="number"
+                      min="100" step="50" value="450" hidden></label>
+                  <label class="plan-chip" title="拖一段放樑（寬×深 mm）">樑<select id="planBeamSize">
+                    <option value="300x500">300×500</option>
+                    <option value="350x600" selected>350×600</option>
+                    <option value="400x700">400×700</option>
+                    <option value="custom">自訂</option></select>
+                    <input id="planBeamW" class="plan-custom" type="number"
+                      min="100" step="50" value="300" title="寬" hidden>×<input
+                      id="planBeamD" class="plan-custom" type="number"
+                      min="100" step="50" value="500" title="深" hidden></label>
+                </span>
+              </div>
+              <svg id="spacePlanSvg"></svg>
             </div>
-            <svg id="spacePlanSvg"></svg>
           </div>
-          <div class="space-hero-preview" id="spaceProjWrap">
-            <svg id="spaceProjSvg"></svg>
+          <div data-ss-pane="proj" class="ss-pane" hidden>
+            <div class="space-hero-preview" id="spaceProjWrap">
+              <svg id="spaceProjSvg"></svg>
+            </div>
           </div>
-          <div id="spaceFaceGrid" class="space-face-grid"></div>
         </section>
         <aside class="inner-panel space-info-panel">
           <div id="spaceInspectorContent"></div>

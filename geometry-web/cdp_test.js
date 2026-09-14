@@ -1749,6 +1749,153 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`(async()=>{ if(oc.focus) await leaveFocus(); })()`);
   await sleep(400);
 
+  /* ================= P19. 空間工作區 C1-C5 + 三視圖 D1-D3 ================= */
+  console.log("=== P19. 空間工作區 + 三視圖 ===");
+  await eval_(`(async()=>{
+    await api("line reset");
+    for (const ln of [
+      "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+      "surface 2 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000",
+      "space 1 boundary 1 2",
+      "column 1 in 1 at 1000 800 size 400 400 z 0 2500",
+      "column 2 at 5000 5000 size 400 400 z 0 2000",
+      "boundary 3 outline 0,0 500,0 500,400 0,400",
+    ]) await api("line " + ln);
+    await renderObjects();
+    await enterFocus("space", 1);
+  })()`);
+  await sleep(1200);
+  /* (1) C1:兩頁切換 planSvg/projSvg 輪流可見;spaceFaceGrid 不存在 */
+  const c1a = await eval_(`(()=>{
+    const tabs=[...document.querySelectorAll("[data-ss-tab]")].map(t=>t.dataset.ssTab);
+    const planVis=()=>!document.querySelector('[data-ss-pane="plan"]').hidden;
+    const projVis=()=>!document.querySelector('[data-ss-pane="proj"]').hidden;
+    const a=[planVis(),projVis()];
+    document.querySelector('[data-ss-tab="proj"]').click();
+    const b=[planVis(),projVis()];
+    document.querySelector('[data-ss-tab="plan"]').click();
+    return {tabs,a,b,grid:!!document.getElementById("spaceFaceGrid")};})()`);
+  console.log("P19 C1 舞台分頁:", c1a.tabs.join() === "plan,proj" &&
+    c1a.a[0] && !c1a.a[1] && !c1a.b[0] && c1a.b[1] ? "✓" : "✗ " + JSON.stringify(c1a),
+    "| spaceFaceGrid移除:", !c1a.grid ? "✓" : "✗");
+  /* (2) C4:構件列 .rc-act 可點(移出);刪除 toast 含 Ctrl+Z */
+  const c4 = await eval_(`(()=>{
+    const rows=[...document.querySelectorAll("#spaceRcList .rc-row")];
+    const r=rows[0];
+    return {n:rows.length, act:r && !!r.querySelector(".rc-act"),
+      actTxt:r && r.querySelector(".rc-act").textContent,
+      del:r && !!r.querySelector(".face-layer-del")};})()`);
+  console.log("P19 C4 構件列動作鈕:", c4.n >= 1 && c4.act && c4.del
+    ? `✓ ${c4.actTxt}` : "✗ " + JSON.stringify(c4));
+  /* 點「移出」→ 構件游離;再「收進」 */
+  const c4b = await eval_(`(async()=>{
+    document.querySelector("#spaceRcList .rc-act").click();
+    await new Promise(r=>setTimeout(r,800));
+    const free1=document.querySelectorAll("#spaceRcFreeList .rc-row").length;
+    document.querySelector("#spaceRcFreeList .rc-act").click();
+    await new Promise(r=>setTimeout(r,800));
+    const free2=document.querySelectorAll("#spaceRcFreeList .rc-row").length;
+    const mine=document.querySelectorAll("#spaceRcList .rc-row").length;
+    return {free1,free2,mine};})()`);
+  console.log("P19 C4 移出/收進:", c4b.free1 === 2 && c4b.free2 === 1 && c4b.mine === 1
+    ? "✓" : "✗ " + JSON.stringify(c4b));
+  /* 刪除 → toast 含 Ctrl+Z */
+  await eval_(`(async()=>{
+    document.querySelector("#spaceRcFreeList .face-layer-del").click();
+    await new Promise(r=>setTimeout(r,800));})()`);
+  const c4c = await eval_(`[...document.querySelectorAll("#toastRegion .toast")]
+    .map(t=>t.textContent).join("|")`);
+  console.log("P19 C4 刪除toast含Ctrl+Z:", c4c.includes("Ctrl+Z") ? "✓" : "✗ " + c4c);
+  /* (3) C3:槽位語意名+空槽「放置一片面」可點 */
+  const c3 = await eval_(`(()=>{
+    const rows=[...document.querySelectorAll("#spaceInspectorContent .slot-row")];
+    return {n:rows.length,
+      names:rows.map(r=>r.querySelector(".slot-name").textContent),
+      axis:rows.every(r=>/[-+xyzXYZ=DW]/.test(r.querySelector(".slot-axis").textContent)),
+      empty:rows.filter(r=>r.querySelector(".slot-empty")).length};})()`);
+  console.log("P19 C3 槽位語意:", c3.n === 6 && c3.names.includes("天花")
+    && c3.names.includes("前牆") && c3.axis ? "✓" : "✗ " + JSON.stringify(c3),
+    "| 空槽鈕:", c3.empty >= 3 ? `✓ ${c3.empty}` : `✗ ${c3.empty}`);
+  await eval_(`document.querySelector(".slot-empty").click()`);
+  await sleep(800);
+  const c3b = await eval_(`({focus:oc.focus && oc.focus.t==="face",
+    toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")})`);
+  console.log("P19 C3 空槽點擊有反應:", c3b.focus || c3b.toast.includes("預設")
+    ? `✓ focus=${c3b.focus}` : "✗ " + JSON.stringify(c3b));
+  await eval_(`(async()=>{ if(oc.focus) await leaveFocus(); await enterFocus("space",1); })()`);
+  await sleep(800);
+  /* (4) C5:#spProjRefresh 不存在;mutate(刪柱)後 spaceProjSvg 自動更新 */
+  const c5 = await eval_(`(async()=>{
+    const noBtn=!document.getElementById("spProjRefresh");
+    const before=document.getElementById("spaceProjSvg").innerHTML.length;
+    await emitLine("delete column 1");
+    await new Promise(r=>setTimeout(r,900));
+    const after=document.getElementById("spaceProjSvg").innerHTML.length;
+    return {noBtn,before,after};})()`);
+  console.log("P19 C5 無refresh鈕:", c5.noBtn ? "✓" : "✗",
+    "| 自動更新:", c5.after !== c5.before ? `✓ ${c5.before}→${c5.after}` : `✗ ${c5.before}→${c5.after}`);
+  await eval_(`(async()=>{ if(oc.focus) await leaveFocus(); })()`);
+  await sleep(400);
+  /* (5) D1:三視圖開 → 左 #v3Panel 視圖/圖層勾選;右 #v3PickPanel */
+  await eval_(`document.getElementById("btnObj").click()`);
+  await sleep(900);
+  const d1 = await eval_(`(()=>{
+    const vp=document.getElementById("v3Panel");
+    return {vis: vp && !vp.hidden && vp.offsetParent !== null,
+      views:document.querySelectorAll("[data-v3-view]").length,
+      layers:document.querySelectorAll("[data-v3-layer]").length,
+      pick:!document.getElementById("v3PickPanel").hidden};})()`);
+  console.log("P19 D1 左欄視圖/圖層:", d1.vis && d1.views === 3 && d1.layers === 4
+    ? "✓" : "✗ " + JSON.stringify(d1),
+    "| 右欄pick容器:", d1.pick ? "✓" : "✗");
+  /* (6) D2:#tool 非原生顯示(segmented)+三視圖縮放列 */
+  const d2 = await eval_(`(()=>{
+    const sel=document.getElementById("tool");
+    const cs=getComputedStyle(sel);
+    return {nativeHidden: +cs.opacity < 0.1 || cs.display === "none" ||
+      sel.classList.contains("v3-native-select"),
+      seg:document.querySelectorAll("[data-v3-tool]").length,
+      segActive:document.querySelector("[data-v3-tool].active").dataset.v3Tool,
+      zoom:!!document.querySelector(".v3-zoom")};})()`);
+  console.log("P19 D2 segmented:", d2.nativeHidden && d2.seg === 5 && d2.segActive === "view"
+    ? "✓" : "✗ " + JSON.stringify(d2),
+    "| 縮放列:", d2.zoom ? "✓" : "✗");
+  /* segmented 切工具 → #tool 同步 */
+  const d2b = await eval_(`(()=>{
+    document.querySelector('[data-v3-tool="rect"]').click();
+    return {tool:document.getElementById("tool").value,
+      act:document.querySelector("[data-v3-tool].active").dataset.v3Tool};})()`);
+  console.log("P19 D2 切工具同步:", d2b.tool === "rect" && d2b.act === "rect"
+    ? "✓" : "✗ " + JSON.stringify(d2b));
+  await eval_(`document.querySelector('[data-v3-tool="view"]').click()`);
+  /* (7) D3:zoom 反比縮放——font-size(mm) 隨 zoom 反比,螢幕 px 不變 */
+  const d3 = await eval_(`(()=>{
+    const tx=document.querySelector("#world text[data-fs0]");
+    if(!tx) return {none:true};
+    const z0=zoom, fs0=+tx.getAttribute("font-size"), px0=fs0*transform().s;
+    zoom=2; applyTransform();
+    const fs2=+tx.getAttribute("font-size"), px2=fs2*transform().s;
+    zoom=0.5; applyTransform();
+    const fsH=+tx.getAttribute("font-size"), pxH=fsH*transform().s;
+    zoom=z0; applyTransform();
+    return {px0,px2,pxH};})()`);
+  console.log("P19 D3 字級恆定:", d3.none ? "✗ 無文字" :
+    (Math.abs(d3.px2 - d3.px0) < 0.5 && Math.abs(d3.pxH - d3.px0) < 0.5
+      ? `✓ ${d3.px0.toFixed(1)}px 恆定` : `✗ ${JSON.stringify(d3)}`));
+  /* (8) D1 圖層過濾生效:關掉「面」→ world 面元素減少 */
+  const d1b = await eval_(`(async()=>{
+    const before=document.querySelectorAll("#world polygon").length;
+    document.querySelector('[data-v3-layer="face"]').click();
+    await new Promise(r=>setTimeout(r,600));
+    const after=document.querySelectorAll("#world polygon").length;
+    document.querySelector('[data-v3-layer="face"]').click();
+    await new Promise(r=>setTimeout(r,600));
+    return {before,after};})()`);
+  console.log("P19 D1 圖層過濾:", d1b.after < d1b.before
+    ? `✓ ${d1b.before}→${d1b.after}` : `✗ ${JSON.stringify(d1b)}`);
+  await eval_(`document.getElementById("btnCanvasView").click()`);
+  await sleep(600);
+
   console.log("=== 10. 三視圖覆層再開 ===");
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(800);
