@@ -3664,12 +3664,13 @@ function renderRcInspector(pane, kind, o) {
 }
 
 /* 刪除（Q1）：delete <kind> <id> 走核心交易重驗。
-   surface 合體面（boundary 卡）先刪承載面再刪邊界面——兩行經 mutate 交易。 */
+   surface 合體面（boundary 卡）先刪承載面再刪邊界面——兩行經 mutate 交易。
+   C4:不用 confirm()——直接刪除,成功後 toast 提示可 Ctrl+Z 復原
+   (對齊空間工作區 renderSpaceRc 構件列 ✕ 的既有做法)。 */
 async function deleteObject(kind, id) {
   const name = kind === "space" ? `空間 ${id}`
     : kind === "column" ? `柱 ${id}` : kind === "beam" ? `樑 ${id}`
     : kind === "placement" ? `placement ${id}` : `面 ${id}`;
-  if (!confirm(`刪除 ${name}？（可用 Ctrl+Z 復原）`)) return;
   let lines;
   if (kind === "boundary") {
     const pl = oc.surfs.find(s => s.boundary === id);
@@ -3679,6 +3680,7 @@ async function deleteObject(kind, id) {
     lines = [`delete ${kind} ${id}`];
   }
   if (await mutate(lines)) {
+    toast(`${name} 已刪除,可 Ctrl+Z 復原`);
     oc.sel = null;
     if (oc.focus) leaveFocus(); else await renderObjects();
   }

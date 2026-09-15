@@ -712,7 +712,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("=== P6. delete(Q1)===");
   const delR = await eval_(`(async()=>{
     await api("line reset");
-    window.confirm = () => true;
+    /* C4:deleteObject 已不呼叫 confirm()——不再需要 stub。 */
     await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 100,0 100,100 0,100");
     const refuse = await api("line delete boundary 1");
     await deleteObject("boundary", 1);           /* 檢視器路徑:先 placement 再 boundary */
@@ -1103,8 +1103,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await sleep(700);
   const dbl = await eval_(`({f:oc.focus, s:oc.sel && oc.sel.kind})`);
   console.log("雙擊只開檢視器:", dbl.f === null && dbl.s === "column" ? "✓" : `✗ ${JSON.stringify(dbl)}`);
-  /* 刪除 → 卡片消失 */
-  await eval_(`window.confirm = () => true`);
+  /* 刪除 → 卡片消失(C4:deleteObject 已不呼叫 confirm(),不再需要 stub） */
   await eval_(`document.getElementById("inspDelete").click()`);
   await sleep(900);
   const gone = await eval_(`api("objects").then(r=>r.columns.length === 0)`);
@@ -2296,6 +2295,42 @@ async function drag(x0, y0, x1, y1, steps = 6) {
       ? `✓ ${JSON.stringify(p21d2)}` : `✗ ${JSON.stringify(p21d2)}`);
   await eval_(`document.getElementById("btnObj").click()`);
   await sleep(300);
+
+  /* ================= P22. #inspDelete 對齊 C4(不彈 confirm,toast+可 Ctrl+Z 復原) =================
+   * 對抗審查指認:主畫布/RC 檢視器 #inspDelete 仍走 confirm(),與空間工作區
+   * renderSpaceRc 構件列 ✕(C4:直接刪除+toast)不一致。 */
+  console.log("=== P22. #inspDelete 對齊 C4 ===");
+  await eval_(`(async()=>{
+    await api("line reset");
+    await api("line boundary 41 outline 0,0 1000,0 1000,800 0,800");
+    await api("line canvas-pos boundary 41 60 60");
+    await renderObjects();
+    selectObject("boundary", 41);
+  })()`);
+  await sleep(500);
+  /* (a) 裝 confirm 監聽 spy(不覆寫成通過,只記錄有沒有被呼叫)→ 點刪除鈕 → 物件即消失 */
+  await eval_(`window.__confirmCalled = false;
+    window.confirm = () => { window.__confirmCalled = true; return true; };`);
+  await eval_(`document.getElementById("inspDelete").click()`);
+  await sleep(700);
+  const p22a = await eval_(`api("objects").then(r=>({
+    called: window.__confirmCalled, gone: !r.faces.some(f=>f.id===41)}))`);
+  console.log("P22 不彈confirm+直接刪除:", !p22a.called && p22a.gone
+    ? "✓" : `✗ ${JSON.stringify(p22a)}`);
+  /* (b) toast 提示可復原 */
+  const p22b = await eval_(`(()=>{
+    const ts=[...document.querySelectorAll("#toastRegion .toast")];
+    const t=ts[ts.length-1];
+    return t ? t.textContent : null;
+  })()`);
+  console.log("P22 toast含復原字樣:", p22b && (p22b.includes("復原") || p22b.includes("Ctrl+Z"))
+    ? `✓ ${p22b}` : `✗ ${p22b}`);
+  /* (c) Ctrl+Z 一次整組復原(boundary 41 沒有 placement,delete 只有一行,仍走同一 mutate 機制) */
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "z", code: "KeyZ", modifiers: 2, windowsVirtualKeyCode: 90 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "z", code: "KeyZ", modifiers: 2, windowsVirtualKeyCode: 90 });
+  await sleep(800);
+  const p22c = await eval_(`api("objects").then(r=>r.faces.some(f=>f.id===41))`);
+  console.log("P22 Ctrl+Z復原:", p22c ? "✓" : `✗ ${p22c}`);
 
   chrome.kill();
   _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);

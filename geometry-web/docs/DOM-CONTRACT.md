@@ -195,6 +195,7 @@
 
 - DSL:`delete boundary|placement|guide|grid|timber|space <id>`(line 指令,核心交易重驗)。
 - 檢視器動態鈕 `#inspDelete` → `deleteObject(kind,id)`(全域);surface 對先 `delete placement` 再 `delete boundary` 經 mutate。
+  C4:不彈 `confirm()`,直接刪除,成功後 toast 提示可 Ctrl+Z 復原(對齊空間工作區 `renderSpaceRc` 構件列 ✕)。
 - 面內圖層列參考線列有 `.face-layer-del` ✕ 鈕 → `emitLine("delete guide <id>")`。
 
 ## RC Phase 4 柱樑一等物件(cdp_test §P11)
