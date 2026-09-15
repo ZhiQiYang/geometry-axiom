@@ -6627,7 +6627,24 @@ static bool timber_end_face_check(
                 if (stop_in_owner_extension(
                         world, placement, boundary,
                         owner, cross_lo, cross_hi)) {
-                    owner_prio = 2;   /* 延伸段側面以優先級 2 計 */
+                    /*
+                     * I22：延伸段側面作擋面時以優先級 2 計。
+                     *
+                     * 注意：在 V_PRIMARY_AXIS(D17/I21)之下這一支恆為拒絕,
+                     * 沒有接受路徑——
+                     *   延伸段與其所屬 boundary 共線(見 stop_in_owner_extension);
+                     *   boundary 與 secondary 都必須垂直於主支軸 → 兩者平行;
+                     *   故 secondary 必與延伸段平行,端面頂不到它的側面。
+                     * 唯一能垂直於延伸段、因而有資格頂它的角色是 primary
+                     * (唯一獲准平行於主支軸者),而 primary 自己的 cut_priority
+                     * 也是 2 → 2 >= 2 必定落進下面的 V_CUT_PRIORITY。
+                     *
+                     * 保留本行是為了語意完整(規則寫的是「以 2 計」而非
+                     * 「一律禁止」);若日後放寬 V_PRIMARY_AXIS 讓 secondary
+                     * 可平行於主支軸,這裡就會出現接受路徑,屆時需補
+                     * secondary → 延伸段的接受向場景。
+                     */
+                    owner_prio = 2;
                 }
 
                 if (owner_prio >= self->cut_priority) {
