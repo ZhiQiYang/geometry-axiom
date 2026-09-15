@@ -109,6 +109,26 @@ TESTS = [
     {"scene": "_role_axis_fallback.scene", "expect": "reject",
      "error": "V_PRIMARY_AXIS"},
 
+    # ---- GEO-092 延伸段與角色優先級(D16/I19/I22)----
+    # I22:凸角處 boundary 延伸使 footprint 跨出外輪廓 → 走 I5 出界(不需新碼)
+    {"scene": "_role_priority_convex.scene", "expect": "reject",
+     "error": "錨點在有效範圍外"},
+    # I22:延伸段側面以優先級 2 計;主支也是 2,2 未嚴格小於 2 → 拒絕
+    {"scene": "_role_priority_ext_primary.scene", "expect": "reject",
+     "error": "角材 5（優先級 2）端面頂到角材 4（優先級 2）"},
+    # D16/I22:延伸段是 boundary 專屬,primary 有超出定位邊的段 → 拒絕
+    {"scene": "_role_priority_mutant.scene", "expect": "reject",
+     "error": "V_EXTENSION：非 boundary 角材（1）"},
+    # I19:邊界材是 RC 錨定層,主支端面不得直接頂外輪廓邊
+    {"scene": "_role_priority_primary_rc.scene", "expect": "reject",
+     "error": "端面頂到外輪廓邊（RC）"},
+    # I19:副支端面同樣不得直接頂 RC(該處無邊界材可當擋面)
+    {"scene": "_role_priority_secondary_rc.scene", "expect": "reject",
+     "error": "端面頂到外輪廓邊（RC）"},
+    # I19:主支(2)端面頂副支(3)側面,3 未嚴格小於 2 → 拒絕
+    {"scene": "_role_priority_primary_secondary.scene", "expect": "reject",
+     "error": "角材 4（優先級 2）端面頂到角材 3（優先級 3）"},
+
     # ---- RC 柱/樑(D13/D14、I15–I17、R11)----
     # 柱-柱面積相交 → I15 重驗拒絕
     {"scene": "_mut_col_overlap.scene", "expect": "reject",
