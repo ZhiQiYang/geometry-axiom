@@ -15,8 +15,10 @@
  * 網頁端是唯一新增東西；C 端一行都沒改。
  */
 #define _CRT_SECURE_NO_WARNINGS
+#ifdef _WIN32
 #include <fcntl.h>
 #include <io.h>
+#endif
 
 #define main geometry_cli_main
 #include "../current_geometry.c"
@@ -662,8 +664,11 @@ static void cmd_dump(void)
 
 int main(void)
 {
+#ifdef _WIN32
+    /* 只有 Windows 需要關掉 CRLF 轉換;POSIX 的 stdio 本來就是位元組流。 */
     _setmode(_fileno(stdout), _O_BINARY);
     _setmode(_fileno(stdin), _O_BINARY);
+#endif
 
     world_default(&g_world);
 
