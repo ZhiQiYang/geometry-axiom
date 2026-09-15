@@ -1,0 +1,15 @@
+# GEO-092 I22:同一支延伸段被主支端面頂 → 拒絕
+# 延伸段側面作擋面時以優先級 2 計;主支優先級也是 2,
+# 2 未嚴格小於 2 → V_CUT_PRIORITY(副支 3 則可頂,見 _role_priority_ext)
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,2000 2000,2000 2000,3000 0,3000
+grid 1 on 1 v 1500 1600
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+timber 3 27 33 role primary
+timber 4 27 33 role boundary
+timber 5 27 33 role primary
+place 1 on 1 at-edge e5 +v +n
+place 2 on 1 at-edge e1 +v +n
+place 3 on 1 at-grid 1 v 0 +u +n
+place 4 on 1 at-edge e3 +v +n
+place 5 on 1 at-grid 1 v 1 through 3000 +u +n

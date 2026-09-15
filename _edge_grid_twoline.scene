@@ -1,8 +1,16 @@
 # grid 兩行宣告:第一行 u 座標、第二行 v 座標
+# 裁切序（I19）:boundary 先圈邊,兩支 primary 頂在邊界材側面,
+# secondary 再頂在兩支 primary 側面之間
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 grid 1 on 1 u 1000 3000
 grid 1 on 1 v 800 2200
-timber 1 27 33 role primary
-timber 2 27 33 role secondary
-place 1 on 1 at-grid 1 u 0 +v +n
-place 2 on 1 at-grid 1 v 1 through 2000 +u +n
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+timber 3 27 33 role primary
+timber 4 27 33 role primary
+timber 5 27 33 role secondary
+place 1 on 1 at-edge e0 +u +n
+place 2 on 1 at-edge e2 -u +n
+place 3 on 1 at-grid 1 u 0 +v +n
+place 4 on 1 at-grid 1 u 1 +v +n
+place 5 on 1 at-grid 1 v 1 through 2000 +u +n

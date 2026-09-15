@@ -1,5 +1,10 @@
 # 孔下緣當錨:h0e0(v=1200,u∈[1800,2200])材料側在下 → footprint v∈[1173,1200]
-# 沿 u 放:被孔 u∈[1800,2200] 擋 → span [0,1800](向左直到 e3)
+# 裁切序（I19）:e1/e3 各放一支 boundary(沿 v,垂直主支軸 u),
+# 主支沿 u 放,兩端頂邊界材側面 → span [20,3980] → L=3960
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1800,1200 2200,1200 2200,1800 1800,1800
 timber 1 27 33 role primary
+timber 2 20 20 role boundary
+timber 3 20 20 role boundary
+place 2 on 1 at-edge e3 +v +n
+place 3 on 1 at-edge e1 -v +n
 place 1 on 1 at-edge h0e0 through 1000 -u +n

@@ -6437,6 +6437,218 @@ static size_t count_legal_stops(
     return hits;
 }
 
+/*
+ * at-edge 錨的「定位邊」在角材長度軸上的區間（D16）。
+ * 只認外輪廓邊（ref_hole < 0）：固定段/延伸段的概念
+ * 對外輪廓固定邊而定；孔邊錨沒有延伸段語意 → 回傳 false。
+ */
+static bool anchor_edge_interval(
+    const SpaceBoundarySurface *boundary,
+    const TimberAnchor *anchor,
+    bool along_v,
+    Coord *out_lo,
+    Coord *out_hi
+)
+{
+    SurfaceSegment2 seg;
+
+    if (boundary == NULL || anchor == NULL ||
+        anchor->anchor_kind != ANCHOR_AT_EDGE || anchor->ref_hole >= 0 ||
+        !loop_get_edge_segment(
+            &boundary->outline, (size_t)anchor->ref_edge, &seg)) {
+        return false;
+    }
+
+    *out_lo = along_v
+        ? coord_min(seg.start.v, seg.end.v)
+        : coord_min(seg.start.u, seg.end.u);
+    *out_hi = along_v
+        ? coord_max(seg.start.v, seg.end.v)
+        : coord_max(seg.start.u, seg.end.u);
+    return true;
+}
+
+/*
+ * 擋面接觸範圍 [lo,hi]（擋面擁有者長度軸上的座標）是否落在
+ * owner 的延伸段上——I22：延伸段的側面作擋面時以優先級 2 計。
+ * 只有「at-edge 外輪廓邊錨的 boundary」才有固定段/延伸段之分;
+ * 其餘 owner 一律回傳 false（擋面優先級 = owner.cut_priority）。
+ */
+static bool stop_in_owner_extension(
+    const World *world,
+    const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,
+    const Timber *owner,
+    Coord lo,
+    Coord hi
+)
+{
+    if (owner->role != TIMBER_ROLE_BOUNDARY) {
+        return false;
+    }
+
+    for (size_t i = 0; i < world->timber_count; ++i) {
+        const TimberAnchor *a;
+        SurfaceRegion2 f;
+        bool owner_along_v;
+        Coord edge_lo, edge_hi, fix_lo, fix_hi;
+        Coord span_lo, span_hi;
+
+        if (&world->timbers[i] != owner) {
+            continue;
+        }
+
+        a = &world->anchors[i];
+        owner_along_v =
+            a->length_direction == SURFACE_DIRECTION_POS_V ||
+            a->length_direction == SURFACE_DIRECTION_NEG_V;
+
+        if (!anchor_edge_interval(
+                boundary, a, owner_along_v, &edge_lo, &edge_hi) ||
+            !timber_a0_footprint_uv(placement, owner, a, &f)) {
+            return false;
+        }
+
+        span_lo = owner_along_v ? f.min_v : f.min_u;
+        span_hi = owner_along_v ? f.max_v : f.max_u;
+        fix_lo = coord_max(span_lo, edge_lo);
+        fix_hi = coord_min(span_hi, edge_hi);
+
+        return !(lo >= fix_lo && hi <= fix_hi);
+    }
+
+    return false;
+}
+
+/*
+ * I19/I22 端面檢查：角材兩端面所頂擋面的裁切優先序。
+ *
+ *   外輪廓邊（RC 牆）：只有 boundary 可頂（邊界材是 RC 錨定層）；
+ *     其他角色端面頂到 → V_CUT_PRIORITY。
+ *   孔邊/柱面：優先級 0,各角色可頂。
+ *   角材側面：擋面擁有者優先級須 < 自己；兩支 boundary 可在
+ *     轉角互頂（例外一）；擋面落在 owner 延伸段上 → 以 2 計。
+ *   自己是 boundary 且該端屬延伸段 → 豁免 I19（可頂任何優先級）。
+ *   自己非 boundary 且 at-edge 外輪廓錨：跨度不得超出定位邊
+ *     （V_EXTENSION）；boundary 超出部分即延伸段。
+ *
+ * 明寫放置：端面沒有涵蓋擋面 → 不檢查（懸空合法，I6）；
+ * auto/重驗：呼叫端已保證端面有擋面。
+ * err 可為 NULL（重驗只取 true/false）。
+ */
+static bool timber_end_face_check(
+    const World *world,
+    const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,
+    const Timber *self,
+    const TimberAnchor *anchor,
+    bool along_v,
+    Coord span_lo,
+    Coord span_hi,
+    Coord cross_lo,
+    Coord cross_hi,
+    char *err,
+    size_t err_cap
+)
+{
+    Coord edge_lo = 0, edge_hi = 0;
+    bool has_edge = anchor_edge_interval(
+        boundary, anchor, along_v, &edge_lo, &edge_hi);
+    bool ext_end[2];
+
+    /* I22：非 boundary 的 footprint 不得超出定位邊。 */
+    if (has_edge && self->role != TIMBER_ROLE_BOUNDARY &&
+        (span_lo < edge_lo || span_hi > edge_hi)) {
+        if (err != NULL) {
+            snprintf(err, err_cap,
+                     "V_EXTENSION：非 boundary 角材（%u）的 "
+                     "footprint 超出定位邊範圍", (unsigned)self->id);
+        }
+        return false;
+    }
+
+    ext_end[0] = has_edge && self->role == TIMBER_ROLE_BOUNDARY &&
+                 span_lo < edge_lo;
+    ext_end[1] = has_edge && self->role == TIMBER_ROLE_BOUNDARY &&
+                 span_hi > edge_hi;
+
+    StopFace faces[STOP_FACE_MAX];
+    size_t face_count = collect_stop_faces(
+        world, placement, boundary, along_v, self,
+        faces, STOP_FACE_MAX);
+
+    for (int e = 0; e < 2; ++e) {
+        Coord at = e == 0 ? span_lo : span_hi;
+
+        for (size_t i = 0; i < face_count; ++i) {
+            const StopFace *f = &faces[i];
+
+            if (f->fixed != at || f->lo > cross_lo || f->hi < cross_hi ||
+                f->fixity == EDGE_FREE || ext_end[e]) {
+                continue;
+            }
+
+            if (f->kind == STOP_OUTLINE_EDGE) {
+                /* RC 牆是邊界材的位置：非 boundary 頂到即違規。 */
+                if (self->role != TIMBER_ROLE_BOUNDARY) {
+                    if (err != NULL) {
+                        snprintf(err, err_cap,
+                                 "V_CUT_PRIORITY：角材 %u 端面頂到"
+                                 "外輪廓邊（RC）——只有 boundary 可頂 RC",
+                                 (unsigned)self->id);
+                    }
+                    return false;
+                }
+                continue;
+            }
+
+            if (f->kind == STOP_TIMBER_SIDE) {
+                const Timber *owner = NULL;
+                Coord owner_prio;
+
+                for (size_t k = 0; k < world->timber_count; ++k) {
+                    if (world->timbers[k].id == f->timber_id &&
+                        world->timbers[k].placed) {
+                        owner = &world->timbers[k];
+                        break;
+                    }
+                }
+                if (owner == NULL || owner == self) {
+                    continue;
+                }
+
+                /* 例外一：兩支 boundary 可在轉角互頂。 */
+                if (self->role == TIMBER_ROLE_BOUNDARY &&
+                    owner->role == TIMBER_ROLE_BOUNDARY) {
+                    continue;
+                }
+
+                owner_prio = owner->cut_priority;
+                if (stop_in_owner_extension(
+                        world, placement, boundary,
+                        owner, cross_lo, cross_hi)) {
+                    owner_prio = 2;   /* 延伸段側面以優先級 2 計 */
+                }
+
+                if (owner_prio >= self->cut_priority) {
+                    if (err != NULL) {
+                        snprintf(err, err_cap,
+                                 "V_CUT_PRIORITY：角材 %u（優先級 %d）"
+                                 "端面頂到角材 %u（優先級 %d）側面——"
+                                 "擋面擁有者優先級必須嚴格小於自己",
+                                 (unsigned)self->id, (int)self->cut_priority,
+                                 (unsigned)owner->id, (int)owner_prio);
+                    }
+                    return false;
+                }
+            }
+            /* STOP_HOLE_EDGE：優先級 0,各角色可頂。 */
+        }
+    }
+
+    return true;
+}
+
 /* ============================================================
  * auto 跨距解析：固定中線上，footprint 不穿過任何實體的
  * 連續合法區間全程。
@@ -6935,12 +7147,7 @@ static bool world_revalidate(const World *world)
             return false;
         }
 
-        /*
-         * auto 角材的恆真條件：兩端各至少還有一個合法擋面。
-         * place 當下要求唯一（不猜）；事後重驗只要求存在——
-         * 唯一性是用來決定當初怎麼放，不是事後不變式。
-         */
-        if (a->span_mode == SPAN_AUTO) {
+        {
             SurfaceRegion2 f;
             const SpaceBoundarySurface *b =
                 world_placement_boundary(world, p);
@@ -6952,24 +7159,42 @@ static bool world_revalidate(const World *world)
                 return false;
             }
 
-            StopFace faces[STOP_FACE_MAX];
-            size_t face_count = collect_stop_faces(
-                world, p, b, along_v, t, faces, STOP_FACE_MAX);
+            /*
+             * auto 角材的恆真條件：兩端各至少還有一個合法擋面。
+             * place 當下要求唯一（不猜）；事後重驗只要求存在——
+             * 唯一性是用來決定當初怎麼放，不是事後不變式。
+             */
+            if (a->span_mode == SPAN_AUTO) {
+                StopFace faces[STOP_FACE_MAX];
+                size_t face_count = collect_stop_faces(
+                    world, p, b, along_v, t, faces, STOP_FACE_MAX);
 
-            if (along_v) {
-                if (count_legal_stops(faces, face_count,
-                        f.min_v, f.min_u, f.max_u) == 0 ||
-                    count_legal_stops(faces, face_count,
-                        f.max_v, f.min_u, f.max_u) == 0) {
-                    return false;
+                if (along_v) {
+                    if (count_legal_stops(faces, face_count,
+                            f.min_v, f.min_u, f.max_u) == 0 ||
+                        count_legal_stops(faces, face_count,
+                            f.max_v, f.min_u, f.max_u) == 0) {
+                        return false;
+                    }
+                } else {
+                    if (count_legal_stops(faces, face_count,
+                            f.min_u, f.min_v, f.max_v) == 0 ||
+                        count_legal_stops(faces, face_count,
+                            f.max_u, f.min_v, f.max_v) == 0) {
+                        return false;
+                    }
                 }
-            } else {
-                if (count_legal_stops(faces, face_count,
-                        f.min_u, f.min_v, f.max_v) == 0 ||
-                    count_legal_stops(faces, face_count,
-                        f.max_u, f.min_v, f.max_v) == 0) {
-                    return false;
-                }
+            }
+
+            /* I19/I22：每支料的端面裁切優先序與延伸段規則。 */
+            if (!timber_end_face_check(
+                    world, p, b, t, a, along_v,
+                    along_v ? f.min_v : f.min_u,
+                    along_v ? f.max_v : f.max_u,
+                    along_v ? f.min_u : f.min_v,
+                    along_v ? f.max_u : f.max_v,
+                    NULL, 0)) {
+                return false;
             }
         }
     }
@@ -8626,6 +8851,38 @@ static bool apply_place_line(
                 world, placement_id, timber, along_v,
                 axis_err, sizeof axis_err)) {
             scene_error(path, line_no, axis_err);
+            return false;
+        }
+    }
+
+    /* I19/I22：端面裁切優先序與延伸段規則。 */
+    {
+        char end_err[256] = "";
+        TimberAnchor probe_anchor = {
+            .placement_id = placement_id,
+            .uv = anchor_uv,
+            .anchor_kind = anchor_kind,
+            .span_mode = timber->auto_length ? SPAN_AUTO : SPAN_EXPLICIT,
+            .length_direction = length_direction,
+            .depth_side = depth_side,
+            .ref_grid = ref_grid,
+            .ref_grid_axis = ref_grid_axis,
+            .ref_grid_index = ref_grid_index,
+            .ref_hole = ref_hole,
+            .ref_edge = ref_edge,
+            .has_through = has_through,
+            .through = through
+        };
+
+        if (!timber_end_face_check(
+                world, placement, boundary, timber, &probe_anchor,
+                along_v,
+                along_v ? footprint.min_v : footprint.min_u,
+                along_v ? footprint.max_v : footprint.max_u,
+                along_v ? footprint.min_u : footprint.min_v,
+                along_v ? footprint.max_u : footprint.max_v,
+                end_err, sizeof end_err)) {
+            scene_error(path, line_no, end_err);
             return false;
         }
     }

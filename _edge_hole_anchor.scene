@@ -1,14 +1,20 @@
 # 孔邊當錨:h0e2 = 孔1第2邊(v=1800,u∈[1800,2200]),材料側=孔外(向下 -v 方向是材料)
 # at-edge 貼孔邊 → footprint v∈[1800,1827](孔下緣往外展)
-# 沿 u 跑:柱孔 u∈[1800,2200],右邊還有已放主支在 u=2800(寬20 → [2790,2810])
-# 預期:span u∈[1800,2790] → L=990;起點擋面=孔邊 h1e3,終點擋面=主支側面
+# 裁切序（I19）:邊界材圈住 e0/e2,e3 放邊界主支;主支 4 頂邊界材側面,
+# 副支 5 起點頂邊界主支側面(u=27)、終點頂主支 4 側面(u=2790)
 
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1800,1200 2200,1200 2200,1800 1800,1800
 
 grid 1 on 1 u 2800
 
-timber 1 20 20 role primary
-timber 2 27 33 role secondary
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+timber 3 27 33 role primary
+timber 4 20 20 role primary
+timber 5 27 33 role secondary
 
-place 1 on 1 at-grid 1 u 0 +v +n
-place 2 on 1 at-edge h0e2 through 2000 +u +n
+place 1 on 1 at-edge e0 +u +n
+place 2 on 1 at-edge e2 -u +n
+place 3 on 1 at-edge e3 +v +n
+place 4 on 1 at-grid 1 u 0 +v +n
+place 5 on 1 at-edge h0e2 through 2000 +u +n
