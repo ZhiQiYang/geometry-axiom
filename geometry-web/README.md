@@ -61,7 +61,8 @@ GEOMETRY_TEST_SCREENSHOT=/tmp/phase1-shell.png \
 
 | 變數 | 用途 |
 |---|---|
-| `GEOMETRY_BRIDGE` | `serve.py` 要啟動的橋接器路徑（預設同目錄 `web_bridge.exe`） |
+| `GEOMETRY_BRIDGE` | `serve.py` 要啟動的橋接器**指令**（可帶參數；預設同目錄 `web_bridge.exe`） |
+| `GEOMETRY_BRIDGE_WSL` | 設為 `1` 時，把送進橋接器的場景路徑由 `D:\…` 翻成 `/mnt/d/…` |
 | `GEOMETRY_CHROME` | chrome 執行檔（預設 Windows 的 `chrome.exe`） |
 | `GEOMETRY_CHROME_PROFILE` | `--user-data-dir` 位置 |
 | `GEOMETRY_CHROME_FLAGS` | 追加旗標，空白分隔；WSL 內以 root 跑需要 `--no-sandbox` |
@@ -73,6 +74,22 @@ GEOMETRY_TEST_SCREENSHOT=/tmp/phase1-shell.png \
 （`.wslconfig` 的 `networkingMode=mirrored`）仍會被 Hyper-V 防火牆的預設輸入
 封鎖策略擋住。上面的做法是讓 server、Chrome、測試腳本全在 WSL 這一側，
 不跨越邊界，因此不需要動任何防火牆設定。
+
+### Windows + WSL 混合模式（要用瀏覽器手動操作 UI 時）
+
+上面那套全在 WSL 內跑，適合自動化測試，但 Windows 的瀏覽器連不到它。
+要**人工操作畫面**時改用混合模式：`serve.py` 跑在 Windows（瀏覽器連得到
+`localhost`），只把橋接器交給 `wsl.exe` 執行 Linux 版。`wsl.exe` 本身有簽章、
+不受 Smart App Control 封鎖，所以用到的是**當前核心**而非舊二進位。
+
+```bat
+set GEOMETRY_BRIDGE=wsl.exe -d Ubuntu-24.04 --user root -- /opt/geometry/web_bridge
+set GEOMETRY_BRIDGE_WSL=1
+python serve.py 8765
+```
+
+`GEOMETRY_BRIDGE_WSL=1` 會把 `loadfile` 的 Windows 路徑翻成 `/mnt/…`，
+否則 `/scenes` 與 `/upload` 給的路徑 Linux 端的橋接器開不了。
 
 ## 檔案配置
 

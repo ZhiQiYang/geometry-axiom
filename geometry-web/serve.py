@@ -10,6 +10,8 @@ import http.server
 import json
 import os
 import pathlib
+import re
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -17,20 +19,44 @@ import threading
 
 HERE = pathlib.Path(__file__).resolve().parent
 SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根目錄
-# 預設用同目錄的 Windows 橋接器；GEOMETRY_BRIDGE 可覆寫成別的路徑，
-# 例如在 WSL/Linux 下以 gcc 建出的 web_bridge（無 .exe 副檔名）。
-BRIDGE = pathlib.Path(os.environ.get("GEOMETRY_BRIDGE") or (HERE / "web_bridge.exe"))
+# 預設用同目錄的 Windows 橋接器。GEOMETRY_BRIDGE 可覆寫，且可帶參數，例如：
+#   GEOMETRY_BRIDGE="wsl.exe -d Ubuntu-24.04 --user root -- /opt/geometry/web_bridge"
+# 讓 serve.py 跑在 Windows（瀏覽器連得到 localhost），橋接器跑在 WSL——
+# Windows 端 web_bridge.exe 被 Smart App Control 封鎖時的解法，
+# 且用的是當前核心而非舊二進位。搭配 GEOMETRY_BRIDGE_WSL=1 開啟路徑翻譯。
+_bridge_env = os.environ.get("GEOMETRY_BRIDGE")
+BRIDGE_CMD = (shlex.split(_bridge_env, posix=False) if _bridge_env
+              else [str(HERE / "web_bridge.exe")])
+BRIDGE_WSL = os.environ.get("GEOMETRY_BRIDGE_WSL") == "1"
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
 
 bridge = subprocess.Popen(
-    [str(BRIDGE)],
+    BRIDGE_CMD,
     stdin=subprocess.PIPE, stdout=subprocess.PIPE,
 )
 bridge_lock = threading.Lock()
 
+_WIN_PATH = re.compile(r"^([A-Za-z]):[\\/](.*)$")
+
+
+def to_bridge_path(path: str) -> str:
+    """橋接器跑在 WSL 時，把 Windows 路徑翻成 /mnt/<碟>/... ；否則原樣回傳。
+
+    前端的場景路徑來自 /scenes（serve.py 以 Windows 視角產出）與 /upload 的
+    暫存檔，兩者都是 Windows 路徑，Linux 端的橋接器直接開不了。
+    """
+    if not BRIDGE_WSL:
+        return path
+    m = _WIN_PATH.match(path)
+    if not m:
+        return path
+    return "/mnt/" + m.group(1).lower() + "/" + m.group(2).replace("\\", "/")
+
 
 def ask_bridge(cmd: str) -> bytes:
     """送一行指令、收一行 JSON（原樣回傳 bytes，不再解析）。"""
+    if cmd.startswith("loadfile "):
+        cmd = "loadfile " + to_bridge_path(cmd[len("loadfile "):])
     with bridge_lock:
         bridge.stdin.write(cmd.encode("utf-8") + b"\n")
         bridge.stdin.flush()
@@ -132,7 +158,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"http://localhost:{PORT}  （Ctrl-C 結束；bridge={BRIDGE.name}）")
+    print(f"http://localhost:{PORT}  （Ctrl-C 結束；bridge={BRIDGE_CMD[0]}）")
     try:
         http.server.ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
     finally:
