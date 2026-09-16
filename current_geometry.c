@@ -11171,6 +11171,39 @@ static void world_dump_dsl(const World *world, FILE *out)
                 (long long)a->uv.u, (long long)a->uv.v,
                 length_dir_word(a->length_direction),
                 depth_side_word(a->depth_side));
+
+        /* R18：角色衍生屬性以註解隨 dump 輸出（純衍生，重放時由幾何重算，
+           不是輸入）。註解不參與解析，R4「重放逐字相同」仍成立。 */
+        {
+            const PlacementSurface *ps =
+                world_find_placement(world, a->placement_id);
+            SurfaceRegion2 f;
+
+            if (ps != NULL && timber_a0_footprint_uv(ps, t, a, &f)) {
+                const SpaceBoundarySurface *bd = ps->boundary_id != 0
+                    ? world_find_boundary(world, ps->boundary_id)
+                    : NULL;
+                bool along_v =
+                    a->length_direction == SURFACE_DIRECTION_POS_V ||
+                    a->length_direction == SURFACE_DIRECTION_NEG_V;
+                bool on_b = false, cov = false;
+                int be = -1;
+
+                timber_role_props(
+                    bd, along_v,
+                    along_v ? f.min_v : f.min_u,
+                    along_v ? f.max_v : f.max_u,
+                    along_v ? f.min_u : f.min_v,
+                    along_v ? f.max_u : f.max_v,
+                    &on_b, &cov, &be);
+                fprintf(out,
+                        "# R18 角材 %u: onBoundary=%s coversEdge=%s"
+                        " boundaryEdge=%d\n",
+                        (unsigned)t->id,
+                        on_b ? "true" : "false",
+                        cov ? "true" : "false", be);
+            }
+        }
     }
 
     for (size_t i = 0; i < world->space_count; ++i) {

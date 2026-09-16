@@ -627,6 +627,57 @@ static void cmd_objects(void)
         putchar('}');
     }
 
+    /*
+     * R18 角色衍生屬性：onBoundary / coversEdge / boundaryEdge 明確成欄位，
+     * 不藏在標籤字串裡（公理層 R18 尾句）。角色與裁切優先級（D15）一併出。
+     */
+    fputs("],\"timbers\":[", stdout);
+
+    first = true;
+    for (size_t i = 0; i < g_world.timber_count; ++i) {
+        const Timber *t = &g_world.timbers[i];
+        const TimberAnchor *a = &g_world.anchors[i];
+        const PlacementSurface *p;
+        const SpaceBoundarySurface *b;
+        SurfaceRegion2 f;
+        bool along_v, on_boundary = false, covers_edge = false;
+        int boundary_edge = -1;
+
+        if (!t->placed) {
+            continue;
+        }
+        p = world_find_placement(&g_world, a->placement_id);
+        if (p == NULL || !timber_a0_footprint_uv(p, t, a, &f)) {
+            continue;
+        }
+        b = p->boundary_id != 0
+            ? world_find_boundary(&g_world, p->boundary_id)
+            : NULL;
+
+        along_v = a->length_direction == SURFACE_DIRECTION_POS_V ||
+                  a->length_direction == SURFACE_DIRECTION_NEG_V;
+        timber_role_props(
+            b, along_v,
+            along_v ? f.min_v : f.min_u,
+            along_v ? f.max_v : f.max_u,
+            along_v ? f.min_u : f.min_v,
+            along_v ? f.max_u : f.max_v,
+            &on_boundary, &covers_edge, &boundary_edge);
+
+        if (!first) {
+            putchar(',');
+        }
+        first = false;
+        printf("{\"id\":%u,\"surface\":%u,\"role\":\"%s\","
+               "\"priority\":%d,\"onBoundary\":%s,\"coversEdge\":%s,"
+               "\"boundaryEdge\":%d}",
+               (unsigned)t->id, (unsigned)a->placement_id,
+               timber_role_name(t->role), (int)t->cut_priority,
+               on_boundary ? "true" : "false",
+               covers_edge ? "true" : "false",
+               boundary_edge);
+    }
+
     fputs("]}\n", stdout);
 }
 
