@@ -132,6 +132,11 @@ TESTS = [
     # 唯一的接受路徑——secondary 由 D17 必平行延伸段頂不到、primary 同為 2 被 I19 擋。
     {"scene": "_role_priority_ext_custom.scene", "expect": "accept",
      "lengths": [4000, 4000, 1946]},
+    # R19(e) 正向:凹角內邊的 boundary 延伸過凹角,端面停在長主支側面。
+    # 需要 I22「延伸段端面不受 I19 限制」才成立(否則 boundary(1) 頂 primary(2)
+    # 要 2<1 會被拒);且長主支不切——2946 與無延伸段時相同。
+    {"scene": "_role_ext_stop_primary.scene", "expect": "accept",
+     "lengths": [2000, 4000, 2946, 2986]},
 
     # ---- RC 柱/樑(D13/D14、I15–I17、R11)----
     # 柱-柱面積相交 → I15 重驗拒絕
