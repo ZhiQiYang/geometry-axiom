@@ -28,7 +28,9 @@
  * - 角材長度方向只能沿表面的 ±U 或 ±V。
  *
  * 配套：geometry-guide/ 下的導讀頁內嵌本檔快照，
- * 改動本檔後須重跑 make_guide.py + check_panels.py。
+ * 改動本檔後須重跑 make_guide.py + check_panels.py;
+ * 條號註解有增減時一併重跑 make_axiom_reader.py(閱讀器的三向連結
+ * 取自本檔、夾具與 mutate.py,不重跑就會過期)。
  */
 
 typedef int64_t Coord;
