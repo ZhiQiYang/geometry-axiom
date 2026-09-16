@@ -180,3 +180,35 @@ place 2 on 1 at-edge h1e2 through 1500 +u +n  # 孔 1 第 2 邊 + 區間選擇�
 - 參考線在多邊形上可能被截斷成多段：GuideLine 的「線段」從一段變成段列，`guide_line_get_local_segment` 回傳型別要改，三視圖/拾取跟著改
 - 放置檢查從「兩角點」變「矩形 ⊆ 多邊形 − 孔」
 - scene 檔 `surface`/`edge` 語意改變：edge 由邊界面輪廓推導，`edge id 面 種類` 的四種 enum 寫法退場
+
+## 7. 與 timberscript-studio 的 reference_grid 模型對應（2026-09-16，第 10 流）
+
+公理層於 2026-09-16 把「網格來源化」排入（D10、D10a、D18、I10、I13、I23、R6(c)、R13、R21），
+來源是另一個專案 `ZhiQiYang/timberscript-studio` 的 C++ Core，它有 14 個 golden 簽核。
+兩邊的對應與**刻意的差異**如下。
+
+| timberscript-studio | 本專案 | 差異與理由 |
+|---|---|---|
+| `reference_grid(u = [...])` | `grid id on sid u 座標...` | 同義，只是語法 |
+| `series(start, step, count)` | `u series 起點 間距 條數` | 同義 |
+| `reference_grid(source_kind = PANEL_LAYOUT, panel_u, gap_u)` | `u panel 面材寬 gap 縫寬 [from 起算點]` | **多了 `from`**，見下 |
+| Canonical 同時存來源與展開後的 `uLinesMm` | **只存來源**，格線用時推導 | 守 D9「只存定義」；dump 也只輸出來源，R4 的重放逐字相同因此成立 |
+| `span = between(face, face)` | `between <擋面參照> <擋面參照>` | 同義；本層另外明訂它**只買走 R6(d) 的「恰好一個」，不買走物理條件**（R21(a)(b)） |
+
+**本層自己的兩個形式化**（timberscript 沒有對應概念）：
+
+1. **起算點具體化（D10a）**。面材從哪裡起排，在宣告當下就固定成一個整數寫進定義，
+   之後承載面改變也不重算。若不這麼做，R13 拆片、R16 邊樑降低、邊界面重宣告都會讓
+   「第 3 條線」悄悄改指另一條線，而 `TimberAnchor.ref_grid_index` 是追溯與刪除守門的
+   唯一依據。具體化之後 `c_k` 只與 `(a, panel, gap, k)` 有關，與承載面無關；
+   承載面縮小只會讓尾端的線不再產生，那是可偵測、可拒絕的事件（I23(b)）。
+   它仍完全符合「只存來源」——起算點是三個純量的定義，不是展開值。
+
+2. **between 只買走唯一性（R21）**。`R6(d)` 的「涵蓋端面全寬 / 非自由邊」是**物理條件**，
+   「恰好一個」是**不猜的程序條件**。`between` 只取代後者，前者原封不動——
+   這和 `through` 只取代 R6(c) 的「多段無選擇器就拒絕」是同一種交易，
+   所以不需要新的豁免概念，I19 的裁切優先序也照常適用（R21(e)）。
+
+**尚未排入**：相位／交丁（RUNNING_BOND、phases、row、support_step）與子網格（subgrid）。
+方向已確認，條文擬在第 2 期立 D10b / I24 / R22、第 3 期立 D19 / I25 / R23；
+條文未定案前不得實作。

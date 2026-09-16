@@ -2249,7 +2249,10 @@ async function feLoadGuides() {
     if (pm && +pm[2] === sid && timberDecl[+pm[1]])
       fe.timbers.push({ id: +pm[1], u: +pm[3], v: +pm[4],
                         dir: pm[5], side: pm[6], ...timberDecl[+pm[1]] });
-    const gm = ln.match(/^grid (\d+) on (\d+) (u|v) (.+)\s*$/);
+    // GEO-100:只吃純數字座標串。grid 的來源已可為 `series …` 或
+    // `panel … gap … from …`(D10/D10a),那些寫法不該被 map(Number)
+    // 解析成 NaN 畫出垃圾格線——認不得就整條忽略,等 WEB-005 接手。
+    const gm = ln.match(/^grid (\d+) on (\d+) (u|v) (-?\d+(?: -?\d+)*)\s*$/);
     if (gm && +gm[2] === sid) {
       const g = fe.grids.find(x => x.id === +gm[1]) ||
         fe.grids[fe.grids.push({ id: +gm[1], u: [], v: [] }) - 1];

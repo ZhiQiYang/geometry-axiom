@@ -1,0 +1,5 @@
+# GEO-100:零條線的軸上放 at-grid index 0 → 拒絕,訊息要說本軸共 0 條。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 300,0 300,3000 0,3000
+grid 1 on 1 u panel 400 gap 20
+timber 1 27 33 role primary
+place 1 on 1 at-grid 1 u 0 +v +n

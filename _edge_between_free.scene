@@ -1,0 +1,7 @@
+# 公理:D18、R21(a):被指名的擋面仍須非 FREE 邊。
+# GEO-101:R21(a)——明寫不放寬物理條件。e1(u=4000)標成自由邊,
+# between 指名它 → 仍然拒絕(頂到空氣)。
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000 fixity F X F F
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+timber 1 20 20 role boundary
+place 1 on 1 at-edge e0 between e3 e1 +u +n

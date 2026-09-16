@@ -1,0 +1,7 @@
+# M54 殺手:產生條件是嚴格小於(a+(k+1)*T < hi)。面寬 3360、T=420,
+# 第 8 條縫的尾端恰好等於 3360 → 不產生,本軸只有 7 條(index 0..6)。
+# 若把條件放寬成 <=,就會多出第 8 條,index 7 變成合法。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 3360,0 3360,3000 0,3000
+grid 1 on 1 u panel 400 gap 20
+timber 1 27 33 role primary
+place 1 on 1 at-grid 1 u 7 +v +n

@@ -1,0 +1,15 @@
+# GEO-100:承載面縮小後整筆回滾的回歸測試。
+# 注意:本檔**不是** I23(b) 的隔離殺手。實測(變異 M56)顯示,真正擋下它的是
+# 兩支 3600 長的邊界材在面縮到 3355 之後出界(I5),而不是「index 7 不再產生」。
+# 要隔離 I23(b) 需要「線消失但所有角材都還在面內」的場景,目前構造不出來:
+# 被錨定的主支必須靠沿 u 的邊界材提供擋面(主支不得直接頂外輪廓),
+# 而那些邊界材必然橫跨全寬,面一縮就先壞。詳見 BACKLOG 的 GEO-100 完成紀錄。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 3600,0 3600,3000 0,3000
+grid 1 on 1 u panel 400 gap 20
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+timber 3 4 4 role primary
+place 1 on 1 at-edge e0 +u +n
+place 2 on 1 at-edge e2 -u +n
+place 3 on 1 at-grid 1 u 7 +v +n
+boundary 1 outline 0,0 3355,0 3355,3000 0,3000
