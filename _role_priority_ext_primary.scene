@@ -1,8 +1,10 @@
 # GEO-092 I22:同一支延伸段被主支端面頂 → 拒絕
 # 延伸段側面作擋面時以優先級 2 計;主支優先級也是 2,
 # 2 未嚴格小於 2 → V_CUT_PRIORITY。
-# 註:副支不可能走到這裡——boundary 與 secondary 同為垂直主支軸故互相平行,
-# 副支端面頂不到與 boundary 共線的延伸段側面(見 current_geometry.c I22 註解)。
+# 頂得到延伸段側面的料必須平行主支軸(延伸段沿 boundary 長度軸、D16+D17 ⊥ 主支軸)：
+#   secondary 由 D17 必 ⊥ 主支軸 → 與延伸段平行 → 頂不到;
+#   primary 頂得到但同為優先級 2 → 本場景的拒絕;
+#   custom(D17 未約束方向)明寫 priority>=3 → 接受,見 _role_priority_ext_custom.scene。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,2000 2000,2000 2000,3000 0,3000
 grid 1 on 1 v 1500 1600
 timber 1 20 20 role boundary

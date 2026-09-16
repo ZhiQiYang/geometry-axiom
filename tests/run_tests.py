@@ -128,6 +128,10 @@ TESTS = [
     # I19:主支(2)端面頂副支(3)側面,3 未嚴格小於 2 → 拒絕
     {"scene": "_role_priority_primary_secondary.scene", "expect": "reject",
      "error": "角材 4（優先級 2）端面頂到角材 3（優先級 3）"},
+    # I22 正向:延伸段側面以 2 計,被 custom(priority 3)頂 → 接受。
+    # 唯一的接受路徑——secondary 由 D17 必平行延伸段頂不到、primary 同為 2 被 I19 擋。
+    {"scene": "_role_priority_ext_custom.scene", "expect": "accept",
+     "lengths": [4000, 4000, 1946]},
 
     # ---- RC 柱/樑(D13/D14、I15–I17、R11)----
     # 柱-柱面積相交 → I15 重驗拒絕

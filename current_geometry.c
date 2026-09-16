@@ -6630,19 +6630,24 @@ static bool timber_end_face_check(
                     /*
                      * I22：延伸段側面作擋面時以優先級 2 計。
                      *
-                     * 注意：在 V_PRIMARY_AXIS(D17/I21)之下這一支恆為拒絕,
-                     * 沒有接受路徑——
-                     *   延伸段與其所屬 boundary 共線(見 stop_in_owner_extension);
-                     *   boundary 與 secondary 都必須垂直於主支軸 → 兩者平行;
-                     *   故 secondary 必與延伸段平行,端面頂不到它的側面。
-                     * 唯一能垂直於延伸段、因而有資格頂它的角色是 primary
-                     * (唯一獲准平行於主支軸者),而 primary 自己的 cut_priority
-                     * 也是 2 → 2 >= 2 必定落進下面的 V_CUT_PRIORITY。
+                     * 誰頂得到延伸段的側面(由公理層推導)：
+                     *   延伸段沿其所屬 boundary 的長度軸(D16、見
+                     *   stop_in_owner_extension)，而 D17 要求 boundary ⊥ 主支軸，
+                     *   故延伸段 ⊥ 主支軸。端面頂側面需兩者垂直，
+                     *   所以頂得到的料必須「平行於主支軸」。
+                     *   - secondary：D17 要求 ⊥ 主支軸 → 與延伸段平行 → 頂不到。
+                     *   - primary  ：平行主支軸、頂得到，但 cut_priority 同為 2，
+                     *                2 >= 2 落進下面的 V_CUT_PRIORITY(I19)。
+                     *   - custom   ：D17 未約束其長度軸、I21 的拒絕條件也只列
+                     *                boundary/secondary(D15：custom 不取得任何
+                     *                角色專屬的義務或權利)，故可平行主支軸；
+                     *                明寫 priority >= 3 時 2 < 3 → 接受。
+                     * 即接受路徑存在且唯一：custom priority >= 3。
+                     * 正向覆蓋見 _role_priority_ext_custom.scene。
                      *
-                     * 保留本行是為了語意完整(規則寫的是「以 2 計」而非
-                     * 「一律禁止」);若日後放寬 V_PRIMARY_AXIS 讓 secondary
-                     * 可平行於主支軸,這裡就會出現接受路徑,屆時需補
-                     * secondary → 延伸段的接受向場景。
+                     * ⚠ 公理層 I22 括號寫「主支端面不得頂它；副支可以」——
+                     *   「副支可以」由 D16+D17 推不出來(副支必與延伸段平行)。
+                     *   此為公理層內部不一致，已回報，未經授權不得修改公理層。
                      */
                     owner_prio = 2;
                 }
