@@ -6469,6 +6469,191 @@ static bool anchor_edge_interval(
 }
 
 /*
+ * R18 角色衍生屬性（純幾何，不看宣告與錨法）：
+ *   onBoundary   footprint 某一側面與外輪廓某邊共線且重疊長度 > 0
+ *   coversEdge   onBoundary 且長度軸區間 ⊇ 該邊區間
+ *   boundaryEdge 該邊索引，無則 -1
+ * 只看外輪廓、不看孔邊；不讀 anchor_kind，所以 through / at-guides 貼齊邊
+ * 一樣算 onBoundary，at-edge 放卻被裁短一樣 coversEdge=false。
+ *
+ * 多條候選邊時的選法（公理層未指定，此處取確定性規則）：
+ * 優先取 coversEdge 成立者，其次取重疊最長者，同長取索引最小者。
+ *
+ * span_* / cross_* 由呼叫端傳入（與 timber_end_face_check 同一種形式）：
+ * 放置當下角材尚未標記 placed，不能靠 timber_a0_footprint_uv 自行推。
+ * span_* = 長度軸區間，cross_* = 兩個側面所在的橫向座標。
+ *
+ * 回傳 false = 推導不出；此時三個輸出為預設值。
+ */
+static bool timber_role_props(
+    const SpaceBoundarySurface *boundary,
+    bool along_v,
+    Coord span_lo,
+    Coord span_hi,
+    Coord cross_lo,
+    Coord cross_hi,
+    bool *out_on_boundary,
+    bool *out_covers_edge,
+    int *out_boundary_edge
+)
+{
+    int best = -1;
+    bool best_covers = false;
+    Coord best_overlap = 0;
+    size_t i;
+
+    *out_on_boundary = false;
+    *out_covers_edge = false;
+    *out_boundary_edge = -1;
+
+    if (boundary == NULL) {
+        return false;
+    }
+
+    for (i = 0; i < boundary->outline.count; ++i) {
+        SurfaceSegment2 seg;
+        bool edge_along_v, covers;
+        Coord edge_fixed, edge_lo, edge_hi, ov;
+
+        if (!loop_get_edge_segment(&boundary->outline, i, &seg)) {
+            continue;
+        }
+
+        /* 側面沿長度軸走 → 只有與長度軸平行的邊才可能共線。 */
+        edge_along_v = seg.start.u == seg.end.u;
+        if (edge_along_v != along_v) {
+            continue;
+        }
+
+        edge_fixed = edge_along_v ? seg.start.u : seg.start.v;
+        if (edge_fixed != cross_lo && edge_fixed != cross_hi) {
+            continue;
+        }
+
+        edge_lo = edge_along_v ? coord_min(seg.start.v, seg.end.v)
+                               : coord_min(seg.start.u, seg.end.u);
+        edge_hi = edge_along_v ? coord_max(seg.start.v, seg.end.v)
+                               : coord_max(seg.start.u, seg.end.u);
+
+        ov = coord_min(span_hi, edge_hi) - coord_max(span_lo, edge_lo);
+        if (ov <= 0) {
+            continue;   /* 共線但不重疊（或只點接觸）→ 不算 onBoundary */
+        }
+
+        covers = span_lo <= edge_lo && span_hi >= edge_hi;
+        if (best < 0 || (covers && !best_covers) ||
+            (covers == best_covers && ov > best_overlap)) {
+            best = (int)i;
+            best_covers = covers;
+            best_overlap = ov;
+        }
+    }
+
+    if (best >= 0) {
+        *out_on_boundary = true;
+        *out_covers_edge = best_covers;
+        *out_boundary_edge = best;
+    }
+    return true;
+}
+
+/*
+ * I20 邊界材整條覆蓋：`boundary` 的固定段在長度軸上必須 ⊇ 它所覆蓋那條邊的
+ * 整個區間，且該邊是外輪廓的 FIXED 邊、與主支軸垂直（D17）。
+ *
+ * 「與主支軸垂直」由 I21 保證（boundary 的長度軸必 ⊥ 主支軸，而此處的邊與
+ * 該長度軸平行），故本函式不重複檢查，只驗覆蓋與 FIXED。
+ * 孔邊不算——R18 本就只掃外輪廓。
+ *
+ * 固定段 = footprint ∩ 邊區間（D16）；固定段 ⊇ 邊區間 等價於
+ * footprint 的長度軸區間 ⊇ 邊區間，即 R18 的 coversEdge。
+ */
+static bool timber_boundary_role_check(
+    const PlacementSurface *placement,
+    const SpaceBoundarySurface *boundary,
+    const Timber *timber,
+    bool along_v,
+    Coord span_lo,
+    Coord span_hi,
+    Coord cross_lo,
+    Coord cross_hi,
+    char *err,
+    size_t err_cap
+)
+{
+    bool on_boundary = false, covers_edge = false;
+    int edge_index = -1;
+    SurfaceSegment2 seg;
+    Coord edge_lo, edge_hi, cover;
+
+    if (timber == NULL || timber->role != TIMBER_ROLE_BOUNDARY) {
+        return true;
+    }
+
+    /*
+     * footprint 已經跨出有效範圍時讓位給 I5——公理層 I22 明訂
+     * 「凸角處延伸即出界，不需另立規則」，該情形的裁決者是 I5 而非本條。
+     */
+    if (!surface_contains_rect(
+            placement, boundary,
+            along_v ? cross_lo : span_lo,
+            along_v ? span_lo : cross_lo,
+            along_v ? cross_hi : span_hi,
+            along_v ? span_hi : cross_hi)) {
+        return true;
+    }
+    if (!timber_role_props(boundary, along_v, span_lo, span_hi,
+                           cross_lo, cross_hi,
+                           &on_boundary, &covers_edge, &edge_index)) {
+        return true;
+    }
+
+    if (!on_boundary) {
+        if (err != NULL) {
+            snprintf(err, err_cap,
+                     "V_BOUNDARY_ROLE：角材 %u 宣告 boundary，"
+                     "但沒有任何側面貼在外輪廓邊上",
+                     (unsigned)timber->id);
+        }
+        return false;
+    }
+
+    if (!loop_get_edge_segment(&boundary->outline,
+                               (size_t)edge_index, &seg)) {
+        return true;
+    }
+
+    if (boundary->outline.fixity[edge_index] != EDGE_FIXED) {
+        if (err != NULL) {
+            snprintf(err, err_cap,
+                     "V_BOUNDARY_ROLE：角材 %u 貼的外輪廓邊 e%d 是自由邊，"
+                     "boundary 必須貼 FIXED 邊",
+                     (unsigned)timber->id, edge_index);
+        }
+        return false;
+    }
+
+    if (!covers_edge) {
+        edge_lo = along_v ? coord_min(seg.start.v, seg.end.v)
+                          : coord_min(seg.start.u, seg.end.u);
+        edge_hi = along_v ? coord_max(seg.start.v, seg.end.v)
+                          : coord_max(seg.start.u, seg.end.u);
+        cover = coord_min(span_hi, edge_hi) - coord_max(span_lo, edge_lo);
+        if (err != NULL) {
+            snprintf(err, err_cap,
+                     "V_BOUNDARY_ROLE：角材 %u 宣告 boundary，"
+                     "但只覆蓋外輪廓邊 e%d 的 %lld / %lld mm——"
+                     "固定段必須涵蓋整條邊",
+                     (unsigned)timber->id, edge_index,
+                     (long long)cover, (long long)(edge_hi - edge_lo));
+        }
+        return false;
+    }
+
+    return true;
+}
+
+/*
  * 擋面接觸範圍 [lo,hi]（擋面擁有者長度軸上的座標）是否落在
  * owner 的延伸段上——I22：延伸段的側面作擋面時以優先級 2 計。
  * 只有「at-edge 外輪廓邊錨的 boundary」才有固定段/延伸段之分;
@@ -7211,6 +7396,17 @@ static bool world_revalidate(const World *world)
             /* I19/I22：每支料的端面裁切優先序與延伸段規則。 */
             if (!timber_end_face_check(
                     world, p, b, t, a, along_v,
+                    along_v ? f.min_v : f.min_u,
+                    along_v ? f.max_v : f.max_u,
+                    along_v ? f.min_u : f.min_v,
+                    along_v ? f.max_u : f.max_v,
+                    NULL, 0)) {
+                return false;
+            }
+
+            /* I20：邊界材固定段須整條覆蓋所貼的外輪廓邊。 */
+            if (!timber_boundary_role_check(
+                    p, b, t, along_v,
                     along_v ? f.min_v : f.min_u,
                     along_v ? f.max_v : f.max_u,
                     along_v ? f.min_u : f.min_v,
@@ -8899,6 +9095,18 @@ static bool apply_place_line(
         if (!timber_end_face_check(
                 world, placement, boundary, timber, &probe_anchor,
                 along_v,
+                along_v ? footprint.min_v : footprint.min_u,
+                along_v ? footprint.max_v : footprint.max_u,
+                along_v ? footprint.min_u : footprint.min_v,
+                along_v ? footprint.max_u : footprint.max_v,
+                end_err, sizeof end_err)) {
+            scene_error(path, line_no, end_err);
+            return false;
+        }
+
+        /* I20：邊界材固定段須整條覆蓋所貼的外輪廓邊。 */
+        if (!timber_boundary_role_check(
+                placement, boundary, timber, along_v,
                 along_v ? footprint.min_v : footprint.min_u,
                 along_v ? footprint.max_v : footprint.max_u,
                 along_v ? footprint.min_u : footprint.min_v,
