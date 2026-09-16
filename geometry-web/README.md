@@ -36,6 +36,44 @@ node cdp_test.js
 `cdp_test.js` 依印出的 ✓/✗ 計數決定 exit code（有 ✗ → exit 1）。
 測試依賴的 DOM id / class / 全域列在 `docs/DOM-CONTRACT.md`——改 DOM 必同步更新它與 `cdp_test.js`。
 
+### 在 WSL 內執行（Windows 端被應用程式控制原則擋住時）
+
+Smart App Control 強制模式會封鎖新編譯的未簽章執行檔，`web_bridge.exe` 因此起不來
+（`cg_new.exe` 不受影響，C 核心測試照跑）。此時整條鏈可以搬進 WSL：
+
+```bash
+# 一次性：gcc、Node 22+（cdp_test.js 用全域 WebSocket）、Chrome
+sudo apt-get install -y gcc
+# Node 官方 tarball 解到 /opt/node；Chrome 用 dl.google.com 的 .deb
+
+# 每次：建置 Linux 版 bridge，起 server，跑測試
+gcc -O2 -o /opt/geometry/web_bridge web_bridge.c -lm
+GEOMETRY_BRIDGE=/opt/geometry/web_bridge python3 serve.py 8765 &
+
+GEOMETRY_CHROME=google-chrome \
+GEOMETRY_CHROME_PROFILE=/tmp/cdp-profile \
+GEOMETRY_CHROME_FLAGS="--no-sandbox --disable-dev-shm-usage" \
+GEOMETRY_TEST_SCREENSHOT=/tmp/phase1-shell.png \
+  node cdp_test.js
+```
+
+可覆寫的環境變數（不設時行為與先前完全相同）：
+
+| 變數 | 用途 |
+|---|---|
+| `GEOMETRY_BRIDGE` | `serve.py` 要啟動的橋接器路徑（預設同目錄 `web_bridge.exe`） |
+| `GEOMETRY_CHROME` | chrome 執行檔（預設 Windows 的 `chrome.exe`） |
+| `GEOMETRY_CHROME_PROFILE` | `--user-data-dir` 位置 |
+| `GEOMETRY_CHROME_FLAGS` | 追加旗標，空白分隔；WSL 內以 root 跑需要 `--no-sandbox` |
+| `GEOMETRY_TEST_URL` | 測試頁面網址（預設 `http://localhost:8765/`） |
+| `GEOMETRY_TEST_SCREENSHOT` | 截圖輸出路徑；**在 WSL 內跑時建議指到 `/tmp`**，否則會用
+  Linux 字型渲染覆寫掉 `docs/screens/phase1-shell.png` 這張文件用參考圖 |
+
+注意：WSL 預設 NAT 網路下 Windows 連不到 WSL 內的 `127.0.0.1`；改用鏡像模式
+（`.wslconfig` 的 `networkingMode=mirrored`）仍會被 Hyper-V 防火牆的預設輸入
+封鎖策略擋住。上面的做法是讓 server、Chrome、測試腳本全在 WSL 這一側，
+不跨越邊界，因此不需要動任何防火牆設定。
+
 ## 檔案配置
 
 | 檔案 | 角色 |

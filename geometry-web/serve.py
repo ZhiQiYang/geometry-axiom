@@ -8,6 +8,7 @@ World 狀態住在它裡面，所以所有請求用一支 lock 串行。
 """
 import http.server
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -16,7 +17,9 @@ import threading
 
 HERE = pathlib.Path(__file__).resolve().parent
 SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根目錄
-BRIDGE = HERE / "web_bridge.exe"
+# 預設用同目錄的 Windows 橋接器；GEOMETRY_BRIDGE 可覆寫成別的路徑，
+# 例如在 WSL/Linux 下以 gcc 建出的 web_bridge（無 .exe 副檔名）。
+BRIDGE = pathlib.Path(os.environ.get("GEOMETRY_BRIDGE") or (HERE / "web_bridge.exe"))
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
 
 bridge = subprocess.Popen(

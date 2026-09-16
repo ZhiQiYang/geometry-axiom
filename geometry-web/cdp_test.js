@@ -1,11 +1,18 @@
 /* CDP 驅動 headless Chrome 實測物件畫布互動 */
 const { spawn } = require("child_process");
-const CHROME = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+/* 預設為 Windows 的 Chrome；下列環境變數可覆寫，用於在 WSL/Linux 內整條跑：
+     GEOMETRY_CHROME         chrome 執行檔路徑（Linux 下通常是 google-chrome）
+     GEOMETRY_CHROME_PROFILE --user-data-dir 的位置
+     GEOMETRY_CHROME_FLAGS   追加旗標，空白分隔（在 WSL 內以 root 跑需要 --no-sandbox）
+   不設時行為與先前完全相同。 */
+const CHROME = process.env.GEOMETRY_CHROME || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+const PROFILE = process.env.GEOMETRY_CHROME_PROFILE || "C:\\tmp\\cdp-profile";
+const EXTRA_FLAGS = (process.env.GEOMETRY_CHROME_FLAGS || "").split(" ").filter(Boolean);
 const PORT = 9333;
 
 const chrome = spawn(CHROME, [
   "--headless=new", "--disable-gpu", `--remote-debugging-port=${PORT}`,
-  "--window-size=1400,900", "--user-data-dir=C:\\tmp\\cdp-profile", "about:blank"
+  "--window-size=1400,900", `--user-data-dir=${PROFILE}`, ...EXTRA_FLAGS, "about:blank"
 ]);
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -1956,7 +1963,13 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`enterFocus("face",1)`);
   await sleep(800);
   const fpre = await eval_(`({focus:oc.focus && oc.focus.t,g:fe.guides.length})`);
-  await eval_(`loadScene("D:/knowledgebase/geometry/room_a.scene","room_a.scene")`);
+  /* 路徑向 /scenes 取(伺服器端絕對路徑),不寫死——Windows 與 WSL 皆可跑。 */
+  await eval_(`(async()=>{
+    const list = await fetch("/scenes").then(r => r.json());
+    const s = list.find(x => x.name === "room_a.scene");
+    if (!s) throw new Error("/scenes 沒有 room_a.scene");
+    return loadScene(s.path, s.name);
+  })()`);
   await sleep(1800);
   const fpost = await eval_(`({focus:oc.focus,
     wsHidden:document.getElementById("objectWorkspace").hidden,
