@@ -6729,37 +6729,6 @@ static size_t count_legal_stops(
 }
 
 /*
- * at-edge 錨的「定位邊」在角材長度軸上的區間（D16）。
- * 只認外輪廓邊（ref_hole < 0）：固定段/延伸段的概念
- * 對外輪廓固定邊而定；孔邊錨沒有延伸段語意 → 回傳 false。
- */
-static bool anchor_edge_interval(
-    const SpaceBoundarySurface *boundary,
-    const TimberAnchor *anchor,
-    bool along_v,
-    Coord *out_lo,
-    Coord *out_hi
-)
-{
-    SurfaceSegment2 seg;
-
-    if (boundary == NULL || anchor == NULL ||
-        anchor->anchor_kind != ANCHOR_AT_EDGE || anchor->ref_hole >= 0 ||
-        !loop_get_edge_segment(
-            &boundary->outline, (size_t)anchor->ref_edge, &seg)) {
-        return false;
-    }
-
-    *out_lo = along_v
-        ? coord_min(seg.start.v, seg.end.v)
-        : coord_min(seg.start.u, seg.end.u);
-    *out_hi = along_v
-        ? coord_max(seg.start.v, seg.end.v)
-        : coord_max(seg.start.u, seg.end.u);
-    return true;
-}
-
-/*
  * R18 角色衍生屬性（純幾何，不看宣告與錨法）：
  *   onBoundary   footprint 某一側面與外輪廓某邊共線且重疊長度 > 0
  *   coversEdge   onBoundary 且長度軸區間 ⊇ 該邊區間
@@ -6845,6 +6814,69 @@ static bool timber_role_props(
         *out_covers_edge = best_covers;
         *out_boundary_edge = best;
     }
+    return true;
+}
+
+/*
+ * 定位邊在角材長度軸上的區間（D16 的固定段/延伸段切分要用它）。
+ *
+ * D16 寫的是「與它所覆蓋的那條外輪廓 FIXED 邊（boundaryEdge）在長度軸上
+ * 重疊的部分」，而 R18 明寫 boundaryEdge 是**純幾何、不看宣告與錨法**，
+ * 還特別點名「用 through 放的料貼齊邊一樣 onBoundary」。
+ * 所以這裡只能問幾何，不能問 anchor_kind：同一支料用 at-edge 放、
+ * 或用 at／through 放在同一個位置，footprint 完全相同，固定段就必須相同。
+ *
+ * 這也是 dump 往返得以成立的原因（R4）：dump 只留凍結的 uv 與長度、
+ * 丟掉放法記錄，但幾何沒變，推導結果因此不變。
+ *
+ * 只看外輪廓、不看孔邊——孔邊是柱擋面，沒有延伸段語意（I20、I21 同一分界）。
+ */
+static bool boundary_edge_interval(
+    const SpaceBoundarySurface *boundary,
+    bool along_v,
+    Coord span_lo,
+    Coord span_hi,
+    Coord cross_lo,
+    Coord cross_hi,
+    Coord *out_lo,
+    Coord *out_hi
+)
+{
+    bool on_boundary = false;
+    bool covers_edge = false;
+    int edge = -1;
+    SurfaceSegment2 seg;
+
+    /*
+     * D16 的固定段/延伸段切分預設這支料放得上去(I5)。連 footprint 都不在
+     * 有效範圍內的東西,問它的定位邊沒有意義——那種場景該由 I5 用
+     * 「放不上去」擋下,不該讓 I22 先攔截並給出誤導的理由
+     * (`_mut_notch_straddle.scene`:橫跨凹口的料恰好與凹口底邊共線)。
+     */
+    if (boundary == NULL ||
+        !boundary_contains_rect(
+            boundary,
+            along_v ? cross_lo : span_lo,
+            along_v ? span_lo : cross_lo,
+            along_v ? cross_hi : span_hi,
+            along_v ? span_hi : cross_hi)) {
+        return false;
+    }
+
+    if (!timber_role_props(boundary, along_v, span_lo, span_hi,
+                           cross_lo, cross_hi,
+                           &on_boundary, &covers_edge, &edge) ||
+        !on_boundary || edge < 0 ||
+        !loop_get_edge_segment(&boundary->outline, (size_t)edge, &seg)) {
+        return false;
+    }
+
+    *out_lo = along_v
+        ? coord_min(seg.start.v, seg.end.v)
+        : coord_min(seg.start.u, seg.end.u);
+    *out_hi = along_v
+        ? coord_max(seg.start.v, seg.end.v)
+        : coord_max(seg.start.u, seg.end.u);
     return true;
 }
 
@@ -6979,14 +7011,20 @@ static bool stop_in_owner_extension(
             a->length_direction == SURFACE_DIRECTION_POS_V ||
             a->length_direction == SURFACE_DIRECTION_NEG_V;
 
-        if (!anchor_edge_interval(
-                boundary, a, owner_along_v, &edge_lo, &edge_hi) ||
-            !timber_a0_footprint_uv(placement, owner, a, &f)) {
+        if (!timber_a0_footprint_uv(placement, owner, a, &f)) {
             return false;
         }
 
         span_lo = owner_along_v ? f.min_v : f.min_u;
         span_hi = owner_along_v ? f.max_v : f.max_u;
+
+        if (!boundary_edge_interval(
+                boundary, owner_along_v, span_lo, span_hi,
+                owner_along_v ? f.min_u : f.min_v,
+                owner_along_v ? f.max_u : f.max_v,
+                &edge_lo, &edge_hi)) {
+            return false;
+        }
         fix_lo = coord_max(span_lo, edge_lo);
         fix_hi = coord_min(span_hi, edge_hi);
 
@@ -7017,7 +7055,6 @@ static bool timber_end_face_check(
     const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,
     const Timber *self,
-    const TimberAnchor *anchor,
     bool along_v,
     Coord span_lo,
     Coord span_hi,
@@ -7028,8 +7065,9 @@ static bool timber_end_face_check(
 )
 {
     Coord edge_lo = 0, edge_hi = 0;
-    bool has_edge = anchor_edge_interval(
-        boundary, anchor, along_v, &edge_lo, &edge_hi);
+    bool has_edge = boundary_edge_interval(
+        boundary, along_v, span_lo, span_hi, cross_lo, cross_hi,
+        &edge_lo, &edge_hi);
     bool ext_end[2];
 
     /* I22：非 boundary 的 footprint 不得超出定位邊。 */
@@ -7823,7 +7861,7 @@ static bool world_revalidate(const World *world)
 
             /* I19/I22：每支料的端面裁切優先序與延伸段規則。 */
             if (!timber_end_face_check(
-                    world, p, b, t, a, along_v,
+                    world, p, b, t, along_v,
                     along_v ? f.min_v : f.min_u,
                     along_v ? f.max_v : f.max_u,
                     along_v ? f.min_u : f.min_v,
@@ -9793,7 +9831,7 @@ static bool apply_place_line(
         };
 
         if (!timber_end_face_check(
-                world, placement, boundary, timber, &probe_anchor,
+                world, placement, boundary, timber,
                 along_v,
                 along_v ? footprint.min_v : footprint.min_u,
                 along_v ? footprint.max_v : footprint.max_u,

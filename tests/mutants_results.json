@@ -37,7 +37,7 @@
   "M08": {
     "desc": "I5：拿掉「環邊不得穿矩形內部」檢查",
     "verdict": "killed",
-    "why": "_mut_notch_straddle.scene          FAIL 應拒絕但接受 (L=['1600'])"
+    "why": "_mut_notch_straddle.scene          FAIL 錯誤不符: 期望含「放不上去」實得「D:\\knowledgebase\\geometry\\_mut_notch_straddle.scene:6: V_EXTENSION：非 boundary 角材（1）的 footprint 超出定位邊範圍」"
   },
   "M09": {
     "desc": "I5：孔 bbox 邊界相接也當相交(<= 改 <)",
@@ -212,7 +212,7 @@
   "M53": {
     "desc": "D10a：縫中心線改成縫起點(少加 gap/2)",
     "verdict": "killed",
-    "why": "_test_grid_panel.scene             FAIL 輸出缺少「角材原點：(424, 20, 2500)」"
+    "why": "(WSL/gcc 驗證,Windows 端持續被 SAC 擋)_test_grid_panel.scene FAIL 輸出缺少「角材原點：(424, 20, 2500)」"
   },
   "M54": {
     "desc": "D10a：產生條件由嚴格小於放寬成小於等於(多出尾端一條)",
