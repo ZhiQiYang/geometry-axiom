@@ -541,3 +541,279 @@
 - **驗收**：check_panels unresolved: none；導讀頁能點到 `apply_timber_line` 的 role 解析與 `V_CUT_PRIORITY` 判定處。
 - **檔案**：`geometry-guide/make_guide.py`、`geometry-model-v2.md`。
 - **相依**：GEO-090～094。**估時 1.5h**。
+
+---
+
+## 第 10 流：網格來源化與面材推導（公理層 D10、D10a、D18、I10、I13、I23、R6(c)、R13、R21；2026-09-16 立）
+
+> 來源：timberscript-studio Core 的 `reference_grid` 模型（14 golden 簽核），形式化為「起算點具體化」（D10a）與「between 只買走唯一性、不買走物理條件」（R21）。
+> 公理層條文已於 2026-09-16 開工前落版（改版前備份 `公理層.md.bak-geo097`）；工單順序即依賴順序，每張都以公理層條文為驗收基準，條文與實作不一致時**改實作**。
+> 使用者拍板的八項決定見 `~/.claude/plans/linked-frolicking-hennessy.md`；其中三項最容易被誤改：**只存來源不存展開值**、**不引入 heap 配置**、**gap 奇數拒絕不取下取整**。
+> 變異 id 從 **M51** 起（M41–M50 已由未完成的 GEO-094 預留）。
+> **收流關卡**：本流全部完成後必須跑一次完整 40+ 個變異（`python tests/mutate.py` 不帶參數），
+> 因為只跑子集會覆寫 `tests/mutants_results.json`；GEO-097 當下是先跑 M31–M33，再把結果併回備份 `tests/mutants_results.json.bak-geo097`。
+
+### GEO-097 ⚡ `ReferenceGrid` 來源化重構（純重構，行為不變）
+- **內容**：`ReferenceGrid` 改成 `GridAxisDef axis[2]`（1285），新增 `GridSource` 列舉（NONE / EXPLICIT / SERIES / PANEL）；`GRID_MAX_LINES` 32→64；新增唯一展開入口 `grid_axis_lines` 與薄包裝 `grid_line_coord`，本票只實作 EXPLICIT 分支；`grid_is_valid`（1306）改成迴圈跑兩軸、外接區間檢查移進 `grid_axis_lines`；`apply_grid_line`（8486）、`apply_place_line` 的 at-grid 分支（8800）、`world_dump_dsl`（11121）改用新欄位；死程式碼 `world_find_grid`（8384）復活並補 `world_find_grid_mut`，取代 8526／8802／10820 三處 inline 迴圈。
+- **驗收**：`python _run_tests_cmd.py` 全綠且**輸出逐字不變**；`python tests/mutate.py M31 M32 M33` 仍 killed；dump→loadfile→dump 逐字相同；明寫 65 條座標 → reject「超過單軸上限」（現況 33 條的拒絕路徑無測試，本票補上）。
+- **檔案**：`current_geometry.c`（1270-1348、8384-8393、8486-8643、8800-8838、10820、11121-11140）。
+- **測試**：`_edge_grid_overflow.scene` 一筆進 `TESTS`；其餘靠既有夾具回歸。
+- **相依**：無。**估時 3h**。
+
+> **GEO-097 完成紀錄（2026-09-16，尚未 commit）**
+> 關卡:編譯無警告;`_run_tests_cmd.py` 61/61,既有 60 筆與改版前**逐字相同**;
+> 變異 M31/M32/M33 全 killed、0 invalid（M32 錨點已從 `grid_is_valid` 搬到
+> `grid_axis_lines` 的 `if (out[k] < lo || out[k] > hi)`，確認全檔唯一）;
+> 27 個 accept 夾具的 `dump` 輸出新舊**逐字相同**;`check_panels.py` 40 panels / unresolved: none。
+> **記憶體實測**（不是估算）:`sizeof(ReferenceGrid)` 536 → **1176** bytes、
+> `sizeof(World)` 121608 → **126728** bytes（+5120，+4.2%）。
+> World 有 65 份靜態快照（`g_hist_undo[32]` + `g_hist_redo[32]` + group base）→ BSS 約 **+325 KB**;
+> `World backup = *world;` 兩處是函式區域變數，單一呼叫框架約佔 **124 KB** 堆疊
+> （改版前已是 119 KB，非新增的風險類別，但 GEO-106 若把 `WORLD_MAX_GRIDS` 提到 16 要重算）。
+> **複驗提出的兩點觀察（非 FAIL，留給後續票）**:
+> (1) `grid_line_coord` 取索引前會重跑 `grid_axis_lines`，連帶重驗 I10;舊版 at-grid 只比對
+>     `u_count/v_count`，不重驗座標合法性。這是**刻意收緊**、且與 GEO-099 的 I23(b) 同向，
+>     但目前 DSL 路徑不可達，GEO-099 應補一條回歸測試把它釘住。
+> (2) 全檔無 `World` 的 `fwrite/fread` 或固定位元組序列化假設，歷史快照與 memmove 都用
+>     `sizeof(World)` 動態算，容量放大不會打到任何序列化契約。
+
+### GEO-098 `series` 來源（等差簡寫）
+- **內容**：`apply_grid_line` 軸段解析加分派——`u`／`v` 後第一個 token 是 `series` 則吃 `start step count`（座標一定過 `parse_i64`、`series` 過不了，故無歧義）；`grid_axis_lines` 的 SERIES 分支（第 k 條 = start + k·step）；`step ≤ 0`／`count == 0`／任一條出界 → 拒絕；`world_dump_dsl` 輸出 `u series <start> <step> <count>`；`SCENE_COMMANDS` 的 grid 列（11390）usage 更新。
+- **驗收**：`grid 1 on 1 u series 1000 2000 2` 與 `grid 1 on 1 u 1000 3000` 推出相同格線、相同角材長度（`lengths` 逐一相同）；dump 輸出 series 形式且重放逐字相同；`step 0`／`count 0`／尾端出界三種 reject 且訊息可辨。
+- **檔案**：`current_geometry.c`。
+- **測試**：`_test_grid_series.scene`（對照 `_edge_grid_twoline.scene`）、`_edge_grid_series_out.scene`、`_edge_grid_series_step0.scene`。
+- **相依**：GEO-097。**估時 2h**。
+
+> **GEO-098 完成紀錄（2026-09-16，尚未 commit）**
+> `_run_tests_cmd.py` 65/65;`_test_grid_series.scene` 推出的長度 `[4000, 4000, 2960, 2960, 1973]`
+> 與明寫版 `_edge_grid_twoline.scene` **逐一相同**，等價性成立;
+> dump 輸出的是來源形式 `grid 1 on 1 u series 1000 2000 2`（不是展開座標），往返逐字相同;
+> `check_panels.py` unresolved: none。
+
+### GEO-099 ⚡ grid 交易化 + I23 網格引用鎖
+- **內容**：`apply_grid_line` 回寫路徑改走交易——既有槽位用 `world_replace_object`（7258），新增槽位用 `World backup` + `world_revalidate`；移除 8584-8591 的「同軸一律不可重宣告」，改成 I23(a) 守門：對每個 `anchors[i].ref_grid == id && ref_grid_axis == axis` 的已放角材，用**舊定義**與**候選定義**各推一次該索引座標，不相等或候選推不出來 → `V_GRID_LOCKED`；`world_revalidate` 的角材迴圈加 I23(b)；`delete grid` 守門（10827）訊息統一成 `V_GRID_LOCKED`。
+- **驗收**：往既有明寫軸追加格線 → accept；改動已錨定索引的座標 → reject `V_GRID_LOCKED`；錨在 u 軸後仍可補 v 軸 → accept；重宣告使某條被錨定的線消失 → 整筆回滾且 `dump` 與先前逐字相同；`_edge_grid_twoline.scene` 仍 accept 且 lengths 不變。
+- **檔案**：`current_geometry.c`（8486-8643、7286-7330、10817-10837）。
+- **測試**：`_test_grid_redeclare.scene`、`_edge_grid_locked.scene`、`_edge_grid_locked_other_axis.scene`、`_mut_grid_locked.scene`。變異加 **M51**（I23(a) 的座標比對拿掉）、**M52**（grid 回寫不呼叫 `world_revalidate`）。
+- **相依**：GEO-097，可與 GEO-098 平行。**估時 3h**。
+
+> **GEO-099 完成紀錄（2026-09-16，尚未 commit）**
+> `_run_tests_cmd.py` 70/70;27 個 accept 夾具往返通過 30 筆、0 筆前後不同;
+> `check_panels.py` unresolved: none;變異 M31/M32/M33/M51/M52 全部取得**真實死因**
+> （M51 由 `_edge_grid_locked.scene` 的「應拒絕但接受」抓到，正是設計的殺手）。
+> 合併後變異紀錄 42 個:38 殺 / 4 個既知等效存活 / 0 無效。
+> **實作偏離規劃的一點**：`world_find_grid` 在 `world_revalidate`(7504) 被用到、
+> 卻定義在 8557，補了一行前向宣告。
+> **已知覆蓋缺口**：I23(b)（重驗時索引必須仍推導得出）目前**沒有殺手夾具**——
+> EXPLICIT/SERIES 的條數是固定的，承載面一縮小 `grid_is_valid` 就先拒了，
+> I23(b) 抓不到任何它抓得到的東西。要等 GEO-100 的 PANEL 來源落地
+> （條數隨面大小變動）才變得可達，**GEO-100 必須補這條殺手**。
+> **驗證環境警告**：跑變異時務必確認死因不是「例外 [WinError 4551]」——
+> 那是 SAC 擋掉 `_mut.exe` 的假死，見 GEO-108。
+
+### GEO-100 面材推導 PANEL_LAYOUT 對縫（D10a）
+- **內容**：`GridAxisDef` 的 panel／gap／anchor 三欄；解析 `panel <p> gap <g> [from <c>]`，**anchor 宣告當下具體化**（未寫 `from` 取當下 `placement_local_bounds` 的該軸下界）並寫進定義；`grid_axis_lines` 的 PANEL 分支照 D10a 直譯（`c_k = a + k·T + panel + gap/2`，產生條件 `a+(k+1)·T < hi`）；gap 奇數／panel ≤ 0／gap < 0／anchor 出界／超上限各自的人話訊息；dump 輸出 `u panel P gap G [from A]`（`from` 只在 `anchor_explicit` 時輸出）；**`geometry-web/app.js:2252-2256` 的 `^grid` regex 收緊成只吃純數字串**，認不得的來源型式忽略不畫（停損，見流末）。
+- **驗收**：3600×3000 面、`u panel 400 gap 20` → **恰 8 條線：410 / 830 / 1250 / 1670 / 2090 / 2510 / 2930 / 3350**；在 index 0 與 index 7 放 auto 主支，長度與明寫等價場景一致；`gap 21` → reject「縫寬必須為偶數」；`panel 1 gap 0` 於 4000 面 → reject「超過單軸上限」；面寬 300 小於 panel 400 → accept 且該軸零條線，此時 at-grid index 0 → reject「本軸共 0 條」；dump 重放逐字相同；web 面內編輯器載入 PANEL 場景不畫出錯誤格線。
+- **檔案**：`current_geometry.c`、`geometry-web/app.js`（一行 regex）。
+- **測試**：`_test_grid_panel.scene`、`_edge_grid_panel_odd_gap.scene`、`_edge_grid_panel_overflow.scene`、`_edge_grid_panel_empty.scene`、`_edge_grid_panel_from.scene`（L 形面 + 明寫 from）、`_mut_grid_panel_center.scene`。變異加 **M53**（中心線改成縫起點）、**M54**（產生條件 `< hi` 改 `<= hi`）、**M55**（gap 奇數改放行取下取整）。
+- **相依**：GEO-099。**估時 4h**。
+
+> **GEO-100 完成紀錄（2026-09-16，尚未 commit）**
+> `_run_tests_cmd.py` 79/79;33 個 accept 夾具往返通過、0 筆前後不同;
+> `check_panels.py` unresolved: none;變異 M53/M54/M55 全部取得真實死因。
+> **公式已由實測釘住**（不是估算）:3600 寬的面配 `panel 400 gap 20` →
+> 恰 8 條線，index 0 的中線 **410**、index 7 的中線 **3350**
+> （角材原點 424 與 3364 減去半寬 14）；index 8 被拒且訊息寫「本軸共 8 條」。
+> `from 1000` → index 0 的中線 **1410**（原點 1424），起算點具體化語意成立。
+> **偏離規劃的一點**：規劃寫「`from` 只在 anchor_explicit 時輸出」，實作改成**一律輸出**。
+> 理由:起算點已具體化進定義（D10a），省略它的話，承載面事後縮小時重放會取到不同的 a，
+> R4 的「重放逐字相同」就破了。
+> **覆蓋缺口（誠實記錄）**：I23(b) 仍**沒有隔離殺手**，變異 **M56 存活**。
+> 原因不是它等效，而是構造不出「線消失但所有角材都還在面內」的場景——
+> 被錨定的主支必須靠沿 u 的邊界材提供擋面（主支不得直接頂外輪廓，見 GEO-109），
+> 而那些邊界材必然橫跨全寬，面一縮就先出界（I5）觸發回滾。
+> `_edge_grid_panel_shrink.scene` 保留為「縮面整筆回滾」的回歸測試，但它擋的是邊界材出界。
+> 若 GEO-109 放寬「只有 boundary 可頂 RC」，這個殺手就做得出來。
+
+### GEO-101 ⚡ `between(face, face)` 明寫兩端（D18、R21）
+- **內容**：`StopFaceRef` 型別與解析（**重用 `parse_edge_ref` 8399**，只多一個 `t<id>` 分支）；`apply_place_line` 選擇器區（8886）加 `between` 分支，與 `through` 互斥；`resolve_auto_span`（6895）加 `const StopFaceRef *between` 參數，在選區間（7050）與兩端擋面檢查（7083）插入 R21(b)(c)(d) 的指名路徑——改用 `pick_stop` 的**條件**去驗被指名的那一面，而不是數有幾面；`SpanStatus`（6864）尾端追加 `SPAN_BETWEEN_BLOCKED`、`SPAN_BETWEEN_AMBIGUOUS`；`SCENE_COMMANDS` 的 `place` max_fields 12→**13**（11401）。
+- **⚠ 連動**：`geometry-guide/make_guide.py:574` 的 callout `"place", 8, 12, true,` 必須同步改 13，否則 `check_panels.py` 會 unresolved（已實測確認）。
+- **驗收**：`_edge_stop_ambiguous.scene` 的歧義場景改用 between → accept 且長度等於明寫值；between 指到 FREE 邊 → reject；兩端之間被已放角材擋住 → reject；`between t5 t9` 有兩組合法配對 → reject 並列舉全部候選；through 與 between 同寫 → reject；I19 違規的 between（主支端面頂 RC 邊）仍 reject `V_CUT_PRIORITY`；`check_panels.py` exit 0。
+- **檔案**：`current_geometry.c`（6864-6875、6895-7125、8399-8444、8886-8896、11401-11406）、`geometry-guide/make_guide.py`。
+- **測試**：`_test_between.scene`、`_edge_between_free.scene`、`_edge_between_blocked.scene`、`_edge_between_ambiguous.scene`、`_edge_between_conflict.scene`、`_role_between_priority.scene`。變異加 **M56**（between 跳過 FREE 邊檢查）、**M57**（between 跳過逐 cell 合法性）。
+- **相依**：GEO-097（不依賴 PANEL，可與 GEO-100 平行）。**估時 4h**。
+
+> **GEO-101 完成紀錄（2026-09-16，尚未 commit）**
+> `_run_tests_cmd.py` 85/85;34 個 accept 夾具往返通過、0 筆前後不同;
+> `check_panels.py` unresolved: none;變異 M57/M58 全部取得真實死因。
+> **等價性已釘住**：`_test_between.scene` 與 `_edge_stop_ambiguous.scene` 是同一個幾何，
+> 副支改用 `between t1 t5` 之後長度 `[1000, 1960, 3000, 2000, 3946]` **逐一相同**——
+> between 只換寫法、不換結果。
+> **偏離規劃的三點**：
+> (1) `place` 的欄位數不是 12→13 而是 12→**15**。at-grid 帶 between 是 13 欄，
+>     但要讓「through 與 between 同時寫」講得出互斥訊息（而不是被籠統的欄位數錯誤蓋掉），
+>     表上限必須放到 15;at-grid／at-edge 兩個分支各自的 count 檢查也一併放寬。
+>     `make_guide.py` 的 `"place", 8, 12, true,` callout 已同步成 15。
+> (2) R21(e) 的夾具原本想用 primary，但 D17 的主支軸一致（I21）會先擋下，
+>     改用 `custom priority 2`——D15 明寫 custom 不取得任何角色專屬義務，
+>     所以 D17 不管它，能單獨把 I19 逼出來。
+> (3) 規劃寫「`between t5 t9` 有兩組合法配對 → reject 並列舉」。實作與條文都照做了，
+>     但**這條路徑目前不可達**：被指名的角材側面必須涵蓋端面全寬（R21(a)），
+>     代表那支角材的本體橫跨中線，於是只有「兩支之間」那一組配對落得進合法區間。
+>     變異 M58（拿掉區間檢查）的死因輸出可以看到 4 組候選被收斂成唯一的 [1020,2980]，
+>     證明列舉邏輯會動。這是 R21(d) 要求的防禦性分支，保留但無夾具。
+
+### GEO-102 ⚡ 導讀與文件同步（公理層已先落版）
+- **內容**：`公理層.md` 已於 2026-09-16 開工前落版，本票不再改它，只做下游同步——`geometry-model-v2.md` 補一節說明與 timberscript-studio `reference_grid` 模型的對應與差異；`make_guide.py` 補「網格來源化」章節（`GridAxisDef`／`grid_axis_lines`／D10a 公式三個面板）並重跑；`current_geometry.c:6833-6836` 那段「未經授權不得修改公理層」的註解改成指向已修正的 I22 條文。
+- **驗收**：`check_panels.py` unresolved: none 且 exit 0；導讀頁能點到 `grid_axis_lines` 的 PANEL 迴圈與 `V_GRID_LOCKED` 判定處；公理層每一條新條文都能在 `TESTS` 找到至少一筆對應夾具（對照表附在本票下方）。
+- **檔案**：`geometry-guide/make_guide.py`、`geometry-model-v2.md`、`current_geometry.c`（註解）。
+- **相依**：GEO-097～101。**估時 2.5h**。
+
+### GEO-103 RUNNING_BOND 交丁排法（phases、row）— 第 2 期，條文未定案前不得實作
+- **架構**：`GridAxisDef` 加 bond／phases／phase_count（`GRID_MAX_PHASES 8`）。交丁必須明寫 phases（不猜）；軸 X 宣告 RUNNING_BOND 時，垂直軸 Y 必須也是 PANEL_LAYOUT——「排」就是 Y 軸的面材本體 band。第 r 排的 X 軸格線 = `c_k + phases[r % phase_count]`。主方向無貫穿線，故 `at-grid` 不帶 `row` → 拒絕；帶 `row n` 時除了給中線，**同時給跨距的接觸範圍**（第 n 排在 Y 軸的 band 區間），直接餵進 `resolve_auto_span` 既有的 `has_contact／contact_lo／contact_hi` 參數——逐排縫段因此從 R6 自動掉出來，不需要新的幾何機器。
+- **擬立條文**：D10b、I24、R22。
+- **驗收方向**：兩相位交丁，第 0 排與第 1 排的同索引格線相差半週期；不帶 row 放置 → reject；row 超出排數 → reject；裁短片所在排的格線條數比完整排少。
+- **相依**：GEO-100。**估時 6h**（含條文）。
+
+### GEO-104 `support_step` 板縫落骨約束 — 第 2 期
+- **架構**：宣告式約束，在 grid 宣告當下檢查。支撐線 = `lo + j·(span／n)`；`span % n != 0` → 拒絕；每條縫中心線必須與某條支撐線重合，否則拒絕。與 D10a 推導解耦：先推縫、再驗落骨。
+- **⚠ 開工前需拍板**：「縫中心與支撐線座標相等」是直譯，實務也可能是「縫落在骨材寬度範圍內」（骨材 27 寬，縫中心在骨材 ±13 內即算落骨）——那是區間包含而非座標相等，條文寫法完全不同。
+- **相依**：GEO-103。**估時 3h**。
+
+### GEO-105 `subgrid` 子網格 — 第 3 期
+- **架構**：`subgrid <id> parent <gid> axis u scope each_cell divisions by_span(v, <band...>)`。以父 cell 為單位等分某軸，band 是 `[min,max)` 依另一軸跨度選等分數；cell 寬不能整除 → 拒絕；交丁時等分的是完整面材本體，裁短片只保留落在片內的線。子網格本身是一個 `ReferenceGrid`，只存 parent_id／axis／bands，**仍然只存來源**。
+- **擬立條文**：D19、I25、R23。
+- **相依**：GEO-103。**估時 8h**。
+
+### GEO-106 「一面一格」規則重定 + 容量重評 — 第 3 期
+- **內容**：現行 8540-8546 的「一面一格」與子網格直接衝突（同面）。改成「一面一主格 + 若干子格」，定義刪父格時子格的連坐，`WORLD_MAX_GRIDS` 8→16，並重評 `GRID_MAX_LINES` 是否要到 96。
+- **註**：公理層 D10 **刻意沒有重述「一面一格」**（它目前只活在實作與程式碼註解的 G1，I10 原文也沒寫），就是為了不在這裡挖坑。
+- **相依**：GEO-105。**估時 3h**。
+
+### WEB-005 網格來源編輯器與推導線渲染
+- **內容**：`web_bridge.c` 新增 `gridlines <sid>` 指令，回傳結構化的 `{id, axis, lines[], source, panel, gap}`；`app.js` 改用它渲染，不再 regex 解析 dump 的 `^grid` 行（2252-2256）；面內「網格」分頁加來源選單（明寫／等差／面材）與即時預覽。**本票同時做掉既有的 WEB-002**（改成 `refs <sid>` 一次回傳 guides+timbers+grids 亦可）。
+- **相依**：GEO-100。**估時 4h**。
+
+### 第 10 流的 web 停損說明
+`geometry-web/app.js:2252-2256` 目前用正則解析 dump 的 `^grid` 行再 `.map(Number)`。GEO-100 一落地，`grid 1 on 1 u panel 400 gap 20 from 0` 會被解析成 `[NaN,400,NaN,20,NaN,0]`，面內編輯器畫出垃圾格線且不報錯。所以 GEO-100 的驗收含一行 regex 收緊（只吃純數字串，認不得就不畫），真正的網格編輯器留給 WEB-005。
+
+### GEO-107 dump 丟失「放法記錄」使延伸段場景重放失敗（D7、R4、D16、I22）
+- **狀態**：2026-09-16 於 GEO-097 的往返驗證中發現，**既有缺陷**（改版前後同樣重現，與網格來源化無關）。尚未修，需先拍板修法。
+- **現象**：`_role_ext_stop_primary.scene` 可正常載入，但 `dump` 出來的結果無法重放——
+  `place 4 on 1 at-edge e2 +u +n` 被 dump 成 `place 4 on 1 at 1014 1000 +u +n`，
+  重放時回報 `V_CUT_PRIORITY：角材 4（優先級 1）端面頂到角材 3（優先級 2）側面`。
+  27 個 accept 夾具中只有這一個踩到；其餘 26 個往返逐字相同。
+- **成因**：D7 明訂「錨點 = place 當下凍結的 uv + **放法記錄**（anchor_kind、參照、through 等）」，
+  但 `world_dump_dsl` 只輸出凍結的 uv 與明寫長度，把 `anchor_kind` 與 `ref_edge` 丟掉。
+  重放後 `anchor_kind` 變成 `ANCHOR_AT`，而 `anchor_edge_interval` 要求 `ANCHOR_AT_EDGE`
+  才認得定位邊，於是 D16 的固定段／延伸段切分不成立、I22 的豁免失效，
+  端面改由 I19 裁決（1 vs 2，需 2 < 1）而被拒。
+  幾何完全沒變，變的只有「這支料還算不算有延伸段」這項**放法**資訊。
+- **這違反的是 R4**：「dump = World → DSL 序列化⋯⋯重放逐字相同」。目前對這一類場景不成立。
+- **修法待拍板（紅燈，需使用者決定）**：
+  1. **dump 補上放法記錄**（建議）：在凍結的 `at u v` 後面附一段來源註記，
+     例如 `place 4 on 1 at 1014 1000 +u +n from-edge e2`，parser 讀到就還原
+     `anchor_kind`／`ref_edge`，**但不重算幾何**（R6(e) 的凍結不受影響）。
+     優點：D7 說錨點本來就含放法記錄，這只是把它真的寫出來；缺點：DSL 多一個尾綴。
+  2. **dump 直接輸出原本的錨法**（`at-edge e2` + 明寫長度）：更短，
+     但明寫長度配 at-edge 違反 I12 的語法配對，要一併改 I12。
+  3. **把延伸段改成純幾何推導**（不看 anchor_kind）：最乾淨，但那是改 D16 的定義，
+     影響 I20／I22／R18 一整組，風險最大。
+- **驗收**：`_role_ext_stop_primary.scene` 的 dump → loadfile → dump 逐字相同；
+  27 個 accept 夾具往返全通過；既有 61 筆測試不受影響。
+- **檔案**：`current_geometry.c`（`world_dump_dsl` 的 timber 段、`apply_place_line`、
+  `anchor_edge_interval`）。
+- **測試**：把往返驗證固定成一個可重跑的關卡（目前是臨時腳本），對全部 accept 夾具執行。
+- **相依**：無（與第 10 流平行）。**估時 依修法而定，方案 1 約 3h**。
+
+### GEO-108 🔁 已於檔末記錄完成 `tests/mutate.py` 把環境失敗誤判成 killed（驗證完整性漏洞）
+- **狀態**：2026-09-16 於 GEO-099 驗證中發現,**既有缺陷**,尚未修。
+- **現象**：`mutate.py:209` 的判決只看 `verdict = "killed" if test.returncode != 0`。
+  本機 Smart App Control 會**間歇性**封鎖新編譯的 `tests/_mut.exe`（`WinError 4551`）,
+  此時 `run_tests.py` 每一筆都失敗、returncode 非 0,於是**全部變異都被判成 killed**。
+  實測:同一組 M31/M32/M33/M51/M52 連跑三次,第一次五個全是假死
+  （死因寫著「例外 [WinError 4551] 應用程式控制原則已封鎖此檔案」）,
+  第二次三個真死兩個假死,第三次才全部取得真實死因。
+- **為什麼嚴重**：這是最壞的一種假綠燈——變異測試本身是用來證明「測試抓得到錯」的工具,
+  它壞掉的時候看起來卻像全部通過。`mutants_results.json` 也會被寫進假結果。
+- **修法**：`mutate.py` 建完 `_mut.exe` 後先做一次冒煙執行（跑任何一個已知 accept 的場景）,
+  若啟動本身就失敗（exception / WinError,而不是測試斷言失敗）→ 判 `blocked`,不判 `killed`,
+  並讓整批以非 0 退出,逼使用者重跑。另可掃 `run_tests.py` 的輸出:
+  死因若是「FAIL 例外」而非「FAIL 錯誤不符／應接受但拒絕／應拒絕但接受／長度不符」,
+  一律不算 killed。
+- **驗收**：人為封鎖 `_mut.exe`（或改名成不存在）後跑 `mutate.py`,結果必須是 `blocked`／非 0 退出,
+  不得出現任何 `killed`。
+- **檔案**：`tests/mutate.py`（`main()` 的建置後與判決段,約 190–215 行）。
+- **相依**：無。**估時 1h**。
+
+### GEO-109 I19 條文允許主支端面頂外輪廓，實作卻拒絕（條文與實作不一致）
+- **狀態**：2026-09-16 於 GEO-100 構造測試場景時發現,**既有不一致**,未動手（超出當次授權範圍）。
+- **現象**：場景只有一支 `primary`、兩端直接頂外輪廓的 FIXED 邊 → 實作回
+  `V_CUT_PRIORITY：角材 3 端面頂到外輪廓邊（RC）——只有 boundary 可頂 RC`。
+- **條文怎麼說**：I19 寫的是「其擁有者的優先級必須**嚴格小於**自己（外輪廓/孔邊/柱面 = 0）」。
+  `primary` 的優先級是 2，外輪廓是 0，**0 < 2 成立**，照條文應該放行。
+  I19 只列了兩個例外（轉角兩支 boundary 互頂、延伸段見 I22），沒有「只有 boundary 可頂 RC」這一條。
+- **哪一邊才對**：看 D15 的物理意義段——「連續的邊界材釘在 RC 上，被夾的主支長度成為模數」，
+  以及 R19(c)(d)「層級 2 停在層級 1 下面」——**實作的意圖是對的**，
+  是 I19 的條文漏寫了「空間邊界只能被 boundary 頂」這一款。
+  依第 9 流總則「條文與實作不一致時**改實作**」的字面會改錯邊，這裡應該改條文。
+- **建議修法（需使用者拍板）**：I19 補一款——
+  「擋面擁有者是空間邊界（優先級 0）時，只有 `boundary` 可以頂它；
+   其餘角色端面頂空間邊界一律拒絕（V_CUT_PRIORITY）。」
+  並在 D15 的物理意義段加一句指回 I19，說明這是「邊界材連續、主支被夾」的直接後果。
+- **附帶影響**：這條限制使「被錨定的主支必然依賴橫跨全寬的邊界材」，
+  這正是 GEO-100 無法為 I23(b) 構造隔離殺手的原因（見 GEO-100 完成紀錄與變異 M56）。
+  若日後放寬，I23(b) 的殺手就做得出來。
+- **驗收**：條文補款後，`_role_priority_primary_rc.scene` 等既有夾具的拒絕理由能由條文推出；
+  新增一筆正向夾具說明「boundary 頂 RC 合法」。
+- **檔案**：`公理層.md`（I19、D15）。**估時 1h（純條文，不改實作）**。
+
+### GEO-110 ✅ 已完成(2026-09-16) 公理層覆蓋率矩陣 `axiom_matrix.py`
+- **動機**:公理層是驗收基準,但「條文」與「守衛它的東西」之間沒有任何機器查得動的連結,
+  只有註解裡的散文。本 session 找到的三個條文/實作不一致(GEO-107、GEO-109、以及 I22 那句)
+  都是靠手工逐條比對才撞到的。
+- **內容**:`geometry-guide/axiom_matrix.py`。解析 `公理層.md` 的 63 條條文,
+  對每一條列出:原始碼哪裡提到它(含所屬函式)、哪些 `*.scene` 夾具提到它、
+  哪些變異的 desc 提到它;另外檢查條文宣告的每個 `V_*` 錯誤碼在原始碼裡找得到。
+  `--strict` 在有紅燈時以非 0 退出。
+- **判準是弱代理,這點寫在腳本開頭也印在輸出裡**:量的是「條號在哪裡被提到」,
+  不是「哪裡實作了它」。紅燈代表沒有可追溯的連結,**不代表沒被測到**——
+  像 I1 承載面框架合法,每個場景都在跑它,只是沒人寫下條號。
+  要消紅燈的正確做法是補註解把連結寫下來,不是去改條文。
+- **本次同時補完的標註**:原始碼 22 處、夾具 17 個、變異描述 46 筆。
+- **結果**:紅燈 24 → **0**,綠燈 19 → 26,黃燈 20 → 37。
+  黃燈全部是「有原始碼、缺夾具」,那是**誠實的狀態**——代表這條有實作但沒有專屬測試,
+  不該為了讓數字變綠而硬掛一個不相干的夾具。
+- **順帶暴露的事**:D15–D17、I19–I22 這整組角色層條文**變異數為 0**,
+  與未完成的 GEO-094(補變異測試)完全對上。矩陣讓這件事不用讀 BACKLOG 就看得見。
+- **注意**:別把 `--strict` 掛進 CI 之前先確認紅燈為 0,否則會擋住所有人。
+- **檔案**:`geometry-guide/axiom_matrix.py`、`current_geometry.c`(註解)、
+  `*.scene`(註解)、`tests/mutate.py`(desc)。
+
+### GEO-108 ✅ 已完成(2026-09-16) 變異工具把環境失敗誤判成 killed
+- **原問題**:判決只看 `returncode != 0`。SAC 間歇封鎖新編譯的 `_mut.exe` 時,
+  `run_tests` 每一筆都以「FAIL 例外 [WinError 4551]」失敗,於是**全部變異被判成殺死**。
+- **修法**:跑完先分辨死因是測試斷言還是執行檔沒跑起來。
+  輸出含「FAIL 例外」或「FAIL 逾時」,或 `CreateProcess` 直接丟 `OSError`,
+  一律重跑(`RUN_RETRIES = 3`);三次都不行就判 `blocked`,**絕不計入 killed**,
+  整批以退出碼 2 結束並印出警告。`main()` 的退出碼現在會傳到 shell。
+- **順手修掉同一張票的另一半**:跑子集時把結果**併回**既有紀錄而不是整份覆寫。
+  原本 `python tests/mutate.py M31` 會把其餘 47 個判決清掉;本 session 踩了兩次,
+  都靠手動備份再合併才補回來。現在同時印「本次」與「全檔」兩組統計。
+- **驗證**:把 `_cl.bat` 暫時換成產生「存在但不可執行」的假 exe,跑 M31。
+  修之前會回報 KILLED,修之後回報 **BLOCKED + 退出碼 2**,`_cl.bat` 已還原。
+  正常路徑無回歸(M31 仍以真實死因 killed,M56 仍 survived)。
+- **檔案**:`tests/mutate.py`(備份 `tests/mutate.py.bak-geo108`)。
+> **收流關卡實測紀錄(2026-09-16)**
+> 完整 48 個變異跑完:**43 殺死 / 5 存活 / 0 無效**。
+> 存活的五個:M01、M09、M10、M23 是既有的等效變異(理由見第 427 行起的變異測試段),
+> M56 是 I23(b) 的未覆蓋缺口(非等效,理由見 GEO-100 完成紀錄)。
+>
+> **GEO-108 的修正在第一次完整跑就證明了價值**:那一輪有 **10 個變異被 SAC 擋住**
+> (M02、M09、M11、M17、M18、M20、M24、M28、M40、M55)。
+> 修正之前,這 10 個會全部被判成「殺死」,整份結果會顯示 44 殺、毫無異狀——完全是假的。
+> 修正之後它們被標成 `blocked` 並讓整批以退出碼 2 結束,逼人重跑;
+> 重跑四輪之後全部取得真實死因(M09 落回既知的等效存活)。
+> **SAC 的封鎖是隨機的,不是固定針對某個二進位**:M11 連續被擋 11 次,第 12 次就過了。
+> 所以看到 `blocked` 就是重跑,不要改程式碼去迎合它。
+
