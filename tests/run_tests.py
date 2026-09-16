@@ -181,6 +181,11 @@ TESTS = [
     {"scene": "_role_priority_mutant.scene", "expect": "reject",
      "error": "V_EXTENSION：非 boundary 角材（1）"},
     # I19:邊界材是 RC 錨定層,主支端面不得直接頂外輪廓邊
+    # GEO-109:I19 的外輪廓邊那一款——正向覆蓋,以及「看角色不看優先級」
+    {"scene": "_role_rc_boundary_ok.scene", "expect": "accept",
+     "lengths": [4000, 4000]},
+    {"scene": "_role_rc_custom_reject.scene", "expect": "reject",
+     "error": "端面頂到外輪廓邊（RC）"},
     {"scene": "_role_priority_primary_rc.scene", "expect": "reject",
      "error": "端面頂到外輪廓邊（RC）"},
     # I19:副支端面同樣不得直接頂 RC(該處無邊界材可當擋面)

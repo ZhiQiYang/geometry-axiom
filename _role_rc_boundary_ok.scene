@@ -1,0 +1,8 @@
+# 公理 I19 外輪廓邊那一款的**正向**覆蓋:boundary 頂外輪廓邊是合法的。
+# 與 _role_priority_primary_rc.scene 是對照組——同一片面、同樣兩端落在
+# 直立外輪廓邊 e3/e1 上,差別只在角色:boundary 可以頂,主支不行。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 1 20 20 role boundary
+timber 2 20 20 role boundary
+place 1 on 1 at-edge e0 +u +n
+place 2 on 1 at-edge e2 -u +n

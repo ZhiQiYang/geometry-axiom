@@ -7063,7 +7063,9 @@ static bool timber_end_face_check(
             }
 
             if (f->kind == STOP_OUTLINE_EDGE) {
-                /* RC 牆是邊界材的位置：非 boundary 頂到即違規。 */
+                /* I19 的外輪廓邊那一款：外圍那圈是邊界材釘在 RC 上的
+                 * 位置，只有 boundary 可以頂它。孔邊與柱面不在此限，
+                 * 所以這裡只攔 STOP_OUTLINE_EDGE（見 _test_hole_auto）。 */
                 if (self->role != TIMBER_ROLE_BOUNDARY) {
                     if (err != NULL) {
                         snprintf(err, err_cap,
@@ -7119,9 +7121,10 @@ static bool timber_end_face_check(
                      * 即接受路徑存在且唯一：custom priority >= 3。
                      * 正向覆蓋見 _role_priority_ext_custom.scene。
                      *
-                     * ⚠ 公理層 I22 括號寫「主支端面不得頂它；副支可以」——
-                     *   「副支可以」由 D16+D17 推不出來(副支必與延伸段平行)。
-                     *   此為公理層內部不一致，已回報，未經授權不得修改公理層。
+                     * 公理層 I22 括號原本寫「主支端面不得頂它；副支可以」，
+                     * 那句由 D16+D17 推不出來(副支必與延伸段平行、頂不到)。
+                     * 2026-09-16 已改成上面推導出的接受路徑：平行主支軸且
+                     * 優先級大於 2 的 custom 料。條文與這段註解現在一致。
                      */
                     owner_prio = 2;
                 }
