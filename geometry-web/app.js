@@ -261,6 +261,35 @@ async function refreshHover(sv) {
 }
 
 /* ---- 事件 ---- */
+/* 同一次拖曳依序送出 move，最後才提交一筆歷史；取消則完整回滾。 */
+function queueGuideDrag(d, sv) {
+  if (!sv || sv.v !== d.view) return;
+  d.queue = d.queue.then(async () => {
+    if (!d.started || d.failed) return;
+    const r = await api(`drag ${d.guide} ${sv.v} ${sv.x} ${sv.y}`);
+    if (!r.ok) { d.failed = true; toast(r.error || "拖曳失敗"); return; }
+    await (d.repaint || render)();
+  }).catch(err => { d.failed = true; toast(err.message || "拖曳失敗"); });
+}
+async function finishGuideDrag(cancel = false, sv = null, d = dragging) {
+  if (!d) return;
+  if (!cancel) queueGuideDrag(d, sv);
+  if (dragging === d) dragging = null;
+  try {
+    await d.queue;
+    if (d.started) {
+      const r = await api(cancel || d.failed ? "line history-abort" : "line history-end");
+      if (!r.ok) toast(r.error || "拖曳提交失敗");
+    }
+    await (d.repaint || render)();
+  } catch (err) {
+    try { await api("line history-abort"); } catch (_) { }
+    toast(err.message || "拖曳失敗");
+  } finally {
+    oc.busy = false;
+    document.body.classList.remove("oc-busy");
+  }
+}
 cv.addEventListener("pointermove", async e => {
   if (panning) {
     panX += e.clientX - panning.x; panY += e.clientY - panning.y;
@@ -271,17 +300,7 @@ cv.addEventListener("pointermove", async e => {
   const sv = screenToView(e.clientX, e.clientY);
   if (tool !== "view") { if (sv) canvasMove(e, sv); return; }
   if (dragging) {
-    if (!sv || sv.v !== dragging.view) return;
-    const r = await api(`drag ${dragging.guide} ${sv.v} ${sv.x} ${sv.y}`);
-    if (r.ok) {
-      await render();
-      /* 拖曳中線保持高亮（同 GDI：refresh 清掉互動態後補回）。 */
-      selected = { hover: null };
-      const p = await pickAt(sv);
-      setHover(p.desc || "");
-      overlay.textContent = "";
-      if (p.hover && p.hover.length) replay(p.hover, overlay);
-    }
+    queueGuideDrag(dragging, sv);
     return;
   }
   if (!sv) { setHover(""); if (!selected) overlay.textContent = ""; return; }
@@ -294,35 +313,44 @@ cv.addEventListener("pointerdown", async e => {
     e.preventDefault();
     return;
   }
-  if (e.button !== 0) return;
+  if (e.button !== 0 || oc.busy) return;
   const sv = screenToView(e.clientX, e.clientY);
   if (!sv) return;
   /* 先抓 pointer 再問 bridge：pointer 只在按住期間有效，await 之後可能已放開。 */
   cv.setPointerCapture(e.pointerId);
   if (tool !== "view") { canvasDown(e, sv); return; }
-  const p = await pickAt(sv);
-  if (p.guide >= 0) {                       /* 拖到參考線 */
-    dragging = { guide: p.guide, view: sv.v };
-    return;
-  }
-  selected = p.none ? null : p;             /* 點選角材面（或點空清除） */
-  overlay.textContent = "";
-  if (selected && selected.hover) replay(selected.hover, overlay);
-  if (p.timber >= 0) setStatus(p.desc);
-  /* D1:右欄 pick 結果 */
-  const pi = $("v3PickInfo");
-  if (pi) pi.textContent = selected ? (p.desc || "已選取")
-    : "未選取物件（點選面/角材/參考線）";
+  const d = { guide: -1, view: sv.v, started: false, failed: false };
+  dragging = d;                            /* await 前建立狀態，快速放開也能收尾 */
+  oc.busy = true;
+  document.body.classList.add("oc-busy");
+  d.queue = (async () => {
+    const p = await pickAt(sv);
+    if (p.guide >= 0) {
+      d.guide = p.guide;
+      const r = await api("line history-begin");
+      d.started = r.ok;
+      if (!r.ok) toast(r.error || "無法開始拖曳");
+      return;
+    }
+    selected = p.none ? null : p;
+    overlay.textContent = "";
+    if (selected && selected.hover) replay(selected.hover, overlay);
+    if (p.timber >= 0) setStatus(p.desc);
+    const pi = $("v3PickInfo");
+    if (pi) pi.textContent = selected ? (p.desc || "已選取")
+      : "未選取物件（點選面/角材/參考線）";
+  })().catch(err => { d.failed = true; toast(err.message || "選取失敗"); });
 });
 cv.addEventListener("pointerup", async e => {
   if (e.button === 1) panning = null;
-  if (e.button === 0 && dragging) { dragging = null; }
+  if (e.button === 0 && dragging) await finishGuideDrag(false, screenToView(e.clientX, e.clientY));
   if (tool !== "view" && e.button === 0) {
     const sv = screenToView(e.clientX, e.clientY);
     await canvasUp(e, sv);
   }
 });
-cv.addEventListener("pointercancel", () => { panning = null; dragging = null; });
+cv.addEventListener("pointercancel", () => { panning = null; finishGuideDrag(true); });
+cv.addEventListener("lostpointercapture", () => { if (dragging) finishGuideDrag(true); });
 cv.addEventListener("wheel", e => {
   e.preventDefault();
   const r = cv.getBoundingClientRect();
@@ -715,12 +743,7 @@ window.addEventListener("keydown", async e => {
     e.preventDefault();
     if (oc.busy) { toast("操作進行中,請稍候"); return; }
     const cmd = (e.key === "y" || e.key === "Y" || e.shiftKey) ? "redo" : "undo";
-    const r = await api("line " + cmd);
-    if (r.ok) {
-      setStatus("✓ " + (cmd === "undo" ? "已復原" : "已重做"));
-      if (oc.on) await renderObjects();
-      else { await render(); await refreshSurfaces(); }
-    } else { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); }
+    await doUndoRedo(cmd);
     return;
   }
   if (e.key === "Escape") {
@@ -825,8 +848,10 @@ $("cmd").addEventListener("keydown", async e => {
 $("btnClear").onclick = async () => {
   if (oc.busy) { toast("操作進行中,請稍候"); return; }
   const r = await api("line reset"); selected = null;
-  if (r.ok) setStatus("✓ 已清空");
-  else { setStatus("✗ " + (r.error || "")); toast(r.error || "清空失敗"); }
+  if (r.ok) {
+    resetSceneFocus();
+    setStatus("✓ 已清空");
+  } else { setStatus("✗ " + (r.error || "")); toast(r.error || "清空失敗"); }
   refreshActive();
 };
 /* 場景/檔案下拉選單(S2):#sceneList 為品牌旁選單,#fileMenu 為頂列檔案選單 */
@@ -874,7 +899,15 @@ document.addEventListener("pointerdown", e => {
 document.addEventListener("click", e => {
   if (e.target.closest && e.target.closest(".menu-item")) closeMenus();
 });
-$("btnEx").onclick = () => loadScene("room_a.scene", "room_a.scene");
+async function loadExampleRoomA() {
+  try {
+    const scenes = await fetch("/scenes").then(r => r.json());
+    const example = scenes.find(s => s.name === "room_a.scene");
+    if (example) await loadScene(example.path, example.name);
+    else toast("找不到範例 room_a.scene");
+  } catch (_) { toast("無法取得範例清單"); }
+}
+$("btnEx").onclick = loadExampleRoomA;
 $("btnScene").onclick = () => loadScene(curScene.path, curScene.name);
 $("btnOpen").onclick = () => $("file").click();
 $("file").addEventListener("change", async e => {
@@ -1941,7 +1974,6 @@ async function renderSpaceProjection() {
   /* §5.6：沿用三視圖互動——hover/pick + 參考線拖曳 */
   const overlay = el("g", {}, svg);
   const views = r.layout.views;
-  let gdrag = null, seq = 0;
   /* 螢幕→SVG 局部（含 tx/ty 的版面座標）→ 找所在視圖 → 視圖局部 mm */
   const locate = e => {
     const lp = projLocalPoint(svg, e);
@@ -1963,31 +1995,7 @@ async function renderSpaceProjection() {
     svg.appendChild(overlay);
     overlay.textContent = "";
   };
-  svg.onpointermove = async e => {
-    if (gdrag) {
-      const lp = projLocalPoint(svg, e);
-      const rr = await api(`drag ${gdrag.g} ${gdrag.v} ` +
-        `${Math.round(lp.x - views[gdrag.v].tx)} ${Math.round(lp.y - views[gdrag.v].ty)}`);
-      if (rr.ok) repaint();
-      return;
-    }
-    const loc = locate(e); if (!loc) { overlay.textContent = ""; return; }
-    const my = ++seq;
-    const p = await api(`pick ${loc.v} ${loc.x} ${loc.y} 12`);
-    if (my !== seq) return;
-    setHover(p.desc || "");
-    overlay.textContent = "";
-    if (p.hover && p.hover.length) replay(p.hover, overlay);
-  };
-  svg.onpointerdown = async e => {
-    if (e.button !== 0) return;
-    const loc = locate(e); if (!loc) return;
-    svg.setPointerCapture(e.pointerId);
-    const p = await api(`pick ${loc.v} ${loc.x} ${loc.y} 12`);
-    if (p.guide >= 0) gdrag = { g: p.guide, v: loc.v };
-  };
-  svg.onpointerup = () => { gdrag = null; };
-  svg.onpointerleave = () => { overlay.textContent = ""; gdrag = null; };
+  bindProjectedGuideDrag(svg, locate, overlay, repaint, false);
 }
 
 /* ---- 對話框：backdrop + 關閉 ---- */
@@ -2245,7 +2253,7 @@ async function feLoadGuides() {
     const ta = ln.match(/^timber (\d+) (\d+) (\d+) role (\w+)( priority \d+)?\s*$/);
     if (ta && !timberDecl[+ta[1]])
       timberDecl[+ta[1]] = { L: 0, A: +ta[2], B: +ta[3], role: ta[4] };
-    const pm = ln.match(/^place (\d+) on (\d+) at (-?\d+) (-?\d+) ([+-][uv]) ([+-]n)\s*$/);
+    const pm = ln.match(/^place (\d+) on (\d+) at (-?\d+) (-?\d+) ([+-][uv]) ([+-]n)(?: grid-ref \d+ [uv] \d+)?\s*$/);
     if (pm && +pm[2] === sid && timberDecl[+pm[1]])
       fe.timbers.push({ id: +pm[1], u: +pm[3], v: +pm[4],
                         dir: pm[5], side: pm[6], ...timberDecl[+pm[1]] });
@@ -2994,12 +3002,13 @@ function renderFaceInspector() {
   let area = 0;
   for (let i = 0; i < loops.length; ++i) {
     const vs = loops[i].verts;
+    let ringArea2 = 0;
     for (let j = 0; j < vs.length; ++j) {
       const a = vs[j], b = vs[(j + 1) % vs.length];
-      area += (i === 0 ? 1 : -1) * (a[0] * b[1] - b[0] * a[1]);
+      ringArea2 += a[0] * b[1] - b[0] * a[1];
     }
+    area += (i === 0 ? 1 : -1) * Math.abs(ringArea2) / 2;
   }
-  area = Math.abs(area) / 2;
   const spaces = oc.spaces.filter(s => s.members.includes(bid));
 
   /* B2:右欄三頁 — 屬性 | 角材 | 網格 */
@@ -3362,31 +3371,48 @@ function projLocalPoint(svg, e) {
   return { x: Math.round(p.x), y: Math.round(p.y) };
 }
 function bindProjInteract(svg, viewIdx, overlay, refresh) {
-  let gdrag = null, seq = 0;
-  svg.addEventListener("pointermove", async e => {
-    const lp = projLocalPoint(svg, e);
-    if (gdrag !== null) {
-      const r = await api(`drag ${gdrag} ${viewIdx} ${lp.x} ${lp.y}`);
-      if (r.ok) refresh();
-      return;
-    }
+  bindProjectedGuideDrag(svg, e => ({ v: viewIdx, ...projLocalPoint(svg, e) }),
+                         overlay, refresh, true);
+}
+function bindProjectedGuideDrag(svg, locate, overlay, repaint, localOverlay) {
+  let active = null, seq = 0;
+  svg.onpointermove = async e => {
+    const loc = locate(e);
+    if (active) { queueGuideDrag(active, loc); return; }
+    if (!loc || oc.busy) return;
     const my = ++seq;
-    const p = await api(`pick ${viewIdx} ${lp.x} ${lp.y} 12`);
-    if (my !== seq) return;
+    const p = await api(`pick ${loc.v} ${loc.x} ${loc.y} 12`);
+    if (my !== seq || active) return;
     setHover(p.desc || "");
     overlay.textContent = "";
     if (p.hover && p.hover.length)
-      replay(p.hover.filter(o => o.op !== "begin" && o.op !== "end"), overlay);
-  });
-  svg.addEventListener("pointerdown", async e => {
-    if (e.button !== 0) return;
+      replay(localOverlay ? p.hover.filter(o => o.op !== "begin" && o.op !== "end") : p.hover, overlay);
+  };
+  svg.onpointerdown = e => {
+    if (e.button !== 0 || oc.busy) return;
+    const loc = locate(e); if (!loc) return;
     svg.setPointerCapture(e.pointerId);
-    const lp = projLocalPoint(svg, e);
-    const p = await api(`pick ${viewIdx} ${lp.x} ${lp.y} 12`);
-    if (p.guide >= 0) gdrag = p.guide;
-  });
-  svg.addEventListener("pointerup", () => { gdrag = null; });
-  svg.addEventListener("pointerleave", () => { overlay.textContent = ""; gdrag = null; });
+    const d = { guide: -1, view: loc.v, started: false, failed: false, repaint };
+    active = d;
+    oc.busy = true;
+    document.body.classList.add("oc-busy");
+    d.queue = (async () => {
+      const p = await api(`pick ${loc.v} ${loc.x} ${loc.y} 12`);
+      if (!p.ok || !(p.guide >= 0)) return;
+      d.guide = p.guide;
+      const r = await api("line history-begin");
+      d.started = r.ok;
+      if (!r.ok) toast(r.error || "無法開始拖曳");
+    })().catch(err => { d.failed = true; toast(err.message || "選取失敗"); });
+  };
+  const finish = (cancel, e) => {
+    const d = active; active = null;
+    if (d) finishGuideDrag(cancel, cancel ? null : locate(e), d);
+  };
+  svg.onpointerup = e => { if (e.button === 0) finish(false, e); };
+  svg.onpointercancel = e => finish(true, e);
+  svg.onlostpointercapture = e => finish(true, e);
+  svg.onpointerleave = () => { overlay.textContent = ""; };
 }
 
 /* ---- 世界層建立互動 ---- */
@@ -3620,7 +3646,7 @@ function renderRcInspector(pane, kind, o) {
       `<div class="kv"><span>z0 / z1</span><b><input id="rcfZ0" type="number" step="1" value="${o.box[2]}" style="width:70px"> / <input id="rcfZ1" type="number" step="1" value="${o.box[5]}" style="width:70px"></b></div>`
     : `<div class="kv"><span>走向軸</span><b><select id="rcfAxis"><option value="x"${o.axis === "x" ? " selected" : ""}>沿 x</option><option value="y"${o.axis === "y" ? " selected" : ""}>沿 y</option></select></b></div>` +
       `<div class="kv"><span>from / to</span><b><input id="rcfA" type="number" step="1" value="${o.axis === "x" ? o.box[0] : o.box[1]}" style="width:70px"> / <input id="rcfB" type="number" step="1" value="${o.axis === "x" ? o.box[3] : o.box[4]}" style="width:70px"></b></div>` +
-      `<div class="kv"><span>中線 c</span><b><input id="rcfC" type="number" step="1" value="${o.axis === "x" ? Math.round((o.box[1] + o.box[4]) / 2) : Math.round((o.box[0] + o.box[3]) / 2)}" style="width:70px"></b></div>` +
+      `<div class="kv"><span>中線 c</span><b><input id="rcfC" type="number" step="1" value="${o.axis === "x" ? o.box[1] + Math.floor((o.box[4] - o.box[1]) / 2) : o.box[0] + Math.floor((o.box[3] - o.box[0]) / 2)}" style="width:70px"></b></div>` +
       `<div class="kv"><span>寬×深</span><b><input id="rcfW" type="number" step="1" value="${o.axis === "x" ? o.box[4] - o.box[1] : o.box[3] - o.box[0]}" style="width:60px">×<input id="rcfD" type="number" step="1" value="${o.box[5] - o.box[2]}" style="width:60px"></b></div>` +
       `<div class="kv"><span>top</span><b><input id="rcfTop" type="number" step="1" value="${o.box[5]}" style="width:70px"></b></div>`;
   pane.innerHTML =
@@ -3865,12 +3891,16 @@ for (const b of document.querySelectorAll("[data-tool]"))
 async function doUndoRedo(verb) {
   if (oc.busy) { toast("操作進行中,請稍候"); return; }
   const r = await api(`line ${verb}`);
-  if (!r.ok) { setStatus(r.error); toast(r.error); return; }
+  if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }
   setStatus(verb === "undo" ? "✓ 已復原" : "✓ 已重做");
-  await renderObjects();
-  /* 面內焦點:undo/redo 後 guide/timber/grid 快取與面板要重拉,
-     否則刪掉的參考線復原後圖層與 dump 對不上 */
-  if (oc.focus && oc.focus.t === "face") await feAfterChange();
+  if (oc.on) {
+    await renderObjects();
+    /* 面內焦點:undo/redo 後 guide/timber/grid 快取與面板要重拉 */
+    if (oc.focus && oc.focus.t === "face") await feAfterChange();
+  } else {
+    await render();
+    await refreshSurfaces();
+  }
 }
 $("btnUndo").addEventListener("click", () => doUndoRedo("undo"));
 $("btnRedo").addEventListener("click", () => doUndoRedo("redo"));
@@ -4274,7 +4304,7 @@ $("btnHole2").addEventListener("click", () => {
     const exIt = document.createElement("button");
     exIt.type = "button"; exIt.className = "menu-item";
     exIt.textContent = "載入範例";
-    exIt.addEventListener("click", () => loadScene("room_a.scene", "room_a.scene"));
+    exIt.addEventListener("click", () => loadExampleRoomA());
     pop.appendChild(exIt);
     $("sceneMenuLabel").textContent = curScene.name;
     markSceneItem();

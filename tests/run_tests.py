@@ -291,6 +291,20 @@ TESTS = [
     # 原點 (400,0,0) 驗 R17;成員清單少了 5 驗 R11(原面退出、新面游離)。
     {"scene": "_ax_r17_wall_column_face.scene", "expect": "accept",
      "contains": ["承載面原點：(400, 0, 0)", "成員邊界面：1 2 3 4 6"]},
+
+    # grid-ref 拒絕面：錯面／錯軸／中線不符／無擋面（R4 支撐義務）
+    {"scene": "_edge_gridref_wrong_face.scene", "expect": "reject",
+     "error": "grid-ref 必須引用同面、有效且與凍結中線一致的垂直格線"},
+    {"scene": "_edge_gridref_wrong_axis.scene", "expect": "reject",
+     "error": "grid-ref 必須引用同面、有效且與凍結中線一致的垂直格線"},
+    {"scene": "_edge_gridref_midline.scene", "expect": "reject",
+     "error": "grid-ref 必須引用同面、有效且與凍結中線一致的垂直格線"},
+    {"scene": "_edge_gridref_no_support.scene", "expect": "reject",
+     "error": "凍結跨距沒有合法支撐"},
+    {"scene": "_edge_place_through_short.scene", "expect": "reject",
+     "error": "place 缺少長度方向與深度側"},
+    {"scene": "_edge_i19_place_order.scene", "expect": "reject",
+     "error": "V_CUT_PRIORITY"},
 ]
 
 LEN_RE = re.compile(r"L=(\d+)")

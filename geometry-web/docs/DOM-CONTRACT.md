@@ -135,6 +135,13 @@
 | `toast` | 錯誤提示(bridge error 原文) | `#toastRegion` 子元素 |
 | `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews` |
 | `renderObjects` | 重拉 objects/surfaces 並重繪畫布 | 測試在送指令後手動觸發刷新 |
+| `curScene` | 目前場景 `{path,name}` | P29 載入範例後比對路徑 |
+| `closeMenus` | 關閉所有 `.menu-pop` | P28 開檔案選單前 |
+| `setView3` | 開／關三視圖 | P24–P30 準備場 |
+| `selectObject` | 選物件並開檢視器 | P25 樑套用 |
+| `resetSceneFocus` | 離開焦點並重繪 | P23 上傳後 |
+| `feRenderProjection` | 面內投影重繪 | P27 面投影拖曳 |
+| `dragging` | 三視圖參考線拖曳狀態 | P27 取消拖曳須 `started` |
 
 ## 測試自注入
 

@@ -10,6 +10,7 @@ import http.server
 import json
 import os
 import pathlib
+import queue
 import re
 import shlex
 import subprocess
@@ -35,6 +36,25 @@ bridge = subprocess.Popen(
     stdin=subprocess.PIPE, stdout=subprocess.PIPE,
 )
 bridge_lock = threading.Lock()
+bridge_responses = queue.Queue()
+bridge_failure = None
+BRIDGE_TIMEOUT = 30.0
+_upload_temps = []
+
+
+def read_bridge_responses():
+    while True:
+        try:
+            response = bridge.stdout.readline()
+        except OSError:
+            response = b""
+        bridge_responses.put(response)
+        if not response:
+            return
+
+
+bridge_reader = threading.Thread(target=read_bridge_responses, daemon=True)
+bridge_reader.start()
 
 _WIN_PATH = re.compile(r"^([A-Za-z]):[\\/](.*)$")
 
@@ -55,12 +75,36 @@ def to_bridge_path(path: str) -> str:
 
 def ask_bridge(cmd: str) -> bytes:
     """送一行指令、收一行 JSON（原樣回傳 bytes，不再解析）。"""
+    global bridge_failure
+    if not isinstance(cmd, str) or not cmd.strip():
+        return err_json("橋接指令不得為空")
+    if any(c in cmd for c in "\r\n\0"):
+        return err_json("指令不得含換行或 NUL")
     if cmd.startswith("loadfile "):
         cmd = "loadfile " + to_bridge_path(cmd[len("loadfile "):])
-    with bridge_lock:
-        bridge.stdin.write(cmd.encode("utf-8") + b"\n")
-        bridge.stdin.flush()
-        return bridge.stdout.readline()
+    payload = cmd.encode("utf-8")
+    if len(payload) > BRIDGE_MAX_CMD:
+        return err_json("指令超過單行上限")
+    if not bridge_lock.acquire(timeout=BRIDGE_TIMEOUT):
+        return err_json("橋接器忙碌，請稍後再試")
+    try:
+        if bridge_failure is not None:
+            return err_json(bridge_failure)
+        try:
+            bridge.stdin.write(payload + b"\n")
+            bridge.stdin.flush()
+            response = bridge_responses.get(timeout=BRIDGE_TIMEOUT)
+        except queue.Empty:
+            bridge_failure = "橋接器回應逾時，請重新啟動服務"
+        except (OSError, ValueError):
+            bridge_failure = "橋接器連線中斷，請重新啟動服務"
+        else:
+            if response:
+                return response
+            bridge_failure = "橋接器已結束，請重新啟動服務"
+        return err_json(bridge_failure)
+    finally:
+        bridge_lock.release()
 
 
 # bridge stdin 緩衝 4096 bytes：fgets 上限 4095 字元含換行，
@@ -125,7 +169,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if self.path == "/api":
             try:
                 cmd = json.loads(body.decode("utf-8"))["cmd"]
-            except (ValueError, KeyError, UnicodeDecodeError):
+            except (ValueError, KeyError, TypeError, UnicodeDecodeError):
                 self._send(err_json("bad request"))
                 return
             if not isinstance(cmd, str):
@@ -145,6 +189,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     "wb", suffix=".scene", delete=False) as f:
                 f.write(body)
                 tmp = f.name
+            while len(_upload_temps) > 0:
+                old = _upload_temps.pop(0)
+                try:
+                    os.unlink(old)
+                except OSError:
+                    pass
+            _upload_temps.append(tmp)
             resp = ask_bridge("loadfile " + tmp)
             # 回傳暫存檔路徑,前端 curScene 指到它,「重新載入場景」載回剛上傳的內容。
             try:
@@ -162,4 +213,9 @@ if __name__ == "__main__":
     try:
         http.server.ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
     finally:
+        for path in _upload_temps:
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
         bridge.terminate()

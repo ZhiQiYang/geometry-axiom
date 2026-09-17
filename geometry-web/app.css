@@ -882,7 +882,7 @@ svg text { user-select: none; }
 .object-list { user-select: none; }
 
 /* 頂列搜尋框寬度調整(右側元件較多) */
-.top-actions { flex-wrap: nowrap; overflow: hidden; }
+.top-actions { flex-wrap: nowrap; overflow: visible; }
 .top-actions .search-control { width: 160px; }
 #sceneList { max-width: 150px; font: inherit; font-size: 11px;
   padding: 4px 6px; border: 1px solid var(--border); border-radius: 7px; }

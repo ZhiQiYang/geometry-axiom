@@ -5,14 +5,14 @@
  *
  *   default                      → 內建房間 A（等價 room_a.scene）
  *   reset                        → 清空世界
- *   line <文字>                  → 套用一行場景指令（surface/edge/guide/timber/place/move/room/reset）
- *   loadfile <路徑>              → reset 後 parse_scene_file（伺服器端路徑）
+ *   line <文字>                  → 套用一行場景指令（與 SCENE_COMMANDS 同一條路）
+ *   loadfile <路徑>              → parse_scene_file（失敗還原世界；成功記入 undo）
  *   render                       → {"ok":true,"layout":{...},"ops":[...]}
  *   pick <view> <x> <y> <r>      → 命中描述 + hover 高亮 ops（r = 拾取半徑，視圖內 mm）
  *   drag <guide_idx> <view> <x> <y> → 拖曳參考線：反解 uv、clamp、guide_line_move
  *
  * ops 串流就是 DrawTarget 回呼的逐字序列化：begin/rect/poly/line/text/end。
- * 網頁端是唯一新增東西；C 端一行都沒改。
+ * 幾何本體在 current_geometry.c；本檔只做 stdin/JSON 橋。
  */
 #define _CRT_SECURE_NO_WARNINGS
 #ifdef _WIN32
@@ -124,6 +124,11 @@ static const DrawTarget JSON_TARGET = {
 static bool feed_line(const char *path, int line_no, const char *text, World *world)
 {
     char line[SCENE_MAX_LINE];
+    if (strlen(text) > sizeof line - 2) {
+        scene_error(path, line_no, "指令超過 DSL 單行上限");
+        if (g_hist_grouping) history_group_rollback(world);
+        return false;
+    }
     snprintf(line, sizeof line, "%s", text);
 
     char *hash = strchr(line, '#');
@@ -131,7 +136,12 @@ static bool feed_line(const char *path, int line_no, const char *text, World *wo
 
     char *tokens[SCENE_MAX_TOKENS];
     int count = split_tokens(line, tokens, SCENE_MAX_TOKENS);
-    if (count <= 0) return true;   /* 空行／純註解：不算錯 */
+    if (count < 0) {
+        scene_error(path, line_no, "這一行的欄位太多");
+        if (g_hist_grouping) history_group_rollback(world);
+        return false;
+    }
+    if (count == 0) return true;   /* 空行／純註解：不算錯 */
 
     /* undo/redo 攔截 + 變更前記快照，都在共享核心裡。 */
     return apply_interactive_tokens(path, line_no, tokens, count, world);
@@ -283,7 +293,18 @@ static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
     if (off < lo) off = lo;
     if (off > hi) off = hi;
 
-    guide_line_move(surface, boundary, gd, off);
+    /* 拖曳走同一個 move 交易入口：保留驗證、undo/redo 與群組語意。 */
+    if (off != gd->offset) {
+        char command[96];
+        snprintf(command, sizeof command, "move %u %" PRId64,
+                 (unsigned)gd->id, (int64_t)off);
+        if (!feed_line("<拖曳>", ++g_input_line_no, command, &g_world)) {
+            fputs("{\"ok\":false,\"error\":", stdout);
+            js_string(scene_last_error());
+            fputs("}\n", stdout);
+            return;
+        }
+    }
     printf("{\"ok\":true,\"offset\":%" PRId64 "}\n", (int64_t)off);
 }
 
@@ -713,6 +734,12 @@ static void cmd_dump(void)
     fclose(tmp);
 }
 
+/* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
+static bool view_coord_in_range(Coord value)
+{
+    return value >= -4 * COORD_LIMIT && value <= 4 * COORD_LIMIT;
+}
+
 int main(void)
 {
 #ifdef _WIN32
@@ -736,7 +763,11 @@ int main(void)
             continue;
         }
         while (n > 0 && (line[n - 1] == '\n' || line[n - 1] == '\r')) line[--n] = '\0';
-        if (n == 0) continue;
+        if (n == 0 || strspn(line, " \t") == n) {
+            fputs("{\"ok\":false,\"error\":\"橋接指令不得為空\"}\n", stdout);
+            fflush(stdout);
+            continue;
+        }
 
         char *arg = strchr(line, ' ');
         if (arg != NULL) *arg++ = '\0';
@@ -750,6 +781,7 @@ int main(void)
                   stdout);
         } else if (strcmp(line, "reset") == 0) {
             memset(&g_world, 0, sizeof g_world);
+            history_clear();
             fputs("{\"ok\":true}\n", stdout);
         } else if (strcmp(line, "line") == 0 && arg != NULL) {
             cmd_line(arg);
@@ -757,35 +789,40 @@ int main(void)
             cmd_loadfile(arg);
         } else if (strcmp(line, "pick") == 0 && arg != NULL) {
             int v; long long x, y, r;
-            if (sscanf(arg, "%d %lld %lld %lld", &v, &x, &y, &r) == 4) {
+            if (sscanf(arg, "%d %lld %lld %lld", &v, &x, &y, &r) == 4 &&
+                view_coord_in_range(x) && view_coord_in_range(y) && coord_in_range(r) && r >= 0) {
                 cmd_pick(v, (Coord)x, (Coord)y, (Coord)r);
             } else {
                 fputs("{\"ok\":false,\"error\":\"pick 用法：pick v x y r\"}\n", stdout);
             }
         } else if (strcmp(line, "drag") == 0 && arg != NULL) {
             int gi, v; long long x, y;
-            if (sscanf(arg, "%d %d %lld %lld", &gi, &v, &x, &y) == 4) {
+            if (sscanf(arg, "%d %d %lld %lld", &gi, &v, &x, &y) == 4 &&
+                view_coord_in_range(x) && view_coord_in_range(y)) {
                 cmd_drag(gi, v, (Coord)x, (Coord)y);
             } else {
                 fputs("{\"ok\":false,\"error\":\"drag 用法：drag idx v x y\"}\n", stdout);
             }
         } else if (strcmp(line, "uv") == 0 && arg != NULL) {
             int v; long long x, y, sid;
-            if (sscanf(arg, "%d %lld %lld %lld", &v, &x, &y, &sid) == 4) {
+            if (sscanf(arg, "%d %lld %lld %lld", &v, &x, &y, &sid) == 4 &&
+                view_coord_in_range(x) && view_coord_in_range(y)) {
                 cmd_uv(v, (Coord)x, (Coord)y, (uint32_t)sid);
             } else {
                 fputs("{\"ok\":false}\n", stdout);
             }
         } else if (strcmp(line, "proj") == 0 && arg != NULL) {
             int v; long long u, vv, sid;
-            if (sscanf(arg, "%d %lld %lld %lld", &v, &u, &vv, &sid) == 4) {
+            if (sscanf(arg, "%d %lld %lld %lld", &v, &u, &vv, &sid) == 4 &&
+                coord_in_range(u) && coord_in_range(vv)) {
                 cmd_proj(v, (Coord)u, (Coord)vv, (uint32_t)sid);
             } else {
                 fputs("{\"ok\":false}\n", stdout);
             }
         } else if (strcmp(line, "bhit") == 0 && arg != NULL) {
             long long bid, u, v, r;
-            if (sscanf(arg, "%lld %lld %lld %lld", &bid, &u, &v, &r) == 4) {
+            if (sscanf(arg, "%lld %lld %lld %lld", &bid, &u, &v, &r) == 4 &&
+                coord_in_range(u) && coord_in_range(v) && coord_in_range(r) && r >= 0) {
                 cmd_bhit((uint32_t)bid, (Coord)u, (Coord)v, (Coord)r);
             } else {
                 fputs("{\"ok\":false}\n", stdout);

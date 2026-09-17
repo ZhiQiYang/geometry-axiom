@@ -1,0 +1,8 @@
+# I19：已放主支兩端懸空（I6 合法）後，再放副支與其端面 T 接。
+# 新料自己的端面檢查不會看到這次違規；要靠全量重驗才拒絕。
+# 檔案路徑走 EOF 重驗；互動路徑先前會接受半套世界。
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 1 1000 27 33 role primary
+place 1 on 1 at 2000 100 +v +n
+timber 2 3000 20 20 role secondary
+place 2 on 1 at 500 1100 +u +n

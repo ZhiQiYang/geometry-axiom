@@ -23,7 +23,7 @@ python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 
 ## 測試
 
-兩套裁判都必須全綠才算過閘：
+下列裁判都必須全綠才算過閘：
 
 ```bat
 :: 1) 直接 DOM/幾何測試（不需要瀏覽器）
@@ -31,7 +31,12 @@ node canvas_test.js direct
 
 :: 2) headless Chrome CDP 實機測試（需 server 在 8765、Chrome 於預設路徑、除錯埠 9333）
 node cdp_test.js
+
+:: 3) 伺服器輸入與故障處理（不需要真實 bridge 或瀏覽器）
+python -B -m unittest discover -s ../tests -p test_serve.py -v
 ```
+
+`canvas_test.js` 的 HTTP 模式與 `cdp_test.js` 都可用 `GEOMETRY_TEST_URL` 指定獨立測試伺服器，避免修改正在使用的場景。
 
 `cdp_test.js` 依印出的 ✓/✗ 計數決定 exit code（有 ✗ → exit 1）。
 測試依賴的 DOM id / class / 全域列在 `docs/DOM-CONTRACT.md`——改 DOM 必同步更新它與 `cdp_test.js`。

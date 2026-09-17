@@ -2345,6 +2345,175 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const p22c = await eval_(`api("objects").then(r=>r.faces.some(f=>f.id===41))`);
   console.log("P22 Ctrl+Z復原:", p22c ? "✓" : `✗ ${p22c}`);
 
+  const gridRefUi = await eval_(`(async()=>{
+    resetSceneFocus();
+    const lines = [
+      "reset",
+      "surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+      "grid 1 on 1 u 2000",
+      "timber 2 20 20 role boundary",
+      "timber 3 20 20 role boundary",
+      "place 2 on 1 at-edge e0 +u +n",
+      "place 3 on 1 at-edge e2 -u +n",
+      "timber 1 27 33 role primary",
+      "place 1 on 1 at-grid 1 u 0 +v +n"
+    ];
+    for (const line of lines) {
+      const r = await api("line " + line);
+      if (!r.ok) return {error:r.error};
+    }
+    await renderObjects();
+    await enterFocus("face", 1);
+    const before = fe.timbers.find(t => t.id === 1);
+    const saved = (await api("dump")).text;
+    const uploaded = await fetch("/upload", {method:"POST", body:saved}).then(r=>r.json());
+    if (!uploaded.ok) return {error:uploaded.error};
+    resetSceneFocus();
+    await renderObjects();
+    await enterFocus("face", 1);
+    const after = fe.timbers.find(t => t.id === 1);
+    const locked = await api("line grid 1 on 1 u 1500");
+    return {before,after,hasRef:saved.includes("grid-ref 1 u 0"),
+            locked:!locked.ok && /V_GRID_LOCKED/.test(locked.error || "")};
+  })()`);
+  const gridRefUiOk = gridRefUi && gridRefUi.hasRef && gridRefUi.locked &&
+    gridRefUi.before && gridRefUi.before.L === 2960 &&
+    JSON.stringify(gridRefUi.before) === JSON.stringify(gridRefUi.after);
+  if (gridRefUiOk) passN++; else failN++;
+  _log("P23 grid-ref 存檔上傳後足跡與引用鎖:", gridRefUiOk ? "PASS" : "FAIL", JSON.stringify(gridRefUi));
+
+  { // P24–P30 使用獨立作用域，避免與既有測試的輔助函式同名。
+  const check = (name, ok, detail = '') => console.log(name, ok ? '✓' : '✗', JSON.stringify(detail));
+  const waitIdle = async () => {
+    for (let i=0;i<100;i++) {
+      if (await eval_('!oc.busy && !dragging')) return;
+      await sleep(50);
+    }
+    throw Error('UI did not finish transaction');
+  };
+  const clickSelector = async sel => {
+    const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+    await click(p.x,p.y); await sleep(120); await waitIdle();
+  };
+  const setupRemaining = async lines => {
+    const out = await eval_(`(async()=>{await setView3(false);resetSceneFocus();await api('reset');const out=[];for(const s of ${JSON.stringify(lines)})out.push(await api('line '+s));await renderObjects();return out})()`);
+    if (!Array.isArray(out) || out.some(r=>!r.ok)) throw Error('test setup failed '+JSON.stringify(out));
+  };
+  const remainingShot = async name => {
+    const dest=process.env.GEOMETRY_REPAIR_SCREENSHOT_DIR;
+    if (!dest) return;
+    const r=await send('Page.captureScreenshot',{format:'png'});
+    require('fs').writeFileSync(require('path').join(dest,name+'.png'),Buffer.from(r.result.data,'base64'));
+  };
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
+  check('P24 page identity',await eval_(`location.href === ${JSON.stringify(process.env.GEOMETRY_TEST_URL || 'http://localhost:8765/')} && document.title.length>0 && document.querySelectorAll('button').length>10 && !document.querySelector('vite-error-overlay,nextjs-portal')`));
+
+  for (const axis of ['x','y']) for (const center of [-100,-1,0,100]) for (const width of [300,301]) {
+    await setupRemaining([`beam 1 along ${axis} from 0 to 1000 at ${center} width ${width} depth 100 top 1000`]);
+    await eval_(`selectObject('beam',1)`);
+    const before=await eval_(`(async()=>({box:(await api('objects')).beams[0].box,c:+document.querySelector('#rcfC').value,hasApply:!!document.querySelector('#rcfApply')}))()`);
+    const shifted=center+40;
+    await eval_(`document.querySelector('#rcfC').value=${JSON.stringify(String(shifted))}`);
+    await clickSelector('#rcfApply');
+    const after=await eval_(`api('objects').then(r=>r.beams[0].box)`);
+    const gotC=axis==='x' ? after[1]+Math.floor((after[4]-after[1])/2) : after[0]+Math.floor((after[3]-after[0])/2);
+    check(`P25 beam ${axis}/${center}/${width}`,before.hasApply && before.c===center && gotC===shifted,{before,after,gotC,shifted});
+  }
+
+  const outer=['0,0','4000,0','4000,3000','0,3000'];
+  const hole=['500,500','1500,500','1500,1500','500,1500'];
+  for (const ro of [false,true]) for (const rh of [false,true]) {
+    await setupRemaining(['boundary 1 outline '+(ro?[...outer].reverse():outer).join(' ')+' hole '+(rh?[...hole].reverse():hole).join(' ')]);
+    await eval_(`enterFocus('face',1)`);
+    const text=await eval_(`document.querySelector('#faceInspectorContent').innerText`);
+    check(`P26 hole area outer=${ro} hole=${rh}`,text.includes('11.00 m²'),text.match(/面積[^\n]*\n[^\n]*/)?.[0]);
+  }
+  await remainingShot('hole-area');
+
+  await eval_(`(async()=>{resetSceneFocus();await api('default');await setView3(true);await render()})()`);
+  const initial=(await eval_(`api('dump')`)).text;
+  const points=await eval_(`(async()=>{const a=[];for(const v of [300,900,1200]){const p=await api('proj 2 2500 '+v+' 1');const t=transform(),r=cv.getBoundingClientRect(),l=layout.views[2];a.push({x:r.left+t.ox+(p.x+l.tx)*t.s,y:r.top+t.oy+(p.y+l.ty)*t.s});}return a})()`);
+  await drag(points[0].x,points[0].y,points[1].x,points[1].y,8);
+  await waitIdle();
+  const moved=(await eval_(`api('dump')`)).text;
+  check('P27 real guide drag changed model',initial!==moved && /guide 1 1 u 900/.test(moved));
+  const key = async redo => {
+    for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'z',code:'KeyZ',windowsVirtualKeyCode:90,modifiers:redo?10:2});
+    await sleep(200);await waitIdle();
+  };
+  await key(false);
+  check('P27 one Ctrl+Z restores whole gesture',(await eval_(`api('dump')`)).text===initial);
+  await key(true);
+  check('P27 Ctrl+Shift+Z redoes whole gesture',(await eval_(`api('dump')`)).text===moved);
+  await send('Input.dispatchMouseEvent',{type:'mousePressed',...points[1],button:'left',clickCount:1});
+  await waitIdle();
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',...points[2],button:'left',buttons:1});
+  await waitIdle();
+  const mid=(await eval_(`api('dump')`)).text;
+  const engaged=await eval_(`!!(dragging && dragging.started && dragging.guide>=0)`);
+  check('P27 cancel drag engaged',engaged && mid!==moved && /guide 1 1 u 1200/.test(mid),{engaged,mid});
+  await eval_(`cv.dispatchEvent(new PointerEvent('pointercancel',{bubbles:true,cancelable:true,pointerId:1}))`);
+  await send('Input.dispatchMouseEvent',{type:'mouseReleased',...points[2],button:'left',clickCount:1});
+  await waitIdle();
+  check('P27 cancelled drag restores model',(await eval_(`api('dump')`)).text===moved);
+  // A quick click must not leave an open transaction or consume an undo step.
+  await click(points[1].x,points[1].y);await waitIdle();await key(false);
+  check('P27 quick click keeps prior undo',(await eval_(`api('dump')`)).text===initial);
+
+  for (const scope of ['face','space']) {
+    await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+                          'guide 1 1 u 300', 'space 1 boundary 1']);
+    const pp=await eval_(`(async()=>{
+      await enterFocus('${scope}',1);
+      let svg;
+      if ('${scope}'==='face') {
+        fe.projOpen=true;fe.projViews=new Set([2]);
+        document.querySelector('#projBody').hidden=false;
+        await feRenderProjection();
+        svg=document.querySelector('#projViews [data-view="2"]').closest('svg');
+      } else {
+        document.querySelector('[data-ss-tab="proj"]').click();
+        svg=document.querySelector('#spaceProjSvg');
+      }
+      svg.scrollIntoView({block:'nearest'});
+      const L=(await api('render')).layout.views[2];
+      const out=[];
+      for(const v of [300,900]) {
+        const p=await api('proj 2 2500 '+v+' 1'),q=svg.createSVGPoint();
+        q.x=p.x+('${scope}'==='space'?L.tx:0);q.y=p.y+('${scope}'==='space'?L.ty:0);
+        const c=q.matrixTransform(svg.getScreenCTM());out.push({x:c.x,y:c.y});
+      }
+      return out;
+    })()`);
+    if (!Array.isArray(pp)) { check('P27 '+scope+' projection setup',false,pp); continue; }
+    const start=(await eval_(`api('dump')`)).text;
+    await drag(pp[0].x,pp[0].y,pp[1].x,pp[1].y,6);await waitIdle();
+    const after=(await eval_(`api('dump')`)).text;
+    check('P27 '+scope+' projection drag',after!==start && /guide 1 1 u 900/.test(after));
+    await key(false);
+    check('P27 '+scope+' projection one-step undo',(await eval_(`api('dump')`)).text===start);
+  }
+
+  for (const width of [1400,1160]) {
+    await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:false});
+    await setupRemaining(['boundary 99 outline 0,0 100,0 100,100 0,100']);
+    await eval_(`closeMenus()`);
+    await clickSelector('#fileMenuBtn');
+    const hit=await eval_(`(()=>{const e=document.querySelector('#btnEx'),r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`);
+    check('P28 file menu hit target @'+width,hit);
+    await remainingShot('file-menu-'+width);
+    await clickSelector('#btnEx');
+    let loaded;
+    for (let i=0;i<100;i++) {
+      loaded=await eval_(`({path:curScene.path,name:curScene.name,status:document.querySelector('#status').textContent,ids:oc.faces.map(f=>f.id)})`);
+      if (loaded.status.includes('已載入') && loaded.ids.includes(1) && !loaded.ids.includes(99)) break;
+      await sleep(50);
+    }
+    check('P29 example loads from web directory @'+width,loaded.name==='room_a.scene' && loaded.path!=='room_a.scene' && loaded.ids.includes(1) && !loaded.ids.includes(99) && loaded.status.includes('已載入'),loaded);
+  }
+  check('P30 no uncaught browser exceptions',excN===0,excN);
+  }
+
   chrome.kill();
   _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);
   process.exit(failN > 0 ? 1 : 0);

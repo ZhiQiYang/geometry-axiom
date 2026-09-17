@@ -6,6 +6,7 @@
 const { spawn } = require("child_process");
 
 const DIRECT = process.argv.includes("direct");
+const API_URL = new URL("/api", process.env.GEOMETRY_TEST_URL || "http://localhost:8765/").href;
 let api;
 if (DIRECT) {
   const bridge = spawn(`"${__dirname.replace(/\//g, "\\")}\\web_bridge.exe"`,
@@ -25,7 +26,7 @@ if (DIRECT) {
                  return new Promise(r => resolveQ.push(r)); };
   process.on("exit", () => bridge.kill());
 } else {
-  api = cmd => fetch("http://localhost:8765/api", {
+  api = cmd => fetch(API_URL, {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ cmd })
   }).then(r => r.json());
@@ -172,12 +173,20 @@ function check(name, cond, detail="") {
   await api("reset");
   const setup = [
     "line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
-    "line grid 1 on 1 u 2000",
+    "line grid 1 on 1 u 2000 v 1000",
+    "line timber 2 20 20 role boundary",
+    "line timber 3 20 20 role boundary",
+    "line place 2 on 1 at-edge e0 +u +n",
+    "line place 3 on 1 at-edge e2 -u +n",
     "line timber 1 27 33 role primary",
-    "line place 1 on 1 at-grid 1 u 0 +v +n",
-    "line grid 1 on 1 u 1500"          /* 移動參考線 → 凍結角材不該跟著走 */
+    "line place 1 on 1 at-grid 1 u 0 +v +n"
   ];
-  for (const ln of setup) await api(ln);
+  for (const ln of setup) {
+    const r = await api(ln);
+    check("I setup: " + ln, r.ok, JSON.stringify(r));
+  }
+  const lockedMove = await api("line grid 1 on 1 u 1500");
+  check("I 移動錨定軸拒絕", !lockedMove.ok && /V_GRID_LOCKED/.test(lockedMove.error || ""), JSON.stringify(lockedMove));
   const d3 = await api("dump");
   check("dump 後 place 是 at u v", d3.ok && /place 1 on 1 at \d+ \d+/.test(d3.text), d3.text);
   await api("reset");
@@ -529,14 +538,14 @@ function check(name, cond, detail="") {
     check("N2 後續 newid 正常", (await api("newid")).ok === true);
 
     /* N3:Origin/Host 白名單(L3) */
-    const post = (path, headers, body) => fetch("http://localhost:8765" + path, {
+    const post = (path, headers, body) => fetch(new URL(path, API_URL), {
       method: "POST", headers, body
     });
     const n3a = await post("/api", { "Content-Type": "application/json",
       "Origin": "http://evil.example" }, JSON.stringify({ cmd: "newid" }));
     check("N3 惡意 Origin → 403", n3a.status === 403, "status=" + n3a.status);
     const n3b = await post("/api", { "Content-Type": "application/json",
-      "Origin": "http://localhost:8765" }, JSON.stringify({ cmd: "newid" }));
+      "Origin": new URL(API_URL).origin }, JSON.stringify({ cmd: "newid" }));
     check("N3 本機 Origin → 200", n3b.status === 200 && (await n3b.json()).ok === true);
     const n3c = await post("/api", { "Content-Type": "application/json" },
       JSON.stringify({ cmd: "newid" }));
@@ -544,7 +553,7 @@ function check(name, cond, detail="") {
     /* Host 偽造:fetch 禁改 Host,走 http.request */
     const n3d = await new Promise(res => {
       const rq = require("http").request(
-        { host: "127.0.0.1", port: 8765, path: "/api", method: "POST",
+        { host: new URL(API_URL).hostname, port: new URL(API_URL).port, path: "/api", method: "POST",
           headers: { "Content-Type": "application/json", "Host": "evil.example" } },
         r => { r.resume(); res(r.statusCode); });
       rq.on("error", () => res(0));
@@ -687,7 +696,133 @@ function check(name, cond, detail="") {
   check("S9 刪後軸仍由 boundary 推得",
         !(await api("line place 3 on 1 at 1000 500 +u +n")).ok);
 
+  console.log("== Review regression ==");
   await api("default");
+  check("失敗前建立可重做操作", (await api("line space 77")).ok);
+  check("復原成功", (await api("line undo")).ok);
+  check("壞指令拒絕", !(await api("line bogus")).ok);
+  check("失敗不清 redo", (await api("line redo")).ok);
+  check("redo 恢復空間", (await api("objects")).spaces.some(s => s.id === 77));
+
+  await api("default");
+  for (let i = 0; i < 32; i++) check("填滿歷史 " + i, (await api(`line move 1 ${400 + i}`)).ok);
+  check("滿歷史壞指令拒絕", !(await api("line bogus")).ok);
+  let undoCount = 0;
+  while ((await api("line undo")).ok) undoCount++;
+  check("失敗不擠掉最舊歷史", undoCount === 32, String(undoCount));
+
+  for (const bad of [
+    "line canvas-pos boundary 999 1 2",
+    "line space 77 " + "junk ".repeat(160),
+    "line space 77 " + " ".repeat(2050) + "garbage",
+  ]) {
+    await api("default");
+    const before = (await api("dump")).text;
+    check("群組開始", (await api("line history-begin")).ok);
+    check("群組首行", (await api("line space 77")).ok);
+    check("群組壞行拒絕 " + bad.slice(0, 38), !(await api(bad)).ok);
+    check("群組壞行自動回滾", (await api("dump")).text === before);
+    check("群組壞行後不能提交", !(await api("line history-end")).ok);
+    await api("line history-abort");
+    check("群組壞行不留歷史", !(await api("line undo")).ok);
+  }
+
+  await api("default");
+  const inputBefore = (await api("dump")).text;
+  for (const bad of ["line space 77 " + "junk ".repeat(160),
+                     "line space 88 " + " ".repeat(2050) + "garbage",
+                     "line space 88 #" + "界".repeat(700)]) {
+    check("超限 DSL 拒絕", !(await api(bad)).ok);
+    check("超限 DSL 不修改世界", (await api("dump")).text === inputBefore);
+  }
+  check("合法空白 DSL 接受", (await api("line   ")).ok);
+  check("合法註解接受", (await api("line # empty")).ok);
+  const maxLine = "space 77 #".padEnd(2046, "x");
+  check("DSL 邊界長度接受", (await api("line " + maxLine)).ok);
+  check("DSL 邊界後拒絕", !(await api("line " + maxLine + "x")).ok);
+
+  await api("reset");
+  for (const ln of setup) check("grid-ref setup", (await api(ln)).ok, ln);
+  const gridDump = (await api("dump")).text;
+  check("dump 保留 grid-ref", /place 1 .* grid-ref 1 u 0$/.test(gridDump.split("\n").find(l => l.startsWith("place 1 ")) || ""));
+  const renderBefore = await api("render");
+  const lockedChange = "line grid 1 on 1 u 1500";
+  let locked = await api(lockedChange);
+  check("重放前引用鎖生效", !locked.ok && /V_GRID_LOCKED/.test(locked.error || ""));
+  await api("reset");
+  for (const ln of gridDump.split("\n").filter(l => l.trim())) check("grid-ref 重放", (await api("line " + ln)).ok, ln);
+  check("grid-ref dump 往返一致", (await api("dump")).text === gridDump);
+  check("grid-ref 幾何不重算", JSON.stringify(await api("render")) === JSON.stringify(renderBefore));
+  locked = await api(lockedChange);
+  check("重放後引用鎖生效", !locked.ok && /V_GRID_LOCKED/.test(locked.error || ""));
+  locked = await api("line delete grid 1");
+  check("重放後不能刪引用網格", !locked.ok && /V_GRID_LOCKED/.test(locked.error || ""));
+  check("重放後追加格線合法", (await api("line grid 1 on 1 u 2000 2500")).ok);
+  check("重放後仍驗 auto 端面支撐", !(await api("line delete timber 2")).ok);
+
+  const savedPlace = gridDump.split("\n").find(l => l.startsWith("place 1 "));
+  for (const suffix of ["grid-ref 999 u 0", "grid-ref 1 v 0", "grid-ref 1 u -1", "grid-ref 1 u 99", "grid-ref 1 u 1", "grid-ref 1 u 2147483648"]) {
+    await api("reset");
+    for (const ln of gridDump.split("\n").filter(l => l.trim() && !l.startsWith("place 1 "))) check("壞引用 setup", (await api("line " + ln)).ok, ln);
+    check("壞引用 setup 追加線", (await api("line grid 1 on 1 u 2000 2500")).ok);
+    const before = (await api("dump")).text;
+    const ln = savedPlace.replace(/ grid-ref .*/, "") + " " + suffix;
+    check("壞引用拒絕 " + suffix, !(await api("line " + ln)).ok);
+    check("壞引用不修改世界", (await api("dump")).text === before);
+  }
+
+  await api("default");
+  check("default 可建世界", (await api("dump")).ok);
+  await api("line space 99");
+  check("reset 前可 undo", (await api("line undo")).ok);
+  await api("line space 99");
+  await api("reset");
+  check("reset 後 undo 疊已清", !(await api("line undo")).ok);
+
+  await api("reset");
+  for (const ln of [
+    "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+    "grid 1 on 1 u 2000",
+    "timber 1 20 20 role boundary",
+    "timber 2 20 20 role boundary",
+    "place 1 on 1 at-edge e0 +u +n",
+    "place 2 on 1 at-edge e2 -u +n",
+    "timber 3 27 33 role primary",
+  ]) check("through-short setup", (await api("line " + ln)).ok, ln);
+  const beforeShort = (await api("dump")).text;
+  const shortPlace = await api("line place 3 on 1 at-grid 1 u 0 through 1000");
+  check("through 漏方向拒絕", !shortPlace.ok && /缺少長度方向/.test(shortPlace.error || ""));
+  check("through 漏方向不改世界", (await api("dump")).text === beforeShort);
+
+  await api("reset");
+  check("I19 主支先放", (await api("line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000")).ok);
+  check("I19 主支懸空", (await api("line timber 1 1000 27 33 role primary")).ok);
+  check("I19 主支放置", (await api("line place 1 on 1 at 2000 100 +v +n")).ok);
+  check("I19 副支宣告", (await api("line timber 2 3000 20 20 role secondary")).ok);
+  const beforeI19 = (await api("dump")).text;
+  const i19 = await api("line place 2 on 1 at 500 1100 +u +n");
+  check("I19 後放副支拒絕", !i19.ok && /V_CUT_PRIORITY/.test(i19.error || ""), JSON.stringify(i19));
+  check("I19 後放不改世界", (await api("dump")).text === beforeI19);
+
+  await api("default");
+
+  for (const cmd of ["", "   ", "\t"]) {
+    try {
+      const r = await Promise.race([
+        api(cmd),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("空指令逾時")), 2000).unref()),
+      ]);
+      check("空指令拒絕 " + JSON.stringify(cmd), r.ok === false && !!r.error);
+      const next = await Promise.race([
+        api("newid"),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("後續指令逾時")), 2000).unref()),
+      ]);
+      check("空指令後通道可用", next.ok && Number.isInteger(next.boundary));
+    } catch (err) {
+      check("空指令不能阻塞通道", false, err.message);
+      break;
+    }
+  }
 
   console.log(`\n${pass} pass / ${fail} fail`);
   process.exit(fail ? 1 : 0);
