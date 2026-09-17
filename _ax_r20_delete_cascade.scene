@@ -1,0 +1,14 @@
+# 公理:R20:刪除或移動任一角材之後,同一面上的全部角材都要重驗;
+# 任一支不過就整筆拒絕回滾,不會留下一個「刪掉之後才發現有人失效」的世界。
+# 角材 3 是 auto,長度在 place 當下由「頂角材 1 側面到頂角材 2 側面」推出並凍結。
+# 接著 delete timber 1——角材 3 沒有被碰到,但它的一端從此懸空,
+# 重驗時被 I6 擋下 → 整筆回滾,連 delete 本身也不算數。
+placement 1 origin 0 0 2500 u +x v +y rect 0 0 4000 3000
+grid 1 on 1 u 1500
+timber 1 3000 20 20 role primary
+timber 2 3000 20 20 role primary
+timber 3 27 33 role secondary
+place 1 on 1 at 500 1000 +u +n
+place 2 on 1 at 500 2000 +u +n
+place 3 on 1 at-grid 1 u 0 through 1500 +v +n
+delete timber 1

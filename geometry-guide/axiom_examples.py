@@ -88,6 +88,48 @@ def run_scene(exe, scene_path, tmpdir, timeout=30):
     return {"rc": p.returncode, "out": p.stdout, "err": p.stderr, "svg": svg}
 
 
+def resolve_bridge(explicit=None):
+    """web_bridge 的位置:GEO_BRIDGE > 參數 > repo 內預設。
+
+    有三條公理(R1 拾取、R4 dump 往返、R5 拖曳 clamp)的行為不存在於場景 DSL——
+    SCENE_COMMANDS 裡沒有對應動詞,只有 bridge 的 pick / dump / drag 看得到。
+    """
+    cand = explicit or os.environ.get("GEO_BRIDGE") or \
+        os.path.join(ROOT, "geometry-web", "web_bridge.exe")
+    if not os.path.exists(cand):
+        raise RenderError(
+            "找不到 web_bridge:%s\n"
+            "先建置(geometry-web\\build.bat),或用 GEO_BRIDGE 指定。" % cand)
+    return cand
+
+
+def run_bridge(bridge, commands, timeout=60):
+    """一次餵完指令,回傳 [(指令, 回應原文)]。
+
+    協定:stdin 一行一個指令,stdout 一行回一個 JSON 物件。
+    行數對不上就是協定變了,直接炸掉——回應錯位比沒有更糟。
+    """
+    body = "\n".join(commands) + "\n"
+    try:
+        p = subprocess.run(
+            [bridge], input=body, capture_output=True, text=True,
+            encoding="utf-8", errors="replace", timeout=timeout)
+    except OSError as exc:
+        raise RenderError(
+            "web_bridge 啟動失敗:%s\n"
+            "本機 Smart App Control 會封鎖新編譯的未簽章 exe。"
+            "備援:在 WSL 裡編出 bridge 後用 GEO_BRIDGE 指定。" % exc)
+
+    out = [ln for ln in (p.stdout or "").splitlines() if ln.strip()]
+    if len(out) != len(commands):
+        raise RenderError(
+            "bridge 回應行數與指令數不符(送 %d 收 %d),協定可能變了。"
+            "第一行 stderr:%s"
+            % (len(commands), len(out),
+               (p.stderr or "").strip().splitlines()[:1]))
+    return list(zip(commands, out))
+
+
 def smoke(exe, tmpdir):
     """開跑前確認 exe 真的能執行。擋住就整份失敗,不要跑五十幾次才發現。"""
     r = run_scene(exe, os.path.join(ROOT, SMOKE_SCENE), tmpdir)

@@ -1,0 +1,12 @@
+# 公理:R16 的拒絕側:樑只從 x=0 到 x=2000,沒有跨滿牆 3 的整個 u 幅、
+# 也沒有到達另一端的輪廓端緣 → 這不是半平面裁切,會切出一個 L 形外環 → 拒絕。
+# 這條刻意只接受「整段降低」,不接受切一半,因為切一半的結果不是唯一的。
+surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
+surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
+surface 4 origin 0    3000 0    u +z v +x outline 0,0 2500,0 2500,4000 0,4000
+surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000
+surface 6 origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500
+space 1 boundary 1 2 3 4 5 6
+beam 1 in 1 along x from 0 to 2000 at 150 width 300 depth 400
+apply-proj 3 b1

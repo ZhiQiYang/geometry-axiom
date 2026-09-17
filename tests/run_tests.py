@@ -6,6 +6,8 @@
   lengths: accept 時,依序比對輸出中所有「尺寸:L=…」的值
   error:   reject 時,stderr 第一行必須包含此子字串
   contains: accept 時,stdout 必須包含此子字串(可多條)
+  not_contains: accept 時,stdout 不得包含此子字串(可多條)——
+                用來驗「什麼都沒發生」這種主張,光靠 accept 驗不到
 
 用法:
   python tests/run_tests.py [exe 路徑]      # 預設 ../cg_new.exe
@@ -229,6 +231,66 @@ TESTS = [
     {"scene": "_rc_col_corner.scene", "expect": "accept"},
     {"scene": "_rc_beam_cross.scene", "expect": "accept"},
     {"scene": "_rc_beam_edge.scene", "expect": "accept"},
+
+    # ---- GEO-113 公理示範夾具(_ax_*):每條公理至少一個看得懂的最小場景 ----
+    {"scene": "_ax_i18_norole.scene", "expect": "reject",
+     "error": "timber 需要 role 子句"},
+    {"scene": "_ax_i18_nopriority.scene", "expect": "reject",
+     "error": "custom 角色需要 priority"},
+    {"scene": "_ax_i18_priority_misuse.scene", "expect": "reject",
+     "error": "priority 只能配 custom 角色"},
+    {"scene": "_ax_i12_auto_with_at.scene", "expect": "reject",
+     "error": "只能用 at-grid 或 at-edge 放置"},
+    {"scene": "_ax_i12_explicit_with_atgrid.scene", "expect": "reject",
+     "error": "明寫長度角材只能用 at 或 at-guides 放置"},
+    {"scene": "_ax_i9_orphan_timber.scene", "expect": "reject",
+     "error": "角材 2 沒有 place"},
+    {"scene": "_ax_i9_forward_ref.scene", "expect": "reject",
+     "error": "place 指的角材不存在"},
+    {"scene": "_ax_i1_frame_degenerate.scene", "expect": "reject",
+     "error": "u 軸與 v 軸必須互相垂直"},
+    {"scene": "_ax_i4_empty_space.scene", "expect": "accept",
+     "contains": ["空間 ID：1", "狀態：部分"]},
+    {"scene": "_ax_i7_guide_out_of_range.scene", "expect": "reject",
+     "error": "guide 的 offset 落在承載面範圍之外"},
+    {"scene": "_ax_i16_beam_outside.scene", "expect": "reject",
+     "error": "樑宣告後有物件失效"},
+    # 最後一行 delete column 1 是斷言:柱若被連坐刪掉,這一行會失敗。
+    {"scene": "_ax_i17_delete_space.scene", "expect": "accept"},
+    {"scene": "_ax_r20_delete_cascade.scene", "expect": "reject",
+     "error": "刪除後 World 失效，已回滾"},
+    {"scene": "_ax_d12_i14_canvas.scene", "expect": "accept",
+     "lengths": [1800], "contains": ["角材原點：(500, 300, 2500)"]},
+    {"scene": "_ax_i14_canvas_missing.scene", "expect": "reject",
+     "error": "canvas-pos 指的物件不存在"},
+    {"scene": "_ax_r08_snapshot.scene", "expect": "accept",
+     "contains": ["孔 #0", "(1000, 1000) -> (1400, 1000)"]},
+    {"scene": "_ax_r09_unplaced.scene", "expect": "reject",
+     "error": "未放置的面不能套用投影"},
+    {"scene": "_ax_r10_hole_straddles_cut.scene", "expect": "reject",
+     "error": "套用投影後有物件失效"},
+    {"scene": "_ax_r10_hole_follows_piece.scene", "expect": "accept",
+     "contains": ["孔 #0", "(800, 1000) -> (1200, 1000)"]},
+    {"scene": "_ax_r12_prefix_col.scene", "expect": "accept",
+     "contains": ["孔 #0"]},
+    # 樑是條帶項又沒帶 cut-strip → 幾何一動也不動,所以要驗「沒有孔」。
+    {"scene": "_ax_r12_prefix_beam.scene", "expect": "accept",
+     "not_contains": ["孔 #0"]},
+    {"scene": "_ax_r13_anchor_lost.scene", "expect": "reject",
+     "error": "拆分後參考線/網格/角材失去承載面"},
+    {"scene": "_ax_r13_anchor_follows.scene", "expect": "accept",
+     "lengths": [500]},
+    {"scene": "_ax_r14_straddles_cut.scene", "expect": "reject",
+     "error": "投影項橫跨拆分線"},
+    {"scene": "_ax_r15_missing_item.scene", "expect": "reject",
+     "error": "apply-proj 的項目在此面上不存在"},
+    {"scene": "_ax_r16_top_drop.scene", "expect": "accept",
+     "contains": ["局部範圍：U=[0,4000]，V=[0,2100]"]},
+    {"scene": "_ax_r16_not_full_span.scene", "expect": "reject",
+     "error": "整段降低的矩形未跨滿輪廓"},
+    # 原點 (400,0,0) 驗 R17;成員清單少了 5 驗 R11(原面退出、新面游離)。
+    {"scene": "_ax_r17_wall_column_face.scene", "expect": "accept",
+     "contains": ["承載面原點：(400, 0, 0)", "成員邊界面：1 2 3 4 6"]},
 ]
 
 LEN_RE = re.compile(r"L=(\d+)")
@@ -254,6 +316,11 @@ def run_one(exe: str, spec: dict) -> str:
         for needle in spec.get("contains", []):
             if needle not in out:
                 return f"FAIL 輸出缺少「{needle}」"
+        # 有些夾具主張的是「什麼都沒發生」(例如 R12:條帶項沒帶 cut-strip
+        # 就不動幾何)。那種主張只能用「不該出現」來驗,accept 本身驗不到。
+        for needle in spec.get("not_contains", []):
+            if needle in out:
+                return f"FAIL 輸出不該有「{needle}」"
         return "ok"
 
     # expect == reject

@@ -4,6 +4,7 @@
 # 這裡角材 1 明寫長度 2000,貼在 e0(v=0,沿 u,u∈[0,4000])上,
 # onBoundary 成立(側面 v=0 與 e0 共線、重疊 2000 > 0),
 # 但 coversEdge=false(2000 ⊉ 4000)→ 拒絕,訊息含覆蓋長度/邊長。
+# 公理:R18:上面那段推導用的 onBoundary 與 coversEdge,就是 R18 定義的純幾何衍生屬性——只看外輪廓,不看宣告也不看錨法。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 timber 1 2000 27 33 role boundary
 place 1 on 1 at 0 0 +u +n

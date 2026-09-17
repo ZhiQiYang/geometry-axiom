@@ -2,6 +2,8 @@
 # 每片面的法向都朝外（U x V = N 自動保證）；space 動詞把它們綁成一個空間。
 
 # surface id origin x y z u 軸 v 軸 outline u,v u,v u,v u,v
+# 公理:I1:六片面各用不同的 U/V 組合(+x+y、+y+x、+z+x…),每一組都是單位、正交、且 U×V=N 指向房間外;有合法框架,D2 的映射才成立。
+# 公理:D5:space 的建構子參數就是一組邊界面 id;各軸範圍與「是否封閉」是推導出來的唯讀結果,不是輸入。
 surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000   # 天花板（法向 +Z）
 surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000   # 地板（法向 -Z：+y x +x = -z）
 surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500   # y=0 牆（法向 -Y）

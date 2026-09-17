@@ -2,6 +2,7 @@
 # 牆的 U 沿房間 X、V 沿房間 Z（直立）；角材可以長在牆上直立。
 
 # surface id origin x y z u 軸 v 軸 outline u,v u,v u,v u,v
+# 公理:D5:同一個動詞只綁兩片面也成立——成員數 ≥0,封閉與否是推導不是前提(對照 room_full.scene 的六面封閉)。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 surface 2 origin 0 0 0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
 

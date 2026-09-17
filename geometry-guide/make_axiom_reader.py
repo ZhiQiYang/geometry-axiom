@@ -20,10 +20,16 @@ v2 加的是「光看條文還是不懂它在講什麼」:
 會過期的閱讀器比沒有更糟,所以解析不到 60 條條文、發現懸空引用、
 白話出現公理層沒有的條號,一律非 0 退出。
 
+GEO-113 之後,63 條全部都有範例。其中三條(R1 拾取、R4 dump 往返、R5 拖曳)
+的行為根本不在場景 DSL 裡——SCENE_COMMANDS 沒有 pick / dump / drag,
+所以它們的範例改用 web bridge 實錄:真的把 bridge 跑起來,
+把送出去的指令與收回來的原文貼上(見 axiom_transcripts.py)。
+
 用法:
-  python geometry-guide/make_axiom_reader.py              # 含範例圖
+  python geometry-guide/make_axiom_reader.py              # 含範例圖與實錄
   python geometry-guide/make_axiom_reader.py --no-render   # 不跑 exe,無圖版
-  GEO_EXE=/tmp/cg python geometry-guide/make_axiom_reader.py
+  python geometry-guide/make_axiom_reader.py --no-bridge   # 不跑 bridge,無實錄版
+  GEO_EXE=/tmp/cg GEO_BRIDGE=/tmp/wb python geometry-guide/make_axiom_reader.py
 """
 import ast
 import html
@@ -40,6 +46,7 @@ sys.path.insert(0, HERE)
 
 import axiom_matrix as am                                    # noqa: E402
 import axiom_examples as ax                                  # noqa: E402
+import axiom_transcripts as tr                               # noqa: E402
 
 ROOT = am.ROOT
 OUT = os.path.join(HERE, "公理層-閱讀器.html")
@@ -182,12 +189,54 @@ def expect_text(spec):
 # ------------------------------------------------------------------
 # 範例區塊
 # ------------------------------------------------------------------
-def build_examples(scenes, tests, rendered):
+def build_transcript(entry):
+    """web bridge 實錄的 HTML。entry 來自 axiom_transcripts.build_all()。
+
+    R1 / R4 / R5 的行為不在場景 DSL 裡(SCENE_COMMANDS 沒有 pick/dump/drag),
+    所以這三條的範例是真的把 bridge 跑起來、把來回原文收下來貼上。
+    """
+    if entry.get("error"):
+        return ('<section class="ex-wrap"><h4>實錄</h4>'
+                '<details class="ex tr trbad" open><summary>'
+                '<span class="badge">實錄失敗</span><code>web bridge</code>'
+                '<span class="gist">這條的範例沒有產生出來</span></summary>'
+                '<div class="tr-body"><div class="tr-why">%s</div></div>'
+                '</details></section>' % html.escape(entry["error"]))
+
+    steps = []
+    for cmd, resp, note in entry["steps"]:
+        out = ('<pre class="io out"><b>回應</b>%s</pre>'
+               % html.escape(resp)) if resp else ""
+        steps.append('<div class="step"><pre class="io"><b>送出</b>%s</pre>%s'
+                     '<p class="note">%s</p></div>'
+                     % (html.escape(cmd), out, html.escape(note)))
+
+    bad = "" if entry["ok"] else " trbad"
+    why = ("" if entry["ok"] else
+           '<div class="tr-why">斷言不成立:%s</div>'
+           % html.escape(entry["why"]))
+
+    return ('<section class="ex-wrap"><h4>實錄 <span class="n">1</span></h4>'
+            '<details class="ex tr%s" open><summary>'
+            '<span class="badge">實錄</span><code>web bridge</code>'
+            '<span class="gist">%s</span></summary>'
+            '<div class="tr-body">%s%s<div class="expect">預期:%s</div></div>'
+            '</details></section>'
+            % (bad, html.escape(entry["title"]), "".join(steps), why,
+               html.escape(entry["expect"])))
+
+
+def build_examples(scenes, tests, rendered, has_transcript=False):
     """單一條文的範例 HTML。rendered[name] = dict(svg, crop, full, note, why)。"""
     if not scenes:
+        if has_transcript:
+            return ""       # 這條的範例是實錄,不是夾具,別再說「尚無範例」
+        # GEO-113 之後 63 條都有範例,正常情況下這段不會被用到。
+        # 留著是為了「之後新增條文卻忘了補夾具」時會在頁面上大聲說出來。
         return ('<div class="no-ex">尚無範例——這條還沒有夾具指名它。'
-                '注意這不等於「沒被測到」,可能只是沒有夾具寫下條號;'
-                '逐條判斷與補件是 BACKLOG 的 GEO-113,不在這頁硬湊。</div>')
+                '注意這不等於「沒被測到」,可能只是沒有夾具寫下條號。'
+                '正確做法是逐條判斷:真的缺覆蓋就寫新夾具,'
+                '已有覆蓋只是沒標就在夾具檔頭補上條號。不在這頁硬湊。</div>')
 
     cards = []
     for k, name in enumerate(sorted(scenes)):
@@ -249,6 +298,7 @@ def build_examples(scenes, tests, rendered):
 # ------------------------------------------------------------------
 def main():
     no_render = "--no-render" in sys.argv
+    no_bridge = "--no-bridge" in sys.argv
 
     axiom = am.read_text(am.AXIOM)
     src = am.read_text(am.SRC)
@@ -325,6 +375,28 @@ def main():
 
     pics = sum(1 for v in rendered.values() if v.get("svg"))
 
+    # ---- web bridge 實錄(R1 / R4 / R5)----
+    # 這三條的行為不在場景 DSL 裡,只有 bridge 的 pick / dump / drag 看得到。
+    # bridge 建不起來或被 SAC 擋:頁面照樣產生(那三條標紅說明原因),
+    # 但 main() 回非 0,不讓它靜悄悄地缺三條。
+    trans = {}
+    if no_bridge:
+        for cid in tr.TRANSCRIPTS:
+            title = tr.TRANSCRIPTS[cid][0]
+            trans[cid] = {"title": title, "error": "未實錄(--no-bridge)"}
+    else:
+        tmp = tempfile.mkdtemp(prefix="axiomtrans_")
+        try:
+            trans = tr.build_all(ax.resolve_bridge(), tmp)
+        except ax.RenderError as exc:
+            for cid, (title, _) in tr.TRANSCRIPTS.items():
+                trans[cid] = {"title": title, "error": str(exc)}
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+    trans_bad = [c for c, v in trans.items()
+                 if v.get("error") or not v.get("ok")]
+
     # ---- 卡片 ----
     data = {}
     cards = []
@@ -382,7 +454,9 @@ def main():
                ('<span class="hub" title="樞紐:被 %d 條引用">樞紐</span>'
                 % len(incoming[cid])) if hub else "",
                line, render_inline(body.strip(), known), plain_html, back,
-               build_examples(scenes[cid], tests, rendered), "".join(foot)))
+               build_examples(scenes[cid], tests, rendered, cid in trans)
+               + (build_transcript(trans[cid]) if cid in trans else ""),
+               "".join(foot)))
 
         index[cid[0]].append(
             '<a href="#c-%s" class="%s" data-q="%s">'
@@ -393,19 +467,24 @@ def main():
     nav = "".join('<div class=grp><h4>%s</h4>%s</div>'
                   % (SECTION_OF[k], "".join(index[k])) for k in "DIR")
 
-    banner = ""
+    bits = []
     if no_render:
-        banner = ('<div class="banner">本頁未含任何範例圖(--no-render)。'
-                  '要含圖請不加這個旗標重跑。</div>')
+        bits.append("本頁未含任何範例圖(--no-render)")
     elif fails:
-        banner = ('<div class="banner">有 %d 個範例渲染失敗,'
-                  '該區塊會標明原因。</div>' % len(fails))
+        bits.append("有 %d 個範例渲染失敗,該區塊會標明原因" % len(fails))
+    if trans_bad:
+        bits.append("web bridge 實錄有 %d 條沒有產生(%s)"
+                    % (len(trans_bad), "、".join(sorted(trans_bad))))
+    banner = ('<div class="banner">%s。</div>' % "；".join(bits)) if bits else ""
 
-    stats = ("%d 條條文・%d 次交叉引用・綠 %d／紅 %d・白話 %d/%d・圖 %d/%d 個夾具"
+    no_ex = sum(1 for c in ids if not scenes[c] and c not in trans)
+    stats = ("%d 條條文・%d 次交叉引用・綠 %d／紅 %d・白話 %d/%d・"
+             "圖 %d/%d 個夾具・實錄 %d/%d・尚無範例 %d 條"
              % (len(ids), sum(len(v) for v in incoming.values()),
                 sum(1 for c in ids if code[c] and scenes[c]),
                 sum(1 for c in ids if not code[c] and not scenes[c]),
-                len(plain), len(ids), pics, len(used)))
+                len(plain), len(ids), pics, len(used),
+                len(trans) - len(trans_bad), len(tr.TRANSCRIPTS), no_ex))
 
     page = (TEMPLATE.replace("__NAV__", nav)
             .replace("__CARDS__", "".join(cards))
@@ -418,7 +497,12 @@ def main():
     print("  %s" % stats)
     if fails:
         print("  渲染失敗:%s" % "、".join(fails))
-    return 1 if fails else 0
+    for cid in sorted(trans_bad):
+        print("  實錄未成立 %s:%s"
+              % (cid, trans[cid].get("error") or trans[cid].get("why")))
+    # --no-bridge 是明講的選擇,跟 --no-render 一樣回 0;
+    # 沒明講卻產不出實錄(bridge 找不到、被 SAC 擋、斷言不成立)才回非 0。
+    return 1 if (fails or (trans_bad and not no_bridge)) else 0
 
 
 TEMPLATE = """<!DOCTYPE html>
@@ -518,6 +602,20 @@ pre.dsl i{display:inline-block;width:34px;text-align:right;margin-right:9px;
 color:var(--dim);font-style:normal;user-select:none}
 pre.dsl span.hit{background:var(--hi)}
 .expect{margin-top:6px;font-size:11.8px;color:var(--dim)}
+/* web bridge 實錄:單欄,沒有圖,內容是真的送出去與收回來的原文 */
+details.ex.tr>summary{border-left:3px solid var(--acc)}
+.ex.tr .badge{color:var(--acc)}
+details.ex.trbad>summary{border-left:3px solid var(--r)}
+.tr-body{padding:4px 10px 11px}
+.tr-why{color:var(--r);font-size:12.3px;padding:4px 0}
+.step{border-top:1px solid var(--line);padding:7px 0 5px}
+.step:first-child{border-top:0}
+pre.io{margin:0 0 3px;background:var(--bg);border:1px solid var(--line);
+border-radius:5px;padding:5px 8px;white-space:pre-wrap;word-break:break-all;
+font:11.8px/1.6 ui-monospace,Consolas,monospace}
+pre.io b{color:var(--dim);font-weight:400;user-select:none;margin-right:7px}
+pre.io.out{background:transparent}
+.step .note{margin:2px 0 0;font-size:11.8px;color:var(--dim)}
 /* 內嵌 SVG 的樣式:原本是全域選擇器,會汙染卡片,所以 scoped 在這裡 */
 .ex-body svg polygon,.ex-body svg line,.ex-body svg rect{vector-effect:non-scaling-stroke}
 .ex-body svg .frame{fill:#fff;stroke:#bbb;stroke-width:1px}

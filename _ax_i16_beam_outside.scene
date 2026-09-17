@@ -1,0 +1,12 @@
+# 公理:I16:樑屬於某個空間時,它的足跡必須落在該空間的平面範圍內。
+# 這個空間的平面範圍是 x∈[0,4000]、y∈[0,3000],
+# 樑卻擺在 x=9000 → 足跡整個在空間外 → 拒絕。
+# (柱-樑、樑-樑彼此相交不檢查,因為它們不在同一層;這條只管足跡有沒有越界。)
+surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
+surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
+surface 4 origin 0    3000 0    u +z v +x outline 0,0 2500,0 2500,4000 0,4000
+surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000
+surface 6 origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500
+space 1 boundary 1 2 3 4 5 6
+beam 1 in 1 along y from 0 to 3000 at 9000 width 300 depth 500

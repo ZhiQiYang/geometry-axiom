@@ -1,3 +1,6 @@
+# 最小接受案例:矩形邊界面 + 貼 e0 的 boundary 角材,長度自動推成整條邊 4000。
+# 公理:D4:承載面的有效範圍來自它引用的邊界面(placement ... on boundary 1),對照 _edge_rect_only.scene 的自帶 rect 分支。
+# 公理:I3:fixity 整個沒寫 → 全邊 FIXED,所以端面頂 e0 合法(對照 _test_free.scene 明寫陣列把 e1 標成 FREE)。
 boundary 1 outline 0,0 4000,0 4000,3000 0,3000
 placement 1 on boundary 1 origin 0 0 2500 u +x v +y
 timber 1 20 20 role boundary

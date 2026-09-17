@@ -1,4 +1,5 @@
 # 公理:R7:面上投影分類——柱足跡完全在內 = hole。
+# 公理:D13:柱屬於空間時 DSL 可以省略 z,高程由空間的槽面推出(對照 _mut_col_noz.scene:游離柱推不出就拒絕)。
 surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
 surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
