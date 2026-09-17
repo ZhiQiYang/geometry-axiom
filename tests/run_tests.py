@@ -43,6 +43,10 @@ TESTS = [{'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000
  {'scene': '_edge_dir_violation.scene', 'expect': 'reject', 'error': '平行'},
  {'scene': '_edge_free.scene', 'expect': 'reject', 'error': '自由邊'},
  {'scene': '_edge_freeze.scene', 'expect': 'reject', 'lengths': [1800], 'error': 'I8a'},
+ # 與上面成對:那個測「不預覽就直接改會被擋」,這個測 I8a 的正向路徑
+ # 「preview → confirm → 真的套用」。R2「零違規且使用者確認才提交」
+ # 先前完全沒有夾具驗證過(GEO-126 稽核發現)。
+ {'scene': '_edge_i8a_confirm.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960]},
  {'scene': '_edge_grid_at_border.scene', 'expect': 'reject', 'error': '沒有任何合法跨距'},
  {'scene': '_edge_grid_overflow.scene', 'expect': 'reject', 'error': '座標超過上限'},
  {'scene': '_edge_grid_twoline.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960, 2960, 1973]},
