@@ -50,7 +50,9 @@ def parse_clauses(text):
     marks = []
 
     for i, ln in enumerate(lines):
-        m = re.match(r"\*\*(D\d+[a-z]?)\s", ln) or re.match(r"^([IR]\d+)\s", ln)
+        # I/R 類原本沒開字母後綴,導致 I8a 這種子條文被整條漏掉(D 類一直有)。
+        # 2026-09-18 補齊,兩邊一致。
+        m = re.match(r"\*\*(D\d+[a-z]?)\s", ln) or re.match(r"^([IR]\d+[a-z]?)\s", ln)
         if m:
             marks.append((m.group(1), i))
         elif re.match(r"^## ", ln) and marks:
