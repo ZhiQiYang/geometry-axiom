@@ -49,7 +49,10 @@ import axiom_examples as ax                                  # noqa: E402
 import axiom_transcripts as tr                               # noqa: E402
 
 ROOT = am.ROOT
-OUT = os.path.join(HERE, "公理層-閱讀器.html")
+# 2026-09-18:正典閱讀器是「批註版」(公理層-閱讀器.html),由批註工具產生、
+# 使用者批註後逐版取代。本腳本**不得**再覆寫那個路徑,否則會把正典蓋回舊版面。
+# 它現在只產覆蓋率/追溯用的診斷頁,檔名另立。規則見 repo 根目錄 AGENTS.md。
+OUT = os.path.join(HERE, "公理層-追溯診斷頁.html")
 PLAIN = os.path.join(HERE, "公理層-白話.md")
 SECTION_OF = {"D": "定義（公理）", "I": "構造保證的不變量", "R": "推演規則"}
 
