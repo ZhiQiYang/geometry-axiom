@@ -446,24 +446,11 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await drag(feCtr.x - 80, feCtr.y, feCtr.x + 80, feCtr.y + 4);   /* 水平拖 → v 線 */
   await sleep(900);
   const dump1 = await eval_(`api("dump").then(r=>r.text)`);
-  const gMatch = dump1 && dump1.match(/^guide (\d+) 20 v (-?\d+)$/m);
-  console.log("guide:", gMatch ? `✓ guide ${gMatch[1]} 20 v ${gMatch[2]}` : "✗ dump 無 guide");
-  /* 拖既有參考線 → move → offset 改變 */
-  if (gMatch) {
-    const gOff = +gMatch[2];
-    const gPt = await eval_(`(()=>{
-      const r = document.getElementById("faceEditorSvg").getBoundingClientRect();
-      return {x: r.left + 100, y: r.top + (${gOff})*fe.zoom + fe.panY};
-    })()`);
-    await eval_(`document.querySelector('[data-face-tool="select"]').click()`);
-    await sleep(200);
-    await drag(gPt.x, gPt.y, gPt.x, gPt.y + 40);                /* 垂直往下拖 40px */
-    await sleep(900);
-    const dump2 = await eval_(`api("dump").then(r=>r.text)`);
-    const g2 = dump2 && dump2.match(new RegExp("^guide " + gMatch[1] + " 20 v (-?\\d+)$", "m"));
-    console.log("guide off:", gOff, "->", g2 && g2[1],
-      g2 && +g2[1] !== gOff ? "✓ move 改變 offset" : "✗");
-  }
+  const rawGuide = /^guide /m.test(dump1);
+  console.log("無具名規格或鄰近引用的自由拖放拒絕:", !rawGuide ? "✓" : "✗");
+  await eval_(`(async()=>{await api("line spec 面內線 1500"); await api("line guide 1 20 u spec:面內線"); await feLoadGuides();drawFaceEditor()})()`);
+  const gMatch = await eval_(`api('references').then(r=>r.guides.find(g=>g.surface===20))`);
+  console.log("引用建線:", gMatch?.expression === 'spec:面內線' && gMatch.off === 1500 ? "✓" : "✗");
 
   console.log("=== P3-3. 開口：拉矩形 → boundary 20 loops=2 ===");
   await eval_(`document.querySelector('[data-face-tool="hole"]').click()`);
@@ -553,8 +540,8 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     await drag(fc2.x - 60, fc2.y, fc2.x + 60, fc2.y + 3);
     await sleep(900);
     const d3 = await eval_(`api("dump").then(r=>r.text)`);
-    const g3 = d3 && d3.match(/^guide \d+ \d+ v -?\d+$/m);
-    console.log("游離→放置後參考線:", g3 ? "✓ " + g3[0] : "✗");
+    const valid = (await eval_(`api("references")`)).guides.every(g => !/^-?\d+$/.test(g.expression));
+    console.log("放置後參考線皆保留引用式:", valid ? "✓" : "✗");
     await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
     await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
     await sleep(400);
@@ -682,7 +669,8 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     /* 在一個已放置成員面上建 guide v=2000(預設視圖可見) */
     const sid = oc.surfs[0] && oc.surfs[0].id;
     const gid = (await api("newid")).guide;
-    await api("line guide " + gid + " " + sid + " v 2000");
+    await api("line spec 投影線 2000");
+    await api("line guide " + gid + " " + sid + " v spec:投影線");
     await enterFocus("space", oc.spaces[0].id);
     const svg = document.querySelector("#spaceProjSvg");
     if (!svg) return {err:"no svg"};
@@ -795,14 +783,14 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     await renderObjects();
     await enterFocus("face", 1);
     /* 角材:設定 L/A/B + 方向 + 深度 → timber 工具點 (500,300) */
-    $("tbLen").value = "1800"; $("tbA").value = "27"; $("tbB").value = "33";
+    $("tbAnchor").value = "at-face e0"; $("tbRole").value = "boundary"; $("tbA").value = "27"; $("tbB").value = "33";
     $("tbDir").value = "+u"; $("tbSide").value = "+n";
     feSetTool("timber");
     await feDown({x: 500, y: 300}, {target: $("faceEditorSvg"), clientX: 0, clientY: 0});
     await new Promise(r=>setTimeout(r,300));
     const dump1 = (await api("dump")).text;
-    const hasTimber = /timber \\d+ 1800 27 33 role \\w+/.test(dump1) &&
-                      /place \\d+ on \\d+ at 500 300 \\+u \\+n/.test(dump1);
+    const hasTimber = /timber \\d+ 27 33 role boundary/.test(dump1) &&
+                      /place \\d+ on \\d+ at-face e0 \\+u \\+n/.test(dump1);
     const fp = document.querySelector(".face-timber");
     /* 網格:表單建 u 500 1500 / v 300 900 */
     $("gridU").value = "500 1500"; $("gridV").value = "300 900";
@@ -837,7 +825,8 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   /* 圖層列 ✕ 刪角材與網格 */
   const q3c = await eval_(`(async()=>{
     const dels = [...document.querySelectorAll(".face-layer-del")];
-    for (const b of dels) { b.click(); await new Promise(r=>setTimeout(r,200)); }
+    for (const b of dels) { b.click(); await new Promise(r=>setTimeout(r,200));
+      const confirm=document.querySelector("#impact-confirm"); if (confirm && !confirm.disabled) { confirm.click(); await new Promise(r=>setTimeout(r,200)); } }
     const dump = (await api("dump")).text;
     return {noTimber: !/timber /.test(dump), noGrid: !/grid /.test(dump)};
   })()`);
@@ -1329,6 +1318,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     "| 浮標隱藏(B6)", fbTool.hintHid ? "✓" : "✗",
     "| 游標類", fbTool.cls.includes("tool-referenceLine") ? "✓" : "✗ " + fbTool.cls);
   /* (b) 參考線只點沒拖 → u/v 小選單 → 選 v → dump 出現 guide */
+  await eval_(`(async()=>{const r=document.getElementById("faceEditorViewport").getBoundingClientRect();const p=feSnap(fePoint({clientX:r.left+r.width/2,clientY:r.top+r.height/2}));await api('line spec 點放定位 '+Math.round(p.x))})()`);
   await click(fbVp.cx, fbVp.cy);
   await sleep(400);
   const pkShown = await eval_(`!document.getElementById("feGuidePick").hidden`);
@@ -1337,7 +1327,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     if(!b) return null; const r=b.getBoundingClientRect();
     return {x:r.left+r.width/2,y:r.top+r.height/2};})()`);
   if (pkBtn) { await click(pkBtn.x, pkBtn.y); await sleep(700); }
-  const gDump = await eval_(`api("dump").then(d=>{const m=d.text.match(/^guide (\\d+) (\\d+) v (-?\\d+)$/m);return m&&m[0]})`);
+  const gDump = await eval_(`api("dump").then(d=>{const m=d.text.match(/^guide (\\d+) (\\d+) v spec:點放定位$/m);return m&&m[0]})`);
   console.log("選 v 後建線:", gDump ? "✓ " + gDump : "✗");
   /* (c) 開口只點沒拖 → toast「拖出矩形」 */
   await eval_(`document.querySelector('[data-face-tool="hole"]').click()`);
@@ -1357,19 +1347,19 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     flash: document.getElementById("faceEditorViewport").classList.contains("fe-flash-edges")})`);
   console.log("凹口點面內→toast:", insFb.toast.includes("邊上") ? "✓" : "✗ " + insFb.toast,
     "| 邊高亮:", insFb.flash ? "✓" : "✗");
-  /* (e) 角材 L 空白 → toast + #tbLen 標紅 */
+  /* (e) 角材 A 空白 → toast + #tbA 標紅 */
   await eval_(`(()=>{
     document.querySelector('[data-face-tool="timber"]').click();
-    const tb=document.getElementById("tbLen"); if (tb) tb.value="";
+    const tb=document.getElementById("tbA"); if (tb) tb.value="";
   })()`);
   await sleep(250);
   await click(fbVp.qx, fbVp.qy);
   await sleep(350);
   const tbFb = await eval_(`({
     toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|"),
-    inv: document.getElementById("tbLen") && document.getElementById("tbLen").classList.contains("invalid")})`);
-  console.log("角材L空→toast:", tbFb.toast.includes("長度") ? "✓" : "✗ " + tbFb.toast,
-    "| tbLen標紅:", tbFb.inv ? "✓" : "✗");
+    inv: document.getElementById("tbA") && document.getElementById("tbA").classList.contains("invalid")})`);
+  console.log("角材A空→toast:", tbFb.toast.includes("截面") ? "✓" : "✗ " + tbFb.toast,
+    "| tbA標紅:", tbFb.inv ? "✓" : "✗");
   /* (f) 狀態列綁定工具:切走後上一工具的訊息被手勢取代 */
   const stLife = await eval_(`(()=>{
     document.querySelector('[data-face-tool="select"]').click();
@@ -1657,14 +1647,14 @@ async function drag(x0, y0, x1, y1, steps = 6) {
       noHelp:!panel.textContent.includes("說明")};})()`);
   console.log("P18 B1 工具icon+kbd:", b1.n >= 7 && b1.ok ? "✓" : `✗ n=${b1.n} ok=${b1.ok}`,
     "| 說明區已移除:", b1.noHelp ? "✓" : "✗");
-  /* (2) B2:三頁;切角材 → tbLen 可見 */
+  /* (2) B2:三頁;切角材 → tbA 可見 */
   const b2 = await eval_(`(()=>{
     const tabs=[...document.querySelectorAll("[data-fi-tab]")].map(t=>t.dataset.fiTab);
     document.querySelector('[data-fi-tab="timber"]').click();
-    const tb=document.getElementById("tbLen");
+    const tb=document.getElementById("tbA");
     return {tabs, vis: !!tb && tb.offsetParent !== null};})()`);
   console.log("P18 B2 三頁:", b2.tabs.join() === "prop,timber,grid" ? "✓" : "✗ " + b2.tabs,
-    "| 角材頁tbLen可見:", b2.vis ? "✓" : "✗");
+    "| 角材頁tbA可見:", b2.vis ? "✓" : "✗");
   /* (3) B3:邊表方向文字+mm+segmented */
   const b3 = await eval_(`(()=>{
     document.querySelector('[data-fi-tab="prop"]').click();
@@ -1752,7 +1742,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     document.querySelector('[data-fi-tab="timber"]').click();
     return {note:!!document.querySelector('[data-fi-pane="timber"] .fi-note'),
       cap:document.getElementById("workspacePlaceTag").textContent,
-      tbDis:document.getElementById("tbLen").disabled};})()`);
+      tbDis:document.getElementById("tbA").disabled};})()`);
   console.log("P18 游離停用說明:", b9b.note && b9b.tbDis ? "✓" : "✗ " + JSON.stringify(b9b),
     "| 游離膠囊:", b9b.cap.includes("游離") ? "✓" : "✗ " + b9b.cap);
   /* (11) 狀態列右側快捷鍵 L/R/Esc */
@@ -1950,7 +1940,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`document.getElementById("btnScene").click()`);
   await sleep(1500);
   const up2 = await eval_(`(async()=>{const t=(await api("dump")).text;
-    return {mark:t.includes("111,222"),roomA:t.includes("guide 1 1 u 300")}})()`);
+    return {mark:t.includes("111,222"),roomA:t.includes("guide 1 1 v spec:主支1中線")}})()`);
   console.log("BF2 btnScene 不載回 room_a:", JSON.stringify(up2),
     up2.mark && !up2.roomA ? "✓" : "✗");
   /* (d) 換場景清焦點:enterFocus → loadScene → focus null、工作區關閉 */
@@ -2040,8 +2030,8 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`api("line reset")`);
   await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
   await eval_(`api("line placement 1 on boundary 1 origin 0 0 2500 u +x v +y")`);
-  await eval_(`api("line guide 1 1 u 500")`);
-  await eval_(`api("line guide 2 1 v 700")`);
+  await eval_(`(async()=>{await api("line spec 線位置 500"); await api("line guide 1 1 u spec:線位置")})()`);
+  await eval_(`(async()=>{await api("line spec 線位置2 700"); await api("line guide 2 1 v spec:線位置2")})()`);
   await eval_(`renderObjects()`); await sleep(500);
   await eval_(`enterFocus("face",1)`); await sleep(800);
   await eval_(`api("line delete guide 2")`);
@@ -2101,7 +2091,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     await api("line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
     await api("line surface 2 origin 0 0 0 u +y v +x outline 0,0 3000,0 3000,4000 0,4000");
     await api("line space 1 boundary 1 2");
-    await api("line guide 1 1 u 500");
+    await api("line spec 線位置 500"); await api("line guide 1 1 u spec:線位置");
     await api("line boundary 3 outline 0,0 500,0 500,400 0,400");
     await api("line canvas-pos boundary 3 500 60");
     await api("line canvas-pos space 1 60 60");
@@ -2353,10 +2343,10 @@ async function drag(x0, y0, x1, y1, steps = 6) {
       "grid 1 on 1 u 2000",
       "timber 2 20 20 role boundary",
       "timber 3 20 20 role boundary",
-      "place 2 on 1 at-edge e0 +u +n",
-      "place 3 on 1 at-edge e2 -u +n",
+      "place 2 on 1 at-face e0 +u +n",
+      "place 3 on 1 at-face e2 -u +n",
       "timber 1 27 33 role primary",
-      "place 1 on 1 at-grid 1 u 0 +v +n"
+      "place 1 on 1 at-line grid 1 u 0 +v +n"
     ];
     for (const line of lines) {
       const r = await api("line " + line);
@@ -2372,9 +2362,10 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     await renderObjects();
     await enterFocus("face", 1);
     const after = fe.timbers.find(t => t.id === 1);
-    const locked = await api("line grid 1 on 1 u 1500");
-    return {before,after,hasRef:saved.includes("grid-ref 1 u 0"),
-            locked:!locked.ok && /V_GRID_LOCKED/.test(locked.error || "")};
+    const locked = await apiRequest("line grid 1 on 1 u 1500");
+    await apiRequest("line cancel-preview");
+    return {before,after,hasRef:saved.includes("at-line grid 1 u 0"),
+            locked:!locked.ok && locked.preview?.valid};
   })()`);
   const gridRefUiOk = gridRefUi && gridRefUi.hasRef && gridRefUi.locked &&
     gridRefUi.before && gridRefUi.before.L === 2960 &&
@@ -2430,13 +2421,14 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   }
   await remainingShot('hole-area');
 
-  await eval_(`(async()=>{resetSceneFocus();await api('default');await setView3(true);await render()})()`);
+  await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000', 'spec 起點 300', 'spec 目標 900', 'spec 再移 1200', 'guide 1 1 u spec:起點']);
+  await eval_(`(async()=>{await setView3(true);await render()})()`);
   const initial=(await eval_(`api('dump')`)).text;
   const points=await eval_(`(async()=>{const a=[];for(const v of [300,900,1200]){const p=await api('proj 2 2500 '+v+' 1');const t=transform(),r=cv.getBoundingClientRect(),l=layout.views[2];a.push({x:r.left+t.ox+(p.x+l.tx)*t.s,y:r.top+t.oy+(p.y+l.ty)*t.s});}return a})()`);
   await drag(points[0].x,points[0].y,points[1].x,points[1].y,8);
   await waitIdle();
   const moved=(await eval_(`api('dump')`)).text;
-  check('P27 real guide drag changed model',initial!==moved && /guide 1 1 u 900/.test(moved));
+  check('P27 real guide drag changed model',initial!==moved && /guide 1 1 u spec:目標/.test(moved));
   const key = async redo => {
     for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:'z',code:'KeyZ',windowsVirtualKeyCode:90,modifiers:redo?10:2});
     await sleep(200);await waitIdle();
@@ -2446,12 +2438,12 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await key(true);
   check('P27 Ctrl+Shift+Z redoes whole gesture',(await eval_(`api('dump')`)).text===moved);
   await send('Input.dispatchMouseEvent',{type:'mousePressed',...points[1],button:'left',clickCount:1});
-  await waitIdle();
+  await sleep(100);
   await send('Input.dispatchMouseEvent',{type:'mouseMoved',...points[2],button:'left',buttons:1});
-  await waitIdle();
+  await sleep(100);
   const mid=(await eval_(`api('dump')`)).text;
   const engaged=await eval_(`!!(dragging && dragging.started && dragging.guide>=0)`);
-  check('P27 cancel drag engaged',engaged && mid!==moved && /guide 1 1 u 1200/.test(mid),{engaged,mid});
+  check('P27 cancel drag engaged',engaged && mid===moved,{engaged,mid});
   await eval_(`cv.dispatchEvent(new PointerEvent('pointercancel',{bubbles:true,cancelable:true,pointerId:1}))`);
   await send('Input.dispatchMouseEvent',{type:'mouseReleased',...points[2],button:'left',clickCount:1});
   await waitIdle();
@@ -2462,7 +2454,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
 
   for (const scope of ['face','space']) {
     await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
-                          'guide 1 1 u 300', 'space 1 boundary 1']);
+                          'spec 起點 300', 'spec 目標 900', 'guide 1 1 u spec:起點', 'space 1 boundary 1']);
     const pp=await eval_(`(async()=>{
       await enterFocus('${scope}',1);
       let svg;
@@ -2489,7 +2481,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     const start=(await eval_(`api('dump')`)).text;
     await drag(pp[0].x,pp[0].y,pp[1].x,pp[1].y,6);await waitIdle();
     const after=(await eval_(`api('dump')`)).text;
-    check('P27 '+scope+' projection drag',after!==start && /guide 1 1 u 900/.test(after));
+    check('P27 '+scope+' projection drag',after!==start && /guide 1 1 u spec:目標/.test(after));
     await key(false);
     check('P27 '+scope+' projection one-step undo',(await eval_(`api('dump')`)).text===start);
   }
@@ -2511,6 +2503,21 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     }
     check('P29 example loads from web directory @'+width,loaded.name==='room_a.scene' && loaded.path!=='room_a.scene' && loaded.ids.includes(1) && !loaded.ids.includes(99) && loaded.status.includes('已載入'),loaded);
   }
+  await eval_(`(async()=>{resetSceneFocus();await api('default');await setView3(false);await renderObjects();await enterFocus('face',1);fiShowTab('prop')})()`);
+  const beforeImpact = (await eval_(`api('dump')`)).text;
+  await eval_(`document.querySelector('#refSpecName').value='主支中線';document.querySelector('#refSpecValue').value='900';document.querySelector('#refSpecSave').click();void 0`);
+  await sleep(250);
+  check('P31 form opens impact preview',await eval_(`!!document.querySelector('dialog.reference-impact[open]') && !document.querySelector('#impact-confirm').disabled && document.querySelector('dialog.reference-impact').innerText.includes('500 → 900')`));
+  check('P31 preview leaves world unchanged',(await eval_(`apiRequest('dump')`)).text===beforeImpact);
+  await clickSelector('#impact-confirm');
+  check('P31 confirm updates dependent center',await eval_(`apiRequest('references').then(r=>r.timbers.find(t=>t.id===3).geometry.centerline===900)`));
+  await eval_(`window.__previewResult=api('line spec 主支中線 1200');void 0`);await sleep(100);
+  await clickSelector('dialog.reference-impact .impact-actions button:first-child');
+  check('P31 cancel keeps approved world',await eval_(`apiRequest('references').then(r=>r.timbers.find(t=>t.id===3).geometry.centerline===900)`));
+  await eval_(`window.__previewResult=api('line spec 主支中線 0');void 0`);await sleep(100);
+  check('P31 invalid impact cannot confirm',await eval_(`document.querySelector('#impact-confirm').disabled && document.querySelectorAll('.impact-violation').length>0`));
+  await clickSelector('dialog.reference-impact .impact-actions button:first-child');
+  await remainingShot('reference-controls');
   check('P30 no uncaught browser exceptions',excN===0,excN);
   }
 

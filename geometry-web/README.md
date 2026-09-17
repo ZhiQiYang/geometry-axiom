@@ -3,10 +3,26 @@
 以 `web_bridge`（C 核心）為唯一真相來源的物件畫布 UI。所有幾何變更都走 DSL → bridge；
 畫布上的 `canvas-pos` 只是展示中繼資料，不記入歷史——undo/redo 還原快照時保留使用者當下的擺位（L1）。
 
+## 新公理版本
+
+已依 2026-09-18 更新的公理改為引用定位與自動跨距。角材表單先選定位引用，
+只輸入截面 A/B，不再輸入長度。具名規格與參考線引用式可在面內屬性頁建立。
+會影響已放角材時，畫面列出新舊中線、長度與違規；按「確認套用」才改場景。
+有違規或取消都保留原狀。詳見 [語法與驗收紀錄](../geometry-core/README.md)。
+
+Windows 如被 Smart App Control 擋住未簽章程式，使用已安裝的 WSL：
+
+```powershell
+powershell -File .\start.ps1 -Port 8765
+```
+
+此啟動器重新編譯目前原始碼，在 WSL 跑核心、Windows 跑網頁服務；不更動系統安全設定。
+需現有 Ubuntu-24.04、gcc、Windows Python。可用 `-Distro` 指定其他已安裝的發行版。
+
 ## 啟動
 
 ```bat
-cd /d/knowledgebase/geometry-web
+cd /d D:\knowledgebase\geometry\geometry-web
 build.bat                  :: 編譯 web_bridge.exe（首次或 C 端變更後）
 python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 ```
@@ -15,7 +31,7 @@ python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 
 `serve.py` 行為：
 
-- `GET /` → `index.html`；`GET /app.css`、`/app.js` → 同名靜態檔。
+- `GET /` → `index.html`；`GET /app.css`、`/app.js`、`/reference-ui.js` → 同名靜態檔。
 - `GET /scenes` → 上層目錄 `*.scene` 清單。
 - `POST /api`（JSON `{"cmd": "..."}`）→ 轉送給長駐 `web_bridge.exe` 的 stdin，回傳其 stdout 一行 JSON。
 - `POST /upload` → 把 scene 內容寫成系統暫存目錄（`tempfile.gettempdir()`，Windows 為 `%TEMP%`）下的暫存檔並 `loadfile`；回應帶 `path` 欄位，前端 `curScene` 指到它，「重新載入場景」才會載回剛上傳的內容。
@@ -31,6 +47,9 @@ node canvas_test.js direct
 
 :: 2) headless Chrome CDP 實機測試（需 server 在 8765、Chrome 於預設路徑、除錯埠 9333）
 node cdp_test.js
+
+:: 新公理表單、確認/取消、非法預覽、扣孔命中的快速實機驗證
+node reference_smoke.js
 
 :: 3) 伺服器輸入與故障處理（不需要真實 bridge 或瀏覽器）
 python -B -m unittest discover -s ../tests -p test_serve.py -v

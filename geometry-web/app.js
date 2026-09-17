@@ -75,12 +75,17 @@ let dragging = null;        /* 參考線拖曳 {guide, view} */
 let pickSeq = 0;
 
 /* ---- 通訊 ---- */
-async function api(cmd) {
+async function apiRequest(cmd) {
   const r = await fetch("/api", {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ cmd })
   });
   return r.json();
+}
+async function api(cmd) {
+  const result = await apiRequest(cmd);
+  if (result.preview) return confirmReferenceImpact(result.preview);
+  return result;
 }
 function setStatus(t) {
   statusEl.textContent = t;
@@ -261,15 +266,9 @@ async function refreshHover(sv) {
 }
 
 /* ---- 事件 ---- */
-/* 同一次拖曳依序送出 move，最後才提交一筆歷史；取消則完整回滾。 */
+/* 拖曳放開時選合法引用並預覽；同一手勢一筆歷史，單擊不改模型。 */
 function queueGuideDrag(d, sv) {
-  if (!sv || sv.v !== d.view) return;
-  d.queue = d.queue.then(async () => {
-    if (!d.started || d.failed) return;
-    const r = await api(`drag ${d.guide} ${sv.v} ${sv.x} ${sv.y}`);
-    if (!r.ok) { d.failed = true; toast(r.error || "拖曳失敗"); return; }
-    await (d.repaint || render)();
-  }).catch(err => { d.failed = true; toast(err.message || "拖曳失敗"); });
+  if (sv && sv.v === d.view && (!d.origin || sv.x !== d.origin.x || sv.y !== d.origin.y)) d.last = sv;
 }
 async function finishGuideDrag(cancel = false, sv = null, d = dragging) {
   if (!d) return;
@@ -277,6 +276,11 @@ async function finishGuideDrag(cancel = false, sv = null, d = dragging) {
   if (dragging === d) dragging = null;
   try {
     await d.queue;
+    if (d.started && !cancel && !d.failed && d.last) {
+      const p = d.last;
+      const moved = await api(`drag ${d.guide} ${p.v} ${p.x} ${p.y}`);
+      if (!moved.ok) { d.failed = true; toast(moved.error || "拖曳未套用"); }
+    }
     if (d.started) {
       const r = await api(cancel || d.failed ? "line history-abort" : "line history-end");
       if (!r.ok) toast(r.error || "拖曳提交失敗");
@@ -319,7 +323,7 @@ cv.addEventListener("pointerdown", async e => {
   /* 先抓 pointer 再問 bridge：pointer 只在按住期間有效，await 之後可能已放開。 */
   cv.setPointerCapture(e.pointerId);
   if (tool !== "view") { canvasDown(e, sv); return; }
-  const d = { guide: -1, view: sv.v, started: false, failed: false };
+  const d = { guide: -1, view: sv.v, origin: sv, started: false, failed: false };
   dragging = d;                            /* await 前建立狀態，快速放開也能收尾 */
   oc.busy = true;
   document.body.classList.add("oc-busy");
@@ -1518,7 +1522,7 @@ const fe = {
   drag: null,              /* vertex/edge/guide/holeRect/guideNew/pan */
   panHold: null,           /* 平移前暫存的點擊制草稿(redraw 等) */
   work: null,              /* 拖曳中的 loops 副本 */
-  guides: [],              /* [{id, axis, off}] 由 dump 解析 */
+  guides: [],              /* 引用式及其求值結果來自 references API */
   timbers: [],             /* [{id,u,v,dir,side,L,A,B}] 本面承載的角材 */
   grids: [],               /* [{id, u:[], v:[]}] 本面網格 */
   spaceDown: false,
@@ -2241,32 +2245,14 @@ async function feLoadGuides() {
   /* R7/R9：已放置面才有柱樑鬼影（不改 boundary） */
   const ob = await api("obstacles " + bid);
   if (ob.ok && ob.items && ob.items.length) fe.obstacles = ob;
-  const d = await api("dump");
-  if (!d.ok || !d.text) return;
-  const timberDecl = {};
-  for (const ln of d.text.split("\n")) {
-    const m = ln.match(/^guide (\d+) (\d+) (u|v) (-?\d+)\s*$/);
-    if (m && +m[2] === sid)
-      fe.guides.push({ id: +m[1], axis: m[3], off: +m[4] });
-    const tm = ln.match(/^timber (\d+) (\d+) (\d+) (\d+) role (\w+)( priority \d+)?\s*$/);
-    if (tm) timberDecl[+tm[1]] = { L: +tm[2], A: +tm[3], B: +tm[4], role: tm[5] };
-    const ta = ln.match(/^timber (\d+) (\d+) (\d+) role (\w+)( priority \d+)?\s*$/);
-    if (ta && !timberDecl[+ta[1]])
-      timberDecl[+ta[1]] = { L: 0, A: +ta[2], B: +ta[3], role: ta[4] };
-    const pm = ln.match(/^place (\d+) on (\d+) at (-?\d+) (-?\d+) ([+-][uv]) ([+-]n)(?: grid-ref \d+ [uv] \d+)?\s*$/);
-    if (pm && +pm[2] === sid && timberDecl[+pm[1]])
-      fe.timbers.push({ id: +pm[1], u: +pm[3], v: +pm[4],
-                        dir: pm[5], side: pm[6], ...timberDecl[+pm[1]] });
-    // GEO-100:只吃純數字座標串。grid 的來源已可為 `series …` 或
-    // `panel … gap … from …`(D10/D10a),那些寫法不該被 map(Number)
-    // 解析成 NaN 畫出垃圾格線——認不得就整條忽略,等 WEB-005 接手。
-    const gm = ln.match(/^grid (\d+) on (\d+) (u|v) (-?\d+(?: -?\d+)*)\s*$/);
-    if (gm && +gm[2] === sid) {
-      const g = fe.grids.find(x => x.id === +gm[1]) ||
-        fe.grids[fe.grids.push({ id: +gm[1], u: [], v: [] }) - 1];
-      g[gm[3]] = gm[4].trim().split(/\s+/).map(Number);
-    }
-  }
+  const r = await api("references");
+  if (!r.ok) return;
+  fe.guides = r.guides.filter(g => g.surface === sid);
+  fe.timbers = r.timbers.filter(t => t.geometry.surface === sid).map(t => ({
+    id:t.id, role:t.role, ...t.geometry, L:t.geometry.length
+  }));
+  fe.grids = (r.grids || []).filter(g => g.surface === sid);
+
 }
 
 function drawFaceEditor() {
@@ -2351,33 +2337,39 @@ function drawFaceEditor() {
         class: "fe-dim fe-edge-dim", fill: "#596376" }, root).textContent = len;
     }
   }
-  /* 參考線（虛線，跨面 bbox）；拖曳中用暫存 offset */
+  /* D6/D10: clip both strokes and hit targets to the effective polygon. */
+  const defs = el("defs", {}, root);
+  const clip = el("clipPath", {id: "face-material-clip", clipPathUnits:"userSpaceOnUse"}, defs);
+  el("path", {d: loops.map(l => "M" + l.verts.map(p => p.join(",")).join("L") + "Z").join(" "),
+    "clip-rule": "evenodd", "fill-rule": "evenodd"}, clip);
+  const refRoot = el("g", {"clip-path":"url(#face-material-clip)"}, root);
+  /* 參考線（虛線，依有效範圍裁切）；拖曳中用暫存 offset */
   const gb = [bb[0] - pad, bb[1] - pad, bb[2] + pad, bb[3] + pad];
   for (const g of fe.guides) {
     const off = (fe.drag && fe.drag.kind === "guide" &&
                  fe.drag.id === g.id && fe.drag.off != null)
       ? fe.drag.off : g.off;
-    const seg = g.axis === "u" ? [off, gb[1], off, gb[3]]
+    const seg = g.axis === "v" ? [off, gb[1], off, gb[3]]
                                : [gb[0], off, gb[2], off];
     el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
-      class: "face-reference-line" }, root);
+      class: "face-reference-line" }, refRoot);
     /* B5:末端標 `u = 1500` */
     el("text", {
-      x: g.axis === "u" ? seg[0] + 4 / z : seg[2] - 4 / z,
-      y: g.axis === "u" ? seg[1] + 13 / z : seg[3] - 5 / z,
+      x: g.axis === "v" ? seg[0] + 4 / z : seg[2] - 4 / z,
+      y: g.axis === "v" ? seg[1] + 13 / z : seg[3] - 5 / z,
       "font-size": 10.5 / z, class: "fe-dim",
-      "text-anchor": g.axis === "u" ? "start" : "end",
-      fill: "#8a5a17" }, root).textContent = `${g.axis} = ${off}`;
+      "text-anchor": g.axis === "v" ? "start" : "end",
+      fill: "#8a5a17" }, root).textContent = `${g.axis === "v" ? "u" : "v"} = ${off}`;
     el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
       "data-face-hit": `g:${g.id}:${g.axis}`,
-      stroke: "transparent", "stroke-width": Math.max(8, 14 / z) }, root);
+      stroke: "transparent", "stroke-width": Math.max(8, 14 / z) }, refRoot);
   }
   /* 網格（Q3）：比參考線細的點線 */
   for (const g of fe.grids || []) {
     for (const c of g.u)
-      el("line", { x1: c, y1: gb[1], x2: c, y2: gb[3], class: "face-grid-line" }, root);
+      el("line", { x1: c, y1: gb[1], x2: c, y2: gb[3], class: "face-grid-line" }, refRoot);
     for (const c of g.v)
-      el("line", { x1: gb[0], y1: c, x2: gb[2], y2: c, class: "face-grid-line" }, root);
+      el("line", { x1: gb[0], y1: c, x2: gb[2], y2: c, class: "face-grid-line" }, refRoot);
   }
   /* 角材 A0 足跡（Q3）：axis_a = axis_b × axis_length 的 uv 版 */
   for (const t2 of fe.timbers || []) {
@@ -2435,8 +2427,8 @@ function drawFaceEditor() {
   }
   if (d && d.kind === "guideNew") {
     const axis = Math.abs(d.x1 - d.x0) >= Math.abs(d.y1 - d.y0) ? "v" : "u";
-    const off = axis === "v" ? d.y1 : d.x1;
-    const seg = axis === "u" ? [off, gb[1], off, gb[3]] : [gb[0], off, gb[2], off];
+    const off = axis === "u" ? d.y1 : d.x1;
+    const seg = axis === "v" ? [off, gb[1], off, gb[3]] : [gb[0], off, gb[2], off];
     el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
       class: "draft-shape" }, root);
   }
@@ -2539,22 +2531,15 @@ async function feDown(pt, ev) {
        timber 宣告 + place 兩行走 mutate 交易。 */
     const sid = feSid(e.bid);
     if (!sid) { toast("游離面不能放角材——先在檢視器「放置」"); return; }
-    const L = Math.round(+($("tbLen") || {}).value || 0);
-    const A = Math.round(+($("tbA") || {}).value || 0);
-    const B = Math.round(+($("tbB") || {}).value || 0);
-    if (!(A > 0) || !(B > 0) || L < 0) {
-      toast("角材 A/B 要是正整數，L 留空 = auto");
-      if (!(A > 0)) feMarkInvalid($("tbA"));
-      if (!(B > 0)) feMarkInvalid($("tbB"));
+    const A = Number($("tbA")?.value), B = Number($("tbB")?.value);
+    if (!Number.isSafeInteger(A) || !Number.isSafeInteger(B) || A <= 0 || B <= 0) {
+      toast("角材截面 A/B 須為正整數 mm");
+      if (!Number.isSafeInteger(A) || A <= 0) feMarkInvalid($("tbA"));
+      if (!Number.isSafeInteger(B) || B <= 0) feMarkInvalid($("tbB"));
       return;
     }
-    /* 公理 O3:auto 角材(L 留空)只能 at-grid/at-edge 錨線放置;
-       點擊 at 錨點必須明寫 L,否則核心必拒 */
-    if (!L) {
-      toast("點放角材要填長度 L（auto 角材只能放格線/邊）");
-      feMarkInvalid($("tbLen"));
-      return;
-    }
+    const anchor = $("tbAnchor")?.value;
+    if (!anchor) { toast("請先選擇定位邊、參考線或格線"); return; }
     const dir = ($("tbDir") || {}).value || "+u";
     const side = ($("tbSide") || {}).value || "+n";
     const role = ($("tbRole") || {}).value || "primary";
@@ -2565,13 +2550,11 @@ async function feDown(pt, ev) {
       return;
     }
     const ids = await api("newid");
-    const decl = (L ? `timber ${ids.timber} ${L} ${A} ${B}`
-                    : `timber ${ids.timber} ${A} ${B}`) +
-                 ` role ${role}` +
-                 (role === "custom" ? ` priority ${pri}` : "");
-    const u = Math.round(pt.x), v = Math.round(pt.y);
+    const decl = `timber ${ids.timber} ${A} ${B} role ${role}` +
+      (role === "custom" ? ` priority ${pri}` : "");
+    const selector = $("tbSelector")?.value.trim() || "";
     if (await mutate([decl,
-        `place ${ids.timber} on ${sid} at ${u} ${v} ${dir} ${side}`])) {
+        `place ${ids.timber} on ${sid} ${anchor} ${selector} ${dir} ${side}`])) {
       await feLoadGuides(); drawFaceEditor(); renderFaceLayers();
     }
     return;
@@ -2616,7 +2599,7 @@ function feMove(pt, ev) {
   }
   if (d.kind === "guide") {
     d.moved = true;
-    d.off = d.axis === "u" ? Math.round(pt.x) : Math.round(pt.y);
+    d.off = d.axis === "v" ? Math.round(pt.x) : Math.round(pt.y);
     drawFaceEditor();
     return;
   }
@@ -2704,18 +2687,18 @@ async function feUp(pt) {
       feGuidePickShow(d.x0, d.y0, d.cx, d.cy);
       drawFaceEditor(); return;
     }
-    const axis = dx >= dy ? "v" : "u";
-    const off = Math.round(axis === "v" ? d.y1 : d.x1);
+    const axis = dx >= dy ? "u" : "v";
+    const off = Math.round(axis === "u" ? d.y1 : d.x1);
     const sid = feSid(e.bid);
     const ids = await api("newid");
-    if (await emitLine(`guide ${ids.guide} ${sid} ${axis} ${off}`))
+    if (await createReferenceGuide(sid, axis, off))
       await feLoadGuides();
     drawFaceEditor();
     renderFaceLayers();
     return;
   }
   if (d.kind === "guide") {
-    if (d.moved && await emitLine(`move ${d.id} ${d.off}`))
+    if (d.moved && await moveReferenceGuide(d.id, d.axis, d.off))
       await feLoadGuides();
     drawFaceEditor();
     renderFaceLayers();
@@ -2901,7 +2884,7 @@ function renderFaceLayers() {
   if (fe.guides.length) {
     group("參考線");
     for (const g of fe.guides)
-      row(icon("guide"), `參考線 ${g.id}`, `${g.axis} = ${g.off}`, async () => {
+      row(icon("guide"), `參考線 ${g.id}`, `${g.axis === "v" ? "u" : "v"} = ${g.off}`, async () => {
         if (await emitLine(`delete guide ${g.id}`)) {
           await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
         }
@@ -3053,6 +3036,13 @@ function renderFaceInspector() {
     }
   }
   html += `</div></div>`;
+  if (surf) html += `<div class="inspector-block"><div class="ib-title">參考線與具名規格</div>` +
+    `<div class="place-form"><label>規格名稱<input id="refSpecName" placeholder="主支中線"></label>` +
+    `<label>數值 mm<input id="refSpecValue" type="number" step="1"></label></div>` +
+    `<button class="btn" id="refSpecSave">儲存具名規格</button>` +
+    `<div class="place-form"><label>線方向<select id="refGuideAxis"><option>u</option><option>v</option></select></label>` +
+    `<label>位置引用式<input id="refGuideExpr" placeholder="spec:主支中線 或 1/2*edge:e1:u"></label></div>` +
+    `<button class="btn" id="refGuideCreate">建立引用線</button></div>`;
   /* 放置（B2:已放置摺成摘要+「重綁…」;游離展開完整表單） */
   html += surf
     ? `<div class="inspector-block"><details class="place-detail">` +
@@ -3076,7 +3066,9 @@ function renderFaceInspector() {
     `<div class="inspector-block"><div class="ib-title">角材放置</div>` +
     (surf ? "" : `<div class="fi-note">游離面：先在「屬性」頁放置這片面，才可放角材。</div>`) +
     `<div class="place-form">` +
-    `<label>長度 L<input id="tbLen" type="number" placeholder="auto"${surf ? "" : " disabled"}></label>` +
+    `<div class="fi-note">長度由支撐與有效範圍自動推導。</div>` +
+    `<label>定位引用<select id="tbAnchor"${surf ? "" : " disabled"}>${referenceAnchorOptions(bid, surf)}</select></label>` +
+    `<label>選段（可留空）<input id="tbSelector" placeholder="through 600 或 between t1 t2"${surf ? "" : " disabled"}></label>` +
     `<label>A<input id="tbA" type="number" value="27"${surf ? "" : " disabled"}></label>` +
     `<label>B<input id="tbB" type="number" value="33"${surf ? "" : " disabled"}></label>` +
     `<label>方向<select id="tbDir"${surf ? "" : " disabled"}>` +
@@ -3090,7 +3082,7 @@ function renderFaceInspector() {
     `</select></label>` +
     `<label id="tbPriLabel" hidden>priority<input id="tbPri" type="number" value="3"${surf ? "" : " disabled"}></label>` +
     `</div><div class="face-help">` +
-    (surf ? "選「角材」工具後在面上點擊放置（足跡需落在有效區域內）"
+    (surf ? "選擇定位引用與方向，再以「角材」工具點擊面內放置；點擊位置不作為尺寸輸入。"
           : "游離面：先「放置」才可放角材") + `</div></div></div>`;
   /* B2:網格頁（同上游離停用） */
   html += `<div data-fi-pane="grid"${fe.fiTab === "grid" ? "" : " hidden"}>` +
@@ -3101,6 +3093,22 @@ function renderFaceInspector() {
     `<label>v 座標<input id="gridV" placeholder="300 900"${surf ? "" : " disabled"}></label>` +
     `</div><button class="btn" id="gridCreate"${surf ? "" : " disabled"}>建立網格</button></div></div>`;
   pane.innerHTML = html;
+  const specSave = pane.querySelector("#refSpecSave");
+  if (specSave) specSave.onclick = async () => {
+    const name = $("refSpecName").value.trim(), value = Number($("refSpecValue").value);
+    if (!name || !/^[\p{L}\p{N}_]+$/u.test(name) || !Number.isSafeInteger(value) || $("refSpecValue").value === "") {
+      toast("請填寫規格名稱與整數 mm"); return;
+    }
+    if (await emitLine(`spec ${name} ${value}`)) await feAfterChange();
+  };
+  const guideCreate = pane.querySelector("#refGuideCreate");
+  if (guideCreate) guideCreate.onclick = async () => {
+    const expr = $("refGuideExpr").value.trim(), axis = $("refGuideAxis").value;
+    if (!expr || /[\r\n#]/.test(expr)) { toast("請填寫合法位置引用式"); return; }
+    const ids = await api("newid");
+    if (await emitLine(`guide ${ids.guide} ${feSid(bid)} ${axis} ${expr}`)) await feAfterChange();
+  };
+
 
   /* 綁事件 */
   for (const b of pane.querySelectorAll("[data-fix-edge]"))
@@ -3392,7 +3400,7 @@ function bindProjectedGuideDrag(svg, locate, overlay, repaint, localOverlay) {
     if (e.button !== 0 || oc.busy) return;
     const loc = locate(e); if (!loc) return;
     svg.setPointerCapture(e.pointerId);
-    const d = { guide: -1, view: loc.v, started: false, failed: false, repaint };
+    const d = { guide: -1, view: loc.v, origin: loc, started: false, failed: false, repaint };
     active = d;
     oc.busy = true;
     document.body.classList.add("oc-busy");
@@ -4211,9 +4219,9 @@ for (const b of document.querySelectorAll("#feGuidePick button"))
     const e = oc.edit, sid = e && feSid(e.bid);
     if (!sid) return;
     const axis = b.dataset.axis;
-    const off = Math.round(+(axis === "v" ? pk.dataset.v : pk.dataset.u));
+    const off = Math.round(+(axis === "u" ? pk.dataset.v : pk.dataset.u));
     const ids = await api("newid");
-    if (await emitLine(`guide ${ids.guide} ${sid} ${axis} ${off}`))
+    if (await createReferenceGuide(sid, axis, off))
       await feLoadGuides();
     drawFaceEditor(); renderFaceLayers();
   });

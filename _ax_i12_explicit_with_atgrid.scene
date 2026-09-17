@@ -1,7 +1,7 @@
 # 公理:I12:反過來的那一半——明寫長度的角材只能用 at / at-guides。
-# 角材 1 明寫 1000,卻用 at-grid 放 → 拒絕。
+# 角材 1 明寫 1000,卻用 at-line grid 放 → 拒絕。
 # 理由:at-grid 是跨距推導用的錨法,長度已經明寫時它沒有意義,不猜。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 grid 1 on 1 u 2000
 timber 1 1000 20 20 role primary
-place 1 on 1 at-grid 1 u 0 +v +n
+place 1 on 1 at-line grid 1 u 0 +v +n

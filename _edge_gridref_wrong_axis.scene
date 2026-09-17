@@ -1,9 +1,12 @@
-# grid-ref 的軸必須與長度方向垂直。沿 V 的料只能引用 u 格線。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
-grid 1 on 1 u 2000 v 1000
-timber 1 20 20 role boundary
-timber 2 20 20 role boundary
-place 1 on 1 at-edge e0 +u +n
-place 2 on 1 at-edge e2 -u +n
-timber 3 2960 27 33 role primary
-place 3 on 1 at 2014 20 +v +n grid-ref 1 v 0
+timber 90 20 20 role boundary
+place 90 on 1 at-face e0 +u +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e2 +u +n
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n
+grid 1 on 1 v 1000
+timber 2 27 33 role primary
+place 2 on 1 at-line grid 1 v 0 +v +n

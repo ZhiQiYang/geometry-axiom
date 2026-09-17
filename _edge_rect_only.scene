@@ -1,10 +1,5 @@
-# 自帶矩形承載面(沒有邊界面):沒有輪廓邊可當擋面
-# 先放一支明寫角材當障礙,auto 只能頂在「角材側面 + ?」
-# u=0 那端沒有任何實體 → 應拒絕(端面懸空)
-# 公理:D4:另一個分支——不引用邊界面(boundary_id=0),有效範圍改用 placement 自帶的 rect。
-placement 1 origin 0 0 2500 u +x v +y rect 0 0 4000 3000
-grid 1 on 1 u 2000
-timber 1 1000 20 20 role primary
-timber 2 27 33 role primary
-place 1 on 1 at 1500 1000 +v +n
-place 2 on 1 at-grid 1 u 0 through 1500 +v +n
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n

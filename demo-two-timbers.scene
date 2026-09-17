@@ -1,13 +1,17 @@
-# 另一個房間：3000 × 4000 的天花板，高 2400，放兩支角材
-surface 7 origin 0 0 2400 u +x v +y outline 0,0 3000,0 3000,4000 0,4000
-
-guide 1 7 u 600
-guide 2 7 v 400
-
-# 第一支：沿 +U，放在兩條參考線的交點
-timber 1 2000 27 33 role primary
-place 1 on 7 at-guides 1 2 +u +n
-
-# 第二支：沿 +V，直接給錨點座標
-timber 2 1500 45 45 role secondary
-place 2 on 7 at 2400 800 +v +n
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 90 20 20 role boundary
+place 90 on 1 at-face e0 +u +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e2 +u +n
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n
+spec 主支2中線 2500
+guide 2 1 v spec:主支2中線
+timber 2 27 33 role primary
+place 2 on 1 at-line guide 2 +v +n
+spec 主支3中線 1000
+guide 3 1 u spec:主支3中線
+timber 3 45 45 role secondary
+place 3 on 1 at-line guide 3 between t1 t2 +u +n

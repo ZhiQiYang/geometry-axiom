@@ -1,7 +1,7 @@
 # ARCHITECTURE — current_geometry.c 幾何系統
 
 > **已過時（2026-09-17 審查）**：本文停在 2026-09-12、`current_geometry.c` 4,567 行／矩形面／`room`／8 指令。
-> 現況約 13,000 行，物件是邊界面／承載面／Space／grid／RC，指令含 `grid`／`between`／`span-auto`／`delete`。
+> 現況約 13,000 行，物件是邊界面／承載面／Space／grid／RC，指令含 `spec`／`grid`／`between`／`delete`。
 > **不要拿本文當地圖。** SSOT 是 `公理層.md`；工單與已知洞見 `BACKLOG.md`。
 >
 > 掃描日期：2026-09-12。對象版本：`current_geometry.c` @ 4,567 行（約 116 個函式）。
@@ -10,6 +10,20 @@
 > 範圍聲明：本 repo（`D:\knowledgebase`）是多專案知識庫；本文只涵蓋 C 幾何系統
 > （`current_geometry.c` + `*.scene` + `geometry-guide/`）。`BlockCAD-SketchUp-Plugin/`、
 > `zealot/`、`github/` 是其他專案，不在本文範圍。
+
+## 2026-09-18 現行實作入口
+
+SSOT 仍是 `公理層.md`。現行分工：
+
+- `current_geometry.c`：幾何、跨距、World 全量驗證、DSL、歷史、GDI。
+- `geometry-core/reference_types.h`：引用與具名規格定義。
+- `geometry-core/references.inc`：有理引用求值、依賴重算、錨法、引用保存、合法吸附。
+- `geometry-core/transactions.inc`：候選世界、影響預覽、确认 token、原子提交。
+- `geometry-web/reference_bridge.inc`：引用／衍生幾何與預覽的 JSON 介面。
+- `geometry-web/reference-ui.js`：引用選擇、吸附與影響確認視窗。
+
+完整新語法與測試清單在 [geometry-core/README.md](geometry-core/README.md)。
+以下 1–9 節是歷史盤點，不代表目前語法或架構。
 
 ---
 

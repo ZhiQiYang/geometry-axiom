@@ -1,13 +1,14 @@
-# 公理:D12:畫布座標 =(類別, id)→(x, y),是純展示用的中繼資料。
-# 它不參與任何幾何推導,但屬於 World 的一部分:跟著場景檔存取、dump 輸出、重放還原。
-# 公理:I14:canvas-pos 只要求那個 (類別, id) 指得到東西;不觸發幾何重驗;
-# 同一個鍵再寫一次就是把卡片移到新位置——這就是拖曳的 DSL 形式。
-# 下面承載面 1 的卡片先放在 (100, 200),再移到 (300, 400),角材完全不受影響。
-# 面 9 沒有任何 placement 引用 = 游離面:合法物件,三視圖不畫它,但一樣能有畫布位置。
+# 2026-09-18 引用式放置；空間與展示資料保留。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
-timber 1 1800 27 33 role primary
-place 1 on 1 at 500 300 +u +n
 canvas-pos placement 1 100 200
 canvas-pos placement 1 300 400
 boundary 9 outline 0,0 1200,0 1200,900 0,900
 canvas-pos boundary 9 700 50
+timber 90 20 20 role boundary
+place 90 on 1 at-face e0 +u +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e2 +u +n
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n

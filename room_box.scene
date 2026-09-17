@@ -1,24 +1,12 @@
-# 雙表面範例：天花板 + y=0 的牆。
-# 牆的 U 沿房間 X、V 沿房間 Z（直立）；角材可以長在牆上直立。
-
-# surface id origin x y z u 軸 v 軸 outline u,v u,v u,v u,v
-# 公理:D5:同一個動詞只綁兩片面也成立——成員數 ≥0,封閉與否是推導不是前提(對照 room_full.scene 的六面封閉)。
+# 2026-09-18 引用式放置；空間與展示資料保留。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 surface 2 origin 0 0 0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
-
-# guide id 承載面id 方向 offset
-guide 1 1 u 300
-guide 2 1 v 500
-guide 3 2 u 800
-guide 4 2 v 2000
-
-# timber id 長度 A尺寸 B尺寸
-timber 1 1800 27 33 role primary
-timber 2 1600 27 33 role primary
-
-# space id boundary 面id x 2~8：這兩片彼此一致（共用 x 區間，牆頂貼齊天花）
 space 1 boundary 1 2
-
-# 天花板上照舊；牆上的角材長度沿 +v（房間 +Z，直立），深度 -n 往房間內
-place 1 on 1 at-guides 1 2 +u +n
-place 2 on 2 at-guides 3 4 +v -n
+timber 90 20 20 role boundary
+place 90 on 1 at-face e0 +u +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e2 +u +n
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n

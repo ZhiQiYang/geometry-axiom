@@ -138,8 +138,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif self.path == "/app.css":
             self._send((HERE / "app.css").read_bytes(),
                        "text/css; charset=utf-8")
-        elif self.path == "/app.js":
-            self._send((HERE / "app.js").read_bytes(),
+        elif self.path in {"/app.js", "/reference-ui.js"}:
+            self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")
         elif self.path == "/scenes":
             items = [{"name": p.name, "path": str(p)}

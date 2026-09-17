@@ -6,4 +6,4 @@
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1800,1200 2200,1200 2200,1800 1800,1800 fixity X F F F
 grid 1 on 1 u 2000
 timber 1 20 20 role primary
-place 1 on 1 at-grid 1 u 0 through 600 +v +n
+place 1 on 1 at-line grid 1 u 0 through 600 +v +n

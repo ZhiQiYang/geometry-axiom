@@ -39,13 +39,20 @@ python tests\test_bridge_integrity.py
 Windows 可用現有 `tests/_clw.bat` 編譯 C 測試；bridge 依 `geometry-web/build.bat` 使用 `/U_WIN32`。
 以環境變數 `GEOMETRY_TEST_BRIDGE` 指定剛編譯的 bridge，避免測到過時的 exe。
 
-## 保存格式相容性
+## 新公理與保存格式
 
-非網格錨定的 auto 角材匯出為已凍結的尺寸及位置，全部 `place` 之後另有 `span-auto 角材id`。
-此標記只恢復兩端仍須有合法支撐的義務，不重新計算尺寸或錨點。網格角材的 `grid-ref` 已保存這項義務。
+2026-09-18 的 D6–D7 / I12–I13 已廢除自由座標、明寫角材長度與凍結保存。
+`test_reference_contract.py` 驗證具名規格、有理引用、依賴重算、I8a 預覽／確認／取消、
+過期預覽、奇數板縫、交易群組與引用往返。執行：
 
-新版繼續接受既有 DSL 語法（數值須符合下方支援範圍）；舊版程式無法讀取新增加的 `span-auto` 指令。
-舊版曾匯出且已遺失 auto 模式的檔案，無法僅從明寫長度可靠推回原本的模式；須從原始 auto 場景重新匯出。
+```sh
+GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge python3 tests/test_reference_contract.py
+```
+
+新版 dump 只保存引用式與 `at-line` / `at-face`，並依依賴順序重放。
+舊 `at` / `at-guides` / `at-grid` / `at-edge`、明寫 L、`grid-ref`、`span-auto` 都拒絕；
+不能從已丟失來源的裸座標反推引用。專案內示例已改成新規格，故意測拒絕的夾具保留舊輸入。
+完整語法與核對紀錄見 [公理實作核對](../geometry-core/README.md)。
 
 ## 其餘缺陷的回歸
 

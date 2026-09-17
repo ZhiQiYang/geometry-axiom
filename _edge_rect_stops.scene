@@ -1,13 +1,17 @@
-# 公理:D11:擋面的第三種來源——同承載面已放角材的側面。
-# 自帶矩形面:auto 兩端各頂一支已放角材的側面(沒有輪廓邊也合法)
-# 主支在 v=1000(v∈[1000,1020])與 v=2000(v∈[2000,2020])沿 u 放
-# auto 沿 v 放 u=1500:下頂主支1側面(1020)上頂主支2側面(2000)→ L=980
-# 公理:D7:兩種長度模式在同一個檔裡對照——角材 1、2 明寫長度 3000,角材 3 寫成 27 33 由跨距推導出 980 後凍結。
-placement 1 origin 0 0 2500 u +x v +y rect 0 0 4000 3000
-grid 1 on 1 u 1500
-timber 1 3000 20 20 role primary
-timber 2 3000 20 20 role primary
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 90 20 20 role boundary
+place 90 on 1 at-face e3 +v +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e1 +v +n
+spec 主支1中線 1010
+guide 1 1 u spec:主支1中線
+timber 1 20 20 role primary
+place 1 on 1 at-line guide 1 +u +n
+spec 主支2中線 2010
+guide 2 1 u spec:主支2中線
+timber 2 20 20 role primary
+place 2 on 1 at-line guide 2 +u +n
+spec 主支3中線 1500
+guide 3 1 v spec:主支3中線
 timber 3 27 33 role secondary
-place 1 on 1 at 500 1000 +u +n
-place 2 on 1 at 500 2000 +u +n
-place 3 on 1 at-grid 1 u 0 through 1500 +v +n
+place 3 on 1 at-line guide 3 between t1 t2 +v +n

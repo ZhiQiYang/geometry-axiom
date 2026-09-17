@@ -3,4 +3,5 @@
 # 建立與移動走的是同一關(_edge_freeze.scene 的 move 也過這一關),
 # 所以拖曳永遠產生不出非法的 offset。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
-guide 1 1 u 9999
+spec 參考線1定位 9999
+guide 1 1 u spec:參考線1定位

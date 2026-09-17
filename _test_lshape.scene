@@ -13,5 +13,5 @@ grid 1 on 1 u 1995
 timber 1 20 20 role boundary
 timber 2 20 20 role primary
 
-place 1 on 1 at-edge e4 +u +n
-place 2 on 1 at-grid 1 u 0 +v +n
+place 1 on 1 at-face e4 +u +n
+place 2 on 1 at-line grid 1 u 0 +v +n

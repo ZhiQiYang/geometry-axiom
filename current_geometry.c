@@ -227,7 +227,7 @@ static Coord coord_max(Coord a, Coord b) { return a > b ? a : b; }
 static bool poly_loop_is_valid(const PolygonLoop2 *loop)
 {
     if (loop == NULL || loop->count < 4 ||
-        loop->count > POLY_MAX_VERTICES || loop->count % 2 != 0) {
+        loop->count > POLY_MAX_VERTICES) {
         return false;
     }
 
@@ -807,6 +807,16 @@ static void placement_outline(
     }
 }
 
+/* D4: self-contained rectangles have the same effective outline as a boundary. */
+static const SpaceBoundarySurface *placement_effective_boundary(
+    const PlacementSurface *p, const SpaceBoundarySurface *b, SpaceBoundarySurface *storage)
+{
+    if (b) return b;
+    memset(storage,0,sizeof *storage);
+    placement_outline(p,NULL,&storage->outline);
+    return storage;
+}
+
 /* 承載面有效區域的點包含判定。 */
 static bool surface_contains_point(
     const PlacementSurface *surface,
@@ -1019,6 +1029,8 @@ typedef enum {
     GUIDE_ALONG_V
 } GuideDirection;
 
+#include "geometry-core/reference_types.h"
+
 typedef struct {
     GuideLineId id;
     SurfaceId placement_id;     /* 屬於哪片承載面 */
@@ -1028,7 +1040,8 @@ typedef struct {
      * GUIDE_ALONG_U：固定 v = offset。
      * GUIDE_ALONG_V：固定 u = offset。
      */
-    Coord offset;
+    Coord offset; /* evaluated cache, rebuilt from expression */
+    char expression[REF_EXPR_MAX];
 } GuideLine;
 /* 公理 D6：參考線——承載面 + 方向 + offset；線段不存，用時截出（D9）。 */
 
@@ -1071,54 +1084,12 @@ static bool guide_offset_in_range(
 }
 
 /* 公理 I7：參考線 offset 必須落在有效範圍的該軸外接區間內。 */
-static bool create_guide_line(
-    GuideLineId id,
-    const PlacementSurface *surface,
-    const SpaceBoundarySurface *boundary,
-    GuideDirection direction,
-    Coord offset,
-    GuideLine *out_guide
-)
-{
-    if (surface == NULL || out_guide == NULL) {
-        return false;
-    }
-
-    if (!guide_offset_in_range(surface, boundary, direction, offset)) {
-        return false;
-    }
-
-    *out_guide = (GuideLine){
-        .id = id,
-        .placement_id = surface->id,
-        .direction = direction,
-        .offset = offset
-    };
-
-    return true;
-}
 
 /*
- * 移動既有參考線 = 改它的 offset 定義。
- * 範圍檢查與 create 共用；已放置的角材不追溯——place 是事件不是約束。
+ * 移動既有參考線 = 改位置引用式。
+ * 範圍檢查與 create 共用，依賴者重算並經 I8a 確認。
  */
 /* 公理 I7：move 與 create 過同一關——構造上產生不出非法 offset（R5）。 */
-static bool guide_line_move(
-    const PlacementSurface *surface,
-    const SpaceBoundarySurface *boundary,
-    GuideLine *guide,
-    Coord offset
-)
-{
-    if (surface == NULL || guide == NULL ||
-        guide->placement_id != surface->id ||
-        !guide_offset_in_range(surface, boundary, guide->direction, offset)) {
-        return false;
-    }
-
-    guide->offset = offset;
-    return true;
-}
 
 /*
  * 參考線在有效區域中的線段（可能多段：外輪廓截出區間、再扣掉孔區間）。
@@ -1354,7 +1325,7 @@ static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
 
 /*
  * 唯一的展開入口（D9：只存定義，線在用時推出）。
- * grid_is_valid、三視圖、at-grid 放置與日後的子網格全部走它，
+ * grid_is_valid、三視圖、at-line grid 放置與日後的子網格全部走它，
  * 不得出現第二份推導邏輯。
  *
  *   axis   0 = u 座標集合（沿 V 走的線），1 = v 座標集合
@@ -1430,11 +1401,10 @@ static bool grid_axis_lines(
         const Coord T = def->panel + def->gap;
 
         if (def->panel <= 0 || def->gap < 0 ||
-            def->gap % 2 != 0 ||
             def->anchor < lo || def->anchor >= hi) {
             if (err != NULL) {
                 snprintf(err, err_cap,
-                         "面材參數不合法（面材寬 > 0、縫寬為非負偶數、"
+                         "面材參數不合法（面材寬 > 0、縫寬非負、"
                          "起算點須落在承載面範圍內）");
             }
             return false;
@@ -1487,7 +1457,7 @@ static bool grid_axis_lines(
     return true;
 }
 
-/* 第 n 條格線（at-grid 用的薄包裝）；索引越界回 false 並回填總條數。 */
+/* 第 n 條格線（at-line grid 用的薄包裝）；索引越界回 false 並回填總條數。 */
 static bool grid_line_coord(
     const ReferenceGrid *grid,
     const PlacementSurface *placement,
@@ -1698,8 +1668,8 @@ typedef struct {
 
     /*
      * true = auto 角材（timber id A B）：length 不是輸入，
-     * 而是 place 當下由可延伸區間推導後凍結的結果。
-     * false = 明寫長度（timber id L A B）。
+     * 而是每次從位置引用與可延伸區間重建的結果。
+     * false 已廢除，建構子拒絕。
      */
     bool auto_length;
 
@@ -1741,7 +1711,7 @@ static bool timber_construct(
     if (out_timber == NULL ||
         size_a <= 0 ||
         size_b <= 0 ||
-        (!auto_length && length <= 0) ||
+        !auto_length ||
         (auto_length && length != 0) ||
         (role == TIMBER_ROLE_CUSTOM && custom_priority < 1)) {
         return false;
@@ -3283,6 +3253,7 @@ static ScenePick scene_pick_at(
                             bm->z_lo, bm->z_hi, q) &&
             view_quad_contains(q, p)) {
             pick.beam = (int)b;
+            pick.column = -1;
         }
     }
     if (pick.column >= 0 || pick.beam >= 0) {
@@ -3307,8 +3278,9 @@ static ScenePick scene_pick_at(
     }
 
     Coord best2 = pick_radius * pick_radius;
-
+    for (size_t pi=0;pi<scene->placement_count;++pi) {
     for (size_t i = 0; i < scene->guide_count; ++i) {
+        if (scene->guides[i].placement_id!=scene->placements[pi].id) continue;
         const GuideLine *guide = &scene->guides[i];
         const PlacementSurface *surface =
             scene_find_placement(scene, guide->placement_id);
@@ -3334,10 +3306,11 @@ static ScenePick scene_pick_at(
             Coord d2 = view_dist2_to_segment(p, a, b);
 
             if (d2 <= best2) {
-                best2 = d2;
                 pick.guide = (int)i;
             }
         }
+    }
+
     }
 
     return pick;
@@ -3624,15 +3597,16 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
  * 角材的放置錨點：哪片承載面、表面上的哪一點、怎麼來的。
  * 重宣告交易要靠它重驗角材，所以放法也要留著。
  *
- * 凍結語意：uv 與 timbers[i].length 在 place 當下凍結，
- * 之後 grid / guide / 邊界變動只重驗、不重算。
+ * 引用是定義；uv 與 length 僅是 reference_rebuild 產生的衍生快取。
+ * 每次交易由引用重新推導；持久化只輸出引用。
  */
 
 typedef enum {
     ANCHOR_AT,          /* at u v：明寫錨點 */
     ANCHOR_AT_GUIDES,   /* at-guides 線1 線2：交點凍結 */
-    ANCHOR_AT_GRID,     /* at-grid 網id 軸 索引：中心線對齊格線 */
-    ANCHOR_AT_EDGE      /* at-edge e3 / h1e2：貼邊 */
+    ANCHOR_AT_GRID,     /* at-line grid 網id 軸 索引：中心線對齊格線 */
+    ANCHOR_AT_EDGE,     /* at-face e3 / h1e2 / t7 */
+    ANCHOR_AT_LINE      /* at-line guide id */
 } AnchorKind;
 
 typedef enum {
@@ -3648,14 +3622,19 @@ typedef struct {
     int length_direction;   /* SurfaceDirection */
     int depth_side;         /* SurfaceDepthSide */
 
-    /* 參照來源：place 之後只供追溯與重驗，不再用來重算。 */
+    /* 參照來源：每次重建時用來求位置與跨距。 */
     uint32_t ref_grid;      /* ANCHOR_AT_GRID：網格 id */
     int ref_grid_axis;      /* 0 = u 座標集合，1 = v 座標集合 */
     int ref_grid_index;
     int ref_hole;           /* ANCHOR_AT_EDGE：-1 外輪廓，否則孔 index */
     int ref_edge;           /* 邊 index */
     bool has_through;
-    Coord through;          /* 區間選擇器（長度軸上的座標） */
+    Coord through;          /* R6(c) span selector */
+    uint32_t ref_guide, ref_timber;
+    bool ref_is_timber;
+    uint64_t order;         /* placement dependency order (I9) */
+    bool has_between;
+    ReferenceFace between[2];
 } TimberAnchor;
 
 /*
@@ -3678,6 +3657,9 @@ typedef struct {
 /* 公理 D12：畫布座標——純展示中繼資料，不參與任何幾何推導。 */
 
 typedef struct World {
+    SpecValue specs[WORLD_MAX_SPECS];
+    size_t spec_count;
+    uint64_t next_order;
     SpaceBoundarySurface boundaries[WORLD_MAX_BOUNDARIES];
     size_t boundary_count;
 
@@ -3709,6 +3691,16 @@ typedef struct World {
     size_t canvas_pos_count;
 } World;
 
+static bool reference_preview_pending(void);
+static uint32_t reference_preview_token(void);
+static bool reference_preview_valid(void);
+static bool reference_rebuild(World *world);
+static bool reference_check_all(const World *w);
+static bool reference_snap(World *world, uint32_t pid, GuideDirection dir, uint32_t exclude, Coord at, Coord radius, char *out);
+static bool apply_reference_guide(const char *, int, char **, int, World *);
+static bool apply_reference_move(const char *, int, char **, int, World *);
+static bool apply_reference_place(const char *, int, char **, int, World *);
+static bool apply_spec_line(const char *, int, char **, int, World *);
 static Scene scene_from_world(const World *world);
 static const PlacementSurface *world_find_placement(
     const World *world, uint32_t id);
@@ -3871,6 +3863,8 @@ static void history_group_rollback(World *world)
 static bool apply_interactive_tokens(
     const char *path, int line_no, char *tokens[], int count, World *world)
 {
+    if (count > 0 && (!strcmp(tokens[0], "preview") || !strcmp(tokens[0], "cancel-preview")))
+        return apply_scene_line(path, line_no, tokens, count, world);
     /* L2 群組控制是 session 層指令,不進 .scene 檔格式。 */
     if (count == 1 && strcmp(tokens[0], "history-begin") == 0) {
         if (g_hist_grouping) {
@@ -3886,6 +3880,12 @@ static bool apply_interactive_tokens(
         if (!g_hist_grouping) {
             scene_error(path, line_no, "沒有進行中的歷史群組");
             return false;
+        }
+        for (size_t i=0;i<world->timber_count;++i) {
+            if (!world->timbers[i].placed) {
+                scene_error(path,line_no,"I9: 群組收尾仍有未放置角材（整筆回滾）");
+                history_group_rollback(world); return false;
+            }
         }
         g_hist_grouping = false;
         /* 整組算一步:把 begin 時的世界推入 undo 疊;沒變更就不記。 */
@@ -3937,12 +3937,13 @@ static bool apply_interactive_tokens(
     if (!g_hist_grouping) {
         history_record(world);
     }
+    uint32_t preview_before = reference_preview_token();
     if (apply_scene_line(path, line_no, tokens, count, world)) {
         if (g_hist_grouping) g_hist_group_dirty = true;
         return true;
     }
     if (g_hist_grouping) {
-        history_group_rollback(world);
+        if (!reference_preview_valid() || reference_preview_token() == preview_before) history_group_rollback(world);
         return false;
     }
     /* 失敗也可能已寫入 auto 推導長度；先完整還原，再撤銷歷史。 */
@@ -3966,6 +3967,7 @@ static bool parse_scene_file(const char *path, World *out_world);
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+static bool reference_gdi_confirm(HWND window, World *world);
 #include <commdlg.h>
 
 #pragma comment(lib, "user32.lib")
@@ -4661,6 +4663,8 @@ static void interactive_apply_line(GdiApp *app, HWND window, const char *text)
         app_refresh(app, window);
         gdi_set_status(app, "✓ 已套用");
         SetWindowTextW(app->input_edit, L"");
+    } else if (reference_preview_pending() && reference_gdi_confirm(window,app->world)) {
+        app_refresh(app,window); gdi_set_status(app,"✓ 已確認套用");
     } else {
         char msg[320];
         snprintf(msg, sizeof msg, "✗ %s", scene_last_error());
@@ -5402,7 +5406,7 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                 ofn.hwndOwner = window;
                 ofn.lpstrFile = wpath;
                 ofn.nMaxFile = 512;
-                ofn.lpstrFilter = L"場景檔 (*.scene) *.scene 所有檔案 *.* ";
+                ofn.lpstrFilter = L"場景檔 (*.scene)\0*.scene\0所有檔案\0*.*\0";
                 ofn.lpstrTitle = L"匯出場景檔";
                 ofn.Flags = OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
                 ofn.lpstrDefExt = L"scene";
@@ -5498,8 +5502,12 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                     return 0;
                 }
 
-                guide_line_move(surface, boundary, gd, off);
-                app_refresh(app, window);
+                char expr[REF_EXPR_MAX], command[REF_EXPR_MAX+64];
+                if (!reference_snap(app->world,gd->placement_id,gd->direction,gd->id,off,80,expr)) {
+                    gdi_set_status(app,"R5: 附近沒有合法引用"); return 0;
+                }
+                snprintf(command,sizeof command,"move %u %s",gd->id,expr);
+                interactive_apply_line(app,window,command);
 
                 /* refresh 會清掉互動態；拖曳還在進行，補回來讓線保持高亮。 */
                 app->drag_guide = (int)(gd - app->world->guides);
@@ -6477,7 +6485,7 @@ static bool a0_rect_uv(
     return true;
 }
 
-/* 已放角材的 A0 footprint（錨點是凍結值）。 */
+/* 已放角材的 A0 footprint（錨點為引用重算後的快取）。 */
 static bool timber_a0_footprint_uv(
     const PlacementSurface *surface,
     const Timber *timber,
@@ -6663,6 +6671,9 @@ static size_t collect_stop_faces(
     size_t out_cap
 )
 {
+    SpaceBoundarySurface effective;
+    boundary=placement_effective_boundary(placement,boundary,&effective);
+
     size_t count = 0;
 
     if (boundary != NULL) {
@@ -6747,6 +6758,36 @@ static size_t collect_stop_faces(
         }
     }
 
+    /* D11 order follows placement, independent of timber declaration order. */
+    for (size_t i=1;i<count;++i) {
+        if (out[i].kind!=STOP_TIMBER_SIDE) continue;
+        uint64_t order=UINT64_MAX;
+        for (size_t t=0;t<world->timber_count;++t) if (world->timbers[t].id==out[i].timber_id) order=world->anchors[t].order;
+        size_t j=i; StopFace value=out[i];
+        while (j && out[j-1].kind==STOP_TIMBER_SIDE) {
+            uint64_t previous=UINT64_MAX;
+            for (size_t t=0;t<world->timber_count;++t) if (world->timbers[t].id==out[j-1].timber_id) previous=world->anchors[t].order;
+            if (previous<=order) break;
+            out[j]=out[j-1]; --j;
+        }
+        out[j]=value;
+    }
+    for (size_t i=0;i<count;) {
+        bool duplicate=false;
+        if (out[i].kind==STOP_TIMBER_SIDE) {
+            uint64_t order=UINT64_MAX;
+            for (size_t t=0;t<world->timber_count;++t) if (world->timbers[t].id==out[i].timber_id) order=world->anchors[t].order;
+            for (size_t j=0;j<count && !duplicate;++j) {
+                if (i==j || out[i].fixed!=out[j].fixed || out[i].lo>=out[j].hi || out[j].lo>=out[i].hi) continue;
+                bool earlier=out[j].kind!=STOP_TIMBER_SIDE;
+                if (!earlier) for (size_t t=0;t<world->timber_count;++t)
+                    if (world->timbers[t].id==out[j].timber_id && world->anchors[t].order<order) earlier=true;
+                if (earlier && out[j].lo<=out[i].lo && out[j].hi>=out[i].hi) duplicate=true;
+            }
+        }
+        if (duplicate) { memmove(out+i,out+i+1,(count-i-1)*sizeof *out); --count; }
+        else ++i;
+    }
     return count;
 }
 
@@ -6756,6 +6797,16 @@ static size_t collect_stop_faces(
  *   命中時 *out_face 指向唯一那面（FREE 邊也算命中，
  *   交由呼叫端拒絕——先找到才能說「頂到自由邊」）。
  */
+/* A partial overlap keeps the exposed extension, but the occupied overlap
+ * is the earlier edge, not a second support (D11). */
+static bool stop_face_shadowed(const StopFace faces[],size_t i,Coord lo,Coord hi)
+{
+    if (faces[i].kind!=STOP_TIMBER_SIDE) return false;
+    for (size_t j=0;j<i;++j)
+        if (faces[j].fixed==faces[i].fixed && faces[j].lo<=lo && faces[j].hi>=hi) return true;
+    return false;
+}
+
 static size_t pick_stop(
     const StopFace faces[],
     size_t face_count,
@@ -6771,7 +6822,7 @@ static size_t pick_stop(
     for (size_t i = 0; i < face_count; ++i) {
         const StopFace *f = &faces[i];
 
-        if (f->fixed != at || f->lo > lo || f->hi < hi) {
+        if (f->fixed != at || f->lo > lo || f->hi < hi || stop_face_shadowed(faces,i,lo,hi)) {
             continue;
         }
 
@@ -6801,7 +6852,7 @@ static size_t count_legal_stops(
         const StopFace *f = &faces[i];
 
         if (f->fixed == at && f->lo <= lo && f->hi >= hi &&
-            f->fixity != EDGE_FREE) {
+            f->fixity != EDGE_FREE && !stop_face_shadowed(faces,i,lo,hi)) {
             ++hits;
         }
     }
@@ -6815,7 +6866,7 @@ static size_t count_legal_stops(
  *   coversEdge   onBoundary 且長度軸區間 ⊇ 該邊區間
  *   boundaryEdge 該邊索引，無則 -1
  * 只看外輪廓、不看孔邊；不讀 anchor_kind，所以 through / at-guides 貼齊邊
- * 一樣算 onBoundary，at-edge 放卻被裁短一樣 coversEdge=false。
+ * 一樣算 onBoundary，at-face 放卻被裁短一樣 coversEdge=false。
  *
  * 多條候選邊時的選法（公理層未指定，此處取確定性規則）：
  * 優先取 coversEdge 成立者，其次取重疊最長者，同長取索引最小者。
@@ -6904,10 +6955,10 @@ static bool timber_role_props(
  * D16 寫的是「與它所覆蓋的那條外輪廓 FIXED 邊（boundaryEdge）在長度軸上
  * 重疊的部分」，而 R18 明寫 boundaryEdge 是**純幾何、不看宣告與錨法**，
  * 還特別點名「用 through 放的料貼齊邊一樣 onBoundary」。
- * 所以這裡只能問幾何，不能問 anchor_kind：同一支料用 at-edge 放、
+ * 所以這裡只能問幾何，不能問 anchor_kind：同一支料用 at-face 放、
  * 或用 at／through 放在同一個位置，footprint 完全相同，固定段就必須相同。
  *
- * 這也是 dump 往返得以成立的原因（R4）：dump 只留凍結的 uv 與長度、
+ * dump 往返保存引用與放置順序（R4），角色属性仍由幾何推導、
  * 丟掉放法記錄，但幾何沒變，推導結果因此不變。
  *
  * 只看外輪廓、不看孔邊——孔邊是柱擋面，沒有延伸段語意（I20、I21 同一分界）。
@@ -6985,6 +7036,9 @@ static bool timber_boundary_role_check(
     size_t err_cap
 )
 {
+    SpaceBoundarySurface effective;
+    boundary=placement_effective_boundary(placement,boundary,&effective);
+
     bool on_boundary = false, covers_edge = false;
     int edge_index = -1;
     SurfaceSegment2 seg;
@@ -7060,7 +7114,7 @@ static bool timber_boundary_role_check(
 /*
  * 擋面接觸範圍 [lo,hi]（擋面擁有者長度軸上的座標）是否落在
  * owner 的延伸段上——I22：延伸段的側面作擋面時以優先級 2 計。
- * 只有「at-edge 外輪廓邊錨的 boundary」才有固定段/延伸段之分;
+ * 只有「at-face 外輪廓邊錨的 boundary」才有固定段/延伸段之分;
  * 其餘 owner 一律回傳 false（擋面優先級 = owner.cut_priority）。
  */
 static bool stop_in_owner_extension(
@@ -7124,11 +7178,10 @@ static bool stop_in_owner_extension(
  *   角材側面：擋面擁有者優先級須 < 自己；兩支 boundary 可在
  *     轉角互頂（例外一）；擋面落在 owner 延伸段上 → 以 2 計。
  *   自己是 boundary 且該端屬延伸段 → 豁免 I19（可頂任何優先級）。
- *   自己非 boundary 且 at-edge 外輪廓錨：跨度不得超出定位邊
+ *   自己非 boundary 且 at-face 外輪廓錨：跨度不得超出定位邊
  *     （V_EXTENSION）；boundary 超出部分即延伸段。
  *
- * 明寫放置：端面沒有涵蓋擋面 → 不檢查（懸空合法，I6）；
- * auto/重驗：呼叫端已保證端面有擋面。
+ * R6 放置與重驗：呼叫端已保證端面有擋面。
  * err 可為 NULL（重驗只取 true/false）。
  */
 static bool timber_end_face_check(
@@ -7145,6 +7198,9 @@ static bool timber_end_face_check(
     size_t err_cap
 )
 {
+    SpaceBoundarySurface effective;
+    boundary=placement_effective_boundary(placement,boundary,&effective);
+
     Coord edge_lo = 0, edge_hi = 0;
     bool has_edge = boundary_edge_interval(
         boundary, along_v, span_lo, span_hi, cross_lo, cross_hi,
@@ -7179,7 +7235,7 @@ static bool timber_end_face_check(
             const StopFace *f = &faces[i];
 
             if (f->fixed != at || f->lo > cross_lo || f->hi < cross_hi ||
-                f->fixity == EDGE_FREE || ext_end[e]) {
+                f->fixity == EDGE_FREE || ext_end[e] || stop_face_shadowed(faces,i,cross_lo,cross_hi)) {
                 continue;
             }
 
@@ -7278,7 +7334,7 @@ typedef enum {
     SPAN_OK,
     SPAN_NO_INTERVAL,        /* 中線上沒有任何合法區間 */
     SPAN_AMBIGUOUS,          /* 多個合法區間，沒有選擇器 */
-    SPAN_OUTSIDE_CONTACT,    /* 有區間但都不接觸 at-edge 引用的邊 */
+    SPAN_OUTSIDE_CONTACT,    /* 有區間但都不接觸 at-face 引用的邊 */
     SPAN_THROUGH_OUTSIDE,    /* through 座標不在任何合法區間內 */
     SPAN_START_UNSUPPORTED,  /* 起點沒有唯一合法擋面 */
     SPAN_END_UNSUPPORTED,    /* 終點沒有唯一合法擋面 */
@@ -7302,7 +7358,7 @@ typedef struct {
  *
  *   along_v            角材長度軸 = V（false = U）
  *   cross_lo/cross_hi  角材在寬度軸上的覆蓋範圍
- *   has_contact        at-edge：候選區間必須與引用邊的範圍重疊
+ *   has_contact        at-face：候選區間必須與引用邊的範圍重疊
  *   has_through        區間選擇器（長度軸座標）
  *   out_start/out_end  解析結果（長度軸座標）
  *   err/err_cap        失敗時的人話訊息
@@ -7441,7 +7497,7 @@ static SpanStatus resolve_auto_span(
         return SPAN_NO_INTERVAL;
     }
 
-    /* --- at-edge 接觸範圍過濾：區間必須與引用邊的範圍重疊 --- */
+    /* --- at-face 接觸範圍過濾：區間必須與引用邊的範圍重疊 --- */
     if (has_contact) {
         SpanInterval touching[SPAN_CUT_MAX / 2 + 1];
         size_t touching_count = 0;
@@ -7872,7 +7928,7 @@ static bool world_validate_derived(const World *world)
             return false;
         }
 
-        /* I23(b)：被 at-grid 錨定的索引必須仍推導得出——
+        /* I23(b)：被 at-line grid 錨定的索引必須仍推導得出——
          * 承載面縮小會讓尾端的線不再產生，那時整筆回滾（I8 同軌）。 */
         if (a->anchor_kind == ANCHOR_AT_GRID) {
             const ReferenceGrid *ag = world_find_grid(world, a->ref_grid);
@@ -7914,31 +7970,17 @@ static bool world_validate_derived(const World *world)
                 return false;
             }
 
-            /*
-             * auto 角材的恆真條件：兩端各至少還有一個合法擋面。
-             * place 當下要求唯一（不猜）；事後重驗只要求存在——
-             * 唯一性是用來決定當初怎麼放，不是事後不變式。
-             */
-            if (a->span_mode == SPAN_AUTO) {
+            /* R6(d)/R21: the full world must still have unique support,
+             * unless between explicitly selects valid stop faces. */
+            {
                 StopFace faces[STOP_FACE_MAX];
-                size_t face_count = collect_stop_faces(
-                    world, p, b, along_v, t, faces, STOP_FACE_MAX);
-
-                if (along_v) {
-                    if (count_legal_stops(faces, face_count,
-                            f.min_v, f.min_u, f.max_u) == 0 ||
-                        count_legal_stops(faces, face_count,
-                            f.max_v, f.min_u, f.max_u) == 0) {
-                        set_revalidate_error("凍結跨距沒有合法支撐");
-                        return false;
-                    }
-                } else {
-                    if (count_legal_stops(faces, face_count,
-                            f.min_u, f.min_v, f.max_v) == 0 ||
-                        count_legal_stops(faces, face_count,
-                            f.max_u, f.min_v, f.max_v) == 0) {
-                        set_revalidate_error("凍結跨距沒有合法支撐");
-                        return false;
+                size_t nf=collect_stop_faces(world,p,b,along_v,t,faces,STOP_FACE_MAX);
+                Coord ends[2]={along_v?f.min_v:f.min_u,along_v?f.max_v:f.max_u};
+                Coord lo=along_v?f.min_u:f.min_v,hi=along_v?f.max_u:f.max_v;
+                for (int k=0;k<2;++k) {
+                    size_t hits=count_legal_stops(faces,nf,ends[k],lo,hi);
+                    if (hits==0 || (!a->has_between && hits!=1)) {
+                        set_revalidate_error("R6(d): 端面需要恰好一個涵蓋全寬的合法擋面"); return false;
                     }
                 }
             }
@@ -8081,25 +8123,18 @@ static bool world_validate_derived(const World *world)
 
 /* D2/D7/D9：承載面 frame 改變後，角材的世界姿態與 Space 範圍必須
  * 從定義重建。只在候選世界上操作，全量驗證通過才一起提交；
- * 失敗不會留下部分更新。錨點 uv、長度、格線索引均維持凍結值。 */
+ * 失敗不會留下部分更新。位置與長度重算，引用與格線索引保持原意。 */
 static bool world_revalidate(World *world)
 {
     g_revalidate_error[0] = '\0';
     World candidate = *world;
 
-    for (size_t i = 0; i < candidate.timber_count; ++i) {
-        Timber *t = &candidate.timbers[i];
-        if (!t->placed) continue;
-        const TimberAnchor *a = &candidate.anchors[i];
-        const PlacementSurface *p = world_find_placement(&candidate, a->placement_id);
-        if (p == NULL) return false;
-        t->placed = false;
-        if (!timber_place_a0_on_surface(
-                t, p, world_placement_boundary(&candidate, p), a->uv,
-                (SurfaceDirection)a->length_direction,
-                (SurfaceDepthSide)a->depth_side)) {
-            return false;
-        }
+    bool rebuilt=reference_rebuild(&candidate);
+    char rebuild_error[256]; snprintf(rebuild_error,sizeof rebuild_error,"%s",g_revalidate_error);
+    bool all_checks=reference_check_all(&candidate);
+    if (!rebuilt || !all_checks) {
+        if (!rebuilt && rebuild_error[0]) set_revalidate_error(rebuild_error);
+        return false;
     }
 
     for (size_t i = 0; i < candidate.space_count; ++i) {
@@ -8797,81 +8832,10 @@ static bool apply_surface_combined_line(
 }
 
 /* guide <id> <承載面id> <u|v> <offset>：offset 合法範圍由承載面決定。 */
-static bool apply_guide_line(
-    const char *path,
-    int line_no,
-    char *tokens[],
-    int count,
-    World *world
-)
-{
-    (void)count;
+static bool apply_guide_line(const char *p, int n, char **t, int c, World *w)
+{ return apply_reference_guide(p, n, t, c, w); }
 
-    if (world->guide_count == WORLD_MAX_GUIDES) {
-        scene_error(path, line_no, "參考線的數量超過上限");
-        return false;
-    }
-
-    GuideLine guide;
-    int direction;
-
-    if (!parse_u32(tokens[1], &guide.id)) {
-        scene_error(path, line_no, "guide 的 id 不是有效的整數");
-        return false;
-    }
-
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        if (world->guides[i].id == guide.id) {
-            scene_error(path, line_no, "這個 guide id 已經用過了");
-            return false;
-        }
-    }
-
-    if (!parse_u32(tokens[2], &guide.placement_id)) {
-        scene_error(path, line_no, "guide 的承載面 id 不是有效的整數");
-        return false;
-    }
-
-    const PlacementSurface *placement =
-        world_find_placement(world, guide.placement_id);
-
-    if (placement == NULL) {
-        scene_error(path, line_no, "guide 指的承載面不存在");
-        return false;
-    }
-
-    if (!lookup_keyword(tokens[3], GUIDE_DIRECTION_WORDS, &direction)) {
-        scene_error(path, line_no, "guide 的方向只能寫 u 或 v");
-        return false;
-    }
-
-    guide.direction = (GuideDirection)direction;
-
-    if (!parse_coord(tokens[4], &guide.offset)) {
-        scene_error(path, line_no, "guide 的 offset 不是有效的整數");
-        return false;
-    }
-
-    const SpaceBoundarySurface *boundary =
-        world_find_boundary(world, placement->boundary_id);
-
-    if (!guide_offset_in_range(
-            placement, boundary, guide.direction, guide.offset)) {
-        scene_error(path, line_no, "guide 的 offset 落在承載面範圍之外");
-        return false;
-    }
-
-    world->guides[world->guide_count++] = guide;
-    return true;
-}
-
-/*
- * timber 兩種語法（公理 O3：明寫長度與 auto 是兩種建構語意）：
- *
- *   timber id L A B   明寫長度：只能配 at / at-guides 放置
- *   timber id A B     auto：長度由 place 當下的合法區間推導，
- *                     只能配 at-grid / at-edge 放置
- */
+/* D7/D15: timber id A B role ...；長度永遠由引用與跨距推導。 */
 static bool apply_timber_line(
     const char *path,
     int line_no,
@@ -8880,29 +8844,22 @@ static bool apply_timber_line(
     World *world
 )
 {
-    if (world->timber_count == WORLD_MAX_TIMBERS) {
+    if (world->timber_count == WORLD_MAX_TIMBERS &&
+        (count < 2 || !world_find_timber(world, (uint32_t)strtoul(tokens[1], NULL, 10)))) {
         scene_error(path, line_no, "角材的數量超過上限");
         return false;
     }
 
-    /*
-     * D15/I18：timber id [L] A B role <角色> [priority N]。
-     * role 關鍵字的位置分出兩種長度模式：
-     *   auto  = timber id A B role …（tokens[4]）
-     *   明寫  = timber id L A B role …（tokens[5]）
-     */
+    /* D7: only A/B dimensions; old explicit lengths are rejected. */
     bool auto_length;
     int role_idx;
 
     if (count >= 5 && strcmp(tokens[4], "role") == 0) {
         auto_length = true;
         role_idx = 4;
-    } else if (count >= 6 && strcmp(tokens[5], "role") == 0) {
-        auto_length = false;
-        role_idx = 5;
     } else {
         scene_error(path, line_no,
-            "timber 需要 role 子句：timber id [長度] A尺寸 B尺寸 "
+            "D7/I18: timber id A尺寸 B尺寸 role 必填；明寫長度已廢除 "
             "role boundary|primary|secondary|custom [priority N]");
         return false;
     }
@@ -8978,8 +8935,10 @@ static bool apply_timber_line(
 
     for (size_t i = 0; i < world->timber_count; ++i) {
         if (world->timbers[i].id == id) {
-            scene_error(path, line_no, "這個 timber id 已經用過了");
-            return false;
+            Timber updated;
+            if (!timber_construct(id, 0, size_a, size_b, true, role, custom_priority, &updated)) return false;
+            updated.placed = world->timbers[i].placed;
+            return world_replace_object(world, &world->timbers[i], &updated, sizeof updated);
         }
     }
 
@@ -9018,7 +8977,7 @@ static ReferenceGrid *world_find_grid_mut(World *world, uint32_t id)
 }
 
 /*
- * at-edge 的邊參照：e3 = 外輪廓邊 index 3；h1e2 = 孔 1 的邊 index 2。
+ * at-face 的邊參照：e3 = 外輪廓邊 index 3；h1e2 = 孔 1 的邊 index 2。
  * 索引一律 0-based，跟 fixity 清單的順位一致。
  */
 static bool parse_edge_ref(const char *token, int *out_hole, int *out_edge)
@@ -9246,11 +9205,7 @@ static bool apply_grid_line(
             }
 
             /* D1 全整數、R3 不猜：縫寬為奇數時中心線不是整數 → 拒絕。 */
-            if (p_gap % 2 != 0) {
-                scene_error(path, line_no,
-                    "grid panel 的縫寬必須是偶數，否則縫中心線不是整數");
-                return false;
-            }
+
 
             int pnext = i + 4;
             bool has_from = false;
@@ -9413,49 +9368,6 @@ static bool apply_grid_line(
     }
 
     /*
-     * I23(a)：每個被 at-grid 錨定的（軸，索引）都必須在新舊兩份定義下
-     * 推導出同一座標。因此往後追加格線、延長等差條數合法；改既有座標、
-     * 改起算點會移動已錨定的線，在這裡就被擋下。
-     */
-    if (existing != NULL) {
-        const SpaceBoundarySurface *gb =
-            world_find_boundary(world, placement->boundary_id);
-
-        for (size_t t = 0; t < world->timber_count; ++t) {
-            const TimberAnchor *a = &world->anchors[t];
-
-            if (!world->timbers[t].placed ||
-                a->anchor_kind != ANCHOR_AT_GRID ||
-                a->ref_grid != grid_id) {
-                continue;
-            }
-
-            Coord was = 0;
-            Coord now = 0;
-            bool had = grid_line_coord(existing, placement, gb,
-                                       a->ref_grid_axis,
-                                       (size_t)a->ref_grid_index,
-                                       &was, NULL, NULL, 0);
-            bool has = grid_line_coord(&candidate, placement, gb,
-                                       a->ref_grid_axis,
-                                       (size_t)a->ref_grid_index,
-                                       &now, NULL, NULL, 0);
-
-            if (!had || !has || was != now) {
-                char msg[256];
-
-                snprintf(msg, sizeof msg,
-                    "V_GRID_LOCKED：角材 %u 錨在網格 %u 的 %c 軸第 %d 條線上，"
-                    "重宣告會移動或移除它（先刪角材）",
-                    (unsigned)world->timbers[t].id, (unsigned)grid_id,
-                    a->ref_grid_axis == 0 ? 'u' : 'v', a->ref_grid_index);
-                scene_error(path, line_no, msg);
-                return false;
-            }
-        }
-    }
-
-    /*
      * 回寫走 I8 交易：全量重驗，失敗整筆回滾、World 留在舊狀態。
      * 既有槽位交給 world_replace_object；新增沒有槽位可換，就地做同一套。
      */
@@ -9480,679 +9392,21 @@ static bool apply_grid_line(
     return true;
 }
 
-/*
- * place <角材id> on <承載面id> <錨法> [through c] <長度方向> <深度側>
- *
- * 錨法四種，兩兩一組：
- *
- *   明寫長度角材（timber id L A B）：
- *     at u v                      直接給錨點的局部座標（A0 角點）
- *     at-guides <線id> <線id>     兩條參考線交點當錨點（place 當下凍結）
- *
- *   auto 角材（timber id A B）：
- *     at-grid <網id> u|v <索引>   格線座標 = 角材中心線，長度自動推導
- *     at-edge e<i> | h<i>e<j>     貼邊放（輪廓邊或孔邊），長度自動推導
- *
- *   兩種都可在方向前加 through <座標> 指定要用哪一段合法區間。
- *
- * 凍結語意（公理層決策 #5 + O3）：錨點與推導長度在 place 當下
- * 凍結，之後移動參考線／網格不連動，重驗只檢查凍結結果仍合法。
- */
-static bool apply_place_line(
-    const char *path,
-    int line_no,
-    char *tokens[],
-    int count,
-    World *world
-)
-{
-    uint32_t timber_id;
+/* I12/I13/R6: at-line guide/grid 或 at-face e/he/t，保存引用並重算。
+ * through 與 between 選擇可證明的合法跨距；既有物件變更走 I8a。 */
+static bool apply_place_line(const char *p, int n, char **t, int c, World *w)
+{ return apply_reference_place(p, n, t, c, w); }
 
-    if (!parse_u32(tokens[1], &timber_id)) {
-        scene_error(path, line_no, "place 的角材 id 不是有效的整數");
-        return false;
-    }
+/* 舊保存標記明確拒絕，避免誤讀成新引用定義。 */
+static bool apply_span_auto_line(const char *p, int n, char **t, int c, World *w)
+{ (void)t; (void)c; (void)w; scene_error(p,n,"R4: span-auto 已廢除；請使用引用錨法"); return false; }
 
-    Timber *timber = NULL;
 
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        if (world->timbers[i].id == timber_id) {
-            timber = &world->timbers[i];
-            break;
-        }
-    }
+static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
+{ return apply_reference_move(p, n, t, c, w); }
 
-    if (timber == NULL) {
-        scene_error(path, line_no, "place 指的角材不存在");
-        return false;
-    }
+#include "geometry-core/references.inc"
 
-    if (timber->placed) {
-        scene_error(path, line_no, "這支角材已經放過了");
-        return false;
-    }
-
-    /* place t on s ... ：on 與承載面 id 固定在 token 2、3。 */
-    if (count < 4 || strcmp(tokens[2], "on") != 0) {
-        scene_error(path, line_no, "place 需要：角材id on 承載面id ...");
-        return false;
-    }
-
-    uint32_t placement_id;
-
-    if (!parse_u32(tokens[3], &placement_id)) {
-        scene_error(path, line_no, "place 的承載面 id 不是有效的整數");
-        return false;
-    }
-
-    const PlacementSurface *placement =
-        world_find_placement(world, placement_id);
-
-    if (placement == NULL) {
-        scene_error(path, line_no, "place 指的承載面不存在");
-        return false;
-    }
-
-    const SpaceBoundarySurface *boundary =
-        world_find_boundary(world, placement->boundary_id);
-
-    int anchor_kind = -1;
-    SurfacePoint2 anchor_uv = { 0, 0 };
-    bool has_through = false;
-    Coord through = 0;
-    bool has_grid_ref = false;
-    bool has_between = false;
-    StopFaceRef between_refs[2] = { { 0, -1, 0, 0 }, { 0, -1, 0, 0 } };
-    uint32_t ref_grid = 0;
-    int ref_grid_axis = -1;
-    int ref_grid_index = -1;
-    int ref_hole = -1;
-    int ref_edge = -1;
-    Coord centerline = 0;
-    int i = 0;
-
-    if (count >= 5 && strcmp(tokens[4], "at") == 0) {
-        /* place t on s at u v dir side */
-        if (count != 9 && (count != 13 || strcmp(tokens[9], "grid-ref") != 0)) {
-            scene_error(path, line_no,
-                "place at 需要：角材id on 承載面id at u v 長度方向 深度側"
-                " [grid-ref 網id u|v 索引]");
-            return false;
-        }
-
-        if (!parse_coord(tokens[5], &anchor_uv.u) ||
-            !parse_coord(tokens[6], &anchor_uv.v)) {
-            scene_error(path, line_no, "place at 的 u / v 不是有效的整數");
-            return false;
-        }
-
-        if (count == 13) {
-            Coord index;
-            if (!parse_u32(tokens[10], &ref_grid) ||
-                !parse_i64(tokens[12], &index) || index < 0 ||
-                index >= GRID_MAX_LINES ||
-                (strcmp(tokens[11], "u") != 0 && strcmp(tokens[11], "v") != 0)) {
-                scene_error(path, line_no, "grid-ref 的網格、軸或索引無效");
-                return false;
-            }
-            ref_grid_axis = strcmp(tokens[11], "u") == 0 ? 0 : 1;
-            ref_grid_index = (int)index;
-            has_grid_ref = true;
-        }
-        anchor_kind = ANCHOR_AT;
-        i = 7;
-    } else if (count >= 5 && strcmp(tokens[4], "at-guides") == 0) {
-        /* place t on s at-guides g1 g2 dir side */
-        if (count != 9) {
-            scene_error(path, line_no,
-                "place at-guides 需要：角材id on 承載面id at-guides 線1 線2 長度方向 深度側");
-            return false;
-        }
-
-        uint32_t guide_a_id, guide_b_id;
-
-        if (!parse_u32(tokens[5], &guide_a_id) ||
-            !parse_u32(tokens[6], &guide_b_id)) {
-            scene_error(path, line_no, "place at-guides 的線 id 不是有效的整數");
-            return false;
-        }
-
-        const GuideLine *guide_a = NULL;
-        const GuideLine *guide_b = NULL;
-
-        for (size_t g = 0; g < world->guide_count; ++g) {
-            if (world->guides[g].id == guide_a_id) guide_a = &world->guides[g];
-            if (world->guides[g].id == guide_b_id) guide_b = &world->guides[g];
-        }
-
-        if (guide_a == NULL || guide_b == NULL) {
-            scene_error(path, line_no, "place at-guides 指的參考線不存在");
-            return false;
-        }
-
-        if (!guide_line_intersection(
-                placement, boundary, guide_a, guide_b, &anchor_uv)) {
-            scene_error(path, line_no,
-                "這兩條參考線不相交（方向相同、不同面，或交點在有效區域外）");
-            return false;
-        }
-
-        anchor_kind = ANCHOR_AT_GUIDES;
-        i = 7;
-    } else if (count >= 5 && strcmp(tokens[4], "at-grid") == 0) {
-        /* place t on s at-grid g u|v n [through c] dir side */
-        if (count != 10 && count != 12 && count != 13 && count != 15) {
-            scene_error(path, line_no,
-                "place at-grid 需要：角材id on 承載面id at-grid 網id u|v 索引 "
-                "[through 座標｜between 擋面 擋面] 長度方向 深度側");
-            return false;
-        }
-
-        if (!parse_u32(tokens[5], &ref_grid)) {
-            scene_error(path, line_no, "place at-grid 的網格 id 不是有效的整數");
-            return false;
-        }
-
-        const ReferenceGrid *grid = world_find_grid(world, ref_grid);
-
-        if (grid == NULL || grid->placement_id != placement_id) {
-            scene_error(path, line_no, "place at-grid 指的網格不在這片承載面上");
-            return false;
-        }
-
-        Coord grid_index;
-
-        if (strcmp(tokens[6], "u") == 0) {
-            ref_grid_axis = 0;
-        } else if (strcmp(tokens[6], "v") == 0) {
-            ref_grid_axis = 1;
-        } else {
-            scene_error(path, line_no, "place at-grid 的座標軸只能寫 u 或 v");
-            return false;
-        }
-
-        if (!parse_i64(tokens[7], &grid_index) || grid_index < 0) {
-            scene_error(path, line_no, "place at-grid 的格線索引超出範圍");
-            return false;
-        }
-
-        /* D9/D10a：中線由定義即時推導，不從展開後的陣列取。 */
-        {
-            char gerr[200] = "";
-
-            if (!grid_line_coord(grid, placement, boundary,
-                                 ref_grid_axis, (size_t)grid_index,
-                                 &centerline, NULL, gerr, sizeof gerr)) {
-                char msg[320];
-
-                snprintf(msg, sizeof msg,
-                         "place at-grid 的格線索引超出範圍%s%s",
-                         gerr[0] != '\0' ? "：" : "", gerr);
-                scene_error(path, line_no, msg);
-                return false;
-            }
-        }
-
-        ref_grid_index = (int)grid_index;
-
-        anchor_kind = ANCHOR_AT_GRID;
-        i = 8;
-    } else if (count >= 5 && strcmp(tokens[4], "at-edge") == 0) {
-        /* place t on s at-edge e3|h1e2 [through c] dir side */
-        if (count != 8 && count != 10 && count != 11 && count != 13) {
-            scene_error(path, line_no,
-                "place at-edge 需要：角材id on 承載面id at-edge e索引|h孔索引e邊索引 "
-                "[through 座標｜between 擋面 擋面] 長度方向 深度側");
-            return false;
-        }
-
-        if (boundary == NULL) {
-            scene_error(path, line_no,
-                "at-edge 需要承載面掛邊界面（自帶矩形沒有邊）");
-            return false;
-        }
-
-        if (!parse_edge_ref(tokens[5], &ref_hole, &ref_edge)) {
-            scene_error(path, line_no,
-                "at-edge 的邊參照寫法是 e3 或 h1e2");
-            return false;
-        }
-
-        const PolygonLoop2 *loop =
-            ref_hole < 0 ? &boundary->outline : NULL;
-
-        if (ref_hole >= 0) {
-            if ((size_t)ref_hole >= boundary->hole_count) {
-                scene_error(path, line_no, "at-edge 的孔索引超出範圍");
-                return false;
-            }
-            loop = &boundary->holes[ref_hole];
-        }
-
-        if ((size_t)ref_edge >= loop->count) {
-            scene_error(path, line_no, "at-edge 的邊索引超出範圍");
-            return false;
-        }
-
-        anchor_kind = ANCHOR_AT_EDGE;
-        i = 6;
-    } else {
-        scene_error(path, line_no,
-            "place 的錨法只認得 at、at-guides、at-grid、at-edge");
-        return false;
-    }
-
-    /* 可選區間選擇器二選一（R6(c)）：through 座標，或 between 明寫兩端。 */
-    if (anchor_kind == ANCHOR_AT_GRID || anchor_kind == ANCHOR_AT_EDGE) {
-        if (i + 2 <= count && strcmp(tokens[i], "through") == 0) {
-            if (!parse_coord(tokens[i + 1], &through)) {
-                scene_error(path, line_no, "through 的座標不是有效的整數");
-                return false;
-            }
-            has_through = true;
-            i += 2;
-        }
-
-        if (i + 3 <= count && strcmp(tokens[i], "between") == 0) {
-            if (has_through) {
-                scene_error(path, line_no,
-                    "through 與 between 是同一個位置的兩種選擇器，不能同時寫");
-                return false;
-            }
-
-            for (int k = 0; k < 2; ++k) {
-                const char *tok = tokens[i + 1 + k];
-                StopFaceRef *r = &between_refs[k];
-
-                if (tok[0] == 't' && tok[1] != '\0') {
-                    uint32_t tid;
-
-                    if (!parse_u32(tok + 1, &tid)) {
-                        scene_error(path, line_no,
-                            "between 的角材參照要寫成 t<角材id>");
-                        return false;
-                    }
-
-                    r->kind = 1;
-                    r->timber = (TimberId)tid;
-                    r->hole = -1;
-                    r->edge = 0;
-                } else if (parse_edge_ref(tok, &r->hole, &r->edge)) {
-                    r->kind = 0;
-                    r->timber = 0;
-                } else {
-                    scene_error(path, line_no,
-                        "between 的擋面參照只認得 e<索引>、"
-                        "h<孔索引>e<邊索引>、t<角材id>");
-                    return false;
-                }
-            }
-
-            has_between = true;
-            i += 3;
-        }
-    }
-
-    int length_direction, depth_side;
-
-    if (i < 0 || i + 1 >= count) {
-        scene_error(path, line_no, "place 缺少長度方向與深度側");
-        return false;
-    }
-
-    if (!lookup_keyword(tokens[i], LENGTH_DIRECTION_WORDS, &length_direction)) {
-        scene_error(path, line_no, "長度方向只能寫 +u -u +v -v");
-        return false;
-    }
-
-    if (!lookup_keyword(tokens[i + 1], DEPTH_SIDE_WORDS, &depth_side)) {
-        scene_error(path, line_no, "深度側只能寫 +n 或 -n");
-        return false;
-    }
-
-    bool along_v =
-        length_direction == SURFACE_DIRECTION_POS_V ||
-        length_direction == SURFACE_DIRECTION_NEG_V;
-
-    /* 語法配對（公理 O3）：auto 角材 ↔ 中心線錨法；明寫 ↔ 角點錨法。 */
-    bool auto_anchor =
-        anchor_kind == ANCHOR_AT_GRID || anchor_kind == ANCHOR_AT_EDGE;
-
-    /* 公理 I12：語法配對——auto 角材只能用 at-grid / at-edge，
-     * 明寫長度角材只能用 at / at-guides。 */
-    if (auto_anchor && !timber->auto_length) {
-        scene_error(path, line_no,
-            "明寫長度角材只能用 at 或 at-guides 放置");
-        return false;
-    }
-
-    if (!auto_anchor && timber->auto_length) {
-        scene_error(path, line_no,
-            "auto 角材（timber id A B）只能用 at-grid 或 at-edge 放置");
-        return false;
-    }
-
-    if (auto_anchor) {
-        /*
-         * 由錨法決定寬度範圍與接觸範圍，再推導跨距。
-         *   at-grid：中線 = 格線座標，寬度 = 中線 ± ⌊w/2⌋ / ⌈w/2⌉
-         *           （奇數寬多的 1mm 一律在 +cross 側——公理，不是猜）。
-         *   at-edge：footprint 貼齊邊、向面內延伸一個寬度；
-         *           邊的長度軸範圍是接觸範圍（區間可超出，必須重疊）。
-         */
-        Coord cross_lo, cross_hi;
-        bool has_contact = false;
-        Coord contact_lo = 0, contact_hi = 0;
-        Coord w = timber->size_a;
-
-        if (anchor_kind == ANCHOR_AT_GRID) {
-            /* 座標軸必須 ⊥ 長度軸：u 座標線沿 V 走 → 配沿 V 的料，
-             * v 座標線沿 U 走 → 配沿 U 的料。方向不垂直 → 拒絕。 */
-            if ((ref_grid_axis == 0) != along_v) {
-                scene_error(path, line_no,
-                    "格線座標軸必須與角材長度方向垂直"
-                    "（u 座標線配 ±v，v 座標線配 ±u）");
-                return false;
-            }
-
-            cross_lo = centerline - w / 2;
-            cross_hi = cross_lo + w;
-        } else {
-            /* at-edge：邊必須與長度方向平行，footprint 貼邊向內。 */
-            const PolygonLoop2 *loop =
-                ref_hole < 0
-                    ? &boundary->outline
-                    : &boundary->holes[ref_hole];
-
-            SurfaceSegment2 edge_seg;
-            SurfacePoint2 outward;
-
-            loop_get_edge_segment(loop, (size_t)ref_edge, &edge_seg);
-            loop_edge_outward_normal(loop, (size_t)ref_edge, &outward);
-
-            bool edge_runs_v = edge_seg.start.u == edge_seg.end.u;
-
-            if (edge_runs_v != along_v) {
-                scene_error(path, line_no,
-                    "at-edge 的邊必須與角材長度方向平行");
-                return false;
-            }
-
-            /* 材料側：外輪廓取外向法線的反側（-outward）；
-             * 孔的外向法線本身已指向材料側（+outward）。 */
-
-            if (along_v) {
-                /* 直立邊：fixed u，跨 v；寬度沿 u 向材料側。 */
-                Coord c = edge_seg.start.u;
-                Coord in = ref_hole < 0 ? -outward.u : outward.u;
-
-                if (in > 0) {
-                    cross_lo = c;
-                    cross_hi = c + w;
-                } else if (in < 0) {
-                    cross_lo = c - w;
-                    cross_hi = c;
-                } else {
-                    scene_error(path, line_no, "at-edge 的邊方向異常");
-                    return false;
-                }
-
-                contact_lo = coord_min(edge_seg.start.v, edge_seg.end.v);
-                contact_hi = coord_max(edge_seg.start.v, edge_seg.end.v);
-            } else {
-                Coord c = edge_seg.start.v;
-                Coord in = ref_hole < 0 ? -outward.v : outward.v;
-
-                if (in > 0) {
-                    cross_lo = c;
-                    cross_hi = c + w;
-                } else if (in < 0) {
-                    cross_lo = c - w;
-                    cross_hi = c;
-                } else {
-                    scene_error(path, line_no, "at-edge 的邊方向異常");
-                    return false;
-                }
-
-                contact_lo = coord_min(edge_seg.start.u, edge_seg.end.u);
-                contact_hi = coord_max(edge_seg.start.u, edge_seg.end.u);
-            }
-
-            has_contact = true;
-        }
-
-        char span_err[200] = "";
-        Coord span_start, span_end;
-        SpanStatus status = resolve_auto_span(
-            world, placement, boundary, along_v,
-            cross_lo, cross_hi,
-            has_contact, contact_lo, contact_hi,
-            has_through, through,
-            has_between ? between_refs : NULL,
-            &span_start, &span_end,
-            span_err, sizeof span_err);
-
-        if (status != SPAN_OK) {
-            char msg[256];
-            snprintf(msg, sizeof msg, "auto 跨距推導失敗：%s", span_err);
-            scene_error(path, line_no, msg);
-            return false;
-        }
-
-        /* 跨距 + 寬度範圍 → footprint 矩形 → 錨角 + 長度（凍結）。 */
-        SurfaceRegion2 rect =
-            along_v
-                ? (SurfaceRegion2){ cross_lo, span_start, cross_hi, span_end }
-                : (SurfaceRegion2){ span_start, cross_lo, span_end, cross_hi };
-
-        anchor_uv = anchor_corner_from_rect(
-            placement, length_direction, depth_side, &rect);
-        if (!coord_in_range(span_end - span_start)) {
-            scene_error(path, line_no, "auto 長度超出支援範圍（最大 100000000 mm）");
-            return false;
-        }
-        timber->length = span_end - span_start;
-    }
-
-    /* 實體不得正面積重疊（公理 O2）：明寫與 auto 都套用。 */
-    SurfaceRegion2 footprint;
-
-    if (!a0_rect_uv(
-            placement, anchor_uv, length_direction, depth_side,
-            timber->length, timber->size_a, &footprint)) {
-        scene_error(path, line_no, "角材參數無法推導 footprint");
-        return false;
-    }
-
-    if (has_grid_ref) {
-        const ReferenceGrid *grid = world_find_grid(world, ref_grid);
-        Coord coord;
-        if (grid == NULL || grid->placement_id != placement_id ||
-            (ref_grid_axis == 0) != along_v ||
-            !grid_line_coord(grid, placement, boundary, ref_grid_axis,
-                             (size_t)ref_grid_index, &coord, NULL, NULL, 0) ||
-            coord != (along_v ? footprint.min_u : footprint.min_v) + timber->size_a / 2) {
-            scene_error(path, line_no, "grid-ref 必須引用同面、有效且與凍結中線一致的垂直格線");
-            return false;
-        }
-    }
-
-    if (world_footprint_collides(
-            world, placement, &footprint, timber)) {
-        scene_error(path, line_no,
-            "角材與同承載面上的已放角材正面積重疊");
-        return false;
-    }
-
-    /* D17/I21：同面主支軸一致——含這支待放料一起驗。 */
-    {
-        char axis_err[200] = "";
-
-        if (!surface_primary_axis_check(
-                world, placement_id, timber, along_v,
-                axis_err, sizeof axis_err)) {
-            scene_error(path, line_no, axis_err);
-            return false;
-        }
-    }
-
-    /* I19/I22：端面裁切優先序與延伸段規則。 */
-    {
-        char end_err[256] = "";
-        TimberAnchor probe_anchor = {
-            .placement_id = placement_id,
-            .uv = anchor_uv,
-            .anchor_kind = anchor_kind,
-            .span_mode = timber->auto_length ? SPAN_AUTO : SPAN_EXPLICIT,
-            .length_direction = length_direction,
-            .depth_side = depth_side,
-            .ref_grid = ref_grid,
-            .ref_grid_axis = ref_grid_axis,
-            .ref_grid_index = ref_grid_index,
-            .ref_hole = ref_hole,
-            .ref_edge = ref_edge,
-            .has_through = has_through,
-            .through = through
-        };
-
-        if (!timber_end_face_check(
-                world, placement, boundary, timber,
-                along_v,
-                along_v ? footprint.min_v : footprint.min_u,
-                along_v ? footprint.max_v : footprint.max_u,
-                along_v ? footprint.min_u : footprint.min_v,
-                along_v ? footprint.max_u : footprint.max_v,
-                end_err, sizeof end_err)) {
-            scene_error(path, line_no, end_err);
-            return false;
-        }
-
-        /* I20：邊界材固定段須整條覆蓋所貼的外輪廓邊。 */
-        if (!timber_boundary_role_check(
-                placement, boundary, timber, along_v,
-                along_v ? footprint.min_v : footprint.min_u,
-                along_v ? footprint.max_v : footprint.max_u,
-                along_v ? footprint.min_u : footprint.min_v,
-                along_v ? footprint.max_u : footprint.max_v,
-                end_err, sizeof end_err)) {
-            scene_error(path, line_no, end_err);
-            return false;
-        }
-    }
-
-    if (!timber_place_a0_on_surface(
-            timber, placement, boundary, anchor_uv,
-            (SurfaceDirection)length_direction,
-            (SurfaceDepthSide)depth_side)) {
-        scene_error(path, line_no,
-            "放不上去：錨點在有效範圍外、A0 面跨出邊界或孔，或端面頂到自由邊");
-        return false;
-    }
-
-    /* 重宣告交易要靠錨點重驗角材，所以放法要留著。 */
-    world->anchors[timber - world->timbers] = (TimberAnchor){
-        .placement_id = placement_id,
-        .uv = anchor_uv,
-        .anchor_kind = has_grid_ref ? ANCHOR_AT_GRID : anchor_kind,
-        .span_mode = timber->auto_length || has_grid_ref ? SPAN_AUTO : SPAN_EXPLICIT,
-        .length_direction = length_direction,
-        .depth_side = depth_side,
-        .ref_grid = ref_grid,
-        .ref_grid_axis = ref_grid_axis,
-        .ref_grid_index = ref_grid_index,
-        .ref_hole = ref_hole,
-        .ref_edge = ref_edge,
-        .has_through = has_through,
-        .through = through
-    };
-
-    /* 場景檔可能先放被支撐料、後放擋面，支撐義務留到 parse 收尾。
-     * 互動一次一行：place 當下就要維持 I8/I19 全量不變量（失敗由呼叫端回滾）。 */
-    if (!g_parsing_scene_file && !world_revalidate(world)) {
-        scene_error(path, line_no,
-            g_revalidate_error[0] != '\0'
-                ? g_revalidate_error
-                : "放置後重驗失敗（已回滾）");
-        return false;
-    }
-
-    return true;
-}
-
-/* R4/R6(e)：在凍結幾何及所有擋面重放完後，恢復 auto 的支撐義務。
- * 宣告順序不一定等於放置順序，所以不能在第一支 place 就要求擋面全到齊。 */
-static bool apply_span_auto_line(
-    const char *path, int line_no, char *tokens[], int count, World *world)
-{
-    (void)count;
-    uint32_t id;
-    if (!parse_u32(tokens[1], &id)) {
-        scene_error(path, line_no, "span-auto 需要有效的角材 id");
-        return false;
-    }
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        if (world->timbers[i].id != id) continue;
-        if (!world->timbers[i].placed) break;
-        int before = world->anchors[i].span_mode;
-        world->anchors[i].span_mode = SPAN_AUTO;
-        if (!world_revalidate(world)) {
-            world->anchors[i].span_mode = before;
-            scene_error(path, line_no, "span-auto 的凍結跨距不再有合法支撐（已回滾）");
-            return false;
-        }
-        return true;
-    }
-    scene_error(path, line_no, "span-auto 指的角材不存在或尚未放置");
-    return false;
-}
-
-
-static bool apply_move_line(
-    const char *path,
-    int line_no,
-    char *tokens[],
-    int count,
-    World *world
-)
-{
-    (void)count;
-
-    uint32_t guide_id;
-    Coord offset;
-
-    if (!parse_u32(tokens[1], &guide_id) ||
-        !parse_coord(tokens[2], &offset)) {
-        scene_error(path, line_no, "move 需要：參考線id 新offset");
-        return false;
-    }
-
-    GuideLine *guide = NULL;
-
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        if (world->guides[i].id == guide_id) {
-            guide = &world->guides[i];
-            break;
-        }
-    }
-
-    if (guide == NULL) {
-        scene_error(path, line_no, "move 指的參考線不存在");
-        return false;
-    }
-
-    const PlacementSurface *placement =
-        world_find_placement(world, guide->placement_id);
-
-    if (placement == NULL ||
-        !guide_line_move(placement,
-            world_find_boundary(world, placement->boundary_id),
-            guide, offset)) {
-        scene_error(path, line_no, "move 的 offset 落在承載面範圍之外");
-        return false;
-    }
-
-    return true;
-}
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
  * 一致性由 space_construct 把關；同名 id = 交易式重宣告。 */
@@ -11982,9 +11236,8 @@ static bool apply_reset_line(
  * world_dump_dsl：把 World 序列化回 DSL 文本（畫布存檔/匯出用）
  *
  *   原則：輸出是「可重放」的規範形——重放後得到同一個 World。
- *   - at-guides 的錨點在 place 當下已凍結（R2），dump 成等價的 at u v。
- *   - 物件順序依依賴鏈：boundary → placement → guide → grid
- *     → timber → place → space。
+ *   - 保存 spec、引用式與 at-line/at-face；不輸出衍生 uv/長度。
+ *   - 角材依放置順序輸出，參考線依其引用拓樸穿插輸出（R4/I9）。
  * ============================================================ */
 
 static const char *axis_word(Vector3 axis)
@@ -12086,14 +11339,8 @@ static void world_dump_dsl(const World *world, FILE *out)
         fputc('\n', out);
     }
 
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        const GuideLine *g = &world->guides[i];
-
-        fprintf(out, "guide %u %u %s %lld\n",
-                (unsigned)g->id, (unsigned)g->placement_id,
-                g->direction == GUIDE_ALONG_U ? "u" : "v",
-                (long long)g->offset);
-    }
+    for (size_t i = 0; i < world->spec_count; ++i)
+        fprintf(out, "spec %s %lld\n", world->specs[i].name, (long long)world->specs[i].value);
 
     for (size_t i = 0; i < world->grid_count; ++i) {
         const ReferenceGrid *g = &world->grids[i];
@@ -12129,91 +11376,7 @@ static void world_dump_dsl(const World *world, FILE *out)
         }
     }
 
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const Timber *t = &world->timbers[i];
-
-        /* auto 角材的 length 在 place 當下已凍結；dump 明寫形式，
-         * 重放不再重算（參照若被移動過，重算會得到不同的世界）。
-         * D15：角色是宣告的一部分，priority 只隨 custom 輸出（I18）。 */
-        fprintf(out, "timber %u %lld %lld %lld role %s",
-                (unsigned)t->id, (long long)t->length,
-                (long long)t->size_a, (long long)t->size_b,
-                timber_role_name(t->role));
-        if (t->role == TIMBER_ROLE_CUSTOM) {
-            fprintf(out, " priority %lld", (long long)t->cut_priority);
-        }
-        fputc('\n', out);
-    }
-
-    /* 擋面可能比被支撐角材晚宣告。dump 先寫非 grid-ref 的 place，
-     * 讓逐行重放時互動路徑的 grid-ref 重驗看得到擋面。 */
-    for (int pass = 0; pass < 2; ++pass) {
-        for (size_t i = 0; i < world->timber_count; ++i) {
-            const Timber *t = &world->timbers[i];
-            const TimberAnchor *a = &world->anchors[i];
-            bool is_grid = a->anchor_kind == ANCHOR_AT_GRID;
-
-            if (!t->placed || is_grid != (pass == 1)) {
-                continue;
-            }
-
-            /* R2：錨點在 place 當下已凍結。at-grid/at-edge 的參照形式
-             * 會在參照（格線座標、邊位置）事後移動時重放出不同位置，
-             * 一律 dump 凍結點；through 是 auto 選段器，明寫長度下無意義。 */
-            fprintf(out, "place %u on %u at %lld %lld %s %s",
-                    (unsigned)t->id, (unsigned)a->placement_id,
-                    (long long)a->uv.u, (long long)a->uv.v,
-                    length_dir_word(a->length_direction),
-                    depth_side_word(a->depth_side));
-            if (is_grid) {
-                fprintf(out, " grid-ref %u %c %d", (unsigned)a->ref_grid,
-                        a->ref_grid_axis == 0 ? 'u' : 'v', a->ref_grid_index);
-            }
-            fputc('\n', out);
-
-            /* R18：角色衍生屬性以註解隨 dump 輸出（純衍生，重放時由幾何重算，
-               不是輸入）。註解不參與解析，R4「重放逐字相同」仍成立。 */
-            {
-                const PlacementSurface *ps =
-                    world_find_placement(world, a->placement_id);
-                SurfaceRegion2 f;
-
-                if (ps != NULL && timber_a0_footprint_uv(ps, t, a, &f)) {
-                    const SpaceBoundarySurface *bd = ps->boundary_id != 0
-                        ? world_find_boundary(world, ps->boundary_id)
-                        : NULL;
-                    bool along_v =
-                        a->length_direction == SURFACE_DIRECTION_POS_V ||
-                        a->length_direction == SURFACE_DIRECTION_NEG_V;
-                    bool on_b = false, cov = false;
-                    int be = -1;
-
-                    timber_role_props(
-                        bd, along_v,
-                        along_v ? f.min_v : f.min_u,
-                        along_v ? f.max_v : f.max_u,
-                        along_v ? f.min_u : f.min_v,
-                        along_v ? f.max_u : f.max_v,
-                        &on_b, &cov, &be);
-                    fprintf(out,
-                            "# R18 角材 %u: onBoundary=%s coversEdge=%s"
-                            " boundaryEdge=%d\n",
-                            (unsigned)t->id,
-                            on_b ? "true" : "false",
-                            cov ? "true" : "false", be);
-                }
-            }
-        }
-    }
-
-    /* 擋面可能比被支撐角材晚宣告；所有 place 之後才恢復 auto 檢查。 */
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        const TimberAnchor *a = &world->anchors[i];
-        if (world->timbers[i].placed && a->span_mode == SPAN_AUTO &&
-            a->anchor_kind != ANCHOR_AT_GRID) {
-            fprintf(out, "span-auto %u\n", (unsigned)world->timbers[i].id);
-        }
-    }
+    reference_dump(world, out);
 
     for (size_t i = 0; i < world->space_count; ++i) {
         const Space *s = &world->spaces[i];
@@ -12369,6 +11532,7 @@ static const struct {
     const char *usage;
     bool (*apply)(const char *path, int line_no, char *tokens[], int count, World *world);
 } SCENE_COMMANDS[] = {
+    { "spec", 3, 3, false, "spec 名稱 整數mm", apply_spec_line },
     {
         "boundary", 6, SCENE_MAX_TOKENS, false,
         "boundary id outline u,v u,v u,v u,v ... "
@@ -12393,8 +11557,8 @@ static const struct {
         apply_space_line
     },
     {
-        "guide", 5, 5, true,
-        "guide id 承載面id 方向（u 或 v） offset",
+        "guide", 5, SCENE_MAX_TOKENS, true,
+        "guide id 承載面id 方向（u 或 v） 位置引用式",
         apply_guide_line
     },
     {
@@ -12406,25 +11570,25 @@ static const struct {
     },
     {
         "timber", 4, 9, false,
-        "timber id [長度] A尺寸 B尺寸 "
+        "timber id A尺寸 B尺寸 "
         "role boundary|primary|secondary|custom [priority N]",
         apply_timber_line
     },
     {
-        "place", 8, 15, true,
-        "place 角材id on 承載面id at u v 長度方向 深度側"
-        "（或 at-guides 線1 線2｜at-grid 網id u|v 索引｜at-edge e索引，"
+        "place", 8, 16, true,
+        "place 角材id on 承載面id at-line guide 線id｜grid 網id u|v 索引 "
+        "或 at-face e索引｜h孔e邊｜t角材，"
         "可加 through 座標 或 between 擋面 擋面）",
         apply_place_line
     },
     {
         "span-auto", 2, 2, true,
-        "span-auto 已放置角材id（恢復凍結跨距的兩端支撐義務）",
+        "span-auto 已廢除，請重新以 at-line/at-face 定義",
         apply_span_auto_line
     },
     {
-        "move", 3, 3, true,
-        "move 參考線id 新offset",
+        "move", 3, SCENE_MAX_TOKENS, true,
+        "move 參考線id 新位置引用式",
         apply_move_line
     },
     {
@@ -12461,7 +11625,7 @@ static const struct {
     { NULL, 0, 0, false, NULL, NULL }
 };
 
-static bool apply_scene_line(const char *path, int line_no, char *tokens[], int count, World *world)
+static bool apply_scene_line_unchecked(const char *path, int line_no, char *tokens[], int count, World *world)
 {
     g_coord_range_error = false;
     for (size_t i = 0; SCENE_COMMANDS[i].word != NULL; ++i) {
@@ -12497,6 +11661,8 @@ static bool apply_scene_line(const char *path, int line_no, char *tokens[], int 
         "move column beam delete reset canvas-pos）");
     return false;
 }
+
+#include "geometry-core/transactions.inc"
 
 /*
  * 一行一筆，由上往下套用。id 要先宣告才能被引用，
@@ -12654,166 +11820,7 @@ int main(int argc, char **argv)
             return 1;
         }
     } else {
-        /*
-         * 房間 A 的天花：一片邊界面 + 一片掛它的承載面。
-         *
-         * 房間根座標：
-         *   X 向右
-         *   Y 向下／向房間深處
-         *   Z 向上
-         *
-         * 天花高度：
-         *   z = 2500
-         *
-         * 表面局部座標：
-         *   U = 房間 X
-         *   V = 房間 Y
-         *   N = 房間 Z
-         */
-        SpaceBoundarySurface ceiling_boundary = {
-            .id = 1,
-            .kind = BOUNDARY_ROOM_PLAN,
-            .outline = {
-                .count = 4,
-                .v = {
-                    { 0, 0 }, { 4000, 0 }, { 4000, 3000 }, { 0, 3000 }
-                },
-                .fixity = { EDGE_FIXED, EDGE_FIXED, EDGE_FIXED, EDGE_FIXED }
-            },
-            .hole_count = 0
-        };
-
-        if (!boundary_is_valid(&ceiling_boundary)) {
-            fprintf(stderr, "邊界面定義無效。\n");
-            return 1;
-        }
-
-        world.boundaries[0] = ceiling_boundary;
-        world.boundary_count = 1;
-
-        PlacementSurface ceiling = {
-            .id = 1,
-            .boundary_id = ceiling_boundary.id,
-            .frame = {
-                .origin = { 0, 0, 2500 },
-                .axis_u = { 1, 0, 0 },
-                .axis_v = { 0, 1, 0 },
-                .normal = { 0, 0, 1 }
-            }
-        };
-
-        if (!surface_frame_is_valid(&ceiling.frame)) {
-            fprintf(stderr, "承載面框架無效。\n");
-            return 1;
-        }
-
-        world.placements[0] = ceiling;
-        world.placement_count = 1;
-
-        /*
-         * 建立兩條非實體參考線：
-         *
-         * guide_u：沿 U，固定 v=300。
-         * guide_v：沿 V，固定 u=500。
-         */
-        if (!create_guide_line(
-                1,
-                &world.placements[0],
-                &world.boundaries[0],
-                GUIDE_ALONG_U,
-                300,
-                &world.guides[0]
-            )) {
-            fprintf(stderr, "無法建立 U 方向參考線。\n");
-            return 1;
-        }
-
-        if (!create_guide_line(
-                2,
-                &world.placements[0],
-                &world.boundaries[0],
-                GUIDE_ALONG_V,
-                500,
-                &world.guides[1]
-            )) {
-            fprintf(stderr, "無法建立 V 方向參考線。\n");
-            return 1;
-        }
-
-        world.guide_count = 2;
-
-        SurfacePoint2 anchor;
-
-        if (!guide_line_intersection(
-                &world.placements[0],
-                &world.boundaries[0],
-                &world.guides[0],
-                &world.guides[1],
-                &anchor
-            )) {
-            fprintf(stderr, "兩條參考線沒有有效交點。\n");
-            return 1;
-        }
-
-        /*
-         * Construct 一支完整角材：
-         *
-         *   長度 = 1800
-         *   A 尺寸 = 27
-         *   B 尺寸 = 33
-         */
-        if (!timber_construct(
-                1,
-                1800,
-                27,
-                33,
-                false,
-                TIMBER_ROLE_PRIMARY,
-                0,
-                &world.timbers[0]
-            )) {
-            fprintf(stderr, "無法 Construct 角材。\n");
-            return 1;
-        }
-
-        /*
-         * 將角材 A0 面放到天花承載面：
-         *
-         *   A0 局部原點放在參考線交點 (500,300)。
-         *   長度沿 +U。
-         *   B 尺寸沿表面 +N，也就是房間 +Z。
-         *
-         * 放置後整支角材範圍：
-         *
-         *   X：500 ～ 2300
-         *   Y：300 ～ 327
-         *   Z：2500 ～ 2533
-         */
-        if (!timber_place_a0_on_surface(
-                &world.timbers[0],
-                &world.placements[0],
-                &world.boundaries[0],
-                anchor,
-                SURFACE_DIRECTION_POS_U,
-                SURFACE_DEPTH_POSITIVE_NORMAL
-            )) {
-            fprintf(stderr, "無法把角材 A0 面放到承載面。\n");
-            return 1;
-        }
-
-        world.anchors[0] = (TimberAnchor){
-            .placement_id = ceiling.id,
-            .uv = anchor,
-            .anchor_kind = ANCHOR_AT_GUIDES,
-            .span_mode = SPAN_EXPLICIT,
-            .length_direction = SURFACE_DIRECTION_POS_U,
-            .depth_side = SURFACE_DEPTH_POSITIVE_NORMAL,
-            .ref_grid_axis = -1,
-            .ref_grid_index = -1,
-            .ref_hole = -1,
-            .ref_edge = -1
-        };
-        world.timber_count = 1;
+        if (!reference_default_world(&world)) return 1;
     }
 
     if (world.placement_count == 0 && world.boundary_count == 0 &&

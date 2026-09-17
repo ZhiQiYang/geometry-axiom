@@ -1,3 +1,4 @@
+# D7: 舊版固定長度檔必須明確拒絕，不自動轉換。
 # M24 殺手：at-edge 唯一合法區間 [1500,4000] 與引用邊範圍
 # [500,1500] 只在端點相接（端點不算接觸）。改成 <= 就會誤放。
 # 料 1 把 u∈[0,1500] 的 v∈[450,500] 全堵住，只留邊範圍外的段。
@@ -5,4 +6,4 @@ surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 500
 timber 1 1500 50 33 role custom priority 1
 place 1 on 1 at 500 450 +u +n
 timber 2 20 20 role primary
-place 2 on 1 at-edge h0e0 +u +n
+place 2 on 1 at-face h0e0 +u +n

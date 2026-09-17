@@ -12,8 +12,8 @@ timber 2 20 20 role boundary
 timber 3 27 33 role primary
 timber 4 27 33 role boundary
 timber 5 27 33 role primary
-place 1 on 1 at-edge e5 +v +n
-place 2 on 1 at-edge e1 +v +n
-place 3 on 1 at-grid 1 v 0 +u +n
-place 4 on 1 at-edge e3 +v +n
-place 5 on 1 at-grid 1 v 1 through 3000 +u +n
+place 1 on 1 at-face e5 +v +n
+place 2 on 1 at-face e1 +v +n
+place 3 on 1 at-line grid 1 v 0 +u +n
+place 4 on 1 at-face e3 +v +n
+place 5 on 1 at-line grid 1 v 1 through 3000 +u +n

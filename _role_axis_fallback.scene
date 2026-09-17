@@ -1,17 +1,13 @@
-# D17/I21:刪掉唯一 primary 後,主支軸由 boundary 推得(不是回到未定義)。
-# 角材 1 沿 u → 主支軸 = v;角材 2 沿 v 合法;刪除後角材 3 沿 u
-# 若軸已回未定義會被當第一支 primary 定軸接受——正確行為是拒絕。
-
-boundary 1 outline 0,0 4000,0 4000,3000 0,3000
-placement 1 on boundary 1 origin 0 0 2500 u +x v +y
-
-timber 1 27 33 role boundary
-place 1 on 1 at-edge e0 +u +n
-
-timber 2 2000 27 33 role primary
-place 2 on 1 at 500 500 +v +n
-
-delete timber 2
-
-timber 3 1500 27 33 role primary
-place 3 on 1 at 1000 500 +u +n
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+timber 90 20 20 role boundary
+place 90 on 1 at-face e0 +u +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e2 +u +n
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n
+spec 主支2中線 1500
+guide 2 1 u spec:主支2中線
+timber 2 27 33 role primary
+place 2 on 1 at-line guide 2 through 2000 +u +n

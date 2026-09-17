@@ -153,11 +153,11 @@ function check(name, cond, detail="") {
   const b7 = await api(`boundary ${sid}`);
   check("拒絕後邊界未變", b7.ok && b7.loops.length === 2);
 
-  /* H. dump round-trip + 凍結錨點 */
+  /* H. dump round-trip + 引用錨點 */
   console.log("== H. dump round-trip ==");
   const d = await api("dump");
   check("dump 有內容", d.ok && d.text.includes("boundary"));
-  check("dump 的 place 一律凍結 at u v", !/at-grid|at-edge|at-guides|through/.test(d.text));
+  check("dump 不含自由錨點", !/ at |at-guides|grid-ref|span-auto/.test(d.text));
   /* 重放 */
   await api("reset");
   for (const ln of d.text.split("\n").filter(l => l.trim())) {
@@ -168,36 +168,37 @@ function check(name, cond, detail="") {
   check("重放後 dump 相同", d2.ok && d2.text === d.text,
         "\n---原---\n" + d.text + "\n---重放---\n" + (d2.text||""));
 
-  /* I. dump 凍結保真：at-grid 放角材後移動格線,dump 必須仍重放同一位置 */
-  console.log("== I. 凍結保真 ==");
+  /* I. dump 引用保真：at-line grid 放角材後移動格線,dump 必須仍重放同一位置 */
+  console.log("== I. 引用保真 ==");
   await api("reset");
   const setup = [
     "line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
     "line grid 1 on 1 u 2000 v 1000",
     "line timber 2 20 20 role boundary",
     "line timber 3 20 20 role boundary",
-    "line place 2 on 1 at-edge e0 +u +n",
-    "line place 3 on 1 at-edge e2 -u +n",
+    "line place 2 on 1 at-face e0 +u +n",
+    "line place 3 on 1 at-face e2 -u +n",
     "line timber 1 27 33 role primary",
-    "line place 1 on 1 at-grid 1 u 0 +v +n"
+    "line place 1 on 1 at-line grid 1 u 0 +v +n"
   ];
   for (const ln of setup) {
     const r = await api(ln);
     check("I setup: " + ln, r.ok, JSON.stringify(r));
   }
   const lockedMove = await api("line grid 1 on 1 u 1500");
-  check("I 移動錨定軸拒絕", !lockedMove.ok && /V_GRID_LOCKED/.test(lockedMove.error || ""), JSON.stringify(lockedMove));
+  check("I 移動錨定軸先預覽", !lockedMove.ok && lockedMove.preview?.valid, JSON.stringify(lockedMove));
+  check("I 確認後引用重算", (await api(`line confirm ${lockedMove.preview.token}`)).ok);
   const d3 = await api("dump");
-  check("dump 後 place 是 at u v", d3.ok && /place 1 on 1 at \d+ \d+/.test(d3.text), d3.text);
+  check("dump 保留線引用", d3.ok && /place 1 on 1 at-line grid 1 u 0/.test(d3.text), d3.text);
   await api("reset");
   let replayOk = true;
   for (const ln of d3.text.split("\n").filter(l => l.trim())) {
     const rr = await api("line " + ln);
     if (!rr.ok) replayOk = false;
   }
-  check("凍結 dump 可重放", replayOk);
+  check("引用 dump 可重放", replayOk);
   const d4 = await api("dump");
-  check("凍結 dump round-trip 相同", d4.ok && d4.text === d3.text,
+  check("引用 dump round-trip 相同", d4.ok && d4.text === d3.text,
         "\n---原---\n" + d3.text + "\n---重放---\n" + (d4.text||""));
 
   console.log("== J. 物件畫布層 ==");
@@ -453,23 +454,21 @@ function check(name, cond, detail="") {
         "line beam 3 in 1 along y from 0 to 3000 at 2800 width 300 depth 500")).ok);
   let auxOk = true;
   for (const ln of [
-    "guide 1 1 v 3500",        /* 固定 u=3500 → 只在新片 */
-    "guide 2 1 u 1500",        /* 固定 v=1500 → 兩片都合法 → 留原片 */
+    "spec 分片定位 3500", "guide 1 1 v spec:分片定位",        /* 固定 u=3500 → 只在新片 */
+    "spec 兩片共線 1500", "guide 2 1 u spec:兩片共線",        /* 固定 v=1500 → 兩片都合法 → 留原片 */
     "grid 1 on 1 u 3500 v 1500",/* u 座標 3500 → 只在新片 */
-    "timber 1 400 27 33 role primary",
-    "place 1 on 1 at 3500 1500 +u +n",  /* 錨點 (3500,1500) → 新片 */
   ]) if (!(await api("line " + ln)).ok) { auxOk = false; console.log("  M8 aux fail:", ln); }
   check("M8 輔助資料就緒", auxOk);
   check("M8 apply cut-strip", (await api("line apply-proj 1 b3 cut-strip")).ok);
   const dM8 = (await api("dump")).text;
-  check("M8 新片 guide 改掛", /guide 1 7 v 3500/.test(dM8), dM8);
-  check("M8 兩棲 guide 留原片", /guide 2 1 u 1500/.test(dM8), dM8);
+  check("M8 新片 guide 改掛", /guide 1 7 v spec:分片定位/.test(dM8), dM8);
+  check("M8 兩棲 guide 留原片", /guide 2 1 u spec:兩片共線/.test(dM8), dM8);
   check("M8 網格改掛新片", /grid 1 on 7/.test(dM8), dM8);
-  check("M8 角材改掛新片", /place 1 on 7 at 3500 1500/.test(dM8), dM8);
+  /* 引用角材隨分片的交易由 test_reference_contract.py 驗收。 */
   /* M8b 錨在移除帶(u=2800)的 guide → 整筆拒絕,世界不變 */
   check("M8b 重建", await freshRoom() &&
         (await api("line beam 3 in 1 along y from 0 to 3000 at 2800 width 300 depth 500")).ok &&
-        (await api("line guide 1 1 v 2800")).ok);
+        (await api("line spec 帶上定位 2800")).ok && (await api("line guide 1 1 v spec:帶上定位")).ok);
   const dM8b = (await api("dump")).text;
   check("M8b 帶上錨點拒絕", !(await api("line apply-proj 1 b3 cut-strip")).ok);
   check("M8b 世界未變", (await api("dump")).text === dM8b);
@@ -635,15 +634,16 @@ function check(name, cond, detail="") {
         !(await api("dump")).text.includes("timber"));
   for (const ln of [
     "line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
-    "line timber 1 1800 27 33 role primary",
-    "line place 1 on 1 at 500 300 +u +n",
-    "line timber 2 20 20 20 role custom priority 4",
-    "line place 2 on 1 at 1000 2000 +v +n",
+    "line timber 90 20 20 role boundary", "line place 90 on 1 at-face e0 +u +n",
+    "line timber 91 20 20 role boundary", "line place 91 on 1 at-face e2 +u +n",
+    "line grid 1 on 1 u 500 2000",
+    "line timber 1 27 33 role primary", "line place 1 on 1 at-line grid 1 u 0 +v +n",
+    "line timber 2 20 20 role custom priority 4", "line place 2 on 1 at-line grid 1 u 1 +v +n",
   ]) await api(ln);
   const dR = (await api("dump")).text;
   check("R4 dump 含角色",
-        /timber 1 1800 27 33 role primary/.test(dR) &&
-        /timber 2 20 20 20 role custom priority 4/.test(dR), dR);
+        /timber 1 27 33 role primary/.test(dR) &&
+        /timber 2 20 20 role custom priority 4/.test(dR), dR);
   await api("reset");
   let okR = true;
   for (const ln of dR.split("\n").filter(l => l.trim())) {
@@ -653,48 +653,21 @@ function check(name, cond, detail="") {
   check("R6 含角色 round-trip 相同",
         (await api("dump")).text === dR);
 
-  /* S. 主支軸一致（GEO-091、D17/I21）:
-     軸未定義放 secondary → 拒絕;同面第二支 primary 換軸 → 拒絕;
-     boundary 定軸後放平行 primary → 拒絕,放垂直 secondary → 接受;
-     刪掉唯一 primary 後軸由 boundary 推得,不回未定義。 */
-  console.log("== S. 主支軸一致（GEO-091）==");
+  /* S. 主支軸與有效擋面，所有放置皆經新引用語法。 */
   await api("reset");
-  await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
-  await api("line timber 1 500 27 33 role secondary");
-  check("S1 軸未定義放 secondary 拒絕",
-        !(await api("line place 1 on 1 at 1000 500 +u +n")).ok);
-
-  await api("line timber 2 500 27 33 role primary");
-  check("S2 首支 primary 定軸",
-        (await api("line place 2 on 1 at 500 1000 +u +n")).ok === true);
-  await api("line timber 3 500 27 33 role primary");
-  check("S3 第二支 primary 換軸拒絕",
-        !(await api("line place 3 on 1 at 3000 2000 +v +n")).ok);
-
-  await api("reset");
-  await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
-  await api("line timber 1 27 33 role boundary");
-  check("S4 boundary 落地定軸",
-        (await api("line place 1 on 1 at-edge e0 +u +n")).ok === true);
-  await api("line timber 2 800 27 33 role primary");
-  check("S5 與 boundary 平行的 primary 拒絕",
-        !(await api("line place 2 on 1 at 1000 500 +u +n")).ok);
-  await api("line timber 3 500 27 33 role secondary");
-  check("S6 垂直主支軸的 secondary 接受",
-        (await api("line place 3 on 1 at 1500 500 +u +n")).ok === true);
-
-  await api("reset");
-  await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
-  await api("line timber 1 27 33 role boundary");
-  await api("line place 1 on 1 at-edge e0 +u +n");
-  await api("line timber 2 1000 27 33 role primary");
-  check("S7 primary 沿 boundary 垂直向接受",
-        (await api("line place 2 on 1 at 500 500 +v +n")).ok === true);
-  check("S8 刪掉唯一 primary",
-        (await api("line delete timber 2")).ok === true);
-  await api("line timber 3 800 27 33 role primary");
-  check("S9 刪後軸仍由 boundary 推得",
-        !(await api("line place 3 on 1 at 1000 500 +u +n")).ok);
+  for (const ln of setup) check("S setup", (await api(ln)).ok, ln);
+  await api("line timber 4 27 33 role primary");
+  const axisBefore = (await api("dump")).text;
+  const axisBad = await api("line place 4 on 1 at-line grid 1 v 0 through 2500 +u +n");
+  check("S 換主支軸拒絕", !axisBad.ok && /V_PRIMARY_AXIS/.test(axisBad.error), JSON.stringify(axisBad));
+  check("S 換軸失敗回滾", (await api("dump")).text === axisBefore);
+  await api("line delete timber 4");
+  const removePrimary = await api("line delete timber 1");
+  check("S 刪除主支需預覽", removePrimary.preview?.valid);
+  check("S 刪除確認", (await api(`line confirm ${removePrimary.preview.token}`)).ok);
+  await api("line timber 4 27 33 role primary");
+  const fallback = await api("line place 4 on 1 at-line grid 1 v 0 +u +n");
+  check("S 刪除後由 boundary 定軸", !fallback.ok && /V_PRIMARY_AXIS/.test(fallback.error), JSON.stringify(fallback));
 
   console.log("== Review regression ==");
   await api("default");
@@ -705,7 +678,7 @@ function check(name, cond, detail="") {
   check("redo 恢復空間", (await api("objects")).spaces.some(s => s.id === 77));
 
   await api("default");
-  for (let i = 0; i < 32; i++) check("填滿歷史 " + i, (await api(`line move 1 ${400 + i}`)).ok);
+  for (let i = 0; i < 32; i++) check("填滿歷史 " + i, (await api(`line spec 歷史步驟 ${400 + i}`)).ok);
   check("滿歷史壞指令拒絕", !(await api("line bogus")).ok);
   let undoCount = 0;
   while ((await api("line undo")).ok) undoCount++;
@@ -744,19 +717,19 @@ function check(name, cond, detail="") {
   await api("reset");
   for (const ln of setup) check("grid-ref setup", (await api(ln)).ok, ln);
   const gridDump = (await api("dump")).text;
-  check("dump 保留 grid-ref", /place 1 .* grid-ref 1 u 0$/.test(gridDump.split("\n").find(l => l.startsWith("place 1 ")) || ""));
+  check("dump 保留 at-line grid", /place 1 on 1 at-line grid 1 u 0/.test(gridDump.split("\n").find(l => l.startsWith("place 1 ")) || ""));
   const renderBefore = await api("render");
   const lockedChange = "line grid 1 on 1 u 1500";
   let locked = await api(lockedChange);
-  check("重放前引用鎖生效", !locked.ok && /V_GRID_LOCKED/.test(locked.error || ""));
+  check("重放前引用變更需預覽", !locked.ok && /I8a/.test(locked.error || ""));
   await api("reset");
   for (const ln of gridDump.split("\n").filter(l => l.trim())) check("grid-ref 重放", (await api("line " + ln)).ok, ln);
   check("grid-ref dump 往返一致", (await api("dump")).text === gridDump);
   check("grid-ref 幾何不重算", JSON.stringify(await api("render")) === JSON.stringify(renderBefore));
   locked = await api(lockedChange);
-  check("重放後引用鎖生效", !locked.ok && /V_GRID_LOCKED/.test(locked.error || ""));
+  check("重放後引用變更需預覽", !locked.ok && /I8a/.test(locked.error || ""));
   locked = await api("line delete grid 1");
-  check("重放後不能刪引用網格", !locked.ok && /V_GRID_LOCKED/.test(locked.error || ""));
+  check("重放後不能刪引用網格", !locked.ok && /I8a/.test(locked.error || ""));
   check("重放後追加格線合法", (await api("line grid 1 on 1 u 2000 2500")).ok);
   check("重放後仍驗 auto 端面支撐", !(await api("line delete timber 2")).ok);
 
@@ -785,23 +758,22 @@ function check(name, cond, detail="") {
     "grid 1 on 1 u 2000",
     "timber 1 20 20 role boundary",
     "timber 2 20 20 role boundary",
-    "place 1 on 1 at-edge e0 +u +n",
-    "place 2 on 1 at-edge e2 -u +n",
+    "place 1 on 1 at-face e0 +u +n",
+    "place 2 on 1 at-face e2 -u +n",
     "timber 3 27 33 role primary",
   ]) check("through-short setup", (await api("line " + ln)).ok, ln);
   const beforeShort = (await api("dump")).text;
-  const shortPlace = await api("line place 3 on 1 at-grid 1 u 0 through 1000");
-  check("through 漏方向拒絕", !shortPlace.ok && /缺少長度方向/.test(shortPlace.error || ""));
+  const shortPlace = await api("line place 3 on 1 at-line grid 1 u 0 through 1000");
+  check("through 漏方向拒絕", !shortPlace.ok);
   check("through 漏方向不改世界", (await api("dump")).text === beforeShort);
 
   await api("reset");
-  check("I19 主支先放", (await api("line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000")).ok);
-  check("I19 主支懸空", (await api("line timber 1 1000 27 33 role primary")).ok);
-  check("I19 主支放置", (await api("line place 1 on 1 at 2000 100 +v +n")).ok);
-  check("I19 副支宣告", (await api("line timber 2 3000 20 20 role secondary")).ok);
+  const priorityFixture = require("fs").readFileSync(require("path").join(__dirname, "../_edge_i19_place_order.scene"), "utf8").trim().split(/\r?\n/).filter(l => l && !l.startsWith("#"));
+  const priorityLast = priorityFixture.pop();
+  for (const ln of priorityFixture) check("I19 setup", (await api("line " + ln)).ok, ln);
   const beforeI19 = (await api("dump")).text;
-  const i19 = await api("line place 2 on 1 at 500 1100 +u +n");
-  check("I19 後放副支拒絕", !i19.ok && /V_CUT_PRIORITY/.test(i19.error || ""), JSON.stringify(i19));
+  const i19 = await api("line " + priorityLast);
+  check("I19 後放高優先級不得被副支裁切", !i19.ok && /V_CUT_PRIORITY/.test(i19.error || ""), JSON.stringify(i19));
   check("I19 後放不改世界", (await api("dump")).text === beforeI19);
 
   await api("default");

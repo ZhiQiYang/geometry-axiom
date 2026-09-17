@@ -1,6 +1,4 @@
-# 公理:R13 的對照組:角材錨點在 v=500,只在保留的下片上合法 → 改掛那一片,接受。
-# 跟 _ax_r13_anchor_lost.scene 只差 place 的 v 座標。
-# 這就是「資料跟材料走」:材料被切到哪一片,掛在它上面的東西就跟到哪一片。
+# R13: 引用線跟隨所屬材料片；落入移除條帶則整筆回滾。
 surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
 surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
@@ -9,6 +7,6 @@ surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000
 surface 6 origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500
 space 1 boundary 1 2 3 4 5 6
 column 1 in 1 at 0 1500 size 400 400
-timber 1 500 27 33 role primary
-place 1 on 5 at 100 500 +v +n
+spec 掛線位置 500
+guide 1 5 u spec:掛線位置
 apply-proj 5 c1

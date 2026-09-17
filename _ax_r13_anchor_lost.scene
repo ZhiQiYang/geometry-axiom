@@ -1,7 +1,4 @@
-# 公理:R13:拆分時承載面的輔助資料跟著「含錨點的那片」走,
-# 兩片都不含(錨點落在被移除的條帶區)= 失去承載面 → 整筆拒絕回滾,不靜默丟資料。
-# 角材 1 的錨點在牆 5 的 v=1600,正好落在柱 1 佔住、拆分時會被移除的 v∈[1500,1900]。
-# 對照 _ax_r13_anchor_follows.scene:錨點改在 v=500 就跟著下片走。
+# R13: 引用線跟隨所屬材料片；落入移除條帶則整筆回滾。
 surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
 surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
@@ -10,6 +7,6 @@ surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000
 surface 6 origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500
 space 1 boundary 1 2 3 4 5 6
 column 1 in 1 at 0 1500 size 400 400
-timber 1 500 27 33 role primary
-place 1 on 5 at 100 1600 +v +n
+spec 掛線位置 1600
+guide 1 5 u spec:掛線位置
 apply-proj 5 c1

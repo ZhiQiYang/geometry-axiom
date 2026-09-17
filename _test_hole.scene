@@ -5,4 +5,5 @@
 # 公理:D6:參考線只存方向與 offset,線段不存;預期輸出的「參考線 1(段 0)」是用時才從承載面有效範圍截出來的。
 boundary 1 outline 0,0 4000,0 4000,3000 0,3000 hole 1800,1200 2200,1200 2200,1600 1800,1600
 placement 1 on boundary 1 origin 0 0 2500 u +x v +y
-guide 1 1 u 1400
+spec 參考線1定位 1400
+guide 1 1 u spec:參考線1定位

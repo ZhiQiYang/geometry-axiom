@@ -27,26 +27,22 @@ static void room(void)
 
 static void test_frame_updates(void)
 {
-    room();
-    CHECK(command("guide 1 1 u 300"));
-    CHECK(command("guide 2 1 v 500"));
-    CHECK(command("timber 1 1800 27 33 role primary"));
-    CHECK(command("place 1 on 1 at-guides 1 2 +u +n"));
-    CHECK(command("move 1 600")); /* Frozen local anchor must remain at v=300. */
-    CHECK(command("placement 1 on boundary 1 origin 0 0 3000 u +x v +y"));
-    CHECK(test_world.timbers[0].origin.z == 3000);
-    CHECK(test_world.timbers[0].origin.x == 500 && test_world.timbers[0].origin.y == 300);
-    CHECK(test_world.anchors[0].uv.u == 500 && test_world.anchors[0].uv.v == 300);
-    CHECK(test_world.timbers[0].length == 1800);
-    CHECK(command("undo"));
-    CHECK(test_world.timbers[0].origin.z == 2500);
-    CHECK(command("redo"));
-    CHECK(test_world.timbers[0].origin.z == 3000);
-    CHECK(command("placement 1 on boundary 1 origin 0 0 3000 u +y v -x"));
-    CHECK(test_world.timbers[0].origin.x == -300 && test_world.timbers[0].origin.y == 500);
-    saved_world = test_world;
-    CHECK(!command("boundary 1 outline 0,0 200,0 200,3000 0,3000"));
-    CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
+    CHECK(reference_default_world(&test_world)); history_clear();
+    CHECK(!command("move 1 1/2*edge:e1:u"));
+    CHECK(g_preview.ready && g_preview.valid);
+    CHECK(test_world.guides[0].offset == 500);
+    char text[64]; snprintf(text,sizeof text,"confirm %u",g_preview.token);
+    CHECK(command(text));
+    CHECK(test_world.guides[0].offset == 2000);
+    CHECK(!command("placement 1 on boundary 1 origin 0 0 3000 u +x v +y"));
+    CHECK(g_preview.valid); snprintf(text,sizeof text,"confirm %u",g_preview.token);
+    CHECK(command(text)); CHECK(test_world.timbers[2].origin.z == 3000);
+    CHECK(command("undo")); CHECK(test_world.timbers[2].origin.z == 2500);
+    CHECK(command("redo")); CHECK(test_world.timbers[2].origin.z == 3000);
+    saved_world=test_world;
+    CHECK(!command("boundary 1 outline 0,0 20,0 20,3000 0,3000"));
+    CHECK(memcmp(&saved_world,&test_world,sizeof test_world)==0);
+    CHECK(!g_preview.valid);
 }
 
 static void test_space_extents(void)
@@ -93,54 +89,15 @@ static void test_new_placement_transaction(void)
 
 static void test_grid_ref_rejects(void)
 {
-    room();
-    CHECK(command("surface 2 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000"));
-    CHECK(command("grid 1 on 1 u 2000"));
-    CHECK(command("timber 1 2960 27 33 role primary"));
-    saved_world = test_world;
-    CHECK(!command("place 1 on 2 at 2014 20 +v +n grid-ref 1 u 0"));
-    CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
-
-    room();
+    CHECK(reference_default_world(&test_world)); history_clear();
     CHECK(command("grid 1 on 1 u 2000 v 1000"));
-    CHECK(command("timber 2 20 20 role boundary"));
-    CHECK(command("timber 3 20 20 role boundary"));
-    CHECK(command("place 2 on 1 at-edge e0 +u +n"));
-    CHECK(command("place 3 on 1 at-edge e2 -u +n"));
-    CHECK(command("timber 1 2960 27 33 role primary"));
-    saved_world = test_world;
-    CHECK(!command("place 1 on 1 at 2014 20 +v +n grid-ref 1 v 0"));
-    CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
-
-    room();
-    CHECK(command("grid 1 on 1 u 2000"));
-    CHECK(command("timber 2 20 20 role boundary"));
-    CHECK(command("timber 3 20 20 role boundary"));
-    CHECK(command("place 2 on 1 at-edge e0 +u +n"));
-    CHECK(command("place 3 on 1 at-edge e2 -u +n"));
-    CHECK(command("timber 1 2960 27 33 role primary"));
-    saved_world = test_world;
-    CHECK(!command("place 1 on 1 at 0 20 +v +n grid-ref 1 u 0"));
-    CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
-
-    room();
-    CHECK(command("grid 1 on 1 u 2000"));
-    CHECK(command("timber 1 2960 27 33 role primary"));
-    saved_world = test_world;
-    CHECK(!command("place 1 on 1 at 2014 20 +v +n grid-ref 1 u 0"));
-    CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
-
-    room();
-    CHECK(command("grid 1 on 1 u 2000"));
-    CHECK(command("timber 2 20 20 role boundary"));
-    CHECK(command("timber 3 20 20 role boundary"));
-    CHECK(command("place 2 on 1 at-edge e0 +u +n"));
-    CHECK(command("place 3 on 1 at-edge e2 -u +n"));
-    CHECK(command("timber 1 2960 27 33 role primary"));
-    CHECK(command("place 1 on 1 at 2014 20 +v +n grid-ref 1 u 0"));
-    CHECK(test_world.timbers[2].id == 1);
-    CHECK(test_world.anchors[2].anchor_kind == ANCHOR_AT_GRID);
-    CHECK(test_world.anchors[2].span_mode == SPAN_AUTO);
+    CHECK(command("timber 4 27 33 role primary")); saved_world=test_world;
+    CHECK(!command("place 4 on 1 at-line grid 1 v 0 +v +n"));
+    CHECK(memcmp(&saved_world,&test_world,sizeof test_world)==0);
+    CHECK(command("place 4 on 1 at-line grid 1 u 0 +v +n"));
+    CHECK(test_world.anchors[3].anchor_kind==ANCHOR_AT_GRID);
+    CHECK(!command("grid 1 on 1 u 2500")); CHECK(g_preview.valid);
+    CHECK(test_world.timbers[3].length==2946);
 }
 
 static void test_place_through_short(void)
@@ -149,25 +106,23 @@ static void test_place_through_short(void)
     CHECK(command("grid 1 on 1 u 2000"));
     CHECK(command("timber 1 20 20 role boundary"));
     CHECK(command("timber 2 20 20 role boundary"));
-    CHECK(command("place 1 on 1 at-edge e0 +u +n"));
-    CHECK(command("place 2 on 1 at-edge e2 -u +n"));
+    CHECK(command("place 1 on 1 at-face e0 +u +n"));
+    CHECK(command("place 2 on 1 at-face e2 -u +n"));
     CHECK(command("timber 3 27 33 role primary"));
     saved_world = test_world;
-    CHECK(!command("place 3 on 1 at-grid 1 u 0 through 1000"));
+    CHECK(!command("place 3 on 1 at-line grid 1 u 0 through 1000"));
     CHECK(strstr(scene_last_error(), "缺少長度方向與深度側") != NULL);
     CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
 }
 
 static void test_place_revalidates_existing_i19(void)
 {
-    room();
-    CHECK(command("timber 1 1000 27 33 role primary"));
-    CHECK(command("place 1 on 1 at 2000 100 +v +n"));
-    CHECK(command("timber 2 3000 20 20 role secondary"));
-    saved_world = test_world;
-    CHECK(!command("place 2 on 1 at 500 1100 +u +n"));
-    CHECK(strstr(scene_last_error(), "V_CUT_PRIORITY") != NULL);
-    CHECK(memcmp(&saved_world, &test_world, sizeof test_world) == 0);
+    CHECK(reference_default_world(&test_world)); history_clear();
+    saved_world=test_world;
+    CHECK(!command("delete timber 1"));
+    CHECK(memcmp(&saved_world,&test_world,sizeof test_world)==0);
+    CHECK(g_preview.ready && !g_preview.valid);
+    CHECK(g_preview.issue_count>0);
 }
 
 static void test_view_dist2_no_overflow(void)
@@ -185,8 +140,24 @@ static void test_view_dist2_no_overflow(void)
     CHECK(d == 0);
 }
 
+static void test_partial_collinear_stop_is_not_duplicated(void)
+{
+    StopFace faces[]={
+        {STOP_OUTLINE_EDGE,1,0,-1,0,EDGE_FIXED,1000,0,100},
+        {STOP_TIMBER_SIDE,0,7,-1,0,EDGE_FIXED,1000,50,150}
+    };
+    const StopFace *stop=NULL;
+    CHECK(pick_stop(faces,2,1000,60,80,&stop)==1);
+    CHECK(stop && stop->kind==STOP_OUTLINE_EDGE);
+    CHECK(count_legal_stops(faces,2,1000,60,80)==1);
+    CHECK(pick_stop(faces,2,1000,110,140,&stop)==1);
+    CHECK(stop && stop->kind==STOP_TIMBER_SIDE);
+    CHECK(pick_stop(faces,2,1000,40,120,&stop)==0);
+}
+
 int main(void)
 {
+    test_partial_collinear_stop_is_not_duplicated();
     test_frame_updates();
     test_space_extents();
     test_new_placement_transaction();

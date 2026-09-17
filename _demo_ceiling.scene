@@ -28,10 +28,10 @@ timber 5 27 33 role primary
 timber 6 27 33 role primary
 timber 7 27 33 role primary
 
-place 1 on 1 at-edge e0 +u +n
-place 3 on 1 at-edge e2 -u +n
-place 2 on 1 at-edge e1 +v +n
-place 4 on 1 at-edge e3 +v +n
-place 5 on 1 at-grid 1 u 0 +v +n
-place 6 on 1 at-grid 1 u 2 +v +n
-place 7 on 1 at-grid 1 u 1 through 600 +v +n
+place 1 on 1 at-face e0 +u +n
+place 3 on 1 at-face e2 -u +n
+place 2 on 1 at-face e1 +v +n
+place 4 on 1 at-face e3 +v +n
+place 5 on 1 at-line grid 1 u 0 +v +n
+place 6 on 1 at-line grid 1 u 2 +v +n
+place 7 on 1 at-line grid 1 u 1 through 600 +v +n

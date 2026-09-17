@@ -1,8 +1,8 @@
 # GEO-092 變異殺手:與 _edge_concave 同構,但把 boundary 改成
 # primary —— 延伸段是 boundary 專屬(D16/I22),其他角色不得有
 # 「超出定位邊」的段 → V_EXTENSION
-# at-edge e2(內邊 v=1000,u∈[2000,4000])的 span [0,4000]
+# at-face e2(內邊 v=1000,u∈[2000,4000])的 span [0,4000]
 # 超出定位邊 → 拒絕
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 2000,0 2000,1000 4000,1000 4000,3000 0,3000
 timber 1 27 33 role primary
-place 1 on 1 at-edge e2 +u +n
+place 1 on 1 at-face e2 +u +n

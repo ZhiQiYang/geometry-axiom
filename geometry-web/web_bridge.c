@@ -148,22 +148,11 @@ static bool feed_line(const char *path, int line_no, const char *text, World *wo
 }
 
 /* 內建預設 = room_a.scene 的內容，走同一條解析路。 */
-static const char *DEFAULT_SCENE[] = {
-    "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
-    "guide 1 1 u 300",
-    "guide 2 1 v 500",
-    "timber 1 1800 27 33 role primary",
-    "place 1 on 1 at-guides 1 2 +u +n",
-};
-
 static bool world_default(World *world)
 {
-    memset(world, 0, sizeof *world);
-    for (size_t i = 0; i < sizeof(DEFAULT_SCENE) / sizeof(DEFAULT_SCENE[0]); ++i) {
-        if (!feed_line("<內建>", (int)i + 1, DEFAULT_SCENE[i], world)) return false;
-    }
-    history_clear();   /* 啟動載入不是使用者操作，不該被 undo */
-    return true;
+    bool ok=reference_default_world(world);
+    history_clear(); g_preview.ready=false;
+    return ok;
 }
 
 /* 命中物 → 一行描述；與 gdi_describe_pick 相同邏輯（那支在 _WIN32 裡碰不到）。 */
@@ -262,61 +251,34 @@ static void cmd_pick(int v, Coord x, Coord y, Coord r)
     fputs("]}\n", stdout);
 }
 
+#include "reference_bridge.inc"
+
 static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
 {
-    if (guide_idx < 0 || guide_idx >= (int)g_world.guide_count ||
-        v < 0 || v >= VIEW_COUNT) {
-        fputs("{\"ok\":false}\n", stdout);
-        return;
+    if (guide_idx<0 || guide_idx>=(int)g_world.guide_count || v<0 || v>=VIEW_COUNT) {
+        fputs("{\"ok\":false}\n",stdout); return;
     }
-
-    GuideLine *gd = &g_world.guides[guide_idx];
-    const PlacementSurface *surface =
-        world_find_placement(&g_world, gd->placement_id);
-    const SpaceBoundarySurface *boundary =
-        surface ? world_placement_boundary(&g_world, surface) : NULL;
-    SurfacePoint2 uv;
-    SurfaceRegion2 bounds;
-
-    if (surface == NULL ||
-        !placement_local_bounds(surface, boundary, &bounds) ||
-        !view_unproject_on_surface(&VIEW_FRAMES[v], surface,
-                                   (ViewPoint2){ x, y }, &uv)) {
-        fputs("{\"ok\":false}\n", stdout);
-        return;
+    GuideLine *g=&g_world.guides[guide_idx];
+    const PlacementSurface *p=world_find_placement(&g_world,g->placement_id); SurfacePoint2 uv;
+    if (!p || !view_unproject_on_surface(&VIEW_FRAMES[v],p,(ViewPoint2){x,y},&uv)) {
+        fputs("{\"ok\":false}\n",stdout); return;
     }
-
-    /* 與 GDI 拖曳同一段：反解 → clamp → move（構造上不可能非法）。 */
-    Coord off = gd->direction == GUIDE_ALONG_U ? uv.v : uv.u;
-    Coord lo = gd->direction == GUIDE_ALONG_U ? bounds.min_v : bounds.min_u;
-    Coord hi = gd->direction == GUIDE_ALONG_U ? bounds.max_v : bounds.max_u;
-    if (off < lo) off = lo;
-    if (off > hi) off = hi;
-
-    /* 拖曳走同一個 move 交易入口：保留驗證、undo/redo 與群組語意。 */
-    if (off != gd->offset) {
-        char command[96];
-        snprintf(command, sizeof command, "move %u %" PRId64,
-                 (unsigned)gd->id, (int64_t)off);
-        if (!feed_line("<拖曳>", ++g_input_line_no, command, &g_world)) {
-            fputs("{\"ok\":false,\"error\":", stdout);
-            js_string(scene_last_error());
-            fputs("}\n", stdout);
-            return;
-        }
+    Coord at=g->direction==GUIDE_ALONG_U?uv.v:uv.u;
+    char expr[REF_EXPR_MAX],command[REF_EXPR_MAX+64];
+    if (!reference_snap(&g_world,g->placement_id,g->direction,g->id,at,80,expr)) {
+        fputs("{\"ok\":false,\"error\":\"R5: 附近沒有合法引用\"}\n",stdout); return;
     }
-    printf("{\"ok\":true,\"offset\":%" PRId64 "}\n", (int64_t)off);
+    snprintf(command,sizeof command,"move %u %s",g->id,expr);
+    uint32_t token=g_preview.token;
+    bool ok=feed_line("drag",++g_input_line_no,command,&g_world);
+    cmd_reference_result(ok,token);
 }
 
 static void cmd_line(const char *text)
 {
-    if (feed_line("<輸入>", ++g_input_line_no, text, &g_world)) {
-        fputs("{\"ok\":true}\n", stdout);
-    } else {
-        fputs("{\"ok\":false,\"error\":", stdout);
-        js_string(scene_last_error());
-        fputs("}\n", stdout);
-    }
+    uint32_t token=g_preview.token;
+    bool ok=feed_line("input",++g_input_line_no,text,&g_world);
+    cmd_reference_result(ok,token);
 }
 
 static void cmd_loadfile(const char *path)
@@ -671,9 +633,8 @@ static void cmd_objects(void)
         if (p == NULL || !timber_a0_footprint_uv(p, t, a, &f)) {
             continue;
         }
-        b = p->boundary_id != 0
-            ? world_find_boundary(&g_world, p->boundary_id)
-            : NULL;
+        SpaceBoundarySurface effective;
+        b=placement_effective_boundary(p,world_placement_boundary(&g_world,p),&effective);
 
         along_v = a->length_direction == SURFACE_DIRECTION_POS_V ||
                   a->length_direction == SURFACE_DIRECTION_NEG_V;
@@ -835,6 +796,10 @@ int main(void)
             cmd_newid();
         } else if (strcmp(line, "surfaces") == 0) {
             cmd_surfaces();
+        } else if (strcmp(line, "references") == 0) {
+            cmd_references();
+        } else if (strcmp(line, "snap") == 0 && arg != NULL) {
+            cmd_snap_reference(arg);
         } else if (strcmp(line, "objects") == 0) {
             cmd_objects();
         } else if (strcmp(line, "dump") == 0) {

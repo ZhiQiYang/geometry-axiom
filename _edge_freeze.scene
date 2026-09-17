@@ -1,9 +1,11 @@
-# 公理:R2:移動參考線不重放以其交點為錨的角材(凍結語意)。
-# 凍結語意:at-guides 放完後 move 參考線,角材應留在原處
-# 公理:D2:承載面框架——原點 (0,0,2500) 配 U=+x、V=+y,局部 (u,v)=(500,300) 依 origin + u·U + v·V 映射成房間座標 (500,300,2500),就是預期輸出那一行。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
-guide 1 1 u 300
-guide 2 1 v 500
-timber 1 1800 27 33 role primary
-place 1 on 1 at-guides 1 2 +u +n
-move 1 900
+timber 90 20 20 role boundary
+place 90 on 1 at-face e0 +u +n
+timber 91 20 20 role boundary
+place 91 on 1 at-face e2 +u +n
+spec 主支1中線 500
+guide 1 1 v spec:主支1中線
+timber 1 27 33 role primary
+place 1 on 1 at-line guide 1 +v +n
+# R2: 舊凍結已廢除；直接移動須先產生 I8a 預覽，不能默默提交。
+move 1 1/2*edge:e1:u

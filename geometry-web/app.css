@@ -939,10 +939,10 @@ svg text { user-select: none; }
 .preset-card:hover { border-color: var(--accent); background: var(--accent-soft, #eef4ff); }
 .preset-card b { font-size: 11px; font-weight: 650; color: var(--ink); }
 .preset-card small { font-size: 11px; color: var(--muted); }
-.place-form { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-.place-form label { display: flex; flex-direction: column; gap: 3px;
+.place-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 7px; }
+.place-form label { display: flex; flex-direction: column; gap: 3px; min-width: 0;
   color: var(--muted); font-size: 11px; }
-.place-form input, .place-form select { height: 28px; padding: 0 7px;
+.place-form input, .place-form select { height: 28px; padding: 0 7px; width: 100%; min-width: 0; box-sizing: border-box;
   border: 1px solid var(--border); border-radius: 7px; background: #fff; font-size: 11px; }
 /* A8 u⊥v 即時驗證 */
 .place-valid { margin: 7px 0 6px; padding: 6px 9px; border-radius: 7px;
@@ -1193,3 +1193,16 @@ body.v3-mode .sidebar-right > *:not(#v3PickPanel) { display: none; }
 .v3-zoom { display: inline-flex; align-items: center; gap: 2px; }
 body.v3-mode .canvas-controls:not(#v3ZoomBar) { display: none; }
 body.v3-mode .minimap-shell { display: none; }
+/* I8a impact approval: native modal focus, scrollable on narrow screens. */
+.reference-impact { width:min(880px, calc(100vw - 32px)); max-height:85vh; overflow:auto; border:1px solid #ccd4df; border-radius:12px; padding:24px; color:#263445; background:#fff; box-shadow:0 24px 90px #152c4840; }
+.reference-impact::backdrop { background:#13243f70; }
+.reference-impact h2 { margin:0 0 12px; font-size:21px; }
+.reference-impact p { line-height:1.6; }
+.reference-impact code { display:block; overflow-wrap:anywhere; background:#f1f4f8; padding:12px; }
+.impact-table-wrap { overflow:auto; margin:18px 0; }
+.reference-impact table { width:100%; border-collapse:collapse; font-size:13px; }
+.reference-impact th,.reference-impact td { text-align:left; padding:10px; border-bottom:1px solid #e2e7ee; white-space:nowrap; }
+.impact-changed { background:#edf8f4; }
+.impact-violation { white-space:pre-wrap; overflow-wrap:anywhere; background:#fff0ed; border-left:3px solid #bf4031; padding:10px; }
+.impact-actions { display:flex; gap:12px; justify-content:flex-end; padding-top:12px; }
+.reference-impact button:disabled { opacity:.5; cursor:not-allowed; }

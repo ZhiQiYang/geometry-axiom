@@ -1,5 +1,2 @@
-# M35 殺手：明寫長度 L=0 必須在宣告時拒絕。
-# 若放行，下游才會用「放不上去」擋——錯誤訊息不同。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
-timber 1 0 27 33 role primary
-place 1 on 1 at 0 0 +u +n
+timber 1 0 33 role primary

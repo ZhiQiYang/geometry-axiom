@@ -1,6 +1,5 @@
-# GEO-092 I22:凸角處延伸 → footprint 跨出輪廓 → 因 I5 出界拒絕
-# (不需新錯誤錯誤碼)。邊界材明寫放在 L 形凸角 (4000,2000) 旁,
-# 長度伸出外輪廓 → 放不上去
-surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,2000 2000,2000 2000,3000 0,3000
-timber 1 2000 27 33 role boundary
-place 1 on 1 at 2100 1973 +u +n
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+spec 越界中線 0
+guide 1 1 u spec:越界中線
+timber 1 27 33 role boundary
+place 1 on 1 at-line guide 1 +u +n

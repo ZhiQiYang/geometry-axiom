@@ -1,0 +1,2 @@
+# Preserve the core's existing CRLF bytes, while allowing useful textual reviews.
+current_geometry.c -text diff whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

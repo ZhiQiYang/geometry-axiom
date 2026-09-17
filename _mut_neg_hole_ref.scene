@@ -2,4 +2,4 @@
 # 若放行，-1 正好是「外輪廓邊」的哨兵值 → 被當 e0 誤放。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 timber 1 20 20 role primary
-place 1 on 1 at-edge h-1e0 +u +n
+place 1 on 1 at-face h-1e0 +u +n

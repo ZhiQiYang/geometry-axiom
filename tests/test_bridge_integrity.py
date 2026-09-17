@@ -36,70 +36,30 @@ class IntegrityTests(unittest.TestCase):
                     self.assertEqual(r[1], r[3])
                     self.assertTrue(r[4]["ok"])
 
-    def test_frame_rebind_render_and_dump_survive_reload(self):
-        r = self.bridge(["default", "line move 1 600",
-                         "line placement 1 on boundary 1 origin 100 200 3000 u +y v -x",
-                         "dump", "render"])
-        self.assertTrue(r[2]["ok"])
-        with tempfile.TemporaryDirectory() as tmp:
-            path = pathlib.Path(tmp) / "rebind.scene"
-            path.write_text(r[3]["text"], encoding="utf-8")
-            loaded = self.bridge(["reset", "loadfile " + str(path), "dump", "render"])
-        self.assertTrue(loaded[1]["ok"], loaded[1])
-        self.assertEqual(r[3], loaded[2])
-        self.assertEqual(r[4], loaded[3])
+    def test_removed_frozen_metadata_is_rejected_atomically(self):
+        for cmd in ['span-auto 3', 'place 3 on 1 at 514 27 +v +n grid-ref 1 u 0',
+                    'timber 9 1000 27 33 role primary']:
+            r = self.bridge(['default', 'dump', 'line ' + cmd, 'dump'])
+            self.assertFalse(r[2]['ok'])
+            self.assertEqual(r[1], r[3])
 
-    def test_auto_edge_support_survives_reload(self):
-        before = self.bridge(["loadfile " + str(ROOT / "_role_ext_stop_primary.scene"),
-                              "dump", "line delete timber 3", "dump"])
-        self.assertTrue(before[0]["ok"])
-        self.assertFalse(before[2]["ok"])
+    def test_auto_support_and_reference_roundtrip(self):
+        before = self.bridge(['loadfile ' + str(ROOT / '_role_ext_stop_primary.scene'), 'dump',
+                              'line delete timber 3', 'dump'])
+        self.assertTrue(before[0]['ok'], before[0])
+        self.assertFalse(before[2]['ok'])
+        self.assertIn('preview', before[2])
         self.assertEqual(before[1], before[3])
-        self.assertIn("span-auto 4\n", before[1]["text"])
+        self.assertIn('at-face', before[1]['text'])
+        self.assertNotIn('span-auto', before[1]['text'])
         with tempfile.TemporaryDirectory() as tmp:
-            path = pathlib.Path(tmp) / "edge.scene"
-            path.write_text(before[1]["text"], encoding="utf-8")
-            after = self.bridge(["loadfile " + str(path), "dump", "line delete timber 3", "dump"])
-        self.assertTrue(after[0]["ok"], after[0])
+            path = pathlib.Path(tmp) / 'edge.scene'
+            path.write_text(before[1]['text'], encoding='utf-8')
+            after = self.bridge(['loadfile ' + str(path), 'dump', 'line delete timber 3', 'dump'])
+        self.assertTrue(after[0]['ok'], after[0])
         self.assertEqual(before[1], after[1])
-        self.assertFalse(after[2]["ok"], "reloading must not remove support requirements")
+        self.assertFalse(after[2]['ok'])
         self.assertEqual(after[1], after[3])
-
-    def test_grid_ref_without_supports_is_rejected(self):
-        r = self.bridge([
-            "reset",
-            "line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
-            "line grid 1 on 1 u 2000",
-            "line timber 1 2960 27 33 role primary",
-            "dump",
-            "line place 1 on 1 at 2014 20 +v +n grid-ref 1 u 0",
-            "dump",
-        ])
-        self.assertFalse(r[-2]["ok"])
-        self.assertIn("支撐", r[-2]["error"])
-        self.assertEqual(r[-3], r[-1])
-        loaded = self.bridge(["loadfile " + str(ROOT / "_edge_gridref_no_support.scene")])
-        self.assertFalse(loaded[0]["ok"])
-        self.assertIn("支撐", loaded[0]["error"])
-
-    def test_frozen_span_metadata_requires_supported_ends(self):
-        setup = ["reset", "line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
-                 "line timber 1 1800 27 33 role primary"]
-        r = self.bridge(setup + ["line place 1 on 1 at 500 300 +u +n", "dump",
-                                 "line span-auto 1", "dump"])
-        self.assertTrue(r[-4]["ok"], "ordinary explicit timber may have interior endpoints")
-        self.assertFalse(r[-2]["ok"])
-        self.assertEqual(r[-3], r[-1])
-
-    def test_frozen_span_rejects_extra_or_misplaced_metadata(self):
-        for place in ["span-auto", "span-auto 999", "span-auto 1", "span-auto 1 garbage",
-                      "place 1 on 1 at 0 0 +u +n span-auto",
-                      "place 1 on 1 at-edge e0 +u +n span-auto"]:
-            with self.subTest(place=place):
-                r = self.bridge(["reset", "line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
-                                 "line timber 1 4000 20 20 role boundary", "dump", "line " + place, "dump"])
-                self.assertFalse(r[-2]["ok"])
-                self.assertEqual(r[-3], r[-1])
 
     def test_beam_centers_survive_repeated_reload(self):
         lines = []
@@ -135,26 +95,26 @@ class IntegrityTests(unittest.TestCase):
         lines = [l for l in (ROOT / '_role_priority_primary_rc.scene').read_text(encoding='utf-8').splitlines()
                  if l.strip() and not l.startswith('#')]
         setup = ['reset'] + ['line ' + l for l in lines[:-1]]
-        r = self.bridge(setup + ['line guide 90 1 u 500', 'line undo', 'dump',
+        r = self.bridge(setup + ['line guide 90 1 u 1/2*edge:e2:v', 'line undo', 'dump',
                                  'line ' + lines[-1], 'dump', 'line redo', 'dump'])
         self.assertFalse(r[-4]['ok'])
         self.assertIn('V_CUT_PRIORITY', r[-4]['error'])
         self.assertEqual(r[-5], r[-3], 'a rejected placement must leave the draft unchanged')
         self.assertTrue(r[-2]['ok'], 'rejection must preserve redo history')
-        self.assertIn('guide 90 1 u 500', r[-1]['text'])
+        self.assertIn('guide 90 1 u 1/2*edge:e2:v', r[-1]['text'])
 
     def test_drag_history_group_and_cancel(self):
         # View 2 maps ceiling u,v directly to x,y.
         setup = ['reset', 'line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
-                 'line guide 1 1 u 300']
+                 'line spec start 300', 'line spec middle 600', 'line spec end 900', 'line spec cancel 1200', 'line guide 1 1 u spec:start']
         r = self.bridge(setup + ['dump', 'line history-begin', 'drag 0 2 2500 600',
                                 'drag 0 2 2500 900', 'line history-end', 'dump',
                                 'line undo', 'dump', 'line redo', 'dump',
                                 'line history-begin', 'drag 0 2 2500 1200',
                                 'line history-abort', 'dump'])
         self.assertTrue(all(x['ok'] for x in r), r)
-        self.assertIn('guide 1 1 u 900', r[-9]['text'])
-        self.assertEqual(r[3], r[-7], 'one undo must restore the entire gesture')
+        self.assertIn('guide 1 1 u spec:end', r[-9]['text'])
+        self.assertEqual(r[len(setup)], r[-7], 'one undo must restore the entire gesture')
         self.assertEqual(r[-9], r[-5])
         self.assertEqual(r[-5], r[-1], 'cancel must restore the gesture start')
 
