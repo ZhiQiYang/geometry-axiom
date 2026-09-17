@@ -4,10 +4,11 @@
 
 重點提要(細節與理由見 `AGENTS.md`):
 
-- 🔴 **公理層閱讀器只准有一份**:正典 `geometry-guide/公理層-閱讀器.html`,
-  唯一產生方式 `python geometry-guide/make_axiom_reader.py`。
+- 🔴 **公理層閱讀器只准有一份**:正典 `geometry-guide/公理層-閱讀器.html`(批註版)。
   它已經是零外部引用的單一自足檔,**不需要也不准再做「離線版」**。
-  要改閱讀器 = 改生成器模板整份重產,不准另存一份再改。
+  **目前沒有可重現的生成器**,改它之前務必先讀 `AGENTS.md` 裡那五道完整性 assert
+  ——任一道失敗會連桌面版面一起失效。`make_axiom_reader.py` 產的是另一套版面
+  (`公理層-追溯診斷頁.html`),**不是正典**。
 - 🔴 **`公理層.md` 是 SSOT**,不得擅改;發現矛盾只回報。條文未定案前不得實作。
 - `geometry-guide/axiom-reader-design/` 是設計參考,不是閱讀器來源。
 - 地雷:`current_geometry.c` 含 NUL byte(grep 會靜默截斷);
