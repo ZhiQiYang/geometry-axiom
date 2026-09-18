@@ -152,6 +152,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
             items = [{"name": p.name, "path": str(p)}
                      for p in sorted(SCENE_DIR.glob("*.scene"))]
             self._send(json.dumps(items, ensure_ascii=False).encode("utf-8"))
+        elif self.path == "/model/capabilities":
+            sys.path.insert(0, str(SCENE_DIR / "geometry-core"))
+            from modeling import CAPABILITIES, PROFILE
+            self._send(json.dumps({"profile": PROFILE, "capabilities": CAPABILITIES,
+                                   "executor": "C scene validation + Python exact integer modeling",
+                                   "max_cells": 200000}).encode("utf-8"))
         else:
             self.send_error(404)
 
@@ -170,10 +176,34 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         if self._local_only():
             return
-        length = int(self.headers.get("Content-Length", 0))
+        try:
+            length = int(self.headers.get("Content-Length", 0))
+        except ValueError:
+            self.send_error(400)
+            return
+        if length < 0 or (self.path.startswith("/model") and length > 16 * 1024 * 1024):
+            self.send_error(413)
+            return
         body = self.rfile.read(length)
 
-        if self.path == "/api":
+        if self.path in {"/model", "/model/verify"}:
+            sys.path.insert(0, str(SCENE_DIR / "geometry-core"))
+            from modeling import (ModelError, build_package, verify_package,
+                                  canonical_bytes, strict_json_loads)
+            try:
+                data = strict_json_loads(body)
+                if self.path == "/model/verify":
+                    result = verify_package(data)
+                else:
+                    if (not isinstance(data, dict) or not {"definitions", "request"} <= data.keys()
+                            or set(data) - {"definitions", "request", "presentation"}):
+                        raise ModelError("INVALID", "INPUT_SCHEMA", "D25", "Expected definitions and request")
+                    result = build_package(data["definitions"], data["request"],
+                                           presentation=data.get("presentation"))
+                self._send(canonical_bytes(result))
+            except ModelError as exc:
+                self._send(canonical_bytes(exc.as_dict()))
+        elif self.path == "/api":
             try:
                 cmd = json.loads(body.decode("utf-8"))["cmd"]
             except (ValueError, KeyError, TypeError, UnicodeDecodeError):

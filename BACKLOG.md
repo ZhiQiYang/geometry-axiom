@@ -1391,3 +1391,11 @@
 - 逐條變更：`geometry-core/MODELING-CHANGES.md`；介面與驗收：`geometry-core/MODELING-CONTRACT.md`；18 組資料向量：`geometry-core/modeling-cases.json`。
 - **現況：規格／白話／正典同步交付；新增 C 型別、幾何執行器、bridge、輸出與畫布功能尚未實作。** 向量只是未來驗收，不算實測通過。
 - 實作順序：擠出及面輸出 → 殼拓撲／複合空間 → 正交布林 → 完整交換包與外部適配器；每個執行器先按 I32 宣告子能力。
+
+### GEO-130 實作：確定性 3D 參考執行器
+- 使用者授權「繼續實作」；不改公理條文，以 GEO-129 規格為基準。
+- 完成 C 原場景 parser／World 接入與實際依賴快照，Python 精確擠出、殼、複合空間、布林及標準幾何。
+- 交換包保留來源及摘要，可重建驗證；ModelWorld 提供預覽／確認／取消與失敗回滾。
+- 提供 CLI、HTTP API、OBJ 匯出及帶孔牆／L 形空間範例。
+- 36 項建模與 2 項傳輸整合測試通過；詳見 `geometry-core/MODELING-VALIDATION.md`。
+- 後續：C World／舊 DSL 新型別整合、畫布建立與編輯、GLB／SketchUp 適配器及第二套完整引擎的跨實作驗收。

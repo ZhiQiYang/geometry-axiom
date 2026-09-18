@@ -4,7 +4,9 @@
   "private": true,
   "description": "Dependency-free launcher for the existing C bridge and Python web UI",
   "scripts": {
-    "build": "mkdir -p .build && gcc -std=c11 -O2 current_geometry.c -lm -o .build/core && gcc -std=c11 -O2 geometry-web/web_bridge.c -lm -o .build/web_bridge",
-    "dev": "GEOMETRY_MANAGED_PREVIEW=1 GEOMETRY_BRIDGE=.build/web_bridge python3 geometry-web/serve.py 4173"
+    "build": "mkdir -p .build && gcc -std=c11 -O2 current_geometry.c -lm -o .build/core && gcc -std=c11 -O2 geometry-web/web_bridge.c -lm -o .build/web_bridge && gcc -std=c11 -O2 geometry-core/model_base.c -lm -o .build/model_base",
+    "dev": "GEOMETRY_MANAGED_PREVIEW=1 GEOMETRY_BRIDGE=.build/web_bridge GEOMETRY_MODEL_BASE=.build/model_base python3 geometry-web/serve.py 4173",
+    "model": "python3 geometry-core/modeling_cli.py",
+    "test:model": "python3 tests/test_modeling_runtime.py"
   }
 }
