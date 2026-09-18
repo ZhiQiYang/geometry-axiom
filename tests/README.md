@@ -1,5 +1,14 @@
 # 核心與保存完整性測試
 
+GEO-130 建模執行器及實際 CLI／HTTP：
+
+```sh
+python3 tests/test_modeling_runtime.py
+python3 tests/test_modeling_transport.py
+```
+
+18 組正式向量、獨立網格檢查與驗證界線見 `geometry-core/MODELING-VALIDATION.md`。
+
 跨面共用基準的提案、逐條追溯與實際驗收見
 [`DATUM-PROPOSAL.md`](../geometry-core/DATUM-PROPOSAL.md)、
 [`DATUM-VALIDATION.md`](../geometry-core/DATUM-VALIDATION.md)。

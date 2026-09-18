@@ -1,8 +1,8 @@
 {
   "format": "geometry-model-acceptance/1",
   "profile": "orthogonal-model/1",
-  "execution_status": "SPECIFICATION_ONLY_NOT_EXECUTED",
-  "note": "Input vectors for the future engine. base_scene here is fixture input, not a canonical export dump. No geometry pass is claimed.",
+  "execution_status": "SPECIFICATION_VECTORS_RESULTS_RECORDED_SEPARATELY",
+  "note": "Normative input vectors. base_scene here is fixture input, not a canonical export dump. Actual runtime results are recorded separately in MODELING-VALIDATION.md.",
   "cases": [
     {
       "id": "wall_through_hole",

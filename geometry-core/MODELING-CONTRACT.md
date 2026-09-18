@@ -1,7 +1,8 @@
 # GEO-129 正交 3D 建模交換契約
 
 規範來源：`公理層.md` 的 D20–D25、I26–I33、R24–R30。本檔定義其資料介面、確定性編碼及驗收。
-版本：`orthogonal-model/1`。狀態：**規格已建立，C 核心、Web bridge 與物件畫布尚未實作**。
+版本：`orthogonal-model/1`。GEO-130 已提供 **C 舊場景驗證＋Python 精確參考執行器、CLI、HTTP 與 OBJ 輸出**。
+新增型別仍未放入舊 C World／DSL 或物件畫布 UI。使用方式與實測界線見 `MODELING-RUNTIME.md`、`MODELING-VALIDATION.md`。
 不能把 JSON 範例可解析、閱讀器同步或文字審查說成 3D 幾何驗收通過。
 
 ## 1. 與既有資料的邊界
@@ -141,7 +142,7 @@ source_sha256 = SHA-256(規範化 definitions)；geometry_sha256 = SHA-256(規�
 
 ## 6. 交付驗收
 
-可解析的輸入與預期結果見 `modeling-cases.json`；這是未來核心的驗收向量，不是現行核心已通過的結果。
+可解析的輸入與預期結果見 `modeling-cases.json`；向量本身不是測試報告，實際執行結果另記 `MODELING-VALIDATION.md`。
 每案都必須：解析→能力檢查→求值→拓撲驗證→輸出→獨立重建比較。僅檢查 JSON 不構成 pass。
 
 | 驗收 | 必须成立 |
@@ -157,6 +158,7 @@ source_sha256 = SHA-256(規範化 definitions)；geometry_sha256 = SHA-256(規�
 
 ## 7. 現況与後續工作
 
-本次只交付正式規格、可讀解釋、資料契約和驗收向量。不得登記上述 M1–M8 已由新核心通過。
-新增型別的 C data model、解析、精確布林、shell 驗證、輸出器、bridge 與畫布UI均待實作。
-GLB/OBJ/SketchUp 等適配器可另實作；其前提是本契約的確定性資料，而不是由 AI 看預覽圖重猜模型。
+GEO-129 首次交付只有規格；GEO-130 接續實作的參考執行器已執行 18 組向量，並有獨立網格與交易檢查。
+不能把這些測試等同於另一套完整幾何引擎已通過 M8 的跨實作符合性驗收。
+新增型別的 C data model／DSL 與畫布 UI 仍待接入；目前可透過 Python API、CLI 或 HTTP 使用新能力。
+OBJ 適配器已提供整數 mm 幾何，來源及語意仍由 JSON 交換包保存；GLB／SketchUp 專用適配器另行實作。
