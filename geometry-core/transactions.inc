@@ -14,15 +14,40 @@ static bool reference_preview_pending(void) { return g_preview.ready; }
 static bool reference_preview_valid(void) { return g_preview.ready && g_preview.valid; }
 static uint32_t reference_preview_token(void) { return g_preview.token; }
 
+static void reference_pose_text(const World *w,int index,char *out,size_t cap)
+{
+    if (index<0 || !w->timbers[index].placed) { snprintf(out,cap,"unavailable"); return; }
+    const Timber *t=&w->timbers[index];
+    snprintf(out,cap,"surface %u origin [%lld,%lld,%lld] axes [%lld,%lld,%lld]/[%lld,%lld,%lld]/[%lld,%lld,%lld]",
+        w->anchors[index].placement_id,(long long)t->origin.x,(long long)t->origin.y,(long long)t->origin.z,
+        (long long)t->axis_length.x,(long long)t->axis_length.y,(long long)t->axis_length.z,
+        (long long)t->axis_a.x,(long long)t->axis_a.y,(long long)t->axis_a.z,
+        (long long)t->axis_b.x,(long long)t->axis_b.y,(long long)t->axis_b.z);
+}
+
+static void reference_guide_text(const World *w,uint32_t id,char *out,size_t cap)
+{
+    const GuideLine *g=world_find_guide(w,id);
+    const PlacementSurface *p=g?world_find_placement(w,g->placement_id):NULL;
+    if (!g || !g->resolved || !p) { snprintf(out,cap,"unavailable"); return; }
+    Vector3 along=g->direction==GUIDE_ALONG_U?p->frame.axis_u:p->frame.axis_v;
+    Vector3 cross=g->direction==GUIDE_ALONG_U?p->frame.axis_v:p->frame.axis_u;
+    snprintf(out,cap,"surface %u %c=%lld world [%lld,%lld,%lld] direction [%lld,%lld,%lld]",
+        g->placement_id,g->direction==GUIDE_ALONG_U?'v':'u',(long long)g->offset,
+        (long long)(p->frame.origin.x+cross.x*g->offset),(long long)(p->frame.origin.y+cross.y*g->offset),(long long)(p->frame.origin.z+cross.z*g->offset),
+        (long long)along.x,(long long)along.y,(long long)along.z);
+}
+
 #ifdef _WIN32
 static bool reference_gdi_confirm(HWND window, World *world)
 {
     if (!g_preview.ready) return false;
-    char text[32768]; size_t used=0;
+    char text[32768]; size_t used=0; bool truncated=false;
     int n=snprintf(text,sizeof text,"I8a 影響預覽：場景尚未改動。\n%s\n\n",g_preview.command);
     used=(size_t)n;
-    for (size_t i=0;i<g_preview.before.timber_count && used+300<sizeof text;++i) {
+    for (size_t i=0;i<g_preview.before.timber_count;++i) {
         const Timber *t=&g_preview.before.timbers[i]; if (!t->placed) continue;
+        if (used+900>=sizeof text) { truncated=true; break; }
         int j=reference_timber_index(&g_preview.after,t->id); bool valid=j>=0 && g_preview.after.timbers[j].placed;
         const TimberAnchor *a=&g_preview.before.anchors[i];
         const PlacementSurface *p=world_find_placement(&g_preview.before,a->placement_id); SurfaceRegion2 f;
@@ -36,10 +61,27 @@ static bool reference_gdi_confirm(HWND window, World *world)
         }
         n=snprintf(text+used,sizeof text-used,"角材 %u：中線 %lld → %lld；長度 %lld → %lld mm%s\n",t->id,(long long)old,(long long)newc,(long long)t->length,
             valid?(long long)g_preview.after.timbers[j].length:0,valid?"":"（已刪除或無法推導）"); used+=(size_t)n;
+        char before[240],after[240];
+        reference_pose_text(&g_preview.before,(int)i,before,sizeof before);
+        reference_pose_text(&g_preview.after,j,after,sizeof after);
+        n=snprintf(text+used,sizeof text-used,"  %s → %s\n",before,after); used+=(size_t)n;
     }
-    for (size_t i=0;i<g_preview.issue_count && used+600<sizeof text;++i) {
+    for (size_t i=0;i<g_preview.before.guide_count;++i) {
+        uint32_t id=g_preview.before.guides[i].id; char before[240],after[240];
+        reference_guide_text(&g_preview.before,id,before,sizeof before);
+        reference_guide_text(&g_preview.after,id,after,sizeof after);
+        if (!strcmp(before,after)) continue;
+        if (used+600>=sizeof text) { truncated=true; break; }
+        n=snprintf(text+used,sizeof text-used,"參考線 %u: %s → %s\n",id,before,after); used+=(size_t)n;
+    }
+    for (size_t i=0;i<g_preview.issue_count;++i) {
+        if (used+600>=sizeof text) { truncated=true; break; }
         const ReferenceIssue *e=&g_preview.issues[i];
         n=snprintf(text+used,sizeof text-used,"\n角材 %u · %s\n預期：%s\n實際：%s\n",e->timber,e->clause,e->expected,e->actual); used+=(size_t)n;
+    }
+    if (truncated) {
+        MessageBoxW(window,L"影響明細超過此視窗容量，未提交。請使用網頁或 CLI 檢視完整預覽後確認。",L"需要完整預覽",MB_OK|MB_ICONWARNING);
+        g_preview.ready=false; return false;
     }
     WCHAR wide[32768]; utf8_to_wide(text,wide,32768);
     if (!g_preview.valid) { MessageBoxW(window,wide,L"變更無法套用",MB_OK|MB_ICONWARNING); g_preview.ready=false; return false; }
@@ -67,7 +109,7 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
     for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed) placed=true;
     if (!placed || !count) return false;
     const char *c=tokens[0];
-    if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||
+    if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||
         !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
     if ((!strcmp(c,"place") || !strcmp(c,"timber")) && count>1) {
         uint32_t id;
@@ -112,6 +154,16 @@ static void reference_preview_text(void)
         }
         fprintf(stderr," timber %u center %lld -> %lld length %lld -> %lld%s\n",t->id,(long long)old,(long long)newc,(long long)t->length,
             valid?(long long)g_preview.after.timbers[j].length:0,valid?"":" (unavailable/deleted)");
+        char before[240],after[240];
+        reference_pose_text(&g_preview.before,(int)i,before,sizeof before);
+        reference_pose_text(&g_preview.after,j,after,sizeof after);
+        fprintf(stderr,"  %s -> %s\n",before,after);
+    }
+    for (size_t i=0;i<g_preview.before.guide_count;++i) {
+        uint32_t id=g_preview.before.guides[i].id; char before[240],after[240];
+        reference_guide_text(&g_preview.before,id,before,sizeof before);
+        reference_guide_text(&g_preview.after,id,after,sizeof after);
+        if (strcmp(before,after)) fprintf(stderr," guide %u: %s -> %s\n",id,before,after);
     }
     for (size_t i=0;i<g_preview.issue_count;++i) {
         const ReferenceIssue *e=&g_preview.issues[i];

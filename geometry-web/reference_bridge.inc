@@ -7,10 +7,35 @@ static void json_reference_geometry(const World *w,int i)
     if (!p || !timber_a0_footprint_uv(p,t,a,&f)) { fputs("null",stdout); return; }
     bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
     Coord center=(along?f.min_u:f.min_v)+t->size_a/2;
-    printf("{\"surface\":%u,\"centerline\":%lld,\"length\":%lld,\"u\":%lld,\"v\":%lld,\"dir\":\"%s\",\"side\":\"%s\",\"A\":%lld,\"B\":%lld,\"origin\":[%lld,%lld,%lld]}",
+    printf("{\"surface\":%u,\"centerline\":%lld,\"length\":%lld,\"u\":%lld,\"v\":%lld,\"dir\":\"%s\",\"side\":\"%s\",\"A\":%lld,\"B\":%lld,\"origin\":[%lld,%lld,%lld]",
         a->placement_id,(long long)center,(long long)t->length,(long long)a->uv.u,(long long)a->uv.v,
         length_dir_word(a->length_direction),depth_side_word(a->depth_side),(long long)t->size_a,(long long)t->size_b,
         (long long)t->origin.x,(long long)t->origin.y,(long long)t->origin.z);
+    printf(",\"axes\":[[%lld,%lld,%lld],[%lld,%lld,%lld],[%lld,%lld,%lld]]}",
+        (long long)t->axis_length.x,(long long)t->axis_length.y,(long long)t->axis_length.z,
+        (long long)t->axis_a.x,(long long)t->axis_a.y,(long long)t->axis_a.z,
+        (long long)t->axis_b.x,(long long)t->axis_b.y,(long long)t->axis_b.z);
+}
+static void json_reference_guide(const World *w,size_t i)
+{
+    const GuideLine *g=&w->guides[i];
+    const PlacementSurface *p=world_find_placement(w,g->placement_id);
+    if (!g->resolved || !p) { fputs("null",stdout); return; }
+    printf("{\"id\":%u,\"surface\":%u,\"source\":\"%s\",\"datum\":%u,\"axis\":\"%s\",\"off\":%lld,\"expression\":",
+        g->id,g->placement_id,g->source==GUIDE_DATUM?"datum":"local",g->datum_id,
+        g->direction==GUIDE_ALONG_U?"u":"v",(long long)g->offset);
+    js_string(g->expression);
+    Vector3 along=g->direction==GUIDE_ALONG_U?p->frame.axis_u:p->frame.axis_v;
+    Vector3 cross=g->direction==GUIDE_ALONG_U?p->frame.axis_v:p->frame.axis_u;
+    printf(",\"worldPoint\":[%lld,%lld,%lld],\"worldDirection\":[%lld,%lld,%lld],\"segments\":[",
+        (long long)(p->frame.origin.x+cross.x*g->offset),(long long)(p->frame.origin.y+cross.y*g->offset),(long long)(p->frame.origin.z+cross.z*g->offset),
+        (long long)along.x,(long long)along.y,(long long)along.z);
+    SurfaceSegment2 segments[POLY_MAX_VERTICES];
+    size_t count=guide_line_get_local_segments(p,world_placement_boundary(w,p),g,segments,POLY_MAX_VERTICES);
+    for (size_t j=0;j<count;++j) printf("%s[[%lld,%lld],[%lld,%lld]]",j?",":"",
+        (long long)segments[j].start.u,(long long)segments[j].start.v,
+        (long long)segments[j].end.u,(long long)segments[j].end.v);
+    fputs("]}",stdout);
 }
 static void json_reference_preview(void)
 {
@@ -22,6 +47,15 @@ static void json_reference_preview(void)
         if (!first) putchar(','); first=false;
         printf("{\"id\":%u,\"before\":",t->id); json_reference_geometry(&g_preview.before,(int)i);
         fputs(",\"after\":",stdout); json_reference_geometry(&g_preview.after,j); putchar('}');
+    }
+    fputs("],\"guides\":[",stdout);
+    for (size_t i=0;i<g_preview.before.guide_count;++i) {
+        const GuideLine *g=&g_preview.before.guides[i];
+        printf("%s{\"id\":%u,\"before\":",i?",":"",g->id); json_reference_guide(&g_preview.before,i);
+        fputs(",\"after\":",stdout); size_t j=0;
+        while (j<g_preview.after.guide_count && g_preview.after.guides[j].id!=g->id) ++j;
+        if (j==g_preview.after.guide_count) fputs("null",stdout); else json_reference_guide(&g_preview.after,j);
+        putchar('}');
     }
     fputs("],\"violations\":[",stdout);
     for (size_t i=0;i<g_preview.issue_count;++i) {
@@ -43,9 +77,7 @@ static void cmd_references(void)
 {
     fputs("{\"ok\":true,\"guides\":[",stdout);
     for (size_t i=0;i<g_world.guide_count;++i) {
-        const GuideLine *g=&g_world.guides[i];
-        printf("%s{\"id\":%u,\"surface\":%u,\"axis\":\"%s\",\"off\":%lld,\"expression\":",i?",":"",g->id,g->placement_id,g->direction==GUIDE_ALONG_U?"u":"v",(long long)g->offset);
-        js_string(g->expression); putchar('}');
+        if (i) putchar(','); json_reference_guide(&g_world,i);
     }
     fputs("],\"grids\":[",stdout);
     for (size_t i=0;i<g_world.grid_count;++i) {
@@ -72,6 +104,16 @@ static void cmd_references(void)
     for (size_t i=0;i<g_world.spec_count;++i) {
         printf("%s{\"name\":",i?",":""); js_string(g_world.specs[i].name);
         printf(",\"value\":%lld}",(long long)g_world.specs[i].value);
+    }
+    fputs("],\"datums\":[",stdout);
+    for (size_t i=0;i<g_world.datum_count;++i) {
+        const DatumPlane *d=&g_world.datums[i];
+        printf("%s{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",i?",":"",d->id,"XYZ"[d->axis],(long long)d->position);
+        js_string(d->expression); fputs(",\"guides\":[",stdout); bool first=true;
+        for (size_t j=0;j<g_world.guide_count;++j) if (g_world.guides[j].source==GUIDE_DATUM && g_world.guides[j].datum_id==d->id) {
+            printf("%s%u",first?"":",",g_world.guides[j].id); first=false;
+        }
+        fputs("]}",stdout);
     }
     fputs("]}\n",stdout);
 }

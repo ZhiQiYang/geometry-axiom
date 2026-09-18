@@ -1,5 +1,31 @@
 # geometry-web — 幾何模型 Web 介面
 
+## 跨面共用基準
+
+工具列「共用基準」依序可建立具名尺寸、世界 X／Y／Z 基準，再讓各承載面引用。
+修改被已放角材引用的基準或尺寸時顯示全場影響，取消保持原狀，確認後原子提交。
+每面只畫有效範圍內的線段；面外仍有定義。共用線請從基準管理器修改，不能拖曳成局部線。
+「檔案 → 公理閱讀器」開啟同一份正典 HTML。
+
+```text
+spec 櫃頂高度 1200
+datum 1 z spec:櫃頂高度
+guide 1 1 datum 1
+guide 2 2 datum 1
+```
+
+上例承載面 1、2 必須事先存在，且各自與基準面有唯一交線；平行或重合皆拒絕。
+
+## Linux 雲端開發基線
+
+需要 gcc、Python 3；managed preview 的啟動器另需 npm，不需下載套件。
+`npm run build` 編譯當前 core 與 bridge 到忽略的 `.build/`。
+本機可直接執行 `GEOMETRY_BRIDGE=.build/web_bridge python3 geometry-web/serve.py 8765`。
+受管開發環境從 repo 根執行 `sites-preview start "$PWD"`；它使用 `npm run dev`。
+受管模式只在環境變數 `GEOMETRY_MANAGED_PREVIEW=1` 且埠為 4173 時
+額外接受 `terminal.local` 並綁定開發環境入口。預設仍只接受 localhost，沒有公開部署。
+測試限制與可重現步驟見 [`DATUM-VALIDATION.md`](../geometry-core/DATUM-VALIDATION.md)。
+
 以 `web_bridge`（C 核心）為唯一真相來源的物件畫布 UI。所有幾何變更都走 DSL → bridge；
 畫布上的 `canvas-pos` 只是展示中繼資料，不記入歷史——undo/redo 還原快照時保留使用者當下的擺位（L1）。
 
@@ -140,7 +166,7 @@ python serve.py 8765
 
 - C 端（`../current_geometry.c`、`web_bridge.c`）改動須重跑 `build.bat` 並過兩套測試。
 - 多行變更走 `mutate(lines)`：包成 `history-begin`/`history-end` 群組 = 一步 undo（L2）；群組內任一行失敗核心自動整組回滾不留半套，前端再送 `history-abort` 驗證，回滾失敗 toast「回滾失敗，狀態可能不一致」。
-- 參考線：bridge 無列舉指令，由 `dump` 文本以正則 `^guide (\d+) (\d+) (u|v) (-?\d+)$` 解析；`sid` 是承載面 id。
+- 參考線：使用 bridge `references` 的來源、世界位置／方向與裁切段；不得從顯示數值反推引用定義。
 
 ## RC 柱樑與投影套用（RC-POLYGON-PLAN）
 

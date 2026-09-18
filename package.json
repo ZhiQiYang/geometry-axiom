@@ -1,0 +1,10 @@
+{
+  "name": "geometry-axiom-dev",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Dependency-free launcher for the existing C bridge and Python web UI",
+  "scripts": {
+    "build": "mkdir -p .build && gcc -std=c11 -O2 current_geometry.c -lm -o .build/core && gcc -std=c11 -O2 geometry-web/web_bridge.c -lm -o .build/web_bridge",
+    "dev": "GEOMETRY_MANAGED_PREVIEW=1 GEOMETRY_BRIDGE=.build/web_bridge python3 geometry-web/serve.py 4173"
+  }
+}

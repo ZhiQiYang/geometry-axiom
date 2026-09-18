@@ -128,7 +128,7 @@ TESTS = [{'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000
  {'scene': '_ax_i9_forward_ref.scene', 'expect': 'reject', 'error': 'place 指的角材不存在'},
  {'scene': '_ax_i1_frame_degenerate.scene', 'expect': 'reject', 'error': 'u 軸與 v 軸必須互相垂直'},
  {'scene': '_ax_i4_empty_space.scene', 'expect': 'accept', 'contains': ['空間 ID：1', '狀態：部分']},
- {'scene': '_ax_i7_guide_out_of_range.scene', 'expect': 'reject', 'error': 'I7'},
+ {'scene': '_ax_i7_guide_out_of_range.scene', 'expect': 'accept'},
  {'scene': '_ax_i16_beam_outside.scene', 'expect': 'reject', 'error': '樑宣告後有物件失效'},
  {'scene': '_ax_i17_delete_space.scene', 'expect': 'accept'},
  {'scene': '_ax_r20_delete_cascade.scene', 'expect': 'reject', 'error': 'I8a'},
