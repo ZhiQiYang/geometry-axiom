@@ -1,0 +1,955 @@
+{
+  "format": "geometry-model-acceptance/1",
+  "profile": "orthogonal-model/1",
+  "execution_status": "SPECIFICATION_ONLY_NOT_EXECUTED",
+  "note": "Input vectors for the future engine. base_scene here is fixture input, not a canonical export dump. No geometry pass is claimed.",
+  "cases": [
+    {
+      "id": "wall_through_hole",
+      "clauses": [
+        "D20",
+        "I26",
+        "R24"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation hole 1000,800 2200,800 2200,2000 1000,2000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n",
+        "extensions": [
+          {
+            "kind": "extrusion",
+            "id": 50,
+            "placement_id": 1,
+            "lo_spec": "near",
+            "hi_spec": "far"
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "extrusion",
+            "id": 50
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "bounds_mm": [
+          [
+            0,
+            -120,
+            0
+          ],
+          [
+            4000,
+            0,
+            2800
+          ]
+        ],
+        "volume_mm3": "1171200000",
+        "through_holes": 1,
+        "closure": "closed"
+      }
+    },
+    {
+      "id": "wall_reverse_side",
+      "clauses": [
+        "D20",
+        "R24"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation hole 1000,800 2200,800 2200,2000 1000,2000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near -120\nspec far 0\n",
+        "extensions": [
+          {
+            "kind": "extrusion",
+            "id": 50,
+            "placement_id": 1,
+            "lo_spec": "near",
+            "hi_spec": "far"
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "extrusion",
+            "id": 50
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "bounds_mm": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            4000,
+            120,
+            2800
+          ]
+        ],
+        "volume_mm3": "1171200000",
+        "through_holes": 1
+      }
+    },
+    {
+      "id": "zero_thickness_rejected",
+      "clauses": [
+        "I26",
+        "I30"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation hole 1000,800 2200,800 2200,2000 1000,2000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 0\n",
+        "extensions": [
+          {
+            "kind": "extrusion",
+            "id": 50,
+            "placement_id": 1,
+            "lo_spec": "near",
+            "hi_spec": "far"
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "extrusion",
+            "id": 50
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "INVALID",
+        "code": "NON_POSITIVE_SPAN",
+        "clause": "I26",
+        "world_unchanged": true
+      }
+    },
+    {
+      "id": "missing_spec_is_not_partial",
+      "clauses": [
+        "D24",
+        "I26",
+        "I31"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation hole 1000,800 2200,800 2200,2000 1000,2000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\n",
+        "extensions": [
+          {
+            "kind": "extrusion",
+            "id": 50,
+            "placement_id": 1,
+            "lo_spec": "near",
+            "hi_spec": "far"
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "extrusion",
+            "id": 50
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": true
+      },
+      "expected": {
+        "status": "INVALID",
+        "code": "MISSING_SPEC",
+        "clause": "I26",
+        "world_unchanged": true
+      }
+    },
+    {
+      "id": "l_room_eight_faces",
+      "clauses": [
+        "D21",
+        "D22",
+        "I27",
+        "I28",
+        "R25"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 6000,0 6000,3000 4200,3000 4200,4500 0,4500 kind room_plan\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 1 origin 0 0 2800 u +x v +y\nboundary 2 outline 0,0 6000,0 6000,2800 0,2800 kind wall_elevation\nplacement 3 on boundary 2 origin 0 0 0 u +x v +z\nboundary 3 outline 0,0 3000,0 3000,2800 0,2800 kind wall_elevation\nplacement 4 on boundary 3 origin 6000 0 0 u +y v +z\nboundary 4 outline 0,0 1800,0 1800,2800 0,2800 kind wall_elevation\nplacement 5 on boundary 4 origin 6000 3000 0 u -x v +z\nboundary 5 outline 0,0 1500,0 1500,2800 0,2800 kind wall_elevation\nplacement 6 on boundary 5 origin 4200 3000 0 u +y v +z\nboundary 6 outline 0,0 4200,0 4200,2800 0,2800 kind wall_elevation\nplacement 7 on boundary 6 origin 4200 4500 0 u -x v +z\nboundary 7 outline 0,0 4500,0 4500,2800 0,2800 kind wall_elevation\nplacement 8 on boundary 7 origin 0 4500 0 u -y v +z\n",
+        "extensions": [
+          {
+            "kind": "shell",
+            "id": 70,
+            "uses": [
+              {
+                "placement_id": 1,
+                "orientation": -1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 2,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 3,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 4,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 5,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 6,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 7,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 8,
+                "orientation": 1,
+                "purpose": "boundary"
+              }
+            ]
+          },
+          {
+            "kind": "composite_space",
+            "id": 80,
+            "shell_id": 70,
+            "obstacles": []
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composite_space",
+            "id": 80
+          }
+        ],
+        "role": "enclosure",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "shell_members": 8,
+        "volume_mm3": "68040000000",
+        "bounds_mm": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            6000,
+            4500,
+            2800
+          ]
+        ],
+        "excluded_point_mm": [
+          5000,
+          4000,
+          1400
+        ]
+      }
+    },
+    {
+      "id": "open_room_has_surfaces",
+      "clauses": [
+        "D24",
+        "I31",
+        "R26"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 6000,0 6000,3000 4200,3000 4200,4500 0,4500 kind room_plan\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 1 origin 0 0 2800 u +x v +y\nboundary 2 outline 0,0 6000,0 6000,2800 0,2800 kind wall_elevation\nplacement 3 on boundary 2 origin 0 0 0 u +x v +z\nboundary 3 outline 0,0 3000,0 3000,2800 0,2800 kind wall_elevation\nplacement 4 on boundary 3 origin 6000 0 0 u +y v +z\nboundary 4 outline 0,0 1800,0 1800,2800 0,2800 kind wall_elevation\nplacement 5 on boundary 4 origin 6000 3000 0 u -x v +z\nboundary 5 outline 0,0 1500,0 1500,2800 0,2800 kind wall_elevation\nplacement 6 on boundary 5 origin 4200 3000 0 u +y v +z\nboundary 6 outline 0,0 4200,0 4200,2800 0,2800 kind wall_elevation\nplacement 7 on boundary 6 origin 4200 4500 0 u -x v +z\nboundary 7 outline 0,0 4500,0 4500,2800 0,2800 kind wall_elevation\nplacement 8 on boundary 7 origin 0 4500 0 u -y v +z\n",
+        "extensions": [
+          {
+            "kind": "shell",
+            "id": 70,
+            "uses": [
+              {
+                "placement_id": 1,
+                "orientation": -1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 3,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 4,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 5,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 6,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 7,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 8,
+                "orientation": 1,
+                "purpose": "boundary"
+              }
+            ]
+          },
+          {
+            "kind": "composite_space",
+            "id": 80,
+            "shell_id": 70,
+            "obstacles": []
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composite_space",
+            "id": 80
+          }
+        ],
+        "role": "enclosure",
+        "target": "surface-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "closure": "open",
+        "volume_mm3": null
+      }
+    },
+    {
+      "id": "open_room_has_no_volume",
+      "clauses": [
+        "D24",
+        "I28",
+        "I31"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 6000,0 6000,3000 4200,3000 4200,4500 0,4500 kind room_plan\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 1 origin 0 0 2800 u +x v +y\nboundary 2 outline 0,0 6000,0 6000,2800 0,2800 kind wall_elevation\nplacement 3 on boundary 2 origin 0 0 0 u +x v +z\nboundary 3 outline 0,0 3000,0 3000,2800 0,2800 kind wall_elevation\nplacement 4 on boundary 3 origin 6000 0 0 u +y v +z\nboundary 4 outline 0,0 1800,0 1800,2800 0,2800 kind wall_elevation\nplacement 5 on boundary 4 origin 6000 3000 0 u -x v +z\nboundary 5 outline 0,0 1500,0 1500,2800 0,2800 kind wall_elevation\nplacement 6 on boundary 5 origin 4200 3000 0 u +y v +z\nboundary 6 outline 0,0 4200,0 4200,2800 0,2800 kind wall_elevation\nplacement 7 on boundary 6 origin 4200 4500 0 u -x v +z\nboundary 7 outline 0,0 4500,0 4500,2800 0,2800 kind wall_elevation\nplacement 8 on boundary 7 origin 0 4500 0 u -y v +z\n",
+        "extensions": [
+          {
+            "kind": "shell",
+            "id": 70,
+            "uses": [
+              {
+                "placement_id": 1,
+                "orientation": -1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 3,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 4,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 5,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 6,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 7,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 8,
+                "orientation": 1,
+                "purpose": "boundary"
+              }
+            ]
+          },
+          {
+            "kind": "composite_space",
+            "id": 80,
+            "shell_id": 70,
+            "obstacles": []
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composite_space",
+            "id": 80
+          }
+        ],
+        "role": "enclosure",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "INCOMPLETE",
+        "code": "OPEN_SHELL",
+        "clause": "I28",
+        "package_success": false
+      }
+    },
+    {
+      "id": "carrier_is_not_solid",
+      "clauses": [
+        "D24"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation hole 1000,800 2200,800 2200,2000 1000,2000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n",
+        "extensions": []
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "placement",
+            "id": 1
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "INVALID",
+        "code": "TARGET_TYPE",
+        "clause": "D24"
+      }
+    },
+    {
+      "id": "keep_overlap_preserves_objects",
+      "clauses": [
+        "D23",
+        "R29"
+      ],
+      "definitions": {
+        "base_scene": "beam 1 along x from 0 to 2000 at 1000 width 2000 depth 2000 top 2000\nbeam 2 along x from 1000 to 3000 at 1000 width 2000 depth 2000 top 2000\n",
+        "extensions": [
+          {
+            "kind": "composition",
+            "id": 90,
+            "op": "KEEP",
+            "inputs": [
+              {
+                "kind": "beam",
+                "id": 1
+              },
+              {
+                "kind": "beam",
+                "id": 2
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composition",
+            "id": 90
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "object_count": 2,
+        "per_object_volume_mm3": [
+          "8000000000",
+          "8000000000"
+        ],
+        "internal_overlap_faces_retained": true
+      }
+    },
+    {
+      "id": "union_overlap",
+      "clauses": [
+        "D23",
+        "R27"
+      ],
+      "definitions": {
+        "base_scene": "beam 1 along x from 0 to 2000 at 1000 width 2000 depth 2000 top 2000\nbeam 2 along x from 1000 to 3000 at 1000 width 2000 depth 2000 top 2000\n",
+        "extensions": [
+          {
+            "kind": "composition",
+            "id": 90,
+            "op": "UNION",
+            "inputs": [
+              {
+                "kind": "beam",
+                "id": 1
+              },
+              {
+                "kind": "beam",
+                "id": 2
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composition",
+            "id": 90
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "volume_mm3": "12000000000",
+        "volume_components": 1
+      }
+    },
+    {
+      "id": "difference_internal_cavity",
+      "clauses": [
+        "D23",
+        "I28",
+        "R27"
+      ],
+      "definitions": {
+        "base_scene": "beam 1 along x from 0 to 2000 at 1000 width 2000 depth 2000 top 2000\nbeam 2 along x from 500 to 1500 at 1000 width 1000 depth 1000 top 1500\n",
+        "extensions": [
+          {
+            "kind": "composition",
+            "id": 90,
+            "op": "DIFFERENCE",
+            "base": {
+              "kind": "beam",
+              "id": 1
+            },
+            "tools": [
+              {
+                "kind": "beam",
+                "id": 2
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composition",
+            "id": 90
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "volume_mm3": "7000000000",
+        "volume_components": 1,
+        "boundary_shell_roles": [
+          "outer",
+          "cavity"
+        ]
+      }
+    },
+    {
+      "id": "difference_two_pieces",
+      "clauses": [
+        "D23",
+        "I29",
+        "R27"
+      ],
+      "definitions": {
+        "base_scene": "beam 1 along x from 0 to 2000 at 1000 width 2000 depth 2000 top 2000\nbeam 2 along x from 900 to 1100 at 1000 width 2200 depth 2200 top 2100\n",
+        "extensions": [
+          {
+            "kind": "composition",
+            "id": 90,
+            "op": "DIFFERENCE",
+            "base": {
+              "kind": "beam",
+              "id": 1
+            },
+            "tools": [
+              {
+                "kind": "beam",
+                "id": 2
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composition",
+            "id": 90
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "volume_mm3": "7200000000",
+        "volume_components": 2
+      }
+    },
+    {
+      "id": "difference_empty",
+      "clauses": [
+        "D23",
+        "I29"
+      ],
+      "definitions": {
+        "base_scene": "beam 1 along x from 0 to 2000 at 1000 width 2000 depth 2000 top 2000\nbeam 2 along x from -100 to 2100 at 1000 width 2200 depth 2200 top 2100\n",
+        "extensions": [
+          {
+            "kind": "composition",
+            "id": 90,
+            "op": "DIFFERENCE",
+            "base": {
+              "kind": "beam",
+              "id": 1
+            },
+            "tools": [
+              {
+                "kind": "beam",
+                "id": 2
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composition",
+            "id": 90
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "EMPTY",
+        "volume_mm3": "0",
+        "volume_components": 0,
+        "root_retained": true
+      }
+    },
+    {
+      "id": "empty_reused_in_union",
+      "clauses": [
+        "D23"
+      ],
+      "definitions": {
+        "base_scene": "beam 1 along x from 0 to 2000 at 1000 width 2000 depth 2000 top 2000\nbeam 2 along x from -100 to 2100 at 1000 width 2200 depth 2200 top 2100\n",
+        "extensions": [
+          {
+            "kind": "composition",
+            "id": 90,
+            "op": "DIFFERENCE",
+            "base": {
+              "kind": "beam",
+              "id": 1
+            },
+            "tools": [
+              {
+                "kind": "beam",
+                "id": 2
+              }
+            ]
+          },
+          {
+            "kind": "composition",
+            "id": 91,
+            "op": "UNION",
+            "inputs": [
+              {
+                "kind": "beam",
+                "id": 1
+              },
+              {
+                "kind": "composition",
+                "id": 90
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composition",
+            "id": 91
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "volume_mm3": "8000000000",
+        "volume_components": 1
+      }
+    },
+    {
+      "id": "edge_contact_does_not_weld",
+      "clauses": [
+        "D23",
+        "R27",
+        "R29"
+      ],
+      "definitions": {
+        "base_scene": "beam 1 along x from 0 to 1 at 0 width 1 depth 1 top 1\nbeam 2 along x from 1 to 2 at 1 width 1 depth 1 top 1\n",
+        "extensions": [
+          {
+            "kind": "composition",
+            "id": 90,
+            "op": "UNION",
+            "inputs": [
+              {
+                "kind": "beam",
+                "id": 1
+              },
+              {
+                "kind": "beam",
+                "id": 2
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composition",
+            "id": 90
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "COMPLETE",
+        "volume_mm3": "2",
+        "volume_components": 2,
+        "shared_topological_vertices": 0
+      }
+    },
+    {
+      "id": "runtime_missing_capability",
+      "clauses": [
+        "D20",
+        "I26",
+        "R24"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation hole 1000,800 2200,800 2200,2000 1000,2000\nplacement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n",
+        "extensions": [
+          {
+            "kind": "extrusion",
+            "id": 50,
+            "placement_id": 1,
+            "lo_spec": "near",
+            "hi_spec": "far"
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "extrusion",
+            "id": 50
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "UNSUPPORTED",
+        "code": "CAPABILITY",
+        "clause": "I32",
+        "package_success": false
+      },
+      "executor_capabilities": []
+    },
+    {
+      "id": "difference_self_is_empty",
+      "clauses": [
+        "D23",
+        "I29"
+      ],
+      "definitions": {
+        "base_scene": "beam 1 along x from 0 to 2000 at 1000 width 2000 depth 2000 top 2000\nbeam 2 along x from -100 to 2100 at 1000 width 2200 depth 2200 top 2100\n",
+        "extensions": [
+          {
+            "kind": "composition",
+            "id": 90,
+            "op": "DIFFERENCE",
+            "base": {
+              "kind": "beam",
+              "id": 1
+            },
+            "tools": [
+              {
+                "kind": "beam",
+                "id": 1
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composition",
+            "id": 90
+          }
+        ],
+        "role": "geometry",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "EMPTY",
+        "volume_mm3": "0",
+        "volume_components": 0,
+        "root_retained": true
+      }
+    },
+    {
+      "id": "duplicate_shell_member_rejected",
+      "clauses": [
+        "D21",
+        "D22",
+        "I27",
+        "I28",
+        "R25"
+      ],
+      "definitions": {
+        "base_scene": "boundary 1 outline 0,0 6000,0 6000,3000 4200,3000 4200,4500 0,4500 kind room_plan\nplacement 1 on boundary 1 origin 0 0 0 u +x v +y\nplacement 2 on boundary 1 origin 0 0 2800 u +x v +y\nboundary 2 outline 0,0 6000,0 6000,2800 0,2800 kind wall_elevation\nplacement 3 on boundary 2 origin 0 0 0 u +x v +z\nboundary 3 outline 0,0 3000,0 3000,2800 0,2800 kind wall_elevation\nplacement 4 on boundary 3 origin 6000 0 0 u +y v +z\nboundary 4 outline 0,0 1800,0 1800,2800 0,2800 kind wall_elevation\nplacement 5 on boundary 4 origin 6000 3000 0 u -x v +z\nboundary 5 outline 0,0 1500,0 1500,2800 0,2800 kind wall_elevation\nplacement 6 on boundary 5 origin 4200 3000 0 u +y v +z\nboundary 6 outline 0,0 4200,0 4200,2800 0,2800 kind wall_elevation\nplacement 7 on boundary 6 origin 4200 4500 0 u -x v +z\nboundary 7 outline 0,0 4500,0 4500,2800 0,2800 kind wall_elevation\nplacement 8 on boundary 7 origin 0 4500 0 u -y v +z\n",
+        "extensions": [
+          {
+            "kind": "shell",
+            "id": 70,
+            "uses": [
+              {
+                "placement_id": 1,
+                "orientation": -1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 2,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 3,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 4,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 5,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 6,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 7,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 8,
+                "orientation": 1,
+                "purpose": "boundary"
+              },
+              {
+                "placement_id": 1,
+                "orientation": -1,
+                "purpose": "boundary"
+              }
+            ]
+          },
+          {
+            "kind": "composite_space",
+            "id": 80,
+            "shell_id": 70,
+            "obstacles": []
+          }
+        ]
+      },
+      "request": {
+        "roots": [
+          {
+            "kind": "composite_space",
+            "id": 80
+          }
+        ],
+        "role": "enclosure",
+        "target": "solid-set",
+        "allow_partial": false
+      },
+      "expected": {
+        "status": "INVALID",
+        "code": "DUPLICATE_FACE_USE",
+        "clause": "I27",
+        "world_unchanged": true
+      }
+    }
+  ]
+}
