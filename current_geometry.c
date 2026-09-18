@@ -1034,7 +1034,10 @@ typedef enum {
 typedef struct {
     GuideLineId id;
     SurfaceId placement_id;     /* 屬於哪片承載面 */
-    GuideDirection direction;
+    GuideDirection direction; /* derived for DATUM */
+    GuideSource source;
+    uint32_t datum_id;
+    bool resolved; /* evaluated cache, never serialized */
 
     /*
      * GUIDE_ALONG_U：固定 v = offset。
@@ -1111,7 +1114,8 @@ static size_t guide_line_get_local_segments(
     bool along_u = guide->direction == GUIDE_ALONG_U;
 
     if (boundary == NULL) {
-        /* 自帶矩形：整條線一段，不截。 */
+        /* D6/I7: existence and visibility are independent, including rectangles. */
+        if (!guide_offset_in_range(surface, NULL, guide->direction, guide->offset)) return 0;
         SurfacePoint2 lo, hi;
 
         if (along_u) {
@@ -3659,6 +3663,8 @@ typedef struct {
 typedef struct World {
     SpecValue specs[WORLD_MAX_SPECS];
     size_t spec_count;
+    DatumPlane datums[WORLD_MAX_DATUMS];
+    size_t datum_count;
     uint64_t next_order;
     SpaceBoundarySurface boundaries[WORLD_MAX_BOUNDARIES];
     size_t boundary_count;
@@ -7894,10 +7900,8 @@ static bool world_validate_derived(const World *world)
         const PlacementSurface *p =
             world_find_placement(world, g->placement_id);
 
-        if (p == NULL ||
-            !guide_offset_in_range(
-                p, world_placement_boundary(world, p),
-                g->direction, g->offset)) {
+        if (p == NULL || !coord_in_range(g->offset) ||
+            (g->direction != GUIDE_ALONG_U && g->direction != GUIDE_ALONG_V)) {
             return false;
         }
     }
@@ -10376,10 +10380,14 @@ static bool proj_rebind_aux(
     for (size_t i = 0; i < world->guide_count; ++i) {
         GuideLine *g = &world->guides[i];
         if (g->placement_id != old_pl->id) continue;
-        bool k = guide_offset_in_range(old_pl, keep_b,
-                    g->direction, g->offset);
-        bool n = guide_offset_in_range(new_pl, new_b,
-                    g->direction, g->offset);
+        /* R13: classify actual clipped visibility, never general I7 validity. */
+        SurfaceSegment2 clipped[POLY_MAX_VERTICES];
+        GuideLine candidate = *g;
+        bool k = guide_line_get_local_segments(old_pl, keep_b, &candidate,
+                    clipped, POLY_MAX_VERTICES) > 0;
+        candidate.placement_id = new_pl_id;
+        bool n = guide_line_get_local_segments(new_pl, new_b, &candidate,
+                    clipped, POLY_MAX_VERTICES) > 0;
         if (n && !k) {
             g->placement_id = new_pl_id;
         } else if (!k && !n) {
@@ -11027,6 +11035,17 @@ static bool apply_delete_line(
                 sizeof world->placements[0]);
         --world->placement_count;
         world_drop_canvas_pos(world, CANVAS_POS_PLACEMENT, id);
+    } else if (strcmp(kind, "datum") == 0) {
+        size_t di = SIZE_MAX;
+        for (size_t i=0;i<world->datum_count;++i) if (world->datums[i].id==id) di=i;
+        if (di==SIZE_MAX) { scene_error(path,line_no,"I7a: datum does not exist"); return false; }
+        for (size_t i=0;i<world->guide_count;++i)
+            if (world->guides[i].source==GUIDE_DATUM && world->guides[i].datum_id==id) {
+                scene_error(path,line_no,"I7a: datum is still referenced by a guide"); return false;
+            }
+        memmove(&world->datums[di],&world->datums[di+1],(world->datum_count-di-1)*sizeof(DatumPlane));
+        --world->datum_count;
+        memset(&world->datums[world->datum_count],0,sizeof(DatumPlane));
     } else if (strcmp(kind, "guide") == 0) {
         size_t gi = SIZE_MAX;
 
@@ -11557,8 +11576,13 @@ static const struct {
         apply_space_line
     },
     {
+        "datum", 4, SCENE_MAX_TOKENS, false,
+        "datum id x|y|z spec-only position expression",
+        apply_datum_line
+    },
+    {
         "guide", 5, SCENE_MAX_TOKENS, true,
-        "guide id 承載面id 方向（u 或 v） 位置引用式",
+        "guide id 承載面id u|v 位置引用式 或 guide id 承載面id datum 基準id",
         apply_guide_line
     },
     {

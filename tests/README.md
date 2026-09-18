@@ -1,5 +1,18 @@
 # 核心與保存完整性測試
 
+跨面共用基準的提案、逐條追溯與實際驗收見
+[`DATUM-PROPOSAL.md`](../geometry-core/DATUM-PROPOSAL.md)、
+[`DATUM-VALIDATION.md`](../geometry-core/DATUM-VALIDATION.md)。
+新測試使用同一 C bridge，不在測試內另做幾何求解：
+
+```sh
+GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge python3 tests/test_datum_contract.py
+python3 tests/test_axiom_reader.py
+```
+
+`_ax_i7_guide_out_of_range.scene` 現為接受案例：I7 放寬的是參考線存在條件，
+零可見段合法；網格生成限制與角材守門員並未放寬。
+
 `run_tests.py` 驗證既有場景的接受／拒絕、尺寸與文字輸出。
 `test_core_integrity.c` 驗證承載面重綁後的世界座標、Space 範圍、交易回滾及 undo/redo。
 `test_bridge_integrity.py` 使用獨立 bridge 程序，驗證不完整指令、存檔重載、auto 支撐義務及所有接受型場景的幾何往返。

@@ -15,15 +15,16 @@
 使用者的工作流是「在它上面讀條文 → 批註 → 依批註改 `公理層.md` → 重出下一版閱讀器」,
 每一版取代前一版。它內建五道完整性 assert(見下),任何一道失敗會**連桌面版面一起失效**。
 
-> ⚠️ **目前沒有可重現的生成器。** 這一版是用一次性腳本從前一版改出來的
-> (scratchpad 的 `build_r*.py`)。`make_axiom_reader.py` 產的是**另一套版面**
-> (輸出 `公理層-追溯診斷頁.html`,用於覆蓋率與三向追溯),**不是正典**。
-> 在補上正式生成器之前,改閱讀器內容必須滿足下列五道 assert,否則整個批註功能停用:
+> **正典同步入口：`geometry-guide/sync_axiom_reader.py`**（GEO-128）。
+> 它從 `公理層.md` + `geometry-guide/公理層-白話.md` 同步版本化正典 HTML，
+> 保留互動模板、批註、例圖及未改段落身份；詳見 `geometry-guide/READER-BUILD.md`。
+> `make_axiom_reader.py` 仍產出另一套追溯診斷頁，**不是正典**。
+> 寫檔前必須通過五道 assert，並逐字對照獨立讀取的 SSOT，不能僅讓內部 JSON 自洽：
 > 1. `docHash(state) === state.documentHash`,其中
 >    `docHash = sha256(JSON.stringify(blocks.map(b=>[b.id,b.source,b.separator])))`
 > 2. `<script id="clause-data">` 與 `axiom-review-data.clauses` 的 JSON **必須全等**
 > 3. 每條每節:`blocks` 的 `source+separator` 串接 **必須等於** `clauses[section]`
->    (每節最後一段 `separator` 是 `''`,其餘 `'\n\n'`)
+>    (每節最後一段 `separator` 是 `''`；其餘精確保留 SSOT 原文分隔，可能是 `'\n'` 或 `'\n\n'`)
 > 4. 每個 block:`sha256(source) === sourceHash`
 > 5. 可編輯 block:DOM `.review-target` 的 **textContent** 必須等於
 >    `window.axiomMobile.inline(source)` 算繪後的 textContent
@@ -72,13 +73,14 @@ agent 不得自行判定「這次情況特殊」。
 - `make_axiom_reader.py` 有建置期強制檢查:條文數 < 60、懸空引用、
   白話出現公理層沒有的條號 → 一律非 0 退出。過期的閱讀器比沒有更糟。
 
-## 待補(不是 bug,是還沒做)
+## 正典重建與驗證
 
-**正典閱讀器缺一個可重現的生成器。** 批註功能已經有了,但這一版是靠一次性腳本
-從前一版改出來的,不是從 `公理層.md` 一鍵重產。後果已經實際發生過:
-插入新條文時吃掉了相鄰條文的開頭標籤、改 `body` 忘了同步 `subs`、
-改內容忘了重算 `documentHash` 導致整個批註功能停用(見 BACKLOG GEO-124)。
+```sh
+python3 geometry-guide/sync_axiom_reader.py
+python3 geometry-guide/sync_axiom_reader.py --check
+python3 tests/test_axiom_reader.py
+```
 
-正確的補法是寫一支生成器:吃 `公理層.md` + `公理層-白話.md` + 既有批註 JSON,
-吐出完整的批註版閱讀器,並在寫檔前自驗那五道 assert。
-在它補上之前,任何人改閱讀器都必須手動滿足五道 assert,風險自負。
+既有正典 HTML 是版本化模板的一部分；缺失時從 Git 還原，不另造閱讀器。
+可用 `--review-json` 合併同源批註備份；相同 ID 內容衝突必須拒絕，不自動覆寫。
+修改版面／互動時仍須遵循設計規格及五道 assert。CLI 結構檢查不能冒充手機或真實瀏覽器操作驗證。

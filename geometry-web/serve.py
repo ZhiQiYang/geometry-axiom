@@ -113,6 +113,10 @@ BRIDGE_MAX_CMD = 4094
 # L3 跨站防護：只收本機來源；無 Origin 的 curl/腳本照常放行。
 LOCAL_ORIGINS = {f"http://127.0.0.1:{PORT}", f"http://localhost:{PORT}"}
 LOCAL_HOSTS = {"127.0.0.1", "localhost"}
+# Explicit opt-in for the managed development preview; defaults stay local-only.
+if os.environ.get("GEOMETRY_MANAGED_PREVIEW") == "1" and PORT == 4173:
+    LOCAL_HOSTS.add("terminal.local")
+    LOCAL_ORIGINS.add("http://terminal.local:4173")
 
 
 def err_json(msg: str) -> bytes:
@@ -141,6 +145,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif self.path in {"/app.js", "/reference-ui.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")
+        elif self.path == "/axioms":
+            self._send((SCENE_DIR / "geometry-guide" / "公理層-閱讀器.html").read_bytes(),
+                       "text/html; charset=utf-8")
         elif self.path == "/scenes":
             items = [{"name": p.name, "path": str(p)}
                      for p in sorted(SCENE_DIR.glob("*.scene"))]
@@ -211,7 +218,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
 if __name__ == "__main__":
     print(f"http://localhost:{PORT}  （Ctrl-C 結束；bridge={BRIDGE_CMD[0]}）")
     try:
-        http.server.ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
+        host = "0.0.0.0" if os.environ.get("GEOMETRY_MANAGED_PREVIEW") == "1" and PORT == 4173 else "127.0.0.1"
+        http.server.ThreadingHTTPServer((host, PORT), Handler).serve_forever()
     finally:
         for path in _upload_temps:
             try:

@@ -2346,6 +2346,7 @@ function drawFaceEditor() {
   /* 參考線（虛線，依有效範圍裁切）；拖曳中用暫存 offset */
   const gb = [bb[0] - pad, bb[1] - pad, bb[2] + pad, bb[3] + pad];
   for (const g of fe.guides) {
+    if (g.segments && !g.segments.length && !(fe.drag && fe.drag.kind === "guide" && fe.drag.id === g.id)) continue;
     const off = (fe.drag && fe.drag.kind === "guide" &&
                  fe.drag.id === g.id && fe.drag.off != null)
       ? fe.drag.off : g.off;

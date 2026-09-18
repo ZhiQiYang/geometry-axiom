@@ -81,6 +81,13 @@ static int reference_timber_index(const World *w, uint32_t id)
 static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const char *text, Coord *out)
 {
     World *w=ctx->world;
+    /* D6c deliberately permits only named specs, without a placement context. */
+    if (!g) {
+        if (strncmp(text,"spec:",5)) return false;
+        for (size_t i=0;i<w->spec_count;++i)
+            if (!strcmp(w->specs[i].name,text+5)) { *out=w->specs[i].value; return true; }
+        return false;
+    }
     const PlacementSurface *p=world_find_placement(w,g->placement_id);
     if (!p) return false;
     SpaceBoundarySurface effective;
@@ -105,8 +112,8 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
         for (size_t i=0;i<w->guide_count;++i) {
             GuideLine *q=&w->guides[i];
             if (q->id!=id) continue;
-            if (q->placement_id!=g->placement_id || q->direction!=g->direction ||
-                !reference_eval_guide(ctx,i)) return false;
+            if (q->placement_id!=g->placement_id || !reference_eval_guide(ctx,i) ||
+                q->direction!=g->direction) return false;
             *out=q->offset; return true;
         }
         return false;
@@ -169,9 +176,9 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
     return false; /* A naked number is never a reference. */
 }
 
-static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Coord *out)
+static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const char *expression, Coord *out)
 {
-    const char *p=g->expression;
+    const char *p=expression;
     Coord sum=0,den=1; int terms=0;
     if (!*p) return false;
     while (*p) {
@@ -202,6 +209,45 @@ static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Co
     return coord_in_range(*out);
 }
 
+static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Coord *out)
+{
+    return reference_eval_text(ctx,g,g->expression,out);
+}
+
+static bool reference_eval_datums(ReferenceEval *ctx)
+{
+    bool ok=true;
+    for (size_t i=0;i<ctx->world->datum_count;++i) {
+        DatumPlane *d=&ctx->world->datums[i];
+        if (d->axis<0 || d->axis>2 || !reference_eval_text(ctx,NULL,d->expression,&d->position)) {
+            char msg[160]; snprintf(msg,sizeof msg,"datum %u: missing spec, bare mm, unsupported reference or rational overflow",d->id);
+            reference_issue(0,"D6c/I7a","axis X/Y/Z and exact spec-only expression within D1",msg); ok=false;
+        }
+    }
+    return ok;
+}
+
+static Coord datum_component(Vector3 v,int axis) { return axis==0?v.x:axis==1?v.y:v.z; }
+
+/* D6c/I7a: solve in world coordinates, then transform the unique line to uv. */
+static bool datum_guide_geometry(const World *w,const PlacementSurface *p,GuideLine *g)
+{
+    const DatumPlane *d=NULL;
+    for (size_t i=0;i<w->datum_count;++i) if (w->datums[i].id==g->datum_id) d=&w->datums[i];
+    if (!d) return reference_issue(0,"I7a/I9","existing datum","datum guide has missing source");
+    Coord origin=d->axis==0?p->frame.origin.x:d->axis==1?p->frame.origin.y:p->frame.origin.z;
+    Coord u=datum_component(p->frame.axis_u,d->axis),v=datum_component(p->frame.axis_v,d->axis);
+    if (!u && !v) {
+        char msg[160]; snprintf(msg,sizeof msg,"guide %u datum %u: %s",g->id,d->id,
+            origin==d->position?"coincident planes have no unique line":"parallel planes do not intersect");
+        return reference_issue(0,"I7a","one unique intersection line",msg);
+    }
+    g->direction=u?GUIDE_ALONG_V:GUIDE_ALONG_U;
+    g->offset=(u?u:v)*(d->position-origin);
+    if (!coord_in_range(g->offset)) return reference_issue(0,"D1/I7a","derived local position within D1","datum intersection outside supported coordinate range");
+    return true;
+}
+
 static bool reference_eval_guide(ReferenceEval *ctx, size_t i)
 {
     if (ctx->guides[i]==2) return true;
@@ -209,18 +255,18 @@ static bool reference_eval_guide(ReferenceEval *ctx, size_t i)
     ctx->guides[i]=1;
     GuideLine *g=&ctx->world->guides[i]; Coord v;
     const PlacementSurface *p=world_find_placement(ctx->world,g->placement_id);
+    if (g->source==GUIDE_DATUM) {
+        if (!p || !datum_guide_geometry(ctx->world,p,g)) { ctx->guides[i]=3; return false; }
+        g->resolved=true; ctx->guides[i]=2; return true;
+    }
     if (!p || !reference_eval_expression(ctx,g,&v)) {
         ctx->guides[i]=3;
         char message[256]; snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,g->expression);
         return reference_issue(0,"D6a/I7/I9","existing same-surface/axis references; acyclic exact rational expression",message);
     }
     g->offset=v;
-    if (!guide_offset_in_range(p,world_placement_boundary(ctx->world,p),g->direction,v)) {
-        ctx->guides[i]=3;
-        char msg[120]; snprintf(msg,sizeof msg,"guide %u evaluated coordinate %lld outside effective bounds",g->id,(long long)v);
-        return reference_issue(0,"I7","coordinate inside effective axis interval",msg);
-    }
-    ctx->guides[i]=2; return true;
+    /* I7: a valid infinite line can have an empty visible clip. */
+    g->resolved=true; ctx->guides[i]=2; return true;
 }
 
 static bool reference_face_parse(const char *s, ReferenceFace *r)
@@ -418,7 +464,9 @@ static bool reference_check_all(const World *w)
 static bool reference_rebuild(World *w)
 {
     ReferenceEval ctx={0}; ctx.world=w; bool ok=true;
+    for (size_t i=0;i<w->guide_count;++i) w->guides[i].resolved=false;
     for (size_t i=0;i<w->timber_count;++i) { ctx.wanted[i]=w->timbers[i].placed; w->timbers[i].placed=false; }
+    if (!reference_eval_datums(&ctx)) { if (g_reference_capturing) g_reference_trial=*w; return false; }
     /* Timbers drive guide evaluation as needed; remaining guides are then evaluated. */
     for (size_t i=0;i<w->timber_count;++i) if (ctx.wanted[i] && !reference_eval_timber(&ctx,i)) ok=false;
     for (size_t i=0;i<w->guide_count;++i) if (!reference_eval_guide(&ctx,i)) ok=false;
@@ -443,13 +491,32 @@ static bool apply_spec_line(const char *p,int n,char **tokens,int count,World *w
     snprintf(w->specs[i].name,SPEC_NAME_MAX,"%s",tokens[1]); w->specs[i].value=value;
     return reference_checked(p,n,w);
 }
+static bool apply_datum_line(const char *p,int n,char **tokens,int count,World *w)
+{
+    DatumPlane d={0};
+    if (!parse_u32(tokens[1],&d.id) || strlen(tokens[2])!=1 ||
+        !strchr("xyzXYZ",tokens[2][0]) || !reference_expression(tokens,3,count,d.expression)) {
+        scene_error(p,n,"D6c: datum id x|y|z spec-only position expression"); return false;
+    }
+    d.axis=tolower((unsigned char)tokens[2][0])=='x'?0:tolower((unsigned char)tokens[2][0])=='y'?1:2;
+    size_t i=0; while (i<w->datum_count && w->datums[i].id!=d.id) ++i;
+    if (i==WORLD_MAX_DATUMS) { scene_error(p,n,"D6c: datum capacity exceeded"); return false; }
+    if (i==w->datum_count) ++w->datum_count;
+    w->datums[i]=d;
+    return reference_checked(p,n,w);
+}
 static bool apply_reference_guide(const char *p,int n,char **tokens,int count,World *w)
 {
     GuideLine g={0}; int dir;
-    if (!parse_u32(tokens[1],&g.id) || !parse_u32(tokens[2],&g.placement_id) ||
-        !lookup_keyword(tokens[3],GUIDE_DIRECTION_WORDS,&dir) ||
-        !reference_expression(tokens,4,count,g.expression)) return false;
-    g.direction=(GuideDirection)dir;
+    if (!parse_u32(tokens[1],&g.id) || !parse_u32(tokens[2],&g.placement_id)) return false;
+    if (!strcmp(tokens[3],"datum")) {
+        if (count!=5 || !parse_u32(tokens[4],&g.datum_id)) return false;
+        g.source=GUIDE_DATUM;
+    } else {
+        if (!lookup_keyword(tokens[3],GUIDE_DIRECTION_WORDS,&dir) ||
+            !reference_expression(tokens,4,count,g.expression)) return false;
+        g.direction=(GuideDirection)dir;
+    }
     size_t i=0; while (i<w->guide_count && w->guides[i].id!=g.id) ++i;
     if (i==WORLD_MAX_GUIDES) return false;
     if (i==w->guide_count) ++w->guide_count;
@@ -460,6 +527,9 @@ static bool apply_reference_move(const char *p,int n,char **tokens,int count,Wor
     uint32_t id;
     if (!parse_u32(tokens[1],&id)) return false;
     for (size_t i=0;i<w->guide_count;++i) if (w->guides[i].id==id) {
+        if (w->guides[i].source==GUIDE_DATUM) {
+            scene_error(p,n,"R5: shared guide cannot be moved locally; edit its datum or named spec"); return false;
+        }
         if (!reference_expression(tokens,2,count,w->guides[i].expression)) return false;
         return reference_checked(p,n,w);
     }
@@ -520,7 +590,8 @@ static void reference_dump_guide(const World *w,FILE *out,size_t i,bool *done)
         p=end>p?end:p+6;
     }
     const GuideLine *g=&w->guides[i];
-    fprintf(out,"guide %u %u %s %s\n",g->id,g->placement_id,g->direction==GUIDE_ALONG_U?"u":"v",g->expression);
+    if (g->source==GUIDE_DATUM) fprintf(out,"guide %u %u datum %u\n",g->id,g->placement_id,g->datum_id);
+    else fprintf(out,"guide %u %u %s %s\n",g->id,g->placement_id,g->direction==GUIDE_ALONG_U?"u":"v",g->expression);
 }
 static bool reference_guide_ready(const World *w,size_t i,const bool *placed,unsigned depth)
 {
@@ -544,6 +615,8 @@ static bool reference_guide_ready(const World *w,size_t i,const bool *placed,uns
 static void reference_dump(const World *w,FILE *out)
 {
     bool gd[WORLD_MAX_GUIDES]={0},placed[WORLD_MAX_TIMBERS]={0};
+    for (size_t i=0;i<w->datum_count;++i)
+        fprintf(out,"datum %u %c %s\n",w->datums[i].id,"xyz"[w->datums[i].axis],w->datums[i].expression);
     for (size_t i=0;i<w->timber_count;++i) {
         const Timber *t=&w->timbers[i];
         fprintf(out,"timber %u %lld %lld role %s",t->id,(long long)t->size_a,(long long)t->size_b,timber_role_name(t->role));

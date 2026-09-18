@@ -259,6 +259,9 @@ static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
         fputs("{\"ok\":false}\n",stdout); return;
     }
     GuideLine *g=&g_world.guides[guide_idx];
+    if (g->source==GUIDE_DATUM) {
+        fputs("{\"ok\":false,\"error\":\"R5: 這是共用基準參考線，請編輯共同基準或具名規格\"}\n",stdout); return;
+    }
     const PlacementSurface *p=world_find_placement(&g_world,g->placement_id); SurfacePoint2 uv;
     if (!p || !view_unproject_on_surface(&VIEW_FRAMES[v],p,(ViewPoint2){x,y},&uv)) {
         fputs("{\"ok\":false}\n",stdout); return;
@@ -334,7 +337,7 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
 static void cmd_newid(void)
 {
     uint32_t mb = 0, mp = 0, mg = 0, mgr = 0, mt = 0, ms = 0;
-    uint32_t mc = 0, mbm = 0;
+    uint32_t mc = 0, mbm = 0, md = 0;
 
     for (size_t i = 0; i < g_world.boundary_count; ++i)
         if (g_world.boundaries[i].id > mb) mb = g_world.boundaries[i].id;
@@ -353,10 +356,21 @@ static void cmd_newid(void)
     for (size_t i = 0; i < g_world.beam_count; ++i)
         if (g_world.beams[i].id > mbm) mbm = g_world.beams[i].id;
 
+    for (size_t i=0;i<g_world.datum_count;++i)
+        if (g_world.datums[i].id>md) md=g_world.datums[i].id;
+    ++md;
+    /* IDs retain the full uint32 domain. Overflow must not overwrite id 0. */
+    for (size_t attempt=0;attempt<=g_world.datum_count;++attempt) {
+        bool used=false;
+        for (size_t i=0;i<g_world.datum_count;++i) if (g_world.datums[i].id==md) used=true;
+        if (!used) break;
+        ++md;
+    }
+
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"timber\":%u,\"space\":%u,"
-           "\"column\":%u,\"beam\":%u}\n",
-           mb + 1, mp + 1, mg + 1, mgr + 1, mt + 1, ms + 1, mc + 1, mbm + 1);
+           "\"column\":%u,\"beam\":%u,\"datum\":%u}\n",
+           mb + 1, mp + 1, mg + 1, mgr + 1, mt + 1, ms + 1, mc + 1, mbm + 1, md);
 }
 
 /* surfaces：列出承載面（畫布的「工作面」選擇器）。 */
