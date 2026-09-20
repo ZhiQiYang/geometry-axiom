@@ -24,7 +24,10 @@ ROOT = HERE.parent
 # Revised acceptance oracle: 2026-09-18 D7/I8a/I12/R2/R4.
 TESTS = [{'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960]},
  {'scene': 'demo-two-timbers.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960, 2960, 1973]},
- {'scene': 'room_a.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960]},
+ {'scene': 'room_a.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960],
+  # GEO-075:兩支同規格 → 加總 x2;不同規格分列。
+  'contains': ['=== 下料清單 ===', '4000x20x20 boundary x2（角材 90、91）',
+               '2960x27x33 primary x1（角材 1）', '合計 3 支，2 種規格，總長 10960 mm']},
  {'scene': 'room_box.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960]},
  {'scene': 'room_full.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960]},
  {'scene': '_test_fixed.scene', 'expect': 'accept', 'lengths': [4000]},
@@ -116,7 +119,9 @@ TESTS = [{'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000
  {'scene': '_mut_col_noz.scene', 'expect': 'reject', 'error': '游離柱'},
  {'scene': '_rc_col_free.scene', 'expect': 'accept'},
  {'scene': '_rc_col_wall.scene', 'expect': 'accept'},
- {'scene': '_rc_col_corner.scene', 'expect': 'accept'},
+ {'scene': '_rc_col_corner.scene', 'expect': 'accept',
+  # GEO-075:封閉六面才印得出三軸內部尺寸。
+  'contains': ['內部尺寸 X：4000 mm', '內部尺寸 Y：3000 mm', '內部尺寸 Z：2500 mm']},
  {'scene': '_rc_beam_cross.scene', 'expect': 'accept'},
  {'scene': '_rc_beam_edge.scene', 'expect': 'accept'},
  {'scene': '_ax_i18_norole.scene', 'expect': 'reject', 'error': 'I18'},
@@ -148,7 +153,10 @@ TESTS = [{'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000
  {'scene': '_ax_r13_anchor_follows.scene', 'expect': 'accept', 'lengths': []},
  {'scene': '_ax_r14_straddles_cut.scene', 'expect': 'reject', 'error': '投影項橫跨拆分線'},
  {'scene': '_ax_r15_missing_item.scene', 'expect': 'reject', 'error': 'apply-proj 的項目在此面上不存在'},
- {'scene': '_ax_r16_top_drop.scene', 'expect': 'accept', 'contains': ['局部範圍：U=[0,4000]，V=[0,2100]']},
+ {'scene': '_ax_r16_top_drop.scene', 'expect': 'accept',
+  # GEO-075:top_drop 後 Y 軸少一面 → 只印得出 X/Z,Y 不猜(R3)。
+  'contains': ['局部範圍：U=[0,4000]，V=[0,2100]', '內部尺寸 X：4000 mm', '內部尺寸 Z：2500 mm'],
+  'not_contains': ['內部尺寸 Y']},
  {'scene': '_ax_r16_not_full_span.scene', 'expect': 'reject', 'error': '整段降低的矩形未跨滿輪廓'},
  {'scene': '_ax_r17_wall_column_face.scene',
   'expect': 'accept',

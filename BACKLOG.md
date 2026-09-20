@@ -345,11 +345,29 @@
 - **測試**：同一 anchor 分別 A0/B0 貼，六面頂點人工核對。
 - **相依**：GEO-002。**估時 2.5h**。
 
-### GEO-075 ⚡ SVG/文字輸出加「房間內部尺寸」與角材下料清單
+### GEO-075 ✅ 已做(2026-09-21) 文字輸出加「房間內部尺寸」與角材下料清單
 - **內容**：cut list：每支角材 L×A×B + 所屬面 + 錨點；加總同規格數量。實用化第一步。
 - **驗收**：room_a 輸出含「角材 1：1800×27×33 ×1」。
 - **檔案**：main 報告段。
 - **測試**：兩支同規格角材 → 數量 ×2。
+- **實作**:`print_cut_list()` 依 (長度, 斷面 A, 斷面 B, 角色) 分組加總,印在逐支細節之後
+  (總表是結論,放結尾才不會被幾十行座標沖掉)。排序固定為「長料先切」——長度遞減,
+  同長度再依斷面與角色,**同一份場景永遠得到逐字相同的清單**(清單要能拿去比對)。
+  未放置的角材不入清單。
+- **刻意不用「L=」字樣**:`tests/run_tests.py` 的 `LEN_RE = r"L=(\d+)"` 會把輸出裡每個 `L=`
+  都當成一支角材的長度,清單若沿用它會污染既有 128 個測試的長度比對。改用 `4000x20x20` 格式。
+- **房間內部尺寸**:只印**兩側槽位都有面**的軸,用 `space_axis_bound()` 各查一次;
+  推不出來的軸不猜、不補預設(R3)。
+- **實測**:
+  - `room_a`(3 支 2 規格):`4000x20x20 boundary x2（角材 90、91）` /
+    `2960x27x33 primary x1（角材 1）` / `合計 3 支,2 種規格,總長 10960 mm`
+    —— 驗收要求的「兩支同規格 → ×2」成立。
+  - `_demo_ceiling`(7 支 3 規格):`合計 7 支,3 種規格,總長 20957 mm`。
+  - `_rc_col_corner`(封閉六面):內部尺寸 X 4000 / Y 3000 / Z 2500。
+  - `_ax_r16_top_drop`(top_drop 後 Y 軸少一面):**只印 X 與 Z,Y 不印**——R3 不猜。
+  - `room_box`(只有 2 面):三軸都印不出來,整段不出現。
+- **驗收已進測試**:`run_tests.py` 對上述三個場景加了 `contains` / `not_contains`;128/128 通過,
+  `test_core_integrity` 80/80 通過。
 - **相依**：無。**估時 1h**。
 
 ### GEO-076 ⚡ GDI 視窗顯示游標所在 mm 座標
@@ -1881,7 +1899,7 @@ GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
 | GEO-072 | 已不適用 | tests/run_tests.py（`_test_collide.scene` expect reject error 'R6'） | 碰撞已由「警告」升級為公理 R6 直接拒絕，比原案更嚴格的設計決定 |
 | GEO-073 | 已完成 | 公理層.md「新語法」表；current_geometry.c:11584-11586 | guide 位置引用式支援 edge:/spec:/vertex:/grid: 等任意運算組合，涵蓋且超越原案的 edge 基準語法糖 |
 | GEO-074 | 未完成 | current_geometry.c:1790/6443/7957（函式名仍為 timber_place_a0_on_surface） | 仍硬綁 A0 面貼面，找不到 B0 貼面或 face 欄位的證據 |
-| GEO-075 | 未完成 | current_geometry.c:11954-11965 | 已印角材尺寸/原點等座標，但找不到「同規格加總數量」的下料清單邏輯 |
+| GEO-075 | ✅ 已完成(2026-09-21) | current_geometry.c `print_cut_list()` | 2026-09-21 補做:同規格加總 + 房間內部尺寸,驗收已進 run_tests |
 | GEO-076 | 未完成 | current_geometry.c:5436-5600（WM_MOUSEMOVE） | 找不到滑鼠即時 mm 座標寫進狀態列的邏輯 |
 | GEO-077 | 未完成 | current_geometry.c:11553-11649（SCENE_COMMANDS 無 include） | scene 檔案引入/分段語法未實作 |
 | GEO-078 | 已完成 | geometry-web/web_bridge.c:4,15,30,117 | 提供完整 stdin/stdout JSON 橋，涵蓋且遠超原案的單次 --emit-json 輸出 |

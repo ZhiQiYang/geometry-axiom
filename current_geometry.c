@@ -11796,6 +11796,116 @@ static bool parse_scene_file(const char *path, World *out_world)
  * 主程式
  * ============================================================ */
 
+/*
+ * GEO-075 下料清單：把逐支座標整理成施工用的總表——同規格加總數量。
+ * 這是**報告段**，不參與任何幾何推導，也不影響公理層的任何判定。
+ *
+ * 刻意不用「L=」這個字樣：tests/run_tests.py 的 LEN_RE 是 r"L=(\d+)"，
+ * 會把輸出裡每一個 L= 都當成一支角材的長度；清單若用它，既有 128 個測試的長度比對會被污染。
+ */
+typedef struct {
+    Coord length;
+    Coord size_a;
+    Coord size_b;
+    TimberRole role;
+    size_t count;
+    TimberId ids[WORLD_MAX_TIMBERS];
+} CutGroup;
+
+static void print_cut_list(const World *world)
+{
+    CutGroup groups[WORLD_MAX_TIMBERS];
+    size_t group_count = 0;
+    size_t placed = 0;
+    Coord total_length = 0;
+
+    for (size_t i = 0; i < world->timber_count; ++i) {
+        const Timber *t = &world->timbers[i];
+
+        /* 未放置的角材沒有推導出來的長度，不入清單（I9 收尾本來就會擋住整份場景）。 */
+        if (!t->placed) {
+            continue;
+        }
+
+        placed++;
+        total_length += t->length;
+
+        size_t g = 0;
+        for (; g < group_count; ++g) {
+            if (groups[g].length == t->length
+                && groups[g].size_a == t->size_a
+                && groups[g].size_b == t->size_b
+                && groups[g].role == t->role) {
+                break;
+            }
+        }
+
+        if (g == group_count) {
+            groups[g].length = t->length;
+            groups[g].size_a = t->size_a;
+            groups[g].size_b = t->size_b;
+            groups[g].role = t->role;
+            groups[g].count = 0;
+            group_count++;
+        }
+
+        groups[g].ids[groups[g].count++] = t->id;
+    }
+
+    if (group_count == 0) {
+        return;
+    }
+
+    /*
+     * 長料先切：長度遞減，同長度再依斷面 A、斷面 B、角色排。
+     * 排序是為了讓同一份場景永遠得到逐字相同的清單——清單要能拿去比對，不能每次順序不一樣。
+     */
+    for (size_t a = 0; a + 1 < group_count; ++a) {
+        for (size_t b = a + 1; b < group_count; ++b) {
+            bool swap =
+                groups[b].length > groups[a].length
+                || (groups[b].length == groups[a].length
+                    && (groups[b].size_a < groups[a].size_a
+                        || (groups[b].size_a == groups[a].size_a
+                            && (groups[b].size_b < groups[a].size_b
+                                || (groups[b].size_b == groups[a].size_b
+                                    && groups[b].role < groups[a].role)))));
+
+            if (swap) {
+                CutGroup tmp = groups[a];
+                groups[a] = groups[b];
+                groups[b] = tmp;
+            }
+        }
+    }
+
+    printf("\n=== 下料清單 ===\n");
+
+    for (size_t g = 0; g < group_count; ++g) {
+        printf(
+            "%" PRId64 "x%" PRId64 "x%" PRId64 " %s x%zu（角材 ",
+            groups[g].length,
+            groups[g].size_a,
+            groups[g].size_b,
+            timber_role_name(groups[g].role),
+            groups[g].count
+        );
+
+        for (size_t k = 0; k < groups[g].count; ++k) {
+            printf("%s%" PRIu32, k == 0 ? "" : "、", groups[g].ids[k]);
+        }
+
+        printf("）\n");
+    }
+
+    printf(
+        "合計 %zu 支，%zu 種規格，總長 %" PRId64 " mm\n",
+        placed,
+        group_count,
+        total_length
+    );
+}
+
 int main(int argc, char **argv)
 {
     /* --no-window：只印文字與 SVG，不開視窗（自動測試用）。 */
@@ -11909,6 +12019,26 @@ int main(int argc, char **argv)
         printf("\n");
         printf("狀態：%s\n",
                space->closed ? "封閉（六面）" : "部分（彼此一致）");
+
+        /*
+         * GEO-075 房間內部尺寸：只印兩側槽位都有面的軸。
+         * 推不出來的軸不猜、不補預設（R3：退化／不精確一律拒絕不猜）。
+         */
+        for (int axis = 0; axis < 3; ++axis) {
+            Coord lo = 0;
+            Coord hi = 0;
+
+            if (!space_axis_bound(&world, space, axis, 0, &lo)
+                || !space_axis_bound(&world, space, axis, 1, &hi)) {
+                continue;
+            }
+
+            printf(
+                "內部尺寸 %c：%" PRId64 " mm\n",
+                axis == 0 ? 'X' : axis == 1 ? 'Y' : 'Z',
+                hi > lo ? hi - lo : lo - hi
+            );
+        }
     }
 
     for (size_t i = 0; i < world.timber_count; ++i) {
@@ -11982,6 +12112,8 @@ int main(int argc, char **argv)
             print_timber_face(timber, (TimberFaceId)f);
         }
     }
+
+    print_cut_list(&world);
 
 
     /*
