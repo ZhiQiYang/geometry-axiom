@@ -97,6 +97,17 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_counts_have_a_single_source(self):
+        # GEO-140:HTML 裡出現的每個計數都必須等於由資料算出的值,且與 #reader-counts 一致。
+        counts = json.loads(reader.script_text(self.html, reader.COUNTS_ID))
+        self.assertEqual(counts, reader.reader_counts(self.html, self.state["clauses"], self.state))
+        self.assertEqual(counts["clauses"], len(self.state["clauses"]))
+        self.assertEqual(counts["comments"], len(self.state["comments"]))
+        self.assertEqual(reader.stale_counts(self.html, counts), [])
+        # 過期的硬編碼字樣不得再出現(這幾個是 2026-09-20 審查 R2 實際抓到的)
+        for ghost in ("66 條", "1 / 63", "12 / 63", "文字 r1"):
+            self.assertNotIn(ghost, self.html, ghost)
+
     def test_witness_figures_match_manifest_and_files(self):
         # GEO-132:manifest 裡每條有 svg 的條文,閱讀器都嵌一張;嵌的內容必須是同步器由當前檔案算出的那一張(讀檔,不跑引擎)。
         manifest = reader.load_witness_manifest()

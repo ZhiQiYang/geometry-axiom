@@ -28,6 +28,7 @@ ROOT = HERE.parent
 CANONICAL = HERE / "公理層-閱讀器.html"
 AXIOM = ROOT / "公理層.md"
 PLAIN = HERE / "公理層-白話.md"
+COUNTS_ID = "reader-counts"
 CLAUSE_START = re.compile(r"^(?:\*\*)?([DIR]\d+[a-z]?)\s+", re.M)
 CLAUSE_REF = re.compile(r"\b([DIR]\d+[a-z]?)(?:\(([a-z])\))?")
 SUB_START = re.compile(r"^( +)\(([a-z])\) +", re.M)
@@ -383,8 +384,92 @@ def validate(source: str, axiom: str, plain: str) -> dict:
         assert target["blockId"] in by_id, "comment anchor removed"
         assert target["section"] == by_id[target["blockId"]]["section"], "comment section changed"
         assert digest(target["sourceSnapshot"]) == target["sourceHash"], "comment snapshot changed"
+    counts = json.loads(script_text(source, COUNTS_ID))
+    assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
+    assert not stale_counts(source, counts), "GEO-140 殘留硬編碼計數: " + "; ".join(stale_counts(source, counts))
     assert not re.search(r"https?://|<link\b|<script\b[^>]*\bsrc\s*=|@import", source, re.I), "external reader resource"
-    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": source.count('<section class="witness-section">'), "five_asserts": "pass", "independent_ssot": "pass", "documentHash": data["documentHash"]}
+    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "documentHash": data["documentHash"]}
+
+
+def reader_counts(template: str, clauses: list[dict], state: dict) -> dict:
+    """GEO-140:所有對讀者顯示的計數,只在這裡算一次。禁止任何地方再寫死數字。"""
+    return {
+        "clauses": len(clauses),
+        "comments": len(state["comments"]),
+        "blocks": len(state["blocks"]),
+        "examples": template.count('<details class="examples'),
+        "witness": template.count('<section class="witness-section">'),
+        "textRevision": state["textRevision"],
+    }
+
+
+def apply_counts(template: str, counts: dict) -> str:
+    """把 counts 寫進 #reader-counts,並用它填掉 HTML 靜態值與腳本裡的每一個計數。"""
+    payload = safe_json(counts)
+    if 'id="%s"' % COUNTS_ID in template:
+        template = replace_script(template, COUNTS_ID, payload)
+    else:
+        tag = '<script id="%s" type="application/json">%s</script>\n' % (COUNTS_ID, payload)
+        template = template.replace('<script id="clause-data"', tag + '<script id="clause-data"', 1)
+
+    n, c = counts["clauses"], counts["comments"]
+    rev = "文字 r%d" % counts["textRevision"]
+
+    # 腳本內的計數:逐一取出該腳本再寫回,不對整份 template 做正則,避免動到 JSON 資料。
+    reader_js = script_text(template, "reader-script")
+    reader_js = re.sub(r"(已顯示全部 )\d+( 條)", lambda m: m[1] + str(n) + m[2], reader_js)
+    template = replace_script(template, "reader-script", reader_js)
+
+    ws_js = script_text(template, "workspace-script")
+    ws_js = re.sub(r"(#workspace-position'\)\.textContent=')\d+ / \d+(')",
+                   lambda m: m[1] + "1 / %d" % n + m[2], ws_js)
+    template = replace_script(template, "workspace-script", ws_js)
+
+    # HTML 靜態值:只動 <script id="clause-data"> 之前的顯示區。
+    cut = template.index('<script id="%s"' % COUNTS_ID)
+    head, tail = template[:cut], template[cut:]
+    subs = [
+        (r"<title>[^<]*</title>", "<title>公理層 · %s · %d 條 · %d 則批註</title>" % (rev, n, c)),
+        (r'(id="review-revision">)[^<]*(<)', lambda m: m[1] + rev + m[2]),
+        (r'(id="review-count">)\d+(<)', lambda m: m[1] + str(c) + m[2]),
+        (r'(id="workspace-position">)[^<]*(<)', lambda m: m[1] + "1 / %d" % n + m[2]),
+        (r'(id="read-position">)[^<]*(<)', lambda m: m[1] + "1 / %d" % n + m[2]),
+        (r"文字 r\d+ 也不是專案的正式版號", "%s 也不是專案的正式版號" % rev),
+        (r"\b\d+ 條規範", "%d 條規範" % n),
+        (r"全部 \d+ 條", "全部 %d 條" % n),
+        (r'(class="directory-count">)\d+ 條', lambda m: m[1] + "%d 條" % n),
+        (r"此檔內含 \d+ 則批註", "此檔內含 %d 則批註" % c),
+    ]
+    for pattern, value in subs:
+        head = re.sub(pattern, value, head)
+    return head + tail
+
+
+def stale_counts(template: str, counts: dict) -> list[str]:
+    """回傳仍與資料不符的計數字樣;空清單才算通過(validate 與測試共用)。"""
+    n, c = counts["clauses"], counts["comments"]
+    bad = []
+    title = re.search(r"<title>([^<]*)</title>", template)
+    want = "公理層 · 文字 r%d · %d 條 · %d 則批註" % (counts["textRevision"], n, c)
+    if not title or title[1] != want:
+        bad.append("title=%r 應為 %r" % (title[1] if title else None, want))
+    for label, pattern, expect in [
+        ("read-position", r'id="read-position">([^<]*)<', "1 / %d" % n),
+        ("workspace-position", r'id="workspace-position">([^<]*)<', "1 / %d" % n),
+        ("review-count", r'id="review-count">([^<]*)<', str(c)),
+        ("review-revision", r'id="review-revision">([^<]*)<', "文字 r%d" % counts["textRevision"]),
+    ]:
+        m = re.search(pattern, template)
+        if not m or m[1].strip() != expect:
+            bad.append("%s=%r 應為 %r" % (label, m[1] if m else None, expect))
+    for label, script, pattern, expect in [
+        ("toast", "reader-script", r"已顯示全部 (\d+) 條", str(n)),
+        ("ws-init", "workspace-script", r"#workspace-position'\)\.textContent='\d+ / (\d+)'", str(n)),
+    ]:
+        m = re.search(pattern, script_text(template, script))
+        if not m or m[1] != expect:
+            bad.append("%s=%r 應為 %r" % (label, m[1] if m else None, expect))
+    return bad
 
 
 def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
@@ -496,13 +581,10 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     template = replace_script(template, "review-script", review_script)
     template = replace_script(template, "clause-data", safe_json(clauses))
     template = replace_script(template, "axiom-review-data", safe_json(state))
-    # Update only display text outside scripts: source strings and review history remain exact.
+    # GEO-140:所有計數由 reader_counts() 算一次,apply_counts() 填進 HTML 與腳本;此處不再寫死數字。
+    template = apply_counts(template, reader_counts(template, clauses, state))
     script_start = template.index('<script id="clause-data"')
     head, tail = template[:script_start], template[script_start:]
-    head = re.sub(r"\b\d+ 條規範", f"{len(clauses)} 條規範", head)
-    head = re.sub(r"全部 \d+ 條", f"全部 {len(clauses)} 條", head)
-    head = re.sub(r'(class="directory-count">)\d+ 條', lambda m: m[1] + f"{len(clauses)} 條", head)
-    head = re.sub(r"此檔內含 \d+ 則批註", f"此檔內含 {len(state['comments'])} 則批註", head)
     status = "本分支的跨面共用基準條文仍為審閱提案，尚未合併正式版本。" if "跨面共用基準分支提案" in axiom else "條文與白話已由目前專案來源同步；歷史批註保留原始快照。"
     banner = '<p class="hint" id="reader-source-status">' + status + '</p>'
     if 'id="reader-source-status"' in head:
