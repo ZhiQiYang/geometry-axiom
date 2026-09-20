@@ -227,6 +227,15 @@ class CanonicalReader(unittest.TestCase):
         self.assertIn("ref-preview", js)                      # 拍板二:hover 預覽與固定面板並存
         self.assertIn("#ref-preview{position:fixed", self.html)
 
+    def test_every_patch_actually_lands(self):
+        # 這個管線最常見的失效不是「補丁做錯」,而是「補丁被靜默跳過」——
+        # 補丁對一份會演化的產物做文字替換,而「有沒有套用過」是用改前/改後的樣子判定的,
+        # 被改的內容一變,判定就失效。登記簿在同步結束時一次驗完,並指名是哪一個補丁。
+        reader.PATCHES.reset()
+        regenerated = reader.rebuild(self.html, self.axiom, self.plain)
+        self.assertGreater(len(reader.PATCHES), 50)          # 有真的登記,不是空跑
+        self.assertEqual(reader.PATCHES.verify(regenerated), [])
+
     def test_counts_have_a_single_source(self):
         # GEO-140:HTML 裡出現的每個計數都必須等於由資料算出的值,且與 #reader-counts 一致。
         counts = json.loads(reader.script_text(self.html, reader.COUNTS_ID))

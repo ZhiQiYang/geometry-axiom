@@ -153,6 +153,10 @@ def apply_color_tokens(template: str) -> str:
         if not m:
             raise ValueError("reader template drift:找不到 :root token 區塊 " + pattern)
         template = template[:m.start()] + write_tokens(m[0], index) + template[m.end():]
+        for name, pair in every.items():
+            if pair[index]:
+                PATCHES.expect_present("色彩 token " + name,
+                                       "%s:%s" % (name, pair[index]))
     for old_css, new_css in COLOR_REWRITES:
         template = force(template, old_css, new_css, "色碼→token: " + new_css[:40])
     return template
@@ -698,7 +702,58 @@ def validate(source: str, axiom: str, plain: str) -> dict:
         assert "<style" not in sec, "GEO-141 Q8 圖的樣式內聯了,會汙染全域"
     assert not stale_counts(source, counts), "GEO-140 殘留硬編碼計數: " + "; ".join(stale_counts(source, counts))
     assert not re.search(r"https?://|<link\b|<script\b[^>]*\bsrc\s*=|@import", source, re.I), "external reader resource"
-    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "geo120": "pass", "search": "pass", "color_tokens": "pass", "documentHash": data["documentHash"]}
+    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "patches": len(PATCHES), "counts_single_source": "pass", "geo120": "pass", "search": "pass", "color_tokens": "pass", "documentHash": data["documentHash"]}
+
+
+def _patch_snippet(text: str, limit: int = 70) -> str:
+    """把標記壓成一行,方便在錯誤訊息裡指名是哪一個補丁。"""
+    flat = " ".join(text.split())
+    return flat if len(flat) <= limit else flat[:limit] + "…"
+
+
+class PatchLog:
+    """這次同步套用了哪些補丁,以及每個補丁「套用後一定存在 / 一定不存在」的標記。
+
+    為什麼需要它:補丁是對一份會演化的產物做文字替換,而「有沒有套用過」是用
+    改前/改後的樣子判定的——被改的內容自己一變,判定就失效,補丁被**靜默跳過**。
+    2026-09-20/21 這類失效發生了四次(CSS 注入兩次、見證圖 17→33、三向連結 89→136、
+    `force()` 把 `changeMode()` 的同形尾巴誤判成「已套用」而整個跳過)。
+    前三次靠冪等檢查接住,第四次靠人眼。冪等檢查只說「結果不對」,不說「哪個補丁失效」——
+    登記簿補的正是後者。
+    """
+
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.present: list[tuple[str, str]] = []
+        self.absent: list[tuple[str, str]] = []
+
+    def expect_present(self, label: str, marker: str):
+        if marker:
+            self.present.append((label, marker))
+
+    def expect_absent(self, label: str, marker: str):
+        if marker:
+            self.absent.append((label, marker))
+
+    def verify(self, source: str) -> list[str]:
+        bad = []
+        for label, marker in self.present:
+            if marker not in source:
+                bad.append("補丁「%s」套用後應該看得到的內容不見了 → %s"
+                           % (label, _patch_snippet(marker)))
+        for label, marker in self.absent:
+            if marker in source:
+                bad.append("補丁「%s」應該刪掉的內容還在 → %s"
+                           % (label, _patch_snippet(marker)))
+        return bad
+
+    def __len__(self):
+        return len(self.present) + len(self.absent)
+
+
+PATCHES = PatchLog()
 
 
 def inject_css(template: str, css: str, marker: str) -> str:
@@ -710,6 +765,7 @@ def inject_css(template: str, css: str, marker: str) -> str:
     """
     if marker not in css:
         raise ValueError("inject_css:守衛字串不在 css 裡,守衛會失效 → " + marker)
+    PATCHES.expect_present("CSS " + _patch_snippet(marker, 40), marker)
     if marker in template:
         return template
     return template.replace("</style>", css + "</style>", 1)
@@ -731,6 +787,12 @@ def force(text: str, old: str, new: str, label: str, marker: str | None = None) 
         if old not in text:
             raise ValueError("reader template drift (%s): 找不到改前字串,也沒有已套用標記" % label)
         return text.replace(old, new, 1)
+    # 登記這個補丁「套用後一定看得到 / 一定看不到」的標記,同步結束時一次驗完。
+    if new == "":
+        PATCHES.expect_absent(label, old)
+    else:
+        PATCHES.expect_present(label, marker or new)
+
     if new == "":
         # 刪除型:空字串在任何文字裡都「存在」,不能走下面的判定。
         # 刪不到就當作已經刪過(冪等);但仍要求存在時必須唯一,避免誤刪同形內容。
@@ -811,6 +873,7 @@ def apply_witness_pane(template: str) -> str:
     """GEO-138 + GEO-146(🔒 Q4):右欄上半固定見證圖;下半維持 tab,但切換前先保留草稿。"""
     # 面板內容日後還會改,所以不用「改前/改後」判定(那會在內容一變就卡住,GEO-141 Q8 實際踩到)。
     # 改成:先把既有面板整段移除,再插一份當前版本——永遠冪等,也永遠是最新的。
+    PATCHES.expect_present("見證圖面板(移除後重插)", 'id="workspace-witness"')
     template = re.sub(r'<section[^>]*id="workspace-witness"[^>]*>.*?</section>\n?', "", template, flags=re.S)
     anchor = '<div id="dock-hub"></div>\n<div aria-label="校對工作區" class="workspace-tabs" role="tablist">'
     if anchor not in template:
@@ -1172,6 +1235,7 @@ def stale_counts(template: str, counts: dict) -> list[str]:
 
 
 def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
+    PATCHES.reset()
     state = json.loads(script_text(template, "axiom-review-data"))
     old = copy.deepcopy(state)
     if review is not None:
@@ -1356,7 +1420,13 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
         head = re.sub(r'<p class="hint" id="reader-source-status">.*?</p>', lambda _: banner, head)
     else:
         head = head.replace('<main aria-label="公理層完整條文"', banner + '<main aria-label="公理層完整條文"', 1)
-    return head + tail
+    result = head + tail
+    drifted = PATCHES.verify(result)
+    if drifted:
+        raise ValueError(
+            "同步套用了 %d 個補丁,其中 %d 個沒有生效(補丁被靜默跳過是這個管線最常見的失效):\n  - %s"
+            % (len(PATCHES), len(drifted), "\n  - ".join(drifted)))
+    return result
 
 
 def main() -> None:
