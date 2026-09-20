@@ -52,6 +52,12 @@ WITNESS_STYLE = (
     ".timber-face{fill:#edb365;fill-opacity:.5;stroke:#edb365;stroke-width:1.5px}\n"
     ".timber-face-near{fill-opacity:.85}</style>"
 )
+# GEO-147:區塊標籤把視覺重量讓給內容——12px、寬字距、muted,不再與內容同重。
+CLAUSE_LABEL_CSS = (
+    ".plain-section>h3,.original-section>h3{font-size:12px;letter-spacing:.08em;"
+    "color:var(--muted);font-weight:600;margin:0 0 8px}"
+    ".plain-section>h3 small,.original-section>h3 small{letter-spacing:0}"
+)
 WITNESS_CSS = (
     ".witness-section{margin-top:22px}.witness-section h3{font-size:13px;color:var(--accent);margin:0 0 8px}"
     ".witness-section h3 small{font-weight:400;color:var(--muted);margin-left:6px}"
@@ -384,6 +390,11 @@ def validate(source: str, axiom: str, plain: str) -> dict:
         assert target["blockId"] in by_id, "comment anchor removed"
         assert target["section"] == by_id[target["blockId"]]["section"], "comment section changed"
         assert digest(target["sourceSnapshot"]) == target["sourceHash"], "comment snapshot changed"
+    for cid in [c["id"] for c in clauses]:
+        art = re.search(r'<article\b[^>]*(?<![\w-])id="' + re.escape(cid) + r'"[^>]*>.*?</article>', source, re.S)
+        assert art, "missing article " + cid
+        body_at, plain_at = art[0].find("original-section"), art[0].find("plain-section")
+        assert 0 <= body_at < plain_at, "GEO-147 原文必須排在白話之前: " + cid
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
@@ -587,6 +598,8 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     witness_manifest = load_witness_manifest()
     if ".witness-section{" not in template:
         template = template.replace("</style>", WITNESS_CSS + "</style>", 1)
+    if ".plain-section>h3,.original-section>h3{" not in template:
+        template = template.replace("</style>", CLAUSE_LABEL_CSS + "</style>", 1)
     articles = []
     previous_group = None
     for index, c in enumerate(clauses):
@@ -600,7 +613,12 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
         examples = ""
         if prior:
             start = prior.find('<details class="examples')
-            end = prior.find('<section class="relation-section"')
+            # 終點取「見證圖」與「被引用」中較早出現者:見證圖由 witness_figure() 每次重新產生,
+            # 不能被當成歷史範例保留下來,否則每重建一次就多一張(GEO-147 施工時實際踩到)。
+            ends = [prior.find(mark) for mark in
+                    ('<section class="witness-section">', '<section class="relation-section"')]
+            ends = [e for e in ends if e > start]
+            end = min(ends) if ends else -1
             if start >= 0 and end > start:
                 examples = prior[start:end]
         if examples:
@@ -608,12 +626,15 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
         title = html.escape(c["title"])
         article = f'<article aria-labelledby="title-{cid}" class="clause" data-clause-id="{cid}" data-position="{index + 1}" data-source-line="{c["line"]}" data-title="{html.escape(c["title"], quote=True)}" id="{cid}">'
         article += f'<header class="clause-header"><div class="clause-meta"><span class="clause-id">{cid} / {GROUPS[group]}</span><span>{index + 1} / {len(clauses)}</span></div><h2 id="title-{cid}">{title}</h2></header>'
-        for section, klass, heading, small in [("plain", "plain", "白話解釋", "輔助閱讀，非條文"), ("body", "original", "條文原文", f"公理層.md · L{c['line']}")]:
+        # GEO-147(🔒 2026-09-20):原文在前。理由不是舊設計規格(已作廢),而是頁尾自己寫「原文為準」、
+        # 公理層.md 是 SSOT、白話明標非條文——版面順序必須與這個事實一致。
+        # 只改這裡的呈現順序;blocks 陣列順序(plain 先)不動,否則 documentHash 與批註錨點會無故失效。
+        for section, klass, heading, small in [("body", "original", "條文原文", f"公理層.md · L{c['line']}"), ("plain", "plain", "白話解釋", "輔助閱讀，非條文")]:
             article += f'<section class="{klass}-section"><h3>{heading} <small>{small}</small></h3><div class="copy {klass}-copy">'
             article += "".join(render_block(b, markup[b["id"]], state["comments"]) for b in blocks if b["clauseId"] == cid and b["section"] == section)
             article += '</div></section>'
-        article += witness_figure(cid, witness_manifest)
         article += examples or '<p class="hint">本條尚無閱讀器內建執行範例；實作驗收另見專案測試記錄。</p>'
+        article += witness_figure(cid, witness_manifest)
         links = "".join(f'<a class="reference-link" data-ref="{ref}" href="#{ref}">{ref}</a>' for ref in incoming[cid])
         article += '<section class="relation-section"><h3>被哪些條文引用</h3><div class="relation-links">' + (links or '<span class="muted">目前沒有其他條文引用。</span>') + '</div></section>'
         footer = (f'<a href="#{clauses[index - 1]["id"]}">上條 {clauses[index - 1]["id"]}</a>' if index else "") + '<a href="#contents">回目錄</a>'

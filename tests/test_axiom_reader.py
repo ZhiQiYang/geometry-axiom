@@ -97,6 +97,15 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_original_text_precedes_plain(self):
+        # GEO-147(🔒):頁尾寫「原文為準」,版面順序必須一致;89 條皆然。
+        for clause in self.state["clauses"]:
+            art = re.search(r'<article\b[^>]*(?<![\w-])id="' + clause["id"] + r'"[^>]*>.*?</article>',
+                            self.html, re.S)
+            self.assertIsNotNone(art, clause["id"])
+            self.assertLess(art[0].find("original-section"), art[0].find("plain-section"), clause["id"])
+            self.assertGreater(art[0].find("original-section"), 0, clause["id"])
+
     def test_geo120_decisions_are_not_regressed(self):
         # GEO-139:GEO-120 是 🔒 已拍板且未作廢,這幾項不得再被改掉。
         self.assertEqual(reader.geo120_regressions(self.html), [])
