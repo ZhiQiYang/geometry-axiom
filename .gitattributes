@@ -1,2 +1,5 @@
 # Preserve the core's existing CRLF bytes, while allowing useful textual reviews.
 current_geometry.c -text diff whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# GEO-131 見證圖是逐位元比對的 golden,任何平台 checkout 都不得改行尾
+geometry-guide/witness/*.svg -text
+geometry-guide/witness/manifest.json -text

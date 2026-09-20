@@ -16,7 +16,7 @@
 執行路徑沿用 `axiom_examples.py` 的 run_scene / crop_bottom / before_failure,
 不另做一套幾何或裁切。
 
-SVG 內嵌兩個雜湊(夾具內容、引擎 exe)只是**診斷線索**,讓 --check 失敗時能說
+SVG 內嵌的夾具雜湊只是**診斷線索**,讓 --check 失敗時能說
 「是夾具動了」還是「夾具沒動、引擎輸出變了」;它們不參與比對——比對的是整個檔案。
 引擎 exe 的雜湊會隨重新編譯而變,所以只印在報告,不寫進 SVG。
 
@@ -131,7 +131,9 @@ def svg_path(cid):
 # render
 # ------------------------------------------------------------------
 def _sha(data):
-    return hashlib.sha256(data).hexdigest()[:16]
+    """行尾正規化後再雜湊:core.autocrlf 會讓同一個 .scene 在 Windows 是 CRLF、在 Linux 是 LF,
+    那不是夾具內容的改變,不能觸發警報。"""
+    return hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()[:16]
 
 
 def render_one(exe, cid, ent, tmpdir):
@@ -158,6 +160,7 @@ def render_one(exe, cid, ent, tmpdir):
     if ent["view"] == "bottom" and not ax.bottom_has_surface(full_svg):
         raise WitnessError("%s:仰視圖是空的" % cid)
 
+    full_svg = full_svg.replace("\r\n", "\n")   # 引擎在 Windows 文字模式可能吐 CRLF;golden 一律 LF
     crop, full, body = crop_view(full_svg, ent["view"])
     style = _STYLE.search(full_svg)
     style = style.group(0) if style else ""
