@@ -1,0 +1,58 @@
+{
+ "clause": "I19",
+ "scene": "_role_rc_boundary_ok.scene",
+ "view": "bottom",
+ "spec": "v1",
+ "timbers": {
+  "1": {
+   "role": "boundary",
+   "priority": null,
+   "L": 4000,
+   "A": 20,
+   "B": 20,
+   "axis": [
+    1,
+    0,
+    0
+   ]
+  },
+  "2": {
+   "role": "boundary",
+   "priority": null,
+   "L": 4000,
+   "A": 20,
+   "B": 20,
+   "axis": [
+    -1,
+    0,
+    0
+   ]
+  }
+ },
+ "joints": [
+  {
+   "t": 1,
+   "end": "START",
+   "stop": "e3",
+   "kind": "outline"
+  },
+  {
+   "t": 1,
+   "end": "END",
+   "stop": "e1",
+   "kind": "outline"
+  },
+  {
+   "t": 2,
+   "end": "START",
+   "stop": "e1",
+   "kind": "outline"
+  },
+  {
+   "t": 2,
+   "end": "END",
+   "stop": "e3",
+   "kind": "outline"
+  }
+ ]
+}

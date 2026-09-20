@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- witness D6 <- _wit_d6_guide_segments.scene (accept, view=bottom) scene-sha256=082a69db55c3005a -->
+<!-- witness D6 <- _wit_d6_guide_segments.scene (accept, view=bottom) scene-sha256=082a69db55c3005a spec=v1 -->
 <!-- 參考線 1 被孔切成兩段仍是同一 id;參考線 2 在面外零段仍存在。 -->
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 1540 4500 3640" data-full="0 0 8300 5180">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 1460 4500 4920" data-full="0 1460 4500 4920">
 <style>
   polygon, line, rect { vector-effect: non-scaling-stroke; }
   .frame { fill: #ffffff; stroke: #bbbbbb; stroke-width: 1px; }
@@ -18,31 +18,8 @@
   .timber-face { fill: #ffd27f; fill-opacity: 0.5; stroke: #a06000; stroke-width: 1.5px; }
   .timber-face-near { fill-opacity: 0.85; }
 </style>
-<g transform="translate(250,3190)">
-<rect class="frame" x="-250" y="-3190" width="4500" height="1240"/>
-<text x="-190" y="-3080" class="title">前視圖（X 向右，Z 向上）</text>
-<polygon points="0,-2500 4000,-2500 4000,-2500 0,-2500" class="surface"/>
-<polygon points="1800,-2500 2200,-2500 2200,-2500 1800,-2500" class="hole"/>
-<line x1="0" y1="-2500" x2="4000" y2="-2500" class="edge"/>
-<line x1="4000" y1="-2500" x2="4000" y2="-2500" class="edge"/>
-<line x1="4000" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<line x1="2000" y1="-2500" x2="2000" y2="-2500" class="guide"/>
-<line x1="2000" y1="-2500" x2="2000" y2="-2500" class="guide"/>
-</g>
-<g transform="translate(5050,3190)">
-<rect class="frame" x="-250" y="-3190" width="3500" height="1240"/>
-<text x="-190" y="-3080" class="title">側視圖（Y 向右，Z 向上）</text>
-<polygon points="0,-2500 0,-2500 3000,-2500 3000,-2500" class="surface"/>
-<polygon points="1200,-2500 1200,-2500 1800,-2500 1800,-2500" class="hole"/>
-<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<line x1="0" y1="-2500" x2="3000" y2="-2500" class="edge"/>
-<line x1="3000" y1="-2500" x2="3000" y2="-2500" class="edge"/>
-<line x1="3000" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<line x1="0" y1="-2500" x2="1200" y2="-2500" class="guide"/>
-<line x1="1800" y1="-2500" x2="3000" y2="-2500" class="guide"/>
-</g>
-<g transform="translate(250,1930)">
+<style id="witness">.role-boundary{fill:#e2a24a;stroke:#e2a24a}.role-primary{fill:#63b3ed;stroke:#63b3ed}.role-secondary{fill:#9ae6b4;stroke:#9ae6b4}.role-custom{fill:#d6bcfa;stroke:#d6bcfa}.stop{fill:none;stroke-linecap:butt}.stop-label{font:bold 110px sans-serif;dominant-baseline:middle;paint-order:stroke;stroke:#ffffff;stroke-width:30px;stroke-linejoin:round}.tile-frame{fill:#ffffff;stroke:#888888;stroke-width:1px}.tile-title{font:bold 72px sans-serif;fill:#222222}.tile .label{display:none}.legend-title{font:bold 110px sans-serif;fill:#222222}.legend-text{font:95px sans-serif;fill:#333333;dominant-baseline:middle}.legend-box{fill:#ffffff;stroke:#bbbbbb;stroke-width:1px}.section-title{font:bold 120px sans-serif;fill:#222222}</style>
+<g transform="translate(250,1930)" data-view="bottom">
 <rect class="frame" x="-250" y="-390" width="4500" height="3640"/>
 <text x="-190" y="-280" class="title">仰視圖（X 向右，Y 向下）</text>
 <polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
@@ -58,5 +35,16 @@
 <line x1="2000" y1="0" x2="2000" y2="1200" class="guide"/>
 <text x="2040" y="-40" class="label guide-label">參考線1</text>
 <line x1="2000" y1="1800" x2="2000" y2="3000" class="guide"/>
+
+
 </g>
+<text x="40" y="5390" class="section-title">接點列(每格 = 一個角材端面,等比例放大,窗 = 8 × 料寬;視圖:仰視圖)</text>
+<text x="40" y="5580" class="legend-text">本條無角材接點。</text>
+<rect x="0" y="5700" width="4500" height="680" class="legend-box"/>
+<text x="40" y="5830" class="legend-title">圖例(每張見證圖相同;規範 v1)</text>
+<rect x="40" y="5900" width="160" height="80" class="role-boundary"/><text x="230" y="5940" class="legend-text">boundary 邊界材(層級 1)</text>
+<rect x="2250" y="5900" width="160" height="80" class="role-primary"/><text x="2440" y="5940" class="legend-text">primary 主支(層級 2)</text>
+<rect x="40" y="6030" width="160" height="80" class="role-secondary"/><text x="230" y="6070" class="legend-text">secondary 副支(層級 3)</text>
+<rect x="2250" y="6030" width="160" height="80" class="role-custom"/><text x="2440" y="6070" class="legend-text">custom 自訂料(priority N)</text>
+<line x1="60" y1="6160" x2="60" y2="6240" class="stop" stroke="#333333" stroke-width="10"/><text x="190" y="6200" class="legend-text">停止標記 = 端面被裁的位置(同角材色);接點格標題 t3·END→t2 = 角材 3 的 END 端面停在角材 2 的側面。</text><text x="190" y="6300" class="legend-text">→e0 = 停在外輪廓邊 0(RC;只有 boundary 可頂,I19);→h0e2 = 停在孔 0 的邊 2。擋面參照寫法同 D18。</text>
 </svg>

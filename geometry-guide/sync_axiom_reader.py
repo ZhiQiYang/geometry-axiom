@@ -265,6 +265,9 @@ def witness_figure(cid: str, manifest: dict) -> str:
     crop, full = m[1], m[2]
     body = svg[m.end():svg.rfind("</svg>")]
     body = re.sub(r"<style>.*?</style>\s*", "", body, count=1, flags=re.S).strip()
+    # 規範 v1 的見證圖自帶 <style id="witness">(角色色、接點格、圖例);只把它的底/字色換成閱讀器深色,角色色不動。
+    for light, dark in (("#ffffff", "#181e24"), ("#222222", "#d7dfe6"), ("#333333", "#c5cfd8"), ("#888888", "#5a6b7a"), ("#bbbbbb", "#5a6b7a")):
+        body = re.sub(r'(<style id="witness">.*?</style>)', lambda mm: mm[1].replace(light, dark), body, count=1, flags=re.S)
 
     def data_uri(view_box: str) -> str:
         doc = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{view_box}" data-full="{full}" '

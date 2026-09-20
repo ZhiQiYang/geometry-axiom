@@ -1,0 +1,178 @@
+{
+ "clause": "D15",
+ "scene": "_demo_ceiling.scene",
+ "view": "bottom",
+ "spec": "v1",
+ "timbers": {
+  "1": {
+   "role": "boundary",
+   "priority": null,
+   "L": 4000,
+   "A": 27,
+   "B": 33,
+   "axis": [
+    1,
+    0,
+    0
+   ]
+  },
+  "2": {
+   "role": "primary",
+   "priority": null,
+   "L": 2946,
+   "A": 27,
+   "B": 33,
+   "axis": [
+    0,
+    1,
+    0
+   ]
+  },
+  "3": {
+   "role": "boundary",
+   "priority": null,
+   "L": 4000,
+   "A": 27,
+   "B": 33,
+   "axis": [
+    -1,
+    0,
+    0
+   ]
+  },
+  "4": {
+   "role": "primary",
+   "priority": null,
+   "L": 2946,
+   "A": 27,
+   "B": 33,
+   "axis": [
+    0,
+    1,
+    0
+   ]
+  },
+  "5": {
+   "role": "primary",
+   "priority": null,
+   "L": 2946,
+   "A": 27,
+   "B": 33,
+   "axis": [
+    0,
+    1,
+    0
+   ]
+  },
+  "6": {
+   "role": "primary",
+   "priority": null,
+   "L": 2946,
+   "A": 27,
+   "B": 33,
+   "axis": [
+    0,
+    1,
+    0
+   ]
+  },
+  "7": {
+   "role": "primary",
+   "priority": null,
+   "L": 1173,
+   "A": 27,
+   "B": 33,
+   "axis": [
+    0,
+    1,
+    0
+   ]
+  }
+ },
+ "joints": [
+  {
+   "t": 1,
+   "end": "START",
+   "stop": "e3",
+   "kind": "outline"
+  },
+  {
+   "t": 1,
+   "end": "END",
+   "stop": "e1",
+   "kind": "outline"
+  },
+  {
+   "t": 2,
+   "end": "START",
+   "stop": "t1",
+   "kind": "timber"
+  },
+  {
+   "t": 2,
+   "end": "END",
+   "stop": "t3",
+   "kind": "timber"
+  },
+  {
+   "t": 3,
+   "end": "START",
+   "stop": "e1",
+   "kind": "outline"
+  },
+  {
+   "t": 3,
+   "end": "END",
+   "stop": "e3",
+   "kind": "outline"
+  },
+  {
+   "t": 4,
+   "end": "START",
+   "stop": "t1",
+   "kind": "timber"
+  },
+  {
+   "t": 4,
+   "end": "END",
+   "stop": "t3",
+   "kind": "timber"
+  },
+  {
+   "t": 5,
+   "end": "START",
+   "stop": "t1",
+   "kind": "timber"
+  },
+  {
+   "t": 5,
+   "end": "END",
+   "stop": "t3",
+   "kind": "timber"
+  },
+  {
+   "t": 6,
+   "end": "START",
+   "stop": "t1",
+   "kind": "timber"
+  },
+  {
+   "t": 6,
+   "end": "END",
+   "stop": "t3",
+   "kind": "timber"
+  },
+  {
+   "t": 7,
+   "end": "START",
+   "stop": "t1",
+   "kind": "timber"
+  },
+  {
+   "t": 7,
+   "end": "END",
+   "stop": "h0e0",
+   "kind": "hole"
+  }
+ ]
+}

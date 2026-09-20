@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- witness R7 <- _rc_col_corner.scene (accept, view=bottom) scene-sha256=b02dd13bf6d77229 -->
+<!-- witness R7 <- _rc_col_corner.scene (accept, view=bottom) scene-sha256=b02dd13bf6d77229 spec=v1 -->
 <!-- 柱足跡貼兩鄰邊 = corner。 -->
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 3440 4500 3640" data-full="0 0 8300 7080">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 3360 4500 4920" data-full="0 3360 4500 4920">
 <style>
   polygon, line, rect { vector-effect: non-scaling-stroke; }
   .frame { fill: #ffffff; stroke: #bbbbbb; stroke-width: 1px; }
@@ -18,95 +18,8 @@
   .timber-face { fill: #ffd27f; fill-opacity: 0.5; stroke: #a06000; stroke-width: 1.5px; }
   .timber-face-near { fill-opacity: 0.85; }
 </style>
-<g transform="translate(250,2890)">
-<rect class="frame" x="-250" y="-2890" width="4500" height="3140"/>
-<text x="-190" y="-2780" class="title">前視圖（X 向右，Z 向上）</text>
-<polygon points="0,-2500 4000,-2500 4000,-2500 0,-2500" class="surface"/>
-<line x1="0" y1="-2500" x2="4000" y2="-2500" class="edge"/>
-<line x1="4000" y1="-2500" x2="4000" y2="-2500" class="edge"/>
-<line x1="4000" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<polygon points="0,0 0,0 4000,0 4000,0" class="surface"/>
-<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
-<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
-<line x1="4000" y1="0" x2="4000" y2="0" class="edge"/>
-<line x1="4000" y1="0" x2="0" y2="0" class="edge"/>
-<polygon points="0,0 4000,0 4000,-2500 0,-2500" class="surface"/>
-<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
-<text x="2000" y="120" class="label">邊0</text>
-<line x1="4000" y1="0" x2="4000" y2="-2500" class="edge"/>
-<text x="4120" y="-1250" class="label" transform="rotate(-90 4120 -1250)">邊1</text>
-<line x1="4000" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<text x="2000" y="-2620" class="label">邊2</text>
-<line x1="0" y1="-2500" x2="0" y2="0" class="edge"/>
-<text x="-120" y="-1250" class="label" transform="rotate(-90 -120 -1250)">邊3</text>
-<polygon points="0,0 0,-2500 4000,-2500 4000,0" class="surface"/>
-<line x1="0" y1="0" x2="0" y2="-2500" class="edge"/>
-<text x="-120" y="-1250" class="label" transform="rotate(-90 -120 -1250)">邊0</text>
-<line x1="0" y1="-2500" x2="4000" y2="-2500" class="edge"/>
-<text x="2000" y="-2620" class="label">邊1</text>
-<line x1="4000" y1="-2500" x2="4000" y2="0" class="edge"/>
-<text x="4120" y="-1250" class="label" transform="rotate(-90 4120 -1250)">邊2</text>
-<line x1="4000" y1="0" x2="0" y2="0" class="edge"/>
-<text x="2000" y="120" class="label">邊3</text>
-<polygon points="0,0 0,-2500 0,-2500 0,0" class="surface"/>
-<line x1="0" y1="0" x2="0" y2="-2500" class="edge"/>
-<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<line x1="0" y1="-2500" x2="0" y2="0" class="edge"/>
-<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
-<polygon points="4000,0 4000,0 4000,-2500 4000,-2500" class="surface"/>
-<line x1="4000" y1="0" x2="4000" y2="0" class="edge"/>
-<line x1="4000" y1="0" x2="4000" y2="-2500" class="edge"/>
-<line x1="4000" y1="-2500" x2="4000" y2="-2500" class="edge"/>
-<line x1="4000" y1="-2500" x2="4000" y2="0" class="edge"/>
-<polygon points="3600,-2500 4000,-2500 4000,0 3600,0" class=""/>
-<text x="3800" y="-1250" class="label">柱1</text>
-</g>
-<g transform="translate(5050,2890)">
-<rect class="frame" x="-250" y="-2890" width="3500" height="3140"/>
-<text x="-190" y="-2780" class="title">側視圖（Y 向右，Z 向上）</text>
-<polygon points="0,-2500 0,-2500 3000,-2500 3000,-2500" class="surface"/>
-<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<line x1="0" y1="-2500" x2="3000" y2="-2500" class="edge"/>
-<line x1="3000" y1="-2500" x2="3000" y2="-2500" class="edge"/>
-<line x1="3000" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<polygon points="0,0 3000,0 3000,0 0,0" class="surface"/>
-<line x1="0" y1="0" x2="3000" y2="0" class="edge"/>
-<line x1="3000" y1="0" x2="3000" y2="0" class="edge"/>
-<line x1="3000" y1="0" x2="0" y2="0" class="edge"/>
-<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
-<polygon points="0,0 0,0 0,-2500 0,-2500" class="surface"/>
-<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
-<line x1="0" y1="0" x2="0" y2="-2500" class="edge"/>
-<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<line x1="0" y1="-2500" x2="0" y2="0" class="edge"/>
-<polygon points="3000,0 3000,-2500 3000,-2500 3000,0" class="surface"/>
-<line x1="3000" y1="0" x2="3000" y2="-2500" class="edge"/>
-<line x1="3000" y1="-2500" x2="3000" y2="-2500" class="edge"/>
-<line x1="3000" y1="-2500" x2="3000" y2="0" class="edge"/>
-<line x1="3000" y1="0" x2="3000" y2="0" class="edge"/>
-<polygon points="0,0 0,-2500 3000,-2500 3000,0" class="surface"/>
-<line x1="0" y1="0" x2="0" y2="-2500" class="edge"/>
-<text x="-120" y="-1250" class="label" transform="rotate(-90 -120 -1250)">邊0</text>
-<line x1="0" y1="-2500" x2="3000" y2="-2500" class="edge"/>
-<text x="1500" y="-2620" class="label">邊1</text>
-<line x1="3000" y1="-2500" x2="3000" y2="0" class="edge"/>
-<text x="3120" y="-1250" class="label" transform="rotate(-90 3120 -1250)">邊2</text>
-<line x1="3000" y1="0" x2="0" y2="0" class="edge"/>
-<text x="1500" y="120" class="label">邊3</text>
-<polygon points="0,0 3000,0 3000,-2500 0,-2500" class="surface"/>
-<line x1="0" y1="0" x2="3000" y2="0" class="edge"/>
-<text x="1500" y="120" class="label">邊0</text>
-<line x1="3000" y1="0" x2="3000" y2="-2500" class="edge"/>
-<text x="3120" y="-1250" class="label" transform="rotate(-90 3120 -1250)">邊1</text>
-<line x1="3000" y1="-2500" x2="0" y2="-2500" class="edge"/>
-<text x="1500" y="-2620" class="label">邊2</text>
-<line x1="0" y1="-2500" x2="0" y2="0" class="edge"/>
-<text x="-120" y="-1250" class="label" transform="rotate(-90 -120 -1250)">邊3</text>
-<polygon points="2600,-2500 3000,-2500 3000,0 2600,0" class=""/>
-<text x="2800" y="-1250" class="label">柱1</text>
-</g>
-<g transform="translate(250,3830)">
+<style id="witness">.role-boundary{fill:#e2a24a;stroke:#e2a24a}.role-primary{fill:#63b3ed;stroke:#63b3ed}.role-secondary{fill:#9ae6b4;stroke:#9ae6b4}.role-custom{fill:#d6bcfa;stroke:#d6bcfa}.stop{fill:none;stroke-linecap:butt}.stop-label{font:bold 110px sans-serif;dominant-baseline:middle;paint-order:stroke;stroke:#ffffff;stroke-width:30px;stroke-linejoin:round}.tile-frame{fill:#ffffff;stroke:#888888;stroke-width:1px}.tile-title{font:bold 72px sans-serif;fill:#222222}.tile .label{display:none}.legend-title{font:bold 110px sans-serif;fill:#222222}.legend-text{font:95px sans-serif;fill:#333333;dominant-baseline:middle}.legend-box{fill:#ffffff;stroke:#bbbbbb;stroke-width:1px}.section-title{font:bold 120px sans-serif;fill:#222222}</style>
+<g transform="translate(250,3830)" data-view="bottom">
 <rect class="frame" x="-250" y="-390" width="4500" height="3640"/>
 <text x="-190" y="-280" class="title">仰視圖（X 向右，Y 向下）</text>
 <polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
@@ -149,5 +62,16 @@
 <line x1="4000" y1="0" x2="4000" y2="0" class="edge"/>
 <polygon points="3600,2600 4000,2600 4000,3000 3600,3000" class=""/>
 <text x="3800" y="2800" class="label">柱1</text>
+
+
 </g>
+<text x="40" y="7290" class="section-title">接點列(每格 = 一個角材端面,等比例放大,窗 = 8 × 料寬;視圖:仰視圖)</text>
+<text x="40" y="7480" class="legend-text">本條無角材接點。</text>
+<rect x="0" y="7600" width="4500" height="680" class="legend-box"/>
+<text x="40" y="7730" class="legend-title">圖例(每張見證圖相同;規範 v1)</text>
+<rect x="40" y="7800" width="160" height="80" class="role-boundary"/><text x="230" y="7840" class="legend-text">boundary 邊界材(層級 1)</text>
+<rect x="2250" y="7800" width="160" height="80" class="role-primary"/><text x="2440" y="7840" class="legend-text">primary 主支(層級 2)</text>
+<rect x="40" y="7930" width="160" height="80" class="role-secondary"/><text x="230" y="7970" class="legend-text">secondary 副支(層級 3)</text>
+<rect x="2250" y="7930" width="160" height="80" class="role-custom"/><text x="2440" y="7970" class="legend-text">custom 自訂料(priority N)</text>
+<line x1="60" y1="8060" x2="60" y2="8140" class="stop" stroke="#333333" stroke-width="10"/><text x="190" y="8100" class="legend-text">停止標記 = 端面被裁的位置(同角材色);接點格標題 t3·END→t2 = 角材 3 的 END 端面停在角材 2 的側面。</text><text x="190" y="8200" class="legend-text">→e0 = 停在外輪廓邊 0(RC;只有 boundary 可頂,I19);→h0e2 = 停在孔 0 的邊 2。擋面參照寫法同 D18。</text>
 </svg>
