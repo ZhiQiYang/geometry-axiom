@@ -1040,15 +1040,17 @@ window.axiomWorkspace={isDocked:docked,sideNavigation,present,markTarget,resetEx
       groups.forEach(function (group) {group.hidden=!group.querySelector('.toc-item:not([hidden])');});
       groupLinks.forEach(function (link) {link.classList.toggle('active',link.dataset.group===activeGroup);});
       $('empty-search').hidden=visibleResults.length>0;
-      $('search-status').textContent=query?'找到 '+visibleResults.length+' 條 · 全部列出':(activeGroup?activeGroup+' 類別 · ':'全部 ')+visibleResults.length+' 條';
+      searchStatusBase=query?'找到 '+visibleResults.length+' 條 · 全部列出':(activeGroup?activeGroup+' 類別 · ':'全部 ')+visibleResults.length+' 條';renderSearchStatus();
       $('clear-search').hidden=!search.value;
       search.removeAttribute('aria-activedescendant');
     }
-    function resetSearch(){search.value='';activeGroup='';filterToc();}
+    var searchStatusBase='';
+    function renderSearchStatus(){$('search-status').textContent=searchStatusBase+((visibleResults.length&&keyboardIndex>=0)?' · 第 '+(keyboardIndex+1)+' / '+visibleResults.length+' 筆':'');}
+    function resetSearch(){search.value='';activeGroup='';keyboardIndex=-1;filterToc();}
     function closeDialogs() { dialogs.forEach(function(d){if(d.open&&!(window.axiomWorkspace&&window.axiomWorkspace.isDocked()&&(d.id==='review-dialog'||d.id==='reference-sheet')))d.close();}); }
     function navigate(id,push,scroll) {
       if(!byId[id])return;
-      closeDialogs();current=id;directory.open=!!(window.axiomWorkspace&&window.axiomWorkspace.sideNavigation());resetSearch();sync();
+      closeDialogs();current=id;directory.open=!!(window.axiomWorkspace&&window.axiomWorkspace.sideNavigation());sync();
       if(push&&location.hash!=='#'+id) {
         try {history.pushState({clause:id},'', '#'+id);} catch (_) {location.hash=id;}
       }
@@ -1129,17 +1131,17 @@ window.axiomWorkspace={isDocked:docked,sideNavigation,present,markTarget,resetEx
     $('clear-search').addEventListener('click',function(){resetSearch();search.focus();});
     search.addEventListener('keydown',function(e){
       if(e.isComposing||e.keyCode===229)return;
-      if(e.key==='Escape'){e.preventDefault();directory.open=!!(window.axiomWorkspace&&window.axiomWorkspace.sideNavigation());search.blur();return;}
+      if(e.key==='Escape'){e.preventDefault();if(search.value){resetSearch();return;}directory.open=!!(window.axiomWorkspace&&window.axiomWorkspace.sideNavigation());search.blur();return;}
       var steps={ArrowDown:1,ArrowUp:-1,PageDown:7,PageUp:-7};
       if(Object.prototype.hasOwnProperty.call(steps,e.key)){
         e.preventDefault();if(!visibleResults.length)return;
         keyboardIndex=Math.max(0,Math.min(visibleResults.length-1,keyboardIndex+steps[e.key]));
         tocLinks.forEach(function(l){l.classList.remove('key-active');});
-        var selected=visibleResults[keyboardIndex];selected.classList.add('key-active');
+        var selected=visibleResults[keyboardIndex];selected.classList.add('key-active');renderSearchStatus();
         selected.scrollIntoView({block:'nearest'});
         return;
       }
-      if(e.key==='Enter'&&visibleResults.length){e.preventDefault();navigate(visibleResults[Math.max(0,keyboardIndex)].dataset.clause,true);search.blur();}
+      if(e.key==='Enter'&&visibleResults.length){e.preventDefault();if(keyboardIndex<0)keyboardIndex=0;navigate(visibleResults[keyboardIndex].dataset.clause,true);keyboardIndex=(keyboardIndex+1)%visibleResults.length;tocLinks.forEach(function(l){l.classList.remove('key-active');});var nextHit=visibleResults[keyboardIndex];if(nextHit){nextHit.classList.add('key-active');nextHit.scrollIntoView({block:'nearest'});}renderSearchStatus();}
     });
     $('open-settings').addEventListener('click',function(){openDialog('settings-sheet');});
     $('font-down').addEventListener('click',function(){fontSize=Math.max(16,fontSize-1);applySettings();save();});

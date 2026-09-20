@@ -395,21 +395,114 @@ def validate(source: str, axiom: str, plain: str) -> dict:
         assert art, "missing article " + cid
         body_at, plain_at = art[0].find("original-section"), art[0].find("plain-section")
         assert 0 <= body_at < plain_at, "GEO-147 原文必須排在白話之前: " + cid
+    assert not search_regressions(source), "GEO-142 搜尋行為: " + "; ".join(search_regressions(source))
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
     assert not stale_counts(source, counts), "GEO-140 殘留硬編碼計數: " + "; ".join(stale_counts(source, counts))
     assert not re.search(r"https?://|<link\b|<script\b[^>]*\bsrc\s*=|@import", source, re.I), "external reader resource"
-    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "geo120": "pass", "documentHash": data["documentHash"]}
+    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "geo120": "pass", "search": "pass", "documentHash": data["documentHash"]}
 
 
 def force(text: str, old: str, new: str, label: str) -> str:
-    """冪等模板補丁:已經是 new 就不動;old 與 new 都找不到 = 模板漂移,直接失敗不靜默略過。"""
+    """冪等模板補丁:先找 old 換成 new;已經是 new 就不動;兩者都找不到 = 模板漂移,失敗不靜默略過。
+
+    old 與 new 都必須在全文唯一。GEO-142 施工時踩過:new 的尾巴
+    (`…sideNavigation());sync();`)剛好也出現在 changeMode() 裡,於是被誤判成「已套用」,
+    補丁整個被跳過而沒有任何人知道。不唯一就是判準有問題,寧可失敗。
+    """
+    if old in new:
+        # 追加式補丁(new 只是在 old 上加東西):old 永遠仍在 new 裡,只能用 new 判定是否已套用,
+        # 否則每重建一次就再追加一次(GEO-142 的 renderSearchStatus() 實際踩到)。
+        if new in text:
+            if text.count(new) != 1:
+                raise ValueError("reader template patch (%s): 改後字串出現 %d 次" % (label, text.count(new)))
+            return text
+        if text.count(old) != 1:
+            raise ValueError("reader template patch (%s): 改前字串出現 %d 次,不唯一" % (label, text.count(old)))
+        return text.replace(old, new, 1)
+    if old in text:
+        if text.count(old) != 1:
+            raise ValueError("reader template patch (%s): 改前字串出現 %d 次,不唯一" % (label, text.count(old)))
+        return text.replace(old, new, 1)
     if new in text:
+        if text.count(new) != 1:
+            raise ValueError("reader template patch (%s): 改後字串出現 %d 次,無法判定是否已套用" % (label, text.count(new)))
         return text
-    if old not in text:
-        raise ValueError("reader template drift (%s): 既不是改前也不是改後的樣子" % label)
-    return text.replace(old, new, 1)
+    raise ValueError("reader template drift (%s): 既不是改前也不是改後的樣子" % label)
+
+
+def apply_search_fixes(template: str) -> str:
+    """GEO-142:搜尋跳轉後保留查詢與命中清單;Enter 連續跳下一筆;狀態列顯示第 n / m 筆;
+    Esc 第一下清查詢、第二下關閉。原本 navigate() 一進來就 resetSearch(),
+    導致「搜尋 → 點第 2 筆 → 想看第 3 筆」必須重打整串關鍵字。"""
+    js = script_text(template, "reader-script")
+
+    js = force(
+        js,
+        "$('search-status').textContent=query?'找到 '+visibleResults.length+' 條 · 全部列出':(activeGroup?activeGroup+' 類別 · ':'全部 ')+visibleResults.length+' 條';",
+        "searchStatusBase=query?'找到 '+visibleResults.length+' 條 · 全部列出':(activeGroup?activeGroup+' 類別 · ':'全部 ')+visibleResults.length+' 條';renderSearchStatus();",
+        "搜尋狀態列")
+
+    js = force(
+        js,
+        "function resetSearch(){search.value='';activeGroup='';filterToc();}",
+        "var searchStatusBase='';\n"
+        "    function renderSearchStatus(){"
+        "$('search-status').textContent=searchStatusBase+"
+        "((visibleResults.length&&keyboardIndex>=0)?' · 第 '+(keyboardIndex+1)+' / '+visibleResults.length+' 筆':'');}\n"
+        "    function resetSearch(){search.value='';activeGroup='';keyboardIndex=-1;filterToc();}",
+        "resetSearch 與狀態列渲染")
+
+    js = force(
+        js,
+        "closeDialogs();current=id;directory.open=!!(window.axiomWorkspace&&window.axiomWorkspace.sideNavigation());resetSearch();sync();",
+        "closeDialogs();current=id;directory.open=!!(window.axiomWorkspace&&window.axiomWorkspace.sideNavigation());sync();",
+        "navigate 不再清空搜尋")
+
+    js = force(
+        js,
+        "var selected=visibleResults[keyboardIndex];selected.classList.add('key-active');",
+        "var selected=visibleResults[keyboardIndex];selected.classList.add('key-active');renderSearchStatus();",
+        "方向鍵更新第 n 筆")
+
+    js = force(
+        js,
+        "if(e.key==='Enter'&&visibleResults.length){e.preventDefault();navigate(visibleResults[Math.max(0,keyboardIndex)].dataset.clause,true);search.blur();}",
+        "if(e.key==='Enter'&&visibleResults.length){e.preventDefault();"
+        "if(keyboardIndex<0)keyboardIndex=0;"
+        "navigate(visibleResults[keyboardIndex].dataset.clause,true);"
+        "keyboardIndex=(keyboardIndex+1)%visibleResults.length;"
+        "tocLinks.forEach(function(l){l.classList.remove('key-active');});"
+        "var nextHit=visibleResults[keyboardIndex];"
+        "if(nextHit){nextHit.classList.add('key-active');nextHit.scrollIntoView({block:'nearest'});}"
+        "renderSearchStatus();}",
+        "Enter 連續跳下一筆")
+
+    js = force(
+        js,
+        "if(e.key==='Escape'){e.preventDefault();directory.open=!!(window.axiomWorkspace&&window.axiomWorkspace.sideNavigation());search.blur();return;}",
+        "if(e.key==='Escape'){e.preventDefault();"
+        "if(search.value){resetSearch();return;}"
+        "directory.open=!!(window.axiomWorkspace&&window.axiomWorkspace.sideNavigation());search.blur();return;}",
+        "Esc 先清查詢再關閉")
+
+    return replace_script(template, "reader-script", js)
+
+
+def search_regressions(template: str) -> list[str]:
+    """回傳搜尋行為仍不成立的項目;空清單才算通過。"""
+    js = script_text(template, "reader-script")
+    bad = []
+    if "current=id;directory.open=!!(window.axiomWorkspace&&window.axiomWorkspace.sideNavigation());resetSearch();sync();" in js:
+        bad.append("navigate() 仍會清空查詢字串(R7)")
+    if "renderSearchStatus" not in js:
+        bad.append("狀態列沒有第 n / m 筆")
+    if "keyboardIndex=(keyboardIndex+1)%visibleResults.length" not in js:
+        bad.append("Enter 不會連續跳下一筆")
+    if "e.key.toLowerCase()==='k'" not in js:
+        bad.append("沒有 Ctrl/⌘K 聚焦搜尋")
+    return bad
 
 
 def apply_geo120(template: str) -> str:
@@ -662,6 +755,8 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     template = replace_script(template, "axiom-review-data", safe_json(state))
     # GEO-139:先回歸 GEO-120 的拍板預設值,再算計數(兩者都會動 reader-script)。
     template = apply_geo120(template)
+    # GEO-142:搜尋跳轉不清空查詢;Enter 連跳下一筆。
+    template = apply_search_fixes(template)
     # GEO-140:所有計數由 reader_counts() 算一次,apply_counts() 填進 HTML 與腳本;此處不再寫死數字。
     template = apply_counts(template, reader_counts(template, clauses, state))
     script_start = template.index('<script id="clause-data"')

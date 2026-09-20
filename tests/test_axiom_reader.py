@@ -97,6 +97,13 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_search_keeps_query_after_navigating(self):
+        # GEO-142(審查 R7):跳轉不得清空查詢;Enter 連跳下一筆;狀態列顯示第 n / m 筆。
+        self.assertEqual(reader.search_regressions(self.html), [])
+        js = reader.script_text(self.html, "reader-script")
+        self.assertNotIn("resetSearch();sync();", js)
+        self.assertIn("' · 第 '+(keyboardIndex+1)+' / '+visibleResults.length+' 筆'", js)
+
     def test_original_text_precedes_plain(self):
         # GEO-147(🔒):頁尾寫「原文為準」,版面順序必須一致;89 條皆然。
         for clause in self.state["clauses"]:

@@ -1582,7 +1582,10 @@
 - **內容**:`navigate()` 內先呼叫 `resetSearch()`,把 `search.value` 清空、`activeGroup` 還原,
   所以「搜尋 → 點第 2 筆 → 想看第 3 筆」必須重打。方向鍵與 Enter 的鍵盤導覽做得很完整,
   卻在跳轉那一刻被自己清掉。改為:跳轉後保留查詢字串與命中清單,導覽顯示「第 n / m 筆」,
-  Enter 連續跳下一筆,只有 × 或 Esc 才清空;另補 Ctrl+K / ⌘K 聚焦搜尋。(R7 P1)
+  Enter 連續跳下一筆,只有 × 或 Esc 才清空。(R7 P1)
+- **對審查的更正**:R7 另稱「沒有全域聚焦搜尋的快捷鍵(規格 §4.4 要求 Ctrl+K)」——
+  **不成立**。`reader-script` 早有 `document.addEventListener('keydown',…(e.ctrlKey||e.metaKey)&&e.key==='k'…)`,
+  會 `openDirectory()` 並 `search.focus()`,實測可用。本票不含此項,只保留防回歸檢查。
 - **驗收**:搜一個詞、連按 Enter 能依序走完所有命中且查詢字串不變;Esc 清空;Ctrl+K 聚焦。
 - **相依**:無。**估時 1.5h**。
 
