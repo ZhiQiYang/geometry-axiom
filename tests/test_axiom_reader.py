@@ -143,6 +143,21 @@ class CanonicalReader(unittest.TestCase):
         self.assertIn(".review-block:focus-within>.block-tools", self.html)
         self.assertIn("pressTimer", reader.script_text(self.html, "reader-script"))
 
+    def test_witness_figures_are_inline_and_themed(self):
+        # GEO-141 最後一段(🔒 Q8):見證圖改 inline svg 由頁面 CSS 控色;範例圖維持 base64。
+        counts = json.loads(reader.script_text(self.html, reader.COUNTS_ID))
+        self.assertEqual(self.html.count('<svg class="witness-diagram"'), counts["witness"])
+        sections = re.findall(r'<section class="witness-section">.*?</section>', self.html, re.S)
+        self.assertEqual(len(sections), counts["witness"])
+        for sec in sections:
+            self.assertNotIn("base64", sec)
+            self.assertNotIn("<style", sec)
+        for token, (light, dark) in reader.WITNESS_TOKENS.items():
+            self.assertIn("%s:%s" % (token, light), self.html, token)
+            self.assertIn("%s:%s" % (token, dark), self.html, token)
+        # 角色色是 🔒 Q1 定案的字面值,不得被 token 化
+        self.assertIn(".witness-diagram .role-boundary{fill:#e2a24a", self.html)
+
     def test_colors_are_tokenised(self):
         # GEO-141(🔒 Q1):批註四色與圖面底色收成 token,深色只改 token 值,不再逐條選擇器補丁。
         self.assertEqual(reader.hardcoded_colors(self.html), [])

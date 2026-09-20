@@ -134,10 +134,25 @@ COLOR_REWRITES = [
 
 def apply_color_tokens(template: str) -> str:
     """把 token 定義併進 :root / :root[data-theme=dark],再把規則裡寫死的色碼換成 token。"""
-    light = "".join("%s:%s;" % (k, v[0]) for k, v in COLOR_TOKENS.items() if v[0])
-    dark = "".join("%s:%s;" % (k, v[1]) for k, v in COLOR_TOKENS.items() if v[1])
-    template = force(template, "--bar:68px}", "--bar:68px;" + light.rstrip(";") + "}", "淺色 token")
-    template = force(template, "--code:#293640}", "--code:#293640;" + dark.rstrip(";") + "}", "深色 token")
+    every = dict(COLOR_TOKENS)
+    every.update(WITNESS_TOKENS)     # GEO-141 Q8:圖面色與其他 token 同一組,深色只改值
+
+    def write_tokens(block: str, index: int) -> str:
+        """把本表的 token 寫進一個 :root 區塊。先移除既有同名 token 再寫入當前集合——
+        token 集合日後會增減,用「改前/改後」判定會在集合一變就卡住(GEO-141 Q8 實際踩到)。"""
+        head, inner = block.split("{", 1)
+        inner = inner.rsplit("}", 1)[0]
+        for name in every:
+            inner = re.sub(re.escape(name) + r":[^;}]*;?", "", inner)
+        inner = inner.rstrip(";")
+        add = "".join("%s:%s;" % (k, v[index]) for k, v in every.items() if v[index])
+        return head + "{" + inner + ";" + add.rstrip(";") + "}"
+
+    for pattern, index in ((r":root\{[^}]*\}", 0), (r":root\[data-theme=dark\]\{[^}]*\}", 1)):
+        m = re.search(pattern, template)
+        if not m:
+            raise ValueError("reader template drift:找不到 :root token 區塊 " + pattern)
+        template = template[:m.start()] + write_tokens(m[0], index) + template[m.end():]
     for old_css, new_css in COLOR_REWRITES:
         template = force(template, old_css, new_css, "色碼→token: " + new_css[:40])
     return template
@@ -167,6 +182,56 @@ GENERATED_SECTIONS = (
     '<section class="witness-section">',
     '<details class="trace-section">',
     '<section class="relation-section"',
+)
+
+# GEO-141 最後一段(🔒 Q8 2026-09-20):見證圖改 inline <svg>,顏色由頁面 CSS 控。
+# 原本樣式燒在 SVG 裡(<img> 看不到頁面變數與 data-theme),淺色主題下是一塊黑方塊。
+# 內聯後全部改吃 token;**角色色維持字面值不動**(🔒 Q1:屬 witness/規範.md v1、與條文語意綁定)。
+# 選擇器一律 scoped 在 .witness-diagram 之下——.title/.label/.frame 名字太通用,直接內聯會汙染全域。
+WITNESS_TOKENS = {
+    "--wit-ink":       ("#222222", "#d7dfe6"),
+    "--wit-ink-soft":  ("#333333", "#c5cfd8"),
+    "--wit-line":      ("#bbbbbb", "#5a6b7a"),
+    "--wit-edge":      ("#3366cc", "#84c8f6"),
+    "--wit-surface":   ("#dbe9ff", "#304557"),
+    "--wit-guide":     ("#cc3333", "#ed9494"),
+    "--wit-free":      ("#e08020", "#efba69"),
+    "--wit-timber":    ("#ffd27f", "#edb365"),
+    "--wit-timber-ln": ("#a06000", "#edb365"),
+    "--wit-timber-tx": ("#7a4a00", "#efba69"),
+}
+WITNESS_DIAGRAM_CSS = (
+    ".witness-diagram{display:block;width:100%;height:auto;background:var(--figure-bg);border-radius:6px}"
+    ".witness-diagram polygon,.witness-diagram line,.witness-diagram rect{vector-effect:non-scaling-stroke}"
+    ".witness-diagram .frame{fill:var(--figure-bg);stroke:none}"
+    ".witness-diagram .title{font:bold 150px sans-serif;fill:var(--wit-ink)}"
+    ".witness-diagram .label{font:110px sans-serif;fill:var(--wit-ink-soft);text-anchor:middle;dominant-baseline:middle}"
+    ".witness-diagram .guide-label{text-anchor:start;fill:var(--wit-guide)}"
+    ".witness-diagram .timber-label{fill:var(--wit-timber-tx);font-weight:bold}"
+    ".witness-diagram .guide-label,.witness-diagram .timber-label"
+    "{paint-order:stroke;stroke:var(--figure-bg);stroke-width:30px;stroke-linejoin:round}"
+    ".witness-diagram .surface{fill:var(--wit-surface);fill-opacity:.7;stroke:var(--wit-edge);stroke-width:1.5px}"
+    ".witness-diagram .hole{fill:var(--figure-bg);stroke:var(--wit-edge);stroke-width:1.5px}"
+    ".witness-diagram .edge{stroke:var(--wit-edge);stroke-width:1.5px}"
+    ".witness-diagram .edge-free{stroke:var(--wit-free);stroke-width:1.5px;stroke-dasharray:30 15}"
+    ".witness-diagram .guide{stroke:var(--wit-guide);stroke-width:1px;stroke-dasharray:60 30}"
+    ".witness-diagram .timber-face{fill:var(--wit-timber);fill-opacity:.5;stroke:var(--wit-timber-ln);stroke-width:1.5px}"
+    ".witness-diagram .timber-face-near{fill-opacity:.85}"
+    ".witness-diagram .role-boundary{fill:#e2a24a;stroke:#e2a24a}"
+    ".witness-diagram .role-primary{fill:#63b3ed;stroke:#63b3ed}"
+    ".witness-diagram .role-secondary{fill:#9ae6b4;stroke:#9ae6b4}"
+    ".witness-diagram .role-custom{fill:#d6bcfa;stroke:#d6bcfa}"
+    ".witness-diagram .stop{stroke:none}"
+    ".witness-diagram .stop-label{font:bold 110px sans-serif;dominant-baseline:middle;"
+    "paint-order:stroke;stroke:var(--figure-bg);stroke-width:30px;stroke-linejoin:round}"
+    ".witness-diagram .tile-frame{fill:var(--figure-bg);stroke:var(--wit-line);stroke-width:1px}"
+    ".witness-diagram .tile-title{font:bold 72px sans-serif;fill:var(--wit-ink)}"
+    ".witness-diagram .tile line.edge,.witness-diagram .tile line.guide,"
+    ".witness-diagram .tile line.edge-free{stroke-width:2px}"
+    ".witness-diagram .legend-title{font:bold 110px sans-serif;fill:var(--wit-ink)}"
+    ".witness-diagram .legend-text{font:95px sans-serif;fill:var(--wit-ink-soft);dominant-baseline:middle}"
+    ".witness-diagram .legend-box{fill:var(--figure-bg);stroke:var(--wit-line);stroke-width:1px}"
+    ".witness-diagram .section-title{font:bold 120px sans-serif;fill:var(--wit-ink)}"
 )
 
 # GEO-148(🔒 Q6 2026-09-20):
@@ -467,20 +532,23 @@ def witness_figure(cid: str, manifest: dict) -> str:
     for light, dark in (("#ffffff", "#181e24"), ("#222222", "#d7dfe6"), ("#333333", "#c5cfd8"), ("#888888", "#5a6b7a"), ("#bbbbbb", "#5a6b7a")):
         body = re.sub(r'(<style id="witness">.*?</style>)', lambda mm: mm[1].replace(light, dark), body, count=1, flags=re.S)
 
-    def data_uri(view_box: str) -> str:
-        doc = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{view_box}" data-full="{full}" '
-               f'preserveAspectRatio="xMidYMid meet">{WITNESS_STYLE}{body}</svg>')
-        return "data:image/svg+xml;base64," + base64.b64encode(doc.encode("utf-8")).decode("ascii")
-
+    # GEO-141(🔒 Q8):改內聯。圖自帶的 <style> 全部拿掉——.title/.label/.frame 名字太通用,
+    # 內聯後會變成全域規則汙染整份文件;改由 WITNESS_DIAGRAM_CSS 以 .witness-diagram 作用域提供。
+    body = re.sub(r"<style[^>]*>.*?</style>\s*", "", body, flags=re.S).strip()
     view = entry["view"]
     label = VIEW_LABEL.get(view, view)
     alt = html.escape(f"{cid} 見證圖:{label}", quote=True)
     out = '<section class="witness-section"><h3>見證圖 <small>GEO-131 · 由夾具經引擎推導,非條文</small></h3>'
-    out += f'<figure><img alt="{alt}" class="scene-diagram witness-diagram" decoding="async" loading="lazy" src="{data_uri(crop)}">'
+    out += (f'<figure><svg class="witness-diagram" viewBox="{crop}" data-crop="{crop}" data-full="{full}" '
+            # HTML 裡的內聯 SVG 不需要 xmlns(HTML 解析器自動放進 SVG 命名空間);
+            # 寫了反而會踩到「零外部引用」那道 assert 的 https?:// 比對。
+            f'preserveAspectRatio="xMidYMid meet" role="img" aria-label="{alt}">{body}</svg>')
     out += ('<figcaption>夾具 <code>' + html.escape(entry["scene"]) + '</code>(' + html.escape(entry["expect"]) + ',' + label + ')· '
             + html.escape(entry["gist"]) + '<br>條文為真則此圖不變;圖變即警報,由 <code>witness.py --check</code> 逐位元守住,同步器不重跑引擎。</figcaption>')
     if view != "all" and crop != full:
-        out += f'<details><summary>展開三視圖</summary><img alt="{html.escape(cid + " 見證圖:三視圖", quote=True)}" class="scene-diagram witness-diagram" decoding="async" loading="lazy" src="{data_uri(full)}"></details>'
+        # 內聯之後不必再放第二份圖:同一個 <svg> 換 viewBox 即可(省一半位元組)。
+        out += ('<details class="three-views"><summary>展開三視圖</summary>'
+                '<p class="hint">展開後上方的圖會切換成完整三視圖,收合即還原。</p></details>')
     out += '</figure></section>'
     return out
 
@@ -601,6 +669,10 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
+    assert source.count('<svg class="witness-diagram"') == counts["witness"], "GEO-141 Q8 見證圖不是 inline svg"
+    for sec in re.findall(r'<section class="witness-section">.*?</section>', source, re.S):
+        assert "base64" not in sec, "GEO-141 Q8 見證圖還有 base64 酬載"
+        assert "<style" not in sec, "GEO-141 Q8 圖的樣式內聯了,會汙染全域"
     assert not stale_counts(source, counts), "GEO-140 殘留硬編碼計數: " + "; ".join(stale_counts(source, counts))
     assert not re.search(r"https?://|<link\b|<script\b[^>]*\bsrc\s*=|@import", source, re.I), "external reader resource"
     return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "geo120": "pass", "search": "pass", "color_tokens": "pass", "documentHash": data["documentHash"]}
@@ -671,7 +743,7 @@ HOVER_PREVIEW_JS = "\n    /* GEO-120 拍板二:hover 快速預覽與點擊固定
 FACET_HELPER_JS = "\n    /* GEO-149:篩選 chip。與搜尋、分類篩選疊加,條件全部讀 toc-item 的 data-*(由資料算)。 */\n    function facetMatch(link){\n      if(!activeFacet)return true;\n      if(activeFacet==='note')return Number(link.dataset.note||0)>0;\n      if(activeFacet==='ex')return Number(link.dataset.ex||0)>0;\n      if(activeFacet==='wit')return Number(link.dataset.wit||0)>0;\n      if(activeFacet==='none')return link.dataset.trace==='none';\n      return true;\n    }"
 
 
-WITNESS_PANE_JS = "\n /* GEO-138(🔒 Q4):右欄上半固定顯示「目前這一條」的見證圖,不與參照/批註互斥。\n    圖直接取自條文卡裡那張(同一個 data URI),不另存第二份。 */\n function toast(text){\n  const t=document.getElementById('toast');if(!t)return;\n  t.textContent=text;t.hidden=false;\n  clearTimeout(toast._timer);toast._timer=setTimeout(()=>{t.hidden=true;},2200);\n }\n function renderWitness(id){\n  const pane=document.getElementById('workspace-witness');if(!pane)return;\n  const label=document.getElementById('workspace-witness-clause');\n  const img=document.getElementById('workspace-witness-img');\n  const none=document.getElementById('workspace-witness-none');\n  const article=id?document.getElementById(id):null;\n  const source=article?article.querySelector('.witness-section figure img'):null;\n  if(label)label.textContent=id||'';\n  if(source){\n   img.src=source.getAttribute('src');img.alt=source.getAttribute('alt')||'';\n   img.hidden=false;none.hidden=true;\n  }else{\n   img.removeAttribute('src');img.hidden=true;none.hidden=false;\n  }\n }\n document.addEventListener('axiom:current',e=>renderWitness(e.detail&&e.detail.id));"
+WITNESS_PANE_JS = "\n /* GEO-138(🔒 Q4):右欄上半固定顯示「目前這一條」的見證圖,不與參照/批註互斥。\n    GEO-141(🔒 Q8):見證圖已是 inline <svg>,直接複製節點,不另存第二份酬載。 */\n function toast(text){\n  const t=document.getElementById('toast');if(!t)return;\n  t.textContent=text;t.hidden=false;\n  clearTimeout(toast._timer);toast._timer=setTimeout(()=>{t.hidden=true;},2200);\n }\n function renderWitness(id){\n  const pane=document.getElementById('workspace-witness');if(!pane)return;\n  const label=document.getElementById('workspace-witness-clause');\n  const holder=document.getElementById('workspace-witness-img');\n  const none=document.getElementById('workspace-witness-none');\n  const article=id?document.getElementById(id):null;\n  const source=article?article.querySelector('.witness-diagram'):null;\n  if(label)label.textContent=id||'';\n  holder.textContent='';\n  if(source){\n   const copy=source.cloneNode(true);copy.removeAttribute('id');\n   copy.setAttribute('viewBox',copy.dataset.crop||copy.getAttribute('viewBox'));\n   holder.appendChild(copy);holder.hidden=false;none.hidden=true;\n  }else{\n   holder.hidden=true;none.hidden=false;\n  }\n }\n document.addEventListener('axiom:current',e=>renderWitness(e.detail&&e.detail.id));\n /* GEO-141(Q8):展開三視圖 = 同一個 <svg> 換 viewBox,不放第二份圖。 */\n document.addEventListener('toggle',e=>{\n  const d=e.target;if(!d||!d.classList||!d.classList.contains('three-views'))return;\n  const fig=d.closest('figure');const svg=fig?fig.querySelector('.witness-diagram'):null;\n  if(!svg)return;\n  svg.setAttribute('viewBox',d.open?svg.dataset.full:svg.dataset.crop);\n },true);"
 
 
 def apply_half_sheet(template: str) -> str:
@@ -705,15 +777,23 @@ def apply_half_sheet(template: str) -> str:
 
 def apply_witness_pane(template: str) -> str:
     """GEO-138 + GEO-146(🔒 Q4):右欄上半固定見證圖;下半維持 tab,但切換前先保留草稿。"""
+    # 面板內容日後還會改,所以不用「改前/改後」判定(那會在內容一變就卡住,GEO-141 Q8 實際踩到)。
+    # 改成:先把既有面板整段移除,再插一份當前版本——永遠冪等,也永遠是最新的。
+    template = re.sub(r'<section[^>]*id="workspace-witness"[^>]*>.*?</section>\n?', "", template, flags=re.S)
     anchor = '<div id="dock-hub"></div>\n<div aria-label="校對工作區" class="workspace-tabs" role="tablist">'
+    if anchor not in template:
+        raise ValueError("reader template drift:找不到右欄的 dock-hub / workspace-tabs 錨點")
+    witness_total = template.count('<section class="witness-section">')
     pane = ('<section aria-label="目前條文的見證圖" class="js-only" id="workspace-witness" hidden="">'
             '<h3>見證圖 <small id="workspace-witness-clause"></small></h3>'
-            '<figure><img alt="" decoding="async" id="workspace-witness-img" hidden=""></figure>'
-            '<p class="hint" id="workspace-witness-none" hidden="">這一條沒有見證圖(89 條中有 17 條有)。</p>'
-            '</section>')
-    template = force(template, anchor,
-                     '<div id="dock-hub"></div>\n' + pane + '\n<div aria-label="校對工作區" class="workspace-tabs" role="tablist">',
-                     "見證圖面板標記")
+            '<figure id="workspace-witness-img" hidden=""></figure>'
+            '<p class="hint" id="workspace-witness-none" hidden="">'
+            + ("這一條沒有見證圖(89 條中有 %d 條有)。" % witness_total) +
+            '</p></section>')
+    template = template.replace(
+        anchor,
+        '<div id="dock-hub"></div>\n' + pane + '\n<div aria-label="校對工作區" class="workspace-tabs" role="tablist">',
+        1)
 
     js = script_text(template, "workspace-script")
     js = force(js, "\nfunction reflectTabs(){", WITNESS_PANE_JS.rstrip("\n") + "\nfunction reflectTabs(){",
@@ -1115,6 +1195,7 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             incoming[ref].append(c["id"])
     witness_manifest = load_witness_manifest()
     template = inject_css(template, WITNESS_CSS, ".witness-section{")
+    template = inject_css(template, WITNESS_DIAGRAM_CSS, ".witness-diagram .role-boundary{")
     template = inject_css(template, SHEET_CSS, "body.half-sheet-open{padding-bottom:52dvh}")
     template = inject_css(template, WITNESS_PANE_CSS, "#workspace-witness{display:none}")
     template = inject_css(template, FACET_CSS, ".toc-facets{display:flex")
