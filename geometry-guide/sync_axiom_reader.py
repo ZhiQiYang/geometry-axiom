@@ -184,6 +184,25 @@ GENERATED_SECTIONS = (
     '<section class="relation-section"',
 )
 
+OLD_STALE = 'if(a!==\'exact\')html+=\'<div class="stale-note">\'+(a===\'missing\'?\'原段落不存在\':\'段落已改版\')+\'：以下引文仍是批註當時的快照，不自動重新配對。</div>\';'
+NEW_STALE = 'if(a!==\'exact\')html+=\'<div class="stale-note">\'+(a===\'missing\'?\'原段落不存在\':\'段落已改版\')+\'：以下引文仍是批註當時的快照，不自動重新配對。</div>\';\n /* GEO-144(🔒 Q2):過期批註就地給下一步,不再只留一行小字。 */\n if(a!==\'exact\')html+=\'<div class="stale-actions review-only"><button type="button" class="review-primary" data-review-action="reanchor" data-id="\'+esc(c.id)+\'">重新綁定這段</button><button type="button" data-review-action="jump" data-id="\'+esc(c.id)+\'">回到段落</button></div>\';\n if((c.anchorHistory||[]).length)html+=\'<div class="stale-actions review-only"><button type="button" data-review-action="undo-reanchor" data-id="\'+esc(c.id)+\'">復原綁定(回到上一個定位)</button></div>\';'
+OLD_REANCHOR = "function reanchor(c){if(!confirm('將這則批註重新綁定到「目前版本的整個段落」？舊引文仍保留在定位歷史中；原本的局部選文不會自動猜測新位置。'))return;c.anchorHistory.push(clone(c.target));c.target=currentTarget(c.target.blockId,null);c.events.push({at:stamp(),type:'user-reanchored-whole-block'});c.updatedAt=stamp();persist();renderNotes();commentList();}"
+NEW_REANCHOR = '/* GEO-144(🔒 Q2):原本是一個 confirm(),看不到綁定前後差多少,等於叫使用者盲簽。\n   改成面板內的前後對照 + 主鈕;綁定後 anchorHistory 留著,可復原一次。 */\nfunction reanchor(c){\n const t=c.target,now=blocks[t.blockId];\n const before=esc((t.selector&&t.selector.exact)||\'\'),after=now?esc(now.source):\'\';\n dialog(\'重新綁定 \'+esc(t.clauseId)+\' · \'+esc(t.label),\n  \'<p class="hint">重新綁定會把這則批註指到<strong>目前版本的整個段落</strong>。\'\n  +\'舊引文保留在定位歷史裡,原本的局部選文<strong>不會</strong>自動猜測新位置。</p>\'\n  +\'<div class="reanchor-diff"><section><h4>批註當時的引文</h4><blockquote class="note-quote">\'\n  +(before||\'(沒有記錄引文)\')+\'</blockquote></section>\'\n  +\'<section><h4>目前的段落</h4><blockquote class="note-quote">\'\n  +(after||\'(這個段落在目前版本裡已經不存在,無法重新綁定)\')+\'</blockquote></section></div>\'\n  +(now?\'<button type="button" class="review-primary" data-review-action="reanchor-confirm" data-id="\'+esc(c.id)+\'">確定重新綁定</button>\':\'\')\n  +\'<button type="button" data-review-action="list">取消</button>\',\'reanchor\');\n}\nfunction reanchorConfirm(c){\n if(!blocks[c.target.blockId])return;\n c.anchorHistory=c.anchorHistory||[];c.anchorHistory.push(clone(c.target));\n c.target=currentTarget(c.target.blockId,null);\n c.events.push({at:stamp(),type:\'user-reanchored-whole-block\'});\n c.updatedAt=stamp();persist();renderNotes();commentList();\n notify(\'已重新綁定。這則批註上有「復原綁定」可以還原。\');\n}\nfunction undoReanchor(c){\n const prev=(c.anchorHistory||[]).pop();if(!prev)return;\n c.target=prev;c.events.push({at:stamp(),type:\'user-undo-reanchor\'});\n c.updatedAt=stamp();persist();renderNotes();commentList();\n notify(\'已復原到上一個定位。\');\n}'
+OLD_DISPATCH = "else if(act==='reanchor'&&c)reanchor(c);"
+NEW_DISPATCH = "else if(act==='reanchor'&&c)reanchor(c);  else if(act==='reanchor-confirm'&&c)reanchorConfirm(c);  else if(act==='undo-reanchor'&&c)undoReanchor(c);"
+
+# GEO-144(🔒 Q2 2026-09-20):過期批註就地重新綁定的樣式。
+REANCHOR_CSS = (
+    ".stale-actions{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 2px}"
+    ".stale-actions button{font-size:12.5px;min-height:38px;padding:6px 12px;border:1px solid var(--line);"
+    "border-radius:7px;background:var(--paper);color:var(--accent)}"
+    ".stale-actions button.review-primary{background:var(--note);color:var(--bg);border-color:var(--note);font-weight:600}"
+    ".reanchor-diff{display:grid;gap:12px;margin:12px 0}"
+    "@media (min-width:640px){.reanchor-diff{grid-template-columns:1fr 1fr}}"
+    ".reanchor-diff h4{font-size:11px;letter-spacing:.08em;color:var(--muted);margin:0 0 6px;font-weight:600}"
+    ".reanchor-diff blockquote{margin:0}"
+)
+
 # GEO-141 最後一段(🔒 Q8 2026-09-20):見證圖改 inline <svg>,顏色由頁面 CSS 控。
 # 原本樣式燒在 SVG 裡(<img> 看不到頁面變數與 data-theme),淺色主題下是一塊黑方塊。
 # 內聯後全部改吃 token;**角色色維持字面值不動**(🔒 Q1:屬 witness/規範.md v1、與條文語意綁定)。
@@ -666,6 +685,10 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     assert "草稿已保留" in script_text(source, "workspace-script"), "GEO-146 切分頁沒有保留草稿"
     assert "halfSheet()" in script_text(source, "workspace-script"), "GEO-148 中間寬度仍走全螢幕 modal"
     assert "body.half-sheet-open" in source, "GEO-148 半高 sheet 樣式不見了"
+    review_js = script_text(source, "review-script")
+    assert "reanchorConfirm" in review_js, "GEO-144 重新綁定沒有前後對照"
+    assert "stale-actions" in review_js, "GEO-144 過期批註沒有就地動作"
+    assert "將這則批註重新綁定到" not in review_js, "GEO-144 confirm() 還在"
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
@@ -744,6 +767,15 @@ FACET_HELPER_JS = "\n    /* GEO-149:篩選 chip。與搜尋、分類篩選疊加
 
 
 WITNESS_PANE_JS = "\n /* GEO-138(🔒 Q4):右欄上半固定顯示「目前這一條」的見證圖,不與參照/批註互斥。\n    GEO-141(🔒 Q8):見證圖已是 inline <svg>,直接複製節點,不另存第二份酬載。 */\n function toast(text){\n  const t=document.getElementById('toast');if(!t)return;\n  t.textContent=text;t.hidden=false;\n  clearTimeout(toast._timer);toast._timer=setTimeout(()=>{t.hidden=true;},2200);\n }\n function renderWitness(id){\n  const pane=document.getElementById('workspace-witness');if(!pane)return;\n  const label=document.getElementById('workspace-witness-clause');\n  const holder=document.getElementById('workspace-witness-img');\n  const none=document.getElementById('workspace-witness-none');\n  const article=id?document.getElementById(id):null;\n  const source=article?article.querySelector('.witness-diagram'):null;\n  if(label)label.textContent=id||'';\n  holder.textContent='';\n  if(source){\n   const copy=source.cloneNode(true);copy.removeAttribute('id');\n   copy.setAttribute('viewBox',copy.dataset.crop||copy.getAttribute('viewBox'));\n   holder.appendChild(copy);holder.hidden=false;none.hidden=true;\n  }else{\n   holder.hidden=true;none.hidden=false;\n  }\n }\n document.addEventListener('axiom:current',e=>renderWitness(e.detail&&e.detail.id));\n /* GEO-141(Q8):展開三視圖 = 同一個 <svg> 換 viewBox,不放第二份圖。 */\n document.addEventListener('toggle',e=>{\n  const d=e.target;if(!d||!d.classList||!d.classList.contains('three-views'))return;\n  const fig=d.closest('figure');const svg=fig?fig.querySelector('.witness-diagram'):null;\n  if(!svg)return;\n  svg.setAttribute('viewBox',d.open?svg.dataset.full:svg.dataset.crop);\n },true);"
+
+
+def apply_reanchor(template: str) -> str:
+    """GEO-144(🔒 Q2):過期批註就地給「重新綁定這段」;confirm() 換成面板內前後對照 + 主鈕。"""
+    js = script_text(template, "review-script")
+    js = force(js, OLD_STALE, NEW_STALE, "過期批註就地動作")
+    js = force(js, OLD_REANCHOR, NEW_REANCHOR, "重新綁定改前後對照")
+    js = force(js, OLD_DISPATCH, NEW_DISPATCH, "重新綁定的 action 分派")
+    return replace_script(template, "review-script", js)
 
 
 def apply_half_sheet(template: str) -> str:
@@ -1195,6 +1227,7 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             incoming[ref].append(c["id"])
     witness_manifest = load_witness_manifest()
     template = inject_css(template, WITNESS_CSS, ".witness-section{")
+    template = inject_css(template, REANCHOR_CSS, ".stale-actions{display:flex")
     template = inject_css(template, WITNESS_DIAGRAM_CSS, ".witness-diagram .role-boundary{")
     template = inject_css(template, SHEET_CSS, "body.half-sheet-open{padding-bottom:52dvh}")
     template = inject_css(template, WITNESS_PANE_CSS, "#workspace-witness{display:none}")
@@ -1291,6 +1324,8 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     template = apply_witness_pane(template)
     # GEO-148:中間寬度的底部半高 sheet。
     template = apply_half_sheet(template)
+    # GEO-144:過期批註就地重新綁定。
+    template = apply_reanchor(template)
     template = apply_facets(template, clauses, trace, note_counts, example_counts,
                            {wid for wid in witness_manifest
                             if (WITNESS_DIR / f"{wid}.svg").exists()})

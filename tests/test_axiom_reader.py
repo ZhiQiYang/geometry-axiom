@@ -143,6 +143,16 @@ class CanonicalReader(unittest.TestCase):
         self.assertIn(".review-block:focus-within>.block-tools", self.html)
         self.assertIn("pressTimer", reader.script_text(self.html, "reader-script"))
 
+    def test_stale_comments_can_be_reanchored_in_place(self):
+        # GEO-144(🔒 Q2):過期批註要就地給下一步,且不得再用 confirm() 叫使用者盲簽。
+        js = reader.script_text(self.html, "review-script")
+        self.assertIn("stale-actions", js)
+        self.assertIn("reanchorConfirm", js)
+        self.assertIn("undoReanchor", js)
+        self.assertNotIn("將這則批註重新綁定到", js)      # 舊的 confirm() 文案
+        self.assertIn(".stale-actions{display:flex", self.html)
+        self.assertIn(".reanchor-diff{display:grid", self.html)
+
     def test_witness_figures_are_inline_and_themed(self):
         # GEO-141 最後一段(🔒 Q8):見證圖改 inline svg 由頁面 CSS 控色;範例圖維持 base64。
         counts = json.loads(reader.script_text(self.html, reader.COUNTS_ID))
