@@ -69,11 +69,11 @@ LEGEND_H = 680
 WITNESS_CSS = (
     "<style id=\"witness\">"
     ".role-boundary{fill:%s;stroke:%s}.role-primary{fill:%s;stroke:%s}.role-secondary{fill:%s;stroke:%s}.role-custom{fill:%s;stroke:%s}"
-    ".stop{fill:none;stroke-linecap:butt}"
+    ".stop{stroke:none}"
     ".stop-label{font:bold 110px sans-serif;dominant-baseline:middle;paint-order:stroke;stroke:#ffffff;stroke-width:30px;stroke-linejoin:round}"
     ".tile-frame{fill:#ffffff;stroke:#888888;stroke-width:1px}"
     ".tile-title{font:bold 72px sans-serif;fill:#222222}"
-    ".tile .label{display:none}"
+    ".tile line.edge,.tile line.guide,.tile line.edge-free{stroke-width:2px}"
     ".legend-title{font:bold 110px sans-serif;fill:#222222}.legend-text{font:95px sans-serif;fill:#333333;dominant-baseline:middle}"
     ".legend-box{fill:#ffffff;stroke:#bbbbbb;stroke-width:1px}"
     ".section-title{font:bold 120px sans-serif;fill:#222222}"
@@ -307,29 +307,22 @@ def check_no_overlap(timbers, surfaces):
 
 
 def check_marks_outside(joints, timbers, view):
-    """標記自驗:停止標記(退半粗度後)的範圍不得進入擋面對方角材的 footprint。"""
+    """標記碰撞自驗:每個停止標記矩形(主圖與接點格兩種厚度)不得與**任何**其他角材的 A0 footprint 有正面積交集。"""
     proj = VIEWS[view][2]
+    foot = {u: _proj_bbox(timbers[u]["faces"]["A0"], proj) for u in timbers}
     for j in joints:
-        if j["detail"]["kind"] != "timber":
-            continue
-        t, u = timbers[j["t"]], timbers[j["detail"]["id"]]
-        w = max(t["A"], t["B"])
-        thick = max(4, int(w * 0.3 * 1.6))
-        x0, x1, y0, y1 = _proj_bbox(t["faces"][j["end"]], proj)
-        if (x1 - x0 == 0) == (y1 - y0 == 0):
-            continue
-        sgn_in = -1 if j["end"] == "END" else 1
-        ix, iy = proj(tuple(sgn_in * c for c in t["axis"]))
-        # 標記在長度軸方向佔的範圍:[接觸面, 接觸面 + 向內 thick]
-        ux0, ux1, uy0, uy1 = _proj_bbox(u["faces"]["A0"], proj)
-        if ix:
-            lo, hi = sorted((x0, x0 + ix * thick))
-            inside = max(lo, ux0) < min(hi, ux1)
-        else:
-            lo, hi = sorted((y0, y0 + iy * thick))
-            inside = max(lo, uy0) < min(hi, uy1)
-        if inside:
-            raise WitnessError("t%d·%s 的停止標記侵入 t%d 的 footprint——標註不得暗示不存在的占用" % (j["t"], j["end"], j["detail"]["id"]))
+        for scale in (1.0, 1.6):
+            box = stop_mark_box(j, timbers, view, scale)
+            if box is None:
+                continue
+            for u, (ux0, ux1, uy0, uy1) in foot.items():
+                if u == j["t"]:
+                    continue
+                ow = min(box[1], ux1) - max(box[0], ux0)
+                oh = min(box[3], uy1) - max(box[2], uy0)
+                if ow > 0 and oh > 0:
+                    raise WitnessError("t%d·%s 的停止標記侵入 t%d 的 footprint(%g×%g mm)——標註不得暗示不存在的占用"
+                                       % (j["t"], j["end"], u, ow, oh))
 
 
 # ------------------------------------------------------------------
@@ -373,57 +366,153 @@ def _proj_bbox(pts, proj):
     return min(x for x, _ in xy), max(x for x, _ in xy), min(y for _, y in xy), max(y for _, y in xy)
 
 
-def stop_marks(joints, timbers, roles, view, with_label=True, scale=1.0):
-    """停止標記:端面在該視圖的投影(線段或矩形)加粗,同角材色;標籤 →擋面參照 放在端面外側。"""
+def _fmt(v):
+    r = round(v, 1)
+    return "%d" % r if r == int(r) else "%.1f" % r
+
+
+def stop_mark_box(j, timbers, view, scale=1.0):
+    """停止標記的矩形 (x0,x1,y0,y1),在該視圖座標;端面退化成點時回 None。
+    範圍 = 端面本身的寬 × 向被裁料內側 thick(0.3×料寬×scale);整個在自己 footprint 內,不外延、不壓接觸面外側。"""
     proj = VIEWS[view][2]
+    t = timbers[j["t"]]
+    w = max(t["A"], t["B"])
+    pts = t["faces"][j["end"]]
+    x0, x1, y0, y1 = _proj_bbox(pts, proj)
+    if (x1 - x0 == 0) == (y1 - y0 == 0):
+        return None
+    thick = max(4, int(w * 0.3 * scale))
+    sgn_in = -1 if j["end"] == "END" else 1
+    ix, iy = proj(tuple(sgn_in * c for c in t["axis"]))
+    if y1 - y0 == 0:          # 端面是水平線段 → 長度軸沿 y
+        lo, hi = sorted((y0, y0 + iy * thick))
+        return (x0, x1, lo, hi)
+    lo, hi = sorted((x0, x0 + ix * thick))
+    return (lo, hi, y0, y1)
+
+
+def stop_marks(joints, timbers, roles, view, with_label=False, scale=1.0):
+    """停止標記 = 填色矩形(無 stroke)。不用 <line stroke-width>:引擎 CSS 的 vector-effect:non-scaling-stroke
+    會讓線條粗度變成螢幕像素,縮小時穿過整支料(GEO-137)。矩形佔的範圍就是座標寫的範圍。"""
     out = []
     for j in joints:
-        t = timbers[j["t"]]
-        role = roles[j["t"]][0]
-        w = max(t["A"], t["B"])
-        pts = t["faces"][j["end"]]
-        x0, x1, y0, y1 = _proj_bbox(pts, proj)
-        color = ROLE_COLOR[role]
-        thick = max(4, int(w * 0.3 * scale))
-        ext = int(w * 0.3 * scale)
-        if x1 - x0 == 0 and y1 - y0 == 0:
-            continue                       # 端面在此視圖退化成點(沿視線),不標
-        if x1 - x0 == 0 or y1 - y0 == 0:   # 線段:垂直於長度軸,延長到 1.6 倍料寬
-            # 物理碰撞:接觸面是零面積的面對面,標記不可以壓在接觸面上伸進對方料——
-            # 整條退到被裁料自己這一側(沿長度軸向內偏移半個粗度),對方 footprint 一個 mm 都不碰。
-            sgn_in = -1 if j["end"] == "END" else 1
-            ax_ = t["axis"]
-            ix, iy = proj((sgn_in * ax_[0], sgn_in * ax_[1], sgn_in * ax_[2]))
-            sx, sy = ix * thick / 2.0, iy * thick / 2.0
-            if y1 - y0 == 0:
-                x0, x1 = x0 - ext, x1 + ext
-            else:
-                y0, y1 = y0 - ext, y1 + ext
-            out.append('<line x1="%g" y1="%g" x2="%g" y2="%g" class="stop" stroke="%s" stroke-width="%d" data-joint="t%d.%s"/>'
-                       % (x0 + sx, y0 + sy, x1 + sx, y1 + sy, color, thick, j["t"], j["end"]))
-        else:                               # 端面正對視線:畫外框
-            out.append('<rect x="%d" y="%d" width="%d" height="%d" class="stop" stroke="%s" stroke-width="%d" data-joint="t%d.%s"/>'
-                       % (x0, y0, x1 - x0, y1 - y0, color, max(2, thick // 2), j["t"], j["end"]))
-        if with_label:
-            # 標籤放在端面外側:END 朝 +長度軸、START 朝 −長度軸
-            sgn = 1 if j["end"] == "END" else -1
-            axis = t["axis"]
-            c3 = [sum(p[i] for p in pts) / 4.0 for i in range(3)]
-            off = [c3[i] + sgn * axis[i] * w * 2.2 for i in range(3)]
-            lx, ly = proj(off)
-            anchor = "middle"
-            dx, dy = proj((sgn * axis[0], sgn * axis[1], sgn * axis[2]))
-            if dx > 0:
-                anchor = "start"
-            elif dx < 0:
-                anchor = "end"
-            out.append('<text x="%d" y="%d" class="stop-label" fill="%s" text-anchor="%s" font-size="%d">→%s</text>'
-                       % (round(lx), round(ly), color, anchor, round(110 * scale), j["stop"]))
+        box = stop_mark_box(j, timbers, view, scale)
+        if box is None:
+            continue
+        x0, x1, y0, y1 = box
+        color = ROLE_COLOR[roles[j["t"]][0]]
+        out.append('<rect x="%s" y="%s" width="%s" height="%s" class="stop" fill="%s" data-joint="t%d.%s"/>'
+                   % (_fmt(x0), _fmt(y0), _fmt(x1 - x0), _fmt(y1 - y0), color, j["t"], j["end"]))
     return "\n".join(out)
 
 
 def _strip_text(body):
     return re.sub(r"<text\b[^>]*>.*?</text>\s*", "", body, flags=re.S)
+
+
+# ---- 接點格:預先裁切成平面幾何(GEO-136) ----
+# 為什麼不用巢狀 <svg viewBox> 或 <g transform>:很多 SVG 檢視器不裁切巢狀 viewBox,
+# 整個場景會不裁切地畫出來,看起來像料互相穿越。這裡在 Python 裡把每個形狀裁到視窗、
+# 算成版面座標,只輸出 polygon / line / rect——任何檢視器只能畫出同一個結果。
+
+def _clip_poly(pts, rect):
+    """Sutherland–Hodgman:多邊形裁到軸對齊矩形 (x0,x1,y0,y1)。"""
+    x0, x1, y0, y1 = rect
+
+    def clip(poly, inside, intersect):
+        out = []
+        for i, cur in enumerate(poly):
+            prev = poly[i - 1]
+            if inside(cur):
+                if not inside(prev):
+                    out.append(intersect(prev, cur))
+                out.append(cur)
+            elif inside(prev):
+                out.append(intersect(prev, cur))
+        return out
+
+    def ix(a, b, x):
+        t = (x - a[0]) / (b[0] - a[0])
+        return (x, a[1] + t * (b[1] - a[1]))
+
+    def iy(a, b, y):
+        t = (y - a[1]) / (b[1] - a[1])
+        return (a[0] + t * (b[0] - a[0]), y)
+
+    poly = list(pts)
+    for inside, intersect in (
+        (lambda p: p[0] >= x0, lambda a, b: ix(a, b, x0)),
+        (lambda p: p[0] <= x1, lambda a, b: ix(a, b, x1)),
+        (lambda p: p[1] >= y0, lambda a, b: iy(a, b, y0)),
+        (lambda p: p[1] <= y1, lambda a, b: iy(a, b, y1)),
+    ):
+        if not poly:
+            return []
+        poly = clip(poly, inside, intersect)
+    return poly
+
+
+def _clip_line(a, b, rect):
+    """Liang–Barsky:線段裁到矩形;不相交回 None。"""
+    x0, x1, y0, y1 = rect
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    t0, t1 = 0.0, 1.0
+    for p, q in ((-dx, a[0] - x0), (dx, x1 - a[0]), (-dy, a[1] - y0), (dy, y1 - a[1])):
+        if p == 0:
+            if q < 0:
+                return None
+            continue
+        t = q / p
+        if p < 0:
+            if t > t1:
+                return None
+            t0 = max(t0, t)
+        else:
+            if t < t0:
+                return None
+            t1 = min(t1, t)
+    return (a[0] + t0 * dx, a[1] + t0 * dy), (a[0] + t1 * dx, a[1] + t1 * dy)
+
+
+_EL = re.compile(r'<(polygon|line|rect)\b([^>]*)/>')
+_ATTR = re.compile(r'([\w-]+)="([^"]*)"')
+
+
+def flat_tile(body, marks, window, px, py, size):
+    """把視圖內容(引擎 SVG 片段,已著色、已去文字)裁到 window=(wx0,wx1,wy0,wy1),
+    映射到版面座標 (px,py) 起、邊長 size 的方格,輸出平面元素。"""
+    wx0, wx1, wy0, wy1 = window
+    k = size / float(wx1 - wx0)
+
+    def M(pt):
+        return (px + (pt[0] - wx0) * k, py + (pt[1] - wy0) * k)
+
+    out = []
+    for m in _EL.finditer(body + "\n" + marks):
+        tag, attrs = m.group(1), dict(_ATTR.findall(m.group(2)))
+        cls = attrs.get("class", "")
+        if tag == "rect" and "frame" in cls:
+            continue
+        keep = " ".join('%s="%s"' % (k_, attrs[k_]) for k_ in ("class", "data-t", "data-joint", "fill") if k_ in attrs)
+        if tag == "polygon":
+            pts = [tuple(map(float, q.split(","))) for q in attrs["points"].split()]
+            c = _clip_poly(pts, window)
+            if len(c) >= 3:
+                out.append('<polygon points="%s" %s/>' % (" ".join("%s,%s" % (_fmt(a), _fmt(b)) for a, b in map(M, c)), keep))
+        elif tag == "rect":
+            x, y, w, h = (float(attrs[k_]) for k_ in ("x", "y", "width", "height"))
+            c = _clip_poly([(x, y), (x + w, y), (x + w, y + h), (x, y + h)], window)
+            if len(c) >= 3:
+                out.append('<polygon points="%s" %s/>' % (" ".join("%s,%s" % (_fmt(a), _fmt(b)) for a, b in map(M, c)), keep))
+        else:
+            a = (float(attrs["x1"]), float(attrs["y1"]))
+            b = (float(attrs["x2"]), float(attrs["y2"]))
+            c = _clip_line(a, b, window)
+            if c:
+                (ax, ay), (bx, by) = M(c[0]), M(c[1])
+                sw = ' stroke-width="%s"' % _fmt(float(attrs["stroke-width"]) * k) if "stroke-width" in attrs else ""
+                out.append('<line x1="%s" y1="%s" x2="%s" y2="%s" %s%s/>' % (_fmt(ax), _fmt(ay), _fmt(bx), _fmt(by), keep, sw))
+    return "\n".join(out)
 
 
 def compose(cid, ent, engine_svg, joints, timbers, roles):
@@ -485,12 +574,13 @@ def compose(cid, ent, engine_svg, joints, timbers, roles):
             py = ty + row * (tile + TILE_GAP + 140)
             title = "t%d·%s→%s%s" % (j["t"], j["end"], j["stop"], "(RC)" if j["detail"]["kind"] == "outline" else "")
             inner = stop_marks([j], timbers, roles, jview, with_label=False, scale=1.6)
+            window = (cx - half, cx + half, cy - half, cy + half)
             tiles.append(
                 '<text x="%d" y="%d" class="tile-title">%s</text>\n'
                 '<rect x="%d" y="%d" width="%d" height="%d" class="tile-frame"/>\n'
-                '<svg x="%d" y="%d" width="%d" height="%d" viewBox="%d %d %d %d" preserveAspectRatio="xMidYMid meet" class="tile" data-joint="t%d.%s">\n%s\n%s\n</svg>'
-                % (px, py + 100, title, px, py + 130, tile, tile, px, py + 130, tile, tile,
-                   round(cx - half), round(cy - half), 2 * half, 2 * half, j["t"], j["end"], scene_body, inner))
+                '<g class="tile" data-joint="t%d.%s">\n%s\n</g>'
+                % (px, py + 100, title, px, py + 130, tile, tile, j["t"], j["end"],
+                   flat_tile(scene_body, inner, window, px, py + 130, tile)))
         rows = (len(joints) + per_row - 1) // per_row
         ty += rows * (tile + TILE_GAP + 140)
 
@@ -502,10 +592,10 @@ def compose(cid, ent, engine_svg, joints, timbers, roles):
         lx, ly = x0 + 40 + (k % 2) * step, ty + 200 + (k // 2) * 130
         legend.append('<rect x="%d" y="%d" width="160" height="80" class="role-%s"/><text x="%d" y="%d" class="legend-text">%s</text>'
                       % (lx, ly, r, lx + 190, ly + 40, ROLE_LABEL[r]))
-    legend.append('<line x1="%d" y1="%d" x2="%d" y2="%d" class="stop" stroke="#333333" stroke-width="10"/>'
+    legend.append('<rect x="%d" y="%d" width="40" height="80" class="stop" fill="#333333"/>'
                   '<text x="%d" y="%d" class="legend-text">停止標記 = 端面被裁的位置(同角材色);接點格標題 t3·END→t2 = 角材 3 的 END 端面停在角材 2 的側面。</text>'
                   '<text x="%d" y="%d" class="legend-text">→e0 = 停在外輪廓邊 0(RC;只有 boundary 可頂,I19);→h0e2 = 停在孔 0 的邊 2。擋面參照寫法同 D18。</text>'
-                  % (x0 + 60, ty + 460, x0 + 60, ty + 540, x0 + 190, ty + 500, x0 + 190, ty + 600))
+                  % (x0 + 60, ty + 460, x0 + 190, ty + 500, x0 + 190, ty + 600))
     H = ty + LEGEND_H - y0
 
     head = ('<?xml version="1.0" encoding="UTF-8"?>\n'

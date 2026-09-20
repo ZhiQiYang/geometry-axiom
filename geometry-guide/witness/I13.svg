@@ -18,7 +18,7 @@
   .timber-face { fill: #ffd27f; fill-opacity: 0.5; stroke: #a06000; stroke-width: 1.5px; }
   .timber-face-near { fill-opacity: 0.85; }
 </style>
-<style id="witness">.role-boundary{fill:#e2a24a;stroke:#e2a24a}.role-primary{fill:#63b3ed;stroke:#63b3ed}.role-secondary{fill:#9ae6b4;stroke:#9ae6b4}.role-custom{fill:#d6bcfa;stroke:#d6bcfa}.stop{fill:none;stroke-linecap:butt}.stop-label{font:bold 110px sans-serif;dominant-baseline:middle;paint-order:stroke;stroke:#ffffff;stroke-width:30px;stroke-linejoin:round}.tile-frame{fill:#ffffff;stroke:#888888;stroke-width:1px}.tile-title{font:bold 72px sans-serif;fill:#222222}.tile .label{display:none}.legend-title{font:bold 110px sans-serif;fill:#222222}.legend-text{font:95px sans-serif;fill:#333333;dominant-baseline:middle}.legend-box{fill:#ffffff;stroke:#bbbbbb;stroke-width:1px}.section-title{font:bold 120px sans-serif;fill:#222222}</style>
+<style id="witness">.role-boundary{fill:#e2a24a;stroke:#e2a24a}.role-primary{fill:#63b3ed;stroke:#63b3ed}.role-secondary{fill:#9ae6b4;stroke:#9ae6b4}.role-custom{fill:#d6bcfa;stroke:#d6bcfa}.stop{stroke:none}.stop-label{font:bold 110px sans-serif;dominant-baseline:middle;paint-order:stroke;stroke:#ffffff;stroke-width:30px;stroke-linejoin:round}.tile-frame{fill:#ffffff;stroke:#888888;stroke-width:1px}.tile-title{font:bold 72px sans-serif;fill:#222222}.tile line.edge,.tile line.guide,.tile line.edge-free{stroke-width:2px}.legend-title{font:bold 110px sans-serif;fill:#222222}.legend-text{font:95px sans-serif;fill:#333333;dominant-baseline:middle}.legend-box{fill:#ffffff;stroke:#bbbbbb;stroke-width:1px}.section-title{font:bold 120px sans-serif;fill:#222222}</style>
 <g transform="translate(250,1930)" data-view="bottom">
 <rect class="frame" x="-250" y="-390" width="4500" height="3640"/>
 <text x="-190" y="-280" class="title">仰視圖（X 向右，Y 向下）</text>
@@ -43,133 +43,83 @@
 <polygon points="1014,20 987,20 987,2980 1014,2980" class="timber-face timber-face-near role-primary" data-t="3"/>
 <text x="1000" y="1500" class="label timber-label">角材3 A0</text>
 
-<line x1="3" y1="-6" x2="3" y2="26" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t1.START"/>
-<line x1="3997" y1="-6" x2="3997" y2="26" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t1.END"/>
-<line x1="3997" y1="2974" x2="3997" y2="3006" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t2.START"/>
-<line x1="3" y1="2974" x2="3" y2="3006" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t2.END"/>
-<line x1="978" y1="24.5" x2="1023" y2="24.5" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t3.START"/>
-<line x1="978" y1="2975.5" x2="1023" y2="2975.5" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t3.END"/>
+<rect x="0" y="0" width="6" height="20" class="stop" fill="#e2a24a" data-joint="t1.START"/>
+<rect x="3994" y="0" width="6" height="20" class="stop" fill="#e2a24a" data-joint="t1.END"/>
+<rect x="3994" y="2980" width="6" height="20" class="stop" fill="#e2a24a" data-joint="t2.START"/>
+<rect x="0" y="2980" width="6" height="20" class="stop" fill="#e2a24a" data-joint="t2.END"/>
+<rect x="987" y="20" width="27" height="9" class="stop" fill="#63b3ed" data-joint="t3.START"/>
+<rect x="987" y="2971" width="27" height="9" class="stop" fill="#63b3ed" data-joint="t3.END"/>
 </g>
 <text x="40" y="5390" class="section-title">接點列(每格 = 一個角材端面,等比例放大,窗 = 8 × 料寬;視圖:仰視圖)</text>
 <text x="0" y="5580" class="tile-title">t1·START→e3(RC)</text>
 <rect x="0" y="5610" width="700" height="700" class="tile-frame"/>
-<svg x="0" y="5610" width="700" height="700" viewBox="-80 -70 160 160" preserveAspectRatio="xMidYMid meet" class="tile" data-joint="t1.START">
-
-<polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
-<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
-<line x1="4000" y1="0" x2="4000" y2="3000" class="edge"/>
-<line x1="4000" y1="3000" x2="0" y2="3000" class="edge"/>
-<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
-<line x1="1000" y1="0" x2="1000" y2="3000" class="guide"/>
-<polygon points="0,0 4000,0 4000,20 0,20" class="timber-face role-boundary" data-t="1"/>
-<polygon points="0,0 0,20 4000,20 4000,0" class="timber-face timber-face-near role-boundary" data-t="1"/>
-<polygon points="4000,3000 0,3000 0,2980 4000,2980" class="timber-face role-boundary" data-t="2"/>
-<polygon points="4000,3000 4000,2980 0,2980 0,3000" class="timber-face timber-face-near role-boundary" data-t="2"/>
-<polygon points="1014,20 1014,2980 987,2980 987,20" class="timber-face role-primary" data-t="3"/>
-<polygon points="1014,20 987,20 987,2980 1014,2980" class="timber-face timber-face-near role-primary" data-t="3"/>
-
-<line x1="4.5" y1="-9" x2="4.5" y2="29" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t1.START"/>
-</svg>
+<g class="tile" data-joint="t1.START">
+<polygon points="350,6310 350,5916.2 700,5916.2 700,6310" class="surface"/>
+<line x1="350" y1="5916.2" x2="700" y2="5916.2" class="edge"/>
+<line x1="350" y1="6310" x2="350" y2="5916.2" class="edge"/>
+<polygon points="350,5916.2 700,5916.2 700,6003.8 350,6003.8" class="timber-face role-boundary" data-t="1"/>
+<polygon points="700,5916.2 350,5916.2 350,6003.8 700,6003.8" class="timber-face timber-face-near role-boundary" data-t="1"/>
+<polygon points="350,5916.2 389.4,5916.2 389.4,6003.8 350,6003.8" class="stop" data-joint="t1.START" fill="#e2a24a"/>
+</g>
 <text x="760" y="5580" class="tile-title">t1·END→e1(RC)</text>
 <rect x="760" y="5610" width="700" height="700" class="tile-frame"/>
-<svg x="760" y="5610" width="700" height="700" viewBox="3920 -70 160 160" preserveAspectRatio="xMidYMid meet" class="tile" data-joint="t1.END">
-
-<polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
-<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
-<line x1="4000" y1="0" x2="4000" y2="3000" class="edge"/>
-<line x1="4000" y1="3000" x2="0" y2="3000" class="edge"/>
-<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
-<line x1="1000" y1="0" x2="1000" y2="3000" class="guide"/>
-<polygon points="0,0 4000,0 4000,20 0,20" class="timber-face role-boundary" data-t="1"/>
-<polygon points="0,0 0,20 4000,20 4000,0" class="timber-face timber-face-near role-boundary" data-t="1"/>
-<polygon points="4000,3000 0,3000 0,2980 4000,2980" class="timber-face role-boundary" data-t="2"/>
-<polygon points="4000,3000 4000,2980 0,2980 0,3000" class="timber-face timber-face-near role-boundary" data-t="2"/>
-<polygon points="1014,20 1014,2980 987,2980 987,20" class="timber-face role-primary" data-t="3"/>
-<polygon points="1014,20 987,20 987,2980 1014,2980" class="timber-face timber-face-near role-primary" data-t="3"/>
-
-<line x1="3995.5" y1="-9" x2="3995.5" y2="29" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t1.END"/>
-</svg>
+<g class="tile" data-joint="t1.END">
+<polygon points="760,6310 760,5916.2 1110,5916.2 1110,6310" class="surface"/>
+<line x1="760" y1="5916.2" x2="1110" y2="5916.2" class="edge"/>
+<line x1="1110" y1="5916.2" x2="1110" y2="6310" class="edge"/>
+<polygon points="760,5916.2 1110,5916.2 1110,6003.8 760,6003.8" class="timber-face role-boundary" data-t="1"/>
+<polygon points="760,5916.2 760,6003.8 1110,6003.8 1110,5916.2" class="timber-face timber-face-near role-boundary" data-t="1"/>
+<polygon points="1070.6,5916.2 1110,5916.2 1110,6003.8 1070.6,6003.8" class="stop" data-joint="t1.END" fill="#e2a24a"/>
+</g>
 <text x="1520" y="5580" class="tile-title">t2·START→e1(RC)</text>
 <rect x="1520" y="5610" width="700" height="700" class="tile-frame"/>
-<svg x="1520" y="5610" width="700" height="700" viewBox="3920 2910 160 160" preserveAspectRatio="xMidYMid meet" class="tile" data-joint="t2.START">
-
-<polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
-<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
-<line x1="4000" y1="0" x2="4000" y2="3000" class="edge"/>
-<line x1="4000" y1="3000" x2="0" y2="3000" class="edge"/>
-<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
-<line x1="1000" y1="0" x2="1000" y2="3000" class="guide"/>
-<polygon points="0,0 4000,0 4000,20 0,20" class="timber-face role-boundary" data-t="1"/>
-<polygon points="0,0 0,20 4000,20 4000,0" class="timber-face timber-face-near role-boundary" data-t="1"/>
-<polygon points="4000,3000 0,3000 0,2980 4000,2980" class="timber-face role-boundary" data-t="2"/>
-<polygon points="4000,3000 4000,2980 0,2980 0,3000" class="timber-face timber-face-near role-boundary" data-t="2"/>
-<polygon points="1014,20 1014,2980 987,2980 987,20" class="timber-face role-primary" data-t="3"/>
-<polygon points="1014,20 987,20 987,2980 1014,2980" class="timber-face timber-face-near role-primary" data-t="3"/>
-
-<line x1="3995.5" y1="2971" x2="3995.5" y2="3009" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t2.START"/>
-</svg>
+<g class="tile" data-joint="t2.START">
+<polygon points="1520,5610 1870,5610 1870,6003.8 1520,6003.8" class="surface"/>
+<line x1="1870" y1="5610" x2="1870" y2="6003.8" class="edge"/>
+<line x1="1870" y1="6003.8" x2="1520" y2="6003.8" class="edge"/>
+<polygon points="1870,6003.8 1520,6003.8 1520,5916.2 1870,5916.2" class="timber-face role-boundary" data-t="2"/>
+<polygon points="1520,6003.8 1870,6003.8 1870,5916.2 1520,5916.2" class="timber-face timber-face-near role-boundary" data-t="2"/>
+<polygon points="1830.6,5916.2 1870,5916.2 1870,6003.8 1830.6,6003.8" class="stop" data-joint="t2.START" fill="#e2a24a"/>
+</g>
 <text x="2280" y="5580" class="tile-title">t2·END→e3(RC)</text>
 <rect x="2280" y="5610" width="700" height="700" class="tile-frame"/>
-<svg x="2280" y="5610" width="700" height="700" viewBox="-80 2910 160 160" preserveAspectRatio="xMidYMid meet" class="tile" data-joint="t2.END">
-
-<polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
-<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
-<line x1="4000" y1="0" x2="4000" y2="3000" class="edge"/>
-<line x1="4000" y1="3000" x2="0" y2="3000" class="edge"/>
-<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
-<line x1="1000" y1="0" x2="1000" y2="3000" class="guide"/>
-<polygon points="0,0 4000,0 4000,20 0,20" class="timber-face role-boundary" data-t="1"/>
-<polygon points="0,0 0,20 4000,20 4000,0" class="timber-face timber-face-near role-boundary" data-t="1"/>
-<polygon points="4000,3000 0,3000 0,2980 4000,2980" class="timber-face role-boundary" data-t="2"/>
-<polygon points="4000,3000 4000,2980 0,2980 0,3000" class="timber-face timber-face-near role-boundary" data-t="2"/>
-<polygon points="1014,20 1014,2980 987,2980 987,20" class="timber-face role-primary" data-t="3"/>
-<polygon points="1014,20 987,20 987,2980 1014,2980" class="timber-face timber-face-near role-primary" data-t="3"/>
-
-<line x1="4.5" y1="2971" x2="4.5" y2="3009" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t2.END"/>
-</svg>
+<g class="tile" data-joint="t2.END">
+<polygon points="2630,5610 2980,5610 2980,6003.8 2630,6003.8" class="surface"/>
+<line x1="2980" y1="6003.8" x2="2630" y2="6003.8" class="edge"/>
+<line x1="2630" y1="6003.8" x2="2630" y2="5610" class="edge"/>
+<polygon points="2980,6003.8 2630,6003.8 2630,5916.2 2980,5916.2" class="timber-face role-boundary" data-t="2"/>
+<polygon points="2980,6003.8 2980,5916.2 2630,5916.2 2630,6003.8" class="timber-face timber-face-near role-boundary" data-t="2"/>
+<polygon points="2630,5916.2 2669.4,5916.2 2669.4,6003.8 2630,6003.8" class="stop" data-joint="t2.END" fill="#e2a24a"/>
+</g>
 <text x="3040" y="5580" class="tile-title">t3·START→t1</text>
 <rect x="3040" y="5610" width="700" height="700" class="tile-frame"/>
-<svg x="3040" y="5610" width="700" height="700" viewBox="868 -112 264 264" preserveAspectRatio="xMidYMid meet" class="tile" data-joint="t3.START">
-
-<polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
-<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
-<line x1="4000" y1="0" x2="4000" y2="3000" class="edge"/>
-<line x1="4000" y1="3000" x2="0" y2="3000" class="edge"/>
-<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
-<line x1="1000" y1="0" x2="1000" y2="3000" class="guide"/>
-<polygon points="0,0 4000,0 4000,20 0,20" class="timber-face role-boundary" data-t="1"/>
-<polygon points="0,0 0,20 4000,20 4000,0" class="timber-face timber-face-near role-boundary" data-t="1"/>
-<polygon points="4000,3000 0,3000 0,2980 4000,2980" class="timber-face role-boundary" data-t="2"/>
-<polygon points="4000,3000 4000,2980 0,2980 0,3000" class="timber-face timber-face-near role-boundary" data-t="2"/>
-<polygon points="1014,20 1014,2980 987,2980 987,20" class="timber-face role-primary" data-t="3"/>
-<polygon points="1014,20 987,20 987,2980 1014,2980" class="timber-face timber-face-near role-primary" data-t="3"/>
-
-<line x1="972" y1="27.5" x2="1029" y2="27.5" class="stop" stroke="#63b3ed" stroke-width="15" data-joint="t3.START"/>
-</svg>
+<g class="tile" data-joint="t3.START">
+<polygon points="3040,6310 3040,5907 3740,5907 3740,6310" class="surface"/>
+<line x1="3040" y1="5907" x2="3740" y2="5907" class="edge"/>
+<line x1="3388.7" y1="5907" x2="3388.7" y2="6310" class="guide"/>
+<polygon points="3040,5907 3740,5907 3740,5960 3040,5960" class="timber-face role-boundary" data-t="1"/>
+<polygon points="3740,5907 3040,5907 3040,5960 3740,5960" class="timber-face timber-face-near role-boundary" data-t="1"/>
+<polygon points="3425.8,5960 3425.8,6310 3354.2,6310 3354.2,5960" class="timber-face role-primary" data-t="3"/>
+<polygon points="3425.8,6310 3425.8,5960 3354.2,5960 3354.2,6310" class="timber-face timber-face-near role-primary" data-t="3"/>
+<polygon points="3354.2,5960 3425.8,5960 3425.8,5999.8 3354.2,5999.8" class="stop" data-joint="t3.START" fill="#63b3ed"/>
+</g>
 <text x="3800" y="5580" class="tile-title">t3·END→t2</text>
 <rect x="3800" y="5610" width="700" height="700" class="tile-frame"/>
-<svg x="3800" y="5610" width="700" height="700" viewBox="868 2848 264 264" preserveAspectRatio="xMidYMid meet" class="tile" data-joint="t3.END">
-
-<polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
-<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
-<line x1="4000" y1="0" x2="4000" y2="3000" class="edge"/>
-<line x1="4000" y1="3000" x2="0" y2="3000" class="edge"/>
-<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
-<line x1="1000" y1="0" x2="1000" y2="3000" class="guide"/>
-<polygon points="0,0 4000,0 4000,20 0,20" class="timber-face role-boundary" data-t="1"/>
-<polygon points="0,0 0,20 4000,20 4000,0" class="timber-face timber-face-near role-boundary" data-t="1"/>
-<polygon points="4000,3000 0,3000 0,2980 4000,2980" class="timber-face role-boundary" data-t="2"/>
-<polygon points="4000,3000 4000,2980 0,2980 0,3000" class="timber-face timber-face-near role-boundary" data-t="2"/>
-<polygon points="1014,20 1014,2980 987,2980 987,20" class="timber-face role-primary" data-t="3"/>
-<polygon points="1014,20 987,20 987,2980 1014,2980" class="timber-face timber-face-near role-primary" data-t="3"/>
-
-<line x1="972" y1="2972.5" x2="1029" y2="2972.5" class="stop" stroke="#63b3ed" stroke-width="15" data-joint="t3.END"/>
-</svg>
+<g class="tile" data-joint="t3.END">
+<polygon points="3800,5610 4500,5610 4500,6013 3800,6013" class="surface"/>
+<line x1="4500" y1="6013" x2="3800" y2="6013" class="edge"/>
+<line x1="4148.7" y1="5610" x2="4148.7" y2="6013" class="guide"/>
+<polygon points="4500,6013 3800,6013 3800,5960 4500,5960" class="timber-face role-boundary" data-t="2"/>
+<polygon points="3800,6013 4500,6013 4500,5960 3800,5960" class="timber-face timber-face-near role-boundary" data-t="2"/>
+<polygon points="4185.8,5610 4185.8,5960 4114.2,5960 4114.2,5610" class="timber-face role-primary" data-t="3"/>
+<polygon points="4185.8,5610 4114.2,5610 4114.2,5960 4185.8,5960" class="timber-face timber-face-near role-primary" data-t="3"/>
+<polygon points="4114.2,5920.2 4185.8,5920.2 4185.8,5960 4114.2,5960" class="stop" data-joint="t3.END" fill="#63b3ed"/>
+</g>
 <rect x="0" y="6380" width="4500" height="680" class="legend-box"/>
 <text x="40" y="6510" class="legend-title">圖例(每張見證圖相同;規範 v1)</text>
 <rect x="40" y="6580" width="160" height="80" class="role-boundary"/><text x="230" y="6620" class="legend-text">boundary 邊界材(層級 1)</text>
 <rect x="2250" y="6580" width="160" height="80" class="role-primary"/><text x="2440" y="6620" class="legend-text">primary 主支(層級 2)</text>
 <rect x="40" y="6710" width="160" height="80" class="role-secondary"/><text x="230" y="6750" class="legend-text">secondary 副支(層級 3)</text>
 <rect x="2250" y="6710" width="160" height="80" class="role-custom"/><text x="2440" y="6750" class="legend-text">custom 自訂料(priority N)</text>
-<line x1="60" y1="6840" x2="60" y2="6920" class="stop" stroke="#333333" stroke-width="10"/><text x="190" y="6880" class="legend-text">停止標記 = 端面被裁的位置(同角材色);接點格標題 t3·END→t2 = 角材 3 的 END 端面停在角材 2 的側面。</text><text x="190" y="6980" class="legend-text">→e0 = 停在外輪廓邊 0(RC;只有 boundary 可頂,I19);→h0e2 = 停在孔 0 的邊 2。擋面參照寫法同 D18。</text>
+<rect x="60" y="6840" width="40" height="80" class="stop" fill="#333333"/><text x="190" y="6880" class="legend-text">停止標記 = 端面被裁的位置(同角材色);接點格標題 t3·END→t2 = 角材 3 的 END 端面停在角材 2 的側面。</text><text x="190" y="6980" class="legend-text">→e0 = 停在外輪廓邊 0(RC;只有 boundary 可頂,I19);→h0e2 = 停在孔 0 的邊 2。擋面參照寫法同 D18。</text>
 </svg>

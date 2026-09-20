@@ -1459,3 +1459,32 @@
   (a) 同承載面任兩支 A0 footprint 正面積交集必須為 0(I11,witness 自己再驗一次,不依賴引擎);
   (b) 停止標記範圍不得進入擋面對方角材的 footprint。突變測試:把偏移設回 0 → `--check I22` 報「侵入」。
 - 規範 §2/§4 補記;17 張重出;閱讀器重出;全部測試通過。
+
+### GEO-135 ✅ 已做（2026-09-20）停止標記長度 = 料寬、不外延；碰撞檢查擴及所有相鄰角材
+- 停止標記原本長 1.6× 料寬,外延部分會伸進貼在旁邊的另一支料——標註暗示了不存在的占用。
+- 修:標記長 = 端面本身的寬、一個 mm 都不外延;`check_marks_outside` 從「只對被頂的那支」
+  改為對**所有**其他角材的 A0 footprint 做正面積交集檢查,碰到即不出圖。
+- 新增獨立驗證 `tests/test_witness_marks.py`(不 import witness.py,只讀 repo 內 SVG/joints.json
+  用最笨的矩形交集重算):任兩角材不重疊、標記不侵入他料、每個接點在主圖都有標記。
+
+### GEO-136 ✅ 已做（2026-09-20）接點格改 Python 內裁切,不用巢狀 viewBox
+- 巢狀 `<svg viewBox>` 在多數檢視器不裁切,整個場景會不裁切地畫出來,看起來像料互相穿越。
+- 修:`flat_tile()` 在 Python 裡把每個形狀(Sutherland–Hodgman 多邊形 / Liang–Barsky 線段)
+  裁到視窗、算成版面座標,只輸出平面 polygon/line/rect——任何檢視器只能畫出同一個結果。
+- `manifest.json` 的 D2 改 `view=front`(側視圖是牆的端面投影,兩支立料會投影重疊,
+  獨立測試視為占用)。規範 §3 補記「不得用巢狀 viewBox/`<use>`/`<g transform>` 做放大裁切」。
+
+### GEO-137 ✅ 已做（2026-09-20）停止標記改填色矩形:stroke 粗度是螢幕像素不是 mm
+- 使用者一再指出圖上「藍色主支穿過琥珀色邊界材、穿過孔邊」。根因:引擎 CSS 的
+  `vector-effect:non-scaling-stroke` 讓 `<line class="stop" stroke-width>` 的粗度變成
+  **螢幕像素**而非 mm——圖縮小時 27mm 的料只剩約 5px,8~40px 粗的標記線直接穿過整支料。
+  放大看「看起來對」、座標算「算起來對」,兩個都是假的。
+- 修:`stop_mark_box()` 直接算標記矩形(端面寬 × 向被裁料內側 0.3×料寬),`stop_marks()`
+  輸出 `<rect class="stop" fill=角色色>`;`check_marks_outside` 改用同一個 box;
+  `flat_tile` 保留 `fill` 屬性;CSS `.stop{stroke:none}`;圖例樣本改 `<rect>`。
+- `test_witness_marks.py` 同步改抓 rect/polygon 標記,新增「全檔不得出現 stroke 式 stop 標記」。
+- 規範 §2 停止標記列改為填色矩形寫法。驗收方式改為**用眼睛看**:整張、480px 縮小、
+  逐接點格放大三種尺度,30 格全數 Chrome 截圖目視通過(含原病徵的 t5·START→t1、
+  t7·END→h0e0),閱讀器內嵌圖同版重出。
+- 17 張重出、`--check` 17/17、test_witness_marks 4/4、閱讀器重出且冪等、
+  test_axiom_reader 9/9、run_tests 128/128。`公理層.md` 未動。

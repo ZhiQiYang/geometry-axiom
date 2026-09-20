@@ -2,8 +2,8 @@
   "D2": {
     "scene": "_wit_d2_wall_frame.scene",
     "expect": "accept",
-    "view": "all",
-    "gist": "牆的 frame U=+x V=+z N=−y:同一組局部座標在三個視圖各自落到房間座標。",
+    "view": "front",
+    "gist": "牆的 frame U=+x V=+z:局部 (u,v) 在前視圖直接落到房間 (x,z);兩支立料貼 e3/e1、橫料停在它們的側面。",
     "joint_view": "front"
   },
   "D6": {
