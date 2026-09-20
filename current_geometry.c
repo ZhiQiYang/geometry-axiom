@@ -4288,7 +4288,18 @@ static void gdi_text(void *ctx, ViewPoint2 at, DrawStyle style, const char *utf8
         font_owned = true;
     }
 
-    HGDIOBJ old_font = SelectObject(g->dc, font);
+    /*
+     * GEO-030：CreateFontW 會失敗（資源吃緊、字型子系統出問題）。
+     * 原本沒判 NULL 就 SelectObject——傳 NULL 進去是錯誤呼叫、回傳 NULL，
+     * 接著又拿這個 NULL 去「還原」，等於把 DC 的字型狀態弄壞，之後每一次畫字都受影響。
+     * 失敗時就不換字型：用 DC 現有的字型把字畫出來，比弄壞狀態或整段不畫好。
+     */
+    HGDIOBJ old_font = NULL;
+
+    if (font != NULL) {
+        old_font = SelectObject(g->dc, font);
+    }
+
     UINT old_align = SetTextAlign(g->dc, align);
     COLORREF old_color = SetTextColor(g->dc, color);
     int old_mode = SetBkMode(g->dc, TRANSPARENT);
@@ -4309,7 +4320,10 @@ static void gdi_text(void *ctx, ViewPoint2 at, DrawStyle style, const char *utf8
     SetBkMode(g->dc, old_mode);
     SetTextColor(g->dc, old_color);
     SetTextAlign(g->dc, old_align);
-    SelectObject(g->dc, old_font);
+
+    if (old_font != NULL) {
+        SelectObject(g->dc, old_font);
+    }
 
     if (font_owned && font != NULL) {
         DeleteObject(font);
@@ -5202,26 +5216,40 @@ static LRESULT CALLBACK gdi_window_proc(HWND window, UINT message, WPARAM wparam
                 0, 0, 10, 10,
                 window, (HMENU)(INT_PTR)IDC_INPUT_EDIT, cs->hInstance, NULL);
 
-            CreateWindowW(
+            HWND example_button = CreateWindowW(
                 L"BUTTON", L"載入範例",
                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                 0, 0, 10, 10,
                 window, (HMENU)(INT_PTR)IDC_BTN_EXAMPLE, cs->hInstance, NULL);
 
-            CreateWindowW(
+            HWND clear_button = CreateWindowW(
                 L"BUTTON", L"清空",
                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                 0, 0, 10, 10,
                 window, (HMENU)(INT_PTR)IDC_BTN_CLEAR, cs->hInstance, NULL);
 
+            /*
+             * GEO-035：任何一個控制項建不起來就讓 WM_CREATE 失敗。
+             * 原本不檢查，於是對 NULL HWND 呼叫 WM_SETFONT 與 SetWindowLongPtrW——
+             * 那些呼叫會靜默失敗，接著 gdi_layout_input_bar() 對 NULL 呼叫 MoveWindow，
+             * 狀態列也再也更新不了：**視窗看起來開著，其實是壞的**。
+             * 回傳 -1 會讓 CreateWindowW 回 NULL，而呼叫端本來就有 `if (window == NULL) return false;`。
+             * 帶著半套 UI 繼續跑，比開不起來更難查。
+             */
+            if (app->status_label == NULL
+                || app->hover_label == NULL
+                || app->input_edit == NULL
+                || example_button == NULL
+                || clear_button == NULL) {
+                return -1;
+            }
+
             HFONT gui_font = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
             SendMessageW(app->status_label, WM_SETFONT, (WPARAM)gui_font, TRUE);
             SendMessageW(app->hover_label, WM_SETFONT, (WPARAM)gui_font, TRUE);
             SendMessageW(app->input_edit, WM_SETFONT, (WPARAM)gui_font, TRUE);
-            SendMessageW(GetDlgItem(window, IDC_BTN_EXAMPLE),
-                         WM_SETFONT, (WPARAM)gui_font, TRUE);
-            SendMessageW(GetDlgItem(window, IDC_BTN_CLEAR),
-                         WM_SETFONT, (WPARAM)gui_font, TRUE);
+            SendMessageW(example_button, WM_SETFONT, (WPARAM)gui_font, TRUE);
+            SendMessageW(clear_button, WM_SETFONT, (WPARAM)gui_font, TRUE);
 
             g_edit_orig_proc = (WNDPROC)SetWindowLongPtrW(
                 app->input_edit, GWLP_WNDPROC, (LONG_PTR)gdi_input_proc);

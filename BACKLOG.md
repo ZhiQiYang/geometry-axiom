@@ -161,7 +161,7 @@
 
 ## 第 3 流：GDI / Win32 層（RISKS A2/A3、E1/E2/E4）
 
-### GEO-030 ⚡ CreateFontW 失敗時不 SelectObject(NULL)
+### GEO-030 ✅ 已做(2026-09-21) CreateFontW 失敗時不 SelectObject(NULL)
 - **內容**：`gdi_text`：`font==NULL` 時改用 `GetStockObject(SYSTEM_FONT)` 或直接 return；消 C6387。
 - **驗收**：`cl /analyze` 無 C6387；故意讓 CreateFontW 失敗（破壞字型名）時不當機、文字用預設字型。
 - **檔案**：~L2400。
@@ -196,7 +196,7 @@
 - **測試**：連續 hover 全部 style 後關視窗，用 GDI 物件計數確認無洩漏。
 - **相依**：無。**估時 1h**。
 
-### GEO-035 WM_CREATE 控制項建立失敗處理
+### GEO-035 ✅ 已做(2026-09-21) WM_CREATE 控制項建立失敗處理
 - **內容**：`CreateWindowW` 三個控制項任一失敗時：status 顯示建立失敗或 graceful 降級（現在 NULL HWND 會繼續往下走，`MoveWindow(NULL,…)` 無害但 status_label=NULL 時 `gdi_set_status` 會對 NULL 呼叫）。
 - **驗收**：控制項 NULL 時不當機；主視窗仍可用（僅少輸入列）。
 - **檔案**：~L2702–2730、~L2568。
@@ -1853,12 +1853,12 @@ GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
 
 | 工單 | 狀態 | 證據 | 理由 |
 |---|---|---|---|
-| GEO-030 | 未完成 | current_geometry.c:4259-4287 | CreateFontW 失敗仍直接 `SelectObject(g->dc, font)`，未判 NULL |
+| GEO-030 | ✅ 已完成(2026-09-21) | current_geometry.c `gdi_text` | 失敗時不換字型,也不拿 NULL 去還原 |
 | GEO-031 | 未完成 | current_geometry.c:4013-4018 | gdi_color 未檢查 `hex[0]=='#'`或長度，直接 `strtoul(hex+1,...)` |
 | GEO-032 | 未完成 | current_geometry.c:5824-5847 | bench_paint 的 sink/sink_bmp 建立失敗分支仍未釋放已取得的 screen DC |
 | GEO-033 | 未完成 | current_geometry.c:4721, 5216-5217 | g_edit_orig_proc 仍是全域 WNDPROC，未改 SetWindowSubclass 或存於視窗自身 |
 | GEO-034 | 無法判定 | current_geometry.c:4149-4155（owned 欄位行內註解） | 只有一行「true=未進快取用完要刪」的行內註解，未見整理成完整所有權表，也無 assert，證據不足以判定達成或未達成 |
-| GEO-035 | 未完成 | current_geometry.c:5180-5217（WM_CREATE） | 三個控制項建立後未檢查是否為 NULL 即呼叫 WM_SETFONT / SetWindowLongPtrW |
+| GEO-035 | ✅ 已完成(2026-09-21) | current_geometry.c `WM_CREATE` | 五個控制項任一為 NULL 即回傳 -1,讓視窗開不起來而不是半套 |
 | GEO-036 | 未完成 | current_geometry.c:4745-4764（gdi_layout_input_bar） | 視窗極小時 `w-176` 等寬度運算無下限防禦，MoveWindow 可能收到負寬 |
 
 ## 第 4 流：房間（room→space）功能收尾
@@ -2032,3 +2032,19 @@ GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
   後者要靠針對資料一致性的測試——`test_facet_chips_are_data_driven` 正是這種測試,而它做到了。
 - **我的流程錯誤**:這次我在 `test_axiom_reader` 報 FAILED 的情況下仍然先 commit 了
   (a3d5a69),修正在後一個 commit。正確做法是測試不綠就不 commit。
+
+**GEO-030 / GEO-035 實作紀錄(2026-09-21)**
+
+- **GEO-030**:`CreateFontW` 失敗時原本直接 `SelectObject(g->dc, font)`——傳 NULL 是錯誤呼叫、
+  回傳 NULL,接著又拿這個 NULL 去「還原」,等於**把 DC 的字型狀態弄壞**,之後每一次畫字都受影響。
+  改成:失敗就不換字型,用 DC 現有的字型把字畫出來;還原時也先判 NULL。
+- **GEO-035**:五個控制項任一建不起來就回傳 -1 讓 `WM_CREATE` 失敗。
+  原本不檢查,於是對 NULL HWND 呼叫 `WM_SETFONT` 與 `SetWindowLongPtrW`(靜默失敗),
+  接著 `gdi_layout_input_bar()` 對 NULL 呼叫 `MoveWindow`,狀態列也再也更新不了——
+  **視窗看起來開著,其實是壞的**。呼叫端本來就有 `if (window == NULL) return false;`,
+  所以回傳 -1 是現成的退路。順帶把兩個按鈕的 handle 存下來,不再用 `GetDlgItem` 取。
+- **⚠ 驗證限制(誠實標記)**:這兩張都在 `#ifdef _WIN32` 區塊內。
+  `tests/_clw.bat` 沒有 `/U_WIN32`,所以**有被編譯、有過型別檢查**;
+  但第 3 流(GDI/Win32 互動層)**完全沒有自動化回歸測試**(稽核缺口 4),
+  我無法在這裡證明「字型建立失敗時畫面仍正確」或「控制項建不起來時視窗確實開不起來」——
+  那需要在真實視窗下製造資源耗盡。**兩者都只驗到「程式碼正確」,沒驗到「行為正確」。**
