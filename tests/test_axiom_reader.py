@@ -97,6 +97,18 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_workspace_shows_witness_and_keeps_draft(self):
+        # GEO-138 + GEO-146(🔒 Q4):右欄上半固定見證圖;切分頁前先保留草稿並告知。
+        self.assertIn('id="workspace-witness"', self.html)
+        self.assertIn('id="workspace-witness-img"', self.html)
+        ws = reader.script_text(self.html, "workspace-script")
+        self.assertIn("renderWitness", ws)
+        self.assertIn("axiom:current", ws)
+        self.assertIn("flushDraft();toast('草稿已保留')", ws)
+        # 面板必須排在分頁列之前(上半固定、下半 tab)
+        self.assertLess(self.html.index('id="workspace-witness"'),
+                        self.html.index('class="workspace-tabs"'))
+
     def test_facet_chips_are_data_driven(self):
         # GEO-149:chip 的數量必須等於實際資料,且不得有硬編碼條號白名單
         # (被作廢的第 3 版原型正是寫死 ['R6','R18','R19','R20','R21'])。

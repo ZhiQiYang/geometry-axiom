@@ -169,6 +169,18 @@ GENERATED_SECTIONS = (
     '<section class="relation-section"',
 )
 
+# GEO-138(🔒 Q4):右欄上半的見證圖面板。只在 dock 寬度出現;窄螢幕維持卡片內 inline。
+WITNESS_PANE_CSS = (
+    "#workspace-witness{display:none}"
+    "@media (min-width:1280px){body.workspace-ready #workspace-witness{display:block;"
+    "border-bottom:1px solid var(--line);padding:10px 12px;max-height:38vh;overflow:auto}}"
+    "#workspace-witness h3{font-size:11px;letter-spacing:.08em;color:var(--muted);margin:0 0 6px;font-weight:600}"
+    "#workspace-witness h3 small{color:var(--accent);font-weight:700;margin-left:6px;letter-spacing:0}"
+    "#workspace-witness figure{margin:0}"
+    "#workspace-witness img{display:block;width:100%;height:auto;background:var(--figure-bg);border-radius:6px}"
+    "#workspace-witness .hint{font-size:12px;color:var(--muted);margin:0;line-height:1.7}"
+)
+
 # GEO-149:篩選 chip 的樣式,沿用分類篩選(.group-jumps a)的視覺語言。
 FACET_CSS = (
     ".toc-facets{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}"
@@ -554,6 +566,8 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     assert "pressTimer" in script_text(source, "reader-script"), "GEO-145 觸控長按沒了"
     assert 'class="toc-facets' in source, "GEO-149 篩選 chip 不見了"
     assert "facetMatch" in script_text(source, "reader-script"), "GEO-149 篩選條件沒接上 filterToc"
+    assert 'id="workspace-witness"' in source, "GEO-138 右欄見證圖面板不見了"
+    assert "草稿已保留" in script_text(source, "workspace-script"), "GEO-146 切分頁沒有保留草稿"
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
@@ -625,6 +639,36 @@ HOVER_PREVIEW_JS = "\n    /* GEO-120 拍板二:hover 快速預覽與點擊固定
 
 
 FACET_HELPER_JS = "\n    /* GEO-149:篩選 chip。與搜尋、分類篩選疊加,條件全部讀 toc-item 的 data-*(由資料算)。 */\n    function facetMatch(link){\n      if(!activeFacet)return true;\n      if(activeFacet==='note')return Number(link.dataset.note||0)>0;\n      if(activeFacet==='ex')return Number(link.dataset.ex||0)>0;\n      if(activeFacet==='wit')return Number(link.dataset.wit||0)>0;\n      if(activeFacet==='none')return link.dataset.trace==='none';\n      return true;\n    }"
+
+
+WITNESS_PANE_JS = "\n /* GEO-138(🔒 Q4):右欄上半固定顯示「目前這一條」的見證圖,不與參照/批註互斥。\n    圖直接取自條文卡裡那張(同一個 data URI),不另存第二份。 */\n function toast(text){\n  const t=document.getElementById('toast');if(!t)return;\n  t.textContent=text;t.hidden=false;\n  clearTimeout(toast._timer);toast._timer=setTimeout(()=>{t.hidden=true;},2200);\n }\n function renderWitness(id){\n  const pane=document.getElementById('workspace-witness');if(!pane)return;\n  const label=document.getElementById('workspace-witness-clause');\n  const img=document.getElementById('workspace-witness-img');\n  const none=document.getElementById('workspace-witness-none');\n  const article=id?document.getElementById(id):null;\n  const source=article?article.querySelector('.witness-section figure img'):null;\n  if(label)label.textContent=id||'';\n  if(source){\n   img.src=source.getAttribute('src');img.alt=source.getAttribute('alt')||'';\n   img.hidden=false;none.hidden=true;\n  }else{\n   img.removeAttribute('src');img.hidden=true;none.hidden=false;\n  }\n }\n document.addEventListener('axiom:current',e=>renderWitness(e.detail&&e.detail.id));"
+
+
+def apply_witness_pane(template: str) -> str:
+    """GEO-138 + GEO-146(🔒 Q4):右欄上半固定見證圖;下半維持 tab,但切換前先保留草稿。"""
+    anchor = '<div id="dock-hub"></div>\n<div aria-label="校對工作區" class="workspace-tabs" role="tablist">'
+    pane = ('<section aria-label="目前條文的見證圖" class="js-only" id="workspace-witness" hidden="">'
+            '<h3>見證圖 <small id="workspace-witness-clause"></small></h3>'
+            '<figure><img alt="" decoding="async" id="workspace-witness-img" hidden=""></figure>'
+            '<p class="hint" id="workspace-witness-none" hidden="">這一條沒有見證圖(89 條中有 17 條有)。</p>'
+            '</section>')
+    template = force(template, anchor,
+                     '<div id="dock-hub"></div>\n' + pane + '\n<div aria-label="校對工作區" class="workspace-tabs" role="tablist">',
+                     "見證圖面板標記")
+
+    js = script_text(template, "workspace-script")
+    js = force(js, "\nfunction reflectTabs(){", WITNESS_PANE_JS.rstrip("\n") + "\nfunction reflectTabs(){",
+               "見證圖面板腳本")
+    # GEO-146:切走批註分頁前先保留草稿,並明確告知——否則寫到一半點條號就沒了。
+    js = force(js,
+               "function present(id){\n const el=$(id);el.hidden=false;\n if(docked()&&dialogs.includes(id)){\n",
+               "function present(id){\n const el=$(id);el.hidden=false;\n if(docked()&&dialogs.includes(id)){\n"
+               "  if(active==='review-dialog'&&id!=='review-dialog'&&window.axiomReviewUI&&window.axiomReviewUI.flushDraft){\n"
+               "   window.axiomReviewUI.flushDraft();toast('草稿已保留');\n  }\n",
+               "切分頁前保留草稿")
+    js = force(js, "\nfunction start(){", "\nrenderWitness(document.body.dataset.currentClause||'D1');\nfunction start(){",
+               "見證圖面板初始化", marker="renderWitness(document.body.dataset.currentClause")
+    return replace_script(template, "workspace-script", js)
 
 
 def apply_facets(template: str, clauses: list[dict], trace: dict, note_counts: dict,
@@ -1012,6 +1056,7 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             incoming[ref].append(c["id"])
     witness_manifest = load_witness_manifest()
     template = inject_css(template, WITNESS_CSS, ".witness-section{")
+    template = inject_css(template, WITNESS_PANE_CSS, "#workspace-witness{display:none}")
     template = inject_css(template, FACET_CSS, ".toc-facets{display:flex")
     template = inject_css(template, REF_PREVIEW_CSS, "#ref-preview{position:fixed")
     template = inject_css(template, BLOCK_TOOLS_CSS, ".review-block>.block-tools{opacity:0")
@@ -1102,6 +1147,7 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
         if count != 1:
             raise ValueError("TOC group missing")
     # Reader edits must rebuild subclauses from the canonical source block, not old originalSub.
+    template = apply_witness_pane(template)
     template = apply_facets(template, clauses, trace, note_counts, example_counts,
                            {wid for wid in witness_manifest
                             if (WITNESS_DIR / f"{wid}.svg").exists()})
