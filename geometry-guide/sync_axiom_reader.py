@@ -169,6 +169,31 @@ GENERATED_SECTIONS = (
     '<section class="relation-section"',
 )
 
+# GEO-139(2/4):hover 快速預覽的樣式。只在有 hover 的裝置出現(@media hover:hover),
+# 觸控裝置本來就沒有 hover,與長按叫出段落工具不衝突(GEO-120 拍板二原文)。
+REF_PREVIEW_CSS = (
+    "#ref-preview{position:fixed;z-index:60;max-width:min(420px,calc(100vw - 16px));"
+    "background:var(--paper);color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--accent);"
+    "border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,.18);padding:10px 12px;font-size:13px;line-height:1.7;"
+    "pointer-events:none}"
+    "#ref-preview b{display:block;font-size:12px;color:var(--accent);margin-bottom:4px}"
+    "#ref-preview[hidden]{display:none}"
+    "@media (hover:none){#ref-preview{display:none!important}}"
+)
+
+# GEO-145(🔒 Q3 2026-09-20):段落工具列改成非常駐。閱讀是常態、校對是階段性;
+# 452 組每段固定掛一列 34–44px 的控制列會把正文切碎。height:0 讓它不佔版面,
+# hover / 鍵盤 focus / 觸控長按才展開;**已有批註的段落仍常駐**,不會漏看。
+BLOCK_TOOLS_CSS = (
+    ".review-block>.block-tools{opacity:0;visibility:hidden;height:0;margin-top:0;overflow:hidden;"
+    "transition:opacity .12s ease}"
+    ".review-block:hover>.block-tools,.review-block:focus-within>.block-tools,"
+    ".review-block.show-tools>.block-tools,.review-block.has-comments>.block-tools,"
+    ".review-block.is-reviewing>.block-tools"
+    "{opacity:1;visibility:visible;height:auto;margin-top:8px;overflow:visible}"
+    "@media print{.review-block>.block-tools{display:none!important}}"
+)
+
 # GEO-147:區塊標籤把視覺重量讓給內容——12px、寬字距、muted,不再與內容同重。
 CLAUSE_LABEL_CSS = (
     ".plain-section>h3,.original-section>h3{font-size:12px;letter-spacing:.08em;"
@@ -516,6 +541,8 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     for mark in ('badge-trace', 'badge-hub', 'trace-section', 'data-trace='):
         assert mark in source, "GEO-139 追溯類功能又丟失了(GEO-120 連帶約束): " + mark
     assert not hardcoded_colors(source), "GEO-141 規則裡仍有寫死的色碼: " + "; ".join(hardcoded_colors(source)[:6])
+    assert ".review-block>.block-tools{opacity:0" in source, "GEO-145 段落工具又變成常駐了"
+    assert "pressTimer" in script_text(source, "reader-script"), "GEO-145 觸控長按沒了"
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
@@ -572,6 +599,46 @@ def force(text: str, old: str, new: str, label: str) -> str:
             raise ValueError("reader template patch (%s): 改後字串出現 %d 次,無法判定是否已套用" % (label, text.count(new)))
         return text
     raise ValueError("reader template drift (%s): 既不是改前也不是改後的樣子" % label)
+
+
+HOVER_PREVIEW_JS = "\n    /* GEO-120 拍板二:hover 快速預覽與點擊固定參照欄並存。只在真的有 hover 的裝置上啟用。 */\n    (function(){\n      if(!(window.matchMedia&&window.matchMedia('(hover:hover)').matches))return;\n      var card=null,hideTimer=null;\n      function ensure(){\n        if(card)return card;\n        card=document.createElement('div');card.id='ref-preview';card.hidden=true;\n        card.setAttribute('role','tooltip');document.body.appendChild(card);return card;\n      }\n      function hide(){if(card)card.hidden=true;}\n      function show(a){\n        var id=a.dataset.ref.replace(/\\([a-z]\\)$/,'');var item=byId[id];if(!item)return;\n        var c=ensure();c.textContent='';\n        var head=document.createElement('b');head.textContent=id+' '+(item.title||'');\n        var body=String(item.body||'').replace(/\\*\\*/g,'').replace(/`/g,'').replace(/\\s+/g,' ').slice(0,150);\n        var text=document.createElement('span');text.textContent=body+(body.length>=150?'…':'');\n        c.appendChild(head);c.appendChild(text);c.hidden=false;\n        var r=a.getBoundingClientRect();\n        var left=Math.min(Math.max(8,r.left),Math.max(8,window.innerWidth-c.offsetWidth-8));\n        var top=r.bottom+8;\n        if(top+c.offsetHeight>window.innerHeight-8)top=Math.max(8,r.top-c.offsetHeight-8);\n        c.style.left=left+'px';c.style.top=top+'px';\n      }\n      document.addEventListener('mouseover',function(e){\n        var a=e.target&&e.target.closest?e.target.closest('a[data-ref]'):null;\n        clearTimeout(hideTimer);\n        if(!a){hideTimer=setTimeout(hide,150);return;}\n        show(a);\n      });\n      window.addEventListener('scroll',hide,{passive:true});\n      document.addEventListener('keydown',function(e){if(e.key==='Escape')hide();});\n    })();"
+
+
+def apply_hover_preview(template: str) -> str:
+    """GEO-139(2/4):還原 GEO-120 拍板二的 hover 快速預覽。接在長按處理之後。"""
+    anchor = ("      ['touchend','touchmove','touchcancel'].forEach(function(ev){\n"
+              "        document.addEventListener(ev,clearPress,{passive:true});});\n"
+              "    })();")
+    js = force(script_text(template, "reader-script"), anchor, anchor + HOVER_PREVIEW_JS, "hover 預覽")
+    return replace_script(template, "reader-script", js)
+
+
+def apply_long_press(template: str) -> str:
+    """GEO-145:觸控裝置沒有 hover,用長按叫出段落工具。
+
+    刻意**不** preventDefault——長按同時仍是瀏覽器的原生選字手勢,兩者並存;
+    手指一移動就取消,避免捲動時誤觸。
+    """
+    anchor = ("document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)"
+              "&&e.key.toLowerCase()==='k'){e.preventDefault();openDirectory();search.focus();}});")
+    handler = (anchor +
+               "\n    /* GEO-145:觸控長按叫出段落工具(不攔截原生選字)。 */\n"
+               "    (function(){var pressTimer=null,pressTarget=null;\n"
+               "      function clearPress(){if(pressTimer){clearTimeout(pressTimer);pressTimer=null;}}\n"
+               "      document.addEventListener('touchstart',function(e){\n"
+               "        var block=e.target&&e.target.closest?e.target.closest('.review-block'):null;\n"
+               "        if(!block)return;pressTarget=block;clearPress();\n"
+               "        pressTimer=setTimeout(function(){\n"
+               "          Array.prototype.forEach.call(document.querySelectorAll('.review-block.show-tools'),\n"
+               "            function(n){if(n!==pressTarget)n.classList.remove('show-tools');});\n"
+               "          if(pressTarget)pressTarget.classList.add('show-tools');\n"
+               "        },500);\n"
+               "      },{passive:true});\n"
+               "      ['touchend','touchmove','touchcancel'].forEach(function(ev){\n"
+               "        document.addEventListener(ev,clearPress,{passive:true});});\n"
+               "    })();")
+    js = force(script_text(template, "reader-script"), anchor, handler, "觸控長按")
+    return replace_script(template, "reader-script", js)
 
 
 def apply_search_fixes(template: str) -> str:
@@ -692,6 +759,8 @@ def geo120_regressions(template: str) -> list[str]:
         bad.append("拍板一:mode 初值不是 'all',首屏會 hidden 掉其他條文,Ctrl+F 搜不到全文")
     if "prefers-color-scheme" not in js:
         bad.append("拍板三:沒有 prefers-color-scheme,不跟隨系統")
+    if "ref-preview" not in js:
+        bad.append("拍板二:沒有 hover 快速預覽(原文:砍掉 hover 是淨損失)")
     return bad
 
 
@@ -875,6 +944,8 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             incoming[ref].append(c["id"])
     witness_manifest = load_witness_manifest()
     template = inject_css(template, WITNESS_CSS, ".witness-section{")
+    template = inject_css(template, REF_PREVIEW_CSS, "#ref-preview{position:fixed")
+    template = inject_css(template, BLOCK_TOOLS_CSS, ".review-block>.block-tools{opacity:0")
     template = inject_css(template, TRACE_CSS, "--trace-ok:")
     template = inject_css(template, CLAUSE_LABEL_CSS, ".plain-section>h3,.original-section>h3{")
     trace = clause_trace(clauses, incoming)
@@ -970,6 +1041,10 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     template = apply_color_tokens(template)
     # GEO-142:搜尋跳轉不清空查詢;Enter 連跳下一筆。
     template = apply_search_fixes(template)
+    # GEO-145:觸控長按叫出段落工具。
+    template = apply_long_press(template)
+    # GEO-139(2/4):hover 快速預覽(GEO-120 拍板二)。
+    template = apply_hover_preview(template)
     # GEO-140:所有計數由 reader_counts() 算一次,apply_counts() 填進 HTML 與腳本;此處不再寫死數字。
     template = apply_counts(template, reader_counts(template, clauses, state))
     script_start = template.index('<script id="clause-data"')

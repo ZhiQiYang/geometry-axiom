@@ -97,6 +97,13 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_block_tools_are_not_always_on(self):
+        # GEO-145(🔒 Q3):正文不得被 452 組控制列切碎;已有批註的段落仍常駐。
+        self.assertIn(".review-block>.block-tools{opacity:0", self.html)
+        self.assertIn(".review-block.has-comments>.block-tools", self.html)
+        self.assertIn(".review-block:focus-within>.block-tools", self.html)
+        self.assertIn("pressTimer", reader.script_text(self.html, "reader-script"))
+
     def test_colors_are_tokenised(self):
         # GEO-141(🔒 Q1):批註四色與圖面底色收成 token,深色只改 token 值,不再逐條選擇器補丁。
         self.assertEqual(reader.hardcoded_colors(self.html), [])
@@ -153,6 +160,8 @@ class CanonicalReader(unittest.TestCase):
         js = reader.script_text(self.html, "reader-script")
         self.assertRegex(js, r"mode\s*=\s*'all'")
         self.assertIn("prefers-color-scheme", js)
+        self.assertIn("ref-preview", js)                      # 拍板二:hover 預覽與固定面板並存
+        self.assertIn("#ref-preview{position:fixed", self.html)
 
     def test_counts_have_a_single_source(self):
         # GEO-140:HTML 裡出現的每個計數都必須等於由資料算出的值,且與 #reader-counts 一致。
