@@ -176,6 +176,10 @@ TESTS = [{'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000
   'contains': ['vertex[0] = (1014, 20, 2500)', 'vertex[1] = (987, 20, 2500)']},
  {'scene': '_wit_r6_span_cells.scene', 'expect': 'accept', 'lengths': [4000, 4000, 1180, 1180, 2960]},
  {'scene': '_wit_r19_edge_primary_2560.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2560, 2560, 2560]},
+ # GEO-041:空間建構的七種失敗原本共用一句話,現在各自分類。
+ {'scene': '_ax_i4_missing_boundary.scene', 'expect': 'reject', 'error': '邊界面 99 不存在'},
+ {'scene': '_ax_i4_duplicate_boundary.scene', 'expect': 'reject', 'error': '邊界面 1 被宣告兩次'},
+ {'scene': '_ax_i4_no_carrier.scene', 'expect': 'reject', 'error': '沒有承載面'},
 ]
 
 

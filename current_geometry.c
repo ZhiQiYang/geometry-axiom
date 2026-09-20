@@ -4020,8 +4020,12 @@ static COLORREF gdi_color(const char *hex)
 static POINT gdi_to_pixel(const GdiContext *g, ViewPoint2 p)
 {
     POINT out;
-    out.x = (LONG)(g->origin_x + (double)(p.x + g->tx) * g->scale + 0.5);
-    out.y = (LONG)(g->origin_y + (double)(p.y + g->ty) * g->scale + 0.5);
+    /*
+     * GEO-020：正向轉換有同一個缺陷。工單只點名反解，但把已知的同類錯留著沒有道理——
+     * 視窗捲動後座標會是負的，往零截斷會讓那一側的線整條偏 1px，且與反解不互為逆運算。
+     */
+    out.x = (LONG)llround(g->origin_x + (double)(p.x + g->tx) * g->scale);
+    out.y = (LONG)llround(g->origin_y + (double)(p.y + g->ty) * g->scale);
     return out;
 }
 
@@ -4707,8 +4711,14 @@ static bool gdi_screen_to_view(
             continue;
         }
 
-        out_mm->x = (Coord)(((double)px - ox) / scale - (double)app->layout.tx[v] + 0.5);
-        out_mm->y = (Coord)(((double)py - oy) / scale - (double)app->layout.ty[v] + 0.5);
+        /*
+         * GEO-020：用 llround，不要 `(Coord)(x + 0.5)`。
+         * 後者對負數是「往零截斷」：-3.4 + 0.5 = -2.9 → -2，應該是 -3。
+         * 視圖有 translate，游標落在 tx/ty 左上方時算出來就是負的 mm，
+         * 拖曳參考線到那個區域會固定偏 1mm——整份系統是整數 mm 的，1mm 不是誤差是錯值。
+         */
+        out_mm->x = (Coord)llround(((double)px - ox) / scale - (double)app->layout.tx[v]);
+        out_mm->y = (Coord)llround(((double)py - oy) / scale - (double)app->layout.ty[v]);
         *out_view = v;
         *out_pick_radius = (Coord)(8.0 / scale + 0.5);
         return true;
@@ -6304,12 +6314,109 @@ static void surface_extent_on_axis(
  */
 /* 公理 I4：Space 建構——零成員 = 空容器直接成立；有成員時各成員邊界面
  * 恰有一個承載面，且槽位一致性全過才成立。非法空間建不出來。 */
+/*
+ * GEO-041：space_construct 的失敗原因。
+ * 原本七種不同的失敗共用一句「這些面組不成一致的空間：…或…或…」，
+ * 使用者得自己猜是哪一種、是哪一面出問題。分類不是為了好看——
+ * 「面不存在」和「兩片面佔同一方向槽位」的下一步完全不同。
+ */
+typedef enum {
+    SPACE_FAULT_NONE = 0,
+    SPACE_FAULT_MEMBER_COUNT,        /* 成員數不在 1..SPACE_MAX_MEMBERS */
+    SPACE_FAULT_MISSING_BOUNDARY,    /* 指名的邊界面不存在 */
+    SPACE_FAULT_DUPLICATE_BOUNDARY,  /* 同一片邊界面宣告兩次 */
+    SPACE_FAULT_NO_CARRIER,          /* 邊界面沒有承載面 → 沒有世界位置（游離面） */
+    SPACE_FAULT_AMBIGUOUS_CARRIER,   /* 邊界面被多片承載面引用 → 位置歧義 */
+    SPACE_FAULT_SLOT_TAKEN,          /* 兩片面佔同一軸的同一方向槽位 */
+    SPACE_FAULT_EXTENT_MISMATCH,     /* 同一軸上的面內區間彼此不一致 */
+    SPACE_FAULT_PLANE_MISMATCH,      /* 界面位置與區間端點對不上 */
+    SPACE_FAULT_INVERTED             /* 下界 >= 上界（法向朝內會落在這裡） */
+} SpaceFault;
+
+typedef struct {
+    SpaceFault kind;
+    SurfaceId boundary;   /* 相關的邊界面 id；0 = 不適用 */
+    int axis;             /* 相關的軸 0/1/2；-1 = 不適用 */
+} SpaceFaultInfo;
+
+static bool space_fail(
+    SpaceFaultInfo *out,
+    SpaceFault kind,
+    SurfaceId boundary,
+    int axis
+)
+{
+    if (out != NULL) {
+        out->kind = kind;
+        out->boundary = boundary;
+        out->axis = axis;
+    }
+
+    return false;
+}
+
+/* 把失敗原因寫成一句可以直接給使用者看的話（含出問題的那一面／那一軸）。 */
+static void space_fault_describe(
+    const SpaceFaultInfo *fault,
+    char *buf,
+    size_t size
+)
+{
+    const char axis_name = fault->axis == 0 ? 'X'
+                         : fault->axis == 1 ? 'Y'
+                         : fault->axis == 2 ? 'Z' : '?';
+
+    switch (fault->kind) {
+    case SPACE_FAULT_MEMBER_COUNT:
+        snprintf(buf, size, "成員數不合法：要 1～%d 片邊界面", SPACE_MAX_MEMBERS);
+        break;
+    case SPACE_FAULT_MISSING_BOUNDARY:
+        snprintf(buf, size, "邊界面 %" PRIu32 " 不存在", fault->boundary);
+        break;
+    case SPACE_FAULT_DUPLICATE_BOUNDARY:
+        snprintf(buf, size, "邊界面 %" PRIu32 " 被宣告兩次", fault->boundary);
+        break;
+    case SPACE_FAULT_NO_CARRIER:
+        snprintf(buf, size,
+                 "邊界面 %" PRIu32 " 沒有承載面（游離面沒有世界位置，不能當空間成員）",
+                 fault->boundary);
+        break;
+    case SPACE_FAULT_AMBIGUOUS_CARRIER:
+        snprintf(buf, size,
+                 "邊界面 %" PRIu32 " 被多片承載面引用，世界位置有歧義",
+                 fault->boundary);
+        break;
+    case SPACE_FAULT_SLOT_TAKEN:
+        snprintf(buf, size,
+                 "邊界面 %" PRIu32 " 與先前某一片佔住 %c 軸的同一個方向槽位",
+                 fault->boundary, axis_name);
+        break;
+    case SPACE_FAULT_EXTENT_MISMATCH:
+        snprintf(buf, size,
+                 "邊界面 %" PRIu32 " 在 %c 軸上的面內區間與先前的面不一致",
+                 fault->boundary, axis_name);
+        break;
+    case SPACE_FAULT_PLANE_MISMATCH:
+        snprintf(buf, size,
+                 "%c 軸的界面位置與面內區間端點對不上", axis_name);
+        break;
+    case SPACE_FAULT_INVERTED:
+        snprintf(buf, size,
+                 "%c 軸的下界不小於上界（常見原因：某一片面的法向朝內）", axis_name);
+        break;
+    default:
+        snprintf(buf, size, "未分類的失敗");
+        break;
+    }
+}
+
 static bool space_construct(
     const World *world,
     uint32_t space_id,
     const SurfaceId boundary_ids[],
     size_t count,
-    Space *out_space
+    Space *out_space,
+    SpaceFaultInfo *out_fault      /* GEO-041：失敗原因；不需要就傳 NULL */
 )
 {
     typedef struct { Coord v; bool set; } MaybeBound;
@@ -6320,7 +6427,7 @@ static bool space_construct(
     bool slot_taken[3][2] = { 0 };    /* [軸][0=負法向, 1=正法向] */
 
     if (count < 1 || count > SPACE_MAX_MEMBERS || out_space == NULL) {
-        return false;
+        return space_fail(out_fault, SPACE_FAULT_MEMBER_COUNT, 0, -1);
     }
 
     for (size_t i = 0; i < count; ++i) {
@@ -6328,12 +6435,14 @@ static bool space_construct(
             world_find_boundary(world, boundary_ids[i]);
 
         if (bd == NULL) {
-            return false;
+            return space_fail(out_fault, SPACE_FAULT_MISSING_BOUNDARY,
+                              boundary_ids[i], -1);
         }
 
         for (size_t j = 0; j < i; ++j) {
             if (boundary_ids[j] == boundary_ids[i]) {
-                return false;   /* 同一片邊界面被宣告兩次 */
+                return space_fail(out_fault, SPACE_FAULT_DUPLICATE_BOUNDARY,
+                                  boundary_ids[i], -1);
             }
         }
 
@@ -6349,7 +6458,11 @@ static bool space_construct(
         }
 
         if (carriers != 1) {
-            return false;   /* 0 = 沒有世界位置；>1 = 位置歧義 */
+            return space_fail(
+                out_fault,
+                carriers == 0 ? SPACE_FAULT_NO_CARRIER
+                              : SPACE_FAULT_AMBIGUOUS_CARRIER,
+                bd->id, -1);
         }
 
         int a = axis_index(face->frame.normal);
@@ -6360,7 +6473,7 @@ static bool space_construct(
         Coord plane = point3_component(face->frame.origin, a);
 
         if (slot_taken[a][slot]) {
-            return false;   /* 兩片面佔同一方向槽位：重複或衝突 */
+            return space_fail(out_fault, SPACE_FAULT_SLOT_TAKEN, bd->id, a);
         }
 
         slot_taken[a][slot] = true;
@@ -6377,7 +6490,8 @@ static bool space_construct(
 
             if (ext_lo[j].set &&
                 (ext_lo[j].v != lo || ext_hi[j].v != hi)) {
-                return false;   /* 同一軸的區間約束不一致 */
+                return space_fail(out_fault, SPACE_FAULT_EXTENT_MISMATCH,
+                                  bd->id, j);
             }
 
             ext_lo[j].v = lo;  ext_lo[j].set = true;
@@ -6388,14 +6502,14 @@ static bool space_construct(
     /* 界值與區間端點要吻合；下界必須小於上界（法向朝內在這裡被擋）。 */
     for (int j = 0; j < 3; ++j) {
         if (bound[j][0].set && ext_lo[j].set && bound[j][0].v != ext_lo[j].v) {
-            return false;
+            return space_fail(out_fault, SPACE_FAULT_PLANE_MISMATCH, 0, j);
         }
         if (bound[j][1].set && ext_hi[j].set && bound[j][1].v != ext_hi[j].v) {
-            return false;
+            return space_fail(out_fault, SPACE_FAULT_PLANE_MISMATCH, 0, j);
         }
         if (bound[j][0].set && bound[j][1].set &&
             bound[j][0].v >= bound[j][1].v) {
-            return false;
+            return space_fail(out_fault, SPACE_FAULT_INVERTED, 0, j);
         }
     }
 
@@ -8074,7 +8188,7 @@ static bool world_validate_derived(const World *world)
         }
 
         if (!space_construct(
-                world, s->id, s->boundaries, s->boundary_count, &probe)) {
+                world, s->id, s->boundaries, s->boundary_count, &probe, NULL)) {
             return false;
         }
     }
@@ -8147,7 +8261,8 @@ static bool world_revalidate(World *world)
             candidate.spaces[i] = (Space){0};
             candidate.spaces[i].id = s->id;
         } else if (!space_construct(&candidate, s->id, s->boundaries,
-                                    s->boundary_count, &candidate.spaces[i])) {
+                                    s->boundary_count, &candidate.spaces[i],
+                                    NULL)) {
             return false;
         }
     }
@@ -9451,6 +9566,22 @@ static void world_drop_canvas_pos(World *world, int kind, uint32_t id)
  */
 
 /* 找空間某軸某向槽位面的高程；沒有該槽回 false（推不出）。 */
+/*
+ * GEO-043：兩個座標的中點，奇數時取下界（偏低座標側）。
+ * 與 D10a 對奇數 gap 的處理同一條紀律——C 的 `/` 對負數是往零截斷，
+ * 直接用會讓房間在負座標區的質心偏一格，那不是誤差是錯值。
+ */
+static Coord coord_midpoint_floor(Coord a, Coord b)
+{
+    Coord sum = a + b;
+
+    if (sum >= 0) {
+        return sum / 2;
+    }
+
+    return -(((-sum) + 1) / 2);
+}
+
 static bool space_axis_bound(
     const World *world,
     const Space *space,
@@ -10987,12 +11118,20 @@ static bool apply_delete_line(
             }
             if (w == sp->boundary_count) continue;
             Space rebuild = { 0 };
+            SpaceFaultInfo fault = { SPACE_FAULT_NONE, 0, -1 };
             if (w == 0) {
                 rebuild.id = sp->id;
             } else if (!space_construct(world, sp->id,
-                                        sp->boundaries, w, &rebuild)) {
+                                        sp->boundaries, w, &rebuild, &fault)) {
+                char why[192];
+                char message[256];
+
+                space_fault_describe(&fault, why, sizeof why);
+                snprintf(message, sizeof message,
+                         "剔除成員後空間 %" PRIu32 " 無法重建：%s",
+                         sp->id, why);
                 *world = backup;
-                scene_error(path, line_no, "剔除成員後空間無法重建");
+                scene_error(path, line_no, message);
                 return false;
             }
             *sp = rebuild;
@@ -11200,16 +11339,25 @@ static bool apply_space_line(
     }
 
     Space candidate;
+    SpaceFaultInfo fault = { SPACE_FAULT_NONE, 0, -1 };
 
     if (face_count == 0) {
         /* 空容器：零成員的部分空間，closed=false、界未釘。 */
         candidate = (Space){ 0 };
         candidate.id = space_id;
-    } else if (!space_construct(world, space_id, faces, face_count, &candidate)) {
-        /* 建構子本身就驗成員一致（不改 World）。 */
-        scene_error(path, line_no,
-            "這些面組不成一致的空間：面不存在、重複、"
-            "沒有唯一承載面、佔同一方向槽位，或區間不一致");
+    } else if (!space_construct(world, space_id, faces, face_count,
+                                &candidate, &fault)) {
+        /*
+         * 建構子本身就驗成員一致（不改 World）。
+         * GEO-041：原本七種失敗共用一句話，使用者得自己猜是哪一種、哪一面。
+         */
+        char why[192];
+        char message[256];
+
+        space_fault_describe(&fault, why, sizeof why);
+        snprintf(message, sizeof message, "空間 %" PRIu32 " 組不起來：%s",
+                 space_id, why);
+        scene_error(path, line_no, message);
         return false;
     }
 
@@ -11723,8 +11871,13 @@ static bool parse_scene_file(const char *path, World *out_world)
 
         char *text = line;
 
-        /* UTF-8 BOM 只可能出現在第一行。 */
-        if (line_no == 1 &&
+        /*
+         * UTF-8 BOM 只可能出現在第一行。
+         * GEO-014：先確認真的有 3 個位元組再比對——空行或 1~2 字的首行，
+         * 原本會讀到 text[1]、text[2] 這兩個未初始化的位元組。
+         * 不是理論風險：fgets 只保證寫到終止符為止，後面的內容是上一輪留下的。
+         */
+        if (line_no == 1 && length >= 3 &&
             (unsigned char)text[0] == 0xEF &&
             (unsigned char)text[1] == 0xBB &&
             (unsigned char)text[2] == 0xBF) {
@@ -12021,9 +12174,13 @@ int main(int argc, char **argv)
                space->closed ? "封閉（六面）" : "部分（彼此一致）");
 
         /*
-         * GEO-075 房間內部尺寸：只印兩側槽位都有面的軸。
-         * 推不出來的軸不猜、不補預設（R3：退化／不精確一律拒絕不猜）。
+         * GEO-075 房間內部尺寸 + GEO-043 體積與質心。
+         * 只印兩側槽位都有面的軸；推不出來的軸不猜、不補預設（R3）。
          */
+        Coord span[3] = { 0, 0, 0 };
+        Coord mid[3] = { 0, 0, 0 };
+        bool span_known[3] = { false, false, false };
+
         for (int axis = 0; axis < 3; ++axis) {
             Coord lo = 0;
             Coord hi = 0;
@@ -12033,11 +12190,39 @@ int main(int argc, char **argv)
                 continue;
             }
 
+            span[axis] = hi > lo ? hi - lo : lo - hi;
+            mid[axis] = coord_midpoint_floor(lo, hi);
+            span_known[axis] = true;
+
             printf(
                 "內部尺寸 %c：%" PRId64 " mm\n",
                 axis == 0 ? 'X' : axis == 1 ? 'Y' : 'Z',
-                hi > lo ? hi - lo : lo - hi
+                span[axis]
             );
+        }
+
+        /* 三軸都釘住才有體積與質心可言；缺一軸就不是一個有界的盒子。 */
+        if (span_known[0] && span_known[1] && span_known[2]) {
+            /*
+             * I33 的紀律：寧可說算不出來，也不印一個回繞過的數字。
+             * D1 允許到 ±100km，三軸相乘確實可能超出 int64。
+             */
+            if (span[1] != 0 && span[2] != 0
+                && span[0] > INT64_MAX / span[1] / span[2]) {
+                printf("內部體積：超出 int64 可表示範圍，不印（避免回繞成錯值）\n");
+            } else {
+                Coord volume = span[0] * span[1] * span[2];
+
+                printf(
+                    "內部體積：%" PRId64 " mm³（%.3f m³）\n",
+                    volume,
+                    (double)volume / 1e9
+                );
+            }
+
+            printf("內部質心：");
+            print_point3((Point3){ mid[0], mid[1], mid[2] });
+            printf("\n");
         }
     }
 
