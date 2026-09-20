@@ -97,6 +97,25 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_traceability_lights_and_hub_badges_exist(self):
+        # GEO-139(4):GEO-120 的連帶約束明列「追溯燈號 / 三向連結 / 樞紐徽章」不得丟失。
+        # 定義沿用 make_axiom_reader.py 原本的那一組,不得另立門檻。
+        incoming = {c["id"]: [] for c in self.state["clauses"]}
+        for c in self.state["clauses"]:
+            for ref in sorted({m[1] for m in reader.CLAUSE_REF.finditer(c["body"]) if m[1] != c["id"]}):
+                if ref in incoming:
+                    incoming[ref].append(c["id"])
+        trace = reader.clause_trace(self.state["clauses"], incoming)
+        self.assertEqual(len(trace), len(self.state["clauses"]))
+        for cid, t in trace.items():
+            self.assertIn(t["light"], ("ok", "partial", "none"))
+            self.assertEqual(t["hub"], t["incoming"] >= 3)          # 門檻與舊產生器一致
+            self.assertEqual(t["light"], "ok" if (t["functions"] and t["scenes"])
+                             else ("partial" if (t["functions"] or t["scenes"]) else "none"))
+            self.assertIn('data-clause="%s" data-trace="%s"' % (cid, t["light"]), self.html, cid)
+        self.assertEqual(self.html.count('<details class="trace-section">'), len(trace))
+        self.assertEqual(self.html.count('class="badge-hub"'), sum(1 for t in trace.values() if t["hub"]))
+
     def test_search_keeps_query_after_navigating(self):
         # GEO-142(審查 R7):跳轉不得清空查詢;Enter 連跳下一筆;狀態列顯示第 n / m 筆。
         self.assertEqual(reader.search_regressions(self.html), [])

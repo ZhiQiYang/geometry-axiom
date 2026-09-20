@@ -24,6 +24,9 @@ import shutil
 import subprocess
 
 HERE = Path(__file__).resolve().parent
+import sys
+sys.path.insert(0, str(HERE))
+import axiom_matrix  # 追溯資料的唯一來源(燈號/三向連結/樞紐都由它算)
 ROOT = HERE.parent
 CANONICAL = HERE / "公理層-閱讀器.html"
 AXIOM = ROOT / "公理層.md"
@@ -52,6 +55,42 @@ WITNESS_STYLE = (
     ".timber-face{fill:#edb365;fill-opacity:.5;stroke:#edb365;stroke-width:1.5px}\n"
     ".timber-face-near{fill-opacity:.85}</style>"
 )
+# GEO-139(4):追溯燈號 / 三向連結 / 樞紐徽章。GEO-120 的連帶約束明列這三項「不得丟失」,
+# 改用批註版正典時整組掉了(全檔 grep 為 0)。定義沿用專案原本的 make_axiom_reader.py:431-433,
+# 不自己發明門檻——綠=原始碼且夾具、黃=其一、紅=皆無;樞紐=被引用數 >= 3。
+TRACE_CSS = (
+    ":root{--trace-ok:#2f855a;--trace-partial:#b7791f;--trace-none:#c53030}"
+    ":root[data-theme=dark]{--trace-ok:#68d391;--trace-partial:#f6c177;--trace-none:#fc8181}"
+    ".toc-item{position:relative;padding-left:14px}"
+    ".toc-item::before{content:'';position:absolute;left:5px;top:50%;transform:translateY(-50%);"
+    "width:4px;height:18px;border-radius:2px;background:var(--trace-dot,transparent)}"
+    ".toc-item[data-trace=ok]{--trace-dot:var(--trace-ok)}"
+    ".toc-item[data-trace=partial]{--trace-dot:var(--trace-partial)}"
+    ".toc-item[data-trace=none]{--trace-dot:var(--trace-none)}"
+    ".toc-evidence{margin-left:auto;font-size:10.5px;color:var(--muted);white-space:nowrap;padding-left:6px}"
+    ".clause-badges{display:inline-flex;gap:6px;align-items:center;margin-left:8px;vertical-align:middle}"
+    ".badge-trace{font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid currentColor;font-weight:600}"
+    ".badge-trace[data-trace=ok]{color:var(--trace-ok)}"
+    ".badge-trace[data-trace=partial]{color:var(--trace-partial)}"
+    ".badge-trace[data-trace=none]{color:var(--trace-none)}"
+    ".badge-hub{font-size:10.5px;padding:1px 7px;border-radius:999px;background:var(--accent);color:var(--bg);font-weight:600}"
+    ".trace-section{margin-top:18px;border-top:1px solid var(--line);padding-top:10px}"
+    ".trace-section>summary{cursor:pointer;color:var(--muted);font-size:12px;letter-spacing:.06em}"
+    ".trace-row{margin:8px 0;font-size:12.5px;display:flex;gap:8px;flex-wrap:wrap;align-items:baseline}"
+    ".trace-row>b{font-weight:600;color:var(--muted);font-size:11px;letter-spacing:.08em;min-width:4.5em}"
+    ".trace-row code{font-size:11.5px}"
+    ".trace-row .muted{color:var(--muted)}"
+)
+TRACE_LABEL = {"ok": "原始碼＋夾具", "partial": "僅其一", "none": "無追溯"}
+
+# 每次重建都重新產生的區塊。保留「歷史範例」時必須以它們為終點,否則會把上一輪的產物
+# 一起留下來、然後再產一份。順序無所謂,取最早出現者。
+GENERATED_SECTIONS = (
+    '<section class="witness-section">',
+    '<details class="trace-section">',
+    '<section class="relation-section"',
+)
+
 # GEO-147:區塊標籤把視覺重量讓給內容——12px、寬字距、muted,不再與內容同重。
 CLAUSE_LABEL_CSS = (
     ".plain-section>h3,.original-section>h3{font-size:12px;letter-spacing:.08em;"
@@ -396,12 +435,28 @@ def validate(source: str, axiom: str, plain: str) -> dict:
         body_at, plain_at = art[0].find("original-section"), art[0].find("plain-section")
         assert 0 <= body_at < plain_at, "GEO-147 原文必須排在白話之前: " + cid
     assert not search_regressions(source), "GEO-142 搜尋行為: " + "; ".join(search_regressions(source))
+    for mark in ('badge-trace', 'badge-hub', 'trace-section', 'data-trace='):
+        assert mark in source, "GEO-139 追溯類功能又丟失了(GEO-120 連帶約束): " + mark
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
     assert not stale_counts(source, counts), "GEO-140 殘留硬編碼計數: " + "; ".join(stale_counts(source, counts))
     assert not re.search(r"https?://|<link\b|<script\b[^>]*\bsrc\s*=|@import", source, re.I), "external reader resource"
     return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "geo120": "pass", "search": "pass", "documentHash": data["documentHash"]}
+
+
+def inject_css(template: str, css: str, marker: str) -> str:
+    """把一段 CSS 併進既有的第一個 </style>。
+
+    marker 必須是這段 css 裡確實存在的字串,否則守衛永遠不成立、每重建一次就再插一次。
+    這個 bug 在 GEO-147 與 GEO-139 各踩過一次(守衛寫 `.plain-section>h3{`、
+    實際插的是 `.plain-section>h3,.original-section>h3{`),所以改成由函式自己檢查。
+    """
+    if marker not in css:
+        raise ValueError("inject_css:守衛字串不在 css 裡,守衛會失效 → " + marker)
+    if marker in template:
+        return template
+    return template.replace("</style>", css + "</style>", 1)
 
 
 def force(text: str, old: str, new: str, label: str) -> str:
@@ -553,6 +608,49 @@ def geo120_regressions(template: str) -> list[str]:
     return bad
 
 
+def clause_trace(clauses: list[dict], incoming: dict) -> dict:
+    """每條的追溯資料。定義沿用 make_axiom_reader.py:431-433,不得在此另立門檻。"""
+    ids = [c["id"] for c in clauses]
+    code = axiom_matrix.code_sites(axiom_matrix.read_text(axiom_matrix.SRC), ids)
+    scenes = axiom_matrix.scene_hits(ids)
+    mutants = axiom_matrix.mutant_hits(ids)
+    trace = {}
+    for cid in ids:
+        has_code, has_scene = bool(code[cid]), bool(scenes[cid])
+        trace[cid] = {
+            "light": "ok" if (has_code and has_scene) else ("partial" if (has_code or has_scene) else "none"),
+            "functions": sorted({fn for fn, _ in code[cid]}),
+            "scenes": sorted(scenes[cid]),
+            "mutants": sorted(mutants[cid]),
+            "incoming": len(incoming.get(cid, [])),
+            "hub": len(incoming.get(cid, [])) >= 3,
+        }
+    return trace
+
+
+def trace_section(cid: str, t: dict) -> str:
+    """卡片底部的三向連結:原始碼 / 夾具 / 變異。內容全部由 axiom_matrix 推導,不手寫。"""
+    rows = []
+    if t["functions"]:
+        rows.append("<div class=\"trace-row\"><b>原始碼</b>" + " ".join(
+            "<code>%s</code>" % html.escape(fn) for fn in t["functions"][:6])
+            + ("<span class=\"muted\">…共 %d 處</span>" % len(t["functions"]) if len(t["functions"]) > 6 else "")
+            + "</div>")
+    if t["scenes"]:
+        rows.append("<div class=\"trace-row\"><b>夾具</b>" + " ".join(
+            "<code>%s</code>" % html.escape(sc) for sc in t["scenes"][:6])
+            + ("<span class=\"muted\">…共 %d 個</span>" % len(t["scenes"]) if len(t["scenes"]) > 6 else "")
+            + "</div>")
+    if t["mutants"]:
+        rows.append("<div class=\"trace-row\"><b>變異</b><span>" + "、".join(t["mutants"]) + "</span></div>")
+    if not rows:
+        rows.append('<div class="trace-row"><span class="muted">這一條在原始碼與夾具裡都沒有留下可追溯的連結。'
+                    '紅燈的意思是「沒有連結」,不等於「沒被測到」——補連結的做法是在夾具註解寫上條號,'
+                    '不是去改條文(判準同 axiom_matrix.py)。</span></div>')
+    return ('<details class="trace-section"><summary>三向連結 · 原始碼 / 夾具 / 變異</summary>'
+            + "".join(rows) + "</details>")
+
+
 def reader_counts(template: str, clauses: list[dict], state: dict) -> dict:
     """GEO-140:所有對讀者顯示的計數,只在這裡算一次。禁止任何地方再寫死數字。"""
     return {
@@ -689,10 +787,13 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
         for ref in sorted({m[1] for m in CLAUSE_REF.finditer(c["body"]) if m[1] != c["id"]}):
             incoming[ref].append(c["id"])
     witness_manifest = load_witness_manifest()
-    if ".witness-section{" not in template:
-        template = template.replace("</style>", WITNESS_CSS + "</style>", 1)
-    if ".plain-section>h3,.original-section>h3{" not in template:
-        template = template.replace("</style>", CLAUSE_LABEL_CSS + "</style>", 1)
+    template = inject_css(template, WITNESS_CSS, ".witness-section{")
+    template = inject_css(template, TRACE_CSS, "--trace-ok:")
+    template = inject_css(template, CLAUSE_LABEL_CSS, ".plain-section>h3,.original-section>h3{")
+    trace = clause_trace(clauses, incoming)
+    example_counts = {m[1]: len(re.findall(r'<details class="ex ', m[0]))
+                      for m in ((art, cid_) for cid_, art in old_articles.items())}
+
     articles = []
     previous_group = None
     for index, c in enumerate(clauses):
@@ -706,11 +807,11 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
         examples = ""
         if prior:
             start = prior.find('<details class="examples')
-            # 終點取「見證圖」與「被引用」中較早出現者:見證圖由 witness_figure() 每次重新產生,
-            # 不能被當成歷史範例保留下來,否則每重建一次就多一張(GEO-147 施工時實際踩到)。
-            ends = [prior.find(mark) for mark in
-                    ('<section class="witness-section">', '<section class="relation-section"')]
-            ends = [e for e in ends if e > start]
+            # 終點取 GENERATED_SECTIONS 裡最早出現者。那些區塊每次重建都重新產生,
+            # 絕不能被當成「歷史範例」保留下來——否則每重建一次就多一份。
+            # 踩過兩次:GEO-147(見證圖 17→33)、GEO-139(三向連結 89→136)。
+            # 新增任何每次重新產生的區塊時,務必同步加進 GENERATED_SECTIONS。
+            ends = [e for e in (prior.find(mark) for mark in GENERATED_SECTIONS) if e > start]
             end = min(ends) if ends else -1
             if start >= 0 and end > start:
                 examples = prior[start:end]
@@ -718,7 +819,12 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             examples = '<p class="hint history-example-note">以下為保留的歷史範例與例圖，未依本次條文重新執行，不作為本次功能驗收證據。</p>' + examples
         title = html.escape(c["title"])
         article = f'<article aria-labelledby="title-{cid}" class="clause" data-clause-id="{cid}" data-position="{index + 1}" data-source-line="{c["line"]}" data-title="{html.escape(c["title"], quote=True)}" id="{cid}">'
-        article += f'<header class="clause-header"><div class="clause-meta"><span class="clause-id">{cid} / {GROUPS[group]}</span><span>{index + 1} / {len(clauses)}</span></div><h2 id="title-{cid}">{title}</h2></header>'
+        t = trace[cid]
+        badges = (f'<span class="clause-badges">'
+                  f'<span class="badge-trace" data-trace="{t["light"]}" title="追溯燈號:{TRACE_LABEL[t["light"]]}">{TRACE_LABEL[t["light"]]}</span>'
+                  + (f'<span class="badge-hub" title="樞紐:被 {t["incoming"]} 條引用">樞紐</span>' if t["hub"] else "")
+                  + '</span>')
+        article += f'<header class="clause-header"><div class="clause-meta"><span class="clause-id">{cid} / {GROUPS[group]}</span>{badges}<span>{index + 1} / {len(clauses)}</span></div><h2 id="title-{cid}">{title}</h2></header>'
         # GEO-147(🔒 2026-09-20):原文在前。理由不是舊設計規格(已作廢),而是頁尾自己寫「原文為準」、
         # 公理層.md 是 SSOT、白話明標非條文——版面順序必須與這個事實一致。
         # 只改這裡的呈現順序;blocks 陣列順序(plain 先)不動,否則 documentHash 與批註錨點會無故失效。
@@ -728,6 +834,7 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             article += '</div></section>'
         article += examples or '<p class="hint">本條尚無閱讀器內建執行範例；實作驗收另見專案測試記錄。</p>'
         article += witness_figure(cid, witness_manifest)
+        article += trace_section(cid, t)
         links = "".join(f'<a class="reference-link" data-ref="{ref}" href="#{ref}">{ref}</a>' for ref in incoming[cid])
         article += '<section class="relation-section"><h3>被哪些條文引用</h3><div class="relation-links">' + (links or '<span class="muted">目前沒有其他條文引用。</span>') + '</div></section>'
         footer = (f'<a href="#{clauses[index - 1]["id"]}">上條 {clauses[index - 1]["id"]}</a>' if index else "") + '<a href="#contents">回目錄</a>'
@@ -741,7 +848,24 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     for group, label in GROUPS.items():
         items = [c for c in clauses if c["id"].startswith(group)]
         toc = f'<section class="toc-group" id="toc-{group}"><h2>{group} · {label} / {len(items)} 條</h2>'
-        toc += "".join(f'<a class="toc-item" data-clause="{c["id"]}" href="#{c["id"]}"><span class="clause-no">{c["id"]}</span><span class="toc-title">{html.escape(c["title"])}</span></a>' for c in items) + '</section>'
+        # GEO-139(4)+GEO-149:左邊 4px 追溯燈號;右邊標出這一條有幾個範例、有沒有見證圖。
+        # data-* 全部由資料算,不得出現硬編碼條號白名單。
+        def toc_item(c):
+            t, cid_ = trace[c["id"]], c["id"]
+            ex = example_counts.get(cid_, 0)
+            wit = 1 if cid_ in witness_manifest and (WITNESS_DIR / f"{cid_}.svg").exists() else 0
+            evidence = []
+            if ex:
+                evidence.append(f"例 {ex}")
+            if wit:
+                evidence.append("見證圖")
+            return (f'<a class="toc-item" data-clause="{cid_}" data-trace="{t["light"]}" '
+                    f'data-ex="{ex}" data-wit="{wit}" data-hub="{1 if t["hub"] else 0}" href="#{cid_}">'
+                    f'<span class="clause-no">{cid_}</span>'
+                    f'<span class="toc-title">{html.escape(c["title"])}</span>'
+                    + (f'<span class="toc-evidence">{" · ".join(evidence)}</span>' if evidence else "")
+                    + '</a>')
+        toc += "".join(toc_item(c) for c in items) + '</section>'
         template, count = re.subn(r'<section class="toc-group" id="toc-' + group + r'">.*?</section>', lambda _: toc, template, count=1, flags=re.S)
         if count != 1:
             raise ValueError("TOC group missing")
