@@ -1567,7 +1567,7 @@
 - **檔案**:`geometry-guide/sync_axiom_reader.py`、`tests/test_axiom_reader.py`、重出正典。
 - **相依**:無。**估時 2h**。
 
-### GEO-141 色彩 token 化;圖面色與互動色分家
+### GEO-141 ◐ 進行中(2026-09-20 完成 token 化,剩圖內色) 色彩 token 化;圖面色與互動色分家
 - **性質**:🟢 全部可做(Q1 已於 2026-09-20 拍板 🔒)。
 - **內容**:
   - head CSS 有 **40 個不同 hex**,批註系統整套色在 token 之外
@@ -1584,6 +1584,20 @@
   見證圖 `witness.py --check` 仍 17/17(圖檔本身不因此改動,只有嵌入時的 style 段變)。
 - **🔒 拍板(Q1)**:**只 token 化底色與線色**;見證圖的四個角色色屬 `witness/規範.md` v1、與條文語意綁定,
   **不動**,17 張見證圖不必重出。
+- **進度**:
+  - ✅ **批註四色 + 範例/實錄/命中色 + 圖卡底色**收成 13 個 token(`--note`/`--note-strong`/`--danger`/
+    `--proposal`/`--figure-bg`/`--reject-*`/`--transcript-*`/`--hit-*`/`--link-underline`/`--sheet-ref-ink`),
+    兩套主題各一組;**深色的三條逐條選擇器補丁已刪除**,值移進 `:root[data-theme=dark]`。
+  - ✅ **焦點環** `outline:3px solid #288b9c` → `outline:2px solid var(--accent);outline-offset:4px`;
+    `#288b9c` 全檔歸零。
+  - ✅ `validate()` 與測試各加一道:CSS 規則內不得再有裸色碼(`@media print` 與 token 定義區除外)。
+  - ⬜ **圖「內」的顏色尚未處理**,這是本票最後一段,而且有一個真實限制:
+    281 張範例圖是 base64 `<img>`,`<img>` 裡的 SVG **看不到頁面的 CSS 變數與 `data-theme`**,
+    只看得到系統的 `prefers-color-scheme`。要讓它們跟著閱讀器的主題切換,只有三條路:
+    (a) 改成 inline `<svg>`(見證圖 17 張可行,且會比 base64 更小;281 張範例圖則會讓 DOM 爆炸)、
+    (b) 出淺深兩份(檔案再大一倍)、(c) 只跟系統不跟使用者切換。
+    **且範例圖被標為「歷史範例,未依本次條文重新執行」——重跑引擎重產會破壞這個語意。**
+    建議:見證圖走 (a),範例圖維持現狀並靠 `--figure-bg` 的圖卡底色減輕突兀。已列入決策佇列 Q8。
 - **相依**:無。**估時 3h**。
 
 ### GEO-142 搜尋:跳轉不清空查詢;補 Ctrl/⌘K

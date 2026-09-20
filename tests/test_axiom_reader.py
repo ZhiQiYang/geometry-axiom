@@ -97,6 +97,20 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_colors_are_tokenised(self):
+        # GEO-141(🔒 Q1):批註四色與圖面底色收成 token,深色只改 token 值,不再逐條選擇器補丁。
+        self.assertEqual(reader.hardcoded_colors(self.html), [])
+        for token, (light, dark) in reader.COLOR_TOKENS.items():
+            if light:
+                self.assertIn("%s:%s" % (token, light), self.html, token)
+            if dark:
+                self.assertIn("%s:%s" % (token, dark), self.html, token)
+        # 深色不得再靠逐條選擇器補丁救色
+        for patched in (":root[data-theme=dark] .ex.no .badge", ":root[data-theme=dark] .dsl>span.hit"):
+            self.assertNotIn(patched, self.html, patched)
+        self.assertIn("outline:2px solid var(--accent);outline-offset:4px", self.html)
+        self.assertNotIn("#288b9c", self.html)
+
     def test_traceability_lights_and_hub_badges_exist(self):
         # GEO-139(4):GEO-120 的連帶約束明列「追溯燈號 / 三向連結 / 樞紐徽章」不得丟失。
         # 定義沿用 make_axiom_reader.py 原本的那一組,不得另立門檻。

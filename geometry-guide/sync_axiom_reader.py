@@ -81,6 +81,84 @@ TRACE_CSS = (
     ".trace-row code{font-size:11.5px}"
     ".trace-row .muted{color:var(--muted)}"
 )
+# GEO-141(🔒 Q1 2026-09-20):批註系統整套色與圖面底色原本散在 CSS 規則裡寫死(head 內 44 個色碼),
+# 深色模式靠逐條選擇器補丁救回來,任何新增顏色都得再補一次。收成 token,深色只改 token 值。
+# 淺色值沿用原本就在用的那幾個,不自己換色;深色值取專案既有的同族色(--trace-* 用過的)。
+COLOR_TOKENS = {
+    "--note":        ("#c68d2a", "#eac076"),   # 批註琥珀:左邊條、引文邊框、復原橫幅
+    "--note-strong": ("#9a5200", "#f6c177"),   # 未存檔 / 引文已過期的字
+    "--danger":      ("#ad3424", "#fc8181"),   # 批註錯誤訊息
+    "--proposal":    ("#bb6c59", "#e0a08e"),   # 提案前後對照的左邊條
+    "--figure-bg":   ("#eef2f5", "#181e24"),   # 圖卡底色(淺色主題不再是黑方塊)
+    "--reject-bg":   ("#faeeeb", "#422f2b"),   # 範例「拒絕」徽章與預期輸出
+    "--reject-ink":  ("#a74739", "#f3b3a4"),
+    "--transcript-bg": ("#edf1fa", "#253243"), # 範例「實錄」徽章
+    "--transcript-ink": ("#405f96", "#9db6e0"),
+    "--hit-bg":      ("#fff0e9", "#453329"),   # DSL 命中行
+    "--hit-line":    ("#d17e5d", "#d17e5d"),
+    "--link-underline": ("#97bdbb", "#4e7f76"),
+    "--sheet-ref-ink": (None, "#132b25"),      # 只有深色有的既有微調,保留原值
+}
+# 規則裡寫死的色碼 → token。只換這幾個,不動 :root 既有的 --bg/--ink/… 定義。
+COLOR_REWRITES = [
+    ("a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid #288b9c;outline-offset:3px}",
+     "a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:4px}"),
+    (".review-save-state.dirty{color:#9a5200}", ".review-save-state.dirty{color:var(--note-strong)}"),
+    (".stale-note{font-size:12px;color:#9a5200;", ".stale-note{font-size:12px;color:var(--note-strong);"),
+    (".review-block.has-comments>.review-target{border-left:3px solid #c68d2a;",
+     ".review-block.has-comments>.review-target{border-left:3px solid var(--note);"),
+    (".review-block.target-flash{outline:2px solid #c68d2a;", ".review-block.target-flash{outline:2px solid var(--note);"),
+    ("border-left:3px solid #c68d2a;border-radius:0 7px 7px 0;", "border-left:3px solid var(--note);border-radius:0 7px 7px 0;"),
+    (".recovery-banner{padding:12px;border:1px solid #c68d2a;", ".recovery-banner{padding:12px;border:1px solid var(--note);"),
+    (".review-error{color:#ad3424;", ".review-error{color:var(--danger);"),
+    (".proposal-before{border-left:3px solid #bb6c59;", ".proposal-before{border-left:3px solid var(--proposal);"),
+    (".ex figure img{display:block;width:100%;height:auto;background:#181e24;",
+     ".ex figure img{display:block;width:100%;height:auto;background:var(--figure-bg);"),
+    (".witness-section figure img{display:block;width:100%;height:auto;background:#181e24;",
+     ".witness-section figure img{display:block;width:100%;height:auto;background:var(--figure-bg);"),
+    (".image-viewport{overflow:auto;flex:1;min-height:0;padding:10px;background:#181e24;",
+     ".image-viewport{overflow:auto;flex:1;min-height:0;padding:10px;background:var(--figure-bg);"),
+    (".ex.no .badge{background:#faeeeb;color:#a74739}", ".ex.no .badge{background:var(--reject-bg);color:var(--reject-ink)}"),
+    (".ex.no .expect{background:#faeeeb}", ".ex.no .expect{background:var(--reject-bg)}"),
+    (".ex.tr .badge{background:#edf1fa;color:#405f96}", ".ex.tr .badge{background:var(--transcript-bg);color:var(--transcript-ink)}"),
+    (".dsl>span.hit{background:#fff0e9;border-left:2px solid #d17e5d}",
+     ".dsl>span.hit{background:var(--hit-bg);border-left:2px solid var(--hit-line)}"),
+    ("text-decoration-color:#97bdbb;", "text-decoration-color:var(--link-underline);"),
+    # 深色的逐條選擇器補丁刪掉,值已移進 :root[data-theme=dark] 的 token。
+    (":root[data-theme=dark] .ex.no .badge,:root[data-theme=dark] .ex.no .expect{background:#422f2b;color:#f3b3a4}", ""),
+    (":root[data-theme=dark] .dsl>span.hit{background:#453329}", ""),
+    (":root[data-theme=dark] .sheet .full-ref{color:#132b25}",
+     ":root[data-theme=dark] .sheet .full-ref{color:var(--sheet-ref-ink)}"),
+]
+
+
+def apply_color_tokens(template: str) -> str:
+    """把 token 定義併進 :root / :root[data-theme=dark],再把規則裡寫死的色碼換成 token。"""
+    light = "".join("%s:%s;" % (k, v[0]) for k, v in COLOR_TOKENS.items() if v[0])
+    dark = "".join("%s:%s;" % (k, v[1]) for k, v in COLOR_TOKENS.items() if v[1])
+    template = force(template, "--bar:68px}", "--bar:68px;" + light.rstrip(";") + "}", "淺色 token")
+    template = force(template, "--code:#293640}", "--code:#293640;" + dark.rstrip(";") + "}", "深色 token")
+    for old_css, new_css in COLOR_REWRITES:
+        template = force(template, old_css, new_css, "色碼→token: " + new_css[:40])
+    return template
+
+
+def hardcoded_colors(template: str) -> list[str]:
+    """回傳 CSS 規則裡仍寫死的色碼(token 定義區與 <meta theme-color> 除外)。"""
+    head = template[:template.index('<script id="reader-counts"')]
+    print_at = head.find("@media print{")
+    bad = []
+    for m in re.finditer(r"#[0-9a-fA-F]{6}\b", head):
+        if print_at >= 0 and m.start() > print_at:
+            continue          # 列印樣式沒有主題,固定色是刻意的
+        before = head.rfind("}", 0, m.start())
+        rule = head[before + 1:m.start()]
+        if "--" in rule.split("{")[-1] or "theme-color" in head[max(0, m.start() - 120):m.start()]:
+            continue          # token 定義本身,或 <meta name=theme-color>
+        bad.append(m.group(0) + " @ " + rule.split("{")[0].strip()[-60:])
+    return bad
+
+
 TRACE_LABEL = {"ok": "原始碼＋夾具", "partial": "僅其一", "none": "無追溯"}
 
 # 每次重建都重新產生的區塊。保留「歷史範例」時必須以它們為終點,否則會把上一輪的產物
@@ -437,12 +515,13 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     assert not search_regressions(source), "GEO-142 搜尋行為: " + "; ".join(search_regressions(source))
     for mark in ('badge-trace', 'badge-hub', 'trace-section', 'data-trace='):
         assert mark in source, "GEO-139 追溯類功能又丟失了(GEO-120 連帶約束): " + mark
+    assert not hardcoded_colors(source), "GEO-141 規則裡仍有寫死的色碼: " + "; ".join(hardcoded_colors(source)[:6])
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
     assert not stale_counts(source, counts), "GEO-140 殘留硬編碼計數: " + "; ".join(stale_counts(source, counts))
     assert not re.search(r"https?://|<link\b|<script\b[^>]*\bsrc\s*=|@import", source, re.I), "external reader resource"
-    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "geo120": "pass", "search": "pass", "documentHash": data["documentHash"]}
+    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "geo120": "pass", "search": "pass", "color_tokens": "pass", "documentHash": data["documentHash"]}
 
 
 def inject_css(template: str, css: str, marker: str) -> str:
@@ -466,6 +545,14 @@ def force(text: str, old: str, new: str, label: str) -> str:
     (`…sideNavigation());sync();`)剛好也出現在 changeMode() 裡,於是被誤判成「已套用」,
     補丁整個被跳過而沒有任何人知道。不唯一就是判準有問題,寧可失敗。
     """
+    if new == "":
+        # 刪除型:空字串在任何文字裡都「存在」,不能走下面的判定。
+        # 刪不到就當作已經刪過(冪等);但仍要求存在時必須唯一,避免誤刪同形內容。
+        if old in text:
+            if text.count(old) != 1:
+                raise ValueError("reader template patch (%s): 待刪字串出現 %d 次,不唯一" % (label, text.count(old)))
+            return text.replace(old, "", 1)
+        return text
     if old in new:
         # 追加式補丁(new 只是在 old 上加東西):old 永遠仍在 new 裡,只能用 new 判定是否已套用,
         # 否則每重建一次就再追加一次(GEO-142 的 renderSearchStatus() 實際踩到)。
@@ -879,6 +966,8 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     template = replace_script(template, "axiom-review-data", safe_json(state))
     # GEO-139:先回歸 GEO-120 的拍板預設值,再算計數(兩者都會動 reader-script)。
     template = apply_geo120(template)
+    # GEO-141:色彩 token 化(批註四色、圖面底色、焦點環)。
+    template = apply_color_tokens(template)
     # GEO-142:搜尋跳轉不清空查詢;Enter 連跳下一筆。
     template = apply_search_fixes(template)
     # GEO-140:所有計數由 reader_counts() 算一次,apply_counts() 填進 HTML 與腳本;此處不再寫死數字。
