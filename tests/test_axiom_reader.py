@@ -97,6 +97,15 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_mid_width_uses_half_sheet_and_mobile_bar_has_four_keys(self):
+        # GEO-148(🔒 Q6):960–1279px 不得再用全螢幕 modal 蓋住正文;手機底部列只留四鍵。
+        ws = reader.script_text(self.html, "workspace-script")
+        self.assertIn("min-width:960px) and (max-width:1279px", ws)
+        self.assertIn("halfSheet()", ws)
+        self.assertIn("body.half-sheet-open{padding-bottom:52dvh}", self.html)
+        self.assertIn('.bottom-bar .bottom-inner>[data-review-action="list"]{display:none}', self.html)
+        self.assertIn(".bottom-bar .bottom-inner button{font-size:14px", self.html)
+
     def test_workspace_shows_witness_and_keeps_draft(self):
         # GEO-138 + GEO-146(🔒 Q4):右欄上半固定見證圖;切分頁前先保留草稿並告知。
         self.assertIn('id="workspace-witness"', self.html)

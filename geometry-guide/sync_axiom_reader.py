@@ -169,6 +169,34 @@ GENERATED_SECTIONS = (
     '<section class="relation-section"',
 )
 
+# GEO-148(🔒 Q6 2026-09-20):
+#  (a) 960–1279px:左欄已是固定導覽、右欄還沒出現,點條號原本走 showModal() 把正文整個蓋掉,
+#      與右欄文案「對照引用,不離開正文」矛盾。改成底部半高 sheet,而且用 show() 而非 showModal()
+#      ——非模態,正文同時看得見**也仍可操作**。
+#  (b) ≤959px:底部列擠 5 個控制、字級被壓到 13px/11px。只留「目錄·上條·位置·下條」四鍵,
+#      字級回 14px;批註入口移到頂列(條文內本來就有琥珀左邊條與徽章)。
+SHEET_CSS = (
+    "@media (min-width:960px) and (max-width:1279px){"
+    "body.half-sheet-open{padding-bottom:52dvh}"
+    "dialog#reference-sheet[open],dialog#review-dialog[open]{position:fixed;inset:auto 0 0 0;margin:0;"
+    "width:100%;max-width:100%;height:50dvh;max-height:50dvh;border:0;border-top:1px solid var(--line);"
+    "border-radius:14px 14px 0 0;box-shadow:0 -12px 34px rgba(0,0,0,.2);overflow:auto;display:block}"
+    "dialog#reference-sheet[open]::backdrop,dialog#review-dialog[open]::backdrop{background:transparent}"
+    "}"
+    "@media (max-width:959px){"
+    ".bottom-bar .bottom-inner>[data-review-action=\"list\"]{display:none}"
+    ".bottom-bar .bottom-inner{gap:8px}"
+    ".bottom-bar .bottom-inner button{font-size:14px;padding:6px 8px}"
+    ".bottom-bar .bottom-inner .position{font-size:12px;min-width:48px}"
+    ".masthead .header-inner .workspace-toolbar{display:flex;align-items:center;gap:6px;margin-left:auto}"
+    ".masthead .header-inner .workspace-toolbar>.workspace-current,"
+    ".masthead .header-inner .workspace-toolbar>.workspace-step,"
+    ".masthead .header-inner .workspace-toolbar>[data-review-action=\"export\"]{display:none}"
+    ".masthead .header-inner .workspace-toolbar>[data-review-action=\"list\"]"
+    "{font-size:13px;padding:6px 10px;min-height:40px;white-space:nowrap}"
+    "}"
+)
+
 # GEO-138(🔒 Q4):右欄上半的見證圖面板。只在 dock 寬度出現;窄螢幕維持卡片內 inline。
 WITNESS_PANE_CSS = (
     "#workspace-witness{display:none}"
@@ -568,6 +596,8 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     assert "facetMatch" in script_text(source, "reader-script"), "GEO-149 篩選條件沒接上 filterToc"
     assert 'id="workspace-witness"' in source, "GEO-138 右欄見證圖面板不見了"
     assert "草稿已保留" in script_text(source, "workspace-script"), "GEO-146 切分頁沒有保留草稿"
+    assert "halfSheet()" in script_text(source, "workspace-script"), "GEO-148 中間寬度仍走全螢幕 modal"
+    assert "body.half-sheet-open" in source, "GEO-148 半高 sheet 樣式不見了"
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
@@ -642,6 +672,35 @@ FACET_HELPER_JS = "\n    /* GEO-149:篩選 chip。與搜尋、分類篩選疊加
 
 
 WITNESS_PANE_JS = "\n /* GEO-138(🔒 Q4):右欄上半固定顯示「目前這一條」的見證圖,不與參照/批註互斥。\n    圖直接取自條文卡裡那張(同一個 data URI),不另存第二份。 */\n function toast(text){\n  const t=document.getElementById('toast');if(!t)return;\n  t.textContent=text;t.hidden=false;\n  clearTimeout(toast._timer);toast._timer=setTimeout(()=>{t.hidden=true;},2200);\n }\n function renderWitness(id){\n  const pane=document.getElementById('workspace-witness');if(!pane)return;\n  const label=document.getElementById('workspace-witness-clause');\n  const img=document.getElementById('workspace-witness-img');\n  const none=document.getElementById('workspace-witness-none');\n  const article=id?document.getElementById(id):null;\n  const source=article?article.querySelector('.witness-section figure img'):null;\n  if(label)label.textContent=id||'';\n  if(source){\n   img.src=source.getAttribute('src');img.alt=source.getAttribute('alt')||'';\n   img.hidden=false;none.hidden=true;\n  }else{\n   img.removeAttribute('src');img.hidden=true;none.hidden=false;\n  }\n }\n document.addEventListener('axiom:current',e=>renderWitness(e.detail&&e.detail.id));"
+
+
+def apply_half_sheet(template: str) -> str:
+    """GEO-148(a):960–1279px 用非模態的底部半高 sheet 取代全螢幕 modal。"""
+    js = script_text(template, "workspace-script")
+    js = force(js,
+               "const navQuery=window.matchMedia('(min-width:960px)'),dockQuery=window.matchMedia('(min-width:1280px)');",
+               "const navQuery=window.matchMedia('(min-width:960px)'),dockQuery=window.matchMedia('(min-width:1280px)');\n"
+               " /* GEO-148(🔒 Q6):中間寬度用非模態底部半高 sheet,正文同時可見也可操作。 */\n"
+               " const halfQuery=window.matchMedia('(min-width:960px) and (max-width:1279px)');\n"
+               " const halfSheet=()=>ready&&halfQuery.matches;",
+               "halfQuery 宣告")
+    js = force(js,
+               " }else{if(!el.open)el.showModal();if(id==='review-dialog')document.body.classList.add('review-panel-open');}",
+               " }else if(halfSheet()&&dialogs.includes(id)){\n"
+               "  if(el.open&&el.matches(':modal'))el.close();\n"
+               "  if(!el.open)el.show();\n"
+               "  document.body.classList.add('half-sheet-open');\n"
+               "  if(id==='review-dialog')document.body.classList.add('review-panel-open');\n"
+               " }else{if(!el.open)el.showModal();if(id==='review-dialog')document.body.classList.add('review-panel-open');}",
+               "底部半高 sheet")
+    js = force(js, "\nfunction start(){",
+               "\n /* sheet 關閉時把 body 的讓位 padding 收回來。 */\n"
+               " dialogs.forEach(id=>{const d=document.getElementById(id);\n"
+               "  if(d)d.addEventListener('close',()=>{\n"
+               "   if(!dialogs.some(x=>{const o=document.getElementById(x);return o&&o.open;}))\n"
+               "    document.body.classList.remove('half-sheet-open');});});\nfunction start(){",
+               "sheet 關閉收回 padding", marker="half-sheet-open');});});")
+    return replace_script(template, "workspace-script", js)
 
 
 def apply_witness_pane(template: str) -> str:
@@ -1056,6 +1115,7 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             incoming[ref].append(c["id"])
     witness_manifest = load_witness_manifest()
     template = inject_css(template, WITNESS_CSS, ".witness-section{")
+    template = inject_css(template, SHEET_CSS, "body.half-sheet-open{padding-bottom:52dvh}")
     template = inject_css(template, WITNESS_PANE_CSS, "#workspace-witness{display:none}")
     template = inject_css(template, FACET_CSS, ".toc-facets{display:flex")
     template = inject_css(template, REF_PREVIEW_CSS, "#ref-preview{position:fixed")
@@ -1148,6 +1208,8 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             raise ValueError("TOC group missing")
     # Reader edits must rebuild subclauses from the canonical source block, not old originalSub.
     template = apply_witness_pane(template)
+    # GEO-148:中間寬度的底部半高 sheet。
+    template = apply_half_sheet(template)
     template = apply_facets(template, clauses, trace, note_counts, example_counts,
                            {wid for wid in witness_manifest
                             if (WITNESS_DIR / f"{wid}.svg").exists()})
