@@ -41,10 +41,10 @@
 <polygon points="2010,20 1990,20 1990,1200 2010,1200" class="timber-face timber-face-near role-primary" data-t="2"/>
 <text x="2000" y="610" class="label timber-label">角材2 A0</text>
 
-<line x1="0" y1="-6" x2="0" y2="26" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t1.START"/>
-<line x1="4000" y1="-6" x2="4000" y2="26" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t1.END"/>
-<line x1="1984" y1="20" x2="2016" y2="20" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t2.START"/>
-<line x1="1984" y1="1200" x2="2016" y2="1200" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t2.END"/>
+<line x1="3" y1="-6" x2="3" y2="26" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t1.START"/>
+<line x1="3997" y1="-6" x2="3997" y2="26" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t1.END"/>
+<line x1="1984" y1="23" x2="2016" y2="23" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t2.START"/>
+<line x1="1984" y1="1197" x2="2016" y2="1197" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t2.END"/>
 </g>
 <text x="40" y="5390" class="section-title">接點列(每格 = 一個角材端面,等比例放大,窗 = 8 × 料寬;視圖:仰視圖)</text>
 <text x="0" y="5580" class="tile-title">t1·START→e3(RC)</text>
@@ -63,7 +63,7 @@
 <polygon points="2010,20 2010,1200 1990,1200 1990,20" class="timber-face role-primary" data-t="2"/>
 <polygon points="2010,20 1990,20 1990,1200 2010,1200" class="timber-face timber-face-near role-primary" data-t="2"/>
 
-<line x1="0" y1="-9" x2="0" y2="29" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t1.START"/>
+<line x1="4.5" y1="-9" x2="4.5" y2="29" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t1.START"/>
 </svg>
 <text x="760" y="5580" class="tile-title">t1·END→e1(RC)</text>
 <rect x="760" y="5610" width="700" height="700" class="tile-frame"/>
@@ -81,7 +81,7 @@
 <polygon points="2010,20 2010,1200 1990,1200 1990,20" class="timber-face role-primary" data-t="2"/>
 <polygon points="2010,20 1990,20 1990,1200 2010,1200" class="timber-face timber-face-near role-primary" data-t="2"/>
 
-<line x1="4000" y1="-9" x2="4000" y2="29" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t1.END"/>
+<line x1="3995.5" y1="-9" x2="3995.5" y2="29" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t1.END"/>
 </svg>
 <text x="1520" y="5580" class="tile-title">t2·START→t1</text>
 <rect x="1520" y="5610" width="700" height="700" class="tile-frame"/>
@@ -99,7 +99,7 @@
 <polygon points="2010,20 2010,1200 1990,1200 1990,20" class="timber-face role-primary" data-t="2"/>
 <polygon points="2010,20 1990,20 1990,1200 2010,1200" class="timber-face timber-face-near role-primary" data-t="2"/>
 
-<line x1="1981" y1="20" x2="2019" y2="20" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t2.START"/>
+<line x1="1981" y1="24.5" x2="2019" y2="24.5" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t2.START"/>
 </svg>
 <text x="2280" y="5580" class="tile-title">t2·END→h0e0</text>
 <rect x="2280" y="5610" width="700" height="700" class="tile-frame"/>
@@ -117,7 +117,7 @@
 <polygon points="2010,20 2010,1200 1990,1200 1990,20" class="timber-face role-primary" data-t="2"/>
 <polygon points="2010,20 1990,20 1990,1200 2010,1200" class="timber-face timber-face-near role-primary" data-t="2"/>
 
-<line x1="1981" y1="1200" x2="2019" y2="1200" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t2.END"/>
+<line x1="1981" y1="1195.5" x2="2019" y2="1195.5" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t2.END"/>
 </svg>
 <rect x="0" y="6380" width="4500" height="680" class="legend-box"/>
 <text x="40" y="6510" class="legend-title">圖例(每張見證圖相同;規範 v1)</text>

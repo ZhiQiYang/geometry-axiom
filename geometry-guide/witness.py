@@ -277,7 +277,59 @@ def resolve_joints(edges, timbers, roles, surfaces):
                                    % (tid, end, len(cands), [c[0] for c in cands]))
             ref, info = cands[0]
             joints.append({"t": tid, "end": end, "stop": ref, "detail": info})
+    check_no_overlap(timbers, surfaces)
     return joints
+
+
+def _rect_overlap_area(a, b, axes):
+    """兩個 3D bbox 在指定兩軸上的交集面積(邊相接 = 0)。"""
+    w = min(a[axes[0]][1], b[axes[0]][1]) - max(a[axes[0]][0], b[axes[0]][0])
+    h = min(a[axes[1]][1], b[axes[1]][1]) - max(a[axes[1]][0], b[axes[1]][0])
+    return max(0, w) * max(0, h)
+
+
+def check_no_overlap(timbers, surfaces):
+    """物理碰撞自驗(I11):同一承載面上任兩支 A0 footprint 的正面積交集必須為 0。
+    引擎本來就擋,這裡再驗一次,讓見證不依賴「引擎沒出錯」這個假設。"""
+    ids = sorted(timbers)
+    for i, a in enumerate(ids):
+        for b in ids[i + 1:]:
+            if surfaces.get(a) != surfaces.get(b):
+                continue
+            fa, fb = timbers[a]["faces"]["A0"], timbers[b]["faces"]["A0"]
+            n = _const_axis(fa)
+            if n is None or n != _const_axis(fb):
+                continue
+            axes = [k for k in range(3) if k != n]
+            area = _rect_overlap_area(_bbox(fa), _bbox(fb), axes)
+            if area > 0:
+                raise WitnessError("角材 %d 與 %d 的 footprint 重疊 %d mm²——同一空間被兩個物體占用(I11),不出圖" % (a, b, area))
+
+
+def check_marks_outside(joints, timbers, view):
+    """標記自驗:停止標記(退半粗度後)的範圍不得進入擋面對方角材的 footprint。"""
+    proj = VIEWS[view][2]
+    for j in joints:
+        if j["detail"]["kind"] != "timber":
+            continue
+        t, u = timbers[j["t"]], timbers[j["detail"]["id"]]
+        w = max(t["A"], t["B"])
+        thick = max(4, int(w * 0.3 * 1.6))
+        x0, x1, y0, y1 = _proj_bbox(t["faces"][j["end"]], proj)
+        if (x1 - x0 == 0) == (y1 - y0 == 0):
+            continue
+        sgn_in = -1 if j["end"] == "END" else 1
+        ix, iy = proj(tuple(sgn_in * c for c in t["axis"]))
+        # 標記在長度軸方向佔的範圍:[接觸面, 接觸面 + 向內 thick]
+        ux0, ux1, uy0, uy1 = _proj_bbox(u["faces"]["A0"], proj)
+        if ix:
+            lo, hi = sorted((x0, x0 + ix * thick))
+            inside = max(lo, ux0) < min(hi, ux1)
+        else:
+            lo, hi = sorted((y0, y0 + iy * thick))
+            inside = max(lo, uy0) < min(hi, uy1)
+        if inside:
+            raise WitnessError("t%d·%s 的停止標記侵入 t%d 的 footprint——標註不得暗示不存在的占用" % (j["t"], j["end"], j["detail"]["id"]))
 
 
 # ------------------------------------------------------------------
@@ -337,12 +389,18 @@ def stop_marks(joints, timbers, roles, view, with_label=True, scale=1.0):
         if x1 - x0 == 0 and y1 - y0 == 0:
             continue                       # 端面在此視圖退化成點(沿視線),不標
         if x1 - x0 == 0 or y1 - y0 == 0:   # 線段:垂直於長度軸,延長到 1.6 倍料寬
+            # 物理碰撞:接觸面是零面積的面對面,標記不可以壓在接觸面上伸進對方料——
+            # 整條退到被裁料自己這一側(沿長度軸向內偏移半個粗度),對方 footprint 一個 mm 都不碰。
+            sgn_in = -1 if j["end"] == "END" else 1
+            ax_ = t["axis"]
+            ix, iy = proj((sgn_in * ax_[0], sgn_in * ax_[1], sgn_in * ax_[2]))
+            sx, sy = ix * thick / 2.0, iy * thick / 2.0
             if y1 - y0 == 0:
                 x0, x1 = x0 - ext, x1 + ext
             else:
                 y0, y1 = y0 - ext, y1 + ext
-            out.append('<line x1="%d" y1="%d" x2="%d" y2="%d" class="stop" stroke="%s" stroke-width="%d" data-joint="t%d.%s"/>'
-                       % (x0, y0, x1, y1, color, thick, j["t"], j["end"]))
+            out.append('<line x1="%g" y1="%g" x2="%g" y2="%g" class="stop" stroke="%s" stroke-width="%d" data-joint="t%d.%s"/>'
+                       % (x0 + sx, y0 + sy, x1 + sx, y1 + sy, color, thick, j["t"], j["end"]))
         else:                               # 端面正對視線:畫外框
             out.append('<rect x="%d" y="%d" width="%d" height="%d" class="stop" stroke="%s" stroke-width="%d" data-joint="t%d.%s"/>'
                        % (x0, y0, x1 - x0, y1 - y0, color, max(2, thick // 2), j["t"], j["end"]))
@@ -375,6 +433,7 @@ def compose(cid, ent, engine_svg, joints, timbers, roles):
     views = split_views(engine_svg)
     view = ent["view"]
     jview = ent.get("joint_view", "bottom")
+    check_marks_outside(joints, timbers, jview)
     for name in views:
         views[name]["body"], seen = colorize(views[name]["body"], roles)
         if name == jview and seen != set(timbers):

@@ -53,16 +53,16 @@
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 <text x="3000" y="2000" class="label timber-label">角材2 A0</text>
 
-<line x1="20" y1="994" x2="20" y2="1026" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t1.START"/>
-<line x1="3980" y1="994" x2="3980" y2="1026" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t1.END"/>
-<line x1="2984" y1="1020" x2="3016" y2="1020" class="stop" stroke="#9ae6b4" stroke-width="6" data-joint="t2.START"/>
-<line x1="2984" y1="2980" x2="3016" y2="2980" class="stop" stroke="#9ae6b4" stroke-width="6" data-joint="t2.END"/>
-<line x1="-6" y1="0" x2="26" y2="0" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t3.START"/>
-<line x1="-6" y1="3000" x2="26" y2="3000" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t3.END"/>
-<line x1="3974" y1="0" x2="4006" y2="0" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t4.START"/>
-<line x1="3974" y1="3000" x2="4006" y2="3000" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t4.END"/>
-<line x1="20" y1="2974" x2="20" y2="3006" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t5.START"/>
-<line x1="3980" y1="2974" x2="3980" y2="3006" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t5.END"/>
+<line x1="23" y1="994" x2="23" y2="1026" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t1.START"/>
+<line x1="3977" y1="994" x2="3977" y2="1026" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t1.END"/>
+<line x1="2984" y1="1023" x2="3016" y2="1023" class="stop" stroke="#9ae6b4" stroke-width="6" data-joint="t2.START"/>
+<line x1="2984" y1="2977" x2="3016" y2="2977" class="stop" stroke="#9ae6b4" stroke-width="6" data-joint="t2.END"/>
+<line x1="-6" y1="3" x2="26" y2="3" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t3.START"/>
+<line x1="-6" y1="2997" x2="26" y2="2997" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t3.END"/>
+<line x1="3974" y1="3" x2="4006" y2="3" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t4.START"/>
+<line x1="3974" y1="2997" x2="4006" y2="2997" class="stop" stroke="#e2a24a" stroke-width="6" data-joint="t4.END"/>
+<line x1="23" y1="2974" x2="23" y2="3006" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t5.START"/>
+<line x1="3977" y1="2974" x2="3977" y2="3006" class="stop" stroke="#63b3ed" stroke-width="6" data-joint="t5.END"/>
 </g>
 <text x="40" y="5390" class="section-title">接點列(每格 = 一個角材端面,等比例放大,窗 = 8 × 料寬;視圖:仰視圖)</text>
 <text x="0" y="5580" class="tile-title">t1·START→t3</text>
@@ -88,7 +88,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="20" y1="991" x2="20" y2="1029" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t1.START"/>
+<line x1="24.5" y1="991" x2="24.5" y2="1029" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t1.START"/>
 </svg>
 <text x="760" y="5580" class="tile-title">t1·END→t4</text>
 <rect x="760" y="5610" width="700" height="700" class="tile-frame"/>
@@ -113,7 +113,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="3980" y1="991" x2="3980" y2="1029" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t1.END"/>
+<line x1="3975.5" y1="991" x2="3975.5" y2="1029" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t1.END"/>
 </svg>
 <text x="1520" y="5580" class="tile-title">t2·START→t1</text>
 <rect x="1520" y="5610" width="700" height="700" class="tile-frame"/>
@@ -138,7 +138,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="2981" y1="1020" x2="3019" y2="1020" class="stop" stroke="#9ae6b4" stroke-width="9" data-joint="t2.START"/>
+<line x1="2981" y1="1024.5" x2="3019" y2="1024.5" class="stop" stroke="#9ae6b4" stroke-width="9" data-joint="t2.START"/>
 </svg>
 <text x="2280" y="5580" class="tile-title">t2·END→t5</text>
 <rect x="2280" y="5610" width="700" height="700" class="tile-frame"/>
@@ -163,7 +163,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="2981" y1="2980" x2="3019" y2="2980" class="stop" stroke="#9ae6b4" stroke-width="9" data-joint="t2.END"/>
+<line x1="2981" y1="2975.5" x2="3019" y2="2975.5" class="stop" stroke="#9ae6b4" stroke-width="9" data-joint="t2.END"/>
 </svg>
 <text x="3040" y="5580" class="tile-title">t3·START→e0(RC)</text>
 <rect x="3040" y="5610" width="700" height="700" class="tile-frame"/>
@@ -188,7 +188,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="-9" y1="0" x2="29" y2="0" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t3.START"/>
+<line x1="-9" y1="4.5" x2="29" y2="4.5" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t3.START"/>
 </svg>
 <text x="3800" y="5580" class="tile-title">t3·END→e2(RC)</text>
 <rect x="3800" y="5610" width="700" height="700" class="tile-frame"/>
@@ -213,7 +213,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="-9" y1="3000" x2="29" y2="3000" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t3.END"/>
+<line x1="-9" y1="2995.5" x2="29" y2="2995.5" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t3.END"/>
 </svg>
 <text x="0" y="6480" class="tile-title">t4·START→e0(RC)</text>
 <rect x="0" y="6510" width="700" height="700" class="tile-frame"/>
@@ -238,7 +238,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="3971" y1="0" x2="4009" y2="0" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t4.START"/>
+<line x1="3971" y1="4.5" x2="4009" y2="4.5" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t4.START"/>
 </svg>
 <text x="760" y="6480" class="tile-title">t4·END→e2(RC)</text>
 <rect x="760" y="6510" width="700" height="700" class="tile-frame"/>
@@ -263,7 +263,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="3971" y1="3000" x2="4009" y2="3000" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t4.END"/>
+<line x1="3971" y1="2995.5" x2="4009" y2="2995.5" class="stop" stroke="#e2a24a" stroke-width="9" data-joint="t4.END"/>
 </svg>
 <text x="1520" y="6480" class="tile-title">t5·START→t3</text>
 <rect x="1520" y="6510" width="700" height="700" class="tile-frame"/>
@@ -288,7 +288,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="20" y1="2971" x2="20" y2="3009" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t5.START"/>
+<line x1="24.5" y1="2971" x2="24.5" y2="3009" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t5.START"/>
 </svg>
 <text x="2280" y="6480" class="tile-title">t5·END→t4</text>
 <rect x="2280" y="6510" width="700" height="700" class="tile-frame"/>
@@ -313,7 +313,7 @@
 <polygon points="3010,1020 3010,2980 2990,2980 2990,1020" class="timber-face role-secondary" data-t="2"/>
 <polygon points="3010,1020 2990,1020 2990,2980 3010,2980" class="timber-face timber-face-near role-secondary" data-t="2"/>
 
-<line x1="3980" y1="2971" x2="3980" y2="3009" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t5.END"/>
+<line x1="3975.5" y1="2971" x2="3975.5" y2="3009" class="stop" stroke="#63b3ed" stroke-width="9" data-joint="t5.END"/>
 </svg>
 <rect x="0" y="7280" width="4500" height="680" class="legend-box"/>
 <text x="40" y="7410" class="legend-title">圖例(每張見證圖相同;規範 v1)</text>
