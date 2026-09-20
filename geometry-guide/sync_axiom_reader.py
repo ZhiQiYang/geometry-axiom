@@ -4,11 +4,14 @@
 Python 3 standard library + Node.js; no network, npm packages or alternate reader.
 The existing canonical HTML is the versioned UI/illustration/review template.
 Only 公理層-閱讀器.html is ever written. --check validates without writing.
+GEO-131 witness figures (geometry-guide/witness/*.svg) are embedded read-only; the
+engine is never run here — byte drift of those figures is witness.py --check's job.
 --review-json optionally merges an exported axiom-review/v1 review backup.
 """
 from __future__ import annotations
 
 import argparse
+import base64
 import copy
 import hashlib
 import html
@@ -29,6 +32,33 @@ CLAUSE_START = re.compile(r"^(?:\*\*)?([DIR]\d+[a-z]?)\s+", re.M)
 CLAUSE_REF = re.compile(r"\b([DIR]\d+[a-z]?)(?:\(([a-z])\))?")
 SUB_START = re.compile(r"^( +)\(([a-z])\) +", re.M)
 GROUPS = {"D": "定義", "I": "不變量", "R": "推演規則"}
+WITNESS_DIR = HERE / "witness"
+WITNESS_MANIFEST = WITNESS_DIR / "manifest.json"
+# 見證圖(GEO-131)嵌入閱讀器時套用的深色配色,與既有歷史例圖相同;引擎自帶的淺色 <style> 被整段替換。
+WITNESS_STYLE = (
+    "<style>svg{background:#181e24} .frame{fill:#181e24;stroke:none}\n"
+    "polygon,line,rect{vector-effect:non-scaling-stroke}\n"
+    ".title{font:bold 150px sans-serif;fill:#d7dfe6}\n"
+    ".label{font:110px sans-serif;fill:#c5cfd8;text-anchor:middle;dominant-baseline:middle}\n"
+    ".guide-label{text-anchor:start;fill:#ed9494}\n"
+    ".timber-label{fill:#efba69;font-weight:bold}\n"
+    ".guide-label,.timber-label{paint-order:stroke;stroke:#181e24;stroke-width:30px;stroke-linejoin:round}\n"
+    ".surface{fill:#304557;fill-opacity:.7;stroke:#84c8f6;stroke-width:1.5px}\n"
+    ".hole{fill:#181e24;stroke:#84c8f6;stroke-width:1.5px}\n"
+    ".edge{stroke:#84c8f6;stroke-width:1.5px}\n"
+    ".edge-free{stroke:#efba69;stroke-width:1.5px;stroke-dasharray:30 15}\n"
+    ".guide{stroke:#ed9494;stroke-width:1px;stroke-dasharray:60 30}\n"
+    ".timber-face{fill:#edb365;fill-opacity:.5;stroke:#edb365;stroke-width:1.5px}\n"
+    ".timber-face-near{fill-opacity:.85}</style>"
+)
+WITNESS_CSS = (
+    ".witness-section{margin-top:22px}.witness-section h3{font-size:13px;color:var(--accent);margin:0 0 8px}"
+    ".witness-section h3 small{font-weight:400;color:var(--muted);margin-left:6px}"
+    ".witness-section figure{margin:0;min-width:0}.witness-section figure img{display:block;width:100%;height:auto;background:#181e24;border-radius:6px}"
+    ".witness-section figcaption{font-size:11px;color:var(--muted);line-height:1.65;margin-top:8px}"
+    ".witness-section details{margin-top:8px}.witness-section summary{font-size:12px;color:var(--accent);cursor:pointer}"
+)
+VIEW_LABEL = {"bottom": "仰視圖", "front": "前視圖", "side": "側視圖", "all": "三視圖"}
 
 
 def digest(value: str) -> str:
@@ -216,6 +246,44 @@ def static_note(comment: dict, block: dict) -> str:
             ('<div class="note-copy"><strong>建議改法（尚未套用）</strong>\n' + html.escape(comment["suggestedText"]) + '</div>' if comment.get("suggestedText") else '') + '</div>')
 
 
+def load_witness_manifest() -> dict:
+    if not WITNESS_MANIFEST.exists():
+        return {}
+    return json.loads(WITNESS_MANIFEST.read_text(encoding="utf-8"))
+
+
+def witness_figure(cid: str, manifest: dict) -> str:
+    """把 GEO-131 的見證圖嵌進條文卡。只讀檔、只換配色;幾何位元組來自 witness/,由 witness.py --check 守。"""
+    entry = manifest.get(cid)
+    path = WITNESS_DIR / f"{cid}.svg"
+    if not entry or not path.exists():
+        return ""
+    svg = path.read_bytes().decode("utf-8").replace("\r\n", "\n")
+    m = re.search(r'<svg[^>]*viewBox="([^"]+)"[^>]*data-full="([^"]+)"[^>]*>', svg)
+    if not m:
+        raise ValueError("Witness SVG missing viewBox/data-full: " + cid)
+    crop, full = m[1], m[2]
+    body = svg[m.end():svg.rfind("</svg>")]
+    body = re.sub(r"<style>.*?</style>\s*", "", body, count=1, flags=re.S).strip()
+
+    def data_uri(view_box: str) -> str:
+        doc = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{view_box}" data-full="{full}" '
+               f'preserveAspectRatio="xMidYMid meet">{WITNESS_STYLE}{body}</svg>')
+        return "data:image/svg+xml;base64," + base64.b64encode(doc.encode("utf-8")).decode("ascii")
+
+    view = entry["view"]
+    label = VIEW_LABEL.get(view, view)
+    alt = html.escape(f"{cid} 見證圖:{label}", quote=True)
+    out = '<section class="witness-section"><h3>見證圖 <small>GEO-131 · 由夾具經引擎推導,非條文</small></h3>'
+    out += f'<figure><img alt="{alt}" class="scene-diagram witness-diagram" decoding="async" loading="lazy" src="{data_uri(crop)}">'
+    out += ('<figcaption>夾具 <code>' + html.escape(entry["scene"]) + '</code>(' + html.escape(entry["expect"]) + ',' + label + ')· '
+            + html.escape(entry["gist"]) + '<br>條文為真則此圖不變;圖變即警報,由 <code>witness.py --check</code> 逐位元守住,同步器不重跑引擎。</figcaption>')
+    if view != "all" and crop != full:
+        out += f'<details><summary>展開三視圖</summary><img alt="{html.escape(cid + " 見證圖:三視圖", quote=True)}" class="scene-diagram witness-diagram" decoding="async" loading="lazy" src="{data_uri(full)}"></details>'
+    out += '</figure></section>'
+    return out
+
+
 def render_block(block: dict, inline: str, comments: list[dict]) -> str:
     bid = html.escape(block["id"], quote=True)
     label = html.escape(block["label"])
@@ -313,7 +381,7 @@ def validate(source: str, axiom: str, plain: str) -> dict:
         assert target["section"] == by_id[target["blockId"]]["section"], "comment section changed"
         assert digest(target["sourceSnapshot"]) == target["sourceHash"], "comment snapshot changed"
     assert not re.search(r"https?://|<link\b|<script\b[^>]*\bsrc\s*=|@import", source, re.I), "external reader resource"
-    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "five_asserts": "pass", "independent_ssot": "pass", "documentHash": data["documentHash"]}
+    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": source.count('<section class="witness-section">'), "five_asserts": "pass", "independent_ssot": "pass", "documentHash": data["documentHash"]}
 
 
 def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
@@ -370,6 +438,9 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     for c in clauses:
         for ref in sorted({m[1] for m in CLAUSE_REF.finditer(c["body"]) if m[1] != c["id"]}):
             incoming[ref].append(c["id"])
+    witness_manifest = load_witness_manifest()
+    if ".witness-section{" not in template:
+        template = template.replace("</style>", WITNESS_CSS + "</style>", 1)
     articles = []
     previous_group = None
     for index, c in enumerate(clauses):
@@ -395,6 +466,7 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             article += f'<section class="{klass}-section"><h3>{heading} <small>{small}</small></h3><div class="copy {klass}-copy">'
             article += "".join(render_block(b, markup[b["id"]], state["comments"]) for b in blocks if b["clauseId"] == cid and b["section"] == section)
             article += '</div></section>'
+        article += witness_figure(cid, witness_manifest)
         article += examples or '<p class="hint">本條尚無閱讀器內建執行範例；實作驗收另見專案測試記錄。</p>'
         links = "".join(f'<a class="reference-link" data-ref="{ref}" href="#{ref}">{ref}</a>' for ref in incoming[cid])
         article += '<section class="relation-section"><h3>被哪些條文引用</h3><div class="relation-links">' + (links or '<span class="muted">目前沒有其他條文引用。</span>') + '</div></section>'

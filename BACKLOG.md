@@ -1426,3 +1426,14 @@
 - 後續：閱讀器例圖槽改讀見證圖（須過 AGENTS.md 五道 assert）另開票；`公理層.md` 未動。
 - 關聯決定（同日、尚未最終拍板）：使用者擬將本 repo 定性為「該領域世界的來源」，其他專案須遵守其公理；
   建議配套：舊 repo `geometry` 封存、公理層加版本號、下游以 `.scene` 夾具／契約測試證明遵守。
+
+### GEO-132 ✅ 已做（2026-09-20）閱讀器例圖槽改讀見證圖
+- 使用者指示「閱讀器例圖槽改讀見證圖,開票做」。做法:`sync_axiom_reader.py` 在每條卡片的歷史範例前
+  插入 `<section class="witness-section">`,內容由 `geometry-guide/witness/<條號>.svg` **讀檔**嵌入
+  (base64 data URI,引擎淺色 `<style>` 整段換成與歷史例圖相同的深色配色;非 all 視圖另附「展開三視圖」)。
+  同步器**不執行引擎**——圖是否仍與夾具/引擎一致是 `witness.py --check` 的事,兩道守門不混。
+- 歷史範例區塊與其批註身份原樣保留(AGENTS.md 五道 assert 不受影響;見證圖沒有 `.review-target`)。
+- CSS `.witness-section` 一次性注入正典 `<style>`(冪等)。`validate()` 回報 `witness` 數量。
+- 測試:`tests/test_axiom_reader.py::test_witness_figures_match_manifest_and_files`——manifest 有圖的條文
+  每條恰嵌一張,且與同步器由當前檔案算出的完全相同;既有冪等測試因此成為「見證圖變了但沒重出閱讀器」的警報。
+- 文件:READER-BUILD.md、AGENTS.md 補記。`公理層.md` 未動。

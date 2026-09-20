@@ -19,6 +19,8 @@
 > 它從 `公理層.md` + `geometry-guide/公理層-白話.md` 同步版本化正典 HTML，
 > 保留互動模板、批註、例圖及未改段落身份；詳見 `geometry-guide/READER-BUILD.md`。
 > `make_axiom_reader.py` 仍產出另一套追溯診斷頁，**不是正典**。
+> 每條的「見證圖」區塊來自 `geometry-guide/witness/`(GEO-131,一條文一圖、由夾具經引擎推導、圖變即警報),
+> 同步器只讀檔嵌入;要改圖請走 `witness.py`,不要手改 HTML 或 SVG。
 > 寫檔前必須通過五道 assert，並逐字對照獨立讀取的 SSOT，不能僅讓內部 JSON 自洽：
 > 1. `docHash(state) === state.documentHash`,其中
 >    `docHash = sha256(JSON.stringify(blocks.map(b=>[b.id,b.source,b.separator])))`

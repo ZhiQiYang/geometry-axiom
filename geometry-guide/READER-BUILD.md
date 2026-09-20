@@ -48,4 +48,7 @@ CLI 的五道結構驗證不等同真實瀏覽器、iOS 鍵盤或下載行為驗
 - `sync_axiom_reader.py` 是正典同步入口；`make_axiom_reader.py` 仍只供舊追溯診斷用途。
 - 既有正典 HTML 是版本化 UI 模板的一部分；若缺失，從 Git 還原它再同步，不自行製作替代閱讀器。
 - 同步不改 `公理層.md`、不重跑幾何例圖、不替使用者採納批註。
+- GEO-131 見證圖(`geometry-guide/witness/<條號>.svg`)由同步器**讀檔嵌入**(換成閱讀器深色配色),不執行引擎;
+  圖的幾何位元組是否仍與夾具/引擎一致,由 `python geometry-guide/witness.py --check` 守。
+  見證圖或 manifest 變了就要重跑同步,否則 `tests/test_axiom_reader.py` 的冪等測試會失敗——那是預期的警報。
 - 原有 `snapshotAt` / `updatedAt` 是批註歷史時間，保留原值；來源同步以確定性的 `ssot-*` snapshot ID、父 snapshot 與檔案雜湊辨識，不偽造批准事件或當前日期。

@@ -97,6 +97,17 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_witness_figures_match_manifest_and_files(self):
+        # GEO-132:manifest 裡每條有 svg 的條文,閱讀器都嵌一張;嵌的內容必須是同步器由當前檔案算出的那一張(讀檔,不跑引擎)。
+        manifest = reader.load_witness_manifest()
+        expected = {cid for cid in manifest if (reader.WITNESS_DIR / f"{cid}.svg").exists()}
+        self.assertTrue(expected, "witness manifest has no figures")
+        self.assertEqual(self.html.count('<section class="witness-section">'), len(expected))
+        for cid in sorted(expected):
+            article = re.search(r'<article\b[^>]*(?<![\w-])id="' + cid + r'"[^>]*>.*?</article>', self.html, re.S)[0]
+            self.assertIn(reader.witness_figure(cid, manifest), article, cid)
+        self.assertEqual(reader.validate(self.html, self.axiom, self.plain)["witness"], len(expected))
+
     def test_subclauses_are_disjoint_and_suffix_links_supported(self):
         clause = next(c for c in self.state["clauses"] if c["id"] == "I23")
         self.assertEqual(clause["body"].count("(a) 網格重宣告"), 1)
