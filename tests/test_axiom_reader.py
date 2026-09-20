@@ -97,6 +97,14 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_geo120_decisions_are_not_regressed(self):
+        # GEO-139:GEO-120 是 🔒 已拍板且未作廢,這幾項不得再被改掉。
+        self.assertEqual(reader.geo120_regressions(self.html), [])
+        self.assertIn('data-theme="dark"', re.search(r"<html[^>]*>", self.html)[0])
+        js = reader.script_text(self.html, "reader-script")
+        self.assertRegex(js, r"mode\s*=\s*'all'")
+        self.assertIn("prefers-color-scheme", js)
+
     def test_counts_have_a_single_source(self):
         # GEO-140:HTML 裡出現的每個計數都必須等於由資料算出的值,且與 #reader-counts 一致。
         counts = json.loads(reader.script_text(self.html, reader.COUNTS_ID))

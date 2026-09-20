@@ -384,11 +384,69 @@ def validate(source: str, axiom: str, plain: str) -> dict:
         assert target["blockId"] in by_id, "comment anchor removed"
         assert target["section"] == by_id[target["blockId"]]["section"], "comment section changed"
         assert digest(target["sourceSnapshot"]) == target["sourceHash"], "comment snapshot changed"
+    assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
     assert not stale_counts(source, counts), "GEO-140 殘留硬編碼計數: " + "; ".join(stale_counts(source, counts))
     assert not re.search(r"https?://|<link\b|<script\b[^>]*\bsrc\s*=|@import", source, re.I), "external reader resource"
-    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "documentHash": data["documentHash"]}
+    return {"clauses": len(clauses), "blocks": len(data["blocks"]), "comments": len(data["comments"]), "witness": counts["witness"], "examples": counts["examples"], "textRevision": counts["textRevision"], "five_asserts": "pass", "independent_ssot": "pass", "counts_single_source": "pass", "geo120": "pass", "documentHash": data["documentHash"]}
+
+
+def force(text: str, old: str, new: str, label: str) -> str:
+    """冪等模板補丁:已經是 new 就不動;old 與 new 都找不到 = 模板漂移,直接失敗不靜默略過。"""
+    if new in text:
+        return text
+    if old not in text:
+        raise ValueError("reader template drift (%s): 既不是改前也不是改後的樣子" % label)
+    return text.replace(old, new, 1)
+
+
+def apply_geo120(template: str) -> str:
+    """GEO-139:回歸 GEO-120(🔒 已拍板)被改掉的預設值。
+
+    拍板一:單頁長捲,Ctrl+F 搜得到全文 → 預設 mode='all',不得首屏 hidden 掉其他條文。
+    拍板三:雙主題、**深色為預設**,且保留 prefers-color-scheme 跟隨系統。
+    """
+    template = force(
+        template,
+        '<html lang="zh-Hant" data-theme="light"',
+        '<html lang="zh-Hant" data-theme="dark"',
+        "html data-theme 預設")
+
+    js = script_text(template, "reader-script")
+    js = force(
+        js,
+        "var current = 'D1', mode = 'single', fontSize = 18, theme = 'light';",
+        "var current = 'D1', mode = 'all', fontSize = 18,\n"
+        "        /* GEO-120 拍板三:深色為預設,系統明確偏好淺色時才跟著淺色。 */\n"
+        "        theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';",
+        "mode/theme 初值")
+    js = force(
+        js,
+        "if (saved.theme === 'dark') theme = 'dark';",
+        "if (saved.theme === 'dark' || saved.theme === 'light') theme = saved.theme;",
+        "已存主題的還原")
+    template = replace_script(template, "reader-script", js)
+
+    # 首屏靜態值要與 JS 初始化後一致,否則慢裝置會先閃一次錯的狀態(審查 R14)。
+    template = re.sub(r'(id="reader-state"[^>]*>)[^<]*(<)',
+                      lambda m: m[1] + "全文連續閱讀" + m[2], template, count=1)
+    return template
+
+
+def geo120_regressions(template: str) -> list[str]:
+    """回傳仍違反 GEO-120 的項目;空清單才算通過(validate 與測試共用)。"""
+    bad = []
+    if 'data-theme="dark"' not in template.split(">", 1)[0] + ">":
+        m = re.search(r"<html[^>]*>", template)
+        if not m or 'data-theme="dark"' not in m[0]:
+            bad.append("拍板三:預設主題不是深色")
+    js = script_text(template, "reader-script")
+    if not re.search(r"mode\s*=\s*'all'", js):
+        bad.append("拍板一:mode 初值不是 'all',首屏會 hidden 掉其他條文,Ctrl+F 搜不到全文")
+    if "prefers-color-scheme" not in js:
+        bad.append("拍板三:沒有 prefers-color-scheme,不跟隨系統")
+    return bad
 
 
 def reader_counts(template: str, clauses: list[dict], state: dict) -> dict:
@@ -581,6 +639,8 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
     template = replace_script(template, "review-script", review_script)
     template = replace_script(template, "clause-data", safe_json(clauses))
     template = replace_script(template, "axiom-review-data", safe_json(state))
+    # GEO-139:先回歸 GEO-120 的拍板預設值,再算計數(兩者都會動 reader-script)。
+    template = apply_geo120(template)
     # GEO-140:所有計數由 reader_counts() 算一次,apply_counts() 填進 HTML 與腳本;此處不再寫死數字。
     template = apply_counts(template, reader_counts(template, clauses, state))
     script_start = template.index('<script id="clause-data"')
