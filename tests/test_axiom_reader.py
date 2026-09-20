@@ -97,6 +97,24 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_facet_chips_are_data_driven(self):
+        # GEO-149:chip 的數量必須等於實際資料,且不得有硬編碼條號白名單
+        # (被作廢的第 3 版原型正是寫死 ['R6','R18','R19','R20','R21'])。
+        self.assertIn('class="toc-facets', self.html)
+        counts = dict(re.findall(r'data-facet="(\w+)" href="#[^"]+">[^<]*<b>(\d+)</b>', self.html))
+        items = re.findall(r'<a class="toc-item"[^>]*>', self.html)
+        self.assertEqual(len(items), len(self.state["clauses"]))
+
+        def positive(attr):
+            return sum(1 for it in items
+                       if int((re.search(attr + r'="(\d+)"', it) or [0, "0"])[1]) > 0)
+
+        self.assertEqual(int(counts["ex"]), positive("data-ex"))
+        self.assertEqual(int(counts["wit"]), positive("data-wit"))
+        self.assertEqual(int(counts["note"]), positive("data-note"))
+        self.assertEqual(int(counts["none"]), sum(1 for it in items if 'data-trace="none"' in it))
+        self.assertIn("facetMatch", reader.script_text(self.html, "reader-script"))
+
     def test_block_tools_are_not_always_on(self):
         # GEO-145(🔒 Q3):正文不得被 452 組控制列切碎;已有批註的段落仍常駐。
         self.assertIn(".review-block>.block-tools{opacity:0", self.html)

@@ -169,6 +169,15 @@ GENERATED_SECTIONS = (
     '<section class="relation-section"',
 )
 
+# GEO-149:篩選 chip 的樣式,沿用分類篩選(.group-jumps a)的視覺語言。
+FACET_CSS = (
+    ".toc-facets{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}"
+    ".toc-facets a{font-size:11.5px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;"
+    "color:var(--muted);min-height:32px;display:inline-flex;align-items:center;text-decoration:none}"
+    ".toc-facets a.active{border-color:var(--accent);color:var(--accent);background:var(--soft);font-weight:600}"
+    ".toc-facets a>b{font-weight:600;margin-left:5px;font-size:10.5px;opacity:.75}"
+)
+
 # GEO-139(2/4):hover 快速預覽的樣式。只在有 hover 的裝置出現(@media hover:hover),
 # 觸控裝置本來就沒有 hover,與長按叫出段落工具不衝突(GEO-120 拍板二原文)。
 REF_PREVIEW_CSS = (
@@ -543,6 +552,8 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     assert not hardcoded_colors(source), "GEO-141 規則裡仍有寫死的色碼: " + "; ".join(hardcoded_colors(source)[:6])
     assert ".review-block>.block-tools{opacity:0" in source, "GEO-145 段落工具又變成常駐了"
     assert "pressTimer" in script_text(source, "reader-script"), "GEO-145 觸控長按沒了"
+    assert 'class="toc-facets' in source, "GEO-149 篩選 chip 不見了"
+    assert "facetMatch" in script_text(source, "reader-script"), "GEO-149 篩選條件沒接上 filterToc"
     assert not geo120_regressions(source), "GEO-139 違反 GEO-120 拍板: " + "; ".join(geo120_regressions(source))
     counts = json.loads(script_text(source, COUNTS_ID))
     assert counts == reader_counts(source, clauses, data), "GEO-140 計數來源與資料不符"
@@ -565,13 +576,22 @@ def inject_css(template: str, css: str, marker: str) -> str:
     return template.replace("</style>", css + "</style>", 1)
 
 
-def force(text: str, old: str, new: str, label: str) -> str:
+def force(text: str, old: str, new: str, label: str, marker: str | None = None) -> str:
     """冪等模板補丁:先找 old 換成 new;已經是 new 就不動;兩者都找不到 = 模板漂移,失敗不靜默略過。
 
     old 與 new 都必須在全文唯一。GEO-142 施工時踩過:new 的尾巴
     (`…sideNavigation());sync();`)剛好也出現在 changeMode() 裡,於是被誤判成「已套用」,
     補丁整個被跳過而沒有任何人知道。不唯一就是判準有問題,寧可失敗。
     """
+    if marker is not None:
+        # 同一段會被多個補丁先後修改時,old/new 都判定不了狀態(第二個補丁會把第一個的 new 改掉)。
+        # 這時由呼叫端給一個「只要套用過就一定在」的標記。GEO-149 的 resetSearch 實際踩到:
+        # apply_search_fixes 先加 keyboardIndex、apply_facets 再加 activeFacet,重建時兩邊都認不得。
+        if marker in text:
+            return text
+        if old not in text:
+            raise ValueError("reader template drift (%s): 找不到改前字串,也沒有已套用標記" % label)
+        return text.replace(old, new, 1)
     if new == "":
         # 刪除型:空字串在任何文字裡都「存在」,不能走下面的判定。
         # 刪不到就當作已經刪過(冪等);但仍要求存在時必須唯一,避免誤刪同形內容。
@@ -602,6 +622,54 @@ def force(text: str, old: str, new: str, label: str) -> str:
 
 
 HOVER_PREVIEW_JS = "\n    /* GEO-120 拍板二:hover 快速預覽與點擊固定參照欄並存。只在真的有 hover 的裝置上啟用。 */\n    (function(){\n      if(!(window.matchMedia&&window.matchMedia('(hover:hover)').matches))return;\n      var card=null,hideTimer=null;\n      function ensure(){\n        if(card)return card;\n        card=document.createElement('div');card.id='ref-preview';card.hidden=true;\n        card.setAttribute('role','tooltip');document.body.appendChild(card);return card;\n      }\n      function hide(){if(card)card.hidden=true;}\n      function show(a){\n        var id=a.dataset.ref.replace(/\\([a-z]\\)$/,'');var item=byId[id];if(!item)return;\n        var c=ensure();c.textContent='';\n        var head=document.createElement('b');head.textContent=id+' '+(item.title||'');\n        var body=String(item.body||'').replace(/\\*\\*/g,'').replace(/`/g,'').replace(/\\s+/g,' ').slice(0,150);\n        var text=document.createElement('span');text.textContent=body+(body.length>=150?'…':'');\n        c.appendChild(head);c.appendChild(text);c.hidden=false;\n        var r=a.getBoundingClientRect();\n        var left=Math.min(Math.max(8,r.left),Math.max(8,window.innerWidth-c.offsetWidth-8));\n        var top=r.bottom+8;\n        if(top+c.offsetHeight>window.innerHeight-8)top=Math.max(8,r.top-c.offsetHeight-8);\n        c.style.left=left+'px';c.style.top=top+'px';\n      }\n      document.addEventListener('mouseover',function(e){\n        var a=e.target&&e.target.closest?e.target.closest('a[data-ref]'):null;\n        clearTimeout(hideTimer);\n        if(!a){hideTimer=setTimeout(hide,150);return;}\n        show(a);\n      });\n      window.addEventListener('scroll',hide,{passive:true});\n      document.addEventListener('keydown',function(e){if(e.key==='Escape')hide();});\n    })();"
+
+
+FACET_HELPER_JS = "\n    /* GEO-149:篩選 chip。與搜尋、分類篩選疊加,條件全部讀 toc-item 的 data-*(由資料算)。 */\n    function facetMatch(link){\n      if(!activeFacet)return true;\n      if(activeFacet==='note')return Number(link.dataset.note||0)>0;\n      if(activeFacet==='ex')return Number(link.dataset.ex||0)>0;\n      if(activeFacet==='wit')return Number(link.dataset.wit||0)>0;\n      if(activeFacet==='none')return link.dataset.trace==='none';\n      return true;\n    }"
+
+
+def apply_facets(template: str, clauses: list[dict], trace: dict, note_counts: dict,
+                 example_counts: dict, witness_ids: set) -> str:
+    """GEO-149:導覽頂端的篩選 chip。數量由資料算,與 GEO-140 的計數同一個來源精神。"""
+    n_note = sum(1 for c in clauses if note_counts.get(c["id"], 0) > 0)
+    n_ex = sum(1 for c in clauses if example_counts.get(c["id"], 0) > 0)
+    n_wit = sum(1 for c in clauses if c["id"] in witness_ids)
+    n_none = sum(1 for c in clauses if trace[c["id"]]["light"] == "none")
+    chips = "".join(
+        '<a data-facet="{k}" href="#{first}">{label}<b>{n}</b></a>'.format(
+            k=key, first=clauses[0]["id"], label=label, n=count)
+        for key, label, count in (("note", "有批註", n_note), ("ex", "有例圖", n_ex),
+                                  ("wit", "有見證圖", n_wit), ("none", "無追溯", n_none)))
+    markup = '<nav aria-label="依證據篩選" class="toc-facets js-only" hidden="">' + chips + "</nav>"
+    anchor = '<a data-group="R" href="#R1">R 推演</a></nav>'
+    template = force(template, anchor, anchor + markup, "篩選 chip 標記")
+
+    js = script_text(template, "reader-script")
+    js = force(js, "var activeGroup = '', visibleResults = [], keyboardIndex = -1;",
+               "var activeGroup = '', activeFacet = '', visibleResults = [], keyboardIndex = -1;",
+               "activeFacet 宣告")
+    js = force(js, "function filterToc() {",
+               FACET_HELPER_JS.strip("\n") + "\n    function filterToc() {",
+               "facetMatch()")
+    js = force(js,
+               "var match=(!activeGroup||id.charAt(0)===activeGroup)&&index[id].indexOf(query)!==-1;",
+               "var match=(!activeGroup||id.charAt(0)===activeGroup)&&facetMatch(link)&&index[id].indexOf(query)!==-1;",
+               "篩選條件疊加")
+    js = force(js,
+               "groupLinks.forEach(function (link) {link.classList.toggle('active',link.dataset.group===activeGroup);});",
+               "groupLinks.forEach(function (link) {link.classList.toggle('active',link.dataset.group===activeGroup);});"
+               "Array.prototype.forEach.call(document.querySelectorAll('a[data-facet]'),"
+               "function(link){link.classList.toggle('active',link.dataset.facet===activeFacet);});",
+               "chip 選取態")
+    js = force(js,
+               "if(group){event.preventDefault();activeGroup=activeGroup===group.dataset.group?'':group.dataset.group;search.value='';filterToc();return;}",
+               "if(group){event.preventDefault();activeGroup=activeGroup===group.dataset.group?'':group.dataset.group;search.value='';filterToc();return;}"
+               "var facet=el.closest('a[data-facet]');"
+               "if(facet){event.preventDefault();activeFacet=activeFacet===facet.dataset.facet?'':facet.dataset.facet;filterToc();return;}",
+               "chip 點擊")
+    js = force(js, "function resetSearch(){search.value='';activeGroup='';keyboardIndex=-1;filterToc();}",
+               "function resetSearch(){search.value='';activeGroup='';activeFacet='';keyboardIndex=-1;filterToc();}",
+               "重設也清掉 chip", marker="activeFacet='';keyboardIndex=-1;filterToc();}")
+    return replace_script(template, "reader-script", js)
 
 
 def apply_hover_preview(template: str) -> str:
@@ -661,7 +729,7 @@ def apply_search_fixes(template: str) -> str:
         "$('search-status').textContent=searchStatusBase+"
         "((visibleResults.length&&keyboardIndex>=0)?' · 第 '+(keyboardIndex+1)+' / '+visibleResults.length+' 筆':'');}\n"
         "    function resetSearch(){search.value='';activeGroup='';keyboardIndex=-1;filterToc();}",
-        "resetSearch 與狀態列渲染")
+        "resetSearch 與狀態列渲染", marker="keyboardIndex=-1;filterToc();}")
 
     js = force(
         js,
@@ -944,11 +1012,16 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             incoming[ref].append(c["id"])
     witness_manifest = load_witness_manifest()
     template = inject_css(template, WITNESS_CSS, ".witness-section{")
+    template = inject_css(template, FACET_CSS, ".toc-facets{display:flex")
     template = inject_css(template, REF_PREVIEW_CSS, "#ref-preview{position:fixed")
     template = inject_css(template, BLOCK_TOOLS_CSS, ".review-block>.block-tools{opacity:0")
     template = inject_css(template, TRACE_CSS, "--trace-ok:")
     template = inject_css(template, CLAUSE_LABEL_CSS, ".plain-section>h3,.original-section>h3{")
     trace = clause_trace(clauses, incoming)
+    note_counts = {}
+    for note in state["comments"]:
+        owner = str(note.get("target", {}).get("blockId", "")).split(".")[0]
+        note_counts[owner] = note_counts.get(owner, 0) + 1
     example_counts = {m[1]: len(re.findall(r'<details class="ex ', m[0]))
                       for m in ((art, cid_) for cid_, art in old_articles.items())}
 
@@ -1018,7 +1091,8 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
             if wit:
                 evidence.append("見證圖")
             return (f'<a class="toc-item" data-clause="{cid_}" data-trace="{t["light"]}" '
-                    f'data-ex="{ex}" data-wit="{wit}" data-hub="{1 if t["hub"] else 0}" href="#{cid_}">'
+                    f'data-ex="{ex}" data-wit="{wit}" data-hub="{1 if t["hub"] else 0}" '
+                    f'data-note="{note_counts.get(cid_, 0)}" href="#{cid_}">'
                     f'<span class="clause-no">{cid_}</span>'
                     f'<span class="toc-title">{html.escape(c["title"])}</span>'
                     + (f'<span class="toc-evidence">{" · ".join(evidence)}</span>' if evidence else "")
@@ -1028,6 +1102,9 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
         if count != 1:
             raise ValueError("TOC group missing")
     # Reader edits must rebuild subclauses from the canonical source block, not old originalSub.
+    template = apply_facets(template, clauses, trace, note_counts, example_counts,
+                           {wid for wid in witness_manifest
+                            if (WITNESS_DIR / f"{wid}.svg").exists()})
     review_script = script_text(template, "review-script")
     old_sub_sync = "for(const b of state.blocks.filter(b=>b.clauseId===item.id&&b.section==='body'&&b.sub)){if(b.source===b.originalSource&&b.originalSub!==null){item.subs[b.sub]=b.originalSub;}else if(b.source!==b.originalSource){item.subs[b.sub]=b.source.replace(/^\\s*\\([a-z]\\)\\s*/,'');}}"
     new_sub_sync = "item.subs={};for(const b of state.blocks.filter(b=>b.clauseId===item.id&&b.section==='body'&&b.sub)){item.subs[b.sub]=b.source.replace(/^\\s*\\([a-z]\\)\\s*/,'');}"
