@@ -1559,7 +1559,7 @@
 - **相依**:無。**估時 2h**。
 
 ### GEO-141 色彩 token 化;圖面色與互動色分家
-- **性質**:🟢 機械修正(token 化、焦點環)+ 🔴 配色取值需拍板。
+- **性質**:🟢 全部可做(Q1 已於 2026-09-20 拍板 🔒)。
 - **內容**:
   - head CSS 有 **40 個不同 hex**,批註系統整套色在 token 之外
     (`#c68d2a`×5、`#9a5200`×2、`#ad3424`、`#bb6c59`,深色模式再逐條覆寫 `#eac076`/`#ffb3a5`)。
@@ -1573,7 +1573,9 @@
 - **驗收**:全檔 CSS 規則內 grep 不到裸 hex(token 定義區除外);
   淺/深兩主題各開一次,例圖與見證圖的底色、線色都跟著主題走;
   見證圖 `witness.py --check` 仍 17/17(圖檔本身不因此改動,只有嵌入時的 style 段變)。
-- **相依**:配色取值待使用者拍板(見 `決策佇列.md` Q1)。**估時 3h**。
+- **🔒 拍板(Q1)**:**只 token 化底色與線色**;見證圖的四個角色色屬 `witness/規範.md` v1、與條文語意綁定,
+  **不動**,17 張見證圖不必重出。
+- **相依**:無。**估時 3h**。
 
 ### GEO-142 搜尋:跳轉不清空查詢;補 Ctrl/⌘K
 - **性質**:🟢 客觀缺陷(功能自相矛盾)。
@@ -1604,30 +1606,35 @@
 - **相依**:Q2 拍板。**估時 2h**。
 
 ### GEO-145 正文不常駐批註按鈕
-- **性質**:🔴 設計取捨,需拍板(Q3)。
+- **性質**:🟢 可做(Q3 已於 2026-09-20 拍板 🔒)。
 - **內容**:452 組 `.review-block > .block-tools` 每段固定掛一列(段落標籤 + 「＋批註這段」),
   純閱讀時與正文等權,每段之間插進 34–44px 控制列。建議改 hover/focus/長按才出現;
   已有批註的段落保留常駐琥珀左邊條與批註數徽章。(R5 P1)
 - **驗收**:純閱讀時正文不被控制列切碎;觸控裝置仍有可達的批註入口;既有批註仍一眼可見。
-- **相依**:Q3 拍板。**估時 2h**。
+- **🔒 拍板(Q3)**:改 hover / focus / 長按才出現;已有批註的段落保留常駐琥珀左邊條與數字徽章。
+  **驗收另加一項:觸控裝置長按不得與瀏覽器原生選字衝突,須實機驗。**
+- **相依**:無。**估時 2h**。
 
 ### GEO-146 參照欄與批註面板並存,不互相關閉
-- **性質**:🔴 版面取捨,需拍板(Q4);與 **GEO-138** 動同一塊右欄,必須合併規劃。
+- **性質**:🟢 可做(Q4 已於 2026-09-20 拍板 🔒);與 **GEO-138** 合併施工。
 - **內容**:`workspace-script` 的 `docked()` 模式下 `present(id)` 會把另一個面板 `hidden`,
   所以寫批註時點正文裡的條號連結,草稿面板直接被參照面板換掉;草稿只在
   `visibilitychange`/`beforeunload` 時 `captureDraft()`,切 tab 不觸發。
   校對的核心動作正是「一邊對照引用、一邊寫批註」,現在互斥。(R13 P2)
 - **驗收**:讀引用與寫批註可同時存在;切換前草稿必被保留且有可見提示。
-- **相依**:Q4 拍板、GEO-138。**估時 2.5h**。
+- **🔒 拍板(Q4)**:右欄改**上半固定見證圖(GEO-138)+ 下半 tab(參照/批註)**;
+  切 tab 前一律先 `captureDraft()` 並顯示「草稿已保留」。見證圖常駐,不與參照/批註互斥。
+- **相依**:與 GEO-138 同一批施工。**估時 3h**。
 
 ### GEO-147 資訊層級:原文與白話的順序
-- **性質**:🔴 設計取捨,需拍板(Q5)。**注意**:舊依據(設計規格 §4.2)已作廢,
+- **性質**:🟢 可做(Q5 已於 2026-09-20 拍板 🔒)。**注意**:舊依據(設計規格 §4.2)已作廢,
   但頁尾文案「原文為準,白話輔助閱讀」與現行版面順序(白話在前)自相矛盾,這點客觀成立。
 - **內容**:89 條一律 `plain-section` 先於 `original-section`;區塊標籤「白話解釋/條文原文」
   同為 14px h3,兩者同重。建議順序改 原文 → 白話 → 範例 → 見證圖 → 被引用,
   區塊標籤降為 12px/.08em muted。(R4 P1)
 - **驗收**:順序與頁尾宣稱一致;五道 assert 全綠(區塊 id 與批註錨點不得因換順序而失聯)。
-- **相依**:Q5 拍板。**估時 1.5h**。
+- **🔒 拍板(Q5)**:順序改 **原文 → 白話 → 範例 → 見證圖 → 被引用**;區塊標籤降為 12px/.08em muted。
+- **相依**:無。**估時 1.5h**。
 
 ### GEO-148 斷點 960–1279px 與手機底部列
 - **性質**:🔴 版面取捨,需拍板(Q6)。舊依據(設計規格 §1)已作廢。
@@ -1648,3 +1655,191 @@
   (有批註/有例圖/有見證圖/無證據);**禁止硬編碼條號白名單**。(R12 P2)
 - **驗收**:標示數字等於實際數量(與 GEO-140 同一份計數來源);篩選 chip 結果與實際相符。
 - **相依**:GEO-139、GEO-140。**估時 1.5h**。
+
+---
+
+## 第 0～8 流稽核結果(2026-09-20,fresh-context agent 唯讀盤點)
+
+舊工單(GEO-001～083,實際 52 張;BACKLOG 開頭自稱 46 張是錯的)立於 2026-09-12,
+從未標過完成狀態。2026-09-20 派 agent 以 repo 實況逐張核對(唯讀,未編譯未跑測試),
+判準只採客觀證據(檔案存在與否、`current_geometry.c` 的函式/字串、`run_tests.py` 的 TESTS、夾具檔)。
+
+**統計:已完成 19、未完成 24、已不適用 8、無法判定 1。**
+
+### 仍值得做(依價值排序,agent 判斷)
+
+1. **GEO-075** 下料清單加總同規格數量——離「能拿去現場用」最近的一步
+2. **GEO-043** Space 尺寸/體積報告(W×D×H)——六面封閉都判得出來,卻不印房間淨尺寸
+3. **GEO-030** `CreateFontW` 失敗未判 NULL 就 `SelectObject`——GDI 視窗真實當機風險
+4. **GEO-014** BOM 檢查補 `length>=3`——一行修法,消除讀未初始化記憶體的隱患
+5. **GEO-041** Space 錯誤訊息分類——六種失敗原因擠成一句話
+6. **GEO-077** scene `include`——上百個 `.scene` 夾具重複房間宣告,維護成本高
+7. **GEO-020** 負值像素捨入——拖曳參考線到視圖負值區仍有 1mm 偏移
+8. **GEO-035** `WM_CREATE` 控制項 NULL 防護
+9. **GEO-081** scene parser fuzz——延續既有 128 測試 + 40 變異測試的品質文化
+10. **GEO-053** 檔頭功能清單更新——完全沒提 room/space/grid/RC/delete/apply-proj
+
+### 建議標作廢(已不適用,且是被後續設計**刻意取代**,不是忘了做)
+
+GEO-001、004、018、022、023、052、070、072。
+例:GEO-022「跨角材拾取取最近者」已被公理 **R1 畫家演算法**取代;
+GEO-023「錨點加已過期標記」已被 **R2 重放/重算**結構性解決;
+GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
+
+### 稽核過程發現、BACKLOG 沒寫的缺口
+
+1. BACKLOG 開頭的工單統計數字錯誤(46 vs 實際 52)。
+2. 全檔 **0 處**使用 C `assert()`,但 3 張工單的驗收條件明寫要加 assert——制度與實作風格對不上。
+3. `guide_line_intersection` / `ANCHOR_AT_GUIDES` / `at-guides` 整條「兩線交點錨點」**疑似死碼**
+   (該函式全檔僅一處定義、未被呼叫),GEO-123 已廢除 `at-guides` 語法卻沒有工單追蹤該砍還是該修。
+4. 第 3 流(GDI/Win32 互動層)**完全沒有自動化回歸測試覆蓋**,卻是七張裡六張未完成的高風險區。
+5. `current_geometry.c` 檔頭沒有像 `ARCHITECTURE.md` 那樣自曝「已過時」。
+
+### 逐張表格
+
+> 稽核方法：唯讀比對 repo 實況（current_geometry.c 用 Python 二進位解碼避開 NUL byte 截斷問題）、
+> tests/run_tests.py、AGENTS.md/ARCHITECTURE.md/公理層.md、geometry-web/、geometry-guide/。
+> 未編譯、未跑測試。current_geometry.c 全檔 0 處使用 C `assert()`——凡工單驗收條件明寫「加 assert」
+> 但實作用註解/return false 達成同等效果者，仍記已完成，於理由欄註明。
+
+## 第 0 流：基礎設施
+
+| 工單 | 狀態 | 證據 | 理由 |
+|---|---|---|---|
+| GEO-001 | 已不適用 | 無 build.bat/build_debug.bat；tests/_clw.bat:1-3、package.json:6-7 | 建置已演化為 gcc(Unix)+ tests/_clw.bat/_cl.bat 參數化 cl 編譯（多檔架構：current_geometry.c/web_bridge.c/model_base.c），非單一 exe 的 root build.bat 設計 |
+| GEO-002 | 已完成 | tests/run_tests.py:1-90+ | 完整測試執行器，比對 exit code/stdout/lengths/contains，收錄遠超原始需求的案例數 |
+| GEO-003 | 已完成 | tests/run_tests.py:26-27（ceiling-a.scene / demo-two-timbers.scene 皆 expect accept） | 兩檔都已改新語法並通過 |
+| GEO-004 | 已不適用 | 無 README-geometry.md；tests/README.md:1-40、ARCHITECTURE.md、geometry-core/README.md | 單檔 CLI 說明文件的前提已不成立，build/test/使用說明改分散到多個 README，系統已是多元件（core/web/GDI） |
+
+## 第 1 流：解析層與輸入面
+
+| 工單 | 狀態 | 證據 | 理由 |
+|---|---|---|---|
+| GEO-010 | 已完成 | current_geometry.c:43-47(COORD_LIMIT/coord_in_range), 6051-6064(parse_coord) | 上限 ±1e8 mm，parse_coord 檢查並設 g_coord_range_error |
+| GEO-011 | 已完成 | current_geometry.c:2467-2486(mul_div_i64) | 用 __int128（gcc/clang）或 _mul128/_div128（MSVC）widen 乘法，註解寫明安全域推導，比原案的 assert 更徹底 |
+| GEO-012 | 已完成 | current_geometry.c:11713-11722 | fgets 後檢查 `length>0 && 非\n && !feof` 才判太長，避免誤殺合法末行 |
+| GEO-013 | 已完成 | current_geometry.c:3579(SCENE_MAX_LINE=2048), 11709 | buffer 遠大於原 511 字元邊界，與 GEO-012 同一段邏輯處理 |
+| GEO-014 | 未完成 | current_geometry.c:11726-11732 | BOM 檢查仍只判 `line_no==1`，未檢查 `length>=3` 就讀 text[1]/text[2]，未初始化記憶體讀取風險依舊（C6387 模式未消） |
+| GEO-015 | 未完成 | current_geometry.c:11813-11838(main argv 迴圈) | 迴圈只有 if/else if 四支，無 else 分支：未知參數被靜默忽略，無 --help |
+| GEO-016 | 未完成 | current_geometry.c:11836 | `bench_iters = atoi(argv[++i]);` 仍用 atoi，無型別/範圍驗證 |
+| GEO-017 | 已完成 | current_geometry.c:11683-11686 | 「不認得的指令」錯誤訊息硬編列出 11 個指令名（非動態拉表，但達成驗收：訊息含全部指令） |
+| GEO-018 | 已不適用 | 全庫無 SCENE-FORMAT.md；公理層.md「新語法」節、geometry-core/README.md | scene 語法規格已改由 公理層.md（SSOT）承載，且語法已演化（spec/at-line/at-face/role/between 等），與原案設想的靜態文件形式不同 |
+
+## 第 2 流：幾何核心正確性
+
+| 工單 | 狀態 | 證據 | 理由 |
+|---|---|---|---|
+| GEO-020 | 未完成 | current_geometry.c:4710-4711 | gdi_screen_to_view 仍用 `(Coord)(v+0.5)`，非 floor/llround，負值捨入偏移問題依舊 |
+| GEO-021 | 已完成 | current_geometry.c:3083-3087, 3107-3111 | det==0 語意已寫成註解（表面退化成線 / 答案非整數 mm 兩種拒絕情形），全檔不用 assert 是專案風格 |
+| GEO-022 | 已不適用 | current_geometry.c:3223-3278（尤 3267-3278），公理 R1 註解 | 命中判定已正式定為「畫家演算法：同點多命中取最後畫的」（公理 R1），非原案建議的 distance4 最近者方案——是刻意的設計決定，取代而非達成原 ticket |
+| GEO-023 | 已不適用 | current_geometry.c:3600-3614, 11915-11921；公理層.md:104(D7 不存凍結 uv), 428(R2) | 錨點系統改為引用制，移動參考線會重放（重算）所引用的角材（R2，2026-09-18 拍板），結構性解決比「印已過期標記」更徹底；僅 ANCHOR_AT_GUIDES 一種錨法仍標「交點凍結」屬另一個獨立設計決定 |
+| GEO-024 | 未完成 | current_geometry.c:1230-1246（guide_line_intersection 全檔僅此一處，且未被任何函式呼叫） | 仍只靠 placement_id 比對間接拒絕跨面組合，無「參考線不在指定面上」專屬訊息；且此函式疑似死碼，舊 at-guides 兩線交點錨點路徑現況不明（見缺口 3） |
+| GEO-025 | 已完成 | current_geometry.c:2580-2583, 2615 | timber_project_faces 註解已寫明退化面跳過策略、繪製與拾取共用同一份投影 |
+| GEO-026 | 已完成 | current_geometry.c:1078-1086（`>=`/`<=`允許邊界值） | offset 允許與邊界重合，決定已正式收錄為公理 I7（比原案設想的 SCENE-FORMAT.md 記錄更正式） |
+
+## 第 3 流：GDI / Win32 層
+
+| 工單 | 狀態 | 證據 | 理由 |
+|---|---|---|---|
+| GEO-030 | 未完成 | current_geometry.c:4259-4287 | CreateFontW 失敗仍直接 `SelectObject(g->dc, font)`，未判 NULL |
+| GEO-031 | 未完成 | current_geometry.c:4013-4018 | gdi_color 未檢查 `hex[0]=='#'`或長度，直接 `strtoul(hex+1,...)` |
+| GEO-032 | 未完成 | current_geometry.c:5824-5847 | bench_paint 的 sink/sink_bmp 建立失敗分支仍未釋放已取得的 screen DC |
+| GEO-033 | 未完成 | current_geometry.c:4721, 5216-5217 | g_edit_orig_proc 仍是全域 WNDPROC，未改 SetWindowSubclass 或存於視窗自身 |
+| GEO-034 | 無法判定 | current_geometry.c:4149-4155（owned 欄位行內註解） | 只有一行「true=未進快取用完要刪」的行內註解，未見整理成完整所有權表，也無 assert，證據不足以判定達成或未達成 |
+| GEO-035 | 未完成 | current_geometry.c:5180-5217（WM_CREATE） | 三個控制項建立後未檢查是否為 NULL 即呼叫 WM_SETFONT / SetWindowLongPtrW |
+| GEO-036 | 未完成 | current_geometry.c:4745-4764（gdi_layout_input_bar） | 視窗極小時 `w-176` 等寬度運算無下限防禦，MoveWindow 可能收到負寬 |
+
+## 第 4 流：房間（room→space）功能收尾
+
+| 工單 | 狀態 | 證據 | 理由 |
+|---|---|---|---|
+| GEO-040 | 已完成 | room_box.scene（檔案存在）；tests/run_tests.py:29 | 六面盒範例檔存在且已收錄於測試 |
+| GEO-041 | 未完成 | current_geometry.c:11208-11213（apply_space_line） | space_construct 失敗仍只回一句把六種原因全部列出的通用訊息，未分類 |
+| GEO-042 | 未完成 | 全檔搜尋「房外面」「歸屬」皆無關聯命中 | 找不到 space 成員歸屬合理性警告的任何字串或邏輯 |
+| GEO-043 | 未完成 | current_geometry.c:11898-11912 | 空間報告只印 ID/成員/開放狀態，無尺寸（W×D×H）或質心 |
+
+> 註：room 概念已整體演化為 Space（`room_bind`→`space_construct`，current_geometry.c:6299-6302 註解「與舊 room_bind 同構」），GEO-040/041/042/043 的評估對象已改為 Space 等價功能。
+
+## 第 5 流：文件與導讀同步
+
+| 工單 | 狀態 | 證據 | 理由 |
+|---|---|---|---|
+| GEO-050 | 已完成 | geometry-guide/check_panels.py:92-112 | check_panels.py 機制已整個改寫為動態讀 HTML `data-panel` 屬性比對，原 ticket 描述的硬編字串比對缺陷已不存在 |
+| GEO-051 | 已完成（部分無法完全確認） | geometry-guide/current_geometry-導讀.html（內嵌原始碼含 canvas-pos/apply-proj/space_construct 等最新符號） | 導讀頁持續與原始碼同步；但原案要求的「§room 章節」因 room 已改名 Space，是否有對應章節未能直接確認 |
+| GEO-052 | 已不適用 | 全庫搜尋無 asm-analysis.md | 檔案不存在，組譯附錄式文件已被 公理層.md/ARCHITECTURE.md/geometry-core 系列文件取代 |
+| GEO-053 | 未完成 | current_geometry.c:14-37（檔頭「目前整合版」清單） | 仍停在原始 8 步，未提及 room/space/grid/RC/delete/apply-proj 等後續功能，與 ARCHITECTURE.md 自陳「已過時」呼應（但 ARCHITECTURE.md 至少自曝過時，檔頭沒有） |
+
+## 第 6 流：程式碼衛生
+
+| 工單 | 狀態 | 證據 | 理由 |
+|---|---|---|---|
+| GEO-060 | 已完成 | current_geometry.c:1（僅1處 #include <errno.h>）, 10946/11479（(void)count） | 重複 include 已消除、count 參數消警告模式已見；未實際編譯確認 0 警告 |
+| GEO-061 | 已完成 | tests/_clw.bat:3, geometry-web/build.bat:4 | 編譯腳本皆帶 `/utf-8` |
+| GEO-062 | 未完成 | current_geometry.c:3502-3553（emit_svg_three_views） | 僅檢查 `fclose(out)==0`，無 ferror 檢查，也未刪除半成品 SVG |
+| GEO-063 | 未完成 | current_geometry.c:3532-3533 等（text_mm 共5處） | StyleSpec 欄位仍叫 text_mm，未更名 text_px |
+
+## 第 7 流：新功能
+
+| 工單 | 狀態 | 證據 | 理由 |
+|---|---|---|---|
+| GEO-070 | 已不適用 | SCENE_COMMANDS（current_geometry.c:11553-11649）無 unplace | 被 delete + 重宣告的交易式工作流取代（見 GEO-071） |
+| GEO-071 | 已完成 | current_geometry.c:11634-11638；BACKLOG.md「WEB-001 ✅ 已完成」段 | delete 指令存在，涵蓋 boundary/placement/guide/grid/timber/space/column/beam，走交易重驗路徑，比原案墓碑方案更完整 |
+| GEO-072 | 已不適用 | tests/run_tests.py（`_test_collide.scene` expect reject error 'R6'） | 碰撞已由「警告」升級為公理 R6 直接拒絕，比原案更嚴格的設計決定 |
+| GEO-073 | 已完成 | 公理層.md「新語法」表；current_geometry.c:11584-11586 | guide 位置引用式支援 edge:/spec:/vertex:/grid: 等任意運算組合，涵蓋且超越原案的 edge 基準語法糖 |
+| GEO-074 | 未完成 | current_geometry.c:1790/6443/7957（函式名仍為 timber_place_a0_on_surface） | 仍硬綁 A0 面貼面，找不到 B0 貼面或 face 欄位的證據 |
+| GEO-075 | 未完成 | current_geometry.c:11954-11965 | 已印角材尺寸/原點等座標，但找不到「同規格加總數量」的下料清單邏輯 |
+| GEO-076 | 未完成 | current_geometry.c:5436-5600（WM_MOUSEMOVE） | 找不到滑鼠即時 mm 座標寫進狀態列的邏輯 |
+| GEO-077 | 未完成 | current_geometry.c:11553-11649（SCENE_COMMANDS 無 include） | scene 檔案引入/分段語法未實作 |
+| GEO-078 | 已完成 | geometry-web/web_bridge.c:4,15,30,117 | 提供完整 stdin/stdout JSON 橋，涵蓋且遠超原案的單次 --emit-json 輸出 |
+
+## 第 8 流：結構演化
+
+| 工單 | 狀態 | 證據 | 理由 |
+|---|---|---|---|
+| GEO-080 | 已完成 | tests/test_core_integrity.c:1-20（`#define main geometry_program_main` + `#include "../current_geometry.c"`） | 機制不同於原案 CG_NO_MAIN ifdef，但同樣達成「直接呼叫內部 static 函式並斷言」的目標 |
+| GEO-081 | 未完成 | tests 目錄檔案列表（無 fuzz_scene.py） | tests/mutate.py 是變異測試（改程式碼），非輸入層 fuzz（隨機 token/截斷），目的不同 |
+| GEO-082 | 未完成 | 全庫搜尋無 split-plan.md | 拆檔計畫文件未寫；專案已用 .inc（transactions.inc/references.inc 等）局部拆分，但無明文計畫 |
+| GEO-083 | 未完成 | tests/_clw.bat、tests/_cl.bat、geometry-web/build.bat 全文 | 找不到 /analyze 或 /RTC1 相關建置腳本 |
+
+---
+
+## 統計
+
+- 已完成：19（002,003,010,011,012,013,017,021,025,026,040,050,051,060,061,071,073,078,080）
+- 未完成：24（014,015,016,020,024,030,031,032,033,035,036,041,042,043,053,062,063,074,075,076,077,081,082,083）
+- 已不適用：8（001,004,018,022,023,052,070,072）
+- 無法判定：1（034）
+- 合計：52（BACKLOG 自稱 46，數字有誤）
+
+## 建議施工優先序（真的還沒做、現在仍值得做）
+
+1. **GEO-075** 下料清單加總——專案的實際用途是木作施工，逐支列印座標但不加總同規格數量，是離「能拿去現場用」最近的一步。
+2. **GEO-043** Space 尺寸/體積報告——六面封閉都判出來了卻不印房間淨尺寸 W×D×H，基本實用資訊缺口。
+3. **GEO-030** CreateFontW 失敗未判 NULL——GDI 互動視窗的真實當機風險，修法只要加一個 if。
+4. **GEO-014** BOM 檢查補 length>=3——一行修法即可消除讀未初始化記憶體的隱患，CP 值最高。
+5. **GEO-041** Space 錯誤訊息分類——六種失敗擠成一句話，且現在的 Space 比舊 room 更複雜，除錯需求更高。
+6. **GEO-077** scene include——上百個 `.scene` 夾具有大量重複房間宣告，include 能顯著降低維護成本。
+7. **GEO-020** 負值像素捨入——拖曳參考線到視圖負值區時仍有 1mm 偏移，互動正確性問題。
+8. **GEO-035** WM_CREATE 控制項 NULL 防護——控制項建立失敗會對 NULL HWND 呼叫 API 的當機風險。
+9. **GEO-081** scene parser fuzz——專案已有 128 項測試+40 個變異測試的品質文化，補上輸入層 fuzz 是自然延伸。
+10. **GEO-053** 檔頭功能清單更新——完全沒提 room/space/grid/RC/delete/apply-proj，對新進 agent/讀者高度誤導。
+
+## 建議標記作廢（已不適用）
+
+- GEO-001（build.bat）——建置架構已演化為多檔 gcc/cl 參數化編譯。
+- GEO-004（README-geometry.md）——單檔 CLI 說明前提不成立，文件已分散且更完整。
+- GEO-018（SCENE-FORMAT.md）——已被 公理層.md 取代為 SSOT。
+- GEO-022（distance4 最近拾取）——已被公理 R1「畫家演算法」取代，是刻意設計決定。
+- GEO-023（過期錨點標記）——已被 R2「移動即重放」結構性解法取代。
+- GEO-052（asm-analysis.md 標版本）——檔案已不存在，組譯附錄形式已被淘汰。
+- GEO-070（unplace 指令）——已被 delete+重宣告工作流取代。
+- GEO-072（碰撞警告）——已被公理 R6 硬性拒絕取代，比原案更嚴格。
+
+## 盤點過程中發現的缺口（BACKLOG 沒寫，明顯該補）
+
+1. **BACKLOG 自身統計數字錯誤**：統計行自稱「總數 46 張」，實際逐行數到 52 張（010~018 是 9 張不是想像中的較少、070~078 是 9 張等）——連審計基準點本身都不可靠，應先修統計行再談別的。
+2. **assert() 制度與實作風格根本不合**：全檔 0 處使用 C `assert()`，但 GEO-011/021/034 三張工單的驗收條件都明寫「加 assert」——應該是工單描述過時要改，而不是繼續期待有人去補從未出現過的模式。
+3. **`guide_line_intersection`／ANCHOR_AT_GUIDES／at-guides 整條「兩線交點錨點」路徑疑似死碼**：函式定義了但全檔無人呼叫，卻仍在 AnchorKind enum 與報告文字（「參考線交點」）中占一席之地——沒有工單記錄這條路徑該砍還是該修，文件（GEO-024）、實作（死碼）、印出邏輯三者對不上。
+4. **第 3 流（GDI/Win32 互動層，GEO-030~036）完全沒有自動化回歸測試覆蓋**：tests/run_tests.py 全部跑 `--no-window`；七張工單裡六張未完成，卻是全專案唯一「改壞了不會被測試網接住」的模組，風險遠高於其他流，應優先建立至少手動驗收清單或有限度的 GDI 煙霧測試。
+5. **current_geometry.c 檔頭注解沒有「已過時」自我標記**：ARCHITECTURE.md 已經在檔頭加警語承認過時並指向 公理層.md，但 current_geometry.c 自己的檔頭（GEO-053 想修的那段）完全沒有類似警語，對照專案「SSOT 優先、過時文件要自曝」的紀律不一致。
+
