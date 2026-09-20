@@ -919,7 +919,14 @@ def apply_facets(template: str, clauses: list[dict], trace: dict, note_counts: d
                                   ("wit", "有見證圖", n_wit), ("none", "無追溯", n_none)))
     markup = '<nav aria-label="依證據篩選" class="toc-facets js-only" hidden="">' + chips + "</nav>"
     anchor = '<a data-group="R" href="#R1">R 推演</a></nav>'
-    template = force(template, anchor, anchor + markup, "篩選 chip 標記")
+    # chip 上的數字是算出來的,會隨資料變。用 force() 判定「已套用」會看到舊的 markup 還在
+    # 就直接返回,數字從此凍結在第一次建置的值(2026-09-21 被 test_facet_chips_are_data_driven 抓到:
+    # 追溯資料變了,chip 仍寫 22、實際 21)。凡是內容會變的標記,一律先移除再插入。
+    template = re.sub(r'<nav[^>]*class="toc-facets[^"]*"[^>]*>.*?</nav>', "", template, flags=re.S)
+    if anchor not in template:
+        raise ValueError("reader template drift:找不到分類篩選 nav 的錨點,無法放篩選 chip")
+    PATCHES.expect_present("篩選 chip 標記", 'class="toc-facets')
+    template = template.replace(anchor, anchor + markup, 1)
 
     js = script_text(template, "reader-script")
     js = force(js, "var activeGroup = '', visibleResults = [], keyboardIndex = -1;",

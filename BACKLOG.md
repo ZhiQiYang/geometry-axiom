@@ -2014,3 +2014,21 @@ GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
   把 `\r\n` 寫成真的換行而弄壞腳本。那壞的是暫存腳本、不是 repo，但同樣是明知故犯。
   處置：這個 repo 的 `current_geometry.c` 是統一 CRLF 且被 `AGENTS.md` 列為地雷，
   **補丁腳本一律用檔案寫入工具產生，不用 heredoc**。
+
+### GEO-152 ✅ 已做（2026-09-21）篩選 chip 的數字在第一次建置後就凍結了
+
+- **怎麼被抓到**:做 GEO-041/043 時在 `current_geometry.c` 的註解裡引用了 I4、I33、D1、D5,
+  `axiom_matrix` 抓到後有一條從「無追溯」變成「有追溯」——
+  `test_facet_chips_are_data_driven` 立刻報 `22 != 21`。
+- **根因**:`apply_facets()` 用 `force(template, anchor, anchor + markup, ...)` 插 chip,
+  而 markup 裡有**算出來的數字**。force() 的「已套用」判定看到 `anchor + 舊 markup` 還在就返回,
+  數字從此凍結在第一次建置的值。GEO-149 交付時只驗了第一次建置,所以當下是對的。
+- **修法**:先用正則移除既有的 `<nav class="toc-facets">`,再插入當前版本
+  (與見證圖面板、色彩 token 同一個處置)。
+- **一般規則**(已寫進 `AGENTS.md`):**凡是內容會隨資料變的標記,一律「先移除再插入」,
+  不得用 force() 的改前/改後判定**——那個判定只看「形狀在不在」,看不出「內容過期了」。
+- **登記簿為什麼沒抓到**:`PatchLog` 驗的是「標記存不存在」,而標記確實存在(只是數字舊了)。
+  這是登記簿設計上的已知邊界:它擋「補丁沒生效」,擋不住「補丁生效了但內容過期」。
+  後者要靠針對資料一致性的測試——`test_facet_chips_are_data_driven` 正是這種測試,而它做到了。
+- **我的流程錯誤**:這次我在 `test_axiom_reader` 報 FAILED 的情況下仍然先 commit 了
+  (a3d5a69),修正在後一個 commit。正確做法是測試不綠就不 commit。
