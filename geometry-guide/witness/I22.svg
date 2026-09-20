@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- witness I22 <- _role_priority_ext_custom.scene (accept, view=bottom) scene-sha256=95db4419fdb0cba4 -->
+<!-- 延伸段側面以優先級 2 計,被 custom(priority 3)端面頂 → 接受。 -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 1540 4500 3640" data-full="0 0 8300 5180">
+<style>
+  polygon, line, rect { vector-effect: non-scaling-stroke; }
+  .frame { fill: #ffffff; stroke: #bbbbbb; stroke-width: 1px; }
+  .title { font: bold 150px sans-serif; fill: #222222; }
+  .label { font: 110px sans-serif; fill: #333333; text-anchor: middle; dominant-baseline: middle; }
+  .guide-label { text-anchor: start; fill: #b03030; }
+  .timber-label { fill: #7a4a00; font-weight: bold; }
+  .guide-label, .timber-label { paint-order: stroke; stroke: #ffffff; stroke-width: 30px; stroke-linejoin: round; }
+  .surface { fill: #dbe9ff; fill-opacity: 0.6; stroke: #3366cc; stroke-width: 1.5px; }
+  .hole { fill: #ffffff; stroke: #3366cc; stroke-width: 1.5px; }
+  .edge { stroke: #3366cc; stroke-width: 1.5px; }
+  .edge-free { stroke: #e08020; stroke-width: 1.5px; stroke-dasharray: 30 15; }
+  .guide { stroke: #cc3333; stroke-width: 1px; stroke-dasharray: 60 30; }
+  .timber-face { fill: #ffd27f; fill-opacity: 0.5; stroke: #a06000; stroke-width: 1.5px; }
+  .timber-face-near { fill-opacity: 0.85; }
+</style>
+<g transform="translate(250,3206)">
+<rect class="frame" x="-250" y="-3206" width="4500" height="1240"/>
+<text x="-190" y="-3096" class="title">前視圖（X 向右，Z 向上）</text>
+<polygon points="0,-2500 4000,-2500 4000,-2500 2000,-2500 2000,-2500 0,-2500" class="surface"/>
+<line x1="0" y1="-2500" x2="4000" y2="-2500" class="edge"/>
+<line x1="4000" y1="-2500" x2="4000" y2="-2500" class="edge"/>
+<line x1="4000" y1="-2500" x2="2000" y2="-2500" class="edge"/>
+<line x1="2000" y1="-2500" x2="2000" y2="-2500" class="edge"/>
+<line x1="2000" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="0" y2="-2500" class="guide"/>
+<polygon points="0,-2500 0,-2533 4000,-2533 4000,-2500" class="timber-face"/>
+<polygon points="0,-2500 4000,-2500 4000,-2533 0,-2533" class="timber-face timber-face-near"/>
+<text x="2000" y="-2516" class="label timber-label">角材1 B0</text>
+<polygon points="0,-2500 0,-2533 4000,-2533 4000,-2500" class="timber-face"/>
+<polygon points="0,-2500 4000,-2500 4000,-2533 0,-2533" class="timber-face timber-face-near"/>
+<text x="2000" y="-2516" class="label timber-label">角材2 B0</text>
+<polygon points="1014,-2500 987,-2500 987,-2533 1014,-2533" class="timber-face"/>
+<polygon points="1014,-2500 1014,-2533 987,-2533 987,-2500" class="timber-face timber-face-near"/>
+<text x="1000" y="-2516" class="label timber-label">角材3 START</text>
+</g>
+<g transform="translate(5050,3206)">
+<rect class="frame" x="-250" y="-3206" width="3500" height="1240"/>
+<text x="-190" y="-3096" class="title">側視圖（Y 向右，Z 向上）</text>
+<polygon points="0,-2500 0,-2500 2000,-2500 2000,-2500 3000,-2500 3000,-2500" class="surface"/>
+<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="2000" y2="-2500" class="edge"/>
+<line x1="2000" y1="-2500" x2="2000" y2="-2500" class="edge"/>
+<line x1="2000" y1="-2500" x2="3000" y2="-2500" class="edge"/>
+<line x1="3000" y1="-2500" x2="3000" y2="-2500" class="edge"/>
+<line x1="3000" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="3000" y2="-2500" class="guide"/>
+<polygon points="0,-2500 0,-2533 27,-2533 27,-2500" class="timber-face"/>
+<polygon points="0,-2500 27,-2500 27,-2533 0,-2533" class="timber-face timber-face-near"/>
+<text x="13" y="-2516" class="label timber-label">角材1 END</text>
+<polygon points="1973,-2500 1973,-2533 2000,-2533 2000,-2500" class="timber-face"/>
+<polygon points="1973,-2500 2000,-2500 2000,-2533 1973,-2533" class="timber-face timber-face-near"/>
+<text x="1986" y="-2516" class="label timber-label">角材2 END</text>
+<polygon points="27,-2500 27,-2533 1973,-2533 1973,-2500" class="timber-face"/>
+<polygon points="27,-2500 1973,-2500 1973,-2533 27,-2533" class="timber-face timber-face-near"/>
+<text x="1000" y="-2516" class="label timber-label">角材3 B0</text>
+</g>
+<g transform="translate(250,1930)">
+<rect class="frame" x="-250" y="-390" width="4500" height="3640"/>
+<text x="-190" y="-280" class="title">仰視圖（X 向右，Y 向下）</text>
+<polygon points="0,0 4000,0 4000,2000 2000,2000 2000,3000 0,3000" class="surface"/>
+<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
+<text x="2000" y="-120" class="label">邊0</text>
+<line x1="4000" y1="0" x2="4000" y2="2000" class="edge"/>
+<text x="4120" y="1000" class="label" transform="rotate(-90 4120 1000)">邊1</text>
+<line x1="4000" y1="2000" x2="2000" y2="2000" class="edge"/>
+<text x="3000" y="2120" class="label">邊2</text>
+<line x1="2000" y1="2000" x2="2000" y2="3000" class="edge"/>
+<text x="2120" y="2500" class="label" transform="rotate(-90 2120 2500)">邊3</text>
+<line x1="2000" y1="3000" x2="0" y2="3000" class="edge"/>
+<text x="1000" y="3120" class="label">邊4</text>
+<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
+<text x="-120" y="1500" class="label" transform="rotate(-90 -120 1500)">邊5</text>
+<line x1="0" y1="0" x2="0" y2="3000" class="guide"/>
+<text x="40" y="20" class="label guide-label">格線1</text>
+<polygon points="0,0 4000,0 4000,27 0,27" class="timber-face"/>
+<polygon points="0,0 0,27 4000,27 4000,0" class="timber-face timber-face-near"/>
+<text x="2000" y="13" class="label timber-label">角材1 A0</text>
+<polygon points="0,1973 4000,1973 4000,2000 0,2000" class="timber-face"/>
+<polygon points="0,1973 0,2000 4000,2000 4000,1973" class="timber-face timber-face-near"/>
+<text x="2000" y="1986" class="label timber-label">角材2 A0</text>
+<polygon points="1014,27 1014,1973 987,1973 987,27" class="timber-face"/>
+<polygon points="1014,27 987,27 987,1973 1014,1973" class="timber-face timber-face-near"/>
+<text x="1000" y="1000" class="label timber-label">角材3 A0</text>
+</g>
+</svg>

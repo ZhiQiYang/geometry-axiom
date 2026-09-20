@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- witness D6c <- _wit_d6c_datum_shared.scene (accept, view=all) scene-sha256=6da8dfbc68699be4 -->
+<!-- datum x=1500 被天花/前牆/地板三面的 DATUM 參考線共用,三視圖同一條 X。 -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 8300 7080" data-full="0 0 8300 7080">
+<style>
+  polygon, line, rect { vector-effect: non-scaling-stroke; }
+  .frame { fill: #ffffff; stroke: #bbbbbb; stroke-width: 1px; }
+  .title { font: bold 150px sans-serif; fill: #222222; }
+  .label { font: 110px sans-serif; fill: #333333; text-anchor: middle; dominant-baseline: middle; }
+  .guide-label { text-anchor: start; fill: #b03030; }
+  .timber-label { fill: #7a4a00; font-weight: bold; }
+  .guide-label, .timber-label { paint-order: stroke; stroke: #ffffff; stroke-width: 30px; stroke-linejoin: round; }
+  .surface { fill: #dbe9ff; fill-opacity: 0.6; stroke: #3366cc; stroke-width: 1.5px; }
+  .hole { fill: #ffffff; stroke: #3366cc; stroke-width: 1.5px; }
+  .edge { stroke: #3366cc; stroke-width: 1.5px; }
+  .edge-free { stroke: #e08020; stroke-width: 1.5px; stroke-dasharray: 30 15; }
+  .guide { stroke: #cc3333; stroke-width: 1px; stroke-dasharray: 60 30; }
+  .timber-face { fill: #ffd27f; fill-opacity: 0.5; stroke: #a06000; stroke-width: 1.5px; }
+  .timber-face-near { fill-opacity: 0.85; }
+</style>
+<g transform="translate(250,2890)">
+<rect class="frame" x="-250" y="-2890" width="4500" height="3140"/>
+<text x="-190" y="-2780" class="title">前視圖（X 向右，Z 向上）</text>
+<polygon points="0,-2500 4000,-2500 4000,-2500 0,-2500" class="surface"/>
+<line x1="0" y1="-2500" x2="4000" y2="-2500" class="edge"/>
+<line x1="4000" y1="-2500" x2="4000" y2="-2500" class="edge"/>
+<line x1="4000" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="1500" y1="-2500" x2="1500" y2="-2500" class="guide"/>
+<polygon points="0,0 0,0 4000,0 4000,0" class="surface"/>
+<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
+<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
+<line x1="4000" y1="0" x2="4000" y2="0" class="edge"/>
+<line x1="4000" y1="0" x2="0" y2="0" class="edge"/>
+<line x1="1500" y1="0" x2="1500" y2="0" class="guide"/>
+<polygon points="0,0 4000,0 4000,-2500 0,-2500" class="surface"/>
+<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
+<text x="2000" y="120" class="label">邊0</text>
+<line x1="4000" y1="0" x2="4000" y2="-2500" class="edge"/>
+<text x="4120" y="-1250" class="label" transform="rotate(-90 4120 -1250)">邊1</text>
+<line x1="4000" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<text x="2000" y="-2620" class="label">邊2</text>
+<line x1="0" y1="-2500" x2="0" y2="0" class="edge"/>
+<text x="-120" y="-1250" class="label" transform="rotate(-90 -120 -1250)">邊3</text>
+<line x1="1500" y1="0" x2="1500" y2="-2500" class="guide"/>
+<text x="1540" y="-40" class="label guide-label">參考線2</text>
+<polygon points="0,0 0,-2500 4000,-2500 4000,0" class="surface"/>
+<line x1="0" y1="0" x2="0" y2="-2500" class="edge"/>
+<text x="-120" y="-1250" class="label" transform="rotate(-90 -120 -1250)">邊0</text>
+<line x1="0" y1="-2500" x2="4000" y2="-2500" class="edge"/>
+<text x="2000" y="-2620" class="label">邊1</text>
+<line x1="4000" y1="-2500" x2="4000" y2="0" class="edge"/>
+<text x="4120" y="-1250" class="label" transform="rotate(-90 4120 -1250)">邊2</text>
+<line x1="4000" y1="0" x2="0" y2="0" class="edge"/>
+<text x="2000" y="120" class="label">邊3</text>
+<polygon points="0,0 0,-2500 0,-2500 0,0" class="surface"/>
+<line x1="0" y1="0" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="0" y2="0" class="edge"/>
+<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
+<polygon points="4000,0 4000,0 4000,-2500 4000,-2500" class="surface"/>
+<line x1="4000" y1="0" x2="4000" y2="0" class="edge"/>
+<line x1="4000" y1="0" x2="4000" y2="-2500" class="edge"/>
+<line x1="4000" y1="-2500" x2="4000" y2="-2500" class="edge"/>
+<line x1="4000" y1="-2500" x2="4000" y2="0" class="edge"/>
+</g>
+<g transform="translate(5050,2890)">
+<rect class="frame" x="-250" y="-2890" width="3500" height="3140"/>
+<text x="-190" y="-2780" class="title">側視圖（Y 向右，Z 向上）</text>
+<polygon points="0,-2500 0,-2500 3000,-2500 3000,-2500" class="surface"/>
+<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="3000" y2="-2500" class="edge"/>
+<line x1="3000" y1="-2500" x2="3000" y2="-2500" class="edge"/>
+<line x1="3000" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="3000" y2="-2500" class="guide"/>
+<polygon points="0,0 3000,0 3000,0 0,0" class="surface"/>
+<line x1="0" y1="0" x2="3000" y2="0" class="edge"/>
+<line x1="3000" y1="0" x2="3000" y2="0" class="edge"/>
+<line x1="3000" y1="0" x2="0" y2="0" class="edge"/>
+<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
+<line x1="0" y1="0" x2="3000" y2="0" class="guide"/>
+<polygon points="0,0 0,0 0,-2500 0,-2500" class="surface"/>
+<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
+<line x1="0" y1="0" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<line x1="0" y1="-2500" x2="0" y2="0" class="edge"/>
+<line x1="0" y1="0" x2="0" y2="-2500" class="guide"/>
+<polygon points="3000,0 3000,-2500 3000,-2500 3000,0" class="surface"/>
+<line x1="3000" y1="0" x2="3000" y2="-2500" class="edge"/>
+<line x1="3000" y1="-2500" x2="3000" y2="-2500" class="edge"/>
+<line x1="3000" y1="-2500" x2="3000" y2="0" class="edge"/>
+<line x1="3000" y1="0" x2="3000" y2="0" class="edge"/>
+<polygon points="0,0 0,-2500 3000,-2500 3000,0" class="surface"/>
+<line x1="0" y1="0" x2="0" y2="-2500" class="edge"/>
+<text x="-120" y="-1250" class="label" transform="rotate(-90 -120 -1250)">邊0</text>
+<line x1="0" y1="-2500" x2="3000" y2="-2500" class="edge"/>
+<text x="1500" y="-2620" class="label">邊1</text>
+<line x1="3000" y1="-2500" x2="3000" y2="0" class="edge"/>
+<text x="3120" y="-1250" class="label" transform="rotate(-90 3120 -1250)">邊2</text>
+<line x1="3000" y1="0" x2="0" y2="0" class="edge"/>
+<text x="1500" y="120" class="label">邊3</text>
+<polygon points="0,0 3000,0 3000,-2500 0,-2500" class="surface"/>
+<line x1="0" y1="0" x2="3000" y2="0" class="edge"/>
+<text x="1500" y="120" class="label">邊0</text>
+<line x1="3000" y1="0" x2="3000" y2="-2500" class="edge"/>
+<text x="3120" y="-1250" class="label" transform="rotate(-90 3120 -1250)">邊1</text>
+<line x1="3000" y1="-2500" x2="0" y2="-2500" class="edge"/>
+<text x="1500" y="-2620" class="label">邊2</text>
+<line x1="0" y1="-2500" x2="0" y2="0" class="edge"/>
+<text x="-120" y="-1250" class="label" transform="rotate(-90 -120 -1250)">邊3</text>
+</g>
+<g transform="translate(250,3830)">
+<rect class="frame" x="-250" y="-390" width="4500" height="3640"/>
+<text x="-190" y="-280" class="title">仰視圖（X 向右，Y 向下）</text>
+<polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
+<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
+<text x="2000" y="-120" class="label">邊0</text>
+<line x1="4000" y1="0" x2="4000" y2="3000" class="edge"/>
+<text x="4120" y="1500" class="label" transform="rotate(-90 4120 1500)">邊1</text>
+<line x1="4000" y1="3000" x2="0" y2="3000" class="edge"/>
+<text x="2000" y="3120" class="label">邊2</text>
+<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
+<text x="-120" y="1500" class="label" transform="rotate(-90 -120 1500)">邊3</text>
+<line x1="1500" y1="0" x2="1500" y2="3000" class="guide"/>
+<text x="1540" y="-40" class="label guide-label">參考線1</text>
+<polygon points="0,0 0,3000 4000,3000 4000,0" class="surface"/>
+<line x1="0" y1="0" x2="0" y2="3000" class="edge"/>
+<text x="-120" y="1500" class="label" transform="rotate(-90 -120 1500)">邊0</text>
+<line x1="0" y1="3000" x2="4000" y2="3000" class="edge"/>
+<text x="2000" y="3120" class="label">邊1</text>
+<line x1="4000" y1="3000" x2="4000" y2="0" class="edge"/>
+<text x="4120" y="1500" class="label" transform="rotate(-90 4120 1500)">邊2</text>
+<line x1="4000" y1="0" x2="0" y2="0" class="edge"/>
+<text x="2000" y="-120" class="label">邊3</text>
+<line x1="1500" y1="0" x2="1500" y2="3000" class="guide"/>
+<text x="1540" y="-40" class="label guide-label">參考線3</text>
+<polygon points="0,0 4000,0 4000,0 0,0" class="surface"/>
+<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
+<line x1="4000" y1="0" x2="4000" y2="0" class="edge"/>
+<line x1="4000" y1="0" x2="0" y2="0" class="edge"/>
+<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
+<line x1="1500" y1="0" x2="1500" y2="0" class="guide"/>
+<polygon points="0,3000 0,3000 4000,3000 4000,3000" class="surface"/>
+<line x1="0" y1="3000" x2="0" y2="3000" class="edge"/>
+<line x1="0" y1="3000" x2="4000" y2="3000" class="edge"/>
+<line x1="4000" y1="3000" x2="4000" y2="3000" class="edge"/>
+<line x1="4000" y1="3000" x2="0" y2="3000" class="edge"/>
+<polygon points="0,0 0,0 0,3000 0,3000" class="surface"/>
+<line x1="0" y1="0" x2="0" y2="0" class="edge"/>
+<line x1="0" y1="0" x2="0" y2="3000" class="edge"/>
+<line x1="0" y1="3000" x2="0" y2="3000" class="edge"/>
+<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
+<polygon points="4000,0 4000,3000 4000,3000 4000,0" class="surface"/>
+<line x1="4000" y1="0" x2="4000" y2="3000" class="edge"/>
+<line x1="4000" y1="3000" x2="4000" y2="3000" class="edge"/>
+<line x1="4000" y1="3000" x2="4000" y2="0" class="edge"/>
+<line x1="4000" y1="0" x2="4000" y2="0" class="edge"/>
+</g>
+</svg>

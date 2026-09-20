@@ -158,7 +158,17 @@ TESTS = [{'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000
  {'scene': '_edge_gridref_midline.scene', 'expect': 'reject', 'error': 'I12'},
  {'scene': '_edge_gridref_no_support.scene', 'expect': 'reject', 'error': 'V_CUT_PRIORITY'},
  {'scene': '_edge_place_through_short.scene', 'expect': 'reject', 'error': 'place 缺少長度方向與深度側'},
- {'scene': '_edge_i19_place_order.scene', 'expect': 'reject', 'error': 'V_CUT_PRIORITY'}]
+ {'scene': '_edge_i19_place_order.scene', 'expect': 'reject', 'error': 'V_CUT_PRIORITY'},
+ {'scene': '_wit_d2_wall_frame.scene', 'expect': 'accept', 'lengths': [2500, 2500, 3960]},
+ {'scene': '_wit_d6_guide_segments.scene', 'expect': 'accept',
+  'contains': ['參考線 1（段 0）：(2000, 0) -> (2000, 1200)', '參考線 1（段 1）：(2000, 1800) -> (2000, 3000)', '參考線 2：（落在有效區域之外，無線段）']},
+ {'scene': '_wit_d6c_datum_shared.scene', 'expect': 'accept',
+  'contains': ['參考線 1：(1500, 0) -> (1500, 3000)', '參考線 2：(1500, 0) -> (1500, 2500)', '參考線 3：(0, 1500) -> (3000, 1500)']},
+ {'scene': '_wit_i13_odd_width.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960],
+  'contains': ['vertex[0] = (1014, 20, 2500)', 'vertex[1] = (987, 20, 2500)']},
+ {'scene': '_wit_r6_span_cells.scene', 'expect': 'accept', 'lengths': [4000, 4000, 1180, 1180, 2960]},
+ {'scene': '_wit_r19_edge_primary_2560.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2560, 2560, 2560]},
+]
 
 
 LEN_RE = re.compile(r"L=(\d+)")

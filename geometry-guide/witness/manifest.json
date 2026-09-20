@@ -1,0 +1,104 @@
+{
+  "D2": {
+    "scene": "_wit_d2_wall_frame.scene",
+    "expect": "accept",
+    "view": "all",
+    "gist": "牆的 frame U=+x V=+z N=−y:同一組局部座標在三個視圖各自落到房間座標。"
+  },
+  "D6": {
+    "scene": "_wit_d6_guide_segments.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "參考線 1 被孔切成兩段仍是同一 id;參考線 2 在面外零段仍存在。"
+  },
+  "D6c": {
+    "scene": "_wit_d6c_datum_shared.scene",
+    "expect": "accept",
+    "view": "all",
+    "gist": "datum x=1500 被天花/前牆/地板三面的 DATUM 參考線共用,三視圖同一條 X。"
+  },
+  "D10a": {
+    "scene": "_test_grid_panel.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "400 面材 + 20 縫:格線在縫中心 c_k=420k+410,8 條,末端裁切片合法。"
+  },
+  "D11": {
+    "scene": "_test_hole_auto.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "擋面來源:起點頂邊界材側面、終點頂孔邊 → L=1180。"
+  },
+  "D15": {
+    "scene": "_demo_ceiling.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "boundary(層級 1)整條蓋到牆;primary(層級 2)被兩端佔掉料寬裁短。"
+  },
+  "D16": {
+    "scene": "_role_priority_ext_custom.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "boundary 2 固定段 u∈[2000,4000],越過凹角的部分是延伸段。"
+  },
+  "D17": {
+    "scene": "_role_ext_stop_primary.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "主支軸 v 由 boundary 的垂直向推出,不存欄位。"
+  },
+  "I13": {
+    "scene": "_wit_i13_odd_width.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "寬 27 at-line 中線 1000 → footprint [987,1014],多的 1mm 在 +cross 側。"
+  },
+  "I19": {
+    "scene": "_role_rc_boundary_ok.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "只有 boundary 可以頂外輪廓邊:兩支邊界材各頂 e0 / e2,合法。"
+  },
+  "I22": {
+    "scene": "_role_priority_ext_custom.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "延伸段側面以優先級 2 計,被 custom(priority 3)端面頂 → 接受。"
+  },
+  "R6": {
+    "scene": "_wit_r6_span_cells.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "格線穿孔切成兩個 cell,through 600/2400 各選一段;無孔格線單段免選。"
+  },
+  "R7": {
+    "scene": "_rc_col_corner.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "柱足跡貼兩鄰邊 = corner。"
+  },
+  "R16": {
+    "scene": "_ax_r16_top_drop.scene",
+    "expect": "accept",
+    "view": "front",
+    "gist": "邊樑跨滿整幅且到端緣 → 半平面裁切,牆高 2500→2100。"
+  },
+  "R17": {
+    "scene": "_ax_r17_wall_column_face.scene",
+    "expect": "accept",
+    "view": "side",
+    "gist": "貼牆柱拆分後新立面在柱遠側緣 x=400,不在牆平面 x=0。"
+  },
+  "R19": {
+    "scene": "_wit_r19_edge_primary_2560.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "邊界主支 L = 2600 − 20 − 20 = 2560;層級 1 蓋到牆 L=4000。"
+  },
+  "R21": {
+    "scene": "_test_between.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "副支 between t1 t5 指名兩支主支側面當擋面 → L=1960。"
+  }
+}

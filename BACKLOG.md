@@ -1399,3 +1399,30 @@
 - 提供 CLI、HTTP API、OBJ 匯出及帶孔牆／L 形空間範例。
 - 36 項建模與 2 項傳輸整合測試通過；詳見 `geometry-core/MODELING-VALIDATION.md`。
 - 後續：C World／舊 DSL 新型別整合、畫布建立與編輯、GLB／SketchUp 適配器及第二套完整引擎的跨實作驗收。
+
+### GEO-131 ✅ 已拍板（2026-09-20）公理層見證圖：一條文一圖、圖變即警報
+- 使用者定性：幾何相關條文須配示意圖，但**示意圖是條文的見證，不是文件**——
+  條文為真 ⇒ 圖不變（所以沒有版本問題）；圖變了 ⇒ 是警報，代表夾具／引擎／條文之一動了，
+  必須由使用者確認要改哪一邊，**絕不自動覆寫**。
+- 為什麼不手繪：手繪圖跟白話一樣是人寫的，會跟條文一起錯、偵測不到漂移
+  （`公理層-白話.md` 已整份落後過一次；閱讀器內 63 張例圖全標「未重新執行引擎」，
+  其中 D1 例圖仍寫「奇數 gap → 拒絕」，與現行 D10a 及引擎行為相反）。引擎推導的圖才有「變了就是有事」的性質。
+- 實作：`geometry-guide/witness.py`（`--build` 建圖 / `--check` 逐位元比對、有差即非 0 且不寫檔 / `--list`）
+  + `geometry-guide/witness/manifest.json`（條號 → 夾具 → expect → 視圖）+ `witness/<條號>.svg`。
+  沿用 `axiom_examples.py` 的 run_scene / crop_bottom / before_failure，不另做幾何或裁切。
+  夾具必須在註解提到條號（`axiom_matrix.py` 同一判準），manifest 不能單獨成為連結。
+  `.gitignore` 對 `geometry-guide/witness/*.svg` 開唯一例外（全域 `*.svg` 仍忽略）。
+- 樣板：I19 ← `_role_rc_boundary_ok.scene`（仰視圖）。實測：同夾具兩次輸出逐位元相同；
+  臨時把夾具房深 3000→3200 後 `--check` 正確報「夾具內容變了」並列 64 行 diff、rc=1、未覆寫。
+- 已鋪 17 條（2026-09-20，使用者「都鋪」授權）：D2、D6、D6c、D10a、D11、D15、D16、D17、I13、I19、I22、
+  R6、R7、R16、R17、R19、R21。新寫夾具 6 個（`_wit_*.scene`，已入 `tests/run_tests.py`，128/128 通過）：
+  D2 牆 frame（view=all）、D6 參考線被孔切段／面外零段、D6c 三面共用 datum（view=all）、
+  I13 寬 27 → footprint [987,1014]、R6 穿孔格線兩個 cell 各選一段、R19 邊界主支 2600−20−20=2560。
+  既有夾具補條號註解 2 個（`_test_hole_auto` +D11、`_test_between` +R21）。
+  D16 與 I22 共用 `_role_priority_ext_custom.scene`（同一現象：延伸段與其規則），圖檔仍各一張。
+  `witness.py` 加 view=front/side/all（R16 看前視、R17 看側視、跨面條文看整張）。
+- **暫無圖（不手繪頂替）**：D20 / D21 / D23 / R27 屬 GEO-129 `orthogonal-model/1`，
+  C 核心與場景 DSL 尚未實作（I32：條文存在 ≠ 已實作），無夾具可推導；待 GEO-130 接入 C World 後補。
+- 後續：閱讀器例圖槽改讀見證圖（須過 AGENTS.md 五道 assert）另開票；`公理層.md` 未動。
+- 關聯決定（同日、尚未最終拍板）：使用者擬將本 repo 定性為「該領域世界的來源」，其他專案須遵守其公理；
+  建議配套：舊 repo `geometry` 封存、公理層加版本號、下游以 `.scene` 夾具／契約測試證明遵守。

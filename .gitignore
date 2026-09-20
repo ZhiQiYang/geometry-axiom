@@ -20,6 +20,8 @@
 *.obj
 !geometry-core/examples/*.obj
 *.svg
+# 見證圖(GEO-131):一條文一張、由引擎推導、commit 進 repo 當 golden;只放行這個目錄
+!geometry-guide/witness/*.svg
 *.bak
 *.bak-*
 __pycache__/
