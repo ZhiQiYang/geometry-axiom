@@ -1843,3 +1843,22 @@ GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
 4. **第 3 流（GDI/Win32 互動層，GEO-030~036）完全沒有自動化回歸測試覆蓋**：tests/run_tests.py 全部跑 `--no-window`；七張工單裡六張未完成，卻是全專案唯一「改壞了不會被測試網接住」的模組，風險遠高於其他流，應優先建立至少手動驗收清單或有限度的 GDI 煙霧測試。
 5. **current_geometry.c 檔頭注解沒有「已過時」自我標記**：ARCHITECTURE.md 已經在檔頭加警語承認過時並指向 公理層.md，但 current_geometry.c 自己的檔頭（GEO-053 想修的那段）完全沒有類似警語，對照專案「SSOT 優先、過時文件要自曝」的紀律不一致。
 
+### GEO-150 ✅ 已做（2026-09-20）專案清理：移除失去依據的設計原型、給第二支產生器上閘門
+- **起因**:使用者問「公理層閱讀器是唯一的嗎」。實地掃描結果:**是唯一的**——
+  全 repo 15 個 `.html` 裡,只有 `geometry-guide/公理層-閱讀器.html` 含 `clause-data`/`axiom-review-data`;
+  無 `dist/`、無離線版、無 `.bak`、無手機版分身。但掃出三個鬆動處,使用者指示「一併處理,我要乾淨的專案」。
+- **移除 `geometry-guide/axiom-reader-design/`**(38 檔、21MB,占當時 repo 36%):
+  第 3 版 React 設計原型,它服務的 `閱讀器-設計規格.md` 同日整份作廢,於是失去依據。
+  **完整內容仍在 git 歷史**,考古用 `git show`,不要 checkout 回工作區。repo 58MB → 35MB。
+- **`make_axiom_reader.py` 加寫檔閘門**:它產的是追溯診斷頁不是正典,但一跑就會在 repo 生出
+  第二份像閱讀器的檔案。文字規則擋不住誤跑,改成機制——預設寫系統暫存目錄;
+  `--in-repo` 才寫進 repo,且**正典存在時一律拒絕**並要求改用 `sync_axiom_reader.py`。實測拒絕成功。
+- **清掉本機殘留**:`verify-GEO-137/`(前一個 agent 的 GEO-137 目視驗收產物)、`current_geometry.svg`、
+  `current_geometry.obj`、兩個 `__pycache__/`。這些因為 `.gitignore` 是允許清單制而被歸為 ignored,
+  **不會出現在 `git status`**——所以先前的「工作目錄乾淨」是假的。
+  另停掉三支前一個 session 遺留的 `python -m http.server`(8765/8766/8791),其中一支卡住
+  `verify-GEO-137/` 使其無法刪除。
+- **連帶更新**:`AGENTS.md`、`CLAUDE.md` 改寫對應段落;`決策佇列.md` 新增 Q7
+  (`make_axiom_reader.py` 714 行要留還是刪,與 `axiom_matrix.py` 功能重疊)。
+- **驗收**:`test_axiom_reader` 12 項、`witness --check` 17/17、`test_witness_marks` 4 項、
+  五道 assert 全綠;ignored 殘留只剩 `.claude/`(本機設定,正常)。

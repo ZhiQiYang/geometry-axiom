@@ -10,6 +10,8 @@
   ——任一道失敗會連桌面版面一起失效。`make_axiom_reader.py` 產的是另一套版面
   (`公理層-追溯診斷頁.html`),**不是正典**。
 - 🔴 **`公理層.md` 是 SSOT**,不得擅改;發現矛盾只回報。條文未定案前不得實作。
-- `geometry-guide/axiom-reader-design/` 是設計參考,不是閱讀器來源。
+- `geometry-guide/axiom-reader-design/`(第 3 版設計原型)與 `閱讀器-設計規格.md` 已於 2026-09-20
+  一併作廢/移除;閱讀器的判準改為 `BACKLOG.md` 的 GEO-120(🔒)與第 11 流(GEO-139～149)。
+- `make_axiom_reader.py` 有寫檔閘門:預設寫暫存目錄,正典存在時拒絕寫進 repo。
 - 地雷:`current_geometry.c` 含 NUL byte(grep 會靜默截斷);
   root `.gitignore` 是允許清單制且全域忽略 `*.svg`。

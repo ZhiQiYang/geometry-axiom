@@ -53,6 +53,25 @@ ROOT = am.ROOT
 # 使用者批註後逐版取代。本腳本**不得**再覆寫那個路徑,否則會把正典蓋回舊版面。
 # 它現在只產覆蓋率/追溯用的診斷頁,檔名另立。規則見 repo 根目錄 AGENTS.md。
 OUT = os.path.join(HERE, "公理層-追溯診斷頁.html")
+
+# 🔴 寫檔閘門(2026-09-20):AGENTS.md 記載過一場事故——同一專案一度同時存在 5 份「公理層閱讀器」,
+# 使用者無法分辨哪一份是真的。本腳本產的是**追溯診斷頁,不是正典**,但它只要一跑就會在 repo 裡
+# 生出第二份看起來像閱讀器的檔案。文字規則擋不住誤跑,所以改成機制:
+#   預設寫到系統暫存目錄;要寫進 repo 必須明示 --in-repo,而且正典存在時一律拒絕。
+def resolve_out(argv):
+    import tempfile
+    if "--out" in argv:
+        return argv[argv.index("--out") + 1]
+    if "--in-repo" in argv:
+        canonical = os.path.join(HERE, "公理層-閱讀器.html")
+        if os.path.exists(canonical):
+            raise SystemExit(
+                "拒絕寫入 repo:正典 %s 已存在。\n"
+                "本腳本產的是追溯診斷頁,不是正典(見 AGENTS.md 🔴);\n"
+                "要改正典請用 geometry-guide/sync_axiom_reader.py。\n"
+                "只是想看診斷頁就別加 --in-repo,會寫到暫存目錄。" % canonical)
+        return OUT
+    return os.path.join(tempfile.gettempdir(), "公理層-追溯診斷頁.html")
 PLAIN = os.path.join(HERE, "公理層-白話.md")
 SECTION_OF = {"D": "定義（公理）", "I": "構造保證的不變量", "R": "推演規則"}
 
@@ -495,8 +514,11 @@ def main():
             .replace("__BANNER__", banner)
             .replace("__STATS__", stats))
 
-    io.open(OUT, "w", encoding="utf-8", newline="\n").write(page)
-    print("已輸出:%s" % OUT)
+    out = resolve_out(sys.argv)
+    io.open(out, "w", encoding="utf-8", newline="\n").write(page)
+    print("已輸出:%s" % out)
+    if out != OUT:
+        print("  (預設寫到暫存目錄;本腳本不是正典閱讀器的產生器,見 AGENTS.md)")
     print("  %s" % stats)
     if fails:
         print("  渲染失敗:%s" % "、".join(fails))
