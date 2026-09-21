@@ -97,6 +97,34 @@ class CanonicalReader(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Conflicting review record"):
             reader.rebuild(self.html, self.axiom, self.plain, backup)
 
+    def test_review_merge_rejects_conflicts_inside_one_backup(self):
+        """GEO-155:衝突不只發生在「備份 vs 現況」,也發生在備份自己內部。"""
+        backup = copy.deepcopy(self.state)
+        first = copy.deepcopy(backup["comments"][0])
+        first["id"] = "C-test-duplicate"
+        first["userIntent"] = "第一筆。"
+        second = copy.deepcopy(first)
+        second["userIntent"] = "同 ID、不同內容的第二筆。"
+        backup["comments"] += [first, second]
+        with self.assertRaisesRegex(ValueError, "Conflicting review record"):
+            reader.rebuild(self.html, self.axiom, self.plain, backup)
+
+    def test_review_merge_takes_an_exact_repeat_only_once(self):
+        """一字不差的重複只是冗餘,不是衝突——但也只能收一次。
+
+        修好之前這裡會收下兩筆同 ID 的批註。
+        """
+        backup = copy.deepcopy(self.state)
+        added = copy.deepcopy(backup["comments"][0])
+        added["id"] = "C-test-repeat"
+        backup["comments"] += [added, copy.deepcopy(added)]
+        merged = reader.rebuild(self.html, self.axiom, self.plain, backup)
+        reader.validate(merged, self.axiom, self.plain)
+        state = json.loads(reader.script_text(merged, "axiom-review-data"))
+        ids = [c["id"] for c in state["comments"]]
+        self.assertEqual(ids.count("C-test-repeat"), 1)
+        self.assertEqual(len(ids), len(set(ids)), "批註 ID 必須唯一")
+
     def test_mid_width_uses_half_sheet_and_mobile_bar_has_four_keys(self):
         # GEO-148(🔒 Q6):960–1279px 不得再用全螢幕 modal 蓋住正文;手機底部列只留四鍵。
         ws = reader.script_text(self.html, "workspace-script")

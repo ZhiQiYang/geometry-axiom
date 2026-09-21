@@ -1256,6 +1256,10 @@ def rebuild(template: str, axiom: str, plain: str, review=None) -> str:
                     raise ValueError("Conflicting review record: " + value["id"])
                 if value["id"] not in known:
                     state[field].append(copy.deepcopy(value))
+                    # GEO-155:剛收下的紀錄也要記進 known。
+                    # 不更新的話,同一份備份裡兩筆同 ID 異內容會**兩筆都被收下**——
+                    # 閱讀器出現兩則同 ID 批註,而五道完整性 assert 不檢查批註集合的唯一性。
+                    known[value["id"]] = value
         if review.get("draft"):
             if state.get("draft") and state["draft"] != review["draft"]:
                 raise ValueError("Conflicting unsent review drafts; export both before merging")
