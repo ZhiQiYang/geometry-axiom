@@ -226,21 +226,33 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     "wb", suffix=".scene", delete=False) as f:
                 f.write(body)
                 tmp = f.name
-            while len(_upload_temps) > 0:
-                old = _upload_temps.pop(0)
+            # GEO-154：**先載,成功了才動舊暫存**。
+            # bridge 的 loadfile 是交易式的(失敗時 `g_world = before`),所以載入失敗後
+            # 畫面上還是舊場景;先刪舊暫存的話,那個還活著的場景就沒有來源檔了,
+            # 前端 curScene 指向一個已刪的路徑,「重新載入場景」從此壞掉。
+            resp = ask_bridge("loadfile " + tmp)
+            try:
+                merged = json.loads(resp.decode("utf-8"))
+            except (ValueError, UnicodeDecodeError):
+                merged = None
+            if not isinstance(merged, dict) or merged.get("ok") is not True:
+                # 新檔沒載起來:它自己才是該丟的那一個,舊暫存留著。
                 try:
-                    os.unlink(old)
+                    os.unlink(tmp)
+                except OSError:
+                    pass
+                self._send(resp)
+                return
+            while len(_upload_temps) > 0:
+                stale = _upload_temps.pop(0)
+                try:
+                    os.unlink(stale)
                 except OSError:
                     pass
             _upload_temps.append(tmp)
-            resp = ask_bridge("loadfile " + tmp)
             # 回傳暫存檔路徑,前端 curScene 指到它,「重新載入場景」載回剛上傳的內容。
-            try:
-                merged = json.loads(resp.decode("utf-8"))
-                merged["path"] = tmp
-                self._send(json.dumps(merged, ensure_ascii=False).encode("utf-8"))
-            except (ValueError, UnicodeDecodeError):
-                self._send(resp)
+            merged["path"] = tmp
+            self._send(json.dumps(merged, ensure_ascii=False).encode("utf-8"))
         else:
             self.send_error(404)
 

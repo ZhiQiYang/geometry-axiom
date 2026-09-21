@@ -1,7 +1,9 @@
+import contextlib
 import http.server
 import importlib.util
 import io
 import json
+import os
 import pathlib
 import queue
 import threading
@@ -87,6 +89,59 @@ class BridgeServerTests(unittest.TestCase):
             self.server_module.bridge_lock.release()
         self.responses.put(b'{"ok":true}\n')
         self.assertTrue(self.ask("newid")["ok"])
+
+    @contextlib.contextmanager
+    def http_server(self):
+        server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), self.server_module.Handler)
+        thread = threading.Thread(target=server.serve_forever)
+        thread.start()
+        try:
+            yield f"http://127.0.0.1:{server.server_port}"
+        finally:
+            server.shutdown()
+            thread.join(timeout=2)
+            server.server_close()
+
+    def upload(self, base, scene, bridge_reply):
+        """送一次 /upload,回傳 (解析後的回應, bridge 收到的 loadfile 路徑)。"""
+        self.responses.put(bridge_reply)
+        request = urllib.request.Request(base + "/upload", data=scene.encode("utf-8"),
+                                         headers={"Content-Type": "text/plain"})
+        with urllib.request.urlopen(request, timeout=2) as response:
+            payload = json.load(response)
+        sent = self.process.stdin.getvalue().decode("utf-8").splitlines()[-1]
+        self.assertTrue(sent.startswith("loadfile "), sent)
+        return payload, sent[len("loadfile "):]
+
+    def test_failed_upload_keeps_the_live_scene_reloadable(self):
+        """GEO-154：bridge 的 loadfile 是交易式的,失敗後畫面上還是舊場景。
+
+        舊場景的來源檔必須活著,否則前端 curScene 指向一個已刪的路徑,
+        「重新載入場景」從此壞掉。修好之前:舊暫存在新檔驗證前就被刪了。
+        """
+        temps = self.server_module._upload_temps
+        with self.http_server() as base:
+            good, first = self.upload(base, "spec 低 300\n", b'{"ok":true}\n')
+            self.assertEqual(good["path"], first)
+            self.assertEqual(temps, [first])
+            self.assertTrue(os.path.exists(first))
+
+            bad, second = self.upload(base, "這不是場景\n",
+                                      b'{"ok":false,"error":"parse failed"}\n')
+            self.assertTrue(os.path.exists(first), "還活著的場景的來源檔被刪了")
+            self.assertEqual(temps, [first])       # 舊暫存原封不動
+            self.assertIs(bad["ok"], False)
+            self.assertNotIn("path", bad)          # 失敗不得讓前端改指到新檔
+            self.assertFalse(os.path.exists(second), "載不起來的新檔應該自己被清掉")
+
+            # 成功的下一次上傳才輪到舊暫存被回收。
+            _, third = self.upload(base, "spec 高 2900\n", b'{"ok":true}\n')
+            self.assertEqual(temps, [third])
+            self.assertFalse(os.path.exists(first))
+        for path in list(temps):
+            with contextlib.suppress(OSError):
+                os.unlink(path)
+        temps.clear()
 
     def test_http_rejects_empty_and_bad_json_then_recovers(self):
         server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), self.server_module.Handler)
