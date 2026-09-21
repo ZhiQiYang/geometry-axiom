@@ -7444,8 +7444,9 @@ static bool timber_end_face_check(
             }
 
             if (f->kind == STOP_OUTLINE_EDGE) {
-                /* I19 的外輪廓邊那一款：外圍那圈是邊界材釘在 RC 上的
-                 * 位置，只有 boundary 可以頂它。孔邊與柱面不在此限，
+                /* I19 的外輪廓邊那一款：端面不提供固定，擋的不是「碰到牆」，
+                 * 是「那條邊還沒鋪邊界材」——板靠牆的邊要有骨可釘（I20）。
+                 * 孔邊與柱面不在此限（貼邊料角色由宣告決定，I21），
                  * 所以這裡只攔 STOP_OUTLINE_EDGE（見 _test_hole_auto）。 */
                 if (self->role != TIMBER_ROLE_BOUNDARY) {
                     if (err != NULL) {

@@ -272,9 +272,12 @@ class CanonicalReader(unittest.TestCase):
         self.assertEqual(counts["clauses"], len(self.state["clauses"]))
         self.assertEqual(counts["comments"], len(self.state["comments"]))
         self.assertEqual(reader.stale_counts(self.html, counts), [])
-        # 過期的硬編碼字樣不得再出現(這幾個是 2026-09-20 審查 R2 實際抓到的)
+        # 過期的硬編碼字樣不得再出現(這幾個是 2026-09-20 審查 R2 實際抓到的)。
+        # 要帶數字邊界:textRevision 走到 r10 之後,「文字 r1」變成真值的子字串,
+        # 純子字串比對會誤判(GEO-168 實際踩到);「1 / 63」對「11 / 63」同理。
         for ghost in ("66 條", "1 / 63", "12 / 63", "文字 r1"):
-            self.assertNotIn(ghost, self.html, ghost)
+            self.assertIsNone(
+                re.search(r"(?<!\d)" + re.escape(ghost) + r"(?!\d)", self.html), ghost)
 
     def test_witness_figures_match_manifest_and_files(self):
         # GEO-132:manifest 裡每條有 svg 的條文,閱讀器都嵌一張;嵌的內容必須是同步器由當前檔案算出的那一張(讀檔,不跑引擎)。

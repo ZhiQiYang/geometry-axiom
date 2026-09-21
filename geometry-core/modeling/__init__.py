@@ -13,7 +13,7 @@ import secrets
 from .common import ModelError, canonical_bytes, digest, strict_json_loads
 
 AXIOM_REVISION = "65156839990f274a6144127bfe55991d6ac5fb84"
-AXIOM_SHA256 = "6958a10ca0be63481f5e9124211fda5f2a6127dd2515ccbbf91d59ec9d5106b1"
+AXIOM_SHA256 = "00a12fea0367717cdd49d6708683b9c9a7162385a6232ef42fb14ba5a028b8ae"
 SCHEMA = "geometry-model-package/1"
 PROFILE = "orthogonal-model/1"
 GENERATOR = {"name": "geometry-axiom-reference", "version": "1.0.0"}
