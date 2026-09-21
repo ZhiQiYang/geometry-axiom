@@ -103,6 +103,12 @@ heredoc 會把 `
 
 ## 已知地雷
 
+- **`surface N` 是「boundary N + placement N」合體一行**,所以它要的 id 必須在
+  **兩個** id 空間裡都空。`newid` 的 `boundary` / `placement` 只各自保證自己那一邊,
+  **不得在 JS 裡用 `Math.max()` 或連續加號湊**——撞到既有 id 時 `surface` 是交易式
+  重宣告,會**靜默覆寫**並回 `ok:true`。要幾個就跟橋接器要幾個:`newid <n>` 的
+  `surfaces` 欄位(GEO-157)。
+
 - `current_geometry.c` 含 NUL byte 且是 CRLF,`grep` 會**靜默截斷**。
   要掃它一律用 Python 以二進位模式讀。
 - root `.gitignore` 是**允許清單制**(`/*` 全忽略,逐項 `!` 放行),
@@ -157,3 +163,34 @@ python3 tests/test_axiom_reader.py
 
 **編出來的 exe 一律放 `%TEMP%\geometry-tests\`**:Smart App Control 會擋 repo 目錄下
 新編的未簽章 exe(WinError 4551)。
+
+### 重編 bridge 的三個坑(GEO-157 各踩一次)
+
+1. **exe 被鎖住時 `cl` 會失敗,但看起來像成功**。`cl` 會先印來源檔名再連結,
+   所以「有看到 `web_bridge.c`」**不等於**編成功;真正的失敗長這樣:
+   `LINK : fatal error LNK1104: 無法開啟檔案 …bridge.exe`。
+   重編前先把 server 與 bridge 殺乾淨:
+
+   ```sh
+   powershell -NoProfile -Command "Get-Process bridge -ErrorAction SilentlyContinue | Stop-Process -Force"
+   ```
+
+   **重編後一定要驗二進位真的換了**(找該版本獨有的字串),不要只看編譯器的輸出。
+
+2. **剛編好的 bridge,第一次被 python 生成子行程時會被 Smart App Control 擋**,
+   症狀是 serve.py 回 `橋接器連線中斷,請重新啟動服務`,而同一支 exe 從 shell 直接跑**沒事**。
+   這是 SAC 在評估新二進位,**等一下再啟動一次就好**。
+   看到這個字串不要當成程式壞了——GEO-157 時我差點據此誤判 cdp_test 的結果。
+
+3. **`cdp_test.js` 會覆寫 `geometry-web/docs/screens/*.png`**(已提交的截圖)。
+   跑完用 `git checkout -- geometry-web/docs/screens/` 還原,別混進 commit。
+
+### 跑 cdp_test
+
+```sh
+GEOMETRY_BRIDGE="$TEMP\geometry-tests\bridge.exe" python geometry-web/serve.py 8799 &
+GEOMETRY_TEST_URL="http://localhost:8799/" node geometry-web/cdp_test.js
+```
+
+它是**唯一真的執行 `app.js` 的 harness**(headless Chrome 實際點按鈕);
+`canvas_test.js` 與 `tests/*.py` 都只到橋接器為止。動到 `app.js` 的行為就得跑它。

@@ -2132,3 +2132,51 @@ GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
 去編 `web_bridge.c`,沒有環境變數可覆寫,本機沒有 gcc 系編譯器所以整組跳過。
 查過了,它**沒有**碰 `/upload` 或 `newid`,所以這四張票的涵蓋沒有因此缺口;
 但「Windows 上跑不動的測試檔」本身是既有問題,另開票。
+
+### GEO-157 ✅ 已做(2026-09-21)P2:畫布自己湊 surface id,仍會覆寫既有物件
+
+外部審查(codex)在 GEO-156 之後的追加回報,兩處都確認屬實。
+
+- **背景**:`surface N` 是「boundary N + placement N」**合體一行**,所以它要的 id
+  必須在**兩個** id 空間裡都是空的。`newid` 只保證各類別各自空。
+- **兩個現場**:
+  - `geometry-web/app.js` `emitNewSurface()`:`Math.max(ids.boundary, ids.placement)`。
+  - `geometry-web/app.js` `submitBox6()`:`b0 = Math.max(...)` 之後 `b0+1 … b0+5` 連續加號。
+- **為什麼以前「看起來」沒事,現在才浮出來**:沒有回繞時 `newid` 的兩個值都**大於**
+  各自類別的所有既有 id,所以 max 與其後的加號也都大於全部——湊得出來是巧合,不是保證。
+  **GEO-156 把回繞修掉之後,`newid` 會回小號碼**,這個巧合就不成立了。
+  也就是說:上一張票修好了「發出去的 id」,卻讓「拿它做算術」這件事第一次真的咬人。
+- **後果是靜默覆寫,不是報錯**:`surface` 對既有 id 是 I8 交易式重宣告。實測
+  (真實瀏覽器、真實 `submitBox6`):世界 boundary {0,1,2,5,MAX}、placement {MAX} 時,
+  舊碼用掉 3,4,5,6,7,8,既有的 `boundary 5 outline 0,0 90,0 90,90 0,90` 被換成
+  `outline 0,0 4000,0 4000,2500 0,2500`,而狀態列顯示 **「✓ 六面盒空間 1(6 面含地板)」**。
+  使用者看到的是成功訊息。
+- **另一種症狀**:在別的世界裡整批會被 `history-abort` 回滾,變成「六面盒建不出來」。
+  我第一次選的重現世界就是這種,**差點據此下結論說「舊碼沒事」**——是去看實際 dump
+  才發現狀態列那句 ✓ 是上一次成功留下的殘影。教訓:狀態列不是證據,dump 才是。
+- **修法(把不變式放回有資料的那一側)**:`newid [n]` 新增 `"surfaces": [n 個 id]`,
+  每個都在 boundary 與 placement 兩邊都空、且彼此相異;n 預設 1,範圍 1..16,
+  不合法一律 `ok:false` 且不回半套。既有的九個純量欄位**一個都沒動**(向後相容,
+  `canvas_test.js` 既有案例不受影響)。畫布改用 `ids.surfaces[0]` 與 `newid 6`,
+  六面盒的槽位維持 `[0]` 天花 / `[1]` 地板 / `[2..5]` 牆,所以「有沒有地板」
+  不會改變牆的編號(保留原行為)。
+- **順帶確認的兩件事實**:`surface 4294967300`(超出 uint32)是**被拒絕**不是回繞;
+  `surface` 撞到既有 id 一律回 `ok:true` 並覆寫。
+- **測試**(三層):
+  1. `tests/test_bridge_integrity.py::test_newid_surface_ids_are_free_in_both_id_spaces`
+     ——六個 id 兩邊都空且互異,並斷言舊算法在這個夾具裡**確實**會撞上(夾具保有牙齒)。
+  2. 同檔 `::test_newid_rejects_a_count_it_cannot_honour`——數量邊界。
+  3. `geometry-web/cdp_test.js` BF4「六面盒不覆寫既有面(GEO-157)」
+     ——**唯一真的跑 app.js 的 harness**(headless Chrome 點 `box6Submit`)。
+- **突變驗證**:
+  - 橋接器:拿掉 `surface_id_taken()` 裡的 placement 檢查 → `0 unexpectedly found in {0, 4294967295}`。
+  - 畫布:把 `app.js` 換回修正前 → cdp_test 報 `{"kept":false,"faces":10} ✗`
+    (既有面被毀、面數少一),其餘 273 條照樣綠——這條測試精準指向缺陷。
+- **回歸**:cdp_test **274 ✓ / 0 ✗**、canvas_test **412 pass / 0 fail**,
+  其餘全套見下。
+
+### 回歸狀態(2026-09-21,GEO-157 後)
+
+場景 131/131、integrity 80/80、witness 17/17、閱讀器 24、bridge 12、serve 9、
+reference 25、datum 9、modeling runtime 39(需 `GEOMETRY_MODEL_BASE`)、
+canvas_test 412/0、cdp_test 274/0。
