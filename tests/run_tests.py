@@ -180,6 +180,8 @@ TESTS = [{'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000
  {'scene': '_ax_i4_missing_boundary.scene', 'expect': 'reject', 'error': '邊界面 99 不存在'},
  {'scene': '_ax_i4_duplicate_boundary.scene', 'expect': 'reject', 'error': '邊界面 1 被宣告兩次'},
  {'scene': '_ax_i4_no_carrier.scene', 'expect': 'reject', 'error': '沒有承載面'},
+ # GEO-172 M10 殺手：孔頂點 (320,250) 落在角材矩形下邊界 v=250 上（貼邊允許，不算相交）。
+ {'scene': '_ax_i5_hole_vertex_touches_rect_edge.scene', 'expect': 'accept', 'lengths': [120]},
 ]
 
 

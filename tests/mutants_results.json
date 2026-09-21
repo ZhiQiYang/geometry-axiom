@@ -1,8 +1,8 @@
 {
   "M01": {
     "desc": "I5：邊上判定:含端點改嚴格(端點不在邊上)",
-    "verdict": "survived",
-    "why": ""
+    "verdict": "equivalent",
+    "why": "等價變異(GEO-173 實證,與 2026-09-16 稽核一致):只變異直立邊分支的端點判定;軸平行多邊形的任一頂點必同時是一條直立邊與一條水平邊的端點,未變異的水平邊分支必接住。夾具 M01_hole_corner_touch(兩孔角對角相碰)原始版與變異版輸出逐字相同。"
   },
   "M02": {
     "desc": "I5：射線半開區間 [v_min,v_max) 改 (v_min,v_max)",
@@ -41,13 +41,13 @@
   },
   "M09": {
     "desc": "I5：孔 bbox 邊界相接也當相交(<= 改 <)",
-    "verdict": "survived",
-    "why": ""
+    "verdict": "equivalent",
+    "why": "等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。"
   },
   "M10": {
     "desc": "I5：孔頂點嚴格在矩形內 -> 含邊界(> 改 >=)",
-    "verdict": "survived",
-    "why": ""
+    "verdict": "killed",
+    "why": "_ax_i5_hole_vertex_touches_rect_edge.scene FAIL 應接受但拒絕: D:\\geometry-axiom\\_ax_i5_hole_vertex_touches_rect_edge.scene:10: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊"
   },
   "M11": {
     "desc": "I5：孔罩住矩形判定:inside==4 改 inside==0(罩住反而放行)",
@@ -111,8 +111,8 @@
   },
   "M23": {
     "desc": "R6(d)：擋面歧義放行(hits>1 不拒絕)",
-    "verdict": "survived",
-    "why": ""
+    "verdict": "equivalent",
+    "why": "等價變異(GEO-172 實證):hits>1 需要兩個邊類擋面在同一座標且都涵蓋角材全寬。輪廓邊+孔邊 → 孔要貼輪廓,核心拒絕;兩孔共邊/共角 → 核心拒絕(兩孔分開才接受);任一為角材側面 → stop_face_shadowed 只留一個;同一簡單多邊形不可能兩邊同座標又涵蓋同段。該分支在合法輸入下不可達,改掉不改變行為。"
   },
   "M24": {
     "desc": "R6(c)：at-edge 接觸範圍:端點相接也算重疊(< 改 <=)",
@@ -226,8 +226,8 @@
   },
   "M56": {
     "desc": "I23：I23(b) 不再檢查被錨定的索引是否仍推導得出",
-    "verdict": "survived",
-    "why": ""
+    "verdict": "equivalent",
+    "why": "等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild 對每個 AT_GRID 角材已先跑同一個 grid_line_coord,索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。"
   },
   "M57": {
     "desc": "R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)",

@@ -34,6 +34,7 @@ RUN_RETRIES = 3
 MUTANTS = [
     # ---- poly_point_on_edge:邊上判定 ----
     dict(id="M01", desc="I5：邊上判定:含端點改嚴格(端點不在邊上)",
+         equivalent="等價變異(GEO-173 實證,與 2026-09-16 稽核一致):只變異直立邊分支的端點判定;軸平行多邊形的任一頂點必同時是一條直立邊與一條水平邊的端點,未變異的水平邊分支必接住。夾具 M01_hole_corner_touch(兩孔角對角相碰)原始版與變異版輸出逐字相同。",
          old="p.v >= coord_min(a.v, b.v) && p.v <= coord_max(a.v, b.v)",
          new="p.v > coord_min(a.v, b.v) && p.v < coord_max(a.v, b.v)"),
     # ---- poly_contains_point:射線法 ----
@@ -62,6 +63,7 @@ MUTANTS = [
          new="        if (0 && segment2_crosses_rect_interior(\n                loop->v[i], loop->v[(i + 1) % loop->count],\n                min_u, min_v, max_u, max_v)) {\n            return false;\n        }\n    }\n\n    return true;\n}"),
     # ---- boundary_contains_rect:孔干涉 ----
     dict(id="M09", desc="I5：孔 bbox 邊界相接也當相交(<= 改 <)",
+         equivalent="等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。",
          old="if (h_max_u <= min_u || h_min_u >= max_u ||\n            h_max_v <= min_v || h_min_v >= max_v) {",
          new="if (h_max_u < min_u || h_min_u > max_u ||\n            h_max_v < min_v || h_min_v > max_v) {"),
     dict(id="M10", desc="I5：孔頂點嚴格在矩形內 -> 含邊界(> 改 >=)",
@@ -109,6 +111,7 @@ MUTANTS = [
          old="    if (stop->fixity == EDGE_FREE) {\n        snprintf(err, err_cap, \"跨距終點頂到自由邊\");",
          new="    if (0) {\n        snprintf(err, err_cap, \"跨距終點頂到自由邊\");"),
     dict(id="M23", desc="R6(d)：擋面歧義放行(hits>1 不拒絕)",
+         equivalent="等價變異(GEO-172 實證):hits>1 需要兩個邊類擋面在同一座標且都涵蓋角材全寬。輪廓邊+孔邊 → 孔要貼輪廓,核心拒絕;兩孔共邊/共角 → 核心拒絕(兩孔分開才接受);任一為角材側面 → stop_face_shadowed 只留一個;同一簡單多邊形不可能兩邊同座標又涵蓋同段。該分支在合法輸入下不可達,改掉不改變行為。",
          old="    if (hits > 1) {\n        snprintf(err, err_cap, \"跨距起點擋面歧義\");",
          new="    if (0) {\n        snprintf(err, err_cap, \"跨距起點擋面歧義\");"),
     dict(id="M24", desc="R6(c)：at-edge 接觸範圍:端點相接也算重疊(< 改 <=)",
@@ -159,6 +162,7 @@ MUTANTS = [
          new="            (void)blank;   /* 重宣告 = 整軸換掉，不是疊加 */"),
     # ---- GEO-100:I23(b) 重驗時的索引存在性 ----
     dict(id="M56", desc="I23：I23(b) 不再檢查被錨定的索引是否仍推導得出",
+         equivalent="等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild 對每個 AT_GRID 角材已先跑同一個 grid_line_coord,索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
          old="                !grid_line_coord(ag, ap,",
          new="                (false) && grid_line_coord(ag, ap,"),
     # ---- GEO-100:面材推導（D10a）----
@@ -217,6 +221,15 @@ def main() -> int:
 
     for m in MUTANTS:
         if only and m["id"] not in only:
+            continue
+
+        # 等價變異:改了程式碼但行為不變,survived 是正確結果、不是測試缺口。
+        # 不編譯、不跑,直接記錄理由;硬湊夾具去殺它只會寫出假測試。
+        if m.get("equivalent"):
+            results[m["id"]] = {
+                "desc": m["desc"], "verdict": "equivalent", "why": m["equivalent"]
+            }
+            print(f"{m['id']}  EQUIVALENT  {m['desc']}")
             continue
 
         n = src.count(m["old"])
@@ -310,14 +323,14 @@ def main() -> int:
     s = sum(1 for r in results.values() if r["verdict"] == "survived")
     i = sum(1 for r in results.values() if r["verdict"] == "invalid")
     b = sum(1 for r in results.values() if r["verdict"] == "blocked")
-    print(f"\n本次 {len(results)}:殺死 {k} / 存活 {s} / 無效 {i} / 受阻 {b}")
+    print(f"\n本次 {len(results)}:殺死 {k} / 存活 {s} / 等價 {sum(1 for v in results.values() if v['verdict']=='equivalent')} / 無效 {i} / 受阻 {b}")
 
     if len(merged) != len(results):
         mk = sum(1 for r in merged.values() if r["verdict"] == "killed")
         ms = sum(1 for r in merged.values() if r["verdict"] == "survived")
         mi = sum(1 for r in merged.values() if r["verdict"] == "invalid")
         mb = sum(1 for r in merged.values() if r["verdict"] == "blocked")
-        print(f"全檔 {len(merged)}:殺死 {mk} / 存活 {ms} / 無效 {mi} / 受阻 {mb}")
+        print(f"全檔 {len(merged)}:殺死 {mk} / 存活 {ms} / 等價 {sum(1 for v in merged.values() if v["verdict"]=="equivalent")} / 無效 {mi} / 受阻 {mb}")
 
     if b:
         print("⚠ 有受阻的變異,這一輪的結果不完整——受阻的沒有被驗證過,"
