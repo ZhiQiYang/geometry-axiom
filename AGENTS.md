@@ -60,7 +60,8 @@
 ### 設計規格
 
 `geometry-guide/閱讀器-設計規格.md` **已於 2026-09-20 整份作廢**(使用者拍板),
-不得引用為施工依據;第 9 流的 GEO-116～119、GEO-121 一併作廢。
+2026-09-21 自工作區移除(GEO-171;文件早已寫「移除」,檔案卻還在——把實況對齊文件)。
+要考古用 `git show`,不要 checkout 回工作區。第 9 流的 GEO-116～119、GEO-121 一併作廢。
 
 版面、色票、字級、元件、互動的判準改為:
 - **`BACKLOG.md` GEO-120(🔒 已拍板)**——單頁長捲(Ctrl+F 保住)、hover 預覽與固定參照欄並存、
@@ -162,8 +163,23 @@ python3 tests/test_axiom_reader.py                   # 冪等 + 補丁 + 資料�
   GEOMETRY_MODEL_BASE="$TEMP/geometry-tests/model-base.exe" python -m unittest tests.test_modeling_runtime
   ```
 
-- `tests/test_modeling_transport.py` 在 `setUpClass` 就**寫死** `cc … -o` 去編 `web_bridge.c`,
-  沒有環境變數可覆寫,所以本機整組跑不動。它沒有碰 `/upload` 或 `newid`。
+- `tests/test_modeling_transport.py`(GEO-171 起)吃 `GEOMETRY_TEST_BRIDGE` 直接用預編 bridge,
+  不再需要 `cc`;但它會生出 serve.py 與 modeling_cli 子行程,**那些也要 `GEOMETRY_MODEL_BASE`**,
+  兩個變數都給才會真的跑(`Ran 2 tests … OK`),只給一個會看到假的 `KeyError: 'derived'` /
+  `BASE_COMPILER`。兩個都沒給 → 乾淨 skip。tearDown 在 Windows 改用 `terminate()`
+  (`SIGINT` 不支援,原本會漏下 serve.py 行程並讓暫存目錄清不掉)。
+
+  ```sh
+  GEOMETRY_TEST_BRIDGE="$TEMP/geometry-tests/bridge.exe" GEOMETRY_MODEL_BASE="$TEMP/geometry-tests/model-base.exe" python -m unittest tests.test_modeling_transport
+  ```
+
+- `tests/mutate.py`(GEO-171 起)每個變異編到 `%TEMP%\geometry-tests\mutants\<id>\_mut.exe`
+  (不再是 repo 內的 `tests/_mut.exe`——SAC 會擋、平行跑會互撞);暫存 `.c` 寫在 repo 根目錄
+  `_mutant_<id>.c`(`#include "geometry-core/…"` 要相對於 `current_geometry.c` 的位置才解析得到),
+  被 `.gitignore` 忽略且編完即刪。`MUTATE_RESULTS=<path>` 可把結果寫到別處,
+  平行跑幾個 id 時各寫各的、事後合併,別讓多個行程同時寫 `mutants_results.json`。
+  每個變異都是**新二進位**,第一次可能被 SAC 擋,腳本會等 12 秒重試 3 次並把
+  「環境阻擋」與「killed」分開記(受阻不算 killed)。
 
 `tests/test_bridge_integrity.py` 與 `tests/test_reference_contract.py` 吃
 `GEOMETRY_TEST_BRIDGE`;`test_bridge_integrity` 要用 `python tests/test_bridge_integrity.py`

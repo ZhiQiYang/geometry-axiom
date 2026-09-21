@@ -9,16 +9,21 @@
   python tests/mutate.py M03 M14    # 只跑指定 id
 """
 import json
+import os
 import pathlib
 import subprocess
 import sys
+import time
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
 SRC = ROOT / "current_geometry.c"
-MUT_SRC = HERE / "_mutant.c"
-MUT_EXE = HERE / "_mut.exe"
-RESULTS = HERE / "mutants_results.json"
+# 每個變異一個獨立目錄,放在 %TEMP%:
+#   - repo 目錄的新編 exe 會被 Smart App Control 擋(WinError 4551),%TEMP% 不會(或機率低很多)
+#   - 平行跑兩個 mutate.py 不會互相覆蓋同一個 _mut.exe
+MUT_ROOT = pathlib.Path(os.environ.get("TEMP", str(HERE))) / "geometry-tests" / "mutants"
+# 結果檔:平行執行時各自寫到 MUTATE_RESULTS 指定的檔,由指揮官事後合併,避免競態。
+RESULTS = pathlib.Path(os.environ.get("MUTATE_RESULTS", str(HERE / "mutants_results.json")))
 
 # 環境失敗(SAC 間歇封鎖新編譯的 exe)時重跑幾次才放棄
 RUN_RETRIES = 3
@@ -223,12 +228,21 @@ def main() -> int:
             print(f"{m['id']}  INVALID  錨點×{n}  {m['desc']}")
             continue
 
+        mut_dir = MUT_ROOT / m["id"]
+        mut_dir.mkdir(parents=True, exist_ok=True)
+        # .c 必須跟 current_geometry.c 同目錄:它的 #include "geometry-core/…" 是相對於
+        # 被包含檔所在目錄解析的。每個變異用自己的檔名,平行跑不互撞;允許清單制的
+        # .gitignore 會忽略它,而且編完就刪。exe 才放 %TEMP%(SAC 在意的是 exe 的位置)。
+        MUT_SRC = ROOT / f"_mutant_{m['id']}.c"
+        MUT_EXE = mut_dir / "_mut.exe"
+        MUT_EXE.unlink(missing_ok=True)          # 舊二進位不得冒充這次的編譯結果
         MUT_SRC.write_text(src.replace(m["old"], m["new"], 1),
                            encoding="utf-8", newline="\n")
 
-        build = run_cmd(["cmd", "/c",
-                         str(HERE / "_cl.bat") + " _mutant.c _mut.exe"],
-                        cwd=HERE, timeout=180)
+        # 參數分開傳:_cl.bat 用 %~1 %~2 剝引號,塞成一個字串時剝不掉
+        build = run_cmd(["cmd", "/c", str(HERE / "_cl.bat"), str(MUT_SRC), str(MUT_EXE)],
+                        cwd=mut_dir, timeout=300)
+        MUT_SRC.unlink(missing_ok=True)          # 成敗都清掉,不在 repo 留暫存
         if not MUT_EXE.exists() or build.returncode != 0:
             results[m["id"]] = {
                 "desc": m["desc"], "verdict": "invalid",
@@ -249,8 +263,9 @@ def main() -> int:
             try:
                 test = run_cmd([sys.executable, str(HERE / "run_tests.py"),
                                 str(MUT_EXE)], cwd=ROOT, timeout=600)
-            except OSError as exc:          # CreateProcess 就被擋掉
+            except OSError as exc:          # CreateProcess 就被擋掉(多半是 SAC 在評估)
                 why = f"啟動失敗: {exc}"
+                time.sleep(12)
                 continue
 
             env_fail = [ln.strip() for ln in test.stdout.splitlines()

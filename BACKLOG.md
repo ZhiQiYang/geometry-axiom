@@ -2425,3 +2425,29 @@ serve 9、witness marks 4、modeling 39(新雜湊)、reader 24、sync --check �
 
 **方法論教訓(記進 memory)**:我查 M23 時一路在推程式碼邏輯,沒先問「這條規則的物理理由
 站不站得住」——順序反了。使用者的做法是對的:**先從物理機制反推,再看條文和程式有沒有跟上**。
+
+### GEO-171 ✅ 已做(2026-09-21)P3:四筆小債——文件失真、transport 跑不動、mutate.py 撞檔、規格檔殘留
+
+**`ARCHITECTURE.md:170`**:表格列了 `asm-analysis.md`,全庫 git log 查無此檔——**從未進版控**
+(root `.gitignore` 是允許清單制,它不在清單)。改成明標不存在 + 取代它的三份文件 + GEO-052 考古線索。
+整份 `ARCHITECTURE.md` 開頭自承過時,**不重寫**。
+
+**`tests/test_modeling_transport.py`**:`setUpClass` 寫死 `cc`,Windows 整組爆。改成:有 `GEOMETRY_TEST_BRIDGE`
+就直接用預編 bridge、不編;沒有就維持 `cc`;`cc` 不存在 → `SkipTest`(原本是 `FileNotFoundError` 炸掉)。
+**第一次在 Windows 真的跑起來,掀出三件事**:
+- `KeyError: 'derived'` 與 CLI 的 `BASE_COMPILER`——**不是 bug**,是子行程(serve.py / modeling_cli)
+  也需要 `GEOMETRY_MODEL_BASE`;兩個變數都給就 `Ran 2 tests … OK`。已寫進 AGENTS.md。
+- `tearDownClass` 用 `signal.SIGINT`,Windows 拋 `ValueError: Unsupported signal: 2` → service 沒關 →
+  `service.log` 被佔住 → 暫存目錄清不掉,**每跑一次漏一個 serve.py 行程**(實際抓到三個,已清)。
+  Windows 改 `terminate()`,其他平台不變。
+
+**`tests/mutate.py`**:原本所有變異都編到 repo 內同一個 `tests/_mut.exe`——SAC 會擋 repo 目錄的新 exe,
+而且兩個 agent 平行跑必撞。改成每變異一個 `%TEMP%` 子目錄放 exe;`.c` 留在 repo 根目錄
+(`current_geometry.c` 的 `#include "geometry-core/…"` 以被包含檔所在目錄解析,搬去 `%TEMP%` 找不到),
+獨立檔名、gitignore 忽略、編完即刪;`cl` 參數改 argv 分開傳(塞成一個字串時 `%~1` 剝不掉引號——
+第一版就是這樣失敗的,錯誤訊息裡檔名連引號都算進去);`MUTATE_RESULTS` 可改結果檔路徑避免平行競態;
+SAC 擋住時重試之間等 12 秒。煙霧測試:M02(先前 killed)→ 仍 **killed**,exe 落在 `%TEMP%`、
+根目錄無殘留、repo 的 `mutants_results.json` 未被動到。
+
+**`geometry-guide/閱讀器-設計規格.md`**:CLAUDE.md 早寫「作廢/移除」、檔頭自承整份作廢,檔案卻還在
+(2026-09-21 文件稽核抓到的失真)。`git rm`,`sync --check` 五道 assert 仍 pass;AGENTS/CLAUDE 措辭對齊。

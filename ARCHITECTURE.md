@@ -167,4 +167,4 @@ main ──┬─► 場景輸入層 ──► domain 動詞（guide/edge/timber
 | `ceiling-a.scene`、`demo-two-timbers.scene` | ❌ **壞的**——舊語法（`place` 無 `on`），執行 exit 1 |
 | `current_geometry.svg` | 程式產出物 |
 | `geometry-guide/make_guide.py` + `check_panels.py` | ⚠️ 導讀頁產生器；check_panels 現有 **3 個 callout 失敗**（SCENE_COMMANDS 表格改了 min/max 格式，HTML 未跟上） |
-| `asm-analysis.md` | 舊版的組合語言逐行分析報告（對應 4,327 行版本） |
+| `asm-analysis.md` | ❌ **不存在**——全庫 git log 無任何紀錄（從未進版控，可能只是本機檔案）；內容已被 `公理層.md`／`ARCHITECTURE.md`／`geometry-core` 系列文件取代，詳見 BACKLOG.md GEO-052 |

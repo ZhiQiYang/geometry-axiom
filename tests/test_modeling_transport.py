@@ -22,12 +22,22 @@ class ModelingTransport(unittest.TestCase):
         cls.temporary = tempfile.TemporaryDirectory(prefix="model-transport-")
         cls.directory = Path(cls.temporary.name)
         cls.environment = dict(os.environ)
-        # Build the unchanged legacy bridge for a real service process.
-        bridge = cls.directory / "bridge"
-        result = subprocess.run(["cc", "-std=c11", "-O0", str(ROOT / "geometry-web/web_bridge.c"),
-                                 "-lm", "-o", str(bridge)], capture_output=True, timeout=60)
-        if result.returncode:
-            raise RuntimeError("Legacy bridge build failed: " + result.stderr.decode(errors="replace"))
+        # Build the unchanged legacy bridge for a real service process, unless
+        # a prebuilt one is supplied (e.g. no system "cc" on this machine).
+        prebuilt = os.environ.get("GEOMETRY_TEST_BRIDGE")
+        if prebuilt:
+            bridge = Path(prebuilt)
+            if not bridge.exists():
+                raise unittest.SkipTest(f"GEOMETRY_TEST_BRIDGE={prebuilt} does not exist")
+        else:
+            bridge = cls.directory / "bridge"
+            try:
+                result = subprocess.run(["cc", "-std=c11", "-O0", str(ROOT / "geometry-web/web_bridge.c"),
+                                         "-lm", "-o", str(bridge)], capture_output=True, timeout=60)
+            except FileNotFoundError:
+                raise unittest.SkipTest("no \"cc\" compiler found and GEOMETRY_TEST_BRIDGE not set")
+            if result.returncode:
+                raise RuntimeError("Legacy bridge build failed: " + result.stderr.decode(errors="replace"))
         cls.environment["GEOMETRY_BRIDGE"] = str(bridge)
         cls.environment.pop("GEOMETRY_MANAGED_PREVIEW", None)
         with socket.socket() as sock:
@@ -56,7 +66,12 @@ class ModelingTransport(unittest.TestCase):
         # serve.py owns one legacy bridge child; terminate both through an
         # ordinary interrupt so its finally block also closes that child.
         import signal
-        cls.service.send_signal(signal.SIGINT)
+        if os.name == "nt":
+            # Windows 對子行程沒有 SIGINT(ValueError: Unsupported signal: 2);
+            # 沒關掉 service 會讓 service.log 被佔住、暫存目錄清不掉。
+            cls.service.terminate()
+        else:
+            cls.service.send_signal(signal.SIGINT)
         try:
             cls.service.wait(timeout=5)
         except subprocess.TimeoutExpired:
