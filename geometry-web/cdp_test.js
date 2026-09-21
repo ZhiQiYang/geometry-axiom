@@ -2034,6 +2034,29 @@ async function drag(x0, y0, x1, y1, steps = 6) {
              faces: rows.filter(l => l.startsWith("boundary ")).length }; })`);
   console.log("BF4 六面盒不覆寫既有面(GEO-157):", JSON.stringify(bf4keep),
     bf4keep.kept && bf4keep.faces === 11 ? "✓" : "✗");
+  /* (b3) GEO-157:0 沒被占用時也不能發給 surface(D4 的 boundary_id=0 是矩形標記)。 */
+  const bf4zeroSeed = await eval_(`(async () => {
+    const reset = await api("line reset");
+    const seed = await api("line surface 4294967295 origin 0 0 200 u +x v +y outline 0,0 100,0 100,100 0,100");
+    return reset.ok && seed.ok;
+  })()`);
+  await eval_(`renderObjects()`); await sleep(500);
+  await eval_(`document.getElementById("btnBox6").click()`); await sleep(300);
+  await eval_(`document.getElementById("box6W").value = 4000;
+               document.getElementById("box6D").value = 3000;
+               document.getElementById("box6H").value = 2500;
+               document.getElementById("box6Floor").checked = true;`);
+  await eval_(`document.getElementById("box6Submit").click()`); await sleep(1500);
+  const bf4zero = await eval_(`(async () => {
+    const dump = await api("dump"), objects = await api("objects");
+    const rows = dump.text.split("\\n");
+    return { kept: rows.includes("boundary 4294967295 outline 0,0 100,0 100,100 0,100"),
+             faces: rows.filter(l => l.startsWith("boundary ")).length,
+             spaces: objects.spaces.length, closed: objects.spaces[0]?.closed };
+  })()`);
+  console.log("BF4 六面盒回繞跳過保留編號0(GEO-157):", JSON.stringify(bf4zero),
+    bf4zeroSeed === true && bf4zero.kept && bf4zero.faces === 7 &&
+    bf4zero.spaces === 1 && bf4zero.closed ? "✓" : "✗");
   /* (a) 空間示意圖 toRoom:點地板左上角內側 2px → 映射點(柱中心)應在角 100mm 內 */
   const bf4sp = await eval_(`api("objects").then(r => r.spaces[0] && r.spaces[0].id)`);
   await eval_(`enterFocus("space", ${bf4sp})`); await sleep(1000);

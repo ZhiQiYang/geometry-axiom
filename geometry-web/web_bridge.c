@@ -387,7 +387,7 @@ static bool surface_id_taken(uint32_t id, const uint32_t *reserved, size_t reser
     return false;
 }
 
-/* 取 n 個 boundary 與 placement 兩邊都沒占用、且彼此相異的 id。 */
+/* 取 n 個非零、boundary 與 placement 兩邊都沒占用、且彼此相異的 id。 */
 static bool next_surface_ids(uint32_t *out, size_t n)
 {
     uint32_t id = 0;
@@ -402,8 +402,11 @@ static bool next_surface_ids(uint32_t *out, size_t n)
         size_t used = g_world.boundary_count + g_world.placement_count + k;
         bool found = false;
 
-        /* 候選 used + 1 個且兩兩相異,被占用的至多 used 個 → 必定找得到。 */
+        /* 非零候選 used + 1 個且兩兩相異,被占用的至多 used 個 → 必定找得到。 */
         for (size_t attempt = 0; attempt <= used; ++attempt) {
+            /* D4:boundary_id=0 表示自帶矩形;surface 必須引用同 id 的邊界面。
+               每次查找都跳過 0,包含第一個候選及同批後續候選的回繞。 */
+            if (id == 0) id = 1;
             if (!surface_id_taken(id, out, k)) { found = true; break; }
             ++id;
         }

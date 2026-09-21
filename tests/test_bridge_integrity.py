@@ -98,6 +98,44 @@ class IntegrityTests(unittest.TestCase):
         self.assertIn(legacy, used["boundary"],
                       "這個世界本來就是為了讓 max() 撞上才建的")
 
+    def test_newid_surface_ids_skip_zero_and_can_be_created_after_wrap(self):
+        """D4:boundary_id=0 是自帶矩形的標記,不能用來建立合體 surface。
+
+        同時涵蓋第一個候選與同批後續候選回繞,以及回繞後要避開兩邊既有 id。
+        """
+        for maximum in (4294967295, 4294967294):
+            for count in (1, 6):
+                for occupied in (False, True):
+                    with self.subTest(maximum=maximum, count=count, occupied=occupied):
+                        setup = ["reset", f"line surface {maximum} origin 0 0 200 u +x v +y "
+                                 "outline 0,0 100,0 100,100 0,100"]
+                        if occupied:
+                            setup += ["line boundary 1 outline 0,0 50,0 50,50 0,50",
+                                      "line placement 2 on boundary 1 origin 0 0 700 u +x v +y"]
+                        command = "newid" if count == 1 else f"newid {count}"
+                        rows = self.bridge(setup + ["dump", command, "dump"])
+                        self.assertTrue(all(row["ok"] for row in rows), rows)
+                        self.assertEqual(rows[-3], rows[-1], "取編號不得改動世界")
+                        before = rows[-1]["text"]
+                        used = self.used_ids(before)
+                        self.assertNotIn(0, used["boundary"] | used["placement"])
+                        ids = rows[-2]["surfaces"]
+                        self.assertEqual(len(ids), count)
+                        self.assertEqual(len(set(ids)), count)
+                        self.assertNotIn(0, ids, "surface 不得引用保留的 boundary_id=0")
+                        self.assertTrue(set(ids).isdisjoint(used["boundary"] | used["placement"]))
+
+                        # 實際宣告回傳的每個 surface,而不只是檢查 JSON 數字。
+                        create = [f"line surface {sid} origin 0 0 300 u +x v +y "
+                                  "outline 0,0 80,0 80,80 0,80" for sid in ids]
+                        created = self.bridge(setup + create + ["dump"])
+                        self.assertTrue(all(row["ok"] for row in created), created)
+                        after = created[-1]["text"]
+                        self.assertTrue(set(before.splitlines()).issubset(after.splitlines()),
+                                        "既有物件的定義必須保留")
+                        for kind, old_ids in used.items():
+                            self.assertEqual(self.used_ids(after)[kind], old_ids | set(ids))
+
     def test_newid_rejects_a_count_it_cannot_honour(self):
         """不帶參數 = 1 個(舊行為);數量不合法一律擋掉,不得回半套。"""
         rows = self.bridge(["reset", "newid"])
