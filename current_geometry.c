@@ -3960,6 +3960,50 @@ static bool apply_interactive_tokens(
 
 static bool parse_scene_file(const char *path, World *out_world);
 
+/*
+ * GEO-158：配一個「boundary 與 placement 兩邊都沒被占用、且不是保留值 0」的 id。
+ *
+ * 原本 canvas_next_id() 與 proj_next_surface_id() 都是裸 max + 1,註解寫「避免碰撞」
+ * 但其實不避免,兩個獨立的洞:
+ *   1. uint32 上界回繞 → 發出**已經被占用**的 id。投影拆面(apply-proj 的 SPLIT 分支)
+ *      在一次交易裡叫兩次,於是追加兩個 id 都是 0 的面;dump 出兩行 `boundary 0`,
+ *      再 loadfile 時後者靜默蓋掉前者——**少掉一個面**,而兩次載入都回 ok:true。
+ *   2. 0 是 D4 的哨兵值(placement.boundary_id == 0 代表「不掛邊界面、自帶矩形」),
+ *      所以 `surface 0` 建不起來、`boundary 0` 永遠掛不上承載面。
+ *
+ * web_bridge.c 的 newid 已在 GEO-156/157 用同一個判準修好,這裡是核心側的同族缺陷。
+ *
+ * 終止性:候選 used + 1 個且兩兩相異(used = boundary_count + placement_count,
+ * 兩者各有 WORLD_MAX_* 上限),被占用的至多 used 個 → 必定找得到。
+ * 回傳 0 = 配號失敗(0 本來就不是合法值,拿它當哨兵不會與正常結果混淆)。
+ */
+static uint32_t world_next_surface_id(const World *world)
+{
+    uint32_t id = 0;
+    size_t used = world->boundary_count + world->placement_count;
+
+    for (size_t i = 0; i < world->boundary_count; ++i)
+        if (world->boundaries[i].id > id) id = world->boundaries[i].id;
+    for (size_t i = 0; i < world->placement_count; ++i)
+        if (world->placements[i].id > id) id = world->placements[i].id;
+    ++id;
+
+    for (size_t attempt = 0; attempt <= used; ++attempt) {
+        bool taken = false;
+
+        if (id == 0) id = 1;        /* 任何一輪回繞到保留值都要跳過 */
+        for (size_t i = 0; i < world->boundary_count; ++i)
+            if (world->boundaries[i].id == id) { taken = true; break; }
+        if (!taken) {
+            for (size_t i = 0; i < world->placement_count; ++i)
+                if (world->placements[i].id == id) { taken = true; break; }
+        }
+        if (!taken) return id;
+        ++id;
+    }
+    return 0;
+}
+
 /* ============================================================
  * 後端二：Windows 視窗（只靠作業系統自帶的 user32 / gdi32）
  *
@@ -4812,15 +4856,10 @@ static const PlacementSurface *canvas_work_surface(
     return world_find_placement(app->world, app->work_placement);
 }
 
-/* 目前最大 boundary/placement id + 1（畫布產生新物件用）。 */
+/* 畫布產生新物件用的 id;0 = 配不到(GEO-158)。 */
 static uint32_t canvas_next_id(const GdiApp *app)
 {
-    uint32_t m = 0;
-    for (size_t i = 0; i < app->world->boundary_count; ++i)
-        if (app->world->boundaries[i].id > m) m = app->world->boundaries[i].id;
-    for (size_t i = 0; i < app->world->placement_count; ++i)
-        if (app->world->placements[i].id > m) m = app->world->placements[i].id;
-    return m + 1;
+    return world_next_surface_id(app->world);
 }
 
 
@@ -4834,10 +4873,18 @@ static void canvas_emit_new_surface(
 {
     char line[SCENE_MAX_LINE];
     char *p = line, *end = line + sizeof line;
+    uint32_t nid = canvas_next_id(app);
+
+    /* GEO-158：配不到就別送。原本回繞時會送出 `surface 0`,解析器拒絕,
+     * 使用者只看到一句答非所問的「重宣告後有物件失效」。 */
+    if (nid == 0) {
+        gdi_set_status(app, "✗ 配不到新的面編號（編號已用盡）");
+        return;
+    }
 
     p += snprintf(p, (size_t)(end - p),
                   "surface %u origin %lld %lld %lld u %s v %s outline ",
-                  (unsigned)canvas_next_id(app),
+                  (unsigned)nid,
                   (long long)plane->frame.origin.x,
                   (long long)plane->frame.origin.y,
                   (long long)plane->frame.origin.z,
@@ -10485,15 +10532,10 @@ static bool proj_add_surface(
     return true;
 }
 
-/* 從 World 配一組新 boundary/placement id(max+1 往上,避免碰撞)。 */
+/* 從 World 配一組新 boundary/placement id;0 = 配不到(GEO-158)。 */
 static uint32_t proj_next_surface_id(const World *world)
 {
-    uint32_t m = 0;
-    for (size_t i = 0; i < world->boundary_count; ++i)
-        if (world->boundaries[i].id > m) m = world->boundaries[i].id;
-    for (size_t i = 0; i < world->placement_count; ++i)
-        if (world->placements[i].id > m) m = world->placements[i].id;
-    return m + 1;
+    return world_next_surface_id(world);
 }
 
 /* 把 bid 從所屬空間成員清單移除(拆片面/生成面進不了槽位)。 */
@@ -10595,6 +10637,8 @@ static bool proj_spawn_face(
 {
     uint32_t id = proj_next_surface_id(world);
     SurfaceFrame f;
+
+    if (id == 0) return false;      /* GEO-158：配不到就整筆失敗,不追加重複 id */
     memset(&f, 0, sizeof(f));
     f.axis_u.x = axis_u == 0 ? 1 : 0;
     f.axis_u.y = axis_u == 1 ? 1 : 0;
@@ -10801,6 +10845,10 @@ static bool proj_apply_one(
             PolygonLoop2 *other = a1 >= a2 ? &p2 : &p1;
             uint32_t nid = proj_next_surface_id(world);
             Coord r0, r1, r2, r3;
+            if (nid == 0) {
+                scene_error(path, line_no, "配不到新的面編號（編號已用盡）");
+                return false;
+            }
             poly_bbox(other, &r0, &r1, &r2, &r3);
             if (!proj_add_surface(world, nid, &pl->frame, other,
                     r0, r1, r2, r3)) {
@@ -10870,6 +10918,10 @@ static bool proj_apply_one(
         PolygonLoop2 *other = a1 >= a2 ? &p2 : &p1;
         uint32_t nid = proj_next_surface_id(world);
         Coord r0, r1, r2, r3;
+        if (nid == 0) {
+            scene_error(path, line_no, "配不到新的面編號（編號已用盡）");
+            return false;
+        }
         poly_bbox(other, &r0, &r1, &r2, &r3);
         if (!proj_add_surface(world, nid, &pl->frame, other,
                 r0, r1, r2, r3)) {
@@ -10923,6 +10975,10 @@ static bool proj_apply_one(
             o.v[3] = (SurfacePoint2){ fu0, fv1 };
             for (int i = 0; i < 4; ++i) o.fixity[i] = EDGE_FIXED;
             uint32_t sid2 = proj_next_surface_id(world);
+            if (sid2 == 0) {
+                scene_error(path, line_no, "配不到新的面編號（編號已用盡）");
+                return false;
+            }
             if (!proj_add_surface(world, sid2, &f, &o,
                     fu0, fv0, fu1, fv1)) {
                 scene_error(path, line_no, "面數超過上限(柱側面)");

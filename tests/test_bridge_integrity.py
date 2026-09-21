@@ -136,6 +136,48 @@ class IntegrityTests(unittest.TestCase):
                         for kind, old_ids in used.items():
                             self.assertEqual(self.used_ids(after)[kind], old_ids | set(ids))
 
+    # 柱 1 貼著牆 5 → apply-proj 走 SPLIT 分支,在同一筆交易裡配兩次新面編號。
+    # 只有第六個面的編號不同:對照組 6、實驗組 uint32 上界。
+    SPLIT_SCENE = """surface 1 origin 0    0    2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
+surface 2 origin 0    0    0    u +y v +x outline 0,0 3000,0 3000,4000 0,4000
+surface 3 origin 0    0    0    u +x v +z outline 0,0 4000,0 4000,2500 0,2500
+surface 4 origin 0    3000 0    u +z v +x outline 0,0 2500,0 2500,4000 0,4000
+surface 5 origin 0    0    0    u +z v +y outline 0,0 2500,0 2500,3000 0,3000
+surface {sixth} origin 4000 0    0    u +y v +z outline 0,0 3000,0 3000,2500 0,2500
+space 1 boundary 1 2 3 4 5 {sixth}
+column 1 in 1 at 0 1500 size 400 400
+apply-proj 5 c1
+"""
+
+    def test_projection_split_ids_survive_a_save_and_reload(self):
+        """GEO-158:投影拆面的配號原本是裸 max + 1,回繞會追加**重複**的 id 0。
+
+        後果不是報錯而是資料遺失:dump 出兩行 `boundary 0`,再 loadfile 時
+        後者靜默蓋掉前者——少一個面,而兩次載入都回 ok:true。
+        對照組(一般編號)用來證明差異來自回繞,不是這個場景本身有問題。
+        """
+        for label, sixth in (("一般編號", 6), ("uint32 上界", 4294967295)):
+            with self.subTest(sixth=label), tempfile.TemporaryDirectory() as tmp:
+                first = pathlib.Path(tmp) / "split.scene"
+                first.write_text(self.SPLIT_SCENE.format(sixth=sixth), encoding="utf-8")
+                rows = self.bridge(["loadfile " + str(first), "dump"])
+                self.assertTrue(rows[0]["ok"], rows[0])
+                dumped = rows[1]["text"]
+
+                used = self.used_ids(dumped)
+                for kind in ("boundary", "placement"):
+                    ids = [l.split()[1] for l in dumped.splitlines()
+                           if l.startswith(kind + " ")]
+                    self.assertEqual(len(ids), len(set(ids)), "%s 出現重複 id" % kind)
+                    self.assertNotIn(0, used[kind], "%s 用到保留的 0" % kind)
+
+                # 真正的傷害在往返:存檔再載回來必須一模一樣。
+                again = pathlib.Path(tmp) / "reloaded.scene"
+                again.write_text(dumped, encoding="utf-8")
+                back = self.bridge(["loadfile " + str(again), "dump"])
+                self.assertTrue(back[0]["ok"], back[0])
+                self.assertEqual(back[1]["text"], dumped, "存檔重載後內容變了")
+
     def test_newid_rejects_a_count_it_cannot_honour(self):
         """不帶參數 = 1 個(舊行為);數量不合法一律擋掉,不得回半套。"""
         rows = self.bridge(["reset", "newid"])
