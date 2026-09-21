@@ -6210,12 +6210,82 @@ static int split_tokens(char *line, char *tokens[], int max_tokens)
 static char g_scene_last_error[256] = "";
 static char g_revalidate_error[256] = "";
 
+/*
+ * snprintf 的截斷以位元組計,可能切在 UTF-8 多位元組字元中間;
+ * 這些訊息會進 bridge 的 JSON 與視窗狀態列,尾巴留半個字元就是無效 UTF-8
+ * (serve.py 那邊 decode 直接炸)。把結尾不完整的序列整個拿掉:
+ * 訊息最多少最後一個字,不會壞掉。中段的壞位元組交給輸出層(js_string)。
+ */
+static void utf8_trim_tail(char *s)
+{
+    size_t len = strlen(s);
+    size_t i = len;
+
+    while (i > 0 && ((unsigned char)s[i - 1] & 0xC0) == 0x80) {
+        --i;                             /* 跳過結尾的續位元組 10xxxxxx */
+    }
+    if (i == 0) {
+        return;                          /* 全是續位元組:不是截斷造成的,留給輸出層 */
+    }
+    unsigned char lead = (unsigned char)s[i - 1];
+    size_t need = lead < 0x80 ? 1
+                : (lead & 0xE0) == 0xC0 ? 2
+                : (lead & 0xF0) == 0xE0 ? 3
+                : (lead & 0xF8) == 0xF0 ? 4 : 1;
+    if (len - (i - 1) < need) {
+        s[i - 1] = '\0';                 /* 起始位元組後面的續位元組不夠:整個序列拿掉 */
+    }
+}
+
+/*
+ * 從 p 起是不是一個合法的 UTF-8 序列:回長度 1–4,不合法回 0。
+ * 不會讀過字串結尾:任一位元組是 NUL 就不是續位元組,提早回 0。
+ * 解析層(下面 utf8_is_valid)與 bridge 的 JSON 輸出層(js_string)共用。
+ */
+static int utf8_seq_len(const unsigned char *p)
+{
+    unsigned char c = p[0];
+    if (c < 0x80) return 1;
+    if (c < 0xC2) return 0;                          /* 續位元組打頭,或過長編碼 C0/C1 */
+    if (c < 0xE0) return (p[1] & 0xC0) == 0x80 ? 2 : 0;
+    if (c < 0xF0) {
+        if ((p[1] & 0xC0) != 0x80 || (p[2] & 0xC0) != 0x80) return 0;
+        if (c == 0xE0 && p[1] < 0xA0) return 0;      /* 過長編碼 */
+        if (c == 0xED && p[1] > 0x9F) return 0;      /* UTF-16 代理對區 */
+        return 3;
+    }
+    if (c < 0xF5) {
+        if ((p[1] & 0xC0) != 0x80 || (p[2] & 0xC0) != 0x80 ||
+            (p[3] & 0xC0) != 0x80) return 0;
+        if (c == 0xF0 && p[1] < 0x90) return 0;      /* 過長編碼 */
+        if (c == 0xF4 && p[1] > 0x8F) return 0;      /* 超過 U+10FFFF */
+        return 4;
+    }
+    return 0;
+}
+
+/*
+ * 場景 DSL 是 UTF-8 文字格式:一行夾了壞位元組就在解析前拒絕,不讓它進世界。
+ * 只在輸出層換成 U+FFFD 不夠——畫布看到的名字會跟世界裡的位元組不一樣,
+ * 存回去就對不上(R4「重放逐字相同」)。GEO-174,fuzz seed 2 案例 301。
+ */
+static bool utf8_is_valid(const char *s)
+{
+    for (const unsigned char *p = (const unsigned char *)s; *p; ) {
+        int n = utf8_seq_len(p);
+        if (n == 0) return false;
+        p += n;
+    }
+    return true;
+}
+
 static void set_revalidate_error(const char *message)
 {
     if (message == NULL || message[0] == '\0') {
         snprintf(g_revalidate_error, sizeof g_revalidate_error, "場景重驗失敗");
     } else {
         snprintf(g_revalidate_error, sizeof g_revalidate_error, "%s", message);
+        utf8_trim_tail(g_revalidate_error);
     }
 }
 
@@ -6224,6 +6294,7 @@ static void scene_error(const char *path, int line_no, const char *message)
     fprintf(stderr, "%s:%d: %s\n", path, line_no, message);
     snprintf(g_scene_last_error, sizeof g_scene_last_error,
              "line %d: %s", line_no, message);
+    utf8_trim_tail(g_scene_last_error);
 }
 
 static const char *scene_last_error(void)
@@ -11999,6 +12070,13 @@ static bool parse_scene_file(const char *path, World *out_world)
             break;
         }
 
+        if (!utf8_is_valid(line)) {
+            scene_error(path, line_no,
+                        "這一行含無效的 UTF-8 位元組（場景 DSL 是 UTF-8 文字）");
+            ok = false;
+            break;
+        }
+
         char *text = line;
 
         /*
@@ -12058,6 +12136,11 @@ static bool parse_scene_file(const char *path, World *out_world)
         if (!out_world->timbers[i].placed) {
             fprintf(stderr, "%s: 角材 %" PRIu32 " 沒有 place。\n",
                     path, out_world->timbers[i].id);
+            /* 也要記進緩衝:bridge 的 loadfile 只拿得到緩衝,
+             * 不然它回 error:""——拒絕沒有理由(GEO-174,fuzz 找到)。 */
+            snprintf(g_scene_last_error, sizeof g_scene_last_error,
+                     "角材 %" PRIu32 " 沒有 place（收尾時仍未放置，I9）",
+                     out_world->timbers[i].id);
             ok = false;
         }
     }

@@ -24,6 +24,16 @@ class IntegrityTests(unittest.TestCase):
         self.assertEqual(len(rows), len(commands), p.stdout)
         return rows
 
+    def bridge_bytes(self, commands):
+        """同 bridge(),但整條路都是位元組:給故意含無效 UTF-8 的輸入用,
+        回傳每行原始位元組,由測試自己決定怎麼解碼(嚴格解碼失敗就是 bug)。"""
+        p = subprocess.run([BRIDGE], input=b"\n".join(commands) + b"\n",
+                           capture_output=True, timeout=20)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        rows = [line for line in p.stdout.splitlines() if line.strip()]
+        self.assertEqual(len(rows), len(commands), p.stdout)
+        return rows
+
     def test_newid_never_hands_out_an_id_already_in_use(self):
         """GEO-156:max + 1 在 uint32 上界回繞成 0,而 0 對參考線是合法 id。
 
@@ -497,6 +507,78 @@ apply-proj 5 c1
                          'uv 2 200000000 200000000 1', 'pick 2 200000000 200000000 10'])
         self.assertTrue(all(x['ok'] for x in r), r)
         self.assertEqual((r[-2]['u'], r[-2]['v']), (100000000, 100000000))
+
+    # ---- GEO-174:fuzz(GEO-169)找到的三個「拒絕沒理由 / JSON 壞掉」 ----
+
+    def test_loadfile_of_unplaced_timber_says_why(self):
+        """收尾仍有未放置角材 → I9 整份拒絕是對的;但 parse_scene_file 那道檢查
+        只印 stderr、沒記進錯誤緩衝,bridge 的 loadfile 回 {"ok":false,"error":""}。
+        拒絕要有理由,而且世界不能動。"""
+        scene_text = ("surface 1 origin 0 0 2500 u +x v +y "
+                      "outline 0,0 4000,0 4000,3000 0,3000\n"
+                      "timber 1 20 20 role primary\n")
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "unplaced.scene"
+            path.write_text(scene_text, encoding="utf-8")
+            rows = self.bridge(["dump", "loadfile " + str(path), "dump"])
+        self.assertFalse(rows[1]["ok"], rows[1])
+        self.assertIn("沒有 place", rows[1].get("error", ""), rows[1])
+        self.assertEqual(rows[0]["text"], rows[2]["text"], "loadfile 失敗卻動了世界")
+
+    def test_bridge_json_stays_valid_utf8_when_input_is_not(self):
+        """js_string 原樣吐出位元組:輸入含無效 UTF-8,JSON 串流跟著壞,
+        serve.py 的 json.loads(resp.decode("utf-8")) 直接炸。輸出層要驗 UTF-8,
+        本測試守的是:不論哪一層擋下,回應都必須是**嚴格合法 UTF-8** 的 JSON、而且講理由。
+        修法分兩層:輸入閘門(parse_scene_file / feed_line 拒絕含壞位元組的行,見下一個測試)先擋;
+        js_string 的 U+FFFD 取代是第二道防線(截斷切半個字那款由後面的測試守)。"""
+        rows = self.bridge_bytes([b"line timber 1 20 20 role prim\xffary"])
+        text = rows[0].decode("utf-8")          # 嚴格解碼:有無效位元組就在這裡炸
+        payload = json.loads(text)
+        self.assertFalse(payload["ok"], payload)
+        self.assertIn("UTF-8", payload["error"], payload)   # 講理由:哪一層擋的都要說
+
+    def test_truncated_error_never_splits_a_utf8_character(self):
+        """錯誤訊息經 %.190s / 固定緩衝截斷時可能切在多位元組字元中間——
+        完全合法的長中文規格名也會讓 bridge 吐出無效 UTF-8。截斷要退到字元邊界。"""
+        name = "測" * 44          # 132 bytes,超過訊息截斷長度
+        scene_text = ("surface 1 origin 0 0 2500 u +x v +y "
+                      "outline 0,0 4000,0 4000,3000 0,3000\n"
+                      "guide 1 1 u spec:" + name + "\n")
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "longname.scene"
+            path.write_text(scene_text, encoding="utf-8")
+            rows = self.bridge_bytes([("loadfile " + str(path)).encode("utf-8")])
+        text = rows[0].decode("utf-8")          # 嚴格解碼
+        payload = json.loads(text)
+        self.assertFalse(payload["ok"], payload)
+        self.assertNotIn("\ufffd", payload["error"],
+                         "合法輸入不該出現替代字元:截斷切在字元中間")
+        self.assertIn("spec:測", payload["error"], payload)
+
+    def test_line_with_invalid_utf8_is_rejected_before_it_enters_the_world(self):
+        """fuzz seed 2 案例 301:`spec 主支2中\xff\xfe線 1500` 回 ok:true,名字帶著壞位元組
+        進了世界,接著 dump 把它原樣吐進 JSON,整條串流壞掉。
+        場景 DSL 是 UTF-8 文字格式:一行不是合法 UTF-8 就在解析前拒絕、講理由、世界不動。
+        不能只靠輸出層換 U+FFFD——畫布看到的名字會跟世界裡的位元組不一樣,存回去就對不上(R4)。"""
+        rows = self.bridge_bytes([b"reset", b"dump",
+                                  b"line spec \xe4\xb8\xbb\xff\xfe\xe6\x94\xaf 500",
+                                  b"dump"])
+        decoded = [json.loads(r.decode("utf-8")) for r in rows]   # 嚴格解碼,四行都要是合法 JSON
+        self.assertFalse(decoded[2]["ok"], decoded[2])
+        self.assertIn("UTF-8", decoded[2].get("error", ""), decoded[2])
+        self.assertEqual(decoded[1]["text"], decoded[3]["text"], "被拒的行不該動到世界")
+        # 同一道閘門也要守場景檔:loadfile 一份含壞位元組的檔,整份拒絕、講理由、世界不動。
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "bad-utf8.scene"
+            path.write_bytes(b"surface 1 origin 0 0 2500 u +x v +y "
+                             b"outline 0,0 4000,0 4000,3000 0,3000\n"
+                             b"spec \xe4\xb8\xbb\xff\xfe\xe6\x94\xaf 500\n")
+            rows = self.bridge_bytes([b"reset", b"dump",
+                                      ("loadfile " + str(path)).encode("utf-8"), b"dump"])
+        decoded = [json.loads(r.decode("utf-8")) for r in rows]
+        self.assertFalse(decoded[2]["ok"], decoded[2])
+        self.assertIn("UTF-8", decoded[2].get("error", ""), decoded[2])
+        self.assertEqual(decoded[1]["text"], decoded[3]["text"], "loadfile 失敗卻動了世界")
 
     def test_all_accepted_scenes_keep_geometry_and_canonical_dump(self):
         # Use the repository's accepted fixtures, including role/grid/projection combinations.

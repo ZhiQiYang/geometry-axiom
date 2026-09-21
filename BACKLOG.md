@@ -2564,3 +2564,32 @@ reset 清不掉 `g_input_line_no` 等行程層全域,案例之間互相污染,�
 22 種變形每種 33–60 案例。
 **用法**:`GEOMETRY_TEST_BRIDGE=%TEMP%\geometry-tests\bridge.exe python tests/fuzz_scene.py --seed 1 --cases 500`;
 產物在 `%TEMP%\fuzz-findings\`(REPORT.md + 最小重現)。不進 CI:每案例都要起行程,500 案例約 1 分鐘。
+
+### GEO-174 ✅ 已做(2026-09-22)P2:fuzz 找到的四個缺口——loadfile 拒絕沒理由、JSON 吐無效 UTF-8、截斷切在字元中間、壞位元組進世界
+
+四個都**先寫回歸測試、對舊 bridge.exe 跑紅**(2 FAIL + 2 UnicodeDecodeError),再修、再綠。
+`tests/test_bridge_integrity.py` 20 → 24(新增位元組層的 `bridge_bytes()` 幫手)。
+
+1. **loadfile 回 `error:""`**:`parse_scene_file` 收尾的未放置檢查(I9)只 `fprintf(stderr)`,沒寫 `g_scene_last_error`;
+   bridge 的 `cmd_loadfile` 只拿得到緩衝。修:另記緩衝「角材 N 沒有 place(收尾時仍未放置,I9)」;
+   stderr 原句不動(命令列使用者與 `_ax_i9_orphan_timber` 夾具都靠它)。世界不動已驗(前後 dump 相同)。
+2. **無效 UTF-8 進 JSON**:`web_bridge.c` 的 `js_string` 原樣吐位元組。輸入夾壞位元組(fuzz 會,複製貼上也會)→
+   I8a 預覽的 `command` 欄回顯 → 整條 JSON 壞,`serve.py:235` 的 `resp.decode("utf-8")` 直接炸。
+   修:輸出層驗 UTF-8(`utf8_seq_len`,含過長編碼 / UTF-16 代理對 / 超過 U+10FFFF),無效序列逐位元組換 `\ufffd`——
+   標出來、不吞掉;合法序列原樣通過。
+3. **截斷切半個字**:`reference_issue` 的 `%.190s`、`references.inc` 的 `%.120s`、各 256 位元組緩衝都是**位元組**截斷;
+   **完全合法**的 44 字中文規格名就會讓錯誤訊息尾巴剩 `\xe6\xb8`(手動重現,不靠 fuzz)。
+   修:`utf8_trim_tail()`(current_geometry.c,`set_revalidate_error` 之前)在 `scene_error` / `set_revalidate_error` /
+   `reference_issue`(msg 與 e->actual)/ `%.120s` 之後各套一次;訊息最多少最後一個字,不會壞。中段壞位元組交給第 2 點。
+4. **名字夾壞位元組進了世界**(seed 2 案例 301,前三點修完再跑才浮出來):`spec 主支2中<0xFF 0xFE>線 1500` 回 ok:true,
+   名字帶著壞位元組進世界,`cmd_dump` 用自己的跳脫迴圈(不是 `js_string`)原樣吐出 → 整條 JSON 壞。
+   **在輸入層擋**:場景 DSL 是 UTF-8 文字格式,`parse_scene_file` 與 bridge `feed_line` 一行不是合法 UTF-8 就拒絕
+   「這一行含無效的 UTF-8 位元組」、世界不動。只靠輸出層換 U+FFFD 不行——畫布看到的名字會跟世界裡的位元組
+   不一樣,存回去就對不上(R4)。`utf8_seq_len` / `utf8_is_valid` 移進 current_geometry.c 供兩邊共用;
+   `cmd_dump` 改走 `js_string_body`(同一道輸出檢查,防線不留單點)。這是實作層的格式規定,不是條文;若要入條文另開票。
+
+**沒做、也不該在這裡做**:互動世界含未 place 角材的 dump 不能用 loadfile 載回——那是 I9 的要求不是 bug;
+要不要放寬是條文問題,入決策佇列 **Q12**(預設維持現狀)。
+
+全套件:run_tests 132、integrity 80、witness 17、bridge 24、reference 25、datum 9、serve 9、transport 2、marks 4、
+reader 24、modeling 63、sync --check pass;fuzz seed 1 / 2 / 3 各 500 案例 0 違規。

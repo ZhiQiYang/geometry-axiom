@@ -29,9 +29,14 @@ static int g_input_line_no = 0;
 
 /* ---------------- JSON 輸出小工具 ---------------- */
 
-static void js_string(const char *s)
+/*
+ * JSON 字串輸出。這裡是 bridge 對外的最後一道:輸入若夾帶無效 UTF-8
+ * (fuzz 會、複製貼上也會),或訊息被位元組截斷切到半個字,原樣吐出去
+ * 整條 JSON 串流就壞了(serve.py 的 decode 直接炸)。無效序列逐位元組換成
+ * U+FFFD——標出來、不吞掉;合法序列原樣通過(GEO-174)。
+ */
+static void js_string_body(const char *s)
 {
-    putchar('"');
     for (const unsigned char *p = (const unsigned char *)s; *p; ++p) {
         switch (*p) {
         case '"':  fputs("\\\"", stdout); break;
@@ -40,10 +45,27 @@ static void js_string(const char *s)
         case '\r': fputs("\\r", stdout);  break;
         case '\t': fputs("\\t", stdout);  break;
         default:
-            if (*p < 0x20) printf("\\u%04x", *p);
-            else           putchar(*p);
+            if (*p < 0x20) {
+                printf("\\u%04x", *p);
+            } else if (*p < 0x80) {
+                putchar(*p);
+            } else {
+                int n = utf8_seq_len(p);
+                if (n == 0) {
+                    fputs("\\ufffd", stdout);       /* 無效序列:一個位元組換一個替代字元 */
+                } else {
+                    fwrite(p, 1, (size_t)n, stdout);
+                    p += n - 1;                    /* for 的 ++p 補最後一步 */
+                }
+            }
         }
     }
+}
+
+static void js_string(const char *s)
+{
+    putchar('"');
+    js_string_body(s);
     putchar('"');
 }
 
@@ -126,6 +148,12 @@ static bool feed_line(const char *path, int line_no, const char *text, World *wo
     char line[SCENE_MAX_LINE];
     if (strlen(text) > sizeof line - 2) {
         scene_error(path, line_no, "指令超過 DSL 單行上限");
+        if (g_hist_grouping) history_group_rollback(world);
+        return false;
+    }
+    if (!utf8_is_valid(text)) {           /* 與 parse_scene_file 同一道閘門(GEO-174) */
+        scene_error(path, line_no,
+                    "這一行含無效的 UTF-8 位元組（場景 DSL 是 UTF-8 文字）");
         if (g_hist_grouping) history_group_rollback(world);
         return false;
     }
@@ -804,15 +832,14 @@ static void cmd_dump(void)
     /* JSON 字串逐段輸出，先寫開頭引號。 */
     putchar('"');
     while (fgets(buf, sizeof buf, tmp) != NULL) {
-        for (const char *p = buf; *p; ++p) {
-            switch (*p) {
-            case '"':  fputs("\\\"", stdout); break;
-            case '\\': fputs("\\\\", stdout); break;
-            case '\n': fputs("\\n", stdout);  break;
-            case '\r': break;
-            default:   putchar(*p);
-            }
+        /* 去掉 CR(文字模式的痕跡),其餘交給 js_string_body:
+         * 跟 error / command 欄同一道 UTF-8 檢查,防線不留單點(GEO-174)。 */
+        char *w = buf;
+        for (const char *r = buf; *r; ++r) {
+            if (*r != '\r') *w++ = *r;
         }
+        *w = '\0';
+        js_string_body(buf);
     }
     fputs("\"}\n", stdout);
     fclose(tmp);

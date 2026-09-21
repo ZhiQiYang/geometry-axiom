@@ -15,6 +15,7 @@ static bool reference_issue(uint32_t id, const char *clause, const char *expecte
 {
     char msg[256];
     snprintf(msg, sizeof msg, "%s timber %u: %.190s", clause, (unsigned)id, actual);
+    utf8_trim_tail(msg);                 /* %.190s 是位元組截斷,別切在字元中間 */
     set_revalidate_error(msg);
     if (g_reference_capturing && g_reference_issue_count < REFERENCE_MAX_ISSUES) {
         ReferenceIssue *e = &g_reference_issues[g_reference_issue_count++];
@@ -22,6 +23,7 @@ static bool reference_issue(uint32_t id, const char *clause, const char *expecte
         snprintf(e->clause, sizeof e->clause, "%s", clause);
         snprintf(e->expected, sizeof e->expected, "%s", expected);
         snprintf(e->actual, sizeof e->actual, "%s", actual);
+        utf8_trim_tail(e->actual);
     }
     return false;
 }
@@ -262,6 +264,7 @@ static bool reference_eval_guide(ReferenceEval *ctx, size_t i)
     if (!p || !reference_eval_expression(ctx,g,&v)) {
         ctx->guides[i]=3;
         char message[256]; snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,g->expression);
+        utf8_trim_tail(message);
         return reference_issue(0,"D6a/I7/I9","existing same-surface/axis references; acyclic exact rational expression",message);
     }
     g->offset=v;
