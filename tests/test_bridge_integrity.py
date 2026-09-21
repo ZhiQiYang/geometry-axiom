@@ -203,12 +203,12 @@ apply-proj 5 c1
         self.assertTrue(used[-2]["ok"], used[-2])
         self.assertTrue(used[-1]["ok"], ("newid 發出的面掛不上承載面", used[-1]))
 
-        # 對照:0 正是掛不上的那一個——證明上面那條斷言有牙齒。
-        dead = self.bridge(seed + [
-            "line boundary 0 outline 0,0 200,0 200,200 0,200",
-            "line placement 5 on boundary 0 origin 0 0 0 u +x v +y"])
-        self.assertTrue(dead[-2]["ok"], "boundary 0 本來就建得起來")
-        self.assertFalse(dead[-1]["ok"], "boundary 0 竟然能當承載面了,這條測試需要重寫")
+        # 對照:0 是解析器層就拒絕的保留值(GEO-163)——證明上面那條斷言有牙齒。
+        # (這個對照組原本寫「boundary 0 建得起來但掛不上承載面」,
+        #  GEO-163 把它改成建都建不起來,所以前提跟著改。)
+        dead = self.bridge(seed + ["line boundary 0 outline 0,0 200,0 200,200 0,200"])
+        self.assertFalse(dead[-1]["ok"], "boundary 0 竟然建得起來了,這條測試需要重寫")
+        self.assertIn("保留值", dead[-1]["error"])
 
     def test_loadfile_is_refused_inside_an_open_history_group(self):
         """GEO-160:歷史群組是行程層狀態,不在 World 裡,loadfile 的快照救不到它。
@@ -246,6 +246,44 @@ apply-proj 5 c1
             self.assertTrue(all(row["ok"] for row in rows), rows)
             self.assertEqual(rows[-1]["text"], rows[1]["text"],
                              "undo 沒有回到載入的世界")
+
+    def test_reserved_boundary_id_zero_is_refused_with_a_useful_message(self):
+        """GEO-163(🔒 2026-09-21 拍板選項 B):0 在邊界面 id 空間是保留值。
+
+        承載面用 boundary_id == 0 表示「不掛邊界面、自帶矩形」。
+        原本靠哨兵撞值意外報錯,訊息答非所問:
+          `surface 0 … outline …` → 「重宣告後有物件失效」(其實是首次宣告)
+          `placement N on boundary 0` → 「不掛邊界面的承載面需要 rect」(其實寫了 on)
+        每一條都帶對照組:換成非 0 的 id 必須成功,否則是我的指令寫錯,不是 0 的問題。
+        """
+        outline = "outline 0,0 400,0 400,300 0,300"
+        frame = "origin 0 0 0 u +x v +y"
+        for label, zero, control in (
+            ("boundary 宣告",
+             "line boundary 0 " + outline,
+             "line boundary 7 " + outline),
+            ("surface 合體宣告",
+             "line surface 0 %s %s" % (frame, outline),
+             "line surface 7 %s %s" % (frame, outline)),
+        ):
+            with self.subTest(case=label):
+                bad = self.bridge(["reset", zero])[1]
+                good = self.bridge(["reset", control])[1]
+                self.assertTrue(good["ok"], ("對照組也失敗 → 指令寫錯", good))
+                self.assertFalse(bad["ok"], bad)
+                self.assertIn("保留值", bad["error"])
+
+        # on boundary 0 是「引用」而不是宣告,也要擋,而且要講對理由。
+        seed = ["reset", "line boundary 3 outline 0,0 400,0 400,300 0,300"]
+        bad = self.bridge(seed + ["line placement 5 on boundary 0 " + frame])[-1]
+        good = self.bridge(seed + ["line placement 5 on boundary 3 " + frame])[-1]
+        self.assertTrue(good["ok"], ("對照組也失敗 → 指令寫錯", good))
+        self.assertFalse(bad["ok"], bad)
+        self.assertIn("保留值", bad["error"])
+
+        # 沒有 outline 的 `surface 0` 只宣告承載面,0 對它合法——不得被誤擋。
+        alive = self.bridge(["reset", "line surface 0 %s rect 0 0 400 300" % frame])[1]
+        self.assertTrue(alive["ok"], ("純 placement 的 surface 0 被誤擋了", alive))
 
     def test_newid_rejects_a_count_it_cannot_honour(self):
         """不帶參數 = 1 個(舊行為);數量不合法一律擋掉,不得回半套。"""

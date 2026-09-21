@@ -3960,6 +3960,11 @@ static bool apply_interactive_tokens(
 
 static bool parse_scene_file(const char *path, World *out_world);
 
+/* GEO-163(🔒 2026-09-21 拍板):0 在邊界面的 id 空間是保留值。三個入口共用同一句話,
+ * 免得同一條規則在不同指令下講出不一樣的理由。 */
+#define RESERVED_BOUNDARY_ID \
+    "id 0 是保留值（承載面用它表示「不掛邊界面、自帶矩形」），請改用 1 以上"
+
 /*
  * GEO-158：配一個「boundary 與 placement 兩邊都沒被占用、且不是保留值 0」的 id。
  *
@@ -8582,6 +8587,13 @@ static bool apply_boundary_line(
         scene_error(path, line_no, "boundary 的 id 不是有效的整數");
         return false;
     }
+    /* D4:承載面用 boundary_id == 0 表示「不掛邊界面、自帶矩形」,
+     * 所以 0 在邊界面的 id 空間是保留值。原本 boundary 0 建得起來,
+     * 卻永遠掛不上承載面——一個回 ok:true 的死物件(GEO-163)。 */
+    if (id == 0) {
+        scene_error(path, line_no, "boundary 的 " RESERVED_BOUNDARY_ID);
+        return false;
+    }
 
     SpaceBoundarySurface candidate;
 
@@ -8651,6 +8663,14 @@ static bool parse_placement_body(
             if (i >= count || !parse_u32(tokens[i], &candidate->boundary_id)) {
                 scene_error(path, line_no,
                     "on boundary 後面要接邊界面 id");
+                return false;
+            }
+            /* 明明寫了 on boundary 0,卻會被當成「沒寫 on」的預設值(GEO-163)。
+             * 原本的訊息是「不掛邊界面的承載面需要 rect」,答非所問。 */
+            if (candidate->boundary_id == 0) {
+                scene_error(path, line_no,
+                    "on boundary 0 不合法:" RESERVED_BOUNDARY_ID
+                    "；要自帶矩形請改用 rect");
                 return false;
             }
             ++i;
@@ -8831,6 +8851,14 @@ static bool apply_surface_combined_line(
             has_outline = true;
             break;
         }
+    }
+
+    /* 合體行會宣告 boundary <id>,所以 0 在這裡是保留值(GEO-163)。
+     * 沒有 outline 的 `surface 0` 只宣告承載面,0 對它是合法的——不擋。
+     * 原本這裡的失敗訊息是「重宣告後有物件失效」,而它其實是首次宣告。 */
+    if (has_outline && id == 0) {
+        scene_error(path, line_no, "surface 的 " RESERVED_BOUNDARY_ID);
+        return false;
     }
 
     if (!has_outline) {
