@@ -23,10 +23,19 @@ _AXIOM_PATH = Path(__file__).resolve().parents[2] / "公理層.md"
 
 
 def _axiom_hash():
+    """條文的雜湊。行尾先正規化——CRLF/LF 是簽出方式,不是條文內容。
+
+    GEO-153:公理層.md 在 git 裡存 LF,`.gitattributes` 沒把它標成 `-text`,
+    所以 Windows 簽出來是 CRLF;直接雜湊原始 bytes 的話,AXIOM_SHA256
+    (在 LF bytes 上算出來的)永遠對不上,**每一次建模都被擋成「公理變了」**。
+    正規化之後這個值才是跨平台同一個,manifest 裡的 axiom_sha256 才談得上可重現。
+    與 `geometry-guide/witness.py::_sha` 同一個判斷。
+    """
     try:
-        actual = hashlib.sha256(_AXIOM_PATH.read_bytes()).hexdigest()
+        raw = _AXIOM_PATH.read_bytes()
     except OSError as exc:
         raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "The supported axiom source is unavailable") from exc
+    actual = hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
     if actual != AXIOM_SHA256:
         raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Axiom source changed without a corresponding executor version")
     return actual

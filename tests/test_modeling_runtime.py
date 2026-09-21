@@ -11,16 +11,28 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "geometry-core"))
+import modeling
 from modeling import ModelError, ModelWorld, build_package, verify_package
 
 VECTORS = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())
 CASES = {case["id"]: case for case in VECTORS["cases"]}
 SOURCE_FIELDS = {"origin", "feature", "placement_id", "boundary_id", "loop_index",
                  "edge_index", "operation_path", "role", "normal_sign"}
+
+
+def axiom_digest():
+    """條文雜湊的獨立算法:行尾正規化後再 sha256(GEO-153)。
+
+    這裡刻意不 import 執行器的 _axiom_hash——測試要能獨立證明那個值是對的。
+    """
+    raw = (ROOT / "公理層.md").read_bytes()
+    return hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
 
 
 def canonical(value):
@@ -224,8 +236,7 @@ class ModelingAcceptance(unittest.TestCase):
         self.assertEqual(manifest["units"], "mm")
         self.assertEqual(manifest["coordinate_system"], {"handedness": "right", "up": "+Z"})
         self.assertRegex(manifest["axiom_revision"], r"^[0-9a-f]{40}$")
-        self.assertEqual(manifest["axiom_sha256"],
-                         hashlib.sha256((ROOT / "公理層.md").read_bytes()).hexdigest())
+        self.assertEqual(manifest["axiom_sha256"], axiom_digest())
         self.assertEqual(manifest["source_sha256"], digest(package["definitions"]))
         self.assertEqual(manifest["geometry_sha256"], digest(package["derived"]))
         roots = package["request"]["roots"]
@@ -641,6 +652,46 @@ def vector_test(case):
 
 for _case in VECTORS["cases"]:
     setattr(ModelingAcceptance, "test_vector_" + _case["id"], vector_test(_case))
+
+
+class AxiomSourceIdentity(unittest.TestCase):
+    """GEO-153:條文的身分不該隨簽出平台改變。
+
+    這一組刻意不經過 build_package——沒有 gcc 系編譯器的機器會先撞
+    BASE_COMPILER,公理閘門輪不到,缺陷就測不出來。
+    """
+
+    def test_hash_matches_the_declared_constant(self):
+        """工作區是 CRLF(Windows)或 LF(Linux)都必須通過。
+
+        修好之前:Windows 上這裡會丟 UNSUPPORTED/AXIOM_VERSION,
+        連帶讓所有建模功能失效。
+        """
+        self.assertEqual(modeling._axiom_hash(), modeling.AXIOM_SHA256)
+        self.assertEqual(axiom_digest(), modeling.AXIOM_SHA256)
+
+    def test_hash_ignores_line_endings(self):
+        lf = (ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")
+        crlf = lf.replace(b"\n", b"\r\n")
+        self.assertNotEqual(lf, crlf)          # 條文有換行,兩種簽出確實不同 bytes
+        for label, data in (("LF", lf), ("CRLF", crlf)):
+            with self.subTest(eol=label), tempfile.TemporaryDirectory() as tmp:
+                path = Path(tmp) / "公理層.md"
+                path.write_bytes(data)
+                with mock.patch.object(modeling, "_AXIOM_PATH", path):
+                    self.assertEqual(modeling._axiom_hash(), modeling.AXIOM_SHA256)
+
+    def test_real_content_change_is_still_rejected(self):
+        """正規化不得把閘門關掉:改一個字仍然要擋。"""
+        body = (ROOT / "公理層.md").read_bytes() + "\n新增一行不屬於條文的字。\n".encode("utf-8")
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "公理層.md"
+            path.write_bytes(body)
+            with mock.patch.object(modeling, "_AXIOM_PATH", path):
+                with self.assertRaises(ModelError) as caught:
+                    modeling._axiom_hash()
+        diagnostic = caught.exception.as_dict()["diagnostics"][0]
+        self.assertEqual((diagnostic["code"], diagnostic["clause"]), ("AXIOM_VERSION", "I32"))
 
 
 if __name__ == "__main__":
