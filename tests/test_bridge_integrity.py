@@ -51,16 +51,20 @@ class IntegrityTests(unittest.TestCase):
                 self.assertGreaterEqual(rows[1][kind], 1)
 
     # 這個世界是特地建來讓畫布的舊算法撞上的:
-    #   boundary = {1, 2, MAX}、placement = {0, MAX}
-    #   → newid.boundary = 0(0 沒被 boundary 占)、newid.placement = 1(0 被占,1 空)
-    #   → 舊算法 max(0, 1) = 1,而 boundary 1 已經存在。
+    #   boundary = {1, 2, 3, MAX}、placement = {4, MAX}
+    #   → newid.boundary  = 4(0 是 D4 保留值跳過,1/2/3 已占用)
+    #     newid.placement = 0(placement 的 0 合法且未被占用)
+    #   → 舊算法 max(4, 0) = 4,而 placement 4 已經存在。
+    # 夾具換過一次:GEO-159 讓 newid.boundary 跳過 0 之後,原本的
+    # boundary{1,2,MAX} / placement{0,MAX} 就不再讓 max() 撞上了。
     ID_WRAP_WORLD = [
         "reset",
         "line surface 4294967295 origin 0 0 200 u +x v +y "
         "outline 0,0 100,0 100,100 0,100",
         "line boundary 1 outline 0,0 50,0 50,50 0,50",
         "line boundary 2 outline 0,0 60,0 60,60 0,60",
-        "line placement 0 on boundary 1 origin 0 0 700 u +x v +y",
+        "line boundary 3 outline 0,0 70,0 70,70 0,70",
+        "line placement 4 on boundary 1 origin 0 0 700 u +x v +y",
     ]
 
     def used_ids(self, dump_text):
@@ -82,8 +86,8 @@ class IntegrityTests(unittest.TestCase):
         for command, row in zip(self.ID_WRAP_WORLD, rows):
             self.assertTrue(row["ok"], (command, row))
         fresh, used = rows[-2], self.used_ids(rows[-1]["text"])
-        self.assertEqual(used["boundary"], {1, 2, 4294967295})
-        self.assertEqual(used["placement"], {0, 4294967295})
+        self.assertEqual(used["boundary"], {1, 2, 3, 4294967295})
+        self.assertEqual(used["placement"], {4, 4294967295})
 
         ids = fresh["surfaces"]
         self.assertEqual(len(ids), 6)
@@ -94,8 +98,9 @@ class IntegrityTests(unittest.TestCase):
                 self.assertNotIn(sid, used["placement"])
 
         # 夾具要保有牙齒:舊算法在這個世界確實會撞上既有物件。
+        # 這一條失敗代表夾具不再對抗(而不是不變式壞了)——換世界,別刪斷言。
         legacy = max(fresh["boundary"], fresh["placement"])
-        self.assertIn(legacy, used["boundary"],
+        self.assertIn(legacy, used["boundary"] | used["placement"],
                       "這個世界本來就是為了讓 max() 撞上才建的")
 
     def test_newid_surface_ids_skip_zero_and_can_be_created_after_wrap(self):
@@ -177,6 +182,70 @@ apply-proj 5 c1
                 back = self.bridge(["loadfile " + str(again), "dump"])
                 self.assertTrue(back[0]["ok"], back[0])
                 self.assertEqual(back[1]["text"], dumped, "存檔重載後內容變了")
+
+    def test_newid_boundary_can_actually_carry_a_placement(self):
+        """GEO-159:boundary 0 建得起來,卻永遠掛不上承載面。
+
+        D4 用 boundary_id == 0 表示「不掛邊界面、自帶矩形」,所以 0 是保留值。
+        回繞時 newid.boundary 會發出 0,而 app.js 的 objEmitFace() 直接用這個欄位——
+        使用者拿到成功訊息和一個死面。
+        這裡不只檢查數字,而是拿它真的建一個面再掛承載面上去。
+        """
+        seed = ["reset", "line boundary 4294967295 outline 0,0 400,0 400,300 0,300"]
+        rows = self.bridge(seed + ["newid"])
+        self.assertTrue(all(row["ok"] for row in rows), rows)
+        fresh = rows[-1]["boundary"]
+        self.assertNotEqual(fresh, 0, "newid.boundary 發出了 D4 的保留值 0")
+
+        used = self.bridge(seed + [
+            "line boundary %d outline 0,0 200,0 200,200 0,200" % fresh,
+            "line placement 5 on boundary %d origin 0 0 0 u +x v +y" % fresh])
+        self.assertTrue(used[-2]["ok"], used[-2])
+        self.assertTrue(used[-1]["ok"], ("newid 發出的面掛不上承載面", used[-1]))
+
+        # 對照:0 正是掛不上的那一個——證明上面那條斷言有牙齒。
+        dead = self.bridge(seed + [
+            "line boundary 0 outline 0,0 200,0 200,200 0,200",
+            "line placement 5 on boundary 0 origin 0 0 0 u +x v +y"])
+        self.assertTrue(dead[-2]["ok"], "boundary 0 本來就建得起來")
+        self.assertFalse(dead[-1]["ok"], "boundary 0 竟然能當承載面了,這條測試需要重寫")
+
+    def test_loadfile_is_refused_inside_an_open_history_group(self):
+        """GEO-160:歷史群組是行程層狀態,不在 World 裡,loadfile 的快照救不到它。
+
+        原本 loadfile 直接跨過去:群組還開著,而 base 停在**載入前**的世界,
+        之後 history-end 會把那個舊世界推進 undo 疊——按一次 undo,
+        loadfile 與其後所有編輯一起消失。成功路徑也會踩到。
+        規則跟 undo / redo 一致:整個世界被換掉的操作,群組進行中一律拒絕。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            scene = pathlib.Path(tmp) / "loaded.scene"
+            scene.write_text(
+                "surface 1 origin 0 0 0 u +x v +y outline 0,0 400,0 400,300 0,300\n",
+                encoding="utf-8")
+
+            # 群組進行中:拒絕,而且群組本身要維持原狀(不靜默中止)。
+            rows = self.bridge(["default", "line history-begin",
+                                "loadfile " + str(scene), "line history-begin"])
+            self.assertTrue(rows[1]["ok"])
+            self.assertFalse(rows[2]["ok"], rows[2])
+            self.assertIn("歷史群組", rows[2]["error"])
+            self.assertFalse(rows[3]["ok"], "群組被 loadfile 靜默關掉了")
+
+            # abort 之後就能載入——恢復路徑必須存在,否則卡住的群組會讓開檔永久失效。
+            rows = self.bridge(["default", "line history-begin",
+                                "line history-abort", "loadfile " + str(scene)])
+            self.assertTrue(all(row["ok"] for row in rows), rows)
+
+            # 正常順序下,undo 必須回到「載入的世界」,不是載入前的世界。
+            rows = self.bridge([
+                "loadfile " + str(scene), "dump",
+                "line history-begin",
+                "line boundary 9 outline 0,0 50,0 50,50 0,50",
+                "line history-end", "line undo", "dump"])
+            self.assertTrue(all(row["ok"] for row in rows), rows)
+            self.assertEqual(rows[-1]["text"], rows[1]["text"],
+                             "undo 沒有回到載入的世界")
 
     def test_newid_rejects_a_count_it_cannot_honour(self):
         """不帶參數 = 1 個(舊行為);數量不合法一律擋掉,不得回半套。"""

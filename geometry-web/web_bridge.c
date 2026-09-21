@@ -286,6 +286,26 @@ static void cmd_line(const char *text)
 
 static void cmd_loadfile(const char *path)
 {
+    /*
+     * GEO-160：歷史群組進行中不得換掉整個世界。
+     *
+     * g_hist_grouping / g_hist_group_base 是行程層全域,不在 World 裡,所以
+     * 下面那個 World 快照救不到它們。原本 loadfile 直接跨過去:群組還開著,
+     * 而 base 停在**載入前**的世界,之後 history-end 會把那個舊世界推進 undo 疊——
+     * 使用者按一次 undo,loadfile 與其後所有編輯一起消失。成功路徑也會踩到。
+     *
+     * 這裡跟 undo / redo 用同一條規則(見 current_geometry.c 的
+     * 「歷史群組進行中,不能 undo」),三者都是整個世界被換掉的操作。
+     * 只拒絕、不自動中止群組:不靜默丟掉做到一半的編輯;history-abort 是冪等的,
+     * 恢復路徑一直都在。
+     */
+    if (g_hist_grouping) {
+        fputs("{\"ok\":false,\"error\":"
+              "\"歷史群組進行中,不能載入檔案（請先 history-end 或 history-abort）\"}\n",
+              stdout);
+        return;
+    }
+
     /* 先記快照：失敗時世界不動，成功時載入本身可以 undo。 */
     World before = g_world;
     memset(&g_world, 0, sizeof g_world);
@@ -344,8 +364,14 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
  *
  * 候選 max+1, max+2, …, max+count+1 共 count + 1 個且兩兩相異(count < 2^32),
  * 而被占用的只有 count 個,所以迴圈必定找得到空位。
+ *
+ * GEO-159:skip_zero 給 boundary 用。boundary 0 建得起來,但
+ * `placement N on boundary 0` 永遠被拒——D4 拿 boundary_id == 0 表示
+ * 「不掛邊界面、自帶矩形」。畫布的 objEmitFace() 直接用這個欄位,
+ * 回繞發出 0 的話使用者會拿到成功訊息和一個**永遠掛不上承載面的死面**。
+ * 其餘八類的 id 0 實測可用,所以不一律跳過,避免無謂的行為變更。
  */
-#define WORLD_NEXT_ID(out, array, count)                                    \
+#define WORLD_NEXT_ID(out, array, count, skip_zero)                         \
     do {                                                                    \
         size_t n_ = (size_t)(count);                                        \
         uint32_t id_ = 0;                                                   \
@@ -354,6 +380,7 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
         ++id_;                                                              \
         for (size_t attempt_ = 0; attempt_ <= n_; ++attempt_) {             \
             bool used_ = false;                                             \
+            if ((skip_zero) && id_ == 0) id_ = 1;                           \
             for (size_t i_ = 0; i_ < n_; ++i_)                              \
                 if ((array)[i_].id == id_) { used_ = true; break; }         \
             if (!used_) break;                                              \
@@ -432,15 +459,16 @@ static void cmd_newid(size_t surface_count)
         return;
     }
 
-    WORLD_NEXT_ID(mb,  g_world.boundaries, g_world.boundary_count);
-    WORLD_NEXT_ID(mp,  g_world.placements, g_world.placement_count);
-    WORLD_NEXT_ID(mg,  g_world.guides,     g_world.guide_count);
-    WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count);
-    WORLD_NEXT_ID(mt,  g_world.timbers,    g_world.timber_count);
-    WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count);
-    WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count);
-    WORLD_NEXT_ID(mbm, g_world.beams,      g_world.beam_count);
-    WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count);
+    /* boundary 的 0 是 D4 的保留值(見上),其餘八類的 0 實測可用。 */
+    WORLD_NEXT_ID(mb,  g_world.boundaries, g_world.boundary_count, true);
+    WORLD_NEXT_ID(mp,  g_world.placements, g_world.placement_count, false);
+    WORLD_NEXT_ID(mg,  g_world.guides,     g_world.guide_count,     false);
+    WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count,      false);
+    WORLD_NEXT_ID(mt,  g_world.timbers,    g_world.timber_count,    false);
+    WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count,     false);
+    WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count,    false);
+    WORLD_NEXT_ID(mbm, g_world.beams,      g_world.beam_count,      false);
+    WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count,     false);
 
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
