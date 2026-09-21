@@ -2593,3 +2593,17 @@ reset 清不掉 `g_input_line_no` 等行程層全域,案例之間互相污染,�
 
 全套件:run_tests 132、integrity 80、witness 17、bridge 24、reference 25、datum 9、serve 9、transport 2、marks 4、
 reader 24、modeling 63、sync --check pass;fuzz seed 1 / 2 / 3 各 500 案例 0 違規。
+
+### GEO-175 待辦 P3:導讀頁 `current_geometry-導讀.html` 自 2026-09-18 起未重產,callout 已飄
+
+`check_panels.py` 對現況(舊頁 + 現在的 C)報 **8 個 unresolved**:main 面板的 `SURFACE_DIRECTION_POS_U,` /
+`SURFACE_DEPTH_POSITIVE_NORMAL`;SCENE_COMMANDS 的 `"place", 8, 15, true,` / `"move", 3, 3, true,`;
+apply_place_line 的四個(`if (timber->placed) {`、`world_find_placement(world, placement_id)`、
+`placement, boundary, guide_a, guide_b, &anchor_uv`、`timber_place_a0_on_surface(`)。
+
+**重產步驟**:`core.exe --out current_geometry.svg`(硬編房間 A 的三視圖;`*.svg` 被 .gitignore 全域忽略,本機沒有這個檔,
+直接跑 `make_guide.py` 會把圖換成「尚未產生」佔位)→ `make_guide.py` → 對現在的 C 逐面板改 `make_guide.py` 的 callout →
+`check_panels.py` unresolved: none。
+**為什麼這輪不做**:第 5 流(文件與導讀同步)的工作,要逐面板重讀程式,不是順手能收的;
+GEO-100 記過「改 C 要同步 make_guide.py 的 callout」但沒有守門測試,所以一路飄到現在——
+建議做的時候順手把 `check_panels.py` 加進 tests 的固定清單,讓它以後會紅。
