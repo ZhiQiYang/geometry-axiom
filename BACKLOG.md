@@ -2048,3 +2048,87 @@ GEO-018「scene 格式文件」已由 `公理層.md`(SSOT)承載。
   但第 3 流(GDI/Win32 互動層)**完全沒有自動化回歸測試**(稽核缺口 4),
   我無法在這裡證明「字型建立失敗時畫面仍正確」或「控制項建不起來時視窗確實開不起來」——
   那需要在真實視窗下製造資源耗盡。**兩者都只驗到「程式碼正確」,沒驗到「行為正確」。**
+
+---
+
+## 外部審查(codex)報的四個問題 — GEO-153～156(2026-09-21)
+
+四條全部**確認屬實**,全部修好,**每一條都做過突變測試**
+(把修正拿掉、測試必紅;不只是「修完測試是綠的」)。
+
+### GEO-153 ✅ 已做(2026-09-21)P1:CRLF 讓建模功能整個失效
+
+- **現象**:Windows 上每一次建模都被擋成 `UNSUPPORTED / AXIOM_VERSION / I32`
+  「Axiom source changed without a corresponding executor version」。
+- **根因**:`AXIOM_SHA256` 是在 **LF bytes** 上算出來的,而 `公理層.md` 在 git 裡存 LF、
+  `.gitattributes` **沒有**把它標成 `-text`(`current_geometry.c` 與見證 SVG 都有),
+  所以 Windows 簽出來是 CRLF。`_axiom_hash()` 直接雜湊原始 bytes,於是**必然**對不上——
+  不是機率問題。實測:工作區 620 CRLF / 0 lone LF,實際 `3092f91f…`,期待 `6958a10c…`,
+  而**把 CRLF 正規化成 LF 後的雜湊恰好等於 `6958a10c…`**,反證那個常數的來歷。
+- **修法**:雜湊前先 `raw.replace(b"\r\n", b"\n")`,與 `geometry-guide/witness.py::_sha`
+  同一個判斷——行尾是簽出方式,不是內容。這也是 manifest 的 `axiom_sha256` 能跨平台同值的前提,
+  否則「可重現的建模套件」根本不成立。常數不用動,`geometry-core/examples/*.model.json`
+  裡的既有 golden 完全不受影響。
+- **沒有改 `.gitattributes`**:標成 `-text` 只治新的 clone,治不了既有工作區,而且正規化之後它是多餘的。
+- **端到端重現與驗證**:本機沒有 gcc 系編譯器,`BASE_COMPILER` 會比公理閘門**先**擋下來,
+  整套測試的數字因此不會動——這代表端到端測不出修好沒有。改用 MSVC 編一支
+  `geometry-core/model_base.c` 當 `GEOMETRY_MODEL_BASE` 之後:
+  **修正前 `FAILED (errors=24)`,24 個全是 `AXIOM_VERSION`、0 個 `BASE_COMPILER`
+  ——與外部審查報的「24 個錯誤」完全一致;修正後 39/39 通過。**
+- **測試**:`test_modeling_runtime.py::AxiomSourceIdentity` 三條,刻意**不經過** `build_package`,
+  沒有編譯器的機器也跑得動:(1) 雜湊等於常數;(2) 同一份條文的 LF 與 CRLF 兩種簽出得到同值;
+  (3) **真的改一個字仍然要擋**——正規化不得把閘門關掉。
+  另把 `test_modeling_runtime` 原本自己算的那個 oracle 抽成 `axiom_digest()` 並同樣正規化;
+  它本來也內建了同一個錯誤假設。
+
+### GEO-154 ✅ 已做(2026-09-21)P2:上傳失敗會毀掉還活著的場景
+
+- **現象**:`/upload` 的新檔載入失敗後,畫面上還是舊場景,但「重新載入場景」從此壞掉。
+- **根因**:順序反了。`serve.py` 先寫新暫存 → **刪光 `_upload_temps`** → 才
+  `ask_bridge("loadfile …")`。而 bridge 的 `cmd_loadfile` 是**交易式**的
+  (失敗時 `g_world = before`),所以舊場景確實還活著——活著,但來源檔已經沒了,
+  前端 `curScene` 指向一個已刪的路徑。
+- **修法**:**先載,成功了才動舊暫存**。失敗時反過來刪掉載不起來的那個新檔,
+  並且不把 `path` 塞進回應(不得讓前端改指到一個沒載進去的檔)。
+- **測試**:`test_serve.py::test_failed_upload_keeps_the_live_scene_reloadable`,
+  三步:成功上傳 → 失敗上傳 → 再成功上傳,逐步檢查 `_upload_temps` 與檔案是否存在。
+- **突變驗證**:把 `serve.py` 還原成 HEAD → `AssertionError: False is not true : 還活著的場景的來源檔被刪了`。
+  (第一版測試的斷言順序讓它停在症狀 `'path' unexpectedly found` 上,已把最能指認病因的那條排到最前面。)
+
+### GEO-155 ✅ 已做(2026-09-21)P2:批註合併漏擋「同一份備份內部」的同 ID
+
+- **根因**:`known = {x["id"]: x for x in state[field]}` 在迴圈**外**建一次,append 時不更新,
+  所以剛收下的紀錄對後面的紀錄是隱形的。同一份備份裡兩筆同 ID 異內容會**兩筆都被收下**。
+- **為什麼五道 assert 攔不住**:那五道驗的是版面完整性,不檢查批註集合的 ID 唯一性。
+- **修法**:append 之後補 `known[value["id"]] = value`。一行。
+- **測試**:兩條。(1) 同 ID 異內容必須丟 `Conflicting review record`;
+  (2) 一字不差的重複只是冗餘、不是衝突,但**只能收一次**。
+- **突變驗證**:拿掉那一行 → 第一條 `ValueError not raised`,第二條 `2 != 1`
+  ——後者正是那個靜默重複。
+
+### GEO-156 ✅ 已做(2026-09-21)P2:newid 可能發出已被占用的 id
+
+- **根因**:`cmd_newid()` 的 `max + 1` 在 uint32 上界回繞成 0。原本**只有 datum**
+  有碰撞迴圈(那段註解寫著 "Overflow must not overwrite id 0"),其餘八種是裸 `+ 1`。
+- **比原報告更精確的定性**:後果分兩種。
+  `guide` / `grid` 的 id 0 **合法**,所以 newid 發出一個已存在的 id,畫布拿去宣告
+  = I8 交易式重宣告 = **覆寫既有物件**;`surface` / `timber` / `column` 的 id 0 會被核心擋掉,
+  症狀變成「新物件建不出來」。兩種都是錯的。
+- **實測**:場景同時有 `guide 0`(位置 300)與 `guide 4294967295`(位置 2900)時,
+  **載入合法**,而 `newid` 回 `"guide":0`。修正後回 `"guide":1`。
+- **修法**:抽出 `WORLD_NEXT_ID(out, array, count)` 巨集,九種一致處理:
+  從 `max + 1` 起找第一個沒被占用的 id。候選 count+1 個且兩兩相異、被占用的只有 count 個,
+  所以迴圈必定找得到空位(終止性有證明,不是靠經驗)。
+- **測試**:`test_bridge_integrity.py::test_newid_never_hands_out_an_id_already_in_use`。
+- **突變驗證**:還原成 HEAD 重編 → `AssertionError: 0 unexpectedly found in {0, 4294967295}`。
+
+### 回歸狀態(2026-09-21)
+
+全綠:`run_tests.py` 131/131、`test_core_integrity` 80/80、`witness --check` 17/17、
+`test_axiom_reader` 24、`test_bridge_integrity` 10、`test_serve` 9、`test_reference_contract` 25、
+`test_datum_contract` 9、`test_modeling_runtime` 39(需 `GEOMETRY_MODEL_BASE`)。
+
+**跑不動(誠實標記)**:`test_modeling_transport` 在 `setUpClass` 就寫死 `cc -std=c11 … -o`
+去編 `web_bridge.c`,沒有環境變數可覆寫,本機沒有 gcc 系編譯器所以整組跳過。
+查過了,它**沒有**碰 `/upload` 或 `newid`,所以這四張票的涵蓋沒有因此缺口;
+但「Windows 上跑不動的測試檔」本身是既有問題,另開票。

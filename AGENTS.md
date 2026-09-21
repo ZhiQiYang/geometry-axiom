@@ -109,6 +109,11 @@ heredoc 會把 `
   且全域忽略 `*.svg`、`*.exe`、`*.bak-*`。新增檔案發現 git 看不到,先看這裡。
 - `make_axiom_reader.py` 有建置期強制檢查:條文數 < 60、懸空引用、
   白話出現公理層沒有的條號 → 一律非 0 退出。過期的閱讀器比沒有更糟。
+- **`公理層.md` 在 Windows 上是 CRLF**。`.gitattributes` 只把 `current_geometry.c`
+  與見證 SVG/manifest 標成 `-text`,**沒有**標它;git 裡存 LF,簽出成 CRLF。
+  凡是拿它的 bytes 算雜湊、比對或做同一性判斷,**一律先 `replace(b"\r\n", b"\n")`**
+  ——行尾是簽出方式,不是條文內容。踩過一次:GEO-153,Windows 上整個建模功能被擋掉。
+  同樣的判斷見 `geometry-guide/witness.py::_sha`。
 
 ## 正典重建與驗證
 
@@ -121,3 +126,34 @@ python3 tests/test_axiom_reader.py
 既有正典 HTML 是版本化模板的一部分；缺失時從 Git 還原，不另造閱讀器。
 可用 `--review-json` 合併同源批註備份；相同 ID 內容衝突必須拒絕，不自動覆寫。
 修改版面／互動時仍須遵循 GEO-120 與第 11 流工單及五道 assert(設計規格已作廢)。CLI 結構檢查不能冒充手機或真實瀏覽器操作驗證。
+
+## 在 Windows 上跑測試
+
+沒有 gcc 系編譯器的機器(本機就是),有兩個地方會**假性**失敗,別誤判成程式有問題:
+
+- `tests/test_modeling_runtime.py` 走 `geometry-core/modeling/base.py`,預設用 `CC`(預設 `cc`)
+  以 `-std=c11 … -o` 編 `geometry-core/model_base.c`。MSVC 的 `cl.exe` 不吃這套旗標,
+  於是每個案例都先撞 `UNSUPPORTED / BASE_COMPILER`,**比任何其他閘門都早**——
+  真正的缺陷會被整個遮住(GEO-153 就是這樣差點被我誤判)。
+  **解法**:用 MSVC 自己編一支 adapter,再用 `GEOMETRY_MODEL_BASE` 指過去
+  (`base.py` 明文支援這個覆寫)。編到 `%TEMP%\geometry-tests\`,不要編進 repo:
+
+  ```bat
+  call "...\VC\Auxiliary\Build\vcvars64.bat"
+  cl /nologo /utf-8 /O2 /W3 /U_WIN32 /Fe:%TEMP%\geometry-tests\model-base.exe ^
+     /Fo:%TEMP%\geometry-tests\ geometry-core\model_base.c /link /STACK:16777216
+  ```
+
+  ```sh
+  GEOMETRY_MODEL_BASE="$TEMP/geometry-tests/model-base.exe" python -m unittest tests.test_modeling_runtime
+  ```
+
+- `tests/test_modeling_transport.py` 在 `setUpClass` 就**寫死** `cc … -o` 去編 `web_bridge.c`,
+  沒有環境變數可覆寫,所以本機整組跑不動。它沒有碰 `/upload` 或 `newid`。
+
+`tests/test_bridge_integrity.py` 與 `tests/test_reference_contract.py` 吃
+`GEOMETRY_TEST_BRIDGE`;`test_bridge_integrity` 要用 `python tests/test_bridge_integrity.py`
+跑(`python -m unittest` 會讓它 `import run_tests` 失敗)。
+
+**編出來的 exe 一律放 `%TEMP%\geometry-tests\`**:Smart App Control 會擋 repo 目錄下
+新編的未簽章 exe(WinError 4551)。
