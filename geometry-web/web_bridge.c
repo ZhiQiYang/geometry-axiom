@@ -333,44 +333,54 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
            (long long)q.x, (long long)q.y);
 }
 
-/* newid：各類物件目前最大 id + 1（畫布產生新物件用）。 */
+/*
+ * GEO-156：從最大 id + 1 起,找第一個沒被占用的 id。
+ *
+ * 單純的 max + 1 在 uint32 上界會回繞成 0。對 guide / grid 這種 id 0 合法的物件,
+ * newid 就發出了一個**已經被占用**的 id;畫布拿去宣告是交易式重宣告,
+ * 既有物件直接被覆寫。實測:場景同時有 `guide 0` 與 `guide 4294967295` 時,
+ * newid 回 "guide":0。對 surface / timber / column(id 0 不合法)症狀則變成
+ * 「新物件建不出來」。原本只有 datum 擋了這件事,其餘八種是裸 + 1。
+ *
+ * 候選 max+1, max+2, …, max+count+1 共 count + 1 個且兩兩相異(count < 2^32),
+ * 而被占用的只有 count 個,所以迴圈必定找得到空位。
+ */
+#define WORLD_NEXT_ID(out, array, count)                                    \
+    do {                                                                    \
+        size_t n_ = (size_t)(count);                                        \
+        uint32_t id_ = 0;                                                   \
+        for (size_t i_ = 0; i_ < n_; ++i_)                                  \
+            if ((array)[i_].id > id_) id_ = (array)[i_].id;                 \
+        ++id_;                                                              \
+        for (size_t attempt_ = 0; attempt_ <= n_; ++attempt_) {             \
+            bool used_ = false;                                             \
+            for (size_t i_ = 0; i_ < n_; ++i_)                              \
+                if ((array)[i_].id == id_) { used_ = true; break; }         \
+            if (!used_) break;                                              \
+            ++id_;                                                          \
+        }                                                                   \
+        (out) = id_;                                                        \
+    } while (0)
+
+/* newid：各類物件一個尚未被占用的 id（畫布產生新物件用）。 */
 static void cmd_newid(void)
 {
-    uint32_t mb = 0, mp = 0, mg = 0, mgr = 0, mt = 0, ms = 0;
-    uint32_t mc = 0, mbm = 0, md = 0;
+    uint32_t mb, mp, mg, mgr, mt, ms, mc, mbm, md;
 
-    for (size_t i = 0; i < g_world.boundary_count; ++i)
-        if (g_world.boundaries[i].id > mb) mb = g_world.boundaries[i].id;
-    for (size_t i = 0; i < g_world.placement_count; ++i)
-        if (g_world.placements[i].id > mp) mp = g_world.placements[i].id;
-    for (size_t i = 0; i < g_world.guide_count; ++i)
-        if (g_world.guides[i].id > mg) mg = g_world.guides[i].id;
-    for (size_t i = 0; i < g_world.grid_count; ++i)
-        if (g_world.grids[i].id > mgr) mgr = g_world.grids[i].id;
-    for (size_t i = 0; i < g_world.timber_count; ++i)
-        if (g_world.timbers[i].id > mt) mt = g_world.timbers[i].id;
-    for (size_t i = 0; i < g_world.space_count; ++i)
-        if (g_world.spaces[i].id > ms) ms = g_world.spaces[i].id;
-    for (size_t i = 0; i < g_world.column_count; ++i)
-        if (g_world.columns[i].id > mc) mc = g_world.columns[i].id;
-    for (size_t i = 0; i < g_world.beam_count; ++i)
-        if (g_world.beams[i].id > mbm) mbm = g_world.beams[i].id;
-
-    for (size_t i=0;i<g_world.datum_count;++i)
-        if (g_world.datums[i].id>md) md=g_world.datums[i].id;
-    ++md;
-    /* IDs retain the full uint32 domain. Overflow must not overwrite id 0. */
-    for (size_t attempt=0;attempt<=g_world.datum_count;++attempt) {
-        bool used=false;
-        for (size_t i=0;i<g_world.datum_count;++i) if (g_world.datums[i].id==md) used=true;
-        if (!used) break;
-        ++md;
-    }
+    WORLD_NEXT_ID(mb,  g_world.boundaries, g_world.boundary_count);
+    WORLD_NEXT_ID(mp,  g_world.placements, g_world.placement_count);
+    WORLD_NEXT_ID(mg,  g_world.guides,     g_world.guide_count);
+    WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count);
+    WORLD_NEXT_ID(mt,  g_world.timbers,    g_world.timber_count);
+    WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count);
+    WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count);
+    WORLD_NEXT_ID(mbm, g_world.beams,      g_world.beam_count);
+    WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count);
 
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"timber\":%u,\"space\":%u,"
            "\"column\":%u,\"beam\":%u,\"datum\":%u}\n",
-           mb + 1, mp + 1, mg + 1, mgr + 1, mt + 1, ms + 1, mc + 1, mbm + 1, md);
+           mb, mp, mg, mgr, mt, ms, mc, mbm, md);
 }
 
 /* surfaces：列出承載面（畫布的「工作面」選擇器）。 */

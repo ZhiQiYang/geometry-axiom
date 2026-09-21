@@ -6,6 +6,7 @@ The bridge runs only against temporary worlds; no running server is used.
 import json
 import os
 import pathlib
+import re
 import subprocess
 import tempfile
 import unittest
@@ -22,6 +23,32 @@ class IntegrityTests(unittest.TestCase):
         rows = [json.loads(line) for line in p.stdout.splitlines()]
         self.assertEqual(len(rows), len(commands), p.stdout)
         return rows
+
+    def test_newid_never_hands_out_an_id_already_in_use(self):
+        """GEO-156:max + 1 在 uint32 上界回繞成 0,而 0 對參考線是合法 id。
+
+        畫布拿到一個已被占用的 id,宣告出去就是交易式重宣告——既有物件被覆寫。
+        修好之前這個場景會讓 newid 回 "guide":0,而 guide 0 就在場景裡。
+        """
+        scene_text = ("surface 1 origin 0 0 2500 u +x v +y "
+                      "outline 0,0 4000,0 4000,3000 0,3000\n"
+                      "spec 低 300\n"
+                      "spec 高 2900\n"
+                      "guide 0 1 u spec:低\n"
+                      "guide 4294967295 1 u spec:高\n")
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "id-wrap.scene"
+            path.write_text(scene_text, encoding="utf-8")
+            rows = self.bridge(["loadfile " + str(path), "newid", "dump"])
+        self.assertTrue(rows[0]["ok"], rows[0])
+        used = {int(m) for m in re.findall(r"^guide (\d+) ", rows[2]["text"], re.M)}
+        self.assertEqual(used, {0, 4294967295}, "場景沒照預期把上界與 0 都占住")
+        self.assertNotIn(rows[1]["guide"], used)
+        # 其餘八種在這個場景裡都是空的,新 id 一律從 1 起算。
+        for kind in ("boundary", "placement", "grid", "timber",
+                     "space", "column", "beam", "datum"):
+            with self.subTest(kind=kind):
+                self.assertGreaterEqual(rows[1][kind], 1)
 
     def test_truncated_beam_preserves_world_and_connection(self):
         seeds = ["beam 1 in 1 along x from 0 to 1000 at 500 width 100 depth 100 top 2000",
