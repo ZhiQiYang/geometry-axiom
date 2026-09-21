@@ -212,7 +212,8 @@ class CanonicalReader(unittest.TestCase):
 
     def test_traceability_lights_and_hub_badges_exist(self):
         # GEO-139(4):GEO-120 的連帶約束明列「追溯燈號 / 三向連結 / 樞紐徽章」不得丟失。
-        # 定義沿用 make_axiom_reader.py 原本的那一組,不得另立門檻。
+        # 判準:綠 = 原始碼且夾具、黃 = 其一、紅 = 皆無;樞紐 = 被引用數 >= 3。
+        # 不得另立門檻;出處見 sync_axiom_reader.py 的 TRACE_CSS 註解(GEO-167)。
         incoming = {c["id"]: [] for c in self.state["clauses"]}
         for c in self.state["clauses"]:
             for ref in sorted({m[1] for m in reader.CLAUSE_REF.finditer(c["body"]) if m[1] != c["id"]}):

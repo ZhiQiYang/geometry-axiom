@@ -2009,17 +2009,18 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("BF4 六面盒排版無重疊:", JSON.stringify(bf4dup),
     bf4dup.length === 0 ? "✓" : "✗");
   /* (b2) GEO-157:六面盒不得覆寫既有物件。
-     世界 boundary {0,1,2,5,MAX}、placement {MAX} → newid.boundary=3、newid.placement=0,
+     世界 boundary {1,2,5,9,MAX}、placement {MAX} → newid.boundary=3、newid.placement=0,
      舊算法 b0 = max(3,0) = 3,用掉 3,4,5,6,7,8——其中 5 已經存在,
      而 `surface` 對既有 id 是交易式重宣告＝**靜默覆寫**(狀態列照樣顯示 ✓)。
      修好之後會跳過 5,既有的 boundary 5 原封不動。 */
-  await eval_(`api("line reset")`);
-  for (const c of ["surface 4294967295 origin 0 0 200 u +x v +y outline 0,0 100,0 100,100 0,100",
-                   "boundary 0 outline 0,0 40,0 40,40 0,40",
+  for (const c of ["reset",
+                   "surface 4294967295 origin 0 0 200 u +x v +y outline 0,0 100,0 100,100 0,100",
+                   "boundary 9 outline 0,0 40,0 40,40 0,40",
                    "boundary 1 outline 0,0 50,0 50,50 0,50",
                    "boundary 2 outline 0,0 60,0 60,60 0,60",
                    "boundary 5 outline 0,0 90,0 90,90 0,90"]) {
-    await eval_(`api(${JSON.stringify("line " + c)})`);
+    const result = await eval_(`api(${JSON.stringify("line " + c)})`);
+    if (result?.ok !== true) throw new Error("BF4 夾具建立失敗: " + c + " " + JSON.stringify(result));
   }
   await eval_(`renderObjects()`); await sleep(500);
   await eval_(`document.getElementById("btnBox6").click()`); await sleep(300);
@@ -2057,6 +2058,19 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("BF4 六面盒回繞跳過保留編號0(GEO-157):", JSON.stringify(bf4zero),
     bf4zeroSeed === true && bf4zero.kept && bf4zero.faces === 7 &&
     bf4zero.spaces === 1 && bf4zero.closed ? "✓" : "✗");
+  /* (b4) GEO-164:空間配號回繞也必須跳過 0 與已存在的空間 1。 */
+  const bf4spaceSeed = await eval_(`api("line space 4294967295 boundary")`);
+  if (bf4spaceSeed?.ok !== true) throw new Error("BF4 空間回繞夾具失敗: " + JSON.stringify(bf4spaceSeed));
+  await eval_(`document.getElementById("btnBox6").click()`); await sleep(300);
+  await eval_(`document.getElementById("box6W").value = 4000;
+               document.getElementById("box6D").value = 3000;
+               document.getElementById("box6H").value = 2500;
+               document.getElementById("box6Floor").checked = true;`);
+  await eval_(`document.getElementById("box6Submit").click()`); await sleep(1500);
+  const bf4spaces = await eval_(`api("objects").then(r => r.spaces.map(s => ({id:s.id, closed:s.closed})))`);
+  console.log("BF4 空間回繞跳過保留編號0及既有空間(GEO-164):", JSON.stringify(bf4spaces),
+    bf4spaces.length === 3 && bf4spaces.some(s => s.id === 1 && s.closed) &&
+    bf4spaces.some(s => s.id === 2 && s.closed) && bf4spaces.some(s => s.id === 4294967295) ? "✓" : "✗");
   /* (a) 空間示意圖 toRoom:點地板左上角內側 2px → 映射點(柱中心)應在角 100mm 內 */
   const bf4sp = await eval_(`api("objects").then(r => r.spaces[0] && r.spaces[0].id)`);
   await eval_(`enterFocus("space", ${bf4sp})`); await sleep(1000);

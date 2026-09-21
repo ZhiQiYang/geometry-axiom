@@ -18,7 +18,7 @@
 > **正典同步入口：`geometry-guide/sync_axiom_reader.py`**（GEO-128）。
 > 它從 `公理層.md` + `geometry-guide/公理層-白話.md` 同步版本化正典 HTML，
 > 保留互動模板、批註、例圖及未改段落身份；詳見 `geometry-guide/READER-BUILD.md`。
-> `make_axiom_reader.py` 仍產出另一套追溯診斷頁，**不是正典**。
+> 舊診斷頁產生器 `make_axiom_reader.py` 已退役(GEO-165)，不要恢復第二套閱讀器。
 > 每條的「見證圖」區塊來自 `geometry-guide/witness/`(GEO-131,一條文一圖、由夾具經引擎推導、圖變即警報),
 > 同步器只讀檔嵌入;要改圖請走 `witness.py`,不要手改 HTML 或 SVG。
 > 寫檔前必須通過五道 assert，並逐字對照獨立讀取的 SSOT，不能僅讓內部 JSON 自洽：
@@ -50,14 +50,12 @@
 **完整內容仍在 git 歷史裡**(移除前最後一版見該次 commit 的父節點),要考古用 `git show` 取回,
 不要重新 checkout 回工作區。
 
-### `make_axiom_reader.py`:診斷工具,不是產品(🔒 2026-09-20 拍板)
+### `make_axiom_reader.py` 已於 2026-09-21 退役(GEO-165)
 
-它產的是**追溯診斷頁,不是正典**。2026-09-20 起加了機制而不只是文字規則:
-預設寫到系統暫存目錄;`--in-repo` 才寫進 repo,而且正典存在時一律拒絕並要求改用
-`sync_axiom_reader.py`。理由見本檔開頭那場「一度同時存在 5 份閱讀器」的事故。
-
-使用者拍板**留著但標為診斷工具**:它維護著公理層的第二套渲染,追溯功能與 `axiom_matrix.py`
-高度重疊。閘門已擋住風險,現在不礙事;**下次它壞掉或再造成困擾時就刪,不必搶救**。
+它曾產出另一套追溯診斷頁。2026-09-21 發現 `--out` 仍能繞過專案內輸出限制,
+依 2026-09-20 Q7 已拍板的「下次壞掉或再造成困擾時就刪,不必搶救」移除。
+正典由 `sync_axiom_reader.py` 同步,追溯診斷使用 `axiom_matrix.py`;
+舊工具只保留在 Git 歷史,不要恢復至工作區。
 
 ### 設計規格
 
@@ -116,8 +114,8 @@ heredoc 會把 `
   現在是 0。CRLF 那半仍然成立,NUL 那半不再是事實。)
 - root `.gitignore` 是**允許清單制**(`/*` 全忽略,逐項 `!` 放行),
   且全域忽略 `*.svg`、`*.exe`、`*.bak-*`。新增檔案發現 git 看不到,先看這裡。
-- `make_axiom_reader.py` 有建置期強制檢查:條文數 < 60、懸空引用、
-  白話出現公理層沒有的條號 → 一律非 0 退出。過期的閱讀器比沒有更糟。
+- 正典同步後必須執行 `sync_axiom_reader.py --check` 與 `tests/test_axiom_reader.py`,
+  不得用已退役的診斷頁產生器取代正典驗證。過期的閱讀器比沒有更糟。
 - **`公理層.md` 在 Windows 上是 CRLF**。`.gitattributes` 只把 `current_geometry.c`
   與見證 SVG/manifest 標成 `-text`,**沒有**標它;git 裡存 LF,簽出成 CRLF。
   凡是拿它的 bytes 算雜湊、比對或做同一性判斷,**一律先 `replace(b"\r\n", b"\n")`**

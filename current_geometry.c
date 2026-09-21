@@ -3965,6 +3965,10 @@ static bool parse_scene_file(const char *path, World *out_world);
 #define RESERVED_BOUNDARY_ID \
     "id 0 是保留值（承載面用它表示「不掛邊界面、自帶矩形」），請改用 1 以上"
 
+/* GEO-164:空間 0 是游離柱樑的標記,宣告與明寫的引用不得占用它。 */
+#define RESERVED_SPACE_ID \
+    "空間 id 0 是保留值（柱樑用它表示「不屬於空間」），請改用 1 以上；游離柱樑請省略 in"
+
 /*
  * GEO-158：配一個「boundary 與 placement 兩邊都沒被占用、且不是保留值 0」的 id。
  *
@@ -9736,6 +9740,10 @@ static bool apply_column_line(
             scene_error(path, line_no, "in 後面的空間 id 不是有效的整數");
             return false;
         }
+        if (space_id == 0) {
+            scene_error(path, line_no, RESERVED_SPACE_ID);
+            return false;
+        }
         i += 2;
     }
     /* at x y size w d [z z0 z1] */
@@ -9842,6 +9850,10 @@ static bool apply_beam_line(
     if (i + 1 < count && strcmp(tokens[i], "in") == 0) {
         if (!parse_u32(tokens[i + 1], &space_id)) {
             scene_error(path, line_no, "in 後面的空間 id 不是有效的整數");
+            return false;
+        }
+        if (space_id == 0) {
+            scene_error(path, line_no, RESERVED_SPACE_ID);
             return false;
         }
         i += 2;
@@ -11425,6 +11437,10 @@ static bool apply_space_line(
 
     if (!parse_u32(tokens[1], &space_id)) {
         scene_error(path, line_no, "space 的 id 不是有效的整數");
+        return false;
+    }
+    if (space_id == 0) {
+        scene_error(path, line_no, RESERVED_SPACE_ID);
         return false;
     }
 

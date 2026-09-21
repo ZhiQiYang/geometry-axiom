@@ -45,7 +45,7 @@ CLI 的五道結構驗證不等同真實瀏覽器、iOS 鍵盤或下載行為驗
 
 ## 範圍
 
-- `sync_axiom_reader.py` 是正典同步入口；`make_axiom_reader.py` 仍只供舊追溯診斷用途。
+- `sync_axiom_reader.py` 是正典同步入口；舊診斷頁產生器 `make_axiom_reader.py` 已退役(GEO-165)。追溯診斷使用 `axiom_matrix.py`。
 - 既有正典 HTML 是版本化 UI 模板的一部分；若缺失，從 Git 還原它再同步，不自行製作替代閱讀器。
 - 同步不改 `公理層.md`、不重跑幾何例圖、不替使用者採納批註。
 - GEO-131/133 見證圖(`geometry-guide/witness/<條號>.svg`,規範見 `witness/規範.md`)由同步器**讀檔嵌入**(引擎樣式與見證圖樣式都換成閱讀器深色,角色色不動),不執行引擎;

@@ -285,6 +285,89 @@ apply-proj 5 c1
         alive = self.bridge(["reset", "line surface 0 %s rect 0 0 400 300" % frame])[1]
         self.assertTrue(alive["ok"], ("純 placement 的 surface 0 被誤擋了", alive))
 
+    def room_commands(self, space_id):
+        room = self.SPLIT_SCENE.split("column 1", 1)[0].format(sixth=6)
+        room = room.replace("space 1 boundary", f"space {space_id} boundary")
+        return ["line " + line for line in room.splitlines()]
+
+    def test_newid_space_can_own_rc_after_wrap(self):
+        """GEO-164:配出的空間必須真的能擁有柱樑,並保留範圍檢查與存檔關係。"""
+        for occupied in (False, True):
+            with self.subTest(occupied=occupied), tempfile.TemporaryDirectory() as tmp:
+                seed = ["reset", "line space 4294967295 boundary"]
+                if occupied:
+                    seed.append("line space 1 boundary")
+                rows = self.bridge(seed + ["dump", "newid", "dump"])
+                self.assertTrue(all(row["ok"] for row in rows), rows)
+                self.assertEqual(rows[-3], rows[-1], "配號不得更動世界")
+                fresh = rows[-2]["space"]
+                self.assertGreater(fresh, 0, "space_id=0 是游離柱樑的標記")
+                self.assertNotIn(fresh, {4294967295, 1} if occupied else {4294967295})
+
+                setup = seed + self.room_commands(fresh) + [
+                    f"line column 0 in {fresh} at 1000 1000 size 100 100",
+                    f"line beam 0 in {fresh} along x from 500 to 1500 at 500 width 100 depth 100",
+                ]
+                rows = self.bridge(setup + ["dump",
+                    f"line column 9 in {fresh} at 9000 9000 size 100 100 z 0 2500",
+                    f"line beam 9 in {fresh} along x from 9000 to 10000 at 9000 width 100 depth 100 top 2500",
+                    "dump"])
+                self.assertTrue(all(row["ok"] for row in rows[:len(setup)]), rows)
+                self.assertFalse(rows[-3]["ok"], "柱不得越出所屬空間")
+                self.assertFalse(rows[-2]["ok"], "樑不得越出所屬空間")
+                self.assertEqual(rows[-4], rows[-1], "拒絕後必須保留完整世界")
+                dumped = rows[-1]["text"]
+                self.assertIn(f"column 0 in {fresh} ", dumped)
+                self.assertIn(f"beam 0 in {fresh} ", dumped)
+                self.assertIn(" z 0 2500", dumped)
+                self.assertIn(" top 2500", dumped)
+                saved = pathlib.Path(tmp) / "space-wrap.scene"
+                saved.write_text(dumped, encoding="utf-8")
+                back = self.bridge(["loadfile " + str(saved), "dump"])
+                self.assertTrue(back[0]["ok"], back[0])
+                self.assertEqual(back[1]["text"], dumped)
+
+    def test_reserved_space_zero_is_refused_without_changing_world(self):
+        """明寫 in 0 不能被當成沒寫 in;各入口都有有效指令對照及載入檔案驗證。"""
+        seed = ["reset"] + self.room_commands(77)
+        for bad, good in (
+            ("space 0 boundary", "space 88 boundary"),
+            ("space 0 boundary 1 2 3 4 5 6", "space 77 boundary 1 2 3 4 5 6"),
+            ("column 0 in 0 at 1000 1000 size 100 100", "column 0 in 77 at 1000 1000 size 100 100"),
+            ("column 0 in 0 at 1000 1000 size 100 100 z 0 2500", "column 0 in 77 at 1000 1000 size 100 100 z 0 2500"),
+            ("beam 0 in 0 along x from 500 to 1500 at 500 width 100 depth 100", "beam 0 in 77 along x from 500 to 1500 at 500 width 100 depth 100"),
+            ("beam 0 in 0 along x from 500 to 1500 at 500 width 100 depth 100 top 2500", "beam 0 in 77 along x from 500 to 1500 at 500 width 100 depth 100 top 2500"),
+        ):
+            with self.subTest(command=bad), tempfile.TemporaryDirectory() as tmp:
+                path = pathlib.Path(tmp) / "reserved-space.scene"
+                path.write_text("\n".join(c[5:] for c in seed[1:]) + "\n" + bad + "\n", encoding="utf-8")
+                rows = self.bridge(seed + ["dump", "line " + bad, "dump",
+                                          "loadfile " + str(path), "dump", "line " + good])
+                self.assertTrue(all(row["ok"] for row in rows[:len(seed)]), rows)
+                before = rows[-6]
+                for result, after in ((rows[-5], rows[-4]), (rows[-3], rows[-2])):
+                    self.assertFalse(result["ok"], result)
+                    self.assertIn("保留值", result["error"])
+                    self.assertEqual(after, before)
+                self.assertTrue(rows[-1]["ok"], ("有效對照組不可被誤擋", rows[-1]))
+
+    def test_free_rc_zero_ids_and_space_deletion_still_work(self):
+        """保留的是所屬空間 0,不是柱樑自己的 id 0;刪除空間仍讓柱樑游離。"""
+        free = ["reset", "line column 0 at 9000 9000 size 100 100 z 0 2500",
+                "line beam 0 along x from 9000 to 10000 at 9000 width 100 depth 100 top 2500", "dump"]
+        rows = self.bridge(free)
+        self.assertTrue(all(row["ok"] for row in rows), rows)
+        self.assertIn("column 0 at ", rows[-1]["text"])
+        self.assertIn("beam 0 along ", rows[-1]["text"])
+        rows = self.bridge(["reset"] + self.room_commands(77) + [
+            "line column 0 in 77 at 1000 1000 size 100 100",
+            "line beam 0 in 77 along x from 500 to 1500 at 500 width 100 depth 100",
+            "line delete space 77", "dump"])
+        self.assertTrue(all(row["ok"] for row in rows), rows)
+        self.assertIn("column 0 at ", rows[-1]["text"])
+        self.assertIn("beam 0 along ", rows[-1]["text"])
+        self.assertNotIn("space 77 ", rows[-1]["text"])
+
     def test_newid_rejects_a_count_it_cannot_honour(self):
         """不帶參數 = 1 個(舊行為);數量不合法一律擋掉,不得回半套。"""
         rows = self.bridge(["reset", "newid"])

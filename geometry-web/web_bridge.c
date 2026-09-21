@@ -459,13 +459,13 @@ static void cmd_newid(size_t surface_count)
         return;
     }
 
-    /* boundary 的 0 是 D4 的保留值(見上),其餘八類的 0 實測可用。 */
+    /* boundary 的 0 是 D4 的保留值;space 的 0 表示游離柱樑。其餘類別仍允許 0。 */
     WORLD_NEXT_ID(mb,  g_world.boundaries, g_world.boundary_count, true);
     WORLD_NEXT_ID(mp,  g_world.placements, g_world.placement_count, false);
     WORLD_NEXT_ID(mg,  g_world.guides,     g_world.guide_count,     false);
     WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count,      false);
     WORLD_NEXT_ID(mt,  g_world.timbers,    g_world.timber_count,    false);
-    WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count,     false);
+    WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count,     true);
     WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count,    false);
     WORLD_NEXT_ID(mbm, g_world.beams,      g_world.beam_count,      false);
     WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count,     false);

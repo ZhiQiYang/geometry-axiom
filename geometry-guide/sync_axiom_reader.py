@@ -56,8 +56,11 @@ WITNESS_STYLE = (
     ".timber-face-near{fill-opacity:.85}</style>"
 )
 # GEO-139(4):追溯燈號 / 三向連結 / 樞紐徽章。GEO-120 的連帶約束明列這三項「不得丟失」,
-# 改用批註版正典時整組掉了(全檔 grep 為 0)。定義沿用專案原本的 make_axiom_reader.py:431-433,
-# 不自己發明門檻——綠=原始碼且夾具、黃=其一、紅=皆無;樞紐=被引用數 >= 3。
+# 改用批註版正典時整組掉了(全檔 grep 為 0)。**判準寫在這裡就是它的出處**:
+#   綠 = 原始碼且夾具、黃 = 其一、紅 = 皆無;樞紐 = 被引用數 >= 3。
+# 不自己發明門檻。這組定義承襲自已退役的 make_axiom_reader.py(GEO-165 刪除),
+# 考古見 `git show 1498bc4:geometry-guide/make_axiom_reader.py` 的 464-466 行
+# (GEO-167:原註解引的 431-433 在刪檔前就已過期,差了三十幾行)。
 TRACE_CSS = (
     ":root{--trace-ok:#2f855a;--trace-partial:#b7791f;--trace-none:#c53030}"
     ":root[data-theme=dark]{--trace-ok:#68d391;--trace-partial:#f6c177;--trace-none:#fc8181}"
@@ -1118,7 +1121,10 @@ def geo120_regressions(template: str) -> list[str]:
 
 
 def clause_trace(clauses: list[dict], incoming: dict) -> dict:
-    """每條的追溯資料。定義沿用 make_axiom_reader.py:431-433,不得在此另立門檻。"""
+    """每條的追溯資料:綠 = 原始碼且夾具、黃 = 其一、紅 = 皆無;樞紐 = 被引用數 >= 3。
+
+    不得在此另立門檻。判準與出處見本檔 TRACE_CSS 上方的註解(GEO-167)。
+    """
     ids = [c["id"] for c in clauses]
     code = axiom_matrix.code_sites(axiom_matrix.read_text(axiom_matrix.SRC), ids)
     scenes = axiom_matrix.scene_hits(ids)
