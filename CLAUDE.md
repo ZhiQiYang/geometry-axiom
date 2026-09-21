@@ -13,5 +13,5 @@
 - `geometry-guide/axiom-reader-design/`(第 3 版設計原型)與 `閱讀器-設計規格.md` 已於 2026-09-20
   一併作廢/移除;閱讀器的判準改為 `BACKLOG.md` 的 GEO-120(🔒)與第 11 流(GEO-139～149)。
 - `make_axiom_reader.py` 有寫檔閘門:預設寫暫存目錄,正典存在時拒絕寫進 repo。
-- 地雷:`current_geometry.c` 含 NUL byte(grep 會靜默截斷);
+- 地雷:`current_geometry.c` 是**統一 CRLF**,要掃它一律用 Python 以二進位模式讀;
   root `.gitignore` 是允許清單制且全域忽略 `*.svg`。

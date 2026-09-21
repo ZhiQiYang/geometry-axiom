@@ -79,7 +79,7 @@ agent 不得自行判定「這次情況特殊」。
 `公理層.md` 是驗收基準。判斷任何行為對錯前先讀它,**不可從 C 碼或工法反推**。
 發現矛盾只回報,不動手;要改必須使用者明示授權,並逐條 diff 給使用者看過。
 
-`公理層.md:319` 的紀律:**條文未定案前不得實作**——推不出的行為就是 bug。
+`公理層.md:614` 的紀律:**條文未定案前不得實作**——推不出的行為就是 bug。
 
 ## 改 `sync_axiom_reader.py` 的補丁時
 
@@ -109,8 +109,11 @@ heredoc 會把 `
   重宣告,會**靜默覆寫**並回 `ok:true`。要幾個就跟橋接器要幾個:`newid <n>` 的
   `surfaces` 欄位(GEO-157)。
 
-- `current_geometry.c` 含 NUL byte 且是 CRLF,`grep` 會**靜默截斷**。
-  要掃它一律用 Python 以二進位模式讀。
+- `current_geometry.c` 是**統一 CRLF**;要掃它一律用 Python 以二進位模式讀,
+  不要靠 `grep` 掃全檔下定論。
+  (**2026-09-21 更正**:這條原本寫「含 NUL byte,grep 會靜默截斷」。
+  寫下時是真的——`7f94145` 版本有 4 個 NUL;檔案後來改動後 NUL 已經消失,
+  現在是 0。CRLF 那半仍然成立,NUL 那半不再是事實。)
 - root `.gitignore` 是**允許清單制**(`/*` 全忽略,逐項 `!` 放行),
   且全域忽略 `*.svg`、`*.exe`、`*.bak-*`。新增檔案發現 git 看不到,先看這裡。
 - `make_axiom_reader.py` 有建置期強制檢查:條文數 < 60、懸空引用、
@@ -124,10 +127,17 @@ heredoc 會把 `
 ## 正典重建與驗證
 
 ```sh
-python3 geometry-guide/sync_axiom_reader.py
-python3 geometry-guide/sync_axiom_reader.py --check
-python3 tests/test_axiom_reader.py
+python3 geometry-guide/sync_axiom_reader.py          # 就地重建正典
+python3 geometry-guide/sync_axiom_reader.py --check  # 只驗現有產物
+python3 tests/test_axiom_reader.py                   # 冪等 + 補丁 + 資料一致性
 ```
+
+**這三條各驗各的,`--check` 綠燈不代表整條管線健康**:
+`--check` 只對既有的 HTML 跑 `validate()`,**不呼叫 `rebuild()`**,
+所以它的輸出永遠是 `"patches": 0`——`PatchLog`(專門攔「補丁被靜默跳過」)
+在這條路徑上是空的。位元組冪等也不是 `--check` 驗的,是
+`test_axiom_reader.py::test_rebuild_is_byte_idempotent_and_keeps_reviews`。
+動過補丁或追溯資料之後,**三條都要跑**。
 
 既有正典 HTML 是版本化模板的一部分；缺失時從 Git 還原，不另造閱讀器。
 可用 `--review-json` 合併同源批註備份；相同 ID 內容衝突必須拒絕，不自動覆寫。
@@ -179,8 +189,11 @@ python3 tests/test_axiom_reader.py
 
 2. **剛編好的 bridge,第一次被 python 生成子行程時會被 Smart App Control 擋**,
    症狀是 serve.py 回 `橋接器連線中斷,請重新啟動服務`,而同一支 exe 從 shell 直接跑**沒事**。
-   這是 SAC 在評估新二進位,**等一下再啟動一次就好**。
-   看到這個字串不要當成程式壞了——GEO-157 時我差點據此誤判 cdp_test 的結果。
+   這是 SAC 在評估新二進位。**通常**等十幾秒重試一次就會放行,
+   但**不保證**——有時會持續被擋;真的過不去就改走 WSL/GCC 那條路,
+   不要去動安全設定。
+   重點是:看到這個字串**先當成環境問題**,把「環境阻擋」與「程式失敗」分開記錄。
+   GEO-157 時我差點據此誤判 cdp_test 的結果。
 
 3. **`cdp_test.js` 會覆寫 `geometry-web/docs/screens/*.png`**(已提交的截圖)。
    跑完用 `git checkout -- geometry-web/docs/screens/` 還原,別混進 commit。

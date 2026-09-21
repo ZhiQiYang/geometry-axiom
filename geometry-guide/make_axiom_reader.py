@@ -70,18 +70,41 @@ OUT = os.path.join(HERE, "公理層-追溯診斷頁.html")
 #   預設寫到系統暫存目錄;要寫進 repo 必須明示 --in-repo,而且正典存在時一律拒絕。
 def resolve_out(argv):
     import tempfile
+    canonical = os.path.join(HERE, "公理層-閱讀器.html")
+
+    def refuse(path):
+        raise SystemExit(
+            "拒絕寫入:%s 是唯一正典。\n"
+            "本腳本產的是追溯診斷頁,不是正典(見 AGENTS.md 🔴);\n"
+            "要改正典請用 geometry-guide/sync_axiom_reader.py。\n"
+            "只是想看診斷頁就別指定輸出路徑,會寫到暫存目錄。" % path)
+
+    def guard(path):
+        """GEO-161:不管路徑是怎麼指定的,都要過這一關。
+
+        原本閘門只掛在 --in-repo 分支上,而 --out 分支在它之前就 return——
+        `--out <正典>` 與 `--in-repo --out <正典>` 都能直接覆寫正典。
+        比對用 realpath,所以相對路徑、`..`、大小寫不同的寫法都擋得住。
+        """
+        if os.path.exists(canonical) and \
+                os.path.realpath(path) == os.path.realpath(canonical):
+            refuse(canonical)
+        return path
+
     if "--out" in argv:
-        return argv[argv.index("--out") + 1]
+        index = argv.index("--out") + 1
+        if index >= len(argv):
+            raise SystemExit("--out 後面要接輸出路徑。")
+        return guard(argv[index])
     if "--in-repo" in argv:
-        canonical = os.path.join(HERE, "公理層-閱讀器.html")
         if os.path.exists(canonical):
             raise SystemExit(
                 "拒絕寫入 repo:正典 %s 已存在。\n"
                 "本腳本產的是追溯診斷頁,不是正典(見 AGENTS.md 🔴);\n"
                 "要改正典請用 geometry-guide/sync_axiom_reader.py。\n"
                 "只是想看診斷頁就別加 --in-repo,會寫到暫存目錄。" % canonical)
-        return OUT
-    return os.path.join(tempfile.gettempdir(), "公理層-追溯診斷頁.html")
+        return guard(OUT)
+    return guard(os.path.join(tempfile.gettempdir(), "公理層-追溯診斷頁.html"))
 PLAIN = os.path.join(HERE, "公理層-白話.md")
 SECTION_OF = {"D": "定義（公理）", "I": "構造保證的不變量", "R": "推演規則"}
 

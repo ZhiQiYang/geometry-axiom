@@ -76,7 +76,7 @@ partial 以 request root 為原子，診斷可深入子路徑。例：KEEP 內�
 
 頂層必含 `manifest`, `definitions`, `request`, `derived`, `diagnostics`；可另含 `presentation`。
 manifest 欄位：`schema:"geometry-model-package/1"`、`profile:"orthogonal-model/1"`、`axiom_revision`
-（來源 Git full SHA）、`axiom_sha256`（條文 UTF-8 原始 bytes）、`generator:{name,version}`、`capabilities`、
+（來源 Git full SHA）、`axiom_sha256`（條文 UTF-8 bytes，**先把 CRLF 正規化成 LF** 再雜湊——行尾是簽出方式、不是條文內容；不正規化的話同一份條文在 Windows 與 Linux 會算出不同值，套件就不可重現。見 GEO-153）、`generator:{name,version}`、`capabilities`、
 `units:"mm"`、`coordinate_system:{handedness:"right",up:"+Z"}`、`source_sha256`、`geometry_sha256`。
 capabilities 為有序能力字串集合：`extrusion/1`, `shell/1`, `composite-space/1`, `solid-composition/1`, `model-export/1`；
 集合與實際版本必符合 I32。只实现 extrusion 的程式可以自稱该子能力，不能自稱完整 orthogonal-model/1。
