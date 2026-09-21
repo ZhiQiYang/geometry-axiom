@@ -2406,6 +2406,7 @@ codex 的修法比我原本的嚴格:換成合法的 `boundary 9`,並給每條�
   沒有先鋪邊界材的義務」,對齊 I21)
 - `公理層-白話.md` I19
 - `current_geometry.c:7447` 的註解(錯誤訊息不動——它陳述的是規則)
+  **→ 2026-09-22 續:訊息也改了**,見本段末。
 - `AXIOM_SHA256` 隨條文更新;正典閱讀器重建,textRevision r9 → r10
 
 **也改了**:R19(d) 與白話的「層級 2 停在它下面」→「層級 2 的端面頂在它的側面」。
@@ -2432,6 +2433,12 @@ serve 9、witness marks 4、modeling 39(新雜湊)、reader 24、sync --check �
 
 **方法論教訓(記進 memory)**:我查 M23 時一路在推程式碼邏輯,沒先問「這條規則的物理理由
 站不站得住」——順序反了。使用者的做法是對的:**先從物理機制反推,再看條文和程式有沒有跟上**。
+
+**續(2026-09-22)**:錯誤訊息從「只有 boundary 可頂 RC」改成「**那條邊還沒鋪邊界材**;只有 boundary 可頂 RC」——
+講出使用者該做的事(先鋪邊界材),規則保留在後半;`run_tests.py` 三個夾具比對的前綴「端面頂到外輪廓邊(RC)」不變。
+函式頂註解 `:7379` 也還寫著舊理由「邊界材是 RC 錨定層」,一併改成新說法。
+全套件重跑:run_tests 132、integrity 80、witness 17、bridge 20、reference 25、datum 9、serve 9、transport 2、
+marks 4、reader 24、modeling 63、sync --check pass。
 
 ### GEO-171 ✅ 已做(2026-09-21)P3:四筆小債——文件失真、transport 跑不動、mutate.py 撞檔、規格檔殘留
 

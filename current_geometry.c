@@ -7376,8 +7376,8 @@ static bool stop_in_owner_extension(
 /*
  * I19/I22 端面檢查：角材兩端面所頂擋面的裁切優先序。
  *
- *   外輪廓邊（RC 牆）：只有 boundary 可頂（邊界材是 RC 錨定層）；
- *     其他角色端面頂到 → V_CUT_PRIORITY。
+ *   外輪廓邊（RC 牆）：只有 boundary 可頂——端面不提供固定，守的是
+ *     「那條邊還沒鋪邊界材」（I19/I20）；其他角色端面頂到 → V_CUT_PRIORITY。
  *   孔邊/柱面：優先級 0,各角色可頂。
  *   角材側面：擋面擁有者優先級須 < 自己；兩支 boundary 可在
  *     轉角互頂（例外一）；擋面落在 owner 延伸段上 → 以 2 計。
@@ -7452,7 +7452,8 @@ static bool timber_end_face_check(
                     if (err != NULL) {
                         snprintf(err, err_cap,
                                  "V_CUT_PRIORITY：角材 %u 端面頂到"
-                                 "外輪廓邊（RC）——只有 boundary 可頂 RC",
+                                 "外輪廓邊（RC）——那條邊還沒鋪邊界材；"
+                                 "只有 boundary 可頂 RC",
                                  (unsigned)self->id);
                     }
                     return false;
