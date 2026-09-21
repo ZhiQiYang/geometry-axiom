@@ -50,6 +50,64 @@ class IntegrityTests(unittest.TestCase):
             with self.subTest(kind=kind):
                 self.assertGreaterEqual(rows[1][kind], 1)
 
+    # 這個世界是特地建來讓畫布的舊算法撞上的:
+    #   boundary = {1, 2, MAX}、placement = {0, MAX}
+    #   → newid.boundary = 0(0 沒被 boundary 占)、newid.placement = 1(0 被占,1 空)
+    #   → 舊算法 max(0, 1) = 1,而 boundary 1 已經存在。
+    ID_WRAP_WORLD = [
+        "reset",
+        "line surface 4294967295 origin 0 0 200 u +x v +y "
+        "outline 0,0 100,0 100,100 0,100",
+        "line boundary 1 outline 0,0 50,0 50,50 0,50",
+        "line boundary 2 outline 0,0 60,0 60,60 0,60",
+        "line placement 0 on boundary 1 origin 0 0 700 u +x v +y",
+    ]
+
+    def used_ids(self, dump_text):
+        used = {"boundary": set(), "placement": set()}
+        for line in dump_text.splitlines():
+            word = line.split()
+            if len(word) > 1 and word[0] in used:
+                used[word[0]].add(int(word[1]))
+        return used
+
+    def test_newid_surface_ids_are_free_in_both_id_spaces(self):
+        """GEO-157:`surface N` 一行同時宣告 boundary N 與 placement N。
+
+        所以它要的 id 必須在**兩個** id 空間裡都空。畫布原本自己用
+        max(newid.boundary, newid.placement) 湊——那只在沒有回繞時成立。
+        撞到既有 id 時 `surface` 是交易式重宣告,會**靜默覆寫**(回應仍是 ok:true)。
+        """
+        rows = self.bridge(self.ID_WRAP_WORLD + ["newid 6", "dump"])
+        for command, row in zip(self.ID_WRAP_WORLD, rows):
+            self.assertTrue(row["ok"], (command, row))
+        fresh, used = rows[-2], self.used_ids(rows[-1]["text"])
+        self.assertEqual(used["boundary"], {1, 2, 4294967295})
+        self.assertEqual(used["placement"], {0, 4294967295})
+
+        ids = fresh["surfaces"]
+        self.assertEqual(len(ids), 6)
+        self.assertEqual(len(set(ids)), 6, "六個 id 必須彼此相異")
+        for sid in ids:
+            with self.subTest(sid=sid):
+                self.assertNotIn(sid, used["boundary"])
+                self.assertNotIn(sid, used["placement"])
+
+        # 夾具要保有牙齒:舊算法在這個世界確實會撞上既有物件。
+        legacy = max(fresh["boundary"], fresh["placement"])
+        self.assertIn(legacy, used["boundary"],
+                      "這個世界本來就是為了讓 max() 撞上才建的")
+
+    def test_newid_rejects_a_count_it_cannot_honour(self):
+        """不帶參數 = 1 個(舊行為);數量不合法一律擋掉,不得回半套。"""
+        rows = self.bridge(["reset", "newid"])
+        self.assertEqual(len(rows[1]["surfaces"]), 1)
+        for bad in ["newid 0", "newid 17", "newid abc", "newid -1", "newid 6 7"]:
+            with self.subTest(cmd=bad):
+                row = self.bridge(["reset", bad])[1]
+                self.assertFalse(row["ok"], row)
+                self.assertNotIn("surfaces", row)
+
     def test_truncated_beam_preserves_world_and_connection(self):
         seeds = ["beam 1 in 1 along x from 0 to 1000 at 500 width 100 depth 100 top 2000",
                  "beam 1 along y from 0 to 1000 at 500 width 100 depth 100 top 2000"]

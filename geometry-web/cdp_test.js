@@ -2008,6 +2008,32 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     return dups; })`);
   console.log("BF4 六面盒排版無重疊:", JSON.stringify(bf4dup),
     bf4dup.length === 0 ? "✓" : "✗");
+  /* (b2) GEO-157:六面盒不得覆寫既有物件。
+     世界 boundary {0,1,2,5,MAX}、placement {MAX} → newid.boundary=3、newid.placement=0,
+     舊算法 b0 = max(3,0) = 3,用掉 3,4,5,6,7,8——其中 5 已經存在,
+     而 `surface` 對既有 id 是交易式重宣告＝**靜默覆寫**(狀態列照樣顯示 ✓)。
+     修好之後會跳過 5,既有的 boundary 5 原封不動。 */
+  await eval_(`api("line reset")`);
+  for (const c of ["surface 4294967295 origin 0 0 200 u +x v +y outline 0,0 100,0 100,100 0,100",
+                   "boundary 0 outline 0,0 40,0 40,40 0,40",
+                   "boundary 1 outline 0,0 50,0 50,50 0,50",
+                   "boundary 2 outline 0,0 60,0 60,60 0,60",
+                   "boundary 5 outline 0,0 90,0 90,90 0,90"]) {
+    await eval_(`api(${JSON.stringify("line " + c)})`);
+  }
+  await eval_(`renderObjects()`); await sleep(500);
+  await eval_(`document.getElementById("btnBox6").click()`); await sleep(300);
+  await eval_(`document.getElementById("box6W").value = 4000;
+               document.getElementById("box6D").value = 3000;
+               document.getElementById("box6H").value = 2500;
+               document.getElementById("box6Floor").checked = true;`);
+  await eval_(`document.getElementById("box6Submit").click()`); await sleep(1500);
+  const bf4keep = await eval_(`api("dump").then(r => {
+    const rows = r.text.split("\\n");
+    return { kept: rows.includes("boundary 5 outline 0,0 90,0 90,90 0,90"),
+             faces: rows.filter(l => l.startsWith("boundary ")).length }; })`);
+  console.log("BF4 六面盒不覆寫既有面(GEO-157):", JSON.stringify(bf4keep),
+    bf4keep.kept && bf4keep.faces === 11 ? "✓" : "✗");
   /* (a) 空間示意圖 toRoom:點地板左上角內側 2px → 映射點(柱中心)應在角 100mm 內 */
   const bf4sp = await eval_(`api("objects").then(r => r.spaces[0] && r.spaces[0].id)`);
   await eval_(`enterFocus("space", ${bf4sp})`); await sleep(1000);

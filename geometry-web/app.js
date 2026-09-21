@@ -490,7 +490,12 @@ async function emitNewSurface(pts) {
   const ids = await api("newid");
   const s = curSurf();
   if (!s) { setStatus("✗ 沒有選工作面"); return false; }
-  const nid = Math.max(ids.boundary, ids.placement);
+  /* GEO-157：`surface` 一行同時宣告 boundary 與 placement，所以 id 必須兩邊都空。
+     原本用 Math.max(ids.boundary, ids.placement) 湊——那只在「沒有回繞」時成立
+     （兩者都大於各自類別的所有既有 id）。回繞時湊出來的號碼可能是另一類的既有物件，
+     而 surface 對既有 id 是交易式重宣告＝靜默覆寫。改由橋接器判定，畫布不自己算。 */
+  if (!ids.ok) { setStatus("✗ " + (ids.error || "取不到新編號")); return false; }
+  const nid = ids.surfaces[0];
   const o = s.origin;
   const line = `surface ${nid} origin ${o[0]} ${o[1]} ${o[2]} ` +
     `u ${AXIS_WORD[s.u.join()]} v ${AXIS_WORD[s.v.join()]} ` +
@@ -2096,23 +2101,29 @@ async function submitBox6() {
   const H = Math.round(+$("box6H").value || 0);
   const floor = $("box6Floor").checked;
   if (!(W > 0 && D > 0 && H > 0)) { toast("W / D / H 必須為正整數"); return; }
-  const ids = await api("newid");
-  const b0 = Math.max(ids.boundary, ids.placement);
+  const ids = await api("newid 6");
+  if (!ids.ok) { toast(ids.error || "取不到新編號"); return; }
+  /* GEO-157：六個面各要一個 boundary/placement 兩邊都空的 id。
+     原本是 b0、b0+1…b0+5 連續加號——那假設「b0 之後一路都空」，回繞時不成立，
+     後面的號碼可能正好是既有物件（實測會被靜默覆寫）。
+     槽位固定：[0] 天花、[1] 地板（沒勾就空著不用）、[2..5] 四面牆，
+     維持原本「有沒有地板不改變牆的編號」的行為。 */
+  const sf = ids.surfaces;
   /* room_full.scene 模板：天花 + (地板) + y=0 + y=D + x=0 + x=W */
   const lines = [
-    `surface ${b0}     origin 0 0 ${H} u +x v +y outline 0,0 ${W},0 ${W},${D} 0,${D}`,
-    `surface ${b0 + 2} origin 0 0 0 u +x v +z outline 0,0 ${W},0 ${W},${H} 0,${H}`,
-    `surface ${b0 + 3} origin 0 ${D} 0 u +z v +x outline 0,0 ${H},0 ${H},${W} 0,${W}`,
-    `surface ${b0 + 4} origin 0 0 0 u +z v +y outline 0,0 ${H},0 ${H},${D} 0,${D}`,
-    `surface ${b0 + 5} origin ${W} 0 0 u +y v +z outline 0,0 ${D},0 ${D},${H} 0,${H}`,
+    `surface ${sf[0]} origin 0 0 ${H} u +x v +y outline 0,0 ${W},0 ${W},${D} 0,${D}`,
+    `surface ${sf[2]} origin 0 0 0 u +x v +z outline 0,0 ${W},0 ${W},${H} 0,${H}`,
+    `surface ${sf[3]} origin 0 ${D} 0 u +z v +x outline 0,0 ${H},0 ${H},${W} 0,${W}`,
+    `surface ${sf[4]} origin 0 0 0 u +z v +y outline 0,0 ${H},0 ${H},${D} 0,${D}`,
+    `surface ${sf[5]} origin ${W} 0 0 u +y v +z outline 0,0 ${D},0 ${D},${H} 0,${H}`,
   ];
-  const mem = [b0];
+  const mem = [sf[0]];
   if (floor) {
     lines.splice(1, 0,
-      `surface ${b0 + 1} origin 0 0 0 u +y v +x outline 0,0 ${D},0 ${D},${W} 0,${W}`);
-    mem.push(b0 + 1);
+      `surface ${sf[1]} origin 0 0 0 u +y v +x outline 0,0 ${D},0 ${D},${W} 0,${W}`);
+    mem.push(sf[1]);
   }
-  mem.push(b0 + 2, b0 + 3, b0 + 4, b0 + 5);
+  mem.push(sf[2], sf[3], sf[4], sf[5]);
   lines.push(`space ${ids.space} boundary ${mem.join(" ")}`);
   if (!(await mutate(lines))) return;
   /* 7/6 個物件排格,跳過已佔用格位——與 renderObjects 的自動排位同邏輯,

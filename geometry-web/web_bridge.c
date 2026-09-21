@@ -362,10 +362,72 @@ static void cmd_proj(int v, Coord u, Coord vv, uint32_t sid)
         (out) = id_;                                                        \
     } while (0)
 
-/* newid：各類物件一個尚未被占用的 id（畫布產生新物件用）。 */
-static void cmd_newid(void)
+/*
+ * GEO-157：`surface N` 是「boundary N + placement N」合體一行,
+ * 所以它要的 id 必須在**兩個** id 空間裡都是空的。
+ *
+ * 畫布原本自己用 Math.max(newid.boundary, newid.placement) 湊:那只在「沒有回繞」時
+ * 才成立(兩者都大於各自類別的所有既有 id)。GEO-156 之後回繞會給出**小號碼**,
+ * 湊出來的號碼可能正好是另一類已存在的物件——而 `surface` 對既有 id 是交易式重宣告,
+ * 會**靜默覆寫**(實測:boundary 1 的輪廓被換掉,回應仍是 ok:true)。
+ * 這個不變式屬於有資料的那一側,不該讓 JS 猜。
+ *
+ * 六面盒還要 6 個彼此相異的這種 id,所以 newid 接一個可選的數量。
+ */
+#define NEWID_MAX_SURFACES 16
+
+static bool surface_id_taken(uint32_t id, const uint32_t *reserved, size_t reserved_count)
+{
+    for (size_t i = 0; i < g_world.boundary_count; ++i)
+        if (g_world.boundaries[i].id == id) return true;
+    for (size_t i = 0; i < g_world.placement_count; ++i)
+        if (g_world.placements[i].id == id) return true;
+    for (size_t i = 0; i < reserved_count; ++i)
+        if (reserved[i] == id) return true;
+    return false;
+}
+
+/* 取 n 個 boundary 與 placement 兩邊都沒占用、且彼此相異的 id。 */
+static bool next_surface_ids(uint32_t *out, size_t n)
+{
+    uint32_t id = 0;
+
+    for (size_t i = 0; i < g_world.boundary_count; ++i)
+        if (g_world.boundaries[i].id > id) id = g_world.boundaries[i].id;
+    for (size_t i = 0; i < g_world.placement_count; ++i)
+        if (g_world.placements[i].id > id) id = g_world.placements[i].id;
+    ++id;
+
+    for (size_t k = 0; k < n; ++k) {
+        size_t used = g_world.boundary_count + g_world.placement_count + k;
+        bool found = false;
+
+        /* 候選 used + 1 個且兩兩相異,被占用的至多 used 個 → 必定找得到。 */
+        for (size_t attempt = 0; attempt <= used; ++attempt) {
+            if (!surface_id_taken(id, out, k)) { found = true; break; }
+            ++id;
+        }
+        if (!found) return false;
+        out[k] = id;
+        ++id;
+    }
+    return true;
+}
+
+/* newid [n]：各類物件一個尚未被占用的 id，外加 n 個 surface 用的 id（預設 1）。 */
+static void cmd_newid(size_t surface_count)
 {
     uint32_t mb, mp, mg, mgr, mt, ms, mc, mbm, md;
+    uint32_t surfaces[NEWID_MAX_SURFACES];
+
+    if (surface_count < 1 || surface_count > NEWID_MAX_SURFACES) {
+        fputs("{\"ok\":false,\"error\":\"newid 的數量必須是 1 到 16\"}\n", stdout);
+        return;
+    }
+    if (!next_surface_ids(surfaces, surface_count)) {
+        fputs("{\"ok\":false,\"error\":\"找不到足夠的空號\"}\n", stdout);
+        return;
+    }
 
     WORLD_NEXT_ID(mb,  g_world.boundaries, g_world.boundary_count);
     WORLD_NEXT_ID(mp,  g_world.placements, g_world.placement_count);
@@ -377,10 +439,16 @@ static void cmd_newid(void)
     WORLD_NEXT_ID(mbm, g_world.beams,      g_world.beam_count);
     WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count);
 
+    /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"timber\":%u,\"space\":%u,"
-           "\"column\":%u,\"beam\":%u,\"datum\":%u}\n",
+           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"surfaces\":[",
            mb, mp, mg, mgr, mt, ms, mc, mbm, md);
+    for (size_t i = 0; i < surface_count; ++i) {
+        if (i) putchar(',');
+        printf("%u", surfaces[i]);
+    }
+    fputs("]}\n", stdout);
 }
 
 /* surfaces：列出承載面（畫布的「工作面」選擇器）。 */
@@ -817,7 +885,14 @@ int main(void)
         } else if (strcmp(line, "obstacles") == 0 && arg != NULL) {
             cmd_obstacles((uint32_t)strtoul(arg, NULL, 10));
         } else if (strcmp(line, "newid") == 0) {
-            cmd_newid();
+            /* 沒帶參數 = 1 個（舊行為）。解析不乾淨一律交給 cmd_newid 擋掉。 */
+            unsigned long count = 1;
+            if (arg != NULL) {
+                char *end = NULL;
+                count = strtoul(arg, &end, 10);
+                if (end == arg || *end != '\0') count = 0;
+            }
+            cmd_newid((size_t)count);
         } else if (strcmp(line, "surfaces") == 0) {
             cmd_surfaces();
         } else if (strcmp(line, "references") == 0) {
