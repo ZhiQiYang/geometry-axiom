@@ -2451,3 +2451,25 @@ SAC 擋住時重試之間等 12 秒。煙霧測試:M02(先前 killed)→ 仍 **k
 
 **`geometry-guide/閱讀器-設計規格.md`**:CLAUDE.md 早寫「作廢/移除」、檔頭自承整份作廢,檔案卻還在
 (2026-09-21 文件稽核抓到的失真)。`git rm`,`sync --check` 五道 assert 仍 pass;AGENTS/CLAUDE 措辭對齊。
+
+### GEO-170 ✅ 已做(2026-09-21)P2:建模引擎的退化幾何輸入——未發現違規
+
+**新增** `tests/test_modeling_degenerate.py`(24 個測試,`DegenerateGeometryAcceptance`),由 agent 建立、
+我 read-back 驗證:24 OK、每個測試都有斷言、0 個 expectedFailure / skip、oracle 與雜湊比對都用上。
+
+**裁判**(每個輸入只允許兩種結果,第三種即違規):
+(甲)明確 `ModelError` 帶非空 `code`/`clause`;(乙)package 通過 `test_modeling_runtime` 既有的
+`assert_mesh`/`assert_package` oracle 且兩次建置 `geometry_sha256` 一致。
+
+**實測結果**:
+- 甲(被拒):孔邊共線相接、孔頂點落外環邊上、孔共用外環頂點、孔等於外環、孔在外環外、孔跨出外環、
+  兩孔相接、兩孔重疊、孔含孔、外環自交(8 字)、相鄰/非相鄰重複頂點、座標超 `COORD_LIMIT`——
+  這些**全部在 C 場景解析層**(`boundary_is_valid` / `poly_loop_is_valid`)就被擋下,Python 引擎根本收不到。
+  另兩個在 `geometry.py` 層拒:擠出零厚度/負厚度(`NON_POSITIVE_SPAN`/I26)、跨距超 D1 範圍(`COORD_RANGE`/I26)。
+- 乙(合法):共線多餘頂點、逆向繞向、座標貼近 D1 極限(體積 24 位大整數以字串精確表示)、座標恰等於 `COORD_LIMIT`。
+
+**結論**:退化幾何在**進入 Python 引擎之前**就被 C 解析層的 `boundary_is_valid` 統一擋掉,
+引擎自己只需要守厚度與座標範圍——分層是對的,沒有漏。這跟 GEO-172 對 M23 的實測互相印證:
+「孔貼輪廓 / 兩孔相接」在核心層不合法,是同一道閘門。
+
+**環境**:需 `GEOMETRY_MODEL_BASE`(本機無 gcc,否則每案都撞 `BASE_COMPILER`);與 runtime 合跑 63 OK。
