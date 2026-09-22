@@ -4,24 +4,52 @@
 > 之後每階段改 DOM 都要對照本表,新增或改名需同步更新測試。
 > 來源:UI-REDESIGN-PLAN.md 附錄 B §7(cdp_test.js 依賴清單)+ §7 測試合約。
 
+## 第二輪新增與行為變更（2026-09-22）
+
+| id / class | 契約 |
+|---|---|
+| `#toggleLeft` / `#toggleRight` | 主畫布窄螢幕抽屜，`aria-expanded` 與可見狀態一致 |
+| `#workspaceToggleLeft` / `#workspaceToggleRight` | 面／空間的抽屜，不得打開或露出背後主畫布欄位 |
+| `[data-close-panel]` / `body.drawer-left-open` / `body.drawer-right-open` | 關閉與 Escape；關閉後焦點回開啟鈕 |
+| `#cmdToggle` / `#cmdPanel` | 指令列預設 hidden；`:` 開啟並 focus；Escape 收合 |
+| `#edgeLabelLayer` / `.edge-label-item.active` | `#cardLayer` 上方標籤；只顯示選取或 hover 空間的標籤 |
+| `.card-enter` | 非精簡卡的進入／檢查鈕；Enter/Space 可操作；精簡卡保留雙擊 |
+| `.inspector-footer` | 放置送出按鈕的 sticky 區，游離面在預設桌面高度可直接操作 |
+| `#edgeLengthN` / `#edgeFixedN` / `#edgeFreeN` | 穩定焦點 id，邊界重繪後還原鍵盤目標 |
+| `#placeDetails` / `#projectionDetails` / `.ib-row` | 原生 details 摺疊，重繪保留 open 狀態 |
+| `#tbPlace` | 以當前角材設定啟動 timber 工具，焦點回面畫布 |
+| `.fl-empty` | 五類圖層的空狀態；有可建操作者提供分頁入口 |
+| `#spaceWorkspaceTools` / `#spaceAddMembers` / `#spacePlaceColumn` / `#spacePlaceBeam` | 空間工作區中間工具群 |
+| `#workspaceKeyHints` | 面內 L/R/T/Esc；空間點放柱／拖放樑／Esc |
+| `body.v3-picked` | 有三視圖選取才展開右欄；主畫布 `[data-tool]` 在三視圖 disabled |
+| `.is-busy` | 觸發按鈕上的 spinner；不降低全頁透明度 |
+
+移除 `#btnScene`（由場景選單載入）與 `#workspaceDoneButton`（只保留返回）。
+`#btnDatums` 移進檔案選單；`#faceShapeButton` 移到屬性頁外環邊下方；
+工作區 undo/redo/fit 移到右側操作群；尺寸 chip 移入 `#spaceStageTabs`；`.space-plan-head` 移除。
+五個測試寬度：1382、1160、900、680、600 px。共用列高 56/32，桌面欄寬 260/320；三視圖左欄 200。
+
+空槽現在記錄 `pendingSlot`，引導建立或選取游離面，使用者確認尺寸與原點後一次交易放置並收進原空間。
+不得以「空槽點擊就立即 placed:true」為測試前提；空空間沒有可推導尺寸。
+
 ## 必須保留的 DOM id
 
 | id | 用途 | 測試依賴點 |
 |---|---|---|
 | `#app` | 三列殼(.app-shell) | 子層數/高度量測(56/1fr/32) |
-| `#cv` | 三視圖 SVG(覆層,z-index 5) | `hasAttribute("hidden")` 切換檢查、rect 量測 |
+| `#cv` | 三視圖 SVG(工具列下方的 flex 剩餘高度) | `hasAttribute("hidden")` 切換檢查、rect 量測 |
 | `#world` | `#cv` 內容群組 | `childElementCount` |
 | `#overlay` | `#cv` 疊層 | 繪圖預覽層 |
 | `#canvasViewport` | 中央畫布容器 | rect 量測、`.show-grid` 切換 |
 | `#ocv` | 物件畫布 SVG(主畫布,常駐可見) | rect 量測(須等於 canvasViewport) |
 | `#oroot` | `#ocv` 內容群組 | 卡片/連線掛點 |
-| `#edgeGroup` | `#oroot` 內的連線層 | `.edge-path`/`.edge-label` 計數 |
+| `#edgeGroup` | `#oroot` 內的連線層 | `.edge-path` 計數；標籤改在 `#edgeLabelLayer` |
 | `#cardLayer` | `#oroot` 內的卡片層 | `.ocard` 掛點 |
-| `#viewToolbar` | 三視圖工具列(覆層內) | `hidden` 切換檢查 |
+| `#viewToolbar` | 三視圖工具列(畫布頂部固定列) | `hidden` 切換檢查 |
 | `#focusBar` | 工作區返回列 | `hidden` 切換檢查 |
 | `#status` | 狀態列文字(在 `.statusbar` 內) | 中文文案比對(改文案必同步改測試) |
-| `#cmd` | 指令輸入(在 `.statusbar` 內) | 存在性檢查 |
-| `#btnObj` | 三視圖鍵(`#viewSwitch` segmented 內,click=toggle 覆層) | `.click()`、rect |
+| `#cmd` | 指令輸入(預設收起的 `#cmdPanel` 浮層內) | 存在性檢查 |
+| `#btnObj` | 三視圖鍵(`#viewSwitch` 內,click=setView3(true),重複點擊維持選定) | `.click()`、rect |
 | `#btnCanvasView` | `#viewSwitch` 的物件畫布鍵 | `.click()` |
 | `#btnUndo` / `#btnRedo` | 復原/重做 | `.click()` |
 | `#btnZoom` | fit-all(已移入 `.canvas-controls`) | `.click()` |
@@ -38,15 +66,15 @@
 | `#filterAll` | 篩選 chips「全部顯示」(S6 新增) | `.click()` |
 | `#minimapToggle` | 小地圖收合鈕(S6 新增) | `.click()`、`.minimap-shell.collapsed` |
 | `#statusSummary` | 狀態列右側物件摘要(S6 新增) | textContent |
-| `#busyIndicator` | 狀態列左側 busy 進度指示(spinner+「套用中…」,§P20 新增) | `hidden`(`mutate()` 飛行中顯示、結束隱藏) |
+| `#busyIndicator` | 狀態列左側 busy 進度指示(spinner+「套用中…」,§P20 新增) | `hidden`(`mutate()` 超過 400 ms 才顯示、結束隱藏) |
 | `#zoomInButton` / `#zoomOutButton` / `#zoomLevelButton` / `#homeButton` | 縮放控制 | `.click()` |
 | `#searchInput` | 搜尋框(左欄頂 `.sidebar-search` 內) | `input` 事件驅動 `oc.search` |
-| `#fileMenu` / `#fileMenuPop` | 檔案選單(含 `#btnOpen #btnScene #btnEx #btnClear`) | `hidden`、`.click()` |
+| `#fileMenu` / `#fileMenuPop` | 檔案選單(含 `#btnOpen #btnDatums #btnEx #btnClear`) | `hidden`、`.click()` |
 | `#sceneList` / `#sceneMenuBtn` / `#sceneMenuPop` / `#sceneMenuLabel` | 場景選單(品牌旁;`.scene-item[data-path]` 載入) | `hidden`、`.click()` |
 | `#minimap` | 小地圖 canvas | `pointerdown` 導航;`oc.mmTf` 座標換算 |
 | `#toastRegion` | toast 容器 | `.toast` 子元素計數 |
 | `#objectWorkspace` | 面內/空間工作區覆層(fixed, z45) | `hidden` 切換檢查 |
-| `#workspaceBackButton` / `#workspaceBackLabel` / `#workspaceDoneButton` | 工作區返回 | `.click()` |
+| `#workspaceBackButton` / `#workspaceBackLabel` | 工作區返回 | `.click()` |
 | `#workspaceTitle` / `#workspaceEyebrow` / `#workspaceTypeIcon` | 工作區標題列 | textContent |
 | `#faceWorkspaceTools` | 面內工具列 | `[data-face-tool]` 子鈕 |
 | `#faceUndoButton` / `#faceRedoButton` / `#workspaceFitButton` | 工作區 undo/redo/fit | `.click()` |
@@ -64,7 +92,7 @@
 | `#placeFlow` | 建面→放置→收成員流程條(S6 新增,兩處檢視器共用) | `.pf-step.done/.current` |
 | `#placeValid` | 放置表單 u⊥v 即時驗證(S6 新增) | textContent、`.ok/.bad` |
 | `[data-filter-type]` | 顯示類型篩選 chips(button,`aria-pressed`) | `aria-pressed`、`.click()` |
-| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性/角材/網格(S6 新增) | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
+| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性/參考線/角材/網格(v2 新增 guide) | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
 | `#workspacePlaceTag` | 工作區放置膠囊(B9:天花·z=N / 游離) | textContent、`.placed/.free` |
 | `#faceCanvasHint` | 面內模式浮標——**限多步工具**(redraw)顯示 | `hidden`、textContent |
 | `#feZoomOut` / `#feZoomLevel` / `#feZoomIn` / `#feZoomFit` | 面內左下縮放列(B8) | `.click()`、百分比 textContent |
@@ -99,11 +127,11 @@
 |---|---|---|
 | `.topbar` / `.workspace` / `.statusbar` | 三列殼區塊 | 子層序/欄寬量測 |
 | `.ocard` | 物件卡片(SVG `<g>`) | `querySelectorAll` 計數、rect;`dataset.kind`/`dataset.id` 須保留;`.selected` 標記選取 |
-| `.edge-path` / `.edge-label` | contains 連線 | `#edgeGroup` 內計數 |
+| `.edge-path` / `.edge-label` | contains 連線 | `#edgeGroup` / `#edgeLabelLayer` 各自計數 |
 | `.object-row` | 左欄清單列 | 搜尋過濾後計數 |
 | `.ocard-frame` | 卡片外框 rect | hover/selected 視覺掛點 |
 | `.object-row` | 左欄清單列 | `dataset.kind`/`dataset.id`;`.selected` |
-| `[data-tool]` | 頂列工具鈕(select/pan/rect/poly) | `dataset.tool`、`.active` |
+| `[data-tool]` | 頂列工具鈕(select/pan); rect/poly 改由物件庫與 R/P 快捷鍵啟動 | `dataset.tool`、`.active` |
 | `[data-filter-type]` | 顯示類型篩選(face/space) | `checked` 狀態 |
 | `[data-icon]` | 圖示插槽 | hydrateIcons 填充 |
 | `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/insert/timber/redraw) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
@@ -111,7 +139,7 @@
 | `#notchDialog` `#notchW` `#notchD` `#notchSubmit` `#notchClose` `#notchCancel` | 參數化凹口對話框(RC P2:insert 點邊後開) | `hidden`、`.click()`、`value` |
 | `#feLenInput` | 鍵入長度浮動框(RC P2:重畫中數字鍵) | `hidden`、`value`、`.style.left/top` |
 | `[data-edge-len]` | 邊長清單輸入(RC P2:`data-edge-len="<i>"`) | `value` + `change` 事件 |
-| `#tbLen` `#tbA` `#tbB` `#tbDir` `#tbSide` | 角材放置參數表單(Q3) | `value` 讀寫 |
+| `#tbAnchor` `#tbSelector` `#tbA` `#tbB` `#tbDir` `#tbSide` | 角材引用、截面與方向；長度由引擎推導 | `value` 讀寫 |
 | `#gridU` `#gridV` `#gridCreate` | 網格建立表單(Q3) | `value`、`.click()`、游離面 disabled |
 | `.face-timber` / `.face-grid-line` | 面內角材足跡/網格線(Q3) | `#faceEditorRoot` 內計數 |
 | `[data-face-hit]` | 面編輯器命中層(`v:<loop>:<i>`/`e:<loop>:<i>`/`g:<id>:<axis>`) | pointerdown 命中(非同步 bhit 已由它取代) |
@@ -169,7 +197,7 @@
 - `#app` 三列:topbar 56px / workspace 1fr / statusbar 32px;`.workspace` 三欄 260 / 1fr / 320。
 - 頂列三段:`.brand`(含 `#sceneList` 場景選單)→ `.tool-group`(`[data-tool]` 鈕含 `<kbd>` V/H/R/P)→ `.top-actions`(右群 5 件:`#btnUndo #btnRedo` + `#viewSwitch` + `#fileMenu` + `#btnExport`)。
 - `#viewSwitch` segmented:`.seg` 鈕 `#btnCanvasView`(物件畫布)與 `#btnObj`(三視圖,toggle 語意不變);`.active` 標目前視圖。
-- `#fileMenu` > `#fileMenuPop` 內含 `#btnOpen #btnScene #btnEx #btnClear`(`.menu-item`);`.menu-pop` 開關由 `bindMenu`/`closeMenus` 控。
+- `#fileMenu` > `#fileMenuPop` 內含 `#btnOpen #btnDatums #btnEx #btnClear`(`.menu-item`);`.menu-pop` 開關由 `bindMenu`/`closeMenus` 控。
 - `#sceneList` 不再是 `<select>`:`#sceneMenuBtn`(顯示 `#sceneMenuLabel` 目前場景)+ `#sceneMenuPop`(`.scene-item[data-path]` 各場景 + 開啟/載入範例)。
 - `#searchInput` 移到 `.sidebar-left > .sidebar-search`;`#btnZoom` 移到 `.canvas-controls`。
 - A1 防溢出:`.top-actions` 右緣 ≤ viewport 且左緣 > `.tool-group` 右緣(1382/1160 皆斷)。
@@ -242,3 +270,80 @@
 - B9:`workspaceEyebrow` 麵包屑補 §S3 格式的 `●` 分隔點,完整格式「空間 N / ● 面 M」。
 - toast 避讓小地圖:`.toast-region` `bottom` 42px → 122px(壓在 `.minimap-shell` right14/bottom14/高96 之上,≥118)。
 - busy 進度指示:`#busyIndicator`(狀態列左側,spinner+「套用中…」)——`mutate()` 飛行中 `hidden=false`,結束 `hidden=true`;不改變既有 `body.oc-busy` 按鈕停用機制。
+
+## 面·多邊形逐點閉合(polydraft,2026-09-22 設計澄清,🔒 Q13–Q16,cdp_test §P34/§P35)
+
+> 規格本體見 `RC-POLYGON-PLAN.md` §5.A.1;共用邏輯模組合約見 `POLYDRAFT-API.md`。
+> 範圍:主畫布「面·多邊形」(P)與面內工作區「重畫外環」(e)共用同一份 `polydraft.js`
+> 狀態機。下表「歸屬」欄標明「主畫布」「面內」「共用」三種,共用 = 兩處各自掛在自己的
+> 草稿層下,class 名相同、掛載節點不同。
+>
+> **實作進度**(2026-09-22 續,diff#12 面內段):diff#1–9/11(主畫布 P 工具本體)、diff#10
+> (外環邊 · 尺寸確認清單)、diff#12 的**面內 e 呼叫端**(`feDown`/`feMove`/`feSetTool`/
+> Esc 階梯的第4·6級/鍵入長度鍵盤掛勾全部改呼叫 `PolyDraft.*`,`#feDraftLayer` 已掛載)
+> 全部已實作;對應斷言在 `cdp_test.js` §P33(diff#10)、§P34(主畫布 diff#1–9/11)、§P35
+> (面內 diff#12;`§P21`–`§P23`/`§P33`/`§P34` 實作當下均已被既有段落占用,依
+> RC-POLYGON-PLAN §5.A.1.14 的重號規則遞補為 §P35)。舊版面內手寫軸鎖函式
+> `feDedupe`/`feRedrawClose`/`feRedrawApplyLen` 已移除(不是薄包裝),由
+> `feDraftTryClose`/`feCommitDraft`/`feDraftApplyLen` 取代,行為與主畫布 `objPoly*` 系列
+> 對等。`polydraft.js` 本體不受本輪影響(該模組由另一 agent 同時維護 `tryClose` 的收尾
+> 驗證,本輪只讀)。
+
+| id / class | 歸屬 | 契約 |
+|---|---|---|
+| `#canvasModeHint` | 主畫布(既有 id,契約擴充) | 三段結構容器:`.hint-tool`/`.hint-context`/`.hint-kbd` 三個子元素常駐(`renderCanvasModeHint()` 產生);`oc.polyDraft.pts.length>=3` 時額外含可見的 `#polyCloseBtn`(既有 textContent/hidden 契約不變,只是內容結構化;rect 工具沿用同一容器,三段內容改為固定文字,聚合 textContent 仍含「拖出範圍」等既有子字串) |
+| `.hint-tool` / `.hint-context` / `.hint-kbd` | 主畫布 | `#canvasModeHint` 內三段內容,`textContent` 依 RC-POLYGON-PLAN §5.A.1.13 狀態轉移表的「畫面」欄切換 |
+| `#polyCloseBtn` | 主畫布 | 「閉合」可點鈕(`.hint-close-btn`);`hidden` 由 `oc.polyDraft.pts.length<3` 控制;`.click()` 等同觸發 §5.A.1.7 閉合判定(`objPolyTryClose()`) |
+| `#polyDraftLayer` | 主畫布 | `<g>` 掛在 `#oroot` 內、`drawObjects()` 每次清空重建時緊接在 `#edgeGroup`/`#cardLayer`/`#edgeLabelLayer` 之後重新掛上;`renderPolyDraftLayer()` 只清空重繪這個 group,pointermove 走 `objPolyPreviewMove()`,不觸發 `drawObjects()`(可觀測訊號:`ocDrawCount`,見下) |
+| `#feDraftLayer` | 面內 | `<g>` 掛在 `#faceEditorRoot` 內、`drawFaceEditor()` 每次清空重建時掛在最後一個子節點(在其他內容之上);比照 `#polyDraftLayer` 動態建立,不寫進 `index.html`。`renderFeDraftLayer()` 只清空重繪這個 group,pointermove 走 `feDraftPreviewMove()`,不觸發 `drawFaceEditor()`(取代舊版直接畫在 `#faceEditorRoot` 的 `d0.kind==="redraw"` 分支,已移除) |
+| `.draft-edge` / `.draft-rubber` / `.draft-preview-face` / `.draft-vertex` / `.draft-start-vertex` / `.draft-edge-len` / `.draft-corner-preview` / `.draft-align-guide` | 共用 | 草稿層內部元素 class(定義在 `app.css`,無容器範圍限制);主畫布版本掛在 `#polyDraftLayer`,面內版本掛在 `#feDraftLayer`,結構一一對應(`renderFeDraftLayer()`/`renderPolyDraftLayer()` 是同一份邏輯的 `oc.*`/`fe.*` 版本);`.draft-rubber.error` = 交叉/回頭警示態(變紅) |
+| `#ocLenInput` | 主畫布 | 鍵入長度浮動框,`class="fe-len-input"` 沿用既有樣式(比照 `#feLenInput`);`hidden`/`value`/`.style.left/top` 由 `ocLenShow()` 控制 |
+| `#polyGridSize` | 主畫布 | 格線間距下拉(值 100/250/300/500,預設 250),掛在 `.canvas-controls` 內、`#snapToggle`/`#gridToggle` 旁;`change` 事件寫入 `oc.gridMm` |
+| `#feLenInput` | 面內(既有 id/樣式不變) | 鍵入長度浮動框;`feLenShow()` 本體未改(讀 `fe.lenBuf`/`fe.drag.cur`/`fe.drag.pts`,兩者皆是鏡射 `fe.draft` 的相容欄位,見下) |
+| `#mainEdgeLength${i}` / `#mainEdgeFixed${i}` / `#mainEdgeFree${i}` | 主畫布 | 主畫布 boundary 檢視器「外環邊 · 尺寸確認」清單(RC-POLYGON-PLAN §5.A.1.10);與面內 `#edgeLength${i}`/`#edgeFixed${i}`/`#edgeFree${i}` 同構,id 前綴不同(同一 DOM 中兩個檢視器面板同時存在,避免撞號);`data-edge-len`/`data-fix-edge`/`data-fix-val` 屬性沿用既有命名 |
+| `.edge-list` / `.edge-row` | 共用(既有 class 延伸用途) | 主畫布版本沿用面內既有樣式 class;`querySelectorAll` 需以各自 pane 為根(`#inspectorContent` vs `#faceInspectorContent`)避免互相命中 |
+| `.quick-create.active` | 主畫布 | diff#1(§5.A.1.1):目前只有 `#btnNewPoly` 在 `setOcTool("poly")`/離開時切這個 class(`#btnNewRect` 未跟進,範圍限定 P 工具) |
+
+新增全域狀態:
+
+- `oc.gridMm`(number,主畫布多邊形格線吸附間距,預設 250)。
+- `oc.polyDraft`(`PolyDraft.createState()` 起始的共用草稿狀態機 state;`place`/`backspace`/
+  `applyTypedLength`/`clearTyped` 等呼叫後整包替換,不原地改)。
+- `oc.poly`(相容既有測試/呼叫端保留,鏡射 `oc.polyDraft.pts`——每次 `oc.polyDraft` 重新指派時
+  同步 `oc.poly = oc.polyDraft.pts`,兩者共享同一陣列參考,不是深拷貝)。
+- `oc.polyPreview`(最近一次 `PolyDraft.previewMove()` 回傳:`{cur,guides,closeReady,error,
+  cornerPreview}`,供 `renderPolyDraftLayer()`/`renderCanvasModeHint()`/`ocLenShow()` 讀取)。
+- `ocDrawCount`(number,`drawObjects()` 每次整份重畫累加一次的頂層 `let`;diff#4 cdp 斷言用它
+  證明 pointermove 沒有觸發整份物件層重繪)。
+- `fe.draft`(面內 `PolyDraft` state,對等 `oc.polyDraft`;`feSetTool`/`resetSceneFocus`/
+  `leaveFocus`/`openFaceWorkspace`/收尾成功後重置為 `PolyDraft.createState()`)。
+- `fe.draftPreview`(對等 `oc.polyPreview`,`feDraftPreviewMove()` 的最近一次回傳)。
+- `fe.drag`(既有欄位,語意改變:redraw 進行中時**不是**原始資料,是 `fe.draft` 的鏡射
+  `{kind:"redraw", pts: fe.draft.pts, cur: fe.draft.cur}`,由 `feSyncDraftMirror()` 在
+  每次 `fe.draft` 變動後同步;`fe.draft.pts.length===0` 時鏡射為 `null`——與舊版「未落
+  第一點前 `fe.drag` 為 null」的語意完全一致,cdp_test 既有 §P9/§P10/B6-Esc 測試直接讀
+  這個欄位,不需要更新)。
+- `fe.lenBuf`(既有欄位,同樣改為鏡射 `fe.draft.typed` 的相容字串,供 `feLenShow()`/既有
+  測試/面內既有 Esc 階梯第4級直接讀取)。
+- `feGridStep()`(新函式,抽出既有 B4「依 zoom 挑 10/25/50/100/250/500/1000,螢幕間距
+  ≥24px」格距計算,`drawFaceEditor()` 畫格線與 `feDraftOpts()` 的 PolyDraft `gridMm` 共用
+  同一份;面內 redraw 的格線吸附因此不是固定 `#faceGridSizeSelect` 值,是 B4 zoom 相依值
+  ——這是刻意的行為改動,對應 POLYDRAFT-API.md §6)。
+
+不變(本節不改動):`#faceCanvasHint`(既有一行文字,未升級成三段浮標,見
+RC-POLYGON-PLAN §5.A.1.2)、`feLenShow()` 函式本體、面內既有 `#edgeLength${i}`/
+`#edgeFixed${i}`/`#edgeFree${i}`(§5.A.1.10 只新增主畫布版本)、面內 Esc 階梯的其餘五級
+(輸入框焦點不攔截/收選單/關對話框/收方向小選單/離開工作區,`#feGuidePick` 等,
+UIUX-FIX-PLAN 既有七階梯不變,只有第4級「清鍵入長度」與第6級「清草稿」內部改呼叫
+`PolyDraft.clearTyped`/清空 state)、`polydraft.js`/`polydraft_test.js` 本體、舊三視圖
+殭屍 `tool==="poly"`(`canvasDown/Move/Up`)。
+
+diff#12 面內接法唯一偏離 POLYDRAFT-API.md 字面(「index.html 改動…留給下一個實作
+agent」)的地方:`#feDraftLayer` **沒有**寫進 `index.html`,原因是主畫布 P 工具實作時
+(diff#1–11)已經改用「`drawObjects()`/`drawFaceEditor()` 每次清空重建時動態掛 `<g>`」
+的作法(`#polyDraftLayer` 同樣不在 `index.html`),面內段沿用同一precedent 保持兩處一致,
+不引入「一個寫死 HTML、一個動態掛」的不對稱。
+
+`serve.py` 的靜態檔白名單追加 `/polydraft.js`(與 `/app.js`/`/reference-ui.js` 同組)——
+`index.html` 依 POLYDRAFT-API.md 要求在 `app.js` 之前插入 `<script src="polydraft.js">`,
+沒有這行白名單瀏覽器會拿到 404、整個模組載入失敗,屬於讓本節可運作的必要最小改動。

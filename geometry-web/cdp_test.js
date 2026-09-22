@@ -84,6 +84,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await send("Page.enable");
   await send("Page.navigate", { url: process.env.GEOMETRY_TEST_URL || "http://localhost:8765/" });
   await sleep(2500);
+  if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   await eval_(`api("line reset")`);
   await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
@@ -120,7 +121,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     return !!(sb.querySelector("#status") && sb.querySelector("#cmd"))})()`);
   console.log("statusbar:", sb ? "✓ status/cmd 在狀態列" : "✗");
   /* (f) A1 防溢出:.top-actions 右緣 ≤ viewport、左緣 > .tool-group 右緣(1382 與 1160) */
-  for (const w of [1382, 1160]) {
+  for (const w of [1382, 1160, 900, 680, 600]) {
     await send("Emulation.setDeviceMetricsOverride",
       { width: w, height: 804, deviceScaleFactor: 1, mobile: false });
     await sleep(350);
@@ -137,14 +138,14 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   /* (g) S2 結構:搜尋在左欄;fileMenu 含四鈕;viewSwitch 含 btnObj */
   const s2 = await eval_(`({
     searchInSide: !!document.querySelector(".sidebar-left #searchInput"),
-    fileKids: ["btnOpen","btnScene","btnEx","btnClear"].every(id=>
+    fileKids: ["btnOpen","btnDatums","btnEx","btnClear"].every(id=>
       document.getElementById("fileMenu").contains(document.getElementById(id))),
     vsHasObj: document.getElementById("viewSwitch").contains(document.getElementById("btnObj")),
     zoomInCtl: document.querySelector(".canvas-controls").contains(document.getElementById("btnZoom")),
     kbd: document.querySelectorAll(".tool-group kbd").length
   })`);
   console.log("S2 結構:", JSON.stringify(s2),
-    s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd >= 4 ? "✓" : "✗");
+    s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 2 ? "✓" : "✗");
   /* (h) A2 清單樣式:.row-copy > strong + small */
   await eval_(`renderObjects()`); await sleep(400);
   const rowCk = await eval_(`(()=>{const r=document.querySelector(".object-row .row-copy strong");
@@ -183,7 +184,11 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("view3 open:", JSON.stringify(v3on),
     !v3on.cv && !v3on.vt && !v3on.on ? "✓ 三視圖開啟" : "✗");
   await click(btnRect.x, btnRect.y);
-  await sleep(1000);
+  await sleep(300);
+  console.log("view3 repeated selection:", !(await eval_(`oc.on`)) ? "✓ 維持三視圖" : "✗");
+  const canvasButton = await eval_(`(()=>{const r=document.getElementById("btnCanvasView").getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()`);
+  await click(canvasButton.x, canvasButton.y);
+  await sleep(700);
   const v3off = await eval_(`({cv:document.getElementById("cv").hasAttribute("hidden"),on:oc.on})`);
   console.log("view3 close:", JSON.stringify(v3off),
     v3off.cv && v3off.on ? "✓ 返回物件畫布" : "✗");
@@ -340,11 +345,23 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   }
 
   console.log("=== 9c. 「＋面·多邊形」逐點閉合 ===");
+  /* polydraft.js 落地(2026-09-22 實作)後主畫布 P 工具預設開格線吸附(oc.gridMm=250,
+     §5.A.1.3)；這條既有斷言的落點間距是 120/60px，比 250mm 格距還小，吸附開著會把
+     多個點收斂成同一格、6 點閉合會變質。這裡只暫時關閉 snapToggle 保留原始像素落點
+     的既有語意(吸附行為本身另有 §P34 專門斷言)，跑完照舊還原成預設 on，不影響後續
+     依賴 snapToggle 預設值的測試(如 §5 拖卡片 20mm 吸附)。同時固定 zoom/pan 為已知值，
+     讓螢幕像素→世界 mm 的對應可預期——但也因此不能再沿用舊的「畫布右緣往左 320px」
+     這個相對視窗邊緣的落點:固定 zoom/pan 後那個位置正好疊到本段剛建立的「空間1」
+     卡片的「進入›」熱區(`card-enter`,pointerdown 會 `stopPropagation()`),折線中段
+     一次點擊會被卡片吃掉、改成雙擊進工作區,而不是落下多邊形頂點。改用世界座標
+     (100,500)起算、y 在卡片群聚集區(約 y<320)以下,確保不會疊到任何既有卡片熱區。 */
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();
+    document.getElementById("snapToggle").classList.remove("on")`);
   await eval_(`document.getElementById("btnNewPoly").click()`);
   await sleep(200);
   const polyBase = await eval_(`(()=>{
     const r = document.getElementById("ocv").getBoundingClientRect();
-    return {x: r.right - 320, y: r.top + 80};
+    return {x: r.left + 100, y: r.top + 500};
   })()`);
   const fb2 = await eval_(`oc.faces.length`);
   /* L 形：右→下→右→下→左回起點 */
@@ -355,14 +372,25 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await click(polyBase.x + 60, polyBase.y + 120); await sleep(120);
   await click(polyBase.x, polyBase.y + 120);  await sleep(120);
   await click(polyBase.x, polyBase.y);        await sleep(1200);  /* 點回起點閉合 */
+  await eval_(`document.getElementById("snapToggle").classList.add("on")`);
   const fa2 = await eval_(`oc.faces.length`);
   console.log("faces:", fb2, "->", fa2, fa2 > fb2 ? "✓ 多邊形建面成功" : "✗ 失敗");
   console.log("status:", await eval_(`document.getElementById("status").textContent`));
 
   console.log("=== 9d. Ctrl+Z 復原 / Ctrl+Y 重做 ===");
-  /* 最後兩步變更：boundary 3 建立 + 自動 canvas-pos。undo 兩次才回到面消失。 */
+  /* §5.A.1.15 已知風險,實測後更新(2026-09-22):新 objEmitFace 閉合當下直接算 bbox
+     左上送 canvas-pos，不再落入 renderObjects() 的 homeless 自動排格分支；而
+     `canvas-pos` 本身不進 undo 歷史(DOM-CONTRACT.md「canvas-pos 是展示中繼資料，
+     不進歷史」/ canvas_test.js U1/L1 既有斷言)，所以「建 boundary」+「送 canvas-pos」
+     不再是兩筆各自要復原的交易——實測(本檔案 2026-09-22 一併驗證,見下方單步 undo/redo)
+     單次 Ctrl+Z 就讓面連同座標一起消失、單次 Ctrl+Y 就完整還原。HEAD 舊註解「undo 兩次
+     才回到面消失」的假設在這版 objEmitFace 下不成立,依規則更新。
+     不测「再按一次應不變」:§9 建立過的空間也在同一份 undo 歷史裡,多按一次 undo/redo
+     會動到空間那筆交易(不影響 oc.faces.length,但也不是嚴格「無事發生」),用 dump 比對
+     世界整體是否精確復原比只看 face 數更準確、也更貼近規格意圖。 */
   const facesN = `oc.faces.length`;
   const fPreUndo = await eval_(facesN);
+  const dumpPreUndo = (await eval_(`api("dump").then(r=>r.text)`));
   const key = async (k, code, vk) => {
     await send("Input.dispatchKeyEvent", { type: "keyDown", key: k, code, modifiers: 2, windowsVirtualKeyCode: vk });
     await send("Input.dispatchKeyEvent", { type: "keyUp", key: k, code, modifiers: 2, windowsVirtualKeyCode: vk });
@@ -371,16 +399,13 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const fU1 = await eval_(facesN);
   const st1 = await eval_(`document.getElementById("status").textContent`);
   console.log("undo1 api faces:", await eval_(`api("objects").then(r=>r.faces.length)`));
-  await key("z", "KeyZ", 90); await sleep(800);
-  const fU2 = await eval_(facesN);
-  console.log("undo2 api faces:", await eval_(`api("objects").then(r=>r.faces.length)`));
-  const st2 = await eval_(`document.getElementById("status").textContent`);
-  console.log("undo×2:", fPreUndo, "->", fU1, "->", fU2,
-              fU2 === fPreUndo - 1 ? "✓ undo 有效" : "✗", "|", st1, "|", st2);
+  console.log("undo×1(單步移除建面+落點):", fPreUndo, "->", fU1,
+              fU1 === fPreUndo - 1 ? "✓ undo 有效" : "✗", "|", st1);
   await key("y", "KeyY", 89); await sleep(800);
-  await key("y", "KeyY", 89); await sleep(800);
-  const fR2 = await eval_(facesN);
-  console.log("redo×2:", fU2, "->", fR2, fR2 === fPreUndo ? "✓ redo 有效" : "✗");
+  const fR1 = await eval_(facesN);
+  const dumpAfterRedo = (await eval_(`api("dump").then(r=>r.text)`));
+  console.log("redo×1(單步還原):", fU1, "->", fR1, fR1 === fPreUndo ? "✓ redo 有效" : "✗");
+  console.log("redo 後世界與 undo 前逐字相同:", dumpAfterRedo === dumpPreUndo ? "✓" : "✗");
 
   console.log("=== 9e. contains 連線(edgeGroup) ===");
   /* 空間成員必須是有承載面的邊界面:先用 surface 建地板+牆(區間一致),
@@ -400,7 +425,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const edgeN = await eval_(`document.querySelectorAll("#edgeGroup .edge-path").length`);
   console.log("edges:", edgeN, edgeN === 2 ? "✓ contains 邊×2" : "✗");
   console.log("edge labels:", await eval_(
-    `[...document.querySelectorAll("#edgeGroup .edge-label")].map(t=>t.textContent).join(",")`));
+    `[...document.querySelectorAll("#edgeLabelLayer .edge-label")].map(t=>t.textContent).join(",")`));
 
   console.log("=== 9f. 搜尋過濾 ===");
   const cardsAll = await eval_(`document.querySelectorAll(".ocard").length`);
@@ -1049,7 +1074,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   }
   /* 空間→柱 障礙連線 */
   const rcEdgeLabels = await eval_(
-    `[...document.querySelectorAll("#edgeGroup .edge-label")].map(t=>t.textContent).join(",")`);
+    `[...document.querySelectorAll("#edgeLabelLayer .edge-label")].map(t=>t.textContent).join(",")`);
   console.log("障礙連線:", /障礙/.test(rcEdgeLabels) ? `✓ ${rcEdgeLabels}` : `✗ ${rcEdgeLabels}`);
   /* ＋樑 */
   await eval_(`document.getElementById("btnNewBeam").click()`);
@@ -1421,7 +1446,13 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const mhToast = await eval_(
     `[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")`);
   console.log("E7 rect 單點 toast:", mhToast.includes("拖出範圍") ? "✓" : "✗ " + mhToast);
-  /* (c) poly 工具:點兩下 → 狀態列+浮標顯示頂點進度 */
+  /* (c) poly 工具:點兩下 → 狀態列+浮標顯示頂點進度
+     2026-09-22 更新(diff#3/🔒 Q15 語意):主畫布多邊形頂點吸附現在預設開(#snapToggle
+     預設 class="on")、oc.gridMm 預設 250mm——兩次點擊只相距 60 螢幕px(遠小於 250mm)，
+     在 snapOn 時會被吸到同一個格點，第二點被 PolyDraft.place 的「與末點重合視為忽略」
+     規則吞掉，狀態列停在「已點 1 頂點」。這裡與 diff#3 吸附行為本身無關(§P34 已有專門
+     斷言)，所以明確關閉 snapToggle 讓兩次點擊各自落在自己的像素位置，兩點必不重合。 */
+  await eval_(`document.getElementById("snapToggle").classList.remove("on")`);
   await eval_(`setOcTool("poly")`);
   await sleep(250);
   await click(ocPt.x, ocPt.y);
@@ -1434,14 +1465,25 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     vis: !document.getElementById("canvasModeHint").hidden}))()`);
   console.log("E7 poly 狀態列:", mh2.st.includes("2 頂點") ? "✓" : "✗ " + mh2.st,
     "| 浮標進度:", mh2.vis && mh2.hint.includes("2 頂點") ? "✓" : "✗ " + mh2.hint);
-  /* (d) Esc 取消 → 浮標隱藏、草稿清空 */
+  /* (d) Esc 取消:2026-09-22 更新(🔒 Q14/§5.A.1.8 三段式)——舊斷言假設單次 Esc 全清
+     (取消草稿+隱浮標+離開工具)，但新語意是三段：第一次 Esc 只清草稿(仍在工具內、
+     浮標仍可見、狀態列提示「再按 Esc 離開」)，第二次 Esc 才真正離開工具。改為驗兩次。 */
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await sleep(300);
+  const mh3a = await eval_(`(()=>({
+    vis: !document.getElementById("canvasModeHint").hidden,
+    tool: oc.drawTool, poly: oc.poly.length}))()`);
+  console.log("E7 第一次Esc只清草稿(仍在工具內):", mh3a.vis && mh3a.tool === "poly" && !mh3a.poly
+    ? "✓" : "✗ " + JSON.stringify(mh3a));
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await sleep(300);
   const mh3 = await eval_(`(()=>({
     vis: !document.getElementById("canvasModeHint").hidden,
     tool: oc.drawTool, poly: oc.poly.length}))()`);
-  console.log("E7 Esc 清草稿:", !mh3.vis && !mh3.tool && !mh3.poly ? "✓" : "✗ " + JSON.stringify(mh3));
+  console.log("E7 第二次Esc離開工具:", !mh3.vis && !mh3.tool && !mh3.poly ? "✓" : "✗ " + JSON.stringify(mh3));
+  await eval_(`document.getElementById("snapToggle").classList.add("on")`);  /* 還原頁面預設 */
   /* (e) 回選取 → 游標復原、浮標仍隱藏 */
   await eval_(`setOcTool("select")`);
   await sleep(200);
@@ -1510,7 +1552,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
       btn: document.querySelector("#placeSubmit") ? document.querySelector("#placeSubmit").textContent : ""};})()`);
   console.log("P16 放置後:", pf2.placed ? "✓ placed" : "✗",
     "| 步3:", pf2.step3.includes("current") || pf2.step3.includes("done") ? "✓" : "✗ " + pf2.step3,
-    "| 鈕:", pf2.btn.includes("重綁") ? "✓" : "✗ " + pf2.btn);
+    "| 鈕:", pf2.btn.includes("更新放置") ? "✓" : "✗ " + pf2.btn);
   /* (d) 刪除鈕文案含 Ctrl+Z */
   const delTxt = await eval_(`document.getElementById("inspDelete").textContent`);
   console.log("P16 刪除文案:", delTxt.includes("Ctrl+Z") ? "✓" : "✗ " + delTxt);
@@ -1579,7 +1621,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     const items=[...document.querySelectorAll("#edgeGroup .edge-group-item")];
     return {n:items.length,
       dash:items.map(i=>i.querySelector(".edge-path").getAttribute("stroke-dasharray")),
-      labels:[...document.querySelectorAll("#edgeGroup .edge-label")].map(t=>t.textContent)};})()`);
+      labels:[...document.querySelectorAll("#edgeLabelLayer .edge-label")].map(t=>t.textContent)};})()`);
   console.log("P17 連線:", ed.n >= 2 && ed.dash.includes("6 4") && ed.dash.includes("none")
     && ed.labels.includes("包含") && ed.labels.includes("障礙")
     ? "✓ " + ed.labels.join(",") : "✗ " + JSON.stringify(ed));
@@ -1653,17 +1695,20 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     document.querySelector('[data-fi-tab="timber"]').click();
     const tb=document.getElementById("tbA");
     return {tabs, vis: !!tb && tb.offsetParent !== null};})()`);
-  console.log("P18 B2 三頁:", b2.tabs.join() === "prop,timber,grid" ? "✓" : "✗ " + b2.tabs,
+  console.log("P18 B2 四頁:", b2.tabs.join() === "prop,guide,timber,grid" ? "✓" : "✗ " + b2.tabs,
     "| 角材頁tbA可見:", b2.vis ? "✓" : "✗");
   /* (3) B3:邊表方向文字+mm+segmented */
   const b3 = await eval_(`(()=>{
     document.querySelector('[data-fi-tab="prop"]').click();
-    const rows=[...document.querySelectorAll(".edge-row")];
+    /* §5.A.1.10 之後 #inspectorContent 也有一份同構 .edge-row(主畫布外環邊清單),
+       這裡只驗面內右欄,scope 到 #faceInspectorContent 避免兩份互相命中(見 DOM-CONTRACT)。 */
+    const scope=document.querySelector("#faceInspectorContent");
+    const rows=[...scope.querySelectorAll(".edge-row")];
     return {n:rows.length,
       dir:rows.every(r=>/[→←↓↑]/.test(r.querySelector(".edge-dir").textContent)),
       mm:rows.every(r=>r.querySelector(".edge-mm").textContent.trim()==="mm"),
       seg:rows.every(r=>r.querySelectorAll(".fixity-btn").length===2),
-      title:document.querySelector(".ib-sub") && document.querySelector(".ib-sub").textContent};})()`);
+      title:scope.querySelector(".ib-sub") && scope.querySelector(".ib-sub").textContent};})()`);
   console.log("P18 B3 邊表:", b3.n === 4 && b3.dir && b3.mm && b3.seg
     ? "✓" : `✗ ${JSON.stringify(b3)}`, "| 標題:", (b3.title||"").includes("固定") ? "✓" : "✗");
   /* (4) B4:zoom 0.17 → 螢幕格距≥24px、格線<60;zoom 2 → 檔位變小 */
@@ -1732,7 +1777,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     capCls:document.getElementById("workspacePlaceTag").className,
     back:document.getElementById("workspaceBackLabel").textContent})`);
   if (b9a && b9a.__err) console.log("P18 B9 麵包屑: ✗ eval", b9a.__err);
-  else console.log("P18 B9 麵包屑:", b9a.eb === "空間 1 / ● 面 1" ? "✓ " + b9a.eb : `✗ ${b9a.eb}`,
+  else console.log("P18 B9 麵包屑:", b9a.eb === "空間 1 ›" ? "✓ " + b9a.eb : `✗ ${b9a.eb}`,
     "| 天花膠囊:", b9a.cap.includes("天花") ? "✓ " + b9a.cap : `✗ ${b9a.cap}`,
     "| 返回:", b9a.back.includes("物件畫布") ? "✓" : "✗");
   /* (10) 游離面:角材頁停用說明 + 游離膠囊 */
@@ -1937,11 +1982,11 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     mark:(await api("dump")).text.includes("111,222")}))()`);
   console.log("BF2 upload curScene:", JSON.stringify(up1),
     up1.name === "verify-upload-bf.scene" && up1.mark ? "✓" : "✗");
-  await eval_(`document.getElementById("btnScene").click()`);
+  await eval_(`loadScene(curScene.path,curScene.name)`);
   await sleep(1500);
   const up2 = await eval_(`(async()=>{const t=(await api("dump")).text;
     return {mark:t.includes("111,222"),roomA:t.includes("guide 1 1 v spec:主支1中線")}})()`);
-  console.log("BF2 btnScene 不載回 room_a:", JSON.stringify(up2),
+  console.log("BF2 上傳場景重載不載回 room_a:", JSON.stringify(up2),
     up2.mark && !up2.roomA ? "✓" : "✗");
   /* (d) 換場景清焦點:enterFocus → loadScene → focus null、工作區關閉 */
   await eval_(`api("line reset")`);
@@ -2104,10 +2149,12 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     dump: (await api("dump")).text.split("\\n").filter(l => /^guide /.test(l)).length }))()`);
   console.log("BF4 面內 undo 刷新:", JSON.stringify(bf4g),
     bf4g.fe === 2 && bf4g.dump === 2 ? "✓" : "✗");
-  /* (e) Esc 在輸入框不關工作區:聚焦 .edge-len 按 Esc → 工作區仍開 */
+  /* (e) Esc 在輸入框不關工作區:聚焦 .edge-len 按 Esc → 工作區仍開
+     §5.A.1.10 之後 #inspectorContent 也有一份同構 .edge-len(主畫布外環邊清單,
+     可能因 hidden 而 focus() 失敗),scope 到 #faceInspectorContent 避免誤命中。 */
   await eval_(`fiShowTab("prop")`); await sleep(300);
   const bf4hasLen = await eval_(`(() => {
-    const i = document.querySelector(".edge-len");
+    const i = document.querySelector("#faceInspectorContent .edge-len");
     if (i) { i.focus(); } return !!i && document.activeElement === i; })()`);
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
@@ -2206,14 +2253,22 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     ? `✓ n=${p20b3.n} minH=${p20b3.minH}` : `✗ ${JSON.stringify(p20b3)}`);
   await eval_(`leaveFocus()`);
   await sleep(400);
-  /* (i) busy 進度指示:#busyIndicator 在 mutate() 飛行中可見,結束隱藏 */
+  /* (i) v2:短操作不閃動;超過 400 ms 才顯示進度,結束收起。 */
   const p20busy = await eval_(`(async () => {
-    const p = mutate(["boundary 555 outline 0,0 10,0 10,10 0,10"]);
-    const mid = document.getElementById("busyIndicator").hidden;
-    await p;
-    const after = document.getElementById("busyIndicator").hidden;
-    return {mid, after};})()`);
-  console.log("P20 busy指示:", p20busy.mid === false && p20busy.after === true
+    const original = api;
+    let delayed = false;
+    api = async cmd => { if (!delayed) { delayed=true; await new Promise(r=>setTimeout(r,800)); } return original(cmd); };
+    try {
+      const p = mutate(["boundary 555 outline 0,0 10,0 10,10 0,10"]);
+      const early = document.getElementById("busyIndicator").hidden;
+      await new Promise(r=>setTimeout(r,500));
+      const mid = document.getElementById("busyIndicator").hidden;
+      const opacity = getComputedStyle(document.querySelector('.workspace')).opacity;
+      await p;
+      return {early, mid, after:document.getElementById("busyIndicator").hidden, opacity};
+    } finally { api=original; }
+  })()`);
+  console.log("P20 busy指示:", p20busy.early && !p20busy.mid && p20busy.after && p20busy.opacity === '1'
     ? "✓" : `✗ ${JSON.stringify(p20busy)}`);
   /* (j) §S1 全域最小字級 11px:主畫布／面內／空間工作區三畫面全掃描,
      不得有任何可見元素 computed font-size < 11px。
@@ -2359,7 +2414,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   console.log("P21 D2 縮放列移左下:",
     p21d2 && p21d2.left < 100 && p21d2.bottom < 60 && !p21d2.inToolbar
       ? `✓ ${JSON.stringify(p21d2)}` : `✗ ${JSON.stringify(p21d2)}`);
-  await eval_(`document.getElementById("btnObj").click()`);
+  await eval_(`document.getElementById("btnCanvasView").click()`);
   await sleep(300);
 
   /* ================= P22. #inspDelete 對齊 C4(不彈 confirm,toast+可 Ctrl+Z 復原) =================
@@ -2436,7 +2491,8 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   if (gridRefUiOk) passN++; else failN++;
   _log("P23 grid-ref 存檔上傳後足跡與引用鎖:", gridRefUiOk ? "PASS" : "FAIL", JSON.stringify(gridRefUi));
 
-  { // P24–P30 使用獨立作用域，避免與既有測試的輔助函式同名。
+  }
+  { // P24–P32 使用獨立作用域，避免與既有測試的輔助函式同名。
   const check = (name, ok, detail = '') => console.log(name, ok ? '✓' : '✗', JSON.stringify(detail));
   const waitIdle = async () => {
     for (let i=0;i<100;i++) {
@@ -2446,7 +2502,8 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     throw Error('UI did not finish transaction');
   };
   const clickSelector = async sel => {
-    const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+    const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,hit:e.contains(hit),target:hit?.outerHTML?.slice(0,200)}})()`);
+    if (!p.hit) throw Error('Control is not reachable '+sel+' '+JSON.stringify(p));
     await click(p.x,p.y); await sleep(120); await waitIdle();
   };
   const setupRemaining = async lines => {
@@ -2462,6 +2519,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
   check('P24 page identity',await eval_(`location.href === ${JSON.stringify(process.env.GEOMETRY_TEST_URL || 'http://localhost:8765/')} && document.title.length>0 && document.querySelectorAll('button').length>10 && !document.querySelector('vite-error-overlay,nextjs-portal')`));
 
+  if (!process.env.GEOMETRY_UI_REVIEW_ONLY) {
   for (const axis of ['x','y']) for (const center of [-100,-1,0,100]) for (const width of [300,301]) {
     await setupRemaining([`beam 1 along ${axis} from 0 to 1000 at ${center} width ${width} depth 100 top 1000`]);
     await eval_(`selectObject('beam',1)`);
@@ -2518,19 +2576,12 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   for (const scope of ['face','space']) {
     await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
                           'spec 起點 300', 'spec 目標 900', 'guide 1 1 u spec:起點', 'space 1 boundary 1']);
+    await eval_(`enterFocus('${scope}',1)`);
+    await clickSelector(scope==='face' ? '#projToggle' : '[data-ss-tab="proj"]');
+    await sleep(200);
     const pp=await eval_(`(async()=>{
-      await enterFocus('${scope}',1);
-      let svg;
-      if ('${scope}'==='face') {
-        fe.projOpen=true;fe.projViews=new Set([2]);
-        document.querySelector('#projBody').hidden=false;
-        await feRenderProjection();
-        svg=document.querySelector('#projViews [data-view="2"]').closest('svg');
-      } else {
-        document.querySelector('[data-ss-tab="proj"]').click();
-        svg=document.querySelector('#spaceProjSvg');
-      }
-      svg.scrollIntoView({block:'nearest'});
+      const svg='${scope}'==='face' ? document.querySelector('#projViews [data-view="2"]').closest('svg') : document.querySelector('#spaceProjSvg');
+      svg.scrollIntoView({block:'center'});
       const L=(await api('render')).layout.views[2];
       const out=[];
       for(const v of [300,900]) {
@@ -2544,7 +2595,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     const start=(await eval_(`api('dump')`)).text;
     await drag(pp[0].x,pp[0].y,pp[1].x,pp[1].y,6);await waitIdle();
     const after=(await eval_(`api('dump')`)).text;
-    check('P27 '+scope+' projection drag',after!==start && /guide 1 1 u spec:目標/.test(after));
+    check('P27 '+scope+' projection drag',after!==start && /guide 1 1 u spec:目標/.test(after),{points:pp,changed:after!==start,guide:after.match(/guide 1[^\n]+/g)});
     await key(false);
     check('P27 '+scope+' projection one-step undo',(await eval_(`api('dump')`)).text===start);
   }
@@ -2566,7 +2617,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     }
     check('P29 example loads from web directory @'+width,loaded.name==='room_a.scene' && loaded.path!=='room_a.scene' && loaded.ids.includes(1) && !loaded.ids.includes(99) && loaded.status.includes('已載入'),loaded);
   }
-  await eval_(`(async()=>{resetSceneFocus();await api('default');await setView3(false);await renderObjects();await enterFocus('face',1);fiShowTab('prop')})()`);
+  await eval_(`(async()=>{resetSceneFocus();await api('default');await setView3(false);await renderObjects();await enterFocus('face',1);fiShowTab('guide')})()`);
   const beforeImpact = (await eval_(`api('dump')`)).text;
   await eval_(`document.querySelector('#refSpecName').value='主支中線';document.querySelector('#refSpecValue').value='900';document.querySelector('#refSpecSave').click();void 0`);
   await sleep(250);
@@ -2581,6 +2632,757 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   check('P31 invalid impact cannot confirm',await eval_(`document.querySelector('#impact-confirm').disabled && document.querySelectorAll('.impact-violation').length>0`));
   await clickSelector('dialog.reference-impact .impact-actions button:first-child');
   await remainingShot('reference-controls');
+  }
+  console.log('=== P32. UI review v2: reachable panels, stable editing and complete slot workflow ===');
+  const pressKey = async (key,code,vk,modifiers=0) => {
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});
+    await sleep(150); await waitIdle();
+  };
+  const fillInput = async (selector,text) => {
+    await clickSelector(selector);
+    await pressKey('a','KeyA',65,2);
+    await send('Input.insertText',{text});
+  };
+  await send('Emulation.setDeviceMetricsOverride',{width:1382,height:804,deviceScaleFactor:1,mobile:false});
+  await setupRemaining(['boundary 1 outline 0,0 400,0 400,300 0,300','canvas-pos boundary 1 71 81']);
+  const cards = await eval_(`(async()=>{
+    oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();
+    await api('line boundary 2 outline 0,0 200,0 200,300 0,300');await renderObjects();
+    return oc.faces.map(cardBox);
+  })()`);
+  check('M2 new card avoids offset existing bbox',cards.length===2 && (cards[0].x+cards[0].w<=cards[1].x || cards[1].x+cards[1].w<=cards[0].x || cards[0].y+cards[0].h<=cards[1].y || cards[1].y+cards[1].h<=cards[0].y),cards);
+  const quick = await eval_(`[...document.querySelectorAll('.quick-create strong')].map(e=>({w:e.clientWidth,scroll:e.scrollWidth,h:e.getBoundingClientRect().height,text:e.textContent}))`);
+  check('M1 library labels stay one line',quick.length===6 && quick.every(r=>r.h<=20 && r.w>=r.scroll),quick);
+  const pan0=await eval_(`[oc.panX,oc.panY]`);
+  await clickSelector('.object-row[data-kind="boundary"][data-id="1"]');
+  check('M12 visible list selection does not pan',JSON.stringify(pan0)===JSON.stringify(await eval_(`[oc.panX,oc.panY]`)));
+  check('M4 placement submit visible without scrolling',await eval_(`(()=>{const e=document.querySelector('#inspectorContent #placeSubmit'),r=e.getBoundingClientRect();return r.top>56 && r.bottom<innerHeight-32 && e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`));
+  check('M3 M5 M7 T3 contextual controls',await eval_(`document.querySelector('#fileMenuPop').contains(document.querySelector('#btnDatums')) && !document.querySelector('#btnScene') && document.querySelectorAll('.topbar [data-tool]').length===2 && document.querySelector('#cmdPanel').hidden`));
+  await pressKey(':','Semicolon',186,8);
+  check('M7 command shortcut opens focused input',await eval_(`!document.querySelector('#cmdPanel').hidden && document.activeElement.id==='cmd'`));
+  await send('Input.insertText',{text:'spec 測試尺寸 123'});await pressKey('Enter','Enter',13);
+  check('M7 command executes',await eval_(`api('dump').then(r=>r.text.includes('spec 測試尺寸 123'))`));
+  await pressKey('Escape','Escape',27);
+  check('M7 command Escape closes only command',await eval_(`document.querySelector('#cmdPanel').hidden && !oc.focus`));
+  await eval_(`toast('畫布頂部驗證','ok')`);
+  check('M10 toast above canvas, away from minimap',await eval_(`(()=>{const r=document.querySelector('.toast').getBoundingClientRect();return r.top>=56 && r.bottom<200})()`));
+  await clickSelector('.ocard[data-id="1"] .card-enter');
+  check('M8 explicit card entry',await eval_(`oc.focus?.t==='face' && oc.focus.id===1`));
+  check('F1 F3 F4 four tabs, seven tools, five persistent groups',await eval_(`document.querySelectorAll('#faceInspectorTabs [data-fi-tab]').length===4 && document.querySelectorAll('#faceWorkspaceTools [data-face-tool]').length===7 && document.querySelectorAll('#faceLayerList .fl-group').length===5 && document.querySelectorAll('#faceLayerList .fl-empty').length>=3 && document.querySelector('#faceInspectorContent').contains(document.querySelector('#faceShapeButton'))`));
+  await fillInput('#edgeLength0','500');await pressKey('Tab','Tab',9);await sleep(300);
+  const lengthEdit = await eval_(`({focus:document.activeElement.id,a:document.querySelector('#edgeLength0').value,b:document.querySelector('#edgeLength2').value,status:document.querySelector('#status').textContent,loops:oc.bmap[1]})`);
+  check('F2 real length edit retains next keyboard target',lengthEdit.focus==='edgeFixed0' && lengthEdit.a==='500' && lengthEdit.b==='500',lengthEdit);
+  await eval_(`document.querySelector('#gridU').value='100 200';document.querySelector('#placeOX').value='250';document.querySelector('#faceInspectorContent').scrollTop=15;renderFaceInspector()`);
+  check('F2 form drafts survive redraw',await eval_(`document.querySelector('#gridU').value==='100 200' && document.querySelector('#placeOX').value==='250'`));
+  for (const width of [1382,1160,900,680,600]) {
+    await send('Emulation.setDeviceMetricsOverride',{width,height:804,deviceScaleFactor:1,mobile:false});
+    check('T4 workspace rows, title and tools fit @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('#faceWorkspaceTools').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect();return h.height===56 && s.height===32 && a.right<=innerWidth && t.right<=a.left+1 && title.width>0})()`));
+  }
+  await clickSelector('#workspaceToggleRight');
+  const drawerHit=await eval_(`(()=>{const e=document.querySelector('#edgeLength0'),r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {same:e===hit,hit:hit?.outerHTML,rect:{x:r.x,y:r.y}}})()`);
+  check('T2 face drawer belongs to face workspace',drawerHit.same,drawerHit);
+  await remainingShot('ui-v2-mobile-face');
+  await pressKey('Escape','Escape',27);
+  check('T2 drawer Escape retains workspace',await eval_(`oc.focus?.t==='face' && !document.body.classList.contains('drawer-right-open') && document.activeElement.id==='workspaceToggleRight'`));
+  await clickSelector('#workspaceToggleLeft');
+  check('T2 face layer drawer hit target',await eval_(`(()=>{const e=document.querySelector('#faceLayerList .fl-empty'),r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`));
+  await clickSelector('#workspaceBackButton');
+  await clickSelector('#toggleLeft');
+  check('T2 main drawer exposes creation',await eval_(`(()=>{const e=document.querySelector('#btnBox6'),r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`));
+  await pressKey('Escape','Escape',27);
+
+  await setupRemaining(['space 1']);await eval_(`enterFocus('space',1)`);
+  await clickSelector('#workspaceToggleRight');
+  check('S1 empty space exposes all six actions',await eval_(`document.querySelectorAll('#spaceInspectorContent .slot-empty').length===6`));
+  await clickSelector('[data-slot-label="地板"]');
+  check('S1 empty slot starts visible guided creation',await eval_(`!oc.focus && oc.drawTool==='rect' && pendingSlot?.space===1 && !document.querySelector('#canvasModeHint').hidden`));
+  await drag(330,430,510,600);await sleep(450);await waitIdle();
+  const slotDrawn=await eval_(`({focus:oc.focus,pending:pendingSlot,u:document.querySelector('#faceInspectorContent #placeU')?.value,v:document.querySelector('#faceInspectorContent #placeV')?.value,status:document.querySelector('#status').textContent})`);
+  check('S1 drawn face continues into intended placement',slotDrawn.focus?.t==='face' && slotDrawn.pending?.bid===slotDrawn.focus.id && slotDrawn.u==='+y' && slotDrawn.v==='+x',slotDrawn);
+  await fillInput('#edgeLength0','800');await pressKey('Tab','Tab',9);await sleep(200);
+  await fillInput('#edgeLength1','600');await pressKey('Tab','Tab',9);await sleep(200);
+  await clickSelector('#faceInspectorContent #placeSubmit');await sleep(500);
+  const slotPlaced=await eval_(`api('objects').then(r=>({focus:oc.focus,faces:r.faces,spaces:r.spaces,status:document.querySelector('#status').textContent}))`);
+  check('S1 explicit placement returns to original space',slotPlaced.focus?.t==='space' && slotPlaced.focus.id===1 && slotPlaced.faces.length===1 && slotPlaced.faces[0].placed && slotPlaced.spaces[0].members.includes(slotPlaced.faces[0].id),slotPlaced);
+  await pressKey('z','KeyZ',90,2);await sleep(300);
+  check('S1 placement and membership undo together',await eval_(`api('objects').then(r=>r.faces.length===1 && !r.faces[0].placed && r.spaces[0].members.length===0)`));
+  await clickSelector('#workspaceToggleRight');await clickSelector('[data-slot-label="地板"]');
+  await clickSelector('#faceInspectorContent [data-place-preset="天花"]');
+  const slotDirection=await eval_(`({pending:pendingSlot,focus:oc.focus,u:document.querySelector('#faceInspectorContent #placeU').value,v:document.querySelector('#faceInspectorContent #placeV').value,disabled:document.querySelector('#faceInspectorContent #placeSubmit').disabled,valid:document.querySelector('#faceInspectorContent #placeValid').textContent})`);
+  check('S1 changed orientation cannot silently fill wrong slot',slotDirection.disabled,slotDirection);
+  await pressKey('Escape','Escape',27);await clickSelector('#workspaceBackButton');
+
+  await send('Emulation.setDeviceMetricsOverride',{width:1382,height:804,deviceScaleFactor:1,mobile:false});
+  await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000','space 1 boundary 1']);
+  await eval_(`enterFocus('face',1)`);await clickSelector('[data-fi-tab="timber"]');
+  await fillInput('#tbA','35');await clickSelector('#tbPlace');
+  check('F5 timber settings activate placement with matching hint',await eval_(`fe.tool==='timber' && document.activeElement.id==='faceEditorViewport' && document.querySelector('#faceCanvasHint').textContent.includes('35')`));
+  await clickSelector('[data-fi-tab="prop"]');
+  await clickSelector('#placeDetails summary');await clickSelector('#projToggle');
+  await eval_(`renderFaceInspector()`);
+  check('F9 both disclosures keep expanded state',await eval_(`document.querySelector('#placeDetails').open && document.querySelector('#projectionDetails').open`));
+  await clickSelector('#workspaceBackButton');await clickSelector('#btnObj');
+  check('V1 V2 toolbar does not overlap drawing and empty inspector collapses',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===0})()`));
+  await clickSelector('#btnObj');
+  check('V3 selecting three-view twice stays in three-view',await eval_(`!oc.on && [...document.querySelectorAll('.topbar [data-tool]')].every(b=>b.disabled)`));
+  await remainingShot('ui-v2-three-view');
+  await clickSelector('#btnCanvasView');
+  check('V3 canvas switch restores active main tools',await eval_(`oc.on && [...document.querySelectorAll('.topbar [data-tool]')].every(b=>!b.disabled)`));
+
+  /* ================= P33. 主畫布 boundary 檢視器:外環邊 · 尺寸確認清單(RC-POLYGON-PLAN §5.A.1.10,🔒 Q16) =================
+   * P21/P23 編號已被既有段落占用,依 §5.A.1.14 規則往後遞補用 P33。
+   * 涵蓋:清單存在且列數=外環邊數、每列顯示長度 mm 與 F/X 狀態、改長度/切 F/X 後世界對應改變、
+   * 非法長度(0/負/非數字)被拒且世界不變、面內右欄清單與主畫布清單對同一 boundary 顯示一致。 */
+  console.log('=== P33. 主畫布外環邊 · 尺寸確認清單(§5.A.1.10) ===');
+  const readMainEdgeList = () => eval_(`(()=>{
+    const pane = document.querySelector('#inspectorContent');
+    const rows = [...pane.querySelectorAll('.edge-row')];
+    return {
+      n: rows.length,
+      title: pane.textContent.includes('外環邊 · 尺寸確認'),
+      lens: rows.map((_,i)=>document.querySelector('#mainEdgeLength'+i)?.value),
+      fx: rows.map((_,i)=>({
+        f: document.querySelector('#mainEdgeFixed'+i)?.classList.contains('on'),
+        x: document.querySelector('#mainEdgeFree'+i)?.classList.contains('on')
+      }))
+    };
+  })()`);
+  const readFaceEdgeList = () => eval_(`(()=>{
+    const pane = document.querySelector('#faceInspectorContent');
+    const rows = [...pane.querySelectorAll('.edge-row')];
+    return {
+      n: rows.length,
+      lens: rows.map((_,i)=>document.querySelector('#edgeLength'+i)?.value),
+      fx: rows.map((_,i)=>({
+        f: document.querySelector('#edgeFixed'+i)?.classList.contains('on'),
+        x: document.querySelector('#edgeFree'+i)?.classList.contains('on')
+      }))
+    };
+  })()`);
+  const readBoundary1 = () => eval_(`api('boundary 1').then(b=>JSON.stringify(b.loops))`);
+
+  await setupRemaining(['boundary 1 outline 0,0 400,0 400,300 0,300','canvas-pos boundary 1 60 60']);
+  await eval_(`selectObject('boundary',1)`); await sleep(300);
+  const mainList0 = await readMainEdgeList();
+  check('P33-1 主畫布清單存在且列數=外環邊數', mainList0.n===4 && mainList0.title, mainList0);
+  check('P33-2 每列顯示長度mm與F/X狀態(預設全F)', JSON.stringify(mainList0.lens)===JSON.stringify(['400','300','400','300']) &&
+    mainList0.fx.every(v=>v.f && !v.x), mainList0);
+
+  /* 改長度 → outline 座標對應改變(邊0 400→500,寬跟著變,高不變) */
+  await fillInput('#mainEdgeLength0','500'); await pressKey('Tab','Tab',9); await sleep(300);
+  const lenChanged = await eval_(`api('boundary 1').then(b=>{
+    const vs=b.loops[0].verts;
+    return {w: vs[1][0]-vs[0][0], h: vs[2][1]-vs[1][1]};
+  })`);
+  check('P33-3 改長度後 outline 座標對應改變', lenChanged.w===500 && lenChanged.h===300, lenChanged);
+
+  /* 切 F/X → fixity 對應改變,再切回驗證雙向 */
+  await clickSelector('#mainEdgeFree1');
+  const fixChanged = await eval_(`api('boundary 1').then(b=>b.loops[0].fixity[1])`);
+  check('P33-4 切X後 fixity 對應改變', fixChanged===0, fixChanged);
+  await clickSelector('#mainEdgeFixed1');
+  const fixRestored = await eval_(`api('boundary 1').then(b=>b.loops[0].fixity[1])`);
+  check('P33-5 切回F fixity 還原', fixRestored===1, fixRestored);
+
+  /* 非法長度:0、負、非數字 → 拒絕且世界不變 */
+  const beforeIllegal = await readBoundary1();
+  await fillInput('#mainEdgeLength0','0'); await pressKey('Tab','Tab',9); await sleep(300);
+  const afterZero = await readBoundary1();
+  check('P33-6 長度0被拒且世界不變', afterZero===beforeIllegal, {before:beforeIllegal,after:afterZero});
+  await fillInput('#mainEdgeLength0','-50'); await pressKey('Tab','Tab',9); await sleep(300);
+  const afterNeg = await readBoundary1();
+  check('P33-7 負長度被拒且世界不變', afterNeg===beforeIllegal, {before:beforeIllegal,after:afterNeg});
+  const nanResult = await eval_(`commitEdgeLength(1, oc.bmap[1], 0, NaN)`);
+  const afterNaN = await readBoundary1();
+  check('P33-8 非數字長度被拒且世界不變', nanResult===false && afterNaN===beforeIllegal,
+    {nanResult,before:beforeIllegal,after:afterNaN});
+
+  /* 面內工作區右欄清單與主畫布清單對同一 boundary 顯示一致 */
+  await eval_(`enterFocus('face',1)`); await sleep(300);
+  const feList = await readFaceEdgeList();
+  await eval_(`leaveFocus()`); await sleep(200);
+  await eval_(`selectObject('boundary',1)`); await sleep(300);
+  const mainList2 = await readMainEdgeList();
+  check('P33-9 面內與主畫布清單對同一boundary顯示一致',
+    feList.n===mainList2.n && JSON.stringify(feList.lens)===JSON.stringify(mainList2.lens) &&
+    JSON.stringify(feList.fx)===JSON.stringify(mainList2.fx), {feList,mainList2});
+
+  /* ================= P34. polydraft:主畫布「面·多邊形」逐點閉合(diff#1–#9/#11) =================
+   * RC-POLYGON-PLAN.md §5.A.1、POLYDRAFT-API.md、polydraft.js(共用狀態機，本節不改它)。
+   * §5.A.1.14 編號規則:P21–P23/P33 皆已被既有段落占用，依規則遞補為當下最大編號之後的 P34。
+   * 全程固定 oc.zoom=1/panX=0/panY=0(除 P34-14 刻意用非零 pan 驗證「視野不動」)，
+   * 讓螢幕像素座標與世界 mm 座標 1:1 對應，落點可預期。 */
+  console.log('=== P34. 主畫布面·多邊形逐點閉合(polydraft,§5.A.1) ===');
+  const ocOrigin = async () => eval_(`(()=>{const r=document.getElementById('ocv').getBoundingClientRect();
+    return {x:r.left,y:r.top};})()`);
+  /* setupRemaining([]) 重置成完全空世界後,#emptyState(「建立第一個領域物件」提示卡)
+     會蓋在畫布正中央(.empty-illustration 有 pointer-events:auto,120×80px 置中),
+     在多邊形收尾送出新物件、drawObjects() 重繪之前都不會自動收起——草稿期間點擊若
+     剛好落在置中那塊區域會被這張卡片吃掉,不會傳到 #ocv。這裡直接把它隱藏,等真的
+     建出新面後 drawObjects() 會依當下物件數自行重算 hidden,不需要手動復原。 */
+  const emptyWorld = async () => {
+    await setupRemaining([]);
+    await eval_(`document.getElementById('emptyState').hidden = true`);
+  };
+
+  /* diff#1(§5.A.1.1):工具啟用態——按 P 後卡片 active、「選取」取消高亮；V 切回還原 */
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply()`);
+  await clickSelector('[data-tool="select"]');
+  await pressKey('p','KeyP',80);
+  const t1 = await eval_(`({polyActive:document.getElementById('btnNewPoly').classList.contains('active'),
+    selectActive:document.querySelector('[data-tool="select"]').classList.contains('active'),
+    drawTool:oc.drawTool})`);
+  check('P34-1 按 P 後面·多邊形卡 active、選取卡取消高亮', t1.polyActive && !t1.selectActive && t1.drawTool==='poly', t1);
+  await pressKey('v','KeyV',86);
+  const t1b = await eval_(`({polyActive:document.getElementById('btnNewPoly').classList.contains('active'),
+    selectActive:document.querySelector('[data-tool="select"]').classList.contains('active'), drawTool:oc.drawTool})`);
+  check('P34-1b 按 V 切回選取後 active 復原', !t1b.polyActive && t1b.selectActive && !t1b.drawTool, t1b);
+
+  /* diff#2(§5.A.1.2):三段浮標子元素常駐、各自 textContent 非空；≥3 點才出現可點的「閉合」鈕 */
+  await pressKey('p','KeyP',80);
+  const hint0 = await eval_(`(()=>{const h=document.getElementById('canvasModeHint');
+    return {hidden:h.hidden, tool:h.querySelector('.hint-tool')?.textContent,
+      ctx:h.querySelector('.hint-context')?.textContent, kbd:h.querySelector('.hint-kbd')?.textContent,
+      closeHidden:document.getElementById('polyCloseBtn').hidden};})()`);
+  check('P34-2 三段浮標常駐且各自非空(0 點狀態，閉合鈕隱藏)',
+    !hint0.hidden && !!hint0.tool && !!hint0.ctx && !!hint0.kbd && hint0.closeHidden, hint0);
+
+  /* diff#2/#7/#9(§5.A.1.7):3 點後可點「閉合」鈕；末點與起點不同軸→自動補一個直角頂點
+     (點擊數 3 → dump 頂點數 4)；同時是 diff#9 bbox 落點/toast 的前置(下面 P34-14 另測落點細節)。 */
+  const o1 = await ocOrigin();
+  await click(o1.x+100, o1.y+100); await sleep(100);
+  await click(o1.x+400, o1.y+100); await sleep(100);
+  await click(o1.x+400, o1.y+400); await sleep(100);
+  const hint3 = await eval_(`(()=>{const h=document.getElementById('canvasModeHint');
+    return {ctx:h.querySelector('.hint-context')?.textContent, closeHidden:document.getElementById('polyCloseBtn').hidden};})()`);
+  check('P34-3 ≥3 點後「閉合」鈕可見，情境提示含頂點數', !hint3.closeHidden && (hint3.ctx||'').includes('3'), hint3);
+  const beforeClose = await eval_(`oc.faces.length`);
+  await clickSelector('#polyCloseBtn');
+  await sleep(900);
+  const closed3 = await eval_(`(async()=>{
+    const r = await api('objects');
+    const f = r.faces[r.faces.length-1];
+    const b = await api('boundary '+f.id);
+    return {faces:r.faces.length, verts:b.loops[0].verts};
+  })()`);
+  check('P34-3b 點「閉合」鈕成功建面', closed3.faces===beforeClose+1, closed3);
+  check('P34-9 末點不同軸自動補直角(dump 頂點數=點擊數 3 + 1)', closed3.verts.length===4, closed3.verts);
+
+  /* diff#3(🔒 Q15,§5.A.1.3):snapToggle 開時第一點與後續點吸附 oc.gridMm 格線；關時不吸 */
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly');oc.gridMm=250;
+    document.getElementById('snapToggle').classList.contains('on') || document.getElementById('snapToggle').click()`);
+  const o2 = await ocOrigin();
+  await click(o2.x+113, o2.y+240); await sleep(120);
+  const snap1 = await eval_(`oc.polyDraft.pts[0]`);
+  check('P34-4a snapOn 時第一點吸附到 gridMm=250 格線', snap1[0]%250===0 && snap1[1]%250===0, snap1);
+  await click(o2.x+380, o2.y+130); await sleep(120);
+  const snap2 = await eval_(`oc.polyDraft.pts[1]`);
+  check('P34-4b snapOn 時後續點同樣吸附格線', snap2[0]%250===0 && snap2[1]%250===0, snap2);
+  await eval_(`setOcTool('poly'); document.getElementById('snapToggle').classList.remove('on')`);
+  await click(o2.x+113, o2.y+240); await sleep(120);
+  const nosnap = await eval_(`oc.polyDraft.pts[0]`);
+  check('P34-4c snapOff 時不吸附(保留原始像素落點)', nosnap[0]===113 && nosnap[1]===240, nosnap);
+  /* 格線吸附本身測完了；下面 P34-5–P34-15 全部要驗證精確像素落點/座標，
+     跟 diff#3 的預設吸附(gridMm=250)放在一起會讓座標被吸附偏移，
+     所以刻意保持 snapOff 到 P34 段落結束才還原成頁面預設(見最下方)。 */
+
+  /* diff#4(§5.A.1.4):獨立草稿層——pointermove 只重繪 #polyDraftLayer，不重繪整個物件層
+     (用 drawObjects() 內累加的 ocDrawCount 當可觀測訊號：移動滑鼠前後應完全不變)。 */
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+  const o3 = await ocOrigin();
+  await click(o3.x+100, o3.y+100); await sleep(100);
+  const cnt0 = await eval_(`ocDrawCount`);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: o3.x+300, y: o3.y+300 });
+  await sleep(150);
+  const cnt1 = await eval_(`ocDrawCount`);
+  const layerN = await eval_(`document.getElementById('polyDraftLayer').children.length`);
+  check('P34-5 pointermove 不觸發 drawObjects(ocDrawCount 不變)且草稿層有內容',
+    cnt1===cnt0 && layerN>0, { cnt0, cnt1, layerN });
+
+  /* diff#5(§5.A.1.5):鍵入長度——數字鍵累積到 #ocLenInput，Enter 定長落點正確 */
+  await pressKey('5','Digit5',53); await pressKey('0','Digit0',48); await pressKey('0','Digit0',48);
+  const lenBox = await eval_(`({hidden:document.getElementById('ocLenInput').hidden,
+    value:document.getElementById('ocLenInput').value})`);
+  check('P34-6a 按數字鍵後 #ocLenInput 顯示且 value=已鍵入字串', !lenBox.hidden && lenBox.value==='500', lenBox);
+  await pressKey('Enter','Enter',13); await sleep(120);
+  const afterLen = await eval_(`oc.polyDraft.pts`);
+  check('P34-6b Enter 後草稿多一段、長度等於輸入值(600,100)',
+    afterLen.length===2 && afterLen[1][0]===600 && afterLen[1][1]===100, afterLen);
+
+  /* diff#6(§5.A.1.6):靠近既有「非相鄰」頂點 ±8px 出現對齊參考線並吸附該軸——
+     用 3 點構成 L(P0=(100,100) P1=(600,100) P2=(600,400))，游標移到「靠近 P0.x=100
+     但 y 遠離」的位置，驗證吸附來源是頂點對齊而不是單純軸鎖(軸鎖只會鎖到「上一點」P2)。 */
+  await eval_(`setOcTool('poly'); document.getElementById('snapToggle').classList.remove('on')`);
+  const o4 = await ocOrigin();
+  await click(o4.x+100, o4.y+100); await sleep(90);
+  await click(o4.x+600, o4.y+100); await sleep(90);
+  await click(o4.x+600, o4.y+400); await sleep(90);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: o4.x+103, y: o4.y+600 });
+  await sleep(150);
+  const guide = await eval_(`({guides:oc.polyPreview.guides, cur:oc.polyPreview.cur,
+    lines:document.querySelectorAll('#polyDraftLayer .draft-align-guide').length})`);
+  check('P34-7 靠近既有頂點±8px 吸附該軸並畫參考線(對齊非相鄰的起點 x=100)',
+    guide.lines>0 && guide.cur[0]===100 && guide.guides.some(g=>g.axis==='x' && g.value===100), guide);
+  /* snapToggle 保持關閉,下面 P34-8–P34-15 仍需要精確像素座標 */
+
+  /* diff#7(§5.A.1.7):三種閉合觸發(點回起點/Enter/雙擊)在同一形狀下結果一致 */
+  const drawPolyRect = async () => {
+    await emptyWorld();
+    await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+    const o = await ocOrigin();
+    await click(o.x+100, o.y+100); await sleep(90);
+    await click(o.x+500, o.y+100); await sleep(90);
+    await click(o.x+500, o.y+400); await sleep(90);
+    await click(o.x+100, o.y+400); await sleep(90);
+    return o;
+  };
+  let ob = await drawPolyRect();
+  await click(ob.x+100, ob.y+100); await sleep(800);
+  const closeA = await eval_(`api('boundary 1').then(b=>JSON.stringify(b.loops[0].verts))`);
+  ob = await drawPolyRect();
+  await pressKey('Enter','Enter',13); await sleep(800);
+  const closeB = await eval_(`api('boundary 1').then(b=>JSON.stringify(b.loops[0].verts))`);
+  ob = await drawPolyRect();
+  await dblclick(ob.x+100, ob.y+400); await sleep(800);
+  const closeC = await eval_(`api('boundary 1').then(b=>JSON.stringify(b.loops[0].verts))`);
+  check('P34-8 點回起點/Enter/雙擊三種閉合觸發，outline 結果一致',
+    closeA===closeB && closeB===closeC, { closeA, closeB, closeC });
+
+  /* 對抗審查 finding-4 修正:上面 P34-8 只用完美矩形，末點(100,400)與起點(100,100)
+     同軸(共用 x=100)，收尾是直接連回起點，從沒走過「末點與起點不同軸→自動補一個
+     直角轉折」(P34-9 那條路徑)。這裡加一組 3 點 L 形(末點(400,400)與起點(100,100)
+     兩軸都不同)，驗三種閉合觸發在「需要補角」的情況下結果仍然一致。 */
+  const drawPolyL = async () => {
+    await emptyWorld();
+    await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+    const o = await ocOrigin();
+    await click(o.x+100, o.y+100); await sleep(90);
+    await click(o.x+400, o.y+100); await sleep(90);
+    await click(o.x+400, o.y+400); await sleep(90);
+    return o;
+  };
+  let obL = await drawPolyL();
+  await click(obL.x+100, obL.y+100); await sleep(800);
+  const closeLA = await eval_(`api('boundary 1').then(b=>JSON.stringify(b.loops[0].verts))`);
+  obL = await drawPolyL();
+  await pressKey('Enter','Enter',13); await sleep(800);
+  const closeLB = await eval_(`api('boundary 1').then(b=>JSON.stringify(b.loops[0].verts))`);
+  obL = await drawPolyL();
+  await dblclick(obL.x+400, obL.y+400); await sleep(800);
+  const closeLC = await eval_(`api('boundary 1').then(b=>JSON.stringify(b.loops[0].verts))`);
+  check('P34-8b 補角序列(末點與起點不同軸):點回起點/Enter/雙擊三種閉合觸發，outline 結果一致且含自動補角頂點',
+    closeLA===closeLB && closeLB===closeLC &&
+    closeLA==='[[100,100],[400,100],[400,400],[100,400]]', { closeLA, closeLB, closeLC });
+
+  /* diff#8(§5.A.1.8):交叉時橡皮筋轉紅、點擊無效、世界不變 */
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+  const o5 = await ocOrigin();
+  await click(o5.x+100, o5.y+100); await sleep(90);
+  await click(o5.x+100, o5.y+500); await sleep(90);
+  await click(o5.x+500, o5.y+500); await sleep(90);
+  await click(o5.x+500, o5.y+200); await sleep(90);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: o5.x+50, y: o5.y+200 });
+  await sleep(150);
+  const crossState = await eval_(`({error:oc.polyPreview.error,
+    rubberError:!!document.querySelector('#polyDraftLayer .draft-rubber.error')})`);
+  check('P34-10a 下一段與既有邊交叉時橡皮筋轉紅(CROSS)',
+    crossState.error && crossState.error.code==='CROSS' && crossState.rubberError, crossState);
+  const beforeCrossClick = await eval_(`oc.polyDraft.pts.length`);
+  await click(o5.x+50, o5.y+200); await sleep(150);
+  const afterCrossClick = await eval_(`oc.polyDraft.pts.length`);
+  const worldStillEmpty = await eval_(`api('objects').then(r=>r.faces.length)`);
+  check('P34-10b 交叉時點擊無效(頂點數不變)、世界不變',
+    afterCrossClick===beforeCrossClick && worldStillEmpty===0, { beforeCrossClick, afterCrossClick, worldStillEmpty });
+
+  /* diff#8:共線且同向延伸=取代末頂點(延長合併)，不新增頂點 */
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+  const o6 = await ocOrigin();
+  await click(o6.x+100, o6.y+100); await sleep(90);
+  await click(o6.x+300, o6.y+100); await sleep(90);
+  const beforeExtend = await eval_(`oc.polyDraft.pts.length`);
+  await click(o6.x+600, o6.y+100); await sleep(90);
+  const afterExtend = await eval_(`oc.polyDraft.pts`);
+  check('P34-11 共線同向延伸=取代末頂點，不新增頂點',
+    afterExtend.length===beforeExtend && afterExtend[afterExtend.length-1][0]===600, { beforeExtend, afterExtend });
+
+  /* diff#8:Backspace 退回最後一個已定頂點 */
+  const beforeBS = await eval_(`oc.polyDraft.pts.length`);
+  await pressKey('Backspace','Backspace',8); await sleep(120);
+  const afterBS = await eval_(`oc.polyDraft.pts.length`);
+  check('P34-12 Backspace 退回一個已定頂點', afterBS===beforeBS-1, { beforeBS, afterBS });
+
+  /* 🔒 Q14(§5.A.1.8):Esc 三段——只清數字 → 只清草稿(提示再按一次) → 離開工具回選取 */
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+  const o7 = await ocOrigin();
+  await click(o7.x+100, o7.y+100); await sleep(90);
+  await click(o7.x+300, o7.y+100); await sleep(90);
+  await pressKey('4','Digit4',52); await pressKey('2','Digit2',50);
+  const typedNow = await eval_(`oc.polyDraft.typed`);
+  check('P34-13a 鍵入長度中 typed 非空', typedNow==='42', typedNow);
+  await pressKey('Escape','Escape',27); await sleep(150);
+  const esc1 = await eval_(`({typed:oc.polyDraft.typed, pts:oc.polyDraft.pts.length, drawTool:oc.drawTool})`);
+  check('P34-13b 第一次 Esc 只清數字，草稿與工具不變', esc1.typed==='' && esc1.pts===2 && esc1.drawTool==='poly', esc1);
+  await pressKey('Escape','Escape',27); await sleep(150);
+  const esc2 = await eval_(`({pts:oc.polyDraft.pts.length, drawTool:oc.drawTool,
+    toast:[...document.querySelectorAll('#toastRegion .toast')].map(t=>t.textContent).join('|')})`);
+  check('P34-13c 第二次 Esc 清草稿並提示「再按」，仍在工具內', esc2.pts===0 && esc2.drawTool==='poly' && (esc2.toast||'').includes('再按'), esc2);
+  await pressKey('Escape','Escape',27); await sleep(150);
+  const esc3 = await eval_(`({drawTool:oc.drawTool, active:document.getElementById('btnNewPoly').classList.contains('active')})`);
+  check('P34-13d 第三次 Esc 離開工具，工具卡 active 消失', !esc3.drawTool && !esc3.active, esc3);
+
+  /* diff#9/#10/#11(§5.A.1.9/.10/.11):閉合後卡片落 bbox 左上、視野不動、
+     檢視器開啟含 §P33 外環邊清單、toast 含頂點數與尺寸 */
+  await emptyWorld();
+  /* 用小一點的 pan 位移(50,40)+靠近原點的世界座標(100–300),確保無論左右欄開合、
+     視窗寬度多少,落點都遠在 #ocv 可視範圍內——P34-14 只是要證明「視野不動」,
+     不需要真的畫在很遠的地方,離視窗邊緣太近反而會讓點擊落在 #ocv 外面。 */
+  await eval_(`oc.zoom=1;oc.panX=50;oc.panY=40;ocApply();setOcTool('poly')`);
+  const panBefore = await eval_(`[oc.panX,oc.panY]`);
+  const o8 = await ocOrigin();
+  const zoom8 = await eval_(`oc.zoom`), panX8 = await eval_(`oc.panX`), panY8 = await eval_(`oc.panY`);
+  const toScreen = (wx, wy) => ({ x: o8.x + wx*zoom8 + panX8, y: o8.y + wy*zoom8 + panY8 });
+  for (const [wx, wy] of [[100,100],[300,100],[300,300],[100,300]]) {
+    const s = toScreen(wx, wy); await click(s.x, s.y); await sleep(90);
+  }
+  const sClose = toScreen(100, 100);
+  await click(sClose.x, sClose.y); await sleep(900);
+  const closed = await eval_(`(async()=>{
+    const r = await api('objects');
+    const f = r.faces[r.faces.length-1];
+    return { id:f.id, cx:f.cx, cy:f.cy, sel:oc.sel, pan:[oc.panX,oc.panY],
+      edgeList: document.querySelectorAll('#inspectorContent .edge-row').length,
+      toast: [...document.querySelectorAll('#toastRegion .toast')].map(t=>t.textContent).find(t=>t.includes('已建立')) || '' };
+  })()`);
+  check('P34-14 閉合後卡片落 bbox 左上、視野不動、檢視器開啟含 §P33 清單、toast 含頂點數',
+    closed.cx===100 && closed.cy===100 &&
+    closed.pan[0]===panBefore[0] && closed.pan[1]===panBefore[1] &&
+    closed.sel && closed.sel.kind==='boundary' && closed.sel.id===closed.id &&
+    closed.edgeList===4 && (closed.toast||'').includes('4') && (closed.toast||'').includes('頂點'), closed);
+
+  /* diff#11(§5.A.1.11):既有狀態列文案逐字保留 */
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+  const o9 = await ocOrigin();
+  await click(o9.x+100, o9.y+100); await sleep(90);
+  await click(o9.x+300, o9.y+100); await sleep(90);
+  const statusText = await eval_(`document.getElementById('status').textContent`);
+  check('P34-15 狀態列文案「多邊形：已點 N 頂點 · 點回起點閉合(Esc 取消)」逐字保留',
+    statusText === '多邊形：已點 2 頂點 · 點回起點閉合(Esc 取消)', statusText);
+  await eval_(`setOcTool('select'); document.getElementById('snapToggle').classList.add('on')`);  /* 還原頁面預設 */
+
+  /* ================= P35. 面內「重畫外環」逐點閉合改接共用 PolyDraft(diff#12 面內段) =================
+   * RC-POLYGON-PLAN.md §5.A.1.12/.16、POLYDRAFT-API.md §6。續 §P34 之後編號。
+   * 全程固定 fe.zoom=1/panX=0/panY=0，讓螢幕像素座標與面 uv mm 座標 1:1 對應。
+   * polydraft.js 本體不受本節影響(該模組由另一 agent 同時維護 tryClose 收尾驗證，本節只讀)。 */
+  console.log('=== P35. 面內重畫外環逐點閉合(polydraft,diff#12 面內段) ===');
+  const feOrigin = async () => eval_(`(()=>{const r=document.getElementById('faceEditorSvg').getBoundingClientRect();
+    return {x:r.left,y:r.top};})()`);
+  /* 每次都用一個夠大的外環(4000×3000)進場：重畫是整份重建 loops[0]，舊外環正被取代
+     不算「既有」(POLYDRAFT-API.md §6)，這裡只是給新草稿足夠的畫布空間，座標互不干擾。 */
+  const enterFaceRedraw = async () => {
+    await setupRemaining(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000']);
+    await eval_(`(async()=>{ await enterFocus('face', 1);
+      fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply(); })()`);
+    await sleep(250);
+  };
+
+  /* diff#12:進入面內按 e 後草稿層存在 */
+  await enterFaceRedraw();
+  await pressKey('e', 'KeyE', 69);
+  const t35_1 = await eval_(`({tool: fe.tool, layer: !!document.getElementById('feDraftLayer')})`);
+  check('P35-1 面內按 e 後 fe.tool=redraw 且 #feDraftLayer 草稿層存在',
+    t35_1.tool === 'redraw' && t35_1.layer, t35_1);
+
+  /* diff#3/§5.A.1.3:面內 gridMm 不是固定 250，是 feGridStep()(B4 依 zoom 挑距)算出來的值，
+     測試自己讀取這個值再驗證吸附後座標是它的整數倍——snapOn 預設開(#faceSnapToggle checked)。 */
+  const fo2 = await feOrigin();
+  const gridStep2 = await eval_(`feGridStep()`);
+  await click(fo2.x + 13, fo2.y + 8);
+  await sleep(150);
+  const fsnap2 = await eval_(`fe.draft.pts[0]`);
+  check(`P35-2 點擊吸附到 B4 格距(zoom=1→${gridStep2}mm)`,
+    fsnap2[0] % gridStep2 === 0 && fsnap2[1] % gridStep2 === 0, { fsnap2, gridStep2 });
+
+  /* diff#6:靠近既有「非相鄰」頂點 ±8px 出現對齊參考線並吸附該軸(同 P34-7 手法，
+     驗證面內也有這道吸附——關 snapOn 避免格線吸附干擾像素級判斷，用完即還原)。 */
+  await enterFaceRedraw();
+  await eval_(`feSetTool('redraw'); document.getElementById('faceSnapToggle').checked = false`);
+  const fo3 = await feOrigin();
+  await click(fo3.x + 100, fo3.y + 100); await sleep(90);
+  await click(fo3.x + 500, fo3.y + 100); await sleep(90);
+  await click(fo3.x + 500, fo3.y + 400); await sleep(90);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: fo3.x + 103, y: fo3.y + 600 });
+  await sleep(150);
+  const guide3 = await eval_(`({guides: fe.draftPreview.guides, cur: fe.draftPreview.cur,
+    lines: document.querySelectorAll('#feDraftLayer .draft-align-guide').length})`);
+  check('P35-3 靠近既有頂點±8px 吸附該軸並畫參考線(對齊起點 x=100)',
+    guide3.lines > 0 && guide3.cur[0] === 100 &&
+    guide3.guides.some(g => g.axis === 'x' && g.value === 100), guide3);
+
+  /* diff#7/#9:末點與起點不同軸 → 自動補一個直角轉折，dump 頂點數 = 點擊數 3 + 1(同 P34-9) */
+  await enterFaceRedraw();
+  await eval_(`feSetTool('redraw')`);
+  const fo4 = await feOrigin();
+  await click(fo4.x + 100, fo4.y + 100); await sleep(90);
+  await click(fo4.x + 400, fo4.y + 100); await sleep(90);
+  await click(fo4.x + 400, fo4.y + 400); await sleep(90);
+  await pressKey('Enter', 'Enter', 13); await sleep(700);
+  const closed4 = await eval_(`api('boundary 1').then(b => b.loops[0].verts)`);
+  /* 不只驗頂點數(舊碼點 3 下因未達 4 點而拒絕、boundary 維持原狀，巧合也是 4 頂點但內容是
+     沒被取代的原始 4000×3000 外環)——這裡逐點驗證真的是新畫的 L 轉角形狀，
+     [400,400] 之後補上 [100,400] 這個直角轉折點，不是舊外環殘留。 */
+  check('P35-4 末點不同軸自動補直角(dump 頂點數=點擊數 3 + 1，且內容確實是新外環)',
+    JSON.stringify(closed4) === JSON.stringify([[100,100],[400,100],[400,400],[100,400]]), closed4);
+
+  /* diff#8:與自身既有邊交叉時橡皮筋轉紅、點擊無效、世界不變。
+     existingEdges 含自身邊的證明:feDraftOpts() 恆傳 existingEdges:[]（重畫外環沒有
+     「既有」邊可比，見上方 enterFaceRedraw 的說明），CROSS 仍被抓到，證明是
+     PolyDraft.place 內部對 state.pts(草稿自身已定邊)自動比對的結果，不靠 existingEdges
+     陣列本身——與主畫布 P34-10a/b(同樣傳 existingEdges:[])是同一套機制，共用的直接證據。 */
+  await enterFaceRedraw();
+  await eval_(`feSetTool('redraw')`);
+  const fo5 = await feOrigin();
+  await click(fo5.x + 100, fo5.y + 100); await sleep(90);
+  await click(fo5.x + 100, fo5.y + 500); await sleep(90);
+  await click(fo5.x + 500, fo5.y + 500); await sleep(90);
+  await click(fo5.x + 500, fo5.y + 200); await sleep(90);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: fo5.x + 50, y: fo5.y + 200 });
+  await sleep(150);
+  const cross5 = await eval_(`({error: fe.draftPreview.error,
+    rubberError: !!document.querySelector('#feDraftLayer .draft-rubber.error')})`);
+  check('P35-5a 面內與自身既有邊交叉時橡皮筋轉紅(CROSS)',
+    cross5.error && cross5.error.code === 'CROSS' && cross5.rubberError, cross5);
+  const beforeCrossPts = await eval_(`fe.draft.pts.length`);
+  await click(fo5.x + 50, fo5.y + 200); await sleep(150);
+  const afterCrossPts = await eval_(`fe.draft.pts.length`);
+  const worldUnchanged5 = await eval_(`api('boundary 1').then(b => b.loops[0].verts.length)`);
+  check('P35-5b 交叉時點擊無效(頂點數不變)、世界不變',
+    afterCrossPts === beforeCrossPts && worldUnchanged5 === 4,
+    { beforeCrossPts, afterCrossPts, worldUnchanged5 });
+
+  /* diff#7:Enter 閉合與點回起點閉合，同一組點擊序列結果一致(同 P34-8 手法的子集，
+     面內沒有雙擊閉合，兩種既夠) */
+  const drawFaceRect = async () => {
+    await enterFaceRedraw();
+    await eval_(`feSetTool('redraw')`);
+    const o = await feOrigin();
+    await click(o.x + 100, o.y + 100); await sleep(90);
+    await click(o.x + 500, o.y + 100); await sleep(90);
+    await click(o.x + 500, o.y + 400); await sleep(90);
+    await click(o.x + 100, o.y + 400); await sleep(90);
+    return o;
+  };
+  let ofa = await drawFaceRect();
+  await click(ofa.x + 100, ofa.y + 100); await sleep(700);
+  const closeFA = await eval_(`api('boundary 1').then(b => JSON.stringify(b.loops[0].verts))`);
+  ofa = await drawFaceRect();
+  await pressKey('Enter', 'Enter', 13); await sleep(700);
+  const closeFB = await eval_(`api('boundary 1').then(b => JSON.stringify(b.loops[0].verts))`);
+  check('P35-6 Enter 閉合與點回起點閉合結果相同', closeFA === closeFB, { closeFA, closeFB });
+
+  /* UIUX-FIX-PLAN「Esc 三段式決定 🔒」既有七階梯不變——驗其中三級的順序：
+     清鍵入長度(第4級) → 清草稿並提示「再按」(第6級) → 離開工作區(第7級)。 */
+  await enterFaceRedraw();
+  await eval_(`feSetTool('redraw')`);
+  const fo7 = await feOrigin();
+  await click(fo7.x + 100, fo7.y + 100); await sleep(90);
+  await click(fo7.x + 300, fo7.y + 100); await sleep(90);
+  await pressKey('4', 'Digit4', 52); await pressKey('2', 'Digit2', 50);
+  const typed7 = await eval_(`fe.lenBuf`);
+  check('P35-7a 面內鍵入長度中 fe.lenBuf 非空', typed7 === '42', typed7);
+  await pressKey('Escape', 'Escape', 27); await sleep(150);
+  const esc7a = await eval_(`({lenBuf: fe.lenBuf, drag: !!fe.drag, focus: !!oc.focus})`);
+  check('P35-7b 第一次 Esc(第4級)只清鍵入長度，草稿與工作區不變',
+    esc7a.lenBuf === '' && esc7a.drag && esc7a.focus, esc7a);
+  await pressKey('Escape', 'Escape', 27); await sleep(150);
+  const esc7b = await eval_(`({drag: !!fe.drag, focus: !!oc.focus,
+    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join('|')})`);
+  check('P35-7c 第二次 Esc(第6級)清草稿並提示「再按」，仍在工作區',
+    !esc7b.drag && esc7b.focus && esc7b.toast.includes('再按'), esc7b);
+  await pressKey('Escape', 'Escape', 27); await sleep(300);
+  const esc7c = await eval_(`!!oc.focus`);
+  check('P35-7d 第三次 Esc(第7級)離開工作區', esc7c === false, esc7c);
+
+  /* diff#10/§5.A.1.10(既有共用邏輯):閉合後面內右欄「外環邊 · 尺寸確認」清單列數=新邊數 */
+  ofa = await drawFaceRect();
+  await click(ofa.x + 100, ofa.y + 100); await sleep(700);
+  const feList8 = await readFaceEdgeList();
+  check('P35-8 閉合後面內右欄「外環邊 · 尺寸確認」清單列數=新邊數', feList8.n === 4, feList8);
+
+  /* diff#12(🔒 Q15):主畫布 P 與面內 e 對同一組點擊序列產生相同 outline——共用同一份
+     polydraft.js 狀態機的直接證據。
+     對抗審查 finding-4 修正:原本兩側都關吸附、用完美矩形(末點與起點同軸、不走補角)，
+     對 §5.A.1.16 唯一刻意分歧(主畫布 gridMm 固定 250、面內 feGridStep() 依 zoom)零覆蓋
+     ——兩邊各自吸附到自己的格線後,若座標不是共同倍數,結果本該分岔卻沒有測到。
+     這裡兩側吸附都開、改用需要補角的 L 形(末點與起點不同軸)，點擊座標統一取主畫布
+     250 與面內 feGridStep() 當下格距的公倍數(由本測試現場讀 feGridStep() 算，不寫死)，
+     讓吸附後的座標在兩側都精確落在同一點，才真的驗到「不同格距、同一份共用邏輯」。 */
+  const gcd9 = (a, b) => b ? gcd9(b, a % b) : a;
+  await enterFaceRedraw();
+  const feGrid9 = await eval_(`feGridStep()`);
+  await eval_(`leaveFocus()`);
+  const mult9 = 250 * feGrid9 / gcd9(250, feGrid9);   /* 主畫布 250mm 與面內當下格距的公倍數 */
+  /* 座標保持在畫布可視/可點擊範圍內(實測 #ocv 在本測試視窗約 800×700px)，×2 才安全。 */
+  const ptsL9 = [[mult9, mult9], [mult9 * 2, mult9], [mult9 * 2, mult9 * 2]];  /* L 形,末點與起點不同軸 */
+
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly');oc.gridMm=250;
+    document.getElementById('snapToggle').classList.contains('on') || document.getElementById('snapToggle').click()`);
+  const oP = await ocOrigin();
+  for (const [px, py] of ptsL9) { await click(oP.x + px, oP.y + py); await sleep(90); }
+  await click(oP.x + ptsL9[0][0], oP.y + ptsL9[0][1]); await sleep(700);
+  const outlineP = await eval_(`api('objects').then(async r => { const f = r.faces[r.faces.length - 1];
+    const b = await api('boundary ' + f.id); return JSON.stringify(b.loops[0].verts); })`);
+  await eval_(`setOcTool('select')`);
+
+  await enterFaceRedraw();
+  await eval_(`feSetTool('redraw'); document.getElementById('faceSnapToggle').checked = true`);
+  const oE = await feOrigin();
+  for (const [px, py] of ptsL9) { await click(oE.x + px, oE.y + py); await sleep(90); }
+  await click(oE.x + ptsL9[0][0], oE.y + ptsL9[0][1]); await sleep(700);
+  const outlineE = await eval_(`api('boundary 1').then(b => JSON.stringify(b.loops[0].verts))`);
+
+  const vertsP9 = JSON.parse(outlineP), vertsE9 = JSON.parse(outlineE);
+  check('P35-9 主畫布 P 與面內 e 對「需要補角的 L 形」序列(兩側吸附都開,座標取兩邊格距公倍數)產生逐點相同的 outline、頂點數=點擊數+1(共用的直接證據，覆蓋 gridMm 250 vs feGridStep() 的刻意分歧)',
+    outlineP === outlineE && vertsP9.length === 4 && vertsE9.length === 4,
+    { outlineP, outlineE, mult9, feGrid9 });
+
+  /* ================= P36. 對抗審查「面·多邊形逐點閉合」UI 接線 4 個 finding =================
+   * finding-1/2/3 是 app.js 行為修正，finding-4 已併入上面 P34-8b/P35-9。 */
+  console.log('=== P36. 對抗審查 4 個 finding 修正(polydraft UI 接線) ===');
+
+  /* finding-1(CONFIRMED,DOM-CONTRACT.md §oc.poly 鏡射契約):resetSceneFocus/enterFocus/
+     leaveFocus 只清 oc.poly,沒有重新指派 oc.polyDraft，三個呼叫點各驗一次。 */
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+  let o36 = await ocOrigin();
+  await click(o36.x+100, o36.y+100); await sleep(90);
+  await click(o36.x+300, o36.y+100); await sleep(90);
+  const before1a = await eval_(`oc.polyDraft.pts.length`);
+  await eval_(`resetSceneFocus(); drawObjects()`);
+  const f1a = await eval_(`({ptsLen:oc.polyDraft.pts.length,
+    layerN:document.getElementById('polyDraftLayer').children.length})`);
+  check('P36-1a resetSceneFocus(loadfile/清空/換場景共用路徑)完整重置 oc.polyDraft,不是只清 oc.poly',
+    before1a===2 && f1a.ptsLen===0 && f1a.layerN===0, { before: before1a, after: f1a });
+
+  await setupRemaining(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000']);
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+  o36 = await ocOrigin();
+  await click(o36.x+100, o36.y+100); await sleep(90);
+  await click(o36.x+300, o36.y+100); await sleep(90);
+  const before1b = await eval_(`oc.polyDraft.pts.length`);
+  await eval_(`enterFocus('face', 1)`); await sleep(200);
+  const f1b = await eval_(`({ptsLen:oc.polyDraft.pts.length,
+    layerN:document.getElementById('polyDraftLayer').children.length})`);
+  check('P36-1b enterFocus(進入面內)完整重置 oc.polyDraft',
+    before1b===2 && f1b.ptsLen===0 && f1b.layerN===0, { before: before1b, after: f1b });
+
+  /* leaveFocus:面內既有流程不會弄髒 oc.polyDraft(草稿是 fe.draft 的事)，這裡直接在
+     leaveFocus() 呼叫前手動塞髒狀態，驗這個呼叫點本身的重置契約——對應 app.js 內
+     leaveFocus() 的程式碼位置，不依賴「能否從 UI 自然走到這個髒狀態」。 */
+  await eval_(`oc.polyDraft = Object.assign({}, oc.polyDraft, {pts:[[10,10],[20,10]]}); oc.poly = oc.polyDraft.pts;`);
+  const before1c = await eval_(`oc.polyDraft.pts.length`);
+  await eval_(`leaveFocus()`); await sleep(200);
+  const f1c = await eval_(`({ptsLen:oc.polyDraft.pts.length,
+    layerN:document.getElementById('polyDraftLayer').children.length})`);
+  check('P36-1c leaveFocus(離開面內)完整重置 oc.polyDraft',
+    before1c===2 && f1c.ptsLen===0 && f1c.layerN===0, { before: before1c, after: f1c });
+
+  /* finding-2(實測確認,見下方 before/after):doUndoRedo() 的 renderObjects()→drawObjects()
+     整份重畫只建立空 #polyDraftLayer，不會自動補回進行中的草稿——草稿線段閃一下才等
+     下一次 pointermove 補回來。先建一個有 undo 歷史的物件，再開始草稿、Ctrl+Z(直接呼叫
+     doUndoRedo，等效於既有鍵盤/按鈕綁定)，驗撤銷後草稿層內容不變。 */
+  await setupRemaining(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000']);
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly')`);
+  const o36b = await ocOrigin();
+  await click(o36b.x+300, o36b.y+300); await sleep(90);
+  await click(o36b.x+600, o36b.y+300); await sleep(90);
+  const facesBefore2 = await eval_(`api('objects').then(r=>r.faces.length)`);
+  const before2 = await eval_(`({ptsLen:oc.polyDraft.pts.length,
+    layerN:document.getElementById('polyDraftLayer').children.length})`);
+  await eval_(`doUndoRedo('undo')`); await sleep(300);
+  const facesAfter2 = await eval_(`api('objects').then(r=>r.faces.length)`);
+  const after2 = await eval_(`({ptsLen:oc.polyDraft.pts.length,
+    layerN:document.getElementById('polyDraftLayer').children.length})`);
+  check('P36-2 主畫布落 2 點後 Ctrl+Z(doUndoRedo)真的執行撤銷(世界物件數變化)、草稿頂點數不變且 #polyDraftLayer 草稿元素數不變(不因整份重畫閃空)',
+    facesBefore2===1 && facesAfter2===0 &&
+    before2.ptsLen===2 && after2.ptsLen===2 &&
+    before2.layerN>0 && before2.layerN===after2.layerN,
+    { facesBefore2, facesAfter2, before: before2, after: after2 });
+
+  /* finding-3(CONFIRMED):鍵入長度出錯(CROSS/BACKTRACK/TOO_MANY/OUT_OF_RANGE)先前只有
+     一次性 toast，和滑鼠落點的持久回饋(狀態列/.hint-context/紅橡皮筋)不對稱。
+     主畫布段:沿用 P34-10a 同一組「C 形」座標與滑鼠落點(500,200)→(50,200)方向，
+     改成鍵入長度 450(等效於把候選點落在同一個會 CROSS 的位置)觸發同一種錯誤，
+     驗狀態列 + .hint-context + 紅橡皮筋三項持久回饋都到齊。 */
+  await emptyWorld();
+  await eval_(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('poly');
+    document.getElementById('snapToggle').classList.remove('on')`);
+  const o36c = await ocOrigin();
+  await click(o36c.x+100, o36c.y+100); await sleep(90);
+  await click(o36c.x+100, o36c.y+500); await sleep(90);
+  await click(o36c.x+500, o36c.y+500); await sleep(90);
+  await click(o36c.x+500, o36c.y+200); await sleep(90);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: o36c.x+50, y: o36c.y+200 });
+  await sleep(150);
+  await pressKey('4','Digit4',52); await pressKey('5','Digit5',53); await pressKey('0','Digit0',48);
+  await pressKey('Enter','Enter',13); await sleep(150);
+  const t3a = await eval_(`({
+    statusText: document.getElementById('status').textContent.replace('✗','[X]'),
+    hintCtx: document.getElementById('canvasModeHint').querySelector('.hint-context').textContent,
+    rubberError: !!document.querySelector('#polyDraftLayer .draft-rubber.error'),
+    typed: oc.polyDraft.typed, ptsLen: oc.polyDraft.pts.length
+  })`);
+  check('P36-3a 主畫布鍵入會交叉的長度後 Enter,狀態列與 .hint-context 顯示警示文字、橡皮筋轉紅(不再只有一次性 toast)',
+    /交叉/.test(t3a.statusText) && /交叉/.test(t3a.hintCtx) && t3a.rubberError &&
+    t3a.typed==='450' && t3a.ptsLen===4, t3a);
+
+  await pressKey('Escape','Escape',27); await sleep(150);
+  const t3a2 = await eval_(`({
+    hintCtx: document.getElementById('canvasModeHint').querySelector('.hint-context').textContent,
+    rubberError: !!document.querySelector('#polyDraftLayer .draft-rubber.error'),
+    typed: oc.polyDraft.typed
+  })`);
+  check('P36-3a2 主畫布清數字(Esc 第一階)後鍵入長度錯誤態消失(hint 回一般文案、橡皮筋不再紅)',
+    t3a2.typed==='' && !t3a2.rubberError && !/交叉/.test(t3a2.hintCtx), t3a2);
+  await eval_(`setOcTool('select'); document.getElementById('snapToggle').classList.add('on')`);  /* 還原頁面預設 */
+
+  /* 面內段:同一種「C 形」座標(P35-5a 同款)，面內沒有 .hint-context 容器(只有主畫布
+     #canvasModeHint 有這個結構，面內工作區沒有對應元素)，改驗狀態列 + 紅橡皮筋。 */
+  await enterFaceRedraw();
+  await eval_(`feSetTool('redraw'); document.getElementById('faceSnapToggle').checked = false`);
+  const fo36 = await feOrigin();
+  await click(fo36.x+100, fo36.y+100); await sleep(90);
+  await click(fo36.x+100, fo36.y+500); await sleep(90);
+  await click(fo36.x+500, fo36.y+500); await sleep(90);
+  await click(fo36.x+500, fo36.y+200); await sleep(90);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: fo36.x+50, y: fo36.y+200 });
+  await sleep(150);
+  await pressKey('4','Digit4',52); await pressKey('5','Digit5',53); await pressKey('0','Digit0',48);
+  await pressKey('Enter','Enter',13); await sleep(150);
+  const t3b = await eval_(`({
+    statusText: document.getElementById('status').textContent.replace('✗','[X]'),
+    rubberError: !!document.querySelector('#feDraftLayer .draft-rubber.error'),
+    typed: fe.draft.typed, ptsLen: fe.draft.pts.length
+  })`);
+  check('P36-3b 面內鍵入會交叉的長度後 Enter,狀態列顯示警示文字、橡皮筋轉紅(面內沒有 .hint-context,狀態列+紅橡皮筋是對應的持久回饋;不再只有一次性 toast)',
+    /交叉/.test(t3b.statusText) && t3b.rubberError && t3b.typed==='450' && t3b.ptsLen===4, t3b);
+
+  await pressKey('Escape','Escape',27); await sleep(150);
+  const t3b2 = await eval_(`({
+    rubberError: !!document.querySelector('#feDraftLayer .draft-rubber.error'),
+    typed: fe.lenBuf
+  })`);
+  check('P36-3b2 面內清數字(Esc 第一階)後鍵入長度錯誤態消失(橡皮筋不再紅)',
+    t3b2.typed==='' && !t3b2.rubberError, t3b2);
+  await eval_(`document.getElementById('faceSnapToggle').checked = true; leaveFocus()`);  /* 還原頁面預設 */
+
   check('P30 no uncaught browser exceptions',excN===0,excN);
   }
 

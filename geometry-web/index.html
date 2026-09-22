@@ -34,45 +34,41 @@
       <button class="tool-button" type="button" data-tool="pan" title="平移 (H 或空白鍵)">
         <span data-icon="hand"></span><span>平移</span><kbd>H</kbd>
       </button>
-      <button class="tool-button" type="button" data-tool="rect" title="＋面·矩形（畫布拖曳）">
-        <span data-icon="rectangle"></span><span>面·矩形</span><kbd>R</kbd>
-      </button>
-      <button class="tool-button" type="button" data-tool="poly" title="＋面·多邊形（逐點閉合）">
-        <span data-icon="vertex"></span><span>面·多邊形</span><kbd>P</kbd>
-      </button>
     </nav>
 
     <div class="top-actions">
-      <button id="btnDatums" class="secondary-button" type="button">共用基準</button>
+      <button id="toggleLeft" class="icon-button panel-toggle left-toggle" type="button" title="物件庫" aria-label="物件庫" aria-expanded="false"><span data-icon="layers"></span></button>
+      <button id="toggleRight" class="icon-button panel-toggle right-toggle" type="button" title="檢查器" aria-label="檢查器" aria-expanded="false"><span data-icon="inspect"></span></button>
       <button id="btnUndo" class="icon-button" type="button" title="復原 (Ctrl+Z)" aria-label="復原"><span data-icon="undo"></span></button>
       <button id="btnRedo" class="icon-button" type="button" title="重做 (Ctrl+Y)" aria-label="重做"><span data-icon="redo"></span></button>
       <span class="toolbar-separator" aria-hidden="true"></span>
       <div id="viewSwitch" class="segmented" role="group" aria-label="視圖切換">
-        <button id="btnCanvasView" class="seg active" type="button">物件畫布</button>
-        <button id="btnObj" class="seg" type="button" title="開/關三視圖總覽"><span data-icon="layers"></span>三視圖</button>
+        <button id="btnCanvasView" class="seg active" type="button" title="物件畫布" aria-label="物件畫布" aria-pressed="true"><span data-icon="space"></span><span>物件畫布</span></button>
+        <button id="btnObj" class="seg" type="button" title="三視圖" aria-label="三視圖" aria-pressed="false"><span data-icon="layers"></span><span>三視圖</span></button>
       </div>
       <span class="toolbar-separator" aria-hidden="true"></span>
       <div id="fileMenu" class="menu">
-        <button id="fileMenuBtn" class="secondary-button" type="button" aria-haspopup="menu">
+        <button id="fileMenuBtn" class="secondary-button" type="button" aria-haspopup="menu" aria-label="檔案">
           <span>檔案</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
         </button>
         <div id="fileMenuPop" class="menu-pop" role="menu" hidden>
           <button id="btnOpen" class="menu-item" type="button"><span data-icon="upload"></span>開啟 .scene…</button>
-          <button id="btnScene" class="menu-item" type="button">載入所選場景</button>
+          <button id="btnDatums" class="menu-item" type="button"><span data-icon="guide"></span>共用基準</button>
           <button id="btnEx" class="menu-item" type="button">載入範例</button>
-          <a class="menu-item" href="/axioms" target="_blank" rel="noopener">公理閱讀器</a>
+          <a class="menu-item" href="/axioms" target="_blank" rel="noopener">公理閱讀器 <span aria-label="另開分頁">↗</span></a>
           <hr class="menu-sep">
-          <button id="btnClear" class="menu-item" type="button">清空</button>
+          <button id="btnClear" class="menu-item danger" type="button"><span data-icon="trash"></span>清空場景</button>
         </div>
       </div>
       <input id="file" type="file" accept=".scene" hidden>
-      <button id="btnExport" class="primary-button" type="button"><span data-icon="download"></span>匯出 .scene</button>
+      <button id="btnExport" class="secondary-button" type="button" title="匯出 .scene" aria-label="匯出 .scene"><span data-icon="download"></span><span>匯出 .scene</span></button>
     </div>
   </header>
 
   <main class="workspace">
     <aside class="sidebar sidebar-left" aria-label="物件庫">
+      <button type="button" class="drawer-close left-toggle" data-close-panel="left" aria-label="關閉物件庫">關閉 ×</button>
       <div class="sidebar-search">
         <label class="search-control" title="搜尋物件">
           <span data-icon="search"></span>
@@ -137,6 +133,7 @@
       </section>
 
       <section id="v3Panel" class="sidebar-section v3-panel" hidden aria-label="三視圖視圖與圖層">
+        <label class="v3-surf-label">工作面 <select id="workSurf"></select></label>
         <div class="section-label-row"><span class="section-label">視圖</span></div>
         <div class="v3-check-col">
           <label><input type="checkbox" data-v3-view="0" checked> 正面</label>
@@ -155,7 +152,15 @@
     </aside>
 
     <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
-      <div id="canvasModeHint" class="canvas-mode-hint" hidden></div>
+      <!-- diff#2(§5.A.1.2):三段浮標(工具名/情境提示/kbd)+ ≥3 點時可點的「閉合」鈕 -->
+      <div id="canvasModeHint" class="canvas-mode-hint" hidden>
+        <span class="hint-tool"></span>
+        <span class="hint-context"></span>
+        <span class="hint-kbd"></span>
+        <button id="polyCloseBtn" type="button" class="hint-close-btn" hidden>閉合</button>
+      </div>
+      <!-- diff#5(§5.A.1.5):鍵入長度浮動框,沿用 .fe-len-input 樣式 -->
+      <input id="ocLenInput" class="fe-len-input" type="text" hidden aria-label="段長 mm" readonly>
       <svg id="ocv">
         <defs>
           <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5"
@@ -175,11 +180,11 @@
 
       <div id="viewToolbar" class="view-toolbar" hidden>
         <div class="v3-seg" role="group" aria-label="三視圖工具">
-          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="檢視／選取">檢視</button>
-          <button type="button" class="v3-seg-btn" data-v3-tool="rect" title="拉矩形建面">▭ 矩形</button>
-          <button type="button" class="v3-seg-btn" data-v3-tool="poly" title="畫多邊形建面">⬠ 多邊形</button>
-          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="挖矩形孔">▨ 挖孔</button>
-          <button type="button" class="v3-seg-btn" data-v3-tool="edit" title="編輯邊界">✥ 編輯</button>
+          <button type="button" class="v3-seg-btn active" data-v3-tool="view" title="檢視／選取"><span data-icon="pointer"></span>檢視</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="rect" title="拉矩形建面"><span data-icon="rectangle"></span>矩形</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="poly" title="畫多邊形建面"><span data-icon="vertex"></span>多邊形</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="hole" title="挖矩形孔"><span data-icon="hole"></span>挖孔</button>
+          <button type="button" class="v3-seg-btn" data-v3-tool="edit" title="編輯邊界"><span data-icon="edit"></span>編輯</button>
         </div>
         <select id="tool" class="v3-native-select" aria-hidden="true" tabindex="-1">
           <option value="view">檢視／選取</option>
@@ -188,7 +193,6 @@
           <option value="hole">▨ 挖矩形孔</option>
           <option value="edit">✥ 編輯邊界</option>
         </select>
-        <label class="v3-surf-label">工作面 <select id="workSurf"></select></label>
         <input id="newZ" type="number" value="0" step="100"
                style="width:76px" title="新平面高度 z（mm）" hidden>
       </div>
@@ -217,6 +221,13 @@
         <span class="toolbar-separator vertical"></span>
         <button id="snapToggle" class="mini-toggle on" type="button" aria-pressed="true" title="格線吸附">吸</button>
         <button id="gridToggle" class="mini-toggle on" type="button" aria-pressed="true" title="顯示格線">格</button>
+        <!-- diff#3(🔒 Q15):多邊形頂點吸附格距,與 snapToggle 共用開關、各自獨立間距值 -->
+        <select id="polyGridSize" class="mini-toggle" title="多邊形格線間距" aria-label="多邊形格線間距(mm)">
+          <option value="100">100</option>
+          <option value="250" selected>250</option>
+          <option value="300">300</option>
+          <option value="500">500</option>
+        </select>
       </div>
 
       <!-- D2:三視圖獨立左下縮放列(樣式沿用主畫布 .canvas-controls),與 #viewToolbar 分離 -->
@@ -237,6 +248,7 @@
     </section>
 
     <aside class="sidebar sidebar-right" aria-label="物件檢查器">
+      <button type="button" class="drawer-close right-toggle" data-close-panel="right" aria-label="關閉檢查器">關閉 ×</button>
       <div id="inspectorEmpty" class="inspector-empty">
         <div class="inspector-empty-icon"><span data-icon="inspect"></span></div>
         <h2>尚未選取物件</h2>
@@ -261,7 +273,8 @@
     </div>
     <div class="status-right">
       <span id="statusSummary" class="status-summary"></span>
-      <input id="cmd" placeholder="› boundary｜placement｜surface｜space｜guide｜timber｜place｜move｜reset" autocomplete="off">
+      <button id="cmdToggle" class="icon-button compact" type="button" title="指令列 (:)" aria-label="指令列" aria-expanded="false">›</button>
+      <div id="cmdPanel" class="command-panel" hidden><label for="cmd">進階指令</label><input id="cmd" placeholder="輸入指令，Enter 執行 · Esc 關閉" autocomplete="off"></div>
     </div>
   </footer>
 </div>
@@ -270,7 +283,7 @@
     <header class="object-workspace-topbar">
       <div class="object-workspace-trail">
         <button id="workspaceBackButton" type="button" class="workspace-back-button"><span>←</span> <span id="workspaceBackLabel">物件畫布</span></button>
-        <span id="workspaceTypeIcon" class="face-layer-icon">▱</span>
+        <span id="workspaceTypeIcon" class="face-layer-icon" data-icon="face"></span>
         <div class="workspace-title-copy">
           <small id="workspaceEyebrow">面內工作區</small>
           <strong id="workspaceTitle">面</strong>
@@ -284,27 +297,31 @@
         <button type="button" class="workspace-tool" data-face-tool="insert" title="插入凹口 (i)"><span data-icon="notch"></span><span>凹口</span><kbd>I</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="timber" title="角材 (t)"><span data-icon="timber"></span><span>角材</span><kbd>T</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="redraw" title="重畫外環 (e)"><span data-icon="redraw"></span><span>外環</span><kbd>E</kbd></button>
-        <button type="button" class="workspace-tool" id="faceShapeButton" title="形狀庫"><span data-icon="layers"></span><span>形狀</span></button>
         <button type="button" class="workspace-tool" data-face-tool="pan" title="平移 (h/空白鍵)"><span data-icon="hand"></span><span>平移</span><kbd>H</kbd></button>
-        <span class="workspace-tool-separator"></span>
-        <button type="button" id="faceUndoButton" class="workspace-icon-button" title="復原 (Ctrl+Z)"><span data-icon="undo"></span></button>
-        <button type="button" id="faceRedoButton" class="workspace-icon-button" title="重做 (Ctrl+Y)"><span data-icon="redo"></span></button>
-        <span class="workspace-tool-separator"></span>
-        <button type="button" id="workspaceFitButton" class="workspace-icon-button" title="顯示全部 (f)"><span data-icon="fit"></span></button>
+      </nav>
+      <nav id="spaceWorkspaceTools" class="face-workspace-tools" aria-label="空間工具" hidden>
+        <button id="spaceAddMembers" class="workspace-tool" type="button"><span data-icon="plus"></span><span>收成員</span></button>
+        <button id="spacePlaceColumn" class="workspace-tool" type="button" title="點一下平面圖放柱"><span data-icon="column"></span><span>點放柱</span></button>
+        <button id="spacePlaceBeam" class="workspace-tool" type="button" title="拖一段平面圖放樑"><span data-icon="beam"></span><span>拖放樑</span></button>
       </nav>
       <div class="object-workspace-actions">
-        <button type="button" id="workspaceDoneButton" class="primary-button" title="完成並返回 (Esc)"><span>完成並返回</span></button>
+        <button id="workspaceToggleLeft" class="workspace-icon-button panel-toggle left-toggle" type="button" title="物件清單" aria-label="物件清單" aria-expanded="false"><span data-icon="layers"></span></button>
+        <button id="workspaceToggleRight" class="workspace-icon-button panel-toggle right-toggle" type="button" title="檢查器" aria-label="檢查器" aria-expanded="false"><span data-icon="inspect"></span></button>
+        <button type="button" id="faceUndoButton" class="workspace-icon-button" title="復原 (Ctrl+Z)" aria-label="復原"><span data-icon="undo"></span></button>
+        <button type="button" id="faceRedoButton" class="workspace-icon-button" title="重做 (Ctrl+Y)" aria-label="重做"><span data-icon="redo"></span></button>
+        <button type="button" id="workspaceFitButton" class="workspace-icon-button" title="顯示全部 (f)" aria-label="顯示全部"><span data-icon="fit"></span></button>
       </div>
     </header>
     <main id="objectWorkspaceContent" class="object-workspace-content">
       <div id="faceWorkspaceLayout" class="face-workspace-layout">
         <aside class="inner-panel face-layer-panel">
+          <button type="button" class="drawer-close left-toggle" data-close-panel="left">關閉 ×</button>
           <section class="inner-section">
             <div class="inner-section-title"><span>面內物件</span><span id="faceLayerCount">0</span></div>
             <div id="faceLayerList" class="face-layer-list"></div>
           </section>
         </aside>
-        <section id="faceEditorViewport" class="face-editor-viewport tool-select">
+        <section id="faceEditorViewport" class="face-editor-viewport tool-select" tabindex="-1" aria-label="面編輯畫布">
           <svg id="faceEditorSvg" class="face-editor-svg"><g id="faceEditorRoot"></g></svg>
           <input id="feLenInput" class="fe-len-input" type="text" hidden
                  aria-label="段長 mm" readonly>
@@ -319,30 +336,35 @@
             <button id="feZoomIn" class="icon-button" type="button" title="放大"><span data-icon="plus"></span></button>
             <button id="feZoomFit" class="icon-button" type="button" title="顯示全部 (f)"><span data-icon="fit"></span></button>
             <span class="toolbar-separator vertical"></span>
-            <label class="face-mini-opt" title="吸附格線"><input id="faceSnapToggle" type="checkbox" checked><span>吸</span></label>
-            <label class="face-mini-opt" title="顯示格線"><input id="faceGridToggle" type="checkbox" checked><span>格</span></label>
+            <label class="face-mini-opt mini-toggle" title="吸附格線"><input id="faceSnapToggle" type="checkbox" checked><span>吸附</span></label>
+            <label class="face-mini-opt mini-toggle" title="顯示格線"><input id="faceGridToggle" type="checkbox" checked><span>格線</span></label>
             <label class="face-mini-opt face-grid-size" title="吸附格距">
+              格距
               <select id="faceGridSizeSelect">
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50" selected>50</option>
                 <option value="100">100</option>
-              </select>
+              </select> mm
             </label>
           </div>
           <div id="faceCoordinateReadout" class="face-coordinate-readout">u 0 v 0 mm</div>
         </section>
         <aside class="inner-panel face-inspector-panel">
+          <button type="button" class="drawer-close right-toggle" data-close-panel="right">關閉 ×</button>
           <nav id="faceInspectorTabs" class="fi-tabs" aria-label="檢視器分頁">
             <button type="button" class="fi-tab active" data-fi-tab="prop">屬性</button>
+            <button type="button" class="fi-tab" data-fi-tab="guide">參考線</button>
             <button type="button" class="fi-tab" data-fi-tab="timber">角材</button>
             <button type="button" class="fi-tab" data-fi-tab="grid">網格</button>
           </nav>
           <div id="faceInspectorContent"></div>
+          <button type="button" class="btn shape-action" id="faceShapeButton" title="形狀庫"><span data-icon="layers"></span>套用形狀庫（L／U／T）…</button>
         </aside>
       </div>
       <div id="spaceWorkspaceLayout" class="space-workspace-layout" hidden>
         <aside class="inner-panel space-boundary-panel">
+          <button type="button" class="drawer-close left-toggle" data-close-panel="left">關閉 ×</button>
           <section class="inner-section">
             <div class="inner-section-title"><span>成員面</span><span id="spaceMemberCount">0</span></div>
             <div id="spaceMemberList" class="space-boundary-list"></div>
@@ -362,7 +384,6 @@
           <div data-ss-pane="plan" class="ss-pane">
             <div class="space-plan-strip">
               <div class="space-plan-head">
-                <span title="點放柱 · 拖放樑">平面示意</span>
                 <span class="space-plan-tools">
                   <label class="plan-chip" title="點一下放柱（見方 mm）">柱<select id="planColSize">
                     <option>500</option><option selected>600</option>
@@ -376,7 +397,7 @@
                     <option value="400x700">400×700</option>
                     <option value="custom">自訂</option></select>
                     <input id="planBeamW" class="plan-custom" type="number"
-                      min="100" step="50" value="300" title="寬" hidden>×<input
+                      min="100" step="50" value="300" title="寬" hidden><span class="plan-size-separator">×</span><input
                       id="planBeamD" class="plan-custom" type="number"
                       min="100" step="50" value="500" title="深" hidden></label>
                 </span>
@@ -391,6 +412,7 @@
           </div>
         </section>
         <aside class="inner-panel space-info-panel">
+          <button type="button" class="drawer-close right-toggle" data-close-panel="right">關閉 ×</button>
           <div id="spaceInspectorContent"></div>
         </aside>
       </div>
@@ -399,7 +421,7 @@
       <div><span id="workspaceToolStatus">工具：選取</span>
       <span class="status-divider"></span>
       <span id="workspaceSelectionStatus"></span></div>
-      <div class="ws-kbd-hints"><kbd>V</kbd> 選取 <kbd>L</kbd> 線 <kbd>R</kbd> 開口 <kbd>I</kbd> 凹口 <kbd>T</kbd> 角材 <kbd>E</kbd> 外環 <kbd>F</kbd> 全圖 <kbd>Esc</kbd> 返回</div>
+      <div class="ws-kbd-hints" id="workspaceKeyHints"><kbd>L</kbd> 參考線 <kbd>R</kbd> 開口 <kbd>T</kbd> 角材 <kbd>Esc</kbd> 返回</div>
     </footer>
   </section>
 
@@ -518,6 +540,7 @@
 <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
 
 <script src="reference-ui.js"></script>
+<script src="polydraft.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

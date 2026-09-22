@@ -2607,3 +2607,73 @@ apply_place_line 的四個(`if (timber->placed) {`、`world_find_placement(world
 **為什麼這輪不做**:第 5 流(文件與導讀同步)的工作,要逐面板重讀程式,不是順手能收的;
 GEO-100 記過「改 C 要同步 make_guide.py 的 callout」但沒有守門測試,所以一路飄到現在——
 建議做的時候順手把 `check_panels.py` 加進 tests 的固定清單,讓它以後會紅。
+
+### GEO-180 ✅ 已做(2026-09-22)P1:「面·多邊形——逐點閉合(正交)」設計澄清落地(主畫布 P + 面內 e 共用狀態機)
+
+使用者提供 dc 互動文件(12 條「修改建議 vs 現況」+ 7 格狀態畫面),由多個 agent 分工、fresh 驗證、對抗審查,
+主迴圈只拆工與整合。**四個紅燈先一次問完**(決策佇列 Q13–Q16 🔒):直接在工作區做(與 codex 未提交變更共存)、
+主畫布 P 的 Esc 三段照澄清做而面內 🔒 階梯不動、補直角兩處都做且共用狀態機、尺寸確認清單兩處都可編輯。
+
+**規格層**:`RC-POLYGON-PLAN.md` §5.A.1(12 條改寫成可驗證規格句 + 狀態轉移表 + cdp 編號分配 + 舊測試相容)、
+`DOM-CONTRACT.md` 新節、新檔 `docs/POLYDRAFT-API.md`(模組介面 SSOT,含閉合驗證設計原則)。基線 cdp 315 ✓。
+
+**Stage 3a 尺寸確認清單**(diff#10,🔒 Q16):`edgeListRowsHTML(loops, idPrefix)` 共用列產生;主畫布與面內都呼叫同一份
+`commitEdgeLength` / `commitEdgeFixity`;cdp §P33 九條(改長度 → dump outline 變、切 F/X → fixity 變、非法長度 → 世界不變、
+兩處清單一致);315 → 324 ✓。fresh 驗證通過。
+
+**Stage 2 主畫布 P 接線**(diff#1–9、#11):`objDrawDown / objPolyTryClose / objPolyEnter / objPolyBackspace / objPolyEscStep /
+objPolyPreviewMove / renderPolyDraftLayer / objFinishPoly / objEmitFace` 全部改呼叫 `PolyDraft.*`;獨立草稿層 `#polyDraftLayer`
+(`ocDrawCount` 當可觀測訊號);三段浮標 + 「閉合」鈕;格線吸附 `gridMm`(預設 250);鍵入長度;對齊參考線;三種閉合;Esc 三段;
+閉合後卡片落 bbox 左上、視野不動、開檢視器、toast。cdp §P34 共 24 條;`serve.py` 白名單加 `/polydraft.js`。
+順手修一個真 UX bug:畫多邊形時卡片「進入›」熱區會搶走點擊、不落頂點。324 → 345 ✓,3 條舊 P15 斷言與拍板語意矛盾留給 3b 更新。
+
+**Stage 3b 面內 e 接線**(diff#12):`fe.draft` 對等 `oc.polyDraft`;`feGridStep()` 抽出 Phase 5 B4 依 zoom 的格距供格線與吸附共用;`feDown` redraw 分支改呼叫 `PolyDraft.place / tryClose`,`feMove` 分派 `feDraftPreviewMove`;`feDraftTryClose / feCommitDraft / feDraftApplyLen` 取代 `feDedupe / feRedrawClose / feRedrawApplyLen`(刪除,不留兩套);面內 Esc 🔒 七階不動,只把「清鍵入長度」「清草稿」兩級改呼叫模組;`#feDraftLayer` 沿用 `.draft-*` 樣式。三條舊 P15 斷言依拍板語意改(關吸附再測;Esc 拆成「第一次只清草稿」「第二次才離開」)。cdp §P35 13 條(格距、參考線、補角逐點比對、自身邊 CROSS、Enter = 點回起點、Esc 三級順序、清單列數、P 與 e 同序列同 outline);345 → 362 ✓。
+
+**驗證**:fresh 驗證員(整體):cdp 362 ✓ / 0 ✗、polydraft 70/70、DOM 合約雙向一致、`serve.py` 只多一行、§2 與 Esc 🔒 段未動;指出三視圖舊 poly 工具仍是第二套手寫軸鎖(範圍外 → GEO-181)。對抗審查(UI 接線):未發現繞過模組,Esc 階梯與 pendingSlot 交互正確;4 個中低 finding 全部修掉、各有紅 → 綠斷言(§P36 8 條 + P34-8b + P35-9 補強):三處重置沒同步 `oc.polyDraft` 鏡射、undo 中草稿層閃空、鍵入長度出錯只有一次性 toast、兩處一致性測試用的矩形不走補角。最終 **371 ✓ / 0 ✗**。
+
+**與 codex 的共存**:工作區同時有 codex 2026-09-22 02:47 未提交的「第二輪 UI 修正(40 項)」(app.js / app.css / index.html /
+cdp_test.js / DOM-CONTRACT / UIUX-FIX-PLAN),使用者選擇直接在其上做(Q13),兩者在 app.js 內不可分,**同一 commit 進版**,
+commit 訊息明寫。`objEmitFace` 的 `pendingSlot` 流程是 codex 的,本輪只在 P 工具閉合路徑依 §5.A.1.9 調整、§P32 全綠。
+
+### GEO-176 ✅ 已做(2026-09-22)P1:`polydraft.js` 共用草稿狀態機 + core.exe 跨層裁判;第一輪對抗審查 F1/F2
+
+`geometry-web/polydraft.js`(純邏輯、UMD、零 DOM)+ `polydraft_test.js`(node:test)。牙先行:前一個 agent 被中斷前已寫 44 條測試,
+接手者審完再實作;**跨層裁判**:隨機正交草稿 `tryClose` 的結果組場景檔送 `core.exe --scene`,接受/拒絕必須一致。
+第一版 44/44、210 例 100%——但對抗審查(adversarial-reviewer)抓到 **F1**:直接閉合分支完全不驗自交;**F2**:補直角候選只比對
+`existingEdges`(主畫布傳空陣列,等於不驗);**F3**:兩個產生器都走不到收尾/補角路徑,「100% 一致」不構成反證。
+修:`loopHasSelfCross` + 三個非單調產生器(220 例);47/47。
+
+### GEO-177 ✅ 已做(2026-09-22)P2:polydraft 第二輪——G1 錯誤碼誤判、G2 裁判盲區
+
+**G1**:補角候選與既有頂點重合時 `dedupeLoop` 單趟去重連坐吃掉真正角點,拒絕結論對但錯誤碼變 TOO_FEW(應 NO_CORNER)。
+**G2**:`judgeAgainstCore` 對 TOO_FEW/DEGENERATE 直接 skip,錯誤碼正確性零偵測力。修:候選去共線後湊不齊 4 頂點視為不可行;
+裁判不再 skip,核心只有兩句粗粒度拒絕訊息,對照表照實記錄不硬湊;50/50。
+
+### GEO-178 ✅ 已做(2026-09-22)P1:polydraft 第三輪(升 opus)——閉合驗證改成原則設計,形狀守恆不變式
+
+第三輪複審抓到 **G3**(嚴重):直接閉合分支在收尾段與首段共線重疊時,去共線把起點 F 吃掉,`tryClose` 靜默送出「巧合合法但不是
+使用者畫的」矩形(raw 5 點核心拒、deduped 4 點核心收);**G4**(根因):`applyTypedLength` 完全不跑 CROSS/BACKTRACK。
+同一子任務 sonnet 連兩輪修不到根因 → 依調度守則帶完整軌跡升 opus。重寫(匯出不變):
+- 檔頭「閉合驗證的設計原則」:每段新邊同一道檢查;閉合驗證對 **raw 環**做(`ringGeometryError` 逐條對齊 `poly_loop_is_valid`
+  含首末邊排除,外加相鄰邊只准共享端點);`dedupeLoop` 只化簡不判合法;`adjacencyRelation` 是共享端點兩段的唯一判準。
+- **形狀守恆斷言**套在每個 ok:輸出頂點都來自 raw、raw 每個頂點落在輸出邊上、有向面積相等非零——先跑紅時連隨機走位都抓到 G3 同病。
+- 三組產生器 210/220/120 一致率 100%;59/59。兩個舊測試期望被收緊(以前靠去共線丟掉使用者畫過的突出段才湊出 ok,現在 NO_CORNER),
+  使用者端表現是「某些畫法要多補一個頂點」。第四輪複審:F1/F2/G1/G3/G4 全部 CONFIRMED 關閉,主線可定稿。
+
+### GEO-179 ✅ 已做(2026-09-22)P2:polydraft 前置先驗補齊——頂點上限 TOO_MANY、座標範圍 OUT_OF_RANGE
+
+核心 `POLY_MAX_VERTICES = 32`(`current_geometry.c:198`,解析層與 `poly_loop_is_valid` 各擋一次,錯誤訊息兼管太少與太多,
+核心分不出)→ 模組鏡射,`evaluateNextPoint` 落點當下擋、`tryClose` 化簡後再擋;上限用 core.exe 實測(32 接受、33/34 拒絕),
+核心改上限測試會紅。幾何事實:正交簡單環頂點數恆偶數,所以「32 + 補角 = 33」不可能,tryClose 的 TOO_MANY 只是最後一道防線。
+第四輪複審 **H1**:座標範圍沒鏡射 `COORD_LIMIT`(±100,000,000 mm),超界的面 UI 閉合成功、核心拒絕。修:鏡射 `COORD_LIMIT`(來源 `:43-47`,兩端含等號;`:239` 逐點驗),落點當下回 `OUT_OF_RANGE`(含吸附/延長/鍵入長度算出的點與首點),`evaluateClosedRing` 對 raw 環逐頂點驗,補角分支照實回報不收斂成 NO_CORNER;邊界用 core.exe 實測定(±1e8 接受、±1e8+1 拒絕);70/70,三組產生器仍 100%。
+
+**教訓**:同一根源連三輪各修一角,是「打補丁」而不是「改原則」的典型;對抗審查每輪都用 core.exe 交叉驗證才逼出原則重寫。
+另:前景 subagent 會被使用者任何訊息中斷,長任務一律背景派工(已記 memory)。
+
+### GEO-181 待辦 P3:三視圖畫布的舊「多邊形」工具仍是第二套手寫軸鎖(`canvasDown / canvasMove`),UI 可達
+
+GEO-180 的 fresh 驗證指出:`app.js` 約 712–763 的三視圖 `tool === "poly"`(`index.html` `data-v3-tool="poly"` 按鈕)
+仍用自己的軸鎖(`Math.abs(du) >= Math.abs(dv)`)與 Manhattan 式回起點閉合,不經 `PolyDraft`,沒有補直角、前端先驗、
+頂點/座標上限。現況地圖與 DOM-CONTRACT 都把它標為「同名殭屍」、本輪範圍外,但它確實存在且使用者點得到。
+**選項**(需拍板):(a) 改接 `PolyDraft`(三視圖座標系另接一組 opts,吸附格距沿用主畫布 250);(b) 移除按鈕與程式碼
+(主畫布 P 工具已完整取代);(c) 保留但在 UI 標示「舊版,無先驗」。我傾向 (b):同一件事三套邏輯只會再飄。

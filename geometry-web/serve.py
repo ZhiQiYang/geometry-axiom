@@ -142,7 +142,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif self.path == "/app.css":
             self._send((HERE / "app.css").read_bytes(),
                        "text/css; charset=utf-8")
-        elif self.path in {"/app.js", "/reference-ui.js"}:
+        elif self.path in {"/app.js", "/reference-ui.js", "/polydraft.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")
         elif self.path == "/axioms":
