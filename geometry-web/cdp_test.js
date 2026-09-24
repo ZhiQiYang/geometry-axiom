@@ -3546,6 +3546,48 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     check('P38 規則拒絕(ok:false)不自動存', fbList().length===before3.length);
   }
 
+  console.log('=== P39. 主畫布 Delete/Backspace 刪除選取的卡片 ===');
+  const faceExists = id => eval_(`api("objects").then(r=>r.faces.some(f=>f.id===${id}))`);
+  const selectCard = async id => { await eval_(`(()=>{selectObject("boundary",${id});document.activeElement&&document.activeElement.blur()})()`); await sleep(150); };
+  await setupRemaining(['boundary 51 outline 0,0 1000,0 1000,800 0,800','canvas-pos boundary 51 60 60']);
+  await selectCard(51);
+  await pressKey('Delete','Delete',46);
+  await sleep(300);
+  check('P39 Delete 刪除選取的面', !(await faceExists(51)));
+  check('P39 刪除後 toast 提示可復原', await eval_(`[...document.querySelectorAll('#toastRegion .toast')].some(t=>t.textContent.includes('51')&&t.textContent.includes('復原'))`));
+  await pressKey('z','KeyZ',90,2);
+  await sleep(300);
+  check('P39 Ctrl+Z 復原被 Delete 刪掉的面', await faceExists(51));
+  await eval_(`renderObjects()`); await sleep(200);
+  await selectCard(51);
+  await pressKey('Backspace','Backspace',8);
+  await sleep(300);
+  check('P39 Backspace 同樣刪除選取的面', !(await faceExists(51)));
+  await pressKey('z','KeyZ',90,2); await sleep(300);
+  await eval_(`renderObjects()`); await sleep(200);
+  await selectCard(51);
+  await eval_(`document.getElementById('searchInput').focus()`);
+  await pressKey('Backspace','Backspace',8);
+  check('P39 焦點在輸入框時 Backspace 不刪卡片', await faceExists(51));
+  await eval_(`document.activeElement.blur()`);
+  await selectCard(51);
+  await eval_(`setOcTool('poly')`); await sleep(150);
+  await eval_(`oc.sel={kind:'boundary',id:51}`);
+  await pressKey('Backspace','Backspace',8);
+  await pressKey('Delete','Delete',46);
+  check('P39 多邊形工具中 Delete/Backspace 不刪卡片', await faceExists(51));
+  await pressKey('Escape','Escape',27); await pressKey('Escape','Escape',27); await pressKey('Escape','Escape',27);
+  await eval_(`(async()=>{resetSceneFocus();await api('default');await renderObjects()})()`);
+  const p39Before = (await eval_(`apiRequest('dump')`)).text;
+  await selectCard(1);
+  /* 被引用的面:核心回 I8a 影響預覽,deleteObject 停在原生對話框等確認——不能用 pressKey(它會 waitIdle) */
+  for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Delete',code:'Delete',windowsVirtualKeyCode:46});
+  for (let i=0;i<30 && !(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`));i++) await sleep(100);
+  check('P39 刪除被引用的面先跳影響預覽,不直接刪', await eval_(`!!document.querySelector('dialog.reference-impact[open]')`) && await faceExists(1));
+  await pressKey('Escape','Escape',27);
+  await sleep(300);
+  check('P39 影響預覽 Esc 取消後世界不變', !(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)) && await faceExists(1) && (await eval_(`apiRequest('dump')`)).text === p39Before);
+
   }
 
   chrome.kill();

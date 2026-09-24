@@ -949,7 +949,7 @@ window.addEventListener("keydown", async e => {
     return;
   }
   /* 主畫布快捷鍵（§5.8）：v 選取、h 平移、f 全部顯示、1 縮放 100%、
-     空白暫時平移、/ 聚焦搜尋 */
+     空白暫時平移、/ 聚焦搜尋、Delete/Backspace 刪除選取 */
   if (oc.on && !oc.focus) {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" ||
         e.target.tagName === "TEXTAREA") return;
@@ -965,6 +965,14 @@ window.addEventListener("keydown", async e => {
       }
       if (k === "Backspace") { objPolyBackspace(); return; }
       if (k === "Enter") { objPolyEnter(); return; }
+    }
+    /* Delete/Backspace 刪除選取的卡片:與右欄「刪除」鈕同一個 deleteObject(可 Ctrl+Z 復原、
+       被引用時核心拒絕);矩形/多邊形/挖孔工具進行中不作用,輸入框已在上方放行給原生編輯。 */
+    if ((k === "Delete" || k === "Backspace") && oc.sel && !oc.drawTool && !oc.rect) {
+      e.preventDefault();
+      if (oc.busy) { toast("操作進行中,請稍候"); return; }
+      await deleteObject(oc.sel.kind, oc.sel.id);
+      return;
     }
     const km = { v: "select", h: "pan", r: "rect", p: "poly" };
     if (km[k.toLowerCase()]) { setOcTool(km[k.toLowerCase()]); return; }
@@ -4181,7 +4189,7 @@ function renderInspector() {
     (sel.kind === "space"
       ? `<button class="btn wide" id="inspMembers"><i data-icon="edit"></i><span>＋收成員</span></button>` : "") +
     `<button class="btn danger wide" id="inspDelete"><i data-icon="trash"></i><span>` +
-    `刪除${name}（可 Ctrl+Z 復原）</span></button>` +
+    `刪除${name}（Delete 鍵 · 可 Ctrl+Z 復原）</span></button>` +
     `</div>`;
   hydrateIcons(pane);
   if (sel.kind === "boundary") bindPlaceForm(pane, sel.id);
@@ -4251,7 +4259,7 @@ function renderRcInspector(pane, kind, o) {
     `<div class="inspector-block"><div class="ib-title">操作</div>` +
     `<div class="btn-col">` +
     `<button class="btn" id="inspLocate"><i data-icon="locate"></i><span>定位卡片</span></button>` +
-    `<button class="btn danger" id="inspDelete"><i data-icon="trash"></i><span>刪除</span></button>` +
+    `<button class="btn danger" id="inspDelete"><i data-icon="trash"></i><span>刪除（Delete 鍵）</span></button>` +
     `</div></div>`;
   hydrateIcons(pane);
   const num = id => { const el = pane.querySelector("#" + id); return el && el.value !== "" ? +el.value : null; };
