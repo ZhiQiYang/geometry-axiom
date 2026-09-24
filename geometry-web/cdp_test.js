@@ -3383,6 +3383,113 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     t3b2.typed==='' && !t3b2.rubberError, t3b2);
   await eval_(`document.getElementById('faceSnapToggle').checked = true; leaveFocus()`);  /* 還原頁面預設 */
 
+  console.log('=== P37. 工作區狀態與手機操作回歸 ===');
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
+  await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000']);
+  await eval_(`enterFocus('face',1)`);
+  await clickSelector('#placeDetails > summary');
+  await fillInput('#faceInspectorContent #placeOZ','3000');
+  await clickSelector('#faceInspectorContent #placeSubmit');
+  check('P37 placement update refreshes header',await eval_(`document.querySelector('#workspacePlaceTag').textContent.includes('3000')`));
+  await clickSelector('#faceUndoButton');
+  check('P37 placement undo refreshes form and header',await eval_(`document.querySelector('#faceInspectorContent #placeOZ').value==='2500' && document.querySelector('#workspacePlaceTag').textContent.includes('2500')`));
+  await clickSelector('#faceRedoButton');
+  check('P37 placement redo refreshes form and header',await eval_(`document.querySelector('#faceInspectorContent #placeOZ').value==='3000' && document.querySelector('#workspacePlaceTag').textContent.includes('3000')`));
+  if (!await eval_(`document.querySelector('#placeDetails').open`)) await clickSelector('#placeDetails > summary');
+  await fillInput('#faceInspectorContent #placeOZ','3100');
+  await eval_(`feAfterChange()`);
+  check('P37 inspector rebuild preserves unsubmitted placement draft and focus',await eval_(`document.querySelector('#faceInspectorContent #placeOZ').value==='3100' && document.activeElement.id==='placeOZ' && feSurf(1).origin[2]===3000`));
+
+  /* Pause the second boundary response, leaving the existing face SVG interactive.
+     This exercises the actual refresh and pointer handlers, not a copied cache model. */
+  await setupRemaining([
+    'boundary 1 outline 0,0 4000,0 4000,3000 0,3000',
+    'boundary 2 outline 0,0 4000,0 4000,3000 0,3000'
+  ]);
+  await eval_(`enterFocus('face',2)`);
+  const p37Exceptions=excN;
+  await eval_(`(()=>{
+    const original=api, oldCache=oc.bmap;
+    const gate={original,oldCache,waiting:false,blocked:false};
+    window.__p37BoundaryGate=gate;
+    api=async function(cmd){
+      if(cmd==='boundary 2' && !gate.blocked){
+        gate.blocked=true;gate.waiting=true;
+        await new Promise(resolve=>{gate.release=resolve});
+      }
+      return original(cmd);
+    };
+    gate.refresh=renderObjects();
+  })()`);
+  try {
+    let pendingBoundary=false;
+    for(let i=0;i<100;i++) {
+      pendingBoundary=await eval_(`window.__p37BoundaryGate.waiting`);
+      if(pendingBoundary) break;
+      await sleep(25);
+    }
+    const cache=await eval_(`({same:oc.bmap===window.__p37BoundaryGate.oldCache,ids:Object.keys(oc.bmap),focus:oc.focus?.id})`);
+    check('P37 pending multi-face refresh retains complete published cache',pendingBoundary && cache.same && cache.ids.includes('1') && cache.ids.includes('2') && cache.focus===2,cache);
+    await clickSelector('#faceEditorRoot [data-face-hit="e:0:0"]');
+    check('P37 existing face edge remains interactive while boundary refresh waits',excN===p37Exceptions && await eval_(`oc.focus?.id===2 && !!oc.bmap[2] && !document.querySelector('#objectWorkspace').hidden`));
+  } finally {
+    await eval_(`(async()=>{
+      const gate=window.__p37BoundaryGate;
+      api=gate.original;
+      if(gate.release)gate.release();
+      await gate.refresh;
+      delete window.__p37BoundaryGate;
+    })()`);
+  }
+
+  for (const kind of ['face','space']) {
+    await setupRemaining(kind==='face' ? ['boundary 1 outline 0,0 4000,0 4000,3000 0,3000'] : ['space 1']);
+    await eval_(`enterFocus('${kind}',1)`);
+    await clickSelector('#faceUndoButton');
+    const gone=await eval_(`({focus:oc.focus,edit:oc.edit,hidden:document.querySelector('#objectWorkspace').hidden,svg:document.querySelector('#faceEditorRoot').childElementCount})`);
+    check('P37 undo removes focused '+kind+' and clears workspace',!gone.focus && !gone.edit && gone.hidden && gone.svg===0,gone);
+  }
+
+  for (const width of [390,320]) {
+    await send('Emulation.setDeviceMetricsOverride',{width,height:804,deviceScaleFactor:1,mobile:false});
+    await eval_(`closePanels();closeMenus()`);await sleep(200);
+    const buttons=await eval_(`[...document.querySelectorAll('.topbar button')].filter(e=>e.getClientRects().length && getComputedStyle(e).visibility!=='hidden').map(e=>{const r=e.getBoundingClientRect();return {id:e.id,inside:r.left>=0 && r.right<=innerWidth && r.top>=0 && r.bottom<=innerHeight,hit:e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}})`);
+    check('P37 all visible topbar buttons fit and are reachable @'+width,buttons.length>0 && buttons.every(b=>b.inside && b.hit),buttons);
+    if (width===390) await eval_(`showCommand(true)`);
+    await clickSelector('#toggleLeft');
+    await clickSelector('#searchInput');
+    await pressKey('Escape','Escape',27);
+    check('P37 search Escape closes drawer and restores toggle @'+width,await eval_(`!document.body.classList.contains('drawer-left-open') && document.activeElement.id==='toggleLeft'`));
+    if (width===390) {
+      check('P37 search Escape leaves background command panel open',await eval_(`!document.querySelector('#cmdPanel').hidden`));
+      await eval_(`showCommand(false)`);
+    }
+  }
+  await send('Emulation.setDeviceMetricsOverride',{width:600,height:804,deviceScaleFactor:1,mobile:false});
+  for (const [button,dialog,field,cancel] of [
+    ['#btnBox6','#box6Dialog','#box6W','#box6Cancel'],
+    ['#btnNewColumn','#rcDialog','#rcW','#rcCancel']
+  ]) {
+    await clickSelector('#toggleLeft');
+    await clickSelector(button);
+    await clickSelector(field);
+    check('P37 drawer closes before opening '+dialog,await eval_(`!document.body.classList.contains('drawer-left-open') && !document.querySelector('${dialog}').hidden && document.activeElement.id==='${field.slice(1)}'`));
+    await clickSelector(cancel);
+  }
+
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
+  /* geometry-core/transactions.inc::reference_default_world defines spec 主支中線 500,
+     guide 1 and dependent timber 3, so editing it must open an impact preview. */
+  await eval_(`(async()=>{resetSceneFocus();await api('default');await renderObjects();await enterFocus('face',1)})()`);
+  await clickSelector('[data-fi-tab="guide"]');
+  const p37Before=(await eval_(`apiRequest('dump')`)).text;
+  await fillInput('#refSpecName','主支中線');
+  await fillInput('#refSpecValue','900');
+  await clickSelector('#refSpecSave');
+  check('P37 reference form opens native impact dialog',await eval_(`!!document.querySelector('dialog.reference-impact[open]')`));
+  await pressKey('Escape','Escape',27);
+  check('P37 impact Escape cancels only dialog and retains face',await eval_(`!document.querySelector('dialog.reference-impact[open]') && oc.focus?.t==='face' && oc.focus.id===1 && !document.querySelector('#objectWorkspace').hidden`));
+  check('P37 impact Escape leaves model unchanged',(await eval_(`apiRequest('dump')`)).text===p37Before);
   check('P30 no uncaught browser exceptions',excN===0,excN);
   }
 

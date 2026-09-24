@@ -82,6 +82,7 @@ function inspectorState(pane, bid) {
   const a = document.activeElement;
   return { focus: pane.contains(a) ? a.id : "", scroll: pane.parentElement.scrollTop,
     ownScroll: pane.scrollTop,
+    placement: pane.dataset.placement,
     drafts: [...pane.querySelectorAll("input[id],select[id]")]
       .filter(e => /^(tb|ref|grid|place[OUV])/.test(e.id)).map(e => [e.id, e.value]),
     details: [...pane.querySelectorAll("details[id]")].map(e => [e.id, e.open]) };
@@ -89,6 +90,9 @@ function inspectorState(pane, bid) {
 function restoreInspectorState(pane, state) {
   if (!state) return;
   for (const [id, value] of state.drafts) {
+    /* A model change (including undo) replaces placement values; ordinary
+       redraws still preserve an unfinished placement draft. */
+    if (/^place[OUV]/.test(id) && state.placement !== pane.dataset.placement) continue;
     const e = pane.querySelector(`#${id}`); if (e) e.value = value;
   }
   for (const [id, open] of state.details) {
@@ -849,10 +853,13 @@ $("btnExport").onclick = async () => {
   setStatus("✓ 已匯出 canvas_export.scene");
 };
 window.addEventListener("keydown", async e => {
-  if (e.key === "Escape" && !$("cmdPanel").hidden) { e.preventDefault(); showCommand(false); return; }
+  /* Native modal dialogs own keyboard input, including their cancel event.
+     Let Escape cancel the preview without also navigating the workspace. */
+  if (document.querySelector("dialog[open]")) return;
   if (e.key === "Escape" && (document.body.classList.contains("drawer-left-open") || document.body.classList.contains("drawer-right-open"))) {
     e.preventDefault(); closePanels(true); return;
   }
+  if (e.key === "Escape" && !$("cmdPanel").hidden) { e.preventDefault(); showCommand(false); return; }
   if (e.key === ":" && !oc.focus && !/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) {
     e.preventDefault(); showCommand(true); return;
   }
@@ -1381,7 +1388,6 @@ async function renderObjects() {
   if (!r.ok || seq !== ocSeq) return;
   oc.faces = r.faces; oc.spaces = r.spaces;
   oc.columns = r.columns || []; oc.beams = r.beams || [];
-  oc.bmap = {};
   const sf = await api("surfaces");
   oc.surfs = (sf && sf.ok) ? sf.surfaces : [];
 
@@ -1400,14 +1406,18 @@ async function renderObjects() {
     await api(`line canvas-pos ${kind} ${o.id} ${cx} ${cy}`);
   }
 
-  /* 面卡縮圖需要的邊界資料一次取齊。 */
-  await Promise.all(oc.faces
-    .filter(f => f.kind === "boundary")
-    .map(async f => {
-      const b = await api("boundary " + f.id);
-      if (b.ok) oc.bmap[f.id] = b.loops;
-    }));
+  /* The bridge processes one command at a time. Avoid a burst of short-lived
+     HTTP connections when a projection creates many faces, and abandon an
+     obsolete refresh before it can overwrite the current boundary cache.
+     Keep the published cache usable until its complete replacement is ready. */
+  const boundaries = {};
+  for (const f of oc.faces.filter(f => f.kind === "boundary")) {
+    if (seq !== ocSeq) return;
+    const b = await api("boundary " + f.id);
+    if (b.ok) boundaries[f.id] = b.loops;
+  }
   if (seq !== ocSeq) return;
+  oc.bmap = boundaries;
   drawObjects();
   /* C5:任何 mutate 成功後,空間工作區(含三視圖投影)自動重繪 */
   if (oc.focus && oc.focus.t === "space") await renderSpaceWorkspace();
@@ -1798,18 +1808,8 @@ async function openFaceWorkspace(bid) {
   $("workspaceFitButton").hidden = false;
   $("workspaceKeyHints").innerHTML = '<kbd>L</kbd> 參考線 <kbd>R</kbd> 開口 <kbd>T</kbd> 角材 <kbd>Esc</kbd> 返回';
   $("workspaceTitle").textContent = "面 " + bid;
-  /* B9:麵包屑「空間 N / ● 面 M」(UI-REVIEW-SPEC §S3)+ 放置膠囊 */
-  const owner = oc.spaces.find(s => s.members.includes(bid));
-  $("workspaceEyebrow").textContent =
-    owner ? `空間 ${owner.id} ›` : "";
   $("workspaceTypeIcon").innerHTML = icon("face");
-  const surf = feSurf(bid);
-  const tag = $("workspacePlaceTag");
-  if (tag) {
-    tag.hidden = false;
-    tag.textContent = surf ? surfNormalLabel(surf) : "游離";
-    tag.className = "place-capsule" + (surf ? " placed" : " free");
-  }
+  updateFaceWorkspaceHeading(bid);
   fe.tool = "select"; fe.panHold = null; fe.work = null;
   fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
   fe.projOpen = false; fe.projViews = new Set();
@@ -1820,6 +1820,19 @@ async function openFaceWorkspace(bid) {
   renderFaceLayers();
   renderFaceInspector();
   setStatus(`面 ${bid}：拖頂點/邊編輯 · l 參考線 · r 開口 · 平移 h/中鍵/空白拖 · 滾輪縮放 · f 全圖 · 1 =100% · Esc 返回`);
+}
+
+/* Both initial entry and model refresh use the current placement/ownership. */
+function updateFaceWorkspaceHeading(bid) {
+  const owner = oc.spaces.find(s => s.members.includes(bid));
+  $("workspaceEyebrow").textContent = owner ? `空間 ${owner.id} ›` : "";
+  const surf = feSurf(bid);
+  const tag = $("workspacePlaceTag");
+  if (tag) {
+    tag.hidden = false;
+    tag.textContent = surf ? surfNormalLabel(surf) : "游離";
+    tag.className = "place-capsule" + (surf ? " placed" : " free");
+  }
 }
 
 /* ---- 空間工作區（Phase 4）：成員清單 + 面卡片格 + 檢視器 + 三視圖 ---- */
@@ -2243,6 +2256,11 @@ async function renderSpaceProjection() {
 }
 
 /* ---- 對話框：backdrop + 關閉 ---- */
+function openEditorDialog(id) {
+  closePanels();
+  $("modalBackdrop").hidden = false;
+  $(id).hidden = false;
+}
 function closeDialogs() {
   $("modalBackdrop").hidden = true;
   $("box6Dialog").hidden = true;
@@ -2270,8 +2288,7 @@ $("notchSubmit").addEventListener("click", async () => {
 
 /* 形狀庫對話框(Phase 1):L/U/T 生成外環取代,孔保留、新邊全 F */
 $("faceShapeButton").addEventListener("click", () => {
-  $("modalBackdrop").hidden = false;
-  $("shapeDialog").hidden = false;
+  openEditorDialog("shapeDialog");
 });
 $("shapeSubmit").addEventListener("click", async () => {
   const e = oc.edit;
@@ -2316,8 +2333,7 @@ function openMemberDialog(sid) {
       `<small>${!f.placed ? "未放置" : other ? "屬於空間 " + other.id : ""}</small>`;
     list.appendChild(lb);
   }
-  $("modalBackdrop").hidden = false;
-  $("memberDialog").hidden = false;
+  openEditorDialog("memberDialog");
   $("memberSubmit").onclick = async () => {
     const ids = [...list.querySelectorAll("input:checked")]
       .map(c => +c.value);
@@ -2823,8 +2839,7 @@ async function feDown(pt, ev) {
                  c: Math.round(horiz ? pt.x : pt.y) };
     $("notchW").value = 2 * half;
     $("notchD").value = gs;
-    $("modalBackdrop").hidden = false;
-    $("notchDialog").hidden = false;
+    openEditorDialog("notchDialog");
     $("notchW").focus();
     return;
   }
@@ -3308,6 +3323,8 @@ function renderFaceInspector() {
   pane.dataset.bid = String(bid);
   const loops = oc.bmap[bid] || [];
   const surf = feSurf(bid);
+  pane.dataset.placement = JSON.stringify(surf ? [surf.id, surf.origin, surf.u, surf.v] : null);
+  updateFaceWorkspaceHeading(bid);
   const bb = loops.length ? loopsBBox(loops) : null;
   let area = 0;
   for (let i = 0; i < loops.length; ++i) {
@@ -4481,6 +4498,20 @@ async function doUndoRedo(verb) {
   setStatus(verb === "undo" ? "✓ 已復原" : "✓ 已重做");
   if (oc.on) {
     await renderObjects();
+    const exists = f => f.t === "face"
+      ? oc.faces.some(o => o.kind === "boundary" && o.id === f.id)
+      : oc.spaces.some(o => o.id === f.id);
+    if (oc.focus && !exists(oc.focus)) {
+      /* Undo may remove the object currently being edited. Return to a live
+         ancestor (or the canvas), and discard its stale drawing and drafts. */
+      oc.stack = oc.stack.filter(exists);
+      $("faceEditorRoot").textContent = "";
+      $("faceInspectorContent").dataset.bid = "";
+      if (oc.sel && !ocFind(oc.sel.kind, oc.sel.id)) oc.sel = null;
+      await leaveFocus();
+      setStatus(verb === "undo" ? "✓ 已復原" : "✓ 已重做");
+      return;
+    }
     /* 面內焦點:undo/redo 後 guide/timber/grid 快取與面板要重拉 */
     if (oc.focus && oc.focus.t === "face") await feAfterChange();
   } else {
@@ -4560,7 +4591,9 @@ $("searchInput").addEventListener("input", e => {
   oc.search = e.target.value;
   drawObjects();
 });
-$("searchInput").addEventListener("keydown", e => e.stopPropagation());
+$("searchInput").addEventListener("keydown", e => {
+  if (e.key !== "Escape") e.stopPropagation();
+});
 /* 小地圖點擊 → 平移到該點 */
 $("minimap").addEventListener("pointerdown", e => {
   if (!oc.mmTf) return;
@@ -4620,8 +4653,7 @@ async function mutate(lines) {
 }
 /* 快速六面盒對話框(§5.6) */
 $("btnBox6").addEventListener("click", () => {
-  $("modalBackdrop").hidden = false;
-  $("box6Dialog").hidden = false;
+  openEditorDialog("box6Dialog");
 });
 $("box6Submit").addEventListener("click", submitBox6);
 /* ---- RC 柱/樑建立對話框(B-3,🔒 R4 預設尺寸 + 自訂) ---- */
@@ -4651,8 +4683,7 @@ function openRcDialog(kind) {
   const sp = $("rcSpace");
   sp.innerHTML = `<option value="0">（游離）</option>` +
     oc.spaces.map(s => `<option value="${s.id}">空間 ${s.id}</option>`).join("");
-  $("modalBackdrop").hidden = false;
-  $("rcDialog").hidden = false;
+  openEditorDialog("rcDialog");
 }
 $("btnNewColumn").addEventListener("click", () => openRcDialog("column"));
 $("btnNewBeam").addEventListener("click", () => openRcDialog("beam"));

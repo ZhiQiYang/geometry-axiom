@@ -27,7 +27,13 @@
 移除 `#btnScene`（由場景選單載入）與 `#workspaceDoneButton`（只保留返回）。
 `#btnDatums` 移進檔案選單；`#faceShapeButton` 移到屬性頁外環邊下方；
 工作區 undo/redo/fit 移到右側操作群；尺寸 chip 移入 `#spaceStageTabs`；`.space-plan-head` 移除。
-五個測試寬度：1382、1160、900、680、600 px。共用列高 56/32，桌面欄寬 260/320；三視圖左欄 200。
+七個測試寬度：1382、1160、900、680、600、390、320 px。桌面欄寬 260/320；三視圖左欄 200。
+共用頂列／狀態列高為 56/32；寬度 ≤560 px 時頂列改為 96 px 的兩列，狀態列仍為 32 px。
+主畫布第一列為場景與選取／平移，第二列為抽屜、復原／重做、視圖與檔案操作；
+面／空間工作區第一列為返回、標題與操作，第二列為工具群。所有頂列按鈕必須在畫面寬度內可達。
+`--topbar-h` 同時決定主畫布與工作區的頂列、畫布剩餘高度、抽屜頂部與 toast 起點，不得個別寫死 56 px。
+`.app-shell` 與 `.object-workspace` 必須明定單欄 `minmax(0,1fr)`，子列不得以內容最小寬度撐開畫面。
+600 px 以上維持既有單列配置。
 
 空槽現在記錄 `pendingSlot`，引導建立或選取游離面，使用者確認尺寸與原點後一次交易放置並收進原空間。
 不得以「空槽點擊就立即 placed:true」為測試前提；空空間沒有可推導尺寸。
@@ -36,7 +42,7 @@
 
 | id | 用途 | 測試依賴點 |
 |---|---|---|
-| `#app` | 三列殼(.app-shell) | 子層數/高度量測(56/1fr/32) |
+| `#app` | 三列殼(.app-shell) | 子層數/高度量測(`--topbar-h`/1fr/32；≤560 px 頂列 96，其餘 56) |
 | `#cv` | 三視圖 SVG(工具列下方的 flex 剩餘高度) | `hasAttribute("hidden")` 切換檢查、rect 量測 |
 | `#world` | `#cv` 內容群組 | `childElementCount` |
 | `#overlay` | `#cv` 疊層 | 繪圖預覽層 |
@@ -194,7 +200,7 @@
 
 ## UI/UX Phase 1(A1/A2/S1/E8,cdp_test §1)
 
-- `#app` 三列:topbar 56px / workspace 1fr / statusbar 32px;`.workspace` 三欄 260 / 1fr / 320。
+- `#app` 桌面三列:topbar 56px / workspace 1fr / statusbar 32px;`.workspace` 三欄 260 / 1fr / 320。≤560 px 頂列依上方手機契約改為 96px。
 - 頂列三段:`.brand`(含 `#sceneList` 場景選單)→ `.tool-group`(`[data-tool]` 鈕含 `<kbd>` V/H/R/P)→ `.top-actions`(右群 5 件:`#btnUndo #btnRedo` + `#viewSwitch` + `#fileMenu` + `#btnExport`)。
 - `#viewSwitch` segmented:`.seg` 鈕 `#btnCanvasView`(物件畫布)與 `#btnObj`(三視圖,toggle 語意不變);`.active` 標目前視圖。
 - `#fileMenu` > `#fileMenuPop` 內含 `#btnOpen #btnDatums #btnEx #btnClear`(`.menu-item`);`.menu-pop` 開關由 `bindMenu`/`closeMenus` 控。
@@ -207,7 +213,7 @@
 
 ## Phase 1 版面檢查點(cdp_test §1,五項)
 
-1. `#app` 三列:topbar 56px / workspace 1fr / statusbar 32px
+1. `#app` 桌面三列:topbar 56px / workspace 1fr / statusbar 32px；≤560 px 頂列改為 96px
 2. `.workspace` 三欄:左 260px / 中 1fr / 右 320px
 3. `.topbar` 子層序:brand → tool-group → top-actions
 4. `#ocv` 在 `#canvasViewport` 內且同大小(誤差 ≤2px)

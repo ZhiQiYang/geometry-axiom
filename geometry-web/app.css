@@ -44,8 +44,9 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 svg { display: block; }
 [hidden] { display: none !important; }
 
-.app-shell { display: grid; grid-template-rows: var(--topbar-h) 1fr var(--statusbar-h); width: 100%; height: 100%; }
+.app-shell { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: var(--topbar-h) 1fr var(--statusbar-h); width: 100%; height: 100%; }
 .topbar {
+  min-width: 0;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
@@ -110,7 +111,7 @@ svg { display: block; }
 .primary-button.danger { background: var(--danger); }
 .text-button { padding: 0; background: transparent; color: var(--accent); font-size: 11px; font-weight: 650; }
 
-.workspace { min-height: 0; display: grid; grid-template-columns: var(--left-w) minmax(0, 1fr) var(--right-w); }
+.workspace { min-width: 0; min-height: 0; display: grid; grid-template-columns: var(--left-w) minmax(0, 1fr) var(--right-w); }
 .sidebar { min-width: 0; background: var(--panel); z-index: 10; overflow: hidden; }
 /* 子元素釘固定列:側欄 display:none 時畫布仍留在 1fr 中欄 */
 .sidebar-left { grid-column: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); }
@@ -460,6 +461,7 @@ body.workspace-open #app { pointer-events: none; user-select: none; }
   inset: 0;
   z-index: 45;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: var(--topbar-h) minmax(0, 1fr) var(--statusbar-h);
   background: #eef1f5;
   color: var(--ink);
@@ -1390,6 +1392,27 @@ body.v3-mode .sidebar-left > .drawer-close, body.v3-mode .sidebar-right > .drawe
   .status-summary { max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
   .slot-empty .slot-idle { display: none; }
   .slot-empty .slot-action { display: inline; }
+}
+/* Narrow phones share a two-row header across every workspace and drawer. */
+@media (max-width: 560px) {
+  :root { --topbar-h: 96px; }
+  .topbar, .object-workspace-topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 4px 8px;
+    padding: 4px 8px;
+  }
+  .topbar > .brand { grid-column: 1; grid-row: 1; }
+  .topbar > .tool-group { grid-column: 2; grid-row: 1; justify-self: end; }
+  .top-actions {
+    grid-column: 1 / -1; grid-row: 2;
+    justify-self: stretch; justify-content: space-between;
+  }
+  .top-actions > * { flex-shrink: 0; }
+  .object-workspace-trail { grid-column: 1; grid-row: 1; }
+  .object-workspace-actions { grid-column: 2; grid-row: 1; }
+  .face-workspace-tools { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
+  #workspaceFitButton { display: inline-flex; }
 }
 @media (hover: none) { .card-enter { opacity: 1; } .rc-acts { opacity: 1; } }
 /* Drawers belong to the visible workspace; the main canvas must not cover it. */
