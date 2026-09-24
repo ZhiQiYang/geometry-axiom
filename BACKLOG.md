@@ -2594,7 +2594,33 @@ reset 清不掉 `g_input_line_no` 等行程層全域,案例之間互相污染,�
 全套件:run_tests 132、integrity 80、witness 17、bridge 24、reference 25、datum 9、serve 9、transport 2、marks 4、
 reader 24、modeling 63、sync --check pass;fuzz seed 1 / 2 / 3 各 500 案例 0 違規。
 
-### GEO-175 待辦 P3:導讀頁 `current_geometry-導讀.html` 自 2026-09-18 起未重產,callout 已飄
+### GEO-175 ✅ 已做(2026-09-24)P3:導讀頁 `current_geometry-導讀.html` 自 2026-09-18 起未重產,callout 已飄
+
+**修法**(只動 `make_guide.py` 的三個面板與緊鄰的一句 prose,重產 HTML):
+- §8 `main：放置角材` → `main：場景來源——場景檔或內建預設`:`main` 已不自己放角材(改呼叫 `parse_scene_file` 或
+  `reference_default_world`),舊的 `SURFACE_DIRECTION_POS_U,` / `SURFACE_DEPTH_POSITIVE_NORMAL` 已不在 `main` 裡。
+- §10 SCENE_COMMANDS:`"place", 8, 16, true,`(錨法改成 at-line / at-face + through / between)、
+  `"move", 3, SCENE_MAX_TOKENS, true,`(新位置是引用式)。
+- §10 `apply_place_line` 現在是一行轉交 `apply_reference_place`(`references.inc`);單行函式本體 `{ … }` 不是獨立的 `{` 行,
+  `findFunction` 會一路抓到下一個函式(舊報告的 9696–9737 其實是 `world_drop_canvas_pos`)。改用 `kind:"range"` 以
+  `from`/`to` 圈出 place/span-auto/move 三個轉交函式。
+- 重產:`core.exe --no-window --out current_geometry.svg`(先重編 core,舊 exe 比最後一次 C 修改早)→ `make_guide.py`
+  → `check_panels.py`:**40 面板,unresolved: none**。headless Chrome 實際開頁:40 面板每個的高亮行數 = callout 數,無「找不到」。
+- **守門**:新增 `tests/test_guide_panels.py`(跑 `check_panels.py`);對舊 HTML 跑紅、重產後綠。
+
+- 順手改正 §10 一句與 SSOT 正面衝突的 prose:「移動參考線**不會**讓角材跟著走」→ 依公理層 R2(2026-09-18 反轉)改為「**要**重放」。
+
+**範圍外、另開 GEO-182**:導讀頁的 prose(不是 callout)仍停在舊語法,check_panels 驗不到。
+
+### GEO-182 待辦 P3:導讀頁 prose 仍描述 2026-09-12 時代的語法與結構
+
+GEO-175 修完 callout 後發現:`check_panels.py` 只驗面板符號與 callout,**不驗說明文字**。`make_guide.py` 的 prose 仍有:
+§10 標題「七個指令」與 `surface`／`edge`／上限 8 片的描述(現行 `SCENE_COMMANDS` 18 列,含已廢除的 span-auto:boundary／placement／space／datum／grid／column／beam…)、
+「邊、參考線、錨點都各自記著 `surface_id`」(現為 `placement_id`)、§9「滑鼠拖曳參考線實際執行 `guide_line_move()`」
+(`guide_line_move(` 在 C 裡已無呼叫點;bridge 的 drag 組成指令走 `feed_line` → `apply_reference_move`,
+`web_bridge.c:12` 的檔頭註解也還寫著 guide_line_move)等。
+另:`current_geometry.c` 檔頭「配套」註解仍叫人重跑已退役的 `make_axiom_reader.py`(GEO-165),應改指 `sync_axiom_reader.py`。與 SSOT 正面衝突的 R2 那句已在 GEO-175 改正,其餘是過時而非矛盾。
+**做法**:以 `公理層.md` 與 `geometry-core/README.md` 為準逐節重讀改寫;屬第 5 流(文件與導讀同步),不是順手能收的。
 
 `check_panels.py` 對現況(舊頁 + 現在的 C)報 **8 個 unresolved**:main 面板的 `SURFACE_DIRECTION_POS_U,` /
 `SURFACE_DEPTH_POSITIVE_NORMAL`;SCENE_COMMANDS 的 `"place", 8, 15, true,` / `"move", 3, 3, true,`;

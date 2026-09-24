@@ -23,6 +23,8 @@ python3 tests/test_axiom_reader.py
 零可見段合法；網格生成限制與角材守門員並未放寬。
 
 `run_tests.py` 驗證既有場景的接受／拒絕、尺寸與文字輸出。
+`test_guide_panels.py`（GEO-175）驗證導讀頁每個面板的符號與 callout 都還在目前的 `current_geometry.c` 裡；
+改 C 後若紅燈，改 `geometry-guide/make_guide.py` 的面板設定並重跑它。
 `test_core_integrity.c` 驗證承載面重綁後的世界座標、Space 範圍、交易回滾及 undo/redo。
 `test_bridge_integrity.py` 使用獨立 bridge 程序，驗證不完整指令、存檔重載、auto 支撐義務及所有接受型場景的幾何往返。
 
