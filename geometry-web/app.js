@@ -439,7 +439,6 @@ const AXIS_WORD = {
 
 let tool = "view";
 let workSurfaces = [];        /* /surfaces 快取 */
-let drawPts = [];             /* 多邊形進行中的 uv 頂點 */
 let rectStart = null;         /* 矩形起點 {u,v} */
 let editLoops = null;         /* 編輯中邊界 loops（[{verts,fixity}]） */
 let editBid = 0;
@@ -531,7 +530,7 @@ async function emitLine(text) {
   const r = await api("line " + text);
   if (r.ok) {
     setStatus("✓ " + text);
-    drawPts = []; rectStart = null; previewClear();
+    rectStart = null; previewClear();
     selected = null;
     if (oc.on) await renderObjects();
     else { await render(); await refreshSurfaces(); }
@@ -720,23 +719,6 @@ async function canvasDown(e, sv) {
 
   if (tool === "rect" || tool === "hole") {
     rectStart = uv; previewClear(); previewPoly(m, [[uv.u, uv.v], [uv.u, uv.v]], true, previewIn(sv.v));
-  } else if (tool === "poly") {
-    /* 軸鎖：新點與上一點水平或垂直對齊（取主軸）。 */
-    if (drawPts.length) {
-      const p = drawPts[drawPts.length - 1];
-      if (Math.abs(uv.u - p[0]) >= Math.abs(uv.v - p[1])) uv.v = p[1];
-      else uv.u = p[0];
-    }
-    /* 點回起點附近 = 閉合。 */
-    if (drawPts.length >= 3) {
-      const q = mapUv(m, drawPts[0][0], drawPts[0][1]);
-      if (Math.hypot(q.x - sv.x, q.y - sv.y) <= sv.r) {
-        const pts = drawPts; drawPts = []; previewClear();
-        await emitNewSurface(pts); return;
-      }
-    }
-    drawPts.push([uv.u, uv.v]);
-    previewClear(); previewPoly(m, [...drawPts, [uv.u, uv.v]], false, previewIn(sv.v));
   } else if (tool === "edit" && editLoops) {
     const s = curSurf();
     const h = await api(`bhit ${editBid} ${uv.u} ${uv.v} ${sv.r}`);
@@ -759,12 +741,6 @@ async function canvasMove(e, sv) {
     const v0 = Math.min(rectStart.v, uv.v), v1 = Math.max(rectStart.v, uv.v);
     previewClear();
     previewPoly(m, [[u0, v0], [u1, v0], [u1, v1], [u0, v1]], true, previewIn(sv.v));
-  } else if (tool === "poly" && drawPts.length) {
-    const p = drawPts[drawPts.length - 1];
-    const lock = { u: uv.u, v: uv.v };
-    if (Math.abs(uv.u - p[0]) >= Math.abs(uv.v - p[1])) lock.v = p[1];
-    else lock.u = p[0];
-    previewClear(); previewPoly(m, [...drawPts, [lock.u, lock.v]], false, previewIn(sv.v));
   } else if (tool === "edit" && editDrag) {
     const pts = editDrag.loops[editDrag.loop + 1].verts;
     if (editDrag.kind === "vertex") applyVertexEdit(pts, editDrag.index, uv);
@@ -808,9 +784,9 @@ async function v3SetTool(t) {
   $("tool").value = t;
   for (const b of document.querySelectorAll("[data-v3-tool]"))
     b.classList.toggle("active", b.dataset.v3Tool === t);
-  drawPts = []; rectStart = null; editDrag = null; previewClear();
+  rectStart = null; editDrag = null; previewClear();
   if (tool === "edit") await enterEdit();
-  else if (tool === "rect" || tool === "poly") setStatus("在工作面上拉／點出範圍");
+  else if (tool === "rect") setStatus("在工作面上拉出範圍");
   else if (tool === "hole") setStatus("在工作面邊界內拉一個矩形當孔");
   else setStatus("");
 }
@@ -927,7 +903,7 @@ window.addEventListener("keydown", async e => {
       }
       return;
     }
-    drawPts = []; rectStart = null; editDrag = null; previewClear();
+    rectStart = null; editDrag = null; previewClear();
     if (tool === "edit") drawEditHandles();
     return;
   }

@@ -108,7 +108,7 @@
 | `#spaceStageTabs` / `[data-ss-tab]` | 空間舞台分頁 平面示意/三視圖(C1) | `.active`、`.click()`、`[data-ss-pane]` 顯隱 |
 | `#v3Panel` / `[data-v3-view]` / `[data-v3-layer]` | 三視圖左欄:視圖+圖層勾選(D1) | `hidden`、`checked` |
 | `#v3PickPanel` / `#v3PickInfo` / `#v3HoverInfo` | 三視圖右欄:pick 結果+游標位置(D1) | textContent |
-| `.v3-seg` / `[data-v3-tool]` | 三視圖工具 segmented(D2;`#tool` 保留為 `.v3-native-select` 隱藏相容) | `.active`、`.click()` |
+| `.v3-seg` / `[data-v3-tool]` | 三視圖工具 segmented(D2;`#tool` 保留為 `.v3-native-select` 隱藏相容);四件 view/rect/hole/edit,舊 `poly` 已依 🔒 Q17 移除(GEO-181) | `.active`、`.click()`、數量 4 且無 `poly` |
 | `#v3ZoomBar` / `.v3-zoom` / `#v3ZoomOut` `#v3ZoomLevel` `#v3ZoomIn` `#v3ZoomFit` | 三視圖獨立左下縮放列(D2 修正:移出 `#viewToolbar`,樣式沿用 `.canvas-controls`;主畫布左下縮放列/小地圖在 `body.v3-mode` 下讓位) | `hidden` 切換、rect 左下位置、`.click()`、百分比 |
 | `.slot-row` / `.slot-face` / `.slot-empty` | 空間六槽列(C3 語意名+軸向副標;空槽放置鈕。`data-slot-preset` 存 `PLACE_PRESETS` 鍵、`data-slot-label` 存中文方位名,點擊帶入該槽 u/v 預設並選取對應游離面) | `.on`、`.click()` |
 | `.rc-acts` / `.rc-act` | 構件列 hover 動作鈕(C4;`.rc-act` `min-height:28px` 與旁邊 `.face-layer-del` ✕ 熱區一致) | `.click()`、`getBoundingClientRect().height` |
@@ -342,7 +342,7 @@ RC-POLYGON-PLAN §5.A.1.2)、`feLenShow()` 函式本體、面內既有 `#edgeLen
 (輸入框焦點不攔截/收選單/關對話框/收方向小選單/離開工作區,`#feGuidePick` 等,
 UIUX-FIX-PLAN 既有七階梯不變,只有第4級「清鍵入長度」與第6級「清草稿」內部改呼叫
 `PolyDraft.clearTyped`/清空 state)、`polydraft.js`/`polydraft_test.js` 本體、舊三視圖
-殭屍 `tool==="poly"`(`canvasDown/Move/Up`)。
+殭屍 `tool==="poly"`(`canvasDown/Move/Up`;2026-09-24 依 🔒 Q17 已移除,見 GEO-181)。
 
 diff#12 面內接法唯一偏離 POLYDRAFT-API.md 字面(「index.html 改動…留給下一個實作
 agent」)的地方:`#feDraftLayer` **沒有**寫進 `index.html`,原因是主畫布 P 工具實作時

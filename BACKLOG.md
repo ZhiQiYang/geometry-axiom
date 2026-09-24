@@ -2556,7 +2556,7 @@ reset 清不掉 `g_input_line_no` 等行程層全域,案例之間互相污染,�
 (b) `js_string` 不驗 UTF-8,壞位元組與截斷剩下的半個字直接進 JSON。三次同 seed 逐字相同。
 
 **裁判收窄兩處**(理由寫在檔頭):類 3 只放過「dump 裡真有未 place 的角材 **且** error 說的正是沒有 place」——
-那是 I9 收尾檢查在條文要求下的拒絕,不是往返 bug(I9/R4 張力 → 決策佇列 **Q12**,預設維持現狀);
+那是 I9 收尾檢查在條文要求下的拒絕,不是往返 bug(I9/R4 張力 → 決策佇列 **Q12**,2026-09-24 🔒 維持現狀);
 類 4 在輸入那一行本身不是合法 UTF-8 時允許 U+FFFD(那是 GEO-174 的正確行為)。
 
 **修正後**:seed 1 500 案例 0 違規;換 seed 2 又抓到 1 個(案例 301,名字夾壞位元組進了世界 → GEO-174 第 4 點,
@@ -2589,7 +2589,7 @@ reset 清不掉 `g_input_line_no` 等行程層全域,案例之間互相污染,�
    `cmd_dump` 改走 `js_string_body`(同一道輸出檢查,防線不留單點)。這是實作層的格式規定,不是條文;若要入條文另開票。
 
 **沒做、也不該在這裡做**:互動世界含未 place 角材的 dump 不能用 loadfile 載回——那是 I9 的要求不是 bug;
-要不要放寬是條文問題,入決策佇列 **Q12**(預設維持現狀)。
+要不要放寬是條文問題,入決策佇列 **Q12**(2026-09-24 🔒 維持現狀)。
 
 全套件:run_tests 132、integrity 80、witness 17、bridge 24、reference 25、datum 9、serve 9、transport 2、marks 4、
 reader 24、modeling 63、sync --check pass;fuzz seed 1 / 2 / 3 各 500 案例 0 違規。
@@ -2670,7 +2670,12 @@ commit 訊息明寫。`objEmitFace` 的 `pendingSlot` 流程是 codex 的,本輪
 **教訓**:同一根源連三輪各修一角,是「打補丁」而不是「改原則」的典型;對抗審查每輪都用 core.exe 交叉驗證才逼出原則重寫。
 另:前景 subagent 會被使用者任何訊息中斷,長任務一律背景派工(已記 memory)。
 
-### GEO-181 待辦 P3:三視圖畫布的舊「多邊形」工具仍是第二套手寫軸鎖(`canvasDown / canvasMove`),UI 可達
+### GEO-181 ✅ 已做(2026-09-24)P3:三視圖畫布的舊「多邊形」工具仍是第二套手寫軸鎖(`canvasDown / canvasMove`),UI 可達
+
+**🔒 Q17(2026-09-24)選 (b) 移除**。已刪:`index.html` 的 `data-v3-tool="poly"` 按鈕與隱藏 `#tool` 的 `poly` 選項;
+`app.js` 的 `canvasDown` / `canvasMove` poly 分支、`drawPts` 宣告與四處重置、`v3SetTool` 狀態文字的 poly 分支。
+三視圖工具剩 view/rect/hole/edit;建多邊形面只走主畫布 P(`PolyDraft`)。`cdp_test.js` P19 D2 改斷言工具數 4 且無 `poly`;
+DOM-CONTRACT 同步。
 
 GEO-180 的 fresh 驗證指出:`app.js` 約 712–763 的三視圖 `tool === "poly"`(`index.html` `data-v3-tool="poly"` 按鈕)
 仍用自己的軸鎖(`Math.abs(du) >= Math.abs(dv)`)與 Manhattan 式回起點閉合,不經 `PolyDraft`,沒有補直角、前端先驗、

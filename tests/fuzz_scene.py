@@ -573,7 +573,7 @@ def is_valid_utf8(raw):
 def dump_has_unplaced_timber(text):
     """I9:場景收尾仍有未 place 的角材 → loadfile 整份拒絕,是條文要求的。
     互動世界可以暫時含未放置角材(逐行追加沒有「收尾」),它的 dump 因此不能用
-    loadfile 載回——這不是往返 bug,是 I9 與 R4 的張力(決策佇列 Q12,預設維持現狀)。"""
+    loadfile 載回——這不是往返 bug,是 I9 與 R4 的張力(決策佇列 Q12,2026-09-24 🔒 維持現狀)。"""
     declared = set(re.findall(r"^timber (\d+)\b", text, re.M))
     placed = set(re.findall(r"^place (\d+)\b", text, re.M))
     return bool(declared - placed)

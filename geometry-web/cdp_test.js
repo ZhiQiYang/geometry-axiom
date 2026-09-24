@@ -1905,8 +1905,10 @@ async function drag(x0, y0, x1, y1, steps = 6) {
       sel.classList.contains("v3-native-select"),
       seg:document.querySelectorAll("[data-v3-tool]").length,
       segActive:document.querySelector("[data-v3-tool].active").dataset.v3Tool,
+      /* 🔒 Q17(GEO-181):三視圖舊多邊形工具已移除,建多邊形面只走主畫布 P(PolyDraft) */
+      noPoly:!document.querySelector('[data-v3-tool="poly"]') && !sel.querySelector('option[value="poly"]'),
       zoom:!!document.querySelector(".v3-zoom")};})()`);
-  console.log("P19 D2 segmented:", d2.nativeHidden && d2.seg === 5 && d2.segActive === "view"
+  console.log("P19 D2 segmented:", d2.nativeHidden && d2.seg === 4 && d2.noPoly && d2.segActive === "view"
     ? "✓" : "✗ " + JSON.stringify(d2),
     "| 縮放列:", d2.zoom ? "✓" : "✗");
   /* segmented 切工具 → #tool 同步 */
