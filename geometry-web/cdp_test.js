@@ -3628,6 +3628,21 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     err:[...document.querySelectorAll('#inspectorContent *, .inspector *')].some(e=>e.children.length===0&&e.textContent.includes('必須垂直'))})`);
   check('P40-6 閉合成功只跳一則 toast', made.toasts===1, made);
   check('P40-8 新面的放置表單預設 u=+x、v=+y,沒有「必須垂直」錯誤', made.u==='+x' && made.v==='+y' && !made.err, made);
+
+  console.log('=== P41. 縮到很小後找回卡片(GEO-187) ===');
+  await setupRemaining(['boundary 61 outline 0,0 1000,0 1000,800 0,800','canvas-pos boundary 61 60 60',
+    'boundary 62 outline 0,0 1000,0 1000,800 0,800','canvas-pos boundary 62 500 -3000']);
+  const cardIn = id => eval_(`(()=>{const c=oroot.querySelector('.ocard[data-id="${id}"]');const r=c.getBoundingClientRect(),v=ocv.getBoundingClientRect();
+    return {w:Math.round(r.width),inside:r.left>=v.left&&r.right<=v.right&&r.top>=v.top&&r.bottom<=v.bottom,zoom:oc.zoom}})()`);
+  await eval_(`oc.zoom=0.02;oc.panX=300;oc.panY=300;ocApply()`);
+  check('P41-1 縮到 2% 時格線間距不小於 8px(不再糊成灰色)', parseFloat(await eval_(`document.getElementById('canvasViewport').style.getPropertyValue('--grid-size')`)) >= 8);
+  await eval_(`(()=>{selectObject('boundary',62);centerOnNode('boundary',62)})()`); await sleep(150);
+  const loc = await cardIn(62);
+  check('P41-2 縮很小時「定位卡片」會放大回 100% 並把卡片放進畫面', loc.zoom===1 && loc.inside && loc.w>=150, loc);
+  await eval_(`oc.zoom=0.02;ocApply();centerOnNode('boundary',61);oc.zoom=0.02;(()=>{const c=cardCenter('boundary',61),r=ocv.getBoundingClientRect();oc.panX=r.width/2-c.x*oc.zoom;oc.panY=r.height/2-c.y*oc.zoom;ocApply()})()`);
+  await clickSelector('#zoomLevelButton');
+  const back = await cardIn(61);
+  check('P41-3 點縮放比例回 100% 以畫面中心為準,中心的卡片不會飛出畫面', back.zoom===1 && back.inside, back);
   }
 
   chrome.kill();

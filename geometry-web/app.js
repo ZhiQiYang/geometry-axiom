@@ -1156,7 +1156,10 @@ function ocGridApply() {
   const vp = $("canvasViewport");
   if (!vp) return;
   const polySnap = oc.drawTool === "poly" && $("snapToggle").classList.contains("on");
-  const minor = (polySnap ? oc.gridMm : 24) * oc.zoom;
+  let minor = (polySnap ? oc.gridMm : 24) * oc.zoom;
+  /* GEO-187:縮得很小時格線間距不到 1px,整片畫布糊成灰色雜訊(GEO-185 把主格改成 5 倍細格後更明顯);
+     間距太小就改畫 5 倍、25 倍…的線(仍對齊同一組格點) */
+  while (minor < 8) minor *= 5;
   vp.style.setProperty("--grid-size", minor + "px");
   vp.style.setProperty("--grid-major", minor * 5 + "px");
   vp.style.setProperty("--grid-x", oc.panX + "px");
@@ -4088,6 +4091,8 @@ function cardCenter(kind, id) {
 function centerOnNode(kind, id) {
   const c = cardCenter(kind, id);
   if (!c) return;
+  /* GEO-187:縮到很小(例如畫大多邊形時縮到 2–5%)再「定位卡片」,舊版只平移不縮放,卡片仍是一個點 */
+  if (oc.zoom < OC_COMPACT_ZOOM) oc.zoom = 1;
   const r = ocv.getBoundingClientRect();
   oc.panX = r.width / 2 - c.x * oc.zoom;
   oc.panY = r.height / 2 - c.y * oc.zoom;
@@ -4562,7 +4567,8 @@ $("zoomOutButton").addEventListener("click", () => ocZoomAt(0.8));
 $("homeButton").addEventListener("click", () => {
   oc.panX = 0; oc.panY = 0; oc.zoom = 1; ocApply();
 });
-$("zoomLevelButton").addEventListener("click", () => { oc.zoom = 1; ocApply(); });
+/* GEO-187:回到 100% 以畫面中心為準;舊版直接改 zoom 不調 pan,從 2% 回 100% 時畫面中心的卡片會飛出畫面 */
+$("zoomLevelButton").addEventListener("click", () => ocZoomAt(1 / oc.zoom));
 /* 吸附 / 格線(aria-pressed 按鈕,A3) */
 for (const id of ["snapToggle", "gridToggle"]) {
   $(id).addEventListener("click", () => {
