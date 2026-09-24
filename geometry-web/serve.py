@@ -20,6 +20,9 @@ import threading
 
 HERE = pathlib.Path(__file__).resolve().parent
 SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根目錄
+sys.path.insert(0, str(HERE))
+import feedback_store  # noqa: E402
+FEEDBACK_MAX_BYTES = 32 * 1024 * 1024
 # 預設用同目錄的 Windows 橋接器。GEOMETRY_BRIDGE 可覆寫，且可帶參數，例如：
 #   GEOMETRY_BRIDGE="wsl.exe -d Ubuntu-24.04 --user root -- /opt/geometry/web_bridge"
 # 讓 serve.py 跑在 Windows（瀏覽器連得到 localhost），橋接器跑在 WSL——
@@ -142,7 +145,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif self.path == "/app.css":
             self._send((HERE / "app.css").read_bytes(),
                        "text/css; charset=utf-8")
-        elif self.path in {"/app.js", "/reference-ui.js", "/polydraft.js"}:
+        elif self.path in {"/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")
         elif self.path == "/axioms":
@@ -181,10 +184,20 @@ class Handler(http.server.BaseHTTPRequestHandler):
         except ValueError:
             self.send_error(400)
             return
-        if length < 0 or (self.path.startswith("/model") and length > 16 * 1024 * 1024):
+        if length < 0 or (self.path.startswith("/model") and length > 16 * 1024 * 1024) or \
+                (self.path == "/feedback" and length > FEEDBACK_MAX_BYTES):
             self.send_error(413)
             return
         body = self.rfile.read(length)
+
+        if self.path == "/feedback":
+            # GEO-183:使用者回報收件匣。寫進 repo 的 feedback/(.gitignore 允許清單制,預設不進 git)。
+            try:
+                result = feedback_store.save(json.loads(body.decode("utf-8")))
+            except (ValueError, UnicodeDecodeError) as exc:
+                result = {"ok": False, "error": str(exc) or "bad request"}
+            self._send(json.dumps(result, ensure_ascii=False).encode("utf-8"))
+            return
 
         if self.path in {"/model", "/model/verify"}:
             sys.path.insert(0, str(SCENE_DIR / "geometry-core"))

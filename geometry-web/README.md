@@ -61,7 +61,32 @@ python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 - `GET /scenes` → 上層目錄 `*.scene` 清單。
 - `POST /api`（JSON `{"cmd": "..."}`）→ 轉送給長駐 `web_bridge.exe` 的 stdin，回傳其 stdout 一行 JSON。
 - `POST /upload` → 把 scene 內容寫成系統暫存目錄（`tempfile.gettempdir()`，Windows 為 `%TEMP%`）下的暫存檔並 `loadfile`；回應帶 `path` 欄位，前端 `curScene` 指到它，「重新載入場景」才會載回剛上傳的內容。
+- `POST /feedback` → 回報收件匣（GEO-183，見下節），寫進 repo 的 `feedback/<id>/`；`GEOMETRY_FEEDBACK_DIR` 可改落點（測試用）。
 - POST 跨站防護（L3）：`Origin` 存在且非 `http://127.0.0.1:<port>` / `http://localhost:<port>` → 403；`Host` 非本機 → 403；無 `Origin` 的 curl/測試腳本放行。`cmd` 含 `\r`/`\n` 或超過 4094 bytes → 直接回 `{"ok":false}` 不送 bridge。
+
+## 回報收件匣（GEO-183）
+
+操作當下就把「哪裡怪」連同現場一起存下來，不必事後回憶，agent 也不必從口述猜是哪個功能。
+
+- **F8** 或右下「回報」鈕開面板：選分類（問題／不符預期／建議／好用）、寫一句話（可留空）、
+  「指出位置」點畫面上的元素、在說明欄 **Ctrl+V 貼截圖**（Win+Shift+S 截的圖可直接貼）。**Ctrl+Enter** 送出、Esc 取消。
+- **Shift+F8**：不開面板，直接存一筆「快速標記」——手上正忙、只想先釘住「剛剛那下不對」。
+- **自動擷取**：未捕捉的 JS 例外、Promise 拒絕、橋接器／伺服器斷線會自動存一筆（20 秒內最多一筆、同一原因 5 分鐘一次）；
+  條文拒絕（`ok:false`）是正常行為，不自動存。伺服器寫不進去時暫存在瀏覽器，下次成功送出時補送。
+- 每筆帶走：回報前最多 1000 筆操作（api 指令與回應、點擊與指到的元素、按鍵、改值、toast／狀態列、錯誤）、
+  當下世界 `world.scene`（bridge dump）、畫面快照 `page.html`（內嵌 CSS、無 JS，紅框＝指到的元素）、
+  應用程式狀態（`oc`／`fe`／三視圖工具）、視窗大小、git 版本。
+- 落點 `feedback/<F-YYYYMMDD-NNN>/`（`.gitignore` 允許清單制，不進 git），索引 `feedback/INBOX.md` 自動重產。
+
+agent 端：
+
+```sh
+python geometry-web/feedback_cli.py list              # 未處理
+python geometry-web/feedback_cli.py show <id>         # 摘要 + 最後 40 筆操作
+python geometry-web/feedback_cli.py events <id> -n 300
+python geometry-web/feedback_cli.py replay <id>       # 列出改世界的指令,並用 core.exe 載回當下世界
+python geometry-web/feedback_cli.py close <id> "已修 <commit>"   # 或 --status wontfix / cannot-reproduce
+```
 
 ## 測試
 
@@ -117,6 +142,7 @@ GEOMETRY_TEST_SCREENSHOT=/tmp/phase1-shell.png \
 | `GEOMETRY_CHROME_PROFILE` | `--user-data-dir` 位置 |
 | `GEOMETRY_CHROME_FLAGS` | 追加旗標，空白分隔；WSL 內以 root 跑需要 `--no-sandbox` |
 | `GEOMETRY_TEST_URL` | 測試頁面網址（預設 `http://localhost:8765/`） |
+| `GEOMETRY_FEEDBACK_DIR` | 回報落點（serve.py 與 cdp_test 都要設同一個；cdp_test 未設時略過 P38 送出段，避免寫進 repo 的 `feedback/`） |
 | `GEOMETRY_TEST_SCREENSHOT` | 截圖輸出路徑；**在 WSL 內跑時建議指到 `/tmp`**，否則會用
   Linux 字型渲染覆寫掉 `docs/screens/phase1-shell.png` 這張文件用參考圖 |
 
@@ -148,7 +174,9 @@ python serve.py 8765
 | `index.html` | DOM 骨架（三欄殼 + objectWorkspace 覆層 + 對話框） |
 | `app.css` | 原型 CSS + 專案補丁段（檔尾「geometry-web 專用補丁」起） |
 | `app.js` | 全部前端邏輯（classic script，無模組） |
-| `serve.py` | 靜態檔 + `/api` + `/scenes` + `/upload` |
+| `serve.py` | 靜態檔 + `/api` + `/scenes` + `/upload` + `/feedback` |
+| `feedback.js` | 回報收件匣前端（黑盒子錄製、F8 面板、自動擷取；在 `app.js` 之前載入） |
+| `feedback_store.py` / `feedback_cli.py` | 回報的寫入／INBOX 產生，與 agent 端 list/show/replay/close |
 | `web_bridge.c` | C 橋接層（編成 `web_bridge.exe`，**公理層真相**） |
 | `canvas_test.js` | 直接裁判 |
 | `cdp_test.js` | CDP 實機裁判 |

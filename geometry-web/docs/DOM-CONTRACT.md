@@ -4,6 +4,21 @@
 > 之後每階段改 DOM 都要對照本表,新增或改名需同步更新測試。
 > 來源:UI-REDESIGN-PLAN.md 附錄 B §7(cdp_test.js 依賴清單)+ §7 測試合約。
 
+## 回報收件匣（GEO-183，2026-09-24，cdp_test §P38）
+
+`feedback.js` 在 `app.js` 之前載入，動態在 `body` 末端掛 `#fbRoot`（不在 `#app` 內，不影響殼層量測）。
+
+| id / class / 全域 | 契約 |
+|---|---|
+| `#fbRoot` | 回報 UI 根節點；畫面快照會把它移除 |
+| `#fbButton` | 右下常駐「回報」鈕；不在頂列、不在 `#app` 內；面／空間工作區中仍可見 |
+| `#fbPanel` / `#fbNote` / `[data-fb-kind]` / `#fbPick` / `#fbTarget` / `#fbSend` / `#fbCancel` | F8 開關；開啟時焦點在 `#fbNote`；Esc 只關面板（不進 app 的 Esc 階梯）；Ctrl+Enter 送出 |
+| `#fbPickHover` / `body.fb-picking` | 「指出位置」模式：下一次點擊只記錄元素，**不交給 app**；Esc 取消回面板 |
+| `[data-fb-target]` | 只出現在 `page.html` 快照裡，標使用者指到的元素 |
+| `window.fbRecord(k, data)` | app.js 在 `apiRequest` / `toast` / `setStatus` 呼叫；`feedback.js` 未載入時 `?.` 略過 |
+| `window.geometryFeedback` | `{events, open, close, quickMark, describe}`，測試讀 `events` |
+
+
 ## 第二輪新增與行為變更（2026-09-22）
 
 | id / class | 契約 |

@@ -73,6 +73,21 @@
 只有使用者當場明示同意才能破例,且必須在 `BACKLOG.md` 開工單記錄原因。
 agent 不得自行判定「這次情況特殊」。
 
+## 使用者回報收件匣(GEO-183)
+
+使用者測 geometry-web 時用 F8 / 右下「回報」鈕 / Shift+F8 當場留回報,程式錯誤也會自動存一筆。
+每筆在 repo 的 `feedback/<id>/`(不進 git):說明、指到的 DOM 元素、畫面狀態、回報前的操作黑盒子、
+當下世界 `world.scene`、畫面快照 `page.html`、選填截圖。
+
+- 使用者提到「回報」「剛剛測的」「F-2026…」、或開工時,**先跑**
+  `python geometry-web/feedback_cli.py list`,再 `show <id>`;不要先請使用者重新描述。
+- 元素字串(例如 `button#btnUndo`、`[data-fi-tab="guide"]`)對照 `geometry-web/docs/DOM-CONTRACT.md` 找功能,
+  操作序列裡的 `api` 指令對照 `公理層.md` 判斷是不是條文要求的拒絕。
+- 重現:`replay <id>` 用 core.exe 載回當下世界並列出改世界的指令;`page.html` 可直接用瀏覽器開來看畫面。
+- 修完用 `close <id> "已修 <commit>"`;判定是條文要求的行為用 `--status wontfix` 並寫出條號。
+  **不要刪回報資料夾**——那是使用者的原始紀錄。
+- 回報只是線索,不是規格:使用者說「應該要能…」而條文不允許時,照 SSOT 紀律回報矛盾,不得直接改行為。
+
 ## 🔴 公理層是 SSOT,不得擅改
 
 `公理層.md` 是驗收基準。判斷任何行為對錯前先讀它,**不可從 C 碼或工法反推**。
@@ -97,7 +112,8 @@ agent 不得自行判定「這次情況特殊」。
 要靠針對資料一致性的測試。
 
 另外:**補丁腳本一律用檔案寫入工具產生,不要用 shell heredoc**——
-heredoc 會把 `
+heredoc 會把 `
+
 ` 這類跳脫序列吃掉,而 `current_geometry.c` 是統一 CRLF(見下方地雷)。
 
 ## 已知地雷
@@ -215,9 +231,12 @@ python3 tests/test_axiom_reader.py                   # 冪等 + 補丁 + 資料�
 ### 跑 cdp_test
 
 ```sh
-GEOMETRY_BRIDGE="$TEMP\geometry-tests\bridge.exe" python geometry-web/serve.py 8799 &
-GEOMETRY_TEST_URL="http://localhost:8799/" node geometry-web/cdp_test.js
+GEOMETRY_FEEDBACK_DIR="$TEMP/geometry-tests/fb-cdp" GEOMETRY_BRIDGE="$TEMP\geometry-tests\bridge.exe" python geometry-web/serve.py 8799 &
+GEOMETRY_FEEDBACK_DIR="$TEMP/geometry-tests/fb-cdp" GEOMETRY_TEST_URL="http://localhost:8799/" node geometry-web/cdp_test.js
 ```
+
+兩邊都要給同一個 `GEOMETRY_FEEDBACK_DIR`:P38 會實際送出回報並觸發一次自動擷取,
+不設就寫進 repo 的 `feedback/`(混進使用者的真回報)——cdp_test 沒看到這個變數時會略過 P38 的送出段。
 
 它是**唯一真的執行 `app.js` 的 harness**(headless Chrome 實際點按鈕);
 `canvas_test.js` 與 `tests/*.py` 都只到橋接器為止。動到 `app.js` 的行為就得跑它。

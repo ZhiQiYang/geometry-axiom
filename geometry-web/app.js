@@ -131,11 +131,22 @@ let pickSeq = 0;
 
 /* ---- 通訊 ---- */
 async function apiRequest(cmd) {
-  const r = await fetch("/api", {
-    method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ cmd })
-  });
-  return r.json();
+  const t0 = performance.now();
+  let res;
+  try {
+    const r = await fetch("/api", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cmd })
+    });
+    res = await r.json();
+  } catch (e) {
+    /* GEO-183:伺服器斷線也要進回報黑盒子 */
+    window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: false, error: e.message, ms: Math.round(performance.now() - t0) });
+    throw e;
+  }
+  window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
+    preview: res.preview ? true : undefined, ms: Math.round(performance.now() - t0) });
+  return res;
 }
 async function api(cmd) {
   const result = await apiRequest(cmd);
@@ -144,6 +155,7 @@ async function api(cmd) {
 }
 function setStatus(t) {
   statusEl.textContent = t;
+  window.fbRecord?.("status", { msg: String(t).slice(0, 500) });
   /* 🔒 成功訊息同步發 .toast.ok(2000ms) */
   if (typeof t === "string" && t.startsWith("✓"))
     toast(t.replace(/^✓\s*/, ""), "ok");
@@ -4583,6 +4595,7 @@ $("minimap").addEventListener("pointerdown", e => {
 });
 /* toast:bridge ok:false 的 error 原文(§5.7) */
 function toast(msg, type = "error") {
+  window.fbRecord?.("toast", { type, msg: String(msg).slice(0, 500) });
   const t = document.createElement("div");
   t.className = "toast " + type;
   t.innerHTML = icon(type === "error" ? "warning" : "check") +

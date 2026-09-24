@@ -2708,3 +2708,26 @@ GEO-180 的 fresh 驗證指出:`app.js` 約 712–763 的三視圖 `tool === "po
 頂點/座標上限。現況地圖與 DOM-CONTRACT 都把它標為「同名殭屍」、本輪範圍外,但它確實存在且使用者點得到。
 **選項**(需拍板):(a) 改接 `PolyDraft`(三視圖座標系另接一組 opts,吸附格距沿用主畫布 250);(b) 移除按鈕與程式碼
 (主畫布 P 工具已完整取代);(c) 保留但在 UI 標示「舊版,無先驗」。我傾向 (b):同一件事三套邏輯只會再飄。
+
+### GEO-183 ✅ 已做(2026-09-24)P1:geometry-web 回報收件匣——操作當下留回報,agent 直接讀現場
+
+**起因**(使用者 2026-09-24):測完再回憶、再描述,agent 還要從口述猜是哪個功能;測試當下感覺到的異常只能間接轉述。
+**拍板**(當場問答):F8 + 右下常駐鈕;存 repo 內 `feedback/` 但不進 git;只自動存程式錯誤(規則拒絕不存);第一版只做 geometry-web。
+
+- `geometry-web/feedback.js`(app.js 之前載入):黑盒子常駐記錄最近 1000 筆(api 指令/回應/耗時、點擊與元素描述、
+  畫布座標、按鍵(連打合併)、改值、toast/狀態列、JS 錯誤、console.error);F8 面板(分類、說明、指出位置、Ctrl+V 貼截圖);
+  Shift+F8 快速標記;未捕捉例外/Promise 拒絕/橋接器斷線自動存(節流 20 秒、同因 5 分鐘);寫入失敗暫存 localStorage 補送。
+  面板開著時鍵盤不外洩給 app(Esc 不會退出工作區);指出位置那一下不交給 app。
+- 送出內容:說明、元素、畫面名稱與 `oc`/`fe`/三視圖狀態、視窗、場景、git 版本、`world.scene`(bridge dump)、
+  `page.html`(DOM 快照,內嵌 app.css、去 script、canvas 轉圖、紅框標元素,瀏覽器直接開就是當時畫面)。
+- `feedback_store.py`:編號 `F-YYYYMMDD-NNN`,先寫暫存資料夾再改名(讀者不會看到寫一半);`report.md` 摘要 + 最後 40 筆操作;
+  `INBOX.md` 每次由全部 meta 重產。`serve.py` 加 `POST /feedback`(32MB 上限、沿用 L3 本機限定)、`GEOMETRY_FEEDBACK_DIR`。
+- `feedback_cli.py`:list / show / events / replay(列改世界的指令 + core.exe 載回世界)/ close。
+- app.js 只加三個掛鉤(`apiRequest` / `toast` / `setStatus` 呼叫 `window.fbRecord?.`)。
+- AGENTS.md 新節:開工或使用者提到回報時先 `feedback_cli.py list`,不要先請使用者重述;不得刪回報資料夾。
+
+**驗證**:`tests/test_feedback_store.py` 7 項;cdp_test §P38 12 項(黑盒子記錄被拒指令、鈕可見且不在頂列、F8 焦點、
+Esc 不退出面工作區、指出位置不觸發 app 分頁切換、Ctrl+Enter 寫檔、meta/events/world/page 內容、欄位清空、
+JS 例外自動存 kind=auto、規則拒絕不自動存);完整 cdp_test **401 ✓ / 0 ✗**;test_serve 9 項。
+page.html 以 headless Chrome 截圖確認:面工作區畫面完整、紅框落在指到的「參考線」分頁。
+**尚未**:真實觸控裝置(長按無 F8)、Safari;公理層閱讀器的批註未匯入同一收件匣(範圍外,第一版只做 geometry-web)。

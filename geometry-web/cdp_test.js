@@ -3493,6 +3493,59 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   check('P37 impact Escape cancels only dialog and retains face',await eval_(`!document.querySelector('dialog.reference-impact[open]') && oc.focus?.t==='face' && oc.focus.id===1 && !document.querySelector('#objectWorkspace').hidden`));
   check('P37 impact Escape leaves model unchanged',(await eval_(`apiRequest('dump')`)).text===p37Before);
   check('P30 no uncaught browser exceptions',excN===0,excN);
+
+  console.log('=== P38. 回報收件匣(GEO-183):F8 面板、Esc 不外洩、指出位置不觸發 app、送出寫檔、程式錯誤自動擷取 ===');
+  const fbDir = process.env.GEOMETRY_FEEDBACK_DIR;
+  const fbList = () => fbDir && require('fs').existsSync(fbDir)
+    ? require('fs').readdirSync(fbDir).filter(n => n.startsWith('F-')).sort() : [];
+  const fbMeta = id => JSON.parse(require('fs').readFileSync(require('path').join(fbDir, id, 'meta.json'), 'utf8'));
+  await send('Emulation.setDeviceMetricsOverride',{width:1382,height:900,deviceScaleFactor:1,mobile:false});
+  await eval_(`(async()=>{resetSceneFocus();await api('default');await renderObjects();await enterFocus('face',1)})()`);
+  await eval_(`api('line place 999 on 1 at-line guide 1')`);
+  check('P38 黑盒子記下被拒的指令與錯誤', await eval_(`geometryFeedback.events.some(e=>e.k==='api'&&e.cmd.includes('place 999')&&!e.ok&&!!e.error)`));
+  check('P38 回報鈕可見且不在頂列內', await eval_(`(()=>{const b=document.querySelector('#fbButton');const r=b.getBoundingClientRect();return r.width>0&&getComputedStyle(b).visibility==='visible'&&r.top>parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topbar-h'))&&!document.querySelector('#app').contains(b)})()`));
+  await pressKey('F8','F8',119);
+  check('P38 F8 開面板且焦點在說明欄', await eval_(`!document.querySelector('#fbPanel').hidden && document.activeElement.id==='fbNote'`));
+  await pressKey('Escape','Escape',27);
+  check('P38 面板內 Esc 只關面板,不退出面工作區', await eval_(`document.querySelector('#fbPanel').hidden && oc.focus?.t==='face' && oc.focus.id===1`));
+  await clickSelector('#fbButton');
+  check('P38 回報鈕開面板', await eval_(`!document.querySelector('#fbPanel').hidden`));
+  await send('Input.insertText',{text:'P38 測試:這裡怪怪的'});
+  await clickSelector('[data-fb-kind="unexpected"]');
+  const tabBefore = await eval_(`fe.fiTab`);
+  await clickSelector('#fbPick');
+  await clickSelector('#faceInspectorTabs [data-fi-tab="guide"]');
+  check('P38 指出位置記下元素、且那一下沒有交給 app', await eval_(`!document.querySelector('#fbPanel').hidden && document.querySelector('#fbTarget').textContent.includes('data-fi-tab="guide"')`) && await eval_(`fe.fiTab`) === tabBefore);
+  if (!fbDir) {
+    console.log('P38 送出/自動擷取段略過:serve.py 未設 GEOMETRY_FEEDBACK_DIR(避免寫進 repo 的 feedback/)');
+    await pressKey('Escape','Escape',27);
+  } else {
+    const before = fbList();
+    await pressKey('Enter','Enter',13,2);
+    for (let i=0;i<60 && fbList().length===before.length;i++) await sleep(100);
+    const added = fbList().filter(n=>!before.includes(n));
+    check('P38 Ctrl+Enter 送出後寫出一筆回報且面板關閉', added.length===1 && await eval_(`document.querySelector('#fbPanel').hidden`), added);
+    if (added.length===1) {
+      const m = fbMeta(added[0]); const d = require('path').join(fbDir, added[0]); const fs = require('fs');
+      check('P38 回報帶分類、說明、指到的元素與畫面', m.kind==='unexpected' && m.note.includes('P38') && m.target.el.includes('data-fi-tab="guide"') && m.context.view.includes('面工作區 · 面 1'), m);
+      check('P38 回報帶被拒指令、世界與紅框畫面快照',
+        fs.readFileSync(require('path').join(d,'events.jsonl'),'utf8').includes('place 999') &&
+        fs.readFileSync(require('path').join(d,'world.scene'),'utf8').includes('spec') &&
+        fs.readFileSync(require('path').join(d,'page.html'),'utf8').includes('data-fb-target') &&
+        !fs.readFileSync(require('path').join(d,'page.html'),'utf8').includes('<script'));
+    }
+    check('P38 送出後面板欄位已清空', await eval_(`document.querySelector('#fbNote').value==='' && document.querySelector('#fbTarget').textContent==='尚未指定元素'`));
+    const before2 = fbList();
+    await eval_(`setTimeout(()=>{throw new Error('fb-auto-probe')},0)`);
+    for (let i=0;i<60 && fbList().length===before2.length;i++) await sleep(100);
+    const auto = fbList().filter(n=>!before2.includes(n));
+    check('P38 未捕捉的 JS 例外自動存一筆 kind=auto', auto.length===1 && fbMeta(auto[0]).kind==='auto' && fbMeta(auto[0]).auto_reason.includes('fb-auto-probe'), auto);
+    const before3 = fbList();
+    await eval_(`api('line place 998 on 1 at-line guide 1')`);
+    await sleep(800);
+    check('P38 規則拒絕(ok:false)不自動存', fbList().length===before3.length);
+  }
+
   }
 
   chrome.kill();

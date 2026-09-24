@@ -1417,3 +1417,24 @@ body.v3-mode .sidebar-left > .drawer-close, body.v3-mode .sidebar-right > .drawe
 @media (hover: none) { .card-enter { opacity: 1; } .rc-acts { opacity: 1; } }
 /* Drawers belong to the visible workspace; the main canvas must not cover it. */
 body:has(#objectWorkspace:not([hidden])) #app { visibility: hidden; }
+
+/* GEO-183 回報收件匣(feedback.js):浮動鈕 + 面板 + 指出位置的高亮框。不在 #app 內,不影響版面量測。 */
+#fbButton { position: fixed; right: 12px; bottom: calc(var(--statusbar-h) + 124px); z-index: 90; padding: 5px 11px; border: 1px solid var(--border-strong); border-radius: 999px; background: rgba(255,255,255,.94); box-shadow: var(--shadow-sm); color: var(--muted); font-size: 11.5px; font-weight: 600; cursor: pointer; opacity: .8; }
+#fbButton:hover, #fbButton:focus-visible { opacity: 1; color: var(--accent-strong); border-color: var(--accent); }
+.fb-panel { position: fixed; right: 12px; bottom: calc(var(--statusbar-h) + 160px); z-index: 95; width: min(380px, calc(100vw - 24px)); display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel); box-shadow: var(--shadow-md); }
+.fb-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.fb-hint { color: var(--faint); font-size: 11px; }
+.fb-kinds { display: flex; gap: 4px; }
+.fb-kind { flex: 1; padding: 5px 0; border: 1px solid var(--border); border-radius: 8px; background: var(--panel-muted); cursor: pointer; }
+.fb-kind.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); font-weight: 600; }
+#fbNote { width: 100%; resize: vertical; padding: 7px 8px; border: 1px solid var(--border-strong); border-radius: 8px; }
+.fb-row, .fb-foot { display: flex; align-items: center; gap: 8px; }
+.fb-row button, .fb-foot button, .fb-shot button { padding: 5px 10px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--panel); cursor: pointer; }
+.fb-target { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: 11.5px; }
+.fb-shot { display: flex; align-items: flex-start; gap: 8px; }
+.fb-shot img { max-width: 220px; max-height: 120px; border: 1px solid var(--border); border-radius: 6px; }
+.fb-foot { justify-content: flex-end; }
+.fb-msg { flex: 1; color: var(--danger); font-size: 11.5px; }
+.fb-foot .fb-primary { border-color: var(--accent); background: var(--accent); color: white; }
+.fb-pick-hover { position: fixed; z-index: 99; pointer-events: none; outline: 2px solid var(--danger); outline-offset: 1px; background: rgba(194, 65, 79, .08); }
+body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
