@@ -1281,7 +1281,17 @@ body.v3-mode .minimap-shell { display: none; }
 #edgeLabelLayer { pointer-events: none; }
 .edge-label-item { opacity: 0; transition: opacity .12s; }
 .edge-label-item.active { opacity: 1; }
-body:has(#toastRegion .toast) .canvas-mode-hint { visibility: hidden; }
+/* GEO-185 #1:多邊形吸附格(格距 = oc.gridMm)畫得比一般格線明顯;間距選單不再被截成「2」 */
+.canvas-viewport.show-grid.poly-snap-grid {
+  background-image:
+    linear-gradient(rgba(78, 103, 232, .22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(78, 103, 232, .22) 1px, transparent 1px),
+    linear-gradient(rgba(78, 103, 232, .12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(78, 103, 232, .12) 1px, transparent 1px);
+}
+#polyGridSize.mini-toggle { width: auto; min-width: 54px; padding: 0 4px; }
+/* GEO-185 #5:舊版有 toast 就把浮標整個隱藏,錯誤/清草稿時 2–3.6 秒內看不到工具狀態;改成 toast 讓到浮標下方。 */
+body:has(#canvasModeHint:not([hidden])) .toast-region { top: calc(var(--topbar-h) + 58px); }
 body.oc-busy { cursor: progress; }
 .is-busy::after { content: ''; width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: busy-spin .7s linear infinite; }
 .inspector-footer { position: sticky; bottom: 0; padding: 10px 0 0; background: var(--panel); z-index: 3; }

@@ -857,6 +857,14 @@ window.addEventListener("keydown", async e => {
     e.preventDefault();
     if (oc.busy) { toast("操作進行中,請稍候"); return; }
     const cmd = (e.key === "y" || e.key === "Y" || e.shiftKey) ? "redo" : "undo";
+    /* GEO-185 #3:多邊形工具中剛用 Esc 清掉草稿、還沒落新點 → Ctrl+Z 先還原草稿,不動世界 */
+    if (cmd === "undo" && oc.on && !oc.focus && oc.drawTool === "poly" && oc.polyStash && !oc.polyDraft.pts.length) {
+      oc.polyDraft = Object.assign(PolyDraft.createState(), { pts: oc.polyStash });
+      oc.poly = oc.polyDraft.pts; oc.polyStash = null;
+      setStatus(`多邊形：已還原草稿 · 已點 ${oc.poly.length} 頂點 · 點回起點閉合(Esc 取消)`);
+      renderPolyDraftLayer(); renderCanvasModeHint();
+      return;
+    }
     await doUndoRedo(cmd);
     return;
   }
@@ -960,7 +968,7 @@ window.addEventListener("keydown", async e => {
     if (oc.drawTool === "poly") {
       if (/^[0-9]$/.test(k)) {
         oc.polyDraft = PolyDraft.typeDigit(oc.polyDraft, k);
-        ocLenShow();
+        ocLenShow(); renderCanvasModeHint();   /* GEO-185 #7:浮標同步顯示「鍵入長度 N mm」 */
         return;
       }
       if (k === "Backspace") { objPolyBackspace(); return; }
@@ -1015,7 +1023,7 @@ function markSceneItem() {
    只清 oc.poly 而不重新指派 oc.polyDraft 會讓兩者分家——與 setOcTool()/objPolyEscStep()
    既有的完整重置同款,resetSceneFocus/enterFocus/leaveFocus 三處共用,避免各自漏寫一半。 */
 function objPolyResetDraft() {
-  oc.polyDraft = PolyDraft.createState(); oc.poly = oc.polyDraft.pts; oc.polyPreview = null;
+  oc.polyDraft = PolyDraft.createState(); oc.poly = oc.polyDraft.pts; oc.polyPreview = null; oc.polyStash = null;
 }
 /* 換場景前清工作區焦點與面面內快取——舊場景的 guide/timber 殘影會誤刪新場景同號物件 */
 function resetSceneFocus() {
@@ -1119,6 +1127,7 @@ const oc = {
   poly: [],               // 相容既有測試/呼叫端：鏡射 oc.polyDraft.pts(§5.A.1.12 diff#12)
   polyDraft: PolyDraft.createState(),  // 共用草稿狀態機(polydraft.js)的 state
   polyPreview: null,      // 最近一次 PolyDraft.previewMove 的回傳，供草稿層/浮標渲染用
+  polyStash: null,        // GEO-185 #3:Esc 清掉的草稿頂點,Ctrl+Z 可還原;落新點/離開工具即丟
   gridMm: 250,            // diff#3(🔒 Q15):主畫布多邊形格線吸附間距(mm),可調 100/250/300/500
   drawTool: null,         // 'rect' | 'poly' | 'hole' | null
   edit: null,             // 面編輯 {bid, work:[{verts,fixity}], drag}
@@ -1133,12 +1142,26 @@ function ocApply() {
   const vp = $("canvasViewport");
   vp.style.setProperty("--pan-x", oc.panX + "px");
   vp.style.setProperty("--pan-y", oc.panY + "px");
-  vp.style.setProperty("--grid-size", (24 * oc.zoom) + "px");
+  ocGridApply();
   const zl = $("zoomLevelButton"); if (zl) zl.textContent = Math.round(oc.zoom * 100) + "%";
   const comp = oc.zoom < OC_COMPACT_ZOOM;
   if (oroot) for (const c of oroot.querySelectorAll(".ocard"))
     c.classList.toggle("compact", comp);
   if (oc.faces) drawMinimap();
+}
+/* 背景格線。GEO-185 #1:多邊形工具 + 吸附開著時,格線改畫「實際吸附間距」(oc.gridMm),
+   舊版固定畫 24 單位格、實際卻吸到看不見的 250mm 格,點下去被吸走或被吞掉都看不出原因。
+   格線也跟著平移(--grid-x/y 以前沒人設,平移時格線不動、對不上畫布座標)。 */
+function ocGridApply() {
+  const vp = $("canvasViewport");
+  if (!vp) return;
+  const polySnap = oc.drawTool === "poly" && $("snapToggle").classList.contains("on");
+  const minor = (polySnap ? oc.gridMm : 24) * oc.zoom;
+  vp.style.setProperty("--grid-size", minor + "px");
+  vp.style.setProperty("--grid-major", minor * 5 + "px");
+  vp.style.setProperty("--grid-x", oc.panX + "px");
+  vp.style.setProperty("--grid-y", oc.panY + "px");
+  vp.classList.toggle("poly-snap-grid", polySnap);
 }
 function ocToCanvasPx(x, y) {       /* 元素局部 px → 畫布座標 */
   return { x: (x - oc.panX) / oc.zoom, y: (y - oc.panY) / oc.zoom };
@@ -3572,7 +3595,7 @@ function placeFormHTML(bid) {
     `<label>原點 y (mm)<input id="placeOY" type="number" step="1" value="${surf?.origin[1] || 0}"></label>` +
     `<label>原點 z (mm)<input id="placeOZ" type="number" step="1" value="${surf?.origin[2] || 0}"></label>` +
     `<label>u 軸<select id="placeU">${AXIS_OPTS.map(a => `<option${a === (surf ? AXIS_WORD[surf.u.join()] : slot ? PLACE_PRESETS[slot.presetName].u : "+x") ? " selected" : ""}>${a}</option>`).join("")}</select></label>` +
-    `<label>v 軸<select id="placeV">${AXIS_OPTS.map(a => `<option${a === (surf ? AXIS_WORD[surf.v.join()] : slot ? PLACE_PRESETS[slot.presetName].v : "+x") ? " selected" : ""}>${a}</option>`).join("")}</select></label>` +
+    `<label>v 軸<select id="placeV">${AXIS_OPTS.map(a => `<option${a === (surf ? AXIS_WORD[surf.v.join()] : slot ? PLACE_PRESETS[slot.presetName].v : "+y") ? " selected" : ""}>${a}</option>`).join("")}</select></label>` +
     `</div>` +
     `<div id="placeValid" class="place-valid"></div>` +
     `<div class="inspector-footer"><button id="placeSubmit" class="btn" data-bid="${bid}">` +
@@ -3788,7 +3811,7 @@ function objDrawDown(pt) {
       objPolyPreviewMove(pt);
       return;
     }
-    oc.polyDraft = r.state; oc.poly = oc.polyDraft.pts;
+    oc.polyDraft = r.state; oc.poly = oc.polyDraft.pts; oc.polyStash = null;
     /* §5.A.1.11:既有文案逐字保留，cdp_test 既有斷言比對此字串 */
     setStatus(`多邊形：已點 ${oc.polyDraft.pts.length} 頂點 · 點回起點閉合(Esc 取消)`);
     objPolyPreviewMove(pt);
@@ -3846,7 +3869,7 @@ function objPolyEnter() {
 function objPolyBackspace() {
   if (oc.polyDraft.typed) {
     oc.polyDraft = PolyDraft.typeBackspace(oc.polyDraft);
-    ocLenShow();
+    ocLenShow(); renderCanvasModeHint();
     return;
   }
   oc.polyDraft = PolyDraft.backspace(oc.polyDraft);
@@ -3870,13 +3893,16 @@ function objPolyEscStep() {
     return;
   }
   if (oc.polyDraft.pts.length > 0) {
+    /* GEO-185 #3:草稿不在世界的 undo 歷史裡,清掉就回不來——先暫存,Ctrl+Z 可還原(落新點或離開工具才丟) */
+    oc.polyStash = oc.polyDraft.pts.map(p => [...p]);
     oc.polyDraft = PolyDraft.createState(); oc.poly = oc.polyDraft.pts; oc.polyPreview = null;
     renderPolyDraftLayer(); renderCanvasModeHint(); ocLenShow();
-    setStatus("多邊形：草稿已清空 · 再按 Esc 離開工具");
-    toast("草稿已清空，再按一次 Esc 離開多邊形工具", "ok");
+    setStatus("多邊形：草稿已清空 · Ctrl+Z 還原 · 再按 Esc 離開工具");
+    toast("草稿已清空（Ctrl+Z 可還原），再按一次 Esc 離開多邊形工具", "ok");
     return;
   }
   pendingSlot = null;
+  oc.polyStash = null;
   oc.drawTool = null;
   $("btnNewPoly")?.classList.remove("active");
   for (const b of document.querySelectorAll("[data-tool]"))
@@ -3982,13 +4008,16 @@ function renderCanvasModeHint() {
   let ctx;
   if (oc.polyDraft.typed) ctx = `鍵入長度 ${oc.polyDraft.typed} mm(Enter 定長)`;
   else if (preview.error) ctx = preview.error.msg;
-  else if (preview.closeReady) ctx = `已點 ${n} 頂點 · 放開即可閉合` +
+  else if (preview.closeReady) ctx = `已點 ${n} 頂點 · 點下即可閉合` +
     (preview.cornerPreview ? "（將自動補一個直角轉折）" : "");
   else if (startAligned) ctx = `已點 ${n} 頂點 · 點下這一點後即可直角閉合`;
+  else if (n === 0 && oc.polyStash) ctx = "草稿已清空";
   else if (n === 0) ctx = "逐點畫正交多邊形，點下第一點開始";
   else ctx = `已點 ${n} 頂點`;
   ctxEl.textContent = ctx;
-  kbdEl.textContent = n > 0 ? "Enter 閉合 · Esc 退回" : "Esc 取消";
+  /* GEO-185 #3:舊文案「Esc 退回」會被讀成退一點,實際是清掉整份草稿;退一點的是 Backspace */
+  kbdEl.textContent = n > 0 ? "Backspace 退一點 · Enter 閉合 · Esc 清草稿"
+    : oc.polyStash ? "Ctrl+Z 還原草稿 · Esc 離開" : "Esc 離開";
   if (closeBtn) closeBtn.hidden = n < 3;
 }
 
@@ -4017,10 +4046,10 @@ async function objEmitFace(pts) {
   /* bbox 左上落點——搶在 renderObjects() 的 homeless 自動排格分支之前送出 */
   await api(`line canvas-pos boundary ${bid} ${x0} ${y0}`);
   const msg = `✓ 面 ${bid} 已建立 · ${pts.length} 頂點 · ${x1 - x0}×${y1 - y0} mm · Ctrl+Z 復原`;
+  /* setStatus 對 ✓ 開頭的訊息已經自動發 .toast.ok;GEO-185 #6 拿掉這裡重複的第二則 */
   setStatus(msg);
   await renderObjects();
   selectObject("boundary", bid);
-  toast(msg, "ok");
   if (pendingSlot && pendingSlot.bid == null) {
     pendingSlot.bid = bid;
     await enterFocus("face", bid);
@@ -4461,6 +4490,7 @@ function ocCursor() {
   v.classList.toggle("tool-poly", oc.drawTool === "poly");
   v.classList.toggle("space-pan", !!oc.spacePan);
   v.classList.toggle("is-panning", !!oc.pan);
+  ocGridApply();
   /* E7/diff#2:模式浮標——只在建面工具啟用時顯示；三段內容見 renderCanvasModeHint */
   renderCanvasModeHint();
   renderPolyDraftLayer();
@@ -4472,7 +4502,7 @@ function setOcTool(t) {
   oc.drawTool = (t === "rect" || t === "poly") ? t : "";
   oc.poly = []; oc.rect = null;
   /* diff#12:離開/重新進入 poly 一律重置共用草稿狀態機 */
-  oc.polyDraft = PolyDraft.createState(); oc.polyPreview = null;
+  oc.polyDraft = PolyDraft.createState(); oc.polyPreview = null; oc.polyStash = null;
   for (const b of document.querySelectorAll("[data-tool]"))
     b.classList.toggle("active", b.dataset.tool === t);
   /* diff#1(§5.A.1.1):物件庫「面·多邊形」卡片本身的 active 態(它不是 [data-tool]) */
@@ -4541,11 +4571,13 @@ for (const id of ["snapToggle", "gridToggle"]) {
     b.setAttribute("aria-pressed", on ? "true" : "false");
     if (id === "gridToggle")
       $("canvasViewport").classList.toggle("show-grid", on);
+    ocGridApply();
   });
 }
 /* diff#3:多邊形格線間距下拉(oc.gridMm),與 snapToggle 共用開關、各自獨立間距值 */
 $("polyGridSize")?.addEventListener("change", e => {
   oc.gridMm = +e.target.value || 250;
+  ocGridApply();
 });
 /* diff#2:浮標「閉合」鈕——等同觸發 §5.A.1.7 的閉合判定 */
 $("polyCloseBtn")?.addEventListener("click", e => {

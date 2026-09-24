@@ -369,6 +369,11 @@ function previewMove(state, freePt, opts) {
   if (closeReady) {
     const cc = computeCornerCandidates(pts);
     if (cc.preferred >= 0) cornerPreview = cc.candidates[cc.preferred];
+    /* GEO-185 #2:閉合就緒時,這一下點下去做的是「閉合」不是「落新點」——錯誤要以 tryClose 的判定為準。
+       舊版照樣把游標當普通下一點跑 evaluateNextPoint,收尾段碰到起點就報 CROSS,
+       畫面顯示紅字「會交叉」但實際點下去閉合成功,回饋互相矛盾。 */
+    const tc = tryClose(state, { existingEdges: opts.existingEdges });
+    error = tc.ok ? null : tc.error;
   }
 
   return { cur, guides, closeReady, error, cornerPreview };

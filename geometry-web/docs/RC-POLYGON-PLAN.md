@@ -230,6 +230,8 @@
   1. 第一次 Esc:若 `typed` 非空 → 只清 `typed`,浮標與草稿不變。
   2. 第二次 Esc(`typed` 已空、`pts.length>0`):清整份草稿(`oc.poly=[]`),浮標提示
      「再按 Esc 離開」(措辭比照面內既有 toast「再按 Esc 返回」)。
+     **GEO-185(2026-09-24)補**:清掉的頂點暫存在 `oc.polyStash`,此時 Ctrl+Z 先還原草稿、不動世界;
+     落新點或離開工具才丟。浮標 kbd 改寫「Backspace 退一點 · Enter 閉合 · Esc 清草稿」(舊「Esc 退回」會被讀成退一點)。
   3. 第三次 Esc(`pts.length===0`,工具仍是 poly):`oc.drawTool=null`,離開工具回 select。
   - 若使用者在某階梯之間又落了新點,階梯重置回第 1 階(`typed` 判斷優先)。
 - 預期畫面:交叉/回頭時草稿層橡皮筋 stroke 變紅;Backspace 後頂點數 -1、狀態列頂點數同步

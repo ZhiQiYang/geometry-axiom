@@ -3588,6 +3588,46 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await sleep(300);
   check('P39 影響預覽 Esc 取消後世界不變', !(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)) && await faceExists(1) && (await eval_(`apiRequest('dump')`)).text === p39Before);
 
+  console.log('=== P40. 多邊形 UI/UX 審查修正(GEO-185) ===');
+  await send('Emulation.setDeviceMetricsOverride',{width:1382,height:860,deviceScaleFactor:1,mobile:false});
+  await emptyWorld();
+  await eval_(`document.getElementById('snapToggle').classList.add('on');document.getElementById('polyGridSize').value='250';oc.gridMm=250;oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();setOcTool('select')`);
+  const gridOf = () => eval_(`(()=>{const v=document.getElementById('canvasViewport');return {size:v.style.getPropertyValue('--grid-size'),cls:v.classList.contains('poly-snap-grid')}})()`);
+  check('P40-1a 一般模式格線 24 單位', (await gridOf()).size === '24px' && !(await gridOf()).cls, await gridOf());
+  await pressKey('p','KeyP',80);
+  check('P40-1b 多邊形工具+吸附:畫面格線 = 吸附間距 250mm×zoom', (await gridOf()).size === '250px' && (await gridOf()).cls, await gridOf());
+  await eval_(`(()=>{const s=document.getElementById('polyGridSize');s.value='500';s.dispatchEvent(new Event('change'))})()`);
+  check('P40-1c 改吸附間距,格線跟著變', (await gridOf()).size === '500px', await gridOf());
+  await eval_(`(()=>{const s=document.getElementById('polyGridSize');s.value='250';s.dispatchEvent(new Event('change'))})()`);
+  check('P40-1d 間距選單不再被截斷', await eval_(`(()=>{const s=document.getElementById('polyGridSize');return s.scrollWidth<=s.clientWidth+1 && s.getBoundingClientRect().width>=50})()`));
+  const o40 = await ocOrigin();
+  for (const [x, y] of [[250,250],[500,250],[500,500],[250,500]]) await click(o40.x+x, o40.y+y);
+  await sleep(150);
+  check('P40-3a 有頂點時浮標提示 Backspace 退一點、Esc 清草稿', await eval_(`(()=>{const k=document.querySelector('#canvasModeHint .hint-kbd').textContent;return k.includes('Backspace')&&k.includes('Esc 清草稿')&&!k.includes('退回')})()`));
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:o40.x+252,y:o40.y+252}); await sleep(150);
+  const cr = await eval_(`({ready:!!(oc.polyPreview&&oc.polyPreview.closeReady),err:(oc.polyPreview||{}).error,ctx:document.querySelector('#canvasModeHint .hint-context').textContent,red:!!document.querySelector('#polyDraftLayer .draft-rubber.error')})`);
+  check('P40-2 閉合就緒不誤報交叉:無錯誤、無紅線、浮標寫「點下即可閉合」', cr.ready && !cr.err && !cr.red && cr.ctx.includes('點下即可閉合'), cr);
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:o40.x+150,y:o40.y+500}); await sleep(100);
+  for (const d of '15') await pressKey(d,'Digit'+d,48+ +d);
+  check('P40-7 鍵入長度時浮標同步顯示', await eval_(`document.querySelector('#canvasModeHint .hint-context').textContent.includes('鍵入長度 15')`));
+  await pressKey('Escape','Escape',27);
+  const worldBefore = (await eval_(`apiRequest('dump')`)).text;
+  await pressKey('Escape','Escape',27);
+  const wiped = await eval_(`({pts:oc.polyDraft.pts.length,stash:(oc.polyStash||[]).length,kbd:document.querySelector('#canvasModeHint .hint-kbd').textContent,
+    hintVis:getComputedStyle(document.getElementById('canvasModeHint')).visibility,hintHidden:document.getElementById('canvasModeHint').hidden,
+    toastTop:(()=>{const t=document.querySelector('#toastRegion .toast');return t?t.getBoundingClientRect().top:null})(),
+    hintBottom:document.getElementById('canvasModeHint').getBoundingClientRect().bottom})`);
+  check('P40-3b Esc 清草稿後暫存、浮標提示 Ctrl+Z 還原', wiped.pts===0 && wiped.stash===4 && wiped.kbd.includes('Ctrl+Z 還原'), wiped);
+  check('P40-5 toast 出現時浮標仍可見,且 toast 在浮標下方', !wiped.hintHidden && wiped.hintVis==='visible' && wiped.toastTop!==null && wiped.toastTop>=wiped.hintBottom, wiped);
+  await pressKey('z','KeyZ',90,2); await sleep(150);
+  check('P40-3c Ctrl+Z 還原草稿 4 頂點、世界不變', await eval_(`oc.polyDraft.pts.length===4 && oc.drawTool==='poly' && !oc.polyStash`) && (await eval_(`apiRequest('dump')`)).text === worldBefore);
+  await eval_(`document.querySelectorAll('#toastRegion .toast').forEach(t=>t.remove())`);
+  await click(o40.x+252, o40.y+252); await sleep(900);
+  const made = await eval_(`({toasts:[...document.querySelectorAll('#toastRegion .toast')].filter(t=>t.textContent.includes('已建立')).length,
+    v:document.querySelector('#placeV')?.value, u:document.querySelector('#placeU')?.value,
+    err:[...document.querySelectorAll('#inspectorContent *, .inspector *')].some(e=>e.children.length===0&&e.textContent.includes('必須垂直'))})`);
+  check('P40-6 閉合成功只跳一則 toast', made.toasts===1, made);
+  check('P40-8 新面的放置表單預設 u=+x、v=+y,沒有「必須垂直」錯誤', made.u==='+x' && made.v==='+y' && !made.err, made);
   }
 
   chrome.kill();

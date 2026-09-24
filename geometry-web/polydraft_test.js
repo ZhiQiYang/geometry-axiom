@@ -311,6 +311,25 @@ test("previewMove：距起點超出 12px/zoom → closeReady=false", () => {
   assert.strictEqual(pm.closeReady, false);
 });
 
+test("previewMove（GEO-185 #2）：閉合就緒且可以閉合 → error 為 null，不得把收尾段當普通下一點報 CROSS", () => {
+  let s = PD.createState();
+  const o = baseOpts({ snapOn: true, gridMm: 250, zoom: 1 });
+  for (const p of [[0, 0], [250, 0], [250, 250], [0, 250]]) s = PD.place(s, p, o).state;
+  const pm = PD.previewMove(s, [2, 2], o);   // 吸附後 cur 正好落在起點——舊版在這裡報 CROSS
+  assert.strictEqual(pm.closeReady, true);
+  assert.strictEqual(PD.tryClose(s, { existingEdges: [] }).ok, true);
+  assert.strictEqual(pm.error, null);
+});
+
+test("previewMove（GEO-185 #2）：閉合就緒但閉合不可行 → error 與 tryClose 同碼", () => {
+  const blockBoth = [[[300, 100], [300, 300]], [[400, -100], [400, 100]]];
+  const s = { pts: CORNER_DRAFT, cur: null, typed: "", closeReady: false, error: null };
+  const o = baseOpts({ snapOn: false, zoom: 1, existingEdges: blockBoth });
+  const pm = PD.previewMove(s, [CORNER_DRAFT[0][0] + 3, CORNER_DRAFT[0][1] + 3], o);
+  assert.strictEqual(pm.closeReady, true);
+  assert.strictEqual(pm.error && pm.error.code, PD.tryClose(s, { existingEdges: blockBoth }).error.code);
+});
+
 test("previewMove：zoom 影響閉合半徑（scene 距離 = 12/zoom）", () => {
   let s = PD.createState();
   const o = baseOpts({ snapOn: false, zoom: 1 });

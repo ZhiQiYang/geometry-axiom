@@ -18,6 +18,16 @@
 | `window.fbRecord(k, data)` | app.js 在 `apiRequest` / `toast` / `setStatus` 呼叫；`feedback.js` 未載入時 `?.` 略過 |
 | `window.geometryFeedback` | `{events, open, close, quickMark, describe}`，測試讀 `events` |
 
+## 多邊形 UI/UX 審查修正與 Delete 快捷鍵（GEO-184/185，2026-09-24，cdp_test §P39/§P40）
+
+| id / class / 全域 | 契約 |
+|---|---|
+| 主畫布 `Delete` / `Backspace` | 有 `oc.sel` 且無繪圖工具（`oc.drawTool`/`oc.rect`）時呼叫 `deleteObject`；輸入框內不作用 |
+| `#canvasViewport.poly-snap-grid` | 多邊形工具 + `#snapToggle.on` 時加上；此時 `--grid-size` = `oc.gridMm × oc.zoom` px，`--grid-major` = 5 倍 |
+| `--grid-x` / `--grid-y` | 由 `ocGridApply()` 設為 `oc.panX/panY`，格線隨平移對齊畫布座標 |
+| `oc.polyStash` | Esc 清掉的草稿頂點；存在且草稿為空時 Ctrl+Z 還原草稿（不送 undo）；落點／換工具清空 |
+| `.hint-kbd`（多邊形） | 有頂點：「Backspace 退一點 · Enter 閉合 · Esc 清草稿」；清空後：「Ctrl+Z 還原草稿 · Esc 離開」 |
+| `.toast-region` | 浮標可見時下移到浮標下方（取代舊的「有 toast 就隱藏浮標」） |
 
 ## 第二輪新增與行為變更（2026-09-22）
 
