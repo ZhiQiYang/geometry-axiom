@@ -32,8 +32,8 @@
  *
  * 配套：geometry-guide/ 下的導讀頁內嵌本檔快照，
  * 改動本檔後須重跑 make_guide.py + check_panels.py;
- * 條號註解有增減時一併重跑 make_axiom_reader.py(閱讀器的三向連結
- * 取自本檔、夾具與 mutate.py,不重跑就會過期)。
+ * 條號註解有增減時一併重跑 sync_axiom_reader.py(正典閱讀器
+ * 由 公理層.md 與 公理層-白話.md 同步;make_axiom_reader.py 已退役)。
  */
 
 typedef int64_t Coord;
@@ -4428,7 +4428,7 @@ static char *fmt_loop(char *p, char *end, const PolygonLoop2 *loop);
 
 /*
  * 視窗的全部狀態。world 是場景唯一定義，UI 只能經由
- * domain 動詞（apply_scene_line / guide_line_move）改它；
+ * apply_scene_line（含拖曳組出的 move 指令）改它；
  * scene 與 layout 由 world 推導，每次變動後重建。
  * hover/selected/drag 是互動態，不是場景內容。
  */

@@ -361,10 +361,9 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
     </ul>
   </div>
   <div class="flow">
-    <span class="s">表面定義</span><em>→</em>
-    <span class="s">推導四條邊</span><em>→</em>
-    <span class="g">放兩條參考線</span><em>→</em>
-    <span class="g">交點當錨點</span><em>→</em>
+    <span class="s">邊界面＋承載面</span><em>→</em>
+    <span class="s">推導外環邊</span><em>→</em>
+    <span class="g">參考線與邊當錨點</span><em>→</em>
     <span class="t">造一支角材</span><em>→</em>
     <span class="t">A0 面貼到錨點</span><em>→</em>
     <span class="t">推導六個面</span><em>→</em>
@@ -372,8 +371,8 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
     <span>印 SVG</span>
   </div>
   <figure>
-    <svg id="mentalModel" viewBox="0 0 900 470" role="img" aria-label="房間、天花板表面與角材的斜視示意圖"></svg>
-    <figcaption>斜視示意（cabinet 投影）：灰色是房間軸，藍色是天花板空間邊界面與它的 U、V、N 軸，紅色虛線是兩條參考線，橘色是貼在交點上的角材。所有數字取自 main 裡的實際設定。</figcaption>
+    <svg id="mentalModel" viewBox="0 -80 900 550" role="img" aria-label="房間、天花板表面與角材的斜視示意圖"></svg>
+    <figcaption>斜視示意（cabinet 投影）：灰色是房間軸，藍色是天花板邊界面（4000×3000，z = 2500）與它的 U、V、N 軸；前後兩條邊上各一支邊界角材（at-face e0、e2）；紅色虛線是唯一的參考線 guide 1（沿 V，u = 500，出自 spec:主支中線）；橘色是貼在它上面的主支角材（at-line，27×33，跨距 v = 27→2973）。所有數字取自內建預設世界。</figcaption>
   </figure>
   <div class="key"><b>最重要的設計決定：</b>只存「定義」，不存「推導結果」。邊不存端點、參考線不存線段、角材不存八個角，全部在需要時從父物件算出來。改一個數字，所有推導自動跟著對。</div>
 </section>
@@ -506,8 +505,8 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
     <div class="ctl">
       <label>表面 max_u（天花板 U 方向長度）<input id="bMaxU" type="number" value="4000" step="100"></label>
       <label>表面 max_v<input id="bMaxV" type="number" value="3000" step="100"></label>
-      <label>錨點 u（參考線 2 的 offset）<input id="bU" type="number" value="500" step="10"></label>
-      <label>錨點 v（參考線 1 的 offset）<input id="bV" type="number" value="300" step="10"></label>
+      <label>錨點 u<input id="bU" type="number" value="500" step="10"></label>
+      <label>錨點 v<input id="bV" type="number" value="300" step="10"></label>
       <label>角材長度 L<input id="bL" type="number" value="1800" step="100"></label>
       <label>長度方向
         <select id="bDir">
@@ -550,7 +549,7 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
   <div class="prose">
     <p>C 標準庫碰不到螢幕，螢幕是作業系統的財產。所以「不靠庫開視窗」最誠實的做法是直接呼叫作業系統：Windows 上就是 <code>windows.h</code>，每台機器都有，MSVC 也附帶標頭檔。所有 GUI 庫最底下都在做同一件事。這一段用 <code>#ifdef _WIN32</code> 包起來，其他平台編譯時整段消失。</p>
     <p>讀它抓三個觀念，換成任何 GUI 庫都一樣：<b>事件迴圈</b>、<b>回呼函式</b>、<b>只在 WM_PAINT 裡畫</b>。</p>
-    <p>這一層也是「語言為體、GUI 為殼」的落點：視窗下方的輸入列收下的一行指令，交給的是與場景檔<b>同一個</b> <code>apply_scene_line()</code>；滑鼠拖曳參考線，實際執行的是 <code>guide_line_move()</code> 這個 domain 動詞。UI 從頭到尾沒有直接寫過 <code>World</code> 的任何欄位——它能做的，不會超過 DSL 能說的。</p>
+    <p>這一層也是「語言為體、GUI 為殼」的落點：視窗下方的輸入列收下的一行指令，交給的是與場景檔<b>同一個</b> <code>apply_scene_line()</code>；滑鼠拖曳參考線，實際做的是把落點交給 <code>reference_snap</code> 對到最近的合法引用式、組出一行 <code>move</code> 指令，走的也是同一條路。UI 從頭到尾沒有直接寫過 <code>World</code> 的任何欄位——它能做的，不會超過 DSL 能說的。</p>
   </div>
   <div data-panel='{"kind":"fn","name":"gdi_show_three_views","label":"開視窗：註冊、建立、事件迴圈","callouts":[{"match":"wc\\.lpfnWndProc = gdi_window_proc;","note":"回呼函式：把自己的函式交給作業系統，之後由它來呼叫你。"},{"match":"HWND window = CreateWindowW\\(","note":"建立視窗。最後一個參數把場景與版面傳進去，WM_CREATE 會拿到。"},{"match":"while \\(GetMessageW\\(&msg, NULL, 0, 0\\) > 0\\) \\{","note":"事件迴圈：程式的心臟。作業系統把滑鼠、鍵盤、重繪要求排進佇列，這裡一則一則取出。"}]}'></div>
   <div data-panel='{"kind":"fn","name":"gdi_window_proc","label":"回呼函式：作業系統打電話進來","callouts":[{"match":"case WM_CREATE: \\{","note":"視窗剛建立：把 CreateWindow 傳進來的指標掛在視窗上。"},{"match":"case WM_PAINT: \\{","note":"只有這裡畫圖。被遮住再露出、被拉大，作業系統都會再送一次 WM_PAINT。"},{"match":"app->mem_dc = CreateCompatibleDC\\(dc\\);","note":"離屏緩衝：先畫到記憶體再一次貼上，避免閃爍。DC 與位圖建在 GdiApp 上重用，尺寸變了才重建。"},{"match":"gdi_app_release_objects\\(app\\);","note":"關窗時統一釋放：離屏位圖、記憶體 DC、快取裡的筆刷與字型。"},{"match":"case WM_DESTROY:","note":"視窗關了就讓 GetMessage 回傳 0，事件迴圈結束，main 返回。"}]}'></div>
@@ -558,16 +557,16 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
   <div data-panel='{"kind":"type","name":"GdiObjectCache","label":"GDI 物件快取：筆、刷、字型","callouts":[{"match":"HPEN pens\\[STYLE_COUNT\\];","note":"DrawStyle 是封閉 enum，直接當索引——第一次用到才 CreatePen，之後每幀只是查表。"},{"match":"size_t font_count;","note":"字型以（像素、粗細、旋轉）為鍵，固定上限 16 個，視窗關閉時統一 DeleteObject。"}]}'></div>
   <div data-panel='{"kind":"fn","name":"gdi_text","from":"int rotate10 = -rotate_degrees","to":"TextOutW","label":"文字：UTF-8 轉 UTF-16，旋轉靠字型的 escapement","callouts":[{"match":"int rotate10 = -rotate_degrees \\* 10;","note":"GDI 沒有「旋轉文字」指令，旋轉是字型的屬性，單位 0.1 度、逆時針為正。SVG 的 rotate(−90) 對應 900。"},{"match":"cache->fonts\\[i\\]\\.px == px &&","note":"命中快取就直接拿舊字型——CreateFontW 是系統呼叫，實測佔每幀成本的大頭。"}]}'></div>
   <div class="key"><b>效能實測（<code>--bench 2000</code>）：</b>每幀重建所有 GDI 物件約 3.8ms，快取重用約 2.5ms——省三分之一。大頭不是位圖，是每個圖元的 CreatePen/CreateSolidBrush/CreateFontW。快取只住在 UI 層（<code>GdiApp</code>），domain 一行沒動。</div>
-  <div class="key"><b>代價：</b>GDI 只有 2D，沒有半透明，只在 Windows 上跑。要 3D 互動或跨平台，第三層的 raylib 是最短的路，它本身也是純 C。但幾何層與 <code>DrawTarget</code> 介面不用改，再寫一個後端就好。</div>
+  <div class="key"><b>代價：</b>GDI 只有 2D，沒有半透明，只在 Windows 上跑。實際長出的第三層是網頁——<code>geometry-web/web_bridge.c</code> 把同一套 DrawTarget 走訪序列化成 JSON ops 串流，瀏覽器端照著畫。要 3D 互動或原生跨平台，raylib 這類純 C 庫仍是最短的路：幾何層與 <code>DrawTarget</code> 介面不用改，再寫一個後端就好。</div>
 </section>
 
 <section class="block" id="s10">
   <div class="eyebrow mono">§10 · 場景檔：組成抽到程式外</div>
-  <h2 class="sec">七個指令的文字檔，就是這個 domain 目前全部能說的話</h2>
+  <h2 class="sec">十八列指令的文字檔，就是這個 domain 目前全部能說的話</h2>
   <div class="prose">
-    <p>前面所有範例的結構都寫死在 main 裡。這一層把它抽出去：<code>--scene</code> 接一份文字檔，一行一個指令，由上而下套用——<code>surface</code>、<code>edge</code>、<code>guide</code>、<code>timber</code>、<code>place</code>，外加兩個狀態動詞 <code>reset</code>（清空重來）與 <code>move</code>（移動既有參考線）。場景檔寫不出第八種行為，也寫不出非單位軸的向量（軸只有 ±x ±y ±z 六個詞）；「封閉行為集合」在這裡是字面的事實。</p>
-    <p>邊界面可以有好幾片：<code>surface</code> 寫幾次就有幾片（上限 8），牆、地板、天花板各是一片，直立角材就是「貼在直立的面上」。<code>place</code> 因此必須明寫 <code>on 面id</code>——貼在哪片不再是隱含的。邊、參考線、錨點都各自記著 <code>surface_id</code>，誰屬於誰是資料裡的事實，不是靠順序猜。</p>
-    <p>id 要先宣告才能被引用，所以「place 寫在 timber 前面」自然變成「id 不存在」，不必另外規定。錯誤不直接印 stderr，而是寫進 domain 層的錯誤緩衝，檔案路徑與視窗輸入列讀的是同一份——拒絕的理由到哪一層都是同一個字串。合法的場景檔與 main 裡硬編的走同一個 <code>World</code>，輸出層完全不分來源。同目錄的 <code>room_a.scene</code> 是與內建預設等價的範例——兩條路徑產生逐位相同的 SVG。</p>
+    <p>前面所有範例的結構都寫死在 main 裡。這一層把它抽出去：<code>--scene</code> 接一份文字檔，一行一個指令，由上而下套用。指令表現在有十八列：宣告用的 <code>spec</code>、<code>boundary</code>、<code>placement</code>、<code>surface</code>（邊界＋承載面合體）、<code>space</code>、<code>datum</code>、<code>column</code>、<code>beam</code>、<code>timber</code>；依附承載面的 <code>guide</code>、<code>grid</code>、<code>place</code>；操作動詞 <code>move</code>、<code>apply-proj</code>、<code>delete</code>、<code>reset</code>、<code>canvas-pos</code>；外加一列墓碑 <code>span-auto</code>（已廢除，寫了會被明確拒絕）。場景檔寫不出這十八列以外的行為，也寫不出非單位軸的向量（軸只有 ±x ±y ±z 六個詞）；「封閉行為集合」在這裡是字面的事實。</p>
+    <p>邊界面可以有好幾片：<code>boundary</code>／<code>placement</code>（或合體的 <code>surface</code>）寫幾次就有幾片（上限 <code>WORLD_MAX_BOUNDARIES</code> = 16），牆、地板、天花板各是一片，直立角材就是「貼在直立的面上」。<code>place</code> 因此必須明寫 <code>on 承載面id</code>——貼在哪片不再是隱含的。參考線與錨點都各自記著 <code>placement_id</code>，誰屬於誰是資料裡的事實，不是靠順序猜。</p>
+    <p>id 要先宣告才能被引用，所以「place 寫在 timber 前面」自然變成「id 不存在」，不必另外規定。錯誤不直接印 stderr，而是寫進 domain 層的錯誤緩衝，檔案路徑與視窗輸入列讀的是同一份——拒絕的理由到哪一層都是同一個字串。合法的場景檔與內建預設世界共用同一個 <code>World</code>，輸出層完全不分來源。同目錄的 <code>room_a.scene</code> 是現行語法的完整範例：合體的 <code>surface</code>、具名 <code>spec</code> 引用、at-face 與 at-line 兩族錨法都在裡面。</p>
     <p><code>move</code> 有一條已拍板的語義（公理層 R2，2026-09-18 反轉）：移動參考線<b>要</b>重放引用它的角材——錨點存的是引用不是座標，引用的語意就是跟著動。中線與長度重新推導，先走 I8a 影響預覽，零違規且確認才提交，失敗整筆回滾。</p>
   </div>
   <div data-panel='{"kind":"type","name":"World","label":"一份場景的全部狀態","callouts":[{"match":"SpaceBoundarySurface boundaries\\[WORLD_MAX_BOUNDARIES\\];","note":"邊界面與承載面分兩個陣列：boundary 是純 2D 輪廓，placement 帶 3D frame。"},{"match":"TimberAnchor anchors\\[WORLD_MAX_TIMBERS\\];","note":"錨點帶著 placement_id——UV 座標離開它所屬的承載面就沒有意義。"},{"match":"Timber timbers\\[WORLD_MAX_TIMBERS\\];","note":"上限是常數，不做動態配置——寫不下的場景在解析時就被拒絕。"}]}'></div>
@@ -840,21 +839,25 @@ document.getElementById("svgOut").innerHTML = SVG_OUT.replace(/<\?xml[^>]*\?>/, 
   s += line([0,0,H],[900,0,H], `stroke="${blue}" stroke-width="2.5"`); s += text([900,0,H], "U", `fill="${blue}" font-size="13" font-weight="700"`, 6, 14);
   s += line([0,0,H],[0,900,H], `stroke="${blue}" stroke-width="2.5"`); s += text([0,900,H], "V", `fill="${blue}" font-size="13" font-weight="700"`, -14, -2);
   s += line([0,0,H],[0,0,H+500], `stroke="${blue}" stroke-width="2.5"`); s += text([0,0,H+500], "N", `fill="${blue}" font-size="13" font-weight="700"`, -14, 0);
-  // 參考線
-  s += line([0,300,H],[W,300,H], `stroke="${red}" stroke-width="1.2" stroke-dasharray="6 4"`);
-  s += line([500,0,H],[500,D,H], `stroke="${red}" stroke-width="1.2" stroke-dasharray="6 4"`);
-  s += text([W,300,H], "參考線 1：v = 300", `fill="${red}" font-size="12"`, 6, 4);
-  s += text([500,D,H], "參考線 2：u = 500", `fill="${red}" font-size="12"`, 6, -4);
-  // 角材（放大厚度以便看見）
-  const x0 = 500, x1 = 2300, y0 = 300, y1 = 300 + 27 * 6, z0 = H, z1 = H + 33 * 6;
-  s += poly([[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]], `fill="${tim}" fill-opacity="0.55" stroke="${tim}"`);
-  s += poly([[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1]], `fill="${tim}" fill-opacity="0.8" stroke="${tim}"`);
-  s += poly([[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],[x1,y0,z1]], `fill="${tim}" fill-opacity="0.35" stroke="${tim}"`);
-  s += text([x0,y0,z0], "錨點 (500,300,2500)：角材局部原點", `fill="${tim}" font-size="12"`, -4, 18);
-  s += text([x1,y0,z1], "角材 27 × 33 × 1800（厚度放大 6 倍）", `fill="${tim}" font-size="12"`, 8, -6);
-  s += text([(x0+x1)/2,y0,z1], "A1", `fill="${tim}" font-size="12" font-weight="700" text-anchor="middle"`, 0, -6);
-  s += text([(x0+x1)/2,y0,z0], "B0", `fill="#fff" font-size="11" font-weight="700" text-anchor="middle"`, 0, -8);
-  s += text([x1,y0,z0], "END", `fill="${tim}" font-size="11" font-weight="700"`, 10, 6);
+  // 邊界角材：前後兩條邊各一支（at-face e0、e2），厚度放大 6 倍
+  const T = 6, bw = 27 * T, z1 = H + 33 * T;
+  for (const [e, ya, yb] of [["e0", 0, bw], ["e2", D - bw, D]]) {
+    s += poly([[0,ya,z1],[W,ya,z1],[W,yb,z1],[0,yb,z1]], `fill="${tim}" fill-opacity="0.5" stroke="${tim}"`);
+    s += poly([[0,ya,H],[W,ya,H],[W,ya,z1],[0,ya,z1]], `fill="${tim}" fill-opacity="0.6" stroke="${tim}"`);
+    s += poly([[0,yb,H],[W,yb,H],[W,yb,z1],[0,yb,z1]], `fill="${tim}" fill-opacity="0.6" stroke="${tim}"`);
+    s += text([W,(ya+yb)/2,z1], "邊界角材 at-face " + e, `fill="${tim}" font-size="12" text-anchor="end"`, -8, -4);
+  }
+  // 主支角材：at-line 貼在 guide 1 上、沿 +V，跨 v = 27 → 2973（厚度同樣放大）
+  const x0 = 500, x1 = 500 + bw, y0 = bw, y1 = D - bw;
+  s += poly([[x0,y0,z1],[x0,y1,z1],[x1,y1,z1],[x1,y0,z1]], `fill="${tim}" fill-opacity="0.55" stroke="${tim}"`);
+  s += poly([[x0,y0,H],[x0,y1,H],[x0,y1,z1],[x0,y0,z1]], `fill="${tim}" fill-opacity="0.8" stroke="${tim}"`);
+  s += poly([[x0,y0,H],[x1,y0,H],[x1,y0,z1],[x0,y0,z1]], `fill="${tim}" fill-opacity="0.35" stroke="${tim}"`);
+  s += text([x0,y0,H], "主支 at-line guide 1：+v，跨 v = 27→2973", `fill="${tim}" font-size="12"`, -4, 18);
+  s += text([x1,y0+700,z1], "角材 27 × 33（厚度放大 6 倍）", `fill="${tim}" font-size="12"`, 8, -6);
+  s += text([(x0+x1)/2,y0+700,z1], "A1", `fill="${tim}" font-size="12" font-weight="700" text-anchor="middle"`, 0, -6);
+  // 參考線 guide 1：沿 V，位置 u = 500（spec:主支中線）；畫在主支之後才看得見
+  s += line([500,0,H],[500,D,H], `stroke="${red}" stroke-width="1.6" stroke-dasharray="6 4"`);
+  s += text([500,1500,H], "guide 1：u = 500（沿 V）", `fill="${red}" font-size="12" text-anchor="end"`, -12, 4);
   svg.innerHTML = s;
 })();
 

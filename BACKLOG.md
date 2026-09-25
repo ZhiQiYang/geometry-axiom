@@ -2612,7 +2612,7 @@ reader 24、modeling 63、sync --check pass;fuzz seed 1 / 2 / 3 各 500 案例 0
 
 **範圍外、另開 GEO-182**:導讀頁的 prose(不是 callout)仍停在舊語法,check_panels 驗不到。
 
-### GEO-182 待辦 P3:導讀頁 prose 仍描述 2026-09-12 時代的語法與結構
+### GEO-182 ✅ 已做(2026-09-25)P3:導讀頁 prose 仍描述 2026-09-12 時代的語法與結構
 
 GEO-175 修完 callout 後發現:`check_panels.py` 只驗面板符號與 callout,**不驗說明文字**。`make_guide.py` 的 prose 仍有:
 §10 標題「七個指令」與 `surface`／`edge`／上限 8 片的描述(現行 `SCENE_COMMANDS` 18 列,含已廢除的 span-auto:boundary／placement／space／datum／grid／column／beam…)、
@@ -2620,7 +2620,17 @@ GEO-175 修完 callout 後發現:`check_panels.py` 只驗面板符號與 callout
 (`guide_line_move(` 在 C 裡已無呼叫點;bridge 的 drag 組成指令走 `feed_line` → `apply_reference_move`,
 `web_bridge.c:12` 的檔頭註解也還寫著 guide_line_move)等。
 另:`current_geometry.c` 檔頭「配套」註解仍叫人重跑已退役的 `make_axiom_reader.py`(GEO-165),應改指 `sync_axiom_reader.py`。與 SSOT 正面衝突的 R2 那句已在 GEO-175 改正,其餘是過時而非矛盾。
-**做法**:以 `公理層.md` 與 `geometry-core/README.md` 為準逐節重讀改寫;屬第 5 流(文件與導讀同步),不是順手能收的。
+
+**處理**(以 `公理層.md` 與 `geometry-core/README.md` 為準,bridge `references`/`dump` 實測預設世界核對數字):
+- §0 流程條與心智模型圖:「兩條參考線→交點當錨點」改畫現行預設世界——前後邊各一支 at-face 邊界角材(e0/e2)、一條 guide 1(u=500,沿 V,spec:主支中線)、主支 at-line 跨 v=27→2973;viewBox 加高 80px 收進後側邊界角材。
+- §9:拖曳實際路徑改寫為 `reference_snap` 對引用式→組 `move` 指令→同一條 `apply_scene_line()`(GDI 與 web bridge 同構);代價框補「實際長出的第三層是網頁(web_bridge.c → JSON ops 串流)」,raylib 降為未來選項。
+- §10:標題「七個指令」→「十八列指令」;指令清單重寫為 宣告 9(spec/boundary/placement/surface/space/datum/column/beam/timber)+承載面 3(guide/grid/place)+操作 5(move/apply-proj/delete/reset/canvas-pos)+墓碑 1(span-auto);
+  上限 8→`WORLD_MAX_BOUNDARIES` = 16;`surface_id`→`placement_id`(並刪去已非物件的「邊」);「main 裡硬編」→內建預設世界;
+  `room_a.scene` 與內建預設**已不等價**(邊界角材 20×20 vs 27×33、id 與 spec 名不同,bridge dump 實測),改述為「現行語法完整範例」。
+- 實驗台錨點標籤不再寫「參考線 N 的 offset」(現行錨點是 at-line/at-face 引用,不是兩線交點)。
+- `current_geometry.c` 檔頭:`make_axiom_reader.py`→`sync_axiom_reader.py`;4431 行註解的 `guide_line_move` 一併清除。
+- `web_bridge.c` 檔頭:`default → 等價 room_a.scene` 改正為 `reference_default_world`;drag 註解改為實際路徑。
+- 驗證:`check_panels.py` 40 panels / unresolved: none;`test_guide_panels` OK;headless Chrome 實開 §0 圖確認繪製與標籤。
 
 `check_panels.py` 對現況(舊頁 + 現在的 C)報 **8 個 unresolved**:main 面板的 `SURFACE_DIRECTION_POS_U,` /
 `SURFACE_DEPTH_POSITIVE_NORMAL`;SCENE_COMMANDS 的 `"place", 8, 15, true,` / `"move", 3, 3, true,`;

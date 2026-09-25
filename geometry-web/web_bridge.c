@@ -3,13 +3,13 @@
  * 幾何層整支用 unity build 含進來（內部函式全是 static，不 include 就碰不到）。
  * 對外協定：stdin 一行一個指令，stdout 一行回一個 JSON 物件。
  *
- *   default                      → 內建房間 A（等價 room_a.scene）
+ *   default                      → 內建預設世界（reference_default_world）
  *   reset                        → 清空世界
  *   line <文字>                  → 套用一行場景指令（與 SCENE_COMMANDS 同一條路）
  *   loadfile <路徑>              → parse_scene_file（失敗還原世界；成功記入 undo）
  *   render                       → {"ok":true,"layout":{...},"ops":[...]}
  *   pick <view> <x> <y> <r>      → 命中描述 + hover 高亮 ops（r = 拾取半徑，視圖內 mm）
- *   drag <guide_idx> <view> <x> <y> → 拖曳參考線：反解 uv、clamp、guide_line_move
+ *   drag <guide_idx> <view> <x> <y> → 拖曳參考線：反解 uv、reference_snap、組 move 走 feed_line
  *
  * ops 串流就是 DrawTarget 回呼的逐字序列化：begin/rect/poly/line/text/end。
  * 幾何本體在 current_geometry.c；本檔只做 stdin/JSON 橋。
