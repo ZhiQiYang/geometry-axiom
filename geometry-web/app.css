@@ -1285,3 +1285,11 @@ body.v3-mode .minimap-shell { display: none; }
 .fe-feat-fields label { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); min-width: 0; }
 .fe-feat-fields input { width: 64px; height: 26px; margin-left: auto; padding: 0 5px; border: 1px solid var(--border); border-radius: 5px; font-size: 12px; font-variant-numeric: tabular-nums; }
 .fe-feat-fields select { height: 26px; padding: 0 3px; border: 1px solid var(--border); border-radius: 5px; background: #fff; font-size: 11px; }
+/* GEO-170:留下欄、開口點標記、多列 segmented */
+.fe-fields label.fe-keep { color: #1d7a4e; }
+.fe-fields label.fe-keep input { border-color: #b9dfd0; background: #f3fbf7; }
+.fe-seg-rows { display: flex; flex-wrap: wrap; gap: 6px; }
+.fe-seg-rows .fe-seg { margin-bottom: 8px; }
+.face-editor-svg .fe-point-mark { fill: none; stroke: var(--accent); stroke-width: 1.6; vector-effect: non-scaling-stroke; pointer-events: none; }
+.fe-fields.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.fe-fields label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

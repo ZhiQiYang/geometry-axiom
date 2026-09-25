@@ -87,8 +87,8 @@
 | `#spaceMemberList` | 空間工作區左欄成員列 | 子列計數 |
 | `#spaceInspectorContent` | 空間工作區右欄檢視器(六槽列掛點) | 存在性 |
 | `#rcErr` | RC 對話框表單內錯誤提示(BF4:驗證失敗顯示) | `hidden`、textContent |
-| `#feActionBar` / `[data-fe-act]` | 面內選邊/角後的浮動操作列(GEO-169;`op:notch`/`op:extend`/`op:push`/`op:corner`/`fixity`) | `hidden`、`.click()`、`.on` |
-| `#feOpPanel` / `[data-fe-param]` / `[data-fe-anchor]` / `[data-fe-dir]` / `#feOpApply` / `#feOpCancel` | 就地參數面板(GEO-169;`input` 事件即時預覽,Enter/`#feOpApply` 套用) | `hidden`、`value`、`.click()` |
+| `#feActionBar` / `[data-fe-act]` | 面內選邊/角/點後的浮動操作列(GEO-169;`op:notch`/`op:extend`/`op:push`/`op:corner`/`op:hole`/`fixity`) | `hidden`、`.click()`、`.on` |
+| `#feOpPanel` / `[data-fe-param]` / `[data-fe-keep]` / `[data-fe-anchor]` / `[data-fe-dir]` / `[data-fe-ax]` / `[data-fe-ay]` / `#feOpApply` / `#feOpCancel` | 就地參數面板(GEO-169/170;`input` 事件即時預覽,`[data-fe-keep]` 是「留下」欄與切掉連動,Enter/`#feOpApply` 套用) | `hidden`、`value`、`.click()` |
 
 ### 已移除(Phase 6)
 
@@ -121,8 +121,8 @@
 | `[data-proj-check]` | 投影視圖勾選 | `checked` |
 | `[data-view]` | 投影面板視圖群組(`<g data-view="0|1|2">`) | 計數(天花面預設只有 2) |
 | `[data-fix-edge]` | fixity F/X 切換鈕 | `dataset.fixEdge`、`.click()` |
-| `.face-edge-sel` / `[data-fe-ghost="sub\|add"]` / `.fe-feat-hi` | 面編輯器:選取邊高亮、操作預覽矩形(紅=減、綠=加)、形狀頁特徵高亮(GEO-169) | `#faceEditorRoot` 內計數、`width`/`height` 屬性 |
-| `[data-fi-tab="shape"]` / `.fe-feat[data-feat]` / `[data-feat-num]` / `[data-feat-side]` / `[data-feat-mirror]` / `[data-feat-del]` | 檢視器「形狀」頁(GEO-169;本次工作階段特徵清單,改數字 `change` 落地、鏡射、刪除) | `.active`、計數、`value`+`change`、`.click()` |
+| `.face-edge-sel` / `.fe-point-mark` / `[data-fe-ghost="sub\|add"]` / `.fe-feat-hi` | 面編輯器:選取邊高亮、操作預覽矩形(紅=減、綠=加)、形狀頁特徵高亮(GEO-169) | `#faceEditorRoot` 內計數、`width`/`height` 屬性 |
+| `[data-fi-tab="shape"]` / `.fe-feat[data-feat]` / `[data-feat-num]` / `[data-feat-side]` / `[data-feat-mirror="x|y"]` / `[data-feat-del]` | 檢視器「形狀」頁(GEO-169;本次工作階段特徵清單,改數字 `change` 落地、鏡射、刪除) | `.active`、計數、`value`+`change`、`.click()` |
 | `.fixity-btn` / `.place-form` / `.proj-svg` / `.inspector-block` | 檢視器元件 | 存在性 |
 | `.toast` | 錯誤提示元素 | `#toastRegion` 內計數 |
 
@@ -258,3 +258,15 @@
 - 成功後特徵記進 `fe.feats[bid]`(**只在本次工作階段**,不進 .scene);每次 `feAfterChange` 用
   `feFeatAlive` 驗活,對不上現況(含 undo)的自動剔除。
 - Esc 階梯在「方向小選單」之後新增兩階:面板開著 → 關面板;有選取 → 清選取;再來才是原本的草稿/離開。
+
+## GEO-170 描繪指定多邊形(cdp_test §P7c)
+
+- 重畫外環:`redraw` 工具下 `keydown` 數字累積到 `fe.lenBuf`;`ArrowRight/Left/Down/Up` = 以該方向套一段;
+  沒點第一點就打數字 → 草稿從 `(0,0)` 起;`Enter` 無數字 = 閉合(末點與起點不同軸自動補角),成功後 `feSetTool("select")`;
+  `Backspace` 無數字 = 退一點。
+- select 單擊面內空白 → `fe.sel={kind:"point",x,y}`,畫布 `.fe-point-mark`,浮動列只有 `op:hole`;
+  面板欄位 `w`/`d`(高)/`dx`/`dy` + `[data-fe-ax]`/`[data-fe-ay]` 起算邊。點面外空白 → 清選取。
+- 切角面板 `[data-fe-keep="w|d"]`(留 u/v 邊)與 `[data-fe-param="w|d"]` 連動;凹口面板 `[data-fe-keep="d"]`(留底)。
+- 「開口」拖矩形(`hole` 工具)改走 `feRectBool`,矩形先裁到外環外接框,記進 `fe.feats`(type 由 `feClassifyRect` 判 hole/notch/corner)。
+- 圖層列孔列有 `.face-layer-del`(拿掉那一環重宣告)。
+- 特徵建立時以 `feNearestSides` 定下 `ax`/`ay`(較近一側),`feFeatMeta` 以現況外接框起算距邊。套用後不再自動選取該特徵(無 `.fe-feat-hi.sel` 殘留)。
