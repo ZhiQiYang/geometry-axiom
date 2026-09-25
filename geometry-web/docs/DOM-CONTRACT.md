@@ -173,11 +173,13 @@
 | ~~`#notchDialog` …~~ | 參數化凹口對話框(RC P2)**已於 GEO-188 移除**,凹口改走 `#feActionBar` → `#feOpPanel` | — |
 | `#feLenInput` | 鍵入長度浮動框(RC P2:重畫中數字鍵) | `hidden`、`value`、`.style.left/top` |
 | `[data-edge-len]` | 邊長清單輸入(RC P2:`data-edge-len="<i>"`) | `value` + `change` 事件 |
-| `#tbAnchor` `#tbSelector` `#tbA` `#tbB` `#tbDir` `#tbSide` | 角材引用、截面與方向；長度由引擎推導 | `value` 讀寫 |
+| `#tbAnchor` `#tbSelector` `#tbA` `#tbB` `#tbDir` `#tbSide` `#tbRole` | 角材引用、截面、方向與角色；長度由引擎推導(GEO-195:`#tbAnchor` 選項排序/後綴見下、`#tbRole` 依主支軸 `disabled` 見下) | `value` 讀寫、`#tbRole [disabled]` |
+| `#tbAnchorAllOccupied` | 角材放置表單:所有定位引用都已被占用時出現的 `.fi-note`(GEO-195) | 存在性、textContent |
 | `#tbSelected` / `#tbEditForm` / `#tbEditA` / `#tbEditB` / `#tbEditDir` / `#tbEditSide` / `#tbEditRole` / `#tbEditPri` / `#tbEditAnchor` / `#tbEditSelector` / `#tbEditApply` / `#tbSelDelete` | 角材頁頂端「已選角材」可編輯表單(GEO-191 唯讀摘要 → GEO-194 可編輯;`fe.sel.kind==="timber"` 時才出現)。A/B/方向/側/角色可預填(橋接有回傳);`#tbEditAnchor`/`#tbEditSelector` 橋接不回傳現有值,固定不預填(第一個 `<option value="">` 佔位) | 存在性、`value`、`.click()` |
 | `.face-layer-row[data-timber-id]` | 左欄角材列(GEO-191;`.sel` 同步畫布選取,hover/click 有掛鉤) | `dataset.timberId`、`.sel`、mouseenter/mouseleave/click |
 | `#gridU` `#gridV` `#gridCreate` | 網格建立表單(Q3) | `value`、`.click()`、游離面 disabled |
 | `.face-timber` / `.face-grid-line` | 面內角材足跡/網格線(Q3;GEO-191 角材矩形加 `data-face-hit`、`.sel`/`.hover`) | `#faceEditorRoot` 內計數 |
+| `.fe-anchor-hi` / `.fe-anchor-band` / `.fe-anchor-band-label` | 角材定位引用預示(GEO-195;角材工具啟用中或 `#tbAnchor` 焦點/hover/改值中才畫;`.fe-anchor-hi` 是定位引用本身的虛線、`.fe-anchor-band` 是依深度(`#tbSide`)/`A` 示意角材占用的半透明帶(不看 `#tbDir`)、`.fe-anchor-band-label` 固定文字「示意」) | `#faceEditorRoot` 內計數、隨 `fe.tool`/`fe.anchorPreview` 出現與消失(不吃事件) |
 | `[data-face-hit]` | 面編輯器命中層(`v:<loop>:<i>`/`e:<loop>:<i>`/`g:<id>:<axis>`/`t:<id>`(GEO-191 角材,只在 `.tool-select` 下吃事件)) | pointerdown 命中(非同步 bhit 已由它取代) |
 | `.fe-ghost-handle` / `[data-fe-handle]` | 就地操作預覽矩形的四條可拖曳邊(GEO-192 B;`left`/`right`/`top`/`bottom`,只在 select 工具且 `fe.op` 時畫出) | `#faceEditorRoot` 內計數、`.click()`(實際互動走 pointerdown/move/up,見 `feApplyGhostDrag`) |
 | `[data-place-preset]` | 放置預設鈕 | `dataset.placePreset`、`.click()` |
@@ -198,9 +200,14 @@
 | `layout` | 三視圖版面 | `screenToView` 等路徑間接依賴 |
 | `leaveFocus` | 退出工作區焦點 | 測試呼叫 `leaveFocus()` |
 | `enterFocus` | 進入工作區焦點 | 雙擊/檢視器按鈕觸發 |
-| `mutate` | 多行 DSL 交易(失敗回滾+toast) | 空間成員重宣告/六面盒使用 |
+| `mutate` | 多行 DSL 交易(失敗回滾+toast) | 空間成員重宣告/六面盒使用;GEO-195 起支援第二參數 `opts.friendlyError(rawError)=>string`(可選,不傳=既有行為) |
 | `toast` | 錯誤提示(bridge error 原文) | `#toastRegion` 子元素 |
-| `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews`、`fe.sel/op/feats/selFeat`(GEO-188;`fe.sel={kind:"timber",id}` GEO-191)、`fe.hoverTimber`(GEO-191) |
+| `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews`、`fe.sel/op/feats/selFeat`(GEO-188;`fe.sel={kind:"timber",id}` GEO-191)、`fe.hoverTimber`(GEO-191)、`fe.anchorPreview`(GEO-195) |
+| `feAnchorLineInfo` / `feAnchorOccupied` | 定位引用式 → `{constAxis,value}` / 占用判斷(GEO-195;依 `fe.timbers` 足跡,距離 ≤ 占用角材 `A`/`B`+1mm 算占) | 純函式(`feAnchorOccupied` 讀 `fe.timbers`/`oc.bmap`),測試可直接呼叫 |
+| `referenceAnchorEntries` | 定位引用結構化清單 `[{value,label,occupied}]`(GEO-195;`referenceAnchorOptions` 據此排版) | 測試可直接呼叫比對排序/後綴 |
+| `feTimberPrimaryAxis` / `feTimberRoleOptionsHTML` / `feTimberSyncRoleOptions` | 主支軸推導 / `#tbRole` 選項 HTML(依主支軸 `disabled`) / `#tbDir` 改值時重算並在原選項被 disable 時自動切換(GEO-195) | 測試讀 `#tbRole option[disabled]` |
+| `feTimberPlaceErrorMessage` | 角材放置失敗訊息人話化(GEO-195;`feDown` 的 timber 分支透過 `mutate` 的 `opts.friendlyError` 呼叫) | 純函式,測試可直接呼叫比對前綴文字 |
+| `feTimberHintRefresh` | 角材工具下重算 `#faceCanvasHint`/狀態列文字(GEO-195;含目前定位引用名與「點擊位置不影響位置」) | `fe.tool!=="timber"` 時 no-op |
 | `feStartOp` / `feApplyOp` / `feCancelOp` / `feRectBool` | 形狀編輯(GEO-188):就地操作與正交矩形布林 | 測試直接呼叫 `feCancelOp()`;`feRectBool(loops,op,rect)` 純函式 |
 | `feDeleteTimber` | 刪角材共用路徑(GEO-191;`delete timber <id>` + 清選取/重載) | 測試可直接呼叫 `feDeleteTimber(id)` |
 | `feTimberEditApply` | 面內角材就地編輯(GEO-194;同一 id「刪掉重放」一筆 `mutate`:`delete timber <id>`→`timber <id> …`→`place <id> on …`,失敗 `mutate` 自己回滾+toast、成功後選取留在同一 id) | 測試可直接呼叫 `feTimberEditApply(id)`(需先填好 `#tbEditForm` 欄位) |
@@ -544,3 +551,59 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - 表單驗證與 `tbPlace`(放置表單)一致:A/B 正整數、custom 要 priority、錨點必選。
 - 角材列/畫布高亮邏輯不變(GEO-191 既有 `.sel`/`hover` 機制,`feTimberEditApply`
   完全不碰)。
+
+## GEO-195 面內「角材放置」表單 UX 止血(cdp_test §P47)
+
+不改放置流程(點擊位置一律只是「確認」,不是落點輸入)、不改引擎、不改 `.scene`；
+只讓人在點擊前就知道角材會落在哪、為什麼失敗、該怎麼改。
+
+- **預設定位引用挑一條沒被占的線**:`feAnchorOccupied(bid, anchorValue)` 依
+  `feAnchorLineInfo(bid, anchorValue)` 把定位引用式(`at-face e<i>`／`at-face h<h>e<i>`／
+  `at-line guide <id>`／`at-line grid <id> u|v <idx>`)換算成 `{constAxis:"u"|"v", value}`
+  (哪個座標軸固定、固定在哪個值;`at-face t<id>` 角材側面回 `null`,不判占用),
+  再看 `fe.timbers` 有沒有哪支的 `feTimberRect` 足跡貼著這條線(只比對「深度軸」——
+  角材沿 u 跑深度就在 v、反之亦然;定位引用的固定軸要等於該角材的深度軸才算數,不然
+  一支貫穿全長的角材會讓所有垂直於它的線都被誤判成占用,見 GEO-195 修正紀錄——
+  距離 ≤ 該角材 `A` 或 `B` + 1mm)。`referenceAnchorEntries(bid, surf)`(app.js)把每條定位引用連同
+  `occupied`(佔用角材 id 或 `null`)包成結構化清單,`referenceAnchorOptions`
+  (reference-ui.js)據此排版:未占用排前面、占用的排後面(兩組各自維持原順序),
+  占用的文字後加 `(已有角材 N)`;瀏覽器 `<select>` 沒標 `selected` 時預設選第一個
+  `<option>`,重排後第一個自然是第一條未占用,不需要另外設定。全部占用時不重排,
+  `#tbAnchorAllOccupied`(`.fi-note`)出現,文字「所有定位引用都已有角材，先加參考線(L)」。
+  `#tbEditAnchor`(GEO-194 編輯表單)沿用同一份 `referenceAnchorOptions`,但它前面自帶
+  空字串佔位選項,不受這次重排影響(仍然固定不預填)。
+- **畫布預示落點**:`fe.anchorPreview`(bool)——`#tbAnchor` 的 `focus`/`mouseenter` 設
+  true,`blur` 設 false,`mouseleave` 依 `document.activeElement === tbAnchorSel` 判斷,
+  `change` 觸發一次 true(見 `renderFaceInspector` 綁定段)。`drawFaceEditor()` 在
+  `fe.tool==="timber" || fe.anchorPreview` 時畫 `.fe-anchor-hi`(定位引用本身,貫穿全圖
+  虛線,用 `feAnchorLineInfo` 換算)+ `.fe-anchor-band`(依目前 `#tbSide`/`#tbA` 示意角材
+  會占的半透明帶,寬 = A,沿定位引用的固定座標軸展開,文字標「示意」——真正長度由引擎依
+  支撐推導,這裡只畫全圖範圍近似;不看 `#tbDir`,方向只決定角材沿哪軸「跑」,不影響帶要
+  畫在哪)。`feSetTool` 切工具
+  離開/進入 `"timber"` 都補一次 `drawFaceEditor()`;`fiShowTab` 切離「角材」頁清
+  `fe.anchorPreview` 並重繪。`#tbA`/`#tbB`/`#tbDir`/`#tbSide` 改值都連動重畫(帶會跟著變)。
+  角材工具下 `#faceCanvasHint`/狀態列改走 `feTimberHintRefresh()`:文字「角材將沿
+  「〈定位引用名〉」放置，點面內任一處確認；點擊位置不影響位置 · A…×B… · Esc 取消」,
+  `#tbAnchor` 改值時同步重算(`feTimberAnchorLabel` 讀 `referenceAnchorEntries` 找標籤)。
+- **失敗訊息講人話**:`feTimberPlaceErrorMessage(err, bid, surf, anchorValue)`——
+  `feDown` 的角材分支呼叫 `mutate([...], { friendlyError })`(`mutate()` 新增可選
+  `opts.friendlyError(rawError)=>string`,不傳就是既有行為,不影響其他呼叫點)。依錯誤
+  原文前置一句、原文接在後半(`\n` 分隔,同 `confirmReferenceImpact` 既有的 `\n` 慣例):
+  含「中線上沒有任何合法跨距」→「〈定位引用名〉已被角材 N 占滿——請換定位引用
+  (可用:〈未占用清單〉)」(全部占用時改「請先加參考線(L)」),並 `feMarkInvalid($("tbAnchor"))`;
+  含 `V_PRIMARY_AXIS` →「主支軸是 〈u|v〉:沿它放只能選 primary;boundary/secondary
+  要垂直於它」,`feMarkInvalid($("tbRole"))`;含 `V_CUT_PRIORITY` →「貼外輪廓邊的角材
+  要選 boundary」,`feMarkInvalid($("tbRole"))`;其他錯誤原文不動。
+- **角色選項依主支軸排除**:`feTimberPrimaryAxis(bid)`——`fe.timbers` 若有 `role==="primary"`
+  的角材,主支軸 = 那支 `dir` 的軸(`"+u"/"-u"→"u"`,`"+v"/"-v"→"v"`);沒有就 `null`
+  (角色不受限)。`feTimberRoleOptionsHTML(bid, dirValue, currentRole)` 依目前 `#tbDir`
+  值算:方向與主支軸平行 → 只有 `primary` 可選,其餘 `disabled` 並在文字後加
+  「（需垂直於主支軸）」;垂直 → `primary` `disabled`(加「（沿主支軸才能是主支）」),
+  其餘可選。`#tbDir` 的 `change` 呼叫 `feTimberSyncRoleOptions(pane)` 重算 `#tbRole`
+  的 `<option>`;原本選的角色若變成 `disabled`,自動跳到第一個可選項並 `toast` 一句
+  說明(`type:"ok"`)。初次渲染時 `feTimberRoleOptionsHTML` 直接產生帶 `selected` 的
+  HTML,不需要額外同步。
+- 全部只動前端(`geometry-web/app.js`、`geometry-web/reference-ui.js`、`app.css`);
+  `.scene`、`web_bridge.c`、`reference_bridge.inc`、`serve.py` 不動。
+
+流程層「點畫布上的邊直接放」(取代/補強「定位引用」下拉)不在本票範圍,另開票。

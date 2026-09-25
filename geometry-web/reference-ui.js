@@ -176,16 +176,14 @@ async function openDatumManager() {
   try { await reload(); } catch (error) { find('datum-feedback').textContent = error.message; }
 }
 document.getElementById('btnDatums').addEventListener('click', openDatumManager);
+/* GEO-195:選項來源改抽到 app.js::referenceAnchorEntries(bid,surf)(給占用判斷/錯誤訊息/
+   這裡的排序共用同一份);這裡只負責排版成 <option>——占用的排到未占用之後,文字後綴
+   「(已有角材 N)」,兩組各自維持原本順序。全部占用時不重排,第一個 <option> 仍是原順序
+   第一條(瀏覽器預設選第一個 <option>,因此「預設選第一條未占用」不需要另外設 selected)。 */
 function referenceAnchorOptions(bid, surf) {
-  const options = [];
-  const loops = oc.bmap[bid] || [];
-  loops.forEach((loop, h) => loop.verts.forEach((_, i) => {
-    const ref = h === 0 ? `e${i}` : `h${h - 1}e${i}`;
-    options.push([`at-face ${ref}`, h === 0 ? `外輪廓邊 ${i}` : `孔 ${h - 1} 邊 ${i}`]);
-  }));
-  for (const g of fe.guides) options.push([`at-line guide ${g.id}`, `參考線 ${g.id} · ${g.off} mm`]);
-  for (const g of fe.grids) for (const axis of ['u', 'v'])
-    g[axis].forEach((value, index) => options.push([`at-line grid ${g.id} ${axis} ${index}`, `網格 ${g.id} ${axis}[${index}] · ${value} mm`]));
-  for (const t of fe.timbers) options.push([`at-face t${t.id}`, `角材 ${t.id} 側面（須有唯一解）`]);
-  return options.map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+  const entries = referenceAnchorEntries(bid, surf);
+  const free = entries.filter(e => e.occupied == null);
+  const busy = entries.filter(e => e.occupied != null);
+  return [...free, ...busy].map(({ value, label, occupied }) =>
+    `<option value="${value}">${label}${occupied != null ? `(已有角材 ${occupied})` : ""}</option>`).join('');
 }

@@ -3087,3 +3087,74 @@ A/B/dir/side 預填正確、錨點固定留空;(b) 改 A=40/B=60/side=-n、重�
 serve.py+bridge、跳過與本票無關的既有測試)對 §P45/§P46 邏輯單獨跑過一次交叉驗證,
 6/6 全過,確認 I8a 影響預覽對話框、`mutate` history 群組、Ctrl+Z 單步復原都是在
 真實瀏覽器 + 真實核心下驗證,不是只過測試斷言字串。
+
+### GEO-195 ✅ 已做(2026-09-26)P1:角材放置表單 UX 止血——預設挑空線、畫布預示落點、失敗訊息講人話、角色依主支軸排除
+
+**起因**:使用者在已有 3 支角材(角材 1/2 boundary 分別在外輪廓邊 0/2、角材 3 primary
+在參考線「主支中線」u=500)的面上開角材頁放第 4 支,表單預設「外輪廓邊 0、+u、+n、
+primary」,在面內點了八次都收到 `line N: R6/I5/I6 timber 4: 中線上沒有任何合法跨距`,
+以為沒有位置可放。真相:(a) 點擊位置被忽略、角材落在定位引用那條線上,畫面沒有任何
+提示;(b) 預設的邊 0 已被角材 1 占滿;(c) 錯誤訊息是規則代號,沒說「換一條定位引用」;
+(d) 角色有硬規則(boundary/secondary 必須垂直於主支軸、沿主支軸只能 primary),表單
+不會排除。不改放置流程本身(點面內永遠只是「確認」)、不改引擎、不改 `.scene`。
+
+**做了什麼**(`geometry-web/app.js`、`geometry-web/reference-ui.js`、`app.css`):
+- **預設挑空線**:`feAnchorLineInfo(bid, anchorValue)` 把定位引用式換算成
+  `{constAxis:"u"|"v", value}`(哪個座標軸固定、固定在哪個值);`feAnchorOccupied(bid,
+  anchorValue)` 用它比對 `fe.timbers` 的足跡(`feTimberRect`)——**只比對角材的「深度
+  軸」**(長度方向的垂直軸,角材沿 u 跑深度就在 v)。第一版漏了這個限制,直接拿軸對齊
+  外接框比對,結果一支貫穿全長的角材(例如角材 1 橫跨整個 u 範圍)讓所有垂直於它的線
+  (包含參考線、對向邊)全部被誤判成占用;cdp_test §P47 一開始就是靠這個假陽性抓到的
+  (見下方「跑測試」的除錯記錄)。`referenceAnchorEntries(bid, surf)` 把每條定位引用
+  包成 `{value,label,occupied}` 結構化清單,`referenceAnchorOptions`(reference-ui.js)
+  據此排版:占用的文字後加「(已有角材 N)」並排到未占用之後,`<select>` 沒標 `selected`
+  時瀏覽器預設選第一個 `<option>`,重排後自然是第一條未占用,不必另外設定;全部占用時
+  不重排,`#tbAnchorAllOccupied` 出現提示「所有定位引用都已有角材，先加參考線(L)」。
+- **畫布預示落點**:`fe.anchorPreview`(#tbAnchor 焦點/hover/改值)或角材工具啟用中,
+  `drawFaceEditor()` 畫 `.fe-anchor-hi`(定位引用本身的虛線)+ `.fe-anchor-band`(依
+  `#tbSide`/`#tbA` 示意角材占用的半透明帶,標「示意」——真正長度由引擎依支撐推導,這裡
+  只畫全圖範圍近似;帶固定沿定位引用展開,不看 `#tbDir`)。切工具/切分頁就清除
+  (`feSetTool`/`fiShowTab`)。角材工具下 `#faceCanvasHint`/狀態列改走
+  `feTimberHintRefresh()`,文字「角材將沿「〈定位引用名〉」放置，點面內任一處確認；
+  點擊位置不影響位置」。
+- **失敗訊息講人話**:`feTimberPlaceErrorMessage(err, bid, surf, anchorValue)`——
+  `mutate()` 新增可選第二參數 `opts.friendlyError(rawError)=>string`(不傳就是既有
+  行為,不影響其他呼叫點),`feDown` 的角材分支傳入。依錯誤原文前置一句、原文接在後半:
+  含「中線上沒有任何合法跨距」→「〈定位引用名〉已被角材 N 占滿——請換定位引用(可用:
+  〈未占用清單〉)」(全部占用改「請先加參考線(L)」),並 `feMarkInvalid($("tbAnchor"))`;
+  含 `V_PRIMARY_AXIS` →「主支軸是 〈u|v〉:沿它放只能選 primary;boundary/secondary
+  要垂直於它」;含 `V_CUT_PRIORITY` →「貼外輪廓邊的角材要選 boundary」,兩者都
+  `feMarkInvalid($("tbRole"))`;其他錯誤原文不動。
+- **角色依主支軸排除**:`feTimberPrimaryAxis(bid)`——`fe.timbers` 若有 `role==="primary"`,
+  主支軸 = 那支 `dir` 的軸;`feTimberRoleOptionsHTML` 依目前 `#tbDir` 算:平行 → 只有
+  `primary` 可選,其餘 `disabled`;垂直 → `primary` `disabled`,其餘可選。`#tbDir` 的
+  `change` 觸發 `feTimberSyncRoleOptions(pane)` 重算;原本選的角色若變成 `disabled`,
+  自動跳到第一個可選項並 `toast` 一句說明。
+
+**測試**:`cdp_test.js` 新增 §P47(6 組,對應驗收條件全部 ✓):(1) `#tbAnchor` 預設值
+不是已占用的 e0/e2/guide 1,選項文字含占用標記;(2) 角材工具下畫出 `.fe-anchor-hi`/
+`.fe-anchor-band`,浮標/狀態列含「點擊位置不影響位置」,切回 select 消失;(3) 方向
++u/+v 下 `#tbRole` 的 primary/boundary `disabled` 對調;(4) 強制選回已占滿的 e0、真
+滑鼠點面內 → toast 含「已被角材 1 占滿」與「可用:」、`#tbAnchor` 標紅、`fe.timbers`
+不變;(5) 用 `referenceAnchorEntries` 算出的第一條未占用值點面內 → 成功、`fe.timbers`
+4 支,Ctrl+Z 回 3 支;(6) 用 JS 移除 disabled 強制選 boundary + 方向平行主支軸 → toast
+含「主支軸是 v」、`fe.timbers` 不變。場景直接用 `api('default')` 還原(`geometry-core/
+transactions.inc::reference_default_world` 剛好就是本票起因場景本身,不用手打 DSL)。
+`docs/DOM-CONTRACT.md`(新增 GEO-195 節 + `#tbAnchorAllOccupied`/`.fe-anchor-hi`/
+`.fe-anchor-band` 等契約)、`README.md`(角材放置段落補說明)同步更新。
+
+**跑測試**(Windows,已編 bridge.exe;8799 當時被殘留的 `python.exe`(PID 21608)占用,
+沒有動它,改走 8798;9333 未被占用):`cdp_test.js` 493/493(含新增 §P47 6 條);
+`canvas_test.js`(HTTP)412/412。過程中 §P47-1/2a/5 起初各失敗一次:5 是測試本身的
+瑕疵(`renderFaceInspector()` 的 `restoreInspectorState` 會刻意保留使用者上次在
+`#tbAnchor` 打的草稿值,不會因為重繪就重算預設——這是既有的、給真人用的草稿保留機制,
+不該為了測試改掉;改成測試直接用 `referenceAnchorEntries` 算出第一條未占用的值寫回
+欄位,等同使用者自己重選);1/2a 是 `feAnchorOccupied` 真的漏了「只比對深度軸」這條,
+已如上「做了什麼」段修正並在程式碼留下踩坑註解。跑完已 `taskkill` 自己起的 `python.exe`
+(port 8798)、確認 9333 無殘留 chrome、`git checkout -- geometry-web/docs/screens/`、
+`git status` 乾淨無 untracked。
+
+**沒做、為什麼**:流程層「點畫布上的邊直接放」(取代/補強「定位引用」下拉,讓點擊位置
+真正決定落點)不在本票範圍——票面明講「不改流程」,這是另一票的語意判斷,不擅自做。
+占用判定的距離容許值(`A`/`B` + 1mm)是 UX 近似,不是引擎的精確拒絕判定,兩者可能在
+極端案例(例如角材截面極薄)下不完全一致;這是預期中的近似,不是 bug。

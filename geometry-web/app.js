@@ -1779,6 +1779,8 @@ const fe = {
   hoverTimber: null,       /* GEO-191:左欄角材列 hover 中的 timber id → 畫布矩形加 .hover */
   ulCalib: null,           /* GEO-190:量比例尺進行中 {pts:[[px,py],…]}(圖片原始像素座標) */
   ulDrag: null,            /* GEO-190:拖曳底圖中 {x0,y0,cx,cy} */
+  anchorPreview: false,    /* GEO-195:#tbAnchor 取得焦點/hover/改值中 → 畫布畫 .fe-anchor-hi/.fe-anchor-band,
+                               與 fe.tool==="timber" 是「或」的關係;切工具/切分頁就清掉(見 feSetTool/fiShowTab)。 */
 };
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
@@ -1795,6 +1797,8 @@ function fiShowTab(name) {
      作用中」走,要在這裡手動同步;離開底圖分頁順便取消進行中的量比例尺(不然切去別頁
      還點得出校準點)。 */
   if (leavingUnderlay && fe.ulCalib) { fe.ulCalib = null; renderFaceInspector(); }
+  /* GEO-195:離開角材頁就取消定位引用預示(見 fe.anchorPreview 註解)。 */
+  if (name !== "timber" && fe.anchorPreview) { fe.anchorPreview = false; drawFaceEditor(); }
   feUlSyncPointerEvents();
 }
 /* GEO-190:只切 #feUnderlay 的 pointer-events,不整份 drawFaceEditor()(給 fiShowTab/
@@ -1865,6 +1869,7 @@ async function openFaceWorkspace(bid) {
   fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
   fe.projOpen = false; fe.projViews = new Set();
   fe.sel = null; fe.op = null; fe.selFeat = null; fe.hoverFeat = null; fe.hoverTimber = null;
+  fe.anchorPreview = false;  /* GEO-195:定位引用預示不跨面沿用 */
   fe.lastPD = null;   /* GEO-192 D:進新面內工作區,不沿用前一個面殘留的雙擊時間/位置基準 */
   fe.ulCalib = null; fe.ulDrag = null;  /* GEO-190:量比例尺/拖曳底圖是暫態,不跨面沿用 */
   feFit(loopsBBox(oc.bmap[bid]));
@@ -2447,6 +2452,7 @@ function feSetTool(t) {
     toast("游離面不能放參考線（先在檢視器「放置」)");
     return;
   }
+  const wasTimber = fe.tool === "timber";  /* GEO-195:離開角材工具要補一次重繪清掉預示 */
   if (fe.tool === "redraw" && t !== "redraw") {
     /* diff#12:切離 redraw 工具＝放棄草稿，PolyDraft state 一併重置（fe.drag/fe.lenBuf
        透過 feSyncDraftMirror 鏡射回去，維持既有相容欄位語意不變）。 */
@@ -2459,6 +2465,8 @@ function feSetTool(t) {
      同步 #feUnderlay 的 pointer-events——拖底圖只在 select 工具下允許,
      不然分頁開著時按其他工具鍵,點下去會被底圖吃成拖曳而不是該工具的動作。 */
   if (fe.tool !== t && t !== "select" && fe.ulCalib) fe.ulCalib = null;
+  /* GEO-195:工具切走就取消定位引用預示(hover/focus 記憶不跨工具沿用)。 */
+  if (t !== "timber" && fe.anchorPreview) fe.anchorPreview = false;
   fe.tool = t;
   fe.sel = null; fe.op = null; feSyncOverlays();
   feUlSyncPointerEvents();
@@ -2471,21 +2479,27 @@ function feSetTool(t) {
   feCursor();
   $("workspaceToolStatus").textContent = "工具：" + (FE_TOOL_NAMES[t] || t);
   /* 狀態列 + 角落浮標:綁定工具生命週期,蓋掉上一工具的訊息;
-     B6:浮標只在多步工具(redraw)顯示,單發工具看狀態列即可 */
-  setStatus(FE_TOOL_TIPS[t] || ("工具：" + t));
+     B6:浮標只在多步工具(redraw)顯示,單發工具看狀態列即可
+     GEO-195:角材工具改走 feTimberHintRefresh(),把定位引用名一併寫進狀態列/浮標,
+     並明講「點擊位置不影響位置」(GEO-195 起因:使用者以為點擊位置決定落點)。 */
   const hint = $("faceCanvasHint");
-  if (hint) {
-    const multi = (t === "redraw" || t === "timber");
-    hint.textContent = t === "timber"
-      ? `角材 A${$("tbA")?.value || 27}×B${$("tbB")?.value || 33} · ${$("tbDir")?.value || "+u"} · 點面內放置 · Esc 取消`
-      : `${FE_TOOL_NAMES[t] || t} · ${FE_TOOL_TIPS[t] || ""}`;
-    hint.hidden = !multi;
+  if (t === "timber") {
+    feTimberHintRefresh();
+    if (hint) hint.hidden = false;
+  } else {
+    setStatus(FE_TOOL_TIPS[t] || ("工具：" + t));
+    if (hint) {
+      const multi = (t === "redraw");
+      hint.textContent = `${FE_TOOL_NAMES[t] || t} · ${FE_TOOL_TIPS[t] || ""}`;
+      hint.hidden = !multi;
+    }
   }
   /* B2:角材工具 → 檢視器自動切「角材」頁(#tbLen 立即可見) */
   if (t === "timber") {
     const tab = document.querySelector('[data-fi-tab="timber"]');
     if (tab) tab.click();
   }
+  if (t === "timber" || wasTimber) drawFaceEditor();  /* GEO-195:進/離角材工具都要重繪 .fe-anchor-hi/.fe-anchor-band */
   /* 游離面：參考線工具停用 */
   const gb = document.querySelector('[data-face-tool="guide"]');
   if (gb) {
@@ -2553,6 +2567,180 @@ function feTimberRect(t2) {
   const fu = t2.u + t2.L * len_uv[0] + t2.A * a_uv[0];
   const fv = t2.v + t2.L * len_uv[1] + t2.A * a_uv[1];
   return [Math.min(t2.u, fu), Math.min(t2.v, fv), Math.max(t2.u, fu), Math.max(t2.v, fv)];
+}
+
+/* ---- GEO-195:角材放置表單 UX 止血 ----
+   起因(見 BACKLOG GEO-195):使用者以為點面內的位置決定角材落點,實際上落點完全由
+   「定位引用」決定,點擊只是確認;預設定位引用又常常已經被別支角材占滿,失敗訊息
+   只有規則代號(如「中線上沒有任何合法跨距」),使用者看不出該換哪條線。
+   本節全部只是前端 UX(挑預設值/畫預示/翻譯錯誤訊息/依主支軸排除角色),
+   不改 .scene/引擎/放置流程本身。 */
+
+/* 定位引用式 → {constAxis:"u"|"v", value} 的「線」描述(哪個座標軸固定、固定在哪個值),
+   用來畫預示與判斷占用。無法判斷(例如角材側面 at-face t<id>,或非正交邊)回 null——
+   這些情況只是不畫預示/不判占用,不影響既有放置流程。 */
+function feAnchorEdgeInfo(p1, p2) {
+  if (!p1 || !p2) return null;
+  if (Math.abs(p1[1] - p2[1]) < 1e-6) return { constAxis: "v", value: p1[1] };
+  if (Math.abs(p1[0] - p2[0]) < 1e-6) return { constAxis: "u", value: p1[0] };
+  return null;
+}
+function feAnchorLineInfo(bid, anchorValue) {
+  if (!anchorValue) return null;
+  const loops = oc.bmap[bid] || [];
+  let m;
+  if ((m = /^at-face e(\d+)$/.exec(anchorValue))) {
+    const verts = loops[0] && loops[0].verts;
+    if (!verts || !verts.length) return null;
+    const i = +m[1];
+    return feAnchorEdgeInfo(verts[i], verts[(i + 1) % verts.length]);
+  }
+  if ((m = /^at-face h(\d+)e(\d+)$/.exec(anchorValue))) {
+    const loop = loops[+m[1] + 1];
+    const verts = loop && loop.verts;
+    if (!verts || !verts.length) return null;
+    const i = +m[2];
+    return feAnchorEdgeInfo(verts[i], verts[(i + 1) % verts.length]);
+  }
+  if ((m = /^at-line guide (\d+)$/.exec(anchorValue))) {
+    const g = fe.guides.find(x => x.id === +m[1]);
+    if (!g) return null;
+    /* guide axis 是線「跑的方向」(哪個座標在變),固定座標是另一軸,見 GEO-193/GEO-190
+       周邊既有慣例(g.axis==="v" → u 固定在 g.off)。 */
+    return { constAxis: g.axis === "v" ? "u" : "v", value: g.off };
+  }
+  if ((m = /^at-line grid (\d+) (u|v) (\d+)$/.exec(anchorValue))) {
+    const g = fe.grids.find(x => x.id === +m[1]);
+    const axis = m[2], idx = +m[3];
+    const value = g && g[axis] && g[axis][idx];
+    if (value == null) return null;
+    return { constAxis: axis, value };
+  }
+  return null;   /* at-face t<id>(角材側面)不判占用/不畫預示 */
+}
+/* 定位引用是否已被 fe.timbers 的某支角材占滿:足跡矩形與該線平行且貼著
+   (距離 ≤ 該角材 A 或 B + 1mm)即算占。回傳占用者 id 或 null。這是 UX 提示用的
+   近似判斷(足跡取自 feTimberRect 的軸對齊外接框),不是引擎的精確拒絕判定。
+   只比對「深度軸」(角材長度方向的垂直軸):角材沿 u 跑,深度就在 v,反之亦然。
+   跳過長度軸——一支貫穿全長的角材,它的軸對齊外接框在長度軸上幾乎跨滿全部範圍,
+   任何一條垂直線(定位引用的固定軸剛好等於它的長度軸)都會「路過」它一次,
+   但那不是「占用」那條線,是那條線在幾何上就會跟它交叉;只有定位引用的固定軸
+   等於角材的深度軸,才是「這支角材貼著/占住這條線」的正確意思(見 GEO-195 起因:
+   最初實作漏了這個排除,導致 e0 的角材把所有其餘邊/guide 都誤判成占用)。 */
+function feAnchorOccupied(bid, anchorValue) {
+  const info = feAnchorLineInfo(bid, anchorValue);
+  if (!info) return null;
+  for (const t of fe.timbers || []) {
+    const depthAxis = t.dir.slice(-1) === "u" ? "v" : "u";
+    if (info.constAxis !== depthAxis) continue;
+    const r = feTimberRect(t);
+    const lo = info.constAxis === "u" ? r[0] : r[1];
+    const hi = info.constAxis === "u" ? r[2] : r[3];
+    const dist = (info.value >= lo && info.value <= hi) ? 0
+      : Math.min(Math.abs(info.value - lo), Math.abs(info.value - hi));
+    if (dist <= Math.max(t.A, t.B) + 1) return t.id;
+  }
+  return null;
+}
+/* referenceAnchorOptions(reference-ui.js)共用的結構化清單:每條定位引用 + 是否占用。
+   給選項排序/文字後綴、放置表單「全部占用」提示、失敗訊息「可用:…」清單共用同一份。 */
+function referenceAnchorEntries(bid, surf) {
+  const options = [];
+  const loops = oc.bmap[bid] || [];
+  loops.forEach((loop, h) => loop.verts.forEach((_, i) => {
+    const ref = h === 0 ? `e${i}` : `h${h - 1}e${i}`;
+    options.push([`at-face ${ref}`, h === 0 ? `外輪廓邊 ${i}` : `孔 ${h - 1} 邊 ${i}`]);
+  }));
+  for (const g of fe.guides) options.push([`at-line guide ${g.id}`, `參考線 ${g.id} · ${g.off} mm`]);
+  for (const g of fe.grids) for (const axis of ["u", "v"])
+    g[axis].forEach((value, index) => options.push([`at-line grid ${g.id} ${axis} ${index}`, `網格 ${g.id} ${axis}[${index}] · ${value} mm`]));
+  for (const t of fe.timbers) options.push([`at-face t${t.id}`, `角材 ${t.id} 側面（須有唯一解）`]);
+  return options.map(([value, label]) => ({ value, label, occupied: feAnchorOccupied(bid, value) }));
+}
+/* 目前 #tbAnchor 選中值對應的中文標籤,找不到就回傳原始引用式本身。 */
+function feTimberAnchorLabel(bid, surf, anchorValue) {
+  if (!anchorValue) return "—";
+  const hit = referenceAnchorEntries(bid, surf).find(x => x.value === anchorValue);
+  return hit ? hit.label : anchorValue;
+}
+/* 承載面現有角材裡若有 role primary,主支軸 = 那支的方向軸(u 或 v);沒有就回 null
+   (角色不受限)。GEO-195 規格:boundary/secondary 必須垂直於主支軸、沿主支軸只能 primary。 */
+function feTimberPrimaryAxis(bid) {
+  const p = (fe.timbers || []).find(t => t.role === "primary");
+  return p ? p.dir.slice(-1) : null;
+}
+const TB_ROLE_OPTS = [["primary", "primary 主支"], ["boundary", "boundary 邊界材"],
+  ["secondary", "secondary 副支"], ["custom", "custom 自訂"]];
+function feTimberRoleOptionsHTML(bid, dirValue, currentRole) {
+  const axis = feTimberPrimaryAxis(bid);
+  const dirAxis = (dirValue || "+u").slice(-1);
+  const parallel = axis && dirAxis === axis;
+  const perpendicular = axis && dirAxis !== axis;
+  return TB_ROLE_OPTS.map(([v, t]) => {
+    let disabled = false, suffix = "";
+    if (parallel && v !== "primary") { disabled = true; suffix = "（需垂直於主支軸）"; }
+    else if (perpendicular && v === "primary") { disabled = true; suffix = "（沿主支軸才能是主支）"; }
+    return `<option value="${v}"${disabled ? " disabled" : ""}${v === currentRole && !disabled ? " selected" : ""}>${t}${suffix}</option>`;
+  }).join("");
+}
+/* 方向改變時重算 #tbRole 的可選項;原本選的角色若變成 disabled,跳到第一個可選項並提示。 */
+function feTimberSyncRoleOptions(pane) {
+  const bid = oc.edit && oc.edit.bid;
+  const dirSel = pane.querySelector("#tbDir"), roleSel = pane.querySelector("#tbRole");
+  if (!dirSel || !roleSel) return;
+  const prevRole = roleSel.value;
+  roleSel.innerHTML = feTimberRoleOptionsHTML(bid, dirSel.value, prevRole);
+  const prevOpt = [...roleSel.options].find(o => o.value === prevRole);
+  if (!prevOpt || prevOpt.disabled) {
+    const first = [...roleSel.options].find(o => !o.disabled);
+    if (first) {
+      roleSel.value = first.value;
+      toast(`角色「${prevRole}」${dirSel.value} 方向下不可選，已自動切換為「${first.value}」`, "ok");
+    }
+  } else roleSel.value = prevRole;
+  const pl = pane.querySelector("#tbPriLabel");
+  if (pl) pl.hidden = roleSel.value !== "custom";
+}
+/* 角材工具下,狀態列 + #faceCanvasHint 顯示「將沿哪條定位引用放置」,並明講點擊位置
+   不影響位置(GEO-195 起因:使用者以為點擊位置決定落點,點了八次都以為沒地方放)。 */
+function feTimberHintRefresh() {
+  if (fe.tool !== "timber") return;
+  const bid = oc.edit && oc.edit.bid;
+  if (bid == null) return;
+  const surf = feSurf(bid);
+  const label = feTimberAnchorLabel(bid, surf, $("tbAnchor")?.value);
+  const A = $("tbA")?.value || 27, B = $("tbB")?.value || 33;
+  const text = `角材將沿「${label}」放置，點面內任一處確認；點擊位置不影響位置 · A${A}×B${B} · Esc 取消`;
+  setStatus(text);
+  const hint = $("faceCanvasHint");
+  if (hint) hint.textContent = text;
+}
+/* 角材放置的 mutate 失敗回呼:依錯誤原文判斷,前置一句人話,原文保留在後半。
+   同時把表單裡對應欄位標紅(feMarkInvalid),讓使用者知道該改哪個欄位。 */
+function feTimberPlaceErrorMessage(err, bid, surf, anchorValue) {
+  if (!err) return err;
+  if (err.includes("中線上沒有任何合法跨距")) {
+    feMarkInvalid($("tbAnchor"));
+    const entries = referenceAnchorEntries(bid, surf);
+    const hit = entries.find(x => x.value === anchorValue);
+    const anchorLabel = hit ? hit.label : anchorValue;
+    const occupiedBy = hit ? hit.occupied : feAnchorOccupied(bid, anchorValue);
+    const free = entries.filter(x => x.occupied == null).map(x => x.label);
+    const prefix = free.length
+      ? `${anchorLabel}已被角材 ${occupiedBy ?? "?"} 占滿——請換定位引用(可用:${free.join("、")})`
+      : `${anchorLabel}已被角材 ${occupiedBy ?? "?"} 占滿——請先加參考線(L)`;
+    return prefix + "\n" + err;
+  }
+  if (err.includes("V_PRIMARY_AXIS")) {
+    feMarkInvalid($("tbRole"));
+    const axis = feTimberPrimaryAxis(bid) || "?";
+    return `主支軸是 ${axis}:沿它放只能選 primary;boundary/secondary 要垂直於它\n${err}`;
+  }
+  if (err.includes("V_CUT_PRIORITY")) {
+    feMarkInvalid($("tbRole"));
+    return `貼外輪廓邊的角材要選 boundary\n${err}`;
+  }
+  return err;
 }
 
 /* ---- GEO-190:面內底圖臨摹 ----
@@ -2808,6 +2996,32 @@ function drawFaceEditor() {
       "data-face-hit": `t:${t2.id}`,
       class: "face-timber" + (selT ? " sel" : "") + (hoverT ? " hover" : "") }, root);
   }
+  /* GEO-195:定位引用預示——角材工具啟用中,或 #tbAnchor 焦點/hover/改值中(fe.anchorPreview)
+     才畫;畫一條貫穿全圖的虛線標出定位引用本身,再依目前深度(+n/-n)/A 畫半透明帶示意角材
+     會落在哪一側(帶只是「示意」,真正長度由引擎依支撐推導——見帶上文字標註;帶永遠沿定位
+     引用的固定座標軸展開,不看 #tbDir——不管使用者選哪個方向,角材的截面深度一定是往定位
+     引用的垂直方向偏,#tbDir 只決定角材沿哪個軸「跑」,不影響這條帶要畫在哪)。 */
+  if ((fe.tool === "timber" || fe.anchorPreview) && e.bid != null) {
+    const anchorVal = $("tbAnchor")?.value;
+    const info = anchorVal ? feAnchorLineInfo(e.bid, anchorVal) : null;
+    if (info) {
+      const seg = info.constAxis === "u"
+        ? [info.value, gb[1], info.value, gb[3]]
+        : [gb[0], info.value, gb[2], info.value];
+      el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3], class: "fe-anchor-hi" }, root);
+      const A2 = Number($("tbA")?.value) || 0;
+      const side2 = ($("tbSide") || {}).value || "+n";
+      const s2 = side2 === "+n" ? 1 : -1;
+      const lo = s2 > 0 ? info.value : info.value - A2;
+      const hi = s2 > 0 ? info.value + A2 : info.value;
+      const br = info.constAxis === "u" ? [lo, gb[1], hi, gb[3]] : [gb[0], lo, gb[2], hi];
+      el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
+        class: "fe-anchor-band" }, root);
+      el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
+        "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
+        class: "fe-dim fe-anchor-band-label" }, root).textContent = "示意";
+    }
+  }
   /* RC 障礙物鬼影（R7）：半透明分類矩形，只讀不改 boundary */
   if (fe.obstacles) {
     const CLS_ZH = { hole: "孔", notch: "凹口", corner: "角凹",
@@ -3036,8 +3250,12 @@ async function feDown(pt, ev) {
     const decl = `timber ${ids.timber} ${A} ${B} role ${role}` +
       (role === "custom" ? ` priority ${pri}` : "");
     const selector = $("tbSelector")?.value.trim() || "";
+    /* GEO-195:失敗訊息講人話——依錯誤原文前置一句(anchor 占滿/主支軸/RC 優先權),
+       原文保留在後半;同時標紅對應欄位(feTimberPlaceErrorMessage 內部處理)。 */
+    const surf = feSurf(e.bid);
     if (await mutate([decl,
-        `place ${ids.timber} on ${sid} ${anchor} ${selector} ${dir} ${side}`])) {
+        `place ${ids.timber} on ${sid} ${anchor} ${selector} ${dir} ${side}`],
+        { friendlyError: err => feTimberPlaceErrorMessage(err, e.bid, surf, anchor) })) {
       await feLoadGuides(); drawFaceEditor(); renderFaceLayers();
     }
     return;
@@ -4573,11 +4791,19 @@ function renderFaceInspector() {
     `</div><div id="projViews"></div></div></details></div>`;
   html += `</div>`;
   html += `<div data-fi-pane="guide"${fe.fiTab === "guide" ? "" : " hidden"}>${guideHTML}</div>`;
-  /* B2:角材頁（游離面顯示停用說明,欄位一併停用） */
+  /* B2:角材頁（游離面顯示停用說明,欄位一併停用）
+     GEO-195:定位引用改用 referenceAnchorOptions 的新排序(未占用在前,預設自然選中第一條
+     未占用);全部占用時加一行提示;角色改用 feTimberRoleOptionsHTML 依主支軸排除。
+     方向/角色的預填讀舊 DOM 的既有值(pane.innerHTML 替換前,$() 還讀得到上一輪渲染)。 */
+  const tbAnchorEntries = surf ? referenceAnchorEntries(bid, surf) : [];
+  const tbAllAnchorsOccupied = tbAnchorEntries.length > 0 && tbAnchorEntries.every(a => a.occupied != null);
+  const tbPrevDir = ($("tbDir") || {}).value || "+u";
+  const tbPrevRole = ($("tbRole") || {}).value || "primary";
   html += `<div data-fi-pane="timber"${fe.fiTab === "timber" ? "" : " hidden"}>` +
     feTbSelectedHTML(bid) +
     `<div class="inspector-block"><div class="ib-title">角材放置</div>` +
     (surf ? "" : `<div class="fi-note">游離面：先在「屬性」頁放置這片面，才可放角材。</div>`) +
+    (tbAllAnchorsOccupied ? `<div class="fi-note" id="tbAnchorAllOccupied">所有定位引用都已有角材，先加參考線(L)</div>` : "") +
     `<div class="fi-note">長度由支撐與有效範圍自動推導。</div>` +
     `<div class="place-form">` +
     `<label>定位引用<select id="tbAnchor"${surf ? "" : " disabled"}>${referenceAnchorOptions(bid, surf)}</select></label>` +
@@ -4585,13 +4811,11 @@ function renderFaceInspector() {
     `<label>A<input id="tbA" type="number" value="27"${surf ? "" : " disabled"}></label>` +
     `<label>B<input id="tbB" type="number" value="33"${surf ? "" : " disabled"}></label>` +
     `<label>方向<select id="tbDir"${surf ? "" : " disabled"}>` +
-    ["+u", "-u", "+v", "-v"].map(d => `<option>${d}</option>`).join("") +
+    ["+u", "-u", "+v", "-v"].map(d => `<option${d === tbPrevDir ? " selected" : ""}>${d}</option>`).join("") +
     `</select></label>` +
     `<label>深度<select id="tbSide"${surf ? "" : " disabled"}><option>+n</option><option>-n</option></select></label>` +
     `<label>角色<select id="tbRole"${surf ? "" : " disabled"}>` +
-    [["primary", "primary 主支"], ["boundary", "boundary 邊界材"],
-     ["secondary", "secondary 副支"], ["custom", "custom 自訂"]]
-      .map(([v, t]) => `<option value="${v}">${t}</option>`).join("") +
+    feTimberRoleOptionsHTML(bid, tbPrevDir, tbPrevRole) +
     `</select></label>` +
     `<label id="tbPriLabel" hidden>priority<input id="tbPri" type="number" value="3"${surf ? "" : " disabled"}></label>` +
     `</div><div class="face-help">` +
@@ -4668,6 +4892,38 @@ function renderFaceInspector() {
     const pl = pane.querySelector("#tbPriLabel");
     if (pl) pl.hidden = tbRole.value !== "custom";
   });
+  /* GEO-195:方向改變時重算 #tbRole 可選項(依主支軸排除);#tbAnchor 焦點/hover/改值
+     開關定位引用預示(.fe-anchor-hi/.fe-anchor-band,見 drawFaceEditor);A/B/深度改變
+     也連動重畫,預示帶(寬=A)才會跟著新值走。 */
+  const tbDirSel = pane.querySelector("#tbDir");
+  if (tbDirSel) tbDirSel.addEventListener("change", () => {
+    feTimberSyncRoleOptions(pane);
+    feTimberHintRefresh();
+    if (fe.tool === "timber" || fe.anchorPreview) drawFaceEditor();
+  });
+  const tbAnchorSel = pane.querySelector("#tbAnchor");
+  if (tbAnchorSel) {
+    const showAnchorPreview = () => { fe.anchorPreview = true; drawFaceEditor(); };
+    const hideAnchorPreviewIfBlurred = () => {
+      fe.anchorPreview = document.activeElement === tbAnchorSel;
+      drawFaceEditor();
+    };
+    tbAnchorSel.addEventListener("mouseenter", showAnchorPreview);
+    tbAnchorSel.addEventListener("mouseleave", hideAnchorPreviewIfBlurred);
+    tbAnchorSel.addEventListener("focus", showAnchorPreview);
+    tbAnchorSel.addEventListener("blur", () => { fe.anchorPreview = false; drawFaceEditor(); });
+    tbAnchorSel.addEventListener("change", () => {
+      showAnchorPreview();
+      feTimberHintRefresh();
+    });
+  }
+  for (const [id, evt] of [["tbA", "input"], ["tbB", "input"], ["tbSide", "change"]]) {
+    const inp = pane.querySelector("#" + id);
+    if (inp) inp.addEventListener(evt, () => {
+      feTimberHintRefresh();
+      if (fe.tool === "timber" || fe.anchorPreview) drawFaceEditor();
+    });
+  }
   const gc = pane.querySelector("#gridCreate");
   if (gc) gc.addEventListener("click", async () => {
     const sid = feSid(bid);
@@ -5608,8 +5864,10 @@ function toast(msg, type = "error") {
   setTimeout(() => t.remove(), type === "ok" ? 2000 : 3600);
 }
 /* mutate:多行 DSL 交易——history 群組 = 一步 undo(§5.1);
-   群組內任一行失敗,核心自動整組回滾;abort 冪等驗證回滾。 */
-async function mutate(lines) {
+   群組內任一行失敗,核心自動整組回滾;abort 冪等驗證回滾。
+   opts.friendlyError(rawError) → string(GEO-195):可選,失敗時把原文轉成講人話的版本再
+   toast;不傳就是既有行為(直接 toast 原文),不影響既有呼叫點。 */
+async function mutate(lines, opts) {
   if (oc.busy) return false;
   oc.busy = true;
   document.body.classList.add("oc-busy");
@@ -5625,7 +5883,8 @@ async function mutate(lines) {
       if (!r.ok) {
         const ab = await api("line history-abort");
         if (!ab.ok) toast("回滾失敗,狀態可能不一致");
-        toast(r.error || "指令失敗");
+        const msg = (opts && opts.friendlyError) ? (opts.friendlyError(r.error) || r.error) : r.error;
+        toast(msg || "指令失敗");
         return false;
       }
     }

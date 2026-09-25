@@ -4184,6 +4184,158 @@ async function rightClick(x, y) {
 
   /* (e) 橋接不回傳錨點(已於前面確認 P46a),改錨點驗證無從進行——略過,log 說明 */
   console.log('P46e 橋接未回傳錨點,略過');
+
+  console.log('=== P47. 面內「角材放置」表單 UX 止血(GEO-195) ===');
+  /* geometry-core/transactions.inc::reference_default_world 就是本票起因場景本身
+     (面 1 4000×3000;角材 1/2 boundary 分別在 e0/e2;spec 主支中線 500 + guide 1 +
+     角材 3 primary 在 guide 1 上)——用 api('default') 直接還原,不用手打 DSL。 */
+  await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
+  await eval_(`(async()=>{ resetSceneFocus(); await api('default'); await renderObjects();
+    await enterFocus('face', 1); fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+    const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false; })()`);
+  await sleep(250);
+  await eval_(`fiShowTab('timber')`);
+  const openFace47 = async () => {
+    await eval_(`(()=>{ fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply(); })()`);
+    await sleep(100);
+    const org = await feOrigin();
+    return (mx, my) => ({ x: org.x + mx, y: org.y + my });
+  };
+  const clearToasts = () => eval_(`document.getElementById('toastRegion').innerHTML = ''`);
+
+  /* (1) #tbAnchor 預設值不是已占用的 e0/e2/guide 1(三者都已有角材);
+     選項文字含「已有角材 1」「已有角材 2」(guide 1 被角材 3 占用,文字含「已有角材 3」)。 */
+  const p47_1 = await eval_(`(()=>{
+    const sel = document.getElementById('tbAnchor');
+    return { value: sel.value, opts: [...sel.options].map(o => o.textContent) };
+  })()`);
+  check('P47-1 #tbAnchor 預設值不是 e0/e2/guide 1,選項含已占用標記',
+    !['at-face e0', 'at-face e2', 'at-line guide 1'].includes(p47_1.value) &&
+    p47_1.opts.some(t => t.includes('已有角材 1')) &&
+    p47_1.opts.some(t => t.includes('已有角材 2')) &&
+    p47_1.opts.some(t => t.includes('已有角材 3')), p47_1);
+
+  /* (2) 角材工具啟用 → 畫布有 .fe-anchor-hi 且 .fe-anchor-band;
+     #faceCanvasHint 或狀態列含「點擊位置不影響位置」;切回 select → 兩者消失。 */
+  await eval_(`feSetTool('timber')`);
+  await sleep(150);
+  const p47_2a = await eval_(`({
+    hi: document.querySelectorAll('#faceEditorRoot .fe-anchor-hi').length,
+    band: document.querySelectorAll('#faceEditorRoot .fe-anchor-band').length,
+    hint: document.getElementById('faceCanvasHint').textContent,
+    status: document.getElementById('status').textContent,
+  })`);
+  check('P47-2a 角材工具下畫出 .fe-anchor-hi/.fe-anchor-band,浮標或狀態列含「點擊位置不影響位置」',
+    p47_2a.hi > 0 && p47_2a.band > 0 &&
+    (p47_2a.hint.includes('點擊位置不影響位置') || p47_2a.status.includes('點擊位置不影響位置')), p47_2a);
+  await eval_(`feSetTool('select')`);
+  await sleep(150);
+  const p47_2b = await eval_(`({
+    hi: document.querySelectorAll('#faceEditorRoot .fe-anchor-hi').length,
+    band: document.querySelectorAll('#faceEditorRoot .fe-anchor-band').length,
+  })`);
+  check('P47-2b 切回 select → 預示消失', p47_2b.hi === 0 && p47_2b.band === 0, p47_2b);
+
+  /* (3) 主支軸為 v(角材 3 primary、dir +v):方向 +u(垂直於主支軸)→ primary disabled、
+     boundary 可選;方向 +v(平行於主支軸)→ boundary/secondary disabled、primary 可選。 */
+  await eval_(`(()=>{ const s = document.getElementById('tbDir'); s.value = '+u';
+    s.dispatchEvent(new Event('change')); })()`);
+  const p47_3a = await eval_(`(()=>{ const o = [...document.getElementById('tbRole').options];
+    return Object.fromEntries(o.map(x => [x.value, x.disabled])); })()`);
+  check('P47-3a 方向 +u(垂直主支軸)→ primary disabled、boundary 可選',
+    p47_3a.primary === true && p47_3a.boundary === false, p47_3a);
+  await eval_(`(()=>{ const s = document.getElementById('tbDir'); s.value = '+v';
+    s.dispatchEvent(new Event('change')); })()`);
+  const p47_3b = await eval_(`(()=>{ const o = [...document.getElementById('tbRole').options];
+    return Object.fromEntries(o.map(x => [x.value, x.disabled])); })()`);
+  check('P47-3b 方向 +v(平行主支軸)→ boundary/secondary disabled、primary 可選',
+    p47_3b.boundary === true && p47_3b.secondary === true && p47_3b.primary === false, p47_3b);
+
+  /* (4) 強制 #tbAnchor=e0(已占滿)、方向 +u、角色 boundary(此方向下未 disabled,
+     不用繞過),真滑鼠點面內 → toast 含「已被角材 1 占滿」與「可用:」;fe.timbers 仍 3;
+     #tbAnchor 有 invalid 標記。 */
+  await eval_(`(()=>{
+    document.getElementById('tbAnchor').value = 'at-face e0';
+    const dirSel = document.getElementById('tbDir'); dirSel.value = '+u';
+    dirSel.dispatchEvent(new Event('change'));
+    document.getElementById('tbRole').value = 'boundary';
+  })()`);
+  await eval_(`feSetTool('timber')`);
+  await sleep(100);
+  await clearToasts();
+  let pt47 = await openFace47();
+  await click(pt47(2000, 1500).x, pt47(2000, 1500).y);
+  await sleep(300);
+  const p47_4 = await eval_(`({
+    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
+    timbers: fe.timbers.map(t => t.id).sort(),
+    anchorInvalid: document.getElementById('tbAnchor').classList.contains('invalid'),
+  })`);
+  check('P47-4 e0 已被角材 1 占滿 → toast 含「已被角材 1 占滿」與「可用:」;仍 3 支;#tbAnchor invalid',
+    p47_4.toast.includes('已被角材 1 占滿') && p47_4.toast.includes('可用:') &&
+    JSON.stringify(p47_4.timbers) === '[1,2,3]' && p47_4.anchorInvalid, p47_4);
+
+  /* (5) 依預設值(自動挑到的空線)點面內 → 成功,fe.timbers 4 支。「自動挑到的空線」
+     用 referenceAnchorEntries 直接算第一條未占用的(不透過重新整理表單取得——
+     renderFaceInspector() 的 restoreInspectorState 會刻意保留使用者上一次在 #tbAnchor
+     打的值/選的值,這是給真實使用者用的草稿保留機制,不是這裡要測的「預設挑空線」邏輯,
+     所以改直接算出第一條未占用的值再寫回欄位,等同使用者自己重選一條空線)。
+     方向/角色照「垂直於主支軸→boundary、平行→primary」規則挑一組會被引擎接受的合法值
+     (規格本身沒規定預設方向/角色一定是哪個,只規定定位引用要挑空線)。Ctrl+Z 回 3 支。 */
+  const p47_5anchor = await eval_(`(()=>{
+    const entries = referenceAnchorEntries(oc.edit.bid, feSurf(oc.edit.bid));
+    return entries.find(e => e.occupied == null).value;
+  })()`);
+  await eval_(`(()=>{
+    const s = document.getElementById('tbAnchor'); s.value = ${JSON.stringify(p47_5anchor)};
+    s.dispatchEvent(new Event('change'));
+  })()`);
+  const p47_5line = await eval_(`feAnchorLineInfo(oc.edit.bid, document.getElementById('tbAnchor').value)`);
+  const p47_5runAxis = p47_5line.constAxis === 'u' ? 'v' : 'u';
+  const p47_5primaryAxis = await eval_(`feTimberPrimaryAxis(oc.edit.bid)`);
+  const p47_5role = p47_5runAxis === p47_5primaryAxis ? 'primary' : 'boundary';
+  await eval_(`(()=>{
+    const dirSel = document.getElementById('tbDir'); dirSel.value = ${JSON.stringify('+' + p47_5runAxis)};
+    dirSel.dispatchEvent(new Event('change'));
+    document.getElementById('tbRole').value = ${JSON.stringify(p47_5role)};
+  })()`);
+  await eval_(`feSetTool('timber')`);
+  await sleep(100);
+  pt47 = await openFace47();
+  await click(pt47(2000, 1500).x, pt47(2000, 1500).y);
+  await sleep(300);
+  const p47_5 = await eval_(`fe.timbers.map(t => t.id).sort()`);
+  check('P47-5 依預設值(自動挑到的空線)點面內 → 成功,fe.timbers 4 支',
+    JSON.stringify(p47_5) === '[1,2,3,4]', { p47_5, p47_5line, p47_5runAxis, p47_5role });
+  await pressKey('z', 'KeyZ', 90, 2);
+  await sleep(300);
+  const p47_5u = await eval_(`(async()=>{ await feLoadGuides(); return fe.timbers.map(t => t.id).sort(); })()`);
+  check('P47-5u Ctrl+Z → 回 3 支', JSON.stringify(p47_5u) === '[1,2,3]', p47_5u);
+
+  /* (6) 設 #tbAnchor=e1、方向 +v(=主支軸,平行)、角色強制 boundary(JS 移除 disabled
+     後選)→ 點面內 → toast 含「主支軸是 v」;仍 3 支。 */
+  await eval_(`fiShowTab('timber')`);
+  await eval_(`(()=>{
+    document.getElementById('tbAnchor').value = 'at-face e1';
+    const dirSel = document.getElementById('tbDir'); dirSel.value = '+v';
+    dirSel.dispatchEvent(new Event('change'));
+    const roleSel = document.getElementById('tbRole');
+    const opt = [...roleSel.options].find(o => o.value === 'boundary');
+    opt.disabled = false;
+    roleSel.value = 'boundary';
+  })()`);
+  await eval_(`feSetTool('timber')`);
+  await sleep(100);
+  await clearToasts();
+  pt47 = await openFace47();
+  await click(pt47(2000, 1500).x, pt47(2000, 1500).y);
+  await sleep(300);
+  const p47_6 = await eval_(`({
+    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
+    timbers: fe.timbers.map(t => t.id).sort(),
+  })`);
+  check('P47-6 強制 boundary + 方向 v(平行主支軸)→ toast 含「主支軸是 v」;仍 3 支',
+    p47_6.toast.includes('主支軸是 v') && JSON.stringify(p47_6.timbers) === '[1,2,3]', p47_6);
   }
 
   chrome.kill();

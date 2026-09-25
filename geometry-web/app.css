@@ -1515,6 +1515,18 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
 .face-editor-viewport.tool-select .face-editor-svg .face-timber { pointer-events: auto; }
 .face-editor-svg .face-timber.sel { stroke: var(--accent); stroke-width: 2.6; }
 .face-editor-svg .face-timber.hover { stroke-width: 2.2; fill-opacity: .4; }
+
+/* GEO-195:角材放置表單 UX 止血——定位引用預示(角材工具啟用中,或 #tbAnchor 焦點/
+   hover/改值中)。.fe-anchor-hi 是定位引用本身(貫穿全圖的虛線);.fe-anchor-band 是
+   依目前方向/深度/A 示意角材會占的半透明帶,不吃事件(純示意,不擋任何既有互動)。 */
+.face-editor-svg .fe-anchor-hi {
+  stroke: #c4781a; stroke-width: 2; stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke; pointer-events: none;
+}
+.face-editor-svg .fe-anchor-band {
+  fill: rgba(196,120,26,.16); stroke: none; pointer-events: none;
+}
+.face-editor-svg .fe-anchor-band-label { fill: #8a5a17; pointer-events: none; }
 .face-layer-row.sel { background: var(--face-soft); box-shadow: inset 0 0 0 1px rgba(47,143,123,.16); }
 .face-layer-row.sel .face-layer-icon { background: #fff; color: var(--face); }
 
