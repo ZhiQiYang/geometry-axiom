@@ -108,9 +108,9 @@
 | `[data-tool]` | 頂列工具鈕(select/pan/rect/poly) | `dataset.tool`、`.active` |
 | `[data-filter-type]` | 顯示類型篩選(face/space) | `checked` 狀態 |
 | `[data-icon]` | 圖示插槽 | hydrateIcons 填充 |
-| `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/insert/timber/redraw) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
+| `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/timber/redraw;`insert` 已於 GEO-169 移除) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
 | `#faceShapeButton` `#shapeDialog` `#shapeW` `#shapeD` `#shapeA` `#shapeB` `shapeKind` | 形狀庫(RC P1:L/U/T 外環生成) | `.click()`、`value`、radio checked |
-| `#notchDialog` `#notchW` `#notchD` `#notchSubmit` `#notchClose` `#notchCancel` | 參數化凹口對話框(RC P2:insert 點邊後開) | `hidden`、`.click()`、`value` |
+| ~~`#notchDialog` …~~ | 參數化凹口對話框(RC P2)**已於 GEO-169 移除**,凹口改走 `#feActionBar` → `#feOpPanel` | — |
 | `#feLenInput` | 鍵入長度浮動框(RC P2:重畫中數字鍵) | `hidden`、`value`、`.style.left/top` |
 | `[data-edge-len]` | 邊長清單輸入(RC P2:`data-edge-len="<i>"`) | `value` + `change` 事件 |
 | `#tbLen` `#tbA` `#tbB` `#tbDir` `#tbSide` | 角材放置參數表單(Q3) | `value` 讀寫 |

@@ -2469,9 +2469,14 @@ B 的清單當同一份特徵堆疊的檢視器放右欄;C(步驟精靈)、D(拖
 socket pool 卡死,P5b 永遠等不到 `pick`。netlog 確認;改 `GEOMETRY_TEST_URL=http://127.0.0.1:<port>/`
 + `--disable-features=HappyEyeballsV3` 即過。
 
+**續(2026-09-25,使用者拍板「把舊的設計移除、用新的取代」)**:舊「凹口」工具整組移除——
+工具鈕 `[data-face-tool="insert"]`、`i` 快捷鍵、`#notchDialog`、`feInsertNotch`/`fePointInFace`/`feFlashEdges`
+與對應 CSS;凹口只走「選邊 → 浮動列 → 面板」。連帶把原本待拍板第 2 項(對話框路徑新邊給 X、
+布林路徑給 F 的不一致)一起消掉:現在只有一條路徑,新邊依 R7 為 F。
+「開口」「外環」重畫與形狀庫保留——新設計沒有取代它們的流程。
+cdp_test §P7、§9f「參數化凹口」、§P17(d)(g) 改走新流程。
+
 **待拍板**(不動 SSOT,只列):
 1. 特徵堆疊要不要進 .scene?要的話核心得多一個「衍生特徵」概念,或前端另存 sidecar;目前刻意不做。
-2. 凹口新邊 fixity:Phase 2 對話框路徑給 X,本工單布林路徑給 F(依 R7)。建議統一為 F,改對話框那邊。
-3. 舊「凹口」工具與新流程重疊,提案原意是拿掉;等使用者用過再決定是否退役(`i` 快捷鍵一併)。
 
 **回歸**:cdp_test 306/306(Linux 容器,Chromium 141,`127.0.0.1` + `--disable-features=HappyEyeballsV3`);canvas_test(HTTP)412/412;test_serve 9/9。

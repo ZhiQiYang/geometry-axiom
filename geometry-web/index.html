@@ -281,7 +281,6 @@
         <button type="button" class="workspace-tool" data-face-tool="select" title="選取/拖曳 (v)"><span data-icon="pointer"></span><span>選取</span><kbd>V</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="guide" title="參考線 (l)"><span data-icon="guide"></span><span>參考線</span><kbd>L</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="hole" title="開口 (r)"><span data-icon="hole"></span><span>開口</span><kbd>R</kbd></button>
-        <button type="button" class="workspace-tool" data-face-tool="insert" title="插入凹口 (i)"><span data-icon="notch"></span><span>凹口</span><kbd>I</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="timber" title="角材 (t)"><span data-icon="timber"></span><span>角材</span><kbd>T</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="redraw" title="重畫外環 (e)"><span data-icon="redraw"></span><span>外環</span><kbd>E</kbd></button>
         <button type="button" class="workspace-tool" id="faceShapeButton" title="形狀庫"><span data-icon="layers"></span><span>形狀</span></button>
@@ -403,7 +402,7 @@
       <div><span id="workspaceToolStatus">工具：選取</span>
       <span class="status-divider"></span>
       <span id="workspaceSelectionStatus"></span></div>
-      <div class="ws-kbd-hints"><kbd>V</kbd> 選取 <kbd>L</kbd> 線 <kbd>R</kbd> 開口 <kbd>I</kbd> 凹口 <kbd>T</kbd> 角材 <kbd>E</kbd> 外環 <kbd>Enter</kbd> 套用 <kbd>F</kbd> 全圖 <kbd>Esc</kbd> 返回</div>
+      <div class="ws-kbd-hints"><kbd>V</kbd> 選取 <kbd>L</kbd> 線 <kbd>R</kbd> 開口 <kbd>T</kbd> 角材 <kbd>E</kbd> 外環 <kbd>Enter</kbd> 套用 <kbd>F</kbd> 全圖 <kbd>Esc</kbd> 返回</div>
     </footer>
   </section>
 
@@ -498,24 +497,6 @@
   <footer class="dialog-footer">
     <button id="rcCancel" class="btn" type="button">取消</button>
     <button id="rcSubmit" class="primary-button" type="button"><span>建立</span></button>
-  </footer>
-</section>
-
-<section id="notchDialog" class="dialog" role="dialog" aria-modal="true" hidden>
-  <header class="dialog-header">
-    <div><span class="dialog-eyebrow">凹口</span><h2>插入凹口</h2></div>
-    <button id="notchClose" class="dialog-close text-button" type="button">✕</button>
-  </header>
-  <div class="dialog-body">
-    <div class="place-form">
-      <label>寬 w (mm)<input id="notchW" type="number" step="1" min="2"></label>
-      <label>深 d (mm)<input id="notchD" type="number" step="1" min="1"></label>
-    </div>
-    <div class="face-help">以點擊處置中;凹口朝面材內側,之後可用頂點/邊拖曳微調。</div>
-  </div>
-  <footer class="dialog-footer">
-    <button id="notchCancel" class="btn" type="button">取消</button>
-    <button id="notchSubmit" class="primary-button" type="button"><span>插入</span></button>
   </footer>
 </section>
 

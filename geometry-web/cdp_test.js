@@ -730,21 +730,24 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     "| guide 已刪:", delR.noGuide ? "✓" : "✗",
     "| 空間已刪:", delR.spLeft === 0 ? "✓" : "✗");
 
-  /* Q2:插入凹口——邊上點一下,頂點 4→8 且核心仍判合法 */
+  /* Q2:插入凹口——GEO-169 後走「選邊 → 浮動列凹口 → 面板 → 套用」,頂點 4→8 且核心仍判合法 */
   console.log("=== P7. 插入凹口(Q2)===");
   const insR = await eval_(`(async()=>{
     await api("line reset");
     await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 200,0 200,100 0,100");
     await renderObjects();
     await enterFocus("face", 1);
-    feSetTool("insert");
+    feSetTool("select");
     const hit = document.querySelector('[data-face-hit="e:0:0"]');
-    const b0v = (await api("boundary 1")).loops[0].verts;
-    const mid = [(b0v[0][0]+b0v[1][0])/2, (b0v[0][1]+b0v[1][1])/2];
-    await feDown({x: mid[0], y: mid[1]}, {target: hit, clientX: 0, clientY: 0});
-    /* Phase 2:點邊開 #notchDialog,確認才插入 */
-    const dlg = !$("notchDialog").hidden;
-    $("notchSubmit").click();
+    await feDown({x: 100, y: 0}, {target: hit, clientX: 0, clientY: 0});
+    await feUp({x: 100, y: 0}, {target: hit, clientX: 0, clientY: 0});
+    document.querySelector('#feActionBar [data-fe-act="op:notch"]').click();
+    const panel = !$("feOpPanel").hidden;
+    const w = document.querySelector('#feOpPanel [data-fe-param="w"]');
+    const d = document.querySelector('#feOpPanel [data-fe-param="d"]');
+    w.value = "100"; w.dispatchEvent(new Event("input"));
+    d.value = "50"; d.dispatchEvent(new Event("input"));
+    document.querySelector("#feOpApply").click();
     await new Promise(r=>setTimeout(r,300));
     const b = await api("boundary 1");
     const ortho = b.ok && b.loops[0].verts.every((v,i,vs)=>{
@@ -752,10 +755,10 @@ async function drag(x0, y0, x1, y1, steps = 6) {
       return v[0]===nx[0] || v[1]===nx[1];
     });
     return {tool: fe.tool, verts: b.loops[0].verts.length,
-            fixity: b.loops[0].fixity.length, ortho, dlg};
+            fixity: b.loops[0].fixity.length, ortho, panel};
   })()`);
-  console.log("insert 工具:", insR.tool === "insert" ? "✓" : "✗",
-    "| 對話框:", insR.dlg ? "✓" : "✗",
+  console.log("select 工具:", insR.tool === "select" ? "✓" : "✗",
+    "| 面板:", insR.panel ? "✓" : "✗",
     "| 頂點 4→", insR.verts, insR.verts === 8 ? "✓" : "✗",
     "| fixity 同步:", insR.fixity === 8 ? "✓" : "✗",
     "| 全正交:", insR.ortho ? "✓" : "✗");
@@ -1145,20 +1148,25 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   })()`);
   console.log("點邊選取+浮動列切 fixity:", fx.before === 1 && fx.mid === 1 && fx.after === 0 ? "✓" : "✗",
     "|", fx.before, "→", fx.mid, "→", fx.after);
-  /* 參數化凹口:insert 點邊 → 對話框,w=40 d=20 → 4→8 頂點 */
+  /* 參數化凹口:選邊 → 浮動列「凹口」→ 面板 w=40 d=20 → 4→8 頂點(取代舊 #notchDialog) */
   const nt = await eval_(`(async()=>{
-    feSetTool("insert");
+    feSetTool("select");
     const hit = document.querySelector('[data-face-hit="e:0:0"]');
     await feDown({x:250,y:0},{target:hit,clientX:0,clientY:0});
-    const dlgOpen = !$("notchDialog").hidden;
-    $("notchW").value = "40"; $("notchD").value = "20";
-    $("notchSubmit").click();
+    await feUp({x:250,y:0},{target:hit,clientX:0,clientY:0});
+    document.querySelector('#feActionBar [data-fe-act="op:notch"]').click();
+    const dlgOpen = !$("feOpPanel").hidden;
+    const w = document.querySelector('#feOpPanel [data-fe-param="w"]');
+    const d = document.querySelector('#feOpPanel [data-fe-param="d"]');
+    w.value = "40"; w.dispatchEvent(new Event("input"));
+    d.value = "20"; d.dispatchEvent(new Event("input"));
+    document.querySelector("#feOpApply").click();
     await new Promise(r=>setTimeout(r,300));
     const b = await api("boundary 1");
     const vs = b.loops[0].verts;
     /* 凹口深 20:找 y=20 的頂點(內側朝下) */
     const depth = vs.filter(p => p[1] === 20).length;
-    return {dlgOpen, closed: $("notchDialog").hidden,
+    return {dlgOpen, closed: $("feOpPanel").hidden,
             verts: vs.length, depth};
   })()`);
   console.log("參數化凹口:", nt.dlgOpen && nt.closed ? "✓" : "✗",
@@ -1522,16 +1530,15 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   const holeToast = await eval_(
     `[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")`);
   console.log("開口只點→toast:", holeToast.includes("拖出矩形") ? "✓" : "✗ " + holeToast);
-  /* (d) 凹口點面內 → toast + 邊高亮 */
-  await eval_(`document.querySelector('[data-face-tool="insert"]').click()`);
+  /* (d) select 點面內空白 → 無選取、浮動列不出現(GEO-169:凹口改走選邊) */
+  await eval_(`document.querySelector('[data-face-tool="select"]').click()`);
   await sleep(250);
   await click(fbVp.qx, fbVp.qy);
   await sleep(150);
-  const insFb = await eval_(`({
-    toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|"),
-    flash: document.getElementById("faceEditorViewport").classList.contains("fe-flash-edges")})`);
-  console.log("凹口點面內→toast:", insFb.toast.includes("邊上") ? "✓" : "✗ " + insFb.toast,
-    "| 邊高亮:", insFb.flash ? "✓" : "✗");
+  const insFb = await eval_(`({sel: fe.sel, bar: document.getElementById("feActionBar").hidden,
+    noInsert: !document.querySelector('[data-face-tool="insert"]') && !document.getElementById("notchDialog")})`);
+  console.log("點面內空白→無選取:", insFb.sel === null && insFb.bar ? "✓" : "✗ " + JSON.stringify(insFb),
+    "| 舊凹口工具已移除:", insFb.noInsert ? "✓" : "✗");
   /* (e) 角材 A 空白 → toast + #tbA 標紅 */
   await eval_(`(()=>{
     document.querySelector('[data-face-tool="timber"]').click();
@@ -1552,7 +1559,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   })()`);
   console.log("切回選取→狀態列=手勢:", stLife.includes("選取") ? "✓" : "✗ " + stLife);
   /* (g) Esc 一次離開(無草稿,工具非 select 也直接走) */
-  await eval_(`document.querySelector('[data-face-tool="insert"]').click()`);
+  await eval_(`document.querySelector('[data-face-tool="timber"]').click()`);
   await sleep(200);
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
@@ -1830,7 +1837,8 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     return {n:btns.length,
       ok:btns.every(b=>b.querySelector("svg")&&b.querySelector("kbd")),
       noHelp:!panel.textContent.includes("說明")};})()`);
-  console.log("P18 B1 工具icon+kbd:", b1.n >= 7 && b1.ok ? "✓" : `✗ n=${b1.n} ok=${b1.ok}`,
+  /* GEO-169 移除舊凹口工具後剩 6 顆(select/guide/hole/timber/redraw/pan) */
+  console.log("P18 B1 工具icon+kbd:", b1.n >= 6 && b1.ok ? "✓" : `✗ n=${b1.n} ok=${b1.ok}`,
     "| 說明區已移除:", b1.noHelp ? "✓" : "✗");
   /* (2) B2:三頁;切角材 → tbA 可見 */
   const b2 = await eval_(`(()=>{

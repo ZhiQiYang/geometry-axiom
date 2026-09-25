@@ -769,8 +769,7 @@ window.addEventListener("keydown", async e => {
     }
     /* 對話框優先：Esc 關閉對話框 */
     if (!$("box6Dialog").hidden || !$("memberDialog").hidden ||
-        !$("shapeDialog").hidden || !$("notchDialog").hidden ||
-        !$("rcDialog").hidden) {
+        !$("shapeDialog").hidden || !$("rcDialog").hidden) {
       closeDialogs(); return;
     }
     if (oc.on) {
@@ -821,7 +820,7 @@ window.addEventListener("keydown", async e => {
       }
       if (k === "enter" && fe.lenBuf) { feRedrawApplyLen(); return; }
     }
-    const map = { v: "select", l: "guide", r: "hole", h: "pan", i: "insert",
+    const map = { v: "select", l: "guide", r: "hole", h: "pan",
                   t: "timber", e: "redraw" };
     if (map[k]) { feSetTool(map[k]); return; }
     if (k === "enter" && fe.op) { e.preventDefault(); feApplyOp(); return; }
@@ -1542,7 +1541,6 @@ const fe = {
   projOpen: false,
   projViews: new Set(),
   lenBuf: "",              /* Phase 2 鍵入長度暫存 */
-  notch: null,             /* Phase 2 凹口對話框待處理上下文 */
   fiTab: "prop",           /* B2:檢視器分頁 shape|prop|timber|grid */
   sel: null,               /* GEO-169:選取 {kind:"edge",loop,i} | {kind:"corner",i} */
   op: null,                /* GEO-169:就地操作 {type,target,edge|corner,params} */
@@ -1619,7 +1617,7 @@ async function openFaceWorkspace(bid) {
   drawFaceEditor();
   renderFaceLayers();
   renderFaceInspector();
-  setStatus(`面 ${bid}：拖頂點/邊編輯 · l 參考線 · r 開口 · 平移 h/中鍵/空白拖 · 滾輪縮放 · f 全圖 · 1 =100% · Esc 返回`);
+  setStatus(`面 ${bid}：拖頂點/邊編輯 · 點邊/角改形狀 · l 參考線 · r 開口 · 平移 h/中鍵/空白拖 · 滾輪縮放 · f 全圖 · 1 =100% · Esc 返回`);
 }
 
 /* ---- 空間工作區（Phase 4）：成員清單 + 面卡片格 + 檢視器 + 三視圖 ---- */
@@ -2027,9 +2025,7 @@ function closeDialogs() {
   $("box6Dialog").hidden = true;
   $("memberDialog").hidden = true;
   $("shapeDialog").hidden = true;
-  $("notchDialog").hidden = true;
   $("rcDialog").hidden = true;
-  fe.notch = null;
 }
 $("modalBackdrop").addEventListener("click", closeDialogs);
 $("box6Close").addEventListener("click", closeDialogs);
@@ -2038,15 +2034,8 @@ $("memberClose").addEventListener("click", closeDialogs);
 $("memberCancel").addEventListener("click", closeDialogs);
 $("shapeClose").addEventListener("click", closeDialogs);
 $("shapeCancel").addEventListener("click", closeDialogs);
-$("notchClose").addEventListener("click", closeDialogs);
-$("notchCancel").addEventListener("click", closeDialogs);
 $("rcClose").addEventListener("click", closeDialogs);
 $("rcCancel").addEventListener("click", closeDialogs);
-$("notchSubmit").addEventListener("click", async () => {
-  await feInsertNotch();
-  if (!fe.notch) closeDialogs();   /* feInsertNotch 失敗保留上下文供修正 */
-});
-
 /* 形狀庫對話框(Phase 1):L/U/T 生成外環取代,孔保留、新邊全 F */
 $("faceShapeButton").addEventListener("click", () => {
   $("modalBackdrop").hidden = false;
@@ -2170,12 +2159,11 @@ async function submitBox6() {
 
 /* 工具手勢說明：切換工具時狀態列/浮標顯示,同時蓋掉上個工具的訊息 */
 const FE_TOOL_NAMES = { select: "選取", guide: "參考線", hole: "開口",
-  pan: "平移", insert: "凹口", timber: "角材", redraw: "重畫外環" };
+  pan: "平移", timber: "角材", redraw: "重畫外環" };
 const FE_TOOL_TIPS = {
-  select: "選取：拖頂點/邊編輯 · 單擊邊切固定/自由",
+  select: "選取：點邊/角 → 凹口／外凸／推拉／切角 · 拖頂點/邊編輯",
   guide: "參考線：水平或垂直拖曳畫線 · 點一下選方向",
   hole: "開口：拖出矩形",
-  insert: "凹口：點在邊上",
   timber: "角材：先填長度 L，再點面內",
   redraw: "重畫外環：依序點頂點，回起點閉合 · Esc 取消",
   pan: "平移：拖曳視角（中鍵/空白拖也可）",
@@ -2198,7 +2186,7 @@ function feSetTool(t) {
     b.classList.toggle("active", b.dataset.faceTool === t);
   const vp = $("faceEditorViewport");
   vp.className = "face-editor-viewport tool-" +
-    ({ select: "select", guide: "referenceLine", hole: "opening", pan: "pan", insert: "insert" }[t] || t);
+    ({ select: "select", guide: "referenceLine", hole: "opening", pan: "pan" }[t] || t);
   feCursor();
   $("workspaceToolStatus").textContent = "工具：" + (FE_TOOL_NAMES[t] || t);
   /* 狀態列 + 角落浮標:綁定工具生命週期,蓋掉上一工具的訊息;
@@ -2231,15 +2219,6 @@ function feCursor() {
   vp.classList.toggle("space-pan", !!fe.spaceDown);
   vp.classList.toggle("is-panning",
     !!(fe.drag && fe.drag.kind === "pan"));
-}
-
-/* 凹口點錯位置:所有邊短暫高亮提示 */
-function feFlashEdges() {
-  const vp = $("faceEditorViewport");
-  vp.classList.add("fe-flash-edges");
-  clearTimeout(vp._flashT);
-  vp._flashT = setTimeout(() =>
-    vp.classList.remove("fe-flash-edges"), 700);
 }
 
 /* 必填欄位標紅 + 聚焦,輸入後自動解除 */
@@ -2548,33 +2527,6 @@ async function feDown(pt, ev) {
                 cx: ev.clientX, cy: ev.clientY };
     return;
   }
-  if (fe.tool === "insert") {
-    /* 凹口工具：點邊開 #notchDialog 輸入 w/d,確認走 feInsertNotch。
-       (Q2 語意:一次插 4 頂點矩形凹口,共線單點核心會拒絕) */
-    const t = ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
-    if (!t || t.dataset.faceHit.split(":")[0] !== "e") {
-      feFlashEdges();
-      toast("凹口：請點在邊上"); return;
-    }
-    const [k, a, b] = t.dataset.faceHit.split(":");
-    const loops = fe.work || oc.bmap[e.bid];
-    const lp = loops[+a], i = +b;
-    const va = lp.verts[i], vb = lp.verts[(i + 1) % lp.verts.length];
-    const horiz = va[1] === vb[1];
-    const lo = Math.min(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
-    const hi = Math.max(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
-    if (hi - lo < 4) { toast("邊太短，插不下凹口"); return; }
-    const gs = +($("faceGridSizeSelect") || {}).value || 50;
-    const half = Math.min(gs, Math.floor((hi - lo - 2) / 2));
-    fe.notch = { loop: +a, i, horiz,
-                 c: Math.round(horiz ? pt.x : pt.y) };
-    $("notchW").value = 2 * half;
-    $("notchD").value = gs;
-    $("modalBackdrop").hidden = false;
-    $("notchDialog").hidden = false;
-    $("notchW").focus();
-    return;
-  }
   if (fe.tool === "timber") {
     /* Q3 角材：點面 = 錨點;尺寸/方向/深度讀檢視器表單,
        timber 宣告 + place 兩行走 mutate 交易。 */
@@ -2803,60 +2755,6 @@ async function feRedrawClose() {
   loops[0] = { verts: pts, fixity: pts.map(() => 1) };
   if (await emitBoundary(e.bid, loops)) await feAfterChange();
   else drawFaceEditor();
-}
-
-/* 點是否在面域內(外環內且不在任何孔內)— 凹口內側判定用 */
-function fePointInFace(loops, x, y) {
-  const inPoly = vs => {
-    let ins = false;
-    for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-      const A = vs[i], B = vs[j];
-      if ((A[1] > y) !== (B[1] > y) &&
-          x < (B[0] - A[0]) * (y - A[1]) / (B[1] - A[1]) + A[0]) ins = !ins;
-    }
-    return ins;
-  };
-  if (!inPoly(loops[0].verts)) return false;
-  for (let q = 1; q < loops.length; ++q)
-    if (inPoly(loops[q].verts)) return false;
-  return true;
-}
-
-/* Phase 2 參數化凹口:對話框確認後在此構造 4 頂點凹口 */
-async function feInsertNotch() {
-  const e = oc.edit, nt = fe.notch;
-  if (!e || !nt) return;
-  const w = Math.round(+$("notchW").value || 0);
-  const dIn = Math.round(+$("notchD").value || 0);
-  if (!(w >= 2) || !(dIn >= 1)) { setStatus("凹口 w/d 要是正整數"); return; }
-  const loops = oc.bmap[e.bid].map(l =>
-    ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
-  const lp = loops[nt.loop], i = nt.i;
-  const va = lp.verts[i], vb = lp.verts[(i + 1) % lp.verts.length];
-  const horiz = nt.horiz;
-  const lo = Math.min(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
-  const hi = Math.max(horiz ? va[0] : va[1], horiz ? vb[0] : vb[1]);
-  if (w > hi - lo - 2) { setStatus("凹口寬度超出邊長"); return; }
-  const c0 = Math.max(lo + 1, nt.c - Math.floor(w / 2));
-  const c1 = Math.min(hi - 1, c0 + w);
-  if (c1 <= c0) { setStatus("插入點太靠邊端"); return; }
-  /* 朝面材內側:probe 一側 5mm,在面域內就用它,否則反向 */
-  const n = horiz ? [0, 1] : [1, 0];
-  const cpt = horiz ? [nt.c, va[1]] : [va[0], nt.c];
-  const d = fePointInFace(loops, cpt[0] + n[0] * 5, cpt[1] + n[1] * 5)
-    ? dIn : -dIn;
-  /* 邊 A→B 拆成 A→ca→in0→in1→cb→B;孔邊一樣朝面材內側凹。
-     ca/cb 依邊的走向排序:反向邊(hi→lo)先遇到 c1 */
-  const fwd = horiz ? (vb[0] > va[0]) : (vb[1] > va[1]);
-  const ca = fwd ? c0 : c1, cb = fwd ? c1 : c0;
-  const e0 = horiz ? [ca, va[1]] : [va[0], ca];
-  const i0 = horiz ? [ca, va[1] + d] : [va[0] + d, ca];
-  const i1 = horiz ? [cb, va[1] + d] : [va[0] + d, cb];
-  const e1 = horiz ? [cb, va[1]] : [va[0], cb];
-  lp.verts.splice(i + 1, 0, e0, i0, i1, e1);
-  lp.fixity.splice(i + 1, 0, 0, 0, 0, lp.fixity[i]);
-  fe.notch = null;
-  if (await emitBoundary(e.bid, loops)) await feAfterChange();
 }
 
 /* Phase 2 鍵入長度:游標旁浮動輸入框顯示/隱藏 */

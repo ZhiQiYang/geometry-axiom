@@ -611,14 +611,10 @@ body.workspace-open #app { pointer-events: none; user-select: none; }
 .face-editor-viewport.tool-select { cursor: default; }
 .face-editor-viewport.tool-vertex { cursor: crosshair; }
 .face-editor-viewport.tool-referenceLine, .face-editor-viewport.tool-opening { cursor: crosshair; }
-.face-editor-viewport.tool-insert { cursor: copy; }
 .face-editor-viewport.tool-timber { cursor: cell; }
 .face-editor-viewport.tool-redraw { cursor: crosshair; }
 .face-editor-viewport.tool-pan, .face-editor-viewport.space-pan { cursor: grab; }
 .face-editor-viewport.is-panning { cursor: grabbing; }
-/* 凹口點錯位置:所有邊短暫高亮 */
-.face-editor-viewport.fe-flash-edges .face-edge-visible { stroke: var(--danger); }
-.face-editor-viewport.fe-flash-edges .face-edge-hit { stroke: rgba(217,68,68,.28); }
 /* 參考線點選方向小選單 */
 .fe-guide-pick {
   position: absolute; z-index: 6;
