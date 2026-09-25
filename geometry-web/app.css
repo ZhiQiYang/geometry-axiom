@@ -634,6 +634,15 @@ body.workspace-open #app { pointer-events: none; user-select: none; }
 .face-editor-viewport.tool-vertex { cursor: crosshair; }
 .face-editor-viewport.tool-referenceLine, .face-editor-viewport.tool-opening { cursor: crosshair; }
 .face-editor-viewport.tool-timber { cursor: cell; }
+/* GEO-196:角材工具下滑過可直接當定位引用的線(外輪廓邊/參考線)→ copy 游標(「點這裡就用它」);
+   滑過孔邊(不可當定位引用,見 feDown)→ not-allowed。格線目前沒有 data-face-hit,不在此列
+   (見 BACKLOG GEO-196)。選擇器要比 CSS 屬性選出的順序更明確：孔邊也符合 `^="e:"`，
+   所以孔邊那條規則要排在外輪廓邊規則之後、用 :not() 排除 `e:0:` 才不會被外輪廓邊規則蓋掉；
+   兩條規則寫在同一個 cascade 順序下、孔邊選擇器優先權相同但屬性選擇器更精確，仍以後寫者為準,
+   保險起見用 :not() 明確互斥。 */
+.face-editor-viewport.tool-timber [data-face-hit^="e:0:"],
+.face-editor-viewport.tool-timber [data-face-hit^="g:"] { cursor: copy; }
+.face-editor-viewport.tool-timber [data-face-hit^="e:"]:not([data-face-hit^="e:0:"]) { cursor: not-allowed; }
 .face-editor-viewport.tool-redraw { cursor: crosshair; }
 .face-editor-viewport.tool-pan, .face-editor-viewport.space-pan { cursor: grab; }
 .face-editor-viewport.is-panning { cursor: grabbing; }

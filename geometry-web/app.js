@@ -1781,6 +1781,11 @@ const fe = {
   ulDrag: null,            /* GEO-190:拖曳底圖中 {x0,y0,cx,cy} */
   anchorPreview: false,    /* GEO-195:#tbAnchor 取得焦點/hover/改值中 → 畫布畫 .fe-anchor-hi/.fe-anchor-band,
                                與 fe.tool==="timber" 是「或」的關係;切工具/切分頁就清掉(見 feSetTool/fiShowTab)。 */
+  timberHoverAnchor: null, /* GEO-196:角材工具下滑鼠所指的可命中線(定位引用式字串,例如
+                               "at-face e1"/"at-line guide 2"),非 null 時預示改畫這條線而不是
+                               #tbAnchor 目前值;離開線/切工具/切分頁清空(見 feMove/feSetTool/fiShowTab)。 */
+  timberHoverSide: null,   /* GEO-196:配合 timberHoverAnchor,滑鼠所指那一側("+n"/"-n"),
+                               預示帶依這個值畫,不是 #tbSide 表單值。 */
 };
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
@@ -2467,6 +2472,8 @@ function feSetTool(t) {
   if (fe.tool !== t && t !== "select" && fe.ulCalib) fe.ulCalib = null;
   /* GEO-195:工具切走就取消定位引用預示(hover/focus 記憶不跨工具沿用)。 */
   if (t !== "timber" && fe.anchorPreview) fe.anchorPreview = false;
+  /* GEO-196:切離角材工具就清掉滑鼠命中線 hover 狀態,不跨工具沿用。 */
+  if (t !== "timber") { fe.timberHoverAnchor = null; fe.timberHoverSide = null; }
   fe.tool = t;
   fe.sel = null; fe.op = null; feSyncOverlays();
   feUlSyncPointerEvents();
@@ -2669,6 +2676,35 @@ function feTimberPrimaryAxis(bid) {
   const p = (fe.timbers || []).find(t => t.role === "primary");
   return p ? p.dir.slice(-1) : null;
 }
+/* ---- GEO-196:點畫布上的線直接放置 ----
+   起因(見 BACKLOG GEO-196):GEO-195 讓人看得懂角材會落在哪,但仍要先在右欄下拉挑線、
+   再點面內確認。這裡加一條新路徑：角材工具下直接點外輪廓邊/參考線＝以那條線為定位引用，
+   側/方向/角色由點擊位置與既有主支軸規則算出；點面內空白仍走舊路徑(表單值)。
+   不改 .scene/引擎/放置流程本身(同一段 mutate)。 */
+
+/* info(feAnchorLineInfo 回傳的 {constAxis,value})→ 沿線方向,固定 +u/+v(不取負向；
+   外輪廓邊的既有走向不採用,統一規則、寫進 BACKLOG)。 */
+function feAnchorDirFromInfo(info) {
+  return info.constAxis === "v" ? "+u" : "+v";
+}
+/* info + 點擊點 pt(scene mm 座標)→ "+n"/"-n"。規則與 feTimberRect 的既有慣例一致
+   (side "+n" = 方向向量逆時針轉 90° 的那一側,在 uv 平面上等同標準旋轉 (x,y)→(-y,x))：
+   constAxis "v"(線沿 u 跑)時 +n 是 v 較大的那側；constAxis "u"(線沿 v 跑)時 +n 是 u 較小的那側。
+   點正好落在線上(dot===0)時預設 "+n",不擋——引擎自己會判合法性。 */
+function feAnchorSideForPoint(info, pt) {
+  if (!info) return null;
+  const dot = info.constAxis === "u" ? (info.value - pt.x) : (pt.y - info.value);
+  return dot >= 0 ? "+n" : "-n";
+}
+/* 依主支軸規則算點擊命中的線該給哪個角色(GEO-196 規格)：
+   面上已有 primary → 方向與主支軸平行給 primary,垂直給 boundary(邊)/secondary(參考線/格線)；
+   面上還沒有 primary → 外輪廓邊給 boundary、參考線/格線給 primary。 */
+function feTimberRoleForClick(bid, kind, dirAxis) {
+  const axis = feTimberPrimaryAxis(bid);
+  if (!axis) return kind === "edge" ? "boundary" : "primary";
+  if (dirAxis === axis) return "primary";
+  return kind === "edge" ? "boundary" : "secondary";
+}
 const TB_ROLE_OPTS = [["primary", "primary 主支"], ["boundary", "boundary 邊界材"],
   ["secondary", "secondary 副支"], ["custom", "custom 自訂"]];
 function feTimberRoleOptionsHTML(bid, dirValue, currentRole) {
@@ -2710,7 +2746,9 @@ function feTimberHintRefresh() {
   const surf = feSurf(bid);
   const label = feTimberAnchorLabel(bid, surf, $("tbAnchor")?.value);
   const A = $("tbA")?.value || 27, B = $("tbB")?.value || 33;
-  const text = `角材將沿「${label}」放置，點面內任一處確認；點擊位置不影響位置 · A${A}×B${B} · Esc 取消`;
+  /* GEO-196:提示改講新路徑——點一條邊或參考線＝直接以那條線為定位引用放置(側由點擊點決定);
+     點面內空白才是舊路徑(依右欄目前設定「${label}」放置)。 */
+  const text = `點一條邊或參考線直接放置（點在哪一側就放哪一側）；點面內空白則依右欄設定（目前「${label}」）放置 · A${A}×B${B} · Esc 取消`;
   setStatus(text);
   const hint = $("faceCanvasHint");
   if (hint) hint.textContent = text;
@@ -3000,9 +3038,13 @@ function drawFaceEditor() {
      才畫;畫一條貫穿全圖的虛線標出定位引用本身,再依目前深度(+n/-n)/A 畫半透明帶示意角材
      會落在哪一側(帶只是「示意」,真正長度由引擎依支撐推導——見帶上文字標註;帶永遠沿定位
      引用的固定座標軸展開,不看 #tbDir——不管使用者選哪個方向,角材的截面深度一定是往定位
-     引用的垂直方向偏,#tbDir 只決定角材沿哪個軸「跑」,不影響這條帶要畫在哪)。 */
+     引用的垂直方向偏,#tbDir 只決定角材沿哪個軸「跑」,不影響這條帶要畫在哪)。
+     GEO-196:滑鼠正指著某條可命中的線(fe.timberHoverAnchor)時,預示改畫「滑鼠所指那條線」與
+     「所指那一側」,不是 #tbAnchor/#tbSide 的表單值(見 feMove 更新 timberHoverAnchor/Side);
+     離開線(fe.timberHoverAnchor===null)回到表單值,行為不變。 */
   if ((fe.tool === "timber" || fe.anchorPreview) && e.bid != null) {
-    const anchorVal = $("tbAnchor")?.value;
+    const hoverAnchor = fe.tool === "timber" ? fe.timberHoverAnchor : null;
+    const anchorVal = hoverAnchor || $("tbAnchor")?.value;
     const info = anchorVal ? feAnchorLineInfo(e.bid, anchorVal) : null;
     if (info) {
       const seg = info.constAxis === "u"
@@ -3010,7 +3052,7 @@ function drawFaceEditor() {
         : [gb[0], info.value, gb[2], info.value];
       el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3], class: "fe-anchor-hi" }, root);
       const A2 = Number($("tbA")?.value) || 0;
-      const side2 = ($("tbSide") || {}).value || "+n";
+      const side2 = hoverAnchor ? (fe.timberHoverSide || "+n") : (($("tbSide") || {}).value || "+n");
       const s2 = side2 === "+n" ? 1 : -1;
       const lo = s2 > 0 ? info.value : info.value - A2;
       const hi = s2 > 0 ? info.value + A2 : info.value;
@@ -3235,6 +3277,34 @@ async function feDown(pt, ev) {
       if (!Number.isSafeInteger(B) || B <= 0) feMarkInvalid($("tbB"));
       return;
     }
+    /* GEO-196:點畫布上的邊/參考線直接放置——命中孔邊拒絕、不送指令；命中外輪廓邊或
+       參考線時,定位引用/側/方向/角色改由點擊決定並寫回表單(方便連放時沿用這次帶入的值);
+       命中面內空白(或頂點/角材等其他元素)照舊——沿用表單目前值,一字不改舊路徑。
+       格線(.face-grid-line)目前沒有 data-face-hit,不可命中(見 BACKLOG GEO-196)。 */
+    const hit0 = ev && ev.target && ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
+    const hit = hit0 ? hit0.dataset.faceHit.split(":") : null;
+    if (hit && hit[0] === "e" && +hit[1] !== 0) {
+      toast("孔邊不能當定位引用"); return;
+    }
+    if (hit && (hit[0] === "e" || hit[0] === "g")) {
+      const clickAnchor = hit[0] === "e" ? `at-face e${hit[2]}` : `at-line guide ${+hit[1]}`;
+      const info = feAnchorLineInfo(e.bid, clickAnchor);
+      if (info) {
+        const clickDir = feAnchorDirFromInfo(info);
+        const clickSide = feAnchorSideForPoint(info, pt);
+        const clickRole = feTimberRoleForClick(e.bid, hit[0] === "e" ? "edge" : "line", clickDir.slice(-1));
+        const anchorSel = $("tbAnchor"), dirSel = $("tbDir"), sideSel = $("tbSide"), roleSel = $("tbRole");
+        if (anchorSel) anchorSel.value = clickAnchor;
+        if (dirSel) dirSel.value = clickDir;
+        if (sideSel) sideSel.value = clickSide;
+        if (roleSel) {
+          roleSel.innerHTML = feTimberRoleOptionsHTML(e.bid, clickDir, clickRole);
+          roleSel.value = clickRole;
+          const pl = $("tbPriLabel");
+          if (pl) pl.hidden = clickRole !== "custom";
+        }
+      }
+    }
     const anchor = $("tbAnchor")?.value;
     if (!anchor) { toast("請先選擇定位邊、參考線或格線"); return; }
     const dir = ($("tbDir") || {}).value || "+u";
@@ -3354,6 +3424,27 @@ function feMove(pt, ev) {
   if (fe.tool === "redraw" && (!d || d.kind === "redraw")) {
     feDraftPreviewMove(pt);
     return;
+  }
+  /* GEO-196:角材工具下(不管是否正在拖曳——實務上角材工具沒有拖曳,d 恆為 null)
+     追蹤滑鼠正指著哪條可命中的線(外輪廓邊/參考線;孔邊與格線不算,見 feDown 同一份判斷),
+     供上面 drawFaceEditor 的 .fe-anchor-hi/.fe-anchor-band 預示改畫這條線。只在值真的變了
+     才重繪,避免每個 pointermove 都整份重畫 SVG。 */
+  if (fe.tool === "timber") {
+    const bidH = oc.edit && oc.edit.bid;
+    const hitElH = ev && ev.target && ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
+    const hitH = hitElH ? hitElH.dataset.faceHit.split(":") : null;
+    let hoverAnchor = null;
+    if (bidH != null && hitH) {
+      if (hitH[0] === "e" && +hitH[1] === 0) hoverAnchor = `at-face e${hitH[2]}`;
+      else if (hitH[0] === "g") hoverAnchor = `at-line guide ${+hitH[1]}`;
+    }
+    const info = hoverAnchor && bidH != null ? feAnchorLineInfo(bidH, hoverAnchor) : null;
+    const hoverSide = info ? feAnchorSideForPoint(info, pt) : null;
+    if (hoverAnchor !== fe.timberHoverAnchor || hoverSide !== fe.timberHoverSide) {
+      fe.timberHoverAnchor = hoverAnchor;
+      fe.timberHoverSide = hoverSide;
+      drawFaceEditor();
+    }
   }
   if (!d) return;
   if (d.kind === "pan") {
@@ -6155,6 +6246,13 @@ fevp.addEventListener("pointerup", async e => {
   }
   await feUp(fe.tool === "redraw" ? fePoint(e) : feSnap(fePoint(e)));
   feCursor();
+});
+/* GEO-196:滑鼠離開畫布時清掉角材工具的 hover 命中線預示,回到表單值(不留殘影)。 */
+fevp.addEventListener("pointerleave", () => {
+  if (fe.timberHoverAnchor != null || fe.timberHoverSide != null) {
+    fe.timberHoverAnchor = null; fe.timberHoverSide = null;
+    drawFaceEditor();
+  }
 });
 /* 參考線方向小選單:選 u/v 以點擊座標建線 */
 for (const b of document.querySelectorAll("#feGuidePick button"))

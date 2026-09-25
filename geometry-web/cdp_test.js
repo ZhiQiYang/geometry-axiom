@@ -4336,6 +4336,169 @@ async function rightClick(x, y) {
   })`);
   check('P47-6 強制 boundary + 方向 v(平行主支軸)→ toast 含「主支軸是 v」;仍 3 支',
     p47_6.toast.includes('主支軸是 v') && JSON.stringify(p47_6.timbers) === '[1,2,3]', p47_6);
+
+  console.log('=== P48. 角材工具下「點畫布上的線」直接放置(GEO-196) ===');
+  /* 場景同 §P47(api('default') 還原:面 1 4000×3000、角材 1 boundary@e0(v=0)、
+     角材 2 boundary@e2(v=3000)、角材 3 primary@guide 1(u=500,dir +v) → 主支軸 v)。
+     命中線的透明判定線寬只有 12(邊)/14(參考線)局部座標單位、半寬 6/7——固定
+     zoom=1/pan=0 時局部座標=mm 1:1(同 §P35 起頭的既有慣例),所以點擊座標要落在
+     線的 ±6~7mm 內才會真的命中 data-face-hit,不能像人眼那樣「大概點在線附近」；
+     下面每個點擊點都刻意落在線的 3mm 內。 */
+  await eval_(`(async()=>{ resetSceneFocus(); await api('default'); await renderObjects();
+    await enterFocus('face', 1); fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+    const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false; })()`);
+  await sleep(250);
+  await eval_(`fiShowTab('timber')`);
+  const openFace48 = async () => {
+    await eval_(`(()=>{ fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply(); })()`);
+    await sleep(100);
+    const org = await feOrigin();
+    return (mx, my) => ({ x: org.x + mx, y: org.y + my });
+  };
+  const clearToasts48 = () => eval_(`document.getElementById('toastRegion').innerHTML = ''`);
+
+  /* (1) 真滑鼠點外輪廓邊 1(右邊,u=4000)靠面內側 3mm(3997,1500)→ fe.timbers 4 支,
+     新支 dir 沿 v(邊 1 是 u 固定的線,沿 v 跑)、side "+n"(面內側,u<4000)、
+     role primary(主支軸 v,邊 1 方向也是 v,平行);#tbAnchor 同步 at-face e1、
+     #tbRole 同步 primary。Ctrl+Z 回 3 支。 */
+  await eval_(`feSetTool('timber')`);
+  await sleep(100);
+  let pt48 = await openFace48();
+  await click(pt48(3997, 1500).x, pt48(3997, 1500).y);
+  await sleep(300);
+  const p48_1 = await eval_(`(()=>{
+    const ids = fe.timbers.map(t => t.id).sort((a,b)=>a-b);
+    const newT = fe.timbers.find(t => t.id !== 1 && t.id !== 2 && t.id !== 3);
+    return { ids, newT, anchor: document.getElementById('tbAnchor').value,
+      role: document.getElementById('tbRole').value };
+  })()`);
+  check('P48-1 真滑鼠點外輪廓邊 1 靠內側 → 4 支,新支 dir=+v/side=+n/role=primary,表單同步',
+    p48_1.ids.length === 4 && [1,2,3].every(id => p48_1.ids.includes(id)) &&
+    p48_1.newT && p48_1.newT.dir === '+v' && p48_1.newT.side === '+n' && p48_1.newT.role === 'primary' &&
+    p48_1.anchor === 'at-face e1' && p48_1.role === 'primary', p48_1);
+  await pressKey('z', 'KeyZ', 90, 2);
+  await sleep(300);
+  const p48_1u = await eval_(`(async()=>{ await feLoadGuides(); return fe.timbers.map(t => t.id).sort(); })()`);
+  check('P48-1u Ctrl+Z → 回 3 支', JSON.stringify(p48_1u) === '[1,2,3]', p48_1u);
+
+  /* (2) 點外輪廓邊 0(v=0,已被角材 1 占滿;點在線上 (2000,0),側任意不影響本測項)→
+     前端不擋,照舊送出,引擎拒絕、GEO-195 人話訊息接手:toast 含「已被角材 1 占滿」;
+     仍 3 支。 */
+  await clearToasts48();
+  pt48 = await openFace48();
+  await click(pt48(2000, 0).x, pt48(2000, 0).y);
+  await sleep(300);
+  const p48_2 = await eval_(`({
+    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
+    ids: fe.timbers.map(t => t.id).sort(),
+  })`);
+  check('P48-2 點已占滿的外輪廓邊 0 → 照舊送出、引擎拒絕,toast 含「已被角材 1 占滿」;仍 3 支',
+    p48_2.toast.includes('已被角材 1 占滿') && JSON.stringify(p48_2.ids) === '[1,2,3]', p48_2);
+
+  /* (3) 新增一條參考線 u≈2000(line spec 測試 2000 + line guide 2 1 v spec:測試),
+     點它「+n」側 3mm(GEO-196 規則:constAxis="u" 的線,+n 側是 u 較小那側;
+     constAxis="v" 的線,+n 側是 v 較大那側——這個規則本身在 feAnchorLineInfo/feTimberRect
+     的既有幾何慣例上推導,不是照抄新程式碼)→ 4 支,新支 role primary(方向與主支軸 v
+     平行)、side "+n"。Ctrl+Z 回 3 支。 */
+  await eval_(`api("line spec 測試 2000")`);
+  await eval_(`api("line guide 2 1 v spec:測試")`);
+  await eval_(`feLoadGuides()`);
+  const p48_3info = await eval_(`feAnchorLineInfo(oc.edit.bid, 'at-line guide 2')`);
+  const off3 = 3;
+  const p48_3pt = p48_3info.constAxis === 'u'
+    ? { x: p48_3info.value - off3, y: 1500 }
+    : { x: 1500, y: p48_3info.value + off3 };
+  const p48_3expectSide = '+n';
+  await eval_(`feSetTool('timber')`);
+  await sleep(100);
+  pt48 = await openFace48();
+  await click(pt48(p48_3pt.x, p48_3pt.y).x, pt48(p48_3pt.x, p48_3pt.y).y);
+  await sleep(300);
+  const p48_3 = await eval_(`(()=>{
+    const ids = fe.timbers.map(t => t.id).sort((a,b)=>a-b);
+    const newT = fe.timbers.find(t => t.id !== 1 && t.id !== 2 && t.id !== 3);
+    return { ids, newT, anchor: document.getElementById('tbAnchor').value };
+  })()`);
+  check('P48-3 點新參考線 +n 側 → 4 支,新支 role=primary/side=+n,#tbAnchor 同步該參考線',
+    p48_3.ids.length === 4 && [1,2,3].every(id => p48_3.ids.includes(id)) &&
+    p48_3.newT && p48_3.newT.role === 'primary' && p48_3.newT.side === p48_3expectSide &&
+    p48_3.anchor === 'at-line guide 2', { p48_3, p48_3info, p48_3pt });
+  await pressKey('z', 'KeyZ', 90, 2);
+  await sleep(300);
+  const p48_3u = await eval_(`(async()=>{ await feLoadGuides(); return fe.timbers.map(t => t.id).sort(); })()`);
+  check('P48-3u Ctrl+Z → 回 3 支', JSON.stringify(p48_3u) === '[1,2,3]', p48_3u);
+
+  /* (4) 面內空白(1000,1700,遠離所有邊/上面新增的參考線 u≈2000/guide 1 u=500)→
+     照舊走表單值:先把 #tbAnchor 設 e3、方向 +v、角色 primary(e3 是 u=0 的邊,
+     方向 +v 與主支軸 v 平行,合法),點空白 → 4 支且 place 行含 "e3"。Ctrl+Z 回 3 支。 */
+  await eval_(`window.__apiLog && (window.__apiLog.length = 0)`);
+  await eval_(`(()=>{
+    document.getElementById('tbAnchor').value = 'at-face e3';
+    const dirSel = document.getElementById('tbDir'); dirSel.value = '+v';
+    dirSel.dispatchEvent(new Event('change'));
+    document.getElementById('tbRole').value = 'primary';
+  })()`);
+  await eval_(`feSetTool('timber')`);
+  await sleep(100);
+  pt48 = await openFace48();
+  await click(pt48(1000, 1700).x, pt48(1000, 1700).y);
+  await sleep(300);
+  const p48_4 = await eval_(`({
+    ids: fe.timbers.map(t => t.id).sort(),
+    placeLine: (window.__apiLog || []).find(c => c.includes('place') && c.includes('e3')) || '',
+  })`);
+  check('P48-4 點面內空白 → 照舊走表單值(#tbAnchor=e3),place 行含 e3;4 支',
+    JSON.stringify(p48_4.ids) === '[1,2,3,4]' && p48_4.placeLine.includes('e3'), p48_4);
+  await pressKey('z', 'KeyZ', 90, 2);
+  await sleep(300);
+  const p48_4u = await eval_(`(async()=>{ await feLoadGuides(); return fe.timbers.map(t => t.id).sort(); })()`);
+  check('P48-4u Ctrl+Z → 回 3 支', JSON.stringify(p48_4u) === '[1,2,3]', p48_4u);
+
+  /* (5) hover(不點)邊 1(u=4000)→ .fe-anchor-hi 畫的是 e1(x1=x2=4000);
+     移開到面內空白(不在任何線的命中走廊內)→ 回到表單目前值那條線。 */
+  await eval_(`(()=>{ document.getElementById('tbAnchor').value = 'at-face e0';
+    document.getElementById('tbAnchor').dispatchEvent(new Event('change')); })()`);
+  await sleep(150);
+  pt48 = await openFace48();
+  const hoverPt1 = pt48(3999, 1500);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: hoverPt1.x, y: hoverPt1.y });
+  await sleep(200);
+  const p48_5a = await eval_(`(()=>{
+    const l = document.querySelector('#faceEditorRoot .fe-anchor-hi');
+    return { x1: l && l.getAttribute('x1'), x2: l && l.getAttribute('x2'), hoverAnchor: fe.timberHoverAnchor };
+  })()`);
+  check('P48-5a hover 邊 1(不點)→ .fe-anchor-hi 是 x=4000 的邊,fe.timberHoverAnchor=at-face e1',
+    p48_5a.x1 === '4000' && p48_5a.x2 === '4000' && p48_5a.hoverAnchor === 'at-face e1', p48_5a);
+  const blankPt48 = pt48(1000, 1700);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: blankPt48.x, y: blankPt48.y });
+  await sleep(200);
+  const p48_5b = await eval_(`(()=>{
+    const l = document.querySelector('#faceEditorRoot .fe-anchor-hi');
+    return { y1: l && l.getAttribute('y1'), y2: l && l.getAttribute('y2'), hoverAnchor: fe.timberHoverAnchor };
+  })()`);
+  check('P48-5b 移開到面內空白 → hoverAnchor 清空,預示回到表單值(#tbAnchor=at-face e0,v=0)',
+    p48_5b.hoverAnchor === null && p48_5b.y1 === '0' && p48_5b.y2 === '0', p48_5b);
+
+  /* (6) 開一個孔(500,500)~(1500,1500),直接重宣告 boundary 1(同一片外環,加 hole)
+     不影響既有 e0~e3/角材;點孔邊(1000,500,孔第 0 邊中點)→ toast 含「孔邊不能當定位引用」,
+     不送指令,fe.timbers 仍 3 支。 */
+  await eval_(`(async()=>{
+    await api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000 hole 500,500 1500,500 1500,1500 500,1500");
+    await feAfterChange();
+  })()`);
+  await sleep(250);
+  await eval_(`feSetTool('timber')`);
+  await sleep(100);
+  await clearToasts48();
+  pt48 = await openFace48();
+  await click(pt48(1000, 500).x, pt48(1000, 500).y);
+  await sleep(300);
+  const p48_6 = await eval_(`({
+    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
+    ids: fe.timbers.map(t => t.id).sort(),
+  })`);
+  check('P48-6 點孔邊 → toast 含「孔邊不能當定位引用」,不送指令;仍 3 支',
+    p48_6.toast.includes('孔邊不能當定位引用') && JSON.stringify(p48_6.ids) === '[1,2,3]', p48_6);
   }
 
   chrome.kill();
