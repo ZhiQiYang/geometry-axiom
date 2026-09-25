@@ -146,7 +146,7 @@
 | `#spaceMemberList` | 空間工作區左欄成員列 | 子列計數 |
 | `#spaceInspectorContent` | 空間工作區右欄檢視器(六槽列掛點) | 存在性 |
 | `#rcErr` | RC 對話框表單內錯誤提示(BF4:驗證失敗顯示) | `hidden`、textContent |
-| `#feActionBar` / `[data-fe-act]` | 面內選邊/角/點後的浮動操作列(GEO-188;`op:notch`/`op:extend`/`op:push`/`op:corner`/`op:hole`/`fixity`) | `hidden`、`.click()`、`.on` |
+| `#feActionBar` / `[data-fe-act]` | 面內選邊/角/點/角材後的浮動操作列(GEO-188;`op:notch`/`op:extend`/`op:push`/`op:corner`/`op:hole`/`fixity`;GEO-191 角材選取只有 `delete`) | `hidden`、`.click()`、`.on` |
 | `#feOpPanel` / `[data-fe-param]` / `[data-fe-keep]` / `[data-fe-anchor]` / `[data-fe-dir]` / `[data-fe-ax]` / `[data-fe-ay]` / `#feOpApply` / `#feOpCancel` | 就地參數面板(GEO-188/170;`input` 事件即時預覽,`[data-fe-keep]` 是「留下」欄與切掉連動,Enter/`#feOpApply` 套用) | `hidden`、`value`、`.click()` |
 
 ### 已移除(Phase 6)
@@ -173,9 +173,11 @@
 | `#feLenInput` | 鍵入長度浮動框(RC P2:重畫中數字鍵) | `hidden`、`value`、`.style.left/top` |
 | `[data-edge-len]` | 邊長清單輸入(RC P2:`data-edge-len="<i>"`) | `value` + `change` 事件 |
 | `#tbAnchor` `#tbSelector` `#tbA` `#tbB` `#tbDir` `#tbSide` | 角材引用、截面與方向；長度由引擎推導 | `value` 讀寫 |
+| `#tbSelected` / `#tbSelDelete` | 角材頁頂端「已選角材」摘要與刪除鈕(GEO-191;`fe.sel.kind==="timber"` 時才出現) | 存在性、textContent、`.click()` |
+| `.face-layer-row[data-timber-id]` | 左欄角材列(GEO-191;`.sel` 同步畫布選取,hover/click 有掛鉤) | `dataset.timberId`、`.sel`、mouseenter/mouseleave/click |
 | `#gridU` `#gridV` `#gridCreate` | 網格建立表單(Q3) | `value`、`.click()`、游離面 disabled |
-| `.face-timber` / `.face-grid-line` | 面內角材足跡/網格線(Q3) | `#faceEditorRoot` 內計數 |
-| `[data-face-hit]` | 面編輯器命中層(`v:<loop>:<i>`/`e:<loop>:<i>`/`g:<id>:<axis>`) | pointerdown 命中(非同步 bhit 已由它取代) |
+| `.face-timber` / `.face-grid-line` | 面內角材足跡/網格線(Q3;GEO-191 角材矩形加 `data-face-hit`、`.sel`/`.hover`) | `#faceEditorRoot` 內計數 |
+| `[data-face-hit]` | 面編輯器命中層(`v:<loop>:<i>`/`e:<loop>:<i>`/`g:<id>:<axis>`/`t:<id>`(GEO-191 角材,只在 `.tool-select` 下吃事件)) | pointerdown 命中(非同步 bhit 已由它取代) |
 | `[data-place-preset]` | 放置預設鈕 | `dataset.placePreset`、`.click()` |
 | `[data-proj-check]` | 投影視圖勾選 | `checked` |
 | `[data-view]` | 投影面板視圖群組(`<g data-view="0|1|2">`) | 計數(天花面預設只有 2) |
@@ -196,8 +198,9 @@
 | `enterFocus` | 進入工作區焦點 | 雙擊/檢視器按鈕觸發 |
 | `mutate` | 多行 DSL 交易(失敗回滾+toast) | 空間成員重宣告/六面盒使用 |
 | `toast` | 錯誤提示(bridge error 原文) | `#toastRegion` 子元素 |
-| `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews`、`fe.sel/op/feats/selFeat`(GEO-188) |
+| `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews`、`fe.sel/op/feats/selFeat`(GEO-188;`fe.sel={kind:"timber",id}` GEO-191)、`fe.hoverTimber`(GEO-191) |
 | `feStartOp` / `feApplyOp` / `feCancelOp` / `feRectBool` | 形狀編輯(GEO-188):就地操作與正交矩形布林 | 測試直接呼叫 `feCancelOp()`;`feRectBool(loops,op,rect)` 純函式 |
+| `feDeleteTimber` | 刪角材共用路徑(GEO-191;`delete timber <id>` + 清選取/重載) | 測試可直接呼叫 `feDeleteTimber(id)` |
 | `renderObjects` | 重拉 objects/surfaces 並重繪畫布 | 測試在送指令後手動觸發刷新 |
 | `curScene` | 目前場景 `{path,name}` | P29 載入範例後比對路徑 |
 | `closeMenus` | 關閉所有 `.menu-pop` | P28 開檔案選單前 |
@@ -429,3 +432,27 @@
   (建立預設狀態:`mmPerPx=外接框寬/imgW`、`x,y=`外接框左上、`rot=0`、`opacity=0.5`、`locked=false`,並重畫)、
   `feUnderlayCalibStart()`、`feUnderlayCalibPoint([px,py])`(直接餵圖片 px 座標)、
   `feUnderlayApplyScale(distMm)`、`feUnderlayRemove(bid)`。
+
+## GEO-191 面內角材可選取(cdp_test §P43)
+
+不做就地改錨點/方向/截面(語意未拍板);只做選取、高亮、可刪。
+
+- 角材矩形(`.face-timber`,`drawFaceEditor()` 「角材 A0 足跡」段;`feTimberRect(t2)` 算矩形,
+  drawFaceEditor 與 `feSelAnchor` 共用同一份算法,不各自重算)加 `data-face-hit="t:<id>"`;
+  只有 `.face-editor-viewport.tool-select` 下 `pointer-events:auto`,其餘工具一律 `none`
+  ——不擋既有的點邊/點角/點面/畫外環/放角材落點。
+- select 工具下命中 `t:<id>`(`feDown`)→ `fe.sel={kind:"timber",id}`,清 `fe.op`/`fe.selFeat`;
+  畫布該矩形加 `.sel`;左欄該列(`.face-layer-row[data-timber-id="<id>"]`)同步加 `.sel`。
+  `#feActionBar` 浮出,只有一顆 `[data-fe-act="delete"]`;位置沿用 `feSelAnchor`/`fePlaceOverlays`
+  既有擺法(矩形中心上方)。
+- 角材頁(`fiShowTab("timber")`)頂端出現 `#tbSelected`:「已選角材 `<id>`」+ 宣告摘要
+  (`L×A×B`、`@(u,v)`、`dir/side`、`role`——欄位照 `references` 指令 `timbers[].geometry` 有什麼就顯示什麼,
+  見 `feTbSelectedHTML()`)+ `#tbSelDelete` 刪除鈕,走 `feDeleteTimber(id)` 共用路徑
+  (`delete timber <id>` 走 `emitLine`/mutate,可 Ctrl+Z)。
+- 左欄角材列:`mouseenter`/`mouseleave` 切 `fe.hoverTimber` → 畫布矩形加/清 `.hover`;
+  點列(非 `.face-layer-del` ✕ 鈕)= 與畫布點選相同效果(選取+高亮+同步 `renderFaceInspector`)。
+- 點面內空白(非角材)行為不變(GEO-189「點」選取);點外環邊/角行為不變——這兩條路徑
+  若先前選的是角材,順帶 `renderFaceLayers()` 清掉左欄殘留的 `.sel`。
+- Esc 既有階梯「有選取 → 清」自然涵蓋 timber(`fe.sel=null` 即可),一併清左欄 `.sel`。
+- `feAfterShapeChange`(邊界變更/`feAfterChange` 收尾)與 `feDeleteTimber` 都會驗:
+  選取的 timber id 若已不在 `fe.timbers` → 清 `fe.sel`。

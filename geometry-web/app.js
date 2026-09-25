@@ -897,7 +897,12 @@ window.addEventListener("keydown", async e => {
         if (fe.ulCalib) { fe.ulCalib = null; drawFaceEditor(); renderFaceInspector(); return; }
         /* GEO-188:就地操作面板 → 先關;再一次 Esc 取消選取 */
         if (fe.op) { feCancelOp(); return; }
-        if (fe.sel) { fe.sel = null; feSyncOverlays(); drawFaceEditor(); return; }
+        if (fe.sel) {
+          const wasTimberSel = fe.sel.kind === "timber";
+          fe.sel = null; feSyncOverlays(); drawFaceEditor();
+          if (wasTimberSel) renderFaceLayers();  /* GEO-191:清掉左欄角材列的 .sel */
+          return;
+        }
         /* 進行中草稿 → 第一次 Esc 清草稿;否則一次離開工作區 */
         if (fe.drag || fe.work) {
           fe.panHold = null; fe.work = null;
@@ -1754,10 +1759,12 @@ const fe = {
   draft: PolyDraft.createState(),  /* diff#12(§5.A.1.12):面內重畫外環的共用草稿狀態機 state */
   draftPreview: null,      /* 最近一次 PolyDraft.previewMove() 回傳,供 feDraftLayer/feLenShow 讀取 */
   fiTab: "prop",           /* B2:檢視器分頁 prop|shape|guide|timber|grid */
-  sel: null,               /* GEO-188:選取 {kind:"edge",loop,i} | {kind:"corner",i} | {kind:"point",x,y} */
+  sel: null,               /* GEO-188:選取 {kind:"edge",loop,i} | {kind:"corner",i} | {kind:"point",x,y} |
+                               {kind:"timber",id}(GEO-191) */
   op: null,                /* GEO-188:就地操作 {type,target,edge|corner,params} */
   feats: {},               /* GEO-188:bid → 本次工作階段套用的特徵 [{id,type,op,rect,ax,ay}] */
   selFeat: null, hoverFeat: null,
+  hoverTimber: null,       /* GEO-191:左欄角材列 hover 中的 timber id → 畫布矩形加 .hover */
   ulCalib: null,           /* GEO-190:量比例尺進行中 {pts:[[px,py],…]}(圖片原始像素座標) */
   ulDrag: null,            /* GEO-190:拖曳底圖中 {x0,y0,cx,cy} */
 };
@@ -1845,7 +1852,7 @@ async function openFaceWorkspace(bid) {
   fe.tool = "select"; fe.panHold = null; fe.work = null;
   fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
   fe.projOpen = false; fe.projViews = new Set();
-  fe.sel = null; fe.op = null; fe.selFeat = null; fe.hoverFeat = null;
+  fe.sel = null; fe.op = null; fe.selFeat = null; fe.hoverFeat = null; fe.hoverTimber = null;
   fe.ulCalib = null; fe.ulDrag = null;  /* GEO-190:量比例尺/拖曳底圖是暫態,不跨面沿用 */
   feFit(loopsBBox(oc.bmap[bid]));
   await feLoadGuides();
@@ -2522,6 +2529,18 @@ async function feLoadGuides() {
   fe.grids = (r.grids || []).filter(g => g.surface === sid);
 
 }
+/* GEO-191:角材 A0 足跡矩形(uv),與 drawFaceEditor 的畫法同一份算法，
+   feSelAnchor/feDown 選取高亮都靠它定位,不要各自重算一次會漂移。 */
+function feTimberRect(t2) {
+  const s = t2.side === "+n" ? 1 : -1;
+  const len_uv = t2.dir === "+u" ? [1, 0] : t2.dir === "-u" ? [-1, 0]
+               : t2.dir === "+v" ? [0, 1] : [0, -1];
+  const a_uv = t2.dir === "+u" ? [0, s] : t2.dir === "-u" ? [0, -s]
+             : t2.dir === "+v" ? [-s, 0] : [s, 0];
+  const fu = t2.u + t2.L * len_uv[0] + t2.A * a_uv[0];
+  const fv = t2.v + t2.L * len_uv[1] + t2.A * a_uv[1];
+  return [Math.min(t2.u, fu), Math.min(t2.v, fv), Math.max(t2.u, fu), Math.max(t2.v, fv)];
+}
 
 /* ---- GEO-190:面內底圖臨摹 ----
    狀態只存 oc.underlays[bid](本次瀏覽器工作階段記憶體,不寫 .scene/localStorage,
@@ -2743,18 +2762,17 @@ function drawFaceEditor() {
     for (const c of g.v)
       el("line", { x1: gb[0], y1: c, x2: gb[2], y2: c, class: "face-grid-line" }, refRoot);
   }
-  /* 角材 A0 足跡（Q3）：axis_a = axis_b × axis_length 的 uv 版 */
+  /* 角材 A0 足跡（Q3）：axis_a = axis_b × axis_length 的 uv 版
+     GEO-191:加 data-face-hit="t:<id>" 可選取;select 工具下才吃事件(見 app.css
+     `.face-editor-viewport.tool-select .face-timber { pointer-events:auto }`),
+     其餘工具一律 pointer-events:none,不擋既有的點邊/點角/點面/畫外環。 */
   for (const t2 of fe.timbers || []) {
-    const s = t2.side === "+n" ? 1 : -1;
-    const len_uv = t2.dir === "+u" ? [1, 0] : t2.dir === "-u" ? [-1, 0]
-                 : t2.dir === "+v" ? [0, 1] : [0, -1];
-    const a_uv = t2.dir === "+u" ? [0, s] : t2.dir === "-u" ? [0, -s]
-               : t2.dir === "+v" ? [-s, 0] : [s, 0];
-    const fu = t2.u + t2.L * len_uv[0] + t2.A * a_uv[0];
-    const fv = t2.v + t2.L * len_uv[1] + t2.A * a_uv[1];
-    el("rect", { x: Math.min(t2.u, fu), y: Math.min(t2.v, fv),
-      width: Math.abs(fu - t2.u), height: Math.abs(fv - t2.v),
-      class: "face-timber" }, root);
+    const r = feTimberRect(t2);
+    const selT = fe.sel && fe.sel.kind === "timber" && fe.sel.id === t2.id;
+    const hoverT = fe.hoverTimber === t2.id;
+    el("rect", { x: r[0], y: r[1], width: r[2] - r[0], height: r[3] - r[1],
+      "data-face-hit": `t:${t2.id}`,
+      class: "face-timber" + (selT ? " sel" : "") + (hoverT ? " hover" : "") }, root);
   }
   /* RC 障礙物鬼影（R7）：半透明分類矩形，只讀不改 boundary */
   if (fe.obstacles) {
@@ -2997,14 +3015,24 @@ async function feDown(pt, ev) {
        GEO-189:點面內空白 = 選一個「點」,浮動列給「開口」(填寬高與距邊) */
     const loops = oc.bmap[e.bid] || [];
     const inside = loops.length && feInsideVerts(loops.map(l => l.verts), pt.x, pt.y);
+    const wasTimberSel = fe.sel && fe.sel.kind === "timber";
     fe.op = null; fe.selFeat = null;
     fe.sel = inside ? { kind: "point", x: Math.round(pt.x), y: Math.round(pt.y) } : null;
     feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
+    if (wasTimberSel) renderFaceLayers();  /* GEO-191:清掉左欄角材列的 .sel */
     return;
   }
   const [k, a, b] = t.dataset.faceHit.split(":");
   if (k === "g") {
     fe.drag = { kind: "guide", id: +a, axis: b, moved: false };
+    return;
+  }
+  if (k === "t") {
+    /* GEO-191:點角材矩形 = 選取(不可拖曳);清掉就地操作/形狀頁選取,
+       浮出 #feActionBar 只有一顆刪除鈕(見 feSyncOverlays)。 */
+    fe.sel = { kind: "timber", id: +a };
+    fe.op = null; fe.selFeat = null;
+    feSyncOverlays(); drawFaceEditor(); renderFaceInspector(); renderFaceLayers();
     return;
   }
   fe.drag = { kind: k === "v" ? "vertex" : "edge",
@@ -3157,12 +3185,14 @@ async function feUp(pt) {
     /* GEO-188(方案 A):單擊邊 = 選取該邊,浮出「凹口／外凸／推拉／F⇄X」;
        單擊外環凸角 = 選取該角,浮出「切角」。(Phase 2 的「單擊切 fixity」移到浮動列) */
     const loops = oc.bmap[e.bid];
+    const wasTimberSel = fe.sel && fe.sel.kind === "timber";
     fe.op = null; fe.selFeat = null;
     if (d.kind === "edge") fe.sel = { kind: "edge", loop: d.loop, i: d.index };
     else if (d.loop === 0 && loops && feCorners(loops[0].verts)[d.index]?.convex)
       fe.sel = { kind: "corner", i: d.index };
     else fe.sel = null;
     feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
+    if (wasTimberSel) renderFaceLayers();  /* GEO-191:清掉左欄角材列的 .sel */
     return;
   }
   if (await emitBoundary(e.bid, work)) await feAfterChange();
@@ -3652,6 +3682,12 @@ function feSelAnchor() {
     return feMmToPx(mx, my - 34 / z);
   }
   if (fe.sel.kind === "point") return feMmToPx(fe.sel.x, fe.sel.y - 30 / z);
+  if (fe.sel.kind === "timber") {
+    const t2 = (fe.timbers || []).find(x => x.id === fe.sel.id);
+    if (!t2) return null;
+    const r = feTimberRect(t2);
+    return feMmToPx((r[0] + r[2]) / 2, r[1] - 20 / z);
+  }
   const c = feCorners(outer.verts)[fe.sel.i]; if (!c) return null;
   return feMmToPx(c.v[0] - c.sx * 40 / z, c.v[1] - c.sy * 40 / z);
 }
@@ -3677,6 +3713,9 @@ function feSyncOverlays() {
       fx ? "此邊目前固定(F),點一下改自由(X)" : "此邊目前自由(X),點一下改固定(F)", false);
   } else if (fe.sel.kind === "point") {
     html += mk("op:hole", FE_OPS.hole.name, FE_OPS.hole.icon, FE_OPS.hole.desc, fe.op && fe.op.type === "hole");
+  } else if (fe.sel.kind === "timber") {
+    /* GEO-191:角材選取只有一顆刪除鈕,不進 feStartOp(不做就地改錨點/方向/截面)。 */
+    html += `<button type="button" data-fe-act="delete" title="刪除角材">${icon("trash") || ""}<span>刪除</span></button>`;
   } else {
     html += mk("op:corner", FE_OPS.corner.name, FE_OPS.corner.icon, FE_OPS.corner.desc, fe.op && fe.op.type === "corner");
   }
@@ -3685,6 +3724,10 @@ function feSyncOverlays() {
     b.addEventListener("click", async ev => {
       ev.stopPropagation();
       const act = b.dataset.feAct;
+      if (act === "delete" && fe.sel && fe.sel.kind === "timber") {
+        await feDeleteTimber(fe.sel.id);
+        return;
+      }
       if (act === "fixity") {
         const e = oc.edit; if (!e || oc.busy) return;
         const work = oc.bmap[e.bid].map(l => ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
@@ -3817,11 +3860,40 @@ function feAfterShapeChange() {
   if (fe.selFeat != null && !feFeats(e.bid).some(f => f.id === fe.selFeat)) fe.selFeat = null;
   fe.op = null;
   if (fe.sel && fe.sel.kind === "point") fe.sel = null;
-  else if (fe.sel) {
+  else if (fe.sel && fe.sel.kind === "timber") {
+    /* GEO-191:角材不在 loops 裡,邊界變更(或刪角材)後 id 已不存在 → 清選取 */
+    if (!(fe.timbers || []).some(t => t.id === fe.sel.id)) fe.sel = null;
+  } else if (fe.sel) {
     const lp = loops[fe.sel.kind === "edge" ? fe.sel.loop : 0];
     if (!lp || fe.sel.i >= lp.verts.length) fe.sel = null;
   }
   feSyncOverlays();
+}
+/* GEO-191:角材頁頂端「已選角材」摘要——欄位照 references 指令 geometry 回傳的有什麼就顯示什麼
+   (L/A/B、@(u,v)、dir/side、role;不做就地改錨點/方向/截面,只給刪除)。 */
+function feTbSelectedHTML() {
+  if (!fe.sel || fe.sel.kind !== "timber") return "";
+  const t2 = (fe.timbers || []).find(x => x.id === fe.sel.id);
+  if (!t2) return "";
+  const parts = [];
+  if (t2.L != null && t2.A != null && t2.B != null) parts.push(`${t2.L}×${t2.A}×${t2.B}`);
+  if (t2.u != null && t2.v != null) parts.push(`@(${t2.u}, ${t2.v})`);
+  if (t2.dir && t2.side) parts.push(`${t2.dir}${t2.side}`);
+  if (t2.role) parts.push(`role ${t2.role}`);
+  return `<div class="inspector-block" id="tbSelected"><div class="ib-title">已選角材 ${t2.id}</div>` +
+    `<div class="kv"><span>宣告</span><b>${parts.join(" · ")}</b></div>` +
+    `<button class="btn danger" id="tbSelDelete" type="button">刪除</button></div>`;
+}
+/* GEO-191:刪角材共用路徑(畫布浮動列刪除鈕 / 左欄 ✕ / 檢視器「已選角材」刪除鈕都走這裡),
+   同 delete guide/grid 的既有作法用 emitLine 走 mutate 交易(可 Ctrl+Z)。 */
+async function feDeleteTimber(id) {
+  if (oc.busy) return false;
+  if (!(await emitLine(`delete timber ${id}`))) return false;
+  if (fe.sel && fe.sel.kind === "timber" && fe.sel.id === id) fe.sel = null;
+  await feLoadGuides();
+  feSyncOverlays();
+  renderFaceLayers(); drawFaceEditor(); renderFaceInspector();
+  return true;
 }
 
 /* ---- 右欄「形狀」頁(方案 B):基底 + 本次工作階段的特徵清單 ---- */
@@ -4027,13 +4099,29 @@ function renderFaceLayers() {
   } else emptyGroup("參考線", "尚無參考線 · 開啟建立表單", "guide");
   if ((fe.timbers || []).length) {
     group("角材");
-    for (const t2 of fe.timbers)
-      row(icon("timber"), `角材 ${t2.id}`, `${t2.L || "auto"}×${t2.A}×${t2.B} @(${t2.u},${t2.v}) ${t2.dir}${t2.side}`,
-        async () => {
-          if (await emitLine(`delete timber ${t2.id}`)) {
-            await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
-          }
-        });
+    /* GEO-191:角材列可選——不用共用的 row()(它沒有 hover/click/data-timber-id 掛鉤),
+       hover → 畫布矩形加 .hover;點列(非 ✕ 鈕)→ 與畫布點選同一效果。 */
+    for (const t2 of fe.timbers) {
+      const selT = fe.sel && fe.sel.kind === "timber" && fe.sel.id === t2.id;
+      const r = document.createElement("div");
+      r.className = "face-layer-row" + (selT ? " sel" : "");
+      r.dataset.timberId = t2.id;
+      r.innerHTML = `<span class="face-layer-icon">${icon("timber")}</span>` +
+        `<span class="face-layer-copy"><strong>角材 ${t2.id}</strong>` +
+        `<small>${t2.L || "auto"}×${t2.A}×${t2.B} @(${t2.u},${t2.v}) ${t2.dir}${t2.side}</small></span>`;
+      const del = document.createElement("button");
+      del.className = "face-layer-del"; del.title = "刪除"; del.textContent = "✕";
+      del.addEventListener("click", async ev => { ev.stopPropagation(); await feDeleteTimber(t2.id); });
+      r.appendChild(del);
+      r.addEventListener("mouseenter", () => { fe.hoverTimber = t2.id; drawFaceEditor(); });
+      r.addEventListener("mouseleave", () => { fe.hoverTimber = null; drawFaceEditor(); });
+      r.addEventListener("click", () => {
+        fe.sel = { kind: "timber", id: t2.id }; fe.op = null; fe.selFeat = null;
+        feSyncOverlays(); drawFaceEditor(); renderFaceInspector(); renderFaceLayers();
+      });
+      list.appendChild(r);
+      ++n;
+    }
   } else emptyGroup("角材", "尚無角材 · 設定並放置", "timber");
   if ((fe.grids || []).length) {
     group("網格");
@@ -4194,6 +4282,7 @@ function renderFaceInspector() {
   html += `<div data-fi-pane="guide"${fe.fiTab === "guide" ? "" : " hidden"}>${guideHTML}</div>`;
   /* B2:角材頁（游離面顯示停用說明,欄位一併停用） */
   html += `<div data-fi-pane="timber"${fe.fiTab === "timber" ? "" : " hidden"}>` +
+    feTbSelectedHTML() +
     `<div class="inspector-block"><div class="ib-title">角材放置</div>` +
     (surf ? "" : `<div class="fi-note">游離面：先在「屬性」頁放置這片面，才可放角材。</div>`) +
     `<div class="fi-note">長度由支撐與有效範圍自動推導。</div>` +
@@ -4231,6 +4320,10 @@ function renderFaceInspector() {
   pane.innerHTML = html;
   pane.querySelector("#shapeActionSlot").appendChild(faceShapeAction);
   pane.querySelector("#tbPlace").addEventListener("click", () => { feSetTool("timber"); closePanels(); $("faceEditorViewport").focus(); });
+  const tbSelDel = pane.querySelector("#tbSelDelete");
+  if (tbSelDel) tbSelDel.addEventListener("click", async () => {
+    if (fe.sel && fe.sel.kind === "timber") await feDeleteTimber(fe.sel.id);
+  });
   feBindShapePane(pane, bid);
   feBindUnderlayPane(pane, bid);
   const specSave = pane.querySelector("#refSpecSave");

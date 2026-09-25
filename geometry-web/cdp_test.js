@@ -3737,6 +3737,125 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   })()`);
   check('P42-9 feUnderlayRemove 後 #feUnderlay 不存在、分頁回到只有 #ulFile',
     ul9.imgGone && ul9.othersLeft === 0, ul9);
+
+  console.log('=== P43. 面內角材可選取(GEO-191) ===');
+  await setupRemaining([
+    'surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+    'timber 10 27 33 role boundary',
+    'place 10 on 1 at-face e0 +u +n',
+  ]);
+  await eval_(`(async()=>{ await enterFocus('face', 1); })()`);
+  await sleep(250);
+  const feSvgOrigin = await eval_(`(()=>{const r=document.getElementById('faceEditorSvg').getBoundingClientRect();
+    return {x:r.left,y:r.top};})()`);
+  const timberScreenCenter = async () => {
+    const p = await eval_(`(()=>{const t=fe.timbers.find(x=>x.id===10);
+      const r=feTimberRect(t); return feMmToPx((r[0]+r[2])/2,(r[1]+r[3])/2);})()`);
+    return { x: feSvgOrigin.x + p.x, y: feSvgOrigin.y + p.y };
+  };
+  const feBlankScreenPt = async (mx, my) => {
+    const p = await eval_(`feMmToPx(${mx},${my})`);
+    return { x: feSvgOrigin.x + p.x, y: feSvgOrigin.y + p.y };
+  };
+
+  /* (1) 畫布有 .face-timber[data-face-hit="t:10"] */
+  const p43_1 = await eval_(`!!document.querySelector('.face-timber[data-face-hit="t:10"]')`);
+  check('P43-1 畫布有 .face-timber[data-face-hit="t:10"]', p43_1);
+
+  /* (2) select 工具下點角材矩形內 → fe.sel、矩形 .sel、左欄列 .sel、feActionBar 只有一顆刪除鈕 */
+  await eval_(`feSetTool('select')`);
+  let tc = await timberScreenCenter();
+  await click(tc.x, tc.y);
+  await sleep(150);
+  const p43_2 = await eval_(`(()=>{
+    const rect = document.querySelector('.face-timber[data-face-hit="t:10"]');
+    const row = document.querySelector('.face-layer-row[data-timber-id="10"]');
+    const acts = [...document.querySelectorAll('#feActionBar [data-fe-act]')].map(b=>b.dataset.feAct);
+    return { sel: fe.sel, rectSel: rect && rect.classList.contains('sel'),
+      rowSel: !!(row && row.classList.contains('sel')),
+      barHidden: document.getElementById('feActionBar').hidden, acts };
+  })()`);
+  check('P43-2 點角材 → fe.sel=timber:10、矩形/左欄高亮、feActionBar 只有 delete',
+    p43_2.sel && p43_2.sel.kind === 'timber' && p43_2.sel.id === 10 && p43_2.rectSel && p43_2.rowSel &&
+    !p43_2.barHidden && JSON.stringify(p43_2.acts) === JSON.stringify(['delete']), p43_2);
+
+  /* (3) 點面內、不在角材上的空白 → fe.sel.kind === "point"(舊行為不變) */
+  const blankPt = await feBlankScreenPt(2000, 1500);
+  await click(blankPt.x, blankPt.y);
+  await sleep(150);
+  const p43_3 = await eval_(`fe.sel && fe.sel.kind`);
+  check('P43-3 點面內空白 → fe.sel.kind === "point"', p43_3 === 'point', p43_3);
+
+  /* (4) 選角材後按 Esc → fe.sel === null,矩形無 .sel,仍在工作區 */
+  tc = await timberScreenCenter();
+  await click(tc.x, tc.y);
+  await sleep(150);
+  await pressKey('Escape', 'Escape', 27);
+  const p43_4 = await eval_(`(()=>{
+    const rect = document.querySelector('.face-timber[data-face-hit="t:10"]');
+    return { sel: fe.sel, rectSel: rect && rect.classList.contains('sel'),
+      stillIn: !!(oc.focus && oc.focus.t === 'face') };
+  })()`);
+  check('P43-4 選角材後 Esc → fe.sel===null、矩形無 .sel、仍在工作區',
+    p43_4.sel === null && !p43_4.rectSel && p43_4.stillIn, p43_4);
+
+  /* (5) hover 左欄列 → 矩形加 .hover;mouseleave → 沒有 */
+  const p43_5 = await eval_(`(()=>{
+    const row = document.querySelector('.face-layer-row[data-timber-id="10"]');
+    row.dispatchEvent(new MouseEvent('mouseenter', {bubbles:true}));
+    const rect = document.querySelector('.face-timber[data-face-hit="t:10"]');
+    const hoverOn = rect && rect.classList.contains('hover');
+    row.dispatchEvent(new MouseEvent('mouseleave', {bubbles:true}));
+    const rect2 = document.querySelector('.face-timber[data-face-hit="t:10"]');
+    const hoverOff = !(rect2 && rect2.classList.contains('hover'));
+    return { hoverOn, hoverOff };
+  })()`);
+  check('P43-5 hover 左欄列 → 矩形加 .hover;mouseleave → 沒有',
+    p43_5.hoverOn && p43_5.hoverOff, p43_5);
+
+  /* (6) 點左欄列(非 ✕ 鈕)→ 選取(同 P43-2) */
+  const p43_6a = await eval_(`(()=>{
+    document.querySelector('.face-layer-row[data-timber-id="10"]').click(); return true;
+  })()`);
+  await sleep(150);
+  const p43_6 = await eval_(`(()=>{
+    const rect = document.querySelector('.face-timber[data-face-hit="t:10"]');
+    const row = document.querySelector('.face-layer-row[data-timber-id="10"]');
+    return { sel: fe.sel, rectSel: rect && rect.classList.contains('sel'),
+      rowSel: !!(row && row.classList.contains('sel')) };
+  })()`);
+  check('P43-6 點左欄列 → 選取(同畫布點選)',
+    p43_6a && p43_6.sel && p43_6.sel.kind === 'timber' && p43_6.sel.id === 10 &&
+    p43_6.rectSel && p43_6.rowSel, p43_6);
+
+  /* (7) 角材頁顯示 #tbSelected「角材 10」;#tbSelDelete → fe.timbers 無 10、fe.sel===null;Ctrl+Z → 角材回來
+     刪這支 boundary 角材會觸發 I8a 影響預覽(角色衍生屬性重算,api() 自動開 confirmReferenceImpact 對話框),
+     要點 #impact-confirm 確認套用才真的落地——同 P22/P31/P39 既有影響預覽測試的作法。 */
+  await eval_(`fiShowTab('timber')`);
+  const p43_7a = await eval_(`(document.getElementById('tbSelected')?.textContent || '')`);
+  check('P43-7a 角材頁 #tbSelected 顯示「角材 10」', p43_7a.includes('角材 10'), p43_7a);
+  await clickSelector('#tbSelDelete');
+  for (let i = 0; i < 30 && !(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)); i++) await sleep(100);
+  if (await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)) await clickSelector('#impact-confirm');
+  await sleep(200);
+  const p43_7b = await eval_(`({ hasTimber: fe.timbers.some(t=>t.id===10), sel: fe.sel })`);
+  check('P43-7b 刪除後 fe.timbers 無 10、fe.sel===null',
+    !p43_7b.hasTimber && p43_7b.sel === null, p43_7b);
+  await pressKey('z', 'KeyZ', 90, 2);
+  await sleep(300);
+  const p43_7c = await eval_(`fe.timbers.some(t=>t.id===10)`);
+  check('P43-7c Ctrl+Z → 角材回來', p43_7c === true, p43_7c);
+
+  /* (8) 切到重畫外環工具 e,在角材位置落點仍成功(角材不擋) */
+  await eval_(`feSetTool('redraw')`);
+  tc = await timberScreenCenter();
+  await click(tc.x, tc.y);
+  await sleep(150);
+  const p43_8 = await eval_(`({ len: fe.draft.pts.length, tool: fe.tool })`);
+  check('P43-8 e 工具時點角材位置仍成功落點(角材不擋)',
+    p43_8.len === 1 && p43_8.tool === 'redraw', p43_8);
+  await pressKey('Escape', 'Escape', 27);
+  await pressKey('Escape', 'Escape', 27);
   }
 
   chrome.kill();

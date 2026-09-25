@@ -2925,3 +2925,31 @@ ids/全域/操作說明。**回歸**:cdp_test 449/449、canvas_test(HTTP)412/412
 **沒做、為什麼**:向量平面圖幾何重建(使用者提到的下一步)不在本票範圍,留待另立票。旋轉的拖曳互動測試只涵蓋
 預設 `rot=0`(驗收條件未要求非零旋轉下的拖曳數學);`feUlImgToMm`/`feUlMmToImg` 的旋轉换算是解析式互逆函式,
 邏輯上對任意 rot 成立,但沒有額外測資覆蓋 90/180/270 度時的拖曳誤差。
+
+### GEO-191 ✅ 已做(2026-09-25)P2:面內工作區角材可選取——點角材高亮、左右欄同步、可刪;不做就地改錨點
+
+**起因**:面內工作區用選取工具點角材沒反應——角材矩形(`.face-timber`)沒有 `data-face-hit`,點下去被當成
+點面內空白(GEO-189 的「點」選取)。使用者拍板:只做選取/高亮/刪除,不做就地改錨點/方向/截面(語意未拍板)。
+
+**做了什麼**(`geometry-web/app.js`、`app.css`):
+- 角材矩形加 `data-face-hit="t:<id>"`(`feTimberRect(t2)` 抽出算矩形的純函式,`drawFaceEditor`/`feSelAnchor`
+  共用同一份,不各自重算);CSS 只在 `.face-editor-viewport.tool-select` 下 `.face-timber { pointer-events:auto }`,
+  其餘工具一律 `none`——不擋既有的點邊/點角/點面/畫外環/放角材落點。
+- select 工具命中 `t:<id>`(`feDown`)→ `fe.sel={kind:"timber",id}`,清 `fe.op`/`fe.selFeat`;矩形加 `.sel`、
+  左欄該列(`.face-layer-row[data-timber-id]`)同步加 `.sel`;`#feActionBar` 只浮出一顆 `[data-fe-act="delete"]`
+  (沿用既有 `feSelAnchor`/`fePlaceOverlays` 擺法)。
+- 角材頁(`fiShowTab("timber")`)頂端加 `#tbSelected`:「已選角材 `<id>`」+ 宣告摘要(L×A×B、@(u,v)、dir/side、role,
+  欄位照 `references` 回傳有什麼顯示什麼)+ `#tbSelDelete`,與畫布浮動列、左欄 ✕ 鈕共用 `feDeleteTimber(id)`
+  (`delete timber <id>` 走 `emitLine`/mutate,可 Ctrl+Z)。
+- 左欄角材列:hover → 矩形加 `.hover`;點列(非 ✕)= 與畫布點選相同效果。
+- `feAfterShapeChange`(邊界變更/`feAfterChange` 收尾)與 `feDeleteTimber` 都驗:選取的 timber id 已不在
+  `fe.timbers` → 清 `fe.sel`。Esc 既有階梯「有選取 → 清」自然涵蓋 timber,一併清左欄 `.sel`。
+
+**測試**:`cdp_test.js` 新增 §P43(8 組斷言:命中層存在、點選高亮+浮動列、點空白仍是「點」選取、Esc 清選取、
+左欄 hover/click 同步、角材頁摘要+刪除+Ctrl+Z 復原、切到重畫外環工具點角材位置仍成功落點)。
+`docs/DOM-CONTRACT.md`、`README.md` 同步補新 ids/class/選取型別/操作說明。
+**回歸**:cdp_test 459/459、canvas_test(HTTP)412/412(Windows,已編 bridge.exe,埠 8799)。
+
+**沒做、為什麼**:就地改錨點/方向/截面——語意未拍板,按票面要求不做;特徵堆疊/底圖等既有機制不受影響。
+刪除 `role boundary` 的角材會經過 I8a 角色衍生屬性重算,`api()` 自動開影響預覽對話框,
+測試(§P43-7b)與畫布/左欄/檢視器三路刪除鈕都要等確認才真的落地(同既有 P22/P31/P39 模式)。
