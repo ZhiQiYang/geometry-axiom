@@ -3330,9 +3330,9 @@ async function feDraftTryClose() {
     setStatus("✗ " + r.error.msg);
     return;
   }
-  await feCommitDraft(r.pts);
+  await feCommitDraft(r.pts, r.dropped || []);
 }
-async function feCommitDraft(pts) {
+async function feCommitDraft(pts, dropped = []) {
   const e = oc.edit;
   if (!e) return;
   fe.draft = PolyDraft.createState(); fe.draftPreview = null;
@@ -3340,7 +3340,18 @@ async function feCommitDraft(pts) {
   const loops = oc.bmap[e.bid].map(l =>
     ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
   loops[0] = { verts: pts, fixity: pts.map(() => 1) };
-  if (await emitBoundary(e.bid, loops)) { await feAfterChange(); feSetTool("select"); }
+  if (await emitBoundary(e.bid, loops)) {
+    await feAfterChange(); feSetTool("select");
+    /* GEO-193:自動補角把草稿裡畫過的轉折併掉(共線去點)時只提示、不擋——
+       使用者可能是故意留缺口,也可能是故意少畫最後一段直接收成矩形,
+       兩者幾何上無法區分,所以決定權留給使用者(Ctrl+Z 後補畫再閉合)。 */
+    if (dropped.length > 0) {
+      const list = dropped.map(p => `(${p[0]},${p[1]})`).join("、");
+      const msg = `已閉合;補角時 ${list} 併入直線——若要保留該轉折,Ctrl+Z 後把下一段畫完再閉合`;
+      toast(msg);
+      setStatus(msg);
+    }
+  }
   else drawFaceEditor();
 }
 
@@ -4085,19 +4096,42 @@ function feAfterShapeChange() {
   }
   feSyncOverlays();
 }
-/* GEO-191:角材頁頂端「已選角材」摘要——欄位照 references 指令 geometry 回傳的有什麼就顯示什麼
-   (L/A/B、@(u,v)、dir/side、role;不做就地改錨點/方向/截面,只給刪除)。 */
-function feTbSelectedHTML() {
+/* GEO-191→GEO-194:角材頁頂端「已選角材」區塊——原本是唯讀摘要,現改成可編輯表單
+   #tbEditForm。欄位照 references 指令 geometry 回傳的有什麼就預填什麼:A/B、方向、側
+   都有回傳可以預填;priority 與錨點/選段(at-face/at-line 的具體引用式)橋接
+   (web_bridge.c::cmd_references → json_reference_geometry)沒有回傳,無從預填,
+   只能讓使用者重選(見 BACKLOG GEO-194「橋接未回傳錨點」待續票)。 */
+function feTbSelectedHTML(bid) {
   if (!fe.sel || fe.sel.kind !== "timber") return "";
   const t2 = (fe.timbers || []).find(x => x.id === fe.sel.id);
   if (!t2) return "";
-  const parts = [];
-  if (t2.L != null && t2.A != null && t2.B != null) parts.push(`${t2.L}×${t2.A}×${t2.B}`);
-  if (t2.u != null && t2.v != null) parts.push(`@(${t2.u}, ${t2.v})`);
-  if (t2.dir && t2.side) parts.push(`${t2.dir}${t2.side}`);
-  if (t2.role) parts.push(`role ${t2.role}`);
-  return `<div class="inspector-block" id="tbSelected"><div class="ib-title">已選角材 ${t2.id}</div>` +
-    `<div class="kv"><span>宣告</span><b>${parts.join(" · ")}</b></div>` +
+  const surf = feSurf(bid);
+  const roleOpts = [["primary", "primary 主支"], ["boundary", "boundary 邊界材"],
+    ["secondary", "secondary 副支"], ["custom", "custom 自訂"]];
+  return `<div class="inspector-block" id="tbSelected">` +
+    `<div class="ib-title">已選角材 ${t2.id}</div>` +
+    `<form id="tbEditForm" class="place-form">` +
+    `<label>A<input id="tbEditA" type="number" value="${t2.A ?? ""}"></label>` +
+    `<label>B<input id="tbEditB" type="number" value="${t2.B ?? ""}"></label>` +
+    `<label>方向<select id="tbEditDir">` +
+    ["+u", "-u", "+v", "-v"].map(d => `<option${d === t2.dir ? " selected" : ""}>${d}</option>`).join("") +
+    `</select></label>` +
+    `<label>側<select id="tbEditSide">` +
+    ["+n", "-n"].map(s => `<option${s === t2.side ? " selected" : ""}>${s}</option>`).join("") +
+    `</select></label>` +
+    `<label>角色<select id="tbEditRole">` +
+    roleOpts.map(([v, t]) => `<option value="${v}"${v === t2.role ? " selected" : ""}>${t}</option>`).join("") +
+    `</select></label>` +
+    `<label id="tbEditPriLabel"${t2.role === "custom" ? "" : " hidden"}>priority` +
+    `<input id="tbEditPri" type="number" value="3"></label>` +
+    `<label>定位引用<select id="tbEditAnchor">` +
+    `<option value="">— 橋接不回傳現有錨點,請重選 —</option>` +
+    referenceAnchorOptions(bid, surf) + `</select></label>` +
+    `<label>選段（可留空）<input id="tbEditSelector" placeholder="through 600 或 between t1 t2"></label>` +
+    `</form>` +
+    `<div class="face-help">橋接(references)不回傳目前錨點/選段,套用前務必重新選擇定位引用,` +
+    `否則角材位置會改成新引用的落點。</div>` +
+    `<button class="btn primary-button" id="tbEditApply" type="button">套用變更</button> ` +
     `<button class="btn danger" id="tbSelDelete" type="button">刪除</button></div>`;
 }
 /* GEO-191:刪角材共用路徑(畫布浮動列刪除鈕 / 左欄 ✕ / 檢視器「已選角材」刪除鈕都走這裡),
@@ -4107,6 +4141,49 @@ async function feDeleteTimber(id) {
   if (!(await emitLine(`delete timber ${id}`))) return false;
   if (fe.sel && fe.sel.kind === "timber" && fe.sel.id === id) fe.sel = null;
   await feLoadGuides();
+  feSyncOverlays();
+  renderFaceLayers(); drawFaceEditor(); renderFaceInspector();
+  return true;
+}
+
+/* GEO-194:面內角材就地編輯——同一個 id「刪掉重放」一筆交易(mutate 的 history-begin/
+   -end 群組是單步 undo,任一行失敗核心整組回滾,不需要另外 dump/undo 保底)。
+   驗證規則對齊 tbPlace(角材放置表單):A/B 正整數、custom 要 priority、錨點必選。
+   失敗時 mutate() 自己 toast 原文、不動狀態;成功後重載並保持選取在同一個 id。 */
+async function feTimberEditApply(id) {
+  if (oc.busy) return false;
+  const pane = $("faceInspectorContent");
+  const sid = feSid(oc.edit && oc.edit.bid);
+  if (!sid) return false;
+  const A = Number(pane.querySelector("#tbEditA")?.value);
+  const B = Number(pane.querySelector("#tbEditB")?.value);
+  if (!Number.isSafeInteger(A) || !Number.isSafeInteger(B) || A <= 0 || B <= 0) {
+    toast("角材截面 A/B 須為正整數 mm");
+    if (!Number.isSafeInteger(A) || A <= 0) feMarkInvalid(pane.querySelector("#tbEditA"));
+    if (!Number.isSafeInteger(B) || B <= 0) feMarkInvalid(pane.querySelector("#tbEditB"));
+    return false;
+  }
+  const anchor = pane.querySelector("#tbEditAnchor")?.value;
+  if (!anchor) {
+    toast("橋接不回傳現有錨點,請先重新選擇定位引用");
+    feMarkInvalid(pane.querySelector("#tbEditAnchor"));
+    return false;
+  }
+  const dir = (pane.querySelector("#tbEditDir") || {}).value || "+u";
+  const side = (pane.querySelector("#tbEditSide") || {}).value || "+n";
+  const role = (pane.querySelector("#tbEditRole") || {}).value || "primary";
+  const pri = Math.round(+(pane.querySelector("#tbEditPri") || {}).value || 0);
+  if (role === "custom" && !(pri >= 1)) {
+    toast("custom 角色要填 priority（≥1 的整數）");
+    feMarkInvalid(pane.querySelector("#tbEditPri"));
+    return false;
+  }
+  const selector = (pane.querySelector("#tbEditSelector")?.value || "").trim();
+  const decl = `timber ${id} ${A} ${B} role ${role}` + (role === "custom" ? ` priority ${pri}` : "");
+  const lines = [`delete timber ${id}`, decl, `place ${id} on ${sid} ${anchor} ${selector} ${dir} ${side}`];
+  if (!(await mutate(lines))) return false;
+  await feLoadGuides();
+  fe.sel = { kind: "timber", id };
   feSyncOverlays();
   renderFaceLayers(); drawFaceEditor(); renderFaceInspector();
   return true;
@@ -4498,7 +4575,7 @@ function renderFaceInspector() {
   html += `<div data-fi-pane="guide"${fe.fiTab === "guide" ? "" : " hidden"}>${guideHTML}</div>`;
   /* B2:角材頁（游離面顯示停用說明,欄位一併停用） */
   html += `<div data-fi-pane="timber"${fe.fiTab === "timber" ? "" : " hidden"}>` +
-    feTbSelectedHTML() +
+    feTbSelectedHTML(bid) +
     `<div class="inspector-block"><div class="ib-title">角材放置</div>` +
     (surf ? "" : `<div class="fi-note">游離面：先在「屬性」頁放置這片面，才可放角材。</div>`) +
     `<div class="fi-note">長度由支撐與有效範圍自動推導。</div>` +
@@ -4539,6 +4616,15 @@ function renderFaceInspector() {
   const tbSelDel = pane.querySelector("#tbSelDelete");
   if (tbSelDel) tbSelDel.addEventListener("click", async () => {
     if (fe.sel && fe.sel.kind === "timber") await feDeleteTimber(fe.sel.id);
+  });
+  const tbEditRole = pane.querySelector("#tbEditRole");
+  if (tbEditRole) tbEditRole.addEventListener("change", () => {
+    const pl = pane.querySelector("#tbEditPriLabel");
+    if (pl) pl.hidden = tbEditRole.value !== "custom";
+  });
+  const tbEditApply = pane.querySelector("#tbEditApply");
+  if (tbEditApply) tbEditApply.addEventListener("click", async () => {
+    if (fe.sel && fe.sel.kind === "timber") await feTimberEditApply(fe.sel.id);
   });
   feBindShapePane(pane, bid);
   feBindUnderlayPane(pane, bid);

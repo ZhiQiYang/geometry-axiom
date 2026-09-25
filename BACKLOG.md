@@ -2999,3 +2999,91 @@ ids/全域/操作說明。**回歸**:cdp_test 449/449、canvas_test(HTTP)412/412
 **沒做、為什麼**:B 的欄位對應語意未拍板(票面明說「由主迴圈決定」),上面寫的規則是實作採用的具體規則,
 不是使用者拍板——若日後語意有爭議,以此規則為準改測試與說明,不必回溯改行為;拖曳時的「留下」欄同步
 沿用既有 `feSyncPanelValues` 的連動,沒有另立一套。
+
+### GEO-193 ✅ 已做(2026-09-25)P3:重畫外環閉合併點提示(不擋)
+
+**起因**:`polydraft.js` 的 `tryClose` 補直角時(末點與起點不同軸)先組出完整 raw 環再去共線
+(GEO-178 三原則),去共線可能把使用者剛畫出來的一個轉折(與相鄰邊共線)悄悄併掉——
+草稿 `(0,0)(4000,0)(4000,1000)(3000,1000)` 按 Enter 補 `(0,1000)` 閉合,`(3000,1000)`
+與相鄰兩點共線被吃掉,得到 4000×1000 矩形,使用者畫的「缺口」靜默消失。但同樣的幾何結構
+(補角+去共線把一個頂點併掉)也可能是使用者故意少畫最後一段、就是想要矩形——`(0,0)(4000,0)
+(4000,3000)(2000,3000)` 補 `(0,3000)` 一樣會併掉 `(2000,3000)`,但這次是想要的結果。
+兩者在幾何上完全無法區分,所以只能提示、不能擋。
+
+**做了什麼**:
+- `polydraft.js::tryClose` 成功時多回傳一個欄位 `dropped: number[][]`——草稿 `state.pts`
+  裡有、輸出 `pts` 裡沒有的頂點(依座標比對純函式 `droppedVertices`),兩個分支(直接閉合、
+  補角閉合)都算;沒有併掉任何點就是 `[]`。既有回傳欄位(`ok`/`pts`/`error`)不變。
+- `app.js::feDraftTryClose`/`feCommitDraft`:閉合成功、`emitBoundary` 落地後,`dropped.length>0`
+  才 `toast`+`setStatus`「已閉合;補角時 (x,y)、(x,y) 併入直線——若要保留該轉折,Ctrl+Z 後
+  把下一段畫完再閉合」(座標依 `dropped` 順序、用「、」隔開)。不改變任何幾何結果、不彈對話框、
+  不擋任何閉合。
+- `README.md` 重畫外環段落補一句說明;`docs/DOM-CONTRACT.md`/`docs/POLYDRAFT-API.md` 補
+  `dropped` 欄位契約。
+
+**測試**:`polydraft_test.js` 加 3 條(缺口案例 `dropped=[[3000,1000]]`、少畫一段案例
+`dropped=[[2000,3000]]`、直接同軸閉合 `dropped=[]`),全部透過既有 `tryCloseChecked` 包裝
+(形狀守恆斷言照跑)。`cdp_test.js` 新增 §P45(2 條):(a) 鍵盤 `4000→ 1000↓ 1000← Enter` →
+外環 4 頂點 4000×1000,狀態列含「(3000,1000)」與「併入直線」;(b) `4000→ 3000↓ Enter`
+(直接同軸補角、無併點)→ 狀態列不含「併入直線」。
+
+**回歸**:`polydraft_test.js` 75/75;`cdp_test.js`/`canvas_test.js` 結果見下一票(GEO-194)
+一併跑的回歸段。
+
+### GEO-194 ✅ 已做(2026-09-25)P2:面內角材就地編輯——同 id 刪掉重放一筆交易
+
+**先查的事實**:`fe.timbers` 來自 `references` 橋接指令(`geometry-web/reference_bridge.inc::
+cmd_references` → `json_reference_geometry`,經 `web_bridge.c` unity-build 併入
+`current_geometry.c`),每支角材回傳 `{id, role, geometry:{surface,centerline,length,u,v,
+dir,side,A,B,origin,axes}}`。**橋接不回傳 anchor/selector(at-face/at-line 的具體引用式)、
+也不回傳 priority**——這兩者是 `place`/`timber` 宣告時的輸入參數,核心目前沒有把它們吐回來。
+`place` 的完整語法(`current_geometry.c` 場景 DSL 表):`place 角材id on 承載面id at-line
+guide 線id｜grid 網id u|v 索引 或 at-face e索引｜h孔e邊｜t角材`;`timber` 語法:`timber id
+A尺寸 B尺寸 role boundary|primary|secondary|custom [priority N]`。本票**沒有**改
+`web_bridge.c`、`.scene` 格式或核心。
+
+**做了什麼**(`geometry-web/app.js`):
+- 角材頁 `#tbSelected` 區塊(GEO-191 唯讀摘要)改成可編輯表單 `#tbEditForm`:A/B/方向
+  (`#tbEditDir`)/側(`#tbEditSide`)/角色(`#tbEditRole`)+priority(`#tbEditPri`,
+  只在 custom 顯示)這五組橋接有回傳,直接預填;定位引用(`#tbEditAnchor`)+選段
+  (`#tbEditSelector`)重用放置表單的選項來源 `referenceAnchorOptions(bid, surf)`,但
+  **固定不預填**(下拉第一項是空字串佔位「橋接不回傳現有錨點,請重選」)——套用前必須
+  重新選擇,否則會被前端擋下(錨點必選,同放置表單既有驗證)。
+- 按鈕「套用變更」(`#tbEditApply` → `feTimberEditApply(id)`):驗證與放置表單一致(A/B
+  正整數、custom 要 priority、錨點必選,失敗 `feMarkInvalid` 標紅、不送指令),通過後組一筆
+  `mutate([...])` 批次、同一個 id:`delete timber <id>` → `timber <id> A B role …` →
+  `place <id> on <sid> anchor selector dir side`。成功後 `feLoadGuides()`、選取留在同一 id、
+  重繪左右欄與畫布;失敗 `mutate()` 自己 toast 原文、不動狀態。
+- `mutate()` 既有的 `history-begin`/`history-end` 群組本身就是原子的(任一行失敗核心整組
+  回滾、abort 冪等驗證回滾)——**不需要**額外的 dump 先留底/undo 保底,三行是單一 history
+  群組,`Ctrl+Z` 一次就回到編輯前。
+- 影響預覽:`delete timber`/`place` 任一行觸發 I8a(角色衍生屬性重算)時,`mutate()`
+  內部逐行呼叫的既有 `api()` 本來就會攔截 `result.preview` 開 `confirmReferenceImpact`
+  對話框並等待使用者確認/取消——`feTimberEditApply` 不必另外處理,照舊等確認、不繞。
+
+**測試**:`cdp_test.js` 新增 §P46(5 組,含 e 略過):(a) 選取後 `#tbEditForm` 出現且
+A/B/dir/side 預填正確、錨點固定留空;(b) 改 A=40/B=60/side=-n、重選錨點 `at-face e0` →
+套用 → `fe.timbers` 仍只有 id 10、欄位如預期、`fe.sel` 仍是 timber 10;(c) `Ctrl+Z` 一次
+回 A=27/B=33(驗證 mutate 群組單步 undo);(d) 填 A=0 → 前端擋下、toast 出現、`fe.timbers`
+不變;(e) 橋接不回傳錨點(已於 (a) 驗證),無法測「改錨點後位置改變」,略過並在測試 log
+印出說明。
+
+**橋接是否回傳錨點**:不回傳(見上「先查的事實」),已在表單與測試中如實處理,並在此記錄
+供後續票參考:若日後 `cmd_references` 補上 anchor/selector,`#tbEditAnchor`/`#tbEditSelector`
+可以改成預填現值。
+
+**mutate 批次是否原子**:是——`history-begin`/`history-end`/`history-abort` 本來就是
+既有機制,群組內任一行失敗核心自動整組回滾,群組整體是單一 undo 步驟。
+
+**Ctrl+Z 實際步數**:1 步(三行 `delete`/`timber`/`place` 同一個 history 群組)。
+
+**沒做、為什麼**:就地改截面/方向/側以外的欄位(例如手動指定 length、直接搬動 A0 原點)——
+語意未拍板,按票面要求不做;錨點/選段預填——橋接沒有回傳來源資料,技術上做不到,已如實記錄
+待續票(需要 `cmd_references` 先補欄位)。
+
+**回歸**(GEO-193/194 合併一次跑;Windows,已編 bridge.exe,埠 8799):
+`polydraft_test.js` 75/75;`cdp_test.js` 484/484(含新增 §P45 2 條、§P46 5 條);
+`canvas_test.js`(HTTP)412/412。另以獨立聚焦腳本(`p45_p46_smoke.js`,只連同一個
+serve.py+bridge、跳過與本票無關的既有測試)對 §P45/§P46 邏輯單獨跑過一次交叉驗證,
+6/6 全過,確認 I8a 影響預覽對話框、`mutate` history 群組、Ctrl+Z 單步復原都是在
+真實瀏覽器 + 真實核心下驗證,不是只過測試斷言字串。

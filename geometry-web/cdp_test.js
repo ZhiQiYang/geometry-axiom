@@ -4054,6 +4054,136 @@ async function rightClick(x, y) {
     p44_8.opPanelHidden && p44_8.barHidden && p44_8.sel === null, p44_8);
 
   await pressKey('Escape', 'Escape', 27);
+
+  console.log('=== P45. 重畫外環閉合併點提示(GEO-193)===');
+  /* (a) 鍵盤 4000→ 1000↓ 1000← Enter:末點(3000,1000)與起點(0,0)不同軸,自動補角
+     (0,1000)閉合;(3000,1000)與相鄰兩點共線,被去共線併掉——外環仍是合法的
+     4000×1000 矩形(4頂點),但狀態列要提示哪個轉折被併入直線,不能靜默消失。 */
+  const p45a = await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+    oc.focus = null; oc.stack = [];
+    await renderObjects();
+    await enterFocus("face", 1);
+    feSetTool("redraw");
+    const key = (k, code) => window.dispatchEvent(new KeyboardEvent("keydown", {key: k, code: code || k, bubbles: true}));
+    const seq = [["4000","ArrowRight"],["1000","ArrowDown"],["1000","ArrowLeft"]];
+    for (const [len, dir] of seq) { for (const ch of len) key(ch, "Digit" + ch); key(dir); }
+    key("Enter");
+    await new Promise(r=>setTimeout(r,400));
+    const b = await api("boundary 1");
+    return { verts: b.loops[0].verts.map(v=>v.join(",")).join(" "),
+      status: document.getElementById('status').textContent };
+  })()`);
+  check('P45a 鍵盤 4000→1000↓1000← Enter → 外環4頂點4000×1000,狀態列含「(3000,1000)」與「併入直線」',
+    p45a.verts === '0,0 4000,0 4000,1000 0,1000' &&
+    p45a.status.includes('(3000,1000)') && p45a.status.includes('併入直線'), p45a);
+
+  /* (b) 鍵盤 4000→ 3000↓ Enter:末點(4000,3000)與起點(0,0)不同軸,同樣要補角
+     (0,3000),但這次補角後 4 點都是原本草稿+候選點、沒有共線贅點——直接閉合成
+     4000×3000 矩形,狀態列不該出現「併入直線」提示。 */
+  const p45b = await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+    oc.focus = null; oc.stack = [];
+    await renderObjects();
+    await enterFocus("face", 1);
+    feSetTool("redraw");
+    const key = (k, code) => window.dispatchEvent(new KeyboardEvent("keydown", {key: k, code: code || k, bubbles: true}));
+    const seq = [["4000","ArrowRight"],["3000","ArrowDown"]];
+    for (const [len, dir] of seq) { for (const ch of len) key(ch, "Digit" + ch); key(dir); }
+    key("Enter");
+    await new Promise(r=>setTimeout(r,400));
+    const b = await api("boundary 1");
+    return { verts: b.loops[0].verts.map(v=>v.join(",")).join(" "),
+      status: document.getElementById('status').textContent };
+  })()`);
+  check('P45b 4000→3000↓ Enter(直接同軸補角無併點) → 外環4頂點4000×3000,狀態列不含「併入直線」',
+    p45b.verts === '0,0 4000,0 4000,3000 0,3000' && !p45b.status.includes('併入直線'), p45b);
+
+  console.log('=== P46. 面內角材就地編輯(GEO-194) ===');
+  await setupRemaining([
+    'surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+    'timber 10 27 33 role boundary',
+    'place 10 on 1 at-face e0 +u +n',
+  ]);
+  await eval_(`(async()=>{ await enterFocus('face', 1); })()`);
+  await sleep(250);
+  const p46SvgOrigin = await eval_(`(()=>{const r=document.getElementById('faceEditorSvg').getBoundingClientRect();
+    return {x:r.left,y:r.top};})()`);
+  const p46TimberCenter = async () => {
+    const p = await eval_(`(()=>{const t=fe.timbers.find(x=>x.id===10);
+      const r=feTimberRect(t); return feMmToPx((r[0]+r[2])/2,(r[1]+r[3])/2);})()`);
+    return { x: p46SvgOrigin.x + p.x, y: p46SvgOrigin.y + p.y };
+  };
+  await eval_(`feSetTool('select')`);
+  const p46tc = await p46TimberCenter();
+  await click(p46tc.x, p46tc.y);
+  await sleep(150);
+  await eval_(`fiShowTab('timber')`);
+
+  /* (a) 選取後 #tbEditForm 出現,A/B/dir/side 預填正確(橋接有回傳這幾項) */
+  const p46a = await eval_(`(()=>{
+    const f = document.getElementById('tbEditForm');
+    return f ? {
+      exists: true,
+      A: document.getElementById('tbEditA').value,
+      B: document.getElementById('tbEditB').value,
+      dir: document.getElementById('tbEditDir').value,
+      side: document.getElementById('tbEditSide').value,
+      anchor: document.getElementById('tbEditAnchor').value,
+    } : { exists: false };
+  })()`);
+  check('P46a #tbEditForm 出現且 A/B/dir/side 預填正確(anchor 橋接不回傳、固定留空)',
+    p46a.exists && p46a.A === '27' && p46a.B === '33' && p46a.dir === '+u' &&
+    p46a.side === '+n' && p46a.anchor === '', p46a);
+
+  /* (b) 改 A=40、B=60、side 改 -n、錨點重選 at-face e0(同一邊)→ 套用 →
+     fe.timbers 仍只有一筆 id 10、A/B/side 如預期、fe.sel 仍是 timber 10。
+     不用 clickSelector——它內建 waitIdle() 只等 5 秒,而 mutate() 的 oc.busy 在
+     I8a 對話框開著、等使用者確認的整段期間都是 true,5 秒等不到會直接丟例外。
+     改成:`.click()` 觸發後(不在 eval_ 裡 await 整條 mutate 鏈,那會卡死等一個沒有人
+     會去點的對話框),自己分兩段輪詢——先等對話框(若有)、確認後再等 oc.busy 清空。 */
+  await eval_(`{
+    document.getElementById('tbEditA').value = '40';
+    document.getElementById('tbEditB').value = '60';
+    document.getElementById('tbEditSide').value = '-n';
+    document.getElementById('tbEditAnchor').value = 'at-face e0';
+  }`);
+  await eval_(`document.getElementById('tbEditApply').click()`);
+  for (let i = 0; i < 30 && !(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)); i++) await sleep(100);
+  if (await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)) await eval_(`document.getElementById('impact-confirm').click()`);
+  for (let i = 0; i < 60 && !(await eval_(`!oc.busy`)); i++) await sleep(100);
+  await sleep(300);
+  const p46b = await eval_(`({ timbers: fe.timbers.map(t=>t.id), t10: fe.timbers.find(t=>t.id===10), sel: fe.sel })`);
+  check('P46b 套用 A=40/B=60/side=-n → fe.timbers 只有 id10、欄位如預期、fe.sel 仍是 timber 10',
+    JSON.stringify(p46b.timbers) === '[10]' && p46b.t10 &&
+    p46b.t10.A === 40 && p46b.t10.B === 60 && p46b.t10.side === '-n' &&
+    p46b.sel && p46b.sel.kind === 'timber' && p46b.sel.id === 10, p46b);
+
+  /* (c) Ctrl+Z → mutate 的三行(delete/timber/place)是同一個 history 群組,單步復原回 27×33 */
+  await pressKey('z', 'KeyZ', 90, 2);
+  await sleep(300);
+  const p46c = await eval_(`(async()=>{ await feLoadGuides();
+    return fe.timbers.find(t=>t.id===10); })()`);
+  check('P46c Ctrl+Z 一次 → 回 A=27/B=33(mutate history 群組單步 undo)',
+    p46c && p46c.A === 27 && p46c.B === 33, p46c);
+
+  /* (d) 填 A=0 → 套用被前端擋下(不送指令),toast 出現,fe.timbers 不變 */
+  await eval_(`fiShowTab('timber')`);
+  const p46d = await eval_(`(async()=>{
+    document.getElementById('tbEditA').value = '0';
+    document.getElementById('tbEditAnchor').value = 'at-face e0';
+    const ok = await feTimberEditApply(10);
+    const toasts = [...document.querySelectorAll('#toastRegion .toast')];
+    return { ok, A: fe.timbers.find(t=>t.id===10).A,
+      toast: toasts.length ? toasts[toasts.length-1].textContent : '' };
+  })()`);
+  check('P46d A=0 套用被擋、toast 出現、fe.timbers 不變',
+    p46d.ok === false && p46d.A === 27 && p46d.toast.includes('正整數'), p46d);
+
+  /* (e) 橋接不回傳錨點(已於前面確認 P46a),改錨點驗證無從進行——略過,log 說明 */
+  console.log('P46e 橋接未回傳錨點,略過');
   }
 
   chrome.kill();

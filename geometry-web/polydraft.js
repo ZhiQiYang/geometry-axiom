@@ -208,6 +208,13 @@ function dedupeLoop(pts) {
   return cur;
 }
 
+/* GEO-193:草稿 pts 裡「有畫過、但最終輸出裡沒有」的頂點(依座標比對)。
+   用來在補角把使用者剛畫的轉折併掉(與相鄰邊共線而被 dedupeLoop 吃掉)時提示,
+   不影響任何判合法邏輯——純粹是 originalPts 與 outputPts 的座標差集。 */
+function droppedVertices(originalPts, outputPts) {
+  return originalPts.filter((p) => !outputPts.some((q) => samePoint(p, q)));
+}
+
 /* shoelace 有向面積的兩倍(整數運算,不會有浮點誤差)。 */
 function ringArea2(ring) {
   let area2 = 0;
@@ -497,7 +504,7 @@ function tryClose(state, opts) {
        其餘一律不得接觸。 */
     const verdict = evaluateClosedRing(pts.slice(), [[L, F]], existingEdges);
     if (verdict.code) return { ok: false, error: { code: verdict.code, msg: verdict.msg } };
-    return { ok: true, pts: verdict.pts };
+    return { ok: true, pts: verdict.pts, dropped: droppedVertices(pts, verdict.pts) };
   }
 
   /* 補角:兩個候選各自組出完整 raw 環,走同一道總驗證;先試偏好候選(§5.A.1.7 規則 2),
@@ -510,7 +517,7 @@ function tryClose(state, opts) {
   for (const idx of order) {
     const cand = candidates[idx];
     const verdict = evaluateClosedRing(pts.concat([cand]), [[L, cand], [cand, F]], existingEdges);
-    if (!verdict.code) return { ok: true, pts: verdict.pts };
+    if (!verdict.code) return { ok: true, pts: verdict.pts, dropped: droppedVertices(pts, verdict.pts) };
     /* 容量/座標範圍不是「這個轉折撞到東西」,換另一個轉折也救不了,照實回報,
        不要收斂成 NO_CORNER(那會像 G1 一樣答非所問)。 */
     if ((verdict.code === "TOO_MANY" || verdict.code === "OUT_OF_RANGE") && !capacity) {

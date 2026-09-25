@@ -226,9 +226,16 @@ state,否則永遠是 `NO_DIRECTION`——見 `app.js::objPolyPreviewMove`)。
    4. 去共線後 shoelace 面積 `=== 0` → `DEGENERATE`(防禦;非自交的正交簡單環面積恆不為 0)。
 5. 通過 → 去共線(等同既有 `feDedupe`)後的點列就是輸出。
 
-輸出:`{ ok: true, pts: number[][] } | { ok: false, error: { code, msg } }`。**不修改
-傳入的 state**,呼叫端在 `ok: true` 後才自行決定何時真的送出核心(`objEmitFace`/
+輸出:`{ ok: true, pts: number[][], dropped: number[][] } | { ok: false, error: { code, msg } }`。
+**不修改傳入的 state**,呼叫端在 `ok: true` 後才自行決定何時真的送出核心(`objEmitFace`/
 `feRedrawClose`)並清空自己持有的 state。
+
+`dropped`(GEO-193):`state.pts` 裡有、但最終輸出 `pts` 裡沒有的頂點(依座標比對),
+純粹是輸出前 `dedupeLoop` 拿掉的共線贅點裡「使用者實際畫過」的那些——不含新增的補角候選點
+(補角候選本來就不在 `state.pts` 裡)。用途:自動補角可能把使用者剛畫出來的一個轉折(缺口)
+與相鄰邊併成同一條直線,幾何上這與「使用者故意少畫最後一段、想要矩形」無法區分,所以
+`tryClose` 本身**不擋**,只誠實回報被併掉的點,由呼叫端(app.js)決定要不要提示使用者。
+沒有任何點被併掉時 `dropped: []`。
 
 **形狀守恆保證**(GEO-178,`polydraft_test.js::assertShapePreserved` 對所有手寫與隨機
 案例逐一驗):`ok: true` 時回傳的 `pts` 與「raw 草稿 + 閉合段」是同一個幾何——shoelace

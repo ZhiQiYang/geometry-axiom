@@ -663,6 +663,41 @@ test("tryClose：共線頂點於閉合前被移除", () => {
 });
 
 /* ---------------------------------------------------------------- */
+/* Q2. tryClose — dropped（GEO-193，補角把剛畫的轉折併掉要提示）        */
+/* ---------------------------------------------------------------- */
+
+test("tryClose（GEO-193）：缺口案例——補角把使用者畫的轉折併成直線 → dropped=[[3000,1000]]", () => {
+  // 草稿 (0,0)(4000,0)(4000,1000)(3000,1000)，Enter 補 (0,1000) 閉合成 4000×1000 矩形，
+  // (3000,1000) 與相鄰兩點共線被去共線吃掉——這正是「缺口靜默消失」的案例，只提示不擋。
+  const pts = [[0, 0], [4000, 0], [4000, 1000], [3000, 1000]];
+  const r = tryCloseChecked({ pts, cur: null, typed: "", closeReady: true, error: null },
+    { existingEdges: [] }, "GEO-193 缺口");
+  assert.strictEqual(r.ok, true);
+  assert.deepStrictEqual(r.pts.slice().sort(), [[0, 0], [0, 1000], [4000, 0], [4000, 1000]].sort());
+  assert.deepStrictEqual(r.dropped, [[3000, 1000]]);
+});
+
+test("tryClose（GEO-193）：少畫最後一段案例——同樣併角，即使結果是使用者想要的矩形也照樣回報 dropped", () => {
+  // 草稿 (0,0)(4000,0)(4000,3000)(2000,3000)，Enter 補 (0,3000) 閉合成 4000×3000 矩形；
+  // 這是使用者故意少畫最後一段、想要的結果，但幾何上無法與「缺口案例」區分，
+  // 所以 dropped 照樣回報(3000,1000)... 這裡是 (2000,3000)，由呼叫端決定要不要提示。
+  const pts = [[0, 0], [4000, 0], [4000, 3000], [2000, 3000]];
+  const r = tryCloseChecked({ pts, cur: null, typed: "", closeReady: true, error: null },
+    { existingEdges: [] }, "GEO-193 少畫一段");
+  assert.strictEqual(r.ok, true);
+  assert.deepStrictEqual(r.pts.slice().sort(), [[0, 0], [0, 3000], [4000, 0], [4000, 3000]].sort());
+  assert.deepStrictEqual(r.dropped, [[2000, 3000]]);
+});
+
+test("tryClose（GEO-193）：直接同軸閉合（不補角）→ dropped=[]", () => {
+  const pts = [[0, 0], [1000, 0], [1000, 800], [0, 800]];
+  const r = tryCloseChecked({ pts, cur: null, typed: "", closeReady: true, error: null },
+    { existingEdges: [] }, "GEO-193 直接閉合");
+  assert.strictEqual(r.ok, true);
+  assert.deepStrictEqual(r.dropped, []);
+});
+
+/* ---------------------------------------------------------------- */
 /* R. 三種閉合觸發（點回起點 12px / Enter / 雙擊）得到同一結果          */
 /* ---------------------------------------------------------------- */
 

@@ -174,7 +174,7 @@
 | `#feLenInput` | 鍵入長度浮動框(RC P2:重畫中數字鍵) | `hidden`、`value`、`.style.left/top` |
 | `[data-edge-len]` | 邊長清單輸入(RC P2:`data-edge-len="<i>"`) | `value` + `change` 事件 |
 | `#tbAnchor` `#tbSelector` `#tbA` `#tbB` `#tbDir` `#tbSide` | 角材引用、截面與方向；長度由引擎推導 | `value` 讀寫 |
-| `#tbSelected` / `#tbSelDelete` | 角材頁頂端「已選角材」摘要與刪除鈕(GEO-191;`fe.sel.kind==="timber"` 時才出現) | 存在性、textContent、`.click()` |
+| `#tbSelected` / `#tbEditForm` / `#tbEditA` / `#tbEditB` / `#tbEditDir` / `#tbEditSide` / `#tbEditRole` / `#tbEditPri` / `#tbEditAnchor` / `#tbEditSelector` / `#tbEditApply` / `#tbSelDelete` | 角材頁頂端「已選角材」可編輯表單(GEO-191 唯讀摘要 → GEO-194 可編輯;`fe.sel.kind==="timber"` 時才出現)。A/B/方向/側/角色可預填(橋接有回傳);`#tbEditAnchor`/`#tbEditSelector` 橋接不回傳現有值,固定不預填(第一個 `<option value="">` 佔位) | 存在性、`value`、`.click()` |
 | `.face-layer-row[data-timber-id]` | 左欄角材列(GEO-191;`.sel` 同步畫布選取,hover/click 有掛鉤) | `dataset.timberId`、`.sel`、mouseenter/mouseleave/click |
 | `#gridU` `#gridV` `#gridCreate` | 網格建立表單(Q3) | `value`、`.click()`、游離面 disabled |
 | `.face-timber` / `.face-grid-line` | 面內角材足跡/網格線(Q3;GEO-191 角材矩形加 `data-face-hit`、`.sel`/`.hover`) | `#faceEditorRoot` 內計數 |
@@ -203,6 +203,7 @@
 | `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews`、`fe.sel/op/feats/selFeat`(GEO-188;`fe.sel={kind:"timber",id}` GEO-191)、`fe.hoverTimber`(GEO-191) |
 | `feStartOp` / `feApplyOp` / `feCancelOp` / `feRectBool` | 形狀編輯(GEO-188):就地操作與正交矩形布林 | 測試直接呼叫 `feCancelOp()`;`feRectBool(loops,op,rect)` 純函式 |
 | `feDeleteTimber` | 刪角材共用路徑(GEO-191;`delete timber <id>` + 清選取/重載) | 測試可直接呼叫 `feDeleteTimber(id)` |
+| `feTimberEditApply` | 面內角材就地編輯(GEO-194;同一 id「刪掉重放」一筆 `mutate`:`delete timber <id>`→`timber <id> …`→`place <id> on …`,失敗 `mutate` 自己回滾+toast、成功後選取留在同一 id) | 測試可直接呼叫 `feTimberEditApply(id)`(需先填好 `#tbEditForm` 欄位) |
 | `feActionsFor` / `feRunAction` | 浮動列/右鍵選單共用的動作清單與處理器(GEO-192 C) | 測試比對 `#feActionBar`/`#feCtxMenu` 的 `[data-fe-act]` 清單逐一相同 |
 | `feHandleDblClick` / `feDblOpenFor` | 雙擊的選取+開面板邏輯(GEO-192 D,由 `fevp` 的 `pointerdown` 自己判斷雙擊後呼叫,不掛原生 `dblclick`) | 不建議測試直接呼叫,走真滑鼠雙擊(見 cdp_test §P44 說明) |
 | `feApplyGhostDrag` / `fePinchRect` | 拖預覽矩形邊(GEO-192 B)/Alt 拖頂點捏缺口(GEO-192 A)的純幾何計算 | 純函式,不碰 DOM |
@@ -342,6 +343,13 @@
 > 對應斷言在 `cdp_test.js` §P33(外環邊清單)、§P35(面內 diff#12)。舊版面內手寫軸鎖函式
 > `feDedupe`/`feRedrawClose`/`feRedrawApplyLen` 已移除,由 `feDraftTryClose`/
 > `feCommitDraft`/`feDraftApplyLen` 取代。
+>
+> **GEO-193**:`feDraftTryClose` 呼叫 `PolyDraft.tryClose` 成功後,把回傳的 `dropped`
+> 陣列轉交 `feCommitDraft(pts, dropped)`;`emitBoundary` 成功、`dropped.length>0` 時
+> `toast`+`setStatus` 提示「已閉合;補角時 (x,y)、(x,y) 併入直線——若要保留該轉折,
+> Ctrl+Z 後把下一段畫完再閉合」(座標依 `dropped` 順序列出、用「、」隔開)。這是提示,
+> 不是阻擋:自動補角把使用者剛畫的轉折併成直線,與「使用者故意少畫最後一段、想要矩形」
+> 幾何上無法區分,不改變任何閉合結果、不彈對話框。對應斷言 `cdp_test.js` §P45。
 
 | id / class | 歸屬 | 契約 |
 |---|---|---|
@@ -450,9 +458,8 @@
   畫布該矩形加 `.sel`;左欄該列(`.face-layer-row[data-timber-id="<id>"]`)同步加 `.sel`。
   `#feActionBar` 浮出,只有一顆 `[data-fe-act="delete"]`;位置沿用 `feSelAnchor`/`fePlaceOverlays`
   既有擺法(矩形中心上方)。
-- 角材頁(`fiShowTab("timber")`)頂端出現 `#tbSelected`:「已選角材 `<id>`」+ 宣告摘要
-  (`L×A×B`、`@(u,v)`、`dir/side`、`role`——欄位照 `references` 指令 `timbers[].geometry` 有什麼就顯示什麼,
-  見 `feTbSelectedHTML()`)+ `#tbSelDelete` 刪除鈕,走 `feDeleteTimber(id)` 共用路徑
+- 角材頁(`fiShowTab("timber")`)頂端出現 `#tbSelected`:「已選角材 `<id>`」+ 可編輯表單
+  `#tbEditForm`(GEO-194,見下節)+ `#tbSelDelete` 刪除鈕,走 `feDeleteTimber(id)` 共用路徑
   (`delete timber <id>` 走 `emitLine`/mutate,可 Ctrl+Z)。
 - 左欄角材列:`mouseenter`/`mouseleave` 切 `fe.hoverTimber` → 畫布矩形加/清 `.hover`;
   點列(非 `.face-layer-del` ✕ 鈕)= 與畫布點選相同效果(選取+高亮+同步 `renderFaceInspector`)。
@@ -500,3 +507,40 @@
   面板由 `feDblOpenFor(sel)` 決定:外環邊 → `notch`;外環凸角 → `corner`;面內空白 →
   `hole`(該點為選取點);角材 → `fiShowTab("timber")`。拖曳中(`fe.drag`)不處理;
   參考線/面外空白無作用。
+
+## GEO-194 面內角材就地編輯(cdp_test §P46)
+
+**先查明的事實**(實作前必讀,免得表單預填假資料):`fe.timbers` 來自 `references`
+橋接指令(`geometry-web/reference_bridge.inc::cmd_references`,經 `web_bridge.c`
+unity-build 進 `current_geometry.c`),對每支角材回傳 `{id, role, geometry:{surface,
+centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geometry`)。
+**沒有 anchor/selector(至-face/at-line 的具體引用式)、也沒有 priority**——這兩者
+`place`/`timber` 的原始宣告參數,核心目前不回吐。`app.js::feLoadGuides()` 把
+`geometry` 展開進每個 `fe.timbers[]` 元素(`{id,role,...t.geometry,L:t.geometry.length}`)。
+
+- 角材頁 `#tbSelected` 區塊(GEO-191 唯讀摘要)改成可編輯表單 `#tbEditForm`(見上方
+  「必須保留的 DOM id」表):A(`#tbEditA`)、B(`#tbEditB`)、方向(`#tbEditDir`,
+  `+u/-u/+v/-v`)、側(`#tbEditSide`,`+n/-n`)、角色(`#tbEditRole`)+ priority
+  (`#tbEditPri`,只在 `role==="custom"` 時顯示,同 `tbPlace` 表單的既有連動)——這五組
+  橋接有回傳,`feTbSelectedHTML(bid)` 直接預填目前值。定位引用(`#tbEditAnchor`)+
+  選段(`#tbEditSelector`)重用放置表單的選項來源 `referenceAnchorOptions(bid, surf)`,
+  但**固定不預填**(下拉第一個選項是空字串佔位「橋接不回傳現有錨點,請重選」)——
+  這是本票故意的行為,不是漏做,理由見上段「先查明的事實」。
+- 按鈕 `#tbEditApply`「套用變更」→ `feTimberEditApply(id)`:驗證同 `tbPlace`(A/B 正整數、
+  custom 要 priority ≥1、錨點必選,驗證失敗 `feMarkInvalid` 標紅對應欄位、不送指令),
+  通過後組一筆 `mutate([...])` 批次、**同一個 id**:`delete timber <id>` →
+  `timber <id> A B role …` → `place <id> on <sid> anchor selector dir side`。
+  `mutate()` 的 `history-begin`/`history-end` 群組本身就是原子的(任一行失敗核心整組
+  回滾、`abort` 冪等驗證回滾),**不需要**額外的 dump/undo 保底。成功後
+  `feLoadGuides()` + 選取留在同一 id(`fe.sel={kind:"timber",id}`)+
+  `renderFaceLayers()`/`drawFaceEditor()`/`renderFaceInspector()`;失敗
+  `mutate()` 自己 `toast` 原文、不動狀態(`feTimberEditApply` 直接 return false)。
+- 影響預覽:刪除唯一的 `role boundary` 角材或改動被引用的邊,`delete timber`/`place`
+  這兩行任一觸發 I8a 時,`mutate()` 內部逐行呼叫的 `api()` 本來就會攔截 `result.preview`
+  開 `confirmReferenceImpact` 對話框並等待使用者確認/取消,`feTimberEditApply` 不必
+  另外處理,直接吃 `mutate()` 的回傳值即可(不繞)。
+- `Ctrl+Z` 一次回到編輯前:因為 `mutate` 的三行是同一個 history 群組,單步 undo 涵蓋
+  整批(delete+timber+place 一次復原)。
+- 表單驗證與 `tbPlace`(放置表單)一致:A/B 正整數、custom 要 priority、錨點必選。
+- 角材列/畫布高亮邏輯不變(GEO-191 既有 `.sel`/`hover` 機制,`feTimberEditApply`
+  完全不碰)。
