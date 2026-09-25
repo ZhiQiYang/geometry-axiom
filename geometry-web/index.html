@@ -313,6 +313,9 @@
             <button type="button" data-axis="u">u 線</button>
             <button type="button" data-axis="v">v 線</button>
           </div>
+          <!-- GEO-169 形狀編輯:選邊/角後的浮動操作列 + 就地參數面板(內容由 feSyncOverlays 產生) -->
+          <div id="feActionBar" class="fe-action-bar" role="toolbar" aria-label="形狀操作" hidden></div>
+          <div id="feOpPanel" class="fe-op-panel" role="dialog" aria-label="形狀操作參數" hidden></div>
           <div class="face-canvas-controls" aria-label="面內縮放控制">
             <button id="feZoomOut" class="icon-button" type="button" title="縮小"><span data-icon="minus"></span></button>
             <button id="feZoomLevel" class="zoom-level" type="button" title="回到 100%">100%</button>
@@ -335,6 +338,7 @@
         <aside class="inner-panel face-inspector-panel">
           <nav id="faceInspectorTabs" class="fi-tabs" aria-label="檢視器分頁">
             <button type="button" class="fi-tab active" data-fi-tab="prop">屬性</button>
+            <button type="button" class="fi-tab" data-fi-tab="shape">形狀</button>
             <button type="button" class="fi-tab" data-fi-tab="timber">角材</button>
             <button type="button" class="fi-tab" data-fi-tab="grid">網格</button>
           </nav>
@@ -399,7 +403,7 @@
       <div><span id="workspaceToolStatus">工具：選取</span>
       <span class="status-divider"></span>
       <span id="workspaceSelectionStatus"></span></div>
-      <div class="ws-kbd-hints"><kbd>V</kbd> 選取 <kbd>L</kbd> 線 <kbd>R</kbd> 開口 <kbd>I</kbd> 凹口 <kbd>T</kbd> 角材 <kbd>E</kbd> 外環 <kbd>F</kbd> 全圖 <kbd>Esc</kbd> 返回</div>
+      <div class="ws-kbd-hints"><kbd>V</kbd> 選取 <kbd>L</kbd> 線 <kbd>R</kbd> 開口 <kbd>I</kbd> 凹口 <kbd>T</kbd> 角材 <kbd>E</kbd> 外環 <kbd>Enter</kbd> 套用 <kbd>F</kbd> 全圖 <kbd>Esc</kbd> 返回</div>
     </footer>
   </section>
 

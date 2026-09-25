@@ -117,6 +117,7 @@ GEOMETRY_TEST_SCREENSHOT=/tmp/phase1-shell.png \
 | `GEOMETRY_CHROME_PROFILE` | `--user-data-dir` 位置 |
 | `GEOMETRY_CHROME_FLAGS` | 追加旗標，空白分隔；WSL 內以 root 跑需要 `--no-sandbox` |
 | `GEOMETRY_TEST_URL` | 測試頁面網址（預設 `http://localhost:8765/`） |
+| | **Chromium 141+ 在 Linux 容器內請用 `http://127.0.0.1:<port>/`**，並在 `GEOMETRY_CHROME_FLAGS` 加 `--disable-features=HappyEyeballsV3`：新版 HttpStreamPool 對 `localhost` 每次先試 `::1` 失敗再退 `127.0.0.1`，約 600 次請求後 socket pool 會卡死（P5b 永遠等不到 `pick` 回應）。2026-09-25 以 netlog 確認，與應用程式碼無關。 |
 | `GEOMETRY_TEST_SCREENSHOT` | 截圖輸出路徑；**在 WSL 內跑時建議指到 `/tmp`**，否則會用
   Linux 字型渲染覆寫掉 `docs/screens/phase1-shell.png` 這張文件用參考圖 |
 
@@ -160,13 +161,29 @@ python serve.py 8765
 
 - 主畫布：`Ctrl+Z`/`Ctrl+Y`/`Ctrl+Shift+Z` 復原重做、`Esc`、`v` 選取、`h` 平移、`r` 矩形、`p` 多邊形、`f` 全部顯示、`1` 縮放 100%、`空白`暫時平移、`/` 聚焦搜尋。
 - 面內工作區：`Esc`、`v`/`l`/`r`/`h`/`i` 凹口/`t` 角材/`e` 重畫外環、`f` fit、`1` 縮放 100%、`空白`暫時平移。
-- `Esc` 實際階梯（單次按）：輸入框聚焦中 → 留給原生（不關工作區）；開著的選單 → 收；開著的對話框 → 關；面內鍵入長度暫存 → 清；面內方向小選單 → 收；進行中草稿 → 清並提示「再按 Esc 返回」；以上皆非 → 返回上一層焦點/世界。
+- 面內工作區形狀編輯（GEO-169）：select 下單擊邊/凸角 → 浮動列選「凹口／外凸／推拉／切角／F⇄X」；面板內 `Enter` 套用、`Esc` 關面板。
+- `Esc` 實際階梯（單次按）：輸入框聚焦中 → 留給原生（不關工作區）；開著的選單 → 收；開著的對話框 → 關；面內鍵入長度暫存 → 清；面內方向小選單 → 收；面內就地操作面板 → 關；面內有選取的邊/角 → 清；進行中草稿 → 清並提示「再按 Esc 返回」；以上皆非 → 返回上一層焦點/世界。
 
 ## 架構約定
 
 - C 端（`../current_geometry.c`、`web_bridge.c`）改動須重跑 `build.bat` 並過兩套測試。
 - 多行變更走 `mutate(lines)`：包成 `history-begin`/`history-end` 群組 = 一步 undo（L2）；群組內任一行失敗核心自動整組回滾不留半套，前端再送 `history-abort` 驗證，回滾失敗 toast「回滾失敗，狀態可能不一致」。
 - 參考線：使用 bridge `references` 的來源、世界位置／方向與裁切段；不得從顯示數值反推引用定義。
+
+## 形狀編輯（GEO-169，`docs/uiux-review/形狀編輯提案.dc.html` 方案 A + B）
+
+- **邊優先（A）**：select 工具單擊外環邊 → 邊亮起、浮動列「凹口／外凸／推拉／F⇄X」；單擊凸角 → 「切角」。
+  選操作後就地面板填「定位（從左／置中／從右）＋距離、寬、深」（推拉：往內／往外＋距離；切角：a、b），
+  畫布即時畫紅（減）／綠（加）預覽矩形，`Enter` 套用、`Esc` 取消。拖邊仍是推拉。
+- **幾何**：`feRectBool(loops, "sub"|"add", rect)` 純函式做正交多邊形對矩形的布林（頂點座標切格 → 取邊界環），
+  結果一律走 `boundary` 重宣告交易，核心 I2 守門；面消失或拆成兩片在前端就擋下（toast）。
+  新邊 fixity：與舊邊共線重疊者繼承，其餘 FIXED（對齊公理層 R7「套用產生的新邊 fixity 一律 FIXED」）；
+  新環的走向與起點盡量沿用舊環，沒被動到的邊保住 `e<i>` 編號。
+  會動到被角材引用的邊時，核心照 I8a 回 `preview`，`api()` 照舊開影響預覽對話框，確認才落地。
+- **形狀頁（B）**：檢視器「形狀」分頁列出本次工作階段套用的特徵（寬、高、距左／右、距上／下，可改起算邊），
+  改數字即落地（反向布林還原再正向套用）、可鏡射、可刪除（反向布林）。
+  **特徵堆疊只存在記憶體，不寫進 .scene**——核心只認最終輪廓；每次邊界變更後逐筆驗活，對不上的自動剔除。
+- 舊的「凹口」工具（點邊開對話框）、「開口」拖矩形、「外環」重畫與形狀庫都保留。
 
 ## RC 柱樑與投影套用（RC-POLYGON-PLAN）
 

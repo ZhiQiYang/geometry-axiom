@@ -38,7 +38,11 @@ const ICON_PATHS = {
   column: '<rect x="7" y="4" width="10" height="10"/><path d="M7 14v6M17 14v6M4 20h16"/>',
   beam: '<path d="M3 9h18v6H3z"/><path d="M3 12h18"/>',
   grid: '<path d="M4 4v16M12 4v16M20 4v16M4 8h16M4 16h16"/>',
-  folder: '<path d="M3.5 6.5h6l2 2.5h9v10.5h-17z"/>'
+  folder: '<path d="M3.5 6.5h6l2 2.5h9v10.5h-17z"/>',
+  /* GEO-169 形狀編輯 */
+  extend: '<path d="M4 19V9h6V5h4v4h6v10z"/>',
+  corner: '<path d="M4 19V5h10v6h6v8z"/>',
+  push: '<path d="M4 5h11v14H4z"/><path d="M19 8v8M17 12h4"/>'
 };
 function icon(name) {
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">${ICON_PATHS[name] || ""}</svg>`;
@@ -776,6 +780,9 @@ window.addEventListener("keydown", async e => {
         /* 參考線方向小選單開著 → 先收 */
         const pk = $("feGuidePick");
         if (pk && !pk.hidden) { pk.hidden = true; return; }
+        /* GEO-169:就地操作面板 → 先關;再一次 Esc 取消選取 */
+        if (fe.op) { feCancelOp(); return; }
+        if (fe.sel) { fe.sel = null; feSyncOverlays(); drawFaceEditor(); return; }
         /* 進行中草稿 → 第一次 Esc 清草稿;否則一次離開工作區 */
         if (fe.drag || fe.work) {
           fe.drag = null; fe.panHold = null; fe.work = null;
@@ -817,6 +824,7 @@ window.addEventListener("keydown", async e => {
     const map = { v: "select", l: "guide", r: "hole", h: "pan", i: "insert",
                   t: "timber", e: "redraw" };
     if (map[k]) { feSetTool(map[k]); return; }
+    if (k === "enter" && fe.op) { e.preventDefault(); feApplyOp(); return; }
     if (k === "enter") { feRedrawClose(); return; }
     if (k === "f" && oc.edit && oc.bmap[oc.edit.bid]) {
       feFit(loopsBBox(oc.bmap[oc.edit.bid])); return;
@@ -1535,7 +1543,11 @@ const fe = {
   projViews: new Set(),
   lenBuf: "",              /* Phase 2 鍵入長度暫存 */
   notch: null,             /* Phase 2 凹口對話框待處理上下文 */
-  fiTab: "prop",           /* B2:檢視器分頁 prop|timber|grid */
+  fiTab: "prop",           /* B2:檢視器分頁 shape|prop|timber|grid */
+  sel: null,               /* GEO-169:選取 {kind:"edge",loop,i} | {kind:"corner",i} */
+  op: null,                /* GEO-169:就地操作 {type,target,edge|corner,params} */
+  feats: {},               /* GEO-169:bid → 本次工作階段套用的特徵 [{id,type,op,rect,ax,ay}] */
+  selFeat: null, hoverFeat: null,
 };
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
@@ -1568,6 +1580,7 @@ function feApply() {
     `translate(${fe.panX},${fe.panY}) scale(${fe.zoom})`);
   const zl = $("feZoomLevel");
   if (zl) zl.textContent = Math.round(fe.zoom * 100) + "%";
+  fePlaceOverlays();
 }
 /* B4:縮放變動後要重選格距 → transform + 重繪 */
 function feApplyZoom() { feApply(); drawFaceEditor(); }
@@ -1599,6 +1612,7 @@ async function openFaceWorkspace(bid) {
   }
   fe.tool = "select"; fe.drag = null; fe.panHold = null; fe.work = null;
   fe.projOpen = false; fe.projViews = new Set();
+  fe.sel = null; fe.op = null; fe.selFeat = null; fe.hoverFeat = null;
   feFit(loopsBBox(oc.bmap[bid]));
   await feLoadGuides();
   feSetTool("select");
@@ -2178,6 +2192,7 @@ function feSetTool(t) {
     drawFaceEditor();
   }
   fe.tool = t;
+  fe.sel = null; fe.op = null; feSyncOverlays();
   const pk = $("feGuidePick"); if (pk) pk.hidden = true;
   for (const b of document.querySelectorAll("[data-face-tool]"))
     b.classList.toggle("active", b.dataset.faceTool === t);
@@ -2321,10 +2336,31 @@ function drawFaceEditor() {
          (邊中點恰在 polygon 邊界上,不關掉會被面蓋住,邊永遠點不到) */
       "pointer-events": "none" }, root);
     for (let i = 0; i < lp.verts.length; ++i) {
-      el("circle", { cx: lp.verts[i][0], cy: lp.verts[i][1], r: 5 / z,
+      const selC = fe.sel && fe.sel.kind === "corner" && li === 0 && fe.sel.i === i;
+      el("circle", { cx: lp.verts[i][0], cy: lp.verts[i][1], r: (selC ? 7 : 5) / z,
         "data-face-hit": `v:${li}:${i}`,
-        class: "face-vertex-handle" }, root);
+        class: "face-vertex-handle" + (selC ? " selected" : "") }, root);
     }
+  }
+  /* GEO-169:選取的邊、操作預覽矩形、形狀頁特徵高亮 */
+  if (fe.sel && fe.sel.kind === "edge" && loops[fe.sel.loop]) {
+    const vs = loops[fe.sel.loop].verts, a = vs[fe.sel.i], b = vs[(fe.sel.i + 1) % vs.length];
+    if (a && b) el("line", { x1: a[0], y1: a[1], x2: b[0], y2: b[1], class: "face-edge-sel" }, root);
+  }
+  for (const f of feFeats()) {
+    const hi = f.id === fe.selFeat ? "sel" : f.id === fe.hoverFeat ? "hover" : null;
+    if (!hi) continue;
+    el("rect", { x: f.rect[0], y: f.rect[1], width: f.rect[2] - f.rect[0], height: f.rect[3] - f.rect[1],
+      class: "fe-feat-hi " + hi, "data-feat-hi": f.id }, root);
+  }
+  const opRect = fe.op ? feOpRect() : null;
+  if (opRect) {
+    const kind = feOpKind();
+    el("rect", { x: opRect[0], y: opRect[1], width: opRect[2] - opRect[0], height: opRect[3] - opRect[1],
+      class: "fe-ghost " + kind, "data-fe-ghost": kind }, root);
+    el("text", { x: (opRect[0] + opRect[2]) / 2, y: opRect[1] - 6 / z, "font-size": 11 / z,
+      "text-anchor": "middle", class: "fe-dim", fill: kind === "add" ? "#1d7a4e" : "#c2414f" }, root)
+      .textContent = `${opRect[2] - opRect[0]} × ${opRect[3] - opRect[1]}`;
   }
   /* B5:外環邊中點長度標註(11.5px 白底,法向朝外偏移) */
   if (loops.length) {
@@ -2464,6 +2500,7 @@ function drawFaceEditor() {
         Math.max(Math.abs(q[0] - p[0]), Math.abs(q[1] - p[1]));
     }
   }
+  fePlaceOverlays();
 }
 
 async function feDown(pt, ev) {
@@ -2573,7 +2610,14 @@ async function feDown(pt, ev) {
   }
   /* select：data-face-hit 命中 v:<loop>:<i> / e:<loop>:<i> / g:<id>:<axis> */
   const t = ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
-  if (!t) return;
+  if (!t) {
+    /* GEO-169:點空白 = 取消選取、關就地操作 */
+    if (fe.sel || fe.op || fe.selFeat != null) {
+      fe.sel = null; fe.op = null; fe.selFeat = null;
+      feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
+    }
+    return;
+  }
   const [k, a, b] = t.dataset.faceHit.split(":");
   if (k === "g") {
     fe.drag = { kind: "guide", id: +a, axis: b, moved: false };
@@ -2663,6 +2707,7 @@ async function feAfterChange() {
     if (b.ok) oc.bmap[bid] = b.loops;
   }
   await feLoadGuides();
+  feAfterShapeChange();
   drawFaceEditor();
   renderFaceLayers();
   renderFaceInspector();
@@ -2720,14 +2765,16 @@ async function feUp(pt) {
   const work = fe.work, moved = d.moved;
   fe.work = null;
   if (!moved) {
-    /* Phase 2 單擊邊(無位移)= 切換該邊 fixity */
-    if (d.kind === "edge" && work) {
-      work[d.loop].fixity[d.index] = work[d.loop].fixity[d.index] ? 0 : 1;
-      if (await emitBoundary(e.bid, work)) await feAfterChange();
-      else drawFaceEditor();
-      return;
-    }
-    drawFaceEditor(); return;
+    /* GEO-169(方案 A):單擊邊 = 選取該邊,浮出「凹口／外凸／推拉／F⇄X」;
+       單擊外環凸角 = 選取該角,浮出「切角」。(Phase 2 的「單擊切 fixity」移到浮動列) */
+    const loops = oc.bmap[e.bid];
+    fe.op = null; fe.selFeat = null;
+    if (d.kind === "edge") fe.sel = { kind: "edge", loop: d.loop, i: d.index };
+    else if (d.loop === 0 && loops && feCorners(loops[0].verts)[d.index]?.convex)
+      fe.sel = { kind: "corner", i: d.index };
+    else fe.sel = null;
+    feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
+    return;
   }
   if (await emitBoundary(e.bid, work)) await feAfterChange();
   else drawFaceEditor();
@@ -2851,6 +2898,553 @@ function shapeOutline(kind, W, D, a, b) {
   /* T:頂部橫帶深 a、中央肋寬 b */
   const x0 = (W - b) / 2, x1 = (W + b) / 2;
   return [[0,0],[W,0],[W,a],[x1,a],[x1,D],[x0,D],[x0,a],[0,a]];
+}
+
+/* ================= 形狀編輯(GEO-169:方案 A 邊優先 + B 形狀頁) =================
+   幾何:正交多邊形對矩形的減/加布林(feRectBool),純函式、不碰 DOM;
+   結果一律走 emitBoundary 交易——核心 I2 守門、I8a 影響預覽照舊由 api() 接手。
+   特徵堆疊 fe.feats 只存在本次工作階段(核心只認最終輪廓,不寫進 .scene);
+   每次邊界變更後用 feFeatAlive 逐筆驗活,對不上現況的特徵直接剔除。 */
+const FE_OPS = {
+  notch:  { name: "凹口", op: "sub", icon: "notch",  target: "edge",   desc: "邊上往內切一塊" },
+  extend: { name: "外凸", op: "add", icon: "extend", target: "edge",   desc: "邊上往外長一塊" },
+  push:   { name: "推拉", op: null,  icon: "push",   target: "edge",   desc: "整條邊往內/外平移" },
+  corner: { name: "切角", op: "sub", icon: "corner", target: "corner", desc: "凸角切掉 a×b" },
+};
+const FE_SIDE_ZH = { left: "左", right: "右", top: "上", bottom: "下" };
+let feFeatSeq = 1;
+
+function fePtInLoop(x, y, vs) {
+  let ins = false;
+  for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+    const A = vs[i], B = vs[j];
+    if ((A[1] > y) !== (B[1] > y) &&
+        x < (B[0] - A[0]) * (y - A[1]) / (B[1] - A[1]) + A[0]) ins = !ins;
+  }
+  return ins;
+}
+function feInsideVerts(vl, x, y) {
+  if (!vl.length || !fePtInLoop(x, y, vl[0])) return false;
+  for (let k = 1; k < vl.length; ++k) if (fePtInLoop(x, y, vl[k])) return false;
+  return true;
+}
+function feLoopArea(vs) {
+  let a = 0;
+  for (let i = 0, j = vs.length - 1; i < vs.length; j = i++)
+    a += vs[j][0] * vs[i][1] - vs[i][0] * vs[j][1];
+  return a / 2;
+}
+/* 去重複點與共線點(核心 I2 拒絕共線頂點) */
+function feSimplifyLoop(pts) {
+  let out = pts.filter((p, i) => {
+    const q = pts[(i + 1) % pts.length];
+    return p[0] !== q[0] || p[1] !== q[1];
+  });
+  let changed = true;
+  while (changed && out.length > 2) {
+    changed = false;
+    for (let i = 0; i < out.length; ++i) {
+      const a = out[(i + out.length - 1) % out.length], b = out[i], c = out[(i + 1) % out.length];
+      if ((a[0] === b[0] && b[0] === c[0]) || (a[1] === b[1] && b[1] === c[1])) {
+        out.splice(i, 1); changed = true; break;
+      }
+    }
+  }
+  return out;
+}
+/* 新邊 fixity:與舊邊共線且重疊 → 繼承;否則 FIXED(公理層 R7「套用產生的新邊 fixity 一律 FIXED」同軌) */
+function feInheritFixity(oldLoops, vs) {
+  return vs.map((a, i) => {
+    const b = vs[(i + 1) % vs.length];
+    const horiz = a[1] === b[1];
+    const c = horiz ? a[1] : a[0];
+    const lo = Math.min(horiz ? a[0] : a[1], horiz ? b[0] : b[1]);
+    const hi = Math.max(horiz ? a[0] : a[1], horiz ? b[0] : b[1]);
+    for (const l of oldLoops) {
+      const n = l.verts.length;
+      for (let j = 0; j < n; ++j) {
+        const p = l.verts[j], q = l.verts[(j + 1) % n];
+        if ((p[1] === q[1]) !== horiz) continue;
+        if ((horiz ? p[1] : p[0]) !== c) continue;
+        const lo2 = Math.min(horiz ? p[0] : p[1], horiz ? q[0] : q[1]);
+        const hi2 = Math.max(horiz ? p[0] : p[1], horiz ? q[0] : q[1]);
+        if (Math.min(hi, hi2) - Math.max(lo, lo2) > 0) return l.fixity[j] ? 1 : 0;
+      }
+    }
+    return 1;
+  });
+}
+/* 讓新環的走向與起點盡量沿用舊環——沒被動到的邊保住 e<i> 編號(I8a 引用穩定) */
+function feAlignLoop(oldVs, vs) {
+  if (!oldVs) return vs;
+  if (Math.sign(feLoopArea(oldVs)) !== Math.sign(feLoopArea(vs))) vs = vs.slice().reverse();
+  const key = p => p[0] + "," + p[1];
+  const have = new Set(vs.map(key));
+  const start = oldVs.find(p => have.has(key(p)));
+  if (start) {
+    const k = vs.findIndex(p => key(p) === key(start));
+    vs = vs.slice(k).concat(vs.slice(0, k));
+  }
+  return vs;
+}
+/* 正交多邊形(外環+孔)對矩形 rect=[x0,y0,x1,y1] 做 sub/add。
+   回傳 {loops:[{verts,fixity}], split} 或 null(面消失)。split=結果不止一片。 */
+function feRectBool(loops, op, rect) {
+  const [x0, y0, x1, y1] = [Math.min(rect[0], rect[2]), Math.min(rect[1], rect[3]),
+                            Math.max(rect[0], rect[2]), Math.max(rect[1], rect[3])];
+  if (x1 - x0 < 1 || y1 - y0 < 1) return null;
+  const vl = loops.map(l => l.verts);
+  const xs = new Set([x0, x1]), ys = new Set([y0, y1]);
+  vl.forEach(l => l.forEach(([x, y]) => { xs.add(x); ys.add(y); }));
+  const X = [...xs].sort((a, b) => a - b), Y = [...ys].sort((a, b) => a - b);
+  const nx = X.length - 1, ny = Y.length - 1;
+  const F = new Uint8Array(nx * ny);
+  for (let j = 0; j < ny; ++j) for (let i = 0; i < nx; ++i) {
+    const cx = (X[i] + X[i + 1]) / 2, cy = (Y[j] + Y[j + 1]) / 2;
+    const ins = feInsideVerts(vl, cx, cy);
+    const inR = cx > x0 && cx < x1 && cy > y0 && cy < y1;
+    F[j * nx + i] = (op === "sub" ? (ins && !inR) : (ins || inR)) ? 1 : 0;
+  }
+  const get = (i, j) => (i < 0 || j < 0 || i >= nx || j >= ny) ? 0 : F[j * nx + i];
+  /* 邊界段:有料格與無料格之間,固定繞向(左手在料側) */
+  const segs = new Map(), key = (x, y) => x + "," + y;
+  const add = (a, b) => { const k = key(a[0], a[1]); if (!segs.has(k)) segs.set(k, []); segs.get(k).push(b); };
+  for (let j = 0; j < ny; ++j) for (let i = 0; i < nx; ++i) {
+    if (!F[j * nx + i]) continue;
+    const a = [X[i], Y[j]], b = [X[i + 1], Y[j]], c = [X[i + 1], Y[j + 1]], d = [X[i], Y[j + 1]];
+    if (!get(i, j - 1)) add(a, b);
+    if (!get(i + 1, j)) add(b, c);
+    if (!get(i, j + 1)) add(c, d);
+    if (!get(i - 1, j)) add(d, a);
+  }
+  const rings = [];
+  while (segs.size) {
+    const k0 = segs.keys().next().value, start = k0.split(",").map(Number);
+    let cur = start; const pts = []; let guard = 0;
+    while (guard++ < 100000) {
+      pts.push(cur);
+      const k = key(cur[0], cur[1]), arr = segs.get(k);
+      if (!arr || !arr.length) break;
+      const nxt = arr.shift(); if (!arr.length) segs.delete(k);
+      cur = nxt;
+      if (cur[0] === start[0] && cur[1] === start[1]) break;
+    }
+    const s = feSimplifyLoop(pts);
+    if (s.length >= 4) rings.push(s);
+  }
+  if (!rings.length) return null;
+  rings.sort((a, b) => Math.abs(feLoopArea(b)) - Math.abs(feLoopArea(a)));
+  const so = Math.sign(feLoopArea(rings[0]));
+  const outers = rings.filter(r => Math.sign(feLoopArea(r)) === so);
+  const holes = rings.filter(r => Math.sign(feLoopArea(r)) !== so);
+  /* 對齊舊環:外環沿用舊外環;孔依舊孔順序配對(共用頂點),新孔接在後面 */
+  const out = [{ verts: feAlignLoop(vl[0], outers[0]) }];
+  const used = new Set();
+  const keyOf = p => p[0] + "," + p[1];
+  for (let q = 1; q < vl.length; ++q) {
+    const oldSet = new Set(vl[q].map(keyOf));
+    const hi = holes.findIndex((h, idx) => !used.has(idx) && h.some(p => oldSet.has(keyOf(p))));
+    if (hi >= 0) { used.add(hi); out.push({ verts: feAlignLoop(vl[q], holes[hi]) }); }
+  }
+  holes.forEach((h, idx) => {
+    if (used.has(idx)) return;
+    /* 新孔:走向比照舊孔(有的話)或外環 */
+    const ref = vl.length > 1 ? vl[1] : vl[0];
+    out.push({ verts: feAlignLoop(ref, h) });
+  });
+  for (const l of out) l.fixity = feInheritFixity(loops, l.verts);
+  return { loops: out, split: outers.length > 1 };
+}
+/* 外環的邊:axis 'h'|'v'、固定座標 c、範圍 lo..hi、outSign = 向外方向(該軸正負) */
+function feEdges(vs) {
+  const n = vs.length, res = [];
+  for (let i = 0; i < n; ++i) {
+    const p0 = vs[i], p1 = vs[(i + 1) % n];
+    const axis = p0[1] === p1[1] ? "h" : "v";
+    const c = axis === "h" ? p0[1] : p0[0];
+    const a0 = axis === "h" ? p0[0] : p0[1], a1 = axis === "h" ? p1[0] : p1[1];
+    const lo = Math.min(a0, a1), hi = Math.max(a0, a1), mid = (lo + hi) / 2;
+    const tx = axis === "h" ? mid : c + 0.5, ty = axis === "h" ? c + 0.5 : mid;
+    const outSign = fePtInLoop(tx, ty, vs) ? -1 : 1;
+    res.push({ i, p0, p1, axis, c, lo, hi, len: hi - lo, outSign });
+  }
+  return res;
+}
+/* 外環的角:sx/sy = 從角往面內走的方向;convex = 凸角(才能切角) */
+function feCorners(vs) {
+  const n = vs.length, res = [];
+  for (let i = 0; i < n; ++i) {
+    const v = vs[i], p = vs[(i - 1 + n) % n], q = vs[(i + 1) % n];
+    const hn = p[1] === v[1] ? p : q, vn = hn === p ? q : p;
+    const sx = Math.sign(hn[0] - v[0]) || 1, sy = Math.sign(vn[1] - v[1]) || 1;
+    const convex = fePtInLoop(v[0] + sx * 0.5, v[1] + sy * 0.5, vs);
+    res.push({ i, v, sx, sy, convex });
+  }
+  return res;
+}
+/* 邊上矩形:anchor start|center|end(沿軸正向起算)、dist、w 沿邊、d 深、dir in|out */
+function feEdgeRect(e, o) {
+  const w = Math.max(0, o.w), d = Math.max(0, o.d);
+  const s = o.anchor === "end" ? e.hi - o.dist - w
+          : o.anchor === "center" ? e.lo + (e.len - w) / 2 : e.lo + o.dist;
+  const sign = o.dir === "out" ? e.outSign : -e.outSign, c2 = e.c + sign * d;
+  return e.axis === "h" ? [s, Math.min(e.c, c2), s + w, Math.max(e.c, c2)]
+                        : [Math.min(e.c, c2), s, Math.max(e.c, c2), s + w];
+}
+function feEdgeSideName(e) {
+  return e.axis === "h" ? (e.outSign < 0 ? "上邊" : "下邊") : (e.outSign < 0 ? "左邊" : "右邊");
+}
+function feAnchorNames(e) { return e.axis === "h" ? ["從左", "置中", "從右"] : ["從上", "置中", "從下"]; }
+
+/* ---- 目前面的 loops / 特徵堆疊 ---- */
+function feCurLoops() { const e = oc.edit; return e ? (fe.work || oc.bmap[e.bid] || []) : []; }
+function feFeats(bid = oc.edit && oc.edit.bid) {
+  if (!bid) return [];
+  if (!fe.feats[bid]) fe.feats[bid] = [];
+  return fe.feats[bid];
+}
+/* 特徵是否還對得上現況:減料的矩形中心該在面外,加料的該在面內 */
+function feFeatAlive(f, loops) {
+  if (!loops.length) return false;
+  const cx = (f.rect[0] + f.rect[2]) / 2, cy = (f.rect[1] + f.rect[3]) / 2;
+  const ins = feInsideVerts(loops.map(l => l.verts), cx, cy);
+  return f.op === "sub" ? !ins : ins;
+}
+/* 特徵尺寸標註:以外環外接框起算,ax/ay 記在特徵上(沒記就取近側) */
+function feFeatMeta(f, loops = feCurLoops()) {
+  const bb = loopsBBox([loops[0]]), [x0, y0, x1, y1] = f.rect;
+  const ax = f.ax || ((x0 - bb[0] <= bb[2] - x1) ? "left" : "right");
+  const ay = f.ay || ((y0 - bb[1] <= bb[3] - y1) ? "top" : "bottom");
+  return { ax, ay, w: x1 - x0, h: y1 - y0,
+           dx: ax === "left" ? x0 - bb[0] : bb[2] - x1,
+           dy: ay === "top" ? y0 - bb[1] : bb[3] - y1, bb };
+}
+function feRectFromMeta(m) {
+  const { bb } = m;
+  const x0 = m.ax === "left" ? bb[0] + m.dx : bb[2] - m.dx - m.w;
+  const y0 = m.ay === "top" ? bb[1] + m.dy : bb[3] - m.dy - m.h;
+  return [x0, y0, x0 + m.w, y0 + m.h];
+}
+function feFeatSub(f) {
+  const m = feFeatMeta(f);
+  return `${m.w} × ${m.h} · 距${FE_SIDE_ZH[m.ax]} ${m.dx} · 距${FE_SIDE_ZH[m.ay]} ${m.dy}`;
+}
+
+/* ---- 就地操作(fe.op)---- */
+function feStartOp(type, target, ref) {
+  const outer = feCurLoops()[0]; if (!outer) return;
+  const g = +($("faceGridSizeSelect") || {}).value || 50;
+  const e = target === "edge" ? feEdges(outer.verts)[ref] : null;
+  const c = target === "corner" ? feCorners(outer.verts)[ref] : null;
+  if (target === "edge" && !e) return;
+  if (target === "corner" && !c) return;
+  const base = e ? Math.max(1, Math.min(300, Math.floor(e.len / 4))) : 0;
+  let params;
+  if (type === "push") params = { dist: base, dir: "in" };
+  else if (type === "corner") {
+    const n = outer.verts.length;
+    const p = outer.verts[(ref - 1 + n) % n], q = outer.verts[(ref + 1) % n];
+    const la = Math.max(Math.abs(p[0] - c.v[0]), Math.abs(q[0] - c.v[0]));
+    const lb = Math.max(Math.abs(p[1] - c.v[1]), Math.abs(q[1] - c.v[1]));
+    params = { w: Math.max(1, Math.min(600, Math.floor(la / 3))), d: Math.max(1, Math.min(600, Math.floor(lb / 3))) };
+  } else params = { anchor: "center", dist: 0, w: Math.max(1, Math.min(600, e.len - 2 * g)), d: base };
+  fe.op = { type, target, params };
+  if (target === "edge") fe.op.edge = ref; else fe.op.corner = ref;
+  feSyncOverlays(); drawFaceEditor();
+}
+function feCancelOp() { fe.op = null; feSyncOverlays(); drawFaceEditor(); }
+function feOpKind(op = fe.op) {
+  if (op.type === "push") return op.params.dir === "out" ? "add" : "sub";
+  return FE_OPS[op.type].op;
+}
+function feOpRect(op = fe.op) {
+  if (!op) return null;
+  const outer = feCurLoops()[0]; if (!outer) return null;
+  const p = op.params;
+  if (op.target === "edge") {
+    const e = feEdges(outer.verts)[op.edge]; if (!e) return null;
+    if (op.type === "push") {
+      if (!(p.dist > 0)) return null;
+      const c2 = e.c + (p.dir === "out" ? e.outSign : -e.outSign) * p.dist;
+      return e.axis === "h" ? [e.lo, Math.min(e.c, c2), e.hi, Math.max(e.c, c2)]
+                            : [Math.min(e.c, c2), e.lo, Math.max(e.c, c2), e.hi];
+    }
+    if (!(p.w > 0) || !(p.d > 0)) return null;
+    return feEdgeRect(e, { anchor: p.anchor, dist: p.dist || 0, w: p.w, d: p.d,
+                           dir: op.type === "extend" ? "out" : "in" });
+  }
+  const c = feCorners(outer.verts)[op.corner]; if (!c) return null;
+  if (!(p.w > 0) || !(p.d > 0)) return null;
+  const x2 = c.v[0] + c.sx * p.w, y2 = c.v[1] + c.sy * p.d;
+  return [Math.min(c.v[0], x2), Math.min(c.v[1], y2), Math.max(c.v[0], x2), Math.max(c.v[1], y2)];
+}
+/* 套用:布林 → emitBoundary 交易;成功才記進特徵堆疊 */
+async function feApplyOp() {
+  const e = oc.edit, op = fe.op;
+  if (!e || !op || oc.busy) return;
+  const rect = feOpRect(op);
+  if (!rect) { toast("請先填尺寸(正整數 mm)"); return; }
+  const loops = oc.bmap[e.bid];
+  const kind = feOpKind(op);
+  const r = feRectBool(loops, kind, rect.map(Math.round));
+  if (!r) { toast("這個操作會讓面消失或無效"); return; }
+  if (r.split) { toast("這個操作會把面切成兩片——核心會拒絕"); return; }
+  let ax, ay;
+  if (op.target === "edge") {
+    const ed = feEdges(loops[0].verts)[op.edge];
+    if (ed.axis === "h") ay = ed.outSign < 0 ? "top" : "bottom";
+    else ax = ed.outSign < 0 ? "left" : "right";
+  }
+  const feat = { id: feFeatSeq++, type: op.type, op: kind, rect: rect.map(Math.round), ax, ay };
+  fe.op = null; fe.sel = null;
+  feSyncOverlays();
+  if (await emitBoundary(e.bid, r.loops)) {
+    feFeats(e.bid).push(feat);
+    fe.selFeat = feat.id;
+    await feAfterChange();
+  } else drawFaceEditor();
+}
+/* 特徵:刪除 = 反向布林;改尺寸 = 反向再正向;鏡射 = 以外環中心翻另一份 */
+async function feFeatDelete(f) {
+  const e = oc.edit; if (!e || oc.busy) return;
+  const r = feRectBool(oc.bmap[e.bid], f.op === "sub" ? "add" : "sub", f.rect);
+  if (!r || r.split) { toast("無法還原這個特徵(會讓面消失或拆成兩片)"); return; }
+  fe.feats[e.bid] = feFeats(e.bid).filter(x => x.id !== f.id);
+  if (fe.selFeat === f.id) fe.selFeat = null;
+  if (await emitBoundary(e.bid, r.loops)) await feAfterChange();
+  else { feFeats(e.bid).push(f); drawFaceEditor(); }
+}
+async function feFeatSet(f, patch) {
+  const e = oc.edit; if (!e || oc.busy) return;
+  const m = { ...feFeatMeta(f, oc.bmap[e.bid]), ...patch };
+  if (!(m.w > 0) || !(m.h > 0) || !(m.dx >= 0) || !(m.dy >= 0)) { toast("尺寸要是正整數 mm"); return; }
+  const rect = feRectFromMeta(m).map(Math.round);
+  const back = feRectBool(oc.bmap[e.bid], f.op === "sub" ? "add" : "sub", f.rect);
+  if (!back || back.split) { toast("無法改這個特徵(還原時會讓面消失或拆成兩片)"); return; }
+  const r = feRectBool(back.loops, f.op, rect);
+  if (!r) { toast("尺寸無效:會讓面消失"); return; }
+  if (r.split) { toast("尺寸無效:會把面拆成兩片"); return; }
+  const old = { rect: f.rect, ax: f.ax, ay: f.ay };
+  f.rect = rect; f.ax = m.ax; f.ay = m.ay;
+  if (await emitBoundary(e.bid, r.loops)) await feAfterChange();
+  else { Object.assign(f, old); renderFaceInspector(); }
+}
+async function feFeatMirror(f) {
+  const e = oc.edit; if (!e || oc.busy) return;
+  const bb = loopsBBox([oc.bmap[e.bid][0]]), [x0, y0, x1, y1] = f.rect;
+  const alongX = !f.ax;   /* 貼上下邊(或自由)的沿 u 鏡射;貼左右邊的沿 v */
+  const rect = alongX ? [bb[0] + bb[2] - x1, y0, bb[0] + bb[2] - x0, y1]
+                      : [x0, bb[1] + bb[3] - y1, x1, bb[1] + bb[3] - y0];
+  const r = feRectBool(oc.bmap[e.bid], f.op, rect);
+  if (!r) { toast("鏡射後會讓面消失"); return; }
+  if (r.split) { toast("鏡射後會把面拆成兩片"); return; }
+  const feat = { id: feFeatSeq++, type: f.type, op: f.op, rect, ax: f.ax, ay: f.ay };
+  if (await emitBoundary(e.bid, r.loops)) {
+    feFeats(e.bid).push(feat); fe.selFeat = feat.id;
+    await feAfterChange();
+  }
+}
+
+/* ---- 浮動操作列 + 參數面板(都掛在 #faceEditorViewport 內,座標 mm→px)---- */
+function feMmToPx(x, y) { return { x: x * fe.zoom + fe.panX, y: y * fe.zoom + fe.panY }; }
+function feSelAnchor() {
+  const outer = feCurLoops()[0]; if (!outer || !fe.sel) return null;
+  const z = fe.zoom;
+  if (fe.sel.kind === "edge") {
+    const loops = feCurLoops(), lp = loops[fe.sel.loop]; if (!lp) return null;
+    const vs = lp.verts, a = vs[fe.sel.i], b = vs[(fe.sel.i + 1) % vs.length];
+    if (!a || !b) return null;
+    const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+    if (fe.sel.loop === 0) {
+      const e = feEdges(outer.verts)[fe.sel.i];
+      const off = 34 / z * e.outSign;
+      return e.axis === "h" ? feMmToPx(mx, my + off) : feMmToPx(mx + off, my);
+    }
+    return feMmToPx(mx, my - 34 / z);
+  }
+  const c = feCorners(outer.verts)[fe.sel.i]; if (!c) return null;
+  return feMmToPx(c.v[0] - c.sx * 40 / z, c.v[1] - c.sy * 40 / z);
+}
+function feSyncOverlays() {
+  const bar = $("feActionBar"), panel = $("feOpPanel");
+  if (!bar || !panel) return;
+  const show = fe.tool === "select" && !!fe.sel && !fe.drag && oc.focus && oc.focus.t === "face";
+  bar.hidden = !show;
+  panel.hidden = !(show && fe.op);
+  if (!show) return;
+  const outer = feCurLoops()[0];
+  const mk = (act, name, iconName, title, on) =>
+    `<button type="button" data-fe-act="${act}" class="${on ? "on" : ""}" title="${title}">${iconName ? icon(iconName) : ""}<span>${name}</span></button>`;
+  let html = "";
+  if (fe.sel.kind === "edge") {
+    const lp = feCurLoops()[fe.sel.loop];
+    const fx = lp && lp.fixity[fe.sel.i];
+    if (fe.sel.loop === 0)
+      html += ["notch", "extend", "push"].map(t =>
+        mk("op:" + t, FE_OPS[t].name, FE_OPS[t].icon, FE_OPS[t].desc, fe.op && fe.op.type === t)).join("") +
+        `<span class="sep"></span>`;
+    html += mk("fixity", fx ? "F → X" : "X → F", null,
+      fx ? "此邊目前固定(F),點一下改自由(X)" : "此邊目前自由(X),點一下改固定(F)", false);
+  } else {
+    html += mk("op:corner", FE_OPS.corner.name, FE_OPS.corner.icon, FE_OPS.corner.desc, fe.op && fe.op.type === "corner");
+  }
+  bar.innerHTML = html;
+  for (const b of bar.querySelectorAll("[data-fe-act]"))
+    b.addEventListener("click", async ev => {
+      ev.stopPropagation();
+      const act = b.dataset.feAct;
+      if (act === "fixity") {
+        const e = oc.edit; if (!e || oc.busy) return;
+        const work = oc.bmap[e.bid].map(l => ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+        work[fe.sel.loop].fixity[fe.sel.i] = work[fe.sel.loop].fixity[fe.sel.i] ? 0 : 1;
+        if (await emitBoundary(e.bid, work)) await feAfterChange();
+        return;
+      }
+      const t = act.slice(3);
+      if (fe.op && fe.op.type === t) { feCancelOp(); return; }
+      feStartOp(t, FE_OPS[t].target, fe.sel.kind === "edge" ? fe.sel.i : fe.sel.i);
+    });
+  if (fe.op) feRenderOpPanel(panel, outer);
+  fePlaceOverlays();
+}
+function feRenderOpPanel(panel, outer) {
+  const op = fe.op, p = op.params, T = FE_OPS[op.type];
+  const e = op.target === "edge" ? feEdges(outer.verts)[op.edge] : null;
+  const field = (label, key, disabled) =>
+    `<label>${label}<input type="number" step="1" min="0" data-fe-param="${key}" value="${p[key] ?? ""}"${disabled ? " disabled" : ""}></label>`;
+  let seg = "", fields = "", note = "";
+  if (op.type === "push") {
+    seg = [["in", "往內"], ["out", "往外"]].map(([v, n]) =>
+      `<button type="button" data-fe-dir="${v}" class="${p.dir === v ? "on" : ""}">${n}</button>`).join("");
+    fields = field("距離", "dist");
+    note = "整條邊平移,相鄰邊自動伸縮。";
+  } else if (op.target === "edge") {
+    const names = feAnchorNames(e);
+    seg = ["start", "center", "end"].map((v, i) =>
+      `<button type="button" data-fe-anchor="${v}" class="${p.anchor === v ? "on" : ""}">${names[i]}</button>`).join("");
+    fields = field("距離", "dist", p.anchor === "center") + field("寬 w", "w") +
+      field(op.type === "extend" ? "凸出 d" : "深 d", "d");
+  } else {
+    fields = field("沿 u 邊 a", "w") + field("沿 v 邊 b", "d");
+  }
+  panel.innerHTML =
+    `<div class="fe-op-head"><strong>${T.name}</strong><small>${e ? `${feEdgeSideName(e)} · 長 ${e.len}` : "凸角"}</small></div>` +
+    (seg ? `<div class="fe-seg">${seg}</div>` : "") +
+    `<div class="fe-fields">${fields}</div>` +
+    (note ? `<div class="fe-op-note">${note}</div>` : "") +
+    `<div class="fe-op-foot"><button type="button" class="btn" id="feOpCancel">取消 <kbd>Esc</kbd></button>` +
+    `<button type="button" class="primary-button" id="feOpApply"><span>套用 <kbd>Enter</kbd></span></button></div>`;
+  const rerender = () => { feSyncOverlays(); drawFaceEditor(); };
+  for (const b of panel.querySelectorAll("[data-fe-dir]"))
+    b.addEventListener("click", () => { p.dir = b.dataset.feDir; rerender(); });
+  for (const b of panel.querySelectorAll("[data-fe-anchor]"))
+    b.addEventListener("click", () => {
+      p.anchor = b.dataset.feAnchor; if (p.anchor === "center") p.dist = 0; rerender();
+    });
+  for (const inp of panel.querySelectorAll("[data-fe-param]")) {
+    inp.addEventListener("input", () => { p[inp.dataset.feParam] = Math.round(+inp.value || 0); drawFaceEditor(); });
+    inp.addEventListener("keydown", ev => {
+      if (ev.key === "Enter") { ev.preventDefault(); feApplyOp(); }
+      else if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); feCancelOp(); }
+    });
+  }
+  panel.querySelector("#feOpCancel").addEventListener("click", feCancelOp);
+  panel.querySelector("#feOpApply").addEventListener("click", feApplyOp);
+  const first = panel.querySelector("[data-fe-param]:not([disabled])");
+  if (first && document.activeElement !== first && !panel.contains(document.activeElement))
+    first.focus({ preventScroll: true });
+}
+/* 依 pan/zoom 重新擺放操作列與面板(feApply 每次平移都會呼叫,只算位置不重建 DOM) */
+function fePlaceOverlays() {
+  const bar = $("feActionBar"), panel = $("feOpPanel"), vp = $("faceEditorViewport");
+  if (!bar || !panel || !vp || bar.hidden) return;
+  const r = vp.getBoundingClientRect(), a = feSelAnchor();
+  if (!a) { bar.hidden = true; panel.hidden = true; return; }
+  const bx = Math.max(150, Math.min(r.width - 150, a.x));
+  const by = Math.max(24, Math.min(r.height - 24, a.y));
+  bar.style.left = bx + "px"; bar.style.top = by + "px";
+  if (!panel.hidden) {
+    /* 面板放在操作列的右側(放不下就左側),與操作列同高——不蓋住畫布上的預覽矩形 */
+    const pw = 300, ph = panel.offsetHeight || 160;
+    let left = bx + 70 + pw / 2;
+    if (left + pw / 2 > r.width - 8) left = bx - 70 - pw / 2;
+    panel.style.left = Math.max(pw / 2 + 8, Math.min(r.width - pw / 2 - 8, left)) + "px";
+    panel.style.top = Math.max(8, Math.min(r.height - ph - 8, by - 17)) + "px";
+  }
+}
+/* 邊界變更後:剔除對不上現況的特徵、驗選取、關面板 */
+function feAfterShapeChange() {
+  const e = oc.edit; if (!e) return;
+  const loops = oc.bmap[e.bid] || [];
+  fe.feats[e.bid] = feFeats(e.bid).filter(f => feFeatAlive(f, loops));
+  if (fe.selFeat != null && !feFeats(e.bid).some(f => f.id === fe.selFeat)) fe.selFeat = null;
+  fe.op = null;
+  if (fe.sel) {
+    const lp = loops[fe.sel.kind === "edge" ? fe.sel.loop : 0];
+    if (!lp || fe.sel.i >= lp.verts.length) fe.sel = null;
+  }
+  feSyncOverlays();
+}
+
+/* ---- 右欄「形狀」頁(方案 B):基底 + 本次工作階段的特徵清單 ---- */
+function feShapePaneHTML(bid) {
+  const loops = oc.bmap[bid] || [];
+  const bb = loops.length ? loopsBBox([loops[0]]) : null;
+  const feats = feFeats(bid);
+  let html = `<div data-fi-pane="shape"${fe.fiTab === "shape" ? "" : " hidden"}>` +
+    `<div class="inspector-block"><div class="ib-title">基底外環` +
+    (bb ? `<small class="ib-sub">${loops[0].verts.length} 頂點 · ${bb[2] - bb[0]} × ${bb[3] - bb[1]} mm</small>` : "") +
+    `</div><button class="btn" id="fiShapeLib" type="button">形狀庫…</button></div>` +
+    `<div class="inspector-block"><div class="ib-title">特徵<small class="ib-sub">本次工作階段 · 依序套用</small>` +
+    `<span class="tag" id="fiFeatCount">${feats.length}</span></div>`;
+  if (!feats.length)
+    html += `<div class="fi-note">尚無特徵。在畫布點一條邊或一個凸角,從浮動列選「凹口／外凸／推拉／切角」,填數字後 Enter 套用;畫布會即時預覽。</div>`;
+  feats.forEach((f, k) => {
+    const m = feFeatMeta(f, loops), T = FE_OPS[f.type] || { name: f.type, icon: "notch" };
+    const sideOpt = (key, opts) => `<select data-feat-side="${key}">` +
+      opts.map(v => `<option value="${v}"${m[key] === v ? " selected" : ""}>距${FE_SIDE_ZH[v]}</option>`).join("") + `</select>`;
+    html += `<div class="fe-feat${fe.selFeat === f.id ? " sel" : ""}" data-feat="${f.id}">` +
+      `<div class="fe-feat-head"><span class="face-layer-icon ${f.op}">${icon(T.icon)}</span>` +
+      `<strong>${T.name} ${k + 1}</strong>` +
+      `<button type="button" data-feat-mirror title="以面的中心鏡射一份">鏡射</button>` +
+      `<button type="button" data-feat-del title="還原這個特徵">刪除</button></div>` +
+      `<div class="fe-feat-fields">` +
+      `<label>寬 w<input type="number" step="1" min="1" data-feat-num="w" value="${m.w}"></label>` +
+      `<label>高 h<input type="number" step="1" min="1" data-feat-num="h" value="${m.h}"></label>` +
+      `<label>${sideOpt("ax", ["left", "right"])}<input type="number" step="1" min="0" data-feat-num="dx" value="${m.dx}"></label>` +
+      `<label>${sideOpt("ay", ["top", "bottom"])}<input type="number" step="1" min="0" data-feat-num="dy" value="${m.dy}"></label>` +
+      `</div></div>`;
+  });
+  html += `</div></div>`;
+  return html;
+}
+function feBindShapePane(pane, bid) {
+  const lib = pane.querySelector("#fiShapeLib");
+  if (lib) lib.addEventListener("click", () => $("faceShapeButton").click());
+  for (const row of pane.querySelectorAll("[data-feat]")) {
+    const f = feFeats(bid).find(x => x.id === +row.dataset.feat);
+    if (!f) continue;
+    row.addEventListener("pointerenter", () => { fe.hoverFeat = f.id; drawFaceEditor(); });
+    row.addEventListener("pointerleave", () => { fe.hoverFeat = null; drawFaceEditor(); });
+    row.addEventListener("click", ev => {
+      if (ev.target.closest("input,select,button")) return;
+      fe.selFeat = f.id; fe.sel = null; fe.op = null; feSyncOverlays();
+      renderFaceInspector(); drawFaceEditor();
+    });
+    row.querySelector("[data-feat-del]").addEventListener("click", () => feFeatDelete(f));
+    row.querySelector("[data-feat-mirror]").addEventListener("click", () => feFeatMirror(f));
+    for (const inp of row.querySelectorAll("[data-feat-num]"))
+      inp.addEventListener("change", () => {
+        const v = Math.round(+inp.value);
+        feFeatSet(f, { [inp.dataset.featNum]: v });
+      });
+    for (const sel of row.querySelectorAll("[data-feat-side]"))
+      sel.addEventListener("change", () => {
+        /* 換起算邊:矩形不動,只換標註;dx/dy 重算 */
+        f[sel.dataset.featSide] = sel.value;
+        renderFaceInspector();
+      });
+  }
 }
 
 /* 左欄「面內物件」：外環 / 孔 / 參考線（§5.5.1） */
@@ -3104,7 +3698,10 @@ function renderFaceInspector() {
     `<label>u 座標<input id="gridU" placeholder="500 1500"${surf ? "" : " disabled"}></label>` +
     `<label>v 座標<input id="gridV" placeholder="300 900"${surf ? "" : " disabled"}></label>` +
     `</div><button class="btn" id="gridCreate"${surf ? "" : " disabled"}>建立網格</button></div></div>`;
+  /* GEO-169(方案 B):形狀頁 */
+  html += feShapePaneHTML(bid);
   pane.innerHTML = html;
+  feBindShapePane(pane, bid);
   const specSave = pane.querySelector("#refSpecSave");
   if (specSave) specSave.onclick = async () => {
     const name = $("refSpecName").value.trim(), value = Number($("refSpecValue").value);
@@ -4195,8 +4792,8 @@ $("faceSnapToggle").addEventListener("change", drawFaceEditor);
 const fevp = $("faceEditorViewport");
 fevp.addEventListener("pointerdown", async e => {
   const pk = $("feGuidePick");
-  if (e.target.closest && e.target.closest("#feGuidePick"))
-    return;                                     /* 點在方向選單上 → 交給按鈕 click */
+  if (e.target.closest && e.target.closest("#feGuidePick, #feActionBar, #feOpPanel"))
+    return;                                     /* 點在浮動選單/操作列/面板上 → 交給按鈕 click */
   if (pk && !pk.hidden) pk.hidden = true;
   if (e.button === 1) {                       /* 中鍵平移(不動資料,busy 也放行) */
     e.preventDefault();

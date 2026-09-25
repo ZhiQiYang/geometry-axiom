@@ -64,7 +64,7 @@
 | `#placeFlow` | 建面→放置→收成員流程條(S6 新增,兩處檢視器共用) | `.pf-step.done/.current` |
 | `#placeValid` | 放置表單 u⊥v 即時驗證(S6 新增) | textContent、`.ok/.bad` |
 | `[data-filter-type]` | 顯示類型篩選 chips(button,`aria-pressed`) | `aria-pressed`、`.click()` |
-| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性/角材/網格(S6 新增) | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
+| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性/形狀/角材/網格(S6 新增;形狀頁 GEO-169) | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
 | `#workspacePlaceTag` | 工作區放置膠囊(B9:天花·z=N / 游離) | textContent、`.placed/.free` |
 | `#faceCanvasHint` | 面內模式浮標——**限多步工具**(redraw)顯示 | `hidden`、textContent |
 | `#feZoomOut` / `#feZoomLevel` / `#feZoomIn` / `#feZoomFit` | 面內左下縮放列(B8) | `.click()`、百分比 textContent |
@@ -87,6 +87,8 @@
 | `#spaceMemberList` | 空間工作區左欄成員列 | 子列計數 |
 | `#spaceInspectorContent` | 空間工作區右欄檢視器(六槽列掛點) | 存在性 |
 | `#rcErr` | RC 對話框表單內錯誤提示(BF4:驗證失敗顯示) | `hidden`、textContent |
+| `#feActionBar` / `[data-fe-act]` | 面內選邊/角後的浮動操作列(GEO-169;`op:notch`/`op:extend`/`op:push`/`op:corner`/`fixity`) | `hidden`、`.click()`、`.on` |
+| `#feOpPanel` / `[data-fe-param]` / `[data-fe-anchor]` / `[data-fe-dir]` / `#feOpApply` / `#feOpCancel` | 就地參數面板(GEO-169;`input` 事件即時預覽,Enter/`#feOpApply` 套用) | `hidden`、`value`、`.click()` |
 
 ### 已移除(Phase 6)
 
@@ -119,6 +121,8 @@
 | `[data-proj-check]` | 投影視圖勾選 | `checked` |
 | `[data-view]` | 投影面板視圖群組(`<g data-view="0|1|2">`) | 計數(天花面預設只有 2) |
 | `[data-fix-edge]` | fixity F/X 切換鈕 | `dataset.fixEdge`、`.click()` |
+| `.face-edge-sel` / `[data-fe-ghost="sub\|add"]` / `.fe-feat-hi` | 面編輯器:選取邊高亮、操作預覽矩形(紅=減、綠=加)、形狀頁特徵高亮(GEO-169) | `#faceEditorRoot` 內計數、`width`/`height` 屬性 |
+| `[data-fi-tab="shape"]` / `.fe-feat[data-feat]` / `[data-feat-num]` / `[data-feat-side]` / `[data-feat-mirror]` / `[data-feat-del]` | 檢視器「形狀」頁(GEO-169;本次工作階段特徵清單,改數字 `change` 落地、鏡射、刪除) | `.active`、計數、`value`+`change`、`.click()` |
 | `.fixity-btn` / `.place-form` / `.proj-svg` / `.inspector-block` | 檢視器元件 | 存在性 |
 | `.toast` | 錯誤提示元素 | `#toastRegion` 內計數 |
 
@@ -133,7 +137,8 @@
 | `enterFocus` | 進入工作區焦點 | 雙擊/檢視器按鈕觸發 |
 | `mutate` | 多行 DSL 交易(失敗回滾+toast) | 空間成員重宣告/六面盒使用 |
 | `toast` | 錯誤提示(bridge error 原文) | `#toastRegion` 子元素 |
-| `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews` |
+| `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews`、`fe.sel/op/feats/selFeat`(GEO-169) |
+| `feStartOp` / `feApplyOp` / `feCancelOp` / `feRectBool` | 形狀編輯(GEO-169):就地操作與正交矩形布林 | 測試直接呼叫 `feCancelOp()`;`feRectBool(loops,op,rect)` 純函式 |
 | `renderObjects` | 重拉 objects/surfaces 並重繪畫布 | 測試在送指令後手動觸發刷新 |
 | `curScene` | 目前場景 `{path,name}` | P29 載入範例後比對路徑 |
 | `closeMenus` | 關閉所有 `.menu-pop` | P28 開檔案選單前 |
@@ -242,3 +247,14 @@
 - B9:`workspaceEyebrow` 麵包屑補 §S3 格式的 `●` 分隔點,完整格式「空間 N / ● 面 M」。
 - toast 避讓小地圖:`.toast-region` `bottom` 42px → 122px(壓在 `.minimap-shell` right14/bottom14/高96 之上,≥118)。
 - busy 進度指示:`#busyIndicator`(狀態列左側,spinner+「套用中…」)——`mutate()` 飛行中 `hidden=false`,結束 `hidden=true`;不改變既有 `body.oc-busy` 按鈕停用機制。
+
+## GEO-169 形狀編輯(cdp_test §P7b)
+
+- select 工具**單擊邊 = 選取**(`fe.sel={kind:"edge",loop,i}`,畫布 `.face-edge-sel`),浮出 `#feActionBar`:
+  外環邊 `op:notch`/`op:extend`/`op:push` + `fixity`;孔邊只有 `fixity`;外環凸角(`v:0:<i>`)只有 `op:corner`。
+  Phase 2 的「單擊邊切 fixity」**改走** `#feActionBar [data-fe-act="fixity"]`(§9f 測試同步改)。
+- 點操作 → `fe.op` + `#feOpPanel`(`[data-fe-param]` 數字 `input` 即時重畫 `[data-fe-ghost]`);
+  Enter / `#feOpApply` → `feRectBool` 布林 → `emitBoundary` 交易;面消失或拆成兩片 → toast,不送指令。
+- 成功後特徵記進 `fe.feats[bid]`(**只在本次工作階段**,不進 .scene);每次 `feAfterChange` 用
+  `feFeatAlive` 驗活,對不上現況(含 undo)的自動剔除。
+- Esc 階梯在「方向小選單」之後新增兩階:面板開著 → 關面板;有選取 → 清選取;再來才是原本的草稿/離開。

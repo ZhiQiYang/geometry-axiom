@@ -775,6 +775,188 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await eval_(`leaveFocus()`);
   await sleep(300);
 
+  /* GEO-169 形狀編輯(方案 A 邊優先 + B 形狀頁):
+     選邊 → 浮動列 → 凹口參數面板(即時預覽)→ Enter 套用;F⇄X 改走浮動列;
+     切角;形狀頁改數字/鏡射/刪除;拆片拒絕;推拉;Esc 階梯 */
+  console.log("=== P7b. 形狀編輯(GEO-169)===");
+  const seA = await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+    await renderObjects();
+    await enterFocus("face", 1);
+    feSetTool("select");
+    const hit = document.querySelector('[data-face-hit="e:0:0"]');
+    await feDown({x:2000,y:0},{target:hit,clientX:0,clientY:0});
+    await feUp({x:2000,y:0},{target:hit,clientX:0,clientY:0});
+    await new Promise(r=>setTimeout(r,150));
+    const barShown = !$("feActionBar").hidden;
+    const acts = [...document.querySelectorAll("#feActionBar [data-fe-act]")].map(b=>b.dataset.feAct);
+    const fx0 = (await api("boundary 1")).loops[0].fixity[0];
+    const selLine = !!document.querySelector("#faceEditorRoot .face-edge-sel");
+    document.querySelector('#feActionBar [data-fe-act="op:notch"]').click();
+    const panel = !$("feOpPanel").hidden;
+    const ghost = !!document.querySelector('#faceEditorRoot [data-fe-ghost="sub"]');
+    const w = document.querySelector('#feOpPanel [data-fe-param="w"]');
+    const d = document.querySelector('#feOpPanel [data-fe-param="d"]');
+    w.value = "600"; w.dispatchEvent(new Event("input"));
+    d.value = "300"; d.dispatchEvent(new Event("input"));
+    const g = document.querySelector('#faceEditorRoot [data-fe-ghost="sub"]');
+    const ghostW = g ? +g.getAttribute("width") : 0, ghostH = g ? +g.getAttribute("height") : 0;
+    w.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",bubbles:true}));
+    await new Promise(r=>setTimeout(r,400));
+    const b = await api("boundary 1");
+    const vs = b.loops[0].verts;
+    const ortho = vs.every((v,i,a)=>{const n=a[(i+1)%a.length];return v[0]===n[0]||v[1]===n[1];});
+    const depth = vs.filter(p=>p[1]===300).length;
+    return {barShown, acts, fx0, selLine, panel, ghost, ghostW, ghostH,
+            verts: vs.length, fixity: b.loops[0].fixity.length, ortho, depth,
+            start: vs[0][0]===0 && vs[0][1]===0, allF: b.loops[0].fixity.every(f=>f===1),
+            feats: (fe.feats[1]||[]).length, panelClosed: $("feOpPanel").hidden};
+  })()`);
+  console.log("選邊→浮動列:", seA.barShown && seA.selLine ? "✓" : "✗",
+    "| 動作:", seA.acts.join(","),
+    ["op:notch","op:extend","op:push","fixity"].every(a=>seA.acts.includes(a)) ? "✓" : "✗",
+    "| 單擊不再切 fixity:", seA.fx0 === 1 ? "✓" : "✗");
+  console.log("凹口面板+即時預覽:", seA.panel && seA.ghost ? "✓" : "✗",
+    "| 預覽尺寸 600×300:", seA.ghostW === 600 && seA.ghostH === 300 ? "✓" : `✗ ${seA.ghostW}×${seA.ghostH}`,
+    "| Enter 套用 頂點 4→", seA.verts, seA.verts === 8 ? "✓" : "✗",
+    "| fixity 同步:", seA.fixity === 8 ? "✓" : "✗",
+    "| 新邊全 F:", seA.allF ? "✓" : "✗",
+    "| 全正交:", seA.ortho ? "✓" : "✗",
+    "| 凹深 300:", seA.depth === 2 ? "✓" : "✗",
+    "| e0 起點沿用:", seA.start ? "✓" : "✗",
+    "| 入特徵堆疊:", seA.feats === 1 ? "✓" : "✗",
+    "| 面板已關:", seA.panelClosed ? "✓" : "✗");
+  /* F⇄X 走浮動列 */
+  const seF = await eval_(`(async()=>{
+    const hit = document.querySelector('[data-face-hit="e:0:0"]');
+    await feDown({x:800,y:0},{target:hit,clientX:0,clientY:0});
+    await feUp({x:800,y:0},{target:hit,clientX:0,clientY:0});
+    const before = (await api("boundary 1")).loops[0].fixity[0];
+    document.querySelector('#feActionBar [data-fe-act="fixity"]').click();
+    await new Promise(r=>setTimeout(r,300));
+    const after = (await api("boundary 1")).loops[0].fixity[0];
+    return {before, after, label: document.querySelector('#feActionBar [data-fe-act="fixity"]').textContent};
+  })()`);
+  console.log("浮動列切 fixity:", seF.before === 1 && seF.after === 0 ? "✓" : "✗",
+    "|", seF.before, "→", seF.after, "| 鈕文案跟著翻:", /X → F/.test(seF.label) ? "✓" : "✗ " + seF.label);
+  /* 切角:點凸角 → 浮動列「切角」→ a=500 b=400 */
+  const seC = await eval_(`(async()=>{
+    const hit = document.querySelector('[data-face-hit="v:0:0"]');
+    await feDown({x:0,y:0},{target:hit,clientX:0,clientY:0});
+    await feUp({x:0,y:0},{target:hit,clientX:0,clientY:0});
+    const sel = fe.sel && fe.sel.kind;
+    const acts = [...document.querySelectorAll("#feActionBar [data-fe-act]")].map(b=>b.dataset.feAct);
+    document.querySelector('#feActionBar [data-fe-act="op:corner"]').click();
+    const w = document.querySelector('#feOpPanel [data-fe-param="w"]');
+    const d = document.querySelector('#feOpPanel [data-fe-param="d"]');
+    w.value = "500"; w.dispatchEvent(new Event("input"));
+    d.value = "400"; d.dispatchEvent(new Event("input"));
+    document.querySelector("#feOpApply").click();
+    await new Promise(r=>setTimeout(r,400));
+    const vs = (await api("boundary 1")).loops[0].verts;
+    const has = (x,y) => vs.some(p=>p[0]===x&&p[1]===y);
+    return {sel, acts, verts: vs.length, gone: !has(0,0), a: has(500,0), b: has(0,400),
+            feats: (fe.feats[1]||[]).length};
+  })()`);
+  console.log("點凸角→切角:", seC.sel === "corner" && seC.acts.join() === "op:corner" ? "✓" : "✗",
+    "| 頂點 8→", seC.verts, seC.verts === 10 ? "✓" : "✗",
+    "| 角點移除+新角 (500,0)(0,400):", seC.gone && seC.a && seC.b ? "✓" : "✗",
+    "| 特徵 2:", seC.feats === 2 ? "✓" : "✗");
+  /* 形狀頁:清單 2 筆;改凹口寬 600→800 落地;鏡射切角;刪除切角還原 */
+  const seB = await eval_(`(async()=>{
+    fiShowTab("shape");
+    const tabOn = document.querySelector('[data-fi-tab="shape"]').classList.contains("active");
+    const rows = document.querySelectorAll("#faceInspectorContent .fe-feat").length;
+    const w = document.querySelector('#faceInspectorContent [data-feat] [data-feat-num="w"]');
+    w.value = "800"; w.dispatchEvent(new Event("change"));
+    await new Promise(r=>setTimeout(r,400));
+    let vs = (await api("boundary 1")).loops[0].verts;
+    const widened = vs.some(p=>p[0]===2500&&p[1]===300) && vs.some(p=>p[0]===1700&&p[1]===300);
+    const rowsAfter = document.querySelectorAll("#faceInspectorContent .fe-feat").length;
+    /* 鏡射切角(第 2 筆):對面右上角也切 → 10→12 */
+    document.querySelectorAll("#faceInspectorContent [data-feat]")[1].querySelector("[data-feat-mirror]").click();
+    await new Promise(r=>setTimeout(r,400));
+    vs = (await api("boundary 1")).loops[0].verts;
+    const mirrored = vs.length === 12 && vs.some(p=>p[0]===3500&&p[1]===0) && vs.some(p=>p[0]===4000&&p[1]===400);
+    const rows3 = document.querySelectorAll("#faceInspectorContent .fe-feat").length;
+    /* 刪除第 2 筆(左上切角)→ 角回來 */
+    document.querySelectorAll("#faceInspectorContent [data-feat]")[1].querySelector("[data-feat-del]").click();
+    await new Promise(r=>setTimeout(r,400));
+    vs = (await api("boundary 1")).loops[0].verts;
+    const restored = vs.length === 10 && vs.some(p=>p[0]===0&&p[1]===0);
+    const rows4 = document.querySelectorAll("#faceInspectorContent .fe-feat").length;
+    return {tabOn, rows, widened, rowsAfter, mirrored, rows3, restored, rows4};
+  })()`);
+  console.log("形狀頁清單:", seB.tabOn && seB.rows === 2 ? "✓" : `✗ rows=${seB.rows}`,
+    "| 改寬 800 落地:", seB.widened && seB.rowsAfter === 2 ? "✓" : "✗",
+    "| 鏡射切角 10→12:", seB.mirrored && seB.rows3 === 3 ? "✓" : "✗",
+    "| 刪除還原:", seB.restored && seB.rows4 === 2 ? "✓" : "✗");
+  /* undo 兩步(回到鏡射前)→ 鏡射那筆對不上現況,堆疊自動剔除 */
+  const seU = await eval_(`(async()=>{
+    await doUndoRedo("undo");
+    await doUndoRedo("undo");
+    await new Promise(r=>setTimeout(r,300));
+    return {verts: (await api("boundary 1")).loops[0].verts.length, feats: (fe.feats[1]||[]).length,
+            rows: document.querySelectorAll("#faceInspectorContent .fe-feat").length};
+  })()`);
+  console.log("undo 後堆疊驗活:", seU.verts === 10 ? "✓" : "✗ verts=" + seU.verts, "| 特徵", seU.feats,
+    seU.feats === 1 && seU.rows === 1 ? "✓" : "✗");
+  /* 拆片拒絕:凹口深到穿透整片 → toast,不送指令 */
+  const seS = await eval_(`(async()=>{
+    await api("line reset");
+    await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+    oc.focus = null; oc.stack = [];
+    await renderObjects();
+    await enterFocus("face", 1);
+    const hit = document.querySelector('[data-face-hit="e:0:0"]');
+    await feDown({x:2000,y:0},{target:hit,clientX:0,clientY:0});
+    await feUp({x:2000,y:0},{target:hit,clientX:0,clientY:0});
+    document.querySelector('#feActionBar [data-fe-act="op:notch"]').click();
+    const d = document.querySelector('#feOpPanel [data-fe-param="d"]');
+    d.value = "3000"; d.dispatchEvent(new Event("input"));
+    document.querySelector("#feOpApply").click();
+    await new Promise(r=>setTimeout(r,300));
+    const toastTxt = [...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|");
+    const verts = (await api("boundary 1")).loops[0].verts.length;
+    return {toastTxt, verts, panelOpen: !$("feOpPanel").hidden};
+  })()`);
+  console.log("拆片拒絕:", /兩片/.test(seS.toastTxt) && seS.verts === 4 && seS.panelOpen ? "✓" : `✗ ${seS.toastTxt} verts=${seS.verts}`);
+  /* 推拉:右邊往內 500 → 寬 3500,頂點仍 4;Esc 階梯:關面板 → 清選取 → 離開 */
+  const seP = await eval_(`(async()=>{
+    feCancelOp();
+    const hit = document.querySelector('[data-face-hit="e:0:1"]');
+    await feDown({x:4000,y:1500},{target:hit,clientX:0,clientY:0});
+    await feUp({x:4000,y:1500},{target:hit,clientX:0,clientY:0});
+    document.querySelector('#feActionBar [data-fe-act="op:push"]').click();
+    const dist = document.querySelector('#feOpPanel [data-fe-param="dist"]');
+    dist.value = "500"; dist.dispatchEvent(new Event("input"));
+    const ghost = document.querySelector('#faceEditorRoot [data-fe-ghost="sub"]');
+    const gw = ghost ? +ghost.getAttribute("width") : 0;
+    document.querySelector("#feOpApply").click();
+    await new Promise(r=>setTimeout(r,400));
+    const b = await api("boundary 1");
+    const bb = loopsBBox(b.loops);
+    /* Esc 階梯 */
+    const hit2 = document.querySelector('[data-face-hit="e:0:0"]');
+    await feDown({x:1000,y:0},{target:hit2,clientX:0,clientY:0});
+    await feUp({x:1000,y:0},{target:hit2,clientX:0,clientY:0});
+    document.querySelector('#feActionBar [data-fe-act="op:extend"]').click();
+    window.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape"}));
+    const s1 = {op: !!fe.op, sel: !!fe.sel, focus: !!oc.focus};
+    window.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape"}));
+    const s2 = {op: !!fe.op, sel: !!fe.sel, focus: !!oc.focus, bar: $("feActionBar").hidden};
+    window.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape"}));
+    await new Promise(r=>setTimeout(r,300));
+    const s3 = {focus: !!oc.focus};
+    return {gw, w: bb[2]-bb[0], verts: b.loops[0].verts.length, s1, s2, s3};
+  })()`);
+  console.log("推拉往內 500:", seP.gw === 500 && seP.w === 3500 && seP.verts === 4 ? "✓" : `✗ w=${seP.w} verts=${seP.verts}`,
+    "| Esc 關面板:", !seP.s1.op && seP.s1.sel && seP.s1.focus ? "✓" : "✗",
+    "| Esc 清選取:", !seP.s2.sel && seP.s2.bar && seP.s2.focus ? "✓" : "✗",
+    "| Esc 離開:", !seP.s3.focus ? "✓" : "✗");
+  await sleep(300);
+
   /* Q3:角材/網格圖形化——工具點放角材、表單建網格、圖層列刪除 */
   console.log("=== P8. 角材與網格(Q3)===");
   const q3R = await eval_(`(async()=>{
@@ -947,19 +1129,22 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   })()`);
   console.log("邊長清單:", el1.w === 500 && el1.h === 300 ? "✓" : "✗",
     "| 結果:", el1.w + "×" + el1.h, "| 頂點:", el1.verts);
-  /* 單擊邊切 fixity:select 點邊不動 → F→X */
+  /* 單擊邊 = 選取(GEO-169);fixity 改走浮動列的 F⇄X 鈕 */
   const fx = await eval_(`(async()=>{
     feSetTool("select");
     const hit = document.querySelector('[data-face-hit="e:0:0"]');
     const before = (await api("boundary 1")).loops[0].fixity[0];
     await feDown({x:250,y:0},{target:hit,clientX:0,clientY:0});
     await feUp({x:250,y:0},{target:hit,clientX:0,clientY:0});
+    await new Promise(r=>setTimeout(r,100));
+    const mid = (await api("boundary 1")).loops[0].fixity[0];
+    document.querySelector('#feActionBar [data-fe-act="fixity"]').click();
     await new Promise(r=>setTimeout(r,300));
     const after = (await api("boundary 1")).loops[0].fixity[0];
-    return {before, after};
+    return {before, mid, after};
   })()`);
-  console.log("點邊切 fixity:", fx.before === 1 && fx.after === 0 ? "✓" : "✗",
-    "|", fx.before, "→", fx.after);
+  console.log("點邊選取+浮動列切 fixity:", fx.before === 1 && fx.mid === 1 && fx.after === 0 ? "✓" : "✗",
+    "|", fx.before, "→", fx.mid, "→", fx.after);
   /* 參數化凹口:insert 點邊 → 對話框,w=40 d=20 → 4→8 頂點 */
   const nt = await eval_(`(async()=>{
     feSetTool("insert");
@@ -1653,7 +1838,8 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     document.querySelector('[data-fi-tab="timber"]').click();
     const tb=document.getElementById("tbA");
     return {tabs, vis: !!tb && tb.offsetParent !== null};})()`);
-  console.log("P18 B2 三頁:", b2.tabs.join() === "prop,timber,grid" ? "✓" : "✗ " + b2.tabs,
+  /* GEO-169 加了「形狀」頁:屬性|形狀|角材|網格 */
+  console.log("P18 B2 四頁:", b2.tabs.join() === "prop,shape,timber,grid" ? "✓" : "✗ " + b2.tabs,
     "| 角材頁tbA可見:", b2.vis ? "✓" : "✗");
   /* (3) B3:邊表方向文字+mm+segmented */
   const b3 = await eval_(`(()=>{
