@@ -20,13 +20,13 @@
 
 ## 多邊形 UI/UX 審查修正與 Delete 快捷鍵（GEO-184/185，2026-09-24，cdp_test §P39/§P40）
 
+> GEO-186(b,同日)移除畫布多邊形工具後，本節的 `poly-snap-grid`、`oc.polyStash`、
+> `.hint-kbd`（多邊形）三列契約隨機器一併移除；下列為仍存在的契約。
+
 | id / class / 全域 | 契約 |
 |---|---|
 | 主畫布 `Delete` / `Backspace` | 有 `oc.sel` 且無繪圖工具（`oc.drawTool`/`oc.rect`）時呼叫 `deleteObject`；輸入框內不作用 |
-| `#canvasViewport.poly-snap-grid` | 多邊形工具 + `#snapToggle.on` 時加上；此時 `--grid-size` = `oc.gridMm × oc.zoom` px，`--grid-major` = 5 倍 |
-| `--grid-x` / `--grid-y` | 由 `ocGridApply()` 設為 `oc.panX/panY`，格線隨平移對齊畫布座標 |
-| `oc.polyStash` | Esc 清掉的草稿頂點；存在且草稿為空時 Ctrl+Z 還原草稿（不送 undo）；落點／換工具清空 |
-| `.hint-kbd`（多邊形） | 有頂點：「Backspace 退一點 · Enter 閉合 · Esc 清草稿」；清空後：「Ctrl+Z 還原草稿 · Esc 離開」 |
+| `--grid-x` / `--grid-y` | 由 `ocGridApply()` 設為 `oc.panX/panY`，格線隨平移對齊畫布座標；`--grid-size` 間距 <8px 時改畫 5/25/…倍疏線（GEO-187） |
 | `.toast-region` | 浮標可見時下移到浮標下方（取代舊的「有 toast 就隱藏浮標」） |
 
 ## 第二輪新增與行為變更（2026-09-22）
@@ -162,7 +162,7 @@
 | `.object-row` | 左欄清單列 | 搜尋過濾後計數 |
 | `.ocard-frame` | 卡片外框 rect | hover/selected 視覺掛點 |
 | `.object-row` | 左欄清單列 | `dataset.kind`/`dataset.id`;`.selected` |
-| `[data-tool]` | 頂列工具鈕(select/pan); rect/poly 改由物件庫與 R/P 快捷鍵啟動 | `dataset.tool`、`.active` |
+| `[data-tool]` | 頂列工具鈕(select/pan); rect 由物件庫與 R 快捷鍵啟動,P 是一次性動作(建面卡→進面內,非工具態) | `dataset.tool`、`.active` |
 | `[data-filter-type]` | 顯示類型篩選(face/space) | `checked` 狀態 |
 | `[data-icon]` | 圖示插槽 | hydrateIcons 填充 |
 | `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/insert/timber/redraw) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
@@ -234,7 +234,7 @@
 - A1 防溢出:`.top-actions` 右緣 ≤ viewport 且左緣 > `.tool-group` 右緣(1382/1160 皆斷)。
 - 物件列:`.object-row > .row-icon.{face|space|column|beam} + .row-copy > strong(12.5/600)+small(11) + (.row-badge 游離)`。
 - E8:800px 下 `#faceWorkspaceTools .workspace-tool` 可見鈕 ≥5(橫向捲動而非消失)。
-- 主畫布快捷鍵增 R(矩形)/P(多邊形)。
+- 主畫布快捷鍵增 R(矩形)/P(建面卡→面內畫外環,GEO-186(b) 後非持續工具)。
 
 ## Phase 1 版面檢查點(cdp_test §1,五項)
 
@@ -302,53 +302,51 @@
 - toast 避讓小地圖:`.toast-region` `bottom` 42px → 122px(壓在 `.minimap-shell` right14/bottom14/高96 之上,≥118)。
 - busy 進度指示:`#busyIndicator`(狀態列左側,spinner+「套用中…」)——`mutate()` 飛行中 `hidden=false`,結束 `hidden=true`;不改變既有 `body.oc-busy` 按鈕停用機制。
 
-## 面·多邊形逐點閉合(polydraft,2026-09-22 設計澄清,🔒 Q13–Q16,cdp_test §P34/§P35)
+## 面·多邊形逐點閉合(polydraft,2026-09-22 設計澄清,🔒 Q13–Q16;GEO-186(b) 後改為面內專用,cdp_test §P34/§P35)
 
 > 規格本體見 `RC-POLYGON-PLAN.md` §5.A.1;共用邏輯模組合約見 `POLYDRAFT-API.md`。
-> 範圍:主畫布「面·多邊形」(P)與面內工作區「重畫外環」(e)共用同一份 `polydraft.js`
-> 狀態機。下表「歸屬」欄標明「主畫布」「面內」「共用」三種,共用 = 兩處各自掛在自己的
-> 草稿層下,class 名相同、掛載節點不同。
 >
-> **實作進度**(2026-09-22 續,diff#12 面內段):diff#1–9/11(主畫布 P 工具本體)、diff#10
-> (外環邊 · 尺寸確認清單)、diff#12 的**面內 e 呼叫端**(`feDown`/`feMove`/`feSetTool`/
-> Esc 階梯的第4·6級/鍵入長度鍵盤掛勾全部改呼叫 `PolyDraft.*`,`#feDraftLayer` 已掛載)
-> 全部已實作;對應斷言在 `cdp_test.js` §P33(diff#10)、§P34(主畫布 diff#1–9/11)、§P35
-> (面內 diff#12;`§P21`–`§P23`/`§P33`/`§P34` 實作當下均已被既有段落占用,依
-> RC-POLYGON-PLAN §5.A.1.14 的重號規則遞補為 §P35)。舊版面內手寫軸鎖函式
-> `feDedupe`/`feRedrawClose`/`feRedrawApplyLen` 已移除(不是薄包裝),由
-> `feDraftTryClose`/`feCommitDraft`/`feDraftApplyLen` 取代,行為與主畫布 `objPoly*` 系列
-> 對等。`polydraft.js` 本體不受本輪影響(該模組由另一 agent 同時維護 `tryClose` 的收尾
-> 驗證,本輪只讀)。
+> **GEO-186(b,2026-09-24 拍板):主畫布不再有 mm 繪圖的多邊形工具。** 同一張畫布混用
+> 「mm 繪圖」與「固定 200×156 卡片排版」兩套座標是 GEO-186 的根因——畫 4000×3000
+> 的房間要縮到 2–5%,閉合後產生的卻是 200×156 縮圖卡片、還被放到多邊形左上角,
+> 縮成一個點(GEO-187「找不到卡片」)。
+>
+> 現行流程:P 鍵/「＋面·多邊形」按一下 = `objNewPolyFace()` 建預設外環
+> (4000×3000 矩形佔位)的面卡、卡片落在當下視野中心 → `enterFocus("face",id)`
+> 自動進入面內工作區 → `feSetTool("redraw")` 直接以實際 mm 逐點畫外環
+> → Esc 回畫布。pendingSlot 流程同樣支援:槽位「＋放置」備妥 rect 工具時按 P,
+> 新面自動帶入 `pendingSlot.bid`、進面內直接開「放置」頁。
+> 對應斷言:`cdp_test.js` §P34(新流程接線)。
+>
+> 畫布端逐點閉合機器已整份移除:`oc.polyDraft`/`oc.poly`/`oc.polyPreview`/`oc.polyStash`/
+> `oc.gridMm`、`#polyDraftLayer`/`#polyCloseBtn`/`#ocLenInput`/`#polyGridSize`、
+> `renderPolyDraftLayer`/`objPoly*`/`ocLenShow`、`.canvas-viewport.tool-poly`/
+> `poly-snap-grid`、`.quick-create.active`。PolyDraft 狀態機行為由
+> `polydraft_test.js` 單元測試 + 面內 §P35/§P36 覆蓋。
+>
+> **實作進度**(2026-09-22 diff#12 面內段):面內 e 呼叫端(`feDown`/`feMove`/`feSetTool`/
+> Esc 階梯的第4·6級/鍵入長度鍵盤掛勾)全部呼叫 `PolyDraft.*`,`#feDraftLayer` 已掛載;
+> 對應斷言在 `cdp_test.js` §P33(外環邊清單)、§P35(面內 diff#12)。舊版面內手寫軸鎖函式
+> `feDedupe`/`feRedrawClose`/`feRedrawApplyLen` 已移除,由 `feDraftTryClose`/
+> `feCommitDraft`/`feDraftApplyLen` 取代。
 
 | id / class | 歸屬 | 契約 |
 |---|---|---|
-| `#canvasModeHint` | 主畫布(既有 id,契約擴充) | 三段結構容器:`.hint-tool`/`.hint-context`/`.hint-kbd` 三個子元素常駐(`renderCanvasModeHint()` 產生);`oc.polyDraft.pts.length>=3` 時額外含可見的 `#polyCloseBtn`(既有 textContent/hidden 契約不變,只是內容結構化;rect 工具沿用同一容器,三段內容改為固定文字,聚合 textContent 仍含「拖出範圍」等既有子字串) |
-| `.hint-tool` / `.hint-context` / `.hint-kbd` | 主畫布 | `#canvasModeHint` 內三段內容,`textContent` 依 RC-POLYGON-PLAN §5.A.1.13 狀態轉移表的「畫面」欄切換 |
-| `#polyCloseBtn` | 主畫布 | 「閉合」可點鈕(`.hint-close-btn`);`hidden` 由 `oc.polyDraft.pts.length<3` 控制;`.click()` 等同觸發 §5.A.1.7 閉合判定(`objPolyTryClose()`) |
-| `#polyDraftLayer` | 主畫布 | `<g>` 掛在 `#oroot` 內、`drawObjects()` 每次清空重建時緊接在 `#edgeGroup`/`#cardLayer`/`#edgeLabelLayer` 之後重新掛上;`renderPolyDraftLayer()` 只清空重繪這個 group,pointermove 走 `objPolyPreviewMove()`,不觸發 `drawObjects()`(可觀測訊號:`ocDrawCount`,見下) |
-| `#feDraftLayer` | 面內 | `<g>` 掛在 `#faceEditorRoot` 內、`drawFaceEditor()` 每次清空重建時掛在最後一個子節點(在其他內容之上);比照 `#polyDraftLayer` 動態建立,不寫進 `index.html`。`renderFeDraftLayer()` 只清空重繪這個 group,pointermove 走 `feDraftPreviewMove()`,不觸發 `drawFaceEditor()`(取代舊版直接畫在 `#faceEditorRoot` 的 `d0.kind==="redraw"` 分支,已移除) |
-| `.draft-edge` / `.draft-rubber` / `.draft-preview-face` / `.draft-vertex` / `.draft-start-vertex` / `.draft-edge-len` / `.draft-corner-preview` / `.draft-align-guide` | 共用 | 草稿層內部元素 class(定義在 `app.css`,無容器範圍限制);主畫布版本掛在 `#polyDraftLayer`,面內版本掛在 `#feDraftLayer`,結構一一對應(`renderFeDraftLayer()`/`renderPolyDraftLayer()` 是同一份邏輯的 `oc.*`/`fe.*` 版本);`.draft-rubber.error` = 交叉/回頭警示態(變紅) |
-| `#ocLenInput` | 主畫布 | 鍵入長度浮動框,`class="fe-len-input"` 沿用既有樣式(比照 `#feLenInput`);`hidden`/`value`/`.style.left/top` 由 `ocLenShow()` 控制 |
-| `#polyGridSize` | 主畫布 | 格線間距下拉(值 100/250/300/500,預設 250),掛在 `.canvas-controls` 內、`#snapToggle`/`#gridToggle` 旁;`change` 事件寫入 `oc.gridMm` |
-| `#feLenInput` | 面內(既有 id/樣式不變) | 鍵入長度浮動框;`feLenShow()` 本體未改(讀 `fe.lenBuf`/`fe.drag.cur`/`fe.drag.pts`,兩者皆是鏡射 `fe.draft` 的相容欄位,見下) |
+| `#canvasModeHint` | 主畫布 | 三段結構容器:`.hint-tool`/`.hint-context`/`.hint-kbd` 三個子元素常駐(`renderCanvasModeHint()` 產生);GEO-186(b) 後只有 rect 工具使用,`hidden = oc.drawTool !== "rect"`、三段為固定文字(「矩形」「在畫布上拖出範圍建立游離面」「Esc 取消」);`enterFocus`/`leaveFocus`/`ocCursor` 都會重算 |
+| `#feDraftLayer` | 面內 | `<g>` 掛在 `#faceEditorRoot` 內、`drawFaceEditor()` 每次清空重建時掛在最後一個子節點(在其他內容之上);動態建立,不寫進 `index.html`。`renderFeDraftLayer()` 只清空重繪這個 group,pointermove 走 `feDraftPreviewMove()`,不觸發 `drawFaceEditor()` |
+| `.draft-edge` / `.draft-rubber` / `.draft-preview-face` / `.draft-vertex` / `.draft-start-vertex` / `.draft-edge-len` / `.draft-corner-preview` / `.draft-align-guide` | 面內 | 草稿層內部元素 class(定義在 `app.css`);GEO-186(b) 後只有 `#feDraftLayer` 使用;`.draft-rubber.error` = 交叉/回頭警示態(變紅) |
+| `#feLenInput` | 面內 | 鍵入長度浮動框;`feLenShow()` 讀 `fe.lenBuf`/`fe.drag.cur`/`fe.drag.pts`(兩者皆是鏡射 `fe.draft` 的相容欄位,見下) |
 | `#mainEdgeLength${i}` / `#mainEdgeFixed${i}` / `#mainEdgeFree${i}` | 主畫布 | 主畫布 boundary 檢視器「外環邊 · 尺寸確認」清單(RC-POLYGON-PLAN §5.A.1.10);與面內 `#edgeLength${i}`/`#edgeFixed${i}`/`#edgeFree${i}` 同構,id 前綴不同(同一 DOM 中兩個檢視器面板同時存在,避免撞號);`data-edge-len`/`data-fix-edge`/`data-fix-val` 屬性沿用既有命名 |
 | `.edge-list` / `.edge-row` | 共用(既有 class 延伸用途) | 主畫布版本沿用面內既有樣式 class;`querySelectorAll` 需以各自 pane 為根(`#inspectorContent` vs `#faceInspectorContent`)避免互相命中 |
-| `.quick-create.active` | 主畫布 | diff#1(§5.A.1.1):目前只有 `#btnNewPoly` 在 `setOcTool("poly")`/離開時切這個 class(`#btnNewRect` 未跟進,範圍限定 P 工具) |
 
-新增全域狀態:
+全域狀態:
 
-- `oc.gridMm`(number,主畫布多邊形格線吸附間距,預設 250)。
-- `oc.polyDraft`(`PolyDraft.createState()` 起始的共用草稿狀態機 state;`place`/`backspace`/
-  `applyTypedLength`/`clearTyped` 等呼叫後整包替換,不原地改)。
-- `oc.poly`(相容既有測試/呼叫端保留,鏡射 `oc.polyDraft.pts`——每次 `oc.polyDraft` 重新指派時
-  同步 `oc.poly = oc.polyDraft.pts`,兩者共享同一陣列參考,不是深拷貝)。
-- `oc.polyPreview`(最近一次 `PolyDraft.previewMove()` 回傳:`{cur,guides,closeReady,error,
-  cornerPreview}`,供 `renderPolyDraftLayer()`/`renderCanvasModeHint()`/`ocLenShow()` 讀取)。
-- `ocDrawCount`(number,`drawObjects()` 每次整份重畫累加一次的頂層 `let`;diff#4 cdp 斷言用它
-  證明 pointermove 沒有觸發整份物件層重繪)。
-- `fe.draft`(面內 `PolyDraft` state,對等 `oc.polyDraft`;`feSetTool`/`resetSceneFocus`/
-  `leaveFocus`/`openFaceWorkspace`/收尾成功後重置為 `PolyDraft.createState()`)。
-- `fe.draftPreview`(對等 `oc.polyPreview`,`feDraftPreviewMove()` 的最近一次回傳)。
+- `oc.drawTool`(`'rect' | 'hole' | null`;GEO-186(b) 後不再有 `'poly'`——P 是一次性動作)。
+- `ocDrawCount`(number,`drawObjects()` 每次整份重畫累加一次的頂層 `let`;原 diff#4 的
+  可觀測訊號,畫布草稿層移除後暫無消費者,保留供除錯)。
+- `fe.draft`(面內 `PolyDraft` state;`feSetTool`/`resetSceneFocus`/`leaveFocus`/
+  `openFaceWorkspace`/收尾成功後重置為 `PolyDraft.createState()`)。
+- `fe.draftPreview`(`feDraftPreviewMove()` 的最近一次 `PolyDraft.previewMove()` 回傳)。
 - `fe.drag`(既有欄位,語意改變:redraw 進行中時**不是**原始資料,是 `fe.draft` 的鏡射
   `{kind:"redraw", pts: fe.draft.pts, cur: fe.draft.cur}`,由 `feSyncDraftMirror()` 在
   每次 `fe.draft` 變動後同步;`fe.draft.pts.length===0` 時鏡射為 `null`——與舊版「未落
@@ -356,25 +354,17 @@
   這個欄位,不需要更新)。
 - `fe.lenBuf`(既有欄位,同樣改為鏡射 `fe.draft.typed` 的相容字串,供 `feLenShow()`/既有
   測試/面內既有 Esc 階梯第4級直接讀取)。
-- `feGridStep()`(新函式,抽出既有 B4「依 zoom 挑 10/25/50/100/250/500/1000,螢幕間距
-  ≥24px」格距計算,`drawFaceEditor()` 畫格線與 `feDraftOpts()` 的 PolyDraft `gridMm` 共用
+- `feGridStep()`(抽出既有 B4「依 zoom 挑 10/25/50/100/250/500/1000,螢幕間距 ≥24px」
+  格距計算,`drawFaceEditor()` 畫格線與 `feDraftOpts()` 的 PolyDraft `gridMm` 共用
   同一份;面內 redraw 的格線吸附因此不是固定 `#faceGridSizeSelect` 值,是 B4 zoom 相依值
-  ——這是刻意的行為改動,對應 POLYDRAFT-API.md §6)。
+  ——對應 POLYDRAFT-API.md §6)。
 
-不變(本節不改動):`#faceCanvasHint`(既有一行文字,未升級成三段浮標,見
-RC-POLYGON-PLAN §5.A.1.2)、`feLenShow()` 函式本體、面內既有 `#edgeLength${i}`/
-`#edgeFixed${i}`/`#edgeFree${i}`(§5.A.1.10 只新增主畫布版本)、面內 Esc 階梯的其餘五級
+不變:`#faceCanvasHint`(既有一行文字,未升級成三段浮標)、`feLenShow()` 函式本體、
+面內既有 `#edgeLength${i}`/`#edgeFixed${i}`/`#edgeFree${i}`、面內 Esc 階梯的其餘五級
 (輸入框焦點不攔截/收選單/關對話框/收方向小選單/離開工作區,`#feGuidePick` 等,
-UIUX-FIX-PLAN 既有七階梯不變,只有第4級「清鍵入長度」與第6級「清草稿」內部改呼叫
-`PolyDraft.clearTyped`/清空 state)、`polydraft.js`/`polydraft_test.js` 本體、舊三視圖
-殭屍 `tool==="poly"`(`canvasDown/Move/Up`;2026-09-24 依 🔒 Q17 已移除,見 GEO-181)。
+只有第4級「清鍵入長度」與第6級「清草稿」內部改呼叫 `PolyDraft.clearTyped`/清空 state)、
+`polydraft.js`/`polydraft_test.js` 本體。
 
-diff#12 面內接法唯一偏離 POLYDRAFT-API.md 字面(「index.html 改動…留給下一個實作
-agent」)的地方:`#feDraftLayer` **沒有**寫進 `index.html`,原因是主畫布 P 工具實作時
-(diff#1–11)已經改用「`drawObjects()`/`drawFaceEditor()` 每次清空重建時動態掛 `<g>`」
-的作法(`#polyDraftLayer` 同樣不在 `index.html`),面內段沿用同一precedent 保持兩處一致,
-不引入「一個寫死 HTML、一個動態掛」的不對稱。
-
-`serve.py` 的靜態檔白名單追加 `/polydraft.js`(與 `/app.js`/`/reference-ui.js` 同組)——
-`index.html` 依 POLYDRAFT-API.md 要求在 `app.js` 之前插入 `<script src="polydraft.js">`,
-沒有這行白名單瀏覽器會拿到 404、整個模組載入失敗,屬於讓本節可運作的必要最小改動。
+`serve.py` 的靜態檔白名單含 `/polydraft.js`(與 `/app.js`/`/reference-ui.js` 同組)——
+`index.html` 在 `app.js` 之前插入 `<script src="polydraft.js">`,
+沒有這行白名單瀏覽器會拿到 404、整個模組載入失敗。

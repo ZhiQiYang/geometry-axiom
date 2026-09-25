@@ -857,14 +857,6 @@ window.addEventListener("keydown", async e => {
     e.preventDefault();
     if (oc.busy) { toast("操作進行中,請稍候"); return; }
     const cmd = (e.key === "y" || e.key === "Y" || e.shiftKey) ? "redo" : "undo";
-    /* GEO-185 #3:多邊形工具中剛用 Esc 清掉草稿、還沒落新點 → Ctrl+Z 先還原草稿,不動世界 */
-    if (cmd === "undo" && oc.on && !oc.focus && oc.drawTool === "poly" && oc.polyStash && !oc.polyDraft.pts.length) {
-      oc.polyDraft = Object.assign(PolyDraft.createState(), { pts: oc.polyStash });
-      oc.poly = oc.polyDraft.pts; oc.polyStash = null;
-      setStatus(`多邊形：已還原草稿 · 已點 ${oc.poly.length} 頂點 · 點回起點閉合(Esc 取消)`);
-      renderPolyDraftLayer(); renderCanvasModeHint();
-      return;
-    }
     await doUndoRedo(cmd);
     return;
   }
@@ -888,8 +880,8 @@ window.addEventListener("keydown", async e => {
            兩級改呼叫 PolyDraft，其餘五級原樣)。Phase 2:鍵入長度中 Esc 先清輸入,不取消整段 */
         if (fe.lenBuf) {
           fe.draft = PolyDraft.clearTyped(fe.draft);
-          /* finding-3:清數字要連帶清掉鍵入長度錯誤殘留的紅橡皮筋,理由同主畫布
-             objPolyEscStep。 */
+          /* finding-3:清數字要連帶清掉鍵入長度錯誤殘留的紅橡皮筋,不然要等下一次
+             pointermove 才會消,卡在錯誤態的時間比「清數字」這個動作本身還久。 */
           if (fe.draftPreview && fe.draftPreview.error)
             fe.draftPreview = Object.assign({}, fe.draftPreview, { error: null });
           feSyncDraftMirror(); feLenShow(); renderFeDraftLayer();
@@ -910,13 +902,9 @@ window.addEventListener("keydown", async e => {
         leaveFocus();
         return;
       }
-      if (oc.drawTool === "poly") {
-        /* 🔒 Q14(§5.A.1.8):P 工具專屬 Esc 三段，與面內既有七階梯無關 */
-        objPolyEscStep();
-      } else if (oc.rect || oc.drawTool) {
+      if (oc.rect || oc.drawTool) {
         pendingSlot = null;
         oc.rect = null; oc.drawTool = null;
-        oc.polyDraft = PolyDraft.createState(); oc.poly = oc.polyDraft.pts; oc.polyPreview = null;
         drawObjects(); ocCursor();
       } else if (oc.focus) {
         leaveFocus();
@@ -964,25 +952,17 @@ window.addEventListener("keydown", async e => {
     const k = e.key;
     if (k === " ") { oc.spacePan = true; ocCursor(); e.preventDefault(); return; }
     if (k === "/") { e.preventDefault(); if (innerWidth <= 900) openPanel("left", $("toggleLeft")); $("searchInput").focus(); return; }
-    /* diff#5/#7/#8:P 工具鍵入長度累積、Enter 閉合/定長、Backspace 退點 */
-    if (oc.drawTool === "poly") {
-      if (/^[0-9]$/.test(k)) {
-        oc.polyDraft = PolyDraft.typeDigit(oc.polyDraft, k);
-        ocLenShow(); renderCanvasModeHint();   /* GEO-185 #7:浮標同步顯示「鍵入長度 N mm」 */
-        return;
-      }
-      if (k === "Backspace") { objPolyBackspace(); return; }
-      if (k === "Enter") { objPolyEnter(); return; }
-    }
     /* Delete/Backspace 刪除選取的卡片:與右欄「刪除」鈕同一個 deleteObject(可 Ctrl+Z 復原、
-       被引用時核心拒絕);矩形/多邊形/挖孔工具進行中不作用,輸入框已在上方放行給原生編輯。 */
+       被引用時核心拒絕);矩形工具進行中不作用,輸入框已在上方放行給原生編輯。 */
     if ((k === "Delete" || k === "Backspace") && oc.sel && !oc.drawTool && !oc.rect) {
       e.preventDefault();
       if (oc.busy) { toast("操作進行中,請稍候"); return; }
       await deleteObject(oc.sel.kind, oc.sel.id);
       return;
     }
-    const km = { v: "select", h: "pan", r: "rect", p: "poly" };
+    /* GEO-186(b):P 不再是畫布上的持續工具,改為一次性動作——建面卡→進面內畫外環 */
+    if (k.toLowerCase() === "p") { objNewPolyFace(); return; }
+    const km = { v: "select", h: "pan", r: "rect" };
     if (km[k.toLowerCase()]) { setOcTool(km[k.toLowerCase()]); return; }
     if (k.toLowerCase() === "f") { ocFitAll(); return; }
     if (k === "1") { oc.zoom = 1; ocApply(); return; }
@@ -1019,19 +999,13 @@ function markSceneItem() {
   for (const b of document.querySelectorAll("#sceneMenuPop .scene-item"))
     b.classList.toggle("active", b.dataset.path === curScene.path);
 }
-/* 對抗審查 finding-1 修正(DOM-CONTRACT.md「oc.poly 鏡射 oc.polyDraft.pts」契約):
-   只清 oc.poly 而不重新指派 oc.polyDraft 會讓兩者分家——與 setOcTool()/objPolyEscStep()
-   既有的完整重置同款,resetSceneFocus/enterFocus/leaveFocus 三處共用,避免各自漏寫一半。 */
-function objPolyResetDraft() {
-  oc.polyDraft = PolyDraft.createState(); oc.poly = oc.polyDraft.pts; oc.polyPreview = null; oc.polyStash = null;
-}
 /* 換場景前清工作區焦點與面面內快取——舊場景的 guide/timber 殘影會誤刪新場景同號物件 */
 function resetSceneFocus() {
   pendingSlot = null; closePanels();
   $("faceInspectorContent").dataset.bid = "";
   fiShowTab("prop");
   oc.focus = null; oc.stack = []; oc.edit = null;
-  oc.rect = null; objPolyResetDraft(); oc.drawTool = null; oc.bmap = {};
+  oc.rect = null; oc.drawTool = null; oc.bmap = {};
   fe.panHold = null; fe.work = null;
   fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
   fe.guides = []; fe.timbers = []; fe.grids = []; fe.obstacles = null;
@@ -1124,12 +1098,7 @@ const oc = {
   card: null,             // 卡片拖曳 {el,kind,id,sx,sy,moved}
   pan: null,
   rect: null,             // 矩形繪製起點 {x,y}（畫布座標）
-  poly: [],               // 相容既有測試/呼叫端：鏡射 oc.polyDraft.pts(§5.A.1.12 diff#12)
-  polyDraft: PolyDraft.createState(),  // 共用草稿狀態機(polydraft.js)的 state
-  polyPreview: null,      // 最近一次 PolyDraft.previewMove 的回傳，供草稿層/浮標渲染用
-  polyStash: null,        // GEO-185 #3:Esc 清掉的草稿頂點,Ctrl+Z 可還原;落新點/離開工具即丟
-  gridMm: 250,            // diff#3(🔒 Q15):主畫布多邊形格線吸附間距(mm),可調 100/250/300/500
-  drawTool: null,         // 'rect' | 'poly' | 'hole' | null
+  drawTool: null,         // 'rect' | 'hole' | null(GEO-186(b):多邊形不再是畫布工具,P=建面卡→進面內畫外環)
   edit: null,             // 面編輯 {bid, work:[{verts,fixity}], drag}
 };
 let ocSeq = 0;
@@ -1149,22 +1118,18 @@ function ocApply() {
     c.classList.toggle("compact", comp);
   if (oc.faces) drawMinimap();
 }
-/* 背景格線。GEO-185 #1:多邊形工具 + 吸附開著時,格線改畫「實際吸附間距」(oc.gridMm),
-   舊版固定畫 24 單位格、實際卻吸到看不見的 250mm 格,點下去被吸走或被吞掉都看不出原因。
-   格線也跟著平移(--grid-x/y 以前沒人設,平移時格線不動、對不上畫布座標)。 */
+/* 背景格線。格線跟著平移(--grid-x/y)對齊畫布座標。
+   GEO-187:縮得很小時格線間距不到 1px,整片畫布糊成灰色雜訊;
+   間距太小就改畫 5 倍、25 倍…的線(仍對齊同一組格點)。 */
 function ocGridApply() {
   const vp = $("canvasViewport");
   if (!vp) return;
-  const polySnap = oc.drawTool === "poly" && $("snapToggle").classList.contains("on");
-  let minor = (polySnap ? oc.gridMm : 24) * oc.zoom;
-  /* GEO-187:縮得很小時格線間距不到 1px,整片畫布糊成灰色雜訊(GEO-185 把主格改成 5 倍細格後更明顯);
-     間距太小就改畫 5 倍、25 倍…的線(仍對齊同一組格點) */
+  let minor = 24 * oc.zoom;
   while (minor < 8) minor *= 5;
   vp.style.setProperty("--grid-size", minor + "px");
   vp.style.setProperty("--grid-major", minor * 5 + "px");
   vp.style.setProperty("--grid-x", oc.panX + "px");
   vp.style.setProperty("--grid-y", oc.panY + "px");
-  vp.classList.toggle("poly-snap-grid", polySnap);
 }
 function ocToCanvasPx(x, y) {       /* 元素局部 px → 畫布座標 */
   return { x: (x - oc.panX) / oc.zoom, y: (y - oc.panY) / oc.zoom };
@@ -1451,13 +1416,6 @@ function drawObjects() {
   const eg = el("g", { id: "edgeGroup" }, oroot);
   const cl = el("g", { id: "cardLayer" }, oroot);
   const labels = el("g", { id: "edgeLabelLayer" }, oroot);
-  /* diff#4(§5.A.1.4):多邊形草稿獨立層,掛在 edgeGroup/cardLayer 之後；
-     pointermove 期間只重繪這個 group(renderPolyDraftLayer),不會再次呼叫 drawObjects()。 */
-  const pdl = el("g", { id: "polyDraftLayer" }, oroot);
-  /* 對抗審查 finding-2 修正:drawObjects() 整份重畫(例如 doUndoRedo 的 renderObjects()
-     路徑)只建立空草稿層,不會自動補回進行中的多邊形草稿——草稿線段因此閃一下,
-     要等下一次 pointermove 才畫回來。這裡補上,對齊 pointermove 期間已有的行為。 */
-  if (oc.drawTool === "poly" && oc.polyDraft.pts.length) renderPolyDraftLayer();
   if (oc.focus && oc.focus.t === "face") { drawFaceEditor(); return; }
 
   const inSpace = oc.focus && oc.focus.t === "space"
@@ -1696,7 +1654,8 @@ async function enterFocus(t, id) {
   closePanels();
   if (oc.focus) oc.stack.push(oc.focus);
   oc.focus = { t, id };
-  oc.rect = null; objPolyResetDraft(); oc.edit = null; oc.drawTool = null;
+  oc.rect = null; oc.edit = null; oc.drawTool = null;
+  renderCanvasModeHint();
 
   if (t === "face") {
     const b = await api("boundary " + id);
@@ -1723,7 +1682,8 @@ async function leaveFocus() {
   closePanels();
   if (pendingSlot?.bid != null && oc.focus?.t === "face" && oc.focus.id === pendingSlot.bid) pendingSlot = null;
   oc.focus = oc.stack.pop() || null;
-  oc.rect = null; objPolyResetDraft(); oc.edit = null; oc.drawTool = null;
+  oc.rect = null; oc.edit = null; oc.drawTool = null;
+  renderCanvasModeHint();
   fe.panHold = null; fe.work = null;
   fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
   if (oc.focus && oc.focus.t === "face") {
@@ -2704,18 +2664,16 @@ function drawFaceEditor() {
     }
   }
   /* diff#4(§5.A.1.4):面內獨立草稿層——掛在 #faceEditorRoot 內最後一個子節點(在其他
-     內容之上)，每次 drawFaceEditor() 清空重建時重新掛上；比照主畫布 #polyDraftLayer
-     掛在 #oroot 的既有作法(動態建立，不寫進 index.html)。pointermove 期間改由
-     feDraftPreviewMove()/renderFeDraftLayer() 單獨清空重繪這個 group，不再呼叫整份
-     drawFaceEditor()——取代舊版直接畫在 root 的 d0.kind==="redraw" 分支(已移除)。 */
+     內容之上)，每次 drawFaceEditor() 清空重建時重新掛上(動態建立，不寫進 index.html)。
+     pointermove 期間改由 feDraftPreviewMove()/renderFeDraftLayer() 單獨清空重繪
+     這個 group，不再呼叫整份 drawFaceEditor()。 */
   el("g", { id: "feDraftLayer" }, root);
   renderFeDraftLayer();
 }
 
-/* diff#4:面內草稿層渲染——只清空重繪 #feDraftLayer 這個 group，class 沿用主畫布
-   renderPolyDraftLayer() 同一組 .draft-*(app.css 是 bare selector，無容器範圍限制），
-   內容結構逐一對應：已定段實線/橡皮筋(錯誤態變紅)/預覽面/段長標註/對齊參考線/
-   補直角預覽方塊/已定頂點圓點(起點空心)。差異只在讀 fe.* 而非 oc.*。 */
+/* diff#4:面內草稿層渲染——只清空重繪 #feDraftLayer 這個 group，用 .draft-* 樣式
+   (app.css 是 bare selector，無容器範圍限制)。內容結構：已定段實線/橡皮筋(錯誤態
+   變紅)/預覽面/段長標註/對齊參考線/補直角預覽方塊/已定頂點圓點(起點空心)。 */
 function renderFeDraftLayer() {
   const g = $("feDraftLayer");
   if (!g) return;
@@ -2761,10 +2719,10 @@ function renderFeDraftLayer() {
 }
 
 /* diff#12(§5.A.1.0/.12/POLYDRAFT-API.md §6):面內 PolyDraft 呼叫端共用參數。
-   gridMm 用 feGridStep()(B4 zoom 相依格距，不是固定 250)；existingEdges 恆為 []——
+   gridMm 用 feGridStep()(B4 zoom 相依格距，不是固定值)；existingEdges 恆為 []——
    重畫外環是整份重建 loops[0]，舊外環正被取代不算「既有」，孔環依既有 P5 規則隱藏
-   不編；自身已定邊的交叉/回頭檢查由 PolyDraft 內部對 state.pts 自動比對(與主畫布
-   objPolyOpts 同理，不需要另外塞進 existingEdges)。 */
+   不編；自身已定邊的交叉/回頭檢查由 PolyDraft 內部對 state.pts 自動比對，
+   不需要另外塞進 existingEdges。 */
 function feDraftOpts() {
   return {
     gridMm: feGridStep(),
@@ -2776,8 +2734,7 @@ function feDraftOpts() {
 }
 
 /* fe.drag/fe.lenBuf 是既有相容欄位(cdp_test §P9/§P10 與面內既有 Esc 七階梯直接讀取)：
-   每次 fe.draft 變動後在這裡鏡射回去，讓舊呼叫端看到的形狀不變——比照
-   DOM-CONTRACT.md「oc.poly 鏡射 oc.polyDraft.pts」的既有作法。 */
+   每次 fe.draft 變動後在這裡鏡射回去，讓舊呼叫端看到的形狀不變。 */
 function feSyncDraftMirror() {
   fe.lenBuf = fe.draft.typed;
   fe.drag = fe.draft.pts.length
@@ -2786,8 +2743,9 @@ function feSyncDraftMirror() {
 }
 
 /* diff#4/#6(§5.A.1.4/.6):只算下一幀畫面 + 重繪 #feDraftLayer，不呼叫 drawFaceEditor()。
-   cur 併回 fe.draft 才能讓 feDraftApplyLen 讀到方向(同 objPolyPreviewMove 的既有註解:
-   previewMove 是純函式，不會自己寫回 state)。 */
+   cur 併回 fe.draft 才能讓 feDraftApplyLen 讀到方向(previewMove 是純函式，
+   不會自己寫回 state——呼叫端要自己把 cur 併回，否則 state.cur 永遠是初始值 null,
+   鍵入長度會被誤判成 NO_DIRECTION)。 */
 function feDraftPreviewMove(pt) {
   if (fe.tool !== "redraw") return;
   fe.draftPreview = PolyDraft.previewMove(fe.draft, [pt.x, pt.y], feDraftOpts());
@@ -2918,8 +2876,7 @@ function feMove(pt, ev) {
   const d = fe.drag;
   /* diff#4/#6(§5.A.1.4/.6):redraw 工具的 pointermove 優先分派給 feDraftPreviewMove，
      涵蓋「尚未落第一點」(d 為 null)與「已落點」(d.kind==="redraw"，此時 d 只是
-     fe.draft 的鏡射)兩種情況——與主畫布 objPolyPreviewMove 不受 pts.length 限制同理，
-     只清空重繪 #feDraftLayer，不呼叫整份 drawFaceEditor()。 */
+     fe.draft 的鏡射)兩種情況——只清空重繪 #feDraftLayer，不呼叫整份 drawFaceEditor()。 */
   if (fe.tool === "redraw" && (!d || d.kind === "redraw")) {
     feDraftPreviewMove(pt);
     return;
@@ -3063,7 +3020,7 @@ async function feUp(pt) {
 /* diff#12(§5.A.1.7/§8):重畫外環閉合——取代舊版 feDedupe/feRedrawClose 手寫驗證，
    前半驗證改呼叫 PolyDraft.tryClose(去共線併入模組內部，不再需要 feDedupe)，
    後半送出 emitBoundary 不變(整份重宣告 loops[0]，新邊 fixity 全 1)。
-   與 objPolyTryClose 的差異：失敗時「不」清空草稿(§5.A.1.7「停留原狀態」)，
+   失敗時「不」清空草稿(§5.A.1.7「停留原狀態」)，
    這點刻意比舊版(不論成敗都先清 fe.drag)更寬鬆——使用者可以留在原地修正再試。 */
 async function feDraftTryClose() {
   if (fe.tool !== "redraw" || fe.draft.pts.length < 3) return;
@@ -3155,16 +3112,15 @@ function feLenShow() {
 }
 
 /* diff#12(§8):Enter 把 typed 套成目前段長(軸向取游標側)，取代舊版 feRedrawApplyLen
-   手寫版本，改呼叫 PolyDraft.applyTypedLength——同 objPolyEnter 的 typed 分支，
-   len<=0(新點與末點重合)時 r.error 為 null 但 state 不變，typed 不會被清空，
-   行為與主畫布一致(共用同一份模組，見 POLYDRAFT-API.md §3)。 */
+   手寫版本，改呼叫 PolyDraft.applyTypedLength。len<=0(新點與末點重合)時 r.error
+   為 null 但 state 不變，typed 不會被清空(見 POLYDRAFT-API.md §3)。 */
 function feDraftApplyLen() {
   const r = PolyDraft.applyTypedLength(fe.draft, {});
   if (r.error) {
-    /* 對抗審查 finding-3 修正:比照主畫布 objPolyEnter 補齊持久回饋。面內工作區沒有
-       .hint-context 這個容器(只有主畫布 #canvasModeHint 有,DOM-CONTRACT 沒有替面內
-       定義對應元素),用狀態列 + 橡皮筋紅(fe.draftPreview.error,同 feDown 的 redraw
-       分支/P35-5a CROSS 走的那條既有通道)補齊,typed 保持不變讓使用者接著訂正。 */
+    /* 對抗審查 finding-3 修正:鍵入長度出錯不能只有一次性 toast——面內工作區沒有
+       .hint-context 這個容器,用狀態列 + 橡皮筋紅(fe.draftPreview.error,同 feDown
+       的 redraw 分支/P35-5a CROSS 走的那條既有通道)補齊,typed 保持不變讓使用者
+       接著訂正。 */
     fe.draftPreview = Object.assign({}, fe.draftPreview, { error: r.error });
     setStatus("✗ " + r.error.msg);
     toast(r.error.msg);
@@ -3172,7 +3128,7 @@ function feDraftApplyLen() {
     return;
   }
   fe.draft = r.state;
-  /* 成功套用要連帶清掉上面可能殘留的錯誤態,理由同 objPolyEnter。 */
+  /* 成功套用要連帶清掉上面可能殘留的錯誤態,否則下次渲染會誤讀舊 error。 */
   if (fe.draftPreview && fe.draftPreview.error)
     fe.draftPreview = Object.assign({}, fe.draftPreview, { error: null });
   feSyncDraftMirror(); feLenShow();
@@ -3784,257 +3740,55 @@ function bindProjectedGuideDrag(svg, locate, overlay, repaint, localOverlay) {
 }
 
 /* ---- 世界層建立互動 ---- */
-/* diff#12(§5.A.1.0/.12):PolyDraft 呼叫端共用參數——主畫布沒有既存幾何，
-   existingEdges 永遠是 []（CROSS/BACKTRACK/補角交叉檢查只跟草稿自己已定的邊比較，見 POLYDRAFT-API.md §5）。 */
-function objPolyOpts() {
-  return {
-    gridMm: oc.gridMm,
-    snapOn: $("snapToggle").classList.contains("on"),
-    vertexSnapPx: 8,
-    zoom: oc.zoom,
-    existingEdges: [],
-  };
-}
-
 function objDrawDown(pt) {
   if (oc.drawTool === "rect") {
     oc.rect = { x: pt.x, y: pt.y };
-  } else if (oc.drawTool === "poly") {
-    const pts = oc.polyDraft.pts;
-    /* 三種閉合觸發之一:點回起點(§5.A.1.7①,螢幕距離比較，未經軸鎖/吸附的原始 pt，
-       與 PolyDraft.previewMove 的 closeReady 判定一致) */
-    if (pts.length >= 3 && Math.hypot(pt.x - pts[0][0], pt.y - pts[0][1]) <= 12 / oc.zoom) {
-      objPolyTryClose();
-      return;
-    }
-    const r = PolyDraft.place(oc.polyDraft, [pt.x, pt.y], objPolyOpts());
-    if (r.error) {
-      /* diff#8:CROSS/BACKTRACK 前端先驗擋下，不落點；橡皮筋已在 preview 顯示紅色，
-         這裡只需重算一次 preview 讓畫面維持當下錯誤態。 */
-      objPolyPreviewMove(pt);
-      return;
-    }
-    oc.polyDraft = r.state; oc.poly = oc.polyDraft.pts; oc.polyStash = null;
-    /* §5.A.1.11:既有文案逐字保留，cdp_test 既有斷言比對此字串 */
-    setStatus(`多邊形：已點 ${oc.polyDraft.pts.length} 頂點 · 點回起點閉合(Esc 取消)`);
-    objPolyPreviewMove(pt);
   }
 }
 
-/* diff#7(§5.A.1.7):三種閉合觸發共用的收尾——點回起點/Enter/#polyCloseBtn/雙擊都走這裡。 */
-function objPolyTryClose() {
-  if (oc.polyDraft.pts.length < 3) return;
-  const r = PolyDraft.tryClose(oc.polyDraft, { existingEdges: [] });
-  if (!r.ok) {
-    /* NO_CORNER/TOO_FEW/DEGENERATE:浮標/toast 顯示警示，不閉合，草稿停留原狀態(狀態5) */
-    toast(r.error.msg);
-    setStatus("✗ " + r.error.msg);
-    return;
-  }
-  objFinishPoly(r.pts);
-}
-
-/* Enter 鍵(diff#5/#7):typed 非空→定長接續下一段；typed 空→視同閉合觸發②。 */
-function objPolyEnter() {
-  if (oc.polyDraft.typed) {
-    const r = PolyDraft.applyTypedLength(oc.polyDraft, {});
-    if (r.error) {
-      /* 對抗審查 finding-3 修正:鍵入長度出錯先前只有一次性 toast,和滑鼠落點 CROSS/
-         BACKTRACK 的持久回饋(狀態列 + 紅橡皮筋,見 P34-10a)不對稱。橡皮筋沿用
-         oc.polyPreview.error 這條既有通道——cur 留著上一次 pointermove 算出的方向,
-         renderPolyDraftLayer() 才畫得出線段;.hint-context 用既有「改子元素、不整份
-         覆寫容器」的作法(§5.A.1.2 diff#2)直接寫錯誤文字。typed 保持不變讓使用者接著
-         訂正——清數字(Esc,見 objPolyEscStep)或移動游標(previewMove 整包換掉
-         oc.polyPreview)才會消。 */
-      oc.polyPreview = Object.assign({}, oc.polyPreview, { error: r.error });
-      setStatus("✗ " + r.error.msg);
-      toast(r.error.msg);
-      renderPolyDraftLayer();
-      renderCanvasModeHint();
-      const ctxEl = $("canvasModeHint")?.querySelector(".hint-context");
-      if (ctxEl) ctxEl.textContent = r.error.msg;
-      return;
-    }
-    oc.polyDraft = r.state; oc.poly = oc.polyDraft.pts;
-    /* 成功套用要連帶清掉上面可能殘留的錯誤態,否則下次 renderCanvasModeHint()/
-       renderPolyDraftLayer() 會誤讀舊 error,顯示已經不成立的警示。 */
-    if (oc.polyPreview && oc.polyPreview.error)
-      oc.polyPreview = Object.assign({}, oc.polyPreview, { error: null });
-    setStatus(`多邊形：已點 ${oc.polyDraft.pts.length} 頂點 · 點回起點閉合(Esc 取消)`);
-    ocLenShow();
-    renderPolyDraftLayer(); renderCanvasModeHint();
-    return;
-  }
-  objPolyTryClose();
-}
-
-/* Backspace(diff#8):typed 非空→只退鍵入的數字；否則退最後一個已定頂點。 */
-function objPolyBackspace() {
-  if (oc.polyDraft.typed) {
-    oc.polyDraft = PolyDraft.typeBackspace(oc.polyDraft);
-    ocLenShow(); renderCanvasModeHint();
-    return;
-  }
-  oc.polyDraft = PolyDraft.backspace(oc.polyDraft);
-  oc.poly = oc.polyDraft.pts;
-  setStatus(oc.polyDraft.pts.length
-    ? `多邊形：已點 ${oc.polyDraft.pts.length} 頂點 · 點回起點閉合(Esc 取消)`
-    : "多邊形：逐點畫正交多邊形，點回起點閉合（Esc 取消）");
-  renderPolyDraftLayer(); renderCanvasModeHint();
-}
-
-/* Esc 階梯(🔒 Q14,§5.A.1.8):只清數字 → 只清草稿(提示再按一次) → 離開工具回選取。
-   純看目前 typed/pts.length 判斷，落新點會自然重置回第 1 階，不需要額外旗標。 */
-function objPolyEscStep() {
-  if (oc.polyDraft.typed) {
-    oc.polyDraft = PolyDraft.clearTyped(oc.polyDraft);
-    /* finding-3:清數字要連帶清掉鍵入長度錯誤殘留的紅橡皮筋/hint,不然要等下一次
-       pointermove 才會消,卡在錯誤態的時間比「清數字」這個動作本身還久。 */
-    if (oc.polyPreview && oc.polyPreview.error)
-      oc.polyPreview = Object.assign({}, oc.polyPreview, { error: null });
-    ocLenShow(); renderCanvasModeHint(); renderPolyDraftLayer();
-    return;
-  }
-  if (oc.polyDraft.pts.length > 0) {
-    /* GEO-185 #3:草稿不在世界的 undo 歷史裡,清掉就回不來——先暫存,Ctrl+Z 可還原(落新點或離開工具才丟) */
-    oc.polyStash = oc.polyDraft.pts.map(p => [...p]);
-    oc.polyDraft = PolyDraft.createState(); oc.poly = oc.polyDraft.pts; oc.polyPreview = null;
-    renderPolyDraftLayer(); renderCanvasModeHint(); ocLenShow();
-    setStatus("多邊形：草稿已清空 · Ctrl+Z 還原 · 再按 Esc 離開工具");
-    toast("草稿已清空（Ctrl+Z 可還原），再按一次 Esc 離開多邊形工具", "ok");
-    return;
-  }
-  pendingSlot = null;
-  oc.polyStash = null;
-  oc.drawTool = null;
-  $("btnNewPoly")?.classList.remove("active");
-  for (const b of document.querySelectorAll("[data-tool]"))
-    b.classList.toggle("active", b.dataset.tool === "select");
-  drawObjects(); ocCursor();
-}
-
-/* pointermove(diff#4/#6):只算下一幀畫面 + 重繪 #polyDraftLayer，不呼叫 drawObjects()。
-   POLYDRAFT-API.md §2:state.cur 是「目前軸鎖後的游標預覽點」,previewMove 只回傳這一幀
-   要畫什麼、不會自己寫回 state(純函式);呼叫端要自己把 cur 併回 oc.polyDraft,
-   applyTypedLength 才讀得到方向(否則 state.cur 永遠是 createState() 的初始值 null,
-   鍵入長度會被誤判成 NO_DIRECTION)。 */
-function objPolyPreviewMove(pt) {
-  if (oc.drawTool !== "poly") return;
-  oc.polyPreview = PolyDraft.previewMove(oc.polyDraft, [pt.x, pt.y], objPolyOpts());
-  oc.polyDraft = Object.assign({}, oc.polyDraft, { cur: oc.polyPreview.cur });
-  renderPolyDraftLayer();
-  renderCanvasModeHint();
-}
-
-/* diff#4:獨立草稿層渲染——只清空重繪 #polyDraftLayer 這個 group。 */
-function renderPolyDraftLayer() {
-  const g = $("polyDraftLayer");
-  if (!g) return;
-  g.textContent = "";
-  if (oc.drawTool !== "poly") return;
-  const pts = oc.polyDraft.pts;
-  if (!pts.length) return;
-  const preview = oc.polyPreview || {};
-  const cur = preview.cur || null;
-  const z = oc.zoom || 1;
-  const seq = cur ? [...pts, cur] : pts;
-  if (pts.length >= 2)
-    el("polyline", { points: pts.map(p => p.join(",")).join(" "), fill: "none",
-      class: "draft-edge" }, g);
-  if (cur) {
-    const last = pts[pts.length - 1];
-    el("line", { x1: last[0], y1: last[1], x2: cur[0], y2: cur[1],
-      class: "draft-rubber" + (preview.error ? " error" : "") }, g);
-  }
-  if (seq.length >= 3)
-    el("polygon", { points: seq.map(p => p.join(",")).join(" "),
-      class: "draft-preview-face" }, g);
-  for (let i = 1; i < seq.length; ++i) {
-    const a = seq[i - 1], b = seq[i];
-    el("text", { x: (a[0] + b[0]) / 2, y: (a[1] + b[1]) / 2 - 8 / z,
-      "font-size": 11 / z, "text-anchor": "middle", class: "draft-edge-len" }, g)
-      .textContent = Math.round(Math.max(Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1]))) + " mm";
-  }
-  for (const gd of preview.guides || []) {
-    if (gd.axis === "x") el("line", { x1: gd.value, y1: -1e6, x2: gd.value, y2: 1e6,
-      class: "draft-align-guide" }, g);
-    else el("line", { x1: -1e6, y1: gd.value, x2: 1e6, y2: gd.value,
-      class: "draft-align-guide" }, g);
-  }
-  if (preview.cornerPreview) {
-    const [cx, cy] = preview.cornerPreview;
-    el("rect", { x: cx - 5 / z, y: cy - 5 / z, width: 10 / z, height: 10 / z,
-      fill: "none", class: "draft-corner-preview" }, g);
-  }
-  for (let i = 0; i < pts.length; ++i)
-    el("circle", { cx: pts[i][0], cy: pts[i][1], r: (i === 0 ? 6 : 4) / z,
-      class: i === 0 ? "draft-start-vertex" : "draft-vertex" }, g);
-}
-
-/* 鍵入長度浮動框(diff#5,對等 feLenShow/#feLenInput) */
-function ocLenShow() {
-  const inp = $("ocLenInput");
-  if (!inp) return;
-  const typed = oc.polyDraft.typed;
-  const pts = oc.polyDraft.pts;
-  const cur = (oc.polyPreview && oc.polyPreview.cur) || (pts.length ? pts[pts.length - 1] : null);
-  if (oc.drawTool !== "poly" || !typed || !cur) { inp.hidden = true; return; }
-  inp.hidden = false;
-  inp.value = typed;
-  inp.style.left = (cur[0] * oc.zoom + oc.panX + 12) + "px";
-  inp.style.top = (cur[1] * oc.zoom + oc.panY - 30) + "px";
-}
-
-/* diff#2/#13:三段浮標內容——依狀態轉移表的「畫面」欄切換；rect 工具維持既有一行語意，
-   只是內容搬進三段結構(工具名/情境提示/kbd),既有 textContent 子字串比對仍然成立。 */
+/* 三段浮標內容(rect 工具)。GEO-186(b):畫布多邊形已移除,
+   畫布上只有「拖曳矩形建面」這一種 mm 手勢(同樣的座標混用問題仍存在,但矩形是
+   單次拖曳、不存在「找不到閉合起點」的風險;P 工具改為建面卡→進面內畫外環)。 */
 function renderCanvasModeHint() {
   const mh = $("canvasModeHint");
   if (!mh) return;
-  const closeBtn = $("polyCloseBtn");
-  mh.hidden = !(oc.drawTool === "rect" || oc.drawTool === "poly");
-  if (mh.hidden) { if (closeBtn) closeBtn.hidden = true; return; }
+  mh.hidden = oc.drawTool !== "rect";
+  if (mh.hidden) return;
   const toolEl = mh.querySelector(".hint-tool"), ctxEl = mh.querySelector(".hint-context"),
         kbdEl = mh.querySelector(".hint-kbd");
   if (!toolEl || !ctxEl || !kbdEl) return;
-  if (oc.drawTool === "rect") {
-    toolEl.textContent = "矩形";
-    ctxEl.textContent = "在畫布上拖出範圍建立游離面";
-    kbdEl.textContent = "Esc 取消";
-    if (closeBtn) closeBtn.hidden = true;
-    return;
-  }
-  /* poly */
-  const pts = oc.polyDraft.pts, n = pts.length, preview = oc.polyPreview || {};
-  toolEl.textContent = "面·多邊形";
-  const startAligned = n >= 3 && (preview.guides || []).some(gd =>
-    (gd.axis === "x" && gd.value === pts[0][0]) || (gd.axis === "y" && gd.value === pts[0][1]));
-  let ctx;
-  if (oc.polyDraft.typed) ctx = `鍵入長度 ${oc.polyDraft.typed} mm(Enter 定長)`;
-  else if (preview.error) ctx = preview.error.msg;
-  else if (preview.closeReady) ctx = `已點 ${n} 頂點 · 點下即可閉合` +
-    (preview.cornerPreview ? "（將自動補一個直角轉折）" : "");
-  else if (startAligned) ctx = `已點 ${n} 頂點 · 點下這一點後即可直角閉合`;
-  else if (n === 0 && oc.polyStash) ctx = "草稿已清空";
-  else if (n === 0) ctx = "逐點畫正交多邊形，點下第一點開始";
-  else ctx = `已點 ${n} 頂點`;
-  ctxEl.textContent = ctx;
-  /* GEO-185 #3:舊文案「Esc 退回」會被讀成退一點,實際是清掉整份草稿;退一點的是 Backspace */
-  kbdEl.textContent = n > 0 ? "Backspace 退一點 · Enter 閉合 · Esc 清草稿"
-    : oc.polyStash ? "Ctrl+Z 還原草稿 · Esc 離開" : "Esc 離開";
-  if (closeBtn) closeBtn.hidden = n < 3;
+  toolEl.textContent = "矩形";
+  ctxEl.textContent = "在畫布上拖出範圍建立游離面";
+  kbdEl.textContent = "Esc 取消";
 }
 
-/* diff#9(§5.A.1.9):卡片座標 = bbox 左上角，直接送 canvas-pos，不呼叫 centerOnNode，
-   也不落入 renderObjects() 的 homeless 自動排格分支——因此必須在第一次 renderObjects()
-   之前就把 canvas-pos 送出去(繞過 emitLine,自行控制送出順序)。視野(oc.panX/panY)不變。 */
-function objFinishPoly(pts) {
-  oc.polyDraft = PolyDraft.createState(); oc.poly = oc.polyDraft.pts; oc.polyPreview = null;
-  oc.drawTool = null;
-  $("btnNewPoly")?.classList.remove("active");
-  for (const b of document.querySelectorAll("[data-tool]"))
-    b.classList.toggle("active", b.dataset.tool === "select");
-  drawObjects(); ocCursor();
-  objEmitFace(pts);
+/* GEO-186(b):主畫布不再用 mm 畫多邊形——同一張畫布混用「mm 繪圖」與「固定尺寸卡片
+   排版」兩套座標,畫 4000×3000 的房間要縮到 2–5%,閉合後產生的卻是 200×156 的縮圖
+   卡片,還被放在很遠的 bbox 左上角(GEO-187 的「找不到卡片」根因)。
+   P 改成一次性動作:建一張預設外環的面卡 → 自動進入該面的工作區、啟用「重畫外環」
+   (面內視野由 feFit 對齊面的大小,1 單位=1mm 的繪圖在面內進行)→ 畫完 Esc 返回畫布。 */
+async function objNewPolyFace() {
+  const ids = await api("newid");
+  if (!ids.ok) { setStatus("✗ " + (ids.error || "取不到新編號")); toast(ids.error || "取不到新編號"); return; }
+  const bid = ids.boundary;
+  /* 預設外環只是佔位,進面內後被 redraw 整份取代;取常見房間大小讓 feFit 給出合適視野 */
+  const r = await api(`line boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`);
+  if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }
+  /* 卡片落在目前視野中心(canvas-pos 是展示中繼資料,不進歷史;搶在 renderObjects()
+     的 homeless 自動排格之前送出) */
+  const vr = ocv.getBoundingClientRect();
+  const cx = Math.round((vr.width / 2 - oc.panX) / oc.zoom - OC_W / 2);
+  const cy = Math.round((vr.height / 2 - oc.panY) / oc.zoom - OC_H / 2);
+  await api(`line canvas-pos boundary ${bid} ${cx} ${cy}`);
+  setStatus(`✓ 面 ${bid} 已建立 · Ctrl+Z 復原`);
+  await renderObjects();
+  selectObject("boundary", bid);
+  if (pendingSlot && pendingSlot.bid == null) pendingSlot.bid = bid;
+  await enterFocus("face", bid);
+  if (!oc.focus || oc.focus.t !== "face" || oc.focus.id !== bid) return;
+  feSetTool("redraw");
+  setStatus(`面 ${bid}：逐點畫出外環取代預設矩形(實際 mm)· 完成後 Esc 返回畫布`);
+  if (pendingSlot && innerWidth <= 680) openPanel("right", $("workspaceToggleRight"));
 }
 
 async function objEmitFace(pts) {
@@ -4346,9 +4100,6 @@ async function deleteObject(kind, id) {
 /* 雙擊卡片 → 進入工作區 */
 ocv.addEventListener("dblclick", e => {
   if (!oc.on) return;
-  /* diff#7:三種閉合觸發之一——雙擊即嘗試閉合(第一下 pointerdown 已照常落點，
-     第二下座標與上一點重合會被 PolyDraft.place 判為 duplicate 靜默略過，這裡只管收尾)。 */
-  if (oc.drawTool === "poly") { objPolyTryClose(); return; }
   /* setPointerCapture 會把相容滑鼠事件的 target 重定向到 ocv,
      用 elementFromPoint 取真實命中;oc.sel 作後援。 */
   const hit = document.elementFromPoint(e.clientX, e.clientY);
@@ -4417,9 +4168,6 @@ ocv.addEventListener("pointermove", e => {
     return;
   }
   if (oc.drawTool === "rect" && oc.rect) { drawObjects(); drawRectPreview(pt); }
-  /* diff#4:poly 草稿的 pointermove 只重繪 #polyDraftLayer(見 objPolyPreviewMove /
-     renderPolyDraftLayer),不呼叫 drawObjects()——這是與 rect 分支的刻意差異。 */
-  if (oc.drawTool === "poly") objPolyPreviewMove(pt);
 });
 
 ocv.addEventListener("pointerup", async e => {
@@ -4486,37 +4234,30 @@ ocv.addEventListener("wheel", e => {
 
 /* ---- 模式切換與按鈕 ---- */
 let view3 = false;          /* 三視圖總覽覆層(D1:按需開啟) */
-/* 工具群:select/pan/rect/poly */
+/* 工具群:select/pan/rect */
 function ocCursor() {
   const v = $("canvasViewport");
   if (!v) return;
   v.classList.toggle("tool-pan", oc.tool === "pan");
   v.classList.toggle("tool-rect", oc.drawTool === "rect");
-  v.classList.toggle("tool-poly", oc.drawTool === "poly");
   v.classList.toggle("space-pan", !!oc.spacePan);
   v.classList.toggle("is-panning", !!oc.pan);
   ocGridApply();
   /* E7/diff#2:模式浮標——只在建面工具啟用時顯示；三段內容見 renderCanvasModeHint */
   renderCanvasModeHint();
-  renderPolyDraftLayer();
 }
 function setOcTool(t) {
   closePanels();
-  if (t !== "rect" && t !== "poly") pendingSlot = null;
-  oc.tool = (t === "rect" || t === "poly") ? "select" : t;
-  oc.drawTool = (t === "rect" || t === "poly") ? t : "";
-  oc.poly = []; oc.rect = null;
-  /* diff#12:離開/重新進入 poly 一律重置共用草稿狀態機 */
-  oc.polyDraft = PolyDraft.createState(); oc.polyPreview = null; oc.polyStash = null;
+  if (t !== "rect") pendingSlot = null;
+  oc.tool = t === "rect" ? "select" : t;
+  oc.drawTool = t === "rect" ? "rect" : "";
+  oc.rect = null;
   for (const b of document.querySelectorAll("[data-tool]"))
     b.classList.toggle("active", b.dataset.tool === t);
-  /* diff#1(§5.A.1.1):物件庫「面·多邊形」卡片本身的 active 態(它不是 [data-tool]) */
-  $("btnNewPoly")?.classList.toggle("active", t === "poly");
   ocCursor();
   const tip = { select: "選取：點卡片選取 · 拖曳移動 · 雙擊進入",
     pan: "平移：拖曳畫布移動視野（中鍵/空白拖也可）",
-    rect: "矩形：在畫布上拖出矩形 → 建立游離面",
-    poly: "多邊形：逐點畫正交多邊形，點回起點閉合（Esc 取消）" };
+    rect: "矩形：在畫布上拖出矩形 → 建立游離面" };
   setStatus(tip[t] || "");
 }
 for (const b of document.querySelectorAll("[data-tool]"))
@@ -4580,16 +4321,6 @@ for (const id of ["snapToggle", "gridToggle"]) {
     ocGridApply();
   });
 }
-/* diff#3:多邊形格線間距下拉(oc.gridMm),與 snapToggle 共用開關、各自獨立間距值 */
-$("polyGridSize")?.addEventListener("change", e => {
-  oc.gridMm = +e.target.value || 250;
-  ocGridApply();
-});
-/* diff#2:浮標「閉合」鈕——等同觸發 §5.A.1.7 的閉合判定 */
-$("polyCloseBtn")?.addEventListener("click", e => {
-  e.stopPropagation();
-  objPolyTryClose();
-});
 /* 篩選 chips(A3:aria-pressed + 計數徽章) */
 function applyFilterChips() {
   for (const b of document.querySelectorAll("[data-filter-type]")) {
@@ -4932,7 +4663,7 @@ $("btnObj").addEventListener("click", () => setView3(true));
 $("btnCanvasView").addEventListener("click", () => setView3(false));
 $("btnBack").addEventListener("click", leaveFocus);
 $("btnNewRect").addEventListener("click", () => setOcTool("rect"));
-$("btnNewPoly").addEventListener("click", () => setOcTool("poly"));
+$("btnNewPoly").addEventListener("click", () => objNewPolyFace());
 $("btnNewSpace").addEventListener("click", async () => {
   closePanels();
   const ids = await api("newid");

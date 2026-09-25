@@ -2755,11 +2755,29 @@ page.html 以 headless Chrome 截圖確認:面工作區畫面完整、紅框落�
 9. 浮標「放開即可閉合」實為按下即閉合 → 改文案。
 **驗證**:cdp §P40 13 項;完整 cdp_test **421 ✓ / 0 ✗**;polydraft 72/72。
 
-### GEO-186 待議 P2:主畫布「畫的尺寸」與「得到的卡片」對不上(GEO-185 審查第 4 項)
+### GEO-186 ✅ 已做(2026-09-24)P2:主畫布「畫的尺寸」與「得到的卡片」對不上(GEO-185 審查第 4 項)
 
 主畫布 1 畫布單位 = 1 mm,畫 4000×3000 的房間要在 100% 下拖 4000px(或縮到 20%);閉合後卻是固定 200×156 的縮圖卡片放在 bbox 左上,
 縮到 20% 卡片只剩一個點。根因是同一張畫布混用兩套座標:卡片排版(固定尺寸)與多邊形繪製(mm)。
-候選:(a) 卡片依實際 mm 縮放;(b) P 工具改成先建空卡、進面內工作區用實際尺寸畫外環;(c) 維持。使用者 2026-09-24 選「先開單,之後再議」。
+候選:(a) 卡片依實際 mm 縮放;(b) P 工具改成先建空卡、進面內工作區用實際尺寸畫外環;(c) 維持。**使用者 2026-09-24 選 (b)。**
+
+做法:P/「＋面·多邊形」改為一次性動作(`objNewPolyFace`)——`newid` + `boundary` 建預設外環
+(4000×3000 矩形佔位)的面卡、落在當下視野中心 → `enterFocus` 自動進面內工作區 → `feSetTool("redraw")`
+直接以實際 mm 逐點畫外環 → Esc 回畫布。核心不需支援「無外環面」:預設矩形是合法 boundary,
+進面內後被 redraw 整份取代(`emitBoundary` 同一交易語意)。
+pendingSlot 流程保留:槽位「＋放置」備妥 rect 後按 P,新面帶入 `pendingSlot.bid`、進面內直接開放置頁。
+
+移除的畫布 poly 機器:`oc.polyDraft`/`oc.poly`/`oc.polyPreview`/`oc.polyStash`/`oc.gridMm`、
+`#polyDraftLayer`/`#polyCloseBtn`/`#ocLenInput`/`#polyGridSize`、`renderPolyDraftLayer`/`objPoly*`/
+`ocLenShow`、`.tool-poly`/`poly-snap-grid`、`.quick-create.active`、poly 鍵盤/雙擊/三段 Esc。
+順修一個殘留狀態 bug:`enterFocus`/`leaveFocus` 清 `drawTool` 後要重算 `#canvasModeHint`
+(原本只有 `ocCursor` 呼叫 `renderCanvasModeHint`,P 在 rect 備妥時按下會留下殘影浮標)。
+保留:面內 `PolyDraft` 全流程(§P35/P36)、`#feDraftLayer`、`.draft-*` 樣式、rect 拖曳建面(`objEmitFace`)。
+
+**驗證**:cdp §P34 改寫為新流程 6 項(建面卡→進面內、預設外環佔位、面內實際 mm 畫 L 外環、
+Esc 回畫布卡片在視野內、pendingSlot 帶入);舊畫布 poly 斷言(P34 原 15 項、P36 畫布段、
+P40 多邊形段、P35-9 兩側對照)隨機器移除,P40 改驗存活路徑(rect 浮標/toast/放置表單預設軸)。
+完整 cdp_test **390 ✓ / 0 ✗**;polydraft 72/72。
 
 ### GEO-187 ✅ 已做(2026-09-24)P1:縮到很小後卡片找不回來
 

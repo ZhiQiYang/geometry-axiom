@@ -126,7 +126,7 @@
     const s = {};
     try {
       s.oc = { on: oc.on, tool: oc.tool, drawTool: oc.drawTool, focus: oc.focus, stack: oc.stack, sel: oc.sel,
-        zoom: Math.round(oc.zoom * 1000) / 1000, polyPts: oc.polyDraft && oc.polyDraft.pts.length,
+        zoom: Math.round(oc.zoom * 1000) / 1000,
         counts: { faces: oc.faces.length, spaces: oc.spaces.length, columns: oc.columns.length, beams: oc.beams.length } };
     } catch (_) { }
     try { s.fe = { tool: fe.tool, fiTab: fe.fiTab, draftPts: fe.draft && fe.draft.pts.length, lenBuf: fe.lenBuf }; } catch (_) { }

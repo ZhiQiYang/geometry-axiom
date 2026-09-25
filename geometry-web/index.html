@@ -92,9 +92,9 @@
             <span class="type-icon face"><span data-icon="rectangle"></span></span>
             <span><strong>面·矩形</strong><small>畫布拖曳</small></span>
           </button>
-          <button id="btnNewPoly" type="button" class="quick-create" title="＋面·多邊形:逐點閉合">
+          <button id="btnNewPoly" type="button" class="quick-create" title="＋面:建立面卡,進面內以實際尺寸畫外環 (P)">
             <span class="type-icon face"><span data-icon="vertex"></span></span>
-            <span><strong>面·多邊形</strong><small>逐點閉合</small></span>
+            <span><strong>面·多邊形</strong><small>面內畫外環</small></span>
           </button>
           <button id="btnNewSpace" type="button" class="quick-create" title="＋空間:空容器">
             <span class="type-icon space"><span data-icon="space"></span></span>
@@ -152,15 +152,12 @@
     </aside>
 
     <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
-      <!-- diff#2(§5.A.1.2):三段浮標(工具名/情境提示/kbd)+ ≥3 點時可點的「閉合」鈕 -->
+      <!-- 三段浮標(工具名/情境提示/kbd),目前只有矩形工具使用 -->
       <div id="canvasModeHint" class="canvas-mode-hint" hidden>
         <span class="hint-tool"></span>
         <span class="hint-context"></span>
         <span class="hint-kbd"></span>
-        <button id="polyCloseBtn" type="button" class="hint-close-btn" hidden>閉合</button>
       </div>
-      <!-- diff#5(§5.A.1.5):鍵入長度浮動框,沿用 .fe-len-input 樣式 -->
-      <input id="ocLenInput" class="fe-len-input" type="text" hidden aria-label="段長 mm" readonly>
       <svg id="ocv">
         <defs>
           <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5"
@@ -219,13 +216,6 @@
         <span class="toolbar-separator vertical"></span>
         <button id="snapToggle" class="mini-toggle on" type="button" aria-pressed="true" title="格線吸附">吸</button>
         <button id="gridToggle" class="mini-toggle on" type="button" aria-pressed="true" title="顯示格線">格</button>
-        <!-- diff#3(🔒 Q15):多邊形頂點吸附格距,與 snapToggle 共用開關、各自獨立間距值 -->
-        <select id="polyGridSize" class="mini-toggle" title="多邊形格線間距" aria-label="多邊形格線間距(mm)">
-          <option value="100">100</option>
-          <option value="250" selected>250</option>
-          <option value="300">300</option>
-          <option value="500">500</option>
-        </select>
       </div>
 
       <!-- D2:三視圖獨立左下縮放列(樣式沿用主畫布 .canvas-controls),與 #viewToolbar 分離 -->

@@ -202,22 +202,16 @@ svg { display: block; }
 .canvas-viewport.tool-pan, .canvas-viewport.space-pan { cursor: grab; }
 .canvas-viewport.is-panning { cursor: grabbing; }
 .canvas-viewport.tool-connect { cursor: crosshair; }
-.canvas-viewport.tool-rect, .canvas-viewport.tool-poly { cursor: crosshair; }
+.canvas-viewport.tool-rect { cursor: crosshair; }
 .canvas-mode-hint { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 8; display: flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,.95); box-shadow: var(--shadow-sm); color: var(--ink); font-size: 11.5px; font-weight: 600; pointer-events: none; white-space: nowrap; }
-/* diff#2(§5.A.1.2):三段浮標——工具名/情境提示各自語意,kbd 段沿用既有 <kbd> 視覺 */
+/* 三段浮標——工具名/情境提示各自語意,kbd 段沿用既有 <kbd> 視覺 */
 .canvas-mode-hint .hint-tool { color: var(--accent-strong); font-weight: 700; }
 .canvas-mode-hint .hint-context { color: var(--ink); font-weight: 600; }
 .canvas-mode-hint .hint-kbd { color: var(--muted); font-size: 10.5px; font-weight: 650; }
-.canvas-mode-hint .hint-close-btn {
-  pointer-events: auto; margin-left: 2px; padding: 3px 11px; border: 1px solid var(--accent);
-  border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px;
-  font-weight: 650; cursor: pointer;
-}
-.canvas-mode-hint .hint-close-btn:hover { background: var(--accent-strong); }
 .canvas-world { position: absolute; left: 0; top: 0; width: 1px; height: 1px; transform-origin: 0 0; will-change: transform; }
-/* diff#4/#6/#7(§5.A.1.4/.6/.7):多邊形草稿層 class——主畫布 #polyDraftLayer、
-   面內 #feDraftLayer(後續 agent 接)共用同一組命名,掛載節點不同。 */
-#polyDraftLayer, #feDraftLayer { pointer-events: none; }
+/* diff#4/#6/#7(§5.A.1.4/.6/.7):多邊形草稿層 class——面內 #feDraftLayer;
+   主畫布 #polyDraftLayer 已於 GEO-186(b) 移除(畫布不再有 mm 繪圖)。 */
+#feDraftLayer { pointer-events: none; }
 .draft-edge { fill: none; stroke: #2f8f7b; stroke-width: 2; vector-effect: non-scaling-stroke; }
 .draft-rubber { fill: none; stroke: #c60; stroke-width: 2; stroke-dasharray: 6 4; vector-effect: non-scaling-stroke; }
 .draft-rubber.error { stroke: var(--danger); }
@@ -660,7 +654,7 @@ body.workspace-open #app { pointer-events: none; user-select: none; }
 /* 必填欄位標紅 */
 input.invalid, select.invalid { border-color: var(--danger) !important; box-shadow: 0 0 0 2px rgba(217,68,68,.16); }
 /* 主畫布工具游標 */
-.canvas-viewport.tool-rect, .canvas-viewport.tool-poly { cursor: crosshair; }
+.canvas-viewport.tool-rect { cursor: crosshair; }
 .face-editor-svg { width: 100%; height: 100%; display: block; }
 .face-editor-svg .face-boundary-fill { fill: rgba(47,143,123,.13); stroke: #2f8f7b; stroke-width: 2; vector-effect: non-scaling-stroke; }
 .face-editor-svg .face-boundary-fill.selected { fill: rgba(47,143,123,.17); }
@@ -865,7 +859,7 @@ input.invalid, select.invalid { border-color: var(--danger) !important; box-shad
 #ocv, #cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 #ocv { background: transparent; cursor: default; }
 /* E7:#ocv 自帶 cursor 會蓋掉 viewport 的工具游標,這裡跟著工具 class 換 */
-.canvas-viewport.tool-rect #ocv, .canvas-viewport.tool-poly #ocv { cursor: crosshair; }
+.canvas-viewport.tool-rect #ocv { cursor: crosshair; }
 .canvas-viewport.tool-pan #ocv, .canvas-viewport.space-pan #ocv { cursor: grab; }
 .canvas-viewport.is-panning #ocv { cursor: grabbing; }
 #cv  { background: #fff; z-index: 5; cursor: crosshair; }
@@ -1281,15 +1275,6 @@ body.v3-mode .minimap-shell { display: none; }
 #edgeLabelLayer { pointer-events: none; }
 .edge-label-item { opacity: 0; transition: opacity .12s; }
 .edge-label-item.active { opacity: 1; }
-/* GEO-185 #1:多邊形吸附格(格距 = oc.gridMm)畫得比一般格線明顯;間距選單不再被截成「2」 */
-.canvas-viewport.show-grid.poly-snap-grid {
-  background-image:
-    linear-gradient(rgba(78, 103, 232, .22) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(78, 103, 232, .22) 1px, transparent 1px),
-    linear-gradient(rgba(78, 103, 232, .12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(78, 103, 232, .12) 1px, transparent 1px);
-}
-#polyGridSize.mini-toggle { width: auto; min-width: 54px; padding: 0 4px; }
 /* GEO-185 #5:舊版有 toast 就把浮標整個隱藏,錯誤/清草稿時 2–3.6 秒內看不到工具狀態;改成 toast 讓到浮標下方。 */
 body:has(#canvasModeHint:not([hidden])) .toast-region { top: calc(var(--topbar-h) + 58px); }
 body.oc-busy { cursor: progress; }

@@ -95,6 +95,18 @@
 
 ### 5.A.1 逐點閉合(2026-09-22 設計澄清,🔒 Q13–Q16)
 
+> **⚠ 現況(GEO-186 b,2026-09-24 拍板):本節的「主畫布 P 工具」部分已全部移除。**
+> 原因:同一張畫布混用「mm 繪圖」與「固定 200×156 卡片排版」兩套座標,畫大於畫面
+> 的房間必須縮到 2–5%,閉合後產生的卻是縮圖卡片、落在多邊形左上角——GEO-187
+> 「找不到卡片」的根因。現行流程:P = `objNewPolyFace()` 建預設外環(4000×3000
+> 佔位)的面卡並落在視野中心 → `enterFocus("face",id)` 自動進面內 →
+> `feSetTool("redraw")` 以實際 mm 逐點畫外環 → Esc 回畫布。
+> 本節以下凡標「主畫布」的 diff(#1–#9/#11 的畫布端、`#polyDraftLayer`/`#ocLenInput`/
+> `#polyGridSize`/`oc.gridMm`/`oc.poly*` 等)均為歷史紀錄,不再是現行契約;
+> **面內 e/redraw 部分與 `polydraft.js` 模組仍是現行契約**。
+> 現行 DOM 契約以 `docs/DOM-CONTRACT.md` 為準;回歸斷言在 `cdp_test.js` §P34(新流程)/
+> §P35/§P36(面內)。
+
 > 依據:`C:\Users\Yang\AppData\Local\Temp\claude\D--geometry-axiom\23bd2335-f432-41f4-8811-dc7307f19014\scratchpad\clarify\摘要.md`
 > §3(12 條建議)、§4(狀態畫面串)、§6(紅燈候選,已由 Q13–Q16 全部收斂,不再是紅燈)。
 > 範圍:主畫布「面·多邊形」(P,`objDrawDown`/`drawPolyPreview`/`objEmitFace`)與面內工作區
