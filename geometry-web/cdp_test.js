@@ -77,6 +77,25 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: x0 + (x1 - x0) * i / steps, y: y0 + (y1 - y0) * i / steps, button: "left" });
   await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: x1, y: y1, button: "left", clickCount: 1 });
 }
+/* GEO-192:帶 modifiers 的拖曳(CDP bitmask 同 pressKey:Alt=1、Ctrl=2、Meta=4、Shift=8),
+   §P44-1/2/3 Alt+拖頂點捏缺口、§P44-4 拖預覽矩形邊都要用。 */
+async function dragMod(x0, y0, x1, y1, steps = 6, modifiers = 0) {
+  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: x0, y: y0, button: "left", clickCount: 1, modifiers });
+  for (let i = 1; i <= steps; ++i)
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: x0 + (x1 - x0) * i / steps, y: y0 + (y1 - y0) * i / steps, button: "left", modifiers });
+  await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: x1, y: y1, button: "left", clickCount: 1, modifiers });
+}
+/* GEO-192:放開拖曳但不放開按鍵(給 §P44-3 拖到一半按 Esc 用)。 */
+async function pressDownMod(x0, y0, modifiers = 0) {
+  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: x0, y: y0, button: "left", clickCount: 1, modifiers });
+}
+async function moveMod(x, y, modifiers = 0) {
+  await send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y, button: "left", modifiers });
+}
+async function rightClick(x, y) {
+  for (const type of ["mousePressed", "mouseReleased"])
+    await send("Input.dispatchMouseEvent", { type, x, y, button: "right", clickCount: 1 });
+}
 
 (async () => {
   await connect();
@@ -3855,6 +3874,185 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   check('P43-8 e 工具時點角材位置仍成功落點(角材不擋)',
     p43_8.len === 1 && p43_8.tool === 'redraw', p43_8);
   await pressKey('Escape', 'Escape', 27);
+  await pressKey('Escape', 'Escape', 27);
+
+  console.log('=== P44. 面內工作區的四種游標互動(GEO-192) ===');
+  /* 場景:surface 1 4000×3000,fe.zoom=1/panX=panY=0 讓 feMmToPx(mx,my) 直接等於
+     螢幕相對 org 的位移,座標好推算(視窗放大到能整份看到 4000×3000,不然右上角頂點
+     會落在瀏覽器視窗外,CDP 點不到)。每個大情境前重新 setupRemaining,互不干擾。
+     關掉吸附格線,避免縮放相依格距(feGridStep)干擾精確的 mm 斷言。 */
+  await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
+  const openFace44 = async (panY = 0) => {
+    await setupRemaining(['surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000']);
+    await eval_(`(async()=>{ await enterFocus('face', 1); fe.zoom = 1; fe.panX = 0; fe.panY = ${panY}; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false; })()`);
+    await sleep(250);
+    const org = await feOrigin();
+    return (mx, my) => ({ x: org.x + mx, y: org.y + my + panY });
+  };
+  const P44_TR = [4000, 0];      /* 右上角頂點 */
+  const P44_EDGE_R_MID = [4000, 1500];   /* 右邊中點 */
+
+  /* (1) 不按 Alt 拖右上角頂點往左下 500,500 → 外環仍 4 頂點、尺寸變 3500×2500 */
+  let pt = await openFace44();
+  await drag(pt(...P44_TR).x, pt(...P44_TR).y, pt(3500, 500).x, pt(3500, 500).y);
+  await sleep(200);
+  const p44_1 = await eval_(`(async()=>{const b=await api('boundary 1');return {n:b.loops[0].verts.length, bb:loopsBBox(b.loops)};})()`);
+  check('P44-1 不按 Alt 拖頂點:外環仍 4 頂點、尺寸變 3500×2500',
+    p44_1.n === 4 && p44_1.bb[2] - p44_1.bb[0] === 3500 && p44_1.bb[3] - p44_1.bb[1] === 2500, p44_1);
+  await pressKey('z', 'KeyZ', 90, 2);
+  const p44_1u = await eval_(`(async()=>{const b=await api('boundary 1');return b.loops[0].verts.length;})()`);
+  check('P44-1u Ctrl+Z 復原回 4 頂點', p44_1u === 4, p44_1u);
+
+  /* (2) Alt 拖右上角頂點往左下(換算 1000,1000)→ 外環 6 頂點、指定形狀;
+     fe.feats[1] 有一筆 type corner;形狀頁列出它。 */
+  pt = await openFace44();
+  await dragMod(pt(4000, 0).x, pt(4000, 0).y, pt(3000, 1000).x, pt(3000, 1000).y, 6, 1);
+  await sleep(200);
+  const p44_2 = await eval_(`(async()=>{const b=await api('boundary 1');
+    return {verts: b.loops[0].verts, feats: (fe.feats[1]||[]).map(f=>f.type)};})()`);
+  const want2 = [[0,0],[3000,0],[3000,1000],[4000,1000],[4000,3000],[0,3000]];
+  check('P44-2 Alt 拖頂點捏缺口:外環 6 頂點且形狀正確', JSON.stringify(p44_2.verts) === JSON.stringify(want2), p44_2);
+  check('P44-2b fe.feats[1] 有一筆 type corner', p44_2.feats.length === 1 && p44_2.feats[0] === 'corner', p44_2.feats);
+  await clickSelector('[data-fi-tab="shape"]');
+  const p44_2c = await eval_(`document.querySelectorAll('.fe-feat[data-feat]').length`);
+  check('P44-2c 形狀頁列出這筆特徵', p44_2c === 1, p44_2c);
+  await clickSelector('[data-fi-tab="prop"]');
+  await pressKey('z', 'KeyZ', 90, 2);
+  const p44_2u = await eval_(`(async()=>{const b=await api('boundary 1');return b.loops[0].verts.length;})()`);
+  check('P44-2u Ctrl+Z 復原回 4 頂點', p44_2u === 4, p44_2u);
+
+  /* (3) Alt 拖到一半按 Esc → 外環不變、無 .fe-ghost */
+  pt = await openFace44();
+  const before3 = await eval_(`(async()=>(await api('boundary 1')).loops[0].verts)()`);
+  await pressDownMod(pt(4000, 0).x, pt(4000, 0).y, 1);
+  await moveMod(pt(3400, 600).x, pt(3400, 600).y, 1);
+  await sleep(150);
+  await pressKey('Escape', 'Escape', 27);
+  const after3 = await eval_(`(async()=>({verts:(await api('boundary 1')).loops[0].verts, ghost: !!document.querySelector('[data-fe-ghost]'), drag: fe.drag}))()`);
+  check('P44-3 Alt 拖到一半按 Esc:外環不變、無 .fe-ghost、fe.drag 清空',
+    JSON.stringify(after3.verts) === JSON.stringify(before3) && !after3.ghost && after3.drag === null, { before3, after3 });
+  /* 收尾:放開滑鼠鍵(避免殘留 pressed 狀態影響後續情境) */
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: pt(3400, 600).x, y: pt(3400, 600).y, button: 'left', clickCount: 1 });
+
+  /* (4) 點右邊 → 凹口 → 面板開;拖預覽矩形「左」邊(depth 邊界)→ d 欄位 +200、其他欄位不變;
+     Enter 套用後頂點數 8。(規則:B 的手把——沿邊方向的邊界動 w,垂直於邊且不與母邊重合的
+     邊界動 d/dist,詳見 app.js feApplyGhostDrag 註解) */
+  pt = await openFace44();
+  await click(pt(...P44_EDGE_R_MID).x, pt(...P44_EDGE_R_MID).y);
+  await sleep(150);
+  await clickSelector('[data-fe-act="op:notch"]');
+  await sleep(150);
+  const before4 = await eval_(`({...fe.op.params})`);
+  const rect4 = await eval_(`feOpRect()`);   /* [3700,1200,4000,1800] */
+  const hx = pt(rect4[0], (rect4[1] + rect4[3]) / 2);   /* 左邊界(depth)中點 */
+  await dragMod(hx.x, hx.y, pt(rect4[0] - 200, (rect4[1] + rect4[3]) / 2).x, hx.y, 6, 0);
+  await sleep(150);
+  const after4 = await eval_(`({...fe.op.params})`);
+  check('P44-4a 拖預覽矩形「左」邊(depth 邊界)往左 200 → d 欄位 +200、其他欄位不變',
+    after4.d === before4.d + 200 && after4.w === before4.w && after4.anchor === before4.anchor && after4.dist === before4.dist,
+    { before4, after4 });
+  await clickSelector('#feOpApply');
+  await sleep(200);
+  const p44_4b = await eval_(`(async()=>(await api('boundary 1')).loops[0].verts.length)()`);
+  check('P44-4b 套用後頂點數 8', p44_4b === 8, p44_4b);
+  await pressKey('z', 'KeyZ', 90, 2);
+
+  /* (5) 右鍵點右邊 → fe.sel 為 edge、#feCtxMenu 可見、其 [data-fe-act] 清單與 #feActionBar 逐一相同;
+     點選單「凹口」→ fe.op.type==="notch"、選單關。Esc 兩下 → 面板關、選取清。 */
+  pt = await openFace44();
+  await rightClick(pt(...P44_EDGE_R_MID).x, pt(...P44_EDGE_R_MID).y);
+  await sleep(150);
+  const p44_5a = await eval_(`(()=>{
+    const barActs = [...document.querySelectorAll('#feActionBar [data-fe-act]')].map(b=>b.dataset.feAct);
+    const menuActs = [...document.querySelectorAll('#feCtxMenu [data-fe-act]')].map(b=>b.dataset.feAct);
+    return { sel: fe.sel, menuHidden: document.getElementById('feCtxMenu').hidden, barActs, menuActs };
+  })()`);
+  check('P44-5a 右鍵選邊:fe.sel=edge、#feCtxMenu 可見、清單與浮動列逐一相同',
+    p44_5a.sel && p44_5a.sel.kind === 'edge' && !p44_5a.menuHidden &&
+    JSON.stringify(p44_5a.barActs) === JSON.stringify(p44_5a.menuActs), p44_5a);
+  await clickSelector('#feCtxMenu [data-fe-act="op:notch"]');
+  await sleep(150);
+  const p44_5b = await eval_(`({ opType: fe.op && fe.op.type, menuHidden: document.getElementById('feCtxMenu').hidden })`);
+  check('P44-5b 點選單「凹口」→ fe.op.type==="notch"、選單關',
+    p44_5b.opType === 'notch' && p44_5b.menuHidden, p44_5b);
+  await pressKey('Escape', 'Escape', 27);
+  await pressKey('Escape', 'Escape', 27);
+  const p44_5c = await eval_(`({ opPanelHidden: document.getElementById('feOpPanel').hidden, sel: fe.sel })`);
+  check('P44-5c Esc 兩下 → 面板關、選取清', p44_5c.opPanelHidden && p44_5c.sel === null, p44_5c);
+
+  /* (6) 右鍵面外空白 → 選單不出現、fe.sel===null;右鍵角材 → 選單只有「刪除」 */
+  pt = await openFace44();
+  const outside6 = pt(4300, 1500);
+  await rightClick(outside6.x, outside6.y);
+  await sleep(150);
+  const p44_6a = await eval_(`({ menuHidden: document.getElementById('feCtxMenu').hidden, sel: fe.sel })`);
+  check('P44-6a 右鍵面外空白 → 選單不出現、fe.sel===null', p44_6a.menuHidden && p44_6a.sel === null, p44_6a);
+  await setupRemaining([
+    'surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+    'timber 10 27 33 role boundary',
+    'place 10 on 1 at-face e0 +u +n',
+  ]);
+  await eval_(`(async()=>{ await enterFocus('face', 1); fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply(); })()`);
+  await sleep(250);
+  const org6 = await feOrigin();
+  const tc6 = await eval_(`(()=>{const t=fe.timbers.find(x=>x.id===10);const r=feTimberRect(t);return feMmToPx((r[0]+r[2])/2,(r[1]+r[3])/2);})()`);
+  await rightClick(org6.x + tc6.x, org6.y + tc6.y);
+  await sleep(150);
+  const p44_6b = await eval_(`[...document.querySelectorAll('#feCtxMenu [data-fe-act]')].map(b=>b.dataset.feAct)`);
+  check('P44-6b 右鍵角材 → 選單只有「刪除」', JSON.stringify(p44_6b) === JSON.stringify(['delete']), p44_6b);
+  await pressKey('Escape', 'Escape', 27);
+
+  /* (7) 雙擊右邊 → notch 面板可見;雙擊右上角 → corner;雙擊面內空白(2000,1500) → hole 且
+     fe.sel.kind==="point";雙擊角材 → fe.fiTab==="timber" 且 fe.sel.kind==="timber"。
+     注意:瀏覽器原生 dblclick 是照「第二下當時滑鼠位置底下的元素」派送——如果第一下選取後
+     跳出的浮動列/面板恰好蓋住同一個點,而點到的按鈕又在自己的 click handler 裡同步整份重繪
+     (feSyncOverlays 換掉 DOM),原生 dblclick 事件會指到一個剛被拔掉的節點、永遠冒泡不到
+     #faceEditorViewport(這是瀏覽器事件模型的既有限制,不是本票要修的行為)。凹口浮動列在
+     邊中點附近、切角浮動列在角本身正上方(y 下限 24px 的夾限讓它幾乎貼著頂列的角)都恰好撞上
+     這個情況,所以雙擊點刻意避開浮動列涵蓋的範圍(邊改點邊上別的位置、頂列的角改把面往下平移),
+     不代表雙擊互動本身只在特定位置才有效——feDblOpenFor 的邏輯與點擊位置無關。 */
+  pt = await openFace44();
+  await dblclick(pt(4000, 300).x, pt(4000, 300).y);   /* 右邊,避開邊中點附近的浮動列 */
+  await sleep(200);
+  const p44_7a = await eval_(`({ opType: fe.op && fe.op.type, panelHidden: document.getElementById('feOpPanel').hidden })`);
+  check('P44-7a 雙擊右邊 → fe.op.type==="notch" 且面板可見', p44_7a.opType === 'notch' && !p44_7a.panelHidden, p44_7a);
+  pt = await openFace44(200);   /* 面往下平移 200px,讓頂列的角不再貼著視窗上緣、浮動列不夾在角上 */
+  await dblclick(pt(...P44_TR).x, pt(...P44_TR).y);
+  await sleep(200);
+  const p44_7b = await eval_(`fe.op && fe.op.type`);
+  check('P44-7b 雙擊右上角 → fe.op.type==="corner"', p44_7b === 'corner', p44_7b);
+  pt = await openFace44();
+  await dblclick(pt(2000, 1500).x, pt(2000, 1500).y);
+  await sleep(200);
+  const p44_7c = await eval_(`({ opType: fe.op && fe.op.type, selKind: fe.sel && fe.sel.kind })`);
+  check('P44-7c 雙擊面內空白 → fe.op.type==="hole" 且 fe.sel.kind==="point"',
+    p44_7c.opType === 'hole' && p44_7c.selKind === 'point', p44_7c);
+  await setupRemaining([
+    'surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+    'timber 10 27 33 role boundary',
+    'place 10 on 1 at-face e0 +u +n',
+  ]);
+  await eval_(`(async()=>{ await enterFocus('face', 1); fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply(); })()`);
+  await sleep(250);
+  const org7 = await feOrigin();
+  const tc7 = await eval_(`(()=>{const t=fe.timbers.find(x=>x.id===10);const r=feTimberRect(t);return feMmToPx((r[0]+r[2])/2,(r[1]+r[3])/2);})()`);
+  await dblclick(org7.x + tc7.x, org7.y + tc7.y);
+  await sleep(200);
+  const p44_7d = await eval_(`({ fiTab: fe.fiTab, selKind: fe.sel && fe.sel.kind })`);
+  check('P44-7d 雙擊角材 → fe.fiTab==="timber" 且 fe.sel.kind==="timber"',
+    p44_7d.fiTab === 'timber' && p44_7d.selKind === 'timber', p44_7d);
+
+  /* (8) 雙擊後單擊面外空白 → 面板關、選取清(雙擊沒留下殘留狀態) */
+  pt = await openFace44();
+  await dblclick(pt(...P44_EDGE_R_MID).x, pt(...P44_EDGE_R_MID).y);
+  await sleep(200);
+  await click(pt(4300, 1500).x, pt(4300, 1500).y);
+  await sleep(150);
+  const p44_8 = await eval_(`({ opPanelHidden: document.getElementById('feOpPanel').hidden, barHidden: document.getElementById('feActionBar').hidden, sel: fe.sel })`);
+  check('P44-8 雙擊後單擊面外空白 → 面板關、選取清',
+    p44_8.opPanelHidden && p44_8.barHidden && p44_8.sel === null, p44_8);
+
   await pressKey('Escape', 'Escape', 27);
   }
 

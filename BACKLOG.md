@@ -2953,3 +2953,49 @@ ids/全域/操作說明。**回歸**:cdp_test 449/449、canvas_test(HTTP)412/412
 **沒做、為什麼**:就地改錨點/方向/截面——語意未拍板,按票面要求不做;特徵堆疊/底圖等既有機制不受影響。
 刪除 `role boundary` 的角材會經過 I8a 角色衍生屬性重算,`api()` 自動開影響預覽對話框,
 測試(§P43-7b)與畫布/左欄/檢視器三路刪除鈕都要等確認才真的落地(同既有 P22/P31/P39 模式)。
+
+### GEO-192 ✅ 已做(2026-09-25)P2:面內四種游標互動——Alt 拖頂點捏缺口、拖預覽邊改尺寸、右鍵選單、雙擊直開面板
+
+**起因**:純滑鼠使用者要能做缺口與改尺寸,並要右鍵/雙擊這兩種常見互動,不必每次都先點浮動列。
+
+**使用者拍板 🔒**:
+1. Alt + 拖頂點 = 捏缺口;不按 Alt 照舊「拉角」(`applyVertexEdit`),零改動。
+2. 雙擊 = 直接開該目標最常用的操作面板(邊→凹口、凸角→切角、面內空白→開口且該點為選取點、角材→切到角材頁並選取)。
+3. 右鍵選單的內容 = 浮動列同一套動作,同一資料來源,不另列。
+4. 拖預覽矩形的邊改尺寸:做法由主迴圈(implementer)決定——見下方欄位對應規則。
+
+**做了什麼**(`geometry-web/app.js`、`app.css`、`index.html`):
+- **A(Alt 拖頂點捏缺口)**:`feDown` 新增 `k==="v" && ev.altKey && loop===0 && 凸角` 分支,進
+  `fe.drag={kind:"pinch",...}`;`fePinchRect()` 算矩形(頂點到游標、吸附 `feGridStep()`、裁到鄰邊長);
+  放開時走與切角面板**完全相同**的路徑(`feRectBool("sub",rect)` → `emitBoundary` → 記進 `fe.feats`
+  `type:"corner"`,`feNearestSides` 定 `ax`/`ay`)。拖曳中畫 `.fe-ghost.sub`;Esc 借用既有「有 `fe.drag` → 清」
+  那一階,不用另外處理。
+- **B(拖預覽矩形邊)**:預覽矩形四邊加 `<line class="fe-ghost-handle" data-fe-handle="left|right|top|bottom">`
+  (只在 select 工具、`fe.op` 存在時畫,粗描邊+對應 `cursor`)。`feApplyGhostDrag()` 的規則:與母邊平行的
+  邊界動「寬 w」(連動改 `anchor:"start"`/`dist` 讓另一側不動)、與母邊垂直且不與母邊重合的邊界動「深 d」
+  (push 動 `dist`);point/corner 目標比照對應欄位。放開不套用,仍要 Enter/`#feOpApply`。
+  `feSyncOverlays()` 的 `show` 判斷放行 `fe.drag.kind==="opHandle"`,拖曳中面板才不會被「有 `fe.drag` 就隱藏」
+  的既有邏輯關掉。
+- **C(右鍵選單)**:新增 `#feCtxMenu`(`role="menu"`)。抽出 `feActionsFor(sel)`/`feRunAction(act)`,
+  `#feActionBar` 與 `#feCtxMenu` 共用同一份清單與處理器(逐一相同)。抽出 `feClickSelectBlank`/
+  `feClickSelectHit`,原本分散在 `feDown`(blank/timber 分支)與 `feUp`(vertex/edge 未移動分支)的選取邏輯
+  合併成共用函式,`contextmenu` 事件也呼叫它們(不複製一份)。關閉:點選單外(`document` capture 階段的
+  `pointerdown`)、Esc(階梯在「量比例尺」之前新增一階)、滾輪縮放。
+- **D(雙擊)**:**不掛原生 `dblclick` 事件**——單擊選取(`feClickSelectHit`/`feStartOp`)會呼叫
+  `drawFaceEditor()` 整份重繪 SVG、`feSyncOverlays()` 重建 `#feActionBar` 按鈕,第一下處理完那個節點就已經
+  被拔掉,原生 `dblclick` 的 target 常常冒泡不到任何監聽器(`ev.detail` 在 CDP 送出的 `pointerdown` 上也量不到
+  可靠的連續點擊數,實測恆為 0/1)。改成 `fevp` 的 `pointerdown` 監聽器自己量這次與 `fe.lastPD`(上一次
+  pointerdown 的時間/螢幕座標)的差,450ms 內、位移 ≤6px 視為雙擊,呼叫 `feHandleDblClick(pt,ev,onOverlay)`;
+  `onOverlay`(這次點在 `#feActionBar`/`#feOpPanel`/`#feCtxMenu`/`#feGuidePick` 上)時改沿用第一下已經定案的
+  `fe.sel`,不重新命中畫布,並 `ev.preventDefault()` 壓下這一下補發的 `click`(避免浮動列按鈕,例如角材的
+  「刪除」,被誤觸發)。這段判斷刻意放在既有「點在浮動 UI 上就 return」之前,否則第二下若剛好落在第一下才
+  冒出來的按鈕上會被那條 return 攔截,永遠走不到雙擊判斷。`feDblOpenFor(sel)` 決定開哪個面板。
+
+**測試**:`cdp_test.js` 新增 §P44(9 組場景,含 1 不按 Alt 拉角照舊、2 Alt 拖捏缺口+Ctrl+Z、3 拖到一半 Esc、
+4 拖預覽邊改尺寸+套用、5 右鍵選單內容比對+點選單項目、6 右鍵面外空白/角材、7 四種目標雙擊、8 雙擊後單擊
+面外空白不留殘留、9 既有斷言照舊)。`docs/DOM-CONTRACT.md`、`README.md` 同步補新 ids/函式/操作說明。
+**回歸**:cdp_test 478/478、canvas_test(HTTP)412/412(Windows,已編 bridge.exe,埠 8799)。
+
+**沒做、為什麼**:B 的欄位對應語意未拍板(票面明說「由主迴圈決定」),上面寫的規則是實作採用的具體規則,
+不是使用者拍板——若日後語意有爭議,以此規則為準改測試與說明,不必回溯改行為;拖曳時的「留下」欄同步
+沿用既有 `feSyncPanelValues` 的連動,沒有另立一套。

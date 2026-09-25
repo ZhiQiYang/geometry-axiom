@@ -893,6 +893,9 @@ window.addEventListener("keydown", async e => {
         /* 參考線方向小選單開著 → 先收 */
         const pk = $("feGuidePick");
         if (pk && !pk.hidden) { pk.hidden = true; return; }
+        /* GEO-192 C:右鍵選單開著 → 先關 */
+        const ctxm = $("feCtxMenu");
+        if (ctxm && !ctxm.hidden) { feCtxMenuHide(); return; }
         /* GEO-190:量比例尺進行中 → 取消(不離開工作區) */
         if (fe.ulCalib) { fe.ulCalib = null; drawFaceEditor(); renderFaceInspector(); return; }
         /* GEO-188:就地操作面板 → 先關;再一次 Esc 取消選取 */
@@ -1074,6 +1077,12 @@ document.addEventListener("pointerdown", e => {
 document.addEventListener("click", e => {
   if (e.target.closest && e.target.closest(".menu-item")) closeMenus();
 });
+/* GEO-192 C:點選單外任一處關閉右鍵選單(capture,先於其他 pointerdown 處理跑完,
+   讓後續的一般選取/拖曳邏輯照舊進行)。 */
+document.addEventListener("pointerdown", e => {
+  const m = $("feCtxMenu");
+  if (m && !m.hidden && !m.contains(e.target)) feCtxMenuHide();
+}, true);
 async function loadExampleRoomA() {
   try {
     const scenes = await fetch("/scenes").then(r => r.json());
@@ -1762,6 +1771,9 @@ const fe = {
   sel: null,               /* GEO-188:選取 {kind:"edge",loop,i} | {kind:"corner",i} | {kind:"point",x,y} |
                                {kind:"timber",id}(GEO-191) */
   op: null,                /* GEO-188:就地操作 {type,target,edge|corner,params} */
+  lastPD: null,            /* GEO-192 D:{t,x,y} 上一次 select 工具 pointerdown 的時間/螢幕座標,
+                               自己判斷雙擊用(ev.detail 在這個 harness 的 pointerdown 上量不到
+                               可靠的連續點擊數,見 feDown 開頭的說明)。 */
   feats: {},               /* GEO-188:bid → 本次工作階段套用的特徵 [{id,type,op,rect,ax,ay}] */
   selFeat: null, hoverFeat: null,
   hoverTimber: null,       /* GEO-191:左欄角材列 hover 中的 timber id → 畫布矩形加 .hover */
@@ -1853,6 +1865,7 @@ async function openFaceWorkspace(bid) {
   fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
   fe.projOpen = false; fe.projViews = new Set();
   fe.sel = null; fe.op = null; fe.selFeat = null; fe.hoverFeat = null; fe.hoverTimber = null;
+  fe.lastPD = null;   /* GEO-192 D:進新面內工作區,不沿用前一個面殘留的雙擊時間/位置基準 */
   fe.ulCalib = null; fe.ulDrag = null;  /* GEO-190:量比例尺/拖曳底圖是暫態,不跨面沿用 */
   feFit(loopsBBox(oc.bmap[bid]));
   await feLoadGuides();
@@ -2704,6 +2717,27 @@ function drawFaceEditor() {
     el("text", { x: (opRect[0] + opRect[2]) / 2, y: opRect[1] - 6 / z, "font-size": 11 / z,
       "text-anchor": "middle", class: "fe-dim", fill: kind === "add" ? "#1d7a4e" : "#c2414f" }, root)
       .textContent = `${opRect[2] - opRect[0]} × ${opRect[3] - opRect[1]}`;
+    /* GEO-192 B:四條可拖曳邊,只在 select 工具下畫出(其餘工具沒有 fe.op)。 */
+    if (fe.tool === "select") {
+      const hw = Math.max(10, 14 / z);
+      el("line", { x1: opRect[0], y1: opRect[1], x2: opRect[0], y2: opRect[3],
+        class: "fe-ghost-handle", "data-fe-handle": "left", "stroke-width": hw }, root);
+      el("line", { x1: opRect[2], y1: opRect[1], x2: opRect[2], y2: opRect[3],
+        class: "fe-ghost-handle", "data-fe-handle": "right", "stroke-width": hw }, root);
+      el("line", { x1: opRect[0], y1: opRect[1], x2: opRect[2], y2: opRect[1],
+        class: "fe-ghost-handle", "data-fe-handle": "top", "stroke-width": hw }, root);
+      el("line", { x1: opRect[0], y1: opRect[3], x2: opRect[2], y2: opRect[3],
+        class: "fe-ghost-handle", "data-fe-handle": "bottom", "stroke-width": hw }, root);
+    }
+  }
+  /* GEO-192 A:Alt 拖頂點捏缺口的預覽——與就地操作的減料預覽同一套視覺(.fe-ghost.sub)。 */
+  if (fe.drag && fe.drag.kind === "pinch" && fe.drag.rect) {
+    const pr = fe.drag.rect;
+    el("rect", { x: pr[0], y: pr[1], width: pr[2] - pr[0], height: pr[3] - pr[1],
+      class: "fe-ghost sub", "data-fe-ghost": "sub" }, root);
+    el("text", { x: (pr[0] + pr[2]) / 2, y: pr[1] - 6 / z, "font-size": 11 / z,
+      "text-anchor": "middle", class: "fe-dim", fill: "#c2414f" }, root)
+      .textContent = `${pr[2] - pr[0]} × ${pr[3] - pr[1]}`;
   }
   /* B5:外環邊中點長度標註(11.5px 白底,法向朝外偏移) */
   if (loops.length) {
@@ -3008,18 +3042,19 @@ async function feDown(pt, ev) {
     }
     return;
   }
-  /* select：data-face-hit 命中 v:<loop>:<i> / e:<loop>:<i> / g:<id>:<axis> */
+  /* GEO-192 B:就地操作面板開著時,預覽矩形的四條可拖曳邊優先吃這一下
+     (只在 select 工具、fe.op 存在時畫出,見 drawFaceEditor)。 */
+  if (fe.tool === "select" && fe.op) {
+    const h = ev.target.closest ? ev.target.closest("[data-fe-handle]") : null;
+    if (h) {
+      fe.drag = { kind: "opHandle", side: h.dataset.feHandle, baseRect: feOpRect() };
+      return;
+    }
+  }
+  /* select：data-face-hit 命中 v:<loop>:<i> / e:<loop>:<i> / g:<id>:<axis> / t:<id> */
   const t = ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
   if (!t) {
-    /* GEO-188:點面外空白 = 取消選取、關就地操作;
-       GEO-189:點面內空白 = 選一個「點」,浮動列給「開口」(填寬高與距邊) */
-    const loops = oc.bmap[e.bid] || [];
-    const inside = loops.length && feInsideVerts(loops.map(l => l.verts), pt.x, pt.y);
-    const wasTimberSel = fe.sel && fe.sel.kind === "timber";
-    fe.op = null; fe.selFeat = null;
-    fe.sel = inside ? { kind: "point", x: Math.round(pt.x), y: Math.round(pt.y) } : null;
-    feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
-    if (wasTimberSel) renderFaceLayers();  /* GEO-191:清掉左欄角材列的 .sel */
+    feClickSelectBlank(pt);
     return;
   }
   const [k, a, b] = t.dataset.faceHit.split(":");
@@ -3028,12 +3063,25 @@ async function feDown(pt, ev) {
     return;
   }
   if (k === "t") {
-    /* GEO-191:點角材矩形 = 選取(不可拖曳);清掉就地操作/形狀頁選取,
-       浮出 #feActionBar 只有一顆刪除鈕(見 feSyncOverlays)。 */
-    fe.sel = { kind: "timber", id: +a };
-    fe.op = null; fe.selFeat = null;
-    feSyncOverlays(); drawFaceEditor(); renderFaceInspector(); renderFaceLayers();
+    /* GEO-191:點角材矩形 = 選取(不可拖曳) */
+    feClickSelectHit("t", +a, 0);
     return;
+  }
+  /* GEO-192 A:Alt + 拖外環凸角 = 捏缺口,不進既有拉角(vertex)拖曳；
+     孔環的頂點(loop!==0)與非凸角一律照舊(不觸發)。 */
+  if (k === "v" && ev && ev.altKey && +a === 0) {
+    const outerNow = oc.bmap[e.bid][0];
+    const corner = outerNow && feCorners(outerNow.verts)[+b];
+    if (corner && corner.convex) {
+      const n = outerNow.verts.length, v = corner.v;
+      const p = outerNow.verts[(+b - 1 + n) % n], q = outerNow.verts[(+b + 1) % n];
+      const hn = p[1] === v[1] ? p : q, vn = hn === p ? q : p;   /* 同 feCorners 的鄰邊判法 */
+      fe.drag = { kind: "pinch", i: +b, start: [...v],
+                  sx: corner.sx, sy: corner.sy,
+                  maxW: Math.abs(hn[0] - v[0]), maxH: Math.abs(vn[1] - v[1]),
+                  rect: null };
+      return;
+    }
   }
   fe.drag = { kind: k === "v" ? "vertex" : "edge",
               loop: +a, index: +b, moved: false,
@@ -3041,6 +3089,43 @@ async function feDown(pt, ev) {
               sx0: ev && ev.clientX, sy0: ev && ev.clientY };
   fe.work = (fe.work || oc.bmap[e.bid]).map(l =>
     ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+}
+
+/* GEO-192 C/D:與左鍵單擊完全相同的選取邏輯,抽出來給 feDown(左鍵)、feUp(左鍵放開
+   未移動 = 單擊)、contextmenu(右鍵)、dblclick 共用,不各自複製一份。 */
+function feClickSelectBlank(pt) {
+  const e = oc.edit; if (!e) return;
+  /* GEO-188:點面外空白 = 取消選取、關就地操作;
+     GEO-189:點面內空白 = 選一個「點」,浮動列給「開口」(填寬高與距邊) */
+  const loops = oc.bmap[e.bid] || [];
+  const inside = loops.length && feInsideVerts(loops.map(l => l.verts), pt.x, pt.y);
+  const wasTimberSel = fe.sel && fe.sel.kind === "timber";
+  fe.op = null; fe.selFeat = null;
+  fe.sel = inside ? { kind: "point", x: Math.round(pt.x), y: Math.round(pt.y) } : null;
+  feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
+  if (wasTimberSel) renderFaceLayers();  /* GEO-191:清掉左欄角材列的 .sel */
+}
+function feClickSelectHit(k, a, b) {
+  const e = oc.edit; if (!e) return;
+  if (k === "t") {
+    /* GEO-191:點角材矩形 = 選取;清掉就地操作/形狀頁選取,
+       浮出 #feActionBar 只有一顆刪除鈕(見 feSyncOverlays)。 */
+    fe.sel = { kind: "timber", id: a };
+    fe.op = null; fe.selFeat = null;
+    feSyncOverlays(); drawFaceEditor(); renderFaceInspector(); renderFaceLayers();
+    return;
+  }
+  if (k !== "v" && k !== "e") return;
+  /* GEO-188(方案 A):單擊邊 = 選取該邊,浮出「凹口／外凸／推拉／F⇄X」;
+     單擊外環凸角 = 選取該角,浮出「切角」。 */
+  const loops = oc.bmap[e.bid];
+  const wasTimberSel = fe.sel && fe.sel.kind === "timber";
+  fe.op = null; fe.selFeat = null;
+  if (k === "e") fe.sel = { kind: "edge", loop: a, i: b };
+  else if (a === 0 && loops && feCorners(loops[0].verts)[b]?.convex) fe.sel = { kind: "corner", i: b };
+  else fe.sel = null;
+  feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
+  if (wasTimberSel) renderFaceLayers();  /* GEO-191:清掉左欄角材列的 .sel */
 }
 
 function feMove(pt, ev) {
@@ -3061,6 +3146,17 @@ function feMove(pt, ev) {
   }
   if (d.kind === "holeRect" || d.kind === "guideNew") {
     d.x1 = pt.x; d.y1 = pt.y;
+    drawFaceEditor();
+    return;
+  }
+  if (d.kind === "pinch") {
+    d.rect = fePinchRect(d, pt);
+    drawFaceEditor();
+    return;
+  }
+  if (d.kind === "opHandle") {
+    feApplyGhostDrag(d, pt);
+    feSyncOverlays();
     drawFaceEditor();
     return;
   }
@@ -3178,25 +3274,47 @@ async function feUp(pt) {
     renderFaceLayers();
     return;
   }
+  /* GEO-192 B:拖預覽矩形邊——放開不套用(仍要 Enter/#feOpApply),只是結束這次拖曳。 */
+  if (d.kind === "opHandle") { drawFaceEditor(); return; }
+  /* GEO-192 A:Alt 拖頂點捏缺口——走與切角面板套用完全相同的路徑:
+     feRectBool("sub", rect) → emitBoundary → 記進 fe.feats(type corner),
+     feNearestSides 定 ax/ay。矩形太小(<1mm)= 取消,不送指令。 */
+  if (d.kind === "pinch") {
+    const rect = d.rect;
+    if (!rect || rect[2] - rect[0] < 1 || rect[3] - rect[1] < 1) { drawFaceEditor(); return; }
+    const r = feRectBool(oc.bmap[e.bid], "sub", rect);
+    if (!r) { toast("矩形沒有蓋到面,或會讓面消失"); drawFaceEditor(); return; }
+    if (r.split) { toast("這個矩形會把面切成兩片——核心會拒絕"); drawFaceEditor(); return; }
+    const feat = { id: feFeatSeq++, type: "corner", op: "sub", rect: rect.map(Math.round) };
+    Object.assign(feat, feNearestSides(feat, r.loops[0]));
+    if (await emitBoundary(e.bid, r.loops)) { feFeats(e.bid).push(feat); await feAfterChange(); }
+    else drawFaceEditor();
+    return;
+  }
   /* vertex / edge */
   const work = fe.work, moved = d.moved;
   fe.work = null;
   if (!moved) {
-    /* GEO-188(方案 A):單擊邊 = 選取該邊,浮出「凹口／外凸／推拉／F⇄X」;
-       單擊外環凸角 = 選取該角,浮出「切角」。(Phase 2 的「單擊切 fixity」移到浮動列) */
-    const loops = oc.bmap[e.bid];
-    const wasTimberSel = fe.sel && fe.sel.kind === "timber";
-    fe.op = null; fe.selFeat = null;
-    if (d.kind === "edge") fe.sel = { kind: "edge", loop: d.loop, i: d.index };
-    else if (d.loop === 0 && loops && feCorners(loops[0].verts)[d.index]?.convex)
-      fe.sel = { kind: "corner", i: d.index };
-    else fe.sel = null;
-    feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
-    if (wasTimberSel) renderFaceLayers();  /* GEO-191:清掉左欄角材列的 .sel */
+    /* GEO-188(方案 A,Phase 2 的「單擊切 fixity」已移到浮動列)：
+       單擊邊/單擊外環凸角的選取邏輯與 feDown(blank/timber)、contextmenu、dblclick 共用
+       (GEO-192 抽出，見 feClickSelectHit)。 */
+    feClickSelectHit(d.kind === "edge" ? "e" : "v", d.loop, d.index);
     return;
   }
   if (await emitBoundary(e.bid, work)) await feAfterChange();
   else drawFaceEditor();
+}
+
+/* GEO-192 A:Alt 拖頂點捏缺口的矩形——頂點到游標,吸附格線,裁到外環外接框
+   且不超過鄰邊長(fe.drag 的 maxW/maxH,建立於 feDown)。 */
+function fePinchRect(d, pt) {
+  const g = ($("faceSnapToggle") || {}).checked ? feGridStep() : 1;
+  const snap = v => Math.round(v / g) * g;
+  const [vx, vy] = d.start;
+  let dx = snap(pt.x) - vx, dy = snap(pt.y) - vy;
+  dx = Math.max(0, Math.min(d.maxW, dx * d.sx)) * d.sx;
+  dy = Math.max(0, Math.min(d.maxH, dy * d.sy)) * d.sy;
+  return [Math.min(vx, vx + dx), Math.min(vy, vy + dy), Math.max(vx, vx + dx), Math.max(vy, vy + dy)];
 }
 
 /* diff#12(§5.A.1.7/§8):重畫外環閉合——取代舊版 feDedupe/feRedrawClose 手寫驗證，
@@ -3593,6 +3711,65 @@ function feOpRect(op = fe.op) {
   const x2 = c.v[0] + c.sx * p.w, y2 = c.v[1] + c.sy * p.d;
   return [Math.min(c.v[0], x2), Math.min(c.v[1], y2), Math.max(c.v[0], x2), Math.max(c.v[1], y2)];
 }
+/* GEO-192 B:拖預覽矩形的邊改尺寸——規則(主迴圈決定,詳見 BACKLOG GEO-192):
+   矩形四邊各對應一條 <line data-fe-handle="left|right|top|bottom">(見 drawFaceEditor)。
+   「拖哪條邊就只有那條邊動,另一側固定」按螢幕上的矩形邊界字面理解:
+   - edge 目標(凹口/外凸/推拉):與母邊平行的那兩條邊界(沿邊方向)動 w(或 push 的 dist,
+     它只有一組有意義的邊界);與母邊垂直、且不與母邊重合的那條邊界動 d(或 push 的 dist)；
+     與母邊重合的那條邊界本來就是面的既有邊,拖它視為 no-op(母邊不能被這個手把移動)。
+     動 w 時,連動改 anchor="start"/dist,讓另一側(被固定的那個邊界)位置維持不變。
+   - point 目標(開口):四條邊界直接對應 ax/ay 的參考角 + w/d/dx/dy,拖哪邊就把 ax 或 ay
+     切到那一側、同時算出對應 dx/dy 與 w/d。
+   - corner 目標(切角):四條邊界兩兩對應 w、d(留下欄由既有 K 連動邏輯處理)。 */
+function feApplyGhostDrag(d, pt) {
+  const op = fe.op; if (!op) return;
+  const outer = feCurLoops()[0]; if (!outer) return;
+  const rect = d.baseRect; if (!rect) return;
+  const g = ($("faceSnapToggle") || {}).checked ? feGridStep() : 1;
+  const snap = v => Math.round(v / g) * g;
+  const axis = (d.side === "left" || d.side === "right") ? "x" : "y";
+  const idx = { left: 0, top: 1, right: 2, bottom: 3 }[d.side];
+  const coord = snap(axis === "x" ? pt.x : pt.y);
+  const p = op.params;
+
+  if (op.target === "point") {
+    const bb = loopsBBox([outer]);
+    if (axis === "x") {
+      const other = d.side === "left" ? rect[2] : rect[0];
+      const w = Math.max(1, Math.round(Math.abs(coord - other)));
+      p.ax = d.side; p.w = w;
+      p.dx = Math.max(0, Math.round(d.side === "left" ? coord - bb[0] : bb[2] - coord));
+    } else {
+      const other = d.side === "top" ? rect[3] : rect[1];
+      const h = Math.max(1, Math.round(Math.abs(coord - other)));
+      p.ay = d.side; p.d = h;
+      p.dy = Math.max(0, Math.round(d.side === "top" ? coord - bb[1] : bb[3] - coord));
+    }
+    return;
+  }
+  if (op.target === "corner") {
+    const c = feCorners(outer.verts)[op.corner]; if (!c) return;
+    if (axis === "x") p.w = Math.max(1, Math.round(Math.abs(coord - c.v[0])));
+    else p.d = Math.max(1, Math.round(Math.abs(coord - c.v[1])));
+    return;
+  }
+  /* edge 目標 */
+  const e = feEdges(outer.verts)[op.edge]; if (!e) return;
+  const depthAxis = e.axis === "v" ? "x" : "y";
+  if (axis === depthAxis) {
+    if (Math.abs(coord - e.c) < 1e-6) return;      /* 拖到與母邊重合的邊界 = no-op */
+    const dep = Math.max(1, Math.round(Math.abs(coord - e.c)));
+    if (op.type === "push") p.dist = dep; else p.d = dep;
+  } else {
+    const otherIdx = axis === "x" ? (idx === 0 ? 2 : 0) : (idx === 1 ? 3 : 1);
+    const otherVal = rect[otherIdx];
+    const w = Math.max(1, Math.round(Math.abs(coord - otherVal)));
+    const lowVal = Math.min(coord, otherVal);
+    p.w = w;
+    p.anchor = "start";
+    p.dist = Math.max(0, Math.round(lowVal - e.lo));
+  }
+}
 /* 套用:布林 → emitBoundary 交易;成功才記進特徵堆疊 */
 async function feApplyOp() {
   const e = oc.edit, op = fe.op;
@@ -3691,56 +3868,95 @@ function feSelAnchor() {
   const c = feCorners(outer.verts)[fe.sel.i]; if (!c) return null;
   return feMmToPx(c.v[0] - c.sx * 40 / z, c.v[1] - c.sy * 40 / z);
 }
+/* GEO-192 C:浮動列與右鍵選單同一份資料來源——回傳 [{act,label,iconName,title,on}]。
+   act 的字串沿用既有 data-fe-act 值(op:<type> / fixity / delete),兩處點擊都走 feRunAction。 */
+function feActionsFor(sel) {
+  if (!sel) return [];
+  if (sel.kind === "edge") {
+    const lp = feCurLoops()[sel.loop];
+    const fx = lp && lp.fixity[sel.i];
+    const acts = [];
+    if (sel.loop === 0)
+      for (const t of ["notch", "extend", "push"])
+        acts.push({ act: "op:" + t, label: FE_OPS[t].name, iconName: FE_OPS[t].icon,
+          title: FE_OPS[t].desc, on: fe.op && fe.op.type === t });
+    acts.push({ act: "fixity", label: fx ? "F → X" : "X → F", iconName: null,
+      title: fx ? "此邊目前固定(F),點一下改自由(X)" : "此邊目前自由(X),點一下改固定(F)", on: false });
+    return acts;
+  }
+  if (sel.kind === "point")
+    return [{ act: "op:hole", label: FE_OPS.hole.name, iconName: FE_OPS.hole.icon,
+      title: FE_OPS.hole.desc, on: fe.op && fe.op.type === "hole" }];
+  if (sel.kind === "timber")
+    /* GEO-191:角材選取只有一顆刪除鈕,不進 feStartOp(不做就地改錨點/方向/截面)。 */
+    return [{ act: "delete", label: "刪除", iconName: "trash", title: "刪除角材", on: false }];
+  return [{ act: "op:corner", label: FE_OPS.corner.name, iconName: FE_OPS.corner.icon,
+    title: FE_OPS.corner.desc, on: fe.op && fe.op.type === "corner" }];
+}
+/* GEO-192 C:浮動列/右鍵選單共用的動作處理器。 */
+async function feRunAction(act) {
+  if (act === "delete" && fe.sel && fe.sel.kind === "timber") {
+    await feDeleteTimber(fe.sel.id);
+    return;
+  }
+  if (act === "fixity") {
+    const e = oc.edit; if (!e || oc.busy || !fe.sel) return;
+    const work = oc.bmap[e.bid].map(l => ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
+    work[fe.sel.loop].fixity[fe.sel.i] = work[fe.sel.loop].fixity[fe.sel.i] ? 0 : 1;
+    if (await emitBoundary(e.bid, work)) await feAfterChange();
+    return;
+  }
+  if (!fe.sel) return;
+  const t = act.slice(3);
+  if (fe.op && fe.op.type === t) { feCancelOp(); return; }
+  feStartOp(t, FE_OPS[t].target, fe.sel.kind === "point" ? [fe.sel.x, fe.sel.y] : fe.sel.i);
+}
 function feSyncOverlays() {
   const bar = $("feActionBar"), panel = $("feOpPanel");
   if (!bar || !panel) return;
-  const show = fe.tool === "select" && !!fe.sel && !fe.drag && oc.focus && oc.focus.t === "face";
+  /* GEO-192 B:拖預覽矩形邊時 fe.drag.kind==="opHandle",面板要保持顯示才能即時同步欄位。 */
+  const show = fe.tool === "select" && !!fe.sel &&
+    (!fe.drag || fe.drag.kind === "opHandle") && oc.focus && oc.focus.t === "face";
   bar.hidden = !show;
   panel.hidden = !(show && fe.op);
-  if (!show) return;
+  if (!show) { feCtxMenuHide(); return; }
   const outer = feCurLoops()[0];
-  const mk = (act, name, iconName, title, on) =>
-    `<button type="button" data-fe-act="${act}" class="${on ? "on" : ""}" title="${title}">${iconName ? icon(iconName) : ""}<span>${name}</span></button>`;
-  let html = "";
-  if (fe.sel.kind === "edge") {
-    const lp = feCurLoops()[fe.sel.loop];
-    const fx = lp && lp.fixity[fe.sel.i];
-    if (fe.sel.loop === 0)
-      html += ["notch", "extend", "push"].map(t =>
-        mk("op:" + t, FE_OPS[t].name, FE_OPS[t].icon, FE_OPS[t].desc, fe.op && fe.op.type === t)).join("") +
-        `<span class="sep"></span>`;
-    html += mk("fixity", fx ? "F → X" : "X → F", null,
-      fx ? "此邊目前固定(F),點一下改自由(X)" : "此邊目前自由(X),點一下改固定(F)", false);
-  } else if (fe.sel.kind === "point") {
-    html += mk("op:hole", FE_OPS.hole.name, FE_OPS.hole.icon, FE_OPS.hole.desc, fe.op && fe.op.type === "hole");
-  } else if (fe.sel.kind === "timber") {
-    /* GEO-191:角材選取只有一顆刪除鈕,不進 feStartOp(不做就地改錨點/方向/截面)。 */
-    html += `<button type="button" data-fe-act="delete" title="刪除角材">${icon("trash") || ""}<span>刪除</span></button>`;
-  } else {
-    html += mk("op:corner", FE_OPS.corner.name, FE_OPS.corner.icon, FE_OPS.corner.desc, fe.op && fe.op.type === "corner");
-  }
+  const mk = a => `<button type="button" data-fe-act="${a.act}" class="${a.on ? "on" : ""}" title="${a.title}">${a.iconName ? icon(a.iconName) : ""}<span>${a.label}</span></button>`;
+  const acts = feActionsFor(fe.sel);
+  let html;
+  if (fe.sel.kind === "edge" && fe.sel.loop === 0 && acts.length > 1)
+    html = acts.slice(0, -1).map(mk).join("") + `<span class="sep"></span>` + mk(acts[acts.length - 1]);
+  else html = acts.map(mk).join("");
   bar.innerHTML = html;
   for (const b of bar.querySelectorAll("[data-fe-act]"))
-    b.addEventListener("click", async ev => {
-      ev.stopPropagation();
-      const act = b.dataset.feAct;
-      if (act === "delete" && fe.sel && fe.sel.kind === "timber") {
-        await feDeleteTimber(fe.sel.id);
-        return;
-      }
-      if (act === "fixity") {
-        const e = oc.edit; if (!e || oc.busy) return;
-        const work = oc.bmap[e.bid].map(l => ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
-        work[fe.sel.loop].fixity[fe.sel.i] = work[fe.sel.loop].fixity[fe.sel.i] ? 0 : 1;
-        if (await emitBoundary(e.bid, work)) await feAfterChange();
-        return;
-      }
-      const t = act.slice(3);
-      if (fe.op && fe.op.type === t) { feCancelOp(); return; }
-      feStartOp(t, FE_OPS[t].target, fe.sel.kind === "point" ? [fe.sel.x, fe.sel.y] : fe.sel.i);
-    });
+    b.addEventListener("click", async ev => { ev.stopPropagation(); await feRunAction(b.dataset.feAct); });
   if (fe.op) feRenderOpPanel(panel, outer);
   fePlaceOverlays();
+}
+/* GEO-192 C:右鍵選單——內容 = feActionsFor(fe.sel),與浮動列同一份資料來源。 */
+function feCtxMenuHide() {
+  const m = $("feCtxMenu");
+  if (m && !m.hidden) { m.hidden = true; m.innerHTML = ""; }
+}
+function feCtxMenuShow(clientX, clientY) {
+  const m = $("feCtxMenu"), vp = $("faceEditorViewport");
+  if (!m || !vp || !fe.sel) return;
+  const acts = feActionsFor(fe.sel);
+  if (!acts.length) return;
+  m.innerHTML = acts.map(a =>
+    `<button type="button" role="menuitem" data-fe-act="${a.act}">${a.iconName ? icon(a.iconName) : ""}<span>${a.label}</span></button>`
+  ).join("");
+  for (const b of m.querySelectorAll("[data-fe-act]"))
+    b.addEventListener("click", async ev => {
+      ev.stopPropagation();
+      await feRunAction(b.dataset.feAct);
+      feCtxMenuHide();
+    });
+  const r = vp.getBoundingClientRect();
+  m.hidden = false;
+  const mw = m.offsetWidth || 140, mh = m.offsetHeight || 40;
+  m.style.left = Math.max(r.left + 4, Math.min(clientX, r.right - mw - 4)) + "px";
+  m.style.top = Math.max(r.top + 4, Math.min(clientY, r.bottom - mh - 4)) + "px";
 }
 function feRenderOpPanel(panel, outer) {
   const op = fe.op, p = op.params, T = FE_OPS[op.type], K = op.keep || {};
@@ -5491,8 +5707,34 @@ $("faceSnapToggle").addEventListener("change", drawFaceEditor);
 
 const fevp = $("faceEditorViewport");
 fevp.addEventListener("pointerdown", async e => {
+  /* GEO-192 D:雙擊要在這裡(呼叫 feDown 之前、也在下面那條「點在浮動 UI 上就整段
+     return」之前)判斷——不掛原生 dblclick 事件,因為原生 dblclick 的 target 是瀏覽器在
+     down/up 當下就釘住的節點參照:單擊選取本身(feClickSelectHit/feStartOp)會呼叫
+     drawFaceEditor() 整份重繪 SVG、feSyncOverlays() 重建 #feActionBar 的按鈕,第一下處理完
+     那個節點就已經被拔掉,原生 dblclick 常常冒泡不到任何監聽器;而且要放在「點在浮動 UI 上
+     就 return」之前,否則第二下如果剛好落在第一下才冒出來的浮動列按鈕上(例如角材的
+     「刪除」),會被那條 return 攔截,永遠走不到這裡。改成直接量這次 pointerdown 與上一次
+     pointerdown 的時間/螢幕位移——ev.detail 在這個 harness 送出的 pointerdown 上量不到可靠
+     的連續點擊數(實測恆為 0/1,即使 CDP clickCount=2),不能拿來當判準。450ms 內、位移
+     ≤6px 視為雙擊;命中浮動列/面板/選單時 feHandleDblClick 會改沿用第一下已經定案的
+     fe.sel(不重新命中,避免落回「面外空白」洗掉選取),並 preventDefault() 壓下這一下
+     補發的 click,避免浮動列按鈕被誤觸發當成單擊。 */
+  if (fe.tool === "select" && e.button === 0 && oc.focus && oc.focus.t === "face") {
+    const onOverlay = e.target.closest && e.target.closest("#feGuidePick, #feActionBar, #feOpPanel, #feCtxMenu");
+    const now = Date.now();
+    const isDbl = fe.lastPD && (now - fe.lastPD.t) <= 450 &&
+      Math.abs(e.clientX - fe.lastPD.x) <= 6 && Math.abs(e.clientY - fe.lastPD.y) <= 6;
+    if (isDbl) {
+      fe.lastPD = null;
+      e.preventDefault();
+      feHandleDblClick(feSnap(fePoint(e)), e, onOverlay);
+      feCursor();
+      return;
+    }
+    fe.lastPD = onOverlay ? null : { t: now, x: e.clientX, y: e.clientY };
+  }
   const pk = $("feGuidePick");
-  if (e.target.closest && e.target.closest("#feGuidePick, #feActionBar, #feOpPanel"))
+  if (e.target.closest && e.target.closest("#feGuidePick, #feActionBar, #feOpPanel, #feCtxMenu"))
     return;                                     /* 點在浮動選單/操作列/面板上 → 交給按鈕 click */
   if (pk && !pk.hidden) pk.hidden = true;
   if (e.button === 0 && !oc.busy && fe.ulCalib) {
@@ -5583,6 +5825,7 @@ for (const b of document.querySelectorAll("#feGuidePick button"))
     drawFaceEditor(); renderFaceLayers();
   });
 fevp.addEventListener("wheel", e => {
+  feCtxMenuHide();   /* GEO-192 C:滾輪/縮放時關右鍵選單 */
   e.preventDefault();
   const r = $("faceEditorSvg").getBoundingClientRect();
   const px = e.clientX - r.left, py = e.clientY - r.top;
@@ -5594,6 +5837,64 @@ fevp.addEventListener("wheel", e => {
   fe.panY = py - (py - fe.panY) * ke;
   feApplyZoom();
 }, { passive: false });
+/* GEO-192 C:右鍵選單——先做與左鍵單擊完全相同的選取(feClickSelectBlank/feClickSelectHit,
+   不複製一份),再在游標處顯示。面外空白右鍵 = 只清選取,不顯示選單。 */
+fevp.addEventListener("contextmenu", e => {
+  e.preventDefault();
+  if (e.target.closest && e.target.closest("#feGuidePick, #feActionBar, #feOpPanel, #feCtxMenu")) return;
+  feCtxMenuHide();
+  if (!oc.edit || fe.tool !== "select" || oc.busy || fe.drag) return;
+  const t = e.target.closest ? e.target.closest("[data-face-hit]") : null;
+  if (!t) {
+    feClickSelectBlank(feSnap(fePoint(e)));
+  } else {
+    const [k, a, b] = t.dataset.faceHit.split(":");
+    if (k === "g") return;   /* 參考線不在右鍵選單範圍內 */
+    feClickSelectHit(k, +a, +b);
+  }
+  if (fe.sel) feCtxMenuShow(e.clientX, e.clientY);
+});
+/* GEO-192 D:雙擊 = 直接開該目標最常用的操作面板,依 fe.sel 的種類決定開哪個。 */
+function feDblOpenFor(sel) {
+  if (!sel) return;
+  if (sel.kind === "edge" && sel.loop === 0) feStartOp("notch", "edge", sel.i);
+  else if (sel.kind === "corner") feStartOp("corner", "corner", sel.i);
+  else if (sel.kind === "point") feStartOp("hole", "point", [sel.x, sel.y]);
+  else if (sel.kind === "timber") fiShowTab("timber");
+  /* 孔邊(loop!==0)、參考線、角材以外的其他情況:無作用 */
+}
+/* 自己判斷雙擊的處理(見 feDown 開頭說明,呼叫端已經確認 fe.tool==="select" 且未忙碌)。
+   onOverlay 時直接沿用第一下已經定案的 fe.sel 開面板(feDown 已經 preventDefault 壓下
+   補發的 click,不會再誤觸發浮動列/面板上的按鈕)。 */
+function feHandleDblClick(pt, ev, onOverlay) {
+  if (!oc.edit || fe.drag) return;
+  const t = !onOverlay && ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
+  if (!t) {
+    if (!onOverlay) feClickSelectBlank(pt);
+    feDblOpenFor(fe.sel);
+    return;
+  }
+  const [k, a, b] = t.dataset.faceHit.split(":");
+  if (k === "e") {
+    feClickSelectHit("e", +a, +b);
+    feDblOpenFor(fe.sel);
+    return;
+  }
+  if (k === "v") {
+    const loops = oc.bmap[oc.edit.bid];
+    if (+a === 0 && loops && feCorners(loops[0].verts)[+b]?.convex) {
+      feClickSelectHit("v", +a, +b);
+      feDblOpenFor(fe.sel);
+    }
+    return;
+  }
+  if (k === "t") {
+    feClickSelectHit("t", +a, 0);
+    feDblOpenFor(fe.sel);
+    return;
+  }
+  /* k === "g"(參考線)或其他:無作用 */
+}
 
 async function setView3(on) {
   if (on === view3) return;

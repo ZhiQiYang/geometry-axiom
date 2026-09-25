@@ -148,6 +148,7 @@
 | `#rcErr` | RC 對話框表單內錯誤提示(BF4:驗證失敗顯示) | `hidden`、textContent |
 | `#feActionBar` / `[data-fe-act]` | 面內選邊/角/點/角材後的浮動操作列(GEO-188;`op:notch`/`op:extend`/`op:push`/`op:corner`/`op:hole`/`fixity`;GEO-191 角材選取只有 `delete`) | `hidden`、`.click()`、`.on` |
 | `#feOpPanel` / `[data-fe-param]` / `[data-fe-keep]` / `[data-fe-anchor]` / `[data-fe-dir]` / `[data-fe-ax]` / `[data-fe-ay]` / `#feOpApply` / `#feOpCancel` | 就地參數面板(GEO-188/170;`input` 事件即時預覽,`[data-fe-keep]` 是「留下」欄與切掉連動,Enter/`#feOpApply` 套用) | `hidden`、`value`、`.click()` |
+| `#feCtxMenu` | 面內右鍵選單(GEO-192;內容 = `feActionsFor(fe.sel)`,與 `#feActionBar` 同一份資料來源) | `hidden`、`[data-fe-act]` 清單與 `#feActionBar` 逐一相同、`.click()` |
 
 ### 已移除(Phase 6)
 
@@ -178,6 +179,7 @@
 | `#gridU` `#gridV` `#gridCreate` | 網格建立表單(Q3) | `value`、`.click()`、游離面 disabled |
 | `.face-timber` / `.face-grid-line` | 面內角材足跡/網格線(Q3;GEO-191 角材矩形加 `data-face-hit`、`.sel`/`.hover`) | `#faceEditorRoot` 內計數 |
 | `[data-face-hit]` | 面編輯器命中層(`v:<loop>:<i>`/`e:<loop>:<i>`/`g:<id>:<axis>`/`t:<id>`(GEO-191 角材,只在 `.tool-select` 下吃事件)) | pointerdown 命中(非同步 bhit 已由它取代) |
+| `.fe-ghost-handle` / `[data-fe-handle]` | 就地操作預覽矩形的四條可拖曳邊(GEO-192 B;`left`/`right`/`top`/`bottom`,只在 select 工具且 `fe.op` 時畫出) | `#faceEditorRoot` 內計數、`.click()`(實際互動走 pointerdown/move/up,見 `feApplyGhostDrag`) |
 | `[data-place-preset]` | 放置預設鈕 | `dataset.placePreset`、`.click()` |
 | `[data-proj-check]` | 投影視圖勾選 | `checked` |
 | `[data-view]` | 投影面板視圖群組(`<g data-view="0|1|2">`) | 計數(天花面預設只有 2) |
@@ -201,6 +203,9 @@
 | `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews`、`fe.sel/op/feats/selFeat`(GEO-188;`fe.sel={kind:"timber",id}` GEO-191)、`fe.hoverTimber`(GEO-191) |
 | `feStartOp` / `feApplyOp` / `feCancelOp` / `feRectBool` | 形狀編輯(GEO-188):就地操作與正交矩形布林 | 測試直接呼叫 `feCancelOp()`;`feRectBool(loops,op,rect)` 純函式 |
 | `feDeleteTimber` | 刪角材共用路徑(GEO-191;`delete timber <id>` + 清選取/重載) | 測試可直接呼叫 `feDeleteTimber(id)` |
+| `feActionsFor` / `feRunAction` | 浮動列/右鍵選單共用的動作清單與處理器(GEO-192 C) | 測試比對 `#feActionBar`/`#feCtxMenu` 的 `[data-fe-act]` 清單逐一相同 |
+| `feHandleDblClick` / `feDblOpenFor` | 雙擊的選取+開面板邏輯(GEO-192 D,由 `fevp` 的 `pointerdown` 自己判斷雙擊後呼叫,不掛原生 `dblclick`) | 不建議測試直接呼叫,走真滑鼠雙擊(見 cdp_test §P44 說明) |
+| `feApplyGhostDrag` / `fePinchRect` | 拖預覽矩形邊(GEO-192 B)/Alt 拖頂點捏缺口(GEO-192 A)的純幾何計算 | 純函式,不碰 DOM |
 | `renderObjects` | 重拉 objects/surfaces 並重繪畫布 | 測試在送指令後手動觸發刷新 |
 | `curScene` | 目前場景 `{path,name}` | P29 載入範例後比對路徑 |
 | `closeMenus` | 關閉所有 `.menu-pop` | P28 開檔案選單前 |
@@ -456,3 +461,42 @@
 - Esc 既有階梯「有選取 → 清」自然涵蓋 timber(`fe.sel=null` 即可),一併清左欄 `.sel`。
 - `feAfterShapeChange`(邊界變更/`feAfterChange` 收尾)與 `feDeleteTimber` 都會驗:
   選取的 timber id 若已不在 `fe.timbers` → 清 `fe.sel`。
+
+## GEO-192 面內工作區的四種游標互動(cdp_test §P44)
+
+- **A. Alt + 拖外環凸角 = 捏缺口**:`feDown` 的 `k==="v"` 分支,`ev.altKey` 且該點是外環
+  (`loop===0`)凸角時進 `fe.drag={kind:"pinch",...}`,不進既有 `vertex` 拖曳;孔環頂點與
+  非凸角一律照舊。拖曳中畫 `.fe-ghost.sub`(與就地操作減料預覽同一套視覺);矩形算法見
+  `fePinchRect()`(頂點到游標,吸附 `feGridStep()`,裁到鄰邊長)。放開時矩形 ≥1mm 才送出,
+  走與切角面板套用完全相同的路徑:`feRectBool("sub",rect)` → `emitBoundary` → 記進
+  `fe.feats` `type:"corner"`(`feNearestSides` 定 `ax`/`ay`)。Esc 走既有「有 `fe.drag` → 清」
+  那一階(`feSyncDraftMirror` 順便把 `fe.drag` 歸零),不用額外處理。
+- **B. 拖預覽矩形的邊改尺寸**:`#feOpPanel` 開著、`fe.tool==="select"` 時,預覽矩形四邊
+  各加一條 `<line class="fe-ghost-handle" data-fe-handle="left|right|top|bottom">`(見
+  `drawFaceEditor`);`feDown` 命中它進 `fe.drag={kind:"opHandle",side,baseRect}`,
+  `feMove` 呼叫 `feApplyGhostDrag(d,pt)` 即時改 `fe.op.params` 並 `feSyncOverlays()`+
+  `drawFaceEditor()`,`feUp` 只結束拖曳、不套用(仍要 Enter/`#feOpApply`)。欄位對應規則
+  (主迴圈定案,寫在 `feApplyGhostDrag` 函式註解):與母邊平行的邊界動 `w`(連動改
+  `anchor:"start"`/`dist` 讓另一側不動)、垂直於母邊且不與母邊重合的邊界動 `d`(或 push
+  的 `dist`);point/corner 目標比照對應欄位。`feSyncOverlays()` 的 `show` 判斷放行
+  `fe.drag.kind==="opHandle"`,拖曳中面板才不會被既有的「有 `fe.drag` 就隱藏」邏輯關掉。
+- **C. 右鍵選單**:`#feCtxMenu`(`role="menu"`,動態填 `[data-fe-act]` 按鈕)。內容來自
+  `feActionsFor(fe.sel)`——`#feActionBar` 與 `#feCtxMenu` 共用這個函式,清單保證逐一相同;
+  點擊都走共用的 `feRunAction(act)`。`fevp` 的 `contextmenu` 事件先呼叫
+  `feClickSelectBlank`/`feClickSelectHit`(與左鍵單擊、`feUp` 的未移動分支、雙擊共用同一段
+  選取邏輯,不複製)再 `feCtxMenuShow(clientX,clientY)`;面外空白右鍵不顯示選單。關閉走
+  `feCtxMenuHide()`:點選單外(`document` capture 階段的 `pointerdown`)、Esc(階梯在
+  「量比例尺」之前新增一階)、滾輪/縮放、`feSyncOverlays()` 發現不該顯示浮動列時。
+- **D. 雙擊**:**不掛原生 `dblclick` 事件**——單擊選取本身會呼叫 `drawFaceEditor()` 整份
+  重繪 SVG、`feSyncOverlays()` 重建 `#feActionBar` 的按鈕,第一下處理完那個節點就已經被
+  拔掉,原生 `dblclick` 的 target 常常冒泡不到任何監聽器(`ev.detail` 在這個測試 harness
+  送出的 `pointerdown` 上也量不到可靠的連續點擊數)。改成 `fevp` 的 `pointerdown` 監聽器
+  自己量這次與 `fe.lastPD`(上一次 pointerdown 的時間/螢幕座標)的時間差/位移,450ms 內、
+  ≤6px 視為雙擊,呼叫 `feHandleDblClick(pt,ev,onOverlay)`(`onOverlay`=這次點在
+  `#feActionBar`/`#feOpPanel`/`#feCtxMenu`/`#feGuidePick` 上,此時改沿用第一下已經定案的
+  `fe.sel`,不重新命中畫布)並 `ev.preventDefault()` 壓下這一下補發的 `click`,避免浮動列
+  按鈕(例如角材的「刪除」)被誤觸發。這段判斷刻意放在既有的「點在浮動 UI 上就 return」
+  之前,否則第二下如果剛好落在第一下才冒出來的按鈕上會被那條 return 攔截。實際開哪個
+  面板由 `feDblOpenFor(sel)` 決定:外環邊 → `notch`;外環凸角 → `corner`;面內空白 →
+  `hole`(該點為選取點);角材 → `fiShowTab("timber")`。拖曳中(`fe.drag`)不處理;
+  參考線/面外空白無作用。
