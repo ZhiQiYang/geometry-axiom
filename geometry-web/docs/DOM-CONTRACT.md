@@ -123,7 +123,7 @@
 | `#placeFlow` | 建面→放置→收成員流程條(S6 新增,兩處檢視器共用) | `.pf-step.done/.current` |
 | `#placeValid` | 放置表單 u⊥v 即時驗證(S6 新增) | textContent、`.ok/.bad` |
 | `[data-filter-type]` | 顯示類型篩選 chips(button,`aria-pressed`) | `aria-pressed`、`.click()` |
-| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性/參考線/角材/網格(v2 新增 guide) | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
+| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性/形狀/參考線/角材/網格(v2 新增 guide;形狀頁 GEO-188) | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
 | `#workspacePlaceTag` | 工作區放置膠囊(B9:天花·z=N / 游離) | textContent、`.placed/.free` |
 | `#faceCanvasHint` | 面內模式浮標——**限多步工具**(redraw)顯示 | `hidden`、textContent |
 | `#feZoomOut` / `#feZoomLevel` / `#feZoomIn` / `#feZoomFit` | 面內左下縮放列(B8) | `.click()`、百分比 textContent |
@@ -146,6 +146,8 @@
 | `#spaceMemberList` | 空間工作區左欄成員列 | 子列計數 |
 | `#spaceInspectorContent` | 空間工作區右欄檢視器(六槽列掛點) | 存在性 |
 | `#rcErr` | RC 對話框表單內錯誤提示(BF4:驗證失敗顯示) | `hidden`、textContent |
+| `#feActionBar` / `[data-fe-act]` | 面內選邊/角/點後的浮動操作列(GEO-188;`op:notch`/`op:extend`/`op:push`/`op:corner`/`op:hole`/`fixity`) | `hidden`、`.click()`、`.on` |
+| `#feOpPanel` / `[data-fe-param]` / `[data-fe-keep]` / `[data-fe-anchor]` / `[data-fe-dir]` / `[data-fe-ax]` / `[data-fe-ay]` / `#feOpApply` / `#feOpCancel` | 就地參數面板(GEO-188/170;`input` 事件即時預覽,`[data-fe-keep]` 是「留下」欄與切掉連動,Enter/`#feOpApply` 套用) | `hidden`、`value`、`.click()` |
 
 ### 已移除(Phase 6)
 
@@ -165,9 +167,9 @@
 | `[data-tool]` | 頂列工具鈕(select/pan); rect 由物件庫與 R 快捷鍵啟動,P 是一次性動作(建面卡→進面內,非工具態) | `dataset.tool`、`.active` |
 | `[data-filter-type]` | 顯示類型篩選(face/space) | `checked` 狀態 |
 | `[data-icon]` | 圖示插槽 | hydrateIcons 填充 |
-| `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/insert/timber/redraw) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
+| `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/timber/redraw;`insert` 已於 GEO-188 移除) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
 | `#faceShapeButton` `#shapeDialog` `#shapeW` `#shapeD` `#shapeA` `#shapeB` `shapeKind` | 形狀庫(RC P1:L/U/T 外環生成) | `.click()`、`value`、radio checked |
-| `#notchDialog` `#notchW` `#notchD` `#notchSubmit` `#notchClose` `#notchCancel` | 參數化凹口對話框(RC P2:insert 點邊後開) | `hidden`、`.click()`、`value` |
+| ~~`#notchDialog` …~~ | 參數化凹口對話框(RC P2)**已於 GEO-188 移除**,凹口改走 `#feActionBar` → `#feOpPanel` | — |
 | `#feLenInput` | 鍵入長度浮動框(RC P2:重畫中數字鍵) | `hidden`、`value`、`.style.left/top` |
 | `[data-edge-len]` | 邊長清單輸入(RC P2:`data-edge-len="<i>"`) | `value` + `change` 事件 |
 | `#tbAnchor` `#tbSelector` `#tbA` `#tbB` `#tbDir` `#tbSide` | 角材引用、截面與方向；長度由引擎推導 | `value` 讀寫 |
@@ -178,6 +180,8 @@
 | `[data-proj-check]` | 投影視圖勾選 | `checked` |
 | `[data-view]` | 投影面板視圖群組(`<g data-view="0|1|2">`) | 計數(天花面預設只有 2) |
 | `[data-fix-edge]` | fixity F/X 切換鈕 | `dataset.fixEdge`、`.click()` |
+| `.face-edge-sel` / `.fe-point-mark` / `[data-fe-ghost="sub\|add"]` / `.fe-feat-hi` | 面編輯器:選取邊高亮、操作預覽矩形(紅=減、綠=加)、形狀頁特徵高亮(GEO-188) | `#faceEditorRoot` 內計數、`width`/`height` 屬性 |
+| `[data-fi-tab="shape"]` / `.fe-feat[data-feat]` / `[data-feat-num]` / `[data-feat-side]` / `[data-feat-mirror="x|y"]` / `[data-feat-del]` | 檢視器「形狀」頁(GEO-188;本次工作階段特徵清單,改數字 `change` 落地、鏡射、刪除) | `.active`、計數、`value`+`change`、`.click()` |
 | `.fixity-btn` / `.place-form` / `.proj-svg` / `.inspector-block` | 檢視器元件 | 存在性 |
 | `.toast` | 錯誤提示元素 | `#toastRegion` 內計數 |
 
@@ -192,7 +196,8 @@
 | `enterFocus` | 進入工作區焦點 | 雙擊/檢視器按鈕觸發 |
 | `mutate` | 多行 DSL 交易(失敗回滾+toast) | 空間成員重宣告/六面盒使用 |
 | `toast` | 錯誤提示(bridge error 原文) | `#toastRegion` 子元素 |
-| `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews` |
+| `fe` | 面內工作區狀態 | `fe.tool`、`fe.panX/panY/zoom`、`fe.drag/work`、`fe.guides`、`fe.projViews`、`fe.sel/op/feats/selFeat`(GEO-188) |
+| `feStartOp` / `feApplyOp` / `feCancelOp` / `feRectBool` | 形狀編輯(GEO-188):就地操作與正交矩形布林 | 測試直接呼叫 `feCancelOp()`;`feRectBool(loops,op,rect)` 純函式 |
 | `renderObjects` | 重拉 objects/surfaces 並重繪畫布 | 測試在送指令後手動觸發刷新 |
 | `curScene` | 目前場景 `{path,name}` | P29 載入範例後比對路徑 |
 | `closeMenus` | 關閉所有 `.menu-pop` | P28 開檔案選單前 |
@@ -368,3 +373,25 @@
 `serve.py` 的靜態檔白名單含 `/polydraft.js`(與 `/app.js`/`/reference-ui.js` 同組)——
 `index.html` 在 `app.js` 之前插入 `<script src="polydraft.js">`,
 沒有這行白名單瀏覽器會拿到 404、整個模組載入失敗。
+## GEO-188 形狀編輯(cdp_test §P7b)
+
+- select 工具**單擊邊 = 選取**(`fe.sel={kind:"edge",loop,i}`,畫布 `.face-edge-sel`),浮出 `#feActionBar`:
+  外環邊 `op:notch`/`op:extend`/`op:push` + `fixity`;孔邊只有 `fixity`;外環凸角(`v:0:<i>`)只有 `op:corner`。
+  Phase 2 的「單擊邊切 fixity」**改走** `#feActionBar [data-fe-act="fixity"]`(§9f 測試同步改)。
+- 點操作 → `fe.op` + `#feOpPanel`(`[data-fe-param]` 數字 `input` 即時重畫 `[data-fe-ghost]`);
+  Enter / `#feOpApply` → `feRectBool` 布林 → `emitBoundary` 交易;面消失或拆成兩片 → toast,不送指令。
+- 成功後特徵記進 `fe.feats[bid]`(**只在本次工作階段**,不進 .scene);每次 `feAfterChange` 用
+  `feFeatAlive` 驗活,對不上現況(含 undo)的自動剔除。
+- Esc 階梯在「方向小選單」之後新增兩階:面板開著 → 關面板;有選取 → 清選取;再來才是原本的草稿/離開。
+
+## GEO-189 描繪指定多邊形(cdp_test §P7c)
+
+- 重畫外環:`redraw` 工具下 `keydown` 數字累積到 `fe.lenBuf`;`ArrowRight/Left/Down/Up` = 以該方向套一段;
+  沒點第一點就打數字 → 草稿從 `(0,0)` 起;`Enter` 無數字 = 閉合(末點與起點不同軸自動補角),成功後 `feSetTool("select")`;
+  `Backspace` 無數字 = 退一點。
+- select 單擊面內空白 → `fe.sel={kind:"point",x,y}`,畫布 `.fe-point-mark`,浮動列只有 `op:hole`;
+  面板欄位 `w`/`d`(高)/`dx`/`dy` + `[data-fe-ax]`/`[data-fe-ay]` 起算邊。點面外空白 → 清選取。
+- 切角面板 `[data-fe-keep="w|d"]`(留 u/v 邊)與 `[data-fe-param="w|d"]` 連動;凹口面板 `[data-fe-keep="d"]`(留底)。
+- 「開口」拖矩形(`hole` 工具)改走 `feRectBool`,矩形先裁到外環外接框,記進 `fe.feats`(type 由 `feClassifyRect` 判 hole/notch/corner)。
+- 圖層列孔列有 `.face-layer-del`(拿掉那一環重宣告)。
+- 特徵建立時以 `feNearestSides` 定下 `ax`/`ay`(較近一側),`feFeatMeta` 以現況外接框起算距邊。套用後不再自動選取該特徵(無 `.fe-feat-hi.sel` 殘留)。

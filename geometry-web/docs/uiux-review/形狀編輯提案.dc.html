@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="./shapeops.js"></script>
+<style>html,body{height:100%}body{margin:0;background:#eef1f5}a{color:#4e67e8}a:hover{color:#3d54d4}@keyframes fePulse{0%,100%{stroke-opacity:.3}50%{stroke-opacity:1}}input[type=number]::-webkit-inner-spin-button{opacity:.4}</style>
+</helmet>
+<div data-screen-label="形狀編輯提案" tabIndex="-1" onKeyDown="{{ onKey }}" style="height:100%;min-height:480px;display:grid;grid-template-rows:auto 56px minmax(0,1fr) 32px;font-family:Inter,'Noto Sans TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.45;color:#172033;background:#eef1f5;overflow:hidden;outline:none">
+  <sc-if value="{{ showBar }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;align-items:center;gap:14px;padding:7px 14px;background:#172033;color:#fff;min-width:0">
+      <strong style="font-size:12px;letter-spacing:.04em;white-space:nowrap">形狀編輯 · 方案比較</strong>
+      <div style="display:flex;gap:2px;padding:3px;border-radius:9px;background:rgba(255,255,255,.09)">
+        <sc-for list="{{ concepts }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.pick }}" style="height:28px;padding:0 11px;border:0;border-radius:6px;background:{{ c.bg }};color:{{ c.fg }};font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">{{ c.label }}</button></sc-for>
+      </div>
+      <span style="flex:1;min-width:0;font-size:12px;color:rgba(255,255,255,.72);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ conceptDesc }}</span>
+      <button onClick="{{ resetShape }}" style="height:28px;padding:0 10px;border:1px solid rgba(255,255,255,.25);border-radius:6px;background:transparent;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">重設形狀</button>
+    </div>
+  </sc-if>
+
+  <header style="min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid #dfe4eb;background:#fff">
+    <div style="min-width:0;display:flex;align-items:center;gap:10px;overflow:hidden">
+      <button style="height:34px;display:inline-flex;align-items:center;gap:6px;padding:0 10px 0 8px;border:1px solid #dfe4eb;border-radius:8px;background:#fff;color:#3c4658;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap"><svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M19 12H5M10 7l-5 5 5 5"></path></svg>物件畫布</button>
+      <span style="width:28px;height:28px;display:grid;place-items:center;border-radius:7px;background:#f7f8fa;color:#657084"><svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="m4.5 7.5 13-3 2 12-13 3z"></path><path d="m6.5 19.5-2-12"></path></svg></span>
+      <div style="min-width:0;display:flex;flex-direction:column;line-height:1.3"><small style="color:#6b7485;font-size:10px;font-weight:600;white-space:nowrap">空間 1 / 面 1</small><strong style="font-size:13px;letter-spacing:-.01em;white-space:nowrap">面 1</strong></div>
+      <span style="height:22px;padding:0 9px;display:inline-flex;align-items:center;border-radius:11px;background:#e8f7f2;color:#1d7a4e;font-size:11px;font-weight:600;white-space:nowrap">天花 z=2500</span>
+    </div>
+    <nav aria-label="面內工具" style="justify-self:center;display:flex;align-items:center;gap:3px;padding:4px;border:1px solid #dfe4eb;border-radius:10px;background:#f7f8fa">
+      <sc-for list="{{ tools }}" as="t" hint-placeholder-count="8">
+        <button title="{{ t.title }}" onClick="{{ t.pick }}" style="height:34px;display:inline-flex;align-items:center;gap:6px;padding:0 9px;border:0;border-radius:7px;background:{{ t.bg }};color:{{ t.fg }};font-size:11px;font-weight:650;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:{{ t.shadow }}"><svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="{{ t.d }}"></path><path d="{{ t.d2 }}" style="fill:currentColor;stroke:none"></path></svg>{{ t.name }}<kbd style="font-family:inherit;font-size:10px;padding:0 4px;border:1px solid #dfe4eb;border-radius:4px;background:#fff;color:#98a1b2;line-height:15px">{{ t.key }}</kbd></button>
+      </sc-for>
+      <span style="width:1px;height:20px;margin:0 2px;background:#dfe4eb"></span>
+      <button title="復原 (Ctrl+Z)" onClick="{{ undo }}" style="width:33px;height:34px;border:0;border-radius:7px;background:transparent;color:{{ undoFg }};display:grid;place-items:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M8 7 3.5 11.5 8 16"></path><path d="M4 11.5h8.2c4.7 0 7.3 2 7.3 6.5"></path></svg></button>
+      <button title="重做 (Ctrl+Y)" onClick="{{ redo }}" style="width:33px;height:34px;border:0;border-radius:7px;background:transparent;color:{{ redoFg }};display:grid;place-items:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="m16 7 4.5 4.5L16 16"></path><path d="M20 11.5h-8.2c-4.7 0-7.3 2-7.3 6.5"></path></svg></button>
+      <button title="顯示全部 (f)" onClick="{{ fit }}" style="width:33px;height:34px;border:0;border-radius:7px;background:transparent;color:#6b7485;display:grid;place-items:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"></path><path d="M8 8h8v8H8z"></path></svg></button>
+    </nav>
+    <div style="justify-self:end;display:flex;align-items:center;gap:7px">
+      <button style="height:34px;padding:0 12px;border:0;border-radius:8px;background:#4e67e8;color:#fff;font-size:12.5px;font-weight:600;box-shadow:0 1px 2px rgba(45,65,170,.2);cursor:pointer;font-family:inherit;white-space:nowrap">完成並返回</button>
+    </div>
+  </header>
+
+  <main style="min-height:0;min-width:0;display:grid;grid-template-columns:236px minmax(0,1fr) 314px;background:#eef1f5">
+    <aside style="min-width:0;min-height:0;display:flex;flex-direction:column;background:#fff;border-right:1px solid #dfe4eb;overflow-y:auto">
+      <section style="padding:13px 14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;color:#6b7485;font-size:11px;font-weight:700;white-space:nowrap"><span>面內物件</span><span style="font-weight:500">{{ layerCount }}</span></div>
+        <div style="margin:0 0 6px;font-size:11px;color:#6b7485">邊界</div>
+        <div style="display:grid;gap:2px">
+          <sc-for list="{{ layers }}" as="l" hint-placeholder-count="1">
+            <div onClick="{{ l.pick }}" style="min-height:38px;display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 6px;border-radius:8px;cursor:pointer;background:{{ l.bg }}">
+              <span style="width:26px;height:26px;display:grid;place-items:center;border-radius:6px;background:{{ l.iconBg }};color:{{ l.iconFg }}"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="{{ l.d }}"></path><path d="{{ l.d2 }}" style="fill:currentColor;stroke:none"></path></svg></span>
+              <span style="min-width:0;display:flex;flex-direction:column;line-height:1.3"><strong style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.name }}</strong><small style="color:#6b7485;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.sub }}</small></span>
+              <sc-if value="{{ l.del }}" hint-placeholder-val="{{ false }}"><button title="刪除（可復原）" onClick="{{ l.remove }}" style="width:28px;height:28px;border:0;border-radius:6px;background:transparent;color:#98a1b2;cursor:pointer;display:grid;place-items:center"><svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"></path></svg></button></sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ showFeatLayers }}" hint-placeholder-val="{{ false }}">
+          <div style="margin:14px 0 6px;font-size:11px;color:#6b7485;display:flex;justify-content:space-between"><span>形狀特徵</span><span>{{ featCount }}</span></div>
+          <div style="display:grid;gap:2px">
+            <sc-for list="{{ featLayers }}" as="l" hint-placeholder-count="0">
+              <div onClick="{{ l.pick }}" onMouseEnter="{{ l.hover }}" onMouseLeave="{{ l.unhover }}" style="min-height:38px;display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:8px;padding:4px 6px;border-radius:8px;cursor:pointer;background:{{ l.bg }}">
+                <span style="width:26px;height:26px;display:grid;place-items:center;border-radius:6px;background:{{ l.iconBg }};color:{{ l.iconFg }}"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="{{ l.d }}"></path></svg></span>
+                <span style="min-width:0;display:flex;flex-direction:column;line-height:1.3"><strong style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.name }}</strong><small style="color:#6b7485;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.sub }}</small></span>
+                <button title="刪除（可復原）" onClick="{{ l.remove }}" style="width:28px;height:28px;border:0;border-radius:6px;background:transparent;color:#98a1b2;cursor:pointer;display:grid;place-items:center"><svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"></path></svg></button>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isCurrent }}" hint-placeholder-val="{{ true }}">
+          <div style="margin:14px 0 6px;font-size:11px;color:#6b7485">柱樑投影</div>
+          <div style="min-height:38px;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px;padding:4px 6px;border-radius:8px">
+            <input type="checkbox" checked="{{ true }}" readOnly="{{ true }}" style="width:15px;height:15px;margin:0;accent-color:#4e67e8">
+            <span style="display:flex;flex-direction:column;line-height:1.3"><strong style="font-size:12px;font-weight:600">柱 1 投影</strong><small style="color:#6b7485;font-size:11px">鑽孔</small></span>
+          </div>
+          <div style="margin-top:8px;padding:10px;border-radius:8px;background:#f7f8fa;display:flex;flex-direction:column;gap:8px">
+            <label style="display:flex;align-items:center;gap:7px;font-size:11.5px;color:#4f5a6d"><input type="checkbox" readOnly="{{ true }}" style="width:14px;height:14px;margin:0;accent-color:#4e67e8">裁切條帶</label>
+            <button style="height:30px;align-self:flex-start;padding:0 12px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#172033;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">套用 1 項投影</button>
+            <small style="font-size:11px;color:#6b7485;line-height:1.45">套用為快照，與柱樑無連結；拆片會改 id</small>
+          </div>
+        </sc-if>
+      </section>
+    </aside>
+
+    <section ref="{{ vpRef }}" aria-label="面編輯畫布" style="position:relative;min-width:0;min-height:0;overflow:hidden;background:#f8fafc;cursor:{{ cursor }}">
+      <svg onPointerDown="{{ onDown }}" onPointerMove="{{ onMove }}" onPointerUp="{{ onUp }}" onPointerLeave="{{ onLeave }}" onWheel="{{ onWheel }}" onDoubleClick="{{ onDbl }}" style="width:100%;height:100%;display:block;touch-action:none;user-select:none">
+        <g transform="{{ tf }}">
+          <sc-for list="{{ minor }}" as="g" hint-placeholder-count="0"><line x1="{{ g.x1 }}" y1="{{ g.y1 }}" x2="{{ g.x2 }}" y2="{{ g.y2 }}" style="stroke:#eceff4;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none"></line></sc-for>
+          <sc-for list="{{ major }}" as="g" hint-placeholder-count="0"><line x1="{{ g.x1 }}" y1="{{ g.y1 }}" x2="{{ g.x2 }}" y2="{{ g.y2 }}" style="stroke:#dde2ea;stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none"></line></sc-for>
+          <path d="{{ facePath }}" style="fill:rgba(47,143,123,.12);stroke:#2f8f7b;stroke-width:2;vector-effect:non-scaling-stroke;stroke-linejoin:round;fill-rule:evenodd"></path>
+          <sc-for list="{{ featHits }}" as="f" hint-placeholder-count="0"><rect x="{{ f.x }}" y="{{ f.y }}" width="{{ f.w }}" height="{{ f.h }}" data-hit="{{ f.hit }}" style="fill:{{ f.fill }};stroke:{{ f.stroke }};stroke-width:{{ f.sw }};stroke-dasharray:5 4;vector-effect:non-scaling-stroke;cursor:pointer"></rect></sc-for>
+          <sc-if value="{{ ghostRect }}" hint-placeholder-val="{{ false }}"><rect x="{{ ghostRect.x }}" y="{{ ghostRect.y }}" width="{{ ghostRect.w }}" height="{{ ghostRect.h }}" style="fill:{{ ghostRect.fill }};stroke:{{ ghostRect.stroke }};stroke-width:1.8;stroke-dasharray:6 4;vector-effect:non-scaling-stroke;pointer-events:none"></rect></sc-if>
+          <sc-if value="{{ ghostRect2 }}" hint-placeholder-val="{{ false }}"><rect x="{{ ghostRect2.x }}" y="{{ ghostRect2.y }}" width="{{ ghostRect2.w }}" height="{{ ghostRect2.h }}" style="fill:{{ ghostRect2.fill }};stroke:{{ ghostRect2.stroke }};stroke-width:1.8;stroke-dasharray:6 4;vector-effect:non-scaling-stroke;pointer-events:none"></rect></sc-if>
+          <sc-if value="{{ ghostCol }}" hint-placeholder-val="{{ false }}"><rect x="1000" y="1000" width="400" height="400" style="fill:rgba(196,120,26,.22);stroke:#a35d08;stroke-width:1.4;stroke-dasharray:6 4;vector-effect:non-scaling-stroke;pointer-events:none"></rect></sc-if>
+          <sc-for list="{{ edgesV }}" as="e" hint-placeholder-count="0"><line x1="{{ e.x1 }}" y1="{{ e.y1 }}" x2="{{ e.x2 }}" y2="{{ e.y2 }}" data-hit="{{ e.hit }}" style="stroke:{{ e.stroke }};stroke-width:{{ e.sw }};vector-effect:non-scaling-stroke;cursor:{{ e.cursor }};animation:{{ e.anim }}"></line></sc-for>
+          <sc-if value="{{ draftPath }}" hint-placeholder-val="{{ false }}"><path d="{{ draftPath }}" style="fill:none;stroke:#4e67e8;stroke-width:1.8;stroke-dasharray:6 4;vector-effect:non-scaling-stroke;pointer-events:none"></path></sc-if>
+          <sc-for list="{{ vertsV }}" as="v" hint-placeholder-count="0"><circle cx="{{ v.x }}" cy="{{ v.y }}" r="{{ v.r }}" data-hit="{{ v.hit }}" style="fill:{{ v.fill }};stroke:{{ v.stroke }};stroke-width:1.8;vector-effect:non-scaling-stroke;cursor:{{ v.cursor }}"></circle></sc-for>
+        </g>
+      </svg>
+      <sc-for list="{{ dims }}" as="d" hint-placeholder-count="0"><span style="position:absolute;left:{{ d.lx }};top:{{ d.ly }};transform:translate(-50%,-50%);padding:1px 6px;border-radius:5px;background:rgba(248,250,252,.92);font-size:11.5px;font-weight:600;color:#4f5a6d;font-variant-numeric:tabular-nums;pointer-events:none;white-space:nowrap">{{ d.text }}</span></sc-for>
+      <span style="position:absolute;left:{{ origin.lx }};top:{{ origin.ly }};font-size:11px;font-weight:600;color:#8792a3;pointer-events:none;white-space:nowrap">0,0 · u→ v↓</span>
+      <sc-if value="{{ ghostCol }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:{{ ghostColPos.lx }};top:{{ ghostColPos.ly }};transform:translate(-50%,-50%);font-size:11.5px;font-weight:600;color:#a35d08;pointer-events:none;white-space:nowrap">柱1·孔</span></sc-if>
+
+      <!-- 拖曳中的尺寸標籤 / 選取特徵的可編輯尺寸 -->
+      <sc-for list="{{ dimEdits }}" as="d" hint-placeholder-count="0">
+        <sc-if value="{{ d.editing }}" hint-placeholder-val="{{ false }}"><input autoFocus="{{ true }}" type="number" defaultValue="{{ d.value }}" onKeyDown="{{ d.onKey }}" onBlur="{{ d.onBlur }}" style="position:absolute;left:{{ d.lx }};top:{{ d.ly }};transform:translate(-50%,-50%);width:74px;height:26px;padding:0 6px;border:1px solid #4e67e8;border-radius:6px;background:#fff;font:inherit;font-size:12px;font-weight:600;color:#172033;box-shadow:0 0 0 3px rgba(78,103,232,.15);outline:none"></sc-if>
+        <sc-if value="{{ d.static }}" hint-placeholder-val="{{ true }}"><button title="{{ d.title }}" onClick="{{ d.edit }}" style="position:absolute;left:{{ d.lx }};top:{{ d.ly }};transform:translate(-50%,-50%);height:22px;padding:0 7px;border:1px solid {{ d.bd }};border-radius:6px;background:{{ d.bg }};color:{{ d.fg }};font:inherit;font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;cursor:{{ d.cursor }};white-space:nowrap;box-shadow:0 1px 2px rgba(22,31,50,.08)">{{ d.text }}</button></sc-if>
+      </sc-for>
+
+      <!-- A：邊優先浮動工具列 -->
+      <sc-if value="{{ aBar }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:{{ aBar.lx }};top:{{ aBar.ly }};transform:translate(-50%,0);display:flex;flex-direction:column;gap:6px;align-items:center;z-index:3">
+          <div style="display:flex;align-items:center;gap:2px;padding:3px;border:1px solid #dfe4eb;border-radius:9px;background:#fff;box-shadow:0 12px 34px rgba(24,33,51,.12),0 3px 10px rgba(24,33,51,.08)">
+            <sc-for list="{{ aBar.items }}" as="b" hint-placeholder-count="0">
+              <button title="{{ b.title }}" onClick="{{ b.pick }}" style="height:32px;display:inline-flex;align-items:center;gap:6px;padding:0 9px;border:0;border-radius:6px;background:{{ b.bg }};color:{{ b.fg }};font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="{{ b.d }}"></path></svg>{{ b.name }}</button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ popover }}" hint-placeholder-val="{{ false }}">
+            <div style="width:{{ popover.width }};padding:12px 12px 10px;border:1px solid #dfe4eb;border-radius:10px;background:#fff;box-shadow:0 12px 34px rgba(24,33,51,.12),0 3px 10px rgba(24,33,51,.08)">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong style="font-size:12.5px">{{ popover.title }}</strong><span style="font-size:11px;color:#6b7485;white-space:nowrap">{{ popover.sub }}</span></div>
+              <sc-if value="{{ popover.hasAnchor }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                  <span style="font-size:11px;color:#6b7485;white-space:nowrap">定位</span>
+                  <span style="display:inline-flex;padding:2px;border:1px solid #dfe4eb;border-radius:7px;background:#f7f8fa">
+                    <sc-for list="{{ popover.anchors }}" as="a" hint-placeholder-count="3"><button onClick="{{ a.pick }}" style="height:24px;padding:0 9px;border:0;border-radius:5px;background:{{ a.bg }};color:{{ a.fg }};font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:{{ a.shadow }}">{{ a.name }}</button></sc-for>
+                  </span>
+                </div>
+              </sc-if>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px">
+                <sc-for list="{{ popover.fields }}" as="f" hint-placeholder-count="0">
+                  <label style="display:flex;flex-direction:column;gap:3px;color:#6b7485;font-size:11px;min-width:0">{{ f.label }}<span style="position:relative;display:flex"><input type="number" step="{{ f.step }}" value="{{ f.value }}" onChange="{{ f.onChange }}" onKeyDown="{{ f.onKey }}" disabled="{{ f.disabled }}" style="width:100%;height:30px;padding:0 30px 0 8px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;font:inherit;font-size:12.5px;font-weight:600;color:#172033;box-sizing:border-box;font-variant-numeric:tabular-nums"><small style="position:absolute;right:8px;top:8px;font-size:10.5px;color:#98a1b2">mm</small></span></label>
+                </sc-for>
+              </div>
+              <sc-if value="{{ popover.note }}" hint-placeholder-val="{{ false }}"><div style="margin-top:8px;font-size:11px;color:#6b7485;line-height:1.45">{{ popover.note }}</div></sc-if>
+              <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px">
+                <button onClick="{{ popover.cancel }}" style="height:30px;padding:0 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#3c4658;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">取消 <kbd style="font-family:inherit;font-size:10px;color:#98a1b2">Esc</kbd></button>
+                <button onClick="{{ popover.apply }}" style="height:30px;padding:0 12px;border:0;border-radius:7px;background:#4e67e8;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">{{ popover.applyLabel }} <kbd style="font-family:inherit;font-size:10px;color:rgba(255,255,255,.7)">Enter</kbd></button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- C：步驟引導 -->
+      <sc-if value="{{ wiz }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:50%;top:14px;transform:translateX(-50%);width:min(560px,calc(100% - 28px));border:1px solid #dfe4eb;border-radius:12px;background:#fff;box-shadow:0 12px 34px rgba(24,33,51,.12),0 3px 10px rgba(24,33,51,.08);z-index:3">
+          <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid #dfe4eb;overflow:hidden">
+            <sc-for list="{{ wiz.steps }}" as="s" hint-placeholder-count="4">
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:{{ s.fg }};white-space:nowrap"><b style="width:18px;height:18px;display:grid;place-items:center;border-radius:50%;background:{{ s.bg }};color:{{ s.numFg }};font-size:10.5px">{{ s.n }}</b>{{ s.name }}</span>
+              <sc-if value="{{ s.arrow }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:#b6bdc9;stroke-width:2"><path d="m9 6 6 6-6 6"></path></svg></sc-if>
+            </sc-for>
+            <button title="關閉 (Esc)" onClick="{{ wiz.close }}" style="margin-left:auto;width:26px;height:26px;border:0;border-radius:6px;background:transparent;color:#98a1b2;cursor:pointer;font-size:14px">✕</button>
+          </div>
+          <div style="padding:12px 14px">
+            <sc-if value="{{ wiz.isPick }}" hint-placeholder-val="{{ true }}">
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px">
+                <sc-for list="{{ wiz.ops }}" as="o" hint-placeholder-count="6">
+                  <button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid #dfe4eb;border-radius:9px;background:#fff;text-align:left;cursor:pointer;font-family:inherit;min-width:0"><span style="width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:7px;background:{{ o.iconBg }};color:{{ o.iconFg }}"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="{{ o.d }}"></path></svg></span><span style="min-width:0;display:flex;flex-direction:column;line-height:1.3"><strong style="font-size:12px;color:#172033">{{ o.name }}</strong><small style="font-size:10.5px;color:#6b7485;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.desc }}</small></span></button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ wiz.isTarget }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:9px;background:#eef1ff;color:#3d54d4"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="{{ wiz.opIcon }}"></path></svg></span>
+                <div style="min-width:0;flex:1"><strong style="font-size:12.5px;display:block">{{ wiz.targetTitle }}</strong><span style="font-size:11.5px;color:#6b7485">{{ wiz.targetHint }}</span></div>
+                <button onClick="{{ wiz.back }}" style="height:30px;padding:0 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#3c4658;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">上一步</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ wiz.isParams }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong style="font-size:12.5px">{{ wiz.paramTitle }}</strong><span style="font-size:11px;color:#6b7485">{{ wiz.paramSub }}</span></div>
+              <sc-if value="{{ wiz.hasAnchor }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                  <span style="font-size:11px;color:#6b7485">定位</span>
+                  <span style="display:inline-flex;padding:2px;border:1px solid #dfe4eb;border-radius:7px;background:#f7f8fa">
+                    <sc-for list="{{ wiz.anchors }}" as="a" hint-placeholder-count="3"><button onClick="{{ a.pick }}" style="height:24px;padding:0 9px;border:0;border-radius:5px;background:{{ a.bg }};color:{{ a.fg }};font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:{{ a.shadow }}">{{ a.name }}</button></sc-for>
+                  </span>
+                </div>
+              </sc-if>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px">
+                <sc-for list="{{ wiz.fields }}" as="f" hint-placeholder-count="0">
+                  <label style="display:flex;flex-direction:column;gap:3px;color:#6b7485;font-size:11px;min-width:0">{{ f.label }}<span style="position:relative;display:flex"><input type="number" step="{{ f.step }}" value="{{ f.value }}" onChange="{{ f.onChange }}" onKeyDown="{{ f.onKey }}" disabled="{{ f.disabled }}" style="width:100%;height:30px;padding:0 30px 0 8px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;font:inherit;font-size:12.5px;font-weight:600;color:#172033;box-sizing:border-box"><small style="position:absolute;right:8px;top:8px;font-size:10.5px;color:#98a1b2">mm</small></span></label>
+                </sc-for>
+              </div>
+              <div style="display:flex;justify-content:space-between;gap:6px;margin-top:12px">
+                <button onClick="{{ wiz.back }}" style="height:30px;padding:0 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#3c4658;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">上一步</button>
+                <button onClick="{{ wiz.next }}" style="height:30px;padding:0 12px;border:0;border-radius:7px;background:#4e67e8;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">下一步 <kbd style="font-family:inherit;font-size:10px;color:rgba(255,255,255,.7)">Enter</kbd></button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ wiz.isConfirm }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:flex-start;gap:12px">
+                <span style="width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:9px;background:#e8f7f2;color:#1d7a4e"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round"><path d="m5 12 5 5 9-10"></path></svg></span>
+                <div style="min-width:0;flex:1"><strong style="font-size:12.5px;display:block">{{ wiz.summary }}</strong><span style="font-size:11.5px;color:#6b7485">確認後寫入面；之後仍可 Ctrl+Z 復原。</span></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;gap:6px;margin-top:12px">
+                <button onClick="{{ wiz.back }}" style="height:30px;padding:0 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#3c4658;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">上一步</button>
+                <span style="display:flex;gap:6px">
+                  <button onClick="{{ wiz.confirmMore }}" style="height:30px;padding:0 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#3d54d4;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">確認並再加一個</button>
+                  <button onClick="{{ wiz.confirm }}" style="height:30px;padding:0 12px;border:0;border-radius:7px;background:#4e67e8;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">確認 <kbd style="font-family:inherit;font-size:10px;color:rgba(255,255,255,.7)">Enter</kbd></button>
+                </span>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hintPill }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:50%;top:14px;transform:translateX(-50%);max-width:min(560px,calc(100% - 40px));padding:7px 12px;border:1px solid rgba(206,213,224,.92);border-radius:8px;background:rgba(255,255,255,.94);box-shadow:0 1px 2px rgba(22,31,50,.06);color:#5a6678;font-size:11.5px;font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none">{{ hintPill }}</div></sc-if>
+
+      <sc-if value="{{ dragLabel }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:{{ dragLabel.lx }};top:{{ dragLabel.ly }};transform:translate(-50%,-100%);padding:2px 8px;border-radius:6px;background:#172033;color:#fff;font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;pointer-events:none;white-space:nowrap">{{ dragLabel.text }}</span></sc-if>
+
+      <div style="position:absolute;left:14px;bottom:14px;display:flex;align-items:center;gap:2px;padding:3px;border:1px solid #dfe4eb;border-radius:9px;background:rgba(255,255,255,.96);box-shadow:0 1px 2px rgba(22,31,50,.06)">
+        <button title="縮小" onClick="{{ zoomOut }}" style="width:30px;height:30px;border:0;border-radius:7px;background:transparent;color:#4b5668;display:grid;place-items:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7"><path d="M5 12h14"></path></svg></button>
+        <button title="回到 100% (1)" onClick="{{ zoom100 }}" style="width:52px;height:30px;border:0;border-radius:6px;background:transparent;color:#172033;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit">{{ zoomPct }}</button>
+        <button title="放大" onClick="{{ zoomIn }}" style="width:30px;height:30px;border:0;border-radius:7px;background:transparent;color:#4b5668;display:grid;place-items:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7"><path d="M12 5v14M5 12h14"></path></svg></button>
+        <button title="顯示全部 (f)" onClick="{{ fit }}" style="width:30px;height:30px;border:0;border-radius:7px;background:transparent;color:#4b5668;display:grid;place-items:center;cursor:pointer"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"></path></svg></button>
+        <span style="width:1px;height:20px;background:#dfe4eb;margin:0 3px"></span>
+        <label title="吸附格線" style="display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 8px;border-radius:7px;font-size:11.5px;font-weight:600;color:#4b5668;cursor:pointer"><input type="checkbox" checked="{{ snapOn }}" onChange="{{ toggleSnap }}" style="width:14px;height:14px;margin:0;accent-color:#4e67e8">吸</label>
+        <label title="顯示格線" style="display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 8px;border-radius:7px;font-size:11.5px;font-weight:600;color:#4b5668;cursor:pointer"><input type="checkbox" checked="{{ gridOn }}" onChange="{{ toggleGrid }}" style="width:14px;height:14px;margin:0;accent-color:#4e67e8">格</label>
+        <select title="吸附格距 mm" value="{{ gridSize }}" onChange="{{ setGridSize }}" style="height:30px;padding:0 4px;border:0;border-radius:7px;background:transparent;font:inherit;font-size:11.5px;font-weight:600;color:#4b5668;cursor:pointer"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>
+      </div>
+      <div style="position:absolute;right:14px;bottom:14px;display:flex;align-items:center;gap:10px;height:30px;padding:0 10px;border:1px solid #dfe4eb;border-radius:8px;background:rgba(255,255,255,.96);box-shadow:0 1px 2px rgba(22,31,50,.06);color:#4f5a6d;font-size:11.5px;font-variant-numeric:tabular-nums;white-space:nowrap">u <b style="color:#172033">{{ cu }}</b> v <b style="color:#172033">{{ cv }}</b> mm</div>
+
+      <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:50%;bottom:58px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #dfe4eb;border-radius:9px;background:#fff;box-shadow:0 12px 34px rgba(24,33,51,.12),0 3px 10px rgba(24,33,51,.08);font-size:12px;font-weight:600;color:#172033;white-space:nowrap;pointer-events:none"><svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:#4e67e8;stroke-width:2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>{{ toast }}</div></sc-if>
+    </section>
+
+    <aside style="min-width:0;min-height:0;display:flex;flex-direction:column;background:#fff;border-left:1px solid #dfe4eb;overflow:hidden">
+      <div role="tablist" style="display:flex;gap:2px;padding:10px 12px 0;border-bottom:1px solid #dfe4eb">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><button role="tab" onClick="{{ t.pick }}" style="height:34px;padding:0 12px;border:0;border-bottom:2px solid {{ t.bd }};background:transparent;color:{{ t.fg }};font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;margin-bottom:-1px;display:inline-flex;align-items:center;gap:6px">{{ t.name }}<sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}"><span style="min-width:16px;height:16px;padding:0 5px;display:inline-grid;place-items:center;border-radius:8px;background:#eef1ff;color:#3d54d4;font-size:10px">{{ t.badge }}</span></sc-if></button></sc-for>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto">
+        <sc-if value="{{ tabProp }}" hint-placeholder-val="{{ true }}">
+          <div style="margin:12px 12px 0;display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #dfe4eb;border-radius:9px;background:#f7f8fa;font-size:11.5px;font-weight:600;color:#3d54d4;white-space:nowrap;overflow:hidden">
+            <span style="width:16px;height:16px;display:grid;place-items:center;border-radius:50%;background:#3d54d4;color:#fff"><svg viewBox="0 0 24 24" style="width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="m5 12 5 5 9-10"></path></svg></span>建面<span style="color:#98a1b2">→</span>
+            <span style="width:16px;height:16px;display:grid;place-items:center;border-radius:50%;background:#3d54d4;color:#fff"><svg viewBox="0 0 24 24" style="width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="m5 12 5 5 9-10"></path></svg></span>放置<span style="color:#98a1b2">→</span>
+            <span style="width:16px;height:16px;display:grid;place-items:center;border-radius:50%;background:#3d54d4;color:#fff"><svg viewBox="0 0 24 24" style="width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="m5 12 5 5 9-10"></path></svg></span>收進空間
+          </div>
+          <section style="padding:14px 16px;border-bottom:1px solid #dfe4eb">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:12.5px;font-weight:700">面 1<span style="padding:1px 7px;border-radius:9px;background:#f7f8fa;color:#6b7485;font-size:10px;font-weight:600">已放置</span></div>
+            <dl style="margin:0;display:grid;gap:6px">
+              <sc-for list="{{ kv }}" as="k" hint-placeholder-count="8"><div style="display:grid;grid-template-columns:84px minmax(0,1fr);gap:10px;align-items:baseline"><dt style="color:#6b7485;font-size:11.5px">{{ k.k }}</dt><dd style="margin:0;text-align:right;color:#384356;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums">{{ k.v }}</dd></div></sc-for>
+            </dl>
+          </section>
+          <section style="padding:14px 16px;border-bottom:1px solid #dfe4eb">
+            <h3 style="margin:0 0 10px;font-size:12.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center">外環邊<span style="font-size:11px;font-weight:500;color:#6b7485">F 固定 · X 自由</span></h3>
+            <div style="display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:6px 8px;align-items:center">
+              <sc-for list="{{ edgeRows }}" as="e" hint-placeholder-count="4">
+                <span onMouseEnter="{{ e.hover }}" onMouseLeave="{{ e.unhover }}" style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:#4f5a6d;white-space:nowrap;cursor:default"><span style="width:18px;height:18px;display:grid;place-items:center;border-radius:5px;background:{{ e.chipBg }};color:{{ e.chipFg }};font-size:10.5px;font-weight:700">{{ e.idx }}</span>{{ e.dir }}</span>
+                <span style="height:28px;display:flex;align-items:center;justify-content:flex-end;padding:0 8px;border:1px solid {{ e.bd }};border-radius:6px;background:#fff;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums">{{ e.len }}</span>
+                <span style="font-size:11px;color:#98a1b2">mm</span>
+                <span role="radiogroup" style="display:inline-flex;padding:2px;border:1px solid #dfe4eb;border-radius:7px;background:#f7f8fa"><button style="width:24px;height:22px;border:0;border-radius:5px;background:#4e67e8;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">F</button><button style="width:24px;height:22px;border:0;border-radius:5px;background:transparent;color:#98a1b2;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">X</button></span>
+              </sc-for>
+            </div>
+          </section>
+          <section style="padding:12px 16px;border-bottom:1px solid #dfe4eb;font-size:12px;color:#3d54d4;font-weight:600;display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2"><path d="m9 6 6 6-6 6"></path></svg>已放置 · 天花 z=2500 · 重綁…</section>
+          <section style="padding:12px 16px;border-bottom:1px solid #dfe4eb;font-size:12px;color:#3d54d4;font-weight:600;display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" style="width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2"><path d="m9 6 6 6-6 6"></path></svg>投影視圖（仰視）</section>
+        </sc-if>
+
+        <!-- B：形狀分頁 -->
+        <sc-if value="{{ tabShape }}" hint-placeholder-val="{{ false }}">
+          <section style="padding:12px 12px 8px;border-bottom:1px solid #dfe4eb">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div><strong style="font-size:12.5px;display:block">基底外環</strong><span style="font-size:11px;color:#6b7485">{{ baseSub }}</span></div>
+              <button onClick="{{ openShapeLib }}" style="height:28px;padding:0 10px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#3c4658;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">形狀庫…</button>
+            </div>
+          </section>
+          <section style="padding:12px 12px 6px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px">
+              <strong style="font-size:12.5px">特徵（依序套用）<span style="margin-left:6px;font-size:11px;font-weight:500;color:#6b7485">{{ featCount }}</span></strong>
+              <button onClick="{{ toggleAddMenu }}" style="height:28px;padding:0 10px;border:0;border-radius:7px;background:{{ addBtnBg }};color:{{ addBtnFg }};font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;display:inline-flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2"><path d="M12 5v14M5 12h14"></path></svg>{{ addBtnLabel }}</button>
+            </div>
+            <sc-if value="{{ addMenuOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:6px;margin-bottom:8px;border:1px solid #dfe4eb;border-radius:9px;background:#f7f8fa">
+                <sc-for list="{{ addMenu }}" as="o" hint-placeholder-count="6"><button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:8px;padding:6px 7px;border:1px solid #eceff4;border-radius:7px;background:#fff;text-align:left;cursor:pointer;font-family:inherit;min-width:0" style-hover="border-color:#4e67e8"><span style="width:24px;height:24px;flex:none;display:grid;place-items:center;border-radius:6px;background:{{ o.iconBg }};color:{{ o.iconFg }}"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="{{ o.d }}"></path></svg></span><span style="display:flex;flex-direction:column;line-height:1.3;min-width:0"><strong style="font-size:11.5px;color:#172033">{{ o.name }}</strong><small style="font-size:10px;color:#6b7485;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.desc }}</small></span></button></sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ featEmpty }}" hint-placeholder-val="{{ true }}"><div style="padding:18px 12px;border:1px dashed #dfe4eb;border-radius:9px;text-align:center;font-size:11.5px;color:#6b7485;line-height:1.5">尚無特徵。按「新增」加入凹口、開口、切角…<br>畫布會即時預覽，改數字立即更新。</div></sc-if>
+            <div style="display:grid;gap:4px">
+              <sc-for list="{{ featRows }}" as="f" hint-placeholder-count="0">
+                <div onMouseEnter="{{ f.hover }}" onMouseLeave="{{ f.unhover }}" style="border:1px solid {{ f.bd }};border-radius:9px;background:{{ f.bg }};overflow:hidden">
+                  <div onClick="{{ f.pick }}" style="min-height:40px;display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 8px;cursor:pointer">
+                    <span style="width:26px;height:26px;display:grid;place-items:center;border-radius:6px;background:{{ f.iconBg }};color:{{ f.iconFg }}"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round"><path d="{{ f.d }}"></path></svg></span>
+                    <span style="min-width:0;display:flex;flex-direction:column;line-height:1.3"><strong style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.name }}</strong><small style="color:#6b7485;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums">{{ f.sub }}</small></span>
+                    <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:#98a1b2;stroke-width:2;transform:{{ f.chev }}"><path d="m6 9 6 6 6-6"></path></svg>
+                  </div>
+                  <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:2px 10px 10px;border-top:1px solid #eceff4">
+                      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+                        <sc-for list="{{ f.fields }}" as="x" hint-placeholder-count="4">
+                          <label style="display:flex;flex-direction:column;gap:3px;color:#6b7485;font-size:11px;min-width:0"><span style="display:flex;justify-content:space-between;align-items:center;gap:4px">{{ x.label }}<sc-if value="{{ x.toggle }}" hint-placeholder-val="{{ false }}"><button onClick="{{ x.toggle }}" title="切換起算邊" style="height:16px;padding:0 5px;border:1px solid #dfe4eb;border-radius:4px;background:#fff;color:#3d54d4;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit">{{ x.toggleLabel }}</button></sc-if></span><span style="position:relative;display:flex"><input type="number" step="{{ x.step }}" value="{{ x.value }}" onChange="{{ x.onChange }}" style="width:100%;height:28px;padding:0 28px 0 8px;border:1px solid #dfe4eb;border-radius:6px;background:#fff;font:inherit;font-size:12px;font-weight:600;color:#172033;box-sizing:border-box;font-variant-numeric:tabular-nums"><small style="position:absolute;right:7px;top:7px;font-size:10px;color:#98a1b2">mm</small></span></label>
+                        </sc-for>
+                      </div>
+                      <div style="display:flex;gap:4px;margin-top:8px">
+                        <button onClick="{{ f.dup }}" style="height:26px;padding:0 8px;border:1px solid #dfe4eb;border-radius:6px;background:#fff;color:#3c4658;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">複製</button>
+                        <button onClick="{{ f.mirror }}" style="height:26px;padding:0 8px;border:1px solid #dfe4eb;border-radius:6px;background:#fff;color:#3c4658;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">鏡射</button>
+                        <button onClick="{{ f.array }}" style="height:26px;padding:0 8px;border:1px solid #dfe4eb;border-radius:6px;background:#fff;color:#3c4658;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">等距 ×3</button>
+                        <button onClick="{{ f.remove }}" style="margin-left:auto;height:26px;padding:0 8px;border:1px solid #f3d3d8;border-radius:6px;background:#fff0f2;color:#c2414f;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">刪除</button>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+        </sc-if>
+        <sc-if value="{{ tabOther }}" hint-placeholder-val="{{ false }}"><div style="padding:24px 16px;font-size:12px;color:#6b7485;text-align:center">{{ tabOtherText }}</div></sc-if>
+      </div>
+    </aside>
+  </main>
+
+  <footer style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 12px;border-top:1px solid #dfe4eb;background:#fbfcfd;color:#6b7485;font-size:11.5px;min-width:0">
+    <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
+      <span style="color:#172033;font-weight:600;white-space:nowrap">工具：{{ toolName }}</span>
+      <span style="width:1px;height:14px;background:#dfe4eb"></span>
+      <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ statusText }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;white-space:nowrap">
+      <sc-for list="{{ kbdHints }}" as="k" hint-placeholder-count="4"><span style="display:inline-flex;align-items:center;gap:4px"><kbd style="font-family:inherit;font-size:10.5px;padding:0 5px;border:1px solid #dfe4eb;border-radius:4px;background:#fff;color:#4f5a6d;line-height:17px">{{ k.key }}</kbd>{{ k.name }}</span></sc-for>
+    </div>
+  </footer>
+
+  <!-- 現況：凹口對話框 / 形狀庫對話框 -->
+  <sc-if value="{{ dialog }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDialog }}" style="position:fixed;inset:0;background:rgba(23,32,51,.32);z-index:20"></div>
+    <section role="dialog" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:360px;border-radius:12px;background:#fff;box-shadow:0 12px 34px rgba(24,33,51,.18),0 3px 10px rgba(24,33,51,.1);z-index:21;overflow:hidden">
+      <header style="display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid #dfe4eb">
+        <div><span style="display:block;color:#6b7485;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase">{{ dialog.eyebrow }}</span><h2 style="margin:2px 0 0;font-size:15px;font-weight:700">{{ dialog.title }}</h2></div>
+        <button onClick="{{ closeDialog }}" style="border:0;background:none;color:#6b7485;font-size:14px;cursor:pointer;padding:2px 4px">✕</button>
+      </header>
+      <div style="padding:12px 16px">
+        <sc-if value="{{ dialog.kinds }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;gap:4px;margin-bottom:10px">
+            <sc-for list="{{ dialog.kinds }}" as="k" hint-placeholder-count="3"><label onClick="{{ k.pick }}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;font-size:12px;cursor:pointer;background:{{ k.bg }}"><input type="radio" checked="{{ k.on }}" readOnly="{{ true }}" style="margin:0;accent-color:#4e67e8">{{ k.name }}</label></sc-for>
+          </div>
+        </sc-if>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <sc-for list="{{ dialog.fields }}" as="f" hint-placeholder-count="2"><label style="display:flex;flex-direction:column;gap:3px;color:#6b7485;font-size:11px">{{ f.label }}<input type="number" value="{{ f.value }}" onChange="{{ f.onChange }}" onKeyDown="{{ f.onKey }}" style="height:28px;padding:0 8px;border:1px solid #dfe4eb;border-radius:6px;background:#fff;font:inherit;font-size:12px;font-weight:600;color:#172033"></label></sc-for>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:#6b7485;line-height:1.5">{{ dialog.help }}</div>
+      </div>
+      <footer style="display:flex;justify-content:flex-end;gap:6px;padding:10px 16px 14px;border-top:1px solid #dfe4eb">
+        <button onClick="{{ closeDialog }}" style="height:30px;padding:0 12px;border:1px solid #dfe4eb;border-radius:7px;background:#fff;color:#3c4658;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">取消</button>
+        <button onClick="{{ dialog.submit }}" style="height:30px;padding:0 12px;border:0;border-radius:7px;background:#4e67e8;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">{{ dialog.submitLabel }}</button>
+      </footer>
+    </section>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;concept&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cur&quot;,&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;],&quot;default&quot;:&quot;cur&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;方案&quot;},&quot;embed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;方案&quot;},&quot;scene&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const ICON = {
+  pointer: "M6 3.5 17.4 14l-5.2.7 2.8 5.1-2.5 1.3-2.7-5-3.8 3.5Z",
+  guide: "M4 20 20 4M4 20h16M4 20V4",
+  hole: "M4 5h16v14H4z", holeFill: "M9 9h6v6H9z",
+  notch: "M4 19V5h16v14h-6v-5h-4v5z",
+  extend: "M4 19V9h6V5h4v4h6v10z",
+  corner: "M4 19V5h10v6h6v8z",
+  push: "M4 5h11v14H4zM19 8v8M17 12h4",
+  sub: "M4 5h16v14H4zM9 12h6",
+  add: "M4 5h16v14H4zM12 9v6M9 12h6",
+  timber: "M3 8h18v8H3zM8 8v8M16 8v8",
+  redraw: "M4 8a8 8 0 0 1 14.5 3M20 16a8 8 0 0 1-14.5-3M18.5 4v7h-7M5.5 20v-7h7",
+  layers: "m3 8 9-5 9 5-9 5zm0 4 9 5 9-5M3 16l9 5 9-5",
+  hand: "M7.5 11V6.8a1.4 1.4 0 0 1 2.8 0v3.4-5.6a1.4 1.4 0 0 1 2.8 0v5-4a1.4 1.4 0 0 1 2.8 0v4.6-2.4a1.4 1.4 0 0 1 2.8 0v5.1c0 4.3-2.5 7-6.6 7h-.8c-2.7 0-4.6-1.1-6.1-3L3 13.6a1.5 1.5 0 0 1 2.4-1.8Z",
+  face: "m4.5 7.5 13-3 2 12-13 3zm2 12-2-12",
+  copy: "M8 8h12v12H8zM4 16V4h12", mirror: "M12 3v18M4 7l4 5-4 5M20 7l-4 5 4 5", array: "M3 8h4v8H3zM10 8h4v8h-4zM17 8h4v8h-4z",
+  trash: "M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6", wand: "M4 5h16v14H4zM8 9h8M8 13h5",
+};
+const TYPES = {
+  notch: { name: "凹口", op: "sub", d: ICON.notch, desc: "邊上往內切一塊", target: "edge" },
+  extend: { name: "外凸", op: "add", d: ICON.extend, desc: "邊上往外長一塊", target: "edge" },
+  push: { name: "推拉", op: null, d: ICON.push, desc: "整條邊往內／外平移", target: "edge" },
+  corner: { name: "切角", op: "sub", d: ICON.corner, desc: "角落切掉 a×b", target: "corner" },
+  hole: { name: "開口", op: "sub", d: ICON.hole, desc: "面內挖矩形孔", target: "point" },
+  sub: { name: "減矩形", op: "sub", d: ICON.sub, desc: "任意位置減去矩形", target: "point" },
+  add: { name: "合矩形", op: "add", d: ICON.add, desc: "任意位置合併矩形", target: "point" },
+};
+const CONCEPTS = [
+  { id: "cur", label: "現況", desc: "現有流程：開口拖矩形、凹口點邊後填對話框、外環整個重畫、形狀庫只有 L／U／T。" },
+  { id: "A", label: "A 邊優先", desc: "點一條邊或一個角就地選操作、填參數，畫布即時預覽；點已建的凹口可複製／鏡射／等距。" },
+  { id: "B", label: "B 參數面板", desc: "右欄「形狀」頁以清單管理每個凹口／開口／切角，改數字畫布即時更新，可複製、鏡射、刪除。" },
+  { id: "C", label: "C 步驟引導", desc: "選操作 → 指位置 → 填尺寸 → 確認，每步有提示，可回上一步。" },
+  { id: "D", label: "D 直接繪製", desc: "用「減」「加」拖任意矩形，放開即吸附成規格；選取後顯示可直接改的尺寸標註。" },
+];
+const TOOLSETS = {
+  cur: ["select", "guide", "hole", "insert", "timber", "redraw", "shape", "pan"],
+  A: ["select", "guide", "timber", "redraw", "pan"],
+  B: ["select", "guide", "timber", "redraw", "pan"],
+  C: ["select", "guide", "wizard", "timber", "redraw", "pan"],
+  D: ["select", "guide", "sub", "add", "timber", "redraw", "pan"],
+};
+const TOOLDEF = {
+  select: { name: "選取", key: "V", d: ICON.pointer, title: "選取/拖曳 (v)", tip: "拖邊可推拉 · 點邊/角/特徵可選取" },
+  guide: { name: "參考線", key: "L", d: ICON.guide, title: "參考線 (l)", tip: "參考線：水平或垂直拖曳畫線（此原型未實作）" },
+  hole: { name: "開口", key: "R", d: ICON.hole, d2: ICON.holeFill, title: "開口 (r)", tip: "開口：拖出矩形" },
+  insert: { name: "凹口", key: "I", d: ICON.notch, title: "插入凹口 (i)", tip: "凹口：點在邊上" },
+  timber: { name: "角材", key: "T", d: ICON.timber, title: "角材 (t)", tip: "角材：點面內放置（此原型未實作）" },
+  redraw: { name: "外環", key: "E", d: ICON.redraw, title: "重畫外環 (e)", tip: "重畫外環：依序點頂點，回起點閉合 · Esc 取消" },
+  shape: { name: "形狀", key: "", d: ICON.layers, title: "形狀庫", tip: "形狀庫：L／U／T 取代外環" },
+  pan: { name: "平移", key: "H", d: ICON.hand, title: "平移 (h/空白鍵)", tip: "平移：拖曳視角（中鍵也可）" },
+  wizard: { name: "形狀", key: "S", d: ICON.wand, title: "形狀步驟 (s)", tip: "形狀：選操作 → 指位置 → 填尺寸 → 確認" },
+  sub: { name: "減", key: "R", d: ICON.sub, title: "減矩形 (r)", tip: "減：拖出矩形，蓋到邊＝凹口，全在面內＝開口，蓋到角＝切角" },
+  add: { name: "加", key: "A", d: ICON.add, title: "合矩形 (a)", tip: "加：拖出矩形，貼邊＝外凸，跨邊＝合併" },
+};
+const KEY2TOOL = { v: "select", l: "guide", r: null, i: "insert", t: "timber", e: "redraw", h: "pan", s: "wizard", a: "add" };
+const BASE0 = [[0, 0], [4000, 0], [4000, 3000], [0, 3000]];
+const SIDE_ZH = { top: "上", bottom: "下", left: "左", right: "右" };
+let uid = 1;
+
+class Component extends DCLogic {
+  state = {
+    concept: null, tool: "select", base: BASE0, features: [], hist: [], future: [],
+    sel: null, hover: null, act: null, wiz: null, drag: null, draft: [], dialog: null, toast: null,
+    z: 0.16, px: 60, py: 60, vw: 800, vh: 600, gridSize: 50, snap: true, grid: true, tab: null,
+    cu: 0, cv: 0, addMenu: false, openFeat: null, dimEdit: null, mouse: null,
+  };
+  vpRef = React.createRef();
+  componentDidMount() {
+    this.ro = new ResizeObserver(() => this.measure(true));
+    if (this.vpRef.current) this.ro.observe(this.vpRef.current);
+    this.measure(true);
+    if (this.props.scene) this.applyScene(this.props.scene);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this.toastT); }
+  measure(fit) {
+    const el = this.vpRef.current; if (!el) return;
+    const vw = el.clientWidth, vh = el.clientHeight;
+    if (vw && vh && (vw !== this.state.vw || vh !== this.state.vh)) this.setState({ vw, vh }, () => fit && this.fit());
+  }
+  /* ---------- 幾何 ---------- */
+  concept() { return this.state.concept || this.props.concept || "cur"; }
+  loops(base = this.state.base, feats = this.state.features) {
+    let loops = [base];
+    for (const f of feats) { const r = ShapeOps.applyRect(loops, f.op, f.rect); if (r) loops = r.loops; }
+    return loops;
+  }
+  fit = () => {
+    const bb = ShapeOps.bbox(this.loops()), { vw, vh } = this.state;
+    const bw = bb[2] - bb[0] || 1, bh = bb[3] - bb[1] || 1;
+    const z = Math.max(0.02, Math.min((vw - 180) / bw, (vh - 180) / bh));
+    this.setState({ z, px: vw / 2 - (bb[0] + bw / 2) * z, py: vh / 2 - (bb[1] + bh / 2) * z });
+  };
+  toMM(ev) {
+    const r = this.vpRef.current.getBoundingClientRect(), { z, px, py } = this.state;
+    return { x: (ev.clientX - r.left - px) / z, y: (ev.clientY - r.top - py) / z, sx: ev.clientX - r.left, sy: ev.clientY - r.top };
+  }
+  toPx(x, y) { const { z, px, py } = this.state; return { lx: x * z + px, ly: y * z + py }; }
+  snap(v) { const g = this.state.gridSize; return this.state.snap ? Math.round(v / g) * g : Math.round(v); }
+  toast(msg) { clearTimeout(this.toastT); this.setState({ toast: msg }); this.toastT = setTimeout(() => this.setState({ toast: null }), 2200); }
+  commit(patch) {
+    const { base, features, hist } = this.state;
+    this.setState({ hist: [...hist, { base, features }].slice(-50), future: [], ...patch });
+  }
+  undo = () => { const { hist, future, base, features } = this.state; if (!hist.length) return; const p = hist[hist.length - 1]; this.setState({ hist: hist.slice(0, -1), future: [{ base, features }, ...future], base: p.base, features: p.features, sel: null, act: null, openFeat: null }); };
+  redo = () => { const { hist, future, base, features } = this.state; if (!future.length) return; const n = future[0]; this.setState({ future: future.slice(1), hist: [...hist, { base, features }], base: n.base, features: n.features, sel: null, act: null }); };
+  addFeature(f, extra = {}) {
+    const test = ShapeOps.applyRect(this.loops(), f.op, f.rect);
+    if (!test) { this.toast("這個操作會讓面消失或無效"); return false; }
+    if (test.split) { this.toast("這個操作會把面切成兩片，核心會拒絕"); return false; }
+    const feat = { id: uid++, ...f };
+    this.commit({ features: [...this.state.features, feat], sel: { kind: "feature", id: feat.id }, act: null, ...extra });
+    return true;
+  }
+  updateFeature(id, rect) {
+    const feats = this.state.features.map(f => f.id === id ? { ...f, rect } : f);
+    this.commit({ features: feats });
+  }
+  removeFeature(id) { this.commit({ features: this.state.features.filter(f => f.id !== id), sel: null, openFeat: null }); }
+  /* 特徵尺寸標註：以基底 bbox 起算，ax/ay 記在特徵上 */
+  meta(f) {
+    const bb = ShapeOps.bbox([this.state.base]), [x0, y0, x1, y1] = f.rect;
+    const ax = f.ax || ((x0 - bb[0] <= bb[2] - x1) ? "left" : "right"), ay = f.ay || ((y0 - bb[1] <= bb[3] - y1) ? "top" : "bottom");
+    return { ax, ay, w: x1 - x0, h: y1 - y0, dx: ax === "left" ? x0 - bb[0] : bb[2] - x1, dy: ay === "top" ? y0 - bb[1] : bb[3] - y1, bb };
+  }
+  rectFromMeta(m) {
+    const { bb } = m, x0 = m.ax === "left" ? bb[0] + m.dx : bb[2] - m.dx - m.w, y0 = m.ay === "top" ? bb[1] + m.dy : bb[3] - m.dy - m.h;
+    return [x0, y0, x0 + m.w, y0 + m.h];
+  }
+  setMeta(f, patch) {
+    const m = { ...this.meta(f), ...patch };
+    if (m.w <= 0 || m.h <= 0) return;
+    const rect = this.rectFromMeta(m);
+    const others = this.state.features.filter(x => x.id !== f.id);
+    const idx = this.state.features.findIndex(x => x.id === f.id);
+    const before = this.state.features.slice(0, idx);
+    const test = ShapeOps.applyRect(this.loops(this.state.base, before), f.op, rect);
+    if (!test || test.split) { this.toast("尺寸無效：會讓面消失或拆成兩片"); return; }
+    this.commit({ features: this.state.features.map(x => x.id === f.id ? { ...x, rect, ax: m.ax, ay: m.ay } : x) });
+  }
+  featSub(f) {
+    const m = this.meta(f);
+    return `${m.w} × ${m.h} · 距${SIDE_ZH[m.ax]} ${m.dx} · 距${SIDE_ZH[m.ay]} ${m.dy}`;
+  }
+  edgeSideName(e) { return e.axis === "h" ? (e.outSign < 0 ? "上邊" : "下邊") : (e.outSign < 0 ? "左邊" : "右邊"); }
+  anchorNames(e) { return e.axis === "h" ? ["從左", "置中", "從右"] : ["從上", "置中", "從下"]; }
+  /* 由 act 算出矩形（A/C/現況對話框共用） */
+  actRect(act = this.state.act) {
+    if (!act) return null;
+    const outer = this.loops()[0], p = act.params;
+    if (act.target === "edge") {
+      const e = ShapeOps.edges(outer)[act.edge]; if (!e) return null;
+      if (act.type === "push") { const s = p.dist; if (!s) return null; const c2 = e.c + (p.dir === "out" ? e.outSign : -e.outSign) * s; return e.axis === "h" ? [e.lo, Math.min(e.c, c2), e.hi, Math.max(e.c, c2)] : [Math.min(e.c, c2), e.lo, Math.max(e.c, c2), e.hi]; }
+      return ShapeOps.edgeRect(e, { anchor: p.anchor, dist: p.dist, w: p.w, d: p.d, dir: act.type === "extend" ? "out" : "in" });
+    }
+    if (act.target === "corner") {
+      const c = ShapeOps.corners(outer)[act.corner]; if (!c) return null;
+      const x2 = c.v[0] + c.sx * p.w, y2 = c.v[1] + c.sy * p.d;
+      return [Math.min(c.v[0], x2), Math.min(c.v[1], y2), Math.max(c.v[0], x2), Math.max(c.v[1], y2)];
+    }
+    if (act.target === "point") { const [x, y] = act.point; return [x - p.w / 2, y - p.d / 2, x + p.w / 2, y + p.d / 2]; }
+    return null;
+  }
+  actOp(act = this.state.act) {
+    if (act.type === "push") return act.params.dir === "out" ? "add" : "sub";
+    return TYPES[act.type].op;
+  }
+  applyAct = () => {
+    const act = this.state.act; if (!act) return;
+    const rect = this.actRect(act); if (!rect) { this.toast("請先填尺寸"); return; }
+    const outer = this.loops()[0]; let ax, ay;
+    if (act.target === "edge") { const e = ShapeOps.edges(outer)[act.edge]; if (e.axis === "h") ay = e.outSign < 0 ? "top" : "bottom"; else ax = e.outSign < 0 ? "left" : "right"; }
+    const ok = this.addFeature({ type: act.type, op: this.actOp(act), rect: rect.map(Math.round), ax, ay }, { wiz: null });
+    if (ok && act.type !== "push") this.setState({ sel: { kind: "feature", id: uid - 1 } });
+  };
+  startAct(type, target, ref) {
+    const g = this.state.gridSize, e = target === "edge" ? ShapeOps.edges(this.loops()[0])[ref] : null;
+    const params = type === "push" ? { dist: 300, dir: "in" } : type === "corner" ? { w: 600, d: 600 } : { anchor: "center", dist: 0, w: Math.min(600, e ? e.len - 2 * g : 600), d: 300 };
+    if (type === "hole" || type === "sub" || type === "add") Object.assign(params, { w: 600, d: 600 });
+    const act = { type, target, params };
+    if (target === "edge") act.edge = ref; else if (target === "corner") act.corner = ref; else act.point = ref;
+    this.setState({ act, addMenu: false });
+  }
+  /* 鏡射／複製／等距 */
+  /* 貼上下邊（或自由）的特徵沿 u 方向操作；貼左右邊的沿 v */
+  alongX(f) { return !f.ax; }
+  mirror(f) {
+    const bb = ShapeOps.bbox([this.state.base]), [x0, y0, x1, y1] = f.rect;
+    const rect = this.alongX(f) ? [bb[0] + bb[2] - x1, y0, bb[0] + bb[2] - x0, y1] : [x0, bb[1] + bb[3] - y1, x1, bb[1] + bb[3] - y0];
+    this.addFeature({ type: f.type, op: f.op, rect, ax: f.ax, ay: f.ay });
+  }
+  dup(f) {
+    const [x0, y0, x1, y1] = f.rect, w = x1 - x0, h = y1 - y0, g = this.state.gridSize * 4;
+    const rect = this.alongX(f) ? [x1 + g, y0, x1 + g + w, y1] : [x0, y1 + g, x1, y1 + g + h];
+    this.addFeature({ type: f.type, op: f.op, rect, ax: f.ax, ay: f.ay });
+  }
+  array(f, n = 3, gap = 600) {
+    const [x0, y0, x1, y1] = f.rect, w = x1 - x0, h = y1 - y0;
+    const alongX = this.alongX(f);
+    let feats = this.state.features, loops = this.loops(); let added = 0;
+    for (let k = 1; k < n; k++) {
+      const rect = alongX ? [x0 + k * (w + gap), y0, x1 + k * (w + gap), y1] : [x0, y0 + k * (h + gap), x1, y1 + k * (h + gap)];
+      const t = ShapeOps.applyRect(loops, f.op, rect); if (!t || t.split) break;
+      loops = t.loops; feats = [...feats, { id: uid++, type: f.type, op: f.op, rect, ax: f.ax, ay: f.ay }]; added++;
+    }
+    if (!added) { this.toast("邊長不夠排列"); return; }
+    this.commit({ features: feats });
+  }
+  /* ---------- 指標事件 ---------- */
+  hitOf(ev) { const t = ev.target.closest ? ev.target.closest("[data-hit]") : null; return t ? t.dataset.hit.split(":") : null; }
+  onDown = ev => {
+    if (ev.button === 1 || this.state.tool === "pan" || this.spaceDown) { this.setState({ drag: { kind: "pan", sx: ev.clientX, sy: ev.clientY, px: this.state.px, py: this.state.py } }); return; }
+    if (ev.button !== 0) return;
+    const pt = this.toMM(ev), hit = this.hitOf(ev), c = this.concept(), tool = this.state.tool, S = { x: this.snap(pt.x), y: this.snap(pt.y) };
+    this.vpRef.current.closest("[tabindex]").focus({ preventScroll: true });
+    if (this.state.addMenu) this.setState({ addMenu: false });
+    if (tool === "hole" || tool === "sub" || tool === "add") { this.setState({ drag: { kind: "rect", op: tool === "add" ? "add" : "sub", x0: S.x, y0: S.y, x1: S.x, y1: S.y, moved: false }, sel: null }); return; }
+    if (tool === "insert") {
+      if (!hit || hit[0] !== "e") { this.toast("凹口：請點在邊上"); this.setState({ flash: true }); setTimeout(() => this.setState({ flash: false }), 700); return; }
+      const e = ShapeOps.edges(this.loops()[0])[+hit[1]], g = this.state.gridSize, half = Math.min(g, Math.floor((e.len - 2) / 2));
+      const click = e.axis === "h" ? pt.x : pt.y;
+      this.setState({ dialog: { kind: "notch", edge: +hit[1], c: Math.round(click), w: 2 * half, d: g } });
+      return;
+    }
+    if (tool === "redraw") {
+      const d = this.state.draft;
+      if (d.length >= 3 && Math.hypot(pt.x - d[0][0], pt.y - d[0][1]) <= 12 / this.state.z) { this.closeDraft(); return; }
+      let p = [S.x, S.y];
+      if (d.length) { const l = d[d.length - 1]; if (Math.abs(p[0] - l[0]) >= Math.abs(p[1] - l[1])) p[1] = l[1]; else p[0] = l[0]; }
+      this.setState({ draft: [...d, p] }); return;
+    }
+    if (tool === "wizard" && this.state.wiz && this.state.wiz.step === 2) {
+      const w = this.state.wiz, T = TYPES[w.type];
+      if (T.target === "edge" && hit && hit[0] === "e") { this.startAct(w.type, "edge", +hit[1]); this.setState({ wiz: { ...w, step: 3 } }); return; }
+      if (T.target === "corner" && hit && hit[0] === "c") { this.startAct(w.type, "corner", +hit[1]); this.setState({ wiz: { ...w, step: 3 } }); return; }
+      if (T.target === "point") { if (!ShapeOps.inside(this.loops(), pt.x, pt.y) && w.type !== "add") { this.toast("請點在面內"); return; } this.startAct(w.type, "point", [S.x, S.y]); this.setState({ wiz: { ...w, step: 3 } }); return; }
+      this.toast(T.target === "edge" ? "請點一條邊" : T.target === "corner" ? "請點一個角" : "請點面內位置"); return;
+    }
+    /* select */
+    if (hit && hit[0] === "f") { this.setState({ sel: { kind: "feature", id: +hit[1] }, act: null, openFeat: +hit[1], tab: c === "B" ? "shape" : this.state.tab }); return; }
+    if (hit && hit[0] === "e") {
+      const i = +hit[1], e = ShapeOps.edges(this.loops()[0])[i];
+      this.setState({ sel: { kind: "edge", i }, act: null, drag: { kind: "edge", i, e, start: e.axis === "h" ? pt.y : pt.x, delta: 0, moved: false } });
+      return;
+    }
+    if (hit && hit[0] === "c") { this.setState({ sel: { kind: "corner", i: +hit[1] }, act: null }); return; }
+    if (hit && hit[0] === "v") return;
+    if (this.state.act && (c === "A")) return;
+    this.setState({ sel: null, act: c === "C" ? this.state.act : null, dimEdit: null });
+  };
+  onMove = ev => {
+    const pt = this.toMM(ev), d = this.state.drag, hit = this.hitOf(ev);
+    const patch = { cu: Math.round(pt.x), cv: Math.round(pt.y), mouse: [pt.x, pt.y] };
+    const hover = hit ? hit.join(":") : null; if (hover !== this.state.hover) patch.hover = hover;
+    if (d) {
+      if (d.kind === "pan") { patch.px = d.px + ev.clientX - d.sx; patch.py = d.py + ev.clientY - d.sy; }
+      else if (d.kind === "rect") { const x1 = this.snap(pt.x), y1 = this.snap(pt.y); patch.drag = { ...d, x1, y1, moved: d.moved || x1 !== d.x0 || y1 !== d.y0 }; }
+      else if (d.kind === "edge") { const cur = d.e.axis === "h" ? pt.y : pt.x; const delta = this.snap(cur - d.start); patch.drag = { ...d, delta, moved: d.moved || Math.abs(cur - d.start) * this.state.z > 4 }; }
+    }
+    this.setState(patch);
+  };
+  onUp = ev => {
+    const d = this.state.drag; if (!d) return;
+    const g = this.state.gridSize;
+    if (d.kind === "rect") {
+      if (!d.moved || Math.abs(d.x1 - d.x0) < g || Math.abs(d.y1 - d.y0) < g) { this.toast(this.state.tool === "hole" ? "開口：請拖出矩形" : "請拖出至少一格的矩形"); this.setState({ drag: null }); return; }
+      let rect = [Math.min(d.x0, d.x1), Math.min(d.y0, d.y1), Math.max(d.x0, d.x1), Math.max(d.y0, d.y1)];
+      if (d.op === "sub") { const bb = ShapeOps.bbox([this.loops()[0]]); rect = [Math.max(rect[0], bb[0]), Math.max(rect[1], bb[1]), Math.min(rect[2], bb[2]), Math.min(rect[3], bb[3])]; if (rect[2] - rect[0] < g || rect[3] - rect[1] < g) { this.toast("矩形沒有蓋到面"); this.setState({ drag: null }); return; } }
+      const type = this.classifyRect(rect, d.op);
+      this.setState({ drag: null }); this.addFeature({ type, op: d.op, rect });
+      return;
+    }
+    if (d.kind === "edge") {
+      this.setState({ drag: null });
+      if (!d.moved || !d.delta) return;
+      const e = d.e, c2 = e.c + d.delta, op = d.delta * e.outSign > 0 ? "add" : "sub";
+      const rect = e.axis === "h" ? [e.lo, Math.min(e.c, c2), e.hi, Math.max(e.c, c2)] : [Math.min(e.c, c2), e.lo, Math.max(e.c, c2), e.hi];
+      this.addFeature({ type: "push", op, rect }); this.setState({ sel: null });
+      return;
+    }
+    this.setState({ drag: null });
+  };
+  onLeave = () => { if (this.state.drag && this.state.drag.kind !== "pan") this.setState({ drag: null }); };
+  onDbl = ev => { if (this.state.tool === "redraw" && this.state.draft.length >= 3) this.closeDraft(); };
+  onWheel = ev => {
+    ev.preventDefault(); const pt = this.toMM(ev), { z } = this.state, nz = Math.max(0.03, Math.min(3, z * (ev.deltaY < 0 ? 1.12 : 1 / 1.12)));
+    this.setState({ z: nz, px: pt.sx - pt.x * nz, py: pt.sy - pt.y * nz });
+  };
+  classifyRect(rect, op) {
+    const outer = this.loops()[0], bb = ShapeOps.bbox([outer]);
+    const touches = ShapeOps.edges(outer).filter(e => e.axis === "h" ? (rect[1] <= e.c && rect[3] >= e.c && rect[2] > e.lo && rect[0] < e.hi) : (rect[0] <= e.c && rect[2] >= e.c && rect[3] > e.lo && rect[1] < e.hi));
+    if (op === "add") return touches.length ? "extend" : "add";
+    const cornerHit = ShapeOps.corners(outer).some(c => c.convex && (c.v[0] === bb[0] || c.v[0] === bb[2]) && (c.v[1] === bb[1] || c.v[1] === bb[3]) && c.v[0] >= rect[0] && c.v[0] <= rect[2] && c.v[1] >= rect[1] && c.v[1] <= rect[3]);
+    if (cornerHit) return "corner";
+    if (touches.length) return "notch";
+    return "hole";
+  }
+  closeDraft() {
+    const d = this.state.draft; let pts = d.slice();
+    const f = pts[0], l = pts[pts.length - 1];
+    if (f[0] !== l[0] && f[1] !== l[1]) pts.push([f[0], l[1]]);
+    if (pts.length < 4 || Math.abs(ShapeOps.area(pts)) < 1) { this.toast("外環至少要 4 個非共線頂點"); return; }
+    this.commit({ base: pts, features: [], draft: [], tool: "select", sel: null }); this.toast("外環已取代，孔已清除"); setTimeout(this.fit, 0);
+  }
+  setTool(t) {
+    if (t === "shape") { this.setState({ dialog: { kind: "shape", shape: "L", W: 4000, D: 3000, a: 1000, b: 1000 } }); return; }
+    const patch = { tool: t, draft: [], sel: null, act: null, drag: null, dimEdit: null };
+    if (t === "wizard") patch.wiz = { step: 1, type: null }; else patch.wiz = null;
+    this.setState(patch);
+  }
+  onKey = ev => {
+    const tag = ev.target.tagName; if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
+    const k = ev.key.toLowerCase(), c = this.concept();
+    if ((ev.ctrlKey || ev.metaKey) && k === "z") { ev.preventDefault(); ev.shiftKey ? this.redo() : this.undo(); return; }
+    if ((ev.ctrlKey || ev.metaKey) && k === "y") { ev.preventDefault(); this.redo(); return; }
+    if (k === "escape") {
+      const s = this.state;
+      if (s.dialog) this.setState({ dialog: null });
+      else if (s.addMenu) this.setState({ addMenu: false });
+      else if (s.act) this.setState({ act: null, wiz: s.wiz ? { ...s.wiz, step: 2 } : null });
+      else if (s.wiz) this.setState({ wiz: null, tool: "select" });
+      else if (s.draft.length) { this.setState({ draft: [] }); this.toast("草稿已清除，再按 Esc 返回"); }
+      else if (s.sel) this.setState({ sel: null, dimEdit: null });
+      else this.setState({ tool: "select" });
+      return;
+    }
+    if (k === "enter") { if (this.state.act) { if (this.state.wiz && this.state.wiz.step === 3) this.setState({ wiz: { ...this.state.wiz, step: 4 } }); else this.applyAct(); } return; }
+    if (k === "delete" || k === "backspace") { const s = this.state.sel; if (s && s.kind === "feature") this.removeFeature(s.id); else if (this.state.draft.length) this.setState({ draft: this.state.draft.slice(0, -1) }); return; }
+    if (k === "f") { this.fit(); return; }
+    if (k === "1") { this.setState({ z: 1 }); return; }
+    if (k === " ") { this.spaceDown = true; return; }
+    const set = TOOLSETS[c];
+    let t = k === "r" ? (set.includes("hole") ? "hole" : set.includes("sub") ? "sub" : null) : KEY2TOOL[k];
+    if (t && set.includes(t)) this.setTool(t);
+  };
+  applyScene(name) {
+    const notch = { id: 901, type: "notch", op: "sub", rect: [800, 0, 1400, 300], ay: "top" }, corner = { id: 902, type: "corner", op: "sub", rect: [3400, 2400, 4000, 3000] };
+    const notchAct = { type: "notch", target: "edge", edge: 0, params: { anchor: "start", dist: 800, w: 600, d: 300 } };
+    const S = {
+      cur1: { concept: "cur", tool: "insert", dialog: { kind: "notch", edge: 0, c: 1500, w: 100, d: 50 } },
+      cur2: { concept: "cur", tool: "redraw", draft: [[0, 0], [4000, 0], [4000, 1800], [2200, 1800]], mouse: [2200, 3000] },
+      a1: { concept: "A", sel: { kind: "edge", i: 0 }, hover: "e:0" },
+      a2: { concept: "A", sel: { kind: "edge", i: 0 }, act: notchAct },
+      a3: { concept: "A", features: [notch], sel: { kind: "feature", id: 901 } },
+      b1: { concept: "B", tab: "shape", features: [notch, corner], openFeat: 902, sel: { kind: "feature", id: 902 } },
+      c1: { concept: "C", tool: "wizard", wiz: { step: 1, type: null } },
+      c2: { concept: "C", tool: "wizard", wiz: { step: 2, type: "notch" } },
+      c3: { concept: "C", tool: "wizard", wiz: { step: 3, type: "notch" }, act: notchAct },
+      c4: { concept: "C", tool: "wizard", wiz: { step: 4, type: "notch" }, act: notchAct },
+      d1: { concept: "D", tool: "sub", drag: { kind: "rect", op: "sub", x0: 1200, y0: 0, x1: 1800, y1: 300, moved: true } },
+      d2: { concept: "D", tool: "sub", features: [{ ...notch, rect: [1200, 0, 1800, 300] }], sel: { kind: "feature", id: 901 } },
+    };
+    if (S[name]) this.setState(S[name]);
+  }
+  /* ---------- render ---------- */
+  renderVals() {
+    const s = this.state, c = this.concept(), z = s.z, loops = this.loops(), outer = loops[0], edges = ShapeOps.edges(outer), corners = ShapeOps.corners(outer);
+    const bb = ShapeOps.bbox(loops), P = (x, y) => this.toPx(x, y), px = (x, y) => { const p = P(x, y); return { lx: p.lx + "px", ly: p.ly + "px" }; };
+    const tab = s.tab || (c === "B" ? "shape" : "prop");
+    const embed = this.props.embed === true || this.props.embed === "true";
+    /* 網格 */
+    const minor = [], major = []; let step = s.gridSize; for (let k = 0; k < 12 && step * z < 14; k++) step *= 2;
+    const pad = 200 / z, gx0 = Math.floor((bb[0] - pad) / step) * step, gx1 = Math.ceil((bb[2] + pad) / step) * step, gy0 = Math.floor((bb[1] - pad) / step) * step, gy1 = Math.ceil((bb[3] + pad) / step) * step;
+    if (s.grid && z > 0 && (gx1 - gx0) / step < 400 && (gy1 - gy0) / step < 400) { for (let x = gx0; x <= gx1; x += step) (x % (step * 4) ? minor : major).push({ x1: x, y1: gy0, x2: x, y2: gy1 }); for (let y = gy0; y <= gy1; y += step) (y % (step * 4) ? minor : major).push({ x1: gx0, y1: y, x2: gx1, y2: y }); }
+    const facePath = loops.map(l => "M" + l.map(p => p.join(" ")).join("L") + "Z").join("");
+    /* 邊 overlay */
+    const selEdge = s.sel && s.sel.kind === "edge" ? s.sel.i : -1, hov = s.hover || "";
+    const wizEdges = s.wiz && s.wiz.step === 2 && TYPES[s.wiz.type].target === "edge";
+    const wizCorners = s.wiz && s.wiz.step === 2 && TYPES[s.wiz.type].target === "corner";
+    const edgeInteractive = s.tool === "select" || s.tool === "insert" || wizEdges;
+    const edgesV = edges.map(e => {
+      const on = e.i === selEdge || (s.act && s.act.target === "edge" && s.act.edge === e.i), h = hov === "e:" + e.i || (s.hoverRow === e.i);
+      return { x1: e.p0[0], y1: e.p0[1], x2: e.p1[0], y2: e.p1[1], hit: "e:" + e.i, stroke: on ? "#4e67e8" : (h && edgeInteractive) || wizEdges || s.flash ? "#4e67e8" : "transparent", sw: on ? 3 : (h && edgeInteractive) ? 3 : wizEdges || s.flash ? 2.5 : 12, cursor: s.tool === "select" ? (e.axis === "h" ? "ns-resize" : "ew-resize") : "pointer", anim: wizEdges || s.flash ? "fePulse 1.1s ease-in-out infinite" : "none" };
+    });
+    /* 頂點（角） */
+    const cornerPick = c === "A" && s.tool === "select" || wizCorners;
+    const vertsV = [];
+    loops.forEach((l, li) => l.forEach((p, i) => {
+      const ci = li === 0 ? i : -1, cc = li === 0 ? corners[i] : null, on = s.sel && s.sel.kind === "corner" && s.sel.i === ci || (s.act && s.act.target === "corner" && s.act.corner === ci), h = hov === "c:" + ci;
+      const pickable = li === 0 && cornerPick && cc.convex;
+      vertsV.push({ x: p[0], y: p[1], r: (on || (h && pickable) ? 7 : 5) / z, hit: li === 0 ? "c:" + i : "v:" + li + ":" + i, fill: on ? "#4e67e8" : "#fff", stroke: on || (h && pickable) || (wizCorners && cc.convex) ? "#4e67e8" : "#2f8f7b", cursor: pickable ? "pointer" : "default" });
+    }));
+    /* 尺寸標註（外環邊中點，向外偏 14px） */
+    const dims = [];
+    for (const e of edges) { if (e.len * z < 44) continue; const mid = (e.lo + e.hi) / 2, off = 16 / z * e.outSign; const p = e.axis === "h" ? P(mid, e.c + off) : P(e.c + off, mid); dims.push({ text: String(e.len), lx: p.lx + "px", ly: p.ly + "px" }); }
+    /* 特徵命中區 */
+    const selFeat = s.sel && s.sel.kind === "feature" ? s.sel.id : null;
+    const showFeat = c !== "cur";
+    const featHits = showFeat ? s.features.map(f => { const on = f.id === selFeat, h = hov === "f:" + f.id || s.hoverFeat === f.id; return { x: f.rect[0], y: f.rect[1], w: f.rect[2] - f.rect[0], h: f.rect[3] - f.rect[1], hit: "f:" + f.id, fill: on ? "rgba(78,103,232,.10)" : h ? "rgba(78,103,232,.06)" : "transparent", stroke: on ? "#4e67e8" : h ? "#98a1b2" : "transparent", sw: on ? 2 : 1.4 }; }) : [];
+    /* 預覽矩形 */
+    const ghostOf = (rect, op) => rect ? { x: Math.min(rect[0], rect[2]), y: Math.min(rect[1], rect[3]), w: Math.abs(rect[2] - rect[0]), h: Math.abs(rect[3] - rect[1]), fill: op === "add" ? "rgba(47,143,123,.18)" : "rgba(194,65,79,.14)", stroke: op === "add" ? "#2f8f7b" : "#c2414f" } : null;
+    let ghostRect = null, dragLabel = null;
+    if (s.act) ghostRect = ghostOf(this.actRect(), this.actOp());
+    if (s.drag && s.drag.kind === "rect" && s.drag.moved) { const d = s.drag; ghostRect = ghostOf([d.x0, d.y0, d.x1, d.y1], d.op); const p = P((d.x0 + d.x1) / 2, Math.min(d.y0, d.y1)); dragLabel = { text: `${Math.abs(d.x1 - d.x0)} × ${Math.abs(d.y1 - d.y0)}`, lx: p.lx + "px", ly: (p.ly - 8) + "px" }; }
+    if (s.drag && s.drag.kind === "edge" && s.drag.delta) { const e = s.drag.e, c2 = e.c + s.drag.delta, op = s.drag.delta * e.outSign > 0 ? "add" : "sub"; ghostRect = ghostOf(e.axis === "h" ? [e.lo, e.c, e.hi, c2] : [e.c, e.lo, c2, e.hi], op); const p = e.axis === "h" ? P((e.lo + e.hi) / 2, c2) : P(c2, (e.lo + e.hi) / 2); dragLabel = { text: (op === "add" ? "外推 " : "內推 ") + Math.abs(s.drag.delta), lx: p.lx + "px", ly: (p.ly - 10) + "px" }; }
+    const ghostRect2 = s.dialog && s.dialog.kind === "notch" ? (() => { const e = edges[s.dialog.edge]; if (!e) return null; return ghostOf(ShapeOps.edgeRect(e, { anchor: "start", dist: s.dialog.c - s.dialog.w / 2 - e.lo, w: s.dialog.w, d: s.dialog.d, dir: "in" }), "sub"); })() : null;
+    /* 重畫草稿 */
+    let draftPath = null;
+    if (s.tool === "redraw" && s.draft.length) { const pts = s.draft.slice(); if (s.mouse) { const l = pts[pts.length - 1]; const m = [this.snap(s.mouse[0]), this.snap(s.mouse[1])]; if (Math.abs(m[0] - l[0]) >= Math.abs(m[1] - l[1])) m[1] = l[1]; else m[0] = l[0]; pts.push(m); } draftPath = "M" + pts.map(p => p.join(" ")).join("L"); }
+    /* 可編輯尺寸（D 與 A 選取特徵時） */
+    const dimEdits = [];
+    const selF = s.features.find(f => f.id === selFeat);
+    if (selF && showFeat && (c === "D" || c === "A")) {
+      const m = this.meta(selF), r = selF.rect, mk = (key, val, x, y, title) => {
+        const p = P(x, y), editing = s.dimEdit === key;
+        return { key, editing, static: !editing, value: val, text: String(val), title, lx: p.lx + "px", ly: p.ly + "px", bd: "#4e67e8", bg: "#fff", fg: "#3d54d4", cursor: "text",
+          edit: ev => { ev.stopPropagation(); this.setState({ dimEdit: key }); },
+          onKey: ev => { if (ev.key === "Enter") { const v = Number(ev.target.value); if (v >= 0) this.setMeta(selF, { [key]: v }); this.setState({ dimEdit: null }); } if (ev.key === "Escape") this.setState({ dimEdit: null }); ev.stopPropagation(); },
+          onBlur: () => this.setState({ dimEdit: null }) };
+      };
+      dimEdits.push(mk("w", m.w, (r[0] + r[2]) / 2, r[1] - 14 / z, "寬（沿 u）"));
+      dimEdits.push(mk("h", m.h, r[2] + 14 / z, (r[1] + r[3]) / 2, "深／高（沿 v）"));
+      if (m.dx > 0) { const ex = m.ax === "left" ? m.bb[0] : m.bb[2], sx = m.ax === "left" ? r[0] : r[2]; dimEdits.push(mk("dx", m.dx, (ex + sx) / 2, (r[1] + r[3]) / 2, `距${SIDE_ZH[m.ax]}邊`)); }
+      if (m.dy > 0) { const ey = m.ay === "top" ? m.bb[1] : m.bb[3], sy = m.ay === "top" ? r[1] : r[3]; dimEdits.push(mk("dy", m.dy, (r[0] + r[2]) / 2, (ey + sy) / 2, `距${SIDE_ZH[m.ay]}邊`)); }
+    }
+    /* A：浮動工具列 */
+    let aBar = null, popover = null;
+    if (c === "A" && s.tool === "select" && !s.drag) {
+      const mkBtn = (name, d, title, pick, on) => ({ name, d, title, pick, bg: on ? "#eef1ff" : "transparent", fg: on ? "#3d54d4" : "#3c4658" });
+      let anchor = null, items = [];
+      if (s.sel && s.sel.kind === "edge" && edges[s.sel.i]) {
+        const e = edges[s.sel.i], mid = (e.lo + e.hi) / 2, off = 30 / z * e.outSign; anchor = e.axis === "h" ? P(mid, e.c + off) : P(e.c + off, mid);
+        items = ["notch", "extend", "push"].map(t => mkBtn(TYPES[t].name, TYPES[t].d, TYPES[t].desc, () => this.startAct(t, "edge", e.i), s.act && s.act.type === t));
+      } else if (s.sel && s.sel.kind === "corner" && corners[s.sel.i]) {
+        const k = corners[s.sel.i]; anchor = P(k.v[0] - k.sx * 40 / z, k.v[1] - k.sy * 40 / z);
+        items = [mkBtn("切角", ICON.corner, TYPES.corner.desc, () => this.startAct("corner", "corner", k.i), s.act && s.act.type === "corner")];
+      } else if (selF) {
+        anchor = P((selF.rect[0] + selF.rect[2]) / 2, selF.rect[3] + 40 / z);
+        items = [mkBtn("複製", ICON.copy, "往邊的方向複製一個", () => this.dup(selF)), mkBtn("鏡射", ICON.mirror, "以面的中心鏡射", () => this.mirror(selF)), mkBtn("等距 ×3", ICON.array, "沿邊等距排 3 個", () => this.array(selF)), mkBtn("刪除", ICON.trash, "Delete", () => this.removeFeature(selF.id))];
+      }
+      if (anchor) aBar = { lx: Math.max(150, Math.min(s.vw - 150, anchor.lx)) + "px", ly: Math.max(8, Math.min(s.vh - 60, anchor.ly)) + "px", items };
+    }
+    /* 參數表（A popover 與 C 第 3 步共用） */
+    const buildFields = () => {
+      const act = s.act; if (!act) return { fields: [], anchors: [], hasAnchor: false };
+      const p = act.params, setP = k => ev => { const v = Number(ev.target.value); this.setState({ act: { ...act, params: { ...p, [k]: v } } }); };
+      const onKey = ev => { if (ev.key === "Enter") { ev.preventDefault(); if (s.wiz) this.setState({ wiz: { ...s.wiz, step: 4 } }); else this.applyAct(); } if (ev.key === "Escape") this.setState({ act: null }); };
+      const F = (label, key, disabled) => ({ label, value: p[key], step: s.gridSize, onChange: setP(key), onKey, disabled: !!disabled });
+      const e = act.target === "edge" ? edges[act.edge] : null;
+      if (act.type === "push") return { hasAnchor: true, anchors: [["in", "往內"], ["out", "往外"]].map(([v, n]) => ({ name: n, pick: () => this.setState({ act: { ...act, params: { ...p, dir: v } } }), bg: p.dir === v ? "#fff" : "transparent", fg: p.dir === v ? "#3d54d4" : "#98a1b2", shadow: p.dir === v ? "0 1px 2px rgba(22,31,50,.08)" : "none" })), fields: [F("距離", "dist")] };
+      if (act.target === "edge") { const names = this.anchorNames(e); return { hasAnchor: true, anchors: ["start", "center", "end"].map((v, i) => ({ name: names[i], pick: () => this.setState({ act: { ...act, params: { ...p, anchor: v, dist: v === "center" ? 0 : p.dist } } }), bg: p.anchor === v ? "#fff" : "transparent", fg: p.anchor === v ? "#3d54d4" : "#98a1b2", shadow: p.anchor === v ? "0 1px 2px rgba(22,31,50,.08)" : "none" })), fields: [F("距離", "dist", p.anchor === "center"), F("寬 w", "w"), F(act.type === "extend" ? "凸出 d" : "深 d", "d")] }; }
+      if (act.target === "corner") return { hasAnchor: false, anchors: [], fields: [F("沿 u 邊 a", "w"), F("沿 v 邊 b", "d")] };
+      return { hasAnchor: false, anchors: [], fields: [F("寬 w", "w"), F("高 h", "d")] };
+    };
+    if (aBar && s.act) {
+      const bf = buildFields(), e = s.act.target === "edge" ? edges[s.act.edge] : null;
+      popover = { ...bf, width: bf.fields.length >= 3 ? "300px" : "230px", title: TYPES[s.act.type].name, sub: e ? `${this.edgeSideName(e)} · 長 ${e.len}` : s.act.target === "corner" ? "凸角" : "", note: s.act.type === "push" ? "整條邊平移，相鄰邊自動伸縮。" : null, cancel: () => this.setState({ act: null }), apply: this.applyAct, applyLabel: "套用" };
+    }
+    /* C：步驟卡 */
+    let wiz = null;
+    if (c === "C" && s.wiz) {
+      const w = s.wiz, T = w.type ? TYPES[w.type] : null, names = ["選操作", "指位置", "填尺寸", "確認"];
+      const bf = w.step === 3 ? buildFields() : { fields: [], anchors: [], hasAnchor: false };
+      const e = s.act && s.act.target === "edge" ? edges[s.act.edge] : null;
+      const where = e ? `${this.edgeSideName(e)}${s.act.type === "push" ? "" : "、" + (s.act.params.anchor === "center" ? "置中" : this.anchorNames(e)[s.act.params.anchor === "start" ? 0 : 2] + " " + s.act.params.dist)}` : s.act && s.act.target === "corner" ? "所選凸角" : s.act ? `(${s.act.point[0]}, ${s.act.point[1]}) 為中心` : "";
+      const size = s.act ? (s.act.type === "push" ? `${s.act.params.dir === "out" ? "往外" : "往內"} ${s.act.params.dist}` : `${s.act.params.w} × ${s.act.params.d}`) : "";
+      wiz = {
+        steps: names.map((n, i) => ({ n: i + 1, name: n, arrow: i < 3, fg: i + 1 === w.step ? "#172033" : i + 1 < w.step ? "#1d7a4e" : "#98a1b2", bg: i + 1 === w.step ? "#4e67e8" : i + 1 < w.step ? "#e8f7f2" : "#f7f8fa", numFg: i + 1 === w.step ? "#fff" : i + 1 < w.step ? "#1d7a4e" : "#98a1b2" })),
+        close: () => this.setState({ wiz: null, act: null, tool: "select" }),
+        isPick: w.step === 1, isTarget: w.step === 2, isParams: w.step === 3, isConfirm: w.step === 4,
+        ops: Object.keys(TYPES).filter(k => k !== "add").map(k => ({ name: TYPES[k].name, desc: TYPES[k].desc, d: TYPES[k].d, iconBg: TYPES[k].op === "add" ? "#e8f7f2" : "#fff0f2", iconFg: TYPES[k].op === "add" ? "#1d7a4e" : "#c2414f", pick: () => this.setState({ wiz: { step: 2, type: k }, act: null, sel: null }) })),
+        opIcon: T ? T.d : "", targetTitle: T ? `${T.name}：${T.target === "edge" ? "點一條邊" : T.target === "corner" ? "點一個凸角" : "在面內點一下"}` : "", targetHint: T ? (T.target === "edge" ? "亮起的邊都可以點；點下去後填尺寸。" : T.target === "corner" ? "亮起的角都可以點。" : "點擊處會成為矩形中心，之後可改。") : "",
+        back: () => this.setState({ wiz: { ...w, step: Math.max(1, w.step - 1) }, act: w.step <= 3 ? null : s.act }),
+        next: () => { if (this.actRect()) this.setState({ wiz: { ...w, step: 4 } }); else this.toast("請先填尺寸"); },
+        paramTitle: T ? `${T.name}尺寸` : "", paramSub: e ? `${this.edgeSideName(e)} · 長 ${e.len}` : "", hasAnchor: bf.hasAnchor, anchors: bf.anchors, fields: bf.fields,
+        summary: T ? `在${where}${T.name === "推拉" ? "推拉" : "加入"} ${size} 的${T.name}` : "",
+        confirm: () => { this.applyAct(); this.setState({ wiz: null, tool: "select" }); },
+        confirmMore: () => { this.applyAct(); this.setState({ wiz: { step: 1, type: null } }); },
+      };
+    }
+    /* 提示 pill（現況多步工具） */
+    let hintPill = null;
+    if (s.tool === "redraw") hintPill = s.draft.length ? `重畫外環 · 已 ${s.draft.length} 點 · 回起點或雙擊閉合 · Backspace 退一點 · Esc 清除` : "重畫外環 · 依序點頂點，回起點閉合 · Esc 取消";
+    else if (c === "D" && (s.tool === "sub" || s.tool === "add") && !s.drag) hintPill = TOOLDEF[s.tool].tip;
+    else if (c === "A" && s.tool === "select" && !s.sel && !s.features.length) hintPill = "點一條邊或一個角開始改形狀 · 拖邊可直接推拉";
+    /* 左欄 */
+    const holes = loops.slice(1);
+    const layers = [{ name: "外環", sub: `${outer.length} 頂點 · ${outer.length}/${outer.length} 邊 F`, d: ICON.face, iconBg: "#e8f7f2", iconFg: "#2f8f7b", bg: "transparent", del: false, pick: () => { } },
+      ...holes.map((h, i) => { const hb = ShapeOps.bbox([h]); return { name: `孔 ${i + 1}`, sub: `${hb[2] - hb[0]} × ${hb[3] - hb[1]} · (${hb[0]}, ${hb[1]})`, d: ICON.hole, d2: ICON.holeFill, iconBg: "#f7f8fa", iconFg: "#657084", bg: "transparent", del: false, pick: () => { } }; })];
+    const featLayers = s.features.map((f, i) => ({ name: `${TYPES[f.type].name} ${i + 1}`, sub: this.featSub(f), d: TYPES[f.type].d, iconBg: f.op === "add" ? "#e8f7f2" : "#fff0f2", iconFg: f.op === "add" ? "#1d7a4e" : "#c2414f", bg: f.id === selFeat ? "#eef1ff" : "transparent",
+      pick: () => this.setState({ sel: { kind: "feature", id: f.id }, act: null }), hover: () => this.setState({ hoverFeat: f.id }), unhover: () => this.setState({ hoverFeat: null }), remove: ev => { ev.stopPropagation(); this.removeFeature(f.id); } }));
+    /* 右欄 */
+    const tabsDef = c === "B" ? [["shape", "形狀"], ["prop", "屬性"], ["timber", "角材"], ["grid", "網格"]] : [["prop", "屬性"], ["timber", "角材"], ["grid", "網格"]];
+    const tabs = tabsDef.map(([id, name]) => ({ name, badge: id === "shape" && s.features.length ? String(s.features.length) : null, bd: tab === id ? "#4e67e8" : "transparent", fg: tab === id ? "#3d54d4" : "#6b7485", pick: () => this.setState({ tab: id }) }));
+    const area = Math.abs(ShapeOps.area(outer)) - holes.reduce((a, h) => a + Math.abs(ShapeOps.area(h)), 0);
+    const kv = [["id", "1"], ["承載面", "1"], ["origin", "0, 0, 2500"], ["u / v", "+x / +y"], ["尺寸", `${bb[2] - bb[0]} × ${bb[3] - bb[1]} mm`], ["外環 / 孔", `${outer.length} 頂點 / ${holes.length} 孔`], ["面積(扣孔)", `${(area / 1e6).toFixed(2)} m²`], ["所屬空間", "空間 1"]].map(([k, v]) => ({ k, v }));
+    const dirName = e => e.axis === "h" ? (e.outSign < 0 ? "→ 上" : "← 下") : (e.outSign > 0 ? "↓ 右" : "↑ 左");
+    const edgeRows = edges.map(e => ({ idx: String(e.i), dir: dirName(e), len: String(e.len), bd: e.i === selEdge ? "#4e67e8" : "#dfe4eb", chipBg: e.i === selEdge ? "#eef1ff" : "#f7f8fa", chipFg: e.i === selEdge ? "#3d54d4" : "#6b7485", hover: () => this.setState({ hoverRow: e.i }), unhover: () => this.setState({ hoverRow: null }) }));
+    const featRows = s.features.map((f, i) => {
+      const m = this.meta(f), open = s.openFeat === f.id, on = f.id === selFeat;
+      const fld = (label, key, toggleKey, toggleLabel) => ({ label, value: m[key], step: s.gridSize, onChange: ev => this.setMeta(f, { [key]: Number(ev.target.value) }), toggle: toggleKey ? () => this.setMeta(f, { [toggleKey]: m[toggleKey] === (toggleKey === "ax" ? "left" : "top") ? (toggleKey === "ax" ? "right" : "bottom") : (toggleKey === "ax" ? "left" : "top") }) : null, toggleLabel });
+      return { name: `${TYPES[f.type].name} ${i + 1}`, sub: this.featSub(f), d: TYPES[f.type].d, iconBg: f.op === "add" ? "#e8f7f2" : "#fff0f2", iconFg: f.op === "add" ? "#1d7a4e" : "#c2414f", bd: on ? "#4e67e8" : "#eceff4", bg: on ? "#f8f9ff" : "#fff", open, chev: open ? "rotate(180deg)" : "none",
+        fields: [fld("寬 w", "w"), fld("高 h", "h"), fld(`距${SIDE_ZH[m.ax]}`, "dx", "ax", m.ax === "left" ? "左→右" : "右→左"), fld(`距${SIDE_ZH[m.ay]}`, "dy", "ay", m.ay === "top" ? "上→下" : "下→上")],
+        pick: () => this.setState({ sel: { kind: "feature", id: f.id }, openFeat: open ? null : f.id }), hover: () => this.setState({ hoverFeat: f.id }), unhover: () => this.setState({ hoverFeat: null }),
+        dup: () => this.dup(f), mirror: () => this.mirror(f), array: () => this.array(f), remove: () => this.removeFeature(f.id) };
+    });
+    const addMenu = Object.keys(TYPES).map(k => ({ name: TYPES[k].name, desc: TYPES[k].desc, d: TYPES[k].d, iconBg: TYPES[k].op === "add" ? "#e8f7f2" : TYPES[k].op ? "#fff0f2" : "#f7f8fa", iconFg: TYPES[k].op === "add" ? "#1d7a4e" : TYPES[k].op ? "#c2414f" : "#657084", pick: () => this.quickAdd(k) }));
+    /* 工具列 */
+    const tools = TOOLSETS[c].map(id => { const t = TOOLDEF[id], on = s.tool === id; return { name: t.name, key: t.key, d: t.d, d2: t.d2 || "", title: t.title, pick: () => this.setTool(id), bg: on ? "#fff" : "transparent", fg: on ? "#3d54d4" : "#6b7485", shadow: on ? "0 1px 2px rgba(22,31,50,.06),0 1px 5px rgba(22,31,50,.04)" : "none" }; });
+    const kbdHints = (c === "cur" ? [["V", "選取"], ["L", "線"], ["R", "開口"], ["I", "凹口"], ["T", "角材"], ["E", "外環"], ["F", "全圖"], ["Esc", "返回"]] : c === "D" ? [["R", "減"], ["A", "加"], ["Enter", "套用尺寸"], ["Del", "刪特徵"], ["Ctrl+Z", "復原"], ["Esc", "返回"]] : c === "C" ? [["S", "形狀步驟"], ["Enter", "下一步"], ["Esc", "上一層"], ["Ctrl+Z", "復原"]] : [["V", "選取"], ["Enter", "套用"], ["Del", "刪特徵"], ["Ctrl+Z", "復原"], ["Esc", "返回"]]).map(([key, name]) => ({ key, name }));
+    let statusText = TOOLDEF[s.tool].tip;
+    if (s.sel && s.sel.kind === "edge" && edges[s.sel.i]) statusText = `已選 ${this.edgeSideName(edges[s.sel.i])}（邊 ${s.sel.i}，長 ${edges[s.sel.i].len}）${c === "A" ? " · 從浮動列選操作，或直接拖邊推拉" : " · 拖曳可推拉"}`;
+    if (selF) statusText = `已選 ${TYPES[selF.type].name} · ${this.featSub(selF)}${c === "D" || c === "A" ? " · 點尺寸標註可直接改" : ""}`;
+    /* 對話框 */
+    let dialog = null;
+    if (s.dialog && s.dialog.kind === "notch") {
+      const d = s.dialog, setF = k => ev => this.setState({ dialog: { ...d, [k]: Number(ev.target.value) } });
+      const submit = () => { const e = edges[d.edge]; if (!(d.w >= 2) || !(d.d >= 1)) { this.toast("凹口 w/d 要是正整數"); return; } const rect = ShapeOps.edgeRect(e, { anchor: "start", dist: d.c - d.w / 2 - e.lo, w: d.w, d: d.d, dir: "in" }); this.setState({ dialog: null }); this.addFeature({ type: "notch", op: "sub", rect }); };
+      const onKey = ev => { if (ev.key === "Enter") submit(); if (ev.key === "Escape") this.setState({ dialog: null }); };
+      dialog = { eyebrow: "凹口", title: "插入凹口", fields: [{ label: "寬 w (mm)", value: d.w, onChange: setF("w"), onKey }, { label: "深 d (mm)", value: d.d, onChange: setF("d"), onKey }], help: "以點擊處置中;凹口朝面材內側,之後可用頂點/邊拖曳微調。", submit, submitLabel: "插入" };
+    } else if (s.dialog && s.dialog.kind === "shape") {
+      const d = s.dialog, setF = k => ev => this.setState({ dialog: { ...d, [k]: Number(ev.target.value) } });
+      const submit = () => { const { W, D, a, b } = d; let pts; if (d.shape === "L") pts = [[0, 0], [W, 0], [W, a], [a, a], [a, D], [0, D]]; else if (d.shape === "U") pts = [[0, 0], [a, 0], [a, D - a], [W - a, D - a], [W - a, 0], [W, 0], [W, D], [0, D]]; else pts = [[0, 0], [W, 0], [W, a], [(W + b) / 2, a], [(W + b) / 2, D], [(W - b) / 2, D], [(W - b) / 2, a], [0, a]]; this.commit({ base: pts, features: [], dialog: null, sel: null }); setTimeout(this.fit, 0); };
+      dialog = { eyebrow: "形狀庫", title: "預設外環", kinds: [["L", "L 形（兩臂同寬 a)"], ["U", "U 形（槽口朝上，臂寬 a)"], ["T", "T 形（頂深 a、肋寬 b)"]].map(([v, n]) => ({ name: n, on: d.shape === v, bg: d.shape === v ? "#f7f8fa" : "transparent", pick: () => this.setState({ dialog: { ...d, shape: v } }) })),
+        fields: [{ label: "總寬 W (mm)", value: d.W, onChange: setF("W") }, { label: "總深 D (mm)", value: d.D, onChange: setF("D") }, { label: "臂寬 a (mm)", value: d.a, onChange: setF("a") }, { label: "肋寬 b (mm)", value: d.b, onChange: setF("b") }], help: "取代現有外環；孔保留（若落在新外環外會被核心拒絕）。", submit, submitLabel: "套用" };
+    }
+    const cursor = s.tool === "pan" || (s.drag && s.drag.kind === "pan") ? (s.drag ? "grabbing" : "grab") : (s.tool === "hole" || s.tool === "sub" || s.tool === "add" || s.tool === "redraw") ? "crosshair" : "default";
+    const ghostCol = c === "cur";
+    return {
+      showBar: !embed, concepts: CONCEPTS.map(k => ({ label: k.label, bg: k.id === c ? "#fff" : "transparent", fg: k.id === c ? "#172033" : "rgba(255,255,255,.75)", pick: () => this.setState({ concept: k.id, tool: "select", sel: null, act: null, wiz: null, draft: [], dialog: null, addMenu: false, tab: null, dimEdit: null }) })),
+      conceptDesc: CONCEPTS.find(k => k.id === c).desc, resetShape: () => this.commit({ base: BASE0, features: [], sel: null, act: null, wiz: null, draft: [] }) || setTimeout(this.fit, 0),
+      tools, undo: this.undo, redo: this.redo, fit: this.fit, undoFg: s.hist.length ? "#4b5668" : "#c3c9d4", redoFg: s.future.length ? "#4b5668" : "#c3c9d4",
+      layerCount: layers.length, layers, showFeatLayers: c === "A" || c === "D" || c === "C", featLayers, featCount: String(s.features.length), isCurrent: c === "cur",
+      vpRef: this.vpRef, cursor, onDown: this.onDown, onMove: this.onMove, onUp: this.onUp, onLeave: this.onLeave, onWheel: this.onWheel, onDbl: this.onDbl,
+      tf: `translate(${s.px},${s.py}) scale(${z})`, minor, major, facePath, featHits, ghostRect, ghostRect2, ghostCol, ghostColPos: px(1200, 1200), edgesV, draftPath, vertsV, dims, origin: px(bb[0] - 40 / z, bb[1] - 30 / z), dimEdits, aBar, popover, wiz, hintPill, dragLabel,
+      zoomOut: () => this.zoomBy(1 / 1.25), zoomIn: () => this.zoomBy(1.25), zoom100: () => this.setState({ z: 1 }), zoomPct: Math.round(z * 100) + "%", snapOn: s.snap, gridOn: s.grid, toggleSnap: () => this.setState({ snap: !s.snap }), toggleGrid: () => this.setState({ grid: !s.grid }), gridSize: String(s.gridSize), setGridSize: ev => this.setState({ gridSize: Number(ev.target.value) }),
+      cu: String(s.cu), cv: String(s.cv), toast: s.toast,
+      tabs, tabProp: tab === "prop", tabShape: tab === "shape", tabOther: tab === "timber" || tab === "grid", tabOtherText: tab === "timber" ? "角材放置（此原型未涵蓋）" : "網格（此原型未涵蓋）", kv, edgeRows,
+      baseSub: `${outer.length} 頂點 · ${bb[2] - bb[0]} × ${bb[3] - bb[1]} mm`, openShapeLib: () => this.setTool("shape"), toggleAddMenu: () => this.setState({ addMenu: !s.addMenu }), addMenuOpen: s.addMenu, addBtnLabel: s.addMenu ? "收起" : "新增", addBtnBg: s.addMenu ? "#eef1ff" : "#4e67e8", addBtnFg: s.addMenu ? "#3d54d4" : "#fff", addMenu, featEmpty: !s.features.length, featRows,
+      toolName: TOOLDEF[s.tool].name, statusText, kbdHints, dialog, closeDialog: () => this.setState({ dialog: null }),
+    };
+  }
+  zoomBy(k) { const { z, px, py, vw, vh } = this.state, nz = Math.max(0.03, Math.min(3, z * k)); this.setState({ z: nz, px: vw / 2 - (vw / 2 - px) * nz / z, py: vh / 2 - (vh / 2 - py) * nz / z }); }
+  quickAdd(type) {
+    const outer = this.loops()[0], edges = ShapeOps.edges(outer), corners = ShapeOps.corners(outer), bb = ShapeOps.bbox([outer]);
+    const T = TYPES[type]; let rect, ax, ay;
+    if (T.target === "edge") {
+      const e = edges.find(x => x.axis === "h" && x.outSign < 0) || edges[0]; ay = "top";
+      rect = type === "push" ? [e.lo, e.c, e.hi, e.c + 300] : ShapeOps.edgeRect(e, { anchor: "center", dist: 0, w: 600, d: 300, dir: type === "extend" ? "out" : "in" });
+    } else if (T.target === "corner") { const k = corners.find(x => x.convex); rect = [Math.min(k.v[0], k.v[0] + k.sx * 600), Math.min(k.v[1], k.v[1] + k.sy * 600), Math.max(k.v[0], k.v[0] + k.sx * 600), Math.max(k.v[1], k.v[1] + k.sy * 600)]; }
+    else { const cx = (bb[0] + bb[2]) / 2, cy = (bb[1] + bb[3]) / 2; rect = type === "add" ? [bb[2] - 300, cy - 300, bb[2] + 300, cy + 300] : [cx - 300, cy - 300, cx + 300, cy + 300]; }
+    const op = type === "push" ? "sub" : T.op;
+    if (this.addFeature({ type, op, rect: rect.map(Math.round), ax, ay }, { addMenu: false })) this.setState({ openFeat: uid - 1, tab: "shape" });
+  }
+}
+</script>
+</body>
+</html>

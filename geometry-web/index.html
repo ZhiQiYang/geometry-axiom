@@ -282,7 +282,6 @@
         <button type="button" class="workspace-tool" data-face-tool="select" title="選取/拖曳 (v)"><span data-icon="pointer"></span><span>選取</span><kbd>V</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="guide" title="參考線 (l)"><span data-icon="guide"></span><span>參考線</span><kbd>L</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="hole" title="開口 (r)"><span data-icon="hole"></span><span>開口</span><kbd>R</kbd></button>
-        <button type="button" class="workspace-tool" data-face-tool="insert" title="插入凹口 (i)"><span data-icon="notch"></span><span>凹口</span><kbd>I</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="timber" title="角材 (t)"><span data-icon="timber"></span><span>角材</span><kbd>T</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="redraw" title="重畫外環 (e)"><span data-icon="redraw"></span><span>外環</span><kbd>E</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="pan" title="平移 (h/空白鍵)"><span data-icon="hand"></span><span>平移</span><kbd>H</kbd></button>
@@ -318,6 +317,9 @@
             <button type="button" data-axis="u">u 線</button>
             <button type="button" data-axis="v">v 線</button>
           </div>
+          <!-- GEO-188 形狀編輯:選邊/角後的浮動操作列 + 就地參數面板(內容由 feSyncOverlays 產生) -->
+          <div id="feActionBar" class="fe-action-bar" role="toolbar" aria-label="形狀操作" hidden></div>
+          <div id="feOpPanel" class="fe-op-panel" role="dialog" aria-label="形狀操作參數" hidden></div>
           <div class="face-canvas-controls" aria-label="面內縮放控制">
             <button id="feZoomOut" class="icon-button" type="button" title="縮小"><span data-icon="minus"></span></button>
             <button id="feZoomLevel" class="zoom-level" type="button" title="回到 100%">100%</button>
@@ -342,6 +344,7 @@
           <button type="button" class="drawer-close right-toggle" data-close-panel="right">關閉 ×</button>
           <nav id="faceInspectorTabs" class="fi-tabs" aria-label="檢視器分頁">
             <button type="button" class="fi-tab active" data-fi-tab="prop">屬性</button>
+            <button type="button" class="fi-tab" data-fi-tab="shape">形狀</button>
             <button type="button" class="fi-tab" data-fi-tab="guide">參考線</button>
             <button type="button" class="fi-tab" data-fi-tab="timber">角材</button>
             <button type="button" class="fi-tab" data-fi-tab="grid">網格</button>
@@ -504,24 +507,6 @@
   <footer class="dialog-footer">
     <button id="rcCancel" class="btn" type="button">取消</button>
     <button id="rcSubmit" class="primary-button" type="button"><span>建立</span></button>
-  </footer>
-</section>
-
-<section id="notchDialog" class="dialog" role="dialog" aria-modal="true" hidden>
-  <header class="dialog-header">
-    <div><span class="dialog-eyebrow">凹口</span><h2>插入凹口</h2></div>
-    <button id="notchClose" class="dialog-close text-button" type="button">✕</button>
-  </header>
-  <div class="dialog-body">
-    <div class="place-form">
-      <label>寬 w (mm)<input id="notchW" type="number" step="1" min="2"></label>
-      <label>深 d (mm)<input id="notchD" type="number" step="1" min="1"></label>
-    </div>
-    <div class="face-help">以點擊處置中;凹口朝面材內側,之後可用頂點/邊拖曳微調。</div>
-  </div>
-  <footer class="dialog-footer">
-    <button id="notchCancel" class="btn" type="button">取消</button>
-    <button id="notchSubmit" class="primary-button" type="button"><span>插入</span></button>
   </footer>
 </section>
 

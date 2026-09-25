@@ -633,14 +633,10 @@ body.workspace-open #app { pointer-events: none; user-select: none; }
 .face-editor-viewport.tool-select { cursor: default; }
 .face-editor-viewport.tool-vertex { cursor: crosshair; }
 .face-editor-viewport.tool-referenceLine, .face-editor-viewport.tool-opening { cursor: crosshair; }
-.face-editor-viewport.tool-insert { cursor: copy; }
 .face-editor-viewport.tool-timber { cursor: cell; }
 .face-editor-viewport.tool-redraw { cursor: crosshair; }
 .face-editor-viewport.tool-pan, .face-editor-viewport.space-pan { cursor: grab; }
 .face-editor-viewport.is-panning { cursor: grabbing; }
-/* 凹口點錯位置:所有邊短暫高亮 */
-.face-editor-viewport.fe-flash-edges .face-edge-visible { stroke: var(--danger); }
-.face-editor-viewport.fe-flash-edges .face-edge-hit { stroke: rgba(217,68,68,.28); }
 /* 參考線點選方向小選單 */
 .fe-guide-pick {
   position: absolute; z-index: 6;
@@ -1433,3 +1429,74 @@ body:has(#objectWorkspace:not([hidden])) #app { visibility: hidden; }
 .fb-foot .fb-primary { border-color: var(--accent); background: var(--accent); color: white; }
 .fb-pick-hover { position: fixed; z-index: 99; pointer-events: none; outline: 2px solid var(--danger); outline-offset: 1px; background: rgba(194, 65, 79, .08); }
 body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
+/* ---- GEO-188 形狀編輯(方案 A 邊優先 + B 形狀頁)---- */
+/* 浮動操作列:選邊/角後浮在旁邊(座標由 fePlaceOverlays 擺) */
+.fe-action-bar {
+  position: absolute; z-index: 7;
+  display: flex; align-items: center; gap: 2px; padding: 3px;
+  background: rgba(255,255,255,.97);
+  border: 1px solid var(--border); border-radius: 9px;
+  box-shadow: var(--shadow-md);
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+.fe-action-bar button {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 28px; padding: 0 9px; border: 0; border-radius: 6px;
+  background: transparent; color: #3c4658;
+  font-size: 11.5px; font-weight: 650; cursor: pointer; font-family: inherit;
+}
+.fe-action-bar button:hover { background: var(--panel-muted); }
+.fe-action-bar button.on { background: var(--accent-soft); color: var(--accent-strong); }
+.fe-action-bar button svg { width: 14px; height: 14px; }
+.fe-action-bar .sep { width: 1px; align-self: stretch; margin: 4px 2px; background: var(--border); }
+/* 就地參數面板 */
+.fe-op-panel {
+  position: absolute; z-index: 8; width: 300px;
+  padding: 12px 14px;
+  background: #fff; border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  transform: translate(-50%, 0);
+}
+.fe-op-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+.fe-op-head strong { font-size: 13px; }
+.fe-op-head small { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.fe-seg { display: inline-flex; gap: 2px; padding: 2px; margin-bottom: 8px; border-radius: 7px; background: var(--panel-muted); }
+.fe-seg button { height: 24px; padding: 0 9px; border: 0; border-radius: 5px; background: transparent; color: var(--faint); font-size: 11.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.fe-seg button.on { background: #fff; color: var(--accent-strong); box-shadow: 0 1px 2px rgba(22,31,50,.08); }
+.fe-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.fe-fields label { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--muted); min-width: 0; }
+.fe-fields input { width: 100%; height: 28px; padding: 0 6px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; font-variant-numeric: tabular-nums; }
+.fe-fields input:disabled { background: var(--panel-muted); color: var(--faint); }
+.fe-op-note { margin-top: 8px; font-size: 11px; color: var(--muted); }
+.fe-op-foot { display: flex; justify-content: flex-end; gap: 6px; margin-top: 10px; }
+.fe-op-foot kbd { font-size: 11px; font-weight: 500; opacity: .75; margin-left: 2px; }
+/* 畫布:選取邊、預覽矩形、特徵高亮 */
+.face-editor-svg .face-edge-sel { stroke: var(--accent); stroke-width: 3; stroke-linecap: round; vector-effect: non-scaling-stroke; pointer-events: none; }
+.face-editor-svg .fe-ghost { stroke-width: 1.5; stroke-dasharray: 5 3; vector-effect: non-scaling-stroke; pointer-events: none; }
+.face-editor-svg .fe-ghost.sub { fill: rgba(194,65,79,.16); stroke: var(--danger); }
+.face-editor-svg .fe-ghost.add { fill: rgba(47,143,123,.2); stroke: var(--face); }
+.face-editor-svg .fe-feat-hi { fill: rgba(78,103,232,.08); stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; pointer-events: none; }
+.face-editor-svg .fe-feat-hi.sel { fill: rgba(78,103,232,.13); stroke-width: 2; stroke-dasharray: none; }
+/* 右欄「形狀」頁:特徵卡 */
+.fe-feat { padding: 8px 10px; margin-bottom: 6px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+.fe-feat.sel { border-color: var(--accent); background: var(--accent-soft); }
+.fe-feat-head { display: flex; align-items: center; gap: 8px; }
+.fe-feat-head .face-layer-icon { width: 24px; height: 24px; }
+.fe-feat-head .face-layer-icon.sub { background: var(--danger-soft); color: var(--danger); }
+.fe-feat-head .face-layer-icon.add { background: var(--face-soft); color: #1d7a4e; }
+.fe-feat-head strong { flex: 1; min-width: 0; font-size: 12px; }
+.fe-feat-head button { height: 24px; padding: 0 7px; border: 1px solid var(--border); border-radius: 5px; background: #fff; color: #4c5769; font-size: 11px; cursor: pointer; font-family: inherit; }
+.fe-feat-head button:hover { border-color: var(--border-strong); background: var(--panel-muted); }
+.fe-feat-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 8px; margin-top: 7px; }
+.fe-feat-fields label { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); min-width: 0; }
+.fe-feat-fields input { width: 64px; height: 26px; margin-left: auto; padding: 0 5px; border: 1px solid var(--border); border-radius: 5px; font-size: 12px; font-variant-numeric: tabular-nums; }
+.fe-feat-fields select { height: 26px; padding: 0 3px; border: 1px solid var(--border); border-radius: 5px; background: #fff; font-size: 11px; }
+/* GEO-189:留下欄、開口點標記、多列 segmented */
+.fe-fields label.fe-keep { color: #1d7a4e; }
+.fe-fields label.fe-keep input { border-color: #b9dfd0; background: #f3fbf7; }
+.fe-seg-rows { display: flex; flex-wrap: wrap; gap: 6px; }
+.fe-seg-rows .fe-seg { margin-bottom: 8px; }
+.face-editor-svg .fe-point-mark { fill: none; stroke: var(--accent); stroke-width: 1.6; vector-effect: non-scaling-stroke; pointer-events: none; }
+.fe-fields.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.fe-fields label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
