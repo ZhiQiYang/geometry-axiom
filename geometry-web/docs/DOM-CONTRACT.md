@@ -123,7 +123,7 @@
 | `#placeFlow` | 建面→放置→收成員流程條(S6 新增,兩處檢視器共用) | `.pf-step.done/.current` |
 | `#placeValid` | 放置表單 u⊥v 即時驗證(S6 新增) | textContent、`.ok/.bad` |
 | `[data-filter-type]` | 顯示類型篩選 chips(button,`aria-pressed`) | `aria-pressed`、`.click()` |
-| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性/形狀/參考線/角材/網格(v2 新增 guide;形狀頁 GEO-188) | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
+| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性/形狀/參考線/角材/網格/底圖(v2 新增 guide;形狀頁 GEO-188;底圖頁 GEO-190,共 6 頁) | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
 | `#workspacePlaceTag` | 工作區放置膠囊(B9:天花·z=N / 游離) | textContent、`.placed/.free` |
 | `#faceCanvasHint` | 面內模式浮標——**限多步工具**(redraw)顯示 | `hidden`、textContent |
 | `#feZoomOut` / `#feZoomLevel` / `#feZoomIn` / `#feZoomFit` | 面內左下縮放列(B8) | `.click()`、百分比 textContent |
@@ -395,3 +395,37 @@
 - 「開口」拖矩形(`hole` 工具)改走 `feRectBool`,矩形先裁到外環外接框,記進 `fe.feats`(type 由 `feClassifyRect` 判 hole/notch/corner)。
 - 圖層列孔列有 `.face-layer-del`(拿掉那一環重宣告)。
 - 特徵建立時以 `feNearestSides` 定下 `ax`/`ay`(較近一側),`feFeatMeta` 以現況外接框起算距邊。套用後不再自動選取該特徵(無 `.fe-feat-hi.sel` 殘留)。
+
+## GEO-190 面內底圖臨摹(cdp_test §P42)
+
+> 🔒 拍板:狀態只存 `oc.underlays[bid]`(本次瀏覽器工作階段記憶體),不寫 `.scene`/`localStorage`;
+> `api("dump")` 輸出不得出現任何底圖資訊。
+
+- 右欄檢視器第 6 分頁 `[data-fi-tab="underlay"]`(順序:屬性/形狀/參考線/角材/網格/底圖,共 6 頁;
+  `#faceInspectorTabs [data-fi-tab]` 計數由 5 改 6)。沒載圖時分頁只有 `#ulFile`(`<input type=file accept="image/*">`)
+  與一行說明;載入後才出現其餘欄位。
+- 分頁欄位:`#ulOpacity`(range 0–1)、`#ulLock`(checkbox)、`#ulX`/`#ulY`(number mm,左上角在面座標的 mm,
+  含義不因旋轉改變)、`#ulRot`(select 0/90/180/270)、`#ulScale`(唯讀顯示 `<mmPerPx> mm/px`)、
+  `#ulCalibStart`(按鈕,進入量比例尺)、`#ulCalibDist`(number mm)+`#ulCalibApply`、`#ulRemove`。
+- 畫布:`#feUnderlay`(`<image>`)是 `#faceEditorRoot` **第一個子節點**(在格線/面之下),
+  `drawFaceEditor()` 每次清空重建時依 `oc.underlays[bid]` 重掛。
+  `transform="rotate(rot,cx,cy) translate(x,y) scale(mmPerPx)"`(`cx,cy` 是未旋轉時圖片中心的面座標)、
+  `opacity` 依 `ul.opacity`。**只有**「底圖」分頁作用中(`fe.fiTab==="underlay"`)、`fe.tool==="select"`、
+  且未鎖定(`!ul.locked`)時 `pointer-events="auto"`,其餘情況 `"none"`——不擋既有的點邊/點角/點面/畫外環。
+  切分頁(`fiShowTab`)、切工具(`feSetTool`)都會透過 `feUlSyncPointerEvents()` 就地同步這個屬性,不整份重畫。
+- 量比例尺:`#ulCalibStart` → `fe.ulCalib={pts:[]}`(圖片原始像素座標,最多存 2 點,`feUlCalibAddPoint` 用
+  `.slice(-2)`);畫布上 `<g id="feUnderlayCalib">` 用 `feUlImgToMm` 換算成面 mm 畫兩點與連線。進行中的
+  `pointerdown`(不論落在哪、不論工具)一律被攔截去記校準點,不進 `feDown`。兩點齊了才允許填距離、
+  `#ulCalibApply`(或 `feUnderlayApplyScale(distMm)`)套用:`mmPerPx = distMm / 兩點的px距離`,
+  `x/y` 不變;套用後 `fe.ulCalib=null`,`#feUnderlayCalib` 消失。Esc 階梯在「就地操作面板」之前插一階:
+  量比例尺進行中 → 只清 `fe.ulCalib`,不離開工作區。切離「底圖」分頁或切離 `select` 工具都會連帶取消
+  進行中的量比例尺。
+- 拖曳底圖:分頁作用中、`select` 工具、未鎖定,`pointerdown` 落在 `#feUnderlay` 上(且不是量比例尺進行中)
+  → `fe.ulDrag={x0,y0,cx,cy}`,`pointermove` 只改 `oc.underlays[bid].x/y` 與 `#feUnderlay` 的 `transform`
+  屬性(不呼叫 `drawFaceEditor()`,同 pan 的作法),`pointerup` 才 `renderFaceInspector()` 同步 `#ulX`/`#ulY`。
+  `.fe-grid-line`/`.fe-origin-mark`(面內格線與原點標)在 `app.css` 設 `pointer-events:none`——這兩者本來就
+  沒有任何點擊處理,但底圖插在最底層時,滑鼠剛好按在這些線上會讓 `e.target` 變成線而不是 `#feUnderlay`。
+- 測試用全域(cdp_test 用它們避開檔案對話框與滑鼠模擬):`feUnderlaySet(bid,{src,imgW,imgH})`
+  (建立預設狀態:`mmPerPx=外接框寬/imgW`、`x,y=`外接框左上、`rot=0`、`opacity=0.5`、`locked=false`,並重畫)、
+  `feUnderlayCalibStart()`、`feUnderlayCalibPoint([px,py])`(直接餵圖片 px 座標)、
+  `feUnderlayApplyScale(distMm)`、`feUnderlayRemove(bid)`。

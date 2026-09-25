@@ -1500,3 +1500,11 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
 .face-editor-svg .fe-point-mark { fill: none; stroke: var(--accent); stroke-width: 1.6; vector-effect: non-scaling-stroke; pointer-events: none; }
 .fe-fields.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .fe-fields label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* GEO-190:面內底圖臨摹——格線/原點標本來就沒有任何點擊處理,底圖插在最底層時
+   仍要讓事件穿透到它上面(或穿透過去給更下層的 #feUnderlay),否則滑鼠剛好按在
+   格線上會拖不動底圖。#feUnderlay 的 pointer-events 本身由 JS 依分頁/鎖定狀態切換。 */
+.face-editor-svg .fe-grid-line,
+.face-editor-svg .fe-origin-mark { pointer-events: none; }
+#feUnderlay { cursor: move; }
+.face-editor-svg #feUnderlayCalib circle { pointer-events: none; }

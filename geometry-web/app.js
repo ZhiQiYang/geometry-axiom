@@ -893,6 +893,8 @@ window.addEventListener("keydown", async e => {
         /* 參考線方向小選單開著 → 先收 */
         const pk = $("feGuidePick");
         if (pk && !pk.hidden) { pk.hidden = true; return; }
+        /* GEO-190:量比例尺進行中 → 取消(不離開工作區) */
+        if (fe.ulCalib) { fe.ulCalib = null; drawFaceEditor(); renderFaceInspector(); return; }
         /* GEO-188:就地操作面板 → 先關;再一次 Esc 取消選取 */
         if (fe.op) { feCancelOp(); return; }
         if (fe.sel) { fe.sel = null; feSyncOverlays(); drawFaceEditor(); return; }
@@ -1125,6 +1127,7 @@ const oc = {
   rect: null,             // 矩形繪製起點 {x,y}（畫布座標）
   drawTool: null,         // 'rect' | 'hole' | null(GEO-186(b):多邊形不再是畫布工具,P=建面卡→進面內畫外環)
   edit: null,             // 面編輯 {bid, work:[{verts,fixity}], drag}
+  underlays: {},          // GEO-190:bid → 底圖臨摹狀態,只存在本次瀏覽器工作階段,不寫 .scene/localStorage
 };
 let ocSeq = 0;
 let ocDrawCount = 0;      /* diff#4 可觀測訊號:每次 drawObjects() 整份重畫累加一次，
@@ -1755,10 +1758,13 @@ const fe = {
   op: null,                /* GEO-188:就地操作 {type,target,edge|corner,params} */
   feats: {},               /* GEO-188:bid → 本次工作階段套用的特徵 [{id,type,op,rect,ax,ay}] */
   selFeat: null, hoverFeat: null,
+  ulCalib: null,           /* GEO-190:量比例尺進行中 {pts:[[px,py],…]}(圖片原始像素座標) */
+  ulDrag: null,            /* GEO-190:拖曳底圖中 {x0,y0,cx,cy} */
 };
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
 function fiShowTab(name) {
+  const leavingUnderlay = fe.fiTab === "underlay" && name !== "underlay";
   fe.fiTab = name;
   for (const t of document.querySelectorAll("#faceInspectorTabs [data-fi-tab]"))
     t.classList.toggle("active", t.dataset.fiTab === name);
@@ -1766,6 +1772,21 @@ function fiShowTab(name) {
   if (pane)
     for (const p of pane.querySelectorAll("[data-fi-pane]"))
       p.hidden = p.dataset.fiPane !== name;
+  /* GEO-190:切分頁不整份重畫畫布,但 #feUnderlay 的 pointer-events 跟著「底圖分頁是否
+     作用中」走,要在這裡手動同步;離開底圖分頁順便取消進行中的量比例尺(不然切去別頁
+     還點得出校準點)。 */
+  if (leavingUnderlay && fe.ulCalib) { fe.ulCalib = null; renderFaceInspector(); }
+  feUlSyncPointerEvents();
+}
+/* GEO-190:只切 #feUnderlay 的 pointer-events,不整份 drawFaceEditor()(給 fiShowTab/
+   feSetTool 這種不想重畫整塊畫布的呼叫點用) */
+function feUlSyncPointerEvents() {
+  const img = $("feUnderlay");
+  if (!img || !oc.edit) return;
+  const ul = oc.underlays[oc.edit.bid];
+  if (!ul) return;
+  img.setAttribute("pointer-events",
+    (fe.fiTab === "underlay" && fe.tool === "select" && !ul.locked) ? "auto" : "none");
 }
 
 /* 承載面 id（placement id）——guide 的 sid，不是 boundary id */
@@ -1825,6 +1846,7 @@ async function openFaceWorkspace(bid) {
   fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
   fe.projOpen = false; fe.projViews = new Set();
   fe.sel = null; fe.op = null; fe.selFeat = null; fe.hoverFeat = null;
+  fe.ulCalib = null; fe.ulDrag = null;  /* GEO-190:量比例尺/拖曳底圖是暫態,不跨面沿用 */
   feFit(loopsBBox(oc.bmap[bid]));
   await feLoadGuides();
   feSetTool("select");
@@ -2413,8 +2435,13 @@ function feSetTool(t) {
     feSyncDraftMirror(); feLenShow();
     drawFaceEditor();
   }
+  /* GEO-190:切離 select 工具(例如按 e 描外環)時取消進行中的量比例尺、
+     同步 #feUnderlay 的 pointer-events——拖底圖只在 select 工具下允許,
+     不然分頁開著時按其他工具鍵,點下去會被底圖吃成拖曳而不是該工具的動作。 */
+  if (fe.tool !== t && t !== "select" && fe.ulCalib) fe.ulCalib = null;
   fe.tool = t;
   fe.sel = null; fe.op = null; feSyncOverlays();
+  feUlSyncPointerEvents();
   const pk = $("feGuidePick"); if (pk) pk.hidden = true;
   for (const b of document.querySelectorAll("[data-face-tool]"))
     b.classList.toggle("active", b.dataset.faceTool === t);
@@ -2496,6 +2523,67 @@ async function feLoadGuides() {
 
 }
 
+/* ---- GEO-190:面內底圖臨摹 ----
+   狀態只存 oc.underlays[bid](本次瀏覽器工作階段記憶體,不寫 .scene/localStorage,
+   見 AGENTS.md/BACKLOG 🔒 拍板)。px 是圖片原始像素;x/y 是圖片「未旋轉時左上角」
+   在面座標的 mm;旋轉繞圖片(已縮放到 mm 的)中心點轉,x/y 語意不因旋轉改變。 */
+function feUlCenter(ul) {
+  return [ul.x + ul.imgW * ul.mmPerPx / 2, ul.y + ul.imgH * ul.mmPerPx / 2];
+}
+function feUlImgToMm(ul, ix, iy) {
+  const mx = ul.x + ix * ul.mmPerPx, my = ul.y + iy * ul.mmPerPx;
+  const [cx, cy] = feUlCenter(ul), rad = ul.rot * Math.PI / 180;
+  const dx = mx - cx, dy = my - cy;
+  return [cx + dx * Math.cos(rad) - dy * Math.sin(rad),
+          cy + dx * Math.sin(rad) + dy * Math.cos(rad)];
+}
+function feUlMmToImg(ul, mx, my) {
+  const [cx, cy] = feUlCenter(ul), rad = -ul.rot * Math.PI / 180;
+  const dx = mx - cx, dy = my - cy;
+  const rmx = cx + dx * Math.cos(rad) - dy * Math.sin(rad);
+  const rmy = cy + dx * Math.sin(rad) + dy * Math.cos(rad);
+  return [(rmx - ul.x) / ul.mmPerPx, (rmy - ul.y) / ul.mmPerPx];
+}
+/* 測試用全域(cdp_test 用它們避開檔案對話框/滑鼠模擬,見 GEO-190 驗收條件) */
+function feUnderlaySet(bid, opts) {
+  const loops = oc.bmap[bid];
+  const bb = loops && loops.length ? loopsBBox([loops[0]]) : [0, 0, opts.imgW, opts.imgH];
+  oc.underlays[bid] = {
+    src: opts.src, imgW: opts.imgW, imgH: opts.imgH,
+    mmPerPx: (bb[2] - bb[0]) / opts.imgW,
+    x: bb[0], y: bb[1], rot: 0, opacity: 0.5, locked: false,
+  };
+  fe.ulCalib = null; fe.ulDrag = null;
+  if (oc.edit && oc.edit.bid === bid) { drawFaceEditor(); renderFaceInspector(); }
+}
+function feUnderlayCalibStart() {
+  if (!(oc.edit && oc.underlays[oc.edit.bid])) return;
+  fe.ulCalib = { pts: [] };
+  drawFaceEditor(); renderFaceInspector();
+}
+function feUlCalibAddPoint(ix, iy) {
+  if (!fe.ulCalib) return;
+  fe.ulCalib.pts = [...fe.ulCalib.pts, [ix, iy]].slice(-2);
+  drawFaceEditor(); renderFaceInspector();
+}
+function feUnderlayCalibPoint(pt) { feUlCalibAddPoint(pt[0], pt[1]); }
+function feUnderlayApplyScale(distMm) {
+  const bid = oc.edit && oc.edit.bid, ul = bid != null && oc.underlays[bid];
+  if (!ul || !fe.ulCalib || fe.ulCalib.pts.length !== 2 || !(distMm > 0)) return false;
+  const [p0, p1] = fe.ulCalib.pts;
+  const pxDist = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]);
+  if (!(pxDist > 0)) return false;
+  ul.mmPerPx = distMm / pxDist;   /* x/y 保持不變(🔒 拍板) */
+  fe.ulCalib = null;
+  drawFaceEditor(); renderFaceInspector();
+  return true;
+}
+function feUnderlayRemove(bid) {
+  delete oc.underlays[bid];
+  fe.ulCalib = null; fe.ulDrag = null;
+  if (oc.edit && oc.edit.bid === bid) { drawFaceEditor(); renderFaceInspector(); }
+}
+
 function drawFaceEditor() {
   const e = oc.edit;
   if (!e || !oc.focus || oc.focus.t !== "face") return;
@@ -2506,6 +2594,21 @@ function drawFaceEditor() {
   const z = fe.zoom;
   const bb = loopsBBox(loops);
   const pad = 80 / z;
+
+  /* GEO-190:底圖——root 第一個子節點(在格線與面之下)。只有「底圖」分頁作用中、
+     select 工具、且未鎖定時開 pointer-events(select 以外——例如 e 描外環——時開著
+     也不該吃事件),其餘時候整片透明,不擋既有的點邊/點角/點面/畫外環。 */
+  const ul = oc.underlays[e.bid];
+  if (ul) {
+    const [ucx, ucy] = feUlCenter(ul);
+    el("image", {
+      id: "feUnderlay", href: ul.src,
+      x: 0, y: 0, width: ul.imgW, height: ul.imgH,
+      opacity: ul.opacity,
+      transform: `rotate(${ul.rot},${ucx},${ucy}) translate(${ul.x},${ul.y}) scale(${ul.mmPerPx})`,
+      "pointer-events": (fe.fiTab === "underlay" && fe.tool === "select" && !ul.locked) ? "auto" : "none",
+    }, root);
+  }
 
   /* B4:格線依 zoom 選檔——螢幕間距 ≥24px,主格線每 4 格;
      (#faceGridSizeSelect 只管吸附,不再控制顯示格距；計算抽到 feGridStep()，diff#12
@@ -2523,11 +2626,13 @@ function drawFaceEditor() {
         stroke: (y / g) % 4 === 0 ? "#d3dae4" : "#e6eaf0",
         "stroke-width": 1 / z, class: "fe-grid-line" }, root);
   }
-  /* B5:原點標 */
+  /* B5:原點標(GEO-190:加 fe-origin-mark,和 .fe-grid-line 一起在 CSS 設 pointer-events:none——
+     這兩種線本來就沒有任何點擊處理,但底圖插在最底層時,滑鼠按在線上會讓事件目標變成這條線
+     而不是 #feUnderlay,底圖就拖不動) */
   el("line", { x1: -6 / z, y1: 0, x2: 6 / z, y2: 0, stroke: "#98a1b2",
-    "stroke-width": 1.2 / z }, root);
+    "stroke-width": 1.2 / z, class: "fe-origin-mark" }, root);
   el("line", { x1: 0, y1: -6 / z, x2: 0, y2: 6 / z, stroke: "#98a1b2",
-    "stroke-width": 1.2 / z }, root);
+    "stroke-width": 1.2 / z, class: "fe-origin-mark" }, root);
   el("text", { x: -16 / z, y: -18 / z, "font-size": 10.5 / z,
     class: "fe-dim fe-origin", fill: "#66758d" }, root).textContent = "原點 0,0 · u→ v↓";
   /* 邊命中層（畫在面底下層，寬透明線） */
@@ -2699,6 +2804,21 @@ function drawFaceEditor() {
         "font-size": 11 / z, "text-anchor": "middle",
         fill: "#c4781a" }, root).textContent =
         Math.max(Math.abs(q[0] - p[0]), Math.abs(q[1] - p[1]));
+    }
+  }
+  /* GEO-190:量比例尺進行中——兩點與連線,座標從圖片 px 換算回面 mm 顯示;
+     兩點齊了才允許填距離套用,套用/Esc 取消後這個 group 就不再出現。 */
+  if (fe.ulCalib) {
+    const g = el("g", { id: "feUnderlayCalib" }, root);
+    const ulc = oc.underlays[e.bid];
+    if (ulc) {
+      const mmPts = fe.ulCalib.pts.map(p => feUlImgToMm(ulc, p[0], p[1]));
+      if (mmPts.length === 2)
+        el("line", { x1: mmPts[0][0], y1: mmPts[0][1], x2: mmPts[1][0], y2: mmPts[1][1],
+          stroke: "#e0592a", "stroke-width": 2 / z }, g);
+      for (const [mx, my] of mmPts)
+        el("circle", { cx: mx, cy: my, r: 6 / z, fill: "#e0592a",
+          stroke: "#fff", "stroke-width": 1.5 / z }, g);
     }
   }
   /* diff#4(§5.A.1.4):面內獨立草稿層——掛在 #faceEditorRoot 內最後一個子節點(在其他
@@ -3767,6 +3887,82 @@ function feBindShapePane(pane, bid) {
   }
 }
 
+/* GEO-190:右欄「底圖」頁——沒載圖時只有 #ulFile + 一行說明;載了圖才出現其餘欄位
+   (對位 x/y/旋轉、不透明度、鎖定、量比例尺、移除)。 */
+function feUnderlayPaneHTML(bid) {
+  const ul = oc.underlays[bid];
+  let html = `<div data-fi-pane="underlay"${fe.fiTab === "underlay" ? "" : " hidden"}>` +
+    `<div class="inspector-block"><div class="ib-title">底圖臨摹</div>` +
+    `<div class="fi-note">放一張掃描/照片平面圖在底下描外環;只存在本次瀏覽器工作階段,` +
+    `不寫進場景檔——離開這片面再回來仍在,重新整理就沒了。</div>` +
+    `<label class="ib-row">選圖片<input type="file" id="ulFile" accept="image/*"></label>`;
+  if (ul) {
+    const calibOn = !!fe.ulCalib;
+    const npts = calibOn ? fe.ulCalib.pts.length : 0;
+    html += `<div class="kv"><span>不透明度</span><input id="ulOpacity" type="range" min="0" max="1" step="0.01" value="${ul.opacity}"></div>` +
+      `<label class="ib-row"><input type="checkbox" id="ulLock"${ul.locked ? " checked" : ""}> 鎖定(不可拖曳)</label>` +
+      `<div class="place-form">` +
+      `<label>X mm<input id="ulX" type="number" step="1" value="${Math.round(ul.x)}"${ul.locked ? " disabled" : ""}></label>` +
+      `<label>Y mm<input id="ulY" type="number" step="1" value="${Math.round(ul.y)}"${ul.locked ? " disabled" : ""}></label>` +
+      `<label>旋轉<select id="ulRot"${ul.locked ? " disabled" : ""}>` +
+      [0, 90, 180, 270].map(r => `<option value="${r}"${ul.rot === r ? " selected" : ""}>${r}°</option>`).join("") +
+      `</select></label></div>` +
+      `<div class="kv"><span>比例尺</span><b id="ulScale">${ul.mmPerPx.toFixed(4)} mm/px</b></div>` +
+      `<button class="btn" type="button" id="ulCalibStart"${ul.locked ? " disabled" : ""}>量比例尺：在圖上點兩點</button>` +
+      `<div class="fi-note">${!calibOn ? "按上面的鈕開始，再在畫布上的底圖點兩點"
+        : npts < 2 ? "在圖上再點" + (2 - npts) + "點" : "已點兩點，填實際距離後套用"}</div>` +
+      `<div class="place-form"><label>實際距離 mm<input id="ulCalibDist" type="number" step="1" min="1"${npts < 2 ? " disabled" : ""}></label></div>` +
+      `<button class="btn" type="button" id="ulCalibApply"${npts < 2 ? " disabled" : ""}>套用比例尺</button>` +
+      `<button class="btn" type="button" id="ulRemove">移除底圖</button>`;
+  }
+  html += `</div></div>`;
+  return html;
+}
+function feBindUnderlayPane(pane, bid) {
+  const fileInp = pane.querySelector("#ulFile");
+  if (fileInp) fileInp.addEventListener("change", () => {
+    const f = fileInp.files && fileInp.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => feUnderlaySet(bid,
+        { src: reader.result, imgW: img.naturalWidth, imgH: img.naturalHeight });
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(f);
+  });
+  const ul = oc.underlays[bid];
+  if (!ul) return;
+  const op = pane.querySelector("#ulOpacity");
+  if (op) op.addEventListener("input", () => {
+    ul.opacity = +op.value;
+    const img = $("feUnderlay"); if (img) img.setAttribute("opacity", ul.opacity);
+  });
+  const lock = pane.querySelector("#ulLock");
+  if (lock) lock.addEventListener("change", () => {
+    ul.locked = lock.checked;
+    fe.ulDrag = null;
+    drawFaceEditor(); renderFaceInspector();
+  });
+  const xi = pane.querySelector("#ulX"), yi = pane.querySelector("#ulY");
+  if (xi) xi.addEventListener("change", () => { ul.x = Math.round(+xi.value) || 0; drawFaceEditor(); });
+  if (yi) yi.addEventListener("change", () => { ul.y = Math.round(+yi.value) || 0; drawFaceEditor(); });
+  const rot = pane.querySelector("#ulRot");
+  if (rot) rot.addEventListener("change", () => { ul.rot = +rot.value || 0; drawFaceEditor(); });
+  const cs = pane.querySelector("#ulCalibStart");
+  if (cs) cs.addEventListener("click", () => feUnderlayCalibStart());
+  const ca = pane.querySelector("#ulCalibApply");
+  if (ca) ca.addEventListener("click", () => {
+    const distInp = pane.querySelector("#ulCalibDist");
+    const dist = distInp && +distInp.value;
+    if (!(dist > 0)) { toast("請填實際距離 mm"); feMarkInvalid(distInp); return; }
+    if (!feUnderlayApplyScale(dist)) toast("請先在圖上點兩點");
+  });
+  const rm = pane.querySelector("#ulRemove");
+  if (rm) rm.addEventListener("click", () => feUnderlayRemove(bid));
+}
+
 /* 左欄「面內物件」：外環 / 孔 / 參考線（§5.5.1） */
 function renderFaceLayers() {
   const e = oc.edit;
@@ -4030,10 +4226,13 @@ function renderFaceInspector() {
     `</div><button class="btn" id="gridCreate"${surf ? "" : " disabled"}>建立網格</button></div></div>`;
   /* GEO-188(方案 B):形狀頁 */
   html += feShapePaneHTML(bid);
+  /* GEO-190:底圖頁 */
+  html += feUnderlayPaneHTML(bid);
   pane.innerHTML = html;
   pane.querySelector("#shapeActionSlot").appendChild(faceShapeAction);
   pane.querySelector("#tbPlace").addEventListener("click", () => { feSetTool("timber"); closePanels(); $("faceEditorViewport").focus(); });
   feBindShapePane(pane, bid);
+  feBindUnderlayPane(pane, bid);
   const specSave = pane.querySelector("#refSpecSave");
   if (specSave) specSave.onclick = async () => {
     const name = $("refSpecName").value.trim(), value = Number($("refSpecValue").value);
@@ -5203,6 +5402,29 @@ fevp.addEventListener("pointerdown", async e => {
   if (e.target.closest && e.target.closest("#feGuidePick, #feActionBar, #feOpPanel"))
     return;                                     /* 點在浮動選單/操作列/面板上 → 交給按鈕 click */
   if (pk && !pk.hidden) pk.hidden = true;
+  if (e.button === 0 && !oc.busy && fe.ulCalib) {
+    /* GEO-190:量比例尺進行中——不管點在哪、不管目前工具,這一下都拿去記校準點,
+       不進 feDown(否則 select 工具的「點面內=選點」邏輯會搶走這一下)。
+       座標從 fePoint() 拿未經吸附的原始 mm,換算回圖片 px 存。 */
+    const bidc = oc.edit && oc.edit.bid, ulc = bidc != null && oc.underlays[bidc];
+    if (ulc) {
+      const p = fePoint(e);
+      const [ix, iy] = feUlMmToImg(ulc, p.x, p.y);
+      feUlCalibAddPoint(ix, iy);
+    }
+    return;
+  }
+  if (e.button === 0 && !oc.busy && fe.tool === "select" &&
+      e.target.closest && e.target.closest("#feUnderlay")) {
+    /* GEO-190:底圖分頁作用中、select 工具、未鎖定 → #feUnderlay 才會有
+       pointer-events,這一下拖的是底圖,不是選取/畫外環等既有互動。 */
+    const bidu = oc.edit && oc.edit.bid, ulu = bidu != null && oc.underlays[bidu];
+    if (ulu && !ulu.locked && fe.fiTab === "underlay") {
+      fevp.setPointerCapture(e.pointerId);
+      fe.ulDrag = { x0: ulu.x, y0: ulu.y, cx: e.clientX, cy: e.clientY };
+      return;
+    }
+  }
   if (e.button === 1) {                       /* 中鍵平移(不動資料,busy 也放行) */
     e.preventDefault();
     fevp.setPointerCapture(e.pointerId);
@@ -5220,6 +5442,22 @@ fevp.addEventListener("pointerdown", async e => {
   feCursor();
 });
 fevp.addEventListener("pointermove", e => {
+  if (fe.ulDrag) {
+    /* GEO-190:拖底圖只改 oc.underlays[bid].x/y + 直接改 #feUnderlay 的 transform,
+       不呼叫 drawFaceEditor()(避免整份重畫拖慢拖曳手感,做法同 pan)。 */
+    const bid = oc.edit && oc.edit.bid, ul = bid != null && oc.underlays[bid];
+    if (ul) {
+      ul.x = fe.ulDrag.x0 + (e.clientX - fe.ulDrag.cx) / fe.zoom;
+      ul.y = fe.ulDrag.y0 + (e.clientY - fe.ulDrag.cy) / fe.zoom;
+      const img = $("feUnderlay");
+      if (img) {
+        const [ucx, ucy] = feUlCenter(ul);
+        img.setAttribute("transform",
+          `rotate(${ul.rot},${ucx},${ucy}) translate(${ul.x},${ul.y}) scale(${ul.mmPerPx})`);
+      }
+    }
+    return;
+  }
   const pt = fe.tool === "redraw" ? fePoint(e) : feSnap(fePoint(e));
   /* B8:讀數 `u 1850 v 600 mm` */
   $("faceCoordinateReadout").textContent =
@@ -5229,6 +5467,12 @@ fevp.addEventListener("pointermove", e => {
 fevp.addEventListener("pointerup", async e => {
   if (fevp.hasPointerCapture(e.pointerId))
     fevp.releasePointerCapture(e.pointerId);
+  if (fe.ulDrag) {
+    /* GEO-190:結束拖曳才同步 #ulX/#ulY(拖曳中只動畫布,不整份重繪檢視器)。 */
+    fe.ulDrag = null;
+    renderFaceInspector();
+    return;
+  }
   await feUp(fe.tool === "redraw" ? fePoint(e) : feSnap(fePoint(e)));
   feCursor();
 });

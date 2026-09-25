@@ -1988,8 +1988,8 @@ async function drag(x0, y0, x1, y1, steps = 6) {
     document.querySelector('[data-fi-tab="timber"]').click();
     const tb=document.getElementById("tbA");
     return {tabs, vis: !!tb && tb.offsetParent !== null};})()`);
-  /* GEO-188 加了「形狀」頁、v2 加了「參考線」頁:屬性|形狀|參考線|角材|網格 */
-  console.log("P18 B2 五頁:", b2.tabs.join() === "prop,shape,guide,timber,grid" ? "✓" : "✗ " + b2.tabs,
+  /* GEO-188 加了「形狀」頁、v2 加了「參考線」頁、GEO-190 加了「底圖」頁:屬性|形狀|參考線|角材|網格|底圖 */
+  console.log("P18 B2 六頁:", b2.tabs.join() === "prop,shape,guide,timber,grid,underlay" ? "✓" : "✗ " + b2.tabs,
     "| 角材頁tbA可見:", b2.vis ? "✓" : "✗");
   /* (3) B3:邊表方向文字+mm+segmented */
   const b3 = await eval_(`(()=>{
@@ -2964,7 +2964,7 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   check('M10 toast above canvas, away from minimap',await eval_(`(()=>{const r=document.querySelector('.toast').getBoundingClientRect();return r.top>=56 && r.bottom<200})()`));
   await clickSelector('.ocard[data-id="1"] .card-enter');
   check('M8 explicit card entry',await eval_(`oc.focus?.t==='face' && oc.focus.id===1`));
-  check('F1 F3 F4 five tabs, six tools (GEO-188 removed insert), five persistent groups',await eval_(`document.querySelectorAll('#faceInspectorTabs [data-fi-tab]').length===5 && document.querySelectorAll('#faceWorkspaceTools [data-face-tool]').length===6 && document.querySelectorAll('#faceLayerList .fl-group').length===5 && document.querySelectorAll('#faceLayerList .fl-empty').length>=3 && document.querySelector('#faceInspectorContent').contains(document.querySelector('#faceShapeButton'))`));
+  check('F1 F3 F4 six tabs (GEO-190 added underlay), six tools (GEO-188 removed insert), five persistent groups',await eval_(`document.querySelectorAll('#faceInspectorTabs [data-fi-tab]').length===6 && document.querySelectorAll('#faceWorkspaceTools [data-face-tool]').length===6 && document.querySelectorAll('#faceLayerList .fl-group').length===5 && document.querySelectorAll('#faceLayerList .fl-empty').length>=3 && document.querySelector('#faceInspectorContent').contains(document.querySelector('#faceShapeButton'))`));
   await fillInput('#edgeLength0','500');await pressKey('Tab','Tab',9);await sleep(300);
   const lengthEdit = await eval_(`({focus:document.activeElement.id,a:document.querySelector('#edgeLength0').value,b:document.querySelector('#edgeLength2').value,status:document.querySelector('#status').textContent,loops:oc.bmap[1]})`);
   check('F2 real length edit retains next keyboard target',lengthEdit.focus==='edgeFixed0' && lengthEdit.a==='500' && lengthEdit.b==='500',lengthEdit);
@@ -3622,6 +3622,121 @@ async function drag(x0, y0, x1, y1, steps = 6) {
   await clickSelector('#zoomLevelButton');
   const back = await cardIn(61);
   check('P41-3 點縮放比例回 100% 以畫面中心為準,中心的卡片不會飛出畫面', back.zoom===1 && back.inside, back);
+
+  console.log('=== P42. 面內底圖臨摹(GEO-190) ===');
+  await send('Emulation.setDeviceMetricsOverride',{width:1382,height:900,deviceScaleFactor:1,mobile:false});
+  await setupRemaining(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000']);
+  await eval_(`(async()=>{ await enterFocus('face', 1); fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply(); })()`);
+  await sleep(250);
+
+  /* (1) 分頁 6 頁且順序正確;點「底圖」分頁顯示 #ulFile */
+  const tabs42 = await eval_(`[...document.querySelectorAll('#faceInspectorTabs [data-fi-tab]')].map(t=>t.dataset.fiTab)`);
+  check('P42-1 分頁 6 頁且順序正確(屬性/形狀/參考線/角材/網格/底圖)',
+    tabs42.join() === 'prop,shape,guide,timber,grid,underlay', tabs42);
+  await clickSelector('[data-fi-tab="underlay"]');
+  const ul1 = await eval_(`(()=>{const p=document.querySelector('[data-fi-pane="underlay"]');
+    return {hidden:p.hidden, hasFile:!!p.querySelector('#ulFile')};})()`);
+  check('P42-1b 點「底圖」分頁顯示 #ulFile', !ul1.hidden && ul1.hasFile, ul1);
+
+  /* (2) canvas 產生 200×100 PNG dataURL,feUnderlaySet 後 #feUnderlay 存在、
+     預設 mmPerPx=面寬/200(4000 寬面 → 20)、opacity 0.5 */
+  const ul2 = await eval_(`(()=>{
+    const c=document.createElement('canvas'); c.width=200; c.height=100;
+    c.getContext('2d').fillRect(0,0,200,100);
+    const src=c.toDataURL('image/png');
+    feUnderlaySet(1,{src,imgW:200,imgH:100});
+    const img=document.getElementById('feUnderlay'), ul=oc.underlays[1];
+    return {exists:!!img, mmPerPx:ul.mmPerPx, opacity:+img.getAttribute('opacity')};
+  })()`);
+  check('P42-2 #feUnderlay 存在、預設 mmPerPx=20(4000/200)、opacity 0.5',
+    ul2.exists && ul2.mmPerPx === 20 && ul2.opacity === 0.5, ul2);
+
+  /* (3) 量比例尺:餵 (0,0)/(100,0)(圖片 px)、套用 1000mm → mmPerPx=10,x/y 不變,
+     #ulScale 更新,#feUnderlayCalib 消失 */
+  const ul3 = await eval_(`(()=>{
+    const before={x:oc.underlays[1].x,y:oc.underlays[1].y};
+    feUnderlayCalibStart();
+    feUnderlayCalibPoint([0,0]); feUnderlayCalibPoint([100,0]);
+    const applied=feUnderlayApplyScale(1000), ul=oc.underlays[1];
+    return {applied, mmPerPx:ul.mmPerPx, xSame:ul.x===before.x, ySame:ul.y===before.y,
+      scale:+(document.getElementById('ulScale')?.textContent||'').split(' ')[0],
+      calibGone:!document.getElementById('feUnderlayCalib')};
+  })()`);
+  check('P42-3 校準套用:mmPerPx=10、x/y 不變、#ulScale 更新、#feUnderlayCalib 消失',
+    ul3.applied && ul3.mmPerPx === 10 && ul3.xSame && ul3.ySame && ul3.scale === 10 && ul3.calibGone, ul3);
+
+  /* (4) #ulOpacity 改 0.8 → image opacity 0.8;#ulLock 勾選 → image pointer-events none */
+  const ul4a = await eval_(`(()=>{
+    const op=document.getElementById('ulOpacity'); op.value='0.8';
+    op.dispatchEvent(new Event('input',{bubbles:true}));
+    return +document.getElementById('feUnderlay').getAttribute('opacity');
+  })()`);
+  check('P42-4a #ulOpacity 改 0.8 → image opacity 0.8', ul4a === 0.8, ul4a);
+  await clickSelector('#ulLock');
+  const ul4b = await eval_(`document.getElementById('feUnderlay').getAttribute('pointer-events')`);
+  check('P42-4b #ulLock 勾選 → image pointer-events none', ul4b === 'none', ul4b);
+  await clickSelector('#ulLock');   /* 解鎖回去,供下面的拖曳測試用 */
+
+  /* (5) 分頁作用中、未鎖定:CDP 滑鼠在圖上按住拖 100px → x 改變量換算 mm 後與
+     #ulX 一致(誤差 ≤1mm,fe.zoom=1 時 100px screen = 100mm);
+     切到「屬性」分頁後同樣拖曳 x 不變(#feUnderlay 這時 pointer-events=none)。 */
+  const org42 = await feOrigin();
+  const sx = org42.x + 200, sy = org42.y + 150;   /* 底圖(0,0)-(2000,1000)內、避開原點標與頂點 */
+  const beforeDrag = await eval_(`({x:oc.underlays[1].x})`);
+  await drag(sx, sy, sx + 100, sy, 8);
+  await sleep(200);
+  const afterDrag = await eval_(`({x:oc.underlays[1].x, ulX:+document.getElementById('ulX').value})`);
+  const dx5 = afterDrag.x - beforeDrag.x;
+  check('P42-5 底圖分頁拖 100px → x 改變量換算 mm 後與 #ulX 一致(誤差 ≤1mm)',
+    Math.abs(dx5 - 100) <= 1 && Math.abs(afterDrag.x - afterDrag.ulX) <= 1,
+    { beforeDrag, afterDrag, dx5 });
+  await clickSelector('[data-fi-tab="prop"]');
+  const beforeDrag2 = await eval_(`oc.underlays[1].x`);
+  await drag(sx, sy, sx + 100, sy, 8);
+  await sleep(200);
+  const afterDrag2 = await eval_(`oc.underlays[1].x`);
+  check('P42-5b 切到「屬性」分頁後同樣拖曳 x 不變', afterDrag2 === beforeDrag2, { beforeDrag2, afterDrag2 });
+
+  /* (6) 底圖存在時,e 重畫外環用鍵盤仍成功(底圖不擋既有互動) */
+  const ul6 = await eval_(`(async()=>{
+    feSetTool('redraw');
+    const key=(k,code)=>window.dispatchEvent(new KeyboardEvent('keydown',{key:k,code:code||k,bubbles:true}));
+    for (const ch of '3000') key(ch,'Digit'+ch); key('ArrowRight');
+    for (const ch of '2000') key(ch,'Digit'+ch); key('ArrowDown');
+    key('Enter');
+    await new Promise(r=>setTimeout(r,400));
+    const b=await api('boundary 1');
+    return {ok:b.ok, nverts:b.loops[0].verts.length, tool:fe.tool, hasUnderlay:!!oc.underlays[1]};
+  })()`);
+  check('P42-6 底圖存在時鍵盤重畫外環(3000→ 2000↓ Enter)仍成功',
+    ul6.ok && ul6.nverts >= 3 && ul6.tool === 'select' && ul6.hasUnderlay, ul6);
+
+  /* (7) 量比例尺進行中按 Esc → fe.ulCalib 為 null 且仍在工作區 */
+  const startedCalib = await eval_(`(()=>{ feUnderlayCalibStart(); return !!fe.ulCalib; })()`);
+  await pressKey('Escape','Escape',27);
+  const ul7 = await eval_(`({calib: fe.ulCalib, stillIn: !!(oc.focus && oc.focus.t==='face')})`);
+  check('P42-7 量比例尺進行中按 Esc → fe.ulCalib 為 null 且仍在工作區',
+    startedCalib && ul7.calib === null && ul7.stillIn, { startedCalib, ul7 });
+
+  /* (8) 離開面(Esc)再進同一面,底圖仍在;api("dump") 文字不含底圖資訊 */
+  await pressKey('Escape','Escape',27);
+  await eval_(`enterFocus('face',1)`); await sleep(250);
+  const ul8 = await eval_(`({hasUnderlay: !!oc.underlays[1], imgExists: !!document.getElementById('feUnderlay')})`);
+  const dump8 = (await eval_(`api('dump')`)).text;
+  check('P42-8 離開面再進同一面底圖仍在;dump 不含底圖資訊',
+    ul8.hasUnderlay && ul8.imgExists && !/underlay/i.test(dump8) &&
+    !dump8.includes('底圖') && !dump8.includes('data:image'),
+    { ul8, dumpLen: dump8.length });
+
+  /* (9) feUnderlayRemove(bid) → #feUnderlay 不存在,分頁回到只有 #ulFile */
+  const ul9 = await eval_(`(()=>{
+    feUnderlayRemove(1);
+    const pane=document.querySelector('[data-fi-pane="underlay"]');
+    const others=pane ? [...pane.querySelectorAll('input,select,button')].filter(el=>el.id!=='ulFile') : ['no-pane'];
+    return {imgGone: !document.getElementById('feUnderlay'), othersLeft: others.length};
+  })()`);
+  check('P42-9 feUnderlayRemove 後 #feUnderlay 不存在、分頁回到只有 #ulFile',
+    ul9.imgGone && ul9.othersLeft === 0, ul9);
   }
 
   chrome.kill();

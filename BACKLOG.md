@@ -2880,3 +2880,48 @@ cdp_test 323/323、canvas_test 412/412、test_serve 9/9。
 
 **沒做、為什麼**:C(步驟精靈)與 D 的自動分類 UI 沒做——D 的分類邏輯已借給拖矩形工具用,精靈對這批使用者沒有價值。
 特徵堆疊仍不進 .scene(見 GEO-188 待拍板)。
+
+### GEO-190 ✅ 已做(2026-09-25)P2:面內工作區「底圖臨摹」
+
+**起因**:使用者要把掃描/照片的平面圖放在面內工作區底下當底圖,照著描外環;之後會再加「向量平面圖幾何重建」,
+所以底圖狀態要獨立、好擴充。核心引擎(`web_bridge.c`、`.scene` 格式、`公理層.md`)一律不動,純前端票。
+
+**🔒 拍板**:
+1. **儲存**:只在本次瀏覽器工作階段(記憶體,依面 bid 保存於 `oc.underlays[bid]`);不寫 `.scene`、不寫 `localStorage`。
+   離開面再進來仍在;重新整理就沒了。`api("dump")` 輸出不得出現任何底圖資訊。
+2. **比例尺**:在圖上點兩點、填實際距離(mm),程式算 mm/px。
+3. **UI**:右欄新增「底圖」分頁 `data-fi-tab="underlay"`,放在「網格」之後(分頁順序 prop,shape,guide,timber,grid,underlay,共 6 頁)。
+4. **對位**:拖曳 + 數字微調(x/y 偏移 mm、旋轉 0/90/180/270)。
+
+**做了什麼**(`geometry-web/app.js`、`index.html`、`app.css`):
+- 狀態 `oc.underlays[bid] = {src,imgW,imgH,mmPerPx,x,y,rot,opacity,locked}`;`feUnderlaySet(bid,{src,imgW,imgH})`
+  建立預設值(`mmPerPx=外接框寬/imgW`、`x,y=`外接框左上、`opacity 0.5`、`rot 0`、`locked false`)。
+- `drawFaceEditor()` 在 `#faceEditorRoot` **第一個子節點**插 `<image id="feUnderlay">`(在格線與面之下),
+  `transform="rotate(rot,cx,cy) translate(x,y) scale(mmPerPx)"`(`cx,cy` 是未旋轉時圖片中心的面座標,
+  x/y 的語意——「未旋轉時左上角」——因此不因旋轉改變)。**只有**「底圖」分頁作用中、`select` 工具、
+  且未鎖定時 `pointer-events:auto`,其餘一律 `none`,不擋既有的點邊/點角/點面/畫外環。切分頁
+  (`fiShowTab`)、切工具(`feSetTool`)都用 `feUlSyncPointerEvents()` 就地同步這個屬性,不整份重畫。
+- 量比例尺:`#ulCalibStart` → `fe.ulCalib={pts:[]}`(圖片原始像素座標);進行中的 `pointerdown` 不論落在
+  哪、不論工具一律攔截去記校準點(不進 `feDown`,避免被 select 工具「點面內=選點」搶走);畫布
+  `<g id="feUnderlayCalib">` 用 `feUlImgToMm`/`feUlMmToImg` 換算顯示。兩點齊了才能填距離套用,
+  `mmPerPx = distMm / 兩點的px距離`,x/y 不變。Esc 階梯在「就地操作面板」之前插一階:量比例尺進行中
+  只清 `fe.ulCalib`,不離開工作區;切離「底圖」分頁或切離 `select` 工具都連帶取消進行中的量比例尺。
+- 拖曳:`pointermove` 只改 `oc.underlays[bid].x/y` 與 `#feUnderlay` 的 `transform` 屬性(不呼叫
+  `drawFaceEditor()`,做法同既有的 pan),`pointerup` 才 `renderFaceInspector()` 同步 `#ulX`/`#ulY`。
+- **另一位讀過原始碼的審查者**(未落地實作,只留意見)指出三個坑,已修:
+  (1) 面內格線(`.fe-grid-line`)與原點標記(新增 `.fe-origin-mark` class)在 `app.css` 設
+  `pointer-events:none`——這兩者本來沒有任何點擊處理,但底圖插在最底層時,滑鼠按在這些線上會讓
+  `e.target` 變成線而不是 `#feUnderlay`,拖曳啟動不了;(2) 拖底圖的條件加上 `fe.tool==="select"`,
+  不然分頁開著時按其他面內工具鍵(例如 `e` 描外環)點下去會被底圖吃成拖曳;(3) `fiShowTab`/`feSetTool`
+  切離底圖分頁或切離 select 工具時,同步 `#feUnderlay` 的 `pointer-events` 並取消進行中的量比例尺。
+- 測試用全域(cdp_test 用它們避開檔案對話框/滑鼠模擬):`feUnderlaySet`、`feUnderlayCalibStart`、
+  `feUnderlayCalibPoint([px,py])`、`feUnderlayApplyScale(distMm)`、`feUnderlayRemove(bid)`。
+
+**測試**:`cdp_test.js` 新增 §P42(9 組斷言:6 頁分頁順序、底圖建立預設值、量比例尺套用、不透明度/鎖定、
+拖曳换算 mm 與跨分頁不拖、底圖存在時鍵盤重畫外環仍成功、量比例尺 Esc 取消、離開再進保留+dump 不洩漏、
+移除底圖回到空頁);P18 B2「五頁」改六頁、F1/F3/F4 分頁數 5 → 6。`docs/DOM-CONTRACT.md`、`README.md` 同步補新
+ids/全域/操作說明。**回歸**:cdp_test 449/449、canvas_test(HTTP)412/412(Windows,已編 bridge.exe,埠 8799)。
+
+**沒做、為什麼**:向量平面圖幾何重建(使用者提到的下一步)不在本票範圍,留待另立票。旋轉的拖曳互動測試只涵蓋
+預設 `rot=0`(驗收條件未要求非零旋轉下的拖曳數學);`feUlImgToMm`/`feUlMmToImg` 的旋轉换算是解析式互逆函式,
+邏輯上對任意 rot 成立,但沒有額外測資覆蓋 90/180/270 度時的拖曳誤差。
