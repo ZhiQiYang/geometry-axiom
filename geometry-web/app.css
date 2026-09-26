@@ -18,6 +18,10 @@
   --danger: #c2414f;
   --danger-soft: #fff0f2;
   --warning: #b96a16;
+  --column: #b96a16;
+  --column-soft: #fdf3e3;
+  --beam: #5b7a99;
+  --beam-soft: #edf3f8;
   --shadow-sm: 0 1px 2px rgba(22, 31, 50, .06), 0 1px 5px rgba(22, 31, 50, .04);
   --shadow-md: 0 12px 34px rgba(24, 33, 51, .12), 0 3px 10px rgba(24, 33, 51, .08);
   --shadow-node: 0 8px 24px rgba(30, 42, 65, .09), 0 2px 6px rgba(30, 42, 65, .07);
@@ -1753,4 +1757,126 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
   .object-workspace .face-inspector-panel,.object-workspace .space-info-panel { top:calc(var(--project-bar-h) + var(--topbar-h)); }
   .reference-task { padding:14px; }
   .calibration-canvas-prompt { top:10px; font-size:12px; padding:8px 10px; width:max-content; }
+}
+
+/* 2026-09-27 review: one project header, two clear starting routes, shared type colors. */
+.brand-copy { min-width: 0; }
+.brand-copy .main-project-name { display: block; max-width: 205px; font-size: 12.5px; }
+.main-project-status { max-width: 126px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: 11px; }
+.topbar .tool-group { justify-self: center; }
+.topbar .tool-button { min-width: 42px; }
+.topbar .tool-button span:not([data-icon]) { white-space: nowrap; }
+.menu-nested { position: relative; }
+.menu-nested > .menu-item { display: flex; justify-content: space-between; gap: 8px; }
+.menu-nested .menu-pop { top: 0; left: auto; right: calc(100% + 6px); width: 210px; }
+.menu-nested #sceneMenuLabel { max-width: 106px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.start-options { display: grid; gap: 8px; margin-top: 13px; }
+.start-options .reference-entry, .start-options .start-box {
+  min-height: 65px; height: auto; display: flex; flex-direction: row; justify-content: flex-start;
+  gap: 11px; padding: 10px; text-align: left; border: 1px solid var(--border);
+  border-radius: 9px; background: #fff; color: var(--ink);
+}
+.start-options .reference-entry:hover, .start-options .start-box:hover { border-color: var(--accent); background: var(--accent-soft); }
+.start-options .start-box > span:last-child { align-items: flex-start; }
+.start-options .start-box strong, .start-options .reference-entry strong { font-size: 12px; color: var(--ink); }
+.start-options .start-box small, .start-options .reference-entry small { font-size: 11px; color: var(--muted); }
+.start-options .reference-entry [data-icon], .start-options .start-box .type-icon { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 7px; background: var(--accent-soft); color: var(--accent-strong); }
+.create-mode-label { margin: 16px 0 8px; font-weight: 650; }
+.type-icon.column, .object-row .row-icon.column { background: var(--column-soft); color: var(--column); }
+.type-icon.beam, .object-row .row-icon.beam { background: var(--beam-soft); color: var(--beam); }
+.dot.column { background: var(--column); }
+.dot.beam { background: var(--beam); }
+.object-row .row-badge { background: var(--column-soft); color: #8c5714; }
+.mini-toggle { width: auto; min-width: 44px; padding: 0 7px; }
+.mini-toggle[aria-pressed="false"] { opacity: 1; background: #fff; color: #5d6878; border-color: var(--border); }
+
+.object-workspace { grid-template-rows: var(--topbar-h) minmax(0, 1fr) var(--statusbar-h); }
+.object-workspace-topbar { grid-template-columns: minmax(0, 1fr) minmax(0, auto) auto; gap: 8px; }
+.object-workspace-actions { min-width: 0; gap: 4px; }
+.workspace-project-status { max-width: 132px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: 11px; }
+#workspaceProjectActions { display: inline-flex; align-items: center; gap: 6px; }
+#workspaceProjectActions .project-save { min-height: 32px; padding: 5px 9px; font-size: 11px; }
+#workspaceProjectActions #fileMenuBtn { height: 32px; }
+.object-workspace .face-layer-panel, .object-workspace .space-boundary-panel,
+.object-workspace .face-inspector-panel, .object-workspace .space-info-panel { top: var(--topbar-h); }
+.shape-tool-menu { position: relative; flex: none; }
+.shape-tool-pop { position: fixed; z-index: 82; width: 148px; padding: 5px; border: 1px solid var(--border); border-radius: 8px; background: #fff; box-shadow: var(--shadow-md); }
+.shape-tool-pop button { display: block; width: 100%; padding: 7px 9px; border-radius: 5px; background: none; text-align: left; color: var(--ink); font-size: 12px; cursor: pointer; }
+.shape-tool-pop button:hover, .shape-tool-pop button:focus-visible { background: var(--accent-soft); color: var(--accent-strong); }
+.shape-tool-menu > .workspace-tool[aria-expanded="true"] { background: #fff; color: var(--accent-strong); }
+.workspace-tool:disabled { opacity: .45; cursor: not-allowed; }
+.component-heading { margin: 13px 12px 5px; font-size: 12px; color: var(--muted); }
+[data-component-section] { scroll-margin-top: 8px; border-top: 1px solid var(--border); }
+[data-component-section]:first-child { border-top: 0; }
+.shape-action[hidden] { display: none; }
+.shape-action { margin-top: 10px; }
+.face-placement-flow[hidden] { display: none; }
+.reference-library:has(.reference-source) { display: flex; flex-direction: column; }
+.reference-library:has(.reference-source) #faceReferenceSummary { order: 1; }
+.reference-library:has(.reference-source) .reference-entry { order: 2; width: auto; align-self: flex-start; margin-top: 6px; padding: 5px 8px; min-height: 28px; font-size: 11px; }
+.reference-library:has(.reference-source) .reference-entry [data-icon], .reference-library:has(.reference-source) .reference-entry-copy { display: none; }
+.reference-add-label { display: none; }
+.reference-library:has(.reference-source) .reference-add-label { display: inline; }
+.reference-library:has(.reference-source) .reference-source { margin-top: 0; }
+.face-mini-opt[aria-pressed="false"] { background: #fff; color: #5d6878; }
+.timber-form-group { margin-top: 13px; padding-top: 10px; border-top: 1px solid var(--border); }
+.timber-form-group > strong { display: block; margin-bottom: 7px; font-size: 12px; color: var(--ink); }
+.timber-form-group .place-form { margin-top: 0; }
+.timber-form-group .auto-badge { margin-left: 4px; padding: 1px 4px; border-radius: 4px; background: var(--face-soft); color: var(--face); font-size: 10px; }
+.timber-form-group .auto-badge[hidden] { display: none; }
+.timber-form-group .field-note { display: block; font-weight: 400; color: var(--muted); font-size: 10.5px; }
+.face-layer-icon.beam, .space-boundary-button .type-icon.beam { color: var(--beam); background: var(--beam-soft); }
+.face-editor-svg .obstacle-ghost[data-type="beam"] { fill: #5b7a992e; stroke: var(--beam); }
+.space-member-add { display: inline-grid; place-items: center; width: 26px; height: 26px; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--space); cursor: pointer; }
+.space-member-add svg { width: 14px; height: 14px; }
+#spaceSizeTools:not([hidden]) { display: inline-flex; align-items: center; max-width: 250px; }
+#spaceSizeTools .space-plan-tools { display: inline-flex; }
+#spaceSizeTools .plan-chip:not(.active) { display: none; }
+.v3-plane-controls { display: inline-flex; align-items: center; gap: 5px; margin-left: 8px; font-size: 11px; color: var(--muted); }
+.v3-plane-controls[hidden] { display: none; }
+.v3-plane-controls select { max-width: 160px; min-width: 95px; height: 30px; }
+.v3-plane-controls #newZ { width: 72px; height: 30px; }
+.focus-bar button { display: inline-flex; align-items: center; gap: 5px; }
+.focus-bar button svg { width: 15px; height: 15px; }
+.reference-editor { --left-w: 260px; --right-w: 320px; }
+.reference-editor .reference-task { padding: 12px; }
+.reference-steps .done { background: var(--face-soft); color: var(--face); }
+.reference-steps button:disabled { opacity: .55; cursor: not-allowed; }
+#referenceNextPlace { margin-left: 8px; padding: 4px 7px; border-radius: 5px; background: var(--accent); color: #fff; cursor: pointer; }
+.reference-editor .reference-task h2 { font-size: 13px; }
+.reference-editor .reference-intro, .reference-editor .calibration-instruction,
+.reference-editor .reference-task .fi-note { font-size: 12px; }
+.reference-editor .calibration-task h3, .reference-editor .ref-section > summary { font-size: 13px; }
+.reference-editor .calibration-task .btn, .reference-editor .calibration-task input,
+.reference-editor .calibration-task select { min-height: 32px; font-size: 12px; }
+.reference-editor .workspace-tool { height: 34px; font-size: 11px; }
+.reference-editor .workspace-back-button { height: 35px; font-size: 11px; }
+@media (min-width: 681px) {
+  body:has(#objectWorkspace:not([hidden])) #fbButton { right: calc(var(--right-w) + 16px); }
+}
+@media (min-width: 681px) and (max-width: 900px) {
+  .face-workspace-layout, .space-workspace-layout { grid-template-columns: minmax(0, 1fr) var(--right-w); }
+  .face-editor-viewport, .space-workspace-stage { grid-column: 1; }
+  .face-inspector-panel, .space-info-panel { grid-column: 2; }
+  .face-draft-notice { grid-column: 1; }
+}
+@media (min-width: 1161px) {
+  .reference-editor .object-workspace-topbar { grid-template-columns: minmax(0,1fr) minmax(0,auto) auto; gap: 8px; }
+}
+@media (max-width: 1160px) {
+  .workspace-project-status, .main-project-status { display: none; }
+}
+@media (max-width: 900px) {
+  .object-workspace .face-layer-panel, .object-workspace .space-boundary-panel,
+  .object-workspace .face-inspector-panel, .object-workspace .space-info-panel { top: var(--topbar-h); }
+  #workspaceProjectActions .project-save { min-width: 30px; padding: 4px; }
+  #workspaceProjectActions .project-save span:not([data-icon]) { display: none; }
+  #workspaceProjectActions .project-save svg { display: block; width: 15px; height: 15px; }
+}
+@media (max-width: 680px) {
+  .face-workspace-layout, .space-workspace-layout { grid-template-columns: minmax(0, 1fr); }
+  .face-editor-viewport, .space-workspace-stage, .face-draft-notice { grid-column: 1; }
+  .object-workspace .face-layer-panel, .object-workspace .space-boundary-panel,
+  .object-workspace .face-inspector-panel, .object-workspace .space-info-panel { top: var(--topbar-h); }
+  .topbar .tool-button { min-width: 29px; }
 }

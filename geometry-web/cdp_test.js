@@ -188,7 +188,7 @@ async function rightClick(x, y) {
     kbd: document.querySelectorAll(".tool-group kbd").length
   })`);
   console.log("S2 結構:", JSON.stringify(s2),
-    s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 2 ? "✓" : "✗");
+    s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? "✓" : "✗");
   /* (h) A2 清單樣式:.row-copy > strong + small */
   await eval_(`renderObjects()`); await sleep(400);
   const rowCk = await eval_(`(()=>{const r=document.querySelector(".object-row .row-copy strong");
@@ -1918,13 +1918,13 @@ async function rightClick(x, y) {
 
   /* ================= P17. 主畫布其餘 A3-A6 A9-A11 F2 ================= */
   console.log("=== P17. 主畫布其餘 ===");
-  /* (a) 物件庫:6 鈕 ≥50px、首格 btnBox6+建議起點 */
+  /* (a) 兩張同級起點卡 + 三個物件庫入口 */
   const qc = await eval_(`(()=>{
     const g=[...document.querySelectorAll(".quick-create")];
     return {n:g.length, minH:Math.round(Math.min(...g.map(b=>b.getBoundingClientRect().height))),
-      first:g[0].id, sug:g[0].textContent};})()`);
-  console.log("P17 物件庫:", qc.n === 6 && qc.minH >= 50 && qc.first === "btnBox6"
-    && qc.sug.includes("建議起點") ? "✓" : "✗ " + JSON.stringify(qc));
+      first:g[0].id, starts:[...document.querySelectorAll('.start-options > button')].map(e=>e.textContent)};})()`);
+  console.log("P17 物件庫:", qc.n === 4 && qc.minH >= 50 && qc.first === "btnBox6"
+    && qc.starts.length === 2 && qc.starts.some(s=>s.includes('有平面圖')) && qc.starts.some(s=>s.includes('知道尺寸')) ? "✓" : "✗ " + JSON.stringify(qc));
   /* (b) chips:關柱 → showColumn=false + aria-pressed;全部顯示還原 */
   await eval_(`document.querySelector('[data-filter-type="column"]').click()`);
   await sleep(300);
@@ -1962,12 +1962,12 @@ async function rightClick(x, y) {
   console.log("P17 連線:", ed.n >= 2 && ed.dash.includes("6 4") && ed.dash.includes("none")
     && ed.labels.includes("包含") && ed.labels.includes("障礙")
     ? "✓ " + ed.labels.join(",") : "✗ " + JSON.stringify(ed));
-  /* (e) 空間卡語意槽 + footer 缺 */
+  /* (e) 空間卡語意槽 + footer 管理入口 */
   const sl = await eval_(`(()=>{
     const c=document.querySelector('.ocard[data-kind="space"]');
     return c ? c.textContent : "";})()`);
   console.log("P17 槽位語意:", sl.includes("天花") && !/\+X \d/.test(sl) ? "✓" : "✗ " + sl.slice(0, 100));
-  console.log("P17 footer缺:", sl.includes("缺") ? "✓" : "✗ " + sl.slice(-40));
+  console.log("P17 footer管理:", sl.includes("管理成員面") && !sl.includes("缺 ") ? "✓" : "✗ " + sl.slice(-40));
   /* (f) statusbar 32px + 摘要含物件 + 成功 toast.ok */
   const stb = await eval_(`(()=>({
     h:getComputedStyle(document.querySelector(".statusbar")).height,
@@ -2027,14 +2027,13 @@ async function rightClick(x, y) {
   /* GEO-188 移除舊凹口工具後剩 6 顆(select/guide/hole/timber/redraw/pan) */
   console.log("P18 B1 工具icon+kbd:", b1.n >= 6 && b1.ok ? "✓" : `✗ n=${b1.n} ok=${b1.ok}`,
     "| 說明區已移除:", b1.noHelp ? "✓" : "✗");
-  /* (2) B2:三頁;切角材 → tbA 可見 */
+  /* (2) B2:四頁;切構件 → tbA 可見 */
   const b2 = await eval_(`(()=>{
     const tabs=[...document.querySelectorAll("[data-fi-tab]")].map(t=>t.dataset.fiTab);
-    document.querySelector('[data-fi-tab="timber"]').click();
+    fiShowTab('timber');
     const tb=document.getElementById("tbA");
     return {tabs, vis: !!tb && tb.offsetParent !== null};})()`);
-  /* GEO-188 加了「形狀」頁、v2 加了「參考線」頁、GEO-190 加了「底圖」頁:屬性|形狀|參考線|角材|網格|底圖 */
-  console.log("P18 B2 六頁:", b2.tabs.join() === "prop,shape,guide,timber,grid,underlay" ? "✓" : "✗ " + b2.tabs,
+  console.log("P18 B2 四頁:", b2.tabs.join() === "prop,shape,components,underlay" ? "✓" : "✗ " + b2.tabs,
     "| 角材頁tbA可見:", b2.vis ? "✓" : "✗");
   /* (3) B3:邊表方向文字+mm+segmented */
   const b3 = await eval_(`(()=>{
@@ -2123,17 +2122,17 @@ async function rightClick(x, y) {
   await eval_(`enterFocus("face", 3)`);
   await sleep(700);
   const b9b = await eval_(`(()=>{
-    document.querySelector('[data-fi-tab="timber"]').click();
-    return {note:!!document.querySelector('[data-fi-pane="timber"] .fi-note'),
+    fiShowTab('timber');
+    return {note:!!document.querySelector('[data-component-section="timber"] .fi-note'),
       cap:document.getElementById("workspacePlaceTag").textContent,
       tbDis:document.getElementById("tbA").disabled};})()`);
   console.log("P18 游離停用說明:", b9b.note && b9b.tbDis ? "✓" : "✗ " + JSON.stringify(b9b),
-    "| 游離膠囊:", b9b.cap.includes("游離") ? "✓" : "✗ " + b9b.cap);
-  /* (11) 狀態列右側快捷鍵 L/R/Esc */
+    "| 未放置膠囊:", b9b.cap.includes("未放置") ? "✓" : "✗ " + b9b.cap);
+  /* (11) 狀態列依工具顯示快捷鍵與 Esc 語意 */
   const b11 = await eval_(`(()=>{
-    const ks=[...document.querySelectorAll(".ws-kbd-hints kbd")].map(k=>k.textContent);
-    return {L:ks.includes("L"),R:ks.includes("R"),Esc:ks.includes("Esc")};})()`);
-  console.log("P18 快捷鍵列:", b11.L && b11.R && b11.Esc ? "✓" : "✗ " + JSON.stringify(b11));
+    const s=document.getElementById('workspaceKeyHints').textContent;
+    return {select:s.includes('V 選取'),redraw:s.includes('E 外環'),Esc:s.includes('Esc')};})()`);
+  console.log("P18 快捷鍵列:", b11.select && b11.redraw && b11.Esc ? "✓" : "✗ " + JSON.stringify(b11));
   await eval_(`(async()=>{ if(oc.focus) await leaveFocus(); })()`);
   await sleep(400);
 
@@ -2993,12 +2992,12 @@ async function rightClick(x, y) {
   })()`);
   check('M2 new card avoids offset existing bbox',cards.length===2 && (cards[0].x+cards[0].w<=cards[1].x || cards[1].x+cards[1].w<=cards[0].x || cards[0].y+cards[0].h<=cards[1].y || cards[1].y+cards[1].h<=cards[0].y),cards);
   const quick = await eval_(`[...document.querySelectorAll('.quick-create strong')].map(e=>({w:e.clientWidth,scroll:e.scrollWidth,h:e.getBoundingClientRect().height,text:e.textContent}))`);
-  check('M1 library labels stay one line',quick.length===6 && quick.every(r=>r.h<=20 && r.w>=r.scroll),quick);
+  check('M1 library labels stay one line',quick.length===4 && quick.every(r=>r.h<=20 && r.w>=r.scroll),quick);
   const pan0=await eval_(`[oc.panX,oc.panY]`);
   await clickSelector('.object-row[data-kind="boundary"][data-id="1"]');
   check('M12 visible list selection does not pan',JSON.stringify(pan0)===JSON.stringify(await eval_(`[oc.panX,oc.panY]`)));
   check('M4 placement submit visible without scrolling',await eval_(`(()=>{const e=document.querySelector('#inspectorContent #placeSubmit'),r=e.getBoundingClientRect();return r.top>56 && r.bottom<innerHeight-32 && e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`));
-  check('M3 M5 M7 T3 contextual controls',await eval_(`document.querySelector('#fileMenuPop').contains(document.querySelector('#btnDatums')) && !document.querySelector('#btnScene') && document.querySelectorAll('.topbar [data-tool]').length===2 && document.querySelector('#cmdPanel').hidden`));
+  check('M3 M5 M7 T3 contextual controls',await eval_(`document.querySelector('#fileMenuPop').contains(document.querySelector('#btnDatums')) && !document.querySelector('#btnScene') && document.querySelectorAll('.topbar [data-tool]').length===2 && document.querySelector('#btnNewRect').closest('.tool-group') && document.querySelector('#btnNewPoly').closest('.tool-group') && document.querySelector('#cmdPanel').hidden`));
   await pressKey(':','Semicolon',186,8);
   check('M7 command shortcut opens focused input',await eval_(`!document.querySelector('#cmdPanel').hidden && document.activeElement.id==='cmd'`));
   await send('Input.insertText',{text:'spec 測試尺寸 123'});await pressKey('Enter','Enter',13);
@@ -3009,7 +3008,7 @@ async function rightClick(x, y) {
   check('M10 toast above canvas, away from minimap',await eval_(`(()=>{const r=document.querySelector('.toast').getBoundingClientRect();return r.top>=56 && r.bottom<200})()`));
   await clickSelector('.ocard[data-id="1"] .card-enter');
   check('M8 explicit card entry',await eval_(`oc.focus?.t==='face' && oc.focus.id===1`));
-  check('F1 F3 F4 six tabs (GEO-190 added underlay), six tools (GEO-188 removed insert), five persistent groups',await eval_(`document.querySelectorAll('#faceInspectorTabs [data-fi-tab]').length===6 && document.querySelectorAll('#faceWorkspaceTools [data-face-tool]').length===6 && document.querySelectorAll('#faceLayerList .fl-group').length===5 && document.querySelectorAll('#faceLayerList .fl-empty').length>=3 && document.querySelector('#faceInspectorContent').contains(document.querySelector('#faceShapeButton'))`));
+  check('F1 F3 F4 four tabs, six tools, five persistent groups',await eval_(`document.querySelectorAll('#faceInspectorTabs [data-fi-tab]').length===4 && document.querySelectorAll('#faceWorkspaceTools [data-face-tool]').length===6 && document.querySelectorAll('#faceLayerList .fl-group').length===5 && document.querySelectorAll('#faceLayerList .fl-empty').length>=3 && document.querySelector('#faceInspectorContent').contains(document.querySelector('#faceShapeButton'))`));
   await fillInput('#edgeLength0','500');await pressKey('Tab','Tab',9);await sleep(300);
   const lengthEdit = await eval_(`({focus:document.activeElement.id,a:document.querySelector('#edgeLength0').value,b:document.querySelector('#edgeLength2').value,status:document.querySelector('#status').textContent,loops:oc.bmap[1]})`);
   check('F2 real length edit retains next keyboard target',lengthEdit.focus==='edgeFixed0' && lengthEdit.a==='500' && lengthEdit.b==='500',lengthEdit);
@@ -3061,9 +3060,10 @@ async function rightClick(x, y) {
 
   await send('Emulation.setDeviceMetricsOverride',{width:1382,height:804,deviceScaleFactor:1,mobile:false});
   await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000','space 1 boundary 1']);
-  await eval_(`enterFocus('face',1)`);await clickSelector('[data-fi-tab="timber"]');
+  await eval_(`(async()=>{await enterFocus('face',1);fiShowTab('timber')})()`);
   await fillInput('#tbA','35');await clickSelector('#tbPlace');
-  check('F5 timber settings activate placement with matching hint',await eval_(`fe.tool==='timber' && document.activeElement.id==='faceEditorViewport' && document.querySelector('#faceCanvasHint').textContent.includes('35')`));
+  const f5 = await eval_(`({tool:fe.tool,tab:fe.fiTab,timbers:fe.timbers.map(t=>({id:t.id,A:t.A,role:t.role})),status:$('status').textContent,toast:document.querySelector('.toast')?.textContent})`);
+  check('F5 timber form directly places with matching section',f5.timbers.some(t=>t.A===35) && f5.tab==='timber',f5);
   await clickSelector('[data-fi-tab="prop"]');
   await clickSelector('#placeDetails summary');await clickSelector('#projToggle');
   await eval_(`renderFaceInspector()`);
@@ -3531,7 +3531,7 @@ async function rightClick(x, y) {
   /* geometry-core/transactions.inc::reference_default_world defines spec 主支中線 500,
      guide 1 and dependent timber 3, so editing it must open an impact preview. */
   await eval_(`(async()=>{resetSceneFocus();await api('default');await renderObjects();await enterFocus('face',1)})()`);
-  await clickSelector('[data-fi-tab="guide"]');
+  await eval_(`fiShowTab('guide')`);
   const p37Before=(await eval_(`apiRequest('dump')`)).text;
   await fillInput('#refSpecName','主支中線');
   await fillInput('#refSpecValue','900');
@@ -3562,8 +3562,8 @@ async function rightClick(x, y) {
   await clickSelector('[data-fb-kind="unexpected"]');
   const tabBefore = await eval_(`fe.fiTab`);
   await clickSelector('#fbPick');
-  await clickSelector('#faceInspectorTabs [data-fi-tab="guide"]');
-  check('P38 指出位置記下元素、且那一下沒有交給 app', await eval_(`!document.querySelector('#fbPanel').hidden && document.querySelector('#fbTarget').textContent.includes('data-fi-tab="guide"')`) && await eval_(`fe.fiTab`) === tabBefore);
+  await clickSelector('#faceInspectorTabs [data-fi-tab="components"]');
+  check('P38 指出位置記下元素、且那一下沒有交給 app', await eval_(`!document.querySelector('#fbPanel').hidden && document.querySelector('#fbTarget').textContent.includes('data-fi-tab="components"')`) && await eval_(`fe.fiTab`) === tabBefore);
   if (!fbDir) {
     console.log('P38 送出/自動擷取段略過:serve.py 未設 GEOMETRY_FEEDBACK_DIR(避免寫進 repo 的 feedback/)');
     await pressKey('Escape','Escape',27);
@@ -3582,7 +3582,7 @@ async function rightClick(x, y) {
     check('P38 Ctrl+Enter 送出後寫出一筆回報且面板關閉', added.length===1 && await eval_(`document.querySelector('#fbPanel').hidden`), added);
     if (added.length===1) {
       const m = fbMeta(added[0]); const d = require('path').join(fbDir, added[0]); const fs = require('fs');
-      check('P38 回報帶分類、說明、指到的元素與畫面', m.kind==='unexpected' && m.note.includes('P38') && m.target.el.includes('data-fi-tab="guide"') && m.context.view.includes('面工作區 · 面 1'), m);
+      check('P38 回報帶分類、說明、指到的元素與畫面', m.kind==='unexpected' && m.note.includes('P38') && m.target.el.includes('data-fi-tab="components"') && m.context.view.includes('面工作區 · 面 1'), m);
       check('P38 回報帶被拒指令、世界與紅框畫面快照',
         fs.readFileSync(require('path').join(d,'events.jsonl'),'utf8').includes('place 999') &&
         fs.readFileSync(require('path').join(d,'world.scene'),'utf8').includes('spec') &&
@@ -3701,10 +3701,10 @@ async function rightClick(x, y) {
   await eval_(`(async()=>{ await enterFocus('face', 1); fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply(); })()`);
   await sleep(250);
 
-  /* (1) 分頁 6 頁且順序正確;點「底圖」分頁顯示 #ulFile */
+  /* (1) 分頁 4 頁且順序正確;點「底圖」分頁顯示 #ulFile */
   const tabs42 = await eval_(`[...document.querySelectorAll('#faceInspectorTabs [data-fi-tab]')].map(t=>t.dataset.fiTab)`);
-  check('P42-1 分頁 6 頁且順序正確(屬性/形狀/參考線/角材/網格/底圖)',
-    tabs42.join() === 'prop,shape,guide,timber,grid,underlay', tabs42);
+  check('P42-1 分頁 4 頁且順序正確(屬性/形狀/構件/底圖)',
+    tabs42.join() === 'prop,shape,components,underlay', tabs42);
   await clickSelector('[data-fi-tab="underlay"]');
   const ul1 = await eval_(`(()=>{const p=document.querySelector('[data-fi-pane="underlay"]');
     return {hidden:p.hidden, hasFile:!!p.querySelector('#ulFile')};})()`);
@@ -3805,7 +3805,7 @@ async function rightClick(x, y) {
   const ul9 = await eval_(`(()=>{
     feUnderlayRemove(1);
     const pane=document.querySelector('[data-fi-pane="underlay"]');
-    const others=pane ? [...pane.querySelectorAll('input,select,button')].filter(el=>!['ulFile','refImport','refDrawOutline','refGoPlace'].includes(el.id)&&el.dataset.projectAction!=='save') : ['no-pane'];
+    const others=pane ? [...pane.querySelectorAll('input,select,button')].filter(el=>!['ulFile','refImport','refDrawOutline','refGoPlace','refChoosePage','refCalibrateStep'].includes(el.id)&&el.dataset.projectAction!=='save') : ['no-pane'];
     return {imgGone: !document.getElementById('feUnderlay'), othersLeft: others.length, importKept:!!pane?.querySelector('#refImport')};
   })()`);
   check('P42-9 feUnderlayRemove 後底圖與調整欄位移除，保留匯入入口',
@@ -3848,9 +3848,9 @@ async function rightClick(x, y) {
       rowSel: !!(row && row.classList.contains('sel')),
       barHidden: document.getElementById('feActionBar').hidden, acts };
   })()`);
-  check('P43-2 點角材 → fe.sel=timber:10、矩形/左欄高亮、feActionBar 只有 delete',
+  check('P43-2 點角材 → fe.sel=timber:10、矩形/左欄高亮、feActionBar 有編輯與刪除',
     p43_2.sel && p43_2.sel.kind === 'timber' && p43_2.sel.id === 10 && p43_2.rectSel && p43_2.rowSel &&
-    !p43_2.barHidden && JSON.stringify(p43_2.acts) === JSON.stringify(['delete']), p43_2);
+    !p43_2.barHidden && JSON.stringify(p43_2.acts) === JSON.stringify(['edit','delete']), p43_2);
 
   /* (3) 點面內、不在角材上的空白 → fe.sel.kind === "point"(舊行為不變) */
   const blankPt = await feBlankScreenPt(2000, 1500);
@@ -4035,7 +4035,7 @@ async function rightClick(x, y) {
   const p44_5c = await eval_(`({ opPanelHidden: document.getElementById('feOpPanel').hidden, sel: fe.sel })`);
   check('P44-5c Esc 兩下 → 面板關、選取清', p44_5c.opPanelHidden && p44_5c.sel === null, p44_5c);
 
-  /* (6) 右鍵面外空白 → 選單不出現、fe.sel===null;右鍵角材 → 選單只有「刪除」 */
+  /* (6) 右鍵面外空白 → 選單不出現、fe.sel===null;右鍵角材 → 編輯與刪除 */
   pt = await openFace44();
   const outside6 = pt(4300, 1500);
   await rightClick(outside6.x, outside6.y);
@@ -4054,7 +4054,7 @@ async function rightClick(x, y) {
   await rightClick(org6.x + tc6.x, org6.y + tc6.y);
   await sleep(150);
   const p44_6b = await eval_(`[...document.querySelectorAll('#feCtxMenu [data-fe-act]')].map(b=>b.dataset.feAct)`);
-  check('P44-6b 右鍵角材 → 選單只有「刪除」', JSON.stringify(p44_6b) === JSON.stringify(['delete']), p44_6b);
+  check('P44-6b 右鍵角材 → 選單有「編輯」與「刪除」', JSON.stringify(p44_6b) === JSON.stringify(['edit','delete']), p44_6b);
   await pressKey('Escape', 'Escape', 27);
 
   /* (7) 雙擊右邊 → notch 面板可見;雙擊右上角 → corner;雙擊面內空白(2000,1500) → hole 且
@@ -4101,7 +4101,7 @@ async function rightClick(x, y) {
   pt = await openFace44();
   await dblclick(pt(...P44_EDGE_R_MID).x, pt(...P44_EDGE_R_MID).y);
   await sleep(200);
-  await click(pt(4300, 1500).x, pt(4300, 1500).y);
+  await click(pt(4300, 2500).x, pt(4300, 2500).y);
   await sleep(150);
   const p44_8 = await eval_(`({ opPanelHidden: document.getElementById('feOpPanel').hidden, barHidden: document.getElementById('feActionBar').hidden, sel: fe.sel })`);
   check('P44-8 雙擊後單擊面外空白 → 面板關、選取清',
@@ -4507,10 +4507,13 @@ async function rightClick(x, y) {
   await waitForUI(`!oc.busy && fe.timbers.length===4`);
   const p48_4 = await eval_(`({
     ids: fe.timbers.map(t => t.id).sort(),
+    anchor: document.getElementById('tbAnchor').value,
+    centerline: fe.timbers.find(t=>t.id===4)?.centerline,
     placeLine: (window.__apiLog || []).find(c => c.includes('place') && c.includes('e3')) || '',
   })`);
-  check('P48-4 點面內空白 → 照舊走表單值(#tbAnchor=e3),place 行含 e3;4 支',
-    JSON.stringify(p48_4.ids) === '[1,2,3,4]' && p48_4.placeLine.includes('e3'), p48_4);
+  check('P48-4 點面內空白 → 照舊走表單 e3，落在左外邊；共 4 支',
+    JSON.stringify(p48_4.ids) === '[1,2,3,4]' && p48_4.anchor === 'at-face e3' &&
+    p48_4.centerline < 100, p48_4);
   await pressKey('z', 'KeyZ', 90, 2);
   await waitForUI(`!oc.busy && fe.timbers.length===3`);
   const p48_4u = await eval_(`(async()=>{ await feLoadGuides(); return fe.timbers.map(t => t.id).sort(); })()`);
@@ -5574,7 +5577,7 @@ async function rightClick(x, y) {
   { // GEO-198: portable references, browser PDF rendering and context isolation.
     console.log('=== P57–P61. PDF 與專案保存(GEO-198) ===');
     const referenceExceptions = excN;
-    const check=(name,value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(value));
+    const check=(name,value,detail=value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(detail));
     const until=async expr=>{for(let i=0;i<150;i++){if(await eval_(expr)===true)return;await sleep(100);}throw Error('G198 wait: '+expr);};
     const ctl=async selector=>{
       const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
@@ -5597,8 +5600,10 @@ async function rightClick(x, y) {
     await field('refRecordLabel','');await ctl('#refRecordAdd');
     check('P57-2c 缺少項目名稱不新增紀錄',await eval_(`ReferenceWorkspace.active(1).records.length===2`));
     await field('refRecordLabel','待移除測試');await ctl('#refRecordAdd');
+    const r57hit=await eval_(`(()=>{const e=document.querySelector('.ref-record:last-of-type [data-ref-remove-record]');e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),h=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {rect:[r.x,r.y,r.width,r.height],hit:h?.outerHTML?.slice(0,130),target:e.outerHTML?.slice(0,130)};})()`);
     await ctl('.ref-record:last-of-type [data-ref-remove-record]');
-    check('P57-2d 移除紀錄保留其餘來源資訊',await eval_(`ReferenceWorkspace.active(1).records.length===2&&ReferenceWorkspace.active(1).records[1].label==='RC樑底'`));
+    const r57 = await eval_(`ReferenceWorkspace.active(1).records.map(r=>r.label)`);
+    check('P57-2d 移除紀錄保留其餘來源資訊',r57.length===2&&r57[1]==='RC樑底',{r57,r57hit});
     check('P57-3 直角旋轉與反向換算精度',await eval_(`(()=>{const p=ReferenceWorkspace.active(1);return [0,90,180,270].every(rot=>{p.rot=rot;const a=feUlImgToMm(p,42.5,61.25),b=feUlMmToImg(p,...a);return Math.abs(b[0]-42.5)<1e-8&&Math.abs(b[1]-61.25)<1e-8;});})()`));
     await eval_(`(async()=>{window.g198Saved=await ReferenceWorkspace.exportBytes();window.g198Before=JSON.stringify((await ReferenceWorkspace.manifest()).faces);window.g198Dump=(await api('dump')).text;})()`);
     check('P57-4 .scene 不混入來源／待補紀錄',await eval_(`!g198Dump.includes('sourceId')&&!g198Dump.includes('RC樑底')`));
@@ -5959,7 +5964,7 @@ async function rightClick(x, y) {
   { // Reference interface: user-visible workflow and mobile point picking.
     console.log('=== P63. 參考描面新版介面 ===');
     const startErrors=excN;
-    const check=(name,value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(value));
+    const check=(name,value,detail=value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(detail));
     const ctl=async selector=>{
       const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
       await click(p.x,p.y);await sleep(100);
@@ -5968,18 +5973,22 @@ async function rightClick(x, y) {
     await eval_(`(async()=>{resetSceneFocus();await api('reset');await api('line boundary 1 outline 0,0 2000,0 2000,1000 0,1000');await renderObjects();await ReferenceWorkspace.openSource(g198PDF,1);})()`);
     check('P63-1 預設整頁預覽完整可見',await eval_(`(()=>{const p=$('refPagePreview').getBoundingClientRect(),v=document.querySelector('.ref-preview-scroll').getBoundingClientRect();return $('refZoom').value==='page'&&p.height>100&&p.top>=v.top&&p.bottom<=v.bottom&&p.left>=v.left&&p.right<=v.right;})()`));
     await ctl('#refApply');await waitForUI(`!$('referenceDialog').open && !!ReferenceWorkspace.active(1)`,5000);
-    check('P63-2 參考描面不補入高度或放置',await eval_(`!feSurf(1)&&$('workspacePlaceTag').textContent.includes('游離')`));
+    check('P63-2 參考描面不補入高度或放置',await eval_(`!feSurf(1)&&$('workspacePlaceTag').textContent.includes('未放置')`));
     check('P63-3 校準入口在首屏，舊放置表單不擋住它',await eval_(`(()=>{const b=$('ulCalibStart').getBoundingClientRect();return b.width>0&&b.bottom<innerHeight&&getComputedStyle(document.querySelector('.face-placement-flow')).display==='none'&&!$('refAlignmentDetails').open&&$('faceReferenceSummary').textContent.includes('未校準');})()`));
     await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});
-    await ctl('#workspaceToggleRight');await ctl('#ulCalibStart');
-    check('P63-4 手機取點自動收起檢查器且保留取消入口',await eval_(`!document.body.classList.contains('drawer-right-open')&&!$('calibrationCanvasPrompt').hidden&&$('calibrationCanvasPrompt').textContent.includes('第 1')`));
+    if (!await eval_(`document.body.classList.contains('drawer-right-open')`)) await ctl('#workspaceToggleRight');
+    const p63hit=await eval_(`(()=>{const e=$('ulCalibStart');e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),h=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {innerWidth,rect:[r.x,r.y,r.width,r.height],hit:h?.outerHTML?.slice(0,150),target:e.outerHTML?.slice(0,150),dialog:$('referenceDialog').open};})()`);
+    await ctl('#ulCalibStart');
+    const p63_4=await eval_(`({drawer:document.body.classList.contains('drawer-right-open'),promptHidden:$('calibrationCanvasPrompt').hidden,prompt:$('calibrationCanvasPrompt').textContent,calib:fe.ulCalib?.pts?.length,tab:fe.fiTab})`);
+    check('P63-4 手機取點自動收起檢查器且保留取消入口',!p63_4.drawer&&!p63_4.promptHidden&&p63_4.prompt.includes('第 1'),{p63_4,p63hit});
     await eval_(`ReferenceWorkspace.fitReference()`);
     const clickPoint=async(x,y)=>{
       const p=await eval_(`(()=>{const ul=ReferenceWorkspace.active(1),q=feUlImgToMm(ul,${x},${y}),r=$('faceEditorViewport').getBoundingClientRect();return {x:r.x+fe.panX+q[0]*fe.zoom,y:r.y+fe.panY+q[1]*fe.zoom};})()`);
       await click(p.x,p.y);await sleep(100);
     };
     await clickPoint(20,70);await clickPoint(220,70);
-    check('P63-5 實際畫布點兩點後回到距離輸入',await eval_(`fe.ulCalib.pts.length===2&&document.body.classList.contains('drawer-right-open')&&document.activeElement.id==='ulCalibDist'&&!$('ulCalibDist').disabled`));
+    const p63_5=await eval_(`({pts:fe.ulCalib?.pts,drawer:document.body.classList.contains('drawer-right-open'),focus:document.activeElement.id,disabled:$('ulCalibDist')?.disabled})`);
+    check('P63-5 實際畫布點兩點後回到距離輸入',p63_5.pts?.length===2&&p63_5.drawer&&p63_5.focus==='ulCalibDist'&&!p63_5.disabled,p63_5);
     check('P63-5b 校準草稿不宣稱已保存，也不能默默略過取點',await eval_(`(async()=>{try{await ReferenceWorkspace.exportBytes();return false;}catch(e){return e.message.includes('校準尚未套用')&&document.querySelector('[data-project-status]').textContent==='校準尚未套用';}})()`));
     check('P63-5c 手機回報鈕不擋住校準單位',await eval_(`(()=>{const e=$('ulCalibUnit'),r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return e===hit||e.contains(hit);})()`));
     await eval_(`$('ulCalibDist').value='200';$('ulCalibUnit').value='cm';`);await ctl('#ulCalibApply');
@@ -5990,17 +5999,18 @@ async function rightClick(x, y) {
     await eval_(`closePanels();feSetTool('redraw');fe.draft.pts=[[0,0],[1000,0]];feSyncDraftMirror();`);
     check('P63-8 保存不會默默丟掉未套用外環草稿',await eval_(`(async()=>{try{await ReferenceWorkspace.exportBytes();return false;}catch(e){return e.message.includes('草稿')&&fe.draft.pts.length===2;}})()`));
     await eval_(`fe.draft=PolyDraft.createState();feSetTool('select');`);
-    check('P63-9 保存按鈕在固定專案列且匯出仍在檔案選單',await eval_(`(()=>{const b=document.querySelector('.workspace-project-bar [data-project-action="save"]').getBoundingClientRect(),h=document.querySelector('.workspace-project-bar').getBoundingClientRect();return b.top>=0&&b.bottom<=h.bottom&&h.top===0&&$('btnExport').closest('#fileMenuPop')!==null;})()`));
+    check('P63-9 保存按鈕在工作區頂列且匯出仍在檔案選單',await eval_(`(()=>{const b=document.querySelector('.object-workspace-topbar [data-project-action="save"]').getBoundingClientRect(),h=document.querySelector('.object-workspace-topbar').getBoundingClientRect();return b.top>=h.top&&b.bottom<=h.bottom&&h.top===0&&$('btnExport').closest('#fileMenuPop')!==null;})()`));
     check('P63-10 寫入完成後顯示已保存，後續變更恢復未保存',await eval_(`(async()=>{const old=window.showSaveFilePicker;window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async()=>{},close:async()=>{}})});try{await ReferenceWorkspace.save();const ok=[...document.querySelectorAll('[data-project-status]')].every(e=>e.textContent==='已保存');ReferenceWorkspace.changed(1);ReferenceWorkspace.present();return ok&&document.querySelector('[data-project-status]').textContent==='有未保存的變更';}finally{window.showSaveFilePicker=old;}})()`));
     check('P63-11 下載模式不宣稱已寫入檔案，也保留未保存狀態',await eval_(`(async()=>{const old=window.showSaveFilePicker,click=HTMLAnchorElement.prototype.click;window.showSaveFilePicker=undefined;HTMLAnchorElement.prototype.click=function(){};try{await ReferenceWorkspace.save();return ReferenceWorkspace.context().dirty&&document.querySelector('[data-project-status]').textContent.includes('已產生下載');}finally{window.showSaveFilePicker=old;HTMLAnchorElement.prototype.click=click;}})()`));
-    await ctl('#refPlacementDetails summary');await ctl('#refGoPlace');
-    check('P63-12 可返回既有放置表單，分頁具有選取狀態',await eval_(`fe.fiTab==='prop'&&document.activeElement.id==='placeOX'&&getComputedStyle(document.querySelector('.face-placement-flow')).display!=='none'&&document.querySelector('[data-fi-tab="prop"]').getAttribute('aria-pressed')==='true'`));
-    await ctl('.workspace-file-menu summary');
+    await ctl('[data-fi-tab="prop"]');
+    const p63_12=await eval_(`({tab:fe.fiTab,flow:getComputedStyle(document.querySelector('.face-placement-flow')).display,form:!!$('placeOX'),pressed:document.querySelector('[data-fi-tab="prop"]').getAttribute('aria-pressed')})`);
+    check('P63-12 屬性頁可返回既有放置表單',p63_12.tab==='prop'&&p63_12.form&&p63_12.flow!=='none'&&p63_12.pressed==='true',p63_12);
+    await ctl('.object-workspace-topbar #fileMenuBtn');
     for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
     await sleep(100);
-    check('P63-13 檔案選單 Esc 只關閉選單，仍在同一個面',await eval_(`!document.querySelector('.workspace-file-menu').open&&!$('objectWorkspace').hidden&&oc.edit.bid===1`));
+    check('P63-13 檔案選單 Esc 只關閉選單，仍在同一個面',await eval_(`document.querySelector('#fileMenuPop').hidden&&!$('objectWorkspace').hidden&&oc.edit.bid===1`));
     await eval_(`window.uiSavedPicker=window.showSaveFilePicker;window.uiWriteCount=0;window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async()=>{uiWriteCount++;},close:async()=>{}})});`);
-    await ctl('.workspace-project-bar [data-project-action="save"]');await waitForUI(`uiWriteCount===1&&!ReferenceWorkspace.busy`,5000);
+    await ctl('.object-workspace-topbar [data-project-action="save"]');await waitForUI(`uiWriteCount===1&&!ReferenceWorkspace.busy`,5000);
     check('P63-14 固定保存按鈕實際呼叫專案寫入',await eval_(`uiWriteCount===1&&document.querySelector('[data-project-status]').textContent==='已保存'`));
     await eval_(`window.showSaveFilePicker=uiSavedPicker;`);
     check('P63-15 開啟專案後解除處理中狀態並恢復保存按鈕',await eval_(`(async()=>{
@@ -6008,6 +6018,127 @@ async function rightClick(x, y) {
       await input.onchange({target:input});return !ReferenceWorkspace.busy&&document.querySelector('[data-project-status]').textContent==='已保存'&&[...document.querySelectorAll('[data-project-action="save"]')].every(b=>!b.disabled);
     })()`));
     check('P63-16 新版流程沒有未處理的瀏覽器例外',excN===startErrors);
+  }
+
+  { // The 2026-09-27 review draft: visible controls and their real interactions.
+    console.log('=== P64. UI/UX 審查修正稿 ===');
+    const check=(name,value,detail=value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(detail));
+    const setupRemaining=async lines=>{
+      const out=await eval_(`(async()=>{await setView3(false);resetSceneFocus();await api('reset');const out=[];for(const s of ${JSON.stringify(lines)})out.push(await api('line '+s));await renderObjects();return out})()`);
+      if (!Array.isArray(out)||out.some(r=>!r.ok)) throw Error('P64 setup '+JSON.stringify(out));
+    };
+    const clickSelector=async selector=>{
+      const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y))};})()`);
+      if (!p.hit) throw Error('P64 control unreachable '+selector+' '+JSON.stringify(p));
+      await click(p.x,p.y);await sleep(120);
+    };
+    const remainingShot=async name=>{
+      const dest=process.env.GEOMETRY_REPAIR_SCREENSHOT_DIR;if(!dest)return;
+      const r=await send('Page.captureScreenshot',{format:'png'});
+      require('fs').writeFileSync(require('path').join(dest,name+'.png'),Buffer.from(r.result.data,'base64'));
+    };
+    const waitIdle=()=>waitForUI('!oc.busy && !dragging');
+    await send('Emulation.setDeviceMetricsOverride',{width:1382,height:804,deviceScaleFactor:1,mobile:false});
+    await eval_(`geometryFeedback.close()`);
+    await setupRemaining(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000']);
+    check('P64 M1-M4 主畫布專案、保存與兩張起點卡',await eval_(`(()=>{
+      const starts=[...document.querySelectorAll('.start-options > button')].map(e=>e.textContent);
+      return document.querySelector('#fileMenuPop').contains(document.querySelector('#sceneList'))
+        && !document.querySelector('#sceneMenuLabel').textContent.includes('.scene')
+        && document.querySelector('.brand [data-project-name]')
+        && document.querySelector('.topbar [data-project-status]')
+        && document.querySelector('#btnSaveProject').textContent.includes('另存新檔')
+        && document.querySelector('.topbar .project-save [data-icon="save"]')
+        && document.querySelector('#btnNewRect').closest('.tool-group')
+        && document.querySelector('#btnNewPoly').closest('.tool-group')
+        && starts.length===2 && starts[0].includes('平面圖') && starts[1].includes('知道尺寸');})()`));
+    check('P64 M5-M8 型別色、未放置、畫布切換與空間卡',await eval_(`(()=>{
+      const root=getComputedStyle(document.documentElement),face=document.querySelector('.object-row[data-kind="boundary"]');
+      const s=$('snapToggle'),g=$('gridToggle');
+      return !!root.getPropertyValue('--column').trim() && !!root.getPropertyValue('--beam').trim()
+        && face?.textContent.includes('未放置') && s.textContent.includes('吸附') && g.textContent.includes('格線')
+        && s.getAttribute('aria-pressed')==='true' && g.getAttribute('aria-pressed')==='true';})()`));
+    await eval_(`enterFocus('face',1)`);
+    check('P64 M7 面內吸附切換文案與狀態一致',await eval_(`(()=>{
+      const t=$('faceSnapToggle'),label=t.closest('.mini-toggle'),before=t.checked;t.click();
+      const changed=t.checked!==before&&label.textContent.includes('吸附')&&label.getAttribute('aria-pressed')===String(t.checked);
+      t.click();return changed&&t.checked===before&&label.getAttribute('aria-pressed')===String(before);})()`));
+    check('P64 F1 單列工作區與共用保存選單',await eval_(`(()=>{
+      const ws=$('objectWorkspace');return !ws.hidden && !ws.querySelector('.workspace-project-bar')
+        && ws.querySelector('.object-workspace-topbar #fileMenu')
+        && ws.querySelector('.object-workspace-topbar .project-save')
+        && !!ws.querySelector('.object-workspace-topbar [data-project-status]');})()`));
+    await clickSelector('#shapeToolButton');
+    check('P64 F2 形狀選單公開五個操作',await eval_(`!$('shapeToolPop').hidden && ['notch','extend','push','corner','hole'].every(a=>$('shapeToolPop').querySelector('[data-shape-action="'+a+'"]'))`));
+    await clickSelector('[data-shape-action="notch"]');
+    check('P64 F2 凹口等待選邊並可取消',await eval_(`fe.queuedShapeAction==='notch' && $('faceCanvasHint').textContent.includes('外環邊')`));
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+    check('P64 F2 Esc 取消形狀選擇',await eval_(`!fe.queuedShapeAction && !!oc.edit`));
+    check('P64 F3-F5 四頁、構件段與形狀庫',await eval_(`(()=>{
+      const tabs=[...document.querySelectorAll('#faceInspectorTabs [data-fi-tab]')].map(e=>e.dataset.fiTab);
+      fiShowTab('shape');const shape=$('faceInspectorContent').contains($('faceShapeButton'))&&!$('faceShapeButton').hidden;
+      fiShowTab('timber');return tabs.join()==='prop,shape,components,underlay' && shape
+        && document.querySelector('[data-fi-tab="components"]').classList.contains('active')
+        && ['guide','timber','grid'].every(s=>!!document.querySelector('[data-component-section="'+s+'"]'))
+        && $('tbA').offsetParent!==null;})()`));
+    check('P64 F7-F8 T1-T2 中文欄位、分組與軸向',await eval_(`(()=>{
+      const p=$('faceInspectorContent'),h=$('workspaceKeyHints').textContent;
+      return h.includes('Esc') && p.querySelectorAll('.timber-form-group').length===3
+        && p.textContent.includes('寬 A（沿面）') && p.textContent.includes('厚 B（出面）')
+        && !!p.querySelector('#tbDirAuto') && !!p.querySelector('#tbRoleAuto');})()`));
+    check('P64 G2 R1 R2 特徵說明、描面三步與底圖版型',await eval_(`(()=>{
+      fiShowTab('shape');const feature=!!document.querySelector('.feature-persistence-note');
+      fiShowTab('underlay');const steps=document.querySelectorAll('[data-reference-step]').length;
+      return feature && steps===3 && !!document.querySelector('[data-fi-pane="underlay"] .inspector-block');})()`));
+    check('P64 G2 切場景前提示特徵參數會消失',await eval_(`(()=>{
+      const old=window.confirm,prior=fe.feats[1];let prompt='';fe.feats[1]=[{id:'review-probe'}];
+      window.confirm=s=>{prompt=s;return false};
+      try{return !ReferenceWorkspace.mayLeave()&&prompt.includes('特徵參數會消失')}
+      finally{window.confirm=old;if(prior)fe.feats[1]=prior;else delete fe.feats[1]}
+    })()`));
+    await remainingShot('uiux-20260927-face-desktop');
+    await send('Emulation.setDeviceMetricsOverride',{width:900,height:700,deviceScaleFactor:1,mobile:false});
+    check('P64 R2 中寬面畫布與檢查器皆可操作',await eval_(`(()=>{
+      const vp=$('faceEditorViewport'),v=vp.getBoundingClientRect(),i=document.querySelector('.face-inspector-panel').getBoundingClientRect();
+      const hit=document.elementFromPoint(v.left+v.width/2,v.top+v.height/2);
+      return v.width>250&&i.width>200&&i.right<=innerWidth+1&&vp.contains(hit)
+        && $('objectWorkspace').scrollWidth<=$('objectWorkspace').clientWidth+1;})()`));
+    await remainingShot('uiux-20260927-face-medium');
+    await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});
+    check('P64 R2 手機面畫布可點且無水平溢出',await eval_(`(()=>{
+      const vp=$('faceEditorViewport'),r=vp.getBoundingClientRect(),hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
+      return r.width>innerWidth-2&&vp.contains(hit)&&document.documentElement.scrollWidth<=innerWidth+1;})()`));
+    await remainingShot('uiux-20260927-face-mobile');
+    await send('Emulation.setDeviceMetricsOverride',{width:1382,height:804,deviceScaleFactor:1,mobile:false});
+    await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000','space 1 boundary 1']);
+    await eval_(`(async()=>{await enterFocus('face',1);fiShowTab('timber')})()`);
+    check('P64 T2 厚度側向有具體法向',await eval_(`[...$('tbSide').options].some(o=>o.textContent.includes('下')) && [...$('tbSide').options].some(o=>o.textContent.includes('上'))`));
+    await eval_(`$('tbA').value='0';$('tbPlace').click()`);await sleep(250);
+    check('P64 T3 無效截面不改世界',await eval_(`!fe.timbers.length && $('tbA').classList.contains('invalid')`));
+    await eval_(`$('tbA').value='27';$('tbA').dispatchEvent(new Event('input',{bubbles:true}));$('tbPlace').click()`);
+    await waitForUI(`fe.timbers.length===1`,5000);
+    const t3=await eval_(`({timbers:fe.timbers.map(t=>({id:t.id,A:t.A})),tool:fe.tool,tab:fe.fiTab,status:$('status').textContent})`);
+    check('P64 T3 表單直接放角材',t3.timbers.length===1&&t3.timbers[0].A===27&&t3.tool!=='timber',t3);
+    check('P64 T1 手動改朝向與角色會撤除自動標記',await eval_(`(()=>{
+      const a=$('tbDirAuto'),b=$('tbRoleAuto'),before=!a.hidden&&!b.hidden;
+      $('tbDir').value='-u';$('tbDir').dispatchEvent(new Event('change',{bubbles:true}));
+      $('tbRole').value='custom';$('tbRole').dispatchEvent(new Event('change',{bubbles:true}));
+      return before&&a.hidden&&b.hidden;})()`));
+    await eval_(`fe.sel={kind:'timber',id:fe.timbers[0].id};renderFaceInspector();feRunAction('edit')`);
+    const t4=await eval_(`({tab:fe.fiTab,focus:document.activeElement.id,note:$('tbSelected')?.textContent.includes('重新選擇定位引用')})`);
+    check('P64 T4 編輯角材聚焦並要求重選錨點',t4.tab==='timber'&&t4.focus==='tbEditAnchor'&&t4.note,t4);
+    const edgeTimber=await eval_(`(async()=>{const occupied=[...$('tbAnchor').options].find(o=>/^at-face e\\d+$/.test(o.value)&&o.textContent.includes('已有角材'));const i=occupied?((+occupied.value.match(/e(\\d+)$/)[1]+2)%4):0,free='at-face e'+i;fe.sel={kind:'edge',loop:0,i};await feRunAction('timber');return {n:fe.timbers.length,free,anchor:$('tbAnchor')?.value,dir:$('tbDir')?.value,side:$('tbSide')?.value,role:$('tbRole')?.value,toast:[...document.querySelectorAll('.toast')].map(e=>e.textContent)};})()`);
+    check('P64 F2 邊浮動列可沿選邊放角材',edgeTimber.n===2&&edgeTimber.anchor===edgeTimber.free,edgeTimber);
+    await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000','space 1 boundary 1']);
+    check('P64 M8 空間卡顯示佔槽數與管理入口',await eval_(`(()=>{const s=document.querySelector('.ocard[data-kind="space"]')?.textContent||'';return s.includes('1／6 面')&&s.includes('管理成員面')&&!s.includes('缺 ');})()`));
+    await eval_(`enterFocus('space',1)`);
+    check('P64 S2 收成員在標題旁',await eval_(`$('spaceAddMembers').closest('.inner-section-title')?.contains($('spaceMemberCount'))`));
+    await clickSelector('#spacePlaceColumn');
+    check('P64 S1 平面放柱時尺寸在工具旁',await eval_(`!$('spaceSizeTools').hidden && $('spaceWorkspaceTools').contains($('spaceSizeTools'))`));
+    await clickSelector('[data-ss-tab="proj"]');
+    check('P64 S1 三視圖停用放置並說明',await eval_(`$('spacePlaceColumn').disabled && $('spacePlaceBeam').disabled && $('spaceSizeTools').hidden && $('workspaceToolStatus').textContent.includes('僅供檢視')`));
+    await eval_(`leaveFocus()`);await clickSelector('#btnObj');await eval_(`v3SetTool('rect')`);
+    check('P64 V1-V2 三視圖工作面、高度與 SVG 控制',await eval_(`!$('v3PlaneControls').hidden && $('v3ToolbarSurf').options.length>0 && document.querySelectorAll('#v3ZoomBar .v3-zoom button svg').length>=2`));
   }
 
   chrome.kill();

@@ -14,6 +14,7 @@ const ICON_PATHS = {
   search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/>',
   fit: '<path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"/><path d="M8 8h8v8H8z"/>',
   download: '<path d="M12 3v12M7.5 10.5 12 15l4.5-4.5"/><path d="M4 19h16"/>',
+  save: '<path d="M4 3h14l3 3v15H3V3z"/><path d="M7 3v7h10V3M7 21v-8h10v8"/>',
   upload: '<path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M4 19h16"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   minus: '<path d="M5 12h14"/>',
@@ -53,6 +54,18 @@ function hydrateIcons(root = document) {
 }
 
 const KIND_ZH = { boundary: "面", placement: "承載面", space: "空間", column: "柱", beam: "樑" };
+function sceneMenuDisplay(name) {
+  return String(name || "內建示範").replace(/\.scene$/i, "").replace(/\.gcanvas$/i, "");
+}
+const mainTopActions = document.querySelector(".top-actions");
+const sharedFileMenu = $("fileMenu");
+const sharedProjectSave = mainTopActions.querySelector(".project-save");
+function syncHeaderControls() {
+  const target = $("objectWorkspace").hidden ? mainTopActions : $("workspaceProjectActions");
+  target.append(sharedFileMenu, sharedProjectSave);
+  closeMenus();
+}
+new MutationObserver(syncHeaderControls).observe($("objectWorkspace"), { attributes: true, attributeFilter: ["hidden"] });
 let pendingSlot = null;
 let drawerTrigger = null;
 function closePanels(restoreFocus = false) {
@@ -87,6 +100,7 @@ function inspectorState(pane, bid) {
   return { focus: pane.contains(a) ? a.id : "", scroll: pane.parentElement.scrollTop,
     ownScroll: pane.scrollTop,
     placement: pane.dataset.placement, timberRoleManual: pane.dataset.tbRoleManual,
+    timberDirManual: pane.dataset.tbDirManual,
     referencePage: pane.dataset.referencePage, calibrationPoints: pane.dataset.calibrationPoints,
     drafts: [...pane.querySelectorAll("input[id],select[id]")]
       .filter(e => /^(tb|ref|grid|place[OUV]|ulCalib)/.test(e.id)).map(e => [e.id, e.value]),
@@ -95,6 +109,7 @@ function inspectorState(pane, bid) {
 function restoreInspectorState(pane, state) {
   if (!state) return;
   pane.dataset.tbRoleManual = state.timberRoleManual || "false";
+  pane.dataset.tbDirManual = state.timberDirManual || "false";
   for (const [id, value] of state.drafts) {
     /* A model change (including undo) replaces placement values; ordinary
        redraws still preserve an unfinished placement draft. */
@@ -171,7 +186,7 @@ async function recoverApiResults() {
     pendingApiResults.delete(requestId); acknowledgedApiResults.add(requestId);
     if (result.ok && cmd.startsWith("loadfile ")) {
       resetSceneFocus();curScene={path:cmd.slice(9),name:cmd.slice(9).split(/[\\/]/).pop()};
-      $("sceneMenuLabel").textContent=curScene.name;markSceneItem();
+      $("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);markSceneItem();
     }
   }
   // A caller that lost history-begin or an interior command has already stopped.
@@ -741,8 +756,19 @@ async function refreshSurfaces() {
   nw.value = "new"; nw.textContent = "＋新水平面";
   sel.appendChild(nw);
   sel.value = [...sel.options].some(o => o.value === keep) ? keep : sel.value;
-  $("newZ").hidden = sel.value !== "new";
+  syncV3PlaneControls();
   if (tool === "edit") await enterEdit();
+}
+function syncV3PlaneControls() {
+  const sel = $("workSurf"), bar = $("v3ToolbarSurf");
+  bar.innerHTML = sel.innerHTML;
+  bar.value = sel.value;
+  $("v3PlaneControls").hidden = tool !== "rect";
+  const isNew = sel.value === "new";
+  $("newZ").hidden = !isNew || tool !== "rect";
+  $("v3ExistingZ").hidden = isNew;
+  const surf = workSurfaces.find(s => String(s.id) === sel.value);
+  $("v3ExistingZ").textContent = surf ? String(surf.origin[2]) : "0";
 }
 
 /* ---- 編輯工具 ---- */
@@ -939,6 +965,7 @@ async function v3SetTool(t) {
   $("tool").value = t;
   for (const b of document.querySelectorAll("[data-v3-tool]"))
     b.classList.toggle("active", b.dataset.v3Tool === t);
+  syncV3PlaneControls();
   rectStart = null; editDrag = null; previewClear();
   if (tool === "edit") await enterEdit();
   else if (tool === "rect") setStatus("在工作面上拉出範圍");
@@ -969,8 +996,12 @@ $("v3ZoomFit").addEventListener("click", () => { zoom = 1; panX = panY = 0; appl
 for (const c of document.querySelectorAll("[data-v3-view],[data-v3-layer]"))
   c.addEventListener("change", () => { if (view3) render(); });
 $("workSurf").addEventListener("change", async () => {
-  $("newZ").hidden = $("workSurf").value !== "new";
+  syncV3PlaneControls();
   if (tool === "edit") await enterEdit();
+});
+$("v3ToolbarSurf").addEventListener("change", () => {
+  $("workSurf").value = $("v3ToolbarSurf").value;
+  $("workSurf").dispatchEvent(new Event("change"));
 });
 $("btnExport").onclick = async () => {
   const r = await api("dump");
@@ -1039,6 +1070,10 @@ window.addEventListener("keydown", async e => {
         if (fe.ulCalib) { fe.ulCalib = null; drawFaceEditor(); renderFaceInspector(); return; }
         /* GEO-188:就地操作面板 → 先關;再一次 Esc 取消選取 */
         if (fe.op) { feCancelOp(); return; }
+        if (fe.queuedShapeAction) {
+          fe.queuedShapeAction = null; $("faceCanvasHint").hidden = true;
+          setStatus("已取消形狀操作"); updateWorkspaceKeyHints(); return;
+        }
         if (fe.sel) {
           const wasTimberSel = fe.sel.kind === "timber";
           fe.sel = null; feSyncOverlays(); drawFaceEditor();
@@ -1160,6 +1195,7 @@ $("cmd").addEventListener("keydown", async e => {
 });
 $("btnClear").onclick = async () => {
   if (oc.busy) { toast("操作進行中,請稍候"); return; }
+  if (!ReferenceWorkspace.mayLeave()) return;
   const r = await api("line reset"); selected = null;
   if (r.ok) {
     resetSceneFocus();
@@ -1184,6 +1220,7 @@ function resetSceneFocus() {
   fe.panHold = null; fe.work = null;
   fe.draft = PolyDraft.createState(); fe.draftPreview = null; feSyncDraftMirror();
   fe.guides = []; fe.timbers = []; fe.grids = []; fe.obstacles = null;
+  fe.feats = {};
   $("objectWorkspace").hidden = true;
 }
 async function loadScene(path, name) {
@@ -1194,7 +1231,7 @@ async function loadScene(path, name) {
   if (r.ok) {
     resetSceneFocus();
     curScene = { path, name };
-    $("sceneMenuLabel").textContent = name;
+    $("sceneMenuLabel").textContent = sceneMenuDisplay(name);
     markSceneItem();
     setStatus("✓ 已載入 " + name); selected = null; refreshActive();
   } else { setStatus("✗ " + (r.error || "")); toast(r.error || "載入失敗"); }
@@ -1206,7 +1243,9 @@ function bindMenu(btnId, popId) {
   $(btnId).addEventListener("click", e => {
     e.stopPropagation();
     const open = $(popId).hidden;
+    const nested = btnId === "sceneMenuBtn" && !$("fileMenuPop").hidden;
     closeMenus();
+    if (nested) $("fileMenuPop").hidden = false;
     $(popId).hidden = !open;
   });
 }
@@ -1244,7 +1283,7 @@ $("file").addEventListener("change", async e => {
     resetSceneFocus();
     /* serve.py 回傳暫存檔路徑:curScene 指向它,「重新載入場景」才會載回剛上傳的內容 */
     curScene = { path: r.path || "", name: f.name };
-    $("sceneMenuLabel").textContent = f.name;
+    $("sceneMenuLabel").textContent = sceneMenuDisplay(f.name);
     markSceneItem();
     setStatus("✓ 已載入 " + f.name); selected = null; refreshActive();
   }
@@ -1372,7 +1411,7 @@ function faceCard(f) {
                  fill: "#fdf3e3", stroke: "#ecd9b5" }, bg);
     const tag = el("text", { x: OC_W - 26, y: 18, "font-size": 10.5, fill: "#a06a18",
                              "text-anchor": "middle", "font-weight": 650 }, bg);
-    tag.textContent = "游離";
+    tag.textContent = "未放置";
   }
   if (f.kind === "placement") {
     el("rect", { x: OC_W - 52, y: 8, width: 44, height: 14, rx: 7,
@@ -1447,7 +1486,7 @@ function spaceCard(s) {
                          "font-weight": 700 }, g);
   t.textContent = `空間 ${s.id}`;
   const sub = el("text", { x: 26, y: 28, "font-size": 10.5, fill: "#8b93a3" }, g);
-  sub.textContent = `${s.members.length} 面 · 缺 ${6 - Object.values(spaceSlots(s) || {}).filter(Boolean).length} 面`;
+  sub.textContent = `${Object.values(spaceSlots(s) || {}).filter(Boolean).length}／6 面`;
   el("rect", { x: SP_W - 52, y: 8, width: 44, height: 14, rx: 7,
                fill: s.closed ? "#e3f4ec" : "#fdf3e3",
                stroke: s.closed ? "#bfe3d0" : "#ecd9b5" }, g);
@@ -1474,11 +1513,11 @@ function spaceCard(s) {
                  stroke: used ? "#8f83e0" : "#e4e8ef" }, body);
     const k = el("text", { x: cx + cw / 2, y: cy + 11, "font-size": 11,
                  "text-anchor": "middle", "font-weight": 650,
-                 fill: used ? "#5b4fc4" : "#a6aebb" }, body);
+                 fill: used ? "#5b4fc4" : "#5d6878" }, body);
     k.textContent = label;
     const ax = el("text", { x: cx + cw / 2, y: cy + 21, "font-size": 10.5,
                   "text-anchor": "middle",
-                  fill: used ? "#8f83e0" : "#c3c9d4" }, body);
+                  fill: used ? "#5b4fc4" : "#5d6878" }, body);
     ax.textContent = key + (slots && used ? ` ×${slots[key]}` : "");
   }
   /* 成員列 */
@@ -1488,9 +1527,7 @@ function spaceCard(s) {
   el("line", { x1: 0, y1: SP_H - 30, x2: SP_W, y2: SP_H - 30,
                stroke: "#e8ebf0", "stroke-width": 1 }, body);
   const ft = el("text", { x: 10, y: SP_H - 11, "font-size": 11, fill: "#687487" }, body);
-  ft.textContent = s.closed ? "封閉 · 六槽齊備"
-    : (missing.length === 6 && !s.members.length ? "開放 · 尚無已放置成員"
-       : `開放 · 缺 ${missing.join("、")}`);
+  ft.textContent = "雙擊進入 · 管理成員面";
   return g;
 }
 
@@ -1501,7 +1538,7 @@ function rcCard(o, kind) {
                       transform: `translate(${o.cx},${o.cy})`, cursor: "pointer" });
   el("rect", { class: "ocard-frame", x: 0, y: 0, width: OC_W, height: OC_H, rx: 10,
                fill: "#ffffff", stroke: "#dfe4eb", "stroke-width": 1.4 }, g);
-  el("circle", { cx: 14, cy: 16, r: 4.5, fill: isCol ? "var(--warning)" : "var(--accent-strong)" }, g);
+  el("circle", { cx: 14, cy: 16, r: 4.5, fill: isCol ? "var(--column)" : "var(--beam)" }, g);
   const t = el("text", { x: 26, y: 15, "font-size": 11.5, fill: "#1d2634",
                          "font-weight": 700 }, g);
   t.textContent = (isCol ? "柱 " : "樑 ") + o.id;
@@ -1528,7 +1565,7 @@ function rcCard(o, kind) {
   if (isCol) {
     el("rect", { x: o.box[0] * k + ox, y: o.box[1] * k + oy,
                  width: fw * k, height: fd * k,
-                 fill: "#fff0d4", fillOpacity: .75, stroke: "var(--warning)",
+                 fill: "var(--column-soft)", fillOpacity: .75, stroke: "var(--column)",
                  "stroke-width": 1.4 }, body);
     const lab = el("text", { x: pvX + pvW / 2, y: pvY + pvH - 4,
       "font-size": 11, fill: "#5a5a5a", "text-anchor": "middle" }, body);
@@ -1537,7 +1574,7 @@ function rcCard(o, kind) {
     /* 樑:沿走向軸拉長的條帶 */
     el("rect", { x: o.box[0] * k + ox, y: o.box[1] * k + oy,
                  width: fw * k, height: fd * k,
-                 fill: "var(--accent-soft)", fillOpacity: .75, stroke: "var(--accent-strong)",
+                 fill: "var(--beam-soft)", fillOpacity: .75, stroke: "var(--beam)",
                  "stroke-width": 1.4 }, body);
     const lab = el("text", { x: pvX + pvW / 2, y: pvY + pvH - 4,
       "font-size": 11, fill: "#4a4a4a", "text-anchor": "middle" }, body);
@@ -1944,21 +1981,28 @@ const fe = {
 function fiShowTab(name) {
   const leavingUnderlay = fe.fiTab === "underlay" && name !== "underlay";
   fe.fiTab = name;
+  const section = ["guide", "timber", "grid"].includes(name) ? "components" : name;
   for (const t of document.querySelectorAll("#faceInspectorTabs [data-fi-tab]"))
-    t.classList.toggle("active", t.dataset.fiTab === name);
+    t.classList.toggle("active", t.dataset.fiTab === section);
   const pane = $("faceInspectorContent");
-  if (pane)
+  if (pane) {
     for (const p of pane.querySelectorAll("[data-fi-pane]"))
-      p.hidden = p.dataset.fiPane !== name;
+      p.hidden = p.dataset.fiPane !== section;
+    const flow = pane.querySelector(".face-placement-flow");
+    if (flow) flow.hidden = section !== "prop" || flow.dataset.complete === "true";
+    if (["guide", "timber", "grid"].includes(name))
+      pane.querySelector(`[data-component-section="${name}"]`)?.scrollIntoView({ block: "start" });
+  }
   /* GEO-190:切分頁不整份重畫畫布,但 #feUnderlay 的 pointer-events 跟著「底圖分頁是否
      作用中」走,要在這裡手動同步;離開底圖分頁順便取消進行中的量比例尺(不然切去別頁
      還點得出校準點)。 */
   if (leavingUnderlay && fe.ulCalib) { fe.ulCalib = null; renderFaceInspector(); }
   /* GEO-195:離開角材頁就取消定位引用預示(見 fe.anchorPreview 註解)。 */
-  if (name !== "timber" && fe.anchorPreview) { fe.anchorPreview = false; drawFaceEditor(); }
+  if (section !== "components" && fe.anchorPreview) { fe.anchorPreview = false; drawFaceEditor(); }
   feUlSyncPointerEvents();
   ReferenceWorkspace.present();
   feCalibrationPrompt();
+  updateWorkspaceKeyHints();
 }
 /* GEO-190:只切 #feUnderlay 的 pointer-events,不整份 drawFaceEditor()(給 fiShowTab/
    feSetTool 這種不想重畫整塊畫布的呼叫點用) */
@@ -2048,9 +2092,24 @@ function updateFaceWorkspaceHeading(bid) {
   const tag = $("workspacePlaceTag");
   if (tag) {
     tag.hidden = false;
-    tag.textContent = surf ? surfNormalLabel(surf) : "游離";
+    tag.textContent = surf ? `${surfNormalLabel(surf)}${owner ? ` · 空間 ${owner.id}` : ""}` : "未放置";
     tag.className = "place-capsule" + (surf ? " placed" : " free");
   }
+}
+function updateWorkspaceKeyHints() {
+  const hint = $("workspaceKeyHints");
+  if (!hint || !oc.focus) return;
+  if (oc.focus.t === "space") {
+    hint.textContent = document.querySelector('[data-ss-tab="proj"]')?.classList.contains("active")
+      ? "三視圖僅供檢視 · 切回平面示意可放置 · Esc 返回" : "點放柱 · 拖放樑 · Esc 返回";
+    return;
+  }
+  const esc = fe.drag || fe.op || fe.ulCalib || fe.sel ? "取消選取／草稿" : "返回物件畫布";
+  const keys = fe.tool === "redraw" ? "E 外環 · Enter 完成" :
+    fe.tool === "timber" ? "T 角材 · 點線放置" :
+    fe.tool === "guide" ? "L 參考線 · R 開口" :
+    fe.tool === "pan" ? "H 平移 · V 選取" : "V 選取 · E 外環 · H 平移";
+  hint.textContent = `${keys} · Esc ${esc}`;
 }
 
 /* ---- 空間工作區（Phase 4）：成員清單 + 面卡片格 + 檢視器 + 三視圖 ---- */
@@ -2060,6 +2119,7 @@ async function openSpaceWorkspace(sid) {
   $("spaceWorkspaceLayout").hidden = false;
   $("faceWorkspaceTools").hidden = true;
   $("spaceWorkspaceTools").hidden = false;
+  syncSpaceStageTools();
   $("workspaceFitButton").hidden = true;
   $("workspaceKeyHints").textContent = "點一下放柱 · 拖一段放樑 · Esc 返回";
   $("workspaceToolStatus").textContent = "平面示意：點放柱／拖放樑";
@@ -2071,6 +2131,7 @@ async function openSpaceWorkspace(sid) {
      renderObjects 被丟棄,留下過期的 oc.columns/beams。 */
   await renderObjects();
   await renderSpaceWorkspace();
+  updateWorkspaceKeyHints();
   setStatus(`空間 ${sid}：成員面清單 · 點面卡進入面編輯 · Esc 返回`);
 }
 
@@ -2091,7 +2152,7 @@ async function renderSpaceWorkspace() {
     row.innerHTML =
       `<span class="space-member-thumb"></span>` +
       `<span class="space-boundary-button-copy"><strong>面 ${bid}</strong>` +
-      `<small>${f ? `${f.bbox[2] - f.bbox[0]}×${f.bbox[3] - f.bbox[1]} mm` : ""} · ${feSurf(bid) ? surfNormalLabel(feSurf(bid)) : "游離"}</small></span><span>›</span>`;
+      `<small>${f ? `${f.bbox[2] - f.bbox[0]}×${f.bbox[3] - f.bbox[1]} mm` : ""} · ${feSurf(bid) ? surfNormalLabel(feSurf(bid)) : "未放置"}</small></span><span>›</span>`;
     const thumb = row.querySelector(".space-member-thumb");
     if (loops && loops.length) thumb.appendChild(spaceMemberThumbnail(sp, bid));
     else thumb.innerHTML = icon("rectangle");
@@ -2136,7 +2197,23 @@ for (const t of document.querySelectorAll("#spaceStageTabs [data-ss-tab]"))
       x.classList.toggle("active", x === t);
     for (const p of document.querySelectorAll("[data-ss-pane]"))
       p.hidden = p.dataset.ssPane !== t.dataset.ssTab;
+    syncSpaceStageTools();
+    updateWorkspaceKeyHints();
   });
+function syncSpaceStageTools() {
+  const projection = document.querySelector('[data-ss-tab="proj"]')?.classList.contains("active");
+  for (const id of ["spacePlaceColumn", "spacePlaceBeam"]) {
+    const b = $(id);
+    b.disabled = !!projection;
+    b.title = projection ? "三視圖僅供檢視，切回平面示意後可放置" :
+      id === "spacePlaceColumn" ? "點一下平面圖放柱" : "拖一段平面圖放樑";
+  }
+  $("spaceSizeTools").hidden = !!projection || !$("spaceWorkspaceTools").querySelector(".workspace-tool.active");
+  const active = $("spaceWorkspaceTools").querySelector(".workspace-tool.active")?.id;
+  $("workspaceToolStatus").textContent = projection ? "三視圖僅供檢視；切回平面示意可放柱或樑"
+    : active === "spacePlaceColumn" ? "在平面圖點一下放柱"
+    : active === "spacePlaceBeam" ? "在平面圖拖出一段放樑" : "平面示意：選擇放柱或放樑";
+}
 
 /* 構件清單：本空間的柱樑（可移出成游離）+ 游離柱樑（可收進） */
 function renderSpaceRc(sp) {
@@ -2643,6 +2720,7 @@ function feSetTool(t) {
   /* GEO-196:切離角材工具就清掉滑鼠命中線 hover 狀態,不跨工具沿用。 */
   if (t !== "timber") fe.timberHoverAnchor = null;
   fe.tool = t;
+  if (t !== "select") fe.queuedShapeAction = null;
   fe.sel = null; fe.op = null; feSyncOverlays();
   feUlSyncPointerEvents();
   const pk = $("feGuidePick"); if (pk) pk.hidden = true;
@@ -2671,8 +2749,9 @@ function feSetTool(t) {
   }
   /* B2:角材工具 → 檢視器自動切「角材」頁(#tbLen 立即可見) */
   if (t === "timber") {
-    const tab = document.querySelector('[data-fi-tab="timber"]');
-    if (tab) tab.click();
+    fiShowTab("timber");
+  } else if (t === "guide") {
+    fiShowTab("guide");
   }
   if (t === "timber" || wasTimber) drawFaceEditor();  /* GEO-195:進/離角材工具都要重繪 .fe-anchor-hi/.fe-anchor-band */
   /* 游離面：參考線工具停用 */
@@ -2688,6 +2767,7 @@ function feSetTool(t) {
   }
   feCalibrationPrompt();
   ReferenceWorkspace.present();
+  updateWorkspaceKeyHints();
 }
 
 function feUpdateDraftNotice() {
@@ -3298,7 +3378,7 @@ function feTimberSuggestForm({ direction = true, forceRole = false } = {}) {
   const suggestion = feTimberSuggestion(oc.edit?.bid, $("tbAnchor")?.value);
   if (forceRole) pane.dataset.tbRoleManual = "false";
   if (suggestion) {
-    if (direction) { $("tbDir").value = suggestion.dir; $("tbDir").classList.remove("invalid"); }
+    if (direction) { $("tbDir").value = suggestion.dir; $("tbDir").classList.remove("invalid"); pane.dataset.tbDirManual = "false"; }
     if (suggestion.role && pane.dataset.tbRoleManual !== "true") {
       $("tbRole").innerHTML = feTimberRoleOptionsHTML(oc.edit.bid, $("tbDir").value, suggestion.role);
       $("tbRole").value = suggestion.role;
@@ -3306,7 +3386,13 @@ function feTimberSuggestForm({ direction = true, forceRole = false } = {}) {
     }
   }
   feTimberSyncRoleOptions(pane);
+  feTimberAutoBadges(pane);
   feTimberShowSuggestion();
+}
+function feTimberAutoBadges(pane) {
+  const dir = pane.querySelector("#tbDirAuto"), role = pane.querySelector("#tbRoleAuto");
+  if (dir) dir.hidden = pane.dataset.tbDirManual === "true";
+  if (role) role.hidden = pane.dataset.tbRoleManual === "true";
 }
 function feTimberShowSuggestion() {
   const suggestion = feTimberSuggestion(oc.edit?.bid, $("tbAnchor")?.value);
@@ -3316,8 +3402,8 @@ function feTimberShowSuggestion() {
     : "目前無法推導建議，請檢查定位引用與角色。";
   if ($("tbUseSuggestion")) $("tbUseSuggestion").disabled = !suggestion?.role || !feSid(oc.edit?.bid);
 }
-const TB_ROLE_OPTS = [["primary", "primary 主支"], ["boundary", "boundary 邊界材"],
-  ["secondary", "secondary 副支"], ["custom", "custom 自訂"]];
+const TB_ROLE_OPTS = [["primary", "主支 (primary)"], ["boundary", "邊框 (boundary)"],
+  ["secondary", "次支 (secondary)"], ["custom", "自訂 (custom)"]];
 /* #tbRole 選項依主支軸排除(G196-R04):
    - 方向平行主支軸 → boundary/secondary 停用(I21),但【custom 不停用】——
      D15:custom 的 priority 只參與 I19 數值比較,不取得角色義務,方向合法性交核心判;
@@ -3405,6 +3491,38 @@ function feTimberPlaceErrorMessage(err, bid, surf, anchorValue) {
   return err;
 }
 
+/* 表單主鈕與畫布點線共用同一筆 timber + place 交易。 */
+async function fePlaceTimberFromForm(bid) {
+  const sid = feSid(bid);
+  if (!sid) { toast("請先放置這片面，再放角材"); return false; }
+  const A = Number($("tbA")?.value), B = Number($("tbB")?.value);
+  if (!Number.isSafeInteger(A) || !Number.isSafeInteger(B) || A <= 0 || B <= 0) {
+    toast("角材截面 A/B 須為正整數 mm");
+    if (!Number.isSafeInteger(A) || A <= 0) feMarkInvalid($("tbA"));
+    if (!Number.isSafeInteger(B) || B <= 0) feMarkInvalid($("tbB"));
+    return false;
+  }
+  const anchor = $("tbAnchor")?.value;
+  if (!anchor) { toast("請先選擇定位邊、參考線或格線"); feMarkInvalid($("tbAnchor")); return false; }
+  const dir = $("tbDir")?.value || "+u";
+  const side = $("tbSide")?.value || "+n";
+  const role = $("tbRole")?.value || "primary";
+  const pri = Math.round(+($("tbPri")?.value || 0));
+  if (role === "custom" && !(pri >= 1)) {
+    toast("自訂角色須填優先序（≥1 的整數）"); feMarkInvalid($("tbPri")); return false;
+  }
+  const ids = await api("newid");
+  if (!ids.ok) return false;
+  const decl = `timber ${ids.timber} ${A} ${B} role ${role}` +
+    (role === "custom" ? ` priority ${pri}` : "");
+  const selector = $("tbSelector")?.value.trim() || "";
+  const surf = feSurf(bid);
+  if (!(await mutate([decl, `place ${ids.timber} on ${sid} ${anchor} ${selector} ${dir} ${side}`],
+    { friendlyError: err => feTimberPlaceErrorMessage(err, bid, surf, anchor) }))) return false;
+  await feLoadGuides(); drawFaceEditor(); renderFaceLayers(); renderFaceInspector();
+  return true;
+}
+
 /* ---- GEO-190/198:面內底圖臨摹 ----
    oc.underlays 是目前場景作用中圖頁的投影；ReferenceWorkspace 管理來源與專案保存。
    圖片用原始像素，PDF 用 scale=1 的頁面座標；x/y 是圖片「未旋轉時左上角」
@@ -3487,6 +3605,10 @@ function feUnderlayRemove(bid) {
 }
 
 function drawFaceEditor() {
+  for (const id of ["faceSnapToggle", "faceGridToggle"]) {
+    const input = $(id);
+    input?.closest(".mini-toggle")?.setAttribute("aria-pressed", String(input.checked));
+  }
   const e = oc.edit;
   if (!e || !oc.focus || oc.focus.t !== "face") return;
   const loops = fe.work || oc.bmap[e.bid];
@@ -3740,9 +3862,16 @@ function drawFaceEditor() {
   /* 草稿 */
   const d = fe.drag;
   if (d && d.kind === "holeRect") {
-    el("rect", { x: Math.min(d.x0, d.x1), y: Math.min(d.y0, d.y1),
+    const rect = [Math.min(d.x0, d.x1), Math.min(d.y0, d.y1), Math.max(d.x0, d.x1), Math.max(d.y0, d.y1)];
+    el("rect", { x: rect[0], y: rect[1],
       width: Math.abs(d.x1 - d.x0), height: Math.abs(d.y1 - d.y0),
       class: "draft-shape" }, root);
+    if (rect[2] - rect[0] >= 1 && rect[3] - rect[1] >= 1 && loops[0]) {
+      const kind = feClassifyRect(loops[0].verts, rect);
+      el("text", { x: rect[0], y: rect[1] - 8 / z, "font-size": 12 / z,
+        class: "draft-shape-kind", fill: "#9b5b11" }, root).textContent =
+        { hole: "孔", notch: "凹口", corner: "切角" }[kind];
+    }
   }
   if (d && d.kind === "guideNew") {
     const axis = Math.abs(d.x1 - d.x0) >= Math.abs(d.y1 - d.y0) ? "v" : "u";
@@ -3970,36 +4099,15 @@ async function feDown(pt, ev) {
           anchorSel?.classList.remove("invalid");
           dirSel?.classList.remove("invalid");
           $("faceInspectorContent").dataset.tbRoleManual = "false";
+          $("faceInspectorContent").dataset.tbDirManual = "false";
+          feTimberAutoBadges($("faceInspectorContent"));
           const pl = $("tbPriLabel");
           if (pl) pl.hidden = clickRole !== "custom";
         }
       }
       feTimberShowSuggestion();
     }
-    const anchor = $("tbAnchor")?.value;
-    if (!anchor) { toast("請先選擇定位邊、參考線或格線"); return; }
-    const dir = ($("tbDir") || {}).value || "+u";
-    const side = ($("tbSide") || {}).value || "+n";
-    const role = ($("tbRole") || {}).value || "primary";
-    const pri = Math.round(+($("tbPri") || {}).value || 0);
-    if (role === "custom" && !(pri >= 1)) {
-      toast("custom 角色要填 priority（≥1 的整數）");
-      feMarkInvalid($("tbPri"));
-      return;
-    }
-    const ids = await api("newid");
-    if (!ids.ok) return;
-    const decl = `timber ${ids.timber} ${A} ${B} role ${role}` +
-      (role === "custom" ? ` priority ${pri}` : "");
-    const selector = $("tbSelector")?.value.trim() || "";
-    /* GEO-195:失敗訊息講人話——依錯誤原文前置一句(anchor 占滿/主支軸/RC 優先權),
-       原文保留在後半;同時標紅對應欄位(feTimberPlaceErrorMessage 內部處理)。 */
-    const surf = feSurf(e.bid);
-    if (await mutate([decl,
-        `place ${ids.timber} on ${sid} ${anchor} ${selector} ${dir} ${side}`],
-        { friendlyError: err => feTimberPlaceErrorMessage(err, e.bid, surf, anchor) })) {
-      await feLoadGuides(); drawFaceEditor(); renderFaceLayers();
-    }
+    await fePlaceTimberFromForm(e.bid);
     return;
   }
   /* GEO-192 B:就地操作面板開著時,預覽矩形的四條可拖曳邊優先吃這一下
@@ -4064,6 +4172,7 @@ function feClickSelectBlank(pt) {
   fe.sel = inside ? { kind: "point", x: Math.round(pt.x), y: Math.round(pt.y) } : null;
   feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
   if (wasTimberSel) renderFaceLayers();  /* GEO-191:清掉左欄角材列的 .sel */
+  updateWorkspaceKeyHints();
 }
 function feClickSelectHit(k, a, b) {
   const e = oc.edit; if (!e) return;
@@ -4086,6 +4195,14 @@ function feClickSelectHit(k, a, b) {
   else fe.sel = null;
   feSyncOverlays(); drawFaceEditor(); renderFaceInspector();
   if (wasTimberSel) renderFaceLayers();  /* GEO-191:清掉左欄角材列的 .sel */
+  const queued = fe.queuedShapeAction;
+  if (queued && fe.sel && ((fe.sel.kind === "edge" && queued !== "corner") ||
+      (fe.sel.kind === "corner" && queued === "corner"))) {
+    fe.queuedShapeAction = null;
+    $("faceCanvasHint").hidden = true;
+    feStartOp(queued, FE_OPS[queued].target, fe.sel.i);
+  }
+  updateWorkspaceKeyHints();
 }
 
 function feMove(pt, ev) {
@@ -4322,6 +4439,16 @@ async function feCommitDraft(pts, dropped = []) {
   if (await emitBoundary(e.bid, loops)) {
     fe.newOutline = null;
     await feAfterChange(); feSetTool("select");
+    if (ReferenceWorkspace.active(e.bid) && !feSurf(e.bid)) {
+      const hint = $("faceCanvasHint");
+      hint.innerHTML = `外環已完成 <button type="button" id="referenceNextPlace">下一步：放置</button>`;
+      hint.hidden = false;
+      hint.querySelector("#referenceNextPlace").addEventListener("click", () => {
+        fiShowTab("prop");
+        if (innerWidth <= 680) openPanel("right", $("workspaceToggleRight"));
+        $("placeOX")?.focus();
+      });
+    }
     /* GEO-193:自動補角把草稿裡畫過的轉折併掉(共線去點)時只提示、不擋——
        使用者可能是故意留缺口,也可能是故意少畫最後一段直接收成矩形,
        兩者幾何上無法區分,所以決定權留給使用者(Ctrl+Z 後補畫再閉合)。 */
@@ -4873,19 +5000,40 @@ function feActionsFor(sel) {
           title: FE_OPS[t].desc, on: fe.op && fe.op.type === t });
     acts.push({ act: "fixity", label: fx ? "F → X" : "X → F", iconName: null,
       title: fx ? "此邊目前固定(F),點一下改自由(X)" : "此邊目前自由(X),點一下改固定(F)", on: false });
+    if (sel.loop === 0) acts.push({ act: "timber", label: "沿此邊放角材", iconName: "timber",
+      title: "以目前截面設定沿這條外環邊放置角材", on: false });
     return acts;
   }
   if (sel.kind === "point")
     return [{ act: "op:hole", label: FE_OPS.hole.name, iconName: FE_OPS.hole.icon,
       title: FE_OPS.hole.desc, on: fe.op && fe.op.type === "hole" }];
   if (sel.kind === "timber")
-    /* GEO-191:角材選取只有一顆刪除鈕,不進 feStartOp(不做就地改錨點/方向/截面)。 */
-    return [{ act: "delete", label: "刪除", iconName: "trash", title: "刪除角材", on: false }];
+    return [{ act: "edit", label: "編輯…", iconName: "edit", title: "在右欄編輯角材", on: false },
+      { act: "delete", label: "刪除", iconName: "trash", title: "刪除角材", on: false }];
   return [{ act: "op:corner", label: FE_OPS.corner.name, iconName: FE_OPS.corner.icon,
     title: FE_OPS.corner.desc, on: fe.op && fe.op.type === "corner" }];
 }
 /* GEO-192 C:浮動列/右鍵選單共用的動作處理器。 */
 async function feRunAction(act) {
+  if (act === "timber" && fe.sel?.kind === "edge" && fe.sel.loop === 0) {
+    const bid = oc.edit?.bid;
+    if (!feSid(bid)) { toast("請先放置這片面，再放角材"); return; }
+    const anchor = `at-face e${fe.sel.i}`;
+    if (!feAnchorLineInfo(bid, anchor)) { toast("這條邊的定位引用已失效——請重新選擇"); return; }
+    fiShowTab("timber");
+    $("tbAnchor").value = anchor;
+    const suggestion = feTimberSuggestion(bid, anchor);
+    if (!suggestion?.role) { toast("目前無法推導角材角色，請在右欄確認方向與角色"); return; }
+    feTimberSuggestForm({ forceRole: true });
+    await fePlaceTimberFromForm(bid);
+    return;
+  }
+  if (act === "edit" && fe.sel?.kind === "timber") {
+    fiShowTab("timber");
+    if (innerWidth <= 680) openPanel("right", $("workspaceToggleRight"));
+    $("tbEditAnchor")?.focus();
+    return;
+  }
   if (act === "delete" && fe.sel && fe.sel.kind === "timber") {
     await feDeleteTimber(fe.sel.id);
     return;
@@ -5086,31 +5234,30 @@ function feTbSelectedHTML(bid) {
   const t2 = (fe.timbers || []).find(x => x.id === fe.sel.id);
   if (!t2) return "";
   const surf = feSurf(bid);
-  const roleOpts = [["primary", "primary 主支"], ["boundary", "boundary 邊界材"],
-    ["secondary", "secondary 副支"], ["custom", "custom 自訂"]];
+  const roleOpts = TB_ROLE_OPTS;
   return `<div class="inspector-block" id="tbSelected">` +
     `<div class="ib-title">已選角材 ${t2.id}</div>` +
     `<form id="tbEditForm" class="place-form">` +
-    `<label>A<input id="tbEditA" type="number" value="${t2.A ?? ""}"></label>` +
-    `<label>B<input id="tbEditB" type="number" value="${t2.B ?? ""}"></label>` +
-    `<label>方向<select id="tbEditDir">` +
+    `<label>寬 A（沿面）<input id="tbEditA" type="number" value="${t2.A ?? ""}"></label>` +
+    `<label>厚 B（出面）<input id="tbEditB" type="number" value="${t2.B ?? ""}"></label>` +
+    `<label>延伸方向<select id="tbEditDir">` +
     ["+u", "-u", "+v", "-v"].map(d => `<option${d === t2.dir ? " selected" : ""}>${d}</option>`).join("") +
     `</select></label>` +
-    `<label>側<select id="tbEditSide">` +
-    ["+n", "-n"].map(s => `<option${s === t2.side ? " selected" : ""}>${s}</option>`).join("") +
+    `<label>厚度朝<select id="tbEditSide">` +
+    timberSideOptions(surf).map(([s, label]) => `<option value="${s}"${s === t2.side ? " selected" : ""}>${label}</option>`).join("") +
     `</select></label>` +
     `<label>角色<select id="tbEditRole">` +
     roleOpts.map(([v, t]) => `<option value="${v}"${v === t2.role ? " selected" : ""}>${t}</option>`).join("") +
     `</select></label>` +
-    `<label id="tbEditPriLabel"${t2.role === "custom" ? "" : " hidden"}>priority` +
+    `<label id="tbEditPriLabel"${t2.role === "custom" ? "" : " hidden"}>優先序 (priority)` +
     `<input id="tbEditPri" type="number" value="3"></label>` +
     `<label>定位引用<select id="tbEditAnchor">` +
-    `<option value="">— 橋接不回傳現有錨點,請重選 —</option>` +
+    `<option value="">— 需重選定位引用 —</option>` +
     referenceAnchorOptions(bid, surf) + `</select></label>` +
     `<label>選段（可留空）<input id="tbEditSelector" placeholder="through 600 或 between t1 t2"></label>` +
     `</form>` +
-    `<div class="face-help">橋接(references)不回傳目前錨點/選段,套用前務必重新選擇定位引用,` +
-    `否則角材位置會改成新引用的落點。</div>` +
+    `<div class="face-help">目前無法自動帶入原本的定位引用與選段。套用前請重新選擇定位引用；` +
+    `若原本只放其中一段，也請重新填寫選段。</div>` +
     `<button class="btn primary-button" id="tbEditApply" type="button">套用變更</button> ` +
     `<button class="btn danger" id="tbSelDelete" type="button">刪除</button></div>`;
 }
@@ -5177,9 +5324,10 @@ function feShapePaneHTML(bid) {
   let html = `<div data-fi-pane="shape"${fe.fiTab === "shape" ? "" : " hidden"}>` +
     `<div class="inspector-block"><div class="ib-title">基底外環` +
     (bb ? `<small class="ib-sub">${loops[0].verts.length} 頂點 · ${bb[2] - bb[0]} × ${bb[3] - bb[1]} mm</small>` : "") +
-    `</div><button class="btn" id="fiShapeLib" type="button">形狀庫…</button></div>` +
+    `</div><p class="fi-note">形狀庫會取代目前外環；可用復原返回原輪廓。</p><div id="shapeActionSlot"></div></div>` +
     `<div class="inspector-block"><div class="ib-title">特徵<small class="ib-sub">本次工作階段 · 依序套用</small>` +
     `<span class="tag" id="fiFeatCount">${feats.length}</span></div>`;
+  html += `<p class="fi-note feature-persistence-note">重新整理後只保留輪廓，特徵無法再改數字；底圖也需儲存在專案檔中。</p>`;
   if (!feats.length)
     html += `<div class="fi-note">尚無特徵。在畫布點一條邊或一個凸角,從浮動列選「凹口／外凸／推拉／切角」,填數字後 Enter 套用;畫布會即時預覽。</div>`;
   feats.forEach((f, k) => {
@@ -5203,8 +5351,8 @@ function feShapePaneHTML(bid) {
   return html;
 }
 function feBindShapePane(pane, bid) {
-  const lib = pane.querySelector("#fiShapeLib");
-  if (lib) lib.addEventListener("click", () => $("faceShapeButton").click());
+  pane.querySelector("#shapeActionSlot")?.appendChild(faceShapeAction);
+  faceShapeAction.hidden = false;
   for (const row of pane.querySelectorAll("[data-feat]")) {
     const f = feFeats(bid).find(x => x.id === +row.dataset.feat);
     if (!f) continue;
@@ -5236,9 +5384,15 @@ function feBindShapePane(pane, bid) {
    (對位 x/y/旋轉、不透明度、鎖定、量比例尺、移除)。 */
 function feUnderlayPaneHTML(bid) {
   const ul = oc.underlays[bid];
+  const sourcePage = ReferenceWorkspace.active(bid);
+  const calibrated = !!sourcePage?.calibration;
+  const outlined = !!oc.bmap[bid]?.[0]?.verts?.length;
   let html = `<div data-fi-pane="underlay"${fe.fiTab === "underlay" ? "" : " hidden"}>` +
     `<div class="inspector-block reference-task"><h2>參考描面</h2><p class="reference-intro">先確認尺寸，再沿底圖建立邊界。</p>` +
-    `<nav class="reference-steps" aria-label="描面步驟"><span data-reference-step="calibrate">1 校準尺寸</span><button type="button" id="refDrawOutline" data-reference-step="draw">2 畫外環</button><button type="button" data-project-action="save">3 保存進度</button></nav>` +
+    `<nav class="reference-steps" aria-label="描面步驟">` +
+    `<button type="button" id="refChoosePage" data-reference-step="page" data-project-action="${sourcePage ? "reference" : "import"}" class="${sourcePage ? "done" : "current"}">${sourcePage ? "✓" : "1"} 選頁</button>` +
+    `<button type="button" id="refCalibrateStep" data-reference-step="calibrate" class="${calibrated ? "done" : sourcePage ? "current" : ""}"${sourcePage ? "" : " disabled"}>${calibrated ? "✓" : "2"} 校準</button>` +
+    `<button type="button" id="refDrawOutline" data-reference-step="draw" class="${outlined ? "done" : calibrated ? "current" : ""}"${calibrated ? "" : " disabled"}>${outlined ? "✓" : "3"} 描外環</button></nav>` +
     `<input type="file" id="ulFile" accept="application/pdf,image/png,image/jpeg,image/webp,image/gif" hidden>`;
   if (ul) {
     const calibOn = !!fe.ulCalib;
@@ -5263,7 +5417,7 @@ function feUnderlayPaneHTML(bid) {
       `<div class="kv"${ReferenceWorkspace.context().sources.get(ul.sourceId)?.meta.type === "application/pdf" ? " hidden" : ""}><span>比例尺</span><b id="ulScale">${ul.mmPerPx.toFixed(4)} mm/px</b></div>` +
       `<button class="btn" type="button" id="ulRemove">移除目前底圖</button></details>`;
   }
-  html += ReferenceWorkspace.paneHTML(bid) + `<details class="ref-section" id="refPlacementDetails"><summary>放置與空間（選用）</summary><p class="fi-note">2D 描面可先保留。需要參考線、角材或 3D 位置時，再設定此面的放置。</p><button class="btn" type="button" id="refGoPlace">設定此面的放置</button></details></div></div>`;
+  html += ReferenceWorkspace.paneHTML(bid) + `</div></div>`;
   return html;
 }
 function feBindUnderlayPane(pane, bid) {
@@ -5271,7 +5425,9 @@ function feBindUnderlayPane(pane, bid) {
   pane.querySelector("#refDrawOutline")?.addEventListener("click", () => {
     feSetTool("redraw"); if (innerWidth <= 680) closePanels(); $("faceEditorViewport").focus();
   });
-  pane.querySelector("#refGoPlace")?.addEventListener("click", () => { fiShowTab("prop"); pane.querySelector("#placeOX")?.focus(); });
+  pane.querySelector("#refCalibrateStep")?.addEventListener("click", () => {
+    pane.querySelector("#ulCalibStart")?.click();
+  });
   const fileInp = pane.querySelector("#ulFile");
   if (fileInp) fileInp.addEventListener("change", () => {
     const f = fileInp.files && fileInp.files[0];
@@ -5492,7 +5648,7 @@ function renderFaceInspector() {
   pane.dataset.bid = String(bid);
   pane.dataset.referencePage = ReferenceWorkspace.active(bid)?.id || "";
   pane.dataset.calibrationPoints = JSON.stringify(fe.ulCalib?.pts || null);
-  if (!saved) pane.dataset.tbRoleManual = "false";
+  if (!saved) { pane.dataset.tbRoleManual = "false"; pane.dataset.tbDirManual = "false"; }
   const loops = oc.bmap[bid] || [];
   const surf = feSurf(bid);
   pane.dataset.placement = JSON.stringify(surf ? [surf.id, surf.origin, surf.u, surf.v] : null);
@@ -5511,15 +5667,15 @@ function renderFaceInspector() {
   const spaces = oc.spaces.filter(s => s.members.includes(bid));
 
   /* 屬性、參考線、角材與網格各自保留表單上下文。 */
-  let html = `<div class="face-placement-flow">${placeFlowHTML(bid)}</div>` +
+  let html = `<div class="face-placement-flow" data-complete="${spaces.length > 0}"${fe.fiTab === "prop" && !spaces.length ? "" : " hidden"}>${placeFlowHTML(bid)}</div>` +
     `<div data-fi-pane="prop"${fe.fiTab === "prop" || !fe.fiTab ? "" : " hidden"}>` +
     `<div class="inspector-block"><div class="ib-title">面 ${bid}` +
-    `<span class="tag">${surf ? "已放置" : "游離"}</span></div>` +
+    `<span class="tag">${surf ? "已放置" : "未放置"}</span></div>` +
     `<div class="kv"><span>id</span><b>${bid}</b></div>` +
     `<div class="kv"><span>承載面</span><b>${surf ? surf.id : "—"}</b></div>`;
   if (surf) html +=
-    `<div class="kv"><span>origin</span><b>${surf.origin.join(", ")}</b></div>` +
-    `<div class="kv"><span>u / v</span><b>${AXIS_WORD[surf.u.join()]} / ${AXIS_WORD[surf.v.join()]}</b></div>`;
+    `<div class="kv"><span>原點 (origin)</span><b>${surf.origin.join(", ")}</b></div>` +
+    `<div class="kv"><span>面內軸 (u / v)</span><b>${AXIS_WORD[surf.u.join()]} / ${AXIS_WORD[surf.v.join()]}</b></div>`;
   if (bb) html +=
     `<div class="kv"><span>尺寸</span><b>${bb[2] - bb[0]} × ${bb[3] - bb[1]} mm</b></div>` +
     `<div class="kv"><span>外環 / 孔</span><b>${loops[0].verts.length} 頂點 / ${loops.length - 1} 孔</b></div>`;
@@ -5533,7 +5689,7 @@ function renderFaceInspector() {
   html += `<div class="inspector-block"><div class="ib-title">外環邊` +
     `<small class="ib-sub">F 固定 · X 自由</small></div><div class="edge-list">` +
     edgeListRowsHTML(loops, "edge");
-  html += `</div><div id="shapeActionSlot"></div></div>`;
+  html += `</div></div>`;
   const guideHTML = surf ? `<div class="inspector-block"><div class="ib-title">參考線與具名規格</div>` +
     `<div class="face-help">以已知邊或具名規格決定位置。例如先儲存「主支中線」，再填入 spec:主支中線。引用式中的比例沒有單位，數值規格以 mm 儲存。</div>` +
     `<div class="guide-summary">${fe.guides.map(g => `<div>參考線 ${g.id} · ${g.axis} 方向 · 位置 ${g.off} mm</div>`).join("") || "尚無參考線"}</div>` +
@@ -5562,7 +5718,8 @@ function renderFaceInspector() {
       `<label><input type="checkbox" data-proj-check="${v}"${fe.projViews.has(v) ? " checked" : ""}> ${VIEW_NAMES[v]}</label>`).join("") +
     `</div><div id="projViews"></div></div></details></div>`;
   html += `</div>`;
-  html += `<div data-fi-pane="guide"${fe.fiTab === "guide" ? "" : " hidden"}>${guideHTML}</div>`;
+  html += `<div data-fi-pane="components"${["components", "guide", "timber", "grid"].includes(fe.fiTab) ? "" : " hidden"}>` +
+    `<section data-component-section="guide"><h2 class="component-heading">參考線</h2>${guideHTML}</section>`;
   /* B2:角材頁（游離面顯示停用說明,欄位一併停用）
      GEO-195:定位引用改用 referenceAnchorOptions 的新排序(未占用在前,預設自然選中第一條
      未占用);全部占用時加一行提示;角色改用 feTimberRoleOptionsHTML 依主支軸排除。
@@ -5571,38 +5728,40 @@ function renderFaceInspector() {
   const tbAllAnchorsOccupied = tbAnchorEntries.length > 0 && tbAnchorEntries.every(a => a.occupied != null);
   const tbPrevDir = saved?.drafts.find(([id]) => id === "tbDir")?.[1] || "+u";
   const tbPrevRole = saved?.drafts.find(([id]) => id === "tbRole")?.[1] || "primary";
-  html += `<div data-fi-pane="timber"${fe.fiTab === "timber" ? "" : " hidden"}>` +
+  html += `<section data-component-section="timber"><h2 class="component-heading">角材</h2>` +
     feTbSelectedHTML(bid) +
     `<div class="inspector-block"><div class="ib-title">角材放置</div>` +
     (surf ? "" : `<div class="fi-note">這片面尚未放置。請先設定位置與朝向，再放角材。</div><button id="tbGoPlace" type="button" class="primary-button">先放置這片面</button>`) +
     (tbAllAnchorsOccupied ? `<div class="fi-note" id="tbAnchorAllOccupied">所有定位引用都已有角材，先加參考線(L)</div>` : "") +
     `<div class="fi-note">長度由支撐與有效範圍自動推導。</div>` +
-    `<div class="place-form">` +
-    `<label>定位引用<select id="tbAnchor"${surf ? "" : " disabled"}>${referenceAnchorOptions(bid, surf)}</select></label>` +
-    `<label>選段（可留空）<input id="tbSelector" placeholder="through 600 或 between t1 t2"${surf ? "" : " disabled"}></label>` +
-    `<label>A<input id="tbA" type="number" value="27"${surf ? "" : " disabled"}></label>` +
-    `<label>B<input id="tbB" type="number" value="33"${surf ? "" : " disabled"}></label>` +
-    `<label>方向<select id="tbDir"${surf ? "" : " disabled"}>` +
+    `<div class="timber-form-group"><strong>1 位置</strong><div class="place-form">` +
+    `<label>沿著<select id="tbAnchor"${surf ? "" : " disabled"}>${referenceAnchorOptions(bid, surf)}</select><small class="field-note">也可直接點畫布上的邊或參考線</small></label>` +
+    `<label>只放其中一段（選填）<input id="tbSelector" placeholder="例如 through 600"${surf ? "" : " disabled"}></label></div></div>` +
+    `<div class="timber-form-group"><strong>2 截面</strong><div class="place-form">` +
+    `<label>寬 A（沿面）<input id="tbA" type="number" value="27"${surf ? "" : " disabled"}></label>` +
+    `<label>厚 B（出面）<input id="tbB" type="number" value="33"${surf ? "" : " disabled"}></label></div></div>` +
+    `<div class="timber-form-group"><strong>3 朝向與角色</strong><div class="place-form">` +
+    `<label>厚度朝<select id="tbSide"${surf ? "" : " disabled"}>${timberSideOptions(surf).map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}</select></label>` +
+    `<label>延伸方向 <span class="auto-badge" id="tbDirAuto">自動</span><select id="tbDir"${surf ? "" : " disabled"}>` +
     ["+u", "-u", "+v", "-v"].map(d => `<option${d === tbPrevDir ? " selected" : ""}>${d}</option>`).join("") +
     `</select></label>` +
-    `<label>深度<select id="tbSide"${surf ? "" : " disabled"}><option>+n</option><option>-n</option></select></label>` +
-    `<label>角色<select id="tbRole"${surf ? "" : " disabled"}>` +
+    `<label>角色 <span class="auto-badge" id="tbRoleAuto">自動</span><select id="tbRole"${surf ? "" : " disabled"}>` +
     feTimberRoleOptionsHTML(bid, tbPrevDir, tbPrevRole) +
     `</select></label>` +
-    `<label id="tbPriLabel" hidden>priority<input id="tbPri" type="number" value="3"${surf ? "" : " disabled"}></label>` +
-    `</div><div class="face-help">` +
-    (surf ? "選擇定位引用與方向，再以「角材」工具點擊面內放置；點擊位置不作為尺寸輸入。"
+    `<label id="tbPriLabel" hidden>優先序 (priority)<input id="tbPri" type="number" value="3"${surf ? "" : " disabled"}></label>` +
+    `</div></div><div class="face-help">` +
+    (surf ? "選好定位引用後可直接放置；畫布點線也是快捷入口，點擊位置不作為尺寸輸入。"
           : "游離面：先「放置」才可放角材") + `</div>` +
     `<div class="timber-suggestion"${surf ? "" : " hidden"}><span id="tbSuggestion"></span><button id="tbUseSuggestion" type="button" class="btn">套用建議</button></div>` +
-    `<button id="tbPlace" class="primary-button"${surf ? "" : " disabled"}>以此設定放置角材</button></div></div>`;
+    `<button id="tbPlace" class="primary-button"${surf ? "" : " disabled"}>放置角材</button></div></section>`;
   /* B2:網格頁（同上游離停用） */
-  html += `<div data-fi-pane="grid"${fe.fiTab === "grid" ? "" : " hidden"}>` +
+  html += `<section data-component-section="grid"><h2 class="component-heading">網格</h2>` +
     `<div class="inspector-block"><div class="ib-title">網格</div>` +
     (surf ? "" : `<div class="fi-note">游離面：先放置才可建網格。</div>`) +
     `<div class="place-form">` +
     `<label>u 座標<input id="gridU" placeholder="500 1500"${surf ? "" : " disabled"}></label>` +
     `<label>v 座標<input id="gridV" placeholder="300 900"${surf ? "" : " disabled"}></label>` +
-    `</div><button class="btn" id="gridCreate"${surf ? "" : " disabled"}>建立網格</button></div></div>`;
+    `</div><button class="btn" id="gridCreate"${surf ? "" : " disabled"}>建立網格</button></div></section></div>`;
   /* GEO-188(方案 B):形狀頁 */
   html += feShapePaneHTML(bid);
   /* GEO-190:底圖頁 */
@@ -5616,8 +5775,7 @@ function renderFaceInspector() {
     origin?.scrollIntoView({ block: "center" });
     setStatus("設定這片面的位置與朝向，再按「放置」。完成後可選角材工具。");
   });
-  pane.querySelector("#shapeActionSlot").appendChild(faceShapeAction);
-  pane.querySelector("#tbPlace").addEventListener("click", () => { feSetTool("timber"); closePanels(); $("faceEditorViewport").focus(); });
+  pane.querySelector("#tbPlace").addEventListener("click", () => fePlaceTimberFromForm(bid));
   pane.querySelector("#tbUseSuggestion").addEventListener("click", () => {
     feTimberSuggestForm({ forceRole: true }); feTimberHintRefresh(); drawFaceEditor();
   });
@@ -5674,6 +5832,7 @@ function renderFaceInspector() {
   const tbRole = pane.querySelector("#tbRole");
   if (tbRole) tbRole.addEventListener("change", () => {
     pane.dataset.tbRoleManual = "true";
+    feTimberAutoBadges(pane);
     const pl = pane.querySelector("#tbPriLabel");
     if (pl) pl.hidden = tbRole.value !== "custom";
   });
@@ -5682,6 +5841,8 @@ function renderFaceInspector() {
      也連動重畫,預示帶(寬=A)才會跟著新值走。 */
   const tbDirSel = pane.querySelector("#tbDir");
   if (tbDirSel) tbDirSel.addEventListener("change", () => {
+    pane.dataset.tbDirManual = "true";
+    feTimberAutoBadges(pane);
     feTimberSyncRoleOptions(pane);
     feTimberHintRefresh();
     if (fe.tool === "timber" || fe.anchorPreview) drawFaceEditor();
@@ -5747,6 +5908,7 @@ function renderFaceInspector() {
     });
   if (fe.projOpen) feRenderProjection();
   restoreInspectorState(pane, saved);
+  feTimberAutoBadges(pane);
   ReferenceWorkspace.present();
   if (!saved || (saved.placement === "null" && surf)) feTimberSuggestForm();
   else feTimberShowSuggestion();
@@ -5789,6 +5951,16 @@ function surfNormalLabel(s) {
            : Math.abs(n[1]) >= Math.abs(n[2]) ? 1 : 2;
   const key = (n[ax] >= 0 ? "+" : "-") + "XYZ"[ax];
   return `${NORMAL_NAMES[key] || key} ${"xyz"[ax]}=${s.origin[ax]}`;
+}
+function timberSideOptions(surf) {
+  if (!surf) return [["+n", "沿法向 (+n)"], ["-n", "逆法向 (−n)"]];
+  const u = surf.u, v = surf.v;
+  const n = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
+  const axis = n.findIndex(x => x !== 0);
+  const plus = (n[axis] > 0 ? "+" : "−") + "XYZ"[axis];
+  const minus = (n[axis] > 0 ? "−" : "+") + "XYZ"[axis];
+  const label = axis === 2 ? [plus === "+Z" ? "朝上" : "朝下", minus === "+Z" ? "朝上" : "朝下"] : ["朝 " + plus, "朝 " + minus];
+  return [["+n", `${label[0]}（${plus}，+n）`], ["-n", `${label[1]}（${minus}，−n）`]];
 }
 /* 建面 → 放置 → 收進空間 流程條(F1) */
 function placeFlowHTML(bid) {
@@ -6169,7 +6341,7 @@ function renderObjectList() {
         r.kind === "beam" ? "beam" : "face")}</span>` +
       `<span class="row-copy"><strong>${r.name}</strong>` +
       `<small>${r.sub}</small></span>` +
-      (free ? `<span class="row-badge" data-insp-scroll="place">游離</span>` : "");
+      (free ? `<span class="row-badge" data-insp-scroll="place">未放置</span>` : "");
     row.addEventListener("click", ev => {
       if (ev.target.closest('[data-insp-scroll="place"]'))
         oc.inspScroll = "place";
@@ -6211,7 +6383,7 @@ function renderInspector() {
     : `${KIND_ZH[sel.kind] || "面"} ${o.id}`;
   const state = sel.kind === "space"
     ? (o.closed ? "封閉" : `開放 · ${o.members.length} 面`)
-    : (o.placed ? "已放置" : "游離");
+    : (o.placed ? "已放置" : "未放置");
   const ownedBy = sel.kind !== "space"
     ? oc.spaces.find(s => s.members.includes(o.id)) : null;
   const bLoops = sel.kind === "boundary" ? (oc.bmap[o.id] || []) : null;
@@ -6561,6 +6733,7 @@ function setOcTool(t) {
   oc.rect = null;
   for (const b of document.querySelectorAll("[data-tool]"))
     b.classList.toggle("active", b.dataset.tool === t);
+  $("btnNewRect").classList.toggle("active", t === "rect");
   ocCursor();
   const tip = { select: "選取：點卡片選取 · 拖曳移動 · 雙擊進入",
     pan: "平移：拖曳畫布移動視野（中鍵/空白拖也可）",
@@ -6845,6 +7018,36 @@ $("rcSubmit").addEventListener("click", async () => {
 /* ---- 面內工作區事件 ---- */
 for (const b of document.querySelectorAll("[data-face-tool]"))
   b.addEventListener("click", () => feSetTool(b.dataset.faceTool));
+$("shapeToolButton").addEventListener("click", () => {
+  const pop = $("shapeToolPop"), open = pop.hidden;
+  pop.hidden = !open;
+  $("shapeToolButton").setAttribute("aria-expanded", String(open));
+  if (open) {
+    const r = $("shapeToolButton").getBoundingClientRect();
+    pop.style.left = Math.max(8, Math.min(r.left, innerWidth - 156)) + "px";
+    pop.style.top = (r.bottom + 4) + "px";
+  }
+});
+for (const b of $("shapeToolPop").querySelectorAll("[data-shape-action]"))
+  b.addEventListener("click", () => {
+    const action = b.dataset.shapeAction;
+    $("shapeToolPop").hidden = true;
+    $("shapeToolButton").setAttribute("aria-expanded", "false");
+    if (action === "hole") { feSetTool("hole"); return; }
+    feSetTool("select");
+    fe.queuedShapeAction = action;
+    const target = action === "corner" ? "凸角" : "外環邊";
+    const prompt = `${FE_OPS[action].name}：點一個${target}，再填入尺寸`;
+    $("faceCanvasHint").textContent = prompt; $("faceCanvasHint").hidden = false;
+    setStatus(prompt); updateWorkspaceKeyHints();
+    if (innerWidth <= 680) closePanels();
+  });
+document.addEventListener("pointerdown", e => {
+  if (!e.target.closest?.(".shape-tool-menu, #shapeToolPop")) {
+    $("shapeToolPop").hidden = true;
+    $("shapeToolButton").setAttribute("aria-expanded", "false");
+  }
+});
 $("workspaceBackButton").addEventListener("click", leaveFocus);
 $("workspaceFitButton").addEventListener("click", () => {
   if (oc.edit && oc.bmap[oc.edit.bid]) feFit(loopsBBox(oc.bmap[oc.edit.bid]));
@@ -7136,11 +7339,16 @@ $("cmdToggle").addEventListener("click", () => showCommand($("cmdPanel").hidden)
 $("spaceAddMembers").addEventListener("click", () => openMemberDialog(oc.focus.id));
 for (const [id, label] of [["spacePlaceColumn", "在平面圖點一下放柱"], ["spacePlaceBeam", "在平面圖拖出一段放樑"]])
   $(id).addEventListener("click", () => {
-    closePanels(); document.querySelector('[data-ss-tab="plan"]').click();
+    if ($(id).disabled) return;
+    closePanels();
+    for (const b of $("spaceWorkspaceTools").querySelectorAll(".workspace-tool")) b.classList.toggle("active", b.id === id);
+    for (const c of $("spaceSizeTools").querySelectorAll(".plan-chip"))
+      c.classList.toggle("active", c.dataset.sizeFor === (id === "spacePlaceColumn" ? "column" : "beam"));
+    syncSpaceStageTools();
     $("workspaceToolStatus").textContent = label; toast(label, "ok");
   });
-/* Size controls belong to the stage switch row, without repeating the stage title. */
-$("spaceStageTabs").appendChild(document.querySelector(".space-plan-tools"));
+/* Current size appears next to the selected placement mode. */
+$("spaceSizeTools").appendChild(document.querySelector(".space-plan-tools"));
 document.querySelector(".space-plan-head").remove();
 new ResizeObserver(() => { if (view3) applyTransform(); }).observe($("canvasViewport"));
 $("btnHole2").addEventListener("click", () => {
@@ -7161,7 +7369,7 @@ $("btnHole2").addEventListener("click", () => {
     for (const s of scenes) {
       const b = document.createElement("button");
       b.type = "button"; b.className = "menu-item scene-item";
-      b.dataset.path = s.path; b.textContent = s.name;
+      b.dataset.path = s.path; b.textContent = sceneMenuDisplay(s.name);
       b.addEventListener("click", () => loadScene(s.path, s.name));
       pop.appendChild(b);
       if (s.name === "room_a.scene")
@@ -7179,7 +7387,7 @@ $("btnHole2").addEventListener("click", () => {
     exIt.textContent = "載入範例";
     exIt.addEventListener("click", () => loadExampleRoomA());
     pop.appendChild(exIt);
-    $("sceneMenuLabel").textContent = curScene.name;
+    $("sceneMenuLabel").textContent = sceneMenuDisplay(curScene.name);
     markSceneItem();
   } catch {}
   await initialRead;
