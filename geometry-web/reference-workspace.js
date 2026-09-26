@@ -16,13 +16,40 @@ const ReferenceWorkspace = (() => {
     return context().groups.get(key) || null;
   }
   function active(bid) { const g = group(bid); return g?.pages.find(p => p.id === g.activePageId) || null; }
-  function dirty() { context().dirty = true; }
+  let presentationFrame = 0;
+  function dirty() { context().dirty = true; context().downloaded = false; schedulePresentation(); }
+  function schedulePresentation() {
+    if (!presentationFrame) presentationFrame = requestAnimationFrame(() => { presentationFrame = 0; present(); });
+  }
+  function present() {
+    const c = context();
+    const state = busy ? "處理中…" : fe.draft?.pts?.length ? "外環草稿尚未套用" : fe.ulCalib?.pts?.length ? "校準尚未套用" : c.downloaded ? "已產生下載 · 請確認檔案" : c.dirty ? "有未保存的變更" : c.saved ? "已保存" : "尚未保存";
+    document.querySelectorAll("[data-project-name]").forEach(el => { const name = c.name + ".gcanvas"; if (el.textContent !== name) { el.textContent = name; el.title = name; } });
+    document.querySelectorAll("[data-project-status]").forEach(el => { if (el.textContent !== state) el.textContent = state; });
+    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy; });
+    const p = oc.edit && active(oc.edit.bid), source = p && c.sources.get(p.sourceId);
+    const summary = document.getElementById("faceReferenceSummary");
+    if (summary) {
+      const html = p ? `<button type="button" class="reference-source" data-project-action="reference"><strong>${escape(source?.meta.name || "參考圖片")}</strong><span>第 ${p.page} 頁 · ${group(oc.edit.bid).pages.length} 張參考頁</span><small>${p.calibration ? "已校準" : "未校準"}${p.reviewRequired ? " · 幾何待核對" : ""}</small></button>` : `<p class="reference-empty">尚未加入來源。也可以直接使用上方工具繪製。</p>`;
+      if (summary.innerHTML !== html) summary.innerHTML = html;
+    }
+    document.getElementById("objectWorkspace")?.classList.toggle("reference-editor", !!p && fe.fiTab === "underlay");
+    const pane = document.getElementById("faceInspectorContent");
+    if (pane) pane.dataset.activeTab = fe.fiTab;
+    document.querySelectorAll("#faceInspectorTabs [data-fi-tab]").forEach(el => el.setAttribute("aria-pressed", String(el.dataset.fiTab === fe.fiTab)));
+    document.querySelectorAll("[data-reference-step]").forEach(el => {
+      const selected = el.dataset.referenceStep === (fe.tool === "redraw" ? "draw" : "calibrate");
+      el.classList.toggle("current", selected);
+      if (selected) el.setAttribute("aria-current", "step"); else el.removeAttribute("aria-current");
+    });
+  }
   function sync() {
     const next = {};
     for (const bid of history.frame.ids.keys()) { const p = active(bid); if (p?.src) next[bid] = p; }
     oc.underlays = next;
     const label = document.getElementById("projectName");
     if (label) label.textContent = context().groups.size ? context().name : "";
+    schedulePresentation();
   }
   function observe(cmd, result) {
     if (pendingLoad) return; // A lost load response must be resolved before reusing any face ids.
@@ -145,18 +172,20 @@ const ReferenceWorkspace = (() => {
   }
   function paneHTML(bid) {
     const g = group(bid), p = active(bid);
-    let html = `<div class="ref-actions"><button id="refImport" class="btn" type="button">匯入 PDF／圖片</button>`;
+    let html = `<details id="refSourceDetails" class="ref-section"${p ? "" : " open"}><summary>參考頁與來源</summary><div class="ref-actions"><button id="refImport" class="btn" type="button">匯入 PDF／圖片</button>`;
     if (p) html += `<button id="refMorePages" class="btn" type="button">從此來源選其他頁</button>`;
     html += `</div>`;
-    if (!p) return html + `<p class="fi-note">參考資料會隨 .gcanvas 專案保存。純 .scene 只保存幾何。</p>`;
-    html += `<p class="fi-note">${escape(context().name)}</p>`;
+    if (!p) return html + `<p class="fi-note">參考資料會隨 .gcanvas 專案保存。純 .scene 只保存幾何。</p></details>`;
     html += `<label class="ib-row">參考頁<select id="refActivePage">${g.pages.map(v => `<option value="${v.id}"${v.id===p.id?" selected":""}>${escape(context().sources.get(v.sourceId)?.meta.name || "圖片")} · 第 ${v.page} 頁</option>`).join("")}</select></label>`;
-    html += `<p id="refCalibrationStatus" class="ref-status${p.calibration?"":" warning"}">${p.calibration ? `已校準 · ${p.calibration.inputValue} ${p.calibration.inputUnit}` : "未校準 · 目前僅為顯示比例"}</p>`;
-    if (p.reviewRequired) html += `<p class="ref-status warning">底圖對位已改變，請重新核對幾何。</p><button id="refConfirmChecked" type="button" class="btn">已核對此面的幾何</button>`;
-    html += `<button id="refFit" type="button" class="btn">顯示取景範圍</button><details class="ref-records" id="refRecordDetails"><summary>來源紀錄與待補資訊（${p.records.length}）</summary>`;
+    html += `<button id="refFit" type="button" class="btn">顯示取景範圍</button></details><details class="ref-records ref-section" id="refRecordDetails"><summary>來源紀錄與待補資訊（${p.records.length}）</summary>`;
     for (const r of p.records) html += `<article class="ref-record"><strong>${escape(r.label || "未命名紀錄")}</strong><span>${r.value===null?"待補":escape(r.value)+" "+r.unit}</span><p>${escape(r.location)}${r.datum?" · 基準："+escape(r.datum):""}</p><small>第 ${p.page} 頁</small><button type="button" class="text-button" data-ref-remove-record="${r.id}" aria-label="移除 ${escape(r.label)} 紀錄">移除</button></article>`;
     html += `<label class="ib-row">項目<input id="refRecordLabel" maxlength="300" placeholder="例如：天花完成高度"></label><label class="ib-row">位置說明<input id="refRecordLocation" maxlength="1000" placeholder="例如：A202 主區域"></label><div class="place-form"><label>數值（留空表示待補）<input id="refRecordValue" type="number" step="any"></label><label>單位<select id="refRecordUnit"><option>mm</option><option>cm</option></select></label></div><label class="ib-row">基準<input id="refRecordDatum" maxlength="300" placeholder="例如：完成地坪 FFL"></label><button id="refRecordAdd" type="button" class="btn">新增來源紀錄</button><p class="fi-note">紀錄不會自動建立構件。天花完成高度與 RC 樑底高度請分開記錄。</p></details>`;
     return html;
+  }
+  function statusHTML(bid) {
+    const p = active(bid); if (!p) return "";
+    return `<p id="refCalibrationStatus" class="ref-status${p.calibration ? "" : " neutral"}">${p.calibration ? `已校準 · ${p.calibration.inputValue} ${p.calibration.inputUnit}` : "未校準 · 請使用圖上已知尺寸"}</p>` +
+      (p.reviewRequired ? `<div class="reference-review"><p>幾何待核對：請依底圖確認已建立的輪廓。</p><button id="refConfirmChecked" type="button" class="btn">已核對此面的幾何</button></div>` : "");
   }
   function bindPane(pane, bid) {
     pane.querySelector("#refImport")?.addEventListener("click", () => chooseFile(bid));
@@ -182,8 +211,8 @@ const ReferenceWorkspace = (() => {
   async function openSource(source, bid = null) {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
     const dialog = document.getElementById("referenceDialog"), token = ++sequence;
-    modal = { source, bid, page: 1, crop: null, width: 1, height: 1, token, zoom: 1, ready: false, drag: null };
-    document.getElementById("refZoom").value = "1";
+    modal = { source, bid, page: 1, crop: null, width: 1, height: 1, token, zoom: "page", ready: false, drag: null };
+    document.getElementById("refZoom").value = "page";
     document.getElementById("refSourceName").textContent = source.meta.name;
     document.getElementById("refPreviewMessage").textContent = "正在讀取來源…";
     document.getElementById("refApply").disabled = true;
@@ -222,7 +251,7 @@ const ReferenceWorkspace = (() => {
       Object.assign(m, { width: r.width, height: r.height, render: r, ready: true, crop: [0,0,r.width,r.height] });
       const host = document.getElementById("refPagePreview");
       host.innerHTML = `<img alt="第 ${number} 頁預覽"><div id="refCropOverlay"></div>`;
-      host.querySelector("img").src = r.src; host.style.width = 100 * m.zoom + "%";
+      host.querySelector("img").src = r.src; layoutPreview();
       document.getElementById("refPreviewMessage").textContent = "拖曳框選取景範圍；未框選時使用整頁。確認後再校準尺寸。";
       document.getElementById("refApply").disabled = false; drawCrop();
       // Only five nearby thumbnails are rendered, never the entire document.
@@ -235,6 +264,12 @@ const ReferenceWorkspace = (() => {
         const img = document.createElement("img"); img.alt=""; img.src=t.src; b.prepend(img);
       }
     } catch(e) { if (modal === m && m.token === request) document.getElementById("refPreviewMessage").textContent=e.message; }
+  }
+  function layoutPreview() {
+    if (!modal?.ready) return;
+    const host = document.getElementById("refPagePreview"), scroll = host.parentElement;
+    const width = Math.max(1, scroll.clientWidth - 24), height = Math.max(1, scroll.clientHeight - 24);
+    host.style.width = (modal.zoom === "page" ? Math.min(width, height * modal.width / modal.height) : width * modal.zoom) + "px";
   }
   function drawCrop() {
     if (!modal?.crop) return; const [x,y,w,h]=modal.crop, box=document.getElementById("refCropOverlay"); if (!box) return;
@@ -262,7 +297,7 @@ const ReferenceWorkspace = (() => {
       closeSource(true); feSetTool("select"); fiShowTab("underlay"); redraw(); fitReference();
       if (innerWidth <= 680) openPanel("right",document.getElementById("workspaceToggleRight"));
       setStatus("已加入參考頁；請用圖上已知尺寸完成兩點校準。");
-    } finally { busy=false; dialog.inert=false; if (modal) document.getElementById("refApply").disabled=!modal.ready; }
+    } finally { busy=false; dialog.inert=false; present(); if (modal) document.getElementById("refApply").disabled=!modal.ready; }
   }
   function closeSource(force = false) {
     if (busy && force !== true) return;
@@ -283,8 +318,13 @@ const ReferenceWorkspace = (() => {
     }
     return { format:P.FORMAT,projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces };
   }
-  async function exportBytes() {
+  function assertSaveReady() {
     if (oc.busy || fe.ulDrag || history.group) throw new Error("請先完成目前的操作再保存。");
+    if (fe.draft?.pts?.length) throw new Error("外環草稿尚未套用。請先完成外環或放棄草稿，再保存專案。");
+    if (fe.ulCalib?.pts?.length) throw new Error("校準尚未套用。請先套用比例尺或取消取點，再保存專案。");
+  }
+  async function exportBytes() {
+    assertSaveReady();
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
     const m=await manifest(), data=new Map([...context().sources].map(([k,s])=>[k,s.bytes]));
     return P.pack(r.text,m,data,fflate);
@@ -295,22 +335,23 @@ const ReferenceWorkspace = (() => {
   }
   async function save() {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
+    assertSaveReady();
     // Request the handle while user activation is still available.
     const suggested=context().name.replace(/[\\/:*?"<>|]/g,"_")+".gcanvas";
     const handlePromise=window.showSaveFilePicker ? window.showSaveFilePicker({suggestedName:suggested,types:[{description:"構形 Canvas 專案",accept:{"application/zip":[".gcanvas"]}}]}) : null;
-    busy=true;
+    busy=true; present();
     try {
       let handle;
       try { handle=handlePromise && await handlePromise; } catch(e) { if(e.name==="AbortError")return;throw e; }
       const bytes=await exportBytes();
       if(handle){const writable=await handle.createWritable();try{await writable.write(bytes);await writable.close();}catch(e){await writable.abort().catch(()=>{});throw e;}
-        context().dirty=false;setStatus("✓ 專案已保存，包含完整來源檔案");}
-      else {download(bytes,suggested);setStatus("已產生專案下載；請確認下載完成後再關閉。");}
-    } finally {busy=false;}
+        context().dirty=false;context().saved=true;context().downloaded=false;setStatus("✓ 專案已保存，包含完整來源檔案");}
+      else {download(bytes,suggested);context().downloaded=true;setStatus("已產生專案下載；請確認下載完成後再關閉。");}
+    } finally {busy=false;present();}
   }
   async function importBytes(bytes,name="匯入專案") {
     if (oc.busy || history.group) throw new Error("請先完成目前的操作再開啟專案。");
-    const loaded=await P.unpack(bytes,fflate),m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;
+    const loaded=await P.unpack(bytes,fflate),m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
     for(const meta of m.sources)c.sources.set(meta.id,{meta,bytes:loaded.sources.get(meta.id)});
     const bids=new Set([...loaded.scene.matchAll(/^(?:boundary|surface)\s+(\d+)\s/gm)].map(v=>+v[1])),ids=[];
     for(const f of m.faces){
@@ -388,8 +429,27 @@ const ReferenceWorkspace = (() => {
     },{capture:true,passive:false});
     document.getElementById("btnImportReference").onclick=()=>chooseFile(oc.edit?.bid ?? null);
     document.getElementById("btnSaveProject").onclick=safe(save);
+    document.addEventListener("click", e => {
+      const button = e.target.closest("[data-project-action]");
+      if (!button) return;
+      const action = button.dataset.projectAction;
+      button.closest("details")?.removeAttribute("open");
+      if (action === "save") safe(save)();
+      else if (action === "import") chooseFile(oc.edit?.bid ?? null);
+      else if (action === "open") document.getElementById("btnOpenProject").click();
+      else if (action === "name") document.getElementById("btnProjectName").click();
+      else if (action === "export") document.getElementById("btnExport").click();
+      else if (action === "reference") { fiShowTab("underlay"); if (innerWidth <= 680) openPanel("right",document.getElementById("workspaceToggleRight")); }
+    });
+    document.addEventListener("click", e => { if (!e.target.closest(".workspace-file-menu")) document.querySelector(".workspace-file-menu")?.removeAttribute("open"); });
+    document.addEventListener("keydown", e => {
+      const menu = document.querySelector(".workspace-file-menu[open]");
+      if (e.key === "Escape" && menu) {
+        e.preventDefault(); e.stopImmediatePropagation(); menu.removeAttribute("open"); menu.querySelector("summary").focus();
+      }
+    }, {capture:true});
     document.getElementById("btnOpenProject").onclick=()=>{if(mayLeave()){const i=document.getElementById("projectFile");i.value="";i.click();}};
-    document.getElementById("projectFile").onchange=safe(async e=>{const f=e.target.files[0];if(!f)return;if(f.size>P.MAX_PACKAGE)throw new Error("專案檔案超過 256 MB。");busy=true;try{await importBytes(new Uint8Array(await f.arrayBuffer()),f.name);}finally{busy=false;e.target.value="";}});
+    document.getElementById("projectFile").onchange=safe(async e=>{const f=e.target.files[0];if(!f)return;if(f.size>P.MAX_PACKAGE)throw new Error("專案檔案超過 256 MB。");busy=true;present();try{await importBytes(new Uint8Array(await f.arrayBuffer()),f.name);}finally{busy=false;e.target.value="";present();}});
     document.getElementById("referenceFile").onchange=safe(async e=>{const f=e.target.files[0];if(f)await openSource(await sourceFromFile(f),e.target.dataset.bid===""?null:Number(e.target.dataset.bid));e.target.value="";});
     document.getElementById("refClose").onclick=closeSource;
     document.getElementById("referenceDialog").addEventListener("cancel",e=>{e.preventDefault();closeSource();});
@@ -398,7 +458,8 @@ const ReferenceWorkspace = (() => {
     document.getElementById("refPrev").onclick=safe(()=>previewPage(modal.page-1));
     document.getElementById("refNext").onclick=safe(()=>previewPage(modal.page+1));
     document.getElementById("refResetCrop").onclick=()=>{if(modal?.ready){modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
-    document.getElementById("refZoom").onchange=e=>{if(modal){modal.zoom=Number(e.target.value);document.getElementById("refPagePreview").style.width=100*modal.zoom+"%";}};
+    document.getElementById("refZoom").onchange=e=>{if(modal){modal.zoom=e.target.value === "page" ? "page" : Number(e.target.value);layoutPreview();}};
+    new ResizeObserver(layoutPreview).observe(document.querySelector(".ref-preview-scroll"));
     const preview=document.getElementById("refPagePreview");
     preview.onpointerdown=e=>{if(!modal?.ready||e.button!==0)return;e.preventDefault();modal.drag=cropPoint(e);preview.setPointerCapture(e.pointerId);};
     preview.onpointermove=e=>{if(!modal?.drag)return;const p=cropPoint(e),s=modal.drag;modal.crop=[Math.min(p[0],s[0]),Math.min(p[1],s[1]),Math.max(1,Math.abs(p[0]-s[0])),Math.max(1,Math.abs(p[1]-s[1]))];drawCrop();};
@@ -406,8 +467,9 @@ const ReferenceWorkspace = (() => {
     preview.onpointercancel=preview.onpointerup;
     document.getElementById("btnProjectName").onclick=()=>{const n=prompt("專案名稱",context().name);if(n?.trim()){context().name=n.trim().slice(0,200);dirty();sync();}};
     window.addEventListener("beforeunload",e=>{if(context().dirty&&context().groups.size){e.preventDefault();e.returnValue="";}});
+    present();
   }
-  return { init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,bindPane,active,group,context,history,
+  return { init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,statusHTML,present,bindPane,active,group,context,history,
     sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     manifest,exportBytes,importBytes,uploadScene,recoverLoad,mayLeave,sync,save,escape,get busy(){return busy;} };
 })();

@@ -87,8 +87,9 @@ function inspectorState(pane, bid) {
   return { focus: pane.contains(a) ? a.id : "", scroll: pane.parentElement.scrollTop,
     ownScroll: pane.scrollTop,
     placement: pane.dataset.placement, timberRoleManual: pane.dataset.tbRoleManual,
+    referencePage: pane.dataset.referencePage, calibrationPoints: pane.dataset.calibrationPoints,
     drafts: [...pane.querySelectorAll("input[id],select[id]")]
-      .filter(e => /^(tb|ref|grid|place[OUV])/.test(e.id)).map(e => [e.id, e.value]),
+      .filter(e => /^(tb|ref|grid|place[OUV]|ulCalib)/.test(e.id)).map(e => [e.id, e.value]),
     details: [...pane.querySelectorAll("details[id]")].map(e => [e.id, e.open]) };
 }
 function restoreInspectorState(pane, state) {
@@ -99,9 +100,12 @@ function restoreInspectorState(pane, state) {
        redraws still preserve an unfinished placement draft. */
     if (/^place[OUV]/.test(id) && state.placement !== pane.dataset.placement) continue;
     if (/^tb/.test(id) && state.placement === "null" && pane.dataset.placement !== "null") continue;
+    if (/^(ref|ulCalib)/.test(id) && state.referencePage !== pane.dataset.referencePage) continue;
+    if (/^ulCalib/.test(id) && state.calibrationPoints !== pane.dataset.calibrationPoints) continue;
     const e = pane.querySelector(`#${id}`); if (e) e.value = value;
   }
   for (const [id, open] of state.details) {
+    if (/^ref/.test(id) && state.referencePage !== pane.dataset.referencePage) continue;
     const e = pane.querySelector(`#${id}`); if (e) e.open = open;
   }
   if (state.focus) pane.querySelector(`#${state.focus}`)?.focus({ preventScroll: true });
@@ -1953,6 +1957,8 @@ function fiShowTab(name) {
   /* GEO-195:離開角材頁就取消定位引用預示(見 fe.anchorPreview 註解)。 */
   if (name !== "timber" && fe.anchorPreview) { fe.anchorPreview = false; drawFaceEditor(); }
   feUlSyncPointerEvents();
+  ReferenceWorkspace.present();
+  feCalibrationPrompt();
 }
 /* GEO-190:只切 #feUnderlay 的 pointer-events,不整份 drawFaceEditor()(給 fiShowTab/
    feSetTool 這種不想重畫整塊畫布的呼叫點用) */
@@ -2680,10 +2686,13 @@ function feSetTool(t) {
   if (t === "redraw" || wasRedraw) {
     drawFaceEditor();
   }
+  feCalibrationPrompt();
+  ReferenceWorkspace.present();
 }
 
 function feUpdateDraftNotice() {
   const active = fe.tool === "redraw" && oc.edit;
+  ReferenceWorkspace.present();
   $("faceDraftNotice").hidden = !active;
   $("objectWorkspace").classList.toggle("drawing-outer", !!active);
   if (!active) return;
@@ -3431,16 +3440,32 @@ function feUnderlaySet(bid, opts) {
   if (oc.edit && oc.edit.bid === bid) { drawFaceEditor(); renderFaceInspector(); }
 }
 function feUnderlayCalibStart() {
-  if (!(oc.edit && oc.underlays[oc.edit.bid])) return;
+  if (!(oc.edit && oc.underlays[oc.edit.bid]) || oc.underlays[oc.edit.bid].locked) return;
+  feSetTool("select");
   fe.ulCalib = { pts: [] };
   drawFaceEditor(); renderFaceInspector();
+  if (innerWidth <= 680) closePanels();
+  $("faceEditorViewport").focus({preventScroll:true});
 }
+function feCalibrationPrompt() {
+  const prompt = $("calibrationCanvasPrompt"), count = fe.ulCalib?.pts.length;
+  prompt.hidden = count == null;
+  if (count != null) prompt.querySelector("span").textContent = count < 2 ? `校準尺寸 · 請點選第 ${count + 1} 個端點` : "已選好兩點 · 請在右欄輸入實際距離";
+}
+$("cancelCalibration").addEventListener("click", () => {
+  fe.ulCalib = null; drawFaceEditor(); renderFaceInspector();
+  if (innerWidth <= 680) openPanel("right",$("workspaceToggleRight"));
+});
 function feUlCalibAddPoint(ix, iy) {
   if (!fe.ulCalib) return;
   const ul = oc.edit && oc.underlays[oc.edit.bid];
   if (!ul || !Number.isFinite(ix) || !Number.isFinite(iy) || ix < 0 || iy < 0 || ix > ul.imgW || iy > ul.imgH) { toast("請在參考圖頁範圍內選點。"); return; }
   fe.ulCalib.pts = [...fe.ulCalib.pts, [ix, iy]].slice(-2);
   drawFaceEditor(); renderFaceInspector();
+  if (fe.ulCalib.pts.length === 2) {
+    if (innerWidth <= 680) openPanel("right",$("workspaceToggleRight"));
+    $("ulCalibDist")?.focus({preventScroll:true});
+  }
 }
 function feUnderlayCalibPoint(pt) { feUlCalibAddPoint(pt[0], pt[1]); }
 function feUnderlayApplyScale(distMm, inputValue = distMm, inputUnit = "mm") {
@@ -3466,6 +3491,7 @@ function drawFaceEditor() {
   if (!e || !oc.focus || oc.focus.t !== "face") return;
   const loops = fe.work || oc.bmap[e.bid];
   if (!loops) return;
+  feCalibrationPrompt();
   const root = $("faceEditorRoot");
   root.textContent = "";
   const z = fe.zoom;
@@ -5211,13 +5237,22 @@ function feBindShapePane(pane, bid) {
 function feUnderlayPaneHTML(bid) {
   const ul = oc.underlays[bid];
   let html = `<div data-fi-pane="underlay"${fe.fiTab === "underlay" ? "" : " hidden"}>` +
-    `<div class="inspector-block"><div class="ib-title">底圖臨摹</div>` +
-    ReferenceWorkspace.paneHTML(bid) +
+    `<div class="inspector-block reference-task"><h2>參考描面</h2><p class="reference-intro">先確認尺寸，再沿底圖建立邊界。</p>` +
+    `<nav class="reference-steps" aria-label="描面步驟"><span data-reference-step="calibrate">1 校準尺寸</span><button type="button" id="refDrawOutline" data-reference-step="draw">2 畫外環</button><button type="button" data-project-action="save">3 保存進度</button></nav>` +
     `<input type="file" id="ulFile" accept="application/pdf,image/png,image/jpeg,image/webp,image/gif" hidden>`;
   if (ul) {
     const calibOn = !!fe.ulCalib;
     const npts = calibOn ? fe.ulCalib.pts.length : 0;
-    html += `<div class="kv"><span>不透明度</span><input id="ulOpacity" type="range" min="0" max="1" step="0.01" value="${ul.opacity}"></div>` +
+    html += `<section class="calibration-task" aria-labelledby="calibrationTitle"><h3 id="calibrationTitle">校準尺寸</h3>` +
+      ReferenceWorkspace.statusHTML(bid) +
+      `<p class="calibration-instruction">在底圖上選一段已知長度的尺寸線，點選兩端。</p>` +
+      `<button class="btn calibration-start" type="button" id="ulCalibStart"${ul.locked ? " disabled" : ""}>${calibOn ? "重新選取兩點" : "在底圖上選取兩點"}</button>` +
+      `<div class="calibration-points${npts === 2 ? " ready" : ""}"><span>第一點 <b>${npts > 0 ? "已選取" : "待選取"}</b></span><span>第二點 <b>${npts > 1 ? "已選取" : "待選取"}</b></span></div>` +
+      `<div class="place-form"><label>實際距離<input id="ulCalibDist" type="number" placeholder="圖上標示的長度" step="any" min="0.1"${npts < 2 ? " disabled" : ""}></label><label>單位<select id="ulCalibUnit"><option>mm</option><option>cm</option></select></label></div>` +
+      `<button class="btn calibration-apply" type="button" id="ulCalibApply"${npts < 2 ? " disabled" : ""}>套用比例尺</button>` +
+      `<p class="fi-note">${ul.locked ? "對位已鎖定，請在下方「對位與顯示」解除鎖定後校準。" : "校準只調整底圖；已建立的幾何尺寸不會自動縮放。"}</p></section>` +
+      `<details class="ref-section" id="refAlignmentDetails"><summary>對位與顯示</summary>` +
+      `<div class="kv"><label for="ulOpacity">不透明度</label><input id="ulOpacity" type="range" min="0" max="1" step="0.01" value="${ul.opacity}"></div>` +
       `<label class="ib-row"><input type="checkbox" id="ulLock"${ul.locked ? " checked" : ""}> 鎖定對位與比例</label>` +
       `<div class="place-form">` +
       `<label>X mm<input id="ulX" type="number" step="1" value="${Math.round(ul.x)}"${ul.locked ? " disabled" : ""}></label>` +
@@ -5226,18 +5261,17 @@ function feUnderlayPaneHTML(bid) {
       [0, 90, 180, 270].map(r => `<option value="${r}"${ul.rot === r ? " selected" : ""}>${r}°</option>`).join("") +
       `</select></label></div>` +
       `<div class="kv"${ReferenceWorkspace.context().sources.get(ul.sourceId)?.meta.type === "application/pdf" ? " hidden" : ""}><span>比例尺</span><b id="ulScale">${ul.mmPerPx.toFixed(4)} mm/px</b></div>` +
-      `<button class="btn" type="button" id="ulCalibStart"${ul.locked ? " disabled" : ""}>量比例尺：在圖上點兩點</button>` +
-      `<div class="fi-note">${!calibOn ? "按上面的鈕開始，再在畫布上的底圖點兩點"
-        : npts < 2 ? "在圖上再點" + (2 - npts) + "點" : "已點兩點，填實際距離後套用"}</div>` +
-      `<div class="place-form"><label>實際距離<input id="ulCalibDist" type="number" step="any" min="0.1"${npts < 2 ? " disabled" : ""}></label><label>單位<select id="ulCalibUnit"><option>mm</option><option>cm</option></select></label></div>` +
-      `<button class="btn" type="button" id="ulCalibApply"${npts < 2 ? " disabled" : ""}>套用比例尺</button>` +
-      `<button class="btn" type="button" id="ulRemove">移除底圖</button>`;
+      `<button class="btn" type="button" id="ulRemove">移除目前底圖</button></details>`;
   }
-  html += `</div></div>`;
+  html += ReferenceWorkspace.paneHTML(bid) + `<details class="ref-section" id="refPlacementDetails"><summary>放置與空間（選用）</summary><p class="fi-note">2D 描面可先保留。需要參考線、角材或 3D 位置時，再設定此面的放置。</p><button class="btn" type="button" id="refGoPlace">設定此面的放置</button></details></div></div>`;
   return html;
 }
 function feBindUnderlayPane(pane, bid) {
   ReferenceWorkspace.bindPane(pane, bid);
+  pane.querySelector("#refDrawOutline")?.addEventListener("click", () => {
+    feSetTool("redraw"); if (innerWidth <= 680) closePanels(); $("faceEditorViewport").focus();
+  });
+  pane.querySelector("#refGoPlace")?.addEventListener("click", () => { fiShowTab("prop"); pane.querySelector("#placeOX")?.focus(); });
   const fileInp = pane.querySelector("#ulFile");
   if (fileInp) fileInp.addEventListener("change", () => {
     const f = fileInp.files && fileInp.files[0];
@@ -5456,6 +5490,8 @@ function renderFaceInspector() {
   const bid = e.bid;
   const saved = inspectorState(pane, bid);
   pane.dataset.bid = String(bid);
+  pane.dataset.referencePage = ReferenceWorkspace.active(bid)?.id || "";
+  pane.dataset.calibrationPoints = JSON.stringify(fe.ulCalib?.pts || null);
   if (!saved) pane.dataset.tbRoleManual = "false";
   const loops = oc.bmap[bid] || [];
   const surf = feSurf(bid);
@@ -5475,7 +5511,7 @@ function renderFaceInspector() {
   const spaces = oc.spaces.filter(s => s.members.includes(bid));
 
   /* 屬性、參考線、角材與網格各自保留表單上下文。 */
-  let html = placeFlowHTML(bid) +
+  let html = `<div class="face-placement-flow">${placeFlowHTML(bid)}</div>` +
     `<div data-fi-pane="prop"${fe.fiTab === "prop" || !fe.fiTab ? "" : " hidden"}>` +
     `<div class="inspector-block"><div class="ib-title">面 ${bid}` +
     `<span class="tag">${surf ? "已放置" : "游離"}</span></div>` +
@@ -5711,6 +5747,7 @@ function renderFaceInspector() {
     });
   if (fe.projOpen) feRenderProjection();
   restoreInspectorState(pane, saved);
+  ReferenceWorkspace.present();
   if (!saved || (saved.placement === "null" && surf)) feTimberSuggestForm();
   else feTimberShowSuggestion();
   updatePlaceValid(pane);
@@ -6868,10 +6905,11 @@ fevp.addEventListener("pointerdown", async e => {
     fe.lastPD = onOverlay ? null : { t: now, x: e.clientX, y: e.clientY };
   }
   const pk = $("feGuidePick");
-  if (e.target.closest && e.target.closest("#feGuidePick, #feActionBar, #feOpPanel, #feCtxMenu"))
+  if (e.target.closest && e.target.closest("#feGuidePick, #feActionBar, #feOpPanel, #feCtxMenu, #calibrationCanvasPrompt"))
     return;                                     /* 點在浮動選單/操作列/面板上 → 交給按鈕 click */
   if (pk && !pk.hidden) pk.hidden = true;
   if (e.button === 0 && !oc.busy && fe.ulCalib) {
+    e.preventDefault(); // Keep focus in the distance input after the second point.
     /* GEO-190:量比例尺進行中——不管點在哪、不管目前工具,這一下都拿去記校準點,
        不進 feDown(否則 select 工具的「點面內=選點」邏輯會搶走這一下)。
        座標從 fePoint() 拿未經吸附的原始 mm,換算回圖片 px 存。 */

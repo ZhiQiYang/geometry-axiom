@@ -3738,6 +3738,7 @@ async function rightClick(x, y) {
     ul3.applied && ul3.mmPerPx === 10 && ul3.xSame && ul3.ySame && ul3.scale === 10 && ul3.calibGone, ul3);
 
   /* (4) #ulOpacity 改 0.8 → image opacity 0.8;#ulLock 勾選 → image pointer-events none */
+  await clickSelector('#refAlignmentDetails summary');
   const ul4a = await eval_(`(()=>{
     const op=document.getElementById('ulOpacity'); op.value='0.8';
     op.dispatchEvent(new Event('input',{bubbles:true}));
@@ -3800,15 +3801,15 @@ async function rightClick(x, y) {
     !dump8.includes('底圖') && !dump8.includes('data:image'),
     { ul8, dumpLen: dump8.length });
 
-  /* (9) feUnderlayRemove(bid) → #feUnderlay 不存在,分頁回到只有 #ulFile */
+  /* (9) 移除底圖的調整欄位；通用描面／保存／放置入口仍保留。 */
   const ul9 = await eval_(`(()=>{
     feUnderlayRemove(1);
     const pane=document.querySelector('[data-fi-pane="underlay"]');
-    const others=pane ? [...pane.querySelectorAll('input,select,button')].filter(el=>!['ulFile','refImport'].includes(el.id)) : ['no-pane'];
-    return {imgGone: !document.getElementById('feUnderlay'), othersLeft: others.length};
+    const others=pane ? [...pane.querySelectorAll('input,select,button')].filter(el=>!['ulFile','refImport','refDrawOutline','refGoPlace'].includes(el.id)&&el.dataset.projectAction!=='save') : ['no-pane'];
+    return {imgGone: !document.getElementById('feUnderlay'), othersLeft: others.length, importKept:!!pane?.querySelector('#refImport')};
   })()`);
   check('P42-9 feUnderlayRemove 後底圖與調整欄位移除，保留匯入入口',
-    ul9.imgGone && ul9.othersLeft === 0, ul9);
+    ul9.imgGone && ul9.othersLeft === 0 && ul9.importKept, ul9);
 
   console.log('=== P43. 面內角材可選取(GEO-191) ===');
   await setupRemaining([
@@ -5953,6 +5954,60 @@ async function rightClick(x, y) {
       const drag=fe.ulDrag,tool=fe.tool;try{fe.ulDrag={x0:0,y0:0,cx:0,cy:0};fe.tool='select';return !!cxResolveFace(-10,-10,false,false);}
       finally{fe.ulDrag=drag;fe.tool=tool;}
     })()`));
+  }
+
+  { // Reference interface: user-visible workflow and mobile point picking.
+    console.log('=== P63. 參考描面新版介面 ===');
+    const startErrors=excN;
+    const check=(name,value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(value));
+    const ctl=async selector=>{
+      const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
+      await click(p.x,p.y);await sleep(100);
+    };
+    await send('Emulation.setDeviceMetricsOverride',{width:1440,height:800,deviceScaleFactor:1,mobile:false});
+    await eval_(`(async()=>{resetSceneFocus();await api('reset');await api('line boundary 1 outline 0,0 2000,0 2000,1000 0,1000');await renderObjects();await ReferenceWorkspace.openSource(g198PDF,1);})()`);
+    check('P63-1 預設整頁預覽完整可見',await eval_(`(()=>{const p=$('refPagePreview').getBoundingClientRect(),v=document.querySelector('.ref-preview-scroll').getBoundingClientRect();return $('refZoom').value==='page'&&p.height>100&&p.top>=v.top&&p.bottom<=v.bottom&&p.left>=v.left&&p.right<=v.right;})()`));
+    await ctl('#refApply');await waitForUI(`!$('referenceDialog').open && !!ReferenceWorkspace.active(1)`,5000);
+    check('P63-2 參考描面不補入高度或放置',await eval_(`!feSurf(1)&&$('workspacePlaceTag').textContent.includes('游離')`));
+    check('P63-3 校準入口在首屏，舊放置表單不擋住它',await eval_(`(()=>{const b=$('ulCalibStart').getBoundingClientRect();return b.width>0&&b.bottom<innerHeight&&getComputedStyle(document.querySelector('.face-placement-flow')).display==='none'&&!$('refAlignmentDetails').open&&$('faceReferenceSummary').textContent.includes('未校準');})()`));
+    await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});
+    await ctl('#workspaceToggleRight');await ctl('#ulCalibStart');
+    check('P63-4 手機取點自動收起檢查器且保留取消入口',await eval_(`!document.body.classList.contains('drawer-right-open')&&!$('calibrationCanvasPrompt').hidden&&$('calibrationCanvasPrompt').textContent.includes('第 1')`));
+    await eval_(`ReferenceWorkspace.fitReference()`);
+    const clickPoint=async(x,y)=>{
+      const p=await eval_(`(()=>{const ul=ReferenceWorkspace.active(1),q=feUlImgToMm(ul,${x},${y}),r=$('faceEditorViewport').getBoundingClientRect();return {x:r.x+fe.panX+q[0]*fe.zoom,y:r.y+fe.panY+q[1]*fe.zoom};})()`);
+      await click(p.x,p.y);await sleep(100);
+    };
+    await clickPoint(20,70);await clickPoint(220,70);
+    check('P63-5 實際畫布點兩點後回到距離輸入',await eval_(`fe.ulCalib.pts.length===2&&document.body.classList.contains('drawer-right-open')&&document.activeElement.id==='ulCalibDist'&&!$('ulCalibDist').disabled`));
+    check('P63-5b 校準草稿不宣稱已保存，也不能默默略過取點',await eval_(`(async()=>{try{await ReferenceWorkspace.exportBytes();return false;}catch(e){return e.message.includes('校準尚未套用')&&document.querySelector('[data-project-status]').textContent==='校準尚未套用';}})()`));
+    check('P63-5c 手機回報鈕不擋住校準單位',await eval_(`(()=>{const e=$('ulCalibUnit'),r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return e===hit||e.contains(hit);})()`));
+    await eval_(`$('ulCalibDist').value='200';$('ulCalibUnit').value='cm';`);await ctl('#ulCalibApply');
+    check('P63-6 手機套用校準保留原幾何與待核對提示',await eval_(`ReferenceWorkspace.active(1).calibration.distanceMm===2000&&ReferenceWorkspace.active(1).reviewRequired&&oc.bmap[1][0].verts[1][0]===2000&&!fe.ulCalib&&$('calibrationCanvasPrompt').hidden`));
+    await ctl('#ulCalibStart');await ctl('#cancelCalibration');
+    check('P63-7 取消取點不修改已校準比例',await eval_(`!fe.ulCalib&&ReferenceWorkspace.active(1).calibration.distanceMm===2000&&document.body.classList.contains('drawer-right-open')`));
+    await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+    await eval_(`closePanels();feSetTool('redraw');fe.draft.pts=[[0,0],[1000,0]];feSyncDraftMirror();`);
+    check('P63-8 保存不會默默丟掉未套用外環草稿',await eval_(`(async()=>{try{await ReferenceWorkspace.exportBytes();return false;}catch(e){return e.message.includes('草稿')&&fe.draft.pts.length===2;}})()`));
+    await eval_(`fe.draft=PolyDraft.createState();feSetTool('select');`);
+    check('P63-9 保存按鈕在固定專案列且匯出仍在檔案選單',await eval_(`(()=>{const b=document.querySelector('.workspace-project-bar [data-project-action="save"]').getBoundingClientRect(),h=document.querySelector('.workspace-project-bar').getBoundingClientRect();return b.top>=0&&b.bottom<=h.bottom&&h.top===0&&$('btnExport').closest('#fileMenuPop')!==null;})()`));
+    check('P63-10 寫入完成後顯示已保存，後續變更恢復未保存',await eval_(`(async()=>{const old=window.showSaveFilePicker;window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async()=>{},close:async()=>{}})});try{await ReferenceWorkspace.save();const ok=[...document.querySelectorAll('[data-project-status]')].every(e=>e.textContent==='已保存');ReferenceWorkspace.changed(1);ReferenceWorkspace.present();return ok&&document.querySelector('[data-project-status]').textContent==='有未保存的變更';}finally{window.showSaveFilePicker=old;}})()`));
+    check('P63-11 下載模式不宣稱已寫入檔案，也保留未保存狀態',await eval_(`(async()=>{const old=window.showSaveFilePicker,click=HTMLAnchorElement.prototype.click;window.showSaveFilePicker=undefined;HTMLAnchorElement.prototype.click=function(){};try{await ReferenceWorkspace.save();return ReferenceWorkspace.context().dirty&&document.querySelector('[data-project-status]').textContent.includes('已產生下載');}finally{window.showSaveFilePicker=old;HTMLAnchorElement.prototype.click=click;}})()`));
+    await ctl('#refPlacementDetails summary');await ctl('#refGoPlace');
+    check('P63-12 可返回既有放置表單，分頁具有選取狀態',await eval_(`fe.fiTab==='prop'&&document.activeElement.id==='placeOX'&&getComputedStyle(document.querySelector('.face-placement-flow')).display!=='none'&&document.querySelector('[data-fi-tab="prop"]').getAttribute('aria-pressed')==='true'`));
+    await ctl('.workspace-file-menu summary');
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+    await sleep(100);
+    check('P63-13 檔案選單 Esc 只關閉選單，仍在同一個面',await eval_(`!document.querySelector('.workspace-file-menu').open&&!$('objectWorkspace').hidden&&oc.edit.bid===1`));
+    await eval_(`window.uiSavedPicker=window.showSaveFilePicker;window.uiWriteCount=0;window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async()=>{uiWriteCount++;},close:async()=>{}})});`);
+    await ctl('.workspace-project-bar [data-project-action="save"]');await waitForUI(`uiWriteCount===1&&!ReferenceWorkspace.busy`,5000);
+    check('P63-14 固定保存按鈕實際呼叫專案寫入',await eval_(`uiWriteCount===1&&document.querySelector('[data-project-status]').textContent==='已保存'`));
+    await eval_(`window.showSaveFilePicker=uiSavedPicker;`);
+    check('P63-15 開啟專案後解除處理中狀態並恢復保存按鈕',await eval_(`(async()=>{
+      const bytes=await ReferenceWorkspace.exportBytes(),input=$('projectFile'),files=new DataTransfer();files.items.add(new File([bytes],'ui-reopen.gcanvas'));input.files=files.files;
+      await input.onchange({target:input});return !ReferenceWorkspace.busy&&document.querySelector('[data-project-status]').textContent==='已保存'&&[...document.querySelectorAll('[data-project-action="save"]')].every(b=>!b.disabled);
+    })()`));
+    check('P63-16 新版流程沒有未處理的瀏覽器例外',excN===startErrors);
   }
 
   chrome.kill();

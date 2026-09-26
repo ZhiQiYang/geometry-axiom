@@ -720,3 +720,17 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `svg.cx-layer` 提供指標圖形、動作膠囊及吸附標記；`pointer-events:none`，不攔截原有畫布操作。
 - `cx-on` 只在畫布顯示自訂指標時隱藏原生游標；按鈕、表單及離開畫布時恢復。
 - 底圖捕捉指標拖出視窗時，`elementFromPoint()` 可為 `null`；空命中仍須安全處理。
+
+## GEO-200 參考描面工作區（P63）
+
+- `[data-project-action="save"]` 在畫布頂列及物件工作區的 `.workspace-project-bar` 保存同一份專案；`#btnSaveProject` 選單入口保留。
+- `[data-project-name]`／`[data-project-status]` 顯示目前來源上下文的名稱及狀態。成功關閉寫入才顯示「已保存」；下載顯示「已產生下載 · 請確認檔案」。
+- `#btnExport` 保留原事件與識別，移至 `#fileMenuPop`；物件工作區的檔案選單代理原有匯出與開啟入口。Esc 只關閉這個選單。
+- `[data-project-action="import"]` 是物件庫及面內左欄的 PDF／圖片入口，仍使用 `#referenceFile`、`#referenceDialog`；取消不新增物件。
+- `#faceReferenceSummary` 顯示實際來源、頁碼及校準狀態；點擊回到原 `underlay` 分頁。六個原有檢視器分頁仍存在，選取狀態使用 `aria-pressed`。
+- 底圖分頁優先顯示 `#ulCalibStart`、`#ulCalibDist`、`#ulCalibUnit`、`#ulCalibApply`。`#refDrawOutline` 進入既有外環工具。
+- `#refAlignmentDetails`、`#refSourceDetails`、`#refRecordDetails`、`#refPlacementDetails` 提供次要操作；原對位控制項位於展開區。`#refGoPlace` 回到原放置表單。
+- 同一圖頁及同一組校準點的未套用距離保留；切換圖頁或重新取點不帶入舊值。
+- ≤680px 開始取點時收起檢查器；`#calibrationCanvasPrompt` 保留進度與 `#cancelCalibration`。第二點後重開檢查器並聚焦距離；取消不改既有校準。
+- `#refZoom` 預設 `page`（適合整頁）；其餘比例選項與取景來源座標不變。`#refResetCrop` 名稱改為「清除取景框」。
+- 未套用外環或校準草稿會提示並阻止專案保存，避免將未套用的資料誤認為已保存；其餘核心驗證及幾何語意維持原樣。

@@ -20,7 +20,8 @@
       </span>
       <span class="brand-copy">
         <strong>構形 Canvas</strong>
-        <small>語意物件無限畫布</small>
+        <small class="main-project-name" data-project-name>未命名專案.gcanvas</small>
+        <small data-project-status>尚未保存</small>
       </span>
       <div id="sceneList" class="menu">
         <button id="sceneMenuBtn" class="scene-menu-btn" type="button" aria-haspopup="menu">
@@ -63,6 +64,7 @@
           <button id="btnProjectName" class="menu-item" type="button">專案名稱 <span id="projectName"></span></button>
           <hr class="menu-sep">
           <button id="btnOpen" class="menu-item" type="button"><span data-icon="upload"></span>開啟 .scene…</button>
+          <button id="btnExport" class="menu-item" type="button" title="僅匯出幾何，不含來源資料" aria-label="匯出 .scene"><span data-icon="download"></span>匯出 .scene（僅幾何）</button>
           <button id="btnDatums" class="menu-item" type="button"><span data-icon="guide"></span>共用基準</button>
           <button id="btnEx" class="menu-item" type="button">載入範例</button>
           <a class="menu-item" href="/axioms" target="_blank" rel="noopener">公理閱讀器 <span aria-label="另開分頁">↗</span></a>
@@ -73,7 +75,7 @@
       <input id="file" type="file" accept=".scene" hidden>
       <input id="referenceFile" type="file" accept="application/pdf,image/png,image/jpeg,image/webp,image/gif" hidden>
       <input id="projectFile" type="file" accept=".gcanvas" hidden>
-      <button id="btnExport" class="secondary-button" type="button" title="匯出 .scene" aria-label="匯出 .scene"><span data-icon="download"></span><span>匯出 .scene</span></button>
+      <button class="project-save" type="button" data-project-action="save" aria-label="保存專案" title="保存幾何、底圖與來源紀錄"><span data-icon="download"></span><span>保存專案</span></button>
     </div>
   </header>
 
@@ -83,17 +85,19 @@
       <div class="sidebar-search">
         <label class="search-control" title="搜尋物件">
           <span data-icon="search"></span>
-          <input id="searchInput" type="search" placeholder="搜尋物件(名稱或 id)" autocomplete="off">
+          <input id="searchInput" type="search" aria-label="搜尋物件名稱或編號" placeholder="搜尋物件(名稱或 id)" autocomplete="off">
           <kbd>/</kbd>
         </label>
       </div>
       <section class="sidebar-section create-section">
         <div class="section-heading">
           <div>
-            <h2>物件庫</h2>
-            <p>在畫布上建立物件</p>
+            <h2>建立物件</h2>
+            <p>從參考圖開始，或直接繪製</p>
           </div>
         </div>
+        <button class="reference-entry" type="button" data-project-action="import"><span data-icon="upload"></span><span><strong>從 PDF／圖片描面</strong><small>選頁、校準，再描繪邊界</small></span></button>
+        <h3 class="create-mode-label">直接建立</h3>
         <div class="quick-create-grid">
           <button id="btnBox6" type="button" class="quick-create suggested" title="快速六面盒:W·D·H 一次建好(建議起點)">
             <span class="type-icon space"><span data-icon="layers"></span></span>
@@ -279,9 +283,20 @@
 </div>
 
   <section id="objectWorkspace" class="object-workspace" aria-label="物件內部工作區" hidden>
+    <div class="workspace-project-bar">
+      <div class="workspace-project-identity"><span class="project-brand"><span class="brand-mark" data-icon="space"></span>構形 Canvas</span><button type="button" class="project-name" data-project-action="name" title="變更專案名稱"><span data-project-name>未命名專案.gcanvas</span></button><span class="project-state" data-project-status role="status">尚未保存</span></div>
+      <div class="workspace-project-actions">
+        <button type="button" class="project-save" data-project-action="save"><span data-icon="download"></span><span>保存專案</span></button>
+        <details class="workspace-file-menu"><summary>檔案</summary><div>
+          <button type="button" data-project-action="import">匯入 PDF／圖片…</button>
+          <button type="button" data-project-action="open">開啟 .gcanvas 專案…</button>
+          <button type="button" data-project-action="export">匯出 .scene（僅幾何）</button>
+        </div></details>
+      </div>
+    </div>
     <header class="object-workspace-topbar">
       <div class="object-workspace-trail">
-        <button id="workspaceBackButton" type="button" class="workspace-back-button"><span>←</span> <span id="workspaceBackLabel">物件畫布</span></button>
+        <button id="workspaceBackButton" type="button" class="workspace-back-button" aria-label="返回物件畫布"><span>←</span> <span id="workspaceBackLabel">物件畫布</span></button>
         <span id="workspaceTypeIcon" class="face-layer-icon" data-icon="face"></span>
         <div class="workspace-title-copy">
           <small id="workspaceEyebrow">面內工作區</small>
@@ -314,6 +329,11 @@
       <div id="faceWorkspaceLayout" class="face-workspace-layout">
         <aside class="inner-panel face-layer-panel">
           <button type="button" class="drawer-close left-toggle" data-close-panel="left">關閉 ×</button>
+          <section class="inner-section reference-library" aria-label="底圖與來源">
+            <h2>底圖／來源</h2>
+            <button class="reference-entry" type="button" data-project-action="import"><span data-icon="upload"></span><span><strong>從 PDF／圖片描面</strong><small>可關聯多張參考頁</small></span></button>
+            <div id="faceReferenceSummary"></div>
+          </section>
           <section class="inner-section">
             <div class="inner-section-title"><span>面內物件</span><span id="faceLayerCount">0</span></div>
             <div id="faceLayerList" class="face-layer-list"></div>
@@ -329,6 +349,7 @@
           <input id="feLenInput" class="fe-len-input" type="text" hidden
                  aria-label="段長 mm" readonly>
           <div id="faceCanvasHint" class="face-canvas-hint" hidden></div>
+          <div id="calibrationCanvasPrompt" class="calibration-canvas-prompt" hidden><span role="status"></span><button type="button" id="cancelCalibration">取消</button></div>
           <div id="feGuidePick" class="fe-guide-pick" hidden>
             <button type="button" data-axis="u">u 線</button>
             <button type="button" data-axis="v">v 線</button>
@@ -537,8 +558,8 @@
     <button id="refPrev" type="button" class="btn" aria-label="上一頁">←</button>
     <label>第 <input id="refPageNumber" type="number" min="1" value="1" aria-label="PDF 頁碼"></label><span id="refPageCount"></span>
     <button id="refNext" type="button" class="btn" aria-label="下一頁">→</button>
-    <label>預覽 <select id="refZoom"><option value="1">適合寬度</option><option value="1.5">150%</option><option value="2">200%</option><option value="3">300%</option></select></label>
-    <button id="refResetCrop" type="button" class="btn">使用整頁</button>
+    <label>預覽 <select id="refZoom"><option value="page">適合整頁</option><option value="1">適合寬度</option><option value="1.5">150%</option><option value="2">200%</option><option value="3">300%</option></select></label>
+    <button id="refResetCrop" type="button" class="btn">清除取景框</button>
   </div>
   <p id="refPreviewMessage" role="status"></p>
   <div class="ref-preview-scroll"><div id="refPagePreview"></div></div>
