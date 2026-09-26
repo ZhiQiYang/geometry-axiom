@@ -1783,9 +1783,9 @@ const fe = {
                                與 fe.tool==="timber" 是「或」的關係;切工具/切分頁就清掉(見 feSetTool/fiShowTab)。 */
   timberHoverAnchor: null, /* GEO-196:角材工具下滑鼠所指的可命中線(定位引用式字串,例如
                                "at-face e1"/"at-line guide 2"),非 null 時預示改畫這條線而不是
-                               #tbAnchor 目前值;離開線/切工具/切分頁清空(見 feMove/feSetTool/fiShowTab)。 */
-  timberHoverSide: null,   /* GEO-196:配合 timberHoverAnchor,滑鼠所指那一側("+n"/"-n"),
-                               預示帶依這個值畫,不是 #tbSide 表單值。 */
+                               #tbAnchor 目前值;離開線/切工具/切分頁清空(見 feMove/feSetTool/fiShowTab)。
+                               G196-R02:曾有的 timberHoverSide 已移除——+n/-n 是法線厚度方向,
+                               由 #tbSide 表單決定,滑鼠側向不參與。 */
 };
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
@@ -2473,7 +2473,7 @@ function feSetTool(t) {
   /* GEO-195:工具切走就取消定位引用預示(hover/focus 記憶不跨工具沿用)。 */
   if (t !== "timber" && fe.anchorPreview) fe.anchorPreview = false;
   /* GEO-196:切離角材工具就清掉滑鼠命中線 hover 狀態,不跨工具沿用。 */
-  if (t !== "timber") { fe.timberHoverAnchor = null; fe.timberHoverSide = null; }
+  if (t !== "timber") fe.timberHoverAnchor = null;
   fe.tool = t;
   fe.sel = null; fe.op = null; feSyncOverlays();
   feUlSyncPointerEvents();
@@ -2670,11 +2670,41 @@ function feTimberAnchorLabel(bid, surf, anchorValue) {
   const hit = referenceAnchorEntries(bid, surf).find(x => x.value === anchorValue);
   return hit ? hit.label : anchorValue;
 }
-/* 承載面現有角材裡若有 role primary,主支軸 = 那支的方向軸(u 或 v);沒有就回 null
-   (角色不受限)。GEO-195 規格:boundary/secondary 必須垂直於主支軸、沿主支軸只能 primary。 */
+/* 承載面主支軸推導(D17):同一面上所有 primary 的長度軸必須相同→該軸即主支軸;
+   沒有 primary 時由 boundary 的垂直方向推(boundary ⊥ 主支軸);兩者皆無→未定義。
+   custom/secondary 不定義主支軸。矛盾(primary 內部不一致、或 primary 與 boundary 推導
+   不一致、或 boundary 彼此不平行)→ 回 conflict,呼叫端不做自動角色選擇、不挑第一支
+   掩蓋矛盾(G196-R04)。回傳 {axis:"u"|"v"|null, conflict:bool,src}。
+   注意:bid 參數目前只用於未來擴充;角材清單一律取 fe.timbers(目前工作區那面),
+   不從其他面推導。 */
+function fePrimaryAxisInfo(bid) {
+  const timbers = fe.timbers || [];
+  const primaries = timbers.filter(t => t.role === "primary");
+  const boundaries = timbers.filter(t => t.role === "boundary");
+  const axisOf = t => t.dir && t.dir.slice(-1);
+  let axis = null, conflict = false, src = "none";
+  if (primaries.length) {
+    const axes = new Set(primaries.map(axisOf));
+    if (axes.size > 1) { conflict = true; }
+    else axis = [...axes][0];
+    src = "primary";
+  }
+  if (boundaries.length) {
+    /* boundary 的長度軸 ⊥ 主支軸 → 主支軸 = boundary 軸的垂直向。
+       所有 boundary 同方向(D17 保證);不一致 = 矛盾。 */
+    const bAxes = new Set(boundaries.map(axisOf));
+    const bAxis = bAxes.size === 1 ? [...bAxes][0] : null;
+    if (bAxis == null) { conflict = true; }
+    else {
+      const derived = bAxis === "u" ? "v" : "u";
+      if (axis == null) { axis = derived; src = "boundary"; }
+      else if (axis !== derived) conflict = true;
+    }
+  }
+  return { axis, conflict, src };
+}
 function feTimberPrimaryAxis(bid) {
-  const p = (fe.timbers || []).find(t => t.role === "primary");
-  return p ? p.dir.slice(-1) : null;
+  return fePrimaryAxisInfo(bid).axis;
 }
 /* ---- GEO-196:點畫布上的線直接放置 ----
    起因(見 BACKLOG GEO-196):GEO-195 讓人看得懂角材會落在哪,但仍要先在右欄下拉挑線、
@@ -2687,34 +2717,92 @@ function feTimberPrimaryAxis(bid) {
 function feAnchorDirFromInfo(info) {
   return info.constAxis === "v" ? "+u" : "+v";
 }
-/* info + 點擊點 pt(scene mm 座標)→ "+n"/"-n"。規則與 feTimberRect 的既有慣例一致
-   (side "+n" = 方向向量逆時針轉 90° 的那一側,在 uv 平面上等同標準旋轉 (x,y)→(-y,x))：
-   constAxis "v"(線沿 u 跑)時 +n 是 v 較大的那側；constAxis "u"(線沿 v 跑)時 +n 是 u 較小的那側。
-   點正好落在線上(dot===0)時預設 "+n",不擋——引擎自己會判合法性。 */
-function feAnchorSideForPoint(info, pt) {
-  if (!info) return null;
-  const dot = info.constAxis === "u" ? (info.value - pt.x) : (pt.y - info.value);
-  return dot >= 0 ? "+n" : "-n";
+/* G196-R05:預示帶的橫向(cross)範圍 [lo,hi]——唯讀暫態計算,不寫回任何狀態、
+   不重作核心的跨距/角色求解。
+   - at-line(參考線/格線):中線對齊 [c-⌊A/2⌋, c-⌊A/2⌋+A](I13:奇數寬多的 1mm 恆在
+     +cross 側——固定座標值較大的方向);不看表單 ±n(那是法線厚度,2D 足跡不變),
+     也不因負向長度軸翻轉。
+   - at-face 外環邊 e<i>:貼邊向材料側展 A——材料側 = 外環內側;孔邊 h<i>e<j>:
+     材料側 = 孔的【外】側(I13「孔邊材料側 = 外向法線側」)。判定用邊中點沿法向
+     ±0.5mm 做點在環內射線測試,L 形凹角也成立——不用畫布中心/外接盒猜。
+   - at-face t<id>(角材側面):二選一由核心(R21(d))判定,前端無足夠資訊 → null,
+     不亂畫帶。回傳 {constAxis, lo, hi} 或 null。 */
+function fePointInLoop(verts, x, y) {
+  let inside = false;
+  for (let i = 0, j = verts.length - 1; i < verts.length; j = i++) {
+    const xi = verts[i][0], yi = verts[i][1], xj = verts[j][0], yj = verts[j][1];
+    if ((yi > y) !== (yj > y) &&
+        x < xi + (xj - xi) * (y - yi) / (yj - yi)) inside = !inside;
+  }
+  return inside;
 }
-/* 依主支軸規則算點擊命中的線該給哪個角色(GEO-196 規格)：
-   面上已有 primary → 方向與主支軸平行給 primary,垂直給 boundary(邊)/secondary(參考線/格線)；
-   面上還沒有 primary → 外輪廓邊給 boundary、參考線/格線給 primary。 */
+function feAnchorCrossRange(bid, anchorValue, A) {
+  if (!anchorValue || !(A > 0)) return null;
+  const loops = oc.bmap[bid] || [];
+  let m;
+  if (/^at-line /.test(anchorValue)) {
+    const info = feAnchorLineInfo(bid, anchorValue);
+    if (!info) return null;
+    const lo = info.value - Math.floor(A / 2);
+    return { constAxis: info.constAxis, lo, hi: lo + A };
+  }
+  if ((m = /^at-face e(\d+)$/.exec(anchorValue)) ||
+      (m = /^at-face h(\d+)e(\d+)$/.exec(anchorValue))) {
+    const holeIdx = m[2] !== undefined ? +m[1] : -1;
+    const edgeIdx = +(m[2] !== undefined ? m[2] : m[1]);
+    const loop = loops[holeIdx + 1];
+    const vs = loop && loop.verts;
+    if (!vs || !vs.length) return null;
+    const p1 = vs[edgeIdx], p2 = vs[(edgeIdx + 1) % vs.length];
+    if (!p1 || !p2) return null;
+    const info = feAnchorEdgeInfo(p1, p2);
+    if (!info) return null;   /* 非正交邊:不畫帶 */
+    const mx = (p1[0] + p2[0]) / 2, my = (p1[1] + p2[1]) / 2;
+    const c = info.value;
+    /* ±0.5mm 法向測試點:at-face 外邊看「是否在外環內」,孔邊看「是否在孔內(要取反)」 */
+    const probe = (sign) => info.constAxis === "u"
+      ? fePointInLoop(vs, c + sign * 0.5, my)
+      : fePointInLoop(vs, mx, c + sign * 0.5);
+    const plusIn = probe(+1), minusIn = probe(-1);
+    let materialIsPlus;   /* 材料在固定座標值較大側? */
+    if (holeIdx < 0) materialIsPlus = plusIn && !minusIn ? true : (!plusIn && minusIn ? false : null);
+    else materialIsPlus = plusIn && !minusIn ? false : (!plusIn && minusIn ? true : null);
+    if (materialIsPlus == null) return null;   /* 兩側同內/同外(邊上或退化):不畫 */
+    return materialIsPlus
+      ? { constAxis: info.constAxis, lo: c, hi: c + A }
+      : { constAxis: info.constAxis, lo: c - A, hi: c };
+  }
+  return null;   /* at-face t<id> 等 → 不畫帶 */
+}
+/* 依主支軸規則算點擊命中的線該給哪個角色(GEO-196 規格,G196-R04 改用 D17 完整推導)：
+   主支軸已定義 → 方向與其平行給 primary,垂直給 boundary(邊)/secondary(參考線/格線)；
+   未定義(無 primary 也無 boundary)→ 外輪廓邊給 boundary、參考線/格線給 primary;
+   矛盾(conflict)→ 回 null,呼叫端不自動改角色,只留診斷提示。 */
 function feTimberRoleForClick(bid, kind, dirAxis) {
-  const axis = feTimberPrimaryAxis(bid);
+  const info = fePrimaryAxisInfo(bid);
+  if (info.conflict) return null;
+  const axis = info.axis;
   if (!axis) return kind === "edge" ? "boundary" : "primary";
   if (dirAxis === axis) return "primary";
   return kind === "edge" ? "boundary" : "secondary";
 }
 const TB_ROLE_OPTS = [["primary", "primary 主支"], ["boundary", "boundary 邊界材"],
   ["secondary", "secondary 副支"], ["custom", "custom 自訂"]];
+/* #tbRole 選項依主支軸排除(G196-R04):
+   - 方向平行主支軸 → boundary/secondary 停用(I21),但【custom 不停用】——
+     D15:custom 的 priority 只參與 I19 數值比較,不取得角色義務,方向合法性交核心判;
+   - 方向垂直主支軸 → primary 停用;
+   - 主支軸未定義或矛盾 → 全部可選(不猜),矛盾時標註提示。
+   自動點選角色(feTimberRoleForClick)與這裡共用同一份 fePrimaryAxisInfo 推導。 */
 function feTimberRoleOptionsHTML(bid, dirValue, currentRole) {
-  const axis = feTimberPrimaryAxis(bid);
+  const info = fePrimaryAxisInfo(bid);
+  const axis = info.conflict ? null : info.axis;
   const dirAxis = (dirValue || "+u").slice(-1);
   const parallel = axis && dirAxis === axis;
   const perpendicular = axis && dirAxis !== axis;
   return TB_ROLE_OPTS.map(([v, t]) => {
     let disabled = false, suffix = "";
-    if (parallel && v !== "primary") { disabled = true; suffix = "（需垂直於主支軸）"; }
+    if (parallel && (v === "boundary" || v === "secondary")) { disabled = true; suffix = "（需垂直於主支軸）"; }
     else if (perpendicular && v === "primary") { disabled = true; suffix = "（沿主支軸才能是主支）"; }
     return `<option value="${v}"${disabled ? " disabled" : ""}${v === currentRole && !disabled ? " selected" : ""}>${t}${suffix}</option>`;
   }).join("");
@@ -2746,9 +2834,10 @@ function feTimberHintRefresh() {
   const surf = feSurf(bid);
   const label = feTimberAnchorLabel(bid, surf, $("tbAnchor")?.value);
   const A = $("tbA")?.value || 27, B = $("tbB")?.value || 33;
-  /* GEO-196:提示改講新路徑——點一條邊或參考線＝直接以那條線為定位引用放置(側由點擊點決定);
-     點面內空白才是舊路徑(依右欄目前設定「${label}」放置)。 */
-  const text = `點一條邊或參考線直接放置（點在哪一側就放哪一側）；點面內空白則依右欄設定（目前「${label}」）放置 · A${A}×B${B} · Esc 取消`;
+  /* GEO-196:提示改講新路徑——點一條邊或參考線＝直接以那條線為定位引用放置;
+     G196-R02:點擊的左右位置不再決定厚度方向(+n/-n 由右欄「深度」欄位決定),
+     不再承諾「點在哪一側就放哪一側」;點面內空白才是舊路徑(依右欄目前設定)。 */
+  const text = `點外輪廓邊或參考線選定位直接放置；厚度方向依右欄「深度」設定。點面內空白則依右欄設定（目前「${label}」）放置 · A${A}×B${B} · Esc 取消`;
   setStatus(text);
   const hint = $("faceCanvasHint");
   if (hint) hint.textContent = text;
@@ -2771,8 +2860,12 @@ function feTimberPlaceErrorMessage(err, bid, surf, anchorValue) {
   }
   if (err.includes("V_PRIMARY_AXIS")) {
     feMarkInvalid($("tbRole"));
-    const axis = feTimberPrimaryAxis(bid) || "?";
-    return `主支軸是 ${axis}:沿它放只能選 primary;boundary/secondary 要垂直於它\n${err}`;
+    /* G196-R04:與下拉/自動點選共用同一份 fePrimaryAxisInfo,不再各自算一版;
+       矛盾時明說矛盾,未定義時明說未定義(不再是「?」)。 */
+    const info = fePrimaryAxisInfo(bid);
+    const axisDesc = info.conflict ? "推導矛盾(請檢查既有角材方向)"
+      : info.axis ? `${info.axis}(由既有 ${info.src} 推導)` : "未定義";
+    return `主支軸${info.axis && !info.conflict ? `是 ${axisDesc}` : `目前${axisDesc}`}：沿主支軸放只能選 primary;boundary/secondary 要垂直於它\n${err}`;
   }
   if (err.includes("V_CUT_PRIORITY")) {
     feMarkInvalid($("tbRole"));
@@ -3039,9 +3132,15 @@ function drawFaceEditor() {
      會落在哪一側(帶只是「示意」,真正長度由引擎依支撐推導——見帶上文字標註;帶永遠沿定位
      引用的固定座標軸展開,不看 #tbDir——不管使用者選哪個方向,角材的截面深度一定是往定位
      引用的垂直方向偏,#tbDir 只決定角材沿哪個軸「跑」,不影響這條帶要畫在哪)。
-     GEO-196:滑鼠正指著某條可命中的線(fe.timberHoverAnchor)時,預示改畫「滑鼠所指那條線」與
-     「所指那一側」,不是 #tbAnchor/#tbSide 的表單值(見 feMove 更新 timberHoverAnchor/Side);
-     離開線(fe.timberHoverAnchor===null)回到表單值,行為不變。 */
+     GEO-196:滑鼠正指著某條可命中的線(fe.timberHoverAnchor)時,預示改畫「滑鼠所指那條線」,
+     不是 #tbAnchor 的表單值(見 feMove 更新 timberHoverAnchor);離開線
+     (fe.timberHoverAnchor===null)回到表單值,行為不變。
+     G196-R02+R05:帶的橫向範圍改由 feAnchorCrossRange 依錨法語意算——
+     at-line 中線對齊(±n 是法線厚度方向,不影響 2D 帶)、at-face 貼材料側;
+     帶套 face-material-clip(evenodd:外環扣孔)裁到有效區域——參考線本體
+     可以無限長,預示的材料帶不能跨孔出界。at-face t<id>(角材側面)解析不出
+     唯一側時回 null 不畫帶,不亂畫一側誤導。帶文字只標「橫向定位示意」——
+     真正的長度/跨距由核心決定,帶不等於最終材料。 */
   if ((fe.tool === "timber" || fe.anchorPreview) && e.bid != null) {
     const hoverAnchor = fe.tool === "timber" ? fe.timberHoverAnchor : null;
     const anchorVal = hoverAnchor || $("tbAnchor")?.value;
@@ -3052,16 +3151,17 @@ function drawFaceEditor() {
         : [gb[0], info.value, gb[2], info.value];
       el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3], class: "fe-anchor-hi" }, root);
       const A2 = Number($("tbA")?.value) || 0;
-      const side2 = hoverAnchor ? (fe.timberHoverSide || "+n") : (($("tbSide") || {}).value || "+n");
-      const s2 = side2 === "+n" ? 1 : -1;
-      const lo = s2 > 0 ? info.value : info.value - A2;
-      const hi = s2 > 0 ? info.value + A2 : info.value;
-      const br = info.constAxis === "u" ? [lo, gb[1], hi, gb[3]] : [gb[0], lo, gb[2], hi];
-      el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
-        class: "fe-anchor-band" }, root);
-      el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
-        "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
-        class: "fe-dim fe-anchor-band-label" }, root).textContent = "示意";
+      const cr = feAnchorCrossRange(e.bid, anchorVal, A2);
+      if (cr) {
+        const bandG = el("g", { "clip-path": "url(#face-material-clip)" }, root);
+        const br = cr.constAxis === "u" ? [cr.lo, gb[1], cr.hi, gb[3]]
+                                        : [gb[0], cr.lo, gb[2], cr.hi];
+        el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
+          class: "fe-anchor-band" }, bandG);
+        el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
+          "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
+          class: "fe-dim fe-anchor-band-label" }, bandG).textContent = "橫向定位示意";
+      }
     }
   }
   /* RC 障礙物鬼影（R7）：半透明分類矩形，只讀不改 boundary */
@@ -3277,27 +3377,36 @@ async function feDown(pt, ev) {
       if (!Number.isSafeInteger(B) || B <= 0) feMarkInvalid($("tbB"));
       return;
     }
-    /* GEO-196:點畫布上的邊/參考線直接放置——命中孔邊拒絕、不送指令；命中外輪廓邊或
-       參考線時,定位引用/側/方向/角色改由點擊決定並寫回表單(方便連放時沿用這次帶入的值);
+    /* GEO-196:點畫布上的邊/參考線直接放置——命中孔邊不送指令(G196-R02:訊息只說明
+       「快捷點選目前不支援孔邊」,不宣稱公理禁止——I13 的 at-face h<i>e<j> 仍可走右欄
+       表單);命中外輪廓邊或參考線時,定位引用/方向/角色由點擊決定並寫回表單;
        命中面內空白(或頂點/角材等其他元素)照舊——沿用表單目前值,一字不改舊路徑。
-       格線(.face-grid-line)目前沒有 data-face-hit,不可命中(見 BACKLOG GEO-196)。 */
+       G196-R02:點擊位置【不】再改 #tbSide——+n/-n 是 B 厚度朝承載面法線哪側(見 C 端
+       depth_side),不是面內左右;面內左右由定位引用本身決定(I13 at-line 中線對齊、
+       at-face 材料側貼齊),兩個概念不能混用。格線(.face-grid-line)目前沒有
+       data-face-hit,不可命中(見 BACKLOG GEO-196)。 */
     const hit0 = ev && ev.target && ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
     const hit = hit0 ? hit0.dataset.faceHit.split(":") : null;
     if (hit && hit[0] === "e" && +hit[1] !== 0) {
-      toast("孔邊不能當定位引用"); return;
+      toast("目前不支援直接點孔邊——請從右欄「定位引用」選孔邊(at-face h<i>e<j>)"); return;
     }
     if (hit && (hit[0] === "e" || hit[0] === "g")) {
       const clickAnchor = hit[0] === "e" ? `at-face e${hit[2]}` : `at-line guide ${+hit[1]}`;
       const info = feAnchorLineInfo(e.bid, clickAnchor);
-      if (info) {
+      /* G196-R03:命中了線但引用解析失敗(例如參考線剛被刪、邊索引失效)——報錯且不送,
+         不能悄悄退回右欄表單裡另一條引用(那會把料放到使用者沒點的地方)。 */
+      if (!info) { toast("這條線的定位引用已失效——請重新選擇"); return; }
+      {
         const clickDir = feAnchorDirFromInfo(info);
-        const clickSide = feAnchorSideForPoint(info, pt);
         const clickRole = feTimberRoleForClick(e.bid, hit[0] === "e" ? "edge" : "line", clickDir.slice(-1));
-        const anchorSel = $("tbAnchor"), dirSel = $("tbDir"), sideSel = $("tbSide"), roleSel = $("tbRole");
+        const anchorSel = $("tbAnchor"), dirSel = $("tbDir"), roleSel = $("tbRole");
         if (anchorSel) anchorSel.value = clickAnchor;
         if (dirSel) dirSel.value = clickDir;
-        if (sideSel) sideSel.value = clickSide;
-        if (roleSel) {
+        if (clickRole == null) {
+          /* G196-R04:主支軸推導矛盾(面上角材方向自相矛盾)——不自動選角色,
+             留診斷讓使用者知道為什麼沒有自動帶入。 */
+          toast("承載面角材方向矛盾,主支軸無法推導——請自行檢查角色");
+        } else if (roleSel) {
           roleSel.innerHTML = feTimberRoleOptionsHTML(e.bid, clickDir, clickRole);
           roleSel.value = clickRole;
           const pl = $("tbPriLabel");
@@ -3428,7 +3537,9 @@ function feMove(pt, ev) {
   /* GEO-196:角材工具下(不管是否正在拖曳——實務上角材工具沒有拖曳,d 恆為 null)
      追蹤滑鼠正指著哪條可命中的線(外輪廓邊/參考線;孔邊與格線不算,見 feDown 同一份判斷),
      供上面 drawFaceEditor 的 .fe-anchor-hi/.fe-anchor-band 預示改畫這條線。只在值真的變了
-     才重繪,避免每個 pointermove 都整份重畫 SVG。 */
+     才重繪,避免每個 pointermove 都整份重畫 SVG。
+     G196-R02:hover 只記「哪條線」——不記側向;+n/-n 是法線厚度方向,由表單決定,
+     滑鼠在線的哪一側只是畫面資訊,不得變成模型輸入。 */
   if (fe.tool === "timber") {
     const bidH = oc.edit && oc.edit.bid;
     const hitElH = ev && ev.target && ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
@@ -3438,11 +3549,8 @@ function feMove(pt, ev) {
       if (hitH[0] === "e" && +hitH[1] === 0) hoverAnchor = `at-face e${hitH[2]}`;
       else if (hitH[0] === "g") hoverAnchor = `at-line guide ${+hitH[1]}`;
     }
-    const info = hoverAnchor && bidH != null ? feAnchorLineInfo(bidH, hoverAnchor) : null;
-    const hoverSide = info ? feAnchorSideForPoint(info, pt) : null;
-    if (hoverAnchor !== fe.timberHoverAnchor || hoverSide !== fe.timberHoverSide) {
+    if (hoverAnchor !== fe.timberHoverAnchor) {
       fe.timberHoverAnchor = hoverAnchor;
-      fe.timberHoverSide = hoverSide;
       drawFaceEditor();
     }
   }
@@ -6249,8 +6357,8 @@ fevp.addEventListener("pointerup", async e => {
 });
 /* GEO-196:滑鼠離開畫布時清掉角材工具的 hover 命中線預示,回到表單值(不留殘影)。 */
 fevp.addEventListener("pointerleave", () => {
-  if (fe.timberHoverAnchor != null || fe.timberHoverSide != null) {
-    fe.timberHoverAnchor = null; fe.timberHoverSide = null;
+  if (fe.timberHoverAnchor != null) {
+    fe.timberHoverAnchor = null;
     drawFaceEditor();
   }
 });

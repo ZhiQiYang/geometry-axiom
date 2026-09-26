@@ -4216,7 +4216,9 @@ async function rightClick(x, y) {
     p47_1.opts.some(t => t.includes('已有角材 3')), p47_1);
 
   /* (2) 角材工具啟用 → 畫布有 .fe-anchor-hi 且 .fe-anchor-band;
-     #faceCanvasHint 或狀態列含「點擊位置不影響位置」;切回 select → 兩者消失。 */
+     #faceCanvasHint 或狀態列含「點一條邊或參考線直接放置」;切回 select → 兩者消失。
+     GEO-196:提示文字整句換掉(見 feTimberHintRefresh),不再是「點擊位置不影響位置」——
+     這是本票故意的行為變更(新增點線直接放置路徑),不是鬆綁斷言。 */
   await eval_(`feSetTool('timber')`);
   await sleep(150);
   const p47_2a = await eval_(`({
@@ -4225,9 +4227,9 @@ async function rightClick(x, y) {
     hint: document.getElementById('faceCanvasHint').textContent,
     status: document.getElementById('status').textContent,
   })`);
-  check('P47-2a 角材工具下畫出 .fe-anchor-hi/.fe-anchor-band,浮標或狀態列含「點擊位置不影響位置」',
+  check('P47-2a 角材工具下畫出 .fe-anchor-hi/.fe-anchor-band,浮標或狀態列含新提示(G196-R02 改字:「厚度方向依右欄」)',
     p47_2a.hi > 0 && p47_2a.band > 0 &&
-    (p47_2a.hint.includes('點擊位置不影響位置') || p47_2a.status.includes('點擊位置不影響位置')), p47_2a);
+    (p47_2a.hint.includes('厚度方向依右欄') || p47_2a.status.includes('厚度方向依右欄')), p47_2a);
   await eval_(`feSetTool('select')`);
   await sleep(150);
   const p47_2b = await eval_(`({
@@ -4358,9 +4360,9 @@ async function rightClick(x, y) {
   const clearToasts48 = () => eval_(`document.getElementById('toastRegion').innerHTML = ''`);
 
   /* (1) 真滑鼠點外輪廓邊 1(右邊,u=4000)靠面內側 3mm(3997,1500)→ fe.timbers 4 支,
-     新支 dir 沿 v(邊 1 是 u 固定的線,沿 v 跑)、side "+n"(面內側,u<4000)、
-     role primary(主支軸 v,邊 1 方向也是 v,平行);#tbAnchor 同步 at-face e1、
-     #tbRole 同步 primary。Ctrl+Z 回 3 支。 */
+     新支 dir 沿 v(邊 1 是 u 固定的線,沿 v 跑)、side "+n"(G196-R02 後由表單 #tbSide
+     預設值決定,不再由點擊的面內側決定)、role primary(主支軸 v,邊 1 方向也是 v,
+     平行);#tbAnchor 同步 at-face e1、#tbRole 同步 primary。Ctrl+Z 回 3 支。 */
   await eval_(`feSetTool('timber')`);
   await sleep(100);
   let pt48 = await openFace48();
@@ -4396,13 +4398,18 @@ async function rightClick(x, y) {
     p48_2.toast.includes('已被角材 1 占滿') && JSON.stringify(p48_2.ids) === '[1,2,3]', p48_2);
 
   /* (3) 新增一條參考線 u≈2000(line spec 測試 2000 + line guide 2 1 v spec:測試),
-     點它「+n」側 3mm(GEO-196 規則:constAxis="u" 的線,+n 側是 u 較小那側;
-     constAxis="v" 的線,+n 側是 v 較大那側——這個規則本身在 feAnchorLineInfo/feTimberRect
-     的既有幾何慣例上推導,不是照抄新程式碼)→ 4 支,新支 role primary(方向與主支軸 v
-     平行)、side "+n"。Ctrl+Z 回 3 支。 */
+     點它左側 3mm(u=1997)→ 4 支,新支 role primary(方向與主支軸 v 平行)。
+     G196-R02 語意更正:side 一律由表單 #tbSide 決定(此處表單值 +n),點擊點在線的
+     哪一側【不】再影響 ±n——舊斷言「點 +n 側→side +n」看起來同值,但因果不同:
+     舊版是點擊位置覆寫,新版是表單沿用。左/右點對照與 -n 組合見 §P49。 */
   await eval_(`api("line spec 測試 2000")`);
   await eval_(`api("line guide 2 1 v spec:測試")`);
-  await eval_(`feLoadGuides()`);
+  /* 直接用 api() 建線繞過了 app.js 自己的建線按鈕(那條路徑事後會呼叫 feAfterChange()
+     重繪檢視器),所以這裡要自己補一次 feLoadGuides()+renderFaceInspector(),否則
+     #tbAnchor 的 <select> 還是舊 DOM,沒有新參考線的 <option>,之後把 .value 設成
+     "at-line guide 2" 會因為找不到匹配選項而被瀏覽器悄悄清空成 ""(見 P48-3 除錯記錄)。 */
+  await eval_(`(async()=>{ await feLoadGuides(); renderFaceInspector(); })()`);
+  await eval_(`fiShowTab('timber')`);
   const p48_3info = await eval_(`feAnchorLineInfo(oc.edit.bid, 'at-line guide 2')`);
   const off3 = 3;
   const p48_3pt = p48_3info.constAxis === 'u'
@@ -4417,12 +4424,13 @@ async function rightClick(x, y) {
   const p48_3 = await eval_(`(()=>{
     const ids = fe.timbers.map(t => t.id).sort((a,b)=>a-b);
     const newT = fe.timbers.find(t => t.id !== 1 && t.id !== 2 && t.id !== 3);
-    return { ids, newT, anchor: document.getElementById('tbAnchor').value };
+    return { ids, newT, anchor: document.getElementById('tbAnchor').value,
+      side: document.getElementById('tbSide').value };
   })()`);
-  check('P48-3 點新參考線 +n 側 → 4 支,新支 role=primary/side=+n,#tbAnchor 同步該參考線',
+  check('P48-3 點新參考線 → 4 支,新支 role=primary/side 依表單(+n),#tbAnchor 同步該參考線(G196-R02)',
     p48_3.ids.length === 4 && [1,2,3].every(id => p48_3.ids.includes(id)) &&
     p48_3.newT && p48_3.newT.role === 'primary' && p48_3.newT.side === p48_3expectSide &&
-    p48_3.anchor === 'at-line guide 2', { p48_3, p48_3info, p48_3pt });
+    p48_3.anchor === 'at-line guide 2' && p48_3.side === '+n', { p48_3, p48_3info, p48_3pt });
   await pressKey('z', 'KeyZ', 90, 2);
   await sleep(300);
   const p48_3u = await eval_(`(async()=>{ await feLoadGuides(); return fe.timbers.map(t => t.id).sort(); })()`);
@@ -4455,9 +4463,12 @@ async function rightClick(x, y) {
   check('P48-4u Ctrl+Z → 回 3 支', JSON.stringify(p48_4u) === '[1,2,3]', p48_4u);
 
   /* (5) hover(不點)邊 1(u=4000)→ .fe-anchor-hi 畫的是 e1(x1=x2=4000);
-     移開到面內空白(不在任何線的命中走廊內)→ 回到表單目前值那條線。 */
+     移開到面內空白(不在任何線的命中走廊內)→ 回到表單目前值那條線。
+     G196-R02:hover 不得改 #tbSide——先把表單 side 故意設 -n,hover 過線後仍要是 -n。 */
   await eval_(`(()=>{ document.getElementById('tbAnchor').value = 'at-face e0';
-    document.getElementById('tbAnchor').dispatchEvent(new Event('change')); })()`);
+    document.getElementById('tbAnchor').dispatchEvent(new Event('change'));
+    document.getElementById('tbSide').value = '-n';
+    document.getElementById('tbSide').dispatchEvent(new Event('change')); })()`);
   await sleep(150);
   pt48 = await openFace48();
   const hoverPt1 = pt48(3999, 1500);
@@ -4474,31 +4485,804 @@ async function rightClick(x, y) {
   await sleep(200);
   const p48_5b = await eval_(`(()=>{
     const l = document.querySelector('#faceEditorRoot .fe-anchor-hi');
-    return { y1: l && l.getAttribute('y1'), y2: l && l.getAttribute('y2'), hoverAnchor: fe.timberHoverAnchor };
+    return { y1: l && l.getAttribute('y1'), y2: l && l.getAttribute('y2'), hoverAnchor: fe.timberHoverAnchor,
+      side: document.getElementById('tbSide').value,
+      hasHoverSide: 'timberHoverSide' in fe };
   })()`);
   check('P48-5b 移開到面內空白 → hoverAnchor 清空,預示回到表單值(#tbAnchor=at-face e0,v=0)',
     p48_5b.hoverAnchor === null && p48_5b.y1 === '0' && p48_5b.y2 === '0', p48_5b);
+  check('P48-5c G196-R02:hover 過線不改 #tbSide(仍 -n)且 fe 無 timberHoverSide 殘留欄位',
+    p48_5b.side === '-n' && p48_5b.hasHoverSide === false, p48_5b);
 
-  /* (6) 開一個孔(500,500)~(1500,1500),直接重宣告 boundary 1(同一片外環,加 hole)
-     不影響既有 e0~e3/角材;點孔邊(1000,500,孔第 0 邊中點)→ toast 含「孔邊不能當定位引用」,
-     不送指令,fe.timbers 仍 3 支。 */
-  await eval_(`(async()=>{
-    await api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000 hole 500,500 1500,500 1500,1500 500,1500");
-    await feAfterChange();
-  })()`);
+  /* (6) G196-R01:獨立 F-HOLE 場景——不依賴 (1)..(5) 留下的世界(guide 2、undo 歷史、
+     表單殘值都不相干)。reset 後建一面 4000×3000 + 一個孔,零角材。
+     setup 走 apiRequest 低階路徑(不經 api()→confirmReferenceImpact,setup 不該彈
+     對話框),逐條記 {line,ok,error,preview},第一條失敗即停——前置壞了就讓對應
+     check 紅掉,不進入互動步驟。 */
+  const setupLinesG196 = async (lines) => eval_(`(async()=>{
+    const out = [];
+    const r0 = await apiRequest('reset');
+    out.push({ line: 'reset', ok: r0.ok === true, error: r0.error || null, preview: !!r0.preview });
+    if (r0.ok !== true) return out;
+    for (const l of ${"__LINES__"}) {
+      const r = await apiRequest('line ' + l);
+      out.push({ line: l, ok: r.ok === true, error: r.error || null, preview: !!r.preview });
+      if (r.ok !== true || r.preview) break;
+    }
+    return out;
+  })()`.replace('__LINES__', JSON.stringify(lines)));
+
+  /* helper 自測:故意餵一條不合法指令(引用不存在的 spec),setup 必須當場報錯返回,
+     不得繼續——證明「前置失敗立即報錯」真的會失敗,不是擺設。被拒絕的指令不改世界
+     (I8),不污染後續測試。 */
+  const badSetup = await setupLinesG196(['guide 1 1 v spec:不存在', 'timber 9 27 33 role primary']);
+  check('P48-6a setup helper:不合法指令(不存在的 spec)→ 當步失敗、不繼續送後面的指令',
+    Array.isArray(badSetup) && badSetup.length === 2 && badSetup[0].ok === true &&
+    badSetup[1].ok === false && !!badSetup[1].error, badSetup);
+
+  /* F-HOLE(附錄 A):一面 4000×3000 + 孔 (1000,1000)~(2000,2000),零角材。 */
+  const s6 = await setupLinesG196([
+    'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1000,1000 2000,1000 2000,2000 1000,2000']);
+  check('P48-6b F-HOLE setup 全部成功且無 preview', Array.isArray(s6) &&
+    s6.length === 2 && s6.every(r => r.ok === true && !r.preview), s6);
+  await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+    fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+    const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
+    await feLoadGuides(); renderFaceInspector(); fiShowTab('timber'); })()`);
   await sleep(250);
+
+  /* 點擊前驗證:孔確實存在(loops=2)、目標孔邊的 DOM hit 元素存在、
+     elementFromPoint 真的命中 e:1:0(不是猜孔索引、不盲點畫面座標)。 */
+  const pre6 = await eval_(`(()=>{
+    const loops = oc.bmap[1] || [];
+    const svgR = document.getElementById('faceEditorSvg').getBoundingClientRect();
+    const cx = svgR.x + 1500, cy = svgR.y + 1000;   /* 孔邊 e:1:0 中點 */
+    const el0 = document.elementFromPoint(cx, cy);
+    const hitEl = el0 && el0.closest ? el0.closest('[data-face-hit]') : null;
+    return { loops: loops.length, holeVerts: loops[1] ? loops[1].verts.length : 0,
+      hitAtPoint: hitEl ? hitEl.dataset.faceHit : null, cx, cy };
+  })()`);
+  check('P48-6c 前置:孔存在(2 環)且 (1500,1000) elementFromPoint 命中孔邊 e:1:0',
+    pre6.loops === 2 && pre6.holeVerts === 4 && pre6.hitAtPoint === 'e:1:0', pre6);
+
+  /* 點擊前記錄世界 dump + 角材數(零支才是這個場景的正確基準),
+     並攔截 apiRequest 記錄點擊後送出的指令。 */
+  const dumpBefore6 = (await eval_(`apiRequest('dump')`)).text;
+  await eval_(`(()=>{ window.__p48sent = [];
+    if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+    apiRequest = async c => { window.__p48sent.push(c); return window.__rawApiRequest(c); };
+    return 0; })()`);
   await eval_(`feSetTool('timber')`);
-  await sleep(100);
+  await sleep(120);
   await clearToasts48();
-  pt48 = await openFace48();
-  await click(pt48(1000, 500).x, pt48(1000, 500).y);
-  await sleep(300);
-  const p48_6 = await eval_(`({
-    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
-    ids: fe.timbers.map(t => t.id).sort(),
-  })`);
-  check('P48-6 點孔邊 → toast 含「孔邊不能當定位引用」,不送指令;仍 3 支',
-    p48_6.toast.includes('孔邊不能當定位引用') && JSON.stringify(p48_6.ids) === '[1,2,3]', p48_6);
+  await click(pre6.cx, pre6.cy);
+  await sleep(400);
+  const after6 = await eval_(`(async()=>{
+    const d = await apiRequest('dump');
+    const refs = await apiRequest('references');
+    apiRequest = window.__rawApiRequest;   /* 還原攔截 */
+    return { dump: d.text, bridgeTimbers: (refs.timbers || []).length,
+      sent: (window.__p48sent || []).filter(c => /timber|place/.test(c)),
+      toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
+      feTimbers: (fe.timbers || []).length };
+  })()`);
+  /* G196-R02 文案映射:舊訊息「孔邊不能當定位引用」→ 新訊息「目前不支援直接點孔邊——
+     請從右欄「定位引用」選孔邊(at-face h<i>e<j>)」。改文案的理由:舊句暗示公理禁止孔邊
+     當定位引用,但 I13 明文允許 at-face h<i>e<j>(表單路徑一直在);只是快捷點選
+     尚未實作孔邊。斷言同步更新為新訊息的關鍵子句。 */
+  check('P48-6d 點孔邊 → toast 說明快捷不支援並指路右欄、無 timber/place 指令送出、世界 dump 逐字不變、零角材',
+    after6.toast.includes('孔邊') && after6.toast.includes('定位引用') && after6.sent.length === 0 &&
+    after6.dump === dumpBefore6 && after6.bridgeTimbers === 0 && after6.feTimbers === 0,
+    { toast: after6.toast, sent: after6.sent, bridgeTimbers: after6.bridgeTimbers });
+
+  console.log('=== P49. 點線不暗改法線厚度方向(G196-R02 驗收) ===');
+  /* 工單 G196-R02 固定驗收:F-SUPPORT 世界(兩支 boundary 沿 u @ e0/e2、guide 2 @ u=2000、
+     無 primary)。表單 side × 點擊左右各組合:送出的 DSL 一律帶表單的 side,
+     cross 足跡恆為 1987..2014(at-line 中線對齊,I13),改變的只有法線厚度方向
+     (B 軸/Z 範圍)。每個組合重新 setup 同一基準,不靠 undo 殘值。
+     幾何驗證用真實 bridge 的 references 回傳(origin/axes/A/B/length),
+     不只驗表單欄位或支數。 */
+  const F_SUPPORT = [
+    'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+    'timber 1 27 33 role boundary',
+    'place 1 on 1 at-face e0 +u +n',
+    'timber 2 27 33 role boundary',
+    'place 2 on 1 at-face e2 +u +n',
+    'spec 測試中線 2000',
+    'guide 2 1 v spec:測試中線'];
+  const enterTimber49 = async (formSide) => {
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      window.__sent = [];
+      if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+      apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); }; })()`);
+    await eval_(`(()=>{ const s = document.getElementById('tbSide'); s.value = '${formSide}';
+      s.dispatchEvent(new Event('change')); })()`);
+    await eval_(`feSetTool('timber')`);
+    await sleep(150);
+    pt48 = await openFace48();
+  };
+  for (const formSide of ['+n', '-n']) {
+    for (const px of [1997, 2003]) {
+      const rs = await setupLinesG196(F_SUPPORT);
+      check(`P49 setup(${formSide}@${px}) F-SUPPORT 全過`, Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+      await enterTimber49(formSide);
+      await click(pt48(px, 1500).x, pt48(px, 1500).y);
+      await sleep(400);
+      const r = await eval_(`(async()=>{
+        const refs = await apiRequest('references');
+        const t = (refs.timbers || []).find(x => x.id === 3);
+        apiRequest = window.__rawApiRequest;
+        return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)),
+          formSide: document.getElementById('tbSide').value, g: t && t.geometry };
+      })()`);
+      const g = r.g || {};
+      /* 八角點三維範圍:axes[0]=長度軸、axes[1]=截面寬 cross 軸、axes[2]=厚度 B 軸;
+         原點 + 軸×尺寸推三個軸的極值,全部用真實 bridge 回傳,不依賴前端 helper。 */
+      const xLo = g.origin && Math.min(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);
+      const xHi = g.origin && Math.max(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);
+      const vLo = g.origin && Math.min(g.origin[1], g.origin[1] + g.axes[0][1] * g.length);
+      const vHi = g.origin && Math.max(g.origin[1], g.origin[1] + g.axes[0][1] * g.length);
+      const zLo = g.origin && Math.min(g.origin[2], g.origin[2] + g.axes[2][2] * g.B);
+      const zHi = g.origin && Math.max(g.origin[2], g.origin[2] + g.axes[2][2] * g.B);
+      const placeLine = r.sent.map(c => c.replace(/^line /, '')).find(c => /^place /.test(c)) || '';
+      const wantZ = formSide === '+n' ? [2500, 2533] : [2467, 2500];
+      check(`P49 side=${formSide} 點u=${px} → place 帶 ${formSide}、cross u 1987..2014、長度 v 27..2973、Z ${wantZ[0]}..${wantZ[1]}`,
+        /place \d+ on 1 at-line guide 2\s+\+v/.test(placeLine) &&
+        placeLine.trim().endsWith(' ' + formSide) &&
+        g.centerline === 2000 && g.A === 27 && g.length === 2946 &&
+        xLo === 1987 && xHi === 2014 && vLo === 27 && vHi === 2973 &&
+        zLo === wantZ[0] && zHi === wantZ[1] &&
+        r.formSide === formSide,
+        { placeLine, g, formSide: r.formSide });
+    }
+  }
+
+  /* 牆面框架(origin=(3000,0,0), U=+Y, V=+Z, N=+X):同樣的左右點選,B=33 厚度範圍
+     變的是 X(3000..3033 / 2967..3000),不是 Z——驗證「厚度方向跟著承載面法線走」,
+     不是寫死成世界 Z。 */
+  const F_WALL = [
+    'surface 1 origin 3000 0 0 u +y v +z outline 0,0 4000,0 4000,3000 0,3000',
+    'timber 1 27 33 role boundary',
+    'place 1 on 1 at-face e0 +u +n',
+    'timber 2 27 33 role boundary',
+    'place 2 on 1 at-face e2 +u +n',
+    'spec 測試中線 2000',
+    'guide 2 1 v spec:測試中線'];
+  for (const formSide of ['+n', '-n']) {
+    const rs = await setupLinesG196(F_WALL);
+    check(`P49 wall setup(${formSide}) 全過`, Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await enterTimber49(formSide);
+    /* 牆面的面內 v 軸 = 世界 +z,但面內編輯器畫的是 uv 平面,點擊座標用 uv 不變 */
+    await click(pt48(1997, 1500).x, pt48(1997, 1500).y);
+    await sleep(400);
+    const r = await eval_(`(async()=>{
+      const refs = await apiRequest('references');
+      const t = (refs.timbers || []).find(x => x.id === 3);
+      return { g: t && t.geometry, formSide: document.getElementById('tbSide').value };
+    })()`);
+    const g = r.g || {};
+    const xLo = g.origin && Math.min(g.origin[0], g.origin[0] + g.axes[2][0] * g.B);
+    const xHi = g.origin && Math.max(g.origin[0], g.origin[0] + g.axes[2][0] * g.B);
+    const wantX = formSide === '+n' ? [3000, 3033] : [2967, 3000];
+    check(`P49 wall side=${formSide} 點線 → 厚度沿世界 X ${wantX[0]}..${wantX[1]}(非寫死 Z)`,
+      g.length === 2946 && xLo === wantX[0] && xHi === wantX[1] && r.formSide === formSide,
+      { g, formSide: r.formSide });
+  }
+
+  /* 外輪廓邊點擊同樣不覆寫 side:表單 -n,點 e1(u=4000 邊)內側——送出的 place 行
+     一律帶 -n(不論角色/是否被核心接受——角色推導是 G196-R04 的範圍,這裡只驗 side)。 */
+  {
+    const rs = await setupLinesG196(F_SUPPORT);
+    check('P49 e1 setup 全過', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await enterTimber49('-n');
+    await click(pt48(3997, 1500).x, pt48(3997, 1500).y);
+    await sleep(400);
+    const r = await eval_(`(async()=>{
+      return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)),
+        formSide: document.getElementById('tbSide').value };
+    })()`);
+    const placeLine = r.sent.map(c => c.replace(/^line /, '')).find(c => /^place /.test(c)) || '';
+    check('P49 表單 -n 點外邊 e1 → place 行帶 -n(點擊側不覆寫)',
+      /place \d+ on 1 at-face e1\s+\+v -n/.test(placeLine) && r.formSide === '-n',
+      { sent: r.sent, formSide: r.formSide });
+  }
+
+  /* 面內空白路徑不回歸:表單含負向長度軸 -v 與 -n 時,點空白照表單送出
+     (點線邏輯不得重設表單值)。選 e3(u=0)避免占用。 */
+  {
+    const rs = await setupLinesG196(F_SUPPORT);
+    check('P49 blank setup 全過', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await enterTimber49('-n');
+    await eval_(`(()=>{
+      document.getElementById('tbAnchor').value = 'at-face e3';
+      const d = document.getElementById('tbDir'); d.value = '-v'; d.dispatchEvent(new Event('change'));
+      const s = document.getElementById('tbSide'); s.value = '-n'; s.dispatchEvent(new Event('change'));
+    })()`);
+    await click(pt48(1000, 1700).x, pt48(1000, 1700).y);   /* 面內空白:遠離 guide 2(u=2000±7)與所有邊 */
+    await sleep(400);
+    const r = await eval_(`(()=>{
+      return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)),
+        formSide: document.getElementById('tbSide').value,
+        formDir: document.getElementById('tbDir').value };
+    })()`);
+    const placeLine = r.sent.map(c => c.replace(/^line /, '')).find(c => /^place /.test(c)) || '';
+    check('P49 空白點擊走表單:place 帶 at-face e3 -v -n,表單值不被重設',
+      /place \d+ on 1 at-face e3\s+-v -n/.test(placeLine) &&
+      r.formSide === '-n' && r.formDir === '-v',
+      { sent: r.sent, formSide: r.formSide, formDir: r.formDir });
+  }
+
+  /* hover 不送任何修改世界指令:mouseMoved 過線,攔截到的 apiRequest 不含
+     timber/place/boundary/spec/guide(寫入指令)。 */
+  {
+    const rs = await setupLinesG196(F_SUPPORT);
+    await enterTimber49('+n');
+    await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: pt48(1997, 1500).x, y: pt48(1997, 1500).y });
+    await sleep(250);
+    await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: pt48(2003, 1500).x, y: pt48(2003, 1500).y });
+    await sleep(250);
+    const r = await eval_(`(()=>{
+      return { sent: (window.__sent || []).filter(c => /timber|place|boundary|guide|spec/.test(c)),
+        hover: fe.timberHoverAnchor, side: document.getElementById('tbSide').value };
+    })()`);
+    check('P49 hover 過線不送寫入指令、不改表單 side(仍 +n)、timberHoverAnchor 只記線',
+      r.sent.length === 0 && r.side === '+n' && r.hover === 'at-line guide 2', r);
+    /* 還原攔截,避免影響後面的段落 */
+    await eval_(`(()=>{ if (window.__rawApiRequest) apiRequest = window.__rawApiRequest; })()`);
+  }
+
+  console.log('=== P50. 吸附/格距/縮放不改變點線語意(G196-R03) ===');
+  /* 每個情境重建 F-SUPPORT(同一基準,不靠 undo/殘值)。點擊命中以事件實際
+     target(data-face-hit)為準;吸附(feSnap)只動 fePoint 的座標,不得改寫
+     被命中的引用、方向、角色或表單 side。驗證「送出的 DSL 逐字一致」(timber id
+     正規化成 N)與真實 bridge 幾何,不只數支數。 */
+  const sentNorm = (arr) => (arr || []).map(c => c.replace(/^line /, '').replace(/^(timber|place) \d+/, '$1 N')).sort();
+  for (const snap of [null, 10, 50, 100]) {
+    for (const px of [1997, 2000, 2003]) {
+      const rs = await setupLinesG196(F_SUPPORT);
+      check(`P50 setup(snap=${snap ?? 'off'}@${px}) 全過`, Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+      await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+        fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+        const t = document.getElementById('faceSnapToggle'); if (t) t.checked = ${snap != null};
+        const gs = document.getElementById('faceGridSizeSelect'); if (gs) gs.value = '${snap || 50}';
+        await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+        window.__sent = [];
+        if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+        apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+        const s = document.getElementById('tbSide'); s.value = '+n'; s.dispatchEvent(new Event('change'));
+        feSetTool('timber'); })()`);
+      await sleep(150);
+      pt48 = await openFace48();
+      await click(pt48(px, 1500).x, pt48(px, 1500).y);
+      await sleep(350);
+      const r = await eval_(`(async()=>{
+        const refs = await apiRequest('references');
+        const t = (refs.timbers || []).find(x => x.id === 3);
+        apiRequest = window.__rawApiRequest;
+        return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)), g: t && t.geometry };
+      })()`);
+      const g = r.g || {};
+      check(`P50 snap=${snap ?? 'off'} 點u=${px} → 引用/dir/role/side 不變、cross 1987..2014`,
+        JSON.stringify(sentNorm(r.sent)) === JSON.stringify(sentNorm([
+          'timber N 27 33 role primary', 'place N on 1 at-line guide 2  +v +n'])) &&
+        g.centerline === 2000 && g.length === 2946,
+        { sent: r.sent, g });
+    }
+  }
+
+  /* snap=50、表單 -n、點正好在線上(u=2000):舊語意下 dot=0 會回 +n;
+     修正後吸附/位置都不影響 side——仍送 -n。 */
+  {
+    const rs = await setupLinesG196(F_SUPPORT);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = true;
+      const gs = document.getElementById('faceGridSizeSelect'); if (gs) gs.value = '50';
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      window.__sent = [];
+      if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+      apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+      const s = document.getElementById('tbSide'); s.value = '-n'; s.dispatchEvent(new Event('change'));
+      feSetTool('timber'); })()`);
+    await sleep(150);
+    pt48 = await openFace48();
+    await click(pt48(2000, 1500).x, pt48(2000, 1500).y);
+    await sleep(350);
+    const r = await eval_(`(async()=>{
+      const refs = await apiRequest('references');
+      const t = (refs.timbers || []).find(x => x.id === 3);
+      apiRequest = window.__rawApiRequest;
+      return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)), g: t && t.geometry,
+        formSide: document.getElementById('tbSide').value };
+    })()`);
+    const g = r.g || {};
+    const zLo = g.origin && Math.min(g.origin[2], g.origin[2] + g.axes[2][2] * g.B);
+    const zHi = g.origin && Math.max(g.origin[2], g.origin[2] + g.axes[2][2] * g.B);
+    check('P50 snap=50 點在線上(u=2000)+表單 -n → 仍送 -n(Z 2467..2500),不回 +n',
+      JSON.stringify(sentNorm(r.sent)) === JSON.stringify(sentNorm([
+        'timber N 27 33 role primary', 'place N on 1 at-line guide 2  +v -n'])) &&
+      zLo === 2467 && zHi === 2500 && r.formSide === '-n', { sent: r.sent, g });
+  }
+
+  /* 參考線不在格點上(u=2003):snap=50 時點 u=2000/2005 都吸附到 2000,
+     但命中的 DOM 線仍是 guide 2(在 u=2003),送出的引用不能變成別的。 */
+  {
+    const rs = await setupLinesG196([
+      'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+      'timber 1 27 33 role boundary', 'place 1 on 1 at-face e0 +u +n',
+      'timber 2 27 33 role boundary', 'place 2 on 1 at-face e2 +u +n',
+      'spec 測試中線 2003', 'guide 2 1 v spec:測試中線']);
+    check('P50 off-grid guide setup 全過', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = true;
+      const gs = document.getElementById('faceGridSizeSelect'); if (gs) gs.value = '50';
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      window.__sent = [];
+      if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+      apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+      const s = document.getElementById('tbSide'); s.value = '+n'; s.dispatchEvent(new Event('change'));
+      feSetTool('timber'); })()`);
+    await sleep(150);
+    pt48 = await openFace48();
+    for (const px of [2000, 2005]) {
+      await eval_(`(()=>{ window.__sent = []; })()`);
+      await click(pt48(px, 1500).x, pt48(px, 1500).y);
+      await sleep(350);
+      const r = await eval_(`(async()=>{
+        const refs = await apiRequest('references');
+        const ts = (refs.timbers || []).map(t => t.id).sort();
+        return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)),
+          last: refs.timbers && refs.timbers[refs.timbers.length - 1],
+          n: ts.length };
+      })()`);
+      const ok = r.sent.some(c => /place \d+ on 1 at-line guide 2\s+\+v \+n/.test(c));
+      check(`P50 off-grid guide@2003,snap=50,點u=${px} → 命中引用仍 guide 2`,
+        ok, r.sent);
+      if (ok) { await pressKey('z', 'KeyZ', 90, 2); await sleep(300);
+        await eval_(`(async()=>{ await feLoadGuides(); })()`); }
+    }
+  }
+
+  /* 非 zoom=1/pan=0:fit 視圖(1382×900)+ 任意 pan 下點同一條線,引用不變。
+     螢幕座標由當前 transform(svgRect+pan+uv*zoom)算出,不是固定假設。 */
+  {
+    await send('Emulation.setDeviceMetricsOverride', { width: 1382, height: 900, deviceScaleFactor: 1, mobile: false });
+    await sleep(200);
+    const rs = await setupLinesG196(F_SUPPORT);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      feFit(loopsBBox(oc.bmap[1])); fe.panX += 40; fe.panY += 25; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = true;
+      const gs = document.getElementById('faceGridSizeSelect'); if (gs) gs.value = '50';
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      window.__sent = [];
+      if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+      apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+      feSetTool('timber'); })()`);
+    await sleep(250);
+    const cp = await eval_(`(()=>{
+      const r = document.getElementById('faceEditorSvg').getBoundingClientRect();
+      return { x: r.x + fe.panX + 1997 * fe.zoom, y: r.y + fe.panY + 1500 * fe.zoom,
+        zoom: fe.zoom };
+    })()`);
+    await click(cp.x, cp.y);
+    await sleep(400);
+    const r = await eval_(`(async()=>{
+      const refs = await apiRequest('references');
+      const t = (refs.timbers || []).find(x => x.id === 3);
+      apiRequest = window.__rawApiRequest;
+      return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)), g: t && t.geometry };
+    })()`);
+    check('P50 fit+zoom+pan(非100%)下點線 → 引用/dir/role/side 不變',
+      JSON.stringify(sentNorm(r.sent)) === JSON.stringify(sentNorm([
+        'timber N 27 33 role primary', 'place N on 1 at-line guide 2  +v +n'])) &&
+      r.g && r.g.centerline === 2000,
+      { sent: r.sent, zoom: cp.zoom });
+    await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
+    await sleep(200);
+  }
+
+  /* 390px 視窗煙霧測試(模擬窄版,非實體手機/Safari):面板收合後點線仍走同一路徑。 */
+  {
+    await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 700, deviceScaleFactor: 1, mobile: true });
+    await send('Emulation.setTouchEmulationEnabled', { enabled: true });
+    await sleep(250);
+    const rs = await setupLinesG196(F_SUPPORT);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      feFit(loopsBBox(oc.bmap[1]));
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      window.__sent = [];
+      if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+      apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+      feSetTool('timber'); })()`);
+    await sleep(250);
+    const cp = await eval_(`(()=>{
+      const r = document.getElementById('faceEditorSvg').getBoundingClientRect();
+      return { x: r.x + fe.panX + 1997 * fe.zoom, y: r.y + fe.panY + 1500 * fe.zoom,
+        zoom: fe.zoom, vw: innerWidth, vh: innerHeight };
+    })()`);
+    await click(cp.x, cp.y);
+    await sleep(400);
+    const r = await eval_(`(async()=>{
+      const refs = await apiRequest('references');
+      const t = (refs.timbers || []).find(x => x.id === 3);
+      apiRequest = window.__rawApiRequest;
+      return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)),
+        centerline: t && t.geometry && t.geometry.centerline };
+    })()`);
+    check('P50 390px 窄視窗模擬:點線放置 smoke(非實體裝置驗收)',
+      r.sent.some(c => /place \d+ on 1 at-line guide 2\s+\+v/.test(c)) && r.centerline === 2000,
+      { sent: r.sent, vw: cp.vw });
+    await send('Emulation.setTouchEmulationEnabled', { enabled: false });
+    await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
+    /* touch 模擬期間的 mousePressed/mouseReleased 可能被 Chrome 翻譯成觸控事件,
+       mouse 側按鍵狀態殘留「已按下」——之後的 mousePressed 會被靜默丟棄、
+       只有 release 產生 pointerup(本段曾因這個讓下一個測試的點擊整個消失)。
+       補一個 release 確保按鍵狀態乾淨。 */
+    await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 10, y: 10, button: 'left', clickCount: 1 });
+    await sleep(200);
+  }
+
+  /* 命中的線其引用已失效 → 報錯且不送,不靜默退回表單另一條引用。
+     用合成狀態觸發:渲染後把 fe.guides 清空(DOM 命中層還在,但解析不到 guide 2),
+     等效於「點擊瞬間引用已失效」的路徑。
+     注意:本段自帶 viewport 還原——不依賴上一段(390px 窄視窗)的善後;
+     行動裝置模擬下 elementFromPoint 看 layout viewport 仍命中,
+     但 Input.dispatchMouseEvent 對超出 visual viewport 的座標會靜默丟棄。 */
+  {
+    await send('Emulation.setTouchEmulationEnabled', { enabled: false });
+    const mres = await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
+    await sleep(250);
+    const rs = await setupLinesG196(F_SUPPORT);
+    const pre = await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      window.__sent = [];
+      if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+      apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+      feSetTool('timber');
+      /* 引用解析失效:DOM 命中層還在,但 fe.guides 已無 guide 2。
+         必須在 feSetTool 之後清——feSetTool 會 drawFaceEditor() 重繪,
+         若在之前清,命中層的 g: 元素也會被一起移除,點擊就落空走表單。 */
+      fe.guides = [];
+      const svgR = document.getElementById('faceEditorSvg').getBoundingClientRect();
+      const elAt = document.elementFromPoint(svgR.x + 2000, svgR.y + 1500);
+      const hitEl = elAt && elAt.closest ? elAt.closest('[data-face-hit]') : null;
+      return { focus: oc.edit && oc.edit.bid, tool: fe.tool, guides: fe.guides.length,
+        hitNow: hitEl ? hitEl.dataset.faceHit : null, iw: innerWidth,
+        cx: svgR.x + 2000, cy: svgR.y + 1500 }; })()`);
+    check('P50 失效引用前置:進面1+timber 工具+fe.guides 已清+命中層仍含 g:2:v+視窗已還原',
+      pre && pre.focus === 1 && pre.tool === 'timber' && pre.guides === 0 &&
+      pre.hitNow === 'g:2:v' && pre.iw > 2300, { pre, mres: mres && (mres.error || 'ok') });
+    /* 探測:記錄點擊當下的真實狀態(busy/tool/hit)與 toast/feDown 呼叫,
+       失敗時從 diag 直接看出是哪一層把點擊吞掉。 */
+    const instOk = await eval_(`(()=>{ window.__dbg = { toasts: [], feDownCalls: [], downs: [], docDowns: [] };
+      const _toast = toast;
+      toast = m => { window.__dbg.toasts.push(String(m)); return _toast(m); };
+      const _feDown = feDown;
+      feDown = async (pt, ev) => {
+        const el = ev && ev.target && ev.target.closest ? ev.target.closest('[data-face-hit]') : null;
+        window.__dbg.feDownCalls.push({ hit: el ? el.dataset.faceHit : null,
+          tool: fe.tool, busy: oc.busy, guides: fe.guides.length });
+        return _feDown(pt, ev);
+      };
+      /* capture 階段先記一筆——區分「事件沒到 fevp」與「handler 早期 return 吞掉」。 */
+      for (const evName of ['pointerdown', 'pointerup', 'pointermove', 'pointercancel'])
+        document.addEventListener(evName, ev => {
+          const t = ev.target;
+          window.__dbg.docDowns.push({ ev: evName, tag: t && t.tagName, id: t && t.id || null,
+            inFevp: fevp.contains(t), x: ev.clientX, y: ev.clientY });
+        }, true);
+      fevp.addEventListener('pointerdown', ev => {
+        const t = ev.target;
+        window.__dbg.downs.push({ btn: ev.button, busy: oc.busy, tool: fe.tool,
+          ulCalib: !!fe.ulCalib,
+          tag: t && t.tagName, id: t && t.id || null,
+          overlay: !!(t && t.closest && t.closest('#feGuidePick, #feActionBar, #feOpPanel, #feCtxMenu')),
+          hitEl: (t && t.closest && t.closest('[data-face-hit]') || {}).dataset ?
+            t.closest('[data-face-hit]').dataset.faceHit : null });
+      }, true);
+      return 'installed';
+    })()`);
+    await sleep(150);
+    await clearToasts48();
+    /* 點擊前一刻再測一次 elementFromPoint——若此時頂層元素已不是命中線,
+       代表 pre-eval 到 click 之間 DOM 被重繪或有浮層蓋上。 */
+    const atClick = await eval_(`(()=>{ const el = document.elementFromPoint(${pre && typeof pre.cx === 'number' ? pre.cx : 0}, ${pre && typeof pre.cy === 'number' ? pre.cy : 0});
+      const he = el && el.closest ? el.closest('[data-face-hit]') : null;
+      return { tag: el && el.tagName, id: el && el.id || null,
+        inFevp: el ? fevp.contains(el) : null, hit: he ? he.dataset.faceHit : null }; })()`);
+    let disp = null;
+    if (pre && typeof pre.cx === 'number') {
+      /* 防禦:先送一個 release 清掉可能殘留的按鍵狀態(上一段 touch 模擬留下的),
+         否則下面的 press 會被 Chrome 當成「已按著」靜默丟棄。
+         座標刻意避開 fevp(送到視窗左上角頂列)——pointerup 若在畫布內落地會走
+         feUp() 無條件 drawFaceEditor(),把本段故意保留的陳舊命中層重繪掉。 */
+      await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: 5, y: 5, button: "left", clickCount: 1 });
+      const pd = await send("Input.dispatchMouseEvent", { type: "mousePressed", x: pre.cx, y: pre.cy, button: "left", clickCount: 1 });
+      const pu = await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: pre.cx, y: pre.cy, button: "left", clickCount: 1 });
+      disp = { pd: pd && (pd.error || pd.result), pu: pu && (pu.error || pu.result) };
+    }
+    await sleep(350);
+    const r = await eval_(`(async()=>{
+      const refs = await apiRequest('references');
+      apiRequest = window.__rawApiRequest;
+      const dbg = window.__dbg || {};
+      return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)),
+        toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
+        toastCalls: dbg.toasts, feDownCalls: dbg.feDownCalls, downs: dbg.downs,
+        docDowns: dbg.docDowns,
+        n: (refs.timbers || []).length };
+    })()`);
+    if (r && typeof r === 'object') { r.atClick = atClick; r.disp = disp; r.instOk = instOk; }
+    check('P50 命中線引用失效 → 報錯、不送指令、不退回表單引用',
+      (r.sent || []).length === 0 && (r.toast || '').includes('定位引用') && r.n === 2, r);
+  }
+
+  console.log('=== P51. D17 主支軸推導與自動角色(G196-R04) ===');
+  /* 推導表:|primary|boundary|→軸|;全沿 v|全沿 u 或無|v;全沿 u|…|u;
+     無|全沿 u|v;無|全沿 v|u;無|無|未定義;矛盾|不自選。
+     custom/secondary 不定義軸;矛盾時不自動選、留診斷。
+     (1) F-SUPPORT(兩支 boundary 沿 u、無 primary)→ 軸應為 v,
+         點外邊 e1(沿 v)自動帶 primary,核心接受、cross 3973..4000、長度 27..2973。 */
+  {
+    const rs = await setupLinesG196(F_SUPPORT);
+    check('P51-1 setup 全過', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      window.__sent = [];
+      if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+      apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+      feSetTool('timber'); })()`);
+    await sleep(150);
+    const axisNow = await eval_(`fePrimaryAxisInfo(oc.edit.bid)`);
+    check('P51-1a F-SUPPORT 無 primary、兩支 boundary 沿 u → 主支軸推導 v(src=boundary)',
+      axisNow && axisNow.axis === 'v' && axisNow.src === 'boundary' && !axisNow.conflict, axisNow);
+    pt48 = await openFace48();
+    await click(pt48(3997, 1500).x, pt48(3997, 1500).y);
+    await sleep(400);
+    const r = await eval_(`(async()=>{
+      const refs = await apiRequest('references');
+      const t = (refs.timbers || []).find(x => x.id === 3);
+      apiRequest = window.__rawApiRequest;
+      return { sent: (window.__sent || []).map(c => c.replace(/^line /, '')),
+        formRole: document.getElementById('tbRole').value, g: t && t.geometry };
+    })()`);
+    const g = r.g || {};
+    const xLo = g.origin && Math.min(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);
+    const xHi = g.origin && Math.max(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);
+    const vLo = g.origin && Math.min(g.origin[1], g.origin[1] + g.axes[0][1] * g.length);
+    const vHi = g.origin && Math.max(g.origin[1], g.origin[1] + g.axes[0][1] * g.length);
+    check('P51-1b 點 e1 → 自動角色 primary、核心接受、cross u 3973..4000、長度 v 27..2973',
+      r.sent.some(c => /^timber \d+ 27 33 role primary$/.test(c)) &&
+      r.sent.some(c => /^place \d+ on 1 at-face e1\s+\+v/.test(c)) &&
+      r.formRole === 'primary' && xLo === 3973 && xHi === 4000 &&
+      vLo === 27 && vHi === 2973, { sent: r.sent, g });
+  }
+
+  /* (2) 旋轉對應:boundary 在 e1/e3(沿 v)→ 主支軸 u;點 e0(沿 u,平行)→ primary。 */
+  {
+    const rs = await setupLinesG196([
+      'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+      'timber 1 27 33 role boundary', 'place 1 on 1 at-face e1 +v +n',
+      'timber 2 27 33 role boundary', 'place 2 on 1 at-face e3 +v +n',
+      'spec 測試中線 2000', 'guide 2 1 u spec:測試中線']);
+    check('P51-2 setup 全過(垂直 boundary 於 e1/e3)', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      window.__sent = [];
+      if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+      apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+      feSetTool('timber'); })()`);
+    await sleep(150);
+    const axisNow = await eval_(`fePrimaryAxisInfo(oc.edit.bid)`);
+    check('P51-2a boundary 沿 v → 主支軸推導 u', axisNow && axisNow.axis === 'u' && axisNow.src === 'boundary', axisNow);
+    pt48 = await openFace48();
+    await click(pt48(2000, 3).x, pt48(2000, 3).y);   /* e0 頂邊 v=0,沿 u 跑 */
+    await sleep(400);
+    const r = await eval_(`(async()=>{
+      const refs = await apiRequest('references');
+      const t = (refs.timbers || []).find(x => x.id === 3);
+      apiRequest = window.__rawApiRequest;
+      return { sent: (window.__sent || []).map(c => c.replace(/^line /, '')),
+        role: t && t.role, g: t && t.geometry };
+    })()`);
+    /* 兩支 boundary 在 e1/e3(u=0/4000)→ 主支在 u 向跨它們內側:u 27..3973、長度 3946 */
+    const g51 = r.g || {};
+    const uLo = g51.origin && Math.min(g51.origin[0], g51.origin[0] + g51.axes[0][0] * g51.length);
+    const uHi = g51.origin && Math.max(g51.origin[0], g51.origin[0] + g51.axes[0][0] * g51.length);
+    check('P51-2b 點 e0(平行主支軸 u)→ 角色 primary、核心接受、跨 u 27..3973(長度 3946)',
+      r.sent.some(c => /^timber \d+ 27 33 role primary$/.test(c)) &&
+      r.role === 'primary' && g51.length === 3946 && uLo === 27 && uHi === 3973,
+      { sent: r.sent, g: r.g });
+  }
+
+  /* (3) 空面(無角材)→ 軸未定義:點外邊給 boundary、點參考線給 primary(首支規則);
+         只有 custom 角材不定義軸。 */
+  {
+    const infoEmpty = await eval_(`(()=>{ const save = fe.timbers; fe.timbers = [];
+      const r = fePrimaryAxisInfo(1); fe.timbers = save; return r; })()`);
+    check('P51-3a 空面 → 主支軸未定義(非矛盾)', infoEmpty && infoEmpty.axis === null && !infoEmpty.conflict, infoEmpty);
+    const infoCustom = await eval_(`(()=>{ const save = fe.timbers; fe.timbers = [{id:9,role:'custom',dir:'+u',A:27,B:33,side:'+n',u:0,v:0}];
+      const r = fePrimaryAxisInfo(1); fe.timbers = save; return r; })()`);
+    check('P51-3b 只有 custom → 主支軸仍未定義(D15:custom 不定義軸)',
+      infoCustom && infoCustom.axis === null && !infoCustom.conflict, infoCustom);
+    /* 空面點參考線 → 首支規則給 primary;點外邊 → boundary */
+    const rs = await setupLinesG196([
+      'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+      'spec 測試中線 2000', 'guide 2 1 v spec:測試中線']);
+    check('P51-3c 空面 setup 全過', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      window.__sent = [];
+      if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+      apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+      feSetTool('timber'); })()`);
+    await sleep(150);
+    pt48 = await openFace48();
+    await click(pt48(2000, 1500).x, pt48(2000, 1500).y);   /* guide 線上 */
+    await sleep(350);
+    const r = await eval_(`(()=>{ const s = (window.__sent || []).map(c => c.replace(/^line /, ''));
+      apiRequest = window.__rawApiRequest; return { sent: s }; })()`);
+    check('P51-3d 空面點參考線 → 首支規則角色 primary',
+      r.sent.some(c => /^timber \d+ 27 33 role primary$/.test(c)), r.sent);
+  }
+
+  /* (4) 矛盾 → 不自選:合成 fe.timbers(primary 沿 u + boundary 沿 u,
+     D17 下不可能出現在合法世界,這裡驗 helper 的診斷分支)。 */
+  {
+    const r = await eval_(`(()=>{ const save = fe.timbers;
+      fe.timbers = [{id:1,role:'primary',dir:'+u',A:27,B:33,side:'+n',u:0,v:0},
+                    {id:2,role:'boundary',dir:'+u',A:27,B:33,side:'+n',u:0,v:0}];
+      const info = fePrimaryAxisInfo(1);
+      const role = feTimberRoleForClick(1, 'line', 'v');
+      fe.timbers = save; return { info, role }; })()`);
+    check('P51-4 推導矛盾 → conflict 標記、feTimberRoleForClick 不自選(回 null)',
+      r.info && r.info.conflict === true && r.role === null, r);
+  }
+
+  /* (5) 下拉與自動角色同源:主支軸 v、方向 +v(平行)→ boundary/secondary disabled、
+     primary/custom 可選(D15:custom 不被方向一刀切禁用)。 */
+  {
+    const rs = await setupLinesG196(F_SUPPORT);
+    check('P51-5 setup 全過', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      const d = document.getElementById('tbDir'); d.value = '+v'; d.dispatchEvent(new Event('change')); })()`);
+    await sleep(150);
+    const opts = await eval_(`(()=>{ const o = [...document.getElementById('tbRole').options];
+      return Object.fromEntries(o.map(x => [x.value, x.disabled])); })()`);
+    check('P51-5 方向平行主支軸 v → boundary/secondary 停用、primary 與 custom 可選(D15)',
+      opts.primary === false && opts.custom === false &&
+      opts.boundary === true && opts.secondary === true, opts);
+  }
+
+  console.log('=== P52. 預示帶橫向幾何符合 at-line/at-face 語意(G196-R05) ===');
+  /* 預示帶(.fe-anchor-band)的 cross 範圍用 feAnchorCrossRange 直接算,再與
+     真實放置後的核心 footprint 對照——兩邊是不同實作(前端示意 vs 引擎求解),
+     交叉驗證不是共用同一個 helper 當裁判。 */
+  {
+    const rs = await setupLinesG196(F_SUPPORT);
+    check('P52 setup 全過', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+      const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+      feSetTool('timber'); })()`);
+    await sleep(150);
+    /* at-line u=2000, A=27 → [1987,2014];A=28 → [1986,2014](I13 多的 1mm 在 +cross) */
+    const c27 = await eval_(`feAnchorCrossRange(oc.edit.bid, 'at-line guide 2', 27)`);
+    const c28 = await eval_(`feAnchorCrossRange(oc.edit.bid, 'at-line guide 2', 28)`);
+    check('P52-1 at-line 置中:A27 → u 1987..2014,A28 → 1986..2014',
+      c27 && c27.constAxis === 'u' && c27.lo === 1987 && c27.hi === 2014 &&
+      c28 && c28.lo === 1986 && c28.hi === 2014, { c27, c28 });
+    /* at-face 四邊 × 兩軸:e1(u=4000,材料 -u)→ [3973,4000];e3(u=0,+u)→ [0,27];
+       e0(v=0,材料 +v)→ [0,27];e2(v=3000,-v)→ [2973,3000] */
+    const cE1 = await eval_(`feAnchorCrossRange(oc.edit.bid, 'at-face e1', 27)`);
+    const cE3 = await eval_(`feAnchorCrossRange(oc.edit.bid, 'at-face e3', 27)`);
+    const cE0 = await eval_(`feAnchorCrossRange(oc.edit.bid, 'at-face e0', 27)`);
+    const cE2 = await eval_(`feAnchorCrossRange(oc.edit.bid, 'at-face e2', 27)`);
+    check('P52-2 at-face 貼材料側:e1 3973..4000、e3 0..27、e0 v0..27、e2 v2973..3000',
+      cE1 && cE1.constAxis === 'u' && cE1.lo === 3973 && cE1.hi === 4000 &&
+      cE3 && cE3.lo === 0 && cE3.hi === 27 &&
+      cE0 && cE0.constAxis === 'v' && cE0.lo === 0 && cE0.hi === 27 &&
+      cE2 && cE2.lo === 2973 && cE2.hi === 3000, { cE1, cE3, cE0, cE2 });
+    /* ±n 與負向長度軸不影響 cross 帶:同 anchor 只由錨法決定 */
+    check('P52-3 cross 範圍不看 side/dir(函式簽名根本不吃它們)', true);
+    /* 畫出的 DOM 帶 = 計算範圍,且套 face-material-clip */
+    await eval_(`(()=>{ const a = document.getElementById('tbAnchor');
+      a.value = 'at-line guide 2'; a.dispatchEvent(new Event('change'));
+      const av = document.getElementById('tbA'); av.value = '27'; av.dispatchEvent(new Event('change')); })()`);
+    await sleep(200);
+    const dom = await eval_(`(()=>{ const b = document.querySelector('#faceEditorRoot .fe-anchor-band');
+      return b ? { x: +b.getAttribute('x'), w: +b.getAttribute('width'),
+        clip: b.parentElement.getAttribute('clip-path') } : null; })()`);
+    check('P52-4 DOM 帶畫 u 1987..2014 且套材料區裁切',
+      dom && dom.x === 1987 && dom.w === 27 && dom.clip === 'url(#face-material-clip)', dom);
+    /* 真實放置後核心 footprint 的 cross 範圍 = 帶的範圍 */
+    pt48 = await openFace48();
+    await click(pt48(2000, 1500).x, pt48(2000, 1500).y);
+    await sleep(400);
+    const g = await eval_(`(async()=>{ const refs = await apiRequest('references');
+      const t = (refs.timbers || []).find(x => x.id === 3); return t && t.geometry; })()`);
+    const fxLo = g && Math.min(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);
+    const fxHi = g && Math.max(g.origin[0], g.origin[0] + g.axes[1][0] * g.A);
+    check('P52-5 真實放置的 cross 足跡(核心) = 預示帶範圍 1987..2014',
+      fxLo === 1987 && fxHi === 2014, { g });
+  }
+
+  /* L 形:凹入垂直邊 u=2500(v 1500..3000)的材料在較小 u 側 → 帶 [2473,2500];
+     用實際幾何找邊,不固定 e<i> 索引(環序可能不同)。 */
+  {
+    const rs = await setupLinesG196([
+      'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,1500 2500,1500 2500,3000 0,3000']);
+    check('P52 L形 setup 全過', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber'); })()`);
+    const cr = await eval_(`(()=>{
+      const vs = oc.bmap[1][0].verts;
+      let idx = -1;
+      for (let i = 0; i < vs.length; ++i) {
+        const a = vs[i], b = vs[(i + 1) % vs.length];
+        if (a[0] === 2500 && b[0] === 2500 &&
+            Math.min(a[1], b[1]) === 1500 && Math.max(a[1], b[1]) === 3000) { idx = i; break; }
+      }
+      return idx < 0 ? null : feAnchorCrossRange(1, 'at-face e' + idx, 27);
+    })()`);
+    check('P52-6 L 形凹邊(u=2500,v 1500..3000)→ 材料側較小 u,帶 2473..2500',
+      cr && cr.constAxis === 'u' && cr.lo === 2473 && cr.hi === 2500, cr);
+    /* 反環走向再驗一次(頂點順序反轉的同一形狀) */
+    const rs2 = await setupLinesG196([
+      'surface 1 origin 0 0 2500 u +x v +y outline 0,0 0,3000 2500,3000 2500,1500 4000,1500 4000,0']);
+    check('P52 L形反環 setup 全過', Array.isArray(rs2) && rs2.every(r => r.ok && !r.preview), rs2);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      await feLoadGuides(); })()`);
+    const cr2 = await eval_(`(()=>{
+      const vs = oc.bmap[1][0].verts;
+      let idx = -1;
+      for (let i = 0; i < vs.length; ++i) {
+        const a = vs[i], b = vs[(i + 1) % vs.length];
+        if (a[0] === 2500 && b[0] === 2500 &&
+            Math.min(a[1], b[1]) === 1500 && Math.max(a[1], b[1]) === 3000) { idx = i; break; }
+      }
+      return idx < 0 ? null : feAnchorCrossRange(1, 'at-face e' + idx, 27);
+    })()`);
+    check('P52-7 L 形反環走向 → 同一凹邊材料側仍為較小 u,帶 2473..2500',
+      cr2 && cr2.lo === 2473 && cr2.hi === 2500, cr2);
+  }
+
+  /* 孔邊(F-HOLE):材料側 = 孔外側。孔 (1000,1000)~(2000,2000) 頂邊 v=1000
+     → 材料在 v<1000 側 → 帶 v [973,1000];跨孔參考線的帶套 clip 不跨孔。 */
+  {
+    const rs = await setupLinesG196([
+      'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1000,1000 2000,1000 2000,2000 1000,2000']);
+    check('P52 孔場景 setup 全過', Array.isArray(rs) && rs.every(r => r.ok && !r.preview), rs);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+      await feLoadGuides(); renderFaceInspector(); fiShowTab('timber'); })()`);
+    const crH = await eval_(`(()=>{
+      /* 找孔環(loop 1)頂邊 v=1000 那條邊的引用式 */
+      const vs = oc.bmap[1][1].verts;
+      let idx = -1;
+      for (let i = 0; i < vs.length; ++i) {
+        const a = vs[i], b = vs[(i + 1) % vs.length];
+        if (a[1] === 1000 && b[1] === 1000) { idx = i; break; }
+      }
+      return idx < 0 ? null : feAnchorCrossRange(1, 'at-face h0e' + idx, 27);
+    })()`);
+    check('P52-8 孔頂邊 v=1000 → 材料側在孔外(v<1000),帶 v 973..1000',
+      crH && crH.constAxis === 'v' && crH.lo === 973 && crH.hi === 1000, crH);
+  }
   }
 
   chrome.kill();

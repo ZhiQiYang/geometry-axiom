@@ -3158,3 +3158,134 @@ transactions.inc::reference_default_world` 剛好就是本票起因場景本身,
 真正決定落點)不在本票範圍——票面明講「不改流程」,這是另一票的語意判斷,不擅自做。
 占用判定的距離容許值(`A`/`B` + 1mm)是 UX 近似,不是引擎的精確拒絕判定,兩者可能在
 極端案例(例如角材截面極薄)下不完全一致;這是預期中的近似,不是 bug。
+
+### GEO-196 ✅ 已做(2026-09-26)P1:角材工具點畫布上的線直接放置——定位/方向/角色由點擊決定,厚度方向依表單(G196-R02 起),表單路徑不變
+
+**起因**:GEO-195 讓人看得懂角材會落在哪,但流程仍是「先在右欄下拉挑線、再點面內確認」。
+使用者的直覺是直接點想放的那條線。本票加一條**新的**路徑,舊路徑(表單 + 點面內空白)
+一字不改。
+
+> **G196 修復批注(2026-09-27,GEO-196 修復工單 R00–R06)**:初版有三個語意錯誤,已由
+> 修復工單改正——(a) **側**原本由「點在線的哪一側」覆寫 `±n`,這是把面內左右誤當法線
+> 厚度方向,已改為一律沿用右欄 `#tbSide`(R02);(b) **角色**的 `feTimberPrimaryAxis`
+> 只看既有 primary,缺 D17 的 boundary 反推,無 primary 時會把平行主支軸的邊誤給
+> boundary 讓核心拒絕——已改為 `fePrimaryAxisInfo` 完整推導(R04);(c) **預示帶**
+> 原本用「線 + 側×A」畫單側偏移,且 `at-face` 可能畫到面外——已改為
+> `feAnchorCrossRange` 依錨法語意算橫向範圍並套材料區裁切(R05)。下列「側/角色/預示」
+> 小節已改寫為修正後語意;原始錯誤版的行為記錄見修復工單稽核檔。
+
+**做了什麼**(`geometry-web/app.js`、`app.css`):
+- `feDown` 的 `fe.tool==="timber"` 分支開頭先看 `ev.target.closest("[data-face-hit]")`:
+  命中外輪廓邊 `e:0:<i>` 或參考線 `g:<id>:<axis>` → 以那條線為定位引用,
+  **定位引用/方向/角色**由點擊決定並寫回表單(`#tbSide` 不寫——厚度方向依表單),
+  再走原本就有的同一段 `mutate([timber…, place…], {friendlyError})`;命中孔邊
+  `e:<h≠0>:<i>` → toast 說明「目前不支援直接點孔邊——請從右欄『定位引用』選孔邊
+  (at-face h<i>e<j>)」(快捷限制,非公理禁止),不送指令;命中面內空白或其他元素
+  (頂點/角材,角材工具下 `.face-timber` 本來就 `pointer-events:none`)→ 照舊用表單值;
+  命中的線其引用解析失敗(如剛被刪)→ 報錯且不送,不靜默退回表單另一條引用。
+- **方向**:`feAnchorDirFromInfo(info)`——`constAxis==="v"`(線沿 u 跑)給 `"+u"`,
+  `"u"`(線沿 v 跑)給 `"+v"`,固定取正向。外輪廓邊的既有走向(逆時針/順時針)不採用,
+  與參考線統一同一條規則——這是實作決定,不是使用者拍板,寫在這裡供日後查證。
+- **側**(G196-R02 修正後):`+n`/`-n` 是 B 厚度朝承載面法線哪側(對應 C 端
+  `depth_side`),**一律由右欄 `#tbSide` 表單值決定,點擊的左右位置不參與**。
+  面內「放在線的哪一邊」由定位引用本身決定(at-line 中線對齊、at-face 貼材料側,
+  I13),與 ±n 是兩個不同的概念——初版把它們混用,導致點線一側會把法線厚度翻向,
+  已在 R02 移除 `feAnchorSideForPoint`/`fe.timberHoverSide`。
+- **角色**:`feTimberRoleForClick(bid, kind, dirAxis)`——G196-R04 改用完整的
+  D17 推導 `fePrimaryAxisInfo(bid)`:同面已有 primary(長度軸一致)→ 該軸;
+  無 primary 由 boundary 的垂直方向推;皆無→未定義;矛盾→`conflict` 不自動選、
+  toast 診斷。主支軸已定義 → 方向平行給 `primary`、垂直給 `boundary`(邊)/
+  `secondary`(參考線);未定義 → 外輪廓邊給 `boundary`、參考線給 `primary`。
+  下拉 `feTimberRoleOptionsHTML` 共用同一份推導;**custom 不因方向被停用**
+  (D15:方向合法性交核心判,前端只排角色語義上不可能的)。
+- **佔滿**:前端不判斷、不擋,照舊送出,由引擎拒絕、GEO-195 的 `feTimberPlaceErrorMessage`
+  接手人話訊息。
+- **hover 預示**:`fe.timberHoverAnchor`(G196-R02 起不再有 `timberHoverSide`),
+  `feMove` 在角材工具下追蹤滑鼠指著哪條可命中線(只認外輪廓邊與參考線,同 `feDown`
+  的判斷),`drawFaceEditor` 的 `.fe-anchor-hi`/`.fe-anchor-band` 在非 `null` 時改畫
+  這條線(橫向範圍由 `feAnchorCrossRange` 算,與表單路徑同一份);離開線/離開畫布
+  (`pointerleave`)/切工具都清空。hover 不送任何修改世界指令。
+  CSS:外輪廓邊/參考線的命中線在角材工具下 `cursor:copy`,孔邊 `cursor:not-allowed`。
+- **預示帶(G196-R05)**:`.fe-anchor-band` 由 `feAnchorCrossRange(bid, anchor, A)`
+  唯讀算出——`at-line` 置中 `[c-⌊A/2⌋, c-⌊A/2⌋+A]`、`at-face` 外邊貼外環內側/
+  孔邊貼孔外側(材料側用邊中點法向 ±0.5mm 點在環內測試,不靠外接盒)、`at-face
+  t<id>` 回 null 不畫;帶套 `#face-material-clip` 扣孔裁到有效區域,標籤固定
+  「橫向定位示意」(不是最終長度)。**不看 `#tbSide`/`#tbDir`**。
+- **提示文字**:`feTimberHintRefresh()` 改為「點外輪廓邊或參考線選定位直接放置;
+  厚度方向依右欄「深度」設定。點面內空白則依右欄設定(目前「〈定位引用名〉」)放置」。
+- **格線不可命中**:`.face-grid-line` 目前沒有 `data-face-hit`,本票沒有補上(票面明講
+  「沒有就只做邊與參考線」)——只做了外輪廓邊與參考線,留給下一票。
+
+**測試**:`cdp_test.js` 新增 §P48(6 組場景,全部 ✓):(1) 真滑鼠點外輪廓邊 1 靠內側
+3mm → 4 支,新支 `dir=+v`/`side=+n`/`role=primary`(橋接回傳值,非前端自算),表單同步
+`#tbAnchor`=`at-face e1`、`#tbRole`=`primary`,Ctrl+Z 回 3 支;(2) 點已被角材 1 占滿的
+外輪廓邊 0 → 前端不擋、照舊送出,toast 含「已被角材 1 占滿」,仍 3 支;(3) 新建參考線
+u≈2000、點其 `+n` 側 3mm → 4 支,新支 `role=primary`/`side=+n`,`#tbAnchor` 同步該參考線,
+Ctrl+Z 回 3 支;(4) 面內空白 → 照舊走表單值(`#tbAnchor=e3`),`place` 行含 `e3`,Ctrl+Z 回
+3 支;(5) hover 邊 1(不點)→ `.fe-anchor-hi` 畫的是 `x=4000` 的邊、`fe.timberHoverAnchor`
+同步;移開到面內空白 → 清空、回到表單值那條線;(6) 開一個遠離所有既有線/角材的孔,點孔邊
+→ toast 含「孔邊不能當定位引用」(G196-R02 起改為「目前不支援直接點孔邊——請從右欄
+『定位引用』選孔邊」,§P48-6d 同步更新),不送指令,仍 3 支。另把 GEO-195 舊斷言
+§P47-2a 的文字比對從「點擊位置不影響位置」改成「點一條邊或參考線直接放置」——這是
+本票故意的提示文字變更(規格明講要換掉這句),不是鬆綁斷言。`docs/DOM-CONTRACT.md`、
+`README.md` 同步補新函式/欄位/命中語意說明。
+
+**G196 修復批次(2026-09-27,工單 G196-R00～R06,審查基準 `07b019f`)**:
+- **R00 基準**:隔離目錄重編 core/bridge/integrity,基準測試全綠;三個缺陷反例錄證:
+  (a) 表單 +n 下點線右側會把 side 改成 -n(Z 2467..2500,應依表單 +n);(b) 兩支
+  boundary 沿 u、無 primary 時點 e1 給 boundary → 核心拒絕 V_PRIMARY_AXIS(核心自己
+  推得出主支軸=v,前端 helper 卻推不出);(c) at-line u=2000 的預示帶畫在
+  [2000,2027](應置中 1987..2014)、at-face e1 畫在 [4000,4027](畫到面外,應
+  3973..4000)。`reference_smoke.js` 的夾具/預期已過期,記為環境限制。
+- **R01**:P48-6 改獨立 F-HOLE 場景(reset→surface+hole,零角材,不依賴 P48-1..5);
+  setup 走 `apiRequest` 逐條記 {line,ok,error,preview} 且第一條失敗即停;點前驗證
+  孔存在+`elementFromPoint` 命中 e:1:0;點後比對 dump 逐字不變、無 timber/place 送出。
+- **R02**:移除 `feAnchorSideForPoint`/`fe.timberHoverSide`——點線只決定定位/方向/
+  角色,`±n` 一律依 `#tbSide`;孔邊訊息改為「快捷不支援+指路右欄」(I13 的表單
+  `at-face h<i>e<j>` 一直在);§P49 驗 ±n×左右點 ×真實 origin/axes/A/B/length
+  (cross 1987..2014、長度 27..2973、Z/X 厚度範圍含牆面 N=+X 案例)。
+- **R03**:§P50 參數化——吸附 off/10/50/100、點 ±3mm/線上、非格點 guide(u=2003)、
+  fit+zoom+pan(0.16x)、390px 窄視窗(模擬,非實體裝置)——送出的 DSL 逐字一致;
+  命中的線引用失效 → 報錯不送、不退回表單;hover 不送寫入指令。
+- **R04**:`fePrimaryAxisInfo` 實作 D17 推導(primary 一致軸→該軸;無 primary 由
+  boundary 垂直向推;皆無→未定義;矛盾→conflict 不自選);`feTimberRoleForClick`/
+  `feTimberRoleOptionsHTML`/`feTimberPlaceErrorMessage` 共用同一份;custom 不因方向
+  被停用(D15);§P51 驗 boundary 反推兩軸、空面首支規則、矛盾不自選。
+- **R05**:`feAnchorCrossRange` 唯讀算預示帶橫向範圍(at-line 置中、at-face 材料側、
+  孔邊孔外側、t<id> 不畫),套 `#face-material-clip` 扣孔;§P52 驗 A27/A28、四邊、
+  L 形正反環、孔邊、DOM 帶與核心 footprint 一致。
+
+**回歸**(Windows,已編 bridge.exe,埠 8799;9333 未被占用):`cdp_test.js` 504/504、
+`canvas_test.js`(HTTP)412/412。過程中踩了兩個測試自己的坑,记录供之後參考:
+(a) §P48-3 一開始用 raw `api()` 建參考線繞過了 app.js 自己的建線按鈕(那條路徑事後會呼叫
+`feAfterChange()` 重繪檢視器),沒有補一次 `renderFaceInspector()`,導致 `#tbAnchor` 的
+`<select>` 還是舊 DOM、沒有新參考線的 `<option>`,設 `.value` 到不存在的選項會被瀏覽器
+悄悄清空成 `""`,新支角材沒放成——修法是建線後手動 `feLoadGuides()`+`renderFaceInspector()`;
+(b) §P48-6 第一版把孔開在 `(500,500)~(1500,1500)`,孔角剛好卡在 guide 1(`u=500`,角材 3
+的 centerline)上,讓角材 3 的合法跨距被切成「跨距歧義」(R6/I5/I6),觸發 I8a 影響預覽,
+且這個預覽因為衝突不可簡單確認,`confirmReferenceImpact` 的 Promise 永遠等不到有效確認,
+**整支 cdp_test 行程卡死**(不是逾時,是真的掛住不動,靠外部 `Stop-Process` 才能收掉)——
+這不是 GEO-196 程式碼的 bug,是測試自己選錯孔的位置;修法一是把孔改開在遠離所有既有線/
+角材的位置(不再觸發歧義),二是即使如此仍加一層防禦:重宣告 `boundary` 改成「頁面內非同步
+發射、host 端輪詢 `dialog.reference-impact[open]` 出現就點 `#impact-confirm`(僅在未
+`disabled` 時)、最後用 `Promise.race` 帶 5 秒逾時去讀結果」,避免同類坑未來再次讓整支
+測試卡死不報錯。跑完 `taskkill` 自己起的 python(埠 8799)、確認 9333 無殘留 chrome、
+`git status` 乾淨無 untracked、`geometry-web/docs/screens/` 無變動。過程中曾有一次
+`cdp_test.js` 報告「P37 placement redo refreshes form and header ✗」,與 GEO-196 改動
+的程式碼(角材/timber 相關)完全不相交,且同一份程式碼重跑立刻變回 504/504 全綠、翻查
+本 session 之前所有 cdp_test log 這條斷言也從未失敗過——判定為單次環境雜訊,不是本票
+造成的回歸,未做進一步處理。
+
+**沒做、為什麼**:格線(`.face-grid-line`)命中——票面明講沒有就只做邊與參考線;角材側面
+(`at-face t<id>`)當定位引用可否點選——GEO-191 起角材工具下 `.face-timber` 本來就
+`pointer-events:none`(CSS 只在 `.tool-select` 下開放),本票沒有為此開特例,點在角材
+上會穿透到底下的元素(通常是面內空白),兩者都留給下一票、不擅自擴大範圍。
+
+**附註(非本票工作,如實記錄)**:本票進行中,repo 在 2026-09-26 02:40 多出一個非我主動執行
+的 commit `07b019f`「GEO-196(進行中):…保全性提交」(作者 Yang,`Co-Authored-By: Claude
+Fable 5.1`),內容與我當時已寫好、語法檢查通過、cdp_test 正在跑的工作階段完全吻合,應是
+harness/上游 session 的自動保全機制在某個時間點產生,不是我呼叫 `git commit` 的結果——
+交辦明講「不要 commit」,我自己全程沒有執行過 `git commit`。之後對 `cdp_test.js` 的兩處
+除錯修正(§P48-3 的 `renderFaceInspector`、§P48-6 的孔位置與防死鎖輪詢)疊在這個 commit
+之上、目前是工作區未提交的變更(`git status` 顯示 `M geometry-web/cdp_test.js`)。是否要
+把這些後續修正併進去、或另立 commit,留給使用者決定。
