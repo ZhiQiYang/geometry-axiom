@@ -3525,6 +3525,13 @@ async function rightClick(x, y) {
     const before = fbList();
     await pressKey('Enter','Enter',13,2);
     for (let i=0;i<60 && fbList().length===before.length;i++) await sleep(100);
+    /* 競態修復:fbList() 偵到的是 serve.py 落盤;面板要等瀏覽器收到 POST 回應
+       才關閉、欄位才清空——「檔案已到但回應還沒回來」時立刻斷言會間歇誤判。
+       繼續輪詢真正的條件(面板 hidden),斷言本身不變。 */
+    for (let i=0;i<50;i++) {
+      if (await eval_(`document.querySelector('#fbPanel').hidden`)) break;
+      await sleep(100);
+    }
     const added = fbList().filter(n=>!before.includes(n));
     check('P38 Ctrl+Enter 送出後寫出一筆回報且面板關閉', added.length===1 && await eval_(`document.querySelector('#fbPanel').hidden`), added);
     if (added.length===1) {
@@ -5198,8 +5205,122 @@ async function rightClick(x, y) {
       cE3 && cE3.lo === 0 && cE3.hi === 27 &&
       cE0 && cE0.constAxis === 'v' && cE0.lo === 0 && cE0.hi === 27 &&
       cE2 && cE2.lo === 2973 && cE2.hi === 3000, { cE1, cE3, cE0, cE2 });
-    /* ±n 與負向長度軸不影響 cross 帶:同 anchor 只由錨法決定 */
-    check('P52-3 cross 範圍不看 side/dir(函式簽名根本不吃它們)', true);
+    /* ±n 與負向長度軸不影響 cross 帶:同 anchor 只由錨法決定。
+       G196-R06-A:不再用 check(...,true) 帶過——下面是真實 UI 行為矩陣:
+       兩軸場景 × 兩種引用 × A{27,28} × dir{±} × side{±n} = 32 情境。
+       每情境獨立重建場景(setup 失敗即拋出)、啟用角材工具後設表單
+       (anchor/A/B/dir/side/role=primary,走既有 change/input 事件)、
+       滑鼠移到已知空白點確認 fe.timberHoverAnchor===null、讀 DOM 帶的
+       橫向範圍/裁切/標籤(預示前後 dump 不得改變)、再點面內空白走表單
+       路徑放置——負向 dir 用表單+空白確認,不用點線快捷(快捷既有規則
+       固定選正向長度軸,P49/P50 已驗,不為測試改壞)。最後驗送出 DSL 與
+       核心 origin+axes×length/A/B 八角點三軸範圍。 */
+    const SC53 = [
+      { tag: 'V(長度軸v)', lines: [
+          'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+          'timber 1 27 33 role boundary', 'place 1 on 1 at-face e0 +u +n',
+          'timber 2 27 33 role boundary', 'place 2 on 1 at-face e2 +u +n',
+          'spec 測試中線 2000', 'guide 2 1 v spec:測試中線'],
+        blank: [1000, 1500], dirs: ['+v', '-v'], lenAxis: 'v', lenExp: [27, 2973],
+        refs: [
+          { anchor: 'at-line guide 2', axis: 'u', exp: { 27: [1987, 2014], 28: [1986, 2014] } },
+          { anchor: 'at-face e1', axis: 'u', exp: { 27: [3973, 4000], 28: [3972, 4000] } }] },
+      { tag: 'H(長度軸u)', lines: [
+          'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+          'timber 1 27 33 role boundary', 'place 1 on 1 at-face e1 +v +n',
+          'timber 2 27 33 role boundary', 'place 2 on 1 at-face e3 +v +n',
+          'spec 測試中線 2000', 'guide 2 1 u spec:測試中線'],
+        blank: [2000, 1000], dirs: ['+u', '-u'], lenAxis: 'u', lenExp: [27, 3973],
+        refs: [
+          { anchor: 'at-line guide 2', axis: 'v', exp: { 27: [1987, 2014], 28: [1986, 2014] } },
+          { anchor: 'at-face e2', axis: 'v', exp: { 27: [2973, 3000], 28: [2972, 3000] } }] },
+    ];
+    await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
+    for (const sc of SC53) for (const ref of sc.refs) for (const A of [27, 28])
+      for (const dir of sc.dirs) for (const side of ['+n', '-n']) {
+        const tag = `P52-3 ${sc.tag} ${ref.anchor} A${A} ${dir}${side}`;
+        const rs = await setupLinesG196(sc.lines);
+        if (!(Array.isArray(rs) && rs.every(r => r.ok && !r.preview)))
+          throw new Error(tag + ' setup 失敗: ' + JSON.stringify(rs));
+        await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+          fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
+          const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
+          await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+          window.__sent = [];
+          if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
+          apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
+          feSetTool('timber');
+          const a = document.getElementById('tbAnchor');
+          a.value = ${JSON.stringify(ref.anchor)}; a.dispatchEvent(new Event('change'));
+          const av = document.getElementById('tbA'); av.value = '${A}'; av.dispatchEvent(new Event('input'));
+          const bv = document.getElementById('tbB'); bv.value = '33'; bv.dispatchEvent(new Event('input'));
+          const d = document.getElementById('tbDir'); d.value = '${dir}'; d.dispatchEvent(new Event('change'));
+          const s = document.getElementById('tbSide'); s.value = '${side}'; s.dispatchEvent(new Event('change'));
+          const ro = document.getElementById('tbRole'); ro.value = 'primary'; ro.dispatchEvent(new Event('change')); })()`);
+        const dumpBefore = (await eval_(`apiRequest('dump')`)).text;
+        /* 已知空白點:滑鼠移過去 → hoverAnchor 應回到 null(預示回到表單值) */
+        const bp = await eval_(`(()=>{ const r = document.getElementById('faceEditorSvg').getBoundingClientRect();
+          return { x: r.x + fe.panX + ${sc.blank[0]} * fe.zoom, y: r.y + fe.panY + ${sc.blank[1]} * fe.zoom }; })()`);
+        await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: bp.x, y: bp.y, button: 'none' });
+        await sleep(200);
+        const band = await eval_(`(()=>{ const b = document.querySelector('#faceEditorRoot .fe-anchor-band');
+          const g = b && b.parentElement;
+          const lb = document.querySelector('#faceEditorRoot .fe-anchor-band-label');
+          return b ? { x: +b.getAttribute('x'), y: +b.getAttribute('y'),
+            w: +b.getAttribute('width'), h: +b.getAttribute('height'),
+            clip: g && g.getAttribute('clip-path'),
+            label: lb && lb.textContent,
+            hoverNull: fe.timberHoverAnchor === null } : { hoverNull: fe.timberHoverAnchor === null }; })()`);
+        const dumpAfter = (await eval_(`apiRequest('dump')`)).text;
+        const [expLo, expHi] = ref.exp[A];
+        const bandLo = band && (ref.axis === 'u' ? band.x : band.y);
+        const bandHi = band && bandLo + (ref.axis === 'u' ? band.w : band.h);
+        const bandOk = band && band.hoverNull === true && bandLo === expLo && bandHi === expHi &&
+          band.clip === 'url(#face-material-clip)' && band.label === '橫向定位示意' &&
+          dumpBefore === dumpAfter;
+        /* 面內空白確認(表單路徑,保留負向 dir 與 ±n) */
+        await click(bp.x, bp.y);
+        await sleep(400);
+        const placed = await eval_(`(async()=>{ const refs = await apiRequest('references');
+          const t = (refs.timbers || []).find(x => x.id === 3);
+          return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)),
+            g: t && t.geometry, n: (refs.timbers || []).length }; })()`);
+        let rng = null;
+        const g = placed && placed.g;
+        if (g) {
+          const pts = [];
+          for (const l of [0, g.length]) for (const a2 of [0, g.A]) for (const b2 of [0, g.B])
+            pts.push([0, 1, 2].map(i => g.origin[i] + g.axes[0][i] * l + g.axes[1][i] * a2 + g.axes[2][i] * b2));
+          rng = [0, 1, 2].map(i => [Math.min(...pts.map(p => p[i])), Math.max(...pts.map(p => p[i]))]);
+        }
+        const crossI = ref.axis === 'u' ? 0 : 1, lenI = sc.lenAxis === 'v' ? 1 : 0;
+        const zExp = side === '+n' ? [2500, 2533] : [2467, 2500];
+        const dirEsc = dir.replace('+', '\\+'), sideEsc = side.replace('+', '\\+');
+        const anchorEsc = ref.anchor.replace(/ /g, '\\s+');
+        const dslOk = placed && placed.n === 3 &&
+          placed.sent.some(c => new RegExp(`timber \\d+ ${A} 33 role primary`).test(c)) &&
+          placed.sent.some(c => new RegExp(`place \\d+ on 1 ${anchorEsc}\\s+${dirEsc} ${sideEsc}`).test(c));
+        const geoOk = rng &&
+          rng[crossI][0] === expLo && rng[crossI][1] === expHi &&
+          rng[lenI][0] === sc.lenExp[0] && rng[lenI][1] === sc.lenExp[1] &&
+          rng[2][0] === zExp[0] && rng[2][1] === zExp[1];
+        check(tag, bandOk && dslOk && geoOk, { band, expCross: [expLo, expHi], sent: placed && placed.sent, rng, expLen: sc.lenExp, expZ: zExp });
+      }
+    await eval_(`(()=>{ if (window.__rawApiRequest) apiRequest = window.__rawApiRequest; })()`);
+    /* P52-3 矩陣把世界留在最後一個情境;P52-4/5 沿用本區塊開頭的假設
+       (F_SUPPORT 場景 + 角材工具 + 表單 v 向/+n/A27)——在這裡還原,
+       不讓矩陣的殘留狀態污染後面的既有檢查。 */
+    {
+      const rs53r = await setupLinesG196(F_SUPPORT);
+      if (!(Array.isArray(rs53r) && rs53r.every(r => r.ok && !r.preview)))
+        throw new Error('P52-3 收尾回 F_SUPPORT 失敗: ' + JSON.stringify(rs53r));
+      await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+        await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
+        feSetTool('timber');
+        const d = document.getElementById('tbDir'); d.value = '+v'; d.dispatchEvent(new Event('change'));
+        const s = document.getElementById('tbSide'); s.value = '+n'; s.dispatchEvent(new Event('change'));
+        const av = document.getElementById('tbA'); av.value = '27'; av.dispatchEvent(new Event('input')); })()`);
+    }
     /* 畫出的 DOM 帶 = 計算範圍,且套 face-material-clip */
     await eval_(`(()=>{ const a = document.getElementById('tbAnchor');
       a.value = 'at-line guide 2'; a.dispatchEvent(new Event('change'));

@@ -17,7 +17,14 @@ function send(method,params={}) {return new Promise((resolve,reject)=>{const id=
 async function evaluate(expression) {const r=await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});
  if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description || r.exceptionDetails.text);return r.result.value;}
 function check(name,ok) {if(!ok)throw Error(name);checks++;console.log('PASS '+name);}
-async function waitFor(expression) {for(let i=0;i<80;i++){if(await evaluate(expression))return;await sleep(50);}throw Error('UI timeout '+expression);}
+async function waitFor(expression) {for(let i=0;i<80;i++){if(await evaluate(expression))return;await sleep(50);}
+ /* 超時輸出當時可觀察狀態(dialog 列表/按鈕 rect/所在分頁),不留盲等紀錄。 */
+ let dom='(unavailable)';
+ try{dom=JSON.stringify(await evaluate(`(()=>{
+   const s=document.querySelector('#refSpecSave');const r=s&&s.getBoundingClientRect();
+   return {dialogs:[...document.querySelectorAll('dialog')].map(d=>({id:d.id,cls:d.className,open:d.open})),
+     fiTab:fe&&fe.fiTab,refSpecSave:r&&{w:r.width,h:r.height,pane:s.closest('[data-fi-pane]')&&s.closest('[data-fi-pane]').dataset.fiPane}})())`));}catch{}
+ throw Error('UI timeout '+expression+' | state='+dom);}
 async function click(selector) {const p=await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
  for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,...p,button:'left',clickCount:1});}
 (async()=>{
@@ -30,13 +37,16 @@ async function click(selector) {const p=await evaluate(`(()=>{const e=document.q
  await send('Runtime.enable');await send('Page.enable');
  await send('Page.navigate',{url:process.env.GEOMETRY_TEST_URL||'http://localhost:8765/'});
  await waitFor(`typeof apiRequest==='function' && typeof oc!=='undefined' && !oc.busy`);
- await evaluate(`(async()=>{await apiRequest('default');resetSceneFocus();await renderObjects();await enterFocus('face',1);fiShowTab('prop')})()`);
+ await evaluate(`(async()=>{await apiRequest('default');resetSceneFocus();await renderObjects();await enterFocus('face',1);fiShowTab('guide')})()`);
  check('reference form available',await evaluate(`!!document.querySelector('#refSpecSave') && !!document.querySelector('#refGuideExpr')`));
+ /* 「存在但隱藏」不算可用——按鈕要有實際版面尺寸才算走到使用者路徑(0×0 會讓
+    elementFromPoint 命中頂列,點擊落空;這就是本次第一個失敗的根因)。 */
+ check('reference form is laid out',await evaluate(`(()=>{const r=document.querySelector('#refSpecSave').getBoundingClientRect();return r.width>0 && r.height>0 && document.elementFromPoint(r.x+r.width/2,r.y+r.height/2).closest('#refSpecSave')!==null})()`));
  check('form fits inspector',await evaluate(`(()=>{const e=document.querySelector('#faceInspectorContent');return e.scrollWidth<=e.clientWidth+1})()`));
  const before=(await evaluate(`apiRequest('dump')`)).text;
  await evaluate(`document.querySelector('#refSpecName').value='主支中線';document.querySelector('#refSpecValue').value='900';void 0`);
  await click('#refSpecSave');await waitFor(`!!document.querySelector('dialog.reference-impact[open]')`);
- check('old/new center and length shown',await evaluate(`document.querySelector('dialog').innerText.includes('500 → 900') && document.querySelector('dialog').innerText.includes('2946 → 2946')`));
+ check('old/new center and length shown',await evaluate(`document.querySelector('dialog.reference-impact').innerText.includes('500 → 900') && document.querySelector('dialog.reference-impact').innerText.includes('2946 → 2946')`));
  check('candidate never mutates live world',(await evaluate(`apiRequest('dump')`)).text===before);
  const shot=await send('Page.captureScreenshot',{format:'png'});
  fs.writeFileSync(process.env.GEOMETRY_IMPACT_SCREENSHOT||path.join(os.tmpdir(),'geometry-impact.png'),Buffer.from(shot.data,'base64'));
