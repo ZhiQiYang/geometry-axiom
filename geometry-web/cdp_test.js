@@ -11,11 +11,16 @@ const EXTRA_FLAGS = (process.env.GEOMETRY_CHROME_FLAGS || "").split(" ").filter(
 const PORT = 9333;
 
 const chrome = spawn(CHROME, [
-  "--headless=new", "--disable-gpu", `--remote-debugging-port=${PORT}`,
+  "--headless=new", "--disable-gpu", "--no-first-run", `--remote-debugging-port=${PORT}`,
   "--window-size=1400,900", `--user-data-dir=${PROFILE}`, ...EXTRA_FLAGS, "about:blank"
 ]);
 
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+const delay = ms => new Promise(r => setTimeout(r, ms));
+const sleep = async ms => {
+  await delay(ms);
+  if(ms>=200 && ws?.readyState===1)
+    await send('Runtime.evaluate',{expression:'window.__cdpSettleUI?.(0)',awaitPromise:true});
+};
 let ws, mid = 0, pending = {};
 
 /* ✓/✗ 計數：所有印出的判定一律計入，exit code 依此決定。 */
@@ -62,6 +67,11 @@ async function eval_(expr) {
   if (r.result.exceptionDetails) return { __err: r.result.exceptionDetails.exception?.description };
   return r.result.result.value;
 }
+async function waitForUI(expr, timeout=5000) {
+  const end=Date.now()+timeout;
+  while(Date.now()<end){if(await eval_(expr)===true)return;await sleep(50);}
+  // The assertion after this bounded wait reports the actual state on failure.
+}
 async function click(x, y) {
   for (const [type, btn] of [["mousePressed", "left"], ["mouseReleased", "left"]])
     await send("Input.dispatchMouseEvent", { type, x, y, button: btn, clickCount: 1 });
@@ -101,9 +111,23 @@ async function rightClick(x, y) {
   await connect();
   await send("Runtime.enable");
   await send("Page.enable");
+  // Observe async UI completion without changing application behavior. A fixed 300–400 ms
+  // pause was reading between a committed command and its subsequent inspector refresh.
+  await send('Page.addScriptToEvaluateOnNewDocument',{source:`(()=>{
+    let pending=0,last=performance.now();const original=window.fetch.bind(window);
+    window.fetch=(...args)=>{pending++;last=performance.now();return original(...args).finally(()=>{pending--;last=performance.now();});};
+    const observer=new MutationObserver(()=>{last=performance.now();});
+    document.addEventListener('DOMContentLoaded',()=>observer.observe(document.body,{subtree:true,childList:true,attributes:true,characterData:true}));
+    window.__cdpSettleUI=async ms=>{
+      await new Promise(r=>setTimeout(r,ms));const end=performance.now()+5000;
+      while(performance.now()<end){if(pending===0&&performance.now()-last>=150)return;await new Promise(r=>setTimeout(r,50));}
+    };
+  })()`});
   await send("Page.navigate", { url: process.env.GEOMETRY_TEST_URL || "http://localhost:8765/" });
-  await sleep(2500);
-  if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY) {
+  await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
+  if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
+    throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
+  if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   await eval_(`api("line reset")`);
   await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
@@ -725,7 +749,7 @@ async function rightClick(x, y) {
     const sc = pt.matrixTransform(svg.getScreenCTM());
     svg.dispatchEvent(new PointerEvent("pointermove",
       {clientX: sc.x, clientY: sc.y, bubbles: true}));
-    await new Promise(r=>setTimeout(r,600));
+    await window.__cdpSettleUI(600);
     const ov = svg.querySelector("g:last-child").childElementCount;
     const hov = document.getElementById("hovertxt").textContent;
     return {hit, ov, hov};
@@ -780,7 +804,7 @@ async function rightClick(x, y) {
     w.value = "100"; w.dispatchEvent(new Event("input"));
     d.value = "50"; d.dispatchEvent(new Event("input"));
     document.querySelector("#feOpApply").click();
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const b = await api("boundary 1");
     const ortho = b.ok && b.loops[0].verts.every((v,i,vs)=>{
       const nx = vs[(i+1)%vs.length];
@@ -838,7 +862,7 @@ async function rightClick(x, y) {
     const g = document.querySelector('#faceEditorRoot [data-fe-ghost="sub"]');
     const ghostW = g ? +g.getAttribute("width") : 0, ghostH = g ? +g.getAttribute("height") : 0;
     w.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",bubbles:true}));
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
     const b = await api("boundary 1");
     const vs = b.loops[0].verts;
     const ortho = vs.every((v,i,a)=>{const n=a[(i+1)%a.length];return v[0]===n[0]||v[1]===n[1];});
@@ -869,7 +893,7 @@ async function rightClick(x, y) {
     await feUp({x:800,y:0},{target:hit,clientX:0,clientY:0});
     const before = (await api("boundary 1")).loops[0].fixity[0];
     document.querySelector('#feActionBar [data-fe-act="fixity"]').click();
-    await new Promise(r=>setTimeout(r,300));
+    for(let i=0;i<100&&!document.querySelector('#feActionBar [data-fe-act="fixity"]').textContent.includes('X → F');i++)await new Promise(r=>setTimeout(r,50));
     const after = (await api("boundary 1")).loops[0].fixity[0];
     return {before, after, label: document.querySelector('#feActionBar [data-fe-act="fixity"]').textContent};
   })()`);
@@ -888,7 +912,9 @@ async function rightClick(x, y) {
     w.value = "500"; w.dispatchEvent(new Event("input"));
     d.value = "400"; d.dispatchEvent(new Event("input"));
     document.querySelector("#feOpApply").click();
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
+    for(let i=0;i<100&&(fe.feats[1]||[]).length!==2;i++)await new Promise(r=>setTimeout(r,50));
+    for(let i=0;i<100&&document.querySelectorAll('#faceInspectorContent .fe-feat').length!==2;i++)await new Promise(r=>setTimeout(r,50));
     const vs = (await api("boundary 1")).loops[0].verts;
     const has = (x,y) => vs.some(p=>p[0]===x&&p[1]===y);
     return {sel, acts, verts: vs.length, gone: !has(0,0), a: has(500,0), b: has(0,400),
@@ -905,19 +931,19 @@ async function rightClick(x, y) {
     const rows = document.querySelectorAll("#faceInspectorContent .fe-feat").length;
     const w = document.querySelector('#faceInspectorContent [data-feat] [data-feat-num="w"]');
     w.value = "800"; w.dispatchEvent(new Event("change"));
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
     let vs = (await api("boundary 1")).loops[0].verts;
     const widened = vs.some(p=>p[0]===2500&&p[1]===300) && vs.some(p=>p[0]===1700&&p[1]===300);
     const rowsAfter = document.querySelectorAll("#faceInspectorContent .fe-feat").length;
     /* 鏡射切角(第 2 筆):對面右上角也切 → 10→12 */
     document.querySelectorAll("#faceInspectorContent [data-feat]")[1].querySelector('[data-feat-mirror="x"]').click();
-    await new Promise(r=>setTimeout(r,400));
+    for(let i=0;i<100&&document.querySelectorAll('#faceInspectorContent .fe-feat').length!==3;i++)await new Promise(r=>setTimeout(r,50));
     vs = (await api("boundary 1")).loops[0].verts;
     const mirrored = vs.length === 12 && vs.some(p=>p[0]===3500&&p[1]===0) && vs.some(p=>p[0]===4000&&p[1]===400);
     const rows3 = document.querySelectorAll("#faceInspectorContent .fe-feat").length;
     /* 刪除第 2 筆(左上切角)→ 角回來 */
     document.querySelectorAll("#faceInspectorContent [data-feat]")[1].querySelector("[data-feat-del]").click();
-    await new Promise(r=>setTimeout(r,400));
+    for(let i=0;i<100&&document.querySelectorAll('#faceInspectorContent .fe-feat').length!==2;i++)await new Promise(r=>setTimeout(r,50));
     vs = (await api("boundary 1")).loops[0].verts;
     const restored = vs.length === 10 && vs.some(p=>p[0]===0&&p[1]===0);
     const rows4 = document.querySelectorAll("#faceInspectorContent .fe-feat").length;
@@ -931,7 +957,7 @@ async function rightClick(x, y) {
   const seU = await eval_(`(async()=>{
     await doUndoRedo("undo");
     await doUndoRedo("undo");
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     return {verts: (await api("boundary 1")).loops[0].verts.length, feats: (fe.feats[1]||[]).length,
             rows: document.querySelectorAll("#faceInspectorContent .fe-feat").length};
   })()`);
@@ -951,7 +977,7 @@ async function rightClick(x, y) {
     const d = document.querySelector('#feOpPanel [data-fe-param="d"]');
     d.value = "3000"; d.dispatchEvent(new Event("input"));
     document.querySelector("#feOpApply").click();
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const toastTxt = [...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|");
     const verts = (await api("boundary 1")).loops[0].verts.length;
     return {toastTxt, verts, panelOpen: !$("feOpPanel").hidden};
@@ -969,7 +995,7 @@ async function rightClick(x, y) {
     const ghost = document.querySelector('#faceEditorRoot [data-fe-ghost="sub"]');
     const gw = ghost ? +ghost.getAttribute("width") : 0;
     document.querySelector("#feOpApply").click();
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
     const b = await api("boundary 1");
     const bb = loopsBBox(b.loops);
     /* Esc 階梯 */
@@ -982,7 +1008,7 @@ async function rightClick(x, y) {
     window.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape"}));
     const s2 = {op: !!fe.op, sel: !!fe.sel, focus: !!oc.focus, bar: $("feActionBar").hidden};
     window.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape"}));
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const s3 = {focus: !!oc.focus};
     return {gw, w: bb[2]-bb[0], verts: b.loops[0].verts.length, s1, s2, s3};
   })()`);
@@ -1010,7 +1036,7 @@ async function rightClick(x, y) {
     key("Backspace"); const afterBs = fe.drag && fe.drag.pts.length;
     for (const ch of "1500") key(ch, "Digit" + ch); key("ArrowDown");
     key("Enter");
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
     const b = await api("boundary 1");
     return {draftPts, afterBs, verts: b.loops[0].verts.map(v=>v.join(",")).join(" "), tool: fe.tool, draft: !!fe.drag};
   })()`);
@@ -1036,7 +1062,7 @@ async function rightClick(x, y) {
     const aIn = document.querySelector('#feOpPanel [data-fe-param="w"]'); aIn.value = "1000"; aIn.dispatchEvent(new Event("input"));
     const kuBack = ku.value;
     document.querySelector("#feOpApply").click();
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
     const b = await api("boundary 1");
     return {a, bb, kuBack, verts: b.loops[0].verts.map(v=>v.join(",")).join(" "),
             hi: !!document.querySelector("#faceEditorRoot .fe-feat-hi")};
@@ -1060,13 +1086,13 @@ async function rightClick(x, y) {
     const set = (k, v) => { const i = document.querySelector('#feOpPanel [data-fe-param="' + k + '"]'); i.value = v; i.dispatchEvent(new Event("input")); };
     set("w", 600); set("d", 400); set("dx", 1000); set("dy", 800);
     document.querySelector("#feOpApply").click();
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
     const b = await api("boundary 1");
     const hb = b.loops.length === 2 ? loopsBBox([b.loops[1]]).join(",") : "";
     const feats = (fe.feats[1]||[]).map(f=>f.type).join();
     const del = document.querySelector("#faceLayerList .face-layer-del");
     if (del) del.click();
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
     const b2 = await api("boundary 1");
     /* 點面外 → 清選取 */
     await feDown({x:-500,y:-500},{target:$("faceEditorSvg"),clientX:0,clientY:0});
@@ -1085,11 +1111,11 @@ async function rightClick(x, y) {
     await feDown({x:500,y:500},{target:$("faceEditorSvg"),clientX:0,clientY:0});
     feMove({x:1100,y:900},{clientX:0,clientY:0});
     await feUp({x:1100,y:900});
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     await feDown({x:2000,y:-200},{target:$("faceEditorSvg"),clientX:0,clientY:0});
     feMove({x:2600,y:300},{clientX:0,clientY:0});
     await feUp({x:2600,y:300});
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const b = await api("boundary 1");
     return {loops: b.loops.length, outer: b.loops[0].verts.length,
             feats: (fe.feats[1]||[]).map(f=>f.type + ":" + f.rect.join(",")).join(" ")};
@@ -1108,7 +1134,7 @@ async function rightClick(x, y) {
     document.querySelector('#feActionBar [data-fe-act="op:push"]').click();
     const i = document.querySelector('#feOpPanel [data-fe-param="dist"]'); i.value = "800"; i.dispatchEvent(new Event("input"));
     document.querySelector("#feOpApply").click();
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
     const bb = loopsBBox((await api("boundary 1")).loops);
     const m = feFeatMeta(fe.feats[1][1]);
     return {before, after: m.dx, ax: m.ax, w: bb[2]-bb[0], n: fe.feats[1].length};
@@ -1130,7 +1156,7 @@ async function rightClick(x, y) {
     $("tbDir").value = "+u"; $("tbSide").value = "+n";
     feSetTool("timber");
     await feDown({x: 500, y: 300}, {target: $("faceEditorSvg"), clientX: 0, clientY: 0});
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const dump1 = (await api("dump")).text;
     const hasTimber = /timber \\d+ 27 33 role boundary/.test(dump1) &&
                       /place \\d+ on \\d+ at-face e0 \\+u \\+n/.test(dump1);
@@ -1138,7 +1164,7 @@ async function rightClick(x, y) {
     /* 網格:表單建 u 500 1500 / v 300 900 */
     $("gridU").value = "500 1500"; $("gridV").value = "300 900";
     $("gridCreate").click();
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const dump2 = (await api("dump")).text;
     const hasGrid = /grid \\d+ on \\d+ u 500 1500/.test(dump2) &&
                     /grid \\d+ on \\d+ v 300 900/.test(dump2);
@@ -1157,7 +1183,7 @@ async function rightClick(x, y) {
     const before = (await api("dump")).text;
     feSetTool("timber");
     await feDown({x: 3999, y: 2999}, {target: $("faceEditorSvg"), clientX: 0, clientY: 0});
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const after = (await api("dump")).text;
     const toastShown = [...document.querySelectorAll(".toast")]
       .map(t => t.textContent).join("|");
@@ -1168,8 +1194,8 @@ async function rightClick(x, y) {
   /* 圖層列 ✕ 刪角材與網格 */
   const q3c = await eval_(`(async()=>{
     const dels = [...document.querySelectorAll(".face-layer-del")];
-    for (const b of dels) { b.click(); await new Promise(r=>setTimeout(r,200));
-      const confirm=document.querySelector("#impact-confirm"); if (confirm && !confirm.disabled) { confirm.click(); await new Promise(r=>setTimeout(r,200)); } }
+    for (const b of dels) { b.click(); await window.__cdpSettleUI(200);
+      const confirm=document.querySelector("#impact-confirm"); if (confirm && !confirm.disabled) { confirm.click(); await window.__cdpSettleUI(200); } }
     const dump = (await api("dump")).text;
     return {noTimber: !/timber /.test(dump), noGrid: !/grid /.test(dump)};
   })()`);
@@ -1191,7 +1217,7 @@ async function rightClick(x, y) {
     for (const p of pts)
       await feDown({x:p[0],y:p[1]}, {target:$("faceEditorSvg"),clientX:0,clientY:0});
     window.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const b = await api("boundary 1");
     const ortho = b.loops[0].verts.every((v,i,vs)=>{
       const nx = vs[(i+1)%vs.length];
@@ -1221,7 +1247,7 @@ async function rightClick(x, y) {
     for (const p of pts)
       await feDown({x:p[0],y:p[1]},{target:$("faceEditorSvg"),clientX:0,clientY:0});
     window.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const b = await api("boundary 1");
     return {verts:b.loops[0].verts.length};
   })()`);
@@ -1232,7 +1258,7 @@ async function rightClick(x, y) {
     $("faceShapeButton").click();
     $("shapeW").value="4000"; $("shapeD").value="3000"; $("shapeA").value="1000";
     $("shapeSubmit").click();
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const b = await api("boundary 1");
     const vs = b.loops[0].verts;
     let area = 0;
@@ -1282,7 +1308,7 @@ async function rightClick(x, y) {
     const inp = document.querySelector('[data-edge-len="0"]');
     inp.value = "500";
     inp.dispatchEvent(new Event("change"));
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const b = await api("boundary 1");
     const vs = b.loops[0].verts;
     const w = vs[1][0] - vs[0][0], h = vs[2][1] - vs[1][1];
@@ -1300,7 +1326,7 @@ async function rightClick(x, y) {
     await new Promise(r=>setTimeout(r,100));
     const mid = (await api("boundary 1")).loops[0].fixity[0];
     document.querySelector('#feActionBar [data-fe-act="fixity"]').click();
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const after = (await api("boundary 1")).loops[0].fixity[0];
     return {before, mid, after};
   })()`);
@@ -1319,7 +1345,7 @@ async function rightClick(x, y) {
     w.value = "40"; w.dispatchEvent(new Event("input"));
     d.value = "20"; d.dispatchEvent(new Event("input"));
     document.querySelector("#feOpApply").click();
-    await new Promise(r=>setTimeout(r,300));
+    await window.__cdpSettleUI(300);
     const b = await api("boundary 1");
     const vs = b.loops[0].verts;
     /* 凹口深 20:找 y=20 的頂點(內側朝下) */
@@ -2152,10 +2178,10 @@ async function rightClick(x, y) {
   /* 點「移出」→ 構件游離;再「收進」 */
   const c4b = await eval_(`(async()=>{
     document.querySelector("#spaceRcList .rc-act").click();
-    await new Promise(r=>setTimeout(r,800));
+    await window.__cdpSettleUI(800);
     const free1=document.querySelectorAll("#spaceRcFreeList .rc-row").length;
     document.querySelector("#spaceRcFreeList .rc-act").click();
-    await new Promise(r=>setTimeout(r,800));
+    await window.__cdpSettleUI(800);
     const free2=document.querySelectorAll("#spaceRcFreeList .rc-row").length;
     const mine=document.querySelectorAll("#spaceRcList .rc-row").length;
     return {free1,free2,mine};})()`);
@@ -2164,7 +2190,7 @@ async function rightClick(x, y) {
   /* 刪除 → toast 含 Ctrl+Z */
   await eval_(`(async()=>{
     document.querySelector("#spaceRcFreeList .face-layer-del").click();
-    await new Promise(r=>setTimeout(r,800));})()`);
+    await window.__cdpSettleUI(800);})()`);
   const c4c = await eval_(`[...document.querySelectorAll("#toastRegion .toast")]
     .map(t=>t.textContent).join("|")`);
   console.log("P19 C4 刪除toast含Ctrl+Z:", c4c.includes("Ctrl+Z") ? "✓" : "✗ " + c4c);
@@ -2191,7 +2217,7 @@ async function rightClick(x, y) {
     const noBtn=!document.getElementById("spProjRefresh");
     const before=document.getElementById("spaceProjSvg").innerHTML.length;
     await emitLine("delete column 1");
-    await new Promise(r=>setTimeout(r,900));
+    await window.__cdpSettleUI(900);
     const after=document.getElementById("spaceProjSvg").innerHTML.length;
     return {noBtn,before,after};})()`);
   console.log("P19 C5 無refresh鈕:", c5.noBtn ? "✓" : "✗",
@@ -2250,10 +2276,10 @@ async function rightClick(x, y) {
   const d1b = await eval_(`(async()=>{
     const before=document.querySelectorAll("#world polygon").length;
     document.querySelector('[data-v3-layer="face"]').click();
-    await new Promise(r=>setTimeout(r,600));
+    await window.__cdpSettleUI(600);
     const after=document.querySelectorAll("#world polygon").length;
     document.querySelector('[data-v3-layer="face"]').click();
-    await new Promise(r=>setTimeout(r,600));
+    await window.__cdpSettleUI(600);
     return {before,after};})()`);
   console.log("P19 D1 圖層過濾:", d1b.after < d1b.before
     ? `✓ ${d1b.before}→${d1b.after}` : `✗ ${JSON.stringify(d1b)}`);
@@ -2572,11 +2598,11 @@ async function rightClick(x, y) {
   const p20busy = await eval_(`(async () => {
     const original = api;
     let delayed = false;
-    api = async cmd => { if (!delayed) { delayed=true; await new Promise(r=>setTimeout(r,800)); } return original(cmd); };
+    api = async cmd => { if (!delayed) { delayed=true; await window.__cdpSettleUI(800); } return original(cmd); };
     try {
       const p = mutate(["boundary 555 outline 0,0 10,0 10,10 0,10"]);
       const early = document.getElementById("busyIndicator").hidden;
-      await new Promise(r=>setTimeout(r,500));
+      await window.__cdpSettleUI(500);
       const mid = document.getElementById("busyIndicator").hidden;
       const opacity = getComputedStyle(document.querySelector('.workspace')).opacity;
       await p;
@@ -2807,7 +2833,7 @@ async function rightClick(x, y) {
   _log("P23 grid-ref 存檔上傳後足跡與引用鎖:", gridRefUiOk ? "PASS" : "FAIL", JSON.stringify(gridRefUi));
 
   }
-  { // P24–P32 使用獨立作用域，避免與既有測試的輔助函式同名。
+  if (!process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY) { // P24–P32 使用獨立作用域，避免與既有測試的輔助函式同名。
   const check = (name, ok, detail = '') => console.log(name, ok ? '✓' : '✗', JSON.stringify(detail));
   const waitIdle = async () => {
     for (let i=0;i<100;i++) {
@@ -3012,6 +3038,12 @@ async function rightClick(x, y) {
   await clickSelector('[data-slot-label="地板"]');
   check('S1 empty slot starts visible guided creation',await eval_(`!oc.focus && oc.drawTool==='rect' && pendingSlot?.space===1 && !document.querySelector('#canvasModeHint').hidden`));
   await drag(330,430,510,600);await sleep(450);await waitIdle();
+  // The rectangle handler refreshes objects before entering the placement workspace.
+  // Waiting for the HTTP queue alone can finish between those two asynchronous steps.
+  for(let i=0;i<100;i++) {
+    if(await eval_(`oc.focus?.t==='face' && pendingSlot?.bid===oc.focus.id && document.querySelector('#faceInspectorContent #placeU')?.value==='+y'`)) break;
+    await sleep(50);
+  }
   const slotDrawn=await eval_(`({focus:oc.focus,pending:pendingSlot,u:document.querySelector('#faceInspectorContent #placeU')?.value,v:document.querySelector('#faceInspectorContent #placeV')?.value,status:document.querySelector('#status').textContent})`);
   check('S1 drawn face continues into intended placement',slotDrawn.focus?.t==='face' && slotDrawn.pending?.bid===slotDrawn.focus.id && slotDrawn.u==='+y' && slotDrawn.v==='+x',slotDrawn);
   await fillInput('#edgeLength0','800');await pressKey('Tab','Tab',9);await sleep(200);
@@ -3132,6 +3164,8 @@ async function rightClick(x, y) {
    * 畫布端逐點閉合機制(吸附/補角/Esc 階梯/鍵入長度/草稿層)已隨畫布繪圖移除;
    * PolyDraft 狀態機行為由 polydraft_test.js 單元測試 + 面內 §P35/P36 繼續覆蓋。 */
   console.log('=== P34. P=建面卡→面內畫外環(GEO-186) ===');
+  /* GEO-197 草稿列在畫布外占位；700px 的測試落點必須完整落在可繪區內。 */
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1100,deviceScaleFactor:1,mobile:false});
   const ocOrigin = async () => eval_(`(()=>{const r=document.getElementById('ocv').getBoundingClientRect();
     return {x:r.left,y:r.top};})()`);
   /* setupRemaining([]) 重置成完全空世界後,#emptyState(「建立第一個領域物件」提示卡)
@@ -3172,6 +3206,7 @@ async function rightClick(x, y) {
     document.getElementById('faceSnapToggle').checked = true`);
   const fo34 = await eval_(`(()=>{const r=document.getElementById('faceEditorSvg').getBoundingClientRect();
     return {x:r.left,y:r.top};})()`);
+  check('P34 測試所有落點都在可繪區內', await eval_(`(()=>{const r=$('faceEditorSvg').getBoundingClientRect();return r.width>712 && r.height>760})()`));
   for (const [x, y] of [[100,100],[700,100],[700,400],[400,400],[400,700],[100,700]]) {
     await click(fo34.x+x, fo34.y+y); await sleep(90);
   }
@@ -3229,6 +3264,7 @@ async function rightClick(x, y) {
   const t35_1 = await eval_(`({tool: fe.tool, layer: !!document.getElementById('feDraftLayer')})`);
   check('P35-1 面內按 e 後 fe.tool=redraw 且 #feDraftLayer 草稿層存在',
     t35_1.tool === 'redraw' && t35_1.layer, t35_1);
+  check('P35 切換外環工具保留使用者縮放', await eval_(`fe.zoom===1 && fe.panX===0 && fe.panY===0`));
 
   /* diff#3/§5.A.1.3:面內 gridMm 不是固定 250，是 feGridStep()(B4 依 zoom 挑距)算出來的值，
      測試自己讀取這個值再驗證吸附後座標是它的整數倍——snapOn 預設開(#faceSnapToggle checked)。 */
@@ -3394,10 +3430,17 @@ async function rightClick(x, y) {
   await clickSelector('#placeDetails > summary');
   await fillInput('#faceInspectorContent #placeOZ','3000');
   await clickSelector('#faceInspectorContent #placeSubmit');
+  // Placement refresh is asynchronous; wait for its visible completion instead of a 120 ms machine-speed assumption.
+  const waitPlaceHeader = async value => {
+    for(let i=0;i<100;i++) { if(await eval_(`$('workspacePlaceTag').textContent.includes(${JSON.stringify(value)})`))return; await sleep(50); }
+  };
+  await waitPlaceHeader('3000');
   check('P37 placement update refreshes header',await eval_(`document.querySelector('#workspacePlaceTag').textContent.includes('3000')`));
   await clickSelector('#faceUndoButton');
+  await waitPlaceHeader('2500');
   check('P37 placement undo refreshes form and header',await eval_(`document.querySelector('#faceInspectorContent #placeOZ').value==='2500' && document.querySelector('#workspacePlaceTag').textContent.includes('2500')`));
   await clickSelector('#faceRedoButton');
+  await waitPlaceHeader('3000');
   check('P37 placement redo refreshes form and header',await eval_(`document.querySelector('#faceInspectorContent #placeOZ').value==='3000' && document.querySelector('#workspacePlaceTag').textContent.includes('3000')`));
   if (!await eval_(`document.querySelector('#placeDetails').open`)) await clickSelector('#placeDetails > summary');
   await fillInput('#faceInspectorContent #placeOZ','3100');
@@ -3450,6 +3493,9 @@ async function rightClick(x, y) {
     await setupRemaining(kind==='face' ? ['boundary 1 outline 0,0 4000,0 4000,3000 0,3000'] : ['space 1']);
     await eval_(`enterFocus('${kind}',1)`);
     await clickSelector('#faceUndoButton');
+    // Undo refreshes the scene asynchronously without setting oc.busy.
+    // Wait for its observable completion, not clickSelector's 120 ms delay.
+    await waitForUI(`!oc.focus && !oc.edit && $('objectWorkspace').hidden && $('faceEditorRoot').childElementCount===0`);
     const gone=await eval_(`({focus:oc.focus,edit:oc.edit,hidden:document.querySelector('#objectWorkspace').hidden,svg:document.querySelector('#faceEditorRoot').childElementCount})`);
     check('P37 undo removes focused '+kind+' and clears workspace',!gone.focus && !gone.edit && gone.hidden && gone.svg===0,gone);
   }
@@ -3524,7 +3570,7 @@ async function rightClick(x, y) {
   } else {
     const before = fbList();
     await pressKey('Enter','Enter',13,2);
-    for (let i=0;i<60 && fbList().length===before.length;i++) await sleep(100);
+    for (let i=0;i<300 && fbList().length===before.length;i++) await sleep(100);
     /* 競態修復:fbList() 偵到的是 serve.py 落盤;面板要等瀏覽器收到 POST 回應
        才關閉、欄位才清空——「檔案已到但回應還沒回來」時立刻斷言會間歇誤判。
        繼續輪詢真正的條件(面板 hidden),斷言本身不變。 */
@@ -3730,7 +3776,7 @@ async function rightClick(x, y) {
     for (const ch of '3000') key(ch,'Digit'+ch); key('ArrowRight');
     for (const ch of '2000') key(ch,'Digit'+ch); key('ArrowDown');
     key('Enter');
-    await new Promise(r=>setTimeout(r,400));
+    for(let i=0;i<100&&fe.tool!=='select';i++)await new Promise(r=>setTimeout(r,50));
     const b=await api('boundary 1');
     return {ok:b.ok, nverts:b.loops[0].verts.length, tool:fe.tool, hasUnderlay:!!oc.underlays[1]};
   })()`);
@@ -3758,10 +3804,10 @@ async function rightClick(x, y) {
   const ul9 = await eval_(`(()=>{
     feUnderlayRemove(1);
     const pane=document.querySelector('[data-fi-pane="underlay"]');
-    const others=pane ? [...pane.querySelectorAll('input,select,button')].filter(el=>el.id!=='ulFile') : ['no-pane'];
+    const others=pane ? [...pane.querySelectorAll('input,select,button')].filter(el=>!['ulFile','refImport'].includes(el.id)) : ['no-pane'];
     return {imgGone: !document.getElementById('feUnderlay'), othersLeft: others.length};
   })()`);
-  check('P42-9 feUnderlayRemove 後 #feUnderlay 不存在、分頁回到只有 #ulFile',
+  check('P42-9 feUnderlayRemove 後底圖與調整欄位移除，保留匯入入口',
     ul9.imgGone && ul9.othersLeft === 0, ul9);
 
   console.log('=== P43. 面內角材可選取(GEO-191) ===');
@@ -4077,7 +4123,7 @@ async function rightClick(x, y) {
     const seq = [["4000","ArrowRight"],["1000","ArrowDown"],["1000","ArrowLeft"]];
     for (const [len, dir] of seq) { for (const ch of len) key(ch, "Digit" + ch); key(dir); }
     key("Enter");
-    await new Promise(r=>setTimeout(r,400));
+    for(let i=0;i<100&&!document.getElementById('status').textContent.includes('併入直線');i++)await new Promise(r=>setTimeout(r,50));
     const b = await api("boundary 1");
     return { verts: b.loops[0].verts.map(v=>v.join(",")).join(" "),
       status: document.getElementById('status').textContent };
@@ -4100,7 +4146,7 @@ async function rightClick(x, y) {
     const seq = [["4000","ArrowRight"],["3000","ArrowDown"]];
     for (const [len, dir] of seq) { for (const ch of len) key(ch, "Digit" + ch); key(dir); }
     key("Enter");
-    await new Promise(r=>setTimeout(r,400));
+    await window.__cdpSettleUI(400);
     const b = await api("boundary 1");
     return { verts: b.loops[0].verts.map(v=>v.join(",")).join(" "),
       status: document.getElementById('status').textContent };
@@ -4312,7 +4358,7 @@ async function rightClick(x, y) {
   await sleep(100);
   pt47 = await openFace47();
   await click(pt47(2000, 1500).x, pt47(2000, 1500).y);
-  await sleep(300);
+  await waitForUI(`!oc.busy && fe.timbers.length===4`);
   const p47_5 = await eval_(`fe.timbers.map(t => t.id).sort()`);
   check('P47-5 依預設值(自動挑到的空線)點面內 → 成功,fe.timbers 4 支',
     JSON.stringify(p47_5) === '[1,2,3,4]', { p47_5, p47_5line, p47_5runAxis, p47_5role });
@@ -4427,7 +4473,7 @@ async function rightClick(x, y) {
   await sleep(100);
   pt48 = await openFace48();
   await click(pt48(p48_3pt.x, p48_3pt.y).x, pt48(p48_3pt.x, p48_3pt.y).y);
-  await sleep(300);
+  await waitForUI(`!oc.busy && fe.timbers.length===4`);
   const p48_3 = await eval_(`(()=>{
     const ids = fe.timbers.map(t => t.id).sort((a,b)=>a-b);
     const newT = fe.timbers.find(t => t.id !== 1 && t.id !== 2 && t.id !== 3);
@@ -4439,7 +4485,7 @@ async function rightClick(x, y) {
     p48_3.newT && p48_3.newT.role === 'primary' && p48_3.newT.side === p48_3expectSide &&
     p48_3.anchor === 'at-line guide 2' && p48_3.side === '+n', { p48_3, p48_3info, p48_3pt });
   await pressKey('z', 'KeyZ', 90, 2);
-  await sleep(300);
+  await waitForUI(`!oc.busy && fe.timbers.length===3`);
   const p48_3u = await eval_(`(async()=>{ await feLoadGuides(); return fe.timbers.map(t => t.id).sort(); })()`);
   check('P48-3u Ctrl+Z → 回 3 支', JSON.stringify(p48_3u) === '[1,2,3]', p48_3u);
 
@@ -4457,7 +4503,7 @@ async function rightClick(x, y) {
   await sleep(100);
   pt48 = await openFace48();
   await click(pt48(1000, 1700).x, pt48(1000, 1700).y);
-  await sleep(300);
+  await waitForUI(`!oc.busy && fe.timbers.length===4`);
   const p48_4 = await eval_(`({
     ids: fe.timbers.map(t => t.id).sort(),
     placeLine: (window.__apiLog || []).find(c => c.includes('place') && c.includes('e3')) || '',
@@ -4465,7 +4511,7 @@ async function rightClick(x, y) {
   check('P48-4 點面內空白 → 照舊走表單值(#tbAnchor=e3),place 行含 e3;4 支',
     JSON.stringify(p48_4.ids) === '[1,2,3,4]' && p48_4.placeLine.includes('e3'), p48_4);
   await pressKey('z', 'KeyZ', 90, 2);
-  await sleep(300);
+  await waitForUI(`!oc.busy && fe.timbers.length===3`);
   const p48_4u = await eval_(`(async()=>{ await feLoadGuides(); return fe.timbers.map(t => t.id).sort(); })()`);
   check('P48-4u Ctrl+Z → 回 3 支', JSON.stringify(p48_4u) === '[1,2,3]', p48_4u);
 
@@ -5404,6 +5450,509 @@ async function rightClick(x, y) {
     check('P52-8 孔頂邊 v=1000 → 材料側在孔外(v<1000),帶 v 973..1000',
       crH && crH.constAxis === 'v' && crH.lo === 973 && crH.hi === 1000, crH);
   }
+  }
+
+  if (!process.env.GEOMETRY_REFERENCE_ONLY) { // GEO-197：四項流程修正，使用真实 UI 事件與可恢復的故障注入。
+    const check = (name, ok, detail = '') => console.log(name, ok ? '✓' : '✗', JSON.stringify(detail));
+    const until = async expr => {
+      for (let i = 0; i < 120; i++) { if (await eval_(expr) === true) return; await sleep(100); }
+      throw Error('GEO-197 wait failed: ' + expr);
+    };
+    const ctl = async selector => {
+      const r = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+      await click(r.x, r.y); await sleep(150);
+    };
+    const key = async (key, code, windowsVirtualKeyCode) => {
+      await send('Input.dispatchKeyEvent', { type:'keyDown', key, code, windowsVirtualKeyCode });
+      await send('Input.dispatchKeyEvent', { type:'keyUp', key, code, windowsVirtualKeyCode });
+      await sleep(150);
+    };
+    const facePoint = async (u, v) => {
+      const p = await eval_(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect();return {x:r.x+fe.panX+${u}*fe.zoom,y:r.y+fe.panY+${v}*fe.zoom}})()`);
+      await click(p.x, p.y); await sleep(100);
+    };
+    const field = async (id, value) => eval_(`(()=>{const e=$('faceInspectorContent').querySelector('#'+${JSON.stringify(id)});e.value=${JSON.stringify(value)};e.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+    const scene = async lines => {
+      const r = await eval_(`(async()=>{resetSceneFocus();await setView3(false);const out=[await api('reset')];for(const l of ${JSON.stringify(lines)})out.push(await api('line '+l));await renderObjects();return out.every(r=>r.ok&&!r.preview)})()`);
+      if (r !== true) throw Error('GEO-197 setup failed: ' + JSON.stringify(r));
+    };
+    await send('Emulation.setDeviceMetricsOverride', {width:1400,height:1000,deviceScaleFactor:1,mobile:false});
+    await scene(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000']);
+    const beforeConnection = await eval_(`api('dump').then(r=>r.text)`);
+    const injected = await send('Page.addScriptToEvaluateOnNewDocument', { source: `
+      window.__g197NativeFetch = window.fetch.bind(window);
+      window.__g197Mode = '403'; window.__g197Commands = [];
+      window.fetch = async (input, init) => {
+        if (input === '/api') {
+          const cmd = JSON.parse(init.body).cmd;
+          window.__g197Commands.push(cmd);
+          if (window.__g197Mode === '403') return new Response('<h1>Forbidden</h1>', {status:403});
+          if (window.__g197Mode === 'malformed') return new Response('<html>unavailable</html>');
+          if (window.__g197Mode === 'network') throw new TypeError('Failed to fetch');
+          if (window.__g197Mode === 'bridge') return new Response(JSON.stringify({ok:false,error:'橋接器連線中斷，請重新啟動服務'}));
+          if (window.__g197Mode === 'partial' && cmd === 'objects') return new Response(JSON.stringify({ok:true,faces:[],spaces:[]}));
+          if (window.__g197Mode === 'partial' && cmd === 'surfaces') return new Response('<html>unavailable</html>');
+        }
+        return window.__g197NativeFetch(input, init);
+      };` });
+    await send('Page.reload');
+    await until(`typeof connection !== 'undefined' && connection.phase === 'error'`);
+    const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert})`);
+    check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert, failedStart);
+    const offlineRequests = await eval_(`__g197Commands.length`);
+    await key('p','KeyP',80);
+    check('P53-2 失敗時快捷鍵不送建立指令', await eval_(`__g197Commands.length`) === offlineRequests);
+    await eval_(`__g197Mode='';__g197Commands=[]`);
+    await ctl('#connectionRetry');
+    await until(`connection.phase === 'ready'`);
+    const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden})`);
+    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
+    check('P53-4 重試前後世界逐字相同', typeof beforeConnection === 'string' && await eval_(`api('dump').then(r=>r.text)`) === beforeConnection);
+    const cached = await eval_(`JSON.stringify([oc.faces,oc.surfs,oc.bmap])`);
+    await eval_(`__g197Mode='partial';renderObjects()`);
+    await until(`connection.phase === 'error'`);
+    check('P53-5 部分讀取失敗保留整份舊快取', await eval_(`JSON.stringify([oc.faces,oc.surfs,oc.bmap])`) === cached && await eval_(`$('connectionMessage').textContent.includes('最後讀取') && $('emptyState').hidden`));
+    for (const mode of ['malformed','network','bridge']) {
+      await eval_(`__g197Mode=${JSON.stringify(mode)}`);
+      await ctl('#connectionRetry');
+      await until(`connection.phase === 'error'`);
+      check('P53-6 ' + mode + ' 留在可重試錯誤狀態', await eval_(`!$('connectionRetry').hidden && !$('connectionRetry').disabled && $('app').inert`));
+    }
+    await eval_(`__g197Mode=''`);
+    await ctl('#connectionRetry'); await until(`connection.phase === 'ready'`);
+    await send('Page.removeScriptToEvaluateOnNewDocument', {identifier:injected.result.identifier});
+    await eval_(`window.fetch=__g197NativeFetch`);
+
+    await scene([]);
+    await ctl('#btnNewPoly'); await until(`oc.edit?.bid > 0 && fe.tool === 'redraw'`);
+    const bid = await eval_(`oc.edit.bid`);
+    const defaultShape = await eval_(`api('boundary '+oc.edit.bid).then(r=>JSON.stringify(r.loops))`);
+    check('P54-1 開始就說明預設矩形、草稿與返回保留', await eval_(`$('faceDraftMessage').textContent.includes('預設矩形') && $('faceDraftMessage').textContent.includes('返回會保留此面') && !$('faceDraftNotice').hidden && $('faceDraftFinish').disabled`));
+    const noticeLayout = await eval_(`(()=>{const a=$('faceDraftNotice').getBoundingClientRect(),b=$('faceEditorViewport').getBoundingClientRect();return a.bottom<=b.top+1})()`);
+    check('P54-2 草稿操作列不遮蓋畫布', noticeLayout);
+    for (const p of [[0,0],[3000,0],[3000,2000],[0,2000]]) await facePoint(...p);
+    check('P54-3 畫草稿未改已建立面', await eval_(`api('boundary '+oc.edit.bid).then(r=>JSON.stringify(r.loops))`) === defaultShape && await eval_(`fe.draft.pts.length===4`));
+    await ctl('#faceDraftCancel');
+    check('P54-4 放棄只清草稿，按鈕不被算成落點', await eval_(`fe.draft.pts.length===0 && oc.edit.bid===${bid}`) && await eval_(`api('boundary '+oc.edit.bid).then(r=>JSON.stringify(r.loops))`) === defaultShape);
+    for (const p of [[0,0],[3000,0],[3000,2000],[0,2000]]) await facePoint(...p);
+    await ctl('#faceDraftFinish'); await until(`fe.tool==='select'`);
+    check('P54-5 完成後才更新外環、收起草稿列', await eval_(`$('faceDraftNotice').hidden && loopsBBox(oc.bmap[${bid}]).join(',')==='0,0,3000,2000'`));
+    await key('Escape','Escape',27);
+    await ctl('#btnNewPoly'); await until(`fe.tool==='redraw' && oc.edit?.bid !== ${bid}`);
+    await key('Escape','Escape',27);
+    check('P54-6 未落點就返回，已建立的面仍保留', await eval_(`!oc.focus && oc.faces.length===2`));
+
+    await eval_(`enterFocus('face',${bid})`);
+    await ctl('[data-face-tool="timber"]');
+    check('P55-1 游離面不啟動放材、不顯示預示，提供直接入口', await eval_(`fe.tool==='select' && fe.fiTab==='timber' && !!$('tbGoPlace') && !$('tbGoPlace').disabled && $('tbPlace').disabled && !document.querySelector('.fe-anchor-hi') && $('faceCanvasHint').textContent.includes('先放置')`));
+    await ctl('#tbGoPlace');
+    check('P55-2 一鍵到放置表單並聚焦', await eval_(`fe.fiTab==='prop' && document.activeElement.id==='placeOX'`));
+    await field('placeOZ','2500'); await ctl('#faceInspectorContent #placeSubmit');
+    await until(`!!feSid(${bid})`);
+    await ctl('[data-face-tool="timber"]');
+    check('P56-1 新放置面預填外邊 boundary，與點線相同', await eval_(`$('tbAnchor').value==='at-face e0' && $('tbDir').value==='+u' && $('tbRole').value==='boundary'`));
+    await ctl('#tbPlace'); await facePoint(1500,1000); await until(`fe.timbers.length===1`);
+    check('P56-2 沿用預填設定點面內成功放第一支邊界材', await eval_(`fe.timbers[0].role==='boundary' && connection.phase==='ready'`));
+
+    await scene(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000']);
+    await eval_(`enterFocus('face',1)`); await ctl('[data-face-tool="timber"]');
+    await field('tbAnchor','at-face e1');
+    check('P56-3 換定位邊同步建議方向與角色', await eval_(`$('tbDir').value==='+v' && $('tbRole').value==='boundary'`));
+    await field('tbRole','custom'); await field('tbPri','7'); await field('tbSide','-n'); await field('tbA','31');
+    await field('tbAnchor','at-face e0'); await eval_(`renderFaceInspector()`);
+    check('P56-4 手選 custom 與截面深度在換邊、重繪後保留', await eval_(`$('tbRole').value==='custom' && $('tbPri').value==='7' && $('tbSide').value==='-n' && $('tbA').value==='31'`));
+    await ctl('#tbUseSuggestion');
+    check('P56-5 套用建議只改方向角色', await eval_(`$('tbRole').value==='boundary' && $('tbSide').value==='-n' && $('tbA').value==='31'`));
+    await field('tbRole','primary'); await ctl('#tbPlace'); await facePoint(2000,1500);
+    await until(`!oc.busy`);
+    check('P56-6 不合法手選仍交核心拒絕，不當作断線', await eval_(`fe.timbers.length===0 && $('tbRole').classList.contains('invalid') && connection.phase==='ready'`));
+    await facePoint(2000,0); await until(`fe.timbers.length===1`);
+    check('P56-7 改用點線成功後移除角色錯誤標示', await eval_(`$('tbRole').value==='boundary' && !$('tbRole').classList.contains('invalid')`));
+  }
+
+  { // GEO-198: portable references, browser PDF rendering and context isolation.
+    console.log('=== P57–P61. PDF 與專案保存(GEO-198) ===');
+    const referenceExceptions = excN;
+    const check=(name,value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(value));
+    const until=async expr=>{for(let i=0;i<150;i++){if(await eval_(expr)===true)return;await sleep(100);}throw Error('G198 wait: '+expr);};
+    const ctl=async selector=>{
+      const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
+      await click(p.x,p.y);await sleep(100);
+    };
+    const field=async(id,value)=>eval_(`(()=>{const e=$(${JSON.stringify(id)});e.value=${JSON.stringify(value)};e.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+    await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+    await eval_(`(async()=>{resetSceneFocus();await api('reset');await api('line boundary 1 outline 0,0 2000,0 2000,1000 0,1000');await renderObjects();await enterFocus('face',1);fiShowTab('underlay');
+      const c=document.createElement('canvas');c.width=200;c.height=100;c.getContext('2d').fillRect(20,20,160,60);feUnderlaySet(1,{src:c.toDataURL(),imgW:200,imgH:100});})()`);
+    check('P57-1 圖片未校準且原有手動面可編輯',await eval_(`$('refCalibrationStatus').textContent.includes('未校準') && oc.edit.bid===1`));
+    await ctl('#ulCalibStart');await eval_(`feUnderlayCalibPoint([20,20]);feUnderlayCalibPoint([180,20])`);
+    await field('ulCalibUnit','cm');await field('ulCalibDist','160');await ctl('#ulCalibApply');
+    check('P57-2 cm 校準保存原值及整數 mm',await eval_(`(()=>{const p=ReferenceWorkspace.active(1);return p.mmPerPx===10&&p.calibration.distanceMm===1600&&p.calibration.inputUnit==='cm'&&p.reviewRequired;})()`));
+    await ctl('#refRecordDetails summary');
+    await field('refRecordLabel','天花完成高度');await field('refRecordValue','2650');
+    await field('refRecordLocation','主區域');await field('refRecordDatum','FFL');await ctl('#refRecordAdd');
+    await field('refRecordLabel','RC樑底');await field('refRecordValue','');
+    await field('refRecordLocation','待確認');await ctl('#refRecordAdd');
+    check('P57-2b 表單保存高度、基準及未知值，並顯示來源頁',await eval_(`(()=>{const r=ReferenceWorkspace.active(1).records;return r.length===2&&r[0].value===2650&&r[0].unit==='mm'&&r[0].datum==='FFL'&&r[1].value===null&&[...document.querySelectorAll('.ref-record small')].every(e=>e.textContent==='第 1 頁');})()`));
+    await field('refRecordLabel','');await ctl('#refRecordAdd');
+    check('P57-2c 缺少項目名稱不新增紀錄',await eval_(`ReferenceWorkspace.active(1).records.length===2`));
+    await field('refRecordLabel','待移除測試');await ctl('#refRecordAdd');
+    await ctl('.ref-record:last-of-type [data-ref-remove-record]');
+    check('P57-2d 移除紀錄保留其餘來源資訊',await eval_(`ReferenceWorkspace.active(1).records.length===2&&ReferenceWorkspace.active(1).records[1].label==='RC樑底'`));
+    check('P57-3 直角旋轉與反向換算精度',await eval_(`(()=>{const p=ReferenceWorkspace.active(1);return [0,90,180,270].every(rot=>{p.rot=rot;const a=feUlImgToMm(p,42.5,61.25),b=feUlMmToImg(p,...a);return Math.abs(b[0]-42.5)<1e-8&&Math.abs(b[1]-61.25)<1e-8;});})()`));
+    await eval_(`(async()=>{window.g198Saved=await ReferenceWorkspace.exportBytes();window.g198Before=JSON.stringify((await ReferenceWorkspace.manifest()).faces);window.g198Dump=(await api('dump')).text;})()`);
+    check('P57-4 .scene 不混入來源／待補紀錄',await eval_(`!g198Dump.includes('sourceId')&&!g198Dump.includes('RC樑底')`));
+    await eval_(`(async()=>{await api('line reset');await renderObjects();await api('line boundary 1 outline 0,0 1000,0 1000,1000 0,1000');await renderObjects();})()`);
+    check('P58-1 新場景同號面不繼承底圖',await eval_(`!ReferenceWorkspace.active(1)&&!oc.underlays[1]`));
+    await eval_(`(async()=>{await doUndoRedo('undo');await doUndoRedo('undo');})()`);
+    check('P58-2 復原回舊場景恢復来源',await eval_(`ReferenceWorkspace.active(1)?.calibration.distanceMm===1600&&!!oc.underlays[1]`));
+    await eval_(`(async()=>{await doUndoRedo('redo');await doUndoRedo('redo');await ReferenceWorkspace.importBytes(g198Saved);})()`);
+    check('P58-3 專案重開恢复來源、校準與待補值',await eval_(`(async()=>JSON.stringify((await ReferenceWorkspace.manifest()).faces)===g198Before&&(await api('dump')).text===g198Dump)()`));
+    check('P58-4 損壞專案不替換目前世界',await eval_(`(async()=>{const id=ReferenceWorkspace.context().id;try{await ReferenceWorkspace.importBytes(new Uint8Array([1,2,3]));return false;}catch(e){return id===ReferenceWorkspace.context().id&&(await api('dump')).text===g198Dump;}})()`));
+    check('P58-5 有效封裝內的非法場景仍由核心拒絕並保留來源',await eval_(`(async()=>{const m=await ReferenceWorkspace.manifest(),s=new Map([...ReferenceWorkspace.context().sources].map(([k,v])=>[k,v.bytes]));const bad=await GeometryProject.pack('boundary 1 outline 0,0 1,1 2,0\\n',m,s,fflate);const id=ReferenceWorkspace.context().id;try{await ReferenceWorkspace.importBytes(bad);return false;}catch(e){return id===ReferenceWorkspace.context().id&&(await api('dump')).text===g198Dump;}})()`));
+    const pdf=require('../tests/reference_pdf_fixture.js')().toString('base64');
+    await eval_(`(async()=>{window.g198PDF=await ReferenceWorkspace.sourceFromFile(new File([Uint8Array.from(atob(${JSON.stringify(pdf)}),c=>c.charCodeAt(0))],'test-reference.pdf',{type:'application/pdf'}));await ReferenceWorkspace.openSource(g198PDF,1);})()`);
+    check('P59-1 本機 PDF.js 讀到兩頁與縮圖',await eval_(`$('refPageCount').textContent.includes('2')&&document.querySelectorAll('.ref-thumbnail').length===2&&!$('refApply').disabled`));
+    const cancelDump=await eval_(`api('dump').then(r=>r.text)`);
+    await ctl('#refClose');
+    check('P59-2 取消選頁不建立物件',await eval_(`(async()=>!$('referenceDialog').open&&(await api('dump')).text===${JSON.stringify(cancelDump)})()`));
+    await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);await field('refPageNumber','2');
+    await until(`!$('refApply').disabled&&document.querySelector('#refPagePreview img')?.alt==='第 2 頁預覽'`);
+    const crop=await eval_(`(()=>{const r=$('refPagePreview').getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})()`);
+    await drag(crop.x+crop.w*.03,crop.y+crop.h*.1,crop.x+crop.w*.83,crop.y+crop.h*.9);
+    await ctl('#refApply');await until(`!$('referenceDialog').open`);
+    check('P59-3 PDF 取景使用固定頁面座標，與圖片共用面',await eval_(`(()=>{const p=ReferenceWorkspace.active(1);return p.page===2&&p.imgW===300&&p.imgH===200&&Math.abs(p.crop[2]-240)<1&&ReferenceWorkspace.group(1).pages.length===2;})()`));
+    await ctl('#ulCalibStart');await eval_(`feUnderlayCalibPoint([20,70]);feUnderlayCalibPoint([220,70]);`);
+    await field('ulCalibDist','2000');await ctl('#ulCalibApply');
+    check('P59-4 PDF 校準後座標與縮放算繪一致',await eval_(`(async()=>{const p=ReferenceWorkspace.active(1),before=feUlImgToMm(p,100,100);await ReferenceWorkspace.preparePage(p,g198PDF);const after=feUlImgToMm(p,100,100);return p.mmPerPx===10&&before.every((v,i)=>Math.abs(v-after[i])<1e-8);})()`));
+    check('P59-4b 已知矩形及 L 形的四種直角座標誤差不超過 1 mm',await eval_(`(()=>{
+      const p=ReferenceWorkspace.active(1);p.x=-200;p.y=-700;
+      // Independent expected coordinates from the authored PDF (its Y axis points upward).
+      const fixtures=[
+        {source:[[20,70],[220,70],[220,170],[20,170]],expected:[
+          [[0,0],[2000,0],[2000,1000],[0,1000]],
+          [[1600,-1000],[1600,1000],[600,1000],[600,-1000]],
+          [[2600,600],[600,600],[600,-400],[2600,-400]],
+          [[1000,1600],[1000,-400],[2000,-400],[2000,1600]]]},
+        {source:[[20,70],[100,70],[100,110],[220,110],[220,170],[20,170]],expected:[
+          [[0,0],[800,0],[800,400],[2000,400],[2000,1000],[0,1000]],
+          [[1600,-1000],[1600,-200],[1200,-200],[1200,1000],[600,1000],[600,-1000]],
+          [[2600,600],[1800,600],[1800,200],[600,200],[600,-400],[2600,-400]],
+          [[1000,1600],[1000,800],[1400,800],[1400,-400],[2000,-400],[2000,1600]]]}
+      ];
+      const ok=fixtures.every(f=>[0,90,180,270].every((rot,r)=>{p.rot=rot;return f.source.every((v,i)=>feUlImgToMm(p,...v).every((n,j)=>Math.abs(Math.round(n)-f.expected[r][i][j])<=1));}));
+      p.rot=0;window.g198ExpectedL=fixtures[1].expected[0];
+      window.g198TracedL=fixtures[1].source.map(v=>feUlImgToMm(p,...v).map(Math.round));return ok;
+    })()`));
+    await eval_(`(async()=>{const r=await api('line boundary 1 outline '+g198TracedL.map(v=>v.join(',')).join(' '));await feAfterChange();return r.ok;})()`);
+    check('P59-5 L 形邊界仍走既有核心，底圖保留',await eval_(`oc.bmap[1][0].verts.length===6&&ReferenceWorkspace.active(1).page===2`));
+    await eval_(`(async()=>{window.g198PDFSaved=await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.importBytes(g198PDFSaved);await enterFocus('face',1);fiShowTab('underlay');})()`);
+    check('P60-1 PDF 重開仍是 L 形、兩張來源及原校準',await eval_(`JSON.stringify(oc.bmap[1][0].verts)===JSON.stringify(g198ExpectedL)&&ReferenceWorkspace.group(1).pages.length===2&&ReferenceWorkspace.active(1).mmPerPx===10`));
+    await field('refActivePage',await eval_(`ReferenceWorkspace.group(1).pages[0].id`));
+    await until(`ReferenceWorkspace.active(1)?.page===1`);
+    check('P60-2 切回圖片保留獨立校準、旋轉與紀錄',await eval_(`ReferenceWorkspace.active(1).rot===270&&ReferenceWorkspace.active(1).records[1].value===null&&ReferenceWorkspace.active(1).calibration.distanceMm===1600`));
+    check('P60-3 慢速圖頁完成時不蓋過使用者後選的頁',await eval_(`(async()=>{
+      const g=ReferenceWorkspace.group(1),first=g.pages[0],second=g.pages[1];delete second.src;
+      const doc=ReferenceWorkspace.context().sources.get(second.sourceId).doc,original=doc.getPage.bind(doc);
+      let release,entered;const gate=new Promise(r=>release=r),started=new Promise(r=>entered=r);
+      doc.getPage=async n=>{entered();await gate;return original(n);};
+      try{const pending=ReferenceWorkspace.selectPage(1,second.id);await started;await ReferenceWorkspace.selectPage(1,first.id);release();await pending;return ReferenceWorkspace.active(1).id===first.id;}
+      finally{release();doc.getPage=original;}
+    })()`));
+    await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);
+    await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+    check('P61-1 窄版選頁對話框與確認按鈕在視窗內',await eval_(`(()=>{const d=$('referenceDialog').getBoundingClientRect(),b=$('refApply').getBoundingClientRect();return d.left>=0&&d.right<=innerWidth&&d.bottom<=innerHeight&&b.bottom<=innerHeight&&b.width>0;})()`));
+    await ctl('#refClose');await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+    check('P61-2 取消後原來源與面仍存在',await eval_(`!$('referenceDialog').open&&!!ReferenceWorkspace.active(1)&&oc.bmap[1][0].verts.length===6`));
+    check('P61-3 切圖頁不累積同一面的返回堆疊',await eval_(`oc.stack.filter(f=>f.t==='face'&&f.id===1).length===0`));
+    check('P61-4 另存取消不變更世界或來源',await eval_(`(async()=>{const old=window.showSaveFilePicker,before=(await api('dump')).text,id=ReferenceWorkspace.context().id;window.showSaveFilePicker=async()=>{throw new DOMException('cancel','AbortError');};try{await ReferenceWorkspace.save();return (await api('dump')).text===before&&ReferenceWorkspace.context().id===id&&!ReferenceWorkspace.busy;}finally{window.showSaveFilePicker=old;}})()`));
+    check('P61-5 寫檔失敗保留未保存狀態並中止寫入',await eval_(`(async()=>{const old=window.showSaveFilePicker;let aborted=false;ReferenceWorkspace.context().dirty=true;window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async()=>{throw Error('disk full');},abort:async()=>{aborted=true;}})});try{await ReferenceWorkspace.save();return false;}catch(e){return e.message==='disk full'&&aborted&&ReferenceWorkspace.context().dirty&&!ReferenceWorkspace.busy;}finally{window.showSaveFilePicker=old;}})()`));
+    check('P61-5b 寫入關閉完成前不宣告已保存',await eval_(`(async()=>{
+      const old=window.showSaveFilePicker;let release,entered,written;
+      const gate=new Promise(r=>release=r),started=new Promise(r=>entered=r);
+      window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async bytes=>{written=bytes;},close:async()=>{entered();await gate;},abort:async()=>{}})});
+      ReferenceWorkspace.context().dirty=true;setStatus('等待測試寫入');
+      try{const pending=ReferenceWorkspace.save();await Promise.race([started,pending.then(()=>{throw Error('write never reached close');})]);
+        const dump=(await api('dump')).text;
+        $('btnClear').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,cancelable:true}));$('btnClear').click();
+        await new Promise(r=>setTimeout(r,100));
+        const before=ReferenceWorkspace.context().dirty&&!$('status').textContent.includes('專案已保存')&&(await api('dump')).text===dump;release();await pending;
+        return before&&written instanceof Uint8Array&&written.length>0&&!ReferenceWorkspace.context().dirty&&$('status').textContent.includes('專案已保存');
+      }finally{release();window.showSaveFilePicker=old;}
+    })()`));
+    check('P61-6 不同 PDF 算繪解析度共用同一頁面座標',await eval_(`(async()=>{const a=await ReferenceWorkspace.renderPage(g198PDF,1,1),b=await ReferenceWorkspace.renderPage(g198PDF,1,3);return a.width===b.width&&a.height===b.height&&a.canvas.width!==b.canvas.width;})()`));
+    await eval_(`(async()=>{const data=await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.importBytes(data);await enterFocus('face',1);fiShowTab('underlay');feUnderlayRemove(1);})()`);
+    await until(`!!oc.underlays[1]?.src`);
+    check('P61-7 移除目前頁後可載入尚未算繪的另一頁',await eval_(`ReferenceWorkspace.group(1).pages.length===1&&ReferenceWorkspace.active(1).page===2&&!!$('feUnderlay')`));
+    const lastDump=await eval_(`api('dump').then(r=>r.text)`);
+    await eval_(`(async()=>{const bad=await ReferenceWorkspace.sourceFromFile(new File(['%PDF-broken'],'broken.pdf',{type:'application/pdf'}));await ReferenceWorkspace.openSource(bad,1);})()`);
+    check('P61-8 PDF 讀取失敗提供訊息且不能套用',await eval_(`$('refApply').disabled&&$('refPreviewMessage').textContent.includes('無法讀取')`));
+    const failedPdfExceptions = excN;
+    await eval_(`$('refPagePreview').dispatchEvent(new PointerEvent('pointerup',{bubbles:true}))`);
+    check('P61-8b 未就緒預覽的點按不觸發例外',excN===failedPdfExceptions);
+    await ctl('#refClose');
+    check('P61-9 PDF 讀取失敗保留原場景',await eval_(`api('dump').then(r=>r.text===${JSON.stringify(lastDump)})`));
+    check('P61-10 載入未送達時，重試連線保留原幾何與來源',await eval_(`(async()=>{
+      const oldFetch=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
+      window.fetch=async(input,init)=>{if(input==='/upload')throw new TypeError('test upload disconnected');return oldFetch(input,init);};
+      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
+      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===before&&ReferenceWorkspace.active(1).id===ref;
+    })()`));
+    check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',await eval_(`(async()=>{
+      const oldFetch=window.fetch.bind(window);
+      window.fetch=async(input,init)=>{if(input==='/upload'){await oldFetch(input,init);throw new TypeError('test response lost');}return oldFetch(input,init);};
+      let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
+      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&curScene.path==='';
+    })()`));
+    await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);
+    await field('refTarget','new');
+    await eval_(`(async()=>{
+      const original=objNewPolyFace;let release,entered;
+      const gate=new Promise(r=>release=r),started=new Promise(r=>entered=r);
+      window.g198Applying={original,release:()=>release()};
+      objNewPolyFace=async()=>{entered();await gate;return original();};
+      g198Applying.pending=$('refApply').onclick();await started;
+    })()`);
+    await ctl('#refNext');await field('refPageNumber','2');await ctl('#refResetCrop');
+    check('P61-12 建面等待期間鎖定已確認圖頁與取景',await eval_(`(async()=>{
+      const locked=ReferenceWorkspace.busy&&$('referenceDialog').inert;
+      try{g198Applying.release();await g198Applying.pending;const p=ReferenceWorkspace.active(oc.edit.bid);
+        return locked&&p?.sourceId===g198PDF.meta.id&&p.page===1&&JSON.stringify(p.crop)==='[0,0,300,200]'&&!$('referenceDialog').open&&!$('referenceDialog').inert;
+      }finally{objNewPolyFace=g198Applying.original;g198Applying.release();}
+    })()`));
+    await eval_(`ReferenceWorkspace.importBytes(g198Saved)`);
+    check('P61-13 寫入回應遺失可查回結果，復原保留同一面的來源',await eval_(`(async()=>{
+      const old=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
+      window.fetch=async(input,init)=>{const body=input==='/api'&&JSON.parse(init.body);if(body?.cmd==='line spec receipt_probe 10'){await old(input,init);throw new TypeError('lost reply');}return old(input,init);};
+      let result;try{result=await api('line spec receipt_probe 10');}finally{window.fetch=old;}
+      await doUndoRedo('undo');return result.ok&&connection.phase==='ready'&&(await api('dump')).text===before&&ReferenceWorkspace.active(1).id===ref;
+    })()`));
+    check('P61-14 未送達操作不重送，也不新增來源歷史',await eval_(`(async()=>{
+      const old=window.fetch.bind(window),before=(await api('dump')).text,n=ReferenceWorkspace.history.undo.length;
+      window.fetch=async(input,init)=>{const body=input==='/api'&&JSON.parse(init.body);if(body?.cmd==='line spec never_arrived 10')throw new TypeError('not sent');return old(input,init);};
+      let result;try{result=await api('line spec never_arrived 10');}finally{window.fetch=old;}
+      return !result.ok&&!result.transport&&connection.phase==='ready'&&(await api('dump')).text===before&&ReferenceWorkspace.history.undo.length===n;
+    })()`));
+    const receiptDir=require('fs').mkdtempSync(require('path').join(require('os').tmpdir(),'geometry-receipt-'));
+    const receiptScene=require('path').join(receiptDir,'same-id.scene');
+    require('fs').writeFileSync(receiptScene,'boundary 1 outline 0,0 3000,0 3000,1500 0,1500\n');
+    try {
+      check('P61-15 場景載入回應遺失，重連隔離同號面且復原恢復來源',await eval_(`(async()=>{
+        const old=window.fetch.bind(window),ref=ReferenceWorkspace.active(1).id,cmd='loadfile '+${JSON.stringify(receiptScene)};
+        window.fetch=async(input,init)=>{const body=input==='/api'&&JSON.parse(init.body);if(body?.cmd===cmd){await old(input,init);throw new TypeError('lost load reply');}if(body?.receipt)throw new TypeError('still offline');return old(input,init);};
+        let result;try{result=await api(cmd);}finally{window.fetch=old;}
+        const blocked=!result.ok&&connection.phase==='error';await recoverConnection();
+        const isolated=connection.phase==='ready'&&!ReferenceWorkspace.active(1)&&!oc.underlays[1];
+        await doUndoRedo('undo');return blocked&&isolated&&ReferenceWorkspace.active(1)?.id===ref;
+      })()`));
+    } finally {require('fs').unlinkSync(receiptScene);require('fs').rmdirSync(receiptDir);}
+    check('P61-16 群組提交回應遺失仍只復原一步並保留來源',await eval_(`(async()=>{
+      const old=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
+      window.fetch=async(input,init)=>{const body=input==='/api'&&JSON.parse(init.body);if(body?.cmd==='line history-end'){await old(input,init);throw new TypeError('lost commit reply');}if(body?.receipt)throw new TypeError('offline');return old(input,init);};
+      try{await mutate(['spec receipt_group_a 10','spec receipt_group_b 20']);}finally{window.fetch=old;}
+      const blocked=connection.phase==='error';await recoverConnection();await doUndoRedo('undo');
+      return blocked&&connection.phase==='ready'&&(await api('dump')).text===before&&ReferenceWorkspace.active(1)?.id===ref;
+    })()`));
+    check('P61-16b 群組內操作未送達時重連仍回復核心群組',await eval_(`(async()=>{
+      const old=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
+      window.fetch=async(input,init)=>{const body=input==='/api'&&JSON.parse(init.body);if(body?.cmd==='line spec group_not_sent 20'||body?.receipt)throw new TypeError('offline before send');return old(input,init);};
+      try{await mutate(['spec group_before_disconnect 10','spec group_not_sent 20']);}finally{window.fetch=old;}
+      const blocked=connection.phase==='error';
+      let abortBlocked=false;
+      window.fetch=async(input,init)=>{const body=input==='/api'&&JSON.parse(init.body);if(body?.cmd==='line history-abort'){abortBlocked=true;throw new TypeError('rollback not sent');}if(body?.receipt&&abortBlocked)throw new TypeError('rollback still offline');return old(input,init);};
+      try{await recoverConnection();}finally{window.fetch=old;}
+      const retryBlocked=connection.phase==='error';await recoverConnection();
+      const restored=(await api('dump')).text===before&&ReferenceWorkspace.active(1)?.id===ref;
+      const next=await mutate(['spec after_group_recovery 10']);await doUndoRedo('undo');
+      return blocked&&retryBlocked&&restored&&next&&connection.phase==='ready'&&(await api('dump')).text===before;
+    })()`));
+    check('P61-17 參考資料流程沒有未處理的瀏覽器例外',excN===referenceExceptions);
+  }
+
+  { /* ===== P62. 自訂 SVG 游標 — 設計方向 1b「箭頭+文字膠囊」 =====
+       驗收:(a) 圖形層與設計稿常數一致(箭頭路徑、膠囊 h=19/rx=9.5/白描邊/色值、
+       文字 10.5px 650 白字含修飾鍵前綴);(b) 狀態解析跟真實行為一致——
+       select 命中族(edge/vertex/alt-vertex/move-line/timber-pick/hole-pick)、
+       工具族(guide/hole/timber 族)、拖曳尺寸膠囊、space-pan、busy;
+       (c) overlay pointer-events:none 不干擾命中、進畫布隱原生游標、離開即隱藏。 */
+    console.log('=== P62. 自訂 SVG 游標(方向 1b) ===');
+    const ck62 = (n, v, d) => console.log(n, v === true ? '✓' : '✗', v === true ? '' : JSON.stringify(d));
+    /* 面內區段慣例:視窗放大到 5400×3800,讓 zoom=1 的 scene mm 座標直接等於螢幕 px,
+       可以直接對 4000×3000 的面點擊/滑過任意 mm 座標(同 P48-P52)。 */
+    await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
+    /* Part A 世界:面 1 = 4000×3000 附孔 (1000,1000)~(2000,2000)、零角材——
+       頂點把手不被角材帶蓋住,可直接點到 v:0:0;孔邊給 hole-pick/deny 用。 */
+    const setup62 = await eval_(`(async()=>{
+      const out=[]; for(const l of ['reset','line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1000,1000 2000,1000 2000,2000 1000,2000',
+        'line spec cx導線 2500','line guide 2 1 v spec:cx導線']) { const r=await apiRequest(l); out.push({l,ok:r.ok===true,err:r.error||null}); if(r.ok!==true) break; }
+      return out; })()`);
+    ck62('P62-0 Part A 場景建立全過', Array.isArray(setup62) && setup62.every(r => r.ok), setup62);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects();
+      await enterFocus('face',1); fe.zoom=1; fe.panX=0; fe.panY=0; feApply();
+      await feLoadGuides(); drawFaceEditor();
+      const t=$('faceSnapToggle'); if(t) t.checked=false; })()`);
+    await sleep(350);
+    const org62 = await eval_(`(()=>{const r=$('faceEditorSvg').getBoundingClientRect();
+      return {x:r.left+fe.panX,y:r.top+fe.panY};})()`);
+    const mv62 = async (mx, my, mods) => {
+      await send('Input.dispatchMouseEvent', { type:'mouseMoved', x:org62.x+mx, y:org62.y+my, button:'none', modifiers:mods||0 });
+      await sleep(60);
+    };
+    /* 讀游標覆層目前狀態(對測試最穩的是 DOM,不是螢幕截圖) */
+    const cx62 = () => eval_(`(()=>{const h=cxUI.fe; if(!h) return null;
+      const cap=h.cur.querySelector('.cx-capsule'), txt=h.cur.querySelector('.cx-label');
+      const arrow=h.cur.querySelector('path');
+      return { vis:h.svg.style.visibility, on:$('faceEditorViewport').classList.contains('cx-on'),
+        cssCursor:getComputedStyle($('faceEditorSvg')).cursor,
+        layerPE:getComputedStyle(h.svg).pointerEvents,
+        arrowD:arrow?arrow.getAttribute('d'):null,
+        transform:h.cur.getAttribute('transform'),
+        capsule:cap?{x:+cap.x.baseVal.value,y:+cap.y.baseVal.value,w:+cap.width.baseVal.value,
+          h:+cap.height.baseVal.value,rx:+cap.rx.baseVal.value,fill:cap.getAttribute('fill'),
+          stroke:cap.getAttribute('stroke'),sw:cap.getAttribute('stroke-width')}:null,
+        label:txt?txt.textContent:null, labelFill:txt?txt.getAttribute('fill'):null,
+        labelFs:txt?txt.getAttribute('font-size'):null, labelFw:txt?txt.getAttribute('font-weight'):null,
+        tip:(h.cur.querySelector('.cx-tip text')||{}).textContent||null,
+        marks:[...h.marks.children].map(c=>c.tagName)};})()`);
+
+    const vpOrg62 = await eval_(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect();
+      return {x:r.left,y:r.top};})()`);
+    await eval_(`feSetTool('select')`); await sleep(80);
+    await mv62(3000, 2500);                                    /* 面內空白(避開孔與 guide 2) */
+    let s62 = await cx62();
+    ck62('P62-1 選取空白:箭頭無膠囊,cx-on 隱原生游標,熱點 translate 對齊指標',
+      s62 && s62.vis === 'visible' && s62.on === true && s62.cssCursor === 'none' &&
+      s62.layerPE === 'none' && s62.capsule === null &&
+      s62.arrowD === 'M6 3.5 17.4 14l-5.2.7 2.8 5.1-2.5 1.3-2.7-5-3.8 3.5Z' &&
+      s62.transform === `translate(${org62.x + 3000 - vpOrg62.x},${org62.y + 2500 - vpOrg62.y})`,
+      s62);
+
+    await mv62(2, 2);                                          /* 頂點 v0 把手圈(無角材世界,圈可直接點) */
+    s62 = await cx62();
+    ck62('P62-2 指到凸角:「拉角」膠囊 face 綠 + 膠囊幾何 h19/rx9.5/白描邊1.3/字10.5-650',
+      s62 && s62.label === '拉角' &&
+      s62.capsule && s62.capsule.fill === '#2f8f7b' && s62.capsule.h === 19 && s62.capsule.rx === 9.5 &&
+      s62.capsule.stroke === '#fff' && +s62.capsule.sw === 1.3 &&
+      s62.labelFs === '10.5' && s62.labelFw === '650' && s62.labelFill === '#fff', s62);
+
+    await mv62(2, 2, 1);                                       /* Alt=1 按住 */
+    s62 = await cx62();
+    ck62('P62-3 Alt+凸角:「Alt · 捏缺口」danger 紅',
+      s62 && s62.label === 'Alt · 捏缺口' && s62.capsule && s62.capsule.fill === '#c2414f', s62);
+
+    await mv62(3997, 1500);                                    /* 外輪廓邊 e1 */
+    s62 = await cx62();
+    ck62('P62-4 指到外環邊:「選邊／推拉」', s62 && s62.label === '選邊／推拉', s62);
+
+    await mv62(1000, 1500);                                    /* 孔左緣 e:1:x */
+    s62 = await cx62();
+    ck62('P62-5 指到孔邊:「孔」ink 膠囊',
+      s62 && s62.label === '孔' && s62.capsule && s62.capsule.fill === '#172033', s62);
+
+    await mv62(2500, 1500);                                    /* guide 2(u=2500 直立線) */
+    s62 = await cx62();
+    ck62('P62-6 指到參考線:「移動參考線」', s62 && s62.label === '移動參考線', s62);
+
+    /* 開口工具拖矩形(驗拖曳中尺寸膠囊),區域避開既有孔 */
+    await eval_(`feSetTool('hole')`); await sleep(80);
+    await send('Input.dispatchMouseEvent', { type:'mousePressed', x:org62.x+2400, y:org62.y+2400, button:'left', clickCount:1 });
+    await send('Input.dispatchMouseEvent', { type:'mouseMoved', x:org62.x+2800, y:org62.y+2800, button:'left', buttons:1 });
+    await sleep(80);
+    s62 = await cx62();
+    ck62('P62-7 拖開口矩形中:「開口」+ 尺寸膠囊 400×400',
+      s62 && s62.label === '開口' && s62.tip === '400 × 400 mm', s62);
+    await send('Input.dispatchMouseEvent', { type:'mouseReleased', x:org62.x+2800, y:org62.y+2800, button:'left', clickCount:1 });
+    await waitForUI(`(oc.bmap[1]||[]).length>=3`, 4000);
+    // Boundary data arrives before feAfterChange finishes reloading guide hits.
+    // Finish that refresh before switching tools and probing the guide cursor.
+    await eval_(`window.__cdpSettleUI(0)`);
+
+    await eval_(`feSetTool('timber')`); await sleep(80);
+    await mv62(2500, 1500);                                    /* guide 2(u=2500,無角材蓋) */
+    s62 = await cx62();
+    ck62('P62-8 角材工具指到參考線:「沿此線放置」face 綠 + cross 基底',
+      s62 && s62.label === '沿此線放置' && s62.capsule && s62.capsule.fill === '#2f8f7b', s62);
+    await mv62(1000, 1500);                                    /* 孔的左緣 */
+    s62 = await cx62();
+    ck62('P62-9 角材工具指到孔邊:「孔邊不可點」danger 紅',
+      s62 && s62.label === '孔邊不可點' && s62.capsule && s62.capsule.fill === '#c2414f', s62);
+    await mv62(3000, 2200);                                    /* 面內空白(避開 guide 2;面外亦同:走表單) */
+    s62 = await cx62();
+    ck62('P62-10 角材工具空白:「角材」accent 膠囊(依右欄設定放置)',
+      s62 && s62.label === '角材' && s62.capsule && s62.capsule.fill === '#4e67e8', s62);
+
+    await eval_(`feSetTool('guide'); $('faceSnapToggle').checked=true;`); await sleep(80);
+    await mv62(937, 1211);                                     /* 非格點 → 吸附標記 */
+    s62 = await cx62();
+    ck62('P62-11 參考線+吸附開:格點標記出現',
+      s62 && s62.label === '參考線' && s62.marks.length >= 1, s62);
+    await eval_(`$('faceSnapToggle').checked=false;`);
+
+    await eval_(`feSetTool('pan')`); await sleep(80); await mv62(2000, 1500);
+    s62 = await cx62();
+    ck62('P62-12 平移工具:「平移」hand 基底', s62 && s62.label === '平移', s62);
+
+    await eval_(`fe.spaceDown=true; feSetTool('select'); cxRefreshAll();`);
+    s62 = await cx62();
+    ck62('P62-13 按住空白:「Space · 平移」',
+      s62 && s62.label === 'Space · 平移', s62);
+    await eval_(`fe.spaceDown=false;`);
+
+    await eval_(`oc.busy=true; document.body.classList.add('oc-busy'); cxRefreshAll();`);
+    await sleep(60); s62 = await cx62();
+    ck62('P62-14 busy:「套用中」warning 橘 + spin 圖示',
+      s62 && s62.label === '套用中' && s62.capsule && s62.capsule.fill === '#b96a16', s62);
+    await eval_(`oc.busy=false; document.body.classList.remove('oc-busy'); cxRefreshAll();`);
+
+    /* 指標移到畫布外(頂列)→ 覆層隱藏、原生游標回來 */
+    await send('Input.dispatchMouseEvent', { type:'mouseMoved', x:60, y:8, button:'none' }); await sleep(80);
+    s62 = await cx62();
+    ck62('P62-15 離開畫布:覆層隱藏 + cx-on 解除',
+      s62 && s62.vis === 'hidden' && s62.on === false, s62);
+
+    /* Part B:預設世界(3 支角材)驗 select 工具指到角材本體 →「角材」ink。 */
+    await eval_(`(async()=>{ await api('default'); await renderObjects();
+      await enterFocus('face',1); fe.zoom=1; fe.panX=0; fe.panY=0; feApply(); await feLoadGuides(); drawFaceEditor(); feSetTool('select'); })()`);
+    await sleep(350);
+    await mv62(2000, 14);                                      /* 角材 1@e0 帶中央 */
+    s62 = await cx62();
+    ck62('P62-16 指到角材:「角材」ink 膠囊',
+      s62 && s62.label === '角材' && s62.capsule && s62.capsule.fill === '#172033', s62);
+
+    /* 物件畫布層 */
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); })()`); await sleep(300);
+    const card62 = await eval_(`(()=>{const c=[...document.querySelectorAll('.ocard')][0];
+      if(!c) return null; const r=c.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
+    if (!card62) ck62('P62-17 物件卡片存在', false, 'no .ocard');
+    else {
+      await send('Input.dispatchMouseEvent', { type:'mouseMoved', x:card62.x, y:card62.y, button:'none' }); await sleep(80);
+      const s62o = await eval_(`(()=>{const h=cxUI.oc; if(!h) return null;
+        const txt=h.cur.querySelector('.cx-label');
+        return {vis:h.svg.style.visibility,on:$('canvasViewport').classList.contains('cx-on'),
+          label:txt?txt.textContent:null};})()`);
+      ck62('P62-17 物件畫布指到卡片:「移動」hand', s62o && s62o.on === true && s62o.label === '移動', s62o);
+      await eval_(`setOcTool('rect')`); await sleep(80);
+      await send('Input.dispatchMouseEvent', { type:'mouseMoved', x:card62.x, y:card62.y, button:'none' }); await sleep(60);
+      const s62r = await eval_(`(()=>{const h=cxUI.oc;const t=h.cur.querySelector('.cx-label');
+        return t?t.textContent:null;})()`);
+      ck62('P62-18 矩形工具:「面·矩形」', s62r === '面·矩形', s62r);
+      await eval_(`setOcTool('select')`);
+    }
+
+    /* 游標覆層不攔截命中:畫布上 elementFromPoint 仍穿到底下元素 */
+    await eval_(`(async()=>{ await enterFocus('face',1); fe.zoom=1; fe.panX=0; fe.panY=0; feApply(); })()`);
+    await sleep(250);
+    await mv62(3997, 1500);
+    const pe62 = await eval_(`(()=>{const h=cxUI.fe;
+      const svgR=$('faceEditorSvg').getBoundingClientRect();
+      const under=document.elementFromPoint(svgR.left+fe.panX+3997, svgR.top+fe.panY+1500);
+      return {pe:getComputedStyle(h.svg).pointerEvents,
+        under:under?(under.dataset&&under.dataset.faceHit)||under.tagName:null};})()`);
+    ck62('P62-19 覆層 pointer-events:none,游標底下仍命中邊 e1',
+      pe62 && pe62.pe === 'none' && pe62.under === 'e:0:1', pe62);
+    ck62('P62-20 拖底圖出視窗的空命中不觸發例外',await eval_(`(()=>{
+      const drag=fe.ulDrag,tool=fe.tool;try{fe.ulDrag={x0:0,y0:0,cx:0,cy:0};fe.tool='select';return !!cxResolveFace(-10,-10,false,false);}
+      finally{fe.ulDrag=drag;fe.tool=tool;}
+    })()`));
   }
 
   chrome.kill();

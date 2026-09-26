@@ -17,8 +17,11 @@ import subprocess
 import sys
 import tempfile
 import threading
+import uuid
 
 HERE = pathlib.Path(__file__).resolve().parent
+VENDOR_FILES = {"/" + p.relative_to(HERE).as_posix(): p
+                for p in (HERE / "vendor").rglob("*") if p.is_file()}
 SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根目錄
 sys.path.insert(0, str(HERE))
 import feedback_store  # noqa: E402
@@ -43,6 +46,10 @@ bridge_responses = queue.Queue()
 bridge_failure = None
 BRIDGE_TIMEOUT = 30.0
 _upload_temps = []
+API_SESSION = uuid.uuid4().hex
+api_receipts = {}
+receipt_lock = threading.Lock()
+MAX_RECEIPTS = 256
 
 
 def read_bridge_responses():
@@ -127,6 +134,43 @@ def err_json(msg: str) -> bytes:
                       ensure_ascii=False).encode("utf-8")
 
 
+def recorded_api(data):
+    """Recover a lost response without running a world-changing command again.
+
+    Clients acknowledge received results on their next request. A lookup arriving
+    before its command seals that id as cancelled, so a late command cannot run.
+    Unacknowledged results are bounded; capacity failure never reaches the core.
+    """
+    request_id = data.get("receipt", data.get("requestId"))
+    if request_id is None:
+        return ask_bridge(data["cmd"])
+    if (not isinstance(request_id, str) or not re.fullmatch(r"[a-f0-9-]{36}", request_id)
+            or data.get("session") != API_SESSION):
+        return err_json("操作結果無法確認：服務已重啟或請求識別不合法。")
+    if not receipt_lock.acquire(timeout=BRIDGE_TIMEOUT):
+        return err_json("操作結果仍在處理，請稍後重試。")
+    try:
+        for ack in data.get("ack", [])[:MAX_RECEIPTS]:
+            if isinstance(ack, str) and api_receipts.get(ack, (None,))[0] is not None:
+                api_receipts.pop(ack, None)
+        cached = api_receipts.get(request_id)
+        if cached is None:
+            if len(api_receipts) >= MAX_RECEIPTS:
+                return err_json("未確認的操作結果過多，已暫停新增操作。")
+            if "receipt" in data:
+                cached = (None, err_json("操作未送達，場景未變更；請重新操作。"))
+            else:
+                cached = (data["cmd"], ask_bridge(data["cmd"]))
+            api_receipts[request_id] = cached
+        elif "receipt" not in data and cached[0] not in (None, data["cmd"]):
+            return err_json("同一操作識別不得用於不同指令。")
+        if "receipt" in data:
+            return json.dumps({"ok": True, "result": json.loads(cached[1])}, ensure_ascii=False).encode("utf-8")
+        return cached[1]
+    finally:
+        receipt_lock.release()
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):  # 靜音
         pass
@@ -135,6 +179,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
+        self.send_header("X-Geometry-Session", API_SESSION)
         self.end_headers()
         self.wfile.write(body)
 
@@ -145,9 +190,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif self.path == "/app.css":
             self._send((HERE / "app.css").read_bytes(),
                        "text/css; charset=utf-8")
-        elif self.path in {"/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js"}:
+        elif self.path in {"/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js",
+                           "/project-store.js", "/reference-workspace.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")
+        elif self.path in VENDOR_FILES:
+            path = VENDOR_FILES[self.path]
+            ctype = {".js": "text/javascript; charset=utf-8",
+                     ".mjs": "text/javascript; charset=utf-8",
+                     ".wasm": "application/wasm"}.get(path.suffix, "application/octet-stream")
+            self._send(path.read_bytes(), ctype)
         elif self.path == "/axioms":
             self._send((SCENE_DIR / "geometry-guide" / "公理層-閱讀器.html").read_bytes(),
                        "text/html; charset=utf-8")
@@ -218,7 +270,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send(canonical_bytes(exc.as_dict()))
         elif self.path == "/api":
             try:
-                cmd = json.loads(body.decode("utf-8"))["cmd"]
+                data = json.loads(body.decode("utf-8"))
+                if not isinstance(data, dict) or not isinstance(data.get("ack", []), list):
+                    raise ValueError("bad request")
+                if "receipt" in data:
+                    self._send(recorded_api(data))
+                    return
+                cmd = data["cmd"]
             except (ValueError, KeyError, TypeError, UnicodeDecodeError):
                 self._send(err_json("bad request"))
                 return
@@ -232,7 +290,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if len(cmd.encode("utf-8")) > BRIDGE_MAX_CMD:
                 self._send(err_json("指令超過單行上限"))
                 return
-            self._send(ask_bridge(cmd))
+            self._send(recorded_api(data))
         elif self.path == "/upload":
             # 瀏覽器開檔 = 拿到內容而非路徑：寫暫存檔走 parse_scene_file 同一條路。
             with tempfile.NamedTemporaryFile(

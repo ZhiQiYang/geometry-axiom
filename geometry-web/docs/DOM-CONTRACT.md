@@ -424,12 +424,10 @@
 
 ## GEO-190 面內底圖臨摹(cdp_test §P42)
 
-> 🔒 拍板:狀態只存 `oc.underlays[bid]`(本次瀏覽器工作階段記憶體),不寫 `.scene`/`localStorage`;
-> `api("dump")` 輸出不得出現任何底圖資訊。
+> 原本僅限本次工作階段；2026-09-26 使用者核准 GEO-198：底圖、校準及來源紀錄可隨 `.gcanvas` 保存。
+> `oc.underlays[bid]` 是目前場景作用中圖頁的投影；不寫 `.scene`/`localStorage`，`api("dump")` 不含底圖資訊。
 
-- 右欄檢視器第 6 分頁 `[data-fi-tab="underlay"]`(順序:屬性/形狀/參考線/角材/網格/底圖,共 6 頁;
-  `#faceInspectorTabs [data-fi-tab]` 計數由 5 改 6)。沒載圖時分頁只有 `#ulFile`(`<input type=file accept="image/*">`)
-  與一行說明;載入後才出現其餘欄位。
+- 右欄檢視器第 6 分頁 `[data-fi-tab="underlay"]`（分頁順序不變）。沒載圖時有 `#refImport`、相容用隱藏 `#ulFile` 及保存說明；載入後才出現對位與校準欄位。檔案入口接受 PDF、PNG、JPEG、WebP、GIF。
 - 分頁欄位:`#ulOpacity`(range 0–1)、`#ulLock`(checkbox)、`#ulX`/`#ulY`(number mm,左上角在面座標的 mm,
   含義不因旋轉改變)、`#ulRot`(select 0/90/180/270)、`#ulScale`(唯讀顯示 `<mmPerPx> mm/px`)、
   `#ulCalibStart`(按鈕,進入量比例尺)、`#ulCalibDist`(number mm)+`#ulCalibApply`、`#ulRemove`。
@@ -676,3 +674,49 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 
 流程層「點畫布上的邊直接放」已在本票做完;格線命中(若日後補上 `data-face-hit`)、
 角材側面(`at-face t<id>`)當定位引用可否點選——留給下一票。
+
+## GEO-197：連線、草稿與放材前置條件
+
+- `#connectionNotice`：載入／錯誤狀態提示，位於工作區之外，`role="status"`。
+  `#connectionRetry` 重新讀取場景；不重送失敗操作。載入與錯誤期間主工作區
+  使用 `inert`，文件快捷鍵也停用。未讀到場景的計數顯示 `—`，不顯示建立第一物件的空狀態。
+  已讀到過則保留最後完整快取，明示可能過期。HTTP 403 不放寬來源驗證。
+- `#faceDraftNotice`：重畫外環時在畫布上方占獨立列，不能遮住落點。
+  `#faceDraftTitle` 顯示草稿頂點數，`#faceDraftMessage` 說明原輪廓、面積與返回保留。
+  `#faceDraftFinish` 走既有閉合驗證；`#faceDraftCancel` 只清草稿，不刪面。
+  Esc 階梯保持原樣。原輪廓改用灰色虛線，草稿維持綠色。
+- `#tbGoPlace`：游離面的角材頁提供「先放置這片面」，切屬性頁並聚焦其
+  `#placeOX`。必須在 `#faceInspectorContent` 內找欄位，避免命中背景檢查器的同名欄位。
+  未放置時角材工具停留選取模式，無材料預示。
+- `#tbSuggestion`／`#tbUseSuggestion`：顯示及套用與點線入口相同的方向、角色建議。
+  新表單及改定位引用時自動建議；手選角色後保留選擇，直到按套用建議或直接點線。
+  `data-tb-role-manual` 記錄這項表單意圖，重繪時保留，不寫入 `.scene`。
+  截面、深度、自訂優先序不因套用建議被改掉。核心仍可拒絕不合法的組合。
+
+回歸：`cdp_test.js` P53–P56；可用 `GEOMETRY_FLOW_REPAIR_ONLY=1` 單跑。
+
+## GEO-198 PDF、來源紀錄與專案保存（P57–P61）
+
+- 檔案選單：`#btnImportReference`、`#btnOpenProject`、`#btnSaveProject`、`#btnProjectName`。檔案輸入為 `#referenceFile`、`#projectFile`；舊 `#file` 仍只載入 `.scene`。
+- `#referenceDialog` 是原生 modal dialog。取消／Esc 不建立面；`#refApply` 成功後才關閉。讀取失敗時保持停用並由 `#refPreviewMessage` 說明。
+  套用期間使用 `inert` 並保存已確認圖頁與取景，非同步建面完成前不能改頁；失敗後解除 `inert` 以便重試。
+- 選頁／預覽：`#refPageNumber`、`#refPageCount`、`#refPrev`、`#refNext`、`#refZoom`、`#refThumbnails`。只算繪作用中頁及附近最多五張縮圖。
+- 取景：`#refPagePreview` 上拖曳，`#refCropOverlay` 顯示範圍；`#refResetCrop` 恢復整頁。`#refTarget` 選既有面或 `new`，新面沿用預設矩形與草稿提示。
+- 面內：`#refImport` 匯入，`#refMorePages` 重用完整來源檔，`#refActivePage` 切换已關聯頁；切頁不新增相同面的返回堆疊。
+- `#refCalibrationStatus` 區分未校準／已校準；`#ulCalibUnit` 提供 mm／cm，核心距離仍為整數 mm。圖片保留 `#ulScale` mm/px；PDF 隱藏像素比例列，使用校準紀錄說明。
+- 對位／比例或已校準面的輪廓改變時要求核對；`#refConfirmChecked` 只清除核對提示，不修改幾何。`#refFit` 對齊取景範圍。
+- 來源紀錄：`#refRecordDetails`、`#refRecordLabel`、`#refRecordLocation`、`#refRecordValue`、`#refRecordUnit`、`#refRecordDatum`、`#refRecordAdd`。數值留空為 `null`；刪除按鈕使用 `data-ref-remove-record`。
+- 來源／圖頁名稱一律作文字輸出；沒有幾何以外的命令執行通道。紀錄不自動建立 RC 或 3D 物件。
+- 存檔測試入口：`ReferenceWorkspace.exportBytes()` / `importBytes(bytes)`；來源選頁入口 `sourceFromFile(file)` / `openSource(source,bid)`。正式 UI 與測試使用相同實作。
+- 回歸保留 GEO-190 的 `feUnderlaySet/CalibStart/CalibPoint/ApplyScale/Remove`；`feUnderlaySet` 會把既有圖片納入目前場景的來源關聯。
+- 儲存取消不改場景；写入失敗不清未保存狀態。已產生下載不等於檔案已寫入成功。
+- 保存／開啟期間在文件捕捉階段阻擋點擊與輸入事件；只攔 `pointerdown` 不足以阻止按鈕的後續 `click`。
+- `/api` 寫入回應遺失時，先依一次性請求識別查回結果，再更新來源歷史；重新連線不重送修改，尚未完成的群組確認後中止。
+- 載入回應遺失時停止編輯，重試先比對核心 dump，確定使用載入前或載入後來源；無法判定時重試原載入並放棄無法證實的來源歷史，不按同號面猜接底圖。
+- 完整格式、歷史與限制見 `REFERENCE-PROJECT.md`。核心、`.scene` 文法與公理未變。
+
+## GEO-199 自訂游標（P62）
+
+- `svg.cx-layer` 提供指標圖形、動作膠囊及吸附標記；`pointer-events:none`，不攔截原有畫布操作。
+- `cx-on` 只在畫布顯示自訂指標時隱藏原生游標；按鈕、表單及離開畫布時恢復。
+- 底圖捕捉指標拖出視窗時，`elementFromPoint()` 可為 `null`；空命中仍須安全處理。

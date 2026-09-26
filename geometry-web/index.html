@@ -7,8 +7,12 @@
 <title>構形 Canvas · 角材幾何</title>
 <link rel="stylesheet" href="app.css">
 </head>
-<body>
-<div id="app" class="app-shell">
+<body class="connection-blocked">
+<section id="connectionNotice" class="connection-notice" role="status" aria-live="polite">
+  <div><strong id="connectionTitle">正在讀取場景</strong><p id="connectionMessage">連線完成後即可編輯。</p></div>
+  <button id="connectionRetry" type="button" class="secondary-button" hidden>重新連線</button>
+</section>
+<div id="app" class="app-shell" inert>
   <header class="topbar">
     <div class="brand" aria-label="構形 Canvas">
       <span class="brand-mark" aria-hidden="true">
@@ -53,6 +57,11 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
         </button>
         <div id="fileMenuPop" class="menu-pop" role="menu" hidden>
+          <button id="btnImportReference" class="menu-item" type="button">匯入參考資料…</button>
+          <button id="btnOpenProject" class="menu-item" type="button">開啟 .gcanvas 專案…</button>
+          <button id="btnSaveProject" class="menu-item" type="button">保存專案（含來源）…</button>
+          <button id="btnProjectName" class="menu-item" type="button">專案名稱 <span id="projectName"></span></button>
+          <hr class="menu-sep">
           <button id="btnOpen" class="menu-item" type="button"><span data-icon="upload"></span>開啟 .scene…</button>
           <button id="btnDatums" class="menu-item" type="button"><span data-icon="guide"></span>共用基準</button>
           <button id="btnEx" class="menu-item" type="button">載入範例</button>
@@ -62,6 +71,8 @@
         </div>
       </div>
       <input id="file" type="file" accept=".scene" hidden>
+      <input id="referenceFile" type="file" accept="application/pdf,image/png,image/jpeg,image/webp,image/gif" hidden>
+      <input id="projectFile" type="file" accept=".gcanvas" hidden>
       <button id="btnExport" class="secondary-button" type="button" title="匯出 .scene" aria-label="匯出 .scene"><span data-icon="download"></span><span>匯出 .scene</span></button>
     </div>
   </header>
@@ -117,17 +128,17 @@
           <button id="filterAll" class="chip-reset" type="button">全部顯示</button>
         </div>
         <div class="chip-row">
-          <button class="chip" type="button" data-filter-type="face" aria-pressed="true"><span class="dot face"></span>面<strong id="faceCount">0</strong></button>
-          <button class="chip" type="button" data-filter-type="space" aria-pressed="true"><span class="dot space"></span>空間<strong id="spaceCount">0</strong></button>
-          <button class="chip" type="button" data-filter-type="column" aria-pressed="true"><span class="dot column"></span>柱<strong id="columnCount">0</strong></button>
-          <button class="chip" type="button" data-filter-type="beam" aria-pressed="true"><span class="dot beam"></span>樑<strong id="beamCount">0</strong></button>
+          <button class="chip" type="button" data-filter-type="face" aria-pressed="true"><span class="dot face"></span>面<strong id="faceCount">—</strong></button>
+          <button class="chip" type="button" data-filter-type="space" aria-pressed="true"><span class="dot space"></span>空間<strong id="spaceCount">—</strong></button>
+          <button class="chip" type="button" data-filter-type="column" aria-pressed="true"><span class="dot column"></span>柱<strong id="columnCount">—</strong></button>
+          <button class="chip" type="button" data-filter-type="beam" aria-pressed="true"><span class="dot beam"></span>樑<strong id="beamCount">—</strong></button>
         </div>
       </section>
 
       <section class="sidebar-section object-tree-section">
         <div class="section-label-row">
           <span class="section-label">所有物件</span>
-          <span id="objectCountBadge" class="count-badge">0</span>
+          <span id="objectCountBadge" class="count-badge">—</span>
         </div>
         <div id="objectList" class="object-list" role="list"></div>
       </section>
@@ -308,6 +319,11 @@
             <div id="faceLayerList" class="face-layer-list"></div>
           </section>
         </aside>
+        <div id="faceDraftNotice" class="face-draft-notice" hidden>
+            <strong id="faceDraftTitle">外環草稿 · 尚未套用</strong>
+            <span id="faceDraftMessage"></span>
+            <div><button id="faceDraftFinish" type="button" class="btn">完成外環</button><button id="faceDraftCancel" type="button" class="btn">放棄草稿</button></div>
+        </div>
         <section id="faceEditorViewport" class="face-editor-viewport tool-select" tabindex="-1" aria-label="面編輯畫布">
           <svg id="faceEditorSvg" class="face-editor-svg"><g id="faceEditorRoot"></g></svg>
           <input id="feLenInput" class="fe-len-input" type="text" hidden
@@ -515,6 +531,23 @@
 
 <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
 
+<dialog id="referenceDialog" class="reference-dialog" aria-labelledby="refDialogTitle">
+  <header><div><h2 id="refDialogTitle">選取參考圖頁</h2><p id="refSourceName"></p></div><button id="refClose" type="button" class="text-button" aria-label="取消匯入">取消</button></header>
+  <div class="ref-toolbar">
+    <button id="refPrev" type="button" class="btn" aria-label="上一頁">←</button>
+    <label>第 <input id="refPageNumber" type="number" min="1" value="1" aria-label="PDF 頁碼"></label><span id="refPageCount"></span>
+    <button id="refNext" type="button" class="btn" aria-label="下一頁">→</button>
+    <label>預覽 <select id="refZoom"><option value="1">適合寬度</option><option value="1.5">150%</option><option value="2">200%</option><option value="3">300%</option></select></label>
+    <button id="refResetCrop" type="button" class="btn">使用整頁</button>
+  </div>
+  <p id="refPreviewMessage" role="status"></p>
+  <div class="ref-preview-scroll"><div id="refPagePreview"></div></div>
+  <nav id="refThumbnails" aria-label="附近圖頁"></nav>
+  <footer><label>加入位置<select id="refTarget"></select></label><button id="refApply" type="button" class="primary-button" disabled>加入參考頁</button></footer>
+</dialog>
+<script src="vendor/fflate/umd/index.js"></script>
+<script src="project-store.js"></script>
+<script src="reference-workspace.js"></script>
 <script src="feedback.js"></script>
 <script src="reference-ui.js"></script>
 <script src="polydraft.js"></script>

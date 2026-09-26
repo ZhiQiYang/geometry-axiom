@@ -10,6 +10,7 @@ import threading
 import time
 import unittest
 import urllib.request
+import uuid
 from unittest.mock import Mock, patch
 
 
@@ -101,6 +102,106 @@ class BridgeServerTests(unittest.TestCase):
             server.shutdown()
             thread.join(timeout=2)
             server.server_close()
+
+    def test_reference_assets_are_local_and_path_allowlisted(self):
+        with self.http_server() as base:
+            for route, ctype in [("/project-store.js", "text/javascript"),
+                                 ("/reference-workspace.js", "text/javascript"),
+                                 ("/vendor/pdfjs-dist/build/pdf.mjs", "text/javascript"),
+                                 ("/vendor/pdfjs-dist/build/pdf.worker.mjs", "text/javascript"),
+                                 ("/vendor/fflate/umd/index.js", "text/javascript")]:
+                with self.subTest(route=route), urllib.request.urlopen(base + route) as response:
+                    self.assertTrue(response.headers["Content-Type"].startswith(ctype))
+                    self.assertGreater(len(response.read()), 100)
+            for route in ["/vendor/../serve.py", "/vendor/not-present.js", "/sources/private.pdf"]:
+                with self.subTest(route=route), self.assertRaises(urllib.error.HTTPError) as result:
+                    urllib.request.urlopen(base + route)
+                self.assertEqual(result.exception.code, 404)
+                result.exception.close()
+
+    def receipt_request(self, **fields):
+        return {"session": self.server_module.API_SESSION, **fields}
+
+    def test_lost_api_response_is_recovered_without_repeating_command(self):
+        request_id = str(uuid.uuid4())
+        with self.http_server() as base:
+            def post(data):
+                request = urllib.request.Request(base + "/api", data=json.dumps(data).encode(),
+                                                 headers={"Content-Type": "application/json"})
+                with urllib.request.urlopen(request, timeout=2) as response:
+                    self.assertEqual(response.headers["X-Geometry-Session"], self.server_module.API_SESSION)
+                    return json.load(response)
+            self.responses.put(b'{"ok":true}\n')
+            command = self.receipt_request(requestId=request_id, cmd="line history-end")
+            self.assertTrue(post(command)["ok"])
+            written = self.process.stdin.getvalue()
+            self.assertEqual(post(self.receipt_request(receipt=request_id)), {"ok": True, "result": {"ok": True}})
+            self.assertTrue(post(command)["ok"])
+            self.assertEqual(self.process.stdin.getvalue(), written)
+            self.assertFalse(post({**command, "cmd": "line reset"})["ok"])
+            self.assertEqual(self.process.stdin.getvalue(), written)
+
+    def test_result_lookup_seals_a_command_that_has_not_arrived(self):
+        request_id = str(uuid.uuid4())
+        lookup = self.receipt_request(receipt=request_id)
+        result = json.loads(self.server_module.recorded_api(lookup))
+        self.assertTrue(result["ok"])
+        self.assertFalse(result["result"]["ok"])
+        late = self.receipt_request(requestId=request_id, cmd="line reset", ack=[request_id])
+        self.assertFalse(json.loads(self.server_module.recorded_api(late))["ok"])
+        self.assertEqual(self.process.stdin.getvalue(), b"")
+
+    def test_receipts_acknowledge_results_and_bound_unconfirmed_operations(self):
+        self.server_module.MAX_RECEIPTS = 1
+        first, second = str(uuid.uuid4()), str(uuid.uuid4())
+        self.responses.put(b'{"ok":false,"error":"core rejection"}\n')
+        result = json.loads(self.server_module.recorded_api(self.receipt_request(requestId=first, cmd="line invalid")))
+        self.assertFalse(result["ok"])
+        self.assertEqual(json.loads(self.server_module.recorded_api(self.receipt_request(receipt=first)))["result"], result)
+        full = self.receipt_request(requestId=second, cmd="line reset")
+        self.assertFalse(json.loads(self.server_module.recorded_api(full))["ok"])
+        self.assertEqual(self.process.stdin.getvalue(), b"line invalid\n")
+        self.responses.put(b'{"ok":true}\n')
+        self.assertTrue(json.loads(self.server_module.recorded_api({**full, "ack": [first]}))["ok"])
+        self.assertNotIn(first, self.server_module.api_receipts)
+        self.assertEqual(len(self.server_module.api_receipts), 1)
+
+    def test_wrong_server_session_cannot_execute_or_recover_operations(self):
+        for key in ["requestId", "receipt"]:
+            result = json.loads(self.server_module.recorded_api({key: str(uuid.uuid4()), "session": "old-server", "cmd": "line reset"}))
+            self.assertFalse(result["ok"])
+        self.assertEqual(self.process.stdin.getvalue(), b"")
+
+    def test_receipt_lookup_waits_for_an_inflight_command_result(self):
+        request_id = str(uuid.uuid4())
+        entered, release, lookup_started, lookup_done = (threading.Event() for _ in range(4))
+        results = []
+        self.server_module.BRIDGE_TIMEOUT = 2
+        def blocked_command(cmd):
+            entered.set()
+            self.assertTrue(release.wait(2))
+            return b'{"ok":true}'
+        def lookup():
+            lookup_started.set()
+            results.append(json.loads(self.server_module.recorded_api(self.receipt_request(receipt=request_id))))
+            lookup_done.set()
+        with patch.object(self.server_module, "ask_bridge", side_effect=blocked_command) as bridge_call:
+            writer = threading.Thread(target=lambda: self.server_module.recorded_api(
+                self.receipt_request(requestId=request_id, cmd="line reset")))
+            reader = threading.Thread(target=lookup)
+            writer.start()
+            try:
+                self.assertTrue(entered.wait(2))
+                reader.start()
+                self.assertTrue(lookup_started.wait(2))
+                self.assertFalse(lookup_done.wait(0.05))
+            finally:
+                release.set()
+                writer.join(2)
+                if reader.ident is not None:
+                    reader.join(2)
+            self.assertEqual(results, [{"ok": True, "result": {"ok": True}}])
+            bridge_call.assert_called_once_with("line reset")
 
     def upload(self, base, scene, bridge_reply):
         """送一次 /upload,回傳 (解析後的回應, bridge 收到的 loadfile 路徑)。"""
