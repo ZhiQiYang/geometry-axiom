@@ -36,9 +36,12 @@ const ReferenceWorkspace = (() => {
     document.getElementById("objectWorkspace")?.classList.toggle("reference-editor", !!p && fe.fiTab === "underlay");
     const pane = document.getElementById("faceInspectorContent");
     if (pane) pane.dataset.activeTab = fe.fiTab;
-    document.querySelectorAll("#faceInspectorTabs [data-fi-tab]").forEach(el => el.setAttribute("aria-pressed", String(el.dataset.fiTab === fe.fiTab)));
+    const activeTab = ["guide", "timber", "grid"].includes(fe.fiTab) ? "components" : fe.fiTab;
+    document.querySelectorAll("#faceInspectorTabs [data-fi-tab]").forEach(el => el.setAttribute("aria-pressed", String(el.dataset.fiTab === activeTab)));
     document.querySelectorAll("[data-reference-step]").forEach(el => {
-      const selected = el.dataset.referenceStep === (fe.tool === "redraw" ? "draw" : "calibrate");
+      const step = el.dataset.referenceStep;
+      const selected = !p && step === "page" || p && !p.calibration && step === "calibrate" ||
+        p && p.calibration && !oc.bmap[oc.edit?.bid]?.[0]?.verts?.length && step === "draw";
       el.classList.toggle("current", selected);
       if (selected) el.setAttribute("aria-current", "step"); else el.removeAttribute("aria-current");
     });
@@ -373,7 +376,7 @@ const ReferenceWorkspace = (() => {
     const r=await uploadScene(loaded.scene,{context:c,ids});
     if(!r.ok)throw new Error(r.error||"場景載入失敗。");
     curScene={path:r.path||"",name:c.name+".gcanvas"};
-    resetSceneFocus();sync();document.getElementById("sceneMenuLabel").textContent=curScene.name;
+    resetSceneFocus();sync();document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
     await refreshActive();setStatus("✓ 已開啟專案，來源與校準已還原");return loaded;
   }
   async function uploadScene(text,replacement=null) {
@@ -415,12 +418,14 @@ const ReferenceWorkspace = (() => {
     }
     if (restoredNew) {
       curScene={path:restoredPath,name:pendingLoad.context.groups.size?pendingLoad.context.name+".gcanvas":"已恢復場景"};
-      document.getElementById("sceneMenuLabel").textContent=curScene.name;
+      document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
       markSceneItem();
     }
     pendingLoad=null;sync();return true;
   }
   function mayLeave() {
+    if (Object.values(fe.feats || {}).some(items => items.length) &&
+      !window.confirm("目前有只能在本次工作階段修改數字的形狀特徵。切換場景後仍保留輪廓，但特徵參數會消失。要繼續嗎？")) return false;
     return !context().dirty || !context().groups.size || window.confirm("目前專案的參考資料可能尚未保存。要離開目前專案嗎？");
   }
   function init() {
@@ -441,13 +446,6 @@ const ReferenceWorkspace = (() => {
       else if (action === "export") document.getElementById("btnExport").click();
       else if (action === "reference") { fiShowTab("underlay"); if (innerWidth <= 680) openPanel("right",document.getElementById("workspaceToggleRight")); }
     });
-    document.addEventListener("click", e => { if (!e.target.closest(".workspace-file-menu")) document.querySelector(".workspace-file-menu")?.removeAttribute("open"); });
-    document.addEventListener("keydown", e => {
-      const menu = document.querySelector(".workspace-file-menu[open]");
-      if (e.key === "Escape" && menu) {
-        e.preventDefault(); e.stopImmediatePropagation(); menu.removeAttribute("open"); menu.querySelector("summary").focus();
-      }
-    }, {capture:true});
     document.getElementById("btnOpenProject").onclick=()=>{if(mayLeave()){const i=document.getElementById("projectFile");i.value="";i.click();}};
     document.getElementById("projectFile").onchange=safe(async e=>{const f=e.target.files[0];if(!f)return;if(f.size>P.MAX_PACKAGE)throw new Error("專案檔案超過 256 MB。");busy=true;present();try{await importBytes(new Uint8Array(await f.arrayBuffer()),f.name);}finally{busy=false;e.target.value="";present();}});
     document.getElementById("referenceFile").onchange=safe(async e=>{const f=e.target.files[0];if(f)await openSource(await sourceFromFile(f),e.target.dataset.bid===""?null:Number(e.target.dataset.bid));e.target.value="";});
@@ -466,7 +464,7 @@ const ReferenceWorkspace = (() => {
     preview.onpointerup=()=>{if(modal){modal.drag=null;if(!modal.ready||!modal.crop)return;if(modal.crop[2]<2||modal.crop[3]<2)modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
     preview.onpointercancel=preview.onpointerup;
     document.getElementById("btnProjectName").onclick=()=>{const n=prompt("專案名稱",context().name);if(n?.trim()){context().name=n.trim().slice(0,200);dirty();sync();}};
-    window.addEventListener("beforeunload",e=>{if(context().dirty&&context().groups.size){e.preventDefault();e.returnValue="";}});
+    window.addEventListener("beforeunload",e=>{if(context().dirty&&context().groups.size || Object.values(fe.feats || {}).some(items => items.length)){e.preventDefault();e.returnValue="";}});
     present();
   }
   return { init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,statusHTML,present,bindPane,active,group,context,history,

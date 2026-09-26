@@ -2,6 +2,14 @@
 
 > 立案 2026-09-13(Phase 0 產出);Phase 1 改版更新。本檔列出自動測試依賴的 DOM id / class / 全域名稱;
 > 之後每階段改 DOM 都要對照本表,新增或改名需同步更新測試。
+
+## 2026-09-27 UI/UX 審查更新（以本節為目前合約）
+
+- 主頂列 `.tool-group` 顯示選取／平移與 `#btnNewRect`／`#btnNewPoly` 四種工具；左欄 `.start-options` 是描面、六面盒兩張起點卡，`.quick-create-grid` 只有 `#btnNewSpace`、`#btnNewColumn`、`#btnNewBeam` 一列。`#sceneList` 位於 `#fileMenuPop` 內，主頂列顯示 `[data-project-name]`／`[data-project-status]`。保存控制 `[data-project-action="save"]` 會在進出工作區時移動同一個 DOM 節點，工作區掛點為 `#workspaceProjectActions`；`#btnSaveProject` 是「另存新檔」選單入口。
+- `#objectWorkspace` 只有 `.object-workspace-topbar` 和 `.object-workspace-statusbar`；已移除 `.workspace-project-bar`／`.workspace-file-menu`。工作區頂列借用主頂列的 `#fileMenu`，Esc 關閉 `#fileMenuPop` 而不離開工作區。`#shapeToolButton` 開啟 `#shapeToolPop [data-shape-action]`；選操作後以 `fe.queuedShapeAction` 等待邊／角，開口轉入既有開口工具。外環邊的浮動列和右鍵選單含 `[data-fe-act="timber"]`，沿選邊預填並放置角材。
+- `#faceInspectorTabs [data-fi-tab]` 順序是 `prop,shape,components,underlay`，右欄對應 `[data-fi-pane]`。原 `guide,timber,grid` 仍可傳給 `fiShowTab()`，會打開構件頁並捲到 `[data-component-section]`。形狀庫 `#faceShapeButton` 由程式移入形狀頁；角材表單 `#tbPlace` 直接提交同一筆宣告與放置交易。`#faceReferenceSummary` 顯示來源，`[data-reference-step]` 表示選頁／校準／描外環。未放置面標示「未放置」。
+- 空間左欄 `#spaceAddMembers` 在成員面標題旁；`#spaceSizeTools` 依平面圖放柱／樑工具移到頂列，三視圖不顯示放置工具。三視圖矩形工具使用 `#v3PlaneControls`、`#v3ToolbarSurf`、`#v3ExistingZ`、`#newZ` 顯示並修改工作面與高度。
+- 審查項目與驗收流程見 `UIUX-REVIEW-2026-09-27.md`；下列舊節保留各階段的歷史決策，若其 DOM 位置或頁數不同，以本節為準。
 > 來源:UI-REDESIGN-PLAN.md 附錄 B §7(cdp_test.js 依賴清單)+ §7 測試合約。
 
 ## 回報收件匣（GEO-183，2026-09-24，cdp_test §P38）
@@ -42,7 +50,7 @@
 | `.inspector-footer` | 放置送出按鈕的 sticky 區，游離面在預設桌面高度可直接操作 |
 | `#edgeLengthN` / `#edgeFixedN` / `#edgeFreeN` | 穩定焦點 id，邊界重繪後還原鍵盤目標 |
 | `#placeDetails` / `#projectionDetails` / `.ib-row` | 原生 details 摺疊，重繪保留 open 狀態 |
-| `#tbPlace` | 以當前角材設定啟動 timber 工具，焦點回面畫布 |
+| `#tbPlace` | 以當前表單設定直接送出 timber＋place 單一交易；畫布工具的點線放置仍可用 |
 | `.fl-empty` | 五類圖層的空狀態；有可建操作者提供分頁入口 |
 | `#spaceWorkspaceTools` / `#spaceAddMembers` / `#spacePlaceColumn` / `#spacePlaceBeam` | 空間工作區中間工具群 |
 | `#workspaceKeyHints` | 面內 L/R/T/Esc；空間點放柱／拖放樑／Esc |
@@ -50,8 +58,8 @@
 | `.is-busy` | 觸發按鈕上的 spinner；不降低全頁透明度 |
 
 移除 `#btnScene`（由場景選單載入）與 `#workspaceDoneButton`（只保留返回）。
-`#btnDatums` 移進檔案選單；`#faceShapeButton` 移到屬性頁外環邊下方；
-工作區 undo/redo/fit 移到右側操作群；尺寸 chip 移入 `#spaceStageTabs`；`.space-plan-head` 移除。
+`#btnDatums` 移進檔案選單；`#faceShapeButton` 現位於形狀頁的基底外環；
+工作區 undo/redo/fit 移到右側操作群；尺寸 chip 跟隨 `#spaceWorkspaceTools` 中的放柱／放樑工具；`.space-plan-head` 移除。
 七個測試寬度：1382、1160、900、680、600、390、320 px。桌面欄寬 260/320；三視圖左欄 200。
 共用頂列／狀態列高為 56/32；寬度 ≤560 px 時頂列改為 96 px 的兩列，狀態列仍為 32 px。
 主畫布第一列為場景與選取／平移，第二列為抽屜、復原／重做、視圖與檔案操作；
@@ -101,7 +109,7 @@
 | `#zoomInButton` / `#zoomOutButton` / `#zoomLevelButton` / `#homeButton` | 縮放控制 | `.click()` |
 | `#searchInput` | 搜尋框(左欄頂 `.sidebar-search` 內) | `input` 事件驅動 `oc.search` |
 | `#fileMenu` / `#fileMenuPop` | 檔案選單(含 `#btnOpen #btnDatums #btnEx #btnClear`) | `hidden`、`.click()` |
-| `#sceneList` / `#sceneMenuBtn` / `#sceneMenuPop` / `#sceneMenuLabel` | 場景選單(品牌旁;`.scene-item[data-path]` 載入) | `hidden`、`.click()` |
+| `#sceneList` / `#sceneMenuBtn` / `#sceneMenuPop` / `#sceneMenuLabel` | 範例選單(檔案選單內;`.scene-item[data-path]` 載入) | `hidden`、`.click()` |
 | `#minimap` | 小地圖 canvas | `pointerdown` 導航;`oc.mmTf` 座標換算 |
 | `#toastRegion` | toast 容器 | `.toast` 子元素計數 |
 | `#objectWorkspace` | 面內/空間工作區覆層(fixed, z45) | `hidden` 切換檢查 |
@@ -123,7 +131,7 @@
 | `#placeFlow` | 建面→放置→收成員流程條(S6 新增,兩處檢視器共用) | `.pf-step.done/.current` |
 | `#placeValid` | 放置表單 u⊥v 即時驗證(S6 新增) | textContent、`.ok/.bad` |
 | `[data-filter-type]` | 顯示類型篩選 chips(button,`aria-pressed`) | `aria-pressed`、`.click()` |
-| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性/形狀/參考線/角材/網格/底圖(v2 新增 guide;形狀頁 GEO-188;底圖頁 GEO-190,共 6 頁) | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
+| `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性／形狀／構件／底圖；構件頁有 guide/timber/grid 三段 | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
 | `#workspacePlaceTag` | 工作區放置膠囊(B9:天花·z=N / 游離) | textContent、`.placed/.free` |
 | `#faceCanvasHint` | 面內模式浮標——**限多步工具**(redraw)顯示 | `hidden`、textContent |
 | `#feZoomOut` / `#feZoomLevel` / `#feZoomIn` / `#feZoomFit` | 面內左下縮放列(B8) | `.click()`、百分比 textContent |
@@ -250,7 +258,7 @@
 ## UI/UX Phase 1(A1/A2/S1/E8,cdp_test §1)
 
 - `#app` 桌面三列:topbar 56px / workspace 1fr / statusbar 32px;`.workspace` 三欄 260 / 1fr / 320。≤560 px 頂列依上方手機契約改為 96px。
-- 頂列三段:`.brand`(含 `#sceneList` 場景選單)→ `.tool-group`(`[data-tool]` 鈕含 `<kbd>` V/H/R/P)→ `.top-actions`(右群 5 件:`#btnUndo #btnRedo` + `#viewSwitch` + `#fileMenu` + `#btnExport`)。
+- 頂列三段:`.brand`(專案名)→ `.tool-group`(選取／平移／矩形／多邊形，含 `<kbd>` V/H/R/P)→ `.top-actions`(復原重做、視圖、檔案選單、保存狀態與主保存鈕)。
 - `#viewSwitch` segmented:`.seg` 鈕 `#btnCanvasView`(物件畫布)與 `#btnObj`(三視圖,toggle 語意不變);`.active` 標目前視圖。
 - `#fileMenu` > `#fileMenuPop` 內含 `#btnOpen #btnDatums #btnEx #btnClear`(`.menu-item`);`.menu-pop` 開關由 `bindMenu`/`closeMenus` 控。
 - `#sceneList` 不再是 `<select>`:`#sceneMenuBtn`(顯示 `#sceneMenuLabel` 目前場景)+ `#sceneMenuPop`(`.scene-item[data-path]` 各場景 + 開啟/載入範例)。
@@ -316,7 +324,7 @@
 
 ## 對抗審查漂移修正(cdp_test §P20)
 
-- A3:`.quick-create-grid` 改 `repeat(3,1fr)`(3 欄 × 2 列,原為 2 欄 × 3 列)。
+- A3:`.quick-create-grid` 為 3 欄 × 1 列（空間、柱、樑）；六面盒移到兩張起點卡的第二張。
 - A4:`faceCard()`/`spaceCard()` 卡片標題 `font-size` 11.5 → 12.5(S1 token)。
 - A9:`.toast.ok svg` 新增著色 `color: var(--face)`(比照 `.toast.error svg`)。
 - A10/A11:`#minimapToggle` 熱區 20×20 → 28×28。
@@ -427,7 +435,7 @@
 > 原本僅限本次工作階段；2026-09-26 使用者核准 GEO-198：底圖、校準及來源紀錄可隨 `.gcanvas` 保存。
 > `oc.underlays[bid]` 是目前場景作用中圖頁的投影；不寫 `.scene`/`localStorage`，`api("dump")` 不含底圖資訊。
 
-- 右欄檢視器第 6 分頁 `[data-fi-tab="underlay"]`（分頁順序不變）。沒載圖時有 `#refImport`、相容用隱藏 `#ulFile` 及保存說明；載入後才出現對位與校準欄位。檔案入口接受 PDF、PNG、JPEG、WebP、GIF。
+- 右欄檢視器第 4 分頁 `[data-fi-tab="underlay"]`。沒載圖時有 `#refImport`、相容用隱藏 `#ulFile` 及保存說明；載入後才出現對位與校準欄位。檔案入口接受 PDF、PNG、JPEG、WebP、GIF。
 - 分頁欄位:`#ulOpacity`(range 0–1)、`#ulLock`(checkbox)、`#ulX`/`#ulY`(number mm,左上角在面座標的 mm,
   含義不因旋轉改變)、`#ulRot`(select 0/90/180/270)、`#ulScale`(唯讀顯示 `<mmPerPx> mm/px`)、
   `#ulCalibStart`(按鈕,進入量比例尺)、`#ulCalibDist`(number mm)+`#ulCalibApply`、`#ulRemove`。
@@ -723,11 +731,11 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 
 ## GEO-200 參考描面工作區（P63）
 
-- `[data-project-action="save"]` 在畫布頂列及物件工作區的 `.workspace-project-bar` 保存同一份專案；`#btnSaveProject` 選單入口保留。
+- `[data-project-action="save"]` 是畫布／工作區共用的同一個保存控制；工作區掛點為 `#workspaceProjectActions`。`#btnSaveProject` 選單入口是「另存新檔」。
 - `[data-project-name]`／`[data-project-status]` 顯示目前來源上下文的名稱及狀態。成功關閉寫入才顯示「已保存」；下載顯示「已產生下載 · 請確認檔案」。
-- `#btnExport` 保留原事件與識別，移至 `#fileMenuPop`；物件工作區的檔案選單代理原有匯出與開啟入口。Esc 只關閉這個選單。
+- `#btnExport` 保留原事件與識別，位於 `#fileMenuPop`；物件工作區移用同一個檔案選單。Esc 只關閉這個選單。
 - `[data-project-action="import"]` 是物件庫及面內左欄的 PDF／圖片入口，仍使用 `#referenceFile`、`#referenceDialog`；取消不新增物件。
-- `#faceReferenceSummary` 顯示實際來源、頁碼及校準狀態；點擊回到原 `underlay` 分頁。六個原有檢視器分頁仍存在，選取狀態使用 `aria-pressed`。
+- `#faceReferenceSummary` 顯示實際來源、頁碼及校準狀態；點擊回到底圖頁。四個檢視器分頁的選取狀態使用 `aria-pressed`。
 - 底圖分頁優先顯示 `#ulCalibStart`、`#ulCalibDist`、`#ulCalibUnit`、`#ulCalibApply`。`#refDrawOutline` 進入既有外環工具。
 - `#refAlignmentDetails`、`#refSourceDetails`、`#refRecordDetails`、`#refPlacementDetails` 提供次要操作；原對位控制項位於展開區。`#refGoPlace` 回到原放置表單。
 - 同一圖頁及同一組校準點的未套用距離保留；切換圖頁或重新取點不帶入舊值。
