@@ -1,10 +1,7 @@
 // Prototype-only millimetre model. Production validation remains in geometry-core.
+import { panelFor } from './catalog.js';
+export { panelFor } from './catalog.js';
 export const SCENE = Object.freeze({ width: 4000, height: 3000, hole: [2300, 1400, 2800, 1900] });
-
-export function panelFor(methodId) {
-  const panels = { a1: [1200, 2400, 6], a2: [900, 1800, 6], b1: [600, 1200, 9] };
-  return panels[methodId] ? [...panels[methodId]] : null;
-}
 
 function coordinates(panel, gap, hi) {
   const step = panel + gap;
@@ -29,10 +26,10 @@ export function clipLine(axis, coordinate, lo, hi, hole = SCENE.hole) {
     : [[a, coordinate], [b, coordinate]]);
 }
 
-export function getLayout(settings, { width = SCENE.width, height = SCENE.height, hasSubgrid = true } = {}) {
+export function getLayout(settings, { width = SCENE.width, height = SCENE.height, hasSubgrid = true, catalog } = {}) {
   const result = { width, height, u: [], v: [], mainSegments: [], child: null, errors: [], panel: null };
-  const panel = panelFor(settings?.methodId);
-  if (!panel) result.errors.push({ code: 'METHOD', message: '請選擇有效的工程做法。' });
+  const panel = settings && Object.hasOwn(settings, 'panel') ? settings.panel : panelFor(settings?.methodId, catalog);
+  if (!Array.isArray(panel) || panel.length < 2 || !panel.slice(0, 2).every(value => Number.isSafeInteger(value) && value > 0) || (panel[2] !== null && panel[2] !== undefined && (!Number.isFinite(panel[2]) || panel[2] <= 0))) result.errors.push({ code: 'PANEL', message: '請引用有效的面材尺寸；厚度可尚未設定。' });
   if (!Number.isSafeInteger(settings?.gap) || settings.gap < 0 || settings.gap > 100000000) {
     result.errors.push({ code: 'GAP', message: '接縫寬度請輸入 0–100,000,000 mm 的整數。' });
   }
@@ -43,8 +40,18 @@ export function getLayout(settings, { width = SCENE.width, height = SCENE.height
     result.errors.push({ code: 'SIZE', message: '示範面的尺寸超出支援範圍。' });
   }
   if (result.errors.length) return result;
-  result.panel = panel;
+  if (panel.slice(0, 2).some(value => !Number.isSafeInteger(value + settings.gap))) {
+    result.errors.push({ code: 'SIZE', message: '面材與縫寬的總和超出可精確計算的整數範圍。' });
+    return result;
+  }
+  result.panel = [...panel];
   const [short, long] = panel;
+  const steps = [settings.longAxis === 'v' ? short : long, settings.longAxis === 'v' ? long : short].map(value => value + settings.gap);
+  const counts = [Math.floor((width - 1) / steps[0]), Math.floor((height - 1) / steps[1])];
+  if (counts.some(count => count > 64)) {
+    result.errors.push({ code: 'LINE_LIMIT', message: `主網格推導線數 u=${counts[0]}、v=${counts[1]}，超過單軸 64 條上限；請調整面材或縫寬。` });
+    return result;
+  }
   result.u = coordinates(settings.longAxis === 'v' ? short : long, settings.gap, width);
   result.v = coordinates(settings.longAxis === 'v' ? long : short, settings.gap, height);
   for (const axis of ['u', 'v']) {
