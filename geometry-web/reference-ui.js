@@ -7,7 +7,7 @@ async function confirmReferenceImpact(preview) {
   title.textContent = preview.valid ? '確認連動變更' : '變更無法套用';
   dialog.append(title);
   const note = document.createElement('p');
-  note.textContent = '目前場景尚未改動。下表列出重新檢查的角材，含沿支撐關係連動的構件；尺寸單位為 mm。';
+  note.textContent = '目前場景尚未改動。以下列出子網格、參考線及角材的連動結果；尺寸單位為 mm。';
   dialog.append(note);
   const code = document.createElement('code'); code.textContent = preview.command;
   dialog.append(code);
@@ -18,7 +18,7 @@ async function confirmReferenceImpact(preview) {
     const th = document.createElement('th'); th.textContent = text; heading.append(th);
   }
   table.append(heading);
-  for (const row of preview.timbers) {
+  for (const row of preview.timbers || []) {
     const tr = document.createElement('tr');
     const value = (key) => `${row.before?.[key] ?? '—'} → ${row.after?.[key] ?? '無法推導'}`;
     const moved = JSON.stringify(row.before) !== JSON.stringify(row.after);
@@ -30,7 +30,27 @@ async function confirmReferenceImpact(preview) {
     }
     table.append(tr);
   }
-  wrap.append(table); dialog.append(wrap);
+  if(preview.timbers?.length) {wrap.append(table); dialog.append(wrap);}
+  const gridChanges=(preview.grids || []).filter(row=>JSON.stringify(row.before)!==JSON.stringify(row.after));
+  if(gridChanges.length) {
+    const section=document.createElement('section');section.className='impact-grids';
+    const h=document.createElement('h3');h.textContent='網格範圍與格線';section.append(h);
+    const list=document.createElement('ul');
+    const describe=g=>{
+      if(!g)return '不存在或無合法結果';
+      const b=g.bounds,cell=g.cell;
+      const ref=r=>r==='min' ? '面下界' : r==='max' ? '面上界' : `主格線 ${Number(r.split(':')[1])+1}`;
+      return `${g.kind==='subgrid' ? `父格 ${g.parentId}；分界 u ${cell?.u.map(ref).join('／')}，v ${cell?.v.map(ref).join('／')}` : '主網格'}；範圍 u ${b?.u.join('–')}，v ${b?.v.join('–')}；座標 u [${g.u.join(', ')}]，v [${g.v.join(', ')}]；可見段 ${g.lines.map(l=>`${l.axis} 第 ${l.index+1} 線：${l.segments?.length ? l.segments.map(s=>`(${s[0].join(', ')}) → (${s[1].join(', ')})`).join('、') : '無可見段'}`).join('；')}`;
+    };
+    for(const row of gridChanges) {
+      const li=document.createElement('li');li.dataset.impactGrid=row.id;
+      const title=document.createElement('strong');title.textContent=`${(row.after || row.before)?.kind==='subgrid' ? '子網格' : '主網格'} ${row.id}`;
+      const before=document.createElement('p');before.textContent='原：'+describe(row.before);
+      const after=document.createElement('p');after.textContent='新：'+describe(row.after);
+      li.append(title,before,after);list.append(li);
+    }
+    section.append(list);dialog.append(section);
+  }
   const changes = (preview.guides || []).filter(row => JSON.stringify(row.before) !== JSON.stringify(row.after));
   if (changes.length) {
     const guides = document.createElement('ul'); guides.className = 'impact-guides';
@@ -187,8 +207,9 @@ function referenceAnchorOptions(bid, surf) {
   const groups = new Map();
   for (const entry of [...free, ...busy]) {
     const match = /^at-line grid (\d+) ([uv])/.exec(entry.value);
+    const grid=match && fe.grids.find(g=>g.id===+match[1]);
     const group = (entry.occupied != null ? "已有角材 · " : "可用 · ") +
-      (match ? `網格 ${match[1]} · ${match[2]} 座標線` : entry.value.startsWith("at-line") ? "參考線" : entry.value.startsWith("at-face t") ? "角材側面" : "輪廓邊");
+      (match ? `${grid?.kind === 'subgrid' ? '子網格' : '主網格'} ${match[1]} · ${match[2]} 座標線` : entry.value.startsWith("at-line") ? "參考線" : entry.value.startsWith("at-face t") ? "角材側面" : "輪廓邊");
     if (!groups.has(group)) groups.set(group, []);
     groups.get(group).push(entry);
   }

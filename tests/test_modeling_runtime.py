@@ -136,6 +136,23 @@ class ModelingAcceptance(unittest.TestCase):
             kwargs.setdefault("capabilities", case["executor_capabilities"])
         return build_package(case["definitions"], case["request"], **kwargs)
 
+    def test_subgrid_definitions_remain_valid_model_base_sources(self):
+        """D19 definitions round-trip without changing the extrusion geometry."""
+        case = deepcopy(CASES["wall_through_hole"])
+        original = build_package(case["definitions"], case["request"])
+        case["definitions"]["base_scene"] += (
+            "grid 7 on 1 main-along v u 1000 3000 v 500 2300\n"
+            "subgrid 8 parent 7 cell u line:0 line:1 v line:0 line:1 divisions u 2 v 2\n"
+        )
+        package = build_package(case["definitions"], case["request"])
+        self.assertEqual(package["derived"], original["derived"])
+        self.assertIn("subgrid 8 parent 7", package["definitions"]["base_scene"])
+        verify_package(package)
+        case["definitions"]["base_scene"] = case["definitions"]["base_scene"].replace(
+            "divisions u 2 v 2", "divisions u 3 v 2")
+        with self.assertRaises(ModelError):
+            build_package(case["definitions"], case["request"])
+
     def assert_mesh(self, obj):
         self.assertEqual(obj["representation"], "mesh")
         vertices, triangles = obj["vertices_mm"], obj["triangles"]

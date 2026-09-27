@@ -22,7 +22,8 @@ HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
 
 # Revised acceptance oracle: 2026-09-18 D7/I8a/I12/R2/R4.
-TESTS = [{'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960]},
+TESTS = [{'scene': 'subgrid-local.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960, 2960, 1980]},
+ {'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960]},
  {'scene': 'demo-two-timbers.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960, 2960, 1973]},
  {'scene': 'room_a.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960],
   # GEO-075:兩支同規格 → 加總 x2;不同規格分列。

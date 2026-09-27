@@ -751,3 +751,17 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - ≤680px 開始取點時收起檢查器；`#calibrationCanvasPrompt` 保留進度與 `#cancelCalibration`。第二點後重開檢查器並聚焦距離；取消不改既有校準。
 - `#refZoom` 預設 `page`（適合整頁）；其餘比例選項與取景來源座標不變。`#refResetCrop` 名稱改為「清除取景框」。
 - 未套用外環或校準草稿會提示並阻止專案保存，避免將未套用的資料誤認為已保存；其餘核心驗證及幾何語意維持原樣。
+
+## GEO-204 子網格（D19 / I25 / R23）
+
+- 主網格編輯器的 `#subgridNew` 建立局部子網格；沒有已保存主格時停用。`SubgridEditor` 使用同一個 `[data-component-section="grid"]`，沒有第二套工作區。
+- `#subgridCellChoice` 依主格座標與面外接 min/max 去重，列出有效面交集有正面積的格子；值為 `uLo|uHi|vLo|vHi` 四個來源參照，例如 `line:0|line:1|min|line:0`。已被其他子格占用的格子停用；正交裁切交點維持整數，面積判斷用 BigInt 避免大座標窄格被浮點誤判為空。
+- `#subgridPickCell` 開啟畫布父格選擇；SVG `[data-subgrid-cell]` 以相同四邊值辨識，支援 click、Enter、Space。所有候選矩形與命中範圍均裁至有效面；手機選格時收起右欄，選定後重開並聚焦等分數。父格選單提供完整鍵盤替代路徑。
+- `#subgridDivU` / `#subgridDivV` 為 1–65 整數等分數；雙軸 1、越界、小數與不能整除的跨度皆有欄位級 `aria-invalid`／錯誤說明。預設 2 / 2；座標只來自唯讀 `grid-preview subgrid …`，不在瀏覽器重做核心子線推導。
+- `#subgridScopeSummary` 顯示父格範圍，`#subgridSpacingSummary` 顯示實際間距與條數；`[data-subgrid-axis] .grid-line-chip` 列出所有座標，點擊只定位，不直接拖動子線。畫布標籤改為聚焦等分數。
+- 沿用 `#gridPreviewStatus` / `#gridDraftBadge` / `#gridCreate` / `#gridReset` / `#gridCommand` 的草稿生命週期；`#subgridCancel` 放棄草稿並返回父主格。編輯、重設、切面及非同步回應均核對編輯器身份與預覽序號。
+- 子格清單列為 `.face-layer-row[data-grid-kind="subgrid"][data-grid-id]`，`.grid-layer-open` 進入編輯；主格與子格清楚標示父 ID。刪除時列出 `dependencies.children/guides/timbers` 實際引用，仍走核心交易守門。
+- 每條 grid JSON `lines[].segments` 是已裁切的真實可見段；保存線、草稿線及 `[data-face-hit="k:id:axis:index"]` 皆逐段繪製。子線與放材預示限父格；孔內不留命中。顯示偏好沿用 `ReferenceVisibility` 的 `grid:id:axis:index`，父子控制互不影響，重開專案重置。
+- 子線兩軸由核心預填 `secondary / 3`；`#tbSuggestion` 和 `#gridTimberPopover .subgrid-role-warning` 根據既有角材的實際主支軸顯示衝突。不能以副支放置時保留副支預設並要求明確改選，不自動改成主支；手動覆寫仍由核心驗證。
+- `.reference-impact .impact-grids` 逐項列出主／子格父引用、新舊矩形、座標與實際可見段，即使沒有角材亦可確認或取消；原 guide 與 timber 影響仍列出。`[data-impact-grid]` 為逐格測試識別。
+- `.subgrid-editor` 所有顯示中的 input、select、button 目標至少 44px，390px 右欄不水平溢出。回歸由 `cdp_test.js` P8v4 實際執行 `app.js`。

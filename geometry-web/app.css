@@ -1168,6 +1168,30 @@ body.oc-busy .face-layer-row { pointer-events: none; }
 .grid-tech-details code { display: block; overflow-wrap: anywhere; padding: 10px; background: #172033; color: #e7ecf5; border-radius: 6px; }
 .grid-text-button { color: #344dbd; padding: 8px 0; background: none; border: 0; cursor: pointer; }
 .grid-subgrid-note button { padding: 8px; }
+.grid-subgrid-note { border-top: 1px solid var(--border); padding-top: 12px; }
+.grid-subgrid-note h4 { margin: 4px 0; color: var(--ink); }
+.grid-subgrid-note button { min-height: 44px; }
+.subgrid-editor fieldset { min-width: 0; border: 0; margin: 22px 0 0; padding: 0; }
+.subgrid-editor legend { font-weight: 650; color: var(--ink); margin-bottom: 8px; }
+.subgrid-editor label { display: grid; gap: 6px; min-width: 0; color: var(--ink); }
+.subgrid-editor input, .subgrid-editor select { box-sizing: border-box; min-width: 0; max-width: 100%; width: 100%; min-height: 44px; padding: 8px; color: var(--ink); background: var(--panel); border: 1px solid var(--border); border-radius: 7px; font-variant-numeric: tabular-nums; }
+.subgrid-editor button { min-height: 44px; }
+.subgrid-cell-fields > button { width: 100%; margin-bottom: 10px; }
+.subgrid-divisions { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; }
+.subgrid-spacing { font-variant-numeric: tabular-nums; line-height: 1.7; color: #526177; font-size: 12px; }
+.subgrid-coordinates { display: grid; gap: 16px; margin: 16px 0; }
+.subgrid-coordinates strong { display: block; font-size: 12px; color: #895923; margin-bottom: 8px; }
+.subgrid-coordinates .grid-line-chips { font-size: 12px; color: #526177; }
+.subgrid-editor .grid-text-button { width: 100%; text-align: center; }
+.face-layer-row[data-grid-kind=subgrid] .grid-layer-open { padding-left: 14px; }
+.face-editor-svg .subgrid-cell-target { fill: #36799b; fill-opacity: .035; stroke: #376f91; stroke-width: 1; vector-effect: non-scaling-stroke; cursor: pointer; }
+.face-editor-svg .subgrid-cell-target:hover, .face-editor-svg .subgrid-cell-target:focus, .face-editor-svg .subgrid-cell-target.selected { fill-opacity: .17; stroke-width: 2; outline: none; }
+.face-editor-svg .subgrid-scope { fill: none; stroke: #855927; stroke-width: 1.5; stroke-dasharray: 5 4; vector-effect: non-scaling-stroke; pointer-events: none; }
+.subgrid-canvas-label { cursor: pointer; }
+.subgrid-role-warning { color: #85511c !important; }
+.impact-grids ul { padding-left: 20px; }
+.impact-grids li { margin-block: 16px; }
+.impact-grids p { margin: 6px 0; overflow-wrap: anywhere; line-height: 1.6; font-variant-numeric: tabular-nums; }
 .component-heading button { display: block; width: 100%; text-align: left; background: none; color: inherit; border: 0; font: inherit; cursor: pointer; padding: 8px 0; }
 .component-collapsed > :not(.component-heading) { display: none !important; }
 .component-collapsed .component-heading button::before { content: '›'; margin-right: 8px; }

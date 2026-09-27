@@ -38,6 +38,22 @@ static void reference_guide_text(const World *w,uint32_t id,char *out,size_t cap
         (long long)along.x,(long long)along.y,(long long)along.z);
 }
 
+static bool reference_grid_changed(const World *,const World *,uint32_t);
+static bool reference_guide_changed(const World *,const World *,uint32_t);
+static void reference_subgrid_text(const World *,uint32_t,FILE *);
+static void reference_guide_clip_text(const World *w,uint32_t id,FILE *out)
+{
+    const GuideLine *g=world_find_guide(w,id);
+    const PlacementSurface *p=g?world_find_placement(w,g->placement_id):NULL;
+    if (!g || !p || !g->resolved) { fputs("unavailable",out); return; }
+    SurfaceSegment2 segs[POLY_MAX_VERTICES];
+    size_t n=guide_line_get_local_segments(p,world_placement_boundary(w,p),g,segs,POLY_MAX_VERTICES);
+    fputc('{',out);
+    for (size_t i=0;i<n;++i) fprintf(out,"%s[%lld,%lld]-[%lld,%lld]",i?",":"",
+        (long long)segs[i].start.u,(long long)segs[i].start.v,(long long)segs[i].end.u,(long long)segs[i].end.v);
+    fputc('}',out);
+}
+
 #ifdef _WIN32
 static bool reference_gdi_confirm(HWND window, World *world)
 {
@@ -45,6 +61,33 @@ static bool reference_gdi_confirm(HWND window, World *world)
     char text[32768]; size_t used=0; bool truncated=false;
     int n=snprintf(text,sizeof text,"I8a 影響預覽：場景尚未改動。\n%s\n\n",g_preview.command);
     used=(size_t)n;
+    FILE *details=tmpfile();
+    if (!details) {
+        MessageBoxW(window,L"無法產生完整預覽明細，未提交。請使用網頁或 CLI 檢視後確認。",L"需要完整預覽",MB_OK|MB_ICONWARNING);
+        g_preview.ready=false; return false;
+    }
+    for (size_t i=0;i<g_preview.before.grid_count;++i) {
+        const ReferenceGrid *g=&g_preview.before.grids[i];
+        if (!g->is_subgrid || !reference_grid_changed(&g_preview.before,&g_preview.after,g->id)) continue;
+        reference_subgrid_text(&g_preview.before,g->id,details); fputs(" -> ",details);
+        reference_subgrid_text(&g_preview.after,g->id,details); fputc('\n',details);
+    }
+    for (size_t i=0;i<g_preview.before.guide_count;++i) {
+        uint32_t id=g_preview.before.guides[i].id;
+        if (!reference_guide_changed(&g_preview.before,&g_preview.after,id)) continue;
+        fprintf(details,"guide %u visible: ",id);
+        reference_guide_clip_text(&g_preview.before,id,details); fputs(" -> ",details);
+        reference_guide_clip_text(&g_preview.after,id,details); fputc('\n',details);
+    }
+    long details_size=ftell(details);
+    if (details_size<0 || (size_t)details_size>=sizeof text-used) truncated=true;
+    else {
+        rewind(details);
+        size_t got=fread(text+used,1,(size_t)details_size,details);
+        if (got!=(size_t)details_size) truncated=true;
+        used+=got; text[used]='\0';
+    }
+    fclose(details);
     for (size_t i=0;i<g_preview.before.timber_count;++i) {
         const Timber *t=&g_preview.before.timbers[i]; if (!t->placed) continue;
         if (used+900>=sizeof text) { truncated=true; break; }
@@ -92,8 +135,82 @@ static bool reference_gdi_confirm(HWND window, World *world)
 }
 #endif
 
+/* I8a: cells and visible clips are geometry, even without timber references. */
+static bool reference_grid_changed(const World *before,const World *after,uint32_t id)
+{
+    const ReferenceGrid *a=world_find_grid(before,id),*z=world_find_grid(after,id);
+    const PlacementSurface *ap=a?world_find_placement(before,a->placement_id):NULL;
+    const PlacementSurface *zp=z?world_find_placement(after,z->placement_id):NULL;
+    if (!a || !z || !ap || !zp || a->is_subgrid!=z->is_subgrid ||
+        a->parent_id!=z->parent_id || a->placement_id!=z->placement_id ||
+        memcmp(&ap->frame,&zp->frame,sizeof ap->frame)) return true;
+    const SpaceBoundarySurface *ab=world_placement_boundary(before,ap),*zb=world_placement_boundary(after,zp);
+    SurfaceRegion2 ac,zc;
+    if (a->is_subgrid && (!grid_cell_bounds(before->grids,before->grid_count,a,ap,ab,&ac,NULL,0) ||
+        !grid_cell_bounds(after->grids,after->grid_count,z,zp,zb,&zc,NULL,0) || memcmp(&ac,&zc,sizeof ac))) return true;
+    for (int axis=0;axis<2;++axis) {
+        Coord ax[GRID_MAX_LINES],zx[GRID_MAX_LINES]; size_t an=0,zn=0;
+        bool av=grid_axis_lines_in(before->grids,before->grid_count,a,ap,ab,axis,ax,&an,NULL,0);
+        bool zv=grid_axis_lines_in(after->grids,after->grid_count,z,zp,zb,axis,zx,&zn,NULL,0);
+        if (av!=zv || an!=zn || (an && memcmp(ax,zx,an*sizeof *ax))) return true;
+        for (size_t k=0;k<an;++k) {
+            SurfaceSegment2 as[POLY_MAX_VERTICES],zs[POLY_MAX_VERTICES];
+            size_t na=grid_line_segments(before->grids,before->grid_count,a,ap,ab,axis,k,as,POLY_MAX_VERTICES);
+            size_t nz=grid_line_segments(after->grids,after->grid_count,z,zp,zb,axis,k,zs,POLY_MAX_VERTICES);
+            if (na!=nz || (na && memcmp(as,zs,na*sizeof *as))) return true;
+        }
+    }
+    return false;
+}
+
+static bool reference_guide_changed(const World *before,const World *after,uint32_t id)
+{
+    const GuideLine *a=world_find_guide(before,id),*z=world_find_guide(after,id);
+    const PlacementSurface *ap=a?world_find_placement(before,a->placement_id):NULL;
+    const PlacementSurface *zp=z?world_find_placement(after,z->placement_id):NULL;
+    if (!a || !z || !ap || !zp || !a->resolved || !z->resolved ||
+        a->placement_id!=z->placement_id || a->direction!=z->direction || a->offset!=z->offset ||
+        memcmp(&ap->frame,&zp->frame,sizeof ap->frame)) return true;
+    SurfaceSegment2 as[POLY_MAX_VERTICES],zs[POLY_MAX_VERTICES];
+    size_t na=guide_line_get_local_segments(ap,world_placement_boundary(before,ap),a,as,POLY_MAX_VERTICES);
+    size_t nz=guide_line_get_local_segments(zp,world_placement_boundary(after,zp),z,zs,POLY_MAX_VERTICES);
+    return na!=nz || (na && memcmp(as,zs,na*sizeof *as));
+}
+
+static void reference_subgrid_text(const World *w,uint32_t id,FILE *out)
+{
+    const ReferenceGrid *g=world_find_grid(w,id);
+    const PlacementSurface *p=g?world_find_placement(w,g->placement_id):NULL;
+    SurfaceRegion2 c;
+    if (!g || !p || !grid_cell_bounds(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),&c,NULL,0)) {
+        fprintf(out,"subgrid %u unavailable",id); return;
+    }
+    fprintf(out,"subgrid %u parent %u cell [%lld,%lld]-[%lld,%lld]",id,g->parent_id,
+        (long long)c.min_u,(long long)c.min_v,(long long)c.max_u,(long long)c.max_v);
+    for (int a=0;a<2;++a) {
+        Coord coords[GRID_MAX_LINES]; size_t n;
+        if (!grid_axis_lines_in(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),a,coords,&n,NULL,0)) continue;
+        fprintf(out," %c:",a?'v':'u');
+        for (size_t i=0;i<n;++i) {
+            fprintf(out," %lld",(long long)coords[i]);
+            SurfaceSegment2 segs[POLY_MAX_VERTICES];
+            size_t ns=grid_line_segments(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),a,i,segs,POLY_MAX_VERTICES);
+            fputc('{',out);
+            for (size_t k=0;k<ns;++k) fprintf(out,"%s[%lld,%lld]-[%lld,%lld]",k?",":"",
+                (long long)segs[k].start.u,(long long)segs[k].start.v,(long long)segs[k].end.u,(long long)segs[k].end.v);
+            fputc('}',out);
+        }
+    }
+}
+
 static bool reference_geometry_changed(const World *before,const World *after)
 {
+    for (size_t i=0;i<before->grid_count;++i)
+        if (before->grids[i].is_subgrid && reference_grid_changed(before,after,before->grids[i].id)) return true;
+    bool has_child=false;
+    for (size_t i=0;i<before->grid_count;++i) if (before->grids[i].is_subgrid) has_child=true;
+    if (has_child) for (size_t i=0;i<before->guide_count;++i)
+        if (reference_guide_changed(before,after,before->guides[i].id)) return true;
     for (size_t i=0;i<before->timber_count;++i) {
         const Timber *t=&before->timbers[i]; if (!t->placed) continue;
         int j=reference_timber_index(after,t->id);
@@ -107,10 +224,12 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
 {
     bool placed=false;
     for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed) placed=true;
-    if (!placed || !count) return false;
+    bool referenced=false;
+    for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].is_subgrid) referenced=true;
+    if ((!placed && !referenced) || !count) return false;
     const char *c=tokens[0];
     if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||
-        !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
+        !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
     if ((!strcmp(c,"place") || !strcmp(c,"timber")) && count>1) {
         uint32_t id;
         if (parse_u32(tokens[1],&id)) { int i=reference_timber_index(w,id); return i>=0 && w->timbers[i].placed; }
@@ -138,6 +257,12 @@ static void reference_stage(const World *before,const World *after,char **tokens
 static void reference_preview_text(void)
 {
     fprintf(stderr,"I8a preview %u: %s\n",g_preview.token,g_preview.valid?"valid; confirm token to apply":"invalid; cannot apply");
+    for (size_t i=0;i<g_preview.before.grid_count;++i) {
+        const ReferenceGrid *g=&g_preview.before.grids[i];
+        if (!g->is_subgrid || !reference_grid_changed(&g_preview.before,&g_preview.after,g->id)) continue;
+        reference_subgrid_text(&g_preview.before,g->id,stderr); fputs(" -> ",stderr);
+        reference_subgrid_text(&g_preview.after,g->id,stderr); fputc('\n',stderr);
+    }
     for (size_t i=0;i<g_preview.before.timber_count;++i) {
         const Timber *t=&g_preview.before.timbers[i]; if (!t->placed) continue;
         int j=reference_timber_index(&g_preview.after,t->id);
@@ -163,7 +288,11 @@ static void reference_preview_text(void)
         uint32_t id=g_preview.before.guides[i].id; char before[240],after[240];
         reference_guide_text(&g_preview.before,id,before,sizeof before);
         reference_guide_text(&g_preview.after,id,after,sizeof after);
-        if (strcmp(before,after)) fprintf(stderr," guide %u: %s -> %s\n",id,before,after);
+        if (reference_guide_changed(&g_preview.before,&g_preview.after,id)) {
+            fprintf(stderr," guide %u: %s -> %s\n visible: ",id,before,after);
+            reference_guide_clip_text(&g_preview.before,id,stderr); fputs(" -> ",stderr);
+            reference_guide_clip_text(&g_preview.after,id,stderr); fputc('\n',stderr);
+        }
     }
     for (size_t i=0;i<g_preview.issue_count;++i) {
         const ReferenceIssue *e=&g_preview.issues[i];
@@ -206,7 +335,10 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
     World candidate=*world;
     g_scene_last_error[0]='\0'; g_reference_issue_count=0;
     g_reference_trial=candidate; g_reference_capturing=true;
+    const World *previous_baseline=g_subgrid_before;
+    g_subgrid_before=world;
     bool ok=apply_scene_line_unchecked(path,line_no,tokens,count,&candidate);
+    g_subgrid_before=previous_baseline;
     g_reference_capturing=false;
     bool affects=reference_may_affect(world,tokens,count);
     if (explicit_preview || (!g_preview_confirming && affects && (!ok || reference_geometry_changed(world,&candidate)))) {

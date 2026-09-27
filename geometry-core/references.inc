@@ -10,6 +10,14 @@ static ReferenceIssue g_reference_issues[REFERENCE_MAX_ISSUES];
 static size_t g_reference_issue_count;
 static World g_reference_trial;
 static bool g_reference_capturing;
+static void reference_capture_trial(const World *world)
+{
+    if (!g_reference_capturing) return;
+    g_reference_trial=*world;
+    /* A rejected source has no validated downstream geometry yet. */
+    for (size_t i=0;i<g_reference_trial.guide_count;++i) g_reference_trial.guides[i].resolved=false;
+    for (size_t i=0;i<g_reference_trial.timber_count;++i) g_reference_trial.timbers[i].placed=false;
+}
 
 static bool reference_issue(uint32_t id, const char *clause, const char *expected, const char *actual)
 {
@@ -128,7 +136,7 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
         if (!strcmp(part[0],"grid")) {
             uint32_t k;
             return n==4 && parse_u32(part[3],&k) &&
-                grid_line_coord(grid,p,b,axis,k,out,NULL,NULL,0);
+                grid_line_coord_in(w->grids,w->grid_count,grid,p,b,axis,k,out,NULL,NULL,0);
         }
         if (n!=3 || grid->axis[axis].source != GRID_SRC_PANEL) return false;
         *out=!strcmp(part[0],"panel")?grid->axis[axis].panel:grid->axis[axis].gap;
@@ -294,14 +302,20 @@ static bool reference_place_geometry(World *w, size_t ti)
     const SpaceBoundarySurface *b=placement_effective_boundary(p,world_placement_boundary(w,p),&effective);
     bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
     Coord widths[2][2], contacts[2][2]; int n=0; bool contact=false;
+    SurfaceRegion2 child_scope; bool scoped=false;
     if (a->anchor_kind==ANCHOR_AT_GRID || a->anchor_kind==ANCHOR_AT_LINE) {
         Coord center;
         if (a->anchor_kind==ANCHOR_AT_GRID) {
             const ReferenceGrid *g=world_find_grid(w,a->ref_grid); char err[180]="";
             if (!g || g->placement_id!=p->id || (a->ref_grid_axis==0)!=along)
                 return reference_issue(t->id,"I13/I23","same-face grid coordinate axis perpendicular to length","missing grid or face/axis mismatch (垂直)");
-            if (!grid_line_coord(g,p,b,a->ref_grid_axis,(size_t)a->ref_grid_index,&center,NULL,err,sizeof err))
+            if (!grid_line_coord_in(w->grids,w->grid_count,g,p,b,a->ref_grid_axis,(size_t)a->ref_grid_index,&center,NULL,err,sizeof err))
                 return reference_issue(t->id,"I23","referenced grid index exists",err);
+            if (g->is_subgrid) {
+                if (!grid_cell_bounds(w->grids,w->grid_count,g,p,b,&child_scope,err,sizeof err))
+                    return reference_issue(t->id,"I25","valid parent cell",err);
+                scoped=true;
+            }
         } else {
             const GuideLine *g=world_find_guide(w,a->ref_guide);
             if (!g || g->placement_id!=p->id || (g->direction==GUIDE_ALONG_V)!=along)
@@ -351,11 +365,15 @@ static bool reference_place_geometry(World *w, size_t ti)
         Coord start,end; char err[256]="";
         SpanStatus status=resolve_auto_span(w,p,b,along,widths[k][0],widths[k][1],
             contact,contact?contacts[k][0]:0,contact?contacts[k][1]:0,
-            a->has_through,a->through,a->has_between?between:NULL,&start,&end,err,sizeof err);
+            a->has_through,a->through,a->has_between?between:NULL,scoped?&child_scope:NULL,&start,&end,err,sizeof err);
         if (status!=SPAN_OK) { snprintf(last,sizeof last,"%s",err); continue; }
         if (!coord_in_range(end-start)) { snprintf(last,sizeof last,"D1 auto length exceeds 100000000 mm"); continue; }
         SurfaceRegion2 rect=along?(SurfaceRegion2){widths[k][0],start,widths[k][1],end}:
             (SurfaceRegion2){start,widths[k][0],end,widths[k][1]};
+        if (scoped && (rect.min_u<child_scope.min_u || rect.max_u>child_scope.max_u ||
+            rect.min_v<child_scope.min_v || rect.max_v>child_scope.max_v)) {
+            snprintf(last,sizeof last,"I13：角材的完整足跡必須留在子格內"); continue;
+        }
         Timber probe=*t; probe.length=end-start; probe.placed=false;
         SurfacePoint2 uv=anchor_corner_from_rect(p,a->length_direction,a->depth_side,&rect);
         bool checks=true; char first_check[256]="";
@@ -674,7 +692,7 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
     }
     for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].placement_id==pid) {
         Coord coords[GRID_MAX_LINES]; size_t count=0; int a=axis=='u'?0:1;
-        if (grid_axis_lines(&w->grids[i],p,b,a,coords,&count,NULL,0))
+        if (grid_axis_lines_in(w->grids,w->grid_count,&w->grids[i],p,b,a,coords,&count,NULL,0))
             for (size_t j=0;j<count && n<SNAP_MAX;++j) snprintf(candidates[n++],REF_EXPR_MAX,"grid:%u:%c:%u",w->grids[i].id,axis,(unsigned)j);
     }
     for (size_t i=0;i<w->timber_count && n+1<SNAP_MAX;++i) if (w->timbers[i].placed && w->anchors[i].placement_id==pid) {

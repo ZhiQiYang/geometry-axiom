@@ -35,8 +35,8 @@
 <text x="2000" y="3120" class="label">邊4</text>
 <line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
 <text x="-120" y="1500" class="label" transform="rotate(-90 -120 1500)">邊5</text>
-<line x1="0" y1="0" x2="0" y2="3000" class="guide"/>
-<text x="40" y="20" class="label guide-label">格線1</text>
+<line x1="1000" y1="0" x2="1000" y2="3000" class="guide"/>
+<text x="1040" y="20" class="label guide-label">格線1</text>
 <polygon points="0,0 2000,0 2000,27 0,27" class="timber-face role-boundary" data-t="1"/>
 <polygon points="0,0 0,27 2000,27 2000,0" class="timber-face timber-face-near role-boundary" data-t="1"/>
 <text x="1000" y="13" class="label timber-label">角材1 A0</text>
@@ -66,7 +66,6 @@
 <polygon points="350,6310 350,5924.2 700,5924.2 700,6310" class="surface"/>
 <line x1="350" y1="5924.2" x2="700" y2="5924.2" class="edge"/>
 <line x1="350" y1="6310" x2="350" y2="5924.2" class="edge"/>
-<line x1="350" y1="5924.2" x2="350" y2="6310" class="guide"/>
 <polygon points="350,5924.2 700,5924.2 700,5995.8 350,5995.8" class="timber-face role-boundary" data-t="1"/>
 <polygon points="700,5924.2 350,5924.2 350,5995.8 700,5995.8" class="timber-face timber-face-near role-boundary" data-t="1"/>
 <polygon points="350,5924.2 389.8,5924.2 389.8,5995.8 350,5995.8" class="stop" data-joint="t1.START" fill="#e2a24a"/>
@@ -87,7 +86,6 @@
 <polygon points="1870,5610 2220,5610 2220,5995.8 1870,5995.8" class="surface"/>
 <line x1="2220" y1="5995.8" x2="1870" y2="5995.8" class="edge"/>
 <line x1="1870" y1="5995.8" x2="1870" y2="5610" class="edge"/>
-<line x1="1870" y1="5610" x2="1870" y2="5995.8" class="guide"/>
 <polygon points="2220,5995.8 1870,5995.8 1870,5924.2 2220,5924.2" class="timber-face role-boundary" data-t="2"/>
 <polygon points="1870,5995.8 2220,5995.8 2220,5924.2 1870,5924.2" class="timber-face timber-face-near role-boundary" data-t="2"/>
 <polygon points="1870,5924.2 1909.8,5924.2 1909.8,5995.8 1870,5995.8" class="stop" data-joint="t2.START" fill="#e2a24a"/>
@@ -107,6 +105,7 @@
 <g class="tile" data-joint="t3.START">
 <polygon points="3040,6310 3040,5888.4 3740,5888.4 3740,6310" class="surface"/>
 <line x1="3040" y1="5888.4" x2="3740" y2="5888.4" class="edge"/>
+<line x1="3388.7" y1="5888.4" x2="3388.7" y2="6310" class="guide"/>
 <polygon points="3040,5888.4 3740,5888.4 3740,5960 3040,5960" class="timber-face role-boundary" data-t="1"/>
 <polygon points="3740,5888.4 3040,5888.4 3040,5960 3740,5960" class="timber-face timber-face-near role-boundary" data-t="1"/>
 <polygon points="3425.8,5960 3425.8,6310 3354.2,6310 3354.2,5960" class="timber-face role-primary" data-t="3"/>
@@ -118,6 +117,7 @@
 <g class="tile" data-joint="t3.END">
 <polygon points="3800,5610 4500,5610 4500,6031.6 3800,6031.6" class="surface"/>
 <line x1="4500" y1="6031.6" x2="3800" y2="6031.6" class="edge"/>
+<line x1="4148.7" y1="5610" x2="4148.7" y2="6031.6" class="guide"/>
 <polygon points="4500,6031.6 3800,6031.6 3800,5960 4500,5960" class="timber-face role-boundary" data-t="2"/>
 <polygon points="3800,6031.6 4500,6031.6 4500,5960 3800,5960" class="timber-face timber-face-near role-boundary" data-t="2"/>
 <polygon points="4185.8,5610 4185.8,5960 4114.2,5960 4114.2,5610" class="timber-face role-primary" data-t="3"/>
@@ -128,6 +128,7 @@
 <rect x="0" y="6510" width="700" height="700" class="tile-frame"/>
 <g class="tile" data-joint="t4.START">
 <polygon points="0,7210 0,6510 700,6510 700,7210" class="surface"/>
+<line x1="312.9" y1="6510" x2="312.9" y2="7210" class="guide"/>
 <polygon points="350,6510 350,7210 278.4,7210 278.4,6510" class="timber-face role-primary" data-t="3"/>
 <polygon points="350,7210 350,6510 278.4,6510 278.4,7210" class="timber-face timber-face-near role-primary" data-t="3"/>
 <polygon points="350,6824.2 700,6824.2 700,6895.8 350,6895.8" class="timber-face role-boundary" data-t="4"/>
