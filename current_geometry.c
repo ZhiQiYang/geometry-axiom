@@ -1273,7 +1273,7 @@ static bool guide_line_intersection(
  *   axis[1]：v 座標集 → 線沿 U 走。
  *
  * 公理 D10 / D10a / I10：
- *   1. 每片承載面最多一座網格；
+ *   1. 每片承載面最多一座主網格；D19 子網格另依父格矩形派生；
  *   2. 每軸的定義三選一——明寫 / 等差 / 面材，兩軸互相獨立；
  *   3. 推導出的座標序列嚴格遞增、且每條落在承載面該軸的外接區間內；
  *   4. 只存定義（D9）：展開後的座標不進 World，用時由 grid_axis_lines 推出。
@@ -1316,6 +1316,11 @@ typedef struct {
     GridAxisDef axis[2];
     /* D10: 0 = 未設定, 1 = 沿 u, 2 = 沿 v。 */
     int main_along;
+    /* D19: only a parent and cell references are stored; geometry is derived. */
+    bool is_subgrid;
+    uint32_t parent_id;
+    int cell_ref[2][2]; /* -1=min, -2=max, >=0 main-grid line index */
+    unsigned divisions[2];
 } ReferenceGrid;
 
 static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
@@ -1351,7 +1356,7 @@ static bool grid_axis_lines(
     size_t err_cap
 )
 {
-    if (grid == NULL || placement == NULL || out == NULL ||
+    if (grid == NULL || grid->is_subgrid || placement == NULL || out == NULL ||
         out_count == NULL || axis < 0 || axis > 1 ||
         grid->placement_id != placement->id) {
         return false;
@@ -1547,6 +1552,9 @@ static bool grid_is_valid(
 
     return true;
 }
+
+/* D19 / I25 / R23: canonical single-cell subgrid derivation and finite clips. */
+#include "geometry-core/subgrids.inc"
 
 /* ============================================================
  * 完整角材實體
@@ -2810,22 +2818,16 @@ static void scene_draw_view(
             for (int axis = 0; axis < 2; ++axis) {
                 Coord coords[GRID_MAX_LINES];
                 size_t n = 0;
-                GuideDirection dir =
-                    axis == 0 ? GUIDE_ALONG_V : GUIDE_ALONG_U;
-
-                if (!grid_axis_lines(grid, surface, boundary, axis,
+                if (!grid_axis_lines_in(scene->grids, scene->grid_count, grid, surface, boundary, axis,
                                      coords, &n, NULL, 0)) {
                     continue;   /* 該軸未宣告或推不出線：不畫（D9） */
                 }
 
                 for (size_t li = 0; li < n; ++li) {
-                    GuideLine temp = {
-                        0, surface->id, dir, coords[li]
-                    };
                     SurfaceSegment2 segs[POLY_MAX_VERTICES];
-                    size_t seg_count = guide_line_get_local_segments(
-                        surface, boundary, &temp,
-                        segs, POLY_MAX_VERTICES);
+                    size_t seg_count = grid_line_segments(
+                        scene->grids, scene->grid_count, grid, surface, boundary,
+                        axis, li, segs, POLY_MAX_VERTICES);
 
                     for (size_t k = 0; k < seg_count; ++k) {
                         ViewPoint2 a = view_project(view,
@@ -3597,7 +3599,7 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
 #define WORLD_MAX_BOUNDARIES  16
 #define WORLD_MAX_PLACEMENTS  16
 #define WORLD_MAX_GUIDES      16
-#define WORLD_MAX_GRIDS       8
+#define WORLD_MAX_GRIDS       16
 #define WORLD_MAX_TIMBERS     64
 #define WORLD_MAX_SPACES      4
 #define WORLD_MAX_RC          32
@@ -3705,6 +3707,9 @@ typedef struct World {
     CanvasPos canvas_pos[WORLD_MAX_CANVAS_POS];
     size_t canvas_pos_count;
 } World;
+
+static const World *g_subgrid_before;
+static void reference_capture_trial(const World *world);
 
 static bool reference_preview_pending(void);
 static uint32_t reference_preview_token(void);
@@ -7662,6 +7667,7 @@ static SpanStatus resolve_auto_span(
     bool has_through,
     Coord through,
     const StopFaceRef *between,
+    const SurfaceRegion2 *scope,
     Coord *out_start,
     Coord *out_end,
     char *err,
@@ -7670,6 +7676,12 @@ static SpanStatus resolve_auto_span(
 {
     Coord cuts[SPAN_CUT_MAX];
     size_t cut_count = 0;
+    Coord scope_lo=scope?(along_v?scope->min_v:scope->min_u):0;
+    Coord scope_hi=scope?(along_v?scope->max_v:scope->max_u):0;
+    if (scope && (cross_lo<(along_v?scope->min_u:scope->min_v) || cross_hi>(along_v?scope->max_u:scope->max_v))) {
+        snprintf(err,err_cap,"I13：角材的完整寬度超出子格範圍");
+        return SPAN_NO_INTERVAL;
+    }
 
     /* --- 切點：輪廓與孔的所有頂點在長度軸上的座標 --- */
     if (boundary != NULL) {
@@ -7805,6 +7817,18 @@ static SpanStatus resolve_auto_span(
         interval_count = touching_count;
     }
 
+    /* R6/D19: scope selects complete intervals; it never supplies stops. */
+    if (scope && !between) {
+        size_t kept=0;
+        for (size_t i=0;i<interval_count;++i)
+            if (intervals[i].start>=scope_lo && intervals[i].end<=scope_hi) intervals[kept++]=intervals[i];
+        interval_count=kept;
+        if (!kept) {
+            snprintf(err,err_cap,"I13/R6：子格 [%lld,%lld] 內沒有兩端獲得支撐的完整跨距",(long long)scope_lo,(long long)scope_hi);
+            return SPAN_NO_INTERVAL;
+        }
+    }
+
     /*
      * --- R21：between 明寫兩端 ---
      * 它是消解歧義的選擇器，不是放寬條件：兩個被指名的擋面各自仍須
@@ -7878,8 +7902,8 @@ static SpanStatus resolve_auto_span(
                     }
                 }
 
-                if (!inside) {
-                    continue;   /* between 不能穿過實體 */
+                if (!inside || (scope && (s<scope_lo || e>scope_hi))) {
+                    continue;   /* R6: between pairs must be fully inside the child scope. */
                 }
 
                 if (hit_count < WORLD_MAX_TIMBERS * 4) {
@@ -8154,6 +8178,8 @@ static bool world_replace_object(
  */
 /* 公理 R20：重宣告/刪除連坐——刪除或移動任一角材後，對同面全部角材
  * 重驗 I19–I22 與 R18；任一不過 → 整筆拒絕回滾（I8 同軌）。 */
+#include "geometry-core/subgrid_world.inc"
+
 static bool world_validate_derived(const World *world)
 {
     for (size_t i = 0; i < world->boundary_count; ++i) {
@@ -8192,7 +8218,7 @@ static bool world_validate_derived(const World *world)
             world_find_placement(world, g->placement_id);
 
         if (p == NULL ||
-            !grid_is_valid(g, p, world_placement_boundary(world, p))) {
+            !grid_is_valid_in(world->grids, world->grid_count, g, p, world_placement_boundary(world, p), NULL, 0)) {
             return false;
         }
     }
@@ -8221,7 +8247,7 @@ static bool world_validate_derived(const World *world)
                            : NULL;
 
             if (ag == NULL || ap == NULL ||
-                !grid_line_coord(ag, ap,
+                !grid_line_coord_in(world->grids, world->grid_count, ag, ap,
                                  world_placement_boundary(world, ap),
                                  a->ref_grid_axis,
                                  (size_t)a->ref_grid_index,
@@ -8252,6 +8278,17 @@ static bool world_validate_derived(const World *world)
 
             if (!timber_a0_footprint_uv(p, t, a, &f)) {
                 return false;
+            }
+
+            /* I13/D19: final-world containment is independent of rebuild order. */
+            if (a->anchor_kind==ANCHOR_AT_GRID) {
+                const ReferenceGrid *g=world_find_grid(world,a->ref_grid);
+                SurfaceRegion2 cell;
+                if (g && g->is_subgrid &&
+                    (!grid_cell_bounds(world->grids,world->grid_count,g,p,b,&cell,NULL,0) ||
+                    f.min_u<cell.min_u || f.max_u>cell.max_u || f.min_v<cell.min_v || f.max_v>cell.max_v)) {
+                    set_revalidate_error("I13：角材的完整足跡超出子格範圍"); return false;
+                }
             }
 
             /* R6(d)/R21: the full world must still have unique support,
@@ -8412,6 +8449,12 @@ static bool world_revalidate(World *world)
 {
     g_revalidate_error[0] = '\0';
     World candidate = *world;
+    char grid_error[256]="";
+    reference_capture_trial(&candidate);
+    if (!subgrid_world_valid(&candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error[0]?grid_error:"I25: grid dependency invalid");
+        return false;
+    }
 
     bool rebuilt=reference_rebuild(&candidate);
     char rebuild_error[256]; snprintf(rebuild_error,sizeof rebuild_error,"%s",g_revalidate_error);
@@ -9373,7 +9416,7 @@ static SurfacePoint2 anchor_corner_from_rect(
  *
  * 一座網格 = u 座標集合 + v 座標集合（公理 G1–G4）。
  * 同一 id 可寫兩行分別補 u / v 集合（同座標軸只能宣告一次）；
- * 每片承載面最多一座網格（與 TS 的 E_GRID_UNIQUE 同規則）。
+ * 每片承載面最多一座主網格，子網格另走 D19 的完整宣告。
  */
 static bool apply_grid_line(
     const char *path,
@@ -9415,6 +9458,10 @@ static bool apply_grid_line(
     ReferenceGrid candidate = { 0 };
     ReferenceGrid *existing = world_find_grid_mut(world, grid_id);
 
+    if (existing != NULL && existing->is_subgrid) {
+        scene_error(path,line_no,"D19：不能將既有子網格改成主網格");
+        return false;
+    }
     if (existing != NULL && existing->placement_id != placement_id) {
         scene_error(path, line_no, "這個 grid id 已經用在別的承載面");
         return false;
@@ -9423,7 +9470,7 @@ static bool apply_grid_line(
     if (existing == NULL) {
         /* 一面一格：不同 id 落在同一承載面 → 拒絕。 */
         for (size_t i = 0; i < world->grid_count; ++i) {
-            if (world->grids[i].placement_id == placement_id) {
+            if (!world->grids[i].is_subgrid && world->grids[i].placement_id == placement_id) {
                 scene_error(path, line_no,
                     "這片承載面已經有一座網格（一面一格）");
                 return false;
@@ -9668,6 +9715,14 @@ static bool apply_grid_line(
         return false;
     }
 
+    /* I8a: preserve the parsed candidate even when parent count locking rejects it. */
+    {
+        World trial=*world;
+        if (existing) trial.grids[existing-world->grids]=candidate;
+        else if (trial.grid_count<WORLD_MAX_GRIDS) trial.grids[trial.grid_count++]=candidate;
+        reference_capture_trial(&trial);
+    }
+
     {
         const SpaceBoundarySurface *vb =
             world_find_boundary(world, placement->boundary_id);
@@ -9697,6 +9752,17 @@ static bool apply_grid_line(
         }
     }
 
+    /* I23: also validate read-only grid-preview calls that bypass transactions. */
+    for (size_t child=0;child<world->grid_count;++child) {
+        if (world->grids[child].is_subgrid && world->grids[child].parent_id==candidate.id) {
+            char err[256]="";
+            if (!subgrid_parent_count_valid(world,&candidate,placement,world_placement_boundary(world,placement),err,sizeof err)) {
+                scene_error(path,line_no,err); return false;
+            }
+            break;
+        }
+    }
+
     /*
      * 回寫走 I8 交易：全量重驗，失敗整筆回滾、World 留在舊狀態。
      * 既有槽位交給 world_replace_object；新增沒有槽位可換，就地做同一套。
@@ -9704,7 +9770,7 @@ static bool apply_grid_line(
     if (existing != NULL) {
         if (!world_replace_object(world, existing, &candidate,
                                   sizeof candidate)) {
-            scene_error(path, line_no, "重宣告後有物件失效（已回滾）");
+            scene_error(path, line_no, g_revalidate_error[0]?g_revalidate_error:"重宣告後有物件失效（已回滾）");
             return false;
         }
     } else {
@@ -9721,6 +9787,8 @@ static bool apply_grid_line(
 
     return true;
 }
+
+#include "geometry-core/subgrid_commands.inc"
 
 /* I12/I13/R6: at-line guide/grid 或 at-face e/he/t，保存引用並重算。
  * through 與 between 選擇可證明的合法跨距；既有物件變更走 I8a。 */
@@ -10711,6 +10779,8 @@ static void proj_space_drop_member(World *world, uint32_t bid)
  */
 /* 公理 R13：拆分時承載面輔助資料跟著含錨點的那片走；
  * 兩片都不含 = 失去承載面 → 整筆拒絕回滾，不靜默丟資料。 */
+#include "geometry-core/subgrid_rebind.inc"
+
 static bool proj_rebind_aux(
     World *world,
     const PlacementSurface *old_pl,
@@ -10722,48 +10792,36 @@ static bool proj_rebind_aux(
     const PlacementSurface *new_pl =
         &world->placements[world->placement_count - 1];
 
-    for (size_t i = 0; i < world->guide_count; ++i) {
-        GuideLine *g = &world->guides[i];
-        if (g->placement_id != old_pl->id) continue;
-        /* R13: classify actual clipped visibility, never general I7 validity. */
-        SurfaceSegment2 clipped[POLY_MAX_VERTICES];
-        GuideLine candidate = *g;
-        bool k = guide_line_get_local_segments(old_pl, keep_b, &candidate,
-                    clipped, POLY_MAX_VERTICES) > 0;
-        candidate.placement_id = new_pl_id;
-        bool n = guide_line_get_local_segments(new_pl, new_b, &candidate,
-                    clipped, POLY_MAX_VERTICES) > 0;
-        if (n && !k) {
-            g->placement_id = new_pl_id;
-        } else if (!k && !n) {
-            return false;
-        }
-    }
     for (size_t i = 0; i < world->grid_count; ++i) {
         ReferenceGrid *g = &world->grids[i];
-        if (g->placement_id != old_pl->id) continue;
-        /* grid_is_valid 會先查 placement_id 對得上 placement——
-           用暫時改掛的副本測新片。 */
-        ReferenceGrid tmp = *g;
-        tmp.placement_id = new_pl_id;
-        bool k = grid_is_valid(g, old_pl, keep_b);
-        bool n = grid_is_valid(&tmp, new_pl, new_b);
+        if (g->is_subgrid || g->placement_id != old_pl->id) continue;
+        bool k = subgrid_family_fits(world,g,old_pl,keep_b);
+        bool n = subgrid_family_fits(world,g,new_pl,new_b);
         if (n && !k) {
-            g->placement_id = new_pl_id;
-        } else if (!k && !n) {
-            return false;
-        }
+            uint32_t parent_id=g->id;
+            for (size_t j=0;j<world->grid_count;++j) {
+                ReferenceGrid *member=&world->grids[j];
+                if (member->id==parent_id || (member->is_subgrid && member->parent_id==parent_id)) member->placement_id=new_pl_id;
+            }
+        } else if (!k && !n) return false;
     }
-    for (size_t i = 0; i < world->timber_count; ++i) {
-        TimberAnchor *a = &world->anchors[i];
-        if (a->placement_id != old_pl->id) continue;
-        bool k = poly_contains_point(&keep_b->outline, a->uv);
-        bool n = poly_contains_point(&new_b->outline, a->uv);
-        if (n && !k) {
-            a->placement_id = new_pl_id;
-        } else if (!k && !n) {
-            return false;
-        }
+    World source=*world;
+    for (size_t i=0;i<source.guide_count;++i) {
+        if (source.guides[i].placement_id!=old_pl->id) continue;
+        GuideLine keep,other;
+        bool k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,false,i,&keep,NULL,NULL);
+        bool n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,false,i,&other,NULL,NULL);
+        if (!k && !n) return false;
+        world->guides[i]=k?keep:other;
+    }
+    for (size_t i=0;i<source.timber_count;++i) {
+        if (!source.timbers[i].placed || source.anchors[i].placement_id!=old_pl->id) continue;
+        Timber keep,other; TimberAnchor ka,na;
+        bool k=reference_fragment_candidate(&source,old_pl->id,old_pl->id,true,i,NULL,&keep,&ka);
+        bool n=reference_fragment_candidate(&source,old_pl->id,new_pl_id,true,i,NULL,&other,&na);
+        if (!k && !n) return false;
+        world->timbers[i]=k?keep:other;
+        world->anchors[i]=k?ka:na;
     }
     return true;
 }
@@ -11436,8 +11494,21 @@ static bool apply_delete_line(
             scene_error(path, line_no, "這個網格不存在");
             return false;
         }
+        for (size_t i=0;i<world->grid_count;++i) {
+            if (world->grids[i].is_subgrid && world->grids[i].parent_id==id) {
+                char err[160]; snprintf(err,sizeof err,"I23：網格 %u 仍有子格 %u，不能刪除",id,world->grids[i].id);
+                scene_error(path,line_no,err); return false;
+            }
+        }
+        for (size_t i=0;i<world->guide_count;++i) {
+            if (grid_guide_references(&world->guides[i],id)) {
+                char err[160]; snprintf(err,sizeof err,"I23：網格 %u 仍被參考線 %u 引用，不能刪除",id,world->guides[i].id);
+                scene_error(path,line_no,err); return false;
+            }
+        }
         for (size_t i = 0; i < world->timber_count; ++i) {
             if (world->timbers[i].placed &&
+                world->anchors[i].anchor_kind == ANCHOR_AT_GRID &&
                 world->anchors[i].ref_grid == id) {
                 scene_error(path, line_no,
                     "V_GRID_LOCKED：有角材錨在這個網格上，先刪角材（timber）");
@@ -11744,6 +11815,8 @@ static void world_dump_dsl(const World *world, FILE *out)
     for (size_t i = 0; i < world->grid_count; ++i) {
         const ReferenceGrid *g = &world->grids[i];
 
+        if (g->is_subgrid) continue;
+
         bool main_along_dumped = false;
         for (int pass = 0; pass < 2; ++pass) {
             /* 重放時先宣告主支方向所需的來源軸。 */
@@ -11783,6 +11856,14 @@ static void world_dump_dsl(const World *world, FILE *out)
         }
     }
 
+    for (size_t i=0;i<world->grid_count;++i) {
+        const ReferenceGrid *g=&world->grids[i];
+        if (!g->is_subgrid) continue;
+        char refs[2][2][32];
+        for (int a=0;a<2;++a) for (int k=0;k<2;++k) grid_cell_ref_format(g->cell_ref[a][k],refs[a][k],sizeof refs[a][k]);
+        fprintf(out,"subgrid %u parent %u cell u %s %s v %s %s divisions u %u v %u\n",
+            g->id,g->parent_id,refs[0][0],refs[0][1],refs[1][0],refs[1][1],g->divisions[0],g->divisions[1]);
+    }
     reference_dump(world, out);
 
     for (size_t i = 0; i < world->space_count; ++i) {
@@ -11939,6 +12020,7 @@ static const struct {
     const char *usage;
     bool (*apply)(const char *path, int line_no, char *tokens[], int count, World *world);
 } SCENE_COMMANDS[] = {
+    { "subgrid", 16, 16, true, "subgrid id parent id cell u lo hi v lo hi divisions u n v n", apply_subgrid_line },
     { "spec", 3, 3, false, "spec 名稱 整數mm", apply_spec_line },
     {
         "boundary", 6, SCENE_MAX_TOKENS, false,

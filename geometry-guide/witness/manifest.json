@@ -48,6 +48,12 @@
     "view": "bottom",
     "gist": "主支軸 v 由 boundary 的垂直向推出,不存欄位。"
   },
+  "D19": {
+    "scene": "_wit_d19_subgrid_cell.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "子格只在父格 [1000,3000]×[600,2400] 中推導雙軸內部線；孔切斷子線，父格以外不延伸。"
+  },
   "I13": {
     "scene": "_wit_i13_odd_width.scene",
     "expect": "accept",
@@ -65,6 +71,12 @@
     "expect": "accept",
     "view": "bottom",
     "gist": "延伸段側面以優先級 2 計,被 custom(priority 3)端面頂 → 接受。"
+  },
+  "I25": {
+    "scene": "_wit_d19_subgrid_cell.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "父格跨度 u=2000、v=1800 各精確四等分，間距 500／450 mm；每軸三條內部線，孔內線段裁去而保留索引。"
   },
   "R6": {
     "scene": "_wit_r6_span_cells.scene",
@@ -101,5 +113,11 @@
     "expect": "accept",
     "view": "bottom",
     "gist": "副支 between t1 t5 指名兩支主支側面當擋面 → L=1960。"
+  },
+  "R23": {
+    "scene": "_wit_d19_subgrid_cell.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "夾具只宣告父格來源、四邊參照及等分數；子線座標與扣孔後的局部段皆由引擎按父先子後順序推出。"
   }
 }

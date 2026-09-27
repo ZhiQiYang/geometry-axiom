@@ -46,7 +46,7 @@ static bool model_source_check(const char *path, bool *capacity, char *error, si
 {
     static const char *allowed[] = {
         "spec", "boundary", "placement", "surface", "space", "datum", "guide",
-        "grid", "timber", "place", "column", "beam", "canvas-pos", NULL
+        "grid", "subgrid", "timber", "place", "column", "beam", "canvas-pos", NULL
     };
     FILE *in = fopen(path, "rb");
     if (!in) { snprintf(error, cap, "Cannot read source scene."); return false; }

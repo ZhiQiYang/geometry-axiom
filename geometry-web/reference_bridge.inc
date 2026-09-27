@@ -1,4 +1,5 @@
 /* Structured I8a report, derived geometry for UI, and reference snapping. */
+static void json_reference_grid(const World *w,const ReferenceGrid *g);
 static void json_reference_geometry(const World *w,int i)
 {
     if (i<0 || !w->timbers[i].placed) { fputs("null",stdout); return; }
@@ -57,6 +58,29 @@ static void json_reference_preview(void)
         if (j==g_preview.after.guide_count) fputs("null",stdout); else json_reference_guide(&g_preview.after,j);
         putchar('}');
     }
+    first=g_preview.before.guide_count==0;
+    for (size_t i=0;i<g_preview.after.guide_count;++i) {
+        const GuideLine *g=&g_preview.after.guides[i];
+        if (world_find_guide(&g_preview.before,g->id)) continue;
+        printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
+        json_reference_guide(&g_preview.after,i); putchar('}');
+    }
+    fputs("],\"grids\":[",stdout); first=true;
+    for (size_t i=0;i<g_preview.before.grid_count;++i) {
+        const ReferenceGrid *g=&g_preview.before.grids[i];
+        const ReferenceGrid *after=world_find_grid(&g_preview.after,g->id);
+        printf("%s{\"id\":%u,\"before\":",first?"":",",g->id); first=false;
+        json_reference_grid(&g_preview.before,g);
+        fputs(",\"after\":",stdout);
+        if (after) json_reference_grid(&g_preview.after,after); else fputs("null",stdout);
+        putchar('}');
+    }
+    for (size_t i=0;i<g_preview.after.grid_count;++i) {
+        const ReferenceGrid *g=&g_preview.after.grids[i];
+        if (world_find_grid(&g_preview.before,g->id)) continue;
+        printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
+        json_reference_grid(&g_preview.after,g); putchar('}');
+    }
     fputs("],\"violations\":[",stdout);
     for (size_t i=0;i<g_preview.issue_count;++i) {
         const ReferenceIssue *e=&g_preview.issues[i];
@@ -73,23 +97,93 @@ static void cmd_reference_result(bool ok,uint32_t old_token)
     if (g_preview.ready && g_preview.token!=old_token) { fputs(",\"preview\":",stdout); json_reference_preview(); }
     fputs("}\n",stdout);
 }
+/* Inspect quantity terms, not substrings: grid 1 must never match grid 10.
+ * This reports direct dependencies; the core remains the deletion authority. */
+static bool reference_expression_uses_grid(const char *expression,uint32_t id)
+{
+    const char *cursor=expression;
+    while (*cursor) {
+        if (*cursor=='+' || *cursor=='-') ++cursor;
+        const char *end=cursor;
+        while (*end && *end!='+' && *end!='-') ++end;
+        const char *quantity=cursor;
+        for (const char *p=cursor;p<end;++p) if (*p=='*') quantity=p+1;
+        const char *number=NULL;
+        if ((size_t)(end-quantity)>=5 && !strncmp(quantity,"grid:",5)) number=quantity+5;
+        else if ((size_t)(end-quantity)>=6 && !strncmp(quantity,"panel:",6)) number=quantity+6;
+        else if ((size_t)(end-quantity)>=4 && !strncmp(quantity,"gap:",4)) number=quantity+4;
+        if (number) {
+            const char *stop=number;
+            while (stop<end && *stop>='0' && *stop<='9') ++stop;
+            if (stop>number && stop<end && *stop==':' && (size_t)(stop-number)<16) {
+                char value[16]; uint32_t found;
+                memcpy(value,number,(size_t)(stop-number)); value[stop-number]='\0';
+                if (parse_u32(value,&found) && found==id) return true;
+            }
+        }
+        cursor=end;
+    }
+    return false;
+}
+static void json_grid_dependencies(const World *w,const ReferenceGrid *g)
+{
+    fputs(",\"dependencies\":{\"children\":[",stdout); bool first=true;
+    for (size_t i=0;i<w->grid_count;++i) {
+        if (!w->grids[i].is_subgrid || w->grids[i].parent_id!=g->id) continue;
+        printf("%s%u",first?"":",",w->grids[i].id); first=false;
+    }
+    fputs("],\"guides\":[",stdout); first=true;
+    for (size_t i=0;i<w->guide_count;++i) {
+        if (!reference_expression_uses_grid(w->guides[i].expression,g->id)) continue;
+        printf("%s%u",first?"":",",w->guides[i].id); first=false;
+    }
+    fputs("],\"timbers\":[",stdout); first=true;
+    for (size_t i=0;i<w->timber_count;++i) {
+        if (!w->timbers[i].placed || w->anchors[i].anchor_kind!=ANCHOR_AT_GRID || w->anchors[i].ref_grid!=g->id) continue;
+        printf("%s%u",first?"":",",w->timbers[i].id); first=false;
+    }
+    fputs("]}",stdout);
+}
 static void json_reference_grid(const World *w,const ReferenceGrid *g)
 {
     const PlacementSurface *p=world_find_placement(w,g->placement_id);
+    const SpaceBoundarySurface *b=p?world_placement_boundary(w,p):NULL;
     printf("{\"id\":%u,\"surface\":%u",g->id,g->placement_id);
-    if (g->main_along==1) fputs(",\"mainAlong\":\"u\"",stdout);
-    else if (g->main_along==2) fputs(",\"mainAlong\":\"v\"",stdout);
+    printf(",\"kind\":\"%s\",\"parentId\":",g->is_subgrid?"subgrid":"main");
+    if (g->is_subgrid) {
+        printf("%u,\"cell\":{",g->parent_id);
+        for (int axis=0;axis<2;++axis) {
+            printf("%s\"%c\":[",axis?",":"",axis?'v':'u');
+            for (int side=0;side<2;++side) {
+                char ref[32]; grid_cell_ref_format(g->cell_ref[axis][side],ref,sizeof ref);
+                if (side) putchar(','); js_string(ref);
+            }
+            putchar(']');
+        }
+        printf("},\"divisions\":{\"u\":%u,\"v\":%u}",g->divisions[0],g->divisions[1]);
+    } else fputs("null,\"cell\":null,\"divisions\":null",stdout);
+    SurfaceRegion2 bounds;
+    bool has_bounds=p && (g->is_subgrid?
+        grid_cell_bounds(w->grids,w->grid_count,g,p,b,&bounds,NULL,0):
+        placement_local_bounds(p,b,&bounds));
+    fputs(",\"bounds\":",stdout);
+    if (has_bounds) printf("{\"u\":[%lld,%lld],\"v\":[%lld,%lld]}",
+        (long long)bounds.min_u,(long long)bounds.max_u,(long long)bounds.min_v,(long long)bounds.max_v);
+    else fputs("null",stdout);
+    if (!g->is_subgrid && g->main_along==1) fputs(",\"mainAlong\":\"u\"",stdout);
+    else if (!g->is_subgrid && g->main_along==2) fputs(",\"mainAlong\":\"v\"",stdout);
     else fputs(",\"mainAlong\":null",stdout);
     for (int axis=0;axis<2;++axis) {
         const GridAxisDef *d=&g->axis[axis];
         Coord values[GRID_MAX_LINES]; size_t count=0;
-        if (p) grid_axis_lines(g,p,world_placement_boundary(w,p),axis,values,&count,NULL,0);
+        if (p) grid_axis_lines_in(w->grids,w->grid_count,g,p,b,axis,values,&count,NULL,0);
         printf(",\"%c\":[",axis?'v':'u');
         for (size_t k=0;k<count;++k) printf("%s%lld",k?",":"",(long long)values[k]);
         printf("],\"%cDefinition\":{\"source\":\"%s\"",axis?'v':'u',
-            d->source==GRID_SRC_EXPLICIT?"explicit":d->source==GRID_SRC_SERIES?"series":
+            g->is_subgrid?"subgrid":d->source==GRID_SRC_EXPLICIT?"explicit":d->source==GRID_SRC_SERIES?"series":
             d->source==GRID_SRC_PANEL?"panel":"none");
-        if (d->source==GRID_SRC_EXPLICIT) {
+        if (g->is_subgrid) printf(",\"divisions\":%u",g->divisions[axis]);
+        else if (d->source==GRID_SRC_EXPLICIT) {
             fputs(",\"coordinates\":[",stdout);
             for (size_t k=0;k<d->count;++k) printf("%s%lld",k?",":"",(long long)d->coords[k]);
             putchar(']');
@@ -107,19 +201,27 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
     bool first=true;
     for (int axis=0;axis<2;++axis) {
         Coord values[GRID_MAX_LINES]; size_t count=0;
-        if (p) grid_axis_lines(g,p,world_placement_boundary(w,p),axis,values,&count,NULL,0);
+        if (p) grid_axis_lines_in(w->grids,w->grid_count,g,p,b,axis,values,&count,NULL,0);
         for (size_t k=0;k<count;++k) {
             if (!first) putchar(',');
             first=false;
             printf("{\"axis\":\"%c\",\"index\":%zu,\"coordinate\":%lld,\"role\":",
                 axis?'v':'u',k,(long long)values[k]);
-            int role=g->main_along==0?0:((g->main_along==1&&axis==1)||(g->main_along==2&&axis==0)?2:3);
-            if (role==2) fputs("\"primary\",\"priority\":2}",stdout);
-            else if (role==3) fputs("\"secondary\",\"priority\":3}",stdout);
-            else fputs("null,\"priority\":null}",stdout);
+            int role=g->is_subgrid?3:g->main_along==0?0:((g->main_along==1&&axis==1)||(g->main_along==2&&axis==0)?2:3);
+            if (role==2) fputs("\"primary\",\"priority\":2",stdout);
+            else if (role==3) fputs("\"secondary\",\"priority\":3",stdout);
+            else fputs("null,\"priority\":null",stdout);
+            fputs(",\"segments\":[",stdout);
+            SurfaceSegment2 segments[POLY_MAX_VERTICES];
+            size_t n=grid_line_segments(w->grids,w->grid_count,g,p,b,axis,k,segments,POLY_MAX_VERTICES);
+            for (size_t j=0;j<n;++j) printf("%s[[%lld,%lld],[%lld,%lld]]",j?",":"",
+                (long long)segments[j].start.u,(long long)segments[j].start.v,
+                (long long)segments[j].end.u,(long long)segments[j].end.v);
+            fputs("]}",stdout);
         }
     }
     putchar(']');
+    json_grid_dependencies(w,g);
     putchar('}');
 }
 /* Read-only draft: run the canonical grid parser and expander on a World copy. */
@@ -131,13 +233,15 @@ static void cmd_grid_preview(const char *command)
     char line[SCENE_MAX_LINE]; snprintf(line,sizeof line,"%s",command);
     char *tokens[SCENE_MAX_TOKENS];
     int count=split_tokens(line,tokens,SCENE_MAX_TOKENS);
-    if (count<5 || strcmp(tokens[0],"grid")!=0) {
-        fputs("{\"ok\":false,\"error\":\"預覽需要 grid 指令\"}\n",stdout); return;
+    bool subgrid=count>0 && !strcmp(tokens[0],"subgrid");
+    if (count<5 || (strcmp(tokens[0],"grid")!=0 && !subgrid)) {
+        fputs("{\"ok\":false,\"error\":\"預覽需要 grid 或 subgrid 指令\"}\n",stdout); return;
     }
     World *draft=(World *)malloc(sizeof *draft);
     if (!draft) { fputs("{\"ok\":false,\"error\":\"預覽記憶體不足\"}\n",stdout); return; }
     *draft=g_world;
-    bool ok=apply_grid_line("preview",0,tokens,count,draft);
+    g_scene_last_error[0]='\0';
+    bool ok=subgrid?apply_subgrid_line("preview",0,tokens,count,draft):apply_grid_line("preview",0,tokens,count,draft);
     uint32_t id=0;
     if (ok && !parse_u32(tokens[1],&id)) ok=false;
     ReferenceGrid *grid=ok?world_find_grid_mut(draft,id):NULL;

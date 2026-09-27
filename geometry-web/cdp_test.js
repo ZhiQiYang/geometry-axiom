@@ -1472,6 +1472,195 @@ async function rightClick(x, y) {
   console.log('P8v3 reset clears preferences',visibilityReset?'✓':'✗');
   await eval_(`leaveFocus()`);
 
+  /* GEO-204 / D19 / I25 / R23: local subgrids through the real editor. */
+  console.log("=== P8v4. 局部子網格 ===");
+  {
+    const subgridExceptionStart=excN;
+    const subgridCheck=(name,ok,detail)=>console.log('P8v4 '+name,ok?'✓':'✗',ok?'':JSON.stringify(detail));
+    const subgridRead=async expression=>{const value=await eval_(expression);if(value?.__err)throw Error(value.__err);return value;};
+    const subgridShot=async name=>{
+      if(!process.env.GEOMETRY_GRID_SCREENSHOT_DIR)return;
+      await waitForUI(`!document.querySelector('.toast')`,6000);
+      const fs=require('fs'),path=require('path');fs.mkdirSync(process.env.GEOMETRY_GRID_SCREENSHOT_DIR,{recursive:true});
+      const result=await send('Page.captureScreenshot',{format:'png'});
+      fs.writeFileSync(path.join(process.env.GEOMETRY_GRID_SCREENSHOT_DIR,name+'.png'),Buffer.from(result.result.data,'base64'));
+    };
+    await subgridRead(`(async()=>{
+      resetSceneFocus();await api('line reset');
+      for(const command of [
+        'surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 2300,1400 2800,1400 2800,1900 2300,1900',
+        'grid 1 on 1 main-along v u 1000 3000 v 500 2500'
+      ]){const r=await api('line '+command);if(!r.ok)throw Error(JSON.stringify(r));}
+      await renderObjects();await enterFocus('face',1);feSetTool('grid');
+      window.subgridBefore=(await api('dump')).text;
+      $('subgridNew').click();await window.__cdpSettleUI(200);
+      return true;
+    })()`);
+    subgridCheck('新增入口與可用父格',await subgridRead(`!!$('subgridCellChoice') && $('subgridCellChoice').options.length>=9 && !!$('subgridPickCell')`));
+    await subgridRead(`$('subgridPickCell').click()`);
+    const selectedCell=await subgridRead(`(()=>{const e=[...document.querySelectorAll('[data-subgrid-cell]')].find(e=>e.dataset.subgridCell==='line:0|line:1|line:0|line:1');if(!e)throw Error('Missing central cell hit');const r=e.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};})()`);
+    await click(selectedCell.x,selectedCell.y);
+    await waitForUI(`fe.gridPreview?.kind==='subgrid' && fe.gridPreview.u[0]===2000`,10000);
+    const subgridDraft=await subgridRead(`(async()=>{
+      const g=fe.gridPreview;
+      window.subgridId=g?.id;
+      return {picked:$('subgridCellChoice').value==='line:0|line:1|line:0|line:1',
+        lines:g?.u.join(',')==='2000'&&g?.v.join(',')==='1500',
+        scope:JSON.stringify(g?.bounds)==='{"u":[1000,3000],"v":[500,2500]}',
+        roles:g?.lines.every(l=>l.role==='secondary'&&l.priority===3),
+        clip:g?.lines.reduce((n,l)=>n+l.segments.length,0)===3,
+        readOnly:(await api('dump')).text===subgridBefore,
+        rendered:document.querySelectorAll('.face-grid-preview-line').length===3};
+    })()`);
+    for(const [key,value]of Object.entries(subgridDraft))subgridCheck('選格預覽 '+key,value,subgridDraft);
+    const subgridError=await subgridRead(`(async()=>{
+      $('subgridDivU').value='3';$('subgridDivU').dispatchEvent(new Event('input',{bubbles:true}));await window.__cdpSettleUI(500);
+      const rejected=$('gridPreviewStatus').classList.contains('invalid')&&!fe.gridPreview&&$('subgridDivU').getAttribute('aria-invalid')==='true';
+      const intact=(await api('dump')).text===subgridBefore;
+      $('subgridDivU').value='2';$('subgridDivU').dispatchEvent(new Event('input',{bubbles:true}));await window.__cdpSettleUI(500);
+      return {rejected,intact,recovered:fe.gridPreview?.u[0]===2000};
+    })()`);
+    for(const [key,value]of Object.entries(subgridError))subgridCheck('除不盡與修正 '+key,value,subgridError);
+    await subgridShot('subgrid-desktop-preview');
+    await subgridRead(`$('gridCreate').click()`);
+    await waitForUI(`fe.grids.some(g=>g.kind==='subgrid')`,10000);
+    const subgridSaved=await subgridRead(`(async()=>{
+      const refs=await api('references'),g=refs.grids.find(g=>g.kind==='subgrid');
+      window.subgridId=g.id;window.subgridSaved=(await api('dump')).text;
+      return {definition:subgridSaved.includes('subgrid '+g.id+' parent 1 cell u line:0 line:1 v line:0 line:1 divisions u 2 v 2'),
+        row:!!document.querySelector('[data-grid-id="'+g.id+'"][data-grid-kind="subgrid"]'),
+        parent:refs.grids.find(g=>g.id===1).u.join(',')==='1000,3000',
+        childHit:document.querySelectorAll('[data-face-hit="k:'+g.id+':v:0"]').length===2};
+    })()`);
+    for(const [key,value]of Object.entries(subgridSaved))subgridCheck('建立 '+key,value,subgridSaved);
+    const subgridVisibility=await subgridRead(`(async()=>{
+      document.querySelector('#faceReferenceVisibility summary').click();
+      const ctl=k=>[...$('faceReferenceVisibility').querySelectorAll('input')].find(x=>x.dataset.refVisible===k);
+      const parentHits=document.querySelectorAll('[data-face-hit^="k:1:"]').length;
+      ctl('grid:'+subgridId+':v:0').click();
+      const one=!document.querySelector('[data-face-hit="k:'+subgridId+':v:0"]')&&!!document.querySelector('[data-face-hit="k:'+subgridId+':u:0"]');
+      const parent=document.querySelectorAll('[data-face-hit^="k:1:"]').length===parentHits;
+      ctl('group:grid:'+subgridId).click();ctl('group:grid:'+subgridId).click();
+      const group=!document.querySelector('[data-face-hit^="k:'+subgridId+':"]');
+      ctl('group:grid:'+subgridId).click();
+      return {one,parent,group,restored:document.querySelectorAll('[data-face-hit="k:'+subgridId+':v:0"]').length===2,unchanged:(await api('dump')).text===subgridSaved};
+    })()`);
+    for(const [key,value]of Object.entries(subgridVisibility))subgridCheck('顯示 '+key,value,subgridVisibility);
+    const subgridEdit=await subgridRead(`(async()=>{
+      document.querySelector('[data-grid-id="'+subgridId+'"] .grid-layer-open').click();await window.__cdpSettleUI(200);
+      const filled=$('subgridDivU').value==='2'&&$('subgridDivV').value==='2';
+      $('subgridDivU').value='4';$('subgridDivU').dispatchEvent(new Event('input',{bubbles:true}));await window.__cdpSettleUI(500);
+      const draft=fe.gridPreview?.u.join(',')==='1500,2000,2500'&&(await api('dump')).text===subgridSaved;
+      $('gridReset').click();await window.__cdpSettleUI(500);
+      return {filled,draft,reset:$('subgridDivU').value==='2'&&(await api('dump')).text===subgridSaved};
+    })()`);
+    for(const [key,value]of Object.entries(subgridEdit))subgridCheck('編輯 '+key,value,subgridEdit);
+    // Changing a child without any timbers still requires a concrete I8a preview.
+    await subgridRead(`$('subgridDivU').value='4';$('subgridDivU').dispatchEvent(new Event('input',{bubbles:true}))`);
+    await waitForUI(`fe.gridPreview?.u.length===3`,10000);
+    await subgridRead(`$('gridCreate').click()`);
+    await waitForUI(`!!document.querySelector('.reference-impact[open]')`,10000);
+    subgridCheck('無角材也列子格影響',await subgridRead(`(async()=>!!document.querySelector('.reference-impact[open]')&&document.querySelector('.reference-impact').textContent.includes('子網格')&&(await api('dump')).text===subgridSaved)()`));
+    await subgridRead(`document.querySelector('.reference-impact .impact-actions button').click()`);
+    await waitForUI(`!document.querySelector('.reference-impact')`,10000);
+    subgridCheck('取消保留世界',await subgridRead(`(async()=>(await api('dump')).text===subgridSaved)()`));
+    await subgridRead(`$('gridCreate').click()`);await waitForUI(`!!$('impact-confirm')`,10000);
+    await subgridRead(`$('impact-confirm').click()`);await waitForUI(`fe.grids.find(g=>g.id===subgridId)?.u.length===3`,10000);
+    subgridCheck('確認更新與來源保留',await subgridRead(`fe.grids.find(g=>g.id===subgridId).u.join(',')==='1500,2000,2500'`));
+    await subgridRead(`$('btnUndo').click()`);await waitForUI(`fe.grids.find(g=>g.id===subgridId)?.u.length===1`,10000);
+    subgridCheck('復原整筆子格',await subgridRead(`(async()=>(await api('dump')).text===subgridSaved)()`));
+    await subgridRead(`$('btnRedo').click()`);await waitForUI(`fe.grids.find(g=>g.id===subgridId)?.u.length===3`,10000);
+    subgridCheck('重做整筆子格',await subgridRead(`fe.grids.find(g=>g.id===subgridId).u.length===3`));
+    // Save through the real project writer, then reopen that package.
+    const subgridRoundtrip=await subgridRead(`(async()=>{
+      const picker=window.showSaveFilePicker,before=(await api('dump')).text;
+      let bytes;
+      window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async data=>{bytes=new Uint8Array(data instanceof Blob?await data.arrayBuffer():data);},close:async()=>{}})});
+      try{await ReferenceWorkspace.save();}finally{window.showSaveFilePicker=picker;}
+      if(!bytes?.length)throw Error('Project save did not write bytes');
+      const control=[...$('faceReferenceVisibility').querySelectorAll('input')].find(x=>x.dataset.refVisible==='group:grid:'+subgridId);control.click();
+      await ReferenceWorkspace.importBytes(bytes,'子網格驗收.gcanvas');await renderObjects();await enterFocus('face',1);
+      return {saved:(await api('dump')).text===before,
+        definition:fe.grids.some(g=>g.kind==='subgrid'&&g.divisions.u===4),
+        visible:!!document.querySelector('[data-face-hit="k:'+subgridId+':u:0"]')};
+    })()`);
+    for(const [key,value]of Object.entries(subgridRoundtrip))subgridCheck('專案重開 '+key,value,subgridRoundtrip);
+    await subgridRead(`document.querySelector('[data-grid-id="'+subgridId+'"] .grid-layer-open').click()`);
+    await subgridShot('subgrid-desktop-saved');
+    await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+    await subgridRead(`openPanel('right',$('workspaceToggleRight'))`);await sleep(250);
+    const subgridPhone=await subgridRead(`(()=>{
+      const form=$('subgridDivU').closest('.grid-editor');
+      const controls=[...form.querySelectorAll('input,select,button')].filter(e=>e.getBoundingClientRect().height>0);
+      return {touch:controls.every(e=>e.getBoundingClientRect().height>=44),fits:document.documentElement.scrollWidth<=390,
+        labels:!!$('subgridDivU').labels.length&&!!$('subgridDivV').labels.length,
+        choices:$('subgridCellChoice').options.length>=9};
+    })()`);
+    for(const [key,value]of Object.entries(subgridPhone))subgridCheck('手機 '+key,value,subgridPhone);
+    await subgridShot('subgrid-mobile-settings');
+    await subgridRead(`$('subgridPickCell').click()`);await sleep(250);
+    subgridCheck('手機選格露出畫布',await subgridRead(`!document.body.classList.contains('drawer-right-open')&&!!document.querySelector('[data-subgrid-cell]')`));
+    await subgridShot('subgrid-mobile-pick');
+    await subgridRead(`document.querySelector('[data-subgrid-cell="min|line:0|min|line:0"]').focus()`);
+    await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+    await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+    await waitForUI(`fe.gridPreview?.bounds.u[0]===0`,10000);
+    subgridCheck('鍵盤重新選邊格',await subgridRead(`$('subgridCellChoice').value==='min|line:0|min|line:0'&&fe.gridPreview?.bounds.u.join(',')==='0,1000'&&fe.gridPreview?.bounds.v.join(',')==='0,500'`));
+    await subgridRead(`$('gridReset').click()`);await sleep(500);
+    await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
+    const subgridDependencyUI=await subgridRead(`(async()=>{
+      closePanels();const before=(await api('dump')).text;
+      document.querySelector('[data-grid-id="1"] .grid-layer-open').click();
+      $('gridU').value='500 1000 3000';$('gridU').dispatchEvent(new Event('input',{bubbles:true}));await window.__cdpSettleUI(500);
+      const countLock=$('gridPreviewStatus').classList.contains('invalid')&&!fe.gridPreview&&(await api('dump')).text===before;
+      $('gridReset').click();await window.__cdpSettleUI(500);
+      document.querySelector('[data-grid-id="1"] .face-layer-del').click();await window.__cdpSettleUI(150);
+      return {countLock,deleteLock:$('gridPreviewStatus').textContent.includes('子網格')&&(await api('dump')).text===before};
+    })()`);
+    for(const [key,value]of Object.entries(subgridDependencyUI))subgridCheck('父格守門 '+key,value,subgridDependencyUI);
+    const subgridRoles=await subgridRead(`(async()=>{
+      fiShowTab('timber');const anchor=$('tbAnchor'),role=$('tbRole');
+      anchor.value='at-line grid '+subgridId+' u 0';anchor.dispatchEvent(new Event('change'));$('tbUseSuggestion').click();
+      const first=role.value==='secondary'&&$('tbSuggestion').textContent.includes('尚未建立實際主支方向');
+      anchor.value='at-line grid '+subgridId+' v 0';anchor.dispatchEvent(new Event('change'));$('tbUseSuggestion').click();
+      const second=role.value==='secondary';
+      const made=await mutate(['timber 1 27 33 role boundary','place 1 on 1 at-face e0 +u +n','timber 2 27 33 role boundary','place 2 on 1 at-face e2 +u +n']);
+      if(!made)throw Error('Support fixture failed');await feAfterChange();fiShowTab('timber');
+      $('tbAnchor').value='at-line grid '+subgridId+' u 0';$('tbAnchor').dispatchEvent(new Event('change'));$('tbUseSuggestion').click();
+      const conflict=$('tbRole').value==='secondary'&&$('tbSuggestion').textContent.includes('平行');
+      const before=(await api('dump')).text;$('tbPlace').click();await window.__cdpSettleUI(250);
+      const blocked=(await api('dump')).text===before;
+      $('tbRole').value='custom';$('tbRole').dispatchEvent(new Event('change'));
+      $('tbAnchor').value='at-line grid '+subgridId+' v 0';$('tbAnchor').dispatchEvent(new Event('change'));
+      return {first,second,conflict,blocked,override:$('tbRole').value==='custom'};
+    })()`);
+    for(const [key,value]of Object.entries(subgridRoles))subgridCheck('角色預設 '+key,value,subgridRoles);
+    const subgridLargeCoordinates=await subgridRead(`(async()=>{
+      resetSceneFocus();await api('line reset');
+      for(const command of [
+        'surface 1 origin 0 0 0 u +x v +y outline 99999998,99999998 100000000,99999998 100000000,100000000 99999998,100000000',
+        'grid 1 on 1 main-along v u 99999999 v 99999999'
+      ]){const r=await api('line '+command);if(!r.ok)throw Error(JSON.stringify(r));}
+      await renderObjects();await enterFocus('face',1);feSetTool('grid');$('subgridNew').click();
+      return $('subgridCellChoice').options.length===5;
+    })()`);
+    subgridCheck('大座標保留四個1平方mm格',subgridLargeCoordinates);
+    const subgridZeroIdentity=await subgridRead(`(async()=>{
+      resetSceneFocus();await api('line reset');
+      for(const command of [
+        'surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+        'grid 1 on 1 main-along v u 2000 v 1500',
+        'subgrid 0 parent 1 cell u min line:0 v min line:0 divisions u 2 v 2'
+      ]){const r=await api('line '+command);if(!r.ok)throw Error(JSON.stringify(r));}
+      await renderObjects();await enterFocus('face',1);feSetTool('grid');GridEditor.open(1);$('subgridNew').click();
+      const option=[...$('subgridCellChoice').options].find(o=>o.value==='min|line:0|min|line:0');
+      return option.disabled&&option.textContent.includes('子格 0')&&!document.querySelector('[data-subgrid-cell="min|line:0|min|line:0"]');
+    })()`);
+    subgridCheck('子格ID0仍標示已占用',subgridZeroIdentity);
+    await subgridRead(`(async()=>{closePanels();resetSceneFocus();await renderObjects();})()`);
+    subgridCheck('無執行期例外',excN===subgridExceptionStart,{before:subgridExceptionStart,after:excN});
+  }
+
   /* RC/多邊形 Phase 1:重畫外環 + 形狀庫 */
   console.log("=== P9. 重畫外環與形狀庫(RC Phase 1)===");
   const rw = await eval_(`(async()=>{

@@ -1,4 +1,4 @@
-"""Read-only bridge to the authoritative C legacy-scene parser (D1–D18)."""
+"""Read-only bridge to the authoritative C scene parser (D1–D19)."""
 
 from __future__ import annotations
 
