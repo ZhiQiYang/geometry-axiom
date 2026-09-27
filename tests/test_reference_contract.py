@@ -67,6 +67,26 @@ class ReferenceContract(unittest.TestCase):
     def confirm(self, p):
         return self.ok('confirm ' + str(p['token']))
 
+    def test_grid_source_metadata_and_read_only_draft(self):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000')
+        original = self.dump()
+        command = 'grid 1 on 1 u series 100 200 3 v panel 400 gap 5 from 0'
+        preview = self.s.send('grid-preview ' + command)
+        self.assertTrue(preview['ok'], preview)
+        self.assertEqual(original, self.dump())
+        self.assertEqual(preview['grid']['u'], [100, 300, 500])
+        self.assertEqual(preview['grid']['v'][:2], [402, 807])
+        self.ok(command)
+        grid = self.refs()['grids'][0]
+        self.assertEqual(grid, preview['grid'])
+        self.assertEqual(grid['uDefinition'], {'source': 'series', 'start': 100, 'step': 200, 'count': 3})
+        self.assertEqual(grid['vDefinition'], {'source': 'panel', 'panel': 400, 'gap': 5,
+                                                'anchor': 0, 'anchorExplicit': True})
+        failed = self.s.send('grid-preview grid 1 on 1 u series 3900 200 3')
+        self.assertFalse(failed['ok'], failed)
+        self.assertEqual(grid, self.refs()['grids'][0])
+
     def test_default_is_supported_reference_world(self):
         self.assertEqual(self.geom(3)['length'], 2946)
         self.assertEqual(self.geom(3)['centerline'], 500)

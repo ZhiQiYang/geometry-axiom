@@ -10,6 +10,7 @@
  *   render                       → {"ok":true,"layout":{...},"ops":[...]}
  *   pick <view> <x> <y> <r>      → 命中描述 + hover 高亮 ops（r = 拾取半徑，視圖內 mm）
  *   drag <guide_idx> <view> <x> <y> → 拖曳參考線：反解 uv、reference_snap、組 move 走 feed_line
+ *   grid-preview grid ...       → 在 World 副本上驗證並推導格線，不寫入場景或 undo
  *
  * ops 串流就是 DrawTarget 回呼的逐字序列化：begin/rect/poly/line/text/end。
  * 幾何本體在 current_geometry.c；本檔只做 stdin/JSON 橋。
@@ -896,6 +897,8 @@ int main(void)
             fputs("{\"ok\":true}\n", stdout);
         } else if (strcmp(line, "line") == 0 && arg != NULL) {
             cmd_line(arg);
+        } else if (strcmp(line, "grid-preview") == 0 && arg != NULL) {
+            cmd_grid_preview(arg);
         } else if (strcmp(line, "loadfile") == 0 && arg != NULL) {
             cmd_loadfile(arg);
         } else if (strcmp(line, "pick") == 0 && arg != NULL) {

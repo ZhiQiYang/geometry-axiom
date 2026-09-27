@@ -1070,6 +1070,21 @@ body.oc-busy .face-layer-row { pointer-events: none; }
 /* Q3：網格線與角材足跡 */
 .face-editor-svg .face-grid-line { fill: none; stroke: #b8c2d0; stroke-width: 1;
   stroke-dasharray: 2 5; vector-effect: non-scaling-stroke; }
+.face-editor-svg .face-grid-preview-line { fill: none; stroke: #376fcb; stroke-width: 1.5;
+  stroke-dasharray: 6 3; vector-effect: non-scaling-stroke; pointer-events: none; }
+.grid-editor-help { margin: 0 0 10px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+.grid-axis-card { display: grid; gap: 8px; margin-bottom: 10px; padding: 10px;
+  border: 1px solid var(--border); border-radius: 9px; background: var(--panel-muted); }
+.grid-axis-title { font-size: 12px; font-weight: 700; color: var(--ink); }
+.grid-axis-card label { display: grid; gap: 4px; color: var(--muted); font-size: 11px; }
+.grid-axis-card input, .grid-axis-card select { width: 100%; min-width: 0; box-sizing: border-box;
+  height: 30px; padding: 0 8px; border: 1px solid var(--border); border-radius: 7px;
+  background: var(--panel); color: var(--ink); }
+.grid-param-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.grid-axis-card [hidden] { display: none; }
+.grid-preview-status { margin: 8px 0; padding: 8px; border-radius: 7px; background: var(--face-soft);
+  color: var(--face); font-size: 11px; line-height: 1.55; overflow-wrap: anywhere; }
+.grid-preview-status.invalid { background: var(--danger-soft); color: var(--danger); }
 .face-editor-svg .face-timber { fill: rgba(196,120,26,.24); stroke: #c4781a;
   stroke-width: 1.6; vector-effect: non-scaling-stroke; }
 

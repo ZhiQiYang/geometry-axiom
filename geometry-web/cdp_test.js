@@ -1178,6 +1178,33 @@ async function rightClick(x, y) {
     "| 網格建立:", q3R.hasGrid ? "✓" : "✗",
     "| 網格線數:", q3R.gridLines, q3R.gridLines === 4 ? "✓" : "✗",
     "| 圖層列:", /角材/.test(q3R.rows) && /網格/.test(q3R.rows) ? "✓" : "✗");
+  const gridSourceUI = await eval_(`(async()=>{
+    fiShowTab("grid");
+    $("gridUSource").value="series"; $("gridUSource").dispatchEvent(new Event("change"));
+    $("gridUStart").value="500"; $("gridUStep").value="1000"; $("gridUCount").value="2";
+    $("gridVSource").value="panel"; $("gridVSource").dispatchEvent(new Event("change"));
+    $("gridVPanel").value="400"; $("gridVGap").value="5"; $("gridVFrom").value="0";
+    $("gridVGap").dispatchEvent(new Event("input"));
+    await window.__cdpSettleUI(600);
+    const preview=fe.gridPreview;
+    const worldBefore=(await api("dump")).text;
+    $("gridCreate").click(); await window.__cdpSettleUI(450);
+    const refs=await api("references"), grid=refs.grids[0];
+    const filled=$("gridUSource").value==="series" && $("gridVSource").value==="panel" &&
+      $("gridVGap").value==="5";
+    const saved=(await api("dump")).text;
+    $("gridUStart").value="3900"; $("gridUStart").dispatchEvent(new Event("input"));
+    await window.__cdpSettleUI(600);
+    return {preview:preview?.u?.join(",")==="500,1500" && preview?.v?.[0]===402,
+      untouchedBeforeSave:!worldBefore.includes("panel 400 gap 5"),
+      saved:grid?.uDefinition?.source==="series" && grid?.vDefinition?.gap===5 && grid?.v?.[0]===402,
+      filled, invalid:$("gridPreviewStatus").classList.contains("invalid") && fe.gridPreview===null,
+      unchanged:saved===(await api("dump")).text};
+  })()`);
+  console.log("網格來源即時預覽:",gridSourceUI.preview?"✓":"✗",
+    "| 預覽不改世界:",gridSourceUI.untouchedBeforeSave?"✓":"✗",
+    "| 來源儲存與回填:",gridSourceUI.saved&&gridSourceUI.filled?"✓":"✗",
+    "| 錯誤草稿拒絕且世界不變:",gridSourceUI.invalid&&gridSourceUI.unchanged?"✓":"✗");
   /* 足跡越界 → 核心拒絕,toast + dump 不變 */
   const q3b = await eval_(`(async()=>{
     const before = (await api("dump")).text;

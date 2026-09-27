@@ -73,6 +73,61 @@ static void cmd_reference_result(bool ok,uint32_t old_token)
     if (g_preview.ready && g_preview.token!=old_token) { fputs(",\"preview\":",stdout); json_reference_preview(); }
     fputs("}\n",stdout);
 }
+static void json_reference_grid(const World *w,const ReferenceGrid *g)
+{
+    const PlacementSurface *p=world_find_placement(w,g->placement_id);
+    printf("{\"id\":%u,\"surface\":%u",g->id,g->placement_id);
+    for (int axis=0;axis<2;++axis) {
+        const GridAxisDef *d=&g->axis[axis];
+        Coord values[GRID_MAX_LINES]; size_t count=0;
+        if (p) grid_axis_lines(g,p,world_placement_boundary(w,p),axis,values,&count,NULL,0);
+        printf(",\"%c\":[",axis?'v':'u');
+        for (size_t k=0;k<count;++k) printf("%s%lld",k?",":"",(long long)values[k]);
+        printf("],\"%cDefinition\":{\"source\":\"%s\"",axis?'v':'u',
+            d->source==GRID_SRC_EXPLICIT?"explicit":d->source==GRID_SRC_SERIES?"series":
+            d->source==GRID_SRC_PANEL?"panel":"none");
+        if (d->source==GRID_SRC_EXPLICIT) {
+            fputs(",\"coordinates\":[",stdout);
+            for (size_t k=0;k<d->count;++k) printf("%s%lld",k?",":"",(long long)d->coords[k]);
+            putchar(']');
+        } else if (d->source==GRID_SRC_SERIES) {
+            printf(",\"start\":%lld,\"step\":%lld,\"count\":%zu",
+                (long long)d->start,(long long)d->step,d->series_count);
+        } else if (d->source==GRID_SRC_PANEL) {
+            printf(",\"panel\":%lld,\"gap\":%lld,\"anchor\":%lld,\"anchorExplicit\":%s",
+                (long long)d->panel,(long long)d->gap,(long long)d->anchor,
+                d->anchor_explicit?"true":"false");
+        }
+        putchar('}');
+    }
+    putchar('}');
+}
+/* Read-only draft: run the canonical grid parser and expander on a World copy. */
+static void cmd_grid_preview(const char *command)
+{
+    if (!command || strlen(command)>=SCENE_MAX_LINE || !utf8_is_valid(command)) {
+        fputs("{\"ok\":false,\"error\":\"網格指令過長或編碼無效\"}\n",stdout); return;
+    }
+    char line[SCENE_MAX_LINE]; snprintf(line,sizeof line,"%s",command);
+    char *tokens[SCENE_MAX_TOKENS];
+    int count=split_tokens(line,tokens,SCENE_MAX_TOKENS);
+    if (count<5 || strcmp(tokens[0],"grid")!=0) {
+        fputs("{\"ok\":false,\"error\":\"預覽需要 grid 指令\"}\n",stdout); return;
+    }
+    World *draft=(World *)malloc(sizeof *draft);
+    if (!draft) { fputs("{\"ok\":false,\"error\":\"預覽記憶體不足\"}\n",stdout); return; }
+    *draft=g_world;
+    bool ok=apply_grid_line("preview",0,tokens,count,draft);
+    uint32_t id=0;
+    if (ok && !parse_u32(tokens[1],&id)) ok=false;
+    ReferenceGrid *grid=ok?world_find_grid_mut(draft,id):NULL;
+    if (!grid) {
+        fputs("{\"ok\":false,\"error\":",stdout); js_string(scene_last_error()); fputs("}\n",stdout);
+    } else {
+        fputs("{\"ok\":true,\"grid\":",stdout); json_reference_grid(draft,grid); fputs("}\n",stdout);
+    }
+    free(draft);
+}
 static void cmd_references(void)
 {
     fputs("{\"ok\":true,\"guides\":[",stdout);
@@ -82,16 +137,8 @@ static void cmd_references(void)
     fputs("],\"grids\":[",stdout);
     for (size_t i=0;i<g_world.grid_count;++i) {
         const ReferenceGrid *g=&g_world.grids[i];
-        const PlacementSurface *p=world_find_placement(&g_world,g->placement_id);
-        printf("%s{\"id\":%u,\"surface\":%u",i?",":"",g->id,g->placement_id);
-        for (int axis=0;axis<2;++axis) {
-            Coord values[GRID_MAX_LINES]; size_t count=0;
-            if (p) grid_axis_lines(g,p,world_placement_boundary(&g_world,p),axis,values,&count,NULL,0);
-            printf(",\"%c\":[",axis?'v':'u');
-            for (size_t k=0;k<count;++k) printf("%s%lld",k?",":"",(long long)values[k]);
-            putchar(']');
-        }
-        putchar('}');
+        if (i) putchar(',');
+        json_reference_grid(&g_world,g);
     }
     fputs("],\"timbers\":[",stdout); bool first=true;
     for (size_t i=0;i<g_world.timber_count;++i) {

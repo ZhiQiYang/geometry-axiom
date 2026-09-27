@@ -102,6 +102,7 @@ function inspectorState(pane, bid) {
     placement: pane.dataset.placement, timberRoleManual: pane.dataset.tbRoleManual,
     timberDirManual: pane.dataset.tbDirManual,
     referencePage: pane.dataset.referencePage, calibrationPoints: pane.dataset.calibrationPoints,
+    gridIdentity: pane.dataset.gridIdentity,
     drafts: [...pane.querySelectorAll("input[id],select[id]")]
       .filter(e => /^(tb|ref|grid|place[OUV]|ulCalib)/.test(e.id)).map(e => [e.id, e.value]),
     details: [...pane.querySelectorAll("details[id]")].map(e => [e.id, e.open]) };
@@ -117,6 +118,7 @@ function restoreInspectorState(pane, state) {
     if (/^tb/.test(id) && state.placement === "null" && pane.dataset.placement !== "null") continue;
     if (/^(ref|ulCalib)/.test(id) && state.referencePage !== pane.dataset.referencePage) continue;
     if (/^ulCalib/.test(id) && state.calibrationPoints !== pane.dataset.calibrationPoints) continue;
+    if (/^grid/.test(id) && state.gridIdentity !== pane.dataset.gridIdentity) continue;
     const e = pane.querySelector(`#${id}`); if (e) e.value = value;
   }
   for (const [id, open] of state.details) {
@@ -1949,6 +1951,8 @@ const fe = {
   guides: [],              /* 引用式及其求值結果來自 references API */
   timbers: [],             /* [{id,u,v,dir,side,L,A,B}] 本面承載的角材 */
   grids: [],               /* [{id, u:[], v:[]}] 本面網格 */
+  gridPreview: null,       /* 核心對編輯草稿推導的格線；不寫入 World */
+  gridPreviewSeq: 0,
   spaceDown: false,
   projOpen: false,
   projViews: new Set(),
@@ -1979,6 +1983,7 @@ const fe = {
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
 function fiShowTab(name) {
+  const wasGrid = fe.fiTab === "grid";
   const leavingUnderlay = fe.fiTab === "underlay" && name !== "underlay";
   fe.fiTab = name;
   const section = ["guide", "timber", "grid"].includes(name) ? "components" : name;
@@ -2000,6 +2005,7 @@ function fiShowTab(name) {
   /* GEO-195:離開角材頁就取消定位引用預示(見 fe.anchorPreview 註解)。 */
   if (section !== "components" && fe.anchorPreview) { fe.anchorPreview = false; drawFaceEditor(); }
   feUlSyncPointerEvents();
+  if (wasGrid !== (name === "grid")) drawFaceEditor();
   ReferenceWorkspace.present();
   feCalibrationPrompt();
   updateWorkspaceKeyHints();
@@ -3128,7 +3134,7 @@ function feGuidePickShow(u, v, cx, cy) {
 }
 
 async function feLoadGuides() {
-  fe.guides = []; fe.timbers = []; fe.grids = []; fe.obstacles = null;
+  fe.guides = []; fe.timbers = []; fe.grids = []; fe.gridPreview = null; fe.obstacles = null;
   const bid = oc.edit && oc.edit.bid, sid = bid && feSid(bid);
   if (!sid) return;
   /* R7/R9：已放置面才有柱樑鬼影（不改 boundary） */
@@ -3793,6 +3799,13 @@ function drawFaceEditor() {
       el("line", { x1: c, y1: gb[1], x2: c, y2: gb[3], class: "face-grid-line" }, refRoot);
     for (const c of g.v)
       el("line", { x1: gb[0], y1: c, x2: gb[2], y2: c, class: "face-grid-line" }, refRoot);
+  }
+  if (fe.fiTab === "grid" && fe.gridPreview) {
+    const g = fe.gridPreview;
+    for (const c of g.u)
+      el("line", { x1:c, y1:gb[1], x2:c, y2:gb[3], class:"face-grid-preview-line" }, refRoot);
+    for (const c of g.v)
+      el("line", { x1:gb[0], y1:c, x2:gb[2], y2:c, class:"face-grid-preview-line" }, refRoot);
   }
   /* 角材 A0 足跡（Q3）：axis_a = axis_b × axis_length 的 uv 版
      GEO-191:加 data-face-hit="t:<id>" 可選取;select 工具下才吃事件(見 app.css
@@ -5638,11 +5651,70 @@ async function feApplyProj() {
   }
 }
 
+/* TimberScript-style source editor, with the geometry always expanded by the core. */
+function gridAxisFormHTML(axis, definition, disabled = false) {
+  const d = definition || {source:"explicit"}, prefix = `grid${axis.toUpperCase()}`;
+  const dis = disabled ? " disabled" : "";
+  const source = d.source === "none" ? "none" : d.source || "explicit";
+  const option = (value, label) => `<option value="${value}"${source === value ? " selected" : ""}>${label}</option>`;
+  return `<div class="grid-axis-card" data-grid-axis="${axis}"><div class="grid-axis-title">${axis} 軸格線</div>` +
+    `<label>來源<select id="${prefix}Source"${dis}>${option("none","未設定")}${option("explicit","明寫座標")}${option("series","等差間距")}${option("panel","面材與縫")}</select></label>` +
+    `<div data-grid-fields="explicit"><label>格線座標（mm，空格分隔）<input id="${prefix}" placeholder="500 1500" value="${(d.coordinates || []).join(" ")}"${dis}></label></div>` +
+    `<div class="grid-param-fields" data-grid-fields="series"><label>起點 mm<input id="${prefix}Start" type="number" step="1" value="${d.start ?? ""}"${dis}></label>` +
+    `<label>間距 mm<input id="${prefix}Step" type="number" step="1" value="${d.step ?? ""}"${dis}></label>` +
+    `<label>條數<input id="${prefix}Count" type="number" min="1" max="64" step="1" value="${d.count ?? ""}"${dis}></label></div>` +
+    `<div class="grid-param-fields" data-grid-fields="panel"><label>面材寬 mm<input id="${prefix}Panel" type="number" step="1" value="${d.panel ?? ""}"${dis}></label>` +
+    `<label>縫寬 mm<input id="${prefix}Gap" type="number" step="1" value="${d.gap ?? ""}"${dis}></label>` +
+    `<label>起算點 mm（空白＝面下界）<input id="${prefix}From" type="number" step="1" value="${d.anchor ?? ""}"${dis}></label></div></div>`;
+}
+function gridSyncFields(pane) {
+  for (const axis of ["U","V"]) {
+    const card = pane.querySelector(`[data-grid-axis="${axis.toLowerCase()}"]`);
+    if (!card) continue;
+    const source = card.querySelector(`#grid${axis}Source`).value;
+    for (const fields of card.querySelectorAll("[data-grid-fields]"))
+      fields.hidden = fields.dataset.gridFields !== source;
+  }
+}
+function gridDraftCommand(pane, sid, id, existing) {
+  if (!Number.isSafeInteger(id) || !Number.isSafeInteger(sid)) throw Error("無法取得網格編號");
+  const parts = [`grid ${id} on ${sid}`];
+  for (const axis of ["U","V"]) {
+    const source = pane.querySelector(`#grid${axis}Source`).value;
+    const old = existing?.[axis.toLowerCase() + "Definition"]?.source;
+    const word = axis.toLowerCase();
+    const get = suffix => pane.querySelector(`#grid${axis}${suffix}`).value.trim();
+    const integer = (value, label) => {
+      if (!/^-?\d+$/.test(value) || !Number.isSafeInteger(Number(value))) throw Error(`${axis} 軸的${label}請填整數`);
+      return value;
+    };
+    if (source === "none") {
+      if (old && old !== "none") throw Error(`${axis} 軸已有格線；要移除請刪除網格後重建`);
+      continue;
+    }
+    if (source === "explicit") {
+      const raw = get("");
+      if (!raw && (!old || old === "none")) continue;
+      const coords = raw.split(/[\s,]+/).filter(Boolean).map(v => integer(v,"座標"));
+      if (!coords.length) throw Error(`${axis} 軸至少填一個座標`);
+      parts.push(`${word} ${coords.join(" ")}`);
+    } else if (source === "series") {
+      parts.push(`${word} series ${integer(get("Start"),"起點")} ${integer(get("Step"),"間距")} ${integer(get("Count"),"條數")}`);
+    } else if (source === "panel") {
+      let part = `${word} panel ${integer(get("Panel"),"面材寬")} gap ${integer(get("Gap"),"縫寬")}`;
+      if (get("From")) part += ` from ${integer(get("From"),"起算點")}`;
+      parts.push(part);
+    }
+  }
+  if (parts.length === 1) throw Error("至少設定一個軸的格線");
+  return parts.join(" ");
+}
 /* 右欄檢視器（§5.5.3 + 5.5.3a 放置 + 5.5.4 投影） */
 function renderFaceInspector() {
   const e = oc.edit;
   const pane = $("faceInspectorContent");
   if (!e || !pane) return;
+  ++fe.gridPreviewSeq;
   const bid = e.bid;
   const saved = inspectorState(pane, bid);
   pane.dataset.bid = String(bid);
@@ -5651,6 +5723,8 @@ function renderFaceInspector() {
   if (!saved) { pane.dataset.tbRoleManual = "false"; pane.dataset.tbDirManual = "false"; }
   const loops = oc.bmap[bid] || [];
   const surf = feSurf(bid);
+  const currentGrid = fe.grids.find(g => g.surface === surf?.id) || null;
+  pane.dataset.gridIdentity = currentGrid ? JSON.stringify([currentGrid.id,currentGrid.uDefinition,currentGrid.vDefinition]) : "new";
   pane.dataset.placement = JSON.stringify(surf ? [surf.id, surf.origin, surf.u, surf.v] : null);
   updateFaceWorkspaceHeading(bid);
   const bb = loops.length ? loopsBBox(loops) : null;
@@ -5754,14 +5828,14 @@ function renderFaceInspector() {
           : "游離面：先「放置」才可放角材") + `</div>` +
     `<div class="timber-suggestion"${surf ? "" : " hidden"}><span id="tbSuggestion"></span><button id="tbUseSuggestion" type="button" class="btn">套用建議</button></div>` +
     `<button id="tbPlace" class="primary-button"${surf ? "" : " disabled"}>放置角材</button></div></section>`;
-  /* B2:網格頁（同上游離停用） */
+  /* 網格來源依軸設定；推導結果由 bridge 的核心 grid_axis_lines 提供。 */
   html += `<section data-component-section="grid"><h2 class="component-heading">網格</h2>` +
-    `<div class="inspector-block"><div class="ib-title">網格</div>` +
+    `<div class="inspector-block grid-editor"><div class="ib-title">${currentGrid ? `編輯網格 ${currentGrid.id}` : "建立網格"}</div>` +
     (surf ? "" : `<div class="fi-note">游離面：先放置才可建網格。</div>`) +
-    `<div class="place-form">` +
-    `<label>u 座標<input id="gridU" placeholder="500 1500"${surf ? "" : " disabled"}></label>` +
-    `<label>v 座標<input id="gridV" placeholder="300 900"${surf ? "" : " disabled"}></label>` +
-    `</div><button class="btn" id="gridCreate"${surf ? "" : " disabled"}>建立網格</button></div></section></div>`;
+    `<p class="grid-editor-help">每軸選擇明寫、等差或面材來源；格線由幾何核心推導，儲存後可作為角材定位引用。</p>` +
+    gridAxisFormHTML("u",currentGrid?.uDefinition,!surf) + gridAxisFormHTML("v",currentGrid?.vDefinition,!surf) +
+    `<div id="gridPreviewStatus" class="grid-preview-status" role="status">輸入參數後顯示格線預覽</div>` +
+    `<button class="btn" id="gridCreate"${surf ? "" : " disabled"}>${currentGrid ? "套用網格變更" : "建立網格"}</button></div></section></div>`;
   /* GEO-188(方案 B):形狀頁 */
   html += feShapePaneHTML(bid);
   /* GEO-190:底圖頁 */
@@ -5872,23 +5946,54 @@ function renderFaceInspector() {
     });
   }
   const gc = pane.querySelector("#gridCreate");
-  if (gc) gc.addEventListener("click", async () => {
+  const gridStatus = pane.querySelector("#gridPreviewStatus");
+  let gridTimer = null;
+  const gridDraftLine = async () => {
     const sid = feSid(bid);
-    if (!sid) return;
-    const parse = id => (($(id) || {}).value || "").trim()
-      .split(/[\s,]+/).filter(Boolean).map(Number);
-    const u = parse("gridU"), v = parse("gridV");
-    if (!u.length && !v.length) { setStatus("至少給一個 u 或 v 座標"); return; }
-    if ([...u, ...v].some(n => !Number.isInteger(n))) {
-      setStatus("網格座標要是整數"); return;
+    if (!sid) throw Error("請先放置這片面");
+    const ids = currentGrid ? null : await api("newid");
+    if (ids && !ids.ok) throw Error(ids.error || "無法取得網格編號");
+    return gridDraftCommand(pane, sid, currentGrid?.id ?? ids.grid, currentGrid);
+  };
+  const gridPreview = async () => {
+    const seq = ++fe.gridPreviewSeq;
+    if (!pane.isConnected || !feSid(bid)) return;
+    try {
+      const line = await gridDraftLine();
+      if (seq !== fe.gridPreviewSeq || !pane.isConnected) return;
+      const r = await apiRequest("grid-preview " + line);
+      if (seq !== fe.gridPreviewSeq || !pane.isConnected) return;
+      if (!r.ok) throw Error(r.error || "格線無法推導");
+      fe.gridPreview = r.grid;
+      gridStatus.classList.remove("invalid");
+      const lineSummary = values => values.length > 8
+        ? values.slice(0,8).join("、") + "…" : values.join("、") || "無";
+      gridStatus.textContent = `預覽：u ${r.grid.u.length} 條（${lineSummary(r.grid.u)}）· v ${r.grid.v.length} 條（${lineSummary(r.grid.v)}）`;
+    } catch (err) {
+      if (seq !== fe.gridPreviewSeq) return;
+      fe.gridPreview = null;
+      gridStatus.classList.add("invalid");
+      gridStatus.textContent = err.message;
     }
-    const ids = await api("newid");
-    let line = `grid ${ids.grid} on ${sid}`;
-    if (u.length) line += ` u ${u.join(" ")}`;
-    if (v.length) line += ` v ${v.join(" ")}`;
-    if (await emitLine(line)) {
-      await feLoadGuides(); drawFaceEditor(); renderFaceLayers();
-    }
+    drawFaceEditor();
+  };
+  for (const field of pane.querySelectorAll(".grid-editor input, .grid-editor select")) {
+    field.addEventListener(field.tagName === "SELECT" ? "change" : "input", () => {
+      gridSyncFields(pane);
+      clearTimeout(gridTimer);
+      gridTimer = setTimeout(gridPreview, 240);
+    });
+  }
+  gc?.addEventListener("click", async () => {
+    ++fe.gridPreviewSeq;
+    try {
+      const line = await gridDraftLine();
+      gc.disabled = true;
+      if (await emitLine(line)) await feAfterChange();
+    } catch (err) {
+      gridStatus.classList.add("invalid"); gridStatus.textContent = err.message;
+      setStatus("✗ " + err.message);
+    } finally { if (gc.isConnected) gc.disabled = false; }
   });
   const pt = pane.querySelector("#projectionDetails");
   pt.addEventListener("toggle", async () => {
@@ -5908,6 +6013,12 @@ function renderFaceInspector() {
     });
   if (fe.projOpen) feRenderProjection();
   restoreInspectorState(pane, saved);
+  gridSyncFields(pane);
+  const hasGridDraft = currentGrid || ["U","V"].some(axis =>
+    pane.querySelector(`#grid${axis}Source`).value !== "explicit" ||
+    pane.querySelector(`#grid${axis}`).value.trim());
+  if (fe.fiTab === "grid" && surf && hasGridDraft)
+    gridTimer = setTimeout(gridPreview, 240);
   feTimberAutoBadges(pane);
   ReferenceWorkspace.present();
   if (!saved || (saved.placement === "null" && surf)) feTimberSuggestForm();

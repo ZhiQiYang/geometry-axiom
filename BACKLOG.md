@@ -482,13 +482,9 @@
 - **測試**:連續 delete + undo/redo 混合;刪除承載面後再 `render` 不殘留。
 - **相依**:無。**估時 1.5h**。
 
-### WEB-002 新增 `guides <sid>` 列舉指令
-- **內容**:回傳指定承載面上的參考線(id/軸/offset)。目前 UI 只能 parse `dump` 文本的 `^guide` 行,脆弱且繞路。
-  Q3 後 timber/place/grid 也走同一路徑解析——若做本單,建議擴成 `refs <sid>` 一次回傳 guides+timbers+grids。
-- **驗收**:JSON 輸出 `{"ok":true,"guides":[{"id":..,"surface":..,"axis":"u","offset":..}]}`;空面回空陣列非錯誤。
-- **檔案**:`web_bridge.c`(指令表)。
-- **測試**:建 guide → 列舉 → move → 再列舉。
-- **相依**:無。**估時 45min**。⚡ 與 WEB-001 平行。
+### WEB-002 ✅ 參照物件結構化列舉
+- **實作**：既有 `references` 一次回傳 guides、timbers、grids，包含承載面 id、參考線軸向及位置；UI 依承載面過濾，不再解析 dump 文字。
+- **驗收**：空集合回空陣列；參照物件新增、移動、刪除後重新讀取一致。與 WEB-005 共用橋接回傳。
 
 ### WEB-003 🔶 部分完成(2026-09-14,RC Phase 6) 邊界面/參考線數量上限檢討(§9 Q1 附帶)
 - **進度**:`WORLD_MAX_BOUNDARIES/PLACEMENTS` 8→16(commit ce02a80)——條帶裁切需 +4 面;兩間六面盒(12 面)現可共存。動態化/再加大仍開放。
@@ -714,12 +710,13 @@
 - **註**：公理層 D10 **刻意沒有重述「一面一格」**（它目前只活在實作與程式碼註解的 G1，I10 原文也沒寫），就是為了不在這裡挖坑。
 - **相依**：GEO-105。**估時 3h**。
 
-### WEB-005 網格來源編輯器與推導線渲染
-- **內容**：`web_bridge.c` 新增 `gridlines <sid>` 指令，回傳結構化的 `{id, axis, lines[], source, panel, gap}`；`app.js` 改用它渲染，不再 regex 解析 dump 的 `^grid` 行（2252-2256）；面內「網格」分頁加來源選單（明寫／等差／面材）與即時預覽。**本票同時做掉既有的 WEB-002**（改成 `refs <sid>` 一次回傳 guides+timbers+grids 亦可）。
-- **相依**：GEO-100。**估時 4h**。
+### WEB-005 ✅ 網格來源編輯器與推導線渲染
+- **實作**：沿用既有 `references` 一次回傳 guides、timbers、grids；各軸新增來源定義欄位，推導線仍由核心唯一的 `grid_axis_lines` 產生。`grid-preview` 在 World 副本上走同一個網格解析與驗證，供面內編輯器即時預覽。UI 可獨立設定 u/v 的明寫、等差、面材來源，編輯既有網格並回填參數。
+- **驗收**：預覽不改 World；明寫／等差／面材的線與儲存後相同；奇數縫寬依 D10a 向下取整；非法來源顯示錯誤且保持原網格；既有角材引用與 I8a 影響預覽仍走正式 `line` 交易。`tests/test_reference_contract.py` 與 `geometry-web/cdp_test.js` 覆蓋核心與瀏覽器流程。
+- **範圍**：TimberScript 的施工相位、支撐步距與子網格須等本專案 D10b/I24/R22、D19/I25/R23 條文定案，未併入此票。
 
-### 第 10 流的 web 停損說明
-`geometry-web/app.js:2252-2256` 目前用正則解析 dump 的 `^grid` 行再 `.map(Number)`。GEO-100 一落地，`grid 1 on 1 u panel 400 gap 20 from 0` 會被解析成 `[NaN,400,NaN,20,NaN,0]`，面內編輯器畫出垃圾格線且不報錯。所以 GEO-100 的驗收含一行 regex 收緊（只吃純數字串，認不得就不畫），真正的網格編輯器留給 WEB-005。
+### 第 10 流的 web 停損說明（已解除）
+先前 dump 的 `^grid` 正則解析會把 `panel` 來源誤讀成 `NaN`。現行面內渲染讀 `references` 的核心推導座標，WEB-005 也用相同來源預覽，因此這條風險已解除。
 
 ### GEO-107 ✅ 已完成(2026-09-16) 定位邊改成純幾何推導,不再讀 anchor_kind
 - **狀態**：2026-09-16 於 GEO-097 的往返驗證中發現，**既有缺陷**（改版前後同樣重現，與網格來源化無關）。尚未修，需先拍板修法。
