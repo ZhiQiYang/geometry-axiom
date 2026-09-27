@@ -6,6 +6,7 @@ import json
 import os
 import pathlib
 import queue
+import sys
 import threading
 import time
 import unittest
@@ -102,6 +103,50 @@ class BridgeServerTests(unittest.TestCase):
             server.shutdown()
             thread.join(timeout=2)
             server.server_close()
+
+    def test_timber_space_release_is_advertised_without_changing_the_world(self):
+        with self.http_server() as base:
+            with urllib.request.urlopen(base + "/model/capabilities", timeout=5) as response:
+                self.assertEqual(response.headers["X-Geometry-Release"], "engineering-spec-v1-20260928")
+                capabilities = json.load(response)
+            self.assertEqual(capabilities["release"], "engineering-spec-v1-20260928")
+            self.assertEqual(capabilities["space_preview_schemas"],
+                             ["geometry-space-preview/1", "geometry-space-preview/2"])
+            self.assertEqual(self.process.stdin.getvalue(), b"")
+
+    def test_example_adapter_failure_is_reported_without_dropping_connection(self):
+        sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "geometry-web"))
+        import space_modeling
+        from modeling import ModelError
+        failure = ModelError("UNSUPPORTED", "BASE_COMPILER", "D25", "Test adapter unavailable")
+        with patch.object(space_modeling, "examples", side_effect=failure), self.http_server() as base:
+            with urllib.request.urlopen(base + "/model/space-examples", timeout=5) as response:
+                self.assertEqual(json.load(response), failure.as_dict())
+            self.assertEqual(self.process.stdin.getvalue(), b"")
+
+    def test_engineering_http_routes_preserve_payload_and_choose_the_correct_core_operation(self):
+        # Exercise Handler wiring as well as file_request: testing the latter
+        # alone would miss preview accidentally routed as scene validation.
+        transaction = json.dumps({"schema":"engineering-transaction/1", "expectedRevision":7,
+                                  "operations":[{"op":"publish-material", "value":{"notes":"尺寸來源"}}]},
+                                 ensure_ascii=False).encode("utf-8")
+        for route, payload, operation in [("/engineering/preview", transaction, "engineering-preview"),
+                                           ("/engineering/validate-project", b"", "engineering-validate")]:
+            paths = []
+            def bridge(command):
+                prefix, name = command.split(" ", 1)
+                self.assertEqual(prefix, operation)
+                source = pathlib.Path(name); paths.append(source)
+                self.assertEqual(source.read_bytes(), payload)
+                return b'{"ok":true,"route_evidence":"real handler"}'
+            with self.subTest(route=route), patch.object(self.server_module, "ask_bridge", side_effect=bridge) as called, self.http_server() as base:
+                request = urllib.request.Request(base + route, data=payload, headers={"Content-Type":"application/json"})
+                with urllib.request.urlopen(request, timeout=2) as response:
+                    self.assertEqual(json.load(response), {"ok":True,"route_evidence":"real handler"})
+                called.assert_called_once()
+                self.assertEqual(len(paths), 1)
+                self.assertFalse(paths[0].exists())
+        self.assertEqual(self.process.stdin.getvalue(), b"")
 
     def test_reference_assets_are_local_and_path_allowlisted(self):
         with self.http_server() as base:

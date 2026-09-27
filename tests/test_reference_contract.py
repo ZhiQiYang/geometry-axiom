@@ -354,6 +354,48 @@ class ReferenceContract(unittest.TestCase):
             self.ok(line)
         self.assertEqual(self.geom(1)['centerline'],40)
         self.assertIn('at-face t0',self.dump())
+        self.assertEqual(next(t['definition'] for t in self.refs()['timbers'] if t['id'] == 1),
+                         {'anchor': 'at-face t0', 'selector': '', 'priority': 2})
+        self.roundtrip()
+
+    def test_timber_definition_preserves_anchor_selector_priority_and_zero_ids(self):
+        surface = 'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000'
+        supports = ['timber 90 20 33 role boundary', 'place 90 on 1 at-face e0 +u +n',
+                    'timber 91 20 33 role boundary', 'place 91 on 1 at-face e2 +u +n']
+        cases = [
+            ([], 'timber 0 27 33 role boundary', 'at-face e0', '', '+u', 1),
+            ([*supports, 'spec center_x 1000', 'guide 0 1 v spec:center_x'],
+             'timber 0 27 33 role custom priority 7', 'at-line guide 0', 'through 600', '+v', 7),
+            ([*supports, 'grid 0 on 1 main-along v u 1000'],
+             'timber 0 27 33 role custom priority 9', 'at-line grid 0 u 0', 'through 700', '+v', 9),
+            (['timber 90 20 33 role boundary', 'place 90 on 1 at-face e0 +u +n',
+              'timber 91 20 33 role boundary', 'place 91 on 1 at-face e2 +u +n',
+              'spec center_x 1000', 'guide 0 1 v spec:center_x'],
+             'timber 0 27 33 role primary', 'at-line guide 0', 'between t90 t91', '+v', 2),
+        ]
+        for setup, declaration, anchor, selector, direction, priority in cases:
+            with self.subTest(anchor=anchor, selector=selector):
+                self.ok('reset')
+                for line in [surface, *setup, declaration,
+                             f'place 0 on 1 {anchor} {selector} {direction} +n']:
+                    self.ok(line)
+                timber = next(t for t in self.refs()['timbers'] if t['id'] == 0)
+                self.assertEqual(timber['definition'], {'anchor': anchor, 'selector': selector, 'priority': priority})
+                before = self.dump()
+                self.roundtrip()
+                self.assertEqual(before, self.dump())
+                self.assertEqual(next(t['definition'] for t in self.refs()['timbers'] if t['id'] == 0), timber['definition'])
+
+    def test_timber_definition_keeps_hole_edge_references(self):
+        self.ok('reset')
+        for line in [
+            'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 3300,500 3800,500 3800,800 3300,800 hole 3300,2200 3800,2200 3800,2500 3300,2500',
+            'spec center_x 3500', 'guide 0 1 v spec:center_x',
+            'timber 0 27 33 role primary', 'place 0 on 1 at-line guide 0 between h0e2 h1e0 +v +n',
+        ]:
+            self.ok(line)
+        self.assertEqual(self.refs()['timbers'][0]['definition'],
+                         {'anchor': 'at-line guide 0', 'selector': 'between h0e2 h1e0', 'priority': 2})
         self.roundtrip()
 
     def test_collinear_extra_vertex_is_valid(self):
@@ -366,6 +408,11 @@ class ReferenceContract(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)/'references.scene'
             path.write_text(before, encoding='utf-8')
+            # Loading over an identical live World lets a no-op loader pass.
+            # Remove that oracle shortcut: replay must reconstruct definitions
+            # and geometry from the saved bytes into an empty World.
+            self.ok('reset')
+            self.assertNotEqual(before, self.dump())
             r = self.s.send('loadfile ' + str(path))
             self.assertTrue(r['ok'], r)
         self.assertEqual(before, self.dump())
@@ -380,12 +427,15 @@ class ReferenceContract(unittest.TestCase):
     def test_boundary_role_priority_and_orphan_file_rejection(self):
         self.s.send('reset')
         self.ok('surface 1 origin 0 0 0 u +x v +y rect 0 0 4000 3000')
+        before, refs = self.dump(), self.refs()
         self.assertFalse(self.line('timber 1 27 33')['ok'])
         self.assertFalse(self.line('timber 1 27 33 role custom')['ok'])
         with tempfile.TemporaryDirectory() as tmp:
             p=Path(tmp)/'orphan.scene'
             p.write_text('boundary 1 outline 0,0 10,0 10,10 0,10\ntimber 1 2 2 role primary\n',encoding='utf-8')
             self.assertFalse(self.s.send('loadfile '+str(p))['ok'])
+        self.assertEqual(before, self.dump(), 'I9 rejected replay must preserve the current World')
+        self.assertEqual(refs, self.refs())
 
 
 if __name__ == '__main__':

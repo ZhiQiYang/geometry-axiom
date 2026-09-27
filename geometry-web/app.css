@@ -1060,6 +1060,8 @@ svg text { user-select: none; }
 /* busy 互斥(§5.1):mutate 飛行中忽略所有按鈕與輸入 */
 body.oc-busy button { pointer-events: none; }
 body.oc-busy input, body.oc-busy select, body.oc-busy textarea { pointer-events: none; }
+/* The transaction is waiting for this I8a decision; these are not competing edits. */
+body.oc-busy .reference-impact button:not(:disabled) { pointer-events: auto; }
 /* div 型可點列（構件列/圖層列）busy 時一樣要擋,否則點了被 emitLine 靜默丟棄 */
 body.oc-busy .space-boundary-button,
 body.oc-busy .face-layer-row { pointer-events: none; }
@@ -2043,3 +2045,53 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
   .object-workspace .face-inspector-panel, .object-workspace .space-info-panel { top: var(--topbar-h); }
   .topbar .tool-button { min-width: 29px; }
 }
+
+#btnFaceProjection{min-height:44px;min-width:44px}
+/* Reserve the face title before giving the remaining tablet width to the
+   scrollable tools. Adding an action must not shrink the title to zero. */
+@media(min-width:561px) and (max-width:900px){.object-workspace-topbar,.reference-editor .object-workspace-topbar{grid-template-columns:minmax(110px,auto) minmax(0,1fr) auto;gap:8px}.face-workspace-tools{justify-self:start;max-width:100%;min-width:0}}
+.fp-inspector p,.fp-inspector small{font-size:11px;line-height:1.65;color:#53647a;margin:8px 0;display:block}
+.fp-inspector .fp-purpose-label{display:block;color:#187667;font-size:13px;line-height:1.5}
+.fp-inspector button{min-height:44px;margin-top:8px;width:100%;white-space:normal}
+.fp-warning{color:#a44222!important}
+.fp-dialog{padding:0;border:1px solid #d9e2ea;border-radius:16px;color:#24354a;background:#fff;width:min(700px,calc(100vw - 24px));max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);box-shadow:0 20px 70px #19324a33;overflow:hidden}
+.fp-dialog[open]{display:flex;flex-direction:column}
+.fp-dialog::backdrop{background:#172c4780;backdrop-filter:blur(3px)}
+.fp-dialog *{box-sizing:border-box}
+.fp-dialog button,.fp-dialog input,.fp-dialog select{font:inherit}
+.fp-dialog button,.fp-dialog select{min-height:44px;border:1px solid #cbd8e4;background:#fff;border-radius:8px;padding:9px 12px;color:#324b68;font-size:13px}
+.fp-dialog button{cursor:pointer}
+.fp-dialog button:disabled,.fp-dialog select:disabled{opacity:.5;cursor:default}
+.fp-dialog button:focus-visible,.fp-dialog select:focus-visible,.fp-dialog input:focus-visible{outline:3px solid #426ad4;outline-offset:2px}
+.fp-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid #dce5ed;flex:0 0 auto;gap:12px}
+.fp-header small{font-size:11px;color:#53647a;letter-spacing:.08em}
+.fp-header h2{font-size:20px;line-height:1.4;margin:5px 0 0}
+.fp-header button{min-width:44px;font-size:22px}
+.fp-body{padding:20px 24px;overflow:auto;min-height:0}
+.fp-lead{font-size:13px;line-height:1.7;margin:0 0 18px;color:#475f76}
+.fp-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.fp-field{display:flex;flex-direction:column;gap:7px;font-size:12px;color:#42566d;font-weight:600;min-width:0}
+.fp-field select{width:100%;font-weight:400}
+.fp-figure{margin:18px 0;background:#f5f9fa;border:1px solid #dae7e8;border-radius:10px;padding:10px}
+.fp-figure svg{display:block;width:100%;height:220px}
+.fp-figure figcaption{font-size:11px;line-height:1.65;color:#51647a;padding:0 7px 5px}
+.fp-confirm{display:flex;align-items:center;gap:10px;min-height:52px;margin-top:16px;padding:10px 12px;border:1px solid #badad3;background:#f1faf7;border-radius:8px;font-size:13px;line-height:1.7}
+.fp-confirm input{width:20px;height:20px;flex:0 0 20px;accent-color:#168876}
+.fp-height{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0;border-bottom:1px solid #e3e9ef}
+.fp-height span,.fp-height strong,.fp-height small{display:block}
+.fp-height span{font-size:12px;color:#52657a}
+.fp-height strong{font-size:17px;margin:4px 0 7px}
+.fp-height small{font-size:11px;line-height:1.6;color:#52657a}
+.fp-height button{flex:0 0 auto}
+.fp-note,#fpMessage,#fpUnavailable{font-size:12px;line-height:1.7;margin:12px 0 0;color:#52657a}
+.fp-footer{display:flex;justify-content:flex-end;gap:8px;padding:14px 24px;border-top:1px solid #dce5ed;flex:0 0 auto;background:#f8fafc}
+.fp-dialog .fp-primary{background:#237e71;border-color:#237e71;color:#fff}
+@media(max-width:680px){.fp-header,.fp-body{padding:16px}.fp-header h2{font-size:17px}.fp-fields{grid-template-columns:1fr}.fp-height{align-items:flex-start;flex-direction:column}.fp-height button{width:100%}.fp-footer{padding:12px;display:grid;grid-template-columns:1fr 1fr}.fp-footer .fp-primary{grid-column:1/-1}.fp-figure svg{height:190px}.fp-dialog{max-height:calc(100dvh - 16px)}}
+/* GEO-209:選取本身不佔幾何；提示留在畫布，手機不超出視窗。 */
+.selection-summary{position:absolute;z-index:8;top:12px;left:12px;right:12px;display:flex;align-items:center;gap:12px;width:max-content;max-width:calc(100% - 24px);padding:8px 12px;background:rgba(255,255,255,.95);border:1px solid #dbe2ed;border-radius:10px;color:#33455d;box-shadow:0 2px 8px #2333480a;pointer-events:none;box-sizing:border-box}
+.selection-copy{display:flex;flex-direction:column;gap:3px;min-width:0;overflow-wrap:anywhere}
+.selection-copy strong{font-size:12px;line-height:1.45}.selection-copy small{font-size:11px;line-height:1.5;color:#64748b}
+.selection-summary button{pointer-events:auto;min-width:78px;min-height:44px;flex-shrink:0;padding:6px 10px;border:1px solid #cfd8e8;border-radius:7px;background:white;color:#364f91;font:inherit;font-size:12px;cursor:pointer}
+.selection-marquee{fill:rgba(78,103,232,.12);stroke:#4e67e8;stroke-width:1.5;stroke-dasharray:5 3;vector-effect:non-scaling-stroke;pointer-events:none}
+.multi-selection-list{max-height:220px;overflow:auto;margin:10px 0;padding-left:22px;font-size:12px;line-height:1.8}.multi-selection-note{font-size:12px;line-height:1.65;color:#617087}
+@media(max-width:680px){.selection-summary{top:8px;left:8px;right:8px;max-width:calc(100% - 16px);gap:8px;padding:7px 9px}.selection-copy small{max-width:240px}.selection-summary button{min-width:68px}}

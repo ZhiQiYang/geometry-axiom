@@ -46,7 +46,7 @@ static bool model_source_check(const char *path, bool *capacity, char *error, si
 {
     static const char *allowed[] = {
         "spec", "boundary", "placement", "surface", "space", "datum", "guide",
-        "grid", "subgrid", "timber", "place", "column", "beam", "canvas-pos", NULL
+        "grid", "subgrid", "timber", "place", "column", "beam", "canvas-pos", "requires", "engineering", NULL
     };
     FILE *in = fopen(path, "rb");
     if (!in) { snprintf(error, cap, "Cannot read source scene."); return false; }
@@ -339,7 +339,9 @@ int main(int argc, char **argv)
     canonical[used++] = '\n'; canonical[used] = '\0';
     fputs("{\"ok\":true,\"schema\":\"geometry-base-snapshot/1\",\"base_scene\":", stdout);
     model_string(stdout, canonical); free(canonical);
-    fputs(",\"specs\":[", stdout);
+    fputs(",\"required_capabilities\":[",stdout);
+    if(engineering_used(&world))model_string(stdout,"engineering-spec/1");
+    fputs("],\"specs\":[", stdout);
     for (size_t i = 0; i < world.spec_count; ++i) {
         if (i) putchar(',');
         fputs("{\"name\":", stdout); model_string(stdout, world.specs[i].name);

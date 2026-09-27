@@ -3,6 +3,41 @@
 > 立案 2026-09-13(Phase 0 產出);Phase 1 改版更新。本檔列出自動測試依賴的 DOM id / class / 全域名稱;
 > 之後每階段改 DOM 都要對照本表,新增或改名需同步更新測試。
 
+## GEO-208 角材結構建模（目前合約）
+
+- `#timber-space-v1` 連線完成後自動開「角材骨架範例」，`#smTryTimberFrame` 可隨時載入。範例不改使用者世界。服務 `/model/capabilities` 宣告 `space_preview_schemas`；確認支援 `/2` 才顯示「角材結構建模版」。舊服務明示未啟用，納入角材的請求不降級送出。
+- `#smIncludeTimbers` 為建模選擇；`#smTimberCount`、`#smTimberCandidates` 顯示精確所選放置的角材與尺寸／世界高度。`#smTimberEmpty`、`#smBackToTimbers` 提供零支引導。候選與場景快照一致後才能採用。
+- `#smShowTimbers` 只控制真實角材 mesh 顯示；`#smShowRoof` 只作用於空間殼。`#smTimberVolume` 獨立列材料量，`#smTimberReview`／`#smTimberReviewList` 在建立前核對支數及高度。`#smExportKind` 的 `timbers` 選項匯出完整角材套件。
+- 新請求的 `input.timbers` 是非空 typed roots；省略時沿用 preview `/1`，有角材時為 `/2`，保存為 `geometry-canvas/4`。舊 `/1–3` 可讀且不補入角材；匯入在替換目前專案前完成五種套件驗證與保存輸入重建。
+- 詳見 `TIMBER-IN-SPACE.md`；測試為 backend、project-store、model-viewer 及 `space_model_test.js`，`GEOMETRY_TIMBER_ONLY=1` 可單跑角材瀏覽器段。
+
+## GEO-207 平面投影定義（版本及角材擴充見 GEO-208）
+
+- `window.FaceProjection` 整合於現有 `app.js`，樣式在 `app.css`；沿用現有工作區。頁面與建模視窗的版本由 GEO-208 服務能力檢查決定。
+- `[data-fp-edit][data-fp-placement]` 開啟指定面／放置的設定，`[data-fp-build][data-fp-placement]` 進入建立空間。面卡片、物件清單、面標題及檢查器呈現同一份定義；沒有定義時明說尚未指定。
+- `#fpDialog` 原生 modal 包含 `#fpPlacement`（放置面）、`#fpPurpose`（`general`／`space-boundary-plan`）、`#fpView`（`top`／`bottom`）、`#fpInterior`（確認輪廓內為室內淨空、牆厚向外）、`#fpZ`（唯讀圖面高度）與 `#fpOutline`（世界座標投影示意）。`#fpApply` 保存設定，`#fpApplyBuild` 接續建模，`#fpCancel` 放棄草稿。
+- 俯視為沿 −Z 看向 XY 平面，仰視為沿 +Z；`#fpOutline` 及建模輪廓依實際放置座標繪製。面內原本的 u→／v↓ 畫布標為「輪廓編輯圖」，不冒充世界俯視。改觀看方向不修改輪廓、放置、z 或材料牆外側方向。
+- 只接受已放置水平面。未放置／垂直面提供放置操作引導；同邊界有多個放置時逐一設定，不按原始面編號共用。一般面可清除用途定義。
+- `#smProjectionCallout`／`#smSetProjection` 引導自己的平面先完成定義；`#smProjectionSummary` 顯示已保存語意。尚未定義時禁止平面預覽及建立；組合既有面模式不受此限制。設定完成保留已填牆底、牆高與牆厚，但使舊預覽失效。
+- `#smBottomHelp` 區分圖面 z 與牆底；`#smHeight` 新模型預設 3000 mm，`#smThickness` 預設 100 mm，牆底仍須明填。`[data-sm-view="top"]`／`[data-sm-view="bottom"]` 分別為真實 3D 俯視／仰視。
+- `ReferenceWorkspace.getFaceProjection(bid, placementId)` 回傳複本或 `null`；`getFaceProjections(bid)` 列各放置；`setFaceProjection(bid, placementId, definitionOrNull)` 為可復原的本機操作，觸發 `face-projections-changed`。
+- 專案有 `faceProjections` 或模型 `source.projection` 快照時使用 `geometry-canvas/3`；舊 `/1`、`/2` 可讀。刪除、重派或轉垂直的放置清除定義，復原恢復；水平平移及 z 改動保留。模型保留建立時快照，修改牆高沿用快照；舊模型標明未保存投影定義。
+- 完整操作及資料契約見 `FACE-PROJECTION.md`；回歸包括 `test_face_projection_store.js`、`test_model_viewer.cjs`、`space_model_test.js` 與完整 `cdp_test.js`。
+
+## GEO-205 從面建立空間（第一版，投影及格式更新見 GEO-207）
+
+- `#btnSpaceModelTrial` 開矩形範例，`#btnSpaceModels`／`#spaceModelCount` 開模型庫；它們位於獨立 `.space-model-entry`，原 `.start-options` 仍保留兩個入口。面工具列 `#btnFaceSpaceModel` 使用目前面。
+- `#smWorkspace` 為原生 modal，內含版本標記及三步引導。`#space-model-v1` 在連線完成後自動開範例，預覽不修改核心世界。
+- `#smTryRectangle`／`#smTryLShape`／`#smUseCurrent` 切來源；`#smMode` 選 `plan` 或 `faces`。`#smBottom`／`#smHeight` 獨立於來源 z；自己的面牆底初始留空，牆高預設 3000 mm。`#smThickness` 預設 100 mm。新試用範例亦使用 3000 mm，已存模型保留原值。
+- `[data-sm-edge]` 明確選擇側邊，`#smFloor`／`#smCeiling` 選面用途，`#smHoles` 明示貫穿孔；`[data-sm-face]`／`[data-sm-orientation]`／`[data-sm-purpose]` 組合既有面；`[data-sm-obstacle]` 選柱樑。
+- `#smPreview` 經 `/model/space-preview` 取得經驗證的模型。`#smCanvas` 使用真實 mesh，支援旋轉、縮放、平移及角度切換；`#smShowRoof` 只影響顯示。`#smVolume`／`#smClearance`／`#smWallVolume` 分別呈現三種量，未定不顯示零。
+- `#smReviewJump` 可直接到核對清單；`#smGeneratedFaces` 列各面朝向及用途，`#smConfirmFaces` 確認後才啟用 `#smCreate`。設定改動使舊預覽失效；自己的來源在建立前再讀 dump 比對。
+- `#smLibrary`／`#smLibraryList` 列已建立模型，`[data-sm-open-model]` 重開模型，`[data-sm-remove-model]` 移除並可復原。`#smSave` 保存 `.gcanvas`，`#smExportKind`／`#smExport` 匯出指定角色套件。
+- 平面模式的 `[data-sm-edit-height]`／`#smEditHeightButton` 打開 `#smHeightEditPanel`，以 `#smEditHeight` 修改正整數牆高；`#smCancelHeightEdit` 取消。沿用保存輸入及來源，只改高度並重新預覽；核對後 `#smCreate` 顯示「更新空間」，經 `updateSpaceModel` 更新同一 ID。過期預覽、模型被復原或上下文改變均不可覆寫舊資料。組合面模式不顯示此入口。
+- ≤720px 用 `#smTabPreview`／`#smTabSetup` 切頁，`#smMobileNext` 直接到核對或保存；桌面低視窗縮小留白，保持可見模型及 44px 操作目標。
+- `ReferenceWorkspace` 的 `addSpaceModel/updateSpaceModel/removeSpaceModel/getSpaceModels` 管理不可變紀錄；`tryLocalHistory(cmd)` 在發送核心 undo／redo 前分流本機步驟。`space-models-changed` 通知模型庫刷新。
+- 含模型保存 `geometry-canvas/2`，全部模型驗證及重建比對成功才 `/upload`；失敗保留場景與專案。完整契約見 `SPACE-MODELING.md`，回歸為 `space_model_test.js` 及 `cdp_test.js` P65。
+
 ## 2026-09-27 UI/UX 審查更新（以本節為目前合約）
 
 - 主頂列 `.tool-group` 顯示選取／平移與 `#btnNewRect`／`#btnNewPoly` 四種工具；左欄 `.start-options` 是描面、六面盒兩張起點卡，`.quick-create-grid` 只有 `#btnNewSpace`、`#btnNewColumn`、`#btnNewBeam` 一列。`#sceneList` 位於 `#fileMenuPop` 內，主頂列顯示 `[data-project-name]`／`[data-project-status]`。保存控制 `[data-project-action="save"]` 會在進出工作區時移動同一個 DOM 節點，工作區掛點為 `#workspaceProjectActions`；`#btnSaveProject` 是「另存新檔」選單入口。
@@ -765,3 +800,32 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - 子線兩軸由核心預填 `secondary / 3`；`#tbSuggestion` 和 `#gridTimberPopover .subgrid-role-warning` 根據既有角材的實際主支軸顯示衝突。不能以副支放置時保留副支預設並要求明確改選，不自動改成主支；手動覆寫仍由核心驗證。
 - `.reference-impact .impact-grids` 逐項列出主／子格父引用、新舊矩形、座標與實際可見段，即使沒有角材亦可確認或取消；原 guide 與 timber 影響仍列出。`[data-impact-grid]` 為逐格測試識別。
 - `.subgrid-editor` 所有顯示中的 input、select、button 目標至少 44px，390px 右欄不水平溢出。回歸由 `cdp_test.js` P8v4 實際執行 `app.js`。
+
+## GEO-209 畫布框選與角材多選
+
+- `#ocSelectionSummary` / `#feSelectionSummary` 在選取工具下顯示框選提示與已選數量；`data-count` 為實際數量，`strong[role="status"]` 提供狀態通知。`[data-selection-clear="oc"]` / `[data-selection-clear="fe"]` 清除所屬畫布的選取。
+- `.selection-marquee` 是 SVG 選取框，`pointer-events:none`，使用完整包含規則；取消／放開指標後移除，不寫入場景或專案。
+- `oc.selection` 是 `{kind,id}` 集合；`fe.timberSelection` 是角材 ID 集合。多選時原本的單物件 `oc.sel` / `fe.sel` 為空，單選時維持既有檢視器契約。清單 `.multi-selection-list` 明示選中的物件，`.multi-selection-note` 說明第一版不批次編輯、移動或刪除。
+- 左鍵從空白處拖曳框選；Shift 點選增減、Shift 框選加入，Ctrl／Cmd＋A 全選目前範圍。輸入欄位及對話框不攔全選。Space／H／中鍵保留平移。選取框不使用幾何格點吸附，不因縮放／平移改變完整包含的判定。
+- 邊與頂點沿用原本單選編輯；面內空白單擊的開口選點亦保留，已有多支角材選取時先清選，單支則維持原本選點流程。3D 預覽與三視圖不加入框選。
+- 焦點導航與復原清除多選，但保留同專案且仍有效的單選：進入面須與目標卡一致，焦點空間僅保留其自身單卡，復原後角材由重載結果修剪。跨專案一律清除，不因 ID 相同沿用舊選取。
+- 操作與驗收見 `CANVAS-SELECTION.md`；新增真瀏覽器回歸由 `cdp_test.js` P67 呼叫 `marquee_test.js`。
+
+## GEO-210 建立空間的常用流程
+
+- `#smInlineProjection` 提供尚未定義之水平來源的同視窗確認。`#smProjectionView` 明示俯視／仰視，`#smConfirmProjection` 點擊後才保存「空間邊界平面投影、室內淨空、牆外側」定義；一般面不因開啟建模而自動改用途。`#smSetProjection` 保留完整定義及 z 編輯入口。
+- inline 確認於讀取前後核對專案身份、面實例 UID、完整場景、歷史 token、來源放置及 frame、原投影定義；關閉、切來源或方向取消等待中的提交。所有等待完成後才同步寫入投影 metadata。
+- `#smCommonSettings` 集中高度、材料及角材；`#smBottomZero` 必須明示點擊才填 0。`#smSourceAdvanced` 收合其他建模方式／來源，`#smBoundaryAdvanced` 收合輪廓邊及底頂用途。`#smBoundarySummary` 與 `#smBoundaryWarning` 在進階區外，孔洞用途 `#smHolesWrap` 也保持外露；FREE 不預選，未指定孔用途則聚焦欄位並拒絕預覽。
+- `#smCommitReview` 與建立按鈕同在 footer，包含 `#smCommitSummary`、`#smReviewJump`、既有 `#smConfirmFaces`。`#smReviewFaces` 是可展開的完整面清單；修改設定即撤銷舊預覽及核對，建立守門不變。footer 可捲動且保留設定區；窄且短的視窗省略非互動步驟列，操作目標仍至少 44px。
+- 單一記憶體草稿只復用同專案、面 UID、放置、frame、投影、完整 dump 及未變歷史的控制值；不復用預覽或確認勾選。場景相同但經 undo/redo 也不可復用，不跨重整或分頁保存，已保存模型／修改牆高不覆蓋新建草稿。
+- `#smSaveNotice` 區分加入目前專案、真正寫檔成功與下載待確認；`#smSave` 仍由使用者點擊直接呼叫保存，以維持原生選檔器的使用者手勢。
+- `space_model_test.js` 的 GEO-210 分支驗證流程、草稿與延遲回覆；完整建模及角材回歸沿用相同按鈕、API 與核心。操作說明見 `SPACE-MODELING.md`。
+
+## GEO-211 正式工程規格與缺口修补
+
+- `#btnEngineeringSpecs` 與 `[data-engineering-open]` 開啟 `#ewWorkspace`；放置面／主格入口透過 `data-placement-id`／`data-grid-id` 對準本次物件。`#ewTitle` 與版號標示正式工作區身份。
+- `.ew-nav [data-ew-section]` 切換套用、材料、做法與工程包；`#ewPreview` 建立核心候選，`#ewReviewed` 核對完整影響，`#ewConfirm` 確認单次交易。`#ewCancelPreview` 保留表單但取消候選。
+- `#ewSave` 由原使用者手勢直接呼叫完整專案保存；未發布表單經 ReferenceWorkspace 草稿 API 保存，與原生 World 分開。單純表單輸入不造成核心 undo 步驟。
+- 已有來源的網格用 `.engineering-grid-details` 顯示有效值；角材 `#tbSelected` 改由工程入口編輯來源，避免舊表單的刪除／重宣告把來源換成字面量。`references.engineeringSources` 為唯一綁定判準。
+- `#guide-editor` 保留 LOCAL 引用式；DATUM 只能從共用基準管理器修改。`.reference-impact [data-impact-guide]` 顯示全部可見段前後端點；忙碌中的 I8a 確認／取消仍允許真指標操作。
+- `engineering_workflow_test.js` 與 `project_audit_test.js` 使用正式畫布及 native bridge 驗證；模擬視窗不代替實體觸控驗證。

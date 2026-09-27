@@ -1,7 +1,7 @@
 # 新公理實作與驗收紀錄
 
 GEO-130 新建模執行器：見 [使用方式](MODELING-RUNTIME.md) 與 [實測紀錄](MODELING-VALIDATION.md)。
-可輸出確定性 3D JSON／OBJ；使用 C 舊場景驗證與 Python 精確運算，未改舊 C DSL 或畫布 UI。
+可輸出確定性 3D JSON／OBJ；使用 C 舊場景驗證與 Python 精確運算。GEO-130 當時未改舊 C DSL 或畫布 UI；後續 GEO-205～210 已由正式 Canvas 接入從面建立空間、角材結構、模型保存與牆高編輯，見 [空間建模操作說明](../geometry-web/docs/SPACE-MODELING.md)。新型別仍未併入舊 C World，模型採獨立交換包保存。
 
 驗收基準：`公理層.md`，包含 2026-09-18 的 GEO-123、GEO-124。
 本次只修改實作、示例、測試與實作文件；沒有修改公理層或閱讀器。

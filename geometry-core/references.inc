@@ -640,6 +640,7 @@ static void reference_dump(const World *w,FILE *out)
         fprintf(out,"datum %u %c %s\n",w->datums[i].id,"xyz"[w->datums[i].axis],w->datums[i].expression);
     for (size_t i=0;i<w->timber_count;++i) {
         const Timber *t=&w->timbers[i];
+        if (engineering_dump_timber(w,t,out)) continue;
         fprintf(out,"timber %u %lld %lld role %s",t->id,(long long)t->size_a,(long long)t->size_b,timber_role_name(t->role));
         if (t->role==TIMBER_ROLE_CUSTOM) fprintf(out," priority %lld",(long long)t->cut_priority);
         fputc('\n',out);

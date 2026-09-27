@@ -4,7 +4,7 @@
 每個測試 = 一份 .scene + 預期:
   expect: "accept" | "reject"
   lengths: accept 時,依序比對輸出中所有「尺寸:L=…」的值
-  error:   reject 時,stderr 第一行必須包含此子字串
+  error:   reject 時,本夾具的「路徑:[行號:]診斷」必須包含此子字串
   contains: accept 時,stdout 必須包含此子字串(可多條)
   not_contains: accept 時,stdout 不得包含此子字串(可多條)——
                 用來驗「什麼都沒發生」這種主張,光靠 accept 驗不到
@@ -191,12 +191,22 @@ LEN_RE = re.compile(r"L=(\d+)")
 
 def run_one(exe: str, spec: dict) -> str:
     scene = ROOT / spec["scene"]
+    if spec.get("expect") not in ("accept", "reject"):
+        return "INFRA invalid test expectation"
+    if spec["expect"] == "reject" and not spec.get("error"):
+        return "INFRA rejection requires an explicit expected diagnostic"
+    if not scene.is_file():
+        return f"INFRA missing fixture: {scene}"
     proc = subprocess.run(
         [exe, "--scene", str(scene), "--no-window"],
         capture_output=True, text=True, encoding="utf-8", errors="replace",
         timeout=30,
     )
     out, err = proc.stdout, proc.stderr
+    # Domain rejection is exit 1. A signal, loader error or Windows crash is
+    # not evidence that the requested geometric rule rejected this scene.
+    if proc.returncode not in (0, 1):
+        return f"INFRA abnormal executable exit {proc.returncode}: {err[:200]}"
     ok = proc.returncode == 0
 
     if spec["expect"] == "accept":
@@ -220,28 +230,33 @@ def run_one(exe: str, spec: dict) -> str:
     if ok:
         lengths = LEN_RE.findall(out)
         return f"FAIL 應拒絕但接受 (L={lengths})"
-    if "error" in spec and spec["error"] not in err:
-        first = err.strip().splitlines()[0] if err.strip() else "(無錯誤訊息)"
+    first = err.strip().splitlines()[0] if err.strip() else "(無錯誤訊息)"
+    diagnostics = re.findall(r"^" + re.escape(str(scene)) + r":(?:\d+:)?\s*(.*)$", err, re.MULTILINE)
+    if not any(spec["error"] in diagnostic for diagnostic in diagnostics):
         return f"FAIL 錯誤不符: 期望含「{spec['error']}」實得「{first}」"
     return "ok"
 
 
 def main() -> int:
     exe = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "cg_new.exe")
-    failures = []
+    results = []
     for spec in TESTS:
         try:
             verdict = run_one(exe, spec)
         except subprocess.TimeoutExpired:
-            verdict = "FAIL 逾時"
+            verdict = "INFRA 逾時"
         except Exception as exc:  # noqa: BLE001
-            verdict = f"FAIL 例外 {exc}"
-        status = "PASS" if verdict == "ok" else verdict
-        print(f"{spec['scene']:<34} {status}")
-        if verdict != "ok":
-            failures.append(spec["scene"])
-    print(f"\n{len(TESTS) - len(failures)}/{len(TESTS)} 通過")
-    return 1 if failures else 0
+            verdict = f"INFRA 例外 {exc}"
+        status = "pass" if verdict == "ok" else "infrastructure" if verdict.startswith("INFRA") else "fail"
+        print(f"{spec['scene']:<34} {'PASS' if status == 'pass' else verdict}")
+        oracle = "rejection-diagnostic" if spec["expect"] == "reject" else "geometry-output" if any(key in spec for key in ("lengths", "contains")) else "acceptance-and-absence" if spec.get("not_contains") else "acceptance-only"
+        results.append({"scene": spec["scene"], "status": status, "detail": verdict, "oracle": oracle})
+    counts = {key: sum(row["status"] == key for row in results) for key in ("pass", "fail", "infrastructure")}
+    print(f"\n{counts['pass']}/{len(TESTS)} 通過；斷言失敗 {counts['fail']}；環境／執行失敗 {counts['infrastructure']}")
+    oracle_counts = {key: sum(row["oracle"] == key for row in results) for key in sorted({row["oracle"] for row in results})}
+    print("Oracle coverage: " + json.dumps(oracle_counts, ensure_ascii=False))
+    print("GEOMETRY_TEST_RESULT " + json.dumps({"schema": "geometry-native-tests/1", "total": len(TESTS), "counts": counts, "oracle_counts": oracle_counts, "cases": results}, ensure_ascii=False))
+    return 2 if counts["infrastructure"] or not results else 1 if counts["fail"] else 0
 
 
 if __name__ == "__main__":

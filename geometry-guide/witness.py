@@ -106,6 +106,8 @@ def load_manifest():
                 raise WitnessError("manifest %s 缺欄位 %s" % (cid, k))
         if ent["expect"] not in ("accept", "reject"):
             raise WitnessError("manifest %s 的 expect 只能是 accept / reject" % cid)
+        if "error_contains" in ent and (ent["expect"] != "reject" or not isinstance(ent["error_contains"], str) or not ent["error_contains"]):
+            raise WitnessError("manifest %s 的 error_contains 只接受拒絕見證的非空診斷字串" % cid)
         if ent["view"] not in list(VIEWS) + ["all"]:
             raise WitnessError("manifest %s 的 view=%r 不在 %s" % (cid, ent["view"], sorted(VIEWS) + ["all"]))
         if ent.get("joint_view", "bottom") not in VIEWS:
@@ -623,6 +625,8 @@ def render_one(exe, cid, ent, tmpdir):
     else:
         if r["rc"] == 0:
             raise WitnessError("%s:夾具 %s 標 reject 但引擎接受(rc=0)——夾具或引擎變了,先確認" % (cid, ent["scene"]))
+        if ent.get("error_contains") and ent["error_contains"] not in (r["err"] or ""):
+            raise WitnessError("%s:拒絕原因不符預期 %r:%s" % (cid, ent["error_contains"], (r["err"] or "").strip()[:200]))
         full_svg, note, why = ax.before_failure(exe, scene, r["err"], tmpdir)
         if not full_svg:
             raise WitnessError("%s:拒絕型夾具無法重建失敗前狀態:%s" % (cid, why))

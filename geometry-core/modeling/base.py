@@ -12,7 +12,7 @@ import shutil
 import subprocess
 import tempfile
 
-from .common import ModelError
+from .common import ModelError, ENGINEERING_CAPABILITY, scene_required_capabilities
 
 _BUILD_DIRS: list[tempfile.TemporaryDirectory] = []
 _MAX_SCENE_BYTES = 1024 * 1024
@@ -65,6 +65,9 @@ def load_base(scene_text: str, executable=None) -> dict:
         raise ModelError("INVALID", "BASE_ENCODING", "D25", "base_scene must contain valid Unicode.") from exc
     if len(encoded) > _MAX_SCENE_BYTES:
         raise ModelError("UNSUPPORTED", "BASE_CAPACITY", "I33", "Scene exceeds adapter 1 MiB capacity.")
+    source_capabilities = scene_required_capabilities(scene_text)
+    if source_capabilities - {ENGINEERING_CAPABILITY}:
+        raise ModelError("UNSUPPORTED", "CAPABILITY", "I32", "Unsupported required scene capability")
     program = executable or os.environ.get("GEOMETRY_MODEL_BASE") or _build_adapter()
     try:
         with tempfile.TemporaryDirectory(prefix="geometry-model-scene-") as directory:
@@ -96,4 +99,11 @@ def load_base(scene_text: str, executable=None) -> dict:
         not isinstance(snapshot[name], list) for name in required - {"base_scene"}
     ):
         raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned an incomplete snapshot.")
+    capabilities = snapshot.get("required_capabilities", [])
+    if (not isinstance(capabilities, list) or any(type(item) is not str for item in capabilities)
+            or len(capabilities) != len(set(capabilities)) or set(capabilities) - {ENGINEERING_CAPABILITY}):
+        raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned unsupported source capabilities.")
+    canonical_capabilities = scene_required_capabilities(snapshot["base_scene"])
+    if source_capabilities != set(capabilities) or canonical_capabilities != set(capabilities):
+        raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I36", "C scene adapter did not preserve engineering source definitions and capability.")
     return snapshot

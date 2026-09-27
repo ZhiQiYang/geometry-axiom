@@ -197,7 +197,12 @@ def before_failure(exe, scene_path, stderr, tmpdir):
       note   給頁面看的旁白(第幾行之前、是否移除了孤兒 timber)
       reason 失敗時的人話理由;成功時為空字串
     """
-    m = _LINE_NO.search(stderr or "")
+    # Revalidation can emit an internal diagnostic such as engineering:0
+    # before the parser reports the real scene line. Prefer the exact input
+    # path; an internal line zero cannot locate the failed source command.
+    m = re.search(re.escape(str(scene_path)) + r":(\d+): ", stderr or "")
+    if not m:
+        m = next((item for item in _LINE_NO.finditer(stderr or "") if int(item.group(1)) > 0), None)
     if not m:
         return None, "", "錯誤訊息沒有行號(%s),無法決定要截到哪裡" % \
             (stderr or "").strip()[:80]

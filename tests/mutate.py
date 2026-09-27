@@ -9,11 +9,14 @@
   python tests/mutate.py M03 M14    # 只跑指定 id
 """
 import json
+import hashlib
 import os
 import pathlib
 import subprocess
 import sys
+import tempfile
 import time
+from run_tests import TESTS
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -214,10 +217,76 @@ def run_cmd(cmd, cwd, timeout=120):
                           timeout=timeout)
 
 
+def classify_test_run(proc):
+    """Only a complete, structured assertion run can kill a mutation.
+
+    Tracebacks, shell errors and incomplete runs never become 'killed' merely
+    because their process exit code is nonzero.
+    """
+    rows = [line.removeprefix("GEOMETRY_TEST_RESULT ") for line in proc.stdout.splitlines()
+            if line.startswith("GEOMETRY_TEST_RESULT ")]
+    if len(rows) != 1:
+        return "blocked", "runner did not emit exactly one complete structured result"
+    try:
+        result = json.loads(rows[0])
+        cases = result["cases"]
+        if result["schema"] != "geometry-native-tests/1" or result["total"] != len(TESTS):
+            raise ValueError("runner schema/count mismatch")
+        if [case["scene"] for case in cases] != [spec["scene"] for spec in TESTS]:
+            raise ValueError("missing, duplicate or reordered test cases")
+        counts = {key: sum(case["status"] == key for case in cases) for key in ("pass", "fail", "infrastructure")}
+        if sum(counts.values()) != len(TESTS) or counts != result["counts"]:
+            raise ValueError("invalid case status/counts")
+        if counts["infrastructure"]:
+            return "blocked", next(case["detail"] for case in cases if case["status"] == "infrastructure")
+        expected_exit = 1 if counts["fail"] else 0
+        if proc.returncode != expected_exit:
+            raise ValueError("exit code contradicts assertion result")
+        if counts["fail"]:
+            return "killed", next(case["scene"] + ": " + case["detail"] for case in cases if case["status"] == "fail")
+        return "survived", "all declared assertions passed"
+    except (ValueError, TypeError, KeyError) as exc:
+        return "blocked", "invalid runner result: " + str(exc)
+
+
 def main() -> int:
-    src = SRC.read_text(encoding="utf-8")
     only = set(sys.argv[1:])
+    unknown = only - {m["id"] for m in MUTANTS}
+    if unknown:
+        print("Unknown mutant IDs: " + ", ".join(sorted(unknown)))
+        return 2
+    # The SSOT repository requires binary reads of this CRLF source.
+    source_bytes = SRC.read_bytes().replace(b"\r\n", b"\n")
+    src = source_bytes.decode("utf-8")
+    provenance = {"source_sha256": hashlib.sha256(source_bytes).hexdigest(),
+                  "runner_sha256": hashlib.sha256((HERE / "run_tests.py").read_bytes().replace(b"\r\n", b"\n")).hexdigest()}
     results = {}
+    selected = [m for m in MUTANTS if not only or m["id"] in only]
+    print("Mutation scope: " + ("partial " if only else "full ") + ", ".join(m["id"] for m in selected))
+    if any(not m.get("equivalent") for m in selected):
+        MUT_ROOT.mkdir(parents=True, exist_ok=True)
+        baseline_dir = pathlib.Path(tempfile.mkdtemp(prefix="baseline-", dir=MUT_ROOT))
+        baseline_exe = baseline_dir / "baseline.exe"
+        baseline_exe.unlink(missing_ok=True)
+        try:
+            build = run_cmd(["cmd", "/c", str(HERE / "_cl.bat"), str(SRC), str(baseline_exe)], cwd=baseline_dir, timeout=300)
+            if build.returncode != 0 or not baseline_exe.exists():
+                print("BASELINE BLOCKED: unmodified source could not be compiled")
+                return 2
+            baseline_verdict, baseline_reason = "blocked", "not executed"
+            for attempt in range(RUN_RETRIES):
+                result = run_cmd([sys.executable, str(HERE / "run_tests.py"), str(baseline_exe)], cwd=ROOT, timeout=600)
+                baseline_verdict, baseline_reason = classify_test_run(result)
+                if baseline_verdict != "blocked":
+                    break
+                if attempt + 1 < RUN_RETRIES:
+                    time.sleep(12)
+            if baseline_verdict != "survived":
+                print("BASELINE BLOCKED: unmodified source must pass first: " + baseline_reason)
+                return 2
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            print("BASELINE BLOCKED: " + str(exc))
+            return 2
 
     for m in MUTANTS:
         if only and m["id"] not in only:
@@ -276,25 +345,17 @@ def main() -> int:
             try:
                 test = run_cmd([sys.executable, str(HERE / "run_tests.py"),
                                 str(MUT_EXE)], cwd=ROOT, timeout=600)
-            except OSError as exc:          # CreateProcess 就被擋掉(多半是 SAC 在評估)
+            except (OSError, subprocess.TimeoutExpired) as exc:
                 why = f"啟動失敗: {exc}"
                 time.sleep(12)
                 continue
 
-            env_fail = [ln.strip() for ln in test.stdout.splitlines()
-                        if "FAIL 例外" in ln or "FAIL 逾時" in ln]
-
-            if env_fail:
-                why = env_fail[0]
-                continue                    # 環境問題,重跑
-
-            verdict = "killed" if test.returncode != 0 else "survived"
-            why = ""
-            if verdict == "killed":
-                for ln in test.stdout.splitlines():
-                    if "FAIL" in ln:
-                        why = ln.strip()
-                        break
+            outcome, why = classify_test_run(test)
+            if outcome == "blocked":
+                if attempt < RUN_RETRIES:
+                    time.sleep(12)
+                continue
+            verdict = outcome
             break
 
         if verdict is None:
@@ -307,6 +368,8 @@ def main() -> int:
 
     # 跑子集時把結果「併回」既有紀錄,不是整份覆寫——
     # 直接覆寫會把沒跑到的那些判決清掉,看起來像它們消失了。
+    for result in results.values():
+        result.update(provenance)
     merged = {}
     if RESULTS.exists():
         try:
@@ -330,14 +393,14 @@ def main() -> int:
         ms = sum(1 for r in merged.values() if r["verdict"] == "survived")
         mi = sum(1 for r in merged.values() if r["verdict"] == "invalid")
         mb = sum(1 for r in merged.values() if r["verdict"] == "blocked")
-        print(f"全檔 {len(merged)}:殺死 {mk} / 存活 {ms} / 等價 {sum(1 for v in merged.values() if v["verdict"]=="equivalent")} / 無效 {mi} / 受阻 {mb}")
+        print(f"歷次紀錄（不是本次覆蓋）{len(merged)}:殺死 {mk} / 存活 {ms} / 等價 {sum(1 for v in merged.values() if v['verdict']=='equivalent')} / 無效 {mi} / 受阻 {mb}")
 
     if b:
         print("⚠ 有受阻的變異,這一輪的結果不完整——受阻的沒有被驗證過,"
               "不要當成殺死。等環境穩定後只重跑那幾個。")
         return 2
 
-    return 0
+    return 1 if s or i else 0
 
 
 if __name__ == "__main__":

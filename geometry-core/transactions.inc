@@ -1,6 +1,8 @@
 /* I8/I8a: one atomic entry point shared by file parser, CLI, GDI and bridge. */
 typedef struct {
     bool ready, valid;
+    bool engineering_batch;
+    uint64_t revision;
     uint32_t token;
     World before, after;
     char command[SCENE_MAX_LINE];
@@ -206,7 +208,7 @@ static void reference_subgrid_text(const World *w,uint32_t id,FILE *out)
 static bool reference_geometry_changed(const World *before,const World *after)
 {
     for (size_t i=0;i<before->grid_count;++i)
-        if (before->grids[i].is_subgrid && reference_grid_changed(before,after,before->grids[i].id)) return true;
+        if ((before->grids[i].is_subgrid || eng_object_bound(before,0,before->grids[i].id)) && reference_grid_changed(before,after,before->grids[i].id)) return true;
     bool has_child=false;
     for (size_t i=0;i<before->grid_count;++i) if (before->grids[i].is_subgrid) has_child=true;
     if (has_child) for (size_t i=0;i<before->guide_count;++i)
@@ -226,7 +228,7 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
     for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed) placed=true;
     bool referenced=false;
     for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].is_subgrid) referenced=true;
-    if ((!placed && !referenced) || !count) return false;
+    if ((!placed && !referenced && !w->engineering.binding_count) || !count) return false;
     const char *c=tokens[0];
     if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||
         !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
@@ -239,6 +241,7 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
 static void reference_stage(const World *before,const World *after,char **tokens,int count,bool valid)
 {
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
+    g_preview.engineering_batch=false; g_preview.revision=g_definition_revision;
     g_preview.before=*before; g_preview.after=*after; g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));
     if (!valid && !g_preview.issue_count) {
@@ -309,14 +312,14 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
     }
     if (!strcmp(tokens[0],"confirm")) {
         uint32_t token;
-        if (count!=2 || !parse_u32(tokens[1],&token) || !g_preview.ready || token!=g_preview.token || !g_preview.valid) {
+        if (count!=2 || !parse_u32(tokens[1],&token) || !g_preview.ready || token!=g_preview.token || !g_preview.valid || g_preview.engineering_batch) {
             scene_error(path,line_no,"I8a: missing/invalid preview token; cannot apply"); return false;
         }
         /* Canvas layout does not invalidate geometry approval (D12/I14). */
         World current=*world,expected=g_preview.before;
         current.canvas_pos_count=expected.canvas_pos_count=0;
         memset(current.canvas_pos,0,sizeof current.canvas_pos); memset(expected.canvas_pos,0,sizeof expected.canvas_pos);
-        if (memcmp(&current,&expected,sizeof current)) {
+        if (g_preview.revision!=g_definition_revision || memcmp(&current,&expected,sizeof current)) {
             g_preview.ready=false;
             scene_error(path,line_no,"I8a: preview is stale; preview again against the current world"); return false;
         }
@@ -333,7 +336,13 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
         ++tokens; --count;
     }
     World candidate=*world;
-    g_scene_last_error[0]='\0'; g_reference_issue_count=0;
+    if (count>1 && (!strcmp(tokens[0],"grid") || !strcmp(tokens[0],"timber"))) {
+        uint32_t id;
+        if (parse_u32(tokens[1],&id) && eng_object_bound(world,!strcmp(tokens[0],"timber"),id)) {
+            scene_error(path,line_no,"D28: this object has engineering sources; edit its engineering source or explicit override instead of replacing it with direct dimensions"); return false;
+        }
+    }
+    g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
     g_reference_trial=candidate; g_reference_capturing=true;
     const World *previous_baseline=g_subgrid_before;
     g_subgrid_before=world;
@@ -341,7 +350,8 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
     g_subgrid_before=previous_baseline;
     g_reference_capturing=false;
     bool affects=reference_may_affect(world,tokens,count);
-    if (explicit_preview || (!g_preview_confirming && affects && (!ok || reference_geometry_changed(world,&candidate)))) {
+    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate.engineering,sizeof world->engineering));
+    if (explicit_preview || (!g_preview_confirming && (engineering_edit || (affects && (!ok || reference_geometry_changed(world,&candidate)))))) {
         reference_stage(world,ok?&candidate:&g_reference_trial,tokens,count,ok);
         reference_preview_text();
         if (explicit_preview) return true;
@@ -352,6 +362,7 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
         if (!g_scene_last_error[0]) scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
         return false;
     }
+    if (!g_parsing_scene_file && strcmp(tokens[0],"canvas-pos") && !world_definitions_equal(world,&candidate)) ++g_definition_revision;
     *world=candidate;
     return true;
 }

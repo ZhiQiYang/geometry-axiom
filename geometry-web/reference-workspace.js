@@ -3,9 +3,14 @@
 const ReferenceWorkspace = (() => {
   const P = GeometryProject, uuid = () => crypto.randomUUID();
   const escape = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
-  const fresh = () => ({ id: uuid(), name: "未命名專案", sources: new Map(), groups: new Map(), pending: new Set(), dirty: false });
+  const fresh = () => ({ id: uuid(), name: "未命名專案", sources: new Map(), groups: new Map(), models: [], modelsDirty: false,
+    faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], pending: new Set(), dirty: false });
   const history = new P.ContextHistory(fresh);
+  const revisions = new WeakMap(), selections = new WeakMap(), contextTokens = new WeakMap();
   let pdfLib, modal = null, busy = false, sequence = 0, pendingLoad = null;
+  let presentedModelContext = null, presentedModels = null;
+  let presentedProjectionContext = null, presentedProjections = null;
+  let presentedDraftContext = null, presentedDrafts = null;
   const context = () => history.frame.context;
   const safe = fn => async (...args) => { try { return await fn(...args); } catch (e) { toast(e.message || "參考資料操作失敗"); } };
   function group(bid, create = false) {
@@ -17,7 +22,31 @@ const ReferenceWorkspace = (() => {
   }
   function active(bid) { const g = group(bid); return g?.pages.find(p => p.id === g.activePageId) || null; }
   let presentationFrame = 0;
-  function dirty() { context().dirty = true; context().downloaded = false; schedulePresentation(); }
+  function revision(c) { return revisions.get(c) || 0; }
+  function getProjectState() {
+    const c = context(); if (!contextTokens.has(c)) contextTokens.set(c, uuid());
+    return {id:c.id,contextToken:contextTokens.get(c),revision:revision(c),dirty:!!c.dirty,saved:!!c.saved};
+  }
+  function dirty() { const c = context(); revisions.set(c, revision(c) + 1); c.dirty = true; c.downloaded = false; schedulePresentation(); }
+  function assertContext(c) { if (context() !== c) throw new Error("專案已切換，請在目前專案重新保存或重新選擇來源。"); }
+  function cancelSelection(c, g) {
+    const jobs = selections.get(c); jobs?.get(g)?.resolve(null); jobs?.delete(g); g.selection = uuid();
+  }
+  async function referencesReady(c) {
+    // Wait for the latest page choice, not a superseded PDF render. Rendering may
+    // finish later, but only a live selection is allowed to change saved values.
+    for (;;) {
+      assertContext(c);
+      const jobs = selections.get(c);
+      if (jobs) for (const [g, job] of jobs) {
+        if (group(job.bid) !== g || g.selection !== job.request) cancelSelection(c, g);
+      }
+      const pending = [...c.pending, ...[...(jobs?.values() || [])].map(job => job.promise)];
+      if (!pending.length) return;
+      const results = await Promise.all(pending); assertContext(c);
+      const failed = results.find(value => value?.selectionError); if (failed) throw failed.selectionError;
+    }
+  }
   function schedulePresentation() {
     if (!presentationFrame) presentationFrame = requestAnimationFrame(() => { presentationFrame = 0; present(); });
   }
@@ -47,20 +76,123 @@ const ReferenceWorkspace = (() => {
     });
   }
   function sync() {
+    if (presentedModelContext && presentedModelContext !== context()) {
+      for (const g of selections.get(presentedModelContext)?.keys() || []) cancelSelection(presentedModelContext, g);
+      sequence++;
+      if (modal && modal.context !== context()) closeSource(true);
+    }
     const next = {};
     for (const bid of history.frame.ids.keys()) { const p = active(bid); if (p?.src) next[bid] = p; }
     oc.underlays = next;
     const label = document.getElementById("projectName");
-    if (label) label.textContent = context().groups.size ? context().name : "";
+    if (label) label.textContent = context().groups.size || context().models.length || context().faceProjections.size || context().engineeringDrafts?.length ? context().name : "";
     schedulePresentation();
+    if (presentedModelContext !== context() || presentedModels !== context().models) {
+      presentedModelContext = context(); presentedModels = context().models;
+      window.dispatchEvent(new CustomEvent("space-models-changed"));
+    }
+    if (presentedProjectionContext !== context() || presentedProjections !== context().faceProjections) {
+      presentedProjectionContext = context(); presentedProjections = context().faceProjections;
+      window.dispatchEvent(new CustomEvent("face-projections-changed"));
+    }
+    if (presentedDraftContext !== context() || presentedDrafts !== context().engineeringDrafts) {
+      presentedDraftContext = context(); presentedDrafts = context().engineeringDrafts;
+      window.dispatchEvent(new CustomEvent("engineering-drafts-changed"));
+    }
   }
   function observe(cmd, result) {
     if (pendingLoad) return; // A lost load response must be resolved before reusing any face ids.
+    if (cmd.startsWith("line ")) {
+      cmd = "line " + cmd.slice(5).split("#", 1)[0].trim();
+      if (cmd === "line ") return;
+    }
+    const hadModels = context().models.length || context().modelsDirty;
+    const hadProjections = context().faceProjections.size || context().faceProjectionsDirty;
+    const previousProjections = context().faceProjections;
     history.observe(cmd, result);
+    if (hadModels && result.ok && /^line\s+(reset|default)\s*$/.test(cmd)) context().modelsDirty = true;
+    if (hadProjections && result.ok && /^line\s+(reset|default)\s*$/.test(cmd)) context().faceProjectionsDirty = true;
     const edited = result.ok && cmd.match(/^line\s+(?:boundary|surface)\s+(\d+)\s/);
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd)) dirty();
+    if (result.ok && /^engineering-confirm /.test(cmd) && result.history_changed !== false) dirty();
+    if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
+  }
+  function getSpaceModels() { return JSON.parse(JSON.stringify(context().models)); }
+  function getEngineeringDrafts() { return JSON.parse(JSON.stringify(context().engineeringDrafts || [])); }
+  function assertDraftContext(expectedContextToken) {
+    if (pendingLoad) throw new Error("請先確認專案載入結果再修改工程草稿。");
+    if (expectedContextToken !== undefined && expectedContextToken !== getProjectState().contextToken)
+      throw new Error("專案已切換，未將先前的工程草稿寫入目前專案。");
+  }
+  function setEngineeringDraft(record, expectedContextToken) {
+    assertDraftContext(expectedContextToken); P.validateEngineeringDraft(record);
+    const next=getEngineeringDrafts(),index=next.findIndex(item=>item.id===record.id);
+    if(index<0 && next.length>=P.MAX_ENGINEERING_DRAFTS)throw new Error("單一專案最多可保存 256 份工程規格草稿。");
+    if(index>=0 && sameModelData(next[index],record))return next[index];
+    const saved=JSON.parse(JSON.stringify(record));if(index<0)next.push(saved);else next[index]=saved;
+    context().engineeringDrafts=next;dirty();sync();return JSON.parse(JSON.stringify(saved));
+  }
+  function removeEngineeringDraft(id, expectedContextToken) {
+    assertDraftContext(expectedContextToken);
+    const next=getEngineeringDrafts(),removed=next.find(item=>item.id===id);if(!removed)return null;
+    context().engineeringDrafts=next.filter(item=>item.id!==id);dirty();sync();return removed;
+  }
+  function getFaceProjections(bid) {
+    return JSON.parse(JSON.stringify(context().faceProjections.get(history.frame.ids.get(bid)) || []));
+  }
+  function getFaceProjection(bid, placementId) {
+    return getFaceProjections(bid).find(record => record.placement_id === placementId)?.projection || null;
+  }
+  function setFaceProjection(bid, placementId, projection) {
+    assertModelReady();
+    if (oc.busy) throw new Error("請先完成目前的操作再變更平面投影定義。");
+    const key = history.frame.ids.get(bid);
+    if (!key || !Number.isSafeInteger(placementId) || placementId < 0 || placementId > 4294967295) throw new Error("找不到要設定平面投影的面或放置。");
+    if (projection !== null) {
+      P.validateFaceProjection(projection);
+      const surface = oc.surfs?.find(s => s.id === placementId && s.boundary === bid);
+      if (!surface || surface.u?.[2] !== 0 || surface.v?.[2] !== 0) throw new Error("平面投影必須指定這個面的水平放置。");
+    }
+    const current = getFaceProjection(bid, placementId);
+    if (sameModelData(current, projection)) return current;
+    const next = new Map(context().faceProjections), records = getFaceProjections(bid).filter(record => record.placement_id !== placementId);
+    if (projection !== null) records.push({placement_id:placementId,projection});
+    records.sort((a,b) => a.placement_id-b.placement_id);
+    if (records.length) next.set(key, records); else next.delete(key);
+    history.changeFaceProjections(next); context().faceProjectionsDirty = true; dirty(); sync();
+    return getFaceProjection(bid, placementId);
+  }
+  function assertModelReady() {
+    if (pendingLoad || history.group) throw new Error("請先完成目前的操作再變更空間模型。");
+    if (typeof connection !== "undefined" && connection.phase !== "ready") throw new Error("場景連線尚未確認，請先重新連線。");
+  }
+  function addSpaceModel(record) {
+    assertModelReady(); P.validateSpaceModel(record);
+    if (context().models.length >= P.MAX_MODELS) throw new Error("單一專案最多可保存 64 個空間模型。");
+    if (context().models.some(m => m.id === record.id)) throw new Error("空間模型 ID 重複。");
+    history.changeModels([...context().models, record]); context().modelsDirty = true; dirty(); sync();
+    return getSpaceModels().at(-1);
+  }
+  function updateSpaceModel(id, record) {
+    assertModelReady(); P.validateSpaceModel(record);
+    const index = context().models.findIndex(m => m.id === id);
+    if (index < 0 || record.id !== id) throw new Error("找不到要更新的空間模型。");
+    history.changeModels(context().models.map((m, n) => n === index ? record : m)); context().modelsDirty = true; dirty(); sync();
+    return getSpaceModels()[index];
+  }
+  function removeSpaceModel(id) {
+    assertModelReady();
+    const removed = getSpaceModels().find(m => m.id === id);
+    if (!removed) throw new Error("找不到要移除的空間模型。");
+    history.changeModels(context().models.filter(m => m.id !== id)); context().modelsDirty = true; dirty(); sync(); return removed;
+  }
+  function tryLocalHistory(cmd) {
+    if (pendingLoad) return null;
+    const result = history.tryLocal(cmd);
+    if (result?.ok) { context().modelsDirty = true; context().faceProjectionsDirty = true; dirty(); sync(); }
+    return result;
   }
   async function library() {
     if (!pdfLib) pdfLib = import("/vendor/pdfjs-dist/build/pdf.mjs").then(lib => {
@@ -127,14 +259,14 @@ const ReferenceWorkspace = (() => {
     p.src = r.src; return p;
   }
   function addPage(bid, p) {
-    const g = group(bid, true); g.selection = uuid(); g.pages.push(p); g.activePageId = p.id;
+    const g = group(bid, true); cancelSelection(context(), g); g.pages.push(p); g.activePageId = p.id;
     dirty(); sync(); return p;
   }
   function adoptLegacy(bid, ul) {
     const c = context();
     const p = Object.assign(ul, { id: uuid(), sourceId: "pending", page: 1, crop: [0,0,ul.imgW,ul.imgH],
       calibration: null, reviewRequired: false, records: [] });
-    const g = group(bid, true); g.pages = [p]; g.activePageId = p.id; dirty();
+    const g = group(bid, true); cancelSelection(c, g); g.pages = [p]; g.activePageId = p.id; dirty();
     const pending = (async () => {
       const blob = await fetch(p.src).then(r => r.blob());
       const s = await sourceFromFile(new File([blob], "參考圖片", { type: blob.type }));
@@ -150,7 +282,7 @@ const ReferenceWorkspace = (() => {
   function changed(bid, recheck = false) { const p = active(bid); if (p && recheck) p.reviewRequired = true; dirty(); }
   function remove(bid) {
     const g = group(bid); if (!g) return;
-    g.selection = uuid();
+    cancelSelection(context(), g);
     g.pages = g.pages.filter(p => p.id !== g.activePageId); g.activePageId = g.pages[0]?.id || "";
     dirty(); sync();
     const next = active(bid), c = context();
@@ -168,10 +300,21 @@ const ReferenceWorkspace = (() => {
   }
   async function selectPage(bid, pageId) {
     const g = group(bid), p = g?.pages.find(p => p.id === pageId); if (!p) return;
-    const c = context(), request = uuid(); g.selection = request;
-    if (!p.src) await preparePage(p, c.sources.get(p.sourceId));
-    if (context() !== c || group(bid) !== g || g.selection !== request) return;
-    g.activePageId = p.id; fe.ulCalib = null; fe.ulDrag = null; dirty(); redraw(); fitReference();
+    const c = context(); cancelSelection(c, g); const request = g.selection;
+    if (!selections.has(c)) selections.set(c, new Map());
+    let resolve; const promise = new Promise(done => { resolve = done; });
+    const job = { bid, request, promise, resolve }; selections.get(c).set(g, job);
+    revisions.set(c, revision(c) + 1);
+    let error = null;
+    try {
+      if (!p.src) await preparePage(p, c.sources.get(p.sourceId));
+      if (context() !== c || group(bid) !== g || g.selection !== request) return;
+      g.activePageId = p.id; fe.ulCalib = null; fe.ulDrag = null; dirty(); redraw(); fitReference();
+    } catch (e) { error = e; throw e; }
+    finally {
+      if (selections.get(c).get(g) === job) selections.get(c).delete(g);
+      resolve(error ? {selectionError:error} : null);
+    }
   }
   function paneHTML(bid) {
     const g = group(bid), p = active(bid);
@@ -214,7 +357,7 @@ const ReferenceWorkspace = (() => {
   async function openSource(source, bid = null) {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
     const dialog = document.getElementById("referenceDialog"), token = ++sequence;
-    modal = { source, bid, page: 1, crop: null, width: 1, height: 1, token, zoom: "page", ready: false, drag: null };
+    modal = { source, bid, context:context(), targets:new Map(history.frame.ids), page: 1, crop: null, width: 1, height: 1, token, zoom: "page", ready: false, drag: null };
     document.getElementById("refZoom").value = "page";
     document.getElementById("refSourceName").textContent = source.meta.name;
     document.getElementById("refPreviewMessage").textContent = "正在讀取來源…";
@@ -230,6 +373,7 @@ const ReferenceWorkspace = (() => {
     if (!dialog.open) dialog.showModal();
     try {
       const doc = await documentFor(source); if (!modal || modal.token !== token) return;
+      assertContext(modal.context);
       modal.count = doc?.numPages || 1;
       document.getElementById("refPageNumber").disabled = false;
       document.getElementById("refPageNumber").max = modal.count;
@@ -249,8 +393,10 @@ const ReferenceWorkspace = (() => {
     document.getElementById("refPrev").disabled = number === 1;
     document.getElementById("refNext").disabled = number === m.count;
     try {
+      assertContext(m.context);
       const r = await renderPage(m.source, number);
       if (modal !== m || m.token !== request) return;
+      assertContext(m.context);
       Object.assign(m, { width: r.width, height: r.height, render: r, ready: true, crop: [0,0,r.width,r.height] });
       const host = document.getElementById("refPagePreview");
       host.innerHTML = `<img alt="第 ${number} 頁預覽"><div id="refCropOverlay"></div>`;
@@ -264,6 +410,7 @@ const ReferenceWorkspace = (() => {
         b.setAttribute("aria-current", String(p===number)); b.textContent=String(p); b.onclick=safe(()=>previewPage(p)); strip.append(b);
         const t = p === number ? r : await renderPage(m.source,p,0.15);
         if (modal !== m || m.token !== request) return;
+        assertContext(m.context);
         const img = document.createElement("img"); img.alt=""; img.src=t.src; b.prepend(img);
       }
     } catch(e) { if (modal === m && m.token === request) document.getElementById("refPreviewMessage").textContent=e.message; }
@@ -286,11 +433,18 @@ const ReferenceWorkspace = (() => {
     if (!modal?.ready || busy) return;
     // Keep exactly the page and crop confirmed before asynchronous face creation.
     const m={...modal,crop:[...modal.crop]}, dialog=document.getElementById("referenceDialog");
+    assertContext(m.context);
     busy=true; dialog.inert=true; document.getElementById("refApply").disabled=true;
     try {
       let bid=document.getElementById("refTarget").value;
       if (bid==="new") { bid=await objNewPolyFace(); if (!bid) throw new Error("建立描繪用面失敗。"); }
-      else { bid=Number(bid); if (oc.focus?.t !== "face" || oc.focus.id !== bid) await enterFocus("face",bid); }
+      else {
+        bid=Number(bid);
+        if (!m.targets.has(bid) || history.frame.ids.get(bid)!==m.targets.get(bid)) throw new Error("目標面已變更，請重新選擇來源。");
+        if (oc.focus?.t !== "face" || oc.focus.id !== bid) await enterFocus("face",bid);
+        if (history.frame.ids.get(bid)!==m.targets.get(bid)) throw new Error("目標面已變更，請重新選擇來源。");
+      }
+      assertContext(m.context);
       if (!oc.edit || oc.edit.bid!==bid) throw new Error("目標面已不存在，請重新選擇。");
       const bb=loopsBBox(oc.bmap[bid]), crop=m.crop, mmPerPx=(bb[2]-bb[0])/crop[2];
       context().sources.set(m.source.meta.id,m.source);
@@ -312,26 +466,43 @@ const ReferenceWorkspace = (() => {
       if(task)source.cleanup=task.destroy().catch(()=>{});
     }
   }
-  async function manifest() {
-    const c=context(); await Promise.all(c.pending);
-    const faces=[]; const used=new Set();
+  async function manifest(c = context()) {
+    await referencesReady(c); assertContext(c);
+    const faces=[], faceProjections=[]; const used=new Set();
     for (const [bid,key] of history.frame.ids) {
+      for (const record of c.faceProjections.get(key) || []) faceProjections.push({bid,...JSON.parse(JSON.stringify(record))});
       const g=c.groups.get(key); if (!g?.pages.length) continue;
       faces.push({ bid,activePageId:g.activePageId,pages:g.pages.map(p=>{used.add(p.sourceId);return P.reference(p);}) });
     }
-    return { format:P.FORMAT,projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces };
+    const data = { projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
+      ...(c.models.length?{models:JSON.parse(JSON.stringify(c.models))}:{}),...(faceProjections.length?{faceProjections}:{}),
+      ...(c.engineeringDrafts?.length?{engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.engineeringDrafts))}}:{}) };
+    const format = P.projectFormat(data);
+    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
   }
   function assertSaveReady() {
-    if (oc.busy || fe.ulDrag || history.group) throw new Error("請先完成目前的操作再保存。");
+    if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
     if (fe.draft?.pts?.length) throw new Error("外環草稿尚未套用。請先完成外環或放棄草稿，再保存專案。");
     if (fe.ulCalib?.pts?.length) throw new Error("校準尚未套用。請先套用比例尺或取消取點，再保存專案。");
   }
-  async function exportBytes() {
-    assertSaveReady();
-    const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
-    const m=await manifest(), data=new Map([...context().sources].map(([k,s])=>[k,s.bytes]));
-    return P.pack(r.text,m,data,fflate);
+  function unchanged(stamp) {
+    return context() === stamp.context && history.frame === stamp.frame && revision(stamp.context) === stamp.revision && !pendingLoad;
   }
+  function assertSnapshot(stamp) {
+    if (!unchanged(stamp)) throw new Error("專案在保存準備期間已變更，請重新保存。");
+    assertSaveReady();
+  }
+  async function exportSnapshot(c = context()) {
+    assertSaveReady(); await referencesReady(c); assertContext(c); assertSaveReady();
+    const stamp = { context:c, frame:history.frame, revision:revision(c) };
+    const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
+    assertSnapshot(stamp);
+    const m=await manifest(c); assertSnapshot(stamp);
+    const data=new Map([...c.sources].map(([k,s])=>[k,s.bytes]));
+    const bytes=await P.pack(r.text,m,data,fflate); assertSnapshot(stamp);
+    return {bytes,stamp};
+  }
+  async function exportBytes() { return (await exportSnapshot()).bytes; }
   function download(bytes,name) {
     const url=URL.createObjectURL(new Blob([bytes],{type:"application/zip"})),a=document.createElement("a");
     a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
@@ -340,26 +511,87 @@ const ReferenceWorkspace = (() => {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
     assertSaveReady();
     // Request the handle while user activation is still available.
-    const suggested=context().name.replace(/[\\/:*?"<>|]/g,"_")+".gcanvas";
+    const c=context(), suggested=c.name.replace(/[\\/:*?"<>|]/g,"_")+".gcanvas";
     const handlePromise=window.showSaveFilePicker ? window.showSaveFilePicker({suggestedName:suggested,types:[{description:"構形 Canvas 專案",accept:{"application/zip":[".gcanvas"]}}]}) : null;
     busy=true; present();
     try {
       let handle;
       try { handle=handlePromise && await handlePromise; } catch(e) { if(e.name==="AbortError")return;throw e; }
-      const bytes=await exportBytes();
+      assertContext(c);
+      const {bytes,stamp}=await exportSnapshot(c);
       if(handle){const writable=await handle.createWritable();try{await writable.write(bytes);await writable.close();}catch(e){await writable.abort().catch(()=>{});throw e;}
-        context().dirty=false;context().saved=true;context().downloaded=false;setStatus("✓ 專案已保存，包含完整來源檔案");}
-      else {download(bytes,suggested);context().downloaded=true;setStatus("已產生專案下載；請確認下載完成後再關閉。");}
+        if (unchanged(stamp)) {
+          c.dirty=false;c.modelsDirty=false;c.faceProjectionsDirty=false;c.saved=true;c.downloaded=false;setStatus("✓ 專案已保存，包含場景、工程來源與草稿、參考資料及空間模型");
+        } else {
+          c.dirty=true;c.downloaded=false;
+          setStatus(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
+        }}
+      else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;setStatus("已產生專案下載；請確認下載完成後再關閉。");}
     } finally {busy=false;present();}
+  }
+  function sameModelData(a, b) {
+    const ordered = value => Array.isArray(value) ? value.map(ordered) : value && typeof value === "object"
+      ? Object.fromEntries(Object.keys(value).sort().map(key => [key, ordered(value[key])])) : value;
+    return JSON.stringify(ordered(a)) === JSON.stringify(ordered(b));
+  }
+  async function verifyStoredModel(model) {
+    const packageKeys = ["space", "volume", "clearance", "walls", ...(model.result.schema === "geometry-space-preview/2" ? ["timbers"] : [])];
+    for (const key of packageKeys) {
+      const pkg = model.result[key]; if (pkg === null) continue;
+      const response = await fetch("/model/verify", {method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(pkg),signal:AbortSignal.timeout(30000)});
+      if (!response.ok) throw new Error("空間模型驗證服務失敗（HTTP "+response.status+"），未變更目前專案。");
+      const verified = await response.json();
+      try { P.validateModelPackage(verified); }
+      catch (_) { throw new Error("空間模型「"+model.name+"」驗證失敗："+(verified.error || verified.message || verified.code || verified.diagnostics?.[0]?.message || "模型內容或版本不一致")+"。未變更目前專案。"); }
+    }
+    if (model.result.timbers && await P.sha(new TextEncoder().encode(model.result.timbers.definitions.base_scene)) !== model.result.source_sha256)
+      throw new Error("空間模型「"+model.name+"」的角材來源摘要不一致，未變更目前專案。");
+    // A valid mesh alone cannot establish that the displayed height/settings describe
+    // that mesh. Replay the saved declarations, never the current canvas world.
+    const response = await fetch("/model/space-preview", {method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(model.input),signal:AbortSignal.timeout(30000)});
+    if (!response.ok) throw new Error("空間設定核對服務失敗，未變更目前專案。");
+    const rebuilt = await response.json(), original = model.result;
+    if (rebuilt.ok !== true || rebuilt.schema !== original.schema || rebuilt.source_sha256 !== original.source_sha256)
+      throw new Error("空間模型「"+model.name+"」的來源設定無法重建，未變更目前專案。");
+    for (const key of packageKeys) {
+      if ((rebuilt[key] === null) !== (original[key] === null) || (original[key] !== null &&
+          ["definitions", "request", "derived"].some(field => !sameModelData(rebuilt[key]?.[field], original[key][field]))))
+        throw new Error("空間模型「"+model.name+"」的設定與模型不一致，未變更目前專案。");
+    }
+    const {wall_diagnostics: oldDiagnostics, ...oldSummary} = original.summary;
+    const {wall_diagnostics: newDiagnostics, ...newSummary} = rebuilt.summary || {};
+    if (!sameModelData(oldSummary, newSummary)) throw new Error("空間模型「"+model.name+"」的摘要與定義不一致，未變更目前專案。");
   }
   async function importBytes(bytes,name="匯入專案") {
     if (oc.busy || history.group) throw new Error("請先完成目前的操作再開啟專案。");
     const loaded=await P.unpack(bytes,fflate),m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
+    if (m.format === P.ENGINEERING_FORMAT) {
+      const response=await fetch("/engineering/validate-project",{method:"POST",body:loaded.scene,signal:AbortSignal.timeout(30000)});
+      if(!response.ok)throw new Error("目前服務無法驗證工程專案，未變更目前專案。");
+      const verified=await response.json();
+      if(verified.ok!==true)throw new Error("工程專案驗證失敗："+(verified.error||verified.code||"版本或來源不合法")+"。未變更目前專案。");
+      P.assertProjectCapabilities(m,verified.capabilities);
+      P.validateProjectCapabilities(verified.required_capabilities);
+      if(!sameModelData(verified.required_capabilities,P.sceneCapabilities(loaded.scene)))
+        throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
+    }
+    // Rebuild every embedded package before uploading anything. Stored definitions
+    // are self-contained and do not depend on the current live source scene.
+    for (const model of m.models) await verifyStoredModel(model);
+    c.models=JSON.parse(JSON.stringify(m.models));
+    c.engineeringDrafts=JSON.parse(JSON.stringify(m.engineeringDrafts?.records||[]));
     for(const meta of m.sources)c.sources.set(meta.id,{meta,bytes:loaded.sources.get(meta.id)});
-    const bids=new Set([...loaded.scene.matchAll(/^(?:boundary|surface)\s+(\d+)\s/gm)].map(v=>+v[1])),ids=[];
+    const bids=new Set([...loaded.scene.matchAll(/^(?:boundary|surface)\s+(\d+)\s/gm)].map(v=>+v[1])),ids=[],keys=new Map();
+    const keyFor = bid => { if(!keys.has(bid)){const key=uuid();keys.set(bid,key);ids.push([bid,key]);}return keys.get(bid); };
+    for(const record of m.faceProjections){
+      const key=keyFor(record.bid),records=c.faceProjections.get(key)||[];
+      records.push({placement_id:record.placement_id,projection:JSON.parse(JSON.stringify(record.projection))});c.faceProjections.set(key,records);
+    }
     for(const f of m.faces){
       if(!bids.has(f.bid))throw new Error("來源關聯的面不存在於場景。");
-      const key=uuid();ids.push([f.bid,key]);
+      const key=keyFor(f.bid);
       // Never trust runtime fields (for example a remote image src) from a project file.
       const pages=f.pages.map(p=>P.reference(p));
       for(const p of pages){
@@ -377,7 +609,7 @@ const ReferenceWorkspace = (() => {
     if(!r.ok)throw new Error(r.error||"場景載入失敗。");
     curScene={path:r.path||"",name:c.name+".gcanvas"};
     resetSceneFocus();sync();document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
-    await refreshActive();setStatus("✓ 已開啟專案，來源與校準已還原");return loaded;
+    await refreshActive();setStatus("✓ 已開啟專案，場景、工程來源與草稿、參考資料及空間模型已還原");return loaded;
   }
   async function uploadScene(text,replacement=null) {
     const before = await api("dump");
@@ -411,13 +643,13 @@ const ReferenceWorkspace = (() => {
       if (!response.ok) throw new Error("仍無法確認場景載入結果。");
       const r = await response.json(); if (r.ok !== true) throw new Error(r.error || "重試載入失敗。");
       // Earlier core history remains usable, but unprovable reference associations must not be guessed.
-      history.undo=[];history.redo=[];history.group=null;history.frame={context:fresh(),ids:new Map()};
+      history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;history.frame={context:fresh(),ids:new Map()};
       history.replace(pendingLoad.context,pendingLoad.ids);
       restoredNew=true;restoredPath=r.path||"";
       toast("已重新載入；連線中斷期間的來源歷史無法確認，較早步驟的底圖需從專案重開。");
     }
     if (restoredNew) {
-      curScene={path:restoredPath,name:pendingLoad.context.groups.size?pendingLoad.context.name+".gcanvas":"已恢復場景"};
+      curScene={path:restoredPath,name:pendingLoad.context.groups.size||pendingLoad.context.models.length||pendingLoad.context.faceProjections.size?pendingLoad.context.name+".gcanvas":"已恢復場景"};
       document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
       markSceneItem();
     }
@@ -426,7 +658,7 @@ const ReferenceWorkspace = (() => {
   function mayLeave() {
     if (Object.values(fe.feats || {}).some(items => items.length) &&
       !window.confirm("目前有只能在本次工作階段修改數字的形狀特徵。切換場景後仍保留輪廓，但特徵參數會消失。要繼續嗎？")) return false;
-    return !context().dirty || !context().groups.size || window.confirm("目前專案的參考資料可能尚未保存。要離開目前專案嗎？");
+    return !context().dirty || window.confirm("目前專案有尚未保存的變更。要離開目前專案嗎？");
   }
   function init() {
     for (const type of ["pointerdown", "pointerup", "click", "dblclick", "keydown", "input", "change", "wheel"]) document.addEventListener(type,e=>{
@@ -448,7 +680,16 @@ const ReferenceWorkspace = (() => {
     });
     document.getElementById("btnOpenProject").onclick=()=>{if(mayLeave()){const i=document.getElementById("projectFile");i.value="";i.click();}};
     document.getElementById("projectFile").onchange=safe(async e=>{const f=e.target.files[0];if(!f)return;if(f.size>P.MAX_PACKAGE)throw new Error("專案檔案超過 256 MB。");busy=true;present();try{await importBytes(new Uint8Array(await f.arrayBuffer()),f.name);}finally{busy=false;e.target.value="";present();}});
-    document.getElementById("referenceFile").onchange=safe(async e=>{const f=e.target.files[0];if(f)await openSource(await sourceFromFile(f),e.target.dataset.bid===""?null:Number(e.target.dataset.bid));e.target.value="";});
+    document.getElementById("referenceFile").onchange=safe(async e=>{
+      const input=e.target, f=input.files[0], c=context(), bid=input.dataset.bid===""?null:Number(input.dataset.bid);
+      if(!f)return;
+      const key=history.frame.ids.get(bid), request=++sequence; input.value="";
+      const source=await sourceFromFile(f);
+      if(request!==sequence)return;
+      assertContext(c);
+      if(bid!==null && history.frame.ids.get(bid)!==key)throw new Error("目標面已變更，請重新選擇來源。");
+      await openSource(source,bid);
+    });
     document.getElementById("refClose").onclick=closeSource;
     document.getElementById("referenceDialog").addEventListener("cancel",e=>{e.preventDefault();closeSource();});
     document.getElementById("refApply").onclick=safe(applySource);
@@ -464,10 +705,13 @@ const ReferenceWorkspace = (() => {
     preview.onpointerup=()=>{if(modal){modal.drag=null;if(!modal.ready||!modal.crop)return;if(modal.crop[2]<2||modal.crop[3]<2)modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
     preview.onpointercancel=preview.onpointerup;
     document.getElementById("btnProjectName").onclick=()=>{const n=prompt("專案名稱",context().name);if(n?.trim()){context().name=n.trim().slice(0,200);dirty();sync();}};
-    window.addEventListener("beforeunload",e=>{if(context().dirty&&context().groups.size || Object.values(fe.feats || {}).some(items => items.length)){e.preventDefault();e.returnValue="";}});
+    window.addEventListener("beforeunload",e=>{if(context().dirty || Object.values(fe.feats || {}).some(items => items.length)){e.preventDefault();e.returnValue="";}});
     present();
   }
   return { init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,statusHTML,present,bindPane,active,group,context,history,
     sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
+    addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
+    getFaceProjection,getFaceProjections,setFaceProjection,
+    getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,
     manifest,exportBytes,importBytes,uploadScene,recoverLoad,mayLeave,sync,save,escape,get busy(){return busy;} };
 })();

@@ -252,6 +252,32 @@ static void cmd_grid_preview(const char *command)
     }
     free(draft);
 }
+static void reference_face_text(char *out,size_t size,const ReferenceFace *r)
+{
+    if (r->kind) snprintf(out,size,"t%u",r->timber);
+    else if (r->hole>=0) snprintf(out,size,"h%de%d",r->hole,r->edge);
+    else snprintf(out,size,"e%d",r->edge);
+}
+/* Return stored I13 references; derived uv is never used to reconstruct an anchor. */
+static void json_reference_timber_definition(const Timber *t,const TimberAnchor *a)
+{
+    char anchor[128],selector[128]="",face[32];
+    if (a->anchor_kind==ANCHOR_AT_LINE) snprintf(anchor,sizeof anchor,"at-line guide %u",a->ref_guide);
+    else if (a->anchor_kind==ANCHOR_AT_GRID) snprintf(anchor,sizeof anchor,"at-line grid %u %c %d",a->ref_grid,a->ref_grid_axis==0?'u':'v',a->ref_grid_index);
+    else {
+        ReferenceFace ref={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber};
+        reference_face_text(face,sizeof face,&ref); snprintf(anchor,sizeof anchor,"at-face %s",face);
+    }
+    if (a->has_through) snprintf(selector,sizeof selector,"through %lld",(long long)a->through);
+    else if (a->has_between) {
+        char other[32]; reference_face_text(face,sizeof face,&a->between[0]);
+        reference_face_text(other,sizeof other,&a->between[1]);
+        snprintf(selector,sizeof selector,"between %s %s",face,other);
+    }
+    fputs("{\"anchor\":",stdout); js_string(anchor);
+    fputs(",\"selector\":",stdout); js_string(selector);
+    printf(",\"priority\":%lld}",(long long)t->cut_priority);
+}
 static void cmd_references(void)
 {
     fputs("{\"ok\":true,\"guides\":[",stdout);
@@ -269,7 +295,8 @@ static void cmd_references(void)
         if (!g_world.timbers[i].placed) continue;
         printf("%s{\"id\":%u,\"role\":",first?"":",",g_world.timbers[i].id); first=false;
         js_string(timber_role_name(g_world.timbers[i].role)); fputs(",\"geometry\":",stdout);
-        json_reference_geometry(&g_world,(int)i); putchar('}');
+        json_reference_geometry(&g_world,(int)i);
+        fputs(",\"definition\":",stdout); json_reference_timber_definition(&g_world.timbers[i],&g_world.anchors[i]); putchar('}');
     }
     fputs("],\"specs\":[",stdout);
     for (size_t i=0;i<g_world.spec_count;++i) {
@@ -286,7 +313,7 @@ static void cmd_references(void)
         }
         fputs("]}",stdout);
     }
-    fputs("]}\n",stdout);
+    fputs("],\"engineeringSources\":",stdout);json_engineering_sources(&g_world);fputs("}\n",stdout);
 }
 static void cmd_snap_reference(const char *args)
 {

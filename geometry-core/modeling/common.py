@@ -4,6 +4,28 @@ from __future__ import annotations
 import hashlib
 import json
 
+ENGINEERING_CAPABILITY = "engineering-spec/1"
+
+
+def scene_required_capabilities(scene):
+    """Identify required source syntax, without evaluating any engineering values.
+
+    The C parser remains authoritative. Detecting bindings as well as the marker
+    prevents a stripped marker or a legacy adapter from flattening new sources.
+    """
+    result = set()
+    for raw in scene.splitlines():
+        tokens = raw.split("#", 1)[0].split()
+        if not tokens:
+            continue
+        if tokens[0] == "requires":
+            if len(tokens) != 2:
+                raise ModelError("INVALID", "CAPABILITY_DECLARATION", "I32", "Expected one required capability")
+            result.add(tokens[1])
+        if tokens[0] == "engineering" or any(token.startswith("eng:") for token in tokens):
+            result.add(ENGINEERING_CAPABILITY)
+    return result
+
 
 class ModelError(ValueError):
     def __init__(self, status, code, clause, message, path=None, root=None,

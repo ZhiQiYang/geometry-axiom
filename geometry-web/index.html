@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>構形 Canvas · 角材幾何</title>
+<title>構形 Canvas · 工程規格與空間建模</title>
 <link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="space-workspace.css">
+<link rel="stylesheet" href="engineering-workspace.css">
 </head>
 <body class="connection-blocked">
 <section id="connectionNotice" class="connection-notice" role="status" aria-live="polite">
@@ -61,8 +63,10 @@
           <button id="btnProjectName" class="menu-item" type="button">專案名稱 <span id="projectName"></span></button>
           <hr class="menu-sep">
           <button id="btnOpen" class="menu-item" type="button"><span data-icon="upload"></span>開啟 .scene…</button>
-          <button id="btnExport" class="menu-item" type="button" title="僅匯出幾何，不含來源資料" aria-label="匯出 .scene"><span data-icon="download"></span>匯出 .scene（僅幾何）</button>
+          <button id="btnExport" class="menu-item" type="button" title="包含幾何與工程來源；不含底圖、未發布草稿及已建立空間" aria-label="匯出 .scene"><span data-icon="download"></span>匯出 .scene（幾何與工程定義）</button>
           <button id="btnDatums" class="menu-item" type="button"><span data-icon="guide"></span>共用基準</button>
+          <button id="btnEngineeringSpecs" class="menu-item" type="button" data-engineering-open>工程規格 · 面材與角材</button>
+          <button id="btnEngineeringExample" class="menu-item" type="button">試用工程規格現成專案…</button>
           <div id="sceneList" class="menu menu-nested">
             <button id="sceneMenuBtn" class="menu-item" type="button" aria-haspopup="menu">範例 <span id="sceneMenuLabel">內建示範</span> ▸</button>
             <div id="sceneMenuPop" class="menu-pop" role="menu" hidden></div>
@@ -105,6 +109,11 @@
             <span><strong>知道尺寸 → 六面盒</strong><small>輸入寬・深・高，一次建好</small></span>
           </button>
         </div>
+        <section class="space-model-entry" aria-label="空間建模第一版">
+          <span class="space-model-release">正在確認建模服務版本…</span>
+          <button id="btnSpaceModelTrial" type="button" class="reference-entry"><span data-icon="space"></span><span><strong>從面建立 3D 空間</strong><small>現成範例＋三步引導，立即試用</small></span></button>
+          <button id="btnSpaceModels" type="button" class="text-button">已建立的空間模型 <span id="spaceModelCount">0</span></button>
+        </section>
         <h3 class="create-mode-label">加入物件</h3>
         <div class="quick-create-grid">
           <button id="btnNewSpace" type="button" class="quick-create" title="＋空間:空容器">
@@ -163,6 +172,7 @@
     </aside>
 
     <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
+      <div id="ocSelectionSummary" class="selection-summary" aria-label="物件選取"><span class="selection-copy"><strong role="status" aria-live="polite">拖曳空白處框選物件</strong><small>完整框入才選取 · Shift 加選 · 空白鍵＋拖曳平移</small></span><button type="button" data-selection-clear="oc" hidden>清除選取</button></div>
       <!-- 三段浮標(工具名/情境提示/kbd),目前只有矩形工具使用 -->
       <div id="canvasModeHint" class="canvas-mode-hint" hidden>
         <span class="hint-tool"></span>
@@ -292,6 +302,8 @@
         <span id="workspacePlaceTag" class="place-capsule" hidden></span>
       </div>
       <nav id="faceWorkspaceTools" class="face-workspace-tools" aria-label="面內工具">
+        <button id="btnFaceProjection" type="button" class="workspace-tool" title="指定此面是空間邊界的平面投影，確認俯視或仰視及輪廓內外"><span data-icon="face"></span><span>平面投影</span></button>
+        <button id="btnFaceSpaceModel" type="button" class="workspace-tool" title="使用此面的輪廓與明示高度建立 3D 空間"><span data-icon="space"></span><span>建立空間</span></button>
         <button type="button" class="workspace-tool" data-face-tool="select" title="選取/拖曳 (v)"><span data-icon="pointer"></span><span>選取</span><kbd>V</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="redraw" title="重畫外環 (e)"><span data-icon="redraw"></span><span>外環</span><kbd>E</kbd></button>
         <div class="shape-tool-menu">
@@ -342,6 +354,7 @@
             <div><button id="faceDraftFinish" type="button" class="btn">完成外環</button><button id="faceDraftCancel" type="button" class="btn">放棄草稿</button></div>
         </div>
         <section id="faceEditorViewport" class="face-editor-viewport tool-select" tabindex="-1" aria-label="面編輯畫布">
+          <div id="feSelectionSummary" class="selection-summary" aria-label="角材選取"><span class="selection-copy"><strong role="status" aria-live="polite">拖曳空白處框選角材</strong><small>完整框入才選取 · Shift 加選 · 空白鍵＋拖曳平移</small></span><button type="button" data-selection-clear="fe" hidden>清除選取</button></div>
           <svg id="faceEditorSvg" class="face-editor-svg"><g id="faceEditorRoot"></g></svg>
           <input id="feLenInput" class="fe-len-input" type="text" hidden
                  aria-label="段長 mm" readonly>
@@ -570,5 +583,9 @@
 <script src="reference-ui.js"></script>
 <script src="polydraft.js"></script>
 <script src="app.js"></script>
+<script src="model-viewer.js"></script>
+<script src="space-workspace.js"></script>
+<script src="engineering-workspace.js"></script>
+<script src="engineering-adapter.js"></script>
 </body>
 </html>
