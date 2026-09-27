@@ -629,6 +629,8 @@ async function rightClick(x, y) {
   const boxSid = boxSp && boxSp[0];
 
   console.log("=== P4-2. 空間工作區：成員/槽位/三視圖 ===");
+  /* 服務完成建模後還要刷新卡片；慢速橋接器可能超過通用 settle 的 5 秒上限。 */
+  await waitForUI(`!!document.querySelector('.ocard[data-kind="space"][data-id="${boxSid}"]')`, 30000);
   const spCard = await eval_(`(()=>{
     const c = document.querySelector('.ocard[data-kind="space"][data-id="${boxSid}"]');
     if (!c) return null;
@@ -1161,6 +1163,13 @@ async function rightClick(x, y) {
     const hasTimber = /timber \\d+ 27 33 role boundary/.test(dump1) &&
                       /place \\d+ on \\d+ at-face e0 \\+u \\+n/.test(dump1);
     const fp = document.querySelector(".face-timber");
+    /* 空白欄位的範例不應當作座標送出；填寫後仍可正常建立。 */
+    $("gridMainAlong").value = "v";
+    $("gridCreate").click();
+    await window.__cdpSettleUI(300);
+    const emptyGridRejected = $("gridU").value === "" && $("gridV").value === "" &&
+      $("gridPreviewStatus").textContent.includes("尚未填入格線資料") &&
+      (await api("dump")).text === dump1;
     /* 網格:表單建 u 500 1500 / v 300 900 */
     $("gridU").value = "500 1500"; $("gridV").value = "300 900";
     $("gridMainAlong").value = "v";
@@ -1174,10 +1183,11 @@ async function rightClick(x, y) {
       .map(x => x.textContent).join("|");
     const roles = document.querySelectorAll(".face-grid-line.role-primary").length === 2 &&
       document.querySelectorAll(".face-grid-line.role-secondary").length === 2;
-    return {hasTimber, fp: !!fp, hasGrid, gridLines, roles, rows};
+    return {hasTimber, fp: !!fp, emptyGridRejected, hasGrid, gridLines, roles, rows};
   })()`);
   console.log("角材放置:", q3R.hasTimber ? "✓" : "✗",
     "| 足跡繪製:", q3R.fp ? "✓" : "✗",
+    "| 空白座標提示且世界不變:", q3R.emptyGridRejected ? "✓" : "✗",
     "| 網格建立:", q3R.hasGrid ? "✓" : "✗",
     "| 網格線數與角色:", q3R.gridLines, q3R.gridLines === 4 && q3R.roles ? "✓" : "✗",
     "| 圖層列:", /角材/.test(q3R.rows) && /網格/.test(q3R.rows) ? "✓" : "✗");

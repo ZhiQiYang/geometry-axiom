@@ -5686,7 +5686,8 @@ function gridAxisFormHTML(axis, definition, disabled = false) {
   const option = (value, label) => `<option value="${value}"${source === value ? " selected" : ""}>${label}</option>`;
   return `<div class="grid-axis-card" data-grid-axis="${axis}"><div class="grid-axis-title">${axis} 軸格線</div>` +
     `<label>來源<select id="${prefix}Source"${dis}>${option("none","未設定")}${option("explicit","明寫座標")}${option("series","等差間距")}${option("panel","面材與縫")}</select></label>` +
-    `<div data-grid-fields="explicit"><label>格線座標（mm，空格分隔）<input id="${prefix}" placeholder="500 1500" value="${(d.coordinates || []).join(" ")}"${dis}></label></div>` +
+    `<div data-grid-fields="explicit"><label>格線座標（mm，空格分隔）<input id="${prefix}" placeholder="請輸入座標" aria-describedby="${prefix}Hint" value="${(d.coordinates || []).join(" ")}"${dis}></label>` +
+    `<div id="${prefix}Hint" class="grid-coordinate-hint">例如輸入 500 1500，會在 500 mm、1500 mm 各建立一條格線。</div></div>` +
     `<div class="grid-param-fields" data-grid-fields="series"><label>起點 mm<input id="${prefix}Start" type="number" step="1" value="${d.start ?? ""}"${dis}></label>` +
     `<label>間距 mm<input id="${prefix}Step" type="number" step="1" value="${d.step ?? ""}"${dis}></label>` +
     `<label>條數<input id="${prefix}Count" type="number" min="1" max="64" step="1" value="${d.count ?? ""}"${dis}></label></div>` +
@@ -5741,7 +5742,7 @@ function gridDraftCommand(pane, sid, id, existing) {
       axisCount++;
     }
   }
-  if (!axisCount && !existing) throw Error("至少設定一個軸的格線");
+  if (!axisCount && !existing) throw Error("尚未填入格線資料。請在至少一軸輸入座標，或設定等差間距／面材與縫。");
   if (!axisCount && existing?.mainAlong === (mainAlong === "none" ? null : mainAlong)) throw Error("網格設定沒有變更");
   return parts.join(" ");
 }
