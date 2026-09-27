@@ -1,8 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { getLayout, SCENE } from './geometry';
+import { createPanGesture, keyboardPan } from './canvasGestures';
 
-const COLORS = { background: '#f8fafc', grid: '#e4eaf3', border: '#11998b', face: 'rgba(20, 150, 132, .095)', baseline: '#929dad', draft: '#4654f5', child: '#b38944', text: '#44536f', dimension: '#aeb9cb' };
+const FALLBACK_COLORS = { background: '#f8fafc', grid: '#e4eaf3', border: '#11998b', face: 'rgba(20, 150, 132, .095)', baseline: '#929dad', draft: '#4654f5', child: '#b38944', text: '#44536f', dimension: '#aeb9cb', highlight: '#c68b2d', 'highlight-fill': 'rgba(217, 159, 56, .055)', 'badge-background': '#ffffff', 'badge-border': '#9da5ff' };
 const visible = (value, primary, alias) => value?.[primary] !== false && (!alias || value?.[alias] !== false);
+
+function canvasColors(canvas) {
+  const styles = window.getComputedStyle(canvas);
+  return Object.fromEntries(Object.entries(FALLBACK_COLORS).map(([name, fallback]) => [name, styles.getPropertyValue(`--canvas-${name}`).trim() || fallback]));
+}
 
 function drawSegment(ctx, points, toScreen) {
   const a = toScreen(points[0]);
@@ -10,7 +16,7 @@ function drawSegment(ctx, points, toScreen) {
   ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
 }
 
-function label(ctx, text, x, y, color = COLORS.text, size = 12) {
+function label(ctx, text, x, y, color, size = 12) {
   ctx.fillStyle = color;
   ctx.font = `${size}px "Noto Sans TC", "Microsoft JhengHei", sans-serif`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, x, y);
@@ -20,9 +26,11 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
   const canvasRef = useRef(null);
   const frameRef = useRef(null);
   const transform = useRef(null);
-  const dragging = useRef(null);
+  const helpId = useId();
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isDragging, setDragging] = useState(false);
+  const gesture = useMemo(() => createPanGesture({ onPan: setPan, onDraggingChange: setDragging }), []);
   const before = useMemo(() => getLayout(baseline, { hasSubgrid }), [baseline, hasSubgrid]);
   const after = useMemo(() => getLayout(draft, { hasSubgrid }), [draft, hasSubgrid]);
 
@@ -40,16 +48,31 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
   // Returning to fit view restores the original centre after a pan.
   useEffect(() => { if (zoom === 1) setPan({ x: 0, y: 0 }); }, [zoom, resetKey]);
 
+  // Changes to the view must not leave a gesture tied to an old origin.
+  useEffect(() => { gesture.cancel(); }, [gesture, panMode, zoom, resetKey, faceName]);
+  useEffect(() => {
+    const cancel = () => { gesture.cancel(); };
+    const visibilityChanged = () => { if (document.hidden) gesture.cancel(); };
+    window.addEventListener('blur', cancel);
+    document.addEventListener('visibilitychange', visibilityChanged);
+    return () => {
+      window.removeEventListener('blur', cancel);
+      document.removeEventListener('visibilitychange', visibilityChanged);
+      gesture.cancel();
+    };
+  }, [gesture]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !size.width || !size.height) return;
     const ctx = canvas.getContext('2d');
+    const colors = canvasColors(canvas);
     const dpr = window.devicePixelRatio || 1;
     canvas.width = Math.round(size.width * dpr);
     canvas.height = Math.round(size.height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const { width, height } = size;
-    ctx.fillStyle = COLORS.background; ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = colors.background; ctx.fillRect(0, 0, width, height);
     const padding = { left: width < 500 ? 62 : 70, right: 28, top: height < 600 ? 84 : 107, bottom: height < 600 ? 110 : 170 };
     const fit = Math.max(.015, Math.min((width - padding.left - padding.right) / SCENE.width, (height - padding.top - padding.bottom) / SCENE.height));
     const scale = fit * zoom;
@@ -63,7 +86,7 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
     const step = baseStep * Math.max(1, Math.ceil(24 / baseStep));
     ctx.setLineDash([]);
     if (showBackground) {
-      ctx.strokeStyle = COLORS.grid; ctx.lineWidth = .7;
+      ctx.strokeStyle = colors.grid; ctx.lineWidth = .7;
       ctx.beginPath();
       for (let x = ((ox % step) + step) % step; x <= width; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, height); }
       for (let y = ((oy % step) + step) % step; y <= height; y += step) { ctx.moveTo(0, y); ctx.lineTo(width, y); }
@@ -84,58 +107,58 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
       ctx.beginPath();
       ctx.rect(ox, oy, x1 - ox, y1 - oy);
       ctx.rect(hx0, hy0, hx1 - hx0, hy1 - hy0);
-      ctx.fillStyle = COLORS.face; ctx.fill('evenodd');
-      ctx.strokeStyle = COLORS.border; ctx.lineWidth = 1.35;
+      ctx.fillStyle = colors.face; ctx.fill('evenodd');
+      ctx.strokeStyle = colors.border; ctx.lineWidth = 1.35;
       ctx.strokeRect(ox, oy, x1 - ox, y1 - oy);
     }
 
     if (main) {
       if (showExisting) {
-        ctx.strokeStyle = COLORS.baseline; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
+        ctx.strokeStyle = colors.baseline; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
         before.mainSegments.forEach(segment => drawSegment(ctx, segment.points, point));
       }
       if (showPreview) {
-        ctx.strokeStyle = COLORS.draft; ctx.lineWidth = 1.65; ctx.setLineDash([7, 5]);
+        ctx.strokeStyle = colors.draft; ctx.lineWidth = 1.65; ctx.setLineDash([7, 5]);
         after.mainSegments.forEach(segment => drawSegment(ctx, segment.points, point));
       }
     }
     if (child && ((showExisting && before.child) || (showPreview && after.child))) {
       if (showExisting && before.child) {
-        ctx.strokeStyle = COLORS.child; ctx.lineWidth = highlight ? 2 : 1.2; ctx.setLineDash([2, 4]);
+        ctx.strokeStyle = colors.child; ctx.lineWidth = highlight ? 2 : 1.2; ctx.setLineDash([2, 4]);
         before.child.segments.forEach(segment => drawSegment(ctx, segment.points, point));
       }
       const box = (showPreview ? after.child : before.child)?.bounds ?? before.child?.bounds;
       if (highlight || (showPreview && after.child && !after.child.valid)) {
         const [bx, by] = point([box.u[0], box.v[0]]);
         const [ex, ey] = point([box.u[1], box.v[1]]);
-        ctx.strokeStyle = '#c68b2d'; ctx.lineWidth = 1.2; ctx.setLineDash([5, 4]);
+        ctx.strokeStyle = colors.highlight; ctx.lineWidth = 1.2; ctx.setLineDash([5, 4]);
         ctx.strokeRect(bx, by, ex - bx, ey - by);
         ctx.save();
         ctx.beginPath(); ctx.rect(ox, oy, x1 - ox, y1 - oy); ctx.rect(hx0, hy0, hx1 - hx0, hy1 - hy0); ctx.clip('evenodd');
-        ctx.fillStyle = 'rgba(217, 159, 56, .055)'; ctx.fillRect(bx, by, ex - bx, ey - by);
+        ctx.fillStyle = colors['highlight-fill']; ctx.fillRect(bx, by, ex - bx, ey - by);
         ctx.restore();
       }
       if (showPreview && after.child?.valid) {
-        ctx.strokeStyle = '#b38944'; ctx.lineWidth = 1.2; ctx.setLineDash([2, 4]);
+        ctx.strokeStyle = colors.child; ctx.lineWidth = 1.2; ctx.setLineDash([2, 4]);
         after.child.segments.forEach(segment => drawSegment(ctx, segment.points, point));
       }
     }
     ctx.setLineDash([]);
     if (hole) {
-      ctx.strokeStyle = COLORS.border; ctx.lineWidth = 1.35;
+      ctx.strokeStyle = colors.border; ctx.lineWidth = 1.35;
       ctx.strokeRect(hx0, hy0, hx1 - hx0, hy1 - hy0);
     }
 
     const handle = (x, y) => {
       ctx.beginPath(); ctx.arc(x, y, 4.4, 0, Math.PI * 2);
-      ctx.fillStyle = '#f8fafc'; ctx.fill();
-      ctx.strokeStyle = COLORS.border; ctx.lineWidth = 1.4; ctx.stroke();
+      ctx.fillStyle = colors.background; ctx.fill();
+      ctx.strokeStyle = colors.border; ctx.lineWidth = 1.4; ctx.stroke();
     };
     if (outer) [[ox, oy], [x1, oy], [ox, y1], [x1, y1]].forEach(([x, y]) => handle(x, y));
     if (hole) [[hx0, hy0], [hx1, hy0], [hx0, hy1], [hx1, hy1]].forEach(([x, y]) => handle(x, y));
 
     if (outer) {
-      ctx.strokeStyle = COLORS.dimension; ctx.lineWidth = 1;
+      ctx.strokeStyle = colors.dimension; ctx.lineWidth = 1;
       const top = oy - 23; const left = ox - 24;
       ctx.beginPath();
       ctx.moveTo(ox, top - 7); ctx.lineTo(ox, top + 8); ctx.moveTo(x1, top - 7); ctx.lineTo(x1, top + 8);
@@ -147,43 +170,51 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
       ctx.moveTo(left - 4, oy + 5); ctx.lineTo(left, oy); ctx.lineTo(left + 4, oy + 5);
       ctx.moveTo(left - 4, y1 - 5); ctx.lineTo(left, y1); ctx.lineTo(left + 4, y1 - 5);
       ctx.stroke();
-      label(ctx, '4000', (ox + x1) / 2, top - 12);
-      label(ctx, '3000', left - 16, (oy + y1) / 2);
+      label(ctx, '4000', (ox + x1) / 2, top - 12, colors.text);
+      label(ctx, '3000', left - 16, (oy + y1) / 2, colors.text);
     }
     if (showPreview && main && after.u.length) {
       const bx = Math.min(width - 70, Math.max(68, point([after.u[0], 0])[0]));
       const by = oy + Math.min(70, (y1 - oy) * .18);
-      ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#9da5ff'; ctx.lineWidth = 1;
+      ctx.fillStyle = colors['badge-background']; ctx.strokeStyle = colors['badge-border']; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.roundRect(bx - 39, by - 12, 78, 25, 7); ctx.fill(); ctx.stroke();
-      label(ctx, `縫寬 ${draft.gap} mm`, bx, by + 1, COLORS.draft, 11);
+      label(ctx, `縫寬 ${draft.gap} mm`, bx, by + 1, colors.draft, 11);
     }
   }, [before, after, size, zoom, pan, visibility, showPreview, showExisting, showBackground, gridSize, highlight, hasSubgrid, draft.gap]);
 
   function handleMove(event) {
+    if (gesture.isActive() && !gesture.owns(event.pointerId)) return;
     const t = transform.current;
     const rect = event.currentTarget.getBoundingClientRect();
-    if (dragging.current) {
-      setPan({ x: dragging.current.x + event.clientX - dragging.current.startX, y: dragging.current.y + event.clientY - dragging.current.startY });
-    }
+    gesture.move(event);
     if (t) onPoint?.({ x: Math.round((event.clientX - rect.left - t.ox) / t.scale), y: Math.round((event.clientY - rect.top - t.oy) / t.scale) });
   }
-  function releasePointer(event) {
-    dragging.current = null;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+  function handleKeyDown(event) {
+    if (event.key === 'Escape') { gesture.cancel(); return; }
+    if (!keyboardPan(event, pan)) return;
+    event.preventDefault();
+    gesture.cancel();
+    setPan(previous => keyboardPan(event, previous));
   }
 
   return <div ref={frameRef} className="geometry-canvas" style={{ width: '100%', height: '100%', minHeight: 260, position: 'relative' }}>
-    <canvas ref={canvasRef} aria-label={`${faceName}網格示範，4000 × 3000 毫米；含一個 500 × 500 毫米開口。灰色為現有格線、藍色為預覽、琥珀色為子網格。`} role="img"
-      style={{ display: 'block', width: '100%', height: '100%', touchAction: panMode ? 'none' : 'pan-y', cursor: panMode ? 'grab' : 'crosshair' }}
+    <canvas ref={canvasRef} tabIndex={0} role="group" aria-roledescription="互動畫布" aria-describedby={helpId}
+      aria-label={`${faceName}網格示範，4000 × 3000 毫米；含一個 500 × 500 毫米開口。灰色為現有格線、藍色為預覽、琥珀色為子網格。`}
+      data-pan-x={pan.x} data-pan-y={pan.y} data-dragging={isDragging} data-zoom={zoom}
+      style={{ display: 'block', width: '100%', height: '100%', touchAction: panMode ? 'none' : 'pan-y', cursor: panMode ? (isDragging ? 'grabbing' : 'grab') : 'crosshair' }}
       onPointerMove={handleMove} onPointerDown={event => {
         if (!panMode) return;
-        dragging.current = { startX: event.clientX, startY: event.clientY, ...pan };
-        event.currentTarget.setPointerCapture(event.pointerId);
-      }} onPointerUp={releasePointer} onPointerCancel={releasePointer}
+        if (gesture.start(event, pan)) {
+          event.preventDefault();
+          event.currentTarget.focus({ preventScroll: true });
+        }
+      }} onPointerUp={gesture.end} onPointerCancel={gesture.end} onLostPointerCapture={gesture.end}
+      onBlur={() => gesture.cancel()} onKeyDown={handleKeyDown}
       onWheel={event => {
         if (event.ctrlKey || !onZoom) return;
         onZoom(Math.max(.5, Math.min(2.5, zoom * (event.deltaY < 0 ? 1.08 : .92))));
       }} />
+    <p id={helpId} className="canvas-keyboard-help"><span className="canvas-keyboard-hint">方向鍵微移 · Shift 加快 · Home 回到中央</span><span className="canvas-touch-hint">{panMode ? '平移已開啟：單指拖動畫布' : '開啟「平移」即可拖動畫布'}</span></p>
     <span className="sr-only">現有主網格 u 軸 {before.u.length} 條、v 軸 {before.v.length} 條。{hasSubgrid ? '包含一個局部子網格，u 軸三等分。' : '本面沒有子網格。'}{showPreview && after.errors.map(error => error.message).join(' ')}</span>
   </div>;
 }
