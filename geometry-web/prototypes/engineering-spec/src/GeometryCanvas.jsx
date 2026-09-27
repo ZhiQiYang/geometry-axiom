@@ -22,6 +22,33 @@ function label(ctx, text, x, y, color, size = 12) {
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, x, y);
 }
 
+function dimensionLabel(ctx, text, x, y, colors, size = 14) {
+  ctx.save();
+  ctx.font = `${size}px "Noto Sans TC", "Microsoft JhengHei", sans-serif`;
+  const width = ctx.measureText(text).width + 8;
+  // Keep measurements legible where grid lines pass through the label.
+  ctx.fillStyle = colors.background;
+  ctx.fillRect(x - width / 2, y - size / 2 - 2, width, size + 4);
+  label(ctx, text, x, y, colors.text, size);
+  ctx.restore();
+}
+
+function drawCoordinateAxes(ctx, compact, colors) {
+  const x = compact ? 20 : 46;
+  const y = compact ? 22 : 42;
+  const length = compact ? 24 : 42;
+  ctx.save();
+  ctx.strokeStyle = colors.text; ctx.lineWidth = 1.3; ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(x, y + length); ctx.lineTo(x, y); ctx.lineTo(x + length, y);
+  ctx.moveTo(x + length - 5, y - 3); ctx.lineTo(x + length, y); ctx.lineTo(x + length - 5, y + 3);
+  ctx.moveTo(x - 3, y + length - 5); ctx.lineTo(x, y + length); ctx.lineTo(x + 3, y + length - 5);
+  ctx.stroke();
+  dimensionLabel(ctx, compact ? 'u' : 'u（水平）', x + length + (compact ? 12 : 42), y, colors, compact ? 11 : 13);
+  dimensionLabel(ctx, compact ? 'v' : 'v（垂直）', x, y + length + 16, colors, compact ? 11 : 13);
+  ctx.restore();
+}
+
 export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, showPreview = true, showExisting = true, showBackground = true, gridSize = 50, faceName = '客廳天花', highlight = false, hasSubgrid = true, onPoint, panMode = false, onZoom, resetKey = 0 }) {
   const canvasRef = useRef(null);
   const frameRef = useRef(null);
@@ -73,7 +100,10 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const { width, height } = size;
     ctx.fillStyle = colors.background; ctx.fillRect(0, 0, width, height);
-    const padding = { left: width < 500 ? 62 : 70, right: 28, top: height < 600 ? 84 : 107, bottom: height < 600 ? 110 : 170 };
+    const compact = width < 500 || height < 600;
+    const padding = compact
+      ? { left: width < 500 ? 62 : 70, right: 28, top: height < 600 ? 84 : 107, bottom: height < 600 ? 110 : 170 }
+      : { left: 80, right: 48, top: 132, bottom: 210 };
     const fit = Math.max(.015, Math.min((width - padding.left - padding.right) / SCENE.width, (height - padding.top - padding.bottom) / SCENE.height));
     const scale = fit * zoom;
     const ox = padding.left + (width - padding.left - padding.right - SCENE.width * scale) / 2 + pan.x;
@@ -118,8 +148,14 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
         before.mainSegments.forEach(segment => drawSegment(ctx, segment.points, point));
       }
       if (showPreview) {
-        ctx.strokeStyle = colors.draft; ctx.lineWidth = 1.65; ctx.setLineDash([7, 5]);
-        after.mainSegments.forEach(segment => drawSegment(ctx, segment.points, point));
+        after.mainSegments.forEach(segment => {
+          // The engine assigns roles from the direction the segment runs along.
+          const primary = segment.role === 2;
+          ctx.strokeStyle = primary ? colors.draft : colors.child;
+          ctx.lineWidth = primary ? 1.65 : 1.3;
+          ctx.setLineDash(primary ? [7, 5] : [2, 4]);
+          drawSegment(ctx, segment.points, point);
+        });
       }
     }
     if (child && ((showExisting && before.child) || (showPreview && after.child))) {
@@ -159,7 +195,7 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
 
     if (outer) {
       ctx.strokeStyle = colors.dimension; ctx.lineWidth = 1;
-      const top = oy - 23; const left = ox - 24;
+      const top = oy - 30; const left = ox - 32;
       ctx.beginPath();
       ctx.moveTo(ox, top - 7); ctx.lineTo(ox, top + 8); ctx.moveTo(x1, top - 7); ctx.lineTo(x1, top + 8);
       ctx.moveTo(ox, top); ctx.lineTo(x1, top);
@@ -170,8 +206,27 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
       ctx.moveTo(left - 4, oy + 5); ctx.lineTo(left, oy); ctx.lineTo(left + 4, oy + 5);
       ctx.moveTo(left - 4, y1 - 5); ctx.lineTo(left, y1); ctx.lineTo(left + 4, y1 - 5);
       ctx.stroke();
-      label(ctx, '4000', (ox + x1) / 2, top - 12, colors.text);
-      label(ctx, '3000', left - 16, (oy + y1) / 2, colors.text);
+      dimensionLabel(ctx, String(SCENE.width), (ox + x1) / 2, top - 14, colors, compact ? 12 : 14);
+      dimensionLabel(ctx, String(SCENE.height), left, (oy + y1) / 2, colors, compact ? 12 : 14);
+    }
+    if (hole) {
+      const top = hy0 - 21;
+      const rightSide = hx1 + 62 < width;
+      const side = rightSide ? hx1 + 25 : hx0 - 25;
+      const arrow = Math.min(5, Math.max(2, (hx1 - hx0) / 6));
+      ctx.strokeStyle = colors.dimension; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(hx0, top - 6); ctx.lineTo(hx0, top + 6); ctx.moveTo(hx1, top - 6); ctx.lineTo(hx1, top + 6);
+      ctx.moveTo(hx0, top); ctx.lineTo(hx1, top);
+      ctx.moveTo(hx0 + arrow, top - 3); ctx.lineTo(hx0, top); ctx.lineTo(hx0 + arrow, top + 3);
+      ctx.moveTo(hx1 - arrow, top - 3); ctx.lineTo(hx1, top); ctx.lineTo(hx1 - arrow, top + 3);
+      ctx.moveTo(side - 6, hy0); ctx.lineTo(side + 6, hy0); ctx.moveTo(side - 6, hy1); ctx.lineTo(side + 6, hy1);
+      ctx.moveTo(side, hy0); ctx.lineTo(side, hy1);
+      ctx.moveTo(side - 3, hy0 + arrow); ctx.lineTo(side, hy0); ctx.lineTo(side + 3, hy0 + arrow);
+      ctx.moveTo(side - 3, hy1 - arrow); ctx.lineTo(side, hy1); ctx.lineTo(side + 3, hy1 - arrow);
+      ctx.stroke();
+      dimensionLabel(ctx, String(hu1 - hu0), (hx0 + hx1) / 2, top - 13, colors, compact ? 11 : 14);
+      dimensionLabel(ctx, String(hv1 - hv0), side + (rightSide ? 22 : -22), (hy0 + hy1) / 2, colors, compact ? 11 : 14);
     }
     if (showPreview && main && after.u.length) {
       const bx = Math.min(width - 70, Math.max(68, point([after.u[0], 0])[0]));
@@ -180,6 +235,8 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
       ctx.beginPath(); ctx.roundRect(bx - 39, by - 12, 78, 25, 7); ctx.fill(); ctx.stroke();
       label(ctx, `縫寬 ${draft.gap} mm`, bx, by + 1, colors.draft, 11);
     }
+    // Fixed viewport orientation; v follows the engine's downward screen axis.
+    drawCoordinateAxes(ctx, compact, colors);
   }, [before, after, size, zoom, pan, visibility, showPreview, showExisting, showBackground, gridSize, highlight, hasSubgrid, draft.gap]);
 
   function handleMove(event) {
@@ -199,7 +256,7 @@ export function GeometryCanvas({ baseline, draft, visibility = {}, zoom = 1, sho
 
   return <div ref={frameRef} className="geometry-canvas" style={{ width: '100%', height: '100%', minHeight: 260, position: 'relative' }}>
     <canvas ref={canvasRef} tabIndex={0} role="group" aria-roledescription="互動畫布" aria-describedby={helpId}
-      aria-label={`${faceName}網格示範，4000 × 3000 毫米；含一個 500 × 500 毫米開口。灰色為現有格線、藍色為預覽、琥珀色為子網格。`}
+      aria-label={`${faceName}網格示範，4000 × 3000 毫米；含一個 500 × 500 毫米開口。u 軸向右，v 軸向下。青綠色為邊界 1；靛藍虛線為主支 2；琥珀色點線為副支 3 與子網格；灰色虛線為現有主網格。`}
       data-pan-x={pan.x} data-pan-y={pan.y} data-dragging={isDragging} data-zoom={zoom}
       style={{ display: 'block', width: '100%', height: '100%', touchAction: panMode ? 'none' : 'pan-y', cursor: panMode ? (isDragging ? 'grabbing' : 'grab') : 'crosshair' }}
       onPointerMove={handleMove} onPointerDown={event => {

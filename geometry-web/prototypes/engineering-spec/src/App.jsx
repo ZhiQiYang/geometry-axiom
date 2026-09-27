@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowUUpLeft, ArrowUUpRight, ArrowsOut, CaretDown, Check, CheckCircle, Crosshair, Cube, Cursor, Eye, EyeSlash, FloppyDisk, GridFour, Hand, Info, Stack as Layers, LineSegment, LinkSimple, MagnifyingGlass, Minus, Plus, Polygon, SlidersHorizontal, Square, WarningCircle, X } from '@phosphor-icons/react';
+import { List, ArrowUUpLeft, ArrowUUpRight, ArrowsOut, CaretDown, Check, CheckCircle, Crosshair, Cube, Cursor, Eye, EyeSlash, FloppyDisk, GridFour, Hand, Info, Stack as Layers, LineSegment, LinkSimple, MagnifyingGlass, Minus, Plus, Polygon, SlidersHorizontal, Square, WarningCircle, X } from '@phosphor-icons/react';
 import { GeometryCanvas } from './GeometryCanvas';
 import { getLayoutErrors } from './geometry';
 import { methodLabel as catalogMethodLabel, panelFor, resolveMethod } from './catalog';
 import { loadSavedState, saveState, parseImport, serializeState, STORAGE_KEY } from './persistence';
 import { SpecificationLibrary } from './SpecificationLibrary';
+import { InlinePanelEditor } from './InlinePanelEditor';
 import { getPreviewChanges } from './previewChanges';
 import './library.css';
 import './catalog-integration.css';
+import './inline-design.css';
 
 const FACES = [{ id: 'living', name: '客廳天花', child: true }, { id: 'hall', name: '走道天花', child: true }, { id: 'bed', name: '臥室天花', child: false }];
 const ROLES = [['boundary', '邊界 1'], ['primary', '主支 2'], ['secondary', '副支 3']];
@@ -47,6 +49,9 @@ export function App() {
   const [storageBlocked, setStorageBlocked] = useState(Boolean(loaded.error));
   const storageSnapshot = useRef(loaded.snapshot);
   const [libraryStart, setLibraryStart] = useState({ tab: 'materials', key: null, action: 'list' });
+  const [editorRevision, setEditorRevision] = useState(0);
+  const [inlineState, setInlineState] = useState({ pending: false, hasOtherDraft: false, blocked: false, error: '', actionCaption: '接續工程做法' });
+  const [faceSettingsOpen, setFaceSettingsOpen] = useState(false);
   const [importText, setImportText] = useState('');
   const [importError, setImportError] = useState('');
   const [importCandidate, setImportCandidate] = useState(null);
@@ -111,15 +116,16 @@ export function App() {
   function updateCatalog(nextCatalog) { requestSeq.current++; setPreview(null); setInspection(null); setCatalog(nextCatalog); }
   function updateDraft(updates) { requestSeq.current++; setPreview(null); setInspection(null); setDrafts(d => ({ ...d, [activeFace]: { ...d[activeFace], ...updates } })); }
   function chooseFace(id) { requestSeq.current++; setActiveFace(id); setTargets([id]); setPreview(null); setInspection(null); setHighlight(false); setModal(null); }
-  function chooseMethod(id) { const selected = resolveMethod(catalog, id); updateDraft({ methodId: id, gap: draft.gapOverride ? draft.gap : selected.gap, longAxis: selected.longAxis, mainAlong: selected.mainAlong }); setModal(null); setToast('已載入工程做法至本面草稿；請預覽後套用。'); }
-  function closeModal() { requestSeq.current++; setModal(null); setBusy(false); }
+  function chooseMethod(id) { const selected = resolveMethod(catalog, id); updateDraft({ methodId: id, gap: draft.gapOverride ? draft.gap : selected.gap, longAxis: selected.longAxis, mainAlong: selected.mainAlong }); setModal(null); setEditorRevision(v => v + 1); setToast('已載入工程做法至本面草稿；請預覽後套用。'); }
+  function closeModal() { requestSeq.current++; setModal(null); setBusy(false); setEditorRevision(v => v + 1); }
   function candidateFor(id) {
     if (id === activeFace) return { ...draft, gap: Number(draft.gap) };
     const keep = preserveOverrides && world[id].gapOverride;
     return { ...world[id], methodId: draft.methodId, gap: keep ? world[id].gap : method.gap, gapOverride: keep };
   }
   function beginPreview() {
-    if (!gapValid) { document.getElementById('gap').focus(); return; }
+    if (inlineState.pending || inlineState.hasOtherDraft || inlineState.blocked) { openLibrary(); setToast('請先完成或放棄保留的規格草稿，再預覽套用。'); return; }
+    if (!gapValid) { setFaceSettingsOpen(true); requestAnimationFrame(() => document.getElementById('gap')?.focus()); return; }
     if (!targets.length) { setModal('targets'); return; }
     const sequence = ++requestSeq.current;
     const rows = targets.map(id => ({ id, before: world[id], after: candidateFor(id), errors: getLayoutErrors(cfg(world[id]), cfg(candidateFor(id)), { hasSubgrid: FACES.find(f => f.id === id).child }) }));
@@ -172,17 +178,17 @@ export function App() {
     return { ...value, gap: Number(value.gap), panel: panelFor(value.methodId, catalog) };
   }, [inspection, gapValid, draft, base, catalog]);
 
-  return <main className="app-shell">
+  return <main className="app-shell inline-workspace">
     <header className="topbar">
-      <div className="scene-heading"><IconButton label="切換面" onClick={() => setModal('faces')}><ArrowLeft size={21} /></IconButton><button className="face-title" onClick={() => setModal('faces')}>{face.name}<CaretDown size={12} /></button><span className="face-chip">天花　z = 0</span></div>
+      <div className="scene-heading"><IconButton label="切換工作面" onClick={() => setModal('faces')}><List size={24} /></IconButton><div><strong className="brand-title">構形 Canvas</strong><span className="brand-subtitle">木作工程圖說 · 從設計到施作</span></div></div>
       <nav className="drawing-tools" aria-label="畫布工具">
         <IconButton label="選取" aria-pressed={!panMode} onClick={() => setPanMode(false)}><Cursor size={19} /><span>選取</span></IconButton>
-        <IconButton label="平移" aria-pressed={panMode} onClick={() => { setPanMode(true); setMobilePanel(null); }}><Hand size={22} /></IconButton>
+        <IconButton label="平移" aria-pressed={panMode} onClick={() => { setPanMode(true); setMobilePanel(null); }}><Hand size={22} /><span>平移</span></IconButton>
         <span className="tool-separator" />
         <IconButton label="繪製輪廓（此原型未提供）" disabled><Polygon size={19} /><span>形狀</span></IconButton><IconButton label="建立參考線（此原型未提供）" disabled><LineSegment size={19} /><span>參考線</span></IconButton>
         <IconButton label="工程規格設定" aria-pressed={mobilePanel === 'settings'} onClick={() => setMobilePanel('settings')}><GridFour size={19} /><span>規格</span></IconButton><IconButton label="放置角材（此原型未提供）" disabled><Cube size={19} /><span>角材</span></IconButton>
       </nav>
-      <div className="project-actions"><IconButton label="復原整批套用" disabled={!past.length} onClick={undo}><ArrowUUpLeft size={21} /></IconButton><IconButton label="重做整批套用" disabled={!future.length} onClick={redo}><ArrowUUpRight size={21} /></IconButton><IconButton label="適合畫面" onClick={fit}><ArrowsOut size={20} /></IconButton><button className="save-button" aria-label="匯出規格備份" onClick={save}><FloppyDisk size={17} /><span>備份</span></button></div>
+      <div className="project-actions"><IconButton label="復原整批套用" disabled={!past.length} onClick={undo}><ArrowUUpLeft size={21} /><span>復原</span></IconButton><IconButton label="重做整批套用" disabled={!future.length} onClick={redo}><ArrowUUpRight size={21} /><span>重做</span></IconButton><IconButton label="適合畫面" onClick={fit}><ArrowsOut size={20} /><span>適合畫面</span></IconButton><button className="save-button" aria-label="備份管理" onClick={() => { setImportText(''); setImportError(''); setImportCandidate(null); setModal('backup'); }}><FloppyDisk size={17} /><span>備份</span></button></div>
     </header>
     <div className="mobile-toolbar"><button aria-pressed={mobilePanel === 'layers'} onClick={() => setMobilePanel(mobilePanel === 'layers' ? null : 'layers')}><Layers size={18} />圖層</button><span>介面原型</span><button aria-pressed={mobilePanel === 'settings'} onClick={() => setMobilePanel(mobilePanel === 'settings' ? null : 'settings')}><SlidersHorizontal size={18} />工程規格</button></div>
     <div className="workspace">
@@ -190,14 +196,15 @@ export function App() {
         <div className="layer-heading"><h2>圖層 / 物件</h2><button className="text-button" onClick={() => setModal('faces')}>選面</button></div>
         <button className="selected-face" onClick={() => setModal('faces')}><Layers size={18} />{face.name}<CheckCircle size={16} weight="fill" /></button>
         {[['surface', '外環', <Polygon size={18} />], ['hole', '開口 1', <Square size={17} />], ['main', '主網格 1', <GridFour size={18} />], ...(face.child ? [['subgrid', '子網格 1', <GridFour size={18} />]] : [])].map(([key, name, icon]) => <div className={`layer-row ${!visibility[key] ? 'is-hidden' : ''}`} key={key}><button className="layer-name" onClick={() => { setHighlight(key === 'subgrid'); setMobilePanel(null); }}>{icon}<span><strong>{name}</strong><small>{key === 'surface' ? '4 頂點 · 4000 × 3000' : key === 'hole' ? '500 × 500' : key === 'main' ? '依面材尺寸排板' : '局部 · u 三等分'}</small></span></button><IconButton label={`${visibility[key] ? '隱藏' : '顯示'}${name}`} aria-pressed={visibility[key]} onClick={() => toggleVisibility(key)}>{visibility[key] ? <Eye size={16} /> : <EyeSlash size={16} />}</IconButton></div>)}
-        <div className="layer-bottom"><span className="prototype-badge">介面原型</span><p>示意場景・工程規格流程</p><button className="text-button" onClick={() => openLibrary()}>管理材料與工程規格</button><button className="text-button" onClick={() => setModal('targets')}>套用範圍：{scopeText}</button></div>
+        <div className="layer-bottom"><span className="prototype-badge">介面原型</span><p>示意場景・工程規格流程</p><button className="text-button" onClick={() => openLibrary()}>管理材料與工程規格</button><button className="text-button" onClick={() => { setImportText(''); setImportError(''); setImportCandidate(null); setModal('backup'); }}>匯入／匯出備份</button></div>
       </aside>
 
       <section className="canvas-region" aria-label="網格畫布">
         <GeometryCanvas baseline={canvasBaseline} draft={canvasDraft} visibility={visibility} zoom={zoom} showPreview={showDraft && gapValid} showExisting={showExisting} showBackground={backgroundGrid} gridSize={gridSize} highlight={highlight} hasSubgrid={canvasFace.child} faceName={canvasFace.name} onPoint={setPoint} panMode={panMode} onZoom={setZoom} resetKey={resetKey} />
         <div className={`canvas-status ${base.applied && !dirty ? 'applied' : ''}`}><span>{base.applied && !dirty ? '已套用' : '尚未套用'}</span>{highlight && <button onClick={() => { setHighlight(false); setInspection(null); }}>已定位：{canvasFace.name} <X size={13} /></button>}</div>
         <button className="return-settings button" onClick={() => setMobilePanel('settings')}><SlidersHorizontal size={17} />編輯規格</button>
-        <div className="canvas-legend"><button aria-pressed={showExisting} onClick={() => setShowExisting(v => !v)}><LineSegment size={18} className="existing-color" />現有</button><button aria-pressed={showDraft} onClick={() => setShowDraft(v => !v)}><LineSegment size={18} className="draft-color" />預覽</button><span><LineSegment size={18} className="child-color" />子網格</span></div>
+        <div className="canvas-view-toggles"><button aria-pressed={showExisting} onClick={() => setShowExisting(v => !v)}>現有格線</button><button aria-pressed={showDraft} onClick={() => setShowDraft(v => !v)}>預覽格線</button></div>
+        <div className="canvas-legend"><span><i className="legend-line boundary" aria-hidden="true" />邊界 1</span><span><i className="legend-line primary" aria-hidden="true" />主支 2</span><span><i className="legend-line secondary" aria-hidden="true" />副支 3</span></div>
         <div className="canvas-controls"><button className={`canvas-pan-toggle ${panMode ? "enabled" : ""}`} aria-pressed={panMode} onClick={() => setPanMode(value => !value)}><Hand size={18} />平移</button><IconButton label="縮小" onClick={() => setZoom(z => Math.max(.5, z - .1))}><Minus size={17} /></IconButton><button className="zoom-value" onClick={fit} title="回到適合畫面">{Math.round(zoom * 100)}%</button><IconButton label="放大" onClick={() => setZoom(z => Math.min(2.5, z + .1))}><Plus size={17} /></IconButton><span className="tool-separator" /><button className={snap ? 'enabled' : ''} aria-pressed={snap} onClick={() => setSnap(v => !v)}><Crosshair size={17} />座標吸附</button><button className={backgroundGrid ? 'enabled' : ''} aria-pressed={backgroundGrid} onClick={() => setBackgroundGrid(v => !v)}><GridFour size={17} />底格</button><select aria-label="底格間距" value={gridSize} onChange={e => setGridSize(Number(e.target.value))}><option value="50">50 mm</option><option value="100">100 mm</option><option value="200">200 mm</option></select></div>
         <div className="coordinate-readout">{displayPoint ? `u ${displayPoint.x}　v ${displayPoint.y} mm` : 'u →　v ↓　單位 mm'}</div>
       </section>
@@ -205,20 +212,21 @@ export function App() {
       <aside className={`inspector ${mobilePanel === 'settings' ? 'mobile-open' : ''}`} aria-label="工程規格設定">
         <header className="inspector-heading"><h1>工程規格</h1><button className="text-button mobile-only" onClick={() => setMobilePanel(null)}>查看畫布</button></header>
         <div className="inspector-body">
-          <div className="method-row"><button className="method-picker" onClick={() => { setSearch(''); setModal('method'); }}><strong>{methodLabel(draft.methodId)}</strong><CaretDown size={13} /></button><span className={`status-badge ${base.applied && !dirty ? 'success' : ''}`}>{base.applied && !dirty ? '已套用' : '尚未套用'}</span><button className="text-button" onClick={() => setModal('details')}>檢視做法</button></div>
-          <section className="materials-section"><div className="section-heading"><h2>材料來源</h2><button className="text-button" onClick={() => openLibrary()}>管理規格庫</button></div><button className="material-row" onClick={() => setModal('panel')}><span className="material-type">面材</span><img src="/assets/panel-112.webp" srcSet="/assets/panel-112.webp 112w, /assets/panel-224.webp 224w" sizes="56px" width="56" height="56" decoding="async" alt="板材示意，非特定產品" /><span className="material-copy"><strong>{method.panel} <small>{method.panelVersion}</small></strong><span>{panel.width} × {panel.length} mm</span><small>厚度：{panel.thickness == null ? '未設定' : `${panel.thickness} mm`}</small></span><LinkSimple size={17} /></button><button className="material-row" onClick={() => openLibrary('methods', draft.methodId, 'edit')}><span className="material-type">角材</span><img src="/assets/timber-112.webp" srcSet="/assets/timber-112.webp 112w, /assets/timber-224.webp 224w" sizes="56px" width="56" height="56" decoding="async" alt="角材示意，非特定產品" /><span className="material-copy"><strong>{Object.values(method.roles).filter(Boolean).length} / 3 個角色已設定</strong><span>設定邊界、主支、副支用料 →</span></span></button></section>
-          <section className="settings-section"><h2>本面設定</h2>
-            <div className="setting-row"><span className="setting-label">面材寬 × 長</span><div><button className="source-link" onClick={() => openLibrary('materials', method.panelKey, 'edit')}><LinkSimple size={18} />編輯面材規格</button><div className="derived-value">{panel.width} × {panel.length} mm</div><p className="source-caption">引用 {method.panelVersion} · 改版後由工程做法選用</p></div></div>
+          <div className="method-row"><button className="method-picker" onClick={() => { setSearch(''); setModal('method'); }}><strong>{methodLabel(draft.methodId)}</strong><CaretDown size={15} /></button><span className={`status-badge ${base.applied && !dirty && !inlineState.pending ? 'success' : ''}`}>{inlineState.error ? '草稿待保存' : inlineState.pending || inlineState.hasOtherDraft ? '草稿已保留' : base.applied && !dirty ? '已套用' : '尚未套用'}</span></div>
+          <p className="method-context">儲存後接續工程做法新版本</p>
+          <section className="materials-section"><div className="section-heading"><h2>材料來源</h2><button className="text-button" onClick={() => openLibrary()}>規格庫</button></div><button className="material-hero" onClick={() => setModal('panel')}><img src="/assets/panel-224.webp" width="100" height="80" decoding="async" alt="板材示意，非特定產品" /><span><strong>{method.panel}</strong><small>目前引用 {method.panelVersion} · 厚 {panel.thickness == null ? '未設定' : `${panel.thickness} mm`}</small></span></button></section>
+          <InlinePanelEditor key={`${activeFace}:${draft.methodId}:${editorRevision}`} catalog={catalog} methodKey={draft.methodId} onCatalogChange={updateCatalog} onContinue={() => openLibrary('methods', draft.methodId, 'edit')} onEditDetails={() => openLibrary('materials', method.panelKey, 'edit')} onStateChange={setInlineState} />
+          <details className="component-materials" open><summary>構件用料 · {Object.values(method.roles).filter(Boolean).length}/3<CaretDown size={18} /></summary><div>{ROLES.map(([key, label]) => <div className="component-role-row" key={key}><span>{label}</span><button className={method.roles[key] ? 'role-material-set' : 'role-material-unset'} onClick={() => openLibrary('methods', draft.methodId, 'edit')}>{method.roles[key] ? timberLabel(method.roles[key]) : '尚未設定'}</button></div>)}</div></details>
+          <details className="face-settings" open={faceSettingsOpen} onToggle={e => setFaceSettingsOpen(e.currentTarget.open)}><summary>排板與本面設定<CaretDown size={18} /></summary><section className="settings-section">
             <div className="setting-row"><label htmlFor="long-axis">面材長邊沿</label><select id="long-axis" value={draft.longAxis} onChange={e => updateDraft({ longAxis: e.target.value })}><option value="v">v 方向（垂直）</option><option value="u">u 方向（水平）</option></select></div>
             <div className="setting-row gap-row"><label htmlFor="gap">縫寬</label><div><div className={`unit-input ${!gapValid ? 'invalid' : ''}`}><input id="gap" type="number" min="0" max="100000000" step="1" value={draft.gap} aria-invalid={!gapValid} aria-describedby="gap-source gap-error" onChange={e => updateDraft({ gap: e.target.value, gapOverride: true })} /><span>mm</span></div><div className="source-state"><span className={draft.gapOverride ? 'override-tag' : 'inherited-tag'}>{draft.gapOverride ? '本面覆寫' : '沿用工程做法'}</span>{draft.gapOverride && <button className="text-button" onClick={() => updateDraft({ gap: method.gap, gapOverride: false })}>恢復沿用</button>}</div><p id="gap-source" className="source-caption">來源：工程做法 {method.gap} mm</p>{!gapValid && <p id="gap-error" className="field-error">請輸入 0 至 100,000,000 的整數毫米。</p>}</div></div>
             <div className="setting-row"><label htmlFor="main-axis">主支長度方向</label><div><select id="main-axis" value={draft.mainAlong} onChange={e => updateDraft({ mainAlong: e.target.value })}><option value="v">沿 v 方向（垂直）</option><option value="u">沿 u 方向（水平）</option></select><p className="source-caption">僅影響新建構件的預設</p></div></div>
           </section>
           <div className="role-note"><Info size={17} /><span>構件角色維持原設定，材料變更不會改寫既有構件的角色。</span></div>
-          <button className="scope-row" onClick={() => setModal('targets')}><Layers size={17} /><span>套用至 <strong>{scopeText}</strong></span><CaretDown size={13} /></button>
-          <div className="local-save-status"><p role="status">{storageError || '規格版本與本面設定已儲存於此瀏覽器'}</p>{storageBlocked && <button className="text-button" onClick={() => window.location.reload()}>重新讀取已儲存版本</button>}<button className="text-button" onClick={() => { setImportText(''); setImportError(''); setImportCandidate(null); setModal('backup'); }}>匯入／匯出備份</button></div>
-          <p className="prototype-note">規格流程原型 · 尚未連接正式工程</p>
+          <button className="text-button" onClick={() => setModal('details')}>檢視目前做法</button><button className="text-button" onClick={() => { updateDraft(base); setToast('已還原本面尚未套用的設定；材料草稿仍保留。'); }}>還原本面設定</button></details>
+          {storageError && <div className="local-save-status"><p role="alert">{storageError}</p>{storageBlocked && <button className="text-button" onClick={() => window.location.reload()}>重新讀取已儲存版本</button>}</div>}
         </div>
-        <footer className="inspector-footer"><button className="button" onClick={() => { updateDraft(base); setToast('已還原本面尚未套用的設定。'); }}>取消</button><button className="button primary" onClick={beginPreview}>預覽套用</button></footer>
+        <footer className="inspector-footer inline-footer"><button className="scope-row" onClick={() => setModal('targets')}><span>套用至 <strong>{scopeText}</strong></span><CaretDown size={14} /></button><button type="submit" form="inline-panel-form" className="button primary">{inlineState.actionCaption}</button><button className="text-button preview-action" onClick={beginPreview}>預覽套用目前做法</button></footer>
       </aside>
     </div>
 
