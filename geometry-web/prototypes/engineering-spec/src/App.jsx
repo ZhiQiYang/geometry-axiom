@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowUUpLeft, ArrowUUpRight, ArrowsOut, CaretDown, Check, CheckCircle, Crosshair, Cube, Cursor, Eye, EyeSlash, FloppyDisk, GridFour, Hand, Info, Stack as Layers, LineSegment, LinkSimple, MagnifyingGlass, Minus, Plus, Polygon, SlidersHorizontal, Square, WarningCircle, X } from '@phosphor-icons/react';
 import { GeometryCanvas } from './GeometryCanvas';
 import { getLayoutErrors } from './geometry';
 import { methodLabel as catalogMethodLabel, panelFor, resolveMethod } from './catalog';
 import { loadSavedState, saveState, parseImport, serializeState, STORAGE_KEY } from './persistence';
 import { SpecificationLibrary } from './SpecificationLibrary';
+import { getPreviewChanges } from './previewChanges';
 import './library.css';
 import './catalog-integration.css';
 
@@ -14,6 +15,19 @@ const timberLabel = material => material ? `${material.name} · v${material.vers
 
 function IconButton({ label, children, ...props }) {
   return <button type="button" className="icon-button" title={label} aria-label={label} {...props}>{children}</button>;
+}
+function PreviewComparison({ catalog, before, after }) {
+  const comparison = getPreviewChanges(catalog, before, after);
+  return <>
+    {comparison.firstApplication && <p className="first-application">首次套用至此面</p>}
+    {comparison.changed.length ? <section className="preview-changes" aria-label="此次變更">
+      <h4>此次變更 · {comparison.changed.length} 項</h4>
+      <dl className="change-table">{comparison.changed.map(row => <div key={row.id}><dt>{row.label}</dt><dd>{row.before} <span aria-label="變更為">→</span> <strong>{row.after}</strong></dd></div>)}</dl>
+    </section> : <p className="preview-no-changes">{comparison.firstApplication ? '規格數值未變更，確認後將首次套用。' : '規格與目前套用內容相同，沒有新的變更。'}</p>}
+    {comparison.unchanged.length > 0 && <details className="preview-unchanged"><summary>查看完整規格 · {comparison.unchanged.length} 項未變更</summary>
+      <dl className="change-table">{comparison.unchanged.map(row => <div key={row.id}><dt>{row.label}</dt><dd>{row.after}</dd></div>)}</dl>
+    </details>}
+  </>;
 }
 function Dialog({ title, subtitle, children, footer, onClose, wide = false, library = false }) {
   const ref = useRef(null);
@@ -90,7 +104,10 @@ export function App() {
     };
     window.addEventListener('storage', changed); return () => window.removeEventListener('storage', changed);
   }, []);
-  function openLibrary(tab = 'materials', key = null, action = 'list') { setLibraryStart({ tab, key, action }); setModal('library'); }
+  function openLibrary(tab = 'materials', key = null, action = 'list') {
+    const contextMethodKey = tab === 'materials' && action === 'edit' && key === method.panelKey ? draft.methodId : null;
+    setLibraryStart({ tab, key, action, contextMethodKey }); setModal('library');
+  }
   function updateCatalog(nextCatalog) { requestSeq.current++; setPreview(null); setInspection(null); setCatalog(nextCatalog); }
   function updateDraft(updates) { requestSeq.current++; setPreview(null); setInspection(null); setDrafts(d => ({ ...d, [activeFace]: { ...d[activeFace], ...updates } })); }
   function chooseFace(id) { requestSeq.current++; setActiveFace(id); setTargets([id]); setPreview(null); setInspection(null); setHighlight(false); setModal(null); }
@@ -146,6 +163,14 @@ export function App() {
   const scopeText = targets.length === 1 ? FACES.find(f => f.id === targets[0]).name : `${targets.length} 個面`;
   const displayPoint = point && (snap ? { x: Math.round(point.x / gridSize) * gridSize, y: Math.round(point.y / gridSize) * gridSize } : point);
   const canvasFace = inspection ? FACES.find(f => f.id === inspection.id) : face;
+  const canvasBaseline = useMemo(() => {
+    const value = inspection?.before || base;
+    return { ...value, gap: Number(value.gap), panel: panelFor(value.methodId, catalog) };
+  }, [inspection, base, catalog]);
+  const canvasDraft = useMemo(() => {
+    const value = inspection?.after || (gapValid ? draft : base);
+    return { ...value, gap: Number(value.gap), panel: panelFor(value.methodId, catalog) };
+  }, [inspection, gapValid, draft, base, catalog]);
 
   return <main className="app-shell">
     <header className="topbar">
@@ -169,11 +194,11 @@ export function App() {
       </aside>
 
       <section className="canvas-region" aria-label="網格畫布">
-        <GeometryCanvas baseline={cfg(inspection?.before || base)} draft={cfg(inspection?.after || (gapValid ? draft : base))} visibility={visibility} zoom={zoom} showPreview={showDraft && gapValid} showExisting={showExisting} showBackground={backgroundGrid} gridSize={gridSize} highlight={highlight} hasSubgrid={canvasFace.child} faceName={canvasFace.name} onPoint={setPoint} panMode={panMode} onZoom={setZoom} resetKey={resetKey} />
+        <GeometryCanvas baseline={canvasBaseline} draft={canvasDraft} visibility={visibility} zoom={zoom} showPreview={showDraft && gapValid} showExisting={showExisting} showBackground={backgroundGrid} gridSize={gridSize} highlight={highlight} hasSubgrid={canvasFace.child} faceName={canvasFace.name} onPoint={setPoint} panMode={panMode} onZoom={setZoom} resetKey={resetKey} />
         <div className={`canvas-status ${base.applied && !dirty ? 'applied' : ''}`}><span>{base.applied && !dirty ? '已套用' : '尚未套用'}</span>{highlight && <button onClick={() => { setHighlight(false); setInspection(null); }}>已定位：{canvasFace.name} <X size={13} /></button>}</div>
         <button className="return-settings button" onClick={() => setMobilePanel('settings')}><SlidersHorizontal size={17} />編輯規格</button>
         <div className="canvas-legend"><button aria-pressed={showExisting} onClick={() => setShowExisting(v => !v)}><LineSegment size={18} className="existing-color" />現有</button><button aria-pressed={showDraft} onClick={() => setShowDraft(v => !v)}><LineSegment size={18} className="draft-color" />預覽</button><span><LineSegment size={18} className="child-color" />子網格</span></div>
-        <div className="canvas-controls"><IconButton label="縮小" onClick={() => setZoom(z => Math.max(.5, z - .1))}><Minus size={17} /></IconButton><button className="zoom-value" onClick={fit} title="回到適合畫面">{Math.round(zoom * 100)}%</button><IconButton label="放大" onClick={() => setZoom(z => Math.min(2.5, z + .1))}><Plus size={17} /></IconButton><span className="tool-separator" /><button className={snap ? 'enabled' : ''} aria-pressed={snap} onClick={() => setSnap(v => !v)}><Crosshair size={17} />座標吸附</button><button className={backgroundGrid ? 'enabled' : ''} aria-pressed={backgroundGrid} onClick={() => setBackgroundGrid(v => !v)}><GridFour size={17} />底格</button><select aria-label="底格間距" value={gridSize} onChange={e => setGridSize(Number(e.target.value))}><option value="50">50 mm</option><option value="100">100 mm</option><option value="200">200 mm</option></select></div>
+        <div className="canvas-controls"><button className={`canvas-pan-toggle ${panMode ? "enabled" : ""}`} aria-pressed={panMode} onClick={() => setPanMode(value => !value)}><Hand size={18} />平移</button><IconButton label="縮小" onClick={() => setZoom(z => Math.max(.5, z - .1))}><Minus size={17} /></IconButton><button className="zoom-value" onClick={fit} title="回到適合畫面">{Math.round(zoom * 100)}%</button><IconButton label="放大" onClick={() => setZoom(z => Math.min(2.5, z + .1))}><Plus size={17} /></IconButton><span className="tool-separator" /><button className={snap ? 'enabled' : ''} aria-pressed={snap} onClick={() => setSnap(v => !v)}><Crosshair size={17} />座標吸附</button><button className={backgroundGrid ? 'enabled' : ''} aria-pressed={backgroundGrid} onClick={() => setBackgroundGrid(v => !v)}><GridFour size={17} />底格</button><select aria-label="底格間距" value={gridSize} onChange={e => setGridSize(Number(e.target.value))}><option value="50">50 mm</option><option value="100">100 mm</option><option value="200">200 mm</option></select></div>
         <div className="coordinate-readout">{displayPoint ? `u ${displayPoint.x}　v ${displayPoint.y} mm` : 'u →　v ↓　單位 mm'}</div>
       </section>
 
@@ -181,7 +206,7 @@ export function App() {
         <header className="inspector-heading"><h1>工程規格</h1><button className="text-button mobile-only" onClick={() => setMobilePanel(null)}>查看畫布</button></header>
         <div className="inspector-body">
           <div className="method-row"><button className="method-picker" onClick={() => { setSearch(''); setModal('method'); }}><strong>{methodLabel(draft.methodId)}</strong><CaretDown size={13} /></button><span className={`status-badge ${base.applied && !dirty ? 'success' : ''}`}>{base.applied && !dirty ? '已套用' : '尚未套用'}</span><button className="text-button" onClick={() => setModal('details')}>檢視做法</button></div>
-          <section className="materials-section"><div className="section-heading"><h2>材料來源</h2><button className="text-button" onClick={() => openLibrary()}>管理規格庫</button></div><button className="material-row" onClick={() => setModal('panel')}><span className="material-type">面材</span><img src="/assets/panel.png" alt="板材示意，非特定產品" /><span className="material-copy"><strong>{method.panel} <small>{method.panelVersion}</small></strong><span>{panel.width} × {panel.length} mm</span><small>厚度：{panel.thickness == null ? '未設定' : `${panel.thickness} mm`}</small></span><LinkSimple size={17} /></button><button className="material-row" onClick={() => openLibrary('methods', draft.methodId, 'edit')}><span className="material-type">角材</span><img src="/assets/timber.png" alt="角材示意，非特定產品" /><span className="material-copy"><strong>{Object.values(method.roles).filter(Boolean).length} / 3 個角色已設定</strong><span>設定邊界、主支、副支用料 →</span></span></button></section>
+          <section className="materials-section"><div className="section-heading"><h2>材料來源</h2><button className="text-button" onClick={() => openLibrary()}>管理規格庫</button></div><button className="material-row" onClick={() => setModal('panel')}><span className="material-type">面材</span><img src="/assets/panel-112.webp" srcSet="/assets/panel-112.webp 112w, /assets/panel-224.webp 224w" sizes="56px" width="56" height="56" decoding="async" alt="板材示意，非特定產品" /><span className="material-copy"><strong>{method.panel} <small>{method.panelVersion}</small></strong><span>{panel.width} × {panel.length} mm</span><small>厚度：{panel.thickness == null ? '未設定' : `${panel.thickness} mm`}</small></span><LinkSimple size={17} /></button><button className="material-row" onClick={() => openLibrary('methods', draft.methodId, 'edit')}><span className="material-type">角材</span><img src="/assets/timber-112.webp" srcSet="/assets/timber-112.webp 112w, /assets/timber-224.webp 224w" sizes="56px" width="56" height="56" decoding="async" alt="角材示意，非特定產品" /><span className="material-copy"><strong>{Object.values(method.roles).filter(Boolean).length} / 3 個角色已設定</strong><span>設定邊界、主支、副支用料 →</span></span></button></section>
           <section className="settings-section"><h2>本面設定</h2>
             <div className="setting-row"><span className="setting-label">面材寬 × 長</span><div><button className="source-link" onClick={() => openLibrary('materials', method.panelKey, 'edit')}><LinkSimple size={18} />編輯面材規格</button><div className="derived-value">{panel.width} × {panel.length} mm</div><p className="source-caption">引用 {method.panelVersion} · 改版後由工程做法選用</p></div></div>
             <div className="setting-row"><label htmlFor="long-axis">面材長邊沿</label><select id="long-axis" value={draft.longAxis} onChange={e => updateDraft({ longAxis: e.target.value })}><option value="v">v 方向（垂直）</option><option value="u">u 方向（水平）</option></select></div>
@@ -190,7 +215,7 @@ export function App() {
           </section>
           <div className="role-note"><Info size={17} /><span>構件角色維持原設定，材料變更不會改寫既有構件的角色。</span></div>
           <button className="scope-row" onClick={() => setModal('targets')}><Layers size={17} /><span>套用至 <strong>{scopeText}</strong></span><CaretDown size={13} /></button>
-          <div className="local-save-status"><p role="status">{storageError || '已自動儲存於此瀏覽器'}</p>{storageBlocked && <button className="text-button" onClick={() => window.location.reload()}>重新讀取已儲存版本</button>}<button className="text-button" onClick={() => { setImportText(''); setImportError(''); setImportCandidate(null); setModal('backup'); }}>匯入／匯出備份</button></div>
+          <div className="local-save-status"><p role="status">{storageError || '規格版本與本面設定已儲存於此瀏覽器'}</p>{storageBlocked && <button className="text-button" onClick={() => window.location.reload()}>重新讀取已儲存版本</button>}<button className="text-button" onClick={() => { setImportText(''); setImportError(''); setImportCandidate(null); setModal('backup'); }}>匯入／匯出備份</button></div>
           <p className="prototype-note">規格流程原型 · 尚未連接正式工程</p>
         </div>
         <footer className="inspector-footer"><button className="button" onClick={() => { updateDraft(base); setToast('已還原本面尚未套用的設定。'); }}>取消</button><button className="button primary" onClick={beginPreview}>預覽套用</button></footer>
@@ -199,7 +224,7 @@ export function App() {
 
     {modal === 'method' && <Dialog title="選擇工程做法" subtitle="載入本面草稿後，仍可調整方向與縫寬，再預覽套用。" onClose={closeModal} footer={<button className="button primary" onClick={() => openLibrary('methods')}>管理／新增工程做法</button>}><label className="search-field"><MagnifyingGlass size={19} /><input aria-label="搜尋工程做法" placeholder="搜尋名稱或版本…" value={search} onChange={e => setSearch(e.target.value)} /></label><div className="choice-list">{Object.keys(catalog.methods).filter(id => methodLabel(id).toLowerCase().includes(search.toLowerCase())).map(id => { const m = resolveMethod(catalog, id); return <button key={id} className={`method-option ${draft.methodId === id ? 'selected' : ''}`} onClick={() => chooseMethod(id)}><GridFour size={26} /><span><strong>{methodLabel(id)}</strong><small>{m.panel} · {dimensions(id)}</small><small>縫寬 {m.gap} mm · 長邊 {m.longAxis} · 主支 {m.mainAlong}</small></span>{draft.methodId === id && <CheckCircle weight="fill" size={20} />}</button>; })}</div>{!Object.keys(catalog.methods).some(id => methodLabel(id).toLowerCase().includes(search.toLowerCase())) && <div className="empty-state"><p>沒有符合的工程做法，可清除搜尋或新增。</p><button className="button" onClick={() => setSearch('')}>清除搜尋</button></div>}<p className="dialog-note">每個版本引用固定的材料版本；材料改版不會自動改寫既有的面。</p></Dialog>}
 
-    {modal === 'library' && <Dialog title="材料與工程規格庫" subtitle="先設定材料，再組合工程做法，最後選面預覽套用。" onClose={closeModal} wide library>{storageError && <div className="storage-alert" role="alert">{storageError}<button className="text-button" onClick={save}>匯出本頁備份</button></div>}<SpecificationLibrary catalog={catalog} initialTab={libraryStart.tab} initialKey={libraryStart.key} initialAction={libraryStart.action} onCatalogChange={updateCatalog} onUseMethod={chooseMethod} onClose={closeModal} /></Dialog>}
+    {modal === 'library' && <Dialog title="材料與工程規格庫" subtitle="先設定材料，再組合工程做法，最後選面預覽套用。" onClose={closeModal} wide library>{storageError && <div className="storage-alert" role="alert">{storageError}<button className="text-button" onClick={save}>匯出本頁備份</button></div>}<SpecificationLibrary catalog={catalog} initialTab={libraryStart.tab} initialKey={libraryStart.key} initialAction={libraryStart.action} contextMethodKey={libraryStart.contextMethodKey} onCatalogChange={updateCatalog} onUseMethod={chooseMethod} onClose={closeModal} /></Dialog>}
 
     {modal === 'backup' && <Dialog title="本機設定與備份" subtitle="此瀏覽器會自動保存有效設定；可匯出備份，在其他瀏覽器匯入。" onClose={closeModal} footer={<><button className="button" onClick={save}>匯出 JSON 備份</button><button className="button primary" disabled={!importCandidate} onClick={applyImport}>確認載入備份</button></>}>
       <label className="backup-label" htmlFor="backup-content">貼上備份 JSON</label><textarea id="backup-content" className="backup-content" value={importText} onChange={e => { setImportText(e.target.value); setImportCandidate(null); setImportError(''); }} placeholder="貼上先前匯出的完整 JSON 內容" /><button className="button" onClick={inspectImport}>檢查備份內容</button>{importError && <p role="alert" className="field-error">{importError}</p>}{importCandidate && <div className="info-box"><Info size={19} /><p>包含 {Object.keys(importCandidate.catalog.materials).length} 個材料版本、{Object.keys(importCandidate.catalog.methods).length} 個工程做法版本與 3 個面。確認後會替換目前本機設定，建議先匯出目前備份。</p></div>}
@@ -216,7 +241,7 @@ export function App() {
 
     {modal === 'preview' && <Dialog title="預覽套用" subtitle={`${methodLabel(draft.methodId)}　·　${targets.length} 個面　·　原型情境預覽`} onClose={closeModal} wide footer={<><span className="footer-detail">{busy ? '正在整理變更…' : blocked ? '整批尚未套用' : '可一次復原整批變更'}</span><button className="button" onClick={closeModal}>返回調整</button><button className="button primary" disabled={busy || !preview || blocked} onClick={applyPreview}>確認套用{preview ? ` ${preview.rows.length} 個面` : ''}</button></>}>
       {busy ? <div className="loading-state" role="status"><GridFour size={30} /><p>正在整理套用範圍與網格變更…</p></div> : preview && <><div className={`preview-banner ${blocked ? 'warning' : 'ready'}`}>{blocked ? <WarningCircle size={25} /> : <CheckCircle size={25} />}<div><strong>{blocked ? '有待處理的網格設定，請先調整' : '示範檢查通過，可以套用'}</strong><p>{blocked ? '任一面有阻擋時，整批保留原狀。子網格不會被自動刪除或重新綁定。' : '此原型檢查示意網格條件；正式套用仍須串接完整核心驗證。'}</p></div></div>
-        {preview.rows.map(row => <article className="preview-face" key={row.id}><header><h3>{FACES.find(f => f.id === row.id).name}</h3><span className={`status-badge ${row.errors.length ? 'warning' : 'success'}`}>{row.errors.length ? '待處理' : '可套用'}</span></header><dl className="change-table"><div><dt>工程做法</dt><dd>{methodLabel(row.before.methodId)} <span>→</span> <strong>{methodLabel(row.after.methodId)}</strong></dd></div><div><dt>面材寬 × 長／厚</dt><dd>{dimensions(row.before.methodId)} <span>→</span> <strong>{dimensions(row.after.methodId)}</strong></dd></div>{ROLES.map(([role, label]) => <div key={role}><dt>{label}</dt><dd>{timberLabel(resolveMethod(catalog, row.before.methodId).roles[role])} <span>→</span> <strong>{timberLabel(resolveMethod(catalog, row.after.methodId).roles[role])}</strong></dd></div>)}<div><dt>縫寬／來源</dt><dd>{row.before.gap} mm <span>→</span> <strong>{row.after.gap} mm</strong> <small>{row.after.gapOverride ? '本面覆寫' : '沿用做法'}</small></dd></div><div><dt>面材長邊／主支</dt><dd>{row.before.longAxis} / {row.before.mainAlong} <span>→</span> <strong>{row.after.longAxis} / {row.after.mainAlong}</strong></dd></div></dl>{row.errors.map((error, i) => <div key={i} className="conflict-row"><WarningCircle size={19} /><p>{error}</p><button className="text-button" onClick={() => { fit(); setInspection(row); setVisibility(v => ({ ...v, surface: true, main: true, subgrid: true })); setShowDraft(true); setHighlight(true); setMobilePanel(null); closeModal(); setToast('已定位子網格範圍。調整規格後，請重新預覽。'); }}>定位</button></div>)}</article>)}<div className="info-box"><Info size={19} /><p>既有角材角色保留。主支方向是新建預設，這次不建立構件，也不代表已完成支撐檢核。</p></div></>}
+        {preview.rows.map(row => <article className="preview-face" key={row.id}><header><h3>{FACES.find(f => f.id === row.id).name}</h3><span className={`status-badge ${row.errors.length ? 'warning' : 'success'}`}>{row.errors.length ? '待處理' : '可套用'}</span></header><PreviewComparison catalog={catalog} before={row.before} after={row.after} />{row.errors.map((error, i) => <div key={i} className="conflict-row"><WarningCircle size={19} /><p>{error}</p><button className="text-button" onClick={() => { fit(); setInspection(row); setVisibility(v => ({ ...v, surface: true, main: true, subgrid: true })); setShowDraft(true); setHighlight(true); setMobilePanel(null); closeModal(); setToast('已定位子網格範圍。調整規格後，請重新預覽。'); }}>定位</button></div>)}</article>)}<div className="info-box"><Info size={19} /><p>既有角材角色保留。主支方向是新建預設，這次不建立構件，也不代表已完成支撐檢核。</p></div></>}
     </Dialog>}
     {toast && <div className="toast" role="status"><CheckCircle size={20} /><span>{toast}</span><IconButton label="關閉提示" onClick={() => setToast('')}><X size={17} /></IconButton></div>}
   </main>;
