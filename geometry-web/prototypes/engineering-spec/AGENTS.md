@@ -2,7 +2,7 @@
 
 ## User-selected direction — 2026-09-27
 
-The user selected option 2, 畫布內套用. The selected visual truth is `design/reference-selected.png` (1487 × 1058 pixels). Preserve the broad drafting canvas, left layer list, right engineering specification inspector, indigo actions, teal boundary, and source/override distinction. Mobile uses a scrollable settings panel, a separate canvas view, and persistent bottom actions.
+The user most recently selected option 1, 畫布旁直接編輯面材. The current visual truth is `design/reference-inline-selected.png` (1487 × 1058 pixels), superseding the earlier option 2 layout in `design/reference-selected.png`. Preserve the broad drafting canvas, left layer list, right engineering specification inspector, indigo actions, teal boundary, and source/override distinction. Width, length, thickness and common presets are directly editable in the inspector; saving continues into the current engineering method's next draft. Keep role materials visible, with advanced face settings progressively disclosed. Mobile uses a scrollable settings panel, a separate canvas view, and persistent bottom actions.
 
 This is a UI prototype with a local, editable material and engineering-method catalog, not the production geometry-web application or an axiom reader. Do not edit SSOT or connect production mutations as part of prototype work. GeometryCanvas is a functional numerical visualization, while material images are generated raster assets and icons are Phosphor icons. Explain geometric differences from the illustrative mock; never fake invalid geometry to match image positions.
 
