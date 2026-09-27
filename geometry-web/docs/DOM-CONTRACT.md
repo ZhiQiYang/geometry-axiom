@@ -119,6 +119,8 @@
 | `#faceUndoButton` / `#faceRedoButton` / `#workspaceFitButton` | 工作區 undo/redo/fit | `.click()` |
 | `#objectWorkspaceContent` / `#faceWorkspaceLayout` | 工作區三欄容器 | 存在性 |
 | `#faceLayerList` / `#faceLayerCount` | 左欄面內物件清單 | 子列 |
+| `#faceReferenceVisibility` / `[data-ref-visible]` | 面內左欄的顯示控制；`all` 全部、`group:guides` 獨立線群組、`group:grid:<id>` 網格群組、`guide:<id>`／`grid:<id>:<axis>:<index>` 個別線 | 原生 checkbox 的 `checked`／`indeterminate`、鍵盤 Space；不送出幾何指令、不增加 undo |
+| `#faceReferenceVisibility details` | 「選擇個別參考線」收合清單，列出當前網格草稿或已套用座標 | 切換不重建右欄，保留草稿及欄位焦點；手機標籤高至少 44 px |
 | `#faceSnapToggle` / `#faceGridToggle` / `#faceGridSizeSelect` | 吸附/格線/格距 | `checked`/`value` |
 | `#faceEditorViewport` / `#faceEditorSvg` / `#faceEditorRoot` | 面編輯器畫布 | rect 量測、pointer 事件目標 |
 | `#faceCoordinateReadout` | 游標 uv 讀數 | textContent |
@@ -301,6 +303,7 @@
 - 檢視器動態鈕 `#inspDelete` → `deleteObject(kind,id)`(全域);surface 對先 `delete placement` 再 `delete boundary` 經 mutate。
   C4:不彈 `confirm()`,直接刪除,成功後 toast 提示可 Ctrl+Z 復原(對齊空間工作區 `renderSpaceRc` 構件列 ✕)。
 - 面內圖層列參考線列有 `.face-layer-del` ✕ 鈕 → `emitLine("delete guide <id>")`。
+- GEO-203：顯示設定只作用於面內畫布，隱藏線、座標標籤及命中範圍，角材定位預示也遵循它；線的定義、引用選單及已放角材仍保留。每個面分別記住本次檢視設定，離開再進入、重繪及欄位更新不重設；換場景或重新整理恢復顯示。新產生的線預設顯示。三視圖投影及匯出不受影響。
 
 ## RC Phase 4 柱樑一等物件(cdp_test §P11)
 

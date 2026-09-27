@@ -1213,6 +1213,7 @@ function markSceneItem() {
 }
 /* 換場景前清工作區焦點與面面內快取——舊場景的 guide/timber 殘影會誤刪新場景同號物件 */
 function resetSceneFocus() {
+  ReferenceVisibility.clear();
   fe.newOutline = null;
   pendingSlot = null; closePanels();
   $("faceInspectorContent").dataset.bid = "";
@@ -1981,6 +1982,77 @@ const fe = {
                                G196-R02:曾有的 timberHoverSide 已移除——+n/-n 是法線厚度方向,
                                由 #tbSide 表單決定,滑鼠側向不參與。 */
 };
+
+/* Display preferences belong to this open scene, never to the geometry or undo history.
+   Grid identity follows D10's (grid, axis, index), including its draft preview. */
+const ReferenceVisibility = (() => {
+  const faces = new Map();
+  const esc = value => String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  let signature = "";
+  const guideKey = id => `guide:${id}`;
+  const gridKey = (id,axis,index) => `grid:${id}:${axis}:${index}`;
+  function hidden() {
+    const bid=oc.edit?.bid;
+    if(!faces.has(bid)) faces.set(bid,new Set());
+    return faces.get(bid);
+  }
+  function visible(key) { return !faces.get(oc.edit?.bid)?.has(key); }
+  function anchorVisible(anchor) {
+    const guide=/^at-line guide (\d+)$/.exec(anchor || "");
+    const grid=/^at-line grid (\d+) ([uv]) (\d+)$/.exec(anchor || "");
+    return visible(guide ? guideKey(guide[1]) : grid ? gridKey(grid[1],grid[2],grid[3]) : "");
+  }
+  function groups() {
+    const out=[];
+    if(fe.guides.length) out.push({id:"guides",label:"獨立參考線",items:fe.guides.map(g=>({
+      key:guideKey(g.id),label:`參考線 ${g.id} · ${g.axis === "v" ? "u" : "v"} ${g.off} mm`
+    }))});
+    const grids=[...fe.grids], draft=["components","grid"].includes(fe.fiTab) && fe.gridPreview;
+    if(draft) {const i=grids.findIndex(g=>g.id===draft.id);if(i<0)grids.push(draft);else grids[i]=draft;}
+    for(const g of grids) out.push({id:`grid:${g.id}`,label:`網格 ${g.id}${g === draft ? " · 草稿" : ""}`,items:
+      ["u","v"].flatMap(axis=>g[axis].map((c,i)=>({key:gridKey(g.id,axis,i),label:`${axis} ${c} mm`,axis,index:i}))) });
+    return out;
+  }
+  function update() {
+    const box=$("faceReferenceVisibility"); if(!box || !oc.edit) return;
+    const rows=groups(), all=rows.flatMap(g=>g.items), next=JSON.stringify([oc.edit.bid,rows]);
+    box.hidden=!all.length;
+    if(next!==signature) {
+      const expanded=box.querySelector("details")?.open || false;
+      const focused=box.contains(document.activeElement) ? document.activeElement.dataset.refVisible : null;
+      const control=(key,label)=>`<label class="reference-visibility-option"><input type="checkbox" data-ref-visible="${esc(key)}"><span>${esc(label)}</span></label>`;
+      box.innerHTML=`<div class="reference-visibility-heading">${control("all","顯示全部參考線")}<output aria-live="polite"></output></div>`+
+        `<details${expanded ? " open" : ""}><summary>選擇個別參考線</summary><p>只影響本面畫布，幾何與角材引用保留。</p>`+
+        rows.map(g=>`<fieldset><legend>${esc(g.label)}</legend>${control("group:"+g.id,"顯示這一組")}<div class="reference-visibility-lines">${g.items.map(i=>control(i.key,i.label)).join("")}</div></fieldset>`).join("")+`</details>`;
+      signature=next;
+      for(const input of box.querySelectorAll("input")) input.onchange=()=>{
+        const key=input.dataset.refVisible, keys=key==="all" ? all.map(i=>i.key) : key.startsWith("group:") ? rows.find(g=>"group:"+g.id===key).items.map(i=>i.key) : [key];
+        const state=hidden();for(const key of keys) {if(input.checked)state.delete(key);else state.add(key);}
+        if(!anchorVisible(fe.timberHoverAnchor)) fe.timberHoverAnchor=null;
+        const card=$("gridTimberPopover");if(card && !anchorVisible(card.dataset.anchor))card.remove();
+        drawFaceEditor();
+      };
+      if(focused) [...box.querySelectorAll("input")].find(i=>i.dataset.refVisible===focused)?.focus({preventScroll:true});
+    }
+    for(const input of box.querySelectorAll("input")) {
+      const key=input.dataset.refVisible, items=key==="all" ? all : key.startsWith("group:") ? rows.find(g=>"group:"+g.id===key).items : [{key}];
+      const count=items.filter(i=>visible(i.key)).length;
+      input.checked=!!items.length && count===items.length;
+      input.indeterminate=count>0 && count<items.length;
+      input.disabled=!items.length;
+      input.closest("label").classList.toggle("is-hidden",count===0);
+    }
+    const text=`${all.filter(i=>visible(i.key)).length}/${all.length} 條`;
+    if(box.querySelector("output").textContent!==text) box.querySelector("output").textContent=text;
+  }
+  function prune() {
+    const keys=new Set(fe.guides.map(g=>guideKey(g.id)));
+    for(const g of fe.grids) for(const a of ["u","v"]) g[a].forEach((_,i)=>keys.add(gridKey(g.id,a,i)));
+    const state=faces.get(oc.edit?.bid);if(state) for(const key of state) if(!keys.has(key))state.delete(key);
+  }
+  function clear() {faces.clear();signature="";const box=$("faceReferenceVisibility");if(box){box.replaceChildren();box.hidden=true;}}
+  return {visible,anchorVisible,guideKey,gridKey,update,prune,clear};
+})();
 
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
 function fiShowTab(name) {
@@ -3153,7 +3225,7 @@ async function feLoadGuides() {
   const dump = await api("dump");
   const gridRefs = [...(dump.text || "").matchAll(/^place (\d+) on \d+ at-line grid (\d+) ([uv]) (\d+)/gm)];
   for (const g of fe.grids) g.references = gridRefs.filter(m => +m[2] === g.id).map(m => ({timber:+m[1],axis:m[3],index:+m[4]}));
-
+  ReferenceVisibility.prune();
 }
 /* GEO-191:角材 A0 足跡矩形(uv),與 drawFaceEditor 的畫法同一份算法，
    feSelAnchor/feDown 選取高亮都靠它定位,不要各自重算一次會漂移。 */
@@ -3641,6 +3713,7 @@ function drawFaceEditor() {
   if (!e || !oc.focus || oc.focus.t !== "face") return;
   const loops = fe.work || oc.bmap[e.bid];
   if (!loops) return;
+  ReferenceVisibility.update();
   feCalibrationPrompt();
   const root = $("faceEditorRoot");
   root.textContent = "";
@@ -3796,6 +3869,7 @@ function drawFaceEditor() {
   /* 參考線（虛線，依有效範圍裁切）；拖曳中用暫存 offset */
   const gb = [bb[0] - pad, bb[1] - pad, bb[2] + pad, bb[3] + pad];
   for (const g of fe.guides) {
+    if (!ReferenceVisibility.visible(ReferenceVisibility.guideKey(g.id))) continue;
     if (g.segments && !g.segments.length && !(fe.drag && fe.drag.kind === "guide" && fe.drag.id === g.id)) continue;
     const off = (fe.drag && fe.drag.kind === "guide" &&
                  fe.drag.id === g.id && fe.drag.off != null)
@@ -3808,7 +3882,7 @@ function drawFaceEditor() {
     el("text", {
       x: g.axis === "v" ? seg[0] + 4 / z : seg[2] - 4 / z,
       y: g.axis === "v" ? seg[1] + 13 / z : seg[3] - 5 / z,
-      "font-size": 10.5 / z, class: "fe-dim",
+      "font-size": 10.5 / z, class: "fe-dim", "data-guide-label":g.id,
       "text-anchor": g.axis === "v" ? "start" : "end",
       fill: "#8a5a17" }, root).textContent = `${g.axis === "v" ? "u" : "v"} = ${off}`;
     el("line", { x1: seg[0], y1: seg[1], x2: seg[2], y2: seg[3],
@@ -3819,6 +3893,7 @@ function drawFaceEditor() {
   for (const g of fe.grids || []) {
     if (["grid","components"].includes(fe.fiTab) && fe.gridPreview?.id === g.id) continue;
     for (const axis of ["u", "v"]) g[axis].forEach((c, index) => {
+      if (!ReferenceVisibility.visible(ReferenceVisibility.gridKey(g.id,axis,index))) return;
       const line = g.lines?.find(x => x.axis === axis && x.index === index);
       const segment = axis === "u" ? [c, gb[1], c, gb[3]] : [gb[0], c, gb[2], c];
       const roleClass = line?.role ? ` role-${line.role}` : " role-unset";
@@ -3859,7 +3934,7 @@ function drawFaceEditor() {
   if ((fe.tool === "timber" || fe.anchorPreview) && feSid(e.bid)) {
     const hoverAnchor = fe.tool === "timber" ? fe.timberHoverAnchor : null;
     const anchorVal = hoverAnchor || $("tbAnchor")?.value;
-    const info = anchorVal ? feAnchorLineInfo(e.bid, anchorVal) : null;
+    const info = anchorVal && ReferenceVisibility.anchorVisible(anchorVal) ? feAnchorLineInfo(e.bid, anchorVal) : null;
     if (info) {
       const seg = info.constAxis === "u"
         ? [info.value, gb[1], info.value, gb[3]]
@@ -6012,6 +6087,7 @@ const GridEditor = (() => {
       legend.lastElementChild.textContent=displayed.some(g=>g.mainAlong) ? "所有座標見右欄" : "格線角色預設未設定";
     }
     if(draft) for(const a of axes) draft[a].forEach((c,i)=>{
+      if(!ReferenceVisibility.visible(ReferenceVisibility.gridKey(draft.id,a,i)))return;
       const seg=a === "u" ? [c,bounds[1],c,bounds[3]] : [bounds[0],c,bounds[2],c];
       el("line",{x1:seg[0],y1:seg[1],x2:seg[2],y2:seg[3],class:`face-grid-preview-line role-${role(draft.mainAlong || "none",a)}`,"data-grid-line-key":`${a}:${i}`},refRoot);
     });
@@ -6032,6 +6108,7 @@ const GridEditor = (() => {
       el("title",{},r).textContent=`點邊尺新增 ${a} 格線；數值也可在右欄輸入`;
       let previousEnd=-Infinity;
       (g?.[a] || []).forEach((c,i)=>{
+        if(!ReferenceVisibility.visible(ReferenceVisibility.gridKey(g.id,a,i)))return;
         const text=`${a} ${c} ${role(g.mainAlong || "none",a) === "primary" ? "主 2" : role(g.mainAlong || "none",a) === "secondary" ? "副 3" : "未設定"}`, width=Math.max(88,text.length*7+14),height=innerWidth<=680?44:28;
         const half=(u?width:height)/2;
         if(c*z-half<previousEnd+4)return;previousEnd=c*z+half;
@@ -6061,6 +6138,7 @@ const GridEditor = (() => {
     if(fe.tool !== "timber" || !oc.edit) {box?.remove();return;}
     if(!match) return;
     const anchor=match[0], g=fe.grids.find(g=>g.id===+match[1]);if(!g)return;
+    if(!ReferenceVisibility.anchorVisible(anchor)) {box?.remove();return;}
     const signature=JSON.stringify([anchor,$("tbA")?.value,$("tbB")?.value,$("tbSide")?.value,$("tbRole")?.value,$("faceInspectorContent")?.dataset.tbRoleManual]);
     if(box?.dataset.signature === signature) return;
     box?.remove();box=document.createElement("div");box.id="gridTimberPopover";box.className="grid-timber-popover";box.dataset.anchor=anchor;

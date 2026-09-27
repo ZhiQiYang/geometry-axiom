@@ -8,7 +8,7 @@ const { spawn } = require("child_process");
 const CHROME = process.env.GEOMETRY_CHROME || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const PROFILE = process.env.GEOMETRY_CHROME_PROFILE || "C:\\tmp\\cdp-profile";
 const EXTRA_FLAGS = (process.env.GEOMETRY_CHROME_FLAGS || "").split(" ").filter(Boolean);
-const PORT = 9333;
+const PORT = +(process.env.GEOMETRY_CDP_PORT || 9333);
 
 const chrome = spawn(CHROME, [
   "--headless=new", "--disable-gpu", "--no-first-run", `--remote-debugging-port=${PORT}`,
@@ -1399,6 +1399,78 @@ async function rightClick(x, y) {
   await eval_(`$('gridShowCanvas').click()`);await gridShot('grid-v2-mobile-canvas-final');
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
   await eval_(`closePanels();leaveFocus()`);
+
+  /* GEO-203: presentation-only reference visibility, including grid lines. */
+  console.log("=== P8v3. 參考線顯示控制 ===");
+  const referenceVisibility = await eval_(`(async()=>{
+    resetSceneFocus();await api('line reset');
+    for(const line of [
+      'surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+      'surface 2 origin 5000 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+      'spec 顯示水平線 800','spec 顯示直線 2000',
+      'guide 1 1 u spec:顯示水平線','guide 2 1 v spec:顯示直線',
+      'grid 1 on 1 main-along v u 500 1500 v 600 1200',
+      'grid 2 on 2 main-along v u 500 1500 v 600 1200',
+      'timber 1 27 33 role boundary','place 1 on 1 at-face e0 +u +n',
+      'timber 2 27 33 role boundary','place 2 on 1 at-face e2 +u +n',
+      'timber 3 27 33 role primary','place 3 on 1 at-line grid 1 u 0 +v +n'
+    ]) {const r=await api('line '+line);if(!r.ok)throw Error(r.error+' '+line);}
+    await renderObjects();await enterFocus('face',1);feSetTool('grid');
+    document.querySelector('#faceReferenceVisibility summary').click();
+    const control=key=>[...$('faceReferenceVisibility').querySelectorAll('input')].find(i=>i.dataset.refVisible===key);
+    const saved=(await api('dump')).text,refs=JSON.stringify(await api('references'));
+    const undo=ReferenceWorkspace.history.undo.length,redo=ReferenceWorkspace.history.redo.length;
+    const initial=control('all').checked && document.querySelectorAll('.face-reference-line').length===2 && document.querySelectorAll('.face-grid-line').length===4;
+    control('guide:1').click();
+    const guideHidden=document.querySelectorAll('.face-reference-line').length===1 && !document.querySelector('[data-face-hit="g:1:u"]') && !document.querySelector('[data-guide-label="1"]') && control('all').indeterminate;
+    control('grid:1:u:0').click();
+    const gridHidden=document.querySelectorAll('.face-grid-line').length===3 && !document.querySelector('[data-face-hit="k:1:u:0"]') && !document.querySelector('[data-grid-label="u:0"]') && control('group:grid:1').indeterminate;
+    feSetTool('timber');$('tbAnchor').value='at-line grid 1 u 0';fe.anchorPreview=true;drawFaceEditor();
+    const anchorHidden=!document.querySelector('.fe-anchor-hi') && [...$('tbAnchor').options].some(o=>o.value==='at-line grid 1 u 0') && document.querySelectorAll('.face-timber').length===3;
+    control('group:grid:1').click();control('group:grid:1').click();
+    const groupHidden=!document.querySelector('.face-grid-line') && document.querySelectorAll('.face-reference-line').length===1;
+    control('all').click();
+    const restoreAll=control('all').checked && document.querySelectorAll('.face-grid-line').length===4 && document.querySelectorAll('.face-reference-line').length===2;
+    control('all').click();
+    const hideAll=!document.querySelector('.face-grid-line,.face-reference-line,.fe-anchor-hi,.face-grid-hit,[data-face-hit^="g:"]') && document.querySelectorAll('.face-timber').length===3;
+    control('guide:2').click();
+    const singleRestore=document.querySelectorAll('.face-reference-line').length===1 && !document.querySelector('.face-grid-line') && control('all').indeterminate;
+    control('all').click();control('grid:1:u:0').click();
+    feSetTool('grid');$('gridU').value='700 1700';$('gridU').dispatchEvent(new Event('input'));await window.__cdpSettleUI(500);
+    const draftHidden=fe.gridPreview?.u[0]===700 && document.querySelectorAll('.face-grid-preview-line').length===3 && !document.querySelector('[data-grid-label="u:0"]');
+    control('guide:1').click();
+    const draftRetained=$('gridU').value==='700 1700' && fe.gridPreview?.u[0]===700;
+    $('gridReset').click();await window.__cdpSettleUI(500);
+    await feLoadGuides();drawFaceEditor();renderFaceLayers();renderFaceInspector();
+    const redraw=!control('grid:1:u:0').checked && !control('guide:1').checked && !document.querySelector('[data-face-hit="k:1:u:0"]');
+    await leaveFocus();await enterFocus('face',2);
+    const otherFace=control('all').checked && document.querySelectorAll('.face-grid-line').length===4;
+    await leaveFocus();await enterFocus('face',1);
+    const retained=!control('guide:1').checked && !control('grid:1:u:0').checked;
+    const unchanged=(await api('dump')).text===saved && JSON.stringify(await api('references'))===refs && ReferenceWorkspace.history.undo.length===undo && ReferenceWorkspace.history.redo.length===redo;
+    return {initial,guideHidden,gridHidden,anchorHidden,groupHidden,restoreAll,hideAll,singleRestore,draftHidden,draftRetained,redraw,otherFace,retained,unchanged};
+  })()`);
+  if(referenceVisibility.__err)throw Error(referenceVisibility.__err);
+  for(const [name,pass] of Object.entries(referenceVisibility))console.log('P8v3 '+name,pass?'✓':'✗');
+  await eval_(`document.querySelector('[data-ref-visible="guide:1"]').focus()`);
+  await send('Input.dispatchKeyEvent',{type:'keyDown',key:' ',code:'Space',windowsVirtualKeyCode:32});
+  await send('Input.dispatchKeyEvent',{type:'keyUp',key:' ',code:'Space',windowsVirtualKeyCode:32});
+  console.log('P8v3 keyboard Space',await eval_(`document.querySelector('[data-ref-visible="guide:1"]').checked && document.querySelectorAll('.face-reference-line').length===2`)?'✓':'✗');
+  await eval_(`feSetTool('grid')`);
+  await gridShot('reference-visibility-desktop');
+  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+  await eval_(`openPanel('left',$('workspaceToggleLeft'))`);
+  const visibilityPhone=await eval_(`(()=>{
+    const box=$('faceReferenceVisibility'),labels=[...box.querySelectorAll('label')];
+    box.scrollIntoView({block:'start'});
+    return {touch:labels.every(l=>l.getBoundingClientRect().height>=44),fits:box.scrollWidth<=box.clientWidth && document.documentElement.scrollWidth<=390};
+  })()`);
+  console.log('P8v3 phone touch',visibilityPhone.touch?'✓':'✗','fits',visibilityPhone.fits?'✓':'✗');
+  await gridShot('reference-visibility-mobile');
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
+  const visibilityReset=await eval_(`(async()=>{resetSceneFocus();await renderObjects();await enterFocus('face',1);return document.querySelector('[data-ref-visible="all"]').checked && document.querySelectorAll('.face-grid-line').length===4;})()`);
+  console.log('P8v3 reset clears preferences',visibilityReset?'✓':'✗');
+  await eval_(`leaveFocus()`);
 
   /* RC/多邊形 Phase 1:重畫外環 + 形狀庫 */
   console.log("=== P9. 重畫外環與形狀庫(RC Phase 1)===");
