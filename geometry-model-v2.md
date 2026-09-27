@@ -194,6 +194,11 @@ place 2 on 1 at-edge h1e2 through 1500 +u +n  # 孔 1 第 2 邊 + 區間選擇�
 | `reference_grid(source_kind = PANEL_LAYOUT, panel_u, gap_u)` | `u panel 面材寬 gap 縫寬 [from 起算點]` | **多了 `from`**，見下 |
 | Canonical 同時存來源與展開後的 `uLinesMm` | **只存來源**，格線用時推導 | 守 D9「只存定義」；dump 也只輸出來源，R4 的重放逐字相同因此成立 |
 | `span = between(face, face)` | `between <擋面參照> <擋面參照>` | 同義；本層另外明訂它**只買走 R6(d) 的「恰好一個」，不買走物理條件**（R21(a)(b)） |
+| 格線上的構件角色提示 | `grid id on sid main-along u\|v ...` 與橋接逐線 `role/priority` | 2026-09-27 批准：沿選定主支長度方向的線預設主支 2、垂直線預設副支 3；角材仍明寫角色，可覆寫並受 I18–I22 驗證 |
+
+`main-along` 是主網格的放置預設元資料，不改格線幾何，也不回頭改已放角材。
+舊場景缺它時逐線角色保持未設定；新圖形化建網格流程要求選擇方向。
+`u` 座標線沿 v 走，`v` 座標線沿 u 走，不能直接拿來源軸名稱當長度方向。
 
 **本層自己的兩個形式化**（timberscript 沒有對應概念）：
 

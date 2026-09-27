@@ -1163,21 +1163,51 @@ async function rightClick(x, y) {
     const fp = document.querySelector(".face-timber");
     /* 網格:表單建 u 500 1500 / v 300 900 */
     $("gridU").value = "500 1500"; $("gridV").value = "300 900";
+    $("gridMainAlong").value = "v";
     $("gridCreate").click();
     await window.__cdpSettleUI(300);
     const dump2 = (await api("dump")).text;
-    const hasGrid = /grid \\d+ on \\d+ u 500 1500/.test(dump2) &&
+    const hasGrid = /grid \\d+ on \\d+ main-along v u 500 1500/.test(dump2) &&
                     /grid \\d+ on \\d+ v 300 900/.test(dump2);
     const gridLines = document.querySelectorAll(".face-grid-line").length;
     const rows = [...document.querySelectorAll(".face-layer-row strong")]
       .map(x => x.textContent).join("|");
-    return {hasTimber, fp: !!fp, hasGrid, gridLines, rows};
+    const roles = document.querySelectorAll(".face-grid-line.role-primary").length === 2 &&
+      document.querySelectorAll(".face-grid-line.role-secondary").length === 2;
+    return {hasTimber, fp: !!fp, hasGrid, gridLines, roles, rows};
   })()`);
   console.log("角材放置:", q3R.hasTimber ? "✓" : "✗",
     "| 足跡繪製:", q3R.fp ? "✓" : "✗",
     "| 網格建立:", q3R.hasGrid ? "✓" : "✗",
-    "| 網格線數:", q3R.gridLines, q3R.gridLines === 4 ? "✓" : "✗",
+    "| 網格線數與角色:", q3R.gridLines, q3R.gridLines === 4 && q3R.roles ? "✓" : "✗",
     "| 圖層列:", /角材/.test(q3R.rows) && /網格/.test(q3R.rows) ? "✓" : "✗");
+  const gridSourceUI = await eval_(`(async()=>{
+    fiShowTab("grid");
+    $("gridUSource").value="series"; $("gridUSource").dispatchEvent(new Event("change"));
+    $("gridUStart").value="500"; $("gridUStep").value="1000"; $("gridUCount").value="2";
+    $("gridVSource").value="panel"; $("gridVSource").dispatchEvent(new Event("change"));
+    $("gridVPanel").value="400"; $("gridVGap").value="5"; $("gridVFrom").value="0";
+    $("gridVGap").dispatchEvent(new Event("input"));
+    await window.__cdpSettleUI(600);
+    const preview=fe.gridPreview;
+    const worldBefore=(await api("dump")).text;
+    $("gridCreate").click(); await window.__cdpSettleUI(450);
+    const refs=await api("references"), grid=refs.grids[0];
+    const filled=$("gridMainAlong").value==="v" && $("gridUSource").value==="series" && $("gridVSource").value==="panel" &&
+      $("gridVGap").value==="5";
+    const saved=(await api("dump")).text;
+    $("gridUStart").value="3900"; $("gridUStart").dispatchEvent(new Event("input"));
+    await window.__cdpSettleUI(600);
+    return {preview:preview?.u?.join(",")==="500,1500" && preview?.v?.[0]===402,
+      untouchedBeforeSave:!worldBefore.includes("panel 400 gap 5"),
+      saved:grid?.uDefinition?.source==="series" && grid?.vDefinition?.gap===5 && grid?.v?.[0]===402,
+      filled, invalid:$("gridPreviewStatus").classList.contains("invalid") && fe.gridPreview===null,
+      unchanged:saved===(await api("dump")).text};
+  })()`);
+  console.log("網格來源即時預覽:",gridSourceUI.preview?"✓":"✗",
+    "| 預覽不改世界:",gridSourceUI.untouchedBeforeSave?"✓":"✗",
+    "| 來源儲存與回填:",gridSourceUI.saved&&gridSourceUI.filled?"✓":"✗",
+    "| 錯誤草稿拒絕且世界不變:",gridSourceUI.invalid&&gridSourceUI.unchanged?"✓":"✗");
   /* 足跡越界 → 核心拒絕,toast + dump 不變 */
   const q3b = await eval_(`(async()=>{
     const before = (await api("dump")).text;
@@ -1201,6 +1231,42 @@ async function rightClick(x, y) {
   })()`);
   console.log("角材已刪:", q3c.noTimber ? "✓" : "✗",
     "| 網格已刪:", q3c.noGrid ? "✓" : "✗");
+  const gridRoleUI = await eval_(`(async()=>{
+    /* 與圖層刪除測試隔離：主支需上下兩條邊界材作合法擋面。 */
+    leaveFocus();
+    await api("line reset");
+    await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
+    await api("line grid 1 on 1 main-along v u 500 1500 v 300 900");
+    await renderObjects();
+    await enterFocus("face",1);
+    const supports=await mutate([
+      "timber 1 27 33 role boundary", "place 1 on 1 at-face e0 +u +n",
+      "timber 2 27 33 role boundary", "place 2 on 1 at-face e2 +u +n"]);
+    if (supports) await feAfterChange();
+    const anchor=$("tbAnchor"), role=$("tbRole");
+    const grid=(await api("references")).grids[0];
+    anchor.value="at-line grid "+grid.id+" u 0"; anchor.dispatchEvent(new Event("change"));
+    const defaultPrimary=role.value==="primary";
+    role.value="custom"; role.dispatchEvent(new Event("change"));
+    anchor.value="at-line grid "+grid.id+" v 0"; anchor.dispatchEvent(new Event("change"));
+    const manualPreserved=role.value==="custom";
+    $("tbUseSuggestion").click();
+    const resetSecondary=role.value==="secondary";
+    const hit=document.querySelector('[data-face-hit="k:'+grid.id+':u:0"]');
+    const before=(await api("references")).timbers.length;
+    feSetTool("timber");
+    await feDown({x:500,y:500},{target:hit,clientX:0,clientY:0});
+    await window.__cdpSettleUI(350);
+    const refs=await api("references");
+    return {supports,defaultPrimary,manualPreserved,resetSecondary,hit:!!hit,
+      placed:refs.timbers.length===before+1 &&
+        refs.timbers.some(t=>t.role==="primary"),
+      timberCount:refs.timbers.length, before, role:$("tbRole").value};
+  })()`);
+  console.log("格線角色預填:",gridRoleUI.defaultPrimary?"✓":"✗",
+    "| 手動覆寫保留:",gridRoleUI.manualPreserved?"✓":"✗",
+    "| 套用建議:",gridRoleUI.resetSecondary?"✓":"✗",
+    "| 點格線放材:",gridRoleUI.supports&&gridRoleUI.hit&&gridRoleUI.placed?"✓":"✗", gridRoleUI.placed?"":`${gridRoleUI.before}→${gridRoleUI.timberCount} role=${gridRoleUI.role}`);
   await eval_(`leaveFocus()`);
   await sleep(300);
 
