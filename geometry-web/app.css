@@ -599,6 +599,23 @@ body.workspace-open #app { pointer-events: none; user-select: none; }
   text-transform: uppercase;
 }
 .face-layer-list { min-height: 0; display: grid; gap: 4px; }
+.reference-visibility { margin: 0 0 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); color: #4c5769; font-size: 12px; }
+.reference-visibility-heading { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.reference-visibility-heading output { flex-shrink: 0; color: #596376; font-size: 11px; font-variant-numeric: tabular-nums; }
+.reference-visibility-option { min-height: 36px; display: flex; align-items: center; gap: 7px; cursor: pointer; line-height: 1.5; }
+.reference-visibility-option input { width: 16px; height: 16px; margin: 0; flex-shrink: 0; accent-color: var(--accent-strong); }
+.reference-visibility-option span { min-width: 0; overflow-wrap: anywhere; }
+.reference-visibility-option.is-hidden { color: #657084; }
+.reference-visibility-option:has(input:focus-visible) { outline: 2px solid var(--accent-strong); outline-offset: 2px; border-radius: 4px; }
+.reference-visibility summary { min-height: 36px; align-content: center; cursor: pointer; color: var(--accent-strong); }
+.reference-visibility p { margin: 4px 0 10px; color: #596376; font-size: 11px; line-height: 1.6; }
+.reference-visibility fieldset { margin: 0 0 12px; padding: 0; border: 0; min-width: 0; }
+.reference-visibility legend { padding: 4px 0 0; color: var(--ink); font-weight: 650; }
+.reference-visibility-lines { padding-left: 14px; }
+@media (max-width: 680px) {
+  .reference-visibility-option, .reference-visibility summary { min-height: 44px; }
+  .reference-visibility-option input { width: 20px; height: 20px; }
+}
 .face-layer-row {
   width: 100%;
   min-height: 39px;
