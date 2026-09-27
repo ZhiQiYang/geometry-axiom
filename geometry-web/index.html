@@ -227,8 +227,8 @@
         <button id="btnZoom" class="icon-button" type="button" title="顯示全部 (F)" aria-label="顯示全部"><span data-icon="fit"></span></button>
         <button id="homeButton" class="icon-button" type="button" title="回到原點" aria-label="回到原點"><span data-icon="home"></span></button>
         <span class="toolbar-separator vertical"></span>
-        <button id="snapToggle" class="mini-toggle on" type="button" aria-pressed="true" title="格線吸附">吸附</button>
-        <button id="gridToggle" class="mini-toggle on" type="button" aria-pressed="true" title="顯示格線">格線</button>
+        <button id="snapToggle" class="mini-toggle on" type="button" aria-pressed="true" title="格點吸附">吸附</button>
+        <button id="gridToggle" class="mini-toggle on" type="button" aria-pressed="true" title="顯示背景格點">格點</button>
       </div>
 
       <!-- D2:三視圖獨立左下縮放列(樣式沿用主畫布 .canvas-controls),與 #viewToolbar 分離 -->
@@ -303,6 +303,7 @@
         <button type="button" class="workspace-tool" data-face-tool="guide" title="參考線 (l)"><span data-icon="guide"></span><span>參考線</span><kbd>L</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="hole" title="開口 (r)"><span data-icon="hole"></span><span>開口</span><kbd>R</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="timber" title="角材 (t)"><span data-icon="timber"></span><span>角材</span><kbd>T</kbd></button>
+        <button type="button" class="workspace-tool" data-face-tool="grid" title="網格 (g)"><span data-icon="grid"></span><span>網格</span><kbd>G</kbd></button>
         <button type="button" class="workspace-tool" data-face-tool="pan" title="平移 (h/空白鍵)"><span data-icon="hand"></span><span>平移</span><kbd>H</kbd></button>
       </nav>
       <nav id="spaceWorkspaceTools" class="face-workspace-tools" aria-label="空間工具" hidden>
@@ -360,8 +361,8 @@
             <button id="feZoomIn" class="icon-button" type="button" title="放大"><span data-icon="plus"></span></button>
             <button id="feZoomFit" class="icon-button" type="button" title="顯示全部 (f)"><span data-icon="fit"></span></button>
             <span class="toolbar-separator vertical"></span>
-            <label class="face-mini-opt mini-toggle" role="button" aria-pressed="true" title="吸附格線"><input id="faceSnapToggle" type="checkbox" checked><span>吸附</span></label>
-            <label class="face-mini-opt mini-toggle" role="button" aria-pressed="true" title="顯示格線"><input id="faceGridToggle" type="checkbox" checked><span>格線</span></label>
+            <label class="face-mini-opt mini-toggle" role="button" aria-pressed="true" title="吸附格點"><input id="faceSnapToggle" type="checkbox" checked><span>吸附</span></label>
+            <label class="face-mini-opt mini-toggle" role="button" aria-pressed="true" title="顯示背景格點"><input id="faceGridToggle" type="checkbox" checked><span>格點</span></label>
             <label class="face-mini-opt face-grid-size" title="吸附格距">
               格距
               <select id="faceGridSizeSelect">
@@ -372,6 +373,8 @@
               </select> mm
             </label>
           </div>
+          <div id="gridLegend" class="grid-canvas-legend" hidden><span class="primary">主支 2</span><span class="secondary">副支 3</span><span>所有座標見右欄</span></div>
+          <button type="button" id="gridReturnSettings" class="grid-return-settings" hidden>返回網格設定</button>
           <div id="faceCoordinateReadout" class="face-coordinate-readout">u 0 v 0 mm</div>
         </section>
         <aside class="inner-panel face-inspector-panel">

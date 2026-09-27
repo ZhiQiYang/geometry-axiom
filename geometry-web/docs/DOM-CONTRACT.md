@@ -186,6 +186,12 @@
 | `#tbSelected` / `#tbEditForm` / `#tbEditA` / `#tbEditB` / `#tbEditDir` / `#tbEditSide` / `#tbEditRole` / `#tbEditPri` / `#tbEditAnchor` / `#tbEditSelector` / `#tbEditApply` / `#tbSelDelete` | 角材頁頂端「已選角材」可編輯表單(GEO-191 唯讀摘要 → GEO-194 可編輯;`fe.sel.kind==="timber"` 時才出現)。A/B/方向/側/角色可預填(橋接有回傳);`#tbEditAnchor`/`#tbEditSelector` 橋接不回傳現有值,固定不預填(第一個 `<option value="">` 佔位) | 存在性、`value`、`.click()` |
 | `.face-layer-row[data-timber-id]` | 左欄角材列(GEO-191;`.sel` 同步畫布選取,hover/click 有掛鉤) | `dataset.timberId`、`.sel`、mouseenter/mouseleave/click |
 | `#gridMainAlong`、`#gridUSource` `#gridVSource`、`#gridU` `#gridV`、`#gridUStart`/`Step`/`Count`、`#gridVStart`/`Step`/`Count`、`#gridUPanel`/`Gap`/`From`、`#gridVPanel`/`Gap`/`From`、`#gridPreviewStatus`、`#gridCreate` | 網格主支長度方向與來源編輯器；新網格必選方向，舊網格可顯示未設定；核心唯讀預覽與建立／重宣告 | `change`/`input`、預覽文字、`.click()`、游離面 disabled |
+| `[data-face-tool="grid"]`、`[data-grid-id] .grid-layer-open` | 網格工具與清單直接編輯；G 快捷鍵 | 打開同一份草稿與方向圖卡 |
+| `[data-grid-direction]`、`[data-grid-axis] [data-source]` | 方向及來源分段按鈕；原 select ID 留作表單狀態 | `aria-pressed`、`aria-invalid`；來源切換保留輸入 |
+| `#gridDraftBadge`、`#gridReset`、`#gridUError`／`#gridVError` | 已套用／草稿／錯誤狀態，重設與欄位錯誤 | 重設不改世界，錯誤透過 `aria-describedby` 關聯 |
+| `[data-grid-label]`、`[data-grid-ruler]`、`.grid-line-chip` | 拖曳座標、邊尺新增與逐線鍵盤編輯 | Esc／pointercancel 取消拖曳；非明寫新增先說明來源轉換 |
+| `#gridShowCanvas`、`#gridReturnSettings` | 手機滿寬設定／畫布切換 | 保留輸入與捲動位置，全圖包含座標標籤 |
+| `#gridTimberPopover` | 角材工具 hover 網格線顯示角色及截面，明確改選角色 | 使用既有 `fePlaceTimberFromForm`，不自行建立模型規則 |
 | `.face-timber` / `.face-grid-line` / `.face-grid-hit` | 面內角材足跡、帶角色樣式的網格線與角材工具下可點的格線命中層(`k:<grid>:<axis>:<index>`) | `#faceEditorRoot` 內計數；`.role-primary`／`.role-secondary`／`.role-unset` |
 | `.fe-anchor-hi` / `.fe-anchor-band` / `.fe-anchor-band-label` | 角材定位引用預示(GEO-195;角材工具啟用中或 `#tbAnchor` 焦點/hover/改值中才畫;`.fe-anchor-hi` 是定位引用本身的虛線、`.fe-anchor-band` 是**橫向定位示意**帶(G196-R05:由 `feAnchorCrossRange` 依錨法語意算——`at-line` 置中 `[c-⌊A/2⌋, c-⌊A/2⌋+A]`、`at-face` 貼材料側、`at-face t<id>` 不畫;帶套 `#face-material-clip` 扣孔裁到有效區域;**不看 `#tbSide`/`#tbDir`**——±n 是法線厚度方向,不影響 2D 帶)、`.fe-anchor-band-label` 固定文字「橫向定位示意」。GEO-196:`fe.timberHoverAnchor` 非 `null` 時(滑鼠指著某條可命中線)改畫那條線,優先於 `#tbAnchor` 表單值) | `#faceEditorRoot` 內計數、隨 `fe.tool`/`fe.anchorPreview`/`fe.timberHoverAnchor` 出現與消失(不吃事件) |
 | `[data-face-hit]` | 面編輯器命中層(`v:<loop>:<i>`/`e:<loop>:<i>`/`g:<id>:<axis>`/`k:<grid>:<axis>:<index>`/`t:<id>`)。角材工具下點外輪廓邊、參考線或網格線可直接定位放置；格線帶主支 2／副支 3 預設，手動角色覆寫仍保留；孔邊快捷仍不支援。`#tbSide` 仍決定法線厚度方向。 | pointerdown 命中(非同步 bhit 已由它取代) |
@@ -639,8 +645,8 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
     `.face-timber` 在角材工具下 `pointer-events:none`,見 app.css,本來就不會被命中)→
     **照舊**,用 `#tbAnchor`/`#tbDir`/`#tbSide`/`#tbRole` 表單目前值放置(含負向
     長度軸,點線邏輯不得重設表單值——G196-R02)。
-  - **格線(`.face-grid-line`)目前沒有 `data-face-hit`,不可命中**——只做了邊與參考線,
-    是本票的已知限制(不是 bug),留給下一票。
+  - GEO-202：格線以 `.face-grid-hit[data-face-hit="k:<id>:<axis>:<index>"]` 命中；
+    hover 顯示角材放置帶及角色卡，直接點線沿用同一個定位／角色流程。
 - **方向**:`feAnchorDirFromInfo(info)`——`info.constAxis==="v"`(線沿 u 跑)給 `"+u"`,
   `"u"`(線沿 v 跑)給 `"+v"`。固定取正向,不取負向;外輪廓邊的既有走向(逆時針/順時針)
   不採用,理由:與參考線統一同一條規則、不必分兩套。

@@ -184,6 +184,14 @@ function referenceAnchorOptions(bid, surf) {
   const entries = referenceAnchorEntries(bid, surf);
   const free = entries.filter(e => e.occupied == null);
   const busy = entries.filter(e => e.occupied != null);
-  return [...free, ...busy].map(({ value, label, occupied }) =>
-    `<option value="${value}">${label}${occupied != null ? `(已有角材 ${occupied})` : ""}</option>`).join('');
+  const groups = new Map();
+  for (const entry of [...free, ...busy]) {
+    const match = /^at-line grid (\d+) ([uv])/.exec(entry.value);
+    const group = (entry.occupied != null ? "已有角材 · " : "可用 · ") +
+      (match ? `網格 ${match[1]} · ${match[2]} 座標線` : entry.value.startsWith("at-line") ? "參考線" : entry.value.startsWith("at-face t") ? "角材側面" : "輪廓邊");
+    if (!groups.has(group)) groups.set(group, []);
+    groups.get(group).push(entry);
+  }
+  return [...groups].map(([label, items]) => `<optgroup label="${label}">` + items.map(({value,label,occupied}) =>
+    `<option value="${value}">${label}${occupied != null ? `(已有角材 ${occupied})` : ""}</option>`).join('') + '</optgroup>').join('');
 }
