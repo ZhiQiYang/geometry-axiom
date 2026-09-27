@@ -111,6 +111,9 @@ async function rightClick(x, y) {
   await connect();
   await send("Runtime.enable");
   await send("Page.enable");
+  // A reused Chrome profile can restore a narrow window. Pin the desktop
+  // baseline explicitly; responsive cases restore this same viewport.
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
   // Observe async UI completion without changing application behavior. A fixed 300–400 ms
   // pause was reading between a committed command and its subsequent inspector refresh.
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`(()=>{
@@ -1173,6 +1176,8 @@ async function rightClick(x, y) {
     /* 網格:表單建 u 500 1500 / v 300 900 */
     $("gridU").value = "500 1500"; $("gridV").value = "300 900";
     $("gridMainAlong").value = "v";
+    $("gridV").dispatchEvent(new Event("input"));
+    await window.__cdpSettleUI(600);
     $("gridCreate").click();
     await window.__cdpSettleUI(300);
     const dump2 = (await api("dump")).text;
@@ -1265,10 +1270,13 @@ async function rightClick(x, y) {
     const hit=document.querySelector('[data-face-hit="k:'+grid.id+':u:0"]');
     const before=(await api("references")).timbers.length;
     feSetTool("timber");
+    feMove({x:500,y:500},{target:hit,clientX:0,clientY:0});
+    const roleCard=!!document.querySelector('#gridTimberPopover select') && document.querySelector('#gridTimberPopover select').value==='primary';
     await feDown({x:500,y:500},{target:hit,clientX:0,clientY:0});
     await window.__cdpSettleUI(350);
     const refs=await api("references");
-    return {supports,defaultPrimary,manualPreserved,resetSecondary,hit:!!hit,
+    return {supports,defaultPrimary,manualPreserved,resetSecondary,hit:!!hit,roleCard,
+      referenceCount:fe.grids[0]?.references?.length,
       placed:refs.timbers.length===before+1 &&
         refs.timbers.some(t=>t.role==="primary"),
       timberCount:refs.timbers.length, before, role:$("tbRole").value};
@@ -1276,9 +1284,121 @@ async function rightClick(x, y) {
   console.log("格線角色預填:",gridRoleUI.defaultPrimary?"✓":"✗",
     "| 手動覆寫保留:",gridRoleUI.manualPreserved?"✓":"✗",
     "| 套用建議:",gridRoleUI.resetSecondary?"✓":"✗",
+    "| 清單引用數:",gridRoleUI.referenceCount===1?"✓":"✗",
+    "| 格線放材角色卡:",gridRoleUI.roleCard?'✓':'✗',
     "| 點格線放材:",gridRoleUI.supports&&gridRoleUI.hit&&gridRoleUI.placed?"✓":"✗", gridRoleUI.placed?"":`${gridRoleUI.before}→${gridRoleUI.timberCount} role=${gridRoleUI.role}`);
+  const gridLinkedChange=await eval_(`(async()=>{
+    const before=(await api('references')).timbers.map(t=>[t.id,t.role,t.geometry]);
+    document.querySelector('[data-grid-id="1"] .face-layer-del').click();
+    const locked=$('gridPreviewStatus').textContent.includes('仍引用格線') && (await api('references')).grids.length===1;
+    $('gridMainAlong').value='u';$('gridMainAlong').dispatchEvent(new Event('change'));await window.__cdpSettleUI(500);
+    $('gridCreate').click();await window.__cdpSettleUI(400);
+    const confirm=document.querySelector('#impact-confirm');if(confirm&&!confirm.disabled){confirm.click();await window.__cdpSettleUI(500);}
+    const after=await api('references');
+    const roles=after.grids[0].mainAlong==='u' && JSON.stringify(before)===JSON.stringify(after.timbers.map(t=>[t.id,t.role,t.geometry]));
+    $('gridUSource').value='panel';$('gridUPanel').value='5000';$('gridUGap').value='5';$('gridUFrom').value='0';$('gridUPanel').dispatchEvent(new Event('input'));await window.__cdpSettleUI(500);
+    const missing=$('gridPreviewStatus').textContent.includes('索引將消失') && !fe.gridPreview && $('gridUSource').getAttribute('aria-invalid')==='true' && (await api('references')).grids[0].u.length===after.grids[0].u.length;
+    return {locked,roles,missing};
+  })()`);
+  for(const [name,pass] of Object.entries(gridLinkedChange)) console.log('P8v2 linked '+name,pass?'✓':'✗');
   await eval_(`leaveFocus()`);
   await sleep(300);
+
+  /* GEO-202: entry paths, draft isolation, accessible errors and source gestures. */
+  console.log("=== P8v2. 網格設計稿整合 ===");
+  const gridV2 = await eval_(`(async()=>{
+    await api('line reset');
+    await api('line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000');
+    await api('line grid 1 on 1 main-along v u 500 1500 2500 v 600 1200');
+    await renderObjects();await enterFocus('face',1);fiShowTab('components');
+    const before=(await api('dump')).text;
+    const set=(id,value)=>{$(id).value=value;$(id).dispatchEvent(new Event($(id).tagName==='SELECT'?'change':'input'));};
+    const applied=$('gridDraftBadge').textContent==='已套用' && !fe.gridPreview && $('gridCreate').disabled;
+    const rowCopy=document.querySelector('[data-grid-id="1"] .face-layer-copy');
+    const rowReadable=rowCopy.getBoundingClientRect().width>=120 && rowCopy.getBoundingClientRect().height<80;
+    set('gridUSource','series');set('gridUStart','800');set('gridUStep','800');set('gridUCount','4');
+    await window.__cdpSettleUI(600);
+    const entryPreview=fe.gridPreview?.u.join(',')==='800,1600,2400,3200' && document.querySelectorAll('.face-grid-preview-line').length===6;
+    const isolated=(await api('dump')).text===before;
+    document.querySelector('[data-grid-id="1"] .grid-layer-open').click();
+    const row=fe.fiTab==='grid' && fe.tool==='grid' && document.activeElement.matches('[data-grid-direction]');
+    const retained=$('gridUStart').value==='800';
+    $('gridReset').click();await window.__cdpSettleUI(400);
+    const reset=$('gridUSource').value==='explicit' && $('gridU').value==='500 1500 2500' && !fe.gridPreview && (await api('dump')).text===before;
+    set('gridU','1500 500');await window.__cdpSettleUI(400);$('gridCreate').click();await window.__cdpSettleUI(200);
+    const inline=$('gridU').getAttribute('aria-invalid')==='true' && document.activeElement.id==='gridU' && !$('gridUError').hidden && !document.querySelector('.reference-impact[open]');
+    const other=$('gridV').value==='600 1200';
+    set('gridUSource','panel');set('gridUPanel','400');set('gridUGap','5');set('gridUFrom','5000');await window.__cdpSettleUI(400);
+    const bounds=$('gridUFrom').getAttribute('aria-invalid')==='true' && $('gridUError').textContent.includes('4000');
+    set('gridUFrom','0');await window.__cdpSettleUI(600);
+    const odd=fe.gridPreview?.u[0]===402;
+    GridEditor.addLine('u',700);
+    const conversion=$('gridUSource').value==='panel' && !$('gridSourceConversion').hidden;
+    [...$('gridSourceConversion').querySelectorAll('button')].find(b=>b.textContent==='取消').click();
+    set('gridUPanel','5000');await window.__cdpSettleUI(600);
+    const zero=fe.gridPreview?.u.length===0 && !document.querySelector('.grid-preview-status.invalid');
+    $('gridCreate').click();await window.__cdpSettleUI(600);
+    const saved=(await api('references')).grids[0];
+    const save=saved.uDefinition.source==='panel' && saved.u.length===0 && $('gridDraftBadge').textContent==='已套用' && !fe.gridPreview;
+    await doUndoRedo('undo');await window.__cdpSettleUI(300);
+    const undo=(await api('references')).grids[0].u.join(',')==='500,1500,2500';
+    set('gridU','700 1700 2700');await window.__cdpSettleUI(500);renderFaceInspector();await window.__cdpSettleUI(500);
+    const rerender=$('gridU').value==='700 1700 2700' && fe.gridPreview?.u[0]===700;
+    set('gridU','900 1900');set('gridU','1000 2000 3000');await window.__cdpSettleUI(600);
+    const latest=fe.gridPreview?.u.join(',')==='1000,2000,3000';
+    const grouped=!!$('tbAnchor').querySelector('optgroup[label*="網格 1"]');
+    return {applied,rowReadable,entryPreview,isolated,row,retained,reset,inline,other,bounds,odd,conversion,zero,save,undo,rerender,latest,grouped};
+  })()`);
+  if(gridV2.__err) throw Error(gridV2.__err);
+  for(const [name,pass] of Object.entries(gridV2)) console.log('P8v2 '+name,pass?'✓':'✗');
+  await eval_(`GridEditor.open(1)`);
+  const gridDragPoint=await eval_(`(()=>{const r=document.querySelector('[data-grid-label="u:0"] rect').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,z:fe.zoom};})()`);
+  await drag(gridDragPoint.x,gridDragPoint.y,gridDragPoint.x+100*gridDragPoint.z,gridDragPoint.y);
+  await sleep(600);
+  console.log('P8v2 pointer drag explicit',await eval_(`$('gridU').value==='1100 2000 3000' && fe.gridPreview?.u[0]===1100`)?'✓':'✗');
+  const cancelGridPoint=await eval_(`(()=>{const r=document.querySelector('[data-grid-label="u:0"] rect').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,z:fe.zoom};})()`);
+  await pressDownMod(cancelGridPoint.x,cancelGridPoint.y);
+  await moveMod(cancelGridPoint.x+100*cancelGridPoint.z,cancelGridPoint.y);
+  await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+  await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:cancelGridPoint.x+100*cancelGridPoint.z,y:cancelGridPoint.y,button:'left',clickCount:1});
+  await sleep(600);
+  console.log('P8v2 drag Escape restores draft',await eval_(`$('gridU').value==='1100 2000 3000' && oc.focus?.t==='face'`)?'✓':'✗');
+  const gridDerivedEdit=await eval_(`(async()=>{
+    const set=(id,value)=>{$(id).value=value;$(id).dispatchEvent(new Event($(id).tagName==='SELECT'?'change':'input'));};
+    set('gridUSource','series');set('gridUStart','500');set('gridUStep','1000');set('gridUCount','3');await window.__cdpSettleUI(600);
+    document.querySelector('[data-grid-label="u:1"]').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+    $('gridSourceConversion').querySelector('input').value='1700';$('gridSourceConversion').querySelector('button').click();await window.__cdpSettleUI(600);
+    const series=$('gridUSource').value==='series' && $('gridUStep').value==='1200' && fe.gridPreview.u[2]===2900;
+    set('gridUSource','panel');set('gridUPanel','400');set('gridUGap','5');set('gridUFrom','0');await window.__cdpSettleUI(600);
+    document.querySelector('[data-grid-label="u:0"]').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+    $('gridSourceConversion').querySelector('input').value='452';$('gridSourceConversion').querySelector('button').click();await window.__cdpSettleUI(600);
+    return {series,panel:$('gridUSource').value==='panel' && $('gridUFrom').value==='50' && fe.gridPreview.u[0]===452};
+  })()`);
+  for(const [name,pass] of Object.entries(gridDerivedEdit)) console.log('P8v2 keyboard '+name,pass?'✓':'✗');
+  const gridShot=async name=>{
+    if(!process.env.GEOMETRY_GRID_SCREENSHOT_DIR)return;
+    const fs=require('fs'),path=require('path');fs.mkdirSync(process.env.GEOMETRY_GRID_SCREENSHOT_DIR,{recursive:true});
+    const shot=await send('Page.captureScreenshot',{format:'png'});
+    fs.writeFileSync(path.join(process.env.GEOMETRY_GRID_SCREENSHOT_DIR,name+'.png'),Buffer.from(shot.result.data,'base64'));
+  };
+  await eval_(`fiShowTab('grid')`);await gridShot('grid-v2-desktop-final');
+  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});
+  const gridPhone=await eval_(`(async()=>{
+    GridEditor.open(1);await window.__cdpSettleUI(100);
+    const width=document.querySelector('.face-inspector-panel').getBoundingClientRect().width;
+    const targets=[...document.querySelectorAll('.grid-editor input,.grid-editor button')].filter(e=>e.getBoundingClientRect().height>0);
+    const touch=targets.every(e=>e.getBoundingClientRect().height>=44);
+    const draft=$('gridU').value,scroll=$('faceInspectorContent').scrollTop;
+    $('gridShowCanvas').click();const canvas=!document.body.classList.contains('drawer-right-open')&&!$('gridReturnSettings').hidden;
+    $('gridReturnSettings').click();
+    const vp=$('faceEditorViewport').getBoundingClientRect(),labels=[...document.querySelectorAll('[data-grid-label]')].map(e=>e.getBoundingClientRect());
+    return {full:width>=389,touch,canvas,retained:$('gridU').value===draft && $('faceInspectorContent').scrollTop===scroll,noOverflow:document.documentElement.scrollWidth<=390,labels:labels.every(r=>r.left>=vp.left && r.right<=vp.right)};
+  })()`);
+  for(const [name,pass] of Object.entries(gridPhone)) console.log('P8v2 phone '+name,pass?'✓':'✗');
+  await gridShot('grid-v2-mobile-settings-final');
+  await eval_(`$('gridShowCanvas').click()`);await gridShot('grid-v2-mobile-canvas-final');
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
+  await eval_(`closePanels();leaveFocus()`);
 
   /* RC/多邊形 Phase 1:重畫外環 + 形狀庫 */
   console.log("=== P9. 重畫外環與形狀庫(RC Phase 1)===");
@@ -2632,18 +2752,21 @@ async function rightClick(x, y) {
   console.log("P20 A4 卡片標題12.5:", p20a4.f === "12.5" && p20a4.s === "12.5"
     ? "✓" : `✗ ${JSON.stringify(p20a4)}`);
   /* (f) A9:成功 toast 的 .toast.ok svg 著色 = --face(原無 .toast.ok 規則) */
-  await eval_(`(async()=>{ await emitLine("boundary 77 outline 0,0 300,0 300,300 0,300"); await renderObjects(); })()`);
-  await sleep(400);
-  const p20a9 = await eval_(`(()=>{
-    const svg = document.querySelector("#toastRegion .toast.ok svg");
-    if (!svg) return null;
-    const got = getComputedStyle(svg).color;
-    const probe = document.createElement("span");
-    probe.style.color = "var(--face)";
-    document.body.appendChild(probe);
-    const want = getComputedStyle(probe).color;
-    probe.remove();
-    return {got, want};})()`);
+  // Capture the real success toast when it appears; slow bridge refreshes can
+  // outlive its deliberately short 2000 ms lifetime.
+  const p20a9 = await eval_(`(async()=>{
+    let captured=null;
+    const observer=new MutationObserver(records=>{
+      for(const record of records)for(const node of record.addedNodes){
+        const svg=node.matches?.('.toast.ok') && node.querySelector('svg');if(!svg)continue;
+        const probe=document.createElement('span');probe.style.color='var(--face)';document.body.appendChild(probe);
+        captured={got:getComputedStyle(svg).color,want:getComputedStyle(probe).color};probe.remove();
+      }
+    });
+    observer.observe($('toastRegion'),{childList:true});
+    await emitLine('boundary 77 outline 0,0 300,0 300,300 0,300');observer.disconnect();
+    await renderObjects();return captured;
+  })()`);
   console.log("P20 A9 toast.ok著色:", p20a9 && p20a9.got === p20a9.want
     ? `✓ ${p20a9.got}` : `✗ ${JSON.stringify(p20a9)}`);
   /* (g) B1:面內圖層列 .face-layer-icon 一律 svg,不含 ▱▨⌖▤╬ 純文字 */
@@ -3084,7 +3207,7 @@ async function rightClick(x, y) {
   check('M10 toast above canvas, away from minimap',await eval_(`(()=>{const r=document.querySelector('.toast').getBoundingClientRect();return r.top>=56 && r.bottom<200})()`));
   await clickSelector('.ocard[data-id="1"] .card-enter');
   check('M8 explicit card entry',await eval_(`oc.focus?.t==='face' && oc.focus.id===1`));
-  check('F1 F3 F4 four tabs, six tools, five persistent groups',await eval_(`document.querySelectorAll('#faceInspectorTabs [data-fi-tab]').length===4 && document.querySelectorAll('#faceWorkspaceTools [data-face-tool]').length===6 && document.querySelectorAll('#faceLayerList .fl-group').length===5 && document.querySelectorAll('#faceLayerList .fl-empty').length>=3 && document.querySelector('#faceInspectorContent').contains(document.querySelector('#faceShapeButton'))`));
+  check('F1 F3 F4 four tabs, seven tools, five persistent groups',await eval_(`document.querySelectorAll('#faceInspectorTabs [data-fi-tab]').length===4 && document.querySelectorAll('#faceWorkspaceTools [data-face-tool]').length===7 && document.querySelectorAll('#faceLayerList .fl-group').length===5 && document.querySelectorAll('#faceLayerList .fl-empty').length>=3 && document.querySelector('#faceInspectorContent').contains(document.querySelector('#faceShapeButton'))`));
   await fillInput('#edgeLength0','500');await pressKey('Tab','Tab',9);await sleep(300);
   const lengthEdit = await eval_(`({focus:document.activeElement.id,a:document.querySelector('#edgeLength0').value,b:document.querySelector('#edgeLength2').value,status:document.querySelector('#status').textContent,loops:oc.bmap[1]})`);
   check('F2 real length edit retains next keyboard target',lengthEdit.focus==='edgeFixed0' && lengthEdit.a==='500' && lengthEdit.b==='500',lengthEdit);
@@ -6132,7 +6255,7 @@ async function rightClick(x, y) {
       const root=getComputedStyle(document.documentElement),face=document.querySelector('.object-row[data-kind="boundary"]');
       const s=$('snapToggle'),g=$('gridToggle');
       return !!root.getPropertyValue('--column').trim() && !!root.getPropertyValue('--beam').trim()
-        && face?.textContent.includes('未放置') && s.textContent.includes('吸附') && g.textContent.includes('格線')
+        && face?.textContent.includes('未放置') && s.textContent.includes('吸附') && g.textContent.includes('格點')
         && s.getAttribute('aria-pressed')==='true' && g.getAttribute('aria-pressed')==='true';})()`));
     await eval_(`enterFocus('face',1)`);
     check('P64 M7 面內吸附切換文案與狀態一致',await eval_(`(()=>{
