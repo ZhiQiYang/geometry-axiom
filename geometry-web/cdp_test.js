@@ -1,44 +1,122 @@
 /* CDP 驅動 headless Chrome 實測物件畫布互動 */
 const { spawn } = require("child_process");
+const fs = require('fs'), path = require('path'), os = require('os');
+const net = require('net');
+const SCOPE_FLAGS = ['GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
+const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
+function runConfiguration(env = process.env) {
+  if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
+  const url = new URL(env.GEOMETRY_TEST_URL);
+  if (!['http:','https:'].includes(url.protocol)) throw Error('GEOMETRY_TEST_URL must be an HTTP(S) test service');
+  if(env.GEOMETRY_CDP_PORT && (!/^\d+$/.test(env.GEOMETRY_CDP_PORT) || Number(env.GEOMETRY_CDP_PORT)<1 || Number(env.GEOMETRY_CDP_PORT)>65535))throw Error('GEOMETRY_CDP_PORT must be an integer from 1 to 65535');
+  if (!env.GEOMETRY_FEEDBACK_DIR || !path.isAbsolute(env.GEOMETRY_FEEDBACK_DIR)) throw Error('GEOMETRY_FEEDBACK_DIR must name the isolated server feedback directory under TEMP');
+  const relative = path.relative(os.tmpdir(),path.resolve(env.GEOMETRY_FEEDBACK_DIR));
+  if (!relative || relative==='..' || relative.startsWith('..'+path.sep) || path.isAbsolute(relative)) throw Error('GEOMETRY_FEEDBACK_DIR must be a dedicated directory under TEMP');
+  const filters=SCOPE_FLAGS.filter(name=>env[name]);
+  const modifiers=ENGINEERING_MODIFIERS.filter(name=>env[name]);
+  if([...filters,...modifiers].some(name=>env[name]!=='1'))throw Error('Scope flags accept only 1; remove a flag to disable it');
+  if(filters.length>1)throw Error('Choose only one CDP scope flag; combined filters can silently omit every suite');
+  if(modifiers.length>1)throw Error('Choose only one engineering workflow modifier');
+  if(modifiers.length && env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY!=='1')throw Error('Engineering modifiers require GEOMETRY_ENGINEERING_WORKFLOW_ONLY=1');
+  return {mode:filters.length?'partial':'full',filters,modifiers,url:url.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
+}
+// Legacy checks log a verdict as a separate argument. Never scan arbitrary
+// diagnostics or page console strings for checkmark characters.
+const EXPLICIT_VERDICT=Symbol('explicit-test-verdict');
+function explicitVerdict(text) {
+  if(typeof text!=='string' || !/[✓✗]/.test(text))throw Error('Explicit test verdict must contain a success/failure marker');
+  return {[EXPLICIT_VERDICT]:text.includes('✗')?false:true,text};
+}
+function assertionVerdicts(args) {
+  if(typeof args[0]==='string' && /^\[(?:console|EXCEPTION)\]/.test(args[0]))return [];
+  return args.flatMap(value=>value && typeof value==='object' && EXPLICIT_VERDICT in value?[value[EXPLICIT_VERDICT]]:value==='✓'?[true]:value==='✗'?[false]:[]);
+}
+function evaluationValue(message, expression) {
+  if(message.error)throw Error('CDP Runtime.evaluate failed: '+JSON.stringify(message.error));
+  if(!message.result?.result)throw Error('CDP Runtime.evaluate returned no result');
+  const error=message.result.exceptionDetails;
+  if(error)throw Error('Browser evaluation failed: '+(error.exception?.description || error.text || JSON.stringify(error))+'; expression='+expression.slice(0,180));
+  return message.result.result.value;
+}
 /* 預設為 Windows 的 Chrome；下列環境變數可覆寫，用於在 WSL/Linux 內整條跑：
      GEOMETRY_CHROME         chrome 執行檔路徑（Linux 下通常是 google-chrome）
      GEOMETRY_CHROME_PROFILE --user-data-dir 的位置
      GEOMETRY_CHROME_FLAGS   追加旗標，空白分隔（在 WSL 內以 root 跑需要 --no-sandbox）
+     GEOMETRY_TEST_SERVER_PATH_STYLE=wsl  Windows harness 對 WSL 服務傳送 /mnt/<drive>/ 路徑
    不設時行為與先前完全相同。 */
 const CHROME = process.env.GEOMETRY_CHROME || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const PROFILE = process.env.GEOMETRY_CHROME_PROFILE || "C:\\tmp\\cdp-profile";
+const PROFILE = process.env.GEOMETRY_CHROME_PROFILE || null;
 const EXTRA_FLAGS = (process.env.GEOMETRY_CHROME_FLAGS || "").split(" ").filter(Boolean);
 const PORT = +(process.env.GEOMETRY_CDP_PORT || 9333);
+function serverFixturePath(localPath) {
+  const style=process.env.GEOMETRY_TEST_SERVER_PATH_STYLE || 'native';
+  if(style==='native')return localPath;
+  if(style==='wsl'&&/^[A-Za-z]:[\\/]/.test(localPath))return '/mnt/'+localPath[0].toLowerCase()+'/'+localPath.slice(3).replace(/\\/g,'/');
+  throw Error('Unsupported test server path style or fixture path: '+style+' '+localPath);
+}
 
-const chrome = spawn(CHROME, [
+let chrome, browserEndpoint=null, browserStartupOutput='';
+async function assertPortAvailable(port,network=net) {
+  await new Promise((resolve,reject)=>{
+    const probe=network.createServer();
+    probe.once('error',error=>reject(Error('CDP port '+port+' is unavailable; refusing to attach to another browser: '+error.message)));
+    probe.listen({host:'127.0.0.1',port,exclusive:true},()=>probe.close(error=>error?reject(error):resolve()));
+  });
+}
+function verifyBrowserOwnership(version,endpoint,port) {
+  const actual=new URL(version.webSocketDebuggerUrl),expected=new URL(endpoint);
+  if(!['127.0.0.1','localhost','[::1]'].includes(actual.hostname) || actual.protocol!=='ws:' || Number(actual.port)!==port || Number(expected.port)!==port || !/^\/devtools\/browser\/[a-zA-Z0-9-]+$/.test(expected.pathname) || actual.pathname!==expected.pathname){
+    const error=Error('CDP browser ownership mismatch: endpoint does not belong to the Chrome process started by this test');error.code='BROWSER_OWNERSHIP';throw error;
+  }
+}
+function startBrowser() {
+  const profile=PROFILE || fs.mkdtempSync(path.join(os.tmpdir(),'geometry-cdp-'));
+  scope.browserProfile=path.resolve(profile);scope.cdpPort=PORT;
+  const child=spawn(CHROME, [
   "--headless=new", "--disable-gpu", "--no-first-run", `--remote-debugging-port=${PORT}`,
-  "--window-size=1400,900", `--user-data-dir=${PROFILE}`, ...EXTRA_FLAGS, "about:blank"
-]);
+  "--window-size=1400,900", `--user-data-dir=${profile}`, ...EXTRA_FLAGS, "about:blank"
+  ]);
+  child.stderr.on('data',chunk=>{
+    browserStartupOutput=(browserStartupOutput+chunk.toString()).slice(-8192);
+    const match=browserStartupOutput.match(/DevTools listening on (ws:\/\/\S+)/);
+    if(match)browserEndpoint=match[1];
+  });
+  scope.browserPid=child.pid;
+  return child;
+}
 
 const delay = ms => new Promise(r => setTimeout(r, ms));
 const sleep = async ms => {
   await delay(ms);
   if(ms>=200 && ws?.readyState===1)
-    await send('Runtime.evaluate',{expression:'window.__cdpSettleUI?.(0)',awaitPromise:true});
+    await eval_('window.__cdpSettleUI?.(0)');
 };
 let ws, mid = 0, pending = {};
 
 /* ✓/✗ 計數：所有印出的判定一律計入，exit code 依此決定。 */
 let passN = 0, failN = 0;
 let excN = 0;            /* Runtime.exceptionThrown 計數(BF2 驗收用) */
+let currentTestStep='connecting to isolated test browser';
+let expectedBeforeUnloadUntil=0;
+let expectedException=null, scope, skipped=[];
 const _log = console.log;
-console.log = (...args) => {
+function recordLog(...args) {
   const s = args.join(" ");
-  passN += (s.match(/✓/g) || []).length;
-  failN += (s.match(/✗/g) || []).length;
-  _log(...args);
-};
+  if(s.startsWith('==='))currentTestStep=s;
+  for(const passed of assertionVerdicts(args)){if(passed)passN++;else failN++;}
+  _log(...args.map(value=>value && typeof value==='object' && EXPLICIT_VERDICT in value?value.text:value));
+}
 
 async function connect() {
-  for (let i = 0; i < 40; ++i) {
+  // A fresh isolated Chrome profile can need longer than ten seconds on Windows.
+  for (let i = 0; i < 120; ++i) {
+    if(chrome.exitCode!==null)throw Error('Test Chrome exited before CDP ownership was established: '+browserStartupOutput);
+    if(!browserEndpoint){await delay(250);continue;}
     try {
-      const list = await fetch(`http://127.0.0.1:${PORT}/json`).then(r => r.json());
-      const page = list.find(t => t.type === "page");
+      const version=await fetch(`http://127.0.0.1:${PORT}/json/version`,{signal:AbortSignal.timeout(3000)}).then(r=>r.json());
+      verifyBrowserOwnership(version,browserEndpoint,PORT);
+      const list = await fetch(`http://127.0.0.1:${PORT}/json`,{signal:AbortSignal.timeout(3000)}).then(r => r.json());
+      const page = list.find(t => t.type === "page" && t.url==='about:blank') || list.find(t => t.type === "page");
       if (page) {
         ws = new WebSocket(page.webSocketDebuggerUrl);
         await new Promise((res, rej) => { ws.onopen = res; ws.onerror = rej; });
@@ -49,28 +127,48 @@ async function connect() {
             console.log("[console]", m.params.args.map(a => a.value ?? a.description).join(" "));
           else if (m.method === "Runtime.exceptionThrown") {
             excN++;
-            console.log("[EXCEPTION]", JSON.stringify(m.params.exceptionDetails.exception?.description || m.params));
+            const description=m.params.exceptionDetails.exception?.description || m.params.exceptionDetails.text || '';
+            const expected=expectedException && Date.now()<expectedException.until && description.split('\n')[0]===expectedException.message;
+            if(expected){expectedException=null;_log('[EXPECTED EXCEPTION]',description);}
+            else {failN++;_log('[UNEXPECTED EXCEPTION]',currentTestStep,description);}
           }
+          else if (m.method === 'Page.javascriptDialogOpening' && m.params.type==='confirm' &&
+              /目前專案有尚未保存的變更|只能在本次工作階段修改數字的形狀特徵/.test(m.params.message)) {
+            // This isolated acceptance run is authorized to leave its own test project.
+            console.log('[TEST PROJECT DIALOG]',m.params.message);
+            send('Page.handleJavaScriptDialog',{accept:true});
+          }
+          else if (m.method==='Page.javascriptDialogOpening' && m.params.type==='beforeunload' && Date.now()<expectedBeforeUnloadUntil) {
+            expectedBeforeUnloadUntil=0;
+            console.log('[TEST PAGE LEAVE]',currentTestStep,m.params.message);
+            send('Page.handleJavaScriptDialog',{accept:true});
+          }
+          else if (m.method==='Page.javascriptDialogOpening')console.log(explicitVerdict('✗ Unexpected native dialog at '+currentTestStep),JSON.stringify(m.params));
+          else if (m.method==='Inspector.targetCrashed')console.log(explicitVerdict('✗ Browser target crashed at '+currentTestStep));
         };
         return;
       }
-    } catch {}
+    } catch(error) {if(error.code==='BROWSER_OWNERSHIP')throw error;}
     await sleep(250);
   }
   throw new Error("no CDP");
 }
 function send(method, params = {}) {
-  return new Promise(res => { const id = ++mid; pending[id] = res; ws.send(JSON.stringify({ id, method, params })); });
+  if(method==='Page.reload'||method==='Page.navigate')expectedBeforeUnloadUntil=Date.now()+15000;
+  return new Promise((res,rej) => {
+    const id=++mid,timer=setTimeout(()=>{delete pending[id];rej(Error('CDP timed out: '+method+' at '+currentTestStep+(params.expression?' expression='+params.expression.slice(0,160):'')));},120000);
+    pending[id]=message=>{clearTimeout(timer);if(message.error)rej(Error('CDP '+method+' failed: '+JSON.stringify(message.error)));else res(message);};
+    ws.send(JSON.stringify({id,method,params}));
+  });
 }
 async function eval_(expr) {
   const r = await send("Runtime.evaluate", { expression: expr, returnByValue: true, awaitPromise: true });
-  if (r.result.exceptionDetails) return { __err: r.result.exceptionDetails.exception?.description };
-  return r.result.result.value;
+  return evaluationValue(r,expr);
 }
 async function waitForUI(expr, timeout=5000) {
   const end=Date.now()+timeout;
   while(Date.now()<end){if(await eval_(expr)===true)return;await sleep(50);}
-  // The assertion after this bounded wait reports the actual state on failure.
+  throw Error('UI condition timed out at '+currentTestStep+': '+expr);
 }
 async function click(x, y) {
   for (const [type, btn] of [["mousePressed", "left"], ["mouseReleased", "left"]])
@@ -107,7 +205,7 @@ async function rightClick(x, y) {
     await send("Input.dispatchMouseEvent", { type, x, y, button: "right", clickCount: 1 });
 }
 
-(async () => {
+async function main() {
   await connect();
   await send("Runtime.enable");
   await send("Page.enable");
@@ -124,15 +222,29 @@ async function rightClick(x, y) {
     window.__cdpSettleUI=async ms=>{
       await new Promise(r=>setTimeout(r,ms));const end=performance.now()+5000;
       while(performance.now()<end){if(pending===0&&performance.now()-last>=150)return;await new Promise(r=>setTimeout(r,50));}
+      // Opportunistic settling only: some race tests deliberately keep a fetch
+      // pending. Their explicit waitForUI predicate/assertion is authoritative.
     };
   })()`});
   await send("Page.navigate", { url: process.env.GEOMETRY_TEST_URL || "http://localhost:8765/" });
   await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
-  if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY) {
+  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY) {
+  if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
-  await eval_(`api("line reset")`);
+  console.log('=== Setup. 確認重置隔離驗收專案 ===');
+  await eval_(`window.__cdpInitialResetDone=false;window.__cdpInitialReset=api('line reset').then(r=>{window.__cdpInitialResetDone=true;return r;});void 0`);
+  await waitForUI(`window.__cdpInitialResetDone || !!document.querySelector('.reference-impact[open] #impact-confirm')`,15000);
+  if(await eval_(`!!document.querySelector('.reference-impact[open] #impact-confirm')`)){
+    const point=await eval_(`(()=>{const e=$('impact-confirm');e.scrollIntoView({block:'center'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y)),disabled:e.disabled};})()`);
+    if(!point.hit||point.disabled)throw Error('Initial isolated reset confirmation is unreachable '+JSON.stringify(point));
+    console.log('[TEST FIXTURE RESET] confirming the isolated project impact preview');
+    await click(point.x,point.y);
+  }
+  const initialReset=await eval_(`window.__cdpInitialReset`);
+  if(!initialReset?.ok)throw Error('Initial isolated reset failed '+JSON.stringify(initialReset));
+  await eval_(`delete window.__cdpInitialReset;delete window.__cdpInitialResetDone;void 0`);
   await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
   await eval_(`api("line canvas-pos boundary 1 60 60")`);
   await sleep(500);
@@ -143,29 +255,25 @@ async function rightClick(x, y) {
     const kids=[...app.children];return {n:kids.length,
       cls:kids.map(k=>k.className.split(" ")[0]).join(","),
       h:kids.map(k=>Math.round(k.getBoundingClientRect().height))}})()`);
-  console.log("app rows:", JSON.stringify(rows),
-    rows.n === 3 && rows.h[0] === 56 && rows.h[2] === 32 ? "✓ 三列殼" : "✗");
+  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 56 && rows.h[2] === 32 ? "✓ 三列殼" : "✗"));
   /* (b) .workspace 三欄:左 260 / 中 1fr / 右 320 */
   const cols = await eval_(`(()=>{const w=document.querySelector(".workspace");
     const k=[...w.children];return {n:k.length,
       w:k.map(c=>Math.round(c.getBoundingClientRect().width))}})()`);
-  console.log("workspace cols:", JSON.stringify(cols),
-    cols.n === 3 && cols.w[0] === 260 && cols.w[2] === 320 ? "✓ 三欄" : "✗");
+  console.log("workspace cols:", JSON.stringify(cols),explicitVerdict(cols.n === 3 && cols.w[0] === 260 && cols.w[2] === 320 ? "✓ 三欄" : "✗"));
   /* (c) topbar 子層序:brand → tool-group → top-actions */
   const tb = await eval_(`[...document.querySelector(".topbar").children].map(c=>c.className.split(" ")[0]).join(",")`);
-  console.log("topbar order:", tb,
-    tb === "brand,tool-group,top-actions" ? "✓ 頂列順序" : "✗");
+  console.log("topbar order:", tb,explicitVerdict(tb === "brand,tool-group,top-actions" ? "✓ 頂列順序" : "✗"));
   /* (d) #ocv 在 #canvasViewport 內且同大小(誤差≤2px) */
   const fit = await eval_(`(()=>{const v=document.getElementById("canvasViewport").getBoundingClientRect();
     const o=document.getElementById("ocv").getBoundingClientRect();
     return {dv:Math.abs(v.left-o.left)+Math.abs(v.top-o.top),
             ds:Math.abs(v.width-o.width)+Math.abs(v.height-o.height)}})()`);
-  console.log("ocv fit:", JSON.stringify(fit),
-    fit.dv <= 2 && fit.ds <= 2 ? "✓ ocv 鋪滿 viewport" : "✗");
+  console.log("ocv fit:", JSON.stringify(fit),explicitVerdict(fit.dv <= 2 && fit.ds <= 2 ? "✓ ocv 鋪滿 viewport" : "✗"));
   /* (e) #status 與 #cmd 都在 .statusbar 裡 */
   const sb = await eval_(`(()=>{const sb=document.querySelector(".statusbar");
     return !!(sb.querySelector("#status") && sb.querySelector("#cmd"))})()`);
-  console.log("statusbar:", sb ? "✓ status/cmd 在狀態列" : "✗");
+  console.log("statusbar:",explicitVerdict(sb ? "✓ status/cmd 在狀態列" : "✗"));
   /* (f) A1 防溢出:.top-actions 右緣 ≤ viewport、左緣 > .tool-group 右緣(1382 與 1160) */
   for (const w of [1382, 1160, 900, 680, 600]) {
     await send("Emulation.setDeviceMetricsOverride",
@@ -175,8 +283,7 @@ async function rightClick(x, y) {
       const ta=document.querySelector(".top-actions").getBoundingClientRect();
       const tg=document.querySelector(".tool-group").getBoundingClientRect();
       return {taR:Math.round(ta.right),taL:Math.round(ta.left),tgR:Math.round(tg.right),iw:innerWidth}})()`);
-    console.log(`防溢出@${w}:`, JSON.stringify(ov),
-      ov.taR <= ov.iw && ov.taL > ov.tgR ? "✓" : "✗");
+    console.log(`防溢出@${w}:`, JSON.stringify(ov),explicitVerdict(ov.taR <= ov.iw && ov.taL > ov.tgR ? "✓" : "✗"));
   }
   await send("Emulation.setDeviceMetricsOverride",
     { width: 1382, height: 804, deviceScaleFactor: 1, mobile: false });
@@ -190,29 +297,27 @@ async function rightClick(x, y) {
     zoomInCtl: document.querySelector(".canvas-controls").contains(document.getElementById("btnZoom")),
     kbd: document.querySelectorAll(".tool-group kbd").length
   })`);
-  console.log("S2 結構:", JSON.stringify(s2),
-    s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? "✓" : "✗");
+  console.log("S2 結構:", JSON.stringify(s2),explicitVerdict(s2.searchInSide && s2.fileKids && s2.vsHasObj && s2.zoomInCtl && s2.kbd === 4 ? "✓" : "✗"));
   /* (h) A2 清單樣式:.row-copy > strong + small */
   await eval_(`renderObjects()`); await sleep(400);
   const rowCk = await eval_(`(()=>{const r=document.querySelector(".object-row .row-copy strong");
     return r ? getComputedStyle(r).fontSize : null})()`);
-  console.log("清單樣式 row-copy strong:", rowCk,
-    rowCk && parseFloat(rowCk) >= 12 ? "✓" : "✗");
+  console.log("清單樣式 row-copy strong:", rowCk,explicitVerdict(rowCk && parseFloat(rowCk) >= 12 ? "✓" : "✗"));
   /* (i) E8:800px 寬進面內工作區,工具列仍有不少於 5 顆可見鈕 */
   await send("Emulation.setDeviceMetricsOverride",
     { width: 800, height: 600, deviceScaleFactor: 1, mobile: false });
   await eval_(`enterFocus("face",1)`); await sleep(600);
   const e8 = await eval_(`[...document.querySelectorAll("#faceWorkspaceTools .workspace-tool")]
     .filter(b=>b.getBoundingClientRect().width>0).length`);
-  console.log("E8 800px 面內工具鈕:", e8, e8 >= 5 ? "✓" : "✗");
+  console.log("E8 800px 面內工具鈕:", e8,explicitVerdict(e8 >= 5 ? "✓" : "✗"));
   await eval_(`leaveFocus()`); await sleep(300);
   await send("Emulation.setDeviceMetricsOverride",
     { width: 1382, height: 804, deviceScaleFactor: 1, mobile: false });
   await sleep(300);
   /* 截圖存檔 */
   const shot = await send("Page.captureScreenshot", { format: "png" });
-  require("fs").mkdirSync("docs/screens", { recursive: true });
-  const screenshotPath = process.env.GEOMETRY_TEST_SCREENSHOT || "docs/screens/phase1-shell.png";
+  const screenshotPath = process.env.GEOMETRY_TEST_SCREENSHOT || path.join(os.tmpdir(),'geometry-tests','cdp-'+process.pid,'phase1-shell.png');
+  fs.mkdirSync(path.dirname(screenshotPath),{recursive:true});
   require("fs").writeFileSync(screenshotPath, Buffer.from((shot.result && shot.result.data) || "", "base64"));
   console.log("screenshot:", screenshotPath);
   console.log("初始:oc.on=", await eval_(`oc.on`),
@@ -227,20 +332,18 @@ async function rightClick(x, y) {
   const v3on = await eval_(`({cv:document.getElementById("cv").hasAttribute("hidden"),
     vt:document.getElementById("viewToolbar").hasAttribute("hidden"),on:oc.on,
     world:document.getElementById("world").childElementCount})`);
-  console.log("view3 open:", JSON.stringify(v3on),
-    !v3on.cv && !v3on.vt && !v3on.on ? "✓ 三視圖開啟" : "✗");
+  console.log("view3 open:", JSON.stringify(v3on),explicitVerdict(!v3on.cv && !v3on.vt && !v3on.on ? "✓ 三視圖開啟" : "✗"));
   await click(btnRect.x, btnRect.y);
   await sleep(300);
-  console.log("view3 repeated selection:", !(await eval_(`oc.on`)) ? "✓ 維持三視圖" : "✗");
+  console.log("view3 repeated selection:",explicitVerdict(!(await eval_(`oc.on`)) ? "✓ 維持三視圖" : "✗"));
   const canvasButton = await eval_(`(()=>{const r=document.getElementById("btnCanvasView").getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()`);
   await click(canvasButton.x, canvasButton.y);
   await sleep(700);
   const v3off = await eval_(`({cv:document.getElementById("cv").hasAttribute("hidden"),on:oc.on})`);
-  console.log("view3 close:", JSON.stringify(v3off),
-    v3off.cv && v3off.on ? "✓ 返回物件畫布" : "✗");
+  console.log("view3 close:", JSON.stringify(v3off),explicitVerdict(v3off.cv && v3off.on ? "✓ 返回物件畫布" : "✗"));
   console.log("cards:", await eval_(`document.querySelectorAll(".ocard").length`));
 
-  console.log("=== 3. 拖曳空白處（pan） ===");
+  console.log("=== 3. H 平移工具拖曳空白處（GEO-209：V 空白拖曳改為框選） ===");
   const ocvRect = await eval_(`JSON.stringify(document.getElementById("ocv").getBoundingClientRect())`);
   console.log("ocv rect:", ocvRect);
   const panBefore = await eval_(`({x:oc.panX,y:oc.panY})`);
@@ -256,10 +359,11 @@ async function rightClick(x, y) {
     return {x: r.left + r.width/2, y: r.top + r.height/2};
   })()`);
   console.log("pan pt:", JSON.stringify(panPt));
+  for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'h',code:'KeyH',windowsVirtualKeyCode:72});
   await drag(panPt.x, panPt.y, panPt.x + 80, panPt.y + 50);
+  for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'v',code:'KeyV',windowsVirtualKeyCode:86});
   const panAfter = await eval_(`({x:oc.panX,y:oc.panY})`);
-  console.log("pan:", JSON.stringify(panBefore), "->", JSON.stringify(panAfter),
-              panBefore.x !== panAfter.x ? "✓ 平移有效" : "✗ 平移無效");
+  console.log("pan:", JSON.stringify(panBefore), "->", JSON.stringify(panAfter),explicitVerdict(panBefore.x !== panAfter.x ? "✓ 平移有效" : "✗ 平移無效"));
 
   console.log("=== 4. 點「＋面·矩形」再拉矩形（避開卡片的空白區） ===");
   await eval_(`document.getElementById("btnNewRect").click()`);
@@ -296,7 +400,7 @@ async function rightClick(x, y) {
   await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: empty.x + 140, y: empty.y + 90, button: "left", clickCount: 1 });
   await sleep(1500);
   const facesAfter = await eval_(`oc.faces.length`);
-  console.log("faces:", facesBefore, "->", facesAfter, facesAfter > facesBefore ? "✓ 建面成功" : "✗ 建面失敗");
+  console.log("faces:", facesBefore, "->", facesAfter,explicitVerdict(facesAfter > facesBefore ? "✓ 建面成功" : "✗ 建面失敗"));
   console.log("status:", await eval_(`document.getElementById("status").textContent`));
   console.log("cards:", await eval_(`document.querySelectorAll(".ocard").length`));
 
@@ -312,8 +416,7 @@ async function rightClick(x, y) {
     await drag(cardBox.x, cardBox.y, cardBox.x + 120, cardBox.y + 60);
     await sleep(1200);
     const posAfter = await eval_(`JSON.stringify(oc.faces.map(f=>[f.id,f.cx,f.cy]))`);
-    console.log("card pos:", posBefore, "->", posAfter,
-                posBefore !== posAfter ? "✓ 拖卡片有效" : "✗ 拖卡片無效");
+    console.log("card pos:", posBefore, "->", posAfter,explicitVerdict(posBefore !== posAfter ? "✓ 拖卡片有效" : "✗ 拖卡片無效"));
   }
 
   console.log("=== 6. 點卡=選取(檢視器);雙擊=進入面編輯 ===");
@@ -329,8 +432,7 @@ async function rightClick(x, y) {
     await click(cardPt.x, cardPt.y);
     await sleep(600);
     const sel = await eval_(`JSON.stringify(oc.sel)`);
-    console.log("click sel:", sel,
-      JSON.parse(sel) ? "✓ 單擊選取" : "✗",
+    console.log("click sel:", sel,explicitVerdict(JSON.parse(sel) ? "✓ 單擊選取" : "✗"),
       "| inspector hidden:", await eval_(`document.getElementById("inspectorContent").hidden`));
     console.log("focus(應為 null):", await eval_(`JSON.stringify(oc.focus)`));
     await dblclick(cardPt.x, cardPt.y);
@@ -355,8 +457,7 @@ async function rightClick(x, y) {
     await drag(vtx.x, vtx.y, vtx.x + 60, vtx.y + 40);
     await sleep(1200);
     const vAfter = await eval_(`JSON.stringify(oc.bmap[oc.edit.bid][0].verts[0])`);
-    console.log("vert0:", vBefore, "->", vAfter,
-                vBefore !== vAfter ? "✓ 頂點編輯有效" : "✗ 頂點編輯無效");
+    console.log("vert0:", vBefore, "->", vAfter,explicitVerdict(vBefore !== vAfter ? "✓ 頂點編輯有效" : "✗ 頂點編輯無效"));
     console.log("status:", await eval_(`document.getElementById("status").textContent`));
   } else console.log("沒進入面編輯，跳過");
 
@@ -371,7 +472,7 @@ async function rightClick(x, y) {
   await eval_(`document.getElementById("btnNewSpace").click()`);
   await sleep(1500);
   const spAfter = await eval_(`oc.spaces.length`);
-  console.log("spaces:", spBefore, "->", spAfter, spAfter > spBefore ? "✓ 空間建立成功" : "✗ 失敗");
+  console.log("spaces:", spBefore, "->", spAfter,explicitVerdict(spAfter > spBefore ? "✓ 空間建立成功" : "✗ 失敗"));
   console.log("status:", await eval_(`document.getElementById("status").textContent`));
   console.log("newid:", await eval_(`api("newid").then(r=>JSON.stringify(r))`));
 
@@ -385,8 +486,7 @@ async function rightClick(x, y) {
   if (spPt) {
     await dblclick(spPt.x, spPt.y);
     await sleep(800);
-    console.log("focus:", await eval_(`JSON.stringify(oc.focus)`),
-                await eval_(`oc.focus && oc.focus.t === "space" ? "✓" : "✗"`));
+    console.log("focus:", await eval_(`JSON.stringify(oc.focus)`),explicitVerdict(await eval_(`oc.focus && oc.focus.t === "space" ? "✓" : "✗"`)));
     await eval_(`leaveFocus()`); await sleep(300);
   }
 
@@ -401,15 +501,15 @@ async function rightClick(x, y) {
   await sleep(900);
   const fa2 = await eval_(`oc.faces.length`);
   const ws9 = await eval_(`({focus:oc.focus, tool:fe.tool})`);
-  console.log("faces:", fb2, "->", fa2, fa2 > fb2 ? "✓ 建面成功" : "✗ 失敗",
-    "| 自動進面內:", ws9.focus && ws9.focus.t === "face" ? "✓" : "✗",
-    "| 重畫外環就緒:", ws9.tool === "redraw" ? "✓" : "✗ " + ws9.tool);
+  console.log("faces:", fb2, "->", fa2,explicitVerdict(fa2 > fb2 ? "✓ 建面成功" : "✗ 失敗"),
+    "| 自動進面內:",explicitVerdict(ws9.focus && ws9.focus.t === "face" ? "✓" : "✗"),
+    "| 重畫外環就緒:",explicitVerdict(ws9.tool === "redraw" ? "✓" : "✗ " + ws9.tool));
   console.log("status:", await eval_(`document.getElementById("status").textContent`));
   /* Esc 回物件畫布,讓 9d 在畫布上驗 undo/redo(單次 undo 移除整個建面交易) */
   for (const type of ['keyDown','keyUp'])
     await send('Input.dispatchKeyEvent', { type, key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
   await sleep(500);
-  console.log("Esc 回畫布:", (await eval_(`oc.focus`)) === null ? "✓" : "✗");
+  console.log("Esc 回畫布:",explicitVerdict((await eval_(`oc.focus`)) === null ? "✓" : "✗"));
 
   console.log("=== 9d. Ctrl+Z 復原 / Ctrl+Y 重做 ===");
   /* §5.A.1.15 已知風險,實測後更新(2026-09-22):新 objEmitFace 閉合當下直接算 bbox
@@ -433,13 +533,12 @@ async function rightClick(x, y) {
   const fU1 = await eval_(facesN);
   const st1 = await eval_(`document.getElementById("status").textContent`);
   console.log("undo1 api faces:", await eval_(`api("objects").then(r=>r.faces.length)`));
-  console.log("undo×1(單步移除建面+落點):", fPreUndo, "->", fU1,
-              fU1 === fPreUndo - 1 ? "✓ undo 有效" : "✗", "|", st1);
+  console.log("undo×1(單步移除建面+落點):", fPreUndo, "->", fU1,explicitVerdict(fU1 === fPreUndo - 1 ? "✓ undo 有效" : "✗"), "|", st1);
   await key("y", "KeyY", 89); await sleep(800);
   const fR1 = await eval_(facesN);
   const dumpAfterRedo = (await eval_(`api("dump").then(r=>r.text)`));
-  console.log("redo×1(單步還原):", fU1, "->", fR1, fR1 === fPreUndo ? "✓ redo 有效" : "✗");
-  console.log("redo 後世界與 undo 前逐字相同:", dumpAfterRedo === dumpPreUndo ? "✓" : "✗");
+  console.log("redo×1(單步還原):", fU1, "->", fR1,explicitVerdict(fR1 === fPreUndo ? "✓ redo 有效" : "✗"));
+  console.log("redo 後世界與 undo 前逐字相同:",explicitVerdict(dumpAfterRedo === dumpPreUndo ? "✓" : "✗"));
 
   console.log("=== 9e. contains 連線(edgeGroup) ===");
   /* 空間成員必須是有承載面的邊界面:先用 surface 建地板+牆(區間一致),
@@ -457,7 +556,7 @@ async function rightClick(x, y) {
   console.log("space members:", await eval_(
     `api("objects").then(r=>JSON.stringify(r.spaces.map(s=>[s.id,s.members])))`));
   const edgeN = await eval_(`document.querySelectorAll("#edgeGroup .edge-path").length`);
-  console.log("edges:", edgeN, edgeN === 2 ? "✓ contains 邊×2" : "✗");
+  console.log("edges:", edgeN,explicitVerdict(edgeN === 2 ? "✓ contains 邊×2" : "✗"));
   console.log("edge labels:", await eval_(
     `[...document.querySelectorAll("#edgeLabelLayer .edge-label")].map(t=>t.textContent).join(",")`));
 
@@ -467,9 +566,9 @@ async function rightClick(x, y) {
     si.value="面 1";si.dispatchEvent(new Event("input",{bubbles:true}))})()`);
   await sleep(600);
   const cardsQ = await eval_(`document.querySelectorAll(".ocard").length`);
-  console.log("cards:", cardsAll, "->", cardsQ, cardsQ === 1 ? "✓ 搜尋只剩 1 張卡" : "✗");
+  console.log("cards:", cardsAll, "->", cardsQ,explicitVerdict(cardsQ === 1 ? "✓ 搜尋只剩 1 張卡" : "✗"));
   const listQ = await eval_(`document.querySelectorAll("#objectList .object-row").length`);
-  console.log("list rows:", listQ, listQ === 1 ? "✓ 清單同步過濾" : "✗");
+  console.log("list rows:", listQ,explicitVerdict(listQ === 1 ? "✓ 清單同步過濾" : "✗"));
   /* 清掉搜尋 */
   await eval_(`(()=>{const si=document.getElementById("searchInput");
     si.value="";si.dispatchEvent(new Event("input",{bubbles:true}))})()`);
@@ -489,10 +588,9 @@ async function rightClick(x, y) {
   if (card20) {
     await dblclick(card20.x, card20.y);
     await sleep(1000);
-    console.log("focus:", await eval_(`JSON.stringify(oc.focus)`),
-      await eval_(`oc.focus && oc.focus.t==="face" && oc.focus.id===20 ? "✓ 進入面 20" : "✗"`));
-    console.log("workspace:", await eval_(
-      `!document.getElementById("objectWorkspace").hidden ? "✓ 開啟" : "✗ 未開啟"`));
+    console.log("focus:", await eval_(`JSON.stringify(oc.focus)`),explicitVerdict(await eval_(`oc.focus && oc.focus.t==="face" && oc.focus.id===20 ? "✓ 進入面 20" : "✗"`)));
+    console.log("workspace:",explicitVerdict(await eval_(
+      `!document.getElementById("objectWorkspace").hidden ? "✓ 開啟" : "✗ 未開啟"`)));
   }
 
   console.log("=== P3-2. 參考線：水平拖 → guide <n> 20 v <off> ===");
@@ -506,10 +604,10 @@ async function rightClick(x, y) {
   await sleep(900);
   const dump1 = await eval_(`api("dump").then(r=>r.text)`);
   const rawGuide = /^guide /m.test(dump1);
-  console.log("無具名規格或鄰近引用的自由拖放拒絕:", !rawGuide ? "✓" : "✗");
+  console.log("無具名規格或鄰近引用的自由拖放拒絕:",explicitVerdict(!rawGuide ? "✓" : "✗"));
   await eval_(`(async()=>{await api("line spec 面內線 1500"); await api("line guide 1 20 u spec:面內線"); await feLoadGuides();drawFaceEditor()})()`);
   const gMatch = await eval_(`api('references').then(r=>r.guides.find(g=>g.surface===20))`);
-  console.log("引用建線:", gMatch?.expression === 'spec:面內線' && gMatch.off === 1500 ? "✓" : "✗");
+  console.log("引用建線:",explicitVerdict(gMatch?.expression === 'spec:面內線' && gMatch.off === 1500 ? "✓" : "✗"));
 
   console.log("=== P3-3. 開口：拉矩形 → boundary 20 loops=2 ===");
   await eval_(`document.querySelector('[data-face-tool="hole"]').click()`);
@@ -524,7 +622,7 @@ async function rightClick(x, y) {
   await drag(holeBox.a.x, holeBox.a.y, holeBox.b.x, holeBox.b.y);
   await sleep(900);
   const loopN = await eval_(`api("boundary 20").then(r=>r.ok ? r.loops.length : -1)`);
-  console.log("loops:", loopN, loopN === 2 ? "✓ 開口成功" : "✗");
+  console.log("loops:", loopN,explicitVerdict(loopN === 2 ? "✓ 開口成功" : "✗"));
 
   console.log("=== P3-4. 投影面板：天花面 → 恰一個 data-view=2 ===");
   await eval_(`document.getElementById("projToggle").click()`);
@@ -533,8 +631,7 @@ async function rightClick(x, y) {
     `document.querySelectorAll('#projViews [data-view="2"]').length`);
   const projAll = await eval_(
     `document.querySelectorAll('#projViews [data-view]').length`);
-  console.log("proj groups:", projAll, "view2:", projN2,
-    projN2 === 1 && projAll === 1 ? "✓ 只顯示仰視" : "✗");
+  console.log("proj groups:", projAll, "view2:", projN2,explicitVerdict(projN2 === 1 && projAll === 1 ? "✓ 只顯示仰視" : "✗"));
 
   console.log("=== P3-5. 非法編輯 → toast + boundary 不變 ===");
   const bSnap = await eval_(
@@ -544,8 +641,8 @@ async function rightClick(x, y) {
   const toastN = await eval_(`document.querySelectorAll("#toastRegion .toast").length`);
   const bAfter = await eval_(
     `api("boundary 20").then(r=>JSON.stringify(r.loops))`);
-  console.log("toast:", toastN, toastN > 0 ? "✓" : "✗",
-    "| boundary 未變:", bSnap === bAfter ? "✓" : "✗");
+  console.log("toast:", toastN,explicitVerdict(toastN > 0 ? "✓" : "✗"),
+    "| boundary 未變:",explicitVerdict(bSnap === bAfter ? "✓" : "✗"));
 
   console.log("=== P3-6. Esc 回世界；游離面放置表單 ===");
   /* P3-3 把工具停在 hole;Esc 先退出工具層級,先歸零再按 Esc 才會離開工作區 */
@@ -572,7 +669,7 @@ async function rightClick(x, y) {
     await sleep(900);
     const gDis = await eval_(
       `document.querySelector('[data-face-tool="guide"]').disabled`);
-    console.log("guide 工具 disabled（游離）:", gDis ? "✓" : "✗");
+    console.log("guide 工具 disabled（游離）:",explicitVerdict(gDis ? "✓" : "✗"));
     /* 工作區檢視器放置表單：天花預設 + origin 0 0 2500 */
     await eval_(`document.querySelector('#faceInspectorContent [data-place-preset="天花"]').click()`);
     await eval_(`(()=>{const p=document.getElementById("faceInspectorContent");
@@ -584,11 +681,11 @@ async function rightClick(x, y) {
       `api("objects").then(r=>{const f=r.faces.find(x=>x.id===${ids6});return f&&f.placed})`);
     const surfN = await eval_(
       `api("surfaces").then(r=>r.surfaces.filter(s=>s.boundary===${ids6}).length)`);
-    console.log("placed:", placed, placed === true ? "✓" : "✗",
-      "| surfaces:", surfN, surfN === 1 ? "✓" : "✗");
+    console.log("placed:", placed,explicitVerdict(placed === true ? "✓" : "✗"),
+      "| surfaces:", surfN,explicitVerdict(surfN === 1 ? "✓" : "✗"));
     const gEn = await eval_(
       `!document.querySelector('[data-face-tool="guide"]').disabled`);
-    console.log("guide 工具啟用（已放置）:", gEn ? "✓" : "✗");
+    console.log("guide 工具啟用（已放置）:",explicitVerdict(gEn ? "✓" : "✗"));
     /* 放置後拉參考線成功 */
     await eval_(`document.querySelector('[data-face-tool="guide"]').click()`);
     await sleep(200);
@@ -600,11 +697,11 @@ async function rightClick(x, y) {
     await sleep(900);
     const d3 = await eval_(`api("dump").then(r=>r.text)`);
     const valid = (await eval_(`api("references")`)).guides.every(g => !/^-?\d+$/.test(g.expression));
-    console.log("放置後參考線皆保留引用式:", valid ? "✓" : "✗");
+    console.log("放置後參考線皆保留引用式:",explicitVerdict(valid ? "✓" : "✗"));
     await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
     await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
     await sleep(400);
-  } else console.log("✗ 游離面卡未出現");
+  } else console.log(explicitVerdict("✗ 游離面卡未出現"));
 
   /* ================= Phase 4：空間工作區 ================= */
   /* WORLD_MAX_BOUNDARIES=8：清掉前面累積的面再測六面盒;
@@ -618,8 +715,8 @@ async function rightClick(x, y) {
     `api("objects").then(r=>({f:r.faces.length,s:r.spaces.length}))`);
   await eval_(`document.getElementById("btnBox6").click()`);
   await sleep(300);
-  console.log("box6 dialog:", await eval_(
-    `!document.getElementById("box6Dialog").hidden ? "✓ 開啟" : "✗"`));
+  console.log("box6 dialog:",explicitVerdict(await eval_(
+    `!document.getElementById("box6Dialog").hidden ? "✓ 開啟" : "✗"`)));
   await eval_(`document.getElementById("box6Submit").click()`);
   await sleep(1500);
   const objBox = await eval_(
@@ -627,8 +724,8 @@ async function rightClick(x, y) {
       closed:r.spaces.map(x=>[x.id,x.closed,x.members.length])}))`);
   const boxSp = objBox.closed.find(x => x[2] === 6);
   console.log("objects:", JSON.stringify(objPre), "->", JSON.stringify(objBox));
-  console.log("六面盒:", objBox.f === objPre.f + 6 && objBox.s === objPre.s + 1 &&
-    boxSp && boxSp[1] === true ? `✓ 6面+1空間 closed:true (空間 ${boxSp && boxSp[0]})` : "✗");
+  console.log("六面盒:",explicitVerdict(objBox.f === objPre.f + 6 && objBox.s === objPre.s + 1 &&
+    boxSp && boxSp[1] === true ? `✓ 6面+1空間 closed:true (空間 ${boxSp && boxSp[0]})` : "✗"));
   const boxSid = boxSp && boxSp[0];
 
   console.log("=== P4-2. 空間工作區：成員/槽位/三視圖 ===");
@@ -643,26 +740,25 @@ async function rightClick(x, y) {
   if (spCard) {
     await dblclick(spCard.x, spCard.y);
     await sleep(1100);
-    console.log("focus:", await eval_(`JSON.stringify(oc.focus)`),
-      await eval_(`oc.focus && oc.focus.t==="space" ? "✓" : "✗"`));
-    console.log("space layout:", await eval_(
-      `!document.getElementById("spaceWorkspaceLayout").hidden ? "✓" : "✗"`));
+    console.log("focus:", await eval_(`JSON.stringify(oc.focus)`),explicitVerdict(await eval_(`oc.focus && oc.focus.t==="space" ? "✓" : "✗"`)));
+    console.log("space layout:",explicitVerdict(await eval_(
+      `!document.getElementById("spaceWorkspaceLayout").hidden ? "✓" : "✗"`)));
     const memN = await eval_(
       `document.querySelectorAll("#spaceMemberList .space-boundary-button").length`);
     const slotOn = await eval_(
       `document.querySelectorAll("#spaceInspectorContent .slot.on").length`);
     const projKids = await eval_(
       `document.getElementById("spaceProjSvg").childElementCount`);
-    console.log("成員列:", memN, memN === 6 ? "✓" : "✗",
-      "| 槽位佔用:", slotOn, slotOn === 6 ? "✓" : "✗",
-      "| 三視圖群組:", projKids, projKids >= 3 ? "✓" : "✗");
-  } else console.log("✗ 六面盒空間卡未出現");
+    console.log("成員列:", memN,explicitVerdict(memN === 6 ? "✓" : "✗"),
+      "| 槽位佔用:", slotOn,explicitVerdict(slotOn === 6 ? "✓" : "✗"),
+      "| 三視圖群組:", projKids,explicitVerdict(projKids >= 3 ? "✓" : "✗"));
+  } else console.log(explicitVerdict("✗ 六面盒空間卡未出現"));
 
   console.log("=== P4-3. 編輯成員：移除一面 → closed:false ===");
   await eval_(`document.getElementById("spEditMembers").click()`);
   await sleep(400);
-  console.log("member dialog:", await eval_(
-    `!document.getElementById("memberDialog").hidden ? "✓" : "✗"`));
+  console.log("member dialog:",explicitVerdict(await eval_(
+    `!document.getElementById("memberDialog").hidden ? "✓" : "✗"`)));
   /* 取消勾選第一個成員 */
   await eval_(`(()=>{
     const c = document.querySelector('#memberCheckList input:checked');
@@ -672,10 +768,8 @@ async function rightClick(x, y) {
   await sleep(1200);
   const spAfterEdit = await eval_(
     `api("objects").then(r=>r.spaces.find(s=>s.id===${boxSid}))`);
-  console.log("members:", spAfterEdit && spAfterEdit.members.length,
-    spAfterEdit && spAfterEdit.members.length === 5 ? "✓" : "✗",
-    "| closed:", spAfterEdit && spAfterEdit.closed,
-    spAfterEdit && spAfterEdit.closed === false ? "✓ closed:false" : "✗");
+  console.log("members:", spAfterEdit && spAfterEdit.members.length,explicitVerdict(spAfterEdit && spAfterEdit.members.length === 5 ? "✓" : "✗"),
+    "| closed:", spAfterEdit && spAfterEdit.closed,explicitVerdict(spAfterEdit && spAfterEdit.closed === false ? "✓ closed:false" : "✗"));
 
   console.log("=== P4-4. Esc 回世界；mutate 第4行送錯回滾 ===");
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
@@ -700,9 +794,8 @@ async function rightClick(x, y) {
     `api("objects").then(r=>({f:r.faces.length,s:r.spaces.length,
       mem:r.spaces.find(s=>s.id===${boxSid}).members.length}))`);
   console.log("mutate 回傳:", mutR,
-    "| objects:", JSON.stringify(objPre2), "->", JSON.stringify(objPost),
-    objPost.f === objPre2.f && objPost.s === objPre2.s && objPost.mem === 5
-      ? "✓ 已回滾(含空間成員還原)" : "✗");
+    "| objects:", JSON.stringify(objPre2), "->", JSON.stringify(objPost),explicitVerdict(objPost.f === objPre2.f && objPost.s === objPre2.s && objPost.mem === 5
+      ? "✓ 已回滾(含空間成員還原)" : "✗"));
 
 
   console.log("=== P5. 鍵盤表(主畫布 v/h/f/1、/ 搜尋)===");
@@ -719,8 +812,7 @@ async function rightClick(x, y) {
     return {t1,t2,z1,sp,foc};
   })()`);
   console.log("h→", kbR.t1, "| v→", kbR.t2, "| 1→zoom", kbR.z1,
-    "| space→", kbR.sp, "| / →搜尋", kbR.foc,
-    kbR.t1==="pan" && kbR.t2==="select" && kbR.z1===1 && kbR.sp===true && kbR.foc===true ? "✓" : "✗");
+    "| space→", kbR.sp, "| / →搜尋", kbR.foc,explicitVerdict(kbR.t1==="pan" && kbR.t2==="select" && kbR.z1===1 && kbR.sp===true && kbR.foc===true ? "✓" : "✗"));
 
   /* 投影面板互動(§5.5.4):建 guide 後 hover → pick 命中 + overlay 有線 */
   console.log("=== P5b. 空間工作區投影 hover/pick ===");
@@ -759,8 +851,7 @@ async function rightClick(x, y) {
     const hov = document.getElementById("hovertxt").textContent;
     return {hit, ov, hov};
   })()`);
-  console.log("proj hover:", JSON.stringify(projR),
-    projR.ov > 0 ? "✓ pick/hover 有回應" : "✗");
+  console.log("proj hover:", JSON.stringify(projR),explicitVerdict(projR.ov > 0 ? "✓ pick/hover 有回應" : "✗"));
   await eval_(`leaveFocus()`);
   await sleep(300);
 
@@ -786,10 +877,10 @@ async function rightClick(x, y) {
     return {refuse: refuse.ok, msg: refuse.error,
             after1, noGuide, spLeft};
   })()`);
-  console.log("boundary 拒絕:", !delR.refuse ? "✓" : "✗", delR.msg || "",
-    "| 刪除後面數:", delR.after1, delR.after1 === 0 ? "✓" : "✗",
-    "| guide 已刪:", delR.noGuide ? "✓" : "✗",
-    "| 空間已刪:", delR.spLeft === 0 ? "✓" : "✗");
+  console.log("boundary 拒絕:",explicitVerdict(!delR.refuse ? "✓" : "✗"), delR.msg || "",
+    "| 刪除後面數:", delR.after1,explicitVerdict(delR.after1 === 0 ? "✓" : "✗"),
+    "| guide 已刪:",explicitVerdict(delR.noGuide ? "✓" : "✗"),
+    "| 空間已刪:",explicitVerdict(delR.spLeft === 0 ? "✓" : "✗"));
 
   /* Q2:插入凹口——GEO-188 後走「選邊 → 浮動列凹口 → 面板 → 套用」,頂點 4→8 且核心仍判合法 */
   console.log("=== P7. 插入凹口(Q2)===");
@@ -818,11 +909,11 @@ async function rightClick(x, y) {
     return {tool: fe.tool, verts: b.loops[0].verts.length,
             fixity: b.loops[0].fixity.length, ortho, panel};
   })()`);
-  console.log("select 工具:", insR.tool === "select" ? "✓" : "✗",
-    "| 面板:", insR.panel ? "✓" : "✗",
-    "| 頂點 4→", insR.verts, insR.verts === 8 ? "✓" : "✗",
-    "| fixity 同步:", insR.fixity === 8 ? "✓" : "✗",
-    "| 全正交:", insR.ortho ? "✓" : "✗");
+  console.log("select 工具:",explicitVerdict(insR.tool === "select" ? "✓" : "✗"),
+    "| 面板:",explicitVerdict(insR.panel ? "✓" : "✗"),
+    "| 頂點 4→", insR.verts,explicitVerdict(insR.verts === 8 ? "✓" : "✗"),
+    "| fixity 同步:",explicitVerdict(insR.fixity === 8 ? "✓" : "✗"),
+    "| 全正交:",explicitVerdict(insR.ortho ? "✓" : "✗"));
   /* 拖凹口底部頂點加深 → 仍合法(用既有頂點拖曳路徑) */
   const notchR = await eval_(`(async()=>{
     feSetTool("select");
@@ -834,8 +925,8 @@ async function rightClick(x, y) {
     const b1 = await api("boundary 1");
     return {ok, verts: b1.loops[0].verts.length};
   })()`);
-  console.log("凹口加深:", notchR.ok ? "✓" : "✗",
-    "| 頂點:", notchR.verts, notchR.verts === 8 ? "✓" : "✗");
+  console.log("凹口加深:",explicitVerdict(notchR.ok ? "✓" : "✗"),
+    "| 頂點:", notchR.verts,explicitVerdict(notchR.verts === 8 ? "✓" : "✗"));
   await eval_(`leaveFocus()`);
   await sleep(300);
 
@@ -877,20 +968,19 @@ async function rightClick(x, y) {
             start: vs[0][0]===0 && vs[0][1]===0, allF: b.loops[0].fixity.every(f=>f===1),
             feats: (fe.feats[1]||[]).length, panelClosed: $("feOpPanel").hidden};
   })()`);
-  console.log("選邊→浮動列:", seA.barShown && seA.selLine ? "✓" : "✗",
-    "| 動作:", seA.acts.join(","),
-    ["op:notch","op:extend","op:push","fixity"].every(a=>seA.acts.includes(a)) ? "✓" : "✗",
-    "| 單擊不再切 fixity:", seA.fx0 === 1 ? "✓" : "✗");
-  console.log("凹口面板+即時預覽:", seA.panel && seA.ghost ? "✓" : "✗",
-    "| 預覽尺寸 600×300:", seA.ghostW === 600 && seA.ghostH === 300 ? "✓" : `✗ ${seA.ghostW}×${seA.ghostH}`,
-    "| Enter 套用 頂點 4→", seA.verts, seA.verts === 8 ? "✓" : "✗",
-    "| fixity 同步:", seA.fixity === 8 ? "✓" : "✗",
-    "| 新邊全 F:", seA.allF ? "✓" : "✗",
-    "| 全正交:", seA.ortho ? "✓" : "✗",
-    "| 凹深 300:", seA.depth === 2 ? "✓" : "✗",
-    "| e0 起點沿用:", seA.start ? "✓" : "✗",
-    "| 入特徵堆疊:", seA.feats === 1 ? "✓" : "✗",
-    "| 面板已關:", seA.panelClosed ? "✓" : "✗");
+  console.log("選邊→浮動列:",explicitVerdict(seA.barShown && seA.selLine ? "✓" : "✗"),
+    "| 動作:", seA.acts.join(","),explicitVerdict(["op:notch","op:extend","op:push","fixity"].every(a=>seA.acts.includes(a)) ? "✓" : "✗"),
+    "| 單擊不再切 fixity:",explicitVerdict(seA.fx0 === 1 ? "✓" : "✗"));
+  console.log("凹口面板+即時預覽:",explicitVerdict(seA.panel && seA.ghost ? "✓" : "✗"),
+    "| 預覽尺寸 600×300:",explicitVerdict(seA.ghostW === 600 && seA.ghostH === 300 ? "✓" : `✗ ${seA.ghostW}×${seA.ghostH}`),
+    "| Enter 套用 頂點 4→", seA.verts,explicitVerdict(seA.verts === 8 ? "✓" : "✗"),
+    "| fixity 同步:",explicitVerdict(seA.fixity === 8 ? "✓" : "✗"),
+    "| 新邊全 F:",explicitVerdict(seA.allF ? "✓" : "✗"),
+    "| 全正交:",explicitVerdict(seA.ortho ? "✓" : "✗"),
+    "| 凹深 300:",explicitVerdict(seA.depth === 2 ? "✓" : "✗"),
+    "| e0 起點沿用:",explicitVerdict(seA.start ? "✓" : "✗"),
+    "| 入特徵堆疊:",explicitVerdict(seA.feats === 1 ? "✓" : "✗"),
+    "| 面板已關:",explicitVerdict(seA.panelClosed ? "✓" : "✗"));
   /* F⇄X 走浮動列 */
   const seF = await eval_(`(async()=>{
     const hit = document.querySelector('[data-face-hit="e:0:0"]');
@@ -902,8 +992,8 @@ async function rightClick(x, y) {
     const after = (await api("boundary 1")).loops[0].fixity[0];
     return {before, after, label: document.querySelector('#feActionBar [data-fe-act="fixity"]').textContent};
   })()`);
-  console.log("浮動列切 fixity:", seF.before === 1 && seF.after === 0 ? "✓" : "✗",
-    "|", seF.before, "→", seF.after, "| 鈕文案跟著翻:", /X → F/.test(seF.label) ? "✓" : "✗ " + seF.label);
+  console.log("浮動列切 fixity:",explicitVerdict(seF.before === 1 && seF.after === 0 ? "✓" : "✗"),
+    "|", seF.before, "→", seF.after, "| 鈕文案跟著翻:",explicitVerdict(/X → F/.test(seF.label) ? "✓" : "✗ " + seF.label));
   /* 切角:點凸角 → 浮動列「切角」→ a=500 b=400 */
   const seC = await eval_(`(async()=>{
     const hit = document.querySelector('[data-face-hit="v:0:0"]');
@@ -925,10 +1015,10 @@ async function rightClick(x, y) {
     return {sel, acts, verts: vs.length, gone: !has(0,0), a: has(500,0), b: has(0,400),
             feats: (fe.feats[1]||[]).length};
   })()`);
-  console.log("點凸角→切角:", seC.sel === "corner" && seC.acts.join() === "op:corner" ? "✓" : "✗",
-    "| 頂點 8→", seC.verts, seC.verts === 10 ? "✓" : "✗",
-    "| 角點移除+新角 (500,0)(0,400):", seC.gone && seC.a && seC.b ? "✓" : "✗",
-    "| 特徵 2:", seC.feats === 2 ? "✓" : "✗");
+  console.log("點凸角→切角:",explicitVerdict(seC.sel === "corner" && seC.acts.join() === "op:corner" ? "✓" : "✗"),
+    "| 頂點 8→", seC.verts,explicitVerdict(seC.verts === 10 ? "✓" : "✗"),
+    "| 角點移除+新角 (500,0)(0,400):",explicitVerdict(seC.gone && seC.a && seC.b ? "✓" : "✗"),
+    "| 特徵 2:",explicitVerdict(seC.feats === 2 ? "✓" : "✗"));
   /* 形狀頁:清單 2 筆;改凹口寬 600→800 落地;鏡射切角;刪除切角還原 */
   const seB = await eval_(`(async()=>{
     fiShowTab("shape");
@@ -954,10 +1044,10 @@ async function rightClick(x, y) {
     const rows4 = document.querySelectorAll("#faceInspectorContent .fe-feat").length;
     return {tabOn, rows, widened, rowsAfter, mirrored, rows3, restored, rows4};
   })()`);
-  console.log("形狀頁清單:", seB.tabOn && seB.rows === 2 ? "✓" : `✗ rows=${seB.rows}`,
-    "| 改寬 800 落地:", seB.widened && seB.rowsAfter === 2 ? "✓" : "✗",
-    "| 鏡射切角 10→12:", seB.mirrored && seB.rows3 === 3 ? "✓" : "✗",
-    "| 刪除還原:", seB.restored && seB.rows4 === 2 ? "✓" : "✗");
+  console.log("形狀頁清單:",explicitVerdict(seB.tabOn && seB.rows === 2 ? "✓" : `✗ rows=${seB.rows}`),
+    "| 改寬 800 落地:",explicitVerdict(seB.widened && seB.rowsAfter === 2 ? "✓" : "✗"),
+    "| 鏡射切角 10→12:",explicitVerdict(seB.mirrored && seB.rows3 === 3 ? "✓" : "✗"),
+    "| 刪除還原:",explicitVerdict(seB.restored && seB.rows4 === 2 ? "✓" : "✗"));
   /* undo 兩步(回到鏡射前)→ 鏡射那筆對不上現況,堆疊自動剔除 */
   const seU = await eval_(`(async()=>{
     await doUndoRedo("undo");
@@ -966,8 +1056,7 @@ async function rightClick(x, y) {
     return {verts: (await api("boundary 1")).loops[0].verts.length, feats: (fe.feats[1]||[]).length,
             rows: document.querySelectorAll("#faceInspectorContent .fe-feat").length};
   })()`);
-  console.log("undo 後堆疊驗活:", seU.verts === 10 ? "✓" : "✗ verts=" + seU.verts, "| 特徵", seU.feats,
-    seU.feats === 1 && seU.rows === 1 ? "✓" : "✗");
+  console.log("undo 後堆疊驗活:",explicitVerdict(seU.verts === 10 ? "✓" : "✗ verts=" + seU.verts), "| 特徵", seU.feats,explicitVerdict(seU.feats === 1 && seU.rows === 1 ? "✓" : "✗"));
   /* 拆片拒絕:凹口深到穿透整片 → toast,不送指令 */
   const seS = await eval_(`(async()=>{
     await api("line reset");
@@ -987,7 +1076,7 @@ async function rightClick(x, y) {
     const verts = (await api("boundary 1")).loops[0].verts.length;
     return {toastTxt, verts, panelOpen: !$("feOpPanel").hidden};
   })()`);
-  console.log("拆片拒絕:", /兩片/.test(seS.toastTxt) && seS.verts === 4 && seS.panelOpen ? "✓" : `✗ ${seS.toastTxt} verts=${seS.verts}`);
+  console.log("拆片拒絕:",explicitVerdict(/兩片/.test(seS.toastTxt) && seS.verts === 4 && seS.panelOpen ? "✓" : `✗ ${seS.toastTxt} verts=${seS.verts}`));
   /* 推拉:右邊往內 500 → 寬 3500,頂點仍 4;Esc 階梯:關面板 → 清選取 → 離開 */
   const seP = await eval_(`(async()=>{
     feCancelOp();
@@ -1017,10 +1106,10 @@ async function rightClick(x, y) {
     const s3 = {focus: !!oc.focus};
     return {gw, w: bb[2]-bb[0], verts: b.loops[0].verts.length, s1, s2, s3};
   })()`);
-  console.log("推拉往內 500:", seP.gw === 500 && seP.w === 3500 && seP.verts === 4 ? "✓" : `✗ w=${seP.w} verts=${seP.verts}`,
-    "| Esc 關面板:", !seP.s1.op && seP.s1.sel && seP.s1.focus ? "✓" : "✗",
-    "| Esc 清選取:", !seP.s2.sel && seP.s2.bar && seP.s2.focus ? "✓" : "✗",
-    "| Esc 離開:", !seP.s3.focus ? "✓" : "✗");
+  console.log("推拉往內 500:",explicitVerdict(seP.gw === 500 && seP.w === 3500 && seP.verts === 4 ? "✓" : `✗ w=${seP.w} verts=${seP.verts}`),
+    "| Esc 關面板:",explicitVerdict(!seP.s1.op && seP.s1.sel && seP.s1.focus ? "✓" : "✗"),
+    "| Esc 清選取:",explicitVerdict(!seP.s2.sel && seP.s2.bar && seP.s2.focus ? "✓" : "✗"),
+    "| Esc 離開:",explicitVerdict(!seP.s3.focus ? "✓" : "✗"));
   await sleep(300);
 
   /* GEO-189 描繪指定正交多邊形的完整路徑:
@@ -1045,10 +1134,10 @@ async function rightClick(x, y) {
     const b = await api("boundary 1");
     return {draftPts, afterBs, verts: b.loops[0].verts.map(v=>v.join(",")).join(" "), tool: fe.tool, draft: !!fe.drag};
   })()`);
-  console.log("鍵盤重畫 L 形:", gp1.verts === "0,0 4000,0 4000,1500 1500,1500 1500,3000 0,3000" ? "✓" : "✗ " + gp1.verts,
-    "| 草稿 5 點:", gp1.draftPts === 5 ? "✓" : "✗ " + gp1.draftPts,
-    "| Backspace 退一點:", gp1.afterBs === 4 ? "✓" : "✗",
-    "| 閉合自動補角+回選取:", gp1.tool === "select" && !gp1.draft ? "✓" : "✗ " + gp1.tool);
+  console.log("鍵盤重畫 L 形:",explicitVerdict(gp1.verts === "0,0 4000,0 4000,1500 1500,1500 1500,3000 0,3000" ? "✓" : "✗ " + gp1.verts),
+    "| 草稿 5 點:",explicitVerdict(gp1.draftPts === 5 ? "✓" : "✗ " + gp1.draftPts),
+    "| Backspace 退一點:",explicitVerdict(gp1.afterBs === 4 ? "✓" : "✗"),
+    "| 閉合自動補角+回選取:",explicitVerdict(gp1.tool === "select" && !gp1.draft ? "✓" : "✗ " + gp1.tool));
   /* 切角「留下」連動 */
   const gp2 = await eval_(`(async()=>{
     await api("line reset");
@@ -1072,19 +1161,24 @@ async function rightClick(x, y) {
     return {a, bb, kuBack, verts: b.loops[0].verts.map(v=>v.join(",")).join(" "),
             hi: !!document.querySelector("#faceEditorRoot .fe-feat-hi")};
   })()`);
-  console.log("切角留下→切掉:", gp2.a === "1500" && gp2.bb === "1200" ? "✓" : `✗ a=${gp2.a} b=${gp2.bb}`,
-    "| 切掉→留下反向:", gp2.kuBack === "3000" ? "✓" : "✗ " + gp2.kuBack,
-    "| 結果:", gp2.verts === "0,0 3000,0 3000,1200 4000,1200 4000,3000 0,3000" ? "✓" : "✗ " + gp2.verts,
-    "| 套用後無殘留高亮:", !gp2.hi ? "✓" : "✗");
+  console.log("切角留下→切掉:",explicitVerdict(gp2.a === "1500" && gp2.bb === "1200" ? "✓" : `✗ a=${gp2.a} b=${gp2.bb}`),
+    "| 切掉→留下反向:",explicitVerdict(gp2.kuBack === "3000" ? "✓" : "✗ " + gp2.kuBack),
+    "| 結果:",explicitVerdict(gp2.verts === "0,0 3000,0 3000,1200 4000,1200 4000,3000 0,3000" ? "✓" : "✗ " + gp2.verts),
+    "| 套用後無殘留高亮:",explicitVerdict(!gp2.hi ? "✓" : "✗"));
   /* 點面內 → 開口填數字 → 圖層列刪孔 */
-  const gp3 = await eval_(`(async()=>{
+  await eval_(`(async()=>{
     await api("line reset");
     await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
     oc.focus = null; oc.stack = [];
     await renderObjects();
     await enterFocus("face", 1);
-    await feDown({x:1000,y:800},{target:$("faceEditorSvg"),clientX:0,clientY:0});
-    await feUp({x:1000,y:800},{target:$("faceEditorSvg"),clientX:0,clientY:0});
+  })()`);
+  // GEO-209: blank selection commits in the viewport pointerup handler so a
+  // click can be distinguished from marquee. Exercise that real event path.
+  const gp3Point = async (x,y) => eval_(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect();return {x:r.left+fe.panX+${x}*fe.zoom,y:r.top+fe.panY+${y}*fe.zoom}})()`);
+  const gp3Inside = await gp3Point(1000,800);
+  await click(gp3Inside.x,gp3Inside.y);await sleep(220);
+  const gp3 = await eval_(`(async()=>{
     const sel = fe.sel && fe.sel.kind, mark = !!document.querySelector("#faceEditorRoot .fe-point-mark");
     const acts = [...document.querySelectorAll("#feActionBar [data-fe-act]")].map(b=>b.dataset.feAct).join();
     document.querySelector('#feActionBar [data-fe-act="op:hole"]').click();
@@ -1099,17 +1193,18 @@ async function rightClick(x, y) {
     if (del) del.click();
     await window.__cdpSettleUI(400);
     const b2 = await api("boundary 1");
-    /* 點面外 → 清選取 */
-    await feDown({x:-500,y:-500},{target:$("faceEditorSvg"),clientX:0,clientY:0});
-    await feUp({x:-500,y:-500},{target:$("faceEditorSvg"),clientX:0,clientY:0});
     return {sel, mark, acts, loops: b.loops.length, hb, feats, hasDel: !!del, loopsAfter: b2.loops.length,
-            featsAfter: (fe.feats[1]||[]).length, selOut: fe.sel};
+            featsAfter: (fe.feats[1]||[]).length};
   })()`);
-  console.log("點面內→開口:", gp3.sel === "point" && gp3.mark && gp3.acts === "op:hole" ? "✓" : "✗ " + JSON.stringify([gp3.sel, gp3.mark, gp3.acts]),
-    "| 孔 600×400 @(1000,800):", gp3.loops === 2 && gp3.hb === "1000,800,1600,1200" ? "✓" : "✗ " + gp3.hb,
-    "| 記為 hole 特徵:", gp3.feats === "hole" ? "✓" : "✗ " + gp3.feats,
-    "| 圖層列刪孔:", gp3.hasDel && gp3.loopsAfter === 1 && gp3.featsAfter === 0 ? "✓" : "✗",
-    "| 點面外清選取:", gp3.selOut === null ? "✓" : "✗");
+  /* A point just beyond the boundary still lies inside the fitted viewport. */
+  const gp3Outside = await gp3Point(-80,-80);
+  await click(gp3Outside.x,gp3Outside.y);await sleep(220);
+  gp3.selOut = await eval_(`fe.sel`);
+  console.log("點面內→開口:",explicitVerdict(gp3.sel === "point" && gp3.mark && gp3.acts === "op:hole" ? "✓" : "✗ " + JSON.stringify([gp3.sel, gp3.mark, gp3.acts])),
+    "| 孔 600×400 @(1000,800):",explicitVerdict(gp3.loops === 2 && gp3.hb === "1000,800,1600,1200" ? "✓" : "✗ " + gp3.hb),
+    "| 記為 hole 特徵:",explicitVerdict(gp3.feats === "hole" ? "✓" : "✗ " + gp3.feats),
+    "| 圖層列刪孔:",explicitVerdict(gp3.hasDel && gp3.loopsAfter === 1 && gp3.featsAfter === 0 ? "✓" : "✗"),
+    "| 點面外清選取:",explicitVerdict(gp3.selOut === null ? "✓" : "✗"));
   /* 開口工具拖矩形 → 走布林記特徵(面內=hole,蓋到邊=notch,矩形裁到外接框) */
   const gp4 = await eval_(`(async()=>{
     feSetTool("hole");
@@ -1125,8 +1220,8 @@ async function rightClick(x, y) {
     return {loops: b.loops.length, outer: b.loops[0].verts.length,
             feats: (fe.feats[1]||[]).map(f=>f.type + ":" + f.rect.join(",")).join(" ")};
   })()`);
-  console.log("開口工具拖矩形:", gp4.loops === 2 && gp4.outer === 8 ? "✓" : "✗",
-    "| 特徵 hole+notch(裁到外接框):", gp4.feats === "hole:500,500,1100,900 notch:2000,0,2600,300" ? "✓" : "✗ " + gp4.feats);
+  console.log("開口工具拖矩形:",explicitVerdict(gp4.loops === 2 && gp4.outer === 8 ? "✓" : "✗"),
+    "| 特徵 hole+notch(裁到外接框):",explicitVerdict(gp4.feats === "hole:500,500,1100,900 notch:2000,0,2600,300" ? "✓" : "✗ " + gp4.feats));
   /* 距邊跟著現況走:凹口建立時較近的是右邊(距右 1400),推拉右邊 800 後距右 600;起算邊不翻轉 */
   const gp5 = await eval_(`(async()=>{
     feSetTool("select");
@@ -1144,8 +1239,8 @@ async function rightClick(x, y) {
     const m = feFeatMeta(fe.feats[1][1]);
     return {before, after: m.dx, ax: m.ax, w: bb[2]-bb[0], n: fe.feats[1].length};
   })()`);
-  console.log("推拉右邊 800 後凹口距右 1400→600:", gp5.before === 1400 && gp5.after === 600 && gp5.ax === "right" && gp5.w === 3200 ? "✓" : `✗ ${gp5.before}→${gp5.after} ${gp5.ax} w=${gp5.w}`,
-    "| 特徵 3:", gp5.n === 3 ? "✓" : "✗ " + gp5.n);
+  console.log("推拉右邊 800 後凹口距右 1400→600:",explicitVerdict(gp5.before === 1400 && gp5.after === 600 && gp5.ax === "right" && gp5.w === 3200 ? "✓" : `✗ ${gp5.before}→${gp5.after} ${gp5.ax} w=${gp5.w}`),
+    "| 特徵 3:",explicitVerdict(gp5.n === 3 ? "✓" : "✗ " + gp5.n));
   await eval_(`leaveFocus()`);
   await sleep(300);
 
@@ -1190,12 +1285,12 @@ async function rightClick(x, y) {
       document.querySelectorAll(".face-grid-line.role-secondary").length === 2;
     return {hasTimber, fp: !!fp, emptyGridRejected, hasGrid, gridLines, roles, rows};
   })()`);
-  console.log("角材放置:", q3R.hasTimber ? "✓" : "✗",
-    "| 足跡繪製:", q3R.fp ? "✓" : "✗",
-    "| 空白座標提示且世界不變:", q3R.emptyGridRejected ? "✓" : "✗",
-    "| 網格建立:", q3R.hasGrid ? "✓" : "✗",
-    "| 網格線數與角色:", q3R.gridLines, q3R.gridLines === 4 && q3R.roles ? "✓" : "✗",
-    "| 圖層列:", /角材/.test(q3R.rows) && /網格/.test(q3R.rows) ? "✓" : "✗");
+  console.log("角材放置:",explicitVerdict(q3R.hasTimber ? "✓" : "✗"),
+    "| 足跡繪製:",explicitVerdict(q3R.fp ? "✓" : "✗"),
+    "| 空白座標提示且世界不變:",explicitVerdict(q3R.emptyGridRejected ? "✓" : "✗"),
+    "| 網格建立:",explicitVerdict(q3R.hasGrid ? "✓" : "✗"),
+    "| 網格線數與角色:", q3R.gridLines,explicitVerdict(q3R.gridLines === 4 && q3R.roles ? "✓" : "✗"),
+    "| 圖層列:",explicitVerdict(/角材/.test(q3R.rows) && /網格/.test(q3R.rows) ? "✓" : "✗"));
   const gridSourceUI = await eval_(`(async()=>{
     fiShowTab("grid");
     $("gridUSource").value="series"; $("gridUSource").dispatchEvent(new Event("change"));
@@ -1219,10 +1314,10 @@ async function rightClick(x, y) {
       filled, invalid:$("gridPreviewStatus").classList.contains("invalid") && fe.gridPreview===null,
       unchanged:saved===(await api("dump")).text};
   })()`);
-  console.log("網格來源即時預覽:",gridSourceUI.preview?"✓":"✗",
-    "| 預覽不改世界:",gridSourceUI.untouchedBeforeSave?"✓":"✗",
-    "| 來源儲存與回填:",gridSourceUI.saved&&gridSourceUI.filled?"✓":"✗",
-    "| 錯誤草稿拒絕且世界不變:",gridSourceUI.invalid&&gridSourceUI.unchanged?"✓":"✗");
+  console.log("網格來源即時預覽:",explicitVerdict(gridSourceUI.preview?"✓":"✗"),
+    "| 預覽不改世界:",explicitVerdict(gridSourceUI.untouchedBeforeSave?"✓":"✗"),
+    "| 來源儲存與回填:",explicitVerdict(gridSourceUI.saved&&gridSourceUI.filled?"✓":"✗"),
+    "| 錯誤草稿拒絕且世界不變:",explicitVerdict(gridSourceUI.invalid&&gridSourceUI.unchanged?"✓":"✗"));
   /* 足跡越界 → 核心拒絕,toast + dump 不變 */
   const q3b = await eval_(`(async()=>{
     const before = (await api("dump")).text;
@@ -1234,8 +1329,8 @@ async function rightClick(x, y) {
       .map(t => t.textContent).join("|");
     return {same: before === after, toast: toastShown};
   })()`);
-  console.log("越界拒絕:", q3b.same ? "✓" : "✗",
-    "| toast:", q3b.toast ? "✓" : "✗");
+  console.log("越界拒絕:",explicitVerdict(q3b.same ? "✓" : "✗"),
+    "| toast:",explicitVerdict(q3b.toast ? "✓" : "✗"));
   /* 圖層列 ✕ 刪角材與網格 */
   const q3c = await eval_(`(async()=>{
     const dels = [...document.querySelectorAll(".face-layer-del")];
@@ -1244,8 +1339,8 @@ async function rightClick(x, y) {
     const dump = (await api("dump")).text;
     return {noTimber: !/timber /.test(dump), noGrid: !/grid /.test(dump)};
   })()`);
-  console.log("角材已刪:", q3c.noTimber ? "✓" : "✗",
-    "| 網格已刪:", q3c.noGrid ? "✓" : "✗");
+  console.log("角材已刪:",explicitVerdict(q3c.noTimber ? "✓" : "✗"),
+    "| 網格已刪:",explicitVerdict(q3c.noGrid ? "✓" : "✗"));
   const gridRoleUI = await eval_(`(async()=>{
     /* 與圖層刪除測試隔離：主支需上下兩條邊界材作合法擋面。 */
     leaveFocus();
@@ -1281,12 +1376,12 @@ async function rightClick(x, y) {
         refs.timbers.some(t=>t.role==="primary"),
       timberCount:refs.timbers.length, before, role:$("tbRole").value};
   })()`);
-  console.log("格線角色預填:",gridRoleUI.defaultPrimary?"✓":"✗",
-    "| 手動覆寫保留:",gridRoleUI.manualPreserved?"✓":"✗",
-    "| 套用建議:",gridRoleUI.resetSecondary?"✓":"✗",
-    "| 清單引用數:",gridRoleUI.referenceCount===1?"✓":"✗",
-    "| 格線放材角色卡:",gridRoleUI.roleCard?'✓':'✗',
-    "| 點格線放材:",gridRoleUI.supports&&gridRoleUI.hit&&gridRoleUI.placed?"✓":"✗", gridRoleUI.placed?"":`${gridRoleUI.before}→${gridRoleUI.timberCount} role=${gridRoleUI.role}`);
+  console.log("格線角色預填:",explicitVerdict(gridRoleUI.defaultPrimary?"✓":"✗"),
+    "| 手動覆寫保留:",explicitVerdict(gridRoleUI.manualPreserved?"✓":"✗"),
+    "| 套用建議:",explicitVerdict(gridRoleUI.resetSecondary?"✓":"✗"),
+    "| 清單引用數:",explicitVerdict(gridRoleUI.referenceCount===1?"✓":"✗"),
+    "| 格線放材角色卡:",explicitVerdict(gridRoleUI.roleCard?'✓':'✗'),
+    "| 點格線放材:",explicitVerdict(gridRoleUI.supports&&gridRoleUI.hit&&gridRoleUI.placed?"✓":"✗"), gridRoleUI.placed?"":`${gridRoleUI.before}→${gridRoleUI.timberCount} role=${gridRoleUI.role}`);
   const gridLinkedChange=await eval_(`(async()=>{
     const before=(await api('references')).timbers.map(t=>[t.id,t.role,t.geometry]);
     document.querySelector('[data-grid-id="1"] .face-layer-del').click();
@@ -1300,7 +1395,7 @@ async function rightClick(x, y) {
     const missing=$('gridPreviewStatus').textContent.includes('索引將消失') && !fe.gridPreview && $('gridUSource').getAttribute('aria-invalid')==='true' && (await api('references')).grids[0].u.length===after.grids[0].u.length;
     return {locked,roles,missing};
   })()`);
-  for(const [name,pass] of Object.entries(gridLinkedChange)) console.log('P8v2 linked '+name,pass?'✓':'✗');
+  for(const [name,pass] of Object.entries(gridLinkedChange)) console.log('P8v2 linked '+name,explicitVerdict(pass?'✓':'✗'));
   await eval_(`leaveFocus()`);
   await sleep(300);
 
@@ -1350,19 +1445,19 @@ async function rightClick(x, y) {
     return {applied,rowReadable,entryPreview,isolated,row,retained,reset,inline,other,bounds,odd,conversion,zero,save,undo,rerender,latest,grouped};
   })()`);
   if(gridV2.__err) throw Error(gridV2.__err);
-  for(const [name,pass] of Object.entries(gridV2)) console.log('P8v2 '+name,pass?'✓':'✗');
+  for(const [name,pass] of Object.entries(gridV2)) console.log('P8v2 '+name,explicitVerdict(pass?'✓':'✗'));
   await eval_(`GridEditor.open(1)`);
   const gridDragPoint=await eval_(`(()=>{const r=document.querySelector('[data-grid-label="u:0"] rect').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,z:fe.zoom};})()`);
   await drag(gridDragPoint.x,gridDragPoint.y,gridDragPoint.x+100*gridDragPoint.z,gridDragPoint.y);
   await sleep(600);
-  console.log('P8v2 pointer drag explicit',await eval_(`$('gridU').value==='1100 2000 3000' && fe.gridPreview?.u[0]===1100`)?'✓':'✗');
+  console.log('P8v2 pointer drag explicit',explicitVerdict(await eval_(`$('gridU').value==='1100 2000 3000' && fe.gridPreview?.u[0]===1100`)?'✓':'✗'));
   const cancelGridPoint=await eval_(`(()=>{const r=document.querySelector('[data-grid-label="u:0"] rect').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,z:fe.zoom};})()`);
   await pressDownMod(cancelGridPoint.x,cancelGridPoint.y);
   await moveMod(cancelGridPoint.x+100*cancelGridPoint.z,cancelGridPoint.y);
   await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
   await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:cancelGridPoint.x+100*cancelGridPoint.z,y:cancelGridPoint.y,button:'left',clickCount:1});
   await sleep(600);
-  console.log('P8v2 drag Escape restores draft',await eval_(`$('gridU').value==='1100 2000 3000' && oc.focus?.t==='face'`)?'✓':'✗');
+  console.log('P8v2 drag Escape restores draft',explicitVerdict(await eval_(`$('gridU').value==='1100 2000 3000' && oc.focus?.t==='face'`)?'✓':'✗'));
   const gridDerivedEdit=await eval_(`(async()=>{
     const set=(id,value)=>{$(id).value=value;$(id).dispatchEvent(new Event($(id).tagName==='SELECT'?'change':'input'));};
     set('gridUSource','series');set('gridUStart','500');set('gridUStep','1000');set('gridUCount','3');await window.__cdpSettleUI(600);
@@ -1374,7 +1469,7 @@ async function rightClick(x, y) {
     $('gridSourceConversion').querySelector('input').value='452';$('gridSourceConversion').querySelector('button').click();await window.__cdpSettleUI(600);
     return {series,panel:$('gridUSource').value==='panel' && $('gridUFrom').value==='50' && fe.gridPreview.u[0]===452};
   })()`);
-  for(const [name,pass] of Object.entries(gridDerivedEdit)) console.log('P8v2 keyboard '+name,pass?'✓':'✗');
+  for(const [name,pass] of Object.entries(gridDerivedEdit)) console.log('P8v2 keyboard '+name,explicitVerdict(pass?'✓':'✗'));
   const gridShot=async name=>{
     if(!process.env.GEOMETRY_GRID_SCREENSHOT_DIR)return;
     const fs=require('fs'),path=require('path');fs.mkdirSync(process.env.GEOMETRY_GRID_SCREENSHOT_DIR,{recursive:true});
@@ -1394,7 +1489,7 @@ async function rightClick(x, y) {
     const vp=$('faceEditorViewport').getBoundingClientRect(),labels=[...document.querySelectorAll('[data-grid-label]')].map(e=>e.getBoundingClientRect());
     return {full:width>=389,touch,canvas,retained:$('gridU').value===draft && $('faceInspectorContent').scrollTop===scroll,noOverflow:document.documentElement.scrollWidth<=390,labels:labels.every(r=>r.left>=vp.left && r.right<=vp.right)};
   })()`);
-  for(const [name,pass] of Object.entries(gridPhone)) console.log('P8v2 phone '+name,pass?'✓':'✗');
+  for(const [name,pass] of Object.entries(gridPhone)) console.log('P8v2 phone '+name,explicitVerdict(pass?'✓':'✗'));
   await gridShot('grid-v2-mobile-settings-final');
   await eval_(`$('gridShowCanvas').click()`);await gridShot('grid-v2-mobile-canvas-final');
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
@@ -1451,11 +1546,11 @@ async function rightClick(x, y) {
     return {initial,guideHidden,gridHidden,anchorHidden,groupHidden,restoreAll,hideAll,singleRestore,draftHidden,draftRetained,redraw,otherFace,retained,unchanged};
   })()`);
   if(referenceVisibility.__err)throw Error(referenceVisibility.__err);
-  for(const [name,pass] of Object.entries(referenceVisibility))console.log('P8v3 '+name,pass?'✓':'✗');
+  for(const [name,pass] of Object.entries(referenceVisibility))console.log('P8v3 '+name,explicitVerdict(pass?'✓':'✗'));
   await eval_(`document.querySelector('[data-ref-visible="guide:1"]').focus()`);
   await send('Input.dispatchKeyEvent',{type:'keyDown',key:' ',code:'Space',windowsVirtualKeyCode:32});
   await send('Input.dispatchKeyEvent',{type:'keyUp',key:' ',code:'Space',windowsVirtualKeyCode:32});
-  console.log('P8v3 keyboard Space',await eval_(`document.querySelector('[data-ref-visible="guide:1"]').checked && document.querySelectorAll('.face-reference-line').length===2`)?'✓':'✗');
+  console.log('P8v3 keyboard Space',explicitVerdict(await eval_(`document.querySelector('[data-ref-visible="guide:1"]').checked && document.querySelectorAll('.face-reference-line').length===2`)?'✓':'✗'));
   await eval_(`feSetTool('grid')`);
   await gridShot('reference-visibility-desktop');
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
@@ -1465,18 +1560,18 @@ async function rightClick(x, y) {
     box.scrollIntoView({block:'start'});
     return {touch:labels.every(l=>l.getBoundingClientRect().height>=44),fits:box.scrollWidth<=box.clientWidth && document.documentElement.scrollWidth<=390};
   })()`);
-  console.log('P8v3 phone touch',visibilityPhone.touch?'✓':'✗','fits',visibilityPhone.fits?'✓':'✗');
+  console.log('P8v3 phone touch',explicitVerdict(visibilityPhone.touch?'✓':'✗'),'fits',explicitVerdict(visibilityPhone.fits?'✓':'✗'));
   await gridShot('reference-visibility-mobile');
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
   const visibilityReset=await eval_(`(async()=>{resetSceneFocus();await renderObjects();await enterFocus('face',1);return document.querySelector('[data-ref-visible="all"]').checked && document.querySelectorAll('.face-grid-line').length===4;})()`);
-  console.log('P8v3 reset clears preferences',visibilityReset?'✓':'✗');
+  console.log('P8v3 reset clears preferences',explicitVerdict(visibilityReset?'✓':'✗'));
   await eval_(`leaveFocus()`);
 
   /* GEO-204 / D19 / I25 / R23: local subgrids through the real editor. */
   console.log("=== P8v4. 局部子網格 ===");
   {
     const subgridExceptionStart=excN;
-    const subgridCheck=(name,ok,detail)=>console.log('P8v4 '+name,ok?'✓':'✗',ok?'':JSON.stringify(detail));
+    const subgridCheck=(name,ok,detail)=>console.log('P8v4 '+name,explicitVerdict(ok?'✓':'✗'),ok?'':JSON.stringify(detail));
     const subgridRead=async expression=>{const value=await eval_(expression);if(value?.__err)throw Error(value.__err);return value;};
     const subgridShot=async name=>{
       if(!process.env.GEOMETRY_GRID_SCREENSHOT_DIR)return;
@@ -1683,9 +1778,9 @@ async function rightClick(x, y) {
     return {tool:"redraw", verts:b.loops[0].verts.length, ortho,
             fixity:b.loops[0].fixity.length};
   })()`);
-  console.log("L 形閉合:", rw.verts === 6 ? "✓" : "✗",
-    "| 頂點:", rw.verts, "| 全正交:", rw.ortho ? "✓" : "✗",
-    "| fixity:", rw.fixity === 6 ? "✓" : "✗");
+  console.log("L 形閉合:",explicitVerdict(rw.verts === 6 ? "✓" : "✗"),
+    "| 頂點:", rw.verts, "| 全正交:",explicitVerdict(rw.ortho ? "✓" : "✗"),
+    "| fixity:",explicitVerdict(rw.fixity === 6 ? "✓" : "✗"));
   /* Esc 取消:畫一半按 Esc → boundary 不變 */
   const rw2 = await eval_(`(async()=>{
     feSetTool("redraw");
@@ -1695,8 +1790,8 @@ async function rightClick(x, y) {
     const b = await api("boundary 1");
     return {verts:b.loops[0].verts.length, draft:!!fe.drag};
   })()`);
-  console.log("Esc 取消:", rw2.verts === 6 && !rw2.draft ? "✓" : "✗",
-    "| 草稿已清:", !rw2.draft ? "✓" : "✗");
+  console.log("Esc 取消:",explicitVerdict(rw2.verts === 6 && !rw2.draft ? "✓" : "✗"),
+    "| 草稿已清:",explicitVerdict(!rw2.draft ? "✓" : "✗"));
   /* 共線點自動去除:4 點中夾一個共線 → 仍 4 頂點 */
   const rw3 = await eval_(`(async()=>{
     feSetTool("redraw");
@@ -1708,7 +1803,7 @@ async function rightClick(x, y) {
     const b = await api("boundary 1");
     return {verts:b.loops[0].verts.length};
   })()`);
-  console.log("共線去除:", rw3.verts === 4 ? "✓" : "✗", "| 頂點:", rw3.verts);
+  console.log("共線去除:",explicitVerdict(rw3.verts === 4 ? "✓" : "✗"), "| 頂點:", rw3.verts);
   /* 形狀庫:L 4000/3000/臂1000 → 6 頂點、面積 = 4000*3000-3000*2000 */
   const rw4 = await eval_(`(async()=>{
     feSetTool("select");
@@ -1726,9 +1821,9 @@ async function rightClick(x, y) {
     return {verts:vs.length, area:Math.abs(area)/2,
             dlg:$("shapeDialog").hidden};
   })()`);
-  console.log("形狀庫 L:", rw4.verts === 6 ? "✓" : "✗",
-    "| 面積:", rw4.area, rw4.area === 6000000 ? "✓" : "✗",
-    "| 對話框已關:", rw4.dlg ? "✓" : "✗");
+  console.log("形狀庫 L:",explicitVerdict(rw4.verts === 6 ? "✓" : "✗"),
+    "| 面積:", rw4.area,explicitVerdict(rw4.area === 6000000 ? "✓" : "✗"),
+    "| 對話框已關:",explicitVerdict(rw4.dlg ? "✓" : "✗"));
   await eval_(`leaveFocus()`);
   await sleep(300);
 
@@ -1755,9 +1850,9 @@ async function rightClick(x, y) {
     const last = fe.drag.pts[fe.drag.pts.length - 1];
     return {bufShown, draftKept, last};
   })()`);
-  console.log("鍵入長度:", tl.last[0] === 1500 && tl.last[1] === 0 ? "✓" : "✗",
-    "| 浮動框:", tl.bufShown ? "✓" : "✗",
-    "| Esc 只清輸入:", tl.draftKept ? "✓" : "✗");
+  console.log("鍵入長度:",explicitVerdict(tl.last[0] === 1500 && tl.last[1] === 0 ? "✓" : "✗"),
+    "| 浮動框:",explicitVerdict(tl.bufShown ? "✓" : "✗"),
+    "| Esc 只清輸入:",explicitVerdict(tl.draftKept ? "✓" : "✗"));
   /* 邊長清單:edge0 400→500,右半邊整串 +100x(矩形 500×300) */
   const el1 = await eval_(`(async()=>{
     window.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape"}));  /* 丟草稿 */
@@ -1771,7 +1866,7 @@ async function rightClick(x, y) {
     const w = vs[1][0] - vs[0][0], h = vs[2][1] - vs[1][1];
     return {w, h, verts: vs.length};
   })()`);
-  console.log("邊長清單:", el1.w === 500 && el1.h === 300 ? "✓" : "✗",
+  console.log("邊長清單:",explicitVerdict(el1.w === 500 && el1.h === 300 ? "✓" : "✗"),
     "| 結果:", el1.w + "×" + el1.h, "| 頂點:", el1.verts);
   /* 單擊邊 = 選取(GEO-188);fixity 改走浮動列的 F⇄X 鈕 */
   const fx = await eval_(`(async()=>{
@@ -1787,7 +1882,7 @@ async function rightClick(x, y) {
     const after = (await api("boundary 1")).loops[0].fixity[0];
     return {before, mid, after};
   })()`);
-  console.log("點邊選取+浮動列切 fixity:", fx.before === 1 && fx.mid === 1 && fx.after === 0 ? "✓" : "✗",
+  console.log("點邊選取+浮動列切 fixity:",explicitVerdict(fx.before === 1 && fx.mid === 1 && fx.after === 0 ? "✓" : "✗"),
     "|", fx.before, "→", fx.mid, "→", fx.after);
   /* 參數化凹口:選邊 → 浮動列「凹口」→ 面板 w=40 d=20 → 4→8 頂點(取代舊 #notchDialog) */
   const nt = await eval_(`(async()=>{
@@ -1810,9 +1905,9 @@ async function rightClick(x, y) {
     return {dlgOpen, closed: $("feOpPanel").hidden,
             verts: vs.length, depth};
   })()`);
-  console.log("參數化凹口:", nt.dlgOpen && nt.closed ? "✓" : "✗",
-    "| 頂點 4→", nt.verts, nt.verts === 8 ? "✓" : "✗",
-    "| 凹深 20:", nt.depth === 2 ? "✓" : "✗");
+  console.log("參數化凹口:",explicitVerdict(nt.dlgOpen && nt.closed ? "✓" : "✗"),
+    "| 頂點 4→", nt.verts,explicitVerdict(nt.verts === 8 ? "✓" : "✗"),
+    "| 凹深 20:",explicitVerdict(nt.depth === 2 ? "✓" : "✗"));
   /* 拖邊對齊吸附:L 形拖邊經過他頂點同軸座標 → snapTo */
   const sn = await eval_(`(async()=>{
     await api("line reset");
@@ -1829,7 +1924,7 @@ async function rightClick(x, y) {
     fe.work = null; fe.drag = null;         /* 不落地,只驗吸附偵測 */
     return {snap, movedY};
   })()`);
-  console.log("對齊吸附:", sn.snap === 100 ? "✓" : "✗",
+  console.log("對齊吸附:",explicitVerdict(sn.snap === 100 ? "✓" : "✗"),
     "| snapTo:", sn.snap, "| 吸附後 v:", sn.movedY);
   await eval_(`leaveFocus()`);
   await sleep(300);
@@ -1850,8 +1945,8 @@ async function rightClick(x, y) {
   /* ＋柱:對話框 → 選空間 → 建立 */
   await eval_(`document.getElementById("btnNewColumn").click()`);
   await sleep(300);
-  console.log("rcDialog:", await eval_(
-    `!document.getElementById("rcDialog").hidden ? "✓ 開啟" : "✗"`));
+  console.log("rcDialog:",explicitVerdict(await eval_(
+    `!document.getElementById("rcDialog").hidden ? "✓ 開啟" : "✗"`)));
   await eval_(`(()=>{
     document.getElementById("rcSpace").value = "1";
     document.getElementById("rcX").value = "500";
@@ -1860,16 +1955,16 @@ async function rightClick(x, y) {
   await eval_(`document.getElementById("rcSubmit").click()`);
   await sleep(1000);
   const colObj = await eval_(`api("objects").then(r=>r.columns)`);
-  console.log("柱建立:", colObj.length === 1 && colObj[0].space === 1
+  console.log("柱建立:",explicitVerdict(colObj.length === 1 && colObj[0].space === 1
     ? `✓ id=${colObj[0].id} z=${colObj[0].box[2]}~${colObj[0].box[5]}`
-    : "✗ " + JSON.stringify(colObj));
+    : "✗ " + JSON.stringify(colObj)));
   const colCard = await eval_(`(()=>{
     const c = document.querySelector('.ocard[data-kind="column"]');
     if (!c) return null;
     const r = c.getBoundingClientRect();
     return {x: r.left + r.width/2, y: r.top + r.height/2};
   })()`);
-  console.log("柱卡片:", colCard ? "✓" : "✗");
+  console.log("柱卡片:",explicitVerdict(colCard ? "✓" : "✗"));
   /* 拖卡片 → canvas-pos 持久化 */
   if (colCard) {
     await drag(colCard.x, colCard.y, colCard.x + 130, colCard.y + 80);
@@ -1878,13 +1973,13 @@ async function rightClick(x, y) {
       has: r.columns[0] && r.columns[0].hasPos }))`);
     const dumpPos = await eval_(
       `api("dump").then(d=>/canvas-pos column/.test(d.text))`);
-    console.log("拖卡片→canvas-pos:", dragR.has && dumpPos ? "✓" : "✗",
+    console.log("拖卡片→canvas-pos:",explicitVerdict(dragR.has && dumpPos ? "✓" : "✗"),
       "| dump 有記錄:", dumpPos);
   }
   /* 空間→柱 障礙連線 */
   const rcEdgeLabels = await eval_(
     `[...document.querySelectorAll("#edgeLabelLayer .edge-label")].map(t=>t.textContent).join(",")`);
-  console.log("障礙連線:", /障礙/.test(rcEdgeLabels) ? `✓ ${rcEdgeLabels}` : `✗ ${rcEdgeLabels}`);
+  console.log("障礙連線:",explicitVerdict(/障礙/.test(rcEdgeLabels) ? `✓ ${rcEdgeLabels}` : `✗ ${rcEdgeLabels}`));
   /* ＋樑 */
   await eval_(`document.getElementById("btnNewBeam").click()`);
   await sleep(300);
@@ -1897,10 +1992,10 @@ async function rightClick(x, y) {
   await eval_(`document.getElementById("rcSubmit").click()`);
   await sleep(1000);
   const beamObj = await eval_(`api("objects").then(r=>r.beams)`);
-  console.log("樑建立:", beamObj.length === 1 && beamObj[0].box[5] === 2500
-    ? `✓ top=${beamObj[0].box[5]}` : "✗ " + JSON.stringify(beamObj));
-  console.log("樑卡片:", await eval_(
-    `!!document.querySelector('.ocard[data-kind="beam"]') ? "✓" : "✗"`));
+  console.log("樑建立:",explicitVerdict(beamObj.length === 1 && beamObj[0].box[5] === 2500
+    ? `✓ top=${beamObj[0].box[5]}` : "✗ " + JSON.stringify(beamObj)));
+  console.log("樑卡片:",explicitVerdict(await eval_(
+    `!!document.querySelector('.ocard[data-kind="beam"]') ? "✓" : "✗"`)));
   /* 搜尋「柱」命中柱卡 */
   await eval_(`(()=>{ const s=document.getElementById("searchInput");
     s.value="柱"; s.dispatchEvent(new Event("input")); })()`);
@@ -1909,20 +2004,20 @@ async function rightClick(x, y) {
     const cards=[...document.querySelectorAll("#cardLayer .ocard")];
     return {n:cards.length, kind:cards[0] && cards[0].dataset.kind};
   })()`);
-  console.log("搜尋柱:", srch.n === 1 && srch.kind === "column" ? "✓" : `✗ ${JSON.stringify(srch)}`);
+  console.log("搜尋柱:",explicitVerdict(srch.n === 1 && srch.kind === "column" ? "✓" : `✗ ${JSON.stringify(srch)}`));
   await eval_(`(()=>{ const s=document.getElementById("searchInput");
     s.value=""; s.dispatchEvent(new Event("input")); })()`);
   await sleep(400);
   /* 檢視器表單 → 重宣告 */
   await eval_(`selectObject("column", ${colObj[0].id})`);
   await sleep(500);
-  console.log("檢視器表單:", await eval_(
-    `!!document.getElementById("rcfX") ? "✓" : "✗"`));
+  console.log("檢視器表單:",explicitVerdict(await eval_(
+    `!!document.getElementById("rcfX") ? "✓" : "✗"`)));
   await eval_(`document.getElementById("rcfX").value = "800"`);
   await eval_(`document.getElementById("rcfApply").click()`);
   await sleep(900);
   const movedX = await eval_(`api("objects").then(r=>r.columns[0].box[0])`);
-  console.log("表單重宣告 x→800:", movedX === 800 ? "✓" : `✗ ${movedX}`);
+  console.log("表單重宣告 x→800:",explicitVerdict(movedX === 800 ? "✓" : `✗ ${movedX}`));
   /* 雙擊柱卡 → 只開只開檢視器(🔒 Q10) */
   const cc = await eval_(`(()=>{
     const c = document.querySelector('.ocard[data-kind="column"]');
@@ -1932,13 +2027,13 @@ async function rightClick(x, y) {
   await dblclick(cc.x, cc.y);
   await sleep(700);
   const dbl = await eval_(`({f:oc.focus, s:oc.sel && oc.sel.kind})`);
-  console.log("雙擊只開檢視器:", dbl.f === null && dbl.s === "column" ? "✓" : `✗ ${JSON.stringify(dbl)}`);
+  console.log("雙擊只開檢視器:",explicitVerdict(dbl.f === null && dbl.s === "column" ? "✓" : `✗ ${JSON.stringify(dbl)}`));
   /* 刪除 → 卡片消失(C4:deleteObject 已不呼叫 confirm(),不再需要 stub） */
   await eval_(`document.getElementById("inspDelete").click()`);
   await sleep(900);
   const gone = await eval_(`api("objects").then(r=>r.columns.length === 0)`);
   const cardGone = await eval_(`!document.querySelector('.ocard[data-kind="column"]')`);
-  console.log("刪除→卡片消失:", gone && cardGone ? "✓" : `✗ obj=${gone} card=${cardGone}`);
+  console.log("刪除→卡片消失:",explicitVerdict(gone && cardGone ? "✓" : `✗ obj=${gone} card=${cardGone}`));
 
   console.log("=== P12. 空間工作區:平面示意+構件+鬼影(RC Phase 5)===");
   /* 等前段 mutate 完全沉降,避免 emitLine 撞 oc.busy */
@@ -1973,10 +2068,10 @@ async function rightClick(x, y) {
     free: document.querySelectorAll("#spaceRcFreeList .space-boundary-button").length,
     floor: !!document.querySelector("#spacePlanSvg .space-plan-floor")
   })`);
-  console.log("平面圖:", plan0.floor && plan0.cols === 1 && plan0.beams === 1
-    ? "✓" : `✗ ${JSON.stringify(plan0)}`);
-  console.log("構件清單:", plan0.mine === 2 && plan0.free === 0
-    ? "✓" : `✗ ${JSON.stringify(plan0)}`);
+  console.log("平面圖:",explicitVerdict(plan0.floor && plan0.cols === 1 && plan0.beams === 1
+    ? "✓" : `✗ ${JSON.stringify(plan0)}`));
+  console.log("構件清單:",explicitVerdict(plan0.mine === 2 && plan0.free === 0
+    ? "✓" : `✗ ${JSON.stringify(plan0)}`));
 
   /* 點放柱:房間 (1500,500) → at 1200 200 size 600;
      房間→螢幕走 CTM(preserveAspectRatio letterbox 也算進去) */
@@ -1992,8 +2087,8 @@ async function rightClick(x, y) {
     n: r.columns.length,
     dom: document.querySelectorAll("#spacePlanSvg .space-plan-col").length
   }))`);
-  console.log("點放柱:", colP.n === 2 && colP.dom === 2
-    ? "✓" : `✗ ${JSON.stringify(colP)}`);
+  console.log("點放柱:",explicitVerdict(colP.n === 2 && colP.dom === 2
+    ? "✓" : `✗ ${JSON.stringify(colP)}`));
 
   /* 拖放樑:水平拖 → along x;房間→螢幕走 CTM */
   const bmD = await eval_(`(()=>{
@@ -2009,8 +2104,8 @@ async function rightClick(x, y) {
     ax: r.beams[1] && r.beams[1].axis,
     dom: document.querySelectorAll("#spacePlanSvg .space-plan-beam").length
   }))`);
-  console.log("拖放樑:", beamP.n === 2 && beamP.ax === "x" && beamP.dom === 2
-    ? "✓" : `✗ ${JSON.stringify(beamP)}`);
+  console.log("拖放樑:",explicitVerdict(beamP.n === 2 && beamP.ax === "x" && beamP.dom === 2
+    ? "✓" : `✗ ${JSON.stringify(beamP)}`));
 
   /* 構件移出→游離列→收進 */
   await eval_(`document.querySelector("#spaceRcList .space-boundary-button").click()`);
@@ -2019,12 +2114,12 @@ async function rightClick(x, y) {
     sp: r.columns[0] && r.columns[0].space,
     free: document.querySelectorAll("#spaceRcFreeList .space-boundary-button").length
   }))`);
-  console.log("移出→游離:", det.sp === 0 && det.free === 1
-    ? "✓" : `✗ ${JSON.stringify(det)}`);
+  console.log("移出→游離:",explicitVerdict(det.sp === 0 && det.free === 1
+    ? "✓" : `✗ ${JSON.stringify(det)}`));
   await eval_(`document.querySelector("#spaceRcFreeList .space-boundary-button").click()`);
   await sleep(900);
   const att = await eval_(`api("objects").then(r=>r.columns[0] && r.columns[0].space)`);
-  console.log("收進→空間:", att === 1 ? "✓" : `✗ ${att}`);
+  console.log("收進→空間:",explicitVerdict(att === 1 ? "✓" : `✗ ${att}`));
 
   /* 面內鬼影:天花(面1)應有 柱×2 + 樑條帶×2 = 4 個 */
   await eval_(`leaveFocus()`);
@@ -2037,9 +2132,9 @@ async function rightClick(x, y) {
       .map(e=>e.dataset.cls).join(","),
     rows: document.querySelectorAll("#faceLayerList .face-layer-row").length
   })`);
-  console.log("面內鬼影:", ghost.n === 4 && ghost.cls.includes("hole")
+  console.log("面內鬼影:",explicitVerdict(ghost.n === 4 && ghost.cls.includes("hole")
     && ghost.cls.includes("strip")
-    ? "✓" : `✗ ${JSON.stringify(ghost)}`);
+    ? "✓" : `✗ ${JSON.stringify(ghost)}`));
   /* 牆面鬼影:y=0 牆(面3)應有 樑1頂凹 + 樑2頂降 */
   await eval_(`leaveFocus()`);
   await sleep(300);
@@ -2047,7 +2142,7 @@ async function rightClick(x, y) {
   await sleep(1000);
   const ghostW = await eval_(`[...document.querySelectorAll("#faceEditorRoot .obstacle-ghost")]
     .map(e=>e.dataset.cls).join(",")`);
-  console.log("牆面鬼影:", /top_notch/.test(ghostW) ? "✓" : `✗ ${ghostW}`);
+  console.log("牆面鬼影:",explicitVerdict(/top_notch/.test(ghostW) ? "✓" : `✗ ${ghostW}`));
   await eval_(`leaveFocus()`);
   await sleep(300);
 
@@ -2088,8 +2183,8 @@ async function rightClick(x, y) {
     })`);
     if (obUi.checks === 2 && obUi.btn && obUi.cut) break;
   }
-  console.log("套用UI:", obUi.checks === 2 && obUi.checked === 1 &&
-    obUi.btn && obUi.cut ? "✓" : `✗ ${JSON.stringify(obUi)}`);
+  console.log("套用UI:",explicitVerdict(obUi.checks === 2 && obUi.checked === 1 &&
+    obUi.btn && obUi.cut ? "✓" : `✗ ${JSON.stringify(obUi)}`));
   /* 只勾柱(預設)→ 套用 → 孔出現 */
   await eval_(`document.getElementById("feApplyProj").click()`);
   await sleep(1200);
@@ -2097,8 +2192,8 @@ async function rightClick(x, y) {
     loops: b.loops.length, verts: b.loops[0].verts.length,
     holeF: b.loops[1] && b.loops[1].fixity.every(f=>f)
   }))`);
-  console.log("套用柱孔:", ap1.loops === 2 && ap1.verts === 4 && ap1.holeF
-    ? "✓" : `✗ ${JSON.stringify(ap1)}`);
+  console.log("套用柱孔:",explicitVerdict(ap1.loops === 2 && ap1.verts === 4 && ap1.holeF
+    ? "✓" : `✗ ${JSON.stringify(ap1)}`));
   /* 只勾樑(取消已套用的柱:重套=拒絕)+ 裁切條帶 → 套用 */
   await eval_(`(()=>{
     for (const c of document.querySelectorAll("#faceLayerList .fe-ob-check")) {
@@ -2114,10 +2209,10 @@ async function rightClick(x, y) {
     faces: r.faces.length,
     sp: r.spaces[0] && r.spaces[0].members
   }))`);
-  console.log("裁切條帶:", ap2.faces === 10 && !ap2.sp.includes(1)
-    ? "✓" : `✗ ${JSON.stringify(ap2)}`);
+  console.log("裁切條帶:",explicitVerdict(ap2.faces === 10 && !ap2.sp.includes(1)
+    ? "✓" : `✗ ${JSON.stringify(ap2)}`));
   const apGhost = await eval_(`document.querySelectorAll("#faceEditorRoot .obstacle-ghost").length`);
-  console.log("保留片無殘影(柱樑都離開此片):", apGhost === 0 ? "✓" : `✗ ${apGhost}`);
+  console.log("保留片無殘影(柱樑都離開此片):",explicitVerdict(apGhost === 0 ? "✓" : `✗ ${apGhost}`));
   await eval_(`leaveFocus()`);
   await sleep(300);
 
@@ -2148,21 +2243,21 @@ async function rightClick(x, y) {
             cls: document.getElementById("faceEditorViewport").className};
   })()`);
   /* B6:浮標只給多步工具(redraw),單發工具看狀態列 */
-  console.log("切參考線:狀態列手勢", fbTool.status.includes("拖曳") ? "✓" : "✗ " + fbTool.status,
-    "| 浮標隱藏(B6)", fbTool.hintHid ? "✓" : "✗",
-    "| 游標類", fbTool.cls.includes("tool-referenceLine") ? "✓" : "✗ " + fbTool.cls);
+  console.log("切參考線:狀態列手勢",explicitVerdict(fbTool.status.includes("拖曳") ? "✓" : "✗ " + fbTool.status),
+    "| 浮標隱藏(B6)",explicitVerdict(fbTool.hintHid ? "✓" : "✗"),
+    "| 游標類",explicitVerdict(fbTool.cls.includes("tool-referenceLine") ? "✓" : "✗ " + fbTool.cls));
   /* (b) 參考線只點沒拖 → u/v 小選單 → 選 v → dump 出現 guide */
   await eval_(`(async()=>{const r=document.getElementById("faceEditorViewport").getBoundingClientRect();const p=feSnap(fePoint({clientX:r.left+r.width/2,clientY:r.top+r.height/2}));await api('line spec 點放定位 '+Math.round(p.x))})()`);
   await click(fbVp.cx, fbVp.cy);
   await sleep(400);
   const pkShown = await eval_(`!document.getElementById("feGuidePick").hidden`);
-  console.log("參考線點一下→方向選單:", pkShown ? "✓" : "✗");
+  console.log("參考線點一下→方向選單:",explicitVerdict(pkShown ? "✓" : "✗"));
   const pkBtn = await eval_(`(()=>{const b=document.querySelector('#feGuidePick [data-axis="v"]');
     if(!b) return null; const r=b.getBoundingClientRect();
     return {x:r.left+r.width/2,y:r.top+r.height/2};})()`);
   if (pkBtn) { await click(pkBtn.x, pkBtn.y); await sleep(700); }
   const gDump = await eval_(`api("dump").then(d=>{const m=d.text.match(/^guide (\\d+) (\\d+) v spec:點放定位$/m);return m&&m[0]})`);
-  console.log("選 v 後建線:", gDump ? "✓ " + gDump : "✗");
+  console.log("選 v 後建線:",explicitVerdict(gDump ? "✓ " + gDump : "✗"));
   /* (c) 開口只點沒拖 → toast「拖出矩形」 */
   await eval_(`document.querySelector('[data-face-tool="hole"]').click()`);
   await sleep(250);
@@ -2170,7 +2265,7 @@ async function rightClick(x, y) {
   await sleep(350);
   const holeToast = await eval_(
     `[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")`);
-  console.log("開口只點→toast:", holeToast.includes("拖出矩形") ? "✓" : "✗ " + holeToast);
+  console.log("開口只點→toast:",explicitVerdict(holeToast.includes("拖出矩形") ? "✓" : "✗ " + holeToast));
   /* (d) select 點面內空白 → 選一個「點」,浮動列只有「開口」(GEO-189);舊凹口工具已移除 */
   await eval_(`document.querySelector('[data-face-tool="select"]').click()`);
   await sleep(250);
@@ -2179,8 +2274,8 @@ async function rightClick(x, y) {
   const insFb = await eval_(`({sel: fe.sel && fe.sel.kind, bar: document.getElementById("feActionBar").hidden,
     acts: [...document.querySelectorAll("#feActionBar [data-fe-act]")].map(b=>b.dataset.feAct).join(),
     noInsert: !document.querySelector('[data-face-tool="insert"]') && !document.getElementById("notchDialog")})`);
-  console.log("點面內→點選取+開口:", insFb.sel === "point" && !insFb.bar && insFb.acts === "op:hole" ? "✓" : "✗ " + JSON.stringify(insFb),
-    "| 舊凹口工具已移除:", insFb.noInsert ? "✓" : "✗");
+  console.log("點面內→點選取+開口:",explicitVerdict(insFb.sel === "point" && !insFb.bar && insFb.acts === "op:hole" ? "✓" : "✗ " + JSON.stringify(insFb)),
+    "| 舊凹口工具已移除:",explicitVerdict(insFb.noInsert ? "✓" : "✗"));
   await eval_(`(()=>{ fe.sel = null; fe.op = null; feSyncOverlays(); drawFaceEditor(); })()`);
   /* (e) 角材 A 空白 → toast + #tbA 標紅 */
   await eval_(`(()=>{
@@ -2193,21 +2288,21 @@ async function rightClick(x, y) {
   const tbFb = await eval_(`({
     toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|"),
     inv: document.getElementById("tbA") && document.getElementById("tbA").classList.contains("invalid")})`);
-  console.log("角材A空→toast:", tbFb.toast.includes("截面") ? "✓" : "✗ " + tbFb.toast,
-    "| tbA標紅:", tbFb.inv ? "✓" : "✗");
+  console.log("角材A空→toast:",explicitVerdict(tbFb.toast.includes("截面") ? "✓" : "✗ " + tbFb.toast),
+    "| tbA標紅:",explicitVerdict(tbFb.inv ? "✓" : "✗"));
   /* (f) 狀態列綁定工具:切走後上一工具的訊息被手勢取代 */
   const stLife = await eval_(`(()=>{
     document.querySelector('[data-face-tool="select"]').click();
     return document.getElementById("status").textContent;
   })()`);
-  console.log("切回選取→狀態列=手勢:", stLife.includes("選取") ? "✓" : "✗ " + stLife);
+  console.log("切回選取→狀態列=手勢:",explicitVerdict(stLife.includes("選取") ? "✓" : "✗ " + stLife));
   /* (g) Esc 一次離開(無草稿,工具非 select 也直接走) */
   await eval_(`document.querySelector('[data-face-tool="timber"]').click()`);
   await sleep(200);
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await sleep(400);
-  console.log("Esc一次離開:", await eval_(`JSON.stringify(oc.focus)`) === "null" ? "✓" : "✗");
+  console.log("Esc一次離開:",explicitVerdict(await eval_(`JSON.stringify(oc.focus)`) === "null" ? "✓" : "✗"));
   /* (h) 有草稿 → 第一次 Esc 清草稿+toast,再一次才離開 */
   await eval_(`enterFocus("face", 1)`);
   await sleep(500);
@@ -2221,13 +2316,13 @@ async function rightClick(x, y) {
   await sleep(300);
   const esc1 = await eval_(`({draft: !!fe.drag, focus: !!oc.focus,
     toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")})`);
-  console.log("Esc清草稿:", !esc1.draft ? "✓" : "✗",
-    "| toast再按Esc:", esc1.toast.includes("再按 Esc") ? "✓" : "✗ " + esc1.toast,
-    "| 仍在工作區:", esc1.focus ? "✓" : "✗");
+  console.log("Esc清草稿:",explicitVerdict(!esc1.draft ? "✓" : "✗"),
+    "| toast再按Esc:",explicitVerdict(esc1.toast.includes("再按 Esc") ? "✓" : "✗ " + esc1.toast),
+    "| 仍在工作區:",explicitVerdict(esc1.focus ? "✓" : "✗"));
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await sleep(400);
-  console.log("第二次Esc離開:", await eval_(`JSON.stringify(oc.focus)`) === "null" ? "✓" : "✗");
+  console.log("第二次Esc離開:",explicitVerdict(await eval_(`JSON.stringify(oc.focus)`) === "null" ? "✓" : "✗"));
 
   /* ================= P15. 主畫布模式回饋 E7 =================
    * 建面工具:浮標(#canvasModeHint)+ crosshair 游標 + 狀態列頂點進度;
@@ -2248,14 +2343,14 @@ async function rightClick(x, y) {
   const mh1 = await eval_(`(()=>{const h=document.getElementById("canvasModeHint");
     return {vis:!h.hidden, txt:h.textContent,
       cur:getComputedStyle(document.getElementById("canvasViewport")).cursor};})()`);
-  console.log("E7 rect 浮標:", mh1.vis && mh1.txt.includes("拖出範圍") ? "✓" : "✗ " + JSON.stringify(mh1),
-    "| 游標:", mh1.cur === "crosshair" ? "✓" : "✗ " + mh1.cur);
+  console.log("E7 rect 浮標:",explicitVerdict(mh1.vis && mh1.txt.includes("拖出範圍") ? "✓" : "✗ " + JSON.stringify(mh1)),
+    "| 游標:",explicitVerdict(mh1.cur === "crosshair" ? "✓" : "✗ " + mh1.cur));
   /* (b) rect 只點沒拖 → toast */
   await click(ocPt.x, ocPt.y);
   await sleep(400);
   const mhToast = await eval_(
     `[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")`);
-  console.log("E7 rect 單點 toast:", mhToast.includes("拖出範圍") ? "✓" : "✗ " + mhToast);
+  console.log("E7 rect 單點 toast:",explicitVerdict(mhToast.includes("拖出範圍") ? "✓" : "✗ " + mhToast));
   /* (c) P 鍵(GEO-186 b):不再進入畫布繪圖工具——按一下即建預設外環的面卡、
      直接進入該面工作區並啟用「重畫外環」。 */
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "p", code: "KeyP", windowsVirtualKeyCode: 80 });
@@ -2267,9 +2362,8 @@ async function rightClick(x, y) {
     drawTool: oc.drawTool,
     hint: !document.getElementById("canvasModeHint").hidden}))()`);
   const mh2faces = await eval_(`api("objects").then(r=>r.faces.length)`);
-  console.log("E7 P 鍵建面卡進面內:",
-    mh2.faces === mh2faces && mh2.focus && mh2.focus.t === "face" && mh2.tool === "redraw"
-      && !mh2.drawTool && !mh2.hint ? "✓" : "✗ " + JSON.stringify(mh2));
+  console.log("E7 P 鍵建面卡進面內:",explicitVerdict(mh2.faces === mh2faces && mh2.focus && mh2.focus.t === "face" && mh2.tool === "redraw"
+      && !mh2.drawTool && !mh2.hint ? "✓" : "✗ " + JSON.stringify(mh2)));
   /* (d) Esc 離開工作區回畫布(redraw 無草稿時一次 Esc 即返回) */
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
@@ -2277,14 +2371,14 @@ async function rightClick(x, y) {
   const mh3 = await eval_(`(()=>({
     focus: oc.focus,
     vis: !document.getElementById("canvasModeHint").hidden}))()`);
-  console.log("E7 Esc 回畫布:", !mh3.focus && !mh3.vis ? "✓" : "✗ " + JSON.stringify(mh3));
+  console.log("E7 Esc 回畫布:",explicitVerdict(!mh3.focus && !mh3.vis ? "✓" : "✗ " + JSON.stringify(mh3)));
   /* (e) 回選取 → 游標復原、浮標仍隱藏 */
   await eval_(`setOcTool("select")`);
   await sleep(200);
   const mh4 = await eval_(`(()=>({
     cur: getComputedStyle(document.getElementById("canvasViewport")).cursor,
     vis: !document.getElementById("canvasModeHint").hidden}))()`);
-  console.log("E7 select 游標復原:", !mh4.vis && mh4.cur !== "crosshair" ? "✓" : "✗ " + JSON.stringify(mh4));
+  console.log("E7 select 游標復原:",explicitVerdict(!mh4.vis && mh4.cur !== "crosshair" ? "✓" : "✗ " + JSON.stringify(mh4)));
 
   /* ================= P16. 放置流程 F1/A7/A8 =================
    * #placeFlow 三步條、#placeValid u⊥v 即時驗證、預設卡、游離徽章捲動。 */
@@ -2303,9 +2397,9 @@ async function rightClick(x, y) {
     const st=[...f.querySelectorAll(".pf-step")].map(s=>s.className);
     return {steps:st,
       note: !!document.querySelector(".pf-note")};})()`);
-  console.log("P16 流程條:", pf1 && pf1.steps[0].includes("done")
-    && pf1.steps[1].includes("current") ? "✓ " + pf1.steps.join(",") : "✗ " + JSON.stringify(pf1),
-    "| 游離說明:", pf1 && pf1.note ? "✓" : "✗");
+  console.log("P16 流程條:",explicitVerdict(pf1 && pf1.steps[0].includes("done")
+    && pf1.steps[1].includes("current") ? "✓ " + pf1.steps.join(",") : "✗ " + JSON.stringify(pf1)),
+    "| 游離說明:",explicitVerdict(pf1 && pf1.note ? "✓" : "✗"));
   /* (b) u=+x v=+x → 禁用+錯誤訊息;u=+x v=+y → 解禁+法向 +Z */
   await eval_(`(()=>{
     const p=document.getElementById("inspectorContent");
@@ -2317,7 +2411,7 @@ async function rightClick(x, y) {
     dis: document.querySelector("#placeSubmit").disabled,
     txt: document.getElementById("placeValid").textContent,
     cls: document.getElementById("placeValid").className}))()`);
-  console.log("P16 平行禁用:", pv1.dis && pv1.txt.includes("垂直") && pv1.cls.includes("bad") ? "✓" : "✗ " + JSON.stringify(pv1));
+  console.log("P16 平行禁用:",explicitVerdict(pv1.dis && pv1.txt.includes("垂直") && pv1.cls.includes("bad") ? "✓" : "✗ " + JSON.stringify(pv1)));
   await eval_(`(()=>{
     const p=document.getElementById("inspectorContent");
     p.querySelector("#placeV").value="+y";
@@ -2326,7 +2420,7 @@ async function rightClick(x, y) {
   const pv2 = await eval_(`(()=>({
     dis: document.querySelector("#placeSubmit").disabled,
     txt: document.getElementById("placeValid").textContent}))()`);
-  console.log("P16 垂直解禁:", !pv2.dis && pv2.txt.includes("+Z") ? "✓ " + pv2.txt : "✗ " + JSON.stringify(pv2));
+  console.log("P16 垂直解禁:",explicitVerdict(!pv2.dis && pv2.txt.includes("+Z") ? "✓ " + pv2.txt : "✗ " + JSON.stringify(pv2)));
   /* (c) 預設卡「天花」→ u=+x v=+y;送出後 placed + 步3亮 + 鈕文案「重綁」 */
   await eval_(`(()=>{
     const b=[...document.querySelectorAll("[data-place-preset]")]
@@ -2336,7 +2430,7 @@ async function rightClick(x, y) {
   const pv3 = await eval_(`(()=>({
     u: document.querySelector("#placeU").value,
     v: document.querySelector("#placeV").value}))()`);
-  console.log("P16 預設卡:", pv3.u === "+x" && pv3.v === "+y" ? "✓" : "✗ " + JSON.stringify(pv3));
+  console.log("P16 預設卡:",explicitVerdict(pv3.u === "+x" && pv3.v === "+y" ? "✓" : "✗ " + JSON.stringify(pv3)));
   await eval_(`document.querySelector("#placeSubmit").click()`);
   await sleep(700);
   const pf2 = await eval_(`(()=>{const f=document.getElementById("placeFlow");
@@ -2344,12 +2438,12 @@ async function rightClick(x, y) {
     return {placed: !!o && !!o.placed,
       step3: f ? [...f.querySelectorAll(".pf-step")][2].className : "",
       btn: document.querySelector("#placeSubmit") ? document.querySelector("#placeSubmit").textContent : ""};})()`);
-  console.log("P16 放置後:", pf2.placed ? "✓ placed" : "✗",
-    "| 步3:", pf2.step3.includes("current") || pf2.step3.includes("done") ? "✓" : "✗ " + pf2.step3,
-    "| 鈕:", pf2.btn.includes("更新放置") ? "✓" : "✗ " + pf2.btn);
+  console.log("P16 放置後:",explicitVerdict(pf2.placed ? "✓ placed" : "✗"),
+    "| 步3:",explicitVerdict(pf2.step3.includes("current") || pf2.step3.includes("done") ? "✓" : "✗ " + pf2.step3),
+    "| 鈕:",explicitVerdict(pf2.btn.includes("更新放置") ? "✓" : "✗ " + pf2.btn));
   /* (d) 刪除鈕文案含 Ctrl+Z */
   const delTxt = await eval_(`document.getElementById("inspDelete").textContent`);
-  console.log("P16 刪除文案:", delTxt.includes("Ctrl+Z") ? "✓" : "✗ " + delTxt);
+  console.log("P16 刪除文案:",explicitVerdict(delTxt.includes("Ctrl+Z") ? "✓" : "✗ " + delTxt));
   /* (e) 游離面:清單徽章點擊 → 檢視器捲到放置區 */
   await eval_(`(async()=>{
     await api("line reset");
@@ -2370,8 +2464,8 @@ async function rightClick(x, y) {
            || document.getElementById("placeFlow");
       if(!t) return null; const r=t.getBoundingClientRect();
       return {top:r.top, ih:innerHeight};})()`);
-    console.log("P16 徽章捲動:", sc && sc.top >= 0 && sc.top < sc.ih ? "✓" : "✗ " + JSON.stringify(sc));
-  } else console.log("P16 徽章捲動: ✗ 找不到徽章");
+    console.log("P16 徽章捲動:",explicitVerdict(sc && sc.top >= 0 && sc.top < sc.ih ? "✓" : "✗ " + JSON.stringify(sc)));
+  } else console.log(explicitVerdict("P16 徽章捲動: ✗ 找不到徽章"));
 
   /* ================= P17. 主畫布其餘 A3-A6 A9-A11 F2 ================= */
   console.log("=== P17. 主畫布其餘 ===");
@@ -2380,18 +2474,18 @@ async function rightClick(x, y) {
     const g=[...document.querySelectorAll(".quick-create")];
     return {n:g.length, minH:Math.round(Math.min(...g.map(b=>b.getBoundingClientRect().height))),
       first:g[0].id, starts:[...document.querySelectorAll('.start-options > button')].map(e=>e.textContent)};})()`);
-  console.log("P17 物件庫:", qc.n === 4 && qc.minH >= 50 && qc.first === "btnBox6"
-    && qc.starts.length === 2 && qc.starts.some(s=>s.includes('有平面圖')) && qc.starts.some(s=>s.includes('知道尺寸')) ? "✓" : "✗ " + JSON.stringify(qc));
+  console.log("P17 物件庫:",explicitVerdict(qc.n === 4 && qc.minH >= 50 && qc.first === "btnBox6"
+    && qc.starts.length === 2 && qc.starts.some(s=>s.includes('有平面圖')) && qc.starts.some(s=>s.includes('知道尺寸')) ? "✓" : "✗ " + JSON.stringify(qc)));
   /* (b) chips:關柱 → showColumn=false + aria-pressed;全部顯示還原 */
   await eval_(`document.querySelector('[data-filter-type="column"]').click()`);
   await sleep(300);
   const ch1 = await eval_(`(()=>({sc:oc.showColumn,
     ap:document.querySelector('[data-filter-type="column"]').getAttribute("aria-pressed")}))()`);
-  console.log("P17 chip關柱:", !ch1.sc && ch1.ap === "false" ? "✓" : "✗ " + JSON.stringify(ch1));
+  console.log("P17 chip關柱:",explicitVerdict(!ch1.sc && ch1.ap === "false" ? "✓" : "✗ " + JSON.stringify(ch1)));
   await eval_(`document.getElementById("filterAll").click()`);
   await sleep(300);
   const ch2 = await eval_(`oc.showColumn && oc.showFace && oc.showSpace && oc.showBeam`);
-  console.log("P17 全部顯示:", ch2 ? "✓" : "✗");
+  console.log("P17 全部顯示:",explicitVerdict(ch2 ? "✓" : "✗"));
   /* (c) compact:zoom 0.5 → .ocard.compact;1.0 → 無 */
   await eval_(`oc.zoom=0.5; ocApply()`);
   await sleep(250);
@@ -2399,7 +2493,7 @@ async function rightClick(x, y) {
   await eval_(`oc.zoom=1; ocApply()`);
   await sleep(250);
   const cp2 = await eval_(`document.querySelectorAll(".ocard.compact").length`);
-  console.log("P17 compact:", cp1 > 0 && cp2 === 0 ? "✓" : `✗ ${cp1}/${cp2}`);
+  console.log("P17 compact:",explicitVerdict(cp1 > 0 && cp2 === 0 ? "✓" : `✗ ${cp1}/${cp2}`));
   /* (d) 邊樣式:包含實線 + 障礙虛線 + 中文標籤 */
   await eval_(`(async()=>{
     await api("line reset");
@@ -2416,27 +2510,27 @@ async function rightClick(x, y) {
     return {n:items.length,
       dash:items.map(i=>i.querySelector(".edge-path").getAttribute("stroke-dasharray")),
       labels:[...document.querySelectorAll("#edgeLabelLayer .edge-label")].map(t=>t.textContent)};})()`);
-  console.log("P17 連線:", ed.n >= 2 && ed.dash.includes("6 4") && ed.dash.includes("none")
+  console.log("P17 連線:",explicitVerdict(ed.n >= 2 && ed.dash.includes("6 4") && ed.dash.includes("none")
     && ed.labels.includes("包含") && ed.labels.includes("障礙")
-    ? "✓ " + ed.labels.join(",") : "✗ " + JSON.stringify(ed));
+    ? "✓ " + ed.labels.join(",") : "✗ " + JSON.stringify(ed)));
   /* (e) 空間卡語意槽 + footer 管理入口 */
   const sl = await eval_(`(()=>{
     const c=document.querySelector('.ocard[data-kind="space"]');
     return c ? c.textContent : "";})()`);
-  console.log("P17 槽位語意:", sl.includes("天花") && !/\+X \d/.test(sl) ? "✓" : "✗ " + sl.slice(0, 100));
-  console.log("P17 footer管理:", sl.includes("管理成員面") && !sl.includes("缺 ") ? "✓" : "✗ " + sl.slice(-40));
+  console.log("P17 槽位語意:",explicitVerdict(sl.includes("天花") && !/\+X \d/.test(sl) ? "✓" : "✗ " + sl.slice(0, 100)));
+  console.log("P17 footer管理:",explicitVerdict(sl.includes("管理成員面") && !sl.includes("缺 ") ? "✓" : "✗ " + sl.slice(-40)));
   /* (f) statusbar 32px + 摘要含物件 + 成功 toast.ok */
   const stb = await eval_(`(()=>({
     h:getComputedStyle(document.querySelector(".statusbar")).height,
     sum:document.getElementById("statusSummary").textContent}))()`);
-  console.log("P17 狀態列:", stb.h === "32px" && stb.sum.includes("物件") ? "✓ " + stb.sum : "✗ " + JSON.stringify(stb));
+  console.log("P17 狀態列:",explicitVerdict(stb.h === "32px" && stb.sum.includes("物件") ? "✓ " + stb.sum : "✗ " + JSON.stringify(stb)));
   await eval_(`(async()=>{
     await emitLine("boundary 99 outline 0,0 500,0 500,400 0,400");
     await renderObjects();
   })()`);
   await sleep(400);
   const okN = await eval_(`document.querySelectorAll("#toastRegion .toast.ok").length`);
-  console.log("P17 成功toast:", okN >= 1 ? "✓" : "✗");
+  console.log("P17 成功toast:",explicitVerdict(okN >= 1 ? "✓" : "✗"));
   /* (g) snap/grid 鈕在 canvas-controls + aria-pressed;minimap 150+收合鈕 */
   const ctl = await eval_(`(()=>{
     const cc=document.querySelector(".canvas-controls");
@@ -2446,8 +2540,8 @@ async function rightClick(x, y) {
       ap: st.getAttribute("aria-pressed") + "/" + gt.getAttribute("aria-pressed"),
       w: Math.round(mm.getBoundingClientRect().width),
       tog: !!document.getElementById("minimapToggle")};})()`);
-  console.log("P17 畫布控制:", ctl.inCc && ctl.ap === "true/true" && ctl.w === 150 && ctl.tog
-    ? "✓" : "✗ " + JSON.stringify(ctl));
+  console.log("P17 畫布控制:",explicitVerdict(ctl.inCc && ctl.ap === "true/true" && ctl.w === 150 && ctl.tog
+    ? "✓" : "✗ " + JSON.stringify(ctl)));
   /* (h) gridToggle 關 → show-grid 消失;開回 */
   await eval_(`document.getElementById("gridToggle").click()`);
   await sleep(150);
@@ -2455,7 +2549,7 @@ async function rightClick(x, y) {
   await eval_(`document.getElementById("gridToggle").click()`);
   await sleep(150);
   const g2 = await eval_(`document.getElementById("canvasViewport").classList.contains("show-grid")`);
-  console.log("P17 格線切換:", !g1 && g2 ? "✓" : "✗");
+  console.log("P17 格線切換:",explicitVerdict(!g1 && g2 ? "✓" : "✗"));
 
   /* ================= P18. 面內工作區 B1-B9 =================
    * B1 工具鈕 icon+kbd、說明區移除;B2 分頁;B3 邊表;B4 zoom 適應格線;
@@ -2482,16 +2576,16 @@ async function rightClick(x, y) {
       ok:btns.every(b=>b.querySelector("svg")&&b.querySelector("kbd")),
       noHelp:!panel.textContent.includes("說明")};})()`);
   /* GEO-188 移除舊凹口工具後剩 6 顆(select/guide/hole/timber/redraw/pan) */
-  console.log("P18 B1 工具icon+kbd:", b1.n >= 6 && b1.ok ? "✓" : `✗ n=${b1.n} ok=${b1.ok}`,
-    "| 說明區已移除:", b1.noHelp ? "✓" : "✗");
+  console.log("P18 B1 工具icon+kbd:",explicitVerdict(b1.n >= 6 && b1.ok ? "✓" : `✗ n=${b1.n} ok=${b1.ok}`),
+    "| 說明區已移除:",explicitVerdict(b1.noHelp ? "✓" : "✗"));
   /* (2) B2:四頁;切構件 → tbA 可見 */
   const b2 = await eval_(`(()=>{
     const tabs=[...document.querySelectorAll("[data-fi-tab]")].map(t=>t.dataset.fiTab);
     fiShowTab('timber');
     const tb=document.getElementById("tbA");
     return {tabs, vis: !!tb && tb.offsetParent !== null};})()`);
-  console.log("P18 B2 四頁:", b2.tabs.join() === "prop,shape,components,underlay" ? "✓" : "✗ " + b2.tabs,
-    "| 角材頁tbA可見:", b2.vis ? "✓" : "✗");
+  console.log("P18 B2 四頁:",explicitVerdict(b2.tabs.join() === "prop,shape,components,underlay" ? "✓" : "✗ " + b2.tabs),
+    "| 角材頁tbA可見:",explicitVerdict(b2.vis ? "✓" : "✗"));
   /* (3) B3:邊表方向文字+mm+segmented */
   const b3 = await eval_(`(()=>{
     document.querySelector('[data-fi-tab="prop"]').click();
@@ -2504,8 +2598,8 @@ async function rightClick(x, y) {
       mm:rows.every(r=>r.querySelector(".edge-mm").textContent.trim()==="mm"),
       seg:rows.every(r=>r.querySelectorAll(".fixity-btn").length===2),
       title:scope.querySelector(".ib-sub") && scope.querySelector(".ib-sub").textContent};})()`);
-  console.log("P18 B3 邊表:", b3.n === 4 && b3.dir && b3.mm && b3.seg
-    ? "✓" : `✗ ${JSON.stringify(b3)}`, "| 標題:", (b3.title||"").includes("固定") ? "✓" : "✗");
+  console.log("P18 B3 邊表:",explicitVerdict(b3.n === 4 && b3.dir && b3.mm && b3.seg
+    ? "✓" : `✗ ${JSON.stringify(b3)}`), "| 標題:",explicitVerdict((b3.title||"").includes("固定") ? "✓" : "✗"));
   /* (4) B4:zoom 0.17 → 螢幕格距≥24px、格線<60;zoom 2 → 檔位變小 */
   const b4a = await eval_(`(()=>{
     fe.zoom=0.17; feApplyZoom();
@@ -2517,8 +2611,8 @@ async function rightClick(x, y) {
     for(let i=1;i<uniq.length;++i) min=Math.min(min,uniq[i]-uniq[i-1]);
     return {n:document.querySelectorAll(".fe-grid-line").length,
       gap:min*fe.zoom};})()`);
-  console.log("P18 B4 zoom0.17:", b4a.gap >= 24 && b4a.n < 60
-    ? `✓ gap=${b4a.gap.toFixed(1)}px n=${b4a.n}` : `✗ ${JSON.stringify(b4a)}`);
+  console.log("P18 B4 zoom0.17:",explicitVerdict(b4a.gap >= 24 && b4a.n < 60
+    ? `✓ gap=${b4a.gap.toFixed(1)}px n=${b4a.n}` : `✗ ${JSON.stringify(b4a)}`));
   const b4b = await eval_(`(()=>{
     fe.zoom=2; feApplyZoom();
     const xs=[...document.querySelectorAll(".fe-grid-line")]
@@ -2526,7 +2620,7 @@ async function rightClick(x, y) {
       .map(l=>+l.getAttribute("x1")).sort((a,b)=>a-b);
     const uniq=[...new Set(xs)];
     return uniq.length>1?uniq[1]-uniq[0]:0;})()`);
-  console.log("P18 B4 zoom2檔位變小:", b4b === 25 ? "✓ g=25" : `✗ g=${b4b}`);
+  console.log("P18 B4 zoom2檔位變小:",explicitVerdict(b4b === 25 ? "✓ g=25" : `✗ g=${b4b}`));
   /* (5) B5:邊長標註 + 原點標 */
   const b5 = await eval_(`(()=>{
     const dims=[...document.querySelectorAll(".fe-edge-dim")];
@@ -2534,8 +2628,8 @@ async function rightClick(x, y) {
     return {dimN:dims.length, dimOk:dims.every(d=>/^\\d+$/.test(d.textContent)),
       origin:texts.some(t=>t.includes("0,0 · u→ v↓")),
       guide:texts.some(t=>/^[uv] = -?\\d+$/.test(t))};})()`);
-  console.log("P18 B5 邊長標註:", b5.dimN >= 4 && b5.dimOk ? `✓ n=${b5.dimN}` : `✗ ${JSON.stringify(b5)}`,
-    "| 原點標:", b5.origin ? "✓" : "✗");
+  console.log("P18 B5 邊長標註:",explicitVerdict(b5.dimN >= 4 && b5.dimOk ? `✓ n=${b5.dimN}` : `✗ ${JSON.stringify(b5)}`),
+    "| 原點標:",explicitVerdict(b5.origin ? "✓" : "✗"));
   /* (6) B6:select 隱藏、redraw 顯示 */
   const b6a = await eval_(`(()=>{
     document.querySelector('[data-face-tool="select"]').click();
@@ -2545,8 +2639,8 @@ async function rightClick(x, y) {
     document.querySelector('[data-face-tool="redraw"]').click();
     return {h:document.getElementById("faceCanvasHint").hidden,
       t:document.getElementById("faceCanvasHint").textContent};})()`);
-  console.log("P18 B6 浮標:select隱藏", b6a ? "✓" : "✗",
-    "| redraw顯示", !b6b.h && b6b.t.includes("外環") ? "✓" : `✗ h=${b6b.h}`);
+  console.log("P18 B6 浮標:select隱藏",explicitVerdict(b6a ? "✓" : "✗"),
+    "| redraw顯示",explicitVerdict(!b6b.h && b6b.t.includes("外環") ? "✓" : `✗ h=${b6b.h}`));
   await eval_(`document.querySelector('[data-face-tool="select"]').click()`);
   /* (7) B7:#feApplyCard + feCutStrip/feApplyProj;無 #b48 */
   const b7 = await eval_(`(()=>{
@@ -2556,25 +2650,25 @@ async function rightClick(x, y) {
       ap:card&&!!card.querySelector("#feApplyProj"),
       b48:!document.getElementById("b48"),
       noOld:!document.querySelector(".fe-ob-ctrl")};})()`);
-  console.log("P18 B7 套用卡:", b7.card && b7.cut && b7.ap && b7.b48 && b7.noOld
-    ? "✓" : "✗ " + JSON.stringify(b7));
+  console.log("P18 B7 套用卡:",explicitVerdict(b7.card && b7.cut && b7.ap && b7.b48 && b7.noOld
+    ? "✓" : "✗ " + JSON.stringify(b7)));
   /* (8) B8:讀數格式 u N v N mm(指位移動後) */
   const b8vp = await eval_(`(()=>{const r=document.getElementById("faceEditorViewport").getBoundingClientRect();
     return {x:r.left+r.width/2,y:r.top+r.height/2};})()`);
   await send("Input.dispatchMouseEvent", { type:"mouseMoved", x:b8vp.x, y:b8vp.y });
   await sleep(250);
   const b8 = await eval_(`document.getElementById("faceCoordinateReadout").textContent`);
-  console.log("P18 B8 讀數:", /^u \d+ v \d+ mm$/.test(b8) ? `✓ ${b8}` : `✗ ${b8}`);
+  console.log("P18 B8 讀數:",explicitVerdict(/^u \d+ v \d+ mm$/.test(b8) ? `✓ ${b8}` : `✗ ${b8}`));
   /* (9) B9:麵包屑完整格式「空間 1 / ● 面 1」(UI-REVIEW-SPEC §S3,非子字串)+ 天花膠囊;游離面→游離 */
   const b9a = await eval_(`({
     eb:document.getElementById("workspaceEyebrow").textContent,
     cap:document.getElementById("workspacePlaceTag").textContent,
     capCls:document.getElementById("workspacePlaceTag").className,
     back:document.getElementById("workspaceBackLabel").textContent})`);
-  if (b9a && b9a.__err) console.log("P18 B9 麵包屑: ✗ eval", b9a.__err);
-  else console.log("P18 B9 麵包屑:", b9a.eb === "空間 1 ›" ? "✓ " + b9a.eb : `✗ ${b9a.eb}`,
-    "| 天花膠囊:", b9a.cap.includes("天花") ? "✓ " + b9a.cap : `✗ ${b9a.cap}`,
-    "| 返回:", b9a.back.includes("物件畫布") ? "✓" : "✗");
+  if (b9a && b9a.__err) console.log(explicitVerdict("P18 B9 麵包屑: ✗ eval"), b9a.__err);
+  else console.log("P18 B9 麵包屑:",explicitVerdict(b9a.eb === "空間 1 ›" ? "✓ " + b9a.eb : `✗ ${b9a.eb}`),
+    "| 天花膠囊:",explicitVerdict(b9a.cap.includes("天花") ? "✓ " + b9a.cap : `✗ ${b9a.cap}`),
+    "| 返回:",explicitVerdict(b9a.back.includes("物件畫布") ? "✓" : "✗"));
   /* (10) 游離面:角材頁停用說明 + 游離膠囊 */
   await eval_(`enterFocus("face", 3)`);
   await sleep(700);
@@ -2583,13 +2677,14 @@ async function rightClick(x, y) {
     return {note:!!document.querySelector('[data-component-section="timber"] .fi-note'),
       cap:document.getElementById("workspacePlaceTag").textContent,
       tbDis:document.getElementById("tbA").disabled};})()`);
-  console.log("P18 游離停用說明:", b9b.note && b9b.tbDis ? "✓" : "✗ " + JSON.stringify(b9b),
-    "| 未放置膠囊:", b9b.cap.includes("未放置") ? "✓" : "✗ " + b9b.cap);
+  console.log("P18 游離停用說明:",explicitVerdict(b9b.note && b9b.tbDis ? "✓" : "✗ " + JSON.stringify(b9b)),
+    "| 未放置膠囊:",explicitVerdict(b9b.cap.includes("未放置") ? "✓" : "✗ " + b9b.cap));
   /* (11) 狀態列依工具顯示快捷鍵與 Esc 語意 */
   const b11 = await eval_(`(()=>{
     const s=document.getElementById('workspaceKeyHints').textContent;
-    return {select:s.includes('V 選取'),redraw:s.includes('E 外環'),Esc:s.includes('Esc')};})()`);
-  console.log("P18 快捷鍵列:", b11.select && b11.redraw && b11.Esc ? "✓" : "✗ " + JSON.stringify(b11));
+    feSetTool('redraw');const r=document.getElementById('workspaceKeyHints').textContent;feSetTool('select');
+    return {select:s.includes('V 框選角材')&&s.includes('Shift'),redraw:r.includes('E 外環')&&r.includes('Enter'),Esc:s.includes('Esc')&&r.includes('Esc')};})()`);
+  console.log("P18 快捷鍵列:",explicitVerdict(b11.select && b11.redraw && b11.Esc ? "✓" : "✗ " + JSON.stringify(b11)));
   await eval_(`(async()=>{ if(oc.focus) await leaveFocus(); })()`);
   await sleep(400);
 
@@ -2619,9 +2714,9 @@ async function rightClick(x, y) {
     const b=[planVis(),projVis()];
     document.querySelector('[data-ss-tab="plan"]').click();
     return {tabs,a,b,grid:!!document.getElementById("spaceFaceGrid")};})()`);
-  console.log("P19 C1 舞台分頁:", c1a.tabs.join() === "plan,proj" &&
-    c1a.a[0] && !c1a.a[1] && !c1a.b[0] && c1a.b[1] ? "✓" : "✗ " + JSON.stringify(c1a),
-    "| spaceFaceGrid移除:", !c1a.grid ? "✓" : "✗");
+  console.log("P19 C1 舞台分頁:",explicitVerdict(c1a.tabs.join() === "plan,proj" &&
+    c1a.a[0] && !c1a.a[1] && !c1a.b[0] && c1a.b[1] ? "✓" : "✗ " + JSON.stringify(c1a)),
+    "| spaceFaceGrid移除:",explicitVerdict(!c1a.grid ? "✓" : "✗"));
   /* (2) C4:構件列 .rc-act 可點(移出);刪除 toast 含 Ctrl+Z */
   const c4 = await eval_(`(()=>{
     const rows=[...document.querySelectorAll("#spaceRcList .rc-row")];
@@ -2629,8 +2724,8 @@ async function rightClick(x, y) {
     return {n:rows.length, act:r && !!r.querySelector(".rc-act"),
       actTxt:r && r.querySelector(".rc-act").textContent,
       del:r && !!r.querySelector(".face-layer-del")};})()`);
-  console.log("P19 C4 構件列動作鈕:", c4.n >= 1 && c4.act && c4.del
-    ? `✓ ${c4.actTxt}` : "✗ " + JSON.stringify(c4));
+  console.log("P19 C4 構件列動作鈕:",explicitVerdict(c4.n >= 1 && c4.act && c4.del
+    ? `✓ ${c4.actTxt}` : "✗ " + JSON.stringify(c4)));
   /* 點「移出」→ 構件游離;再「收進」 */
   const c4b = await eval_(`(async()=>{
     document.querySelector("#spaceRcList .rc-act").click();
@@ -2641,15 +2736,15 @@ async function rightClick(x, y) {
     const free2=document.querySelectorAll("#spaceRcFreeList .rc-row").length;
     const mine=document.querySelectorAll("#spaceRcList .rc-row").length;
     return {free1,free2,mine};})()`);
-  console.log("P19 C4 移出/收進:", c4b.free1 === 2 && c4b.free2 === 1 && c4b.mine === 1
-    ? "✓" : "✗ " + JSON.stringify(c4b));
+  console.log("P19 C4 移出/收進:",explicitVerdict(c4b.free1 === 2 && c4b.free2 === 1 && c4b.mine === 1
+    ? "✓" : "✗ " + JSON.stringify(c4b)));
   /* 刪除 → toast 含 Ctrl+Z */
   await eval_(`(async()=>{
     document.querySelector("#spaceRcFreeList .face-layer-del").click();
     await window.__cdpSettleUI(800);})()`);
   const c4c = await eval_(`[...document.querySelectorAll("#toastRegion .toast")]
     .map(t=>t.textContent).join("|")`);
-  console.log("P19 C4 刪除toast含Ctrl+Z:", c4c.includes("Ctrl+Z") ? "✓" : "✗ " + c4c);
+  console.log("P19 C4 刪除toast含Ctrl+Z:",explicitVerdict(c4c.includes("Ctrl+Z") ? "✓" : "✗ " + c4c));
   /* (3) C3:槽位語意名+空槽「放置一片面」可點 */
   const c3 = await eval_(`(()=>{
     const rows=[...document.querySelectorAll("#spaceInspectorContent .slot-row")];
@@ -2657,15 +2752,15 @@ async function rightClick(x, y) {
       names:rows.map(r=>r.querySelector(".slot-name").textContent),
       axis:rows.every(r=>/[-+xyzXYZ=DW]/.test(r.querySelector(".slot-axis").textContent)),
       empty:rows.filter(r=>r.querySelector(".slot-empty")).length};})()`);
-  console.log("P19 C3 槽位語意:", c3.n === 6 && c3.names.includes("天花")
-    && c3.names.includes("前牆") && c3.axis ? "✓" : "✗ " + JSON.stringify(c3),
-    "| 空槽鈕:", c3.empty >= 3 ? `✓ ${c3.empty}` : `✗ ${c3.empty}`);
+  console.log("P19 C3 槽位語意:",explicitVerdict(c3.n === 6 && c3.names.includes("天花")
+    && c3.names.includes("前牆") && c3.axis ? "✓" : "✗ " + JSON.stringify(c3)),
+    "| 空槽鈕:",explicitVerdict(c3.empty >= 3 ? `✓ ${c3.empty}` : `✗ ${c3.empty}`));
   await eval_(`document.querySelector(".slot-empty").click()`);
   await sleep(800);
   const c3b = await eval_(`({focus:oc.focus && oc.focus.t==="face",
     toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")})`);
-  console.log("P19 C3 空槽點擊有反應:", c3b.focus || c3b.toast.includes("預設")
-    ? `✓ focus=${c3b.focus}` : "✗ " + JSON.stringify(c3b));
+  console.log("P19 C3 空槽點擊有反應:",explicitVerdict(c3b.focus || c3b.toast.includes("預設")
+    ? `✓ focus=${c3b.focus}` : "✗ " + JSON.stringify(c3b)));
   await eval_(`(async()=>{ if(oc.focus) await leaveFocus(); await enterFocus("space",1); })()`);
   await sleep(800);
   /* (4) C5:#spProjRefresh 不存在;mutate(刪柱)後 spaceProjSvg 自動更新 */
@@ -2676,8 +2771,8 @@ async function rightClick(x, y) {
     await window.__cdpSettleUI(900);
     const after=document.getElementById("spaceProjSvg").innerHTML.length;
     return {noBtn,before,after};})()`);
-  console.log("P19 C5 無refresh鈕:", c5.noBtn ? "✓" : "✗",
-    "| 自動更新:", c5.after !== c5.before ? `✓ ${c5.before}→${c5.after}` : `✗ ${c5.before}→${c5.after}`);
+  console.log("P19 C5 無refresh鈕:",explicitVerdict(c5.noBtn ? "✓" : "✗"),
+    "| 自動更新:",explicitVerdict(c5.after !== c5.before ? `✓ ${c5.before}→${c5.after}` : `✗ ${c5.before}→${c5.after}`));
   await eval_(`(async()=>{ if(oc.focus) await leaveFocus(); })()`);
   await sleep(400);
   /* (5) D1:三視圖開 → 左 #v3Panel 視圖/圖層勾選;右 #v3PickPanel */
@@ -2689,9 +2784,9 @@ async function rightClick(x, y) {
       views:document.querySelectorAll("[data-v3-view]").length,
       layers:document.querySelectorAll("[data-v3-layer]").length,
       pick:!document.getElementById("v3PickPanel").hidden};})()`);
-  console.log("P19 D1 左欄視圖/圖層:", d1.vis && d1.views === 3 && d1.layers === 4
-    ? "✓" : "✗ " + JSON.stringify(d1),
-    "| 右欄pick容器:", d1.pick ? "✓" : "✗");
+  console.log("P19 D1 左欄視圖/圖層:",explicitVerdict(d1.vis && d1.views === 3 && d1.layers === 4
+    ? "✓" : "✗ " + JSON.stringify(d1)),
+    "| 右欄pick容器:",explicitVerdict(d1.pick ? "✓" : "✗"));
   /* (6) D2:#tool 非原生顯示(segmented)+三視圖縮放列 */
   const d2 = await eval_(`(()=>{
     const sel=document.getElementById("tool");
@@ -2703,16 +2798,16 @@ async function rightClick(x, y) {
       /* 🔒 Q17(GEO-181):三視圖舊多邊形工具已移除,建多邊形面只走主畫布 P(PolyDraft) */
       noPoly:!document.querySelector('[data-v3-tool="poly"]') && !sel.querySelector('option[value="poly"]'),
       zoom:!!document.querySelector(".v3-zoom")};})()`);
-  console.log("P19 D2 segmented:", d2.nativeHidden && d2.seg === 4 && d2.noPoly && d2.segActive === "view"
-    ? "✓" : "✗ " + JSON.stringify(d2),
-    "| 縮放列:", d2.zoom ? "✓" : "✗");
+  console.log("P19 D2 segmented:",explicitVerdict(d2.nativeHidden && d2.seg === 4 && d2.noPoly && d2.segActive === "view"
+    ? "✓" : "✗ " + JSON.stringify(d2)),
+    "| 縮放列:",explicitVerdict(d2.zoom ? "✓" : "✗"));
   /* segmented 切工具 → #tool 同步 */
   const d2b = await eval_(`(()=>{
     document.querySelector('[data-v3-tool="rect"]').click();
     return {tool:document.getElementById("tool").value,
       act:document.querySelector("[data-v3-tool].active").dataset.v3Tool};})()`);
-  console.log("P19 D2 切工具同步:", d2b.tool === "rect" && d2b.act === "rect"
-    ? "✓" : "✗ " + JSON.stringify(d2b));
+  console.log("P19 D2 切工具同步:",explicitVerdict(d2b.tool === "rect" && d2b.act === "rect"
+    ? "✓" : "✗ " + JSON.stringify(d2b)));
   await eval_(`document.querySelector('[data-v3-tool="view"]').click()`);
   /* (7) D3:zoom 反比縮放——font-size(mm) 隨 zoom 反比,螢幕 px 不變 */
   const d3 = await eval_(`(()=>{
@@ -2725,9 +2820,9 @@ async function rightClick(x, y) {
     const fsH=+tx.getAttribute("font-size"), pxH=fsH*transform().s;
     zoom=z0; applyTransform();
     return {px0,px2,pxH};})()`);
-  console.log("P19 D3 字級恆定:", d3.none ? "✗ 無文字" :
+  console.log("P19 D3 字級恆定:",explicitVerdict(d3.none ? "✗ 無文字" :
     (Math.abs(d3.px2 - d3.px0) < 0.5 && Math.abs(d3.pxH - d3.px0) < 0.5
-      ? `✓ ${d3.px0.toFixed(1)}px 恆定` : `✗ ${JSON.stringify(d3)}`));
+      ? `✓ ${d3.px0.toFixed(1)}px 恆定` : `✗ ${JSON.stringify(d3)}`)));
   /* (8) D1 圖層過濾生效:關掉「面」→ world 面元素減少 */
   const d1b = await eval_(`(async()=>{
     const before=document.querySelectorAll("#world polygon").length;
@@ -2737,8 +2832,8 @@ async function rightClick(x, y) {
     document.querySelector('[data-v3-layer="face"]').click();
     await window.__cdpSettleUI(600);
     return {before,after};})()`);
-  console.log("P19 D1 圖層過濾:", d1b.after < d1b.before
-    ? `✓ ${d1b.before}→${d1b.after}` : `✗ ${JSON.stringify(d1b)}`);
+  console.log("P19 D1 圖層過濾:",explicitVerdict(d1b.after < d1b.before
+    ? `✓ ${d1b.before}→${d1b.after}` : `✗ ${JSON.stringify(d1b)}`));
   await eval_(`document.getElementById("btnCanvasView").click()`);
   await sleep(600);
 
@@ -2760,12 +2855,12 @@ async function rightClick(x, y) {
   const exc0 = excN;
   await eval_(`document.getElementById("btnZoom").click()`);
   await sleep(500);
-  console.log("BF2 btnZoom 無例外:", excN === exc0 ? "✓" : "✗ exc=" + (excN - exc0));
+  console.log("BF2 btnZoom 無例外:",explicitVerdict(excN === exc0 ? "✓" : "✗ exc=" + (excN - exc0)));
   /* (b) 放大鈕曾把 transform 變 NaN → 畫布消失 */
   await eval_(`document.getElementById("zoomInButton").click()`);
   await sleep(400);
   const tf = await eval_(`document.getElementById("oroot").getAttribute("transform")`);
-  console.log("BF2 zoom transform:", tf, tf && !/NaN/.test(tf) ? "✓" : "✗");
+  console.log("BF2 zoom transform:", tf,explicitVerdict(tf && !/NaN/.test(tf) ? "✓" : "✗"));
   /* (c) /upload 後 curScene/標籤同步;btnScene 載回上傳內容,不載回 room_a */
   const fsB = require("fs"), osB = require("os"), pathB = require("path");
   const up = pathB.join(osB.tmpdir(), "verify-upload-bf.scene");
@@ -2777,14 +2872,12 @@ async function rightClick(x, y) {
   const up1 = await eval_(`(async()=>({name:curScene.name,
     label:document.getElementById("sceneMenuLabel").textContent,
     mark:(await api("dump")).text.includes("111,222")}))()`);
-  console.log("BF2 upload curScene:", JSON.stringify(up1),
-    up1.name === "verify-upload-bf.scene" && up1.mark ? "✓" : "✗");
+  console.log("BF2 upload curScene:", JSON.stringify(up1),explicitVerdict(up1.name === "verify-upload-bf.scene" && up1.mark ? "✓" : "✗"));
   await eval_(`loadScene(curScene.path,curScene.name)`);
   await sleep(1500);
   const up2 = await eval_(`(async()=>{const t=(await api("dump")).text;
     return {mark:t.includes("111,222"),roomA:t.includes("guide 1 1 v spec:主支1中線")}})()`);
-  console.log("BF2 上傳場景重載不載回 room_a:", JSON.stringify(up2),
-    up2.mark && !up2.roomA ? "✓" : "✗");
+  console.log("BF2 上傳場景重載不載回 room_a:", JSON.stringify(up2),explicitVerdict(up2.mark && !up2.roomA ? "✓" : "✗"));
   /* (d) 換場景清焦點:enterFocus → loadScene → focus null、工作區關閉 */
   await eval_(`api("line reset")`);
   await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
@@ -2806,9 +2899,8 @@ async function rightClick(x, y) {
   const fpost = await eval_(`({focus:oc.focus,
     wsHidden:document.getElementById("objectWorkspace").hidden,
     guides:fe.guides.length,stack:oc.stack.length})`);
-  console.log("BF2 換場景清焦點:", JSON.stringify(fpre), "→", JSON.stringify(fpost),
-    fpre.focus === "face" && fpost.focus === null && fpost.wsHidden === true &&
-    fpost.guides === 0 && fpost.stack === 0 ? "✓" : "✗");
+  console.log("BF2 換場景清焦點:", JSON.stringify(fpre), "→", JSON.stringify(fpost),explicitVerdict(fpre.focus === "face" && fpost.focus === null && fpost.wsHidden === true &&
+    fpost.guides === 0 && fpost.stack === 0 ? "✓" : "✗"));
 
   /* ================= BF3. undo 群組(L2) ================= */
   console.log("=== BF3. undo 群組 ===");
@@ -2827,8 +2919,7 @@ async function rightClick(x, y) {
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "z", code: "KeyZ", modifiers: 2, windowsVirtualKeyCode: 90 });
   await sleep(1200);
   const bf3post = await eval_(`api("objects").then(r=>r.faces.length)`);
-  console.log("BF3 六面盒一次 Ctrl+Z 全退:", bf3pre, "→", bf3mid, "→", bf3post,
-    bf3mid === bf3pre + 6 && bf3post === bf3pre ? "✓" : "✗");
+  console.log("BF3 六面盒一次 Ctrl+Z 全退:", bf3pre, "→", bf3mid, "→", bf3post,explicitVerdict(bf3mid === bf3pre + 6 && bf3post === bf3pre ? "✓" : "✗"));
 
   /* ================= BF4. 其餘功能錯誤 ================= */
   console.log("=== BF4. 功能錯誤 ===");
@@ -2848,8 +2939,7 @@ async function rightClick(x, y) {
       if (m) { const k = m[1] + "," + m[2]; if (seen[k]) dups.push(k); seen[k] = 1; }
     }
     return dups; })`);
-  console.log("BF4 六面盒排版無重疊:", JSON.stringify(bf4dup),
-    bf4dup.length === 0 ? "✓" : "✗");
+  console.log("BF4 六面盒排版無重疊:", JSON.stringify(bf4dup),explicitVerdict(bf4dup.length === 0 ? "✓" : "✗"));
   /* (b2) GEO-157:六面盒不得覆寫既有物件。
      世界 boundary {1,2,5,9,MAX}、placement {MAX} → newid.boundary=3、newid.placement=0,
      舊算法 b0 = max(3,0) = 3,用掉 3,4,5,6,7,8——其中 5 已經存在,
@@ -2875,8 +2965,7 @@ async function rightClick(x, y) {
     const rows = r.text.split("\\n");
     return { kept: rows.includes("boundary 5 outline 0,0 90,0 90,90 0,90"),
              faces: rows.filter(l => l.startsWith("boundary ")).length }; })`);
-  console.log("BF4 六面盒不覆寫既有面(GEO-157):", JSON.stringify(bf4keep),
-    bf4keep.kept && bf4keep.faces === 11 ? "✓" : "✗");
+  console.log("BF4 六面盒不覆寫既有面(GEO-157):", JSON.stringify(bf4keep),explicitVerdict(bf4keep.kept && bf4keep.faces === 11 ? "✓" : "✗"));
   /* (b3) GEO-157:0 沒被占用時也不能發給 surface(D4 的 boundary_id=0 是矩形標記)。 */
   const bf4zeroSeed = await eval_(`(async () => {
     const reset = await api("line reset");
@@ -2897,9 +2986,8 @@ async function rightClick(x, y) {
              faces: rows.filter(l => l.startsWith("boundary ")).length,
              spaces: objects.spaces.length, closed: objects.spaces[0]?.closed };
   })()`);
-  console.log("BF4 六面盒回繞跳過保留編號0(GEO-157):", JSON.stringify(bf4zero),
-    bf4zeroSeed === true && bf4zero.kept && bf4zero.faces === 7 &&
-    bf4zero.spaces === 1 && bf4zero.closed ? "✓" : "✗");
+  console.log("BF4 六面盒回繞跳過保留編號0(GEO-157):", JSON.stringify(bf4zero),explicitVerdict(bf4zeroSeed === true && bf4zero.kept && bf4zero.faces === 7 &&
+    bf4zero.spaces === 1 && bf4zero.closed ? "✓" : "✗"));
   /* (b4) GEO-164:空間配號回繞也必須跳過 0 與已存在的空間 1。 */
   const bf4spaceSeed = await eval_(`api("line space 4294967295 boundary")`);
   if (bf4spaceSeed?.ok !== true) throw new Error("BF4 空間回繞夾具失敗: " + JSON.stringify(bf4spaceSeed));
@@ -2910,9 +2998,8 @@ async function rightClick(x, y) {
                document.getElementById("box6Floor").checked = true;`);
   await eval_(`document.getElementById("box6Submit").click()`); await sleep(1500);
   const bf4spaces = await eval_(`api("objects").then(r => r.spaces.map(s => ({id:s.id, closed:s.closed})))`);
-  console.log("BF4 空間回繞跳過保留編號0及既有空間(GEO-164):", JSON.stringify(bf4spaces),
-    bf4spaces.length === 3 && bf4spaces.some(s => s.id === 1 && s.closed) &&
-    bf4spaces.some(s => s.id === 2 && s.closed) && bf4spaces.some(s => s.id === 4294967295) ? "✓" : "✗");
+  console.log("BF4 空間回繞跳過保留編號0及既有空間(GEO-164):", JSON.stringify(bf4spaces),explicitVerdict(bf4spaces.length === 3 && bf4spaces.some(s => s.id === 1 && s.closed) &&
+    bf4spaces.some(s => s.id === 2 && s.closed) && bf4spaces.some(s => s.id === 4294967295) ? "✓" : "✗"));
   /* (a) 空間示意圖 toRoom:點地板左上角內側 2px → 映射點(柱中心)應在角 100mm 內 */
   const bf4sp = await eval_(`api("objects").then(r => r.spaces[0] && r.spaces[0].id)`);
   await eval_(`enterFocus("space", ${bf4sp})`); await sleep(1000);
@@ -2928,8 +3015,7 @@ async function rightClick(x, y) {
   const bf4m = /at (-?\d+) (-?\d+)/.exec(bf4line);
   /* at x y = 映射點 - 半柱邊(600/2=300);還原映射點驗證 ≈ 房角 (0,0) */
   const bf4px = bf4m && +bf4m[1] + 300, bf4py = bf4m && +bf4m[2] + 300;
-  console.log("BF4 平面點放柱映射:", bf4line, "→ 映射點", bf4px + "," + bf4py,
-    bf4m && Math.abs(bf4px) < 100 && Math.abs(bf4py) < 100 ? "✓" : "✗");
+  console.log("BF4 平面點放柱映射:", bf4line, "→ 映射點", bf4px + "," + bf4py,explicitVerdict(bf4m && Math.abs(bf4px) < 100 && Math.abs(bf4py) < 100 ? "✓" : "✗"));
   /* (c) 面內 undo 刷新:刪 guide → 面內復原 → fe.guides 與 dump 一致 */
   await eval_(`leaveFocus()`); await sleep(400);
   await eval_(`api("line reset")`);
@@ -2944,8 +3030,7 @@ async function rightClick(x, y) {
   await eval_(`document.getElementById("faceUndoButton").click()`); await sleep(1200);
   const bf4g = await eval_(`(async () => ({ fe: fe.guides.length,
     dump: (await api("dump")).text.split("\\n").filter(l => /^guide /.test(l)).length }))()`);
-  console.log("BF4 面內 undo 刷新:", JSON.stringify(bf4g),
-    bf4g.fe === 2 && bf4g.dump === 2 ? "✓" : "✗");
+  console.log("BF4 面內 undo 刷新:", JSON.stringify(bf4g),explicitVerdict(bf4g.fe === 2 && bf4g.dump === 2 ? "✓" : "✗"));
   /* (e) Esc 在輸入框不關工作區:聚焦 .edge-len 按 Esc → 工作區仍開
      §5.A.1.10 之後 #inspectorContent 也有一份同構 .edge-len(主畫布外環邊清單,
      可能因 hidden 而 focus() 失敗),scope 到 #faceInspectorContent 避免誤命中。 */
@@ -2957,8 +3042,7 @@ async function rightClick(x, y) {
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await sleep(600);
   const bf4ws = await eval_(`document.getElementById("objectWorkspace").hidden`);
-  console.log("BF4 Esc 輸入框不關工作區:", "focused=" + bf4hasLen, "wsHidden=" + bf4ws,
-    bf4ws === false && bf4hasLen ? "✓" : "✗");
+  console.log("BF4 Esc 輸入框不關工作區:", "focused=" + bf4hasLen, "wsHidden=" + bf4ws,explicitVerdict(bf4ws === false && bf4hasLen ? "✓" : "✗"));
   /* (d) RC 表單驗證:x 留空 → 不送 column;w 留空 → 不送任何 line + 表單提示 */
   await eval_(`leaveFocus()`); await sleep(400);
   await eval_(`window.__apiLog.length = 0`);
@@ -2966,15 +3050,13 @@ async function rightClick(x, y) {
   await eval_(`document.getElementById("rcX").value = ""`);
   await eval_(`document.getElementById("rcSubmit").click()`); await sleep(500);
   const bf4rc1 = await eval_(`__apiLog.filter(c => c.startsWith("line") || c === "newid")`);
-  console.log("BF4 RC 空 x 不送指令:", JSON.stringify(bf4rc1),
-    bf4rc1.length === 0 ? "✓" : "✗");
+  console.log("BF4 RC 空 x 不送指令:", JSON.stringify(bf4rc1),explicitVerdict(bf4rc1.length === 0 ? "✓" : "✗"));
   await eval_(`window.__apiLog.length = 0;
     document.getElementById("rcW").value = ""; document.getElementById("rcX").value = "0"`);
   await eval_(`document.getElementById("rcSubmit").click()`); await sleep(500);
   const bf4rc2 = await eval_(`__apiLog.filter(c => c.startsWith("line") || c === "newid")`);
   const bf4err = await eval_(`!document.getElementById("rcErr").hidden`);
-  console.log("BF4 RC 空 w 不送+表單提示:", JSON.stringify(bf4rc2),
-    bf4rc2.length === 0 && bf4err ? "✓" : "✗");
+  console.log("BF4 RC 空 w 不送+表單提示:", JSON.stringify(bf4rc2),explicitVerdict(bf4rc2.length === 0 && bf4err ? "✓" : "✗"));
   await eval_(`document.getElementById("rcCancel").click()`);
 
   /* ================= P20. 對抗審查漂移修正(A3 A4 A9 A10/A11 B1 B3 + toast/busy) =================
@@ -2983,15 +3065,15 @@ async function rightClick(x, y) {
   /* (a) A3:物件庫改 3 欄(repeat(3,1fr)),不是原 2 欄 */
   const p20a3 = await eval_(`getComputedStyle(document.querySelector(".quick-create-grid")).gridTemplateColumns`);
   const p20a3n = (p20a3 || "").trim().split(/\s+/).filter(Boolean).length;
-  console.log("P20 A3 quick-create 3欄:", p20a3n === 3 ? `✓ ${p20a3}` : `✗ n=${p20a3n} (${p20a3})`);
+  console.log("P20 A3 quick-create 3欄:",explicitVerdict(p20a3n === 3 ? `✓ ${p20a3}` : `✗ n=${p20a3n} (${p20a3})`));
   /* (b) A10/A11:minimapToggle 熱區 ≥28×28(原 20×20) */
   const p20a10 = await eval_(`(()=>{const r=document.getElementById("minimapToggle").getBoundingClientRect();
     return {w:Math.round(r.width),h:Math.round(r.height)};})()`);
-  console.log("P20 A10 minimapToggle熱區≥28:", p20a10.w >= 28 && p20a10.h >= 28
-    ? `✓ ${p20a10.w}×${p20a10.h}` : `✗ ${JSON.stringify(p20a10)}`);
+  console.log("P20 A10 minimapToggle熱區≥28:",explicitVerdict(p20a10.w >= 28 && p20a10.h >= 28
+    ? `✓ ${p20a10.w}×${p20a10.h}` : `✗ ${JSON.stringify(p20a10)}`));
   /* (c) toast 避讓小地圖:.toast-region bottom ≥ 118(14+96+8),原 42 會被小地圖蓋住 */
   const p20tr = await eval_(`parseFloat(getComputedStyle(document.querySelector(".toast-region")).bottom)`);
-  console.log("P20 toast避讓小地圖:", p20tr >= 118 ? `✓ bottom=${p20tr}px` : `✗ bottom=${p20tr}px`);
+  console.log("P20 toast避讓小地圖:",explicitVerdict(p20tr >= 118 ? `✓ bottom=${p20tr}px` : `✗ bottom=${p20tr}px`));
   /* (d) 建物件:free 面(boundary 3)+ space(1,由已放置 boundary 1/2 組成,帶 guide)供 A4/B1/B3 用 */
   await eval_(`(async()=>{
     await api("line reset");
@@ -3010,8 +3092,8 @@ async function rightClick(x, y) {
     const fc = document.querySelector('.ocard[data-kind="boundary"] text');
     const sc = document.querySelector('.ocard[data-kind="space"] text');
     return {f: fc && fc.getAttribute("font-size"), s: sc && sc.getAttribute("font-size")};})()`);
-  console.log("P20 A4 卡片標題12.5:", p20a4.f === "12.5" && p20a4.s === "12.5"
-    ? "✓" : `✗ ${JSON.stringify(p20a4)}`);
+  console.log("P20 A4 卡片標題12.5:",explicitVerdict(p20a4.f === "12.5" && p20a4.s === "12.5"
+    ? "✓" : `✗ ${JSON.stringify(p20a4)}`));
   /* (f) A9:成功 toast 的 .toast.ok svg 著色 = --face(原無 .toast.ok 規則) */
   // Capture the real success toast when it appears; slow bridge refreshes can
   // outlive its deliberately short 2000 ms lifetime.
@@ -3028,8 +3110,8 @@ async function rightClick(x, y) {
     await emitLine('boundary 77 outline 0,0 300,0 300,300 0,300');observer.disconnect();
     await renderObjects();return captured;
   })()`);
-  console.log("P20 A9 toast.ok著色:", p20a9 && p20a9.got === p20a9.want
-    ? `✓ ${p20a9.got}` : `✗ ${JSON.stringify(p20a9)}`);
+  console.log("P20 A9 toast.ok著色:",explicitVerdict(p20a9 && p20a9.got === p20a9.want
+    ? `✓ ${p20a9.got}` : `✗ ${JSON.stringify(p20a9)}`));
   /* (g) B1:面內圖層列 .face-layer-icon 一律 svg,不含 ▱▨⌖▤╬ 純文字 */
   await eval_(`enterFocus("face", 1)`);
   await sleep(700);
@@ -3042,15 +3124,15 @@ async function rightClick(x, y) {
     return {n: icons.length,
       svgN: icons.filter(i => i.querySelector("svg")).length,
       bad: icons.some(i => /[▱▨⌖▤╬]/.test(i.textContent))};})()`);
-  console.log("P20 B1 圖層列SVG圖示:", p20b1.n >= 1 && p20b1.svgN === p20b1.n && !p20b1.bad
-    ? `✓ n=${p20b1.n}` : `✗ ${JSON.stringify(p20b1)}`);
+  console.log("P20 B1 圖層列SVG圖示:",explicitVerdict(p20b1.n >= 1 && p20b1.svgN === p20b1.n && !p20b1.bad
+    ? `✓ n=${p20b1.n}` : `✗ ${JSON.stringify(p20b1)}`));
   /* (h) B3:.fixity-btn.seg 熱區高度 ≥28(原 22) */
   const p20b3 = await eval_(`(()=>{
     const btns = [...document.querySelectorAll(".fixity-btn.seg")];
     return {n: btns.length,
       minH: btns.length ? Math.min(...btns.map(b => b.getBoundingClientRect().height)) : 0};})()`);
-  console.log("P20 B3 fixity-btn熱區≥28:", p20b3.n >= 1 && p20b3.minH >= 28
-    ? `✓ n=${p20b3.n} minH=${p20b3.minH}` : `✗ ${JSON.stringify(p20b3)}`);
+  console.log("P20 B3 fixity-btn熱區≥28:",explicitVerdict(p20b3.n >= 1 && p20b3.minH >= 28
+    ? `✓ n=${p20b3.n} minH=${p20b3.minH}` : `✗ ${JSON.stringify(p20b3)}`));
   await eval_(`leaveFocus()`);
   await sleep(400);
   /* (i) v2:短操作不閃動;超過 400 ms 才顯示進度,結束收起。 */
@@ -3068,8 +3150,8 @@ async function rightClick(x, y) {
       return {early, mid, after:document.getElementById("busyIndicator").hidden, opacity};
     } finally { api=original; }
   })()`);
-  console.log("P20 busy指示:", p20busy.early && !p20busy.mid && p20busy.after && p20busy.opacity === '1'
-    ? "✓" : `✗ ${JSON.stringify(p20busy)}`);
+  console.log("P20 busy指示:",explicitVerdict(p20busy.early && !p20busy.mid && p20busy.after && p20busy.opacity === '1'
+    ? "✓" : `✗ ${JSON.stringify(p20busy)}`));
   /* (j) §S1 全域最小字級 11px:主畫布／面內／空間工作區三畫面全掃描,
      不得有任何可見元素 computed font-size < 11px。
      排除:①未顯示元素(如空的 .toast-region)因寬高為 0 自然排除,不需另立白名單;
@@ -3100,9 +3182,9 @@ async function rightClick(x, y) {
   const p20fontSpace = await eval_(`__scanMinFont()`);
   const p20fontAll = [["主畫布", p20fontMain], ["面內", p20fontFace], ["空間工作區", p20fontSpace]];
   const p20fontBad = p20fontAll.filter(([, v]) => !(v.min >= 11));
-  console.log("P20 全域最小字級≥11px:", p20fontBad.length === 0
+  console.log("P20 全域最小字級≥11px:",explicitVerdict(p20fontBad.length === 0
     ? `✓ ${p20fontAll.map(([n, v]) => `${n}=${v.min}`).join(" ")}`
-    : `✗ ${p20fontBad.map(([n, v]) => `${n}: min=${v.min}px @ ${v.sel}`).join("; ")}`);
+    : `✗ ${p20fontBad.map(([n, v]) => `${n}: min=${v.min}px @ ${v.sel}`).join("; ")}`));
   /* (k) B-icon:.space-member-thumb 無承載面(bmap 缺失)時走 icon("rectangle")
      SVG 佔位,不留 ▱▨⌖▤╬ 等 Unicode 圖示字元。目前處於空間 1 工作區
      (成員 1 2 皆已放置、bmap 皆有值),故先人為刪除成員 2 的 bmap 條目
@@ -3114,8 +3196,8 @@ async function rightClick(x, y) {
     return {n: rows.length,
       bad: rows.some(t => /[▱▨⌖▤╬]/.test(t.textContent)),
       svgN: rows.filter(t => t.querySelector("svg")).length};})()`);
-  console.log("P20 space-member-thumb無殘留Unicode圖示:", p20thumb.n >= 1 && !p20thumb.bad && p20thumb.svgN === p20thumb.n
-    ? `✓ n=${p20thumb.n} svgN=${p20thumb.svgN}` : `✗ ${JSON.stringify(p20thumb)}`);
+  console.log("P20 space-member-thumb無殘留Unicode圖示:",explicitVerdict(p20thumb.n >= 1 && !p20thumb.bad && p20thumb.svgN === p20thumb.n
+    ? `✓ n=${p20thumb.n} svgN=${p20thumb.svgN}` : `✗ ${JSON.stringify(p20thumb)}`));
   await eval_(`leaveFocus()`);
   await sleep(400);
 
@@ -3142,8 +3224,8 @@ async function rightClick(x, y) {
       overflow: stage.scrollHeight > stage.clientHeight + 2,
       sh: Math.round(sr.height), ch: Math.round(cr.height) };
   })()`);
-  console.log("P21 C1 舞台佔滿高度:", p21c1 && p21c1.ratio >= 0.85 && !p21c1.overflow
-    ? `✓ ratio=${p21c1.ratio} h=${p21c1.ch}/${p21c1.sh}` : `✗ ${JSON.stringify(p21c1)}`);
+  console.log("P21 C1 舞台佔滿高度:",explicitVerdict(p21c1 && p21c1.ratio >= 0.85 && !p21c1.overflow
+    ? `✓ ratio=${p21c1.ratio} h=${p21c1.ch}/${p21c1.sh}` : `✗ ${JSON.stringify(p21c1)}`));
 
   /* (b) C3:空槽點擊直達放置——帶入槽位對應預設 u/v,且選中的是預期的游離面 */
   await eval_(`(async()=>{
@@ -3171,10 +3253,9 @@ async function rightClick(x, y) {
     return { clicked: true, focus: oc.focus && JSON.parse(JSON.stringify(oc.focus)),
       u: u && u.value, v: v && v.value };
   })()`);
-  console.log("P21 C3 空槽直達放置:",
-    p21c3click && p21c3.focus && p21c3.focus.t === "face" && p21c3.focus.id === 10 &&
+  console.log("P21 C3 空槽直達放置:",explicitVerdict(p21c3click && p21c3.focus && p21c3.focus.t === "face" && p21c3.focus.id === 10 &&
     p21c3.u === "+y" && p21c3.v === "+x"
-      ? `✓ face=${p21c3.focus.id} u=${p21c3.u} v=${p21c3.v}` : `✗ ${JSON.stringify(p21c3)}`);
+      ? `✓ face=${p21c3.focus.id} u=${p21c3.u} v=${p21c3.v}` : `✗ ${JSON.stringify(p21c3)}`));
   await eval_(`leaveFocus()`);
   await sleep(300);
 
@@ -3194,8 +3275,8 @@ async function rightClick(x, y) {
     const b = document.querySelector(".rc-act");
     return b ? Math.round(b.getBoundingClientRect().height) : null;
   })()`);
-  console.log("P21 C4 rc-act熱區≥28:", p21c4 !== null && p21c4 >= 28
-    ? `✓ h=${p21c4}` : `✗ ${JSON.stringify(p21c4)}`);
+  console.log("P21 C4 rc-act熱區≥28:",explicitVerdict(p21c4 !== null && p21c4 >= 28
+    ? `✓ h=${p21c4}` : `✗ ${JSON.stringify(p21c4)}`));
   await eval_(`leaveFocus()`);
   await sleep(300);
 
@@ -3211,9 +3292,8 @@ async function rightClick(x, y) {
       bottom: Math.round(canvas.bottom - bb.bottom),
       inToolbar: !!bar.closest("#viewToolbar") };
   })()`);
-  console.log("P21 D2 縮放列移左下:",
-    p21d2 && p21d2.left < 100 && p21d2.bottom < 60 && !p21d2.inToolbar
-      ? `✓ ${JSON.stringify(p21d2)}` : `✗ ${JSON.stringify(p21d2)}`);
+  console.log("P21 D2 縮放列移左下:",explicitVerdict(p21d2 && p21d2.left < 100 && p21d2.bottom < 60 && !p21d2.inToolbar
+      ? `✓ ${JSON.stringify(p21d2)}` : `✗ ${JSON.stringify(p21d2)}`));
   await eval_(`document.getElementById("btnCanvasView").click()`);
   await sleep(300);
 
@@ -3236,22 +3316,22 @@ async function rightClick(x, y) {
   await sleep(700);
   const p22a = await eval_(`api("objects").then(r=>({
     called: window.__confirmCalled, gone: !r.faces.some(f=>f.id===41)}))`);
-  console.log("P22 不彈confirm+直接刪除:", !p22a.called && p22a.gone
-    ? "✓" : `✗ ${JSON.stringify(p22a)}`);
+  console.log("P22 不彈confirm+直接刪除:",explicitVerdict(!p22a.called && p22a.gone
+    ? "✓" : `✗ ${JSON.stringify(p22a)}`));
   /* (b) toast 提示可復原 */
   const p22b = await eval_(`(()=>{
     const ts=[...document.querySelectorAll("#toastRegion .toast")];
     const t=ts[ts.length-1];
     return t ? t.textContent : null;
   })()`);
-  console.log("P22 toast含復原字樣:", p22b && (p22b.includes("復原") || p22b.includes("Ctrl+Z"))
-    ? `✓ ${p22b}` : `✗ ${p22b}`);
+  console.log("P22 toast含復原字樣:",explicitVerdict(p22b && (p22b.includes("復原") || p22b.includes("Ctrl+Z"))
+    ? `✓ ${p22b}` : `✗ ${p22b}`));
   /* (c) Ctrl+Z 一次整組復原(boundary 41 沒有 placement,delete 只有一行,仍走同一 mutate 機制) */
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "z", code: "KeyZ", modifiers: 2, windowsVirtualKeyCode: 90 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "z", code: "KeyZ", modifiers: 2, windowsVirtualKeyCode: 90 });
   await sleep(800);
   const p22c = await eval_(`api("objects").then(r=>r.faces.some(f=>f.id===41))`);
-  console.log("P22 Ctrl+Z復原:", p22c ? "✓" : `✗ ${p22c}`);
+  console.log("P22 Ctrl+Z復原:",explicitVerdict(p22c ? "✓" : `✗ ${p22c}`));
 
   const gridRefUi = await eval_(`(async()=>{
     resetSceneFocus();
@@ -3288,12 +3368,11 @@ async function rightClick(x, y) {
   const gridRefUiOk = gridRefUi && gridRefUi.hasRef && gridRefUi.locked &&
     gridRefUi.before && gridRefUi.before.L === 2960 &&
     JSON.stringify(gridRefUi.before) === JSON.stringify(gridRefUi.after);
-  if (gridRefUiOk) passN++; else failN++;
-  _log("P23 grid-ref 存檔上傳後足跡與引用鎖:", gridRefUiOk ? "PASS" : "FAIL", JSON.stringify(gridRefUi));
+  console.log("P23 grid-ref 存檔上傳後足跡與引用鎖:",explicitVerdict(gridRefUiOk ? "✓" : "✗"), JSON.stringify(gridRefUi));
 
   }
   if (!process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY) { // P24–P32 使用獨立作用域，避免與既有測試的輔助函式同名。
-  const check = (name, ok, detail = '') => console.log(name, ok ? '✓' : '✗', JSON.stringify(detail));
+  const check = (name, ok, detail = '') => console.log(name,explicitVerdict(ok ? '✓' : '✗'), JSON.stringify(detail));
   const waitIdle = async () => {
     for (let i=0;i<100;i++) {
       if (await eval_('!oc.busy && !dragging')) return;
@@ -3305,6 +3384,7 @@ async function rightClick(x, y) {
     const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,hit:e.contains(hit),target:hit?.outerHTML?.slice(0,200)}})()`);
     if (!p.hit) throw Error('Control is not reachable '+sel+' '+JSON.stringify(p));
     await click(p.x,p.y); await sleep(120); await waitIdle();
+    await eval_(`window.__cdpSettleUI(0)`);
   };
   const setupRemaining = async lines => {
     const out = await eval_(`(async()=>{await setView3(false);resetSceneFocus();await api('reset');const out=[];for(const s of ${JSON.stringify(lines)})out.push(await api('line '+s));await renderObjects();return out})()`);
@@ -3313,6 +3393,7 @@ async function rightClick(x, y) {
   const remainingShot = async name => {
     const dest=process.env.GEOMETRY_REPAIR_SCREENSHOT_DIR;
     if (!dest) return;
+    fs.mkdirSync(dest,{recursive:true});
     const r=await send('Page.captureScreenshot',{format:'png'});
     require('fs').writeFileSync(require('path').join(dest,name+'.png'),Buffer.from(r.result.data,'base64'));
   };
@@ -3320,6 +3401,9 @@ async function rightClick(x, y) {
   check('P24 page identity',await eval_(`location.href === ${JSON.stringify(process.env.GEOMETRY_TEST_URL || 'http://localhost:8765/')} && document.title.length>0 && document.querySelectorAll('button').length>10 && !document.querySelector('vite-error-overlay,nextjs-portal')`));
 
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY) {
+  // P31 starts from its own default scene, so a failed asynchronous modal wait
+  // can be rerun together with every remaining phase without repeating P1–30.
+  if (!process.env.GEOMETRY_CDP_FROM_P31) {
   for (const axis of ['x','y']) for (const center of [-100,-1,0,100]) for (const width of [300,301]) {
     await setupRemaining([`beam 1 along ${axis} from 0 to 1000 at ${center} width ${width} depth 100 top 1000`]);
     await eval_(`selectObject('beam',1)`);
@@ -3417,6 +3501,7 @@ async function rightClick(x, y) {
     }
     check('P29 example loads from web directory @'+width,loaded.name==='room_a.scene' && loaded.path!=='room_a.scene' && loaded.ids.includes(1) && !loaded.ids.includes(99) && loaded.status.includes('已載入'),loaded);
   }
+  }
   await eval_(`(async()=>{resetSceneFocus();await api('default');await setView3(false);await renderObjects();await enterFocus('face',1);fiShowTab('guide')})()`);
   const beforeImpact = (await eval_(`api('dump')`)).text;
   await eval_(`document.querySelector('#refSpecName').value='主支中線';document.querySelector('#refSpecValue').value='900';document.querySelector('#refSpecSave').click();void 0`);
@@ -3425,10 +3510,12 @@ async function rightClick(x, y) {
   check('P31 preview leaves world unchanged',(await eval_(`apiRequest('dump')`)).text===beforeImpact);
   await clickSelector('#impact-confirm');
   check('P31 confirm updates dependent center',await eval_(`apiRequest('references').then(r=>r.timbers.find(t=>t.id===3).geometry.centerline===900)`));
-  await eval_(`window.__previewResult=api('line spec 主支中線 1200');void 0`);await sleep(100);
+  await eval_(`window.__previewResult=api('line spec 主支中線 1200');void 0`);
+  await waitForUI(`!!document.querySelector('dialog.reference-impact[open] .impact-actions button:first-child')`,10000);
   await clickSelector('dialog.reference-impact .impact-actions button:first-child');
   check('P31 cancel keeps approved world',await eval_(`apiRequest('references').then(r=>r.timbers.find(t=>t.id===3).geometry.centerline===900)`));
-  await eval_(`window.__previewResult=api('line spec 主支中線 0');void 0`);await sleep(100);
+  await eval_(`window.__previewResult=api('line spec 主支中線 0');void 0`);
+  await waitForUI(`!!document.querySelector('dialog.reference-impact[open] #impact-confirm')`,10000);
   check('P31 invalid impact cannot confirm',await eval_(`document.querySelector('#impact-confirm').disabled && document.querySelectorAll('.impact-violation').length>0`));
   await clickSelector('dialog.reference-impact .impact-actions button:first-child');
   await remainingShot('reference-controls');
@@ -3437,6 +3524,7 @@ async function rightClick(x, y) {
   const pressKey = async (key,code,vk,modifiers=0) => {
     for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});
     await sleep(150); await waitIdle();
+    await eval_(`window.__cdpSettleUI(0)`);
   };
   const fillInput = async (selector,text) => {
     await clickSelector(selector);
@@ -3996,6 +4084,7 @@ async function rightClick(x, y) {
   await fillInput('#refSpecName','主支中線');
   await fillInput('#refSpecValue','900');
   await clickSelector('#refSpecSave');
+  await waitForUI(`!!document.querySelector('dialog.reference-impact[open]')`,10000);
   check('P37 reference form opens native impact dialog',await eval_(`!!document.querySelector('dialog.reference-impact[open]')`));
   await pressKey('Escape','Escape',27);
   check('P37 impact Escape cancels only dialog and retains face',await eval_(`!document.querySelector('dialog.reference-impact[open]') && oc.focus?.t==='face' && oc.focus.id===1 && !document.querySelector('#objectWorkspace').hidden`));
@@ -4025,7 +4114,8 @@ async function rightClick(x, y) {
   await clickSelector('#faceInspectorTabs [data-fi-tab="components"]');
   check('P38 指出位置記下元素、且那一下沒有交給 app', await eval_(`!document.querySelector('#fbPanel').hidden && document.querySelector('#fbTarget').textContent.includes('data-fi-tab="components"')`) && await eval_(`fe.fiTab`) === tabBefore);
   if (!fbDir) {
-    console.log('P38 送出/自動擷取段略過:serve.py 未設 GEOMETRY_FEEDBACK_DIR(避免寫進 repo 的 feedback/)');
+    skipped.push('P38 feedback submission/automatic capture: isolated feedback directory unavailable');
+    console.log('[SKIP]',skipped.at(-1));
     await pressKey('Escape','Escape',27);
   } else {
     const before = fbList();
@@ -4051,10 +4141,13 @@ async function rightClick(x, y) {
     }
     check('P38 送出後面板欄位已清空', await eval_(`document.querySelector('#fbNote').value==='' && document.querySelector('#fbTarget').textContent==='尚未指定元素'`));
     const before2 = fbList();
+    expectedException={message:'Error: fb-auto-probe',until:Date.now()+15000};
     await eval_(`setTimeout(()=>{throw new Error('fb-auto-probe')},0)`);
     for (let i=0;i<60 && fbList().length===before2.length;i++) await sleep(100);
     const auto = fbList().filter(n=>!before2.includes(n));
     check('P38 未捕捉的 JS 例外自動存一筆 kind=auto', auto.length===1 && fbMeta(auto[0]).kind==='auto' && fbMeta(auto[0]).auto_reason.includes('fb-auto-probe'), auto);
+    check('P38 預期的單次例外確實抵達',expectedException===null);
+    expectedException=null;
     const before3 = fbList();
     await eval_(`api('line place 998 on 1 at-line guide 1')`);
     await sleep(800);
@@ -4648,11 +4741,11 @@ async function rightClick(x, y) {
       anchor: document.getElementById('tbEditAnchor').value,
     } : { exists: false };
   })()`);
-  check('P46a #tbEditForm 出現且 A/B/dir/side 預填正確(anchor 橋接不回傳、固定留空)',
+  check('P46a #tbEditForm 出現且尺寸、方向及原定位引用皆正確帶入',
     p46a.exists && p46a.A === '27' && p46a.B === '33' && p46a.dir === '+u' &&
-    p46a.side === '+n' && p46a.anchor === '', p46a);
+    p46a.side === '+n' && p46a.anchor === 'at-face e0', p46a);
 
-  /* (b) 改 A=40、B=60、side 改 -n、錨點重選 at-face e0(同一邊)→ 套用 →
+  /* (b) 改 A=40、B=60、side 改 -n，保留已帶入的原定位引用 → 套用 →
      fe.timbers 仍只有一筆 id 10、A/B/side 如預期、fe.sel 仍是 timber 10。
      不用 clickSelector——它內建 waitIdle() 只等 5 秒,而 mutate() 的 oc.busy 在
      I8a 對話框開著、等使用者確認的整段期間都是 true,5 秒等不到會直接丟例外。
@@ -4662,7 +4755,6 @@ async function rightClick(x, y) {
     document.getElementById('tbEditA').value = '40';
     document.getElementById('tbEditB').value = '60';
     document.getElementById('tbEditSide').value = '-n';
-    document.getElementById('tbEditAnchor').value = 'at-face e0';
   }`);
   await eval_(`document.getElementById('tbEditApply').click()`);
   for (let i = 0; i < 30 && !(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)); i++) await sleep(100);
@@ -4696,8 +4788,13 @@ async function rightClick(x, y) {
   check('P46d A=0 套用被擋、toast 出現、fe.timbers 不變',
     p46d.ok === false && p46d.A === 27 && p46d.toast.includes('正整數'), p46d);
 
-  /* (e) 橋接不回傳錨點(已於前面確認 P46a),改錨點驗證無從進行——略過,log 說明 */
-  console.log('P46e 橋接未回傳錨點,略過');
+  /* (e) Stored anchors can be changed explicitly and read back after revalidation. */
+  await eval_(`$('tbEditA').value='27';$('tbEditAnchor').value='at-face e2';$('tbEditApply').click()`);
+  for (let i=0;i<30 && !(await eval_(`!!document.querySelector('dialog.reference-impact[open]') || !oc.busy`));i++) await sleep(100);
+  if(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)) await eval_(`$('impact-confirm').click()`);
+  await waitForUI(`!oc.busy`,10000);await sleep(300);
+  const p46e=await eval_(`(async()=>{await feLoadGuides();return fe.timbers.find(t=>t.id===10);})()`);
+  check('P46e 明確改到對邊後回傳新定位並保持同一角材 ID',p46e?.definition?.anchor==='at-face e2' && p46e.A===27 && p46e.id===10,p46e);
 
   console.log('=== P47. 面內「角材放置」表單 UX 止血(GEO-195) ===');
   /* geometry-core/transactions.inc::reference_default_world 就是本票起因場景本身
@@ -5917,7 +6014,8 @@ async function rightClick(x, y) {
   }
 
   if (!process.env.GEOMETRY_REFERENCE_ONLY) { // GEO-197：四項流程修正，使用真实 UI 事件與可恢復的故障注入。
-    const check = (name, ok, detail = '') => console.log(name, ok ? '✓' : '✗', JSON.stringify(detail));
+    console.log('=== P53. 連線錯誤、重新載入與重試 ===');
+    const check = (name, ok, detail = '') => console.log(name,explicitVerdict(ok ? '✓' : '✗'), JSON.stringify(detail));
     const until = async expr => {
       for (let i = 0; i < 120; i++) { if (await eval_(expr) === true) return; await sleep(100); }
       throw Error('GEO-197 wait failed: ' + expr);
@@ -5941,6 +6039,7 @@ async function rightClick(x, y) {
       if (r !== true) throw Error('GEO-197 setup failed: ' + JSON.stringify(r));
     };
     await send('Emulation.setDeviceMetricsOverride', {width:1400,height:1000,deviceScaleFactor:1,mobile:false});
+    console.log('P53 setup isolated connection fixture');
     await scene(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000']);
     const beforeConnection = await eval_(`api('dump').then(r=>r.text)`);
     const injected = await send('Page.addScriptToEvaluateOnNewDocument', { source: `
@@ -5959,7 +6058,9 @@ async function rightClick(x, y) {
         }
         return window.__g197NativeFetch(input, init);
       };` });
+    console.log('P53 reload with expected test-project leave protection');
     await send('Page.reload');
+    console.log('P53 wait for injected connection error');
     await until(`typeof connection !== 'undefined' && connection.phase === 'error'`);
     const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert})`);
     check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert, failedStart);
@@ -6037,7 +6138,7 @@ async function rightClick(x, y) {
   { // GEO-198: portable references, browser PDF rendering and context isolation.
     console.log('=== P57–P61. PDF 與專案保存(GEO-198) ===');
     const referenceExceptions = excN;
-    const check=(name,value,detail=value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(detail));
+    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
     const until=async expr=>{for(let i=0;i<150;i++){if(await eval_(expr)===true)return;await sleep(100);}throw Error('G198 wait: '+expr);};
     const ctl=async selector=>{
       const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
@@ -6200,16 +6301,18 @@ async function rightClick(x, y) {
     })()`));
     const receiptDir=require('fs').mkdtempSync(require('path').join(require('os').tmpdir(),'geometry-receipt-'));
     const receiptScene=require('path').join(receiptDir,'same-id.scene');
+    const receiptServerScene=serverFixturePath(receiptScene);
     require('fs').writeFileSync(receiptScene,'boundary 1 outline 0,0 3000,0 3000,1500 0,1500\n');
     try {
-      check('P61-15 場景載入回應遺失，重連隔離同號面且復原恢復來源',await eval_(`(async()=>{
-        const old=window.fetch.bind(window),ref=ReferenceWorkspace.active(1).id,cmd='loadfile '+${JSON.stringify(receiptScene)};
+      const receiptLoadResult=await eval_(`(async()=>{
+        const old=window.fetch.bind(window),ref=ReferenceWorkspace.active(1).id,cmd='loadfile '+${JSON.stringify(receiptServerScene)};
         window.fetch=async(input,init)=>{const body=input==='/api'&&JSON.parse(init.body);if(body?.cmd===cmd){await old(input,init);throw new TypeError('lost load reply');}if(body?.receipt)throw new TypeError('still offline');return old(input,init);};
         let result;try{result=await api(cmd);}finally{window.fetch=old;}
         const blocked=!result.ok&&connection.phase==='error';await recoverConnection();
         const isolated=connection.phase==='ready'&&!ReferenceWorkspace.active(1)&&!oc.underlays[1];
-        await doUndoRedo('undo');return blocked&&isolated&&ReferenceWorkspace.active(1)?.id===ref;
-      })()`));
+        await doUndoRedo('undo');return {blocked,isolated,restored:ReferenceWorkspace.active(1)?.id===ref,result};
+      })()`);
+      check('P61-15 場景載入回應遺失，重連隔離同號面且復原恢復來源',receiptLoadResult?.blocked&&receiptLoadResult.isolated&&receiptLoadResult.restored,receiptLoadResult);
     } finally {require('fs').unlinkSync(receiptScene);require('fs').rmdirSync(receiptDir);}
     check('P61-16 群組提交回應遺失仍只復原一步並保留來源',await eval_(`(async()=>{
       const old=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
@@ -6241,7 +6344,7 @@ async function rightClick(x, y) {
        工具族(guide/hole/timber 族)、拖曳尺寸膠囊、space-pan、busy;
        (c) overlay pointer-events:none 不干擾命中、進畫布隱原生游標、離開即隱藏。 */
     console.log('=== P62. 自訂 SVG 游標(方向 1b) ===');
-    const ck62 = (n, v, d) => console.log(n, v === true ? '✓' : '✗', v === true ? '' : JSON.stringify(d));
+    const ck62 = (n, v, d) => console.log(n,explicitVerdict(v === true ? '✓' : '✗'), v === true ? '' : JSON.stringify(d));
     /* 面內區段慣例:視窗放大到 5400×3800,讓 zoom=1 的 scene mm 座標直接等於螢幕 px,
        可以直接對 4000×3000 的面點擊/滑過任意 mm 座標(同 P48-P52)。 */
     await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
@@ -6424,7 +6527,7 @@ async function rightClick(x, y) {
   { // Reference interface: user-visible workflow and mobile point picking.
     console.log('=== P63. 參考描面新版介面 ===');
     const startErrors=excN;
-    const check=(name,value,detail=value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(detail));
+    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
     const ctl=async selector=>{
       const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
       await click(p.x,p.y);await sleep(100);
@@ -6482,7 +6585,7 @@ async function rightClick(x, y) {
 
   { // The 2026-09-27 review draft: visible controls and their real interactions.
     console.log('=== P64. UI/UX 審查修正稿 ===');
-    const check=(name,value,detail=value)=>console.log(name,value===true?'✓':'✗',value===true?'':JSON.stringify(detail));
+    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
     const setupRemaining=async lines=>{
       const out=await eval_(`(async()=>{await setView3(false);resetSceneFocus();await api('reset');const out=[];for(const s of ${JSON.stringify(lines)})out.push(await api('line '+s));await renderObjects();return out})()`);
       if (!Array.isArray(out)||out.some(r=>!r.ok)) throw Error('P64 setup '+JSON.stringify(out));
@@ -6494,6 +6597,7 @@ async function rightClick(x, y) {
     };
     const remainingShot=async name=>{
       const dest=process.env.GEOMETRY_REPAIR_SCREENSHOT_DIR;if(!dest)return;
+      fs.mkdirSync(dest,{recursive:true});
       const r=await send('Page.captureScreenshot',{format:'png'});
       require('fs').writeFileSync(require('path').join(dest,name+'.png'),Buffer.from(r.result.data,'base64'));
     };
@@ -6585,8 +6689,8 @@ async function rightClick(x, y) {
       $('tbRole').value='custom';$('tbRole').dispatchEvent(new Event('change',{bubbles:true}));
       return before&&a.hidden&&b.hidden;})()`));
     await eval_(`fe.sel={kind:'timber',id:fe.timbers[0].id};renderFaceInspector();feRunAction('edit')`);
-    const t4=await eval_(`({tab:fe.fiTab,focus:document.activeElement.id,note:$('tbSelected')?.textContent.includes('重新選擇定位引用')})`);
-    check('P64 T4 編輯角材聚焦並要求重選錨點',t4.tab==='timber'&&t4.focus==='tbEditAnchor'&&t4.note,t4);
+    const t4=await eval_(`({tab:fe.fiTab,focus:document.activeElement.id,anchor:$('tbEditAnchor')?.value,note:$('tbSelected')?.textContent.includes('已帶入原定位引用')})`);
+    check('P64 T4 編輯角材聚焦且明示已帶入原定位引用',t4.tab==='timber'&&t4.focus==='tbEditAnchor'&&!!t4.anchor&&t4.note,t4);
     const edgeTimber=await eval_(`(async()=>{const occupied=[...$('tbAnchor').options].find(o=>/^at-face e\\d+$/.test(o.value)&&o.textContent.includes('已有角材'));const i=occupied?((+occupied.value.match(/e(\\d+)$/)[1]+2)%4):0,free='at-face e'+i;fe.sel={kind:'edge',loop:0,i};await feRunAction('timber');return {n:fe.timbers.length,free,anchor:$('tbAnchor')?.value,dir:$('tbDir')?.value,side:$('tbSide')?.value,role:$('tbRole')?.value,toast:[...document.querySelectorAll('.toast')].map(e=>e.textContent)};})()`);
     check('P64 F2 邊浮動列可沿選邊放角材',edgeTimber.n===2&&edgeTimber.anchor===edgeTimber.free,edgeTimber);
     await setupRemaining(['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000','space 1 boundary 1']);
@@ -6601,7 +6705,69 @@ async function rightClick(x, y) {
     check('P64 V1-V2 三視圖工作面、高度與 SVG 控制',await eval_(`!$('v3PlaneControls').hidden && $('v3ToolbarSurf').options.length>0 && document.querySelectorAll('#v3ZoomBar .v3-zoom button svg').length>=2`));
   }
 
+  { // First-version space-model entry points; the full real-browser flow lives in space_model_test.js.
+    console.log('=== P65. 從面建立 3D 空間入口 ===');
+    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
+    await eval_(`leaveFocus();setView3(false)`);await sleep(200);
+    check('P65-1 正式版本載入建模模組並提供現成範例入口',await eval_(`typeof SpaceModelWorkspace==='object' && !!$('btnSpaceModelTrial') && !!$('btnSpaceModels') && !!$('btnFaceSpaceModel') && $('btnSpaceModelTrial').textContent.includes('現成範例')`));
+    await eval_(`$('btnSpaceModelTrial').click()`);await sleep(200);
+    check('P65-2 三步操作、範例與明示高度欄位皆在正式工作區',await eval_(`$('smWorkspace').open && !!$('smTryRectangle') && !!$('smTryLShape') && !!$('smBottom') && !!$('smHeight') && !!$('smPreview') && !!$('smConfirmFaces') && !!$('smCreate')`));
+    for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+    await sleep(100);
+    check('P65-3 Esc 可關閉建模工作區',await eval_(`!$('smWorkspace').open`));
+  }
+
+  { // Projection metadata is explicit per face; full persistence is exercised by space_model_test.js.
+    console.log('=== P66. 每面平面投影用途與建模守門 ===');
+    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
+    const ctl=async selector=>{const r=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y)),disabled:e.disabled};})()`);if(!r.hit||r.disabled)throw Error('Projection control unreachable '+selector);await click(r.x,r.y);await sleep(150);};
+    await send('Emulation.setDeviceMetricsOverride',{width:1382,height:804,deviceScaleFactor:1,mobile:false});
+    await eval_(`(async()=>{await leaveFocus();await setView3(false);await api('reset');await api('line surface 501 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000');await renderObjects();await enterFocus('face',501);})()`);
+    check('P66-1 面工作區提供真正的投影設定入口',await eval_(`typeof FaceProjection==='object' && !!$('btnFaceProjection') && ReferenceWorkspace.getFaceProjection(501,501)==null`));
+    await ctl('#btnFaceSpaceModel');
+    await waitForUI(`$('smWorkspace').open && SpaceModelWorkspace.snapshot().phase==='ready'`);
+    check('P66-2 未定義的自己面不偷推用途或方向',await eval_(`!$('smProjectionCallout').hidden && $('smPreview').disabled && $('smCreate').disabled`));
+    await ctl('#smSetProjection');
+    await waitForUI(`$('fpDialog')?.open`);
+    check('P66-3 對話框明示位置、輪廓、用途、視向與內淨空',await eval_(`$('fpPurpose').value==='general' && !$('fpInterior').checked && /2500|2,500/.test($('fpZ').textContent) && !!$('fpOutline') && !!$('fpView') && !!$('fpPlacement')`));
+    await ctl('#fpCancel');
+    check('P66-4 取消設定不寫入任何投影定義',await eval_(`ReferenceWorkspace.getFaceProjection(501,501)==null && $('smPreview').disabled`));
+    await ctl('#smClose');
+  }
+
+  }
+  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY)
+    await require('./project_audit_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY)
+    await require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY)
+    await require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN});
+
   chrome.kill();
-  _log(`\n=== 結果:${passN} ✓ / ${failN} ✗ ===`);
+  if(passN+failN===0){failN++;_log('No assertions executed');}
+  _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);
+  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
   process.exit(failN > 0 ? 1 : 0);
-})().catch(e => { console.log("FATAL:", e.message); chrome.kill(); process.exit(1); });
+}
+async function fatal(e) {
+  _log("FATAL:", e.message);
+  try {
+    if(ws?.readyState===1){
+      const state=await Promise.race([eval_(`({ready:document.readyState,focus:typeof oc==='object'?oc.focus:null,dialogs:[...document.querySelectorAll('dialog[open]')].map(d=>({id:d.id,classes:d.className,text:d.textContent.slice(0,1200)})),active:document.activeElement?.id,feedback:document.querySelector('#fbPanel')?.hidden,status:document.querySelector('#status')?.textContent})`),delay(1500).then(()=>null)]);
+      _log('FATAL_UI:',JSON.stringify(state));
+      const capture=await Promise.race([send('Page.captureScreenshot',{format:'png'}),delay(1500).then(()=>null)]);
+      if(capture?.result?.data&&process.env.GEOMETRY_REPAIR_SCREENSHOT_DIR){
+        fs.mkdirSync(process.env.GEOMETRY_REPAIR_SCREENSHOT_DIR,{recursive:true});
+        fs.writeFileSync(path.join(process.env.GEOMETRY_REPAIR_SCREENSHOT_DIR,'fatal-state.png'),Buffer.from(capture.result.data,'base64'));
+      }
+    }
+  } catch(captureError) {_log('FATAL_CAPTURE_FAILED:',captureError.message);}
+  finally {
+    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped}));
+    chrome?.kill();process.exit(1);
+  }
+}
+if(require.main===module){
+  try {scope=runConfiguration();console.log=recordLog;(async()=>{await assertPortAvailable(PORT);chrome=startBrowser();chrome.on('error',fatal);_log('CDP_SCOPE '+JSON.stringify(scope));await main();})().catch(fatal);}
+  catch(error){_log('CDP preflight failed:',error.message);process.exitCode=1;}
+} else module.exports={runConfiguration,assertionVerdicts,evaluationValue,explicitVerdict,assertPortAvailable,verifyBrowserOwnership};

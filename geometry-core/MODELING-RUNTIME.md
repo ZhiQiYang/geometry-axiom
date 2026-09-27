@@ -83,4 +83,6 @@ ModelWorld 每次變更先完整求值候選，再明示確認；確認前再驗
 - `modeling/__init__.py`／`common.py`：交換包、摘要、匯入及原子候選交易。
 - `modeling_cli.py`：命令列與 OBJ 適配器。
 
-舊 C World 新增型別、畫布建立／編輯介面、GLB 與 SketchUp 專用適配器是後續接入項目。
+GEO-130 交付時，畫布尚未接入；後續 GEO-205～210 已提供正式 Canvas「從面建立 3D 空間」、納入來源面角材、模型保存／重開及平面模式的牆高編輯，操作與範圍見 [空間建模](../geometry-web/docs/SPACE-MODELING.md)。這些模型使用建模執行器與獨立交換包，沒有把新型別併入舊 C World，也不自動隨來源變更更新。
+
+舊 C World 新增型別、已存模型除牆高以外的完整設定編輯、GLB 與 SketchUp 專用適配器，以及第二套完整引擎的跨實作符合性驗收仍是後續項目。原 GEO-130 的測試範圍保留於 `MODELING-VALIDATION.md`，後續 Canvas 驗收記於 `BACKLOG.md` GEO-205～210。

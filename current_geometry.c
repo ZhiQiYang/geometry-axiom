@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #ifdef _MSC_VER
 #include <intrin.h>
 #endif
@@ -15,11 +16,11 @@
  * 目前整合版：
  *
  * 1. 建立房間座標中的空間邊界面。
- * 2. 從空間邊界面推導四條正交邊。
+ * 2. 從正交多邊形輪廓與孔推導邊，支援空間、RC 柱樑及其投影。
  * 3. 每條邊可取得局部座標、房間座標，以及它所在的側向平面。
  * 4. 在空間邊界面上建立非實體參考線。
- * 5. 以兩條參考線的交點作為角材放置錨點。
- * 6. Construct 一支 27 × 33 × L 的完整角材。
+ * 5. 以 at-line / at-face 保存角材定位引用；主格、子格與共用基準皆可推導定位。
+ * 6. 宣告角材截面 A × B，長度依合法擋面與跨距推導；變更依賴時預覽並重驗。
  * 7. 把角材 A0 面貼到空間邊界面。
  * 8. 從完整角材推導 A0、A1、B0、B1、START、END 六個面。
  *
@@ -1030,6 +1031,7 @@ typedef enum {
 } GuideDirection;
 
 #include "geometry-core/reference_types.h"
+#include "geometry-core/engineering_types.h"
 
 typedef struct {
     GuideLineId id;
@@ -3561,7 +3563,21 @@ static bool emit_svg_three_views(const char *path, const Scene *scene, const Sce
 
     fprintf(out, "</svg>\n");
 
-    return fclose(out) == 0;
+    /* A previous buffered write can fail even when fclose itself succeeds. */
+    bool failed = ferror(out) != 0;
+    if (fclose(out) != 0) failed = true;
+    if (failed) {
+        /* Remove an incomplete regular output only; never unlink a device such as /dev/full. */
+        struct stat output_stat;
+        if (stat(path, &output_stat) == 0) {
+#if defined(_WIN32) || defined(_MSC_VER)
+            if ((output_stat.st_mode & _S_IFMT) == _S_IFREG) remove(path);
+#else
+            if (S_ISREG(output_stat.st_mode)) remove(path);
+#endif
+        }
+    }
+    return !failed;
 }
 
 /*
@@ -3706,7 +3722,19 @@ typedef struct World {
 
     CanvasPos canvas_pos[WORLD_MAX_CANVAS_POS];
     size_t canvas_pos_count;
+    EngineeringState engineering;
 } World;
+
+static uint64_t g_definition_revision;
+static bool engineering_rebuild(World *,char *,size_t);
+static bool engineering_dump_timber(const World *,const Timber *,FILE *);
+static bool world_definitions_equal(const World *a,const World *b)
+{
+    World x=*a,y=*b;
+    x.canvas_pos_count=y.canvas_pos_count=0;
+    memset(x.canvas_pos,0,sizeof x.canvas_pos);memset(y.canvas_pos,0,sizeof y.canvas_pos);
+    return memcmp(&x,&y,sizeof x)==0;
+}
 
 static const World *g_subgrid_before;
 static void reference_capture_trial(const World *world);
@@ -3852,6 +3880,7 @@ static bool history_undo(World *w)
     }
     g_hist_redo[g_hist_redo_n++] = *w;
     history_restore_world(w, &g_hist_undo[--g_hist_undo_n]);
+    ++g_definition_revision;
     return true;
 }
 
@@ -3867,6 +3896,7 @@ static bool history_redo(World *w)
     }
     g_hist_undo[g_hist_undo_n++] = *w;
     history_restore_world(w, &g_hist_redo[--g_hist_redo_n]);
+    ++g_definition_revision;
     return true;
 }
 
@@ -4080,6 +4110,12 @@ typedef struct {
 /* 「#rrggbb」轉 COLORREF。 */
 static COLORREF gdi_color(const char *hex)
 {
+    if (!hex || hex[0] != '#' || strlen(hex) != 7) return RGB(0, 0, 0);
+    for (int i = 1; i < 7; ++i) {
+        char c = hex[i];
+        if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')))
+            return RGB(0, 0, 0);
+    }
     unsigned v = (unsigned)strtoul(hex + 1, NULL, 16);
     return RGB((v >> 16) & 0xffu, (v >> 8) & 0xffu, v & 0xffu);
 }
@@ -4832,6 +4868,13 @@ static LRESULT CALLBACK gdi_input_proc(
     return CallWindowProcW(g_edit_orig_proc, edit, msg, wparam, lparam);
 }
 
+/* Minimized/tiny windows must not send negative control coordinates or dimensions. */
+static void gdi_move_control(HWND control, int x, int y, int width, int height, BOOL repaint)
+{
+    MoveWindow(control, x < 0 ? 0 : x, y < 0 ? 0 : y,
+               width < 0 ? 0 : width, height < 0 ? 0 : height, repaint);
+}
+
 /* 依目前 client 尺寸重排底部輸入列的控制項。 */
 static void gdi_layout_input_bar(HWND window, GdiApp *app)
 {
@@ -4842,16 +4885,16 @@ static void gdi_layout_input_bar(HWND window, GdiApp *app)
     int h = client.bottom - client.top;
 
     /* 頂列左邊是指令回饋（錯誤訊息較長），右邊是 hover 命中物。 */
-    MoveWindow(app->status_label,
+    gdi_move_control(app->status_label,
                8, h - GDI_INPUT_BAR_H + 4, (w - 16) * 3 / 5, 20, TRUE);
-    MoveWindow(app->hover_label,
+    gdi_move_control(app->hover_label,
                8 + (w - 16) * 3 / 5 + 8, h - GDI_INPUT_BAR_H + 4,
                (w - 16) * 2 / 5 - 8, 20, TRUE);
-    MoveWindow(app->input_edit,
+    gdi_move_control(app->input_edit,
                8, h - 34, w - 176, 26, TRUE);
-    MoveWindow(GetDlgItem(window, IDC_BTN_EXAMPLE),
+    gdi_move_control(GetDlgItem(window, IDC_BTN_EXAMPLE),
                w - 162, h - 34, 76, 26, TRUE);
-    MoveWindow(GetDlgItem(window, IDC_BTN_CLEAR),
+    gdi_move_control(GetDlgItem(window, IDC_BTN_CLEAR),
                w - 80, h - 34, 72, 26, TRUE);
 }
 
@@ -5932,7 +5975,8 @@ static void bench_paint(const Scene *scene, const SceneLayout *layout, int iters
     HDC screen = GetDC(NULL);
 
     if (screen == NULL || iters <= 0) {
-        fprintf(stderr, "bench：拿不到螢幕 DC。\n");
+        fprintf(stderr, "bench：拿不到螢幕 DC 或次數無效。\n");
+        if (screen) ReleaseDC(NULL, screen);
         return;
     }
 
@@ -5951,13 +5995,21 @@ static void bench_paint(const Scene *scene, const SceneLayout *layout, int iters
 
     if (sink == NULL || sink_bmp == NULL) {
         fprintf(stderr, "bench：建立量測用位圖失敗。\n");
+        if (sink_bmp) DeleteObject(sink_bmp);
+        if (sink) DeleteDC(sink);
+        ReleaseDC(NULL, screen);
         return;
     }
 
-    SelectObject(sink, sink_bmp);
-
+    HGDIOBJ sink_stock = SelectObject(sink, sink_bmp);
+    if (!sink_stock || sink_stock == HGDI_ERROR) {
+        DeleteObject(sink_bmp); DeleteDC(sink); ReleaseDC(NULL, screen);
+        fprintf(stderr, "bench：選取量測位圖失敗。\n");
+        return;
+    }
+    bool completed = false;
     LARGE_INTEGER freq;
-    QueryPerformanceFrequency(&freq);
+    if (!QueryPerformanceFrequency(&freq) || freq.QuadPart <= 0) goto bench_cleanup;
 
     double cold_setup = 0.0, cold_draw = 0.0, cold_blit = 0.0;
     double warm_setup = 0.0, warm_draw = 0.0, warm_blit = 0.0;
@@ -5969,7 +6021,15 @@ static void bench_paint(const Scene *scene, const SceneLayout *layout, int iters
         HDC mem = CreateCompatibleDC(screen);
         HBITMAP bmp =
             CreateCompatibleBitmap(screen, client.right, client.bottom);
+        if (!mem || !bmp) {
+            if (bmp) DeleteObject(bmp);
+            if (mem) DeleteDC(mem);
+            goto bench_cleanup;
+        }
         HGDIOBJ mem_stock = SelectObject(mem, bmp);
+        if (!mem_stock || mem_stock == HGDI_ERROR) {
+            DeleteObject(bmp); DeleteDC(mem); goto bench_cleanup;
+        }
         QueryPerformanceCounter(&t1);
 
         gdi_cache_release(&app.objects);
@@ -5990,9 +6050,20 @@ static void bench_paint(const Scene *scene, const SceneLayout *layout, int iters
     app.mem_dc = CreateCompatibleDC(screen);
     app.mem_bitmap =
         CreateCompatibleBitmap(screen, client.right, client.bottom);
+    if (!app.mem_dc || !app.mem_bitmap) {
+        if (app.mem_bitmap) DeleteObject(app.mem_bitmap);
+        if (app.mem_dc) DeleteDC(app.mem_dc);
+        app.mem_bitmap = NULL; app.mem_dc = NULL;
+        goto bench_cleanup;
+    }
     app.mem_w = client.right;
     app.mem_h = client.bottom;
     app.mem_stock = SelectObject(app.mem_dc, app.mem_bitmap);
+    if (!app.mem_stock || app.mem_stock == HGDI_ERROR) {
+        DeleteObject(app.mem_bitmap); DeleteDC(app.mem_dc);
+        app.mem_bitmap = NULL; app.mem_dc = NULL;
+        goto bench_cleanup;
+    }
 
     for (int i = 0; i < iters; ++i) {
         LARGE_INTEGER t0, t1, t2;
@@ -6009,10 +6080,14 @@ static void bench_paint(const Scene *scene, const SceneLayout *layout, int iters
         warm_blit += (double)(t2.QuadPart - t1.QuadPart) / freq.QuadPart;
     }
 
+    completed = true;
+bench_cleanup:
     gdi_app_release_objects(&app);
+    SelectObject(sink, sink_stock);
     DeleteObject(sink_bmp);
     DeleteDC(sink);
     ReleaseDC(NULL, screen);
+    if (!completed) { fprintf(stderr, "bench：配置量測資源失敗，已釋放資源。\n"); return; }
 
     printf("\n=== GDI 每幀成本量測（%d 次）===\n", iters);
     printf("cold（每幀重建）：建立 %.1f + 繪製 %.1f + 貼上/拆除 %.1f = %.1f us\n",
@@ -8450,6 +8525,9 @@ static bool world_revalidate(World *world)
     g_revalidate_error[0] = '\0';
     World candidate = *world;
     char grid_error[256]="";
+    if (!engineering_rebuild(&candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    }
     reference_capture_trial(&candidate);
     if (!subgrid_world_valid(&candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error[0]?grid_error:"I25: grid dependency invalid");
@@ -9804,6 +9882,8 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 { return apply_reference_move(p, n, t, c, w); }
 
 #include "geometry-core/references.inc"
+#include "geometry-core/engineering.inc"
+#include "geometry-core/engineering_commands.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -10823,7 +10903,7 @@ static bool proj_rebind_aux(
         world->timbers[i]=k?keep:other;
         world->anchors[i]=k?ka:na;
     }
-    return true;
+    return engineering_follow_fragment(world,old_pl->id);
 }
 
 /* 生成面:房間座標矩形 → 自備框(法向朝外)建 boundary+placement。
@@ -11065,7 +11145,7 @@ static bool proj_apply_one(
                     &world->boundaries[world->boundary_count - 1],
                     nid)) {
                 scene_error(path, line_no,
-                    "拆分後參考線/網格/角材失去承載面");
+                    g_engineering_error[0]?g_engineering_error:"拆分後參考線/網格/角材失去承載面");
                 return false;
             }
             proj_space_drop_member(world, b->id);
@@ -11138,7 +11218,7 @@ static bool proj_apply_one(
                 &world->boundaries[world->boundary_count - 1],
                 nid)) {
             scene_error(path, line_no,
-                "拆分後參考線/網格/角材失去承載面");
+                g_engineering_error[0]?g_engineering_error:"拆分後參考線/網格/角材失去承載面");
             return false;
         }
         proj_space_drop_member(world, b->id);
@@ -11592,6 +11672,7 @@ static bool apply_delete_line(
         return false;
     }
 
+    engineering_drop_owned(world,kind,id);
     if (!world_revalidate(world)) {
         *world = backup;
         scene_error(path, line_no, "刪除後 World 失效，已回滾");
@@ -11770,6 +11851,7 @@ static void dump_loop(FILE *out, const PolygonLoop2 *loop)
 
 static void world_dump_dsl(const World *world, FILE *out)
 {
+    engineering_dump_versions(world,out);
     for (size_t i = 0; i < world->boundary_count; ++i) {
         const SpaceBoundarySurface *b = &world->boundaries[i];
 
@@ -11812,10 +11894,12 @@ static void world_dump_dsl(const World *world, FILE *out)
     for (size_t i = 0; i < world->spec_count; ++i)
         fprintf(out, "spec %s %lld\n", world->specs[i].name, (long long)world->specs[i].value);
 
+    engineering_dump_applications(world,out);
     for (size_t i = 0; i < world->grid_count; ++i) {
         const ReferenceGrid *g = &world->grids[i];
 
         if (g->is_subgrid) continue;
+        if (engineering_dump_grid(world,g,out)) continue;
 
         bool main_along_dumped = false;
         for (int pass = 0; pass < 2; ++pass) {
@@ -12020,6 +12104,8 @@ static const struct {
     const char *usage;
     bool (*apply)(const char *path, int line_no, char *tokens[], int count, World *world);
 } SCENE_COMMANDS[] = {
+    { "requires", 2, 2, false, "requires engineering-spec/1", apply_requires_line },
+    { "engineering", 3, 3, false, "engineering kind base64-json", apply_engineering_line },
     { "subgrid", 16, 16, true, "subgrid id parent id cell u lo hi v lo hi divisions u n v n", apply_subgrid_line },
     { "spec", 3, 3, false, "spec 名稱 整數mm", apply_spec_line },
     {
@@ -12430,7 +12516,28 @@ int main(int argc, char **argv)
                 return 1;
             }
 
-            bench_iters = atoi(argv[++i]);
+            const char *value = argv[++i];
+            char *end = NULL;
+            errno = 0;
+            long parsed = strtol(value, &end, 10);
+            if (!value[0] || value[0] < '0' || value[0] > '9' || errno == ERANGE ||
+                !end || *end || parsed < 1 || parsed > 1000000) {
+                fprintf(stderr, "--bench 次數須為 1 至 1000000 的整數。\n");
+                return 1;
+            }
+            bench_iters = (int)parsed;
+            open_window = false;
+        } else if (strcmp(argv[i], "--help") == 0) {
+            printf("用法：%s [--no-window] [--scene 路徑] [--out 路徑] [--bench N] [--help]\n"
+                   "  --no-window  不開啟視窗\n"
+                   "  --scene 路徑  載入場景檔\n"
+                   "  --out 路徑    SVG 輸出路徑\n"
+                   "  --bench N     GDI 測試次數，1..1000000（Windows）\n"
+                   "  --help        顯示用法，不建立輸出\n", argv[0]);
+            return 0;
+        } else {
+            fprintf(stderr, "不認得的參數：%s；請用 --help 查看用法。\n", argv[i]);
+            return 1;
         }
     }
 

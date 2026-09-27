@@ -1,4 +1,5 @@
-/* 畫布功能端到端測試：透過 serve.py 的 /api HTTP 介面（或直連 bridge）。
+/* 畫布橋接器／幾何整合測試：透過 serve.py 的 /api HTTP 介面（或直連 bridge）。
+ * 不執行 DOM 或瀏覽器點擊；實際介面操作由 cdp_test.js 驗證。
  * 用法：node canvas_test.js          → 走 http://localhost:8765/api
  *       node canvas_test.js direct   → 直接 spawn web_bridge.exe
  * 不重實作幾何——照抄前端的仿射/編輯算式，對照 bridge 的 uv/proj/bhit。
@@ -353,8 +354,11 @@ function check(name, cond, detail="") {
   const bAfter = await api("boundary 1");
   check("鬼影不改邊界", JSON.stringify(bBefore) === JSON.stringify(bAfter));
   /* 未放置面 → ok:false(R9) */
-  check("未放置面拒絕", !(await api("line boundary 7 outline 0,0 100,0 100,100 0,100")).ok === false ||
-        !(await api("obstacles 7")).ok);
+  const unplacedBoundary = await api("line boundary 7 outline 0,0 100,0 100,100 0,100");
+  check("未放置面建立成功", unplacedBoundary.ok === true, JSON.stringify(unplacedBoundary));
+  const unplacedObstacles = await api("obstacles 7");
+  check("未放置面拒絕", unplacedObstacles.ok === false &&
+        /尚未放置/.test(unplacedObstacles.error || ""), JSON.stringify(unplacedObstacles));
 
   /* ==== §M. apply-proj 套用(P13:B-1 七種分類 + 拆分/回滾)==== */
   console.log("== M. apply-proj ==");

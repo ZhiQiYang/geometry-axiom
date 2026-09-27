@@ -90,8 +90,10 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
         return err_json("指令不得含換行或 NUL")
-    if cmd.startswith("loadfile "):
-        cmd = "loadfile " + to_bridge_path(cmd[len("loadfile "):])
+    for prefix in ("loadfile ", "engineering-preview ", "engineering-validate "):
+        if cmd.startswith(prefix):
+            cmd = prefix + to_bridge_path(cmd[len(prefix):])
+            break
     payload = cmd.encode("utf-8")
     if len(payload) > BRIDGE_MAX_CMD:
         return err_json("指令超過單行上限")
@@ -180,6 +182,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("X-Geometry-Session", API_SESSION)
+        self.send_header("X-Geometry-Release", "engineering-spec-v1-20260928")
+        self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(body)
 
@@ -187,11 +191,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if self.path == "/" or self.path == "/index.html":
             self._send((HERE / "index.html").read_bytes(),
                        "text/html; charset=utf-8")
-        elif self.path == "/app.css":
-            self._send((HERE / "app.css").read_bytes(),
+        elif self.path in {"/app.css", "/space-workspace.css", "/engineering-workspace.css"}:
+            self._send((HERE / self.path[1:]).read_bytes(),
                        "text/css; charset=utf-8")
         elif self.path in {"/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js",
-                           "/project-store.js", "/reference-workspace.js"}:
+                           "/project-store.js", "/reference-workspace.js",
+                           "/model-viewer.js", "/space-workspace.js", "/engineering-workspace.js", "/engineering-adapter.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")
         elif self.path in VENDOR_FILES:
@@ -203,15 +208,27 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif self.path == "/axioms":
             self._send((SCENE_DIR / "geometry-guide" / "公理層-閱讀器.html").read_bytes(),
                        "text/html; charset=utf-8")
+        elif self.path == "/examples/engineering-spec-v1.gcanvas":
+            self._send((HERE / "examples" / "engineering-spec-v1.gcanvas").read_bytes(),
+                       "application/octet-stream")
         elif self.path == "/scenes":
             items = [{"name": p.name, "path": str(p)}
                      for p in sorted(SCENE_DIR.glob("*.scene"))]
             self._send(json.dumps(items, ensure_ascii=False).encode("utf-8"))
+        elif self.path == "/model/space-examples":
+            import space_modeling
+            from modeling import ModelError, canonical_bytes
+            try:
+                self._send(canonical_bytes(space_modeling.examples()))
+            except ModelError as exc:
+                self._send(canonical_bytes(exc.as_dict()))
         elif self.path == "/model/capabilities":
             sys.path.insert(0, str(SCENE_DIR / "geometry-core"))
             from modeling import CAPABILITIES, PROFILE
             self._send(json.dumps({"profile": PROFILE, "capabilities": CAPABILITIES,
                                    "executor": "C scene validation + Python exact integer modeling",
+                                   "release": "engineering-spec-v1-20260928",
+                                   "space_preview_schemas": ["geometry-space-preview/1", "geometry-space-preview/2"],
                                    "max_cells": 200000}).encode("utf-8"))
         else:
             self.send_error(404)
@@ -237,10 +254,22 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_error(400)
             return
         if length < 0 or (self.path.startswith("/model") and length > 16 * 1024 * 1024) or \
+                (self.path.startswith("/engineering/") and length > 1024 * 1024) or \
                 (self.path == "/feedback" and length > FEEDBACK_MAX_BYTES):
             self.send_error(413)
             return
         body = self.rfile.read(length)
+
+        if self.path in {"/engineering/preview", "/engineering/validate-project"}:
+            from engineering_transport import file_request
+            try:
+                self._send(file_request(body, ask_bridge, validate_scene=self.path.endswith('validate-project')))
+            except OSError:
+                self._send(err_json('無法建立工程資料暫存檔，場景未變更。'))
+            return
+        if self.path == "/engineering/read":
+            self._send(ask_bridge('engineering-read'))
+            return
 
         if self.path == "/feedback":
             # GEO-183:使用者回報收件匣。寫進 repo 的 feedback/(.gitignore 允許清單制,預設不進 git)。
@@ -251,13 +280,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send(json.dumps(result, ensure_ascii=False).encode("utf-8"))
             return
 
-        if self.path in {"/model", "/model/verify"}:
+        if self.path in {"/model", "/model/verify", "/model/space-preview"}:
             sys.path.insert(0, str(SCENE_DIR / "geometry-core"))
             from modeling import (ModelError, build_package, verify_package,
                                   canonical_bytes, strict_json_loads)
             try:
                 data = strict_json_loads(body)
-                if self.path == "/model/verify":
+                if self.path == "/model/space-preview":
+                    import space_modeling
+                    result = space_modeling.preview(data)
+                elif self.path == "/model/verify":
                     result = verify_package(data)
                 else:
                     if (not isinstance(data, dict) or not {"definitions", "request"} <= data.keys()

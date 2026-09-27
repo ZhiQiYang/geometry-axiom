@@ -10,11 +10,11 @@ from copy import deepcopy
 from dataclasses import replace
 import heapq
 
-from .common import ModelError, canonical_bytes
+from .common import ModelError, canonical_bytes, ENGINEERING_CAPABILITY
 
 CAPABILITIES = (
     "composite-space/1", "extrusion/1", "model-export/1", "shell/1",
-    "solid-composition/1",
+    "solid-composition/1", ENGINEERING_CAPABILITY,
 )
 _EXTENSION_KINDS = {"extrusion", "shell", "composite_space", "composition"}
 _PRIMITIVE_SOLIDS = {"column", "beam", "timber", "extrusion"}
@@ -395,7 +395,7 @@ def evaluate(definitions, request, *, capabilities=None, max_cells=200000,
         unknown = capability_set - set(CAPABILITIES)
         if unknown:
             errors.append(ModelError("UNSUPPORTED", "CAPABILITY", "I32", "Unknown capability: " + min(unknown)))
-    required = {"model-export/1"} | {_KIND_CAPABILITY[key[0]] for key in records}
+    required = {"model-export/1"} | {_KIND_CAPABILITY[key[0]] for key in records} | set(base.get("required_capabilities", []))
     missing_caps = sorted(required - capability_set)
     if missing_caps:
         errors.append(ModelError("UNSUPPORTED", "CAPABILITY", "I32",
@@ -471,5 +471,6 @@ def evaluate(definitions, request, *, capabilities=None, max_cells=200000,
                                    -1 if item["component"] is None else item["component"]))
     status = "INCOMPLETE" if incomplete else ("EMPTY" if all(item["status"] == "EMPTY" for item in objects) else "COMPLETE")
     return {"definitions": {"base_scene": base["base_scene"], "extensions": canonical},
+            "required_capabilities": sorted(base.get("required_capabilities", [])),
             "request": canonical_request,
             "derived": {"status": status, "objects": objects}, "diagnostics": diagnostics}

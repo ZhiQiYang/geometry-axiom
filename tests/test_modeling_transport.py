@@ -28,7 +28,7 @@ class ModelingTransport(unittest.TestCase):
         if prebuilt:
             bridge = Path(prebuilt)
             if not bridge.exists():
-                raise unittest.SkipTest(f"GEOMETRY_TEST_BRIDGE={prebuilt} does not exist")
+                raise RuntimeError(f"Explicit GEOMETRY_TEST_BRIDGE={prebuilt} does not exist")
         else:
             bridge = cls.directory / "bridge"
             try:
@@ -88,21 +88,42 @@ class ModelingTransport(unittest.TestCase):
             return json.load(response)
 
     def test_http_models_are_isolated_and_reconstructible(self):
-        self.assertEqual(len(self.capabilities["capabilities"]), 5)
-        before = self.post("/api", {"cmd": "render"})
+        self.assertIn("engineering-spec/1", self.capabilities["capabilities"])
+        self.assertEqual(len(self.capabilities["capabilities"]), 6)
+        self.assertTrue(self.post("/api", {"cmd": "line spec transport_sentinel 419"})["ok"])
+        def world():
+            dump = self.post("/api", {"cmd": "dump"})
+            engineering = self.post("/api", {"cmd": "engineering-read"})
+            self.assertTrue(dump["ok"])
+            self.assertTrue(engineering["ok"])
+            # A render cannot expose a lost source or an extra undo entry.
+            # These routes are read-only: their World revision must not advance.
+            return dump["text"], engineering["definition_sha256"], engineering["revision"]
+        before = world()
+        def isolated(path, data=None, raw=None):
+            result = self.post(path, data, raw)
+            self.assertEqual(world(), before, path + " changed the live World")
+            return result
         case = CASES[0]
         source = {"definitions": case["definitions"], "request": case["request"]}
-        package = self.post("/model", source)
+        package = isolated("/model", source)
         self.assertEqual(package["derived"]["objects"][0]["volume_mm3"], "1171200000")
-        self.assertEqual(self.post("/model/verify", package)["derived"], package["derived"])
+        self.assertEqual(isolated("/model/verify", package)["derived"], package["derived"])
         foreign = deepcopy(package)
         foreign["manifest"]["generator"] = {"name": "independent-project", "version": "test/1"}
-        self.assertEqual(self.post("/model/verify", foreign)["derived"], package["derived"])
+        self.assertEqual(isolated("/model/verify", foreign)["derived"], package["derived"])
         invalid = deepcopy(source)
         invalid["definitions"]["extensions"][0]["hi_spec"] = "absent"
-        self.assertEqual(self.post("/model", invalid)["status"], "INVALID")
-        self.assertEqual(self.post("/model", raw=b'{"definitions":{},"definitions":{},"request":{}}')["status"], "INVALID")
-        self.assertEqual(self.post("/api", {"cmd": "render"}), before)
+        self.assertEqual(isolated("/model", invalid)["status"], "INVALID")
+        self.assertEqual(isolated("/model", raw=b'{"definitions":{},"definitions":{},"request":{}}')["status"], "INVALID")
+        for field, value in [("axiom_sha256", "0" * 64), ("capabilities", ["future-model/9"]),
+                             ("geometry_sha256", "0" * 64)]:
+            with self.subTest(manifest_field=field):
+                forged = deepcopy(package)
+                forged["manifest"][field] = value
+                result = isolated("/model/verify", forged)
+                self.assertIn(result.get("status"), ("INVALID", "UNSUPPORTED"))
+                self.assertNotIn("derived", result)
 
     def test_cli_exact_obj_and_failure_preserves_previous_file(self):
         package_path, obj_path = self.directory / "wall.json", self.directory / "wall.obj"
@@ -117,6 +138,12 @@ class ModelingTransport(unittest.TestCase):
         triangles = [[int(n)-1 for n in line.split()[1:]] for line in lines if line.startswith("f ")]
         self.assertEqual(vertices, objects[0]["vertices_mm"])
         self.assertEqual(triangles, objects[0]["triangles"])
+        # Independent acceptance vector; equal JSON/OBJ output alone could let
+        # both writers agree on the wrong fixture or an empty/wrong mesh.
+        expected = next(case["expected"] for case in CASES if case["id"] == "wall_through_hole")
+        self.assertEqual(objects[0]["volume_mm3"], expected["volume_mm3"])
+        self.assertEqual([[min(v[axis] for v in vertices) for axis in range(3)],
+                          [max(v[axis] for v in vertices) for axis in range(3)]], expected["bounds_mm"])
         previous = package_path.read_bytes()
         failed = subprocess.run([sys.executable, str(CLI), "example", "open_room_has_no_volume", "-o", str(package_path)],
                                 cwd=ROOT, env=self.environment, capture_output=True, timeout=60)

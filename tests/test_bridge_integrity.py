@@ -16,6 +16,14 @@ BRIDGE = os.environ.get("GEOMETRY_TEST_BRIDGE", str(ROOT / "geometry-web/web_bri
 
 
 class IntegrityTests(unittest.TestCase):
+    def assert_same_definitions(self, expected, actual, message=None):
+        # Revision identifies an editing session/ABA, not persisted geometry.
+        # Keep checking every other field, including canonical text and hash.
+        self.assertIsInstance(expected.get('revision'), int)
+        self.assertIsInstance(actual.get('revision'), int)
+        self.assertEqual({k:v for k,v in expected.items() if k != 'revision'},
+                         {k:v for k,v in actual.items() if k != 'revision'}, message)
+
     def bridge(self, commands):
         p = subprocess.run([BRIDGE], input="\n".join(commands) + "\n",
                            capture_output=True, text=True, encoding="utf-8", timeout=20)
@@ -441,7 +449,9 @@ apply-proj 5 c1
                 path.write_text(before[-2]['text'], encoding='utf-8')
                 before = self.bridge(['loadfile ' + str(path), 'objects', 'dump', 'render'])
                 self.assertTrue(before[0]['ok'], before[0])
-                self.assertEqual(expected, before[-3:])
+                self.assertEqual(expected[0], before[-3])
+                self.assert_same_definitions(expected[1], before[-2])
+                self.assertEqual(expected[2], before[-1])
 
     def test_boundary_kind_survives_reload(self):
         for kind in ['room_plan', 'wall_elevation', 'unspecified']:
@@ -454,7 +464,7 @@ apply-proj 5 c1
                 path.write_text(r[-1]['text'], encoding='utf-8')
                 after = self.bridge(['loadfile ' + str(path), 'dump'])
                 self.assertTrue(after[0]['ok'])
-                self.assertEqual(r[-1], after[-1])
+                self.assert_same_definitions(r[-1], after[-1])
 
     def test_failed_auto_place_restores_draft_and_redo(self):
         lines = [l for l in (ROOT / '_role_priority_primary_rc.scene').read_text(encoding='utf-8').splitlines()
@@ -479,9 +489,12 @@ apply-proj 5 c1
                                 'line history-abort', 'dump'])
         self.assertTrue(all(x['ok'] for x in r), r)
         self.assertIn('guide 1 1 u spec:end', r[-9]['text'])
-        self.assertEqual(r[len(setup)], r[-7], 'one undo must restore the entire gesture')
-        self.assertEqual(r[-9], r[-5])
-        self.assertEqual(r[-5], r[-1], 'cancel must restore the gesture start')
+        self.assert_same_definitions(r[len(setup)], r[-7], 'one undo must restore the entire gesture')
+        self.assert_same_definitions(r[-9], r[-5])
+        self.assert_same_definitions(r[-5], r[-1], 'cancel must restore the gesture start')
+        self.assertGreater(r[-7]['revision'], r[-9]['revision'], 'undo invalidates an earlier preview')
+        self.assertGreater(r[-5]['revision'], r[-7]['revision'], 'redo cannot revive an ABA preview')
+        self.assertGreater(r[-1]['revision'], r[-5]['revision'], 'cancelled edits also invalidate old previews')
 
     def test_large_coordinates_rejected_without_mutation(self):
         commands = [

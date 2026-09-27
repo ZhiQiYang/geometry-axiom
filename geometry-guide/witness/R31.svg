@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- witness R31 <- _wit_d28_engineering_sources.scene (accept, view=bottom) scene-sha256=1e01d2dbaf58369d spec=v1 -->
+<!-- 固定材料版本→做法→面套用→尺寸來源→D10a 格線；引擎由同一份來源推出 u 的四條線與 v 的一條線。 -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 1460 4500 4920" data-full="0 1460 4500 4920">
+<style>
+  polygon, line, rect { vector-effect: non-scaling-stroke; }
+  .frame { fill: #ffffff; stroke: #bbbbbb; stroke-width: 1px; }
+  .title { font: bold 150px sans-serif; fill: #222222; }
+  .label { font: 110px sans-serif; fill: #333333; text-anchor: middle; dominant-baseline: middle; }
+  .guide-label { text-anchor: start; fill: #b03030; }
+  .timber-label { fill: #7a4a00; font-weight: bold; }
+  .guide-label, .timber-label { paint-order: stroke; stroke: #ffffff; stroke-width: 30px; stroke-linejoin: round; }
+  .surface { fill: #dbe9ff; fill-opacity: 0.6; stroke: #3366cc; stroke-width: 1.5px; }
+  .hole { fill: #ffffff; stroke: #3366cc; stroke-width: 1.5px; }
+  .edge { stroke: #3366cc; stroke-width: 1.5px; }
+  .edge-free { stroke: #e08020; stroke-width: 1.5px; stroke-dasharray: 30 15; }
+  .guide { stroke: #cc3333; stroke-width: 1px; stroke-dasharray: 60 30; }
+  .timber-face { fill: #ffd27f; fill-opacity: 0.5; stroke: #a06000; stroke-width: 1.5px; }
+  .timber-face-near { fill-opacity: 0.85; }
+</style>
+<style id="witness">.role-boundary{fill:#e2a24a;stroke:#e2a24a}.role-primary{fill:#63b3ed;stroke:#63b3ed}.role-secondary{fill:#9ae6b4;stroke:#9ae6b4}.role-custom{fill:#d6bcfa;stroke:#d6bcfa}.stop{stroke:none}.stop-label{font:bold 110px sans-serif;dominant-baseline:middle;paint-order:stroke;stroke:#ffffff;stroke-width:30px;stroke-linejoin:round}.tile-frame{fill:#ffffff;stroke:#888888;stroke-width:1px}.tile-title{font:bold 72px sans-serif;fill:#222222}.tile line.edge,.tile line.guide,.tile line.edge-free{stroke-width:2px}.legend-title{font:bold 110px sans-serif;fill:#222222}.legend-text{font:95px sans-serif;fill:#333333;dominant-baseline:middle}.legend-box{fill:#ffffff;stroke:#bbbbbb;stroke-width:1px}.section-title{font:bold 120px sans-serif;fill:#222222}</style>
+<g transform="translate(250,1930)" data-view="bottom">
+<rect class="frame" x="-250" y="-390" width="4500" height="3640"/>
+<text x="-190" y="-280" class="title">仰視圖（X 向右，Y 向下）</text>
+<polygon points="0,0 4000,0 4000,3000 0,3000" class="surface"/>
+<line x1="0" y1="0" x2="4000" y2="0" class="edge"/>
+<text x="2000" y="-120" class="label">邊0</text>
+<line x1="4000" y1="0" x2="4000" y2="3000" class="edge"/>
+<text x="4120" y="1500" class="label" transform="rotate(-90 4120 1500)">邊1</text>
+<line x1="4000" y1="3000" x2="0" y2="3000" class="edge"/>
+<text x="2000" y="3120" class="label">邊2</text>
+<line x1="0" y1="3000" x2="0" y2="0" class="edge"/>
+<text x="-120" y="1500" class="label" transform="rotate(-90 -120 1500)">邊3</text>
+<line x1="916" y1="0" x2="916" y2="3000" class="guide"/>
+<text x="956" y="20" class="label guide-label">格線1</text>
+<line x1="1834" y1="0" x2="1834" y2="3000" class="guide"/>
+<line x1="2752" y1="0" x2="2752" y2="3000" class="guide"/>
+<line x1="3670" y1="0" x2="3670" y2="3000" class="guide"/>
+<line x1="0" y1="1831" x2="4000" y2="1831" class="guide"/>
+
+
+</g>
+<text x="40" y="5390" class="section-title">接點列(每格 = 一個角材端面,等比例放大,窗 = 8 × 料寬;視圖:仰視圖)</text>
+<text x="40" y="5580" class="legend-text">本條無角材接點。</text>
+<rect x="0" y="5700" width="4500" height="680" class="legend-box"/>
+<text x="40" y="5830" class="legend-title">圖例(每張見證圖相同;規範 v1)</text>
+<rect x="40" y="5900" width="160" height="80" class="role-boundary"/><text x="230" y="5940" class="legend-text">boundary 邊界材(層級 1)</text>
+<rect x="2250" y="5900" width="160" height="80" class="role-primary"/><text x="2440" y="5940" class="legend-text">primary 主支(層級 2)</text>
+<rect x="40" y="6030" width="160" height="80" class="role-secondary"/><text x="230" y="6070" class="legend-text">secondary 副支(層級 3)</text>
+<rect x="2250" y="6030" width="160" height="80" class="role-custom"/><text x="2440" y="6070" class="legend-text">custom 自訂料(priority N)</text>
+<rect x="60" y="6160" width="40" height="80" class="stop" fill="#333333"/><text x="190" y="6200" class="legend-text">停止標記 = 端面被裁的位置(同角材色);接點格標題 t3·END→t2 = 角材 3 的 END 端面停在角材 2 的側面。</text><text x="190" y="6300" class="legend-text">→e0 = 停在外輪廓邊 0(RC;只有 boundary 可頂,I19);→h0e2 = 停在孔 0 的邊 2。擋面參照寫法同 D18。</text>
+</svg>

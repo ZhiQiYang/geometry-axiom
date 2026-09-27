@@ -27,6 +27,9 @@
 
 static World g_world;
 static int g_input_line_no = 0;
+static void json_engineering_sources(const World *);
+static void json_engineering_capabilities(const World *);
+static bool eng_definition_hash(const World *,char[65]);
 
 /* ---------------- JSON 輸出小工具 ---------------- */
 
@@ -180,6 +183,7 @@ static bool feed_line(const char *path, int line_no, const char *text, World *wo
 static bool world_default(World *world)
 {
     bool ok=reference_default_world(world);
+    if (ok) ++g_definition_revision;
     history_clear(); g_preview.ready=false;
     return ok;
 }
@@ -340,7 +344,12 @@ static void cmd_loadfile(const char *path)
     memset(&g_world, 0, sizeof g_world);
     if (parse_scene_file(path, &g_world)) {
         history_record(&before);
-        fputs("{\"ok\":true}\n", stdout);
+        ++g_definition_revision;
+        char hash[65]; bool hashed=eng_definition_hash(&g_world,hash);
+        printf("{\"ok\":true,\"revision\":%llu,",(unsigned long long)g_definition_revision);
+        json_engineering_capabilities(&g_world);
+        if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);
+        fputs("}\n",stdout);
     } else {
         g_world = before;
         fputs("{\"ok\":false,\"error\":", stdout);
@@ -507,6 +516,12 @@ static void cmd_newid(size_t surface_count)
     for (size_t i = 0; i < surface_count; ++i) {
         if (i) putchar(',');
         printf("%u", surfaces[i]);
+    }
+    fputs("],\"grids\":[",stdout);
+    uint32_t candidate_grid=0;
+    for(size_t i=0;i<surface_count;++i){
+        while(world_find_grid(&g_world,candidate_grid)) ++candidate_grid;
+        printf("%s%u",i?",":"",candidate_grid++);
     }
     fputs("]}\n", stdout);
 }
@@ -842,9 +857,14 @@ static void cmd_dump(void)
         *w = '\0';
         js_string_body(buf);
     }
-    fputs("\"}\n", stdout);
+    fputs("\",",stdout);json_engineering_capabilities(&g_world);
+    printf(",\"revision\":%llu",(unsigned long long)g_definition_revision);
+    char hash[65];if(eng_definition_hash(&g_world,hash))printf(",\"definition_sha256\":\"%s\"",hash);
+    fputs("}\n", stdout);
     fclose(tmp);
 }
+
+#include "engineering_bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -894,9 +914,20 @@ int main(void)
         } else if (strcmp(line, "reset") == 0) {
             memset(&g_world, 0, sizeof g_world);
             history_clear();
+            ++g_definition_revision;
             fputs("{\"ok\":true}\n", stdout);
         } else if (strcmp(line, "line") == 0 && arg != NULL) {
             cmd_line(arg);
+        } else if (strcmp(line,"engineering-read")==0 && !arg) {
+            cmd_engineering_read();
+        } else if (strcmp(line,"engineering-preview")==0 && arg) {
+            cmd_engineering_preview(arg);
+        } else if (strcmp(line,"engineering-confirm")==0) {
+            cmd_engineering_confirm(arg);
+        } else if (strcmp(line,"engineering-cancel")==0) {
+            cmd_engineering_cancel(arg);
+        } else if (strcmp(line,"engineering-validate")==0 && arg) {
+            cmd_engineering_validate(arg);
         } else if (strcmp(line, "grid-preview") == 0 && arg != NULL) {
             cmd_grid_preview(arg);
         } else if (strcmp(line, "loadfile") == 0 && arg != NULL) {

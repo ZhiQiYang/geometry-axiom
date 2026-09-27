@@ -1,8 +1,28 @@
 # geometry-web — 幾何模型 Web 介面
 
+## 工程規格：材料、做法與正式網格
+
+工程規格已接入正式畫布及原生核心。從「檔案 → 工程規格 · 面材與角材」，或面內「構件 → 網格 → 套用工程規格」進入；已綁定物件會顯示來源、生效尺寸與覆寫入口。先發布材料與做法版本，再勾選放置面、核對起算點及既有角材，預覽後確認整批套用。
+
+材料／做法改版不自動改動既有引用；選面升級時會預覽所有連帶影響。保存完整來源與未發布草稿用 `.gcanvas`，攜帶材料及做法用正式做法包。操作見 [工程規格操作說明](docs/ENGINEERING-SPEC-USE.md)，格式見 [正式工程做法包](docs/ENGINEERING-PACKAGE.md)，檢查紀錄見 [專案缺口補齊](docs/PROJECT-AUDIT-20260928.md)。
+
+## 從面建立 3D 空間（第一版）
+
+目前「工程規格版 2026.09.28」整合了空間與角材建模：可在面物件上指定空間邊界平面投影、俯視／仰視及室內淨輪廓，並將所選放置面上已放好的角材一併建模。從面工作區按「建立空間」；用途尚未定義時，可在同一視窗選擇俯視／仰視，按「確認用途與觀看方向」後繼續。原「平面投影」入口仍可編輯完整定義與圖面 z；詳見 [面投影定義](docs/FACE-PROJECTION.md) 與 [角材納入規則](docs/TIMBER-IN-SPACE.md)。
+
+左欄「從面建立 3D 空間」提供矩形、L 形現成範例與介面內三步引導；自己的面可從面工作區「建立空間」進入。牆高預設 **3000 mm**，明確指定牆底與邊界後預覽，再核對建立；圖面 z 不代替牆高。材料牆預設 100 mm 向外加厚，可修改或不建立。
+
+模型保存於 `.gcanvas` 專案的「已建立空間」，可透過「修改牆高 → 更新預覽 → 更新空間」調整已建平面模型，更新同一模型，支援重開及復原／重做。舊模型保留原高度；組合既有面的模式沒有單一牆高編輯。來源日後修改不會自動更新已建立模型。操作、格式及限制見 [第一版操作說明](docs/SPACE-MODELING.md)。
+
+Windows 已安裝 WSL／GCC／Python 時，可用 `powershell -File .\geometry-web\start-space-model.ps1 -Port 18841` 從 repo 根啟動；入口為 `http://127.0.0.1:18841/#engineering-spec-v1`。選用空閒連接埠；啟動器不停止其他服務，會核對新服務工程能力及 z=2500～2533 骨架幾何。左欄空間建模仍提供 7 支角材的現成範例。
+
+## 框選與多選（GEO-209）
+
+物件畫布與面內角材可用「選取 V」從空白處拖曳框選，**完整落在框內**才選取；Shift＋點選加入／取消，Shift＋框選加入，Ctrl／Cmd＋A 全選目前範圍，空白鍵＋拖曳或 H 平移。畫面顯示已選數量與操作提示；第一版多選可核對清單，編輯／移動／刪除仍先單選個別物件。3D 預覽與三視圖維持原操作。規則與驗收見 [畫布選取](docs/CANVAS-SELECTION.md)。
+
 ## 跨面共用基準
 
-工具列「共用基準」依序可建立具名尺寸、世界 X／Y／Z 基準，再讓各承載面引用。
+「檔案 → 共用基準」依序可建立具名尺寸、世界 X／Y／Z 基準，再讓各承載面引用。
 修改被已放角材引用的基準或尺寸時顯示全場影響，取消保持原狀，確認後原子提交。
 每面只畫有效範圍內的線段；面外仍有定義。共用線請從基準管理器修改，不能拖曳成局部線。
 「檔案 → 公理閱讀器」開啟同一份正典 HTML。
@@ -32,7 +52,7 @@ guide 2 2 datum 1
 ## 新公理版本
 
 已依 2026-09-18 更新的公理改為引用定位與自動跨距。角材表單先選定位引用，
-只輸入截面 A/B，不再輸入長度。具名規格與參考線引用式可在面內屬性頁建立。
+只輸入截面 A/B，不再輸入長度。具名規格與參考線引用式可在面內「構件」頁的參考線區建立；工具列「參考線」也可直達。
 會影響已放角材時，畫面列出新舊中線、長度與違規；按「確認套用」才改場景。
 有違規或取消都保留原狀。詳見 [語法與驗收紀錄](../geometry-core/README.md)。
 
@@ -47,8 +67,10 @@ powershell -File .\start.ps1 -Port 8765
 
 ## 啟動
 
+從 repository 根目錄執行下列原生 Windows 開發流程；角材結構建模的現成範例與能力檢查請使用本頁開頭的 `start-space-model.ps1`。
+
 ```bat
-cd /d D:\knowledgebase\geometry\geometry-web
+cd geometry-web
 build.bat                  :: 編譯 web_bridge.exe（首次或 C 端變更後）
 python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 ```
@@ -90,13 +112,15 @@ python geometry-web/feedback_cli.py close <id> "已修 <commit>"   # 或 --statu
 
 ## 測試
 
-下列裁判都必須全綠才算過閘：
+測試分別驗證核心、前端整合與實際輸入；通過斷言數不等於獨立的端到端情境數。必須記錄實際執行範圍，略過或環境阻擋不算通過。
 
 ```bat
-:: 1) 直接 DOM/幾何測試（不需要瀏覽器）
+:: 1) 橋接器／幾何測試（不執行畫布 DOM）
 node canvas_test.js direct
 
-:: 2) headless Chrome CDP 實機測試（需 server 在 8765、Chrome 於預設路徑、除錯埠 9333）
+:: 2) headless Chrome 混合整合測試（先用相同 feedback 目錄啟動獨立測試服務）
+set GEOMETRY_TEST_URL=http://127.0.0.1:8799/
+set GEOMETRY_FEEDBACK_DIR=%TEMP%\geometry-tests\fb-cdp
 node cdp_test.js
 
 :: 新公理表單、確認/取消、非法預覽、扣孔命中的快速實機驗證
@@ -106,9 +130,11 @@ node reference_smoke.js
 python -B -m unittest discover -s ../tests -p test_serve.py -v
 ```
 
-`canvas_test.js` 的 HTTP 模式與 `cdp_test.js` 都可用 `GEOMETRY_TEST_URL` 指定獨立測試伺服器，避免修改正在使用的場景。
+`canvas_test.js` 的 HTTP 模式可用 `GEOMETRY_TEST_URL` 指定獨立測試服務。`cdp_test.js` 與 `space_model_test.js` 必須明設測試 URL 與 TEMP 下獨立回報目錄；未設時在開啟瀏覽器／重置場景前拒絕。服務與測試應指向同一實際目錄；Windows／WSL 使用各自對應路徑。
 
-`cdp_test.js` 依印出的 ✓/✗ 計數決定 exit code（有 ✗ → exit 1）。
+`cdp_test.js` 只計受控斷言，頁面日誌及狀態文字中的勾號不計數。執行例外與協定錯誤必須失敗；`CDP_SCOPE`／`CDP_RESULT` 明列全套或部分執行，不能把專項結果說成全套。完整回歸不得設定 `*_ONLY`／`GEOMETRY_CDP_FROM_P31`。工程子範圍必須搭配工程專項旗標，且互斥。
+
+`space_model_test.js` 的結果也列出 included／omitted 群組；一般空間、角材、流程等專項分開，不合併冒充單次完整執行。保存下載流程不代表原生另存視窗，390px 版面不代表真手機觸控。原型目錄內的測試只證明原型，不作正式畫布整合證據。
 測試依賴的 DOM id / class / 全域列在 `docs/DOM-CONTRACT.md`——改 DOM 必同步更新它與 `cdp_test.js`。
 
 ### 在 WSL 內執行（Windows 端被應用程式控制原則擋住時）
@@ -123,16 +149,18 @@ sudo apt-get install -y gcc
 
 # 每次：建置 Linux 版 bridge，起 server，跑測試
 gcc -O2 -o /opt/geometry/web_bridge web_bridge.c -lm
-GEOMETRY_BRIDGE=/opt/geometry/web_bridge python3 serve.py 8765 &
+GEOMETRY_BRIDGE=/opt/geometry/web_bridge GEOMETRY_FEEDBACK_DIR=/tmp/geometry-tests/fb-cdp python3 serve.py 8799 &
 
 GEOMETRY_CHROME=google-chrome \
 GEOMETRY_CHROME_PROFILE=/tmp/cdp-profile \
 GEOMETRY_CHROME_FLAGS="--no-sandbox --disable-dev-shm-usage" \
 GEOMETRY_TEST_SCREENSHOT=/tmp/phase1-shell.png \
+GEOMETRY_TEST_URL=http://127.0.0.1:8799/ \
+GEOMETRY_FEEDBACK_DIR=/tmp/geometry-tests/fb-cdp \
   node cdp_test.js
 ```
 
-可覆寫的環境變數（不設時行為與先前完全相同）：
+測試環境變數（URL 與回報目錄必填，其餘依需覆寫）：
 
 | 變數 | 用途 |
 |---|---|
@@ -141,11 +169,11 @@ GEOMETRY_TEST_SCREENSHOT=/tmp/phase1-shell.png \
 | `GEOMETRY_CHROME` | chrome 執行檔（預設 Windows 的 `chrome.exe`） |
 | `GEOMETRY_CHROME_PROFILE` | `--user-data-dir` 位置 |
 | `GEOMETRY_CHROME_FLAGS` | 追加旗標，空白分隔；WSL 內以 root 跑需要 `--no-sandbox` |
-| `GEOMETRY_TEST_URL` | 測試頁面網址（預設 `http://localhost:8765/`） |
-| `GEOMETRY_FEEDBACK_DIR` | 回報落點（serve.py 與 cdp_test 都要設同一個；cdp_test 未設時略過 P38 送出段，避免寫進 repo 的 `feedback/`） |
+| `GEOMETRY_TEST_URL` | 必填，明確指定獨立測試服務網址 |
+| `GEOMETRY_TEST_SERVER_PATH_STYLE` | Windows 上執行 CDP 測試、服務位於 WSL 時設為 `wsl`，將測試建立的暫存場景轉成服務可讀的 `/mnt/<磁碟>/…` 路徑；同系統執行時留空 |
+| `GEOMETRY_FEEDBACK_DIR` | 必填，TEMP 下的專用回報目錄；serve.py 與測試必須指向同一實際位置 |
 | | **Chromium 141+ 在 Linux 容器內請用 `http://127.0.0.1:<port>/`**，並在 `GEOMETRY_CHROME_FLAGS` 加 `--disable-features=HappyEyeballsV3`：新版 HttpStreamPool 對 `localhost` 每次先試 `::1` 失敗再退 `127.0.0.1`，約 600 次請求後 socket pool 會卡死（P5b 永遠等不到 `pick` 回應）。2026-09-25 以 netlog 確認，與應用程式碼無關。 |
-| `GEOMETRY_TEST_SCREENSHOT` | 截圖輸出路徑；**在 WSL 內跑時建議指到 `/tmp`**，否則會用
-  Linux 字型渲染覆寫掉 `docs/screens/phase1-shell.png` 這張文件用參考圖 |
+| `GEOMETRY_TEST_SCREENSHOT` | 截圖輸出路徑；未設時使用系統暫存，不覆寫已提交的文件截圖 |
 
 注意：WSL 預設 NAT 網路下 Windows 連不到 WSL 內的 `127.0.0.1`；改用鏡像模式
 （`.wslconfig` 的 `networkingMode=mirrored`）仍會被 Hyper-V 防火牆的預設輸入

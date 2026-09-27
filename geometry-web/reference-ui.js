@@ -56,7 +56,8 @@ async function confirmReferenceImpact(preview) {
     const guides = document.createElement('ul'); guides.className = 'impact-guides';
     for (const row of changes) {
       const li = document.createElement('li');
-      const describe = g => g ? `面 ${g.surface}：${g.axis === 'u' ? 'v' : 'u'}=${g.off}，世界 [${g.worldPoint.join(', ')}]，方向 [${g.worldDirection.join(', ')}]，可見 ${g.segments.length} 段` : '無唯一合法結果';
+      li.dataset.impactGuide = row.id;
+      const describe = g => g ? `面 ${g.surface}：${g.axis === 'u' ? 'v' : 'u'}=${g.off}，世界 [${g.worldPoint.join(', ')}]，方向 [${g.worldDirection.join(', ')}]，可見 ${g.segments.length} 段：${g.segments.map(s => `(${s[0].join(', ')}) → (${s[1].join(', ')})`).join('；') || '無可見線段'}` : '無唯一合法結果';
       li.textContent = `參考線 ${row.id}｜${describe(row.before)} → ${describe(row.after)}`;
       guides.append(li);
     }
@@ -157,7 +158,12 @@ async function openDatumManager() {
       const text = document.createElement('span'); text.textContent = `基準 ${d.id} · ${d.axis}=${d.position} mm · ${d.expression} · ${d.guides.length} 條引用`;
       const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'btn'; edit.textContent = `編輯基準 ${d.id}`;
       edit.onclick = () => { find('datum-id').value = d.id; find('datum-axis').value = d.axis; find('datum-expression').value = d.expression; find('datum-select').value = d.id; };
-      row.append(text, edit); list.append(row);
+      const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'btn danger';
+      remove.textContent = `刪除基準 ${d.id}`; remove.dataset.deleteDatum = d.id;
+      remove.disabled = d.guides.length > 0;
+      remove.title = d.guides.length ? `仍被參考線 ${d.guides.join('、')} 引用，請先處理引用` : '刪除未被引用的基準，可復原';
+      remove.onclick = () => submit(`delete datum ${d.id}`);
+      row.append(text, edit, remove); list.append(row);
     }
     const guides = find('datum-guide-list'); guides.replaceChildren();
     for (const g of r.guides.filter(g => g.source === 'datum')) {
@@ -166,14 +172,16 @@ async function openDatumManager() {
   };
   const submit = async command => {
     const feedback = find('datum-feedback'); feedback.textContent = '正在驗證…';
-    const buttons = [...dialog.querySelectorAll('button[type="submit"]')]; buttons.forEach(b => b.disabled = true);
+    if (dialog.dataset.busy === 'true') return;
+    dialog.dataset.busy = 'true';
+    const buttons = [...dialog.querySelectorAll('button')].map(b => [b, b.disabled]); buttons.forEach(([b]) => b.disabled = true);
     try {
       const result = await api(`line ${command}`);
       feedback.textContent = result.ok ? '已儲存。所有引用已重新驗證。' : result.error || '變更未套用';
       if (result.ok) { await refreshActive(); if (oc.edit) await feAfterChange(); }
       await reload();
     } catch (error) { feedback.textContent = error.message; }
-    finally { buttons.forEach(b => b.disabled = false); }
+    finally { delete dialog.dataset.busy; buttons.forEach(([b, disabled]) => b.disabled = disabled); }
   };
   find('datum-spec-name').onchange = () => {
     const spec = refs?.specs.find(s => s.name === find('datum-spec-name').value);
@@ -189,13 +197,63 @@ async function openDatumManager() {
     const ids = await apiRequest('newid');
     if (ids.ok) submit(`guide ${ids.guide} ${find('datum-surface').value} datum ${find('datum-select').value}`);
   };
-  const close = () => { dialog.close(); dialog.remove(); };
+  const close = () => { if (dialog.dataset.busy === 'true') return; dialog.close(); dialog.remove(); };
   find('datum-close').onclick = close;
   dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
   dialog.showModal();
   try { await reload(); } catch (error) { find('datum-feedback').textContent = error.message; }
 }
 document.getElementById('btnDatums').addEventListener('click', openDatumManager);
+
+/* Edit the stored LOCAL expression, never reconstruct it from its evaluated coordinate. */
+function editReferenceGuide(id) {
+  if (document.getElementById('guide-editor') || oc.busy) return;
+  const guide = fe.guides.find(g => g.id === id);
+  if (!guide) return;
+  const context = ReferenceWorkspace.context(), edit = oc.edit;
+  const definition = g => JSON.stringify(g && [g.id,g.surface,g.source,g.datum,g.axis,g.expression]);
+  const before = definition(guide), datum = guide.source === 'datum';
+  const dialog = document.createElement('dialog'); dialog.id = 'guide-editor'; dialog.className = 'datum-manager';
+  dialog.setAttribute('aria-labelledby','guide-editor-title');
+  dialog.innerHTML = `<h2 id="guide-editor-title"></h2><p id="guide-editor-source"></p>
+    <form id="guide-editor-form"><label>位置引用式<input id="guide-editor-expression" required autocomplete="off"></label>
+    <p>修改來源後，引用這條線的角材會重新驗證；有連動時須確認預覽。尺寸仍由具名規格或既有幾何引用決定。</p>
+    <p id="guide-editor-error" role="status" aria-live="polite"></p>
+    <div class="impact-actions"><button type="button" class="btn" id="guide-editor-close">取消</button>
+    <button type="button" class="btn" id="guide-editor-datum">前往共用基準</button>
+    <button type="submit" class="btn primary" id="guide-editor-apply">套用來源</button></div></form>`;
+  document.body.append(dialog);
+  const find = name => dialog.querySelector('#guide-editor-' + name);
+  find('title').textContent = `參考線 ${id} · 來源`;
+  find('source').textContent = `承載面 ${guide.surface} · 沿 ${guide.axis} · ${guide.axis === 'u' ? 'v' : 'u'} = ${guide.off} mm` +
+    (datum ? ` · 共用基準 ${guide.datum}，請修改共用來源` : ' · 局部引用');
+  find('expression').value = datum ? `datum ${guide.datum}` : guide.expression;
+  find('expression').readOnly = datum; find('apply').hidden = datum; find('datum').hidden = !datum;
+  let pending = false;
+  const close = () => { if (pending) return; dialog.close(); dialog.remove(); };
+  find('close').onclick = close;
+  dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
+  find('datum').onclick = () => { close(); openDatumManager(); };
+  find('form').onsubmit = async event => {
+    event.preventDefault(); if (datum || pending || oc.busy) return;
+    const expression = find('expression').value.trim();
+    if (!expression || /[\r\n#]/.test(expression)) { find('error').textContent = '請填寫單行合法位置引用式。'; return; }
+    pending = true; find('apply').disabled = true; find('close').disabled = true;
+    try {
+      const refs = await apiRequest('references');
+      if (ReferenceWorkspace.context() !== context || oc.edit !== edit || !refs.ok ||
+          definition(refs.guides?.find(g => g.id === id)) !== before) {
+        find('error').textContent = '來源或專案已變更，請關閉後重新開啟來源。'; return;
+      }
+      if (await emitLine(`move ${id} ${expression}`)) {
+        pending = false; close();
+        if (ReferenceWorkspace.context() === context && oc.edit === edit) await feAfterChange();
+      } else find('error').textContent = '變更未套用；請檢查引用或重新確認連動預覽。';
+    } catch (error) { find('error').textContent = error.message; }
+    finally { pending = false; find('apply').disabled = false; find('close').disabled = false; }
+  };
+  dialog.showModal(); find(datum ? 'datum' : 'expression').focus();
+}
 /* GEO-195:選項來源改抽到 app.js::referenceAnchorEntries(bid,surf)(給占用判斷/錯誤訊息/
    這裡的排序共用同一份);這裡只負責排版成 <option>——占用的排到未占用之後,文字後綴
    「(已有角材 N)」,兩組各自維持原本順序。全部占用時不重排,第一個 <option> 仍是原順序
