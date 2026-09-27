@@ -3246,7 +3246,11 @@ function referenceAnchorEntries(bid, surf) {
   }));
   for (const g of fe.guides) options.push([`at-line guide ${g.id}`, `參考線 ${g.id} · ${g.off} mm`]);
   for (const g of fe.grids) for (const axis of ["u", "v"])
-    g[axis].forEach((value, index) => options.push([`at-line grid ${g.id} ${axis} ${index}`, `網格 ${g.id} ${axis}[${index}] · ${value} mm`]));
+    g[axis].forEach((value, index) => {
+      const line = g.lines?.find(x => x.axis === axis && x.index === index);
+      const role = line?.priority ? ` · ${line.role === "primary" ? "主支" : "副支"} ${line.priority}` : " · 優先級未設定";
+      options.push([`at-line grid ${g.id} ${axis} ${index}`, `網格 ${g.id} ${axis}[${index}] · ${value} mm${role}`]);
+    });
   for (const t of fe.timbers) options.push([`at-face t${t.id}`, `角材 ${t.id} 側面（須有唯一解）`]);
   return options.map(([value, label]) => ({ value, label, occupied: feAnchorOccupied(bid, value) }));
 }
@@ -3360,9 +3364,9 @@ function feAnchorCrossRange(bid, anchorValue, A) {
   }
   return null;   /* at-face t<id> 等 → 不畫帶 */
 }
-/* 依主支軸規則算點擊命中的線該給哪個角色(GEO-196 規格,G196-R04 改用 D17 完整推導)：
+/* 依主支軸規則算外輪廓邊／參考線的角色(GEO-196,G196-R04；網格線另取 D10 的逐線預設)：
    主支軸已定義 → 方向與其平行給 primary,垂直給 boundary(邊)/secondary(參考線/格線)；
-   未定義(無 primary 也無 boundary)→ 外輪廓邊給 boundary、參考線/格線給 primary;
+   未定義(無 primary 也無 boundary)→ 外輪廓邊給 boundary、參考線給 primary;
    矛盾(conflict)→ 回 null,呼叫端不自動改角色,只留診斷提示。 */
 function feTimberRoleForClick(bid, kind, dirAxis) {
   const info = fePrimaryAxisInfo(bid);
@@ -3377,6 +3381,11 @@ function feTimberSuggestion(bid, anchor) {
   const info = feAnchorLineInfo(bid, anchor || "");
   if (!info) return null;
   const dir = feAnchorDirFromInfo(info);
+  const match = /^at-line grid (\d+) ([uv]) (\d+)$/.exec(anchor || "");
+  if (match) {
+    const line = fe.grids.find(g => g.id === +match[1])?.lines?.find(x => x.axis === match[2] && x.index === +match[3]);
+    return { dir, role: line?.role || null };
+  }
   return { dir, role: feTimberRoleForClick(bid, /^at-face e\d+$/.test(anchor) ? "edge" : "line", dir.slice(-1)) };
 }
 function feTimberSuggestForm({ direction = true, forceRole = false } = {}) {
@@ -3415,7 +3424,8 @@ const TB_ROLE_OPTS = [["primary", "主支 (primary)"], ["boundary", "邊框 (bou
      D15:custom 的 priority 只參與 I19 數值比較,不取得角色義務,方向合法性交核心判;
    - 方向垂直主支軸 → primary 停用;
    - 主支軸未定義或矛盾 → 全部可選(不猜),矛盾時標註提示。
-   自動點選角色(feTimberRoleForClick)與這裡共用同一份 fePrimaryAxisInfo 推導。 */
+   外輪廓邊／參考線的自動角色(feTimberRoleForClick)與這裡共用 fePrimaryAxisInfo；
+   網格線的預設則取橋接器逐線資料，非法組合仍由核心守門。 */
 function feTimberRoleOptionsHTML(bid, dirValue, currentRole) {
   const info = fePrimaryAxisInfo(bid);
   const axis = info.conflict ? null : info.axis;
@@ -3460,7 +3470,7 @@ function feTimberHintRefresh() {
   /* GEO-196:提示改講新路徑——點一條邊或參考線＝直接以那條線為定位引用放置;
      G196-R02:點擊的左右位置不再決定厚度方向(+n/-n 由右欄「深度」欄位決定),
      不再承諾「點在哪一側就放哪一側」;點面內空白才是舊路徑(依右欄目前設定)。 */
-  const text = `點外輪廓邊或參考線選定位直接放置；厚度方向依右欄「深度」設定。點面內空白則依右欄設定（目前「${label}」）放置 · A${A}×B${B} · Esc 取消`;
+  const text = `點外輪廓邊、參考線或網格線選定位直接放置；厚度方向依右欄「深度」設定。點面內空白則依右欄設定（目前「${label}」）放置 · A${A}×B${B} · Esc 取消`;
   setStatus(text);
   const hint = $("faceCanvasHint");
   if (hint) hint.textContent = text;
@@ -3510,6 +3520,12 @@ async function fePlaceTimberFromForm(bid) {
   }
   const anchor = $("tbAnchor")?.value;
   if (!anchor) { toast("請先選擇定位邊、參考線或格線"); feMarkInvalid($("tbAnchor")); return false; }
+  if (anchor.startsWith("at-line grid ") && !feTimberSuggestion(bid, anchor)?.role &&
+      $("faceInspectorContent")?.dataset.tbRoleManual !== "true") {
+    toast("這座網格尚未設定主支方向，請明確選擇角材角色");
+    feMarkInvalid($("tbRole"));
+    return false;
+  }
   const dir = $("tbDir")?.value || "+u";
   const side = $("tbSide")?.value || "+n";
   const role = $("tbRole")?.value || "primary";
@@ -3793,12 +3809,18 @@ function drawFaceEditor() {
       "data-face-hit": `g:${g.id}:${g.axis}`,
       stroke: "transparent", "stroke-width": Math.max(8, 14 / z) }, refRoot);
   }
-  /* 網格（Q3）：比參考線細的點線 */
+  /* 網格：格線自帶角色預設，角材工具可直接沿線放置。 */
   for (const g of fe.grids || []) {
-    for (const c of g.u)
-      el("line", { x1: c, y1: gb[1], x2: c, y2: gb[3], class: "face-grid-line" }, refRoot);
-    for (const c of g.v)
-      el("line", { x1: gb[0], y1: c, x2: gb[2], y2: c, class: "face-grid-line" }, refRoot);
+    for (const axis of ["u", "v"]) g[axis].forEach((c, index) => {
+      const line = g.lines?.find(x => x.axis === axis && x.index === index);
+      const segment = axis === "u" ? [c, gb[1], c, gb[3]] : [gb[0], c, gb[2], c];
+      const roleClass = line?.role ? ` role-${line.role}` : " role-unset";
+      el("line", { x1:segment[0], y1:segment[1], x2:segment[2], y2:segment[3],
+        class:"face-grid-line" + roleClass }, refRoot);
+      el("line", { x1:segment[0], y1:segment[1], x2:segment[2], y2:segment[3],
+        "data-face-hit":`k:${g.id}:${axis}:${index}`, class:"face-grid-hit",
+        stroke:"transparent", "stroke-width":Math.max(8,14/z) }, refRoot);
+    });
   }
   if (fe.fiTab === "grid" && fe.gridPreview) {
     const g = fe.gridPreview;
@@ -4079,19 +4101,20 @@ async function feDown(pt, ev) {
     }
     /* GEO-196:點畫布上的邊/參考線直接放置——命中孔邊不送指令(G196-R02:訊息只說明
        「快捷點選目前不支援孔邊」,不宣稱公理禁止——I13 的 at-face h<i>e<j> 仍可走右欄
-       表單);命中外輪廓邊或參考線時,定位引用/方向/角色由點擊決定並寫回表單;
+       表單);命中外輪廓邊、參考線或網格線時,定位引用/方向/角色預設由線決定並寫回表單;
        命中面內空白(或頂點/角材等其他元素)照舊——沿用表單目前值,一字不改舊路徑。
        G196-R02:點擊位置【不】再改 #tbSide——+n/-n 是 B 厚度朝承載面法線哪側(見 C 端
        depth_side),不是面內左右;面內左右由定位引用本身決定(I13 at-line 中線對齊、
-       at-face 材料側貼齊),兩個概念不能混用。格線(.face-grid-line)目前沒有
-       data-face-hit,不可命中(見 BACKLOG GEO-196)。 */
+       at-face 材料側貼齊),兩個概念不能混用。 */
     const hit0 = ev && ev.target && ev.target.closest ? ev.target.closest("[data-face-hit]") : null;
     const hit = hit0 ? hit0.dataset.faceHit.split(":") : null;
     if (hit && hit[0] === "e" && +hit[1] !== 0) {
       toast("目前不支援直接點孔邊——請從右欄「定位引用」選孔邊(at-face h<i>e<j>)"); return;
     }
-    if (hit && (hit[0] === "e" || hit[0] === "g")) {
-      const clickAnchor = hit[0] === "e" ? `at-face e${hit[2]}` : `at-line guide ${+hit[1]}`;
+    if (hit && (hit[0] === "e" || hit[0] === "g" || hit[0] === "k")) {
+      const clickAnchor = hit[0] === "e" ? `at-face e${hit[2]}`
+        : hit[0] === "g" ? `at-line guide ${+hit[1]}`
+        : `at-line grid ${+hit[1]} ${hit[2]} ${+hit[3]}`;
       const info = feAnchorLineInfo(e.bid, clickAnchor);
       /* G196-R03:命中了線但引用解析失敗(例如參考線剛被刪、邊索引失效)——報錯且不送,
          不能悄悄退回右欄表單裡另一條引用(那會把料放到使用者沒點的地方)。 */
@@ -4104,14 +4127,18 @@ async function feDown(pt, ev) {
         if (clickRole == null) {
           /* G196-R04:主支軸推導矛盾(面上角材方向自相矛盾)——不自動選角色,
              留診斷讓使用者知道為什麼沒有自動帶入。 */
-          toast("承載面角材方向矛盾,主支軸無法推導——請自行檢查角色");
+          toast(hit[0] === "k" ? "這座網格尚未設定主支方向，請先選擇角材角色" : "承載面角材方向矛盾,主支軸無法推導——請自行檢查角色");
+          if (hit[0] === "k" && $("faceInspectorContent").dataset.tbRoleManual !== "true") return;
         } else if (roleSel) {
-          roleSel.innerHTML = feTimberRoleOptionsHTML(e.bid, clickDir, clickRole);
-          roleSel.value = clickRole;
+          const manualGridRole = hit[0] === "k" && $("faceInspectorContent").dataset.tbRoleManual === "true";
+          if (!manualGridRole) {
+            roleSel.innerHTML = feTimberRoleOptionsHTML(e.bid, clickDir, clickRole);
+            roleSel.value = clickRole;
+          }
           roleSel.classList.remove("invalid");
           anchorSel?.classList.remove("invalid");
           dirSel?.classList.remove("invalid");
-          $("faceInspectorContent").dataset.tbRoleManual = "false";
+          if (!manualGridRole) $("faceInspectorContent").dataset.tbRoleManual = "false";
           $("faceInspectorContent").dataset.tbDirManual = "false";
           feTimberAutoBadges($("faceInspectorContent"));
           const pl = $("tbPriLabel");
@@ -5574,7 +5601,7 @@ function renderFaceLayers() {
   if ((fe.grids || []).length) {
     group("網格");
     for (const g of fe.grids)
-      row(icon("grid"), `網格 ${g.id}`, `u×${g.u.length} v×${g.v.length}`, async () => {
+      row(icon("grid"), `網格 ${g.id}`, `${g.mainAlong ? `主支沿 ${g.mainAlong}` : "優先級未設定"} · u×${g.u.length} v×${g.v.length}`, async () => {
         if (await emitLine(`delete grid ${g.id}`)) {
           await feLoadGuides(); renderFaceLayers(); drawFaceEditor();
         }
@@ -5679,6 +5706,11 @@ function gridSyncFields(pane) {
 function gridDraftCommand(pane, sid, id, existing) {
   if (!Number.isSafeInteger(id) || !Number.isSafeInteger(sid)) throw Error("無法取得網格編號");
   const parts = [`grid ${id} on ${sid}`];
+  const mainAlong = pane.querySelector("#gridMainAlong")?.value || "none";
+  if (!existing && mainAlong === "none") throw Error("新網格請先選擇主支長度方向");
+  if (mainAlong !== "none") parts.push(`main-along ${mainAlong}`);
+  else if (existing?.mainAlong) parts.push("main-along none");
+  let axisCount = 0;
   for (const axis of ["U","V"]) {
     const source = pane.querySelector(`#grid${axis}Source`).value;
     const old = existing?.[axis.toLowerCase() + "Definition"]?.source;
@@ -5698,15 +5730,19 @@ function gridDraftCommand(pane, sid, id, existing) {
       const coords = raw.split(/[\s,]+/).filter(Boolean).map(v => integer(v,"座標"));
       if (!coords.length) throw Error(`${axis} 軸至少填一個座標`);
       parts.push(`${word} ${coords.join(" ")}`);
+      axisCount++;
     } else if (source === "series") {
       parts.push(`${word} series ${integer(get("Start"),"起點")} ${integer(get("Step"),"間距")} ${integer(get("Count"),"條數")}`);
+      axisCount++;
     } else if (source === "panel") {
       let part = `${word} panel ${integer(get("Panel"),"面材寬")} gap ${integer(get("Gap"),"縫寬")}`;
       if (get("From")) part += ` from ${integer(get("From"),"起算點")}`;
       parts.push(part);
+      axisCount++;
     }
   }
-  if (parts.length === 1) throw Error("至少設定一個軸的格線");
+  if (!axisCount && !existing) throw Error("至少設定一個軸的格線");
+  if (!axisCount && existing?.mainAlong === (mainAlong === "none" ? null : mainAlong)) throw Error("網格設定沒有變更");
   return parts.join(" ");
 }
 /* 右欄檢視器（§5.5.3 + 5.5.3a 放置 + 5.5.4 投影） */
@@ -5724,7 +5760,7 @@ function renderFaceInspector() {
   const loops = oc.bmap[bid] || [];
   const surf = feSurf(bid);
   const currentGrid = fe.grids.find(g => g.surface === surf?.id) || null;
-  pane.dataset.gridIdentity = currentGrid ? JSON.stringify([currentGrid.id,currentGrid.uDefinition,currentGrid.vDefinition]) : "new";
+  pane.dataset.gridIdentity = currentGrid ? JSON.stringify([currentGrid.id,currentGrid.mainAlong,currentGrid.uDefinition,currentGrid.vDefinition]) : "new";
   pane.dataset.placement = JSON.stringify(surf ? [surf.id, surf.origin, surf.u, surf.v] : null);
   updateFaceWorkspaceHeading(bid);
   const bb = loops.length ? loopsBBox(loops) : null;
@@ -5832,7 +5868,11 @@ function renderFaceInspector() {
   html += `<section data-component-section="grid"><h2 class="component-heading">網格</h2>` +
     `<div class="inspector-block grid-editor"><div class="ib-title">${currentGrid ? `編輯網格 ${currentGrid.id}` : "建立網格"}</div>` +
     (surf ? "" : `<div class="fi-note">游離面：先放置才可建網格。</div>`) +
-    `<p class="grid-editor-help">每軸選擇明寫、等差或面材來源；格線由幾何核心推導，儲存後可作為角材定位引用。</p>` +
+    `<p class="grid-editor-help">選擇主支長度方向，再設定格線來源。沿主支方向的格線預設主支 2，垂直格線預設副支 3；放置角材時可明確改選。</p>` +
+    `<label class="grid-main-label">主支長度方向<select id="gridMainAlong"${surf ? "" : " disabled"}>` +
+    `<option value="none"${currentGrid?.mainAlong ? "" : " selected"}>${currentGrid ? "未設定（舊網格）" : "請選擇"}</option>` +
+    `<option value="u"${currentGrid?.mainAlong === "u" ? " selected" : ""}>沿 u（v 座標格線為主支）</option>` +
+    `<option value="v"${currentGrid?.mainAlong === "v" ? " selected" : ""}>沿 v（u 座標格線為主支）</option></select></label>` +
     gridAxisFormHTML("u",currentGrid?.uDefinition,!surf) + gridAxisFormHTML("v",currentGrid?.vDefinition,!surf) +
     `<div id="gridPreviewStatus" class="grid-preview-status" role="status">輸入參數後顯示格線預覽</div>` +
     `<button class="btn" id="gridCreate"${surf ? "" : " disabled"}>${currentGrid ? "套用網格變更" : "建立網格"}</button></div></section></div>`;
@@ -5968,7 +6008,12 @@ function renderFaceInspector() {
       gridStatus.classList.remove("invalid");
       const lineSummary = values => values.length > 8
         ? values.slice(0,8).join("、") + "…" : values.join("、") || "無";
-      gridStatus.textContent = `預覽：u ${r.grid.u.length} 條（${lineSummary(r.grid.u)}）· v ${r.grid.v.length} 條（${lineSummary(r.grid.v)}）`;
+      const primary = r.grid.lines.filter(x => x.priority === 2).length;
+      const secondary = r.grid.lines.filter(x => x.priority === 3).length;
+      const roleText = r.grid.mainAlong
+        ? ` · 主支 2：${primary} 條 · 副支 3：${secondary} 條`
+        : " · 尚未設定主支方向；格線優先級未設定";
+      gridStatus.textContent = `預覽：u ${r.grid.u.length} 條（${lineSummary(r.grid.u)}）· v ${r.grid.v.length} 條（${lineSummary(r.grid.v)}）${roleText}`;
     } catch (err) {
       if (seq !== fe.gridPreviewSeq) return;
       fe.gridPreview = null;

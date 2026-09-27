@@ -1314,6 +1314,8 @@ typedef struct {
     SurfaceId placement_id;
 
     GridAxisDef axis[2];
+    /* D10: 0 = 未設定, 1 = 沿 u, 2 = 沿 v。 */
+    int main_along;
 } ReferenceGrid;
 
 static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
@@ -1513,6 +1515,13 @@ static bool grid_is_valid(
 {
     if (grid == NULL || placement == NULL ||
         grid->placement_id != placement->id) {
+        return false;
+    }
+
+    /* I10: 主支方向須有對應格線來源；u 座標線沿 v，反之亦然。 */
+    if (grid->main_along < 0 || grid->main_along > 2 ||
+        (grid->main_along == 1 && grid->axis[1].source == GRID_SRC_NONE) ||
+        (grid->main_along == 2 && grid->axis[0].source == GRID_SRC_NONE)) {
         return false;
     }
 
@@ -9360,7 +9369,7 @@ static SurfacePoint2 anchor_corner_from_rect(
 }
 
 /*
- * grid <id> on <承載面id> u c1 [c2 ...] [v c1 [c2 ...]]
+ * grid <id> on <承載面id> [main-along u|v|none] u c1 [c2 ...] [v c1 [c2 ...]]
  *
  * 一座網格 = u 座標集合 + v 座標集合（公理 G1–G4）。
  * 同一 id 可寫兩行分別補 u / v 集合（同座標軸只能宣告一次）；
@@ -9434,8 +9443,25 @@ static bool apply_grid_line(
 
     ReferenceGrid *grid = &candidate;
 
-    /* 逐段解析：u|v 開頭，後面跟一串座標直到下一個 u/v 或行尾。 */
+    /* 既有網格可單獨更新主支方向；省略時保留原值。 */
     int i = 4;
+    bool has_main_along = false;
+    if (i < count && strcmp(tokens[i], "main-along") == 0) {
+        if (i + 1 >= count) {
+            scene_error(path, line_no, "grid main-along 需要 u、v 或 none");
+            return false;
+        }
+        if (strcmp(tokens[i + 1], "u") == 0) candidate.main_along = 1;
+        else if (strcmp(tokens[i + 1], "v") == 0) candidate.main_along = 2;
+        else if (strcmp(tokens[i + 1], "none") == 0) candidate.main_along = 0;
+        else {
+            scene_error(path, line_no, "grid main-along 只接受 u、v 或 none");
+            return false;
+        }
+        has_main_along = true;
+        i += 2;
+    }
+    /* 逐段解析：u|v 開頭，後面跟一串座標直到下一個 u/v 或行尾。 */
     size_t filled = 0;
     bool declared_here[2] = { false, false };
 
@@ -9632,8 +9658,13 @@ static bool apply_grid_line(
         }
     }
 
-    if (filled == 0) {
-        scene_error(path, line_no, "grid 至少要一個座標");
+    if (filled == 0 && !(existing != NULL && has_main_along)) {
+        scene_error(path, line_no, "新網格至少要一個格線來源");
+        return false;
+    }
+    if ((candidate.main_along == 1 && candidate.axis[1].source == GRID_SRC_NONE) ||
+        (candidate.main_along == 2 && candidate.axis[0].source == GRID_SRC_NONE)) {
+        scene_error(path, line_no, "grid 主支方向沒有對應的格線來源");
         return false;
     }
 
@@ -11713,15 +11744,23 @@ static void world_dump_dsl(const World *world, FILE *out)
     for (size_t i = 0; i < world->grid_count; ++i) {
         const ReferenceGrid *g = &world->grids[i];
 
-        for (int a = 0; a < 2; ++a) {
+        bool main_along_dumped = false;
+        for (int pass = 0; pass < 2; ++pass) {
+            /* 重放時先宣告主支方向所需的來源軸。 */
+            int a = g->main_along == 1 ? 1 - pass : pass;
             const GridAxisDef *def = &g->axis[a];
 
             if (def->source == GRID_SRC_NONE) {
                 continue;
             }
 
-            fprintf(out, "grid %u on %u %c", (unsigned)g->id,
-                    (unsigned)g->placement_id, a == 0 ? 'u' : 'v');
+            fprintf(out, "grid %u on %u", (unsigned)g->id,
+                    (unsigned)g->placement_id);
+            if (!main_along_dumped && g->main_along != 0) {
+                fprintf(out, " main-along %c", g->main_along == 1 ? 'u' : 'v');
+                main_along_dumped = true;
+            }
+            fprintf(out, " %c", a == 0 ? 'u' : 'v');
 
             /* 只存來源就只 dump 來源（R4：重放逐字相同）。 */
             if (def->source == GRID_SRC_SERIES) {

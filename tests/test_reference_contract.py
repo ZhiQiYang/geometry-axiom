@@ -87,6 +87,61 @@ class ReferenceContract(unittest.TestCase):
         self.assertFalse(failed['ok'], failed)
         self.assertEqual(grid, self.refs()['grids'][0])
 
+    def test_grid_line_roles_follow_main_length_axis(self):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000')
+        self.ok('grid 1 on 1 main-along u u 500 1500 v 300 900')
+        grid = self.refs()['grids'][0]
+        self.assertEqual(grid['mainAlong'], 'u')
+        self.assertEqual([(x['axis'], x['role'], x['priority']) for x in grid['lines']],
+                         [('u', 'secondary', 3), ('u', 'secondary', 3),
+                          ('v', 'primary', 2), ('v', 'primary', 2)])
+        self.assertIn('grid 1 on 1 main-along u v 300 900', self.dump())
+        self.roundtrip()
+        before = self.dump()
+        self.assertFalse(self.line('grid 1 on 1 main-along z')['ok'])
+        self.assertFalse(self.line('grid 1 on 1 main-along u u 500 1500 v 900 300')['ok'])
+        self.assertEqual(before, self.dump())
+        self.ok('grid 1 on 1 main-along v')
+        self.assertEqual([(x['axis'], x['priority']) for x in self.refs()['grids'][0]['lines']],
+                         [('u', 2), ('u', 2), ('v', 3), ('v', 3)])
+        self.roundtrip()
+
+    def test_grid_role_legacy_and_source_validation(self):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000')
+        self.ok('grid 1 on 1 u 500')
+        self.assertIsNone(self.refs()['grids'][0]['mainAlong'])
+        self.assertIsNone(self.refs()['grids'][0]['lines'][0]['role'])
+        before = self.dump()
+        self.assertFalse(self.line('grid 1 on 1 main-along u')['ok'])
+        self.assertEqual(before, self.dump())
+        self.ok('grid 1 on 1 main-along v')
+        self.assertEqual(self.refs()['grids'][0]['lines'][0]['priority'], 2)
+        self.ok('grid 1 on 1 main-along none')
+        self.assertIsNone(self.refs()['grids'][0]['lines'][0]['priority'])
+        self.assertEqual(before, self.dump())
+        self.roundtrip()
+
+    def test_grid_main_direction_never_rewrites_existing_timber(self):
+        original = self.geom(3)
+        role = next(t['role'] for t in self.refs()['timbers'] if t['id'] == 3)
+        self.ok('grid 7 on 1 main-along u u 1000 v 500')
+        self.assertEqual(self.refs()['grids'][0]['lines'][0]['role'], 'secondary')
+        self.ok('timber 4 27 33 role primary')
+        self.ok('place 4 on 1 at-line grid 7 u 0 +v +n')
+        grid_timber = self.geom(4)
+        self.ok('grid 7 on 1 main-along v')
+        self.assertEqual(self.geom(3), original)
+        self.assertEqual(self.geom(4), grid_timber)
+        self.assertEqual(next(t['role'] for t in self.refs()['timbers'] if t['id'] == 3), role)
+        self.assertEqual(next(t['role'] for t in self.refs()['timbers'] if t['id'] == 4), 'primary')
+        self.ok('undo')
+        self.assertEqual(self.refs()['grids'][0]['mainAlong'], 'u')
+        self.ok('redo')
+        self.assertEqual(self.refs()['grids'][0]['mainAlong'], 'v')
+        self.roundtrip()
+
     def test_default_is_supported_reference_world(self):
         self.assertEqual(self.geom(3)['length'], 2946)
         self.assertEqual(self.geom(3)['centerline'], 500)

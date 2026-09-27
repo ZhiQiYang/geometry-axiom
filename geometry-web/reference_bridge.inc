@@ -77,6 +77,9 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
 {
     const PlacementSurface *p=world_find_placement(w,g->placement_id);
     printf("{\"id\":%u,\"surface\":%u",g->id,g->placement_id);
+    if (g->main_along==1) fputs(",\"mainAlong\":\"u\"",stdout);
+    else if (g->main_along==2) fputs(",\"mainAlong\":\"v\"",stdout);
+    else fputs(",\"mainAlong\":null",stdout);
     for (int axis=0;axis<2;++axis) {
         const GridAxisDef *d=&g->axis[axis];
         Coord values[GRID_MAX_LINES]; size_t count=0;
@@ -100,6 +103,23 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
         }
         putchar('}');
     }
+    fputs(",\"lines\":[",stdout);
+    bool first=true;
+    for (int axis=0;axis<2;++axis) {
+        Coord values[GRID_MAX_LINES]; size_t count=0;
+        if (p) grid_axis_lines(g,p,world_placement_boundary(w,p),axis,values,&count,NULL,0);
+        for (size_t k=0;k<count;++k) {
+            if (!first) putchar(',');
+            first=false;
+            printf("{\"axis\":\"%c\",\"index\":%zu,\"coordinate\":%lld,\"role\":",
+                axis?'v':'u',k,(long long)values[k]);
+            int role=g->main_along==0?0:((g->main_along==1&&axis==1)||(g->main_along==2&&axis==0)?2:3);
+            if (role==2) fputs("\"primary\",\"priority\":2}",stdout);
+            else if (role==3) fputs("\"secondary\",\"priority\":3}",stdout);
+            else fputs("null,\"priority\":null}",stdout);
+        }
+    }
+    putchar(']');
     putchar('}');
 }
 /* Read-only draft: run the canonical grid parser and expander on a World copy. */
