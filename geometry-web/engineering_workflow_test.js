@@ -10,6 +10,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   const read=async expression=>{const value=await eval_(expression);if(value?.__err)throw Error(value.__err);return value;};
   const wait=async(expression,label=expression)=>{await waitForUI(expression,20000);if(await read(expression)!==true)throw Error('Engineering timeout: '+label);};
   const ctl=async selector=>{
+    if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await ctl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
     await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'center'});void 0`);
     let point;
     for(let attempt=0;attempt<10;attempt++){

@@ -58,10 +58,23 @@ static bool grid_cell_bounds(const ReferenceGrid *grids,size_t count,const Refer
     if (!grid || !grid->is_subgrid || !p || grid->placement_id!=p->id) goto invalid;
     for (size_t i=0;i<count;++i) if (grids[i].id==grid->parent_id) parent=&grids[i];
     if (!parent || parent->is_subgrid || parent->placement_id!=p->id) goto invalid;
+    if (grid->lattice_cell!=parent->from_binding) {
+        if (err) snprintf(err,cap,"D19/I37: subgrid cell index space must match its parent grid");
+        return false;
+    }
     SurfaceRegion2 bounds;
     if (!placement_local_bounds(p,b,&bounds)) goto invalid;
     Coord ends[2][2];
     for (int axis=0;axis<2;++axis) {
+        if (grid->lattice_cell) {
+            int64_t k=grid->lattice_cell_index[axis];
+            if (k==INT64_MAX || !grid_lattice_coord(parent,axis,k,&ends[axis][0]) ||
+                !grid_lattice_coord(parent,axis,k+1,&ends[axis][1]) || ends[axis][0]>=ends[axis][1]) {
+                if (err) snprintf(err,cap,"D19/I37: subgrid %u lattice cell endpoint is outside the signed-index or D1 coordinate range",grid->id);
+                return false;
+            }
+            continue;
+        }
         Coord lines[GRID_MAX_LINES], stops[GRID_MAX_LINES+2];
         int refs[GRID_MAX_LINES+2]; size_t n=0,m=0;
         Coord lo=axis==0?bounds.min_u:bounds.min_v, hi=axis==0?bounds.max_u:bounds.max_v;
@@ -114,17 +127,49 @@ static bool grid_axis_lines_in(const ReferenceGrid *grids,size_t count,const Ref
 }
 
 static bool grid_line_coord_in(const ReferenceGrid *grids,size_t count,const ReferenceGrid *grid,
-    const PlacementSurface *p,const SpaceBoundarySurface *b,int axis,size_t index,Coord *out,size_t *total,char *err,size_t cap)
+    const PlacementSurface *p,const SpaceBoundarySurface *b,int axis,int64_t index,Coord *out,size_t *total,char *err,size_t cap)
 {
     Coord coords[GRID_MAX_LINES]; size_t n=0;
     if (total) *total=0;
+    if (grid && grid->from_binding && !grid->is_subgrid) {
+        if (!p || p->id!=grid->placement_id || !grid_lattice_coord(grid,axis,index,out)) {
+            if (err) snprintf(err,cap,"D10/I37: lattice grid %u index %lld cannot be evaluated in D1",grid->id,(long long)index);
+            return false;
+        }
+        return true;
+    }
     if (!grid_axis_lines_in(grids,count,grid,p,b,axis,coords,&n,err,cap)) return false;
     if (total) *total=n;
-    if (index>=n) {
-        if (err) snprintf(err,cap,"I23: 網格 %u %c 軸索引 %u 超出範圍（本軸共 %u 條）",grid->id,axis?'v':'u',(unsigned)index,(unsigned)n);
+    if (index<0 || (uint64_t)index>=n) {
+        if (err) snprintf(err,cap,"I23: 網格 %u %c 軸索引 %lld 超出範圍（本軸共 %u 條）",grid->id,axis?'v':'u',(long long)index,(unsigned)n);
         return false;
     }
     if (out) *out=coords[index];
+    return true;
+}
+
+/* Display/query sampling preserves the source index. A sampled pair is never a
+ * cell definition; lattice-cell evaluation above always uses consecutive k. */
+static bool grid_sample_indices_in(const ReferenceGrid *grids,size_t count,const ReferenceGrid *grid,
+    const PlacementSurface *p,const SpaceBoundarySurface *b,int axis,
+    int64_t indices[GRID_MAX_LINES],Coord coords[GRID_MAX_LINES],size_t *out_count)
+{
+    if (!out_count) return false;
+    *out_count=0;
+    if (!grid || !p || grid->placement_id!=p->id || axis<0 || axis>1 || !indices || !coords) return false;
+    if (grid->from_binding && !grid->is_subgrid) {
+        SurfaceRegion2 bounds; GridQueryAxis result;
+        if (!placement_local_bounds(p,b,&bounds) ||
+            !grid_lattice_window(grid,axis,axis?bounds.min_v:bounds.min_u,
+                axis?bounds.max_v:bounds.max_u,GRID_MAX_LINES,true,&result,NULL,0)) return false;
+        for (size_t i=0;i<result.count;++i) {
+            indices[i]=result.lines[i].index; coords[i]=result.lines[i].coordinate;
+        }
+        *out_count=result.count;
+        return true;
+    }
+    if (!grid_axis_lines_in(grids,count,grid,p,b,axis,coords,out_count,NULL,0)) return false;
+    for (size_t i=0;i<*out_count;++i) indices[i]=(int64_t)i;
     return true;
 }
 
@@ -143,7 +188,9 @@ static bool grid_is_valid_in(const ReferenceGrid *grids,size_t count,const Refer
     for (size_t i=0;i<count;++i) {
         const ReferenceGrid *other=&grids[i];
         if (other->id!=grid->id && other->is_subgrid && other->parent_id==grid->parent_id &&
-            !memcmp(other->cell_ref,grid->cell_ref,sizeof grid->cell_ref)) {
+            other->lattice_cell==grid->lattice_cell &&
+            (grid->lattice_cell ? !memcmp(other->lattice_cell_index,grid->lattice_cell_index,sizeof grid->lattice_cell_index) :
+                !memcmp(other->cell_ref,grid->cell_ref,sizeof grid->cell_ref))) {
             if (err) snprintf(err,cap,"I25：父格 %u 的這個格子已有子格 %u",grid->parent_id,other->id);
             return false;
         }
@@ -156,7 +203,7 @@ static bool grid_is_valid_in(const ReferenceGrid *grids,size_t count,const Refer
 }
 
 static size_t grid_line_segments(const ReferenceGrid *grids,size_t count,const ReferenceGrid *grid,
-    const PlacementSurface *p,const SpaceBoundarySurface *b,int axis,size_t index,SurfaceSegment2 *out,size_t cap)
+    const PlacementSurface *p,const SpaceBoundarySurface *b,int axis,int64_t index,SurfaceSegment2 *out,size_t cap)
 {
     Coord coord; SurfaceRegion2 cell;
     if (!grid_line_coord_in(grids,count,grid,p,b,axis,index,&coord,NULL,NULL,0)) return 0;

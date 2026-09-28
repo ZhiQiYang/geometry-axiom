@@ -10,6 +10,8 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   };
   const at=async(selector)=>eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)}),r=e?.getBoundingClientRect();return r?{x:r.x+r.width/2,y:r.y+r.height/2,l:r.left,t:r.top,r:r.right,b:r.bottom}:null})()`);
   const ctl=async(selector)=>{
+    if(await eval_(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await ctl(await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+    if(await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return !!e?.closest('#filterDisclosure')&&!e.matches('summary')&&!e.closest('#filterDisclosure').open;})()`))await ctl('#filterDisclosure > summary');
     const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)return {error:'missing'};
       e.scrollIntoView({block:'nearest',inline:'nearest'});const r=e.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,h=document.elementFromPoint(x,y);
       return r.width>0&&r.height>0&&!e.disabled&&(h===e||e.contains(h))?{x,y}:{error:'hidden, disabled or covered',hit:h?.tagName+'#'+h?.id};})()`);
@@ -34,10 +36,14 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
     fs.writeFileSync(path.join(dest,name+'.png'),Buffer.from(result.result.data,'base64'));
   };
   const reset=async(lines)=>{
-    const result=await eval_(`(async()=>{for(const d of document.querySelectorAll('dialog[open]'))d.close();resetSceneFocus();await setView3(false);closePanels();await api('reset');for(const line of ${JSON.stringify(lines)}){const r=await api('line '+line);if(!r.ok)throw Error(line+': '+JSON.stringify(r));}await renderObjects();setOcTool('select');oc.panX=0;oc.panY=0;oc.zoom=1;ocApply();ReferenceWorkspace.context().dirty=false;ReferenceWorkspace.present();return true;})()`);
+    const result=await eval_(`(async()=>{for(const d of document.querySelectorAll('dialog[open]'))d.close();resetSceneFocus();await setView3(false);closePanels();const reset=await api('reset');if(!reset.ok)throw Error('reset: '+JSON.stringify(reset));for(const line of ${JSON.stringify(lines)}){const r=await api('line '+line);if(!r.ok)throw Error(line+': '+JSON.stringify(r));}if(!await renderObjects())throw Error('fixture render failed: '+JSON.stringify(connection));setOcTool('select');oc.panX=0;oc.panY=0;oc.zoom=1;ocApply();ReferenceWorkspace.context().dirty=false;ReferenceWorkspace.present();return true;})()`);
     if(result!==true)throw Error('Selection fixture failed: '+JSON.stringify(result));await sleep(250);
   };
-  const objectPoint=async(x,y)=>eval_(`(()=>{const r=ocv.getBoundingClientRect();return {x:r.left+oc.panX+${x}*oc.zoom,y:r.top+oc.panY+${y}*oc.zoom}})()`);
+  // Preserve each original containment/crossing relation as card dimensions
+  // evolve. The independent edge/corner tests below still read screen bounds.
+  let objectScale={x:1,y:1};
+  const objectCoord=(x,y)=>({x:Math.round(x*objectScale.x),y:100+Math.round(y*objectScale.y)});
+  const objectPoint=async(x,y)=>{const p=objectCoord(x,y);return eval_(`(()=>{const r=ocv.getBoundingClientRect();return {x:r.left+oc.panX+${p.x}*oc.zoom,y:r.top+oc.panY+${p.y}*oc.zoom}})()`);};
   const objectBox=async(x0,y0,x1,y1,modifiers=0)=>{const a=await objectPoint(x0,y0),b=await objectPoint(x1,y1);await dragMod(a.x,a.y,b.x,b.y,8,modifiers);await sleep(220);};
   const facePoint=async(x,y)=>eval_(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect();return {x:r.left+fe.panX+${x}*fe.zoom,y:r.top+fe.panY+${y}*fe.zoom}})()`);
   const faceBox=async(x0,y0,x1,y1,modifiers=0)=>{const a=await facePoint(x0,y0),b=await facePoint(x1,y1);await dragMod(a.x,a.y,b.x,b.y,8,modifiers);await sleep(220);};
@@ -52,7 +58,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
     }finally{await mouseUp(b);await sleep(220);}
     if(!await noMarquee())throw Error('Screen-space selection left a marquee after pointer release: '+JSON.stringify({a,b}));
   };
-  const marqueeAppearance=async(scope)=>eval_(`(()=>{const e=document.querySelector('.selection-marquee'),s=e&&getComputedStyle(e),summary=$('${scope}SelectionSummary');return e?{mode:e.dataset.selectionMode,crossing:e.classList.contains('crossing'),dash:s.strokeDasharray,stroke:s.stroke,text:summary.querySelector('small')?.textContent,visible:!summary.hidden}:null})()`);
+  const marqueeAppearance=async(scope)=>eval_(`(()=>{const e=document.querySelector('.selection-marquee'),s=e&&getComputedStyle(e),summary=$('${scope}SelectionSummary');return e?{mode:e.dataset.selectionMode,crossing:e.classList.contains('crossing'),dash:s.strokeDasharray,stroke:s.stroke,text:summary.querySelector('small')?.textContent,visible:!summary.hidden&&summary.getClientRects().length>0}:null})()`);
   const modeColor=(stroke,mode)=>{const rgb=String(stroke).match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)?.slice(1).map(Number);return !!rgb&&(mode==='crossing'?rgb[1]>rgb[0]&&rgb[1]>rgb[2]:rgb[2]>rgb[0]&&rgb[2]>rgb[1]);};
   const hasAppearance=(state,mode)=>!!state&&state.visible&&state.mode===mode&&state.crossing===(mode==='crossing')&&
     modeColor(state.stroke,mode)&&
@@ -60,17 +66,23 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   const card=n=>`.ocard[data-kind="boundary"][data-id="${n+1}"]`;
   const timber=n=>`.face-timber[data-face-hit="t:${n}"]`;
   // Boundary 0 is reserved by the SSOT; valid timber 0 is covered below.
-  const baseLines=[1,2,3].flatMap(id=>[`boundary ${id} outline 0,0 4000,0 4000,3000 0,3000`,`canvas-pos boundary ${id} ${id===2?300:60} ${id===3?300:60}`]);
-
-  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1200,deviceScaleFactor:1,mobile:false});
+  await reset(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000','canvas-pos boundary 1 60 60']);
+  const cardSize=await eval_(`(()=>{const f=document.querySelector('.ocard[data-kind="boundary"] .ocard-frame');return {w:+f.getAttribute('width'),h:+f.getAttribute('height')};})()`);
+  if(!(cardSize.w>0&&cardSize.h>0))throw Error('Invalid native card frame dimensions '+JSON.stringify(cardSize));
+  // The original fixture used 200 × 156 cards. Add screen-safe headroom for
+  // the floating toolbar without changing any card/selection relationship.
+  objectScale={x:cardSize.w/200,y:cardSize.h/156};
+  const baseLines=[1,2,3].flatMap(id=>{const p=objectCoord(id===2?300:60,id===3?300:60);return [`boundary ${id} outline 0,0 4000,0 4000,3000 0,3000`,`canvas-pos boundary ${id} ${p.x} ${p.y}`];});
   await reset(baseLines);
   const savedProject=await eval_(`(async()=>{window.g209SavedProject=await ReferenceWorkspace.exportBytes();return g209SavedProject instanceof Uint8Array&&g209SavedProject.length>0})()`);
   if(savedProject!==true)throw Error('Selection import fixture failed: '+JSON.stringify(savedProject));
   check('S01/S07 選取契約、數量與清除入口存在',await eval_(`Array.isArray(oc.selection)&&!!$('ocSelectionSummary')&&!!$('feSelectionSummary')`));
+  check('S07 未選取時保留 live 狀態但不遮住物件卡',await eval_(`$('ocSelectionSummary').getClientRects().length===0 && !!$('ocSelectionSummary').querySelector('[aria-live]')`));
   const before=await snapshot();
   await objectBox(40,40,520,235);
   check('S01 正向完整包含兩張卡片',same(await objectIds(),['boundary:1','boundary:2']),await objectIds());
-  check('S07 卡片、清單高亮及可見數量一致',await eval_(`document.querySelectorAll('.ocard.selected').length===2&&document.querySelectorAll('.object-row.selected').length===2&&!$('ocSelectionSummary').hidden&&/2/.test($('ocSelectionSummary').textContent)&&oc.sel===null`));
+  check('S07 卡片、清單高亮及可見數量一致',await eval_(`document.querySelectorAll('.ocard.selected').length===2&&document.querySelectorAll('.object-row.selected').length===2&&!$('ocSelectionSummary').hidden&&$('ocSelectionSummary').getClientRects().length>0&&/2/.test($('ocSelectionSummary').textContent)&&oc.sel===null`));
   await shot('objects-two-selected');
   await objectBox(520,235,40,40);
   check('S01 向左拖框也納入完整包含的兩張卡片',same(await objectIds(),['boundary:1','boundary:2']),await objectIds());
@@ -103,6 +115,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   check('S01 拖過起點即時切換相交/包含樣式與操作說明',hasAppearance(objectCrossing,'crossing')&&hasAppearance(objectWindow,'window')&&objectCrossing.stroke!==objectWindow.stroke&&same(await objectIds(),['boundary:1']),{objectCrossing,objectWindow,selected:await objectIds()});
   await mouseUp(changeRight);await sleep(220);
   check('S01 放開時依最後向右方向選取第二張卡片並恢復雙向提示',same(await objectIds(),['boundary:2'])&&await noMarquee()&&await eval_(`$('ocSelectionSummary').querySelector('small').textContent.includes('向右完整框住 · 向左相交即選')`),await objectIds());
+  check('S07 單選結束後收起摘要並保留 live 數量',await eval_(`$('ocSelectionSummary').getClientRects().length===0 && /1/.test($('ocSelectionSummary').textContent)`));
   await objectBox(280,480,240,280,8);
   check('S03 Shift 向左部分相交加入第三張且保留第二張',same(await objectIds(),['boundary:2','boundary:3']),await objectIds());
   await objectBox(280,480,240,280,8);
@@ -187,6 +200,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   const c0=await at(card(0));await dblclick(c0.x,c0.y);await sleep(350);
   check('S09 雙擊卡片仍進入面編輯',await eval_(`oc.focus?.t==='face'&&oc.edit?.bid===1`));
 
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
   await reset([
     'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
     'surface 2 origin 0 0 3000 u +x v +y outline 0,0 2000,0 2000,2000 0,2000',
@@ -329,15 +343,15 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   check('S08 帶著多選直接開啟同面 ID 的另一專案清掉幽靈選取',beforeImport.count>1&&beforeImport.bid===1&&imported===true&&same(await objectIds(),[])&&same(await timberIds(),[])&&await noMarquee()&&await eval_(`ReferenceWorkspace.context().id!==${JSON.stringify(beforeImport.id)}&&oc.focus===null&&oc.faces.some(f=>f.id===1)`),{beforeImport,imported,objects:await objectIds(),timbers:await timberIds()});
   await reset(['surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000','space 1 boundary 1','canvas-pos boundary 1 60 60','canvas-pos space 1 340 60']);
   const spaceCard='.ocard[data-kind="space"][data-id="1"]';
-  await ctl(spaceCard);const spacePoint=await at(spaceCard);await dblclick(spacePoint.x,spacePoint.y);await sleep(220);
+  const spacePoint=await at(spaceCard);await dblclick(spacePoint.x,spacePoint.y);await sleep(220);
   const spaceSelectedInside=await eval_(`oc.focus?.t==='space'&&oc.focus.id===1&&oc.sel?.kind==='space'&&oc.sel.id===1`);
   await key('Escape','Escape',27);
   const spaceEscReturned=await eval_(`oc.focus===null&&oc.sel?.kind==='space'&&oc.sel.id===1`);
   // Preserve the assertion while recovering enough UI state to test the button too.
   if(!spaceEscReturned)await eval_(`leaveFocus()`);
-  await ctl(spaceCard);const spaceAgain=await at(spaceCard);await dblclick(spaceAgain.x,spaceAgain.y);await sleep(220);
+  const spaceAgain=await at(spaceCard);await dblclick(spaceAgain.x,spaceAgain.y);await sleep(220);
   await ctl('#workspaceBackButton');
-  check('S09 空間單張卡以 Esc 或返回鈕退出都保留選取',spaceSelectedInside&&spaceEscReturned&&same(await objectIds(),['space:1'])&&await eval_(`oc.focus===null&&document.querySelector('.ocard[data-kind="space"][data-id="1"]').classList.contains('selected')`));
+  check('S09 空間單張卡以 Esc 或返回鈕退出都保留選取',spaceSelectedInside&&spaceEscReturned&&same(await objectIds(),['space:1'])&&await eval_(`oc.focus===null&&document.querySelector('.ocard[data-kind="space"][data-id="1"]').classList.contains('selected')`),{spaceSelectedInside,spaceEscReturned,selection:await objectIds(),focus:await eval_('oc.focus')});
   await reset([]);await key('p','KeyP',80);await waitForUI(`oc.focus?.t==='face'&&fe.tool==='redraw'&&!oc.busy`);
   const newFace=await eval_(`({id:oc.edit?.bid,n:oc.faces.length,sel:oc.sel,verts:oc.edit&&oc.bmap[oc.edit.bid]?.[0]?.verts?.length,tool:fe.tool})`);
   await key('Escape','Escape',27);
@@ -382,11 +396,19 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   const projectBefore=await eval_(`(async()=>({id:ReferenceWorkspace.context().id,dump:(await api('dump')).text}))()`);
   await eval_(`ReferenceWorkspace.importBytes(g209SavedProject)`);await sleep(250);await ctl(card(0));
   const importedContext=await eval_(`ReferenceWorkspace.context().id`);
+  const importedDump=await eval_(`api('dump').then(r=>r.text)`);
   await key('z','KeyZ',90,2);
   const projectUndo=await eval_(`(async()=>({id:ReferenceWorkspace.context().id,dump:(await api('dump')).text,selection:oc.selection,sel:oc.sel}))()`);
   await ctl(card(0));await key('y','KeyY',89,2);
-  const projectRedo=await eval_(`({id:ReferenceWorkspace.context().id,selection:oc.selection,sel:oc.sel})`);
-  check('S08 主畫布同 ID 跨專案 Undo/Redo 清掉前專案單選',importedContext!==projectBefore.id&&projectUndo.id===projectBefore.id&&projectUndo.dump===projectBefore.dump&&same(projectUndo.selection,[])&&projectUndo.sel===null&&projectRedo.id===importedContext&&same(projectRedo.selection,[])&&projectRedo.sel===null,{projectBefore:projectBefore.id,importedContext,undo:{id:projectUndo.id,selection:projectUndo.selection,sel:projectUndo.sel},redo:projectRedo});
+  const projectRedo=await eval_(`(async()=>({id:ReferenceWorkspace.context().id,dump:(await api('dump')).text,selection:oc.selection,sel:oc.sel}))()`);
+  // UIUX-FIX-PLAN L1 (approved): undo/redo restores geometry while retaining
+  // the current canvas-pos for the same kind/id. These projects deliberately
+  // position boundary 1 differently, so a whole-dump equality hides that rule.
+  const positions=s=>s.split('\n').filter(l=>l.startsWith('canvas-pos '));
+  const geometry=s=>s.split('\n').filter(l=>!l.startsWith('canvas-pos ')).join('\n');
+  check('S08 主畫布同 ID 跨專案 Undo/Redo 清掉前專案單選並還原完整幾何',importedContext!==projectBefore.id&&projectUndo.id===projectBefore.id&&geometry(projectUndo.dump)===geometry(projectBefore.dump)&&same(projectUndo.selection,[])&&projectUndo.sel===null&&projectRedo.id===importedContext&&geometry(projectRedo.dump)===geometry(importedDump)&&same(projectRedo.selection,[])&&projectRedo.sel===null,{projectBefore:projectBefore.id,importedContext,undo:{id:projectUndo.id,selection:projectUndo.selection,sel:projectUndo.sel},redo:{id:projectRedo.id,selection:projectRedo.selection,sel:projectRedo.sel}});
+  const currentBoundaryPosition=positions(importedDump).filter(l=>l.startsWith('canvas-pos boundary 1 '));
+  check('S08 L1 Undo/Redo 保留同 ID 卡片的還原前展示位置',currentBoundaryPosition.length===1&&!same(positions(projectBefore.dump),currentBoundaryPosition)&&same(positions(projectUndo.dump),currentBoundaryPosition)&&same(positions(projectRedo.dump),positions(importedDump)),{before:positions(projectBefore.dump),imported:positions(importedDump),undo:positions(projectUndo.dump),redo:positions(projectRedo.dump)});
   check('S10 操作不產生瀏覽器未捕捉例外',exceptionCount()===errors,{before:errors,after:exceptionCount()});
 };
 

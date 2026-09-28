@@ -44,6 +44,7 @@ static bool eng_operation(World *w,EngJson *j,int t)
             return true;
         }
         ReferenceGrid *g=world_find_grid_mut(w,id); int create=0;
+        if (g && (g->from_system || g->from_binding)) return eng_fail("D29: grid-system applications cannot have engineering bindings");
         int create_t=eng_json_member(j,t,"create"); if (create_t>=0 && !eng_json_boolean(j,create_t,&create)) return eng_fail("D28: create must be boolean");
         if (g && (g->is_subgrid || g->placement_id!=a->placement_id)) return eng_fail("D28: selected main grid belongs to another face or is a subgrid");
         if (!g) {

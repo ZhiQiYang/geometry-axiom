@@ -1,0 +1,61 @@
+/* The canvas dock is owned by app.css; these rules stay within its content. */
+.gi-inspector{height:100%;min-height:0;display:flex;flex-direction:column;background:#fff;color:#243247;font-size:12px;box-sizing:border-box;overflow:auto}
+.gi-inspector *{box-sizing:border-box}
+.gi-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 22px 10px;border-bottom:1px solid #edf0f5;flex-shrink:0}
+.gi-heading{display:flex;align-items:baseline;gap:12px;min-width:0}
+.gi-eyebrow{font-size:12px;color:#61738a;white-space:nowrap}
+.gi-heading h2{margin:0;font-size:16px;line-height:1.35;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gi-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.gi-actions .btn{min-height:30px;padding:4px 10px;font-size:12px}
+.gi-actions .gi-delete{border-color:transparent;color:#78869a;background:transparent}
+.gi-actions .gi-delete:hover{color:#bd4b50;background:#fff1f1}
+.gi-content{display:grid;min-width:0;flex:1;padding:13px 0 8px;align-items:start}
+.gi-binding-content{grid-template-columns:minmax(180px,1fr) minmax(310px,1.6fr) minmax(175px,.9fr)}
+.gi-source-content{grid-template-columns:minmax(190px,1fr) minmax(300px,1.45fr) minmax(175px,.9fr)}
+.gi-section{min-width:0;padding:0 22px;align-self:stretch}
+.gi-section+.gi-section{border-left:1px solid #e8edf4}
+.gi-inspector h3{font-size:13px;line-height:1.4;font-weight:500;margin:0 0 7px;color:#58687e}
+.gi-inspector h3 span{float:right;color:#61738a;font-size:11px}
+.gi-inspector label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:13px;line-height:1.3;color:#69788d}
+.gi-inspector input,.gi-inspector select{width:100%;min-width:0;min-height:34px;padding:6px 9px;border:1px solid #dce3ec;border-radius:5px;background:#fff;color:#27364b;font:inherit;font-size:14px;outline:none}
+.gi-inspector input:focus,.gi-inspector select:focus{border-color:var(--accent,#3d57ff);box-shadow:0 0 0 3px #ecefff}
+.gi-inspector input[disabled],.gi-inspector select[disabled]{background:#f4f7fb;color:#8290a2}
+.gi-inspector .primary-button{display:block;width:100%;min-height:35px;border:1px solid var(--accent,#3d57ff);border-radius:5px;background:var(--accent,#3d57ff);color:#fff;padding:6px 14px;font:inherit;font-size:13px;font-weight:550;cursor:pointer}
+.gi-inspector .primary-button:hover{filter:brightness(.94)}
+.gi-inspector .primary-button:disabled{opacity:.55;cursor:wait}
+.gi-references label+label{margin-top:10px}
+.gi-help{font-size:12px;line-height:1.45;color:#61738a;margin:6px 0 0;overflow-wrap:anywhere}
+.gi-alignment{display:grid;grid-template-columns:minmax(160px,1fr) 94px;gap:15px}
+.gi-vertex-pane,.gi-anchor-pane{min-width:0}
+#giBoundaryView{display:block;width:100%;height:90px;overflow:visible;margin-top:0}
+#giAnchorView{display:block;width:86px;height:86px;overflow:visible;margin:0 auto}
+.gi-anchor-pane h3{margin-bottom:0}
+.gi-anchor-pane .gi-help{text-align:center;margin-top:2px;font-size:11px}
+.gi-boundary-shape{fill:#ecf8f4;stroke:#2f8f7b;stroke-width:1.1}
+.gi-hit{fill:transparent;stroke:none}
+.gi-vertex-dot{fill:#a5b5c8;stroke:#fff;stroke-width:1.3}
+.gi-vertex-point[aria-pressed=true] .gi-vertex-dot{fill:var(--accent,#3d57ff);stroke:#fff;stroke-width:2}
+.gi-vertex-point,.gi-anchor-point{cursor:pointer;outline:none}
+.gi-vertex-point:hover .gi-vertex-dot,.gi-vertex-point:focus-visible .gi-vertex-dot{fill:var(--accent,#3d57ff);stroke:#d3d9ff;stroke-width:3}
+.gi-vertex-label{font-size:11px;fill:#517964;pointer-events:none}
+.gi-anchor-cell{fill:#f5f6ff;stroke:#b4bce4;stroke-width:1}
+.gi-anchor-midlines{fill:none;stroke:#d3e1f0;stroke-dasharray:3 3;stroke-width:.8}
+.gi-anchor-dot{fill:#a2b5cb;stroke:#fff;stroke-width:1.7}
+.gi-anchor-point[aria-pressed=true] .gi-anchor-dot{fill:var(--accent,#3d57ff);stroke:#dce1ff;stroke-width:4}
+.gi-anchor-point:hover .gi-anchor-dot,.gi-anchor-point:focus-visible .gi-anchor-dot{stroke:#d3d9ff;stroke-width:4}
+.gi-cell-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.gi-cell .primary-button{margin-top:12px}
+.gi-spacing{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.gi-unit-input{position:relative;display:block}
+.gi-unit-input input{padding-right:36px}
+.gi-unit-input>span{position:absolute;right:10px;top:10px;color:#61738a;font-size:11px;pointer-events:none}
+.gi-axis-field small,.gi-source-rule small{display:block;color:#61738a;font-size:12px;line-height:1.45;font-weight:400}
+.gi-readonly{min-height:34px;line-height:1.45;color:#445971;font-size:14px;padding-top:4px}
+.gi-source-rule{font-size:14px;color:#60718a;margin:2px 0 13px;line-height:1.45}
+.gi-source-rule small{margin-top:6px}
+.gi-footer{flex-shrink:0;padding:5px 22px 8px;min-width:0}
+.gi-footer p{margin:0;font-size:12px;line-height:1.4;color:#61738a;overflow-wrap:anywhere}
+.gi-footer p.gi-error{color:#b44850}
+.gi-busy .gi-vertex-point,.gi-busy .gi-anchor-point{pointer-events:none;opacity:.65}
+@media(max-width:1050px){.gi-section{padding:0 14px}.gi-header{padding-left:14px;padding-right:14px}.gi-binding-content{grid-template-columns:minmax(150px,1fr) minmax(260px,1.5fr) minmax(145px,.85fr)}.gi-alignment{grid-template-columns:minmax(125px,1fr) 82px;gap:7px}.gi-source-content{grid-template-columns:minmax(150px,1fr) minmax(250px,1.4fr) minmax(140px,.8fr)}.gi-spacing{gap:10px}}
+@media(max-width:760px){.gi-header{padding:12px 14px;gap:8px;flex-wrap:wrap}.gi-heading h2{font-size:16px}.gi-actions{gap:6px}.gi-actions .btn{min-height:36px}.gi-content{display:flex;flex-wrap:wrap;gap:14px;padding:14px 0}.gi-section{width:100%;padding:0 14px}.gi-section+.gi-section{border-left:0;border-top:1px solid #edf0f5;padding-top:14px}.gi-references{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gi-references label+label{margin-top:0}.gi-references .gi-help{grid-column:1/-1}.gi-alignment{grid-template-columns:minmax(150px,1fr) 110px}.gi-inspector input,.gi-inspector select,.gi-inspector .primary-button{min-height:40px;font-size:14px}#giBoundaryView{height:110px}#giAnchorView{width:100px;height:100px}.gi-cell-fields{max-width:none}.gi-cell .primary-button{margin-top:10px}.gi-footer{padding:0 14px 12px}}

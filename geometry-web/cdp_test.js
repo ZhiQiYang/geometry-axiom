@@ -2,7 +2,7 @@
 const { spawn } = require("child_process");
 const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
-const SCOPE_FLAGS = ['GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
+const SCOPE_FLAGS = ['GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
   if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
@@ -210,6 +210,24 @@ async function click(x, y) {
   for (const [type, btn] of [["mousePressed", "left"], ["mouseReleased", "left"]])
     await send("Input.dispatchMouseEvent", { type, x, y, button: btn, clickCount: 1 });
 }
+// Persistent entries and relocated creation commands are exercised through the
+// same visible menu a user opens, never by clicking a hidden DOM button.
+async function clickControl(selector) {
+  const menu=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return e?.closest('#createObjectPop')?.hidden?'create':e?.closest('#filterDisclosure')&&!e.matches('summary')&&!e.closest('#filterDisclosure').open?'filter':null;})()`);
+  if(menu==='create'){
+    const trigger=await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`);
+    await clickControl(trigger);
+  }else if(menu==='filter')await clickControl('#filterDisclosure > summary');
+  await eval_(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'nearest',inline:'nearest'});void 0`);
+  let p;
+  for(let n=0;n<12;n++){
+    await sleep(70);
+    p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing control '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,w:r.width,h:r.height,hit:e.contains(document.elementFromPoint(x,y)),disabled:!!e.disabled};})()`);
+    if(p.w&&p.h&&p.hit&&!p.disabled)break;
+  }
+  if(!p.w||!p.h||!p.hit||p.disabled)throw Error('Unreachable control '+selector+' '+JSON.stringify(p));
+  await click(p.x,p.y);await sleep(150);
+}
 async function dblclick(x, y) {
   for (const n of [1, 2])
     for (const type of ["mousePressed", "mouseReleased"])
@@ -266,7 +284,7 @@ async function main() {
   await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
-  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY) {
+  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY) {
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   console.log('=== Setup. 確認重置隔離驗收專案 ===');
@@ -286,20 +304,19 @@ async function main() {
   await sleep(500);
 
   console.log("=== 1. Phase 1 版面檢查點(§6) ===");
-  /* (a) #app 三列:56 / 1fr / 32 */
+  /* (a) 固定頂列、工作區、狀態列；浮動選單不計入排版列。 */
   const rows = await eval_(`(()=>{const app=document.getElementById("app");
-    const kids=[...app.children];return {n:kids.length,
+    const kids=[app.querySelector(':scope > .topbar'),app.querySelector(':scope > .workspace'),app.querySelector(':scope > .statusbar')];return {n:kids.filter(Boolean).length,
       cls:kids.map(k=>k.className.split(" ")[0]).join(","),
       h:kids.map(k=>Math.round(k.getBoundingClientRect().height))}})()`);
-  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 56 && rows.h[2] === 32 ? "✓ 三列殼" : "✗"));
-  /* (b) .workspace 三欄:左 260 / 中 1fr / 右 320 */
+  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 60 && rows.h[2] === 28 ? "✓ 三列殼" : "✗"));
+  /* (b) 主畫布不再保留空白右欄，物件庫與畫布共用完整寬度。 */
   const cols = await eval_(`(()=>{const w=document.querySelector(".workspace");
-    const k=[...w.children];return {n:k.length,
-      w:k.map(c=>Math.round(c.getBoundingClientRect().width))}})()`);
-  console.log("workspace cols:", JSON.stringify(cols),explicitVerdict(cols.n === 3 && cols.w[0] === 260 && cols.w[2] === 320 ? "✓ 三欄" : "✗"));
-  /* (c) topbar 子層序:brand → tool-group → top-actions */
-  const tb = await eval_(`[...document.querySelector(".topbar").children].map(c=>c.className.split(" ")[0]).join(",")`);
-  console.log("topbar order:", tb,explicitVerdict(tb === "brand,tool-group,top-actions" ? "✓ 頂列順序" : "✗"));
+    const l=w.querySelector('.sidebar-left').getBoundingClientRect(),c=$('canvasViewport').getBoundingClientRect();return {left:l.width,leftRight:l.right,canvasLeft:c.left,canvasRight:c.right,canvasWidth:c.width,iw:innerWidth,composition:document.body.classList.contains('canvas-composition'),hasInspector:document.body.classList.contains('canvas-has-inspector')};})()`);
+  console.log("workspace composition:",JSON.stringify(cols),explicitVerdict(cols.composition&&!cols.hasInspector&&cols.left>0&&Math.abs(cols.leftRight-cols.canvasLeft)<=2&&Math.abs(cols.canvasRight-cols.iw)<=2&&cols.canvasWidth>cols.iw/2?'✓ 物件庫與完整畫布':'✗'));
+  /* (c) 專案頂列與畫布浮動工具列分工。 */
+  const tb = await eval_(`!!document.querySelector('.topbar > .brand') && !!document.querySelector('.topbar > .top-actions') && $('canvasDrawToolbar').closest('#canvasViewport')!==null && !$('canvasDrawToolbar').closest('.topbar')`);
+  console.log("topbar / canvas tools:",explicitVerdict(tb?'✓ 專案列與畫布工具分開':'✗'));
   /* (d) #ocv 在 #canvasViewport 內且同大小(誤差≤2px) */
   const fit = await eval_(`(()=>{const v=document.getElementById("canvasViewport").getBoundingClientRect();
     const o=document.getElementById("ocv").getBoundingClientRect();
@@ -310,16 +327,15 @@ async function main() {
   const sb = await eval_(`(()=>{const sb=document.querySelector(".statusbar");
     return !!(sb.querySelector("#status") && sb.querySelector("#cmd"))})()`);
   console.log("statusbar:",explicitVerdict(sb ? "✓ status/cmd 在狀態列" : "✗"));
-  /* (f) A1 防溢出:.top-actions 右緣 ≤ viewport、左緣 > .tool-group 右緣(1382 與 1160) */
+  /* (f) 各寬度頂列控制與浮動工具皆可見、可點且不互相遮擋。 */
   for (const w of [1382, 1160, 900, 680, 600]) {
     await send("Emulation.setDeviceMetricsOverride",
       { width: w, height: 804, deviceScaleFactor: 1, mobile: false });
     await sleep(350);
     const ov = await eval_(`(()=>{
-      const ta=document.querySelector(".top-actions").getBoundingClientRect();
-      const tg=document.querySelector(".tool-group").getBoundingClientRect();
-      return {taR:Math.round(ta.right),taL:Math.round(ta.left),tgR:Math.round(tg.right),iw:innerWidth}})()`);
-    console.log(`防溢出@${w}:`, JSON.stringify(ov),explicitVerdict(ov.taR <= ov.iw && ov.taL > ov.tgR ? "✓" : "✗"));
+      const top=document.querySelector('.topbar').getBoundingClientRect(),tools=$('canvasDrawToolbar').getBoundingClientRect();
+      const buttons=[...document.querySelectorAll('.topbar button,#canvasDrawToolbar button')].filter(e=>e.getBoundingClientRect().width>0&&getComputedStyle(e).visibility!=='hidden').map(e=>{const r=e.getBoundingClientRect();return {id:e.id||e.dataset.tool,fit:r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight,hit:e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))};});return {toolsBelowHeader:tools.top>=top.bottom-1,buttons};})()`);
+    console.log(`防溢出@${w}:`,JSON.stringify(ov),explicitVerdict(ov.toolsBelowHeader&&ov.buttons.length>6&&ov.buttons.every(b=>b.fit&&b.hit)?'✓':'✗'));
   }
   await send("Emulation.setDeviceMetricsOverride",
     { width: 1382, height: 804, deviceScaleFactor: 1, mobile: false });
@@ -505,7 +521,7 @@ async function main() {
 
   console.log("=== 9. 「＋空間」建空容器 ===");
   const spBefore = await eval_(`oc.spaces.length`);
-  await eval_(`document.getElementById("btnNewSpace").click()`);
+  await clickControl('#btnNewSpace');
   await sleep(1500);
   const spAfter = await eval_(`oc.spaces.length`);
   console.log("spaces:", spBefore, "->", spAfter,explicitVerdict(spAfter > spBefore ? "✓ 空間建立成功" : "✗ 失敗"));
@@ -614,6 +630,7 @@ async function main() {
   console.log("=== P3-1. 已放置面（天花 surface 20）進入工作區 ===");
   await cmdLine("surface 20 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
   await sleep(800);
+  await clickControl('#btnZoom');
   const card20 = await eval_(`(()=>{
     const c = document.querySelector('.ocard[data-id="20"]');
     if (!c) return null;
@@ -696,6 +713,7 @@ async function main() {
   await eval_(`api("line canvas-pos boundary ${ids6} 700 300")`);
   await eval_(`renderObjects()`);
   await sleep(900);
+  await clickControl('#btnZoom');
   const freeCard = await eval_(`(()=>{
     const c = document.querySelector('.ocard[data-id="${ids6}"]');
     if (!c) return null;
@@ -751,7 +769,7 @@ async function main() {
   console.log("=== P4-1. 快速六面盒 4000/3000/2500 ===");
   const objPre = await eval_(
     `api("objects").then(r=>({f:r.faces.length,s:r.spaces.length}))`);
-  await eval_(`document.getElementById("btnBox6").click()`);
+  await clickControl('#btnBox6');
   await sleep(300);
   console.log("box6 dialog:",explicitVerdict(await eval_(
     `!document.getElementById("box6Dialog").hidden ? "✓ 開啟" : "✗"`)));
@@ -769,6 +787,7 @@ async function main() {
   console.log("=== P4-2. 空間工作區：成員/槽位/三視圖 ===");
   /* 服務完成建模後還要刷新卡片；慢速橋接器可能超過通用 settle 的 5 秒上限。 */
   await waitForUI(`!!document.querySelector('.ocard[data-kind="space"][data-id="${boxSid}"]')`, 30000);
+  await clickControl('#btnZoom');
   const spCard = await eval_(`(()=>{
     const c = document.querySelector('.ocard[data-kind="space"][data-id="${boxSid}"]');
     if (!c) return null;
@@ -1981,7 +2000,7 @@ async function main() {
   })()`);
   await sleep(700);
   /* ＋柱:對話框 → 選空間 → 建立 */
-  await eval_(`document.getElementById("btnNewColumn").click()`);
+  await clickControl('#btnNewColumn');
   await sleep(300);
   console.log("rcDialog:",explicitVerdict(await eval_(
     `!document.getElementById("rcDialog").hidden ? "✓ 開啟" : "✗"`)));
@@ -2019,7 +2038,7 @@ async function main() {
     `[...document.querySelectorAll("#edgeLabelLayer .edge-label")].map(t=>t.textContent).join(",")`);
   console.log("障礙連線:",explicitVerdict(/障礙/.test(rcEdgeLabels) ? `✓ ${rcEdgeLabels}` : `✗ ${rcEdgeLabels}`));
   /* ＋樑 */
-  await eval_(`document.getElementById("btnNewBeam").click()`);
+  await clickControl('#btnNewBeam');
   await sleep(300);
   await eval_(`(()=>{
     document.getElementById("rcSpace").value = "1";
@@ -2503,20 +2522,18 @@ async function main() {
 
   /* ================= P17. 主畫布其餘 A3-A6 A9-A11 F2 ================= */
   console.log("=== P17. 主畫布其餘 ===");
-  /* (a) 兩張同級起點卡 + 三個物件庫入口 */
-  const qc = await eval_(`(()=>{
-    const g=[...document.querySelectorAll(".quick-create")];
-    return {n:g.length, minH:Math.round(Math.min(...g.map(b=>b.getBoundingClientRect().height))),
-      first:g[0].id, starts:[...document.querySelectorAll('.start-options > button')].map(e=>e.textContent)};})()`);
-  console.log("P17 物件庫:",explicitVerdict(qc.n === 4 && qc.minH >= 50 && qc.first === "btnBox6"
-    && qc.starts.length === 2 && qc.starts.some(s=>s.includes('有平面圖')) && qc.starts.some(s=>s.includes('知道尺寸')) ? "✓" : "✗ " + JSON.stringify(qc)));
+  /* (a) 常駐來源入口 + 真實建立選單保留原本物件與資料入口。 */
+  await clickControl('#btnCreateObject');
+  const qc = await eval_(`(()=>{const pop=$('createObjectPop'),ids=['btnQuickGrid','btnCreateRect','btnCreatePoly','btnBox6','btnNewSpace','btnNewColumn','btnNewBeam','btnSpaceModelTrial','btnSpaceModels'];return {open:!pop.hidden,entries:ids.map(id=>({id,inside:pop.contains($(id)),label:$(id)?.textContent.trim()})),hasImport:!!pop.querySelector('[data-project-action="import"]'),permanent:['btnNewGridSystem','btnQuickBoundary'].every(id=>$(id).closest('.sidebar-left')&&$(id).getBoundingClientRect().height>=44)};})()`);
+  console.log('P17 物件庫:',explicitVerdict(qc.open&&qc.permanent&&qc.hasImport&&qc.entries.every(e=>e.inside&&e.label)?'✓':'✗ '+JSON.stringify(qc)));
+  await clickControl('#btnCreateObject');
   /* (b) chips:關柱 → showColumn=false + aria-pressed;全部顯示還原 */
-  await eval_(`document.querySelector('[data-filter-type="column"]').click()`);
+  await clickControl('[data-filter-type="column"]');
   await sleep(300);
   const ch1 = await eval_(`(()=>({sc:oc.showColumn,
     ap:document.querySelector('[data-filter-type="column"]').getAttribute("aria-pressed")}))()`);
   console.log("P17 chip關柱:",explicitVerdict(!ch1.sc && ch1.ap === "false" ? "✓" : "✗ " + JSON.stringify(ch1)));
-  await eval_(`document.getElementById("filterAll").click()`);
+  await clickControl('#filterAll');
   await sleep(300);
   const ch2 = await eval_(`oc.showColumn && oc.showFace && oc.showSpace && oc.showBeam`);
   console.log("P17 全部顯示:",explicitVerdict(ch2 ? "✓" : "✗"));
@@ -2553,17 +2570,17 @@ async function main() {
     return c ? c.textContent : "";})()`);
   console.log("P17 槽位語意:",explicitVerdict(sl.includes("天花") && !/\+X \d/.test(sl) ? "✓" : "✗ " + sl.slice(0, 100)));
   console.log("P17 footer管理:",explicitVerdict(sl.includes("管理成員面") && !sl.includes("缺 ") ? "✓" : "✗ " + sl.slice(-40)));
-  /* (f) statusbar 32px + 摘要含物件 + 成功 toast.ok */
+  /* (f) 組合畫布 statusbar 28px + 摘要含物件 + 成功 toast.ok */
   const stb = await eval_(`(()=>({
     h:getComputedStyle(document.querySelector(".statusbar")).height,
     sum:document.getElementById("statusSummary").textContent}))()`);
-  console.log("P17 狀態列:",explicitVerdict(stb.h === "32px" && stb.sum.includes("物件") ? "✓ " + stb.sum : "✗ " + JSON.stringify(stb)));
+  console.log("P17 狀態列:",explicitVerdict(stb.h === "28px" && stb.sum.includes("物件") ? "✓ " + stb.sum : "✗ " + JSON.stringify(stb)));
   const successToasts=await captureNewToasts(async()=>{await eval_(`(async()=>{
     await emitLine("boundary 99 outline 0,0 500,0 500,400 0,400");
     await renderObjects();
   })()`);await sleep(400);});
   console.log("P17 成功toast:",explicitVerdict(toastText(successToasts,'ok').includes('boundary 99 outline 0,0 500,0 500,400 0,400') ? "✓" : "✗"),JSON.stringify(successToasts));
-  /* (g) snap/grid 鈕在 canvas-controls + aria-pressed;minimap 150+收合鈕 */
+  /* (g) snap/grid 鈕在 canvas-controls + aria-pressed;minimap 112+收合鈕 */
   const ctl = await eval_(`(()=>{
     const cc=document.querySelector(".canvas-controls");
     const st=document.getElementById("snapToggle"), gt=document.getElementById("gridToggle");
@@ -2572,7 +2589,7 @@ async function main() {
       ap: st.getAttribute("aria-pressed") + "/" + gt.getAttribute("aria-pressed"),
       w: Math.round(mm.getBoundingClientRect().width),
       tog: !!document.getElementById("minimapToggle")};})()`);
-  console.log("P17 畫布控制:",explicitVerdict(ctl.inCc && ctl.ap === "true/true" && ctl.w === 150 && ctl.tog
+  console.log("P17 畫布控制:",explicitVerdict(ctl.inCc && ctl.ap === "true/true" && ctl.w === 112 && ctl.tog
     ? "✓" : "✗ " + JSON.stringify(ctl)));
   /* (h) gridToggle 關 → show-grid 消失;開回 */
   await eval_(`document.getElementById("gridToggle").click()`);
@@ -2939,7 +2956,7 @@ async function main() {
   await eval_(`renderObjects()`);
   await sleep(600);
   const bf3pre = await eval_(`api("objects").then(r=>r.faces.length)`);
-  await eval_(`document.getElementById("btnBox6").click()`);
+  await clickControl('#btnBox6');
   await sleep(300);
   await eval_(`document.getElementById("box6Submit").click()`);
   await sleep(1500);
@@ -2959,7 +2976,7 @@ async function main() {
   await eval_(`api("line boundary 1 outline 0,0 4000,0 4000,3000 0,3000")`);
   await eval_(`api("line canvas-pos boundary 1 60 60")`);
   await eval_(`renderObjects()`); await sleep(500);
-  await eval_(`document.getElementById("btnBox6").click()`); await sleep(300);
+  await clickControl('#btnBox6'); await sleep(300);
   await eval_(`document.getElementById("box6Submit").click()`); await sleep(1500);
   const bf4dup = await eval_(`api("dump").then(r => {
     const seen = {}, dups = [];
@@ -2984,7 +3001,7 @@ async function main() {
     if (result?.ok !== true) throw new Error("BF4 夾具建立失敗: " + c + " " + JSON.stringify(result));
   }
   await eval_(`renderObjects()`); await sleep(500);
-  await eval_(`document.getElementById("btnBox6").click()`); await sleep(300);
+  await clickControl('#btnBox6'); await sleep(300);
   await eval_(`document.getElementById("box6W").value = 4000;
                document.getElementById("box6D").value = 3000;
                document.getElementById("box6H").value = 2500;
@@ -3002,7 +3019,7 @@ async function main() {
     return reset.ok && seed.ok;
   })()`);
   await eval_(`renderObjects()`); await sleep(500);
-  await eval_(`document.getElementById("btnBox6").click()`); await sleep(300);
+  await clickControl('#btnBox6'); await sleep(300);
   await eval_(`document.getElementById("box6W").value = 4000;
                document.getElementById("box6D").value = 3000;
                document.getElementById("box6H").value = 2500;
@@ -3020,7 +3037,7 @@ async function main() {
   /* (b4) GEO-164:空間配號回繞也必須跳過 0 與已存在的空間 1。 */
   const bf4spaceSeed = await eval_(`api("line space 4294967295 boundary")`);
   if (bf4spaceSeed?.ok !== true) throw new Error("BF4 空間回繞夾具失敗: " + JSON.stringify(bf4spaceSeed));
-  await eval_(`document.getElementById("btnBox6").click()`); await sleep(300);
+  await clickControl('#btnBox6'); await sleep(300);
   await eval_(`document.getElementById("box6W").value = 4000;
                document.getElementById("box6D").value = 3000;
                document.getElementById("box6H").value = 2500;
@@ -3075,7 +3092,7 @@ async function main() {
   /* (d) RC 表單驗證:x 留空 → 不送 column;w 留空 → 不送任何 line + 表單提示 */
   await eval_(`leaveFocus()`); await sleep(400);
   await eval_(`window.__apiLog.length = 0`);
-  await eval_(`document.getElementById("btnNewColumn").click()`); await sleep(300);
+  await clickControl('#btnNewColumn'); await sleep(300);
   await eval_(`document.getElementById("rcX").value = ""`);
   await eval_(`document.getElementById("rcSubmit").click()`); await sleep(500);
   const bf4rc1 = await eval_(`__apiLog.filter(c => c.startsWith("line") || c === "newid")`);
@@ -3091,10 +3108,9 @@ async function main() {
   /* ================= P20. 對抗審查漂移修正(A3 A4 A9 A10/A11 B1 B3 + toast/busy) =================
    * 對應 audit-A.md/audit-B.md 揪出的假完成項:斷言要咬住「修前」的錯誤做法。 */
   console.log("=== P20. 對抗審查漂移修正 ===");
-  /* (a) A3:物件庫改 3 欄(repeat(3,1fr)),不是原 2 欄 */
-  const p20a3 = await eval_(`getComputedStyle(document.querySelector(".quick-create-grid")).gridTemplateColumns`);
-  const p20a3n = (p20a3 || "").trim().split(/\s+/).filter(Boolean).length;
-  console.log("P20 A3 quick-create 3欄:",explicitVerdict(p20a3n === 3 ? `✓ ${p20a3}` : `✗ n=${p20a3n} (${p20a3})`));
+  /* (a) 新組合版面：網格與邊界常駐，不依賴隱藏選單或空白世界。 */
+  const p20a3=await eval_(`['btnCreateObject','btnNewGridSystem','btnQuickBoundary'].map(id=>{const e=$(id),r=e.getBoundingClientRect();return {id,visible:r.width>0&&r.height>=44&&r.top>=0&&r.bottom<=innerHeight,hit:e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))};})`);
+  console.log('P20 A3 常駐建立入口:',explicitVerdict(p20a3.every(e=>e.visible&&e.hit)?'✓':'✗ '+JSON.stringify(p20a3)));
   /* (b) A10/A11:minimapToggle 熱區 ≥28×28(原 20×20) */
   const p20a10 = await eval_(`(()=>{const r=document.getElementById("minimapToggle").getBoundingClientRect();
     return {w:Math.round(r.width),h:Math.round(r.height)};})()`);
@@ -3116,12 +3132,12 @@ async function main() {
     await renderObjects();
   })()`);
   await sleep(700);
-  /* (e) A4:faceCard()/spaceCard() 卡片標題 font-size 12.5(原 11.5) */
+  /* (e) 來源卡標題 15px；空間卡保留既有 12.5px 可讀字級。 */
   const p20a4 = await eval_(`(()=>{
     const fc = document.querySelector('.ocard[data-kind="boundary"] text');
     const sc = document.querySelector('.ocard[data-kind="space"] text');
     return {f: fc && fc.getAttribute("font-size"), s: sc && sc.getAttribute("font-size")};})()`);
-  console.log("P20 A4 卡片標題12.5:",explicitVerdict(p20a4.f === "12.5" && p20a4.s === "12.5"
+  console.log("P20 A4 來源與空間卡片標題:",explicitVerdict(p20a4.f === "15" && p20a4.s === "12.5"
     ? "✓" : `✗ ${JSON.stringify(p20a4)}`));
   /* (f) A9:成功 toast 的 .toast.ok svg 著色 = --face(原無 .toast.ok 規則) */
   // Capture the real success toast when it appears; slow bridge refreshes can
@@ -3405,13 +3421,15 @@ async function main() {
     throw Error('UI did not finish transaction');
   };
   const clickSelector = async sel => {
-    const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,hit:e.contains(hit),target:hit?.outerHTML?.slice(0,200)}})()`);
+    const menu=await eval_(`document.querySelector(${JSON.stringify(sel)})?.closest('#createObjectPop')?.hidden===true`);
+    if(menu)await clickControl(await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
+    const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});if(!e)throw Error('Missing control '+${JSON.stringify(sel)}+' '+JSON.stringify({focus:oc.focus,connection:connection.phase,error:connection.error,status:$('status').textContent}));e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,hit:e.contains(hit),target:hit?.outerHTML?.slice(0,200)}})()`);
     if (!p.hit) throw Error('Control is not reachable '+sel+' '+JSON.stringify(p));
     await click(p.x,p.y); await sleep(120); await waitIdle();
     await eval_(`window.__cdpSettleUI(0)`);
   };
   const setupRemaining = async lines => {
-    const out = await eval_(`(async()=>{await setView3(false);resetSceneFocus();await api('reset');const out=[];for(const s of ${JSON.stringify(lines)})out.push(await api('line '+s));await renderObjects();return out})()`);
+    const out = await eval_(`(async()=>{await setView3(false);resetSceneFocus();const reset=await api('reset');if(!reset.ok)throw Error('Fixture reset failed: '+JSON.stringify(reset));const out=[];for(const s of ${JSON.stringify(lines)})out.push(await api('line '+s));const refreshed=await renderObjects();if(refreshed!==true)throw Error('Fixture did not finish rendering: '+JSON.stringify({refreshed,connection:connection.phase,error:connection.error,events:window.geometryFeedback?.events?.slice(-10)}));return out})()`);
     if (!Array.isArray(out) || out.some(r=>!r.ok)) throw Error('test setup failed '+JSON.stringify(out));
   };
   const remainingShot = async name => {
@@ -3563,13 +3581,13 @@ async function main() {
     return oc.faces.map(cardBox);
   })()`);
   check('M2 new card avoids offset existing bbox',cards.length===2 && (cards[0].x+cards[0].w<=cards[1].x || cards[1].x+cards[1].w<=cards[0].x || cards[0].y+cards[0].h<=cards[1].y || cards[1].y+cards[1].h<=cards[0].y),cards);
-  const quick = await eval_(`[...document.querySelectorAll('.quick-create strong')].map(e=>({w:e.clientWidth,scroll:e.scrollWidth,h:e.getBoundingClientRect().height,text:e.textContent}))`);
-  check('M1 library labels stay one line',quick.length===4 && quick.every(r=>r.h<=20 && r.w>=r.scroll),quick);
+  const quick = await eval_(`['btnNewGridSystem','btnQuickBoundary'].map(id=>{const e=$(id).querySelector('strong');return {id,w:e.clientWidth,scroll:e.scrollWidth,h:e.getBoundingClientRect().height,text:e.textContent};})`);
+  check('M1 persistent library labels stay one line',quick.length===2&&quick.every(r=>r.h>0&&r.h<=24&&r.w>=r.scroll),quick);
   const pan0=await eval_(`[oc.panX,oc.panY]`);
   await clickSelector('.object-row[data-kind="boundary"][data-id="1"]');
   check('M12 visible list selection does not pan',JSON.stringify(pan0)===JSON.stringify(await eval_(`[oc.panX,oc.panY]`)));
   check('M4 placement submit visible without scrolling',await eval_(`(()=>{const e=document.querySelector('#inspectorContent #placeSubmit'),r=e.getBoundingClientRect();return r.top>56 && r.bottom<innerHeight-32 && e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`));
-  check('M3 M5 M7 T3 contextual controls',await eval_(`document.querySelector('#fileMenuPop').contains(document.querySelector('#btnDatums')) && !document.querySelector('#btnScene') && document.querySelectorAll('.topbar [data-tool]').length===2 && document.querySelector('#btnNewRect').closest('.tool-group') && document.querySelector('#btnNewPoly').closest('.tool-group') && document.querySelector('#cmdPanel').hidden`));
+  check('M3 M5 M7 T3 contextual controls',await eval_(`document.querySelector('#fileMenuPop').contains(document.querySelector('#btnDatums')) && !document.querySelector('#btnScene') && document.querySelectorAll('#canvasDrawToolbar [data-tool]').length===2 && document.querySelector('#btnNewRect').closest('#canvasDrawToolbar') && document.querySelector('#btnNewPoly').closest('#canvasDrawToolbar') && document.querySelector('#cmdPanel').hidden`));
   await pressKey(':','Semicolon',186,8);
   check('M7 command shortcut opens focused input',await eval_(`!document.querySelector('#cmdPanel').hidden && document.activeElement.id==='cmd'`));
   await send('Input.insertText',{text:'spec 測試尺寸 123'});await pressKey('Enter','Enter',13);
@@ -3603,7 +3621,7 @@ async function main() {
   check('T2 face layer drawer hit target',await eval_(`(()=>{const e=document.querySelector('#faceLayerList .fl-empty'),r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`));
   await clickSelector('#workspaceBackButton');
   await clickSelector('#toggleLeft');
-  check('T2 main drawer exposes creation',await eval_(`(()=>{const e=document.querySelector('#btnBox6'),r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`));
+  check('T2 main drawer exposes source creation',await eval_(`['btnNewGridSystem','btnQuickBoundary'].every(id=>{const e=$(id),r=e.getBoundingClientRect();return r.width>0&&r.height>0&&e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})`));
   await pressKey('Escape','Escape',27);
 
   await setupRemaining(['space 1']);await eval_(`enterFocus('space',1)`);
@@ -3646,10 +3664,10 @@ async function main() {
   await clickSelector('#workspaceBackButton');await clickSelector('#btnObj');
   check('V1 V2 toolbar does not overlap drawing and empty inspector collapses',await eval_(`(()=>{const t=document.querySelector('#viewToolbar').getBoundingClientRect(),c=document.querySelector('#cv').getBoundingClientRect(),r=document.querySelector('.sidebar-right').getBoundingClientRect();return c.top>=t.bottom-1 && c.height>400 && r.width===0})()`));
   await clickSelector('#btnObj');
-  check('V3 selecting three-view twice stays in three-view',await eval_(`!oc.on && [...document.querySelectorAll('.topbar [data-tool]')].every(b=>b.disabled)`));
+  check('V3 selecting three-view twice stays in three-view',await eval_(`!oc.on && document.querySelectorAll('#canvasDrawToolbar [data-tool]').length===2 && [...document.querySelectorAll('#canvasDrawToolbar [data-tool]')].every(b=>b.disabled)`));
   await remainingShot('ui-v2-three-view');
   await clickSelector('#btnCanvasView');
-  check('V3 canvas switch restores active main tools',await eval_(`oc.on && [...document.querySelectorAll('.topbar [data-tool]')].every(b=>!b.disabled)`));
+  check('V3 canvas switch restores active main tools',await eval_(`oc.on && document.querySelectorAll('#canvasDrawToolbar [data-tool]').length===2 && [...document.querySelectorAll('#canvasDrawToolbar [data-tool]')].every(b=>!b.disabled)`));
 
   /* ================= P33. 主畫布 boundary 檢視器:外環邊 · 尺寸確認清單(RC-POLYGON-PLAN §5.A.1.10,🔒 Q16) =================
    * P21/P23 編號已被既有段落占用,依 §5.A.1.14 規則往後遞補用 P33。
@@ -4412,12 +4430,11 @@ async function main() {
     return {x:r.left,y:r.top};})()`);
   const timberScreenCenter = async () => {
     const p = await eval_(`(()=>{const t=fe.timbers.find(x=>x.id===10);
-      const r=feTimberRect(t); return feMmToPx((r[0]+r[2])/2,(r[1]+r[3])/2);})()`);
-    return { x: feSvgOrigin.x + p.x, y: feSvgOrigin.y + p.y };
+      const r=feTimberRect(t),o=$('faceEditorSvg').getBoundingClientRect(),p=feMmToPx((r[0]+r[2])/2,(r[1]+r[3])/2);return {x:o.left+p.x,y:o.top+p.y};})()`);
+    return p;
   };
   const feBlankScreenPt = async (mx, my) => {
-    const p = await eval_(`feMmToPx(${mx},${my})`);
-    return { x: feSvgOrigin.x + p.x, y: feSvgOrigin.y + p.y };
+    return eval_(`(()=>{const o=$('faceEditorSvg').getBoundingClientRect(),p=feMmToPx(${mx},${my});return {x:o.left+p.x,y:o.top+p.y};})()`);
   };
 
   /* (1) 畫布有 .face-timber[data-face-hit="t:10"] */
@@ -4507,15 +4524,18 @@ async function main() {
   await sleep(300);
   const p43_7c = await eval_(`fe.timbers.some(t=>t.id===10)`);
   check('P43-7c Ctrl+Z → 角材回來', p43_7c === true, p43_7c);
+  const p43FaceLayout=await eval_(`(()=>{const top=document.querySelector('.topbar').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return {focus:oc.focus,composition:document.body.classList.contains('canvas-composition'),topHeight:top.height,viewportTop:vp.top,topBottom:top.bottom};})()`);
+  check('P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留',p43FaceLayout.focus?.t==='face'&&!p43FaceLayout.composition&&p43FaceLayout.topHeight===56&&p43FaceLayout.viewportTop>=p43FaceLayout.topBottom,p43FaceLayout);
 
   /* (8) 切到重畫外環工具 e,在角材位置落點仍成功(角材不擋) */
   await eval_(`feSetTool('redraw')`);
   tc = await timberScreenCenter();
+  const p43RedrawHit=await eval_(`(()=>{const e=document.elementFromPoint(${tc.x},${tc.y}),r=$('faceEditorSvg').getBoundingClientRect(),rect=e=>{const b=e?.getBoundingClientRect();return b?{left:b.left,top:b.top,right:b.right,bottom:b.bottom}:null;};return {point:${JSON.stringify(tc)},hit:e?.outerHTML?.slice(0,220),origin:{x:r.left,y:r.top},previousOrigin:${JSON.stringify(feSvgOrigin)},viewport:rect($('faceEditorViewport')),timber:rect(document.querySelector('.face-timber[data-face-hit="t:10"]')),timberMm:feTimberRect(fe.timbers.find(t=>t.id===10)),bodyClass:document.body.className,focus:oc.focus,topbar:getComputedStyle(document.documentElement).getPropertyValue('--topbar-h')};})()`);
   await click(tc.x, tc.y);
   await sleep(150);
   const p43_8 = await eval_(`({ len: fe.draft.pts.length, tool: fe.tool })`);
   check('P43-8 e 工具時點角材位置仍成功落點(角材不擋)',
-    p43_8.len === 1 && p43_8.tool === 'redraw', p43_8);
+    p43_8.len === 1 && p43_8.tool === 'redraw', {...p43_8,hit:p43RedrawHit});
   await pressKey('Escape', 'Escape', 27);
   await pressKey('Escape', 'Escape', 27);
 
@@ -6631,8 +6651,7 @@ async function main() {
     await send('Emulation.setDeviceMetricsOverride',{width:1382,height:804,deviceScaleFactor:1,mobile:false});
     await eval_(`geometryFeedback.close()`);
     await setupRemaining(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000']);
-    check('P64 M1-M4 主畫布專案、保存與兩張起點卡',await eval_(`(()=>{
-      const starts=[...document.querySelectorAll('.start-options > button')].map(e=>e.textContent);
+    check('P64 M1-M4 主畫布專案、保存與常駐來源入口',await eval_(`(()=>{
       return document.querySelector('#fileMenuPop').contains(document.querySelector('#sceneList'))
         && !document.querySelector('#sceneMenuLabel').textContent.includes('.scene')
         && document.querySelector('.brand [data-project-name]')
@@ -6641,7 +6660,8 @@ async function main() {
         && document.querySelector('.topbar .project-save [data-icon="save"]')
         && document.querySelector('#btnNewRect').closest('.tool-group')
         && document.querySelector('#btnNewPoly').closest('.tool-group')
-        && starts.length===2 && starts[0].includes('平面圖') && starts[1].includes('知道尺寸');})()`));
+        && $('btnNewGridSystem').closest('.sidebar-left') && $('btnQuickBoundary').closest('.sidebar-left')
+        && $('createObjectPop').contains($('btnBox6')) && !!$('createObjectPop').querySelector('[data-project-action="import"]');})()`));
     check('P64 M5-M8 型別色、未放置、畫布切換與空間卡',await eval_(`(()=>{
       const root=getComputedStyle(document.documentElement),face=document.querySelector('.object-row[data-kind="boundary"]');
       const s=$('snapToggle'),g=$('gridToggle');
@@ -6736,7 +6756,7 @@ async function main() {
     const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
     await eval_(`leaveFocus();setView3(false)`);await sleep(200);
     check('P65-1 正式版本載入建模模組並提供現成範例入口',await eval_(`typeof SpaceModelWorkspace==='object' && !!$('btnSpaceModelTrial') && !!$('btnSpaceModels') && !!$('btnFaceSpaceModel') && $('btnSpaceModelTrial').textContent.includes('現成範例')`));
-    await eval_(`$('btnSpaceModelTrial').click()`);await sleep(200);
+    await clickControl('#btnSpaceModelTrial');await sleep(200);
     check('P65-2 三步操作、範例與明示高度欄位皆在正式工作區',await eval_(`$('smWorkspace').open && !!$('smTryRectangle') && !!$('smTryLShape') && !!$('smBottom') && !!$('smHeight') && !!$('smPreview') && !!$('smConfirmFaces') && !!$('smCreate')`));
     for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
     await sleep(100);
@@ -6762,12 +6782,18 @@ async function main() {
   }
 
   }
-  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY)
+  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./project_audit_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY)
+  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY)
+  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN});
+  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+    await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if (process.env.GEOMETRY_INFINITE_FACE_ONLY)
+    await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
+  if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
+    await require('./composition_canvas_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
 
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
@@ -6779,7 +6805,7 @@ async function fatal(e) {
   _log("FATAL:", e.message);
   try {
     if(ws?.readyState===1){
-      const state=await Promise.race([eval_(`({ready:document.readyState,focus:typeof oc==='object'?oc.focus:null,dialogs:[...document.querySelectorAll('dialog[open]')].map(d=>({id:d.id,classes:d.className,text:d.textContent.slice(0,1200)})),active:document.activeElement?.id,feedback:document.querySelector('#fbPanel')?.hidden,status:document.querySelector('#status')?.textContent})`),delay(1500).then(()=>null)]);
+      const state=await Promise.race([eval_(`({ready:document.readyState,focus:typeof oc==='object'?oc.focus:null,connection:typeof connection==='object'?{phase:connection.phase,error:connection.error}:null,events:window.geometryFeedback?.events?.slice(-10),dialogs:[...document.querySelectorAll('dialog[open]')].map(d=>({id:d.id,classes:d.className,text:d.textContent.slice(0,1200)})),active:document.activeElement?.id,feedback:document.querySelector('#fbPanel')?.hidden,status:document.querySelector('#status')?.textContent})`),delay(1500).then(()=>null)]);
       _log('FATAL_UI:',JSON.stringify(state));
       const capture=await Promise.race([send('Page.captureScreenshot',{format:'png'}),delay(1500).then(()=>null)]);
       if(capture?.result?.data&&process.env.GEOMETRY_REPAIR_SCREENSHOT_DIR){

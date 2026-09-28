@@ -81,7 +81,11 @@ static void json_reference_preview(void)
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
         json_reference_grid(&g_preview.after,g); putchar('}');
     }
-    fputs("],\"violations\":[",stdout);
+    putchar(']');
+    json_grid_system_preview();
+    json_grid_binding_preview();
+    json_boundary_preview();
+    fputs(",\"violations\":[",stdout);
     for (size_t i=0;i<g_preview.issue_count;++i) {
         const ReferenceIssue *e=&g_preview.issues[i];
         printf("%s{\"timber\":%u,\"clause\":",i?",":"",e->timber); js_string(e->clause);
@@ -149,18 +153,35 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
     const PlacementSurface *p=world_find_placement(w,g->placement_id);
     const SpaceBoundarySurface *b=p?world_placement_boundary(w,p):NULL;
     printf("{\"id\":%u,\"surface\":%u",g->id,g->placement_id);
+    fputs(",\"bindingId\":",stdout);
+    if (g->from_binding) printf("%u",g->binding_id); else fputs("null",stdout);
+    printf(",\"indexSpace\":\"%s\"",g->from_binding?"lattice":"ordinal");
+    fputs(",\"sourceSystem\":",stdout);
+    const GridBinding *binding=g->from_binding?world_find_grid_binding(w,g->binding_id):NULL;
+    if (binding) printf("%u",binding->system_id);
+    else if (g->from_system) printf("%u",g->system_id); else fputs("null",stdout);
+    printf(",\"origin\":[%lld,%lld]",g->from_system?(long long)g->system_origin[0]:0LL,
+        g->from_system?(long long)g->system_origin[1]:0LL);
     printf(",\"kind\":\"%s\",\"parentId\":",g->is_subgrid?"subgrid":"main");
     if (g->is_subgrid) {
-        printf("%u,\"cell\":{",g->parent_id);
-        for (int axis=0;axis<2;++axis) {
-            printf("%s\"%c\":[",axis?",":"",axis?'v':'u');
-            for (int side=0;side<2;++side) {
-                char ref[32]; grid_cell_ref_format(g->cell_ref[axis][side],ref,sizeof ref);
-                if (side) putchar(','); js_string(ref);
+        printf("%u,\"latticeCell\":",g->parent_id);
+        if (g->lattice_cell) {
+            printf("[\"%lld\",\"%lld\"],\"cellMode\":\"lattice\",\"cell\":{\"i\":\"%lld\",\"j\":\"%lld\"}",
+                (long long)g->lattice_cell_index[0],(long long)g->lattice_cell_index[1],
+                (long long)g->lattice_cell_index[0],(long long)g->lattice_cell_index[1]);
+        } else {
+            fputs("null,\"cellMode\":\"ordinal\",\"cell\":{",stdout);
+            for (int axis=0;axis<2;++axis) {
+                printf("%s\"%c\":[",axis?",":"",axis?'v':'u');
+                for (int side=0;side<2;++side) {
+                    char ref[32]; grid_cell_ref_format(g->cell_ref[axis][side],ref,sizeof ref);
+                    if (side) putchar(','); js_string(ref);
+                }
+                putchar(']');
             }
-            putchar(']');
+            putchar('}');
         }
-        printf("},\"divisions\":{\"u\":%u,\"v\":%u}",g->divisions[0],g->divisions[1]);
+        printf(",\"divisions\":{\"u\":%u,\"v\":%u}",g->divisions[0],g->divisions[1]);
     } else fputs("null,\"cell\":null,\"divisions\":null",stdout);
     SurfaceRegion2 bounds;
     bool has_bounds=p && (g->is_subgrid?
@@ -173,27 +194,42 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
     if (!g->is_subgrid && g->main_along==1) fputs(",\"mainAlong\":\"u\"",stdout);
     else if (!g->is_subgrid && g->main_along==2) fputs(",\"mainAlong\":\"v\"",stdout);
     else fputs(",\"mainAlong\":null",stdout);
+    GridQueryAxis *sampled=NULL; bool query_ok=false;
+    if (g->from_binding) {
+        Coord rect[4]={0}; char error[256]="";
+        sampled=calloc(2,sizeof *sampled);
+        if (has_bounds) {
+            rect[0]=bounds.min_u; rect[1]=bounds.min_v; rect[2]=bounds.max_u; rect[3]=bounds.max_v;
+            if (sampled) query_ok=grid_query(w,"grid",g->id,rect,GRID_MAX_LINES,true,sampled,error,sizeof error);
+        }
+        fputs(",\"geometryMode\":\"sample\",\"geometryExact\":false,\"query\":",stdout);
+        if (query_ok) json_grid_query_result(sampled,rect,true);
+        else json_grid_query_error(error[0]?error:"無法產生主格預覽");
+    } else fputs(",\"geometryMode\":\"exact\",\"geometryExact\":true",stdout);
     for (int axis=0;axis<2;++axis) {
         const GridAxisDef *d=&g->axis[axis];
         Coord values[GRID_MAX_LINES]; size_t count=0;
-        if (p) grid_axis_lines_in(w->grids,w->grid_count,g,p,b,axis,values,&count,NULL,0);
+        if (g->from_binding) {
+            if (query_ok) { count=sampled[axis].count; for (size_t k=0;k<count;++k) values[k]=sampled[axis].lines[k].coordinate; }
+        } else if (p) grid_axis_lines_in(w->grids,w->grid_count,g,p,b,axis,values,&count,NULL,0);
         printf(",\"%c\":[",axis?'v':'u');
         for (size_t k=0;k<count;++k) printf("%s%lld",k?",":"",(long long)values[k]);
-        printf("],\"%cDefinition\":{\"source\":\"%s\"",axis?'v':'u',
-            g->is_subgrid?"subgrid":d->source==GRID_SRC_EXPLICIT?"explicit":d->source==GRID_SRC_SERIES?"series":
-            d->source==GRID_SRC_PANEL?"panel":"none");
-        if (g->is_subgrid) printf(",\"divisions\":%u",g->divisions[axis]);
-        else if (d->source==GRID_SRC_EXPLICIT) {
-            fputs(",\"coordinates\":[",stdout);
-            for (size_t k=0;k<d->count;++k) printf("%s%lld",k?",":"",(long long)d->coords[k]);
+        printf("],\"%cDefinition\":",axis?'v':'u');
+        json_grid_axis_definition(d,g->is_subgrid,g->divisions[axis]);
+    }
+    if (g->from_binding) {
+        fputs(",\"indices\":{",stdout);
+        for (int axis=0;axis<2;++axis) {
+            printf("%s\"%c\":[",axis?",":"",axis?'v':'u');
+            if (query_ok) for (size_t k=0;k<sampled[axis].count;++k)
+                printf("%s\"%lld\"",k?",":"",(long long)sampled[axis].lines[k].index);
             putchar(']');
-        } else if (d->source==GRID_SRC_SERIES) {
-            printf(",\"start\":%lld,\"step\":%lld,\"count\":%zu",
-                (long long)d->start,(long long)d->step,d->series_count);
-        } else if (d->source==GRID_SRC_PANEL) {
-            printf(",\"panel\":%lld,\"gap\":%lld,\"anchor\":%lld,\"anchorExplicit\":%s",
-                (long long)d->panel,(long long)d->gap,(long long)d->anchor,
-                d->anchor_explicit?"true":"false");
+        }
+        fputs("},\"lattice\":{",stdout);
+        for (int axis=0;axis<2;++axis) {
+            printf("%s\"%c\":{\"defined\":%s,\"pitch\":%lld,\"baseIndex\":\"%lld\",\"baseCoordinate\":%lld}",
+                axis?",":"",axis?'v':'u',g->lattice_step[axis]>0?"true":"false",
+                (long long)g->lattice_step[axis],(long long)g->lattice_index[axis],(long long)g->lattice_base[axis]);
         }
         putchar('}');
     }
@@ -201,19 +237,25 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
     bool first=true;
     for (int axis=0;axis<2;++axis) {
         Coord values[GRID_MAX_LINES]; size_t count=0;
-        if (p) grid_axis_lines_in(w->grids,w->grid_count,g,p,b,axis,values,&count,NULL,0);
+        if (g->from_binding) {
+            if (query_ok) { count=sampled[axis].count; for (size_t k=0;k<count;++k) values[k]=sampled[axis].lines[k].coordinate; }
+        } else if (p) grid_axis_lines_in(w->grids,w->grid_count,g,p,b,axis,values,&count,NULL,0);
         for (size_t k=0;k<count;++k) {
             if (!first) putchar(',');
             first=false;
-            printf("{\"axis\":\"%c\",\"index\":%zu,\"coordinate\":%lld,\"role\":",
-                axis?'v':'u',k,(long long)values[k]);
+            printf("{\"axis\":\"%c\",\"index\":",axis?'v':'u');
+            if (g->from_binding) printf("\"%lld\"",(long long)sampled[axis].lines[k].index);
+            else printf("%zu",k);
+            printf(",\"coordinate\":%lld,\"role\":",(long long)values[k]);
             int role=g->is_subgrid?3:g->main_along==0?0:((g->main_along==1&&axis==1)||(g->main_along==2&&axis==0)?2:3);
             if (role==2) fputs("\"primary\",\"priority\":2",stdout);
             else if (role==3) fputs("\"secondary\",\"priority\":3",stdout);
             else fputs("null,\"priority\":null",stdout);
             fputs(",\"segments\":[",stdout);
-            SurfaceSegment2 segments[POLY_MAX_VERTICES];
-            size_t n=grid_line_segments(w->grids,w->grid_count,g,p,b,axis,k,segments,POLY_MAX_VERTICES);
+            SurfaceSegment2 finite_segments[POLY_MAX_VERTICES];
+            const SurfaceSegment2 *segments=finite_segments; size_t n;
+            if (g->from_binding) { segments=sampled[axis].lines[k].segments; n=sampled[axis].lines[k].segment_count; }
+            else n=grid_line_segments(w->grids,w->grid_count,g,p,b,axis,k,finite_segments,POLY_MAX_VERTICES);
             for (size_t j=0;j<n;++j) printf("%s[[%lld,%lld],[%lld,%lld]]",j?",":"",
                 (long long)segments[j].start.u,(long long)segments[j].start.v,
                 (long long)segments[j].end.u,(long long)segments[j].end.v);
@@ -221,6 +263,7 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
         }
     }
     putchar(']');
+    free(sampled);
     json_grid_dependencies(w,g);
     putchar('}');
 }
@@ -263,7 +306,7 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
 {
     char anchor[128],selector[128]="",face[32];
     if (a->anchor_kind==ANCHOR_AT_LINE) snprintf(anchor,sizeof anchor,"at-line guide %u",a->ref_guide);
-    else if (a->anchor_kind==ANCHOR_AT_GRID) snprintf(anchor,sizeof anchor,"at-line grid %u %c %d",a->ref_grid,a->ref_grid_axis==0?'u':'v',a->ref_grid_index);
+    else if (a->anchor_kind==ANCHOR_AT_GRID) snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
     else {
         ReferenceFace ref={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber};
         reference_face_text(face,sizeof face,&ref); snprintf(anchor,sizeof anchor,"at-face %s",face);

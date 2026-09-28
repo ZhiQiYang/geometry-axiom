@@ -1289,6 +1289,8 @@ typedef enum {
     GRID_SRC_NONE = 0,      /* 該軸未宣告 */
     GRID_SRC_EXPLICIT,      /* 明寫座標 */
     GRID_SRC_SERIES,        /* 等差：start / step / count（GEO-098） */
+    GRID_SRC_REPEAT,
+    GRID_SRC_REPEAT_PANEL,
     GRID_SRC_PANEL          /* 面材：panel / gap / anchor（GEO-100、D10a） */
 } GridSource;
 
@@ -1311,9 +1313,47 @@ typedef struct {
     bool anchor_explicit;   /* 只影響 dump 是否輸出 from，不影響推導 */
 } GridAxisDef;
 
+#define WORLD_MAX_GRID_SYSTEMS 16
+#define GRID_SYSTEM_NAME_MAX 96
+typedef struct {
+    uint32_t id;
+    char name[GRID_SYSTEM_NAME_MAX+1];
+    GridAxisDef axis[2];
+    int main_along;
+} GridSystem;
+#define WORLD_MAX_GRID_BINDINGS 32
+typedef struct {
+    uint32_t id,boundary_id,system_id,vertex_key;
+    int64_t cell[2];
+    uint32_t anchor_num[2],anchor_den[2];
+} GridBinding;
+typedef struct {
+    uint32_t boundary_id;
+    size_t loop_count,counts[POLY_MAX_HOLES+1];
+    uint32_t keys[POLY_MAX_HOLES+1][POLY_MAX_VERTICES];
+    uint32_t next_key;
+} BoundaryVertexKeys;
+typedef struct {
+    int64_t index; Coord coordinate;
+    size_t segment_count; SurfaceSegment2 segments[POLY_MAX_VERTICES];
+} GridQueryLine;
+typedef struct {
+    bool defined; int64_t first,last; uint64_t total,stride;
+    size_t count; GridQueryLine lines[GRID_MAX_LINES];
+} GridQueryAxis;
+
 typedef struct {
     uint32_t id;
     SurfaceId placement_id;
+    bool from_system;
+    bool from_binding;
+    uint32_t binding_id;
+    Coord lattice_base[2],lattice_step[2];
+    int64_t lattice_index[2];
+    bool lattice_cell;
+    int64_t lattice_cell_index[2];
+    uint32_t system_id;
+    Coord system_origin[2];
 
     GridAxisDef axis[2];
     /* D10: 0 = 未設定, 1 = 沿 u, 2 = 沿 v。 */
@@ -1324,6 +1364,8 @@ typedef struct {
     int cell_ref[2][2]; /* -1=min, -2=max, >=0 main-grid line index */
     unsigned divisions[2];
 } ReferenceGrid;
+
+#include "geometry-core/grid_lattice.inc"
 
 static bool grid_coord_list_is_valid(const Coord coords[], size_t count)
 {
@@ -1364,6 +1406,15 @@ static bool grid_axis_lines(
         return false;
     }
 
+    if (grid->from_binding) {
+        SurfaceRegion2 bounds; GridQueryAxis result;
+        if (!placement_local_bounds(placement,boundary,&bounds) ||
+            !grid_lattice_window(grid,axis,axis?bounds.min_v:bounds.min_u,
+                axis?bounds.max_v:bounds.max_u,GRID_MAX_LINES,false,&result,err,err_cap)) return false;
+        *out_count=result.count;
+        for (size_t i=0;i<result.count;++i) out[i]=result.lines[i].coordinate;
+        return true;
+    }
     const GridAxisDef *def = &grid->axis[axis];
 
     *out_count = 0;
@@ -1476,13 +1527,17 @@ static bool grid_line_coord(
     const PlacementSurface *placement,
     const SpaceBoundarySurface *boundary,
     int axis,
-    size_t index,
+    int64_t index,
     Coord *out_coord,
     size_t *out_total,
     char *err,
     size_t err_cap
 )
 {
+    if (grid && grid->from_binding) {
+        if (out_total) *out_total=0;
+        return grid_lattice_coord(grid,axis,index,out_coord);
+    }
     Coord lines[GRID_MAX_LINES];
     size_t n = 0;
 
@@ -1499,7 +1554,7 @@ static bool grid_line_coord(
         *out_total = n;
     }
 
-    if (index >= n) {
+    if (index < 0 || (uint64_t)index >= n) {
         if (err != NULL) {
             snprintf(err, err_cap,
                      "索引超出範圍（本軸共 %u 條）", (unsigned)n);
@@ -1525,6 +1580,8 @@ static bool grid_is_valid(
         return false;
     }
 
+    if (grid->from_binding) return !grid->from_system && !grid->is_subgrid &&
+        grid->lattice_step[0]>0 && grid->lattice_step[1]>0;
     /* I10: 主支方向須有對應格線來源；u 座標線沿 v，反之亦然。 */
     if (grid->main_along < 0 || grid->main_along > 2 ||
         (grid->main_along == 1 && grid->axis[1].source == GRID_SRC_NONE) ||
@@ -2818,10 +2875,10 @@ static void scene_draw_view(
             }
 
             for (int axis = 0; axis < 2; ++axis) {
-                Coord coords[GRID_MAX_LINES];
+                Coord coords[GRID_MAX_LINES]; int64_t indices[GRID_MAX_LINES];
                 size_t n = 0;
-                if (!grid_axis_lines_in(scene->grids, scene->grid_count, grid, surface, boundary, axis,
-                                     coords, &n, NULL, 0)) {
+                if (!grid_sample_indices_in(scene->grids, scene->grid_count, grid, surface, boundary, axis,
+                                     indices,coords, &n)) {
                     continue;   /* 該軸未宣告或推不出線：不畫（D9） */
                 }
 
@@ -2829,7 +2886,7 @@ static void scene_draw_view(
                     SurfaceSegment2 segs[POLY_MAX_VERTICES];
                     size_t seg_count = grid_line_segments(
                         scene->grids, scene->grid_count, grid, surface, boundary,
-                        axis, li, segs, POLY_MAX_VERTICES);
+                        axis, indices[li], segs, POLY_MAX_VERTICES);
 
                     for (size_t k = 0; k < seg_count; ++k) {
                         ViewPoint2 a = view_project(view,
@@ -2844,7 +2901,7 @@ static void scene_draw_view(
                         if (surface_has_area && !labeled) {
                             ViewPoint2 at = { .x = a.x + 40, .y = a.y + 20 };
                             snprintf(label, sizeof label,
-                                     "格線%" PRIu32, grid->id);
+                                     grid->from_binding?"格線%" PRIu32 "（取樣）":"格線%" PRIu32, grid->id);
                             scene_emit_text(target, at,
                                             STYLE_GUIDE_LABEL, label, 0);
                             labeled = true;
@@ -3603,8 +3660,8 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
  * C 要先用後宣告，所以在這裡先給前置宣告；
  * 定義與說明都在下方那一節。
  */
-#define SCENE_MAX_LINE    2048
-#define SCENE_MAX_TOKENS  160
+#define SCENE_MAX_LINE    16384
+#define SCENE_MAX_TOKENS  640
 
 /*
  * 一份場景 = 若干空間邊界面（純 2D 輪廓）+ 承載面（3D 嵌入）
@@ -3619,7 +3676,7 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
 #define WORLD_MAX_TIMBERS     64
 #define WORLD_MAX_SPACES      4
 #define WORLD_MAX_RC          32
-#define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2)
+#define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2 + WORLD_MAX_GRID_SYSTEMS + WORLD_MAX_GRID_BINDINGS)
 
 /* 一個空間最多八片邊界成員；零成員 = 空容器（公理 D5）。 */
 #define SPACE_MAX_MEMBERS 8
@@ -3656,7 +3713,7 @@ typedef struct {
     /* 參照來源：每次重建時用來求位置與跨距。 */
     uint32_t ref_grid;      /* ANCHOR_AT_GRID：網格 id */
     int ref_grid_axis;      /* 0 = u 座標集合，1 = v 座標集合 */
-    int ref_grid_index;
+    int64_t ref_grid_index;
     int ref_hole;           /* ANCHOR_AT_EDGE：-1 外輪廓，否則孔 index */
     int ref_edge;           /* 邊 index */
     bool has_through;
@@ -3677,7 +3734,9 @@ typedef enum {
     CANVAS_POS_PLACEMENT,      /* 自帶矩形面卡：以承載面 id 為鍵 */
     CANVAS_POS_SPACE,          /* 空間卡：以空間 id 為鍵 */
     CANVAS_POS_COLUMN,         /* 柱卡：以柱 id 為鍵 */
-    CANVAS_POS_BEAM            /* 樑卡：以樑 id 為鍵 */
+    CANVAS_POS_BEAM,           /* 樑卡：以樑 id 為鍵 */
+    CANVAS_POS_GRID_BINDING,
+    CANVAS_POS_GRID_SYSTEM     /* D29: independent reusable grid definition */
 } CanvasPosKind;
 
 typedef struct {
@@ -3695,6 +3754,10 @@ typedef struct World {
     uint64_t next_order;
     SpaceBoundarySurface boundaries[WORLD_MAX_BOUNDARIES];
     size_t boundary_count;
+    BoundaryVertexKeys vertex_keys[WORLD_MAX_BOUNDARIES];
+    size_t vertex_key_count;
+    GridBinding grid_bindings[WORLD_MAX_GRID_BINDINGS];
+    size_t grid_binding_count;
 
     PlacementSurface placements[WORLD_MAX_PLACEMENTS];
     size_t placement_count;
@@ -3702,6 +3765,8 @@ typedef struct World {
     GuideLine guides[WORLD_MAX_GUIDES];
     size_t guide_count;
 
+    GridSystem grid_systems[WORLD_MAX_GRID_SYSTEMS];
+    size_t grid_system_count;
     ReferenceGrid grids[WORLD_MAX_GRIDS];
     size_t grid_count;
 
@@ -3725,6 +3790,25 @@ typedef struct World {
     EngineeringState engineering;
 } World;
 
+static const GridSystem *world_find_grid_system(const World *w,uint32_t id)
+{
+    for (size_t i=0;i<w->grid_system_count;++i) if (w->grid_systems[i].id==id) return &w->grid_systems[i];
+    return NULL;
+}
+static const GridBinding *world_find_grid_binding(const World *w,uint32_t id)
+{
+    for (size_t i=0;i<w->grid_binding_count;++i) if(w->grid_bindings[i].id==id) return &w->grid_bindings[i];
+    return NULL;
+}
+static const BoundaryVertexKeys *world_find_vertex_keys(const World *,uint32_t);
+static bool boundary_vertex_by_key(const World *,uint32_t,uint32_t,SurfacePoint2 *);
+static bool boundary_keys_reconcile(World *,const World *,char *,size_t);
+static bool boundary_keys_initialize(World *,uint32_t);
+static void boundary_geometry_hash(const SpaceBoundarySurface *,char [65]);
+static bool grid_bindings_rebuild(World *,char *,size_t);
+static bool apply_grid_binding_application(const char *,int,char **,int,World *);
+static bool grid_systems_rebuild(World *,char *,size_t);
+static bool eng_object_bound(const World *,int,uint32_t);
 static uint64_t g_definition_revision;
 static bool engineering_rebuild(World *,char *,size_t);
 static bool engineering_dump_timber(const World *,const Timber *,FILE *);
@@ -3831,6 +3915,8 @@ static bool world_canvas_target_exists(const World *w, int kind, uint32_t id)
         kind == CANVAS_POS_PLACEMENT ? world_find_placement(w, id) != NULL :
         kind == CANVAS_POS_SPACE     ? world_find_space(w, id)     != NULL :
         kind == CANVAS_POS_COLUMN    ? world_find_column(w, id)    != NULL :
+        kind == CANVAS_POS_GRID_BINDING ? world_find_grid_binding(w,id) != NULL :
+        kind == CANVAS_POS_GRID_SYSTEM ? world_find_grid_system(w,id) != NULL :
                                        world_find_beam(w, id)      != NULL;
 }
 
@@ -8325,7 +8411,7 @@ static bool world_validate_derived(const World *world)
                 !grid_line_coord_in(world->grids, world->grid_count, ag, ap,
                                  world_placement_boundary(world, ap),
                                  a->ref_grid_axis,
-                                 (size_t)a->ref_grid_index,
+                                 a->ref_grid_index,
                                  NULL, NULL, NULL, 0)) {
                 set_revalidate_error("被網格錨定的格線已不存在");
                 return false;
@@ -8525,7 +8611,16 @@ static bool world_revalidate(World *world)
     g_revalidate_error[0] = '\0';
     World candidate = *world;
     char grid_error[256]="";
+    if (!boundary_keys_reconcile(&candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    }
     if (!engineering_rebuild(&candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    }
+    if (!grid_systems_rebuild(&candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    }
+    if (!grid_bindings_rebuild(&candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
     }
     reference_capture_trial(&candidate);
@@ -9496,6 +9591,8 @@ static SurfacePoint2 anchor_corner_from_rect(
  * 同一 id 可寫兩行分別補 u / v 集合（同座標軸只能宣告一次）；
  * 每片承載面最多一座主網格，子網格另走 D19 的完整宣告。
  */
+#include "geometry-core/grid_systems.inc"
+
 static bool apply_grid_line(
     const char *path,
     int line_no,
@@ -9504,6 +9601,10 @@ static bool apply_grid_line(
     World *world
 )
 {
+    if (count>4 && !strcmp(tokens[4],"from-binding"))
+        return apply_grid_binding_application(path,line_no,tokens,count,world);
+    if (count>4 && !strcmp(tokens[4],"from-system"))
+        return apply_grid_system_application(path,line_no,tokens,count,world);
     uint32_t grid_id;
 
     if (!parse_u32(tokens[1], &grid_id)) {
@@ -9536,6 +9637,10 @@ static bool apply_grid_line(
     ReferenceGrid candidate = { 0 };
     ReferenceGrid *existing = world_find_grid_mut(world, grid_id);
 
+    if (existing != NULL && (existing->from_system || existing->from_binding)) {
+        scene_error(path,line_no,"D29: edit the grid-system source or its application origin; direct axis edits are not allowed");
+        return false;
+    }
     if (existing != NULL && existing->is_subgrid) {
         scene_error(path,line_no,"D19：不能將既有子網格改成主網格");
         return false;
@@ -9883,6 +9988,8 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 
 #include "geometry-core/references.inc"
 #include "geometry-core/engineering.inc"
+#include "geometry-core/boundary_vertex_keys.inc"
+#include "geometry-core/grid_bindings.inc"
 #include "geometry-core/engineering_commands.inc"
 
 
@@ -11469,6 +11576,13 @@ static bool apply_delete_line(
                 return false;
             }
         }
+        for(size_t i=0;i<world->grid_binding_count;++i)if(world->grid_bindings[i].boundary_id==id){
+            scene_error(path,line_no,"I37: boundary is still referenced by a grid-binding");return false;
+        }
+        for(size_t i=0;i<world->vertex_key_count;++i)if(world->vertex_keys[i].boundary_id==id){
+            memmove(&world->vertex_keys[i],&world->vertex_keys[i+1],(world->vertex_key_count-i-1)*sizeof(BoundaryVertexKeys));
+            memset(&world->vertex_keys[--world->vertex_key_count],0,sizeof(BoundaryVertexKeys));break;
+        }
         memmove(&world->boundaries[bi], &world->boundaries[bi + 1],
                 (world->boundary_count - bi - 1) *
                 sizeof world->boundaries[0]);
@@ -11564,6 +11678,29 @@ static bool apply_delete_line(
         memmove(&world->guides[gi], &world->guides[gi + 1],
                 (world->guide_count - gi - 1) * sizeof world->guides[0]);
         --world->guide_count;
+    } else if (strcmp(kind, "grid-binding") == 0) {
+        size_t bi=0;while(bi<world->grid_binding_count && world->grid_bindings[bi].id!=id)++bi;
+        if(bi==world->grid_binding_count){scene_error(path,line_no,"I37: grid-binding does not exist");return false;}
+        for(size_t i=0;i<world->grid_count;++i)if(world->grids[i].from_binding && world->grids[i].binding_id==id){
+            scene_error(path,line_no,"I37: grid-binding is still referenced by a grid");return false;
+        }
+        memmove(&world->grid_bindings[bi],&world->grid_bindings[bi+1],(world->grid_binding_count-bi-1)*sizeof(GridBinding));
+        memset(&world->grid_bindings[--world->grid_binding_count],0,sizeof(GridBinding));
+        world_drop_canvas_pos(world,CANVAS_POS_GRID_BINDING,id);
+    } else if (strcmp(kind, "grid-system") == 0) {
+        for(size_t i=0;i<world->grid_binding_count;++i)if(world->grid_bindings[i].system_id==id){
+            scene_error(path,line_no,"I37: grid-system is still referenced by a grid-binding");return false;
+        }
+        size_t si=0;
+        while (si<world->grid_system_count && world->grid_systems[si].id!=id) ++si;
+        if (si==world->grid_system_count) { scene_error(path,line_no,"I37: grid-system does not exist"); return false; }
+        for (size_t i=0;i<world->grid_count;++i) if (world->grids[i].from_system && world->grids[i].system_id==id) {
+            char error[160]; snprintf(error,sizeof error,"I37: grid-system %u is still referenced by grid %u",id,world->grids[i].id);
+            scene_error(path,line_no,error); return false;
+        }
+        memmove(&world->grid_systems[si],&world->grid_systems[si+1],(world->grid_system_count-si-1)*sizeof(GridSystem));
+        memset(&world->grid_systems[--world->grid_system_count],0,sizeof(GridSystem));
+        world_drop_canvas_pos(world,CANVAS_POS_GRID_SYSTEM,id);
     } else if (strcmp(kind, "grid") == 0) {
         size_t gi = SIZE_MAX;
 
@@ -11894,11 +12031,22 @@ static void world_dump_dsl(const World *world, FILE *out)
     for (size_t i = 0; i < world->spec_count; ++i)
         fprintf(out, "spec %s %lld\n", world->specs[i].name, (long long)world->specs[i].value);
 
+    boundary_keys_dump(world,out);
+    grid_systems_dump(world,out);
+    grid_bindings_dump(world,out);
     engineering_dump_applications(world,out);
     for (size_t i = 0; i < world->grid_count; ++i) {
         const ReferenceGrid *g = &world->grids[i];
 
         if (g->is_subgrid) continue;
+        if (g->from_binding) {
+            fprintf(out,"grid %u on %u from-binding %u\n",g->id,g->placement_id,g->binding_id); continue;
+        }
+        if (g->from_system) {
+            fprintf(out,"grid %u on %u from-system %u origin %lld %lld\n",g->id,g->placement_id,g->system_id,
+                (long long)g->system_origin[0],(long long)g->system_origin[1]);
+            continue;
+        }
         if (engineering_dump_grid(world,g,out)) continue;
 
         bool main_along_dumped = false;
@@ -11943,6 +12091,10 @@ static void world_dump_dsl(const World *world, FILE *out)
     for (size_t i=0;i<world->grid_count;++i) {
         const ReferenceGrid *g=&world->grids[i];
         if (!g->is_subgrid) continue;
+        if(g->lattice_cell){
+            fprintf(out,"subgrid %u parent %u lattice-cell %lld %lld divisions u %u v %u\n",g->id,g->parent_id,
+                (long long)g->lattice_cell_index[0],(long long)g->lattice_cell_index[1],g->divisions[0],g->divisions[1]);continue;
+        }
         char refs[2][2][32];
         for (int a=0;a<2;++a) for (int k=0;k<2;++k) grid_cell_ref_format(g->cell_ref[a][k],refs[a][k],sizeof refs[a][k]);
         fprintf(out,"subgrid %u parent %u cell u %s %s v %s %s divisions u %u v %u\n",
@@ -12010,7 +12162,8 @@ static void world_dump_dsl(const World *world, FILE *out)
                 p->kind == CANVAS_POS_BOUNDARY  ? "boundary"  :
                 p->kind == CANVAS_POS_PLACEMENT ? "placement" :
                 p->kind == CANVAS_POS_SPACE     ? "space"     :
-                p->kind == CANVAS_POS_COLUMN    ? "column"    : "beam",
+                p->kind == CANVAS_POS_COLUMN    ? "column"    :
+                p->kind == CANVAS_POS_GRID_BINDING ? "grid-binding" : p->kind == CANVAS_POS_GRID_SYSTEM ? "grid-system" : "beam",
                 (unsigned)p->id, (long long)p->x, (long long)p->y);
     }
 }
@@ -12042,9 +12195,13 @@ static bool apply_canvaspos_line(
         kind = CANVAS_POS_COLUMN;
     } else if (strcmp(tokens[1], "beam") == 0) {
         kind = CANVAS_POS_BEAM;
+    } else if (strcmp(tokens[1], "grid-system") == 0) {
+        kind = CANVAS_POS_GRID_SYSTEM;
+    } else if (strcmp(tokens[1], "grid-binding") == 0) {
+        kind = CANVAS_POS_GRID_BINDING;
     } else {
         scene_error(path, line_no,
-            "canvas-pos 的類別要是 boundary / placement / space / column / beam");
+            "canvas-pos 的類別要是 boundary / placement / space / column / beam / grid-system");
         return false;
     }
 
@@ -12064,6 +12221,8 @@ static bool apply_canvaspos_line(
         kind == CANVAS_POS_PLACEMENT ? world_find_placement(world, id) != NULL :
         kind == CANVAS_POS_SPACE     ? world_find_space(world, id)     != NULL :
         kind == CANVAS_POS_COLUMN    ? world_find_column(world, id)    != NULL :
+        kind == CANVAS_POS_GRID_BINDING ? world_find_grid_binding(world,id) != NULL :
+        kind == CANVAS_POS_GRID_SYSTEM ? world_find_grid_system(world,id) != NULL :
                                        world_find_beam(world, id)      != NULL;
 
     if (!exists) {
@@ -12104,9 +12263,13 @@ static const struct {
     const char *usage;
     bool (*apply)(const char *path, int line_no, char *tokens[], int count, World *world);
 } SCENE_COMMANDS[] = {
+    { "grid-binding", 15, SCENE_MAX_TOKENS, false, "grid-binding id on-boundary id from-system id vertex-key key cell i j anchor nu du nv dv", apply_grid_binding_line },
+    { "boundary-vertex-keys", 7, SCENE_MAX_TOKENS, false, "boundary-vertex-keys id outer keys [hole keys] next-key n", apply_boundary_keys_line },
+    { "boundary-keyed", 9, SCENE_MAX_TOKENS, false, "boundary-keyed id geometry-hash hash outline key:u,v ...", apply_boundary_keyed_line },
+    { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
     { "requires", 2, 2, false, "requires engineering-spec/1", apply_requires_line },
     { "engineering", 3, 3, false, "engineering kind base64-json", apply_engineering_line },
-    { "subgrid", 16, 16, true, "subgrid id parent id cell u lo hi v lo hi divisions u n v n", apply_subgrid_line },
+    { "subgrid", 12, 16, true, "subgrid id parent id cell u lo hi v lo hi divisions u n v n", apply_subgrid_line },
     { "spec", 3, 3, false, "spec 名稱 整數mm", apply_spec_line },
     {
         "boundary", 6, SCENE_MAX_TOKENS, false,
@@ -12189,7 +12352,7 @@ static const struct {
     },
     {
         "delete", 3, 3, false,
-        "delete boundary|placement|guide|grid|timber|space|column|beam id",
+        "delete boundary|placement|guide|grid|grid-system|timber|space|column|beam id",
         apply_delete_line
     },
     {

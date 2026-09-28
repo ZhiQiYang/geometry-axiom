@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="space-workspace.css">
 <link rel="stylesheet" href="engineering-workspace.css">
+<link rel="stylesheet" href="grid-system-workspace.css">
+<link rel="stylesheet" href="grid-inspector.css">
 </head>
 <body class="connection-blocked">
 <section id="connectionNotice" class="connection-notice" role="status" aria-live="polite">
@@ -20,25 +22,14 @@
       <span class="brand-mark" aria-hidden="true">
         <svg viewBox="0 0 32 32"><path d="M7 8.5 16 3l9 5.5v10L16 24l-9-5.5z"/><path d="M7 8.5 16 14l9-5.5M16 14v10"/></svg>
       </span>
+      <span class="brand-title">構形 Canvas</span>
+      <span class="brand-divider" aria-hidden="true"></span>
       <span class="brand-copy">
-        <strong class="main-project-name" data-project-name>未命名專案.gcanvas</strong>
+        <strong class="main-project-name" data-project-name>未命名專案</strong>
       </span>
     </div>
 
-    <nav class="tool-group" aria-label="畫布工具">
-      <button class="tool-button active" type="button" data-tool="select" title="選取/移動 (V)">
-        <span data-icon="pointer"></span><span>選取</span><kbd>V</kbd>
-      </button>
-      <button class="tool-button" type="button" data-tool="pan" title="平移 (H 或空白鍵)">
-        <span data-icon="hand"></span><span>平移</span><kbd>H</kbd>
-      </button>
-      <button id="btnNewRect" class="tool-button" type="button" title="矩形面：在畫布拖曳 (R)">
-        <span data-icon="rectangle"></span><span>矩形</span><kbd>R</kbd>
-      </button>
-      <button id="btnNewPoly" class="tool-button" type="button" title="多邊形面：進入面內畫外環 (P)">
-        <span data-icon="vertex"></span><span>多邊形</span><kbd>P</kbd>
-      </button>
-    </nav>
+    <button id="mobileCreateObject" class="mobile-create-object primary-button" type="button" aria-haspopup="menu" aria-controls="createObjectPop" aria-expanded="false"><span data-icon="plus"></span><span>建立</span></button>
 
     <div class="top-actions">
       <button id="toggleLeft" class="icon-button panel-toggle left-toggle" type="button" title="物件庫" aria-label="物件庫" aria-expanded="false"><span data-icon="layers"></span></button>
@@ -53,7 +44,7 @@
       <span class="toolbar-separator" aria-hidden="true"></span>
       <div id="fileMenu" class="menu">
         <button id="fileMenuBtn" class="secondary-button" type="button" aria-haspopup="menu" aria-label="檔案">
-          <span>檔案</span>
+          <span class="file-menu-label">檔案</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
         </button>
         <div id="fileMenuPop" class="menu-pop" role="menu" hidden>
@@ -88,6 +79,21 @@
   <main class="workspace">
     <aside class="sidebar sidebar-left" aria-label="物件庫">
       <button type="button" class="drawer-close left-toggle" data-close-panel="left" aria-label="關閉物件庫">關閉 ×</button>
+
+      <section class="sidebar-section create-section canvas-create-section" aria-label="建立物件">
+        <button id="btnCreateObject" class="create-object-button primary-button" type="button" aria-haspopup="menu" aria-controls="createObjectPop" aria-expanded="false"><span data-icon="plus"></span><span>建立物件</span></button>
+        <div class="canvas-quick-entries">
+          <button id="btnNewGridSystem" type="button" class="quick-create grid-system-create canvas-quick-entry" title="建立無限延伸的網格來源">
+            <span class="type-icon grid-system"><span data-icon="grid"></span></span>
+            <span class="quick-entry-copy"><strong>網格系統</strong><small>建立無限延伸的網格來源</small></span>
+          </button>
+          <button id="btnQuickBoundary" type="button" class="quick-create canvas-quick-entry boundary-create" title="建立矩形或多邊形邊界" aria-haspopup="menu" aria-controls="quickBoundaryPop" aria-expanded="false">
+            <span class="type-icon face"><span data-icon="rectangle"></span></span>
+            <span class="quick-entry-copy"><strong>邊界</strong><small>建立矩形或多邊形邊界</small></span>
+          </button>
+        </div>
+      </section>
+
       <div class="sidebar-search">
         <label class="search-control" title="搜尋物件">
           <span data-icon="search"></span>
@@ -95,58 +101,12 @@
           <kbd>/</kbd>
         </label>
       </div>
-      <section class="sidebar-section create-section">
-        <div class="section-heading">
-          <div>
-            <h2>開始</h2>
-            <p>選擇你手上的資料</p>
-          </div>
-        </div>
-        <div class="start-options">
-          <button class="reference-entry" type="button" data-project-action="import"><span data-icon="upload"></span><span><strong>有平面圖 → 描面</strong><small>PDF／圖片，選頁後校準</small></span></button>
-          <button id="btnBox6" type="button" class="quick-create start-box" title="輸入寬、深、高，一次建立六面盒">
-            <span class="type-icon space"><span data-icon="space"></span></span>
-            <span><strong>知道尺寸 → 六面盒</strong><small>輸入寬・深・高，一次建好</small></span>
-          </button>
-        </div>
-        <section class="space-model-entry" aria-label="空間建模第一版">
-          <span class="space-model-release">正在確認建模服務版本…</span>
-          <button id="btnSpaceModelTrial" type="button" class="reference-entry"><span data-icon="space"></span><span><strong>從面建立 3D 空間</strong><small>現成範例＋三步引導，立即試用</small></span></button>
-          <button id="btnSpaceModels" type="button" class="text-button">已建立的空間模型 <span id="spaceModelCount">0</span></button>
-        </section>
-        <h3 class="create-mode-label">加入物件</h3>
-        <div class="quick-create-grid">
-          <button id="btnNewSpace" type="button" class="quick-create" title="＋空間:空容器">
-            <span class="type-icon space"><span data-icon="space"></span></span>
-            <span><strong>空間</strong><small>空容器</small></span>
-          </button>
-          <button id="btnNewColumn" type="button" class="quick-create" title="＋柱:RC 柱 w×d">
-            <span class="type-icon column"><span data-icon="column"></span></span>
-            <span><strong>柱</strong><small>RC 柱 w×d</small></span>
-          </button>
-          <button id="btnNewBeam" type="button" class="quick-create" title="＋樑:RC 樑 w×d">
-            <span class="type-icon beam"><span data-icon="beam"></span></span>
-            <span><strong>樑</strong><small>RC 樑 w×d</small></span>
-          </button>
-        </div>
-      </section>
 
-      <section class="sidebar-section filter-section">
-        <div class="section-label-row">
-          <span class="section-label">顯示類型</span>
-          <button id="filterAll" class="chip-reset" type="button">全部顯示</button>
-        </div>
-        <div class="chip-row">
-          <button class="chip" type="button" data-filter-type="face" aria-pressed="true"><span class="dot face"></span>面<strong id="faceCount">—</strong></button>
-          <button class="chip" type="button" data-filter-type="space" aria-pressed="true"><span class="dot space"></span>空間<strong id="spaceCount">—</strong></button>
-          <button class="chip" type="button" data-filter-type="column" aria-pressed="true"><span class="dot column"></span>柱<strong id="columnCount">—</strong></button>
-          <button class="chip" type="button" data-filter-type="beam" aria-pressed="true"><span class="dot beam"></span>樑<strong id="beamCount">—</strong></button>
-        </div>
-      </section>
+
 
       <section class="sidebar-section object-tree-section">
         <div class="section-label-row">
-          <span class="section-label">所有物件</span>
+          <span class="section-label">物件</span>
           <span id="objectCountBadge" class="count-badge">—</span>
         </div>
         <div id="objectList" class="object-list" role="list"></div>
@@ -169,9 +129,43 @@
         </div>
       </section>
 
+      <footer class="canvas-library-footer">
+        <button id="btnCollapseLibrary" type="button" class="library-collapse-button" title="收合選單" aria-label="收合物件庫" aria-expanded="true"><span data-icon="arrowLeft"></span><span>收合選單</span></button>
+        <details id="filterDisclosure" class="library-filter-menu">
+          <summary title="篩選顯示的物件類型">篩選</summary>
+      <section class="sidebar-section filter-section">
+        <div class="section-label-row">
+          <span class="section-label">顯示類型</span>
+          <button id="filterAll" class="chip-reset" type="button">全部顯示</button>
+        </div>
+        <div class="chip-row">
+          <button class="chip" type="button" data-filter-type="face" aria-pressed="true"><span class="dot face"></span>面<strong id="faceCount">—</strong></button>
+          <button class="chip" type="button" data-filter-type="space" aria-pressed="true"><span class="dot space"></span>空間<strong id="spaceCount">—</strong></button>
+          <button class="chip" type="button" data-filter-type="column" aria-pressed="true"><span class="dot column"></span>柱<strong id="columnCount">—</strong></button>
+          <button class="chip" type="button" data-filter-type="beam" aria-pressed="true"><span class="dot beam"></span>樑<strong id="beamCount">—</strong></button>
+          <button class="chip" type="button" data-filter-type="grid-system" aria-pressed="true"><span class="dot grid-system"></span>網格系統<strong id="gridSystemCount">—</strong></button>
+          <button class="chip" type="button" data-filter-type="grid-binding" aria-pressed="true"><span class="dot grid-binding"></span>網格配置<strong id="gridBindingCount">—</strong></button>
+        </div>
+      </section>
+        </details>
+      </footer>
     </aside>
 
     <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
+    <nav id="canvasDrawToolbar" class="tool-group canvas-draw-toolbar" aria-label="畫布工具">
+      <button class="tool-button active" type="button" data-tool="select" title="選取/移動 (V)">
+        <span data-icon="pointer"></span><span>選取</span><kbd>V</kbd>
+      </button>
+      <button class="tool-button" type="button" data-tool="pan" title="平移 (H 或空白鍵)">
+        <span data-icon="hand"></span><span>平移</span><kbd>H</kbd>
+      </button>
+      <button id="btnNewRect" class="tool-button" type="button" title="矩形面：在畫布拖曳 (R)">
+        <span data-icon="rectangle"></span><span>矩形</span><kbd>R</kbd>
+      </button>
+      <button id="btnNewPoly" class="tool-button" type="button" title="多邊形面：進入面內畫外環 (P)">
+        <span data-icon="vertex"></span><span>多邊形</span><kbd>P</kbd>
+      </button>
+    </nav>
       <div id="ocSelectionSummary" class="selection-summary" aria-label="物件選取"><span class="selection-copy"><strong role="status" aria-live="polite">拖曳空白處框選物件</strong><small>向右完整框住 · 向左相交即選 · Shift 加選 · 空白鍵平移</small></span><button type="button" data-selection-clear="oc" hidden>清除選取</button></div>
       <!-- 三段浮標(工具名/情境提示/kbd),目前只有矩形工具使用 -->
       <div id="canvasModeHint" class="canvas-mode-hint" hidden>
@@ -184,6 +178,14 @@
           <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5"
                   markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0 0L10 5L0 10z" fill="#929bad"/>
+          </marker>
+          <marker id="grid-arrow-grid-system" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#467fb0"/>
+          </marker>
+          <marker id="grid-arrow-boundary" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#2f8f7b"/>
           </marker>
           <linearGradient id="faceGrad" x1="0" x2="1" y1="0" y2="1">
             <stop offset="0" stop-color="#dff3ed"/><stop offset="1" stop-color="#b9ded4"/>
@@ -226,7 +228,8 @@
           <span class="empty-tile tile-a"></span><span class="empty-tile tile-b"></span><span class="empty-line"></span>
         </div>
         <h2>建立第一個領域物件</h2>
-        <p>建立「面」或「空間」，它會以卡片出現在畫布；雙擊卡片進入物件內部編輯。</p>
+        <p>先建立網格系統、面或空間。網格可獨立保存，之後再選擇要套用的承載面。</p>
+        <button id="emptyNewGridSystem" type="button" class="primary-button">建立網格系統</button>
       </div>
 
       <div class="canvas-controls" aria-label="縮放控制">
@@ -274,6 +277,41 @@
       </div>
     </aside>
   </main>
+  <div id="createObjectPop" class="canvas-create-menu menu menu-pop" role="menu" aria-label="建立物件" hidden>
+    <div class="create-menu-heading">建立物件</div>
+    <button id="btnQuickGrid" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon grid-system"><span data-icon="grid"></span></span><span><strong>網格系統</strong><small>建立無限延伸的格線來源</small></span></button>
+    <button id="btnCreateRect" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon face"><span data-icon="rectangle"></span></span><span><strong>矩形邊界</strong><small>在畫布拖曳建立</small></span></button>
+    <button id="btnCreatePoly" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon face"><span data-icon="vertex"></span></span><span><strong>多邊形邊界</strong><small>逐點描繪輪廓</small></span></button>
+    <div class="create-menu-heading">更多物件</div>
+          <button id="btnNewSpace" type="button" class="create-menu-entry menu-item" role="menuitem" title="＋空間:空容器">
+            <span class="type-icon space"><span data-icon="space"></span></span>
+            <span><strong>空間</strong><small>空容器</small></span>
+          </button>
+          <button id="btnNewColumn" type="button" class="create-menu-entry menu-item" role="menuitem" title="＋柱:RC 柱 w×d">
+            <span class="type-icon column"><span data-icon="column"></span></span>
+            <span><strong>柱</strong><small>RC 柱 w×d</small></span>
+          </button>
+          <button id="btnNewBeam" type="button" class="create-menu-entry menu-item" role="menuitem" title="＋樑:RC 樑 w×d">
+            <span class="type-icon beam"><span data-icon="beam"></span></span>
+            <span><strong>樑</strong><small>RC 樑 w×d</small></span>
+          </button>
+    <div class="create-menu-heading">從資料開始</div>
+    <button class="create-menu-entry menu-item" type="button" role="menuitem" data-project-action="import"><span class="type-icon face"><span data-icon="upload"></span></span><span><strong>匯入 PDF／圖片</strong><small>選頁、校準，再描繪邊界</small></span></button>
+          <button id="btnBox6" type="button" class="create-menu-entry menu-item" role="menuitem" title="輸入寬、深、高，一次建立六面盒">
+            <span class="type-icon space"><span data-icon="space"></span></span>
+            <span><strong>知道尺寸 → 六面盒</strong><small>輸入寬・深・高，一次建好</small></span>
+          </button>
+        <section class="space-model-entry" aria-label="空間建模第一版">
+          <span class="space-model-release">正在確認建模服務版本…</span>
+          <button id="btnSpaceModelTrial" type="button" class="reference-entry menu-item" role="menuitem"><span data-icon="space"></span><span><strong>從面建立 3D 空間</strong><small>現成範例＋三步引導，立即試用</small></span></button>
+          <button id="btnSpaceModels" type="button" class="text-button menu-item" role="menuitem">已建立的空間模型 <span id="spaceModelCount">0</span></button>
+        </section>
+  </div>
+  <div id="quickBoundaryPop" class="canvas-boundary-menu menu menu-pop" role="menu" aria-label="選擇邊界形狀" hidden>
+    <button id="btnQuickRect" class="menu-item" type="button" role="menuitem"><span data-icon="rectangle"></span>矩形邊界</button>
+    <button id="btnQuickPoly" class="menu-item" type="button" role="menuitem"><span data-icon="vertex"></span>多邊形邊界</button>
+  </div>
+
 
   <footer class="statusbar">
     <div class="status-left">
@@ -583,6 +621,8 @@
 <script src="reference-ui.js"></script>
 <script src="polydraft.js"></script>
 <script src="app.js"></script>
+<script src="grid-system-workspace.js"></script>
+<script src="grid-inspector.js"></script>
 <script src="model-viewer.js"></script>
 <script src="space-workspace.js"></script>
 <script src="engineering-workspace.js"></script>

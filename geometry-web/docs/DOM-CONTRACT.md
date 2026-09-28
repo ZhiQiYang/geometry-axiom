@@ -3,6 +3,39 @@
 > 立案 2026-09-13(Phase 0 產出);Phase 1 改版更新。本檔列出自動測試依賴的 DOM id / class / 全域名稱;
 > 之後每階段改 DOM 都要對照本表,新增或改名需同步更新測試。
 
+## 2026-09-28 來源／配置組合畫布（目前主畫布合約）
+
+本節實作使用者選定的第 3 張介面：左側物件清單、主畫布組合關係、底部就地編輯。主畫布的 DOM 位置與操作入口以本節為準，優先於下方 2026-09-27 及更早的佈局紀錄；面內、空間與三視圖工作區仍各遵循原有契約。D29／D30 的物件語意、預覽確認與保存格式未變。
+
+| id / class | 契約 |
+|---|---|
+| `body.canvas-composition` | 僅主物件畫布啟用；進入面／空間或三視圖即移除，不改其他工作區的欄位佈局 |
+| `body.canvas-has-inspector` / `body.canvas-grid-inspector` | 前者在主畫布有選取或建立草稿時展開底部檢視器；後者限單選無限網格來源或網格配置，套用就地網格編輯版面 |
+| `#btnCreateObject` / `#mobileCreateObject` / `#createObjectPop` | 桌面物件庫與窄螢幕「建立」共用同一選單，`aria-expanded` 對應開啟狀態；原空間、柱、樑、六面盒、匯入與空間建模入口保留原識別，收在此選單 |
+| `#createObjectPop` / `#quickBoundaryPop` 鍵盤操作 | trigger 的原生 Enter／Space 開啟並聚焦首個可用項目，ArrowDown／ArrowUp 開啟並聚焦首／末項；選單內 ArrowDown／ArrowUp 循環、Home／End 到首／末項。Escape 關閉選單、焦點回 trigger，保留手機物件庫抽屜的開啟狀態 |
+| `#btnNewGridSystem` / `#emptyNewGridSystem` | 常駐物件庫入口與空畫布入口都建立無限來源，開啟 `#infiniteGridWorkspace`；不是舊有限編輯器的建立入口 |
+| `#btnQuickBoundary` / `#quickBoundaryPop` / `#btnQuickRect` / `#btnQuickPoly` | 「邊界」快捷入口明選矩形或多邊形，沿用既有建面操作；建立選單中的 `#btnCreateRect`／`#btnCreatePoly` 也走相同操作 |
+| `#canvasDrawToolbar` | 選取、平移、`#btnNewRect` 與 `#btnNewPoly` 浮於畫布，保留原工具識別與快捷鍵；不再位於主頂列 |
+| `#ocSelectionSummary` | 主畫布通常為 0／1 選取時視覺隱藏，僅多選或正在框選時顯示；保留 DOM 的實際 `data-count` 與 `aria-live` 狀態節點 |
+| `#btnCollapseLibrary` / `body.canvas-library-collapsed` | 桌面收合／展開左側物件庫並更新 `aria-expanded`；窄螢幕關閉左抽屜 |
+| `#filterDisclosure` | 物件庫底部的原生 `details`，內含既有 `[data-filter-type]` 與 `#filterAll`；收合篩選選單不改目前篩選值 |
+| `.object-group[data-object-group]` | `sources` 為來源（網格、邊界與面），`bindings` 為網格配置，`structures` 為空間與構件；空組不顯示。組內保留 `.object-row[data-kind][data-id]`、選取及鍵盤操作 |
+| `.grid-relation[data-binding-id][data-source-kind][data-source-id]` | 從來源卡連到配置卡；`data-source-kind` 為 `grid-system` 或 `boundary`，曲線為子節點 `path.grid-relation-path`。只有兩端卡片皆顯示時才繪製，拖移卡片會更新連線 |
+| `.grid-relation-label[data-binding-id][data-source-kind][data-source-id]` | 與對應曲線使用同一組身分，分別標「使用此網格」／「使用此邊界」。選取任一端時連線與標籤 `.active`；關係顯示不攔截畫布操作、不新增模型引用 |
+| `.ocard[data-kind="grid-system"] .ocard-body` | 無限來源縮圖每軸最多繪製 64 條線，以縮圖座標 8px 為最小取樣間距；僅控制顯示密度，不改幾何、格距或無限索引 |
+| `#gridInlineInspector[data-gi-kind]` | 底部就地編輯根節點，值為 `source` 或 `binding`；切換專案、物件或工作區時清除失效編輯上下文 |
+| `#giName` / `#giUStep` / `#giVStep` | 無限來源的名稱與 `repeat` 間距；只有對應軸為 `repeat` 才有間距欄位。基準、主支方向及 `repeat-panel`／`none` 排法在完整工作區修改，底部預覽保留其既有值 |
+| `#giSystem` / `#giBoundary` / `#giVertex` | 配置選擇無限來源、獨立邊界與實際頂點；缺少任一軸的來源不可用於 cell 配置。更換邊界須重新選點，不按陣列位置猜測既有頂點身分 |
+| `#giBoundaryView [data-gi-vertex]` | 真實外環／孔環縮圖上的頂點，值為 `outer:N` 或 `hole:H:N`；與 `#giVertex` 同步，`data-vertex-key` 保留已有穩定身分，支援點擊及 Enter／Space |
+| `#giAnchorView [data-gi-anchor]` | cell 內九個對齊位置；屬性使用半格單位 `0,0` 至 `2,2`，`1,1` 代表中心 `(1/2,1/2)`。`aria-pressed` 表示選取；未更動時保留已有精確比例 |
+| `#giCellI` / `#giCellJ` | `type="text"` 的正負整數索引，使用 BigInt 驗證及傳輸十進位字串，不經 Number 截斷 |
+| `#giPreview` / `#giStatus` | 「預覽變更」先取得核心完整候選，再由 `.reference-impact`／`#impact-confirm` 確認；輸入草稿、取消或失效回應不直接修改世界。狀態使用 `role="status"` |
+| `#gridObjectOpen` / `#gridObjectNewBinding` / `#gridObjectDelete` | 開啟同一個完整網格工作區、從所選來源建立配置、刪除所選物件。建立配置只在無限雙軸來源且沒有未保存的底部來源草稿時可用；刪除仍受原生依賴守門 |
+
+`grid-inspector.js` 擴充既有 `InfiniteGridWorkspace.renderInspector/disposeInspector`，不另存一份來源或配置。來源／邊界／專案已變更、選取被切換或較舊的讀取回應返回時，不能提交舊草稿。來源與配置卡片的畫布位置仍只是顯示資料；移動卡片不改幾何對齊。
+
+回歸入口為 `cdp_test.js` P72 的 `composition_canvas_test.js`，可用 `GEOMETRY_COMPOSITION_ONLY=1` 單跑，也納入完整 CDP。它以實際指標／鍵盤操作檢查入口、分組、連線、就地編輯與窄螢幕；此處列測試契約，通過狀態以實際執行紀錄為準。
+
 ## GEO-208 角材結構建模（目前合約）
 
 - `#timber-space-v1` 連線完成後自動開「角材骨架範例」，`#smTryTimberFrame` 可隨時載入。範例不改使用者世界。服務 `/model/capabilities` 宣告 `space_preview_schemas`；確認支援 `/2` 才顯示「角材結構建模版」。舊服務明示未啟用，納入角材的請求不降級送出。
@@ -38,13 +71,15 @@
 - `ReferenceWorkspace` 的 `addSpaceModel/updateSpaceModel/removeSpaceModel/getSpaceModels` 管理不可變紀錄；`tryLocalHistory(cmd)` 在發送核心 undo／redo 前分流本機步驟。`space-models-changed` 通知模型庫刷新。
 - 含模型保存 `geometry-canvas/2`，全部模型驗證及重建比對成功才 `/upload`；失敗保留場景與專案。完整契約見 `SPACE-MODELING.md`，回歸為 `space_model_test.js` 及 `cdp_test.js` P65。
 
-## 2026-09-27 UI/UX 審查更新（以本節為目前合約）
+## 2026-09-27 UI/UX 審查更新（主畫布佈局已由 2026-09-28 節更新）
+
+以下保留當日決策；主畫布入口、工具列、物件清單與檢視器位置若與上方 2026-09-28 節不同，以新節為準。
 
 - 主頂列 `.tool-group` 顯示選取／平移與 `#btnNewRect`／`#btnNewPoly` 四種工具；左欄 `.start-options` 是描面、六面盒兩張起點卡，`.quick-create-grid` 只有 `#btnNewSpace`、`#btnNewColumn`、`#btnNewBeam` 一列。`#sceneList` 位於 `#fileMenuPop` 內，主頂列顯示 `[data-project-name]`／`[data-project-status]`。保存控制 `[data-project-action="save"]` 會在進出工作區時移動同一個 DOM 節點，工作區掛點為 `#workspaceProjectActions`；`#btnSaveProject` 是「另存新檔」選單入口。
 - `#objectWorkspace` 只有 `.object-workspace-topbar` 和 `.object-workspace-statusbar`；已移除 `.workspace-project-bar`／`.workspace-file-menu`。工作區頂列借用主頂列的 `#fileMenu`，Esc 關閉 `#fileMenuPop` 而不離開工作區。`#shapeToolButton` 開啟 `#shapeToolPop [data-shape-action]`；選操作後以 `fe.queuedShapeAction` 等待邊／角，開口轉入既有開口工具。外環邊的浮動列和右鍵選單含 `[data-fe-act="timber"]`，沿選邊預填並放置角材。
 - `#faceInspectorTabs [data-fi-tab]` 順序是 `prop,shape,components,underlay`，右欄對應 `[data-fi-pane]`。原 `guide,timber,grid` 仍可傳給 `fiShowTab()`，會打開構件頁並捲到 `[data-component-section]`。形狀庫 `#faceShapeButton` 由程式移入形狀頁；角材表單 `#tbPlace` 直接提交同一筆宣告與放置交易。`#faceReferenceSummary` 顯示來源，`[data-reference-step]` 表示選頁／校準／描外環。未放置面標示「未放置」。
 - 空間左欄 `#spaceAddMembers` 在成員面標題旁；`#spaceSizeTools` 依平面圖放柱／樑工具移到頂列，三視圖不顯示放置工具。三視圖矩形工具使用 `#v3PlaneControls`、`#v3ToolbarSurf`、`#v3ExistingZ`、`#newZ` 顯示並修改工作面與高度。
-- 審查項目與驗收流程見 `UIUX-REVIEW-2026-09-27.md`；下列舊節保留各階段的歷史決策，若其 DOM 位置或頁數不同，以本節為準。
+- 審查項目與驗收流程見 `UIUX-REVIEW-2026-09-27.md`；下列舊節保留各階段的歷史決策。除 2026-09-28 更新的主畫布範圍外，若其 DOM 位置或頁數不同，以本節為準。
 > 來源:UI-REDESIGN-PLAN.md 附錄 B §7(cdp_test.js 依賴清單)+ §7 測試合約。
 
 ## 回報收件匣（GEO-183，2026-09-24，cdp_test §P38）
@@ -803,7 +838,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 
 ## GEO-209／GEO-212 畫布框選與角材多選
 
-- `#ocSelectionSummary` / `#feSelectionSummary` 在選取工具下顯示框選提示與已選數量；`data-count` 為實際數量，`strong[role="status"]` 提供狀態通知。`[data-selection-clear="oc"]` / `[data-selection-clear="fe"]` 清除所屬畫布的選取。
+- `#ocSelectionSummary` / `#feSelectionSummary` 在選取工具下提供框選提示與已選數量；主畫布的視覺顯示條件依上方 2026-09-28 節。`data-count` 為實際數量，`strong[role="status"]` 提供狀態通知。`[data-selection-clear="oc"]` / `[data-selection-clear="fe"]` 清除所屬畫布的選取。
 - `.selection-marquee` 是 SVG 選取框，`pointer-events:none`。向右使用完整包含（藍色實線，`data-selection-mode="window"`）；向左使用含邊／角接觸的相交（綠色虛線，另有 `.crossing` 與 `data-selection-mode="crossing"`）。垂直方向不影響規則，水平位移為零沿用完整包含。拖過起點即時更新外觀及 summary `small` 說明；取消／放開指標後移除框並恢復方向提示，不寫入場景或專案。
 - `oc.selection` 是 `{kind,id}` 集合；`fe.timberSelection` 是角材 ID 集合。多選時原本的單物件 `oc.sel` / `fe.sel` 為空，單選時維持既有檢視器契約。清單 `.multi-selection-list` 明示選中的物件，`.multi-selection-note` 說明第一版不批次編輯、移動或刪除。
 - 左鍵從空白處拖曳框選；Shift 點選增減、Shift 框選加入，Ctrl／Cmd＋A 全選目前範圍。輸入欄位及對話框不攔全選。Space／H／中鍵保留平移。選取框不使用幾何格點吸附；縮放／平移後依實際畫面位置選取，手勢途中鏡頭改變則取消框選並保留原選取，避免混用座標基準。
@@ -837,3 +872,27 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `[data-ew-grid-origin]` 明選面下界；`[data-ew-grid-method-defaults]` 明選做法設定。既有網格主支方向唯讀，包含 `none`；新網格須明選方向。未填縫寬及起點不暗中補值。
 - 沿用 `#ewPreview`、`#ewReviewed`、`#ewConfirm` 與 `#ewCancelPreview`，整包候選包含必要的材料／做法發布、面套用及同 ID 網格綁定，不加入角材綁定。關閉、失效上下文或過期候選不得提交。
 - `grid_material_entry_test.js` 從真實工具列及選材按鈕測試，由 `engineering_workflow_test.js` 納入完整 P69；原本僅填數字的格線測試不能代替此材料流程。
+
+## GEO-215 無限網格與配置
+
+- `#infiniteGridWorkspace` 為完整編輯工作區；建立新來源或配置時使用它，主畫布已選物件的常用修改另見上方 2026-09-28 就地編輯契約。`#igGridView` 可平移、縮放與拾取 cell；攝影機不寫入模型。`#igDensity` 明示抽樣。
+- `#igName`、`#igMainAlong` 與 `#igUSource`／`#igVSource` 定義來源；`#igSaveSource` 預覽後確認。只新增 repeat／repeat-panel／none，沒有條數。
+- `#igNewBinding` 選邊界建立配置。`#igBoundaryView` 與 `#igVertex` 選實際外環或孔環頂點；`#igCellI`／`#igCellJ` 使用十進位字串及 BigInt，`[data-ig-anchor]` 選 cell 內九宮位置。`#igSaveBinding` 保存明確引用。
+- `#igResultView` 只繪核心 query 回傳的裁切線段。`#igApplyBinding` 明確套用到同邊界承載面；未套用配置不暗建面。
+- `#igKeyedVertices`、四側 `#igGrowLeft/Right/Top/Bottom` 和 `#igSaveBoundary` 保留穩定頂點身分，預覽確認後提交。
+- `grid-binding` 為獨立物件種類；卡片、選取、清單、位置、刪除與保存均使用其獨立 ID。`#gridBindingOpen` 從面內開啟配置。
+- 面內 `gridLineEntries()` 將抽樣位置轉為真正的 signed 索引；命中區、角材選項、隱藏偏好均沿用此索引。子線仍為 ordinal。`feRefreshLatticeViewport()` 隨平移／縮放查詢目前範圍，`#feLatticeDensity` 明示稀疏顯示；過期回應核對專案、面、網格實例與範圍後捨棄。未抽到的合法線仍由 lattice 定義精確求值，點選新出現的格線會先補入角材選項。
+- lattice 子格使用 `[data-subgrid-cell="lattice:i:j"]` 真 cell；`#subgridCellI`／`#subgridCellJ`／`#subgridUseLatticeCell` 可直接指定密集格的索引。不以外接框或抽樣間距假造 cell。
+- `grid_system_test.js` 和 `infinite_grid_face_test.js` 由正式 CDP harness 執行，包含實際 SVG 拾取、signed 引用、保存重開及窄螢幕。
+
+## GEO-214 舊有限網格相容介面
+
+以下控制只保留給舊有限來源；新來源使用上方 GEO-215 工作區。
+
+- 選取既有舊有限來源時使用 `#gridSystemEditor`；不提供新建有限來源入口。`#btnNewGridSystem` 與空白畫布 `#emptyNewGridSystem` 建立的是 GEO-215 無限來源，開啟 `#infiniteGridWorkspace`。`[data-filter-type="grid-system"]` 與 `#gridSystemCount` 控制展示與數量；卡片、清單、搜尋、框選及小地圖均納入同一 `grid-system` 身分。
+- `#gsName`、`#gsMainAlong` 編輯名稱及可選主支方向；`[data-gs-axis="u"]`／`[data-gs-axis="v"]` 各含排法和數值欄位。面材模式提示未套用時只有排法，不能把卡片示意當實際範圍。
+- `#gsSave` 預覽新增／來源修改，`#gsReset` 重設未提交草稿，`#gsCancel` 取消建立；`#gsStatus[role="status"]` 呈現錯誤與結果。核心完整定義為唯一保存来源，名稱以 UTF-8 hex 安全傳輸。
+- `#gsSurface`、`#gsOriginU`／`#gsOriginV` 選擇套用目標與原點；`#gsApply` 建立套用候選。需更換既有主格來源時，先明勾 `#gsReplaceExisting`；工程綁定主格不能隱含轉換。
+- `#gsApplications [data-gs-application]` 列出主格與面；`[data-gs-edit-application]` 回填該次原點；`[data-gs-delete-application]` 預覽解除該次套用，依賴仍須通過核心守門，不連帶刪除來源。來源修改預覽使用既有 `.reference-impact`，包含主格、子格及後續依賴的新舊結果。
+- 來源式面內主格顯示來源與原點，`#gridSourceSystemOpen` 開啟獨立系統；不提供普通軸編輯或工程綁定覆蓋。`#gsDelete` 在仍有引用時停用，核心也拒絕直接刪除。
+- 操作見 `GRID-SYSTEM.md`；`grid_system_test.js` 經 `cdp_test.js` 執行真瀏覽器流程，原生守門另由 `tests/test_grid_system_contract.py` 驗證。

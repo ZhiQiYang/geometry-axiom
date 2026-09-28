@@ -134,8 +134,8 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
         const ReferenceGrid *grid=world_find_grid(w,id);
         if (!grid || grid->placement_id!=g->placement_id) return false;
         if (!strcmp(part[0],"grid")) {
-            uint32_t k;
-            return n==4 && parse_u32(part[3],&k) &&
+            int64_t k;
+            return n==4 && parse_i64(part[3],&k) &&
                 grid_line_coord_in(w->grids,w->grid_count,grid,p,b,axis,k,out,NULL,NULL,0);
         }
         if (n!=3 || grid->axis[axis].source != GRID_SRC_PANEL) return false;
@@ -195,7 +195,15 @@ static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const ch
         int sign=1;
         if (*p=='+' || *p=='-') { if (*p=='-') sign=-1; ++p; }
         if (!*p || ++terms>64) return false;
-        const char *end=p; while (*end && *end!='+' && *end!='-') ++end;
+        const char *end=p;
+        while (*end) {
+            if (*end=='+' || *end=='-') {
+                /* A sign immediately after ':' belongs to the grid index;
+                 * the next sign still separates expression terms. */
+                if (!(end>p && end[-1]==':' && isdigit((unsigned char)end[1]))) break;
+            }
+            ++end;
+        }
         size_t len=(size_t)(end-p); if (!len || len>=REF_EXPR_MAX) return false;
         char term[REF_EXPR_MAX]; memcpy(term,p,len); term[len]='\0';
         char *q=term, *star=strchr(term,'*'); Coord num=sign,d=1,value;
@@ -309,7 +317,7 @@ static bool reference_place_geometry(World *w, size_t ti)
             const ReferenceGrid *g=world_find_grid(w,a->ref_grid); char err[180]="";
             if (!g || g->placement_id!=p->id || (a->ref_grid_axis==0)!=along)
                 return reference_issue(t->id,"I13/I23","same-face grid coordinate axis perpendicular to length","missing grid or face/axis mismatch (垂直)");
-            if (!grid_line_coord_in(w->grids,w->grid_count,g,p,b,a->ref_grid_axis,(size_t)a->ref_grid_index,&center,NULL,err,sizeof err))
+            if (!grid_line_coord_in(w->grids,w->grid_count,g,p,b,a->ref_grid_axis,a->ref_grid_index,&center,NULL,err,sizeof err))
                 return reference_issue(t->id,"I23","referenced grid index exists",err);
             if (g->is_subgrid) {
                 if (!grid_cell_bounds(w->grids,w->grid_count,g,p,b,&child_scope,err,sizeof err))
@@ -567,10 +575,14 @@ static bool apply_reference_place(const char *p,int n,char **tokens,int count,Wo
         if (i<count && !strcmp(tokens[i],"guide") && i+1<count) {
             a.anchor_kind=ANCHOR_AT_LINE; if (!parse_u32(tokens[i+1],&a.ref_guide)) return false; i+=2;
         } else if (i+3<count && !strcmp(tokens[i],"grid")) {
-            uint32_t index; a.anchor_kind=ANCHOR_AT_GRID;
-            if (!parse_u32(tokens[i+1],&a.ref_grid) || !parse_u32(tokens[i+3],&index) || index>=GRID_MAX_LINES ||
+            int64_t index; a.anchor_kind=ANCHOR_AT_GRID;
+            if (!parse_u32(tokens[i+1],&a.ref_grid) || !parse_i64(tokens[i+3],&index) ||
                 (strcmp(tokens[i+2],"u") && strcmp(tokens[i+2],"v"))) return false;
-            a.ref_grid_axis=!strcmp(tokens[i+2],"u")?0:1; a.ref_grid_index=(int)index; i+=4;
+            const ReferenceGrid *grid=world_find_grid(w,a.ref_grid);
+            if (!grid || (!grid->from_binding && (index<0 || index>=GRID_MAX_LINES))) {
+                scene_error(p,n,"I13: the grid must exist; finite grid indices must be nonnegative and below 64"); return false;
+            }
+            a.ref_grid_axis=!strcmp(tokens[i+2],"u")?0:1; a.ref_grid_index=index; i+=4;
         } else { scene_error(p,n,"I13: at-line guide id | grid id u|v index"); return false; }
     } else if (!strcmp(tokens[4],"at-face")) {
         ReferenceFace r;
@@ -653,7 +665,7 @@ static void reference_dump(const World *w,FILE *out)
         const Timber *t=&w->timbers[at]; const TimberAnchor *a=&w->anchors[at];
         fprintf(out,"place %u on %u ",t->id,a->placement_id);
         if (a->anchor_kind==ANCHOR_AT_LINE) fprintf(out,"at-line guide %u",a->ref_guide);
-        else if (a->anchor_kind==ANCHOR_AT_GRID) fprintf(out,"at-line grid %u %c %d",a->ref_grid,a->ref_grid_axis==0?'u':'v',a->ref_grid_index);
+        else if (a->anchor_kind==ANCHOR_AT_GRID) fprintf(out,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
         else { ReferenceFace r={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber}; fputs("at-face ",out); reference_face_format(out,&r); }
         if (a->has_through) fprintf(out," through %lld",(long long)a->through);
         if (a->has_between) { fputs(" between ",out); reference_face_format(out,&a->between[0]); fputc(' ',out); reference_face_format(out,&a->between[1]); }
@@ -692,9 +704,23 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
         }
     }
     for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].placement_id==pid) {
-        Coord coords[GRID_MAX_LINES]; size_t count=0; int a=axis=='u'?0:1;
-        if (grid_axis_lines_in(w->grids,w->grid_count,&w->grids[i],p,b,a,coords,&count,NULL,0))
-            for (size_t j=0;j<count && n<SNAP_MAX;++j) snprintf(candidates[n++],REF_EXPR_MAX,"grid:%u:%c:%u",w->grids[i].id,axis,(unsigned)j);
+        const ReferenceGrid *grid=&w->grids[i];
+        Coord coords[GRID_MAX_LINES]; int64_t indices[GRID_MAX_LINES]; size_t count=0; int a=axis=='u'?0:1;
+        if (grid->from_binding) {
+            /* Snapping uses the actual nearest lattice lines, even when display
+             * sampling hides them. It never snaps to a sample-array ordinal. */
+            int64_t first;
+            if (grid->lattice_step[a]>0 && grid_i64_add(grid->lattice_index[a],
+                grid_floor_div(at-grid->lattice_base[a],grid->lattice_step[a]),&first)) {
+                for (int side=0;side<2;++side) {
+                    int64_t k;
+                    if (grid_i64_add(first,side,&k) && grid_lattice_coord(grid,a,k,&coords[count]))
+                        indices[count++]=k;
+                }
+            }
+        } else if (!grid_sample_indices_in(w->grids,w->grid_count,grid,p,b,a,indices,coords,&count)) continue;
+        for (size_t j=0;j<count && n<SNAP_MAX;++j)
+            snprintf(candidates[n++],REF_EXPR_MAX,"grid:%u:%c:%lld",grid->id,axis,(long long)indices[j]);
     }
     for (size_t i=0;i<w->timber_count && n+1<SNAP_MAX;++i) if (w->timbers[i].placed && w->anchors[i].placement_id==pid) {
         snprintf(candidates[n++],REF_EXPR_MAX,"timber:%u:%c:lo",w->timbers[i].id,axis);
