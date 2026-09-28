@@ -14,7 +14,7 @@ window.EngineeringWorkspace = (() => {
   const integer = (value, min = 0) => /^-?\d+$/.test(String(value).trim()) && Number.isSafeInteger(Number(value)) && Number(value) >= min && Number(value) <= 100000000;
   const decimal = value => /^\d+(?:\.\d+)?$/.test(String(value).trim()) && /[1-9]/.test(String(value));
   const state = {snapshot:null, context:null, section:"apply", inlineKind:null, mobile:"settings", activePlacement:null, request:0, formRevision:0, busy:false, preview:null, intent:null, selectedMaterial:null, selectedMethod:null, material:null, method:null, application:{method:null,targets:{}}, search:"", importText:""};
-  let adapter = null, dialog = null, unsubscribe = null, opener = null;
+  let adapter = null, dialog = null, unsubscribe = null, opener = null, draftBaseline = null;
   const drafts = new Map();
   const $ = id => dialog?.querySelector(`#${id}`);
 
@@ -34,7 +34,7 @@ window.EngineeringWorkspace = (() => {
     if (dialog) return;
     dialog = document.createElement('dialog');
     dialog.id = 'ewWorkspace'; dialog.className = 'ew-workspace'; dialog.setAttribute('aria-labelledby', 'ewTitle');
-    dialog.innerHTML = `<header class="ew-header"><div><p>構形 CANVAS · 工程規格版 2026.09.28</p><h1 id="ewTitle">工程規格</h1><small id="ewProjectState">正在讀取目前工程</small></div><div class="ew-header-actions"><button type="button" id="ewSave">保存專案</button><button type="button" id="ewClose" aria-label="關閉工程規格">返回畫布 ×</button></div></header>
+    dialog.innerHTML = `<header class="ew-header"><div><h1 id="ewTitle">工程規格</h1></div><div class="ew-header-actions"><button type="button" id="ewClose" aria-label="返回畫布">返回畫布</button></div></header>
       <nav class="ew-nav" aria-label="工程規格工作區"><button type="button" data-ew-section="apply" aria-current="page">套用至面</button><button type="button" data-ew-section="materials">材料規格</button><button type="button" data-ew-section="methods">工程做法</button><button type="button" data-ew-section="transfer">匯入／匯出</button></nav>
       <p id="ewStatus" class="ew-status" role="status" aria-live="polite"></p>
       <div id="ewContent" class="ew-content"></div>
@@ -45,12 +45,6 @@ window.EngineeringWorkspace = (() => {
     $('ewPreview').onclick = requestPreview;
     $('ewConfirm').onclick = confirm;
     $('ewCancelPreview').onclick = () => { invalidate(); render(); message('已返回修改，尚未套用這次變更。請重新預覽。'); };
-    $('ewSave').onclick = () => {
-      if (!adapter?.saveProject || state.busy) return;
-      // Invoke directly in this user gesture; do not await a draft flush first.
-      const pending = adapter.saveProject();
-      Promise.resolve(pending).then(() => { if(dialog.open)syncProjectStatus(); }).catch(error => message(error.message, 'error'));
-    };
     dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
     dialog.addEventListener('click', handleClick);
     dialog.addEventListener('input', handleInput);
@@ -71,6 +65,7 @@ window.EngineeringWorkspace = (() => {
       load(false);
     }) || null;
   }
+  const draftContent = () => JSON.stringify({material:state.material,method:state.method,application:state.application,importText:state.importText});
   function saveDraft() {
     // A grid hand-off is a temporary view of the existing GridEditor draft.
     // Cancelling it must not save unrelated workspace metadata or dirty the project.
@@ -79,6 +74,10 @@ window.EngineeringWorkspace = (() => {
     const value = {material:state.material,method:state.method,application:state.application,section:state.section,inlineKind:state.inlineKind,activePlacement:state.activePlacement,importText:state.importText};
     drafts.set(JSON.stringify(state.context), clone(value));
     if(!adapter?.setEngineeringDraft)return;
+    // Opening selects a useful face and initial form. Navigation stays in this
+    // session; only a changed form creates/updates portable draft records.
+    const content=draftContent();
+    if(content===draftBaseline)return;
     const existing=adapter.getEngineeringDrafts?.()||[];
     for(const kind of ['material','method','application']){
       const id='engineering-workspace-'+kind;
@@ -90,6 +89,7 @@ window.EngineeringWorkspace = (() => {
       if(prior && JSON.stringify(prior.data)===JSON.stringify(data) && JSON.stringify(prior.base_ref)===JSON.stringify(base_ref))continue;
       adapter.setEngineeringDraft({id,kind,base_ref,data:clone(data),updated_at:new Date().toISOString()},state.context.token);
     }
+    draftBaseline=content;syncProjectStatus();
   }
   function restoreDraft() {
     const records=adapter?.getEngineeringDrafts?.();
@@ -111,19 +111,23 @@ window.EngineeringWorkspace = (() => {
     }else if(state.section==='grid')state.section=state.previousSection||'apply';
     state.preview=null;state.intent=null;
     if (options.placementId != null) { state.activePlacement=options.placementId;if(state.mode!=='grid')state.section='apply';state.inlineKind=null; }
+    // Also covers closing while the initial read is still pending.
+    draftBaseline=draftContent();
     dialog.dataset.mode=state.mode||'standard';
     $('ewTitle').textContent=state.mode==='grid'?'材料規格排格':'工程規格';
     dialog.querySelector('.ew-nav').hidden=state.mode==='grid';
     if (!dialog.open)dialog.showModal();
+    WorkspaceShell.attach(dialog, {saveBlocked:()=>state.busy || !adapter?.saveProject,
+      saveReason:()=>state.busy?'正在處理工程變更，完成後即可保存。':'工程規格服務尚未連接。', onProjectState:syncProjectStatus});
     await load(true, options);
   }
   function close() {
     if (state.busy && $('ewConfirm')?.dataset.committing === 'true') return;
-    saveDraft(); invalidate(); dialog?.close();
+    saveDraft(); invalidate(); dialog?.close(); WorkspaceShell.detach(dialog);
     if (opener?.isConnected)opener.focus();
   }
   async function load(initial, options = {}) {
-    const sequence = ++state.request, sourceContext = context();
+    const sequence = ++state.request, sourceContext = context(), initialFormRevision=state.formRevision;
     state.busy=true;updateActions();message('正在讀取材料、做法及目前工程…');
     try {
       if (!sourceContext || !adapter?.read)throw new Error('工程規格服務尚未連接；目前工程保持不變。');
@@ -146,7 +150,12 @@ window.EngineeringWorkspace = (() => {
         if(!previous){const application=list(state.snapshot.applications).find(a=>a.placement_id===state.activePlacement);if(application)state.application.method=clone(application.method);}
       }
       if (initial && state.activePlacement != null && !Object.keys(state.application.targets).length)selectTarget(state.activePlacement, options.gridId);
-      render();message('已讀取目前工程。草稿與預覽不會改變已套用的定義。');return true;
+      for(const [id,target] of Object.entries(state.application.targets))
+        if(target.gridAction==='defaults'&&!canUseFutureDefaults(state.snapshot,Number(id)))target.gridAction='application';
+      render();
+      // A background reload must never swallow edits made while reading.
+      if(initial && state.formRevision===initialFormRevision)draftBaseline=draftContent();
+      message('已讀取目前工程。草稿與預覽不會改變已套用的定義。');return true;
     } catch(error) {
       if (sequence !== state.request)return;
       state.snapshot=null;render();message(error.message,'error');
@@ -162,8 +171,7 @@ window.EngineeringWorkspace = (() => {
   }
   function changed() { invalidate();saveDraft();message('設定已修改，預覽後才會套用到工程。'); }
   function syncProjectStatus() {
-    const value=adapter?.getProjectState?.() || adapter?.context?.() || {};
-    $('ewProjectState').textContent=value.name ? `${value.name} · ${value.dirty?'有未保存的變更':value.saved?'已保存':'尚未保存'}` : '目前工程';
+    WorkspaceShell.refresh(dialog);
   }
   function updateActions() {
     if(!dialog)return;
@@ -174,7 +182,7 @@ window.EngineeringWorkspace = (() => {
     $('ewCancelPreview').hidden=!state.preview;
     $('ewConfirm').disabled=state.busy || !state.preview?.valid || !state.preview?.token || !$('ewReviewed')?.checked;
     $('ewClose').disabled=state.busy && $('ewConfirm').dataset.committing==='true';
-    $('ewSave').disabled=state.busy || !adapter?.saveProject;
+    WorkspaceShell.refresh(dialog);
     $('ewContent').inert=$('ewConfirm').dataset.committing==='true'||state.mode==='grid'&&state.busy;
     dialog.querySelector('.ew-nav').inert=$('ewConfirm').dataset.committing==='true';
     $('ewPreview').textContent=state.section==='materials'?'預覽發布材料':state.section==='methods'?'預覽發布做法':state.section==='transfer'?'檢查匯入':'預覽套用';
@@ -215,7 +223,6 @@ window.EngineeringWorkspace = (() => {
       const target=state.application.targets[state.activePlacement];
       if(target){
         if(!canUseFutureDefaults(state.snapshot,state.activePlacement)){
-          if(target.gridAction==='defaults')target.gridAction='application';
           const path=`application.targets.${state.activePlacement}.gridAction`,field=dialog.querySelector(`[data-ew-field="${path}"]`);
           if(field){field.innerHTML=[['create','建立新主網格'],['update','更新指定主網格'],['application','更新本面做法與既有引用']].map(([value,label])=>`<option value="${value}"${value===target.gridAction?' selected':''}>${label}</option>`).join('');field.parentElement.insertAdjacentHTML('afterend','<p class="ew-note" id="ewExistingSourcesNotice">此面已有套用或尺寸來源。更新做法會重算沿用它的既有物件，全部影響須先預覽；不會自動增加角材綁定。既有主格的具體起算點保持，除非明選更新。</p>');}
         }
@@ -318,7 +325,7 @@ window.EngineeringWorkspace = (() => {
     const grids=list(state.snapshot?.grids).filter(g=>(g.placement_id??g.surface)===id && g.kind!=='subgrid');
     const mode=gridId!=null?'keep':'lower';
     const anchors=Object.fromEntries(['u','v'].map(axis=>{const setting=existing?.anchorOptions?.[axis];return [axis,gridId!=null?{mode:'keep',value:''}:setting?.kind==='coordinate'?{mode:'value',value:String(setting.value)}:setting?.kind==='edge'?{mode:setting.side==='max'?'upper':'lower',value:''}:{mode:existing?'keep':mode,value:''}];}));
-    state.application.targets[id]={placement_id:id,gridAction:gridId!=null?'update':grids.length?'defaults':'create',gridId:gridId??null,longAxis:existing?.longAxis??'inherit',mainAlong:existing?.mainAlong??'inherit',anchors,preserveOverrides:true,overrides:{},timberIds:[],objectOverrides:{},objectSources:{}};
+    state.application.targets[id]={placement_id:id,gridAction:gridId!=null?'update':grids.length?(canUseFutureDefaults(state.snapshot,id)?'defaults':'application'):'create',gridId:gridId??null,longAxis:existing?.longAxis??'inherit',mainAlong:existing?.mainAlong??'inherit',anchors,preserveOverrides:true,overrides:{},timberIds:[],objectOverrides:{},objectSources:{}};
     if(existing?.method && !state.application.method)state.application.method=clone(existing.method);
   }
   function overrideField(label,path,value,options={}) {

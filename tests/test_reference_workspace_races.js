@@ -23,7 +23,7 @@ async function fixture(options = {}) {
   };
   const handle = {createWritable:async () => ({write:async bytes => {writes.push(bytes.slice());written.resolve();await writeGate.promise;},
     close:async()=>{closes++;closing.resolve();await options.closeGate?.promise;},abort:async()=>{aborts++;}})};
-  const env = {GeometryProject:options.packGate?{...P,pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:P,fflate:zip,crypto,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,
+  const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
     requestAnimationFrame:()=>1,CustomEvent:class {},ResizeObserver:class {observe(){}},File,Blob,
     fetch:async url=>{assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
       assert.ok(options.legacyGate,'Unexpected fetch: '+url);return options.legacyGate.promise;},
@@ -212,4 +212,271 @@ test('edits while obtaining the scene or packing prevent a mixed snapshot from r
     gate.resolve({ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'});
     await failed;assert.equal(f.writes.length,0);assert.equal(f.w.context().dirty,true);assert.equal(f.w.busy,false);
   }
+});
+
+async function openFixture(options={}) {
+  const f=await fixture(options),requests=[],refreshed=deferred();
+  const scene='boundary 8 outline 0,0 800,0 800,700 0,700\n';
+  const bytes=await P.pack(scene,{format:P.FORMAT,projectId:'opened',name:'試用工程',sources:[],faces:[]},new Map(),zip);
+  f.env.curScene={};f.env.resetSceneFocus=()=>{};f.env.sceneMenuDisplay=name=>name;
+  f.env.refreshActive=async()=>{
+    if(options.autoLayout)f.w.observe('line canvas-pos boundary 8 60 60',{ok:true});
+    refreshed.resolve();
+    await options.refreshGate?.promise;
+  };
+  f.env.fetch=async(url,request)=>{
+    requests.push({url,request});assert.equal(url,'/upload');
+    return {ok:true,json:async()=>({ok:true,path:'opened.scene'})};
+  };
+  return {...f,bytes,requests,refreshed};
+}
+
+test('opening owns the busy state from first byte read through rendering and refuses reentry',async()=>{
+  const readGate=deferred(),refreshGate=deferred(),afterGate=deferred(),f=await openFixture({refreshGate});
+  const opening=f.w.openProject(()=>readGate.promise,'example',()=>afterGate.promise);
+  assert.equal(f.w.busy,true);assert.equal(f.element('busyIndicator').hidden,false);
+  assert.match(f.statuses.at(-1),/正在讀取/);
+  await assert.rejects(()=>f.w.importBytes(f.bytes),/目前的操作/);
+  await assert.rejects(()=>f.w.save(),/操作進行中/);
+  readGate.resolve(f.bytes);await f.refreshed.promise;
+  assert.equal(f.w.busy,true);assert.equal(f.requests.length,1);
+  assert.match(f.statuses.at(-1),/整理畫布/);
+  refreshGate.resolve();await turn();assert.equal(f.w.busy,true);
+  assert.match(f.statuses.at(-1),/開啟工程規格/);
+  afterGate.resolve();await opening;
+  assert.equal(f.w.busy,false);assert.equal(f.element('busyIndicator').hidden,true);
+  assert.equal(f.w.context().dirty,false);assert.equal(f.w.context().saved,true);
+  assert.equal(f.w.historyActionLabel('undo'),'開啟專案「試用工程」');
+  assert.match(f.statuses.at(-1),/✓ 已開啟/);
+});
+
+test('changes during project reading or its pre-upload dump prevent replacement without swallowing edits',async()=>{
+  for(const stage of ['read','dump']) {
+    const gate=deferred(),f=await openFixture(stage==='dump'?{dumpGate:gate}:{}),old=f.w.context();
+    const opening=f.w.openProject(()=>stage==='read'?gate.promise:f.bytes);
+    const rejected=assert.rejects(opening,/目前工程已有變更/);
+    await turn();f.w.calibrated(1,[[0,0],[10,0]],100);
+    gate.resolve(stage==='read'?f.bytes:{ok:true,text:'previous world'});await rejected;
+    assert.equal(f.w.context(),old);assert.equal(old.dirty,true);
+    assert.equal(f.requests.length,0);assert.equal(f.w.busy,false);
+    assert.equal(f.w.historyActionLabel('undo'),null);
+  }
+});
+
+test('failed reading or unpacking releases busy state and leaves the existing project untouched',async()=>{
+  for(const failRead of [true,false]) {
+    const f=await openFixture(),old=f.w.context();
+    await assert.rejects(()=>f.w.openProject(()=>{
+      if(failRead)throw new Error('read failed');return new Uint8Array([1,2,3]);
+    }));
+    assert.equal(f.w.context(),old);assert.equal(f.requests.length,0);
+    assert.equal(f.w.busy,false);assert.equal(f.element('busyIndicator').hidden,true);
+    assert.match(f.statuses.at(-1),/未能完成/);
+  }
+});
+
+test('automatic layout during open explains the real unsaved change; later user changes clear that explanation',async()=>{
+  const f=await openFixture({autoLayout:true});
+  await f.w.importBytes(f.bytes);
+  assert.equal(f.w.context().dirty,true);
+  assert.match(f.w.context().dirtyReason,/畫布已自動排版/);
+  assert.match(f.statuses.at(-1),/請保存以保留排列/);
+  f.w.observe('line canvas-pos boundary 8 100 150',{ok:true});
+  assert.equal(f.w.context().dirty,true);assert.equal(f.w.context().dirtyReason,'');
+});
+
+test('example provenance does not pretend a user file exists or mark unchanged data dirty',async()=>{
+  const f=await openFixture();await f.w.openProject(()=>f.bytes,'example.gcanvas',null,{source:'example'});
+  assert.equal(f.w.context().dirty,false);assert.equal(f.w.context().saved,false);
+  const info=f.w.getProjectInfo();assert.equal(info.sourceKind,'example');assert.match(info.statusText,/範例已載入.*尚未另存/);
+  assert.equal(info.lastSavedAt,null);assert.equal(info.lastDownloadAt,null);assert.ok(info.openedAt);
+  assert.match(info.undoLabel,/開啟專案/);
+});
+
+test('file opening does not invent a save time and successful writer close records one',async()=>{
+  const gate=deferred(),f=await openFixture({closeGate:gate});await f.w.importBytes(f.bytes,'mine.gcanvas');
+  assert.equal(f.w.getProjectInfo().sourceKind,'file');assert.equal(f.w.getProjectInfo().lastSavedAt,null);
+  const saving=f.w.save();await f.written.promise;f.writeGate.resolve();await f.closing.promise;
+  assert.equal(f.w.getProjectInfo().lastSavedAt,null);gate.resolve();await saving;
+  assert.ok(Number.isFinite(Date.parse(f.w.getProjectInfo().lastSavedAt)));assert.equal(f.w.getProjectInfo().lastDownloadAt,null);
+});
+
+test('download mode records generation separately from a confirmed disk write',async()=>{
+  const f=await openFixture();await f.w.importBytes(f.bytes);
+  f.env.window.showSaveFilePicker=null;f.env.URL={createObjectURL:()=> 'blob:test',revokeObjectURL(){}};f.env.setTimeout=()=>1;
+  await f.w.save();const info=f.w.getProjectInfo();
+  assert.equal(info.lastSavedAt,null);assert.ok(info.lastDownloadAt);assert.match(info.statusText,/已產生下載/);
+});
+
+test('new project and clear contents have distinct identities and undo restores full context',async()=>{
+  for(const keep of [false,true]) {
+    const f=await openFixture(),before=f.w.context();before.name='原工程';before.dirty=true;
+    const prompts=[];f.env.window.confirm=text=>{prompts.push(text);return true;};
+    assert.equal(await (keep?f.w.clearContents():f.w.newProject()),true);
+    const next=f.w.context();assert.notEqual(next,before);assert.equal(next.sources.size,0);assert.equal(next.groups.size,0);assert.equal(next.models.length,0);
+    assert.equal(next.id===before.id,keep);assert.equal(next.name,keep?'原工程':'未命名專案');assert.equal(next.dirty,keep);
+    assert.equal(f.requests[0].request.body,'reset\n');assert.match(prompts[0],keep?/保留專案名稱/:/新的專案識別/);
+    assert.match(f.w.historyActionLabel('undo'),keep?/清空/:/新專案/);
+    f.w.observe('line undo',{ok:true});assert.equal(f.w.context(),before);assert.equal(f.w.context().sources.size,1);
+  }
+});
+
+test('cancelled empty-project action preserves context and sends no world mutation',async()=>{
+  const f=await openFixture(),before=f.w.context();assert.equal(await f.w.newProject(),false);assert.equal(f.w.context(),before);assert.equal(f.requests.length,0);
+});
+
+test('undoing clear restores saved content and timestamps but expires the prior download status',async()=>{
+  const f=await openFixture(),c=f.w.context();f.env.window.confirm=()=>true;
+  c.saved=true;c.downloaded=true;c.dirty=true;
+  c.provenance.lastSavedAt='2026-09-29T01:00:00.000Z';c.provenance.lastDownloadAt='2026-09-29T01:01:00.000Z';
+  const before=await f.w.manifest(),provenance={...c.provenance},sourceBytes=[...c.sources].map(([id,s])=>[id,s.bytes.slice()]);
+  await f.w.clearContents();f.w.observe('line undo',{ok:true});
+  assert.equal(f.w.context(),c);assert.deepEqual(await f.w.manifest(),before);assert.deepEqual(JSON.parse(JSON.stringify(c.provenance)),provenance);
+  for(const [id,bytes] of sourceBytes)assert.deepEqual(c.sources.get(id).bytes,bytes);
+  assert.equal(c.downloaded,false);assert.equal(c.dirty,true);assert.equal(c.saved,true);
+  assert.match(f.w.getProjectInfo().statusText,/有未保存的變更/);assert.equal(f.w.getProjectInfo().lastDownloadAt,provenance.lastDownloadAt);
+});
+
+function recoveryEnvironment(f,{records=new Map(),tab='tab-one',locked=true,writeError=false}={}) {
+  const store={get:key=>{const request={result:records.get(key)};return request;},put:(value,key)=>{if(writeError)throw new Error('quota exceeded');records.set(key,structuredClone(value));return {};}};
+  const db={transaction(){const tx={objectStore:()=>store};setImmediate(()=>tx.oncomplete?.());return tx;}};
+  f.env.indexedDB={open(){const request={result:db};setImmediate(()=>request.onsuccess());return request;}};
+  f.env.navigator={locks:{request:async(name,_options,callback)=>callback((typeof locked==='function'?locked(name):locked)?{}:null)}};
+  f.env.window.sessionStorage={getItem:()=>tab,setItem(){}};
+  f.env.setTimeout=()=>1;f.env.clearTimeout=()=>{};f.env.connection.session='service-one';
+  return records;
+}
+
+async function recoveryRecord(f,scene) {
+  return {version:1,session:'service-one',sceneHash:await P.sha(new TextEncoder().encode(scene)),bytes:f.bytes,
+    project:{dirty:true,saved:false,downloaded:false,provenance:{kind:'example',label:'內建範例',openedAt:'2026-09-29T00:00:00Z',lastSavedAt:null,lastDownloadAt:null}}};
+}
+
+test('matching reload restores complete project context without uploading or inventing undo',async()=>{
+  const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene);
+  const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
+  assert.equal((await f.w.restoreSession()).state,'restored');assert.equal(f.requests.length,0);
+  assert.equal(f.w.context().id,'opened');assert.equal(f.w.context().name,'試用工程');assert.equal(f.w.context().dirty,true);
+  assert.equal(f.w.getProjectInfo().sourceKind,'example');assert.equal(f.w.getProjectInfo().undoLabel,null);
+  assert.match(f.w.getProjectInfo().historyNote,/較早/);
+  await f.w.persistSession();assert.equal(records.get('tab-one').sceneHash,record.sceneHash);
+  assert.equal((await P.unpack(records.get('tab-one').bytes,zip)).manifest.projectId,'opened');
+});
+
+test('reload refuses different server or geometry and preserves the original backup',async()=>{
+  for(const mismatch of ['session','scene']) {
+    const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene),before=f.w.context();
+    if(mismatch==='session')record.session='other-service';
+    const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});
+    f.env.api=async()=>({ok:true,text:mismatch==='scene'?'boundary 55 outline 0,0 1,0 1,1\n':loaded.scene});
+    assert.equal((await f.w.restoreSession()).state,'mismatch');assert.equal(f.w.context(),before);assert.equal(f.requests.length,0);
+    await f.w.persistSession();assert.equal(records.get('tab-one'),record);
+  }
+});
+
+test('duplicate-tab lock, denied storage and write failure never report restored or saved',async()=>{
+  for(const mode of ['lock','storage','quota']) {
+    const f=await openFixture();recoveryEnvironment(f,{locked:mode!=='lock',writeError:mode==='quota'});
+    if(mode==='storage')Object.defineProperty(f.env.window,'sessionStorage',{get(){throw new Error('storage denied');}});
+    const state=await f.w.restoreSession();assert.equal(state.state,mode==='quota'?'empty':mode==='lock'?'readonly':'unavailable');
+    if(mode==='quota'){await f.w.persistSession();assert.equal(f.w.getProjectInfo().recovery.state,'unavailable');}
+    assert.equal(f.requests.length,0);assert.equal(f.w.getProjectInfo().lastSavedAt,null);
+  }
+});
+
+test('another tab invalidates saving, metadata editing and local undo until explicit project replacement',async()=>{
+  let channel;const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}}});f.env.connection.session='service-one';
+  channel.onmessage({data:{peer:'other-tab',session:'service-one'}});
+  assert.equal(f.w.getProjectInfo().editingBlocked,true);assert.equal(f.w.getProjectInfo().recovery.state,'external');
+  assert.throws(()=>f.w.assertEditable(),/另一個分頁/);await assert.rejects(()=>f.w.exportBytes(),/另一個分頁/);
+  await assert.rejects(()=>f.w.save(),/另一個分頁/);assert.throws(()=>f.w.tryLocalHistory('line undo'),/另一個分頁/);
+  assert.throws(()=>f.w.setEngineeringDraft({}),/另一個分頁/);assert.equal(f.writes.length,0);
+  await f.w.importBytes(f.bytes);assert.equal(f.w.getProjectInfo().editingBlocked,false);f.w.assertEditable();
+  f.w.observe('line undo',{ok:true});assert.equal(f.w.context().sources.size,0);assert.equal(f.w.context().groups.size,0);
+  assert.equal(f.w.getProjectInfo().sourceKind,'server');assert.equal(f.w.history.undo.length,0);
+});
+
+test('external mutation during final reload fingerprint cannot commit the earlier local context',async()=>{
+  let channel,hashes=0;const reached=deferred(),gate=deferred();
+  const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}},projectOverride:{sha:async bytes=>{
+    if(++hashes===3){reached.resolve();await gate.promise;}return P.sha(bytes);
+  }}}),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene),before=f.w.context();
+  recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
+  const restoring=f.w.restoreSession();await reached.promise;
+  channel.onmessage({data:{peer:'other-tab',session:'service-one'}});gate.resolve();
+  assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.equal(f.requests.length,0);
+  assert.equal(f.w.getProjectInfo().editingBlocked,true);
+});
+
+test('service editing lease rejects every replacement and can be acquired only by explicit retry',async()=>{
+  const f=await openFixture();recoveryEnvironment(f,{locked:false});f.env.window.confirm=()=>true;
+  assert.equal((await f.w.restoreSession()).state,'readonly');assert.equal(f.w.getProjectInfo().editingBlocked,true);
+  assert.match(f.w.getProjectInfo().statusText,/唯讀/);
+  for(const task of [()=>f.w.newProject(),()=>f.w.clearContents(),()=>f.w.importBytes(f.bytes),()=>f.w.uploadScene('reset\n'),()=>f.w.save()])await assert.rejects(task,/僅供查看/);
+  assert.equal(f.requests.length,0);assert.equal(f.writes.length,0);
+  f.env.navigator.locks.request=async(_name,_options,callback)=>callback({});
+  assert.equal((await f.w.restoreSession()).state,'readonly');
+  assert.equal((await f.w.retryRecovery()).state,'empty');assert.equal(f.w.getProjectInfo().editingBlocked,false);
+  assert.equal(await f.w.newProject(),true);assert.equal(f.requests.length,1);
+});
+
+test('backup-key lock conflict never loads another tabs attachments despite owning the service lease',async()=>{
+  const f=await openFixture(),before=f.w.context();
+  recoveryEnvironment(f,{locked:name=>name.startsWith('geometry-canvas-service-editor-')});
+  assert.equal((await f.w.restoreSession()).state,'unavailable');assert.equal(f.w.context(),before);assert.equal(f.requests.length,0);
+  assert.match(f.w.getProjectInfo().recovery.message,/另一個分頁.*恢復資料/);
+});
+
+test('owner edits keep a reader retryable and takeover discards unproven metadata before editing',async()=>{
+  let channel;const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}}});
+  const stale=f.w.context();stale.name='不可沿用的舊專案';assert.equal(stale.sources.size,1);
+  recoveryEnvironment(f,{locked:false});assert.equal((await f.w.restoreSession()).state,'readonly');
+  for(let n=0;n<2;n++)channel.onmessage({data:{peer:'editing-tab',session:'service-one'}});
+  assert.equal(f.w.getProjectInfo().recovery.state,'readonly');assert.equal(f.w.getProjectInfo().editingBlocked,true);
+  assert.match(f.w.getProjectInfo().recovery.message,/重新連接此工作/);assert.throws(()=>f.w.assertEditable(),/僅供查看/);
+  f.env.navigator.locks.request=async(_name,_options,callback)=>callback({});
+  assert.equal((await f.w.retryRecovery()).state,'empty');assert.equal(f.w.getProjectInfo().editingBlocked,false);f.w.assertEditable();
+  assert.notEqual(f.w.context(),stale);assert.equal(f.w.context().name,'未命名專案');assert.equal(f.w.getProjectInfo().sourceKind,'server');
+  assert.equal(f.w.context().sources.size,0);assert.equal(f.w.context().groups.size,0);assert.equal(f.w.history.undo.length,0);assert.equal(f.requests.length,0);
+});
+
+test('readonly project rename is rejected before prompting or changing local identity',async()=>{
+  const f=await openFixture();recoveryEnvironment(f,{locked:false});await f.w.restoreSession();
+  let prompts=0;f.env.prompt=()=>{prompts++;return '不可改名';};f.w.init();
+  const before=f.w.context().name;await f.element('btnProjectName').onclick();
+  assert.equal(prompts,0);assert.equal(f.w.context().name,before);assert.match(f.statuses.at(-1),/僅供查看/);
+});
+
+test('readonly reference mutation APIs preserve all page metadata and do not open the file picker',async()=>{
+  const f=await openFixture();recoveryEnvironment(f,{locked:false});await f.w.restoreSession();
+  const before=JSON.stringify(await f.w.manifest()),page={...f.w.active(1),id:'page-extra'},legacy=legacyPage();let picked=0;
+  f.element('referenceFile').click=()=>picked++;
+  for(const task of [()=>f.w.chooseFile(1),()=>f.w.addPage(1,page),()=>f.w.adoptLegacy(1,legacy),()=>f.w.calibrated(1,[[0,0],[2,0]],200),()=>f.w.changed(1,true),()=>f.w.remove(1),()=>f.w.group(55,true)])assert.throws(task,/僅供查看/);
+  await assert.rejects(()=>f.w.selectPage(1,'page-2'),/僅供查看/);
+  assert.equal(JSON.stringify(await f.w.manifest()),before);assert.equal(legacy.id,undefined);assert.equal(picked,0);
+});
+
+test('reference records and review UI reject readonly writes while the owning page can edit them',async()=>{
+  for(const writable of [false,true]) {
+    const f=await openFixture(),p=f.w.active(1);p.reviewRequired=true;
+    p.records=[{id:'old-note',label:'原紀錄',value:100,unit:'mm',location:'舊位置',datum:''}];
+    recoveryEnvironment(f,{locked:writable});await f.w.restoreSession();
+    const controls=new Map(),handlers=new Map();
+    const control=selector=>{if(!controls.has(selector))controls.set(selector,{value:'',dataset:{refRemoveRecord:'old-note'},addEventListener:(_type,fn)=>handlers.set(selector,fn)});return controls.get(selector);};
+    const pane={querySelector:control,querySelectorAll:()=>[control('remove-note')]};
+    control('#refRecordLabel').value='新紀錄';control('#refRecordValue').value='250';control('#refRecordUnit').value='mm';
+    f.w.bindPane(pane,1);const before=JSON.stringify(await f.w.manifest());
+    await handlers.get('#refConfirmChecked')();await handlers.get('#refRecordAdd')();await handlers.get('remove-note')();
+    if(!writable){assert.equal(JSON.stringify(await f.w.manifest()),before);assert.match(f.statuses.at(-1),/僅供查看/);}
+    else {assert.equal(p.reviewRequired,false);assert.equal(p.records.length,1);assert.equal(p.records[0].label,'新紀錄');assert.equal(p.records[0].value,250);}
+  }
+});
+
+test('source attachment rechecks edit ownership after navigation before writing an existing face',async()=>{
+  let channel;const f=await fixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}}}),gate=deferred();
+  f.env.connection.session='service-one';f.w.init();f.source.doc.numPages=1;await f.w.openSource(f.source,1);
+  const before=JSON.stringify(await f.w.manifest());
+  f.env.enterFocus=async()=>{await gate.promise;f.env.oc.edit={bid:1};};
+  const applying=f.element('refApply').onclick();await turn();channel.onmessage({data:{peer:'external-editor',session:'service-one'}});gate.resolve();await applying;
+  assert.equal(JSON.stringify(await f.w.manifest()),before);assert.match(f.statuses.at(-1),/另一個分頁/);assert.equal(f.w.busy,false);assert.equal(f.element('refApply').disabled,true);
 });

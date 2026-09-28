@@ -4,16 +4,42 @@ const ReferenceWorkspace = (() => {
   const P = GeometryProject, uuid = () => crypto.randomUUID();
   const escape = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
   const fresh = () => ({ id: uuid(), name: "未命名專案", sources: new Map(), groups: new Map(), models: [], modelsDirty: false,
-    faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], pending: new Set(), dirty: false });
+    faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], pending: new Set(), dirty: false,
+    provenance:{kind:"server",label:"服務目前保留的場景（來源未確認）",openedAt:null,lastSavedAt:null,lastDownloadAt:null} });
   const history = new P.ContextHistory(fresh);
   const revisions = new WeakMap(), selections = new WeakMap(), contextTokens = new WeakMap();
-  let pdfLib, modal = null, busy = false, sequence = 0, pendingLoad = null;
+  let pdfLib, modal = null, busy = false, busyLabel = "", busyShort = "處理中", sequence = 0, pendingLoad = null;
+  let importRenderingContext = null;
   let presentedModelContext = null, presentedModels = null;
   let presentedProjectionContext = null, presentedProjections = null;
   let presentedDraftContext = null, presentedDrafts = null;
+  let recovery = {state:"pending",message:"尚未檢查本分頁的恢復資料。"};
+  let recoveryKey = null, recoveryDB = null, recoveryTimer = null, recoveryWriting = false, recoveryAgain = false, recoveryReady = false;
+  let releaseRecoveryLock = null, recoveryAttempted = false;
+  let contextConflict = false, externalEpoch = 0;
+  let editorLease = "unchecked", editorLeaseSession = null;
+  const recoveryPeer=uuid();
+  const recoveryChannel=typeof BroadcastChannel!=="undefined"?new BroadcastChannel("geometry-canvas-project-recovery-v1"):null;
+  if(recoveryChannel)recoveryChannel.onmessage=event=>{
+    if(event.data?.peer===recoveryPeer || typeof connection==="undefined" || event.data?.session!==connection.session)return;
+    recoveryReady=false;externalEpoch++;
+    revisions.set(context(),revision(context())+1);
+    if(editorLease==="readonly" || editorLease==="unavailable"){
+      recoveryMessage("readonly","編輯分頁已更新服務中的工作內容。本分頁仍僅供查看；請關閉原編輯分頁，再按「重新連接此工作」。接管時會重新核對來源，不沿用目前畫面的附件關聯。");return;
+    }
+    contextConflict=true;
+    recoveryMessage("external","另一個分頁已修改服務中的場景，本分頁已暫停編輯、保存及恢復資料更新。請開啟正確專案或建立新專案，避免混用不同專案的附件。");
+  };
+  function notifySceneChange(){recoveryChannel?.postMessage({peer:recoveryPeer,session:typeof connection!=="undefined"?connection.session:null});}
+  function assertWritableLease(){
+    if(editorLease==="readonly" || editorLease==="unavailable")throw new Error("另一個分頁正在編輯這份工作，或瀏覽器無法確認編輯權限。本分頁僅供查看；請關閉原編輯分頁，再從專案資訊重新連接。");
+    if(editorLeaseSession && connection.session!==editorLeaseSession)throw new Error("服務工作階段已變更，請重新連接後再編輯。");
+  }
+  function assertEditable(){assertWritableLease();if(contextConflict)throw new Error("另一個分頁已變更目前場景。請先開啟正確的 .gcanvas 專案或建立新專案，再編輯或保存。");}
   const context = () => history.frame.context;
   const safe = fn => async (...args) => { try { return await fn(...args); } catch (e) { toast(e.message || "參考資料操作失敗"); } };
   function group(bid, create = false) {
+    if(create)assertEditable();
     if (!history.frame.ids.has(bid) && create) history.frame.ids.set(bid, uuid());
     const key = history.frame.ids.get(bid);
     if (!key) return null;
@@ -27,7 +53,141 @@ const ReferenceWorkspace = (() => {
     const c = context(); if (!contextTokens.has(c)) contextTokens.set(c, uuid());
     return {id:c.id,contextToken:contextTokens.get(c),revision:revision(c),dirty:!!c.dirty,saved:!!c.saved};
   }
-  function dirty() { const c = context(); revisions.set(c, revision(c) + 1); c.dirty = true; c.downloaded = false; schedulePresentation(); }
+  function dirty(reason = "") { const c = context(); revisions.set(c, revision(c) + 1); c.dirty = true; c.dirtyReason = reason; c.downloaded = false; schedulePresentation(); scheduleRecovery(); }
+  function statusText(c = context()) {
+    return busy ? busyLabel || "處理中…" : editorLease==="readonly" || editorLease==="unavailable" ? "另一分頁編輯中 · 唯讀" : contextConflict ? "場景已由其他分頁變更 · 暫停編輯" : fe.draft?.pts?.length ? "外環草稿尚未套用" : fe.ulCalib?.pts?.length ? "校準尚未套用" : c.downloaded ? "已產生下載 · 請確認檔案" : c.dirty ? c.dirtyReason || "有未保存的變更" : c.provenance?.kind === "example" && !c.saved ? "範例已載入 · 尚未另存" : c.saved ? "已保存" : "尚未保存";
+  }
+  function getProjectInfo() {
+    const c=context(),p=c.provenance || fresh().provenance;
+    return {id:c.id,name:c.name,sourceKind:p.kind,sourceLabel:p.label,openedAt:p.openedAt || null,
+      lastSavedAt:p.lastSavedAt || null,lastDownloadAt:p.lastDownloadAt || null,statusText:statusText(c),
+      undoLabel:history.actionLabel("undo") || (history.undo.length ? "上一步模型修改" : null),
+      historyNote:history.undo.length ? "可復原本頁已記錄的操作；開啟專案、新專案及清空內容也各算一步。" : "本頁尚無可確認的復原記錄；服務較早的幾何歷史不保證能恢復附件與工程草稿。",
+      recovery:{...recovery},editingBlocked:contextConflict || editorLease==="readonly" || editorLease==="unavailable"};
+  }
+  function markSceneSource(label,kind="scene") {
+    assertWritableLease();
+    contextConflict=false;
+    context().provenance={kind,label,openedAt:new Date().toISOString(),lastSavedAt:null,lastDownloadAt:null};
+    recoveryReady=!!recoveryDB && !!recoveryKey;
+    present();scheduleRecovery();
+  }
+  function recoveryMessage(state,message) { recovery={state,message};schedulePresentation(); }
+  function recoveryStore(mode,operation) {
+    return new Promise((resolve,reject)=>{
+      const transaction=recoveryDB.transaction("projects",mode),request=operation(transaction.objectStore("projects"));
+      transaction.oncomplete=()=>resolve(request?.result);transaction.onerror=()=>reject(transaction.error || new Error("本機恢復資料寫入失敗。"));
+      transaction.onabort=()=>reject(transaction.error || new Error("本機恢復資料交易已中止。"));
+    });
+  }
+  const sceneFingerprint = text => P.sha(new TextEncoder().encode(text.replace(/\r\n/g,"\n")));
+  function scheduleRecovery() {
+    if(!recoveryReady)return;
+    if(recoveryWriting){recoveryAgain=true;return;}
+    if(recoveryTimer)clearTimeout(recoveryTimer);
+    recoveryTimer=setTimeout(()=>{recoveryTimer=null;persistSession();},600);
+  }
+  async function persistSession() {
+    if(!recoveryReady)return;
+    if(recoveryWriting){recoveryAgain=true;return;}
+    if(busy || oc.busy || history.group || pendingLoad){scheduleRecovery();return;}
+    if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.WorkspaceShell?.saveState().blocked){
+      recoveryMessage("draft","本次外環、校準或工作區草稿尚未套用；恢復資料只保留上次完成的工作內容。");return;
+    }
+    recoveryWriting=true;
+    try {
+      const session=typeof connection!=="undefined"?connection.session:null;
+      if(!session)throw new Error("尚未確認服務工作階段，未建立恢復資料。");
+      const {bytes,stamp,scene}=await exportSnapshot(),c=stamp.context;
+      const record={version:1,session,sceneHash:await sceneFingerprint(scene),bytes,updatedAt:new Date().toISOString(),
+        project:{dirty:!!c.dirty,dirtyReason:c.dirtyReason || "",saved:!!c.saved,downloaded:!!c.downloaded,provenance:{...c.provenance}}};
+      assertSnapshot(stamp);
+      if(!recoveryReady || connection.session!==session)throw new Error("服務或其他分頁已變更，未更新恢復資料。");
+      await recoveryStore("readwrite",store=>store.put(record,recoveryKey));
+      if(contextConflict)return;
+      if(!unchanged(stamp)){recoveryAgain=true;return;}
+      recoveryMessage("ready","已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。");
+    } catch(error) {
+      if(!contextConflict)recoveryMessage("unavailable","本機恢復資料未更新："+(error.message || "儲存空間不可用")+"請保存專案檔案。");
+    } finally {recoveryWriting=false;if(recoveryAgain){recoveryAgain=false;scheduleRecovery();}}
+  }
+  async function restoreSession() {
+    if(recoveryAttempted)return {...recovery};
+    recoveryAttempted=true;
+    if(typeof navigator==="undefined" || !navigator.locks){
+      editorLease="unavailable";
+      recoveryMessage("readonly","此瀏覽器無法確認單一分頁的編輯權限，目前僅供查看。請使用支援工作鎖定的瀏覽器重新開啟。");present();return {...recovery};
+    }
+    let initial={context:context(),frame:history.frame,revision:revision(context())},epoch=externalEpoch;
+    const assertInitial=()=>{if(externalEpoch!==epoch || !unchanged(initial))throw new Error("檢查恢復資料期間目前專案已變更，未套用舊資料。");};
+    busy=true;busyLabel="正在檢查本分頁的恢復資料…";present();
+    try {
+      const serviceSession=typeof connection!=="undefined"?connection.session:null;
+      if(!serviceSession)throw new Error("尚未確認服務工作階段，請重新連接。");
+      if(editorLease!=="owned"){
+        const takingOver=editorLease==="readonly" || editorLease==="unavailable";
+        const writable=await new Promise((resolve,reject)=>{
+          navigator.locks.request("geometry-canvas-service-editor-"+serviceSession,{ifAvailable:true},async lock=>{
+            if(!lock){resolve(false);return;}
+            resolve(true);await new Promise(()=>{});
+          }).catch(reject);
+        });
+        if(!writable){editorLease="readonly";recoveryMessage("readonly","另一個分頁正在編輯這個服務的工作內容。本分頁僅供查看，未讀取或寫入專案恢復資料。請關閉原編輯分頁，再按「重新連接此工作」。");return {...recovery};}
+        editorLease="owned";editorLeaseSession=serviceSession;
+        if(takingOver){
+          // A reader's displayed world may have changed many times. Establish
+          // an unknown predecessor before checking this tab's recovery package.
+          history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
+          history.frame={context:fresh(),ids:new Map()};contextConflict=false;sync();
+          initial={context:context(),frame:history.frame,revision:revision(context())};epoch=externalEpoch;
+        }
+      }
+      if(typeof indexedDB==="undefined"){recoveryMessage("unavailable","此瀏覽器無法保留本分頁的完整專案。重新整理前請保存 .gcanvas 檔案。");return {...recovery};}
+      const storageKey="geometry-canvas-recovery-tab-v1";
+      if(!window.sessionStorage)throw new Error("本分頁儲存空間不可用。");
+      recoveryKey=window.sessionStorage.getItem(storageKey);
+      if(!recoveryKey){recoveryKey=uuid();window.sessionStorage.setItem(storageKey,recoveryKey);}
+      const locked=await new Promise((resolve,reject)=>{
+        navigator.locks.request("geometry-canvas-recovery-"+recoveryKey,{ifAvailable:true},async lock=>{
+          if(!lock){resolve(false);return;}
+          resolve(true);await new Promise(release=>{releaseRecoveryLock=release;});
+        }).catch(reject);
+      });
+      if(!locked){recoveryKey=null;recoveryMessage("unavailable","另一個分頁正在使用這份恢復資料。本分頁未讀取或覆蓋它；請另存專案檔案。");return {...recovery};}
+      recoveryDB=await new Promise((resolve,reject)=>{
+        const request=indexedDB.open("geometry-canvas-recovery",1);
+        request.onupgradeneeded=()=>request.result.createObjectStore("projects");
+        request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);request.onblocked=()=>reject(new Error("本機恢復資料庫被其他視窗占用。"));
+      });
+      const record=await recoveryStore("readonly",store=>store.get(recoveryKey));assertInitial();
+      if(!record){recoveryReady=true;recoveryMessage("empty","本分頁尚無恢復資料。服務上的既有幾何來源未知，不能據此推定已保存專案。");return {...recovery};}
+      const session=typeof connection!=="undefined"?connection.session:null,dump=await api("dump");assertInitial();
+      if(record.version!==1 || !session || record.session!==session || !dump.ok || record.sceneHash!==await sceneFingerprint(dump.text)){
+        recoveryMessage("mismatch","先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。");return {...recovery};
+      }
+      const stage=label=>{busyLabel=label;present();};
+      const {loaded,c,ids}=await readProjectContext(record.bytes,"本機恢復專案",stage,assertInitial);
+      if(await sceneFingerprint(loaded.scene)!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
+      const verify=await api("dump");assertInitial();
+      if(!verify.ok || connection.session!==session || await sceneFingerprint(verify.text)!==record.sceneHash)throw new Error("恢復期間服務場景已變更，未恢復專案。");
+      assertInitial();
+      const p=record.project;
+      if(!p || typeof p.provenance?.kind!=="string" || typeof p.provenance?.label!=="string")throw new Error("本機專案來源記錄不完整。");
+      Object.assign(c,{dirty:!!p.dirty,dirtyReason:String(p.dirtyReason || ""),saved:!!p.saved,downloaded:!!p.downloaded,provenance:{...p.provenance}});
+      history.frame={context:c,ids:new Map(ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
+      recoveryReady=true;sync();
+      recoveryMessage("restored","已核對同一服務及場景，恢復本分頁的專案、來源附件、空間模型與工程草稿。未套用的工具草稿及較早復原歷史無法恢復；檔案保存狀態維持原紀錄。");
+      return {...recovery};
+    } catch(error) {
+      if(editorLease!=="owned")editorLease="unavailable";
+      if(!contextConflict)recoveryMessage("unavailable","未恢復本機專案："+(error.message || "儲存空間不可用")+"目前場景未被覆寫，請開啟 .gcanvas 檔案。");return {...recovery};
+    } finally {busy=false;busyLabel="";present();if(recoveryReady)scheduleRecovery();}
+  }
+  async function retryRecovery() {
+    if(busy)throw new Error("請先等目前操作完成。");
+    if(editorLease!=="readonly" && editorLease!=="unavailable")return {...recovery};
+    recoveryAttempted=false;return restoreSession();
+  }
   function assertContext(c) { if (context() !== c) throw new Error("專案已切換，請在目前專案重新保存或重新選擇來源。"); }
   function cancelSelection(c, g) {
     const jobs = selections.get(c); jobs?.get(g)?.resolve(null); jobs?.delete(g); g.selection = uuid();
@@ -52,10 +212,11 @@ const ReferenceWorkspace = (() => {
   }
   function present() {
     const c = context();
-    const state = busy ? "處理中…" : fe.draft?.pts?.length ? "外環草稿尚未套用" : fe.ulCalib?.pts?.length ? "校準尚未套用" : c.downloaded ? "已產生下載 · 請確認檔案" : c.dirty ? "有未保存的變更" : c.saved ? "已保存" : "尚未保存";
+    const state = statusText(c);
+    const short = busy ? busyShort : contextConflict || editorLease==="readonly" || editorLease==="unavailable" ? "唯讀" : fe.draft?.pts?.length || fe.ulCalib?.pts?.length ? "有草稿" : c.downloaded ? "已下載" : c.dirty || !c.saved ? "未保存" : "已保存";
     document.querySelectorAll("[data-project-name]").forEach(el => { const name = c.name + ".gcanvas"; if (el.textContent !== name) { el.textContent = name; el.title = name; } });
-    document.querySelectorAll("[data-project-status]").forEach(el => { if (el.textContent !== state) el.textContent = state; });
-    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy; });
+    document.querySelectorAll("[data-project-status]").forEach(el => { if (el.textContent !== state) el.textContent = state; el.dataset.statusShort = short; el.title = state; el.setAttribute("aria-label", state); });
+    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy || getProjectInfo().editingBlocked || !!window.WorkspaceShell?.saveState().blocked; });
     const p = oc.edit && active(oc.edit.bid), source = p && c.sources.get(p.sourceId);
     const summary = document.getElementById("faceReferenceSummary");
     if (summary) {
@@ -74,6 +235,7 @@ const ReferenceWorkspace = (() => {
       el.classList.toggle("current", selected);
       if (selected) el.setAttribute("aria-current", "step"); else el.removeAttribute("aria-current");
     });
+    window.dispatchEvent(new CustomEvent("project-info-changed"));
   }
   function sync() {
     if (presentedModelContext && presentedModelContext !== context()) {
@@ -114,7 +276,9 @@ const ReferenceWorkspace = (() => {
     if (hadProjections && result.ok && /^line\s+(reset|default)\s*$/.test(cmd)) context().faceProjectionsDirty = true;
     const edited = result.ok && cmd.match(/^line\s+(?:boundary|surface)\s+(\d+)\s/);
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
-    if (result.ok && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd)) dirty();
+    if (result.ok && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
+      dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
+    if(result.ok && /^(line |drag |reset$|default$|loadfile |engineering-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
     if (result.ok && /^engineering-confirm /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
@@ -122,6 +286,7 @@ const ReferenceWorkspace = (() => {
   function getSpaceModels() { return JSON.parse(JSON.stringify(context().models)); }
   function getEngineeringDrafts() { return JSON.parse(JSON.stringify(context().engineeringDrafts || [])); }
   function assertDraftContext(expectedContextToken) {
+    assertEditable();
     if (pendingLoad) throw new Error("請先確認專案載入結果再修改工程草稿。");
     if (expectedContextToken !== undefined && expectedContextToken !== getProjectState().contextToken)
       throw new Error("專案已切換，未將先前的工程草稿寫入目前專案。");
@@ -165,6 +330,7 @@ const ReferenceWorkspace = (() => {
     return getFaceProjection(bid, placementId);
   }
   function assertModelReady() {
+    assertEditable();
     if (pendingLoad || history.group) throw new Error("請先完成目前的操作再變更空間模型。");
     if (typeof connection !== "undefined" && connection.phase !== "ready") throw new Error("場景連線尚未確認，請先重新連線。");
   }
@@ -190,6 +356,7 @@ const ReferenceWorkspace = (() => {
   }
   function tryLocalHistory(cmd) {
     if (pendingLoad) return null;
+    if(/^line\s+(undo|redo)\b/.test(cmd))assertEditable();
     const result = history.tryLocal(cmd);
     if (result?.ok) { context().modelsDirty = true; context().faceProjectionsDirty = true; dirty(); sync(); }
     return result;
@@ -259,10 +426,12 @@ const ReferenceWorkspace = (() => {
     p.src = r.src; return p;
   }
   function addPage(bid, p) {
+    assertEditable();
     const g = group(bid, true); cancelSelection(context(), g); g.pages.push(p); g.activePageId = p.id;
     dirty(); sync(); return p;
   }
   function adoptLegacy(bid, ul) {
+    assertEditable();
     const c = context();
     const p = Object.assign(ul, { id: uuid(), sourceId: "pending", page: 1, crop: [0,0,ul.imgW,ul.imgH],
       calibration: null, reviewRequired: false, records: [] });
@@ -270,17 +439,20 @@ const ReferenceWorkspace = (() => {
     const pending = (async () => {
       const blob = await fetch(p.src).then(r => r.blob());
       const s = await sourceFromFile(new File([blob], "參考圖片", { type: blob.type }));
+      assertEditable();assertContext(c);
       c.sources.set(s.meta.id, s); p.sourceId = s.meta.id;
     })();
     c.pending.add(pending); pending.then(() => c.pending.delete(pending), () => {});
   }
   function calibrated(bid, points, distMm, inputValue = distMm, inputUnit = "mm") {
+    assertEditable();
     const p = active(bid); if (!p) return;
     p.calibration = { points: points.map(v => [...v]), distanceMm: distMm, inputValue, inputUnit };
     p.reviewRequired = true; dirty();
   }
-  function changed(bid, recheck = false) { const p = active(bid); if (p && recheck) p.reviewRequired = true; dirty(); }
+  function changed(bid, recheck = false) { assertEditable();const p = active(bid); if (p && recheck) p.reviewRequired = true; dirty(); }
   function remove(bid) {
+    assertEditable();
     const g = group(bid); if (!g) return;
     cancelSelection(context(), g);
     g.pages = g.pages.filter(p => p.id !== g.activePageId); g.activePageId = g.pages[0]?.id || "";
@@ -299,6 +471,7 @@ const ReferenceWorkspace = (() => {
     drawFaceEditor();
   }
   async function selectPage(bid, pageId) {
+    assertEditable();
     const g = group(bid), p = g?.pages.find(p => p.id === pageId); if (!p) return;
     const c = context(); cancelSelection(c, g); const request = g.selection;
     if (!selections.has(c)) selections.set(c, new Map());
@@ -309,6 +482,7 @@ const ReferenceWorkspace = (() => {
     try {
       if (!p.src) await preparePage(p, c.sources.get(p.sourceId));
       if (context() !== c || group(bid) !== g || g.selection !== request) return;
+      assertEditable();
       g.activePageId = p.id; fe.ulCalib = null; fe.ulDrag = null; dirty(); redraw(); fitReference();
     } catch (e) { error = e; throw e; }
     finally {
@@ -334,24 +508,27 @@ const ReferenceWorkspace = (() => {
       (p.reviewRequired ? `<div class="reference-review"><p>幾何待核對：請依底圖確認已建立的輪廓。</p><button id="refConfirmChecked" type="button" class="btn">已核對此面的幾何</button></div>` : "");
   }
   function bindPane(pane, bid) {
-    pane.querySelector("#refImport")?.addEventListener("click", () => chooseFile(bid));
+    pane.querySelector("#refImport")?.addEventListener("click", safe(() => chooseFile(bid)));
     pane.querySelector("#refMorePages")?.addEventListener("click", safe(() => openSource(context().sources.get(active(bid).sourceId), bid)));
     pane.querySelector("#refActivePage")?.addEventListener("change", safe(e => selectPage(bid,e.target.value)));
-    pane.querySelector("#refConfirmChecked")?.addEventListener("click", () => { active(bid).reviewRequired = false; dirty(); redraw(); });
+    pane.querySelector("#refConfirmChecked")?.addEventListener("click", safe(() => { assertEditable();active(bid).reviewRequired = false; dirty(); redraw(); }));
     pane.querySelector("#refFit")?.addEventListener("click", fitReference);
-    pane.querySelector("#refRecordAdd")?.addEventListener("click", () => {
+    pane.querySelector("#refRecordAdd")?.addEventListener("click", safe(() => {
+      assertEditable();
       const raw = pane.querySelector("#refRecordValue").value, value = raw.trim()==="" ? null : Number(raw);
       const label = pane.querySelector("#refRecordLabel").value.trim();
       if (!label || (value !== null && (!Number.isFinite(value) || Math.abs(value)>1e8))) { toast("請填項目名稱及有效數值；未知值可留空。"); return; }
       active(bid).records.push({ id: uuid(), label, value, unit: pane.querySelector("#refRecordUnit").value,
         location: pane.querySelector("#refRecordLocation").value, datum: pane.querySelector("#refRecordDatum").value });
       dirty(); redraw(); document.getElementById("refRecordDetails").open = true;
-    });
-    for (const b of pane.querySelectorAll("[data-ref-remove-record]")) b.addEventListener("click", () => {
+    }));
+    for (const b of pane.querySelectorAll("[data-ref-remove-record]")) b.addEventListener("click", safe(() => {
+      assertEditable();
       const p = active(bid); p.records = p.records.filter(r => r.id !== b.dataset.refRemoveRecord); dirty(); redraw(); document.getElementById("refRecordDetails").open = true;
-    });
+    }));
   }
   function chooseFile(bid = null) {
+    assertEditable();
     const input = document.getElementById("referenceFile"); input.dataset.bid = bid ?? ""; input.value = ""; input.click();
   }
   async function openSource(source, bid = null) {
@@ -402,7 +579,7 @@ const ReferenceWorkspace = (() => {
       host.innerHTML = `<img alt="第 ${number} 頁預覽"><div id="refCropOverlay"></div>`;
       host.querySelector("img").src = r.src; layoutPreview();
       document.getElementById("refPreviewMessage").textContent = "拖曳框選取景範圍；未框選時使用整頁。確認後再校準尺寸。";
-      document.getElementById("refApply").disabled = false; drawCrop();
+      document.getElementById("refApply").disabled = getProjectInfo().editingBlocked; drawCrop();
       // Only five nearby thumbnails are rendered, never the entire document.
       const strip = document.getElementById("refThumbnails"); strip.replaceChildren();
       for (let p = Math.max(1,number-2); p <= Math.min(m.count,number+2); p++) {
@@ -430,6 +607,7 @@ const ReferenceWorkspace = (() => {
     return [Math.max(0,Math.min(modal.width,(e.clientX-b.left)/b.width*modal.width)),Math.max(0,Math.min(modal.height,(e.clientY-b.top)/b.height*modal.height))];
   }
   async function applySource() {
+    assertEditable();
     if (!modal?.ready || busy) return;
     // Keep exactly the page and crop confirmed before asynchronous face creation.
     const m={...modal,crop:[...modal.crop]}, dialog=document.getElementById("referenceDialog");
@@ -445,6 +623,7 @@ const ReferenceWorkspace = (() => {
         if (history.frame.ids.get(bid)!==m.targets.get(bid)) throw new Error("目標面已變更，請重新選擇來源。");
       }
       assertContext(m.context);
+      assertEditable();
       if (!oc.edit || oc.edit.bid!==bid) throw new Error("目標面已不存在，請重新選擇。");
       const bb=loopsBBox(oc.bmap[bid]), crop=m.crop, mmPerPx=(bb[2]-bb[0])/crop[2];
       context().sources.set(m.source.meta.id,m.source);
@@ -454,7 +633,7 @@ const ReferenceWorkspace = (() => {
       closeSource(true); feSetTool("select"); fiShowTab("underlay"); redraw(); fitReference();
       if (innerWidth <= 680) openPanel("right",document.getElementById("workspaceToggleRight"));
       setStatus("已加入參考頁；請用圖上已知尺寸完成兩點校準。");
-    } finally { busy=false; dialog.inert=false; present(); if (modal) document.getElementById("refApply").disabled=!modal.ready; }
+    } finally { busy=false; dialog.inert=false; present(); if (modal) document.getElementById("refApply").disabled=!modal.ready || getProjectInfo().editingBlocked; }
   }
   function closeSource(force = false) {
     if (busy && force !== true) return;
@@ -481,6 +660,7 @@ const ReferenceWorkspace = (() => {
     return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
   }
   function assertSaveReady() {
+    assertEditable();
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
     if (fe.draft?.pts?.length) throw new Error("外環草稿尚未套用。請先完成外環或放棄草稿，再保存專案。");
     if (fe.ulCalib?.pts?.length) throw new Error("校準尚未套用。請先套用比例尺或取消取點，再保存專案。");
@@ -500,7 +680,7 @@ const ReferenceWorkspace = (() => {
     const m=await manifest(c); assertSnapshot(stamp);
     const data=new Map([...c.sources].map(([k,s])=>[k,s.bytes]));
     const bytes=await P.pack(r.text,m,data,fflate); assertSnapshot(stamp);
-    return {bytes,stamp};
+    return {bytes,stamp,scene:r.text};
   }
   async function exportBytes() { return (await exportSnapshot()).bytes; }
   function download(bytes,name) {
@@ -509,25 +689,28 @@ const ReferenceWorkspace = (() => {
   }
   async function save() {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
+    const shellState=window.WorkspaceShell?.saveState();
+    if(shellState?.blocked)throw new Error(shellState.reason || "請先套用或放棄目前視窗的草稿。");
     assertSaveReady();
     // Request the handle while user activation is still available.
     const c=context(), suggested=c.name.replace(/[\\/:*?"<>|]/g,"_")+".gcanvas";
     const handlePromise=window.showSaveFilePicker ? window.showSaveFilePicker({suggestedName:suggested,types:[{description:"構形 Canvas 專案",accept:{"application/zip":[".gcanvas"]}}]}) : null;
-    busy=true; present();
+    busy=true; busyLabel="正在保存專案…"; busyShort="保存中"; present();
     try {
       let handle;
       try { handle=handlePromise && await handlePromise; } catch(e) { if(e.name==="AbortError")return;throw e; }
       assertContext(c);
       const {bytes,stamp}=await exportSnapshot(c);
       if(handle){const writable=await handle.createWritable();try{await writable.write(bytes);await writable.close();}catch(e){await writable.abort().catch(()=>{});throw e;}
+        c.provenance.lastSavedAt=new Date().toISOString();
         if (unchanged(stamp)) {
           c.dirty=false;c.modelsDirty=false;c.faceProjectionsDirty=false;c.saved=true;c.downloaded=false;setStatus("✓ 專案已保存，包含場景、工程來源與草稿、參考資料及空間模型");
         } else {
           c.dirty=true;c.downloaded=false;
           setStatus(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
         }}
-      else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;setStatus("已產生專案下載；請確認下載完成後再關閉。");}
-    } finally {busy=false;present();}
+      else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;c.provenance.lastDownloadAt=new Date().toISOString();setStatus("已產生專案下載；請確認下載完成後再關閉。");}
+    } finally {busy=false;busyLabel="";busyShort="處理中";present();scheduleRecovery();}
   }
   function sameModelData(a, b) {
     const ordered = value => Array.isArray(value) ? value.map(ordered) : value && typeof value === "object"
@@ -564,10 +747,44 @@ const ReferenceWorkspace = (() => {
     const {wall_diagnostics: newDiagnostics, ...newSummary} = rebuilt.summary || {};
     if (!sameModelData(oldSummary, newSummary)) throw new Error("空間模型「"+model.name+"」的摘要與定義不一致，未變更目前專案。");
   }
-  async function importBytes(bytes,name="匯入專案") {
-    if (oc.busy || history.group) throw new Error("請先完成目前的操作再開啟專案。");
+  async function openProject(readBytes,name="匯入專案",onOpened=null,options={}) {
+    assertWritableLease();
+    if (busy || oc.busy || history.group || pendingLoad) throw new Error("請先完成目前的操作再開啟專案。");
+    const stamp={context:context(),frame:history.frame,revision:revision(context())};
+    const assertCurrent=()=>{
+      if (!unchanged(stamp)) throw new Error("開啟專案期間目前工程已有變更，未替換目前專案；請再次開啟。");
+    };
+    const indicator=document.getElementById("busyIndicator"), previousHTML=indicator?.innerHTML;
+    const stage=(label,short="讀取中")=>{
+      busyLabel=label;busyShort=short;
+      if(indicator){indicator.innerHTML='<span class="busy-spinner"></span><span>'+escape(label)+'</span>';indicator.hidden=false;}
+      present();setStatus(label);
+    };
+    busy=true;stage("正在讀取專案…");
+    try {
+      const bytes=await readBytes();assertCurrent();
+      const loaded=await importProjectData(bytes,name,stage,assertCurrent,options);
+      recoveryReady=!!recoveryDB && !!recoveryKey;
+      if(onOpened){
+        stage("正在開啟工程規格…");await onOpened(loaded);
+        setStatus(context().dirtyReason ? "✓ 已開啟專案；畫布已自動排版，請保存以保留排列。" : "✓ 已開啟專案「"+context().name+"」與工程規格");
+      }
+      return loaded;
+    } catch(error) {
+      setStatus("未能完成開啟專案："+(error.message || "請重試。"));throw error;
+    } finally {
+      busy=false;busyLabel="";busyShort="處理中";
+      if(indicator){indicator.hidden=true;indicator.innerHTML=previousHTML;}
+      present();scheduleRecovery();
+    }
+  }
+  function importBytes(bytes,name="匯入專案") { return openProject(()=>bytes,name); }
+  async function readProjectContext(bytes,name,stage,assertCurrent) {
+    stage("正在檢查專案完整性…","驗證中");
     const loaded=await P.unpack(bytes,fflate),m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
+    assertCurrent();
     if (m.format === P.ENGINEERING_FORMAT) {
+      stage("正在驗證工程來源與幾何…","驗證中");
       const response=await fetch("/engineering/validate-project",{method:"POST",body:loaded.scene,signal:AbortSignal.timeout(30000)});
       if(!response.ok)throw new Error("目前服務無法驗證工程專案，未變更目前專案。");
       const verified=await response.json();
@@ -576,10 +793,14 @@ const ReferenceWorkspace = (() => {
       P.validateProjectCapabilities(verified.required_capabilities);
       if(!sameModelData(verified.required_capabilities,P.sceneCapabilities(loaded.scene)))
         throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
+      assertCurrent();
     }
     // Rebuild every embedded package before uploading anything. Stored definitions
     // are self-contained and do not depend on the current live source scene.
-    for (const model of m.models) await verifyStoredModel(model);
+    for (const [index,model] of m.models.entries()) {
+      stage("正在驗證空間模型（"+(index+1)+"／"+m.models.length+"）…","驗證中");
+      await verifyStoredModel(model);assertCurrent();
+    }
     c.models=JSON.parse(JSON.stringify(m.models));
     c.engineeringDrafts=JSON.parse(JSON.stringify(m.engineeringDrafts?.records||[]));
     for(const meta of m.sources)c.sources.set(meta.id,{meta,bytes:loaded.sources.get(meta.id)});
@@ -590,6 +811,7 @@ const ReferenceWorkspace = (() => {
       records.push({placement_id:record.placement_id,projection:JSON.parse(JSON.stringify(record.projection))});c.faceProjections.set(key,records);
     }
     for(const f of m.faces){
+      stage("正在還原參考資料…");
       if(!bids.has(f.bid))throw new Error("來源關聯的面不存在於場景。");
       const key=keyFor(f.bid);
       // Never trust runtime fields (for example a remote image src) from a project file.
@@ -604,17 +826,50 @@ const ReferenceWorkspace = (() => {
       }
       const g={activePageId:f.activePageId,pages};
       await preparePage(g.pages.find(p=>p.id===g.activePageId),c.sources.get(g.pages.find(p=>p.id===g.activePageId).sourceId));c.groups.set(key,g);
+      assertCurrent();
     }
-    const r=await uploadScene(loaded.scene,{context:c,ids});
+    assertCurrent();return {loaded,c,ids};
+  }
+  async function importProjectData(bytes,name,stage,assertCurrent,options={}) {
+    const {loaded,c,ids}=await readProjectContext(bytes,name,stage,assertCurrent);
+    c.saved=options.source!=="example";
+    c.provenance={kind:options.source==="example"?"example":"file",label:options.source==="example"?"內建範例「"+c.name+"」":"專案檔案「"+name+"」",openedAt:new Date().toISOString(),lastSavedAt:null,lastDownloadAt:null};
+    assertCurrent();stage("正在載入專案場景…","載入中");
+    const r=await uploadScene(loaded.scene,{context:c,ids,action:"開啟專案「"+c.name+"」"},assertCurrent);
     if(!r.ok)throw new Error(r.error||"場景載入失敗。");
     curScene={path:r.path||"",name:c.name+".gcanvas"};
     resetSceneFocus();sync();document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
-    await refreshActive();setStatus("✓ 已開啟專案，場景、工程來源與草稿、參考資料及空間模型已還原");return loaded;
+    stage("正在整理畫布…","載入中");
+    importRenderingContext=c;
+    try {await refreshActive();} finally {importRenderingContext=null;}
+    setStatus(c.dirtyReason ? "✓ 已開啟專案；畫布已自動排版，請保存以保留排列。" : "✓ 已開啟專案，場景、工程來源與草稿、參考資料及空間模型已還原");return loaded;
   }
-  async function uploadScene(text,replacement=null) {
+  async function replaceWithEmpty(keepIdentity) {
+    assertWritableLease();
+    if(busy || oc.busy || history.group || pendingLoad)throw new Error("請先完成目前的操作。");
+    const explanation=keepIdentity ? "清空目前專案的幾何、參考資料、空間模型與工程草稿，保留專案名稱及識別。" : "建立一份空白新專案，切換為新的專案識別及「未命名專案」。";
+    const warning=context().dirty ? "目前尚未保存的變更不會自動寫入檔案。" : "";
+    if(!window.confirm(explanation+warning+"本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"))return false;
+    const previous=context(),c=fresh(),stamp={context:previous,frame:history.frame,revision:revision(previous)};
+    if(keepIdentity){c.id=previous.id;c.name=previous.name;c.provenance={...previous.provenance};c.dirty=true;c.saved=previous.saved;}
+    else c.provenance={kind:"new",label:"本頁建立的新專案",openedAt:new Date().toISOString(),lastSavedAt:null,lastDownloadAt:null};
+    busy=true;busyLabel=keepIdentity?"正在清空專案內容…":"正在建立新專案…";present();
+    try {
+      const r=await uploadScene("reset\n",{context:c,ids:[],action:keepIdentity?"清空專案「"+c.name+"」內容":"建立新專案"},()=>{if(!unchanged(stamp))throw new Error("目前專案已變更，請重新操作。");});
+      if(!r.ok)throw new Error(r.error || "未能完成專案切換。");
+      curScene={path:r.path || "",name:c.name+".gcanvas"};resetSceneFocus();sync();
+      document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
+      await refreshActive();recoveryReady=!!recoveryDB && !!recoveryKey;setStatus(keepIdentity?"✓ 已清空專案內容，保留專案名稱；可復原。":"✓ 已建立空白新專案；可復原回上一份專案。");return true;
+    } finally {busy=false;busyLabel="";present();scheduleRecovery();}
+  }
+  async function uploadScene(text,replacement=null,assertCurrent=()=>{}) {
+    assertWritableLease();
+    if(pendingLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");
+    assertCurrent();
     const before = await api("dump");
+    assertCurrent();
     if (!before.ok) throw new Error(before.error || "無法讀取載入前的場景。");
-    pendingLoad = { text, before: before.text, context: replacement?.context || fresh(), ids: replacement?.ids };
+    pendingLoad = { text, before: before.text, context: replacement?.context || fresh(), ids: replacement?.ids, action:replacement?.action || null, isolateHistory:contextConflict };
     let result;
     try {
       const r=await fetch("/upload",{method:"POST",body:text,signal:AbortSignal.timeout(30000)});
@@ -625,9 +880,18 @@ const ReferenceWorkspace = (() => {
       connectionFailed("無法確認載入結果，已暫停編輯。請確認服務後重試。");
       throw e;
     }
-    if(result.ok){history.replace(pendingLoad.context,pendingLoad.ids);}
+    if(result.ok){adoptLoadedContext();notifySceneChange();}
     pendingLoad=null;sync();
     return result;
+  }
+  function adoptLoadedContext() {
+    if(pendingLoad.isolateHistory){
+      // The native predecessor belongs to the other tab. Do not attach this
+      // tab's old references or drafts when undo returns to that predecessor.
+      history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
+      history.frame={context:fresh(),ids:new Map()};
+    }
+    history.replace(pendingLoad.context,pendingLoad.ids,pendingLoad.action);contextConflict=false;
   }
   async function recoverLoad() {
     if (!pendingLoad) return true;
@@ -636,7 +900,7 @@ const ReferenceWorkspace = (() => {
     const old = normalized(dump.text) === normalized(pendingLoad.before);
     const next = normalized(dump.text) === normalized(pendingLoad.text);
     let restoredNew = false, restoredPath = "";
-    if (next && !old) { history.replace(pendingLoad.context,pendingLoad.ids); restoredNew=true; }
+    if (next && !old) { adoptLoadedContext(); restoredNew=true; }
     else if (!(old && !next)) {
       // The user pressed retry; repeat the pending load if identical worlds make its outcome ambiguous.
       const response = await fetch("/upload",{method:"POST",body:pendingLoad.text,signal:AbortSignal.timeout(30000)});
@@ -644,7 +908,7 @@ const ReferenceWorkspace = (() => {
       const r = await response.json(); if (r.ok !== true) throw new Error(r.error || "重試載入失敗。");
       // Earlier core history remains usable, but unprovable reference associations must not be guessed.
       history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;history.frame={context:fresh(),ids:new Map()};
-      history.replace(pendingLoad.context,pendingLoad.ids);
+      adoptLoadedContext();
       restoredNew=true;restoredPath=r.path||"";
       toast("已重新載入；連線中斷期間的來源歷史無法確認，較早步驟的底圖需從專案重開。");
     }
@@ -664,9 +928,9 @@ const ReferenceWorkspace = (() => {
     for (const type of ["pointerdown", "pointerup", "click", "dblclick", "keydown", "input", "change", "wheel"]) document.addEventListener(type,e=>{
       if(busy){e.preventDefault();e.stopImmediatePropagation();}
     },{capture:true,passive:false});
-    document.getElementById("btnImportReference").onclick=()=>chooseFile(oc.edit?.bid ?? null);
+    document.getElementById("btnImportReference").onclick=safe(()=>chooseFile(oc.edit?.bid ?? null));
     document.getElementById("btnSaveProject").onclick=safe(save);
-    document.addEventListener("click", e => {
+    document.addEventListener("click", safe(e => {
       const button = e.target.closest("[data-project-action]");
       if (!button) return;
       const action = button.dataset.projectAction;
@@ -677,15 +941,17 @@ const ReferenceWorkspace = (() => {
       else if (action === "name") document.getElementById("btnProjectName").click();
       else if (action === "export") document.getElementById("btnExport").click();
       else if (action === "reference") { fiShowTab("underlay"); if (innerWidth <= 680) openPanel("right",document.getElementById("workspaceToggleRight")); }
-    });
-    document.getElementById("btnOpenProject").onclick=()=>{if(mayLeave()){const i=document.getElementById("projectFile");i.value="";i.click();}};
-    document.getElementById("projectFile").onchange=safe(async e=>{const f=e.target.files[0];if(!f)return;if(f.size>P.MAX_PACKAGE)throw new Error("專案檔案超過 256 MB。");busy=true;present();try{await importBytes(new Uint8Array(await f.arrayBuffer()),f.name);}finally{busy=false;e.target.value="";present();}});
+    }));
+    document.getElementById("btnOpenProject").onclick=safe(()=>{assertWritableLease();if(mayLeave()){const i=document.getElementById("projectFile");i.value="";i.click();}});
+    document.getElementById("projectFile").onchange=safe(async e=>{const f=e.target.files[0];if(!f)return;if(f.size>P.MAX_PACKAGE)throw new Error("專案檔案超過 256 MB。");try{await openProject(async()=>new Uint8Array(await f.arrayBuffer()),f.name);}finally{e.target.value="";}});
     document.getElementById("referenceFile").onchange=safe(async e=>{
+      assertEditable();
       const input=e.target, f=input.files[0], c=context(), bid=input.dataset.bid===""?null:Number(input.dataset.bid);
       if(!f)return;
       const key=history.frame.ids.get(bid), request=++sequence; input.value="";
       const source=await sourceFromFile(f);
       if(request!==sequence)return;
+      assertEditable();
       assertContext(c);
       if(bid!==null && history.frame.ids.get(bid)!==key)throw new Error("目標面已變更，請重新選擇來源。");
       await openSource(source,bid);
@@ -704,7 +970,7 @@ const ReferenceWorkspace = (() => {
     preview.onpointermove=e=>{if(!modal?.drag)return;const p=cropPoint(e),s=modal.drag;modal.crop=[Math.min(p[0],s[0]),Math.min(p[1],s[1]),Math.max(1,Math.abs(p[0]-s[0])),Math.max(1,Math.abs(p[1]-s[1]))];drawCrop();};
     preview.onpointerup=()=>{if(modal){modal.drag=null;if(!modal.ready||!modal.crop)return;if(modal.crop[2]<2||modal.crop[3]<2)modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
     preview.onpointercancel=preview.onpointerup;
-    document.getElementById("btnProjectName").onclick=()=>{const n=prompt("專案名稱",context().name);if(n?.trim()){context().name=n.trim().slice(0,200);dirty();sync();}};
+    document.getElementById("btnProjectName").onclick=safe(()=>{assertEditable();const n=prompt("專案名稱",context().name);if(n?.trim()){assertEditable();context().name=n.trim().slice(0,200);dirty();sync();}});
     window.addEventListener("beforeunload",e=>{if(context().dirty || Object.values(fe.feats || {}).some(items => items.length)){e.preventDefault();e.returnValue="";}});
     present();
   }
@@ -712,6 +978,9 @@ const ReferenceWorkspace = (() => {
     sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
-    getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,
-    manifest,exportBytes,importBytes,uploadScene,recoverLoad,mayLeave,sync,save,escape,get busy(){return busy;} };
+    getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
+    newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
+    noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
+    manifest,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,
+    historyActionLabel:op=>history.actionLabel(op),get busy(){return busy;} };
 })();

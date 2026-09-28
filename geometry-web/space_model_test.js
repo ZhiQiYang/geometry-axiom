@@ -97,6 +97,8 @@ async function point(selector) {
   return p;
 }
 async function click(selector) {
+  if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#exampleMenuPop')?.hidden===true`))await click('#exampleMenuBtn');
+  if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#fileMenuPop')?.hidden===true`))await click('#fileMenuBtn');
   if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await click(await evaluate(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
   const p = await point(selector);
   for (const type of ['mousePressed', 'mouseReleased']) await send('Input.dispatchMouseEvent', { type, x: p.x, y: p.y, button: 'left', clickCount: 1 });
@@ -395,14 +397,14 @@ async function spaceFlowRegression() {
   await preview();const made=await create();
   check('GEO210 creation clearly exposes save as a separate next step',await evaluate(`!document.querySelector('#smCreatedActions').hidden && /保存|gcanvas/.test(document.querySelector('#smSaveNotice').textContent) && ReferenceWorkspace.context().dirty`));
   await evaluate(`(()=>{window.__flowOriginalPicker=window.showSaveFilePicker;window.showSaveFilePicker=async()=>{throw new DOMException('Cancelled','AbortError')};})()`);
-  await click('#smSave');
+  await click('#projectBar [data-project-action="save"]');
   check('GEO210 cancelling the save picker leaves the model dirty and the save reminder accurate',await evaluate(`ReferenceWorkspace.context().dirty && /還需要保存/.test(document.querySelector('#smSaveNotice').textContent)`));
-  await evaluate(`window.showSaveFilePicker=undefined`);await click('#smSave');
+  await evaluate(`window.showSaveFilePicker=undefined`);await click('#projectBar [data-project-action="save"]');
   await wait(`ReferenceWorkspace.context().downloaded===true`,'fallback download started');
   check('GEO210 fallback download asks the user to confirm completion and does not claim a saved file',await evaluate(`ReferenceWorkspace.context().dirty && /下載已開始/.test(document.querySelector('#smSaveNotice').textContent) && !/檔案已保存/.test(document.querySelector('#smSaveNotice').textContent)`));
   await evaluate(`window.showSaveFilePicker=__flowOriginalPicker`);
   await evaluate(`(()=>{window.__flowSavedBytes=null;window.__flowSaveClosed=false;window.__flowOriginalPicker=window.showSaveFilePicker;window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async bytes=>{window.__flowSavedBytes=new Uint8Array(bytes)},close:async()=>{window.__flowSaveClosed=true},abort:async()=>{}})});})()`);
-  await click('#smSave');await wait(`window.__flowSaveClosed===true && ReferenceWorkspace.context().saved && !ReferenceWorkspace.context().dirty`,'actual Save workflow');
+  await click('#projectBar [data-project-action="save"]');await wait(`window.__flowSaveClosed===true && ReferenceWorkspace.context().saved && !ReferenceWorkspace.context().dirty`,'actual Save workflow');
   check('GEO210 successful save updates the next-step notice instead of continuing to request saving',await evaluate(`/已保存/.test(document.querySelector('#smSaveNotice').textContent) && !/還需要保存/.test(document.querySelector('#smSaveNotice').textContent)`));
   const saved=await evaluate(`(async()=>{const p=await GeometryProject.unpack(__flowSavedBytes,fflate);window.showSaveFilePicker=__flowOriginalPicker;return {models:p.manifest.models,projections:p.manifest.faceProjections,scene:p.scene};})()`);
   check('GEO210 the Save button writes a reopenable gcanvas with exact model and projection',saved.models?.length===1 && saved.models[0].id===made.createdId && saved.models[0].input.settings.height===3200 && saved.projections?.some(p=>p.bid===311&&p.projection.view==='bottom'),saved.models?.[0]?.source);
@@ -864,8 +866,8 @@ async function timberRegression() {
   check('GEO208 zero-timber source still previews a closed space normally',(await snapshot()).resultSummary?.closed===true&&!Object.hasOwn((await snapshot()).resultSummary,'timber_count'));
 
   await example('#smTryTimberFrame');
-  const frameSetup=await evaluate(`({selected:document.querySelector('#smIncludeTimbers').checked,count:document.querySelector('#smTimberCount').textContent,height:document.querySelector('#smHeight').value,version:document.querySelector('#smVersion').textContent})`);
-  check('GEO208 ready-to-use timber example advertises 7 selected members and independent wall height 3000',frameSetup.selected&&frameSetup.count==='7'&&frameSetup.height==='3000'&&frameSetup.version===RELEASE_LABEL,frameSetup);
+  const frameSetup=await evaluate(`({selected:document.querySelector('#smIncludeTimbers').checked,count:document.querySelector('#smTimberCount').textContent,height:document.querySelector('#smHeight').value,version:document.querySelector('#smVersion').textContent,versionHidden:document.querySelector('#smVersion').hidden})`);
+  check('GEO208 ready-to-use timber example advertises 7 selected members and independent wall height 3000',frameSetup.selected&&frameSetup.count==='7'&&frameSetup.height==='3000'&&frameSetup.versionHidden&&frameSetup.version==='',frameSetup);
   await checked('#smShowSpace',true);await checked('#smShowWalls',true);await checked('#smShowTimbers',true);await click('[data-sm-view="iso"]');await viewport(1280,720);await click('#smFit');
   const frameSummary=(await snapshot()).resultSummary;
   check('GEO208 ready frame has exact separate room, wall and seven-member quantities',frameSummary.volume_mm3==='36000000000'&&frameSummary.clearance_mm3==='36000000000'&&frameSummary.wall_volume_mm3==='4320000000'&&frameSummary.timber_count===7&&frameSummary.timber_volume_mm3==='18494487',frameSummary);
@@ -995,7 +997,9 @@ async function run() {
   await setup(['surface 101 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000']);
   const originalScene = await scene();
   await click('#btnSpaceModelTrial');
-  check('release label and guided workspace are discoverable', await evaluate(`document.querySelector('#smWorkspace').open && document.querySelector('#smVersion').textContent===${JSON.stringify(RELEASE_LABEL)} && /預覽/.test(document.querySelector('#smWorkspace').textContent)`));
+  // The real capability/version probe above remains authoritative. Compatible
+  // service versions are intentionally quiet in the task-focused workspace.
+  check('supported service opens the guided workspace without a redundant release badge', await evaluate(`document.querySelector('#smWorkspace').open && document.querySelector('#smVersion').hidden && document.querySelector('#smVersion').textContent==='' && document.querySelector('#smTitle').textContent.trim()==='空間建模' && /預覽/.test(document.querySelector('#smWorkspace').textContent)`));
   await example('#smTryRectangle');
   // The preceding projection scenario deliberately chose the underside camera.
   // Measure 3D rendering from a known user-selected isometric view.

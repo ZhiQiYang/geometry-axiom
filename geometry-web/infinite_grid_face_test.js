@@ -4,6 +4,8 @@ module.exports = async function ({send,eval_,sleep,click,waitForUI}) {
   const check=(name,ok,detail='')=>console.log(name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));
   const ctl=async selector=>{
     const p=await eval_(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});if(!n)throw Error('Missing control');n.scrollIntoView({block:'center'});const r=n.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
+    await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:p.x,y:p.y});
+    await waitForUI(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});if(!n)return false;const r=n.getBoundingClientRect(),s=getComputedStyle(n);return r.width>0&&r.height>0&&!n.disabled&&Number(s.opacity)>0&&s.pointerEvents!=='none'&&n.contains(document.elementFromPoint(${p.x},${p.y}));})()`);
     await click(p.x,p.y);await sleep(250);
   };
   await send('Emulation.setDeviceMetricsOverride',{width:1382,height:900,deviceScaleFactor:1,mobile:false});
@@ -34,8 +36,10 @@ module.exports = async function ({send,eval_,sleep,click,waitForUI}) {
   await waitForUI(`fe.grids.some(g=>g.kind==='subgrid'&&g.parentId===70)`);
   const saved=await eval_(`(async()=>{const g=fe.grids.find(g=>g.kind==='subgrid'&&g.parentId===70);return {cell:g.cell,mode:g.cellMode,text:(await api('dump')).text};})()`);
   check('P71-4 保存 signed cell，子線仍為局部 ordinal 索引',saved.mode==='lattice'&&saved.cell.i==='-1'&&saved.cell.j==='2'&&saved.text.includes('lattice-cell -1 2'),saved);
+  const beforeDelete=await eval_(`apiRequest('dump').then(r=>r.text)`);
   await ctl('.face-layer-row[data-grid-id="70"] .face-layer-del');
-  check('P71-5 有依賴的來源格刪除顯示說明，沒有空狀態欄例外',await eval_(`fe.grids.some(g=>g.id===70) && [...document.querySelectorAll('.toast')].some(n=>n.textContent.includes('無法刪除網格 70'))`));
+  const refusedDelete=await eval_(`(async()=>({grid:fe.grids.some(g=>g.id===70),explanation:[...document.querySelectorAll('.toast')].some(n=>n.textContent.includes('無法刪除網格 70')),scene:(await apiRequest('dump')).text}))()`);
+  check('P71-5 有依賴的來源格刪除顯示說明，沒有空狀態欄例外',refusedDelete.grid&&refusedDelete.explanation&&refusedDelete.scene===beforeDelete,refusedDelete);
   await eval_(`(async()=>{await leaveFocus();})()`);
   await eval_(`(async()=>{await api('reset');for(const l of ${JSON.stringify([
     'surface 80 origin 0 0 2500 u +x v +y outline 0,0 10000,0 10000,10000 0,10000',
@@ -45,8 +49,11 @@ module.exports = async function ({send,eval_,sleep,click,waitForUI}) {
     'grid 80 on 80 from-binding 80'
   ])}){let r=await apiRequest('line '+l);if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok)throw Error(JSON.stringify(r));}await renderObjects();await enterFocus('face',80);})()`);
   await waitForUI(`!!$('feLatticeDensity') && !$('feLatticeDensity').hidden`);
-  const initialView=await eval_(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect();return {composition:document.body.classList.contains('canvas-composition'),width:r.width,height:r.height,zoom:fe.zoom,center:[(r.width/2-fe.panX)/fe.zoom,(r.height/2-fe.panY)/fe.zoom]};})()`);
-  check('P71-6a 進入面工作區時依最終版面置中，縮放不偏離原中心',!initialView.composition&&initialView.center.every(v=>Math.abs(v-5000)*initialView.zoom<1),initialView);
+  await eval_(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))`);
+  const initialView=await eval_(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect(),summary=$('feSelectionSummary'),controls=document.querySelector('.face-canvas-controls').getBoundingClientRect(),m=$('faceEditorRoot').getScreenCTM();
+    const top=Math.max(r.top+40,!summary.hidden?summary.getBoundingClientRect().bottom+40:r.top+40),bottom=Math.min(r.bottom-40,controls.top-40),center=new DOMPoint(5000,5000).matrixTransform(m),a=new DOMPoint(0,0).matrixTransform(m),b=new DOMPoint(10000,10000).matrixTransform(m);
+    return {composition:document.body.classList.contains('canvas-composition'),width:r.width,height:r.height,zoom:fe.zoom,center:[center.x,center.y],expectedCenter:[r.left+r.width/2,(top+bottom)/2],bounds:{left:a.x,right:b.x,top:a.y,bottom:b.y},usable:{left:r.left+40,right:r.right-40,top,bottom}};})()`);
+  check('P71-6a 進入面工作區依最終可繪區置中，完整面避開操作控制',!initialView.composition&&initialView.center.every((v,i)=>Math.abs(v-initialView.expectedCenter[i])<1)&&initialView.bounds.left>=initialView.usable.left-1&&initialView.bounds.right<=initialView.usable.right+1&&initialView.bounds.top>=initialView.usable.top-1&&initialView.bounds.bottom<=initialView.usable.bottom+1,initialView);
   const missing=await eval_(`(()=>{const g=fe.grids.find(g=>g.id===80),i=['49','50','51'].find(k=>!g.indices.u.includes(k));return {i,value:feAnchorLineInfo(80,'at-line grid 80 u '+i)?.value};})()`);
   check('P71-6 抽樣省略的合法線仍可用 lattice 定義精確求座標',!!missing.i&&missing.value===Number(missing.i)*100,missing);
   for(let n=0;n<12;n++)await ctl('#feZoomIn');

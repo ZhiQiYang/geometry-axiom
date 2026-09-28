@@ -173,6 +173,12 @@ def recorded_api(data):
         receipt_lock.release()
 
 
+class PreviewHTTPServer(http.server.ThreadingHTTPServer):
+    # Browser preload/reload bursts can exceed the default five pending handshakes.
+    # Leave room for those connections while the server accepts each request.
+    request_queue_size = 128
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):  # 靜音
         pass
@@ -191,11 +197,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if self.path == "/" or self.path == "/index.html":
             self._send((HERE / "index.html").read_bytes(),
                        "text/html; charset=utf-8")
-        elif self.path in {"/app.css", "/space-workspace.css", "/engineering-workspace.css", "/grid-system-workspace.css", "/grid-inspector.css"}:
+        elif self.path in {"/app.css", "/space-workspace.css", "/engineering-workspace.css", "/grid-system-workspace.css", "/grid-inspector.css",
+                           "/canvas-labels.css", "/workspace-guidance.css", "/project-ui.css", "/workspace-shell.css"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/css; charset=utf-8")
         elif self.path in {"/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js",
-                           "/project-store.js", "/reference-workspace.js",
+                           "/project-store.js", "/reference-workspace.js", "/project-ui.js", "/workspace-guidance.js", "/workspace-shell.js",
                            "/model-viewer.js", "/space-workspace.js", "/engineering-workspace.js", "/engineering-adapter.js", "/grid-system-workspace.js", "/grid-inspector.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")
@@ -364,7 +371,7 @@ if __name__ == "__main__":
     print(f"http://localhost:{PORT}  （Ctrl-C 結束；bridge={BRIDGE_CMD[0]}）")
     try:
         host = "0.0.0.0" if os.environ.get("GEOMETRY_MANAGED_PREVIEW") == "1" and PORT == 4173 else "127.0.0.1"
-        http.server.ThreadingHTTPServer((host, PORT), Handler).serve_forever()
+        PreviewHTTPServer((host, PORT), Handler).serve_forever()
     finally:
         for path in _upload_temps:
             try:

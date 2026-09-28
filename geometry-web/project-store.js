@@ -445,8 +445,8 @@
       if (frame.models) this.frame.context.models = copy(frame.models);
       if (frame.faceProjections) this.frame.context.faceProjections = new Map([...frame.faceProjections].map(([key, value]) => [key, copy(value)]));
     }
-    push(frame, kind = "core") {
-      this.undo.push({ ...frame, kind }); if (this.undo.length > this.limit) this.undo.shift(); this.redo = [];
+    push(frame, kind = "core", action = null) {
+      this.undo.push({ ...frame, kind, action }); if (this.undo.length > this.limit) this.undo.shift(); this.redo = [];
       // A new core transaction discards its redo branch. A local branch cannot do that,
       // so the browser must refuse any leftover bridge redo beyond its own timeline.
       this.blockCoreRedo = kind === "local";
@@ -478,8 +478,12 @@
       const from = op === "undo" ? this.undo : this.redo, to = op === "undo" ? this.redo : this.undo;
       const previous = from.pop();
       if (!previous) return false;
-      to.push({ ...this.snapshot(), kind: previous.kind || "core" }); if (to.length > this.limit) to.shift();
+      to.push({ ...this.snapshot(), kind: previous.kind || "core", action: previous.action || null }); if (to.length > this.limit) to.shift();
       this.restore(previous); this.group = null; return true;
+    }
+    actionLabel(op) {
+      if (op !== "undo" && op !== "redo") return null;
+      return (op === "undo" ? this.undo : this.redo).at(-1)?.action || null;
     }
     tryLocal(command) {
       const match = command.split("#", 1)[0].match(/^line\s+(undo|redo)\s*$/);
@@ -497,8 +501,8 @@
       for (const bid of live) if (!this.frame.ids.has(bid)) this.frame.ids.set(bid, globalThis.crypto.randomUUID());
       this.pruneFaceProjections(() => true);
     }
-    replace(context, ids) {
-      this.push(this.snapshot()); this.group = null;
+    replace(context, ids, action = null) {
+      this.push(this.snapshot(), "core", action); this.group = null;
       this.frame = { context, ids: new Map(ids || []) };
     }
     observe(command, result) {

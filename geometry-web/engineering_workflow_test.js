@@ -3,7 +3,7 @@
  * Requires an isolated engineering-capable service; replaces its test World.
  * No mocked adapter, fabricated read response, or frontend geometry evaluator.
  */
-module.exports = async function engineeringWorkflow({send,eval_,sleep,click,waitForUI,exceptionCount}) {
+module.exports = async function engineeringWorkflow({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount}) {
   console.log('=== P69. 正式工程規格：材料、做法、套用、引用與保存 ===');
   const errors=exceptionCount(),fs=require('fs'),path=require('path');
   const check=(name,ok,detail=ok)=>{console.log('P69 '+name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));if(ok!==true)throw Error('P69 assertion failed: '+name);};
@@ -122,7 +122,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
     const timber=before.sources.find(b=>b.target.kind==='timber'&&b.source.kind==='application');
     if(!timber)throw Error('Bound-timber inspector fixture is missing');
     await ctl('.face-layer-row[data-timber-id="'+timber.target.id+'"]');await ctl('[data-fi-tab="components"]');
-    check('已綁角材檢查器顯示來源與原定位',await read(`!!$('tbSelected') && /工程|來源/.test($('tbSelected').textContent) && /原定位.*at-face e0/.test($('tbSelected').textContent) && !!$('tbSelected').querySelector('[data-engineering-open]') && !$('tbEditA')`));
+    check('已綁角材檢查器顯示來源，精確定位收在詳細資料',await read(`!!$('tbSelected') && /工程|來源/.test($('tbSelected').textContent) && !!$('tbTechnicalDetails') && !$('tbTechnicalDetails').open && /at-face e0/.test($('tbTechnicalDetails').textContent) && !!$('tbSelected').querySelector('[data-engineering-open]') && !$('tbEditA')`));
     await shot('engineering-bound-timber-inspector');
     check('檢視已綁角材不改工程來源',same(await state(),before)&&(await dump())===scene);
     await ctl('#tbSelected [data-engineering-open]');await ready('bound timber engineering entry');
@@ -141,7 +141,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   if(process.env.GEOMETRY_ENGINEERING_NAVIGATION_ONLY){await navigationRegression();check('三視圖定位無 JavaScript 例外',exceptionCount()===errors);return;}
   if(process.env.GEOMETRY_ENGINEERING_SUBGRID_ONLY){await boundSubgrid();check('子格入口無 JavaScript 例外',exceptionCount()===errors);return;}
   if(process.env.GEOMETRY_ENGINEERING_EXAMPLE_ONLY){
-    await ctl('#fileMenuBtn');await ctl('#btnEngineeringExample');
+    await ctl('#fileMenuBtn');await ctl('#exampleMenuBtn');await ctl('#btnEngineeringExample');
     await ready('official example loaded');await sleep(250);
     const loaded=await state(),r=await refs(),models=await read('ReferenceWorkspace.getSpaceModels()');
     check('選單現成專案包含2材料1做法18來源7角材1模型',loaded.materials.length===2&&loaded.methods.length===1&&loaded.sources.length===18&&r.timbers.length===7&&models.length===1,{materials:loaded.materials.length,methods:loaded.methods.length,sources:loaded.sources.length,timbers:r.timbers.length,models:models.length});
@@ -150,8 +150,9 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
     const savedModel=models[0],mesh=savedModel?.result.timbers?.derived.objects;
     check('現成空間模型包含原高程的7支角材',savedModel?.result.summary.timber_count===7&&savedModel.input.timbers.length===7&&savedModel.result.summary.source_z===2500&&savedModel.input.settings.bottom===0&&savedModel.input.settings.height===3000&&savedModel.input.settings.wall_thickness===100&&mesh?.length===7&&mesh.every(m=>Math.min(...m.vertices_mm.map(v=>v[2]))===2500&&Math.max(...m.vertices_mm.map(v=>v[2]))===2533),savedModel?.result.summary);
     const capability=await read(`fetch('/model/capabilities').then(r=>r.json())`);
-    check('現成介面與服务版號一致',capability.release==='engineering-spec-v1-20260928'&&await read(`document.title.includes('工程規格') && $('ewWorkspace').textContent.includes('工程規格版 2026.09.28')`));
-    const scene=await dump();await shot('engineering-example-workspace');await ctl('#ewClose');
+    check('現成服務版號正確，正式介面聚焦工程用途',capability.release==='engineering-spec-v1-20260928'&&capability.capabilities?.includes('engineering-spec/1')===true&&await read(`document.title.includes('工程規格') && $('ewWorkspace').open && $('ewTitle').textContent==='工程規格' && !$('ewWorkspace').textContent.includes('工程規格版 2026.09.28')`));
+    const scene=await dump(),initialDrafts=await read('ReferenceWorkspace.getEngineeringDrafts()');await shot('engineering-example-workspace');await ctl('#ewClose');
+    check('只查看現成工程再返回畫布仍是未另存範例且不建立草稿',await read('ReferenceWorkspace.context().saved!==true && ReferenceWorkspace.context().dirty===false && ReferenceWorkspace.getProjectInfo().sourceKind==="example"')&&same(initialDrafts,await read('ReferenceWorkspace.getEngineeringDrafts()')));
     await read(`(async()=>{await enterFocus('face',1);})()`);await sleep(220);await ctl('.face-layer-row[data-grid-id="1"] .grid-layer-open');await ctl('.engineering-grid-details details > summary');
     check('現成主格sidebar保留材料版本與欄位來源',await read(`document.querySelector('.engineering-grid-details').textContent.includes('example-panel-915x1830@1.width')`));await shot('engineering-example-source-sidebar');
     await ctl('.engineering-grid-details [data-engineering-open]');await ready('bound grid engineering entry');await details('本面覆寫');
@@ -168,7 +169,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
 
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
   check('正式頁面身份與工程入口',await read(`location.href===${JSON.stringify(process.env.GEOMETRY_TEST_URL||'http://localhost:8765/')} && !!$('btnEngineeringSpecs') && typeof EngineeringWorkspace==='object' && !document.querySelector('vite-error-overlay,nextjs-portal')`));
-  await require('./grid_material_entry_test')({read,wait,ctl,fill,choose,preview,confirm,ready,dump,state,refs,shot,send,check,same,gridSources,refValue,segmentsMatch,downloadRoot,downloaded,openProjectFile,orderedState,oracles:module.exports.oracles});
+  await require('./grid_material_entry_test')({read,wait,ctl,fill,choose,preview,confirm,ready,dump,state,refs,shot,send,check,same,gridSources,refValue,segmentsMatch,downloadRoot,downloaded,openProjectFile,orderedState,expectNativeDialog,oracles:module.exports.oracles});
   const fixture=[
     'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
     'surface 2 origin 6000 0 2500 u +x v +y outline 0,0 3000,0 3000,3000 0,3000',
@@ -179,9 +180,13 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
     'timber 2 27 33 role custom priority 7','place 2 on 1 at-line guide 0 through 600 +v +n'
   ];
   await read(`(async()=>{EngineeringWorkspace.close();for(const d of document.querySelectorAll('dialog[open]'))d.close();resetSceneFocus();await setView3(false);closePanels();for(const line of ['reset',...${JSON.stringify(fixture)}]){const r=await api(line==='reset'?'reset':'line '+line);if(!r.ok)throw Error(line+' '+JSON.stringify(r));}await renderObjects();})()`);
-  const legacy=await dump();await open();await tab('materials');await ctl('[data-ew-new-material="panel"]');
+  const legacy=await dump(),beforeBrowsing=await read('ReferenceWorkspace.getProjectState()');
+  await open();await tab('materials');await tab('methods');await tab('apply');await ctl('#ewClose');
+  check('只開關工程工作區及切換分頁不新增草稿或修改專案',same(beforeBrowsing,await read('ReferenceWorkspace.getProjectState()'))&&await read('ReferenceWorkspace.getEngineeringDrafts().length===0'));
+  await open();await tab('materials');await ctl('[data-ew-new-material="panel"]');
   await fill('#ewField-material-name','驗收面材');await fill('#ewField-material-width',915);await fill('#ewField-material-length',1830);await fill('#ewField-material-thickness','6.5');
   check('未發布草稿不寫入 World',(await dump())===legacy&&(await state()).materials.length===0);
+  check('真正編輯表單立即保存草稿並標示未保存',await read(`ReferenceWorkspace.context().dirty===true && ReferenceWorkspace.getEngineeringDrafts().some(d=>d.id==='engineering-workspace-material'&&d.data.name==='驗收面材'&&d.data.thickness==='6.5')`));
   await ctl('#ewClose');await open();await tab('materials');
   check('關閉重開保留未發布草稿',await read(`$('ewField-material-name')?.value==='驗收面材' && $('ewField-material-thickness')?.value==='6.5'`));
   await fill('#ewField-material-width','915.5');await preview();
@@ -300,7 +305,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   const beforeProjectDownload=fs.readdirSync(downloadRoot);
   await read(`window.__engineeringSavePickerDescriptor=Object.getOwnPropertyDescriptor(window,'showSaveFilePicker');Object.defineProperty(window,'showSaveFilePicker',{value:undefined,configurable:true});void 0`);
   let projectFile;
-  try{await ctl('#ewSave');projectFile=await downloaded('.gcanvas',beforeProjectDownload);}
+  try{await ctl('#projectBar [data-project-action="save"]');projectFile=await downloaded('.gcanvas',beforeProjectDownload);}
   finally{await read(`if(window.__engineeringSavePickerDescriptor)Object.defineProperty(window,'showSaveFilePicker',window.__engineeringSavePickerDescriptor);else delete window.showSaveFilePicker;delete window.__engineeringSavePickerDescriptor;void 0`);}
   const entries=require('./vendor/fflate/umd/index.js').unzipSync(fs.readFileSync(projectFile)),manifest=JSON.parse(Buffer.from(entries['manifest.json']).toString('utf8'));
   check('正式保存按鈕下載 v5 完整定義與草稿',manifest.format==='geometry-canvas/5'&&same(manifest.requiredCapabilities,['engineering-spec/1'])&&Buffer.from(entries['world.scene']).toString('utf8')===savedScene&&same(manifest.engineeringDrafts.records,savedDrafts),manifest);
@@ -317,7 +322,13 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   const roundtrip=Object.fromEntries(Object.entries(comparison).map(([part,[before,after]])=>[part,{equal:same(before,after),differences:module.exports.oracles.differences(before,after)}]));
   const comparisonFile=path.join(downloadRoot,'roundtrip-comparison.json');fs.writeFileSync(comparisonFile,JSON.stringify({...roundtrip,rawReferenceDifferences:module.exports.oracles.differences(savedSnapshot.references,reopenedSnapshot.references),normalization:'Only references.engineeringSources collection order by unique (kind,id,axis,field); no field values or geometry arrays are omitted.'},null,2));
   check('gcanvas 由正式開檔入口還原完整來源、版本與幾何',Object.values(roundtrip).every(part=>part.equal),{artifact:comparisonFile,parts:Object.fromEntries(Object.entries(roundtrip).map(([key,value])=>[key,{equal:value.equal,differences:value.differences.slice(0,40),totalDifferences:value.differences.length}]))});
+  const beforeDraftBrowsing=await read('({project:ReferenceWorkspace.getProjectState(),drafts:ReferenceWorkspace.getEngineeringDrafts()})');
   await open();await tab('materials');check('gcanvas 重開保留獨立未發布草稿',await read(`$('ewField-material-name')?.value==='待完成角材草稿' && $('ewField-material-A')?.value==='29'`));
+  await tab('methods');await ctl('#ewClose');
+  check('查看已保存草稿後關閉不改草稿內容與保存狀態',same(beforeDraftBrowsing,await read('({project:ReferenceWorkspace.getProjectState(),drafts:ReferenceWorkspace.getEngineeringDrafts()})')));
+  await open();await tab('materials');await fill('#ewField-material-A',30);await ctl('#ewClose');await open();await tab('materials');
+  check('已有草稿的真實修改持續保存並標示未保存',await read(`ReferenceWorkspace.context().dirty===true && $('ewField-material-A')?.value==='30'`));
+  await fill('#ewField-material-A',29);
 
   // Export is a real browser download. Import uses the visible package field.
   await tab('transfer');
