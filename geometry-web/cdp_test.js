@@ -6839,7 +6839,7 @@ async function main() {
     console.log('=== P65. 從面建立 3D 空間入口 ===');
     const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
     await eval_(`leaveFocus();setView3(false)`);await sleep(200);
-    check('P65-1 正式版本載入建模模組並提供現成範例入口',await eval_(`typeof SpaceModelWorkspace==='object' && !!$('btnSpaceModelTrial') && !!$('btnSpaceModels') && !!$('btnFaceSpaceModel') && $('btnSpaceModelTrial').textContent.includes('現成範例')`));
+    check('P65-1 正式版本載入建模模組並提供現成範例入口',await eval_(`typeof SpaceModelWorkspace==='object' && typeof SpaceModelWorkspace.openCurrentFace==='function' && !!$('btnSpaceModelTrial') && !!$('btnSpaceModels') && $('btnSpaceModelTrial').textContent.includes('現成範例')`));
     await clickControl('#btnSpaceModelTrial');await sleep(200);
     check('P65-2 三步操作、範例與明示高度欄位皆在正式工作區',await eval_(`$('smWorkspace').open && !!$('smTryRectangle') && !!$('smTryLShape') && !!$('smBottom') && !!$('smHeight') && !!$('smPreview') && !!$('smConfirmFaces') && !!$('smCreate')`));
     for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
@@ -6853,8 +6853,9 @@ async function main() {
     const ctl=async selector=>{const r=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y)),disabled:e.disabled};})()`);if(!r.hit||r.disabled)throw Error('Projection control unreachable '+selector);await click(r.x,r.y);await sleep(150);};
     await send('Emulation.setDeviceMetricsOverride',{width:1382,height:804,deviceScaleFactor:1,mobile:false});
     await eval_(`(async()=>{await leaveFocus();await setView3(false);await api('reset');await api('line surface 501 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000');await renderObjects();await enterFocus('face',501);})()`);
-    check('P66-1 面工作區提供真正的投影設定入口',await eval_(`typeof FaceProjection==='object' && !!$('btnFaceProjection') && ReferenceWorkspace.getFaceProjection(501,501)==null`));
-    await ctl('#btnFaceSpaceModel');
+    check('P66-1 面工作區提供真正的投影設定入口（GEO-219：工具列鈕已移除，入口在屬性欄）',await eval_(`typeof FaceProjection==='object' && !$('btnFaceProjection') && !$('btnFaceSpaceModel') && !!document.querySelector('#faceInspectorContent [data-fp-edit]') && !!document.querySelector('#faceInspectorContent [data-fp-build]') && ReferenceWorkspace.getFaceProjection(501,501)==null`));
+    await eval_(`fiShowTab('prop')`);await sleep(150);
+    await ctl('#faceInspectorContent [data-fp-build]');
     await waitForUI(`$('smWorkspace').open && SpaceModelWorkspace.snapshot().phase==='ready'`);
     check('P66-2 未定義的自己面不偷推用途或方向',await eval_(`!$('smProjectionCallout').hidden && $('smPreview').disabled && $('smCreate').disabled`));
     await ctl('#smSetProjection');

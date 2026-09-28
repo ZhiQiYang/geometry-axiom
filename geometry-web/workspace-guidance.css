@@ -4,7 +4,11 @@
 .guidance-dismiss, .guidance-help { flex: 0 0 auto; min-height: 32px; border: 1px solid #ccd5e1; border-radius: 6px; padding: 5px 10px; background: #fff; color: #253a55; font: inherit; white-space: nowrap; cursor: pointer; }
 .guidance-dismiss:focus-visible, .guidance-help:focus-visible, .inspector-technical > summary:focus-visible { outline: 2px solid #3859c7; outline-offset: 2px; }
 body.canvas-composition #canvasViewport:not(:has(#ocv .selection-marquee)) #ocSelectionSummary.guidance-open { display: flex; }
-body.canvas-composition #canvasViewport:not(:has(#ocv .selection-marquee)) #ocSelectionSummary[data-guidance-dynamic="true"] { display: flex; }
+/* GEO-216 contract: the live-selection rule must not resurface the overlay for
+   ordinary single selection; the inspector card carries that state. Explicit
+   工具說明 reopen (guidance-open) and counts 0/≥2 stay governed by the other
+   rules. */
+body.canvas-composition #canvasViewport:not(:has(#ocv .selection-marquee)) #ocSelectionSummary[data-guidance-dynamic="true"]:not([data-count="1"]) { display: flex; }
 .canvas-mode-hint.workspace-guidance { white-space: normal; border-radius: 8px; }
 .workspace-guidance .guidance-dismiss { pointer-events: auto; }
 .face-canvas-hint.workspace-guidance { display: flex; flex-wrap: wrap; pointer-events: auto; }

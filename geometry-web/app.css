@@ -2077,7 +2077,6 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
   .topbar .tool-button { min-width: 29px; }
 }
 
-#btnFaceProjection{min-height:44px;min-width:44px}
 /* Reserve the face title before giving the remaining tablet width to the
    scrollable tools. Adding an action must not shrink the title to zero. */
 @media(min-width:561px) and (max-width:900px){.object-workspace-topbar,.reference-editor .object-workspace-topbar{grid-template-columns:minmax(110px,auto) minmax(0,1fr) auto;gap:8px}.face-workspace-tools{justify-self:start;max-width:100%;min-width:0}}

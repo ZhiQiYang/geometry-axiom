@@ -16,7 +16,7 @@ window.FaceProjection = (() => {
     if (!horizontal(s)) return "平面投影 · 放置待修正";
     return `${def.view === "bottom" ? "仰視" : "俯視"}平面投影${compact ? "" : ` · z=${s.origin[2]} mm`}`;
   }
-  function inspectorHTML(bid, pid) {
+  function inspectorHTML(bid, pid, {faceWorkspace = false} = {}) {
     const all = surfaces(bid), s = all.find(item => item.id === Number(pid)) || all[0];
     const def = s && get(bid, s.id), valid = horizontal(s);
     const attrs = `data-fp-placement="${s?.id ?? ""}"`;
@@ -27,7 +27,13 @@ window.FaceProjection = (() => {
       (!valid ? `<p class="fp-warning">${s ? "平面投影需要水平放置，請先修改放置。" : "請先放置這片面，再指定平面投影。"}</p>` : "") +
       (all.length > 1 ? `<p>此面有 ${all.length} 個放置；目前顯示放置 #${s.id}。可在設定中切換，各自保存定義。</p>` : "") +
       `<button type="button" class="btn wide" data-fp-edit="${bid}" ${attrs}>${def ? "修改投影定義" : "設定平面投影"}</button>` +
-      (def && valid ? `<button type="button" class="primary-button" data-fp-build="${bid}" ${attrs}>依此平面建立空間</button>` : "") +
+      (def && valid ? `<button type="button" class="primary-button" data-fp-build="${bid}" ${attrs}>依此平面建立空間</button>` :
+        /* GEO-219: the face toolbar entries moved into this inspector. Every
+           placed face keeps a build door here — undefined plans confirm the
+           projection inside the modeling workspace, and non-horizontal faces
+           can switch to the existing-face mode there. The main-canvas
+           inspector keeps the narrower door (defined + horizontal only). */
+        faceWorkspace && s ? `<button type="button" class="btn wide" data-fp-build="${bid}" ${attrs}>以此面建立空間</button>` : "") +
       `<small>輪廓編輯圖沿局部 u →、v ↓ 顯示；觀看方向的預覽請開啟投影定義。</small></section>`;
   }
   function ensureDialog() {
@@ -157,7 +163,6 @@ window.FaceProjection = (() => {
     input?.scrollIntoView({block:"center"}); input?.focus();
   }
   document.addEventListener("click", event => {
-    if (event.target.closest("#btnFaceProjection")) { if (oc.edit) open(oc.edit.bid,feSurf(oc.edit.bid)?.id); return; }
     const edit=event.target.closest("[data-fp-edit]"), build=event.target.closest("[data-fp-build]");
     if (edit) open(Number(edit.dataset.fpEdit),edit.dataset.fpPlacement === "" ? undefined : Number(edit.dataset.fpPlacement));
     else if (build) window.SpaceModelWorkspace?.openCurrentFace(Number(build.dataset.fpPlacement));
@@ -7586,7 +7591,7 @@ function renderFaceInspector() {
       `<div class="kv"><span>面內軸（u / v）</span><b>${AXIS_WORD[surf.u.join()]} / ${AXIS_WORD[surf.v.join()]}</b></div>` : "") +
     (bb ? `<div class="kv"><span>外環 / 孔</span><b>${loops[0].verts.length} 頂點 / ${loops.length - 1} 孔</b></div>` : "") + `</details>` +
     `</div>`;
-  html += FaceProjection.inspectorHTML(bid, surf?.id);
+  html += FaceProjection.inspectorHTML(bid, surf?.id, {faceWorkspace:true});
 
   /* B3 外環邊表:索引 + 方向文字 + 長度 mm + fixity segmented(F 固定 · X 自由)
      §5.A.1.10:列產生邏輯抽成 edgeListRowsHTML,與主畫布 renderInspector 共用。 */

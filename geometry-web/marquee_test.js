@@ -121,7 +121,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   check('S01 拖過起點即時切換相交/包含樣式與操作說明',hasAppearance(objectCrossing,'crossing')&&hasAppearance(objectWindow,'window')&&objectCrossing.stroke!==objectWindow.stroke&&same(await objectIds(),['boundary:1']),{objectCrossing,objectWindow,selected:await objectIds()});
   await mouseUp(changeRight);await sleep(220);
   check('S01 放開時依最後向右方向選取第二張卡片並恢復單選狀態',same(await objectIds(),['boundary:2'])&&await noMarquee()&&await eval_(`$('ocSelectionSummary').querySelector('small').textContent.includes('屬性欄')`),await objectIds());
-  check('S07 單選結束後保留可見即時數量，不受已讀教學影響',await eval_(`$('ocSelectionSummary').getClientRects().length>0 && /1/.test($('ocSelectionSummary').textContent)`));
+  check('S07 單選結束後恢復隱藏（GEO-216），數量與 live 節點仍在 DOM',await eval_(`$('ocSelectionSummary').getClientRects().length===0 && $('ocSelectionSummary').dataset.count==='1' && /1/.test($('ocSelectionSummary').textContent) && !!$('ocSelectionSummary').querySelector('[aria-live]')`));
   await objectBox(280,480,240,280,8);
   check('S03 Shift 向左部分相交加入第三張且保留第二張',same(await objectIds(),['boundary:2','boundary:3']),await objectIds());
   await objectBox(280,480,240,280,8);

@@ -240,3 +240,12 @@ GEOMETRY_FEEDBACK_DIR="$TEMP/geometry-tests/fb-cdp" GEOMETRY_TEST_URL="http://lo
 
 它是**唯一真的執行 `app.js` 的 harness**(headless Chrome 實際點按鈕);
 `canvas_test.js` 與 `tests/*.py` 都只到橋接器為止。動到 `app.js` 的行為就得跑它。
+
+## 🟡 UI 減重紀律（2026-09-29 使用者拍板 🔒，GEO-219）
+
+1. **新增可見 UI 入口、按鈕或常駐說明的工單，必須在 BACKLOG 條目寫明本次
+   「拿掉或合併了什麼」。** 寫不出減項就先入 `決策佇列.md` 給使用者拍板，
+   不得只加不減。
+2. **每個工作畫面的常駐操作說明區塊不超過 3 塊。** 不計入：首次出現、可關閉
+   且記住已讀的教學卡；錯誤／警告訊息；狀態列。既有超標畫面在下次改動該
+   畫面時一併收斂，不為此另做大改。

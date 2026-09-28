@@ -332,7 +332,7 @@ window.SpaceModelWorkspace = (() => {
       if(connection.phase!=="ready")throw new Error("請先等待場景連線完成，再使用目前面。");
       const bid=oc.edit?.bid??(oc.sel?.kind==="face"?oc.sel.id:null);
       const selectedSurface=placementId!=null?oc.surfs.find(s=>s.id===Number(placementId)):bid!=null?feSurf(bid):oc.surfs.length===1?oc.surfs[0]:null;
-      if(!selectedSurface) throw new Error("請先返回畫布，開啟要使用的面，再點面工具列的「建立空間」。來源面也必須先設定空間位置。");
+      if(!selectedSurface) throw new Error("請先返回畫布，開啟要使用的面並完成放置，再由屬性欄建立空間。");
       const dump=await api("dump");
       if(seq!==state.sequence)return;
       if(sourceContextId!==contextId())throw new Error("讀取期間專案已切換。請在目前專案重新選取來源面。");
@@ -582,7 +582,7 @@ window.SpaceModelWorkspace = (() => {
   $("smLibraryList").addEventListener("click",e=>{const open=e.target.closest("[data-sm-open-model]"),edit=e.target.closest("[data-sm-edit-height]"),remove=e.target.closest("[data-sm-remove-model]");if(open)openRecord(open.dataset.smOpenModel);else if(edit)beginHeightEdit(edit.dataset.smEditHeight);else if(remove){ReferenceWorkspace.removeSpaceModel(remove.dataset.smRemoveModel);refresh();}else if(e.target.closest("[data-sm-library-trial]"))openExample();});
   window.addEventListener("space-models-changed",refresh);
   window.addEventListener("face-projections-changed",projectionChanged);
-  $("btnSpaceModelTrial")?.addEventListener("click",()=>openExample());$("btnSpaceModels")?.addEventListener("click",openLibrary);$("btnFaceSpaceModel")?.addEventListener("click",()=>openCurrentFace());
+  $("btnSpaceModelTrial")?.addEventListener("click",()=>openExample());$("btnSpaceModels")?.addEventListener("click",openLibrary);
   probeCapabilities();
   if(["#space-model-v1","#timber-space-v1"].includes(location.hash)) { const deadline=Date.now()+30000; const autoOpen=()=>{if(connection.phase==="ready")openExample(location.hash==="#timber-space-v1"?"timber-frame":"rectangle");else if(Date.now()<deadline)setTimeout(autoOpen,150);};setTimeout(autoOpen,0); }
   return {openCurrentFace,openLibrary,openExample,close,refresh,snapshot:()=>({phase:state.phase,sourceKind:state.source?.kind||null,resultSummary:state.result?copy(state.result.summary):null,createdId:state.createdId,editingId:state.editing?.record.id||null,supportsTimbers,timberCandidates:copy(state.source?.timbers||[]),stale:state.previewRevision!==state.revision,previewRevision:state.previewRevision,inputRevision:state.revision,viewer:state.viewer?.getState()||null})};

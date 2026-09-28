@@ -180,6 +180,17 @@ async function setup(lines) {
   await settle();
 }
 
+// GEO-219: the face toolbar projection/model buttons moved into the face
+// inspector. Tab and drawer navigation is programmatic like enterFocus; the
+// projection entries themselves are real pointer clicks with hit testing.
+async function facePropEntry(selector) {
+  if (await evaluate(`innerWidth<=680 && !document.body.classList.contains('drawer-right-open')`)) await click('#workspaceToggleRight');
+  await click('#faceInspectorTabs [data-fi-tab="prop"]');
+  await click('#faceInspectorContent ' + selector);
+}
+const openFaceModel = () => facePropEntry('[data-fp-build]');
+const openFaceProjection = () => facePropEntry('[data-fp-edit]');
+
 async function projectionDialog(view, { cancel = false, build = false } = {}) {
   await click('#smSetProjection');
   await wait(`document.querySelector('#fpDialog')?.open===true`, 'face projection definition');
@@ -198,7 +209,7 @@ async function projectionLifecycleRegression() {
   ]);
   const original = await scene();
   await evaluate(`enterFocus('face',71)`);
-  await click('#btnFaceSpaceModel');
+  await openFaceModel();
   await wait(`document.querySelector('#smWorkspace').open && SpaceModelWorkspace.snapshot().phase==='ready'`, 'unset source workspace');
   check('a newly drawn face has no inferred projection definition', await evaluate(`ReferenceWorkspace.getFaceProjection(71,71)==null`));
   check('own-plan modeling visibly requires a definition before preview or create', await evaluate(`!document.querySelector('#smProjectionCallout').hidden && document.querySelector('#smPreview').disabled && document.querySelector('#smCreate').disabled`));
@@ -239,7 +250,7 @@ async function projectionLifecycleRegression() {
   check('undo removes the projection definition without changing source geometry', await evaluate(`ReferenceWorkspace.getFaceProjection(71,71)==null`) && await scene()===original);
   for(let i=0;i<3;i++)await click('#faceRedoButton');
   check('redo restores the exact explicit projection definition', JSON.stringify(await evaluate(`ReferenceWorkspace.getFaceProjection(71,71)`))===JSON.stringify(bottomProjection));
-  await click('#btnFaceSpaceModel');
+  await openFaceModel();
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'configured source reopens');
   await click('#smSetProjection');
   await wait(`document.querySelector('#fpDialog').open`, 'clear definition dialog');
@@ -252,7 +263,7 @@ async function projectionLifecycleRegression() {
   await evaluate(`(async()=>{await leaveFocus();await deleteObject('boundary',71);const r=await api('line surface 71 origin 0 0 2500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');if(!r.ok)throw Error(r.error);await renderObjects();})()`);
   check('deleting and recreating the same face and placement ids does not inherit metadata', await evaluate(`ReferenceWorkspace.getFaceProjection(71,71)==null`));
   await evaluate(`enterFocus('face',72)`);
-  await click('#btnFaceSpaceModel');
+  await openFaceModel();
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'vertical source workspace');
   await click('#smSetProjection');
   await wait(`document.querySelector('#fpDialog').open`, 'vertical projection dialog');
@@ -273,7 +284,7 @@ async function projectionLifecycleRegression() {
 
 async function openFlowFace(id) {
   await evaluate(`oc.edit?.bid===${id} ? undefined : enterFocus('face',${id})`);
-  await click('#btnFaceSpaceModel');
+  await openFaceModel();
   await wait(`document.querySelector('#smWorkspace').open && SpaceModelWorkspace.snapshot().phase==='ready'`, 'flow source ready');
 }
 async function keyboardActivate(selector) {
@@ -429,7 +440,7 @@ async function projectionPlacementRegression() {
     'placement 92 on boundary 81 origin 0 0 3500 u +x v +y'
   ]);
   await evaluate(`enterFocus('face',81)`);
-  await click('#btnFaceSpaceModel');
+  await openFaceModel();
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'multi-placement source');
   await select('#smSourceSelect','92');
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready' && document.querySelector('#smSourceSelect').value==='92'`, 'select second placement');
@@ -454,7 +465,7 @@ async function projectionPlacementRegression() {
 
   await setup(['boundary 83 outline 0,0 4000,0 4000,3000 0,3000','placement 0 on boundary 83 origin 0 0 2500 u +x v +y']);
   await evaluate(`enterFocus('face',83)`);
-  await click('#btnFaceProjection');
+  await openFaceProjection();
   await wait(`document.querySelector('#fpDialog').open`, 'placement-zero projection dialog');
   check('legal placement id zero is preserved by the face projection entry',await evaluate(`document.querySelector('#fpPlacement').value==='0'`));
   await select('#fpPurpose','space-boundary-plan');
@@ -490,6 +501,18 @@ async function projectionPlacementRegression() {
   await click('#smCancelHeightEdit');
   check('cancelling this height edit leaves the original model record byte-equivalent',JSON.stringify((await models()).find(m=>m.id===zeroModel.createdId))===JSON.stringify(zeroStored));
   await closeWorkspace();
+  // GEO-219 S5: on a phone the inspector entries live behind the right drawer
+  // and must remain real, touch-sized click targets.
+  await viewport(390,844);
+  await evaluate(`oc.edit?.bid===83 ? undefined : enterFocus('face',83)`);
+  if (await evaluate(`!document.body.classList.contains('drawer-right-open')`)) await click('#workspaceToggleRight');
+  await click('#faceInspectorTabs [data-fi-tab="prop"]');
+  const mobileEntries=await evaluate(`(()=>{const q=s=>{const e=document.querySelector('#faceInspectorContent '+s);if(!e)return null;e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),h=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {height:r.height,hit:!!h&&(h===e||e.contains(h))};};return {edit:q('[data-fp-edit]'),build:q('[data-fp-build]')};})()`);
+  check('390px drawer exposes touch-sized inspector projection and model entries',!!mobileEntries.edit&&!!mobileEntries.build&&mobileEntries.edit.height>=44&&mobileEntries.build.height>=44&&mobileEntries.edit.hit&&mobileEntries.build.hit,mobileEntries);
+  await click('#faceInspectorContent [data-fp-build]');
+  await wait(`document.querySelector('#smWorkspace').open && SpaceModelWorkspace.snapshot().phase==='ready'`, 'mobile inspector model entry');
+  await closeWorkspace();
+  await viewport(1400,900);
   await projectionSourceRaceRegression();
 }
 
@@ -499,7 +522,7 @@ async function projectionSourceRaceRegression() {
     await setup(['surface 84 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000']);
     await evaluate(`enterFocus('face',84)`);
     await evaluate(`(()=>{window.__raceContext=ReferenceWorkspace.context().id;window.__sourceDumpHeld=false;const original=window.fetch,gate=new Promise(resolve=>window.__releaseSourceDump=resolve);window.fetch=async(...args)=>{const response=await original(...args);let cmd;try{cmd=JSON.parse(args[1]?.body||'{}').cmd}catch{}if(String(args[0]).includes('/api')&&cmd==='dump'){window.fetch=original;const json=response.json.bind(response);response.json=async()=>{const data=await json();window.__sourceDumpHeld=true;await gate;window.__sourceDumpHeld=false;return data;};}return response;};})()`);
-    await click('#btnFaceSpaceModel');
+    await openFaceModel();
     await wait(`window.__sourceDumpHeld===true`, 'delayed original-context source dump');
     if(closeFirst)await closeWorkspace();
     await evaluate(`(async()=>{resetSceneFocus();await api('reset');await api('line surface 84 origin 0 0 4500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');await renderObjects();})()`);
@@ -689,7 +712,7 @@ async function wallHeightEditingRegression(modelId, originalScene) {
   check('undo restores the complete pre-edit model without affecting its source', JSON.stringify(await stored()) === JSON.stringify(before) && await scene() === originalScene);
   await click('#faceRedoButton');
   check('redo restores the edited model and regenerated geometry', JSON.stringify(await stored()) === JSON.stringify(updated) && await scene() === originalScene);
-  await click('#btnFaceSpaceModel');
+  await openFaceModel();
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'reopen current face before model library');
   await click('#smLibrary');
   await click('[data-sm-edit-height="' + modelId + '"]');
@@ -746,13 +769,13 @@ async function timberSourceGuardsRegression() {
   await closeWorkspace();await viewport(1400,900);
   const fixture=['boundary 1 outline 0,0 4000,0 4000,3000 0,3000','placement 0 on boundary 1 origin 0 0 2500 u +x v +y','timber 0 27 33 role boundary','place 0 on 0 at-face e0 +u +n'];
   await setup(fixture);await evaluate(`enterFocus('face',1)`);
-  await click('#btnFaceSpaceModel');await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'timber guard source');
+  await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'timber guard source');
   await projectionDialog('top');await input('#smBottom','0');await input('#smHeight','3000');await preview();
   await projectionDialog('bottom');await preview();
   check('GEO208 a direct projection edit without source changes preserves wall fields and allows a fresh timber preview',await evaluate(`!SpaceModelWorkspace.snapshot().stale && SpaceModelWorkspace.snapshot().resultSummary.timber_count===1 && document.querySelector('#smBottom').value==='0' && document.querySelector('#smHeight').value==='3000' && ReferenceWorkspace.getFaceProjection(1,0).view==='bottom'`));
   await projectionDialog('top');await closeWorkspace();
   await changeTimberSource('boundary 99 outline 0,0 100,0 100,100 0,100');
-  await evaluate(`enterFocus('face',1)`);await click('#btnFaceSpaceModel');await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'history guard source');
+  await evaluate(`enterFocus('face',1)`);await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'history guard source');
   await input('#smBottom','0');await preview();await checked('#smConfirmFaces',true);const original=await scene();
   await evaluate(`(async()=>{await doUndoRedo('undo');await doUndoRedo('redo');})()`);await settle();
   check('GEO208 history guard fixture returns to byte-identical source after undo and redo',await scene()===original);
@@ -770,13 +793,13 @@ async function timberSourceGuardsRegression() {
   if(process.env.GEOMETRY_TIMBER_HISTORY_ONLY){await closeWorkspace();return;}
   await closeWorkspace();await setup(fixture);await evaluate(`enterFocus('face',1)`);
   await evaluate(`(()=>{const original=window.fetch;window.__timberReferencesHeld=false;const gate=new Promise(resolve=>window.__releaseTimberReferences=resolve);window.fetch=async(...args)=>{const response=await original(...args);let cmd;try{cmd=JSON.parse(args[1]?.body||'{}').cmd}catch{}if(String(args[0]).includes('/api')&&cmd==='references'){window.fetch=original;const json=response.json.bind(response);response.json=async()=>{const data=await json();window.__timberReferencesHeld=true;await gate;window.__timberReferencesHeld=false;return data;};}return response;};})()`);
-  await click('#btnFaceSpaceModel');await wait(`window.__timberReferencesHeld===true`, 'held authoritative timber candidates');
+  await openFaceModel();await wait(`window.__timberReferencesHeld===true`, 'held authoritative timber candidates');
   await changeTimberSource('delete timber 0');
   await changeTimberSource('timber 0 29 33 role boundary');
   await changeTimberSource('place 0 on 0 at-face e0 +u +n');
   await evaluate(`window.__releaseTimberReferences()`);await wait(`window.__timberReferencesHeld===false && SpaceModelWorkspace.snapshot().phase!=='loading'`, 'changed-source candidates released');await settle();
   check('GEO208 deleting and reusing timber id during candidate load rejects the mixed source snapshot',await evaluate(`SpaceModelWorkspace.snapshot().sourceKind===null && document.querySelector('#smPreview').disabled && document.querySelector('#smCreate').disabled && ReferenceWorkspace.getSpaceModels().length===0 && /角材|來源/.test(document.querySelector('#smStatus').textContent)`));
-  await closeWorkspace();await evaluate(`enterFocus('face',1)`);await click('#btnFaceSpaceModel');await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'fresh rebuilt timber source');
+  await closeWorkspace();await evaluate(`enterFocus('face',1)`);await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'fresh rebuilt timber source');
   check('GEO208 freshly reloading the reused id obtains its new verified section',await evaluate(`/29/.test(document.querySelector('#smTimberCandidates').textContent) && document.querySelector('#smTimberCount').textContent==='1'`));
   await projectionDialog('top');await input('#smBottom','0');await preview();
   await holdTimberPreview();await click('#smPreview');await wait(`window.__timberPreviewHeld===true`, 'held current-world preview during context switch');
@@ -795,7 +818,7 @@ async function timberRegression() {
   ]);
   const originalScene=await scene();
   await evaluate(`enterFocus('face',1)`);
-  await click('#btnFaceSpaceModel');
+  await openFaceModel();
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'own timber source loaded');
   check('GEO208 own source preserves legal placement zero and defaults to its one timber', await evaluate(`document.querySelector('#smSourceSelect').value==='0' && document.querySelector('#smIncludeTimbers').checked && !document.querySelector('#smIncludeTimbers').disabled && document.querySelector('#smTimberCount').textContent==='1'`));
   await click('#smTimberCandidateDetails > summary');
@@ -859,7 +882,7 @@ async function timberRegression() {
   check('GEO208 undo restores the former height and exact original timber snapshot',JSON.stringify((await models()).find(m=>m.id===included.createdId))===JSON.stringify(includedRecord));
   await click('#btnRedo');
   check('GEO208 redo restores updated height with the same timber snapshot',JSON.stringify((await models()).find(m=>m.id===included.createdId))===JSON.stringify(updatedRecord));
-  await evaluate(`enterFocus('face',1)`);await click('#btnFaceSpaceModel');
+  await evaluate(`enterFocus('face',1)`);await openFaceModel();
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'now empty placement source');
   check('GEO208 deleted current timber produces explicit zero-candidate guidance without affecting sibling placement',await evaluate(`document.querySelector('#smTimberCount').textContent==='0' && document.querySelector('#smIncludeTimbers').disabled && !document.querySelector('#smTimberEmpty').hidden && !document.querySelector('#smBackToTimbers').hidden`));
   await input('#smBottom','0');await preview();
@@ -1110,7 +1133,7 @@ async function run() {
   check('cancelling edits preserves source and stored models', await scene() === originalScene && (await models()).length === 2);
 
   await evaluate(`enterFocus('face',101)`);
-  await click('#btnFaceSpaceModel');
+  await openFaceModel();
   await wait(`document.querySelector('#smWorkspace').open`, 'current source workspace');
   check('current own face remains gated until its projection purpose is explicitly confirmed', await evaluate(`document.querySelector('#smPreview').disabled && !document.querySelector('#smProjectionCallout').hidden`));
   const heightFields = await evaluate(`({bottom:document.querySelector('#smBottom').value,height:document.querySelector('#smHeight').value,body:document.querySelector('#smWorkspace').textContent})`);
@@ -1215,7 +1238,7 @@ async function run() {
   ]);
   const sixFacesScene = await scene();
   await evaluate(`enterFocus('face',201)`);
-  await click('#btnFaceSpaceModel');
+  await openFaceModel();
   await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`, 'existing-face workspace');
   await select('#smMode', 'faces');
   for (const [id, orientation] of [[201,-1],[202,1],[203,1],[204,-1],[205,-1],[206,1]]) {

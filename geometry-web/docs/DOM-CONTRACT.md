@@ -15,6 +15,12 @@
 - `#faceTechnicalDetails`、`#mainFaceTechnicalDetails` 收合面編號、原點與軸向；`#tbTechnicalDetails`、`#tbNewSegmentDetails` 收合精確選段及代碼，首層保留中文角色與常用尺寸。
 - `ux_refinement_test.js` 由正式 CDP harness P74 執行；涵蓋桌面／390px、保存守門、真實重新整理及同瀏覽器雙分頁。
 
+## 2026-09-29 GEO-219 介面減重（面工具列入口與單選覆層）
+
+- 面工作區工具列的 `#btnFaceProjection`／`#btnFaceSpaceModel` **已移除**；對應能力集中在屬性欄：`[data-fp-edit]` 開啟投影定義，`[data-fp-build]` 建立空間。面內工作區對**已放置的面一律提供 `[data-fp-build]`**——未定義的水平面由建模視窗內的 `#smInlineProjection`/`#smProjectionCallout` 接手確認，非水平面可於視窗內切 `#smMode` 組合面模式；主畫布檢視器的 `[data-fp-build]` 仍限已定義且水平的放置。`SpaceModelWorkspace.openCurrentFace(placementId)` 介面不變。
+- `#ocSelectionSummary` 恢復 GEO-216 契約：0／1 選取時視覺隱藏，僅多選或框選中顯示；`data-count` 與 `aria-live` 節點保留於 DOM。`[data-guidance-dynamic]` 顯示規則明確排除 `data-count="1"`；「工具說明」（`.guidance-help`）的明確重開不受此限。`#feSelectionSummary` 不變。
+- `space_model_test.js` 的建模／投影入口全部改走屬性欄真實點擊（`facePropEntry` helper）；390px 下先開右側抽屜。
+
 ## 2026-09-28 Canvas 審查修正（面工作區及保存回饋）
 
 本節取代舊節的一列面工作區頂列、隱藏窄螢幕保存狀態及復原按鈕位置要求。其餘幾何／預覽守門維持原契約；驗收範圍見 `UIUX-FIXES-2026-09-28.md`。
@@ -87,7 +93,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 
 ## GEO-205 從面建立空間（第一版，投影及格式更新見 GEO-207）
 
-- `#btnSpaceModelTrial` 開矩形範例，`#btnSpaceModels`／`#spaceModelCount` 開模型庫；它們位於獨立 `.space-model-entry`，原 `.start-options` 仍保留兩個入口。面工具列 `#btnFaceSpaceModel` 使用目前面。
+- `#btnSpaceModelTrial` 開矩形範例，`#btnSpaceModels`／`#spaceModelCount` 開模型庫；它們位於獨立 `.space-model-entry`，原 `.start-options` 仍保留兩個入口。面內「使用目前面」的入口自 GEO-219 起由屬性欄 `[data-fp-build]` 提供，原 `#btnFaceSpaceModel` 工具列鈕已移除。
 - `#smWorkspace` 為原生 modal，內含版本標記及三步引導。`#space-model-v1` 在連線完成後自動開範例，預覽不修改核心世界。
 - `#smTryRectangle`／`#smTryLShape`／`#smUseCurrent` 切來源；`#smMode` 選 `plan` 或 `faces`。`#smBottom`／`#smHeight` 獨立於來源 z；自己的面牆底初始留空，牆高預設 3000 mm。`#smThickness` 預設 100 mm。新試用範例亦使用 3000 mm，已存模型保留原值。
 - `[data-sm-edge]` 明確選擇側邊，`#smFloor`／`#smCeiling` 選面用途，`#smHoles` 明示貫穿孔；`[data-sm-face]`／`[data-sm-orientation]`／`[data-sm-purpose]` 組合既有面；`[data-sm-obstacle]` 選柱樑。
