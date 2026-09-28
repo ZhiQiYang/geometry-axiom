@@ -285,6 +285,7 @@ static void cmd_pick(int v, Coord x, Coord y, Coord r)
 }
 
 #include "grid_system_bridge.inc"
+#include "grid_binding_bridge.inc"
 #include "reference_bridge.inc"
 
 static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
@@ -486,7 +487,7 @@ static bool next_surface_ids(uint32_t *out, size_t n)
 /* newid [n]：各類物件一個尚未被占用的 id，外加 n 個 surface 用的 id（預設 1）。 */
 static void cmd_newid(size_t surface_count)
 {
-    uint32_t mb, mp, mg, mgr, mgs, mt, ms, mc, mbm, md;
+    uint32_t mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md;
     uint32_t surfaces[NEWID_MAX_SURFACES];
 
     if (surface_count < 1 || surface_count > NEWID_MAX_SURFACES) {
@@ -504,6 +505,7 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID(mg,  g_world.guides,     g_world.guide_count,     false);
     WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count,      false);
     WORLD_NEXT_ID(mgs, g_world.grid_systems, g_world.grid_system_count, false);
+    WORLD_NEXT_ID(mgb, g_world.grid_bindings, g_world.grid_binding_count, false);
     WORLD_NEXT_ID(mt,  g_world.timbers,    g_world.timber_count,    false);
     WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count,     true);
     WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count,    false);
@@ -512,9 +514,9 @@ static void cmd_newid(size_t surface_count)
 
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
-           "\"grid\":%u,\"gridSystem\":%u,\"timber\":%u,\"space\":%u,"
+           "\"grid\":%u,\"gridSystem\":%u,\"gridBinding\":%u,\"timber\":%u,\"space\":%u,"
            "\"column\":%u,\"beam\":%u,\"datum\":%u,\"surfaces\":[",
-           mb, mp, mg, mgr, mgs, mt, ms, mc, mbm, md);
+           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md);
     for (size_t i = 0; i < surface_count; ++i) {
         if (i) putchar(',');
         printf("%u", surfaces[i]);
@@ -559,24 +561,7 @@ static void cmd_boundary(uint32_t id)
         return;
     }
 
-    fputs("{\"ok\":true,\"loops\":[", stdout);
-    for (int li = -1; li < (int)b->hole_count; ++li) {
-        const PolygonLoop2 *loop = li < 0 ? &b->outline : &b->holes[li];
-        if (li >= 0) putchar(',');
-        fputs("{\"verts\":[", stdout);
-        for (size_t i = 0; i < loop->count; ++i) {
-            if (i) putchar(',');
-            printf("[%lld,%lld]", (long long)loop->v[i].u,
-                   (long long)loop->v[i].v);
-        }
-        fputs("],\"fixity\":[", stdout);
-        for (size_t i = 0; i < loop->count; ++i) {
-            if (i) putchar(',');
-            putchar(loop->fixity[i] == EDGE_FREE ? '0' : '1');
-        }
-        fputs("]}", stdout);
-    }
-    fputs("]}\n", stdout);
+    json_boundary_definition(&g_world,b,true); putchar('\n');
 }
 
 /* bhit <boundary_id> <u> <v> <r>：邊界頂點/邊命中（編輯拖曳用）。 */
@@ -704,8 +689,9 @@ static void cmd_objects(void)
 
         if (!first) putchar(',');
         first = false;
-        printf("{\"kind\":\"boundary\",\"id\":%u,\"placed\":%s,"
+        printf("{\"kind\":\"boundary\",\"boundaryKind\":\"%s\",\"id\":%u,\"placed\":%s,"
                "\"bbox\":[%lld,%lld,%lld,%lld],",
+               b->kind==BOUNDARY_ROOM_PLAN?"room_plan":b->kind==BOUNDARY_WALL_ELEVATION?"wall_elevation":"unspecified",
                (unsigned)b->id, placed ? "true" : "false",
                (long long)lo_u, (long long)lo_v,
                (long long)hi_u, (long long)hi_v);
@@ -783,6 +769,12 @@ static void cmd_objects(void)
     for (size_t i=0;i<g_world.grid_system_count;++i) {
         if (i) putchar(',');
         json_grid_system(&g_world,&g_world.grid_systems[i]);
+    }
+
+    fputs("],\"gridBindings\":[",stdout);
+    for (size_t i=0;i<g_world.grid_binding_count;++i) {
+        if (i) putchar(',');
+        json_grid_binding(&g_world,&g_world.grid_bindings[i],false);
     }
 
     /*
@@ -938,6 +930,8 @@ int main(void)
             cmd_engineering_validate(arg);
         } else if (strcmp(line, "grid-preview") == 0 && arg != NULL) {
             cmd_grid_preview(arg);
+        } else if (strcmp(line, "grid-query") == 0) {
+            cmd_grid_query(arg);
         } else if (strcmp(line, "loadfile") == 0 && arg != NULL) {
             cmd_loadfile(arg);
         } else if (strcmp(line, "pick") == 0 && arg != NULL) {

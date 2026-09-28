@@ -133,16 +133,22 @@
     "gist": "固定材料版本→做法→面套用→尺寸來源→D10a 格線；引擎由同一份來源推出 u 的四條線與 v 的一條線。"
   },
   "D29": {
-    "scene": "_wit_d29_grid_system.scene",
+    "scene": "_wit_d30_infinite_grid_binding.scene",
     "expect": "accept",
     "view": "bottom",
-    "gist": "同一個 400 mm 系統引用到帶孔矩形與 L 形面，各自使用原點 0／200；可見段由輪廓扣孔裁切，來源身分與索引不變。"
+    "gist": "同一份 600×400 無限網格由帶孔矩形與 L 形引用；正負格線查詢後裁切，兩個邊界都不限制來源線數與線長。"
+  },
+  "D30": {
+    "scene": "_wit_d30_infinite_grid_binding.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "兩份配置指定 cell (-2,1)：第一份以左上角、第二份以中心對齊頂點 (100,200)。平移分別為 (1300,-200) 與 (1000,-400)。"
   },
   "R32": {
-    "scene": "_wit_d29_grid_system.scene",
+    "scene": "_wit_d30_infinite_grid_binding.scene",
     "expect": "accept",
     "view": "bottom",
-    "gist": "先讀系統定義，再依兩個原點得到格線 400／800／1200／1600 與 600／1000／1400／1800；夾具只存系統引用，不存展開線段。"
+    "gist": "先求無限來源，再以穩定頂點、cell 和比例求相對位置，最後按真實邊界扣孔裁切；保存關聯而不保存抽樣線段。"
   },
   "I37": {
     "scene": "_wit_i37_grid_system_missing.scene",

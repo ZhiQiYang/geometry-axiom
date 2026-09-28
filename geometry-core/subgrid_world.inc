@@ -6,6 +6,11 @@ static bool subgrid_parent_count_valid(const World *before,const ReferenceGrid *
     if (!before) return true;
     const ReferenceGrid *old=world_find_grid(before,parent->id);
     if (!old) return true;
+    if (old->from_binding!=parent->from_binding) {
+        if (err) snprintf(err,cap,"I37: a parent grid cannot change its ordinal/lattice index space");
+        return false;
+    }
+    if (parent->from_binding) return true; /* Visible cardinality is not identity. */
     const PlacementSurface *op=world_find_placement(before,old->placement_id);
     if (!op || old->is_subgrid) return false;
     const SpaceBoundarySurface *ob=world_placement_boundary(before,op);

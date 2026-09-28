@@ -838,7 +838,21 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - 沿用 `#ewPreview`、`#ewReviewed`、`#ewConfirm` 與 `#ewCancelPreview`，整包候選包含必要的材料／做法發布、面套用及同 ID 網格綁定，不加入角材綁定。關閉、失效上下文或過期候選不得提交。
 - `grid_material_entry_test.js` 從真實工具列及選材按鈕測試，由 `engineering_workflow_test.js` 納入完整 P69；原本僅填數字的格線測試不能代替此材料流程。
 
-## GEO-214 獨立網格系統
+## GEO-215 無限網格與配置
+
+- `#infiniteGridWorkspace` 為正式編輯工作區；`#igGridView` 可平移、縮放與拾取 cell；攝影機不寫入模型。`#igDensity` 明示抽樣。
+- `#igName`、`#igMainAlong` 與 `#igUSource`／`#igVSource` 定義來源；`#igSaveSource` 預覽後確認。只新增 repeat／repeat-panel／none，沒有條數。
+- `#igNewBinding` 選邊界建立配置。`#igBoundaryView` 與 `#igVertex` 選實際外環或孔環頂點；`#igCellI`／`#igCellJ` 使用十進位字串及 BigInt，`[data-ig-anchor]` 選 cell 內九宮位置。`#igSaveBinding` 保存明確引用。
+- `#igResultView` 只繪核心 query 回傳的裁切線段。`#igApplyBinding` 明確套用到同邊界承載面；未套用配置不暗建面。
+- `#igKeyedVertices`、四側 `#igGrowLeft/Right/Top/Bottom` 和 `#igSaveBoundary` 保留穩定頂點身分，預覽確認後提交。
+- `grid-binding` 為獨立物件種類；卡片、選取、清單、位置、刪除與保存均使用其獨立 ID。`#gridBindingOpen` 從面內開啟配置。
+- 面內 `gridLineEntries()` 將抽樣位置轉為真正的 signed 索引；命中區、角材選項、隱藏偏好均沿用此索引。子線仍為 ordinal。`feRefreshLatticeViewport()` 隨平移／縮放查詢目前範圍，`#feLatticeDensity` 明示稀疏顯示；過期回應核對專案、面、網格實例與範圍後捨棄。未抽到的合法線仍由 lattice 定義精確求值，點選新出現的格線會先補入角材選項。
+- lattice 子格使用 `[data-subgrid-cell="lattice:i:j"]` 真 cell；`#subgridCellI`／`#subgridCellJ`／`#subgridUseLatticeCell` 可直接指定密集格的索引。不以外接框或抽樣間距假造 cell。
+- `grid_system_test.js` 和 `infinite_grid_face_test.js` 由正式 CDP harness 執行，包含實際 SVG 拾取、signed 引用、保存重開及窄螢幕。
+
+## GEO-214 舊有限網格相容介面
+
+以下控制只保留給舊有限來源；新來源使用上方 GEO-215 工作區。
 
 - `#btnNewGridSystem` 與空白畫布 `#emptyNewGridSystem` 開啟右側 `#gridSystemEditor`。`[data-filter-type="grid-system"]` 與 `#gridSystemCount` 控制展示與數量；卡片、清單、搜尋、框選及小地圖均納入同一 `grid-system` 身分。
 - `#gsName`、`#gsMainAlong` 編輯名稱及可選主支方向；`[data-gs-axis="u"]`／`[data-gs-axis="v"]` 各含排法和數值欄位。面材模式提示未套用時只有排法，不能把卡片示意當實際範圍。

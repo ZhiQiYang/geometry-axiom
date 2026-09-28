@@ -15,8 +15,8 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "b4fe75f7f03ed81b4bc9f85a044282f91bd27cb6"
-AXIOM_SHA256 = "2d31868524cb2776c2c405367fa69087b8f43371f320f12f3405fb14ce9fdf28"
+AXIOM_REVISION = "f34c0aeb56a4d2c639be924b289e3572756807d8"
+AXIOM_SHA256 = "b2b3ebde32f693e3853ace3d39a8618e5717d42e437019510505b3453ae87c75"
 # Known pre-engineering specification. These exact sources remain supported by
 # the additive executor; arbitrary old hashes or engineering definitions do not.
 LEGACY_AXIOM_VERSIONS = frozenset({
@@ -27,9 +27,12 @@ LEGACY_AXIOM_VERSIONS = frozenset({
 ENGINEERING_AXIOM_VERSIONS = frozenset({
     ("5698f8501d539ed3a6f0644dab854e62e3bafb1a", "1843e3e9f6a3a6db07ceaa8f62fad693039296d519791af98c2a433554308bcf"),
 })
+FINITE_GRID_AXIOM_VERSIONS = frozenset({
+    ("b4fe75f7f03ed81b4bc9f85a044282f91bd27cb6", "2d31868524cb2776c2c405367fa69087b8f43371f320f12f3405fb14ce9fdf28"),
+})
 SCHEMA = "geometry-model-package/1"
 PROFILE = "orthogonal-model/1"
-GENERATOR = {"name": "geometry-axiom-reference", "version": "1.1.0"}
+GENERATOR = {"name": "geometry-axiom-reference", "version": "1.2.0"}
 CAPABILITIES = ("extrusion/1", "shell/1", "composite-space/1",
                 "solid-composition/1", "model-export/1", ENGINEERING_CAPABILITY)
 _AXIOM_PATH = Path(__file__).resolve().parents[2] / "公理層.md"
@@ -63,6 +66,21 @@ def _scene_uses_grid_system(scene):
         if tokens and (tokens[0] == "grid-system" or
                        tokens[0] == "grid" and "from-system" in tokens[1:] or
                        tokens[:2] == ["canvas-pos", "grid-system"]):
+            return True
+    return False
+
+
+def _scene_uses_infinite_grid(scene):
+    """Old finite-grid snapshots cannot claim the new lattice/key contract."""
+    for raw in scene.removeprefix("\ufeff").splitlines():
+        tokens = raw.split("#", 1)[0].split()
+        if not tokens:
+            continue
+        if (tokens[0] in {"grid-binding", "boundary-vertex-keys", "boundary-keyed"} or
+                tokens[0] == "grid-system" and any(t in {"repeat", "repeat-panel"} for t in tokens[1:]) or
+                tokens[0] == "grid" and "from-binding" in tokens[1:] or
+                tokens[0] == "subgrid" and "lattice-cell" in tokens[1:] or
+                tokens[:2] in (["canvas-pos", "grid-binding"], ["delete", "grid-binding"])):
             return True
     return False
 
@@ -121,13 +139,16 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
     current_version = (AXIOM_REVISION, _axiom_hash())
     supplied_version = (manifest["axiom_revision"], manifest["axiom_sha256"])
     if not all(type(part) is str for part in supplied_version) or supplied_version not in {
-            current_version, *LEGACY_AXIOM_VERSIONS, *ENGINEERING_AXIOM_VERSIONS}:
+            current_version, *LEGACY_AXIOM_VERSIONS, *ENGINEERING_AXIOM_VERSIONS,
+            *FINITE_GRID_AXIOM_VERSIONS}:
         raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "This executor does not implement the supplied axiom revision")
     if supplied_version != current_version:
         definitions = package["definitions"]
         if (not isinstance(definitions, dict) or type(definitions.get("base_scene")) is not str):
             raise ModelError("INVALID", "PACKAGE_SCHEMA", "D25", "Expected complete source definitions")
-        if _scene_uses_grid_system(definitions["base_scene"]):
+        if _scene_uses_infinite_grid(definitions["base_scene"]):
+            raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Infinite-grid sources require the infinite-grid axiom revision")
+        if supplied_version not in FINITE_GRID_AXIOM_VERSIONS and _scene_uses_grid_system(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Grid-system sources require the grid-system axiom revision")
         if supplied_version in LEGACY_AXIOM_VERSIONS and (
                 scene_required_capabilities(definitions["base_scene"]) or

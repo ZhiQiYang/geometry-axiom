@@ -3,7 +3,8 @@ static void json_grid_axis_definition(const GridAxisDef *d,bool subgrid,unsigned
 {
     printf("{\"source\":\"%s\"",subgrid?"subgrid":
         d->source==GRID_SRC_EXPLICIT?"explicit":d->source==GRID_SRC_SERIES?"series":
-        d->source==GRID_SRC_PANEL?"panel":"none");
+        d->source==GRID_SRC_PANEL?"panel":d->source==GRID_SRC_REPEAT?"repeat":
+        d->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"none");
     if (subgrid) printf(",\"divisions\":%u",divisions);
     else if (d->source==GRID_SRC_EXPLICIT) {
         fputs(",\"coordinates\":[",stdout);
@@ -12,7 +13,9 @@ static void json_grid_axis_definition(const GridAxisDef *d,bool subgrid,unsigned
     } else if (d->source==GRID_SRC_SERIES) {
         printf(",\"start\":%lld,\"step\":%lld,\"count\":%zu",
             (long long)d->start,(long long)d->step,d->series_count);
-    } else if (d->source==GRID_SRC_PANEL) {
+    } else if (d->source==GRID_SRC_REPEAT) {
+        printf(",\"phase\":%lld,\"step\":%lld",(long long)d->start,(long long)d->step);
+    } else if (d->source==GRID_SRC_PANEL || d->source==GRID_SRC_REPEAT_PANEL) {
         printf(",\"panel\":%lld,\"gap\":%lld,\"anchor\":%lld,\"anchorExplicit\":%s",
             (long long)d->panel,(long long)d->gap,(long long)d->anchor,
             d->anchor_explicit?"true":"false");
@@ -24,6 +27,7 @@ static void json_grid_system(const World *w,const GridSystem *system)
 {
     printf("{\"kind\":\"grid-system\",\"id\":%u,\"name\":",system->id);
     js_string(system->name);
+    printf(",\"mode\":\"%s\"",grid_system_is_infinite(system)?"infinite":"legacy-finite");
     fputs(",\"mainAlong\":",stdout);
     if (system->main_along==1) fputs("\"u\"",stdout);
     else if (system->main_along==2) fputs("\"v\"",stdout);
@@ -35,9 +39,16 @@ static void json_grid_system(const World *w,const GridSystem *system)
     fputs(",\"applications\":[",stdout); bool first=true;
     for (size_t i=0;i<w->grid_count;++i) {
         const ReferenceGrid *grid=&w->grids[i];
-        if (!grid->from_system || grid->system_id!=system->id) continue;
+        const GridBinding *binding=grid->from_binding?world_find_grid_binding(w,grid->binding_id):NULL;
+        if (grid->from_binding ? (!binding || binding->system_id!=system->id) :
+            (!grid->from_system || grid->system_id!=system->id)) continue;
         printf("%s{\"grid\":%u,\"surface\":%u}",first?"":",",grid->id,grid->placement_id);
         first=false;
+    }
+    fputs("],\"bindings\":[",stdout); first=true;
+    for (size_t i=0;i<w->grid_binding_count;++i) {
+        if (w->grid_bindings[i].system_id!=system->id) continue;
+        printf("%s%u",first?"":",",w->grid_bindings[i].id); first=false;
     }
     fputs("],",stdout);
     const CanvasPos *pos=NULL;

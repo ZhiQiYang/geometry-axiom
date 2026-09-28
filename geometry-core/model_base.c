@@ -46,7 +46,7 @@ static bool model_source_check(const char *path, bool *capacity, char *error, si
 {
     static const char *allowed[] = {
         "spec", "boundary", "placement", "surface", "space", "datum", "guide",
-        "grid", "grid-system", "subgrid", "timber", "place", "column", "beam", "canvas-pos", "requires", "engineering", NULL
+        "grid", "grid-system", "grid-binding", "boundary-keyed", "boundary-vertex-keys", "subgrid", "timber", "place", "column", "beam", "canvas-pos", "requires", "engineering", NULL
     };
     FILE *in = fopen(path, "rb");
     if (!in) { snprintf(error, cap, "Cannot read source scene."); return false; }

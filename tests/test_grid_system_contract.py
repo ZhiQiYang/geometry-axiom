@@ -132,7 +132,8 @@ class GridSystemContract(unittest.TestCase):
         self.assertTrue(self.command("reset")["ok"])
         self.assertEqual([], self.objects()["gridSystems"])
         self.assertEqual([], self.refs()["grids"])
-        self.assertTrue(self.command("loadfile " + native_path(path))["ok"])
+        loaded = self.command("loadfile " + native_path(path))
+        self.assertTrue(loaded["ok"], loaded)
         self.assertEqual(before, self.snapshot())
 
     def test_three_independent_layouts_names_zero_id_and_no_hidden_surface(self):

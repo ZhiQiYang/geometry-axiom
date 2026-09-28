@@ -206,7 +206,7 @@ static bool eng_target_context(const World *w,const EngTarget *t,uint32_t *pid,i
     *role=-1;
     if (!t->kind) {
         const ReferenceGrid *g=world_find_grid(w,t->id);
-        if (g && g->from_system) return eng_fail("D29: edit the grid-system source; engineering bindings are not allowed on its application");
+        if (g && (g->from_system || g->from_binding)) return eng_fail("D29: edit the grid-system source; engineering bindings are not allowed on its application");
         if (!g || g->is_subgrid || g->axis[t->axis].source!=GRID_SRC_PANEL) return eng_fail("I35: dimension target is not an existing PANEL_LAYOUT main-grid axis");
         *pid=g->placement_id;
     } else {
@@ -354,7 +354,7 @@ static bool engineering_rebuild(World *w,char *error,size_t cap)
     for (size_t i=0;i<w->engineering.binding_count;++i) {
         const EngBinding *b=&w->engineering.bindings[i]; Coord value;
         if (!eng_effective(w,b,&value,NULL,0)) goto fail;
-        if (!b->target.kind) { ReferenceGrid *g=world_find_grid_mut(w,b->target.id); if (g->from_system) { eng_fail("D29: grid-system applications cannot have engineering bindings"); goto fail; } if (b->target.field) g->axis[b->target.axis].gap=value; else g->axis[b->target.axis].panel=value; }
+        if (!b->target.kind) { ReferenceGrid *g=world_find_grid_mut(w,b->target.id); if (g->from_system || g->from_binding) { eng_fail("D29: grid-system applications cannot have engineering bindings"); goto fail; } if (b->target.field) g->axis[b->target.axis].gap=value; else g->axis[b->target.axis].panel=value; }
         else { int t=reference_timber_index(w,b->target.id); if (b->target.field) w->timbers[t].size_b=value; else w->timbers[t].size_a=value; }
     }
     if (!engineering_serializable(w)) goto fail;

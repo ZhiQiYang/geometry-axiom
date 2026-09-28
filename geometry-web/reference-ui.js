@@ -7,10 +7,11 @@ async function confirmReferenceImpact(preview) {
   title.textContent = preview.valid ? '確認連動變更' : '變更無法套用';
   dialog.append(title);
   const note = document.createElement('p');
-  note.textContent = '目前場景尚未改動。以下列出子網格、參考線及角材的連動結果；尺寸單位為 mm。';
+  note.textContent = '目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。';
   dialog.append(note);
   const code = document.createElement('code'); code.textContent = preview.command;
   dialog.append(code);
+  appendGridDefinitionImpact(dialog, preview);
   const wrap = document.createElement('div'); wrap.className = 'impact-table-wrap';
   const table = document.createElement('table');
   const heading = document.createElement('tr');
@@ -40,7 +41,8 @@ async function confirmReferenceImpact(preview) {
       if(!g)return '不存在或無合法結果';
       const b=g.bounds,cell=g.cell;
       const ref=r=>r==='min' ? '面下界' : r==='max' ? '面上界' : `主格線 ${Number(r.split(':')[1])+1}`;
-      return `${g.kind==='subgrid' ? `父格 ${g.parentId}；分界 u ${cell?.u.map(ref).join('／')}，v ${cell?.v.map(ref).join('／')}` : '主網格'}；範圍 u ${b?.u.join('–')}，v ${b?.v.join('–')}；座標 u [${g.u.join(', ')}]，v [${g.v.join(', ')}]；可見段 ${g.lines.map(l=>`${l.axis} 第 ${l.index+1} 線：${l.segments?.length ? l.segments.map(s=>`(${s[0].join(', ')}) → (${s[1].join(', ')})`).join('、') : '無可見段'}`).join('；')}`;
+      const scope=g.kind==='subgrid' ? g.cellMode==='lattice' ? `父格 ${g.parentId}；cell (${cell.i}, ${cell.j})` : `父格 ${g.parentId}；分界 u ${cell?.u.map(ref).join('／')}，v ${cell?.v.map(ref).join('／')}` : '主網格';
+      return `${scope}；範圍 u ${b?.u.join('–')}，v ${b?.v.join('–')}；座標 u [${g.u.join(', ')}]，v [${g.v.join(', ')}]；可見段 ${g.lines.map(l=>`${l.axis} ${g.indexSpace==='lattice' ? `索引 ${l.index}` : `第 ${Number(l.index)+1} 線`}：${l.segments?.length ? l.segments.map(s=>`(${s[0].join(', ')}) → (${s[1].join(', ')})`).join('、') : '無可見段'}`).join('；')}`;
     };
     for(const row of gridChanges) {
       const li=document.createElement('li');li.dataset.impactGrid=row.id;
@@ -93,6 +95,88 @@ async function confirmReferenceImpact(preview) {
     apply.onclick = () => finish(true);
     dialog.addEventListener('cancel', event => { event.preventDefault(); finish(false); });
     dialog.showModal(); cancel.focus();
+  });
+}
+
+/* D29/D30/I8a: independent sources and bindings must be reviewable even before
+   a placement exists. Keep signed indices and exact translations as strings. */
+function appendGridDefinitionImpact(dialog, preview) {
+  const same = (a,b) => JSON.stringify(a) === JSON.stringify(b);
+  const sourceDefinition = g => g && [g.name,g.mode,g.mainAlong,g.uDefinition,g.vDefinition];
+  const sources = (preview.gridSystems || []).filter(r => !same(sourceDefinition(r.before),sourceDefinition(r.after)));
+  const boundaries = (preview.boundaries || []).filter(r => !same(r.before,r.after));
+  const sourceIds = new Set(sources.map(r=>r.id)), boundaryIds = new Set(boundaries.map(r=>r.id));
+  const bindings = (preview.gridBindings || []).filter(r => !same(r.before,r.after) ||
+    [r.before,r.after].some(b=>b && (sourceIds.has(b.system) || boundaryIds.has(b.boundary))));
+  const textNode = (tag, text, className) => {const n=document.createElement(tag);n.textContent=text;if(className)n.className=className;return n;};
+  const para = (parent,text,side) => {const n=textNode('p',text);if(side)n.dataset.impactSide=side;parent.append(n);return n;};
+  function section(rows,title,kind,render) {
+    if(!rows.length)return;
+    const node=document.createElement('section');node.className='impact-definitions impact-'+kind;
+    node.append(textNode('h3',title+' · '+rows.length));
+    const list=document.createElement('ul');
+    for(const row of rows){const item=document.createElement('li');item.setAttribute('data-impact-'+kind,row.id);render(item,row);list.append(item);}
+    node.append(list);dialog.append(node);
+  }
+  function axis(d) {
+    if(!d || d.source==='none')return '不設此軸';
+    if(d.source==='repeat')return `無限重複：間距 ${d.step} mm，第 0 線 ${d.phase} mm`;
+    if(d.source==='repeat-panel')return `無限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm，間距 ${d.panel+d.gap} mm`;
+    if(d.source==='explicit')return `舊版有限座標 [${(d.coordinates||[]).join(', ')}] mm`;
+    if(d.source==='series')return `舊版有限等差：起點 ${d.start}、間距 ${d.step} mm，共 ${d.count} 條`;
+    return `舊版有限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm`;
+  }
+  function source(g) {return g ? `「${g.name}」；${g.mainAlong ? '主支沿 '+g.mainAlong : '主支方向未設定'}；u ${axis(g.uDefinition)}；v ${axis(g.vDefinition)}` : '不存在';}
+  section(sources,'網格來源','system',(item,row)=>{
+    item.append(textNode('strong','網格系統 '+row.id));
+    para(item,'原：'+source(row.before),'before');para(item,'新：'+source(row.after),'after');
+  });
+  const loopName = l => l<0 ? '外環' : '孔 '+(l+1);
+  const points = b => (b?.loops||[]).flatMap((l,li)=>(l.vertices||l.verts.map((uv,index)=>({uv,index,key:null}))).map(v=>({...v,loop:l.loop??li-1,fixity:l.fixity?.[v.index]})));
+  const vertex = v => v ? `${loopName(v.loop)}頂點 ${v.index+1} · ${v.key==null?'未設 key':'key '+v.key} · (${v.uv.join(', ')}) mm · 下一邊${v.fixity?'固定':'自由'}` : '不存在';
+  const boundary = b => !b ? '不存在' : `${({room_plan:'平面輪廓',wall_elevation:'立面輪廓',unspecified:'用途未設定'})[b.kind]||b.kind}；${b.loops?.[0]?.verts.length||0} 個外環頂點、${Math.max(0,(b.loops?.length||1)-1)} 個孔；${b.keysPersisted?'已保存頂點身分':'尚未保存頂點身分'}`;
+  section(boundaries,'邊界與頂點','boundary',(item,row)=>{
+    item.append(textNode('strong','面 '+row.id));
+    para(item,'原：'+boundary(row.before),'before');para(item,'新：'+boundary(row.after),'after');
+    const before=points(row.before),after=points(row.after),detail=document.createElement('details');
+    detail.open=true;detail.append(textNode('summary','核對頂點座標與身分'));
+    const list=document.createElement('ul');
+    if(row.before?.keysPersisted && row.after?.keysPersisted){
+      const old=new Map(before.map(v=>[v.key,v])),next=new Map(after.map(v=>[v.key,v]));
+      const keys=new Set([...old.keys(),...next.keys()]);let changes=0;
+      for(const key of keys)if(!same(old.get(key),next.get(key))){const line=textNode('li',`${vertex(old.get(key))} → ${vertex(next.get(key))}`);line.dataset.impactVertexKey=key;list.append(line);changes++;}
+      if(!changes)list.append(textNode('li','頂點座標、key 與固定狀態保持原狀。'));
+    }else{
+      // Before identity initialization, position is only a list location. Do
+      // not imply that a newly allocated key was an old geometric identity.
+      list.append(textNode('li','原頂點：'+(before.map(vertex).join('；')||'不存在')));
+      list.append(textNode('li','新頂點：'+(after.map(vertex).join('；')||'不存在')));
+    }
+    detail.append(list);item.append(detail);
+  });
+  const fraction = a => a ? `${a.num}/${a.den}` : '未定義';
+  const translation = b => {if(!b)return '不存在';const t=b.translationExact??b.translation;return t ? `(${t.join(', ')}) mm` : '超出整數平移顯示範圍；局部格線仍依錨點精確求值';};
+  const binding = b => !b ? '不存在' : `來源 ${b.system} · 面 ${b.boundary} · 頂點 key ${b.vertexKey}；cell (${b.cell.join(', ')})；格內比例 u ${fraction(b.anchor?.[0])}、v ${fraction(b.anchor?.[1])}；平移 ${translation(b)}；${b.applications?.length ? b.applications.map(a=>`承載面 ${a.surface}／主網格 ${a.grid}`).join('、') : '尚未套用至承載面'}`;
+  function querySummary(q) {
+    if(!q)return '無配置';if(!q.ok)return q.error || '無合法裁切結果';
+    const axes=['u','v'].map(a=>{const r=q.axes?.[a];return !r?.defined ? a+' 軸未設定' : `${a} 真實索引 ${r.firstIndex??'無'}…${r.lastIndex??'無'}，範圍內 ${r.total} 條，每 ${r.stride} 條取一線，顯示 ${(r.lines||[]).reduce((n,l)=>n+(l.segments?.length||0),0)} 段`;});
+    return `範圍 (${q.rect.join(', ')}) mm；${q.exact?'完整查詢':'抽樣檢視，非完整格線清單'}；${axes.join('；')}`;
+  }
+  function queryLines(parent,q,title) {
+    parent.append(textNode('h4',title));
+    if(!q?.ok){para(parent,q?.error||'不存在');return;}
+    const list=document.createElement('ul');
+    for(const a of ['u','v'])for(const line of q.axes?.[a]?.lines||[]){list.append(textNode('li',`${a} 索引 ${line.index} · ${line.coordinate} mm：${line.segments?.length ? line.segments.map(s=>`(${s.a.join(', ')}) → (${s.b.join(', ')})`).join('；') : '無可見線段'}`));}
+    if(!list.children.length)list.append(textNode('li','這個範圍沒有可見格線。'));
+    parent.append(list);
+  }
+  section(bindings,'網格配置與裁切結果（含未放置邊界）','binding',(item,row)=>{
+    item.append(textNode('strong','網格配置 '+row.id));
+    para(item,'原：'+binding(row.before),'before');para(item,'新：'+binding(row.after),'after');
+    para(item,'原裁切：'+querySummary(row.before?.preview));para(item,'新裁切：'+querySummary(row.after?.preview));
+    if(same(row.before,row.after))para(item,'此配置重新檢查後，錨點與裁切結果保持原狀。');
+    const details=document.createElement('details');details.append(textNode('summary','查看原／新裁切線段與真實索引'));
+    queryLines(details,row.before?.preview,'原裁切線段');queryLines(details,row.after?.preview,'新裁切線段');item.append(details);
   });
 }
 

@@ -2,6 +2,9 @@
 static bool grid_system_axis_valid(const GridAxisDef *a)
 {
     if (a->source==GRID_SRC_NONE) return true;
+    if (a->source==GRID_SRC_REPEAT) return coord_in_range(a->start) && a->step>0 && coord_in_range(a->step);
+    if (a->source==GRID_SRC_REPEAT_PANEL) return a->panel>0 && coord_in_range(a->panel) &&
+        a->gap>=0 && coord_in_range(a->gap) && coord_in_range(a->anchor) && a->anchor_explicit;
     if (a->source==GRID_SRC_EXPLICIT) {
         if (!a->count || a->count>GRID_MAX_LINES || !grid_coord_list_is_valid(a->coords,a->count)) return false;
         for (size_t k=0;k<a->count;++k) if (!coord_in_range(a->coords[k])) return false;
@@ -36,6 +39,8 @@ static bool grid_system_name_valid(const unsigned char *name,size_t n)
 
 static bool grid_system_valid(const GridSystem *s)
 {
+    if(grid_system_is_infinite(s)) for(int a=0;a<2;++a)
+        if(s->axis[a].source && !grid_axis_is_infinite(&s->axis[a])) return false;
     size_t n=0; while (n<=GRID_SYSTEM_NAME_MAX && s->name[n]) ++n;
     return grid_system_name_valid((const unsigned char*)s->name,n) &&
         grid_system_axis_valid(&s->axis[0]) && grid_system_axis_valid(&s->axis[1]) &&
@@ -59,7 +64,7 @@ static bool grid_systems_rebuild(World *w,char *error,size_t cap)
     for (size_t i=0;i<w->grid_count;++i) {
         ReferenceGrid *g=&w->grids[i]; if (!g->from_system) continue;
         const GridSystem *s=world_find_grid_system(w,g->system_id);
-        if (!s || g->is_subgrid || !coord_in_range(g->system_origin[0]) || !coord_in_range(g->system_origin[1])) {
+        if (!s || grid_system_is_infinite(s) || g->from_binding || g->is_subgrid || !coord_in_range(g->system_origin[0]) || !coord_in_range(g->system_origin[1])) {
             snprintf(error,cap,"I37: grid %u has a missing or invalid grid-system source",g->id); return false;
         }
         g->main_along=s->main_along;
@@ -93,15 +98,19 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a)
 {
     int i=*at; if (i>=count) return false;
     if (!strcmp(t[i],"none")) ++i;
+    else if (!strcmp(t[i],"repeat")) {
+        if(i+2>=count || !parse_coord(t[i+1],&a->start) || !parse_coord(t[i+2],&a->step)) return false;
+        a->source=GRID_SRC_REPEAT; i+=3;
+    }
     else if (!strcmp(t[i],"series")) {
         Coord n;
         if (i+3>=count || !parse_coord(t[i+1],&a->start) || !parse_coord(t[i+2],&a->step) ||
             !parse_i64(t[i+3],&n) || n<1 || n>GRID_MAX_LINES) return false;
         a->source=GRID_SRC_SERIES; a->series_count=(size_t)n; i+=4;
-    } else if (!strcmp(t[i],"panel")) {
+    } else if (!strcmp(t[i],"panel") || !strcmp(t[i],"repeat-panel")) {
         if (i+5>=count || strcmp(t[i+2],"gap") || strcmp(t[i+4],"from") ||
             !parse_coord(t[i+1],&a->panel) || !parse_coord(t[i+3],&a->gap) || !parse_coord(t[i+5],&a->anchor)) return false;
-        a->source=GRID_SRC_PANEL; a->anchor_explicit=true; i+=6;
+        a->source=!strcmp(t[i],"panel")?GRID_SRC_PANEL:GRID_SRC_REPEAT_PANEL; a->anchor_explicit=true; i+=6;
     } else {
         /* Accept the descriptive explicit keyword as well as grid's bare list. */
         if (!strcmp(t[i],"explicit")) ++i;
@@ -127,6 +136,9 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
     if (i!=count || !grid_system_valid(&s)) goto invalid;
     World candidate=*w; size_t slot=0;
     while (slot<candidate.grid_system_count && candidate.grid_systems[slot].id!=s.id) ++slot;
+    if(slot<candidate.grid_system_count && grid_system_is_infinite(&candidate.grid_systems[slot])!=grid_system_is_infinite(&s)) {
+        scene_error(path,line_no,"D29/I37: legacy-finite and infinite identities cannot be converted implicitly"); return false;
+    }
     if (slot==candidate.grid_system_count) {
         if (slot==WORLD_MAX_GRID_SYSTEMS) { scene_error(path,line_no,"I37: grid-system capacity is 16"); return false; }
         ++candidate.grid_system_count;
@@ -158,7 +170,7 @@ static bool apply_grid_system_application(const char *path,int line_no,char **t,
     for (size_t k=0;k<w->grid_count;++k) {
         const ReferenceGrid *old=&w->grids[k];
         if (old->id==g.id) {
-            if (old->is_subgrid || old->placement_id!=g.placement_id) {
+            if (old->is_subgrid || old->from_binding || old->placement_id!=g.placement_id) {
                 scene_error(path,line_no,"I37: cannot change a subgrid or move an existing grid identity to another surface"); return false;
             }
             slot=k;
@@ -193,7 +205,8 @@ static void grid_systems_dump(const World *w,FILE *out)
             else if (a->source==GRID_SRC_EXPLICIT) {
                 fputs(" explicit",out); for (size_t k=0;k<a->count;++k) fprintf(out," %lld",(long long)a->coords[k]);
             } else if (a->source==GRID_SRC_SERIES) fprintf(out," series %lld %lld %u",(long long)a->start,(long long)a->step,(unsigned)a->series_count);
-            else fprintf(out," panel %lld gap %lld from %lld",(long long)a->panel,(long long)a->gap,(long long)a->anchor);
+            else if(a->source==GRID_SRC_REPEAT) fprintf(out," repeat %lld %lld",(long long)a->start,(long long)a->step);
+            else fprintf(out," %s %lld gap %lld from %lld",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel",(long long)a->panel,(long long)a->gap,(long long)a->anchor);
         }
         fputc('\n',out);
     }

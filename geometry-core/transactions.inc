@@ -43,6 +43,63 @@ static void reference_guide_text(const World *w,uint32_t id,char *out,size_t cap
 static bool reference_grid_changed(const World *,const World *,uint32_t);
 static bool reference_guide_changed(const World *,const World *,uint32_t);
 static void reference_subgrid_text(const World *,uint32_t,FILE *);
+static void reference_object_preview(FILE *);
+
+static bool reference_axis_definition_equal(const GridAxisDef *a,const GridAxisDef *z)
+{
+    if (a->source!=z->source) return false;
+    if (a->source==GRID_SRC_NONE) return true;
+    if (a->source==GRID_SRC_EXPLICIT)
+        return a->count==z->count && a->count<=GRID_MAX_LINES &&
+            !memcmp(a->coords,z->coords,a->count*sizeof *a->coords);
+    if (a->source==GRID_SRC_SERIES || a->source==GRID_SRC_REPEAT)
+        return a->start==z->start && a->step==z->step &&
+            (a->source==GRID_SRC_REPEAT || a->series_count==z->series_count);
+    return a->panel==z->panel && a->gap==z->gap && a->anchor==z->anchor &&
+        a->anchor_explicit==z->anchor_explicit;
+}
+
+static bool reference_system_changed(const World *before,const World *after,uint32_t id)
+{
+    const GridSystem *a=world_find_grid_system(before,id),*z=world_find_grid_system(after,id);
+    if (!a || !z) return a!=z;
+    return strcmp(a->name,z->name) || a->main_along!=z->main_along ||
+        !reference_axis_definition_equal(&a->axis[0],&z->axis[0]) ||
+        !reference_axis_definition_equal(&a->axis[1],&z->axis[1]);
+}
+
+static bool reference_boundary_geometry_changed(const SpaceBoundarySurface *a,const SpaceBoundarySurface *z)
+{
+    if (!a || !z) return a!=z;
+    char ah[65],zh[65]; boundary_geometry_hash(a,ah); boundary_geometry_hash(z,zh);
+    return a->id!=z->id || !ah[0] || !zh[0] || strcmp(ah,zh);
+}
+
+static bool reference_boundary_changed(const World *before,const World *after,uint32_t id)
+{
+    if (reference_boundary_geometry_changed(world_find_boundary(before,id),world_find_boundary(after,id))) return true;
+    const BoundaryVertexKeys *a=world_find_vertex_keys(before,id),*z=world_find_vertex_keys(after,id);
+    if (!a || !z) return a!=z;
+    if (a->loop_count!=z->loop_count || a->next_key!=z->next_key) return true;
+    for (size_t l=0;l<a->loop_count;++l)
+        if (a->counts[l]!=z->counts[l] || memcmp(a->keys[l],z->keys[l],a->counts[l]*sizeof *a->keys[l])) return true;
+    return false;
+}
+
+static bool reference_binding_changed(const World *before,const World *after,uint32_t id)
+{
+    const GridBinding *a=world_find_grid_binding(before,id),*z=world_find_grid_binding(after,id);
+    if (!a || !z) return a!=z;
+    if (a->boundary_id!=z->boundary_id || a->system_id!=z->system_id || a->vertex_key!=z->vertex_key ||
+        memcmp(a->cell,z->cell,sizeof a->cell) || memcmp(a->anchor_num,z->anchor_num,sizeof a->anchor_num) ||
+        memcmp(a->anchor_den,z->anchor_den,sizeof a->anchor_den) ||
+        reference_system_changed(before,after,a->system_id) ||
+        reference_boundary_geometry_changed(world_find_boundary(before,a->boundary_id),world_find_boundary(after,z->boundary_id))) return true;
+    SurfacePoint2 av,zv;
+    bool ap=boundary_vertex_by_key(before,a->boundary_id,a->vertex_key,&av);
+    bool zp=boundary_vertex_by_key(after,z->boundary_id,z->vertex_key,&zv);
+    return ap!=zp || !ap || av.u!=zv.u || av.v!=zv.v;
+}
 static void reference_guide_clip_text(const World *w,uint32_t id,FILE *out)
 {
     const GuideLine *g=world_find_guide(w,id);
@@ -68,12 +125,7 @@ static bool reference_gdi_confirm(HWND window, World *world)
         MessageBoxW(window,L"無法產生完整預覽明細，未提交。請使用網頁或 CLI 檢視後確認。",L"需要完整預覽",MB_OK|MB_ICONWARNING);
         g_preview.ready=false; return false;
     }
-    for (size_t i=0;i<g_preview.before.grid_count;++i) {
-        const ReferenceGrid *g=&g_preview.before.grids[i];
-        if (!reference_grid_changed(&g_preview.before,&g_preview.after,g->id)) continue;
-        reference_subgrid_text(&g_preview.before,g->id,details); fputs(" -> ",details);
-        reference_subgrid_text(&g_preview.after,g->id,details); fputc('\n',details);
-    }
+    reference_object_preview(details);
     for (size_t i=0;i<g_preview.before.guide_count;++i) {
         uint32_t id=g_preview.before.guides[i].id;
         if (!reference_guide_changed(&g_preview.before,&g_preview.after,id)) continue;
@@ -146,9 +198,25 @@ static bool reference_grid_changed(const World *before,const World *after,uint32
     if (!a || !z || !ap || !zp || a->is_subgrid!=z->is_subgrid ||
         a->parent_id!=z->parent_id || a->placement_id!=z->placement_id || a->main_along!=z->main_along ||
         a->from_system!=z->from_system || a->system_id!=z->system_id ||
+        a->from_binding!=z->from_binding || a->binding_id!=z->binding_id ||
+        a->lattice_cell!=z->lattice_cell || memcmp(a->lattice_cell_index,z->lattice_cell_index,sizeof a->lattice_cell_index) ||
+        memcmp(a->cell_ref,z->cell_ref,sizeof a->cell_ref) || memcmp(a->divisions,z->divisions,sizeof a->divisions) ||
         memcmp(a->system_origin,z->system_origin,sizeof a->system_origin) ||
+        ap->boundary_id!=zp->boundary_id || memcmp(&ap->rect,&zp->rect,sizeof ap->rect) ||
         memcmp(&ap->frame,&zp->frame,sizeof ap->frame)) return true;
     const SpaceBoundarySurface *ab=world_placement_boundary(before,ap),*zb=world_placement_boundary(after,zp);
+    if (a->from_binding) {
+        /* A finite/sample window cannot establish equality of an infinite
+         * definition. Compare the exact lattice cache and the actual boundary,
+         * including holes and fixity that a sample may never intersect. */
+        return memcmp(a->lattice_base,z->lattice_base,sizeof a->lattice_base) ||
+            memcmp(a->lattice_index,z->lattice_index,sizeof a->lattice_index) ||
+            memcmp(a->lattice_step,z->lattice_step,sizeof a->lattice_step) ||
+            !reference_axis_definition_equal(&a->axis[0],&z->axis[0]) ||
+            !reference_axis_definition_equal(&a->axis[1],&z->axis[1]) ||
+            reference_binding_changed(before,after,a->binding_id) ||
+            reference_boundary_geometry_changed(ab,zb);
+    }
     SurfaceRegion2 ac,zc;
     if (a->is_subgrid && (!grid_cell_bounds(before->grids,before->grid_count,a,ap,ab,&ac,NULL,0) ||
         !grid_cell_bounds(after->grids,after->grid_count,z,zp,zb,&zc,NULL,0) || memcmp(&ac,&zc,sizeof ac))) return true;
@@ -156,7 +224,7 @@ static bool reference_grid_changed(const World *before,const World *after,uint32
         Coord ax[GRID_MAX_LINES],zx[GRID_MAX_LINES]; size_t an=0,zn=0;
         bool av=grid_axis_lines_in(before->grids,before->grid_count,a,ap,ab,axis,ax,&an,NULL,0);
         bool zv=grid_axis_lines_in(after->grids,after->grid_count,z,zp,zb,axis,zx,&zn,NULL,0);
-        if (av!=zv || an!=zn || (an && memcmp(ax,zx,an*sizeof *ax))) return true;
+        if (!av || !zv || an!=zn || (an && memcmp(ax,zx,an*sizeof *ax))) return true;
         for (size_t k=0;k<an;++k) {
             SurfaceSegment2 as[POLY_MAX_VERTICES],zs[POLY_MAX_VERTICES];
             size_t na=grid_line_segments(before->grids,before->grid_count,a,ap,ab,axis,k,as,POLY_MAX_VERTICES);
@@ -181,6 +249,33 @@ static bool reference_guide_changed(const World *before,const World *after,uint3
     return na!=nz || (na && memcmp(as,zs,na*sizeof *as));
 }
 
+static void reference_query_text(const World *w,const char *kind,uint32_t id,const Coord rect[4],FILE *out)
+{
+    GridQueryAxis *axes=calloc(2,sizeof *axes); char error[256]="";
+    if (!axes || !grid_query(w,kind,id,rect,GRID_MAX_LINES,true,axes,error,sizeof error)) {
+        fprintf(out," sample unavailable: %s",error[0]?error:"query memory unavailable");
+        free(axes); return;
+    }
+    fputs(" sample (not complete geometry)",out);
+    for (int axis=0;axis<2;++axis) {
+        const GridQueryAxis *q=&axes[axis];
+        fprintf(out," %c stride %llu total %llu:",axis?'v':'u',
+            (unsigned long long)q->stride,(unsigned long long)q->total);
+        if (!q->defined) { fputs(" undefined",out); continue; }
+        for (size_t i=0;i<q->count;++i) {
+            const GridQueryLine *line=&q->lines[i];
+            fprintf(out," k=%lld@%lld{",(long long)line->index,(long long)line->coordinate);
+            for (size_t k=0;k<line->segment_count;++k) {
+                const SurfaceSegment2 *s=&line->segments[k];
+                fprintf(out,"%s[%lld,%lld]-[%lld,%lld]",k?",":"",
+                    (long long)s->start.u,(long long)s->start.v,(long long)s->end.u,(long long)s->end.v);
+            }
+            fputc('}',out);
+        }
+    }
+    free(axes);
+}
+
 static void reference_subgrid_text(const World *w,uint32_t id,FILE *out)
 {
     const ReferenceGrid *g=world_find_grid(w,id);
@@ -193,31 +288,124 @@ static void reference_subgrid_text(const World *w,uint32_t id,FILE *out)
         }
         fprintf(out,"subgrid %u parent %u cell [%lld,%lld]-[%lld,%lld]",id,g->parent_id,
             (long long)c.min_u,(long long)c.min_v,(long long)c.max_u,(long long)c.max_v);
+        if (g->lattice_cell) fprintf(out," lattice-cell %lld %lld",
+            (long long)g->lattice_cell_index[0],(long long)g->lattice_cell_index[1]);
     } else {
         fprintf(out,"grid %u on %u",id,g->placement_id);
         if (g->from_system) fprintf(out," from-system %u origin %lld %lld",g->system_id,
             (long long)g->system_origin[0],(long long)g->system_origin[1]);
+        if (g->from_binding) fprintf(out," from-binding %u index-space lattice",g->binding_id);
     }
-    for (int a=0;a<2;++a) {
-        Coord coords[GRID_MAX_LINES]; size_t n;
-        if (!grid_axis_lines_in(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),a,coords,&n,NULL,0)) continue;
-        fprintf(out," %c:",a?'v':'u');
-        for (size_t i=0;i<n;++i) {
-            fprintf(out," %lld",(long long)coords[i]);
-            SurfaceSegment2 segs[POLY_MAX_VERTICES];
-            size_t ns=grid_line_segments(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),a,i,segs,POLY_MAX_VERTICES);
-            fputc('{',out);
-            for (size_t k=0;k<ns;++k) fprintf(out,"%s[%lld,%lld]-[%lld,%lld]",k?",":"",
-                (long long)segs[k].start.u,(long long)segs[k].start.v,(long long)segs[k].end.u,(long long)segs[k].end.v);
-            fputc('}',out);
+    SurfaceRegion2 bounds;
+    if (placement_local_bounds(p,world_placement_boundary(w,p),&bounds)) {
+        Coord rect[4]={bounds.min_u,bounds.min_v,bounds.max_u,bounds.max_v};
+        reference_query_text(w,"grid",id,rect,out);
+    } else fputs(" sample unavailable: invalid bounds",out);
+}
+
+static void reference_system_text(const World *w,uint32_t id,FILE *out)
+{
+    const GridSystem *s=world_find_grid_system(w,id);
+    if (!s) { fprintf(out,"grid-system %u unavailable",id); return; }
+    fprintf(out,"grid-system %u name %s mode %s main-along %s",id,s->name,
+        grid_system_is_infinite(s)?"infinite":"legacy-finite",s->main_along==1?"u":s->main_along==2?"v":"none");
+    for (int axis=0;axis<2;++axis) {
+        const GridAxisDef *a=&s->axis[axis]; fprintf(out," %c",axis?'v':'u');
+        if (a->source==GRID_SRC_NONE) fputs(" none",out);
+        else if (a->source==GRID_SRC_EXPLICIT) {
+            fputs(" explicit",out);
+            for (size_t k=0;k<a->count;++k) fprintf(out," %lld",(long long)a->coords[k]);
+        } else if (a->source==GRID_SRC_SERIES)
+            fprintf(out," series %lld %lld %u",(long long)a->start,(long long)a->step,(unsigned)a->series_count);
+        else if (a->source==GRID_SRC_REPEAT)
+            fprintf(out," repeat %lld %lld",(long long)a->start,(long long)a->step);
+        else fprintf(out," %s %lld gap %lld from %lld",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel",
+            (long long)a->panel,(long long)a->gap,(long long)a->anchor);
+    }
+}
+
+static void reference_boundary_text(const World *w,uint32_t id,FILE *out)
+{
+    const SpaceBoundarySurface *b=world_find_boundary(w,id);
+    if (!b) { fprintf(out,"boundary %u unavailable",id); return; }
+    const BoundaryVertexKeys *keys=world_find_vertex_keys(w,id); char hash[65];
+    boundary_geometry_hash(b,hash);
+    fprintf(out,"boundary %u geometry-hash %s kind %u",id,hash,(unsigned)b->kind);
+    if (keys) fprintf(out," next-key %u",keys->next_key);
+    for (size_t l=0;l<=b->hole_count;++l) {
+        const PolygonLoop2 *loop=l?&b->holes[l-1]:&b->outline;
+        fprintf(out," %s",l?"hole":"outer");
+        for (size_t i=0;i<loop->count;++i) {
+            if (keys && l<keys->loop_count && i<keys->counts[l]) fprintf(out," %u:",keys->keys[l][i]);
+            else fputs(" unkeyed:",out);
+            fprintf(out,"%lld,%lld/fixity=%u",(long long)loop->v[i].u,(long long)loop->v[i].v,(unsigned)loop->fixity[i]);
+        }
+    }
+}
+
+static void reference_binding_text(const World *w,uint32_t id,FILE *out)
+{
+    const GridBinding *b=world_find_grid_binding(w,id);
+    if (!b) { fprintf(out,"grid-binding %u unavailable",id); return; }
+    fprintf(out,"grid-binding %u boundary %u system %u vertex-key %u cell [%lld,%lld] anchor [%u/%u,%u/%u]",
+        id,b->boundary_id,b->system_id,b->vertex_key,(long long)b->cell[0],(long long)b->cell[1],
+        b->anchor_num[0],b->anchor_den[0],b->anchor_num[1],b->anchor_den[1]);
+    SurfacePoint2 vertex; Coord translation[2];
+    if (boundary_vertex_by_key(w,b->boundary_id,b->vertex_key,&vertex))
+        fprintf(out," vertex [%lld,%lld]",(long long)vertex.u,(long long)vertex.v);
+    else fputs(" vertex unavailable",out);
+    if (grid_binding_translation(w,b,translation))
+        fprintf(out," translation [%lld,%lld]",(long long)translation[0],(long long)translation[1]);
+    else fputs(" translation unavailable (not representable or invalid candidate)",out);
+    const SpaceBoundarySurface *boundary=world_find_boundary(w,b->boundary_id);
+    if (boundary && boundary->outline.count) {
+        char hash[65]; boundary_geometry_hash(boundary,hash); fprintf(out," geometry-hash %s",hash);
+        Coord rect[4]={boundary->outline.v[0].u,boundary->outline.v[0].v,boundary->outline.v[0].u,boundary->outline.v[0].v};
+        for (size_t i=1;i<boundary->outline.count;++i) {
+            rect[0]=coord_min(rect[0],boundary->outline.v[i].u); rect[2]=coord_max(rect[2],boundary->outline.v[i].u);
+            rect[1]=coord_min(rect[1],boundary->outline.v[i].v); rect[3]=coord_max(rect[3],boundary->outline.v[i].v);
+        }
+        reference_query_text(w,"binding",id,rect,out);
+    } else fputs(" sample unavailable: missing boundary",out);
+}
+
+static void reference_object_preview(FILE *out)
+{
+    const World *before=&g_preview.before,*after=&g_preview.after;
+    for (int pass=0;pass<2;++pass) {
+        const World *w=pass?after:before;
+        for (size_t i=0;i<w->grid_system_count;++i) {
+            uint32_t id=w->grid_systems[i].id;
+            if (pass?world_find_grid_system(before,id)!=NULL:!reference_system_changed(before,after,id)) continue;
+            reference_system_text(before,id,out); fputs(" -> ",out); reference_system_text(after,id,out); fputc('\n',out);
+        }
+        for (size_t i=0;i<w->boundary_count;++i) {
+            uint32_t id=w->boundaries[i].id;
+            if (pass?world_find_boundary(before,id)!=NULL:!reference_boundary_changed(before,after,id)) continue;
+            reference_boundary_text(before,id,out); fputs(" -> ",out); reference_boundary_text(after,id,out); fputc('\n',out);
+        }
+        for (size_t i=0;i<w->grid_binding_count;++i) {
+            uint32_t id=w->grid_bindings[i].id;
+            if (pass?world_find_grid_binding(before,id)!=NULL:!reference_binding_changed(before,after,id)) continue;
+            reference_binding_text(before,id,out); fputs(" -> ",out); reference_binding_text(after,id,out); fputc('\n',out);
+        }
+        for (size_t i=0;i<w->grid_count;++i) {
+            uint32_t id=w->grids[i].id;
+            if (pass?world_find_grid(before,id)!=NULL:!reference_grid_changed(before,after,id)) continue;
+            reference_subgrid_text(before,id,out); fputs(" -> ",out); reference_subgrid_text(after,id,out); fputc('\n',out);
         }
     }
 }
 
 static bool reference_geometry_changed(const World *before,const World *after)
 {
+    /* Replay may append independent definitions without editing any earlier
+     * geometry. Existing bindings still protect both changes and deletion;
+     * interactive creation is separately guarded by binding_edit below. */
+    for (size_t i=0;i<before->grid_binding_count;++i)
+        if (reference_binding_changed(before,after,before->grid_bindings[i].id)) return true;
     for (size_t i=0;i<before->grid_count;++i)
-        if ((before->grids[i].is_subgrid || before->grids[i].from_system || eng_object_bound(before,0,before->grids[i].id)) && reference_grid_changed(before,after,before->grids[i].id)) return true;
+        if ((before->grids[i].is_subgrid || before->grids[i].from_system || before->grids[i].from_binding || eng_object_bound(before,0,before->grids[i].id)) && reference_grid_changed(before,after,before->grids[i].id)) return true;
     bool has_child=false;
     for (size_t i=0;i<before->grid_count;++i) if (before->grids[i].is_subgrid) has_child=true;
     if (has_child) for (size_t i=0;i<before->guide_count;++i)
@@ -235,11 +423,12 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
 {
     bool placed=false;
     for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed) placed=true;
-    bool referenced=false;
-    for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].is_subgrid || w->grids[i].from_system) referenced=true;
+    bool referenced=w->grid_binding_count>0;
+    for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].is_subgrid || w->grids[i].from_system || w->grids[i].from_binding) referenced=true;
     if ((!placed && !referenced && !w->engineering.binding_count) || !count) return false;
     const char *c=tokens[0];
     if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||
+        !strcmp(c,"boundary-keyed") || !strcmp(c,"grid-binding") ||
         !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"grid-system") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
     if ((!strcmp(c,"place") || !strcmp(c,"timber")) && count>1) {
         uint32_t id;
@@ -269,12 +458,7 @@ static void reference_stage(const World *before,const World *after,char **tokens
 static void reference_preview_text(void)
 {
     fprintf(stderr,"I8a preview %u: %s\n",g_preview.token,g_preview.valid?"valid; confirm token to apply":"invalid; cannot apply");
-    for (size_t i=0;i<g_preview.before.grid_count;++i) {
-        const ReferenceGrid *g=&g_preview.before.grids[i];
-        if (!reference_grid_changed(&g_preview.before,&g_preview.after,g->id)) continue;
-        reference_subgrid_text(&g_preview.before,g->id,stderr); fputs(" -> ",stderr);
-        reference_subgrid_text(&g_preview.after,g->id,stderr); fputc('\n',stderr);
-    }
+    reference_object_preview(stderr);
     for (size_t i=0;i<g_preview.before.timber_count;++i) {
         const Timber *t=&g_preview.before.timbers[i]; if (!t->placed) continue;
         int j=reference_timber_index(&g_preview.after,t->id);
@@ -363,8 +547,13 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
     uint32_t system_edit_id;
     bool system_edit=!g_parsing_scene_file && count>1 && !strcmp(tokens[0],"grid-system") &&
         parse_u32(tokens[1],&system_edit_id) && world_find_grid_system(world,system_edit_id);
-    bool application_edit=!g_parsing_scene_file && count>4 && !strcmp(tokens[0],"grid") && !strcmp(tokens[4],"from-system");
-    if (explicit_preview || (!g_preview_confirming && (engineering_edit || system_edit || application_edit || (affects && (!ok || reference_geometry_changed(world,&candidate)))))) {
+    bool application_edit=!g_parsing_scene_file && count>4 && !strcmp(tokens[0],"grid") &&
+        (!strcmp(tokens[4],"from-system") || !strcmp(tokens[4],"from-binding"));
+    bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
+    bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
+    if (explicit_preview || (!g_preview_confirming &&
+        (engineering_edit || system_edit || application_edit || binding_edit || keyed_edit ||
+        (affects && (!ok || reference_geometry_changed(world,&candidate)))))) {
         reference_stage(world,ok?&candidate:&g_reference_trial,tokens,count,ok);
         reference_preview_text();
         if (explicit_preview) return true;

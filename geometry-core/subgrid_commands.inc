@@ -11,22 +11,30 @@ static bool grid_cell_ref_parse(const char *s,int *out)
 static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,World *world)
 {
     ReferenceGrid candidate={0}; uint32_t du,dv;
-    if (count!=16 || !parse_u32(t[1],&candidate.id) || strcmp(t[2],"parent") ||
-        !parse_u32(t[3],&candidate.parent_id) || strcmp(t[4],"cell") || strcmp(t[5],"u") ||
-        !grid_cell_ref_parse(t[6],&candidate.cell_ref[0][0]) || !grid_cell_ref_parse(t[7],&candidate.cell_ref[0][1]) ||
-        strcmp(t[8],"v") || !grid_cell_ref_parse(t[9],&candidate.cell_ref[1][0]) ||
-        !grid_cell_ref_parse(t[10],&candidate.cell_ref[1][1]) || strcmp(t[11],"divisions") ||
-        strcmp(t[12],"u") || !parse_u32(t[13],&du) || strcmp(t[14],"v") || !parse_u32(t[15],&dv)) {
-        scene_error(path,line_no,"D19/I25: subgrid id parent id cell u min|max|line:N min|max|line:N v lo hi divisions u integer v integer");
+    bool header=count>=5 && parse_u32(t[1],&candidate.id) && !strcmp(t[2],"parent") &&
+        parse_u32(t[3],&candidate.parent_id);
+    bool lattice=header && !strcmp(t[4],"lattice-cell");
+    bool valid=header && (lattice ?
+        (count==12 && parse_i64(t[5],&candidate.lattice_cell_index[0]) &&
+            parse_i64(t[6],&candidate.lattice_cell_index[1]) && !strcmp(t[7],"divisions") &&
+            !strcmp(t[8],"u") && parse_u32(t[9],&du) && !strcmp(t[10],"v") && parse_u32(t[11],&dv)) :
+        (count==16 && !strcmp(t[4],"cell") && !strcmp(t[5],"u") &&
+            grid_cell_ref_parse(t[6],&candidate.cell_ref[0][0]) && grid_cell_ref_parse(t[7],&candidate.cell_ref[0][1]) &&
+            !strcmp(t[8],"v") && grid_cell_ref_parse(t[9],&candidate.cell_ref[1][0]) &&
+            grid_cell_ref_parse(t[10],&candidate.cell_ref[1][1]) && !strcmp(t[11],"divisions") &&
+            !strcmp(t[12],"u") && parse_u32(t[13],&du) && !strcmp(t[14],"v") && parse_u32(t[15],&dv)));
+    if (!valid) {
+        scene_error(path,line_no,"D19/I25: subgrid id parent id cell u lo hi v lo hi divisions u NU v NV; lattice parent uses lattice-cell I J divisions u NU v NV");
         return false;
     }
     ReferenceGrid *existing=world_find_grid_mut(world,candidate.id);
     const ReferenceGrid *parent=world_find_grid(world,candidate.parent_id);
     if (!parent || parent->is_subgrid || candidate.id==candidate.parent_id ||
-        (existing && (!existing->is_subgrid || existing->parent_id!=candidate.parent_id))) {
+        parent->from_binding!=lattice ||
+        (existing && (!existing->is_subgrid || existing->parent_id!=candidate.parent_id || existing->lattice_cell!=lattice))) {
         scene_error(path,line_no,"D19/I25：父格必須是主網格；既有網格的類型與父格編號不能更換"); return false;
     }
-    candidate.is_subgrid=true; candidate.placement_id=parent->placement_id;
+    candidate.is_subgrid=true; candidate.lattice_cell=lattice; candidate.placement_id=parent->placement_id;
     candidate.divisions[0]=du; candidate.divisions[1]=dv;
     /* I8a: invalid candidates must never masquerade as the old definition. */
     World trial=*world;

@@ -17,6 +17,7 @@ from modeling.common import canonical_bytes, digest, scene_required_capabilities
 
 LEGACY_VERSION = ("494660068ceb884c1a96884a2b704e3bcf5d24ca", "bc01cf0db266f97255156e28e40fb235833031fb95f1f234ad6d90a9f08240f8")
 ENGINEERING_VERSION = ("5698f8501d539ed3a6f0644dab854e62e3bafb1a", "1843e3e9f6a3a6db07ceaa8f62fad693039296d519791af98c2a433554308bcf")
+FINITE_GRID_VERSION = ("b4fe75f7f03ed81b4bc9f85a044282f91bd27cb6", "2d31868524cb2776c2c405367fa69087b8f43371f320f12f3405fb14ce9fdf28")
 CASE = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())["cases"][0]
 
 
@@ -109,7 +110,7 @@ class EngineeringModelCompatibility(unittest.TestCase):
             verify_package(package)
         self.assertEqual(caught.exception.code, "AXIOM_VERSION")
 
-    def test_grid_system_sources_roundtrip_only_under_current_axioms(self):
+    def test_finite_grid_sources_roundtrip_but_reject_pre_grid_axioms(self):
         definitions = deepcopy(CASE["definitions"])
         definitions["base_scene"] += ("grid-system 0 name-hex e585b1e794a8 main-along none u series 100 100 3 v none\n"
                                       "grid 0 on 1 from-system 0 origin 0 0\n")
@@ -119,6 +120,14 @@ class EngineeringModelCompatibility(unittest.TestCase):
         self.assertEqual(rebuilt["derived"], package["derived"])
         self.assertIn("grid-system 0 name-hex", rebuilt["definitions"]["base_scene"])
         self.assertIn("grid 0 on 1 from-system 0 origin 0 0", rebuilt["definitions"]["base_scene"])
+        previous = deepcopy(package)
+        previous["manifest"]["axiom_revision"], previous["manifest"]["axiom_sha256"] = FINITE_GRID_VERSION
+        original = deepcopy(previous)
+        old_rebuilt = verify_package(previous)
+        self.assertEqual(previous, original, "verification cannot silently upgrade a saved finite package")
+        self.assertEqual(old_rebuilt["definitions"], original["definitions"])
+        self.assertEqual(old_rebuilt["derived"], original["derived"])
+        self.assertIn("u series 100 100 3", old_rebuilt["definitions"]["base_scene"])
         for version in (LEGACY_VERSION, ENGINEERING_VERSION):
             old = deepcopy(package)
             old["manifest"]["axiom_revision"], old["manifest"]["axiom_sha256"] = version
@@ -139,6 +148,45 @@ class EngineeringModelCompatibility(unittest.TestCase):
                 with self.subTest(version=version, source=source), self.assertRaises(ModelError) as caught:
                     verify_package(bad)
                 self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_known_finite_revision_cannot_claim_any_infinite_or_vertex_key_syntax(self):
+        package = self.build()
+        syntaxes = [
+            "grid-system 0 name-hex 61 main-along none u repeat 0 600 v repeat 0 400\n",
+            "grid-system 0 name-hex 61 main-along none u repeat-panel 600 gap 3 from 0 v none\n",
+            "grid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell -2 1 anchor 0 1 0 1\n",
+            "boundary-keyed 1 geometry-hash " + "0" * 64 + " outline 1:0,0 2:100,0 3:100,100 4:0,100\n",
+            "boundary-vertex-keys 1 outer 1 2 3 4 next-key 5\n",
+            "grid 0 on 1 from-binding 0\n",
+            "subgrid 1 parent 0 lattice-cell -2 1 divisions u 2 v 2\n",
+            "canvas-pos grid-binding 0 10 20\n",
+        ]
+        for source in syntaxes:
+            bad = deepcopy(package)
+            bad["manifest"]["axiom_revision"], bad["manifest"]["axiom_sha256"] = FINITE_GRID_VERSION
+            bad["definitions"]["base_scene"] = source + bad["definitions"]["base_scene"]
+            bad["manifest"]["source_sha256"] = digest(bad["definitions"])
+            with self.subTest(source=source), self.assertRaises(ModelError) as caught:
+                verify_package(bad)
+            self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_current_infinite_binding_package_keeps_signed_indices_and_vertex_keys(self):
+        definitions = deepcopy(CASE["definitions"])
+        definitions["base_scene"] += (
+            "boundary-vertex-keys 1 outer 1 2 3 4 hole 5 6 7 8 next-key 9\n"
+            "grid-system 0 name-hex e784a1e99990 main-along none u repeat 0 600 v repeat 0 400\n"
+            "grid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell -2 1 anchor 1 2 1 2\n"
+            "grid 0 on 1 from-binding 0\n"
+        )
+        package = build_package(definitions, deepcopy(CASE["request"]))
+        original = deepcopy(package)
+        rebuilt = verify_package(package)
+        self.assertEqual(original, package)
+        self.assertEqual(rebuilt["definitions"], original["definitions"])
+        self.assertEqual(rebuilt["derived"], original["derived"])
+        scene = rebuilt["definitions"]["base_scene"]
+        for text in ("next-key 9", "vertex-key 1 cell -2 1 anchor 1 2 1 2", "grid 0 on 1 from-binding 0"):
+            self.assertIn(text, scene)
 
     def test_rehashed_legacy_snapshot_corruption_still_rebuilds_and_rejects(self):
         package = self.build()
