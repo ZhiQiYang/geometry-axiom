@@ -134,10 +134,22 @@ window.EngineeringAdapter = (() => {
     setEngineeringDraft:(record,contextToken)=>ReferenceWorkspace.setEngineeringDraft(record,contextToken),
     removeEngineeringDraft:(id,contextToken)=>ReferenceWorkspace.removeEngineeringDraft(id,contextToken),
     read,preview,confirm,cancel,allocateGridIds,navigateObject,
+    isGridContextCurrent:value=>!!value&&oc.focus?.t==='face'&&feSid(oc.focus.id)===value.placementId,
+    gridConfirmed:value=>{if(oc.focus?.t==='face'&&feSid(oc.focus.id)===value.placementId)GridEditor.open(value.gridId);},
     saveProject:()=>ReferenceWorkspace.save(),
     subscribe:listener=>{listeners.add(listener);return ()=>listeners.delete(listener);}};
   EngineeringWorkspace.configure(adapter);
   document.addEventListener('click',event=>{
+    const gridButton=event.target.closest('[data-engineering-grid]');
+    if(gridButton){
+      if(gridButton.disabled)return;
+      event.preventDefault();
+      const draft=GridEditor.engineeringContext();
+      const placement=gridButton.dataset.placementId,grid=gridButton.dataset.gridId;
+      if(!draft||placement===undefined||Number(placement)!==draft.placementId||(grid===undefined?null:Number(grid))!==draft.gridId){toast('網格畫布已切換，請在目前面的網格表單重新選擇材料規格。','error');return;}
+      EngineeringWorkspace.open({placementId:draft.placementId,gridId:draft.gridId,gridDraft:draft,mode:'grid'});
+      return;
+    }
     const button=event.target.closest('[data-engineering-open]');if(!button || button.disabled)return;
     event.preventDefault();document.getElementById('fileMenuPop').hidden=true;
     const placementId=button.dataset.placementId,gridId=button.dataset.gridId;

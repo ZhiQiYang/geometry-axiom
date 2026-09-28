@@ -78,8 +78,8 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   const downloadParent=process.env.GEOMETRY_ENGINEERING_DOWNLOAD_DIR||require('os').tmpdir();fs.mkdirSync(downloadParent,{recursive:true});
   const downloadRoot=fs.mkdtempSync(path.join(downloadParent,'engineering-run-'));
   await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:path.resolve(downloadRoot)});
-  const downloaded=async(extension,before)=>{
-    for(let i=0;i<150;i++){const files=fs.readdirSync(downloadRoot).filter(f=>!before.includes(f)&&f.endsWith(extension));if(files.length===1)return path.join(downloadRoot,files[0]);if(files.length>1)throw Error('Ambiguous download '+files);await sleep(100);}
+  const downloaded=async(extension,before,directory=downloadRoot)=>{
+    for(let i=0;i<150;i++){const files=fs.readdirSync(directory).filter(f=>!before.includes(f)&&f.endsWith(extension));if(files.length===1)return path.join(directory,files[0]);if(files.length>1)throw Error('Ambiguous download '+files);await sleep(100);}
     throw Error('Browser download did not complete: '+extension);
   };
   const openProjectFile=async file=>{
@@ -167,6 +167,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
 
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
   check('正式頁面身份與工程入口',await read(`location.href===${JSON.stringify(process.env.GEOMETRY_TEST_URL||'http://localhost:8765/')} && !!$('btnEngineeringSpecs') && typeof EngineeringWorkspace==='object' && !document.querySelector('vite-error-overlay,nextjs-portal')`));
+  await require('./grid_material_entry_test')({read,wait,ctl,fill,choose,preview,confirm,ready,dump,state,refs,shot,send,check,same,gridSources,refValue,segmentsMatch,downloadRoot,downloaded,openProjectFile,orderedState,oracles:module.exports.oracles});
   const fixture=[
     'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
     'surface 2 origin 6000 0 2500 u +x v +y outline 0,0 3000,0 3000,3000 0,3000',
