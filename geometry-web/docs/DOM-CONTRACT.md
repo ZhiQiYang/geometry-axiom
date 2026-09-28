@@ -837,3 +837,13 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `[data-ew-grid-origin]` 明選面下界；`[data-ew-grid-method-defaults]` 明選做法設定。既有網格主支方向唯讀，包含 `none`；新網格須明選方向。未填縫寬及起點不暗中補值。
 - 沿用 `#ewPreview`、`#ewReviewed`、`#ewConfirm` 與 `#ewCancelPreview`，整包候選包含必要的材料／做法發布、面套用及同 ID 網格綁定，不加入角材綁定。關閉、失效上下文或過期候選不得提交。
 - `grid_material_entry_test.js` 從真實工具列及選材按鈕測試，由 `engineering_workflow_test.js` 納入完整 P69；原本僅填數字的格線測試不能代替此材料流程。
+
+## GEO-214 獨立網格系統
+
+- `#btnNewGridSystem` 與空白畫布 `#emptyNewGridSystem` 開啟右側 `#gridSystemEditor`。`[data-filter-type="grid-system"]` 與 `#gridSystemCount` 控制展示與數量；卡片、清單、搜尋、框選及小地圖均納入同一 `grid-system` 身分。
+- `#gsName`、`#gsMainAlong` 編輯名稱及可選主支方向；`[data-gs-axis="u"]`／`[data-gs-axis="v"]` 各含排法和數值欄位。面材模式提示未套用時只有排法，不能把卡片示意當實際範圍。
+- `#gsSave` 預覽新增／來源修改，`#gsReset` 重設未提交草稿，`#gsCancel` 取消建立；`#gsStatus[role="status"]` 呈現錯誤與結果。核心完整定義為唯一保存来源，名稱以 UTF-8 hex 安全傳輸。
+- `#gsSurface`、`#gsOriginU`／`#gsOriginV` 選擇套用目標與原點；`#gsApply` 建立套用候選。需更換既有主格來源時，先明勾 `#gsReplaceExisting`；工程綁定主格不能隱含轉換。
+- `#gsApplications [data-gs-application]` 列出主格與面；`[data-gs-edit-application]` 回填該次原點；`[data-gs-delete-application]` 預覽解除該次套用，依賴仍須通過核心守門，不連帶刪除來源。來源修改預覽使用既有 `.reference-impact`，包含主格、子格及後續依賴的新舊結果。
+- 來源式面內主格顯示來源與原點，`#gridSourceSystemOpen` 開啟獨立系統；不提供普通軸編輯或工程綁定覆蓋。`#gsDelete` 在仍有引用時停用，核心也拒絕直接刪除。
+- 操作見 `GRID-SYSTEM.md`；`grid_system_test.js` 經 `cdp_test.js` 執行真瀏覽器流程，原生守門另由 `tests/test_grid_system_contract.py` 驗證。

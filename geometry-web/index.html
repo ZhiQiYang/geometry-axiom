@@ -116,6 +116,10 @@
         </section>
         <h3 class="create-mode-label">加入物件</h3>
         <div class="quick-create-grid">
+          <button id="btnNewGridSystem" type="button" class="quick-create grid-system-create" title="建立可重用的獨立網格系統">
+            <span class="type-icon grid-system"><span data-icon="grid"></span></span>
+            <span><strong>網格系統</strong><small>獨立建立・多面共用</small></span>
+          </button>
           <button id="btnNewSpace" type="button" class="quick-create" title="＋空間:空容器">
             <span class="type-icon space"><span data-icon="space"></span></span>
             <span><strong>空間</strong><small>空容器</small></span>
@@ -141,6 +145,7 @@
           <button class="chip" type="button" data-filter-type="space" aria-pressed="true"><span class="dot space"></span>空間<strong id="spaceCount">—</strong></button>
           <button class="chip" type="button" data-filter-type="column" aria-pressed="true"><span class="dot column"></span>柱<strong id="columnCount">—</strong></button>
           <button class="chip" type="button" data-filter-type="beam" aria-pressed="true"><span class="dot beam"></span>樑<strong id="beamCount">—</strong></button>
+          <button class="chip" type="button" data-filter-type="grid-system" aria-pressed="true"><span class="dot grid-system"></span>網格系統<strong id="gridSystemCount">—</strong></button>
         </div>
       </section>
 
@@ -226,7 +231,8 @@
           <span class="empty-tile tile-a"></span><span class="empty-tile tile-b"></span><span class="empty-line"></span>
         </div>
         <h2>建立第一個領域物件</h2>
-        <p>建立「面」或「空間」，它會以卡片出現在畫布；雙擊卡片進入物件內部編輯。</p>
+        <p>先建立網格系統、面或空間。網格可獨立保存，之後再選擇要套用的承載面。</p>
+        <button id="emptyNewGridSystem" type="button" class="primary-button">建立網格系統</button>
       </div>
 
       <div class="canvas-controls" aria-label="縮放控制">

@@ -13,18 +13,23 @@ import secrets
 from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
                      ENGINEERING_CAPABILITY, scene_required_capabilities)
 
-# The checked-out implementation baseline, paired with the exact adopted source
-# digest below. The digest identifies the approved working-tree axiom content.
-AXIOM_REVISION = "5698f8501d539ed3a6f0644dab854e62e3bafb1a"
-AXIOM_SHA256 = "1843e3e9f6a3a6db07ceaa8f62fad693039296d519791af98c2a433554308bcf"
+# The source commit contains the adopted axiom bytes identified by this digest.
+# Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
+AXIOM_REVISION = "b4fe75f7f03ed81b4bc9f85a044282f91bd27cb6"
+AXIOM_SHA256 = "2d31868524cb2776c2c405367fa69087b8f43371f320f12f3405fb14ce9fdf28"
 # Known pre-engineering specification. These exact sources remain supported by
 # the additive executor; arbitrary old hashes or engineering definitions do not.
 LEGACY_AXIOM_VERSIONS = frozenset({
     ("494660068ceb884c1a96884a2b704e3bcf5d24ca", "bc01cf0db266f97255156e28e40fb235833031fb95f1f234ad6d90a9f08240f8"),
 })
+# The previous engineering release supports D26-D28, but not D29 grid systems.
+# Keep it separate: adding this tuple must not grant engineering to LEGACY.
+ENGINEERING_AXIOM_VERSIONS = frozenset({
+    ("5698f8501d539ed3a6f0644dab854e62e3bafb1a", "1843e3e9f6a3a6db07ceaa8f62fad693039296d519791af98c2a433554308bcf"),
+})
 SCHEMA = "geometry-model-package/1"
 PROFILE = "orthogonal-model/1"
-GENERATOR = {"name": "geometry-axiom-reference", "version": "1.0.0"}
+GENERATOR = {"name": "geometry-axiom-reference", "version": "1.1.0"}
 CAPABILITIES = ("extrusion/1", "shell/1", "composite-space/1",
                 "solid-composition/1", "model-export/1", ENGINEERING_CAPABILITY)
 _AXIOM_PATH = Path(__file__).resolve().parents[2] / "公理層.md"
@@ -47,6 +52,19 @@ def _axiom_hash():
     if actual != AXIOM_SHA256:
         raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Axiom source changed without a corresponding executor version")
     return actual
+
+
+def _scene_uses_grid_system(scene):
+    """Gate new source syntax before rebuilding a package claiming older axioms."""
+    for index, raw in enumerate(scene.splitlines()):
+        if not index:
+            raw = raw.removeprefix("\ufeff")
+        tokens = raw.split("#", 1)[0].split()
+        if tokens and (tokens[0] == "grid-system" or
+                       tokens[0] == "grid" and "from-system" in tokens[1:] or
+                       tokens[:2] == ["canvas-pos", "grid-system"]):
+            return True
+    return False
 
 
 def build_package(definitions, request, *, capabilities=None, max_cells=200000,
@@ -102,13 +120,17 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
         raise ModelError("UNSUPPORTED", "VERSION", "I32", "Unsupported package schema or modeling profile")
     current_version = (AXIOM_REVISION, _axiom_hash())
     supplied_version = (manifest["axiom_revision"], manifest["axiom_sha256"])
-    if not all(type(part) is str for part in supplied_version) or supplied_version not in {current_version, *LEGACY_AXIOM_VERSIONS}:
+    if not all(type(part) is str for part in supplied_version) or supplied_version not in {
+            current_version, *LEGACY_AXIOM_VERSIONS, *ENGINEERING_AXIOM_VERSIONS}:
         raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "This executor does not implement the supplied axiom revision")
     if supplied_version != current_version:
         definitions = package["definitions"]
         if (not isinstance(definitions, dict) or type(definitions.get("base_scene")) is not str):
             raise ModelError("INVALID", "PACKAGE_SCHEMA", "D25", "Expected complete source definitions")
-        if (scene_required_capabilities(definitions["base_scene"]) or
+        if _scene_uses_grid_system(definitions["base_scene"]):
+            raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Grid-system sources require the grid-system axiom revision")
+        if supplied_version in LEGACY_AXIOM_VERSIONS and (
+                scene_required_capabilities(definitions["base_scene"]) or
                 isinstance(manifest["capabilities"], list) and ENGINEERING_CAPABILITY in manifest["capabilities"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Engineering sources require the engineering axiom revision")
     generator = manifest["generator"]

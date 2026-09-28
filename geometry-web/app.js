@@ -236,7 +236,7 @@ function hydrateIcons(root = document) {
   for (const slot of root.querySelectorAll("[data-icon]")) slot.innerHTML = icon(slot.dataset.icon);
 }
 
-const KIND_ZH = { boundary: "面", placement: "承載面", space: "空間", column: "柱", beam: "樑" };
+const KIND_ZH = { boundary: "面", placement: "承載面", space: "空間", column: "柱", beam: "樑", "grid-system": "網格系統" };
 function sceneMenuDisplay(name) {
   return String(name || "內建示範").replace(/\.scene$/i, "").replace(/\.gcanvas$/i, "");
 }
@@ -512,7 +512,7 @@ function updateStatusSummary() {
     el.textContent = connection.phase === "error" ? "連線失敗 · 物件狀態未確認" : "正在讀取場景…";
     return;
   }
-  const n = oc.faces.length + oc.spaces.length + oc.columns.length + oc.beams.length;
+  const n = ocAllObjects().length;
   const open = oc.spaces.filter(s => !s.closed).length;
   const free = oc.faces.filter(f => f.kind === "boundary" && !f.placed).length +
     oc.columns.filter(c => !c.space).length + oc.beams.filter(b => !b.space).length;
@@ -1284,6 +1284,7 @@ window.addEventListener("keydown", async e => {
         leaveFocus();
         return;
       }
+      if (!oc.focus && oc.gridSystemCreating) { oc.gridSystemCreating=false;drawObjects();return; }
       if (!oc.focus && oc.selection.length && !oc.drawTool && !oc.rect) { ocSetSelection([]); return; }
       if (oc.rect || oc.drawTool) {
         pendingSlot = null;
@@ -1510,10 +1511,11 @@ const oc = {
   tool: "select",         /* select | pan */
   sel: null,              /* 選取 {kind,id} */
   selection: [],          /* GEO-209:展示選取；多選時 sel=null，不把單物件編輯套給其中一張 */
-  showFace: true, showSpace: true, showColumn: true, showBeam: true,
+  showFace: true, showSpace: true, showColumn: true, showBeam: true, showGridSystem: true,
   search: "",             /* 搜尋過濾字串 */
   surfs: [],              /* /surfaces 快照(法向→空間六槽) */
-  faces: [], spaces: [], columns: [], beams: [],
+  faces: [], spaces: [], columns: [], beams: [], gridSystems: [],
+  gridSystemCreating: false,
   stack: [],              // 焦點堆疊：世界 → 空間 → 面
   focus: null,            // null | {t:'space'|'face', id}
   bmap: {},               // boundary id → loops（縮圖 + 編輯）
@@ -1564,12 +1566,12 @@ function ocToCanvas(e) {
   return ocToCanvasPx(e.clientX - r.left, e.clientY - r.top);
 }
 function ocFitAll() {               /* 與 f 快捷鍵同一組 bbox:全部卡片 */
-  const all = [...oc.faces, ...oc.spaces];
+  const all = ocAllObjects();
   if (all.length)
     ocFit([Math.min(...all.map(o => o.cx)) - 40,
            Math.min(...all.map(o => o.cy)) - 40,
-           Math.max(...all.map(o => o.cx + OC_W)) + 40,
-           Math.max(...all.map(o => o.cy + OC_H)) + 40]);
+           Math.max(...all.map(o => o.cx + cardBox(o).w)) + 40,
+           Math.max(...all.map(o => o.cy + cardBox(o).h)) + 40]);
 }
 function ocFit(b) {                 /* b = [minx,miny,maxx,maxy] */
   const r = ocv.getBoundingClientRect();
@@ -1815,6 +1817,7 @@ async function renderObjects({ persistPositions = true } = {}) {
   if (seq !== ocSeq || connection.phase === "error") return false;
   oc.faces = r.faces; oc.spaces = r.spaces;
   oc.columns = r.columns || []; oc.beams = r.beams || [];
+  oc.gridSystems = r.gridSystems || [];
   oc.surfs = sf.surfaces; oc.bmap = boundaries;
 
   /* 沒有畫布座標的物件：自動排格並立刻持久化。
@@ -1823,7 +1826,8 @@ async function renderObjects({ persistPositions = true } = {}) {
   const homeless = [...oc.faces.filter(f => !f.hasPos),
                     ...oc.spaces.filter(s => !s.hasPos),
                     ...oc.columns.filter(c => !c.hasPos),
-                    ...oc.beams.filter(b => !b.hasPos)];
+                    ...oc.beams.filter(b => !b.hasPos),
+                    ...oc.gridSystems.filter(g => !g.hasPos)];
   for (const o of homeless) {
     const [cx, cy] = nextCardPosition(o, occupied);
     o.cx = cx; o.cy = cy;
@@ -1869,7 +1873,8 @@ function drawObjects() {
     (!inSpace || c.space === oc.focus.id) && oc.showColumn && matchQ(c));
   const visBeams = oc.beams.filter(b =>
     (!inSpace || b.space === oc.focus.id) && oc.showBeam && matchQ(b));
-  const visibleKeys = new Set([...visFaces,...visSpaces,...visCols,...visBeams].map(o => `${o.members ? "space" : o.kind}:${o.id}`));
+  const visGridSystems = inSpace ? [] : oc.gridSystems.filter(g => oc.showGridSystem && matchQ(g));
+  const visibleKeys = new Set([...visFaces,...visSpaces,...visCols,...visBeams,...visGridSystems].map(o => `${o.members ? "space" : o.kind}:${o.id}`));
   const focusedSpaceSingle = oc.selection.length === 1 && oc.focus?.t === "space" &&
     oc.selection[0].kind === "space" && oc.selection[0].id === oc.focus.id && oc.spaces.some(s => s.id === oc.focus.id);
   oc.selection = oc.selection.filter(s => visibleKeys.has(`${s.kind}:${s.id}`) || focusedSpaceSingle);
@@ -1899,6 +1904,11 @@ function drawObjects() {
       c.classList.add("selected");
     cl.appendChild(c);
   }
+  for (const o of visGridSystems) {
+    const c = GridSystemEditor.card(o);
+    c.classList.toggle("selected", ocSelected("grid-system", o.id));
+    cl.appendChild(c);
+  }
   for (const card of cl.children) {
     const kind = card.dataset.kind, id = +card.dataset.id;
     const box = cardBox(ocFind(kind, id));
@@ -1913,7 +1923,7 @@ function drawObjects() {
       if (oc.drawTool) return;
       e.stopPropagation(); closePanels();
       if (kind === "boundary" || kind === "space") enterFocus(kind === "space" ? "space" : "face", id);
-      else selectObject(kind, id); };
+      else { selectObject(kind, id); if (kind === "grid-system" && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
     action.addEventListener("click", enter);
     action.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); enter(e); } });
     if (kind === "space") {
@@ -1929,12 +1939,12 @@ function drawObjects() {
   drawMinimap();
   renderSelectionSummary();
   $("emptyState").hidden = connection.phase !== "ready" ||
-    (oc.faces.length + oc.spaces.length +
-     oc.columns.length + oc.beams.length) > 0 || !!oc.focus;
+    ocAllObjects().length > 0 || !!oc.focus || oc.gridSystemCreating;
 }
 
 /* ---- 搜尋比對:名稱 / id / kind ---- */
 function ocCardName(o) {
+  if (o.kind === "grid-system") return `網格系統 ${o.id} ${o.name}`;
   if (o.members) return `空間 ${o.id}`;
   if (o.kind === "column") return `柱 ${o.id}`;
   if (o.kind === "beam") return `樑 ${o.id}`;
@@ -2038,7 +2048,7 @@ function drawMinimap() {
   const vr = ocv.getBoundingClientRect();
   const vb = { minX: -oc.panX / oc.zoom, minY: -oc.panY / oc.zoom,
     maxX: (vr.width - oc.panX) / oc.zoom, maxY: (vr.height - oc.panY) / oc.zoom };
-  const nodes = [...oc.faces, ...(oc.focus ? [] : oc.spaces),
+  const nodes = [...oc.faces, ...(oc.focus ? [] : [...oc.spaces,...oc.gridSystems]),
                  ...oc.columns, ...oc.beams];
   if (!nodes.length && !oc.focus) return;
   const allMinX = Math.min(vb.minX, ...nodes.map(n => n.cx));
@@ -2069,7 +2079,7 @@ function drawMinimap() {
   /* 節點 */
   for (const n of nodes) {
     const b = cardBox(n);
-    ctx.fillStyle = n.members ? "#6a5fd0" : "#2f8f7b";
+    ctx.fillStyle = n.kind === "grid-system" ? "#467fb0" : n.members ? "#6a5fd0" : "#2f8f7b";
     ctx.globalAlpha = (oc.sel && oc.sel.id === n.id && oc.sel.kind === (n.members ? "space" : n.kind)) ? 1 : .72;
     ctx.fillRect(mx(b.x), my(b.y), Math.max(3, b.w * sc), Math.max(2, b.h * sc));
   }
@@ -6296,6 +6306,7 @@ const GridEditor = (() => {
   }
   function html(g, surf) {
     if(g?.kind === "subgrid" || fe.subgridDraftParent != null)return SubgridEditor.html(g,surf);
+    if(g?.sourceSystem != null)return GridSystemEditor.appliedHTML(g);
     if(g?.engineeringSources?.length)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block engineering-grid-details"><h3>尺寸引用工程規格</h3><p>來源變更會重新檢查排格及引用它的角材。起算點保存在這個網格內。</p>${engineeringSourceSummary(g.engineeringSources)}<p>起算點：u ${esc(g.uDefinition?.anchor ?? '—')} · v ${esc(g.vDefinition?.anchor ?? '—')} mm</p><button type="button" class="btn primary-button" data-engineering-open data-placement-id="${surf.id}" data-grid-id="${g.id}">編輯工程來源與覆寫</button><div class="grid-subgrid-note"><h4>局部等分</h4><p>選擇這個主格的一格，建立子網格；主格的工程來源保持不變。</p><button type="button" id="subgridNew" class="btn">建立子網格</button></div></div></section>`;
     const dis = surf ? "" : " disabled";
     return `<section data-component-section="grid"><h2 class="component-heading">網格</h2><div class="inspector-block grid-editor">` +
@@ -6496,6 +6507,10 @@ const GridEditor = (() => {
     SubgridEditor.clear();
     if(grid?.kind === "subgrid" || fe.subgridDraftParent != null){SubgridEditor.bind(pane,bid,grid,surf);return;}
     pane.querySelector('#subgridNew')?.addEventListener('click',()=>{if(grid)SubgridEditor.begin(grid.id);});
+    if(grid?.sourceSystem != null) {
+      pane.querySelector('#gridSourceSystemOpen')?.addEventListener('click',()=>GridSystemEditor.open(grid.sourceSystem));
+      fe.gridPreview=null;focusSection();return;
+    }
     const editor=pane.querySelector(".grid-editor"); if(!editor) return;
     const s={pane,bid,grid,surf,editor,bounds:loopsBBox(oc.bmap[bid] || []),result:grid,saving:false};active=s;
     // Baseline comes from saved definitions, never from restored draft fields.
@@ -6680,6 +6695,255 @@ const GridEditor = (() => {
   }
   function clear() {if(dragCancel)dragCancel();if(active)clearTimeout(active.timer);active=null;SubgridEditor.clear();fe.subgridDraftParent=null;++fe.gridPreviewSeq;fe.gridPreview=null;$("gridTimberPopover")?.remove();if($("gridReturnSettings"))$("gridReturnSettings").hidden=true;document.body.classList.remove("grid-workspace-active");}
   return {html,bind,open,focusSection,draw,sync,highlight,fit,clear,engineeringContext,addLine:(a,mm)=>active && addLine(active,a,mm)};
+})();
+
+/* D29/I37: a reusable definition has no hidden face or evaluated panel extent.
+   All creates, updates and applications use a validated candidate + token. */
+const GridSystemEditor = (() => {
+  const axes = ["u", "v"], esc = ReferenceWorkspace.escape;
+  const modes = [["none","不設"],["explicit","明寫座標"],["series","等差"],["panel","面材＋縫"]];
+  const prefix = a => "gs" + a.toUpperCase();
+  let active = null;
+  const definitionKey = o => JSON.stringify(o && [o.id,o.name,o.mainAlong,o.uDefinition,o.vDefinition]);
+  // Every authoritative world refresh invalidates the application snapshot.
+  // objects lists application identities only: origin changes and undo/redo
+  // are visible in references, even when the source definition is unchanged.
+  const signature = o => JSON.stringify([ocSeq,definitionKey(o),o?.applications,oc.surfs.map(s=>[s.id,s.boundary])]);
+  const current = s => active === s && s.root.isConnected && s.context === ReferenceWorkspace.context();
+  const get = (s,id) => s.root.querySelector("#"+id);
+  function summary(d) {
+    if (!d || d.source === "none") return "未設定";
+    if (d.source === "explicit") return `座標 ${(d.coordinates || []).join("、")} mm`;
+    if (d.source === "series") return `從 ${d.start} mm，每 ${d.step} mm，共 ${d.count} 條`;
+    return `面材 ${d.panel}＋縫 ${d.gap} mm，從 ${d.anchor} mm 起算`;
+  }
+  function sketch(parent, o, x, y, w, h) {
+    el("rect",{x,y,width:w,height:h,rx:6,fill:"#f3f7fb",stroke:"#dce5ef"},parent);
+    for (const a of axes) {
+      const d=o[a+"Definition"];if(!d || d.source === "none")continue;
+      // A panel has no count before application. These ticks are illustrative,
+      // intentionally independent of an invented range or geometric boundary.
+      let values=d.source === "explicit" ? d.coordinates : d.source === "series" ? Array.from({length:Math.min(64,d.count)},(_,i)=>d.start+d.step*i) : null;
+      const positions=values?.length ? values.map(v=>values.length === 1 ? .5 : .08+.84*(v-values[0])/Math.max(1,values[values.length-1]-values[0])) : [.16,.39,.62,.85];
+      for(const p of positions)el("line",{x1:a === "u" ? x+p*w : x+7,y1:a === "u" ? y+7 : y+p*h,
+        x2:a === "u" ? x+p*w : x+w-7,y2:a === "u" ? y+h-7 : y+p*h,
+        stroke:o.mainAlong && o.mainAlong !== a ? "#316b9e" : "#90adc8","stroke-width":o.mainAlong && o.mainAlong !== a ? 2 : 1,
+        ...(d.source === "panel" ? {"stroke-dasharray":"4 3"} : {})},parent);
+    }
+  }
+  function card(o) {
+    const g=el("g",{class:"ocard grid-system-card","data-kind":"grid-system","data-id":o.id,transform:`translate(${o.cx},${o.cy})`,cursor:"pointer"});
+    el("rect",{class:"ocard-frame",width:OC_W,height:OC_H,rx:10,fill:"#fff",stroke:"#cbdbe9","stroke-width":1.4},g);
+    el("circle",{cx:14,cy:16,r:4.5,fill:"#467fb0"},g);
+    const name=Array.from(o.name);el("text",{x:26,y:17,"font-size":12.5,"font-weight":700,fill:"#1d2634"},g).textContent=name.length>12 ? name.slice(0,11).join("")+"…" : o.name;
+    el("text",{x:26,y:29,"font-size":10.5,fill:"#6d8197"},g).textContent=`網格系統 ${o.id} · ${o.applications.length} 個套用`;
+    el("title",{},g).textContent=`${o.name}\nu：${summary(o.uDefinition)}\nv：${summary(o.vDefinition)}\n卡片僅示意排法，沒有幾何範圍。`;
+    el("line",{x1:0,y1:34,x2:OC_W,y2:34,stroke:"#e2eaf1"},g);
+    const body=el("g",{class:"ocard-body"},g);sketch(body,o,10,41,OC_W-20,61);
+    el("text",{x:10,y:121,"font-size":10.5,fill:"#6d8197"},body).textContent="排法示意 · 無幾何範圍";
+    el("text",{x:10,y:145,"font-size":11,fill:"#687487"},body).textContent=o.mainAlong ? `主支沿 ${o.mainAlong} · 可重複套用` : "角色未設定 · 可重複套用";
+    return g;
+  }
+  function appliedHTML(g) {
+    const source=oc.gridSystems.find(s=>s.id === g.sourceSystem), origin=g.origin || [0,0];
+    return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block grid-system-source"><h3>引用網格系統</h3><p><strong>${esc(source?.name || `網格系統 ${g.sourceSystem}`)}</strong> · #${g.sourceSystem}</p><p>套用原點 u ${origin[0]}、v ${origin[1]} mm。${g.mainAlong ? `主支沿 ${g.mainAlong}。` : "角色未設定。"}</p><p>兩軸排法由來源共用；編輯來源會先預覽所有套用的影響。</p><button type="button" id="gridSourceSystemOpen" class="btn primary-button">編輯來源與套用</button><div id="gridPreviewStatus" role="status" aria-live="polite"></div><div class="grid-subgrid-note"><h4>局部等分</h4><p>保留來源網格，在其中一格建立子網格。</p><button type="button" id="subgridNew" class="btn">建立子網格</button></div></div></section>`;
+  }
+  function axisHTML(a,d) {
+    d=d || {source:"none"};const p=prefix(a);
+    const input=(key,label,value,type="number")=>`<label>${label}<input id="${p}${key}" aria-label="${a} ${label}" type="${type}"${type === "number" ? ' step="1"' : ''} value="${esc(value ?? "")}"></label>`;
+    return `<fieldset class="grid-axis-card gs-axis" data-gs-axis="${a}"><legend>${a} 軸排法</legend><label>排格方式<select id="${p}Source">${modes.map(([v,l])=>`<option value="${v}"${d.source === v ? " selected" : ""}>${l}</option>`).join("")}</select></label><div data-gs-fields="explicit">${input("Coordinates","座標 mm（空格分隔）",(d.coordinates || []).join(" "),"text")}</div><div data-gs-fields="series" class="grid-param-fields">${input("Start","起點 mm",d.start ?? 0)}${input("Step","間距 mm",d.step ?? 600)}${input("Count","條數",d.count ?? 4)}</div><div data-gs-fields="panel" class="grid-param-fields">${input("Panel","面材 mm",d.panel ?? 600)}${input("Gap","縫寬 mm",d.gap ?? 0)}${input("Anchor","相對起點 mm",d.anchor ?? 0)}</div><p class="gs-panel-note" data-gs-panel-note>尚未套用範圍，只保存排法；條數在套用後由實際面推導。</p></fieldset>`;
+  }
+  function values(s) {
+    const val=id=>get(s,id).value.trim();
+    return {name:val("gsName"),mainAlong:val("gsMainAlong"),axes:Object.fromEntries(axes.map(a=>[a,Object.fromEntries(["Source","Coordinates","Start","Step","Count","Panel","Gap","Anchor"].map(k=>[k,val(prefix(a)+k)]))]))};
+  }
+  function draftKey(d) {
+    return JSON.stringify([d.name,d.mainAlong,...axes.map(a=>{const x=d.axes[a];return x.Source === "explicit" ? [x.Source,x.Coordinates.split(/[\s,]+/).filter(Boolean).join(" ")] : x.Source === "series" ? [x.Source,x.Start,x.Step,x.Count] : x.Source === "panel" ? [x.Source,x.Panel,x.Gap,x.Anchor] : ["none"];})]);
+  }
+  function feedback(s,text,error=false) {
+    if(!current(s))return;
+    const node=get(s,"gsStatus");node.textContent=text;node.classList.toggle("invalid",error);
+  }
+  function integer(s,id,label,min=-100000000,max=100000000) {
+    const node=get(s,id),raw=node.value.trim(),n=Number(raw);
+    if(!/^-?\d+$/.test(raw) || !Number.isSafeInteger(n) || n<min || n>max) {
+      node.setAttribute("aria-invalid","true");node.focus();throw Error(`${label}須為 ${min} 至 ${max} 的整數。`);
+    }
+    return n;
+  }
+  function command(s,id) {
+    const d=values(s),bytes=new TextEncoder().encode(d.name),defs={};
+    if(!d.name || bytes.length>96 || /[\u0000-\u001f\u007f]/.test(d.name)) {
+      get(s,"gsName").focus();throw Error("請填寫名稱，最多 96 個 UTF-8 位元組（約 32 個中文字），不可包含控制字元。");
+    }
+    const parts=axes.map(a=>{
+      const x=d.axes[a],p=prefix(a),num=(key,label,min,max)=>integer(s,p+key,`${a} ${label}`,min,max);
+      if(x.Source === "none") {defs[a]={source:"none"};return `${a} none`;}
+      if(x.Source === "explicit") {
+        const raw=x.Coordinates.split(/[\s,]+/).filter(Boolean),coords=raw.map(Number);
+        if(!raw.length || raw.length>64 || raw.some(v=>! /^-?\d+$/.test(v)) || coords.some((n,i)=>!Number.isSafeInteger(n) || Math.abs(n)>100000000 || i && n<=coords[i-1])) {
+          get(s,p+"Coordinates").focus();throw Error(`${a} 座標請填 1–64 個由小到大、不重複的整數，範圍 ±100,000,000 mm。`);
+        }
+        defs[a]={source:"explicit",coordinates:coords};return `${a} explicit ${coords.join(" ")}`;
+      }
+      if(x.Source === "series") {
+        const start=num("Start","起點"),step=num("Step","間距",1),count=num("Count","條數",1,64);
+        if(Math.abs(start+(count-1)*step)>100000000)throw Error(`${a} 最後一條座標超出 ±100,000,000 mm，請調整間距或條數。`);
+        defs[a]={source:"series",start,step,count};return `${a} series ${start} ${step} ${count}`;
+      }
+      const panel=num("Panel","面材尺寸",1),gap=num("Gap","縫寬",0),anchor=num("Anchor","相對起點");
+      defs[a]={source:"panel",panel,gap,anchor};return `${a} panel ${panel} gap ${gap} from ${anchor}`;
+    });
+    if(axes.every(a=>defs[a].source === "none"))throw Error("請至少設定一軸排法。");
+    if(d.mainAlong !== "none" && defs[d.mainAlong === "u" ? "v" : "u"].source === "none")throw Error(`主支沿 ${d.mainAlong} 時，需要設定 ${d.mainAlong === "u" ? "v" : "u"} 軸格線來源。`);
+    return {line:`grid-system ${id} name-hex ${Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("")} main-along ${d.mainAlong} ${parts.join(" ")}`,
+      id,name:d.name,uDefinition:defs.u,vDefinition:defs.v,mainAlong:d.mainAlong};
+  }
+  function changed(s) {
+    if(!current(s) || s.saving)return;
+    for(const a of axes) {
+      const source=get(s,prefix(a)+"Source").value,group=s.root.querySelector(`[data-gs-axis="${a}"]`);
+      for(const node of group.querySelectorAll("[data-gs-fields]"))node.hidden=node.dataset.gsFields !== source;
+      group.querySelector("[data-gs-panel-note]").hidden=source !== "panel";
+    }
+    s.dirty=draftKey(values(s)) !== s.baseline;
+    get(s,"gsSave").disabled=!!s.object && !s.dirty;
+    get(s,"gsReset").disabled=!s.dirty;
+    feedback(s,s.dirty ? "草稿尚未套用。預覽確認後才更新來源與所有套用。" : s.object ? "來源已保存於目前場景，可由上方保存專案。" : "設定排法後預覽建立；不需要先建立面。");
+    applicationState(s,false);
+  }
+  function applicationState(s,resetOrigin) {
+    if(!s.object || !current(s) || s.saving)return;
+    const select=get(s,"gsSurface"),sid=select.value === "" ? null : Number(select.value);
+    const existing=s.refs?.grids?.find(g=>g.surface === sid && g.kind !== "subgrid");
+    const binding=existing && s.refs?.engineeringSources?.some(b=>b.target?.kind === "grid" && b.target.id === existing.id);
+    const replacement=!!existing && existing.sourceSystem !== s.object.id;
+    get(s,"gsReplaceLabel").hidden=!replacement || !!binding;
+    if(resetOrigin) {
+      const origin=existing?.sourceSystem === s.object.id ? existing.origin : [0,0];
+      get(s,"gsOriginU").value=origin?.[0] ?? 0;get(s,"gsOriginV").value=origin?.[1] ?? 0;
+      get(s,"gsReplaceExisting").checked=false;
+    }
+    get(s,"gsApplicationNote").textContent=binding ? "這個面的主網格引用工程規格，不能覆蓋成網格系統來源。請先在原網格處理工程來源。" : existing ? `將更新現有主網格 ${existing.id}；目前${existing.sourceSystem != null ? `引用網格系統 ${existing.sourceSystem}` : "使用直接排法"}。預覽會列出格線與依賴的變更。` : sid == null ? "先建立並放置面，再回來選擇套用。網格系統現在即可保存。" : "在這個承載面建立主網格，與其他套用共用同一份來源。";
+    get(s,"gsApply").textContent=existing ? "預覽更新這次套用" : "預覽套用到此面";
+    get(s,"gsApply").disabled=!s.refs || sid == null || s.dirty || !!binding || replacement && !get(s,"gsReplaceExisting").checked;
+    get(s,"gsApplicationDraftNote").hidden=!s.dirty;
+  }
+  async function preview(s,line,description,proposal) {
+    feedback(s,"正在檢查候選結果，場景尚未改動…");
+    const result=await apiRequest("line preview "+line);
+    if(!current(s)) {if(result.preview)await apiRequest("line cancel-preview");return false;}
+    if(!result.preview)throw Error(result.error || "無法取得影響預覽，場景未改動。");
+    if(proposal && !s.object && result.preview.gridSystems?.some(row=>row.id === proposal.id && row.before != null)) {
+      await apiRequest("line cancel-preview");throw Error("新編號已被其他操作使用，請重新預覽建立。");
+    }
+    const promise=confirmReferenceImpact(result.preview);
+    const dialog=document.querySelector("dialog.reference-impact:last-of-type");
+    if(dialog) {
+      const note=dialog.querySelector("h2 + p");if(note)note.textContent="目前場景尚未改動。確認後整筆更新；取消會保留原狀。下方列出所有受影響的網格、子格、參考線與角材。";
+      const section=document.createElement("section");section.className="gs-impact-summary";
+      const title=document.createElement("h3");title.textContent=description;section.append(title);
+      if(proposal && s.object) {const p=document.createElement("p");p.textContent=`名稱：${s.object.name} → ${proposal.name}；主支方向：${s.object.mainAlong || "未設定"} → ${proposal.mainAlong === "none" ? "未設定" : proposal.mainAlong}`;section.append(p);}
+      if(proposal)for(const a of axes) {const p=document.createElement("p");p.textContent=`${a}：${summary(s.object?.[a+"Definition"])} → ${summary(proposal[a+"Definition"])}`;section.append(p);}
+      if(proposal) {const p=document.createElement("p");p.textContent=`${proposal.mainAlong === "none" ? "角色未設定" : `主支沿 ${proposal.mainAlong}`} · 將重新檢查 ${s.object?.applications?.length || 0} 個套用。`;section.append(p);}
+      note?.after(section);
+      // Keep the transport encoding out of the normal naming/editing flow.
+      const code=dialog.querySelector(":scope > code");if(code){const details=document.createElement("details"),label=document.createElement("summary");label.textContent="進階：送出指令";details.append(label);code.replaceWith(details);details.append(code);}
+    }
+    const confirmed=await promise;
+    if(!confirmed.ok){feedback(s,confirmed.error || "未套用",true);return false;}
+    return true;
+  }
+  async function operation(s,run) {
+    if(s.saving || oc.busy || !current(s))return;
+    s.saving=true;oc.busy=true;
+    const controls=Array.from(s.root.querySelectorAll("input,select,button"),node=>[node,node.disabled]);controls.forEach(([node])=>node.disabled=true);
+    try {await run();}catch(error){feedback(s,error.message,true);}
+    finally {s.saving=false;oc.busy=false;if(current(s)){controls.forEach(([node,disabled])=>node.disabled=disabled);applicationState(s,false);}}
+  }
+  async function stillSame(s) {
+    const objects=await apiRequest("objects");
+    if(!current(s) || !objects.ok)throw Error("專案已切換或無法讀取來源，請重新開啟編輯器。");
+    const fresh=objects.gridSystems?.find(g=>g.id === s.object?.id);
+    if(s.object && definitionKey(fresh) !== definitionKey(s.object))throw Error("來源已被其他操作更新。請重新選取網格系統後再編輯。");
+  }
+  function render(pane,object,force=false) {
+    const sig=signature(object);
+    if(!force && active && current(active) && active.pane === pane && active.signature === sig)return;
+    const d=object || {name:"網格系統",mainAlong:null,uDefinition:{source:"series",start:0,step:600,count:4},vDefinition:{source:"series",start:0,step:600,count:4}};
+    pane.innerHTML=`<div id="gridSystemEditor" class="grid-system-editor"><div class="inspector-block"><div class="ib-title">${object ? `網格系統 ${object.id}` : "建立網格系統"}</div><p class="gs-intro">定義排法，之後可套用到多個承載面。卡片只顯示示意。</p><label>名稱<input id="gsName" value="${esc(d.name)}" autocomplete="off"></label><label>主支方向<select id="gsMainAlong"><option value="none"${!d.mainAlong ? " selected" : ""}>不設定角色</option><option value="u"${d.mainAlong === "u" ? " selected" : ""}>沿 u</option><option value="v"${d.mainAlong === "v" ? " selected" : ""}>沿 v</option></select></label></div><div class="grid-axis-cards">${axes.map(a=>axisHTML(a,d[a+"Definition"])).join("")}</div><div class="inspector-block gs-save-block"><p id="gsStatus" class="grid-preview-status" role="status" aria-live="polite"></p><div class="gs-actions"><button type="button" id="gsReset" class="btn">重設草稿</button><button type="button" id="gsSave" class="primary-button">${object ? "預覽變更" : "預覽並建立"}</button></div>${!object ? '<button type="button" id="gsCancel" class="grid-text-button">取消建立</button>' : ""}</div>${object ? `<section class="inspector-block"><h3>套用到承載面</h3><label>承載面<select id="gsSurface"><option value="">${oc.surfs.length ? "選擇承載面" : "尚無承載面"}</option>${oc.surfs.map(s=>`<option value="${s.id}">承載面 ${s.id}${s.boundary != null ? ` · 面 ${s.boundary}` : ""} · ${esc(surfNormalLabel(s))}</option>`).join("")}</select></label><div class="gs-origin-fields"><label>原點 u mm<input id="gsOriginU" type="number" step="1" value="0"></label><label>原點 v mm<input id="gsOriginV" type="number" step="1" value="0"></label></div><p id="gsApplicationNote" class="gs-intro"></p><label id="gsReplaceLabel" class="gs-replace" hidden><input id="gsReplaceExisting" type="checkbox">明確將現有主網格改用這個來源</label><p id="gsApplicationDraftNote" class="grid-note" hidden>來源有未套用草稿，請先預覽變更或重設草稿。</p><button type="button" id="gsApply" class="primary-button" disabled>預覽套用到此面</button></section><section class="inspector-block"><h3>已套用處 · ${object.applications.length}</h3><ul id="gsApplications" class="gs-applications">${object.applications.map(a=>`<li data-gs-application="${a.grid}"><strong>承載面 ${a.surface}</strong><span>主網格 ${a.grid}</span><button type="button" class="btn" data-gs-edit-application="${a.surface}">編輯套用</button></li>`).join("") || '<li>尚未套用，可先保存這個網格系統。</li>'}</ul></section><div class="inspector-block"><button id="gsDelete" type="button" class="btn danger"${object.applications.length ? ' disabled title="仍有主網格引用，請先處理套用"' : ""}>刪除網格系統</button>${object.applications.length ? '<p class="gs-intro">仍有主網格引用，無法刪除來源。</p>' : ""}</div>` : ""}</div>`;
+    const s={pane,object,signature:sig,root:pane.querySelector("#gridSystemEditor"),context:ReferenceWorkspace.context(),refs:null,saving:false};active=s;s.baseline=draftKey(values(s));
+    for(const input of s.root.querySelectorAll(".grid-axis-cards input,.grid-axis-cards select,#gsName,#gsMainAlong"))input.addEventListener(input.tagName === "SELECT" ? "change" : "input",()=>{input.removeAttribute("aria-invalid");changed(s);});
+    get(s,"gsReset").onclick=()=>render(pane,object,true);
+    get(s,"gsCancel")?.addEventListener("click",()=>{oc.gridSystemCreating=false;active=null;drawObjects();});
+    get(s,"gsSave").onclick=()=>operation(s,async()=>{
+      const ids=object ? null : await apiRequest("newid");if(ids && (!ids.ok || ids.gridSystem == null))throw Error("無法取得網格系統編號，請重試。");
+      const id=object?.id ?? ids.gridSystem,proposal=command(s,id);await stillSame(s);
+      if(!await preview(s,proposal.line,`${object ? "更新" : "建立"}「${proposal.name}」`,proposal))return;
+      oc.gridSystemCreating=false;oc.showGridSystem=true;document.querySelector('[data-filter-type="grid-system"]').setAttribute("aria-pressed","true");
+      oc.search="";$("searchInput").value="";
+      // Candidate commit is complete; allow the normal refresh/selection flow.
+      await renderObjects();selectObject("grid-system",id);centerOnNode("grid-system",id);
+      setStatus(`✓ 網格系統「${proposal.name}」已${object ? "更新" : "建立"}`);
+    });
+    if(object) {
+      get(s,"gsSurface").onchange=()=>applicationState(s,true);
+      get(s,"gsReplaceExisting").onchange=()=>applicationState(s,false);
+      for(const button of s.root.querySelectorAll("[data-gs-edit-application]"))button.onclick=()=>{get(s,"gsSurface").value=button.dataset.gsEditApplication;applicationState(s,true);get(s,"gsSurface").scrollIntoView({block:"center"});get(s,"gsOriginU").focus();};
+      for(const row of s.root.querySelectorAll("[data-gs-application]")) {
+        const remove=document.createElement("button");remove.type="button";remove.className="btn danger";
+        const gridId=Number(row.dataset.gsApplication);remove.dataset.gsDeleteApplication=gridId;remove.textContent="解除套用";
+        remove.setAttribute("aria-label",`解除主網格 ${gridId} 的套用`);
+        remove.onclick=()=>operation(s,async()=>{
+          await stillSame(s);
+          const refs=await apiRequest("references");
+          if(!refs.ok || !current(s) || !refs.grids.some(g=>g.id === gridId && g.sourceSystem === object.id))throw Error("這次套用已變更，請重新選取網格系統。");
+          if(!await preview(s,`delete grid ${gridId}`,`解除主網格 ${gridId} 的套用；網格系統「${object.name}」保持`))return;
+          await renderObjects();selectObject("grid-system",object.id);setStatus(`✓ 已解除主網格 ${gridId} 的套用，可復原`);
+        });
+        row.append(remove);
+      }
+      get(s,"gsDelete").onclick=()=>deleteObject("grid-system",object.id);
+      get(s,"gsApply").onclick=()=>operation(s,async()=>{
+        if(s.dirty)throw Error("請先套用來源草稿或重設草稿。");
+        if(get(s,"gsSurface").value === "")throw Error("請明確選擇承載面。");
+        const sid=Number(get(s,"gsSurface").value),u=integer(s,"gsOriginU","原點 u"),v=integer(s,"gsOriginV","原點 v");
+        if(!oc.surfs.some(x=>x.id === sid))throw Error("請明確選擇承載面。");
+        await stillSame(s);
+        const refs=await apiRequest("references");if(!refs.ok || !current(s))throw Error("無法核對目前主網格，請重新開啟編輯器。");
+        const existing=refs.grids.find(g=>g.surface === sid && g.kind !== "subgrid");
+        const previous=s.refs?.grids?.find(g=>g.surface === sid && g.kind !== "subgrid");
+        const applicationKey=g=>JSON.stringify(g && [g.id,g.sourceSystem,g.origin,g.uDefinition,g.vDefinition]);
+        if(applicationKey(existing) !== applicationKey(previous))throw Error("這個面的主網格或原點已變更。請重新選取網格系統，再核對套用。");
+        if(existing && existing.sourceSystem !== object.id && !get(s,"gsReplaceExisting").checked)throw Error("這個面已有主網格，請勾選明確變更來源後重試。");
+        if(existing && refs.engineeringSources?.some(b=>b.target?.kind === "grid" && b.target.id === existing.id))throw Error("這個主網格有工程規格來源，不能覆蓋成網格系統來源。");
+        const ids=existing ? null : await apiRequest("newid");if(ids && !ids.ok)throw Error("無法取得主網格編號。");
+        const id=existing?.id ?? ids.grid;
+        if(!await preview(s,`grid ${id} on ${sid} from-system ${object.id} origin ${u} ${v}`,`${existing ? "更新" : "建立"}主網格 ${id} → 承載面 ${sid}，引用「${object.name}」，原點 (${u}, ${v}) mm`))return;
+        await renderObjects();
+        selectObject("grid-system",object.id);setStatus(`✓ 網格系統已套用到承載面 ${sid}`);
+      });
+      apiRequest("references").then(refs=>{if(!current(s))return;if(!refs.ok){feedback(s,refs.error || "無法讀取套用資料，請重新選取。",true);return;}s.refs=refs;applicationState(s,true);for(const row of s.root.querySelectorAll("[data-gs-application]")){const g=refs.grids.find(g=>g.id === Number(row.dataset.gsApplication));if(g)row.querySelector("span").textContent=`主網格 ${g.id} · 原點 (${g.origin?.join(", ") || "0, 0"}) mm`;}}).catch(error=>feedback(s,error.message,true));
+    }
+    changed(s);
+  }
+  async function open(id=null) {
+    if(oc.busy)return;
+    if(view3)await setView3(false);
+    if(oc.focus){oc.stack=[];await leaveFocus();}
+    setOcTool("select");
+    await renderObjects();
+    oc.gridSystemCreating=id == null;
+    if(id == null) {oc.selection=[];oc.sel=null;drawObjects();}
+    else {
+      if(!ocFind("grid-system",id)){toast("網格系統已不存在，請重新讀取場景。");return;}
+      oc.showGridSystem=true;document.querySelector('[data-filter-type="grid-system"]').setAttribute("aria-pressed","true");
+      oc.search="";$("searchInput").value="";drawObjects();selectObject("grid-system",id);centerOnNode("grid-system",id);
+    }
+    closePanels();if(innerWidth<=900)openPanel("right",$("toggleRight"));
+    $("gsName")?.focus();
+  }
+  return {card,render,open,appliedHTML};
 })();
 
 /* 右欄檢視器（§5.5.3 + 5.5.3a 放置 + 5.5.4 投影） */
@@ -7331,6 +7595,7 @@ function feTimberSelected(id) {
   return fe.timberSelection.has(id) || (!fe.timberSelection.size && fe.sel?.kind === "timber" && fe.sel.id === id);
 }
 function ocSetSelection(items) {
+  if(items.length)oc.gridSystemCreating=false;
   const seen = new Set();
   oc.selection = items.filter(s => {
     const key = `${s.kind}:${s.id}`;
@@ -7345,6 +7610,7 @@ function ocSetSelection(items) {
   drawMinimap(); renderSelectionSummary();
 }
 function selectObject(kind, id, additive = false) {
+  oc.gridSystemCreating = false;
   const previous = oc.selection.length ? oc.selection : oc.sel ? [oc.sel] : [];
   const exists = previous.some(s => s.kind === kind && s.id === id);
   ocSetSelection(additive ? exists ? previous.filter(s => s.kind !== kind || s.id !== id) : [...previous,{kind,id}] : [{kind,id}]);
@@ -7446,6 +7712,7 @@ function finishCanvasMarquee(event) {
   return true;
 }
 function clearCanvasSelections({keepSingleObject = false, keepSingleTimber = false} = {}) {
+  oc.gridSystemCreating=false;
   /* Navigation keeps the existing single card (notably a newly created face).
      Undo can keep a single timber, then the refreshed cache validates its ID.
      Multiple selections and project transitions always clear. */
@@ -7503,9 +7770,10 @@ for (const target of [ocv,$("faceEditorViewport")]) {
   });
 }
 function ocAllObjects() {
-  return [...oc.faces, ...oc.spaces, ...oc.columns, ...oc.beams];
+  return [...oc.faces, ...oc.spaces, ...oc.columns, ...oc.beams, ...oc.gridSystems];
 }
 function ocFind(kind, id) {
+  if (kind === "grid-system") return oc.gridSystems.find(g => g.id === id) || null;
   if (kind === "space") return oc.spaces.find(s => s.id === id) || null;
   if (kind === "column") return oc.columns.find(c => c.id === id) || null;
   if (kind === "beam") return oc.beams.find(b => b.id === id) || null;
@@ -7555,6 +7823,11 @@ function renderObjectList() {
     rows.push({ kind: "beam", id: b.id, name: `樑 ${b.id}`, space: b.space,
       sub: (b.space ? `空間 ${b.space}` : "游離") + ` · ${b.axis} 向` });
   }
+  for (const g of oc.gridSystems) {
+    if (!oc.showGridSystem || !ocMatchSearch(g)) continue;
+    rows.push({kind:"grid-system",id:g.id,name:ReferenceWorkspace.escape(g.name),
+      sub:`網格系統 ${g.id} · ${g.applications.length} 個套用`});
+  }
   $("objectCountBadge").textContent = rows.length;
   for (const r of rows) {
     const row = document.createElement("div");
@@ -7567,7 +7840,7 @@ function renderObjectList() {
     row.innerHTML =
       `<span class="row-icon ${r.kind}">${icon(
         r.kind === "space" ? "space" : r.kind === "column" ? "column" :
-        r.kind === "beam" ? "beam" : "face")}</span>` +
+        r.kind === "beam" ? "beam" : r.kind === "grid-system" ? "grid" : "face")}</span>` +
       `<span class="row-copy"><strong>${r.name}</strong>` +
       `<small>${r.sub}</small></span>` +
       (free ? `<span class="row-badge" data-insp-scroll="place">未放置</span>` : "");
@@ -7581,8 +7854,10 @@ function renderObjectList() {
     });
     row.addEventListener("dblclick", () => {
       if (r.kind === "placement") setStatus("自帶矩形面沒有邊界可編輯");
-      else if (r.kind === "column" || r.kind === "beam")
-        selectObject(r.kind, r.id);      /* Q10:柱樑雙擊只開檢視器 */
+      else if (r.kind === "column" || r.kind === "beam" || r.kind === "grid-system") {
+        selectObject(r.kind, r.id);      /* 獨立物件開檢視器 */
+        if (innerWidth <= 900) openPanel("right", $("toggleRight"));
+      }
       else enterFocus(r.kind === "space" ? "space" : "face", r.id);
     });
     list.appendChild(row);
@@ -7591,12 +7866,17 @@ function renderObjectList() {
   $("spaceCount").textContent = oc.spaces.length;
   $("columnCount").textContent = oc.columns.length;
   $("beamCount").textContent = oc.beams.length;
+  $("gridSystemCount").textContent = oc.gridSystems.length;
   updateStatusSummary();
 }
 /* 右欄檢視器 */
 function renderInspector() {
   const pane = $("inspectorContent"); if (!pane) return;
   const empty = $("inspectorEmpty");
+  if (oc.gridSystemCreating && !oc.selection.length) {
+    if (empty) empty.hidden = true;
+    pane.hidden = false; GridSystemEditor.render(pane, null); return;
+  }
   if (oc.selection.length > 1) {
     if (empty) empty.hidden = true;
     pane.hidden = false; pane.innerHTML = selectionMultiHTML(oc.selection);
@@ -7607,6 +7887,7 @@ function renderInspector() {
   pane.hidden = !sel;
   if (!sel) { pane.innerHTML = ""; return; }
   const o = ocFind(sel.kind, sel.id);
+  if (sel.kind === "grid-system") { GridSystemEditor.render(pane, o); return; }
   pane.textContent = "";
   /* RC 構件檢視器(B-3):欄位表單 → DSL 重宣告(交易式);雙擊也只到這裡(Q10)。 */
   if (sel.kind === "column" || sel.kind === "beam") {
@@ -7764,6 +8045,7 @@ async function deleteObject(kind, id) {
   if (oc.selection.length > 1) { toast("請先單選一個物件，再編輯或刪除"); return; }
   const name = kind === "space" ? `空間 ${id}`
     : kind === "column" ? `柱 ${id}` : kind === "beam" ? `樑 ${id}`
+    : kind === "grid-system" ? `網格系統 ${id}`
     : kind === "placement" ? `placement ${id}` : `面 ${id}`;
   let lines;
   if (kind === "boundary") {
@@ -7793,8 +8075,9 @@ ocv.addEventListener("dblclick", e => {
     return;
   }
   /* Q10:柱樑雙擊只開檢視器,無工作區 */
-  if (card.dataset.kind === "column" || card.dataset.kind === "beam") {
+  if (card.dataset.kind === "column" || card.dataset.kind === "beam" || card.dataset.kind === "grid-system") {
     selectObject(card.dataset.kind, parseInt(card.dataset.id, 10));
+    if (innerWidth <= 900) openPanel("right", $("toggleRight"));
     return;
   }
   enterFocus(card.dataset.kind === "space" ? "space" : "face",
@@ -8059,6 +8342,7 @@ function applyFilterChips() {
   oc.showSpace = document.querySelector('[data-filter-type="space"]').getAttribute("aria-pressed") === "true";
   oc.showColumn = document.querySelector('[data-filter-type="column"]').getAttribute("aria-pressed") === "true";
   oc.showBeam = document.querySelector('[data-filter-type="beam"]').getAttribute("aria-pressed") === "true";
+  oc.showGridSystem = document.querySelector('[data-filter-type="grid-system"]').getAttribute("aria-pressed") === "true";
   drawObjects();
 }
 for (const b of document.querySelectorAll("[data-filter-type]"))
@@ -8578,6 +8862,8 @@ $("btnCanvasView").addEventListener("click", () => setView3(false));
 $("btnBack").addEventListener("click", leaveFocus);
 $("btnNewRect").addEventListener("click", () => setOcTool("rect"));
 $("btnNewPoly").addEventListener("click", () => objNewPolyFace());
+$("btnNewGridSystem").addEventListener("click", () => GridSystemEditor.open());
+$("emptyNewGridSystem").addEventListener("click", () => GridSystemEditor.open());
 $("btnNewSpace").addEventListener("click", async () => {
   closePanels();
   const ids = await api("newid");

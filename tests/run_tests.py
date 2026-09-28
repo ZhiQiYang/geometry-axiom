@@ -22,7 +22,9 @@ HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
 
 # Revised acceptance oracle: 2026-09-18 D7/I8a/I12/R2/R4.
-TESTS = [{'scene': 'subgrid-local.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960, 2960, 1980]},
+TESTS = [{'scene': '_wit_d29_grid_system.scene', 'expect': 'accept'},
+ {'scene': '_wit_i37_grid_system_missing.scene', 'expect': 'reject', 'error': 'existing surface and grid-system'},
+ {'scene': 'subgrid-local.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960, 2960, 1980]},
  {'scene': 'ceiling-a.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960]},
  {'scene': 'demo-two-timbers.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960, 2960, 1973]},
  {'scene': 'room_a.scene', 'expect': 'accept', 'lengths': [4000, 4000, 2960],

@@ -70,7 +70,7 @@ static bool reference_gdi_confirm(HWND window, World *world)
     }
     for (size_t i=0;i<g_preview.before.grid_count;++i) {
         const ReferenceGrid *g=&g_preview.before.grids[i];
-        if (!g->is_subgrid || !reference_grid_changed(&g_preview.before,&g_preview.after,g->id)) continue;
+        if (!reference_grid_changed(&g_preview.before,&g_preview.after,g->id)) continue;
         reference_subgrid_text(&g_preview.before,g->id,details); fputs(" -> ",details);
         reference_subgrid_text(&g_preview.after,g->id,details); fputc('\n',details);
     }
@@ -144,7 +144,9 @@ static bool reference_grid_changed(const World *before,const World *after,uint32
     const PlacementSurface *ap=a?world_find_placement(before,a->placement_id):NULL;
     const PlacementSurface *zp=z?world_find_placement(after,z->placement_id):NULL;
     if (!a || !z || !ap || !zp || a->is_subgrid!=z->is_subgrid ||
-        a->parent_id!=z->parent_id || a->placement_id!=z->placement_id ||
+        a->parent_id!=z->parent_id || a->placement_id!=z->placement_id || a->main_along!=z->main_along ||
+        a->from_system!=z->from_system || a->system_id!=z->system_id ||
+        memcmp(a->system_origin,z->system_origin,sizeof a->system_origin) ||
         memcmp(&ap->frame,&zp->frame,sizeof ap->frame)) return true;
     const SpaceBoundarySurface *ab=world_placement_boundary(before,ap),*zb=world_placement_boundary(after,zp);
     SurfaceRegion2 ac,zc;
@@ -184,11 +186,18 @@ static void reference_subgrid_text(const World *w,uint32_t id,FILE *out)
     const ReferenceGrid *g=world_find_grid(w,id);
     const PlacementSurface *p=g?world_find_placement(w,g->placement_id):NULL;
     SurfaceRegion2 c;
-    if (!g || !p || !grid_cell_bounds(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),&c,NULL,0)) {
-        fprintf(out,"subgrid %u unavailable",id); return;
+    if (!g || !p) { fprintf(out,"grid %u unavailable",id); return; }
+    if (g->is_subgrid) {
+        if (!grid_cell_bounds(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),&c,NULL,0)) {
+            fprintf(out,"subgrid %u unavailable",id); return;
+        }
+        fprintf(out,"subgrid %u parent %u cell [%lld,%lld]-[%lld,%lld]",id,g->parent_id,
+            (long long)c.min_u,(long long)c.min_v,(long long)c.max_u,(long long)c.max_v);
+    } else {
+        fprintf(out,"grid %u on %u",id,g->placement_id);
+        if (g->from_system) fprintf(out," from-system %u origin %lld %lld",g->system_id,
+            (long long)g->system_origin[0],(long long)g->system_origin[1]);
     }
-    fprintf(out,"subgrid %u parent %u cell [%lld,%lld]-[%lld,%lld]",id,g->parent_id,
-        (long long)c.min_u,(long long)c.min_v,(long long)c.max_u,(long long)c.max_v);
     for (int a=0;a<2;++a) {
         Coord coords[GRID_MAX_LINES]; size_t n;
         if (!grid_axis_lines_in(w->grids,w->grid_count,g,p,world_placement_boundary(w,p),a,coords,&n,NULL,0)) continue;
@@ -208,7 +217,7 @@ static void reference_subgrid_text(const World *w,uint32_t id,FILE *out)
 static bool reference_geometry_changed(const World *before,const World *after)
 {
     for (size_t i=0;i<before->grid_count;++i)
-        if ((before->grids[i].is_subgrid || eng_object_bound(before,0,before->grids[i].id)) && reference_grid_changed(before,after,before->grids[i].id)) return true;
+        if ((before->grids[i].is_subgrid || before->grids[i].from_system || eng_object_bound(before,0,before->grids[i].id)) && reference_grid_changed(before,after,before->grids[i].id)) return true;
     bool has_child=false;
     for (size_t i=0;i<before->grid_count;++i) if (before->grids[i].is_subgrid) has_child=true;
     if (has_child) for (size_t i=0;i<before->guide_count;++i)
@@ -227,11 +236,11 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
     bool placed=false;
     for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed) placed=true;
     bool referenced=false;
-    for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].is_subgrid) referenced=true;
+    for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].is_subgrid || w->grids[i].from_system) referenced=true;
     if ((!placed && !referenced && !w->engineering.binding_count) || !count) return false;
     const char *c=tokens[0];
     if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||
-        !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
+        !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"grid-system") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
     if ((!strcmp(c,"place") || !strcmp(c,"timber")) && count>1) {
         uint32_t id;
         if (parse_u32(tokens[1],&id)) { int i=reference_timber_index(w,id); return i>=0 && w->timbers[i].placed; }
@@ -262,7 +271,7 @@ static void reference_preview_text(void)
     fprintf(stderr,"I8a preview %u: %s\n",g_preview.token,g_preview.valid?"valid; confirm token to apply":"invalid; cannot apply");
     for (size_t i=0;i<g_preview.before.grid_count;++i) {
         const ReferenceGrid *g=&g_preview.before.grids[i];
-        if (!g->is_subgrid || !reference_grid_changed(&g_preview.before,&g_preview.after,g->id)) continue;
+        if (!reference_grid_changed(&g_preview.before,&g_preview.after,g->id)) continue;
         reference_subgrid_text(&g_preview.before,g->id,stderr); fputs(" -> ",stderr);
         reference_subgrid_text(&g_preview.after,g->id,stderr); fputc('\n',stderr);
     }
@@ -351,7 +360,11 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
     g_reference_capturing=false;
     bool affects=reference_may_affect(world,tokens,count);
     bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate.engineering,sizeof world->engineering));
-    if (explicit_preview || (!g_preview_confirming && (engineering_edit || (affects && (!ok || reference_geometry_changed(world,&candidate)))))) {
+    uint32_t system_edit_id;
+    bool system_edit=!g_parsing_scene_file && count>1 && !strcmp(tokens[0],"grid-system") &&
+        parse_u32(tokens[1],&system_edit_id) && world_find_grid_system(world,system_edit_id);
+    bool application_edit=!g_parsing_scene_file && count>4 && !strcmp(tokens[0],"grid") && !strcmp(tokens[4],"from-system");
+    if (explicit_preview || (!g_preview_confirming && (engineering_edit || system_edit || application_edit || (affects && (!ok || reference_geometry_changed(world,&candidate)))))) {
         reference_stage(world,ok?&candidate:&g_reference_trial,tokens,count,ok);
         reference_preview_text();
         if (explicit_preview) return true;

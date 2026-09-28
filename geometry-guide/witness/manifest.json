@@ -132,6 +132,25 @@
     "view": "bottom",
     "gist": "固定材料版本→做法→面套用→尺寸來源→D10a 格線；引擎由同一份來源推出 u 的四條線與 v 的一條線。"
   },
+  "D29": {
+    "scene": "_wit_d29_grid_system.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "同一個 400 mm 系統引用到帶孔矩形與 L 形面，各自使用原點 0／200；可見段由輪廓扣孔裁切，來源身分與索引不變。"
+  },
+  "R32": {
+    "scene": "_wit_d29_grid_system.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "先讀系統定義，再依兩個原點得到格線 400／800／1200／1600 與 600／1000／1400／1800；夾具只存系統引用，不存展開線段。"
+  },
+  "I37": {
+    "scene": "_wit_i37_grid_system_missing.scene",
+    "expect": "reject",
+    "view": "bottom",
+    "error_contains": "existing surface and grid-system",
+    "gist": "套用引用不存在的系統 99 時拒絕；沒有暗建來源或隱藏承載面。圖為失敗前的合法面。"
+  },
   "I35": {
     "scene": "_wit_i35_engineering_zero_panel.scene",
     "expect": "reject",

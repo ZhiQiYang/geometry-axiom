@@ -284,6 +284,7 @@ static void cmd_pick(int v, Coord x, Coord y, Coord r)
     fputs("]}\n", stdout);
 }
 
+#include "grid_system_bridge.inc"
 #include "reference_bridge.inc"
 
 static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
@@ -485,7 +486,7 @@ static bool next_surface_ids(uint32_t *out, size_t n)
 /* newid [n]：各類物件一個尚未被占用的 id，外加 n 個 surface 用的 id（預設 1）。 */
 static void cmd_newid(size_t surface_count)
 {
-    uint32_t mb, mp, mg, mgr, mt, ms, mc, mbm, md;
+    uint32_t mb, mp, mg, mgr, mgs, mt, ms, mc, mbm, md;
     uint32_t surfaces[NEWID_MAX_SURFACES];
 
     if (surface_count < 1 || surface_count > NEWID_MAX_SURFACES) {
@@ -502,6 +503,7 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID(mp,  g_world.placements, g_world.placement_count, false);
     WORLD_NEXT_ID(mg,  g_world.guides,     g_world.guide_count,     false);
     WORLD_NEXT_ID(mgr, g_world.grids,      g_world.grid_count,      false);
+    WORLD_NEXT_ID(mgs, g_world.grid_systems, g_world.grid_system_count, false);
     WORLD_NEXT_ID(mt,  g_world.timbers,    g_world.timber_count,    false);
     WORLD_NEXT_ID(ms,  g_world.spaces,     g_world.space_count,     true);
     WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count,    false);
@@ -510,9 +512,9 @@ static void cmd_newid(size_t surface_count)
 
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
-           "\"grid\":%u,\"timber\":%u,\"space\":%u,"
+           "\"grid\":%u,\"gridSystem\":%u,\"timber\":%u,\"space\":%u,"
            "\"column\":%u,\"beam\":%u,\"datum\":%u,\"surfaces\":[",
-           mb, mp, mg, mgr, mt, ms, mc, mbm, md);
+           mb, mp, mg, mgr, mgs, mt, ms, mc, mbm, md);
     for (size_t i = 0; i < surface_count; ++i) {
         if (i) putchar(',');
         printf("%u", surfaces[i]);
@@ -775,6 +777,12 @@ static void cmd_objects(void)
                (long long)b->x_hi, (long long)b->y_hi, (long long)b->z_hi);
         cpos_json(CANVAS_POS_BEAM, b->id);
         putchar('}');
+    }
+
+    fputs("],\"gridSystems\":[",stdout);
+    for (size_t i=0;i<g_world.grid_system_count;++i) {
+        if (i) putchar(',');
+        json_grid_system(&g_world,&g_world.grid_systems[i]);
     }
 
     /*

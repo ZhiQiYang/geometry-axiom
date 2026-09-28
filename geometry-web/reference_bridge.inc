@@ -81,7 +81,9 @@ static void json_reference_preview(void)
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
         json_reference_grid(&g_preview.after,g); putchar('}');
     }
-    fputs("],\"violations\":[",stdout);
+    putchar(']');
+    json_grid_system_preview();
+    fputs(",\"violations\":[",stdout);
     for (size_t i=0;i<g_preview.issue_count;++i) {
         const ReferenceIssue *e=&g_preview.issues[i];
         printf("%s{\"timber\":%u,\"clause\":",i?",":"",e->timber); js_string(e->clause);
@@ -149,6 +151,10 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
     const PlacementSurface *p=world_find_placement(w,g->placement_id);
     const SpaceBoundarySurface *b=p?world_placement_boundary(w,p):NULL;
     printf("{\"id\":%u,\"surface\":%u",g->id,g->placement_id);
+    fputs(",\"sourceSystem\":",stdout);
+    if (g->from_system) printf("%u",g->system_id); else fputs("null",stdout);
+    printf(",\"origin\":[%lld,%lld]",g->from_system?(long long)g->system_origin[0]:0LL,
+        g->from_system?(long long)g->system_origin[1]:0LL);
     printf(",\"kind\":\"%s\",\"parentId\":",g->is_subgrid?"subgrid":"main");
     if (g->is_subgrid) {
         printf("%u,\"cell\":{",g->parent_id);
@@ -179,23 +185,8 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
         if (p) grid_axis_lines_in(w->grids,w->grid_count,g,p,b,axis,values,&count,NULL,0);
         printf(",\"%c\":[",axis?'v':'u');
         for (size_t k=0;k<count;++k) printf("%s%lld",k?",":"",(long long)values[k]);
-        printf("],\"%cDefinition\":{\"source\":\"%s\"",axis?'v':'u',
-            g->is_subgrid?"subgrid":d->source==GRID_SRC_EXPLICIT?"explicit":d->source==GRID_SRC_SERIES?"series":
-            d->source==GRID_SRC_PANEL?"panel":"none");
-        if (g->is_subgrid) printf(",\"divisions\":%u",g->divisions[axis]);
-        else if (d->source==GRID_SRC_EXPLICIT) {
-            fputs(",\"coordinates\":[",stdout);
-            for (size_t k=0;k<d->count;++k) printf("%s%lld",k?",":"",(long long)d->coords[k]);
-            putchar(']');
-        } else if (d->source==GRID_SRC_SERIES) {
-            printf(",\"start\":%lld,\"step\":%lld,\"count\":%zu",
-                (long long)d->start,(long long)d->step,d->series_count);
-        } else if (d->source==GRID_SRC_PANEL) {
-            printf(",\"panel\":%lld,\"gap\":%lld,\"anchor\":%lld,\"anchorExplicit\":%s",
-                (long long)d->panel,(long long)d->gap,(long long)d->anchor,
-                d->anchor_explicit?"true":"false");
-        }
-        putchar('}');
+        printf("],\"%cDefinition\":",axis?'v':'u');
+        json_grid_axis_definition(d,g->is_subgrid,g->divisions[axis]);
     }
     fputs(",\"lines\":[",stdout);
     bool first=true;

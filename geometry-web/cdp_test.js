@@ -2,7 +2,7 @@
 const { spawn } = require("child_process");
 const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
-const SCOPE_FLAGS = ['GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
+const SCOPE_FLAGS = ['GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
   if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
@@ -266,7 +266,7 @@ async function main() {
   await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
-  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY) {
+  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY) {
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   console.log('=== Setup. 確認重置隔離驗收專案 ===');
@@ -2503,12 +2503,12 @@ async function main() {
 
   /* ================= P17. 主畫布其餘 A3-A6 A9-A11 F2 ================= */
   console.log("=== P17. 主畫布其餘 ===");
-  /* (a) 兩張同級起點卡 + 三個物件庫入口 */
+  /* (a) 兩張同級起點卡 + 四個物件庫入口（含獨立網格系統） */
   const qc = await eval_(`(()=>{
     const g=[...document.querySelectorAll(".quick-create")];
-    return {n:g.length, minH:Math.round(Math.min(...g.map(b=>b.getBoundingClientRect().height))),
+    return {n:g.length, ids:g.map(b=>b.id).sort(), minH:Math.round(Math.min(...g.map(b=>b.getBoundingClientRect().height))),
       first:g[0].id, starts:[...document.querySelectorAll('.start-options > button')].map(e=>e.textContent)};})()`);
-  console.log("P17 物件庫:",explicitVerdict(qc.n === 4 && qc.minH >= 50 && qc.first === "btnBox6"
+  console.log("P17 物件庫:",explicitVerdict(JSON.stringify(qc.ids) === JSON.stringify(['btnBox6','btnNewBeam','btnNewColumn','btnNewGridSystem','btnNewSpace']) && qc.minH >= 50 && qc.first === "btnBox6"
     && qc.starts.length === 2 && qc.starts.some(s=>s.includes('有平面圖')) && qc.starts.some(s=>s.includes('知道尺寸')) ? "✓" : "✗ " + JSON.stringify(qc)));
   /* (b) chips:關柱 → showColumn=false + aria-pressed;全部顯示還原 */
   await eval_(`document.querySelector('[data-filter-type="column"]').click()`);
@@ -3405,13 +3405,13 @@ async function main() {
     throw Error('UI did not finish transaction');
   };
   const clickSelector = async sel => {
-    const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,hit:e.contains(hit),target:hit?.outerHTML?.slice(0,200)}})()`);
+    const p = await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(sel)});if(!e)throw Error('Missing control '+${JSON.stringify(sel)}+' '+JSON.stringify({focus:oc.focus,connection:connection.phase,error:connection.error,status:$('status').textContent}));e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,hit:e.contains(hit),target:hit?.outerHTML?.slice(0,200)}})()`);
     if (!p.hit) throw Error('Control is not reachable '+sel+' '+JSON.stringify(p));
     await click(p.x,p.y); await sleep(120); await waitIdle();
     await eval_(`window.__cdpSettleUI(0)`);
   };
   const setupRemaining = async lines => {
-    const out = await eval_(`(async()=>{await setView3(false);resetSceneFocus();await api('reset');const out=[];for(const s of ${JSON.stringify(lines)})out.push(await api('line '+s));await renderObjects();return out})()`);
+    const out = await eval_(`(async()=>{await setView3(false);resetSceneFocus();const reset=await api('reset');if(!reset.ok)throw Error('Fixture reset failed: '+JSON.stringify(reset));const out=[];for(const s of ${JSON.stringify(lines)})out.push(await api('line '+s));const refreshed=await renderObjects();if(refreshed!==true)throw Error('Fixture did not finish rendering: '+JSON.stringify({refreshed,connection:connection.phase,error:connection.error,events:window.geometryFeedback?.events?.slice(-10)}));return out})()`);
     if (!Array.isArray(out) || out.some(r=>!r.ok)) throw Error('test setup failed '+JSON.stringify(out));
   };
   const remainingShot = async name => {
@@ -3563,8 +3563,8 @@ async function main() {
     return oc.faces.map(cardBox);
   })()`);
   check('M2 new card avoids offset existing bbox',cards.length===2 && (cards[0].x+cards[0].w<=cards[1].x || cards[1].x+cards[1].w<=cards[0].x || cards[0].y+cards[0].h<=cards[1].y || cards[1].y+cards[1].h<=cards[0].y),cards);
-  const quick = await eval_(`[...document.querySelectorAll('.quick-create strong')].map(e=>({w:e.clientWidth,scroll:e.scrollWidth,h:e.getBoundingClientRect().height,text:e.textContent}))`);
-  check('M1 library labels stay one line',quick.length===4 && quick.every(r=>r.h<=20 && r.w>=r.scroll),quick);
+  const quick = await eval_(`[...document.querySelectorAll('.quick-create strong')].map(e=>({id:e.closest('.quick-create').id,w:e.clientWidth,scroll:e.scrollWidth,h:e.getBoundingClientRect().height,text:e.textContent}))`);
+  check('M1 library labels stay one line',JSON.stringify(quick.map(r=>r.id).sort())===JSON.stringify(['btnBox6','btnNewBeam','btnNewColumn','btnNewGridSystem','btnNewSpace']) && quick.every(r=>r.h<=20 && r.w>=r.scroll),quick);
   const pan0=await eval_(`[oc.panX,oc.panY]`);
   await clickSelector('.object-row[data-kind="boundary"][data-id="1"]');
   check('M12 visible list selection does not pan',JSON.stringify(pan0)===JSON.stringify(await eval_(`[oc.panX,oc.panY]`)));
@@ -6762,12 +6762,14 @@ async function main() {
   }
 
   }
-  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY)
+  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./project_audit_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY)
+  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY)
+  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN});
+  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+    await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
 
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
@@ -6779,7 +6781,7 @@ async function fatal(e) {
   _log("FATAL:", e.message);
   try {
     if(ws?.readyState===1){
-      const state=await Promise.race([eval_(`({ready:document.readyState,focus:typeof oc==='object'?oc.focus:null,dialogs:[...document.querySelectorAll('dialog[open]')].map(d=>({id:d.id,classes:d.className,text:d.textContent.slice(0,1200)})),active:document.activeElement?.id,feedback:document.querySelector('#fbPanel')?.hidden,status:document.querySelector('#status')?.textContent})`),delay(1500).then(()=>null)]);
+      const state=await Promise.race([eval_(`({ready:document.readyState,focus:typeof oc==='object'?oc.focus:null,connection:typeof connection==='object'?{phase:connection.phase,error:connection.error}:null,events:window.geometryFeedback?.events?.slice(-10),dialogs:[...document.querySelectorAll('dialog[open]')].map(d=>({id:d.id,classes:d.className,text:d.textContent.slice(0,1200)})),active:document.activeElement?.id,feedback:document.querySelector('#fbPanel')?.hidden,status:document.querySelector('#status')?.textContent})`),delay(1500).then(()=>null)]);
       _log('FATAL_UI:',JSON.stringify(state));
       const capture=await Promise.race([send('Page.captureScreenshot',{format:'png'}),delay(1500).then(()=>null)]);
       if(capture?.result?.data&&process.env.GEOMETRY_REPAIR_SCREENSHOT_DIR){
