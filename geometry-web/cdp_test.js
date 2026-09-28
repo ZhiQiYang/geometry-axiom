@@ -2,7 +2,7 @@
 const { spawn } = require("child_process");
 const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
-const SCOPE_FLAGS = ['GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
+const SCOPE_FLAGS = ['GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
   if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
@@ -324,7 +324,7 @@ async function main() {
   await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
-  if (!process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY) {
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY) {
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   console.log('=== Setup. 確認重置隔離驗收專案 ===');
@@ -6459,7 +6459,18 @@ async function main() {
        工具族(guide/hole/timber 族)、拖曳尺寸膠囊、space-pan、busy;
        (c) overlay pointer-events:none 不干擾命中、進畫布隱原生游標、離開即隱藏。 */
     console.log('=== P62. 自訂 SVG 游標(方向 1b) ===');
-    const ck62 = (n, v, d) => console.log(n,explicitVerdict(v === true ? '✓' : '✗'), v === true ? '' : JSON.stringify(d));
+    const ck62 = (n, v, d) => {
+      console.log(n,explicitVerdict(v === true ? '✓' : '✗'), v === true ? '' : JSON.stringify(d));
+      // Attribute checks miss a global CSS rule overriding SVG presentation attributes.
+      if (d?.vis === 'visible' && d.labelStyle) {
+        const s=d.labelStyle;
+        console.log(n+' 實際字樣無描邊且保留白字',explicitVerdict(s.stroke==='none'&&s.width===0&&s.fill==='rgb(255, 255, 255)'?'✓':'✗'),s);
+      }
+      if (d?.tipStyle) {
+        const s=d.tipStyle;
+        console.log(n+' 尺寸提示實際字樣無描邊',explicitVerdict(s.stroke==='none'&&s.width===0&&s.fill==='rgb(255, 255, 255)'?'✓':'✗'),s);
+      }
+    };
     /* 面內區段慣例:視窗放大到 5400×3800,讓 zoom=1 的 scene mm 座標直接等於螢幕 px,
        可以直接對 4000×3000 的面點擊/滑過任意 mm 座標(同 P48-P52)。 */
     await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
@@ -6485,6 +6496,7 @@ async function main() {
     const cx62 = () => eval_(`(()=>{const h=cxUI.fe; if(!h) return null;
       const cap=h.cur.querySelector('.cx-capsule'), txt=h.cur.querySelector('.cx-label');
       const arrow=h.cur.querySelector('path');
+      const style=e=>{if(!e)return null;const s=getComputedStyle(e);return {stroke:s.stroke,width:parseFloat(s.strokeWidth),fill:s.fill};};
       return { vis:h.svg.style.visibility, on:$('faceEditorViewport').classList.contains('cx-on'),
         cssCursor:getComputedStyle($('faceEditorSvg')).cursor,
         layerPE:getComputedStyle(h.svg).pointerEvents,
@@ -6494,6 +6506,7 @@ async function main() {
           h:+cap.height.baseVal.value,rx:+cap.rx.baseVal.value,fill:cap.getAttribute('fill'),
           stroke:cap.getAttribute('stroke'),sw:cap.getAttribute('stroke-width')}:null,
         label:txt?txt.textContent:null, labelFill:txt?txt.getAttribute('fill'):null,
+        labelStyle:style(txt),tipStyle:style(h.cur.querySelector('.cx-tip text')),
         labelFs:txt?txt.getAttribute('font-size'):null, labelFw:txt?txt.getAttribute('font-weight'):null,
         tip:(h.cur.querySelector('.cx-tip text')||{}).textContent||null,
         marks:[...h.marks.children].map(c=>c.tagName)};})()`);
@@ -6611,14 +6624,16 @@ async function main() {
       await send('Input.dispatchMouseEvent', { type:'mouseMoved', x:card62.x, y:card62.y, button:'none' }); await sleep(80);
       const s62o = await eval_(`(()=>{const h=cxUI.oc; if(!h) return null;
         const txt=h.cur.querySelector('.cx-label');
+        const s=txt&&getComputedStyle(txt);
         return {vis:h.svg.style.visibility,on:$('canvasViewport').classList.contains('cx-on'),
-          label:txt?txt.textContent:null};})()`);
+          label:txt?txt.textContent:null,labelStyle:s?{stroke:s.stroke,width:parseFloat(s.strokeWidth),fill:s.fill}:null};})()`);
       ck62('P62-17 物件畫布指到卡片:「移動」hand', s62o && s62o.on === true && s62o.label === '移動', s62o);
       await eval_(`setOcTool('rect')`); await sleep(80);
       await send('Input.dispatchMouseEvent', { type:'mouseMoved', x:card62.x, y:card62.y, button:'none' }); await sleep(60);
       const s62r = await eval_(`(()=>{const h=cxUI.oc;const t=h.cur.querySelector('.cx-label');
-        return t?t.textContent:null;})()`);
-      ck62('P62-18 矩形工具:「面·矩形」', s62r === '面·矩形', s62r);
+        const s=t&&getComputedStyle(t);return {vis:h.svg.style.visibility,label:t?.textContent,
+          labelStyle:s?{stroke:s.stroke,width:parseFloat(s.strokeWidth),fill:s.fill}:null};})()`);
+      ck62('P62-18 矩形工具:「面·矩形」', s62r.label === '面·矩形', s62r);
       await eval_(`setOcTool('select')`);
     }
 
@@ -6851,11 +6866,11 @@ async function main() {
   }
 
   }
-  if (!process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./project_audit_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN});
   if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
@@ -6867,6 +6882,8 @@ async function main() {
     await require('./uiux_review_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
   if (scope.mode==='full' || process.env.GEOMETRY_UX_REFINEMENT_ONLY)
     await require('./ux_refinement_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,expectBeforeUnload:()=>{expectedBeforeUnloadUntil=Date.now()+15000;},exceptionCount:()=>excN});
+  if (scope.mode==='full' || process.env.GEOMETRY_SELECTION_CURSOR_ONLY)
+    await require('./selection_cursor_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
 
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
