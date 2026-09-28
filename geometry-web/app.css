@@ -2128,3 +2128,243 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
 .selection-marquee.crossing{fill:rgba(30,145,109,.12);stroke:#1e916d;stroke-dasharray:5 3}
 .multi-selection-list{max-height:220px;overflow:auto;margin:10px 0;padding-left:22px;font-size:12px;line-height:1.8}.multi-selection-note{font-size:12px;line-height:1.65;color:#617087}
 @media(max-width:680px){.selection-summary{top:8px;left:8px;right:8px;max-width:calc(100% - 16px);gap:8px;padding:7px 9px}.selection-copy small{max-width:240px}.selection-summary button{min-width:68px}}
+
+/* Object composition canvas: a library, a working surface, and a selection dock.
+   Face, space, reference, and three-view workspaces keep their own layouts. */
+.brand-title { color: #22334c; font-size: 18px; font-weight: 750; white-space: nowrap; letter-spacing: -.04em; }
+.brand-divider { width: 1px; height: 24px; flex: 0 0 1px; background: var(--border); margin: 0 6px; }
+.mobile-create-object, .canvas-draw-toolbar { display: none; }
+.topbar > .top-actions { grid-column: 3; }
+#createObjectPop, #quickBoundaryPop {
+  position: fixed; inset: auto; top: calc(var(--topbar-h) + 68px); left: 16px;
+  width: 260px; min-width: 0; max-width: calc(100vw - 16px);
+  max-height: calc(100dvh - 160px); overflow: auto; overscroll-behavior: contain;
+  padding: 8px; gap: 2px; border-color: #d9e2ed; border-radius: 12px;
+  box-shadow: 0 14px 42px #263e6124, 0 3px 10px #263e6110; z-index: 85;
+}
+.create-menu-heading { padding: 10px 10px 5px; color: #667790; font-size: 12px; font-weight: 650; }
+.create-menu-heading:not(:first-child) { margin-top: 5px; border-top: 1px solid #e7edf4; padding-top: 12px; }
+#createObjectPop .create-menu-entry, #createObjectPop .reference-entry {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 54px;
+  flex-shrink: 0; margin: 0; padding: 8px 10px; border: 0; border-radius: 8px;
+  background: transparent; text-align: left; white-space: normal; cursor: pointer;
+}
+#createObjectPop .create-menu-entry:hover, #createObjectPop .reference-entry:hover { background: #f1f5fb; }
+#createObjectPop .create-menu-entry > span:last-child, #createObjectPop .reference-entry > span:last-child { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+#createObjectPop strong { font-size: 14px; font-weight: 650; color: #263d58; }
+#createObjectPop small { font-size: 12px; line-height: 1.55; color: #6d7e93; white-space: normal; }
+#createObjectPop .space-model-entry { margin: 4px 0 0; padding: 6px 0 0; border: 0; border-top: 1px solid #e7edf4; background: transparent; }
+#createObjectPop .space-model-release { display: block; padding: 4px 10px; font-size: 12px; line-height: 1.6; }
+#createObjectPop .reference-entry > [data-icon] { display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; border-radius: 8px; background: var(--space-soft); color: var(--space); }
+#createObjectPop .reference-entry svg { width: 17px; height: 17px; }
+#createObjectPop .text-button, #quickBoundaryPop .menu-item { min-height: 44px; font-size: 14px; }
+#createObjectPop .text-button { width: 100%; justify-content: flex-start; padding: 8px 10px; }
+#quickBoundaryPop .menu-item svg { width: 19px; height: 19px; color: var(--face); }
+
+body.canvas-composition {
+  --left-w: 278px; --right-w: 0px; --topbar-h: 60px; --statusbar-h: 28px;
+  --bg: #f6f8fc; --canvas: #fbfcfe; --ink: #22344d; --muted: #687c96;
+  --border: #dfe6ef; --border-strong: #cbd8e7;
+  --accent: #365bf5; --accent-strong: #2d50db; --accent-soft: #edf2ff;
+  font-size: 14px;
+}
+body.canvas-composition .topbar { grid-template-columns: minmax(0, 1fr) auto; gap: 16px; padding: 0 20px; background: #fff; }
+body.canvas-composition .topbar > .top-actions { grid-column: 2; gap: 9px; }
+body.canvas-composition .brand { gap: 11px; }
+body.canvas-composition .brand-copy { display: flex; }
+body.canvas-composition .brand-copy .main-project-name { max-width: 260px; font-size: 14px; color: #5b708b; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.canvas-composition .brand-mark { display: grid; width: 32px; height: 32px; border-radius: 8px; background: #1d365b; }
+body.canvas-composition .top-actions > .icon-button { width: 34px; height: 36px; }
+body.canvas-composition .segmented { border-color: #dce4ef; border-radius: 8px; background: #f3f6fb; padding: 3px; }
+body.canvas-composition .segmented .seg { min-height: 30px; padding: 0 12px; font-size: 13px; font-weight: 600; }
+body.canvas-composition .segmented .seg.active { color: #3b5480; }
+body.canvas-composition #fileMenuBtn { height: 36px; padding: 0 10px; font-size: 13px; }
+body.canvas-composition .main-project-status { color: #8090a6; font-size: 12px; }
+body.canvas-composition .project-save { min-height: 36px; padding: 0 16px; border-radius: 8px; font-size: 14px; background: var(--accent); }
+body.canvas-composition .workspace { grid-template-columns: var(--left-w) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; background: var(--canvas); }
+body.canvas-composition .sidebar-left { grid-column: 1; grid-row: 1 / -1; border-right: 1px solid var(--border); background: #fff; }
+body.canvas-composition #canvasViewport { grid-column: 2; grid-row: 1; }
+body.canvas-composition #canvasViewport.show-grid {
+  background-image: radial-gradient(circle, #dce3ec .75px, transparent .95px);
+  background-size: var(--grid-size) var(--grid-size);
+  background-position: var(--grid-x) var(--grid-y);
+}
+body.canvas-composition .canvas-create-section { padding: 18px 16px 8px; border-bottom: 0; }
+body.canvas-composition .create-object-button { width: 100%; height: 46px; justify-content: flex-start; gap: 12px; padding: 0 18px; border-radius: 8px; font-size: 15px; font-weight: 650; box-shadow: 0 3px 7px #365bf51a; }
+body.canvas-composition .create-object-button svg { width: 20px; height: 20px; }
+body.canvas-composition .canvas-quick-entries { display: grid; gap: 2px; margin-top: 13px; }
+body.canvas-composition .canvas-quick-entry { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 13px; width: 100%; height: 70px; min-height: 70px; padding: 10px; border: 1px solid transparent; border-radius: 9px; background: #fff; text-align: left; }
+body.canvas-composition .canvas-quick-entry:hover { background: #f4f7fc; border-color: #e5ecf5; }
+body.canvas-composition .canvas-quick-entry .type-icon { width: 32px; height: 32px; border-radius: 8px; background: transparent; }
+body.canvas-composition .canvas-quick-entry .type-icon svg { width: 25px; height: 25px; }
+body.canvas-composition .canvas-quick-entry .grid-system { color: #467fb0; }
+body.canvas-composition .canvas-quick-entry .face { color: #2f8f7b; }
+body.canvas-composition .canvas-quick-entry strong { font-size: 15px; color: #263d59; font-weight: 650; }
+body.canvas-composition .canvas-quick-entry small { margin-top: 4px; font-size: 12px; color: #61738a; }
+body.canvas-composition .sidebar-search { padding: 8px 16px 10px; border-bottom: 1px solid #edf1f6; }
+body.canvas-composition .search-control { height: 40px; padding: 0 11px; gap: 8px; border-color: #dde5ef; border-radius: 8px; background: #fafbfd; }
+body.canvas-composition .search-control input { font-size: 13px; }
+body.canvas-composition .search-control input::placeholder { color: #61738a; }
+body.canvas-composition .object-tree-section { padding: 10px 16px 8px; border: 0; }
+body.canvas-composition .object-tree-section > .section-label-row { display: none; }
+body.canvas-composition .object-tree-section > .section-label-row .section-label { color: #5d7290; font-size: 14px; letter-spacing: 0; font-weight: 650; }
+body.canvas-composition .count-badge { font-size: 12px; background: #f1f5fb; color: #7c8ca4; }
+body.canvas-composition .object-list { padding: 0 3px 20px; margin: 0 -3px; }
+body.canvas-composition .object-group + .object-group { margin-top: 24px; }
+body.canvas-composition .object-group-title { display: flex; align-items: center; gap: 8px; padding: 0 7px 9px; margin: 0; color: #506a8b; font-size: 14px; font-weight: 700; line-height: 1.5; }
+body.canvas-composition .object-group-title::after { content: ""; flex: 1; height: 1px; background: #e9eef5; margin-left: 6px; }
+body.canvas-composition .object-row { grid-template-columns: 29px minmax(0, 1fr) auto; gap: 9px; min-height: 60px; margin-bottom: 3px; padding: 9px 8px; border: 1px solid transparent; border-radius: 8px; }
+body.canvas-composition .object-row:hover { background: #f5f8fd; }
+body.canvas-composition .object-row.selected { background: #edf3ff; border-color: #d6e3fb; }
+body.canvas-composition .object-row:focus-visible { outline: 2px solid #4d72dc; outline-offset: -2px; }
+body.canvas-composition .object-row .row-icon { width: 29px; height: 29px; border-radius: 7px; }
+body.canvas-composition .object-row .row-icon svg { width: 18px; height: 18px; }
+body.canvas-composition .object-row strong { font-size: 14px; font-weight: 600; color: #2d4260; }
+body.canvas-composition .object-row small { margin-top: 3px; font-size: 12px; line-height: 1.5; color: #61738a; }
+body.canvas-composition .object-row .show-view { width: 26px; height: 30px; color: #8ea0b7; }
+body.canvas-composition .object-list-empty { padding: 28px 8px; font-size: 13px; line-height: 1.7; }
+body.canvas-composition .canvas-library-footer { flex: 0 0 56px; min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 16px; border-top: 1px solid var(--border); background: #fff; }
+.library-collapse-button { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 4px; color: #667b97; background: transparent; font-size: 13px; cursor: pointer; }
+.library-collapse-button svg { width: 18px; height: 18px; }
+.library-filter-menu { position: relative; color: #667b97; font-size: 12px; }
+.library-filter-menu > summary { min-height: 40px; display: flex; align-items: center; padding: 0 7px; border-radius: 6px; list-style: none; cursor: pointer; }
+.library-filter-menu > summary::-webkit-details-marker { display: none; }
+.library-filter-menu > summary:hover, .library-collapse-button:hover { background: #f5f8fd; color: #375683; }
+.library-filter-menu > .filter-section { position: absolute; bottom: calc(100% + 12px); right: -4px; width: 250px; padding: 14px; border: 1px solid #dce5ef; border-radius: 10px; background: #fff; box-shadow: 0 8px 28px #263e6120; z-index: 22; }
+.library-filter-menu .chip { min-height: 34px; font-size: 12px; }
+.library-filter-menu .section-label, .library-filter-menu .chip-reset { font-size: 12px; }
+body.canvas-composition .canvas-draw-toolbar { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 12; display: flex; gap: 4px; padding: 5px; border: 1px solid #dce4ef; border-radius: 10px; background: #fff; box-shadow: 0 4px 14px #23477412; }
+body.canvas-composition .canvas-draw-toolbar .tool-button { min-width: 39px; height: 38px; padding: 0 10px; border-radius: 7px; background: transparent; }
+body.canvas-composition .canvas-draw-toolbar .tool-button > span:not([data-icon]), body.canvas-composition .canvas-draw-toolbar kbd { display: none; }
+body.canvas-composition .canvas-draw-toolbar .tool-button svg { width: 19px; height: 19px; }
+body.canvas-composition .canvas-draw-toolbar .tool-button.active { background: #eaf1ff; color: #345ff0; box-shadow: none; }
+body.canvas-composition .canvas-draw-toolbar .tool-button:hover:not(.active) { background: #f3f6fa; }
+body.canvas-composition .canvas-mode-hint { top: 76px; }
+body.canvas-composition .toast-region { top: calc(var(--topbar-h) + 78px); }
+body.canvas-composition:has(#canvasModeHint:not([hidden])) .toast-region { top: calc(var(--topbar-h) + 116px); }
+body.canvas-composition .selection-summary { top: 78px; left: 18px; right: auto; max-width: calc(100% - 36px); padding: 7px 10px; background: #ffffffed; border-color: #e4eaf3; box-shadow: none; }
+/* Routine single selection is shown in the dock; the overlay is reserved for
+   multiple selection and a live marquee, where its direction hint is useful. */
+body.canvas-composition #canvasViewport:not(:has(#ocv .selection-marquee)) #ocSelectionSummary:is([data-count="0"], [data-count="1"], :not([data-count])) { display: none; }
+body.canvas-composition .selection-copy strong { font-size: 12px; font-weight: 600; color: #687c98; }
+body.canvas-composition .selection-copy small { font-size: 11px; color: #8b9cb2; }
+body.canvas-composition .selection-summary button { min-height: 34px; }
+body.canvas-composition .canvas-controls { left: auto; right: 18px; bottom: 18px; gap: 4px; padding: 5px; border-color: #dce4ef; border-radius: 10px; box-shadow: 0 4px 14px #23477410; }
+body.canvas-composition .canvas-controls .icon-button { width: 32px; height: 32px; }
+body.canvas-composition .canvas-controls .zoom-level { height: 32px; min-width: 52px; font-size: 13px; }
+body.canvas-composition .canvas-controls .mini-toggle { flex: 0 0 44px; width: 44px; min-width: 44px; height: 32px; padding: 0 6px; font-size: 12px; white-space: nowrap; }
+body.canvas-composition .minimap-shell { left: 18px; right: auto; bottom: 18px; width: 112px; height: 72px; border-color: #dde5ef; opacity: .9; }
+body.canvas-composition .minimap-shell.collapsed { width: 34px; height: 30px; }
+body.canvas-composition .ocard-frame { filter: drop-shadow(0 4px 9px #32507712); }
+body.canvas-composition .ocard.selected .ocard-frame { stroke-width: 2; filter: drop-shadow(0 4px 10px #467fb020); }
+body.canvas-composition .ocard.compact > text:nth-of-type(2), body.canvas-composition .ocard.compact > line { display: none; }
+body.canvas-composition .grid-relation { pointer-events: none; }
+body.canvas-composition .grid-relation.active path, body.canvas-composition .grid-relation.selected path, body.canvas-composition .grid-relation path.active { stroke-width: 2; }
+body.canvas-composition .grid-relation text { opacity: .75; font-size: 12px; }
+body.canvas-composition .sidebar-right {
+  display: none; grid-column: 2; grid-row: 2; position: relative; inset: auto;
+  width: auto; min-width: 0; min-height: 0; max-height: 280px;
+  margin: 0 12px 12px; padding: 0; overflow: auto; overscroll-behavior: contain;
+  border: 1px solid #dbe4f0; border-radius: 12px; background: #fff;
+  box-shadow: 0 3px 12px #284b7010; z-index: 11;
+}
+body.canvas-composition.canvas-has-inspector .sidebar-right { display: block; }
+body.canvas-composition .sidebar-right > .drawer-close, body.canvas-composition #inspectorEmpty { display: none; }
+body.canvas-composition .inspector-content { min-height: 0; }
+body.canvas-composition .inspector-content > .inspector-hero { padding: 16px 20px; }
+body.canvas-composition .inspector-content .inspector-hero h2 { font-size: 17px; }
+body.canvas-composition .inspector-content .inspector-section { padding: 14px 20px; }
+body.canvas-composition .inspector-content .inspector-section h3 { font-size: 14px; }
+body.canvas-composition .inspector-content .inspector-section input, body.canvas-composition .inspector-content .inspector-section select { min-height: 36px; font-size: 14px; }
+body.canvas-composition .inspector-content .inspector-section .btn { min-height: 36px; font-size: 13px; }
+body.canvas-composition .statusbar { padding: 0 16px; font-size: 11px; background: #fff; }
+body.canvas-composition #fbButton { top: calc(var(--topbar-h) + 18px); right: 18px; bottom: auto; }
+
+@media (min-width: 901px) {
+  /* Recover canvas height from padding without shrinking inspector controls. */
+  body.canvas-composition.canvas-grid-inspector .gi-header { padding-top: 9px; padding-bottom: 7px; }
+  body.canvas-composition.canvas-grid-inspector .gi-content { padding-top: 8px; padding-bottom: 4px; }
+  body.canvas-composition.canvas-grid-inspector .gi-footer { padding-top: 3px; padding-bottom: 5px; }
+  body.canvas-composition.canvas-grid-inspector .gi-references label + label { margin-top: 9px; }
+  body.canvas-composition.canvas-library-collapsed { --left-w: 64px; }
+  body.canvas-composition.canvas-library-collapsed .canvas-create-section { padding: 18px 8px 8px; }
+  body.canvas-composition.canvas-library-collapsed .create-object-button { padding: 0; justify-content: center; }
+  body.canvas-composition.canvas-library-collapsed .create-object-button > span:not([data-icon]),
+  body.canvas-composition.canvas-library-collapsed .quick-entry-copy,
+  body.canvas-composition.canvas-library-collapsed .sidebar-search,
+  body.canvas-composition.canvas-library-collapsed .object-tree-section,
+  body.canvas-composition.canvas-library-collapsed .library-filter-menu,
+  body.canvas-composition.canvas-library-collapsed .library-collapse-button > span:not([data-icon]) { display: none; }
+  body.canvas-composition.canvas-library-collapsed .canvas-quick-entry { height: 48px; min-height: 48px; padding: 6px; justify-content: center; }
+  body.canvas-composition.canvas-library-collapsed .canvas-library-footer { margin-top: auto; padding: 6px 12px; justify-content: center; }
+  body.canvas-composition.canvas-library-collapsed .library-collapse-button svg { transform: rotate(180deg); }
+}
+@media (max-width: 1160px) {
+  body.canvas-composition .brand-divider { margin: 0 2px; }
+  body.canvas-composition .brand-copy .main-project-name { max-width: 165px; }
+  body.canvas-composition .brand-title { font-size: 16px; }
+  body.canvas-composition .topbar { gap: 10px; padding: 0 14px; }
+  body.canvas-composition .top-actions { gap: 5px; }
+}
+@media (max-width: 900px) {
+  body.canvas-composition { --left-w: 278px; }
+  body.canvas-composition .workspace { grid-template-columns: minmax(0, 1fr); }
+  body.canvas-composition #canvasViewport, body.canvas-composition .sidebar-right { grid-column: 1; }
+  body.canvas-composition .topbar { grid-template-columns: minmax(0, 1fr) auto auto; }
+  body.canvas-composition .topbar > .top-actions { grid-column: 3; }
+  body.canvas-composition .mobile-create-object { display: inline-flex; height: 36px; gap: 6px; padding: 0 11px; font-size: 13px; }
+  body.canvas-composition .brand-title, body.canvas-composition .brand-divider { display: none; }
+  body.canvas-composition .brand-copy .main-project-name { max-width: 180px; }
+  body.canvas-composition .sidebar-left { position: fixed; grid-column: auto; grid-row: auto; top: var(--topbar-h); bottom: var(--statusbar-h); left: 0; width: min(278px, 88vw); z-index: 80; }
+  body.canvas-composition .sidebar-left > .drawer-close { display: flex; min-height: 38px; margin: 7px 12px 0; align-items: center; justify-content: flex-end; font-size: 12px; }
+  body.canvas-composition .canvas-create-section { padding-top: 10px; }
+  body.canvas-composition .top-actions .right-toggle { display: none; }
+  body.canvas-composition .sidebar-right { box-shadow: 0 3px 12px #284b7010; }
+  body.canvas-composition .canvas-controls { right: 12px; bottom: 12px; }
+  body.canvas-composition .minimap-shell { left: 12px; bottom: 12px; }
+}
+@media (max-width: 680px) {
+  .topbar > .top-actions { grid-column: 3; }
+  body.canvas-composition { --topbar-h: 100px; --statusbar-h: 26px; }
+  body.canvas-composition .topbar { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 48px 44px; padding: 4px 12px; gap: 0 8px; }
+  body.canvas-composition .topbar > .brand { grid-row: 1; grid-column: 1; gap: 9px; }
+  body.canvas-composition .brand-mark { width: 28px; height: 28px; border-radius: 7px; }
+  body.canvas-composition .brand-mark svg { width: 20px; height: 20px; }
+  body.canvas-composition .brand-copy .main-project-name { max-width: 210px; font-size: 14px; }
+  body.canvas-composition .mobile-create-object { grid-column: 2; grid-row: 1; min-height: 38px; padding: 0 13px; }
+  body.canvas-composition .topbar > .top-actions { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; justify-content: space-between; gap: 4px; }
+  body.canvas-composition .top-actions > .icon-button { width: 30px; height: 34px; flex: 0 0 30px; }
+  body.canvas-composition .top-actions > .toolbar-separator { display: none; }
+  body.canvas-composition .segmented { padding: 2px; }
+  body.canvas-composition .segmented .seg { min-height: 30px; height: 30px; padding: 0 7px; font-size: 12px; }
+  body.canvas-composition .segmented .seg svg { width: 14px; height: 14px; }
+  body.canvas-composition #fileMenuBtn { width: 29px; height: 34px; padding: 0 4px; }
+  body.canvas-composition .file-menu-label { display: none; }
+  body.canvas-composition .project-save { min-width: 38px; width: 38px; height: 34px; min-height: 34px; padding: 0; }
+  body.canvas-composition .project-save > span:not([data-icon]) { display: none; }
+  body.canvas-composition .project-save svg { display: block; width: 17px; height: 17px; }
+  body.canvas-composition .canvas-draw-toolbar { top: 12px; padding: 4px; }
+  body.canvas-composition .canvas-draw-toolbar .tool-button { height: 40px; min-width: 42px; }
+  body.canvas-composition .selection-summary { top: 73px; left: 10px; max-width: calc(100% - 20px); padding: 6px 8px; }
+  body.canvas-composition .selection-copy small { max-width: 250px; }
+  body.canvas-composition .canvas-mode-hint { top: 72px; }
+  body.canvas-composition .canvas-controls { right: 10px; bottom: 10px; padding: 4px; gap: 3px; max-width: calc(100% - 20px); }
+  body.canvas-composition .canvas-controls .icon-button { width: 30px; height: 32px; }
+  body.canvas-composition .canvas-controls .zoom-level { min-width: 44px; }
+  body.canvas-composition .canvas-controls .mini-toggle { flex-basis: 44px; width: 44px; min-width: 44px; white-space: nowrap; }
+  body.canvas-composition.canvas-has-inspector .sidebar-right { display: block; position: relative; inset: auto; width: auto; max-height: min(310px, 40dvh); margin: 0 8px 8px; z-index: 11; }
+  body.canvas-composition .sidebar-right .inspector-content { min-height: 0; }
+  body.canvas-composition .inspector-content > .inspector-hero { padding: 14px 16px; }
+  body.canvas-composition .inspector-content .inspector-section { padding: 12px 16px; }
+  body.canvas-composition #fbButton { top: calc(var(--topbar-h) + 17px); right: 9px; bottom: auto; }
+  body.canvas-composition .statusbar { padding: 0 9px; }
+}
+@media (max-width: 400px) {
+  body.canvas-composition .canvas-controls { gap: 2px; }
+  body.canvas-composition .canvas-controls .icon-button { flex: 0 0 28px; width: 28px; }
+  body.canvas-composition .canvas-controls .zoom-level { min-width: 40px; }
+  body.canvas-composition .canvas-controls .toolbar-separator.vertical { margin-left: 3px; margin-right: 3px; }
+}
+@media (max-width: 560px) {
+  .topbar > .top-actions { grid-column: 1 / -1; }
+}

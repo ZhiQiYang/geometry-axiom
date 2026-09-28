@@ -1208,7 +1208,11 @@ $("btnExport").onclick = async () => {
 window.addEventListener("keydown", async e => {
   /* Native modal dialogs own keyboard input, including their cancel event.
      Let Escape cancel the preview without also navigating the workspace. */
-  if (document.querySelector("dialog[open]")) return;
+  if (e.defaultPrevented || document.querySelector("dialog[open]")) return;
+  if (e.key === " " && e.target.closest?.("button,a[href],summary,[role='button'],[role='menuitem'],[contenteditable]")) return;
+  if (e.key === "Escape" && document.querySelector("#createObjectPop:not([hidden]),#quickBoundaryPop:not([hidden])")) {
+    e.preventDefault(); closeMenus(true); return;
+  }
   if (e.key === "Escape" && (document.body.classList.contains("drawer-left-open") || document.body.classList.contains("drawer-right-open"))) {
     e.preventDefault(); closePanels(true); return;
   }
@@ -1435,23 +1439,67 @@ async function loadScene(path, name) {
     setStatus("✓ 已載入 " + name); selected = null; refreshActive();
   } else { setStatus("✗ " + (r.error || "")); toast(r.error || "載入失敗"); }
 }
-function closeMenus() {
+let canvasMenuTrigger = null;
+const canvasMenuItems = pop => [...pop.querySelectorAll("button:not(:disabled),a[href]")].filter(n => n.getClientRects().length);
+function closeMenus(restoreFocus = false) {
+  const trigger = canvasMenuTrigger;
   for (const m of document.querySelectorAll(".menu-pop")) m.hidden = true;
+  for (const button of document.querySelectorAll('[aria-controls$="Pop"]')) button.setAttribute("aria-expanded","false");
+  canvasMenuTrigger = null;
+  if (restoreFocus && trigger?.isConnected) trigger.focus({preventScroll:true});
 }
 function bindMenu(btnId, popId) {
-  $(btnId).addEventListener("click", e => {
-    e.stopPropagation();
-    const open = $(popId).hidden;
+  const button = $(btnId), pop = $(popId);
+  if (!button || !pop) return;
+  const canvasMenu = ["createObjectPop","quickBoundaryPop"].includes(popId);
+  button.setAttribute("aria-controls",popId); button.setAttribute("aria-expanded","false");
+  const setOpen = (open, last = false) => {
     const nested = btnId === "sceneMenuBtn" && !$("fileMenuPop").hidden;
     closeMenus();
     if (nested) $("fileMenuPop").hidden = false;
-    $(popId).hidden = !open;
+    pop.hidden = !open;
+    button.setAttribute("aria-expanded",String(open));
+    if (open && canvasMenu) {
+      canvasMenuTrigger = button;
+      positionCanvasMenu(pop,button);
+      const items = canvasMenuItems(pop);
+      items[last ? items.length - 1 : 0]?.focus({preventScroll:true});
+    }
+  };
+  button.addEventListener("click", e => {
+    e.stopPropagation(); setOpen(pop.hidden);
   });
+  if (canvasMenu) button.addEventListener("keydown", e => {
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    e.preventDefault(); e.stopPropagation(); setOpen(true,e.key === "ArrowUp");
+  });
+}
+function positionCanvasMenu(pop, anchor) {
+  const r=anchor.getBoundingClientRect();
+  pop.style.left = Math.max(8,Math.min(r.left,innerWidth-pop.offsetWidth-8))+"px";
+  pop.style.top = Math.max(8,Math.min(r.bottom+8,innerHeight-pop.offsetHeight-8))+"px";
 }
 bindMenu("sceneMenuBtn", "sceneMenuPop");
 bindMenu("fileMenuBtn", "fileMenuPop");
+bindMenu("btnCreateObject", "createObjectPop");
+bindMenu("btnQuickBoundary", "quickBoundaryPop");
+document.addEventListener("keydown", e => {
+  const pop = e.target.closest?.("#createObjectPop,#quickBoundaryPop");
+  if (!pop || pop.hidden || !["ArrowDown","ArrowUp","Home","End"].includes(e.key)) return;
+  e.preventDefault(); e.stopPropagation();
+  const items = canvasMenuItems(pop), index = items.indexOf(document.activeElement);
+  if (!items.length) return;
+  const next = e.key === "Home" ? 0 : e.key === "End" ? items.length - 1 :
+    (index + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+  items[next].focus({preventScroll:true});
+});
+document.addEventListener("focusin", e => {
+  if (!canvasMenuTrigger) return;
+  const pop = $(canvasMenuTrigger.getAttribute("aria-controls"));
+  if (e.target !== canvasMenuTrigger && !pop?.contains(e.target)) closeMenus();
+});
 document.addEventListener("pointerdown", e => {
-  if (!e.target.closest || !e.target.closest(".menu")) closeMenus();
+  if (!e.target.closest || !e.target.closest(".menu,[aria-controls$='Pop']")) closeMenus();
 });
 document.addEventListener("click", e => {
   if (e.target.closest && e.target.closest(".menu-item")) closeMenus();
@@ -1501,7 +1549,7 @@ window.addEventListener("resize", applyTransform);
  * 幾何永遠走 DSL line。點卡片進入：面→2D 邊界編輯、空間→成員層。
  * ============================================================ */
 const ocv = $("ocv"), oroot = $("oroot");
-const OC_W = 200, OC_H = 156, OC_PAD = 12;
+const OC_W = 260, OC_H = 220, OC_PAD = 12;
 const SP_W = 240, SP_H = 196;
 /* A4:zoom < 0.75 卡片只留標題列(🔒 compact 門檻) */
 const OC_COMPACT_ZOOM = 0.75;
@@ -1528,6 +1576,7 @@ const oc = {
 };
 let ocSeq = 0;
 let canvasMarquee = null;
+let ocCardClick = null, ocConsumedClick = null, ocObjectOpening = false;
 let ocDrawCount = 0;      /* diff#4 可觀測訊號:每次 drawObjects() 整份重畫累加一次，
                               供 cdp 斷言「pointermove 只重繪草稿層、不重繪物件層」 */
 
@@ -1541,8 +1590,12 @@ function ocApply() {
   ocGridApply();
   const zl = $("zoomLevelButton"); if (zl) zl.textContent = Math.round(oc.zoom * 100) + "%";
   const comp = oc.zoom < OC_COMPACT_ZOOM;
-  if (oroot) for (const c of oroot.querySelectorAll(".ocard"))
+  let compactChanged = false;
+  if (oroot) for (const c of oroot.querySelectorAll(".ocard")) {
+    if (c.classList.contains("compact") !== comp) compactChanged = true;
     c.classList.toggle("compact", comp);
+  }
+  if (compactChanged) refreshGridRelations();
   if (oc.faces) drawMinimap();
 }
 /* 背景格線。格線跟著平移(--grid-x/y)對齊畫布座標。
@@ -1597,12 +1650,12 @@ function faceCard(f) {
   el("rect", { class: "ocard-frame", x: 0, y: 0, width: OC_W, height: OC_H, rx: 10,
                fill: "#ffffff", stroke: "#dfe4eb", "stroke-width": 1.4 }, g);
   /* header:型別點 + 名稱 + 副標 */
-  el("circle", { cx: 14, cy: 16, r: 4.5, fill: f.kind === "placement" ? "#c08a3e" : "#2f8f7b" }, g);
+  el("circle", { cx: 17, cy: 22, r: 5, fill: f.kind === "placement" ? "#c08a3e" : "#2f8f7b" }, g);
   /* A4:卡片標題字級 12.5(S1 全域 token) */
-  const t = el("text", { x: 26, y: 15, "font-size": 12.5, fill: "#1d2634",
+  const t = el("text", { x: 31, y: 25, "font-size": 15, fill: "#1d2634",
                          "font-weight": 700 }, g);
   t.textContent = (KIND_ZH[f.kind] || "面") + " " + f.id;
-  const sub = el("text", { x: 26, y: 28, "font-size": 10.5, fill: "#8b93a3" }, g);
+  const sub = el("text", { x: 31, y: 42, "font-size": 12, fill: "#6b7485" }, g);
   const fs = f.kind === "boundary" && f.placed ? feSurf(f.id) : null;
   const projection = fs && FaceProjection.get(f.id, fs.id);
   sub.textContent = f.kind === "placement" ? "自帶矩形 · 無邊界"
@@ -1627,12 +1680,12 @@ function faceCard(f) {
                              "text-anchor": "middle", "font-weight": 650 }, g);
     tag.textContent = "無邊界";
   }
-  el("line", { x1: 0, y1: 34, x2: OC_W, y2: 34, stroke: "#e8ebf0", "stroke-width": 1 }, g);
+  el("line", { x1: 0, y1: 50, x2: OC_W, y2: 50, stroke: "#e8ebf0", "stroke-width": 1 }, g);
 
   /* A4:compact 模式(zoom<0.75)只留標題列——其餘進 body 群組 */
   const body = el("g", { class: "ocard-body" }, g);
   /* preview:previewFaceSvg 簡化版——外環+孔+頂點 */
-  const pvX = 10, pvY = 40, pvW = OC_W - 20, pvH = OC_H - 76;
+  const pvX = 14, pvY = 58, pvW = OC_W - 28, pvH = OC_H - 99;
   el("rect", { x: pvX, y: pvY, width: pvW, height: pvH, rx: 6,
                fill: "#f7f9fb", stroke: "#edf0f5" }, body);
   const bw = Math.max(1, f.bbox[2] - f.bbox[0]), bh = Math.max(1, f.bbox[3] - f.bbox[1]);
@@ -1660,7 +1713,7 @@ function faceCard(f) {
   /* footer:範圍 + 頂點數 */
   el("line", { x1: 0, y1: OC_H - 30, x2: OC_W, y2: OC_H - 30,
                stroke: "#e8ebf0", "stroke-width": 1 }, body);
-  const ft = el("text", { x: 10, y: OC_H - 11, "font-size": 11, fill: "#687487" }, body);
+  const ft = el("text", { x: 14, y: OC_H - 12, "font-size": 12.5, fill: "#687487" }, body);
   const nv = (f.kind === "boundary" && oc.bmap[f.id]) ? oc.bmap[f.id][0].verts.length : 4;
   ft.textContent = `${bw}×${bh} mm · ${nv} 頂點`;
   return g;
@@ -1853,6 +1906,7 @@ async function renderObjects({ persistPositions = true } = {}) {
 }
 
 function drawObjects() {
+  syncCompositionLayout();
   cancelCanvasMarquee();
   ++ocDrawCount;
   oroot.textContent = "";
@@ -1943,6 +1997,7 @@ function drawObjects() {
     }
   }
   drawOcEdges(eg, visSpaces, visFaces, visCols, visBeams, labels);
+  drawGridRelations(eg, labels, visibleKeys);
   updateEdgeLabels();
   drawCrumb();
   renderObjectList();
@@ -1982,18 +2037,79 @@ function cardBox(o) {
 function nextCardPosition(o, occupied) {
   const originX = Math.round(-oc.panX / oc.zoom + 60);
   const originY = Math.round(-oc.panY / oc.zoom + 60);
-  const cols = Math.max(1, Math.floor(ocv.clientWidth / oc.zoom / 300));
+  const cols = Math.max(1, Math.floor(ocv.clientWidth / oc.zoom / 380));
   const size = cardBox(o);
+  const available = box => !occupied.some(b => box.x < b.x + b.w + 24 && box.x + box.w + 24 > b.x &&
+    box.y < b.y + b.h + 24 && box.y + box.h + 24 > b.y);
+  // Newly created configurations sit beside their inputs. Existing positions
+  // remain user-owned and are never rearranged merely by opening the project.
+  if (o.kind === "grid-binding") {
+    const source = oc.gridSystems.find(s => s.id === o.system && s.hasPos);
+    const boundary = oc.faces.find(b => b.kind === "boundary" && b.id === o.boundary && b.hasPos);
+    const inputs = [source, boundary].filter(Boolean);
+    if (inputs.length) {
+      const x = Math.max(...inputs.map(n => n.cx + cardBox(n).w)) + 180;
+      const y = Math.round(inputs.reduce((sum,n) => sum+n.cy,0) / inputs.length);
+      for (let row = 0; row < 8; row++) {
+        const box = {x, y:y+row*300, w:size.w, h:size.h};
+        if (available(box)) { occupied.push(box); return [box.x,box.y]; }
+      }
+    }
+  }
   for (let slot = 0; ; ++slot) {
-    const box = { x: originX + slot % cols * 300, y: originY + Math.floor(slot / cols) * 240, w: size.w, h: size.h };
-    if (occupied.some(b => box.x < b.x + b.w + 24 && box.x + box.w + 24 > b.x &&
-                           box.y < b.y + b.h + 24 && box.y + box.h + 24 > b.y)) continue;
+    const box = { x: originX + slot % cols * 380, y: originY + Math.floor(slot / cols) * 300, w: size.w, h: size.h };
+    if (!available(box)) continue;
     occupied.push(box); return [box.x, box.y];
   }
 }
 function updateEdgeLabels(hoverSpace = null) {
   const id = hoverSpace ?? (oc.sel?.kind === "space" ? oc.sel.id : null);
   for (const label of document.querySelectorAll(".edge-label-item")) label.classList.toggle("active", +label.dataset.space === id);
+  for (const relation of oroot.querySelectorAll(".grid-relation,.grid-relation-label")) {
+    const selected = ocSelected("grid-binding", +relation.dataset.bindingId) ||
+      ocSelected(relation.dataset.sourceKind, +relation.dataset.sourceId);
+    relation.classList.toggle("active", selected);
+  }
+}
+
+function drawGridRelations(edges, labels, visibleKeys) {
+  if (oc.focus) return;
+  const visible = visibleKeys || new Set([...oroot.querySelectorAll(".ocard")].map(c => `${c.dataset.kind}:${c.dataset.id}`));
+  const box = o => {
+    const b = cardBox(o);
+    if (oc.zoom < OC_COMPACT_ZOOM) b.h = 40;
+    if (oc.card?.moved && oc.card.kind === o.kind && oc.card.id === o.id) {
+      b.x = oc.card.nx; b.y = oc.card.ny;
+    }
+    return b;
+  };
+  for (const binding of oc.gridBindings) {
+    if (!visible.has(`grid-binding:${binding.id}`)) continue;
+    const inputs = [
+      [oc.gridSystems.find(s => s.id === binding.system), "使用此網格", "#467fb0"],
+      [oc.faces.find(f => f.kind === "boundary" && f.id === binding.boundary), "使用此邊界", "#2f8f7b"],
+    ];
+    for (const [source, text, color] of inputs) {
+      if (!source || !visible.has(`${source.kind}:${source.id}`)) continue;
+      const geometry = relGeom(box(source), box(binding));
+      const attrs = {"data-binding-id":binding.id, "data-source-kind":source.kind, "data-source-id":source.id};
+      const group = el("g", {...attrs, class:"grid-relation", "pointer-events":"none"}, edges);
+      el("path", {class:"grid-relation-path", d:geometry.d, fill:"none", stroke:color,
+        "stroke-width":1.6, "vector-effect":"non-scaling-stroke", "marker-end":`url(#grid-arrow-${source.kind})`}, group);
+      const label = el("g", {...attrs, class:"grid-relation-label", "pointer-events":"none"}, labels);
+      el("rect", {x:geometry.mid.x-44,y:geometry.mid.y-13,width:88,height:26,rx:7,
+        fill:"#fff",stroke:color,"stroke-opacity":.35},label);
+      el("text", {x:geometry.mid.x,y:geometry.mid.y+4,"text-anchor":"middle","font-size":12,fill:color},label).textContent=text;
+    }
+  }
+}
+
+function refreshGridRelations() {
+  const edges = $("edgeGroup"), labels = $("edgeLabelLayer");
+  if (!edges || !labels) return;
+  edges.querySelectorAll(".grid-relation").forEach(n => n.remove());
+  labels.querySelectorAll(".grid-relation-label").forEach(n => n.remove());
+  drawGridRelations(edges, labels); updateEdgeLabels();
 }
 function nodeAnchor(node, toward) {
   const cx = node.x + node.w / 2, cy = node.y + node.h / 2;
@@ -2123,6 +2239,8 @@ async function enterFocus(t, id, options = {}) {
   if (oc.focus) oc.stack.push(oc.focus);
   const contextId = ReferenceWorkspace.context().id;
   const focus = oc.focus = { t, id, ...(t==='face' && Number.isSafeInteger(options.placementId)?{placementId:options.placementId}:{}) };
+  // Workspace fitting must measure its own columns, not the canvas dock layout.
+  syncCompositionLayout();
   oc.rect = null; oc.edit = null; oc.drawTool = null;
   renderCanvasModeHint();
 
@@ -6853,6 +6971,31 @@ const GridSystemEditor = (() => {
   }
   function sketch(parent, o, x, y, w, h) {
     el("rect",{x,y,width:w,height:h,rx:6,fill:"#f3f7fb",stroke:"#dce5ef"},parent);
+    if (o.mode === "infinite") {
+      const definition = d => d.source === "repeat" ? {phase:d.phase,pitch:d.step} : d.source === "repeat-panel" ?
+        {phase:d.anchor+d.panel+Math.floor(d.gap/2),pitch:d.panel+d.gap} : null;
+      const defs=axes.map(a=>definition(o[a+"Definition"]));
+      const scale=Math.min(...defs.map((d,i)=>d ? (i===0?w:h)/(d.pitch*4) : Infinity));
+      const center=[x+w/2,y+h/2];
+      for(let a=0;a<2;a++) {
+        const d=defs[a]; if(!d)continue;
+        // A bounded camera sample of the definition, with the same scale on
+        // both axes. It expresses spacing, never a total count or boundary.
+        const pitch=d.pitch*scale,span=a===0?w:h,start=a===0?x:y;
+        if (!(pitch > 0) || !Number.isFinite(pitch)) continue;
+        const offset=((d.phase%d.pitch)+d.pitch)%d.pitch*scale;
+        const stride=Math.max(1,Math.ceil(8/pitch)),spacing=pitch*stride;
+        const first=Math.ceil((start-center[a]-offset)/spacing);
+        const last=Math.floor((start+span-center[a]-offset)/spacing);
+        const count=Math.min(64,Math.max(0,last-first+1));
+        for(let n=0;n<count;n++) {
+          const p=center[a]+offset+(first+n)*spacing;
+          el("line",{x1:a===0?p:x+8,y1:a===0?y+8:p,x2:a===0?p:x+w-8,y2:a===0?y+h-8:p,
+            stroke:"#729fc9","stroke-width":1,opacity:.85},parent);
+        }
+      }
+      return;
+    }
     for (const a of axes) {
       const d=o[a+"Definition"];if(!d || d.source === "none")continue;
       // A panel has no count before application. These ticks are illustrative,
@@ -6868,14 +7011,15 @@ const GridSystemEditor = (() => {
   function card(o) {
     const g=el("g",{class:"ocard grid-system-card","data-kind":"grid-system","data-id":o.id,transform:`translate(${o.cx},${o.cy})`,cursor:"pointer"});
     el("rect",{class:"ocard-frame",width:OC_W,height:OC_H,rx:10,fill:"#fff",stroke:"#cbdbe9","stroke-width":1.4},g);
-    el("circle",{cx:14,cy:16,r:4.5,fill:"#467fb0"},g);
-    const name=Array.from(o.name);el("text",{x:26,y:17,"font-size":12.5,"font-weight":700,fill:"#1d2634"},g).textContent=name.length>12 ? name.slice(0,11).join("")+"…" : o.name;
-    el("text",{x:26,y:29,"font-size":10.5,fill:"#6d8197"},g).textContent=`${o.mode === "infinite" ? "無限網格" : "舊版有限網格"} ${o.id} · ${o.applications.length} 個套用`;
+    el("circle",{cx:17,cy:22,r:5,fill:"#467fb0"},g);
+    const name=Array.from(o.name);el("text",{x:31,y:25,"font-size":15,"font-weight":700,fill:"#1d2634"},g).textContent=name.length>17 ? name.slice(0,16).join("")+"…" : o.name;
+    el("text",{x:31,y:42,"font-size":12,fill:"#6d8197"},g).textContent=o.mode === "infinite" ? "網格來源 · 無限延伸" : `舊版有限網格 ${o.id} · ${o.applications.length} 個套用`;
     el("title",{},g).textContent=`${o.name}\nu：${summary(o.uDefinition)}\nv：${summary(o.vDefinition)}\n卡片僅示意排法，沒有幾何範圍。`;
-    el("line",{x1:0,y1:34,x2:OC_W,y2:34,stroke:"#e2eaf1"},g);
-    const body=el("g",{class:"ocard-body"},g);sketch(body,o,10,41,OC_W-20,61);
-    el("text",{x:10,y:121,"font-size":10.5,fill:"#6d8197"},body).textContent=o.mode === "infinite" ? "← ∞　無限延伸　∞ →" : "舊版有限排法 · 保留原義";
-    el("text",{x:10,y:145,"font-size":11,fill:"#687487"},body).textContent=o.mainAlong ? `主支沿 ${o.mainAlong} · 可重複套用` : "角色未設定 · 可重複套用";
+    el("line",{x1:0,y1:50,x2:OC_W,y2:50,stroke:"#e2eaf1"},g);
+    const body=el("g",{class:"ocard-body"},g);sketch(body,o,14,58,OC_W-28,OC_H-109);
+    const pitch=d=>d.source === "repeat" ? `${d.step}` : d.source === "repeat-panel" ? `${d.panel+d.gap}` : "—";
+    el("text",{x:14,y:OC_H-30,"font-size":12.5,fill:"#6d8197"},body).textContent=o.mode === "infinite" ? `X 間距 ${pitch(o.uDefinition)} · Y 間距 ${pitch(o.vDefinition)} mm` : "舊版有限排法 · 保留原義";
+    el("text",{x:14,y:OC_H-11,"font-size":12,fill:"#687487"},body).textContent=o.mode === "infinite" ? "格線向兩端無限延伸" : o.mainAlong ? `主支沿 ${o.mainAlong} · 可重複套用` : "角色未設定 · 可重複套用";
     return g;
   }
   function appliedHTML(g) {
@@ -7084,6 +7228,10 @@ const GridSystemEditor = (() => {
 })();
 
 function renderGridObjectInspector(pane, object) {
+  if (window.InfiniteGridWorkspace?.renderInspector) {
+    window.InfiniteGridWorkspace.renderInspector(pane, object);
+    return;
+  }
   const binding=object.kind === "grid-binding",esc=ReferenceWorkspace.escape;
   const source=binding ? oc.gridSystems.find(g=>g.id === object.system) : object;
   const definitions=source ? ["u","v"].map(a=>{const d=source[a+"Definition"];return `${a}：${!d || d.source === "none" ? "未設定" : d.source === "repeat" ? `每 ${d.step} mm · 基準 ${d.phase} mm` : `面材 ${d.panel}＋縫 ${d.gap} mm · 起點 ${d.anchor} mm`}`;}) : [];
@@ -7859,6 +8007,7 @@ function finishCanvasMarquee(event) {
   return true;
 }
 function clearCanvasSelections({keepSingleObject = false, keepSingleTimber = false} = {}) {
+  ocCardClick = null;
   oc.gridSystemCreating=false;
   /* Navigation keeps the existing single card (notably a newly created face).
      Undo can keep a single timber, then the refreshed cache validates its ID.
@@ -7873,6 +8022,7 @@ function clearCanvasSelections({keepSingleObject = false, keepSingleTimber = fal
 }
 /* Capture only selection shortcuts; input fields and modal viewers retain their own keys. */
 window.addEventListener("keydown", event => {
+  ocCardClick = null;
   if (document.querySelector("dialog[open]") || !oc.on) return;
   if (["box6Dialog","memberDialog","shapeDialog","rcDialog"].some(id => !$(id).hidden)) return;
   const editing = event.target.isContentEditable || event.target.closest?.("input,textarea,select,[contenteditable=''],[contenteditable='true'],[role='textbox']");
@@ -7899,11 +8049,13 @@ document.addEventListener("click", event => {
   if (clear.dataset.selectionClear === "fe") feSetTimberSelection([]); else ocSetSelection([]);
 });
 function cancelSelectionPointer() {
+  ocCardClick = null;
   cancelCanvasMarquee();
   if (oc.card) {
     const c = oc.card, object = ocFind(c.kind,c.id); oc.card = null;
     if (object) c.el.setAttribute("transform", `translate(${object.cx},${object.cy})`);
     if (ocv.hasPointerCapture(c.pointerId)) ocv.releasePointerCapture(c.pointerId);
+    refreshGridRelations();
   }
   oc.pan = null; oc.spacePan = false; fe.spaceDown = false; fe.lastPD = null;
   if (fe.drag?.kind === "pan") { fe.drag = fe.panHold; fe.panHold = null; }
@@ -7981,9 +8133,19 @@ function renderObjectList() {
     rows.push({kind:"grid-binding",id:b.id,name:`網格配置 ${b.id}`,sub:`面 ${b.boundary} · 來源 ${b.system} · ${b.applications.length} 個套用`});
   }
   $("objectCountBadge").textContent = rows.length;
-  for (const r of rows) {
+  const groups = new Map();
+  for (const [key,title] of [["sources","來源"],["bindings","配置"],["structures","空間與構件"]]) {
+    const group = document.createElement("section"); group.className = "object-group";
+    group.dataset.objectGroup = key; group.setAttribute("aria-label",title);
+    const heading = document.createElement("h3"); heading.className = "object-group-title"; heading.textContent = title;
+    group.append(heading); groups.set(key,group);
+  }
+  const order = {"grid-system":0,boundary:1,placement:2,"grid-binding":3,space:4,column:5,beam:6};
+  for (const r of rows.sort((a,b) => order[a.kind]-order[b.kind])) {
     const row = document.createElement("div");
     row.className = "object-row";
+    row.tabIndex = 0; row.setAttribute("role","button");
+    row.setAttribute("aria-pressed",String(ocSelected(r.kind,r.id)));
     row.dataset.kind = r.kind; row.dataset.id = r.id;
     if (ocSelected(r.kind, r.id))
       row.classList.add("selected");
@@ -7992,7 +8154,7 @@ function renderObjectList() {
     row.innerHTML =
       `<span class="row-icon ${r.kind}">${icon(
         r.kind === "space" ? "space" : r.kind === "column" ? "column" :
-        r.kind === "beam" ? "beam" : r.kind === "grid-system" || r.kind === "grid-binding" ? "grid" : "face")}</span>` +
+        r.kind === "beam" ? "beam" : r.kind === "grid-binding" ? "layers" : r.kind === "grid-system" ? "grid" : "face")}</span>` +
       `<span class="row-copy"><strong>${r.name}</strong>` +
       `<small>${r.sub}</small></span>` +
       (free ? `<span class="row-badge" data-insp-scroll="place">未放置</span>` : "");
@@ -8014,7 +8176,18 @@ function renderObjectList() {
       }
       else enterFocus(r.kind === "space" ? "space" : "face", r.id);
     });
-    list.appendChild(row);
+    row.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault(); selectObject(r.kind,r.id,e.shiftKey);
+        list.querySelector(`.object-row[data-kind="${r.kind}"][data-id="${r.id}"]`)?.focus({preventScroll:true});
+      }
+    });
+    groups.get(r.kind === "grid-binding" ? "bindings" : ["grid-system","boundary","placement"].includes(r.kind) ? "sources" : "structures").appendChild(row);
+  }
+  for (const group of groups.values()) if (group.children.length > 1) list.append(group);
+  if (!rows.length) {
+    const empty = document.createElement("p"); empty.className = "object-list-empty";
+    empty.textContent = oc.search ? "沒有符合的物件" : "從上方建立網格或邊界"; list.append(empty);
   }
   $("faceCount").textContent = oc.faces.length;
   $("spaceCount").textContent = oc.spaces.length;
@@ -8024,8 +8197,35 @@ function renderObjectList() {
   $("gridBindingCount").textContent = oc.gridBindings.length;
   updateStatusSummary();
 }
-/* 右欄檢視器 */
+/* Composition uses the same inspector as a bottom sheet. Other workspaces
+   keep their existing panels, so geometry/editor behavior is unchanged. */
+function syncCompositionLayout() {
+  const active = oc.on && !oc.focus && !view3;
+  document.body.classList.toggle("canvas-composition",active);
+  document.body.classList.toggle("canvas-has-inspector",active && (!!oc.selection.length || !!oc.gridSystemCreating));
+  const selected = oc.sel && ocFind(oc.sel.kind,oc.sel.id);
+  const grid = active && oc.selection.length === 1 && selected && (selected.kind === "grid-binding" || selected.kind === "grid-system" && selected.mode === "infinite");
+  document.body.classList.toggle("canvas-grid-inspector",!!grid);
+  if (!grid) window.InfiniteGridWorkspace?.disposeInspector?.();
+}
+function keepSelectedCardVisible() {
+  if (!oc.on || oc.focus || view3 || !oc.sel) return;
+  const o = ocFind(oc.sel.kind,oc.sel.id); if (!o) return;
+  const box=cardBox(o),rect=ocv.getBoundingClientRect(),margin=24;
+  if (!rect.width || !rect.height) return;
+  const left=box.x*oc.zoom+oc.panX,top=box.y*oc.zoom+oc.panY;
+  const width=box.w*oc.zoom,height=(oc.zoom < OC_COMPACT_ZOOM ? 40 : box.h)*oc.zoom;
+  const bottomMargin=Math.min(72,Math.max(margin,(rect.height-height)/2));
+  const topMargin=rect.height >= height+80+bottomMargin ? 80 : margin;
+  if (left < margin) oc.panX += margin-left;
+  else if(left+width > rect.width-margin) oc.panX -= Math.min(left-margin,left+width-rect.width+margin);
+  if (top < topMargin) oc.panY += topMargin-top;
+  else if(top+height > rect.height-bottomMargin) oc.panY -= Math.min(top-topMargin,top+height-rect.height+bottomMargin);
+  ocApply();
+}
+
 function renderInspector() {
+  syncCompositionLayout();
   const pane = $("inspectorContent"); if (!pane) return;
   const empty = $("inspectorEmpty");
   if (oc.gridSystemCreating && !oc.selection.length) {
@@ -8217,30 +8417,61 @@ async function deleteObject(kind, id) {
     if (oc.focus) leaveFocus(); else await renderObjects();
   }
 }
-/* 雙擊卡片 → 進入工作區 */
-ocv.addEventListener("dblclick", e => {
-  if (!oc.on || e.shiftKey || oc.selection.length > 1 || canvasMarquee) return;
-  /* setPointerCapture 會把相容滑鼠事件的 target 重定向到 ocv,
-     用 elementFromPoint 取真實命中;oc.sel 作後援。 */
-  const hit = document.elementFromPoint(e.clientX, e.clientY);
-  const card = (hit && hit.closest(".ocard")) ||
-    (oc.sel && oroot.querySelector(
-      `.ocard[data-kind="${oc.sel.kind}"][data-id="${oc.sel.id}"]`));
-  if (!card || card.dataset.kind === "placement") {
-    if (card) setStatus("自帶矩形面沒有邊界可編輯");
-    return;
-  }
-  /* Q10:柱樑雙擊只開檢視器,無工作區 */
-  if (card.dataset.kind === "grid-binding") { window.InfiniteGridWorkspace.openBinding(Number(card.dataset.id)); return; }
-  if (card.dataset.kind === "grid-system" && ocFind("grid-system",Number(card.dataset.id))?.mode === "infinite") {window.InfiniteGridWorkspace.openSystem(Number(card.dataset.id));return;}
-  if (card.dataset.kind === "column" || card.dataset.kind === "beam" || card.dataset.kind === "grid-system") {
-    selectObject(card.dataset.kind, parseInt(card.dataset.id, 10));
-    if (innerWidth <= 900) openPanel("right", $("toggleRight"));
-    return;
-  }
-  enterFocus(card.dataset.kind === "space" ? "space" : "face",
-             parseInt(card.dataset.id, 10));
-});
+/* The first click can place the new inspector under the pointer. Like the
+   face editor, recognize the second down by time/position and stable identity,
+   before either the new panel or a blank canvas can consume it. */
+function canvasCardClickEligible(e) {
+  return !e.defaultPrevented && e.isPrimary !== false && e.button === 0 &&
+    !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey &&
+    oc.on && !oc.focus && !view3 && !oc.busy && !ocObjectOpening &&
+    oc.tool === "select" && !oc.spacePan && !oc.pan && !oc.drawTool && !canvasMarquee &&
+    connection.phase === "ready" && !document.querySelector("dialog[open]") &&
+    ["box6Dialog","memberDialog","shapeDialog","rcDialog"].every(id => $(id).hidden);
+}
+async function openCanvasObject(kind, id) {
+  if (ocObjectOpening || !ocFind(kind,id)) return;
+  ocObjectOpening = true;
+  try {
+    if (kind === "placement") { setStatus("自帶矩形面沒有邊界可編輯"); return; }
+    if (kind === "grid-binding") { await window.InfiniteGridWorkspace.openBinding(id); return; }
+    if (kind === "grid-system" && ocFind(kind,id)?.mode === "infinite") { await window.InfiniteGridWorkspace.openSystem(id); return; }
+    /* Q10: RC and legacy grid cards open their inspector only. */
+    if (["column","beam","grid-system"].includes(kind)) {
+      selectObject(kind,id);
+      if (innerWidth <= 900) openPanel("right",$("toggleRight"));
+      return;
+    }
+    await enterFocus(kind === "space" ? "space" : "face",id);
+  } finally { ocObjectOpening = false; }
+}
+document.addEventListener("pointerdown", e => {
+  const first = ocCardClick;
+  ocCardClick = null; ocConsumedClick = null;
+  if (!first || !canvasCardClickEligible(e)) return;
+  const inRegion = e.target.closest?.("#ocv,#app .sidebar-right") || e.target === $("canvasViewport");
+  const hitCard = e.target.closest?.("#ocv .ocard");
+  if (hitCard && (hitCard.dataset.kind !== first.kind || Number(hitCard.dataset.id) !== first.id)) return;
+  const sameSelection = oc.selection.length === 1 && oc.sel?.kind === first.kind && oc.sel.id === first.id;
+  const samePoint = Math.abs(e.clientX-first.x) <= 6 && Math.abs(e.clientY-first.y) <= 6;
+  const rect = first.viewport, now = performance.now();
+  if (!inRegion || !sameSelection || !samePoint || now-first.time > 450 ||
+      first.context !== ReferenceWorkspace.context().id || first.pointerType !== e.pointerType ||
+      e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom ||
+      !ocFind(first.kind,first.id)) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  ocConsumedClick = {pointerId:e.pointerId,x:e.clientX,y:e.clientY,expires:now+2000};
+  openCanvasObject(first.kind,first.id).catch(error => toast(error.message || "無法開啟物件"));
+}, true);
+for (const type of ["pointerup","click","dblclick"]) document.addEventListener(type, e => {
+  const consumed = ocConsumedClick;
+  if (!consumed || performance.now() > consumed.expires || e.button !== 0) return;
+  if (type === "pointerup" ? e.pointerId !== consumed.pointerId :
+      e.detail === 0 || Math.abs(e.clientX-consumed.x) > 6 || Math.abs(e.clientY-consumed.y) > 6) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+}, true);
+document.addEventListener("pointercancel", () => { ocCardClick = null; ocConsumedClick = null; }, true);
+document.addEventListener("keydown", () => { ocCardClick = null; }, true);
+document.addEventListener("wheel", () => { ocCardClick = null; }, {capture:true,passive:true});
 ocv.addEventListener("pointerdown", e => {
   if (!oc.on) return;
   if (e.button === 1) {                       /* 中鍵平移 */
@@ -8261,6 +8492,8 @@ ocv.addEventListener("pointerdown", e => {
     oc.card = { el: card, kind: card.dataset.kind, id: +card.dataset.id,
                 pointerId:e.pointerId,
                 sx: pt.x, sy: pt.y, moved: false,
+                click:canvasCardClickEligible(e) ? {x:e.clientX,y:e.clientY,time:performance.now(),
+                  context:ReferenceWorkspace.context().id,pointerType:e.pointerType,viewport:ocv.getBoundingClientRect()} : null,
                 additive:e.shiftKey, blocked: e.shiftKey || oc.selection.length > 1,
                 scrollPlace: !!e.target.closest('[data-insp-scroll="place"]') };
   } else if (oc.tool === "pan" || oc.spacePan) {
@@ -8282,7 +8515,7 @@ ocv.addEventListener("pointermove", e => {
   }
   if (oc.card) {
     const dx = pt.x - oc.card.sx, dy = pt.y - oc.card.sy;
-    if (Math.abs(dx) + Math.abs(dy) > 3) oc.card.moved = true;
+    if (Math.abs(dx) + Math.abs(dy) > 3) { oc.card.moved = true; ocCardClick = null; }
     if (oc.card.blocked) return;
     const o = ocAllObjects()
       .find(o => o.id === oc.card.id &&
@@ -8291,6 +8524,7 @@ ocv.addEventListener("pointermove", e => {
       oc.card.nx = o.cx + dx; oc.card.ny = o.cy + dy;
       oc.card.el.setAttribute("transform",
         `translate(${oc.card.nx},${oc.card.ny})`);
+      refreshGridRelations();
     }
     return;
   }
@@ -8324,6 +8558,8 @@ ocv.addEventListener("pointerup", async e => {
          游離徽章 → 順帶捲檢視器到放置區 */
       if (c.scrollPlace) oc.inspScroll = "place";
       selectObject(c.kind === "space" ? "space" : c.kind, c.id, c.additive);
+      if (c.click && canvasCardClickEligible(e) && oc.selection.length === 1 && oc.sel?.kind === c.kind && oc.sel.id === c.id)
+        ocCardClick = {...c.click,kind:c.kind,id:c.id};
     }
     return;
   }
@@ -8989,6 +9225,7 @@ async function setView3(on, { persistPositions = true } = {}) {
   closePanels(); pendingSlot = null;
   view3 = on;
   oc.on = !view3;
+  syncCompositionLayout();
   cv.toggleAttribute("hidden", !view3);
   $("viewToolbar").toggleAttribute("hidden", !view3);
   $("v3ZoomBar").toggleAttribute("hidden", !view3);
@@ -8996,7 +9233,7 @@ async function setView3(on, { persistPositions = true } = {}) {
   $("btnCanvasView").classList.toggle("active", !view3);
   $("btnObj").setAttribute("aria-pressed", String(view3));
   $("btnCanvasView").setAttribute("aria-pressed", String(!view3));
-  for (const b of document.querySelectorAll(".topbar [data-tool]")) b.disabled = view3;
+  for (const b of document.querySelectorAll("#app [data-tool]")) b.disabled = view3;
   document.body.classList.remove("v3-picked");
   /* D1(Q1):三視圖開啟時左欄換「視視圖+圖層」、右欄換 pick 結果 */
   document.body.classList.toggle("v3-mode", view3);
@@ -9021,8 +9258,23 @@ $("btnCanvasView").addEventListener("click", () => setView3(false));
 $("btnBack").addEventListener("click", leaveFocus);
 $("btnNewRect").addEventListener("click", () => setOcTool("rect"));
 $("btnNewPoly").addEventListener("click", () => objNewPolyFace());
-$("btnNewGridSystem").addEventListener("click", () => window.InfiniteGridWorkspace.create());
+$("btnNewGridSystem").addEventListener("click", async () => {
+  closeMenus(); closePanels();
+  if (view3) await setView3(false);
+  window.InfiniteGridWorkspace.create();
+});
 $("emptyNewGridSystem").addEventListener("click", () => window.InfiniteGridWorkspace.create());
+for (const [entry,target] of [["btnQuickGrid","btnNewGridSystem"],["btnQuickRect","btnNewRect"],["btnQuickPoly","btnNewPoly"],["btnCreateRect","btnNewRect"],["btnCreatePoly","btnNewPoly"]]) {
+  $(entry)?.addEventListener("click", () => { closeMenus(); closePanels(); $(target).click(); });
+}
+bindMenu("mobileCreateObject","createObjectPop");
+$("btnCollapseLibrary")?.addEventListener("click", () => {
+  if (innerWidth <= 900) { closePanels(true); return; }
+  const collapsed=document.body.classList.toggle("canvas-library-collapsed");
+  $("btnCollapseLibrary").setAttribute("aria-expanded",String(!collapsed));
+  $("btnCollapseLibrary").setAttribute("aria-label",collapsed ? "展開物件庫" : "收合物件庫");
+  closeMenus(); ocApply();
+});
 $("btnNewSpace").addEventListener("click", async () => {
   closePanels();
   const ids = await api("newid");
@@ -9050,6 +9302,13 @@ for (const [id, label] of [["spacePlaceColumn", "在平面圖點一下放柱"], 
 /* Current size appears next to the selected placement mode. */
 $("spaceSizeTools").appendChild(document.querySelector(".space-plan-tools"));
 document.querySelector(".space-plan-head").remove();
+let canvasResizeFrame = 0;
+window.addEventListener("resize", () => {
+  cancelAnimationFrame(canvasResizeFrame);
+  canvasResizeFrame = requestAnimationFrame(() => {
+    if (!oc.card && !oc.pan && !canvasMarquee) keepSelectedCardVisible();
+  });
+});
 new ResizeObserver(() => { if (view3) applyTransform(); }).observe($("canvasViewport"));
 $("btnHole2").addEventListener("click", () => {
   if (oc.focus && oc.focus.t === "face") {

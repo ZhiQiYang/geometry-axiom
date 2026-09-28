@@ -191,12 +191,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if self.path == "/" or self.path == "/index.html":
             self._send((HERE / "index.html").read_bytes(),
                        "text/html; charset=utf-8")
-        elif self.path in {"/app.css", "/space-workspace.css", "/engineering-workspace.css", "/grid-system-workspace.css"}:
+        elif self.path in {"/app.css", "/space-workspace.css", "/engineering-workspace.css", "/grid-system-workspace.css", "/grid-inspector.css"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/css; charset=utf-8")
         elif self.path in {"/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js",
                            "/project-store.js", "/reference-workspace.js",
-                           "/model-viewer.js", "/space-workspace.js", "/engineering-workspace.js", "/engineering-adapter.js", "/grid-system-workspace.js"}:
+                           "/model-viewer.js", "/space-workspace.js", "/engineering-workspace.js", "/engineering-adapter.js", "/grid-system-workspace.js", "/grid-inspector.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")
         elif self.path in VENDOR_FILES:

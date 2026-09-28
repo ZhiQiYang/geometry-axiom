@@ -97,6 +97,7 @@ async function point(selector) {
   return p;
 }
 async function click(selector) {
+  if(await evaluate(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await click(await evaluate(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
   const p = await point(selector);
   for (const type of ['mousePressed', 'mouseReleased']) await send('Input.dispatchMouseEvent', { type, x: p.x, y: p.y, button: 'left', clickCount: 1 });
   await settle();

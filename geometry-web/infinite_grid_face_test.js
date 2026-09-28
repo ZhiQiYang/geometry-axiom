@@ -45,11 +45,14 @@ module.exports = async function ({send,eval_,sleep,click,waitForUI}) {
     'grid 80 on 80 from-binding 80'
   ])}){let r=await apiRequest('line '+l);if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok)throw Error(JSON.stringify(r));}await renderObjects();await enterFocus('face',80);})()`);
   await waitForUI(`!!$('feLatticeDensity') && !$('feLatticeDensity').hidden`);
+  const initialView=await eval_(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect();return {composition:document.body.classList.contains('canvas-composition'),width:r.width,height:r.height,zoom:fe.zoom,center:[(r.width/2-fe.panX)/fe.zoom,(r.height/2-fe.panY)/fe.zoom]};})()`);
+  check('P71-6a 進入面工作區時依最終版面置中，縮放不偏離原中心',!initialView.composition&&initialView.center.every(v=>Math.abs(v-5000)*initialView.zoom<1),initialView);
   const missing=await eval_(`(()=>{const g=fe.grids.find(g=>g.id===80),i=['49','50','51'].find(k=>!g.indices.u.includes(k));return {i,value:feAnchorLineInfo(80,'at-line grid 80 u '+i)?.value};})()`);
   check('P71-6 抽樣省略的合法線仍可用 lattice 定義精確求座標',!!missing.i&&missing.value===Number(missing.i)*100,missing);
   for(let n=0;n<12;n++)await ctl('#feZoomIn');
   await waitForUI(`fe.grids.find(g=>g.id===80)?.query?.axes?.u?.stride==='1'`);
-  check('P71-7 實際放大後重新查詢，恢復被抽樣省略的真格線與命中區',await eval_(`!!document.querySelector('[data-face-hit="k:80:u:${missing.i}"]') && $('feLatticeDensity').hidden`));
+  const zoomed=await eval_(`(()=>{const g=fe.grids.find(g=>g.id===80),n=$('feLatticeDensity'),r=$('faceEditorViewport').getBoundingClientRect();return {missingIndex:'${missing.i}',hit:!!document.querySelector('[data-face-hit="k:80:u:${missing.i}"]'),densityHidden:n.hidden,densityText:n.textContent,uStride:g?.query?.axes?.u?.stride,vStride:g?.query?.axes?.v?.stride,uIndices:g?.indices?.u,vIndices:g?.indices?.v,zoom:fe.zoom,pan:[fe.panX,fe.panY],viewportKey:g?._viewportKey,view:[-fe.panX/fe.zoom,-fe.panY/fe.zoom,(r.width-fe.panX)/fe.zoom,(r.height-fe.panY)/fe.zoom]};})()`);
+  check('P71-7 實際放大後重新查詢，恢復被抽樣省略的真格線與命中區',zoomed.hit&&zoomed.densityHidden,zoomed);
   check('P71-8 放大後的新可見線能正確帶入角材引用，不落回空選項',await eval_(`(()=>{const a='at-line grid 80 u ${missing.i}';feChooseTimberAnchor(a);return $('tbAnchor').value===a;})()`));
   await eval_(`(async()=>{await leaveFocus();})()`);
 };
