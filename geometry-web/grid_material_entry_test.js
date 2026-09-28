@@ -185,4 +185,60 @@ module.exports=async function gridMaterialEntry(h){
   const noRole=await sourceResult({panel:newPanel,method:reusedMethod,gridId:9,anchors:[100,200],u:[1016,1934,2852,3770],v:[2031]});
   check('既有 none 網格轉來源後仍無角色預設且全部角材原樣',noRole.r.grids.length===1&&noRole.g.mainAlong===noRoleGrid.mainAlong&&same(noRole.r.timbers,noRoleRefs.timbers)&&noRole.s.sources.length===4&&noRole.s.sources.every(b=>b.target.kind==='grid'&&b.target.id===9));
   await shot('grid-material-existing-no-role');await close();
+
+  // Observe (and optionally delay) the actual server response. The payload is
+  // never fabricated. Restoring fetch/releasing the gate is mandatory in finally.
+  const observePreview=async hold=>read(`(()=>{
+    const original=window.fetch,gate={original,seen:false,held:false,valid:false,token:null,release:null};
+    const released=new Promise(resolve=>gate.release=resolve);window.__gridEntryRace=gate;
+    window.fetch=async(...args)=>{
+      const response=await original(...args);
+      if(String(args[0]).includes('/engineering/preview')){
+        window.fetch=original;const json=response.json.bind(response);
+        response.json=async()=>{const data=await json();gate.seen=true;gate.valid=data.preview?.valid===true;gate.token=data.preview?.token;
+          if(${hold}){gate.held=true;await released;gate.held=false;}return data;};
+      }return response;
+    };
+  })()`);
+  const restorePreview=()=>read(`(()=>{const gate=window.__gridEntryRace;if(gate){window.fetch=gate.original;gate.release();delete window.__gridEntryRace;}})()`);
+  const prepareCandidate=async name=>{await fixture();await toolbar();await panelAxis('u');await enter();await fillNew(name);await setupAxes();};
+
+  await prepareCandidate('過期候選不得發布');const staleBefore=await dump(),staleTimbers=(await refs()).timbers;
+  await observePreview(false);
+  try{
+    await preview();const token=await read('window.__gridEntryRace.token');
+    check('網格入口取得真實有效候選且尚未寫入世界',await read('window.__gridEntryRace.seen && window.__gridEntryRace.valid')&&Number.isSafeInteger(token)&&token>0&&(await dump())===staleBefore);
+    await ctl('#ewReviewed');check('變更前的候選已核對且可確認',await read(`!$('ewConfirm').disabled`));
+    // Deliberate interleaving from another editor/client, outside this UI flow:
+    // move a real upstream spec and explicitly confirm its native I8a candidate.
+    await read(`(async()=>{let r=await apiRequest('line spec GridEntryGuide 600');if(r.preview){if(r.preview.valid!==true||!Number.isSafeInteger(r.preview.token)||r.preview.token<1)throw Error('Invalid external edit '+JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok||r.preview)throw Error('External edit failed '+JSON.stringify(r));})()`);
+    await wait(`$('ewReview').hidden && $('ewConfirm').disabled && !$('ewPreview').disabled && !$('ewContent').inert`,'known World change invalidates grid candidate');
+    const changed=await dump(),changedTimbers=(await refs()).timbers;
+    check('來源規格確實移動角材並使前端撤銷舊確認',changed!==staleBefore&&!same(changedTimbers.find(t=>t.id===3),staleTimbers.find(t=>t.id===3))&&await read(`$('ewReview').hidden && $('ewConfirm').disabled`));
+    // Separately replay the captured old token directly to the core. This proves
+    // server rejection; it does not pretend to click a disabled UI button.
+    const rejected=await read(`apiRequest('engineering-confirm '+${JSON.stringify(token)})`);
+    const rejectedState=await state();
+    check('原候選 token 真送核心被拒且無材料做法網格殘留',rejected.ok===false&&['TOKEN','STALE'].includes(rejected.code)&&(await dump())===changed&&rejectedState.materials.length===0&&rejectedState.methods.length===0&&rejectedState.applications.length===0&&rejectedState.sources.length===0&&(await refs()).grids.length===0,rejected);
+  }finally{await restorePreview();}
+  await close();
+
+  await prepareCandidate('遲到候選不得跨專案');const oldContext=await read('ReferenceWorkspace.context().id');
+  await observePreview(true);
+  try{
+    await ctl('#ewPreview');await wait('window.__gridEntryRace.held===true','real grid preview response held');
+    check('跨專案案例暫扣的是真實有效預覽',await read('window.__gridEntryRace.seen && window.__gridEntryRace.valid && Number.isSafeInteger(window.__gridEntryRace.token)'));
+    await close();await ctl('#fileMenuBtn');await ctl('#btnClear');
+    await wait(`!ReferenceWorkspace.busy && !document.body.classList.contains('oc-busy') && $('objectWorkspace').hidden`,'formal clear scene completed');
+    const newContext=await read('ReferenceWorkspace.context().id');
+    check('關閉預覽後由正式清空入口切換專案',newContext!==oldContext&&(await refs()).grids.length===0);
+    // Reusing the old placement ID in the new fixture must not make the old
+    // response applicable. Only fixture geometry setup uses the native API.
+    await read(`(async()=>{const r=await apiRequest('line surface 1 origin 0 0 4500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');if(!r.ok||r.preview)throw Error('Race fixture failed '+JSON.stringify(r));await renderObjects();await enterFocus('face',1);})()`);
+    const replacement={scene:await dump(),state:await state(),references:await refs(),drafts:await read('ReferenceWorkspace.getEngineeringDrafts()')};
+    await read('window.__gridEntryRace.release()');await wait('window.__gridEntryRace.held===false','late real preview released');
+    await read(`(async()=>{await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);await window.__cdpSettleUI?.(0);})()`);
+    check('舊專案遲到回覆不能復活視窗或改寫同 ID 新面',await read(`ReferenceWorkspace.context().id===${JSON.stringify(newContext)} && !$('ewWorkspace').open && $('ewConfirm').disabled && oc.focus?.t==='face' && feSid(oc.focus.id)===1`)&&(await dump())===replacement.scene&&same(await state(),replacement.state)&&same(await refs(),replacement.references)&&same(await read('ReferenceWorkspace.getEngineeringDrafts()'),replacement.drafts));
+    check('新專案沒有舊候選材料做法套用或網格',replacement.state.materials.length===0&&replacement.state.methods.length===0&&replacement.state.applications.length===0&&replacement.state.sources.length===0&&replacement.references.grids.length===0);
+  }finally{await restorePreview();}
 };
