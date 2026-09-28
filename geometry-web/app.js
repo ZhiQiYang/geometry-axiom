@@ -2565,6 +2565,9 @@ const ReferenceVisibility = (() => {
 /* B2:檢視器分頁切換(#faceInspectorTabs ↔ [data-fi-pane]) */
 function fiShowTab(name) {
   const leavingUnderlay = fe.fiTab === "underlay" && name !== "underlay";
+  // Grid rulers and cell picking belong to the grid section. Leaving it must
+  // restore ordinary canvas selection without clearing the inspector draft.
+  if (fe.tool === "grid" && name !== "grid") feSetTool("select");
   fe.fiTab = name;
   const section = ["guide", "timber", "grid"].includes(name) ? "components" : name;
   for (const t of document.querySelectorAll("#faceInspectorTabs [data-fi-tab]"))
@@ -2746,6 +2749,7 @@ function updateWorkspaceKeyHints() {
   const keys = fe.tool === "redraw" ? "E 外環 · Enter 完成" :
     fe.tool === "timber" ? "T 角材 · 點線放置" :
     fe.tool === "guide" ? "L 參考線 · R 開口" :
+    fe.tool === "grid" ? "V 切回選取 · 空白鍵平移" :
     fe.tool === "pan" ? "H 平移 · V 選取" : "V 框選角材 · Shift 加選 · 空白鍵平移";
   hint.textContent = `${keys} · Esc ${esc}`;
 }
@@ -3351,6 +3355,13 @@ function faceToolTip(t) {
 }
 
 function feSetTool(t) {
+  // Source-backed grids are informational here; their own workspace owns
+  // editing. Do not enter a grid tool with no rulers or cell picker.
+  if (t === "grid" && GridEditor.sourceOnly()) {
+    feSetTool("select"); fiShowTab("grid");
+    if (innerWidth <= 680) openPanel("right", $("workspaceToggleRight"));
+    return;
+  }
   cancelCanvasMarquee();
   const hadTimberSelection = fe.timberSelection.size > 0;
   const keepTimberSelection = t === "pan" || (t === "select" && (fe.tool === "select" || fe.tool === "pan"));
@@ -6740,7 +6751,7 @@ const SubgridEditor = (() => {
       get(s,"subgridCellChoice").value=c.key;s.picking=false;s.change();
     });
     for(const id of ["subgridDivU","subgridDivV"])get(s,id).oninput=s.change;
-    const choose=()=>{s.picking=true;drawFaceEditor();GridEditor.fit(loopsBBox(oc.bmap[bid]));if(innerWidth<=680){closePanels();$("gridReturnSettings").hidden=false;}setStatus("請在畫布點選父格；也可返回設定用父格選單選擇。");};
+    const choose=()=>{feSetTool("grid");if(!active || !current(active))return;active.picking=true;drawFaceEditor();GridEditor.fit(loopsBBox(oc.bmap[bid]));if(innerWidth<=680){closePanels();$("gridReturnSettings").hidden=false;}setStatus("請在畫布點選父格；也可返回設定用父格選單選擇。");};
     get(s,"subgridPickCell").onclick=choose;
     get(s,"subgridCancel").onclick=()=>{if(s.saving)return;fe.subgridDraftParent=null;GridEditor.open(parent.id);};
     get(s,"gridReset").onclick=()=>{if(s.saving)return;get(s,"subgridCellChoice").value=cellKey(grid?.cell);for(const a of ["u","v"])get(s,"subgridDiv"+a.toUpperCase()).value=grid?.divisions?.[a] ?? 2;s.picking=!grid;s.change();};
@@ -6752,7 +6763,7 @@ const SubgridEditor = (() => {
     };
     get(s,"gridShowCanvas").onclick=()=>{closePanels();GridEditor.fit(s.cell?.bounds || loopsBBox(oc.bmap[bid]));$("gridReturnSettings").hidden=false;$("gridReturnSettings").focus();};
     $("gridReturnSettings").onclick=()=>{fiShowTab("grid");openPanel("right",$("workspaceToggleRight"));$("gridReturnSettings").hidden=true;get(s,"subgridCellChoice").focus({preventScroll:true});};
-    for(const h of pane.querySelectorAll(".component-heading")) {const text=h.textContent,section=h.closest("[data-component-section]").dataset.componentSection;h.replaceChildren();const button=document.createElement("button");button.type="button";button.textContent=text;button.onclick=()=>fiShowTab(section);h.append(button);}
+    for(const h of pane.querySelectorAll(".component-heading")) {const text=h.textContent,section=h.closest("[data-component-section]").dataset.componentSection;h.replaceChildren();const button=document.createElement("button");button.type="button";button.textContent=text;button.onclick=()=>section === "grid" ? feSetTool("grid") : fiShowTab(section);h.append(button);}
     summary(s,grid);get(s,"gridCommand").textContent="沒有待送出的變更。";
     if(key(values(s))===s.baseline)status(s,grid ? "已套用，沒有待套用的子格變更。" : "選擇父格，開始預覽局部等分。",grid ? "applied" : "empty");else s.timer=setTimeout(()=>preview(s),180);
     GridEditor.focusSection();
@@ -7096,6 +7107,13 @@ const GridEditor = (() => {
     if(innerWidth<=680) openPanel("right",$("workspaceToggleRight"));
     $("faceInspectorContent")?.querySelector("#subgridCellChoice,[data-grid-direction]")?.focus({preventScroll:true});
   }
+  function sourceOnly() {
+    if(fe.subgridDraftParent != null)return false;
+    const sid=feSid(oc.edit?.bid),grids=fe.grids.filter(g=>g.surface===sid);
+    const grid=grids.find(g=>g.id===fe.gridEditingId) || grids[0];
+    return !!(grid && grid.kind !== "subgrid" &&
+      (grid.bindingId != null || grid.sourceSystem != null || grid.engineeringSources?.length));
+  }
   function fit(b) {
     const r=$("faceEditorViewport").getBoundingClientRect();
     if (!r.width || !r.height) return;
@@ -7213,7 +7231,7 @@ const GridEditor = (() => {
     $("faceEditorViewport").append(box);
   }
   function clear() {if(dragCancel)dragCancel();if(active)clearTimeout(active.timer);active=null;SubgridEditor.clear();fe.subgridDraftParent=null;++fe.gridPreviewSeq;fe.gridPreview=null;$("gridTimberPopover")?.remove();if($("gridReturnSettings"))$("gridReturnSettings").hidden=true;document.body.classList.remove("grid-workspace-active");}
-  return {html,bind,open,focusSection,draw,sync,highlight,fit,clear,engineeringContext,addLine:(a,mm)=>active && addLine(active,a,mm)};
+  return {html,bind,open,focusSection,draw,sync,highlight,fit,clear,sourceOnly,engineeringContext,addLine:(a,mm)=>active && addLine(active,a,mm)};
 })();
 
 /* D29/I37: a reusable definition has no hidden face or evaluated panel extent.
@@ -8228,6 +8246,7 @@ function feSetTimberSelection(ids) {
 function feSelectTimber(id, additive = false) {
   const lastPD = fe.lastPD;
   const previous = fe.timberSelection.size ? [...fe.timberSelection] : fe.sel?.kind === "timber" ? [fe.sel.id] : [];
+  if (fe.tool !== "select") feSetTool("select");
   feSetTimberSelection(additive ? previous.includes(id) ? previous.filter(n => n !== id) : [...previous,id] : [id]);
   if (!additive) fe.lastPD = lastPD;
 }
