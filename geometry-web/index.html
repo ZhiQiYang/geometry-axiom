@@ -5,11 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>構形 Canvas · 工程規格與空間建模</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d365b'/%3E%3Cpath d='M7 10l9-5 9 5v11l-9 5-9-5zm0 0l9 5 9-5M16 15v11' fill='none' stroke='white' stroke-width='1.7' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="space-workspace.css">
 <link rel="stylesheet" href="engineering-workspace.css">
 <link rel="stylesheet" href="grid-system-workspace.css">
 <link rel="stylesheet" href="grid-inspector.css">
+<link rel="stylesheet" href="canvas-labels.css">
+<link rel="stylesheet" href="workspace-guidance.css">
+<link rel="stylesheet" href="project-ui.css">
+<link rel="stylesheet" href="workspace-shell.css">
 </head>
 <body class="connection-blocked">
 <section id="connectionNotice" class="connection-notice" role="status" aria-live="polite">
@@ -23,10 +28,6 @@
         <svg viewBox="0 0 32 32"><path d="M7 8.5 16 3l9 5.5v10L16 24l-9-5.5z"/><path d="M7 8.5 16 14l9-5.5M16 14v10"/></svg>
       </span>
       <span class="brand-title">構形 Canvas</span>
-      <span class="brand-divider" aria-hidden="true"></span>
-      <span class="brand-copy">
-        <strong class="main-project-name" data-project-name>未命名專案</strong>
-      </span>
     </div>
 
     <button id="mobileCreateObject" class="mobile-create-object primary-button" type="button" aria-haspopup="menu" aria-controls="createObjectPop" aria-expanded="false"><span data-icon="plus"></span><span>建立</span></button>
@@ -48,31 +49,58 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
         </button>
         <div id="fileMenuPop" class="menu-pop" role="menu" hidden>
-          <button id="btnImportReference" class="menu-item" type="button">匯入參考資料…</button>
-          <button id="btnOpenProject" class="menu-item" type="button">開啟 .gcanvas 專案…</button>
-          <button id="btnSaveProject" class="menu-item" type="button">另存新檔…</button>
-          <button id="btnProjectName" class="menu-item" type="button">專案名稱 <span id="projectName"></span></button>
+          <section data-file-section="project" role="group" aria-label="專案">
+            <h3 class="file-section-label">專案</h3>
+            <button id="btnNewProject" class="menu-item" type="button">新專案…</button>
+            <button id="btnOpenProject" class="menu-item" type="button">開啟專案… <small>.gcanvas</small></button>
+            <button id="btnMenuSaveProject" class="menu-item" type="button" data-project-action="save">保存專案</button>
+            <button id="btnSaveProject" class="menu-item" type="button">另存新檔…</button>
+            <button id="btnProjectName" class="menu-item" type="button">專案名稱 <span id="projectName"></span></button>
+          </section>
+          <section data-file-section="transfer" role="group" aria-label="匯入與匯出">
+            <h3 class="file-section-label">匯入與匯出</h3>
+            <button id="btnImportReference" class="menu-item" type="button">匯入參考資料… <small>PDF／圖片</small></button>
+            <button id="btnOpen" class="menu-item" type="button">開啟場景檔… <small>.scene</small></button>
+            <button id="btnExport" class="menu-item" type="button" title="包含幾何與工程來源；不含底圖、未發布草稿及已建立空間" aria-label="匯出 .scene">匯出場景檔… <small>.scene</small></button>
+          </section>
+          <section data-file-section="resources" role="group" aria-label="工程與範例">
+            <h3 class="file-section-label">工程與範例</h3>
+            <button id="btnDatums" class="menu-item" type="button">共用基準</button>
+            <button id="btnEngineeringSpecs" class="menu-item" type="button" data-engineering-open>工程規格 · 面材與角材</button>
+            <button id="btnModelLibraryMenu" class="menu-item" type="button">空間模型庫</button>
+            <div id="exampleMenu" class="menu menu-nested">
+              <button id="exampleMenuBtn" class="menu-item" type="button" aria-haspopup="menu">範例 <span aria-hidden="true">▸</span></button>
+              <div id="exampleMenuPop" class="menu-pop" role="menu" hidden>
+                <button id="btnEngineeringExample" class="menu-item" type="button">試用工程規格現成專案…</button>
+                <button id="btnSpaceModelTrial" type="button" class="menu-item">從面建立 3D 空間 · 現成範例</button>
+                <div id="sceneList" class="menu menu-nested">
+                  <button id="sceneMenuBtn" class="menu-item" type="button" aria-haspopup="menu">場景範例 <span id="sceneMenuLabel" hidden></span> ▸</button>
+                  <div id="sceneMenuPop" class="menu-pop" role="menu" hidden></div>
+                </div>
+                <button id="btnEx" class="menu-item" type="button">載入預設場景範例</button>
+              </div>
+            </div>
+            <a class="menu-item" href="/axioms" target="_blank" rel="noopener">公理閱讀器 <span aria-label="另開分頁">↗</span></a>
+          </section>
           <hr class="menu-sep">
-          <button id="btnOpen" class="menu-item" type="button"><span data-icon="upload"></span>開啟 .scene…</button>
-          <button id="btnExport" class="menu-item" type="button" title="包含幾何與工程來源；不含底圖、未發布草稿及已建立空間" aria-label="匯出 .scene"><span data-icon="download"></span>匯出 .scene（幾何與工程定義）</button>
-          <button id="btnDatums" class="menu-item" type="button"><span data-icon="guide"></span>共用基準</button>
-          <button id="btnEngineeringSpecs" class="menu-item" type="button" data-engineering-open>工程規格 · 面材與角材</button>
-          <button id="btnEngineeringExample" class="menu-item" type="button">試用工程規格現成專案…</button>
-          <div id="sceneList" class="menu menu-nested">
-            <button id="sceneMenuBtn" class="menu-item" type="button" aria-haspopup="menu">範例 <span id="sceneMenuLabel">內建示範</span> ▸</button>
-            <div id="sceneMenuPop" class="menu-pop" role="menu" hidden></div>
-          </div>
-          <button id="btnEx" class="menu-item" type="button">載入預設範例</button>
-          <a class="menu-item" href="/axioms" target="_blank" rel="noopener">公理閱讀器 <span aria-label="另開分頁">↗</span></a>
-          <hr class="menu-sep">
-          <button id="btnClear" class="menu-item danger" type="button"><span data-icon="trash"></span>清空場景</button>
+          <button id="btnClear" class="menu-item danger" type="button"><span data-icon="trash"></span>清空專案內容…</button>
         </div>
+      </div>
+      <div id="projectBar" class="project-bar" aria-label="目前專案">
+        <strong class="project-bar-name main-project-name" data-project-name>未命名專案</strong>
+        <button id="projectInfoButton" class="project-info-button" type="button" aria-label="專案資訊" title="來源、保存與復原" popovertarget="projectInfoPanel"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10v7M12 6.5v1"/></svg></button>
+        <section id="projectInfoPanel" class="project-info-panel" popover="auto" role="dialog" aria-labelledby="projectInfoTitle">
+          <header><h2 id="projectInfoTitle">目前專案</h2><button type="button" class="text-button" popovertarget="projectInfoPanel" popovertargetaction="hide" aria-label="關閉專案資訊">關閉</button></header>
+          <dl id="projectInfoDetails"></dl>
+          <button id="projectRecoveryRetry" class="project-recovery-retry" type="button" hidden>重新連接此工作</button>
+          <details class="project-concepts"><summary>專案與場景有何不同？</summary><p><strong>專案 .gcanvas</strong> 包含場景、參考圖、工程草稿及已建立的空間模型。</p><p><strong>場景 .scene</strong> 包含幾何、放置與已發布工程定義。單獨匯出場景不會帶走完整專案。</p><p>本機暫存用於接續工作，不代表已保存到你的專案檔。</p></details>
+        </section>
+        <span class="main-project-status" data-project-status role="status">尚未保存</span>
+        <button class="project-save" type="button" data-project-action="save" aria-label="保存專案" title="保存完整專案"><span data-icon="save"></span><span>保存</span></button>
       </div>
       <input id="file" type="file" accept=".scene" hidden>
       <input id="referenceFile" type="file" accept="application/pdf,image/png,image/jpeg,image/webp,image/gif" hidden>
       <input id="projectFile" type="file" accept=".gcanvas" hidden>
-      <span class="main-project-status" data-project-status role="status">尚未保存</span>
-      <button class="project-save" type="button" data-project-action="save" aria-label="保存專案" title="保存幾何、底圖與來源紀錄"><span data-icon="save"></span><span>保存</span></button>
     </div>
   </header>
 
@@ -92,6 +120,11 @@
             <span class="quick-entry-copy"><strong>邊界</strong><small>建立矩形或多邊形邊界</small></span>
           </button>
         </div>
+      </section>
+
+      <section class="sidebar-section project-library-entry" aria-label="專案資料庫">
+        <button id="btnSpaceModels" type="button" class="text-button"><span data-icon="space"></span>空間模型 <span id="spaceModelCount">0</span></button>
+        <span class="space-model-release" hidden>正在確認建模服務版本…</span>
       </section>
 
       <div class="sidebar-search">
@@ -295,17 +328,10 @@
             <span class="type-icon beam"><span data-icon="beam"></span></span>
             <span><strong>樑</strong><small>RC 樑 w×d</small></span>
           </button>
-    <div class="create-menu-heading">從資料開始</div>
-    <button class="create-menu-entry menu-item" type="button" role="menuitem" data-project-action="import"><span class="type-icon face"><span data-icon="upload"></span></span><span><strong>匯入 PDF／圖片</strong><small>選頁、校準，再描繪邊界</small></span></button>
           <button id="btnBox6" type="button" class="create-menu-entry menu-item" role="menuitem" title="輸入寬、深、高，一次建立六面盒">
             <span class="type-icon space"><span data-icon="space"></span></span>
             <span><strong>知道尺寸 → 六面盒</strong><small>輸入寬・深・高，一次建好</small></span>
           </button>
-        <section class="space-model-entry" aria-label="空間建模第一版">
-          <span class="space-model-release">正在確認建模服務版本…</span>
-          <button id="btnSpaceModelTrial" type="button" class="reference-entry menu-item" role="menuitem"><span data-icon="space"></span><span><strong>從面建立 3D 空間</strong><small>現成範例＋三步引導，立即試用</small></span></button>
-          <button id="btnSpaceModels" type="button" class="text-button menu-item" role="menuitem">已建立的空間模型 <span id="spaceModelCount">0</span></button>
-        </section>
   </div>
   <div id="quickBoundaryPop" class="canvas-boundary-menu menu menu-pop" role="menu" aria-label="選擇邊界形狀" hidden>
     <button id="btnQuickRect" class="menu-item" type="button" role="menuitem"><span data-icon="rectangle"></span>矩形邊界</button>
@@ -339,6 +365,7 @@
         </div>
         <span id="workspacePlaceTag" class="place-capsule" hidden></span>
       </div>
+      <div class="workspace-tools-row" aria-label="工作區工具，可左右捲動">
       <nav id="faceWorkspaceTools" class="face-workspace-tools" aria-label="面內工具">
         <button id="btnFaceProjection" type="button" class="workspace-tool" title="指定此面是空間邊界的平面投影，確認俯視或仰視及輪廓內外"><span data-icon="face"></span><span>平面投影</span></button>
         <button id="btnFaceSpaceModel" type="button" class="workspace-tool" title="使用此面的輪廓與明示高度建立 3D 空間"><span data-icon="space"></span><span>建立空間</span></button>
@@ -361,13 +388,15 @@
         <button id="spacePlaceBeam" class="workspace-tool" type="button" title="拖一段平面圖放樑"><span data-icon="beam"></span><span>拖放樑</span></button>
         <span id="spaceSizeTools" hidden></span>
       </nav>
-      <div class="object-workspace-actions">
-        <button id="workspaceToggleLeft" class="workspace-icon-button panel-toggle left-toggle" type="button" title="物件清單" aria-label="物件清單" aria-expanded="false"><span data-icon="layers"></span></button>
-        <button id="workspaceToggleRight" class="workspace-icon-button panel-toggle right-toggle" type="button" title="檢查器" aria-label="檢查器" aria-expanded="false"><span data-icon="inspect"></span></button>
+      <div class="workspace-history-tools" role="group" aria-label="復原與視角">
         <button type="button" id="faceUndoButton" class="workspace-icon-button" title="復原 (Ctrl+Z)" aria-label="復原"><span data-icon="undo"></span></button>
         <button type="button" id="faceRedoButton" class="workspace-icon-button" title="重做 (Ctrl+Y)" aria-label="重做"><span data-icon="redo"></span></button>
         <button type="button" id="workspaceFitButton" class="workspace-icon-button" title="顯示全部 (f)" aria-label="顯示全部"><span data-icon="fit"></span></button>
-        <span class="workspace-project-status" data-project-status role="status">尚未保存</span>
+      </div>
+      </div>
+      <div class="object-workspace-actions">
+        <button id="workspaceToggleLeft" class="workspace-icon-button panel-toggle left-toggle" type="button" title="物件清單" aria-label="物件清單" aria-expanded="false"><span data-icon="layers"></span></button>
+        <button id="workspaceToggleRight" class="workspace-icon-button panel-toggle right-toggle" type="button" title="檢查器" aria-label="檢查器" aria-expanded="false"><span data-icon="inspect"></span></button>
         <span id="workspaceProjectActions"></span>
       </div>
     </header>
@@ -509,15 +538,16 @@
 <section id="box6Dialog" class="dialog" role="dialog" aria-modal="true" hidden>
   <header class="dialog-header">
     <div><span class="dialog-eyebrow">快速建立</span><h2>六面盒空間</h2></div>
-    <button id="box6Close" class="dialog-close text-button" type="button">✕</button>
+    <button id="box6Close" class="dialog-close text-button" type="button">返回畫布</button>
   </header>
   <div class="dialog-body">
     <div class="place-form">
       <label>寬 W (mm)<input id="box6W" type="number" step="1" value="4000"></label>
       <label>深 D (mm)<input id="box6D" type="number" step="1" value="3000"></label>
-      <label>高 H (mm)<input id="box6H" type="number" step="1" value="2500"></label>
+      <label>高 H (mm)<input id="box6H" type="number" step="1" value="2500" aria-describedby="box6HeightNote"></label>
       <label class="face-option-row"><span>含地板</span><input id="box6Floor" type="checkbox" checked></label>
     </div>
+    <p id="box6HeightNote" class="dialog-field-note">底面位於 z = 0；H 同時決定四面牆的高度與頂面 z 座標，此處預設 2500 mm。空間建模入口的牆高預設為 3000 mm；兩個入口皆可依專案修改。</p>
   </div>
   <footer class="dialog-footer">
     <button id="box6Cancel" class="btn" type="button">取消</button>
@@ -617,6 +647,9 @@
 <script src="vendor/fflate/umd/index.js"></script>
 <script src="project-store.js"></script>
 <script src="reference-workspace.js"></script>
+<script src="project-ui.js"></script>
+<script src="workspace-guidance.js"></script>
+<script src="workspace-shell.js"></script>
 <script src="feedback.js"></script>
 <script src="reference-ui.js"></script>
 <script src="polydraft.js"></script>

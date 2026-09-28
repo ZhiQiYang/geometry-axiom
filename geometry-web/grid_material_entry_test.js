@@ -3,7 +3,7 @@
  * trusted browser controls. Expected coordinates below are independent D10a examples.
  */
 module.exports=async function gridMaterialEntry(h){
-  const {read,wait,ctl,fill,choose,preview,confirm,ready,dump,state,refs,shot,send,check,same,gridSources,refValue,segmentsMatch,downloadRoot,downloaded,openProjectFile,orderedState,oracles}=h;
+  const {read,wait,ctl,fill,choose,preview,confirm,ready,dump,state,refs,shot,send,check,same,gridSources,refValue,segmentsMatch,downloadRoot,downloaded,openProjectFile,orderedState,expectNativeDialog,oracles}=h;
   const fs=require('fs'),path=require('path');
   const field=key=>'#ewField-gridFlow-'+key.replaceAll('.','-');
   const geometry=[
@@ -80,7 +80,7 @@ module.exports=async function gridMaterialEntry(h){
     let file;
     try{
       await read(`window.__gridEntrySavePicker=Object.getOwnPropertyDescriptor(window,'showSaveFilePicker');Object.defineProperty(window,'showSaveFilePicker',{value:undefined,configurable:true});void 0`);
-      try{await ctl('#ewSave');file=await downloaded('.gcanvas',[],gridDownloads);}
+      try{await ctl('#projectBar [data-project-action="save"]');file=await downloaded('.gcanvas',[],gridDownloads);}
       finally{await read(`if(window.__gridEntrySavePicker)Object.defineProperty(window,'showSaveFilePicker',window.__gridEntrySavePicker);else delete window.showSaveFilePicker;delete window.__gridEntrySavePicker;void 0`);}
     }finally{await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:path.resolve(downloadRoot)});}
     const entries=require('./vendor/fflate/umd/index.js').unzipSync(fs.readFileSync(file)),manifest=JSON.parse(Buffer.from(entries['manifest.json']).toString('utf8'));
@@ -228,10 +228,12 @@ module.exports=async function gridMaterialEntry(h){
   try{
     await ctl('#ewPreview');await wait('window.__gridEntryRace.held===true','real grid preview response held');
     check('跨專案案例暫扣的是真實有效預覽',await read('window.__gridEntryRace.seen && window.__gridEntryRace.valid && Number.isSafeInteger(window.__gridEntryRace.token)'));
-    await close();await ctl('#fileMenuBtn');await ctl('#btnClear');
-    await wait(`!ReferenceWorkspace.busy && !document.body.classList.contains('oc-busy') && $('objectWorkspace').hidden`,'formal clear scene completed');
+    await close();await ctl('#fileMenuBtn');
+    const unsaved=await read('ReferenceWorkspace.context().dirty');
+    await expectNativeDialog(()=>ctl('#btnNewProject'),{message:'建立一份空白新專案，切換為新的專案識別及「未命名專案」。'+(unsaved?'目前尚未保存的變更不會自動寫入檔案。':'')+'本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？',accept:true});
+    await wait(`!ReferenceWorkspace.busy && !document.body.classList.contains('oc-busy') && $('objectWorkspace').hidden`,'formal new project completed');
     const newContext=await read('ReferenceWorkspace.context().id');
-    check('關閉預覽後由正式清空入口切換專案',newContext!==oldContext&&(await refs()).grids.length===0);
+    check('關閉預覽後由正式新專案入口切換身份',newContext!==oldContext&&(await refs()).grids.length===0);
     // Reusing the old placement ID in the new fixture must not make the old
     // response applicable. Only fixture geometry setup uses the native API.
     await read(`(async()=>{const r=await apiRequest('line surface 1 origin 0 0 4500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');if(!r.ok||r.preview)throw Error('Race fixture failed '+JSON.stringify(r));await renderObjects();await enterFocus('face',1);})()`);

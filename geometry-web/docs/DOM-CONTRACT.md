@@ -3,6 +3,34 @@
 > 立案 2026-09-13(Phase 0 產出);Phase 1 改版更新。本檔列出自動測試依賴的 DOM id / class / 全域名稱;
 > 之後每階段改 DOM 都要對照本表,新增或改名需同步更新測試。
 
+## 2026-09-29 GEO-218 第二輪介面與專案生命週期
+
+- `#projectBar` 是同一個 DOM 節點，內含專案名稱、`#projectInfoButton`、狀態及 `[data-project-action="save"]`。主畫布、面工作區及大型模態視窗共用；`WorkspaceShell` 將它移入 `.workspace-project-header`，關閉後還原。`#ewSave`、`#igSaveProject`、`#smSave` 已移除。保留原生 `showModal()` 隔離背景。
+- `#projectInfoPanel` 使用原生 popover；`#projectInfoDetails` 顯示可信來源、保存／下載與復原資訊。`#projectRecoveryRetry` 只在唯讀恢復狀態顯示；關閉原編輯分頁後，可重新競取編輯權限並刷新視圖。
+- `ReferenceWorkspace.getProjectInfo()`、`restoreSession()`、`retryRecovery()`、`persistSession()`、`assertEditable()` 管理來源與恢復；詳見 `REFERENCE-PROJECT.md` GEO-218。`connection.session` 須先握手確認；唯讀讀取不寫入自動畫布位置。
+- `#fileMenuPop [data-file-section]` 分 project、transfer、resources；`#exampleMenuBtn` 展開 `#exampleMenuPop`。`#btnNewProject` 建新身份，`#btnClear` 清空完整內容但保留身份。建立選單只放建立功能，`#btnSpaceModels` 位於 `.project-library-entry`，亦可由 `#btnModelLibraryMenu` 進入。
+- `canvas-labels.css` 對畫布 SVG text 使用白色描邊與固定螢幕粗細；`.fe-edge-dimension` 的延伸線、尺寸線及端點刻度依真實邊生成。三視圖 `data-label-full`、title 及標註清單保留完整面代號，常態文字只顯示角材編號。
+- `WorkspaceGuidance.apply()` 只保存工具教學的已讀偏好；`[data-guidance-dismiss]` 關閉，工具列的 `.guidance-help` 重新開啟。即時選取／定位不因關閉教學消失。原生按鈕及 summary 的 Enter／Space 不可誤提交外環草稿。
+- 面內即時選取摘要是浮動覆層：顯示／隱藏本身不能觸發自動適配或取消框選；尺寸觀察器只監看畫布容器及底部控制列。明確按全圖時仍避讓當下提示，真正容器縮放仍重新適配。
+- `#faceTechnicalDetails`、`#mainFaceTechnicalDetails` 收合面編號、原點與軸向；`#tbTechnicalDetails`、`#tbNewSegmentDetails` 收合精確選段及代碼，首層保留中文角色與常用尺寸。
+- `ux_refinement_test.js` 由正式 CDP harness P74 執行；涵蓋桌面／390px、保存守門、真實重新整理及同瀏覽器雙分頁。
+
+## 2026-09-28 Canvas 審查修正（面工作區及保存回饋）
+
+本節取代舊節的一列面工作區頂列、隱藏窄螢幕保存狀態及復原按鈕位置要求。其餘幾何／預覽守門維持原契約；驗收範圍見 `UIUX-FIXES-2026-09-28.md`。
+
+- `.workspace-tools-row` 是面／空間頂列第二列，包含既有工具與 `.workspace-history-tools` 的復原／重做／全圖；原 ID 不變。第一列是返回、物件名稱、放置摘要、抽屜與檔案／保存操作。第二列可水平捲動，焦點控制保持可達。
+- `#objectWorkspace:not([hidden])` 使根節點與 body 同步頂列高度；桌面為 116px，手機斷點為 122px。`--topbar-h` 同步畫布、抽屜、提示的位置。主物件畫布維持自己的響應式頂列，不能將工作區高度套到主畫布。
+- `[data-project-status]` 保留完整狀態文字、`title` 與可及名稱；`data-status-short` 供窄螢幕顯示「未保存／已保存／讀取中／驗證中」等短字。檔案入口保留文字。
+- 開啟專案及試用工程期間，`#busyIndicator` 立即顯示真實讀取／驗證／載入階段，`ReferenceWorkspace.busy` 阻擋 UI 及重複開啟。`ReferenceWorkspace.historyActionLabel('undo'|'redo')` 提供待復原的專案開啟操作名稱。
+- 面視野由 `ResizeObserver` 跟隨畫布容器尺寸：全圖模式重新適配，手動視角保留倍率與中心。三視圖切換重新同步 `#ocSelectionSummary`，三視圖不顯示框選提示。
+- `#v3LabelDetails` 位於左側 `#v3Panel`，未選物件時亦可展開全部標註；窄螢幕由左側抽屜開啟與捲讀。圖上收合的密集標註仍保留於清單。
+- 零成員空間的 `.space-plan-empty` 顯示空容器說明及加入成員入口，不渲染有尺寸的房間矩形。
+- 無限網格的 `#igSaveSource`／`#igSaveBinding` 保留原 ID 並固定於 footer；保存專案與預覽建立是分開的動作，有未套用草稿時不允許以保存專案關窗丟棄內容。
+- `#box6HeightNote` 說明整盒高度與空間建模牆高預設的差別；既有 2500／3000 值不變。
+
+P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETRY_UIUX_FIX_ONLY=1` 單跑；仍須使用明確隔離的服務及 TEMP 回報資料夾。
+
 ## 2026-09-28 來源／配置組合畫布（目前主畫布合約）
 
 本節實作使用者選定的第 3 張介面：左側物件清單、主畫布組合關係、底部就地編輯。主畫布的 DOM 位置與操作入口以本節為準，優先於下方 2026-09-27 及更早的佈局紀錄；面內、空間與三視圖工作區仍各遵循原有契約。D29／D30 的物件語意、預覽確認與保存格式未變。
@@ -853,14 +881,14 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `#smCommonSettings` 集中高度、材料及角材；`#smBottomZero` 必須明示點擊才填 0。`#smSourceAdvanced` 收合其他建模方式／來源，`#smBoundaryAdvanced` 收合輪廓邊及底頂用途。`#smBoundarySummary` 與 `#smBoundaryWarning` 在進階區外，孔洞用途 `#smHolesWrap` 也保持外露；FREE 不預選，未指定孔用途則聚焦欄位並拒絕預覽。
 - `#smCommitReview` 與建立按鈕同在 footer，包含 `#smCommitSummary`、`#smReviewJump`、既有 `#smConfirmFaces`。`#smReviewFaces` 是可展開的完整面清單；修改設定即撤銷舊預覽及核對，建立守門不變。footer 可捲動且保留設定區；窄且短的視窗省略非互動步驟列，操作目標仍至少 44px。
 - 單一記憶體草稿只復用同專案、面 UID、放置、frame、投影、完整 dump 及未變歷史的控制值；不復用預覽或確認勾選。場景相同但經 undo/redo 也不可復用，不跨重整或分頁保存，已保存模型／修改牆高不覆蓋新建草稿。
-- `#smSaveNotice` 區分加入目前專案、真正寫檔成功與下載待確認；`#smSave` 仍由使用者點擊直接呼叫保存，以維持原生選檔器的使用者手勢。
+- `#smSaveNotice` 區分加入目前專案、真正寫檔成功與下載待確認；GEO-218 統一使用 `#projectBar [data-project-action="save"]`，使用者點擊直接呼叫保存以維持原生選檔器手勢。
 - `space_model_test.js` 的 GEO-210 分支驗證流程、草稿與延遲回覆；完整建模及角材回歸沿用相同按鈕、API 與核心。操作說明見 `SPACE-MODELING.md`。
 
 ## GEO-211 正式工程規格與缺口修补
 
 - `#btnEngineeringSpecs` 與 `[data-engineering-open]` 開啟 `#ewWorkspace`；放置面／主格入口透過 `data-placement-id`／`data-grid-id` 對準本次物件。`#ewTitle` 與版號標示正式工作區身份。
 - `.ew-nav [data-ew-section]` 切換套用、材料、做法與工程包；`#ewPreview` 建立核心候選，`#ewReviewed` 核對完整影響，`#ewConfirm` 確認单次交易。`#ewCancelPreview` 保留表單但取消候選。
-- `#ewSave` 由原使用者手勢直接呼叫完整專案保存；未發布表單經 ReferenceWorkspace 草稿 API 保存，與原生 World 分開。單純表單輸入不造成核心 undo 步驟。
+- GEO-218 統一由 `#projectBar [data-project-action="save"]` 的原使用者手勢直接呼叫完整專案保存；未發布表單經 ReferenceWorkspace 草稿 API 保存，與原生 World 分開。單純表單輸入不造成核心 undo 步驟。
 - 已有來源的網格用 `.engineering-grid-details` 顯示有效值；角材 `#tbSelected` 改由工程入口編輯來源，避免舊表單的刪除／重宣告把來源換成字面量。`references.engineeringSources` 為唯一綁定判準。
 - `#guide-editor` 保留 LOCAL 引用式；DATUM 只能從共用基準管理器修改。`.reference-impact [data-impact-guide]` 顯示全部可見段前後端點；忙碌中的 I8a 確認／取消仍允許真指標操作。
 - `engineering_workflow_test.js` 與 `project_audit_test.js` 使用正式畫布及 native bridge 驗證；模擬視窗不代替實體觸控驗證。

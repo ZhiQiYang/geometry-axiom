@@ -160,16 +160,19 @@ window.EngineeringAdapter = (() => {
     if(button.disabled || oc.busy || ReferenceWorkspace.busy || !ReferenceWorkspace.mayLeave())return;
     const expected=project();button.disabled=true;
     try {
-      const response=await fetch('/examples/engineering-spec-v1.gcanvas',{signal:AbortSignal.timeout(30000)});
-      checkApiSession(response);
-      if(!response.ok)throw new Error('無法讀取現成工程專案，請確認服務版本後重試。');
-      const bytes=new Uint8Array(await response.arrayBuffer());
-      assertContext(expected);
-      if(expected.revision!==project().revision)throw new Error('讀取範例期間目前工程已有變更，請再次開啟範例。');
-      await ReferenceWorkspace.importBytes(bytes,'engineering-spec-v1.gcanvas');
-      resetSceneFocus();await setView3(false);await renderObjects();
-      document.getElementById('fileMenuPop').hidden=true;
-      await EngineeringWorkspace.open();
+      await ReferenceWorkspace.openProject(async()=>{
+        const response=await fetch('/examples/engineering-spec-v1.gcanvas',{signal:AbortSignal.timeout(30000)});
+        checkApiSession(response);
+        if(!response.ok)throw new Error('無法讀取現成工程專案，請確認服務版本後重試。');
+        const bytes=new Uint8Array(await response.arrayBuffer());
+        assertContext(expected);
+        if(expected.revision!==project().revision)throw new Error('讀取範例期間目前工程已有變更，請再次開啟範例。');
+        return bytes;
+      },'engineering-spec-v1.gcanvas',async()=>{
+        resetSceneFocus();await setView3(false);await renderObjects();
+        document.getElementById('fileMenuPop').hidden=true;
+        await EngineeringWorkspace.open();
+      },{source:'example'});
     }catch(error){toast(error.message,'error');}
     finally {button.disabled=false;}
   };

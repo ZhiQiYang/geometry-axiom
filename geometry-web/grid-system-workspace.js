@@ -40,22 +40,87 @@
     if (!$('igStatus')) return;
     $('igStatus').textContent = text; $('igStatus').classList.toggle('ig-error', error);
   }
+  function sourceEditorKey() {
+    const values = [$('igName').value.trim(), $('igMainAlong').value];
+    for (const a of axes) {
+      const p = 'ig' + a.toUpperCase(), mode = $(p + 'Source').value;
+      values.push(mode, ...(mode === 'repeat' ? ['Step','Phase'] : mode === 'repeat-panel' ? ['Panel','Gap','Anchor'] : []).map(key => $(p + key).value.trim()));
+    }
+    return JSON.stringify(values);
+  }
+  function bindingEditorKey(s) {
+    const vertex = s.vertex ? s.vertex.key != null ? 'key:' + s.vertex.key : vertexId(s.vertex) : s.restoringBoundary ? 'key:' + s.binding.vertexKey : '';
+    return JSON.stringify([$('igBoundary').value, vertex, ...['igCellI','igCellJ','igAnchorUN','igAnchorUD','igAnchorVN','igAnchorVD'].map(id => $(id).value.trim())]);
+  }
+  function savedBindingKey(binding) {
+    return JSON.stringify([String(binding.boundary), 'key:' + binding.vertexKey, ...binding.cell.map(String), ...binding.anchor.flatMap(a => [String(a.num),String(a.den)])]);
+  }
+  function growthDraftKey() {
+    return JSON.stringify(['Left','Right','Top','Bottom'].map(a => $('igGrow' + a).value));
+  }
+  function growthDraftChanged(s = state) {
+    return growthDraftKey() !== (s.growthAppliedKey || '["0","0","0","0"]');
+  }
+  function boundaryDraftChanged(s) {
+    return growthDraftChanged(s) || s.vertices.some(v => v.key != null && ['U','V'].some(a => $('igKey'+v.key+a)?.value !== String(v[a.toLowerCase()])));
+  }
+  function draftState(s) {
+    if (!s || !dialog.open) return {changed:false, pending:false, note:''};
+    const source = s.mode === 'source' && sourceEditorKey() !== s.initialSourceKey;
+    const binding = s.mode === 'binding' && bindingEditorKey(s) !== s.initialBindingKey;
+    const boundary = s.mode === 'binding' && boundaryDraftChanged(s);
+    const surface = $('igSurface').value;
+    const application = s.mode === 'binding' && !!surface && !s.references.grids?.some(g => g.surface === Number(surface) && g.kind !== 'subgrid');
+    const fresh = s.mode === 'source' ? !s.source : !s.binding;
+    const note = source || fresh && s.mode === 'source' ? '網格來源尚未建立或套用。先按「預覽並建立／預覽來源變更」，確認後再保存專案。' :
+      binding || fresh ? '網格配置尚未建立或套用。先按「預覽並建立配置／預覽配置變更」，確認後再保存專案。' :
+      boundary ? growthDraftChanged() ? '擴大量尚未填入頂點草稿。請先按「將四側擴大填入頂點草稿」，再預覽並確認邊界變更。' : '邊界有未套用的頂點草稿。請先「預覽邊界變更」並確認。' :
+      application ? '承載面已選取但尚未套用。請先「預覽套用」並確認，或清除選擇。' : '網格設定已在目前場景，可保存成完整專案。';
+    return {source, binding, boundary, application, changed:source || binding || boundary || application, pending:fresh || source || binding || boundary || application || !s.bindingReady, note};
+  }
+  function syncDraftState(s) {
+    if (!current(s)) return;
+    const draft = draftState(s);
+    $('igDraftNote').textContent = draft.note;
+    WorkspaceShell.refresh(dialog);
+    if (s.mode === 'binding') $('igSaveBinding').disabled = s.busy || !s.bindingReady || (!!s.binding && bindingEditorKey(s) === s.initialBindingKey);
+  }
+  function mayLeave(s) {
+    return !s || !draftState(s).changed || window.confirm('這個網格工作區有尚未建立或套用的草稿。離開會捨棄這些草稿；已保存到場景的網格保持不變。確定離開？');
+  }
+  function requireOnlyDraft(s, allowed) {
+    const draft = draftState(s), labels = {source:'來源',binding:'配置',boundary:'邊界頂點',application:'承載面套用'};
+    const remaining = Object.keys(labels).filter(key => key !== allowed && draft[key]);
+    if (remaining.length) throw Error(`另有未套用的${remaining.map(key => labels[key]).join('、')}草稿。請先完成或還原該設定，再預覽這項操作。`);
+  }
   function axisForm(a, d) {
     const p = 'ig' + a.toUpperCase(), source = d?.source || 'repeat';
     const input = (key, title, value) => `<label>${title}<input id="${p}${key}" type="number" step="1" value="${esc(value)}"></label>`;
     return `<fieldset class="ig-axis" data-ig-axis="${a}"><legend>${a} ${a === 'u' ? '→' : '↓'} 軸</legend><label>排格方式<select id="${p}Source"><option value="repeat"${source === 'repeat' ? ' selected' : ''}>固定間距 · 無限重複</option><option value="repeat-panel"${source === 'repeat-panel' ? ' selected' : ''}>面材＋縫 · 無限重複</option><option value="none"${source === 'none' ? ' selected' : ''}>不設此軸</option></select></label><div data-ig-mode="repeat" class="ig-pair">${input('Step', '間距 mm', d?.step ?? 600)}${input('Phase', '第 0 線座標 mm', d?.phase ?? 0)}</div><div data-ig-mode="repeat-panel"><div class="ig-pair">${input('Panel', '面材 mm', d?.panel ?? 600)}${input('Gap', '縫寬 mm', d?.gap ?? 0)}</div>${input('Anchor', '面材起點 mm', d?.anchor ?? 0)}<p>格線位於縫中心；向正、負方向持續重複。</p></div></fieldset>`;
   }
   function render(s) {
+    // The project bar is shared DOM; return it before rebuilding this workspace.
+    WorkspaceShell.detach(dialog);
     const source = s.source || {name: '無限網格', mainAlong: null, uDefinition: {source: 'repeat', phase: 0, step: 600}, vDefinition: {source: 'repeat', phase: 0, step: 400}};
-    dialog.innerHTML = `<header class="ig-header"><div><p>無限網格 · 局部座標 u →　v ↓</p><h1 id="igTitle">${s.mode === 'binding' ? s.binding ? `網格配置 ${s.binding.id}` : '建立網格配置' : s.source ? esc(s.source.name) : '建立無限網格'}</h1></div><button id="igClose" type="button" class="btn">返回畫布</button></header><div class="ig-layout"><aside class="ig-settings"><section id="igSourceForm"${s.mode === 'binding' ? ' hidden' : ''}><h2>網格來源</h2><p>格線向兩端無限延伸。設定間距與基準，不需要總條數。</p><label>名稱<input id="igName" value="${esc(source.name)}" autocomplete="off"></label><label>主支方向<select id="igMainAlong"><option value="none"${!source.mainAlong ? ' selected' : ''}>不設定</option><option value="u"${source.mainAlong === 'u' ? ' selected' : ''}>沿 u</option><option value="v"${source.mainAlong === 'v' ? ' selected' : ''}>沿 v</option></select></label>${axes.map(a => axisForm(a, source[a + 'Definition'])).join('')}<button id="igSaveSource" class="primary-button" type="button">${s.source ? '預覽來源變更' : '預覽並建立'}</button>${s.source ? `<button id="igNewBinding" class="btn" type="button">＋ 選邊界建立配置</button><section class="ig-related"><h3>使用此來源的配置</h3>${s.bindings.filter(b => b.system === s.source.id).map(b => `<button type="button" class="btn" data-ig-open-binding="${b.id}">配置 ${b.id} · 面 ${b.boundary}</button>`).join('') || '<p>尚未配置，可以先保存來源。</p>'}</section>` : ''}</section><section id="igBindingForm"${s.mode !== 'binding' ? ' hidden' : ''}><h2>對齊邊界與 cell</h2><p>來源：${esc(source.name)} <button type="button" id="igEditSource" class="grid-text-button">編輯來源</button></p><label>1 · 邊界<select id="igBoundary"><option value="">選擇已有邊界（可尚未放置）</option>${s.boundaries.map(b => `<option value="${b.id}"${s.binding?.boundary === b.id ? ' selected' : ''}>面 ${b.id}${b.placed ? ' · 已放置' : ' · 尚未放置'}</option>`).join('')}</select></label><p id="igVertexSummary">2 · 點選右側邊界的實際頂點。</p><label>頂點<select id="igVertex"><option value="">先選邊界</option></select></label><p>3 · 點選網格的一格，或填入精確索引。</p><div class="ig-pair"><label>cell i<input id="igCellI" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[0] ?? '0')}"></label><label>cell j<input id="igCellJ" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[1] ?? '0')}"></label></div><button id="igLocateCell" class="btn" type="button">定位這一格</button><p>4 · 格子裡的對齊位置</p><div class="ig-anchor" role="group" aria-label="格子內的對齊位置">${['左上','上中','右上','左中','中心','右中','左下','下中','右下'].map((t,k)=>`<button type="button" data-ig-anchor="${k%3},${Math.floor(k/3)}" aria-pressed="false">${t}</button>`).join('')}</div><details class="ig-rational"><summary>其他精確比例</summary><div class="ig-pair"><label>u 分子<input id="igAnchorUN" type="number" step="1" value="0"></label><label>u 分母<input id="igAnchorUD" type="number" step="1" value="1"></label><label>v 分子<input id="igAnchorVN" type="number" step="1" value="0"></label><label>v 分母<input id="igAnchorVD" type="number" step="1" value="1"></label></div></details><p id="igAlignmentSummary" class="ig-summary"></p><button id="igSaveBinding" class="primary-button" type="button">${s.binding ? '預覽配置變更' : '預覽並建立配置'}</button><section id="igApplicationSection"${s.binding ? '' : ' hidden'}><h3>套用到承載面</h3><p>只列出引用同一邊界的承載面。</p><label>承載面<select id="igSurface"></select></label><p id="igApplyNote"></p><button id="igApplyBinding" type="button" class="btn">預覽套用</button><div id="igApplications"></div></section><details id="igKeyedEditor"${s.binding ? '' : ' hidden'}><summary>以頂點身分修改邊界</summary><p>保留每個頂點的身分。修改會重新檢查此邊界的所有配置與構件。</p><div id="igKeyedVertices"></div><div class="ig-pair">${['Left','Right','Top','Bottom'].map((a,k)=>`<label>向${['左','右','上','下'][k]}擴大 mm<input id="igGrow${a}" type="number" step="1" min="0" value="0"></label>`).join('')}</div><button id="igGrowBoundary" type="button" class="btn">將四側擴大填入頂點草稿</button><button id="igSaveBoundary" type="button" class="primary-button">預覽邊界變更</button></details>${s.binding ? `<button id="igDeleteBinding" class="btn danger" type="button">刪除此配置</button>` : ''}</section></aside><main class="ig-main"><div class="ig-view-heading"><div><h2>無限網格</h2><p id="igViewNote">點格子選取 · 拖曳平移 · 滾輪縮放；視窗不改模型</p></div><div class="ig-view-tools"><button id="igZoomOut" type="button" class="btn" aria-label="縮小網格">−</button><button id="igZoomIn" type="button" class="btn" aria-label="放大網格">＋</button><button id="igFit" type="button" class="btn">回到基準</button></div></div><svg id="igGridView" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="可平移縮放的無限網格，點選 cell"></svg><p id="igDensity" class="ig-density" role="status"></p><section id="igBoundarySection"${s.mode === 'binding' ? '' : ' hidden'}><h2>邊界實際頂點 <small>u →　v ↓</small></h2><p>點圓點選擇外環或孔環頂點；橙色圓點是目前的對齊頂點。</p><svg id="igBoundaryView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界外環及孔環的實際頂點"></svg></section><section id="igResultSection"${s.binding ? '' : ' hidden'}><h2>目前已保存的配置結果</h2><p id="igResultNote"></p><svg id="igResultView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界內實際裁切的配置格線"></svg></section></main></div><footer class="ig-footer"><p id="igStatus" role="status" aria-live="polite">所有變更先預覽，確認後才保存到目前場景。</p><button id="igSaveProject" type="button" class="btn">保存專案 .gcanvas</button></footer>`;
+    dialog.innerHTML = `<header class="ig-header"><div><p>無限網格 · 局部座標 u →　v ↓</p><h1 id="igTitle">${s.mode === 'binding' ? s.binding ? `網格配置 ${s.binding.id}` : '建立網格配置' : s.source ? esc(s.source.name) : '建立無限網格'}</h1></div><button id="igClose" type="button" class="btn">返回畫布</button></header><div class="ig-layout"><aside class="ig-settings"><section id="igSourceForm"${s.mode === 'binding' ? ' hidden' : ''}><h2>網格來源</h2><p>格線向兩端無限延伸。設定間距與基準，不需要總條數。</p><label>名稱<input id="igName" value="${esc(source.name)}" autocomplete="off"></label><label>主支方向<select id="igMainAlong"><option value="none"${!source.mainAlong ? ' selected' : ''}>不設定</option><option value="u"${source.mainAlong === 'u' ? ' selected' : ''}>沿 u</option><option value="v"${source.mainAlong === 'v' ? ' selected' : ''}>沿 v</option></select></label>${axes.map(a => axisForm(a, source[a + 'Definition'])).join('')}<button id="igSaveSource" class="primary-button" type="button">${s.source ? '預覽來源變更' : '預覽並建立'}</button>${s.source ? `<button id="igNewBinding" class="btn" type="button">＋ 選邊界建立配置</button><section class="ig-related"><h3>使用此來源的配置</h3>${s.bindings.filter(b => b.system === s.source.id).map(b => `<button type="button" class="btn" data-ig-open-binding="${b.id}">配置 ${b.id} · 面 ${b.boundary}</button>`).join('') || '<p>尚未配置，可以先保存來源。</p>'}</section>` : ''}</section><section id="igBindingForm"${s.mode !== 'binding' ? ' hidden' : ''}><h2>對齊邊界與 cell</h2><p>來源：${esc(source.name)} <button type="button" id="igEditSource" class="grid-text-button">編輯來源</button></p><label>1 · 邊界<select id="igBoundary"><option value="">選擇已有邊界（可尚未放置）</option>${s.boundaries.map(b => `<option value="${b.id}"${s.binding?.boundary === b.id ? ' selected' : ''}>面 ${b.id}${b.placed ? ' · 已放置' : ' · 尚未放置'}</option>`).join('')}</select></label><p id="igVertexSummary">2 · 點選右側邊界的實際頂點。</p><label>頂點<select id="igVertex"><option value="">先選邊界</option></select></label><p>3 · 點選網格的一格，或填入精確索引。</p><div class="ig-pair"><label>cell i<input id="igCellI" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[0] ?? '0')}"></label><label>cell j<input id="igCellJ" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[1] ?? '0')}"></label></div><button id="igLocateCell" class="btn" type="button">定位這一格</button><p>4 · 格子裡的對齊位置</p><div class="ig-anchor" role="group" aria-label="格子內的對齊位置">${['左上','上中','右上','左中','中心','右中','左下','下中','右下'].map((t,k)=>`<button type="button" data-ig-anchor="${k%3},${Math.floor(k/3)}" aria-pressed="false">${t}</button>`).join('')}</div><details class="ig-rational"><summary>其他精確比例</summary><div class="ig-pair"><label>u 分子<input id="igAnchorUN" type="number" step="1" value="0"></label><label>u 分母<input id="igAnchorUD" type="number" step="1" value="1"></label><label>v 分子<input id="igAnchorVN" type="number" step="1" value="0"></label><label>v 分母<input id="igAnchorVD" type="number" step="1" value="1"></label></div></details><p id="igAlignmentSummary" class="ig-summary"></p><button id="igSaveBinding" class="primary-button" type="button">${s.binding ? '預覽配置變更' : '預覽並建立配置'}</button><section id="igApplicationSection"${s.binding ? '' : ' hidden'}><h3>套用到承載面</h3><p>只列出引用同一邊界的承載面。</p><label>承載面<select id="igSurface"></select></label><p id="igApplyNote"></p><button id="igApplyBinding" type="button" class="btn">預覽套用</button><div id="igApplications"></div></section><details id="igKeyedEditor"${s.binding ? '' : ' hidden'}><summary>以頂點身分修改邊界</summary><p>保留每個頂點的身分。修改會重新檢查此邊界的所有配置與構件。</p><div id="igKeyedVertices"></div><div class="ig-pair">${['Left','Right','Top','Bottom'].map((a,k)=>`<label>向${['左','右','上','下'][k]}擴大 mm<input id="igGrow${a}" type="number" step="1" min="0" value="0"></label>`).join('')}</div><button id="igGrowBoundary" type="button" class="btn">將四側擴大填入頂點草稿</button><button id="igSaveBoundary" type="button" class="primary-button">預覽邊界變更</button></details>${s.binding ? `<button id="igDeleteBinding" class="btn danger" type="button">刪除此配置</button>` : ''}</section></aside><main class="ig-main"><div class="ig-view-heading"><div><h2>無限網格</h2><p id="igViewNote">點格子選取 · 拖曳平移 · 滾輪縮放；視窗不改模型</p></div><div class="ig-view-tools"><button id="igZoomOut" type="button" class="btn" aria-label="縮小網格">−</button><button id="igZoomIn" type="button" class="btn" aria-label="放大網格">＋</button><button id="igFit" type="button" class="btn">回到基準</button></div></div><svg id="igGridView" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="可平移縮放的無限網格，點選 cell"></svg><p id="igDensity" class="ig-density" role="status"></p><section id="igBoundarySection"${s.mode === 'binding' ? '' : ' hidden'}><h2>邊界實際頂點 <small>u →　v ↓</small></h2><p>點圓點選擇外環或孔環頂點；橙色圓點是目前的對齊頂點。</p><svg id="igBoundaryView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界外環及孔環的實際頂點"></svg></section><section id="igResultSection"${s.binding ? '' : ' hidden'}><h2>目前已保存的配置結果</h2><p id="igResultNote"></p><svg id="igResultView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界內實際裁切的配置格線"></svg></section></main></div><footer class="ig-footer"><p id="igStatus" role="status" aria-live="polite">所有變更先預覽，確認後才保存到目前場景。</p></footer>`;
+    const footer = dialog.querySelector('.ig-footer'), notes = document.createElement('div'), actions = document.createElement('div');
+    notes.className = 'ig-footer-notes'; actions.className = 'ig-footer-actions';
+    const draftNote = document.createElement('p'); draftNote.id = 'igDraftNote';
+    notes.append($('igStatus'), draftNote);
+    for (const id of ['igSaveSource','igSaveBinding']) { $(id).hidden = id === 'igSaveSource' ? s.mode === 'binding' : s.mode !== 'binding'; actions.append($(id)); }
+    footer.replaceChildren(notes, actions);
     $('igClose').onclick = () => close();
-    $('igSaveProject').onclick = () => { close(); document.querySelector('#btnSaveProject, #btnSave')?.click(); };
     $('igSaveSource').onclick = () => operation(s, () => saveSource(s));
     $('igNewBinding')?.addEventListener('click', () => open({system: s.source.id, mode: 'binding'}));
     $('igEditSource').onclick = () => open({system: s.source.id});
     for (const b of dialog.querySelectorAll('[data-ig-open-binding]')) b.onclick = () => open({binding:Number(b.dataset.igOpenBinding)});
     for (const node of dialog.querySelectorAll('#igSourceForm input,#igSourceForm select')) node.addEventListener('input', () => { syncFields(); drawGrid(s); });
-    $('igBoundary').onchange = () => loadBoundary(s, Number($('igBoundary').value), false);
+    $('igBoundary').onchange = () => {
+      if (boundaryDraftChanged(s) && !window.confirm('邊界有尚未套用的頂點草稿。切換邊界會捨棄這些草稿，確定切換？')) {
+        $('igBoundary').value = s.boundaryId == null ? '' : String(s.boundaryId); syncDraftState(s); return;
+      }
+      loadBoundary(s, Number($('igBoundary').value), false);
+    };
     $('igVertex').onchange = () => { s.vertex = s.vertices.find(v => vertexId(v) === $('igVertex').value) || null; drawBoundary(s); alignment(s); };
     for (const node of dialog.querySelectorAll('[data-ig-anchor]')) node.onclick = () => { const [u,v] = node.dataset.igAnchor.split(',').map(Number); setAnchor(u, 2, v, 2); alignment(s); drawGrid(s); };
     for (const id of ['igCellI','igCellJ','igAnchorUN','igAnchorUD','igAnchorVN','igAnchorVD']) $(id).oninput = () => { alignment(s); drawGrid(s); };
@@ -71,8 +136,14 @@
     bindCamera(s);
     const a = s.binding?.anchor;
     setAnchor(a?.[0]?.num ?? 0, a?.[0]?.den ?? 1, a?.[1]?.num ?? 0, a?.[1]?.den ?? 1);
+    s.restoringBoundary = !!s.binding;
+    s.initialSourceKey = sourceEditorKey(); s.initialBindingKey = s.binding ? savedBindingKey(s.binding) : bindingEditorKey(s); s.bindingReady = !s.binding;
+    dialog.oninput = dialog.onchange = () => syncDraftState(s);
     syncFields(); drawGrid(s);
     if (s.binding) { locate(s); loadBoundary(s, s.binding.boundary, true); }
+    WorkspaceShell.attach(dialog, {saveBlocked:()=>!current(s) || s.busy || draftState(s).pending,
+      saveReason:()=>s.busy?'正在處理網格變更，完成後即可保存。':'先預覽並確認未套用的設定，再保存專案。', describedBy:'igDraftNote'});
+    syncDraftState(s);
   }
   function syncFields() {
     for (const a of axes) { const card = dialog.querySelector(`[data-ig-axis="${a}"]`), value = $('ig' + a.toUpperCase() + 'Source').value; for (const n of card.querySelectorAll('[data-ig-mode]')) n.hidden = n.dataset.igMode !== value; }
@@ -99,6 +170,7 @@
       $('igAlignmentSummary').textContent = `${s.vertex ? `${vertexTitle(s.vertex)} (${s.vertex.u}, ${s.vertex.v})` : '尚未選擇頂點'} ↔ cell (${i}, ${j}) 內 (${un}/${ud}, ${vn}/${vd})。`;
       setAnchor(un,ud,vn,vd);
     } catch(e) { $('igAlignmentSummary').textContent=e.message; }
+    syncDraftState(s);
   }
   function cameraPoint(s, event) { const r=$('igGridView').getBoundingClientRect(),c=s.camera;return [c[0]+(event.clientX-r.left)/r.width*(c[2]-c[0]), c[1]+(event.clientY-r.top)/r.height*(c[3]-c[1])]; }
   function bindCamera(s) {
@@ -134,8 +206,11 @@
   const vertexTitle = v => `${v.loop < 0 ? '外環' : '孔洞 '+(v.loop+1)}・頂點 ${v.index+1}`;
   function vertices(b) { return b.loops.flatMap((loop,li) => (loop.vertices || loop.verts.map((uv,index)=>({index,key:null,uv}))).map(v=>({key:v.key,loop:loop.loop ?? li-1,index:v.index,u:v.uv[0],v:v.uv[1]}))); }
   async function loadBoundary(s, id, restore) {
-    const request=++s.boundarySerial;s.boundary=null;s.vertex=null;s.vertices=[];$('igVertex').innerHTML='<option value="">讀取頂點…</option>';
-    if(!$('igBoundary').value){$('igVertex').innerHTML='<option value="">先選邊界</option>';drawBoundary(s);alignment(s);return;}
+    const request=++s.boundarySerial;s.boundary=null;s.vertex=null;s.vertices=[];s.bindingReady=false;s.restoringBoundary=restore;$('igVertex').innerHTML='<option value="">讀取頂點…</option>';syncDraftState(s);
+    $('igKeyedVertices').replaceChildren(); $('igKeyedEditor').hidden=true;
+    for (const a of ['Left','Right','Top','Bottom']) $('igGrow'+a).value=0;
+    s.growthAppliedKey = growthDraftKey();
+    if(!$('igBoundary').value){s.bindingReady=true;$('igVertex').innerHTML='<option value="">先選邊界</option>';drawBoundary(s);alignment(s);return;}
     try {
       const b=await apiRequest('boundary '+id);
       if(!current(s)||request!==s.boundarySerial)return;
@@ -144,6 +219,7 @@
       $('igVertex').innerHTML='<option value="">點選圖中的頂點</option>'+s.vertices.map(v=>`<option value="${vertexId(v)}">${vertexTitle(v)} (${v.u}, ${v.v})</option>`).join('');
       if(restore&&s.binding)s.vertex=s.vertices.find(v=>v.key===s.binding.vertexKey)||null;
       $('igVertex').value=s.vertex ? vertexId(s.vertex) : '';
+      s.bindingReady=true;s.restoringBoundary=false;
       drawBoundary(s);alignment(s);keyedEditor(s);applications(s);
       if(s.binding&&s.binding.boundary===id)await drawResult(s);
     }catch(e){if(current(s))status(e.message,true);}
@@ -180,9 +256,13 @@
     if(!s.boundary)throw Error('請先選擇邊界。');
     const [left,right,top,bottom]=['Left','Right','Top','Bottom'].map(a=>int('igGrow'+a,'擴大量',0)),outer=s.vertices.filter(v=>v.loop<0),u0=Math.min(...outer.map(v=>v.u)),u1=Math.max(...outer.map(v=>v.u)),v0=Math.min(...outer.map(v=>v.v)),v1=Math.max(...outer.map(v=>v.v));
     for(const v of outer){$('igKey'+v.key+'U').value=v.u===u0?v.u-left:v.u===u1?v.u+right:v.u;$('igKey'+v.key+'V').value=v.v===v0?v.v-top:v.v===v1?v.v+bottom:v.v;}
+    s.growthAppliedKey = growthDraftKey();
     status('已更新邊界頂點草稿；孔環保持原座標。請預覽確認後套用。');
+    syncDraftState(s);
   }
   async function saveBoundary(s) {
+    requireOnlyDraft(s, 'boundary');
+    if (growthDraftChanged()) throw Error('請先按「將四側擴大填入頂點草稿」，再預覽邊界變更。');
     if(!s.boundary||!s.vertices.every(v=>v.key!=null))throw Error('需要已保存的頂點身分。');
     let line=`boundary-keyed ${s.boundaryId} geometry-hash ${s.boundary.geometryFingerprint}`;
     for(let li=0;li<s.boundary.loops.length;li++) {const loop=s.boundary.loops[li],verts=s.vertices.filter(v=>v.loop===li-1);line+=(li===0?' outline ':' hole ')+verts.map(v=>`${v.key}:${int('igKey'+v.key+'U','頂點 u')},${int('igKey'+v.key+'V','頂點 v')}`).join(' ');if(li===0&&s.boundary.kind&&s.boundary.kind!=='unspecified')line+=' kind '+s.boundary.kind;line+=' fixity '+loop.fixity.map(f=>f?'F':'X').join(' ');}
@@ -193,15 +273,17 @@
     const surfaces=s.surfaces.filter(p=>p.boundary===s.binding.boundary);
     $('igSurface').innerHTML='<option value="">'+(surfaces.length?'選擇承載面':'此邊界尚未放置')+'</option>'+surfaces.map(p=>`<option value="${p.id}">承載面 ${p.id}</option>`).join('');
     $('igApplications').innerHTML=(s.binding.applications||[]).map(a=>`<p>主網格 ${a.grid} · 承載面 ${a.surface} <button type="button" class="btn danger" data-ig-detach="${a.grid}">解除套用</button></p>`).join('');
-    for(const b of dialog.querySelectorAll('[data-ig-detach]'))b.onclick=()=>operation(s,async()=>{await stillSame(s);const refs=await apiRequest('references');if(!refs.ok||!refs.grids.some(g=>g.id===Number(b.dataset.igDetach)&&g.bindingId===s.binding.id))throw Error('這次套用已改變，請重新開啟配置。');if(await commit(s,`delete grid ${b.dataset.igDetach}`,`解除主網格 ${b.dataset.igDetach} 的套用`))await reopen(s);});
+    for(const b of dialog.querySelectorAll('[data-ig-detach]'))b.onclick=()=>operation(s,async()=>{requireOnlyDraft(s, null);await stillSame(s);const refs=await apiRequest('references');if(!refs.ok||!refs.grids.some(g=>g.id===Number(b.dataset.igDetach)&&g.bindingId===s.binding.id))throw Error('這次套用已改變，請重新開啟配置。');if(await commit(s,`delete grid ${b.dataset.igDetach}`,`解除主網格 ${b.dataset.igDetach} 的套用`))await reopen(s);});
     applicationState(s);
   }
   function applicationState(s) {
     const id=$('igSurface').value,existing=id===''?null:s.references.grids?.find(g=>g.surface===Number(id)&&g.kind!=='subgrid');
     $('igApplyBinding').disabled=!id||!!existing;
     $('igApplyNote').textContent=existing ? existing.bindingId===s.binding?.id?`此面已使用配置 ${s.binding.id}（主網格 ${existing.id}）。`:`此面已有主網格 ${existing.id}。請先處理原網格及其依賴，再建立新的配置套用。` : !id ? '配置可先保存。需要沿格線放角材時，再明確套用到已放置的面。' : '建立引用此配置的主網格。';
+    syncDraftState(s);
   }
   async function applyBinding(s) {
+    requireOnlyDraft(s, 'application');
     if(!s.binding||!$('igSurface').value)throw Error('請選擇引用同一邊界的承載面。');
     await stillSame(s);
     const surface=Number($('igSurface').value),refs=await apiRequest('references');
@@ -216,16 +298,17 @@
     if(id==null)throw Error('無法取得網格系統編號。');
     const parts=axes.map(a=>{const v=d[a+'Definition'];return `${a} `+(v.source==='none'?'none':v.source==='repeat'?`repeat ${v.phase} ${v.step}`:`repeat-panel ${v.panel} gap ${v.gap} from ${v.anchor}`);});
     if(!await commit(s,`grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong} ${parts.join(' ')}`,`${s.source?'更新':'建立'}無限網格「${d.name}」`,s.source?null:['gridSystems',id]))return;
-    await renderObjects();reveal('grid-system',id);await open({system:id});status('來源已保存；可選擇邊界與格子建立配置。');
+    await renderObjects();reveal('grid-system',id);await open({system:id}, true);status('來源已保存；可選擇邊界與格子建立配置。');
   }
   async function saveBinding(s) {
+    requireOnlyDraft(s, 'binding');
     if(!s.source||!s.boundary||!s.vertex)throw Error('請選擇邊界，並點選一個實際頂點。');
     if(!def(s.source.uDefinition)||!def(s.source.vDefinition))throw Error('配置 cell 需要兩軸皆有定義。');
     const i=signed('igCellI','cell i'),j=signed('igCellJ','cell j'),a=anchor();await stillSame(s);
     const ids=s.binding?null:await apiRequest('newid'),id=s.binding?.id??ids?.gridBinding;if(id==null)throw Error('無法取得網格配置編號。');
     const v=s.vertex,vertex=v.key!=null?`vertex-key ${v.key}`:`vertex ${v.loop<0?'outer '+v.index:'hole '+v.loop+' '+v.index} geometry-hash ${s.boundary.geometryFingerprint}`;
     const line=`grid-binding ${id} on-boundary ${s.boundaryId} from-system ${s.source.id} ${vertex} cell ${i} ${j} anchor ${a.join(' ')}`;
-    if(await commit(s,line,`${s.binding?'更新':'建立'}配置：面 ${s.boundaryId} · ${vertexTitle(v)} ↔ cell (${i}, ${j})`,s.binding?null:['gridBindings',id])){await renderObjects();reveal('grid-binding',id);await open({binding:id});status('配置已保存。可繼續將它套用到引用同一邊界的承載面。');}
+    if(await commit(s,line,`${s.binding?'更新':'建立'}配置：面 ${s.boundaryId} · ${vertexTitle(v)} ↔ cell (${i}, ${j})`,s.binding?null:['gridBindings',id])){await renderObjects();reveal('grid-binding',id);await open({binding:id}, true);status('配置已保存。可繼續將它套用到引用同一邊界的承載面。');}
   }
   async function stillSame(s) {
     if(!current(s))throw Error('專案或編輯工作區已切換，請重新開啟。');
@@ -249,9 +332,10 @@
     try{await run();}catch(e){if(current(s))status(e.message,true);}
     finally{s.busy=false;oc.busy=false;dialog.classList.remove('ig-busy');if(current(s)){controls.forEach(([n,disabled])=>n.disabled=disabled);applicationState(s);}}
   }
-  async function reopen(s) { await renderObjects();await open({system:s.source?.id,binding:s.binding?.id,mode:s.mode});status('變更已保存，可從畫布復原或重做。'); }
+  async function reopen(s) { await renderObjects();await open({system:s.source?.id,binding:s.binding?.id,mode:s.mode}, true);status('變更已保存，可從畫布復原或重做。'); }
   function reveal(kind,id) { if(kind==='grid-system')oc.showGridSystem=true;else oc.showGridBinding=true;document.querySelector(`[data-filter-type="${kind}"]`)?.setAttribute('aria-pressed','true');oc.search='';$('searchInput').value='';selectObject(kind,id);centerOnNode(kind,id); }
-  async function open(options={}) {
+  async function open(options={}, committed=false) {
+    if (dialog.open && !committed && (state?.busy || !mayLeave(state))) return;
     const ticket=++serial,context=ReferenceWorkspace.context();
     if(view3)await setView3(false);
     if(oc.focus){oc.stack=[];await leaveFocus();}
@@ -269,7 +353,7 @@
     if(!dialog.open)dialog.showModal();render(state);
     (state.mode==='binding'?$('igBoundary'):$('igName')).focus();
   }
-  function close(force=false) { if(state?.busy&&!force)return;state=null;++serial;dialog.close(); }
+  function close(force=false) { if(!force && (state?.busy || !mayLeave(state)))return false;state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);return true; }
   dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
   window.addEventListener('face-projections-changed',()=>{if(state&&state.context!==ReferenceWorkspace.context())close(true);});
   const cardCache=new Map();let cardQueue=Promise.resolve();

@@ -65,6 +65,31 @@ test('scene contexts follow grouped transactions and transactional import',()=>{
   h.observe('line undo',{ok:true});assert.equal(h.frame.context.id,first.context.id);assert.equal(h.frame.ids.get(1),first.ids.get(1));
   h.observe('line redo',{ok:true});assert.equal(h.frame.context.id,'import');
 });
+test('project-open action follows its transaction through undo/redo without leaking to ordinary edits',()=>{
+  const h=new P.ContextHistory(()=>({id:'original',name:'原工程'}));
+  const opened={id:'new',name:'試用工程'};
+  h.replace(opened,[], '開啟專案「試用工程」');
+  assert.equal(h.actionLabel('undo'),'開啟專案「試用工程」');
+  h.observe('line spec width 20',{ok:true});
+  assert.equal(h.actionLabel('undo'),null);
+  h.observe('line undo',{ok:true});
+  assert.equal(h.actionLabel('redo'),null);
+  assert.equal(h.actionLabel('undo'),'開啟專案「試用工程」');
+  opened.name='稍後重新命名';
+  h.observe('line undo',{ok:false});
+  assert.equal(h.actionLabel('undo'),'開啟專案「試用工程」');
+  h.observe('line undo',{ok:true});
+  assert.equal(h.frame.context.id,'original');
+  assert.equal(h.actionLabel('redo'),'開啟專案「試用工程」');
+  h.observe('line redo',{ok:true});
+  assert.equal(h.frame.context.id,'new');
+  assert.equal(h.actionLabel('undo'),'開啟專案「試用工程」');
+  h.observe('line redo',{ok:true});
+  assert.equal(h.actionLabel('undo'),null);
+  h.observe('line undo',{ok:true});h.observe('line undo',{ok:true});
+  h.observe('line spec new-branch 20',{ok:true});
+  assert.equal(h.actionLabel('redo'),null);
+});
 test('delete and same-id recreation in a group never inherit the old reference',()=>{
   const h=new P.ContextHistory(()=>({groups:new Map()}));
   h.observe('line boundary 1 outline ...',{ok:true});const first=h.frame.ids.get(1);

@@ -46,7 +46,12 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   const objectPoint=async(x,y)=>{const p=objectCoord(x,y);return eval_(`(()=>{const r=ocv.getBoundingClientRect();return {x:r.left+oc.panX+${p.x}*oc.zoom,y:r.top+oc.panY+${p.y}*oc.zoom}})()`);};
   const objectBox=async(x0,y0,x1,y1,modifiers=0)=>{const a=await objectPoint(x0,y0),b=await objectPoint(x1,y1);await dragMod(a.x,a.y,b.x,b.y,8,modifiers);await sleep(220);};
   const facePoint=async(x,y)=>eval_(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect();return {x:r.left+fe.panX+${x}*fe.zoom,y:r.top+fe.panY+${y}*fe.zoom}})()`);
-  const faceBox=async(x0,y0,x1,y1,modifiers=0)=>{const a=await facePoint(x0,y0),b=await facePoint(x1,y1);await dragMod(a.x,a.y,b.x,b.y,8,modifiers);await sleep(220);};
+  const selectionTrace=async(label)=>{
+    if(!process.env.GEOMETRY_MARQUEE_DIAGNOSTICS)return;
+    const trace=await eval_(`(()=>{const d=window.__p67MarqueeDiagnostic;if(!d)return null;d.record(${JSON.stringify(label)});return d.events.splice(0);})()`);
+    if(trace)console.log('P67_TRACE '+label+' '+JSON.stringify(trace));
+  };
+  const faceBox=async(x0,y0,x1,y1,modifiers=0)=>{const a=await facePoint(x0,y0),b=await facePoint(x1,y1);await selectionTrace('before faceBox '+JSON.stringify({a,b}));await dragMod(a.x,a.y,b.x,b.y,8,modifiers);await sleep(220);await selectionTrace('after faceBox');};
   const screenBox=async(a,b,modifiers=0)=>{
     const hit=await eval_(`(()=>{const e=document.elementFromPoint(${a.x},${a.y});return {tag:e?.tagName,id:e?.id,classes:e?.getAttribute('class'),control:e?.closest('button,[data-face-hit],.ocard')?.outerHTML.slice(0,250)}})()`);
     await pressDownMod(a.x,a.y,modifiers);
@@ -55,7 +60,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
       const frame=await eval_(`(()=>{const e=document.querySelector('.selection-marquee');return e?{mode:e.dataset.selectionMode,width:+e.getAttribute('width'),height:+e.getAttribute('height')}:null})()`);
       if(!frame||frame.mode!==(a.x>b.x?'crossing':'window')||!(frame.width>0)||!(frame.height>0))
         throw Error('Screen-space selection did not start a real marquee: '+JSON.stringify({a,b,hit,frame}));
-    }finally{await mouseUp(b);await sleep(220);}
+    }finally{await mouseUp(b);await sleep(220);await selectionTrace('after screenBox '+JSON.stringify({a,b}));}
     if(!await noMarquee())throw Error('Screen-space selection left a marquee after pointer release: '+JSON.stringify({a,b}));
   };
   const marqueeAppearance=async(scope)=>eval_(`(()=>{const e=document.querySelector('.selection-marquee'),s=e&&getComputedStyle(e),summary=$('${scope}SelectionSummary');return e?{mode:e.dataset.selectionMode,crossing:e.classList.contains('crossing'),dash:s.strokeDasharray,stroke:s.stroke,text:summary.querySelector('small')?.textContent,visible:!summary.hidden&&summary.getClientRects().length>0}:null})()`);
@@ -78,6 +83,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   const savedProject=await eval_(`(async()=>{window.g209SavedProject=await ReferenceWorkspace.exportBytes();return g209SavedProject instanceof Uint8Array&&g209SavedProject.length>0})()`);
   if(savedProject!==true)throw Error('Selection import fixture failed: '+JSON.stringify(savedProject));
   check('S01/S07 選取契約、數量與清除入口存在',await eval_(`Array.isArray(oc.selection)&&!!$('ocSelectionSummary')&&!!$('feSelectionSummary')`));
+  if(await eval_(`!$('ocSelectionSummary').hidden&&!$('ocSelectionSummary').querySelector('[data-guidance-dismiss]').hidden`))await ctl('#ocSelectionSummary [data-guidance-dismiss]');
   check('S07 未選取時保留 live 狀態但不遮住物件卡',await eval_(`$('ocSelectionSummary').getClientRects().length===0 && !!$('ocSelectionSummary').querySelector('[aria-live]')`));
   const before=await snapshot();
   await objectBox(40,40,520,235);
@@ -114,8 +120,8 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   await shot('objects-active-window');
   check('S01 拖過起點即時切換相交/包含樣式與操作說明',hasAppearance(objectCrossing,'crossing')&&hasAppearance(objectWindow,'window')&&objectCrossing.stroke!==objectWindow.stroke&&same(await objectIds(),['boundary:1']),{objectCrossing,objectWindow,selected:await objectIds()});
   await mouseUp(changeRight);await sleep(220);
-  check('S01 放開時依最後向右方向選取第二張卡片並恢復雙向提示',same(await objectIds(),['boundary:2'])&&await noMarquee()&&await eval_(`$('ocSelectionSummary').querySelector('small').textContent.includes('向右完整框住 · 向左相交即選')`),await objectIds());
-  check('S07 單選結束後收起摘要並保留 live 數量',await eval_(`$('ocSelectionSummary').getClientRects().length===0 && /1/.test($('ocSelectionSummary').textContent)`));
+  check('S01 放開時依最後向右方向選取第二張卡片並恢復單選狀態',same(await objectIds(),['boundary:2'])&&await noMarquee()&&await eval_(`$('ocSelectionSummary').querySelector('small').textContent.includes('屬性欄')`),await objectIds());
+  check('S07 單選結束後保留可見即時數量，不受已讀教學影響',await eval_(`$('ocSelectionSummary').getClientRects().length>0 && /1/.test($('ocSelectionSummary').textContent)`));
   await objectBox(280,480,240,280,8);
   check('S03 Shift 向左部分相交加入第三張且保留第二張',same(await objectIds(),['boundary:2','boundary:3']),await objectIds());
   await objectBox(280,480,240,280,8);
@@ -209,6 +215,27 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
     'timber 2 100 33 role primary','place 2 on 1 at-face e3 +v +n'
   ]);
   await eval_(`(async()=>{await enterFocus('face',1);feSetTool('select');feFit(loopsBBox(oc.bmap[1]));ReferenceWorkspace.context().dirty=false;ReferenceWorkspace.present();})()`);await sleep(250);
+  // Selection must work after the first-use lesson has been read. Its live
+  // summary may reappear during a drag without cancelling that gesture.
+  if(await eval_(`!$('feSelectionSummary').hidden&&!$('feSelectionSummary').querySelector('[data-guidance-dismiss]').hidden`))await ctl('#feSelectionSummary [data-guidance-dismiss]');
+  if(process.env.GEOMETRY_MARQUEE_DIAGNOSTICS){
+    // Observe gestures without changing the lesson preference or selection.
+    await eval_(`(()=>{
+      const events=[];
+      const rect=e=>{const r=e?.getBoundingClientRect();return r?{x:r.x,y:r.y,w:r.width,h:r.height,hidden:e.hidden}:null;};
+      const record=(kind,extra={})=>{if(events.length>=240)return;events.push({kind,t:performance.now(),viewport:rect($('faceEditorViewport')),size:fe.viewportSize,zoom:fe.zoom,pan:[fe.panX,fe.panY],autoFit:fe.fittedBounds,summary:rect($('feSelectionSummary')),hint:rect($('faceCanvasHint')),controls:rect(document.querySelector('.face-canvas-controls')),selection:[...fe.timberSelection],frame:canvasMarquee?{scope:canvasMarquee.scope,moved:canvasMarquee.moved,point:canvasMarquee.point,end:canvasMarquee.end}:null,...extra});};
+      window.__p67MarqueeDiagnostic={events,record};
+      const cancel=cancelCanvasMarquee;
+      cancelCanvasMarquee=function(...args){if(canvasMarquee)record('cancel marquee',{stack:new Error().stack.split('\\n').slice(1,7)});return cancel.apply(this,args);};
+      const fit=feFit;
+      feFit=function(...args){record('feFit before');const result=fit.apply(this,args);record('feFit after');return result;};
+      const apply=feApply;
+      feApply=function(...args){record('feApply before',{keepFit:args[0]});const result=apply.apply(this,args);record('feApply after');return result;};
+      for(const type of ['pointerdown','pointermove','pointerup','pointercancel','lostpointercapture'])$('faceEditorViewport').addEventListener(type,event=>record(type,{at:[event.clientX,event.clientY],path:event.composedPath().slice(0,6).map(e=>e.tagName?e.tagName+'#'+e.id:e===window?'window':'document')}),true);
+      const observer=new ResizeObserver(()=>record('observed resize'));observer.observe($('faceEditorViewport'));observer.observe($('feSelectionSummary'));
+      record('installed');
+    })()`);
+  }
   check('S02 本面角材測試資料含 ID 0',await eval_(`fe.timbers.length===3&&fe.timbers.some(t=>t.id===0)&&fe.timberSelection instanceof Set`));
   const faceBefore=await snapshot();
   await faceBox(-100,-100,4100,3100);
@@ -227,13 +254,19 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
     await screenBox(await facePoint(coords[0],coords[1]),await facePoint(coords[2],coords[3]));
     check('S02 四象限角材 '+name,same(await timberIds(),ids),await timberIds());
   }
+  // Explicitly fit the view around the now-visible live selection summary.
+  // Merely showing that summary must not move the view during earlier drags.
+  await ctl('#feZoomFit');
   // The single-timber action bar floats above its midpoint. Use the quarter
   // point and require a live marquee so hitting that UI cannot falsely pass.
   let timberEdge=await at(timber(0)),timberQuarter=timberEdge.l+(timberEdge.r-timberEdge.l)/4;
   await screenBox({x:timberQuarter+30,y:timberEdge.t-30},{x:timberQuarter,y:timberEdge.t});
   check('S02 向左只接觸角材上緣也納入',same(await timberIds(),[0]),await timberIds());
   timberEdge=await at(timber(0));
-  await screenBox({x:timberEdge.r+30,y:timberEdge.t-30},{x:timberEdge.r,y:timberEdge.t});
+  const faceRight=await eval_(`$('faceEditorViewport').getBoundingClientRect().right`);
+  const cornerStartOffset=Math.min(30,(faceRight-timberEdge.r)/2);
+  if(!(cornerStartOffset>0))throw Error('Corner-touch fixture needs visible canvas beyond timber: '+JSON.stringify({faceRight,timberEdge}));
+  await screenBox({x:timberEdge.r+cornerStartOffset,y:timberEdge.t-30},{x:timberEdge.r,y:timberEdge.t});
   check('S02 向左只接觸角材角點也納入',same(await timberIds(),[0]),await timberIds());
   timberEdge=await at(timber(0));timberQuarter=timberEdge.l+(timberEdge.r-timberEdge.l)/4;
   await screenBox({x:timberQuarter+30,y:timberEdge.t-30},{x:timberQuarter,y:timberEdge.t-1});
@@ -248,7 +281,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   await shot('timbers-active-window');
   check('S02 面內拖過起點即時切換樣式與操作說明',hasAppearance(faceCrossing,'crossing')&&hasAppearance(faceWindow,'window')&&faceCrossing.stroke!==faceWindow.stroke&&same(await timberIds(),[0]),{faceCrossing,faceWindow,selected:await timberIds()});
   await key('Escape','Escape',27);await mouseUp(faceChangeRight);await sleep(220);
-  check('S05 面內切換框選方向後取消保留選取並恢復雙向提示',same(await timberIds(),[0])&&await noMarquee()&&await eval_(`$('feSelectionSummary').querySelector('small').textContent.includes('向右完整框住 · 向左相交即選')`),await timberIds());
+  check('S05 面內切換框選方向後取消保留選取與即時單選狀態',same(await timberIds(),[0])&&await noMarquee()&&await eval_(`!$('feSelectionSummary').hidden&&$('feSelectionSummary').querySelector('small').textContent.includes('屬性欄')`),await timberIds());
   await ctl(timber(1));await faceBox(4100,150,-100,-100,8);
   check('S03 Shift 向左相交加入頂支與側支且保留底支',same(await timberIds(),[0,1,2]),await timberIds());
   await faceBox(4100,150,-100,-100,8);
@@ -308,7 +341,8 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
     if(mode==='Space')await send('Input.dispatchKeyEvent',{type:'keyUp',key:' ',code:'Space',windowsVirtualKeyCode:32});
     await key('v','KeyV',86);
     const after=await eval_(`({x:fe.panX,y:fe.panY})`);
-    check('S04 面內 '+mode+' 平移保留角材選取',after.x-pan.x===20&&after.y-pan.y===15&&same(await timberIds(),old)&&await noMarquee(),{pan,after,old,selected:await timberIds(),noMarquee:await noMarquee()});
+    // Chromium rounds fractional pointer coordinates; keep tolerance far below one pixel.
+    check('S04 面內 '+mode+' 平移保留角材選取',Math.abs(after.x-pan.x-20)<.001&&Math.abs(after.y-pan.y-15)<.001&&same(await timberIds(),old)&&await noMarquee(),{pan,after,old,selected:await timberIds(),noMarquee:await noMarquee()});
   }
   await faceBox(1500,1200,2200,2000);
   check('S02 框內沒有角材得到空選取',same(await timberIds(),[])&&await eval_(`fe.sel===null`));

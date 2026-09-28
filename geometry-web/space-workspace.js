@@ -7,17 +7,17 @@ window.SpaceModelWorkspace = (() => {
   const DEFAULT_WALL_HEIGHT = 3000;
   const EXAMPLE_PROJECTION = {kind:"space-boundary-plan",view:"top",region:"interior",wallSide:"outside"};
   const state = { source: null, result: null, input: null, revision: 0, previewRevision: -1, sequence: 0, phase: "empty", createdId: null, examples: null, viewer: null, controller: null, readonly: false, editing: null, committingId: null, recordSignature: null, projectionPending: false, projectionSequence: 0 };
-  let draft = null;
+  let draft = null, viewerLoad = null, viewerOpenSequence = 0;
   const dialog = document.createElement("dialog");
   dialog.id = "smWorkspace"; dialog.className = "sm-workspace";
   dialog.setAttribute("aria-labelledby", "smTitle");
   dialog.innerHTML = `
-    <header class="sm-header"><div class="sm-brand"><span class="sm-mark" aria-hidden="true">▱</span><div><p class="sm-eyebrow">構形 CANVAS / SPACE</p><h1 id="smTitle">空間建模 <span id="smVersion">正在確認建模服務版本</span></h1></div></div><button id="smClose" class="sm-button sm-close" type="button" aria-label="關閉空間建模">返回畫布 <span aria-hidden="true">×</span></button></header>
+    <header class="sm-header"><div class="sm-brand"><span class="sm-mark" aria-hidden="true">▱</span><div><h1 id="smTitle">空間建模 <span id="smVersion">正在確認建模服務</span></h1></div></div><button id="smClose" class="sm-button sm-close" type="button" aria-label="返回畫布">返回畫布</button></header>
     <nav class="sm-source-actions" aria-label="選擇建模來源"><button id="smTryTimberFrame" class="sm-button" type="button">試用角材骨架範例</button><button id="smTryRectangle" class="sm-button" type="button">試用矩形範例</button><button id="smTryLShape" class="sm-button" type="button">試用 L 形範例</button><button id="smUseCurrent" class="sm-button" type="button">使用目前面</button><button id="smLibrary" class="sm-button sm-library-button" type="button">已建立空間 <span id="smModelCount">0</span></button></nav>
     <ol class="sm-steps" aria-label="建立空間的三個步驟"><li data-sm-step="1"><span>1</span><div><strong>選擇來源</strong><small>從平面輪廓或既有面開始</small></div></li><li data-sm-step="2"><span>2</span><div><strong>補齊幾何資料</strong><small>明確指定高度、邊界與厚度</small></div></li><li data-sm-step="3"><span>3</span><div><strong>預覽並建立</strong><small>核對各面，保存到專案</small></div></li></ol>
     <div class="sm-mobile-tabs" role="tablist" aria-label="建模工作區"><button id="smTabPreview" role="tab" aria-selected="true" type="button">3D 預覽</button><button id="smTabSetup" role="tab" aria-selected="false" type="button">設定與建立</button></div>
     <div id="smMain" class="sm-layout" data-tab="preview">
-      <section class="sm-stage" aria-label="三維模型預覽"><div class="sm-stage-head"><div><p class="sm-eyebrow">MODEL PREVIEW</p><h2 id="smPreviewTitle">讓平面，成為空間。</h2></div><span id="smResultBadge" class="sm-badge">尚未選取來源</span></div>
+      <section class="sm-stage" aria-label="三維模型預覽"><div class="sm-stage-head"><div><p class="sm-eyebrow">模型預覽</p><h2 id="smPreviewTitle">讓平面，成為空間。</h2></div><span id="smResultBadge" class="sm-badge">尚未選取來源</span></div>
         <div class="sm-canvas-wrap"><canvas id="smCanvas" aria-label="空間三維預覽；拖曳旋轉，滾輪縮放"></canvas><div id="smWelcome" class="sm-welcome"><div class="sm-wire-cube" aria-hidden="true">◇</div><h2>先用現成範例，走一次完整流程</h2><p>輪廓、牆高與牆厚已填好。<br>預覽完成後，確認各面並按「建立空間」。</p><button id="smWelcomeTry" class="sm-button sm-primary" type="button">開始試用 4 × 3 m 房間 →</button><small>範例獨立預覽，不會改動畫布裡的面。</small></div></div>
         <div class="sm-view-tools"><div class="sm-view-segment" role="group" aria-label="預覽角度"><button data-sm-view="iso" class="active" aria-pressed="true" type="button">立體</button><button data-sm-view="top" aria-pressed="false" type="button" title="由上往下，沿 −Z 看">俯視</button><button data-sm-view="bottom" aria-pressed="false" type="button" title="由下往上，沿 +Z 看">仰視</button><button data-sm-view="front" aria-pressed="false" type="button">正視</button><button id="smFit" type="button">置中</button></div><span class="sm-gesture">拖曳旋轉 · 滾輪縮放 · Shift 拖曳平移</span></div>
         <p id="smViewDirection" class="sm-view-direction">立體檢視；切換視角不改動模型幾何。</p><div class="sm-display-options"><label><input id="smShowSpace" type="checkbox" checked>空間邊界</label><label><input id="smShowWalls" type="checkbox" checked>材料牆</label><label><input id="smShowTimbers" type="checkbox" checked>角材結構</label><label><input id="smShowRoof" type="checkbox">顯示頂面</label><small>頂面僅在檢視中隱藏，幾何仍保留。</small></div>
@@ -32,9 +32,9 @@ window.SpaceModelWorkspace = (() => {
         </div><section id="smFaceSettings" class="sm-section" hidden><div class="sm-section-heading"><span>02</span><h2>明確選取空間的各個面</h2></div><p class="sm-help">只使用下方勾選的已有放置面。方向是相對該面法向的正負；封閉空間的方向須朝外。</p><div id="smFaceUses"></div></section>
         <details class="sm-obstacles"><summary>納入淨空計算的柱樑 <span id="smObstacleCount">0</span></summary><p class="sm-help">只扣除明確選取且幾何完整的障礙物，不自動加入附近物件。</p><div id="smObstacles"></div></details></fieldset>
         <section id="smPreviewDetails" class="sm-section" hidden><div class="sm-section-heading"><span>04</span><h2>核對預覽結果</h2></div><p id="smPreviewDescription" class="sm-help"></p><ul id="smGeneratedFaces" class="sm-face-summary"></ul><div id="smTimberReview" class="sm-timber-review"></div><ul id="smTimberReviewList" class="sm-timber-list" hidden></ul><div id="smMissing" class="sm-missing" hidden></div><label class="sm-check sm-confirm"><input id="smConfirmFaces" type="checkbox"><span>我已核對以上各面、朝向與用途</span></label><p class="sm-help">建立時保存這次的明確定義。牆高可事後修改；來源面的修改不會自動套入，若要採用新輪廓請重新建立。</p></section>
-      </div><footer class="sm-setup-footer"><div id="smStatus" class="sm-status" role="status" aria-live="polite">選一個範例即可開始，無須先畫圖。</div><button id="smReviewJump" class="sm-review-jump" type="button" hidden>查看面清單並確認 ↓</button><div class="sm-footer-actions"><button id="smPreview" class="sm-button" type="button" disabled>更新預覽</button><button id="smCreate" class="sm-button sm-primary" type="button" disabled>建立空間</button></div><div id="smCreatedActions" hidden><button id="smEditHeightButton" class="sm-button sm-edit-height-button" type="button" hidden>修改牆高</button><button id="smSave" class="sm-button sm-save" type="button">保存專案 .gcanvas</button><div class="sm-export"><select id="smExportKind" aria-label="要匯出的模型"><option value="space">空間邊界</option><option value="volume">空間實體</option><option value="clearance">扣除後淨空</option><option value="walls">材料牆</option><option value="timbers">角材結構</option></select><button id="smExport" class="sm-button" type="button">匯出 .model.json</button></div><p>保存後可由「檔案 → 開啟 .gcanvas 專案」還原全部模型。</p></div></footer></aside>
+      </div><footer class="sm-setup-footer"><div id="smStatus" class="sm-status" role="status" aria-live="polite">選一個範例即可開始，無須先畫圖。</div><button id="smReviewJump" class="sm-review-jump" type="button" hidden>查看面清單並確認 ↓</button><div class="sm-footer-actions"><button id="smPreview" class="sm-button" type="button" disabled>更新預覽</button><button id="smCreate" class="sm-button sm-primary" type="button" disabled>建立空間</button></div><div id="smCreatedActions" hidden><button id="smEditHeightButton" class="sm-button sm-edit-height-button" type="button" hidden>修改牆高</button><div class="sm-export"><select id="smExportKind" aria-label="要匯出的模型"><option value="space">空間邊界</option><option value="volume">空間實體</option><option value="clearance">扣除後淨空</option><option value="walls">材料牆</option><option value="timbers">角材結構</option></select><button id="smExport" class="sm-button" type="button">匯出 .model.json</button></div><p>保存後可由「檔案 → 開啟 .gcanvas 專案」還原全部模型。</p></div></footer></aside>
     </div>
-    <section id="smLibraryPanel" class="sm-library-panel" hidden><header><div><p class="sm-eyebrow">PROJECT SPACES</p><h2>已建立空間</h2><p>模型保存在目前專案中；保存 .gcanvas 後可再次開啟。</p></div><button id="smBackToBuild" class="sm-button" type="button">返回建模</button></header><div id="smLibraryList"></div></section>`;
+    <section id="smLibraryPanel" class="sm-library-panel" hidden><header><div><p class="sm-eyebrow">專案空間</p><h2>已建立空間</h2><p>模型保存在目前專案中；保存 .gcanvas 後可再次開啟。</p></div><button id="smBackToBuild" class="sm-button" type="button">返回建模</button></header><div id="smLibraryList"></div></section>`;
   document.body.append(dialog);
   // Keep the established controls and validation, while putting the common path
   // ahead of optional source choices and per-face configuration.
@@ -51,7 +51,9 @@ window.SpaceModelWorkspace = (() => {
     const bottomShortcut=document.createElement('button');bottomShortcut.id='smBottomZero';bottomShortcut.className='sm-button sm-bottom-shortcut';bottomShortcut.type='button';bottomShortcut.textContent='牆底設為 0 mm';
     common.insertBefore(bottomShortcut,$('smBottomHelp'));
     $('smBottomHelp').textContent='牆底需另外指定；圖面 z 是原面的位置。牆頂＝牆底＋牆高。';
-    $('smBottomHelp').nextElementSibling.textContent='牆高預設 3000 mm，建立後仍可修改。';
+    const heightHelp = $('smBottomHelp').nextElementSibling;
+    heightHelp.id='smHeightHelp'; heightHelp.textContent='空間建模的牆高預設 3000 mm，建立後仍可修改。「六面盒」另以 2500 mm 作為整盒預設高度；兩個入口的工作預設各自獨立，請依同一工程的尺寸調整。牆頂＝牆底＋牆高。';
+    $('smHeight').setAttribute('aria-describedby', 'smHeightHelp');
     const boundary=document.createElement('details');boundary.id='smBoundaryAdvanced';boundary.className='sm-advanced';boundary.innerHTML='<summary>調整輪廓邊、底面與頂面</summary>';
     const outline=$('smPlanOutline'),outlineHelp=$('smOutlineViewHelp'),edgeLabel=outlineHelp.nextElementSibling,edgeHelp=edgeLabel.nextElementSibling,floorPair=$('smFloor').closest('.sm-field-pair');
     boundary.append(outline,outlineHelp,edgeLabel,edgeHelp,$('smEdges'),floorPair);
@@ -63,7 +65,7 @@ window.SpaceModelWorkspace = (() => {
     const boundaryWarning=document.createElement('p');boundaryWarning.id='smBoundaryWarning';boundaryWarning.className='sm-missing';boundaryWarning.hidden=true;
     common.append(material,timber,boundarySummary,boundaryWarning,holes,boundary);
     const guide=dialog.querySelector('.sm-guide');guide.open=false;guide.querySelector('summary').textContent='操作說明與幾何定義';
-    guide.querySelector('ol').innerHTML='<li>使用自己的面時，在這裡確認平面投影用途與俯視／仰視；或從上方選現成範例。</li><li>指定牆底，牆高預設 3000 mm、材料牆厚 100 mm。可修改設定及角材納入，再按「更新預覽」。</li><li>核對預覽及各面用途，在建立按鈕旁勾選確認、按「建立空間」，最後「保存專案 .gcanvas」。</li>';
+    guide.querySelector('ol').innerHTML='<li>使用自己的面時，在這裡確認平面投影用途與俯視／仰視；或從上方選現成範例。</li><li>指定牆底，牆高預設 3000 mm、材料牆厚 100 mm。可修改設定及角材納入，再按「更新預覽」。</li><li>核對預覽及各面用途，在建立按鈕旁勾選確認、按「建立空間」，最後使用頂列的「保存」保存專案。</li>';
     guide.querySelector('p').textContent='圖面 z 是原面位置，不代替牆底或牆高。輪廓內代表室內淨空，材料牆向外加厚；FREE 邊及孔洞需明確核對。需要逐邊、底頂用途或另一種建模方式時，可展開對應設定。';
     dialog.querySelector('.sm-setup-scroll').append(guide);
     const review=$('smPreviewDetails'),heading=review.querySelector('.sm-section-heading'),details=document.createElement('details');details.id='smReviewFaces';details.className='sm-advanced sm-review-faces';
@@ -84,8 +86,8 @@ window.SpaceModelWorkspace = (() => {
       supportsTimbers=Array.isArray(data.space_preview_schemas)&&data.space_preview_schemas.includes("geometry-space-preview/2");return supportsTimbers;
     }).catch(()=>{supportsTimbers=false;return false;}).then(supported=>{
       const label=supportsEngineering?'工程規格版 2026.09.28':supported?"角材結構建模版":"服務待更新：角材功能未啟用";
-      $("smVersion").textContent=label;document.title="構形 Canvas · "+label;
-      for(const badge of document.querySelectorAll(".space-model-release"))badge.textContent=label;
+      $("smVersion").textContent=supported?'':label;$("smVersion").hidden=supported;
+      for(const badge of document.querySelectorAll(".space-model-release")){badge.textContent=supported?'空間建模':label;badge.title=label;}
       if(!supported)dialog.querySelector(".sm-guide li").textContent="此服務尚未啟用角材結構。請用本次交付網址或啟動腳本開新版；現有服務仍可試用矩形或 L 形空間。";
       return supported;
     });
@@ -133,13 +135,52 @@ window.SpaceModelWorkspace = (() => {
     state.controller?.abort();state.sequence++;state.phase=state.source?"ready":"empty";state.previewRevision=-1;$("smConfirmFaces").checked=false;
     $("smResultBadge").textContent="建模操作已取消";updateActions();
   }
-  function close() { rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(dialog.open)dialog.close(); }
+  function close() { viewerOpenSequence++;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(dialog.open)dialog.close();WorkspaceShell.detach(dialog); }
   function setTab(tab) { $("smMain").dataset.tab = tab; for (const [id, key] of [["smTabPreview", "preview"], ["smTabSetup", "setup"]]) $(id).setAttribute("aria-selected", String(tab === key)); }
   function viewChanged(viewState) {
     for(const button of dialog.querySelectorAll("[data-sm-view]")){const active=button.dataset.smView===viewState.view;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active));}
     $("smViewDirection").textContent=({top:"俯視：沿 −Z 看。",bottom:"仰視：沿 +Z 看。",front:"正視：沿 +Y 看，+Z 朝上。"}[viewState.view]||"立體檢視。")+"只改視角，不改幾何。";
   }
-  function show() { if (!dialog.open) dialog.showModal(); if (!state.viewer) state.viewer = GeometryModelViewer.create($("smCanvas"), { emptyText: "", background: "#edf2f5", onChange:viewChanged }); refresh(); }
+  function loadViewer() {
+    if (window.GeometryModelViewer?.create) return Promise.resolve();
+    if (viewerLoad) return viewerLoad;
+    // The ordinary scripts are ordered. A failed resource load must not turn a
+    // later user action into an unhandled ReferenceError; retry that same asset.
+    viewerLoad = new Promise((resolve, reject) => {
+      const script = document.createElement("script"); script.src = "model-viewer.js";
+      const finish = error => { clearTimeout(timer); script.onload = script.onerror = null; script.remove(); error ? reject(error) : resolve(); };
+      const timer = setTimeout(() => finish(new Error("3D 檢視器載入逾時。請再按一次原操作重試。")), 15000);
+      script.onload = () => finish(window.GeometryModelViewer?.create ? null : new Error("3D 檢視器未能啟動。請重新整理頁面後重試。"));
+      script.onerror = () => finish(new Error("3D 檢視器載入失敗。請確認服務連線，再按一次原操作重試。"));
+      document.head.append(script);
+    }).finally(() => { viewerLoad = null; });
+    return viewerLoad;
+  }
+  function show(resume) {
+    if (!dialog.open) dialog.showModal();
+    WorkspaceShell.attach(dialog, {saveBlocked:()=>state.viewerLoading || state.projectionPending || ['loading','previewing','creating'].includes(state.phase),
+      saveReason:()=> '正在處理空間變更，完成後即可保存。', onProjectState:updateActions});
+    if (!window.GeometryModelViewer?.create) {
+      const sequence = ++viewerOpenSequence, sourceContextId = contextId();
+      state.viewerLoading = true; message("正在載入 3D 檢視器…"); $("smResultBadge").textContent = "檢視器載入中"; updateActions();
+      loadViewer().then(() => {
+        if (sequence !== viewerOpenSequence) return;
+        state.viewerLoading = false;
+        if (!dialog.open) return;
+        if (sourceContextId !== contextId()) { message("載入期間專案已切換，請重新選擇建模來源。", "warning"); updateActions(); return; }
+        return resume?.();
+      }).catch(error => {
+        if (sequence !== viewerOpenSequence) return;
+        state.viewerLoading = false; $("smResultBadge").textContent = "檢視器尚未就緒"; message(error.message, "error"); updateActions();
+      });
+      return false;
+    }
+    state.viewerLoading = false;
+    try { if (!state.viewer) state.viewer = window.GeometryModelViewer.create($("smCanvas"), { emptyText: "", background: "#edf2f5", onChange:viewChanged }); }
+    catch (error) { message(`3D 檢視器無法啟動：${error.message}`, "error"); updateActions(); return false; }
+    refresh();
+    return true;
+  }
   function validProjection(def) { return !!def && def.kind==="space-boundary-plan" && ["top","bottom"].includes(def.view) && def.region==="interior" && def.wallSide==="outside"; }
   function currentProjection(source=state.source) { return source?.kind==="scene" ? ReferenceWorkspace.getFaceProjection?.(source.boundary_id,source.placement_id)||null : source?.projection||null; }
   function needsProjection() { return !!state.source && $("smMode").value==="plan" && !state.editing && !state.readonly && !state.createdId; }
@@ -171,7 +212,8 @@ window.SpaceModelWorkspace = (() => {
   }
   function buildView() { $("smLibraryPanel").hidden = true; $("smMain").hidden = false; dialog.classList.remove("sm-in-library"); }
   function updateActions() {
-    const busy = state.projectionPending || state.phase === "loading" || state.phase === "previewing" || state.phase === "creating";
+    const busy = state.viewerLoading || !state.viewer || state.projectionPending || state.phase === "loading" || state.phase === "previewing" || state.phase === "creating";
+    WorkspaceShell.refresh(dialog);
     const missingProjection=needsProjection()&&!validProjection(state.source.projection);
     $("smPreview").disabled = !state.source || busy || missingProjection || (state.readonly && !state.editing);
     $("smCreate").disabled = busy || missingProjection || !state.result || state.previewRevision !== state.revision || !$("smConfirmFaces").checked || !!state.createdId;
@@ -267,7 +309,8 @@ window.SpaceModelWorkspace = (() => {
     toggleMode(false); updateActions();
   }
   async function openExample(kind = "rectangle") {
-    show(); const seq=startSource(),sourceContextId=contextId(); $("smMode").value="plan"; message("正在載入現成範例…");
+    if (!show(() => openExample(kind))) return;
+    const seq=startSource(),sourceContextId=contextId(); $("smMode").value="plan"; message("正在載入現成範例…");
     try {
       if(kind==="timber-frame")await requireTimberCapability();
       if(seq!==state.sequence)return;
@@ -283,7 +326,8 @@ window.SpaceModelWorkspace = (() => {
     } catch(e) { if(e.name!=="AbortError" && seq===state.sequence){state.phase="error";message(e.message,"error");updateActions();} }
   }
   async function openCurrentFace(placementId) {
-    show(); const seq=startSource(),sourceContextId=contextId(),historyToken=sourceHistoryToken();$("smMode").value="plan"; message("正在讀取目前場景與來源面…");
+    if (!show(() => openCurrentFace(placementId))) return;
+    const seq=startSource(),sourceContextId=contextId(),historyToken=sourceHistoryToken();$("smMode").value="plan"; message("正在讀取目前場景與來源面…");
     try {
       if(connection.phase!=="ready")throw new Error("請先等待場景連線完成，再使用目前面。");
       const bid=oc.edit?.bid??(oc.sel?.kind==="face"?oc.sel.id:null);
@@ -468,10 +512,11 @@ window.SpaceModelWorkspace = (() => {
     const models=ReferenceWorkspace.getSpaceModels?.()||[]; $("smModelCount").textContent=String(models.length); if($("spaceModelCount"))$("spaceModelCount").textContent=String(models.length);
     $("smLibraryList").innerHTML=models.length?models.map(m=>`<article class="sm-model-card"><div class="sm-model-symbol" aria-hidden="true">▱</div><div><h3>${esc(m.name)}</h3><p>${m.result.summary.closed?"封閉空間":"開放空間"} · ${m.result.summary.face_count} 個面 · ${esc(metric(m.result.summary.volume_mm3))} · 角材 ${esc(m.result.summary.timber_count||0)} 支</p><small>${esc(new Date(m.created_at).toLocaleString("zh-TW"))} · 來源${m.source.kind==="example"?"範例":"面 #"+m.source.boundary_id}</small></div><div class="sm-model-actions"><button class="sm-button" data-sm-open-model="${esc(m.id)}" type="button">開啟 3D</button>${m.input.mode==="plan"?`<button class="sm-button" data-sm-edit-height="${esc(m.id)}" type="button">修改牆高</button>`:""}<button class="sm-button sm-danger" data-sm-remove-model="${esc(m.id)}" type="button">移除</button></div></article>`).join(""):'<div class="sm-library-empty"><h3>還沒有建立空間</h3><p>選一個範例，核對預覽後按「建立空間」，它就會出現在這裡。</p><button class="sm-button sm-primary" data-sm-library-trial type="button">試用矩形範例 →</button></div>';
   }
-  function openLibrary(){if(state.editing)cancelHeightEdit();show();libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;dialog.classList.add("sm-in-library");}
+  function openLibrary(){if(state.editing)cancelHeightEdit();if(!show(openLibrary))return;libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;dialog.classList.add("sm-in-library");}
   function openRecord(id, display = true) {
     const record=ReferenceWorkspace.getSpaceModels().find(m=>m.id===id); if(!record)return;
-    state.recordSignature=null;if(display)show();startSource();const input=record.input,s=record.result.summary;
+    if(display&&!show(()=>openRecord(id,display)))return;
+    state.recordSignature=null;startSource();const input=record.input,s=record.result.summary;
     // A saved definition keeps its source snapshot. Height editing changes only its explicit height.
     state.source={kind:record.source.kind,name:record.name,base_scene:input.base_scene,placement_id:record.source.placement_id,boundary_id:record.source.boundary_id,source_z:s.source_z,projection:record.source.projection?copy(record.source.projection):null,context_id:contextId()};
     state.result=copy(record.result);state.input=copy(input);state.previewRevision=state.revision;state.createdId=id;state.recordSignature=JSON.stringify(record);state.phase="created";state.readonly=true;
@@ -487,6 +532,7 @@ window.SpaceModelWorkspace = (() => {
   function beginHeightEdit(id = state.createdId) {
     const record=ReferenceWorkspace.getSpaceModels().find(m=>m.id===id);
     if(!record||record.input.mode!=="plan")return;
+    if(!state.viewer&&!show(()=>beginHeightEdit(id)))return;
     openRecord(id);
     state.editing={record:copy(record),context_id:contextId()};state.createdId=null;state.phase="editing";state.previewRevision=-1;
     $("smEditHeight").value=record.input.settings.height;$("smConfirmFaces").checked=false;
@@ -523,8 +569,8 @@ window.SpaceModelWorkspace = (() => {
   $('smConfirmProjection').onclick=confirmProjection;
   $('smProjectionView').onchange=()=>{const pending=state.projectionPending;cancelProjectionConfirmation();if(pending)message('觀看方向已變更，請重新確認用途與觀看方向。');};
   $('smBottomZero').onclick=()=>{$('smBottom').value='0';stale();message('牆底已明確設為 0 mm；圖面維持原來的 z。確認設定後按「更新預覽」。');$('smBottom').focus();};
-  dialog.addEventListener("cancel",()=>{rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();});
-  dialog.addEventListener("close",()=>{rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(state.editing)cancelHeightEdit();});
+  dialog.addEventListener("cancel",()=>{viewerOpenSequence++;state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();});
+  dialog.addEventListener("close",()=>{viewerOpenSequence++;state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(state.editing)cancelHeightEdit();});
   const reviewJump=()=>{setTab("setup");if(state.result&&state.previewRevision===state.revision){$('smReviewFaces').open=true;$("smPreviewDetails").scrollIntoView({block:"start"});}};$("smReviewJump").onclick=reviewJump;
   $('smMobileNext').onclick=()=>{setTab('setup');if(state.result&&state.previewRevision===state.revision&&!state.createdId)$('smConfirmFaces').focus({preventScroll:true});};
   $("smSourceSelect").onchange=()=>openCurrentFace($("smSourceSelect").value);$("smMode").onchange=()=>toggleMode();$("smFit").onclick=()=>state.viewer?.fit();
@@ -532,7 +578,6 @@ window.SpaceModelWorkspace = (() => {
   dialog.querySelectorAll("[data-sm-view]").forEach(button=>button.onclick=()=>{state.viewer?.setView(button.dataset.smView);dialog.querySelectorAll("[data-sm-view]").forEach(b=>{b.classList.toggle("active",b===button);b.setAttribute("aria-pressed",String(b===button));});});
   $("smSettings").addEventListener("input",()=>{stale();$("smObstacleCount").textContent=String(dialog.querySelectorAll("[data-sm-obstacle]:checked").length);});
   $("smModelName").addEventListener("input",()=>{if(state.createdId)message("若要以新名稱建立模型，請重新選擇來源。此處不會改動已保存的模型。","warning");});
-  $("smSave").onclick=async()=>{try{await ReferenceWorkspace.save();const c=ReferenceWorkspace.context();message(c.saved&&!c.dirty?"專案已保存。下次用「檔案 → 開啟 .gcanvas 專案」即可還原。":c.downloaded?"專案下載已開始，請確認 .gcanvas 已存到電腦。":"尚未保存。你可以再次按「保存專案」。",c.saved&&!c.dirty?"success":"");}catch(e){message(e.message,"error");}finally{updateActions();}};
   $("smExport").onclick=exportModel;
   $("smLibraryList").addEventListener("click",e=>{const open=e.target.closest("[data-sm-open-model]"),edit=e.target.closest("[data-sm-edit-height]"),remove=e.target.closest("[data-sm-remove-model]");if(open)openRecord(open.dataset.smOpenModel);else if(edit)beginHeightEdit(edit.dataset.smEditHeight);else if(remove){ReferenceWorkspace.removeSpaceModel(remove.dataset.smRemoveModel);refresh();}else if(e.target.closest("[data-sm-library-trial]"))openExample();});
   window.addEventListener("space-models-changed",refresh);

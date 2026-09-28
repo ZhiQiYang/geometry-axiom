@@ -2,7 +2,7 @@
 const { spawn } = require("child_process");
 const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
-const SCOPE_FLAGS = ['GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
+const SCOPE_FLAGS = ['GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
   if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
@@ -98,8 +98,27 @@ let passN = 0, failN = 0;
 let excN = 0;            /* Runtime.exceptionThrown 計數(BF2 驗收用) */
 let currentTestStep='connecting to isolated test browser';
 let expectedBeforeUnloadUntil=0;
+let expectedNativeDialog=null;
 let expectedException=null, scope, skipped=[];
+const assetRequests=new Map(), assetFailures=[];
 const _log = console.log;
+function observeAssetNetwork(message) {
+  const p=message.params,key=(message.sessionId||'main')+':'+p.requestId;
+  if(message.method==='Network.requestWillBeSent'){
+    let url;try {url=new URL(p.request.url);}catch{return;}
+    if(url.origin!==new URL(scope.url).origin || (!['Script','Stylesheet'].includes(p.type)&&! /\.(?:js|css)$/i.test(url.pathname)))return;
+    assetRequests.set(key,{url:url.href,type:p.type,requestId:p.requestId,sessionId:message.sessionId||null,step:currentTestStep,requestedAt:new Date().toISOString()});
+    return;
+  }
+  const request=assetRequests.get(key);if(!request)return;
+  let failure=null;
+  if(message.method==='Network.responseReceived'&&p.response.status>=400)
+    failure={...request,event:message.method,status:p.response.status,errorText:p.response.statusText,type:p.type||request.type};
+  else if(message.method==='Network.loadingFailed')
+    failure={...request,event:message.method,errorText:p.errorText,type:p.type||request.type,canceled:!!p.canceled,blockedReason:p.blockedReason||null};
+  if(failure){assetFailures.push(failure);if(assetFailures.length>60)assetFailures.shift();_log('[NETWORK ASSET FAILURE]',JSON.stringify(failure));}
+  if(message.method==='Network.loadingFinished'||message.method==='Network.loadingFailed')assetRequests.delete(key);
+}
 function recordLog(...args) {
   const s = args.join(" ");
   if(s.startsWith('==='))currentTestStep=s;
@@ -123,6 +142,7 @@ async function connect() {
         ws.onmessage = ev => {
           const m = JSON.parse(ev.data);
           if (m.id && pending[m.id]) { pending[m.id](m); delete pending[m.id]; }
+          else if (['Network.requestWillBeSent','Network.responseReceived','Network.loadingFailed','Network.loadingFinished'].includes(m.method))observeAssetNetwork(m);
           else if (m.method === "Runtime.consoleAPICalled")
             console.log("[console]", m.params.args.map(a => a.value ?? a.description).join(" "));
           else if (m.method === "Runtime.exceptionThrown") {
@@ -132,18 +152,29 @@ async function connect() {
             if(expected){expectedException=null;_log('[EXPECTED EXCEPTION]',description);}
             else {failN++;_log('[UNEXPECTED EXCEPTION]',currentTestStep,description);}
           }
+          else if (m.method === 'Page.javascriptDialogOpening' && expectedNativeDialog && m.params.type===expectedNativeDialog.type && m.params.message===expectedNativeDialog.message) {
+            const expectation=expectedNativeDialog;expectedNativeDialog=null;expectation.seen=true;
+            _log('[EXPECTED NATIVE DIALOG]',m.params.message,'accept='+expectation.accept);
+            send('Page.handleJavaScriptDialog',{accept:expectation.accept},m.sessionId);
+          }
           else if (m.method === 'Page.javascriptDialogOpening' && m.params.type==='confirm' &&
               /目前專案有尚未保存的變更|只能在本次工作階段修改數字的形狀特徵/.test(m.params.message)) {
             // This isolated acceptance run is authorized to leave its own test project.
             console.log('[TEST PROJECT DIALOG]',m.params.message);
-            send('Page.handleJavaScriptDialog',{accept:true});
+            send('Page.handleJavaScriptDialog',{accept:true},m.sessionId);
           }
           else if (m.method==='Page.javascriptDialogOpening' && m.params.type==='beforeunload' && Date.now()<expectedBeforeUnloadUntil) {
             expectedBeforeUnloadUntil=0;
             console.log('[TEST PAGE LEAVE]',currentTestStep,m.params.message);
-            send('Page.handleJavaScriptDialog',{accept:true});
+            send('Page.handleJavaScriptDialog',{accept:true},m.sessionId);
           }
-          else if (m.method==='Page.javascriptDialogOpening')console.log(explicitVerdict('✗ Unexpected native dialog at '+currentTestStep),JSON.stringify(m.params));
+          else if (m.method==='Page.javascriptDialogOpening') {
+            const message='Unexpected native dialog at '+currentTestStep+': '+m.params.type+' '+m.params.message;
+            console.log(explicitVerdict('✗ '+message),JSON.stringify(m.params));
+            // Reject the unexpected action and terminate this run. Leaving a
+            // native modal open would hang Runtime.evaluate indefinitely.
+            send('Page.handleJavaScriptDialog',{accept:false},m.sessionId).then(()=>fatal(Error(message))).catch(fatal);
+          }
           else if (m.method==='Inspector.targetCrashed')console.log(explicitVerdict('✗ Browser target crashed at '+currentTestStep));
         };
         return;
@@ -153,12 +184,12 @@ async function connect() {
   }
   throw new Error("no CDP");
 }
-function send(method, params = {}) {
+function send(method, params = {}, sessionId = null) {
   if(method==='Page.reload'||method==='Page.navigate')expectedBeforeUnloadUntil=Date.now()+15000;
   return new Promise((res,rej) => {
     const id=++mid,timer=setTimeout(()=>{delete pending[id];rej(Error('CDP timed out: '+method+' at '+currentTestStep+(params.expression?' expression='+params.expression.slice(0,160):'')));},120000);
     pending[id]=message=>{clearTimeout(timer);if(message.error)rej(Error('CDP '+method+' failed: '+JSON.stringify(message.error)));else res(message);};
-    ws.send(JSON.stringify({id,method,params}));
+    ws.send(JSON.stringify({id,method,params,...(sessionId?{sessionId}:{})}));
   });
 }
 async function eval_(expr) {
@@ -169,6 +200,12 @@ async function waitForUI(expr, timeout=5000) {
   const end=Date.now()+timeout;
   while(Date.now()<end){if(await eval_(expr)===true)return;await sleep(50);}
   throw Error('UI condition timed out at '+currentTestStep+': '+expr);
+}
+async function expectNativeDialog(action,{message,accept,type='confirm'}) {
+  if(expectedNativeDialog)throw Error('A native dialog expectation is already pending');
+  const expected={message,accept,type,seen:false};expectedNativeDialog=expected;
+  try {await action();if(!expected.seen)throw Error('Expected native dialog did not appear: '+message);}
+  finally {if(expectedNativeDialog===expected)expectedNativeDialog=null;}
 }
 // Observe actual, newly appended DOM toasts during one action. Never read an
 // earlier toast or replace toast()/its timers; retain evidence after expiry.
@@ -213,11 +250,13 @@ async function click(x, y) {
 // Persistent entries and relocated creation commands are exercised through the
 // same visible menu a user opens, never by clicking a hidden DOM button.
 async function clickControl(selector) {
-  const menu=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return e?.closest('#createObjectPop')?.hidden?'create':e?.closest('#filterDisclosure')&&!e.matches('summary')&&!e.closest('#filterDisclosure').open?'filter':null;})()`);
+  const menu=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return e?.closest('#exampleMenuPop')?.hidden?'examples':e?.closest('#fileMenuPop')?.hidden?'file':e?.closest('#createObjectPop')?.hidden?'create':e?.closest('#filterDisclosure')&&!e.matches('summary')&&!e.closest('#filterDisclosure').open?'filter':null;})()`);
   if(menu==='create'){
     const trigger=await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`);
     await clickControl(trigger);
-  }else if(menu==='filter')await clickControl('#filterDisclosure > summary');
+  }else if(menu==='examples')await clickControl('#exampleMenuBtn');
+  else if(menu==='file')await clickControl('#fileMenuBtn');
+  else if(menu==='filter')await clickControl('#filterDisclosure > summary');
   await eval_(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'nearest',inline:'nearest'});void 0`);
   let p;
   for(let n=0;n<12;n++){
@@ -263,6 +302,7 @@ async function main() {
   await connect();
   await send("Runtime.enable");
   await send("Page.enable");
+  await send("Network.enable");
   // A reused Chrome profile can restore a narrow window. Pin the desktop
   // baseline explicitly; responsive cases restore this same viewport.
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
@@ -284,7 +324,7 @@ async function main() {
   await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
-  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY) {
+  if (!process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY) {
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
   console.log('=== Setup. 確認重置隔離驗收專案 ===');
@@ -2297,11 +2337,12 @@ async function main() {
     return {status: document.getElementById("status").textContent,
             hint: document.getElementById("faceCanvasHint").textContent,
             hintHid: document.getElementById("faceCanvasHint").hidden,
+            help: !document.getElementById("faceCanvasHintHelp").hidden,
             cls: document.getElementById("faceEditorViewport").className};
   })()`);
   /* B6:浮標只給多步工具(redraw),單發工具看狀態列 */
-  console.log("切參考線:狀態列手勢",explicitVerdict(fbTool.status.includes("拖曳") ? "✓" : "✗ " + fbTool.status),
-    "| 浮標隱藏(B6)",explicitVerdict(fbTool.hintHid ? "✓" : "✗"),
+  console.log("切參考線:狀態列標明工具",explicitVerdict(fbTool.status.includes("參考線") ? "✓" : "✗ " + fbTool.status),
+    "| 工具教學可重新開啟",explicitVerdict(fbTool.help&&fbTool.hint.includes('水平或垂直拖曳') ? "✓" : "✗"),
     "| 游標類",explicitVerdict(fbTool.cls.includes("tool-referenceLine") ? "✓" : "✗ " + fbTool.cls));
   /* (b) 參考線只點沒拖 → u/v 小選單 → 選 v → dump 出現 guide */
   await eval_(`(async()=>{const r=document.getElementById("faceEditorViewport").getBoundingClientRect();const p=feSnap(fePoint({clientX:r.left+r.width/2,clientY:r.top+r.height/2}));await api('line spec 點放定位 '+Math.round(p.x))})()`);
@@ -2396,6 +2437,7 @@ async function main() {
   /* (a) rect 工具:浮標 + crosshair */
   await eval_(`setOcTool("rect")`);
   await sleep(250);
+  await clickControl('#canvasModeHintHelp');
   const mh1 = await eval_(`(()=>{const h=document.getElementById("canvasModeHint");
     return {vis:!h.hidden, txt:h.textContent,
       cur:getComputedStyle(document.getElementById("canvasViewport")).cursor};})()`);
@@ -2524,8 +2566,8 @@ async function main() {
   console.log("=== P17. 主畫布其餘 ===");
   /* (a) 常駐來源入口 + 真實建立選單保留原本物件與資料入口。 */
   await clickControl('#btnCreateObject');
-  const qc = await eval_(`(()=>{const pop=$('createObjectPop'),ids=['btnQuickGrid','btnCreateRect','btnCreatePoly','btnBox6','btnNewSpace','btnNewColumn','btnNewBeam','btnSpaceModelTrial','btnSpaceModels'];return {open:!pop.hidden,entries:ids.map(id=>({id,inside:pop.contains($(id)),label:$(id)?.textContent.trim()})),hasImport:!!pop.querySelector('[data-project-action="import"]'),permanent:['btnNewGridSystem','btnQuickBoundary'].every(id=>$(id).closest('.sidebar-left')&&$(id).getBoundingClientRect().height>=44)};})()`);
-  console.log('P17 物件庫:',explicitVerdict(qc.open&&qc.permanent&&qc.hasImport&&qc.entries.every(e=>e.inside&&e.label)?'✓':'✗ '+JSON.stringify(qc)));
+  const qc = await eval_(`(()=>{const pop=$('createObjectPop'),ids=['btnQuickGrid','btnCreateRect','btnCreatePoly','btnBox6','btnNewSpace','btnNewColumn','btnNewBeam'];return {open:!pop.hidden,entries:ids.map(id=>({id,inside:pop.contains($(id)),label:$(id)?.textContent.trim()})),onlyCreation:!pop.querySelector('[data-project-action="import"],#btnSpaceModelTrial,#btnSpaceModels'),permanent:['btnNewGridSystem','btnQuickBoundary'].every(id=>$(id).closest('.sidebar-left')&&$(id).getBoundingClientRect().height>=44)};})()`);
+  console.log('P17 物件庫:',explicitVerdict(qc.open&&qc.permanent&&qc.onlyCreation&&qc.entries.every(e=>e.inside&&e.label)?'✓':'✗ '+JSON.stringify(qc)));
   await clickControl('#btnCreateObject');
   /* (b) chips:關柱 → showColumn=false + aria-pressed;全部顯示還原 */
   await clickControl('[data-filter-type="column"]');
@@ -2675,7 +2717,7 @@ async function main() {
     const dims=[...document.querySelectorAll(".fe-edge-dim")];
     const texts=[...document.querySelectorAll("#faceEditorRoot text")].map(t=>t.textContent);
     return {dimN:dims.length, dimOk:dims.every(d=>/^\\d+$/.test(d.textContent)),
-      origin:texts.some(t=>t.includes("0,0 · u→ v↓")),
+      origin:document.querySelectorAll('.fe-origin-mark').length===2&&!document.querySelector('.fe-origin')&&!!$('faceTechnicalDetails'),
       guide:texts.some(t=>/^[uv] = -?\\d+$/.test(t))};})()`);
   console.log("P18 B5 邊長標註:",explicitVerdict(b5.dimN >= 4 && b5.dimOk ? `✓ n=${b5.dimN}` : `✗ ${JSON.stringify(b5)}`),
     "| 原點標:",explicitVerdict(b5.origin ? "✓" : "✗"));
@@ -2686,6 +2728,7 @@ async function main() {
   await sleep(200);
   const b6b = await eval_(`(()=>{
     document.querySelector('[data-face-tool="redraw"]').click();
+    document.getElementById('faceCanvasHintHelp').click();
     return {h:document.getElementById("faceCanvasHint").hidden,
       t:document.getElementById("faceCanvasHint").textContent};})()`);
   console.log("P18 B6 浮標:select隱藏",explicitVerdict(b6a ? "✓" : "✗"),
@@ -3530,7 +3573,7 @@ async function main() {
     await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:false});
     await setupRemaining(['boundary 99 outline 0,0 100,0 100,100 0,100']);
     await eval_(`closeMenus()`);
-    await clickSelector('#fileMenuBtn');
+    await clickSelector('#fileMenuBtn');await clickControl('#exampleMenuBtn');
     const hit=await eval_(`(()=>{const e=document.querySelector('#btnEx'),r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`);
     check('P28 file menu hit target @'+width,hit);
     await remainingShot('file-menu-'+width);
@@ -3586,7 +3629,14 @@ async function main() {
   const pan0=await eval_(`[oc.panX,oc.panY]`);
   await clickSelector('.object-row[data-kind="boundary"][data-id="1"]');
   check('M12 visible list selection does not pan',JSON.stringify(pan0)===JSON.stringify(await eval_(`[oc.panX,oc.panY]`)));
-  check('M4 placement submit visible without scrolling',await eval_(`(()=>{const e=document.querySelector('#inspectorContent #placeSubmit'),r=e.getBoundingClientRect();return r.top>56 && r.bottom<innerHeight-32 && e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()`));
+  check('M4 common properties precede the complete placement form',await eval_(`(()=>{const pane=$('inspectorContent'),submit=pane.querySelector('#placeSubmit'),common=pane.querySelector('.inspector-block');return ['用途','面積','位置','所屬空間'].every(t=>common.textContent.includes(t))&&!!(common.compareDocumentPosition(submit)&Node.DOCUMENT_POSITION_FOLLOWING);})()`));
+  let placementReachable;
+  for(let attempt=0;attempt<12;attempt++){
+    placementReachable=await eval_(`(()=>{const e=document.querySelector('#inspectorContent #placeSubmit'),r=e.getBoundingClientRect(),panel=e.closest('.sidebar-right').getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {width:r.width,height:r.height,top:r.top,bottom:r.bottom,panelTop:panel.top,panelBottom:panel.bottom,hit:e.contains(document.elementFromPoint(x,y)),disabled:e.disabled,wheelX:panel.right-18,wheelY:panel.top+panel.height/2,delta:r.bottom>panel.bottom-8?Math.min(300,r.bottom-panel.bottom+16):r.top<panel.top+8?Math.max(-300,r.top-panel.top-16):0};})()`);
+    if(placementReachable.hit&&placementReachable.top>=placementReachable.panelTop&&placementReachable.bottom<=placementReachable.panelBottom)break;
+    await send('Input.dispatchMouseEvent',{type:'mouseWheel',x:placementReachable.wheelX,y:placementReachable.wheelY,deltaX:0,deltaY:placementReachable.delta||100});await sleep(160);
+  }
+  check('M4 placement submit remains reachable by scrolling the property dock',placementReachable.hit&&!placementReachable.disabled&&placementReachable.width>=44&&placementReachable.height>=28&&placementReachable.top>=placementReachable.panelTop&&placementReachable.bottom<=placementReachable.panelBottom,placementReachable);
   check('M3 M5 M7 T3 contextual controls',await eval_(`document.querySelector('#fileMenuPop').contains(document.querySelector('#btnDatums')) && !document.querySelector('#btnScene') && document.querySelectorAll('#canvasDrawToolbar [data-tool]').length===2 && document.querySelector('#btnNewRect').closest('#canvasDrawToolbar') && document.querySelector('#btnNewPoly').closest('#canvasDrawToolbar') && document.querySelector('#cmdPanel').hidden`));
   await pressKey(':','Semicolon',186,8);
   check('M7 command shortcut opens focused input',await eval_(`!document.querySelector('#cmdPanel').hidden && document.activeElement.id==='cmd'`));
@@ -3609,9 +3659,10 @@ async function main() {
   check('F2 form drafts survive redraw',await eval_(`document.querySelector('#gridU').value==='100 200' && document.querySelector('#placeOX').value==='250'`));
   for (const width of [1382,1160,900,680,600]) {
     await send('Emulation.setDeviceMetricsOverride',{width,height:804,deviceScaleFactor:1,mobile:false});
-    check('T4 workspace rows, title and tools fit @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('#faceWorkspaceTools').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect();return h.height===56 && s.height===32 && a.right<=innerWidth && t.right<=a.left+1 && title.width>0})()`));
+    check('T4 workspace identity and scrollable tools occupy separate usable rows @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('.workspace-tools-row').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return h.height>=100 && h.height<=150 && s.height===32 && a.right<=innerWidth+1 && t.left>=0 && t.right<=innerWidth+1 && t.top>=a.bottom-1 && title.width>0 && vp.top>=h.bottom-1 && vp.height>300})()`));
   }
   await clickSelector('#workspaceToggleRight');
+  await eval_(`document.querySelector('#edgeLength0').scrollIntoView({block:'center',inline:'nearest'})`);
   const drawerHit=await eval_(`(()=>{const e=document.querySelector('#edgeLength0'),r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {same:e===hit,hit:hit?.outerHTML,rect:{x:r.x,y:r.y}}})()`);
   check('T2 face drawer belongs to face workspace',drawerHit.same,drawerHit);
   await remainingShot('ui-v2-mobile-face');
@@ -3837,11 +3888,23 @@ async function main() {
 
   /* ================= P35. 面內「重畫外環」逐點閉合改接共用 PolyDraft(diff#12 面內段) =================
    * RC-POLYGON-PLAN.md §5.A.1.12/.16、POLYDRAFT-API.md §6。續 §P34 之後編號。
-   * 全程固定 fe.zoom=1/panX=0/panY=0，讓螢幕像素座標與面 uv mm 座標 1:1 對應。
+   * 初始 camera 為 zoom=1/pan=0；工具提示改變可繪區後，依實際 SVG camera 映射 mm 落點。
    * polydraft.js 本體不受本節影響(該模組由另一 agent 同時維護 tryClose 收尾驗證，本節只讀)。 */
   console.log('=== P35. 面內重畫外環逐點閉合(polydraft,diff#12 面內段) ===');
-  const feOrigin = async () => eval_(`(()=>{const r=document.getElementById('faceEditorSvg').getBoundingClientRect();
-    return {x:r.left,y:r.top};})()`);
+  const waitForFaceViewport = async () => {
+    await eval_(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))`);
+    await waitForUI(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect(),v=fe.viewportSize,i=feViewportInsets(r);
+      return !!v&&Math.abs(v.width-r.width)<.5&&Math.abs(v.height-r.height)<.5&&v.top===i.top&&v.bottom===i.bottom;})()`);
+  };
+  const feOrigin = async () => {
+    await waitForFaceViewport();
+    const origin=await eval_(`(()=>{const r=$('faceEditorSvg').getBoundingClientRect(),m=$('faceEditorRoot').getScreenCTM();
+      return {x:r.left,y:r.top,matrix:{a:m.a,b:m.b,c:m.c,d:m.d,e:m.e,f:m.f}};})()`);
+    // Existing callers add their own camera offsets to x/y; retain that contract.
+    const m=origin.matrix;
+    return {...origin,point:(u,v)=>({x:m.a*u+m.c*v+m.e,y:m.b*u+m.d*v+m.f})};
+  };
+  const clickFacePoint = async (origin,u,v) => {const p=origin.point(u,v);await click(p.x,p.y);};
   /* 每次都用一個夠大的外環(4000×3000)進場：重畫是整份重建 loops[0]，舊外環正被取代
      不算「既有」(POLYDRAFT-API.md §6)，這裡只是給新草稿足夠的畫布空間，座標互不干擾。 */
   const enterFaceRedraw = async () => {
@@ -3863,7 +3926,11 @@ async function main() {
      測試自己讀取這個值再驗證吸附後座標是它的整數倍——snapOn 預設開(#faceSnapToggle checked)。 */
   const fo2 = await feOrigin();
   const gridStep2 = await eval_(`feGridStep()`);
-  await click(fo2.x + 13, fo2.y + 8);
+  // Keep the non-grid-aligned sample inside the viewport after redraw's notice appears.
+  const snapSample=fo2.point(13,108);
+  check('P35-2 吸附採樣點在可繪區內且無遮擋',await eval_(`(()=>{const p=${JSON.stringify(snapSample)},v=$('faceEditorViewport'),r=v.getBoundingClientRect(),hit=document.elementFromPoint(p.x,p.y);
+    return p.x>r.left&&p.x<r.right&&p.y>r.top&&p.y<r.bottom&&!!hit&&$('faceEditorSvg').contains(hit);})()`),snapSample);
+  await clickFacePoint(fo2, 13, 108);
   await sleep(150);
   const fsnap2 = await eval_(`fe.draft.pts[0]`);
   check(`P35-2 點擊吸附到 B4 格距(zoom=1→${gridStep2}mm)`,
@@ -3874,10 +3941,10 @@ async function main() {
   await enterFaceRedraw();
   await eval_(`feSetTool('redraw'); document.getElementById('faceSnapToggle').checked = false`);
   const fo3 = await feOrigin();
-  await click(fo3.x + 100, fo3.y + 100); await sleep(90);
-  await click(fo3.x + 500, fo3.y + 100); await sleep(90);
-  await click(fo3.x + 500, fo3.y + 400); await sleep(90);
-  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: fo3.x + 103, y: fo3.y + 600 });
+  await clickFacePoint(fo3, 100, 100); await sleep(90);
+  await clickFacePoint(fo3, 500, 100); await sleep(90);
+  await clickFacePoint(fo3, 500, 400); await sleep(90);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', ...fo3.point(103, 600) });
   await sleep(150);
   const guide3 = await eval_(`({guides: fe.draftPreview.guides, cur: fe.draftPreview.cur,
     lines: document.querySelectorAll('#feDraftLayer .draft-align-guide').length})`);
@@ -3889,9 +3956,9 @@ async function main() {
   await enterFaceRedraw();
   await eval_(`feSetTool('redraw')`);
   const fo4 = await feOrigin();
-  await click(fo4.x + 100, fo4.y + 100); await sleep(90);
-  await click(fo4.x + 400, fo4.y + 100); await sleep(90);
-  await click(fo4.x + 400, fo4.y + 400); await sleep(90);
+  await clickFacePoint(fo4, 100, 100); await sleep(90);
+  await clickFacePoint(fo4, 400, 100); await sleep(90);
+  await clickFacePoint(fo4, 400, 400); await sleep(90);
   await pressKey('Enter', 'Enter', 13); await sleep(700);
   const closed4 = await eval_(`api('boundary 1').then(b => b.loops[0].verts)`);
   /* 不只驗頂點數(舊碼點 3 下因未達 4 點而拒絕、boundary 維持原狀，巧合也是 4 頂點但內容是
@@ -3908,18 +3975,18 @@ async function main() {
   await enterFaceRedraw();
   await eval_(`feSetTool('redraw')`);
   const fo5 = await feOrigin();
-  await click(fo5.x + 100, fo5.y + 100); await sleep(90);
-  await click(fo5.x + 100, fo5.y + 500); await sleep(90);
-  await click(fo5.x + 500, fo5.y + 500); await sleep(90);
-  await click(fo5.x + 500, fo5.y + 200); await sleep(90);
-  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: fo5.x + 50, y: fo5.y + 200 });
+  await clickFacePoint(fo5, 100, 100); await sleep(90);
+  await clickFacePoint(fo5, 100, 500); await sleep(90);
+  await clickFacePoint(fo5, 500, 500); await sleep(90);
+  await clickFacePoint(fo5, 500, 200); await sleep(90);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', ...fo5.point(50, 200) });
   await sleep(150);
   const cross5 = await eval_(`({error: fe.draftPreview.error,
     rubberError: !!document.querySelector('#feDraftLayer .draft-rubber.error')})`);
   check('P35-5a 面內與自身既有邊交叉時橡皮筋轉紅(CROSS)',
     cross5.error && cross5.error.code === 'CROSS' && cross5.rubberError, cross5);
   const beforeCrossPts = await eval_(`fe.draft.pts.length`);
-  await click(fo5.x + 50, fo5.y + 200); await sleep(150);
+  await clickFacePoint(fo5, 50, 200); await sleep(150);
   const afterCrossPts = await eval_(`fe.draft.pts.length`);
   const worldUnchanged5 = await eval_(`api('boundary 1').then(b => b.loops[0].verts.length)`);
   check('P35-5b 交叉時點擊無效(頂點數不變)、世界不變',
@@ -3932,14 +3999,14 @@ async function main() {
     await enterFaceRedraw();
     await eval_(`feSetTool('redraw')`);
     const o = await feOrigin();
-    await click(o.x + 100, o.y + 100); await sleep(90);
-    await click(o.x + 500, o.y + 100); await sleep(90);
-    await click(o.x + 500, o.y + 400); await sleep(90);
-    await click(o.x + 100, o.y + 400); await sleep(90);
+    await clickFacePoint(o, 100, 100); await sleep(90);
+    await clickFacePoint(o, 500, 100); await sleep(90);
+    await clickFacePoint(o, 500, 400); await sleep(90);
+    await clickFacePoint(o, 100, 400); await sleep(90);
     return o;
   };
   let ofa = await drawFaceRect();
-  await click(ofa.x + 100, ofa.y + 100); await sleep(700);
+  await clickFacePoint(ofa, 100, 100); await sleep(700);
   const closeFA = await eval_(`api('boundary 1').then(b => JSON.stringify(b.loops[0].verts))`);
   ofa = await drawFaceRect();
   await pressKey('Enter', 'Enter', 13); await sleep(700);
@@ -3951,8 +4018,8 @@ async function main() {
   await enterFaceRedraw();
   await eval_(`feSetTool('redraw')`);
   const fo7 = await feOrigin();
-  await click(fo7.x + 100, fo7.y + 100); await sleep(90);
-  await click(fo7.x + 300, fo7.y + 100); await sleep(90);
+  await clickFacePoint(fo7, 100, 100); await sleep(90);
+  await clickFacePoint(fo7, 300, 100); await sleep(90);
   await pressKey('4', 'Digit4', 52); await pressKey('2', 'Digit2', 50);
   const typed7 = await eval_(`fe.lenBuf`);
   check('P35-7a 面內鍵入長度中 fe.lenBuf 非空', typed7 === '42', typed7);
@@ -3970,7 +4037,7 @@ async function main() {
 
   /* diff#10/§5.A.1.10(既有共用邏輯):閉合後面內右欄「外環邊 · 尺寸確認」清單列數=新邊數 */
   ofa = await drawFaceRect();
-  await click(ofa.x + 100, ofa.y + 100); await sleep(700);
+  await clickFacePoint(ofa, 100, 100); await sleep(700);
   const feList8 = await readFaceEdgeList();
   check('P35-8 閉合後面內右欄「外環邊 · 尺寸確認」清單列數=新邊數', feList8.n === 4, feList8);
 
@@ -3990,11 +4057,11 @@ async function main() {
   await enterFaceRedraw();
   await eval_(`feSetTool('redraw'); document.getElementById('faceSnapToggle').checked = false`);
   const fo36 = await feOrigin();
-  await click(fo36.x+100, fo36.y+100); await sleep(90);
-  await click(fo36.x+100, fo36.y+500); await sleep(90);
-  await click(fo36.x+500, fo36.y+500); await sleep(90);
-  await click(fo36.x+500, fo36.y+200); await sleep(90);
-  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: fo36.x+50, y: fo36.y+200 });
+  await clickFacePoint(fo36, 100, 100); await sleep(90);
+  await clickFacePoint(fo36, 100, 500); await sleep(90);
+  await clickFacePoint(fo36, 500, 500); await sleep(90);
+  await clickFacePoint(fo36, 500, 200); await sleep(90);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', ...fo36.point(50, 200) });
   await sleep(150);
   await pressKey('4','Digit4',52); await pressKey('5','Digit5',53); await pressKey('0','Digit0',48);
   await pressKey('Enter','Enter',13); await sleep(150);
@@ -4268,6 +4335,7 @@ async function main() {
      先清掉前段殘留的 toast,只取這次點擊產生的那則。 */
   const o40 = await ocOrigin();
   await pressKey('r','KeyR',82); await sleep(150);
+  await clickControl('#canvasModeHintHelp');
   await eval_(`document.querySelectorAll('#toastRegion .toast').forEach(t=>t.remove())`);
   const t40Toasts=await captureNewToasts(async()=>{await click(o40.x+600, o40.y+550);await sleep(300);},
     `(()=>{const h=document.getElementById('canvasModeHint');return {hintVis:!h.hidden&&getComputedStyle(h).visibility==='visible',hintBottom:h.getBoundingClientRect().bottom};})()`);
@@ -4524,8 +4592,8 @@ async function main() {
   await sleep(300);
   const p43_7c = await eval_(`fe.timbers.some(t=>t.id===10)`);
   check('P43-7c Ctrl+Z → 角材回來', p43_7c === true, p43_7c);
-  const p43FaceLayout=await eval_(`(()=>{const top=document.querySelector('.topbar').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return {focus:oc.focus,composition:document.body.classList.contains('canvas-composition'),topHeight:top.height,viewportTop:vp.top,topBottom:top.bottom};})()`);
-  check('P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留',p43FaceLayout.focus?.t==='face'&&!p43FaceLayout.composition&&p43FaceLayout.topHeight===56&&p43FaceLayout.viewportTop>=p43FaceLayout.topBottom,p43FaceLayout);
+  const p43FaceLayout=await eval_(`(()=>{const top=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return {focus:oc.focus,composition:document.body.classList.contains('canvas-composition'),topHeight:top.height,viewportTop:vp.top,viewportHeight:vp.height,topBottom:top.bottom};})()`);
+  check('P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留',p43FaceLayout.focus?.t==='face'&&!p43FaceLayout.composition&&p43FaceLayout.topHeight>=100&&p43FaceLayout.topHeight<=150&&p43FaceLayout.viewportHeight>300&&p43FaceLayout.viewportTop>=p43FaceLayout.topBottom,p43FaceLayout);
 
   /* (8) 切到重畫外環工具 e,在角材位置落點仍成功(角材不擋) */
   await eval_(`feSetTool('redraw')`);
@@ -4893,9 +4961,9 @@ async function main() {
     hint: document.getElementById('faceCanvasHint').textContent,
     status: document.getElementById('status').textContent,
   })`);
-  check('P47-2a 角材工具下畫出 .fe-anchor-hi/.fe-anchor-band,浮標或狀態列含新提示(G196-R02 改字:「厚度方向依右欄」)',
+  check('P47-2a 角材工具保留定位預示及即時定位與截面摘要',
     p47_2a.hi > 0 && p47_2a.band > 0 &&
-    (p47_2a.hint.includes('厚度方向依右欄') || p47_2a.status.includes('厚度方向依右欄')), p47_2a);
+    p47_2a.hint.includes('目前定位：')&&p47_2a.hint.includes('截面'), p47_2a);
   await eval_(`feSetTool('select')`);
   await sleep(150);
   const p47_2b = await eval_(`({
@@ -5599,7 +5667,7 @@ async function main() {
     const mres = await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
     await sleep(250);
     const rs = await setupLinesG196(F_SUPPORT);
-    const pre = await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
+    await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); await enterFocus('face', 1);
       fe.zoom = 1; fe.panX = 0; fe.panY = 0; feApply();
       const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false;
       await feLoadGuides(); renderFaceInspector(); fiShowTab('timber');
@@ -5607,19 +5675,7 @@ async function main() {
       if (!window.__rawApiRequest) window.__rawApiRequest = apiRequest;
       apiRequest = async c => { window.__sent.push(c); return window.__rawApiRequest(c); };
       feSetTool('timber');
-      /* 引用解析失效:DOM 命中層還在,但 fe.guides 已無 guide 2。
-         必須在 feSetTool 之後清——feSetTool 會 drawFaceEditor() 重繪,
-         若在之前清,命中層的 g: 元素也會被一起移除,點擊就落空走表單。 */
-      fe.guides = [];
-      const svgR = document.getElementById('faceEditorSvg').getBoundingClientRect();
-      const elAt = document.elementFromPoint(svgR.x + 2000, svgR.y + 1500);
-      const hitEl = elAt && elAt.closest ? elAt.closest('[data-face-hit]') : null;
-      return { focus: oc.edit && oc.edit.bid, tool: fe.tool, guides: fe.guides.length,
-        hitNow: hitEl ? hitEl.dataset.faceHit : null, iw: innerWidth,
-        cx: svgR.x + 2000, cy: svgR.y + 1500 }; })()`);
-    check('P50 失效引用前置:進面1+timber 工具+fe.guides 已清+命中層仍含 g:2:v+視窗已還原',
-      pre && pre.focus === 1 && pre.tool === 'timber' && pre.guides === 0 &&
-      pre.hitNow === 'g:2:v' && pre.iw > 2300, { pre, mres: mres && (mres.error || 'ok') });
+    })()`);
     /* 探測:記錄點擊當下的真實狀態(busy/tool/hit)與 toast/feDown 呼叫,
        失敗時從 diag 直接看出是哪一層把點擊吞掉。 */
     const instOk = await eval_(`(()=>{ window.__dbg = { toasts: [], feDownCalls: [], downs: [], docDowns: [] };
@@ -5652,12 +5708,25 @@ async function main() {
     })()`);
     await sleep(150);
     await clearToasts48();
+    await waitForFaceViewport();
+    const pre = await eval_(`(()=>{
+      /* 最後才製造失效引用:工具/提示版面與 ResizeObserver 均已穩定,
+         不讓正常重繪先移除刻意保留的陳舊命中層。 */
+      fe.guides = [];
+      const m=$('faceEditorRoot').getScreenCTM(),p=new DOMPoint(2000,1500).matrixTransform(m);
+      const elAt=document.elementFromPoint(p.x,p.y),hitEl=elAt?.closest('[data-face-hit]');
+      return {focus:oc.edit?.bid,tool:fe.tool,guides:fe.guides.length,
+        hitNow:hitEl?.dataset.faceHit||null,iw:innerWidth,cx:p.x,cy:p.y};})()`);
+    check('P50 失效引用前置:進面1+timber 工具+fe.guides 已清+命中層仍含 g:2:v+視窗已還原',
+      pre && pre.focus === 1 && pre.tool === 'timber' && pre.guides === 0 &&
+      pre.hitNow === 'g:2:v' && pre.iw > 2300, { pre, mres: mres && (mres.error || 'ok') });
     /* 點擊前一刻再測一次 elementFromPoint——若此時頂層元素已不是命中線,
        代表 pre-eval 到 click 之間 DOM 被重繪或有浮層蓋上。 */
     const atClick = await eval_(`(()=>{ const el = document.elementFromPoint(${pre && typeof pre.cx === 'number' ? pre.cx : 0}, ${pre && typeof pre.cy === 'number' ? pre.cy : 0});
       const he = el && el.closest ? el.closest('[data-face-hit]') : null;
       return { tag: el && el.tagName, id: el && el.id || null,
         inFevp: el ? fevp.contains(el) : null, hit: he ? he.dataset.faceHit : null }; })()`);
+    check('P50 真實點擊前仍命中失效參考線 g:2:v',atClick.hit==='g:2:v',atClick);
     let disp = null;
     const invalidReferenceToasts=await captureNewToasts(async()=>{if (pre && typeof pre.cx === 'number') {
       /* 防禦:先送一個 release 清掉可能殘留的按鍵狀態(上一段 touch 模擬留下的),
@@ -6117,7 +6186,7 @@ async function main() {
     await ctl('#connectionRetry');
     await until(`connection.phase === 'ready'`);
     const recovered = await eval_(`({commands:__g197Commands.slice(),count:$('objectCountBadge').textContent,hidden:$('connectionNotice').hidden})`);
-    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
+    check('P53-3 重試只讀取，不重送修改', recovered.commands.length > 0 && recovered.commands.every(c=>/^(dump|objects|surfaces|boundary|references|obstacles|render)(\s|$)/.test(c)) && recovered.count === '1' && recovered.hidden, recovered);
     check('P53-4 重試前後世界逐字相同', typeof beforeConnection === 'string' && await eval_(`api('dump').then(r=>r.text)`) === beforeConnection);
     const cached = await eval_(`JSON.stringify([oc.faces,oc.surfs,oc.bmap])`);
     await eval_(`__g197Mode='partial';renderObjects()`);
@@ -6608,7 +6677,7 @@ async function main() {
     await eval_(`closePanels();feSetTool('redraw');fe.draft.pts=[[0,0],[1000,0]];feSyncDraftMirror();`);
     check('P63-8 保存不會默默丟掉未套用外環草稿',await eval_(`(async()=>{try{await ReferenceWorkspace.exportBytes();return false;}catch(e){return e.message.includes('草稿')&&fe.draft.pts.length===2;}})()`));
     await eval_(`fe.draft=PolyDraft.createState();feSetTool('select');`);
-    check('P63-9 保存按鈕在工作區頂列且匯出仍在檔案選單',await eval_(`(()=>{const b=document.querySelector('.object-workspace-topbar [data-project-action="save"]').getBoundingClientRect(),h=document.querySelector('.object-workspace-topbar').getBoundingClientRect();return b.top>=h.top&&b.bottom<=h.bottom&&h.top===0&&$('btnExport').closest('#fileMenuPop')!==null;})()`));
+    check('P63-9 保存按鈕在工作區頂列且匯出仍在檔案選單',await eval_(`(()=>{const b=document.querySelector('#projectBar [data-project-action="save"]').getBoundingClientRect(),h=document.querySelector('.object-workspace-topbar').getBoundingClientRect();return b.top>=h.top&&b.bottom<=h.bottom&&h.top===0&&$('btnExport').closest('#fileMenuPop')!==null;})()`));
     check('P63-10 寫入完成後顯示已保存，後續變更恢復未保存',await eval_(`(async()=>{const old=window.showSaveFilePicker;window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async()=>{},close:async()=>{}})});try{await ReferenceWorkspace.save();const ok=[...document.querySelectorAll('[data-project-status]')].every(e=>e.textContent==='已保存');ReferenceWorkspace.changed(1);ReferenceWorkspace.present();return ok&&document.querySelector('[data-project-status]').textContent==='有未保存的變更';}finally{window.showSaveFilePicker=old;}})()`));
     check('P63-11 下載模式不宣稱已寫入檔案，也保留未保存狀態',await eval_(`(async()=>{const old=window.showSaveFilePicker,click=HTMLAnchorElement.prototype.click;window.showSaveFilePicker=undefined;HTMLAnchorElement.prototype.click=function(){};try{await ReferenceWorkspace.save();return ReferenceWorkspace.context().dirty&&document.querySelector('[data-project-status]').textContent.includes('已產生下載');}finally{window.showSaveFilePicker=old;HTMLAnchorElement.prototype.click=click;}})()`));
     await ctl('[data-fi-tab="prop"]');
@@ -6619,7 +6688,7 @@ async function main() {
     await sleep(100);
     check('P63-13 檔案選單 Esc 只關閉選單，仍在同一個面',await eval_(`document.querySelector('#fileMenuPop').hidden&&!$('objectWorkspace').hidden&&oc.edit.bid===1`));
     await eval_(`window.uiSavedPicker=window.showSaveFilePicker;window.uiWriteCount=0;window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async()=>{uiWriteCount++;},close:async()=>{}})});`);
-    await ctl('.object-workspace-topbar [data-project-action="save"]');await waitForUI(`uiWriteCount===1&&!ReferenceWorkspace.busy`,5000);
+    await ctl('#projectBar [data-project-action="save"]');await waitForUI(`uiWriteCount===1&&!ReferenceWorkspace.busy`,5000);
     check('P63-14 固定保存按鈕實際呼叫專案寫入',await eval_(`uiWriteCount===1&&document.querySelector('[data-project-status]').textContent==='已保存'`));
     await eval_(`window.showSaveFilePicker=uiSavedPicker;`);
     check('P63-15 開啟專案後解除處理中狀態並恢復保存按鈕',await eval_(`(async()=>{
@@ -6654,14 +6723,14 @@ async function main() {
     check('P64 M1-M4 主畫布專案、保存與常駐來源入口',await eval_(`(()=>{
       return document.querySelector('#fileMenuPop').contains(document.querySelector('#sceneList'))
         && !document.querySelector('#sceneMenuLabel').textContent.includes('.scene')
-        && document.querySelector('.brand [data-project-name]')
+        && document.querySelector('#projectBar [data-project-name]')
         && document.querySelector('.topbar [data-project-status]')
         && document.querySelector('#btnSaveProject').textContent.includes('另存新檔')
         && document.querySelector('.topbar .project-save [data-icon="save"]')
         && document.querySelector('#btnNewRect').closest('.tool-group')
         && document.querySelector('#btnNewPoly').closest('.tool-group')
         && $('btnNewGridSystem').closest('.sidebar-left') && $('btnQuickBoundary').closest('.sidebar-left')
-        && $('createObjectPop').contains($('btnBox6')) && !!$('createObjectPop').querySelector('[data-project-action="import"]');})()`));
+        && $('createObjectPop').contains($('btnBox6')) && !$('createObjectPop').querySelector('[data-project-action="import"],#btnSpaceModelTrial,#btnSpaceModels');})()`));
     check('P64 M5-M8 型別色、未放置、畫布切換與空間卡',await eval_(`(()=>{
       const root=getComputedStyle(document.documentElement),face=document.querySelector('.object-row[data-kind="boundary"]');
       const s=$('snapToggle'),g=$('gridToggle');
@@ -6782,18 +6851,22 @@ async function main() {
   }
 
   }
-  if (!process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./project_audit_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
-    await require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
-  if (!process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+  if (!process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
+    await require('./engineering_workflow_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if (!process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN});
   if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
-    await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+    await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if (process.env.GEOMETRY_INFINITE_FACE_ONLY)
     await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
   if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
     await require('./composition_canvas_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
+  if (scope.mode==='full' || process.env.GEOMETRY_UIUX_FIX_ONLY)
+    await require('./uiux_review_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount:()=>excN});
+  if (scope.mode==='full' || process.env.GEOMETRY_UX_REFINEMENT_ONLY)
+    await require('./ux_refinement_test.js')({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,expectBeforeUnload:()=>{expectedBeforeUnloadUntil=Date.now()+15000;},exceptionCount:()=>excN});
 
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
@@ -6803,6 +6876,7 @@ async function main() {
 }
 async function fatal(e) {
   _log("FATAL:", e.message);
+  _log('FATAL_NETWORK:',JSON.stringify({failures:assetFailures,pendingAssets:[...assetRequests.values()]}));
   try {
     if(ws?.readyState===1){
       const state=await Promise.race([eval_(`({ready:document.readyState,focus:typeof oc==='object'?oc.focus:null,connection:typeof connection==='object'?{phase:connection.phase,error:connection.error}:null,events:window.geometryFeedback?.events?.slice(-10),dialogs:[...document.querySelectorAll('dialog[open]')].map(d=>({id:d.id,classes:d.className,text:d.textContent.slice(0,1200)})),active:document.activeElement?.id,feedback:document.querySelector('#fbPanel')?.hidden,status:document.querySelector('#status')?.textContent})`),delay(1500).then(()=>null)]);

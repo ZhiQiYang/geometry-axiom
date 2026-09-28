@@ -706,17 +706,24 @@ function check(name, cond, detail="") {
 
   await api("default");
   const inputBefore = (await api("dump")).text;
-  for (const bad of ["line space 77 " + "junk ".repeat(160),
-                     "line space 88 " + " ".repeat(2050) + "garbage",
-                     "line space 88 #" + "界".repeat(700)]) {
-    check("超限 DSL 拒絕", !(await api(bad)).ok);
-    check("超限 DSL 不修改世界", (await api("dump")).text === inputBefore);
+  // Scene lines now support 16 KiB, while this bridge command transport is
+  // still bounded to 4094 UTF-8 bytes including the "line " prefix. Use valid
+  // definitions with trailing comments so rejection really tests capacity.
+  for (const bad of ["line space 77 #".padEnd(4095, "x"),
+                     "line space 88 #".padEnd(4200, " "),
+                     "line space 88 #" + "界".repeat(1361)]) {
+    check("超限橋接指令拒絕", !(await api(bad)).ok);
+    check("超限橋接指令不修改世界", (await api("dump")).text === inputBefore);
+    check("超限後下一筆指令仍完整", (await api("newid")).ok);
   }
   check("合法空白 DSL 接受", (await api("line   ")).ok);
   check("合法註解接受", (await api("line # empty")).ok);
-  const maxLine = "space 77 #".padEnd(2046, "x");
-  check("DSL 邊界長度接受", (await api("line " + maxLine)).ok);
-  check("DSL 邊界後拒絕", !(await api("line " + maxLine + "x")).ok);
+  check("合法多位元組註解不受舊2KiB上限限制", (await api("line space 88 #" + "界".repeat(700))).ok);
+  const maxLine = "line space 77 #".padEnd(4094, "x");
+  check("橋接指令4094-byte邊界接受", (await api(maxLine)).ok);
+  const atLimit = (await api("dump")).text;
+  check("橋接指令4095-byte拒絕", !(await api(maxLine + "x")).ok);
+  check("橋接邊界後拒絕不修改世界", (await api("dump")).text === atLimit);
 
   await api("reset");
   for (const ln of setup) check("grid-ref setup", (await api(ln)).ok, ln);

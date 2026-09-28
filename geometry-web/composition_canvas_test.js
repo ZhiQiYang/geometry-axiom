@@ -38,7 +38,10 @@ module.exports = async function compositionCanvasTests({send,eval_,sleep,click,d
   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await settle();};
   const row=(kind,id)=>`.object-row[data-kind="${kind}"][data-id="${id}"]`;
   const card=(kind,id)=>`.ocard[data-kind="${kind}"][data-id="${id}"]`;
-  const select=async(kind,id)=>{await ctl(row(kind,id));await wait(`oc.sel?.kind===${JSON.stringify(kind)} && oc.sel.id===${id}`);};
+  const select=async(kind,id)=>{
+    if(await read(`$('filterDisclosure').open`))await ctl('#filterDisclosure > summary');
+    await ctl(row(kind,id));await wait(`oc.sel?.kind===${JSON.stringify(kind)} && oc.sel.id===${id}`);
+  };
   const shot=async name=>{
     const folder=process.env.GEOMETRY_COMPOSITION_SCREENSHOT_DIR;if(!folder)return;
     fs.mkdirSync(folder,{recursive:true});const r=await send('Page.captureScreenshot',{format:'png'});
@@ -57,7 +60,11 @@ module.exports = async function compositionCanvasTests({send,eval_,sleep,click,d
     'grid-binding 1 on-boundary 1 from-system 1 vertex-key 1 cell 0 0 anchor 0 1 0 1',
     'canvas-pos grid-system 1 290 90','canvas-pos boundary 1 290 320','canvas-pos grid-binding 1 780 205'
   ]);
-  await read(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();void 0`);await select('grid-binding',1);await wait(`!!$('giCellI')`);await sleep(250);await shot('desktop-selected-binding');
+  await read(`oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();void 0`);
+  if(!await read(`$('filterDisclosure').open`))await ctl('#filterDisclosure > summary');
+  await select('grid-binding',1);await wait(`!!$('giCellI')`);
+  check('桌面收起篩選浮層後可選取原目標配置',await read(`!$('filterDisclosure').open && oc.sel?.kind==='grid-binding' && oc.sel.id===1`));
+  await sleep(250);await shot('desktop-selected-binding');
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await sleep(250);
   const designCard=await box(card('grid-binding',1)),designControls=await box('.canvas-controls[aria-label="縮放控制"]');
   check('手機所選配置完整避開下方縮放控制',designCard.bottom<=designControls.top-8,{designCard,designControls});await shot('mobile-selected-binding');
@@ -103,10 +110,10 @@ module.exports = async function compositionCanvasTests({send,eval_,sleep,click,d
   check('既有專案首屏不用捲動就能建立網格與邊界',entrances.every(b=>visible(b)&&b.top>=0&&b.bottom<=1000),entrances);
   check('主畫布使用組合版面且未選取時不佔用編輯面板',await read(`document.body.classList.contains('canvas-composition') && !document.body.classList.contains('canvas-has-inspector')`));
   await ctl('#btnCreateObject');
-  const menuIds=['btnBox6','btnNewSpace','btnNewColumn','btnNewBeam','btnSpaceModelTrial','btnSpaceModels'];
+  const menuIds=['btnBox6','btnNewSpace','btnNewColumn','btnNewBeam'];
   const menuEntries=[];
   for(const id of menuIds){await read(`document.getElementById(${JSON.stringify(id)}).scrollIntoView({block:'nearest'});void 0`);await sleep(90);menuEntries.push(await box('#'+id));}
-  check('建立物件選單保留原有六種入口並能真正點擊',menuEntries.every(visible),menuEntries);
+  check('建立物件選單保留真正建立入口並能點擊',menuEntries.every(visible),menuEntries);
   await key('End','End',35);const lastMenuFocus=await read(`$('createObjectPop').contains(document.activeElement) && !document.activeElement.disabled`);
   await key('Home','Home',36);const firstMenuFocus=await read(`document.activeElement.id==='btnQuickGrid'`);await key('ArrowDown','ArrowDown',40);
   check('建立選單支援 Home End 與方向鍵逐項操作',lastMenuFocus&&firstMenuFocus&&await read(`document.activeElement.id==='btnCreateRect'`));

@@ -1,0 +1,23 @@
+/* Canvas annotations must remain legible over model strokes at every zoom.
+   vector-effect keeps the white halo at 3 screen px, including mm-based SVGs. */
+svg text:not([data-label-halo="none"]) {
+  paint-order: stroke fill;
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.fe-edge-dimension {
+  pointer-events: none;
+}
+#feAnnotationLayer > text {
+  pointer-events: none;
+}
+.fe-edge-dimension .fe-dimension-extension {
+  stroke: #9ba5b5;
+}
+.fe-edge-dimension .fe-dimension-tick {
+  stroke: #596376;
+  stroke-width: 1.2px;
+}
