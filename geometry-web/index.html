@@ -172,7 +172,7 @@
     </aside>
 
     <section id="canvasViewport" class="canvas-viewport show-grid" tabindex="0" aria-label="無限畫布">
-      <div id="ocSelectionSummary" class="selection-summary" aria-label="物件選取"><span class="selection-copy"><strong role="status" aria-live="polite">拖曳空白處框選物件</strong><small>完整框入才選取 · Shift 加選 · 空白鍵＋拖曳平移</small></span><button type="button" data-selection-clear="oc" hidden>清除選取</button></div>
+      <div id="ocSelectionSummary" class="selection-summary" aria-label="物件選取"><span class="selection-copy"><strong role="status" aria-live="polite">拖曳空白處框選物件</strong><small>向右完整框住 · 向左相交即選 · Shift 加選 · 空白鍵平移</small></span><button type="button" data-selection-clear="oc" hidden>清除選取</button></div>
       <!-- 三段浮標(工具名/情境提示/kbd),目前只有矩形工具使用 -->
       <div id="canvasModeHint" class="canvas-mode-hint" hidden>
         <span class="hint-tool"></span>
@@ -354,7 +354,7 @@
             <div><button id="faceDraftFinish" type="button" class="btn">完成外環</button><button id="faceDraftCancel" type="button" class="btn">放棄草稿</button></div>
         </div>
         <section id="faceEditorViewport" class="face-editor-viewport tool-select" tabindex="-1" aria-label="面編輯畫布">
-          <div id="feSelectionSummary" class="selection-summary" aria-label="角材選取"><span class="selection-copy"><strong role="status" aria-live="polite">拖曳空白處框選角材</strong><small>完整框入才選取 · Shift 加選 · 空白鍵＋拖曳平移</small></span><button type="button" data-selection-clear="fe" hidden>清除選取</button></div>
+          <div id="feSelectionSummary" class="selection-summary" aria-label="角材選取"><span class="selection-copy"><strong role="status" aria-live="polite">拖曳空白處框選角材</strong><small>向右完整框住 · 向左相交即選 · Shift 加選 · 空白鍵平移</small></span><button type="button" data-selection-clear="fe" hidden>清除選取</button></div>
           <svg id="faceEditorSvg" class="face-editor-svg"><g id="faceEditorRoot"></g></svg>
           <input id="feLenInput" class="fe-len-input" type="text" hidden
                  aria-label="段長 mm" readonly>

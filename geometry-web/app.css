@@ -2092,6 +2092,7 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
 .selection-copy{display:flex;flex-direction:column;gap:3px;min-width:0;overflow-wrap:anywhere}
 .selection-copy strong{font-size:12px;line-height:1.45}.selection-copy small{font-size:11px;line-height:1.5;color:#64748b}
 .selection-summary button{pointer-events:auto;min-width:78px;min-height:44px;flex-shrink:0;padding:6px 10px;border:1px solid #cfd8e8;border-radius:7px;background:white;color:#364f91;font:inherit;font-size:12px;cursor:pointer}
-.selection-marquee{fill:rgba(78,103,232,.12);stroke:#4e67e8;stroke-width:1.5;stroke-dasharray:5 3;vector-effect:non-scaling-stroke;pointer-events:none}
+.selection-marquee{fill:rgba(78,103,232,.12);stroke:#4e67e8;stroke-width:1.5;vector-effect:non-scaling-stroke;pointer-events:none}
+.selection-marquee.crossing{fill:rgba(30,145,109,.12);stroke:#1e916d;stroke-dasharray:5 3}
 .multi-selection-list{max-height:220px;overflow:auto;margin:10px 0;padding-left:22px;font-size:12px;line-height:1.8}.multi-selection-note{font-size:12px;line-height:1.65;color:#617087}
 @media(max-width:680px){.selection-summary{top:8px;left:8px;right:8px;max-width:calc(100% - 16px);gap:8px;padding:7px 9px}.selection-copy small{max-width:240px}.selection-summary button{min-width:68px}}
