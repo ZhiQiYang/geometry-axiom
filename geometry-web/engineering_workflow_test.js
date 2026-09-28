@@ -51,8 +51,14 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   const attr=(name,value)=>'['+name+'='+JSON.stringify(value)+']';
   const field=path=>'#ewField-'+path.replace(/[^\w-]/g,'-');
   const tab=section=>ctl('.ew-nav [data-ew-section="'+section+'"]');
-  const ready=()=>wait(`$('ewWorkspace')?.open && !$('ewPreview').disabled && !$('ewContent').inert`,'workspace ready');
-  const open=async()=>{await ctl('#fileMenuBtn');await ctl('#btnEngineeringSpecs');await wait(`$('ewWorkspace')?.open && !$('ewContent').inert && !!$('ewContent').firstElementChild && $('ewStatus').dataset.kind!=='error'`);};
+  // Opening retains the preceding form while fetching. inert only represents
+  // a commit, so require the public load-complete status and enabled preview
+  // before inspecting the new form. Never wait for the expected selection.
+  const ready=async(label='workspace ready')=>{
+    try{await wait(`$('ewWorkspace')?.open && !$('ewPreview').disabled && !$('ewContent').inert && !!$('ewContent').firstElementChild && $('ewStatus').dataset.kind!=='error' && $('ewStatus').textContent.startsWith('已讀取目前工程。')`,label);}
+    catch(error){const ui=await read(`({open:$('ewWorkspace')?.open,previewDisabled:$('ewPreview')?.disabled,inert:$('ewContent')?.inert,status:$('ewStatus')?.textContent,statusKind:$('ewStatus')?.dataset.kind})`);throw Error(label+': '+error.message+' '+JSON.stringify(ui));}
+  };
+  const open=async()=>{await ctl('#fileMenuBtn');await ctl('#btnEngineeringSpecs');await ready();};
   const preview=async()=>{await ctl('#ewPreview');await wait(`!$('ewReview').hidden || (!$('ewPreview').disabled && $('ewStatus').dataset.kind==='error')`,'preview result');};
   const confirm=async()=>{
     await wait(`!$('ewReview').hidden && !!$('ewReviewed')`,'valid review');
@@ -118,8 +124,9 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
     check('已綁角材檢查器顯示來源與原定位',await read(`!!$('tbSelected') && /工程|來源/.test($('tbSelected').textContent) && /原定位.*at-face e0/.test($('tbSelected').textContent) && !!$('tbSelected').querySelector('[data-engineering-open]') && !$('tbEditA')`));
     await shot('engineering-bound-timber-inspector');
     check('檢視已綁角材不改工程來源',same(await state(),before)&&(await dump())===scene);
-    await ctl('#tbSelected [data-engineering-open]');await wait(`$('ewWorkspace').open && !$('ewContent').inert`,'bound timber engineering entry');
-    check('角材檢查器入口只勾選目前承載面，不沿用先前批次選取',same(await selectedTargets(),[application.placement_id])&&await read(`Number($('ewField-activePlacement').value)===${application.placement_id}`)&&(await dump())===scene);
+    await ctl('#tbSelected [data-engineering-open]');await ready('bound timber engineering entry');
+    const boundEntry={selected:await selectedTargets(),activePlacement:await read(`Number($('ewField-activePlacement').value)`),sceneUnchanged:(await dump())===scene};
+    check('角材檢查器入口只勾選目前承載面，不沿用先前批次選取',same(boundEntry.selected,[application.placement_id])&&boundEntry.activePlacement===application.placement_id&&boundEntry.sceneUnchanged,{expectedPlacement:application.placement_id,...boundEntry});
     await ctl('#ewClose');
     await read(`(async()=>{resetSceneFocus();await renderObjects();})()`);
   };
@@ -134,7 +141,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   if(process.env.GEOMETRY_ENGINEERING_SUBGRID_ONLY){await boundSubgrid();check('子格入口無 JavaScript 例外',exceptionCount()===errors);return;}
   if(process.env.GEOMETRY_ENGINEERING_EXAMPLE_ONLY){
     await ctl('#fileMenuBtn');await ctl('#btnEngineeringExample');
-    await wait(`$('ewWorkspace')?.open && !$('ewContent').inert && !!$('ewField-application-method')`,'official example loaded');await sleep(250);
+    await ready('official example loaded');await sleep(250);
     const loaded=await state(),r=await refs(),models=await read('ReferenceWorkspace.getSpaceModels()');
     check('選單現成專案包含2材料1做法18來源7角材1模型',loaded.materials.length===2&&loaded.methods.length===1&&loaded.sources.length===18&&r.timbers.length===7&&models.length===1,{materials:loaded.materials.length,methods:loaded.methods.length,sources:loaded.sources.length,timbers:r.timbers.length,models:models.length});
     const examplePanel=loaded.materials.find(m=>m.id==='example-panel-915x1830'&&m.version===1),exampleTimbers=r.timbers.map(t=>[t.id,t.role]).sort((a,b)=>a[0]-b[0]);
@@ -146,7 +153,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
     const scene=await dump();await shot('engineering-example-workspace');await ctl('#ewClose');
     await read(`(async()=>{await enterFocus('face',1);})()`);await sleep(220);await ctl('.face-layer-row[data-grid-id="1"] .grid-layer-open');await ctl('.engineering-grid-details details > summary');
     check('現成主格sidebar保留材料版本與欄位來源',await read(`document.querySelector('.engineering-grid-details').textContent.includes('example-panel-915x1830@1.width')`));await shot('engineering-example-source-sidebar');
-    await ctl('.engineering-grid-details [data-engineering-open]');await wait(`$('ewWorkspace').open && !!$('ewField-application-targets-1-gridId')`);await details('本面覆寫');
+    await ctl('.engineering-grid-details [data-engineering-open]');await ready('bound grid engineering entry');await details('本面覆寫');
     await choose(field('application.targets.1.overrides.gap.mode'),'literal');await fill(field('application.targets.1.overrides.gap.value'),4);await preview();
     check('現成預覽首屏先列格線與人話影響摘要',await read(`!!$('ewReviewed') && /個面.*個網格.*支角材/.test($('ewReview').querySelector('.ew-impact-summary')?.textContent||'') && /^網格/.test($('ewReview').querySelector('.ew-diff h3')?.textContent||'')`) && (await dump())===scene);await shot('engineering-example-preview-summary');
     await ctl('#ewCancelPreview');check('返回修改清除過期警示',await read(`$('ewStatus').dataset.kind==='' && !$('ewStatus').textContent.includes('有阻擋')`));

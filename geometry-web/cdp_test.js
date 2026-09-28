@@ -170,6 +170,42 @@ async function waitForUI(expr, timeout=5000) {
   while(Date.now()<end){if(await eval_(expr)===true)return;await sleep(50);}
   throw Error('UI condition timed out at '+currentTestStep+': '+expr);
 }
+// Observe actual, newly appended DOM toasts during one action. Never read an
+// earlier toast or replace toast()/its timers; retain evidence after expiry.
+async function captureNewToasts(action, visibleState = 'null') {
+  await eval_(`(()=>{
+    if(window.__cdpActionToastProbe)throw Error('A toast observation is already active');
+    const region=document.getElementById('toastRegion');if(!region)throw Error('Missing toastRegion');
+    const seen=new WeakSet(region.querySelectorAll('.toast'));
+    const probe=window.__cdpActionToastProbe={rows:[],frames:new Set(),active:true};
+    probe.collect=records=>{for(const record of records)for(const node of record.addedNodes){
+      if(node.nodeType!==1||!node.matches('.toast')||seen.has(node))continue;seen.add(node);
+      const row={text:node.textContent,classes:[...node.classList],visible:false};probe.rows.push(row);
+      const sample=()=>{const s=getComputedStyle(node),r=node.getBoundingClientRect();
+        row.visible=row.visible||(node.isConnected&&s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity)>0&&r.width>0&&r.height>0&&r.right>0&&r.bottom>0&&r.left<innerWidth&&r.top<innerHeight);
+        if(row.visible&&!row.bounds){row.bounds={left:r.left,top:r.top,right:r.right,bottom:r.bottom};row.state=(${visibleState});}
+        if(!row.visible&&node.isConnected&&probe.active){const id=requestAnimationFrame(()=>{probe.frames.delete(id);sample()});probe.frames.add(id);}};
+      const id=requestAnimationFrame(()=>{probe.frames.delete(id);sample()});probe.frames.add(id);
+    }};
+    probe.observer=new MutationObserver(probe.collect);probe.observer.observe(region,{childList:true});return true;
+  })()`);
+  let observed;
+  try {
+    await action();
+    // Synchronous actions also get a real paint opportunity. The bounded wait
+    // only observes this probe's pending samples; it cannot invent a toast.
+    await eval_(`(async()=>{const p=window.__cdpActionToastProbe;p.collect(p.observer.takeRecords());
+      if(p.frames.size)await new Promise(resolve=>{let done=false,waitFrame=null;const finish=()=>{if(done)return;done=true;clearTimeout(timer);if(waitFrame!==null)cancelAnimationFrame(waitFrame);resolve()};
+        const timer=setTimeout(finish,1000);const tick=()=>{waitFrame=null;if(done)return;if(!p.active||!p.frames.size)finish();else waitFrame=requestAnimationFrame(tick)};waitFrame=requestAnimationFrame(tick);});return true;})()`);
+  }
+  finally {
+    observed=await eval_(`(()=>{const p=window.__cdpActionToastProbe;if(!p)throw Error('Toast observation was lost');
+      p.collect(p.observer.takeRecords());p.observer.disconnect();p.active=false;for(const id of p.frames)cancelAnimationFrame(id);
+      delete window.__cdpActionToastProbe;return p.rows;})()`);
+  }
+  return observed;
+}
+const toastText=(rows,type)=>rows.filter(t=>t.visible&&t.classes.includes(type)).map(t=>t.text).join(' | ');
 async function click(x, y) {
   for (const [type, btn] of [["mousePressed", "left"], ["mouseReleased", "left"]])
     await send("Input.dispatchMouseEvent", { type, x, y, button: btn, clickCount: 1 });
@@ -636,12 +672,14 @@ async function main() {
   console.log("=== P3-5. 非法編輯 → toast + boundary 不變 ===");
   const bSnap = await eval_(
     `api("boundary 20").then(r=>JSON.stringify(r.loops))`);
-  await cmdLine("boundary 20 outline 0,0 4000,0 4000,3000 1500,1500 0,3000");
-  await sleep(900);
-  const toastN = await eval_(`document.querySelectorAll("#toastRegion .toast").length`);
+  const invalidEditToasts=await captureNewToasts(async()=>{
+    await cmdLine("boundary 20 outline 0,0 4000,0 4000,3000 1500,1500 0,3000");
+    await sleep(900);
+  });
+  const invalidEditToast=invalidEditToasts.some(t=>t.visible&&t.classes.includes('error')&&t.text.includes('邊界面輪廓不合法：邊要軸平行'));
   const bAfter = await eval_(
     `api("boundary 20").then(r=>JSON.stringify(r.loops))`);
-  console.log("toast:", toastN,explicitVerdict(toastN > 0 ? "✓" : "✗"),
+  console.log("本次非法輪廓錯誤 toast:", JSON.stringify(invalidEditToasts),explicitVerdict(invalidEditToast ? "✓" : "✗"),
     "| boundary 未變:",explicitVerdict(bSnap === bAfter ? "✓" : "✗"));
 
   console.log("=== P3-6. Esc 回世界；游離面放置表單 ===");
@@ -1058,7 +1096,7 @@ async function main() {
   })()`);
   console.log("undo 後堆疊驗活:",explicitVerdict(seU.verts === 10 ? "✓" : "✗ verts=" + seU.verts), "| 特徵", seU.feats,explicitVerdict(seU.feats === 1 && seU.rows === 1 ? "✓" : "✗"));
   /* 拆片拒絕:凹口深到穿透整片 → toast,不送指令 */
-  const seS = await eval_(`(async()=>{
+  await eval_(`(async()=>{
     await api("line reset");
     await api("line surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000");
     oc.focus = null; oc.stack = [];
@@ -1070,12 +1108,14 @@ async function main() {
     document.querySelector('#feActionBar [data-fe-act="op:notch"]').click();
     const d = document.querySelector('#feOpPanel [data-fe-param="d"]');
     d.value = "3000"; d.dispatchEvent(new Event("input"));
+  })()`);
+  let seS;
+  const splitToasts=await captureNewToasts(async()=>{seS=await eval_(`(async()=>{
     document.querySelector("#feOpApply").click();
     await window.__cdpSettleUI(300);
-    const toastTxt = [...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|");
     const verts = (await api("boundary 1")).loops[0].verts.length;
-    return {toastTxt, verts, panelOpen: !$("feOpPanel").hidden};
-  })()`);
+    return {verts, panelOpen: !$("feOpPanel").hidden};
+  })()`);});seS.toastTxt=toastText(splitToasts,'error');
   console.log("拆片拒絕:",explicitVerdict(/兩片/.test(seS.toastTxt) && seS.verts === 4 && seS.panelOpen ? "✓" : `✗ ${seS.toastTxt} verts=${seS.verts}`));
   /* 推拉:右邊往內 500 → 寬 3500,頂點仍 4;Esc 階梯:關面板 → 清選取 → 離開 */
   const seP = await eval_(`(async()=>{
@@ -1318,19 +1358,17 @@ async function main() {
     "| 預覽不改世界:",explicitVerdict(gridSourceUI.untouchedBeforeSave?"✓":"✗"),
     "| 來源儲存與回填:",explicitVerdict(gridSourceUI.saved&&gridSourceUI.filled?"✓":"✗"),
     "| 錯誤草稿拒絕且世界不變:",explicitVerdict(gridSourceUI.invalid&&gridSourceUI.unchanged?"✓":"✗"));
-  /* 足跡越界 → 核心拒絕,toast + dump 不變 */
-  const q3b = await eval_(`(async()=>{
-    const before = (await api("dump")).text;
-    feSetTool("timber");
+  /* Click position does not set timber placement. Explicitly retry the occupied
+     e0 anchor created above; rejection must report occupancy and keep World. */
+  const q3bBefore=await eval_(`api('dump').then(r=>r.text)`);
+  await eval_(`feSetTool('timber');$('tbAnchor').value='at-face e0';$('tbRole').value='boundary';$('tbA').value='27';$('tbB').value='33';$('tbDir').value='+u';$('tbSide').value='+n';void 0`);
+  const q3bToasts=await captureNewToasts(async()=>{await eval_(`(async()=>{
     await feDown({x: 3999, y: 2999}, {target: $("faceEditorSvg"), clientX: 0, clientY: 0});
     await window.__cdpSettleUI(300);
-    const after = (await api("dump")).text;
-    const toastShown = [...document.querySelectorAll(".toast")]
-      .map(t => t.textContent).join("|");
-    return {same: before === after, toast: toastShown};
-  })()`);
-  console.log("越界拒絕:",explicitVerdict(q3b.same ? "✓" : "✗"),
-    "| toast:",explicitVerdict(q3b.toast ? "✓" : "✗"));
+  })()`);});
+  const q3b={same:q3bBefore===await eval_(`api('dump').then(r=>r.text)`),toast:toastText(q3bToasts,'error')};
+  console.log("重複定位拒絕:",explicitVerdict(q3b.same ? "✓" : "✗"),
+    "| toast:",explicitVerdict(q3b.toast.includes('占滿') ? "✓" : "✗"),JSON.stringify(q3bToasts));
   /* 圖層列 ✕ 刪角材與網格 */
   const q3c = await eval_(`(async()=>{
     const dels = [...document.querySelectorAll(".face-layer-del")];
@@ -2261,11 +2299,8 @@ async function main() {
   /* (c) 開口只點沒拖 → toast「拖出矩形」 */
   await eval_(`document.querySelector('[data-face-tool="hole"]').click()`);
   await sleep(250);
-  await click(fbVp.qx, fbVp.qy);
-  await sleep(350);
-  const holeToast = await eval_(
-    `[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")`);
-  console.log("開口只點→toast:",explicitVerdict(holeToast.includes("拖出矩形") ? "✓" : "✗ " + holeToast));
+  const holeToasts=await captureNewToasts(async()=>{await click(fbVp.qx, fbVp.qy);await sleep(350);});
+  console.log("開口只點→toast:",explicitVerdict(toastText(holeToasts,'error').includes("開口：請拖出矩形") ? "✓" : "✗"),JSON.stringify(holeToasts));
   /* (d) select 點面內空白 → 選一個「點」,浮動列只有「開口」(GEO-189);舊凹口工具已移除 */
   await eval_(`document.querySelector('[data-face-tool="select"]').click()`);
   await sleep(250);
@@ -2283,12 +2318,10 @@ async function main() {
     const tb=document.getElementById("tbA"); if (tb) tb.value="";
   })()`);
   await sleep(250);
-  await click(fbVp.qx, fbVp.qy);
-  await sleep(350);
+  const tbToasts=await captureNewToasts(async()=>{await click(fbVp.qx, fbVp.qy);await sleep(350);});
   const tbFb = await eval_(`({
-    toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|"),
     inv: document.getElementById("tbA") && document.getElementById("tbA").classList.contains("invalid")})`);
-  console.log("角材A空→toast:",explicitVerdict(tbFb.toast.includes("截面") ? "✓" : "✗ " + tbFb.toast),
+  console.log("角材A空→toast:",explicitVerdict(toastText(tbToasts,'error').includes("角材截面 A/B 須為正整數 mm") ? "✓" : "✗"),JSON.stringify(tbToasts),
     "| tbA標紅:",explicitVerdict(tbFb.inv ? "✓" : "✗"));
   /* (f) 狀態列綁定工具:切走後上一工具的訊息被手勢取代 */
   const stLife = await eval_(`(()=>{
@@ -2311,13 +2344,17 @@ async function main() {
   await click(fbVp.qx, fbVp.qy);
   await click(fbVp.cx, fbVp.cy);
   await sleep(300);
-  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
-  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
-  await sleep(300);
-  const esc1 = await eval_(`({draft: !!fe.drag, focus: !!oc.focus,
-    toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")})`);
+  const escDraftBefore=await eval_(`({tool:fe.tool,kind:fe.drag?.kind,points:fe.draft.pts.length,focus:oc.focus})`);
+  if(escDraftBefore.tool!=='redraw'||escDraftBefore.kind!=='redraw'||escDraftBefore.points<2||escDraftBefore.focus?.t!=='face'||escDraftBefore.focus.id!==1)
+    throw Error('Esc draft-clear prerequisite was not created: '+JSON.stringify(escDraftBefore));
+  const escToasts=await captureNewToasts(async()=>{
+    await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+    await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+    await sleep(300);
+  });
+  const esc1 = await eval_(`({draft: !!fe.drag||!!fe.work||fe.draft.pts.length>0,focus:oc.focus?.t==='face'&&oc.focus.id===1})`);
   console.log("Esc清草稿:",explicitVerdict(!esc1.draft ? "✓" : "✗"),
-    "| toast再按Esc:",explicitVerdict(esc1.toast.includes("再按 Esc") ? "✓" : "✗ " + esc1.toast),
+    "| toast再按Esc:",explicitVerdict(escToasts.some(t=>t.visible&&t.classes.includes('ok')&&t.text.includes('再按 Esc')) ? "✓" : "✗"),JSON.stringify(escToasts),
     "| 仍在工作區:",explicitVerdict(esc1.focus ? "✓" : "✗"));
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
@@ -2346,11 +2383,8 @@ async function main() {
   console.log("E7 rect 浮標:",explicitVerdict(mh1.vis && mh1.txt.includes("拖出範圍") ? "✓" : "✗ " + JSON.stringify(mh1)),
     "| 游標:",explicitVerdict(mh1.cur === "crosshair" ? "✓" : "✗ " + mh1.cur));
   /* (b) rect 只點沒拖 → toast */
-  await click(ocPt.x, ocPt.y);
-  await sleep(400);
-  const mhToast = await eval_(
-    `[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")`);
-  console.log("E7 rect 單點 toast:",explicitVerdict(mhToast.includes("拖出範圍") ? "✓" : "✗ " + mhToast));
+  const mhToasts=await captureNewToasts(async()=>{await click(ocPt.x, ocPt.y);await sleep(400);});
+  console.log("E7 rect 單點 toast:",explicitVerdict(toastText(mhToasts,'error').includes("矩形：請拖出範圍") ? "✓" : "✗"),JSON.stringify(mhToasts));
   /* (c) P 鍵(GEO-186 b):不再進入畫布繪圖工具——按一下即建預設外環的面卡、
      直接進入該面工作區並啟用「重畫外環」。 */
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "p", code: "KeyP", windowsVirtualKeyCode: 80 });
@@ -2524,13 +2558,11 @@ async function main() {
     h:getComputedStyle(document.querySelector(".statusbar")).height,
     sum:document.getElementById("statusSummary").textContent}))()`);
   console.log("P17 狀態列:",explicitVerdict(stb.h === "32px" && stb.sum.includes("物件") ? "✓ " + stb.sum : "✗ " + JSON.stringify(stb)));
-  await eval_(`(async()=>{
+  const successToasts=await captureNewToasts(async()=>{await eval_(`(async()=>{
     await emitLine("boundary 99 outline 0,0 500,0 500,400 0,400");
     await renderObjects();
-  })()`);
-  await sleep(400);
-  const okN = await eval_(`document.querySelectorAll("#toastRegion .toast.ok").length`);
-  console.log("P17 成功toast:",explicitVerdict(okN >= 1 ? "✓" : "✗"));
+  })()`);await sleep(400);});
+  console.log("P17 成功toast:",explicitVerdict(toastText(successToasts,'ok').includes('boundary 99 outline 0,0 500,0 500,400 0,400') ? "✓" : "✗"),JSON.stringify(successToasts));
   /* (g) snap/grid 鈕在 canvas-controls + aria-pressed;minimap 150+收合鈕 */
   const ctl = await eval_(`(()=>{
     const cc=document.querySelector(".canvas-controls");
@@ -2739,11 +2771,10 @@ async function main() {
   console.log("P19 C4 移出/收進:",explicitVerdict(c4b.free1 === 2 && c4b.free2 === 1 && c4b.mine === 1
     ? "✓" : "✗ " + JSON.stringify(c4b)));
   /* 刪除 → toast 含 Ctrl+Z */
-  await eval_(`(async()=>{
+  const c4cToasts=await captureNewToasts(async()=>{await eval_(`(async()=>{
     document.querySelector("#spaceRcFreeList .face-layer-del").click();
-    await window.__cdpSettleUI(800);})()`);
-  const c4c = await eval_(`[...document.querySelectorAll("#toastRegion .toast")]
-    .map(t=>t.textContent).join("|")`);
+    await window.__cdpSettleUI(800);})()`);});
+  const c4c = toastText(c4cToasts,'error');
   console.log("P19 C4 刪除toast含Ctrl+Z:",explicitVerdict(c4c.includes("Ctrl+Z") ? "✓" : "✗ " + c4c));
   /* (3) C3:槽位語意名+空槽「放置一片面」可點 */
   const c3 = await eval_(`(()=>{
@@ -2755,10 +2786,8 @@ async function main() {
   console.log("P19 C3 槽位語意:",explicitVerdict(c3.n === 6 && c3.names.includes("天花")
     && c3.names.includes("前牆") && c3.axis ? "✓" : "✗ " + JSON.stringify(c3)),
     "| 空槽鈕:",explicitVerdict(c3.empty >= 3 ? `✓ ${c3.empty}` : `✗ ${c3.empty}`));
-  await eval_(`document.querySelector(".slot-empty").click()`);
-  await sleep(800);
-  const c3b = await eval_(`({focus:oc.focus && oc.focus.t==="face",
-    toast:[...document.querySelectorAll("#toastRegion .toast")].map(t=>t.textContent).join("|")})`);
+  const c3bToasts=await captureNewToasts(async()=>{await eval_(`document.querySelector(".slot-empty").click()`);await sleep(800);});
+  const c3b = await eval_(`({focus:oc.focus && oc.focus.t==="face"})`);c3b.toast=c3bToasts.filter(t=>t.visible).map(t=>t.text).join('|');
   console.log("P19 C3 空槽點擊有反應:",explicitVerdict(c3b.focus || c3b.toast.includes("預設")
     ? `✓ focus=${c3b.focus}` : "✗ " + JSON.stringify(c3b)));
   await eval_(`(async()=>{ if(oc.focus) await leaveFocus(); await enterFocus("space",1); })()`);
@@ -3312,18 +3341,13 @@ async function main() {
   /* (a) 裝 confirm 監聽 spy(不覆寫成通過,只記錄有沒有被呼叫)→ 點刪除鈕 → 物件即消失 */
   await eval_(`window.__confirmCalled = false;
     window.confirm = () => { window.__confirmCalled = true; return true; };`);
-  await eval_(`document.getElementById("inspDelete").click()`);
-  await sleep(700);
+  const p22Toasts=await captureNewToasts(async()=>{await eval_(`document.getElementById("inspDelete").click()`);await sleep(700);});
   const p22a = await eval_(`api("objects").then(r=>({
     called: window.__confirmCalled, gone: !r.faces.some(f=>f.id===41)}))`);
   console.log("P22 不彈confirm+直接刪除:",explicitVerdict(!p22a.called && p22a.gone
     ? "✓" : `✗ ${JSON.stringify(p22a)}`));
   /* (b) toast 提示可復原 */
-  const p22b = await eval_(`(()=>{
-    const ts=[...document.querySelectorAll("#toastRegion .toast")];
-    const t=ts[ts.length-1];
-    return t ? t.textContent : null;
-  })()`);
+  const p22b = toastText(p22Toasts,'error');
   console.log("P22 toast含復原字樣:",explicitVerdict(p22b && (p22b.includes("復原") || p22b.includes("Ctrl+Z"))
     ? `✓ ${p22b}` : `✗ ${p22b}`));
   /* (c) Ctrl+Z 一次整組復原(boundary 41 沒有 placement,delete 只有一行,仍走同一 mutate 機制) */
@@ -3552,8 +3576,11 @@ async function main() {
   check('M7 command executes',await eval_(`api('dump').then(r=>r.text.includes('spec 測試尺寸 123'))`));
   await pressKey('Escape','Escape',27);
   check('M7 command Escape closes only command',await eval_(`document.querySelector('#cmdPanel').hidden && !oc.focus`));
-  await eval_(`toast('畫布頂部驗證','ok')`);
-  check('M10 toast above canvas, away from minimap',await eval_(`(()=>{const r=document.querySelector('.toast').getBoundingClientRect();return r.top>=56 && r.bottom<200})()`));
+  // This layout fixture measures one toast, not preceding command notices.
+  await eval_(`document.querySelectorAll('#toastRegion .toast').forEach(t=>t.remove())`);
+  const topToasts=await captureNewToasts(async()=>{await eval_(`toast('畫布頂部驗證','ok')`);});
+  const topToast=topToasts.find(t=>t.visible&&t.classes.includes('ok')&&t.text==='畫布頂部驗證');
+  check('M10 toast above canvas, away from minimap',!!topToast&&topToast.bounds.top>=56&&topToast.bounds.bottom<200,topToasts);
   await clickSelector('.ocard[data-id="1"] .card-enter');
   check('M8 explicit card entry',await eval_(`oc.focus?.t==='face' && oc.focus.id===1`));
   check('F1 F3 F4 four tabs, seven tools, five persistent groups',await eval_(`document.querySelectorAll('#faceInspectorTabs [data-fi-tab]').length===4 && document.querySelectorAll('#faceWorkspaceTools [data-face-tool]').length===7 && document.querySelectorAll('#faceLayerList .fl-group').length===5 && document.querySelectorAll('#faceLayerList .fl-empty').length>=3 && document.querySelector('#faceInspectorContent').contains(document.querySelector('#faceShapeButton'))`));
@@ -3915,9 +3942,8 @@ async function main() {
   const esc7a = await eval_(`({lenBuf: fe.lenBuf, drag: !!fe.drag, focus: !!oc.focus})`);
   check('P35-7b 第一次 Esc(第4級)只清鍵入長度，草稿與工作區不變',
     esc7a.lenBuf === '' && esc7a.drag && esc7a.focus, esc7a);
-  await pressKey('Escape', 'Escape', 27); await sleep(150);
-  const esc7b = await eval_(`({drag: !!fe.drag, focus: !!oc.focus,
-    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join('|')})`);
+  const esc7Toasts=await captureNewToasts(async()=>{await pressKey('Escape', 'Escape', 27);await sleep(150);});
+  const esc7b = await eval_(`({drag: !!fe.drag, focus: !!oc.focus})`);esc7b.toast=toastText(esc7Toasts,'ok');
   check('P35-7c 第二次 Esc(第6級)清草稿並提示「再按」，仍在工作區',
     !esc7b.drag && esc7b.focus && esc7b.toast.includes('再按'), esc7b);
   await pressKey('Escape', 'Escape', 27); await sleep(300);
@@ -4140,18 +4166,31 @@ async function main() {
         !fs.readFileSync(require('path').join(d,'page.html'),'utf8').includes('<script'));
     }
     check('P38 送出後面板欄位已清空', await eval_(`document.querySelector('#fbNote').value==='' && document.querySelector('#fbTarget').textContent==='尚未指定元素'`));
+    // Test the negative case BEFORE the error probe starts the 20s auto-report
+    // cooldown. Use the same observation budget as a positive report, not 800ms.
+    const beforeRejection = fbList();
+    const rejected = await eval_(`api('line place 998 on 1 at-line guide 1')`);
+    for (let i=0;i<300 && fbList().length===beforeRejection.length;i++) await sleep(100);
+    const rejectionQuiet = rejected?.ok===false && typeof rejected.error==='string' && rejected.error.length>0 && fbList().length===beforeRejection.length;
+    check('P38 規則拒絕(ok:false)不自動存', rejectionQuiet, {rejected,added:fbList().filter(n=>!beforeRejection.includes(n))});
+    if (!rejectionQuiet) throw Error('P38 rule rejection failed or created a report; refusing to run the auto probe under an unexpected cooldown.');
     const before2 = fbList();
     expectedException={message:'Error: fb-auto-probe',until:Date.now()+15000};
     await eval_(`setTimeout(()=>{throw new Error('fb-auto-probe')},0)`);
-    for (let i=0;i<60 && fbList().length===before2.length;i++) await sleep(100);
+    // Like manual submission above, allow the actual report to finish writing.
+    // On WSL the async capture can exceed six seconds; receiving the error event
+    // does not mean its report has already reached the filesystem.
+    for (let i=0;i<300;i++) {
+      const pendingAuto = fbList().filter(n=>!before2.includes(n));
+      if (pendingAuto.length && pendingAuto.every(id=>fs.existsSync(path.join(fbDir,id,'meta.json')))) break;
+      await sleep(100);
+    }
     const auto = fbList().filter(n=>!before2.includes(n));
-    check('P38 未捕捉的 JS 例外自動存一筆 kind=auto', auto.length===1 && fbMeta(auto[0]).kind==='auto' && fbMeta(auto[0]).auto_reason.includes('fb-auto-probe'), auto);
+    const autoComplete = auto.length===1 && fbMeta(auto[0]).kind==='auto' && fbMeta(auto[0]).auto_reason.includes('fb-auto-probe');
+    check('P38 未捕捉的 JS 例外自動存一筆 kind=auto', autoComplete, auto);
+    if (!autoComplete) throw Error('P38 automatic capture did not complete correctly.');
     check('P38 預期的單次例外確實抵達',expectedException===null);
     expectedException=null;
-    const before3 = fbList();
-    await eval_(`api('line place 998 on 1 at-line guide 1')`);
-    await sleep(800);
-    check('P38 規則拒絕(ok:false)不自動存', fbList().length===before3.length);
   }
 
   console.log('=== P39. 主畫布 Delete/Backspace 刪除選取的卡片 ===');
@@ -4159,10 +4198,9 @@ async function main() {
   const selectCard = async id => { await eval_(`(()=>{selectObject("boundary",${id});document.activeElement&&document.activeElement.blur()})()`); await sleep(150); };
   await setupRemaining(['boundary 51 outline 0,0 1000,0 1000,800 0,800','canvas-pos boundary 51 60 60']);
   await selectCard(51);
-  await pressKey('Delete','Delete',46);
-  await sleep(300);
+  const deleted51Toasts=await captureNewToasts(async()=>{await pressKey('Delete','Delete',46);await sleep(300);});
   check('P39 Delete 刪除選取的面', !(await faceExists(51)));
-  check('P39 刪除後 toast 提示可復原', await eval_(`[...document.querySelectorAll('#toastRegion .toast')].some(t=>t.textContent.includes('51')&&t.textContent.includes('復原'))`));
+  check('P39 刪除後 toast 提示可復原',deleted51Toasts.some(t=>t.visible&&t.classes.includes('error')&&t.text.includes('51')&&t.text.includes('復原')),deleted51Toasts);
   await pressKey('z','KeyZ',90,2);
   await sleep(300);
   check('P39 Ctrl+Z 復原被 Delete 刪掉的面', await faceExists(51));
@@ -4213,22 +4251,20 @@ async function main() {
   const o40 = await ocOrigin();
   await pressKey('r','KeyR',82); await sleep(150);
   await eval_(`document.querySelectorAll('#toastRegion .toast').forEach(t=>t.remove())`);
-  await click(o40.x+600, o40.y+550); await sleep(300);
-  const t40 = await eval_(`(()=>{const h=document.getElementById('canvasModeHint');
-    const t=document.querySelector('#toastRegion .toast');
-    return {hintVis:!h.hidden && getComputedStyle(h).visibility==='visible',
-      hintBottom:h.getBoundingClientRect().bottom,
-      toastTop:t?t.getBoundingClientRect().top:null,
-      toastText:t?t.textContent:''};})()`);
+  const t40Toasts=await captureNewToasts(async()=>{await click(o40.x+600, o40.y+550);await sleep(300);},
+    `(()=>{const h=document.getElementById('canvasModeHint');return {hintVis:!h.hidden&&getComputedStyle(h).visibility==='visible',hintBottom:h.getBoundingClientRect().bottom};})()`);
+  const t40Toast=t40Toasts.find(t=>t.visible&&t.classes.includes('error')&&t.text.includes('拖出範圍'));
+  const t40={hintVis:t40Toast?.state.hintVis,hintBottom:t40Toast?.state.hintBottom,toastTop:t40Toast?.bounds.top??null,toastText:t40Toast?.text||''};
   check('P40-2 rect 浮標在 toast 出現時仍可見、toast 排在浮標下方',
     t40.hintVis && t40.toastTop!==null && t40.toastTop>=t40.hintBottom && /拖出範圍/.test(t40.toastText), t40);
   /* 拖出矩形建面(objEmitFace):成功 toast 只有一則;新面放置表單預設 u=+x/v=+y、
      沒有「必須垂直」錯誤(原 P40-6/P40-8,改走矩形路徑) */
   await eval_(`document.querySelectorAll('#toastRegion .toast').forEach(t=>t.remove())`);
-  await drag(o40.x+100, o40.y+100, o40.x+400, o40.y+350); await sleep(900);
-  const made = await eval_(`({toasts:[...document.querySelectorAll('#toastRegion .toast')].filter(t=>t.textContent.includes('已建立')).length,
+  const madeToasts=await captureNewToasts(async()=>{await drag(o40.x+100,o40.y+100,o40.x+400,o40.y+350);await sleep(900);});
+  const made = await eval_(`({
     v:document.querySelector('#placeV')?.value, u:document.querySelector('#placeU')?.value,
     err:[...document.querySelectorAll('#inspectorContent *, .inspector *')].some(e=>e.children.length===0&&e.textContent.includes('必須垂直'))})`);
+  made.toasts=madeToasts.filter(t=>t.visible&&t.classes.includes('ok')&&t.text.includes('已建立')).length;
   check('P40-3 建面成功只跳一則 toast', made.toasts===1, made);
   check('P40-4 新面的放置表單預設 u=+x、v=+y,沒有「必須垂直」錯誤', made.u==='+x' && made.v==='+y' && !made.err, made);
   await eval_(`setOcTool('select')`);
@@ -4777,14 +4813,13 @@ async function main() {
 
   /* (d) 填 A=0 → 套用被前端擋下(不送指令),toast 出現,fe.timbers 不變 */
   await eval_(`fiShowTab('timber')`);
-  const p46d = await eval_(`(async()=>{
+  let p46d;
+  const invalidEditToasts46=await captureNewToasts(async()=>{p46d=await eval_(`(async()=>{
     document.getElementById('tbEditA').value = '0';
     document.getElementById('tbEditAnchor').value = 'at-face e0';
     const ok = await feTimberEditApply(10);
-    const toasts = [...document.querySelectorAll('#toastRegion .toast')];
-    return { ok, A: fe.timbers.find(t=>t.id===10).A,
-      toast: toasts.length ? toasts[toasts.length-1].textContent : '' };
-  })()`);
+    return { ok, A: fe.timbers.find(t=>t.id===10).A };
+  })()`);});p46d.toast=toastText(invalidEditToasts46,'error');
   check('P46d A=0 套用被擋、toast 出現、fe.timbers 不變',
     p46d.ok === false && p46d.A === 27 && p46d.toast.includes('正整數'), p46d);
 
@@ -4877,13 +4912,11 @@ async function main() {
   await sleep(100);
   await clearToasts();
   let pt47 = await openFace47();
-  await click(pt47(2000, 1500).x, pt47(2000, 1500).y);
-  await sleep(300);
+  const p47_4Toasts=await captureNewToasts(async()=>{await click(pt47(2000,1500).x,pt47(2000,1500).y);await sleep(300);});
   const p47_4 = await eval_(`({
-    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
     timbers: fe.timbers.map(t => t.id).sort(),
     anchorInvalid: document.getElementById('tbAnchor').classList.contains('invalid'),
-  })`);
+  })`);p47_4.toast=toastText(p47_4Toasts,'error');
   check('P47-4 e0 已被角材 1 占滿 → toast 含「已被角材 1 占滿」與「可用:」;仍 3 支;#tbAnchor invalid',
     p47_4.toast.includes('已被角材 1 占滿') && p47_4.toast.includes('可用:') &&
     JSON.stringify(p47_4.timbers) === '[1,2,3]' && p47_4.anchorInvalid, p47_4);
@@ -4941,12 +4974,10 @@ async function main() {
   await sleep(100);
   await clearToasts();
   pt47 = await openFace47();
-  await click(pt47(2000, 1500).x, pt47(2000, 1500).y);
-  await sleep(300);
+  const p47_6Toasts=await captureNewToasts(async()=>{await click(pt47(2000,1500).x,pt47(2000,1500).y);await sleep(300);});
   const p47_6 = await eval_(`({
-    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
     timbers: fe.timbers.map(t => t.id).sort(),
-  })`);
+  })`);p47_6.toast=toastText(p47_6Toasts,'error');
   check('P47-6 強制 boundary + 方向 v(平行主支軸)→ toast 含「主支軸是 v」;仍 3 支',
     p47_6.toast.includes('主支軸是 v') && JSON.stringify(p47_6.timbers) === '[1,2,3]', p47_6);
 
@@ -4999,12 +5030,10 @@ async function main() {
      仍 3 支。 */
   await clearToasts48();
   pt48 = await openFace48();
-  await click(pt48(2000, 0).x, pt48(2000, 0).y);
-  await sleep(300);
+  const p48_2Toasts=await captureNewToasts(async()=>{await click(pt48(2000,0).x,pt48(2000,0).y);await sleep(300);});
   const p48_2 = await eval_(`({
-    toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
     ids: fe.timbers.map(t => t.id).sort(),
-  })`);
+  })`);p48_2.toast=toastText(p48_2Toasts,'error');
   check('P48-2 點已占滿的外輪廓邊 0 → 照舊送出、引擎拒絕,toast 含「已被角材 1 占滿」;仍 3 支',
     p48_2.toast.includes('已被角材 1 占滿') && JSON.stringify(p48_2.ids) === '[1,2,3]', p48_2);
 
@@ -5169,17 +5198,15 @@ async function main() {
   await eval_(`feSetTool('timber')`);
   await sleep(120);
   await clearToasts48();
-  await click(pre6.cx, pre6.cy);
-  await sleep(400);
+  const holeEdgeToasts=await captureNewToasts(async()=>{await click(pre6.cx,pre6.cy);await sleep(400);});
   const after6 = await eval_(`(async()=>{
     const d = await apiRequest('dump');
     const refs = await apiRequest('references');
     apiRequest = window.__rawApiRequest;   /* 還原攔截 */
     return { dump: d.text, bridgeTimbers: (refs.timbers || []).length,
       sent: (window.__p48sent || []).filter(c => /timber|place/.test(c)),
-      toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
       feTimbers: (fe.timbers || []).length };
-  })()`);
+  })()`);after6.toast=toastText(holeEdgeToasts,'error');
   /* G196-R02 文案映射:舊訊息「孔邊不能當定位引用」→ 新訊息「目前不支援直接點孔邊——
      請從右欄「定位引用」選孔邊(at-face h<i>e<j>)」。改文案的理由:舊句暗示公理禁止孔邊
      當定位引用,但 I13 明文允許 at-face h<i>e<j>(表單路徑一直在);只是快捷點選
@@ -5612,7 +5639,7 @@ async function main() {
       return { tag: el && el.tagName, id: el && el.id || null,
         inFevp: el ? fevp.contains(el) : null, hit: he ? he.dataset.faceHit : null }; })()`);
     let disp = null;
-    if (pre && typeof pre.cx === 'number') {
+    const invalidReferenceToasts=await captureNewToasts(async()=>{if (pre && typeof pre.cx === 'number') {
       /* 防禦:先送一個 release 清掉可能殘留的按鍵狀態(上一段 touch 模擬留下的),
          否則下面的 press 會被 Chrome 當成「已按著」靜默丟棄。
          座標刻意避開 fevp(送到視窗左上角頂列)——pointerup 若在畫布內落地會走
@@ -5622,17 +5649,16 @@ async function main() {
       const pu = await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: pre.cx, y: pre.cy, button: "left", clickCount: 1 });
       disp = { pd: pd && (pd.error || pd.result), pu: pu && (pu.error || pu.result) };
     }
-    await sleep(350);
+    await sleep(350);});
     const r = await eval_(`(async()=>{
       const refs = await apiRequest('references');
       apiRequest = window.__rawApiRequest;
       const dbg = window.__dbg || {};
       return { sent: (window.__sent || []).filter(c => /timber|place/.test(c)),
-        toast: [...document.querySelectorAll('#toastRegion .toast')].map(t => t.textContent).join(' | '),
         toastCalls: dbg.toasts, feDownCalls: dbg.feDownCalls, downs: dbg.downs,
         docDowns: dbg.docDowns,
         n: (refs.timbers || []).length };
-    })()`);
+    })()`);r.toast=toastText(invalidReferenceToasts,'error');
     if (r && typeof r === 'object') { r.atClick = atClick; r.disp = disp; r.instOk = instOk; }
     check('P50 命中線引用失效 → 報錯、不送指令、不退回表單引用',
       (r.sent || []).length === 0 && (r.toast || '').includes('定位引用') && r.n === 2, r);

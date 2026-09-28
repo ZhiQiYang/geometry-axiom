@@ -41,6 +41,22 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   const objectBox=async(x0,y0,x1,y1,modifiers=0)=>{const a=await objectPoint(x0,y0),b=await objectPoint(x1,y1);await dragMod(a.x,a.y,b.x,b.y,8,modifiers);await sleep(220);};
   const facePoint=async(x,y)=>eval_(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect();return {x:r.left+fe.panX+${x}*fe.zoom,y:r.top+fe.panY+${y}*fe.zoom}})()`);
   const faceBox=async(x0,y0,x1,y1,modifiers=0)=>{const a=await facePoint(x0,y0),b=await facePoint(x1,y1);await dragMod(a.x,a.y,b.x,b.y,8,modifiers);await sleep(220);};
+  const screenBox=async(a,b,modifiers=0)=>{
+    const hit=await eval_(`(()=>{const e=document.elementFromPoint(${a.x},${a.y});return {tag:e?.tagName,id:e?.id,classes:e?.getAttribute('class'),control:e?.closest('button,[data-face-hit],.ocard')?.outerHTML.slice(0,250)}})()`);
+    await pressDownMod(a.x,a.y,modifiers);
+    try{
+      for(let i=1;i<=8;i++)await moveMod(a.x+(b.x-a.x)*i/8,a.y+(b.y-a.y)*i/8,modifiers);
+      const frame=await eval_(`(()=>{const e=document.querySelector('.selection-marquee');return e?{mode:e.dataset.selectionMode,width:+e.getAttribute('width'),height:+e.getAttribute('height')}:null})()`);
+      if(!frame||frame.mode!==(a.x>b.x?'crossing':'window')||!(frame.width>0)||!(frame.height>0))
+        throw Error('Screen-space selection did not start a real marquee: '+JSON.stringify({a,b,hit,frame}));
+    }finally{await mouseUp(b);await sleep(220);}
+    if(!await noMarquee())throw Error('Screen-space selection left a marquee after pointer release: '+JSON.stringify({a,b}));
+  };
+  const marqueeAppearance=async(scope)=>eval_(`(()=>{const e=document.querySelector('.selection-marquee'),s=e&&getComputedStyle(e),summary=$('${scope}SelectionSummary');return e?{mode:e.dataset.selectionMode,crossing:e.classList.contains('crossing'),dash:s.strokeDasharray,stroke:s.stroke,text:summary.querySelector('small')?.textContent,visible:!summary.hidden}:null})()`);
+  const modeColor=(stroke,mode)=>{const rgb=String(stroke).match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)?.slice(1).map(Number);return !!rgb&&(mode==='crossing'?rgb[1]>rgb[0]&&rgb[1]>rgb[2]:rgb[2]>rgb[0]&&rgb[2]>rgb[1]);};
+  const hasAppearance=(state,mode)=>!!state&&state.visible&&state.mode===mode&&state.crossing===(mode==='crossing')&&
+    modeColor(state.stroke,mode)&&
+    (mode==='crossing'?state.dash!=='none'&&/相交即選取/.test(state.text):state.dash==='none'&&/完整框住才選取/.test(state.text));
   const card=n=>`.ocard[data-kind="boundary"][data-id="${n+1}"]`;
   const timber=n=>`.face-timber[data-face-hit="t:${n}"]`;
   // Boundary 0 is reserved by the SSOT; valid timber 0 is covered below.
@@ -57,11 +73,41 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   check('S07 卡片、清單高亮及可見數量一致',await eval_(`document.querySelectorAll('.ocard.selected').length===2&&document.querySelectorAll('.object-row.selected').length===2&&!$('ocSelectionSummary').hidden&&/2/.test($('ocSelectionSummary').textContent)&&oc.sel===null`));
   await shot('objects-two-selected');
   await objectBox(520,235,40,40);
-  check('S01 反向拖框得到同一集合',same(await objectIds(),['boundary:1','boundary:2']),await objectIds());
+  check('S01 向左拖框也納入完整包含的兩張卡片',same(await objectIds(),['boundary:1','boundary:2']),await objectIds());
+  for(const [name,coords,ids] of [
+    ['右下完整包含', [40,40,490,235], ['boundary:1']],
+    ['右上完整包含', [40,235,490,40], ['boundary:1']],
+    ['左上相交納入', [490,235,40,40], ['boundary:1','boundary:2']],
+    ['左下相交納入', [490,40,40,235], ['boundary:1','boundary:2']]
+  ]){
+    await screenBox(await objectPoint(coords[0],coords[1]),await objectPoint(coords[2],coords[3]));
+    check('S01 四象限卡片 '+name,same(await objectIds(),ids),await objectIds());
+  }
+  const cardEdge=await at(card(0));
+  await screenBox({x:cardEdge.l+20,y:cardEdge.t-30},{x:cardEdge.l,y:cardEdge.t});
+  check('S01 向左只接觸卡片上緣也納入',same(await objectIds(),['boundary:1']),await objectIds());
+  await screenBox({x:cardEdge.l,y:cardEdge.t-30},{x:cardEdge.l-30,y:cardEdge.t});
+  check('S01 向左只接觸卡片角點也納入',same(await objectIds(),['boundary:1']),await objectIds());
+  await screenBox({x:cardEdge.l+20,y:cardEdge.t-30},{x:cardEdge.l,y:cardEdge.t-1});
+  check('S01 向左與卡片差一像素不相交則不納入',same(await objectIds(),[]),await objectIds());
+  await screenBox({x:cardEdge.l,y:cardEdge.t-30},{x:cardEdge.l+20,y:cardEdge.t});
+  check('S01 向右只接觸卡片不視為完整包含',same(await objectIds(),[]),await objectIds());
   await objectBox(40,40,490,235);
-  check('S01 部分相交的卡片不納入',same(await objectIds(),['boundary:1']),await objectIds());
-  await objectBox(490,235,40,40);
-  check('S01 反向部分相交也排除（v1 不採 crossing 規則）',same(await objectIds(),['boundary:1']),await objectIds());
+  const changeStart=await objectPoint(280,250),changeLeft=await objectPoint(40,40),changeRight=await objectPoint(520,40);
+  await pressDownMod(changeStart.x,changeStart.y);await moveMod(changeLeft.x,changeLeft.y);await sleep(100);
+  const objectCrossing=await marqueeAppearance('oc');
+  await shot('objects-active-crossing');
+  await moveMod(changeRight.x,changeRight.y);await sleep(100);
+  const objectWindow=await marqueeAppearance('oc');
+  await shot('objects-active-window');
+  check('S01 拖過起點即時切換相交/包含樣式與操作說明',hasAppearance(objectCrossing,'crossing')&&hasAppearance(objectWindow,'window')&&objectCrossing.stroke!==objectWindow.stroke&&same(await objectIds(),['boundary:1']),{objectCrossing,objectWindow,selected:await objectIds()});
+  await mouseUp(changeRight);await sleep(220);
+  check('S01 放開時依最後向右方向選取第二張卡片並恢復雙向提示',same(await objectIds(),['boundary:2'])&&await noMarquee()&&await eval_(`$('ocSelectionSummary').querySelector('small').textContent.includes('向右完整框住 · 向左相交即選')`),await objectIds());
+  await objectBox(280,480,240,280,8);
+  check('S03 Shift 向左部分相交加入第三張且保留第二張',same(await objectIds(),['boundary:2','boundary:3']),await objectIds());
+  await objectBox(280,480,240,280,8);
+  check('S03 重複 Shift 相交框不重複或取消既有卡片',same(await objectIds(),['boundary:2','boundary:3']),await objectIds());
+  await objectBox(40,40,490,235);
   await clickMod(await at(card(1)));
   check('S03 Shift 點加入第二張',same(await objectIds(),['boundary:1','boundary:2']),await objectIds());
   await clickMod(await at(card(0)));
@@ -84,6 +130,15 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
     if(event==='Escape')await key('Escape','Escape',27);else await eval_(`${event==='blur'?'window':'ocv'}.dispatchEvent(new ${event==='blur'?'Event':'PointerEvent'}('${event}'${event==='blur'?'':',{bubbles:true,pointerId:1}' }))`);
     await mouseUp(b);await sleep(220);
     check('S05 物件 '+event+' 取消框且保留選取',visible&&await noMarquee()&&same(await objectIds(),old));
+  }
+  for(const [name,code,vk] of [['1','Digit1',49],['f','KeyF',70]]){
+    await eval_(`oc.panX=31;oc.panY=22;oc.zoom=.8;ocApply()`);
+    const a=await objectPoint(520,235),b=await objectPoint(40,40),old=await objectIds(),cameraBefore=await eval_(`({zoom:oc.zoom,x:oc.panX,y:oc.panY})`);
+    await pressDownMod(a.x,a.y);await moveMod(b.x,b.y);await sleep(100);
+    const visible=await eval_(`document.querySelectorAll('.selection-marquee').length===1`);
+    await key(name,code,vk);const canceled=await noMarquee();await mouseUp(b);await sleep(220);
+    const cameraAfter=await eval_(`({zoom:oc.zoom,x:oc.panX,y:oc.panY})`);
+    check('S05 物件拖框中按 '+name+' 變更視圖會取消框並保留選取/歷史',visible&&canceled&&await noMarquee()&&!same(cameraBefore,cameraAfter)&&same(await objectIds(),old)&&same(await snapshot(),before),{visible,canceled,cameraBefore,cameraAfter,selected:await objectIds()});
   }
   await eval_(`oc.panX=31;oc.panY=22;oc.zoom=.8;ocApply()`);
   await objectBox(40,40,520,235);
@@ -148,11 +203,42 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   check('S06 多選角材沒有單支編輯/刪除按鈕',await eval_(`!$('tbEditApply')&&!$('tbSelDelete')`));
   await shot('timbers-three-selected-desktop');
   await faceBox(4100,3100,-100,-100);
-  check('S02 角材反向拖框一致',same(await timberIds(),[0,1,2]),await timberIds());
+  check('S02 向左拖框也納入完整包含的三支角材',same(await timberIds(),[0,1,2]),await timberIds());
+  for(const [name,coords,ids] of [
+    ['右下完整包含', [-100,-100,4100,150], [0]],
+    ['右上完整包含', [-100,150,4100,-100], [0]],
+    ['左上相交納入', [4100,150,-100,-100], [0,2]],
+    ['左下相交納入', [4100,-100,-100,150], [0,2]]
+  ]){
+    await screenBox(await facePoint(coords[0],coords[1]),await facePoint(coords[2],coords[3]));
+    check('S02 四象限角材 '+name,same(await timberIds(),ids),await timberIds());
+  }
+  // The single-timber action bar floats above its midpoint. Use the quarter
+  // point and require a live marquee so hitting that UI cannot falsely pass.
+  let timberEdge=await at(timber(0)),timberQuarter=timberEdge.l+(timberEdge.r-timberEdge.l)/4;
+  await screenBox({x:timberQuarter+30,y:timberEdge.t-30},{x:timberQuarter,y:timberEdge.t});
+  check('S02 向左只接觸角材上緣也納入',same(await timberIds(),[0]),await timberIds());
+  timberEdge=await at(timber(0));
+  await screenBox({x:timberEdge.r+30,y:timberEdge.t-30},{x:timberEdge.r,y:timberEdge.t});
+  check('S02 向左只接觸角材角點也納入',same(await timberIds(),[0]),await timberIds());
+  timberEdge=await at(timber(0));timberQuarter=timberEdge.l+(timberEdge.r-timberEdge.l)/4;
+  await screenBox({x:timberQuarter+30,y:timberEdge.t-30},{x:timberQuarter,y:timberEdge.t-1});
+  check('S02 向左與角材差一像素不相交則不納入',same(await timberIds(),[]),await timberIds());
   await faceBox(-100,-100,4100,150);
-  check('S02 角材部分相交排除，完整頂支留下',same(await timberIds(),[0]),await timberIds());
-  await faceBox(4100,150,-100,-100);
-  check('S02 角材反向部分相交也排除',same(await timberIds(),[0]),await timberIds());
+  const faceChangeStart=await facePoint(2000,1500),faceChangeLeft=await facePoint(-100,-100),faceChangeRight=await facePoint(4100,-100);
+  await pressDownMod(faceChangeStart.x,faceChangeStart.y);await moveMod(faceChangeLeft.x,faceChangeLeft.y);await sleep(100);
+  const faceCrossing=await marqueeAppearance('fe');
+  await shot('timbers-active-crossing');
+  await moveMod(faceChangeRight.x,faceChangeRight.y);await sleep(100);
+  const faceWindow=await marqueeAppearance('fe');
+  await shot('timbers-active-window');
+  check('S02 面內拖過起點即時切換樣式與操作說明',hasAppearance(faceCrossing,'crossing')&&hasAppearance(faceWindow,'window')&&faceCrossing.stroke!==faceWindow.stroke&&same(await timberIds(),[0]),{faceCrossing,faceWindow,selected:await timberIds()});
+  await key('Escape','Escape',27);await mouseUp(faceChangeRight);await sleep(220);
+  check('S05 面內切換框選方向後取消保留選取並恢復雙向提示',same(await timberIds(),[0])&&await noMarquee()&&await eval_(`$('feSelectionSummary').querySelector('small').textContent.includes('向右完整框住 · 向左相交即選')`),await timberIds());
+  await ctl(timber(1));await faceBox(4100,150,-100,-100,8);
+  check('S03 Shift 向左相交加入頂支與側支且保留底支',same(await timberIds(),[0,1,2]),await timberIds());
+  await faceBox(4100,150,-100,-100,8);
+  check('S03 重複 Shift 相交框不重複或取消既有角材',same(await timberIds(),[0,1,2]),await timberIds());
   await key('a','KeyA',65,2);
   check('S03 面內 Ctrl+A 全選本面的角材',same(await timberIds(),[0,1,2]),await timberIds());
   await faceBox(-100,-100,4100,150);
@@ -183,6 +269,15 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
     if(event==='Escape')await key('Escape','Escape',27);else await eval_(`${event==='blur'?'window':"$('faceEditorViewport')"}.dispatchEvent(new ${event==='blur'?'Event':'PointerEvent'}('${event}'${event==='blur'?'':',{bubbles:true,pointerId:1}' }))`);
     await mouseUp(b);await sleep(220);
     check('S05 面內 '+event+' 取消框且保留選取',visible&&await noMarquee()&&same(await timberIds(),old)&&await eval_(`oc.focus?.t==='face'&&oc.edit?.bid===1`));
+  }
+  for(const [name,code,vk] of [['1','Digit1',49],['f','KeyF',70]]){
+    await eval_(`feFit(loopsBBox(oc.bmap[1]));fe.zoom*=.8;feApplyZoom()`);
+    const a=await facePoint(4100,3100),b=await facePoint(-100,-100),old=await timberIds(),cameraBefore=await eval_(`({zoom:fe.zoom,x:fe.panX,y:fe.panY})`);
+    await pressDownMod(a.x,a.y);await moveMod(b.x,b.y);await sleep(100);
+    const visible=await eval_(`document.querySelectorAll('.selection-marquee').length===1`);
+    await key(name,code,vk);const canceled=await noMarquee();await mouseUp(b);await sleep(220);
+    const cameraAfter=await eval_(`({zoom:fe.zoom,x:fe.panX,y:fe.panY})`);
+    check('S05 面內拖框中按 '+name+' 變更視圖會取消框並保留選取/歷史',visible&&canceled&&await noMarquee()&&!same(cameraBefore,cameraAfter)&&same(await timberIds(),old)&&same(await snapshot(),faceBefore),{visible,canceled,cameraBefore,cameraAfter,selected:await timberIds()});
   }
   await eval_(`fe.zoom*=.8;fe.panX+=25;fe.panY+=20;feApplyZoom()`);
   await faceBox(-100,-100,4100,3100);
@@ -305,21 +400,38 @@ if (require.main === module) {
   const start=source.indexOf('function finishCanvasMarquee(event) {'),end=source.indexOf('\nfunction clearCanvasSelections(',start);
   assert.ok(start>=0&&end>start,'Real finishCanvasMarquee function must be found.');
   const finishSource=source.slice(start,end);
+  // Expected sets are fixed examples, not a second intersection algorithm.
+  // Candidate 2 encloses the whole selection: endpoint-inside-object paths
+  // cannot begin a marquee through the real UI, so exercise this geometry
+  // directly here without claiming it as browser pointer coverage.
+  const directions=[
+    {name:'right-down window',point:{x:0,y:0},end:{x:100,y:100},hits:[0]},
+    {name:'right-up window',point:{x:0,y:100},end:{x:100,y:0},hits:[0]},
+    {name:'left-up crossing',point:{x:100,y:100},end:{x:0,y:0},hits:[0,1,2,4,5,6]},
+    {name:'left-down crossing',point:{x:100,y:0},end:{x:0,y:100},hits:[0,1,2,4,5,6]},
+    {name:'vertical-down zero width stays window',point:{x:50,y:0},end:{x:50,y:100},hits:[]},
+    {name:'vertical-up zero width stays window',point:{x:50,y:100},end:{x:50,y:0},hits:[]},
+    {name:'horizontal-right zero height window',point:{x:0,y:50},end:{x:100,y:50},hits:[]},
+    {name:'horizontal-left zero height crossing',point:{x:100,y:50},end:{x:0,y:50},hits:[0,1,2,4,6]}
+  ];
   let cases=0;
-  for(const scope of ['oc','fe'])for(const reverse of [false,true])for(const additive of [false,true]){
+  for(const scope of ['oc','fe'])for(const direction of directions)for(const additive of [false,true]){
     const selected=[],capture={},previous=scope==='fe'?[7]:[{kind:'boundary',id:7}];
-    const a={x:0,y:0},b={x:100,y:100};
-    const env={canvasMarquee:{scope,pointerId:1,point:reverse?b:a,end:reverse?a:b,moved:true,additive,
+    const env={canvasMarquee:{scope,pointerId:1,point:direction.point,end:direction.end,moved:true,additive,
       context:'current',edit:capture,history:undefined,previous,
       candidates:[{kind:'boundary',id:0,box:[0,0,100,100]},
         {kind:'boundary',id:1,box:[90,10,120,80]}, // intersects but is not fully inside
         {kind:'boundary',id:2,box:[-20,-20,120,120]}, // surrounds the marquee
-        {kind:'boundary',id:3,box:[110,110,130,130]}]},
+        {kind:'boundary',id:3,box:[110,110,130,130]}, // disjoint on both axes
+        {kind:'boundary',id:4,box:[100,25,125,75]}, // touches only the right edge
+        {kind:'boundary',id:5,box:[100,100,125,125]}, // touches only one corner
+        {kind:'boundary',id:6,box:[-30,20,0,80]}, // touches only the left edge
+        {kind:'boundary',id:8,box:[101,25,125,75]}]}, // one-unit gap, never touches
       ReferenceWorkspace:{context:()=>({id:'current'}),history:{undo:[]}},oc:{edit:capture},fe:{lastPD:null},
       moveCanvasMarquee(){},cancelCanvasMarquee(){env.canvasMarquee=null;},
       ocSetSelection:items=>selected.push(...items.map(item=>item.id)),feSetTimberSelection:ids=>selected.push(...ids)};
     vm.runInNewContext(finishSource+'\nfinishCanvasMarquee({pointerId:1});',env);
-    assert.deepEqual(selected,additive?[7,0]:[0],`${scope} reverse=${reverse} additive=${additive}: only complete containment`);
+    assert.deepEqual(selected,additive?[7,...direction.hits]:direction.hits,`${scope} ${direction.name} additive=${additive}`);
     cases++;
   }
   console.log(`marquee rule unit contract: ${cases} cases passed (not browser pointer coverage)`);

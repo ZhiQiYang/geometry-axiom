@@ -801,12 +801,12 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `.reference-impact .impact-grids` 逐項列出主／子格父引用、新舊矩形、座標與實際可見段，即使沒有角材亦可確認或取消；原 guide 與 timber 影響仍列出。`[data-impact-grid]` 為逐格測試識別。
 - `.subgrid-editor` 所有顯示中的 input、select、button 目標至少 44px，390px 右欄不水平溢出。回歸由 `cdp_test.js` P8v4 實際執行 `app.js`。
 
-## GEO-209 畫布框選與角材多選
+## GEO-209／GEO-212 畫布框選與角材多選
 
 - `#ocSelectionSummary` / `#feSelectionSummary` 在選取工具下顯示框選提示與已選數量；`data-count` 為實際數量，`strong[role="status"]` 提供狀態通知。`[data-selection-clear="oc"]` / `[data-selection-clear="fe"]` 清除所屬畫布的選取。
-- `.selection-marquee` 是 SVG 選取框，`pointer-events:none`，使用完整包含規則；取消／放開指標後移除，不寫入場景或專案。
+- `.selection-marquee` 是 SVG 選取框，`pointer-events:none`。向右使用完整包含（藍色實線，`data-selection-mode="window"`）；向左使用含邊／角接觸的相交（綠色虛線，另有 `.crossing` 與 `data-selection-mode="crossing"`）。垂直方向不影響規則，水平位移為零沿用完整包含。拖過起點即時更新外觀及 summary `small` 說明；取消／放開指標後移除框並恢復方向提示，不寫入場景或專案。
 - `oc.selection` 是 `{kind,id}` 集合；`fe.timberSelection` 是角材 ID 集合。多選時原本的單物件 `oc.sel` / `fe.sel` 為空，單選時維持既有檢視器契約。清單 `.multi-selection-list` 明示選中的物件，`.multi-selection-note` 說明第一版不批次編輯、移動或刪除。
-- 左鍵從空白處拖曳框選；Shift 點選增減、Shift 框選加入，Ctrl／Cmd＋A 全選目前範圍。輸入欄位及對話框不攔全選。Space／H／中鍵保留平移。選取框不使用幾何格點吸附，不因縮放／平移改變完整包含的判定。
+- 左鍵從空白處拖曳框選；Shift 點選增減、Shift 框選加入，Ctrl／Cmd＋A 全選目前範圍。輸入欄位及對話框不攔全選。Space／H／中鍵保留平移。選取框不使用幾何格點吸附；縮放／平移後依實際畫面位置選取，手勢途中鏡頭改變則取消框選並保留原選取，避免混用座標基準。
 - 邊與頂點沿用原本單選編輯；面內空白單擊的開口選點亦保留，已有多支角材選取時先清選，單支則維持原本選點流程。3D 預覽與三視圖不加入框選。
 - 焦點導航與復原清除多選，但保留同專案且仍有效的單選：進入面須與目標卡一致，焦點空間僅保留其自身單卡，復原後角材由重載結果修剪。跨專案一律清除，不因 ID 相同沿用舊選取。
 - 操作與驗收見 `CANVAS-SELECTION.md`；新增真瀏覽器回歸由 `cdp_test.js` P67 呼叫 `marquee_test.js`。

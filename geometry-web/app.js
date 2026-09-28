@@ -1530,6 +1530,7 @@ let ocDrawCount = 0;      /* diff#4 可觀測訊號:每次 drawObjects() 整份�
                               供 cdp 斷言「pointermove 只重繪草稿層、不重繪物件層」 */
 
 function ocApply() {
+  cancelCanvasMarquee();
   oroot.setAttribute("transform",
     `translate(${oc.panX},${oc.panY}) scale(${oc.zoom})`);
   const vp = $("canvasViewport");
@@ -2340,6 +2341,7 @@ function feGridStep() {
   return SER[SER.length - 1];
 }
 function feApply() {
+  cancelCanvasMarquee();
   $("faceEditorRoot").setAttribute("transform",
     `translate(${fe.panX},${fe.panY}) scale(${fe.zoom})`);
   const zl = $("feZoomLevel");
@@ -2986,7 +2988,7 @@ async function submitBox6() {
 const FE_TOOL_NAMES = { grid: "網格", select: "選取", guide: "參考線", hole: "開口",
   pan: "平移", timber: "角材", redraw: "重畫外環" };
 const FE_TOOL_TIPS = {
-  select: "選取：空白處拖曳框選角材（完整框入）· Shift 加選 · 空白鍵拖曳平移 · 點邊/角改形狀",
+  select: "選取：空白拖曳框選角材 · 向右完整框住／向左相交即選 · Shift 加選 · 空白鍵平移",
   guide: "參考線：水平或垂直拖曳畫線 · 點一下選方向",
   hole: "開口：拖出矩形",
   timber: "角材：選擇定位引用與截面，再點面內放置；長度自動推導",
@@ -7310,7 +7312,7 @@ async function objEmitFace(pts) {
 
 /* ---- 事件 ---- */
 /* ── 選取與檢視器(Phase 1) ── */
-/* GEO-209:選取只存在 UI。單點仍依 SVG 畫家次序；框選獨立走完整包含。 */
+/* GEO-212:選取只存在 UI。單點依 SVG 畫家次序；框選依水平拖曳方向決定包含或相交。 */
 function ocSelected(kind, id) {
   return oc.selection.some(s => s.kind === kind && s.id === id) ||
     (!oc.selection.length && oc.sel?.kind === kind && oc.sel.id === id);
@@ -7358,13 +7360,13 @@ function renderSelectionSummary() {
     box.hidden = !oc.on || (face ? oc.focus?.t !== "face" || fe.tool !== "select" : !!oc.focus || oc.tool !== "select" || !!oc.drawTool);
     box.dataset.count = String(n);
     box.querySelector("strong").textContent = n ? `已選 ${n} ${face ? "支角材" : "個物件"}` : `從空白處拖曳，框選${face ? "角材" : "物件"}`;
-    box.querySelector("small").textContent = n > 1 ? "Shift 點選增減 · 多選僅供選取，編輯／刪除請先單選" : "完整框入才選取 · Shift 加選 · 空白鍵＋拖曳平移";
+    box.querySelector("small").textContent = "向右完整框住 · 向左相交即選 · Shift 加選" + (n > 1 ? " · 編輯／刪除請先單選" : " · 空白鍵平移");
     box.querySelector("button").hidden = !n;
   }
 }
 function selectionMultiHTML(items, face = false) {
   return `<section class="inspector-block"><div class="ib-title">已選 ${items.length} ${face ? "支角材" : "個物件"}</div>` +
-    `<p class="multi-selection-note">完整被選框包含的${face ? "角材" : "卡片"}才會選取。Shift 點選可加入或移除。</p>` +
+    `<p class="multi-selection-note">向右拖曳：完整框住${face ? "角材" : "卡片"}才選取；向左拖曳：相交或接觸就選取。Shift 點選可加入或移除。</p>` +
     `<ul class="multi-selection-list">${items.map(s => `<li>${face ? "角材" : KIND_ZH[s.kind] || "物件"} ${s.id}</li>`).join("")}</ul>` +
     `<p class="multi-selection-note">目前多選供查看選取範圍，尚不支援整組移動、編輯或刪除。請點選單一物件後再操作。</p></section>`;
 }
@@ -7373,6 +7375,7 @@ function cancelCanvasMarquee() {
   if (m) fe.lastPD = null;
   document.querySelectorAll(".selection-marquee").forEach(n => n.remove());
   if (m?.capture.hasPointerCapture(m.pointerId)) m.capture.releasePointerCapture(m.pointerId);
+  if (m) renderSelectionSummary();
   return !!m;
 }
 function startCanvasMarquee(scope, event) {
@@ -7397,6 +7400,11 @@ function moveCanvasMarquee(event) {
     fe.lastPD = null;
     let box = document.querySelector(".selection-marquee");
     if (!box) box = el("rect", {class:"selection-marquee"}, m.scope === "fe" ? $("faceEditorRoot") : oroot);
+    const crossing = m.end.x < m.point.x;
+    box.classList.toggle("crossing", crossing);
+    box.dataset.selectionMode = crossing ? "crossing" : "window";
+    const hint = $(m.scope + "SelectionSummary")?.querySelector("small");
+    if (hint) hint.textContent = (crossing ? "向左拖曳：相交即選取（綠色虛線）" : "向右拖曳：完整框住才選取（藍色實線）") + (m.additive ? " · Shift 加入原選取" : " · 放開套用選取");
     const attrs = {x:Math.min(m.point.x,m.end.x),y:Math.min(m.point.y,m.end.y),width:Math.abs(m.end.x-m.point.x),height:Math.abs(m.end.y-m.point.y)};
     for (const [key,value] of Object.entries(attrs)) box.setAttribute(key,value);
   }
@@ -7419,7 +7427,10 @@ function finishCanvasMarquee(event) {
     return true;
   }
   const bounds = [Math.min(m.point.x,m.end.x),Math.min(m.point.y,m.end.y),Math.max(m.point.x,m.end.x),Math.max(m.point.y,m.end.y)];
-  const hits = m.candidates.filter(c => c.box[0]>=bounds[0] && c.box[1]>=bounds[1] && c.box[2]<=bounds[2] && c.box[3]<=bounds[3]);
+  const crossing = m.end.x < m.point.x;
+  const hits = m.candidates.filter(c => crossing
+    ? c.box[0]<=bounds[2] && c.box[2]>=bounds[0] && c.box[1]<=bounds[3] && c.box[3]>=bounds[1]
+    : c.box[0]>=bounds[0] && c.box[1]>=bounds[1] && c.box[2]<=bounds[2] && c.box[3]<=bounds[3]);
   if (m.scope === "fe") feSetTimberSelection([...(m.additive ? m.previous : []),...hits.map(c => c.id)]);
   else ocSetSelection([...(m.additive ? m.previous : []),...hits]);
   return true;
@@ -7959,7 +7970,7 @@ function setOcTool(t) {
   $("btnNewRect").classList.toggle("active", t === "rect");
   ocCursor();
   renderSelectionSummary();
-  const tip = { select: "選取：空白處拖曳框選（完整框入）· Shift 加選 · 空白鍵拖曳平移 · 單張卡片可拖移",
+  const tip = { select: "選取：空白拖曳框選 · 向右完整框住／向左相交即選 · Shift 加選 · 空白鍵平移",
     pan: "平移：拖曳畫布移動視野（中鍵/空白拖也可）",
     rect: "矩形：在畫布上拖出矩形 → 建立游離面" };
   setStatus(tip[t] || "");
