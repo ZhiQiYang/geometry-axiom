@@ -1149,6 +1149,12 @@ body.oc-busy .face-layer-row { pointer-events: none; }
 .grid-source-options [aria-pressed=true] { color: #344dbd; background: #eef1ff; font-weight: 650; }
 .grid-source-options button:hover { background: #e9edf4; }
 .grid-param-fields { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.grid-material-entry { margin: 0 0 20px; padding: 12px; border: 1px solid #cbd5ef; border-radius: 8px; background: #f3f6ff; }
+.grid-material-entry p { margin: 8px 0 0; color: var(--grid-muted); font-size: 12px; line-height: 1.6; }
+.grid-editor .grid-material-button { width: 100%; min-height: 44px; padding: 9px 10px; border: 1px solid #a9b8ec; background: var(--panel); color: #344dbd; white-space: normal; line-height: 1.5; }
+.grid-material-entry .grid-material-button { background: #eef1ff; font-weight: 650; }
+.grid-panel-source { display: grid; gap: 10px; min-width: 0; }
+.grid-manual-label { color: var(--grid-muted); font-size: 12px; }
 .grid-field-error { color: #ac2639; background: #fff0f2; padding: 8px; border-radius: 6px; font-size: 12px; line-height: 1.6; }
 .grid-editor [aria-invalid=true] { border-color: #ac2639; }
 .grid-line-chips { display: flex; flex-wrap: wrap; gap: 6px; }

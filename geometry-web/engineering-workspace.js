@@ -24,7 +24,7 @@ window.EngineeringWorkspace = (() => {
     return {id:value.id, token:value.contextToken ?? value.token ?? value.incarnation};
   }
   function sameContext(a, b) { return a && b && a.id === b.id && a.token === b.token; }
-  function current(sequence, sourceContext) { return dialog?.open && sequence === state.request && sameContext(context(), sourceContext); }
+  function current(sequence, sourceContext) { return dialog?.open && sequence === state.request && sameContext(context(), sourceContext) && (state.mode!=='grid'||adapter?.isGridContextCurrent?.(state.gridFlow)!==false); }
   function message(text, kind = "") {
     if (!$('ewStatus')) return;
     $('ewStatus').textContent = text;
@@ -72,6 +72,9 @@ window.EngineeringWorkspace = (() => {
     }) || null;
   }
   function saveDraft() {
+    // A grid hand-off is a temporary view of the existing GridEditor draft.
+    // Cancelling it must not save unrelated workspace metadata or dirty the project.
+    if(state.mode==='grid')return;
     if (!state.context || !sameContext(state.context,context())) return;
     const value = {material:state.material,method:state.method,application:state.application,section:state.section,inlineKind:state.inlineKind,activePlacement:state.activePlacement,importText:state.importText};
     drafts.set(JSON.stringify(state.context), clone(value));
@@ -98,10 +101,19 @@ window.EngineeringWorkspace = (() => {
   }
   async function open(options = {}) {
     ensure(); opener = document.activeElement;
+    invalidate();
     const nextContext = context();
     if (!sameContext(nextContext, state.context)) { state.context=nextContext;restoreDraft(); }
+    state.mode=options.mode==='grid'?'grid':null;
+    if(state.mode==='grid'){
+      state.previousSection=state.section==='grid'?'apply':state.section;
+      state.section='grid';state.mobile='settings';state.gridSeed=clone(options.gridDraft||options);state.gridFlow={placementId:options.placementId,gridId:options.gridId??null};
+    }else if(state.section==='grid')state.section=state.previousSection||'apply';
     state.preview=null;state.intent=null;
-    if (options.placementId != null) { state.activePlacement=options.placementId;state.section='apply';state.inlineKind=null; }
+    if (options.placementId != null) { state.activePlacement=options.placementId;if(state.mode!=='grid')state.section='apply';state.inlineKind=null; }
+    dialog.dataset.mode=state.mode||'standard';
+    $('ewTitle').textContent=state.mode==='grid'?'材料規格排格':'工程規格';
+    dialog.querySelector('.ew-nav').hidden=state.mode==='grid';
     if (!dialog.open)dialog.showModal();
     await load(true, options);
   }
@@ -120,6 +132,11 @@ window.EngineeringWorkspace = (() => {
       if (result.capability !== 'engineering-spec/1')throw new Error('目前服務尚未支援工程規格來源，請開啟支援此功能的版本。');
       state.snapshot={...result,materials:list(result.materials).map(r=>({...r,type:r.kind??r.type}))};state.context=sourceContext;
       const placements = list(result.placements);
+      if(state.mode==='grid'){
+        if(!placements.some(p=>p.id===state.gridFlow.placementId))throw new Error('原本的放置面已不存在，請返回畫布重新開啟網格。');
+        if(initial||!state.gridFlow.route)initializeGridFlow(state.gridSeed);
+        render();message('已讀取目前工程。選面材、設定排格後，一次預覽並建立目前面的網格。');return true;
+      }
       if (!placements.some(p => p.id === state.activePlacement))state.activePlacement=placements[0]?.id ?? null;
       if(initial&&options.placementId!=null){
         const previous=state.application.targets[state.activePlacement];
@@ -129,7 +146,7 @@ window.EngineeringWorkspace = (() => {
         if(!previous){const application=list(state.snapshot.applications).find(a=>a.placement_id===state.activePlacement);if(application)state.application.method=clone(application.method);}
       }
       if (initial && state.activePlacement != null && !Object.keys(state.application.targets).length)selectTarget(state.activePlacement, options.gridId);
-      render();message('已讀取目前工程。草稿與預覽不會改變已套用的定義。');
+      render();message('已讀取目前工程。草稿與預覽不會改變已套用的定義。');return true;
     } catch(error) {
       if (sequence !== state.request)return;
       state.snapshot=null;render();message(error.message,'error');
@@ -158,11 +175,18 @@ window.EngineeringWorkspace = (() => {
     $('ewConfirm').disabled=state.busy || !state.preview?.valid || !state.preview?.token || !$('ewReviewed')?.checked;
     $('ewClose').disabled=state.busy && $('ewConfirm').dataset.committing==='true';
     $('ewSave').disabled=state.busy || !adapter?.saveProject;
-    $('ewContent').inert=$('ewConfirm').dataset.committing==='true';
+    $('ewContent').inert=$('ewConfirm').dataset.committing==='true'||state.mode==='grid'&&state.busy;
     dialog.querySelector('.ew-nav').inert=$('ewConfirm').dataset.committing==='true';
     $('ewPreview').textContent=state.section==='materials'?'預覽發布材料':state.section==='methods'?'預覽發布做法':state.section==='transfer'?'檢查匯入':'預覽套用';
     if(state.section==='apply'&&state.inlineKind)$('ewPreview').textContent=state.inlineKind==='material'?'預覽發布面材':'預覽發布做法';
     $('ewFooterHelp').textContent=state.preview?'核對完整影響後確認；任一目標失敗會整批保留原狀。':state.section==='apply'?'已選目標才會直接套用；角材只綁定明確勾選的項目。':'發布新版不會自動升級既有使用位置。未發布表單為草稿。';
+    $('ewConfirm').textContent='確認套用';
+    if(state.mode==='grid'){
+      const update=state.gridFlow?.gridId!=null;
+      $('ewPreview').textContent=update?'預覽更新網格':'預覽建立網格';
+      $('ewConfirm').textContent=update?'確認更新網格':'確認建立網格';
+      $('ewFooterHelp').textContent=state.preview?'確認後才會一次發布規格並套用網格；請核對既有來源的連帶影響。':'只處理目前面與指定網格。返回畫布會保留原網格草稿；既有角材不自動改綁材料。';
+    }
   }
   function render() {
     if (!dialog)return;
@@ -178,7 +202,7 @@ window.EngineeringWorkspace = (() => {
       if(button.dataset.ewSection===state.section)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
     }
     if(!state.snapshot){$('ewContent').innerHTML='<div class="ew-empty"><h2>尚未取得工程規格資料</h2><p>確認服務支援後，即可在這裡管理材料與真實工程的套用關係。</p><button type="button" data-ew-retry>重新讀取</button></div>';updateActions();return;}
-    $('ewContent').innerHTML=state.section==='materials'?renderMaterials():state.section==='methods'?renderMethods():state.section==='transfer'?renderTransfer():renderApply();
+    $('ewContent').innerHTML=state.mode==='grid'?renderGridFlow():state.section==='materials'?renderMaterials():state.section==='methods'?renderMethods():state.section==='transfer'?renderTransfer():renderApply();
     $('ewContent').dataset.section=state.section;
     if(state.section==='apply'&&state.inlineKind&&state[state.inlineKind]){
       const template=document.createElement('template');template.innerHTML=state.inlineKind==='material'?renderMaterials():renderMethods();
@@ -214,11 +238,53 @@ window.EngineeringWorkspace = (() => {
     for(const details of $('ewContent').querySelectorAll('details'))if(openDetails.includes(detailKey(details)))details.open=true;
     Array.from($('ewContent').querySelectorAll('.ew-editor,.ew-library-list')).forEach((element,index)=>{element.scrollTop=scrolls[index]||0;});
     if((state.section==='materials'||state.inlineKind==='material')&&state.material?.mode==='version'&&$('ewField-material-type'))$('ewField-material-type').disabled=true;
+    if(state.mode==='grid'&&state.gridFlow.gridId!=null&&$('ewField-gridFlow-mainAlong'))$('ewField-gridFlow-mainAlong').disabled=true;
     syncProjectStatus();updateActions();
   }
   function input(label,path,value,extra='') { const id='ewField-'+path.replace(/[^\w-]/g,'-');return `<label for="${id}">${label}<input id="${id}" data-ew-field="${path}" value="${esc(value)}" ${extra}></label>`; }
   function select(label,path,value,options) {const id='ewField-'+path.replace(/[^\w-]/g,'-');return `<label for="${id}">${label}<select id="${id}" data-ew-field="${path}">${options.map(([v,t])=>`<option value="${esc(v)}"${String(v)===String(value)?' selected':''}>${esc(t)}</option>`).join('')}</select></label>`;}
   function recordOptions(kind, type) {return [['','未設定'],...list(state.snapshot[kind]).filter(r=>(!type||(r.kind??r.type)===type)).map(r=>[refKey(r),refText(r)+(r.archived?'（已封存）':'')])];}
+  function initializeGridFlow(draft) {
+    const placementId=state.gridFlow.placementId,gridId=state.gridFlow.gridId;
+    const application=list(state.snapshot.applications).find(a=>a.placement_id===placementId);
+    const method=list(state.snapshot.methods).find(m=>sameRef(m,application?.method));
+    const panels=list(state.snapshot.materials).filter(m=>m.type==='panel'&&!m.archived);
+    const grid=gridId==null?null:list(state.snapshot.grids).find(g=>g.id===gridId&&(g.placement_id??g.surface)===placementId&&g.kind!=='subgrid');
+    if(gridId!=null&&!grid)throw new Error('原本選取的主網格已不存在，請返回畫布重新選擇。');
+    const strings=values=>Object.fromEntries(['u','v'].map(axis=>[axis,typeof values?.[axis]==='string'?values[axis]:'']));
+    state.gridFlow={placementId,gridId,route:method?'method':panels.length?'panel':'new',method:ref(method),panel:null,
+      name:'',width:'',length:'',thickness:'',methodName:`面 ${state.snapshot.placements.find(p=>p.id===placementId)?.boundary??placementId} 排格做法`,
+      longAxis:application?.longAxis??method?.longAxis??'',mainAlong:grid?(grid.mainAlong||'none'):(draft.mainAlong??''),
+      gaps:strings(draft.gaps),anchors:strings(draft.anchors)};
+    // Existing typed values remain exact, including invalid or blank input.
+    // Method defaults enter only after explicitly choosing a method or its button.
+  }
+  function applyGridMethodDefaults(replace) {
+    const d=state.gridFlow,m=list(state.snapshot.methods).find(record=>sameRef(record,d.method));
+    if(!m)return;
+    for(const axis of ['u','v'])if((replace||d.gaps[axis]==='')&&m.gap!=null)d.gaps[axis]=String(m.gap);
+    if((replace||!d.longAxis)&&m.longAxis)d.longAxis=m.longAxis;
+    if(d.gridId==null&&(replace||!d.mainAlong)&&m.mainAlong)d.mainAlong=m.mainAlong;
+  }
+  function gridOrigin() {
+    const placement=list(state.snapshot.placements).find(p=>p.id===state.gridFlow.placementId),points=placement?.loops?.flat();
+    if(!points?.length||points.some(p=>!Array.isArray(p)||p.length!==2||p.some(n=>!Number.isSafeInteger(n))))return null;
+    return {u:Math.min(...points.map(p=>p[0])),v:Math.min(...points.map(p=>p[1]))};
+  }
+  function renderGridFlow() {
+    const d=state.gridFlow,p=list(state.snapshot.placements).find(p=>p.id===d.placementId),origin=gridOrigin();
+    const existing=list(state.snapshot.applications).find(a=>a.placement_id===d.placementId);
+    const method=list(state.snapshot.methods).find(m=>sameRef(m,d.method));
+    const panel=list(state.snapshot.materials).find(m=>sameRef(m,d.route==='method'?method?.panel:d.panel));
+    const heading=d.gridId==null?'用材料規格建立網格':`用材料規格更新網格 #${d.gridId}`;
+    const panelSummary=panel?`<p class="ew-panel-summary" id="ewGridPanelSummary"><strong>${esc(refText(panel))}</strong><br>${esc(panel.width)} × ${esc(panel.length)} mm · 厚 ${esc(panel.thickness??'未設定')} mm<br><small>固定引用這個材料版本的長、寬。</small></p>`:'';
+    return `<div class="ew-mobile-tabs"><button type="button" data-ew-mobile="settings" aria-pressed="${state.mobile==='settings'}">設定與套用</button><button type="button" data-ew-mobile="canvas" aria-pressed="${state.mobile==='canvas'}">查看畫布</button></div><div class="ew-apply ew-grid-flow" data-mobile="${state.mobile}"><section class="ew-stage" aria-label="目前面的核心幾何"><div class="ew-stage-head"><h2>${esc(placementLabel(p))}</h2><span id="ewGridTarget">${d.gridId==null?'建立一個主網格':`更新既有網格 #${d.gridId}`}</span></div><div class="ew-stage-geometry">${renderGeometry(p)}</div><p class="ew-note">只有確認後才會改變工程；預覽由核心計算，既有角材不自動改綁。</p></section><section class="ew-editor" aria-label="材料規格排格設定"><div class="ew-form"><h2>${heading}</h2>${select('規格來源','gridFlow.route',d.route,[['panel','選用已發布面材'],['new','新增面材規格'],['method','選用已發布工程做法']])}
+      ${d.route==='method'?select('工程做法版本','gridFlow.method',refKey(d.method),recordOptions('methods'))+`<button type="button" data-ew-grid-method-defaults${method?'':' disabled'}>採用做法排格設定</button>`:d.route==='panel'?select('面材版本','gridFlow.panel',refKey(d.panel),recordOptions('materials','panel')):`<fieldset><legend>新增面材規格</legend>${input('材料名稱','gridFlow.name',d.name,'maxlength="160"')}<div class="ew-fields">${input('面材寬 mm','gridFlow.width',d.width,'inputmode="numeric"')}${input('面材長 mm','gridFlow.length',d.length,'inputmode="numeric"')}${input('面材厚 mm（選填）','gridFlow.thickness',d.thickness,'inputmode="decimal"')}</div><p class="ew-note">厚度可留空；這一步以長寬排格，不建立面材實體。</p></fieldset>`}${panelSummary}
+      ${d.route==='method'?'':`<fieldset><legend>建立排格做法</legend>${input('排格做法名稱','gridFlow.methodName',d.methodName,'maxlength="160"')}<p class="ew-note">確認時一起發布此做法與所選材料的固定版本引用。${existing?'沿用目前做法的三角色用料；本面與物件覆寫仍保留。':'三角色角材用料保持未設定。'}</p></fieldset>`}
+      <fieldset><legend>排格方向與縫寬</legend>${select('面材長邊方向','gridFlow.longAxis',d.longAxis,[['','請選擇'],['u','沿 u（橫向）'],['v','沿 v（直向）']])}${select('主支長度方向','gridFlow.mainAlong',d.mainAlong,[...(d.gridId!=null?[['none','未設定角色預設（保留）']]:[['','請選擇']]),['u','沿 u（橫向）'],['v','沿 v（直向）']])}${d.gridId!=null?'<p class="ew-note">更新材料來源時保留既有網格的主支方向；未設定時繼續保持未設定，不改角材角色。</p>':''}<div class="ew-fields">${input('u 軸縫寬 mm','gridFlow.gaps.u',d.gaps.u,'inputmode="numeric"')}${input('v 軸縫寬 mm','gridFlow.gaps.v',d.gaps.v,'inputmode="numeric"')}</div><p class="ew-note">兩軸縫寬各自明設，可為 0；與做法不同的數值會列為此網格覆寫。</p></fieldset>
+      <fieldset><legend>具體起算點</legend><div class="ew-fields">${input('u 起算點 mm','gridFlow.anchors.u',d.anchors.u,'inputmode="numeric"')}${input('v 起算點 mm','gridFlow.anchors.v',d.anchors.v,'inputmode="numeric"')}</div><button type="button" data-ew-grid-origin${origin?'':' disabled'}>使用面起點${origin?`（u ${origin.u}、v ${origin.v} mm）`:''}</button><p class="ew-note">沿用網格表單已填的座標。留空時請明寫，或按上方按鈕採用目前面下界。</p></fieldset>
+      ${existing?`<details><summary>本面已有做法與覆寫，核對保留內容</summary><p class="ew-note">更換做法或長邊方向可能影響本面已綁定的其他物件，預覽會完整列出。角材不會新增綁定。</p>${renderData(existing)}${renderData(bindingsForPlacement(d.placementId).filter(binding=>binding.override))}</details>`:''}<p class="ew-field-error" id="ewFormError" role="alert"></p></div></section></div>`;
+  }
   function renderUsage(kind,record) {
     const methods=kind==='material'?list(state.snapshot.methods).filter(m=>sameRef(m.panel,record)||Object.values(m.roles||{}).some(r=>sameRef(r,record))):[record];
     const applications=list(state.snapshot.applications).filter(a=>methods.some(m=>sameRef(m,a.method)));
@@ -337,7 +403,7 @@ window.EngineeringWorkspace = (() => {
   function fieldValue(element) {
     const path=element.dataset.ewField;
     if(element.type==='checkbox')return element.checked;
-    if(path==='application.method'||path==='method.panel'||path?.startsWith('method.roles.')) {const parsed=element.value?JSON.parse(element.value):null;return parsed?{id:parsed[0],version:parsed[1]}:null;}
+    if(path==='application.method'||path==='method.panel'||path==='gridFlow.method'||path==='gridFlow.panel'||path?.startsWith('method.roles.')) {const parsed=element.value?JSON.parse(element.value):null;return parsed?{id:parsed[0],version:parsed[1]}:null;}
     if(path==='activePlacement'||path?.endsWith('.gridId'))return element.value===''?null:Number(element.value);
     return element.value;
   }
@@ -364,6 +430,7 @@ window.EngineeringWorkspace = (() => {
     if(e.dataset.ewObjectValue!=null){const target=state.application.targets[e.dataset.placement],key=e.dataset.ewObjectValue;target.objectOverrides[key].value=e.value;changed();return;}
     if(e.dataset.ewField && (e.tagName==='SELECT'||e.type==='checkbox')) {
       const path=e.dataset.ewField;setPath(path,fieldValue(e));
+      if(path==='gridFlow.method')applyGridMethodDefaults(false);
       if(path.endsWith('.gridAction')){const target=state.application.targets[path.split('.')[2]];for(const axis of ['u','v'])target.anchors[axis].mode=target.gridAction==='update'?'keep':'lower';}
       changed();render();dialog.querySelector(`[data-ew-field="${CSS.escape(path)}"]`)?.focus();return;
     }
@@ -373,6 +440,8 @@ window.EngineeringWorkspace = (() => {
   }
   function handleClick(event) {
     const button=event.target.closest('button');if(!button||!dialog.contains(button)||state.busy)return;
+    if(button.hasAttribute('data-ew-grid-origin')){const origin=gridOrigin();if(origin){state.gridFlow.anchors={u:String(origin.u),v:String(origin.v)};changed();render();}return;}
+    if(button.hasAttribute('data-ew-grid-method-defaults')){applyGridMethodDefaults(true);changed();render();return;}
     if(button.dataset.ewSection){state.section=button.dataset.ewSection;invalidate();saveDraft();render();message('已切換頁面，草稿仍保留。請重新預覽要套用的變更。');return;}
     if(button.hasAttribute('data-ew-retry')){load(false);return;}
     if(button.hasAttribute('data-ew-return-settings')){invalidate();render();message('已返回本次設定，請依阻擋原因修改後重新預覽。');return;}
@@ -411,6 +480,23 @@ window.EngineeringWorkspace = (() => {
   }
   function validateIntent(intent) {
     const d=intent.draft;
+    if(intent.action==='grid'){
+      if(!d||!Number.isSafeInteger(d.placementId))return '請返回畫布選擇要排格的面。';
+      if(d.route==='method'&&!list(state.snapshot.methods).some(m=>sameRef(m,d.method)))return '請選擇已發布的工程做法版本。';
+      if(d.route==='panel'&&!list(state.snapshot.materials).some(m=>sameRef(m,d.panel)&&m.type==='panel'))return '請選擇已發布的面材版本。';
+      if(d.route==='new'){
+        if(!d.name.trim())return '請填寫材料名稱。';
+        if(!integer(d.width,1)||!integer(d.length,1))return '面材長、寬請填寫 1～100,000,000 的整數 mm。';
+        if(d.thickness.trim()!==''&&!decimal(d.thickness))return '面材厚度須為正十進位 mm，或留空表示未設定。';
+      }
+      if(d.route!=='method'&&!d.methodName.trim())return '請填寫要一起建立的排格做法名稱。';
+      if(!['u','v'].includes(d.longAxis))return '請選擇面材長邊方向。';
+      if(!['u','v'].includes(d.mainAlong)&&!(d.gridId!=null&&d.mainAlong==='none'))return '請選擇主支長度方向。';
+      for(const axis of ['u','v']){
+        if(!integer(d.gaps[axis]))return `${axis} 軸縫寬請填寫 0～100,000,000 的整數 mm。`;
+        if(!integer(d.anchors[axis],-100000000))return `${axis} 起算點請填寫整數 mm，或明選「使用面起點」。`;
+      }
+    }
     if(intent.action==='publishMaterial'){
       if(!d?.name?.trim())return '請填寫材料名稱。';
       for(const key of d.type==='panel'?['width','length']:['A','B'])if(!integer(d[key],1))return `${key} 請填寫 1～100,000,000 的整數 mm。`;
@@ -440,6 +526,7 @@ window.EngineeringWorkspace = (() => {
     changed();if(rerender){render();dialog.querySelector(`[data-ew-source-${key}][data-ew-source-target="${CSS.escape(identity)}"][data-ew-source-level="${element.dataset.ewSourceLevel}"]`)?.focus();}
   }
   function defaultIntent() {
+    if(state.mode==='grid')return {action:'grid',draft:clone(state.gridFlow)};
     if(state.section==='apply'&&state.inlineKind)return {action:state.inlineKind==='material'?'publishMaterial':'publishMethod',draft:clone(state[state.inlineKind])};
     if(state.section==='materials')return {action:'publishMaterial',draft:clone(state.material)};
     if(state.section==='methods')return {action:'publishMethod',draft:clone(state.method)};
@@ -460,8 +547,56 @@ window.EngineeringWorkspace = (() => {
     if(version>4294967295)throw new Error('版本數超過上限，請複製為新規格。');
     return {id:d.base.id,version};
   }
+  async function buildGridOperations(d,snapshot) {
+    const placement=list(snapshot.placements).find(p=>p.id===d.placementId);
+    if(!placement)throw new Error('目標面已不存在，請返回畫布重新開啟。');
+    const existing=list(snapshot.applications).find(a=>a.placement_id===d.placementId);
+    const previousMethod=list(snapshot.methods).find(m=>sameRef(m,existing?.method));
+    const grid=d.gridId==null?null:list(snapshot.grids).find(g=>g.id===d.gridId&&(g.placement_id??g.surface)===d.placementId&&g.kind!=='subgrid');
+    if(d.gridId!=null&&!grid)throw new Error('指定的主網格已不存在，請返回畫布重新選擇。');
+    if(grid&&d.mainAlong!==(grid.mainAlong||'none'))throw new Error('既有網格的主支方向已改變，請重新讀取後再預覽。');
+    if(d.gridId==null&&list(snapshot.grids).some(g=>(g.placement_id??g.surface)===d.placementId&&g.kind!=='subgrid'))throw new Error('這個面已有主網格，請返回畫布開啟該網格，再選擇材料規格。');
+    const operations=[];
+    let method=d.route==='method'?list(snapshot.methods).find(m=>sameRef(m,d.method)):null,panel=d.panel;
+    if(d.route==='new'){
+      const value={...identity({mode:'new'},list(snapshot.materials),'material'),kind:'panel',name:d.name.trim(),width:Number(d.width),length:Number(d.length),thickness:d.thickness.trim()||null};
+      operations.push({op:'publish-material',value});panel=ref(value);
+    }
+    if(d.route!=='method'){
+      if(!panel)throw new Error('請選擇面材固定版本。');
+      method={...identity({mode:'new'},list(snapshot.methods),'method'),name:d.methodName.trim(),panel:clone(panel),
+        roles:clone(previousMethod?.roles||Object.fromEntries(roles.map(([key])=>[key,null]))),gap:Number(d.gaps.u),longAxis:d.longAxis,mainAlong:d.mainAlong==='none'?(previousMethod?.mainAlong??null):d.mainAlong,notes:previousMethod?.notes??null};
+      operations.push({op:'publish-method',value:method});
+    }
+    if(!method?.panel)throw new Error('這份工程做法尚未設定面材版本，請改選面材或選擇完整做法。');
+    const application={id:existing?.id??'application-'+crypto.randomUUID(),placement_id:d.placementId,method:ref(method),
+      longAxis:d.longAxis,mainAlong:grid?(existing?.mainAlong??null):d.mainAlong,overrides:clone(existing?.overrides||{}),anchorOptions:clone(existing?.anchorOptions||{u:null,v:null})};
+    if(!grid)for(const axis of ['u','v'])application.anchorOptions[axis]={kind:'coordinate',value:Number(d.anchors[axis])};
+    operations.push({op:'put-application',value:application});
+    let gridId=d.gridId;
+    if(gridId==null){
+      if(!adapter?.allocateGridIds)throw new Error('服務尚未提供網格配號，尚未建立網格。');
+      const ids=await adapter.allocateGridIds(1);
+      if(!Array.isArray(ids)||ids.length!==1||!Number.isSafeInteger(ids[0])||ids[0]<0||ids[0]>4294967295)throw new Error('網格配號不完整，請重新預覽。');
+      gridId=ids[0];
+    }
+    operations.push({op:'bind-grid',id:gridId,application:application.id,...(!grid?{create:true}:{}),anchors:{u:Number(d.anchors.u),v:Number(d.anchors.v)}});
+    // Retain existing overrides unless the user explicitly changes that gap.
+    // New axes inherit the application's fixed method whenever its value fits.
+    const gapSource=application.overrides.gap;
+    const baseGap=gapSource?.kind==='literal'?gapSource.value:gapSource?.kind==='spec'?list(snapshot.specs).find(s=>s.name===gapSource.name)?.value:gapSource?undefined:method.gap;
+    for(const axis of ['u','v']){
+      const binding=list(snapshot.sources??snapshot.bindings).find(b=>b.target?.kind==='grid'&&b.target.id===gridId&&b.target.axis===axis&&b.target.field==='gap');
+      const wanted=Number(d.gaps[axis]);
+      if(binding?.override&&binding.effective===wanted)continue;
+      if(!binding?.override&&baseGap===wanted)continue;
+      operations.push({op:'set-override',target:{kind:'grid',id:gridId,axis,field:'gap'},value:{kind:'literal',value:wanted}});
+    }
+    return operations;
+  }
   async function buildOperations(intent,snapshot) {
     const d=intent.draft;
+    if(intent.action==='grid')return buildGridOperations(d,snapshot);
     if(intent.action==='publishMaterial'){
       const value={...identity(d,list(snapshot.materials),'material'),kind:d.type,name:d.name.trim(),brand:d.brand?.trim()||null,model:d.model?.trim()||null,notes:[d.source?.trim(),d.note?.trim()].filter(Boolean).join('\n')||null};
       if(d.type==='panel')Object.assign(value,{width:Number(d.width),length:Number(d.length),thickness:d.thickness==null||String(d.thickness).trim()===''?null:String(d.thickness).trim()});
@@ -548,6 +683,7 @@ window.EngineeringWorkspace = (() => {
   }
   async function requestPreview(explicit) {
     if(state.busy||!state.snapshot)return;
+    if(state.mode==='grid'&&adapter?.isGridContextCurrent?.(state.gridFlow)===false){invalidate();message('畫布已切換，請返回目前面重新開啟網格。','error');return;}
     const intent=explicit?.action?explicit:defaultIntent(),error=validateIntent(intent);
     if(error){message(error,'error');if($('ewFormError')){$('ewFormError').textContent=error;$('ewFormError').scrollIntoView({block:'nearest'});}return;}
     invalidate();state.busy=true;updateActions();
@@ -560,7 +696,7 @@ window.EngineeringWorkspace = (() => {
       if(result.ok===false)throw new Error(result.error||'核心未接受此預覽，工程保持不變。');
       const normalized=result.preview?{...result.preview,diagnostics:result.preview.violations??result.diagnostics}:result;
       if(!normalized.rows && (normalized.before||normalized.after))normalized.rows=diffSnapshots(normalized.before,normalized.after);
-      const selected=intent.action==='apply'?Object.values(intent.draft.targets).map(t=>t.placement_id):intent.action==='sources'?[intent.draft.placement_id]:null;
+      const selected=intent.action==='grid'?[intent.draft.placementId]:intent.action==='apply'?Object.values(intent.draft.targets).map(t=>t.placement_id):intent.action==='sources'?[intent.draft.placement_id]:null;
       if(selected)normalized.outsideScope=(normalized.rows||[]).filter(row=>row.placement_id!=null&&!selected.includes(row.placement_id)).map(row=>({name:row.label,placement_id:row.placement_id}));
       if(normalized.before&&normalized.after){
         normalized.preservedOverrides=list(normalized.after.sources??normalized.after.bindings).filter(binding=>binding.override&&list(normalized.before.sources??normalized.before.bindings).some(old=>JSON.stringify(old.target)===JSON.stringify(binding.target)&&JSON.stringify(old.override)===JSON.stringify(binding.override))).map(binding=>({target:binding.target,override:binding.override,effective:binding.effective}));
@@ -582,7 +718,7 @@ window.EngineeringWorkspace = (() => {
     $('ewReview').innerHTML=`<h2>${result.valid?'核對這次變更':'無法套用'}</h2><div class="ew-review-scroll">${(result.diagnostics||[]).map(d=>`<p class="ew-diagnostic">${esc(typeof d==='string'?d:d.message||d.code)}${d.object?` <button type="button" data-ew-locate="${esc(JSON.stringify(d.object))}">定位問題物件</button>`:''}</p>`).join('')}${(result.rows||[]).map((row,i)=>`<article class="ew-diff"><h3>${esc(row.label||row.name||`變更 ${i+1}`)}</h3>${renderDiff(row)}${row.segments&&row.placement_id!=null?renderGeometry(list(state.snapshot.placements).find(p=>p.id===row.placement_id),row.segments):''}</article>`).join('')||'<p>核心未回傳變更列，請核對操作摘要。</p>'}${result.preservedOverrides?.length?`<details><summary>保留的覆寫 · ${result.preservedOverrides.length}</summary>${renderData(result.preservedOverrides)}</details>`:''}${result.outsideScope?.length?`<details open><summary>選取面以外的連帶影響 · ${result.outsideScope.length}</summary>${renderData(result.outsideScope)}</details>`:''}</div>${result.valid?'<label class="ew-checkbox ew-review-check"><input id="ewReviewed" type="checkbox">我已核對版本、目標、覆寫及連帶影響</label>':''}`;
     $('ewReview').scrollIntoView({block:'nearest'});updateActions();
     $('ewReview').querySelector('h2').insertAdjacentHTML('afterend',`<p class="ew-impact-summary">${faces.size||grids.size||timbers.size?`核對 ${faces.size} 個面 · ${grids.size} 個網格 · ${timbers.size} 支角材`:`核對 ${rows.length} 項版本或定義變更`}。目前工程尚未改動。</p>`);
-    const targetIds=state.intent?.action==='apply'?Object.values(state.intent.draft.targets).map(target=>target.placement_id):state.intent?.action==='sources'?[state.intent.draft.placement_id]:[];
+    const targetIds=state.intent?.action==='grid'?[state.intent.draft.placementId]:state.intent?.action==='apply'?Object.values(state.intent.draft.targets).map(target=>target.placement_id):state.intent?.action==='sources'?[state.intent.draft.placement_id]:[];
     const diagnosticElements=$('ewReview').querySelectorAll('.ew-diagnostic');
     (result.diagnostics||[]).forEach((diagnostic,index)=>{
       if(diagnostic?.object)return;
@@ -619,6 +755,7 @@ window.EngineeringWorkspace = (() => {
   function renderDiff(row) {return `<div class="ew-diff-values"><div><h4>目前</h4>${row.before==null?'尚未建立':renderData(changeSummary(row.before,row.collection))}</div><div><h4>套用後</h4>${row.after==null?'已移除':renderData(changeSummary(row.after,row.collection))}</div></div><details><summary>完整定義、識別與核心幾何</summary><div class="ew-diff-values"><div>${renderData(row.before)}</div><div>${renderData(row.after)}</div></div></details>`;}
   async function confirm() {
     if($('ewConfirm').disabled||!state.preview?.token)return;
+    if(state.mode==='grid'&&adapter?.isGridContextCurrent?.(state.gridFlow)===false){invalidate();message('畫布已切換，請返回目前面重新開啟網格。','error');return;}
     if(!sameContext(context(),state.context)){close();return;}
     const token=state.preview.token,intent=state.intent;state.busy=true;$('ewConfirm').dataset.committing='true';updateActions();
     try {
@@ -648,7 +785,14 @@ window.EngineeringWorkspace = (() => {
       if(intent.action==='sources'){
         const target=state.application.targets[intent.draft.placement_id];if(target){target.objectOverrides={};target.objectSources={};}
       }
-      saveDraft();await load(false);$('ewReview').hidden=true;message('已套用到目前工程。按「保存專案」後，才會寫入專案檔案。','success');
+      if(intent.action==='grid'){
+        const binding=intent.operations.find(o=>o.op==='bind-grid'),application=intent.operations.find(o=>o.op==='put-application').value;
+        state.gridFlow.gridId=binding.id;state.gridFlow.route='method';state.gridFlow.method=clone(application.method);
+        adapter?.gridConfirmed?.({placementId:intent.draft.placementId,gridId:binding.id});
+      }
+      saveDraft();const reloaded=await load(false);$('ewReview').hidden=true;
+      if(intent.action==='grid'&&reloaded!==true){message('網格已確認套用，但最新來源讀取失敗。請按「重新讀取」核對；請勿重複建立網格。','error');return;}
+      message(intent.action==='grid'?'已套用到目前工程。網格已依材料固定版本建立；返回畫布可查看格線與來源。按「保存專案」寫入專案檔案。':'已套用到目前工程。按「保存專案」後，才會寫入專案檔案。','success');
     }catch(error){message(error.message,'error');invalidate();}
     finally{state.busy=false;delete $('ewConfirm').dataset.committing;updateActions();}
   }

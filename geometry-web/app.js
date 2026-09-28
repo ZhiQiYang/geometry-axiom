@@ -6282,15 +6282,16 @@ const GridEditor = (() => {
   const role = (main, a) => main === "none" ? "unset" : main !== a ? "primary" : "secondary";
   const roleName = r => r === "primary" ? "主支 2" : r === "secondary" ? "副支 3" : "角色未設定";
   const directionSVG = main => `<svg viewBox="0 0 64 34" aria-hidden="true"><rect x="1" y="1" width="62" height="32" rx="2"/><path class="${main === "u" ? "primary" : "secondary"}" d="M1 11h62M1 23h62"/><path class="${main === "v" ? "primary" : "secondary"}" d="M21 1v32M43 1v32"/></svg>`;
-  function axisHTML(a, definition, disabled) {
-    const d = definition || {source:"explicit"}, p = prefix(a), dis = disabled ? " disabled" : "";
+  const engineeringButton = (surf, grid, text, axis = "") => `<button type="button" class="btn grid-material-button" data-engineering-grid${surf ? ` data-placement-id="${surf.id}"` : " disabled"}${grid ? ` data-grid-id="${grid.id}"` : ""}${axis ? ` aria-label="${axis} ${text}"` : ""}>${text}</button>`;
+  function axisHTML(a, definition, surf, grid) {
+    const d = definition || {source:"explicit"}, p = prefix(a), dis = surf ? "" : " disabled";
     const input = (suffix, label, value = "", type = "number") => `<label>${label}<input id="${p}${suffix}" aria-label="${a} ${label}" aria-describedby="${p}Error ${p}Hint" type="${type}"${type === "number" ? ' step="1"' : ''} value="${esc(value)}"${dis}></label>`;
     return `<fieldset class="grid-axis-card" data-grid-axis="${a}"><legend class="grid-axis-title">${a} 座標格線</legend><span class="grid-role-badge"></span><div class="grid-axis-sub"></div>` +
       `<label class="grid-native-source">${a} 格線來源<select id="${p}Source"${dis}>${sources.map(([v,l]) => `<option value="${v}"${(d.source || "explicit") === v ? " selected" : ""}>${l}</option>`).join("")}</select></label>` +
       `<div class="grid-source-options" role="group" aria-label="${a} 格線來源">${sources.map(([v,l]) => `<button type="button" data-source="${v}"${dis}>${l}</button>`).join("")}</div>` +
       `<div data-grid-fields="explicit">${input("", "座標 mm（空格分隔）", (d.coordinates || []).join(" "), "text")}</div>` +
       `<div class="grid-param-fields" data-grid-fields="series">${input("Start","起點 mm",d.start)}${input("Step","間距 mm",d.step)}${input("Count","條數",d.count)}</div>` +
-      `<div class="grid-param-fields" data-grid-fields="panel">${input("Panel","面材寬 mm",d.panel)}${input("Gap","縫寬 mm",d.gap)}${input("From","起算點 mm",d.anchor)}</div>` +
+      `<div class="grid-panel-source" data-grid-fields="panel">${engineeringButton(surf,grid,"選擇材料規格",a)}<span class="grid-manual-label">或手填固定尺寸</span><div class="grid-param-fields">${input("Panel","面材尺寸 mm",d.panel)}${input("Gap","縫寬 mm",d.gap)}${input("From","起算點 mm",d.anchor)}</div></div>` +
       `<div id="${p}Hint" class="grid-coordinate-hint"></div><div id="${p}Error" class="grid-field-error" hidden></div><div class="grid-line-chips" aria-label="${a} 逐線座標"></div></fieldset>`;
   }
   function html(g, surf) {
@@ -6299,13 +6300,13 @@ const GridEditor = (() => {
     const dis = surf ? "" : " disabled";
     return `<section data-component-section="grid"><h2 class="component-heading">網格</h2><div class="inspector-block grid-editor">` +
       `<div class="grid-editor-heading"><h3>${g ? `編輯網格 ${g.id}` : "建立網格"}</h3><span id="gridDraftBadge">${g ? "已套用" : "尚未建立"}</span></div>` +
-      `<div class="grid-note"><button type="button" class="btn" data-engineering-open${surf ? ` data-placement-id="${surf.id}"` : ' disabled'}${g ? ` data-grid-id="${g.id}"` : ''}>套用工程規格</button><p>選擇面材尺寸、縫寬與角材截面，核對預覽後套用；來源會隨專案保存。</p></div>` +
+      `<div class="grid-material-entry">${engineeringButton(surf,g,"使用材料規格排格")}<p>選擇材料與長短邊，預覽後套用並保留來源。下方也可手填固定尺寸。</p></div>` +
       (surf ? "" : `<p class="grid-field-error">這片面尚未放置。請先到「屬性」設定位置與朝向。</p><button type="button" data-grid-place>先放置這片面</button>`) +
       `<fieldset class="grid-direction"><legend>1 主支方向</legend><div class="grid-direction-options">${axes.map(a => `<button type="button" data-grid-direction="${a}"${dis}>${directionSVG(a)}<strong>主支${a === "u" ? "橫向" : "直向"}</strong><small>沿 ${a} 走 · ${a === "u" ? "v" : "u"} 座標線為主支</small></button>`).join("")}</div>` +
       `<label class="grid-native-source">主支方向<select id="gridMainAlong"${dis}><option value="none">${g ? "不提供角色預設" : "請選擇主支方向"}</option>${axes.map(a => `<option value="${a}"${g?.mainAlong === a ? " selected" : ""}>沿 ${a}</option>`).join("")}</select></label>` +
       (g ? `<button type="button" class="grid-text-button" id="gridClearDirection"${dis}>清除主支預設</button>` : "") +
       `<div id="gridMainError" class="grid-field-error" hidden></div><p class="grid-editor-help">主支 2、副支 3 是放置預設；角材可明確改選。邊界材 1 仍由邊界規則決定。</p></fieldset>` +
-      `<h4>2 格線位置</h4><p class="grid-editor-help">拖曳畫布標籤調整位置，或點上方／左側邊尺加線。</p><div class="grid-axis-cards">${axes.map(a => axisHTML(a,g?.[a+"Definition"],!surf)).join("")}</div>` +
+      `<h4>2 格線位置</h4><p class="grid-editor-help">拖曳畫布標籤調整位置，或點上方／左側邊尺加線。</p><div class="grid-axis-cards">${axes.map(a => axisHTML(a,g?.[a+"Definition"],surf,g)).join("")}</div>` +
       `<div id="gridSourceConversion" class="grid-note" hidden></div><p id="gridChangeNote" class="grid-note" hidden></p>` +
       `<div class="grid-commit-bar"><div id="gridPreviewStatus" class="grid-preview-status" role="status" aria-live="polite"></div><div class="grid-commit-actions"><button type="button" id="gridReset" class="btn">重設草稿</button><button type="button" id="gridCreate" class="primary-button"${dis}>${g ? "套用網格變更" : "建立網格"}</button></div><button type="button" class="grid-mobile-preview" id="gridShowCanvas">查看畫布預覽</button></div>` +
       `<details class="grid-tech-details"><summary>進階：送出指令</summary><code id="gridCommand"></code></details>` +
@@ -6315,6 +6316,15 @@ const GridEditor = (() => {
     return {main: val(p,"gridMainAlong"), axes: Object.fromEntries(axes.map(a => {
       const id = prefix(a); return [a, Object.fromEntries(["Source","","Start","Step","Count","Panel","Gap","From"].map(k => [k,val(p,id+k)]))];
     }))};
+  }
+  function engineeringContext() {
+    const s=active;
+    if(!s || !isCurrent(s) || !s.editor.isConnected || !s.surf || s.saving ||
+       oc.edit.contextId !== ReferenceWorkspace.context().id || feSurf(s.bid)?.id !== s.surf.id) return null;
+    const raw=id=>get(s.pane,id)?.value ?? "", main=raw("gridMainAlong");
+    return {placementId:s.surf.id,gridId:s.grid?.id ?? null,mainAlong:axes.includes(main) ? main : null,
+      anchors:Object.fromEntries(axes.map(a=>[a,raw(prefix(a)+"From")])),
+      gaps:Object.fromEntries(axes.map(a=>[a,raw(prefix(a)+"Gap")]))};
   }
   function key(d) {
     return JSON.stringify([d.main,...axes.map(a => {
@@ -6376,13 +6386,13 @@ const GridEditor = (() => {
         parts.push(`${a} series ${x.Start} ${x.Step} ${x.Count}`);
       } else if(x.Source === "panel") {
         present.push(a);
-        const panel=integer(x.Panel,p+"Panel","面材寬"), gap=integer(x.Gap,p+"Gap","縫寬"), from=x.From === "" ? lo : integer(x.From,p+"From","起算點");
-        if(panel !== null && panel<=0) add(p+"Panel","面材寬必須大於 0 mm。");
+        const panel=integer(x.Panel,p+"Panel","面材尺寸"), gap=integer(x.Gap,p+"Gap","縫寬"), from=x.From === "" ? lo : integer(x.From,p+"From","起算點");
+        if(panel !== null && panel<=0) add(p+"Panel","面材尺寸必須大於 0 mm。");
         if(gap !== null && gap<0) add(p+"Gap","縫寬不可小於 0 mm。");
         if(from !== null && (from<lo || from>=hi)) add(p+"From",`起算點須大於等於 ${lo}、小於 ${hi} mm。`);
         // D10a count only; coordinates still come exclusively from grid-preview.
         if(panel>0 && gap>=0 && from !== null) counts[a]=Math.max(0,Math.ceil((hi-from)/(panel+gap))-1);
-        if(counts[a]>64) add(p+"Panel","此面材與縫寬會產生超過 64 條格線；請增加面材寬或調整起算點。");
+        if(counts[a]>64) add(p+"Panel","此面材與縫寬會產生超過 64 條格線；請增加面材尺寸或調整起算點。");
         parts.push(`${a} panel ${x.Panel} gap ${x.Gap}${x.From ? " from "+x.From : ""}`);
       }
     }
@@ -6669,7 +6679,7 @@ const GridEditor = (() => {
     $("faceEditorViewport").append(box);
   }
   function clear() {if(dragCancel)dragCancel();if(active)clearTimeout(active.timer);active=null;SubgridEditor.clear();fe.subgridDraftParent=null;++fe.gridPreviewSeq;fe.gridPreview=null;$("gridTimberPopover")?.remove();if($("gridReturnSettings"))$("gridReturnSettings").hidden=true;document.body.classList.remove("grid-workspace-active");}
-  return {html,bind,open,focusSection,draw,sync,highlight,fit,clear,addLine:(a,mm)=>active && addLine(active,a,mm)};
+  return {html,bind,open,focusSection,draw,sync,highlight,fit,clear,engineeringContext,addLine:(a,mm)=>active && addLine(active,a,mm)};
 })();
 
 /* 右欄檢視器（§5.5.3 + 5.5.3a 放置 + 5.5.4 投影） */

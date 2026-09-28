@@ -829,3 +829,11 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - 已有來源的網格用 `.engineering-grid-details` 顯示有效值；角材 `#tbSelected` 改由工程入口編輯來源，避免舊表單的刪除／重宣告把來源換成字面量。`references.engineeringSources` 為唯一綁定判準。
 - `#guide-editor` 保留 LOCAL 引用式；DATUM 只能從共用基準管理器修改。`.reference-impact [data-impact-guide]` 顯示全部可見段前後端點；忙碌中的 I8a 確認／取消仍允許真指標操作。
 - `engineering_workflow_test.js` 與 `project_audit_test.js` 使用正式畫布及 native bridge 驗證；模擬視窗不代替實體觸控驗證。
+
+## GEO-213 普通網格入口直接選材
+
+- `[data-engineering-grid]` 出現在網格表單頂端及每軸「面材＋縫」內，携帶 `data-placement-id` 與已有網格的 `data-grid-id`。`GridEditor.engineeringContext()` 僅提供目前有效編輯面的原始縫寬、起點與主支方向；拒絕失效或錯面上下文。
+- 入口使用同一個 `#ewWorkspace[data-mode="grid"]`，`#ewTitle` 為材料規格排格；不復用一般批次工作區的選面清單。`#ewField-gridFlow-route` 選既有面材、新面材或既有做法；其他設定沿用 `#ewField-gridFlow-…`。
+- `[data-ew-grid-origin]` 明選面下界；`[data-ew-grid-method-defaults]` 明選做法設定。既有網格主支方向唯讀，包含 `none`；新網格須明選方向。未填縫寬及起點不暗中補值。
+- 沿用 `#ewPreview`、`#ewReviewed`、`#ewConfirm` 與 `#ewCancelPreview`，整包候選包含必要的材料／做法發布、面套用及同 ID 網格綁定，不加入角材綁定。關閉、失效上下文或過期候選不得提交。
+- `grid_material_entry_test.js` 從真實工具列及選材按鈕測試，由 `engineering_workflow_test.js` 納入完整 P69；原本僅填數字的格線測試不能代替此材料流程。
