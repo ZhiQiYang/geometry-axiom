@@ -515,7 +515,7 @@ static bool apply_spec_line(const char *p,int n,char **tokens,int count,World *w
         scene_error(p,n,"D6b: spec requires a unique name and integer mm in D1 range"); return false;
     }
     size_t i=0; while (i<w->spec_count && strcmp(w->specs[i].name,tokens[1])) ++i;
-    if (i==WORLD_MAX_SPECS) return false;
+    if (i==WORLD_MAX_SPECS) { scene_error(p,n,"D6b: spec capacity exceeded"); return false; }
     if (i==w->spec_count) ++w->spec_count;
     snprintf(w->specs[i].name,SPEC_NAME_MAX,"%s",tokens[1]); w->specs[i].value=value;
     return reference_checked(p,n,w);
@@ -547,7 +547,7 @@ static bool apply_reference_guide(const char *p,int n,char **tokens,int count,Wo
         g.direction=(GuideDirection)dir;
     }
     size_t i=0; while (i<w->guide_count && w->guides[i].id!=g.id) ++i;
-    if (i==WORLD_MAX_GUIDES) return false;
+    if (i==WORLD_MAX_GUIDES) { scene_error(p,n,"D6: guide capacity exceeded"); return false; }
     if (i==w->guide_count) ++w->guide_count;
     w->guides[i]=g; return reference_checked(p,n,w);
 }

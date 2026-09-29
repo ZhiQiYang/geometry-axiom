@@ -7,6 +7,7 @@ import os
 import pathlib
 import queue
 import sys
+import tempfile
 import threading
 import time
 import unittest
@@ -36,6 +37,74 @@ class BridgeServerTests(unittest.TestCase):
 
     def ask(self, cmd):
         return json.loads(self.server_module.ask_bridge(cmd))
+
+    def post_handler(self, route, body=b"", length=None):
+        handler = object.__new__(self.server_module.Handler)
+        handler.path = route
+        handler.headers = {"Content-Length": str(len(body) if length is None else length)}
+        handler.rfile = Mock(wraps=io.BytesIO(body))
+        handler._local_only = lambda: False
+        handler._send = Mock()
+        handler.send_error = Mock()
+        return handler
+
+    def test_post_body_limits_reject_before_reading_and_accept_the_boundary(self):
+        limits = {"/api": 64 * 1024, "/upload": 16 * 1024 * 1024,
+                  "/feedback": 32 * 1024 * 1024,
+                  "/model": 16 * 1024 * 1024, "/model/verify": 16 * 1024 * 1024,
+                  "/model/space-preview": 16 * 1024 * 1024,
+                  "/engineering/read": 1024 * 1024,
+                  "/engineering/preview": 1024 * 1024,
+                  "/engineering/validate-project": 1024 * 1024}
+        for route, limit in limits.items():
+            with self.subTest(route=route):
+                handler = self.post_handler(route, length=limit + 1)
+                handler.do_POST()
+                handler.send_error.assert_called_once_with(413)
+                handler.rfile.read.assert_not_called()
+                # Stop at read(): no need to allocate 32 MiB to check the boundary.
+                handler = self.post_handler(route, length=limit)
+                handler.rfile.read.side_effect = RuntimeError("body read reached")
+                with self.assertRaisesRegex(RuntimeError, "body read reached"):
+                    handler.do_POST()
+                handler.send_error.assert_not_called()
+                handler.rfile.read.assert_called_once_with(limit)
+
+    def test_unknown_routes_and_invalid_lengths_do_not_read_the_body(self):
+        for route in ["/missing", "/model/missing", "/engineering/missing", "/api?query=1"]:
+            with self.subTest(route=route):
+                handler = self.post_handler(route, length=2 ** 40)
+                handler.do_POST()
+                handler.send_error.assert_called_once_with(404)
+                handler.rfile.read.assert_not_called()
+        for length, status in [("bad", 400), (-1, 413)]:
+            with self.subTest(length=length):
+                handler = self.post_handler("/api", length=length)
+                handler.do_POST()
+                handler.send_error.assert_called_once_with(status)
+                handler.rfile.read.assert_not_called()
+
+    def test_api_limit_allows_maximum_escaped_command_and_receipt_acknowledgements(self):
+        command = "\x01" * self.server_module.BRIDGE_MAX_CMD
+        data = self.receipt_request(requestId=str(uuid.uuid4()), cmd=command,
+                                    ack=[str(uuid.uuid4()) for _ in range(256)])
+        body = json.dumps(data).encode("utf-8")
+        self.assertLess(len(body), self.server_module.API_MAX_BYTES)
+        body += b" " * (self.server_module.API_MAX_BYTES - len(body))
+        handler = self.post_handler("/api", body)
+        with patch.object(self.server_module, "recorded_api", return_value=b'{"ok":true}') as recorded:
+            handler.do_POST()
+        recorded.assert_called_once_with(data)
+        handler.send_error.assert_not_called()
+        handler._send.assert_called_once_with(b'{"ok":true}')
+
+    def test_feedback_storage_errors_return_json_without_dropping_connection(self):
+        with patch.object(self.server_module.feedback_store, "save", side_effect=OSError("disk full")), self.http_server() as base:
+            request = urllib.request.Request(base + "/feedback", data=b'{"kind":"bug"}',
+                                             headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(request, timeout=2) as response:
+                self.assertEqual(response.status, 200)
+                self.assertEqual(json.load(response), {"ok": False, "error": "disk full"})
 
     def test_empty_commands_do_not_reach_bridge(self):
         for cmd in ["", "   ", "\t", None, 12]:
@@ -81,14 +150,23 @@ class BridgeServerTests(unittest.TestCase):
         self.assertEqual(self.process.stdin.write.call_count, 1)
 
     def test_busy_lock_has_bounded_wait(self):
-        self.server_module.bridge_lock.acquire()
+        entered, release = threading.Event(), threading.Event()
+        def hold_bridge():
+            with self.server_module.bridge_lock:
+                entered.set()
+                release.wait(3)
+        owner = threading.Thread(target=hold_bridge)
+        owner.start()
         try:
+            self.assertTrue(entered.wait(2))
             start = time.monotonic()
             self.assertIn("忙碌", self.ask("render")["error"])
             self.assertLess(time.monotonic() - start, 1)
             self.assertEqual(self.process.stdin.getvalue(), b"")
         finally:
-            self.server_module.bridge_lock.release()
+            release.set()
+            owner.join(2)
+        self.assertFalse(owner.is_alive())
         self.responses.put(b'{"ok":true}\n')
         self.assertTrue(self.ask("newid")["ok"])
 
@@ -288,6 +366,201 @@ class BridgeServerTests(unittest.TestCase):
             with contextlib.suppress(OSError):
                 os.unlink(path)
         temps.clear()
+
+    def test_concurrent_uploads_preserve_load_and_source_retirement_order(self):
+        for reject_second in [False, True]:
+            with self.subTest(reject_second=reject_second), tempfile.TemporaryDirectory() as directory:
+                mod = self.server_module
+                mod.BRIDGE_TIMEOUT = 2
+                prior = pathlib.Path(directory) / "prior.scene"
+                prior.write_bytes(b"prior")
+                mod._upload_temps[:] = [str(prior)]
+                cleanup_entered, release_cleanup, second_started, second_loaded = (threading.Event() for _ in range(4))
+                loaded, world, results, failures = {}, [], {}, []
+                original_temp = tempfile.NamedTemporaryFile
+                original_unlink = os.unlink
+
+                def new_temp(*args, **kwargs):
+                    return original_temp(*args, **kwargs, dir=directory)
+
+                def bridge(command):
+                    source = pathlib.Path(command.removeprefix("loadfile "))
+                    label = source.read_bytes()
+                    loaded[label] = source
+                    if label == b"B":
+                        second_loaded.set()
+                        if reject_second:
+                            return b'{"ok":false,"error":"invalid scene"}'
+                    world[:] = [source]
+                    return b'{"ok":true}'
+
+                def unlink(path, *args, **kwargs):
+                    if path == str(prior):
+                        cleanup_entered.set()
+                        if not release_cleanup.wait(3):
+                            raise RuntimeError("cleanup was not released")
+                    return original_unlink(path, *args, **kwargs)
+
+                def post(label):
+                    try:
+                        handler = self.post_handler("/upload", label)
+                        if label == b"B":
+                            handler.rfile.read.side_effect = lambda _: (second_started.set(), label)[1]
+                        handler.do_POST()
+                        results[label] = json.loads(handler._send.call_args.args[0])
+                    except Exception as exc:
+                        failures.append(exc)
+
+                with patch.object(mod.tempfile, "NamedTemporaryFile", side_effect=new_temp), \
+                        patch.object(mod, "ask_bridge", side_effect=bridge), \
+                        patch.object(mod.os, "unlink", side_effect=unlink):
+                    first = threading.Thread(target=post, args=(b"A",))
+                    second = threading.Thread(target=post, args=(b"B",))
+                    first.start()
+                    try:
+                        self.assertTrue(cleanup_entered.wait(2))
+                        second.start()
+                        self.assertTrue(second_started.wait(2))
+                        self.assertFalse(second_loaded.wait(0.05), "second load overtook first source cleanup")
+                    finally:
+                        release_cleanup.set()
+                        first.join(3)
+                        if second.ident is not None:
+                            second.join(3)
+                    self.assertFalse(first.is_alive())
+                    self.assertFalse(second.is_alive())
+                    self.assertEqual(failures, [])
+                self.assertTrue(results[b"A"]["ok"])
+                self.assertEqual(results[b"B"]["ok"], not reject_second)
+                active = loaded[b"A" if reject_second else b"B"]
+                retired = loaded[b"B" if reject_second else b"A"]
+                self.assertEqual(world, [active])
+                self.assertEqual(mod._upload_temps, [str(active)])
+                self.assertTrue(active.exists())
+                self.assertFalse(retired.exists())
+                self.assertFalse(prior.exists())
+                mod._upload_temps.clear()
+
+    def test_upload_busy_lock_has_bounded_wait_and_creates_no_file(self):
+        mod = self.server_module
+        mod.upload_lock.acquire()
+        try:
+            handler = self.post_handler("/upload", b"scene")
+            with patch.object(mod.tempfile, "NamedTemporaryFile") as temporary, patch.object(mod, "ask_bridge") as bridge:
+                start = time.monotonic()
+                handler.do_POST()
+                self.assertLess(time.monotonic() - start, 1)
+                self.assertFalse(json.loads(handler._send.call_args.args[0])["ok"])
+                temporary.assert_not_called()
+                bridge.assert_not_called()
+        finally:
+            mod.upload_lock.release()
+
+    def test_api_reload_waits_until_upload_source_retirement_finishes(self):
+        mod = self.server_module
+        mod.BRIDGE_TIMEOUT = 2
+        with tempfile.TemporaryDirectory() as directory:
+            prior = pathlib.Path(directory) / "prior.scene"
+            prior.write_bytes(b"prior")
+            mod._upload_temps[:] = [str(prior)]
+            cleanup_entered, release_cleanup, reload_started, reload_done = (threading.Event() for _ in range(4))
+            results, failures = [], []
+            original_temp, original_unlink = tempfile.NamedTemporaryFile, os.unlink
+
+            def new_temp(*args, **kwargs):
+                return original_temp(*args, **kwargs, dir=directory)
+
+            def unlink(path, *args, **kwargs):
+                if path == str(prior):
+                    cleanup_entered.set()
+                    if not release_cleanup.wait(3):
+                        raise RuntimeError("cleanup was not released")
+                return original_unlink(path, *args, **kwargs)
+
+            upload = self.post_handler("/upload", b"new scene")
+            def do_upload():
+                try:
+                    upload.do_POST()
+                except Exception as exc:
+                    failures.append(exc)
+
+            def reload():
+                reload_started.set()
+                try:
+                    results.append(self.ask("loadfile " + str(prior)))
+                except Exception as exc:
+                    failures.append(exc)
+                finally:
+                    reload_done.set()
+
+            with patch.object(mod.tempfile, "NamedTemporaryFile", side_effect=new_temp), \
+                    patch.object(mod.os, "unlink", side_effect=unlink):
+                self.responses.put(b'{"ok":true}\n')
+                first = threading.Thread(target=do_upload)
+                second = threading.Thread(target=reload)
+                first.start()
+                try:
+                    self.assertTrue(cleanup_entered.wait(2))
+                    before_reload = self.process.stdin.getvalue()
+                    # The bridge rejects the retired path once the upload completes.
+                    self.responses.put(b'{"ok":false,"error":"source no longer exists"}\n')
+                    second.start()
+                    self.assertTrue(reload_started.wait(2))
+                    self.assertFalse(reload_done.wait(0.05))
+                    self.assertEqual(self.process.stdin.getvalue(), before_reload)
+                finally:
+                    release_cleanup.set()
+                    first.join(3)
+                    if second.ident is not None:
+                        second.join(3)
+                self.assertFalse(first.is_alive())
+                self.assertFalse(second.is_alive())
+                self.assertEqual(failures, [])
+            self.assertEqual(results, [{"ok": False, "error": "source no longer exists"}])
+            result = json.loads(upload._send.call_args.args[0])
+            self.assertTrue(result["ok"])
+            self.assertTrue(pathlib.Path(result["path"]).exists())
+            self.assertEqual(mod._upload_temps, [result["path"]])
+            self.assertFalse(prior.exists())
+            mod._upload_temps.clear()
+
+    def test_failed_temp_write_removes_new_file_and_preserves_previous_source(self):
+        mod = self.server_module
+        with tempfile.TemporaryDirectory() as directory:
+            prior = pathlib.Path(directory) / "prior.scene"
+            prior.write_bytes(b"prior")
+            created = pathlib.Path(directory) / "new.scene"
+            created.touch()
+            mod._upload_temps[:] = [str(prior)]
+            file = Mock(name=str(created))
+            file.name = str(created)
+            file.write.side_effect = OSError("disk full")
+            context = Mock()
+            context.__enter__ = Mock(return_value=file)
+            context.__exit__ = Mock(return_value=False)
+            with patch.object(mod.tempfile, "NamedTemporaryFile", return_value=context), patch.object(mod, "ask_bridge") as bridge:
+                handler = self.post_handler("/upload", b"scene")
+                handler.do_POST()
+                self.assertFalse(json.loads(handler._send.call_args.args[0])["ok"])
+                bridge.assert_not_called()
+            self.assertFalse(created.exists())
+            self.assertTrue(prior.exists())
+            self.assertEqual(mod._upload_temps, [str(prior)])
+            self.assertFalse(mod.upload_lock.locked())
+            mod._upload_temps.clear()
+
+    def test_upload_does_not_hold_lock_while_sending_response(self):
+        mod = self.server_module
+        handler = self.post_handler("/upload", b"invalid scene")
+        def send(_):
+            acquired = mod.upload_lock.acquire(blocking=False)
+            self.assertTrue(acquired)
+            if acquired:
+                mod.upload_lock.release()
+        handler._send.side_effect = send
+        with patch.object(mod, "ask_bridge", return_value=b'{"ok":false,"error":"invalid scene"}'):
+            handler.do_POST()
+        handler._send.assert_called_once()
 
     def test_http_rejects_empty_and_bad_json_then_recovers(self):
         server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), self.server_module.Handler)

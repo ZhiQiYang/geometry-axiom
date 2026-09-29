@@ -11,6 +11,7 @@
 feedback/INBOX.md 由所有 meta.json 重新產生,不做增量追加——多個寫入者不會互相踩。
 """
 import base64
+import binascii
 import datetime
 import json
 import os
@@ -23,6 +24,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 KINDS = {"bug": "問題", "unexpected": "不符預期", "idea": "建議", "good": "好用", "auto": "自動擷取"}
 MAX_EVENTS = 2000
 MAX_TEXT = 8 * 1024 * 1024
+MAX_SCREENSHOT_BYTES = 8 * 1024 * 1024
 _lock = threading.Lock()
 
 
@@ -54,9 +56,31 @@ def _str(v, limit=4000):
 
 def _next_id(root: pathlib.Path, now: datetime.datetime) -> str:
     day = now.strftime("%Y%m%d")
-    seqs = [int(m.group(1)) for p in root.glob(f"F-{day}-*")
-            if (m := re.fullmatch(rf"F-{day}-(\d+)", p.name))]
+    # Failed writes may contain original user evidence. Keep those directories
+    # and reserve their IDs so an orphan cannot block every later report.
+    seqs = [int(m.group(1)) for p in root.iterdir()
+            if (m := re.fullmatch(rf"(?:\.tmp-)?F-{day}-(\d+)", p.name))]
     return f"F-{day}-{max(seqs, default=0) + 1:03d}"
+
+
+def _screenshot(value):
+    if not isinstance(value, str) or not re.match(r"data:image/png(?:[;,]|$)", value):
+        return None
+    prefix = "data:image/png;base64,"
+    if not value.startswith(prefix):
+        raise FeedbackError("PNG 截圖必須使用 base64 資料格式")
+    encoded = value[len(prefix):]
+    if len(encoded) > 4 * ((MAX_SCREENSHOT_BYTES + 2) // 3):
+        raise FeedbackError("PNG 截圖超過 8 MB，請縮小後再回報")
+    try:
+        data = base64.b64decode(encoded, validate=True)
+    except (binascii.Error, ValueError) as error:
+        raise FeedbackError("PNG 截圖的 base64 資料不完整或格式錯誤") from error
+    if len(data) > MAX_SCREENSHOT_BYTES:
+        raise FeedbackError("PNG 截圖超過 8 MB，請縮小後再回報")
+    if not data.startswith(b"\x89PNG\r\n\x1a\n"):
+        raise FeedbackError("截圖資料不是 PNG 圖片")
+    return data
 
 
 def _fmt_event(ev, t0):
@@ -162,6 +186,7 @@ def save(payload, now=None) -> dict:
     if not isinstance(events, list):
         raise FeedbackError("events 必須是陣列")
     events = [e for e in events if isinstance(e, dict)][-MAX_EVENTS:]
+    screenshot = _screenshot(payload.get("screenshot"))
     now = now or datetime.datetime.now()
     root = feedback_dir()
     with _lock:
@@ -190,10 +215,8 @@ def save(payload, now=None) -> dict:
         page = _str(payload.get("page"), MAX_TEXT)
         if page:
             (d / "page.html").write_text(page, encoding="utf-8", newline="\n")
-        shot = _str(payload.get("screenshot"), MAX_TEXT)
-        m = re.fullmatch(r"data:image/png;base64,([A-Za-z0-9+/=]+)", shot)
-        if m:
-            (d / "screenshot.png").write_bytes(base64.b64decode(m.group(1)))
+        if screenshot is not None:
+            (d / "screenshot.png").write_bytes(screenshot)
         (d / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
         (d / "report.md").write_text(render_report(meta, events, d), encoding="utf-8")
         d.rename(final)  # 讀的人(CLI、測試)只會看到完整的一筆,不會讀到寫一半的資料夾

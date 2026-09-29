@@ -7,10 +7,13 @@ import io
 import json
 import os
 import pathlib
+import struct
 import sys
 import tempfile
 import unittest
+import zlib
 from contextlib import redirect_stdout
+from unittest.mock import patch
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "geometry-web"))
@@ -20,6 +23,16 @@ import feedback_cli as cli  # noqa: E402
 PNG = "data:image/png;base64," + base64.b64encode(
     bytes.fromhex("89504e470d0a1a0a0000000d4948445200000001000000010806000000"
                   "1f15c4890000000d49444154789c6360000002000154a24f5d0000000049454e44ae426082")).decode()
+
+
+def png_bytes(size):
+    """A complete 1-pixel PNG with an ancillary text chunk of the requested size."""
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+    header = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0))
+    image = chunk(b"IDAT", zlib.compress(b"\0\0\0\0")) + chunk(b"IEND", b"")
+    text = b"Note\0" + b"A" * (size - len(header) - len(image) - 12 - 5)
+    return header + chunk(b"tEXt", text) + image
 
 
 def payload(**kw):
@@ -39,6 +52,9 @@ class FeedbackStore(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         os.environ["GEOMETRY_FEEDBACK_DIR"] = self.tmp.name
+        version = patch.object(store, "_version", return_value={"commit": "test-version", "dirty": False})
+        version.start()
+        self.addCleanup(version.stop)
 
     def tearDown(self):
         os.environ.pop("GEOMETRY_FEEDBACK_DIR", None)
@@ -77,10 +93,57 @@ class FeedbackStore(unittest.TestCase):
         self.assertEqual(list(pathlib.Path(self.tmp.name).glob("F-*")), [])
 
     def test_non_png_screenshot_and_missing_world_are_skipped(self):
-        r = store.save(payload(screenshot="data:text/html;base64,PHA+", world=""))
-        d = pathlib.Path(r["path"])
-        self.assertFalse((d / "screenshot.png").exists())
-        self.assertFalse((d / "world.scene").exists())
+        for shot in ("data:text/html;base64,PHA+", "data:image/png+xml;base64,PHA+"):
+            with self.subTest(screenshot=shot):
+                r = store.save(payload(screenshot=shot, world=""))
+                d = pathlib.Path(r["path"])
+                self.assertFalse((d / "screenshot.png").exists())
+                self.assertFalse((d / "world.scene").exists())
+
+    def test_large_png_is_saved_byte_for_byte(self):
+        image = png_bytes(7 * 1024 * 1024)
+        shot = "data:image/png;base64," + base64.b64encode(image).decode()
+        self.assertGreater(len(shot), store.MAX_TEXT)
+        r = store.save(payload(screenshot=shot))
+        self.assertEqual((pathlib.Path(r["path"]) / "screenshot.png").read_bytes(), image)
+
+    def test_invalid_or_oversized_png_does_not_reserve_a_report_id(self):
+        oversized = png_bytes(store.MAX_SCREENSHOT_BYTES + 1)
+        bad_shots = (
+            "data:image/png;base64,AAAAA",  # Invalid padding previously escaped as an exception.
+            "data:image/png;base64,!!!!",
+            "data:image/png;base64," + base64.b64encode(b"not a PNG").decode(),
+            "data:image/png;base64," + base64.b64encode(oversized).decode(),
+        )
+        for shot in bad_shots:
+            with self.subTest(length=len(shot)):
+                with self.assertRaises(store.FeedbackError):
+                    store.save(payload(screenshot=shot))
+                self.assertEqual(list(pathlib.Path(self.tmp.name).iterdir()), [])
+        saved = store.save(payload(), now=datetime.datetime(2026, 9, 24, 9))
+        self.assertEqual(saved["id"], "F-20260924-001")
+
+    def test_orphaned_report_is_preserved_and_does_not_block_later_reports(self):
+        root = pathlib.Path(self.tmp.name)
+        orphan = root / ".tmp-F-20260924-001"
+        orphan.mkdir()
+        evidence = orphan / "world.scene"
+        evidence.write_bytes(b"original user evidence")
+        saved = store.save(payload(), now=datetime.datetime(2026, 9, 24, 9))
+        self.assertEqual(saved["id"], "F-20260924-002")
+        self.assertEqual(evidence.read_bytes(), b"original user evidence")
+
+    def test_failed_write_preserves_evidence_and_next_report_can_save(self):
+        now = datetime.datetime(2026, 9, 24, 9)
+        with patch.object(pathlib.Path, "write_bytes", side_effect=OSError("disk write failed")):
+            with self.assertRaisesRegex(OSError, "disk write failed"):
+                store.save(payload(), now=now)
+        orphan = pathlib.Path(self.tmp.name) / ".tmp-F-20260924-001"
+        evidence = (orphan / "events.jsonl").read_bytes()
+        self.assertIn(b"button#btnUndo", evidence)
+        saved = store.save(payload(), now=now)
+        self.assertEqual(saved["id"], "F-20260924-002")
+        self.assertEqual((orphan / "events.jsonl").read_bytes(), evidence)
 
     def test_cli_list_show_close_roundtrip(self):
         fid = store.save(payload())["id"]

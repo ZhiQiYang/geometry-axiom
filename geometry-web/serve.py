@@ -26,6 +26,19 @@ SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根�
 sys.path.insert(0, str(HERE))
 import feedback_store  # noqa: E402
 FEEDBACK_MAX_BYTES = 32 * 1024 * 1024
+API_MAX_BYTES = 64 * 1024  # Escaped 4094-byte command, 256 receipt acknowledgements.
+UPLOAD_MAX_BYTES = 16 * 1024 * 1024
+POST_MAX_BYTES = {
+    "/api": API_MAX_BYTES,
+    "/upload": UPLOAD_MAX_BYTES,
+    "/feedback": FEEDBACK_MAX_BYTES,
+    "/model": 16 * 1024 * 1024,
+    "/model/verify": 16 * 1024 * 1024,
+    "/model/space-preview": 16 * 1024 * 1024,
+    "/engineering/preview": 1024 * 1024,
+    "/engineering/validate-project": 1024 * 1024,
+    "/engineering/read": 1024 * 1024,
+}
 # 預設用同目錄的 Windows 橋接器。GEOMETRY_BRIDGE 可覆寫，且可帶參數，例如：
 #   GEOMETRY_BRIDGE="wsl.exe -d Ubuntu-24.04 --user root -- /opt/geometry/web_bridge"
 # 讓 serve.py 跑在 Windows（瀏覽器連得到 localhost），橋接器跑在 WSL——
@@ -41,11 +54,12 @@ bridge = subprocess.Popen(
     BRIDGE_CMD,
     stdin=subprocess.PIPE, stdout=subprocess.PIPE,
 )
-bridge_lock = threading.Lock()
+bridge_lock = threading.RLock()
 bridge_responses = queue.Queue()
 bridge_failure = None
 BRIDGE_TIMEOUT = 30.0
 _upload_temps = []
+upload_lock = threading.Lock()
 API_SESSION = uuid.uuid4().hex
 api_receipts = {}
 receipt_lock = threading.Lock()
@@ -173,6 +187,51 @@ def recorded_api(data):
         receipt_lock.release()
 
 
+def upload_scene(body: bytes) -> bytes:
+    """Keep successful load order and source-file retirement in one transaction."""
+    if not upload_lock.acquire(timeout=BRIDGE_TIMEOUT):
+        return err_json("場景上傳仍在處理，請稍後再試。")
+    # Include ordinary /api reloads in the ordering. ask_bridge re-enters this
+    # lock; no request may load an old source between success and its retirement.
+    if not bridge_lock.acquire(timeout=BRIDGE_TIMEOUT):
+        upload_lock.release()
+        return err_json("橋接器忙碌，請稍後再試")
+    tmp = None
+    try:
+        # Assign the path before writing, so a failed write also cleans its file.
+        with tempfile.NamedTemporaryFile("wb", suffix=".scene", delete=False) as f:
+            tmp = f.name
+            f.write(body)
+        # GEO-154: a rejected load leaves the previous world and its source alive.
+        resp = ask_bridge("loadfile " + tmp)
+        try:
+            merged = json.loads(resp.decode("utf-8"))
+        except (ValueError, UnicodeDecodeError):
+            merged = None
+        if not isinstance(merged, dict) or merged.get("ok") is not True:
+            return resp
+        while _upload_temps:
+            stale = _upload_temps.pop(0)
+            try:
+                os.unlink(stale)
+            except OSError:
+                pass
+        _upload_temps.append(tmp)
+        merged["path"] = tmp
+        tmp = None  # The successful scene owns this source until the next load.
+        return json.dumps(merged, ensure_ascii=False).encode("utf-8")
+    except OSError:
+        return err_json("無法寫入場景暫存檔，請稍後再試。")
+    finally:
+        if tmp is not None:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
+        bridge_lock.release()
+        upload_lock.release()
+
+
 class PreviewHTTPServer(http.server.ThreadingHTTPServer):
     # Browser preload/reload bursts can exceed the default five pending handshakes.
     # Leave room for those connections while the server accepts each request.
@@ -255,14 +314,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         if self._local_only():
             return
+        limit = POST_MAX_BYTES.get(self.path)
+        if limit is None:
+            self.send_error(404)
+            return
         try:
             length = int(self.headers.get("Content-Length", 0))
         except ValueError:
             self.send_error(400)
             return
-        if length < 0 or (self.path.startswith("/model") and length > 16 * 1024 * 1024) or \
-                (self.path.startswith("/engineering/") and length > 1024 * 1024) or \
-                (self.path == "/feedback" and length > FEEDBACK_MAX_BYTES):
+        if length < 0 or length > limit:
             self.send_error(413)
             return
         body = self.rfile.read(length)
@@ -282,7 +343,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             # GEO-183:使用者回報收件匣。寫進 repo 的 feedback/(.gitignore 允許清單制,預設不進 git)。
             try:
                 result = feedback_store.save(json.loads(body.decode("utf-8")))
-            except (ValueError, UnicodeDecodeError) as exc:
+            except (ValueError, UnicodeDecodeError, OSError) as exc:
                 result = {"ok": False, "error": str(exc) or "bad request"}
             self._send(json.dumps(result, ensure_ascii=False).encode("utf-8"))
             return
@@ -331,38 +392,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 return
             self._send(recorded_api(data))
         elif self.path == "/upload":
-            # 瀏覽器開檔 = 拿到內容而非路徑：寫暫存檔走 parse_scene_file 同一條路。
-            with tempfile.NamedTemporaryFile(
-                    "wb", suffix=".scene", delete=False) as f:
-                f.write(body)
-                tmp = f.name
-            # GEO-154：**先載,成功了才動舊暫存**。
-            # bridge 的 loadfile 是交易式的(失敗時 `g_world = before`),所以載入失敗後
-            # 畫面上還是舊場景;先刪舊暫存的話,那個還活著的場景就沒有來源檔了,
-            # 前端 curScene 指向一個已刪的路徑,「重新載入場景」從此壞掉。
-            resp = ask_bridge("loadfile " + tmp)
-            try:
-                merged = json.loads(resp.decode("utf-8"))
-            except (ValueError, UnicodeDecodeError):
-                merged = None
-            if not isinstance(merged, dict) or merged.get("ok") is not True:
-                # 新檔沒載起來:它自己才是該丟的那一個,舊暫存留著。
-                try:
-                    os.unlink(tmp)
-                except OSError:
-                    pass
-                self._send(resp)
-                return
-            while len(_upload_temps) > 0:
-                stale = _upload_temps.pop(0)
-                try:
-                    os.unlink(stale)
-                except OSError:
-                    pass
-            _upload_temps.append(tmp)
-            # 回傳暫存檔路徑,前端 curScene 指到它,「重新載入場景」載回剛上傳的內容。
-            merged["path"] = tmp
-            self._send(json.dumps(merged, ensure_ascii=False).encode("utf-8"))
+            # Release upload_lock before sending a response to a slow client.
+            self._send(upload_scene(body))
         else:
             self.send_error(404)
 

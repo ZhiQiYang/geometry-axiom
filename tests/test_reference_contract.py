@@ -161,6 +161,33 @@ class ReferenceContract(unittest.TestCase):
                 self.assertFalse(self.line(cmd)['ok'])
                 self.assertEqual(before, self.dump())
 
+    def test_spec_capacity_reports_resource_and_preserves_world(self):
+        self.ok('reset')
+        for index in range(64):
+            self.ok(f'spec capacity_{index} {index}')
+        before = self.dump()
+        rejected = self.line('spec capacity_overflow 100')
+        self.assertFalse(rejected['ok'], rejected)
+        self.assertRegex(rejected['error'], r'spec.*capacity')
+        self.assertEqual(before, self.dump(), 'Capacity rejection must leave World unchanged')
+        self.ok('spec capacity_0 100')
+        self.assertIn('spec capacity_0 100', self.dump())
+
+    def test_guide_capacity_reports_resource_and_preserves_world(self):
+        self.ok('reset')
+        self.ok('surface 1 origin 0 0 0 u +x v +y rect 0 0 4000 3000')
+        self.ok('spec offset 100')
+        for guide_id in range(1, 17):
+            self.ok(f'guide {guide_id} 1 v spec:offset')
+        before = self.dump()
+        rejected = self.line('guide 17 1 v spec:offset')
+        self.assertFalse(rejected['ok'], rejected)
+        self.assertRegex(rejected['error'], r'guide.*capacity')
+        self.assertEqual(before, self.dump(), 'Capacity rejection must leave World unchanged')
+        self.ok('guide 1 1 v 2*spec:offset')
+        self.assertEqual(len(self.refs()['guides']), 16)
+        self.assertEqual(next(g['off'] for g in self.refs()['guides'] if g['id'] == 1), 200)
+
     def test_spec_redeclare_requires_preview_then_moves_timber(self):
         p = self.preview('spec 主支中線 900')
         self.assertTrue(p['valid'], p)

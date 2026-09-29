@@ -88,6 +88,7 @@ python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 - `POST /api`（JSON `{"cmd": "..."}`）→ 轉送給長駐 `web_bridge.exe` 的 stdin，回傳其 stdout 一行 JSON。
 - `POST /upload` → 把 scene 內容寫成系統暫存目錄（`tempfile.gettempdir()`，Windows 為 `%TEMP%`）下的暫存檔並 `loadfile`；回應帶 `path` 欄位，前端 `curScene` 指到它，「重新載入場景」才會載回剛上傳的內容。
 - `POST /feedback` → 回報收件匣（GEO-183，見下節），寫進 repo 的 `feedback/<id>/`；`GEOMETRY_FEEDBACK_DIR` 可改落點（測試用）。
+- POST 在讀取內容前檢查大小：`/api` 上限 64 KiB，`/upload` 與模型請求上限 16 MiB，工程請求上限 1 MiB，`/feedback` 上限 32 MiB；超限回 HTTP 413，未知路徑回 HTTP 404，不送進核心。
 - POST 跨站防護（L3）：`Origin` 存在且非 `http://127.0.0.1:<port>` / `http://localhost:<port>` → 403；`Host` 非本機 → 403；無 `Origin` 的 curl/測試腳本放行。`cmd` 含 `\r`/`\n` 或超過 4094 bytes → 直接回 `{"ok":false}` 不送 bridge。
 
 ## 回報收件匣（GEO-183）
@@ -103,6 +104,7 @@ python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
   當下世界 `world.scene`（bridge dump）、畫面快照 `page.html`（內嵌 CSS、無 JS，紅框＝指到的元素）、
   應用程式狀態（`oc`／`fe`／三視圖工具）、視窗大小、git 版本。
 - 落點 `feedback/<F-YYYYMMDD-NNN>/`（`.gitignore` 允許清單制，不進 git），索引 `feedback/INBOX.md` 自動重產。
+- 截圖上限為 PNG 解碼後 8 MiB，完整保存圖片；超限或 Base64 損壞會明確拒絕該筆回報，不截斷圖片。寫入失敗留下的 `.tmp-F-*` 原始資料會保留，後續回報使用新序號，不會被舊暫存目錄卡住。
 
 agent 端：
 
