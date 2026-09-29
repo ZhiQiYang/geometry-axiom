@@ -910,7 +910,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 ## GEO-215 無限網格與配置
 
 - `#infiniteGridWorkspace` 為完整編輯工作區；建立新來源或配置時使用它，主畫布已選物件的常用修改另見上方 2026-09-28 就地編輯契約。`#igGridView` 可平移、縮放與拾取 cell；攝影機不寫入模型。`#igDensity` 明示抽樣。
-- `#igName`、`#igMainAlong` 與 `#igUSource`／`#igVSource` 定義來源；`#igSaveSource` 預覽後確認。只新增 repeat／repeat-panel／none，沒有條數。
+- `#igName`、`#igMainAlong`（GEO-222 起為 `role=radiogroup` 的分段選擇，內含 `input[name=igMainAlong][value=none|u|v]`，元素本身仍可讀寫 `.value`）與 `#igUSource`／`#igVSource` 定義來源；`#igSaveSource` 預覽後確認。只新增 repeat／repeat-panel／none，沒有條數。
 - `#igNewBinding` 選邊界建立配置。`#igBoundaryView` 與 `#igVertex` 選實際外環或孔環頂點；`#igCellI`／`#igCellJ` 使用十進位字串及 BigInt，`[data-ig-anchor]` 選 cell 內九宮位置。`#igSaveBinding` 保存明確引用。
 - `#igResultView` 只繪核心 query 回傳的裁切線段。`#igApplyBinding` 明確套用到同邊界承載面；未套用配置不暗建面。
 - `#igKeyedVertices`、四側 `#igGrowLeft/Right/Top/Bottom` 和 `#igSaveBoundary` 保留穩定頂點身分，預覽確認後提交。
@@ -918,6 +918,8 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - 面內 `gridLineEntries()` 將抽樣位置轉為真正的 signed 索引；命中區、角材選項、隱藏偏好均沿用此索引。子線仍為 ordinal。`feRefreshLatticeViewport()` 隨平移／縮放查詢目前範圍，`#feLatticeDensity` 明示稀疏顯示；過期回應核對專案、面、網格實例與範圍後捨棄。未抽到的合法線仍由 lattice 定義精確求值，點選新出現的格線會先補入角材選項。
 - lattice 子格使用 `[data-subgrid-cell="lattice:i:j"]` 真 cell；`#subgridCellI`／`#subgridCellJ`／`#subgridUseLatticeCell` 可直接指定密集格的索引。不以外接框或抽樣間距假造 cell。
 - `grid_system_test.js` 和 `infinite_grid_face_test.js` 由正式 CDP harness 執行，包含實際 SVG 拾取、signed 引用、保存重開及窄螢幕。
+- GEO-221：`#igGridView` 的 viewBox 等於元素實際像素，u、v 共用比例。`data-ig-camera="u0 v0 u1 v1"` 是目前（已貼合繪圖區）的模型矩形（mm，相對局部索引基準）；`[data-ig-plot]` 是繪圖區矩形，點擊只在其內選 cell。`[data-ig-ruler="u|v"][data-ig-ruler-index]` 為尺規索引（純數字、置中於格線），`[data-ig-origin]`／`[data-ig-origin-label]` 為基準點，`#igZoom` 顯示「1 格 U×V mm · N px」。
+- GEO-222：版面為單列 56px 標題（`.ig-header` 的 `#igClose`＋麵包屑 `.ig-crumb`，與共用 `#projectBar` 同列）、左側 `.ig-main`（`.ig-canvas` 內含 `#igGridView`、`#igViewNote` 浮動提示、`.ig-zoombar` 內的 `#igZoomOut`／`#igZoom`／`#igZoomIn`／`#igFit`）、右側 `.ig-inspector`（`.ig-settings` 捲動區＋底部 `.ig-footer`，`#igSaveSource`／`#igSaveBinding`／`#igStatus`／`#igDraftNote` 在 footer）。`#igCellPreview` 為格子縮圖；`#igInfo`（`#igInfoTitle`、`#igInfoCell`、`#igInfoRows`）顯示游標與已選取格。SVG 內 `[data-ig-hover="i,j"]`、`[data-ig-selected="i,j"]`（僅來源模式）與 `[data-ig-band=u|v]`（尺規高亮）。`#igDensity` 只在稀疏或大索引時顯示。麵包屑的專案名稱為 `.ig-crumb-project[data-project-name]`（390px 時為標題上方小字）；`[data-ig-origin-label]` 在第 0 線不在 0 mm 時附上 mm 位置。軸線查詢請用 `fieldset[data-ig-axis]`，`line[data-ig-axis]` 也帶同名屬性。
 
 ## GEO-214 舊有限網格相容介面
 
