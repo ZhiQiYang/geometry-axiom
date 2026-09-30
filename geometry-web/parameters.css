@@ -1,20 +1,238 @@
-.parameter-editor {display:grid;gap:14px;padding-bottom:20px}
-.parameter-editor h2,.parameter-editor h3 {margin:0}
-.parameter-editor label {display:grid;gap:6px;font-size:13px;color:var(--text)}
-.parameter-editor input,.parameter-editor select,.param-source select {width:100%;min-width:0;min-height:44px;border:1px solid var(--border,#ccd3df);border-radius:7px;padding:10px;background:var(--surface,#fff);color:var(--text,#23334a)}
-.parameter-editor fieldset {margin:12px 0;padding:12px;border:1px solid #d9d4ea;border-radius:9px;display:grid;gap:10px;min-width:0}
-.parameter-editor legend {color:#65528c;font-size:12px;padding:0 5px}
-.parameter-editor button,.parameter-editor summary,.param-source button {min-height:44px;cursor:pointer}
-.param-pair {display:grid;grid-template-columns:1fr 1fr;gap:8px;min-width:0}
-.param-field-actions {display:flex;align-items:end;gap:4px}
-.param-field-actions button {flex:1}
-.param-help,.parameter-editor p,.parameter-editor li {font-size:13px;line-height:1.6;overflow-wrap:anywhere}
-.param-error {color:#b33a42}
-.param-source {display:grid;gap:4px;margin-top:5px;font-weight:normal}
-.param-source select {font-size:12px}
-[data-reference-parameter] {min-height:44px;white-space:normal;overflow-wrap:anywhere}
-.param-source input[readonly],input[aria-readonly=true] {background:#f0eef8;color:#65528c}
-.parameter-card.selected>rect:first-child {stroke:var(--accent,#574ee3);stroke-width:3}
-#paramResult {max-height:260px;overflow:auto;border-radius:8px;background:#f6f5fb;padding:10px}
-#paramResult:empty {display:none}
-@media(max-width:440px){.parameter-editor fieldset{padding:10px}.parameter-editor .param-pair{gap:6px}.param-source select{max-width:100%}}
+/* GEO-224：參數編輯面板。只用 app.css :root 的既有 token，不載入外部字型。 */
+
+/* ---- 共用（舊「具名規格」編輯器、匯入摺疊區、網格來源下拉都沿用） ---- */
+.parameter-editor {
+  --param-ok: #12b76a;
+  --param-wait: #98a2b3;
+  --param-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  display: grid;
+  gap: 14px;
+  padding-bottom: 20px;
+}
+.parameter-editor h2,
+.parameter-editor h3 { margin: 0; }
+.parameter-editor label { display: grid; gap: 6px; font-size: 13px; color: var(--ink); }
+.parameter-editor input,
+.parameter-editor select,
+.param-source select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px;
+  background: var(--panel);
+  color: var(--ink);
+}
+.parameter-editor button,
+.parameter-editor summary,
+.param-source button { min-height: 44px; cursor: pointer; }
+.parameter-editor p,
+.parameter-editor li { font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.param-error { color: var(--danger); }
+.param-source { display: grid; gap: 4px; margin-top: 5px; font-weight: normal; }
+.param-source select { font-size: 12px; }
+[data-reference-parameter] { min-height: 44px; white-space: normal; overflow-wrap: anywhere; }
+.param-source input[readonly],
+input[aria-readonly=true] { background: #f0eef8; color: #65528c; }
+.parameter-card.selected > rect:first-child { stroke: var(--accent); stroke-width: 3; }
+
+/* ---- 面板骨架：標頭 / 內容 / 固定頁尾 ---- */
+.parameter-editor[data-editor="card"] {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  gap: 0;
+  padding: 0;
+  min-width: 0;
+}
+.param-head {
+  display: grid;
+  gap: 8px;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.param-head-row { display: flex; align-items: center; gap: 8px; }
+.parameter-editor .param-title { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--muted); }
+.param-badge { padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; background: var(--panel-muted); color: var(--muted); }
+.param-badge[data-state="draft"],
+.param-badge[data-state="changed"] { background: #fff4e5; color: #b54708; }
+.param-badge[data-state="applied"] { background: #ecfdf3; color: #067647; }
+.parameter-editor .param-name { font-size: 18px; font-weight: 600; }
+.param-body {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  flex: 1 0 auto;
+  min-width: 0;
+  padding: 16px 20px;
+}
+.param-label { font-size: 12px; font-weight: 600; color: var(--muted); }
+.param-note,
+.param-help,
+.param-quick-hint { margin: 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
+.param-quick-hint { min-height: 18px; }
+.param-quick-hint[data-state="ok"] { color: var(--accent); }
+.param-quick-hint[data-state="error"] { color: var(--danger); }
+
+/* ---- 從範本開始 / 快速輸入 ---- */
+.param-start { display: grid; gap: 8px; }
+.param-template-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.parameter-editor .param-template {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--ink);
+  text-align: left;
+}
+.parameter-editor .param-template:hover { border-color: var(--accent); }
+.parameter-editor .param-template[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.param-template-name { font-size: 13px; font-weight: 600; }
+.param-template-sample { font-family: var(--param-mono); font-size: 11px; color: var(--muted); }
+.param-quick { display: flex; gap: 6px; align-items: stretch; }
+.param-quick input { flex: 1; font-family: var(--param-mono); font-size: 12px; }
+.parameter-editor .param-quick .btn:not(:disabled) { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ---- 欄位列表 ---- */
+.param-fields-box { display: grid; gap: 0; }
+.param-fields-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.param-count { font-size: 11px; color: var(--muted); }
+.param-fields {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+}
+.param-field {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+}
+.param-field:first-child { border-top: 0; }
+.param-field.is-active { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.param-line { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(64px, auto); gap: 8px; align-items: center; }
+.parameter-editor .param-line input { font-weight: 600; }
+.parameter-editor .param-line select { width: auto; padding: 0 6px; font-size: 12px; color: var(--muted); }
+.param-result { max-width: 130px; font-family: var(--param-mono); font-size: 12px; font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+.param-result[data-state="pending"] { font-weight: 400; color: var(--muted); }
+.param-result[data-state="error"] { color: var(--danger); }
+.param-input-line { position: relative; }
+.parameter-editor .param-input-line input { padding-right: 60px; font-family: var(--param-mono); }
+.param-unit { position: absolute; top: 50%; right: 10px; transform: translateY(-50%); font-size: 11px; color: var(--muted); pointer-events: none; }
+.param-field.is-error .param-input-line input { border-color: var(--danger); }
+.param-error-line p { margin: 0; font-size: 12px; color: var(--danger); }
+.param-error-line summary { display: flex; align-items: center; font-size: 12px; color: var(--muted); }
+.param-error-line code { display: block; padding: 8px; border-radius: 6px; background: var(--panel-muted); font-family: var(--param-mono); font-size: 11px; overflow-wrap: anywhere; }
+.param-tools { display: grid; gap: 8px; }
+.param-tools:empty { display: none; }
+.param-refs { display: grid; gap: 6px; }
+.param-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.param-chips.is-long { align-content: flex-start; max-height: 122px; overflow: auto; }
+.parameter-editor .param-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--panel);
+  font-size: 12px;
+  color: var(--ink);
+}
+.parameter-editor .param-chip:hover { border-color: var(--accent); background: var(--accent-soft); }
+.param-chip[hidden] { display: none; }
+.param-chip small { font-family: var(--param-mono); font-size: 11px; color: var(--muted); }
+.param-row-actions { display: flex; justify-content: flex-end; gap: 6px; }
+.parameter-editor .param-add {
+  justify-content: flex-start;
+  border: 1px solid var(--border);
+  border-radius: 0 0 8px 8px;
+  background: var(--panel-muted);
+  color: var(--accent);
+  font-weight: 600;
+  text-align: left;
+}
+.parameter-editor .param-add:disabled { color: var(--muted); }
+
+/* ---- 套用後的影響 / 摺疊區 ---- */
+#paramResult { display: grid; gap: 8px; }
+#paramResult[data-stale] { opacity: .55; }
+.param-impact { display: grid; margin: 0; padding: 0; list-style: none; border: 1px solid var(--border); border-radius: 8px; }
+.param-impact li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 9px 12px; border-top: 1px solid var(--border); font-size: 12px; }
+.param-impact li:first-child { border-top: 0; }
+.param-delta { font-family: var(--param-mono); color: var(--accent); text-align: right; overflow-wrap: anywhere; }
+.param-delta strong { font-weight: 600; }
+#paramResult code { display: block; padding: 8px; border-radius: 6px; background: var(--panel-muted); font-family: var(--param-mono); font-size: 11px; overflow-wrap: anywhere; }
+.param-details { font-size: 13px; color: var(--muted); }
+.param-details > summary { display: flex; align-items: center; font-size: 12px; font-weight: 600; }
+.param-details > summary::before,
+.param-error-line summary::before,
+#paramResult summary::before { content: "▸"; margin-right: 6px; font-size: 10px; }
+.param-details[open] > summary::before,
+.param-error-line details[open] > summary::before,
+#paramResult details[open] > summary::before { content: "▾"; }
+#paramResult summary { display: flex; align-items: center; font-size: 12px; color: var(--muted); }
+.param-details > :not(summary) { margin-top: 8px; }
+.param-details ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.param-detail-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ---- 固定頁尾 ---- */
+.param-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: grid;
+  flex: none;
+  gap: 8px;
+  padding: 10px 20px 12px;
+  border-top: 1px solid var(--border-strong);
+  background: var(--panel-muted);
+}
+#paramStatus { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 12px; line-height: 1.4; color: var(--ink); }
+#paramStatus.param-error { color: var(--danger); }
+.param-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--param-wait); }
+#paramStatus[data-tone="ok"] .param-dot { background: var(--param-ok); }
+#paramStatus[data-tone="error"] .param-dot { background: var(--danger); }
+.param-actions { display: flex; gap: 8px; }
+.param-actions .btn { padding: 0 12px; white-space: nowrap; }
+.parameter-editor .param-actions .primary-button { flex: 1; min-width: 0; height: auto; }
+
+/* ---- 版面：>900px 參數編輯時檢視器改為畫布右側固定欄；其他檢視器與 ≤900px 維持畫布下方 ---- */
+body.parameter-editing .sidebar-right { scroll-padding-bottom: 96px; }
+@media (min-width: 901px) {
+  body.canvas-composition.parameter-editing { --right-w: clamp(380px, 30vw, 480px); }
+  body.canvas-composition.parameter-editing .workspace { grid-template-columns: var(--left-w) minmax(0, 1fr) var(--right-w); grid-template-rows: minmax(0, 1fr); }
+  body.canvas-composition.parameter-editing .sidebar-right {
+    display: flex;
+    flex-direction: column;
+    grid-column: 3;
+    grid-row: 1;
+    max-height: none;
+    margin: 0;
+    border-width: 0 0 0 1px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  body.canvas-composition.parameter-editing .sidebar-right .inspector-content { display: flex; flex-direction: column; flex: 1 0 auto; }
+  body.canvas-composition.parameter-editing #fbButton { right: calc(var(--right-w) + 18px); }
+}
+@media (max-width: 440px) {
+  .param-head { padding: 10px 12px; }
+  .param-body { gap: 14px; padding: 12px; }
+  .param-footer { padding: 8px 12px 10px; }
+  .param-actions { gap: 6px; }
+  .param-actions .btn { padding: 0 8px; }
+  .param-source select { max-width: 100%; }
+}

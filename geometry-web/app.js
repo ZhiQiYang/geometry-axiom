@@ -8551,6 +8551,7 @@ function renderObjectList() {
 function syncCompositionLayout() {
   const active = oc.on && !oc.focus && !view3;
   document.body.classList.toggle("canvas-composition",active);
+  if (!active) document.body.classList.remove("parameter-editing");
   document.body.classList.toggle("canvas-has-inspector",active && (!!oc.selection.length || !!oc.gridSystemCreating || !!oc.parameterCreating));
   const selected = oc.sel && ocFind(oc.sel.kind,oc.sel.id);
   const grid = active && oc.selection.length === 1 && selected && (selected.kind === "grid-binding" || selected.kind === "grid-system" && selected.mode === "infinite");
@@ -8574,6 +8575,17 @@ function keepSelectedCardVisible() {
 }
 
 function renderInspector() {
+  renderInspectorBody();
+  syncParameterEditingLayout();
+}
+/* GEO-224: parameter editing (create or edit a card) puts the inspector in a right-hand column on wide screens. */
+function syncParameterEditingLayout() {
+  const pane = $("inspectorContent");
+  const editing = document.body.classList.contains("canvas-composition") && !!pane && !pane.hidden &&
+    !!pane.querySelector('#parameterEditor[data-editor="card"]');
+  document.body.classList.toggle("parameter-editing", editing);
+}
+function renderInspectorBody() {
   syncCompositionLayout();
   const pane = $("inspectorContent"); if (!pane) return;
   const empty = $("inspectorEmpty");
