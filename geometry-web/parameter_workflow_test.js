@@ -150,6 +150,9 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   check('參考線可跳回參數卡',await read(`$('paramName').value==='板⟦材⟧尺寸'`));
   /* ===== GEO-224 參數編輯面板重做：範本鈕、快速輸入、逐欄試算與錯誤、引用晶片、右側固定欄、手機尺寸 ===== */
   console.log('=== P76 GEO-224 參數編輯面板 ===');
+  /* 不丟例外的等待：失敗時由 check 帶出當下 DOM 細節，而不是死在逾時。 */
+  const softWait=async(expr,ms=6000)=>{try{await waitForUI(expr,ms);return true;}catch(e){return false;}};
+  const chipsOf=id=>`[...document.querySelectorAll('[data-param-field="${id}"] [data-insert-ref]')].map(b=>b.dataset.insertRef)`;
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
   await read(`closePanels();ParameterUI.discard();drawObjects();void 0`);
   await createCard();
@@ -158,15 +161,25 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   check('範本改三顆按鈕，選寬 × 長得 2 欄且 aria-pressed 正確',templateKinds==='single,panel,section'&&await read(`!$('paramTemplate')&&document.querySelectorAll('[data-param-field]').length===2&&[...document.querySelectorAll('[data-param-template]')].every(b=>b.getAttribute('aria-pressed')===String(b.dataset.paramTemplate==='panel'))&&[...document.querySelectorAll('[data-param-field] [data-name]')].map(e=>e.value).join()==='寬,長'`),templateKinds);
   await fill('#paramQuick','W27H33');
   const quickHint=await read(`$('paramQuickHint').textContent`);
+  const quickAria=await read(`({live:$('paramQuickHint').getAttribute('aria-live'),describedBy:$('paramParse').getAttribute('aria-describedby')})`);
+  /* R8：輸入法組字中的 Enter（isComposing／keyCode 229）不能建立欄位、也不能被 preventDefault。 */
+  const composing=await read(`(()=>{const q=$('paramQuick'),notPrevented=q.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',keyCode:229,isComposing:true,bubbles:true,cancelable:true}));return {notPrevented,names:[...document.querySelectorAll('[data-param-field] [data-name]')].map(e=>e.value).join(),quick:q.value};})()`);
+  check('輸入法組字中的 Enter 不建立欄位也不被攔截',composing.notPrevented&&composing.names==='寬,長'&&composing.quick==='W27H33',composing);
   await key('Enter','Enter',13);await sleep(150);
   check('快速輸入 W27H33 即時預告，Enter 建立 2 欄',/建立 2 欄/.test(quickHint)&&quickHint.includes('W 27')&&quickHint.includes('H 33')&&await read(`[...document.querySelectorAll('[data-param-field] [data-name]')].map(e=>e.value).join()==='W,H'&&[...document.querySelectorAll('[data-param-field] [data-input]')].map(e=>e.value).join()==='27,33'`),quickHint);
   await wait(`!$('paramConfirm').disabled`);
   const fieldResults=await read(`[...document.querySelectorAll('[data-param-field] [data-result]')].map(e=>e.dataset.state+':'+e.textContent.trim()).join('|')`);
   check('成功試算後每一欄顯示核心值',fieldResults==='ok:= 27 mm|ok:= 33 mm',fieldResults);
-  await fill('[data-param-field] [data-input]','=1/0');await wait(`!!document.querySelector('[data-error]')`);
-  const divZero=await read(`({count:document.querySelectorAll('[data-error]').length,row:document.querySelector('[data-error]').closest('[data-param-field]')?.querySelector('[data-name]').value,text:document.querySelector('[data-error]').textContent,disabled:$('paramConfirm').disabled,others:[...document.querySelectorAll('[data-param-field]:not(.is-error) [data-result]')].map(e=>e.textContent.trim()).join('|')})`);
-  await fill('[data-param-field] [data-input]','27');await wait(`!document.querySelector('[data-error]')&&!$('paramConfirm').disabled`);
-  check('=1/0 只標出錯欄、顯示除以零、不可套用，改回後恢復',divZero.count===1&&divZero.row==='W'&&divZero.text.includes('除以零')&&divZero.disabled===true&&divZero.others==='待試算',divZero);
+  await fill('[data-param-field] [data-input]','=1/0');
+  const errorShown=await softWait(`!!document.querySelector('[data-error]')`);
+  const divZero=await read(`({errorRows:[...document.querySelectorAll('[data-param-field]')].filter(r=>r.querySelector('[data-error]')).map(r=>r.querySelector('[data-name]').value),text:document.querySelector('[data-error]')?.textContent||'',alert:document.querySelector('[data-error]')?.getAttribute('role')||'',disabled:$('paramConfirm').disabled,others:[...document.querySelectorAll('[data-param-field]:not(.is-error) [data-result]')].map(e=>e.textContent.trim()).join('|'),result:$('paramResult').textContent.slice(0,240),status:$('paramStatus').textContent})`);
+  const groups=await read(`[...document.querySelectorAll('[data-param-field]')].map(r=>({role:r.getAttribute('role'),label:r.getAttribute('aria-label'),name:r.querySelector('[data-name]').value}))`);
+  await fill('[data-param-field] [data-input]','27');
+  const recovered=await softWait(`!document.querySelector('[data-error]')&&!$('paramConfirm').disabled`);
+  check('=1/0 只標出錯欄、顯示除以零、不可套用，改回後恢復',errorShown&&recovered&&divZero.errorRows.join()==='W'&&divZero.text.includes('除以零')&&divZero.disabled===true&&divZero.others==='待試算',{errorShown,recovered,...divZero});
+  await fill('[data-param-field] [data-name]','W2');
+  const renamed=await read(`(()=>{const r=document.querySelector('[data-param-field]');return {label:r.getAttribute('aria-label'),remove:r.querySelector('[data-remove]')?.getAttribute('aria-label')||'',up:r.querySelector('[data-up]')?.getAttribute('aria-label')||''};})()`);
+  check('欄位列為 group、可及名稱含欄位名且隨改名更新；錯誤有 alert、預告有 live region',groups.length===2&&groups.every(g=>g.role==='group'&&g.label==='欄位 '+g.name)&&groups[0].label!==groups[1].label&&divZero.alert==='alert'&&renamed.label==='欄位 W2'&&renamed.remove.includes('W2')&&renamed.up.includes('W2')&&quickAria.live==='polite'&&quickAria.describedBy==='paramQuickHint',{groups,renamed,quickAria,alert:divZero.alert});
   const panelNow=await read(`oc.parameters.find(p=>p.id===${panel.id}).card.fields.find(f=>f.id===${width}).value.num`);
   await ctl('[data-param-field] [data-input]');
   await ctl(`[data-param-field] [data-insert-ref="${panel.id}:${width}"]`);
@@ -176,10 +189,32 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   await read(`ParameterUI.jump('parameter',${panel.id})`);await wait(`$('paramName')?.value==='板⟦材⟧尺寸'`);
   const sectionW=section.fields.find(f=>f.name==='W').id,dependent=settings.id+':'+settings.fields[0].id;
   await ctl(`[data-param-field="${width}"] [data-input]`);
-  const widthChips=await read(`[...document.querySelectorAll('[data-param-field="${width}"] [data-insert-ref]')].map(b=>b.dataset.insertRef)`);
+  const widthChips=await read(chipsOf(width));
   await ctl(`[data-param-field="${length}"] [data-input]`);
-  const lengthChips=await read(`[...document.querySelectorAll('[data-param-field="${length}"] [data-insert-ref]')].map(b=>b.dataset.insertRef)`);
+  const lengthChips=await read(chipsOf(length));
   check('循環來源與自己不出現在晶片，其他來源仍在',!widthChips.includes(dependent)&&!widthChips.includes(panel.id+':'+width)&&widthChips.includes(panel.id+':'+length)&&widthChips.includes(section.id+':'+sectionW)&&lengthChips.includes(dependent)&&lengthChips.includes(panel.id+':'+width)&&!lengthChips.includes(panel.id+':'+length)&&await read(`document.querySelectorAll('[data-param-field] [data-insert-ref]').length===${lengthChips.length}`),{widthChips,lengthChips,dependent});
+  await ctl('#paramDiscard');
+  /* R6a：三層鏈 A→B→C。編輯 C 時 A 與 B 都是（間接）依賴 C 的來源，只看直接引用會漏掉 A。 */
+  const makeCard=async(name,text)=>{await createCard();await fill('#paramName',name);await fill('[data-input]',text);await confirm();return read(`oc.parameters.find(p=>p.name===${JSON.stringify(name)}).card`);};
+  const chainC=await makeCard('鏈C','5'),chainCKey=chainC.id+':'+chainC.fields[0].id;
+  const chainB=await makeCard('鏈B',`=@${chainCKey}+1 mm`),chainBKey=chainB.id+':'+chainB.fields[0].id;
+  const chainA=await makeCard('鏈A',`=@${chainBKey}+1 mm`),chainAKey=chainA.id+':'+chainA.fields[0].id;
+  await read(`ParameterUI.jump('parameter',${chainC.id})`);await wait(`$('paramName')?.value==='鏈C'`);
+  await ctl(`[data-param-field="${chainC.fields[0].id}"] [data-input]`);
+  const chainChips=await read(chipsOf(chainC.fields[0].id));
+  await ctl('#paramDiscard');
+  check('三層依賴鏈（A→B→C）編輯 C 時晶片排除 A、B 與自己，無關來源仍在',!chainChips.includes(chainAKey)&&!chainChips.includes(chainBKey)&&!chainChips.includes(chainCKey)&&chainChips.includes(panel.id+':'+width),{chainChips,chainAKey,chainBKey,chainCKey});
+  /* R6a：草稿裡尚未送出的引用（只存在輸入文字的 token）也要建邊。 */
+  await createCard();await ctl('[data-param-template="panel"]');
+  const draftIds=await read(`({card:ParameterUI.editingId,fields:[...document.querySelectorAll('[data-param-field]')].map(r=>Number(r.dataset.paramField))})`);
+  const [draftF1,draftF2]=draftIds.fields,draftKey1=draftIds.card+':'+draftF1,draftKey2=draftIds.card+':'+draftF2;
+  await ctl(`[data-param-field="${draftF1}"] [data-input]`);
+  const beforeEdge=await read(chipsOf(draftF1));
+  await ctl(`[data-param-field="${draftF2}"] [data-input]`);
+  await ctl(`[data-param-field="${draftF2}"] [data-insert-ref="${draftKey1}"]`);
+  await ctl(`[data-param-field="${draftF1}"] [data-input]`);
+  const afterEdge=await read(chipsOf(draftF1));
+  check('草稿內尚未送出的引用也建邊：欄 2 引用欄 1 後，欄 1 的晶片不再含欄 2',beforeEdge.includes(draftKey2)&&!afterEdge.includes(draftKey2)&&!afterEdge.includes(draftKey1),{beforeEdge,afterEdge,draftKey1,draftKey2});
   await ctl('#paramDiscard');
   /* 1280px：參數編輯時面板在畫布右側，頁尾確認鈕固定在面板可視範圍內；離開後其他檢視器仍在畫布下方。 */
   await send('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
@@ -190,6 +225,27 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   await read(`selectObject('grid-system',oc.gridSystems[0].id);void 0`);await wait(`!!document.querySelector('#inspectorContent')&&!$('inspectorContent').hidden`);
   const otherViewer=await read(`(()=>{const canvas=$('canvasViewport').getBoundingClientRect(),side=document.querySelector('.sidebar-right').getBoundingClientRect();return {editing:document.body.classList.contains('parameter-editing'),below:side.top>=canvas.bottom-1,width:side.width,canvasWidth:canvas.width};})()`);
   check('1280px 參數編輯面板在畫布右側、確認鈕固定在可視範圍；離開後其他檢視器仍在畫布下方',sideLayout.editing&&sideLayout.rightOfCanvas&&sideLayout.scrollable&&sideLayout.atTop&&sideLayout.atBottom&&sideLayout.fields===10&&!otherViewer.editing&&otherViewer.below,{sideLayout,otherViewer});
+  await read(`ParameterUI.discard();ocSetSelection([]);void 0`);
+  /* R6d：各種離開路徑都要清掉 body.parameter-editing，且其他檢視器回到畫布下方。 */
+  const editorState=`({cls:document.body.classList.contains('parameter-editing'),dom:!!document.querySelector('#inspectorContent #parameterEditor[data-editor="card"]')&&!$('inspectorContent').hidden})`;
+  const belowCanvas=`(()=>{const canvas=$('canvasViewport').getBoundingClientRect(),side=document.querySelector('.sidebar-right').getBoundingClientRect();return side.top>=canvas.bottom-1;})()`;
+  await read(`ParameterUI.jump('parameter',${panel.id})`);await wait(`$('paramName')?.value==='板⟦材⟧尺寸'&&document.body.classList.contains('parameter-editing')`);
+  await read(`selectObject('grid-system',oc.gridSystems[0].id);void 0`);await softWait(`!document.body.classList.contains('parameter-editing')`);
+  const leaveSelect={state:await read(editorState),below:await read(belowCanvas)};
+  await read(`ParameterUI.jump('parameter',${panel.id})`);await wait(`$('paramName')?.value==='板⟦材⟧尺寸'&&document.body.classList.contains('parameter-editing')`);
+  await read(`setView3(true).then(()=>void 0)`);await sleep(400);
+  const inView3=await read(editorState);
+  await read(`setView3(false).then(()=>void 0)`);await sleep(500);
+  const backFromView3=await read(editorState);
+  await read(`ParameterUI.discard();ocSetSelection([]);void 0`);
+  await createCard();await fill('#paramName','離開確認');
+  await read(`window.__origConfirm=window.confirm;window.confirm=()=>true;void 0`);
+  const left=await read(`ParameterUI.mayLeave()`);
+  await read(`window.confirm=window.__origConfirm;void 0`);
+  await softWait(`!document.body.classList.contains('parameter-editing')`);
+  await read(`selectObject('grid-system',oc.gridSystems[0].id);void 0`);await sleep(300);
+  const leaveConfirm={left,state:await read(editorState),below:await read(belowCanvas)};
+  check('離開參數編輯（選別的物件、切三視圖再回來、確認離開草稿）都清掉 parameter-editing 且其他檢視器在畫布下方',!leaveSelect.state.cls&&!leaveSelect.state.dom&&leaveSelect.below&&!inView3.cls&&backFromView3.cls===backFromView3.dom&&leaveConfirm.left===true&&!leaveConfirm.state.cls&&leaveConfirm.below,{leaveSelect,inView3,backFromView3,leaveConfirm});
   await read(`ParameterUI.discard();ocSetSelection([]);void 0`);
   /* 390px：沿用畫布下方面板，無水平溢出，面板內所有可點控制至少 44px。 */
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
@@ -202,19 +258,81 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   await ctl('#paramUsage > summary');await ctl('#paramExchange > summary');await ctl(`[data-param-field="${width}"] [data-input]`);
   const cardAudit=await read(controlAudit);
   check('390px 參數編輯無水平溢出、面板內可點控制皆 ≥44px',draftAudit.small.length===0&&cardAudit.small.length===0&&!draftAudit.pageOverflow&&!cardAudit.pageOverflow&&!draftAudit.editorOverflow&&!cardAudit.editorOverflow&&!draftAudit.sideOverflow&&!cardAudit.sideOverflow&&draftAudit.count>12&&cardAudit.count>12,{draftAudit,cardAudit});
+  /* R7：窄畫面參數編輯時底部面板放寬，欄位區至少約 240px 可視，確認鈕在可視區；其他檢視器高度不變。 */
+  await ctl('#paramUsage > summary');await ctl('#paramExchange > summary');await editorTop();
+  const sheet=await read(`(()=>{const side=document.querySelector('.sidebar-right'),s=side.getBoundingClientRect(),f=$('paramFields').getBoundingClientRect(),foot=document.querySelector('.param-footer').getBoundingClientRect(),c=$('paramConfirm').getBoundingClientRect(),canvas=$('canvasViewport').getBoundingClientRect();side.scrollTop=0;const top=Math.max(f.top,s.top),bottom=Math.min(f.bottom,foot.top,s.bottom);return {fieldsVisible:Math.round(bottom-top),confirmVisible:c.top>=s.top&&c.bottom<=s.bottom&&c.bottom<=innerHeight,sheetHeight:Math.round(s.height),canvasHeight:Math.round(s.top-canvas.top),maxHeight:getComputedStyle(side).maxHeight};})()`);
+  await read(`ParameterUI.discard();selectObject('grid-system',oc.gridSystems[0].id);void 0`);await sleep(400);
+  const otherSheet=await read(`(()=>{const side=document.querySelector('.sidebar-right');return {maxHeight:getComputedStyle(side).maxHeight,height:Math.round(side.getBoundingClientRect().height)};})()`);
+  check('390px 參數編輯的底部面板放寬：欄位區可視 ≥240px、確認鈕在可視區、畫布仍可見；其他檢視器高度不變',sheet.fieldsVisible>=240&&sheet.confirmVisible&&sheet.canvasHeight>=150&&!cardAudit.pageOverflow&&otherSheet.maxHeight==='310px'&&otherSheet.height<=311,{sheet,otherSheet});
   await read(`ParameterUI.discard();ocSetSelection([]);void 0`);
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
-  /* ===== GEO-224 畫布草稿卡：建立新卡期間虛線草稿、跟著欄位更新、不可選取、不進保存內容 ===== */
-  const sceneOf=`(async()=>{const b=await ReferenceWorkspace.exportBytes();const p=await GeometryProject.unpack(b,fflate);return p.scene;})()`;
+  /* ===== GEO-224 畫布草稿卡：建立新卡期間虛線草稿、跟著欄位更新、不可選取；草稿還在畫布上時保存內容（scene dump）不變 ===== */
+  const dumpOf=`api('dump').then(r=>r.text)`;
   await read(`ParameterUI.discard();ocSetSelection([]);void 0`);
-  const sceneBeforeDraft=await read(sceneOf),cardsBeforeDraft=await read(`oc.parameters.length`),ocardsBeforeDraft=await read(`document.querySelectorAll('#oroot .ocard').length`);
+  const dumpBefore=await read(dumpOf),cardsBefore=await read(`oc.parameters.length`);
   await createCard();
   await fill('#paramName','草稿示意');await ctl('[data-param-template="panel"]');
   await wait(`!$('paramConfirm').disabled&&[...document.querySelectorAll('.parameter-card.is-draft .draft-value')].map(e=>e.textContent).join()==='915 mm,1830 mm'`);
-  const draftInfo=await read(`(()=>{const d=document.querySelector('.parameter-card.is-draft'),r=d.getBoundingClientRect(),v=$('canvasViewport').getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {count:document.querySelectorAll('.parameter-card.is-draft').length,text:d.textContent,dashed:getComputedStyle(d.querySelector('rect')).strokeDasharray!=='none',inLayer:!!d.closest('#cardLayer'),asCard:d.classList.contains('ocard'),passThrough:getComputedStyle(d).pointerEvents==='none'&&!d.contains(hit),visible:r.right>v.left&&r.left<v.right&&r.bottom>v.top&&r.top<v.bottom,cards:oc.parameters.length,ocards:document.querySelectorAll('#oroot .ocard').length};})()`);
+  const draftInfo=await read(`(()=>{const d=document.querySelector('.parameter-card.is-draft'),r=d.getBoundingClientRect(),v=$('canvasViewport').getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {count:document.querySelectorAll('.parameter-card.is-draft').length,text:d.textContent,dashed:getComputedStyle(d.querySelector('rect')).strokeDasharray!=='none',passThrough:getComputedStyle(d).pointerEvents==='none'&&!d.contains(hit),visible:r.right>v.left&&r.left<v.right&&r.bottom>v.top&&r.top<v.bottom,cards:oc.parameters.length,selection:oc.selection.length};})()`);
+  const dumpDuring=await read(dumpOf);
   await fill('#paramName','草稿改名');await wait(`document.querySelector('.parameter-card.is-draft').textContent.includes('草稿改名')`);
   await ctl('#paramDiscard');await wait(`!document.body.classList.contains('parameter-editing')`);
   const afterDraft=await read(`({drafts:document.querySelectorAll('.parameter-card.is-draft').length,cards:oc.parameters.length})`);
-  check('建立新卡時畫布有虛線草稿卡、跟著欄位更新；捨棄後消失且保存內容不變',draftInfo.count===1&&draftInfo.text.includes('草稿示意')&&draftInfo.text.includes('草稿')&&draftInfo.text.includes('寬')&&draftInfo.dashed&&!draftInfo.inLayer&&!draftInfo.asCard&&draftInfo.passThrough&&draftInfo.visible&&draftInfo.cards===cardsBeforeDraft&&draftInfo.ocards===ocardsBeforeDraft&&afterDraft.drafts===0&&afterDraft.cards===cardsBeforeDraft&&await read(sceneOf)===sceneBeforeDraft,{draftInfo,afterDraft,cardsBeforeDraft});
+  const dumpAfter=await read(dumpOf);
+  check('建立新卡時畫布有虛線草稿卡、跟著欄位更新；草稿在畫布上時保存內容不變，捨棄後消失',draftInfo.count===1&&draftInfo.text.includes('草稿示意')&&draftInfo.text.includes('草稿')&&draftInfo.text.includes('寬')&&draftInfo.dashed&&draftInfo.passThrough&&draftInfo.visible&&draftInfo.cards===cardsBefore&&draftInfo.selection===0&&dumpDuring===dumpBefore&&afterDraft.drafts===0&&afterDraft.cards===cardsBefore&&dumpAfter===dumpBefore,{draftInfo,afterDraft,cardsBefore,sceneChangedDuring:dumpDuring!==dumpBefore,sceneChangedAfter:dumpAfter!==dumpBefore});
+  /* R1：草稿卡位置＝確認後真卡位置，且完整落在未被右欄遮住的畫布可視區內（畫布上已有多張卡）。 */
+  await send('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
+  await read(`ocSetSelection([]);oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();void 0`);
+  const cardsOnCanvas=await read(`oc.parameters.length`);
+  await createCard();
+  await fill('#paramName','位置一致');await fill('[data-input]','11');
+  await wait(`!!document.querySelector('.parameter-card.is-draft')`);
+  const draftAt=await read(`(()=>{const d=document.querySelector('.parameter-card.is-draft'),m=d.transform.baseVal.consolidate().matrix,r=d.getBoundingClientRect(),v=$('canvasViewport').getBoundingClientRect();return {cx:m.e,cy:m.f,left:r.left,right:r.right,top:r.top,bottom:r.bottom,canvasLeft:v.left,canvasRight:v.right,canvasTop:v.top,canvasBottom:v.bottom,editing:document.body.classList.contains('parameter-editing')};})()`);
+  await confirm();await wait(`oc.sel?.kind==='parameter'&&oc.parameters.find(p=>p.id===oc.sel.id)?.name==='位置一致'`);
+  const realAt=await read(`(()=>{const p=oc.parameters.find(p=>p.name==='位置一致');return {id:p.id,cx:p.cx,cy:p.cy};})()`);
+  check('草稿卡位置等於確認後真卡位置，且完整落在未被右欄遮住的畫布內',cardsOnCanvas>=1&&draftAt.editing&&Math.abs(draftAt.cx-realAt.cx)<=1&&Math.abs(draftAt.cy-realAt.cy)<=1&&draftAt.left>=draftAt.canvasLeft-1&&draftAt.right<=draftAt.canvasRight+1&&draftAt.top>=draftAt.canvasTop-1&&draftAt.bottom<=draftAt.canvasBottom+1,{draftAt,realAt,cardsOnCanvas});
+  /* R2：卡片放在畫布右緣，選取進入參數編輯（畫布變窄）後，選中的卡不能被右側欄蓋住。 */
+  await read(`(async()=>{ParameterUI.discard();ocSetSelection([]);oc.zoom=1;oc.panX=0;oc.panY=0;ocApply();await api('line canvas-pos parameter ${realAt.id} '+(Math.round($('canvasViewport').clientWidth)-330)+' 200');await renderObjects();})()`);
+  const cardRight=`(()=>{const c=document.querySelector('.parameter-card[data-id="${realAt.id}"]');return c?c.getBoundingClientRect().right:-1;})()`;
+  const rightBefore=await read(cardRight);
+  await read(`selectObject('parameter',${realAt.id});void 0`);await softWait(`document.body.classList.contains('parameter-editing')`);await sleep(300);
+  const rightAfter=await read(cardRight),sideLeft=await read(`document.querySelector('.sidebar-right').getBoundingClientRect().left`);
+  check('選取畫布右緣的參數卡進入編輯後，卡片不被右側欄遮住',rightBefore>sideLeft&&rightAfter>0&&rightAfter<=sideLeft,{rightBefore,rightAfter,sideLeft});
+  await read(`ParameterUI.discard();ocSetSelection([]);void 0`);
+  /* R6d：特殊字元（HTML、引號、括號、 -> ）只當文字顯示，且錯誤歸屬不標錯欄。 */
+  const nasty='<img src=x onerror=window.__xss=1>"]';
+  await createCard();await fill('#paramName',nasty);
+  await fill('[data-name]','x -> [5:1 y');await fill('[data-input]','=1/0');
+  await ctl('#paramAdd');
+  const nastyErr=await softWait(`!!document.querySelector('[data-error]')||$('paramResult').textContent.includes('除以零')`);
+  const nastyInfo=await read(`({imgs:document.querySelectorAll('#parameterEditor img,#oroot img,#inspectorContent img').length,xss:window.__xss===undefined,name:$('paramName').value,draft:document.querySelector('.parameter-card.is-draft')?.textContent||'',errorRows:[...document.querySelectorAll('[data-param-field]')].filter(r=>r.querySelector('[data-error]')).map(r=>r.querySelector('[data-name]').value),result:$('paramResult').textContent})`);
+  await fill('[data-input]','3');
+  const nastyOk=await softWait(`!$('paramConfirm').disabled`);
+  const nastyStatus=await read(`$('paramStatus').textContent`);
+  if(nastyOk)await confirm();
+  await createCard();await ctl('[data-param-field] [data-input]');
+  const nastyChips=await read(`({imgs:document.querySelectorAll('#parameterEditor img').length,texts:[...document.querySelectorAll('[data-param-field] [data-insert-ref]')].map(b=>b.textContent)})`);
+  await ctl('#paramDiscard');
+  check('特殊字元只當文字：面板、草稿卡、晶片與錯誤行沒有多出元素或執行程式，且不標錯欄',nastyErr&&nastyInfo.imgs===0&&nastyInfo.xss&&nastyInfo.name===nasty&&nastyInfo.draft.includes('<img src=x')&&!nastyInfo.errorRows.includes('欄位 3')&&(nastyInfo.errorRows.length>0||nastyInfo.result.includes('除以零'))&&nastyOk&&nastyChips.imgs===0&&nastyChips.texts.some(t=>t.includes(nasty)),{nastyInfo,nastyOk,nastyStatus,nastyChips});
+  /* R6d：過期回應回來後不覆寫逐欄結果。 */
+  await createCard();
+  await read(`window.__origPreview2=EngineeringAdapter.preview;window.__hold2=true;window.__release2=null;EngineeringAdapter.preview=async request=>{const result=await window.__origPreview2(request);if(window.__hold2){window.__hold2=false;return new Promise(resolve=>{window.__release2=()=>resolve(result);});}return result;};void 0`);
+  await fill('[data-input]','7');await wait(`!!window.__release2`);
+  await fill('[data-input]','8');await wait(`document.querySelector('[data-param-field] [data-result]').textContent.includes('8 mm')`);
+  await read(`window.__release2();EngineeringAdapter.preview=window.__origPreview2;void 0`);await sleep(250);
+  const staleResult=await read(`({result:document.querySelector('[data-param-field] [data-result]').textContent.trim(),draft:document.querySelector('.parameter-card.is-draft .draft-value')?.textContent||'',enabled:!$('paramConfirm').disabled})`);
+  check('過期回應回來後逐欄結果與草稿卡仍是新值',staleResult.result==='= 8 mm'&&staleResult.draft==='8 mm'&&staleResult.enabled,staleResult);
+  await ctl('#paramDiscard');
+  /* R4／R5：核心訊息解析（純函式）。 */
+  const card5={id:5,fields:[{id:1},{id:2},{id:3}]};
+  const explain=msgs=>read(`(()=>{const f=ParameterUI.explainFailure(${JSON.stringify(msgs.map(m=>({message:m})))},${JSON.stringify(card5)}),d=document.createElement('div');d.innerHTML=ParameterUI.failureMarkup(f);return {fieldId:f.fieldId,short:f.short,rest:f.rest.length,markup:d.textContent};})()`);
+  const twoViolations=await explain(['[5:2 板.寬] -> I38 DIV_ZERO: division by zero','網格 3 拒絕：cell 超出邊界']);
+  const twoReversed=await explain(['網格 3 拒絕：cell 超出邊界','[5:2 板.寬] -> I38 DIV_ZERO: division by zero']);
+  check('多筆違規：歸屬本卡欄位的那筆在該欄，其餘每一筆仍逐筆列在 #paramResult',twoViolations.fieldId===2&&twoViolations.short==='除以零'&&twoViolations.rest===1&&twoViolations.markup.includes('網格 3 拒絕')&&twoReversed.fieldId===2&&twoReversed.rest===1&&twoReversed.markup.includes('網格 3 拒絕'),{twoViolations,twoReversed});
+  const nested=await explain(['[7:1 x[5:2 y.z] -> I38 DIV_ZERO: division by zero']);
+  const trap=await explain(['[5:2 板.寬] -> [7:1 名含 I38 CYCLE 字樣.z] -> I38 DIV_ZERO: division by zero']);
+  const elided=await explain(['[5:1 a.b] -> ... -> [5:3 a.d] -> I38 UNIT: unit mismatch']);
+  const arrowName=await explain(['[7:1 甲 -> [5:2 乙.z] -> I38 DIV_ZERO: division by zero']);
+  check('欄位歸屬只認分節開頭、錯誤碼只取根因段；名稱含 ` -> ` 寧可不歸屬',nested.fieldId===null&&trap.fieldId===2&&trap.short==='除以零'&&elided.fieldId===3&&elided.short==='單位不合'&&arrowName.fieldId===null,{nested,trap,elided,arrowName});
   check('無未捕捉瀏覽器例外',exceptionCount()===errors);
 };

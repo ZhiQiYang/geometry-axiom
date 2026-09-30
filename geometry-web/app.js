@@ -2085,11 +2085,12 @@ function drawObjects() {
   drawOcEdges(eg, visSpaces, visFaces, visCols, visBeams, labels);
   drawGridRelations(eg, labels, visibleKeys);
   window.ParameterUI?.relations(eg, visibleKeys);
-  window.ParameterUI?.drawDraft(oroot);
   updateEdgeLabels();
   drawCrumb();
   renderObjectList();
   renderInspector();
+  /* 草稿卡要在檢視器版面（右側欄）定案之後才排位置，才會與確認後的真卡同一套欄寬。 */
+  window.ParameterUI?.drawDraft(oroot);
   drawMinimap();
   renderSelectionSummary();
   $("emptyState").hidden = connection.phase !== "ready" ||
@@ -8562,6 +8563,11 @@ function syncCompositionLayout() {
 function keepSelectedCardVisible() {
   if (!oc.on || oc.focus || view3 || !oc.sel) return;
   const o = ocFind(oc.sel.kind,oc.sel.id); if (!o) return;
+  keepObjectVisible(o);
+}
+/* 平移視圖讓 {cx,cy} 的卡片（含尚未存在的草稿卡）完整落在可視區內。 */
+function keepObjectVisible(o) {
+  if (!oc.on || oc.focus || view3) return;
   const box=cardBox(o),rect=ocv.getBoundingClientRect(),margin=24;
   if (!rect.width || !rect.height) return;
   const left=box.x*oc.zoom+oc.panX,top=box.y*oc.zoom+oc.panY;
@@ -8576,8 +8582,11 @@ function keepSelectedCardVisible() {
 }
 
 function renderInspector() {
+  const wasEditing = document.body.classList.contains("parameter-editing");
   renderInspectorBody();
   syncParameterEditingLayout();
+  /* 右側欄使畫布變窄：剛進入參數編輯時，選中的卡不能被欄蓋住。 */
+  if (!wasEditing && document.body.classList.contains("parameter-editing")) keepSelectedCardVisible();
 }
 /* GEO-224: parameter editing (create or edit a card) puts the inspector in a right-hand column on wide screens. */
 function syncParameterEditingLayout() {

@@ -95,31 +95,55 @@ window.ParameterUI = (() => {
     'UNSUPPORTED/CAPACITY': '超過容量上限',
     'UNSUPPORTED/PRECISION': '超過可表示的精度'
   };
+  /* 核心訊息格式：`[pid:fid 卡.欄] -> [pid:fid …] -> … -> 根因`，過長時中段以 `...` 省略（parameters.inc）。
+     只認「分節開頭」的 `[pid:fid `；分節被名稱裡的 ` -> ` 切歪時，寧可歸屬不到也不標錯欄。錯誤碼只從根因段（最後一節）取。 */
+  const SECTION_SEPARATOR = ' -> ';
+  const CODE_AT_START = /^(I3[89] [A-Z_]+|UNSUPPORTED\/[A-Z_]+)/;
+  const messageSections = message => String(message).split(SECTION_SEPARATOR);
   function errorCode(message) {
-    const parts = String(message).split('->');
-    for (const part of [parts[parts.length - 1], String(message)]) {
-      const found = [...part.matchAll(/I3[89] [A-Z_]+|UNSUPPORTED\/[A-Z_]+/g)].pop();
-      if (found) return found[0];
-    }
-    return null;
+    const sections = messageSections(message);
+    const found = CODE_AT_START.exec(sections[sections.length - 1].trim());
+    return found ? found[1] : null;
   }
   function errorText(message) {
     const text = String(message || '');
     const code = errorCode(text);
     if (code && ERROR_TEXT[code]) return ERROR_TEXT[code];
-    return text.split('->').pop().trim() || '核心拒絕這次變更';
+    return text.trim() || '核心拒絕這次變更';
   }
-  /* 核心 fail-fast：訊息前綴 `[pid:fid 卡.欄] -> … -> 根因`，取最後一個屬於本卡的欄位當出錯欄；解析不到就不硬猜。 */
-  function failureOf(diagnostics, card) {
-    const messages = (diagnostics || []).map(d => String(d?.message ?? d));
-    for (const message of messages) {
-      const own = [...message.matchAll(/\[(\d+):(\d+)[\s\]]/g)]
-        .map(m => [Number(m[1]), Number(m[2])])
-        .filter(([parameterId, fieldId]) => parameterId === card.id && card.fields.some(f => f.id === fieldId))
-        .pop();
-      if (own) return {fieldId: own[1], short: errorText(message), raw: message};
+  /* 這筆訊息路徑上最後一個屬於本卡的欄位 id；不屬於本卡、或路徑切歪時回傳 null。 */
+  function ownField(message, card) {
+    const sections = messageSections(message);
+    let own = null;
+    for (const [index, section] of sections.entries()) {
+      if (section === '...') continue;
+      const last = index === sections.length - 1;
+      const hit = /^\[(\d+):(\d+) .*\]$/.exec(section) || (last ? /^I38 GEOMETRY: \[(\d+):(\d+) /.exec(section) : null);
+      if (!hit) {
+        if (last) continue;
+        return null;
+      }
+      if (Number(hit[1]) === card.id && card.fields.some(f => f.id === Number(hit[2]))) own = Number(hit[2]);
     }
-    return {fieldId: null, short: errorText(messages[0]), raw: messages.join('\n')};
+    return own;
+  }
+  /* 歸屬到本卡欄位的那一筆顯示在該欄；其餘每一筆違規都留在 rest，由 #paramResult 逐筆列出，不丟資訊。 */
+  function explainFailure(diagnostics, card) {
+    const items = (diagnostics || []).map(d => String(d?.message ?? d));
+    const attributed = items.findIndex(message => ownField(message, card) != null);
+    const first = attributed >= 0 ? items[attributed] : (items[0] ?? '');
+    return {
+      fieldId: attributed >= 0 ? ownField(first, card) : null,
+      short: errorText(first),
+      raw: first,
+      rest: items.filter((_, index) => index !== attributed).map(message => ({short: errorText(message), raw: message}))
+    };
+  }
+  const violationMarkup = item => `<div class="param-violation"><p class="param-error">${esc(item.short)}</p><details><summary>核心原始訊息</summary><code>${esc(item.raw)}</code></details></div>`;
+  function failureMarkup(failure) {
+    const note = failure.fieldId != null ? '<p class="param-note">有欄位無法試算，修正後才會列出影響。</p>' : '';
+    const items = failure.rest.map(violationMarkup).join('');
+    return note + (items || (failure.fieldId == null ? violationMarkup({short: '核心拒絕這次變更', raw: ''}) : ''));
   }
   function resultView(entry) {
     if (entry?.status === 'ok') {
@@ -174,6 +198,7 @@ window.ParameterUI = (() => {
     if (!s.draftPos) {
       const [cx, cy] = nextCardPosition({kind: 'parameter', card: s.card}, ocAllObjects().filter(o => o.hasPos).map(cardBox));
       s.draftPos = {cx, cy};
+      keepObjectVisible({kind: 'parameter', cx, cy});
     }
     return s.draftPos;
   }
@@ -221,17 +246,23 @@ window.ParameterUI = (() => {
     badge.dataset.state = state;
     badge.textContent = text;
   }
+  /* 欄位改名後，群組與列內按鈕的可及名稱同步更新。 */
+  function syncRowLabels(row, name) {
+    row.setAttribute('aria-label', `欄位 ${name}`);
+    row.querySelector('[data-up]')?.setAttribute('aria-label', `上移欄位 ${name}`);
+    row.querySelector('[data-remove]')?.setAttribute('aria-label', `移除欄位 ${name}`);
+  }
   function paintUnit(row, s) {
     const f = s.card.fields.find(f => f.id === Number(row.dataset.paramField));
     const unit = row.querySelector('[data-unit]');
     if (f && unit) unit.textContent = unitLabel(f);
   }
   function errorLineHtml(failure) {
-    return `<div class="param-error-line" data-error="${esc(failure.raw)}"><p>${esc(failure.short)}</p><details><summary>核心原始訊息</summary><code>${esc(failure.raw)}</code></details></div>`;
+    return `<div class="param-error-line" role="alert" data-error="${esc(failure.raw)}"><p>${esc(failure.short)}</p><details><summary>核心原始訊息</summary><code>${esc(failure.raw)}</code></details></div>`;
   }
   function fieldRowHtml(s, f) {
     const view = resultView(s.results.get(f.id)), failed = view.state === 'error' && !!s.failure;
-    return `<div class="param-field${failed ? ' is-error' : ''}" data-param-field="${f.id}">
+    return `<div class="param-field${failed ? ' is-error' : ''}" data-param-field="${f.id}" role="group" aria-label="欄位 ${esc(f.name)}">
       <div class="param-line">
         <input data-name value="${esc(f.name)}" aria-label="欄位名稱" autocomplete="off" spellcheck="false">
         <select data-type aria-label="種類">${typeOptions(f.type)}</select>
@@ -253,8 +284,8 @@ window.ParameterUI = (() => {
       <div class="param-chips${filter ? ' is-long' : ''}">${chips || '<span class="param-note">沒有可引用的欄位</span>'}</div>
     </div>
     <div class="param-row-actions">
-      <button type="button" class="btn" data-up aria-label="上移欄位">上移</button>
-      <button type="button" class="btn danger" data-remove>移除</button>
+      <button type="button" class="btn" data-up aria-label="上移欄位 ${esc(s.card.fields.find(f => f.id === fieldId)?.name)}">上移</button>
+      <button type="button" class="btn danger" data-remove aria-label="移除欄位 ${esc(s.card.fields.find(f => f.id === fieldId)?.name)}">移除</button>
     </div>`;
   }
   /* 選中列（焦點在列內任一控制）才展開引用晶片與上移／移除；失焦不收合，避免點按鈕時版面位移。 */
@@ -392,7 +423,7 @@ window.ParameterUI = (() => {
       }));
       return;
     }
-    s.failure = failureOf(p.diagnostics, s.card);
+    s.failure = explainFailure(p.diagnostics, s.card);
     s.results = new Map(s.card.fields.map(f => [f.id, s.failure.fieldId === f.id ? {status: 'error'} : {status: 'pending'}]));
   }
   function changeRows(s, p) {
@@ -421,11 +452,8 @@ window.ParameterUI = (() => {
     return IMPACT_TITLE + `<p class="param-note">${uses.length ? '直接使用處：' + esc(uses.map(u => u.label).join('、')) : '目前沒有物件引用這張卡。'}</p>`;
   }
   function failureHtml(s, p) {
-    const failure = s.previewKind === 'put' ? s.failure : null;
-    if (failure?.fieldId != null) return '<p class="param-note">有欄位無法試算，修正後才會列出影響。</p>';
-    const messages = (p.diagnostics || []).map(d => d.message || d);
-    const short = failure?.short ?? errorText(messages[0]);
-    return `<p class="param-error">${esc(short)}</p><details><summary>核心原始訊息</summary><code>${esc(messages.join('\n'))}</code></details>`;
+    const failure = s.previewKind === 'put' && s.failure ? s.failure : explainFailure(p.diagnostics, {id: null, fields: []});
+    return failureMarkup(failure);
   }
   function impactHtml(s, p) {
     if (!p.valid) return IMPACT_TITLE + failureHtml(s, p);
@@ -458,6 +486,8 @@ window.ParameterUI = (() => {
   }
   async function preview(s, quiet = false, operations = null) {
     if (!current(s) || s.busy) return;
+    /* 明確要求試算時，撤掉尚在防抖等待的自動試算：否則它稍後又建一個候選，讓剛拿到的確認 token 失效。 */
+    if (!quiet) clearTimeout(timer);
     if (operations) {
       clearTimeout(timer);
       s.generation++;
@@ -499,6 +529,8 @@ window.ParameterUI = (() => {
       const id = s.card.id, context = s.context;
       await EngineeringAdapter.confirm({token: p.token});
       if (state !== s || context !== ReferenceWorkspace.context()) return;
+      /* 真卡落在草稿卡的位置（同一份座標，不受確認前平移或欄寬變化影響）。 */
+      if (s.fresh && s.draftPos) await api(`line canvas-pos parameter ${id} ${s.draftPos.cx} ${s.draftPos.cy}`);
       state = null;
       oc.parameterCreating = false;
       clearTimeout(timer);
@@ -524,8 +556,8 @@ window.ParameterUI = (() => {
     const starter = s.fresh ? `<section class="param-start" aria-label="從範本開始">
         <span class="param-label">從範本開始</span>
         <div class="param-template-grid">${Object.entries(TEMPLATES).map(([kind, t]) => `<button type="button" class="param-template" data-param-template="${kind}" aria-pressed="${s.template === kind}"><span class="param-template-name">${esc(t.label)}</span><span class="param-template-sample">${esc(t.sample)}</span></button>`).join('')}</div>
-        <div class="param-quick"><input id="paramQuick" aria-label="快速輸入" placeholder="快速輸入：(915,1830) 或 W27H33" autocomplete="off" spellcheck="false"><button type="button" class="btn" id="paramParse" disabled>建立欄位</button></div>
-        <p id="paramQuickHint" class="param-quick-hint"></p>
+        <div class="param-quick"><input id="paramQuick" aria-label="快速輸入" placeholder="快速輸入：(915,1830) 或 W27H33" autocomplete="off" spellcheck="false"><button type="button" class="btn" id="paramParse" disabled aria-describedby="paramQuickHint">建立欄位</button></div>
+        <p id="paramQuickHint" class="param-quick-hint" aria-live="polite"></p>
       </section>` : '';
     const usageBox = !s.fresh ? `<details id="paramUsage" class="param-details"><summary>使用關係與交換</summary>
         <ul>${usage(c.id).map(u => `<li><button type="button" class="btn" data-param-use="${u.kind}:${u.id}">${esc(u.label)}</button></li>`).join('') || '<li>尚未被其他物件引用</li>'}</ul>
@@ -637,6 +669,7 @@ window.ParameterUI = (() => {
         capture(s);
         const row = target.closest('[data-param-field]');
         if (row) paintUnit(row, s);
+        if (row && target.matches('[data-name]')) syncRowLabels(row, target.value);
         invalidate(s);
       } else if (target.matches('#paramQuick')) paintQuick();
       else if (target.matches('[data-ref-filter]')) {
@@ -654,7 +687,7 @@ window.ParameterUI = (() => {
       e.target.dataset.caretEnd = e.target.selectionEnd;
     });
     root.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && e.target.id === 'paramQuick') {
+      if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229 && e.target.id === 'paramQuick') {
         e.preventDefault();
         applyQuick(s);
       }
@@ -804,5 +837,5 @@ window.ParameterUI = (() => {
   document.addEventListener('click',e=>{if(e.target.closest('#parameterSelectionExport'))exportPackage(oc.selection.filter(s=>s.kind==='parameter').map(s=>s.id));});
   window.addEventListener('project-info-changed',()=>{if(state&&!current(state)){clearTimeout(timer);state=null;paintDraft(null);oc.parameterCreating=false;++serial;}});
   $('btnNewParameter').onclick=()=>{ $('createObjectPop').hidden=true;create(); };
-  return {value,errorText,errorCodes:ERROR_TEXT,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,get pending(){return !!state&&(state.changed||state.busy);},get editingId(){return state?.card.id;}};
+  return {value,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,get pending(){return !!state&&(state.changed||state.busy);},get editingId(){return state?.card.id;}};
 })();
