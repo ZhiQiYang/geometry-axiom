@@ -1,17 +1,15 @@
 /* Real browser controls, native candidate read-back, and portable project bytes. */
+const cdp=require('./cdp_helpers.js');
 module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const fs=require('fs'),path=require('path'),os=require('os'),errors=exceptionCount();
-  const check=(name,ok,detail)=>{console.log('P76 '+name,ok===true?'✓':'✗',ok?'':JSON.stringify(detail));if(ok!==true)throw Error('P76 '+name);};
-  const read=eval_,wait=expr=>waitForUI(expr,15000);
+  const check=cdp.makeCheck({prefix:'P76 ',throwOnFail:true,detail:'none',failMessage:name=>'P76 '+name});
+  const read=eval_,wait=cdp.makeWait(waitForUI,15000);
   const editorTop=async()=>{await read(`(()=>{let n=$('parameterEditor');while(n){n.scrollTop=0;n=n.parentElement;}})()`);};
-  const key=async(k,code,n,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:k,code,windowsVirtualKeyCode:n,modifiers});};
-  const ctl=async selector=>{
-    if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await ctl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
-    await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'center'});void 0`);await sleep(130);
-    const p=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y)),disabled:e.disabled,w:r.width,h:r.height};})()`);
-    if(!p.hit||p.disabled||!p.w||!p.h)throw Error('P76 unreachable '+selector+' '+JSON.stringify(p));await click(p.x,p.y);await sleep(120);
-  };
-  const fill=async(selector,text)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(text)});};
+  const key=cdp.makeKey({send,sleep});
+  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:1,pollMs:130,settleMs:120,missing:'missing ',
+    unreachable:(selector,p)=>'P76 unreachable '+selector+' '+JSON.stringify(p),
+    before:cdp.openCreateObjectMenu(read,selector=>ctl(selector))});
+  const fill=cdp.makeFill({ctl,key,send,sleep});
   // Creating fetches capabilities and a new ID before replacing the old editor.
   // Its existing name input alone does not prove the new form is ready.
   const createCard=async()=>{await ctl('#btnNewParameter');await wait(`!!$('paramQuick') && $('paramName')?.value==='參數'`);};

@@ -3,28 +3,23 @@
  * GEOMETRY_PROJECT_AUDIT_ONLY=1 node geometry-web/cdp_test.js
  * Always use an isolated server/profile; these fixtures replace that test world.
  */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function projectAudit({send,eval_,sleep,click,waitForUI,exceptionCount}) {
   console.log('=== P68. 共用基準、參考線來源與角材定位回填 ===');
   const errors=exceptionCount(), fs=require('fs'),path=require('path');
-  const check=(name,ok,detail=ok)=>{console.log('P68 '+name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));if(ok!==true)throw Error('P68 assertion failed: '+name+' '+JSON.stringify(detail));};
-  const read=async expression=>{const v=await eval_(expression);if(v?.__err)throw Error(v.__err);return v;};
+  const check=cdp.makeCheck({prefix:'P68 ',throwOnFail:true});
+  const read=cdp.makeRead(eval_);
   const wait=async(expression,label=expression)=>{await waitForUI(expression,15000);if(await read(expression)!==true)throw Error('Audit timeout: '+label);};
-  const ctl=async selector=>{
-    await wait(`!!document.querySelector(${JSON.stringify(selector)})`,'control rendered '+selector);
-    await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'center'})`);
-    let p;
-    // Native dialogs and nested scroll panes need one rendered frame after scrolling.
-    for(let attempt=0;attempt<8;attempt++){
-      await sleep(80);
-      p=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,w:r.width,h:r.height,hit:e.contains(h),hitElement:h?.tagName+'#'+h?.id,disabled:!!e.disabled};})()`);
-      if(p.hit&&!p.disabled&&p.w&&p.h)break;
-    }
-    if(!p.hit||p.disabled||!p.w||!p.h)throw Error('Audit control unreachable '+selector+' '+JSON.stringify(p));
-    await click(p.x,p.y);await sleep(180);
-    if(selector.startsWith('[data-edit-guide='))await wait(`!!document.querySelector('#guide-editor[open]')`,'guide source editor opened');
-  };
-  const key=async(key,code,vk,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});await sleep(180);};
-  const fill=async(selector,value)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(value)});await sleep(60);};
+  // Native dialogs and nested scroll panes need one rendered frame after scrolling (pollMs is slept before each probe).
+  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:8,pollMs:80,settleMs:180,missing:'missing ',hitElement:true,
+    unreachable:(selector,p)=>'Audit control unreachable '+selector+' '+JSON.stringify(p),
+    before:async selector=>{
+      if(selector.startsWith('[data-edit-guide='))await settled();
+      await wait(`!!document.querySelector(${JSON.stringify(selector)})`,'control rendered '+selector);
+    },
+    after:async selector=>{if(selector.startsWith('[data-edit-guide='))await wait(`!!document.querySelector('#guide-editor[open]')`,'guide source editor opened');}});
+  const key=cdp.makeKey({send,sleep},{afterMs:180});
+  const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:60});
   const choose=async(selector,value)=>{
     const option=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return [...e.options].findIndex(o=>o.value===${JSON.stringify(String(value))}&&!o.disabled);})()`);
     if(option<0)throw Error('Audit select has no enabled option '+selector+'='+value);
@@ -33,7 +28,7 @@ module.exports = async function projectAudit({send,eval_,sleep,click,waitForUI,e
     await key('Tab','Tab',9);
     if(await read(`document.querySelector(${JSON.stringify(selector)}).value`)!==String(value))throw Error('Native select did not choose '+selector+'='+value);
   };
-  const shot=async name=>{const dir=process.env.GEOMETRY_PROJECT_AUDIT_SCREENSHOT_DIR;if(!dir)return;fs.mkdirSync(dir,{recursive:true});const r=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(dir,name+'.png'),Buffer.from(r.result.data,'base64'));};
+  const shot=cdp.makeShot(send,['GEOMETRY_PROJECT_AUDIT_SCREENSHOT_DIR']);
   const dump=()=>read(`apiRequest('dump').then(r=>{if(r.ok!==true||typeof r.text!=='string')throw Error('Audit dump failed: '+JSON.stringify(r));return r.text;})`);
   const refs=()=>read(`apiRequest('references').then(r=>{if(r.ok!==true||!['guides','timbers','datums','specs'].every(k=>Array.isArray(r[k])))throw Error('Audit references failed: '+JSON.stringify(r));return r;})`);
   const reset=async(lines,face=null)=>{

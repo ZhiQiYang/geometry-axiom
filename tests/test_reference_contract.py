@@ -2,42 +2,20 @@
 
 GEOMETRY_TEST_BRIDGE=/path/to/fresh/bridge python tests/test_reference_contract.py
 """
-import json
-import os
 from pathlib import Path
-import subprocess
+import sys
 import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-BRIDGE = os.environ.get('GEOMETRY_TEST_BRIDGE', str(ROOT / 'geometry-web/web_bridge.exe'))
-
-
-class Session:
-    def __init__(self):
-        self.stderr = tempfile.TemporaryFile(mode='w+b')
-        self.p = subprocess.Popen([BRIDGE], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                  stderr=self.stderr, text=True, encoding='utf-8')
-
-    def send(self, command):
-        self.p.stdin.write(command + '\n')
-        self.p.stdin.flush()
-        line = self.p.stdout.readline()
-        if not line:
-            self.stderr.seek(0)
-            raise AssertionError(self.stderr.read().decode('utf-8', errors='replace'))
-        return json.loads(line)
-
-    def close(self):
-        self.p.stdin.close()
-        self.p.wait(timeout=10)
-        self.p.stdout.close()
-        self.stderr.close()
+if str(ROOT) not in sys.path:  # `python tests/x.py` puts tests/ first, not the repo root
+    sys.path.insert(0, str(ROOT))
+from tests import _bridge  # noqa: E402
 
 
 class ReferenceContract(unittest.TestCase):
     def setUp(self):
-        self.s = Session()
+        self.s = _bridge.BridgeSession()
         self.addCleanup(self.s.close)
 
     def line(self, text):

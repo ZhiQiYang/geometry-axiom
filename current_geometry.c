@@ -6068,11 +6068,13 @@ static bool gdi_show_three_views(World *world)
 static void bench_paint(const Scene *scene, const SceneLayout *layout, int iters)
 {
     RECT client = { 0, 0, 1100, 800 };
+    if (iters <= 0) {
+        fprintf(stderr, "bench：次數無效。\n");
+        return;
+    }
     HDC screen = GetDC(NULL);
-
-    if (screen == NULL || iters <= 0) {
-        fprintf(stderr, "bench：拿不到螢幕 DC 或次數無效。\n");
-        if (screen) ReleaseDC(NULL, screen);
+    if (screen == NULL) {
+        fprintf(stderr, "bench：拿不到螢幕 DC。\n");
         return;
     }
 

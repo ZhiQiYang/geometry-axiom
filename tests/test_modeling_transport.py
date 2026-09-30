@@ -12,6 +12,9 @@ import unittest
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:  # `python tests/x.py` puts tests/ first, not the repo root
+    sys.path.insert(0, str(ROOT))
+from tests import _bridge  # noqa: E402
 CLI = ROOT / "geometry-core/modeling_cli.py"
 CASES = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())["cases"]
 
@@ -19,25 +22,11 @@ CASES = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())["ca
 class ModelingTransport(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        # The unchanged legacy bridge for a real service process: a fresh, checked exe or a skip (never a stale default).
+        bridge = _bridge.find_bridge()
         cls.temporary = tempfile.TemporaryDirectory(prefix="model-transport-")
         cls.directory = Path(cls.temporary.name)
         cls.environment = dict(os.environ)
-        # Build the unchanged legacy bridge for a real service process, unless
-        # a prebuilt one is supplied (e.g. no system "cc" on this machine).
-        prebuilt = os.environ.get("GEOMETRY_TEST_BRIDGE")
-        if prebuilt:
-            bridge = Path(prebuilt)
-            if not bridge.exists():
-                raise RuntimeError(f"Explicit GEOMETRY_TEST_BRIDGE={prebuilt} does not exist")
-        else:
-            bridge = cls.directory / "bridge"
-            try:
-                result = subprocess.run(["cc", "-std=c11", "-O0", str(ROOT / "geometry-web/web_bridge.c"),
-                                         "-lm", "-o", str(bridge)], capture_output=True, timeout=60)
-            except FileNotFoundError:
-                raise unittest.SkipTest("no \"cc\" compiler found and GEOMETRY_TEST_BRIDGE not set")
-            if result.returncode:
-                raise RuntimeError("Legacy bridge build failed: " + result.stderr.decode(errors="replace"))
         cls.environment["GEOMETRY_BRIDGE"] = str(bridge)
         cls.environment.pop("GEOMETRY_MANAGED_PREVIEW", None)
         with socket.socket() as sock:

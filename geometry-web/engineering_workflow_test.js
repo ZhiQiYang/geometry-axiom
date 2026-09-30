@@ -3,26 +3,18 @@
  * Requires an isolated engineering-capable service; replaces its test World.
  * No mocked adapter, fabricated read response, or frontend geometry evaluator.
  */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function engineeringWorkflow({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount}) {
   console.log('=== P69. 正式工程規格：材料、做法、套用、引用與保存 ===');
   const errors=exceptionCount(),fs=require('fs'),path=require('path');
-  const check=(name,ok,detail=ok)=>{console.log('P69 '+name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));if(ok!==true)throw Error('P69 assertion failed: '+name);};
-  const read=async expression=>{const value=await eval_(expression);if(value?.__err)throw Error(value.__err);return value;};
+  const check=cdp.makeCheck({prefix:'P69 ',throwOnFail:true,failMessage:name=>'P69 assertion failed: '+name});
+  const read=cdp.makeRead(eval_);
   const wait=async(expression,label=expression)=>{await waitForUI(expression,20000);if(await read(expression)!==true)throw Error('Engineering timeout: '+label);};
-  const ctl=async selector=>{
-    if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await ctl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
-    await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'center'});void 0`);
-    let point;
-    for(let attempt=0;attempt<10;attempt++){
-      await sleep(80);
-      point=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,h=document.elementFromPoint(x,y);return {x,y,w:r.width,h:r.height,hit:e.contains(h),hitElement:h?.tagName+'#'+h?.id,disabled:!!e.disabled};})()`);
-      if(point.hit&&!point.disabled&&point.w&&point.h)break;
-    }
-    if(!point.hit||point.disabled||!point.w||!point.h)throw Error('Engineering control unreachable '+selector+' '+JSON.stringify(point));
-    await click(point.x,point.y);await sleep(180);
-  };
-  const key=async(key,code,vk,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});};
-  const fill=async(selector,value)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(value)});await sleep(80);};
+  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:10,pollMs:80,settleMs:180,missing:'missing ',hitElement:true,
+    unreachable:(selector,p)=>'Engineering control unreachable '+selector+' '+JSON.stringify(p),
+    before:cdp.openCreateObjectMenu(read,selector=>ctl(selector))});
+  const key=cdp.makeKey({send,sleep});
+  const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:80});
   const choose=async(selector,value)=>{
     const index=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e || e.tagName!=='SELECT')throw Error('missing select');return [...e.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(String(value))});})()`);
     if(index<0)throw Error('Missing enabled option '+value+' in '+selector);
@@ -39,7 +31,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
     const selector=await read(`(()=>{const d=[...$('ewContent').querySelectorAll('details')].find(e=>e.querySelector(':scope > summary')?.textContent.includes(${JSON.stringify(text)}));if(!d)throw Error('missing disclosure '+${JSON.stringify(text)});if(d.open)return null;d.dataset.engineeringTestDisclosure='active';return '[data-engineering-test-disclosure="active"] > summary';})()`);
     if(selector){await ctl(selector);await read(`document.querySelector('[data-engineering-test-disclosure="active"]')?.removeAttribute('data-engineering-test-disclosure');void 0`);}
   };
-  const shot=async name=>{const dir=process.env.GEOMETRY_ENGINEERING_SCREENSHOT_DIR;if(!dir)return;fs.mkdirSync(dir,{recursive:true});const image=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(dir,name+'.png'),Buffer.from(image.result.data,'base64'));};
+  const shot=cdp.makeShot(send,['GEOMETRY_ENGINEERING_SCREENSHOT_DIR']);
   const dump=()=>read(`apiRequest('dump').then(r=>r.text)`);
   const core=async()=>{const r=await read(`apiRequest('engineering-read')`);if(!r.ok)throw Error('Engineering core unavailable: '+JSON.stringify(r));return r;};
   const refs=()=>read(`apiRequest('references')`);

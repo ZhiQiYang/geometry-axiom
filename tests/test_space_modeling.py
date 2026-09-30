@@ -290,11 +290,15 @@ class SpaceModelingAcceptance(unittest.TestCase):
                 data = request()
                 del data["settings"][key]
                 self.rejects(data, "SPACE_MISSING_FIELD")
-        for key, value in (("height", -1), ("height", 0), ("bottom", True), ("wall_thickness", -100), ("height", 1.5), ("edges", []), ("edges", [0, 0])):
+        # (key, value, code): out-of-range / non-integer numbers, a float (JSON_TYPE: only integers are
+        # representable), an empty edge list and a duplicated edge selection each have their own code.
+        for key, value, code in (("height", -1, "SPACE_INPUT_RANGE"), ("height", 0, "SPACE_INPUT_RANGE"),
+                                 ("bottom", True, "SPACE_INPUT_RANGE"), ("wall_thickness", -100, "SPACE_INPUT_RANGE"),
+                                 ("height", 1.5, "JSON_TYPE"), ("edges", [], "SPACE_EDGES"), ("edges", [0, 0], "SPACE_EDGES")):
             with self.subTest(key=key, value=value):
                 data = request()
                 data["settings"][key] = value
-                self.rejects(data)
+                self.rejects(data, code)
         data = request()
         data["settings"]["guess_height"] = 2800
         self.rejects(data, "SPACE_UNKNOWN_FIELD")
@@ -433,17 +437,24 @@ class SpaceTimberAcceptance(unittest.TestCase):
                 self.assertEqual(updated["summary"]["top"], bottom + height)
 
     def test_t12_empty_duplicate_unknown_wrong_type_and_unplaced_are_rejected(self):
-        for refs in ([], None, {}, [0], [{"kind": "beam", "id": 0}], [{"kind": "timber", "id": True}],
-                     [{"kind": "timber", "id": -1}], [{"kind": "timber", "id": 4294967296}],
-                     [{"kind": "timber", "id": 999}], [{"kind": "timber", "id": 0}] * 2,
-                     [{"kind": "timber", "id": 0, "placement_id": 1}]):
+        # (refs, code): every shape/identity fault is SPACE_TIMBERS, except a bare non-object entry
+        # (SPACE_INPUT) and an extra key inside a reference (SPACE_UNKNOWN_FIELD).
+        for refs, code in (([], "SPACE_TIMBERS"), (None, "SPACE_TIMBERS"), ({}, "SPACE_TIMBERS"),
+                           ([0], "SPACE_INPUT"), ([{"kind": "beam", "id": 0}], "SPACE_TIMBERS"),
+                           ([{"kind": "timber", "id": True}], "SPACE_TIMBERS"),
+                           ([{"kind": "timber", "id": -1}], "SPACE_TIMBERS"),
+                           ([{"kind": "timber", "id": 4294967296}], "SPACE_TIMBERS"),
+                           ([{"kind": "timber", "id": 999}], "SPACE_TIMBERS"),
+                           ([{"kind": "timber", "id": 0}] * 2, "SPACE_TIMBERS"),
+                           ([{"kind": "timber", "id": 0, "placement_id": 1}], "SPACE_UNKNOWN_FIELD")):
             with self.subTest(refs=refs):
                 data = timber_request()
                 data["timbers"] = refs
-                self.rejects(data)
+                self.rejects(data, code)
         data = timber_request()
         data["base_scene"] = data["base_scene"].replace("place 0 on 1 at-face e0 +u +n\n", "")
-        self.rejects(data)
+        # an unplaced timber is refused by the base scene's final check (I9), before any space logic
+        self.assertIn("角材 0 沒有 place", self.rejects(data, "BASE_INVALID").message)
         data = timber_request()
         data.update(mode="faces", uses=[{"placement_id": 1, "orientation": 1, "purpose": "boundary"}])
         del data["settings"], data["placement_id"]

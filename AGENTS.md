@@ -194,8 +194,12 @@ python3 tests/test_axiom_reader.py                   # 冪等 + 補丁 + 資料�
   `_mutant_<id>.c`(`#include "geometry-core/…"` 要相對於 `current_geometry.c` 的位置才解析得到),
   被 `.gitignore` 忽略且編完即刪。`MUTATE_RESULTS=<path>` 可把結果寫到別處,
   平行跑幾個 id 時各寫各的、事後合併,別讓多個行程同時寫 `mutants_results.json`。
-  每個變異都是**新二進位**,第一次可能被 SAC 擋,腳本會等 12 秒重試 3 次並把
-  「環境阻擋」與「killed」分開記(受阻不算 killed)。
+  變異 exe **依指紋快取**(GEO-225 起:mutant + include 閉包 + 編譯指令相符就沿用,不重編),
+  所以只有變異定義或核心來源變了才會產生新二進位;新二進位第一次可能被 SAC 擋,
+  腳本會等 12 秒重試 3 次並把「環境阻擋」與「killed」分開記(受阻不算 killed)。
+  每筆結果帶來源、閉包、變異、**裁判**(`run_tests.py` + 被 `TESTS` 引用的夾具)四組雜湊,
+  任一不符就標 `stale`、不計入 killed——改了夾具要重跑 `mutate.py`,不然結果檔會自己說過期。
+  `python tests/mutate.py --check` 只讀不跑;`--selftest` 驗它自己的誠實性機制。
 
 `tests/test_bridge_integrity.py` 與 `tests/test_reference_contract.py` 吃
 `GEOMETRY_TEST_BRIDGE`;`test_bridge_integrity` 要用 `python tests/test_bridge_integrity.py`
@@ -225,8 +229,10 @@ python3 tests/test_axiom_reader.py                   # 冪等 + 補丁 + 資料�
    重點是:看到這個字串**先當成環境問題**,把「環境阻擋」與「程式失敗」分開記錄。
    GEO-157 時我差點據此誤判 cdp_test 的結果。
 
-3. **`cdp_test.js` 會覆寫 `geometry-web/docs/screens/*.png`**(已提交的截圖)。
-   跑完用 `git checkout -- geometry-web/docs/screens/` 還原,別混進 commit。
+3. **截圖預設寫到 `%TEMP%\geometry-tests\`,不會碰 `geometry-web/docs/screens/*.png`**(已提交的截圖)。
+   (**2026-10-01 更正**:這條原本寫「`cdp_test.js` 會覆寫 `docs/screens`」。寫下時是真的;
+   現在 `cdp_test.js` 與各外掛模組的截圖都只寫 `%TEMP%` 或 `GEOMETRY_*_SCREENSHOT*` 指定的目錄。)
+   只有把那些變數指進 repo 才會覆寫;跑完仍看一眼 `git status`,有變動就 `git checkout --` 還原。
 
 ### 跑 cdp_test
 
@@ -238,8 +244,13 @@ GEOMETRY_FEEDBACK_DIR="$TEMP/geometry-tests/fb-cdp" GEOMETRY_TEST_URL="http://lo
 兩邊都要給同一個 `GEOMETRY_FEEDBACK_DIR`:P38 會實際送出回報並觸發一次自動擷取,
 不設就寫進 repo 的 `feedback/`(混進使用者的真回報)——cdp_test 沒看到這個變數時會略過 P38 的送出段。
 
-它是**唯一真的執行 `app.js` 的 harness**(headless Chrome 實際點按鈕);
-`canvas_test.js` 與 `tests/*.py` 都只到橋接器為止。動到 `app.js` 的行為就得跑它。
+真的執行 `app.js` 的 harness 有兩支(headless Chrome 實際點按鈕):`cdp_test.js`,以及
+空間/投影/牆高/角材流程專用的 `space_model_test.js`——後者**不包含在 `cdp_test.js` 的完整模式裡**,
+要另外跑(同樣要給 `GEOMETRY_TEST_URL` 與 `GEOMETRY_FEEDBACK_DIR`,用法見它的檔頭)。
+`canvas_test.js` 與 `tests/*.py` 都只到橋接器為止。動到 `app.js` 的行為就得跑 `cdp_test.js`;
+動到空間工作區再加跑 `space_model_test.js`。
+`*_test.js` 裡檔名不是這兩支、也不是 `canvas_test.js` / `polydraft_test.js` 的,都是 `cdp_test.js`
+用 `require` 載入的外掛模組,不能單獨執行。
 
 ## 🟡 UI 減重紀律（2026-09-29 使用者拍板 🔒，GEO-219）
 

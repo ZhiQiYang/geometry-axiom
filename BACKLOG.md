@@ -3810,3 +3810,28 @@ P70 定向真實瀏覽器 52 個斷言已通過：未放置邊界、兩份配置
   [驗收報告](geometry-web/docs/PARAMETERS-VALIDATION.md)。依 Q23-b，實體手機鍵盤與作業系統
   下載提示仍待使用者人工確認，完成前不標「已交付」。Q25／GEO-224 的參數編輯面板重設計
   已定案、尚未實作，屬後續工作。
+
+## GEO-225 — 測試可信度與入口精煉（2026-10-01，進行中）
+
+使用者問「測試會不會太多、要不要精煉」。盤點結論：量不是問題（測試約 26,000 行對產品碼約
+30,000 行，沒有大面積重複），要精煉的是「綠燈可不可信」與「怎麼跑」。使用者指示依發現的問題改善；
+`prototypes/engineering-spec/` 的去留明示先不管。不刪任何仍有效的測試、不拆 `cdp_test.js`。
+
+- **a 二進位新舊與單一入口**：`tests/binaries.py`（來源指紋快取，沒變就不重編）、
+  `tests/run_all.py`（一次跑完非瀏覽器測試，分列 pass／fail／skip／環境阻擋）。
+- **b 靜默通過與看不見的 skip**：`test_parameters_core.py` 缺 `GEOMETRY_MODEL_BASE` 時後半段
+  直接 return 算通過；class 級 skip 只記 1 筆；`cdp_test.js` 沒有每段斷言數地板。
+- **c 變異測試結果過期**：`mutants_results.json` 有 12 個錨點已不在現行原始碼卻仍記 killed，
+  且無來源雜湊。
+- **d 孤兒與過時文件**：移除 `geometry-web/_cursor_test.js`、`_shot.js`（無入口、引用的
+  `#notchDialog` 已於 GEO-188 移除、預設連 8765）；`reference_smoke.js` 也已移除（過期夾具、預設重置 8765，引用流程由完整 CDP 覆蓋；Q26）；
+  更正 `AGENTS.md` 兩處（截圖已不寫 `docs/screens`、`space_model_test.js` 也執行 `app.js`）。
+  `docs/UIUX-FIX-PLAN.md` 提到 `_cursor_test.js` 的字樣屬歷史紀錄，未改。
+- **e 共用樣板**：抽出 `cdp_helpers.js` 與 `tests/_bridge.py`，保留各測試的等待、輸入及錯誤行為。
+- **f 負例釘住拒絕理由**：格網負例同時驗拒絕原因與整個世界不變；補足 Q29 真實支撐的方向夾具。
+- **收尾修正**：Q27 無效 benchmark 次數在取得 GDI 資源前返回；Q29 無限父格錯用有限 cell 的訊息指名正確原因。公理條文未修改。
+
+接手核對與執行結果見 [GEO-225 驗證紀錄](tests/GEO225-VALIDATION.md)。新核心完整瀏覽器回歸
+1490 斷言通過、0 失敗、0 略過，72 段與既有基準相符；Linux 非瀏覽器全套 1179 通過、
+0 失敗，僅 Windows GDI 略過。GDI 在 Windows 仍遭 SAC 阻擋；Q28 的崩潰分類仍待使用者回覆，
+這兩項完成前保留「進行中」。

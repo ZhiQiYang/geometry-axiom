@@ -137,8 +137,8 @@ set GEOMETRY_TEST_URL=http://127.0.0.1:8799/
 set GEOMETRY_FEEDBACK_DIR=%TEMP%\geometry-tests\fb-cdp
 node cdp_test.js
 
-:: 新公理表單、確認/取消、非法預覽、扣孔命中的快速實機驗證
-node reference_smoke.js
+:: reference_smoke.js 已退役(GEO-225)：過期夾具及預設重置 8765 的入口已移除；由 cdp_test.js 驗證引用流程。
+:: 未設 GEOMETRY_TEST_URL 時它會連 8765 並重置場景——那是你正在用的服務。
 
 :: 3) 伺服器輸入與故障處理（不需要真實 bridge 或瀏覽器）
 python -B -m unittest discover -s ../tests -p test_serve.py -v
@@ -147,6 +147,8 @@ python -B -m unittest discover -s ../tests -p test_serve.py -v
 `canvas_test.js` 的 HTTP 模式可用 `GEOMETRY_TEST_URL` 指定獨立測試服務。`cdp_test.js` 與 `space_model_test.js` 必須明設測試 URL 與 TEMP 下獨立回報目錄；未設時在開啟瀏覽器／重置場景前拒絕。服務與測試應指向同一實際目錄；Windows／WSL 使用各自對應路徑。
 
 `cdp_test.js` 只計受控斷言，頁面日誌及狀態文字中的勾號不計數。執行例外與協定錯誤必須失敗；`CDP_SCOPE`／`CDP_RESULT` 明列全套或部分執行，不能把專項結果說成全套。完整回歸不得設定 `*_ONLY`／`GEOMETRY_CDP_FROM_P31`。工程子範圍必須搭配工程專項旗標，且互斥。
+
+`cdp_test.js` 另有「每段斷言數地板」：`CDP_RESULT.sections` 記每個主編號段（Setup、1…10、P3…P76；子標頭如 P48-6、P8v2 歸入主編號）的通過斷言數，完整模式結束時與 [`cdp_sections.golden.json`](cdp_sections.golden.json) **嚴格相等**比對——整段被跳過、提早結束、斷言變少，或新增斷言而 golden 沒跟上，都會讓整次失敗並逐條印出「段 X：預期 N，實得 M」。有意增刪斷言時，在完整模式且零失敗下加 `GEOMETRY_CDP_UPDATE_GOLDEN=1` 重寫 golden，並在提交前檢視 `git diff`。部分模式（任何 `*_ONLY`／`GEOMETRY_CDP_FROM_P31`）只印 sections、註明「部分模式，未比對 golden」。比對邏輯在 `cdp_floor.js`，單元測試：`node --test ../tests/test_cdp_floor.js`。
 
 `space_model_test.js` 的結果也列出 included／omitted 群組；一般空間、角材、流程等專項分開，不合併冒充單次完整執行。保存下載流程不代表原生另存視窗，390px 版面不代表真手機觸控。原型目錄內的測試只證明原型，不作正式畫布整合證據。
 測試依賴的 DOM id / class / 全域列在 `docs/DOM-CONTRACT.md`——改 DOM 必同步更新它與 `cdp_test.js`。

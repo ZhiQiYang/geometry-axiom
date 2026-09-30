@@ -1,13 +1,11 @@
 /* GEO-209: real pointer/keyboard events in the existing CDP application harness.
    Run only this group with GEOMETRY_MARQUEE_ONLY=1; no production test hooks. */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,drag,dragMod,pressDownMod,moveMod,waitForUI,exceptionCount}) {
   console.log('=== P67. 畫布框選與角材多選 ===');
   const errors=exceptionCount();
-  const check=(name,value,detail=value)=>console.log('P67 '+name,value===true?'✓':'✗',value===true?'':JSON.stringify(detail));
-  const key=async(key,code,vk,modifiers=0)=>{
-    for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});
-    await sleep(220);
-  };
+  const check=cdp.makeCheck({prefix:'P67 '});
+  const key=cdp.makeKey({send,sleep},{afterMs:220});
   const at=async(selector)=>eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)}),r=e?.getBoundingClientRect();return r?{x:r.x+r.width/2,y:r.y+r.height/2,l:r.left,t:r.top,r:r.right,b:r.bottom}:null})()`);
   const ctl=async(selector)=>{
     if(await eval_(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await ctl(await eval_(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
@@ -18,7 +16,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
     if(!p||p.error)throw Error('Selection control not clickable: '+selector+' '+JSON.stringify(p));
     await click(p.x,p.y);await sleep(220);
   };
-  const fill=async(selector,value)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(value)});};
+  const fill=cdp.makeFill({ctl,key,send,sleep});
   const clickMod=async(p,modifiers=8)=>{
     for(const type of ['mousePressed','mouseReleased'])await send('Input.dispatchMouseEvent',{type,x:p.x,y:p.y,button:'left',clickCount:1,modifiers});
     await sleep(220);
@@ -29,12 +27,7 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   const timberIds=async()=>eval_(`[...(fe.timberSelection||[])].sort((a,b)=>a-b)`);
   const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
   const noMarquee=async()=>eval_(`document.querySelectorAll('.selection-marquee').length===0`);
-  const shot=async(name)=>{
-    const dest=process.env.GEOMETRY_MARQUEE_SCREENSHOT_DIR;if(!dest)return;
-    const fs=require('fs'),path=require('path');fs.mkdirSync(dest,{recursive:true});
-    const result=await send('Page.captureScreenshot',{format:'png'});
-    fs.writeFileSync(path.join(dest,name+'.png'),Buffer.from(result.result.data,'base64'));
-  };
+  const shot=cdp.makeShot(send,['GEOMETRY_MARQUEE_SCREENSHOT_DIR']);
   const reset=async(lines)=>{
     const result=await eval_(`(async()=>{for(const d of document.querySelectorAll('dialog[open]'))d.close();resetSceneFocus();await setView3(false);closePanels();const reset=await api('reset');if(!reset.ok)throw Error('reset: '+JSON.stringify(reset));for(const line of ${JSON.stringify(lines)}){const r=await api('line '+line);if(!r.ok)throw Error(line+': '+JSON.stringify(r));}if(!await renderObjects())throw Error('fixture render failed: '+JSON.stringify(connection));setOcTool('select');oc.panX=0;oc.panY=0;oc.zoom=1;ocApply();ReferenceWorkspace.context().dirty=false;ReferenceWorkspace.present();return true;})()`);
     if(result!==true)throw Error('Selection fixture failed: '+JSON.stringify(result));await sleep(250);
