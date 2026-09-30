@@ -6,7 +6,7 @@
 
 - `ParameterSet`：uint32 `id`、UTF-8 `name`、有序欄位與 `nextFieldId`。每世界最多 64 卡、256 欄；每卡 1–16 欄。
 - `ParameterField`：卡片內 uint32 `id`、唯一 `name`、`dimension | count | ratio` 與結構化 `expression`。
-- 名稱為 1–96 個 UTF-8 位元組，禁止控制字元。欄位刪除後其身分不可在原卡重用；完整專案保留最高使用記錄。
+- 名稱為 1–96 個 UTF-8 位元組，禁止控制字元；超長或空名以 `I38 NAME` 拒絕（條文約束，不歸入容量錯誤；Q24-a 🔒）。欄位刪除後其身分不可在原卡重用；完整專案保留最高使用記錄。
 - 精確值回傳 `{num:"915",den:"2",unit:"mm"}`。整數絕對值不得超過 INT64_MAX；小數精確轉換，運算前約分與檢查溢位。
 - 算式儲存最多 2047 bytes、128 節點、32 層；欄位依賴深度最多 64。容量不足以 `UNSUPPORTED/CAPACITY` 或 `UNSUPPORTED/PRECISION` 拒絕。
 
@@ -40,7 +40,7 @@
 ## 保存與交換
 
 - 能力 `parameters/1`；完整專案使用 `geometry-canvas/6`，舊 /1–5 仍讀取。執行器、模型套件及專案清單必須保留並驗能力。
-- 原生 `.scene`：`requires parameters/1`，再以 `parameters begin`、base64 JSON card/field records、`parameters end` 組成完整區塊。每欄一行避免超過既有行長上限。區塊只可在原子場景載入中使用，不允許互動逐行留下未完成參數。
+- 原生 `.scene`：`requires parameters/1`，再以 `parameters begin`、base64 JSON card/field records、`parameters end` 組成完整區塊。缺 `requires parameters/1` 但區塊完整時照常載入並於輸出補回宣告（與 engineering-spec 既有慣例相同，屬升級不是降級）；明確拒絕的是未知版本（`parameters/2`、`geometry-canvas/7`）與專案清單 `requiredCapabilities` 被刪或不足（Q24-b 🔒）。每欄一行避免超過既有行長上限。區塊只可在原子場景載入中使用，不允許互動逐行留下未完成參數。
 - 卡片位置：`canvas-pos parameter id x y`；有效值不進定義，重開重算。
 - `geometry-parameters/1` 為 `{schema,cards}`；cards 使用完整定義，不含有效值或使用物件。匯出以整卡取得全部遞移來源。匯入必須自足，重配卡片身分、保留欄位身分並改寫 AST，候選全部有效才確認。同名不覆寫。
 - UI 草稿阻擋完整專案匯出與保存；離開可取消以繼續編輯，或明確捨棄。非同步試算核對編輯序號、草稿版本與專案 context。
