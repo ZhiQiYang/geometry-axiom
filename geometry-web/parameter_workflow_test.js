@@ -12,19 +12,22 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
     if(!p.hit||p.disabled||!p.w||!p.h)throw Error('P76 unreachable '+selector+' '+JSON.stringify(p));await click(p.x,p.y);await sleep(120);
   };
   const fill=async(selector,text)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(text)});};
+  // Creating fetches capabilities and a new ID before replacing the old editor.
+  // Its existing name input alone does not prove the new form is ready.
+  const createCard=async()=>{await ctl('#btnNewParameter');await wait(`!!$('paramQuick') && $('paramName')?.value==='參數'`);};
   const choose=async(selector,v)=>{const i=await read(`Array.from(document.querySelector(${JSON.stringify(selector)}).options).findIndex(o=>o.value===${JSON.stringify(String(v))})`);if(i<0)throw Error('P76 option missing '+v);await ctl(selector);await key('Home','Home',36);for(let n=0;n<i;n++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await sleep(160);};
   const confirm=async()=>{await ctl('#paramPreview');await wait(`!!document.querySelector('#paramConfirm')&&!document.querySelector('#paramConfirm').disabled`);await ctl('#paramConfirm');await wait(`!ParameterUI.pending`);};
   console.log('=== P76 畫布參數卡 ===');
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
   await read(`(async()=>{ParameterUI.discard();InfiniteGridWorkspace.close(true);resetSceneFocus();await api('reset');await setView3(false);await renderObjects();})()`);
-  await ctl('#btnNewParameter');await wait(`!!document.querySelector('#paramName')`);
+  await createCard();
   await fill('#paramName','板材尺寸');await fill('#paramQuick','(915,1830)');await ctl('#paramParse');
   check('尺寸組先顯示欄位及單位',await read(`document.querySelectorAll('[data-param-field]').length===2&&[...document.querySelectorAll('[data-type]')].every(e=>e.value==='dimension')`));
   check('未提交草稿阻擋保存',await read(`ReferenceWorkspace.exportBytes().then(()=>false,e=>/參數草稿/.test(e.message))`));
   await confirm();
   const panel=await read(`oc.parameters.find(p=>p.name==='板材尺寸').card`),width=panel.fields.find(f=>f.name==='寬').id,length=panel.fields.find(f=>f.name==='長').id;
   check('建立真正參數卡',panel.fields.map(f=>f.value.num).join(',')==='915,1830',panel);
-  await ctl('#btnNewParameter');await fill('#paramName','排格設定');
+  await createCard();await fill('#paramName','排格設定');
   await fill('[data-name]','u 格距');await fill('[data-input]',`=@${panel.id}:${width}+2 mm`);await confirm();
   const settings=await read(`oc.parameters.find(p=>p.name==='排格設定').card`);
   check('跨卡算式由核心試算',settings.fields[0].value.num==='917');
@@ -49,7 +52,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   await read(`ReferenceWorkspace.importBytes(window.__parameterSaved,'參數驗收.gcanvas')`);await read(`renderObjects()`);
   check('保存重開仍連動',await read(`oc.parameters.length===2&&oc.gridSystems[0].uDefinition.step===922`));
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
-  await ctl('#btnNewParameter');await wait(`!!$('paramName')`);await fill('#paramName','角材截面');await fill('#paramQuick','W27H33');await ctl('#paramParse');await confirm();
+  await createCard();await fill('#paramName','角材截面');await fill('#paramQuick','W27H33');await ctl('#paramParse');await confirm();
   check('390px 建立 W/H 尺寸卡',await read(`oc.parameters.some(p=>p.name==='角材截面'&&p.card.fields.map(f=>f.value.num).join(',')==='27,33')`));
   check('手機欄位與確認觸控目標',await read(`['paramName','paramPreview','paramConfirm'].every(id=>$(id).getBoundingClientRect().height>=44)`));
   check('手機無水平溢出',await read(`document.documentElement.scrollWidth<=innerWidth`));

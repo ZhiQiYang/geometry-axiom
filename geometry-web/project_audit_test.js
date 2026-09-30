@@ -10,6 +10,7 @@ module.exports = async function projectAudit({send,eval_,sleep,click,waitForUI,e
   const read=async expression=>{const v=await eval_(expression);if(v?.__err)throw Error(v.__err);return v;};
   const wait=async(expression,label=expression)=>{await waitForUI(expression,15000);if(await read(expression)!==true)throw Error('Audit timeout: '+label);};
   const ctl=async selector=>{
+    await wait(`!!document.querySelector(${JSON.stringify(selector)})`,'control rendered '+selector);
     await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'center'})`);
     let p;
     // Native dialogs and nested scroll panes need one rendered frame after scrolling.
@@ -20,6 +21,7 @@ module.exports = async function projectAudit({send,eval_,sleep,click,waitForUI,e
     }
     if(!p.hit||p.disabled||!p.w||!p.h)throw Error('Audit control unreachable '+selector+' '+JSON.stringify(p));
     await click(p.x,p.y);await sleep(180);
+    if(selector.startsWith('[data-edit-guide='))await wait(`!!document.querySelector('#guide-editor[open]')`,'guide source editor opened');
   };
   const key=async(key,code,vk,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});await sleep(180);};
   const fill=async(selector,value)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(value)});await sleep(60);};
@@ -39,7 +41,13 @@ module.exports = async function projectAudit({send,eval_,sleep,click,waitForUI,e
     await sleep(200);
   };
   const manager=async()=>{await ctl('#fileMenuBtn');await ctl('#btnDatums');await wait(`!!document.querySelector('#datum-manager[open]') && !!document.querySelector('#datum-surface option')`);};
-  const settled=()=>wait(`!oc.busy && !document.querySelector('#datum-manager')?.dataset.busy`);
+  // Undo publishes the new World before its asynchronous workspace refresh.
+  // Finish that refresh before navigating or clicking a source from its list.
+  const settled=async()=>{
+    await wait(`!oc.busy && !document.querySelector('#datum-manager')?.dataset.busy`);
+    await read(`window.__cdpSettleUI(0)`);
+    await wait(`!oc.busy && !document.querySelector('#datum-manager')?.dataset.busy`);
+  };
   const impact=()=>wait(`!!document.querySelector('.reference-impact[open]')`,'impact preview');
   const confirm=async()=>{await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]') && !oc.busy`);await sleep(180);};
   const base='surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000';
