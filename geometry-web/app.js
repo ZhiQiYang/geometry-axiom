@@ -2085,6 +2085,7 @@ function drawObjects() {
   drawOcEdges(eg, visSpaces, visFaces, visCols, visBeams, labels);
   drawGridRelations(eg, labels, visibleKeys);
   window.ParameterUI?.relations(eg, visibleKeys);
+  window.ParameterUI?.drawDraft(oroot);
   updateEdgeLabels();
   drawCrumb();
   renderObjectList();

@@ -169,6 +169,44 @@ window.ParameterUI = (() => {
     return sources;
   }
 
+  /* GEO-224: 建立新卡期間畫布上的虛線草稿卡。純顯示層：不進 oc.parameters、不寫 canvas-pos、不可選取或拖曳、不畫關係線。 */
+  function draftPosition(s) {
+    if (!s.draftPos) {
+      const [cx, cy] = nextCardPosition({kind: 'parameter', card: s.card}, ocAllObjects().filter(o => o.hasPos).map(cardBox));
+      s.draftPos = {cx, cy};
+    }
+    return s.draftPos;
+  }
+  function svgDraft(s) {
+    const {cx, cy} = draftPosition(s);
+    const short = (text, n) => {
+      const chars = Array.from(text);
+      return chars.length > n ? chars.slice(0, n - 1).join('') + '…' : text;
+    };
+    const g = el('g', {class: 'parameter-card is-draft', 'data-draft': '', 'pointer-events': 'none', transform: `translate(${cx},${cy})`});
+    el('rect', {width: OC_W, height: OC_H, rx: 12}, g);
+    el('rect', {class: 'draft-head', width: OC_W, height: 38, rx: 12}, g);
+    el('text', {class: 'draft-title', x: 14, y: 25}, g).textContent = 'ƒ  ' + short(s.card.name || '未命名參數', 12);
+    el('text', {class: 'draft-badge', x: OC_W - 14, y: 25, 'text-anchor': 'end'}, g).textContent = '草稿';
+    s.card.fields.slice(0, 4).forEach((f, i) => {
+      const view = resultView(s.results.get(f.id));
+      el('text', {class: 'draft-name', x: 14, y: 65 + i * 27}, g).textContent = short(f.name || '—', 8);
+      el('text', {class: 'draft-value', x: OC_W - 14, y: 65 + i * 27, 'text-anchor': 'end', 'data-state': view.state}, g).textContent = view.state === 'ok' ? view.text.replace(/^= /, '') : view.text;
+    });
+    return g;
+  }
+  /* s 不是目前的建立中草稿（含 null）就清掉草稿卡。 */
+  function paintDraft(s) {
+    const layer = document.getElementById('draftLayer');
+    if (!layer) return;
+    layer.textContent = '';
+    if (s && s === state && s.fresh && current(s)) layer.appendChild(svgDraft(s));
+  }
+  function drawDraft(root) {
+    el('g', {id: 'draftLayer'}, root);
+    paintDraft(state);
+  }
+
   function status(text, error = false, tone = error ? 'error' : 'wait') {
     const node = $('paramStatus');
     if (!node) return;
@@ -263,6 +301,7 @@ window.ParameterUI = (() => {
       else if (!line) row.querySelector('.param-input-line').insertAdjacentHTML('afterend', errorLineHtml(s.failure));
       else if (line.dataset.error !== s.failure.raw) line.outerHTML = errorLineHtml(s.failure);
     }
+    paintDraft(s);
   }
   function refreshChipValues(s) {
     const root = $('parameterEditor');
@@ -651,6 +690,7 @@ window.ParameterUI = (() => {
     renderFields(s);
     paintBadge(s);
     paintQuick();
+    paintDraft(s);
     $('paramResult').innerHTML = idleImpactHtml(s);
     status(s.changed ? '草稿尚未套用。' : '沒有未套用的修改。', false, 'wait');
     $('paramAdd').onclick = () => addField(s);
@@ -690,6 +730,7 @@ window.ParameterUI = (() => {
     if (s?.preview) EngineeringAdapter.cancel({token: s.preview.token}).catch(() => {});
     const id = s?.card.id;
     state = null;
+    paintDraft(null);
     oc.parameterCreating = false;
     ++serial;
     if (s?.fresh) ocSetSelection([]);
@@ -713,8 +754,8 @@ window.ParameterUI = (() => {
     if(!support.ok||!support.state?.capabilities?.includes('parameters/1')){toast('目前服務尚未支援參數卡，請重新啟動更新後的服務。','error');return;}
     const ids=await apiRequest('newid');if(!ids.ok||context!==ReferenceWorkspace.context())return;
     if(oc.focus){oc.stack=[];await leaveFocus();}if(view3)await setView3(false);
-    closePanels();ocSetSelection([]);oc.parameterCreating=true;state={context,card:{id:ids.parameter,name:'參數',nextFieldId:2,fields:[{id:1,name:'尺寸',type:'dimension',input:'0'}]},fresh:true,changed:true,generation:0,busy:false,preview:null,results:new Map(),failure:null,template:'single',activeId:null,previewKind:'put'};
-    renderInspector();if(innerWidth<=900)openPanel('right',$('toggleRight'));$('paramName')?.focus();
+    closePanels();ocSetSelection([]);oc.parameterCreating=true;state={context,card:{id:ids.parameter,name:'參數',nextFieldId:2,fields:[{id:1,name:'尺寸',type:'dimension',input:'0'}]},fresh:true,changed:true,generation:0,busy:false,preview:null,results:new Map(),failure:null,template:'single',activeId:null,previewKind:'put',draftPos:null};
+    drawObjects();if(innerWidth<=900)openPanel('right',$('toggleRight'));$('paramName')?.focus();
   }
   async function jump(kind,id) {
     if(!mayLeave())return;
@@ -761,7 +802,7 @@ window.ParameterUI = (() => {
   window.addEventListener('beforeunload',e=>{if(state?.changed){e.preventDefault();e.returnValue='';}});
   window.addEventListener('geometry-definition-changed',()=>{if(state&&!state.busy){state.preview=null;state.generation++;++serial;clearTimeout(timer);if(!state.changed)state=null;else{markPending(state);status('來源或物件已變更，請重新試算。');}if($('paramConfirm'))$('paramConfirm').disabled=true;}});
   document.addEventListener('click',e=>{if(e.target.closest('#parameterSelectionExport'))exportPackage(oc.selection.filter(s=>s.kind==='parameter').map(s=>s.id));});
-  window.addEventListener('project-info-changed',()=>{if(state&&!current(state)){clearTimeout(timer);state=null;oc.parameterCreating=false;++serial;}});
+  window.addEventListener('project-info-changed',()=>{if(state&&!current(state)){clearTimeout(timer);state=null;paintDraft(null);oc.parameterCreating=false;++serial;}});
   $('btnNewParameter').onclick=()=>{ $('createObjectPop').hidden=true;create(); };
-  return {value,errorText,errorCodes:ERROR_TEXT,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,get pending(){return !!state&&(state.changed||state.busy);},get editingId(){return state?.card.id;}};
+  return {value,errorText,errorCodes:ERROR_TEXT,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,get pending(){return !!state&&(state.changed||state.busy);},get editingId(){return state?.card.id;}};
 })();

@@ -188,6 +188,17 @@ input[aria-readonly=true] { background: #f0eef8; color: #65528c; }
 .param-details ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .param-detail-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 
+/* ---- 畫布草稿卡（建立新卡期間；純顯示層） ---- */
+.parameter-card.is-draft > rect:first-child { fill: var(--panel); fill-opacity: .9; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.parameter-card.is-draft .draft-head { fill: var(--accent-soft); }
+.parameter-card.is-draft text { font-size: 13px; fill: var(--ink); }
+.parameter-card.is-draft .draft-title { font-size: 14px; font-weight: 600; }
+.parameter-card.is-draft .draft-badge { font-size: 10px; font-weight: 600; letter-spacing: .04em; fill: var(--accent); }
+.parameter-card.is-draft .draft-name { fill: var(--muted); }
+.parameter-card.is-draft .draft-value { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; }
+.parameter-card.is-draft .draft-value[data-state="pending"] { fill: var(--muted); }
+.parameter-card.is-draft .draft-value[data-state="error"] { fill: var(--danger); }
+
 /* ---- 固定頁尾 ---- */
 .param-footer {
   position: sticky;

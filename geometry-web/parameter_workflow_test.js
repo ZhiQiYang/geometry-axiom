@@ -201,5 +201,17 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   check('390px 參數編輯無水平溢出、面板內可點控制皆 ≥44px',draftAudit.small.length===0&&cardAudit.small.length===0&&!draftAudit.pageOverflow&&!cardAudit.pageOverflow&&!draftAudit.editorOverflow&&!cardAudit.editorOverflow&&!draftAudit.sideOverflow&&!cardAudit.sideOverflow&&draftAudit.count>12&&cardAudit.count>12,{draftAudit,cardAudit});
   await read(`ParameterUI.discard();ocSetSelection([]);void 0`);
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
+  /* ===== GEO-224 畫布草稿卡：建立新卡期間虛線草稿、跟著欄位更新、不可選取、不進保存內容 ===== */
+  const sceneOf=`(async()=>{const b=await ReferenceWorkspace.exportBytes();const p=await GeometryProject.unpack(b,fflate);return p.scene;})()`;
+  await read(`ParameterUI.discard();ocSetSelection([]);void 0`);
+  const sceneBeforeDraft=await read(sceneOf),cardsBeforeDraft=await read(`oc.parameters.length`),ocardsBeforeDraft=await read(`document.querySelectorAll('#oroot .ocard').length`);
+  await ctl('#btnNewParameter');await wait(`!!$('paramName')`);
+  await fill('#paramName','草稿示意');await ctl('[data-param-template="panel"]');
+  await wait(`!$('paramConfirm').disabled&&[...document.querySelectorAll('.parameter-card.is-draft .draft-value')].map(e=>e.textContent).join()==='915 mm,1830 mm'`);
+  const draftInfo=await read(`(()=>{const d=document.querySelector('.parameter-card.is-draft'),r=d.getBoundingClientRect(),v=$('canvasViewport').getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {count:document.querySelectorAll('.parameter-card.is-draft').length,text:d.textContent,dashed:getComputedStyle(d.querySelector('rect')).strokeDasharray!=='none',inLayer:!!d.closest('#cardLayer'),asCard:d.classList.contains('ocard'),passThrough:getComputedStyle(d).pointerEvents==='none'&&!d.contains(hit),visible:r.right>v.left&&r.left<v.right&&r.bottom>v.top&&r.top<v.bottom,cards:oc.parameters.length,ocards:document.querySelectorAll('#oroot .ocard').length};})()`);
+  await fill('#paramName','草稿改名');await wait(`document.querySelector('.parameter-card.is-draft').textContent.includes('草稿改名')`);
+  await ctl('#paramDiscard');await wait(`!document.body.classList.contains('parameter-editing')`);
+  const afterDraft=await read(`({drafts:document.querySelectorAll('.parameter-card.is-draft').length,cards:oc.parameters.length})`);
+  check('建立新卡時畫布有虛線草稿卡、跟著欄位更新；捨棄後消失且保存內容不變',draftInfo.count===1&&draftInfo.text.includes('草稿示意')&&draftInfo.text.includes('草稿')&&draftInfo.text.includes('寬')&&draftInfo.dashed&&!draftInfo.inLayer&&!draftInfo.asCard&&draftInfo.passThrough&&draftInfo.visible&&draftInfo.cards===cardsBeforeDraft&&draftInfo.ocards===ocardsBeforeDraft&&afterDraft.drafts===0&&afterDraft.cards===cardsBeforeDraft&&await read(sceneOf)===sceneBeforeDraft,{draftInfo,afterDraft,cardsBeforeDraft});
   check('無未捕捉瀏覽器例外',exceptionCount()===errors);
 };
