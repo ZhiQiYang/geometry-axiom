@@ -152,7 +152,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   console.log('=== P76 GEO-224 參數編輯面板 ===');
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
   await read(`closePanels();ParameterUI.discard();drawObjects();void 0`);
-  await ctl('#btnNewParameter');await wait(`!!$('paramName')`);
+  await createCard();
   const templateKinds=await read(`[...document.querySelectorAll('[data-param-template]')].map(b=>b.dataset.paramTemplate).join(',')`);
   await ctl('[data-param-template="panel"]');
   check('範本改三顆按鈕，選寬 × 長得 2 欄且 aria-pressed 正確',templateKinds==='single,panel,section'&&await read(`!$('paramTemplate')&&document.querySelectorAll('[data-param-field]').length===2&&[...document.querySelectorAll('[data-param-template]')].every(b=>b.getAttribute('aria-pressed')===String(b.dataset.paramTemplate==='panel'))&&[...document.querySelectorAll('[data-param-field] [data-name]')].map(e=>e.value).join()==='寬,長'`),templateKinds);
@@ -183,7 +183,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   await ctl('#paramDiscard');
   /* 1280px：參數編輯時面板在畫布右側，頁尾確認鈕固定在面板可視範圍內；離開後其他檢視器仍在畫布下方。 */
   await send('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
-  await ctl('#btnNewParameter');await wait(`!!$('paramName')`);
+  await createCard();
   for(let i=0;i<9;i++)await ctl('#paramAdd');
   const sideLayout=await read(`(()=>{const canvas=$('canvasViewport').getBoundingClientRect(),editor=$('parameterEditor').getBoundingClientRect(),side=document.querySelector('.sidebar-right'),footer=()=>{const s=side.getBoundingClientRect(),b=$('paramConfirm').getBoundingClientRect();return b.top>=s.top-0.5&&b.bottom<=s.bottom+0.5&&b.height>0&&$('paramConfirm').contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2));};side.scrollTop=0;const atTop=footer();side.scrollTop=side.scrollHeight;const atBottom=footer();side.scrollTop=0;return {editing:document.body.classList.contains('parameter-editing'),rightOfCanvas:editor.left>=canvas.right-1,editorLeft:editor.left,canvasRight:canvas.right,scrollable:side.scrollHeight>side.clientHeight+60,atTop,atBottom,fields:document.querySelectorAll('[data-param-field]').length};})()`);
   await ctl('#paramDiscard');await wait(`!document.body.classList.contains('parameter-editing')`);
@@ -194,7 +194,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   /* 390px：沿用畫布下方面板，無水平溢出，面板內所有可點控制至少 44px。 */
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
   const controlAudit=`(()=>{const visible=e=>e.getClientRects().length>0&&!e.hidden&&e.type!=='hidden'&&getComputedStyle(e).visibility!=='hidden';const small=[...document.querySelectorAll('#parameterEditor button,#parameterEditor input,#parameterEditor select,#parameterEditor summary')].filter(visible).map(e=>({html:e.outerHTML.slice(0,70),h:Math.round(e.getBoundingClientRect().height)})).filter(x=>x.h<44);const editor=$('parameterEditor'),side=document.querySelector('.sidebar-right');return {small,pageOverflow:document.documentElement.scrollWidth>innerWidth,editorOverflow:editor.scrollWidth>editor.clientWidth+1,sideOverflow:side.scrollWidth>side.clientWidth+1,count:document.querySelectorAll('#parameterEditor button,#parameterEditor input,#parameterEditor select,#parameterEditor summary').length};})()`;
-  await ctl('#btnNewParameter');await wait(`!!$('paramName')`);
+  await createCard();
   await fill('[data-input]','=1/0');await wait(`!!document.querySelector('[data-error]')&&document.querySelectorAll('[data-insert-ref]').length>0`);
   const draftAudit=await read(controlAudit);
   await ctl('#paramDiscard');
@@ -208,7 +208,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const sceneOf=`(async()=>{const b=await ReferenceWorkspace.exportBytes();const p=await GeometryProject.unpack(b,fflate);return p.scene;})()`;
   await read(`ParameterUI.discard();ocSetSelection([]);void 0`);
   const sceneBeforeDraft=await read(sceneOf),cardsBeforeDraft=await read(`oc.parameters.length`),ocardsBeforeDraft=await read(`document.querySelectorAll('#oroot .ocard').length`);
-  await ctl('#btnNewParameter');await wait(`!!$('paramName')`);
+  await createCard();
   await fill('#paramName','草稿示意');await ctl('[data-param-template="panel"]');
   await wait(`!$('paramConfirm').disabled&&[...document.querySelectorAll('.parameter-card.is-draft .draft-value')].map(e=>e.textContent).join()==='915 mm,1830 mm'`);
   const draftInfo=await read(`(()=>{const d=document.querySelector('.parameter-card.is-draft'),r=d.getBoundingClientRect(),v=$('canvasViewport').getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {count:document.querySelectorAll('.parameter-card.is-draft').length,text:d.textContent,dashed:getComputedStyle(d.querySelector('rect')).strokeDasharray!=='none',inLayer:!!d.closest('#cardLayer'),asCard:d.classList.contains('ocard'),passThrough:getComputedStyle(d).pointerEvents==='none'&&!d.contains(hit),visible:r.right>v.left&&r.left<v.right&&r.bottom>v.top&&r.top<v.bottom,cards:oc.parameters.length,ocards:document.querySelectorAll('#oroot .ocard').length};})()`);
