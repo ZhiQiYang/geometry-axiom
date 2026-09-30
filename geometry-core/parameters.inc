@@ -162,7 +162,32 @@ static bool parameter_input(const char *text,int type,char out[PARAM_EXPR_MAX])
     ParameterWriter b={out,PARAM_EXPR_MAX,0,true};parameter_ast_write(&p,root,&b);
     return b.ok?true:parameter_fail("UNSUPPORTED/CAPACITY: expression record exceeds 2047 bytes");
 }
-typedef struct {World *w;unsigned char marks[PARAM_FIELD_MAX];int depth;uint32_t path_card[PARAM_DEPTH_MAX],path_field[PARAM_DEPTH_MAX];} ParameterEval;
+/* Dependency depth is a property of the field, not of the evaluation stack: fdepth[i] = 1 + max fdepth of the fields it references
+ * (a leaf is 1). It is recorded when a field finishes and read back by every referrer, cache hit or not, so accept/reject is
+ * independent of storage order. maxref accumulates the deepest referenced field of the field currently being evaluated. */
+typedef struct {World *w;unsigned char marks[PARAM_FIELD_MAX];unsigned char fdepth[PARAM_FIELD_MAX];int depth,maxref;uint32_t path_card[PARAM_DEPTH_MAX],path_field[PARAM_DEPTH_MAX];} ParameterEval;
+/* Prepend one "[card:field name.field] -> " link to g_parameter_error. Consumers truncate from the end (eng_fail keeps 255 bytes,
+ * grid messages "%.190s"), so a 64-link path used to swallow the error code. Keep the outermost link, the innermost link and the
+ * root cause, and elide the middle, so the total stays within PARAM_ERROR_BUDGET and the code (e.g. UNSUPPORTED/CAPACITY) survives. */
+#define PARAM_ERROR_BUDGET 190
+static void parameter_wrap_error(uint32_t pid,uint32_t fid,const char *card,const char *field)
+{
+    char head[256],tail[512],out[512];
+    snprintf(head,sizeof head,"[%u:%u %s.%s] -> ",pid,fid,card,field);utf8_trim_tail(head);
+    snprintf(tail,sizeof tail,"%s",g_parameter_error);
+    if(strlen(head)+strlen(tail)<=PARAM_ERROR_BUDGET){snprintf(g_parameter_error,sizeof g_parameter_error,"%s%s",head,tail);return;}
+    const char *last=NULL,*prev=NULL;for(const char *q=tail;(q=strstr(q," -> "))!=NULL;q+=4){prev=last;last=q;}
+    const char *root=last?last+4:tail,*inner=last?(prev?prev+4:tail):"";int inner_len=last?(int)(last-inner):0;
+    if(inner_len==3&&!memcmp(inner,"...",3))inner_len=0;
+    snprintf(out,sizeof out,"%s... -> %.*s%s%s",head,inner_len,inner,inner_len?" -> ":"",root);
+    if(strlen(out)>PARAM_ERROR_BUDGET)snprintf(out,sizeof out,"%s... -> %s",head,root);
+    if(strlen(out)>PARAM_ERROR_BUDGET){
+        int room=PARAM_ERROR_BUDGET-7-(int)strlen(root);if(room<16)room=16;
+        snprintf(out,sizeof out,"%.*s",room,head);utf8_trim_tail(out);
+        size_t n=strlen(out);snprintf(out+n,sizeof out-n,"... -> %s",root);
+    }
+    snprintf(g_parameter_error,sizeof g_parameter_error,"%s",out);utf8_trim_tail(g_parameter_error);
+}
 static bool parameter_eval_field(ParameterEval *e,int index);
 static bool parameter_eval_ast(ParameterEval *e,EngJson *j,int t,int depth,int *nodes,ParamValue *out)
 {
@@ -179,7 +204,9 @@ static bool parameter_eval_ast(ParameterEval *e,EngJson *j,int t,int depth,int *
     if(!strcmp(op,"ref")){
         uint32_t id,field;if(!eng_json_keys(j,t,"op,parameterId,fieldId","")||!parameter_u32(j,eng_json_member(j,t,"parameterId"),&id)||!parameter_u32(j,eng_json_member(j,t,"fieldId"),&field))return parameter_fail("I38 AST: invalid reference");
         int i=parameter_field_index(e->w,id,field);if(i<0)return parameter_fail("I38 MISSING: parameter %u field %u",id,field);
-        if(!parameter_eval_field(e,i))return false;*out=e->w->parameters.fields[i].value;return true;
+        if(!parameter_eval_field(e,i))return false;
+        if(e->fdepth[i]>e->maxref)e->maxref=e->fdepth[i];  /* also on cache hits: the depth comes from the field, not the stack */
+        *out=e->w->parameters.fields[i].value;return true;
     }
     bool neg=!strcmp(op,"neg");if(!neg&&strcmp(op,"add")&&strcmp(op,"sub")&&strcmp(op,"mul")&&strcmp(op,"div"))return parameter_fail("I38 OP: unsupported operation");
     if(!eng_json_keys(j,t,neg?"op,left":"op,left,right",""))return parameter_fail("I38 AST: invalid arithmetic node");
@@ -191,18 +218,21 @@ static bool parameter_eval_ast(ParameterEval *e,EngJson *j,int t,int depth,int *
 static bool parameter_eval_field(ParameterEval *e,int index)
 {
     ParameterField *f=&e->w->parameters.fields[index];
-    if(e->marks[index]==2)return true;
+    if(e->marks[index]==2)return true;  /* cached value; its dependency depth is e->fdepth[index] */
     if(e->marks[index]==1)return parameter_fail("I38 CYCLE: parameter %u field %u",f->parameter_id,f->id);
     if(e->depth==PARAM_DEPTH_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: dependency depth exceeds 64");
     e->marks[index]=1;e->path_card[e->depth]=f->parameter_id;e->path_field[e->depth++]=f->id;
+    int outer_maxref=e->maxref;e->maxref=0;
     EngJson j;bool ok=eng_json_parse_n(&j,f->expression,strlen(f->expression));ParamValue value={0,1,0};int nodes=0;
     if(ok)ok=parameter_eval_ast(e,&j,0,0,&nodes,&value);else parameter_fail("I38 JSON: %s",j.error);
     eng_json_free(&j);
     if(ok&&value.unit!=(f->type==0))ok=parameter_fail("I38 UNIT: result unit does not match field type");
     if(ok&&f->type==1&&(value.num<0||value.den!=1))ok=parameter_fail("I38 COUNT: quantity must be a nonnegative integer");
     --e->depth;
-    if(!ok){const ParameterSet *c=parameter_find(e->w,f->parameter_id);char tail[512];snprintf(tail,sizeof tail,"%s",g_parameter_error);snprintf(g_parameter_error,sizeof g_parameter_error,"[%u:%u %s.%s] -> %s",f->parameter_id,f->id,c?c->name:"?",f->name,tail);utf8_trim_tail(g_parameter_error);return false;}
-    f->value=value;e->marks[index]=2;return true;
+    int own_depth=e->maxref+1;e->maxref=outer_maxref;
+    if(ok&&own_depth>PARAM_DEPTH_MAX)ok=parameter_fail("UNSUPPORTED/CAPACITY: dependency depth exceeds 64");
+    if(!ok){const ParameterSet *c=parameter_find(e->w,f->parameter_id);parameter_wrap_error(f->parameter_id,f->id,c?c->name:"?",f->name);return false;}
+    f->value=value;e->fdepth[index]=(unsigned char)own_depth;e->marks[index]=2;return true;
 }
 static bool parameters_rebuild(World *w,char *error,size_t cap)
 {
@@ -233,7 +263,7 @@ static bool parameter_put(World *w,EngJson *j,int t)
         if(v->id==UINT32_MAX)card.next_field_id=0;else if(card.next_field_id&&v->id>=card.next_field_id)card.next_field_id=v->id+1;
         if(input>=0){char text[PARAM_EXPR_MAX];if(!eng_json_string(j,input,text,sizeof text))ok=parameter_fail("UNSUPPORTED/CAPACITY: parameter input exceeds 2047 bytes");else if(!parameter_input(text,v->type,v->expression))ok=false;}
         else if(!eng_json_canonical(j,expr,v->expression,sizeof v->expression))ok=parameter_fail("UNSUPPORTED/CAPACITY: expression record exceeds capacity");
-        if(!ok){char cause[512];snprintf(cause,sizeof cause,"%s",g_parameter_error);parameter_fail("[%u:%u %s.%s] -> %s",id,v->id,card.name,v->name,cause);}
+        if(!ok)parameter_wrap_error(id,v->id,card.name,v->name);
     }
     uint32_t next;int nt=eng_json_member(j,t,"nextFieldId");if(ok&&nt>=0){if(!parameter_u32(j,nt,&next))ok=false;else if(card.next_field_id==0?next!=0:(next!=0&&next<card.next_field_id))ok=parameter_fail("I38 ID: nextFieldId cannot move backwards");else card.next_field_id=next;}
     size_t slot=0;while(slot<w->parameters.card_count&&w->parameters.cards[slot].id!=id)++slot;

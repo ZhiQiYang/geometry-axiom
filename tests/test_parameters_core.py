@@ -276,19 +276,46 @@ class ParametersCore(unittest.TestCase):
         self.capacity([card(1, "x", [field(1, "=" + "+".join(["1"] * 65), "ratio")])], False, "exceeds 128 nodes")
         for depth, accepted in [(31, True), (32, False)]:
             self.capacity([card(1, "x", [field(1, "=" + "(" * depth + "1" + ")" * depth, "ratio")])], accepted, None if accepted else "nesting exceeds 32")
-        # 依賴深度：欄位依序連到下一欄，最深鏈排在儲存順序最前面時，64 層合法、65 層被拒。
-        # 已知缺口（見 VALIDATION）：拒絕訊息被路徑前綴截斷而不含 UNSUPPORTED；依存序排列的 256 層鏈也會被接受，故這裡不斷言訊息。
-        def chain(n):
-            cards, k = [], 0
-            while k < n:
-                fields = []
-                for j in range(1, 17):
-                    if k >= n: break
-                    fields.append(field(j, "1" if k == n - 1 else "=@%d:%d+1" % ((k + 1) // 16 + 1, (k + 1) % 16 + 1), "ratio")); k += 1
-                cards.append(card(len(cards) + 1, "c%d" % len(cards), fields))
+        # 依賴深度（GEO-223 契約：最多 64 層）：判定必須與儲存順序、求值順序、快取命中無關。
+        # 邏輯鏈 0→1→…→n-1（0 是最深端、n-1 是葉）；leaf_first 決定儲存順序：False＝深端排最前，True＝葉排最前（快取由淺往深填）。
+        # 以前只有求值堆疊真的走到第 65 層才拒絕：葉排前面時 65/120/256 層全被接受。extra 另掛一個只依賴「已快取的鏈頂」的欄位。
+        def chain(n, leaf_first, extra=False):
+            pos = (lambda i: n - 1 - i) if leaf_first else (lambda i: i)
+            slots = [None] * n
+            for i in range(n):
+                slots[pos(i)] = "1" if i == n - 1 else "=@%d:%d+1" % (pos(i + 1) // 16 + 1, pos(i + 1) % 16 + 1)
+            if extra:  # 依賴邏輯鏈頂（鏈頂深度 n），自己是第 n+1 層；排在最後，此時鏈頂早已被快取
+                slots.append("=@%d:%d+1" % (pos(0) // 16 + 1, pos(0) % 16 + 1))
+            cards = []
+            for c in range(0, len(slots), 16):
+                cards.append(card(c // 16 + 1, "c%d" % (c // 16), [field(j + 1, t, "ratio") for j, t in enumerate(slots[c:c + 16])]))
             return cards
-        self.capacity(chain(64), True)
-        self.capacity(chain(65), False)
+        for leaf_first in (False, True):
+            for n, accepted in [(1, True), (63, True), (64, True), (65, False), (120, False), (256, False)]:
+                with self.subTest(depth=n, leaf_first=leaf_first):
+                    self.capacity(chain(n, leaf_first), accepted, None if accepted else "UNSUPPORTED/CAPACITY: dependency depth exceeds 64")
+        # 快取命中也要帶出深度：64 層鏈（葉在前、全部已快取）＋一個依賴鏈頂的欄位＝65 層，必須拒絕；63 層鏈＋同款欄位＝64 層，合法。
+        with self.subTest(cached_top="65"):
+            self.capacity(chain(64, True, extra=True), False, "UNSUPPORTED/CAPACITY: dependency depth exceeds 64")
+        with self.subTest(cached_top="64"):
+            self.capacity(chain(63, True, extra=True), True)
+        # 扇入（菱形）：深度是「所引用欄位深度的最大值 +1」，不是累加。一個欄位同時引用 63 層鏈頂（深度 63）與葉（深度 1）：
+        # 取最大＝64 合法；若誤寫成累加＝65 會被拒。引用 64 層鏈頂＋葉＝65 必須拒絕，兩種引用順序都要（防止進出遞迴時 maxref 沒還原）。
+        def fanin(n, top_first):
+            cards = chain(n, True)
+            top = "@%d:%d" % ((n - 1) // 16 + 1, (n - 1) % 16 + 1)
+            leaf = "@1:1"
+            text = "=" + (top + "+" + leaf if top_first else leaf + "+" + top)
+            if len(cards[-1]["value"]["fields"]) < 16:
+                cards[-1]["value"]["fields"].append(field(len(cards[-1]["value"]["fields"]) + 1, text, "ratio"))
+            else:
+                cards.append(card(len(cards) + 1, "fan", [field(1, text, "ratio")]))
+            return cards
+        for top_first in (True, False):
+            with self.subTest(fanin="63+leaf", top_first=top_first):
+                self.capacity(fanin(63, top_first), True)
+            with self.subTest(fanin="64+leaf", top_first=top_first):
+                self.capacity(fanin(64, top_first), False, "UNSUPPORTED/CAPACITY: dependency depth exceeds 64")
         self.assertEqual([], self.read()["state"]["parameters"])
 
     def test_matrix_scene_block_integrity_and_canvas_position_survive_reopen(self):
