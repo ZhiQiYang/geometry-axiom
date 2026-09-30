@@ -54,6 +54,15 @@ static bool grid_systems_rebuild(World *w,char *error,size_t cap)
         snprintf(error,cap,"I37: grid-system capacity exceeded"); return false;
     }
     for (size_t i=0;i<w->grid_system_count;++i) {
+        for(int axis=0;axis<2;++axis){
+            GridAxisDef *a=&w->grid_systems[i].axis[axis];
+            Coord *values[]={&a->start,&a->step,&a->panel,&a->gap,&a->anchor};
+            for(int field=0;field<5;++field)if(a->parameters[field].set){
+                if(!grid_axis_is_infinite(a)||!parameter_coord(w,a->parameters[field],values[field])){
+                    snprintf(error,cap,"grid-system %u %c: %.190s",w->grid_systems[i].id,axis?'v':'u',g_parameter_error);return false;
+                }
+            }
+        }
         if (!grid_system_valid(&w->grid_systems[i])) {
             snprintf(error,cap,"I37: grid-system %u has an invalid definition",w->grid_systems[i].id); return false;
         }
@@ -94,12 +103,22 @@ static bool grid_system_read_name(const char *hex,char out[GRID_SYSTEM_NAME_MAX+
     }
     out[n/2]=0; return grid_system_name_valid((const unsigned char*)out,n/2);
 }
+static bool grid_parameter_token(const char *text,Coord *value,ParameterRef *ref,bool allowed)
+{
+    if(allowed&&!strncmp(text,"param:",6)){*value=1;return parameter_ref_parse(text,ref);}
+    return parse_coord(text,value);
+}
+static void grid_parameter_dump(FILE *out,Coord value,ParameterRef ref)
+{
+    if(ref.set)fprintf(out,"param:%u:%u",ref.parameter_id,ref.field_id);
+    else fprintf(out,"%lld",(long long)value);
+}
 static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a)
 {
     int i=*at; if (i>=count) return false;
     if (!strcmp(t[i],"none")) ++i;
     else if (!strcmp(t[i],"repeat")) {
-        if(i+2>=count || !parse_coord(t[i+1],&a->start) || !parse_coord(t[i+2],&a->step)) return false;
+        if(i+2>=count || !grid_parameter_token(t[i+1],&a->start,&a->parameters[0],true) || !grid_parameter_token(t[i+2],&a->step,&a->parameters[1],true)) return false;
         a->source=GRID_SRC_REPEAT; i+=3;
     }
     else if (!strcmp(t[i],"series")) {
@@ -109,7 +128,9 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a)
         a->source=GRID_SRC_SERIES; a->series_count=(size_t)n; i+=4;
     } else if (!strcmp(t[i],"panel") || !strcmp(t[i],"repeat-panel")) {
         if (i+5>=count || strcmp(t[i+2],"gap") || strcmp(t[i+4],"from") ||
-            !parse_coord(t[i+1],&a->panel) || !parse_coord(t[i+3],&a->gap) || !parse_coord(t[i+5],&a->anchor)) return false;
+            !grid_parameter_token(t[i+1],&a->panel,&a->parameters[2],!strcmp(t[i],"repeat-panel")) ||
+            !grid_parameter_token(t[i+3],&a->gap,&a->parameters[3],!strcmp(t[i],"repeat-panel")) ||
+            !grid_parameter_token(t[i+5],&a->anchor,&a->parameters[4],!strcmp(t[i],"repeat-panel"))) return false;
         a->source=!strcmp(t[i],"panel")?GRID_SRC_PANEL:GRID_SRC_REPEAT_PANEL; a->anchor_explicit=true; i+=6;
     } else {
         /* Accept the descriptive explicit keyword as well as grid's bare list. */
@@ -205,8 +226,12 @@ static void grid_systems_dump(const World *w,FILE *out)
             else if (a->source==GRID_SRC_EXPLICIT) {
                 fputs(" explicit",out); for (size_t k=0;k<a->count;++k) fprintf(out," %lld",(long long)a->coords[k]);
             } else if (a->source==GRID_SRC_SERIES) fprintf(out," series %lld %lld %u",(long long)a->start,(long long)a->step,(unsigned)a->series_count);
-            else if(a->source==GRID_SRC_REPEAT) fprintf(out," repeat %lld %lld",(long long)a->start,(long long)a->step);
-            else fprintf(out," %s %lld gap %lld from %lld",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel",(long long)a->panel,(long long)a->gap,(long long)a->anchor);
+            else if(a->source==GRID_SRC_REPEAT) {
+                fputs(" repeat ",out);grid_parameter_dump(out,a->start,a->parameters[0]);fputc(' ',out);grid_parameter_dump(out,a->step,a->parameters[1]);
+            } else {
+                fprintf(out," %s ",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel");grid_parameter_dump(out,a->panel,a->parameters[2]);
+                fputs(" gap ",out);grid_parameter_dump(out,a->gap,a->parameters[3]);fputs(" from ",out);grid_parameter_dump(out,a->anchor,a->parameters[4]);
+            }
         }
         fputc('\n',out);
     }

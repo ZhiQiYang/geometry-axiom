@@ -100,6 +100,7 @@ window.EngineeringWorkspace = (() => {
     for (const key of ['material','method','application','section','inlineKind','activePlacement','importText']) if (Object.hasOwn(value,key))state[key]=clone(value[key]);
   }
   async function open(options = {}) {
+    if(window.ParameterUI?.pending && !ParameterUI.mayLeave())return;
     ensure(); opener = document.activeElement;
     invalidate();
     const nextContext = context();
@@ -347,6 +348,7 @@ window.EngineeringWorkspace = (() => {
     if(!source)return '既有直接輸入';
     if(source.kind==='literal')return `明設 ${source.value} mm`;
     if(source.kind==='spec')return `具名尺寸「${source.name}」`;
+    if(source.kind==='parameter')return window.ParameterUI?.sourceLabel(source,state.snapshot.parameters)||`參數 ${source.parameterId}:${source.fieldId}`;
     if(source.kind==='material'){const material=lookupVersion('materials',source);return `${material?refText(material):'材料版本 v'+source.version} · ${uiLabels[source.field]||source.field}`;}
     if(source.kind==='application'){const application=list(state.preview?.after?.applications??state.snapshot.applications).find(a=>a.id===source.id);return `${application?faceName(application.placement_id):'本面'}做法 · ${sourceFieldLabel(source.field)}`;}
     return '來源資料待核對';
@@ -357,12 +359,13 @@ window.EngineeringWorkspace = (() => {
   function targetLabel(target){return target.kind==='grid'?`網格 #${target.id} · ${target.axis} ${target.field==='panel'?'面材尺寸':'縫寬'}`:`角材 #${target.id} · ${target.field}`;}
   function sourceEditor(target,setting,placementId,level) {
     const key=JSON.stringify(target),draft=setting||{mode:'keep',value:'',field:target.field==='panel'?'width':target.field};
-    const modes=[['keep','保持目前設定'],...(level==='override'?[['inherit','移除覆寫，恢復來源']]:[]),['literal','明設數值'],['spec','引用具名尺寸'],...(target.field!=='gap'?[['material','引用固定材料版本']]:[])];
+    const modes=[['keep','保持目前設定'],...(level==='override'?[['inherit','移除覆寫，恢復來源']]:[['unbind','解除引用，保留有效值']]),['literal','明設數值'],['spec','引用具名尺寸'],['parameter','引用參數欄位'],...(target.field!=='gap'?[['material','引用固定材料版本']]:[])];
     const common=`data-placement="${placementId}" data-ew-source-target="${esc(key)}" data-ew-source-level="${level}"`;
     const control=(name,label,options)=>`<label>${label}<select data-ew-source-${name} ${common}>${options.map(([value,text])=>`<option value="${esc(value)}"${String(draft[name])===String(value)?' selected':''}>${esc(text)}</option>`).join('')}</select></label>`;
     let html=control('mode',level==='source'?'尺寸來源':'物件覆寫',modes);
     if(draft.mode==='literal')html+=`<label>數值 mm<input inputmode="numeric" data-ew-source-value ${common} value="${esc(draft.value)}"></label>`;
     if(draft.mode==='spec')html+=control('value','具名尺寸',[['','請選擇'],...list(state.snapshot.specs).map(spec=>[spec.name,`${spec.name} · ${spec.value} mm`])]);
+    if(draft.mode==='parameter')html+=control('value','參數欄位',[['','請選擇'],...(window.ParameterUI?.options({dimensions:true,catalog:state.snapshot.parameters||[]})||[]).map(o=>[o.ref.parameterId+':'+o.ref.fieldId,o.text])]);
     if(draft.mode==='material'){
       html+=control('value','固定材料版本',recordOptions('materials',target.kind==='grid'?'panel':'timber'));
       if(target.kind==='grid')html+=control('field','採用面材的',[['width','寬'],['length','長']]);
@@ -384,7 +387,8 @@ window.EngineeringWorkspace = (() => {
     }
     return `<details data-ew-source-details><summary>物件來源、有效值與覆寫 · ${rows.length} 項</summary><p class="ew-note">包含 custom 角材。直接指定材料或具名尺寸只改截面來源，不會改角色、位置引用或優先序。只修改下方來源時可單獨預覽，不必另選做法。</p>${rows.map(binding=>{
       const key=JSON.stringify(binding.target);
-      return `<div class="ew-source-row"><strong>${esc(targetLabel(binding.target))}</strong><p>${esc(sourceLabel(binding.source))}<br>生效值：${esc(binding.effective??'待核心提供')} mm${binding.override?` · 目前覆寫：${esc(sourceLabel(binding.override))}`:''}</p>${binding.path?`<details><summary>有效來源路徑</summary>${renderData(binding.path)}</details>`:''}${sourceEditor(binding.target,t.objectSources?.[key],id,'source')}${binding.source?sourceEditor(binding.target,t.objectOverrides[key],id,'override'):''}</div>`;
+      const parameterLinks=[binding.source,binding.override].filter(s=>s?.kind==='parameter').map(s=>`<button type="button" data-ew-parameter="${s.parameterId}">查看 ${esc(sourceLabel(s))}</button>`).join('');
+      return `<div class="ew-source-row"><strong>${esc(targetLabel(binding.target))}</strong><p>${esc(sourceLabel(binding.source))}<br>生效值：${esc(binding.effective??'待核心提供')} mm${binding.override?` · 目前覆寫：${esc(sourceLabel(binding.override))}`:''}</p>${parameterLinks}${binding.path?`<details><summary>有效來源路徑</summary>${renderData(binding.path)}</details>`:''}${sourceEditor(binding.target,t.objectSources?.[key],id,'source')}${binding.source?sourceEditor(binding.target,t.objectOverrides[key],id,'override'):''}</div>`;
     }).join('')||'<p class="ew-note">目前沒有已放角材或工程來源綁定。可先從上方明確綁定既有主網格。</p>'}<button type="button" data-ew-source-preview="${id}">只預覽這個面的來源變更</button></details>`;
   }
   function renderApply() {
@@ -447,6 +451,7 @@ window.EngineeringWorkspace = (() => {
   }
   function handleClick(event) {
     const button=event.target.closest('button');if(!button||!dialog.contains(button)||state.busy)return;
+    if(button.hasAttribute('data-ew-parameter')){close();window.ParameterUI?.jump('parameter',Number(button.dataset.ewParameter));return;}
     if(button.hasAttribute('data-ew-grid-origin')){const origin=gridOrigin();if(origin){state.gridFlow.anchors={u:String(origin.u),v:String(origin.v)};changed();render();}return;}
     if(button.hasAttribute('data-ew-grid-method-defaults')){applyGridMethodDefaults(true);changed();render();return;}
     if(button.dataset.ewSection){state.section=button.dataset.ewSection;invalidate();saveDraft();render();message('已切換頁面，草稿仍保留。請重新預覽要套用的變更。');return;}
@@ -541,6 +546,7 @@ window.EngineeringWorkspace = (() => {
     return {action:'apply',draft:clone(state.application)};
   }
   function sourceFromDraft(d, minimum=0) {
+    if(d.mode==='parameter'){if(!/^\d+:\d+$/.test(d.value))throw Error('請選擇參數欄位。');const [parameterId,fieldId]=d.value.split(':').map(Number);return {kind:'parameter',parameterId,fieldId};}
     if(d.mode==='inherit')return null;
     if(d.mode==='spec'){if(!d.value)throw new Error('請選擇具名尺寸。');return {kind:'spec',name:d.value};}
     if(d.mode==='material'){if(!d.value)throw new Error('請選擇固定材料版本。');const parsed=JSON.parse(d.value);if(!Array.isArray(parsed)||parsed.length!==2||!['width','length','A','B'].includes(d.field))throw new Error('材料欄位未設定。');return {kind:'material',id:parsed[0],version:parsed[1],field:d.field};}
@@ -663,7 +669,7 @@ window.EngineeringWorkspace = (() => {
   function buildSourceOperations(target) {
     const operations=[];
     for(const [key,setting] of Object.entries(target.objectSources||{}))if(setting.mode!=='keep'){
-      const bound=JSON.parse(key);operations.push({op:'set-source',target:bound,source:sourceFromDraft(setting,bound.field==='gap'?0:1)});
+      const bound=JSON.parse(key);operations.push(setting.mode==='unbind'?{op:'unbind-source',target:bound}:{op:'set-source',target:bound,source:sourceFromDraft(setting,bound.field==='gap'?0:1)});
     }
     for(const [key,setting] of Object.entries(target.objectOverrides||{}))if(setting.mode!=='keep'){
       const bound=JSON.parse(key);operations.push({op:'set-override',target:bound,value:sourceFromDraft(setting,bound.field==='gap'?0:1)});

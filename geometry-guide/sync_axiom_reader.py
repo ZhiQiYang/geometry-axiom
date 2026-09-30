@@ -32,7 +32,9 @@ CANONICAL = HERE / "公理層-閱讀器.html"
 AXIOM = ROOT / "公理層.md"
 PLAIN = HERE / "公理層-白話.md"
 COUNTS_ID = "reader-counts"
-CLAUSE_START = re.compile(r"^(?:\*\*)?([DIR]\d+[a-z]?)\s+", re.M)
+# D headings are bold in the SSOT; plain leading D references remain body text.
+# Match the established grammar used by axiom_matrix instead of splitting those references.
+CLAUSE_START = re.compile(r"^(?:\*\*|(?=[IR]))([DIR]\d+[a-z]?)\s+", re.M)
 CLAUSE_REF = re.compile(r"\b([DIR]\d+[a-z]?)(?:\(([a-z])\))?")
 SUB_START = re.compile(r"^( +)\(([a-z])\) +", re.M)
 GROUPS = {"D": "定義", "I": "不變量", "R": "推演規則"}

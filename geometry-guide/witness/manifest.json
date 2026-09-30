@@ -163,5 +163,30 @@
     "view": "bottom",
     "error_contains": "I35: effective dimension violates",
     "gist": "主格 u.panel 明示覆寫為 0，因有效板寬不為正值而拒絕。圖是拒絕前的合法承載面，沒有把失敗網格畫成成功。"
+  },
+  "D31": {
+    "scene": "_wit_d31_parameters.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "板材與排格卡依固定欄位身分相連；u 格距精確為 915＋2＝917 mm，v 為 1830 mm。"
+  },
+  "I39": {
+    "scene": "_wit_d31_parameters.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "保存包含未直接使用的半寬分數與兩張卡；重新載入依原身分重算網格，不以有效數字代替來源。"
+  },
+  "R33": {
+    "scene": "_wit_d31_parameters.scene",
+    "expect": "accept",
+    "view": "bottom",
+    "gist": "先求板材與縫寬、再求跨卡 u 格距、無限來源、配置與參考線。半寬乘 2 成為整數 915 mm。"
+  },
+  "I38": {
+    "scene": "_wit_i38_fractional_geometry.scene",
+    "expect": "reject",
+    "view": "bottom",
+    "error_contains": "integer",
+    "gist": "457.5 mm 可保存在參數欄位；直接用於整數定位時拒絕，圖保留失敗前的合法網格與參考線。"
   }
 }

@@ -38,7 +38,7 @@ class CanonicalReader(unittest.TestCase):
                     break
                 continue
             first = line.removeprefix("**").split(" ", 1)[0]
-            if re.fullmatch(r"[DIR][0-9]+[a-z]?", first):
+            if re.fullmatch(r"[DIR][0-9]+[a-z]?", first) and (line.startswith("**") or first[0] in "IR"):
                 if current:
                     found[current] = "\n".join(lines).rstrip("\n")
                 current, lines = first, [line]
@@ -46,6 +46,11 @@ class CanonicalReader(unittest.TestCase):
                 lines.append(line)
         self.assertEqual({c["id"]: c["body"] for c in self.state["clauses"]}, found)
         self.assertEqual(len(found), len(self.state["clauses"]))
+
+    def test_plain_leading_definition_reference_stays_in_body(self):
+        clauses=reader.source_clauses(self.axiom)
+        self.assertEqual(1,sum(c['id']=='D31' for c in clauses))
+        self.assertIn('D31 的參數值',next(c['body'] for c in clauses if c['id']=='D1'))
 
     def test_rebuild_is_byte_idempotent_and_keeps_reviews(self):
         regenerated = reader.rebuild(self.html, self.axiom, self.plain)

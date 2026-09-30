@@ -241,7 +241,7 @@ function hydrateIcons(root = document) {
   for (const slot of root.querySelectorAll("[data-icon]")) slot.innerHTML = icon(slot.dataset.icon);
 }
 
-const KIND_ZH = { boundary: "面", placement: "承載面", space: "空間", column: "柱", beam: "樑", "grid-system": "網格系統", "grid-binding": "網格配置" };
+const KIND_ZH = { parameter: "參數", boundary: "面", placement: "承載面", space: "空間", column: "柱", beam: "樑", "grid-system": "網格系統", "grid-binding": "網格配置" };
 function sceneMenuDisplay(name) {
   return String(name || "內建示範").replace(/\.scene$/i, "").replace(/\.gcanvas$/i, "");
 }
@@ -1644,7 +1644,7 @@ const oc = {
   showFace: true, showSpace: true, showColumn: true, showBeam: true, showGridSystem: true, showGridBinding: true,
   search: "",             /* 搜尋過濾字串 */
   surfs: [],              /* /surfaces 快照(法向→空間六槽) */
-  faces: [], spaces: [], columns: [], beams: [], gridSystems: [], gridBindings: [],
+  faces: [], spaces: [], columns: [], beams: [], gridSystems: [], gridBindings: [], parameters: [], parameterUses: [], parameterCreating: false,
   gridSystemCreating: false,
   stack: [],              // 焦點堆疊：世界 → 空間 → 面
   focus: null,            // null | {t:'space'|'face', id}
@@ -1953,6 +1953,8 @@ async function renderObjects({ persistPositions = true } = {}) {
   oc.faces = r.faces; oc.spaces = r.spaces;
   oc.columns = r.columns || []; oc.beams = r.beams || [];
   oc.gridSystems = r.gridSystems || [];
+  oc.parameters = r.parameters || [];
+  oc.parameterUses = r.parameterUses || [];
   oc.gridBindings = r.gridBindings || [];
   oc.surfs = sf.surfaces; oc.bmap = boundaries;
 
@@ -1964,7 +1966,7 @@ async function renderObjects({ persistPositions = true } = {}) {
                     ...oc.columns.filter(c => !c.hasPos),
                     ...oc.beams.filter(b => !b.hasPos),
                     ...oc.gridSystems.filter(g => !g.hasPos),
-                    ...oc.gridBindings.filter(g => !g.hasPos)];
+                    ...oc.gridBindings.filter(g => !g.hasPos), ...oc.parameters.filter(g => !g.hasPos)];
   for (const o of homeless) {
     const [cx, cy] = nextCardPosition(o, occupied);
     o.cx = cx; o.cy = cy;
@@ -2013,7 +2015,8 @@ function drawObjects() {
     (!inSpace || b.space === oc.focus.id) && oc.showBeam && matchQ(b));
   const visGridSystems = inSpace ? [] : oc.gridSystems.filter(g => oc.showGridSystem && matchQ(g));
   const visGridBindings = inSpace ? [] : oc.gridBindings.filter(g => oc.showGridBinding && matchQ(g));
-  const visibleKeys = new Set([...visFaces,...visSpaces,...visCols,...visBeams,...visGridSystems,...visGridBindings].map(o => `${o.members ? "space" : o.kind}:${o.id}`));
+  const visParameters = inSpace ? [] : oc.parameters.filter(matchQ);
+  const visibleKeys = new Set([...visFaces,...visSpaces,...visCols,...visBeams,...visGridSystems,...visGridBindings,...visParameters].map(o => `${o.members ? "space" : o.kind}:${o.id}`));
   const focusedSpaceSingle = oc.selection.length === 1 && oc.focus?.t === "space" &&
     oc.selection[0].kind === "space" && oc.selection[0].id === oc.focus.id && oc.spaces.some(s => s.id === oc.focus.id);
   oc.selection = oc.selection.filter(s => visibleKeys.has(`${s.kind}:${s.id}`) || focusedSpaceSingle);
@@ -2054,6 +2057,7 @@ function drawObjects() {
     c.classList.toggle("selected", ocSelected("grid-binding", o.id));
     cl.appendChild(c);
   }
+  for (const o of visParameters) if(window.ParameterUI) cl.appendChild(ParameterUI.card(o));
   for (const card of cl.children) {
     const kind = card.dataset.kind, id = +card.dataset.id;
     const box = cardBox(ocFind(kind, id));
@@ -2070,7 +2074,7 @@ function drawObjects() {
       if (kind === "boundary" || kind === "space") enterFocus(kind === "space" ? "space" : "face", id);
       else if (kind === "grid-binding") window.InfiniteGridWorkspace.openBinding(id);
       else if (kind === "grid-system" && ocFind(kind,id)?.mode === "infinite") window.InfiniteGridWorkspace.openSystem(id);
-      else { selectObject(kind, id); if (kind === "grid-system" && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
+      else { selectObject(kind, id); if (["grid-system","parameter"].includes(kind) && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
     action.addEventListener("click", enter);
     action.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); enter(e); } });
     if (kind === "space") {
@@ -2080,6 +2084,7 @@ function drawObjects() {
   }
   drawOcEdges(eg, visSpaces, visFaces, visCols, visBeams, labels);
   drawGridRelations(eg, labels, visibleKeys);
+  window.ParameterUI?.relations(eg, visibleKeys);
   updateEdgeLabels();
   drawCrumb();
   renderObjectList();
@@ -2087,11 +2092,12 @@ function drawObjects() {
   drawMinimap();
   renderSelectionSummary();
   $("emptyState").hidden = connection.phase !== "ready" ||
-    ocAllObjects().length > 0 || !!oc.focus || oc.gridSystemCreating;
+    ocAllObjects().length > 0 || !!oc.focus || oc.gridSystemCreating || oc.parameterCreating;
 }
 
 /* ---- 搜尋比對:名稱 / id / kind ---- */
 function ocCardName(o) {
+  if(o.kind === "parameter")return `參數 ${o.id} ${o.name} ${o.card.fields.map(f=>f.name).join(" ")}`;
   if (o.kind === "grid-binding") return `網格配置 ${o.id} 面 ${o.boundary} 來源 ${o.system}`;
   if (o.kind === "grid-system") return `網格系統 ${o.id} ${o.name}`;
   if (o.members) return `空間 ${o.id}`;
@@ -2258,7 +2264,7 @@ function drawMinimap() {
   const vr = ocv.getBoundingClientRect();
   const vb = { minX: -oc.panX / oc.zoom, minY: -oc.panY / oc.zoom,
     maxX: (vr.width - oc.panX) / oc.zoom, maxY: (vr.height - oc.panY) / oc.zoom };
-  const nodes = [...oc.faces, ...(oc.focus ? [] : [...oc.spaces,...oc.gridSystems,...oc.gridBindings]),
+  const nodes = [...oc.faces, ...(oc.focus ? [] : [...oc.spaces,...oc.gridSystems,...oc.gridBindings,...oc.parameters]),
                  ...oc.columns, ...oc.beams];
   if (!nodes.length && !oc.focus) return;
   const allMinX = Math.min(vb.minX, ...nodes.map(n => n.cx));
@@ -2314,6 +2320,7 @@ function drawCrumb() {
 
 /* ---- 焦點導航 ---- */
 async function enterFocus(t, id, options = {}) {
+  if(window.ParameterUI?.pending && !ParameterUI.mayLeave())return;
   const matchesTarget = oc.sel?.kind === (t === "space" ? "space" : "boundary") && oc.sel.id === id;
   clearCanvasSelections({keepSingleObject:matchesTarget});
   closePanels();
@@ -3957,6 +3964,7 @@ function gridLineLabel(grid, axis, index) {
 function referenceGuideSources(bid, along) {
   const coordinate = along === "u" ? "v" : "u", ci = coordinate === "u" ? 0 : 1;
   const options = fe.specs.map(s => [`spec:${s.name}`, `規格「${s.name}」 · ${s.value} mm`]);
+  for(const o of window.ParameterUI?.options({dimensions:true})||[])options.push([`param:${o.ref.parameterId}:${o.ref.fieldId}`,o.text]);
   (oc.bmap[bid] || []).forEach((loop, h) => loop.verts.forEach((point,i) => {
     if (point[ci] !== loop.verts[(i+1)%loop.verts.length][ci]) return;
     const ref = h ? `h${h-1}e${i}` : `e${i}`;
@@ -7603,13 +7611,11 @@ function renderFaceInspector() {
     `<div class="face-help">選擇已知邊、格線或具名規格作為位置來源；來源改動時，參考線跟著重算。要輸入設計尺寸，請先為它命名並儲存。</div>` +
     (fe.grids.some(g=>g.kind === "subgrid") ? `<p class="face-help">使用子格線座標建立的參考線會延伸至本面，不帶入父格範圍。要沿局部子線放材，請在角材的「沿著」選擇子網格線。</p>` : "") +
     `<div class="guide-summary">${fe.guides.map(g => `<button type="button" class="btn" data-guide-edit="${g.id}">參考線 ${g.id} · ${guidePositionLabel(g)} · 查看來源</button>`).join("") || "尚無參考線"}</div>` +
-    `<div class="place-form"><label>規格名稱<input id="refSpecName" placeholder="主支中線"></label>` +
-    `<label>數值 mm<input id="refSpecValue" type="number" step="1"></label></div>` +
-    `<button class="btn" id="refSpecSave">儲存具名規格</button>` +
+    `<button class="btn" id="refParameterOpen">建立／編輯參數</button>` +
     `<div class="place-form"><label>線的走向<select id="refGuideAxis"><option value="u">沿 u（固定 v 位置）</option><option value="v">沿 v（固定 u 位置）</option></select></label>` +
     `<label>設定方式<select id="refGuideMode"><option value="source">選擇位置來源</option><option value="advanced">進階：完整引用式</option></select></label></div>` +
     `<div class="place-form reference-source-mode" id="refGuideSourceFields"><label>位置來源<select id="refGuideSource"></select></label>` +
-    `<label>來源比例<select id="refGuideRatio"><option value="1">原值</option><option value="1/2">一半</option><option value="2">兩倍</option></select></label></div>` +
+    `<label>來源比例<select id="refGuideRatio"><option value="1">原值</option><option value="1/2">一半</option><option value="2">兩倍</option></select></label><span id="refGuideParameterLinks"></span></div>` +
     `<label id="refGuideExprLabel" hidden>完整位置引用式<input id="refGuideExpr" placeholder="例如 1/2*edge:e1:u"><small>比例沒有單位；mm 數值必須先存為具名規格。支援完整的同面、同軸引用式。</small></label>` +
     `<p id="refGuideSourceSummary" class="face-help" role="status"></p>` +
     `<button class="btn" id="refGuideCreate">建立引用線</button></div>`
@@ -7711,6 +7717,7 @@ function renderFaceInspector() {
   });
   feBindShapePane(pane, bid);
   feBindUnderlayPane(pane, bid);
+  pane.querySelector("#refParameterOpen")?.addEventListener("click",()=>window.ParameterUI?.openLegacy());
   const specSave = pane.querySelector("#refSpecSave");
   if (specSave) specSave.onclick = async () => {
     const name = $("refSpecName").value.trim(), value = Number($("refSpecValue").value);
@@ -7834,6 +7841,7 @@ function renderFaceInspector() {
       if (!advanced) $("refGuideExpr").value = source.value ? `${ratio.value === "1" ? "" : ratio.value + "*"}${source.value}` : "";
       $("refGuideSourceSummary").textContent = advanced ? "由核心檢查引用關係與連動影響。" :
         source.value ? `位置取自：${source.selectedOptions[0].textContent}${ratio.value === "1" ? "" : ` × ${ratio.value}`}` : "此方向尚無可用來源，請先儲存具名規格。";
+      $("refGuideParameterLinks").replaceChildren();appendParameterSourceLinks($("refGuideParameterLinks"),source.value);
     };
     axis.onchange = () => updateGuideSource(true);
     source.onchange = mode.onchange = ratio.onchange = () => updateGuideSource();
@@ -8220,6 +8228,8 @@ function feTimberSelected(id) {
   return fe.timberSelection.has(id) || (!fe.timberSelection.size && fe.sel?.kind === "timber" && fe.sel.id === id);
 }
 function ocSetSelection(items) {
+  if(window.ParameterUI?.pending && !(items.length===1 && items[0].kind==="parameter" && items[0].id===ParameterUI.editingId) && !ParameterUI.mayLeave())return;
+  if(items.length)oc.parameterCreating=false;
   if(items.length)oc.gridSystemCreating=false;
   const seen = new Set();
   oc.selection = items.filter(s => {
@@ -8274,6 +8284,7 @@ function selectionMultiHTML(items, face = false) {
   return `<section class="inspector-block"><div class="ib-title">已選 ${items.length} ${face ? "支角材" : "個物件"}</div>` +
     `<p class="multi-selection-note">向右拖曳：完整框住${face ? "角材" : "卡片"}才選取；向左拖曳：相交或接觸就選取。${touchCanvasUI() ? "可重新框選或清除選取。" : "Shift 點選可加入或移除。"}</p>` +
     `<ul class="multi-selection-list">${items.map(s => `<li>${face ? "角材" : KIND_ZH[s.kind] || "物件"} ${s.id}</li>`).join("")}</ul>` +
+    (!face&&items.some(s=>s.kind==='parameter')?'<button type="button" class="btn" id="parameterSelectionExport">匯出所選參數及引用卡片</button>':'') +
     `<p class="multi-selection-note">目前多選供查看選取範圍，尚不支援整組移動、編輯或刪除。請點選單一物件後再操作。</p></section>`;
 }
 function cancelCanvasMarquee() {
@@ -8404,9 +8415,10 @@ for (const target of [ocv,$("faceEditorViewport")]) {
   });
 }
 function ocAllObjects() {
-  return [...oc.faces, ...oc.spaces, ...oc.columns, ...oc.beams, ...oc.gridSystems, ...oc.gridBindings];
+  return [...oc.faces, ...oc.spaces, ...oc.columns, ...oc.beams, ...oc.gridSystems, ...oc.gridBindings, ...oc.parameters];
 }
 function ocFind(kind, id) {
+  if(kind === "parameter")return oc.parameters.find(p=>p.id===id)||null;
   if (kind === "grid-binding") return oc.gridBindings.find(g => g.id === id) || null;
   if (kind === "grid-system") return oc.gridSystems.find(g => g.id === id) || null;
   if (kind === "space") return oc.spaces.find(s => s.id === id) || null;
@@ -8475,7 +8487,9 @@ function renderObjectList() {
     const heading = document.createElement("h3"); heading.className = "object-group-title"; heading.textContent = title;
     group.append(heading); groups.set(key,group);
   }
-  const order = {"grid-system":0,boundary:1,placement:2,"grid-binding":3,space:4,column:5,beam:6};
+  for(const p of oc.parameters){if(ocMatchSearch(p))rows.push({kind:"parameter",id:p.id,name:ReferenceWorkspace.escape(p.name),sub:`${p.card.fields.length} 個欄位 · ${window.ParameterUI?.usage(p.id).length||0} 處使用`});}
+  $("objectCountBadge").textContent = rows.length;
+  const order = {parameter:0,"grid-system":0,boundary:1,placement:2,"grid-binding":3,space:4,column:5,beam:6};
   for (const r of rows.sort((a,b) => order[a.kind]-order[b.kind])) {
     const row = document.createElement("div");
     row.className = "object-row";
@@ -8505,7 +8519,7 @@ function renderObjectList() {
       if (r.kind === "placement") setStatus("自帶矩形面沒有邊界可編輯");
       else if (r.kind === "grid-binding") window.InfiniteGridWorkspace.openBinding(r.id);
       else if (r.kind === "grid-system" && ocFind(r.kind,r.id)?.mode === "infinite") window.InfiniteGridWorkspace.openSystem(r.id);
-      else if (r.kind === "column" || r.kind === "beam" || r.kind === "grid-system") {
+      else if (r.kind === "column" || r.kind === "beam" || r.kind === "grid-system" || r.kind === "parameter") {
         selectObject(r.kind, r.id);      /* 獨立物件開檢視器 */
         if (innerWidth <= 900) openPanel("right", $("toggleRight"));
       }
@@ -8517,7 +8531,7 @@ function renderObjectList() {
         list.querySelector(`.object-row[data-kind="${r.kind}"][data-id="${r.id}"]`)?.focus({preventScroll:true});
       }
     });
-    groups.get(r.kind === "grid-binding" ? "bindings" : ["grid-system","boundary","placement"].includes(r.kind) ? "sources" : "structures").appendChild(row);
+    groups.get(r.kind === "grid-binding" ? "bindings" : ["grid-system","boundary","placement","parameter"].includes(r.kind) ? "sources" : "structures").appendChild(row);
   }
   for (const group of groups.values()) if (group.children.length > 1) list.append(group);
   if (!rows.length) {
@@ -8537,7 +8551,7 @@ function renderObjectList() {
 function syncCompositionLayout() {
   const active = oc.on && !oc.focus && !view3;
   document.body.classList.toggle("canvas-composition",active);
-  document.body.classList.toggle("canvas-has-inspector",active && (!!oc.selection.length || !!oc.gridSystemCreating));
+  document.body.classList.toggle("canvas-has-inspector",active && (!!oc.selection.length || !!oc.gridSystemCreating || !!oc.parameterCreating));
   const selected = oc.sel && ocFind(oc.sel.kind,oc.sel.id);
   const grid = active && oc.selection.length === 1 && selected && (selected.kind === "grid-binding" || selected.kind === "grid-system" && selected.mode === "infinite");
   document.body.classList.toggle("canvas-grid-inspector",!!grid);
@@ -8563,6 +8577,7 @@ function renderInspector() {
   syncCompositionLayout();
   const pane = $("inspectorContent"); if (!pane) return;
   const empty = $("inspectorEmpty");
+  if(oc.parameterCreating){if(empty)empty.hidden=true;pane.hidden=false;window.ParameterUI?.render(pane);return;}
   if (oc.gridSystemCreating && !oc.selection.length) {
     if (empty) empty.hidden = true;
     pane.hidden = false; GridSystemEditor.render(pane, null); return;
@@ -8579,6 +8594,7 @@ function renderInspector() {
   const o = ocFind(sel.kind, sel.id);
   if (sel.kind === "grid-binding" || sel.kind === "grid-system" && o.mode === "infinite") {renderGridObjectInspector(pane,o);return;}
   if (sel.kind === "grid-system") { GridSystemEditor.render(pane, o); return; }
+  if (sel.kind === "parameter") { window.ParameterUI?.render(pane, o); return; }
   pane.textContent = "";
   /* RC 構件檢視器(B-3):欄位表單 → DSL 重宣告(交易式);雙擊也只到這裡(Q10)。 */
   if (sel.kind === "column" || sel.kind === "beam") {
@@ -8739,6 +8755,7 @@ function renderRcInspector(pane, kind, o) {
    C4:不用 confirm()——直接刪除,成功後 toast 提示可 Ctrl+Z 復原
    (對齊空間工作區 renderSpaceRc 構件列 ✕ 的既有做法)。 */
 async function deleteObject(kind, id) {
+  if(kind === "parameter"){selectObject(kind,id);document.getElementById("paramDelete")?.click();return;}
   if (oc.selection.length > 1) { toast("請先單選一個物件，再編輯或刪除"); return; }
   const name = kind === "space" ? `空間 ${id}`
     : kind === "column" ? `柱 ${id}` : kind === "beam" ? `樑 ${id}`
@@ -8777,7 +8794,7 @@ async function openCanvasObject(kind, id) {
     if (kind === "grid-binding") { await window.InfiniteGridWorkspace.openBinding(id); return; }
     if (kind === "grid-system" && ocFind(kind,id)?.mode === "infinite") { await window.InfiniteGridWorkspace.openSystem(id); return; }
     /* Q10: RC and legacy grid cards open their inspector only. */
-    if (["column","beam","grid-system"].includes(kind)) {
+    if (["column","beam","grid-system","parameter"].includes(kind)) {
       selectObject(kind,id);
       if (innerWidth <= 900) openPanel("right",$("toggleRight"));
       return;
@@ -8987,6 +9004,7 @@ function ocCursor() {
   renderCanvasModeHint();
 }
 function setOcTool(t) {
+  if(t!=="select" && window.ParameterUI?.pending && !ParameterUI.mayLeave())return;
   cancelCanvasMarquee();
   closePanels();
   if (t !== "rect") pendingSlot = null;

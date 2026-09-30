@@ -111,9 +111,13 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
   await ctl('#feZoomFit');check('顯示全部可重新啟用自動適配',fits(await fitGeometry()));
   await viewport(1382,804);await ctl('[data-fi-tab="components"]');
   check('參考線預設提供位置來源選擇，完整語法收在進階',await read(`$('refGuideMode').value==='source' && !$('refGuideSourceFields').hidden && $('refGuideExprLabel').hidden && $('refGuideSource').options.length>0`));
-  await fill('#refSpecName','審查定位');await fill('#refSpecValue','1700');await ctl('#refSpecSave');
-  await wait(`$('refGuideSource')?.value==='spec:審查定位'`);await choose('#refGuideAxis','u');await ctl('#refGuideCreate');await wait('!oc.busy');await sleep(180);
-  check('選具名規格建立參考線，核心保存來源與軸向',await read(`apiRequest('references').then(r=>r.guides.some(g=>g.expression==='spec:審查定位' && g.axis==='u' && g.off===1700))`));
+  const parameterFace=await read('oc.focus.id');
+  await ctl('#refParameterOpen');await ctl('#paramNewFromLegacy');await wait(`!!$('paramName')`);
+  await fill('#paramName','審查定位');await fill('[data-input]','1700');await ctl('#paramPreview');await wait(`!$('paramConfirm').disabled`);await ctl('#paramConfirm');await wait('!ParameterUI.pending');
+  const parameterSource=await read(`(()=>{const c=oc.parameters.find(p=>p.name==='審查定位').card;return 'param:'+c.id+':'+c.fields[0].id;})()`);
+  await read(`enterFocus('face',${parameterFace})`);await ctl('[data-fi-tab="components"]');
+  await choose('#refGuideSource',parameterSource);await choose('#refGuideAxis','u');await ctl('#refGuideCreate');await wait(`!!$('impact-confirm')`);await ctl('#impact-confirm');await wait('!oc.busy');await sleep(180);
+  check('共用參數入口建立引用，核心保存來源與軸向',await read(`apiRequest('references').then(r=>r.guides.some(g=>g.expression===${JSON.stringify(parameterSource)} && g.axis==='u' && g.off===1700))`));
   await choose('#refGuideAxis','v');await choose('#refGuideSource','edge:e1:u');await choose('#refGuideRatio','1/2');await ctl('#refGuideCreate');await wait('!oc.busy');await sleep(180);
   check('選已知邊一半產生引用式，位置與走向用語一致',await read(`apiRequest('references').then(r=>{const g=r.guides.find(g=>g.expression==='1/2*edge:e1:u'&&g.axis==='v');if(!g||g.off!==2000)return false;const row=document.querySelector('[data-edit-guide="'+g.id+'"]');return /沿 v/.test($('faceInspectorContent').textContent)&&/u\\s*=\\s*2000/.test($('faceInspectorContent').textContent)&&!!row&&/沿 v/.test(row.textContent)&&/u\\s*=\\s*2000/.test(row.textContent);})`));
   await ctl('#workspaceBackButton');

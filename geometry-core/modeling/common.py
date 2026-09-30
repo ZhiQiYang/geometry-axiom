@@ -5,6 +5,7 @@ import hashlib
 import json
 
 ENGINEERING_CAPABILITY = "engineering-spec/1"
+PARAMETER_CAPABILITY = "parameters/1"
 
 
 def scene_required_capabilities(scene):
@@ -24,6 +25,8 @@ def scene_required_capabilities(scene):
             result.add(tokens[1])
         if tokens[0] == "engineering" or any(token.startswith("eng:") for token in tokens):
             result.add(ENGINEERING_CAPABILITY)
+        if tokens[0] == "parameters" or "param:" in " ".join(tokens):
+            result.add(PARAMETER_CAPABILITY)
     return result
 
 

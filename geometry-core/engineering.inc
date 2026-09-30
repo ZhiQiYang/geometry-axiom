@@ -3,7 +3,7 @@
 #include <stdarg.h>
 static bool engineering_serializable(const World *w);
 static char g_engineering_error[256];
-static bool eng_fail(const char *text) { snprintf(g_engineering_error,sizeof g_engineering_error,"%s",text); return false; }
+static bool eng_fail(const char *text) { snprintf(g_engineering_error,sizeof g_engineering_error,"%s",text); utf8_trim_tail(g_engineering_error); return false; }
 static bool eng_id(const char *s)
 {
     size_t n=strlen(s); if (!n || n>=ENG_ID_MAX) return false;
@@ -64,6 +64,9 @@ static bool eng_source_parse(EngJson *j,int t,EngDimensionSource *s,bool allow_a
     } else if (!strcmp(kind,"spec")) {
         s->kind=ENG_SPEC;
         if (!eng_json_keys(j,t,"kind,name","") || !eng_json_string(j,eng_json_member(j,t,"name"),s->ref,sizeof s->ref) || !reference_name(s->ref)) return eng_fail("I35: invalid named-spec dimension source");
+    } else if (!strcmp(kind,"parameter")) {
+        s->kind=ENG_PARAMETER;s->parameter.set=true;
+        if(!eng_json_keys(j,t,"kind,parameterId,fieldId","")||!parameter_u32(j,eng_json_member(j,t,"parameterId"),&s->parameter.parameter_id)||!parameter_u32(j,eng_json_member(j,t,"fieldId"),&s->parameter.field_id))return eng_fail("I38: invalid parameter dimension source");
     } else if (!strcmp(kind,"material") || !strcmp(kind,"application")) {
         s->kind=!strcmp(kind,"material")?ENG_MATERIAL:ENG_APPLICATION;
         if (s->kind==ENG_APPLICATION && !allow_app) return eng_fail("I35: application override cannot refer to another application");
@@ -176,7 +179,7 @@ static bool eng_put_application(World *w,EngJson *j,int t)
     int overrides=eng_json_member(j,t,"overrides"); const char *names[]={"gap","boundary.A","boundary.B","primary.A","primary.B","secondary.A","secondary.B"};
     if (overrides>=0) {
         if (!eng_json_keys(j,overrides,"","gap,boundary.A,boundary.B,primary.A,primary.B,secondary.A,secondary.B")) return eng_fail("D28: unknown face override field");
-        for (int i=0;i<7;++i) { int v=eng_json_member(j,overrides,names[i]); if (v<0) continue; a.overridden[i]=true; if (!eng_source_parse(j,v,&a.overrides[i],false)) return false; }
+        for (int i=0;i<7;++i) { int v=eng_json_member(j,overrides,names[i]); if (v<0) continue; a.overridden[i]=true; if (!eng_source_parse(j,v,&a.overrides[i],false)) return false; if(a.overrides[i].kind==ENG_PARAMETER)return eng_fail("D28: parameter fields bind object dimensions, not face application overrides"); }
     }
     int anchors=eng_json_member(j,t,"anchorOptions");
     if (anchors>=0) {
@@ -222,6 +225,9 @@ static bool eng_resolve(World *w,const EngDimensionSource *s,const EngTarget *ta
         size_t i=0; while (i<w->spec_count&&strcmp(w->specs[i].name,s->ref)) ++i;
         if (i==w->spec_count) return eng_fail("I35: named dimension spec is missing");
         *value=w->specs[i].value; if (path) snprintf(path,cap,"spec:%s",s->ref);
+    } else if (s->kind==ENG_PARAMETER) {
+        if(!parameter_coord(w,s->parameter,value))return eng_fail(g_parameter_error);
+        if(path)snprintf(path,cap,"param:%u:%u",s->parameter.parameter_id,s->parameter.field_id);
     } else if (s->kind==ENG_MATERIAL) {
         const EngMaterialVersion *m=eng_material(w,s->ref,s->version);
         if (!m) return eng_fail("I34: fixed material version is missing");
@@ -366,6 +372,7 @@ static bool eng_source_json(const EngDimensionSource *s,char *out,size_t cap)
 {
     char q[600]; int n;
     if (s->kind==ENG_LITERAL) n=snprintf(out,cap,"{\"kind\":\"literal\",\"value\":%lld}",(long long)s->value);
+    else if(s->kind==ENG_PARAMETER)n=snprintf(out,cap,"{\"kind\":\"parameter\",\"parameterId\":%u,\"fieldId\":%u}",s->parameter.parameter_id,s->parameter.field_id);
     else if (s->kind==ENG_SPEC) { if (!eng_json_quote(s->ref,q,sizeof q)) return false; n=snprintf(out,cap,"{\"kind\":\"spec\",\"name\":%s}",q); }
     else { if (!eng_json_quote(s->ref,q,sizeof q)) return false; if (s->kind==ENG_MATERIAL) n=snprintf(out,cap,"{\"field\":\"%s\",\"id\":%s,\"kind\":\"material\",\"version\":%u}",ENG_FIELDS[s->field],q,s->version); else n=snprintf(out,cap,"{\"field\":\"%s\",\"id\":%s,\"kind\":\"application\"}",ENG_FIELDS[s->field],q); }
     return n>=0&&(size_t)n<cap;

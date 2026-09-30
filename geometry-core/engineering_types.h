@@ -9,7 +9,7 @@
 #define ENG_INPUT_MAX (1024u * 1024u)
 
 typedef struct { char id[ENG_ID_MAX]; uint32_t version; } EngVersionRef;
-typedef enum { ENG_LITERAL, ENG_SPEC, ENG_MATERIAL, ENG_APPLICATION } EngSourceKind;
+typedef enum { ENG_LITERAL, ENG_SPEC, ENG_MATERIAL, ENG_APPLICATION, ENG_PARAMETER } EngSourceKind;
 typedef enum {
     ENG_WIDTH, ENG_LENGTH, ENG_A, ENG_B,
     ENG_U_PANEL, ENG_V_PANEL, ENG_U_GAP, ENG_V_GAP,
@@ -21,6 +21,7 @@ typedef struct {
     Coord value;
     char ref[SPEC_NAME_MAX];
     uint32_t version;
+    ParameterRef parameter;
 } EngDimensionSource;
 typedef struct {
     int kind; /* 0=grid, 1=timber */

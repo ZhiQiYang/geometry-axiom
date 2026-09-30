@@ -1,0 +1,339 @@
+/* parameters/1: the native evaluator is shared by bridge, scene and model CLI. */
+#include "engineering_json.inc"
+#include <stdarg.h>
+#include <ctype.h>
+static bool g_parameter_scene_loading;
+static bool parameter_fail(const char *format,...)
+{
+    va_list a;va_start(a,format);vsnprintf(g_parameter_error,sizeof g_parameter_error,format,a);va_end(a);utf8_trim_tail(g_parameter_error);return false;
+}
+static int64_t parameter_gcd(int64_t a,int64_t b)
+{ if(a<0)a=-a;while(b){int64_t r=a%b;a=b;b=r;}return a; }
+static bool parameter_mul(int64_t a,int64_t b,int64_t *r)
+{
+    if(a==INT64_MIN||b==INT64_MIN)return parameter_fail("UNSUPPORTED/PRECISION: integer magnitude");
+    int64_t x=a<0?-a:a,y=b<0?-b:b;
+    if(y && x>INT64_MAX/y)return parameter_fail("UNSUPPORTED/PRECISION: exact multiplication exceeds int64");
+    *r=a*b;return true;
+}
+static bool parameter_add(int64_t a,int64_t b,int64_t *r)
+{
+    if((b>0&&a>INT64_MAX-b)||(b<0&&a< -INT64_MAX-b))return parameter_fail("UNSUPPORTED/PRECISION: exact sum exceeds int64");
+    *r=a+b;return true;
+}
+static ParamValue parameter_normal(ParamValue v)
+{ int64_t g=parameter_gcd(v.num,v.den);v.num/=g;v.den/=g;return v; }
+static bool parameter_binary(const char *op,ParamValue a,ParamValue b,ParamValue *r)
+{
+    if(!strcmp(op,"add")||!strcmp(op,"sub")){
+        if(a.unit!=b.unit)return parameter_fail("I38 UNIT: addition/subtraction needs matching units");
+        if(!strcmp(op,"sub"))b.num=-b.num;
+        int64_t g=parameter_gcd(a.den,b.den),x,y,n,d;
+        if(!parameter_mul(a.num,b.den/g,&x)||!parameter_mul(b.num,a.den/g,&y)||!parameter_add(x,y,&n)||!parameter_mul(a.den,b.den/g,&d))return false;
+        *r=parameter_normal((ParamValue){n,d,a.unit});return true;
+    }
+    int unit;
+    if(!strcmp(op,"mul")){
+        if(a.unit&&b.unit)return parameter_fail("I38 UNIT: area/volume arithmetic is not supported");
+        unit=a.unit+b.unit;
+    }else if(!strcmp(op,"div")){
+        if(!b.num)return parameter_fail("I38 DIV_ZERO: division by zero");
+        if(!a.unit&&b.unit)return parameter_fail("I38 UNIT: inverse length is not supported");
+        unit=a.unit-b.unit;int64_t n=b.num;b.num=b.den;b.den=n;
+        if(b.den<0){b.den=-b.den;b.num=-b.num;}
+    }else return parameter_fail("I38 OP: unknown arithmetic operation");
+    int64_t g=parameter_gcd(a.num,b.den);a.num/=g;b.den/=g;
+    g=parameter_gcd(b.num,a.den);b.num/=g;a.den/=g;
+    if(!parameter_mul(a.num,b.num,&r->num)||!parameter_mul(a.den,b.den,&r->den))return false;
+    r->unit=unit;*r=parameter_normal(*r);return true;
+}
+static const ParameterSet *parameter_find(const World *w,uint32_t id)
+{for(size_t i=0;i<w->parameters.card_count;++i)if(w->parameters.cards[i].id==id)return &w->parameters.cards[i];return NULL;}
+static int parameter_field_index(const World *w,uint32_t id,uint32_t field)
+{for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id==id&&w->parameters.fields[i].id==field)return (int)i;return -1;}
+static bool parameter_u32(EngJson *j,int t,uint32_t *out)
+{int64_t v;if(!eng_json_integer(j,t,&v)||v<0||v>UINT32_MAX)return parameter_fail("I38 ID: expected uint32 identity");*out=(uint32_t)v;return true;}
+static bool parameter_integer(const char *s,int64_t *v)
+{if(!s||!parse_i64(s,v)||*v==INT64_MIN)return parameter_fail("UNSUPPORTED/PRECISION: exact integer must fit signed int64 magnitude");return true;}
+static bool parameter_ref_parse(const char *s,ParameterRef *r)
+{
+    if(strncmp(s,"param:",6))return false;
+    char b[64];if(strlen(s)>=sizeof b)return false;snprintf(b,sizeof b,"%s",s+6);char *c=strchr(b,':');if(!c)return false;*c++=0;
+    if(!parse_u32(b,&r->parameter_id)||!parse_u32(c,&r->field_id))return false;r->set=true;return true;
+}
+static bool parameter_value(const World *w,ParameterRef ref,ParamValue *v)
+{
+    int i=parameter_field_index(w,ref.parameter_id,ref.field_id);
+    if(i<0)return parameter_fail("I38 MISSING: parameter %u field %u",ref.parameter_id,ref.field_id);
+    const ParameterField *f=&w->parameters.fields[i];
+    if(f->type!=0)return parameter_fail("I38 UNIT: parameter %u field %u is not a dimension",ref.parameter_id,ref.field_id);
+    *v=f->value;return true;
+}
+static bool parameter_coord(const World *w,ParameterRef ref,Coord *out)
+{
+    ParamValue v;if(!parameter_value(w,ref,&v))return false;
+    const ParameterSet *c=parameter_find(w,ref.parameter_id);const ParameterField *f=&w->parameters.fields[parameter_field_index(w,ref.parameter_id,ref.field_id)];
+    if(v.den!=1||!coord_in_range(v.num))return parameter_fail("I38 GEOMETRY: [%u:%u %s.%s] must resolve to integer mm in D1 range (got %lld/%lld)",ref.parameter_id,ref.field_id,c->name,f->name,(long long)v.num,(long long)v.den);
+    *out=v.num;return true;
+}
+/* Canonical AST is persisted; this bounded parser only translates input text. */
+typedef struct {int op,left,right;ParamValue value;ParameterRef ref;} ParameterNode;
+typedef struct {const char *p;ParameterNode nodes[PARAM_NODE_MAX];int count,depth;} ParameterParser;
+static int parameter_text_sum(ParameterParser *p);
+static void parameter_space(ParameterParser *p){while(*p->p==' '||*p->p=='\t')++p->p;}
+static int parameter_node(ParameterParser *p,ParameterNode n)
+{if(p->count==PARAM_NODE_MAX){parameter_fail("UNSUPPORTED/CAPACITY: expression exceeds 128 nodes");return -1;}p->nodes[p->count]=n;return p->count++;}
+static bool parameter_decimal(const char **text,ParamValue *out)
+{
+    const char *p=*text;int64_t n=0,d=1;bool dot=false,any=false;
+    while((*p>='0'&&*p<='9')||*p=='.'){
+        if(*p=='.'){if(dot)return parameter_fail("I38 NUMBER: repeated decimal point");dot=true;++p;continue;}
+        int digit=*p++-'0';any=true;
+        if(n>(INT64_MAX-digit)/10||(dot&&d>INT64_MAX/10))return parameter_fail("UNSUPPORTED/PRECISION: decimal exceeds exact capacity");
+        n=n*10+digit;if(dot)d*=10;
+    }
+    if(!any)return parameter_fail("I38 NUMBER: expected decimal number");
+    *text=p;*out=parameter_normal((ParamValue){n,d,0});return true;
+}
+static int parameter_text_atom(ParameterParser *p)
+{
+    parameter_space(p);if(++p->depth>32){parameter_fail("UNSUPPORTED/CAPACITY: expression nesting exceeds 32");return -1;}
+    int node=-1;ParameterNode n={0};
+    if(*p->p=='+'||*p->p=='-'){bool neg=*p->p++=='-';int child=parameter_text_atom(p);if(child<0)return -1;if(neg){n.op=6;n.left=child;node=parameter_node(p,n);}else node=child;}
+    else if(*p->p=='('){++p->p;node=parameter_text_sum(p);if(node<0)return -1;parameter_space(p);if(*p->p!=')'){parameter_fail("I38 SYNTAX: missing closing parenthesis");return -1;}++p->p;}
+    else if(*p->p=='@'){
+        ++p->p;char id[32],field[32];size_t i=0;
+        while(isdigit((unsigned char)*p->p)&&i<sizeof id-1)id[i++]=*p->p++;id[i]=0;
+        if(*p->p++!=':'){parameter_fail("I38 REFERENCE: expected @parameterId:fieldId");return -1;}i=0;
+        while(isdigit((unsigned char)*p->p)&&i<sizeof field-1)field[i++]=*p->p++;field[i]=0;
+        if(!parse_u32(id,&n.ref.parameter_id)||!parse_u32(field,&n.ref.field_id)){parameter_fail("I38 REFERENCE: invalid field identity");return -1;}
+        n.op=1;n.ref.set=true;node=parameter_node(p,n);
+    }else{
+        if(!parameter_decimal(&p->p,&n.value))return -1;parameter_space(p);
+        if(!strncmp(p->p,"mm",2)){n.value.unit=1;p->p+=2;}node=parameter_node(p,n);
+    }
+    --p->depth;return node;
+}
+static int parameter_text_product(ParameterParser *p)
+{
+    int left=parameter_text_atom(p);if(left<0)return -1;
+    for(;;){parameter_space(p);char op=*p->p;if(op!='*'&&op!='/')return left;++p->p;int right=parameter_text_atom(p);if(right<0)return -1;ParameterNode n={0};n.op=op=='*'?4:5;n.left=left;n.right=right;left=parameter_node(p,n);if(left<0)return -1;}
+}
+static int parameter_text_sum(ParameterParser *p)
+{
+    int left=parameter_text_product(p);if(left<0)return -1;
+    for(;;){parameter_space(p);char op=*p->p;if(op!='+'&&op!='-')return left;++p->p;int right=parameter_text_product(p);if(right<0)return -1;ParameterNode n={0};n.op=op=='+'?2:3;n.left=left;n.right=right;left=parameter_node(p,n);if(left<0)return -1;}
+}
+typedef struct {char *text;size_t size,used;bool ok;} ParameterWriter;
+static void parameter_write(ParameterWriter *b,const char *format,...)
+{
+    if(!b->ok)return;va_list a;va_start(a,format);int n=vsnprintf(b->text+b->used,b->size-b->used,format,a);va_end(a);
+    if(n<0||(size_t)n>=b->size-b->used){b->ok=false;return;}b->used+=(size_t)n;
+}
+static void parameter_ast_write(ParameterParser *p,int index,ParameterWriter *b)
+{
+    ParameterNode *n=&p->nodes[index];const char *ops[]={"literal","ref","add","sub","mul","div","neg"};
+    if(!n->op)parameter_write(b,"{\"den\":\"%lld\",\"num\":\"%lld\",\"op\":\"literal\",\"unit\":\"%s\"}",(long long)n->value.den,(long long)n->value.num,n->value.unit?"mm":"1");
+    else if(n->op==1)parameter_write(b,"{\"fieldId\":%u,\"op\":\"ref\",\"parameterId\":%u}",n->ref.field_id,n->ref.parameter_id);
+    else{parameter_write(b,"{\"left\":");parameter_ast_write(p,n->left,b);parameter_write(b,",\"op\":\"%s\"",ops[n->op]);if(n->op!=6){parameter_write(b,",\"right\":");parameter_ast_write(p,n->right,b);}parameter_write(b,"}");}
+}
+static bool parameter_input(const char *text,int type,char out[PARAM_EXPR_MAX])
+{
+    char normalized[PARAM_EXPR_MAX];size_t at=0;
+    for(const unsigned char *p=(const unsigned char*)text;*p;){
+        if(at+1>=sizeof normalized)return parameter_fail("UNSUPPORTED/CAPACITY: input length");
+        if(!strncmp((const char*)p,"−",3)){normalized[at++]='-';p+=3;}
+        else if(!strncmp((const char*)p,"×",2)){normalized[at++]='*';p+=2;}
+        else if(!strncmp((const char*)p,"÷",2)){normalized[at++]='/';p+=2;}
+        else if(!strncmp((const char*)p,"＝",3)){normalized[at++]='=';p+=3;}
+        else normalized[at++]=(char)*p++;
+    }normalized[at]=0;text=normalized;
+    ParameterParser p={0};p.p=text;parameter_space(&p);bool formula=*p.p=='=';if(formula)++p.p;
+    int root;
+    if(formula)root=parameter_text_sum(&p);
+    else{
+        bool neg=false;if(*p.p=='+'||*p.p=='-')neg=*p.p++=='-';ParameterNode n={0};
+        if(!parameter_decimal(&p.p,&n.value))return false;if(neg)n.value.num=-n.value.num;parameter_space(&p);
+        if(*p.p=='/'){++p.p;parameter_space(&p);ParamValue d;if(!parameter_decimal(&p.p,&d)||!parameter_binary("div",n.value,d,&n.value))return false;}
+        parameter_space(&p);if(!strncmp(p.p,"mm",2)){if(type!=0)return parameter_fail("I38 UNIT: only dimension literals accept mm");p.p+=2;}
+        n.value.unit=type==0;root=parameter_node(&p,n);
+    }
+    parameter_space(&p);if(root<0)return false;if(*p.p)return parameter_fail("I38 SYNTAX: unexpected input near %.40s",p.p);
+    ParameterWriter b={out,PARAM_EXPR_MAX,0,true};parameter_ast_write(&p,root,&b);
+    return b.ok?true:parameter_fail("UNSUPPORTED/CAPACITY: expression record exceeds 2047 bytes");
+}
+typedef struct {World *w;unsigned char marks[PARAM_FIELD_MAX];int depth;uint32_t path_card[PARAM_DEPTH_MAX],path_field[PARAM_DEPTH_MAX];} ParameterEval;
+static bool parameter_eval_field(ParameterEval *e,int index);
+static bool parameter_eval_ast(ParameterEval *e,EngJson *j,int t,int depth,int *nodes,ParamValue *out)
+{
+    if(depth>32||++*nodes>PARAM_NODE_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: expression tree exceeds declared limits");
+    char op[16];if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return parameter_fail("I38 AST: missing operation");
+    if(!strcmp(op,"literal")){
+        char num[40],den[40],unit[8];
+        if(!eng_json_keys(j,t,"op,num,den,unit","")||!eng_json_string(j,eng_json_member(j,t,"num"),num,sizeof num)||!eng_json_string(j,eng_json_member(j,t,"den"),den,sizeof den)||!eng_json_string(j,eng_json_member(j,t,"unit"),unit,sizeof unit))return parameter_fail("I38 AST: invalid exact literal");
+        if(!parameter_integer(num,&out->num)||!parameter_integer(den,&out->den))return false;
+        if(out->den<=0)return parameter_fail("I38 NUMBER: denominator must be positive");
+        if(strcmp(unit,"mm")&&strcmp(unit,"1"))return parameter_fail("I38 UNIT: expected mm or 1");
+        out->unit=!strcmp(unit,"mm");*out=parameter_normal(*out);return true;
+    }
+    if(!strcmp(op,"ref")){
+        uint32_t id,field;if(!eng_json_keys(j,t,"op,parameterId,fieldId","")||!parameter_u32(j,eng_json_member(j,t,"parameterId"),&id)||!parameter_u32(j,eng_json_member(j,t,"fieldId"),&field))return parameter_fail("I38 AST: invalid reference");
+        int i=parameter_field_index(e->w,id,field);if(i<0)return parameter_fail("I38 MISSING: parameter %u field %u",id,field);
+        if(!parameter_eval_field(e,i))return false;*out=e->w->parameters.fields[i].value;return true;
+    }
+    bool neg=!strcmp(op,"neg");if(!neg&&strcmp(op,"add")&&strcmp(op,"sub")&&strcmp(op,"mul")&&strcmp(op,"div"))return parameter_fail("I38 OP: unsupported operation");
+    if(!eng_json_keys(j,t,neg?"op,left":"op,left,right",""))return parameter_fail("I38 AST: invalid arithmetic node");
+    ParamValue a,b;if(!parameter_eval_ast(e,j,eng_json_member(j,t,"left"),depth+1,nodes,&a))return false;
+    if(neg){*out=a;out->num=-out->num;return true;}
+    if(!parameter_eval_ast(e,j,eng_json_member(j,t,"right"),depth+1,nodes,&b))return false;
+    return parameter_binary(op,a,b,out);
+}
+static bool parameter_eval_field(ParameterEval *e,int index)
+{
+    ParameterField *f=&e->w->parameters.fields[index];
+    if(e->marks[index]==2)return true;
+    if(e->marks[index]==1)return parameter_fail("I38 CYCLE: parameter %u field %u",f->parameter_id,f->id);
+    if(e->depth==PARAM_DEPTH_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: dependency depth exceeds 64");
+    e->marks[index]=1;e->path_card[e->depth]=f->parameter_id;e->path_field[e->depth++]=f->id;
+    EngJson j;bool ok=eng_json_parse_n(&j,f->expression,strlen(f->expression));ParamValue value={0,1,0};int nodes=0;
+    if(ok)ok=parameter_eval_ast(e,&j,0,0,&nodes,&value);else parameter_fail("I38 JSON: %s",j.error);
+    eng_json_free(&j);
+    if(ok&&value.unit!=(f->type==0))ok=parameter_fail("I38 UNIT: result unit does not match field type");
+    if(ok&&f->type==1&&(value.num<0||value.den!=1))ok=parameter_fail("I38 COUNT: quantity must be a nonnegative integer");
+    --e->depth;
+    if(!ok){const ParameterSet *c=parameter_find(e->w,f->parameter_id);char tail[512];snprintf(tail,sizeof tail,"%s",g_parameter_error);snprintf(g_parameter_error,sizeof g_parameter_error,"[%u:%u %s.%s] -> %s",f->parameter_id,f->id,c?c->name:"?",f->name,tail);utf8_trim_tail(g_parameter_error);return false;}
+    f->value=value;e->marks[index]=2;return true;
+}
+static bool parameters_rebuild(World *w,char *error,size_t cap)
+{
+    g_parameter_error[0]=0;ParameterEval *e=calloc(1,sizeof *e);if(!e){snprintf(error,cap,"UNSUPPORTED/CAPACITY: parameter evaluation memory");return false;}e->w=w;
+    bool ok=!w->parameters.loading;
+    if(!ok)parameter_fail("I39: unterminated parameter block");
+    for(size_t i=0;i<w->parameters.field_count&&ok;++i)ok=parameter_eval_field(e,(int)i);
+    free(e);if(!ok)snprintf(error,cap,"%s",g_parameter_error);return ok;
+}
+static bool parameter_name(EngJson *j,int t,char out[PARAM_NAME_MAX])
+{
+    if(!eng_json_string(j,t,out,PARAM_NAME_MAX)||!grid_system_name_valid((const unsigned char*)out,strlen(out)))return parameter_fail("I38 NAME: expected 1..96 UTF-8 bytes without control characters");return true;
+}
+static bool parameter_put(World *w,EngJson *j,int t)
+{
+    uint32_t id;if(!eng_json_keys(j,t,"id,name,fields","nextFieldId")||!parameter_u32(j,eng_json_member(j,t,"id"),&id))return parameter_fail("I38 CARD: expected id, name and fields");
+    ParameterSet card={0};card.id=id;if(!parameter_name(j,eng_json_member(j,t,"name"),card.name))return false;
+    int fields=eng_json_member(j,t,"fields");if(!eng_json_is_array(j,fields)||eng_json_size(j,fields)<1||eng_json_size(j,fields)>PARAM_FIELDS_PER_CARD)return parameter_fail("UNSUPPORTED/CAPACITY: card requires 1..16 fields");
+    ParameterField *fresh=calloc(PARAM_FIELDS_PER_CARD,sizeof *fresh);if(!fresh)return parameter_fail("UNSUPPORTED/CAPACITY: parameter fields memory");
+    bool ok=true;card.count=(size_t)eng_json_size(j,fields);const ParameterSet *old=parameter_find(w,id);card.next_field_id=old?old->next_field_id:1;
+    for(size_t k=0;k<card.count&&ok;++k){int f=eng_json_at(j,fields,(int)k);ParameterField *v=&fresh[k];char type[20];v->parameter_id=id;
+        int input=eng_json_member(j,f,"input"),expr=eng_json_member(j,f,"expression");
+        if((input>=0)==(expr>=0)||!eng_json_keys(j,f,input>=0?"id,name,type,input":"id,name,type,expression","")||!parameter_u32(j,eng_json_member(j,f,"id"),&v->id)||!parameter_name(j,eng_json_member(j,f,"name"),v->name)||!eng_json_string(j,eng_json_member(j,f,"type"),type,sizeof type)){ok=parameter_fail("I38 FIELD: invalid field definition");break;}
+        v->type=!strcmp(type,"dimension")?0:!strcmp(type,"count")?1:!strcmp(type,"ratio")?2:-1;if(v->type<0){ok=parameter_fail("I38 TYPE: dimension/count/ratio required");break;}
+        for(size_t q=0;q<k;++q)if(fresh[q].id==v->id||!strcmp(fresh[q].name,v->name)){ok=parameter_fail("I38 DUPLICATE: field identity/name in parameter %u",id);break;}
+        if(!ok)break;card.fields[k]=v->id;
+        if(old && parameter_field_index(w,id,v->id)<0 && (old->next_field_id==0||v->id<old->next_field_id)){ok=parameter_fail("I38 ID: deleted field identities cannot be reused");break;}
+        if(v->id==UINT32_MAX)card.next_field_id=0;else if(card.next_field_id&&v->id>=card.next_field_id)card.next_field_id=v->id+1;
+        if(input>=0){char text[PARAM_EXPR_MAX];if(!eng_json_string(j,input,text,sizeof text))ok=parameter_fail("UNSUPPORTED/CAPACITY: parameter input exceeds 2047 bytes");else if(!parameter_input(text,v->type,v->expression))ok=false;}
+        else if(!eng_json_canonical(j,expr,v->expression,sizeof v->expression))ok=parameter_fail("UNSUPPORTED/CAPACITY: expression record exceeds capacity");
+        if(!ok){char cause[512];snprintf(cause,sizeof cause,"%s",g_parameter_error);parameter_fail("[%u:%u %s.%s] -> %s",id,v->id,card.name,v->name,cause);}
+    }
+    uint32_t next;int nt=eng_json_member(j,t,"nextFieldId");if(ok&&nt>=0){if(!parameter_u32(j,nt,&next))ok=false;else if(card.next_field_id==0?next!=0:(next!=0&&next<card.next_field_id))ok=parameter_fail("I38 ID: nextFieldId cannot move backwards");else card.next_field_id=next;}
+    size_t slot=0;while(slot<w->parameters.card_count&&w->parameters.cards[slot].id!=id)++slot;
+    size_t existing=0;for(size_t i=0;i<w->parameters.field_count;++i)existing+=w->parameters.fields[i].parameter_id==id;
+    if(ok&&(slot==PARAM_CARD_MAX||w->parameters.field_count-existing+card.count>PARAM_FIELD_MAX))ok=parameter_fail("UNSUPPORTED/CAPACITY: 64 cards / 256 total fields exceeded");
+    if(ok){size_t n=0;for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id!=id)w->parameters.fields[n++]=w->parameters.fields[i];for(size_t k=0;k<card.count;++k)w->parameters.fields[n++]=fresh[k];memset(w->parameters.fields+n,0,(PARAM_FIELD_MAX-n)*sizeof(ParameterField));w->parameters.field_count=n;w->parameters.cards[slot]=card;if(slot==w->parameters.card_count)++w->parameters.card_count;}
+    free(fresh);return ok;
+}
+static bool parameter_remove(World *w,uint32_t id)
+{
+    size_t k=0;while(k<w->parameters.card_count&&w->parameters.cards[k].id!=id)++k;
+    if(k==w->parameters.card_count)return parameter_fail("I38 MISSING: parameter %u",id);
+    memmove(w->parameters.cards+k,w->parameters.cards+k+1,(w->parameters.card_count-k-1)*sizeof(ParameterSet));memset(&w->parameters.cards[--w->parameters.card_count],0,sizeof(ParameterSet));
+    size_t n=0;for(size_t i=0;i<w->parameters.field_count;++i)if(w->parameters.fields[i].parameter_id!=id)w->parameters.fields[n++]=w->parameters.fields[i];memset(w->parameters.fields+n,0,(PARAM_FIELD_MAX-n)*sizeof(ParameterField));w->parameters.field_count=n;
+    n=0;for(size_t i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind!=CANVAS_POS_PARAMETER||w->canvas_pos[i].id!=id)w->canvas_pos[n++]=w->canvas_pos[i];memset(w->canvas_pos+n,0,(w->canvas_pos_count-n)*sizeof(CanvasPos));w->canvas_pos_count=n;return true;
+}
+/* Package imports allocate a complete independent identity map before copying.
+ * References must remain inside the package; no accidental links to this world. */
+static bool parameter_remap_ast(EngJson *j,int t,ParameterWriter *out,const uint32_t *old,const uint32_t *fresh,int count,int depth)
+{
+    if(depth>32)return parameter_fail("UNSUPPORTED/CAPACITY: imported expression nesting");
+    char op[16];if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return parameter_fail("I38 AST: imported operation missing");
+    if(!strcmp(op,"literal")){
+        char literal[PARAM_EXPR_MAX];if(!eng_json_canonical(j,t,literal,sizeof literal))return parameter_fail("I38 AST: imported literal invalid");parameter_write(out,"%s",literal);return out->ok;
+    }
+    if(!strcmp(op,"ref")){
+        uint32_t id,field;if(!eng_json_keys(j,t,"op,parameterId,fieldId","")||!parameter_u32(j,eng_json_member(j,t,"parameterId"),&id)||!parameter_u32(j,eng_json_member(j,t,"fieldId"),&field))return parameter_fail("I38 AST: imported reference invalid");
+        int k=0;while(k<count&&old[k]!=id)++k;if(k==count)return parameter_fail("I39 PACKAGE: missing dependency card %u",id);
+        parameter_write(out,"{\"op\":\"ref\",\"parameterId\":%u,\"fieldId\":%u}",fresh[k],field);return out->ok;
+    }
+    bool neg=!strcmp(op,"neg");if((!neg&&strcmp(op,"add")&&strcmp(op,"sub")&&strcmp(op,"mul")&&strcmp(op,"div"))||!eng_json_keys(j,t,neg?"op,left":"op,left,right",""))return parameter_fail("I38 AST: invalid imported operation");
+    parameter_write(out,"{\"op\":\"%s\",\"left\":",op);
+    if(!parameter_remap_ast(j,eng_json_member(j,t,"left"),out,old,fresh,count,depth+1))return false;
+    if(!neg){parameter_write(out,",\"right\":");if(!parameter_remap_ast(j,eng_json_member(j,t,"right"),out,old,fresh,count,depth+1))return false;}
+    parameter_write(out,"}");return out->ok;
+}
+static bool parameter_import(World *w,EngJson *j,int t)
+{
+    char schema[40];int cards=eng_json_member(j,t,"cards");
+    if(!eng_json_keys(j,t,"schema,cards","")||!eng_json_string(j,eng_json_member(j,t,"schema"),schema,sizeof schema)||strcmp(schema,"geometry-parameters/1")||!eng_json_is_array(j,cards))return parameter_fail("I39 PACKAGE: expected geometry-parameters/1 cards");
+    int n=eng_json_size(j,cards);if(n<1||n>PARAM_CARD_MAX||(size_t)n+w->parameters.card_count>PARAM_CARD_MAX)return parameter_fail("UNSUPPORTED/CAPACITY: imported card capacity");
+    uint32_t old[PARAM_CARD_MAX],fresh[PARAM_CARD_MAX];uint32_t candidate=0;
+    for(int k=0;k<n;++k){
+        int c=eng_json_at(j,cards,k);if(!parameter_u32(j,eng_json_member(j,c,"id"),&old[k]))return false;
+        for(int q=0;q<k;++q)if(old[q]==old[k])return parameter_fail("I39 PACKAGE: duplicate card identity");
+        while(parameter_find(w,candidate))++candidate;fresh[k]=candidate++;
+    }
+    char *buffer=malloc(PARAM_FIELDS_PER_CARD*(PARAM_EXPR_MAX+1000));if(!buffer)return parameter_fail("UNSUPPORTED/CAPACITY: package memory");bool ok=true;
+    for(int k=0;k<n&&ok;++k){
+        int c=eng_json_at(j,cards,k),fields=eng_json_member(j,c,"fields");char name[PARAM_NAME_MAX],quoted[600];
+        if(!eng_json_keys(j,c,"id,name,fields","nextFieldId")||!parameter_name(j,eng_json_member(j,c,"name"),name)||!eng_json_is_array(j,fields)||eng_json_size(j,fields)<1||eng_json_size(j,fields)>PARAM_FIELDS_PER_CARD){ok=parameter_fail("I39 PACKAGE: invalid card");break;}
+        eng_json_quote(name,quoted,sizeof quoted);ParameterWriter b={buffer,PARAM_FIELDS_PER_CARD*(PARAM_EXPR_MAX+1000),0,true};parameter_write(&b,"{\"id\":%u,\"name\":%s",fresh[k],quoted);
+        int nt=eng_json_member(j,c,"nextFieldId");uint32_t next;if(nt>=0){if(!parameter_u32(j,nt,&next)){ok=false;break;}parameter_write(&b,",\"nextFieldId\":%u",next);}parameter_write(&b,",\"fields\":[");
+        for(int f=0;f<eng_json_size(j,fields)&&ok;++f){int ft=eng_json_at(j,fields,f);uint32_t id;char type[20];
+            if(!eng_json_keys(j,ft,"id,name,type,expression","")||!parameter_u32(j,eng_json_member(j,ft,"id"),&id)||!parameter_name(j,eng_json_member(j,ft,"name"),name)||!eng_json_string(j,eng_json_member(j,ft,"type"),type,sizeof type)||(strcmp(type,"dimension")&&strcmp(type,"count")&&strcmp(type,"ratio"))){ok=parameter_fail("I39 PACKAGE: invalid field");break;}
+            eng_json_quote(name,quoted,sizeof quoted);parameter_write(&b,"%s{\"id\":%u,\"name\":%s,\"type\":\"%s\",\"expression\":",f?",":"",id,quoted,type);
+            ok=parameter_remap_ast(j,eng_json_member(j,ft,"expression"),&b,old,fresh,n,0);parameter_write(&b,"}");
+        }
+        parameter_write(&b,"]}");if(!b.ok){ok=parameter_fail("UNSUPPORTED/CAPACITY: package expression record");break;}
+        if(ok){EngJson copy;ok=eng_json_parse_n(&copy,buffer,b.used);if(ok)ok=parameter_put(w,&copy,0);eng_json_free(&copy);}
+    }
+    free(buffer);return ok;
+}
+static void parameter_json_card(const World *w,const ParameterSet *c,FILE *out,bool values)
+{
+    char q[600];eng_json_quote(c->name,q,sizeof q);fprintf(out,"{\"id\":%u,\"name\":%s,\"nextFieldId\":%u,\"fields\":[",c->id,q,c->next_field_id);
+    for(size_t k=0;k<c->count;++k){int index=parameter_field_index(w,c->id,c->fields[k]);const ParameterField *f=&w->parameters.fields[index];eng_json_quote(f->name,q,sizeof q);
+        fprintf(out,"%s{\"id\":%u,\"name\":%s,\"type\":\"%s\",\"expression\":%s",k?",":"",f->id,q,f->type==0?"dimension":f->type==1?"count":"ratio",f->expression);
+        if(values)fprintf(out,",\"value\":{\"num\":\"%lld\",\"den\":\"%lld\",\"unit\":\"%s\"}",(long long)f->value.num,(long long)f->value.den,f->value.unit?"mm":"1");fputc('}',out);
+    }fputs("]}",out);
+}
+static void parameters_dump(const World *w,FILE *out)
+{
+    if(!w->parameters.card_count)return;fputs("requires parameters/1\nparameters begin\n",out);
+    /* One field per bounded scene record; the block is a single declaration. */
+    for(size_t i=0;i<w->parameters.card_count;++i){const ParameterSet *c=&w->parameters.cards[i];char q[600];eng_json_quote(c->name,q,sizeof q);char record[900],encoded[1300];size_t n;
+        snprintf(record,sizeof record,"{\"id\":%u,\"name\":%s,\"nextFieldId\":%u}",c->id,q,c->next_field_id);eng_base64_encode(record,strlen(record),encoded,sizeof encoded,&n);fprintf(out,"parameters card %s\n",encoded);
+        for(size_t k=0;k<c->count;++k){const ParameterField *f=&w->parameters.fields[parameter_field_index(w,c->id,c->fields[k])];char field[3000],b64[4100];eng_json_quote(f->name,q,sizeof q);
+            snprintf(field,sizeof field,"{\"parameterId\":%u,\"id\":%u,\"name\":%s,\"type\":%d,\"expression\":%s}",c->id,f->id,q,f->type,f->expression);eng_base64_encode(field,strlen(field),b64,sizeof b64,&n);fprintf(out,"parameters field %s\n",b64);
+        }
+    }fputs("parameters end\n",out);
+}
+static bool apply_parameters_line(const char *path,int line_no,char **t,int count,World *w)
+{
+    bool ok=false;if(!g_parameter_scene_loading){scene_error(path,line_no,"I39: parameter blocks require atomic full-scene loading; use parameter transactions for editing");return false;}
+    if(count==2&&!strcmp(t[1],"begin")){if(w->parameters.loading)goto fail;w->parameters.loading=true;return true;}
+    if(!w->parameters.loading)goto fail;
+    if(count==2&&!strcmp(t[1],"end")){w->parameters.loading=false;for(size_t i=0;i<w->parameters.card_count;++i)if(!w->parameters.cards[i].count)goto fail;char e[512];if(!parameters_rebuild(w,e,sizeof e)){scene_error(path,line_no,e);return false;}return true;}
+    if(count!=3)goto fail;unsigned char decoded[4000];size_t n=0;if(!eng_base64_decode(t[2],strlen(t[2]),decoded,sizeof decoded-1,&n))goto fail;decoded[n]=0;
+    EngJson j;if(!eng_json_parse_n(&j,(char*)decoded,n)){eng_json_free(&j);goto fail;}
+    if(!strcmp(t[1],"card")){
+        ParameterSet c={0};if(eng_json_keys(&j,0,"id,name,nextFieldId","")&&parameter_u32(&j,eng_json_member(&j,0,"id"),&c.id)&&parameter_u32(&j,eng_json_member(&j,0,"nextFieldId"),&c.next_field_id)&&parameter_name(&j,eng_json_member(&j,0,"name"),c.name)&&!parameter_find(w,c.id)&&w->parameters.card_count<PARAM_CARD_MAX){w->parameters.cards[w->parameters.card_count++]=c;ok=true;}
+    }else if(!strcmp(t[1],"field")){
+        ParameterField f={0};int64_t type;
+        if(eng_json_keys(&j,0,"parameterId,id,name,type,expression","")&&parameter_u32(&j,eng_json_member(&j,0,"parameterId"),&f.parameter_id)&&parameter_u32(&j,eng_json_member(&j,0,"id"),&f.id)&&parameter_name(&j,eng_json_member(&j,0,"name"),f.name)&&eng_json_integer(&j,eng_json_member(&j,0,"type"),&type)&&type>=0&&type<=2&&eng_json_canonical(&j,eng_json_member(&j,0,"expression"),f.expression,sizeof f.expression)){
+            ParameterSet *c=(ParameterSet*)parameter_find(w,f.parameter_id);bool unique=true;
+            for(size_t k=0;k<w->parameters.field_count;++k)if(w->parameters.fields[k].parameter_id==f.parameter_id&&(w->parameters.fields[k].id==f.id||!strcmp(w->parameters.fields[k].name,f.name)))unique=false;
+            if(c&&unique&&c->count<PARAM_FIELDS_PER_CARD&&w->parameters.field_count<PARAM_FIELD_MAX&&(!c->next_field_id||f.id<c->next_field_id)){f.type=(int)type;c->fields[c->count++]=f.id;w->parameters.fields[w->parameters.field_count++]=f;ok=true;}
+        }
+    }
+    eng_json_free(&j);if(ok)return true;
+fail:scene_error(path,line_no,g_parameter_error[0]?g_parameter_error:"I39: invalid parameter block record");return false;
+}

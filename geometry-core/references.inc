@@ -188,8 +188,11 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
 
 static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const char *expression, Coord *out)
 {
+    g_parameter_error[0]=0;
     const char *p=expression;
     Coord sum=0,den=1; int terms=0;
+    bool exact=strstr(expression,"param:")!=NULL;
+    ParamValue total={0,1,1};
     if (!*p) return false;
     while (*p) {
         int sign=1;
@@ -213,6 +216,14 @@ static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const ch
             if (!parse_i64(term,&num) || num<0 || num==INT64_MIN) return false;
             num*=sign;
         }
+        if(exact){
+            ParamValue quantity={0,1,1},coefficient={num,d,0},term_value;ParameterRef ref={0};
+            if(!strncmp(q,"param:",6)){
+                if(!parameter_ref_parse(q,&ref)||!parameter_value(ctx->world,ref,&quantity))return false;
+            }else{if(!reference_quantity(ctx,g,q,&quantity.num))return false;}
+            if(!parameter_binary("mul",quantity,coefficient,&term_value)||!parameter_binary("add",total,term_value,&total))return false;
+            p=end;continue;
+        }
         if (!reference_quantity(ctx,g,q,&value)) return false;
         Coord k=ref_gcd(value,d); value/=k; d/=k;
         k=ref_gcd(num,d); num/=k; d/=k;
@@ -223,7 +234,10 @@ static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const ch
         den=newden; k=ref_gcd(sum,den); sum/=k; den/=k;
         p=end;
     }
-    *out=sum/den - (sum<0 && sum%den!=0);
+    if(exact){
+        if(total.den!=1)return parameter_fail("I38 GEOMETRY: %s must resolve to integer mm (got %lld/%lld)",expression,(long long)total.num,(long long)total.den);
+        *out=total.num;
+    }else *out=sum/den - (sum<0 && sum%den!=0);
     return coord_in_range(*out);
 }
 
@@ -238,7 +252,7 @@ static bool reference_eval_datums(ReferenceEval *ctx)
     for (size_t i=0;i<ctx->world->datum_count;++i) {
         DatumPlane *d=&ctx->world->datums[i];
         if (d->axis<0 || d->axis>2 || !reference_eval_text(ctx,NULL,d->expression,&d->position)) {
-            char msg[160]; snprintf(msg,sizeof msg,"datum %u: missing spec, bare mm, unsupported reference or rational overflow",d->id);
+            char msg[256];if(g_parameter_error[0])snprintf(msg,sizeof msg,"datum %u: %s",d->id,g_parameter_error);else snprintf(msg,sizeof msg,"datum %u: missing spec, bare mm, unsupported reference or rational overflow",d->id);
             reference_issue(0,"D6c/I7a","axis X/Y/Z and exact spec-only expression within D1",msg); ok=false;
         }
     }
@@ -279,7 +293,7 @@ static bool reference_eval_guide(ReferenceEval *ctx, size_t i)
     }
     if (!p || !reference_eval_expression(ctx,g,&v)) {
         ctx->guides[i]=3;
-        char message[256]; snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,g->expression);
+        char message[256];if(g_parameter_error[0])snprintf(message,sizeof message,"guide %u: %s",g->id,g_parameter_error);else snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,g->expression);
         utf8_trim_tail(message);
         return reference_issue(0,"D6a/I7/I9","existing same-surface/axis references; acyclic exact rational expression",message);
     }

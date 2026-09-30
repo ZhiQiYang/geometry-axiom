@@ -921,6 +921,17 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - GEO-221：`#igGridView` 的 viewBox 等於元素實際像素，u、v 共用比例。`data-ig-camera="u0 v0 u1 v1"` 是目前（已貼合繪圖區）的模型矩形（mm，相對局部索引基準）；`[data-ig-plot]` 是繪圖區矩形，點擊只在其內選 cell。`[data-ig-ruler="u|v"][data-ig-ruler-index]` 為尺規索引（純數字、置中於格線），`[data-ig-origin]`／`[data-ig-origin-label]` 為基準點，`#igZoom` 顯示「1 格 U×V mm · N px」。
 - GEO-222：版面為單列 56px 標題（`.ig-header` 的 `#igClose`＋麵包屑 `.ig-crumb`，與共用 `#projectBar` 同列）、左側 `.ig-main`（`.ig-canvas` 內含 `#igGridView`、`#igViewNote` 浮動提示、`.ig-zoombar` 內的 `#igZoomOut`／`#igZoom`／`#igZoomIn`／`#igFit`）、右側 `.ig-inspector`（`.ig-settings` 捲動區＋底部 `.ig-footer`，`#igSaveSource`／`#igSaveBinding`／`#igStatus`／`#igDraftNote` 在 footer）。`#igCellPreview` 為格子縮圖；`#igInfo`（`#igInfoTitle`、`#igInfoCell`、`#igInfoRows`）顯示游標與已選取格。SVG 內 `[data-ig-hover="i,j"]`、`[data-ig-selected="i,j"]`（僅來源模式）與 `[data-ig-band=u|v]`（尺規高亮）。`#igDensity` 只在稀疏或大索引時顯示。麵包屑的專案名稱為 `.ig-crumb-project[data-project-name]`（390px 時為標題上方小字）；`[data-ig-origin-label]` 在第 0 線不在 0 mm 時附上 mm 位置。軸線查詢請用 `fieldset[data-ig-axis]`，`line[data-ig-axis]` 也帶同名屬性。
 
+## GEO-223 畫布參數卡
+
+- `#btnNewParameter` 加入建立選單；卡片為 `.parameter-card[data-kind=parameter][data-id]`，沿用選取、移動、搜尋、框選和小地圖。只對目前選取卡片／物件畫引用連線；幾何使用處連到所屬面。
+- 共用編輯器 `#parameterEditor` 位於既有檢視器；`#paramName`、`#paramTemplate`、`#paramQuick`／`#paramParse` 及 `[data-param-field]` 支援自訂欄位、種類、算式、排序與移除。`[data-insert]` 插入含固定身分的可讀 token；前端只格式化核心值。
+- `#paramPreview`／`#paramResult`／`#paramConfirm` 使用原生候選交易；`#paramDiscard` 明確還原草稿。回應核對草稿序號及專案 context；dirty 草稿阻擋保存與離開。所有參數表單控制最小 44px，390px 使用既有抽屜。
+- 尺寸控制的 `…Source` 下拉與 `[data-param-jump-for]` 共用「直接輸入／引用來源」。無限來源的 phase、step、panel、gap、anchor 均保留 ParameterRef；工程物件來源模式 `parameter` 分別綁定每一欄。`[data-ew-parameter]` 從既有綁定跳至來源卡。
+- `#paramExport` 與 `#parameterSelectionExport` 匯出所選及完整引用卡；`#paramImport`／`#paramFile` 先預覽整包新增，確認才提交。同名保持獨立。
+- UI 減項：面內 `#refSpecName`／`#refSpecValue`／`#refSpecSave` 獨立表單移除；`#refParameterOpen` 進共用入口，`#paramSpec`／`#paramSpecValue`／`#paramSpecSave` 編輯既有 spec 原物件。參數編輯器僅一塊常駐操作說明，試算狀態及使用關係按需呈現。
+- 位置引用參數（共用基準與參考線）：共用空間基準管理器的 `#datum-parameter` 下拉選尺寸欄位，寫入 `#datum-expression` 的 `param:卡:欄`；面內參考線建立表單在選到參數來源時，於 `#refGuideParameterLinks` 掛 `[data-reference-parameter="卡ID"]` 按鈕（基準列 `#datum-list` 與參考線編輯器 `#guide-editor-source` 同樣掛此按鈕），點擊經 `ParameterUI.jump` 跳回參數卡。即使沒有下游構件，綁定仍先走 `.reference-impact` 預覽（`#impact-confirm`／取消鈕）；基準的前後值列在 `.impact-datums` 的 `[data-impact-datum="基準ID"]`，參考線一律在 `<code>` 顯示 preview.command，`.impact-guides` 的 `[data-impact-guide]` 列僅在核心 preview.guides 有前後差異時出現，測試不依賴該列。
+- `parameter_workflow_test.js` 經完整 `cdp_test.js` 執行，含尺寸組、跨卡算式、真網格引用、連動／復原、/6 保存重開、手機、過期回應、獨立參數包匯入，以及共用基準與參考線的參數綁定（先預覽、取消保持原狀、確認保留來源、跳回參數卡）。
+
 ## GEO-214 舊有限網格相容介面
 
 以下控制只保留給舊有限來源；新來源使用上方 GEO-215 工作區。

@@ -657,9 +657,10 @@ const ReferenceWorkspace = (() => {
       ...(c.models.length?{models:JSON.parse(JSON.stringify(c.models))}:{}),...(faceProjections.length?{faceProjections}:{}),
       ...(c.engineeringDrafts?.length?{engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.engineeringDrafts))}}:{}) };
     const format = P.projectFormat(data);
-    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
+    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
   }
   function assertSaveReady() {
+    if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
     assertEditable();
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
     if (fe.draft?.pts?.length) throw new Error("外環草稿尚未套用。請先完成外環或放棄草稿，再保存專案。");
@@ -783,7 +784,7 @@ const ReferenceWorkspace = (() => {
     stage("正在檢查專案完整性…","驗證中");
     const loaded=await P.unpack(bytes,fflate),m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
     assertCurrent();
-    if (m.format === P.ENGINEERING_FORMAT) {
+    if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT].includes(m.format)) {
       stage("正在驗證工程來源與幾何…","驗證中");
       const response=await fetch("/engineering/validate-project",{method:"POST",body:loaded.scene,signal:AbortSignal.timeout(30000)});
       if(!response.ok)throw new Error("目前服務無法驗證工程專案，未變更目前專案。");
@@ -920,6 +921,7 @@ const ReferenceWorkspace = (() => {
     pendingLoad=null;sync();return true;
   }
   function mayLeave() {
+    if(window.ParameterUI && !ParameterUI.mayLeave())return false;
     if (Object.values(fe.feats || {}).some(items => items.length) &&
       !window.confirm("目前有只能在本次工作階段修改數字的形狀特徵。切換場景後仍保留輪廓，但特徵參數會消失。要繼續嗎？")) return false;
     return !context().dirty || window.confirm("目前專案有尚未保存的變更。要離開目前專案嗎？");

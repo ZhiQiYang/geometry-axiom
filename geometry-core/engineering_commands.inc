@@ -2,6 +2,25 @@
 static bool eng_operation(World *w,EngJson *j,int t)
 {
     char op[40]; if (!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op)) return eng_fail("I35: operation requires an op name");
+    if(!strcmp(op,"import-parameters")){
+        if(!eng_json_keys(j,t,"op,value","")||!parameter_import(w,j,eng_json_member(j,t,"value")))return eng_fail(g_parameter_error[0]?g_parameter_error:"I39: invalid parameter package");return true;
+    }
+    if(!strcmp(op,"put-parameter")) {
+        if(!eng_json_keys(j,t,"op,value","")||!parameter_put(w,j,eng_json_member(j,t,"value")))return eng_fail(g_parameter_error[0]?g_parameter_error:"I38: invalid parameter operation");return true;
+    }
+    if(!strcmp(op,"delete-parameter")) {
+        uint32_t id;if(!eng_json_keys(j,t,"op,id","")||!parameter_u32(j,eng_json_member(j,t,"id"),&id))return eng_fail("I38: invalid parameter identity");
+        return parameter_remove(w,id)?true:eng_fail(g_parameter_error);
+    }
+    if(!strcmp(op,"unbind-source")) {
+        EngTarget target;Coord value;
+        if(!eng_json_keys(j,t,"op,target","")||!eng_target_parse(j,eng_json_member(j,t,"target"),&target))return eng_fail("I38: invalid unbind target");
+        EngBinding *b=eng_binding(w,&target);if(!b)return eng_fail("I38: target has no source binding");
+        char error[512]="";if(!parameters_rebuild(w,error,sizeof error))return eng_fail(error);if(!eng_effective(w,b,&value,NULL,0))return false;
+        if(target.kind){int i=reference_timber_index(w,target.id);if(target.field)w->timbers[i].size_b=value;else w->timbers[i].size_a=value;}
+        else {GridAxisDef *a=&world_find_grid_mut(w,target.id)->axis[target.axis];if(target.field)a->gap=value;else a->panel=value;}
+        size_t k=(size_t)(b-w->engineering.bindings);memmove(b,b+1,(w->engineering.binding_count-k-1)*sizeof *b);memset(&w->engineering.bindings[--w->engineering.binding_count],0,sizeof *b);return true;
+    }
     if (!strcmp(op,"publish-material") || !strcmp(op,"publish-method")) {
         char hash[65],*expected=NULL; int h=eng_json_member(j,t,"fingerprint");
         if (!eng_json_keys(j,t,"op,value","fingerprint")) return eng_fail("I35: unexpected publication operation fields");
@@ -146,5 +165,5 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
 }
 static bool apply_requires_line(const char *path,int line_no,char **tokens,int count,World *w)
 {
-    (void)count;(void)w;if(!strcmp(tokens[1],"engineering-spec/1"))return true;scene_error(path,line_no,"I32: unsupported required scene capability");return false;
+    (void)count;(void)w;if(!strcmp(tokens[1],"engineering-spec/1")||!strcmp(tokens[1],"parameters/1"))return true;scene_error(path,line_no,"I32: unsupported required scene capability");return false;
 }

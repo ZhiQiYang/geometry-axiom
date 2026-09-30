@@ -81,6 +81,8 @@ manifest 欄位：`schema:"geometry-model-package/1"`、`profile:"orthogonal-mod
 capabilities 為有序能力字串集合：`extrusion/1`, `shell/1`, `composite-space/1`, `solid-composition/1`, `model-export/1`；
 集合與實際版本必符合 I32。只实现 extrusion 的程式可以自稱该子能力，不能自稱完整 orthogonal-model/1。
 
+來源另可要求 `engineering-spec/1` 與 `parameters/1`。含參數來源的套件保留所有卡片（含未使用欄位）、AST、固定身分與引用，原生重放後才建模；畫布位置仍移入 presentation。缺少能力或宣告舊公理版本時明確拒絕，不能將引用改寫成有效數字。參數版公理來源為 `802f9bda1b1b8ab046f059e115dbf05a44da10df`，LF 正規化 SHA-256 為 `b19009682ba5b3e7150341ae1b5190629cb03985d500d382aa918438fb548c0b`。舊版無參數套件沿用對應版本驗證。細節見 [參數操作契約](PARAMETERS-CONTRACT.md)。
+
 derived 必含 `status`, `objects`。objects 每項包含：
 
 - `root`：輸入根型別引用；`member_path`：KEEP 成員 0-based 索引路徑（非 KEEP 為空陣列）。

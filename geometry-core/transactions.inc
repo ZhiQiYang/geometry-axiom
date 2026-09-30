@@ -436,6 +436,31 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
     }
     return false;
 }
+/* I8a: parameter bindings need approval even without downstream geometry.
+ * Inspect the previous expression as well, so removing a binding is guarded. */
+static const DatumPlane *world_find_datum(const World *w,uint32_t id)
+{
+    for(size_t i=0;i<w->datum_count;++i)if(w->datums[i].id==id)return &w->datums[i];return NULL;
+}
+static bool parameter_reference_edit(const World *w,char **tokens,int count)
+{
+    if(g_parsing_scene_file || count<2)return false;
+    const char *command=tokens[0];
+    if(!strcmp(command,"guide") || !strcmp(command,"move") || !strcmp(command,"datum") || !strcmp(command,"grid-system")){
+        for(int i=1;i<count;++i)if(strstr(tokens[i],"param:"))return true;
+        uint32_t id;if(!parse_u32(tokens[1],&id))return false;
+        if(!strcmp(command,"guide") || !strcmp(command,"move")){
+            const GuideLine *g=world_find_guide(w,id);return g && strstr(g->expression,"param:")!=NULL;
+        }
+        if(!strcmp(command,"datum")){
+            const DatumPlane *d=world_find_datum(w,id);return d && strstr(d->expression,"param:")!=NULL;
+        }
+    }
+    if(!strcmp(command,"delete") && count==3){
+        char *edit[]={tokens[1],tokens[2]};return parameter_reference_edit(w,edit,2);
+    }
+    return false;
+}
 static void reference_stage(const World *before,const World *after,char **tokens,int count,bool valid)
 {
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
@@ -552,7 +577,7 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
     bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
     bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
     if (explicit_preview || (!g_preview_confirming &&
-        (engineering_edit || system_edit || application_edit || binding_edit || keyed_edit ||
+        (engineering_edit || system_edit || application_edit || binding_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
         (affects && (!ok || reference_geometry_changed(world,&candidate)))))) {
         reference_stage(world,ok?&candidate:&g_reference_trial,tokens,count,ok);
         reference_preview_text();

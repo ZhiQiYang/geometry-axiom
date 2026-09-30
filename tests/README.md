@@ -1,5 +1,7 @@
 # 核心與保存完整性測試
 
+GEO-223 參數卡：`python -m unittest tests.test_parameters_core`（同時設定 `GEOMETRY_ENGINEERING_BRIDGE` 與 `GEOMETRY_MODEL_BASE`），`node --test tests/test_parameters_project_store.js`。正式操作測試 `parameter_workflow_test.js` 已納入完整 `cdp_test.js`；`GEOMETRY_PARAMETERS_ONLY=1` 僅供開發，不能代替完整回歸。原生產物在 Windows 放暫存目錄。
+
 GEO-130 建模執行器及實際 CLI／HTTP：
 
 ```sh

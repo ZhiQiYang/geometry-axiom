@@ -89,7 +89,8 @@ class ModelingTransport(unittest.TestCase):
 
     def test_http_models_are_isolated_and_reconstructible(self):
         self.assertIn("engineering-spec/1", self.capabilities["capabilities"])
-        self.assertEqual(len(self.capabilities["capabilities"]), 6)
+        self.assertEqual(len(self.capabilities["capabilities"]), 7)
+        self.assertIn("parameters/1", self.capabilities["capabilities"])
         self.assertTrue(self.post("/api", {"cmd": "line spec transport_sentinel 419"})["ok"])
         def world():
             dump = self.post("/api", {"cmd": "dump"})

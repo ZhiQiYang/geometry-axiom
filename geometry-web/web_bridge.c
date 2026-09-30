@@ -487,7 +487,7 @@ static bool next_surface_ids(uint32_t *out, size_t n)
 /* newid [n]：各類物件一個尚未被占用的 id，外加 n 個 surface 用的 id（預設 1）。 */
 static void cmd_newid(size_t surface_count)
 {
-    uint32_t mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md;
+    uint32_t mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam;
     uint32_t surfaces[NEWID_MAX_SURFACES];
 
     if (surface_count < 1 || surface_count > NEWID_MAX_SURFACES) {
@@ -511,12 +511,13 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID(mc,  g_world.columns,    g_world.column_count,    false);
     WORLD_NEXT_ID(mbm, g_world.beams,      g_world.beam_count,      false);
     WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count,     false);
+    WORLD_NEXT_ID(mparam, g_world.parameters.cards, g_world.parameters.card_count, false);
 
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"gridSystem\":%u,\"gridBinding\":%u,\"timber\":%u,\"space\":%u,"
-           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"surfaces\":[",
-           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md);
+           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"parameter\":%u,\"surfaces\":[",
+           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam);
     for (size_t i = 0; i < surface_count; ++i) {
         if (i) putchar(',');
         printf("%u", surfaces[i]);
@@ -658,6 +659,7 @@ static void cpos_json(int kind, uint32_t id)
 }
 
 /* objects：列出畫布層所有物件（面卡 + 空間卡）與畫布座標。 */
+#include "parameter_bridge.inc"
 static void cmd_objects(void)
 {
     fputs("{\"ok\":true,\"faces\":[", stdout);
@@ -771,7 +773,14 @@ static void cmd_objects(void)
         json_grid_system(&g_world,&g_world.grid_systems[i]);
     }
 
-    fputs("],\"gridBindings\":[",stdout);
+    fputs("],\"parameters\":[",stdout);
+    for(size_t i=0;i<g_world.parameters.card_count;++i){
+        if(i)putchar(',');const ParameterSet *c=&g_world.parameters.cards[i];
+        fputs("{\"kind\":\"parameter\",\"card\":",stdout);parameter_json_card(&g_world,c,stdout,true);
+        printf(",\"id\":%u,\"name\":",c->id);js_string(c->name);putchar(',');cpos_json(CANVAS_POS_PARAMETER,c->id);putchar('}');
+    }
+    fputs("],\"parameterUses\":",stdout);json_parameter_uses(&g_world);
+    fputs(",\"gridBindings\":[",stdout);
     for (size_t i=0;i<g_world.grid_binding_count;++i) {
         if (i) putchar(',');
         json_grid_binding(&g_world,&g_world.grid_bindings[i],false);

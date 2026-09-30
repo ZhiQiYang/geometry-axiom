@@ -1031,6 +1031,7 @@ typedef enum {
 } GuideDirection;
 
 #include "geometry-core/reference_types.h"
+#include "geometry-core/parameter_types.h"
 #include "geometry-core/engineering_types.h"
 
 typedef struct {
@@ -1311,6 +1312,7 @@ typedef struct {
     Coord gap;
     Coord anchor;
     bool anchor_explicit;   /* 只影響 dump 是否輸出 from，不影響推導 */
+    ParameterRef parameters[5]; /* phase, step, panel, gap, anchor */
 } GridAxisDef;
 
 #define WORLD_MAX_GRID_SYSTEMS 16
@@ -3676,7 +3678,7 @@ static bool path_beside_source(char *buffer, size_t size, const char *name)
 #define WORLD_MAX_TIMBERS     64
 #define WORLD_MAX_SPACES      4
 #define WORLD_MAX_RC          32
-#define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2 + WORLD_MAX_GRID_SYSTEMS + WORLD_MAX_GRID_BINDINGS)
+#define WORLD_MAX_CANVAS_POS  (WORLD_MAX_BOUNDARIES + WORLD_MAX_PLACEMENTS + WORLD_MAX_SPACES + WORLD_MAX_RC * 2 + WORLD_MAX_GRID_SYSTEMS + WORLD_MAX_GRID_BINDINGS + PARAM_CARD_MAX)
 
 /* 一個空間最多八片邊界成員；零成員 = 空容器（公理 D5）。 */
 #define SPACE_MAX_MEMBERS 8
@@ -3736,6 +3738,7 @@ typedef enum {
     CANVAS_POS_COLUMN,         /* 柱卡：以柱 id 為鍵 */
     CANVAS_POS_BEAM,           /* 樑卡：以樑 id 為鍵 */
     CANVAS_POS_GRID_BINDING,
+    CANVAS_POS_PARAMETER,
     CANVAS_POS_GRID_SYSTEM     /* D29: independent reusable grid definition */
 } CanvasPosKind;
 
@@ -3788,6 +3791,7 @@ typedef struct World {
     CanvasPos canvas_pos[WORLD_MAX_CANVAS_POS];
     size_t canvas_pos_count;
     EngineeringState engineering;
+    ParameterState parameters;
 } World;
 
 static const GridSystem *world_find_grid_system(const World *w,uint32_t id)
@@ -3811,6 +3815,11 @@ static bool grid_systems_rebuild(World *,char *,size_t);
 static bool eng_object_bound(const World *,int,uint32_t);
 static uint64_t g_definition_revision;
 static bool engineering_rebuild(World *,char *,size_t);
+static bool parameters_rebuild(World *,char *,size_t);
+static const ParameterSet *parameter_find(const World *,uint32_t);
+static bool parameter_ref_parse(const char *,ParameterRef *);
+static bool parameter_coord(const World *,ParameterRef,Coord *);
+static char g_parameter_error[512];
 static bool engineering_dump_timber(const World *,const Timber *,FILE *);
 static bool world_definitions_equal(const World *a,const World *b)
 {
@@ -3916,6 +3925,7 @@ static bool world_canvas_target_exists(const World *w, int kind, uint32_t id)
         kind == CANVAS_POS_SPACE     ? world_find_space(w, id)     != NULL :
         kind == CANVAS_POS_COLUMN    ? world_find_column(w, id)    != NULL :
         kind == CANVAS_POS_GRID_BINDING ? world_find_grid_binding(w,id) != NULL :
+        kind == CANVAS_POS_PARAMETER ? parameter_find(w,id) != NULL :
         kind == CANVAS_POS_GRID_SYSTEM ? world_find_grid_system(w,id) != NULL :
                                        world_find_beam(w, id)      != NULL;
 }
@@ -8614,6 +8624,9 @@ static bool world_revalidate(World *world)
     if (!boundary_keys_reconcile(&candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
     }
+    if (!parameters_rebuild(&candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    }
     if (!engineering_rebuild(&candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
     }
@@ -9986,6 +9999,7 @@ static bool apply_span_auto_line(const char *p, int n, char **t, int c, World *w
 static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 { return apply_reference_move(p, n, t, c, w); }
 
+#include "geometry-core/parameters.inc"
 #include "geometry-core/references.inc"
 #include "geometry-core/engineering.inc"
 #include "geometry-core/boundary_vertex_keys.inc"
@@ -11988,6 +12002,7 @@ static void dump_loop(FILE *out, const PolygonLoop2 *loop)
 
 static void world_dump_dsl(const World *world, FILE *out)
 {
+    parameters_dump(world,out);
     engineering_dump_versions(world,out);
     for (size_t i = 0; i < world->boundary_count; ++i) {
         const SpaceBoundarySurface *b = &world->boundaries[i];
@@ -12163,7 +12178,7 @@ static void world_dump_dsl(const World *world, FILE *out)
                 p->kind == CANVAS_POS_PLACEMENT ? "placement" :
                 p->kind == CANVAS_POS_SPACE     ? "space"     :
                 p->kind == CANVAS_POS_COLUMN    ? "column"    :
-                p->kind == CANVAS_POS_GRID_BINDING ? "grid-binding" : p->kind == CANVAS_POS_GRID_SYSTEM ? "grid-system" : "beam",
+                p->kind == CANVAS_POS_PARAMETER ? "parameter" : p->kind == CANVAS_POS_GRID_BINDING ? "grid-binding" : p->kind == CANVAS_POS_GRID_SYSTEM ? "grid-system" : "beam",
                 (unsigned)p->id, (long long)p->x, (long long)p->y);
     }
 }
@@ -12195,6 +12210,8 @@ static bool apply_canvaspos_line(
         kind = CANVAS_POS_COLUMN;
     } else if (strcmp(tokens[1], "beam") == 0) {
         kind = CANVAS_POS_BEAM;
+    } else if (strcmp(tokens[1], "parameter") == 0) {
+        kind = CANVAS_POS_PARAMETER;
     } else if (strcmp(tokens[1], "grid-system") == 0) {
         kind = CANVAS_POS_GRID_SYSTEM;
     } else if (strcmp(tokens[1], "grid-binding") == 0) {
@@ -12222,6 +12239,7 @@ static bool apply_canvaspos_line(
         kind == CANVAS_POS_SPACE     ? world_find_space(world, id)     != NULL :
         kind == CANVAS_POS_COLUMN    ? world_find_column(world, id)    != NULL :
         kind == CANVAS_POS_GRID_BINDING ? world_find_grid_binding(world,id) != NULL :
+        kind == CANVAS_POS_PARAMETER ? parameter_find(world,id) != NULL :
         kind == CANVAS_POS_GRID_SYSTEM ? world_find_grid_system(world,id) != NULL :
                                        world_find_beam(world, id)      != NULL;
 
@@ -12267,6 +12285,7 @@ static const struct {
     { "boundary-vertex-keys", 7, SCENE_MAX_TOKENS, false, "boundary-vertex-keys id outer keys [hole keys] next-key n", apply_boundary_keys_line },
     { "boundary-keyed", 9, SCENE_MAX_TOKENS, false, "boundary-keyed id geometry-hash hash outline key:u,v ...", apply_boundary_keyed_line },
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
+    { "parameters", 2, 3, false, "parameters begin|card|field|end", apply_parameters_line },
     { "requires", 2, 2, false, "requires engineering-spec/1", apply_requires_line },
     { "engineering", 3, 3, false, "engineering kind base64-json", apply_engineering_line },
     { "subgrid", 12, 16, true, "subgrid id parent id cell u lo hi v lo hi divisions u n v n", apply_subgrid_line },
@@ -12424,6 +12443,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     g_parsing_scene_file = true;
+    g_parameter_scene_loading = true;
 
     char line[SCENE_MAX_LINE];
     int line_no = 0;
@@ -12493,6 +12513,9 @@ static bool parse_scene_file(const char *path, World *out_world)
             continue;
         }
 
+        if (out_world->parameters.loading && strcmp(tokens[0],"parameters")) {
+            scene_error(path,line_no,"I39: parameter block may only contain parameter records"); ok=false; break;
+        }
         ok = apply_scene_line(path, line_no, tokens, count, out_world);
     }
 
@@ -12525,6 +12548,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     g_parsing_scene_file = false;
+    g_parameter_scene_loading = false;
     return ok;
 }
 

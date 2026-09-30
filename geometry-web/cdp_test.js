@@ -2,7 +2,7 @@
 const { spawn } = require("child_process");
 const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
-const SCOPE_FLAGS = ['GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
+const SCOPE_FLAGS = ['GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
   if (!env.GEOMETRY_TEST_URL) throw Error('GEOMETRY_TEST_URL is required: use an explicitly isolated test service. No browser or reset was started.');
@@ -324,6 +324,7 @@ async function main() {
   await waitForUI(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`,30000);
   if (!await eval_(`typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`))
     throw Error('Application did not finish loading: '+JSON.stringify(await eval_(`({state:document.readyState,url:location.href,api:typeof api,message:document.querySelector('#connectionMessage')?.textContent})`)));
+  if (!process.env.GEOMETRY_PARAMETERS_ONLY) {
   if (!process.env.GEOMETRY_SELECTION_CURSOR_ONLY && !process.env.GEOMETRY_UX_REFINEMENT_ONLY && !process.env.GEOMETRY_UIUX_FIX_ONLY && !process.env.GEOMETRY_MARQUEE_ONLY && !process.env.GEOMETRY_PROJECT_AUDIT_ONLY && !process.env.GEOMETRY_ENGINEERING_WORKFLOW_ONLY && !process.env.GEOMETRY_GRID_SYSTEM_ONLY && !process.env.GEOMETRY_INFINITE_FACE_ONLY && !process.env.GEOMETRY_COMPOSITION_ONLY) {
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY && !process.env.GEOMETRY_REPAIR_ONLY && !process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY && !process.env.GEOMETRY_CDP_FROM_P31) {
   /* 清世界 + 建一個乾淨的測試場：一片游離面、一個空容器 */
@@ -3589,7 +3590,8 @@ async function main() {
   }
   await eval_(`(async()=>{resetSceneFocus();await api('default');await setView3(false);await renderObjects();await enterFocus('face',1);fiShowTab('guide')})()`);
   const beforeImpact = (await eval_(`api('dump')`)).text;
-  await eval_(`document.querySelector('#refSpecName').value='主支中線';document.querySelector('#refSpecValue').value='900';document.querySelector('#refSpecSave').click();void 0`);
+  await eval_(`ParameterUI.openLegacy()`);await waitForUI(`!!$('paramSpec')`);
+  await eval_(`$('paramSpec').value='主支中線';$('paramSpecValue').value='900';$('paramSpecSave').click();void 0`);
   await sleep(250);
   check('P31 form opens impact preview',await eval_(`!!document.querySelector('dialog.reference-impact[open]') && !document.querySelector('#impact-confirm').disabled && document.querySelector('dialog.reference-impact').innerText.includes('500 → 900')`));
   check('P31 preview leaves world unchanged',(await eval_(`apiRequest('dump')`)).text===beforeImpact);
@@ -4192,9 +4194,10 @@ async function main() {
   await eval_(`(async()=>{resetSceneFocus();await api('default');await renderObjects();await enterFocus('face',1)})()`);
   await eval_(`fiShowTab('guide')`);
   const p37Before=(await eval_(`apiRequest('dump')`)).text;
-  await fillInput('#refSpecName','主支中線');
-  await fillInput('#refSpecValue','900');
-  await clickSelector('#refSpecSave');
+  await clickSelector('#refParameterOpen');await waitForUI(`!!$('paramSpec')`);
+  await eval_(`$('paramSpec').value='主支中線';$('paramSpec').dispatchEvent(new Event('change'));void 0`);
+  await fillInput('#paramSpecValue','900');
+  await clickSelector('#paramSpecSave');
   await waitForUI(`!!document.querySelector('dialog.reference-impact[open]')`,10000);
   check('P37 reference form opens native impact dialog',await eval_(`!!document.querySelector('dialog.reference-impact[open]')`));
   await pressKey('Escape','Escape',27);
@@ -6886,6 +6889,8 @@ async function main() {
   if (scope.mode==='full' || process.env.GEOMETRY_SELECTION_CURSOR_ONLY)
     await require('./selection_cursor_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
 
+  }
+  if(scope.mode==='full'||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
   _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);

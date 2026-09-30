@@ -12,6 +12,12 @@ async function confirmReferenceImpact(preview) {
   const code = document.createElement('code'); code.textContent = preview.command;
   dialog.append(code);
   appendGridDefinitionImpact(dialog, preview);
+  const datumChanges=(preview.datums||[]).filter(row=>JSON.stringify(row.before)!==JSON.stringify(row.after));
+  if(datumChanges.length){
+    const list=document.createElement('ul');list.className='impact-datums';
+    const describe=d=>d?`${d.axis}=${d.position} mm · ${d.expression}`:'不存在';
+    for(const row of datumChanges){const item=document.createElement('li');item.dataset.impactDatum=row.id;item.textContent=`基準面 ${row.id}：${describe(row.before)} → ${describe(row.after)}`;list.append(item);}dialog.append(list);
+  }
   const wrap = document.createElement('div'); wrap.className = 'impact-table-wrap';
   const table = document.createElement('table');
   const heading = document.createElement('tr');
@@ -197,6 +203,15 @@ async function moveReferenceGuide(id, axis, off) {
 }
 
 /* D6c: UI submits definitions only; coordinates, clipping and guards live in C. */
+function appendParameterSourceLinks(parent,expression,beforeJump=()=>{}) {
+  const seen=new Set();
+  for(const match of expression.matchAll(/param:(\d+):(\d+)/g)){
+    const parameterId=Number(match[1]),fieldId=Number(match[2]),key=match[1]+':'+match[2];if(seen.has(key))continue;seen.add(key);
+    const button=document.createElement('button');button.type='button';button.className='btn';button.dataset.referenceParameter=parameterId;
+    button.textContent='查看 '+ParameterUI.sourceLabel({parameterId,fieldId});
+    button.onclick=()=>{if(beforeJump()===false)return;ParameterUI.jump('parameter',parameterId);};parent.append(button);
+  }
+}
 async function openDatumManager() {
   if (document.getElementById('datum-manager')) return;
   const dialog = document.createElement('dialog'); dialog.id = 'datum-manager';
@@ -212,7 +227,8 @@ async function openDatumManager() {
       <label>基準 ID<input id="datum-id" type="number" min="0" max="4294967295" step="1" required></label>
       <label>世界軸<select id="datum-axis"><option>X</option><option>Y</option><option selected>Z</option></select></label>
       <label class="datum-expression">位置引用式<input id="datum-expression" required placeholder="spec:櫃頂高度"></label>
-      <small>可用具名尺寸與比例，例如 1/2*spec:櫃頂高度；不接受無名尺寸。</small>
+      <label>引用參數<select id="datum-parameter"><option value="">選擇尺寸欄位</option>${(window.ParameterUI?.options({dimensions:true})||[]).map(o=>`<option value="param:${o.ref.parameterId}:${o.ref.fieldId}">${ReferenceWorkspace.escape(o.text)}</option>`).join('')}</select></label>
+      <small>可用具名尺寸、參數與比例；含參數的結果須為整數 mm。</small>
       <button class="btn primary" type="submit">儲存基準</button></form></section>
     <section><h3>3 · 讓承載面引用</h3><form id="datum-attach-form" class="datum-form">
       <label>基準<select id="datum-select" required></select></label>
@@ -221,6 +237,7 @@ async function openDatumManager() {
     <p id="datum-feedback" role="status" aria-live="polite"></p>`;
   document.body.append(dialog);
   const find = id => dialog.querySelector('#' + id);
+  find('datum-parameter').onchange=e=>{if(e.target.value)find('datum-expression').value=e.target.value;};
   let refs;
   const option = (value, text) => { const node = document.createElement('option'); node.value = value; node.textContent = text; return node; };
   const reload = async () => {
@@ -247,7 +264,7 @@ async function openDatumManager() {
       remove.disabled = d.guides.length > 0;
       remove.title = d.guides.length ? `仍被參考線 ${d.guides.join('、')} 引用，請先處理引用` : '刪除未被引用的基準，可復原';
       remove.onclick = () => submit(`delete datum ${d.id}`);
-      row.append(text, edit, remove); list.append(row);
+      row.append(text, edit, remove);appendParameterSourceLinks(row,d.expression,()=>{if(dialog.dataset.busy==='true')return false;dialog.close();dialog.remove();});list.append(row);
     }
     const guides = find('datum-guide-list'); guides.replaceChildren();
     for (const g of r.guides.filter(g => g.source === 'datum')) {
@@ -312,6 +329,7 @@ function editReferenceGuide(id) {
   find('source').textContent = `承載面 ${guide.surface} · 沿 ${guide.axis} · ${guide.axis === 'u' ? 'v' : 'u'} = ${guide.off} mm` +
     (datum ? ` · 共用基準 ${guide.datum}，請修改共用來源` : ' · 局部引用');
   find('expression').value = datum ? `datum ${guide.datum}` : guide.expression;
+  if(!datum)appendParameterSourceLinks(find('source'),guide.expression,()=>{if(pending)return false;dialog.close();dialog.remove();});
   find('expression').readOnly = datum; find('apply').hidden = datum; find('datum').hidden = !datum;
   let pending = false;
   const close = () => { if (pending) return; dialog.close(); dialog.remove(); };

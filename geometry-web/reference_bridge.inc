@@ -38,6 +38,11 @@ static void json_reference_guide(const World *w,size_t i)
         (long long)segments[j].end.u,(long long)segments[j].end.v);
     fputs("]}",stdout);
 }
+static void json_reference_datum(const DatumPlane *d)
+{
+    if(!d){fputs("null",stdout);return;}
+    printf("{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",d->id,'X'+d->axis,(long long)d->position);js_string(d->expression);putchar('}');
+}
 static void json_reference_preview(void)
 {
     printf("{\"token\":%u,\"valid\":%s,\"command\":",g_preview.token,g_preview.valid?"true":"false");
@@ -81,7 +86,14 @@ static void json_reference_preview(void)
         printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
         json_reference_grid(&g_preview.after,g); putchar('}');
     }
-    putchar(']');
+    fputs("],\"datums\":[",stdout);first=true;
+    for(int pass=0;pass<2;++pass){const World *w=pass?&g_preview.after:&g_preview.before;
+        for(size_t i=0;i<w->datum_count;++i){uint32_t id=w->datums[i].id;
+            const DatumPlane *before=world_find_datum(&g_preview.before,id),*after=world_find_datum(&g_preview.after,id);
+            if(pass && before)continue;
+            printf("%s{\"id\":%u,\"before\":",first?"":",",id);first=false;json_reference_datum(before);fputs(",\"after\":",stdout);json_reference_datum(after);putchar('}');
+        }
+    }putchar(']');
     json_grid_system_preview();
     json_grid_binding_preview();
     json_boundary_preview();

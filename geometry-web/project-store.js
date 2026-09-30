@@ -6,6 +6,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
   const FORMAT = "geometry-canvas/1", MODEL_FORMAT = "geometry-canvas/2", PROJECTION_FORMAT = "geometry-canvas/3", TIMBER_FORMAT = "geometry-canvas/4", ENGINEERING_FORMAT = "geometry-canvas/5", MAX_SOURCE = 128 * 1024 * 1024;
+  const PARAMETER_FORMAT = "geometry-canvas/6", PARAMETER_CAPABILITY = "parameters/1";
   const ENGINEERING_CAPABILITY = "engineering-spec/1", DRAFT_SCHEMA = "engineering-drafts/1", MAX_ENGINEERING_DRAFTS = 256;
   const MAX_MANIFEST = 8 * 1024 * 1024, MAX_MODELS = 64;
   const MAX_PACKAGE = 256 * 1024 * 1024, MAX_EXPANDED = 512 * 1024 * 1024;
@@ -74,13 +75,14 @@
     for (const raw of scene.replace(/\r\n/g, "\n").split("\n")) {
       const line = raw.split("#", 1)[0].trim();
       if (/^engineering(?:\s|$)/.test(line) || /(?:^|\s)eng:/.test(line)) result.add(ENGINEERING_CAPABILITY);
+      if (/^parameters(?:\s|$)/.test(line) || /(?:^|[^\w])param:\d+:\d+/.test(line)) result.add(PARAMETER_CAPABILITY);
       const requires = line.match(/^requires\s+(.+)$/);
       if (requires) {
-        if (requires[1] !== ENGINEERING_CAPABILITY) fail("場景需要尚未支援的工程能力。");
+        if (![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY].includes(requires[1])) fail("場景需要尚未支援的工程能力。");
         result.add(requires[1]);
       }
     }
-    return [...result];
+    return [...result].sort();
   }
   function modelRequiresEngineering(model) {
     return sceneCapabilities(model.input?.base_scene || "").length || Object.values(model.result || {}).some(pkg =>
@@ -88,6 +90,7 @@
       (typeof pkg?.definitions?.base_scene === "string" && sceneCapabilities(pkg.definitions.base_scene).length));
   }
   function projectFormat(manifest, scene = "") {
+    if (projectCapabilities(manifest, scene).includes(PARAMETER_CAPABILITY)) return PARAMETER_FORMAT;
     if (manifest.requiredCapabilities?.length || manifest.engineeringDrafts?.records?.length ||
         sceneCapabilities(scene).length || manifest.models?.some(modelRequiresEngineering)) return ENGINEERING_FORMAT;
     if (manifest.models?.some(model => Object.hasOwn(model.input || {}, "timbers") || model.result?.schema === "geometry-space-preview/2")) return TIMBER_FORMAT;
@@ -117,8 +120,8 @@
     return drafts;
   }
   function validateProjectCapabilities(capabilities) {
-    if (!Array.isArray(capabilities) || capabilities.length > 1 ||
-        capabilities.some(capability => capability !== ENGINEERING_CAPABILITY)) fail("專案需要尚未支援的工程能力。");
+    if (!Array.isArray(capabilities) || capabilities.length > 2 || new Set(capabilities).size !== capabilities.length ||
+        capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY].includes(capability))) fail("專案需要尚未支援的工程能力。");
     return capabilities;
   }
   function assertProjectCapabilities(manifest, available) {
@@ -127,10 +130,23 @@
     if (!Array.isArray(available) || required.some(capability => !available.includes(capability)))
       fail("目前服務不支援此專案所需的工程規格能力，未變更目前專案。");
   }
+  function projectCapabilities(manifest, scene) {
+    const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
+    for (const model of manifest.models || []) {
+      for (const c of sceneCapabilities(model.input?.base_scene || "")) required.add(c);
+      for (const pkg of Object.values(model.result || {})) {
+        for (const c of pkg?.manifest?.capabilities || []) if ([ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY].includes(c)) required.add(c);
+        for (const c of sceneCapabilities(pkg?.definitions?.base_scene || "")) required.add(c);
+      }
+    }
+    return [...required].sort();
+  }
   function validateEngineeringScene(manifest, scene) {
-    const needed = sceneCapabilities(scene).length || manifest.models?.some(modelRequiresEngineering);
-    if (needed && (manifest.format !== ENGINEERING_FORMAT || !manifest.requiredCapabilities?.includes(ENGINEERING_CAPABILITY)))
-      fail("含工程來源的專案必須使用第 5 版並宣告所需能力，不可降成直接數值。");
+    const needed = projectCapabilities({...manifest, requiredCapabilities: []}, scene);
+    if (needed.some(c => !manifest.requiredCapabilities?.includes(c)) ||
+        (needed.includes(PARAMETER_CAPABILITY) && manifest.format !== PARAMETER_FORMAT) ||
+        (needed.length && ![ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(manifest.format)))
+      fail("含參數的專案必須使用第 6 版，含工程來源須使用第 5 版以上，並保留所需能力。");
   }
   // Bound and reject non-JSON values before cloning: JSON.stringify otherwise hides NaN.
   function jsonData(value) {
@@ -164,7 +180,7 @@
         !Array.isArray(m.capabilities) || m.capabilities.length > 32 || !m.capabilities.every(c => str(c, 100))) fail("空間模型版本或座標資訊不合法。");
     if (!keys(p.definitions, ["base_scene", "extensions"]) || !str(p.definitions.base_scene, MAX_MANIFEST) ||
         !Array.isArray(p.definitions.extensions) || p.definitions.extensions.length > 512 || !p.definitions.extensions.every(object)) fail("空間模型定義不合法。");
-    if (sceneCapabilities(p.definitions.base_scene).length && !m.capabilities.includes(ENGINEERING_CAPABILITY))
+    if (sceneCapabilities(p.definitions.base_scene).some(c => !m.capabilities.includes(c)))
       fail("空間模型缺少工程來源能力宣告。");
     const req = p.request;
     if (!keys(req, ["roots", "role", "target"], ["allow_partial"]) || !Array.isArray(req.roots) || !req.roots.length || req.roots.length > 512 ||
@@ -274,8 +290,8 @@
     return Array.from(new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes)), b => b.toString(16).padStart(2, "0")).join("");
   }
   function validate(m) {
-    if (!m || ![FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT].includes(m.format)) fail("專案版本不支援，請使用相容版本開啟。");
-    if (m.format === ENGINEERING_FORMAT) {
+    if (!m || ![FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format)) fail("專案版本不支援，請使用相容版本開啟。");
+    if ([ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format)) {
       if (!keys(m, ["format", "projectId", "name", "sceneHash", "sources", "faces", "models", "faceProjections", "requiredCapabilities"], ["engineeringDrafts"]))
         fail("第 5 版工程專案的欄位不完整或含未知定義。");
       validateProjectCapabilities(m.requiredCapabilities);
@@ -284,10 +300,10 @@
       fail("工程能力與草稿必須使用第 5 版格式。");
     if (m.format === FORMAT && Object.hasOwn(m, "models") && (!Array.isArray(m.models) || m.models.length)) fail("含空間模型的專案必須使用第 2 版格式。");
     if (m.format === MODEL_FORMAT && (!Array.isArray(m.models) || m.models.length > MAX_MODELS)) fail("空間模型清單不合法。");
-    if ([PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT].includes(m.format) && (!Array.isArray(m.models) || m.models.length > MAX_MODELS || !Array.isArray(m.faceProjections))) fail("平面投影專案清單不合法。");
+    if ([PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format) && (!Array.isArray(m.models) || m.models.length > MAX_MODELS || !Array.isArray(m.faceProjections))) fail("平面投影專案清單不合法。");
     if (Object.hasOwn(m, "faceProjections")) validateFaceProjectionList(m.faceProjections);
-    if (![PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT].includes(m.format) && (m.faceProjections?.length || m.models?.some(model => Object.hasOwn(model.source || {}, "projection")))) fail("含平面投影定義的專案必須使用第 3 版格式。");
-    if (![TIMBER_FORMAT, ENGINEERING_FORMAT].includes(m.format) && m.models?.some(model => Object.hasOwn(model.input || {}, "timbers") || model.result?.schema === "geometry-space-preview/2")) fail("含角材模型的專案必須使用第 4 版格式。");
+    if (![PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format) && (m.faceProjections?.length || m.models?.some(model => Object.hasOwn(model.source || {}, "projection")))) fail("含平面投影定義的專案必須使用第 3 版格式。");
+    if (![TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format) && m.models?.some(model => Object.hasOwn(model.input || {}, "timbers") || model.result?.schema === "geometry-space-preview/2")) fail("含角材模型的專案必須使用第 4 版格式。");
     validateEngineeringScene(m, "");
     const modelIds = new Set();
     for (const model of m.models || []) {
@@ -349,12 +365,12 @@
     if (Object.hasOwn(manifest, "requiredCapabilities")) validateProjectCapabilities(manifest.requiredCapabilities);
     if (Object.hasOwn(manifest, "engineeringDrafts")) validateEngineeringDrafts(manifest.engineeringDrafts);
     const m = { ...copy(manifest), format: projectFormat(manifest, scene), sceneHash: await sha(sceneBytes) };
-    if (m.format === ENGINEERING_FORMAT) {
-      m.requiredCapabilities = (manifest.requiredCapabilities?.length || sceneCapabilities(scene).length || manifest.models?.some(modelRequiresEngineering)) ? [ENGINEERING_CAPABILITY] : [];
+    if ([ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format)) {
+      m.requiredCapabilities = projectCapabilities(manifest, scene);
       if (!m.engineeringDrafts?.records.length) delete m.engineeringDrafts;
     } else { delete m.requiredCapabilities; delete m.engineeringDrafts; }
     if (m.format === FORMAT) delete m.models;
-    if ([PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT].includes(m.format)) { m.models ||= []; m.faceProjections ||= []; }
+    if ([PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format)) { m.models ||= []; m.faceProjections ||= []; }
     else delete m.faceProjections;
     validate(m);
     validateEngineeringScene(m, scene);
@@ -563,7 +579,7 @@
         (changedPlacement && pid === +changedPlacement[1] && (placed?.bid !== bid || !placed.horizontal))));
     }
   }
-  return { FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
+  return { PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
     MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage,
     validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, assertProjectCapabilities, sceneCapabilities,
     validateFaceProjection, validateFaceProjectionRefs, projectFormat, reference, pack, unpack, ContextHistory };

@@ -116,7 +116,7 @@ function workspace(verify, rebuild = () => model().result) {
   const env = { GeometryProject:P,crypto,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,console,
     requestAnimationFrame:()=>1, CustomEvent:class {constructor(type){this.type=type;}},
     window:{dispatchEvent:e=>events.push(e.type),confirm:()=>false},
-    document:{getElementById:()=>({textContent:''})},oc:{busy:false},fe:{feats:{}},connection:{phase:'ready'},
+    document:{getElementById:id=>id==='sceneMenuLabel'?{textContent:''}:null,querySelectorAll:()=>[]},oc:{busy:false},fe:{feats:{}},connection:{phase:'ready'},
     api:async cmd=>({ok:true,text:'old scene'}),resetSceneFocus:()=>{},refreshActive:async()=>{},setStatus:()=>{},
     sceneMenuDisplay:x=>x,curScene:{},
     fetch:async (url,opts)=>{calls.push(url);requests.push({url,body:url==='/upload'?opts.body:JSON.parse(opts.body)});return {ok:true,json:async()=>url==='/model/verify'?verify(JSON.parse(opts.body)):
