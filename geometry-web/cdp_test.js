@@ -3529,7 +3529,9 @@ async function main() {
   await key(true);
   check('P27 Ctrl+Shift+Z redoes whole gesture',(await eval_(`api('dump')`)).text===moved);
   await send('Input.dispatchMouseEvent',{type:'mousePressed',...points[1],button:'left',clickCount:1});
-  await sleep(100);
+  // The bridge resolves the hit and opens the history group asynchronously.
+  // Wait for that real state before testing cancellation on a slower service.
+  await waitForUI(`!!(dragging && dragging.started && dragging.guide>=0)`,15000);
   await send('Input.dispatchMouseEvent',{type:'mouseMoved',...points[2],button:'left',buttons:1});
   await sleep(100);
   const mid=(await eval_(`api('dump')`)).text;
