@@ -924,13 +924,27 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 ## GEO-223 畫布參數卡
 
 - `#btnNewParameter` 加入建立選單；卡片為 `.parameter-card[data-kind=parameter][data-id]`，沿用選取、移動、搜尋、框選和小地圖。只對目前選取卡片／物件畫引用連線；幾何使用處連到所屬面。
-- 共用編輯器 `#parameterEditor` 位於既有檢視器；`#paramName`、`#paramTemplate`、`#paramQuick`／`#paramParse` 及 `[data-param-field]` 支援自訂欄位、種類、算式、排序與移除。`[data-insert]` 插入含固定身分的可讀 token；前端只格式化核心值。
-- `#paramPreview`／`#paramResult`／`#paramConfirm` 使用原生候選交易；`#paramDiscard` 明確還原草稿。回應核對草稿序號及專案 context；dirty 草稿阻擋保存與離開。所有參數表單控制最小 44px，390px 使用既有抽屜。
+- 共用編輯器 `#parameterEditor` 位於既有檢視器；`#paramName`、`#paramQuick`／`#paramParse` 及 `[data-param-field]` 支援自訂欄位、種類、算式、排序與移除。插入引用含固定身分的可讀 token；前端只格式化核心值。（`#paramTemplate`、`[data-insert]` 已於 GEO-224 移除，見下節。）
+- `#paramPreview`／`#paramResult`／`#paramConfirm` 使用原生候選交易；`#paramDiscard` 明確還原草稿。回應核對草稿序號及專案 context；dirty 草稿阻擋保存與離開。所有參數表單控制最小 44px。composition 版面下沒有右側抽屜：≤900px（含 390px）沿用畫布下方的檢視器面板（GEO-224 起 >900px 參數編輯時改為畫布右側固定欄）。
 - 尺寸控制的 `…Source` 下拉與 `[data-param-jump-for]` 共用「直接輸入／引用來源」。無限來源的 phase、step、panel、gap、anchor 均保留 ParameterRef；工程物件來源模式 `parameter` 分別綁定每一欄。`[data-ew-parameter]` 從既有綁定跳至來源卡。
 - `#paramExport` 與 `#parameterSelectionExport` 匯出所選及完整引用卡；`#paramImport`／`#paramFile` 先預覽整包新增，確認才提交。同名保持獨立。
 - UI 減項：面內 `#refSpecName`／`#refSpecValue`／`#refSpecSave` 獨立表單移除；`#refParameterOpen` 進共用入口，`#paramSpec`／`#paramSpecValue`／`#paramSpecSave` 編輯既有 spec 原物件。參數編輯器僅一塊常駐操作說明，試算狀態及使用關係按需呈現。
 - 位置引用參數（共用基準與參考線）：共用空間基準管理器的 `#datum-parameter` 下拉選尺寸欄位，寫入 `#datum-expression` 的 `param:卡:欄`；面內參考線建立表單在選到參數來源時，於 `#refGuideParameterLinks` 掛 `[data-reference-parameter="卡ID"]` 按鈕（基準列 `#datum-list` 與參考線編輯器 `#guide-editor-source` 同樣掛此按鈕），點擊經 `ParameterUI.jump` 跳回參數卡。即使沒有下游構件，綁定仍先走 `.reference-impact` 預覽（`#impact-confirm`／取消鈕）；基準的前後值列在 `.impact-datums` 的 `[data-impact-datum="基準ID"]`，參考線一律在 `<code>` 顯示 preview.command，`.impact-guides` 的 `[data-impact-guide]` 列僅在核心 preview.guides 有前後差異時出現，測試不依賴該列。
 - `parameter_workflow_test.js` 經完整 `cdp_test.js` 執行，含尺寸組、跨卡算式、真網格引用、連動／復原、/6 保存重開、手機、過期回應、獨立參數包匯入，以及共用基準與參考線的參數綁定（先預覽、取消保持原狀、確認保留來源、跳回參數卡）。
+
+## GEO-224 參數編輯面板重做
+
+設計稿存於 `docs/uiux-review/建議-建立參數 4a.dc.html`；使用者定案 `決策佇列.md` Q25。純前端：核心、橋接器、`PARAMETERS-CONTRACT.md` 與專案檔案格式不變，前端仍不做算式求值。
+
+- **版面**：參數編輯（建立新卡或編輯既有卡）時 `body` 加 `parameter-editing`（僅在 `canvas-composition` 且 `#inspectorContent` 內有 `#parameterEditor[data-editor="card"]` 時；離開編輯即移除）。視窗 >900px 且有此 class：`.sidebar-right` 變畫布右側固定欄，寬 `clamp(380px, 30vw, 480px)`、高度佔滿畫布列、內部捲動，畫布取其餘寬度。其他檢視器（面、網格、參考線…）沿用畫布下方面板，語意不變。≤900px 不做右側欄，沿用畫布下方面板（高度上限 280px／680px 以下 min(310px,40dvh)）。
+- **面板結構**（`#parameterEditor.parameter-editor[data-editor="card"]`，由上而下）：標頭（`.param-title`、`.param-badge` 狀態徽章：草稿 · 未套用／已套用／有未套用修改、`#paramName`）；只在建立新卡：`[data-param-template="single|panel|section"]` 三顆範本鈕（`aria-pressed`）與 `#paramQuick`／`#paramParse`（文字「建立欄位」，內容可解析才 enabled；Enter 等同按鈕）、`#paramQuickHint` 即時預告；`#paramFields`（每欄一列 `[data-param-field="欄ID"]`，不再是 fieldset）含 `input[data-name]`、`select[data-type]`（三個值 dimension／count／ratio）、`[data-result]`（`data-state="ok|pending|error"`）、`input[data-input]`；`#paramAdd`（滿 16 欄 disabled）與 `[data-field-count]`；`.param-help` 說明；`#paramResult`；`details#paramUsage`（只在編輯既有卡；內含 `[data-param-use]`、`#paramExport`、`#paramDelete`）；`details#paramExchange`（`#paramImport`、`#paramFile`、`#paramLegacy`）；`.param-footer` 固定頁尾（`position: sticky`）含 `#paramStatus`（`role="status"`，`data-tone="ok|wait|error"`）、`#paramDiscard`、`#paramPreview`（次要「重新試算」）、`#paramConfirm`（主按鈕；enabled 條件不變＝最新一次預覽 valid）。
+- **選中列**：列內任一控制取得焦點即加 `.is-active`，該列才展開 `[data-tools]`：`.param-chips` 內的引用晶片 `button[data-insert-ref="卡ID:欄ID"]`（文字「卡名.欄名 值」）、`[data-up]`、`[data-remove]`。來源排除自己這一欄與會造成循環的來源（以 catalog 的 AST 加上草稿輸入內的引用 token 求傳遞閉包）；超過 8 個來源時出現 `input[data-ref-filter]`，晶片區限高可捲動。點晶片在 `[data-input]` 游標處插入 token（原值不是算式時改為 `=` 加 token，比照舊 `[data-insert]`）。加欄、移除、上移、套範本只重繪 `#paramFields`，焦點落在新欄名稱、相鄰列或被移動列的上移鈕。
+- **試算與錯誤**：沿用 450ms 防抖與 `/engineering/preview`。valid：每欄 `[data-result]` 顯示核心回傳的精確值（如 `= 27 mm`）；invalid：以 `violations[].message` 的路徑前綴 `[pid:fid 卡.欄]` 取最後一個屬於本卡者為出錯欄，該列加 `.is-error`、`input[data-input]` 設 `aria-invalid="true"`，並出現 `[data-error]`（中文短句＋`<details>` 內的核心原文），其餘欄顯示「待試算」；解析不到欄位時錯誤顯示於 `#paramResult`。錯誤碼對照為 `ParameterUI.errorText(message)`（`I38 DIV_ZERO`＝除以零、`CYCLE`＝循環引用、`UNIT`＝單位不合、`MISSING`／`REFERENCE`＝找不到引用、`SYNTAX`／`AST`／`OP`＝算式寫法有誤、`NUMBER`＝數值格式有誤、`GEOMETRY`＝不是整數 mm、`NAME`＝名稱不合規定、`DUPLICATE`＝名稱或身分重複、`COUNT`／`UNSUPPORTED/CAPACITY`＝超過容量上限、`UNSUPPORTED/PRECISION`＝超過可表示的精度；其餘顯示原文）。
+- **移除**：`#paramTemplate`（併入三顆範本鈕）、`select[data-insert]`（併入引用晶片）、每欄 `fieldset`／`legend`。`#paramParse` 保留但文字改「建立欄位」。
+- **保留**：`#parameterEditor`、`#paramName`、`#paramQuick`、`#paramParse`、`[data-param-field]`、`[data-name]`、`[data-type]`、`[data-input]`、`[data-up]`、`[data-remove]`、`#paramAdd`、`#paramPreview`、`#paramResult`、`#paramStatus`、`#paramConfirm`、`#paramDiscard`、`#paramExport`、`#paramDelete`、`#paramImport`、`#paramFile`（仍為 `input[type=file]`）、`#paramLegacy`、`[data-param-use]`。測試改以 `#paramUsage`／`#paramExchange` 取兩個摺疊區（舊寫法 `details:first-of-type`／`details:last-child` 作廢）。
+- **一致性**：常駐操作說明維持 3 塊（`.param-help`、`#paramResult`、`#paramStatus`）；`#paramQuickHint` 是輸入時才出現的即時預告，不計入。所有可點控制（含晶片、上移、移除、範本鈕、種類下拉、`summary`）最小 44px，390px 無水平溢出。樣式只用 `app.css :root` 既有 token，不載入外部字型。
+- **畫布草稿卡**（GEO-224 最後一步）：建立新卡期間畫布顯示 `.parameter-card.is-draft`（虛線外框、右上角「草稿」標），內容跟著草稿欄位與試算結果更新；位置取 `nextCardPosition`，不寫 canvas-pos、不進 `oc.parameters`、不影響保存內容與歷史，不可選取、不畫關係線；捨棄或確認後消失。
+- **測試**：`parameter_workflow_test.js`（P76）新增斷言：範本鈕與 `aria-pressed`、快速輸入預告與 Enter、每欄核心值、`=1/0` 只標該欄且不可套用、循環來源不出現於晶片、點晶片後試算成功、1280px 右側固定欄與頁尾可見（含離開後其他檢視器仍在下方）、390px 控制項 ≥44px 且無水平溢出、草稿卡出現／消失且不進保存內容。
 
 ## GEO-214 舊有限網格相容介面
 
