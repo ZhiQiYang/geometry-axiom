@@ -43,3 +43,17 @@ test('parameter definitions retained only inside model snapshots still require /
   const broken=structuredClone(model);broken.result.space.manifest.capabilities=broken.result.space.manifest.capabilities.filter(c=>c!=='parameters/1');
   assert.throws(()=>P.validateSpaceModel(broken));
 });
+/* 驗收矩陣「移除能力標記、未知版本」：未知版本與被拿掉的宣告一律拒絕，不降級、不半套開啟。 */
+test('matrix: unknown project versions and stripped or unknown capability markers are rejected',async()=>{
+  const bytes=await pack();
+  await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.format='geometry-canvas/7'),zip),/專案版本不支援/);
+  await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.requiredCapabilities=['parameters/2']),zip),/尚未支援/);
+  await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.requiredCapabilities=['parameters/1','parameters/2']),zip),/尚未支援/);
+  await assert.rejects(()=>P.unpack(rewrite(bytes,m=>{delete m.requiredCapabilities;}),zip));
+  await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.requiredCapabilities=['engineering-spec/1']),zip),/必須使用第 6 版/);
+  await assert.rejects(()=>pack('requires parameters/2\n'+scene),/尚未支援/);
+  assert.throws(()=>P.assertProjectCapabilities({requiredCapabilities:['parameters/2']},['parameters/1']),/尚未支援/);
+  // 場景本身缺 requires 行時，由場景內容重新推得能力並升為 /6，而不是變成沒有參數能力的專案
+  const p=await P.unpack(await pack('parameters begin\nparameters end\n'),zip);
+  assert.equal(p.manifest.format,'geometry-canvas/6');assert.deepEqual(p.manifest.requiredCapabilities,['parameters/1']);
+});

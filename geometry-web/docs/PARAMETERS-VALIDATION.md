@@ -16,14 +16,30 @@
 - 面內參考線同樣：選參數來源建立引用線，沒有角材引用時仍先預覽；取消不建線，確認後保留來源、軸向與 1830 mm 位置，來源旁的按鈕可跳回參數卡（`parameter_workflow_test.js:132-145`）。
 - `.gcanvas` /6 保留參數能力，/1–5 繼續讀取；建模來源保留未使用分數卡與完整引用，不以數字降級。混合工程／參數能力按固定順序核對。
 
+## 驗收矩陣對應
+
+[提案驗收矩陣](../../geometry-core/PARAMETERS-PROPOSAL.md)（317–341 行）17 列中，上文「已驗證流程」未逐列點名的 7 列如下，格式為「矩陣列 → 測試檔:行號（測了什麼）」。Python 測試皆由真實 bridge 執行檔求值；`tests/test_parameters_core.py` 簡稱 core，`tests/test_parameters_project_store.js` 簡稱 store。
+
+| 矩陣列 | 對應測試 | 結果 |
+| --- | --- | --- |
+| 有限 SERIES／EXPLICIT 保持原義、PANEL_LAYOUT 經工程來源接入 | core:220（SERIES／EXPLICIT 網格的 `param:` 寫法與 set-source 目標全部拒絕；改參數不動其格線；PANEL_LAYOUT 的 panel 經工程來源綁定後隨參數更新、保存重開仍為參數來源；`from` 不可綁定）；core:172（PANEL_LAYOUT 與角材綁定及解除往返） | 已驗 |
+| 各容量上限具體值以 UNSUPPORTED 拒絕 | core:260（64 卡、256 欄、每卡 1–16 欄、算式 2047 bytes、128 節點、巢狀 32 層：上限值合法、多一即拒，訊息含 `UNSUPPORTED/CAPACITY`）；core:61、core:122（既有 17 欄、34 層括號、第 65 卡、匯入超限） | 已驗，兩點例外：名稱 96 bytes 的拒絕訊息是 `I38 NAME`（非 UNSUPPORTED），核心未把名稱長度歸入容量錯誤；**依賴深度 64：未驗：實作缺口**（見下） |
+| `.scene` 的 `parameters begin/end` 完整性、`canvas-pos parameter` 重開保留位置 | core:294（缺 begin／end、重複 begin、base64 截斷或非法、end 後又有紀錄、卡片或欄位紀錄被刪、區塊夾帶其他指令、canvas-pos 指向不存在的卡：全部載入失敗且世界不變；重開後位置行與有效值一致）；core:72（區塊原子載入）、core:40（重開後 dump 位元組相同） | 已驗 |
+| 參數修改與既有工程物件覆寫保留；拆面／刪除入口不展平 | core:337（角材 A 明示覆寫在參數改值後保留，清除後才回到參數值；舊的網格／角材重宣告入口被 D28 擋下而不展平；`apply-proj … cut-strip` 拆面後格線隨材料片換面，來源仍為參數且之後改參數仍連動，兩次復原回到拆面前；刪角材只清自己的來源） | 已驗 |
+| 「明確解除後刪除」在同一交易成功 | core:385（解除＋刪除同一次確認成功、一次復原回到原狀、重做再套用；先刪後解除整筆拒絕）；core:172 | 已驗 |
+| 移除能力標記與未知版本（geometry-canvas/7、parameters/2）明確拒絕 | store:47（/7、`parameters/2`、宣告被刪、只剩工程能力、場景 `requires parameters/2` 皆拒絕）；store:19（/1–5 降級與缺宣告）；core:408（.scene 的 `requires parameters/2`、`/0`、並存皆拒絕且世界不變）；core:72（模型套件移除 `parameters/1` 即驗證失敗） | 已驗，一項說明：`.scene` 或專案清單「缺 requires 行、區塊完整」時不會降級成無參數，而是完整載入並重新推得宣告（與 engineering-spec 相同）；被視為缺失的只有專案清單的 `requiredCapabilities` |
+| 影響清單含 guide 新舊方向／座標／可見段、子格 | core:426（預覽 before／after 逐條列出 guide 的軸、`worldDirection`、`worldPoint`、`off`、`segments`，以及子格新舊格線、範圍與父格 `dependencies.children`）；core:131（主網格定義） | 已驗 |
+
+依賴深度缺口（尚未修，僅記錄）：核心只在求值堆疊實際走到第 65 層時才拒絕，且以「欄位儲存順序」求值並快取。最深的鏈排在儲存順序前面時，64 層合法、65 層被拒（core:290–291 只斷言這一情形）；但同一條 256 層鏈若依賴端排在前面，會全部被接受。此外 65 層拒絕的訊息被 512 bytes 錯誤緩衝的路徑前綴截斷，看不到 `UNSUPPORTED/CAPACITY`。容量本身仍有界（256 欄），沒有崩潰或半套寫入。另外，核心的 128 節點上限在 2047 bytes 紀錄上限之前無法用合法輸入到達（30 個字面值的加總就先超過位元組上限，20 個仍合法），因此只驗證「129 節點被拒」與「20 個字面值合法」。
+
 ## 檢查結果
 
 | 檢查 | 結果 |
 | --- | --- |
-| 原生參數、工程、網格、定位、HTTP／CLI、建模來源與相容性 | 198 tests，全部通過 |
+| 原生參數、工程、網格、定位、HTTP／CLI、建模來源與相容性 | 205 tests，全部通過（含驗收矩陣新補 7 個 `test_matrix_*`） |
 | Bridge 完整性 | 24 tests，全部通過 |
 | 既有原生場景回歸 | 136/136，無斷言失敗或環境失敗 |
-| 專案保存、能力、非同步競態與模型保存 | 83 JavaScript tests，全部通過，無略過 |
+| 專案保存、能力、非同步競態與模型保存 | 84 JavaScript tests，全部通過，無略過（`test_parameters_project_store.js` 5/5） |
 | 正典同步及 `--check` | 107 條、545 blocks、31 見證；五道 assert 及獨立 SSOT 對照通過；保留 5 筆批註 |
 | 正典閱讀器測試 | 25 tests，含重建位元組冪等、正文掃描及互動測試，全部通過 |
 | 見證重跑 | 31/31 位元組一致；新增 D31／I38／I39／R33 |

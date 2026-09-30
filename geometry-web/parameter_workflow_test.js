@@ -134,8 +134,10 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const guideSource=`param:${panel.id}:${length}`,guideId=await read(`apiRequest('newid').then(r=>r.guide)`);
   const guideBound=`apiRequest('references').then(r=>r.guides.some(g=>g.expression===${JSON.stringify(guideSource)}))`;
   await choose('#refGuideAxis','u');await choose('#refGuideSource',guideSource);
-  await ctl('#refGuideCreate');await wait(`!!$('impact-confirm')`);
-  check('無下游構件的參考線引用仍先預覽',await read(`(async()=>{const d=document.querySelector('.reference-impact');return !!d&&d.querySelector('code').textContent.includes('guide ${guideId} ')&&d.querySelector('code').textContent.includes(${JSON.stringify(guideSource)})&&!$('impact-confirm').disabled&&!(await ${guideBound});})()`));
+  /* 等待改成「不拋例外」：若參考線建立繞過了確認預覽（直接套用），要由下面這個斷言連同世界狀態一起報「沒經過預覽」，而不是只丟一個 UI 逾時。 */
+  await ctl('#refGuideCreate');const previewShown=await wait(`!!$('impact-confirm')`).then(()=>true,()=>false);
+  const guideState=await read(`(async()=>{const d=document.querySelector('.reference-impact'),code=d?.querySelector('code')?.textContent||'';return {dialog:!!d,commandOk:code.includes('guide ${guideId} ')&&code.includes(${JSON.stringify(guideSource)}),confirmEnabled:!!$('impact-confirm')&&!$('impact-confirm').disabled,alreadyApplied:await ${guideBound}};})()`);
+  check('無下游構件的參考線引用仍先預覽',previewShown&&guideState.dialog&&guideState.commandOk&&guideState.confirmEnabled&&!guideState.alreadyApplied,{why:guideState.alreadyApplied?'參考線在確認預覽出現前已被套用（沒經過預覽）':'沒有出現含 guide 指令的確認預覽',previewShown,...guideState});
   await ctl('.reference-impact .impact-actions button:first-child');await wait(`!document.querySelector('.reference-impact')&&!oc.busy`);
   check('取消參考線參數綁定保持原狀',await read(`apiRequest('references').then(r=>!r.guides.some(g=>g.id===${guideId}||g.expression===${JSON.stringify(guideSource)}))`));
   await ctl('#refGuideCreate');await wait(`!!$('impact-confirm')`);await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact')&&!oc.busy`);

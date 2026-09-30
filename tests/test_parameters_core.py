@@ -206,6 +206,248 @@ class ParametersCore(unittest.TestCase):
         self.apply([{"op":"delete-parameter","id":1}])
         self.assertEqual(915,self.command("references")["datums"][0]["position"])
 
+    # ---- 驗收矩陣補列：對應 PARAMETERS-PROPOSAL.md「驗收矩陣」，逐列索引見 PARAMETERS-VALIDATION.md「驗收矩陣對應」 ----
+    split_room = harness.EngineeringCore.split_room
+
+    def sources(self):
+        return [(s["target"], s["source"]["kind"], s["override"], s["effective"]) for s in self.read()["state"]["sources"]]
+
+    def load_scene(self, text, name="matrix.scene"):
+        path = self.directory / name
+        path.write_text(text, encoding="utf-8")
+        return self.command("loadfile " + str(path))
+
+    def test_matrix_finite_series_explicit_keep_meaning_and_panel_layout_uses_engineering_source(self):
+        self.apply([card()])
+        self.apply_line("surface 2 origin 0 0 5000 u +x v +y outline 0,0 4000,0 4000,3000 0,3000")
+        self.apply_line("grid 1 on 1 u series 100 200 3 v 500 1000")
+        self.apply_line("grid 2 on 2 u panel 915 gap 2 from 0 v 700")
+        series = self.command("references")["grids"][0]
+        self.assertEqual(([100, 300, 500], [500, 1000]), (series["u"], series["v"]))
+        baseline = self.command("dump")["text"]
+        for line in ["grid 1 on 1 u series param:1:1 200 3", "grid 1 on 1 u series 100 param:1:1 3", "grid 1 on 1 u series 100 200 param:1:1",
+                     "grid 1 on 1 u param:1:1 1000", "grid 2 on 2 u panel param:1:1 gap 2 from 0", "grid 2 on 2 u panel 915 gap param:1:1 from 0",
+                     "grid 2 on 2 u panel 915 gap 2 from param:1:1"]:
+            with self.subTest(line=line):
+                self.assertFalse(self.command("line " + line)["ok"])
+                self.assertEqual(baseline, self.command("dump")["text"])
+        ref = {"kind": "parameter", "parameterId": 1, "fieldId": 1}
+        for target in [{"kind": "grid", "id": 1, "axis": "u", "field": "start"}, {"kind": "grid", "id": 1, "axis": "u", "field": "step"},
+                       {"kind": "grid", "id": 1, "axis": "v", "field": "panel"}, {"kind": "grid", "id": 2, "axis": "v", "field": "panel"},
+                       {"kind": "grid", "id": 2, "axis": "u", "field": "anchor"}]:
+            with self.subTest(target=target):
+                r = self.request([{"op": "set-source", "target": target, "source": ref}])
+                self.assertFalse(r["preview"]["valid"], r)
+        self.assertEqual(baseline, self.command("dump")["text"])
+        self.apply([{"op": "set-source", "target": {"kind": "grid", "id": 2, "axis": "u", "field": "panel"}, "source": ref}])
+        self.apply([card(fields=[field(1, "920"), field(2, "1830")])])
+        grids = {g["id"]: g for g in self.command("references")["grids"]}
+        self.assertEqual([921, 1843, 2765, 3687], grids[2]["u"])
+        self.assertEqual(([100, 300, 500], [500, 1000]), (grids[1]["u"], grids[1]["v"]))
+        saved = self.command("dump")["text"]
+        self.assertTrue(self.command("reset")["ok"])
+        self.assertTrue(self.load_scene(saved)["ok"])
+        self.assertEqual(saved, self.command("dump")["text"])
+        self.assertEqual(["parameter"], [kind for _, kind, _, _ in self.sources()])
+
+    def capacity(self, operations, accepted, message=None):
+        r = self.request(operations)
+        self.assertTrue(r["ok"], r)
+        self.assertEqual(accepted, r["preview"]["valid"], r)
+        if message:
+            self.assertIn(message, json.dumps(r, ensure_ascii=False), r)
+
+    def test_matrix_capacity_limits_accept_the_bound_and_reject_one_beyond(self):
+        cap = "UNSUPPORTED/CAPACITY"
+        many = lambda cards, fields: [card(i, "c%d" % i, [field(j, "1") for j in range(1, fields + 1)]) for i in range(1, cards + 1)]
+        self.capacity(many(64, 1), True)
+        self.capacity(many(65, 1), False, cap)
+        self.capacity(many(16, 16), True)
+        self.capacity(many(16, 16) + [card(17, "c17", [field(1, "1")])], False, cap)
+        self.capacity(many(1, 16), True)
+        self.capacity(many(1, 17), False, cap)
+        self.capacity([{"op": "put-parameter", "value": {"id": 1, "name": "空", "fields": []}}], False, cap)
+        # 名稱以 UTF-8 位元組計：96 合法，97 與 33 個漢字（99 bytes）不合法。注意訊息是 I38 NAME（非 UNSUPPORTED）。
+        for name, accepted in [("a" * 96, True), ("字" * 32, True), ("a" * 97, False), ("字" * 33, False), ("", False)]:
+            self.capacity([card(1, name)], accepted, None if accepted else "I38 NAME")
+        for length, accepted in [(2047, True), (2048, False)]:
+            self.capacity([card(1, "x", [field(1, "=1 mm" + " " * (length - 5))])], accepted, None if accepted else "exceeds 2047 bytes")
+        self.capacity([card(1, "x", [field(1, "=" + "+".join(["1"] * 20), "ratio")])], True)
+        self.capacity([card(1, "x", [field(1, "=" + "+".join(["1"] * 65), "ratio")])], False, "exceeds 128 nodes")
+        for depth, accepted in [(31, True), (32, False)]:
+            self.capacity([card(1, "x", [field(1, "=" + "(" * depth + "1" + ")" * depth, "ratio")])], accepted, None if accepted else "nesting exceeds 32")
+        # 依賴深度：欄位依序連到下一欄，最深鏈排在儲存順序最前面時，64 層合法、65 層被拒。
+        # 已知缺口（見 VALIDATION）：拒絕訊息被路徑前綴截斷而不含 UNSUPPORTED；依存序排列的 256 層鏈也會被接受，故這裡不斷言訊息。
+        def chain(n):
+            cards, k = [], 0
+            while k < n:
+                fields = []
+                for j in range(1, 17):
+                    if k >= n: break
+                    fields.append(field(j, "1" if k == n - 1 else "=@%d:%d+1" % ((k + 1) // 16 + 1, (k + 1) % 16 + 1), "ratio")); k += 1
+                cards.append(card(len(cards) + 1, "c%d" % len(cards), fields))
+            return cards
+        self.capacity(chain(64), True)
+        self.capacity(chain(65), False)
+        self.assertEqual([], self.read()["state"]["parameters"])
+
+    def test_matrix_scene_block_integrity_and_canvas_position_survive_reopen(self):
+        self.apply([card(), card(2, "排格", [field(1, "=@1:1+2 mm")])])
+        self.apply_line("canvas-pos parameter 1 33 -9")
+        self.apply_line("canvas-pos parameter 2 -70 88")
+        text = self.command("dump")["text"]
+        lines = text.splitlines(True)
+        self.assertEqual(1, sum(l.startswith("parameters begin") for l in lines))
+        self.assertEqual(1, sum(l.startswith("parameters end") for l in lines))
+        self.assertLess(next(i for i, l in enumerate(lines) if l.startswith("parameters begin")), next(i for i, l in enumerate(lines) if l.startswith("parameters end")))
+        first_card = next(i for i, l in enumerate(lines) if l.startswith("parameters card"))
+        first_field = next(i for i, l in enumerate(lines) if l.startswith("parameters field"))
+        end = next(i for i, l in enumerate(lines) if l.startswith("parameters end"))
+        parts = lines[first_card].split()
+
+        def edited(change):
+            copy = lines[:]
+            change(copy)
+            return "".join(copy)
+        broken = {
+            "缺 end": text.replace("parameters end\n", ""),
+            "缺 begin": text.replace("parameters begin\n", ""),
+            "重複 begin": text.replace("parameters begin\n", "parameters begin\nparameters begin\n"),
+            "base64 被截斷": edited(lambda c: c.__setitem__(first_card, " ".join(parts[:2] + [parts[2][:-6]]) + "\n")),
+            "base64 非法字元": edited(lambda c: c.__setitem__(first_card, " ".join(parts[:2] + ["!!!" + parts[2]]) + "\n")),
+            "end 之後又有紀錄": edited(lambda c: c.insert(end + 1, lines[first_card])),
+            "卡片紀錄被刪": edited(lambda c: c.pop(first_card)),
+            "欄位紀錄被刪": edited(lambda c: c.pop(first_field)),
+            "區塊內夾帶其他指令": text.replace("parameters end", "spec forbidden 2\nparameters end"),
+            "canvas-pos 指向不存在的卡": text.replace("canvas-pos parameter 1 33 -9", "canvas-pos parameter 9 33 -9"),
+        }
+        before = self.command("dump")["text"]
+        for label, scene in broken.items():
+            with self.subTest(label):
+                self.assertFalse(self.load_scene(scene, "broken.scene")["ok"])
+                self.assertEqual(before, self.command("dump")["text"])
+        self.assertTrue(self.command("reset")["ok"])
+        self.assertEqual([], self.read()["state"]["parameters"])
+        self.assertTrue(self.load_scene(text)["ok"])
+        reopened = self.command("dump")["text"]
+        self.assertEqual(text, reopened)
+        self.assertEqual(["canvas-pos parameter 1 33 -9", "canvas-pos parameter 2 -70 88"], [l for l in reopened.splitlines() if l.startswith("canvas-pos parameter")])
+        self.assertEqual({(1, 1): "915", (1, 2): "1830", (2, 1): "917"}, {k: v["num"] for k, v in self.values().items()})
+
+    def test_matrix_parameter_edit_keeps_object_override_and_legacy_entries_cannot_flatten(self):
+        self.split_room()
+        self.apply([card(), card(2, "截面", [field(1, "27"), field(2, "33")])])
+        self.apply_line("grid 1 on 1 u panel 915 gap 2 from 3300 v panel 1830 gap 2 from 0")
+        self.apply_line("timber 10 27 33 role boundary")
+        self.apply_line("place 10 on 1 at-face e0 +u +n")
+        grid_target = {"kind": "grid", "id": 1, "axis": "u", "field": "panel"}
+        timber_target = {"kind": "timber", "id": 10, "field": "A"}
+        self.apply([{"op": "set-source", "target": grid_target, "source": {"kind": "parameter", "parameterId": 1, "fieldId": 1}},
+                    {"op": "set-source", "target": timber_target, "source": {"kind": "parameter", "parameterId": 2, "fieldId": 1}}])
+        self.apply([{"op": "set-override", "target": timber_target, "value": {"kind": "literal", "value": 30}}])
+        width = lambda: next(t for t in self.command("references")["timbers"] if t["id"] == 10)["geometry"]["A"]
+        self.apply([card(2, "截面", [field(1, "28"), field(2, "33")])])
+        override = {"kind": "literal", "value": 30}
+        self.assertIn((timber_target, "parameter", override, 30), self.sources())
+        self.assertEqual(30, width())
+        # 舊入口不能把有來源的物件展平成直接尺寸
+        before = self.command("dump")["text"]
+        for line in ["grid 1 on 1 u panel 1000 gap 2 from 3300 v panel 1830 gap 2 from 0", "timber 10 40 33 role boundary"]:
+            with self.subTest(line=line):
+                r = self.command("line " + line)
+                self.assertFalse(r["ok"], r)
+                self.assertIn("engineering source", r["error"])
+                self.assertEqual(before, self.command("dump")["text"])
+        # 拆面：格線隨材料片搬到新面，來源仍是參數，之後改參數仍連動，一次復原回到拆面前
+        pending = self.command("line apply-proj 1 b1 cut-strip")
+        self.assertTrue(pending["preview"]["valid"], pending)
+        self.assertTrue(self.command("line confirm %d" % pending["preview"]["token"])["ok"])
+        grid = self.command("references")["grids"][0]
+        self.assertNotEqual(1, grid["surface"])
+        self.assertEqual(915, grid["uDefinition"]["panel"])
+        self.assertIn((grid_target, "parameter", None, 915), self.sources())
+        self.apply([card(fields=[field(1, "920"), field(2, "1830")])])
+        self.assertEqual(920, self.command("references")["grids"][0]["uDefinition"]["panel"])
+        self.assertIn((grid_target, "parameter", None, 920), self.sources())
+        self.apply_line("undo")
+        self.apply_line("undo")
+        self.assertEqual(before, self.command("dump")["text"])
+        self.assertEqual(915, self.command("references")["grids"][0]["uDefinition"]["panel"])
+        # 清除覆寫後參數重新生效；刪除角材只清自己的來源，格線的參數來源與卡片保留
+        self.apply([{"op": "set-override", "target": timber_target, "value": None}])
+        self.assertEqual(28, width())
+        pending = self.command("line delete timber 10")
+        self.assertTrue(pending["preview"]["valid"], pending)
+        self.assertTrue(self.command("line confirm %d" % pending["preview"]["token"])["ok"])
+        self.assertEqual([(grid_target, "parameter", None, 915)], self.sources())
+        self.assertEqual(2, len(self.read()["state"]["parameters"]))
+
+    def test_matrix_explicit_unbind_then_delete_is_one_transaction(self):
+        self.apply([card(), card(2, "截面", [field(1, "27"), field(2, "33")])])
+        self.apply_line("timber 1 27 33 role boundary")
+        self.apply_line("place 1 on 1 at-face e3 +v +n")
+        target = {"kind": "timber", "id": 1, "field": "A"}
+        self.apply([{"op": "set-source", "target": target, "source": {"kind": "parameter", "parameterId": 2, "fieldId": 1}}])
+        self.rejected([{"op": "delete-parameter", "id": 2}], "MISSING")
+        before = self.command("dump")["text"]
+        # 先刪後解除仍是「刪被引用欄位」，整筆拒絕；必須在同一交易內先解除再刪除
+        r = self.request([{"op": "delete-parameter", "id": 2}, {"op": "unbind-source", "target": target}])
+        self.assertFalse(r["preview"]["valid"], r)
+        self.assertEqual(before, self.command("dump")["text"])
+        self.apply([{"op": "unbind-source", "target": target}, {"op": "delete-parameter", "id": 2}])
+        after = self.command("dump")["text"]
+        self.assertEqual([1], [c["id"] for c in self.read()["state"]["parameters"]])
+        self.assertEqual([], self.read()["state"]["sources"])
+        self.assertIn("timber 1 27 33", after)
+        self.apply_line("undo")
+        self.assertEqual(before, self.command("dump")["text"])
+        self.assertEqual([(target, "parameter", None, 27)], self.sources())
+        self.apply_line("redo")
+        self.assertEqual(after, self.command("dump")["text"])
+
+    def test_matrix_unknown_scene_versions_are_rejected_and_capability_is_rederived_never_dropped(self):
+        self.apply([card()])
+        text = self.command("dump")["text"]
+        self.assertTrue(self.command("reset")["ok"])
+        before = self.command("dump")["text"]
+        for label, scene in {"parameters/2": text.replace("requires parameters/1", "requires parameters/2"),
+                             "parameters/0": text.replace("requires parameters/1", "requires parameters/0"),
+                             "1 與 2 並存": text.replace("requires parameters/1", "requires parameters/1\nrequires parameters/2")}.items():
+            with self.subTest(label):
+                r = self.load_scene(scene)
+                self.assertFalse(r["ok"], r)
+                self.assertIn("unsupported required scene capability", r["error"])
+                self.assertEqual(before, self.command("dump")["text"])
+        # 拿掉 requires 行不會降級成沒有參數的世界：區塊照常完整載入，重新輸出時補回宣告
+        self.assertTrue(self.load_scene(text.replace("requires parameters/1\n", ""))["ok"])
+        self.assertEqual(text, self.command("dump")["text"])
+        self.assertEqual({(1, 1): "915", (1, 2): "1830"}, {k: v["num"] for k, v in self.values().items()})
+
+    def test_matrix_impact_list_carries_guide_direction_coordinates_visible_segments_and_subgrid(self):
+        self.apply([card(), card(2, "截面", [field(1, "27"), field(2, "33")])])
+        self.apply_line("grid 1 on 1 u panel 915 gap 2 from 0 v panel 1830 gap 2 from 0")
+        self.apply([{"op": "set-source", "target": {"kind": "grid", "id": 1, "axis": "u", "field": "panel"}, "source": {"kind": "parameter", "parameterId": 1, "fieldId": 1}}])
+        self.apply_line("guide 1 1 v grid:1:u:1")
+        self.apply_line("guide 2 1 u param:1:1")
+        self.apply_line("subgrid 5 parent 1 cell u min line:0 v min line:0 divisions u 2 v 1")
+        pv = self.request([card(fields=[field(1, "925"), field(2, "1830")])])["preview"]
+        self.assertTrue(pv["valid"], pv)
+        guides = lambda side: {g["id"]: g for g in pv[side]["geometry"]["guides"]}
+        grids = lambda side: {g["id"]: g for g in pv[side]["geometry"]["grids"]}
+        old, new = guides("before"), guides("after")
+        for gid, axis, direction, old_point, new_point in [(1, "v", [0, 1, 0], [1833, 0, 2500], [1853, 0, 2500]), (2, "u", [1, 0, 0], [0, 915, 2500], [0, 925, 2500])]:
+            for guide, point in ((old[gid], old_point), (new[gid], new_point)):
+                self.assertEqual((axis, direction, point), (guide["axis"], guide["worldDirection"], guide["worldPoint"]))
+            self.assertEqual([[[1833, 0], [1833, 3000]]], old[1]["segments"])
+        self.assertEqual([[[1853, 0], [1853, 3000]]], new[1]["segments"])
+        self.assertEqual([[[0, 915], [4000, 915]]], old[2]["segments"])
+        self.assertEqual([[[0, 925], [4000, 925]]], new[2]["segments"])
+        self.assertEqual({1, 5}, set(grids("after")))
+        self.assertEqual(([458], [463]), (grids("before")[5]["u"], grids("after")[5]["u"]))
+        self.assertEqual({"u": [0, 916], "v": [0, 1831]}, grids("before")[5]["bounds"])
+        self.assertEqual({"u": [0, 926], "v": [0, 1831]}, grids("after")[5]["bounds"])
+        self.assertEqual(([5], [1]), (grids("after")[1]["dependencies"]["children"], grids("after")[1]["dependencies"]["guides"]))
+
 
 if __name__ == "__main__":
     unittest.main()
