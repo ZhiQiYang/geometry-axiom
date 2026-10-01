@@ -1,7 +1,7 @@
 /* I8/I8a: one atomic entry point shared by file parser, CLI, GDI and bridge. */
 typedef struct {
     bool ready, valid;
-    bool engineering_batch;
+    bool engineering_batch, assembly_batch;
     uint64_t revision;
     uint32_t token;
     World before, after;
@@ -464,7 +464,7 @@ static bool parameter_reference_edit(const World *w,char **tokens,int count)
 static void reference_stage(const World *before,const World *after,char **tokens,int count,bool valid)
 {
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
-    g_preview.engineering_batch=false; g_preview.revision=g_definition_revision;
+    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.revision=g_definition_revision;
     g_preview.before=*before; g_preview.after=*after; g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));
     if (!valid && !g_preview.issue_count) {
@@ -534,10 +534,7 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
             scene_error(path,line_no,"I8a: missing/invalid preview token; cannot apply"); return false;
         }
         /* Canvas layout does not invalidate geometry approval (D12/I14). */
-        World current=*world,expected=g_preview.before;
-        current.canvas_pos_count=expected.canvas_pos_count=0;
-        memset(current.canvas_pos,0,sizeof current.canvas_pos); memset(expected.canvas_pos,0,sizeof expected.canvas_pos);
-        if (g_preview.revision!=g_definition_revision || memcmp(&current,&expected,sizeof current)) {
+        if (g_preview.revision!=g_definition_revision || !world_definitions_equal(world,&g_preview.before)) {
             g_preview.ready=false;
             scene_error(path,line_no,"I8a: preview is stale; preview again against the current world"); return false;
         }
@@ -568,7 +565,7 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
     g_subgrid_before=previous_baseline;
     g_reference_capturing=false;
     bool affects=reference_may_affect(world,tokens,count);
-    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate.engineering,sizeof world->engineering));
+    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate.engineering,sizeof world->engineering) || memcmp(&world->assembly,&candidate.assembly,sizeof world->assembly));
     uint32_t system_edit_id;
     bool system_edit=!g_parsing_scene_file && count>1 && !strcmp(tokens[0],"grid-system") &&
         parse_u32(tokens[1],&system_edit_id) && world_find_grid_system(world,system_edit_id);
@@ -577,7 +574,7 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
     bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
     bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
     if (explicit_preview || (!g_preview_confirming &&
-        (engineering_edit || system_edit || application_edit || binding_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
+        (engineering_edit || assembly_dimensions_changed(world,&candidate) || system_edit || application_edit || binding_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
         (affects && (!ok || reference_geometry_changed(world,&candidate)))))) {
         reference_stage(world,ok?&candidate:&g_reference_trial,tokens,count,ok);
         reference_preview_text();

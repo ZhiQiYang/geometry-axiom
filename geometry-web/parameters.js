@@ -87,6 +87,9 @@ window.ParameterUI = (() => {
     if(!current(s)||!$('paramResult'))return;
     const before=new Map((p.before.parameters||[]).map(c=>[c.id,c]));
     const changes=(p.after.parameters||[]).flatMap(c=>c.fields.filter(f=>JSON.stringify(f)!==JSON.stringify(before.get(c.id)?.fields.find(x=>x.id===f.id))).map(f=>`<li>${esc(c.name+'.'+f.name)}：${esc(value(before.get(c.id)?.fields.find(x=>x.id===f.id)?.value))} → <strong>${esc(value(f.value))}</strong></li>`));
+    for(const b of p.after.assembly?.bindings||[]){const old=p.before.assembly?.bindings.find(x=>x.value.id===b.value.id);
+      for(const slot of b.effective)for(const axis of ['A','B']){const prior=old?.effective.find(x=>x.slotId===slot.slotId)?.[axis]?.value,now=slot[axis]?.value;
+        if(prior!==now)changes.push(`<li>組構配置 ${b.value.id} 槽位 ${slot.slotId}.${axis}：${prior??'未設定'} → <strong>${now??'未設定'} mm</strong></li>`);}}
     const after=new Map((p.after.parameters||[]).map(c=>[c.id,c]));
     for(const c of before.values()){
       const next=after.get(c.id);
@@ -170,7 +173,7 @@ window.ParameterUI = (() => {
     if(!mayLeave())return;
     const context=ReferenceWorkspace.context();
     try {
-    if(kind==='parameter'||kind==='grid-system'){if(window.InfiniteGridWorkspace?.isOpen&&!window.InfiniteGridWorkspace.close())return;if(oc.focus){oc.stack=[];await leaveFocus();}oc.search='';$('searchInput').value='';await renderObjects();if(context!==ReferenceWorkspace.context())return;selectObject(kind,id);centerOnNode(kind,id);if(innerWidth<=900)openPanel('right',$('toggleRight'));}
+    if(kind==='parameter'||kind==='grid-system'||kind==='assembly-binding'){if(window.InfiniteGridWorkspace?.isOpen&&!window.InfiniteGridWorkspace.close())return;if(oc.focus){oc.stack=[];await leaveFocus();}oc.search='';$('searchInput').value='';await renderObjects();if(context!==ReferenceWorkspace.context())return;selectObject(kind,id);centerOnNode(kind,id);if(innerWidth<=900)openPanel('right',$('toggleRight'));}
     else if(kind==='datum')await openDatumManager();
     else if(kind==='guide'){
       const r=await apiRequest('references'),g=r.guides?.find(g=>g.id===id);if(!g){toast('參考線已不存在。');return;}

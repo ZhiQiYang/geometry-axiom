@@ -105,6 +105,10 @@ class ParametersCore(unittest.TestCase):
         self.assertEqual(2,package["definitions"]["base_scene"].count("parameters card "))
         self.assertEqual(str(4000*915*33),package["derived"]["objects"][0]["volume_mm3"])
         self.assertEqual(package["derived"],verify_package(package)["derived"])
+        previous=deepcopy(package)
+        previous["manifest"]["axiom_revision"]="802f9bda1b1b8ab046f059e115dbf05a44da10df"
+        previous["manifest"]["axiom_sha256"]="b19009682ba5b3e7150341ae1b5190629cb03985d500d382aa918438fb548c0b"
+        self.assertEqual(package["derived"],verify_package(previous)["derived"])
         invalid=deepcopy(package);invalid["manifest"]["capabilities"].remove("parameters/1")
         with self.assertRaises(ModelError):verify_package(invalid)
         invalid=deepcopy(package);invalid["manifest"]["axiom_revision"],invalid["manifest"]["axiom_sha256"]=next(iter(INFINITE_GRID_AXIOM_VERSIONS))

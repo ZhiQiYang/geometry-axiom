@@ -1,8 +1,14 @@
-#assemblyWorkspace { position: fixed; inset: 12px; z-index: 40; background: var(--panel, #1c1c1e); color: inherit; border: 1px solid var(--line, #333); display: flex; flex-direction: column; }
-#assemblyWorkspace[hidden] { display: none; }
-#assemblyWorkspace header { display: flex; gap: 12px; align-items: center; padding: 12px; }
-#assemblyWorkspace header span { opacity: .75; font-size: 13px; }
-.asm-body { padding: 12px; overflow: auto; }
-.asm-body form { display: grid; gap: 8px; max-width: 420px; }
-.asm-body svg { width: 100%; height: 180px; border: 1px dashed currentColor; }
-.asm-card { min-width: 160px; min-height: 72px; }
+#assemblyWorkspace{width:min(1180px,calc(100vw - 32px));height:calc(100dvh - 32px);max-height:none;max-width:none;padding:0;border:1px solid var(--line,#ced3dd);border-radius:12px;color:var(--text,#243047);background:var(--panel,#fff);box-sizing:border-box}
+#assemblyWorkspace::backdrop{background:#17223980}
+#assemblyWorkspace[open]{display:flex;flex-direction:column}
+.asm-header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid #bbc1cd;gap:12px}
+.asm-header h2{font-size:18px;margin:0}.asm-layout{display:grid;grid-template-columns:220px minmax(0,1fr);overflow:hidden;flex:1;min-height:0}
+.asm-layout nav{padding:16px;overflow:auto;border-right:1px solid #bbc1cd}.asm-layout nav button{display:block;width:100%;text-align:left;margin:4px 0;overflow-wrap:anywhere}
+.asm-body{padding:20px;overflow:auto;min-width:0}.asm-body section{margin:24px 0}.asm-body h3,.asm-body h4{margin:12px 0}
+#assemblyWorkspace button,#assemblyWorkspace input,#assemblyWorkspace select{font:inherit;min-height:44px;box-sizing:border-box;max-width:100%;border:1px solid #a8b0bf;border-radius:6px;padding:8px;color:inherit;background:var(--panel,#fff)}
+#assemblyWorkspace button{cursor:pointer}#assemblyWorkspace button:disabled{opacity:.45;cursor:default}#assemblyWorkspace :focus-visible{outline:3px solid #487ada;outline-offset:2px}
+.asm-row,.asm-actions,.asm-body footer{display:flex;align-items:end;flex-wrap:wrap;gap:8px;margin:10px 0}.asm-row label{flex:1;min-width:120px}
+.asm-body label{display:flex;flex-direction:column;gap:6px;margin:8px 0}.asm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px}
+.asm-body fieldset{min-width:0;margin:14px 0;border:1px solid #b9c0ce;border-radius:8px;padding:12px}.asm-body pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.asm-error{color:#b42e34}
+#asmDiagram{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}#asmDiagram figure{margin:0;min-width:0}#asmDiagram svg{width:100%;height:auto;max-height:300px;background:#fafbfe;border:1px solid #bbc1cd;border-radius:8px}#asmDiagram text{font:12px system-ui;fill:#26334a}#asmDiagram [role=button]{cursor:pointer}
+@media(max-width:680px){#assemblyWorkspace{width:100vw;height:100dvh;border-radius:0;border:0}.asm-layout{display:block;overflow:auto}.asm-layout nav{border-right:0;border-bottom:1px solid #bbc1cd;max-height:180px}.asm-body{overflow:visible;padding:14px}.asm-grid{grid-template-columns:1fr}.asm-header{padding:10px 14px}}

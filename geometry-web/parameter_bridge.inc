@@ -16,6 +16,18 @@ static void json_parameter_uses(const World *w)
             fputs("]}",stdout);
         }
     }
+    for(size_t i=0;i<w->assembly.binding_count;++i){const AsmBinding *b=&w->assembly.bindings[i];EngJson j;
+        if(eng_json_parse(&j,b->content)){int slots=eng_json_member(&j,0,"slots");
+            for(int k=0;k<eng_json_size(&j,slots);++k){int slot=eng_json_at(&j,slots,k);uint32_t sid=0;eng_u32(&j,eng_json_member(&j,slot,"slotId"),&sid,true);
+                for(int axis=0;axis<2;++axis){EngDimensionSource src;int t=eng_json_member(&j,slot,axis?"B":"A");
+                    if(eng_json_is_null(&j,t)||!eng_source_parse(&j,t,&src,false)||src.kind!=ENG_PARAMETER)continue;
+                    printf("%s{\"parameterId\":%u,\"fieldId\":%u,\"kind\":\"assembly-binding\",\"id\":%u,\"label\":",first?"":",",src.parameter.parameter_id,src.parameter.field_id,b->id);first=false;
+                    char label[160];snprintf(label,sizeof label,"組構配置 %u · 槽位 %u.%c",b->id,sid,axis?'B':'A');js_string(label);
+                    printf(",\"canvasTargets\":[{\"kind\":\"assembly-binding\",\"id\":%u}]}",b->id);
+                }
+            }
+        }eng_json_free(&j);
+    }
     for(int kind=0;kind<2;++kind){size_t n=kind?w->datum_count:w->guide_count;
         for(size_t i=0;i<n;++i){const char *expr=kind?w->datums[i].expression:w->guides[i].expression;uint32_t id=kind?w->datums[i].id:w->guides[i].id;
             for(const char *p=expr;(p=strstr(p,"param:"))!=NULL;++p){char token[70];size_t k=0;while(p[k]&&(p[k]==':'||isdigit((unsigned char)p[k])||(k<6))&&k<sizeof token-1){token[k]=p[k];++k;}token[k]=0;ParameterRef r={0};if(!parameter_ref_parse(token,&r))continue;

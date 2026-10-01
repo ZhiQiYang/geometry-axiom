@@ -4,7 +4,7 @@ const ReferenceWorkspace = (() => {
   const P = GeometryProject, uuid = () => crypto.randomUUID();
   const escape = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
   const fresh = () => ({ id: uuid(), name: "未命名專案", sources: new Map(), groups: new Map(), models: [], modelsDirty: false,
-    faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], pending: new Set(), dirty: false,
+    faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], assemblyDrafts: [], pending: new Set(), dirty: false,
     provenance:{kind:"server",label:"服務目前保留的場景（來源未確認）",openedAt:null,lastSavedAt:null,lastDownloadAt:null} });
   const history = new P.ContextHistory(fresh);
   const revisions = new WeakMap(), selections = new WeakMap(), contextTokens = new WeakMap();
@@ -278,12 +278,28 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && /^(line |drag |reset$|default$|loadfile |engineering-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
-    if (result.ok && /^engineering-confirm /.test(cmd) && result.history_changed !== false) dirty();
+    if(result.ok && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
   function getSpaceModels() { return JSON.parse(JSON.stringify(context().models)); }
+  function getAssemblyDrafts() { return structuredClone(context().assemblyDrafts || []); }
+  function setAssemblyDraft(record, token, recordHistory = true) {
+    assertDraftContext(token); P.validateAssemblyDraft(record);
+    const next=getAssemblyDrafts(), index=next.findIndex(item=>item.id===record.id);
+    if(index<0 && next.length>=256)throw new Error("單一專案最多 256 份組構草稿。");
+    if(index>=0 && sameModelData(next[index],record))return next[index];
+    if(recordHistory)history.push(history.snapshot(),"local","編輯組構草稿");
+    const saved=structuredClone(record);if(index<0)next.push(saved);else next[index]=saved;
+    context().assemblyDrafts=next;dirty();sync();return structuredClone(saved);
+  }
+  function removeAssemblyDraft(id, token, recordHistory = true) {
+    assertDraftContext(token);const next=getAssemblyDrafts(),removed=next.find(item=>item.id===id);
+    if(!removed)return null;
+    if(recordHistory)history.push(history.snapshot(),"local","刪除組構草稿");
+    context().assemblyDrafts=next.filter(item=>item.id!==id);dirty();sync();return removed;
+  }
   function getEngineeringDrafts() { return JSON.parse(JSON.stringify(context().engineeringDrafts || [])); }
   function assertDraftContext(expectedContextToken) {
     assertEditable();
@@ -655,9 +671,10 @@ const ReferenceWorkspace = (() => {
     }
     const data = { projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
       ...(c.models.length?{models:JSON.parse(JSON.stringify(c.models))}:{}),...(faceProjections.length?{faceProjections}:{}),
+      ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.assemblyDrafts))}}:{}),
       ...(c.engineeringDrafts?.length?{engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.engineeringDrafts))}}:{}) };
     const format = P.projectFormat(data);
-    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
+    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
   }
   function assertSaveReady() {
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
@@ -674,6 +691,7 @@ const ReferenceWorkspace = (() => {
     assertSaveReady();
   }
   async function exportSnapshot(c = context()) {
+    window.AssemblyWorkspace?.flush();
     assertSaveReady(); await referencesReady(c); assertContext(c); assertSaveReady();
     const stamp = { context:c, frame:history.frame, revision:revision(c) };
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
@@ -690,6 +708,7 @@ const ReferenceWorkspace = (() => {
   }
   async function save() {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
+    window.AssemblyWorkspace?.flush();
     const shellState=window.WorkspaceShell?.saveState();
     if(shellState?.blocked)throw new Error(shellState.reason || "請先套用或放棄目前視窗的草稿。");
     assertSaveReady();
@@ -784,7 +803,7 @@ const ReferenceWorkspace = (() => {
     stage("正在檢查專案完整性…","驗證中");
     const loaded=await P.unpack(bytes,fflate),m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
     assertCurrent();
-    if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT].includes(m.format)) {
+    if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT].includes(m.format)) {
       stage("正在驗證工程來源與幾何…","驗證中");
       const response=await fetch("/engineering/validate-project",{method:"POST",body:loaded.scene,signal:AbortSignal.timeout(30000)});
       if(!response.ok)throw new Error("目前服務無法驗證工程專案，未變更目前專案。");
@@ -792,7 +811,7 @@ const ReferenceWorkspace = (() => {
       if(verified.ok!==true)throw new Error("工程專案驗證失敗："+(verified.error||verified.code||"版本或來源不合法")+"。未變更目前專案。");
       P.assertProjectCapabilities(m,verified.capabilities);
       P.validateProjectCapabilities(verified.required_capabilities);
-      if(!sameModelData(verified.required_capabilities,P.sceneCapabilities(loaded.scene)))
+      if(!sameModelData([...verified.required_capabilities].sort(),P.sceneCapabilities(loaded.scene)))
         throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
       assertCurrent();
     }
@@ -803,6 +822,7 @@ const ReferenceWorkspace = (() => {
       await verifyStoredModel(model);assertCurrent();
     }
     c.models=JSON.parse(JSON.stringify(m.models));
+    c.assemblyDrafts=JSON.parse(JSON.stringify(m.assemblyDrafts?.records||[]));
     c.engineeringDrafts=JSON.parse(JSON.stringify(m.engineeringDrafts?.records||[]));
     for(const meta of m.sources)c.sources.set(meta.id,{meta,bytes:loaded.sources.get(meta.id)});
     const bids=new Set([...loaded.scene.matchAll(/^(?:boundary|surface)\s+(\d+)\s/gm)].map(v=>+v[1])),ids=[],keys=new Map();
@@ -980,7 +1000,7 @@ const ReferenceWorkspace = (() => {
     sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
-    getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
+    getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
     manifest,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,

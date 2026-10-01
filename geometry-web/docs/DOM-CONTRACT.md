@@ -943,3 +943,15 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `#gsApplications [data-gs-application]` 列出主格與面；`[data-gs-edit-application]` 回填該次原點；`[data-gs-delete-application]` 預覽解除該次套用，依賴仍須通過核心守門，不連帶刪除來源。來源修改預覽使用既有 `.reference-impact`，包含主格、子格及後續依賴的新舊結果。
 - 來源式面內主格顯示來源與原點，`#gridSourceSystemOpen` 開啟獨立系統；不提供普通軸編輯或工程綁定覆蓋。`#gsDelete` 在仍有引用時停用，核心也拒絕直接刪除。
 - 操作見 `GRID-SYSTEM.md`；`grid_system_test.js` 經 `cdp_test.js` 執行真瀏覽器流程，原生守門另由 `tests/test_grid_system_contract.py` 驗證。
+
+## 組構規則（GEO-226）
+
+- `#btnNewAssembly` 開啟唯一 `#assemblyWorkspace`。草稿、全部固定版本、材料配置同列於側欄；共用 WorkspaceShell 保存列。
+- `[data-asm-draft]`、`[data-asm-rule="id:version"]`、`[data-asm-binding="id"]` 選來源。草稿 ID 作 HTML 屬性前必須 escape。
+- `#asmNewRule`、`#asmName`、`#asmAddSlot`、`#asmAddMember`、`#asmAddJoint` 從空白定義開始；`#asmSwapN` 交換該接合的連續構件。
+- `#asmKindN`、`#asmEndN`、`#asmSideN`、`#asmDirN` 與示意的 `[data-joint][data-face]` 寫入局部型別與固定身分。`#asmRotate`／`#asmZoomIn`／`#asmZoomOut` 只改檢視。
+- `#asmSourceNA`／`#asmSourceNB`、`#asmValueNA`／`#asmValueNB`、`#asmContactN`、`#asmOrientationN` 編輯材料配置；空值可存草稿或合法未完成配置。
+- `#asmBindingRule` 換版先開 `#asmMapping`；`#asmMapN` 及 `#asmApplyMapping` 明確對應槽位，`#asmCancelMapping` 撤回選擇。
+- `#asmPreview`／`#asmPreviewResult`／`#asmConfirm`／`#asmCancel` 使用原生交易，`#asmStatus` 顯示拒絕原因。異步回應核對 context、編輯代次及序號。
+- `.assembly-card[data-kind="assembly-rule"|"assembly-binding"][data-id]` 沿用畫布身分、拖曳、搜尋、小地圖和選取。`#asmInspectorOpen` 返回工作區。
+- `#asmClose` 返回畫布，草稿留在專案；需使用共用保存寫入檔案。新建／開啟專案會關閉舊工作區。

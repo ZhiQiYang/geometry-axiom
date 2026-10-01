@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="workspace-guidance.css">
 <link rel="stylesheet" href="project-ui.css">
 <link rel="stylesheet" href="workspace-shell.css">
+<link rel="stylesheet" href="assembly-workspace.css">
 </head>
 <body class="connection-blocked">
 <section id="connectionNotice" class="connection-notice" role="status" aria-live="polite">
@@ -317,7 +318,7 @@
     <button id="btnCreateRect" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon face"><span data-icon="rectangle"></span></span><span><strong>矩形邊界</strong><small>在畫布拖曳建立</small></span></button>
     <button id="btnCreatePoly" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon face"><span data-icon="vertex"></span></span><span><strong>多邊形邊界</strong><small>逐點描繪輪廓</small></span></button>
     <button id="btnNewParameter" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">ƒ</span><span><strong>參數</strong><small>建立可重用的尺寸與算式</small></span></button>
-    <div class="create-menu-heading">更多物件</div>
+    <button id="btnNewAssembly" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">⋈</span><span><strong>組構規則</strong><small>定義局部接合與材料配置</small></span></button>
           <button id="btnNewSpace" type="button" class="create-menu-entry menu-item" role="menuitem" title="＋空間:空容器">
             <span class="type-icon space"><span data-icon="space"></span></span>
             <span><strong>空間</strong><small>空容器</small></span>
@@ -661,5 +662,6 @@
 <script src="engineering-workspace.js"></script>
 <script src="engineering-adapter.js"></script>
 <script src="parameters.js"></script>
+<script src="assembly-workspace.js"></script>
 </body>
 </html>

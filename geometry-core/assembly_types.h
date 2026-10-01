@@ -1,4 +1,4 @@
-/* D32/D33/I40: published assembly rules and bindings are POD owned by World. */
+/* D32/D33: bounded canonical definitions copied with native World/history. */
 #ifndef GEOMETRY_ASSEMBLY_TYPES_H
 #define GEOMETRY_ASSEMBLY_TYPES_H
 #define ASM_NAME_MAX 97
@@ -8,6 +8,7 @@
 #define ASM_MEMBER_MAX 12
 #define ASM_JOINT_MAX 16
 #define ASM_BINDING_MAX 64
+#define ASM_RECORD_MAX 8192
 #define ASM_SCHEMA "assembly-rule/1"
 #define ASM_CAPABILITY "assembly-rule-authoring/1"
 
@@ -36,12 +37,7 @@ typedef struct {
     uint32_t id, version;
     char name[ASM_NAME_MAX];
     char fingerprint[65];
-    AsmSlot slots[ASM_SLOT_MAX];
-    size_t slot_count;
-    AsmMember members[ASM_MEMBER_MAX];
-    size_t member_count;
-    AsmJoint joints[ASM_JOINT_MAX];
-    size_t joint_count;
+    char content[ASM_RECORD_MAX];
 } AsmRuleVersion;
 typedef struct {
     int kind;
@@ -52,9 +48,7 @@ typedef struct {
 } AsmSlotBinding;
 typedef struct {
     uint32_t id, rule_id, rule_version;
-    uint32_t slot_ids[ASM_SLOT_MAX];
-    AsmSlotBinding slots[ASM_SLOT_MAX];
-    size_t slot_count;
+    char name[ASM_NAME_MAX], content[ASM_RECORD_MAX];
     bool complete;
 } AsmBinding;
 typedef struct {
@@ -62,5 +56,6 @@ typedef struct {
     size_t rule_count;
     AsmBinding bindings[ASM_BINDING_MAX];
     size_t binding_count;
+    bool loading;
 } AssemblyState;
 #endif

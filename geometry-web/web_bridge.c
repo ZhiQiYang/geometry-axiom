@@ -487,7 +487,7 @@ static bool next_surface_ids(uint32_t *out, size_t n)
 /* newid [n]：各類物件一個尚未被占用的 id，外加 n 個 surface 用的 id（預設 1）。 */
 static void cmd_newid(size_t surface_count)
 {
-    uint32_t mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam;
+    uint32_t mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab;
     uint32_t surfaces[NEWID_MAX_SURFACES];
 
     if (surface_count < 1 || surface_count > NEWID_MAX_SURFACES) {
@@ -513,11 +513,13 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count,     false);
     WORLD_NEXT_ID(mparam, g_world.parameters.cards, g_world.parameters.card_count, false);
 
+    WORLD_NEXT_ID(mar,g_world.assembly.rules,g_world.assembly.rule_count,true);
+    WORLD_NEXT_ID(mab,g_world.assembly.bindings,g_world.assembly.binding_count,true);
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"gridSystem\":%u,\"gridBinding\":%u,\"timber\":%u,\"space\":%u,"
-           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"parameter\":%u,\"surfaces\":[",
-           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam);
+           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"parameter\":%u,\"assemblyRule\":%u,\"assemblyBinding\":%u,\"surfaces\":[",
+           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab);
     for (size_t i = 0; i < surface_count; ++i) {
         if (i) putchar(',');
         printf("%u", surfaces[i]);
@@ -779,6 +781,11 @@ static void cmd_objects(void)
         fputs("{\"kind\":\"parameter\",\"card\":",stdout);parameter_json_card(&g_world,c,stdout,true);
         printf(",\"id\":%u,\"name\":",c->id);js_string(c->name);putchar(',');cpos_json(CANVAS_POS_PARAMETER,c->id);putchar('}');
     }
+    fputs("],\"assemblyRules\":[",stdout);bool first_rule=true;
+    for(size_t i=0;i<g_world.assembly.rule_count;++i){const AsmRuleVersion *r=&g_world.assembly.rules[i];if(assembly_rule(&g_world,r->id,0)!=r)continue;
+        printf("%s{\"kind\":\"assembly-rule\",\"id\":%u,\"version\":%u,\"name\":",first_rule?"":",",r->id,r->version);first_rule=false;js_string(r->name);putchar(',');cpos_json(CANVAS_POS_ASSEMBLY_RULE,r->id);putchar('}');}
+    fputs("],\"assemblyBindings\":[",stdout);
+    for(size_t i=0;i<g_world.assembly.binding_count;++i){const AsmBinding *b=&g_world.assembly.bindings[i];printf("%s{\"kind\":\"assembly-binding\",\"id\":%u,\"ruleId\":%u,\"version\":%u,\"complete\":%s,\"name\":",i?",":"",b->id,b->rule_id,b->rule_version,b->complete?"true":"false");js_string(b->name);putchar(',');cpos_json(CANVAS_POS_ASSEMBLY_BINDING,b->id);putchar('}');}
     fputs("],\"parameterUses\":",stdout);json_parameter_uses(&g_world);
     fputs(",\"gridBindings\":[",stdout);
     for (size_t i=0;i<g_world.grid_binding_count;++i) {
@@ -874,6 +881,7 @@ static void cmd_dump(void)
 }
 
 #include "engineering_bridge.inc"
+#include "assembly_bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -927,6 +935,14 @@ int main(void)
             fputs("{\"ok\":true}\n", stdout);
         } else if (strcmp(line, "line") == 0 && arg != NULL) {
             cmd_line(arg);
+        } else if (strcmp(line,"assembly-read")==0 && !arg) {
+            cmd_assembly_read();
+        } else if (strcmp(line,"assembly-preview")==0 && arg) {
+            cmd_assembly_preview(arg);
+        } else if (strcmp(line,"assembly-confirm")==0) {
+            cmd_assembly_confirm(arg);
+        } else if (strcmp(line,"assembly-cancel")==0) {
+            cmd_assembly_cancel(arg);
         } else if (strcmp(line,"engineering-read")==0 && !arg) {
             cmd_engineering_read();
         } else if (strcmp(line,"engineering-preview")==0 && arg) {
