@@ -207,4 +207,5 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   const inspector=await read(`({text:document.querySelector('#giVStep')?.closest('label')?.innerText||'',extra:!!$('giUStagger')||!!$('giVStagger')})`);
   check('底部檢查器沿用第 0 線那一行帶出相位差，不加輸入欄',inspector.text.includes('第 0 線座標 0 mm')&&inspector.text.includes('相鄰格子相位差 400 mm')&&!inspector.extra,inspector);
   await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
+  await require('./grid_trial_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount});
 };

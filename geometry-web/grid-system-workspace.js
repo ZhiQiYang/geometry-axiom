@@ -109,6 +109,7 @@
     return `<fieldset class="ig-axis" data-ig-axis="${a}"><legend>${axisHeading(a)}</legend><label>排格方式<select id="${p}Source"><option value="repeat"${source === 'repeat' ? ' selected' : ''}>固定間距 · 無限重複</option><option value="repeat-panel"${source === 'repeat-panel' ? ' selected' : ''}>面材＋縫 · 無限重複</option><option value="none"${source === 'none' ? ' selected' : ''}>不設此軸</option></select></label><div data-ig-mode="repeat" class="ig-pair">${input('Step', stepFieldTitle, d?.step ?? 600)}${input('Phase', '第 0 線座標 mm', d?.phase ?? 0)}</div><div data-ig-mode="repeat-panel"><div class="ig-pair">${input('Panel', '面材 mm', d?.panel ?? 600)}${input('Gap', '縫寬 mm', d?.gap ?? 0)}</div>${input('Anchor', '面材起點 mm', d?.anchor ?? 0)}<p>格線位於縫中心；向正、負方向持續重複。</p></div>${stagger}</fieldset>`;
   }
   function render(s) {
+    s.trial?.dispose();
     // The project bar is shared DOM; return it before rebuilding this workspace.
     WorkspaceShell.detach(dialog);
     const source = s.source || {name: '無限網格', mainAlong: null, uDefinition: {source: 'repeat', phase: 0, step: 600}, vDefinition: {source: 'repeat', phase: 0, step: 400}};
@@ -145,6 +146,11 @@
     $('igSaveBoundary').onclick = () => operation(s, () => saveBoundary(s));
     $('igZoomIn').onclick = () => zoom(s, .7); $('igZoomOut').onclick = () => zoom(s, 1/.7);
     $('igFit').onclick = () => { s.base = [0n,0n]; s.camera = homeCamera(s); drawGrid(s); };
+    if(s.mode==='source')s.trial=GridTrial.mount($('igSourceForm'),{
+      view:$('igGridView'),current:()=>current(s),query:apiRequest,
+      redraw:()=>drawGrid(s),point:e=>cameraPoint(s,e),inPlot,
+      fit:r=>{s.base=[0n,0n];const pad=Math.max(r[2]-r[0],r[3]-r[1])*.12+40;s.camera=[r[0]-pad,r[1]-pad,r[2]+pad,r[3]+pad];drawGrid(s);$('igGridView').scrollIntoView({block:'center'});}
+    });
     bindCamera(s);
     const a = s.binding?.anchor;
     setAnchor(a?.[0]?.num ?? 0, a?.[0]?.den ?? 1, a?.[1]?.num ?? 0, a?.[1]?.den ?? 1);
@@ -280,11 +286,13 @@
     const px=u=>RL+(u-c[0])*scale,py=v=>RT+(v-c[1])*scale;
     svg('rect',{x:RL,y:RT,width:b.pw,height:b.ph,fill:'#f8fafc','data-ig-plot':''},view);
     svg('rect',{x:RL,y:RT,width:b.pw,height:b.ph},svg('clipPath',{id:'igPlotClip'},svg('defs',{},view)));
-    const plot=svg('g',{'clip-path':'url(#igPlotClip)'},view),marks=[],bands=[];let zoomText='',error='';
+    const plot=svg('g',{'clip-path':'url(#igPlotClip)'},view),marks=[],bands=[];let zoomText='',error='',trialCommand='',trialFingerprint='';
     // Redraws validate silently; only an explicit preview moves focus to the invalid field.
     quietDraft=true;
     try {
       const d=sourceDraft(s),defs=axes.map(a=>def(d[a+'Definition']));let sampled=false;s.defs=defs;
+      trialCommand=sourceCommand(d,0);
+      trialFingerprint=JSON.stringify(d);
       if(s.mode==='source'&&!s.busy){const dirty=!s.source||sourceFormKey(d)!==sourceFormKey(s.source);$('igSaveSource').disabled=!dirty;if($('igNewBinding'))$('igNewBinding').disabled=dirty;}
       for(let a=0;a<2;a++){const v=defs[a];if(!v)continue;const other=defs[1-a],mag=other&&v.stagger?Math.abs(v.stagger):0;const first=Math.ceil((c[a]-mag-v.phase)/v.pitch),last=Math.floor((c[a+2]+mag-v.phase)/v.pitch),total=Math.max(0,last-first+1),stride=Math.max(1,Math.ceil(total/42));sampled ||= stride>1;
         // Choose samples by the true global k, never by a viewport-relative ordinal.
@@ -306,6 +314,9 @@
       $('igDensity').textContent=note;$('igDensity').hidden=!note;
       cellExtras(s,defs,px,py,scale,plot,bands);
     } catch(e) { if($('igNewBinding'))$('igNewBinding').disabled=true;error=e.message;s.defs=null;$('igCellPreview')&&($('igCellPreview').hidden=true);$('igInfoCell').textContent='';$('igInfoRows').replaceChildren(); } finally { quietDraft=false; }
+    const trialVisible=s.trial?.render({svg,label,plot,px,py,scale},trialCommand,error,trialFingerprint);
+    if(trialVisible)for(const node of plot.querySelectorAll('[data-ig-origin],[data-ig-origin-label],[data-ig-selected],[data-ig-hover]'))plot.append(node);
+    if(trialVisible&&$('igCellPreview'))$('igCellPreview').hidden=true;
     $('igZoom').textContent=zoomText;
     svg('rect',{x:0,y:0,width:PR,height:RT,fill:'#fff'},view);svg('rect',{x:0,y:0,width:RL,height:PB,fill:'#fff'},view);
     svg('line',{x1:RL,y1:RT,x2:PR,y2:RT,stroke:'#cbd8e7'},view);svg('line',{x1:RL,y1:RT,x2:RL,y2:PB,stroke:'#cbd8e7'},view);
@@ -406,12 +417,15 @@
     const ids=await apiRequest('newid');if(!ids.ok||ids.grid==null)throw Error('無法取得主網格編號。');
     if(await commit(s,`grid ${ids.grid} on ${surface} from-binding ${s.binding.id}`,`將配置 ${s.binding.id} 套用到承載面 ${surface}`,['grids',ids.grid]))await reopen(s);
   }
+  function sourceCommand(d,id) {
+    const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};if(v.source==='none')return `${a} none`;const body=v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;const stag=v.parameterRefs?.stagger?` stagger ${token('stagger')}`:(v.stagger!=null?` stagger ${v.stagger}`:'');return `${a} ${body}${stag}`;});
+    return `grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong} ${parts.join(' ')}`;
+  }
   async function saveSource(s) {
     const d=sourceDraft(s);await stillSame(s);
     const ids=s.source?null:await apiRequest('newid'),id=s.source?.id??ids?.gridSystem;
     if(id==null)throw Error('無法取得網格系統編號。');
-    const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};if(v.source==='none')return `${a} none`;const body=v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;const stag=v.parameterRefs?.stagger?` stagger ${token('stagger')}`:(v.stagger!=null?` stagger ${v.stagger}`:'');return `${a} ${body}${stag}`;});
-    if(!await commit(s,`grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong} ${parts.join(' ')}`,`${s.source?'更新':'建立'}無限網格「${d.name}」`,s.source?null:['gridSystems',id]))return;
+    if(!await commit(s,sourceCommand(d,id),`${s.source?'更新':'建立'}無限網格「${d.name}」`,s.source?null:['gridSystems',id]))return;
     await renderObjects();reveal('grid-system',id);await open({system:id}, true);status('來源已保存；可選擇邊界與格子建立配置。');
   }
   async function saveBinding(s) {
@@ -465,11 +479,12 @@
     if(options.binding!=null&&!binding||system!=null&&!source){toast('網格來源或配置已不存在。');return;}
     if(source&&source.mode!=='infinite'){if(dialog.open)dialog.close();GridSystemEditor.open(source.id);return;}
     closePanels();
+    state?.trial?.dispose();
     state={context,source,binding,mode:binding?'binding':options.mode||'source',bindings:objects.gridBindings||[],boundaries:objects.faces.filter(b=>b.kind==='boundary'),surfaces:surfaces.surfaces,references,base:[0n,0n],camera:[-1800,-1200,2400,1600],vertices:[],boundarySerial:0,busy:false};
     if(!dialog.open)dialog.showModal();render(state);
     (state.mode==='binding'?$('igBoundary'):$('igName')).focus();
   }
-  function close(force=false) { if(!force && (state?.busy || !mayLeave(state)))return false;state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
+  function close(force=false) { if(!force && (state?.busy || !mayLeave(state)))return false;state?.trial?.dispose();state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
   dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
   window.addEventListener('face-projections-changed',()=>{if(state&&state.context!==ReferenceWorkspace.context())close(true);});
   const cardCache=new Map();let cardQueue=Promise.resolve();

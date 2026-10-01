@@ -24,6 +24,13 @@
 .ig-settings label { display: flex; flex-direction: column; gap: 5px; margin: 10px 0; font-size: 12px; }
 .ig-settings input, .ig-settings select { width: 100%; min-width: 0; min-height: 38px; border: 1px solid var(--border-strong); border-radius: 6px; padding: 7px 8px; background: #fff; }
 .ig-settings button { min-height: 38px; }
+.ig-trial { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+.ig-trial summary { font-size: 13px; }
+.ig-settings .ig-trial-toggle { flex-direction: row; align-items: center; }
+.ig-settings .ig-trial-toggle input { width: 18px; min-height: 18px; height: 18px; }
+.ig-trial [aria-pressed=true] { color: var(--accent); outline: 2px solid var(--accent); }
+.ig-trial [aria-invalid=true] { border-color: var(--danger); }
+#igTrialNote { overflow-wrap: anywhere; }
 .ig-settings .primary-button { width: 100%; margin: 8px 0; padding: 10px; }
 .ig-settings > section > .btn, .ig-related .btn { width: 100%; margin: 6px 0; }
 .ig-axis { margin: 14px 0 0; padding: 0; border: 0; min-width: 0; }

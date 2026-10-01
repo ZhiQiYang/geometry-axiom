@@ -137,6 +137,36 @@ static void cmd_grid_query(const char *command)
     free(axes); putchar('\n');
 }
 
+/* Presentation-only source trial. No live World, revision, undo or pending
+ * I8a preview is touched. The scratch world carries only current parameters;
+ * this is not an impact/engineering validation of existing applications. */
+static void cmd_grid_trial_query(const char *command)
+{
+    if (!command || strlen(command)>=SCENE_MAX_LINE || !utf8_is_valid(command)) {
+        json_grid_query_error("試擺查詢過長或編碼無效"); putchar('\n'); return;
+    }
+    char text[SCENE_MAX_LINE]; snprintf(text,sizeof text,"%s",command);
+    char *tokens[SCENE_MAX_TOKENS]; int count=split_tokens(text,tokens,SCENE_MAX_TOKENS);
+    Coord rect[4]; uint32_t id;
+    if (count<15 || strcmp(tokens[0],"rect") ||
+        !parse_coord(tokens[1],&rect[0]) || !parse_coord(tokens[2],&rect[1]) ||
+        !parse_coord(tokens[3],&rect[2]) || !parse_coord(tokens[4],&rect[3]) ||
+        rect[0]>=rect[2] || rect[1]>=rect[3] || strcmp(tokens[5],"grid-system") || !parse_u32(tokens[6],&id)) {
+        json_grid_query_error("grid-trial-query rect U0 V0 U1 V1 grid-system ...；矩形須有正面積"); putchar('\n'); return;
+    }
+    World *draft=calloc(1,sizeof *draft);
+    GridQueryAxis *axes=calloc(2,sizeof *axes); char error[256]="";
+    if (!draft || !axes) { free(draft); free(axes); json_grid_query_error("試擺記憶體不足"); putchar('\n'); return; }
+    draft->parameters=g_world.parameters;
+    g_scene_last_error[0]='\0';
+    bool ok=apply_grid_system_line("trial",0,tokens+5,count-5,draft);
+    const GridSystem *source=ok?world_find_grid_system(draft,id):NULL;
+    if (!source || !grid_system_is_infinite(source)) json_grid_query_error(ok?"試擺只接受無限網格來源":scene_last_error());
+    else if (grid_query(draft,"system",id,rect,GRID_MAX_LINES,false,axes,error,sizeof error)) json_grid_query_result(axes,rect,false);
+    else json_grid_query_error(error);
+    free(axes); free(draft); putchar('\n');
+}
+
 static bool grid_binding_preview_rect(const World *w,const GridBinding *binding,Coord rect[4])
 {
     const SpaceBoundarySurface *b=world_find_boundary(w,binding->boundary_id);
