@@ -22,6 +22,17 @@
     try { const u = new URL(value); return ['https:','http:'].includes(u.protocol) && !u.username && !u.password ? u.href : null; } catch (_) { return null; }
   }
   function slug(value) { return String(value).trim().toLowerCase().replace(/[^\p{L}\p{N}_ -]/gu,'').replace(/\s+/g,'-'); }
+  const inlinePattern=/(`[^`\n]+`|\*\*[^*\n]+\*\*|\*[^*\n]+\*|!?\[[^\]\n]{1,500}\]\([^\)\n]{1,2000}\))/g;
+  function validateComplexity(blocks) {
+    let nodes=0,headings=0,cells=0;
+    const charge=n=>{nodes+=n;if(nodes>20000)throw Error('文件排版過於複雜，請分割後重試（上限 20,000 個閱讀節點）。');};
+    const inline=text=>{charge(1);for(const _ of text.matchAll(inlinePattern))charge(3);};
+    for(const block of blocks){charge(2);if(block.type==='heading'){if(++headings>1000)throw Error('章節標題超過 1,000 個，請分割文件。');charge(2);}
+      if(block.type==='table'){for(const row of block.rows){charge(1);for(const text of row){if(++cells>5000)throw Error('表格儲存格超過 5,000 個，請分割文件。');charge(1);inline(text);}}}
+      else if(!['code','hr'].includes(block.type))inline(block.text);
+    }
+    return blocks;
+  }
   // This intentionally supports a bounded Markdown subset, not arbitrary HTML.
   function parse(text) {
     if (typeof text !== 'string' || text.length > LIMITS.text) throw Error('文字文件過大。');
@@ -39,19 +50,19 @@
       if(/^\s*>/.test(line)){flush();blocks.push({type:'quote',text:line.replace(/^\s*>\s?/,'')});continue;}
       if(/^\s*(?:---+|\*\*\*+)\s*$/.test(line)){flush();blocks.push({type:'hr',text:''});continue;}
       if(line.includes('|') && i+1<lines.length && /^\s*\|?\s*:?-+:?\s*\|/.test(lines[i+1])) {
-        flush();const cells=s=>s.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map(c=>c.trim());
-        const rows=[cells(line)];i++;while(i+1<lines.length&&lines[i+1].includes('|')&&lines[i+1].trim())rows.push(cells(lines[++i]));
-        blocks.push({type:'table',rows:rows.slice(0,1000),text:rows.map(r=>r.join(' | ')).join('\n')});continue;
+        flush();const cells=s=>{const values=s.trim().replace(/^\|/,'').replace(/\|$/,'').split('|');if(values.length>256)throw Error('表格欄位超過 256 欄，請分割文件。');return values.map(c=>c.trim());};
+        const rows=[cells(line)];i++;while(i+1<lines.length&&lines[i+1].includes('|')&&lines[i+1].trim()){if(rows.length>=1000)throw Error('表格超過 1,000 列，請分割文件。');rows.push(cells(lines[++i]));}
+        blocks.push({type:'table',rows,text:rows.map(r=>r.join(' | ')).join('\n')});continue;
       }
       if(!line.trim()){flush();continue;}paragraph.push(line);
     }
-    flush();if(code!==null)blocks.push({type:'code',text:code.join('\n')});return blocks;
+    flush();if(code!==null)blocks.push({type:'code',text:code.join('\n')});return validateComplexity(blocks);
   }
   function preferences(value) {
     const v=value&&typeof value==='object'?value:{};
     const clamp=(n,a,b,d)=>typeof n==='number'&&Number.isFinite(n)?Math.min(b,Math.max(a,n)):d;
     return {font:clamp(v.font,14,24,17),line:clamp(v.line,1.4,2.2,1.8),width:clamp(v.width,560,960,720),theme:['light','dark','paper'].includes(v.theme)?v.theme:'light'};
   }
-  const api={LIMITS,fileKind,decodeText,safeURL,slug,parse,preferences};
+  const api={LIMITS,fileKind,decodeText,safeURL,slug,parse,preferences,validateComplexity};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.DocumentFormat=Object.freeze(api);
 })(typeof window==='undefined'?globalThis:window);

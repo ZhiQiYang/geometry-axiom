@@ -16,6 +16,10 @@ assert.equal(F.parse('# Root\n\n## Child\n\n- One\n  - Two\n\n```js\n<script>x</
 assert.equal(F.parse('<script>alert(1)</script>')[0].text,'<script>alert(1)</script>');
 assert.equal(F.parse('| A | B |\n| --- | --- |\n| 1 | 2 |')[0].type,'table');
 assert.throws(()=>F.parse('x'.repeat(2*1024*1024+1)));
+assert.throws(()=>F.parse('# A\n'.repeat(1002)),/標題/);
+assert.throws(()=>F.parse('*a* '.repeat(10000)),/複雜/);
+assert.throws(()=>F.parse('|'+Array(300).fill('a').join('|')+'|\n|---|---|'),/256/);
+assert.throws(()=>F.parse('| A | B |\n|---|---|\n'+('| 1 | 2 |\n').repeat(1001)),/1,000/);
 assert.equal({}.polluted,undefined);
 console.log('Document format validation: passed');
 

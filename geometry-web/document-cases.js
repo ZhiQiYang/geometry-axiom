@@ -520,6 +520,10 @@
       const hint = el('p', 'doc-case-note-hint', '切換文件／案例會保留筆記；重新整理或關閉網頁後清除。請匯出 JSON 備份，不會修改模型或來源檔。');
       textarea.addEventListener('input', () => {
         const previous = currentNotes(), next = new Map(previous);
+        if (textarea.value.length > LIMITS.noteLength) {
+          textarea.value = previous.get(c.id)?.text || '';
+          report('每個案例筆記最多 20,000 字；此變更未儲存。', true); return;
+        }
         if (textarea.value) next.set(c.id, { text: textarea.value, updatedAt: new Date().toISOString() });
         else next.delete(c.id);
         try { serializeNotes(bundle, next); }

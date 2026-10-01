@@ -68,6 +68,7 @@
 .documents-article code {font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--doc-muted);border-radius:3px;padding:1px 3px;}
 .documents-article pre code {padding:0;}
 .documents-article a,.documents-inline-link {color:var(--accent);text-decoration:underline;text-underline-offset:3px;}
+.documents-dialog[data-theme="dark"] .documents-article a,.documents-dialog[data-theme="dark"] .documents-inline-link {color:#aab8ff;}
 .documents-inline-link {background:transparent;padding:0;font:inherit;white-space:normal;}
 .documents-table-wrap {overflow:auto;max-width:100%;}
 .documents-article table {border-collapse:collapse;font-size:.85em;min-width:100%;}
