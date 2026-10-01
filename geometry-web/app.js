@@ -2510,9 +2510,42 @@ function gridLineEntry(grid, axis, index) {
   const role=grid.mainAlong ? grid.mainAlong!==axis ? "primary" : "secondary" : null;
   return {index:String(k),coordinate:Number(value),line:{axis,index:String(k),role,priority:role==="primary" ? 2 : role==="secondary" ? 3 : 0}};
 }
+function gridAnchorParts(anchor) {
+  const m=/^at-line grid (\d+) ([uv]) (-?\d+)(?: band (-?\d+))?$/.exec(anchor||"");
+  return m ? {id:m[1], axis:m[2], index:m[3], band:m[4]??null} : null;
+}
+function gridSegmentBand(segment) {
+  if(!segment) return null;
+  if(segment.band!=null) return String(segment.band);
+  if(Array.isArray(segment[0]) && segment.length>2 && segment[2]!=null) return String(segment[2]);
+  return null;
+}
+function gridSegmentEnds(segment) {
+  if(Array.isArray(segment?.[0])) return [segment[0][0],segment[0][1],segment[1][0],segment[1][1]];
+  if(Array.isArray(segment) && segment.length>=4) return [segment[0],segment[1],segment[2],segment[3]];
+  return null;
+}
+function gridHasStagger(grid, axis) {
+  return !!grid?.[axis+"Definition"]?.stagger;
+}
+function gridAnchorCoordinate(grid, axis, index, band) {
+  const entry=gridLineEntry(grid, axis, index);
+  if(!entry || gridHasStagger(grid, axis)!==(band!=null)) return null;
+  if(band!=null) {
+    const seg=(entry.line?.segments||[]).find(s=>gridSegmentBand(s)===String(band));
+    const ends=seg&&gridSegmentEnds(seg);
+    if(ends) return axis==="u" ? ends[0] : ends[1];
+    const def=grid[axis+"Definition"];
+    if(!def?.stagger || !/^-?\d+$/.test(String(band))) return null;
+    const value=BigInt(entry.coordinate)+((BigInt(band)&1n)?BigInt(def.stagger):0n);
+    if(value<BigInt(Number.MIN_SAFE_INTEGER) || value>BigInt(Number.MAX_SAFE_INTEGER)) return null;
+    return Number(value);
+  }
+  return entry.coordinate;
+}
 function feChooseTimberAnchor(anchor) {
   const select=$("tbAnchor");if(!select)return;
-  if(![...select.options].some(o=>o.value===anchor) && /^at-line grid \d+ [uv] -?\d+$/.test(anchor) && feAnchorLineInfo(oc.edit?.bid,anchor))
+  if(![...select.options].some(o=>o.value===anchor) && gridAnchorParts(anchor) && feAnchorLineInfo(oc.edit?.bid,anchor))
     select.add(new Option(feTimberAnchorLabel(oc.edit?.bid,feSurf(oc.edit?.bid),anchor),anchor));
   select.value=anchor;
 }
@@ -2544,7 +2577,7 @@ function feRefreshLatticeViewport() {
           g[axis]=entries.map(l=>l.coordinate);g.indices[axis]=entries.map(l=>String(l.index));
           const role=g.mainAlong ? g.mainAlong!==axis ? "primary" : "secondary" : null;
           for(const line of entries)g.lines.push({...line,axis,role,priority:role==="primary" ? 2 : role==="secondary" ? 3 : 0,
-            segments:(line.segments || []).map(seg=>[seg.a,seg.b])});
+            segments:(line.segments || []).map(seg=>{const row=[seg.a,seg.b];if(seg.band!=null)row.push(String(seg.band));return row;})});
         }
         drawFaceEditor();
       } catch(error) {if(current()){g._viewportError=error.message;drawFaceEditor();}}
@@ -2573,8 +2606,8 @@ const ReferenceVisibility = (() => {
   function visible(key) { return !faces.get(oc.edit?.bid)?.has(key); }
   function anchorVisible(anchor) {
     const guide=/^at-line guide (\d+)$/.exec(anchor || "");
-    const grid=/^at-line grid (\d+) ([uv]) (-?\d+)$/.exec(anchor || "");
-    return visible(guide ? guideKey(guide[1]) : grid ? gridKey(grid[1],grid[2],grid[3]) : "");
+    const grid=gridAnchorParts(anchor || "");
+    return visible(guide ? guideKey(guide[1]) : grid ? gridKey(grid.id,grid.axis,grid.index) : "");
   }
   function groups() {
     const out=[];
@@ -3897,7 +3930,7 @@ async function feLoadGuides() {
   for(const grid of grids)grid.engineeringSources=(r.engineeringSources || []).filter(source=>source.target.kind==='grid' && source.target.id===grid.id);
   const dump = await api("dump");
   if (!current()) return;
-  const gridRefs = [...(dump.text || "").matchAll(/^place (\d+) on \d+ at-line grid (\d+) ([uv]) (-?\d+)(?=\s|$)/gm)];
+  const gridRefs = [...(dump.text || "").matchAll(/^place (\d+) on \d+ at-line grid (\d+) ([uv]) (-?\d+)(?: band (-?\d+))?(?=\s|$)/gm)];
   for (const g of grids) g.references = gridRefs.filter(m => +m[2] === g.id).map(m => ({timber:+m[1],axis:m[3],index:g.indexSpace==="lattice" ? m[4] : +m[4]}));
   fe.guides = guides; fe.specs = r.specs || []; fe.timbers = timbers; fe.grids = grids;
   const alive = new Set(timbers.map(t => t.id));
@@ -3960,12 +3993,12 @@ function feAnchorLineInfo(bid, anchorValue) {
        周邊既有慣例(g.axis==="v" → u 固定在 g.off)。 */
     return { constAxis: g.axis === "v" ? "u" : "v", value: g.off };
   }
-  if ((m = /^at-line grid (\d+) (u|v) (-?\d+)$/.exec(anchorValue))) {
-    const g = fe.grids.find(x => x.id === +m[1]);
-    const axis = m[2], idx = m[3];
-    const value = gridLineEntry(g,axis,idx)?.coordinate;
+  const gridAnchor = gridAnchorParts(anchorValue);
+  if (gridAnchor) {
+    const g = fe.grids.find(x => x.id === +gridAnchor.id);
+    const value = g && gridAnchorCoordinate(g, gridAnchor.axis, gridAnchor.index, gridAnchor.band);
     if (value == null) return null;
-    return { constAxis: axis, value, bounds:g.kind === "subgrid" ? [g.bounds.u[0],g.bounds.v[0],g.bounds.u[1],g.bounds.v[1]] : null };
+    return { constAxis: gridAnchor.axis, value, bounds:g.kind === "subgrid" ? [g.bounds.u[0],g.bounds.v[0],g.bounds.u[1],g.bounds.v[1]] : null };
   }
   return null;   /* at-face t<id>(角材側面)不判占用/不畫預示 */
 }
@@ -4006,7 +4039,20 @@ function referenceAnchorEntries(bid, surf) {
   for (const g of fe.grids) for (const axis of ["u", "v"])
     gridLineEntries(g,axis).forEach(({coordinate:value,index,line}) => {
       const role = line?.priority ? ` · ${line.role === "primary" ? "主支" : "副支"} ${line.priority}` : " · 優先級未設定";
-      options.push([`at-line grid ${g.id} ${axis} ${index}`, `${g.kind === "subgrid" ? "子網格" : "主網格"} ${g.id} · ${gridLineLabel(g,axis,index)} · ${axis}=${value} mm${role}`]);
+      const labelOf = (coord, band) => `${g.kind === "subgrid" ? "子網格" : "主網格"} ${g.id} · ${gridLineLabel(g,axis,index)}${band!=null?` · 格 ${band}`:""} · ${axis}=${coord} mm${role}`;
+      if (gridHasStagger(g, axis)) {
+        const seen = new Set();
+        for (const segment of line?.segments || []) {
+          const band = gridSegmentBand(segment);
+          if (band == null || seen.has(band)) continue;
+          seen.add(band);
+          const ends = gridSegmentEnds(segment);
+          const coord = ends ? (axis === "u" ? ends[0] : ends[1]) : value;
+          options.push([`at-line grid ${g.id} ${axis} ${index} band ${band}`, labelOf(coord, band)]);
+        }
+        return;
+      }
+      options.push([`at-line grid ${g.id} ${axis} ${index}`, labelOf(value, null)]);
     });
   for (const t of fe.timbers) options.push([`at-face t${t.id}`, `角材 ${t.id} 側面（須有唯一解）`]);
   return options.map(([value, label]) => ({ value, label, occupied: feAnchorOccupied(bid, value) }));
@@ -4161,10 +4207,10 @@ function feTimberSuggestion(bid, anchor) {
   const info = feAnchorLineInfo(bid, anchor || "");
   if (!info) return null;
   const dir = feAnchorDirFromInfo(info);
-  const match = /^at-line grid (\d+) ([uv]) (-?\d+)$/.exec(anchor || "");
+  const match = gridAnchorParts(anchor || "");
   if (match) {
-    const grid = fe.grids.find(g => g.id === +match[1]);
-    const line = gridLineEntry(grid,match[2],match[3])?.line;
+    const grid = fe.grids.find(g => g.id === +match.id);
+    const line = gridLineEntry(grid,match.axis,match.index)?.line;
     return { dir, role: line?.role || null, subgrid:grid?.kind === "subgrid" };
   }
   return { dir, role: feTimberRoleForClick(bid, /^at-face e\d+$/.test(anchor) ? "edge" : "line", dir.slice(-1)) };
@@ -4717,10 +4763,11 @@ function drawFaceEditor() {
       if (!ReferenceVisibility.visible(ReferenceVisibility.gridKey(g.id,axis,index))) return;
       const roleClass = line?.role ? ` role-${line.role}` : " role-unset";
       for(const segment of feGridSegments(g,axis,index,gb)) {
+        const hit=`k:${g.id}:${axis}:${index}`+(segment.band!=null?`:${segment.band}`:"");
         el("line", { x1:segment[0], y1:segment[1], x2:segment[2], y2:segment[3],
           class:"face-grid-line" + roleClass, "data-grid-id":g.id,"data-grid-line-key":`${axis}:${index}` }, refRoot);
         el("line", { x1:segment[0], y1:segment[1], x2:segment[2], y2:segment[3],
-          "data-face-hit":`k:${g.id}:${axis}:${index}`, class:"face-grid-hit",
+          "data-face-hit":hit, class:"face-grid-hit",
           stroke:"transparent", "stroke-width":Math.max(8,14/z) }, refRoot);
       }
     });
@@ -5017,7 +5064,7 @@ async function feDown(pt, ev) {
     if (hit && (hit[0] === "e" || hit[0] === "g" || hit[0] === "k")) {
       const clickAnchor = hit[0] === "e" ? `at-face e${hit[2]}`
         : hit[0] === "g" ? `at-line guide ${+hit[1]}`
-        : `at-line grid ${+hit[1]} ${hit[2]} ${hit[3]}`;
+        : `at-line grid ${+hit[1]} ${hit[2]} ${hit[3]}${hit[4]!=null&&hit[4]!==""?` band ${hit[4]}`:""}`;
       const info = feAnchorLineInfo(e.bid, clickAnchor);
       /* G196-R03:命中了線但引用解析失敗(例如參考線剛被刪、邊索引失效)——報錯且不送,
          不能悄悄退回右欄表單裡另一條引用(那會把料放到使用者沒點的地方)。 */
@@ -5180,7 +5227,7 @@ function feMove(pt, ev) {
     if (bidH != null && hitH) {
       if (hitH[0] === "e" && +hitH[1] === 0) hoverAnchor = `at-face e${hitH[2]}`;
       else if (hitH[0] === "g") hoverAnchor = `at-line guide ${+hitH[1]}`;
-      else if (hitH[0] === "k") hoverAnchor = `at-line grid ${+hitH[1]} ${hitH[2]} ${hitH[3]}`;
+      else if (hitH[0] === "k") hoverAnchor = `at-line grid ${+hitH[1]} ${hitH[2]} ${hitH[3]}${hitH[4]!=null&&hitH[4]!==""?` band ${hitH[4]}`:""}`;
     }
     if (hoverAnchor !== fe.timberHoverAnchor) {
       fe.timberHoverAnchor = hoverAnchor;
@@ -6636,7 +6683,10 @@ async function feApplyProj() {
    segments field only occurs with older main-grid servers. */
 function feGridSegments(g,axis,index,fallbackBounds) {
   const line=g.lines?.find(l=>l.axis===axis && String(l.index)===String(index));
-  if(Array.isArray(line?.segments)) return line.segments.map(s=>s.flat());
+  if(Array.isArray(line?.segments)) return line.segments.map(s=>{
+    const ends=gridSegmentEnds(s); if(!ends) return null;
+    const out=ends.slice(); const band=gridSegmentBand(s); if(band!=null) out.band=band; return out;
+  }).filter(Boolean);
   if(g.kind === "subgrid" || g.indexSpace === "lattice") return [];
   const c=g[axis][index],b=fallbackBounds;
   return [axis === "u" ? [c,b[1],c,b[3]] : [b[0],c,b[2],c]];
@@ -6898,7 +6948,7 @@ const GridEditor = (() => {
   }
   function html(g, surf) {
     if(g?.kind === "subgrid" || fe.subgridDraftParent != null)return SubgridEditor.html(g,surf);
-    if(g?.bindingId != null)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block"><h3>無限網格配置 ${g.bindingId}</h3><p>格線由來源與邊界的對齊關係決定。畫面只顯示邊界內的部分，正負索引保持不變。</p><button type="button" class="btn" id="gridBindingOpen">編輯網格與邊界對齊</button><div class="grid-subgrid-note"><h4>局部等分</h4><p>選取原網格的一個完整 cell；邊界只裁切顯示範圍。</p><button type="button" id="subgridNew" class="btn">建立子網格</button></div></div></section>`;
+    if(g?.bindingId != null)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block"><h3>無限網格配置 ${g.bindingId}</h3><p>格線由來源與邊界的對齊關係決定。畫面只顯示邊界內的部分，正負索引保持不變。</p><button type="button" class="btn" id="gridBindingOpen">編輯網格與邊界對齊</button><div class="grid-subgrid-note"><h4>局部等分</h4>${(g.uDefinition?.stagger || g.vDefinition?.stagger) ? `<p>有相位差的主格不能建立子網格。</p><button type="button" id="subgridNew" class="btn" disabled>建立子網格</button>` : `<p>選取原網格的一個完整 cell；邊界只裁切顯示範圍。</p><button type="button" id="subgridNew" class="btn">建立子網格</button>`}</div></div></section>`;
     if(g?.sourceSystem != null)return GridSystemEditor.appliedHTML(g);
     if(g?.engineeringSources?.length)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block engineering-grid-details"><h3>尺寸引用工程規格</h3><p>來源變更會重新檢查排格及引用它的角材。起算點保存在這個網格內。</p>${engineeringSourceSummary(g.engineeringSources)}<p>起算點：u ${esc(g.uDefinition?.anchor ?? '—')} · v ${esc(g.vDefinition?.anchor ?? '—')} mm</p><button type="button" class="btn primary-button" data-engineering-open data-placement-id="${surf.id}" data-grid-id="${g.id}">編輯工程來源與覆寫</button><div class="grid-subgrid-note"><h4>局部等分</h4><p>選擇這個主格的一格，建立子網格；主格的工程來源保持不變。</p><button type="button" id="subgridNew" class="btn">建立子網格</button></div></div></section>`;
     const dis = surf ? "" : " disabled";
@@ -7099,7 +7149,7 @@ const GridEditor = (() => {
     if(dragCancel) dragCancel();if(active) {clearTimeout(active.timer);active=null;}
     SubgridEditor.clear();
     if(grid?.kind === "subgrid" || fe.subgridDraftParent != null){SubgridEditor.bind(pane,bid,grid,surf);return;}
-    pane.querySelector('#subgridNew')?.addEventListener('click',()=>{if(grid)SubgridEditor.begin(grid.id);});
+    pane.querySelector('#subgridNew')?.addEventListener('click',()=>{if(grid && !grid.uDefinition?.stagger && !grid.vDefinition?.stagger)SubgridEditor.begin(grid.id);});
     if(grid?.bindingId != null) {
       pane.querySelector('#gridBindingOpen')?.addEventListener('click',()=>window.InfiniteGridWorkspace.openBinding(grid.bindingId));
       fe.gridPreview=null;focusSection();return;
@@ -7278,17 +7328,17 @@ const GridEditor = (() => {
   }
   function timberCard() {
     let box=$("gridTimberPopover");
-    const match=/^at-line grid (\d+) ([uv]) (-?\d+)$/.exec(fe.timberHoverAnchor || "");
+    const match=gridAnchorParts(fe.timberHoverAnchor || "");
     if(fe.tool !== "timber" || !oc.edit) {box?.remove();return;}
     if(!match) return;
-    const anchor=match[0], g=fe.grids.find(g=>g.id===+match[1]);if(!g)return;
+    const anchor=fe.timberHoverAnchor, g=fe.grids.find(g=>g.id===+match.id);if(!g)return;
     if(!ReferenceVisibility.anchorVisible(anchor)) {box?.remove();return;}
     const signature=JSON.stringify([anchor,$("tbA")?.value,$("tbB")?.value,$("tbSide")?.value,$("tbRole")?.value,$("faceInspectorContent")?.dataset.tbRoleManual]);
     if(box?.dataset.signature === signature) return;
     box?.remove();box=document.createElement("div");box.id="gridTimberPopover";box.className="grid-timber-popover";box.dataset.anchor=anchor;
     box.dataset.signature=signature;
     box.setAttribute("role","group");box.setAttribute("aria-label","沿網格線放置角材");
-    const a=match[2], i=match[3], suggestion=feTimberSuggestion(oc.edit.bid,anchor), manual=$("faceInspectorContent").dataset.tbRoleManual === "true";
+    const a=match.axis, i=match.index, suggestion=feTimberSuggestion(oc.edit.bid,anchor), manual=$("faceInspectorContent").dataset.tbRoleManual === "true";
     if(!suggestion){box.remove();return;}
     const selectedRole=manual ? $("tbRole").value : suggestion.role;
     const warning=suggestion.subgrid ? feSubgridRoleWarning(oc.edit.bid,suggestion.dir,selectedRole) : "";
@@ -7382,7 +7432,7 @@ const GridSystemEditor = (() => {
   }
   function appliedHTML(g) {
     const source=oc.gridSystems.find(s=>s.id === g.sourceSystem), origin=g.origin || [0,0];
-    return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block grid-system-source"><h3>引用網格系統</h3><p><strong>${esc(source?.name || `網格系統 ${g.sourceSystem}`)}</strong> · #${g.sourceSystem}</p><p>套用原點 u ${origin[0]}、v ${origin[1]} mm。${g.mainAlong ? `主支沿 ${g.mainAlong}。` : "角色未設定。"}</p><p>兩軸排法由來源共用；編輯來源會先預覽所有套用的影響。</p><button type="button" id="gridSourceSystemOpen" class="btn primary-button">編輯來源與套用</button><div id="gridPreviewStatus" role="status" aria-live="polite"></div><div class="grid-subgrid-note"><h4>局部等分</h4><p>保留來源網格，在其中一格建立子網格。</p><button type="button" id="subgridNew" class="btn">建立子網格</button></div></div></section>`;
+    return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block grid-system-source"><h3>引用網格系統</h3><p><strong>${esc(source?.name || `網格系統 ${g.sourceSystem}`)}</strong> · #${g.sourceSystem}</p><p>套用原點 u ${origin[0]}、v ${origin[1]} mm。${g.mainAlong ? `主支沿 ${g.mainAlong}。` : "角色未設定。"}</p><p>兩軸排法由來源共用；編輯來源會先預覽所有套用的影響。</p><button type="button" id="gridSourceSystemOpen" class="btn primary-button">編輯來源與套用</button><div id="gridPreviewStatus" role="status" aria-live="polite"></div><div class="grid-subgrid-note"><h4>局部等分</h4>${(g.uDefinition?.stagger || g.vDefinition?.stagger) ? `<p>有相位差的主格不能建立子網格。</p><button type="button" id="subgridNew" class="btn" disabled>建立子網格</button>` : `<p>保留來源網格，在其中一格建立子網格。</p><button type="button" id="subgridNew" class="btn">建立子網格</button>`}</div></div></section>`;
   }
   function axisHTML(a,d) {
     d=d || {source:"none"};const p=prefix(a);

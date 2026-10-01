@@ -911,6 +911,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 
 - `#infiniteGridWorkspace` 為完整編輯工作區；建立新來源或配置時使用它，主畫布已選物件的常用修改另見上方 2026-09-28 就地編輯契約。`#igGridView` 可平移、縮放與拾取 cell；攝影機不寫入模型。`#igDensity` 明示抽樣。
 - `#igName`、`#igMainAlong`（GEO-222 起為 `role=radiogroup` 的分段選擇，內含 `input[name=igMainAlong][value=none|u|v]`，元素本身仍可讀寫 `.value`）與 `#igUSource`／`#igVSource` 定義來源；`#igSaveSource` 預覽後確認。只新增 repeat／repeat-panel／none，沒有條數。
+- GEO-229：`#igUStagger`／`#igVStagger` 是「相鄰格子相位差 mm」。空白或 0 不寫入 stagger。非零時工作區把該軸畫成停在另一軸格子邊界的段，段帶 `data-ig-segment-band`。底部檢查器不加輸入欄；非零時既有「第 0 線座標」那一行帶出數字。不新增工作區或常駐說明。有相位差的主格上 `#subgridNew` 停用。
 - `#igNewBinding` 選邊界建立配置。`#igBoundaryView` 與 `#igVertex` 選實際外環或孔環頂點；`#igCellI`／`#igCellJ` 使用十進位字串及 BigInt，`[data-ig-anchor]` 選 cell 內九宮位置。`#igSaveBinding` 保存明確引用。
 - `#igResultView` 只繪核心 query 回傳的裁切線段。`#igApplyBinding` 明確套用到同邊界承載面；未套用配置不暗建面。
 - `#igKeyedVertices`、四側 `#igGrowLeft/Right/Top/Bottom` 和 `#igSaveBoundary` 保留穩定頂點身分，預覽確認後提交。

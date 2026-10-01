@@ -326,7 +326,12 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
 {
     char anchor[128],selector[128]="",face[32];
     if (a->anchor_kind==ANCHOR_AT_LINE) snprintf(anchor,sizeof anchor,"at-line guide %u",a->ref_guide);
-    else if (a->anchor_kind==ANCHOR_AT_GRID) snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
+    else if (a->anchor_kind==ANCHOR_AT_GRID) {
+        if (a->ref_grid_has_band)
+            snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld band %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index,(long long)a->ref_grid_band);
+        else
+            snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
+    }
     else {
         ReferenceFace ref={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber};
         reference_face_text(face,sizeof face,&ref); snprintf(anchor,sizeof anchor,"at-face %s",face);

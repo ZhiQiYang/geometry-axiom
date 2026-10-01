@@ -131,8 +131,9 @@ function appendGridDefinitionImpact(dialog, preview) {
   }
   function axis(d) {
     if(!d || d.source==='none')return '不設此軸';
-    if(d.source==='repeat')return `無限重複：間距 ${d.step} mm，第 0 線 ${d.phase} mm`;
-    if(d.source==='repeat-panel')return `無限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm，間距 ${d.panel+d.gap} mm`;
+    const stagger = d.stagger ? `，相鄰格子相位差 ${d.stagger} mm` : '';
+    if(d.source==='repeat')return `無限重複：間距 ${d.step} mm，第 0 線 ${d.phase} mm${stagger}`;
+    if(d.source==='repeat-panel')return `無限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm，間距 ${d.panel+d.gap} mm${stagger}`;
     if(d.source==='explicit')return `舊版有限座標 [${(d.coordinates||[]).join(', ')}] mm`;
     if(d.source==='series')return `舊版有限等差：起點 ${d.start}、間距 ${d.step} mm，共 ${d.count} 條`;
     return `舊版有限面材 ${d.panel}＋縫 ${d.gap} mm，起點 ${d.anchor} mm`;
@@ -371,7 +372,7 @@ function referenceAnchorOptions(bid, surf) {
   const busy = entries.filter(e => e.occupied != null);
   const groups = new Map();
   for (const entry of [...free, ...busy]) {
-    const match = /^at-line grid (\d+) ([uv])/.exec(entry.value);
+    const match = /^at-line grid (\d+) ([uv]) (-?\d+)(?: band (-?\d+))?/.exec(entry.value);
     const grid=match && fe.grids.find(g=>g.id===+match[1]);
     const group = (entry.occupied != null ? "已有角材 · " : "可用 · ") +
       (match ? `${grid?.kind === 'subgrid' ? '子網格' : '主網格'} ${match[1]} · ${match[2]} 座標線` : entry.value.startsWith("at-line") ? "參考線" : entry.value.startsWith("at-face t") ? "角材側面" : "輪廓邊");

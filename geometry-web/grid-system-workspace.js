@@ -33,11 +33,15 @@
     if (n < -9223372036854775808n || n > 9223372036854775806n) throw Error(`${title}超出可建立 cell 的 signed 64 位元範圍。`);
     return n.toString();
   };
-  const def = d => !d || d.source === 'none' ? null : d.source === 'repeat' ?
-    {phase: d.phase, pitch: d.step} : d.source === 'repeat-panel' ?
-    {phase: d.anchor + d.panel + Math.floor(d.gap / 2), pitch: d.panel + d.gap} : null;
+  const def = d => {
+    if (!d || d.source === 'none') return null;
+    const stagger = d.stagger ? Number(d.stagger) : 0;
+    if (d.source === 'repeat') return {phase: d.phase, pitch: d.step, stagger};
+    if (d.source === 'repeat-panel') return {phase: d.anchor + d.panel + Math.floor(d.gap / 2), pitch: d.panel + d.gap, stagger};
+    return null;
+  };
   const sourceKey = o => JSON.stringify(o && [o.id, o.name, o.mainAlong, o.uDefinition, o.vDefinition]);
-  const sourceFormKey = o => JSON.stringify([o.name,o.mainAlong||'none',...axes.map(a=>{const d=o[a+'Definition'];return d.source==='repeat'?[d.source,d.phase,d.step,d.parameterRefs||{}]:d.source==='repeat-panel'?[d.source,d.panel,d.gap,d.anchor,d.parameterRefs||{}]:['none'];})]);
+  const sourceFormKey = o => JSON.stringify([o.name,o.mainAlong||'none',...axes.map(a=>{const d=o[a+'Definition'];return d.source==='repeat'?[d.source,d.phase,d.step,d.stagger||0,d.parameterRefs||{}]:d.source==='repeat-panel'?[d.source,d.panel,d.gap,d.anchor,d.stagger||0,d.parameterRefs||{}]:['none'];})]);
   const bindingKey = o => JSON.stringify(o && [o.id, o.system, o.boundary, o.vertexKey, o.cell, o.anchor]);
   function status(text, error = false) {
     if (!$('igStatus')) return;
@@ -47,7 +51,7 @@
     const values = [$('igName').value.trim(), $('igMainAlong').value];
     for (const a of axes) {
       const p = 'ig' + a.toUpperCase(), mode = $(p + 'Source').value;
-      values.push(mode, ...(mode === 'repeat' ? ['Step','Phase'] : mode === 'repeat-panel' ? ['Panel','Gap','Anchor'] : []).map(key => [$(p + key).value.trim(),$(p+key+'Source')?.value||'']));
+      values.push(mode, ...(mode === 'repeat' ? ['Step','Phase','Stagger'] : mode === 'repeat-panel' ? ['Panel','Gap','Anchor','Stagger'] : []).map(key => [$(p + key).value.trim(),$(p+key+'Source')?.value||'']));
     }
     return JSON.stringify(values);
   }
@@ -100,7 +104,8 @@
   function axisForm(a, d) {
     const p = 'ig' + a.toUpperCase(), source = d?.source || 'repeat';
     const input = (key, title, value) => `<label>${title}<input id="${p}${key}" type="number" step="1" value="${esc(value)}">${window.ParameterUI?.sourceControl(p+key,d?.parameterRefs?.[key.toLowerCase()])||''}</label>`;
-    return `<fieldset class="ig-axis" data-ig-axis="${a}"><legend>${axisHeading(a)}</legend><label>排格方式<select id="${p}Source"><option value="repeat"${source === 'repeat' ? ' selected' : ''}>固定間距 · 無限重複</option><option value="repeat-panel"${source === 'repeat-panel' ? ' selected' : ''}>面材＋縫 · 無限重複</option><option value="none"${source === 'none' ? ' selected' : ''}>不設此軸</option></select></label><div data-ig-mode="repeat" class="ig-pair">${input('Step', stepFieldTitle, d?.step ?? 600)}${input('Phase', '第 0 線座標 mm', d?.phase ?? 0)}</div><div data-ig-mode="repeat-panel"><div class="ig-pair">${input('Panel', '面材 mm', d?.panel ?? 600)}${input('Gap', '縫寬 mm', d?.gap ?? 0)}</div>${input('Anchor', '面材起點 mm', d?.anchor ?? 0)}<p>格線位於縫中心；向正、負方向持續重複。</p></div></fieldset>`;
+    const stagger = `<div data-ig-stagger>${input('Stagger', '相鄰格子相位差 mm', d?.stagger ?? '')}</div>`;
+    return `<fieldset class="ig-axis" data-ig-axis="${a}"><legend>${axisHeading(a)}</legend><label>排格方式<select id="${p}Source"><option value="repeat"${source === 'repeat' ? ' selected' : ''}>固定間距 · 無限重複</option><option value="repeat-panel"${source === 'repeat-panel' ? ' selected' : ''}>面材＋縫 · 無限重複</option><option value="none"${source === 'none' ? ' selected' : ''}>不設此軸</option></select></label><div data-ig-mode="repeat" class="ig-pair">${input('Step', stepFieldTitle, d?.step ?? 600)}${input('Phase', '第 0 線座標 mm', d?.phase ?? 0)}</div><div data-ig-mode="repeat-panel"><div class="ig-pair">${input('Panel', '面材 mm', d?.panel ?? 600)}${input('Gap', '縫寬 mm', d?.gap ?? 0)}</div>${input('Anchor', '面材起點 mm', d?.anchor ?? 0)}<p>格線位於縫中心；向正、負方向持續重複。</p></div>${stagger}</fieldset>`;
   }
   function render(s) {
     // The project bar is shared DOM; return it before rebuilding this workspace.
@@ -145,7 +150,7 @@
     s.restoringBoundary = !!s.binding;
     s.initialSourceKey = sourceEditorKey(); s.initialBindingKey = s.binding ? savedBindingKey(s.binding) : bindingEditorKey(s); s.bindingReady = !s.binding;
     dialog.oninput = dialog.onchange = () => syncDraftState(s);
-    for(const a of axes)for(const key of ['Step','Phase','Panel','Gap','Anchor'])window.ParameterUI?.bindSource('ig'+a.toUpperCase()+key,()=>{drawGrid(s);syncDraftState(s);});
+    for(const a of axes)for(const key of ['Step','Phase','Panel','Gap','Anchor','Stagger'])window.ParameterUI?.bindSource('ig'+a.toUpperCase()+key,()=>{drawGrid(s);syncDraftState(s);});
     s.initialSourceKey=sourceEditorKey();
     syncFields(); drawGrid(s);
     if (s.binding) { locate(s); loadBoundary(s, s.binding.boundary, true); }
@@ -155,7 +160,12 @@
     window.ParamGridLesson?.place();
   }
   function syncFields() {
-    for (const a of axes) { const card = dialog.querySelector(`fieldset[data-ig-axis="${a}"]`), value = $('ig' + a.toUpperCase() + 'Source').value; for (const n of card.querySelectorAll('[data-ig-mode]')) n.hidden = n.dataset.igMode !== value; }
+    for (const a of axes) {
+      const card = dialog.querySelector(`fieldset[data-ig-axis="${a}"]`), value = $('ig' + a.toUpperCase() + 'Source').value;
+      for (const n of card.querySelectorAll('[data-ig-mode]')) n.hidden = n.dataset.igMode !== value;
+      const stag = card.querySelector('[data-ig-stagger]');
+      if (stag) stag.hidden = value === 'none';
+    }
   }
   function sourceDraft(s) {
     if (s.mode === 'binding') return s.source;
@@ -165,7 +175,12 @@
     for (const a of axes) { const p = 'ig' + a.toUpperCase(), source = $(p + 'Source').value;
       result[a + 'Definition'] = source === 'none' ? {source} : source === 'repeat' ? {source, phase: int(p+'Phase', a+' 第 0 線座標'), step: int(p+'Step', a+' 間距',1)} : {source, panel:int(p+'Panel',a+' 面材',1),gap:int(p+'Gap',a+' 縫寬',0),anchor:int(p+'Anchor',a+' 面材起點')};
       const d=result[a+'Definition'];d.parameterRefs={};
-      for(const key of source==='repeat'?['Phase','Step']:source==='repeat-panel'?['Panel','Gap','Anchor']:[]){const ref=window.ParameterUI?.sourceRef(p+key);if(ref)d.parameterRefs[key.toLowerCase()]=ref;}
+      if (source !== 'none') {
+        for(const key of source==='repeat'?['Phase','Step']:['Panel','Gap','Anchor']){const ref=window.ParameterUI?.sourceRef(p+key);if(ref)d.parameterRefs[key.toLowerCase()]=ref;}
+        const sref = window.ParameterUI?.sourceRef(p+'Stagger'), raw = $(p+'Stagger').value.trim();
+        if (sref) d.parameterRefs.stagger = sref;
+        if (raw && raw !== '0' && raw !== '-0') d.stagger = int(p+'Stagger', a+' 相鄰格子相位差');
+      }
     }
     if (axes.every(a => result[a+'Definition'].source === 'none')) throw Error('至少設定一軸。');
     return result;
@@ -239,7 +254,7 @@
     const rectOf = c => {
       const di = c[0] - s.base[0], dj = c[1] - s.base[1];
       if (di < -1000000n || di > 1000000n || dj < -1000000n || dj > 1000000n) return null;
-      const u = defs[0].phase + Number(di) * defs[0].pitch, v = defs[1].phase + Number(dj) * defs[1].pitch;
+      const u = defs[0].phase + Number(di) * defs[0].pitch + ((defs[0].stagger && (c[1] & 1n)) ? defs[0].stagger : 0), v = defs[1].phase + Number(dj) * defs[1].pitch + ((defs[1].stagger && (c[0] & 1n)) ? defs[1].stagger : 0);
       return {x: px(u), y: py(v), w: defs[0].pitch * scale, h: defs[1].pitch * scale};
     };
     const hover = both ? s.hover : null, sel = both ? selectedCell(s) : null;
@@ -251,7 +266,8 @@
     const shown = hover || sel, fmt = c => c ? `(${c[0]}, ${c[1]})` : '—';
     $('igInfoTitle').textContent = hover ? '游標所在格' : sel ? '已選取格' : '格資訊';
     $('igInfoCell').textContent = shown ? `cell ${fmt(shown)}` : '';
-    const rows = both ? [['游標', fmt(hover)], ['已選取', fmt(sel)], ['起點 mm', shown ? `${BigInt(defs[0].phase) + shown[0] * BigInt(defs[0].pitch)}, ${BigInt(defs[1].phase) + shown[1] * BigInt(defs[1].pitch)}` : '—'], ['尺寸 mm', `${defs[0].pitch} × ${defs[1].pitch}`]] : [['狀態', '兩軸都設定後才有 cell']];
+    const shiftOf = (axisDef, band) => axisDef?.stagger && (band & 1n) ? BigInt(axisDef.stagger) : 0n;
+    const rows = both ? [['游標', fmt(hover)], ['已選取', fmt(sel)], ['起點 mm', shown ? `${BigInt(defs[0].phase) + shown[0] * BigInt(defs[0].pitch) + shiftOf(defs[0], shown[1])}, ${BigInt(defs[1].phase) + shown[1] * BigInt(defs[1].pitch) + shiftOf(defs[1], shown[0])}` : '—'], ['尺寸 mm', `${defs[0].pitch} × ${defs[1].pitch}`]] : [['狀態', '兩軸都設定後才有 cell']];
     info.replaceChildren(...rows.map(([k, v]) => { const row = document.createElement('div'), a = document.createElement('span'), b = document.createElement('span'); a.textContent = k; b.textContent = v; row.append(a, b); return row; }));
   }
   function drawGrid(s) {
@@ -267,13 +283,19 @@
     try {
       const d=sourceDraft(s),defs=axes.map(a=>def(d[a+'Definition']));let sampled=false;s.defs=defs;
       if(s.mode==='source'&&!s.busy){const dirty=!s.source||sourceFormKey(d)!==sourceFormKey(s.source);$('igSaveSource').disabled=!dirty;if($('igNewBinding'))$('igNewBinding').disabled=dirty;}
-      for(let a=0;a<2;a++){const v=defs[a];if(!v)continue;const first=Math.ceil((c[a]-v.phase)/v.pitch),last=Math.floor((c[a+2]-v.phase)/v.pitch),total=Math.max(0,last-first+1),stride=Math.max(1,Math.ceil(total/42));sampled ||= stride>1;
+      for(let a=0;a<2;a++){const v=defs[a];if(!v)continue;const other=defs[1-a],mag=other&&v.stagger?Math.abs(v.stagger):0;const first=Math.ceil((c[a]-mag-v.phase)/v.pitch),last=Math.floor((c[a+2]+mag-v.phase)/v.pitch),total=Math.max(0,last-first+1),stride=Math.max(1,Math.ceil(total/42));sampled ||= stride>1;
         // Choose samples by the true global k, never by a viewport-relative ordinal.
         const bs=BigInt(stride),fi=s.base[a]+BigInt(first),start=fi+((bs-fi%bs)%bs),end=s.base[a]+BigInt(last);
         const need=a===0?Math.max(40,Math.max(String(start).length,String(end).length)*7+16):22,labelStep=bs*BigInt(Math.max(1,Math.ceil(need/(stride*v.pitch*scale))));
-        for(let index=start;index<=end;index+=bs){const delta=Number(index-s.base[a]),coord=v.phase+delta*v.pitch,pos=a===0?px(coord):py(coord),zero=index===0n;svg('line',{x1:a===0?pos:RL,y1:a===0?RT:pos,x2:a===0?pos:PR,y2:a===0?PB:pos,stroke:zero?acc:'#bccddd','stroke-width':zero?2:1,'data-ig-axis':axes[a],'data-ig-index':index.toString()},plot);if(index%labelStep===0n)marks.push([a,pos,index.toString(),zero]);}
+        let bandStart=0n,bandEnd=-1n,bandStep=1n;
+        if(mag&&other){const oFirst=Math.ceil((c[1-a]-other.phase)/other.pitch),oLast=Math.floor((c[1-a+2]-other.phase)/other.pitch),bandTotal=Math.max(0,oLast-oFirst+1),bStride=Math.max(1,Math.ceil(bandTotal/42));sampled ||= bStride>1;bandStep=BigInt(bStride);const b0=s.base[1-a]+BigInt(oFirst);bandStart=b0+((bandStep-(b0%bandStep))%bandStep);bandEnd=s.base[1-a]+BigInt(oLast);}
+        for(let index=start;index<=end;index+=bs){const delta=Number(index-s.base[a]),baseCoord=v.phase+delta*v.pitch,zero=index===0n;
+          if(!(mag&&other)){const pos=a===0?px(baseCoord):py(baseCoord);svg('line',{x1:a===0?pos:RL,y1:a===0?RT:pos,x2:a===0?pos:PR,y2:a===0?PB:pos,stroke:zero?acc:'#bccddd','stroke-width':zero?2:1,'data-ig-axis':axes[a],'data-ig-index':index.toString()},plot);if(index%labelStep===0n)marks.push([a,pos,index.toString(),zero]);continue;}
+          let marked=false;
+          for(let band=bandStart;band<=bandEnd;band+=bandStep){const shift=(band&1n)?v.stagger:0,coord=baseCoord+shift;if(coord<c[a]||coord>c[a+2])continue;const along0=other.phase+Number(band-s.base[1-a])*other.pitch,along1=along0+other.pitch,lo=Math.max(along0,c[1-a]),hi=Math.min(along1,c[1-a+2]);if(!(lo<hi))continue;const pos=a===0?px(coord):py(coord),q1=a===0?py(lo):px(lo),q2=a===0?py(hi):px(hi);svg('line',{x1:a===0?pos:q1,y1:a===0?q1:pos,x2:a===0?pos:q2,y2:a===0?q2:pos,stroke:zero?acc:'#bccddd','stroke-width':zero?2:1,'data-ig-axis':axes[a],'data-ig-index':index.toString(),'data-ig-segment-band':band.toString()},plot);if(!marked&&index%labelStep===0n){marks.push([a,pos,index.toString(),zero]);marked=true;}}
+        }
       }
-      if(s.mode==='binding'&&defs.every(Boolean)){try{const i=BigInt(signed('igCellI','cell i')),j=BigInt(signed('igCellJ','cell j')),di=i-s.base[0],dj=j-s.base[1];if(di>=-1000000n&&di<=1000000n&&dj>=-1000000n&&dj<=1000000n){const u=defs[0].phase+Number(di)*defs[0].pitch,v=defs[1].phase+Number(dj)*defs[1].pitch;svg('rect',{x:px(u),y:py(v),width:px(u+defs[0].pitch)-px(u),height:py(v+defs[1].pitch)-py(v),fill:'#4e67e824',stroke:'#4e67e8','stroke-width':2,'data-ig-cell':`${i},${j}`},plot);const [un,ud,vn,vd]=anchor();svg('circle',{cx:px(u+un/ud*defs[0].pitch),cy:py(v+vn/vd*defs[1].pitch),r:6,fill:'#c66b2c',stroke:'#fff','stroke-width':2},plot);}}catch(_){} }
+      if(s.mode==='binding'&&defs.every(Boolean)){try{const i=BigInt(signed('igCellI','cell i')),j=BigInt(signed('igCellJ','cell j')),di=i-s.base[0],dj=j-s.base[1];if(di>=-1000000n&&di<=1000000n&&dj>=-1000000n&&dj<=1000000n){const u=defs[0].phase+Number(di)*defs[0].pitch+((defs[0].stagger&&(j&1n))?defs[0].stagger:0),v=defs[1].phase+Number(dj)*defs[1].pitch+((defs[1].stagger&&(i&1n))?defs[1].stagger:0);svg('rect',{x:px(u),y:py(v),width:px(u+defs[0].pitch)-px(u),height:py(v+defs[1].pitch)-py(v),fill:'#4e67e824',stroke:'#4e67e8','stroke-width':2,'data-ig-cell':`${i},${j}`},plot);const [un,ud,vn,vd]=anchor();svg('circle',{cx:px(u+un/ud*defs[0].pitch),cy:py(v+vn/vd*defs[1].pitch),r:6,fill:'#c66b2c',stroke:'#fff','stroke-width':2},plot);}}catch(_){} }
       if(defs.every(Boolean)){const ox=px(defs[0].phase-Number(s.base[0])*defs[0].pitch),oy=py(defs[1].phase-Number(s.base[1])*defs[1].pitch);if(ox>=RL&&ox<=PR&&oy>=RT&&oy<=PB){svg('circle',{cx:ox,cy:oy,r:5,fill:acc,stroke:'#fff','stroke-width':2,'data-ig-origin':''},plot);label(plot,ox+10,oy-8,defs[0].phase||defs[1].phase?`基準 (0, 0) · ${defs[0].phase}, ${defs[1].phase} mm`:'基準 (0, 0)',{'font-size':11,'font-weight':600,fill:acc,'data-ig-origin-label':''});}}
       const pitches=defs.filter(Boolean).map(x=>x.pitch),cellPx=pitches[0]*scale;
       if(pitches.length)zoomText=`1 格 ${pitches.join('×')} mm · ${cellPx<10?+cellPx.toFixed(2):Math.round(cellPx)} px`;
@@ -329,7 +351,7 @@
     const result=await apiRequest(`grid-query binding ${s.binding.id} rect ${r.join(' ')} mode sample limit 48`);
     if(!current(s)||s.boundary!==boundary)return;
     if(!result.ok){$('igResultNote').textContent=result.error||'無法查詢配置結果；來源與配置保持保存。';return;}
-    for(const a of axes)for(const line of result.axes?.[a]?.lines||[])for(const segment of line.segments||[]){const p=t.point(segment.a),q=t.point(segment.b);const n=svg('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:'#5182ae','stroke-width':1.2,'data-ig-result-axis':a,'data-ig-result-index':line.index},view);svg('title',{},n).textContent=`${a} 格線 ${line.index} · ${line.coordinate} mm`;}
+    for(const a of axes)for(const line of result.axes?.[a]?.lines||[])for(const segment of line.segments||[]){const p=t.point(segment.a),q=t.point(segment.b);const n=svg('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:'#5182ae','stroke-width':1.2,'data-ig-result-axis':a,'data-ig-result-index':line.index,...(segment.band!=null?{'data-ig-result-band':segment.band}:{})},view);svg('title',{},n).textContent=`${a} 格線 ${line.index}${segment.band!=null?` · 格 ${segment.band}`:''} · ${segment.a[a==='u'?0:1]} mm`;}
     const selected=s.vertices.find(v=>v.key===s.binding.vertexKey);if(selected){const p=t.point([selected.u,selected.v]);svg('circle',{cx:p[0],cy:p[1],r:6,fill:'#c66b2c'},view);}
     const dense=axes.some(a=>BigInt(result.axes?.[a]?.stride||'1')>1n);
     const translation=s.binding.translationExact??s.binding.translation;
@@ -385,7 +407,7 @@
     const d=sourceDraft(s);await stillSame(s);
     const ids=s.source?null:await apiRequest('newid'),id=s.source?.id??ids?.gridSystem;
     if(id==null)throw Error('無法取得網格系統編號。');
-    const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};return `${a} `+(v.source==='none'?'none':v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`);});
+    const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};if(v.source==='none')return `${a} none`;const body=v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;const stag=v.parameterRefs?.stagger?` stagger ${token('stagger')}`:(v.stagger?` stagger ${v.stagger}`:'');return `${a} ${body}${stag}`;});
     if(!await commit(s,`grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong} ${parts.join(' ')}`,`${s.source?'更新':'建立'}無限網格「${d.name}」`,s.source?null:['gridSystems',id]))return;
     await renderObjects();reveal('grid-system',id);await open({system:id}, true);status('來源已保存；可選擇邊界與格子建立配置。');
   }

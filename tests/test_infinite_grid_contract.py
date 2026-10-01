@@ -529,6 +529,112 @@ class InfiniteGridContract(unittest.TestCase):
         self.binding(1, source=1)
         self.reject("grid 10 on 1 from-binding 1", ("D30/I37", "requires an available lattice grid identity"))
 
+    def band_segments(self, result, axis):
+        rows = []
+        for line in self.axis(result, axis)["lines"]:
+            self.assertIsInstance(line["index"], str)
+            for segment in line["segments"]:
+                self.assertIsInstance(segment["band"], str)
+                rows.append((int(line["index"]), int(segment["band"]), segment["a"], segment["b"]))
+        return rows
+
+    def test_alternating_stagger_segments_match_the_hand_oracle(self):
+        self.commit(infinite(u="repeat 0 2000", v="repeat 0 1830 stagger 400"))
+        result = self.query(rect=(-2000, 0, 4000, 5000))
+        expected = []
+        for index, base in ((0, 0), (1, 1830), (2, 3660)):
+            for band, u0, u1 in ((-1, -2000, 0), (0, 0, 2000), (1, 2000, 4000)):
+                coord = base + (400 if band & 1 else 0)
+                expected.append((index, band, [u0, coord], [u1, coord]))
+        self.assertEqual(expected, self.band_segments(result, "v"))
+        self.assertEqual({0: 0, 1: 1830, 2: 3660}, self.coordinates(result, "v"))
+        for line in self.axis(result, "u")["lines"]:
+            for segment in line["segments"]:
+                self.assertNotIn("band", segment)
+        text = self.dump()
+        self.assertIn("v repeat 0 1830 stagger 400", text)
+        self.assertNotIn("u repeat 0 2000 stagger", text)
+        self.roundtrip()
+        narrow = self.query(rect=(2000, 300, 4000, 500))
+        self.assertEqual([(0, 1, [2000, 400], [4000, 400])], self.band_segments(narrow, "v"))
+
+    def test_unstaggered_scenes_do_not_gain_stagger_or_band(self):
+        self.commit(infinite())
+        self.assertNotIn("stagger", self.dump())
+        result = self.query()
+        for axis in ("u", "v"):
+            for line in self.axis(result, axis)["lines"]:
+                for segment in line["segments"]:
+                    self.assertEqual(["a", "b"], sorted(segment))
+
+    def test_stagger_rejects_zero_multiples_finite_axes_and_subgrids(self):
+        self.reject(infinite(v="repeat 0 1830 stagger 0"), "相位差為 0")
+        self.reject(infinite(v="repeat 0 1830 stagger 1830"), "整數倍")
+        self.reject(infinite(v="repeat 0 1830 stagger -3660"), "整數倍")
+        self.reject(infinite(u="repeat 0 2000", v="series 0 1830 3 stagger 400"), "只接受無限軸")
+        self.reject(infinite(u="none", v="repeat 0 1830 stagger 400"), "兩軸都存在")
+        self.commit(infinite(u="repeat 0 2000", v="repeat 0 1830 stagger 400"))
+        self.boundary(outer=[(0, 0), (4000, 0), (4000, 4000), (0, 4000)])
+        self.binding(cell=(0, 0), anchor=(0, 1, 0, 1))
+        self.commit("placement 1 on boundary 1 origin 0 0 0 u +x v +y")
+        self.commit("grid 10 on 1 from-binding 0")
+        self.reject("subgrid 11 parent 10 lattice-cell 0 0 divisions u 2 v 2", "不能建立子網格")
+        self.commit("timber 90 20 33 role boundary")
+        self.commit("place 90 on 1 at-face e3 +v +n")
+        self.commit("timber 91 20 33 role boundary")
+        self.commit("place 91 on 1 at-face e1 +v +n")
+        self.commit("timber 1 27 33 role primary")
+        self.reject("place 1 on 1 at-line grid 10 v 0 +u +n", "必須寫 band")
+        self.reject("place 1 on 1 at-line grid 10 u 0 band 0 +v +n", "不能寫 band")
+        self.reject("place 1 on 1 at-line grid 10 v 1 band 0 +u +n", "沿線範圍超出該格子")
+        self.commit("boundary-keyed 1 geometry-hash " + self.fingerprint(1) + " outline "
+                    + " ".join(f"{key}:{u},{v}" for key, (u, v) in zip(self.keymap(1)[0], [(0, 0), (2000, 0), (2000, 4000), (0, 4000)])))
+        self.commit("place 1 on 1 at-line grid 10 v 1 band 0 +u +n")
+        timber = next(row for row in self.refs()["timbers"] if row["id"] == 1)
+        self.assertEqual("at-line grid 10 v 1 band 0", timber["definition"]["anchor"])
+        self.assertIn("band 0", self.dump())
+        self.roundtrip()
+
+    def test_adding_stagger_to_a_parent_with_a_subgrid_rolls_back(self):
+        self.fixture()
+        self.commit("placement 1 on boundary 1 origin 0 0 0 u +x v +y")
+        self.commit("grid 10 on 1 from-binding 0")
+        self.commit("subgrid 11 parent 10 lattice-cell -2 1 divisions u 2 v 2")
+        self.reject(infinite(v="repeat 0 400 stagger 100"), "不能建立子網格")
+        self.assertNotIn("stagger", self.dump())
+
+    def test_parameter_stagger_survives_dump_and_zero_is_rejected_after_evaluation(self):
+        revision = self.command("engineering-read")
+        self.assertTrue(revision["ok"], revision)
+        path = Path(self.directory.name) / "parameter.json"
+        path.write_text(json.dumps({
+            "schema": "engineering-transaction/1",
+            "expectedRevision": revision["revision"],
+            "operations": [{"op": "put-parameter", "value": {"id": 1, "name": "相位", "fields": [
+                {"id": 1, "name": "差", "type": "dimension", "input": "400"},
+                {"id": 2, "name": "零", "type": "dimension", "input": "0"},
+                {"id": 3, "name": "倍", "type": "dimension", "input": "1830"},
+            ]}}],
+        }, ensure_ascii=False), encoding="utf-8")
+        preview = self.command("engineering-preview " + native_path(path))
+        self.assertTrue(preview["ok"] and preview["preview"]["valid"], preview)
+        self.assertTrue(self.command("engineering-confirm " + str(preview["preview"]["token"]))["ok"])
+        self.commit(infinite(u="repeat 0 2000", v="repeat 0 1830 stagger param:1:1"))
+        self.assertEqual(400, self.objects()["gridSystems"][0]["vDefinition"]["stagger"])
+        self.assertIn("stagger param:1:1", self.dump())
+        self.roundtrip()
+        self.reject(infinite(u="repeat 0 2000", v="repeat 0 1830 stagger param:1:2"), "相位差為 0")
+        self.reject(infinite(u="repeat 0 2000", v="repeat 0 1830 stagger param:1:3"), "整數倍")
+
+    def test_exact_stagger_query_reports_capacity_when_bands_exceed_the_segment_limit(self):
+        self.commit(infinite(u="repeat 0 100", v="repeat 0 1830 stagger 400"))
+        exact = self.query(rect=(0, 0, 4000, 2000))
+        self.assertFalse(exact["ok"], exact)
+        self.assertEqual("QUERY_CAPACITY", exact["code"])
+        sample = self.query(rect=(0, 0, 4000, 2000), mode="sample")
+        self.assertTrue(sample["ok"], sample)
+        self.assertGreater(int(self.axis(sample, "v")["stride"]), 1)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

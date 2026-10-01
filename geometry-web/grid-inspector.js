@@ -24,8 +24,9 @@
   }
   function definitionText(d) {
     if(!d || d.source==='none')return '未設定此軸';
-    if(d.source==='repeat')return `每 ${d.step} mm · 基準 ${d.phase}`;
-    if(d.source==='repeat-panel')return `面材 ${d.panel} + 縫 ${d.gap} mm · 起點 ${d.anchor}`;
+    const stagger = d.stagger ? ` · 相鄰格子相位差 ${d.stagger} mm` : '';
+    if(d.source==='repeat')return `每 ${d.step} mm · 基準 ${d.phase}${stagger}`;
+    if(d.source==='repeat-panel')return `面材 ${d.panel} + 縫 ${d.gap} mm · 起點 ${d.anchor}${stagger}`;
     if(d.source==='series')return `有限等距 · ${d.count} 條`;
     if(d.source==='explicit')return `有限座標 · ${d.coordinates?.length || 0} 條`;
     return '有限面材排格';
@@ -80,7 +81,7 @@
   function updateSourceSummary(s) {$(s,'giSourceSummary').textContent=axes.map(a=>a+' '+definitionText(s.source?.[a+'Definition'])).join(' ／ ');}
   function sourceForm(s) {
     const o=s.object,legacy=!isInfinite(o);
-    const axisField=a=>{const d=o[a+'Definition'],id='gi'+a.toUpperCase()+'Step';return `<label class="gi-axis-field"><span>${a==='u'?'X / u →':'Y / v ↓'} 間距</span>${d?.source==='repeat'?`<span class="gi-unit-input"><input id="${id}" type="number" min="1" max="100000000" step="1" value="${d.step}"${d.parameterRefs?.step?' readonly aria-readonly="true"':''}><span>mm</span></span><small>第 0 線座標 ${d.phase} mm${d.parameterRefs?.step?' · 引用參數，於完整工作區改綁':''}</small>`:`<span class="gi-readonly">${esc(definitionText(d))}</span><small>在完整工作區調整排法</small>`}</label>`;};
+    const axisField=a=>{const d=o[a+'Definition'],id='gi'+a.toUpperCase()+'Step';return `<label class="gi-axis-field"><span>${a==='u'?'X / u →':'Y / v ↓'} 間距</span>${d?.source==='repeat'?`<span class="gi-unit-input"><input id="${id}" type="number" min="1" max="100000000" step="1" value="${d.step}"${d.parameterRefs?.step?' readonly aria-readonly="true"':''}><span>mm</span></span><small>第 0 線座標 ${d.phase} mm${d.stagger?` · 相鄰格子相位差 ${d.stagger} mm`:''}${d.parameterRefs?.step?' · 引用參數，於完整工作區改綁':''}</small>`:`<span class="gi-readonly">${esc(definitionText(d))}</span><small>在完整工作區調整排法</small>`}</label>`;};
     if(legacy)return `<div class="gi-content gi-source-content"><section class="gi-section"><h3>舊版有限網格</h3><p class="gi-help">保留原有條數與座標，開啟完整工作區繼續編輯。</p></section>${axes.map(a=>`<section class="gi-section"><h3>${a} 軸</h3><p>${esc(definitionText(o[a+'Definition']))}</p></section>`).join('')}</div>`;
     return `<div class="gi-content gi-source-content"><section class="gi-section"><label>名稱<input id="giName" value="${esc(o.name)}" autocomplete="off"></label><p class="gi-help">${(oc.gridBindings || []).filter(b=>b.system===o.id).length} 個配置使用此來源 · 格線向兩端無限延伸</p></section><section class="gi-section gi-spacing">${axes.map(axisField).join('')}</section><section class="gi-section gi-source-submit"><div class="gi-source-rule">固定規則，持續重複<small>主支方向：${o.mainAlong ? '沿 '+o.mainAlong : '未設定'}；排法與基準可在完整工作區調整。</small></div><button type="button" id="giPreview" class="primary-button">預覽變更</button></section></div>`;
   }
