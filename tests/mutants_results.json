@@ -2,241 +2,739 @@
   "M01": {
     "desc": "I5：邊上判定:含端點改嚴格(端點不在邊上)",
     "verdict": "equivalent",
-    "why": "等價變異(GEO-173 實證,與 2026-09-16 稽核一致):只變異直立邊分支的端點判定;軸平行多邊形的任一頂點必同時是一條直立邊與一條水平邊的端點,未變異的水平邊分支必接住。夾具 M01_hole_corner_touch(兩孔角對角相碰)原始版與變異版輸出逐字相同。"
+    "why": "等價變異(GEO-173 實證,與 2026-09-16 稽核一致):只變異直立邊分支的端點判定;軸平行多邊形的任一頂點必同時是一條直立邊與一條水平邊的端點,未變異的水平邊分支必接住。夾具 M01_hole_corner_touch(兩孔角對角相碰)原始版與變異版輸出逐字相同。",
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "ae55a07300ae815dcdc0ec9a43b1c21fb548027626f3215662975b04ccea9186"
   },
   "M02": {
     "desc": "I5：射線半開區間 [v_min,v_max) 改 (v_min,v_max)",
     "verdict": "killed",
-    "why": "_test_lshape.scene                 FAIL 錯誤不符: 期望含「沒有擋面」實得「D:\\knowledgebase\\geometry\\_test_lshape.scene:17: auto 跨距推導失敗：中線上沒有任何合法跨距」"
+    "why": "_test_lshape.scene: FAIL 錯誤不符: 期望含「沒有擋面」實得「/mnt/d/geometry-axiom/_test_lshape.scene:17: R6/I5/I6 timber 2: 中線上沒有任何合法跨距」",
+    "killed_by": [
+      "_test_lshape.scene",
+      "_role_priority_ext_primary.scene",
+      "_role_ext_stop_primary.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "eb37820358b0fb178168f468e3c67f734e62bb17966740f66393de92db1190c3"
   },
   "M03": {
     "desc": "I5：射線只數直立邊 -> 改數水平邊",
     "verdict": "killed",
-    "why": "ceiling-a.scene                    FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\ceiling-a.scene:17: 這兩條參考線不相交（方向相同、不同面，或交點在有效區域外）"
+    "why": "_wit_d30_infinite_grid_binding.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/_wit_d30_infinite_grid_binding.scene:3: 邊界面輪廓不合法：邊要軸平行、不零長、不自交；孔要在外輪廓內且互不重疊",
+    "killed_by": [
+      "_wit_d30_infinite_grid_binding.scene",
+      "_wit_d29_grid_system.scene",
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "c8afc0fd8ec130f35d760fcec6096ed9155ba8367d7e0f1ae3fed4ed8ab52481"
   },
   "M04": {
     "desc": "I5：奇偶判定反轉(內外互換)",
     "verdict": "killed",
-    "why": "ceiling-a.scene                    FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\ceiling-a.scene:17: 這兩條參考線不相交（方向相同、不同面，或交點在有效區域外）"
+    "why": "_wit_d30_infinite_grid_binding.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/_wit_d30_infinite_grid_binding.scene:3: 邊界面輪廓不合法：邊要軸平行、不零長、不自交；孔要在外輪廓內且互不重疊",
+    "killed_by": [
+      "_wit_d30_infinite_grid_binding.scene",
+      "_wit_d29_grid_system.scene",
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "5936b5e5af45b23a7c73556b9080af268239032c092ace748e691c74175f30bc"
   },
   "M05": {
     "desc": "I5：直立邊在矩形邊界上也算穿入(<= 改 <)",
     "verdict": "killed",
-    "why": "_test_fixed.scene                  FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_fixed.scene:4: auto 跨距推導失敗：中線上沒有任何合法跨距"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "a0d421686e0a6f4609f4fe8a0ef9ad48a995cf3b3cde2174ef4d712ccb39c45f"
   },
   "M06": {
     "desc": "I5：水平邊在矩形邊界上也算穿入(<= 改 <)",
     "verdict": "killed",
-    "why": "_test_fixed.scene                  FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_fixed.scene:4: auto 跨距推導失敗：中線上沒有任何合法跨距"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "8e7ce972ee543bb08d95b6578353ca1a92df6972861bca37c988ba60faaa6465"
   },
   "M07": {
     "desc": "I5：直立邊 v 區間零長度接觸也算穿入(< 改 <=)",
     "verdict": "killed",
-    "why": "_test_lshape.scene                 FAIL 錯誤不符: 期望含「沒有擋面」實得「D:\\knowledgebase\\geometry\\_test_lshape.scene:17: auto 跨距推導失敗：中線上沒有任何合法跨距」"
+    "why": "_test_lshape.scene: FAIL 錯誤不符: 期望含「沒有擋面」實得「/mnt/d/geometry-axiom/_test_lshape.scene:17: R6/I5/I6 timber 2: 中線上沒有任何合法跨距」",
+    "killed_by": [
+      "_test_lshape.scene",
+      "_edge_concave.scene",
+      "_role_priority_mutant.scene",
+      "_role_priority_ext_custom.scene",
+      "_role_ext_stop_primary.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "29f1d7295a8a6a5fd73ff8b13be58283844d74327962449d86593975899dba3f"
   },
   "M08": {
     "desc": "I5：拿掉「環邊不得穿矩形內部」檢查",
     "verdict": "killed",
-    "why": "_mut_notch_straddle.scene          FAIL 錯誤不符: 期望含「放不上去」實得「D:\\knowledgebase\\geometry\\_mut_notch_straddle.scene:6: V_EXTENSION：非 boundary 角材（1）的 footprint 超出定位邊範圍」"
+    "why": "_role_cover_short.scene: FAIL 應拒絕但接受 (L=['4000'])",
+    "killed_by": [
+      "_role_cover_short.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "52590d545b6d64a49bb78f34a65091bb40c52f167956c784502fd2f2156e07f0"
   },
   "M09": {
     "desc": "I5：孔 bbox 邊界相接也當相交(<= 改 <)",
     "verdict": "equivalent",
-    "why": "等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。"
+    "why": "等價變異(GEO-172 實證):bbox 恰好相切時孔的所有點都在 u<=min_u(或對稱軸)一側,後續三道細查(頂點嚴格在內/邊穿過內部/孔罩住矩形)都不可能成立,快退與細查得到同一答案。",
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "0a30f16585f0013f0a811e76053f85de15ee90ba5f549da2278e15f3a76354d1"
   },
   "M10": {
     "desc": "I5：孔頂點嚴格在矩形內 -> 含邊界(> 改 >=)",
     "verdict": "killed",
-    "why": "_ax_i5_hole_vertex_touches_rect_edge.scene FAIL 應接受但拒絕: D:\\geometry-axiom\\_ax_i5_hole_vertex_touches_rect_edge.scene:10: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊"
+    "why": "_ax_i5_hole_vertex_touches_rect_edge.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/_ax_i5_hole_vertex_touches_rect_edge.scene:10: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊",
+    "killed_by": [
+      "_ax_i5_hole_vertex_touches_rect_edge.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "b1356a3a3a4051ce662872a6e1cbd3ecbb748ec9967f7025a48c6a51c18cf499"
   },
   "M11": {
     "desc": "I5：孔罩住矩形判定:inside==4 改 inside==0(罩住反而放行)",
     "verdict": "killed",
-    "why": "_test_hole_auto.scene              FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_hole_auto.scene:13: V_CUT_PRIORITY：角材 2 端面頂到外輪廓邊（RC）——只有 boundary 可頂 RC"
+    "why": "_test_hole_auto.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/_test_hole_auto.scene:15: V_CUT_PRIORITY：角材 2 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC",
+    "killed_by": [
+      "_test_hole_auto.scene",
+      "_test_ambiguous.scene",
+      "_demo_ceiling.scene",
+      "_edge_upper_seg.scene",
+      "_mut_reval_free_hole.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "906ffbb1c748702b07ef73eb4adbc19503880df11603a5563bc4e639af1adcf3"
   },
   "M12": {
     "desc": "I11：正面積重疊:端點相接也算重疊(> 改 >=)",
     "verdict": "killed",
-    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_grid.scene:16: auto 跨距推導失敗：中線上沒有任何合法跨距"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:13: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "6f3338036e7b7dcf7c9e242dd2d694668f26c0331e9f44bd31ded0b66d1da05c"
   },
   "M13": {
     "desc": "I11：碰撞只看同承載面 -> 看不同承載面(!= 改 ==)",
     "verdict": "killed",
-    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_grid.scene:16: auto 跨距推導失敗：跨距起點擋面歧義"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:13: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "d5d4cc60292eab5ed895d246b449c22b46d0f5b51a5ac41372a81d71747ed143"
   },
   "M14": {
     "desc": "D11：只收垂直邊 -> 只收平行邊(along_v 分支)",
     "verdict": "killed",
-    "why": "_test_hole_auto.scene              FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_hole_auto.scene:13: auto 跨距推導失敗：跨距終點沒有擋面（端面懸空）"
+    "why": "_test_hole_auto.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/_test_hole_auto.scene:15: R6/I5/I6 timber 2: 跨距終點沒有擋面（端面懸空）",
+    "killed_by": [
+      "_test_hole_auto.scene",
+      "_demo_ceiling.scene",
+      "_edge_hole_bottom.scene",
+      "_edge_rect_only.scene",
+      "_edge_rect_stops.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "c255f1c47e3868de98f6b19e5cd3ba34671df7e4b1ab3d0711c0c03b229f685f"
   },
   "M15": {
     "desc": "D11：角材側面涵蓋範圍用錯軸(u 範圍改成 v 範圍)",
     "verdict": "killed",
-    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_grid.scene:16: auto 跨距推導失敗：跨距起點沒有擋面（端面懸空）"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:13: R6/I5/I6 timber 1: 跨距起點沒有擋面（端面懸空）",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "613083fb68232378dad0d7f113e34464d9ee15a2c19b30ce2d1a3f3c53415b7f"
   },
   "M16": {
     "desc": "D11：擋面涵蓋檢查:丟掉 hi 側檢查(半寬也算涵蓋)",
     "verdict": "killed",
-    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_grid.scene:15: auto 跨距推導失敗：跨距起點擋面歧義"
+    "why": "_edge_straddle_hi.scene: FAIL 錯誤不符: 期望含「端面懸空」實得「/mnt/d/geometry-axiom/_edge_straddle_hi.scene:11: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」",
+    "killed_by": [
+      "_edge_straddle_hi.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "0f0575851812ae0bf8e1eb789f2698dcbc5db2b8a7610892fb14cfd363db8690"
   },
   "M17": {
     "desc": "D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)",
     "verdict": "killed",
-    "why": "_test_fixed.scene                  FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_fixed.scene:4: auto 跨距推導失敗：跨距起點沒有擋面（端面懸空）"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:7: R6/I5/I6 timber 80: 跨距起點沒有擋面（端面懸空）",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "0338932766ba4f87c488178d06bff00bd548c9544a9f510c9015791f7545482f"
   },
   "M18": {
     "desc": "D11：重驗擋面:FREE 邊也算合法(!= 改 ==)",
     "verdict": "killed",
-    "why": "_test_grid_redeclare.scene         FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_grid_redeclare.scene:11: 重宣告後有物件失效（已回滾）"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:7: R6(d)/I6 timber 80: end 1 at 4000 mm, cross [0,20], legal stops=0",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "f32f48552271af3ea6321e97572a6a24375d5116dd859e731eff1f4fe92226a6"
   },
   "M19": {
     "desc": "R6(c)：through 選段:邊界座標不算在區間內(<= 改 <)",
     "verdict": "killed",
-    "why": "_mut_through_boundary.scene        FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_mut_through_boundary.scene:9: auto 跨距推導失敗：through 座標不在任何合法跨距內"
+    "why": "_mut_through_boundary.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/_mut_through_boundary.scene:9: R6/I5/I6 timber 2: through 座標不在任何合法跨距內",
+    "killed_by": [
+      "_mut_through_boundary.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "d2585c2dc642cf6f745a09349b9de906f244db7d1c294f7a03db13d801dd0892"
   },
   "M20": {
     "desc": "R6(d)：拿掉「起點必須有擋面」檢查(懸空端放行)",
-    "verdict": "killed",
-    "why": "_test_lshape.scene                 FAIL 錯誤不符: 期望含「沒有擋面」實得「(無錯誤訊息)」"
+    "verdict": "blocked",
+    "why": "連跑 3 次都是環境失敗,結果不可信 <- INFRA abnormal executable exit -11: (不是 SAC 的 WinError 4551:執行檔自己異常結束,重試結果相同,多半是變異讓它崩潰;run_tests.py 規定崩潰不算 killed,需人工判斷)",
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "d38138c5de0bd3caa2a7a6626dcbc84147d2a51d1527e456141730a79aa424c3"
   },
   "M21": {
     "desc": "R6(d)：拿掉「終點必須有擋面」檢查",
     "verdict": "killed",
-    "why": "_edge_straddle.scene               FAIL 錯誤不符: 期望含「端面懸空」實得「D:\\knowledgebase\\geometry\\_edge_straddle.scene:7: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——只有 boundary 可頂 RC」"
+    "why": "_edge_straddle.scene: FAIL 錯誤不符: 期望含「端面懸空」實得「/mnt/d/geometry-axiom/_edge_straddle.scene:7: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」",
+    "killed_by": [
+      "_edge_straddle.scene",
+      "_mut_notch_straddle.scene",
+      "_role_cover_short.scene",
+      "_edge_straddle_hi.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "4194657a4155d5304184e1a602fc40aceab8c5b8b8aeb282c91e58d8f2d109ff"
   },
   "M22": {
     "desc": "R6(d)：拿掉 FREE 擋面拒絕",
     "verdict": "killed",
-    "why": "_edge_free.scene                   FAIL 錯誤不符: 期望含「自由邊」實得「D:\\knowledgebase\\geometry\\_edge_free.scene:8: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——只有 boundary 可頂 RC」"
+    "why": "_test_free.scene: FAIL 錯誤不符: 期望含「自由邊」實得「/mnt/d/geometry-axiom/_test_free.scene:7: R6/I5/I6 timber 1: I5/I6 footprint outside effective region or FREE edge」",
+    "killed_by": [
+      "_test_free.scene",
+      "_edge_free.scene",
+      "_mut_free_hole_end.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "391ffab2fa68e7087053cf782f2a3f2d01373b682d170d5067a2e7dc2c2e2f46"
   },
   "M23": {
     "desc": "R6(d)：擋面歧義放行(hits>1 不拒絕)",
     "verdict": "equivalent",
-    "why": "等價變異(GEO-172 實證):hits>1 需要兩個邊類擋面在同一座標且都涵蓋角材全寬。輪廓邊+孔邊 → 孔要貼輪廓,核心拒絕;兩孔共邊/共角 → 核心拒絕(兩孔分開才接受);任一為角材側面 → stop_face_shadowed 只留一個;同一簡單多邊形不可能兩邊同座標又涵蓋同段。該分支在合法輸入下不可達,改掉不改變行為。"
+    "why": "等價變異(GEO-172 實證):hits>1 需要兩個邊類擋面在同一座標且都涵蓋角材全寬。輪廓邊+孔邊 → 孔要貼輪廓,核心拒絕;兩孔共邊/共角 → 核心拒絕(兩孔分開才接受);任一為角材側面 → stop_face_shadowed 只留一個;同一簡單多邊形不可能兩邊同座標又涵蓋同段。該分支在合法輸入下不可達,改掉不改變行為。",
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "a5db3dc3a3c6dbfe7500081d9ebfdc9acc68f2473206ad06c18e347a88faa113"
   },
   "M24": {
     "desc": "R6(c)：at-edge 接觸範圍:端點相接也算重疊(< 改 <=)",
     "verdict": "killed",
-    "why": "_mut_edge_touch_only.scene         FAIL 錯誤不符: 期望含「不接觸引用的邊」實得「D:\\knowledgebase\\geometry\\_mut_edge_touch_only.scene:8: V_CUT_PRIORITY：角材 2 端面頂到外輪廓邊（RC）——只有 boundary 可頂 RC」"
+    "why": "_edge_face_touch_only.scene: FAIL 錯誤不符: 期望含「都不接觸引用的邊」實得「/mnt/d/geometry-axiom/_edge_face_touch_only.scene:10: R6/I5/I6 timber 1: 跨距起點沒有擋面（端面懸空）」",
+    "killed_by": [
+      "_edge_face_touch_only.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "552a00013ac33518a2cbf0e54295b2b1193a932131d4cdb5ba017155b8fb88e1"
   },
   "M25": {
     "desc": "R6(c)：跨距歧義放行:多區間自動選第一段",
     "verdict": "killed",
-    "why": "_test_ambiguous.scene              FAIL 錯誤不符: 期望含「跨距歧義」實得「D:\\knowledgebase\\geometry\\_test_ambiguous.scene:10: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——只有 boundary 可頂 RC」"
+    "why": "_test_ambiguous.scene: FAIL 錯誤不符: 期望含「跨距歧義」實得「/mnt/d/geometry-axiom/_test_ambiguous.scene:10: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」",
+    "killed_by": [
+      "_test_ambiguous.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "a3fa516cd72d8c23928914238d8ba22b93ce7ba07b84aa7ae0c48e1960f401fb"
   },
   "M26": {
     "desc": "I13：錨角選錯邊(min/max 對調)",
     "verdict": "killed",
-    "why": "_test_fixed.scene                  FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_fixed.scene:4: 放不上去：錨點在有效範圍外、A0 面跨出邊界或孔，或端面頂到自由邊"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:7: R6/I5/I6 timber 80: I5/I6 footprint outside effective region or FREE edge",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "57f74daed563f3e2f594141f746261c7e6cedc86244e1a7a7fd339f38487642d"
   },
   "M27": {
     "desc": "深度側反轉:角材往面下長",
     "verdict": "killed",
-    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_grid.scene:15: V_BOUNDARY_ROLE：角材 2 宣告 boundary，但沒有任何側面貼在外輪廓邊上"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:7: R6(d)/I6 timber 80: end 1 at 4000 mm, cross [-20,0], legal stops=0",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "714be2601168637ab8f8a51b304a098aea567df9ccff4429ee2288e4244ca86d"
   },
   "M28": {
     "desc": "I13：奇數寬多的 1mm 改放 -cross 側",
     "verdict": "killed",
-    "why": "_test_grid_panel.scene             FAIL 輸出缺少「角材原點：(424, 20, 2500)」"
+    "why": "_test_grid_panel.scene: FAIL 輸出缺少「角材原點：(424, 20, 2500)」",
+    "killed_by": [
+      "_test_grid_panel.scene",
+      "_edge_grid_panel_from.scene",
+      "_role_ext_stop_primary.scene",
+      "_wit_i13_odd_width.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "geometry-core/references.inc",
+    "source_sha256": "458f636b4e6ca3fb6eba1f3dedef22fa25d77ee1c8888d7997559f9f0cab0f6c",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "5f7c13c50d40ae599b5d951c9e9d720e4e16f6f845f349b37c558927fb753553"
   },
   "M29": {
     "desc": "I13：外輪廓材料側反轉(footprint 長到面外)",
     "verdict": "killed",
-    "why": "_demo_ceiling.scene                FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_demo_ceiling.scene:33: auto 跨距推導失敗：中線上沒有任何合法跨距"
+    "why": "_demo_ceiling.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/_demo_ceiling.scene:33: R6/I5/I6 timber 2: 中線上沒有任何合法跨距",
+    "killed_by": [
+      "_demo_ceiling.scene",
+      "_edge_hole_anchor.scene",
+      "_edge_hole_bottom.scene",
+      "_edge_rect_stops.scene",
+      "_edge_stop_ambiguous.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "geometry-core/references.inc",
+    "source_sha256": "458f636b4e6ca3fb6eba1f3dedef22fa25d77ee1c8888d7997559f9f0cab0f6c",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "7fab8731da7c92363f2eb752f4e5f4b860888e0f7e398ce10e5b47faa12a9513"
   },
   "M30": {
     "desc": "I13：孔邊材料側反轉(footprint 長進孔裡)",
     "verdict": "killed",
-    "why": "_edge_hole_anchor.scene            FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_edge_hole_anchor.scene:20: auto 跨距推導失敗：有合法跨距但都不接觸引用的邊"
+    "why": "_edge_hole_anchor.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/_edge_hole_anchor.scene:20: R6/I5/I6 timber 5: 有合法跨距但都不接觸引用的邊",
+    "killed_by": [
+      "_edge_hole_anchor.scene",
+      "_edge_hole_bottom.scene",
+      "_ax_i5_hole_vertex_touches_rect_edge.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "geometry-core/references.inc",
+    "source_sha256": "458f636b4e6ca3fb6eba1f3dedef22fa25d77ee1c8888d7997559f9f0cab0f6c",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "6d414bf99d9c896277686ca029109b9d69bfc1df088639d90fe6b7b86e433ae7"
   },
   "M31": {
     "desc": "I10：格線座標遞增改非嚴格(<= 改 <)",
     "verdict": "killed",
-    "why": "_mut_grid_dup.scene                FAIL 錯誤不符: 期望含「嚴格遞增」實得「D:\\knowledgebase\\geometry\\_mut_grid_dup.scene:5: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——只有 boundary 可頂 RC」"
+    "why": "_mut_grid_dup.scene: FAIL 錯誤不符: 期望含「嚴格遞增」實得「/mnt/d/geometry-axiom/_mut_grid_dup.scene:5: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」",
+    "killed_by": [
+      "_mut_grid_dup.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "ce9a7c2cc5c09f1715231e63a643f61061cfe6b919428cdae0cb14104bd574dc"
   },
   "M32": {
     "desc": "I10：格線座標上下界改成嚴格(壓邊界的格線拒絕)",
     "verdict": "killed",
-    "why": "_edge_grid_at_border.scene         FAIL 錯誤不符: 期望含「沒有任何合法跨距」實得「D:\\knowledgebase\\geometry\\_edge_grid_at_border.scene:3: grid 座標不合法（u 軸）：座標要落在承載面外接範圍內」"
+    "why": "_edge_grid_at_border.scene: FAIL 錯誤不符: 期望含「沒有任何合法跨距」實得「/mnt/d/geometry-axiom/_edge_grid_at_border.scene:3: grid 座標不合法（u 軸）：座標要落在承載面外接範圍內」",
+    "killed_by": [
+      "_edge_grid_at_border.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "8eafea1fdf987abd8fa473f45cea58c2917f8ac7ce747f11feec6b2e074f90c6"
   },
   "M33": {
     "desc": "I13：at-grid 軸向守門員反轉",
     "verdict": "killed",
-    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_grid.scene:16: 格線座標軸必須與角材長度方向垂直（u 座標線配 ±v，v 座標線配 ±u）"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:13: I13/I23 timber 1: missing grid or face/axis mismatch (垂直)",
+    "killed_by": [
+      "subgrid-local.scene",
+      "_test_grid.scene",
+      "_test_lshape.scene",
+      "_test_hole_auto.scene",
+      "_test_ambiguous.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "geometry-core/references.inc",
+    "source_sha256": "458f636b4e6ca3fb6eba1f3dedef22fa25d77ee1c8888d7997559f9f0cab0f6c",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "d8e4aa2a96774117b6fdb7a25e7b0c1288651bb3bd2782f4134b75a98109c973"
   },
   "M34": {
     "desc": "I13：at-edge 平行守門員反轉",
     "verdict": "killed",
-    "why": "_test_fixed.scene                  FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_fixed.scene:4: at-edge 的邊必須與角材長度方向平行"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:7: I13 timber 80: at-face 邊必須平行於長度軸",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "geometry-core/references.inc",
+    "source_sha256": "458f636b4e6ca3fb6eba1f3dedef22fa25d77ee1c8888d7997559f9f0cab0f6c",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "4b721b9afbbdf8d63b78b375158891292614d093407b921f60e62695e93f0e9f"
   },
   "M35": {
     "desc": "明寫長度允許 L=0(<= 改 <)",
-    "verdict": "killed",
-    "why": "_mut_zero_len.scene                FAIL 錯誤不符: 期望含「大於 0」實得「D:\\knowledgebase\\geometry\\_mut_zero_len.scene:5: 角材參數無法推導 footprint」"
+    "verdict": "retired",
+    "why": "GEO-125(commit bc87d02,2026-09-18)廢除明寫長度:timber_construct 現在以 `!auto_length ||` 一律拒絕明寫長度(current_geometry.c timber_construct),`(!auto_length && length <= 0)` 這條判定隨整個分支消失;apply_timber_line 的訊息亦改為「明寫長度已廢除」,公理層 D7/I18/R4 同。沒有可對應的現行判定,不另編變異湊數。",
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "mutant_sha256": "4e006d329aa023a7a6948bf6efa9dedd8b77c710ad7a730bb56790bcde8ae71b"
   },
   "M36": {
-    "desc": "R6(e)：重驗跳過 auto 端點擋面檢查",
-    "verdict": "killed",
-    "why": "_mut_reval_free_hole.scene         FAIL 應拒絕但接受 (L=['600'])"
+    "desc": "R6(e)：重驗跳過端點擋面檢查",
+    "verdict": "equivalent",
+    "why": "等價變異(冗餘檢查,2026-10-01 實證):被變異的是 world_validate_derived 內的 R6(d)/R21 端面唯一擋面檢查,它唯一的呼叫者是 world_revalidate,而 world_revalidate 在它之前(同一個 candidate、reference_rebuild 之後)先跑 reference_check_all(references.inc:485-491),對每支已放角材算同一個 collect_stop_faces / count_legal_stops / 同一個 hits==0||(!has_between&&hits!=1) 條件,不過就 return false、根本到不了 world_validate_derived;兩處輸入(candidate 的 timbers/anchors/placements/boundaries)逐項相同,中間只改 candidate.spaces,不影響擋面。差分測試:基準 exe 與 M36 變異 exe 對 7143 個輸入(根目錄 143 個 .scene + tests/fuzz_scene.py 語料 3000 案 seed 1 + 4000 個 surface/grid 重宣告擾動,其中基準接受 362、重驗拒絕 612)比 exit code / stdout / stderr,零分歧;基準輸出從未出現 world_validate_derived 的專屬訊息「R6(d): 端面需要恰好一個涵蓋全寬的合法擋面」。另:同時拿掉兩處檢查 136/136 仍全過(前一輪探針)。此塊是 reference_check_all 的重複防線,不是獨立判定。",
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "4d479111f4a39b8bac332d9011211ee8ecbe9cc8421b9bbdbbc5d091b8a4f241"
   },
   "M37": {
     "desc": "I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)",
     "verdict": "killed",
-    "why": "_test_tx2.scene                    FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_tx2.scene:6: 重宣告後有物件失效（承載面/參考線/角材/空間沒全過）"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:7: 場景重驗失敗",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "9058138d4bb0af2308a222c655d92d19f934d6b33819e9e3c366200d96deff51"
   },
   "M38": {
     "desc": "I13：at-edge 邊參照:孔索引 <0 也放行(hole<0 檢查拿掉)",
     "verdict": "killed",
-    "why": "_mut_neg_hole_ref.scene            FAIL 錯誤不符: 期望含「邊參照」實得「D:\\knowledgebase\\geometry\\_mut_neg_hole_ref.scene:5: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——只有 boundary 可頂 RC」"
+    "why": "_mut_neg_hole_ref.scene: FAIL 錯誤不符: 期望含「邊參照」實得「/mnt/d/geometry-axiom/_mut_neg_hole_ref.scene:5: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC」",
+    "killed_by": [
+      "_mut_neg_hole_ref.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "dc85a69c25e55c9b4b3a76c35d69bb42d6d6dcc69c94fc4f8b0ef44eea8c6632"
   },
   "M39": {
     "desc": "R6(a)：切點去重用 < 不去重(零長 cell 出現)",
     "verdict": "killed",
-    "why": "_test_fixed.scene                  FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_fixed.scene:4: auto 跨距推導失敗：中線上沒有任何合法跨距"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:7: R6/I5/I6 timber 80: 中線上沒有任何合法跨距",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "d61046c10861234fa589b5b3fad934fb0d3c654d3e405e92e7b1bc13da2cb14a"
   },
   "M40": {
     "desc": "R6(b)：有效 cell 判定拿掉碰撞(只查包含)",
     "verdict": "killed",
-    "why": "_test_grid.scene                   FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_grid.scene:16: auto 跨距推導失敗：跨距起點擋面歧義"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:13: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC",
+    "killed_by": [
+      "subgrid-local.scene",
+      "ceiling-a.scene",
+      "demo-two-timbers.scene",
+      "room_a.scene",
+      "room_box.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "b5a24e8846793126d6b86adfbad2dcf569a910731a50725e67bc8a4d0f0e62cf"
   },
   "M51": {
     "desc": "I23：I23(a) 拿掉座標比對(移動已錨定的線也放行)",
-    "verdict": "killed",
-    "why": "_edge_grid_locked.scene            FAIL 應拒絕但接受 (L=['4000', '4000', '2960'])"
+    "verdict": "retired",
+    "why": "GEO-125(commit bc87d02,2026-09-18)解除 I23(a) 引用鎖:apply_grid_line 已無 was/now 座標比對區塊(整段刪除);公理層 I23(a) 改為「不再直接拒絕,重新推導引用它的角材並走 I8a 影響預覽」。取代它的是重算 + 預覽機制,不是同一判定的新寫法,故退役。",
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "mutant_sha256": "02876d3d49e287538dee75d4061bc836440dea39c228fd91a737ecb3cd29f138"
   },
   "M52": {
     "desc": "I10：重宣告改成疊加而非整軸換掉",
     "verdict": "killed",
-    "why": "_test_grid_redeclare.scene         FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_grid_redeclare.scene:11: grid 座標不合法（u 軸）：座標必須嚴格遞增"
+    "why": "_test_grid_redeclare.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/_test_grid_redeclare.scene:12: grid 座標不合法（u 軸）：座標必須嚴格遞增",
+    "killed_by": [
+      "_test_grid_redeclare.scene",
+      "_edge_grid_locked.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "bafed119bde6b640d9253b8520492be45516586cb0c56c21175dc0590475e2b0"
   },
   "M53": {
     "desc": "D10a：縫中心線改成縫起點(少加 gap/2)",
     "verdict": "killed",
-    "why": "(WSL/gcc 驗證,Windows 端持續被 SAC 擋)_test_grid_panel.scene FAIL 輸出缺少「角材原點：(424, 20, 2500)」"
+    "why": "_test_grid_panel.scene: FAIL 輸出缺少「角材原點：(424, 20, 2500)」",
+    "killed_by": [
+      "_test_grid_panel.scene",
+      "_edge_grid_panel_from.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "598d2c41c25cafa8705492f9ea07cf0956e34f5aea90697a556dfc79b968d501"
   },
   "M54": {
     "desc": "D10a：產生條件由嚴格小於放寬成小於等於(多出尾端一條)",
     "verdict": "killed",
-    "why": "_mut_grid_panel_edge.scene         FAIL 錯誤不符: 期望含「本軸共 7 條」實得「D:\\knowledgebase\\geometry\\_mut_grid_panel_edge.scene:7: auto 跨距推導失敗：中線上沒有任何合法跨距」"
+    "why": "_mut_grid_panel_edge.scene: FAIL 錯誤不符: 期望含「本軸共 7 條」實得「/mnt/d/geometry-axiom/_mut_grid_panel_edge.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距」",
+    "killed_by": [
+      "_mut_grid_panel_edge.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "35dd01741c9cef7c529bf016d1682aa93a76f0ae883857537e894e35203215c3"
   },
   "M55": {
     "desc": "D10a：縫寬奇數不再拒絕(改成只擋負數)",
-    "verdict": "killed",
-    "why": "_edge_grid_panel_odd_gap.scene     FAIL 錯誤不符: 期望含「縫寬必須是偶數」實得「D:\\knowledgebase\\geometry\\_edge_grid_panel_odd_gap.scene:3: grid 座標不合法（u 軸）：面材參數不合法（面材寬 > 0、縫寬為非負偶數、起算點須落在承載面範圍內）」"
+    "verdict": "retired",
+    "why": "GEO-122 / GEO-125(commit bc87d02,2026-09-18)刪除奇數縫寬拒絕:apply_grid_line 的 `p_gap % 2 != 0` 檢查已移除(只剩一行過期註解),公理層 D10a「gap 為奇數不拒絕」,縫中心線取下界(錨點在 current_geometry.c:1495 `def->anchor + k*T + def->panel + def->gap / 2`,該公式仍由 M53 變異)。被變異的拒絕已不屬於產品。",
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "mutant_sha256": "e57f384a286517d7218b7fd468309a6b593cce413ac83f4c56f5ef98a07df891"
   },
   "M56": {
     "desc": "I23：I23(b) 不再檢查被錨定的索引是否仍推導得出",
     "verdict": "equivalent",
-    "why": "等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild 對每個 AT_GRID 角材已先跑同一個 grid_line_coord,索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。"
+    "why": "等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild 對每個 AT_GRID 角材已先跑同一個 grid_line_coord,索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "52c54f1d2bdd93a4d12840f892841ba9391d0831c0eed463b0e24c2bb212fab9"
   },
   "M57": {
     "desc": "R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)",
     "verdict": "killed",
-    "why": "_test_between.scene                FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_between.scene:16: auto 跨距推導失敗：between 指名的擋面是自由邊（頂到空氣）"
+    "why": "subgrid-local.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/subgrid-local.scene:17: R6/I5/I6 timber 3: between 指名的擋面是自由邊（頂到空氣）",
+    "killed_by": [
+      "subgrid-local.scene",
+      "demo-two-timbers.scene",
+      "_edge_rect_stops.scene",
+      "_test_between.scene",
+      "_edge_between_blocked.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "2f04e96bc4e06187cebc8bbdb836fb34c9a04d12fbcf4a49177c44409b61f8b0"
   },
   "M58": {
     "desc": "R21：between 不再要求跨距落在合法區間內(可穿過實體)",
     "verdict": "killed",
-    "why": "_test_between.scene                FAIL 應接受但拒絕: D:\\knowledgebase\\geometry\\_test_between.scene:16: auto 跨距推導失敗：between 有多組合法配對： [1000,2980] [1000,3000] [1020,2980] [1020,3000]"
+    "why": "demo-two-timbers.scene: FAIL 應接受但拒絕: /mnt/d/geometry-axiom/demo-two-timbers.scene:17: R6/I5/I6 timber 3: between 有多組合法配對： [487,2487] [487,2514] [514,2487] [514,2514]",
+    "killed_by": [
+      "demo-two-timbers.scene",
+      "_edge_rect_stops.scene",
+      "_test_between.scene",
+      "_edge_between_blocked.scene",
+      "_role_between_priority.scene"
+    ],
+    "date": "2026-10-01",
+    "source_file": "current_geometry.c",
+    "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
+    "closure_sha256": "2c4a29673c38b08bc04ba78290d4b8a445937ebffcebf5dd14a66570b7ffbdc3",
+    "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+    "mutant_sha256": "4bbc7542d27c74057498ad0440beb3905da2ed0d2228e0de8101b8fd9ed95b4f"
   }
 }

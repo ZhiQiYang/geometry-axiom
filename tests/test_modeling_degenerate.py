@@ -74,9 +74,22 @@ def _extrusion_case(scene, placement_id=1, extrusion_id=50, lo="near", hi="far")
 
 class DegenerateGeometryAcceptance(unittest.TestCase):
     """裁判見模組 docstring:每個 case 只准落在 assert_rejected 或
-    assert_legal_and_reproducible 兩者之一。"""
+    assert_legal_and_reproducible 兩者之一。
 
-    def assert_rejected(self, definitions, request, status, code, clause):
+    關於 BASE_INVALID/I9 的覆蓋範圍(2026-10-01 核對 bridge 實回):
+    「孔與外環的關係」9 案(孔貼邊/孔頂點在邊上/孔與外角重合/孔等於外環/孔在外面/孔跨出/兩孔貼齊/
+    兩孔重疊/孔含孔)加「外環本身病態」3 案(8 字自交/相鄰重複點/非相鄰重複點),共 12 案,
+    在 C 解析層一律回同碼同訊息(BASE_INVALID / I9 /「邊界面輪廓不合法：邊要軸平行、不零長、
+    不自交；孔要在外輪廓內且互不重疊」,diagnostics 只有這一筆)。這 12 案都在解析層被 I9 擋下,
+    彼此不區分原因,屬同一守門(boundary_is_valid / poly_loop_is_valid)的覆蓋;想分辨各案究竟被
+    哪一條幾何規則擋,只能改產品碼讓訊息帶原因(不在本檔範圍)。這 12 案都釘住共同訊息
+    「邊界面輪廓不合法」,至少擋得住場景字串打錯後換成另一句 I9 訊息仍綠的情況。
+    另兩個 BASE_INVALID/I9 案(座標超界 coordinate_exceeds_D1 與 union_of_huge_beams)的訊息是
+    「座標或尺寸超出支援範圍」,與輪廓守門可區分,已用 message 參數各自釘住。"""
+
+    def assert_rejected(self, definitions, request, status, code, clause, message=None):
+        """`message`: optional substring the first diagnostic's message must contain (pins the cause where the
+        code/clause pair is shared by several causes -- see the BASE_INVALID/I9 note in the class docstring)."""
         with self.assertRaises(ModelError) as caught:
             build_package(definitions, request)
         diagnostics = caught.exception.as_dict()["diagnostics"]
@@ -87,6 +100,8 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         self.assertEqual(caught.exception.as_dict()["status"], status)
         self.assertEqual(diag0["code"], code)
         self.assertEqual(diag0["clause"], clause)
+        if message is not None:
+            self.assertIn(message, diag0["message"])
 
     def assert_legal_and_reproducible(self, definitions, request):
         package = build_package(definitions, request)
@@ -101,6 +116,8 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
     # ---- 孔與外環的相接／重疊／包含關係 -----------------------------------
     # 全部在 C legacy 場景解析層被拒(current_geometry.c 的 boundary_is_valid/
     # poly_loop_is_valid,D2/D3),Python modeling 層根本沒機會看到這些構形。
+    # 這 9 案加下一節「外環本身的病態構形」3 案,共 12 案都在解析層被 I9 擋下,彼此不區分原因
+    # (同碼同訊息「邊界面輪廓不合法…」),屬同一守門的覆蓋——見本類別 docstring。
 
     def test_hole_edge_collinear_touches_outer_edge(self):
         """孔邊與外環邊共線相接(貼齊、不重疊)。
@@ -112,7 +129,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         scene = ("boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation "
                  "hole 0,800 1000,800 1000,2000 0,2000\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_hole_vertex_on_outer_edge(self):
         """孔頂點落在外環邊上(不共線,只有一點貼齊)。
@@ -123,7 +140,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         scene = ("boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation "
                  "hole 0,800 2200,800 2200,2000 0,2000\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_hole_shares_vertex_with_outer_corner(self):
         """孔頂點與外環角點完全重合。
@@ -134,7 +151,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         scene = ("boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation "
                  "hole 0,0 2200,0 2200,2000 0,2000\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_hole_equals_outer_outline(self):
         """孔的座標與外環完全相同(整面挖空)。
@@ -144,7 +161,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         scene = ("boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation "
                  "hole 0,0 4000,0 4000,2800 0,2800\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_hole_entirely_outside_outer_outline(self):
         """孔完全在外環之外。
@@ -155,7 +172,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         scene = ("boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation "
                  "hole 5000,800 6000,800 6000,2000 5000,2000\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_hole_straddles_outer_outline(self):
         """孔跨出外環邊界(一部分在內、一部分在外)。
@@ -166,7 +183,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         scene = ("boundary 1 outline 0,0 4000,0 4000,2800 0,2800 kind wall_elevation "
                  "hole 3500,800 4500,800 4500,2000 3500,2000\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_two_holes_touching_along_shared_edge(self):
         """兩孔沿共同邊貼齊(不重疊,只接觸)。
@@ -179,7 +196,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
                  "hole 500,500 1500,500 1500,1500 500,1500 "
                  "hole 1500,500 2500,500 2500,1500 1500,1500\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_two_holes_overlapping(self):
         """兩孔互相重疊。
@@ -191,7 +208,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
                  "hole 500,500 1500,500 1500,1500 500,1500 "
                  "hole 1000,700 2000,700 2000,1700 1000,1700\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_hole_contains_another_hole(self):
         """一個孔完整包住另一個孔(孔含孔)。
@@ -203,9 +220,10 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
                  "hole 500,500 3000,500 3000,2000 500,2000 "
                  "hole 1000,900 1500,900 1500,1400 1000,1400\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     # ---- 外環本身的病態構形 -------------------------------------------------
+    # (這 3 案與上一節 9 案同屬「同一守門、同碼同訊息、彼此不區分原因」的 12 案。)
 
     def test_outer_outline_self_intersecting_figure_eight(self):
         """外環自交成 8 字形(頂點依 0,0 → 4000,2800 → 4000,0 → 0,2800 連接)。
@@ -215,7 +233,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         """
         scene = ("boundary 1 outline 0,0 4000,2800 4000,0 0,2800 kind wall_elevation\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_outer_outline_immediate_duplicate_vertex(self):
         """外環相鄰兩點重複(產生零長邊)。
@@ -225,7 +243,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         """
         scene = ("boundary 1 outline 0,0 4000,0 4000,0 4000,2800 0,2800 kind wall_elevation\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     def test_outer_outline_nonadjacent_duplicate_vertex_pinch(self):
         """外環非相鄰兩點座標相同,形成捏合(bowtie)。
@@ -237,7 +255,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         scene = ("boundary 1 outline 0,0 2000,0 2000,1400 2000,0 4000,0 4000,2800 0,2800 "
                  "kind wall_elevation\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "邊界面輪廓不合法")
 
     # ---- 擠出厚度:零與負 ----------------------------------------------------
 
@@ -268,7 +286,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         """
         scene = ("boundary 1 outline 0,0 100000001,0 100000001,2800 0,2800 kind wall_elevation\n"
                  "placement 1 on boundary 1 origin 0 0 0 u +x v +z\nspec near 0\nspec far 120\n")
-        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(*_extrusion_case(scene), "INVALID", "BASE_INVALID", "I9", "座標或尺寸超出支援範圍")
 
     def test_extrusion_span_exceeds_D1_range(self):
         """擠出跨距本身超過 D1 支援範圍(near=-1e8, far=+1e8,跨距 2e8)。
@@ -298,7 +316,7 @@ class DegenerateGeometryAcceptance(unittest.TestCase):
         ]}
         request = {"roots": [{"kind": "composition", "id": 90}], "role": "geometry",
                    "target": "solid-set", "allow_partial": False}
-        self.assert_rejected(definitions, request, "INVALID", "BASE_INVALID", "I9")
+        self.assert_rejected(definitions, request, "INVALID", "BASE_INVALID", "I9", "座標或尺寸超出支援範圍")
 
     # ---- 合法但反直覺的構形(裁判甲/乙的乙那一側) -----------------------------
 

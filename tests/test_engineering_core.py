@@ -3,58 +3,33 @@ import base64
 import copy
 import hashlib
 import json
-import os
 from pathlib import Path
-import shutil
-import subprocess
+import sys
 import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:  # `python tests/x.py` puts tests/ first, not the repo root
+    sys.path.insert(0, str(ROOT))
+from tests import _bridge  # noqa: E402
 
 
 class EngineeringCore(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.build = tempfile.TemporaryDirectory(prefix="geometry-eng-")
-        cls.addClassCleanup(cls.build.cleanup)
-        override = os.environ.get("GEOMETRY_ENGINEERING_BRIDGE")
-        if override:
-            cls.exe = override
-        else:
-            cc = shutil.which("cc")
-            if not cc:
-                raise unittest.SkipTest("set GEOMETRY_ENGINEERING_BRIDGE or install a C compiler")
-            cls.exe = str(Path(cls.build.name) / "bridge")
-            subprocess.run([cc, "-std=c11", "-O0", str(ROOT / "geometry-web/web_bridge.c"), "-lm", "-o", cls.exe], check=True, capture_output=True)
+        cls.exe = _bridge.find_bridge()
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="geometry-eng-case-")
         self.addCleanup(self.temp.cleanup)
         self.directory = Path(self.temp.name)
-        self.stderr = (self.directory / "stderr.log").open("w", encoding="utf-8")
-        self.proc = subprocess.Popen([self.exe], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=self.stderr, text=True, encoding="utf-8")
-        self.addCleanup(self.stop)
+        self.session = _bridge.BridgeSession(self.exe)
+        self.addCleanup(self.session.stop)
         self.assertTrue(self.command("reset")["ok"])
         self.assertTrue(self.command("line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000")["ok"])
 
-    def stop(self):
-        self.proc.stdin.close()
-        try:
-            self.proc.wait(timeout=10)
-        except subprocess.TimeoutExpired:
-            self.proc.kill()
-            self.proc.wait()
-        self.proc.stdout.close()
-        self.stderr.close()
-
     def command(self, command):
-        self.proc.stdin.write(command + "\n")
-        self.proc.stdin.flush()
-        line = self.proc.stdout.readline()
-        if not line:
-            self.fail("bridge closed: " + (self.directory / "stderr.log").read_text(encoding="utf-8"))
-        return json.loads(line)
+        return self.session.command(command)
 
     def read(self):
         result = self.command("engineering-read")

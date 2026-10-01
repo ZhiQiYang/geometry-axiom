@@ -4,46 +4,45 @@ Run against a freshly compiled bridge:
     GEOMETRY_TEST_BRIDGE=/path/to/bridge python tests/test_subgrid_contract.py
 
 All rejection checks compare the complete dump. The tests intentionally use the
-public bridge protocol, not internal structs or implementation-specific errors.
+public bridge protocol, not internal structs.
+Every reject(command, why=...) also pins the *reason*: `why` is a substring (or a tuple
+of substrings, all required) of the clause code / wording the bridge reports, so a
+mistyped command that is refused for the wrong reason (usage text, unknown command)
+cannot pass as "the rule rejected it". A gated edit answers ok=false with the generic
+"I8a: impact preview required" and keeps the real reason in preview.violations[].actual;
+rejection_reason() reads that, not the generic line. Each rejection below supplies
+its expected reason; broad diagnostics are explicitly marked as weak pins.
 S14/S15 (visibility, hit testing, keyboard and responsive UI) live in cdp_test.js.
 """
-import json
-import os
 from pathlib import Path
-import subprocess
+import sys
 import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-BRIDGE = os.environ.get('GEOMETRY_TEST_BRIDGE', str(ROOT / 'geometry-web/web_bridge.exe'))
+if str(ROOT) not in sys.path:  # `python tests/x.py` puts tests/ first, not the repo root
+    sys.path.insert(0, str(ROOT))
+from tests import _bridge  # noqa: E402
+
+# R6(b)/I13: direct at-line use of a subgrid line needs a fully supported span inside cell C.
+NO_LOCAL_SPAN = ('I13/R6', '沒有兩端獲得支撐的完整跨距')
+NO_BETWEEN_SPAN = 'between 指名的兩端之間沒有合法跨距'
 
 
-class Session:
-    def __init__(self):
-        self.stderr = tempfile.TemporaryFile(mode='w+b')
-        self.process = subprocess.Popen(
-            [BRIDGE], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=self.stderr, text=True, encoding='utf-8')
+def rejection_reason(result):
+    """Why a refused command was refused.
 
-    def send(self, command):
-        self.process.stdin.write(command + '\n')
-        self.process.stdin.flush()
-        line = self.process.stdout.readline()
-        if not line:
-            self.stderr.seek(0)
-            raise AssertionError(self.stderr.read().decode('utf-8', errors='replace'))
-        return json.loads(line)
-
-    def close(self):
-        self.process.stdin.close()
-        self.process.wait(timeout=10)
-        self.process.stdout.close()
-        self.stderr.close()
+    A preview-gated edit (ok=false + preview.valid=false) carries the generic
+    "I8a: impact preview required" in `error`; its real reason is in
+    preview.violations[].actual. Other refusals put the reason in `error`."""
+    violations = (result.get('preview') or {}).get('violations') or []
+    actual = [str(v['actual']) for v in violations if v.get('actual')]
+    return '\n'.join(actual) if actual else str(result.get('error', ''))
 
 
 class SubgridContract(unittest.TestCase):
     def setUp(self):
-        self.s = Session()
+        self.s = _bridge.BridgeSession()
         self.addCleanup(self.s.close)
         self.ok('reset')
 
@@ -71,7 +70,8 @@ class SubgridContract(unittest.TestCase):
     def timber(self, tid):
         return next(t for t in self.refs()['timbers'] if t['id'] == tid)
 
-    def reject(self, command):
+    def reject(self, command, why=None):
+        """`why`: substring, or tuple of substrings (all required), of rejection_reason(); None = reason not pinned."""
         before = self.dump()
         result = self.line(command)
         self.assertFalse(result['ok'], (command, result))
@@ -81,6 +81,10 @@ class SubgridContract(unittest.TestCase):
             self.assertFalse(confirmation['ok'], confirmation)
         self.assertEqual(before, self.dump(), command)
         self.assertTrue(result.get('error'), result)
+        if why is not None:
+            reason = rejection_reason(result)
+            for needle in ((why,) if isinstance(why, str) else why):
+                self.assertIn(needle, reason, f'{command!r} was refused for a different reason: {reason!r}')
         return result
 
     def preview(self, command, valid=True):
@@ -177,16 +181,17 @@ class SubgridContract(unittest.TestCase):
         self.surface('0,0 4000,0 4000,1000 1000,1000 1000,3000 0,3000')
         self.ok('grid 1 on 1 u 0 1000 3000 4000 v 1000 2000')
         self.ok(self.child(u=('min', 'line:1'), v=('min', 'line:0')))
+        not_adjacent = ('I25', '彼此相鄰')
         invalid = [
-            self.child(3, u=('line:0', 'line:1'), v=('min', 'line:0')),
-            self.child(3, u=('line:2', 'line:3'), v=('min', 'line:0')),
-            self.child(3, u=('min', 'line:2'), v=('min', 'line:0')),
-            self.child(3, u=('line:1', 'line:1'), v=('min', 'line:0')),
-            self.child(3, u=('line:1', 'line:2')),
+            (self.child(3, u=('line:0', 'line:1'), v=('min', 'line:0')), not_adjacent),
+            (self.child(3, u=('line:2', 'line:3'), v=('min', 'line:0')), not_adjacent),
+            (self.child(3, u=('min', 'line:2'), v=('min', 'line:0')), not_adjacent),
+            (self.child(3, u=('line:1', 'line:1'), v=('min', 'line:0')), not_adjacent),
+            (self.child(3, u=('line:1', 'line:2')), ('I25', '沒有正面積交集')),
         ]
-        for command in invalid:
+        for command, why in invalid:
             with self.subTest(command=command):
-                self.reject(command)
+                self.reject(command, why)
 
     def test_s03_exact_divisions_one_axis_empty_and_64_line_limit(self):
         self.surface('0,0 260,0 260,260 0,260')
@@ -196,9 +201,16 @@ class SubgridContract(unittest.TestCase):
         self.assertEqual(self.grid()['u'], list(range(2, 130, 2)))
         self.assertEqual(self.grid()['v'], [])
         self.assertEqual(len(self.grid()['lines']), 64)
-        for divisions in [(1, 1), (0, 2), (-1, 2), ('2.5', 2), (66, 1), (3, 1)]:
+        # -1 and 2.5 never reach the I25 checks: the grammar refuses them with the D19/I25 usage line
+        # (same text for any malformed subgrid line), so those two pins are weak.
+        usage = ('D19/I25', 'subgrid id parent id cell')
+        for divisions, why in [((1, 1), ('I25', '至少一軸須大於 1 等分')),
+                               ((0, 2), ('I25', '無法精確分成 0 等分')),
+                               ((-1, 2), usage), (('2.5', 2), usage),
+                               ((66, 1), ('I25', '無法精確分成 66 等分')),
+                               ((3, 1), ('I25', '無法精確分成 3 等分'))]:
             with self.subTest(divisions=divisions):
-                self.reject(self.child(u=('min', 'line:0'), v=('min', 'line:0'), divisions=divisions))
+                self.reject(self.child(u=('min', 'line:0'), v=('min', 'line:0'), divisions=divisions), why)
 
     def test_s03_read_only_preview_matches_committed_subgrid(self):
         self.surface()
@@ -237,7 +249,7 @@ class SubgridContract(unittest.TestCase):
         self.assertEqual(self.guide(1)['segments'], [[[2000, 0], [2000, 900]],
                                                    [[2000, 2100], [2000, 3000]]])
         self.ok('timber 1 20 20 role primary')
-        self.reject('place 1 on 1 at-line grid 2 u 0 through 500 +v +n')
+        self.reject('place 1 on 1 at-line grid 2 u 0 through 500 +v +n', NO_LOCAL_SPAN)
 
     def test_s04_concave_face_segments_are_clipped_to_cell_intersection(self):
         self.surface('0,0 4000,0 4000,1000 1000,1000 1000,3000 0,3000')
@@ -247,17 +259,23 @@ class SubgridContract(unittest.TestCase):
         self.assertEqual(lines['u', 2], [[[1500, 0], [1500, 1000]]])
         self.assertEqual(lines['v', 2], [[[0, 1500], [1000, 1500]]])
 
-    def test_s05_duplicate_cells_parent_kind_and_id_type_are_rejected(self):
+    def test_s05_duplicate_cells_parent_kind_id_type_and_one_main_grid_are_rejected(self):
         self.basic()
         self.ok(self.child(3, u=('min', 'line:0')))
-        invalid = [self.child(4), self.child(4, parent=2), self.child(4, parent=99),
-                   self.child(1), 'grid 2 on 1 u 1000', 'grid 4 on 1 u 1000']
-        for command in invalid:
+        parent_not_main = ('D19/I25', '父格必須是主網格')
+        invalid = [(self.child(4), ('I25', '已有子格')),
+                   (self.child(4, parent=2), parent_not_main),
+                   (self.child(4, parent=99), parent_not_main),
+                   (self.child(1), ('D19/I25', '類型與父格編號不能更換')),
+                   ('grid 2 on 1 u 1000', ('D19', '不能將既有子網格改成主網格')),
+                   # I10 permits children, but only one main grid per surface.
+                   ('grid 4 on 1 u 1000', '一面一格')]
+        for command, why in invalid:
             with self.subTest(command=command):
-                self.reject(command)
+                self.reject(command, why)
         self.surface_on_two()
         self.ok('grid 8 on 2 u 1000 3000 v 1000 2000')
-        self.reject(self.child(parent=8))
+        self.reject(self.child(parent=8), ('D19/I25', '類型與父格編號不能更換'))
 
     def surface_on_two(self):
         self.ok('surface 2 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000')
@@ -270,7 +288,8 @@ class SubgridContract(unittest.TestCase):
             lower = 'min' if index == 0 else f'line:{index - 1}'
             self.ok(self.child(gid, u=(lower, f'line:{index}'), v=('min', 'max'), divisions=(2, 1)))
         self.assertEqual(len(self.refs()['grids']), 16)
-        self.reject(self.child(17, u=('line:14', 'line:15'), v=('min', 'max'), divisions=(2, 1)))
+        self.reject(self.child(17, u=('line:14', 'line:15'), v=('min', 'max'), divisions=(2, 1)),
+                    ('I10', '合計不能超過 16 組'))
 
     def test_s06_both_child_axes_default_secondary_and_direction_rules_still_apply(self):
         self.basic()
@@ -278,24 +297,36 @@ class SubgridContract(unittest.TestCase):
         self.assertEqual([(x['axis'], x['role'], x['priority']) for x in self.grid()['lines']],
                          [('u', 'secondary', 3), ('v', 'secondary', 3)])
         self.ok('timber 1 20 20 role secondary')
-        self.reject('place 1 on 1 at-line grid 2 v 0 +u +n')
+        # R6(b): this local cell has no supported complete span.
+        self.reject('place 1 on 1 at-line grid 2 v 0 +u +n', NO_LOCAL_SPAN)
         self.ok('reset')
         self.supported()
         self.ok('timber 3 20 20 role secondary')
         self.ok('place 3 on 1 at-line grid 2 v 0 between t1 t2 +u +n')
         self.ok('timber 4 20 20 role secondary')
-        self.reject('place 4 on 1 at-line grid 2 u 0 +v +n')
+        self.reject('place 4 on 1 at-line grid 2 u 0 +v +n', NO_LOCAL_SPAN)
         before = self.timber(3)
         self.ok('grid 1 on 1 main-along u')
         self.assertEqual(self.timber(3), before)
         self.assertTrue(all(x['role'] == 'secondary' for x in self.grid()['lines']))
+
+        # D17/I21: full-height child cell and real boundary supports remove the
+        # earlier R6(b) failure. A secondary parallel to the primary axis must fail.
+        self.ok('reset')
+        self.supported(v='panel 4000 gap 5', child=False)
+        self.ok(self.child(v=('min', 'max')))
+        self.ok('timber 4 20 20 role secondary')
+        self.reject('place 4 on 1 at-line grid 2 u 0 +v +n', 'V_PRIMARY_AXIS')
+        self.ok('timber 4 20 20 role primary')
+        self.ok('place 4 on 1 at-line grid 2 u 0 +v +n')
+        self.assertEqual(self.timber(4)['geometry']['length'], 2960)
 
     def test_s06_explicit_primary_override_can_use_a_fully_supported_child_line(self):
         self.supported(child=False)
         self.ok(self.child(u=('min', 'line:0'), v=('min', 'line:0'), divisions=(2, 1)))
         # This cell ends at v=1000, so it cannot support a full primary span.
         self.ok('timber 3 20 20 role primary')
-        self.reject('place 3 on 1 at-line grid 2 u 0 +v +n')
+        self.reject('place 3 on 1 at-line grid 2 u 0 +v +n', NO_LOCAL_SPAN)
         self.apply('delete grid 2')
         self.ok('grid 1 on 1 v panel 4000 gap 5')
         self.ok(self.child(u=('min', 'line:0'), v=('min', 'max'), divisions=(2, 1)))
@@ -309,19 +340,19 @@ class SubgridContract(unittest.TestCase):
         self.ok('place 3 on 1 at-line grid 2 v 0 +u +n')
         self.assertEqual(self.timber(3)['geometry']['length'], 1980)
         self.ok('timber 4 20 20 role primary')
-        self.reject('place 4 on 1 at-line grid 2 u 0 +v +n')
-        self.reject('place 4 on 1 at-line grid 2 u 0 through 1500 +v +n')
-        self.reject('place 4 on 1 at-line grid 2 u 0 between t80 t81 +v +n')
+        self.reject('place 4 on 1 at-line grid 2 u 0 +v +n', NO_LOCAL_SPAN)
+        self.reject('place 4 on 1 at-line grid 2 u 0 through 1500 +v +n', NO_LOCAL_SPAN)
+        self.reject('place 4 on 1 at-line grid 2 u 0 between t80 t81 +v +n', NO_BETWEEN_SPAN)
         self.ok('reset')
         self.supported(v='1000 1010')
         self.ok('timber 3 20 20 role secondary')
-        self.reject('place 3 on 1 at-line grid 2 v 0 between t1 t2 +u +n')
+        self.reject('place 3 on 1 at-line grid 2 v 0 between t1 t2 +u +n', ('I13', '完整寬度超出子格範圍'))
 
     def test_s07_independent_guide_from_child_coordinate_does_not_inherit_scope(self):
         self.supported()
         self.ok('guide 1 1 v grid:2:u:0')
         self.ok('timber 3 20 20 role primary')
-        self.reject('place 3 on 1 at-line grid 2 u 0 +v +n')
+        self.reject('place 3 on 1 at-line grid 2 u 0 +v +n', NO_LOCAL_SPAN)
         self.ok('place 3 on 1 at-line guide 1 +v +n')
         self.assertEqual(self.timber(3)['geometry']['centerline'], 2000)
         self.assertEqual(self.timber(3)['geometry']['length'], 2960)
@@ -336,7 +367,7 @@ class SubgridContract(unittest.TestCase):
         self.ok('grid 1 on 1 u 1000 3000 v 1200 1800')
         self.ok(self.child(v=('min', 'line:0'), divisions=(2, 1)))
         self.ok('timber 1 20 20 role primary')
-        self.reject('place 1 on 1 at-line grid 2 u 0 through 2400 +v +n')
+        self.reject('place 1 on 1 at-line grid 2 u 0 through 2400 +v +n', 'through 座標不在任何合法跨距內')
         self.ok('place 1 on 1 at-line grid 2 u 0 through 600 +v +n')
         self.assertEqual(self.timber(1)['geometry']['length'], 1180)
         self.ok('undo')
@@ -351,8 +382,8 @@ class SubgridContract(unittest.TestCase):
         self.ok('grid 1 on 1 u 1000 3000')
         self.ok(self.child(v=('min', 'max'), divisions=(2, 1)))
         self.ok('timber 1 20 20 role primary')
-        self.reject('place 1 on 1 at-line grid 2 u 0 +v +n')
-        self.reject('place 1 on 1 at-line grid 2 u 0 between t80 t81 +v +n')
+        self.reject('place 1 on 1 at-line grid 2 u 0 +v +n', '跨距歧義')
+        self.reject('place 1 on 1 at-line grid 2 u 0 between t80 t81 +v +n', NO_BETWEEN_SPAN)
         self.ok('place 1 on 1 at-line grid 2 u 0 between t80 h0e0 +v +n')
         self.assertEqual(self.timber(1)['geometry']['length'], 1180)
 
@@ -411,23 +442,26 @@ class SubgridContract(unittest.TestCase):
         self.ok('redo')
         self.roundtrip()
 
-    def test_s09_parent_line_count_and_edge_dedup_changes_are_locked(self):
+    def test_s09_parent_line_count_and_child_canonical_edges_are_preserved(self):
         self.basic()
         for command in ['grid 1 on 1 u 500 1000 3000', 'grid 1 on 1 u 1000',
                         'grid 1 on 1 v panel 4000 gap 5', 'grid 1 on 1 v 500 1000 2000']:
             with self.subTest(command=command):
-                self.reject(command)
+                self.reject(command, ('I23', '線數不可從'))
         self.ok('reset')
         self.surface()
         self.ok('grid 1 on 1 u 1000 3000')
         self.ok(self.child(u=('min', 'line:0'), v=('min', 'max')))
-        self.reject('grid 1 on 1 u 0 3000')
+        # D19/I25: line:0 coincides with min, invalidating the child's canonical edge.
+        self.reject('grid 1 on 1 u 0 3000', ('I25', '相鄰'))
 
     def test_s09_boundary_growth_cannot_change_panel_count_behind_children(self):
         self.surface()
         self.ok('grid 1 on 1 u panel 400 gap 5 from 0')
         self.ok(self.child(v=('min', 'max'), divisions=(3, 1)))
-        self.reject('boundary 1 outline 0,0 4100,0 4100,3000 0,3000')
+        # Weak pin: the bridge only says "re-declaration invalidated objects" (the world-revalidation path);
+        # it does not name I23/I25, so this proves the refusal comes from revalidation, not which rule.
+        self.reject('boundary 1 outline 0,0 4100,0 4100,3000 0,3000', '重宣告後有物件失效')
 
     def test_s09_retarget_divisions_and_referenced_index_contract(self):
         self.basic()
@@ -437,7 +471,7 @@ class SubgridContract(unittest.TestCase):
         preview = self.preview(self.child(u=('min', 'line:0'), divisions=(4, 2)))
         self.confirm(preview)
         self.ok('guide 1 1 v grid:2:u:2')
-        self.reject(self.child(u=('min', 'line:0'), divisions=(2, 2)))
+        self.reject(self.child(u=('min', 'line:0'), divisions=(2, 2)), ('guide 1', 'grid:2:u:2'))
         self.apply('delete guide 1')
         self.ok('guide 1 1 v grid:2:u:0')
         preview = self.preview(self.child(u=('min', 'line:0'), divisions=(2, 2)))
@@ -450,14 +484,14 @@ class SubgridContract(unittest.TestCase):
         before = self.dump()
         preview = self.preview('grid 1 on 1 u 1100 3100')
         self.ok('cancel-preview')
-        self.reject('confirm ' + str(preview['token']))
+        self.reject('confirm ' + str(preview['token']), ('I8a', 'preview token'))
         self.assertEqual(before, self.dump())
         preview = self.preview('grid 1 on 1 u 1100 3100')
         self.ok('spec unrelated 20')
-        self.reject('confirm ' + str(preview['token']))
+        self.reject('confirm ' + str(preview['token']), ('I8a', 'stale'))
         self.assertEqual(self.grid()['u'], [2000])
         preview = self.preview('grid 1 on 1 u 1001 3000', valid=False)
-        self.reject('confirm ' + str(preview['token']))
+        self.reject('confirm ' + str(preview['token']), ('I8a', 'preview token'))
         self.assertEqual(self.grid()['u'], [2000])
 
     def test_s10_invalid_preview_shows_requested_parent_and_unresolvable_child(self):
@@ -477,7 +511,7 @@ class SubgridContract(unittest.TestCase):
         # The early I23 rejection cannot present an untested guide as valid new geometry.
         guide = next(g for g in preview['guides'] if g['id'] == 1)
         self.assertIsNone(guide['after'])
-        self.reject('confirm ' + str(preview['token']))
+        self.reject('confirm ' + str(preview['token']), ('I8a', 'preview token'))
         self.assertEqual(before, self.dump())
         preview = self.preview(self.child(divisions=(3, 2)), valid=False)
         child = next(g for g in preview['grids'] if g['id'] == 2)
@@ -487,7 +521,7 @@ class SubgridContract(unittest.TestCase):
         self.assertEqual(child['after']['u'], [])
         self.assertFalse(any(line['axis'] == 'u' for line in child['after']['lines']))
         self.assertIsNone(next(g for g in preview['guides'] if g['id'] == 1)['after'])
-        self.reject('confirm ' + str(preview['token']))
+        self.reject('confirm ' + str(preview['token']), ('I8a', 'preview token'))
         self.assertEqual(before, self.dump())
 
     def test_s11_parent_guide_and_timber_dependencies_block_deletion(self):
@@ -498,10 +532,10 @@ class SubgridContract(unittest.TestCase):
         self.assertEqual(self.grid(1)['dependencies']['children'], [2])
         self.assertIn(1, self.grid()['dependencies']['guides'])
         self.assertIn(3, self.grid()['dependencies']['timbers'])
-        self.reject('delete grid 1')
-        self.reject('delete grid 2')
+        self.reject('delete grid 1', ('I23', '仍有子格'))
+        self.reject('delete grid 2', ('I23', '仍被參考線'))
         self.apply('delete guide 1')
-        self.reject('delete grid 2')
+        self.reject('delete grid 2', 'V_GRID_LOCKED')
         preview = self.preview('delete timber 3')
         self.confirm(preview)
         before = self.dump()
@@ -517,7 +551,7 @@ class SubgridContract(unittest.TestCase):
         self.ok('guide 22 1 v 1/2*grid:2:u:0+1/2*grid:20:u:0')
         self.assertEqual(self.grid(2)['dependencies']['guides'], [22])
         self.assertEqual(self.grid(20)['dependencies']['guides'], [21, 22])
-        self.reject('delete grid 20')
+        self.reject('delete grid 20', ('I23', '仍被參考線'))
         self.ok('reset')
         self.surface()
         self.ok('grid 0 on 1 u 1000 3000 v 1000 2000')
@@ -527,7 +561,7 @@ class SubgridContract(unittest.TestCase):
         self.ok(self.child(parent=0))
         self.ok('guide 0 1 v grid:2:u:0')
         self.assertEqual(self.grid(2)['dependencies']['guides'], [0])
-        self.reject('delete grid 2')
+        self.reject('delete grid 2', ('I23', '仍被參考線'))
 
     def room_for_split(self):
         for line in (ROOT / '_ax_r13_anchor_follows.scene').read_text(encoding='utf-8').splitlines():
@@ -564,7 +598,7 @@ class SubgridContract(unittest.TestCase):
         self.room_for_split()
         self.ok('grid 1 on 1 u 1000 3500')
         self.ok(self.child(v=('min', 'max')))
-        self.reject('apply-proj 1 b1 cut-strip')
+        self.reject('apply-proj 1 b1 cut-strip', '拆分後參考線/網格/角材失去承載面')
 
     def test_s12_split_assigns_guide_from_recomputed_child_not_stale_coordinate(self):
         self.room_for_split()

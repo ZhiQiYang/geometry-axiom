@@ -3,17 +3,27 @@
 GEOMETRY_TEST_BRIDGE points to a fresh executable (or a WSL launcher).
 GEOMETRY_TEST_SERVER_PATH_STYLE=wsl translates temporary load/request paths.
 No coordinate oracle calls the implementation's grid evaluator.
+
+reject(command, why=...) pins the *reason* as well as "refused and World unchanged": `why` is a
+substring (or a tuple of substrings, all required) of rejection_reason(response), so a command that
+is refused only because it was mistyped (unknown command) cannot pass as a rule rejection.
+test_infinite_grid_contract.py shares this reject().  A gated edit answers ok=false with the generic
+"I8a: impact preview required" and puts the real reason in preview.violations[].actual; the
+grid-system definition refusals all share one D29/I37 line, so those pins are weak (they prove the
+definition guard fired, not which field was wrong).
 """
 import json
 import os
 from pathlib import Path
-import shutil
-import subprocess
+import sys
 import tempfile
 import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:  # `python tests/x.py` puts tests/ first, not the repo root
+    sys.path.insert(0, str(ROOT))
+from tests import _bridge  # noqa: E402
 
 
 def system(identifier=0, name="天花 網格 A", u="series 100 200 3", v="explicit 200 600", main="none"):
@@ -27,49 +37,29 @@ def native_path(path):
     return value
 
 
+def rejection_reason(response):
+    """Why a refused command was refused: preview.violations[].actual when the refusal is a
+    preview-gated one (its top-level `error` is then the generic "I8a: impact preview required"),
+    else the top-level `error`."""
+    violations = (response.get("preview") or {}).get("violations") or []
+    actual = [str(v["actual"]) for v in violations if v.get("actual")]
+    return "\n".join(actual) if actual else str(response.get("error", ""))
+
+
 class GridSystemContract(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        override = os.environ.get("GEOMETRY_TEST_BRIDGE")
-        if override:
-            cls.bridge = override
-            return
-        cc = shutil.which("cc")
-        if not cc:
-            raise unittest.SkipTest("set GEOMETRY_TEST_BRIDGE to a freshly built bridge")
-        cls.build = tempfile.TemporaryDirectory(prefix="geometry-grid-build-")
-        cls.addClassCleanup(cls.build.cleanup)
-        cls.bridge = str(Path(cls.build.name) / "bridge")
-        subprocess.run([cc, "-std=c11", "-O0", str(ROOT / "geometry-web/web_bridge.c"), "-lm", "-o", cls.bridge], check=True, capture_output=True)
+        cls.bridge = _bridge.find_bridge()
 
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory(prefix="geometry-grid-contract-")
         self.addCleanup(self.directory.cleanup)
-        self.stderr = tempfile.TemporaryFile()
-        self.addCleanup(self.stderr.close)
-        self.proc = subprocess.Popen([self.bridge], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                     stderr=self.stderr, text=True, encoding="utf-8")
-        self.addCleanup(self.stop)
+        self.session = _bridge.BridgeSession(self.bridge)
+        self.addCleanup(self.session.stop)
         self.assertTrue(self.command("reset")["ok"])
 
-    def stop(self):
-        self.proc.stdin.close()
-        try:
-            self.proc.wait(timeout=10)
-        except subprocess.TimeoutExpired:
-            self.proc.kill()
-            self.proc.wait()
-        self.proc.stdout.close()
-        self.stderr.close()
-
     def command(self, command):
-        self.proc.stdin.write(command + "\n")
-        self.proc.stdin.flush()
-        answer = self.proc.stdout.readline()
-        if not answer:
-            self.stderr.seek(0)
-            self.fail("Bridge exited: " + self.stderr.read().decode("utf-8", errors="replace"))
-        return json.loads(answer)
+        return self.session.command(command)
 
     def line(self, command):
         return self.command("line " + command)
@@ -117,13 +107,18 @@ class GridSystemContract(unittest.TestCase):
         self.assertEqual(before, self.snapshot(), "a preview must not mutate any live definition or geometry")
         return response["preview"]
 
-    def reject(self, command):
+    def reject(self, command, why=None):
+        """`why`: substring, or tuple of substrings (all required), of rejection_reason(); None = reason not pinned."""
         before = self.snapshot()
         response = self.line(command)
         self.assertFalse(response.get("ok") and response.get("preview", {}).get("valid", True), response)
         if "preview" in response:
             self.assertFalse(self.line("confirm " + str(response["preview"]["token"]))["ok"])
         self.assertEqual(before, self.snapshot(), command)
+        if why is not None:
+            reason = rejection_reason(response)
+            for needle in ((why,) if isinstance(why, str) else why):
+                self.assertIn(needle, reason, f"{command!r} was refused for a different reason: {reason!r}")
 
     def roundtrip(self):
         before = self.snapshot()
@@ -167,25 +162,33 @@ class GridSystemContract(unittest.TestCase):
                         "series 0 9223372036854775807 2", "panel 0 gap 0 from 0",
                         "panel 10 gap -1 from 0", "panel 10 gap 0", "explicit 100000001",
                         "explicit " + " ".join(str(i) for i in range(65))]
+        # Weak pins: the bridge answers every malformed grid-system definition with one shared D29/I37 line
+        # (name/id/axis/main-along alike), so "D29/I37" shows the definition guard fired, not which field was
+        # wrong. Only the two D1 overflows have their own wording.
+        definition_guard = "D29/I37"
+        out_of_d1_range = {"series 0 9223372036854775807 2", "explicit 100000001"}
         for axis in invalid_axes:
             with self.subTest(axis=axis):
-                self.reject(system(u=axis, v="none"))
-        for command in [system(u="none", v="none"), system(u="explicit 100", v="none", main="u"),
-                        system(name=""), system(name="界" * 33), system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex ff"),
-                        system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex 610a62"),
-                        system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex 610062"),
-                        system().replace("grid-system 0", "grid-system 4294967296"),
-                        "grid 1 on 1 from-system 0 origin 0 0"]:
+                self.reject(system(u=axis, v="none"), "超出支援範圍" if axis in out_of_d1_range else definition_guard)
+        needs_surface = "前面要先有 placement 或 surface"
+        for command, why in [(system(u="none", v="none"), definition_guard),
+                             (system(u="explicit 100", v="none", main="u"), definition_guard),
+                             (system(name=""), definition_guard), (system(name="界" * 33), definition_guard),
+                             (system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex ff"), definition_guard),
+                             (system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex 610a62"), definition_guard),
+                             (system().replace("name-hex " + "天花 網格 A".encode().hex(), "name-hex 610062"), definition_guard),
+                             (system().replace("grid-system 0", "grid-system 4294967296"), definition_guard),
+                             ("grid 1 on 1 from-system 0 origin 0 0", needs_surface)]:
             with self.subTest(command=command):
-                self.reject(command)
+                self.reject(command, why)
         self.commit(system(name="界" * 32))
-        self.reject("grid 1 on 1 from-system 0 origin 0 0")
+        self.reject("grid 1 on 1 from-system 0 origin 0 0", needs_surface)
         self.surface(1)
-        self.reject("grid 1 on 1 from-system 99 origin 0 0")
-        self.reject("grid 1 on 1 from-system 0 origin 100000000 0")
+        self.reject("grid 1 on 1 from-system 99 origin 0 0", ("I37", "existing surface and grid-system"))
+        self.reject("grid 1 on 1 from-system 0 origin 100000000 0", ("I37", "exceed D1 range"))
         for identifier in range(1, 16):
             self.commit(system(identifier=identifier))
-        self.reject(system(identifier=16))
+        self.reject(system(identifier=16), ("I37", "capacity is 16"))
         self.assertEqual(16, len(self.objects()["gridSystems"]))
 
     def test_line_limit_applies_when_panel_system_gets_a_surface(self):
@@ -195,7 +198,7 @@ class GridSystemContract(unittest.TestCase):
         self.assertEqual(list(range(64)), self.grids()[10]["u"])
         self.commit(system(1, u="panel 1 gap 0 from 0", v="none"))
         self.surface(2)
-        self.reject("grid 20 on 2 from-system 1 origin 0 0")
+        self.reject("grid 20 on 2 from-system 1 origin 0 0", ("I10", "來源或主支方向不合法"))
         self.assertEqual([], next(x for x in self.objects()["gridSystems"] if x["id"] == 1)["applications"])
 
     def test_failed_reload_preserves_live_source_and_all_applications(self):
@@ -218,7 +221,7 @@ class GridSystemContract(unittest.TestCase):
         self.assertIn("grid 10 on 1 from-system 0 origin 0 0", scene)
         self.assertIn("grid 20 on 2 from-system 0 origin 100 200", scene)
         self.assertNotIn("grid 10 on 1 u ", scene, "derived coordinates cannot become persisted sources")
-        self.reject("grid 11 on 1 from-system 0 origin 0 0")
+        self.reject("grid 11 on 1 from-system 0 origin 0 0", ("I10", "already has a main grid"))
         self.roundtrip()
 
     def test_panel_anchor_and_true_l_shape_hole_segments(self):
@@ -317,12 +320,12 @@ class GridSystemContract(unittest.TestCase):
 
     def test_protected_source_deletion_and_ordinary_grid_edits(self):
         self.pair()
-        self.reject("delete grid-system 0")
-        self.reject("grid 10 on 1 u 500 1000")
-        self.reject("grid 10 on 1 main-along u")
-        self.reject("grid 10 on 1 u panel 1000 gap 0 from 0")
+        self.reject("delete grid-system 0", ("I37", "still referenced by grid"))
+        self.reject("grid 10 on 1 u 500 1000", ("D29", "direct axis edits are not allowed"))
+        self.reject("grid 10 on 1 main-along u", ("D29", "direct axis edits are not allowed"))
+        self.reject("grid 10 on 1 u panel 1000 gap 0 from 0", ("D29", "direct axis edits are not allowed"))
         self.commit("delete grid 10")
-        self.reject("delete grid-system 0")
+        self.reject("delete grid-system 0", ("I37", "still referenced by grid"))
         self.commit("delete grid 20")
         before = self.snapshot()
         self.commit("delete grid-system 0")
@@ -372,7 +375,7 @@ class GridSystemContract(unittest.TestCase):
         self.assertTrue(response["preview"]["valid"], response)
         self.assertTrue(self.command("engineering-confirm " + str(response["preview"]["token"]))["ok"])
         binding = self.command("engineering-read")["state"]
-        self.reject("grid 10 on 1 from-system 0 origin 0 0")
+        self.reject("grid 10 on 1 from-system 0 origin 0 0", ("D28", "engineering sources"))
         self.assertEqual(binding, self.command("engineering-read")["state"])
         self.assertIsNone(self.grids()[10]["sourceSystem"])
 

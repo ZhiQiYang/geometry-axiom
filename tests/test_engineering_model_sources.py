@@ -1,13 +1,12 @@
 """Actual native engineering sources through model packages and saved previews.
 
-Set GEOMETRY_ENGINEERING_BRIDGE and GEOMETRY_MODEL_BASE to freshly built C
+Set GEOMETRY_TEST_BRIDGE and GEOMETRY_MODEL_BASE to freshly built C
 executables. Every world below belongs to a private subprocess, never a server.
 """
 from copy import deepcopy
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -21,21 +20,20 @@ from modeling import ModelError, build_package, verify_package
 from modeling.base import load_base
 from modeling.common import digest
 from space_modeling import preview
+from tests import _bridge
 from tests.test_space_modeling import assert_exact_box
 
 
 class EngineeringModelSources(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        bridge = os.environ.get("GEOMETRY_ENGINEERING_BRIDGE")
-        if not bridge or not os.environ.get("GEOMETRY_MODEL_BASE"):
-            raise unittest.SkipTest("set both native engineering bridge and model adapter executables")
+        if not os.environ.get("GEOMETRY_MODEL_BASE"):
+            raise unittest.SkipTest("set GEOMETRY_MODEL_BASE to a freshly built model adapter executable")
+        bridge = _bridge.find_bridge()
         with tempfile.TemporaryDirectory(prefix="engineering-model-source-") as directory:
-            process = subprocess.Popen([bridge], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE, text=True, encoding="utf-8")
+            session = _bridge.BridgeSession(bridge)
             def command(text):
-                process.stdin.write(text + "\n"); process.stdin.flush()
-                result = json.loads(process.stdout.readline())
+                result = session.command(text)
                 if not result.get("ok"):
                     raise AssertionError(result)
                 return result
@@ -59,12 +57,7 @@ class EngineeringModelSources(unittest.TestCase):
                 command("engineering-confirm " + str(candidate["preview"]["token"]))
                 cls.scene = command("dump")["text"]
             finally:
-                process.stdin.close()
-                try:
-                    process.wait(timeout=10)
-                except subprocess.TimeoutExpired:
-                    process.kill(); process.wait()
-                process.stdout.close(); process.stderr.close()
+                session.stop()
         cls.canonical = load_base(cls.scene)["base_scene"]
         cls.definitions = {"base_scene":cls.canonical,"extensions":[]}
         cls.request = {"roots":[{"kind":"timber","id":10}],"role":"geometry","target":"solid-set","allow_partial":False}

@@ -4,15 +4,16 @@ GEOMETRY_TEST_BRIDGE=/absolute/path/to/bridge python tests/test_bridge_integrity
 The bridge runs only against temporary worlds; no running server is used.
 """
 import json
-import os
 import pathlib
 import re
-import subprocess
+import sys
 import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-BRIDGE = os.environ.get("GEOMETRY_TEST_BRIDGE", str(ROOT / "geometry-web/web_bridge.exe"))
+if str(ROOT) not in sys.path:  # `python tests/x.py` puts tests/ first, not the repo root
+    sys.path.insert(0, str(ROOT))
+from tests import _bridge  # noqa: E402
 
 
 class IntegrityTests(unittest.TestCase):
@@ -25,8 +26,7 @@ class IntegrityTests(unittest.TestCase):
                          {k:v for k,v in actual.items() if k != 'revision'}, message)
 
     def bridge(self, commands):
-        p = subprocess.run([BRIDGE], input="\n".join(commands) + "\n",
-                           capture_output=True, text=True, encoding="utf-8", timeout=20)
+        p = _bridge.run_once("\n".join(commands) + "\n")
         self.assertEqual(p.returncode, 0, p.stderr)
         rows = [json.loads(line) for line in p.stdout.splitlines()]
         self.assertEqual(len(rows), len(commands), p.stdout)
@@ -35,8 +35,7 @@ class IntegrityTests(unittest.TestCase):
     def bridge_bytes(self, commands):
         """同 bridge(),但整條路都是位元組:給故意含無效 UTF-8 的輸入用,
         回傳每行原始位元組,由測試自己決定怎麼解碼(嚴格解碼失敗就是 bug)。"""
-        p = subprocess.run([BRIDGE], input=b"\n".join(commands) + b"\n",
-                           capture_output=True, timeout=20)
+        p = _bridge.run_once(b"\n".join(commands) + b"\n", text=False)
         self.assertEqual(p.returncode, 0, p.stderr)
         rows = [line for line in p.stdout.splitlines() if line.strip()]
         self.assertEqual(len(rows), len(commands), p.stdout)

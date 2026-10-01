@@ -1,7 +1,8 @@
 /* Signed lattice identities through the existing face editor. */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function ({send,eval_,sleep,click,waitForUI}) {
   console.log('=== P71. 無限格線的面內引用與真 cell ===');
-  const check=(name,ok,detail='')=>console.log(name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));
+  const check=cdp.makeCheck({detail:'empty'});
   const ctl=async selector=>{
     const p=await eval_(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});if(!n)throw Error('Missing control');n.scrollIntoView({block:'center'});const r=n.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
     await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:p.x,y:p.y});

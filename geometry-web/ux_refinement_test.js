@@ -3,13 +3,14 @@
  * The File System Access boundary is probed explicitly, never represented as a
  * real OS dialog. Reload recovery uses the real browser IndexedDB and service.
  */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount}) {
   console.log('=== P74. 標註、教學、屬性、選單、共用保存與專案恢復 ===');
   const fs=require('fs'),path=require('path'),os=require('os'),errors=exceptionCount();
-  const check=(name,ok,detail=ok)=>{console.log('P74 '+name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));if(ok!==true)throw Error('P74 assertion failed: '+name+' '+JSON.stringify(detail));};
-  const read=async code=>{const value=await eval_(code);if(value?.__err)throw Error(value.__err);return value;};
-  const wait=code=>waitForUI(code,40000);
-  const key=async(key,code,vk,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});};
+  const check=cdp.makeCheck({prefix:'P74 ',throwOnFail:true});
+  const read=cdp.makeRead(eval_);
+  const wait=cdp.makeWait(waitForUI,40000);
+  const key=cdp.makeKey({send,sleep});
   const point=async(selector,allowDisabled=false)=>{
     await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'nearest',inline:'nearest'});void 0`);
     let p;for(let i=0;i<16;i++){
@@ -23,10 +24,10 @@ module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,e
     if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await ctl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
     const p=await point(selector);await click(p.x,p.y);if(settle)await sleep(160);
   };
-  const fill=async(selector,value)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(value)});await sleep(120);};
+  const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:120});
   const viewport=async(width,height=844)=>{await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width===390});await sleep(230);};
   const dump=()=>read(`apiRequest('dump').then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r.text;})`);
-  const shot=async name=>{const dir=process.env.GEOMETRY_UX_REFINEMENT_SCREENSHOT_DIR||process.env.GEOMETRY_UIUX_SCREENSHOT_DIR;if(!dir)return;fs.mkdirSync(dir,{recursive:true});const result=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(dir,name+'.png'),Buffer.from(result.result.data,'base64'));};
+  const shot=cdp.makeShot(send,['GEOMETRY_UX_REFINEMENT_SCREENSHOT_DIR','GEOMETRY_UIUX_SCREENSHOT_DIR']);
   const saveSelector='#projectBar [data-project-action="save"]';
   const projectSnapshot=()=>read(`(async()=>{const c=ReferenceWorkspace.context();return {manifest:await ReferenceWorkspace.manifest(),sources:await Promise.all([...c.sources].map(async([id,s])=>({id,meta:s.meta,hash:await GeometryProject.sha(s.bytes)}))),dirty:!!c.dirty,saved:!!c.saved,downloaded:!!c.downloaded,provenance:c.provenance};})()`);
   const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);

@@ -2,17 +2,15 @@
  * The delayed query returns the original native response unchanged. Only its
  * delivery is gated so an actual input event can occur while it is pending.
  */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function gridWorkspaceDrafts({send,eval_,sleep,click,waitForUI,expectNativeDialog}) {
   console.log('=== P73B. 網格延遲載入及切換邊界不吞草稿 ===');
-  const check=(name,ok,detail=ok)=>{console.log('P73B '+name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));if(ok!==true)throw Error('P73B assertion failed: '+name+' '+JSON.stringify(detail));};
-  const wait=expression=>waitForUI(expression,20000);
-  const ctl=async selector=>{
-    await eval_(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'nearest',inline:'nearest'});void 0`);await sleep(70);
-    const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,w:r.width,h:r.height,hit:e.contains(document.elementFromPoint(x,y)),disabled:!!e.disabled};})()`);
-    if(!p.hit||p.disabled||!p.w||!p.h)throw Error('Draft control unreachable '+selector+' '+JSON.stringify(p));await click(p.x,p.y);await sleep(130);
-  };
-  const key=async(key,code,vk,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});};
-  const fill=async(selector,text)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(text)});await sleep(70);};
+  const check=cdp.makeCheck({prefix:'P73B ',throwOnFail:true});
+  const wait=cdp.makeWait(waitForUI,20000);
+  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'nearest',attempts:1,pollMs:70,settleMs:130,missing:'Missing ',
+    unreachable:(selector,p)=>'Draft control unreachable '+selector+' '+JSON.stringify(p)});
+  const key=cdp.makeKey({send,sleep});
+  const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:70});
   const choose=async(selector,value,expected=value)=>{
     const index=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return [...e.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(value)});})()`);if(index<0)throw Error('Missing option '+value);
     await ctl(selector);await key('Home','Home',36);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)}).value===${JSON.stringify(expected)}`);

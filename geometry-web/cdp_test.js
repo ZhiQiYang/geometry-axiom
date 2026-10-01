@@ -2,6 +2,8 @@
 const { spawn } = require("child_process");
 const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
+const floor = require('./cdp_floor.js');
+const cdp = require('./cdp_helpers.js');
 const SCOPE_FLAGS = ['GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
@@ -27,6 +29,9 @@ function explicitVerdict(text) {
   if(typeof text!=='string' || !/[✓✗]/.test(text))throw Error('Explicit test verdict must contain a success/failure marker');
   return {[EXPLICIT_VERDICT]:text.includes('✗')?false:true,text};
 }
+/* 本體各段的 check 共用 cdp_helpers.makeCheck:只把判定值換成 explicitVerdict,讓 harness 只計受控斷言。
+   通過判定一律 value===true;選項見 cdp_helpers.js。 */
+const bodyCheck=(options={})=>cdp.makeCheck({...options,mark:ok=>explicitVerdict(ok?'✓':'✗')});
 function assertionVerdicts(args) {
   if(typeof args[0]==='string' && /^\[(?:console|EXCEPTION)\]/.test(args[0]))return [];
   return args.flatMap(value=>value && typeof value==='object' && EXPLICIT_VERDICT in value?[value[EXPLICIT_VERDICT]]:value==='✓'?[true]:value==='✗'?[false]:[]);
@@ -97,6 +102,9 @@ let ws, mid = 0, pending = {};
 let passN = 0, failN = 0;
 let excN = 0;            /* Runtime.exceptionThrown 計數(BF2 驗收用) */
 let currentTestStep='connecting to isolated test browser';
+/* 每段斷言數(cdp_floor.js 的 sectionOf 由 `=== ` 標頭取主編號);CDP_RESULT.sections 與 golden 比對都用它。 */
+let currentSection=floor.NO_SECTION;
+const sectionPass={}, sectionFail={};
 let expectedBeforeUnloadUntil=0;
 let expectedNativeDialog=null;
 let expectedException=null, scope, skipped=[];
@@ -121,8 +129,15 @@ function observeAssetNetwork(message) {
 }
 function recordLog(...args) {
   const s = args.join(" ");
-  if(s.startsWith('==='))currentTestStep=s;
-  for(const passed of assertionVerdicts(args)){if(passed)passN++;else failN++;}
+  if(s.startsWith('===')){
+    currentTestStep=s;
+    currentSection=floor.sectionOf(s)||currentSection;
+    sectionPass[currentSection]=sectionPass[currentSection]||0;
+  }
+  for(const passed of assertionVerdicts(args)){
+    if(passed){passN++;sectionPass[currentSection]=(sectionPass[currentSection]||0)+1;}
+    else{failN++;sectionFail[currentSection]=(sectionFail[currentSection]||0)+1;}
+  }
   _log(...args.map(value=>value && typeof value==='object' && EXPLICIT_VERDICT in value?value.text:value));
 }
 
@@ -298,6 +313,38 @@ async function rightClick(x, y) {
     await send("Input.dispatchMouseEvent", { type, x, y, button: "right", clickCount: 1 });
 }
 
+/* 每段斷言數地板:完整模式與 golden 嚴格比對(差異 → failN 增加);部分模式只印不比。
+   GEOMETRY_CDP_UPDATE_GOLDEN=1 才會重寫 golden(僅完整模式、且本次零失敗)。 */
+const GOLDEN_PATH=path.join(__dirname,'cdp_sections.golden.json');
+function evaluateSections() {
+  const actual={sections:{...sectionPass}};
+  const total=Object.values(actual.sections).reduce((a,b)=>a+b,0);
+  const wantUpdate=process.env.GEOMETRY_CDP_UPDATE_GOLDEN;
+  _log('CDP_SECTIONS '+Object.keys(actual.sections).length+' 段,合計 '+total+' 通過斷言');
+  if(wantUpdate!==undefined && wantUpdate!=='1'){failN++;_log('[CDP FLOOR] GEOMETRY_CDP_UPDATE_GOLDEN 只接受 1');}
+  if(scope.mode!=='full'){
+    if(wantUpdate){failN++;_log('[CDP FLOOR] 部分模式不可更新 golden(golden 只記完整模式)');return 'update-refused (partial mode)';}
+    _log('[CDP FLOOR] 部分模式,未比對 golden。各段通過數:'+JSON.stringify(actual.sections));
+    return 'not compared (partial mode)';
+  }
+  if(wantUpdate==='1'){
+    if(failN>0){_log('[CDP FLOOR] 本次有失敗斷言,不更新 golden');return 'update-refused (failures)';}
+    fs.writeFileSync(GOLDEN_PATH,JSON.stringify(floor.buildGolden(actual.sections),null,2)+'\n');
+    _log('[CDP FLOOR] 已重寫 '+GOLDEN_PATH+'(請檢視 git diff 後再提交)');
+    return 'golden updated';
+  }
+  let golden;
+  try {golden=JSON.parse(fs.readFileSync(GOLDEN_PATH,'utf8'));}
+  catch(error){failN++;_log('[CDP FLOOR] 讀不到 golden '+GOLDEN_PATH+':'+error.message+'(以 GEOMETRY_CDP_UPDATE_GOLDEN=1 建立)');return 'golden unreadable';}
+  const problems=floor.validateGolden(golden);
+  if(problems.length){failN++;for(const problem of problems)_log('[CDP FLOOR] golden 格式錯誤:'+problem);return 'golden invalid';}
+  const diffs=floor.compare(golden,actual);
+  for(const diff of diffs){failN++;_log('[CDP FLOOR]',diff.message);}
+  if(diffs.length)return 'mismatch ('+diffs.length+')';
+  _log('[CDP FLOOR] 與 golden 逐段相符('+Object.keys(golden.sections).length+' 段)');
+  return 'matched';
+}
+
 async function main() {
   await connect();
   await send("Runtime.enable");
@@ -413,6 +460,9 @@ async function main() {
   fs.mkdirSync(path.dirname(screenshotPath),{recursive:true});
   require("fs").writeFileSync(screenshotPath, Buffer.from((shot.result && shot.result.data) || "", "base64"));
   console.log("screenshot:", screenshotPath);
+  /* 牙齒:存檔不等於截到圖——讀回剛寫的檔,必須非空且以 PNG 簽名(89 50 4E 47)開頭。 */
+  const shotBytes = fs.readFileSync(screenshotPath);
+  console.log("screenshot PNG:", shotBytes.length, "bytes", explicitVerdict(shotBytes.length > 8 && shotBytes.subarray(0, 4).equals(Buffer.from([0x89, 0x50, 0x4E, 0x47])) ? "✓ 截圖非空且為 PNG" : "✗ 截圖為空或不是 PNG"));
   console.log("初始:oc.on=", await eval_(`oc.on`),
     "ocv.hidden=", await eval_(`document.getElementById("ocv").hasAttribute("hidden")`),
     "cv.hidden=", await eval_(`document.getElementById("cv").hasAttribute("hidden")`),
@@ -694,11 +744,18 @@ async function main() {
     const r = document.getElementById("faceEditorViewport").getBoundingClientRect();
     return {x: r.left + r.width/2, y: r.top + r.height/2};
   })()`);
-  await drag(feCtr.x - 80, feCtr.y, feCtr.x + 80, feCtr.y + 4);   /* 水平拖 → v 線 */
-  await sleep(900);
+  const dumpBeforeDrag = await eval_(`api("dump").then(r=>r.text)`);
+  /* 牙齒:拖放真的走到「snap 拒絕」路徑才會彈出 R5 toast;拖放若根本沒發生,下面的「dump 沒有 guide 行」照綠,
+     所以要另外觀察這次拖放必然產生的可見 toast(reference_bridge.inc 的 snap 訊息)。 */
+  const freeDragToasts = await captureNewToasts(async()=>{
+    await drag(feCtr.x - 80, feCtr.y, feCtr.x + 80, feCtr.y + 4);   /* 水平拖 → v 線 */
+    await sleep(900);
+  });
   const dump1 = await eval_(`api("dump").then(r=>r.text)`);
   const rawGuide = /^guide /m.test(dump1);
   console.log("無具名規格或鄰近引用的自由拖放拒絕:",explicitVerdict(!rawGuide ? "✓" : "✗"));
+  const freeDragToastText = freeDragToasts.filter(t=>t.visible).map(t=>t.text).join(' | ');
+  console.log("自由拖放被拒的正向證據(R5 toast,世界不變):",JSON.stringify(freeDragToastText),explicitVerdict(freeDragToastText.includes('R5') && freeDragToastText.includes('附近沒有合法引用') && dump1 === dumpBeforeDrag ? "✓" : "✗"));
   await eval_(`(async()=>{await api("line spec 面內線 1500"); await api("line guide 1 20 u spec:面內線"); await feLoadGuides();drawFaceEditor()})()`);
   const gMatch = await eval_(`api('references').then(r=>r.guides.find(g=>g.surface===20))`);
   console.log("引用建線:",explicitVerdict(gMatch?.expression === 'spec:面內線' && gMatch.off === 1500 ? "✓" : "✗"));
@@ -3456,7 +3513,7 @@ async function main() {
 
   }
   if (!process.env.GEOMETRY_FLOW_REPAIR_ONLY && !process.env.GEOMETRY_REFERENCE_ONLY) { // P24–P32 使用獨立作用域，避免與既有測試的輔助函式同名。
-  const check = (name, ok, detail = '') => console.log(name,explicitVerdict(ok ? '✓' : '✗'), JSON.stringify(detail));
+  const check = bodyCheck({detail:'empty',detailWhenPassing:true});
   const waitIdle = async () => {
     for (let i=0;i<100;i++) {
       if (await eval_('!oc.busy && !dragging')) return;
@@ -3485,6 +3542,9 @@ async function main() {
   };
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
   check('P24 page identity',await eval_(`location.href === ${JSON.stringify(process.env.GEOMETRY_TEST_URL || 'http://localhost:8765/')} && document.title.length>0 && document.querySelectorAll('button').length>10 && !document.querySelector('vite-error-overlay,nextjs-portal')`));
+  /* 牙齒:數量與「title 非空」不證明頁面是這個 app——比對已知鈕(index.html)的 title 文字。 */
+  const p24Titles = await eval_(`({canvasView:document.getElementById('btnCanvasView')?.title,views3:document.getElementById('btnObj')?.title,fitAll:document.getElementById('btnZoom')?.title})`);
+  check('P24 page identity 已知按鈕 title 文字',p24Titles.canvasView==='物件畫布' && p24Titles.views3==='三視圖' && p24Titles.fitAll==='顯示全部 (F)',p24Titles);
 
   if (!process.env.GEOMETRY_UI_REVIEW_ONLY) {
   // P31 starts from its own default scene, so a failed asynchronous modal wait
@@ -3529,7 +3589,9 @@ async function main() {
   await key(true);
   check('P27 Ctrl+Shift+Z redoes whole gesture',(await eval_(`api('dump')`)).text===moved);
   await send('Input.dispatchMouseEvent',{type:'mousePressed',...points[1],button:'left',clickCount:1});
-  await sleep(100);
+  // The bridge resolves the hit and opens the history group asynchronously.
+  // Wait for that real state before testing cancellation on a slower service.
+  await waitForUI(`!!(dragging && dragging.started && dragging.guide>=0)`,15000);
   await send('Input.dispatchMouseEvent',{type:'mouseMoved',...points[2],button:'left',buttons:1});
   await sleep(100);
   const mid=(await eval_(`api('dump')`)).text;
@@ -4586,7 +4648,10 @@ async function main() {
   check('P43-7a 角材頁 #tbSelected 顯示「角材 10」', p43_7a.includes('角材 10'), p43_7a);
   await clickSelector('#tbSelDelete');
   for (let i = 0; i < 30 && !(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)); i++) await sleep(100);
-  if (await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)) await clickSelector('#impact-confirm');
+  /* 牙齒:上面註解明載刪 boundary 角材必觸發 I8a 影響預覽;對話框沒出現就是失敗,不是靜默略過。 */
+  const p43_7dialog = await eval_(`!!document.querySelector('dialog.reference-impact[open]')`);
+  check('P43-7a 刪 boundary 角材必須彈出 I8a 影響預覽對話框', p43_7dialog === true, p43_7dialog);
+  if (p43_7dialog) await clickSelector('#impact-confirm');
   await sleep(200);
   const p43_7b = await eval_(`({ hasTimber: fe.timbers.some(t=>t.id===10), sel: fe.sel })`);
   check('P43-7b 刪除後 fe.timbers 無 10、fe.sel===null',
@@ -4885,7 +4950,10 @@ async function main() {
   }`);
   await eval_(`document.getElementById('tbEditApply').click()`);
   for (let i = 0; i < 30 && !(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)); i++) await sleep(100);
-  if (await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)) await eval_(`document.getElementById('impact-confirm').click()`);
+  /* 牙齒:改 boundary 角材的 A/B/side 一律進 I8a 影響預覽(實測 2026-10-01 必出現);沒出現就是失敗,不靜默略過。 */
+  const p46b_dialog = await eval_(`!!document.querySelector('dialog.reference-impact[open]')`);
+  check('P46b 套用角材編輯必須彈出 I8a 影響預覽對話框', p46b_dialog === true, p46b_dialog);
+  if (p46b_dialog) await eval_(`document.getElementById('impact-confirm').click()`);
   for (let i = 0; i < 60 && !(await eval_(`!oc.busy`)); i++) await sleep(100);
   await sleep(300);
   const p46b = await eval_(`({ timbers: fe.timbers.map(t=>t.id), t10: fe.timbers.find(t=>t.id===10), sel: fe.sel })`);
@@ -4917,7 +4985,11 @@ async function main() {
   /* (e) Stored anchors can be changed explicitly and read back after revalidation. */
   await eval_(`$('tbEditA').value='27';$('tbEditAnchor').value='at-face e2';$('tbEditApply').click()`);
   for (let i=0;i<30 && !(await eval_(`!!document.querySelector('dialog.reference-impact[open]') || !oc.busy`));i++) await sleep(100);
-  if(await eval_(`!!document.querySelector('dialog.reference-impact[open]')`)) await eval_(`$('impact-confirm').click()`);
+  /* 牙齒:改定位引用到對邊同樣進 I8a 影響預覽(實測必出現);迴圈在「對話框或 busy 清空」任一成立即離開,
+     所以這裡要明確要求是對話框,而不是 busy 清空後靜默略過。 */
+  const p46e_dialog = await eval_(`!!document.querySelector('dialog.reference-impact[open]')`);
+  check('P46e 改定位引用必須彈出 I8a 影響預覽對話框', p46e_dialog === true, p46e_dialog);
+  if (p46e_dialog) await eval_(`$('impact-confirm').click()`);
   await waitForUI(`!oc.busy`,10000);await sleep(300);
   const p46e=await eval_(`(async()=>{await feLoadGuides();return fe.timbers.find(t=>t.id===10);})()`);
   check('P46e 明確改到對邊後回傳新定位並保持同一角材 ID',p46e?.definition?.anchor==='at-face e2' && p46e.A===27 && p46e.id===10,p46e);
@@ -6133,7 +6205,7 @@ async function main() {
 
   if (!process.env.GEOMETRY_REFERENCE_ONLY) { // GEO-197：四項流程修正，使用真实 UI 事件與可恢復的故障注入。
     console.log('=== P53. 連線錯誤、重新載入與重試 ===');
-    const check = (name, ok, detail = '') => console.log(name,explicitVerdict(ok ? '✓' : '✗'), JSON.stringify(detail));
+    const check = bodyCheck({detail:'empty',detailWhenPassing:true});
     const until = async expr => {
       for (let i = 0; i < 120; i++) { if (await eval_(expr) === true) return; await sleep(100); }
       throw Error('GEO-197 wait failed: ' + expr);
@@ -6256,7 +6328,7 @@ async function main() {
   { // GEO-198: portable references, browser PDF rendering and context isolation.
     console.log('=== P57–P61. PDF 與專案保存(GEO-198) ===');
     const referenceExceptions = excN;
-    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
+    const check=bodyCheck();
     const until=async expr=>{for(let i=0;i<150;i++){if(await eval_(expr)===true)return;await sleep(100);}throw Error('G198 wait: '+expr);};
     const ctl=async selector=>{
       const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
@@ -6296,7 +6368,7 @@ async function main() {
     check('P58-5 有效封裝內的非法場景仍由核心拒絕並保留來源',await eval_(`(async()=>{const m=await ReferenceWorkspace.manifest(),s=new Map([...ReferenceWorkspace.context().sources].map(([k,v])=>[k,v.bytes]));const bad=await GeometryProject.pack('boundary 1 outline 0,0 1,1 2,0\\n',m,s,fflate);const id=ReferenceWorkspace.context().id;try{await ReferenceWorkspace.importBytes(bad);return false;}catch(e){return id===ReferenceWorkspace.context().id&&(await api('dump')).text===g198Dump;}})()`));
     const pdf=require('../tests/reference_pdf_fixture.js')().toString('base64');
     await eval_(`(async()=>{window.g198PDF=await ReferenceWorkspace.sourceFromFile(new File([Uint8Array.from(atob(${JSON.stringify(pdf)}),c=>c.charCodeAt(0))],'test-reference.pdf',{type:'application/pdf'}));await ReferenceWorkspace.openSource(g198PDF,1);})()`);
-    check('P59-1 本機 PDF.js 讀到兩頁與縮圖',await eval_(`$('refPageCount').textContent.includes('2')&&document.querySelectorAll('.ref-thumbnail').length===2&&!$('refApply').disabled`));
+    check('P59-1 本機 PDF.js 讀到兩頁與縮圖',await eval_(`$('refPageCount').textContent==='/ 2 頁'&&document.querySelectorAll('.ref-thumbnail').length===2&&!$('refApply').disabled`));
     const cancelDump=await eval_(`api('dump').then(r=>r.text)`);
     await ctl('#refClose');
     check('P59-2 取消選頁不建立物件',await eval_(`(async()=>!$('referenceDialog').open&&(await api('dump')).text===${JSON.stringify(cancelDump)})()`));
@@ -6660,7 +6732,7 @@ async function main() {
   { // Reference interface: user-visible workflow and mobile point picking.
     console.log('=== P63. 參考描面新版介面 ===');
     const startErrors=excN;
-    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
+    const check=bodyCheck();
     const ctl=async selector=>{
       const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);
       await click(p.x,p.y);await sleep(100);
@@ -6718,7 +6790,7 @@ async function main() {
 
   { // The 2026-09-27 review draft: visible controls and their real interactions.
     console.log('=== P64. UI/UX 審查修正稿 ===');
-    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
+    const check=bodyCheck();
     const setupRemaining=async lines=>{
       const out=await eval_(`(async()=>{await setView3(false);resetSceneFocus();await api('reset');const out=[];for(const s of ${JSON.stringify(lines)})out.push(await api('line '+s));await renderObjects();return out})()`);
       if (!Array.isArray(out)||out.some(r=>!r.ok)) throw Error('P64 setup '+JSON.stringify(out));
@@ -6840,11 +6912,19 @@ async function main() {
 
   { // First-version space-model entry points; the full real-browser flow lives in space_model_test.js.
     console.log('=== P65. 從面建立 3D 空間入口 ===');
-    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
+    const check=bodyCheck();
     await eval_(`leaveFocus();setView3(false)`);await sleep(200);
     check('P65-1 正式版本載入建模模組並提供現成範例入口',await eval_(`typeof SpaceModelWorkspace==='object' && typeof SpaceModelWorkspace.openCurrentFace==='function' && !!$('btnSpaceModelTrial') && !!$('btnSpaceModels') && $('btnSpaceModelTrial').textContent.includes('現成範例')`));
+    /* 牙齒:入口存在但工作區點擊前必須是關的、入口標籤是真內容(空間模型 <n>),否則 P65-1 只證明 id 在。 */
+    const p65Entry=await eval_(`({open:document.getElementById('smWorkspace')?.open,count:document.getElementById('spaceModelCount')?.textContent,library:document.getElementById('btnSpaceModels')?.textContent})`);
+    check('P65-1b 點擊前建模工作區關閉,模型庫入口顯示「空間模型 <數量>」',p65Entry.open!==true && /^\d+$/.test(p65Entry.count||'') && /^空間模型\s*\d+$/.test((p65Entry.library||'').trim()),p65Entry);
     await clickControl('#btnSpaceModelTrial');await sleep(200);
     check('P65-2 三步操作、範例與明示高度欄位皆在正式工作區',await eval_(`$('smWorkspace').open && !!$('smTryRectangle') && !!$('smTryLShape') && !!$('smBottom') && !!$('smHeight') && !!$('smPreview') && !!$('smConfirmFaces') && !!$('smCreate')`));
+    /* 牙齒:點「現成範例」的可觀察結果(DOM-CONTRACT:96-100)——載入矩形範例並自動預覽:來源 example、牆高預設 3000、
+       厚度 100、核心回傳閉合 6 面體(4 外環邊+底+頂)且面清單同步列出 6 面。 */
+    await waitForUI(`SpaceModelWorkspace.snapshot().phase==='preview'`,15000);
+    const p65Example=await eval_(`(()=>{const s=SpaceModelWorkspace.snapshot(),r=s.resultSummary||{};return {sourceKind:s.sourceKind,stale:s.stale,height:$('smHeight').value,thickness:$('smThickness').value,closed:r.closed,faceCount:r.face_count,top:r.top,listed:document.querySelectorAll('#smGeneratedFaces li').length};})()`);
+    check('P65-2b 點現成範例後載入矩形範例並預覽出閉合 6 面體',p65Example.sourceKind==='example' && p65Example.stale===false && p65Example.height==='3000' && p65Example.thickness==='100' && p65Example.closed===true && p65Example.faceCount===6 && p65Example.top===3000 && p65Example.listed===6,p65Example);
     for (const type of ['keyDown','keyUp']) await send('Input.dispatchKeyEvent',{type,key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
     await sleep(100);
     check('P65-3 Esc 可關閉建模工作區',await eval_(`!$('smWorkspace').open`));
@@ -6852,7 +6932,7 @@ async function main() {
 
   { // Projection metadata is explicit per face; full persistence is exercised by space_model_test.js.
     console.log('=== P66. 每面平面投影用途與建模守門 ===');
-    const check=(name,value,detail=value)=>console.log(name,explicitVerdict(value===true?'✓':'✗'),value===true?'':JSON.stringify(detail));
+    const check=bodyCheck();
     const ctl=async selector=>{const r=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y)),disabled:e.disabled};})()`);if(!r.hit||r.disabled)throw Error('Projection control unreachable '+selector);await click(r.x,r.y);await sleep(150);};
     await send('Emulation.setDeviceMetricsOverride',{width:1382,height:804,deviceScaleFactor:1,mobile:false});
     await eval_(`(async()=>{await leaveFocus();await setView3(false);await api('reset');await api('line surface 501 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000');await renderObjects();await enterFocus('face',501);})()`);
@@ -6893,8 +6973,9 @@ async function main() {
   if(scope.mode==='full'||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   chrome.kill();
   if(passN+failN===0){failN++;_log('No assertions executed');}
+  const goldenCompare=evaluateSections();
   _log(`\n=== 結果:${passN} 通過斷言 / ${failN} 失敗斷言 / ${skipped.length} 略過群組 (${scope.mode}) ===`);
-  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
+  _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:true,passedAssertions:passN,failedAssertions:failN,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),goldenCompare,uncaughtBrowserExceptions:excN,coverage:'Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.'}));
   process.exit(failN > 0 ? 1 : 0);
 }
 async function fatal(e) {
@@ -6912,7 +6993,7 @@ async function fatal(e) {
     }
   } catch(captureError) {_log('FATAL_CAPTURE_FAILED:',captureError.message);}
   finally {
-    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped}));
+    _log('CDP_RESULT '+JSON.stringify({schema:'geometry-cdp-result/1',scope,completed:false,passedAssertions:passN,failedAssertions:failN,fatal:e.message,skipped,sections:sectionPass,...(Object.keys(sectionFail).length?{sectionsFailed:sectionFail}:{}),currentSection,goldenCompare:'not compared (run did not complete)'}));
     chrome?.kill();process.exit(1);
   }
 }

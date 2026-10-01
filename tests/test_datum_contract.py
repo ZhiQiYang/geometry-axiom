@@ -1,15 +1,20 @@
 """D6c/I7a end-to-end core contract through the same public bridge as the UI."""
 import itertools
 import json
+import sys
 import tempfile
 from pathlib import Path
 import unittest
-from test_reference_contract import Session
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:  # `python tests/x.py` puts tests/ first, not the repo root
+    sys.path.insert(0, str(ROOT))
+from tests import _bridge  # noqa: E402
 
 
 class DatumContract(unittest.TestCase):
     def setUp(self):
-        self.s = Session()
+        self.s = _bridge.BridgeSession()
         self.addCleanup(self.s.close)
         self.assertTrue(self.s.send('reset')['ok'])
 

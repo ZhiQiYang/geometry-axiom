@@ -984,9 +984,10 @@ function vertsStr(pts) {
 
 function findCoreExe() {
   const tempDir = process.env.TEMP || process.env.TMP || os.tmpdir();
-  const p = path.join(tempDir, "geometry-tests", "core.exe");
+  const p = process.env.GEOMETRY_TEST_CORE || path.join(tempDir, "geometry-tests",
+    process.platform === "win32" ? "core.exe" : "core");
   if (!fs.existsSync(p)) {
-    throw new Error("找不到 core.exe：" + p + "（跨層裁判需要它已建置）");
+    throw new Error("找不到核心程式：" + p + "（跨層裁判需要它已建置；可設 GEOMETRY_TEST_CORE）");
   }
   return p;
 }
