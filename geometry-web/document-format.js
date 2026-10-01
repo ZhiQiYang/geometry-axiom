@@ -26,7 +26,7 @@
   function validateComplexity(blocks) {
     let nodes=0,headings=0,cells=0;
     const charge=n=>{nodes+=n;if(nodes>20000)throw Error('文件排版過於複雜，請分割後重試（上限 20,000 個閱讀節點）。');};
-    const inline=text=>{charge(1);for(const _ of text.matchAll(inlinePattern))charge(3);};
+    const inline=text=>{charge(1);let syntax=0;for(const char of text){if(char==='*'||char==='['||char==='`'){if(++syntax>20000)throw Error('文件排版過於複雜，請分割後重試。');}}for(const _ of text.matchAll(inlinePattern))charge(3);};
     for(const block of blocks){charge(2);if(block.type==='heading'){if(++headings>1000)throw Error('章節標題超過 1,000 個，請分割文件。');charge(2);}
       if(block.type==='table'){for(const row of block.rows){charge(1);for(const text of row){if(++cells>5000)throw Error('表格儲存格超過 5,000 個，請分割文件。');charge(1);inline(text);}}}
       else if(!['code','hr'].includes(block.type))inline(block.text);
@@ -43,13 +43,16 @@
       const line=lines[i];
       if (/^\s*```/.test(line)) { flush(); if(code!==null) {blocks.push({type:'code',text:code.join('\n')});code=null;} else code=[]; continue; }
       if (code!==null) {code.push(line);continue;}
-      const h=/^(#{1,6})\s+(.+?)\s*#*\s*$/.exec(line);
-      if(h){flush();blocks.push({type:'heading',level:h[1].length,text:h[2],slug:slug(h[2])});continue;}
-      const li=/^(\s*)(?:([-+*])|\d+[.)])\s+(.+)$/.exec(line);
-      if(li){flush();blocks.push({type:'li',level:Math.min(8,Math.floor(li[1].replace(/\t/g,'  ').length/2)),ordered:!li[2],text:li[3]});continue;}
+      // Prefix-only recognition avoids ambiguous trailing whitespace backtracking.
+      const h=/^(#{1,6})[ \t]/.exec(line);
+      if(h){flush();let title=line.slice(h[0].length).trim(),end=title.length;while(end>0&&title[end-1]==='#')end--;title=title.slice(0,end).trimEnd();blocks.push({type:'heading',level:h[1].length,text:title,slug:slug(title)});continue;}
+      const stripped=line.trimStart(),li=/^(?:([-+*])|\d+[.)])[ \t]/.exec(stripped);
+      if(li){flush();const indent=line.slice(0,line.length-stripped.length).replace(/\t/g,'  ').length;blocks.push({type:'li',level:Math.min(8,Math.floor(indent/2)),ordered:!li[1],text:stripped.slice(li[0].length).trimStart()});continue;}
       if(/^\s*>/.test(line)){flush();blocks.push({type:'quote',text:line.replace(/^\s*>\s?/,'')});continue;}
-      if(/^\s*(?:---+|\*\*\*+)\s*$/.test(line)){flush();blocks.push({type:'hr',text:''});continue;}
-      if(line.includes('|') && i+1<lines.length && /^\s*\|?\s*:?-+:?\s*\|/.test(lines[i+1])) {
+      if(/^(?:---+|\*\*\*+)$/.test(line.trim())){flush();blocks.push({type:'hr',text:''});continue;}
+      const next=i+1<lines.length?lines[i+1].trimStart():'';
+      const delimiter=(next.startsWith('|')?next.slice(1):next).trimStart();
+      if(line.includes('|') && /^:?-+:?[ \t]*\|/.test(delimiter)) {
         flush();const cells=s=>{const values=s.trim().replace(/^\|/,'').replace(/\|$/,'').split('|');if(values.length>256)throw Error('表格欄位超過 256 欄，請分割文件。');return values.map(c=>c.trim());};
         const rows=[cells(line)];i++;while(i+1<lines.length&&lines[i+1].includes('|')&&lines[i+1].trim()){if(rows.length>=1000)throw Error('表格超過 1,000 列，請分割文件。');rows.push(cells(lines[++i]));}
         blocks.push({type:'table',rows,text:rows.map(r=>r.join(' | ')).join('\n')});continue;

@@ -26,8 +26,6 @@ jobs:
           npm run build
           # The Windows GDI harness is unavailable on Linux; the runner reports it.
           python3 tests/run_all.py --build
-          node tests/test_document_format.js
-          node tests/test_document_cases.js
 
   browser:
     name: browser (${{ matrix.suite }})

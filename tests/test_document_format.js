@@ -18,9 +18,16 @@ assert.equal(F.parse('| A | B |\n| --- | --- |\n| 1 | 2 |')[0].type,'table');
 assert.throws(()=>F.parse('x'.repeat(2*1024*1024+1)));
 assert.throws(()=>F.parse('# A\n'.repeat(1002)),/標題/);
 assert.throws(()=>F.parse('*a* '.repeat(10000)),/複雜/);
+assert.throws(()=>F.parse('['.repeat(100000)),/複雜/);
 assert.throws(()=>F.parse('|'+Array(300).fill('a').join('|')+'|\n|---|---|'),/256/);
 assert.throws(()=>F.parse('| A | B |\n|---|---|\n'+('| 1 | 2 |\n').repeat(1001)),/1,000/);
 assert.equal({}.polluted,undefined);
+// Run adversarial whitespace separately: a regression fails within a bounded
+// interval rather than hanging native CI (or the user's unsaved app state).
+const {spawnSync}=require('child_process');
+const parserPath=require.resolve('../geometry-web/document-format.js');
+const timed=spawnSync(process.execPath,['-e',`const F=require(${JSON.stringify(parserPath)});F.parse('# a'+' '.repeat(200000)+'#x');F.parse('|a|\\n'+' '.repeat(200000));F.parse('- '+' '.repeat(200000)+'\\u2028');`],{timeout:5000,encoding:'utf8'});
+assert.equal(timed.status,0,'Adversarial parser exceeded five seconds: '+(timed.error?.message||timed.stderr));
 console.log('Document format validation: passed');
 
 const C=require('../geometry-web/document-cases.js').helpers;
