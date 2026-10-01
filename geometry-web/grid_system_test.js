@@ -22,7 +22,7 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
   const card=(kind,id)=>`.ocard[data-kind="${kind}"][data-id="${id}"]`;
   const close=async(discard=false)=>{if(await read(`!!$('infiniteGridWorkspace')?.open`)){const action=()=>ctl('#igClose');if(discard)await expectNativeDialog(action,{message:'這個網格工作區有尚未建立或套用的草稿。離開會捨棄這些草稿；已保存到場景的網格保持不變。確定離開？',accept:true});else await action();}};
-  const open=async(kind,id)=>{await close();await ctl('#btnZoom');await ctl(card(kind,id));await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open && !!$('igGridView')`);};
+  const open=async(kind,id)=>{await close();await ctl('#btnZoom');await ctl(card(kind,id));await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open && !!$('igGridView')`);if(kind==='grid-binding')await wait(`$('igVertex').value!=='' && $('igSurface').options.length>0`);};
   const axis=async(letter,source,fields)=>{await choose('#ig'+letter+'Source',source);for(const [field,value] of Object.entries(fields))await fill('#ig'+letter+field,value);};
   const saveSource=async()=>{await ctl('#igSaveSource');await impact();await confirm();};
   const create=async(name,u=['repeat',{Phase:0,Step:600}],v=['repeat',{Phase:0,Step:400}],entry='#btnNewGridSystem')=>{

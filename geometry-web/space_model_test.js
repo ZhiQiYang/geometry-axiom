@@ -913,7 +913,23 @@ async function timberRegression() {
   check('GEO208 mobile timber preview has no horizontal overflow and touch-sized layer controls',mobile.scroll<=mobile.width+1&&mobile.left>=-1&&mobile.right<=mobile.width+1&&mobile.labels.every(h=>h>=44),mobile);
   await shot('timber-frame-mobile-timbers-bottom');
   await click('#smTabSetup');await point('#smIncludeTimbers');
-  const mobileSetup=await evaluate(`(()=>{const e=document.querySelector('#smIncludeTimbers'),d=document.querySelector('#smWorkspace'),fonts=[...d.querySelectorAll('*')].filter(n=>!n.closest('svg')&&n.getClientRects().length&&getComputedStyle(n).visibility!=='hidden'&&[...n.childNodes].some(c=>c.nodeType===3&&c.textContent.trim())).map(n=>parseFloat(getComputedStyle(n).fontSize));return {height:e.closest('label').getBoundingClientRect().height,minFont:Math.min(...fonts),overflow:d.scrollWidth-d.clientWidth};})()`);
+  const mobileSetup=await evaluate(`(()=>{
+    const e=document.querySelector('#smIncludeTimbers'),d=document.querySelector('#smWorkspace'),fonts=[];
+    for(const n of d.querySelectorAll('*')){
+      if(n.closest('svg')||!n.getClientRects().length||getComputedStyle(n).visibility==='hidden')continue;
+      // Compact project status hides its long text at 0px and renders an 11px ::after label.
+      // Measure rendered text, including generated labels, rather than the hidden source text.
+      for(const c of n.childNodes)if(c.nodeType===3&&c.textContent.trim()){
+        const range=document.createRange();range.selectNodeContents(c);
+        if([...range.getClientRects()].some(r=>r.width>0&&r.height>0))fonts.push(parseFloat(getComputedStyle(n).fontSize));
+      }
+      for(const pseudo of ['::before','::after']){
+        const cs=getComputedStyle(n,pseudo);
+        if(cs.display!=='none'&&cs.visibility!=='hidden'&&cs.content&&!['none','normal','""'].includes(cs.content))fonts.push(parseFloat(cs.fontSize));
+      }
+    }
+    return {height:e.closest('label').getBoundingClientRect().height,minFont:Math.min(...fonts),overflow:d.scrollWidth-d.clientWidth};
+  })()`);
   check('GEO208 mobile selection is reachable with >=44px target and all visible text >=11px',mobileSetup.height>=44&&mobileSetup.minFont>=11&&mobileSetup.overflow<=1,mobileSetup);
   await shot('timber-frame-mobile-settings');
   await point('#smConfirmFaces');await checked('#smConfirmFaces',true);const mobileCreate=await point('#smCreate');
