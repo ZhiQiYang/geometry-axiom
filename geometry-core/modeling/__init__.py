@@ -15,10 +15,11 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "82074011fabdccb5918a580eef737aa227536d01"
-AXIOM_SHA256 = "8b3afe498b0050a50b020a3a6fc3018abfecf9f9502fccf742a32e0bc499cc03"
+AXIOM_REVISION = "ccbec5fe9e4b056bcd5673fb9f69a54e888ea4e6"
+AXIOM_SHA256 = "264d8c5d2fa4e513418fbd611f2ef6f8d597def51d89805a75e9e21d0d24e8fe"
 PARAMETER_AXIOM_VERSIONS = frozenset({
     ("802f9bda1b1b8ab046f059e115dbf05a44da10df", "b19009682ba5b3e7150341ae1b5190629cb03985d500d382aa918438fb548c0b"),
+    ("82074011fabdccb5918a580eef737aa227536d01", "8b3afe498b0050a50b020a3a6fc3018abfecf9f9502fccf742a32e0bc499cc03"),
 })
 # Known pre-engineering specification. These exact sources remain supported by
 # the additive executor; arbitrary old hashes or engineering definitions do not.
@@ -38,7 +39,7 @@ INFINITE_GRID_AXIOM_VERSIONS = frozenset({
 })
 SCHEMA = "geometry-model-package/1"
 PROFILE = "orthogonal-model/1"
-GENERATOR = {"name": "geometry-axiom-reference", "version": "1.3.1"}
+GENERATOR = {"name": "geometry-axiom-reference", "version": "1.3.2"}
 CAPABILITIES = ("extrusion/1", "shell/1", "composite-space/1",
                 "solid-composition/1", "model-export/1", ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY)
 _AXIOM_PATH = Path(__file__).resolve().parents[2] / "公理層.md"
@@ -87,6 +88,16 @@ def _scene_uses_infinite_grid(scene):
                 tokens[0] == "grid" and "from-binding" in tokens[1:] or
                 tokens[0] == "subgrid" and "lattice-cell" in tokens[1:] or
                 tokens[:2] in (["canvas-pos", "grid-binding"], ["delete", "grid-binding"])):
+            return True
+    return False
+
+
+def _scene_uses_stagger(scene):
+    """D10b axis sources and band identities cannot claim pre-stagger axioms."""
+    for raw in scene.removeprefix("\ufeff").splitlines():
+        tokens = raw.split("#", 1)[0].split()
+        if tokens and ((tokens[0] == "grid-system" and "stagger" in tokens[1:]) or
+                       (tokens[0] == "place" and "at-line" in tokens[1:] and "band" in tokens[1:])):
             return True
     return False
 
@@ -152,6 +163,8 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
         definitions = package["definitions"]
         if (not isinstance(definitions, dict) or type(definitions.get("base_scene")) is not str):
             raise ModelError("INVALID", "PACKAGE_SCHEMA", "D25", "Expected complete source definitions")
+        if _scene_uses_stagger(definitions["base_scene"]):
+            raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Stagger sources and band anchors require the stagger axiom revision")
         if supplied_version not in PARAMETER_AXIOM_VERSIONS and (PARAMETER_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or PARAMETER_CAPABILITY in manifest["capabilities"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Parameter sources require the parameter axiom revision")
         if supplied_version not in INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS and _scene_uses_infinite_grid(definitions["base_scene"]):

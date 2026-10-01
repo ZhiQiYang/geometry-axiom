@@ -1,5 +1,5 @@
 /* D29/D30/I37/R32: actual browser input, native independent read-back.
- * Geometry fixtures supply host boundaries/placements only. Cell and vertex
+ * Fixtures supply host geometry and dimension cards. Grid declarations, cell and vertex
  * selection use real CDP pointers; declarations are checked against hand oracles.
  */
 const cdp=require('./cdp_helpers.js');
@@ -117,6 +117,59 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   for(const [id,surface] of [[leftTop,401],[center,402]]){await open('grid-binding',id);const offered=await read(`[...$('igSurface').options].filter(o=>o.value!=='').map(o=>Number(o.value))`);check('套用只列出同邊界承載面',same(offered,[surface]),offered);await choose('#igSurface',surface);const beforeApply=await dump();await ctl('#igApplyBinding');await impact();check('套用到承載面也先預覽',(await dump())===beforeApply);await confirm();await close();}
   const applied=(await refs()).grids;check('兩個主網格保留配置引用與有號 lattice 身分',applied.length===2&&applied.every(g=>g.indexSpace==='lattice')&&same(applied.map(g=>[g.surface,g.bindingId]).sort((a,b)=>a[0]-b[0]),[[401,leftTop],[402,center]]),applied);
 
+  // D10b/I24: exercise the real input-to-command path, including explicit zero.
+  // A rejected preview must not silently remove an existing stagger or create a grid.
+  const staggered=await create('交丁 1830',['repeat',{Phase:0,Step:2000}],['repeat',{Phase:0,Step:1830,Stagger:400}]);
+  const rejectStagger=async(label,expected)=>{
+    const before=await snapshot();await ctl('#igSaveSource');await impact();
+    const result=await read(`({disabled:$('impact-confirm').disabled,text:document.querySelector('.reference-impact').textContent})`),unchanged=same(before,await snapshot());
+    await cancel();
+    check(label,result.disabled&&result.text.includes('I24')&&expected.every(text=>result.text.includes(text))&&unchanged&&same(before,await snapshot()),result);
+  };
+  for(const value of ['0','-0','1830','-3660']){
+    await fill('#igVStagger',value);
+    check('相位差測試確實輸入 '+value,await read(`$('igVStagger').value===${JSON.stringify(value)}`));
+    await rejectStagger('既有 REPEAT 拒絕 '+value+'，完整世界不變',value==='0'||value==='-0'?['0','省略']:['重合','省略']);
+  }
+  const beforeNegative=await snapshot();await fill('#igVStagger',-400);await ctl('#igSaveSource');await impact();await cancel();
+  check('取消合法負相位差預覽保留原定義與世界',same(beforeNegative,await snapshot()));
+  await saveSource();check('合法負相位差按原值保存',(await objects()).gridSystems.find(g=>g.id===staggered).vDefinition.stagger===-400&&(await dump()).includes('v repeat 0 1830 stagger -400'));
+  await ctl('#igVStagger');await key('a','KeyA',65,2);await key('Backspace','Backspace',8);await saveSource();await close();await open('grid-system',staggered);
+  check('清空相位差才省略欄位，重開仍空白',!Object.hasOwn((await objects()).gridSystems.find(g=>g.id===staggered).vDefinition,'stagger')&&await read(`$('igVStagger').value===''`)&&!(await dump()).split('\n').find(line=>line.startsWith('grid-system '+staggered+' ')).includes('stagger'));
+  for(const value of ['0','-0']){
+    await fill('#igVStagger',value);
+    check('既有空白 REPEAT 改成 '+value+' 是未套用草稿，可預覽且不能建立配置',await read(`$('igVStagger').value===${JSON.stringify(value)} && !$('igSaveSource').disabled && $('igNewBinding').disabled`));
+    await rejectStagger('既有空白 REPEAT 拒絕 '+value+'，不將零視為省略',['0','省略']);
+  }
+  await fill('#igVStagger',400);await saveSource();await close();
+
+  // The native engine evaluates these dimension fixtures; choosing the reference,
+  // previewing and saving the grid all use the actual browser controls.
+  await read(`(async()=>{const request={expectedRevision:(await apiRequest('engineering-read')).revision,operations:[{op:'put-parameter',value:{id:901,name:'相位差驗收',fields:[{id:1,name:'零',type:'dimension',input:'0'},{id:2,name:'有效相位差',type:'dimension',input:'400'},{id:3,name:'整格間距',type:'dimension',input:'405'}]}}]};const p=await EngineeringAdapter.preview(request);if(!p.valid)throw Error(JSON.stringify(p));await EngineeringAdapter.confirm({token:p.token});await renderObjects();})()`);
+  const systemsBeforeReference=new Set((await objects()).gridSystems.map(g=>g.id));
+  await ctl('#btnNewGridSystem');await wait(`!!$('infiniteGridWorkspace')?.open`);await fill('#igName','面材參數相位差');
+  await axis('U','repeat-panel',{Panel:400,Gap:5,Anchor:-100});await axis('V','repeat',{Phase:0,Step:1830});
+  for(const value of ['0','-0','405','-810']){
+    await fill('#igUStagger',value);
+    await rejectStagger('新建 REPEAT_PANEL 拒絕 '+value+'，不建立來源',value==='0'||value==='-0'?['0','省略']:['重合','省略']);
+  }
+  await ctl('#igUStagger');await key('a','KeyA',65,2);await key('Backspace','Backspace',8);await saveSource();
+  check('REPEAT_PANEL 空白相位差保存為省略，沒有待套用來源草稿',await read(`$('igUStagger').value==='' && $('igSaveSource').disabled && !$('igNewBinding').disabled`)&&!Object.hasOwn((await objects()).gridSystems.find(g=>!systemsBeforeReference.has(g.id)).uDefinition,'stagger'));
+  for(const value of ['0','-0']){
+    await fill('#igUStagger',value);
+    check('既有空白 REPEAT_PANEL 改成 '+value+' 是未套用草稿，可預覽且不能建立配置',await read(`$('igUStagger').value===${JSON.stringify(value)} && !$('igSaveSource').disabled && $('igNewBinding').disabled`));
+    await rejectStagger('既有空白 REPEAT_PANEL 拒絕 '+value+'，不將零視為省略',['0','省略']);
+  }
+  for(const [field,value] of [[1,'0'],[3,'405']]){
+    await choose('#igUStaggerSource','901:'+field);
+    check('相位差參數引用顯示核心有效值 '+value,await read(`$('igUStagger').readOnly && $('igUStagger').value===${JSON.stringify(value)}`));
+    await rejectStagger('拒絕求值為 '+value+' 的相位差參數，完整世界不變',field===1?['0','省略']:['重合','省略']);
+  }
+  await choose('#igUStaggerSource','901:2');await saveSource();
+  const referenceGrid=(await objects()).gridSystems.find(g=>!systemsBeforeReference.has(g.id));
+  check('合法相位差保存參數來源，空白另一軸不補零',referenceGrid?.uDefinition.stagger===400&&referenceGrid.uDefinition.parameterRefs?.stagger?.parameterId===901&&referenceGrid.uDefinition.parameterRefs.stagger.fieldId===2&&!Object.hasOwn(referenceGrid.vDefinition,'stagger')&&(await dump()).includes('u repeat-panel 400 gap 5 from -100 stagger param:901:2 v repeat 0 1830'));
+  await close();
+
   // Actual formal download, reset, and file input; no application save helper.
   const downloadRoot=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-infinite-grid-download-'));await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:downloadRoot});const beforeSave=await snapshot();let file;
   await read(`window.__gridSavePicker=Object.getOwnPropertyDescriptor(window,'showSaveFilePicker');Object.defineProperty(window,'showSaveFilePicker',{value:undefined,configurable:true});void 0`);
@@ -127,6 +180,7 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   try{await read(`window.__gridChooserOpened=false;$('projectFile').addEventListener('click',()=>{window.__gridChooserOpened=true;},{once:true});void 0`);await ctl('#fileMenuBtn');await ctl('#btnOpenProject');check('正式開檔按鈕觸發檔案選擇',await read('window.__gridChooserOpened===true'));const doc=await send('DOM.getDocument',{depth:0}),node=await send('DOM.querySelector',{nodeId:doc.result.root.nodeId,selector:'#projectFile'});await send('DOM.setFileInputFiles',{nodeId:node.result.nodeId,files:[file]});await wait(`!ReferenceWorkspace.busy && !$('app').inert`);await sleep(250);}
   finally{await send('Page.setInterceptFileChooserDialog',{enabled:false});await read('delete window.__gridChooserOpened;void 0');}
   const afterOpen=await snapshot();check('正式重開恢復規則、key、負索引、比例與卡片位置',same(beforeSave,afterOpen),{before:beforeSave,after:afterOpen});fs.writeFileSync(path.join(downloadRoot,'infinite-grid-roundtrip.json'),JSON.stringify({before:beforeSave,after:afterOpen},null,2));console.log('P70 saved artifact',file);
+  check('正式保存重開保留直接與參數相位差，省略欄位仍不存在',savedScene.includes('v repeat 0 1830 stagger 400')&&savedScene.includes('stagger param:901:2')&&!savedScene.includes('stagger 0')&&afterOpen.objects.gridSystems.find(g=>g.id===referenceGrid.id).uDefinition.parameterRefs.stagger.fieldId===2&&!Object.hasOwn(afterOpen.objects.gridSystems.find(g=>g.id===staggered).uDefinition,'stagger'));
 
   // Dense presentation: derive the true cell from the actual pointer event and
   // documented model rectangle, not from product picker helpers or sampled lines.
@@ -135,7 +189,7 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   const legacyBefore=await dump();await ctl('#btnZoom');await ctl(card('grid-system',900));check('舊有限來源正式保存重開後保留條數與明寫座標',(await objects()).gridSystems.find(g=>g.id===900).mode==='legacy-finite'&&await read(`$('gsUCount')?.value==='4' && $('gsVCoordinates')?.value==='0 400 800'`));check('查看舊資料沒有靜默轉成無限 repeat',(await dump())===legacyBefore);
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await sleep(200);if(!await read(`(()=>{const r=$('btnNewGridSystem').getBoundingClientRect();return r.width>0 && r.height>0 && r.left>=0 && r.right<=innerWidth;})()`))await ctl('#toggleLeft');
   const mobile=await create('手機 無限');await ctl('#igNewBinding');await choose('#igBoundary',301);await wait(`!!document.querySelector('[data-ig-vertex="outer:0"]')`);await ctl('[data-ig-vertex="outer:0"]');await pickCell(-900,600);await ctl('[data-ig-anchor="0,0"]');const mobileBefore=new Set((await objects()).gridBindings.map(b=>b.id));await ctl('#igSaveBinding');await impact();await confirm();const mobileBinding=(await objects()).gridBindings.find(b=>!mobileBefore.has(b.id));check('390px 真實頂點與格子點選完成配置',mobileBinding?.system===mobile&&same(mobileBinding.cell,['-2','1'])&&same(mobileBinding.translation,[1300,-200]),mobileBinding);const bounds=await read(`(()=>{const r=$('infiniteGridWorkspace').getBoundingClientRect();return {left:r.left,right:r.right,pageOverflow:document.documentElement.scrollWidth>innerWidth,dialogOverflow:$('infiniteGridWorkspace').scrollWidth>$('infiniteGridWorkspace').clientWidth};})()`);check('390px 工作區與頁面沒有水平溢出',bounds.left>=0&&bounds.right<=390&&!bounds.pageOverflow&&!bounds.dialogOverflow,bounds);const crumb=await read(`(()=>{const p=document.querySelector('.ig-crumb-project'),t=$('igTitle'),r=p.getBoundingClientRect(),q=t.getBoundingClientRect();return {name:p.textContent,visible:r.width>0&&r.height>0,below:q.top>=r.bottom-1,title:t.textContent};})()`);check('390px 標題列仍顯示專案名稱（在工作區標題上方）',crumb.visible&&crumb.below&&/\.gcanvas$/.test(crumb.name)&&crumb.title==='網格配置 3',crumb);await shot('infinite-grid-mobile');await close();await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});check('無限網格流程無未處理瀏覽器例外',exceptionCount()===exceptions,{before:exceptions,after:exceptionCount()});
-  const staggered=await create('交丁 1830',['repeat',{Phase:0,Step:2000}],['repeat',{Phase:0,Step:1830,Stagger:400}]);
+  await open('grid-system',staggered);
   const drawn=await read(`(()=>{const g=$('igGridView'),line=e=>({k:e.dataset.igIndex,band:e.dataset.igSegmentBand??null,x1:+e.getAttribute('x1'),x2:+e.getAttribute('x2'),y1:+e.getAttribute('y1'),y2:+e.getAttribute('y2')});return {width:g.clientWidth,height:g.clientHeight,camera:g.dataset.igCamera.split(' ').map(Number),label:$('igVStagger')?.closest('label')?.textContent||'',value:$('igVStagger')?.value,v:[...g.querySelectorAll('line[data-ig-axis="v"]')].map(line),u:[...g.querySelectorAll('line[data-ig-axis="u"]')].map(line)};})()`);
   const RL=44,RT=26,pw=Math.max(1,drawn.width-RL),scale=pw/(drawn.camera[2]-drawn.camera[0]);
   const px=u=>RL+(u-drawn.camera[0])*scale,py=v=>RT+(v-drawn.camera[1])*scale;
