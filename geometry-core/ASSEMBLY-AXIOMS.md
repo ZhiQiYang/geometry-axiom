@@ -1,6 +1,9 @@
 # Adopted axiom deltas for #20
 
-These are the seven approved semantics. They do not relax D1, D7, D15, D17, I19 or R6.
+Adoption record for the seven issue #20 deltas. The authoritative text is now `../公理層.md`, D12, D32, D33, I40, I41, R34 and R4. This summary is not a second specification. These changes do not relax D1, D7, D15, D17, I19 or R6.
+
+## D12 addition
+CanvasPos also supports the native `assembly-rule` and `assembly-binding` identities. Position remains display metadata and cannot change a rule, binding or geometric preview identity.
 
 ## D32
 World may store AssemblyRuleVersion records with stable rule identity, version, name, role slots and local joints. Identity is not name, order or canvas position. Joints describe continuity, segmentation and end-to-face contact for orthogonal members. They are not fasteners, joints of joinery, construction order or a structural approval. A rule need not bind a material, grid or carrier. A published version is immutable. A draft is not a citable version. A legal definition is not the same claim as generated construction geometry.
