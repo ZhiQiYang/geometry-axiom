@@ -59,6 +59,19 @@
     if (typeof value !== 'string' || !value.trim() || value.length > 200 || BAD_KEYS.has(value)) fail(label + ' 缺少有效 id。');
     return value;
   }
+  function documentRoles(value) {
+    // Role metadata can add filter membership, but cannot rename an asset's primary kind.
+    return Array.isArray(value) ? [...new Set(value.filter(role => typeof role === 'string' && Object.prototype.hasOwnProperty.call(KIND_NAMES, role)))] : [];
+  }
+  function matchesRole(asset, role) {
+    return !role || asset.kind === role || documentRoles(asset.document_roles).includes(role);
+  }
+  function roleOptions(assets) {
+    // Preserve the existing primary-kind order before appending role-only filters.
+    const kinds = new Set(assets.map(asset => asset.kind));
+    for (const asset of assets) for (const role of documentRoles(asset.document_roles)) kinds.add(role);
+    return [...kinds];
+  }
   function validateManifest(input) {
     safeJSON(input);
     if (plain(input) && input.schema_version !== undefined && input.schema_version !== '1.0') fail('不支援此案例索引 schema_version；需要 1.0。');
@@ -101,6 +114,7 @@
           if (a[key] && !safeURL(a[key])) fail('素材含不安全的來源網址：' + assetId);
         }
         asset.kind = typeof a.kind === 'string' && a.kind.length <= 100 ? a.kind : 'other';
+        if (a.document_roles !== undefined) asset.document_roles = documentRoles(a.document_roles);
         asset.caption = display(a.caption, assetId);
         return asset;
       });
@@ -336,7 +350,7 @@
       const title = el('strong', 'doc-case-pane-title', label);
       const kindSelect = el('select', 'doc-case-kind'); kindSelect.setAttribute('aria-label', label + ' 素材種類');
       const all = el('option', '', '所有種類'); all.value = ''; kindSelect.append(all);
-      for (const kind of new Set(c.assets.map(a => a.kind))) { const option = el('option', '', kindLabel(kind)); option.value = kind; kindSelect.append(option); }
+      for (const kind of roleOptions(c.assets)) { const option = el('option', '', kindLabel(kind)); option.value = kind; kindSelect.append(option); }
       const assetSelect = el('select', 'doc-case-asset'); assetSelect.setAttribute('aria-label', label + ' 素材');
       controls.append(title, kindSelect, assetSelect);
       const documentTools = el('div', 'doc-case-document-tools'); documentTools.hidden = true;
@@ -469,7 +483,7 @@
       }
       function populate(preferred) {
         assetSelect.replaceChildren();
-        const items = c.assets.filter(a => !kindSelect.value || a.kind === kindSelect.value);
+        const items = c.assets.filter(a => matchesRole(a, kindSelect.value));
         for (const a of items) {
           const option = el('option', '', kindLabel(a.kind) + ' · ' + a.caption + (a.counted === false ? ' [已排除]' : '') + (!available(a) ? ' [缺檔]' : ''));
           option.value = a.id; assetSelect.append(option);
@@ -598,7 +612,7 @@
   }
   const api = Object.freeze({ mount, importFiles: files => active ? active.importFiles(files) : Promise.resolve(false),
     destroy: () => { if (active) active.destroy(); },
-    helpers: Object.freeze({ normalizePath, safeURL, safeJSON, validateManifest, imageDimensions, indexFiles, serializeNotes, limits: LIMITS }) });
+    helpers: Object.freeze({ normalizePath, safeURL, safeJSON, validateManifest, matchesRole, roleOptions, imageDimensions, indexFiles, serializeNotes, limits: LIMITS }) });
   global.DocumentCases = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : globalThis);
