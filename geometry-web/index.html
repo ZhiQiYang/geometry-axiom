@@ -17,6 +17,8 @@
 <link rel="stylesheet" href="project-ui.css">
 <link rel="stylesheet" href="workspace-shell.css">
 <link rel="stylesheet" href="assembly-workspace.css">
+<link rel="stylesheet" href="documents.css">
+<link rel="stylesheet" href="document-cases.css">
 </head>
 <body class="connection-blocked">
 <section id="connectionNotice" class="connection-notice" role="status" aria-live="polite">
@@ -82,7 +84,7 @@
                 <button id="btnEx" class="menu-item" type="button">載入預設場景範例</button>
               </div>
             </div>
-            <a class="menu-item" href="/axioms" target="_blank" rel="noopener">公理閱讀器 <span aria-label="另開分頁">↗</span></a>
+            <button id="btnDocuments" class="menu-item" type="button">文件 · 規格與案例閱讀</button>
           </section>
           <hr class="menu-sep">
           <button id="btnClear" class="menu-item danger" type="button"><span data-icon="trash"></span>清空專案內容…</button>
@@ -661,5 +663,8 @@
 <script src="engineering-adapter.js"></script>
 <script src="parameters.js"></script>
 <script src="assembly-workspace.js"></script>
+<script src="document-format.js"></script>
+<script src="document-cases.js"></script>
+<script src="documents.js"></script>
 </body>
 </html>
