@@ -28,20 +28,35 @@ jobs:
           python3 tests/run_all.py --build
 
   browser:
+    name: browser (${{ matrix.suite }})
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: ${{ matrix.timeout }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - suite: grid
+            timeout: 15
+          - suite: canvas
+            timeout: 35
+          - suite: space
+            timeout: 15
+          - suite: timber
+            timeout: 20
     env:
       GEOMETRY_TEST_URL: http://127.0.0.1:18839/
       GEOMETRY_FEEDBACK_DIR: /tmp/geometry-integration-feedback
       GEOMETRY_CHROME: /usr/bin/google-chrome
       GEOMETRY_CHROME_FLAGS: --no-sandbox
+      GEOMETRY_BROWSER_SUITE: ${{ matrix.suite }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
       - name: Build current native executables
         run: npm run build
-      - name: Run actual browser integration and space workflows
+      - name: Run actual browser regression group
         shell: bash
         run: |
           ulimit -s 16384
@@ -56,17 +71,17 @@ jobs:
             sleep 1
           done
           curl --fail --silent "$GEOMETRY_TEST_URL" > /dev/null
-          # Run the changed grid flow independently so an earlier full-harness
-          # failure cannot hide it. Preserve every exit status, including the
-          # timber groups omitted by the default space suite.
+          # Independent matrix jobs expose each result promptly. They use
+          # separate runners/servers and do not cancel siblings on failure.
+          # The full canvas run retains its strict golden comparison.
           set +e
-          GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js
-          grid_status=$?
-          node geometry-web/cdp_test.js
-          canvas_status=$?
-          GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js
-          space_status=$?
-          GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js
-          timber_status=$?
+          case "$GEOMETRY_BROWSER_SUITE" in
+            grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;
+            canvas) node geometry-web/cdp_test.js ;;
+            space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;
+            timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js ;;
+            *) echo "Unknown browser suite"; exit 2 ;;
+          esac
+          status=$?
           cat /tmp/geometry-integration-server.log
-          test "$grid_status" -eq 0 && test "$canvas_status" -eq 0 && test "$space_status" -eq 0 && test "$timber_status" -eq 0
+          exit "$status"
