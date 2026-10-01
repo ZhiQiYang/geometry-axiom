@@ -7,11 +7,12 @@ import sys
 from types import SimpleNamespace
 import unittest
 from unittest import mock
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "geometry-core"))
 import modeling
-from modeling import ModelError, build_package, verify_package
+from modeling import ModelError, ModelWorld, build_package, verify_package
 from modeling.base import load_base
 from modeling.common import canonical_bytes, digest, scene_required_capabilities
 
@@ -229,6 +230,140 @@ class EngineeringModelCompatibility(unittest.TestCase):
             with self.assertRaises(ModelError) as caught:
                 build_package(definitions, CASE["request"], capabilities=[c for c in modeling.CAPABILITIES if c != "engineering-spec/1"])
             self.assertEqual(caught.exception.code, "CAPABILITY")
+
+
+class StaggerModelCompatibility(unittest.TestCase):
+    """Exercise the real native adapter before granting the D10b axiom version."""
+    def scene(self, delta="400", band=0):
+        # Move the carrier into the chosen unshifted u band. The v binding is
+        # anchored at an even band so its translation is independent of delta.
+        lo, hi = band * 2000, (band + 1) * 2000
+        stagger = "" if delta is None else " stagger " + delta
+        return (f"surface 1 origin 0 0 0 u +x v +y outline {lo},0 {hi},0 {hi},4000 {lo},4000\n"
+                "boundary-vertex-keys 1 outer 1 2 3 4 next-key 5\n"
+                f"grid-system 0 name-hex 61 main-along none u repeat 0 2000 v repeat 0 1830{stagger}\n"
+                f"grid-binding 0 on-boundary 1 from-system 0 vertex-key 1 cell {band} 0 anchor 0 1 0 1\n"
+                "grid 10 on 1 from-binding 0\n"
+                "timber 90 20 33 role boundary\nplace 90 on 1 at-face e3 +v +n\n"
+                "timber 91 20 33 role boundary\nplace 91 on 1 at-face e1 +v +n\n"
+                "timber 1 27 33 role primary\n"
+                f"place 1 on 1 at-line grid 10 v 1" + (f" band {band}" if delta is not None else "") + " +u +n\n")
+
+    def definitions(self, scene):
+        return {"base_scene": scene, "extensions": []}
+
+    def request(self):
+        return {"roots": [{"kind": "timber", "id": 1}], "role": "geometry", "target": "solid-set", "allow_partial": False}
+
+    def build(self, scene=None):
+        return build_package(self.definitions(scene or self.scene()), self.request())
+
+    def test_actual_adapter_preserves_stagger_band_and_exact_mesh_roundtrip(self):
+        for band in (-2, -1, 0, 1, 2):
+            with self.subTest(band=band):
+                package = self.build(self.scene(band=band))
+                source = package["definitions"]["base_scene"]
+                self.assertIn("v repeat 0 1830 stagger 400", source)
+                self.assertIn(f"at-line grid 10 v 1 band {band}", source)
+                # Binding follows the same odd-band offset, canceling it at
+                # the anchored boundary; the local line remains at v=1830.
+                obj = package["derived"]["objects"][0]
+                self.assertEqual(obj["volume_mm3"], str(1960 * 27 * 33))
+                self.assertEqual(sorted({p[1] for p in obj["vertices_mm"]}), [1817, 1844])
+                original = deepcopy(package)
+                rebuilt = verify_package(json.loads(json.dumps(package)))
+                self.assertEqual(package, original)
+                self.assertEqual(rebuilt, package)
+
+    def test_adapter_rejects_literal_zero_multiples_missing_extra_and_outside_band(self):
+        sources = [self.scene(delta=v) for v in ("0", "-0", "1830", "-3660")]
+        sources += [self.scene().replace(" band 0 +u", " +u"),
+                    self.scene(None).replace("v 1 +u", "v 1 band 0 +u"),
+                    self.scene().replace("band 0 +u", "band 1 +u"),
+                    self.scene() + "subgrid 11 parent 10 lattice-cell 0 0 divisions u 2 v 2\n"]
+        for source in sources:
+            with self.subTest(source=source), self.assertRaises(ModelError) as caught:
+                self.build(source)
+            self.assertEqual(caught.exception.status, "INVALID")
+
+    def test_blank_is_unset_and_negative_offset_stays_exact(self):
+        plain = self.build(self.scene(None))
+        self.assertNotIn("stagger", plain["definitions"]["base_scene"])
+        self.assertNotIn("band", plain["definitions"]["base_scene"])
+        negative = self.build(self.scene("-400"))
+        self.assertIn("stagger -400", verify_package(negative)["definitions"]["base_scene"])
+
+    def test_parameter_stagger_preserves_reference_and_rejects_evaluated_zero(self):
+        def record(kind, value):
+            return "parameters " + kind + " " + base64.b64encode(canonical_bytes(value)).decode() + "\n"
+        for value in ("400", "-400", "0", "1830"):
+            parameters = ("requires parameters/1\nparameters begin\n" +
+                          record("card", {"id": 1, "name": "Phase", "nextFieldId": 2}) +
+                          record("field", {"parameterId": 1, "id": 1, "name": "delta", "type": 0,
+                                           "expression": {"op": "literal", "num": value, "den": "1", "unit": "mm"}}) +
+                          "parameters end\n")
+            source = parameters + self.scene("param:1:1")
+            with self.subTest(value=value):
+                if value in ("0", "1830"):
+                    with self.assertRaises(ModelError) as caught:
+                        self.build(source)
+                    self.assertEqual(caught.exception.status, "INVALID")
+                else:
+                    package = self.build(source)
+                    self.assertIn("stagger param:1:1", package["definitions"]["base_scene"])
+                    self.assertIn("parameters/1", package["manifest"]["capabilities"])
+                    self.assertEqual(verify_package(package), package)
+
+    def test_engineering_example_space_preview_retains_all_seven_timbers(self):
+        sys.path.insert(0, str(ROOT / "geometry-web"))
+        from space_modeling import preview
+        with zipfile.ZipFile(ROOT / "geometry-web/examples/engineering-spec-v1.gcanvas") as archive:
+            manifest = json.loads(archive.read("manifest.json"))
+        model = manifest["models"][0]
+        source = deepcopy(model["input"])
+        result = preview(source)
+        self.assertEqual(source, model["input"])
+        self.assertEqual(result["summary"]["timber_volume_mm3"], "18494487")
+        self.assertEqual(len(result["timbers"]["derived"]["objects"]), 7)
+        for key in ("space", "volume", "clearance", "timbers"):
+            self.assertEqual(verify_package(result[key])["derived"], result[key]["derived"])
+            self.assertIn("engineering-spec/1", result[key]["manifest"]["capabilities"])
+
+    def test_known_pre_stagger_package_rebuilds_without_upgrading_input(self):
+        for version in modeling.PARAMETER_AXIOM_VERSIONS:
+            package = self.build(self.scene(None))
+            package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
+            original = deepcopy(package)
+            rebuilt = verify_package(package)
+            self.assertEqual(package, original)
+            self.assertEqual(rebuilt["derived"], package["derived"])
+
+    def test_all_pre_stagger_versions_reject_stagger_and_band_before_replay(self):
+        versions = (modeling.LEGACY_AXIOM_VERSIONS | modeling.ENGINEERING_AXIOM_VERSIONS |
+                    modeling.FINITE_GRID_AXIOM_VERSIONS | modeling.INFINITE_GRID_AXIOM_VERSIONS |
+                    modeling.PARAMETER_AXIOM_VERSIONS)
+        for version in versions:
+            for scene in (self.scene(), self.scene().replace(" stagger 400", "")):
+                package = self.build()
+                package["definitions"]["base_scene"] = "\ufeff" + scene
+                package["manifest"]["source_sha256"] = digest(package["definitions"])
+                package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
+                with self.subTest(version=version, scene=scene), self.assertRaises(ModelError) as caught:
+                    verify_package(package)
+                self.assertEqual(caught.exception.code, "AXIOM_VERSION")
+
+    def test_invalid_stagger_preview_rolls_back_model_world_and_pending_token(self):
+        world = ModelWorld(self.definitions(self.scene()), self.request())
+        original = world.package
+        pending = world.preview(self.definitions(self.scene("-400")))
+        with self.assertRaises(ModelError):
+            world.preview(self.definitions(self.scene("0")))
+        self.assertEqual(world.package, original)
+        with self.assertRaises(ModelError) as caught:
+            world.confirm(pending["token"])
+        self.assertEqual(caught.exception.code, "STALE_PREVIEW")
+        fresh = world.preview(self.definitions(self.scene("-400")))
+        self.assertIn("stagger -400", world.confirm(fresh["token"])["definitions"]["base_scene"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,66 @@
+name: Geometry integration
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: geometry-integration-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Build and run non-browser suites
+        run: |
+          ulimit -s 16384
+          npm run build
+          # The Windows GDI harness is unavailable on Linux; the runner reports it.
+          python3 tests/run_all.py --build
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/geometry-integration-feedback
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Build current native executables
+        run: npm run build
+      - name: Run actual browser integration and space workflows
+        shell: bash
+        run: |
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          export GEOMETRY_BRIDGE="$PWD/.build/web_bridge"
+          export GEOMETRY_MODEL_BASE="$PWD/.build/model_base"
+          python3 -u geometry-web/serve.py 18839 > /tmp/geometry-integration-server.log 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent "$GEOMETRY_TEST_URL" > /dev/null; then break; fi
+            sleep 1
+          done
+          curl --fail --silent "$GEOMETRY_TEST_URL" > /dev/null
+          # Run both independent harnesses even if one fails, retaining honest exits.
+          set +e
+          node geometry-web/cdp_test.js
+          canvas_status=$?
+          GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js
+          space_status=$?
+          cat /tmp/geometry-integration-server.log
+          test "$canvas_status" -eq 0 && test "$space_status" -eq 0

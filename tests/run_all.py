@@ -93,6 +93,11 @@ NODE_EXCLUDED = {
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
 # Any other skip (even one whose reason mentions POSIX) stays a skip.
 ALLOWED_SKIPS = [
+    {'suite': 'py:test_gdi_contract',
+     'test': 'test_gdi_contract.GdiContract.test_confirmed_failures_release_real_resources',
+     'reason': 'requires compiled Windows GDI contract harness',
+     'platforms': ('posix',),
+     'why': 'Windows GDI resources do not exist on POSIX; all native geometry suites still run'},
     {'suite': 'py:test_cli_args',
      'test': 'test_cli_args.CliArgs.test_svg_write_failure_is_reported_without_unlinking_device',
      'reason': 'requires POSIX full device',

@@ -83,6 +83,8 @@ capabilities 為有序能力字串集合：`extrusion/1`, `shell/1`, `composite-
 
 來源另可要求 `engineering-spec/1` 與 `parameters/1`。含參數來源的套件保留所有卡片（含未使用欄位）、AST、固定身分與引用，原生重放後才建模；畫布位置仍移入 presentation。缺少能力或宣告舊公理版本時明確拒絕，不能將引用改寫成有效數字。參數版公理來源為 `802f9bda1b1b8ab046f059e115dbf05a44da10df`，LF 正規化 SHA-256 為 `b19009682ba5b3e7150341ae1b5190629cb03985d500d382aa918438fb548c0b`。舊版無參數套件沿用對應版本驗證。細節見 [參數操作契約](PARAMETERS-CONTRACT.md)。
 
+交替相位版採 `ccbec5fe9e4b056bcd5673fb9f69a54e888ea4e6`，LF 正規化 SHA-256 為 `264d8c5d2fa4e513418fbd611f2ef6f8d597def51d89805a75e9e21d0d24e8fe`。D10b / I24 的 stagger、參數引用與 band 交由同一個原生 C parser 求值並完整重放，不在 Python 另造座標；模型包保留來源身分。舊參數版（含 `82074011...`）可重建原本未錯開的來源，但不得夾帶 stagger 或 band 宣稱舊版已支援。精確版本配對與來源雜湊守門仍保留。
+
 derived 必含 `status`, `objects`。objects 每項包含：
 
 - `root`：輸入根型別引用；`member_path`：KEEP 成員 0-based 索引路徑（非 KEEP 為空陣列）。

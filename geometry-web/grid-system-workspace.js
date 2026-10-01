@@ -41,7 +41,8 @@
     return null;
   };
   const sourceKey = o => JSON.stringify(o && [o.id, o.name, o.mainAlong, o.uDefinition, o.vDefinition]);
-  const sourceFormKey = o => JSON.stringify([o.name,o.mainAlong||'none',...axes.map(a=>{const d=o[a+'Definition'];return d.source==='repeat'?[d.source,d.phase,d.step,d.stagger||0,d.parameterRefs||{}]:d.source==='repeat-panel'?[d.source,d.panel,d.gap,d.anchor,d.stagger||0,d.parameterRefs||{}]:['none'];})]);
+  // Omission differs from explicit zero: an invalid zero must remain a draft.
+  const sourceFormKey = o => JSON.stringify([o.name,o.mainAlong||'none',...axes.map(a=>{const d=o[a+'Definition'];return d.source==='repeat'?[d.source,d.phase,d.step,d.stagger??null,d.parameterRefs||{}]:d.source==='repeat-panel'?[d.source,d.panel,d.gap,d.anchor,d.stagger??null,d.parameterRefs||{}]:['none'];})]);
   const bindingKey = o => JSON.stringify(o && [o.id, o.system, o.boundary, o.vertexKey, o.cell, o.anchor]);
   function status(text, error = false) {
     if (!$('igStatus')) return;
@@ -179,7 +180,9 @@
         for(const key of source==='repeat'?['Phase','Step']:['Panel','Gap','Anchor']){const ref=window.ParameterUI?.sourceRef(p+key);if(ref)d.parameterRefs[key.toLowerCase()]=ref;}
         const sref = window.ParameterUI?.sourceRef(p+'Stagger'), raw = $(p+'Stagger').value.trim();
         if (sref) d.parameterRefs.stagger = sref;
-        if (raw && raw !== '0' && raw !== '-0') d.stagger = int(p+'Stagger', a+' 相鄰格子相位差');
+        // D10b/I24: only an empty field omits stagger. Preserve explicit zero
+        // so the native candidate validator rejects it instead of saving a line.
+        if (raw) d.stagger = int(p+'Stagger', a+' 相鄰格子相位差');
       }
     }
     if (axes.every(a => result[a+'Definition'].source === 'none')) throw Error('至少設定一軸。');
@@ -407,7 +410,7 @@
     const d=sourceDraft(s);await stillSame(s);
     const ids=s.source?null:await apiRequest('newid'),id=s.source?.id??ids?.gridSystem;
     if(id==null)throw Error('無法取得網格系統編號。');
-    const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};if(v.source==='none')return `${a} none`;const body=v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;const stag=v.parameterRefs?.stagger?` stagger ${token('stagger')}`:(v.stagger?` stagger ${v.stagger}`:'');return `${a} ${body}${stag}`;});
+    const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};if(v.source==='none')return `${a} none`;const body=v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;const stag=v.parameterRefs?.stagger?` stagger ${token('stagger')}`:(v.stagger!=null?` stagger ${v.stagger}`:'');return `${a} ${body}${stag}`;});
     if(!await commit(s,`grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong} ${parts.join(' ')}`,`${s.source?'更新':'建立'}無限網格「${d.name}」`,s.source?null:['gridSystems',id]))return;
     await renderObjects();reveal('grid-system',id);await open({system:id}, true);status('來源已保存；可選擇邊界與格子建立配置。');
   }
