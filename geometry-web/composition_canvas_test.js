@@ -109,7 +109,7 @@ module.exports = async function compositionCanvasTests({send,eval_,sleep,click,d
   check('建立選單支援 Home End 與方向鍵逐項操作',lastMenuFocus&&firstMenuFocus&&await read(`document.activeElement.id==='btnCreateRect'`));
   await key('Escape','Escape',27);check('Escape 關閉建立選單並回到發起按鈕',await read(`$('createObjectPop').hidden && document.activeElement.id==='btnCreateObject'`));
   await key('Enter','Enter',13);check('鍵盤 Enter 可重新打開選單且聚焦第一項',await read(`!$('createObjectPop').hidden && document.activeElement.id==='btnQuickGrid'`));
-  const beforeSpace=await dump();await ctl('#btnNewSpace');await settle();
+  const beforeSpace=await dump();await ctl('#btnNewSpace');await wait(`oc.spaces.length===1`);await settle();
   check('選單的空間入口仍建立原生空容器',(await objects()).spaces.length===1&&await read(`$('createObjectPop').hidden || !$('createObjectPop').getClientRects().length`));
   await ctl('#btnUndo');await settle();check('選單建立仍可完整復原',(await dump())===beforeSpace);
   await ctl('#btnQuickBoundary');await ctl('#btnQuickRect');check('常駐邊界入口啟動真正矩形工具',await read(`oc.drawTool==='rect' && $('btnNewRect').classList.contains('active')`));await key('Escape','Escape',27);
