@@ -57,6 +57,8 @@ jobs:
           persist-credentials: false
       - name: Build current native executables
         run: npm run build
+      - name: Install Chinese fonts for visual verification
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends fonts-noto-cjk
       - name: Run actual browser regression group
         shell: bash
         run: |

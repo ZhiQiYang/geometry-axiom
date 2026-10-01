@@ -56,8 +56,9 @@ module.exports=async function({send,eval_,sleep,click,drag,waitForUI,expectNativ
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await ctl('#igTrial summary');await ctl('#igTrialEnabled');await ready();await ctl('#igTrialFit');
   check('390px 試擺控制與畫布沒有水平溢位',await read(`(()=>{const d=$('infiniteGridWorkspace'),r=$('igTrial').getBoundingClientRect();return d.scrollWidth<=d.clientWidth+1 && r.width>0 && r.left>=0 && r.right<=391 && [...$('igTrial').querySelectorAll('input,select,button')].every(e=>e.getBoundingClientRect().right<=391);})()`));
   const shot=cdp.makeShot(send,['GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR']);await ctl('#igTrialWidth');await shot('grid-trial-mobile-controls');
+  await ctl('#igTrialOffset');await shot('grid-trial-mobile-alignment');
   await read(`$('igGridView').scrollIntoView({block:'center'});`);await sleep(200);await shot('grid-trial-mobile-canvas');
-  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});await sleep(200);await shot('grid-trial-desktop');
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});await sleep(200);await ctl('#igTrialFit');await ready();await ctl('#igTrialWidth');await shot('grid-trial-desktop');
   await ctl('#igSaveSource');await wait(`!!document.querySelector('.reference-impact[open]')`);
   check('建立確認前試擺仍不寫入 World',(await dump())===before);
   await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]') && !oc.busy`);
