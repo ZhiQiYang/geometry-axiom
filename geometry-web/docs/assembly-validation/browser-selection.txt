@@ -1,0 +1,44 @@
+CDP_SCOPE {"mode":"partial","filters":["GEOMETRY_SELECTION_CURSOR_ONLY"],"modifiers":[],"url":"http://127.0.0.1:8847/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\fb-native-assembly-pr26","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-aQJB9u","cdpPort":9348,"browserPid":21888}
+=== P75. 網格退出選取與游標文字實際呈現 ===
+P75 一般網格仍啟用格尺編輯 ✓
+P75 真點格尺新增草稿線，世界未變 ✓
+P75 真拖格線改草稿並保留未套用世界 ✓
+P75 網格切構件後工具和高亮一致回到選取 ✓
+P75 只切分頁保留網格草稿 ✓
+P75 真實命中 t:10 ✓
+P75 切構件後真點角材可選取 ✓
+P75 參考線真實命中 ✓
+P75 角材後真按參考線可開始拖曳 ✓
+P75 退出網格後真拖框可選本面兩支角材 ✓
+P75 點選與框選不改幾何世界 ✓
+P75 網格中點側欄角材會退出網格並選該支 ✓
+P75 真實命中 t:11 ✓
+P75 側欄選取後下一次畫布點選仍有效 ✓
+P75 工程範例含來源綁定格線 ✓
+P75 工程來源網格開啟資訊時維持可選取工具 ✓
+P75 真實命中 t:11 ✓
+P75 工程網格返回構件後可連續選側欄和畫布角材 ✓
+P75 側欄來源格線入口也不留下空網格工具 ✓
+P75 來源格仍能開始子網格草稿 ✓
+P75 離開子格頁也能恢復選取 ✓
+P75 子格重新選父格會恢復有效網格工具 ✓
+P75 離開再返回的父格選擇可實際命中 ✓
+P75 檢視來源與取消子格草稿不改工程世界 ✓
+P75 參考線游標白字無白色描邊 @1382 ✓
+P75 深色角材膠囊白字保持清楚 @1382 ✓
+P75 角材工具膠囊實際字樣可讀 @1382 ✓
+P75 真拖開口時操作字和尺寸提示都沒有粗白描邊 @1382 ✓
+P75 游標視覺驗證取消拖曳後世界不變 @1382 ✓
+P75 尺寸和參考線文字仍保有白描邊 @1382 ✓
+P75 參考線游標白字無白色描邊 @390 ✓
+P75 深色角材膠囊白字保持清楚 @390 ✓
+P75 角材工具膠囊實際字樣可讀 @390 ✓
+P75 真拖開口時操作字和尺寸提示都沒有粗白描邊 @390 ✓
+P75 游標視覺驗證取消拖曳後世界不變 @390 ✓
+P75 尺寸和參考線文字仍保有白描邊 @390 ✓
+P75 沒有新增未處理的瀏覽器例外 ✓
+CDP_SECTIONS 1 段,合計 37 通過斷言
+[CDP FLOOR] 部分模式,未比對 golden。各段通過數:{"P75":37}
+
+=== 結果:37 通過斷言 / 0 失敗斷言 / 0 略過群組 (partial) ===
+CDP_RESULT {"schema":"geometry-cdp-result/1","scope":{"mode":"partial","filters":["GEOMETRY_SELECTION_CURSOR_ONLY"],"modifiers":[],"url":"http://127.0.0.1:8847/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\fb-native-assembly-pr26","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-aQJB9u","cdpPort":9348,"browserPid":21888},"completed":true,"passedAssertions":37,"failedAssertions":0,"skipped":[],"sections":{"P75":37},"goldenCompare":"not compared (partial mode)","uncaughtBrowserExceptions":0,"coverage":"Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."}

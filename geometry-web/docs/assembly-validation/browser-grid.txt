@@ -1,0 +1,90 @@
+CDP_SCOPE {"mode":"partial","filters":["GEOMETRY_GRID_SYSTEM_ONLY"],"modifiers":[],"url":"http://localhost:8846/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\fb-space-assembly-pr26","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-ZGNrXE","cdpPort":9347,"browserPid":6148}
+=== P70. 無限格線、獨立邊界與 cell 對齊 ===
+P70 空畫布可直接建立獨立網格 ✓
+P70 新增來源先預覽，沒有提前寫入世界 ✓
+P70 確認建立無限來源並保存名稱 ✓
+P70 來源沒有隱含建立邊界、配置或承載面 ✓
+P70 無限來源表單沒有總條數，名稱以文字呈現 ✓
+P70 視窗兩軸含正負格線，每條穿越完整視窗 ✓
+P70 1b 兩軸共用同一 mm→px 比例，SVG 座標即像素、不再壓扁 ✓
+P70 1b 索引在上、左尺規列並置中對齊格線，第 0 線為強調藍 ✓
+P70 1b 拿掉 ∞ 與 u → v ↓ 疊字，尺規只有索引數字 ✓
+P70 1b 基準點 (0, 0) 落在兩條第 0 線交點 ✓
+P70 1b 工具列顯示目前比例（格距 mm 與一格像素） ✓
+P70 1b 網格拉高填滿主區，下方不再留大片空白 ✓
+P70 3a 專案列與工作區標題合併成單列麵包屑，返回在最前，只剩「預覽並建立」一個主動作 ✓
+P70 3a 設定集中到右側 360px 檢查器，網格在左側成為畫面本體，沒有標題與說明卡 ✓
+P70 3a 格子縮圖維持 600:400 比例 ✓
+P70 3a 主支方向為分段選擇，值仍由 #igMainAlong.value 讀取 ✓
+P70 3a 游標移入格子：格資訊顯示 cell、起點與尺寸，格子與尺規範圍同步高亮 ✓
+P70 3a 來源畫面點格選取只影響視窗，再點一次取消，不改世界 ✓
+P70 3a 版面尺寸改變（如密度提示出現、視窗縮放）不累積改變縮放比例 ✓
+P70 3a 草稿欄位無效時，滑過、縮放網格不會把焦點搶到該欄位 ✓
+P70 3a 單軸來源點網格不顯示錯誤、不選取 ✓
+P70 3a 第 0 線不在 0 mm 時，基準標籤同時寫出索引與 mm 位置 ✓
+P70 3a 按預覽遇到無效欄位：顯示錯誤並把焦點移到該欄位，不開預覽 ✓
+P70 縮放與平移只改視窗，沒有改來源或世界 ✓
+P70 新增來源先預覽，沒有提前寫入世界 ✓
+P70 確認建立無限來源並保存名稱 ✓
+P70 面材來源保存原始規則與無限身分 ✓
+P70 建立來源可單步復原 ✓
+P70 重做保留來源身分與原始排法 ✓
+P70 真正點選負索引格子與邊界頂點 ✓
+P70 配置與首次頂點 key 一起預覽，確認前沒有保存 ✓
+P70 配置保存精確 cell 與手算平移 ✓
+P70 真正點選負索引格子與邊界頂點 ✓
+P70 配置與首次頂點 key 一起預覽，確認前沒有保存 ✓
+P70 配置保存精確 cell 與手算平移 ✓
+P70 同來源組合兩個未放置邊界，孔頂點也有穩定身分 ✓
+P70 配置結果使用原生裁切查詢 ✓
+P70 四側擴大預覽列出具名頂點的新舊座標 ✓
+P70 四側擴大出現原範圍之外的格線，既有索引不變 ✓
+P70 擴邊沒有移動孔錨點或配置平移 ✓
+P70 來源預覽明列兩份未放置配置的錨點與新舊平移 ✓
+P70 取消来源更新保留完整世界 ✓
+P70 修改間距仍將左上與中心錨定同一頂點 ✓
+P70 來源與所有配置一次復原 ✓
+P70 來源與所有配置一次重做 ✓
+P70 重開配置顯示確切負索引與中心錨點 ✓
+P70 配置卡片可拖動且不改錨定幾何 ✓
+P70 套用只列出同邊界承載面 ✓
+P70 套用到承載面也先預覽 ✓
+P70 套用只列出同邊界承載面 ✓
+P70 套用到承載面也先預覽 ✓
+P70 兩個主網格保留配置引用與有號 lattice 身分 ✓
+P70 正式另存新檔已下載專案 ✓
+P70 保存宣告、key 高水位與引用，没有取樣線或平移副本 ✓
+P70 正式重開前已清空來源與配置 ✓
+[TEST PROJECT DIALOG] 目前專案有尚未保存的變更。要離開目前專案嗎？
+P70 正式開檔按鈕觸發檔案選擇 ✓
+P70 正式重開恢復規則、key、負索引、比例與卡片位置 ✓
+P70 saved artifact C:\Users\Yang\AppData\Local\Temp\geometry-infinite-grid-download-wtLTuc\未命名專案.gcanvas
+P70 新增來源先預覽，沒有提前寫入世界 ✓
+P70 確認建立無限來源並保存名稱 ✓
+P70 密集來源可保存且明示稀疏顯示 ✓
+P70 取樣仍命中真正 cell，不以顯示線序號代替 ✓
+P70 放大定位恢復完整密度與同一 cell ✓
+[EXPECTED NATIVE DIALOG] 這個網格工作區有尚未建立或套用的草稿。離開會捨棄這些草稿；已保存到場景的網格保持不變。確定離開？ accept=true
+P70 舊有限來源正式保存重開後保留條數與明寫座標 ✓
+P70 查看舊資料沒有靜默轉成無限 repeat ✓
+P70 新增來源先預覽，沒有提前寫入世界 ✓
+P70 確認建立無限來源並保存名稱 ✓
+P70 390px 真實頂點與格子點選完成配置 ✓
+P70 390px 工作區與頁面沒有水平溢出 ✓
+P70 390px 標題列仍顯示專案名稱（在工作區標題上方） ✓
+P70 無限網格流程無未處理瀏覽器例外 ✓
+=== P71. 無限格線的面內引用與真 cell ===
+P71-1 負索引 -1 對應 u=400，選項與命中區保持同一身分 ✓
+P71-2 靠邊 cell 保持原始 -200..400 與 0..400，外接框不冒充格線 ✓
+P71-3 實際點選負索引 cell，預覽使用 lattice-cell 並精確等分 ✓
+P71-4 保存 signed cell，子線仍為局部 ordinal 索引 ✓
+P71-5 有依賴的來源格刪除顯示說明，沒有空狀態欄例外 ✓
+P71-6a 進入面工作區依最終可繪區置中，完整面避開操作控制 ✓
+P71-6 抽樣省略的合法線仍可用 lattice 定義精確求座標 ✓
+P71-7 實際放大後重新查詢，恢復被抽樣省略的真格線與命中區 ✓
+P71-8 放大後的新可見線能正確帶入角材引用，不落回空選項 ✓
+CDP_SECTIONS 2 段,合計 79 通過斷言
+[CDP FLOOR] 部分模式,未比對 golden。各段通過數:{"P70":70,"P71":9}
+
+=== 結果:79 通過斷言 / 0 失敗斷言 / 0 略過群組 (partial) ===
+CDP_RESULT {"schema":"geometry-cdp-result/1","scope":{"mode":"partial","filters":["GEOMETRY_GRID_SYSTEM_ONLY"],"modifiers":[],"url":"http://localhost:8846/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\fb-space-assembly-pr26","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-ZGNrXE","cdpPort":9347,"browserPid":6148},"completed":true,"passedAssertions":79,"failedAssertions":0,"skipped":[],"sections":{"P70":70,"P71":9},"goldenCompare":"not compared (partial mode)","uncaughtBrowserExceptions":0,"coverage":"Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."}

@@ -1,0 +1,129 @@
+公理層覆蓋率矩陣
+==========================================================================
+條文 112 條  |  綠 62  黃 23  紅 27
+  綠 = 原始碼與夾具都留下了條號
+  黃 = 只有一邊留下條號
+  紅 = 兩邊都沒有,這條完全沒有可追溯的連結
+  註:量的是「條號在哪裡被提到」,不是「哪裡實作了它」。
+     紅燈代表沒有可追溯的連結,不代表沒被測到。
+
+── 紅燈 27 條 ──
+  D6a   L62   局部參考線位置的引用式
+  D20   L261  擠出實體（ExtrusionSolid；orthog
+  D21   L270  有向邊界殼（BoundaryShell；orthog
+  D22   L282  複合空間（CompositeSpace；orthog
+  D23   L291  實體組合（SolidComposition；orth
+  D24   L304  建模請求與完整性（ModelRequest；orth
+  D25   L320  建模交換包（ModelPackage；orthogo
+  D32   L432  構件分件與接合規則版本（AssemblyRuleVe
+  D33   L443  組構綁定（AssemblyBinding；assem
+  I26   L619  擠出構造守門
+  I27   L622  殼接合守門
+  I28   L627  封閉與體積守門
+  I29   L633  組合守門
+  I30   L637  擴充交易與依賴
+  I31   L642  輸出完整性
+  I32   L649  能力與版本守門
+  I34   L664  工程版本完整性
+  I36   L670  工程保存
+  I40   L714  組構編輯守門
+  R24   L869  擠出求值
+  R25   L872  殼正規化
+  R26   L875  複合空間求值
+  R27   L878  正交布林
+  R28   L883  來源追溯
+  R29   L888  標準幾何輸出
+  R30   L902  建模驗收與輸出紀律
+  R34   L944  組構規則流程
+
+── 黃燈 23 條 ──
+  D12   L48   畫布座標（CanvasPos)          缺夾具  有原始碼 world_find_grid_system
+  D6b   L85   具名規格常數（SpecValue)        缺原始碼  有夾具 _wit_d6c_datum_shared.scene
+  D6c   L96   共用基準面（DatumPlane）        缺原始碼  有夾具 _wit_d6c_datum_shared.scene
+  D26   L334  材料版本（MaterialVersion；eng 缺原始碼  有夾具 _wit_d28_engineering_sources.scene
+  D27   L343  工程做法版本（MethodVersion；eng 缺原始碼  有夾具 _wit_d28_engineering_sources.scene
+  D28   L350  面套用與尺寸來源（EngineeringAppl 缺原始碼  有夾具 _wit_d28_engineering_sources.scene,
+  D30   L392  網格配置（GridBinding)        缺原始碼  有夾具 _wit_d30_infinite_grid_binding.scen
+  D31   L409  參數卡與欄位（ParameterSet / Pa 缺原始碼  有夾具 _wit_d31_parameters.scene, _wit_i38
+  I7a   L469  共用基準交線唯一性                缺夾具  有原始碼 apply_delete_line
+  I33   L657  精確運算與容量                  缺夾具  有原始碼 main
+  I35   L667  套用合法性                    缺原始碼  有夾具 _wit_i35_engineering_zero_panel.sce
+  I38   L693  參數合法性與精確運算               缺原始碼  有夾具 _wit_d31_parameters.scene, _wit_i38
+  I41   L722  組構保存與能力                  缺夾具  有原始碼 parse_scene_file
+  R1    L733  拾取 = 畫家演算法               缺夾具  有原始碼 scene_pick_at
+  R2    L734  移動參考線要重放引用它的角材（2026-09-1 缺原始碼  有夾具 _edge_freeze.scene, _edge_i8a_confi
+  R4    L740  場景檔是 SSOT；互動指令列 = 對同一 pa 缺夾具  有原始碼 apply_move_line, axis_word
+  R5    L761  拖曳參考線                    缺夾具  有原始碼 gdi_window_proc, guide_line_get_lo
+  R18   L829  角色衍生屬性（純幾何，不看宣告與錨法）      缺夾具  有原始碼 boundary_edge_interval, timber_bou
+  R19   L836  推論（由 I19–I22 推出，不另存）     缺原始碼  有夾具 _demo_ceiling.scene, _role_ext_stop
+  R20   L847  重宣告/刪除連坐                 缺夾具  有原始碼 world_validate_derived
+  R31   L908  工程來源求值                   缺原始碼  有夾具 _wit_d28_engineering_sources.scene
+  R32   L913  網格求值與保存                  缺原始碼  有夾具 _wit_d29_grid_system.scene, _wit_d3
+  R33   L936  參數求值與引用                  缺原始碼  有夾具 _wit_d31_parameters.scene, _wit_i38
+
+── 綠燈 62 條 ──
+  D1    房間座標                     原始碼 apply_grid_line, main            夾具 1  變異 無
+  D2    承載面框架（PlacementSurface.f 原始碼 surface_frame_is_valid, world_re 夾具 2  變異 無
+  D3    空間邊界面（SpaceBoundarySurfa 原始碼 boundary_is_valid                夾具 1  變異 無
+  D4    承載面（PlacementSurface)    原始碼 apply_boundary_line, placement_e 夾具 2  變異 無
+  D5    空間（Space)                原始碼 scene_find_placement, world_find 夾具 1  變異 無
+  D6    參考線（GuideLine)           原始碼 guide_line_get_local_segments, g 夾具 3  變異 無
+  D7    角材（Timber)               原始碼 apply_timber_line, timber_role_n 夾具 3  變異 無
+  D8    邊（SurfaceBoundaryEdge)   原始碼 loop_get_edge_segment            夾具 1  變異 無
+  D9    只存定義                     原始碼 grid_axis_lines, grid_coord_list 夾具 2  變異 無
+  D10   參考網格（ReferenceGrid)      原始碼 apply_grid_line, grid_axis_lines 夾具 1  變異 無
+  D10a  面材排法（PANEL_LAYOUT）的格線    原始碼 apply_grid_line, coord_midpoint_ 夾具 5  變異 M53,M54,M55
+  D11   擋面（StopFace)             原始碼 collect_stop_faces, stop_face_ma 夾具 3  變異 M14,M15,M16,M17,M18
+  D13   RC 柱（RcColumn)           原始碼 coord_midpoint_floor, scene_find 夾具 2  變異 無
+  D14   RC 樑（RcBeam)             原始碼 coord_midpoint_floor, scene_find 夾具 2  變異 無
+  D15   角材角色與裁切優先級（cut priority） 原始碼 apply_timber_line, timber_end_fa 夾具 3  變異 無
+  D16   邊界材的固定段與延伸段              原始碼 boundary_edge_interval, timber_b 夾具 3  變異 無
+  D17   承載面的主支軸                  原始碼 surface_primary_axis_check, timb 夾具 4  變異 無
+  D18   擋面參照（StopFaceRef)        原始碼 stop_face_matches_ref            夾具 2  變異 無
+  D19   子網格（Subgrid）             原始碼 apply_grid_line, grid_coord_list 夾具 2  變異 無
+  D29   獨立網格系統（GridSystem)       原始碼 apply_grid_line, path_beside_sou 夾具 2  變異 無
+  I1    承載面 frame 合法             原始碼 surface_frame_is_valid           夾具 1  變異 無
+  I2    邊界面輪廓                    原始碼 poly_loop_is_valid               夾具 2  變異 無
+  I3    fixity 陣列長度 = 邊數；不寫 → 全  原始碼 parse_boundary_body              夾具 2  變異 無
+  I4    Space 建構                 原始碼 space_fail                       夾具 4  變異 無
+  I5    角材放置                     原始碼 boundary_edge_interval, timber_b 夾具 2  變異 M01,M02,M03,M04,M05,M06,M07,M08,M09,M10,M11
+  I6    角材端面（START/END）若正好貼在輪廓邊上 原始碼 timber_place_a0_on_surface       夾具 2  變異 無
+  I7    參考線有效性                   原始碼 guide_line_get_local_segments    夾具 2  變異 無
+  I8    重宣告（同名 id 再宣告）= 交易       原始碼 a0_rect_uv, apply_grid_line      夾具 1  變異 無
+  I8a   影響預覽                     原始碼 apply_grid_line, apply_place_lin 夾具 2  變異 無
+  I9    DSL 順序即依賴順序              原始碼 apply_interactive_tokens, axis_w 夾具 2  變異 無
+  I10   網格                       原始碼 apply_grid_line, grid_axis_lines 夾具 1  變異 M31,M32,M52
+  I11   實體不重疊                    原始碼 world_footprint_collides         夾具 1  變異 M12,M13,M37
+  I12   錨法二選一                    原始碼 apply_place_line                 夾具 2  變異 無
+  I13   錨法幾何約束                   原始碼 apply_beam_line, apply_place_lin 夾具 6  變異 M26,M28,M29,M30,M33,M34,M38
+  I14   canvas-pos               原始碼 apply_canvaspos_line             夾具 1  變異 無
+  I15   柱                        原始碼 coord_midpoint_floor, world_vali 夾具 2  變異 無
+  I16   樑                        原始碼 scene_find_placement, world_vali 夾具 1  變異 無
+  I17   空間重宣告使推導範圍縮小 → 柱樑一併重驗，不過 原始碼 apply_delete_line, coord_midpoin 夾具 1  變異 無
+  I18   角色必填                     原始碼 apply_timber_line                夾具 3  變異 無
+  I19   端面規則（裁切優先序的形式）           原始碼 parse_scene_file, surface_primar 夾具 13  變異 無
+  I20   邊界材整條覆蓋                  原始碼 boundary_edge_interval, timber_b 夾具 1  變異 無
+  I21   主支軸一致                    原始碼 boundary_edge_interval, surface_ 夾具 1  變異 無
+  I22   延伸段                      原始碼 boundary_edge_interval, stop_in_ 夾具 4  變異 無
+  I23   網格引用的追溯與重算（2026-09-18 目的 原始碼 apply_delete_line, apply_grid_li 夾具 4  變異 M51,M56
+  I25   子網格守門                    原始碼 timber_face_id_is_valid, world_r 夾具 2  變異 無
+  I37   網格系統與配置                  原始碼 apply_delete_line                夾具 2  變異 無
+  I39   參數保存與交換                  原始碼 parse_scene_file                 夾具 2  變異 無
+  R3    退化/不精確 → 拒絕不猜            原始碼 apply_grid_line, main            夾具 3  變異 無
+  R6    auto 跨距推導（🔒 四項已拍板）       原始碼 apply_place_line, path_beside_so 夾具 6  變異 M19,M20,M21,M22,M23,M24,M25,M36,M39,M40
+  R7    面上投影分類 = 單一「足跡 × 輪廓接觸關係」 原始碼 frame_project_uv                 夾具 6  變異 無
+  R8    套用（apply-proj）是快照式衍生     原始碼 coord_midpoint_floor, frame_proj 夾具 1  變異 無
+  R9    只有已放置面可接收投影（R3 不猜）；平面/立面 原始碼 apply_applyproj_line, frame_proj 夾具 1  變異 無
+  R10   拆分時孔隨片重分配                原始碼 proj_edge_covered                夾具 2  變異 無
+  R11   拆片面與生成面一律游離              原始碼 coord_midpoint_floor, proj_apply 夾具 2  變異 無
+  R12   apply-proj 的項目 id 加 c/b  原始碼 apply_applyproj_line             夾具 2  變異 無
+  R13   拆分時承載面輔助資料跟著含錨點的那片走（與 R1 原始碼 proj_rebind_aux                  夾具 2  變異 無
+  R14   apply-proj 逐項選片          原始碼 proj_apply_one                   夾具 1  變異 無
+  R15   指定項不存在 = 整筆拒絕            原始碼 apply_applyproj_line             夾具 1  變異 無
+  R16   top_drop（邊樑整段降低）= 半平面裁切  原始碼 proj_spawn_face                  夾具 2  變異 無
+  R17   貼牆柱露出面在柱遠側緣平面            原始碼 proj_apply_one                   夾具 1  變異 無
+  R21   明寫跨距兩端（between）          原始碼 resolve_auto_span, stop_face_mat 夾具 3  變異 M57,M58
+  R23   子格推導                     原始碼 timber_face_id_is_valid          夾具 2  變異 無
+
+── 錯誤碼對照 ──
+  條文宣告的 V_* 錯誤碼全部在原始碼裡找得到

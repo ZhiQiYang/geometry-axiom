@@ -1,0 +1,33 @@
+CDP_SCOPE {"mode":"partial","filters":["GEOMETRY_ASSEMBLY_ONLY"],"modifiers":[],"url":"http://127.0.0.1:8847/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\fb-native-assembly-pr26","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-DNgDYZ","cdpPort":9351,"browserPid":14768}
+=== P77 組構規則與材料配置 ===
+P77 空世界草稿從零開始 ✓
+P77 視窗跟隨草稿復原而不覆寫 ✓
+P77 草稿重做還原編輯值 ✓
+P77 正交分段按局部交換連續構件 ✓
+P77 旋轉縮放只改檢視 ✓
+P77 刪除使用中槽位指出構件 ✓
+P77 衝突預覽拒絕且正式世界為空 ✓
+P77 改名排序不改接合身分 ✓
+P77 開啟中的草稿保存最新值 ✓
+P77 發布後原生卡片可找到且不生成角材 ✓
+P77 未選材料保存為未完成 ✓
+P77 新版本不升級既有配置 ✓
+P77 槽位名稱在換版對應中只當文字顯示 ✓
+P77 取消換版不改正式配置 ✓
+P77 複製有新原生身分 ✓
+P77 復原發布同時恢復草稿 ✓
+P77 重做恢復正式來源 ✓
+P77 正式搜尋列表與命中皆包含規則 ✓
+P77 拖曳原生卡片只改位置 ✓
+P77 390px 完成 A/B 材料配置 ✓
+P77 390px 無橫向溢出與小於44px操作 ✓
+P77 保存重開保留所有版本配置與卡片位置 ✓
+P77 正式範例重開含兩版、配置與未完成草稿 ✓
+P77 範例材料與參數均可從正式來源選擇 ✓
+P77 切專案後延遲預覽不污染新專案 ✓
+P77 沒有未處理瀏覽器例外 ✓
+CDP_SECTIONS 1 段,合計 26 通過斷言
+[CDP FLOOR] 部分模式,未比對 golden。各段通過數:{"P77":26}
+
+=== 結果:26 通過斷言 / 0 失敗斷言 / 0 略過群組 (partial) ===
+CDP_RESULT {"schema":"geometry-cdp-result/1","scope":{"mode":"partial","filters":["GEOMETRY_ASSEMBLY_ONLY"],"modifiers":[],"url":"http://127.0.0.1:8847/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\fb-native-assembly-pr26","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-DNgDYZ","cdpPort":9351,"browserPid":14768},"completed":true,"passedAssertions":26,"failedAssertions":0,"skipped":[],"sections":{"P77":26},"goldenCompare":"not compared (partial mode)","uncaughtBrowserExceptions":0,"coverage":"Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."}

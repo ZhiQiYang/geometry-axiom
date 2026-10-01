@@ -55,6 +55,20 @@ GEOMETRY_FEEDBACK_DIR=/tmp/geometry-tests/fb-assembly python3 geometry-web/serve
 執行 `node geometry-web/cdp_test.js`（不帶 ONLY）、`node geometry-web/space_model_test.js`。
 Windows Chrome 連 WSL 服務時加 `GEOMETRY_TEST_SERVER_PATH_STYLE=wsl`，feedback 路徑的兩種表示必須指向同一資料夾。
 
+最終完整 CDP 使用 Windows 原生 bridge 與 model adapter（兩支均以目前 C 來源編譯），
+避免跨環境每次請求的延遲。實際編譯命令見 [Windows build](assembly-validation/windows-build-command.txt)，
+model adapter 使用 `tests/binaries.py build model-base`。PowerShell 啟動方式：
+
+```powershell
+$env:GEOMETRY_BRIDGE="$env:TEMP\geometry-tests\bridge-assembly-pr26.exe"
+$env:GEOMETRY_MODEL_BASE="$env:TEMP\geometry-tests\model-base.exe"
+$env:GEOMETRY_FEEDBACK_DIR="$env:TEMP\geometry-tests\fb-native-full-pr26"
+python geometry-web/serve.py 8848
+```
+
+另一終端設定相同 feedback 目錄、`GEOMETRY_TEST_URL=http://127.0.0.1:8848/`，
+執行 `node geometry-web/cdp_test.js`；Windows 原生服務不設定 WSL path style。
+
 ## 故障注入
 
 `tests/assembly_mutation_check.py` 在暫存來源副本編譯三種故障，先跑正常基準。
@@ -73,7 +87,7 @@ Windows 專用路徑的 bridge 另跑 28 個組構／共用基準案例通過。
 自動更新因 GDI skip 拒絕，故本次明確只調整這兩個數量，保留 skip 守門及非零退出碼。
 斷言、單元案例、scene 案例與 C 檢查點分列，不相加宣稱端到端流程數。
 
-最終執行摘要與可供審查的日誌見本目錄 `assembly-validation/`。
+最終執行摘要、完整日誌、截圖與來源雜湊見 [驗證紀錄](assembly-validation/README.md)。
 
 ## 回歸中修復的缺陷
 
@@ -88,6 +102,11 @@ Windows 專用路徑的 bridge 另跑 28 個組構／共用基準案例通過。
   同時驗證視窗寬度、操作區不重疊及標題可見。
 - 手機字級檢查誤把 0px 隱藏長文字當成可見內容；改量實際文字範圍與偽元素標籤，
   保留 11px 下限，也涵蓋真正顯示的精簡專案狀態。
+- 網格測試開啟配置後未等待非同步頂點／承載面資料；改等載入完成，再以原斷言核對同邊界承載面。
+- 畫布建立空間先請求空號，再提交與重畫；測試改等新空間出現在畫布後，再讀核心核對，避免在兩個請求之間誤判。
+- 換版對應的槽位名稱須以文字插入；統一逸出欄位標籤，P77 以含 HTML 標記的名稱實際換版驗證。
+- 參數手動試算未取消尚待執行的自動試算，兩者可能覆寫核心候選，導致確認憑證失效。
+  每次試算先取消計時、清除舊候選並停用確認；P76 延後回覆超過原排程時間，驗證只發出一次試算，再真正確認套用。
 
 追溯矩陣的紅黃綠量的是條號引用，不是測試結果；本次輸出 62 綠／23 黃／27 紅。
 它仍未涵蓋所有獨立模組，組構逐條實測對應以上矩陣，不以修改燈號冒充覆蓋。

@@ -1,0 +1,43 @@
+CDP_SCOPE {"mode":"partial","filters":["GEOMETRY_PARAMETERS_ONLY"],"modifiers":[],"url":"http://127.0.0.1:8847/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\fb-native-assembly-pr26","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-VxFUjk","cdpPort":9350,"browserPid":37884}
+=== P76 畫布參數卡 ===
+P76 尺寸組先顯示欄位及單位 ✓
+P76 未提交草稿阻擋保存 ✓
+P76 建立真正參數卡 ✓
+P76 跨卡算式由核心試算 ✓
+P76 網格來源顯示有效值 ✓
+P76 網格保存固定欄位身分 ✓
+P76 預覽列出間接受影響網格 ✓
+P76 尚未确认原世界不變 ✓
+P76 確認整筆連動 ✓
+P76 一次復原含所有引用 ✓
+P76 專案第 6 版保留參數關係 ✓
+P76 保存重開仍連動 ✓
+P76 390px 建立 W/H 尺寸卡 ✓
+P76 手機欄位與確認觸控目標 ✓
+P76 手機無水平溢出 ✓
+P76 過期試算不覆蓋新草稿 ✓
+P76 物件定義變更使待回覆候選失效 ✓
+P76 匯出所選卡及完整引用卡，沒有幾何與有效值快取 ✓
+P76 匯入先預覽新增卡片 ✓
+P76 同名參數包匯入為獨立副本 ✓
+P76 手動試算取消待執行的自動試算，回覆前不能確認 ✓
+P76 修改原卡不影響匯入副本 ✓
+P76 角材 A/B 明選 W/H、有限面材網格真實綁定 ✓
+P76 使用物件可跳回參數來源卡 ✓
+P76 構件來源保存重開保持 W/H 身分 ✓
+P76 刪除預覽明列原值且尚未動世界 ✓
+P76 改名含引用符號仍以固定身分試算 ✓
+P76 無下游構件的基準引用仍先預覽 ✓
+P76 取消基準參數綁定保持原狀 ✓
+P76 基準確認後保留參數來源與座標 ✓
+P76 共用基準可跳回參數卡 ✓
+P76 無下游構件的參考線引用仍先預覽 ✓
+P76 取消參考線參數綁定保持原狀 ✓
+P76 參考線確認後保留參數來源與座標 ✓
+P76 參考線可跳回參數卡 ✓
+P76 無未捕捉瀏覽器例外 ✓
+CDP_SECTIONS 1 段,合計 36 通過斷言
+[CDP FLOOR] 部分模式,未比對 golden。各段通過數:{"P76":36}
+
+=== 結果:36 通過斷言 / 0 失敗斷言 / 0 略過群組 (partial) ===
+CDP_RESULT {"schema":"geometry-cdp-result/1","scope":{"mode":"partial","filters":["GEOMETRY_PARAMETERS_ONLY"],"modifiers":[],"url":"http://127.0.0.1:8847/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\fb-native-assembly-pr26","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-cdp-VxFUjk","cdpPort":9350,"browserPid":37884},"completed":true,"passedAssertions":36,"failedAssertions":0,"skipped":[],"sections":{"P76":36},"goldenCompare":"not compared (partial mode)","uncaughtBrowserExceptions":0,"coverage":"Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."}

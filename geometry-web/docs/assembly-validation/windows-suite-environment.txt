@@ -1,0 +1,109 @@
+二進位輸出目錄：C:\Users\Yang\AppData\Local\Temp\geometry-tests
+[build] 只建置 stale/missing：bridge, core, engjson, gdi, integrity, model-base
+  bridge：重建（來源指紋不符（exe 建於 2026-10-01T09:20:59+08:00，指紋 1728fb94f3… ≠ 現在 657eb3d5fe…）；變動：current_geometry.c, geometry-core/transactions.inc）…
+  bridge：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (1/3)
+  bridge：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (2/3)
+  bridge：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (3/3)
+  core：重建（沒有 sidecar（這支 exe 不是 binaries.py 建的，來源是否相符無從證明））…
+  core：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (1/3)
+  core：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (2/3)
+  core：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (3/3)
+  engjson：重建（來源指紋不符（exe 建於 2026-10-01T09:22:39+08:00，指紋 d7db5bed3f… ≠ 現在 32304983ae…）；變動：current_geometry.c, geometry-core/transactions.inc）…
+  engjson：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (1/3)
+  engjson：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (2/3)
+  engjson：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (3/3)
+  integrity：重建（來源指紋不符（exe 建於 2026-10-01T09:24:31+08:00，指紋 ec4a2f4961… ≠ 現在 021cc9ebda…）；變動：current_geometry.c, geometry-core/transactions.inc）…
+  integrity：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (1/3)
+  integrity：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (2/3)
+  integrity：被 SAC 擋（[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)）；15 秒後重試 (3/3)
+  model-base：重建（沒有 sidecar（這支 exe 不是 binaries.py 建的，來源是否相符無從證明））…
+  bridge     blocked        SAC 擋住新二進位（重試 3 次仍被擋；未寫 sidecar；再跑 build 只會重試啟動、不會重編）：[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)
+  core       blocked        SAC 擋住新二進位（重試 3 次仍被擋；未寫 sidecar；再跑 build 只會重試啟動、不會重編）：[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)
+  engjson    blocked        SAC 擋住新二進位（重試 3 次仍被擋；未寫 sidecar；再跑 build 只會重試啟動、不會重編）：[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)
+  gdi        reused         沿用（指紋相符（建於 2026-10-01T09:53:16+08:00））
+  integrity  blocked        SAC 擋住新二進位（重試 3 次仍被擋；未寫 sidecar；再跑 build 只會重試啟動、不會重編）：[WinError 4551] 應用程式控制原則已封鎖此檔案。 (winerror=4551)
+  model-base built          建好 C:\Users\Yang\AppData\Local\Temp\geometry-tests\model-base.exe
+[binaries]
+  bridge     stale    已由 binaries.py 編好但尚未通過 SAC 評估（環境阻擋中；再跑 build 只重試啟動，不重編）
+  core       stale    已由 binaries.py 編好但尚未通過 SAC 評估（環境阻擋中；再跑 build 只重試啟動，不重編）
+  engjson    stale    已由 binaries.py 編好但尚未通過 SAC 評估（環境阻擋中；再跑 build 只重試啟動，不重編）
+  gdi        fresh    指紋相符（建於 2026-10-01T09:53:16+08:00）
+  integrity  stale    已由 binaries.py 編好但尚未通過 SAC 評估（環境阻擋中；再跑 build 只重試啟動，不重編）
+  model-base fresh    指紋相符（建於 2026-10-01T09:59:54+08:00）
+[環境] CC=未設定（繼承自外殼；僅影響 binaries.py 在非 Windows 的編譯）
+[環境] 已清除外殼繼承的 GEOMETRY_*：（無）
+[環境] run_all 設給子行程的 GEOMETRY_*：GEOMETRY_MODEL_BASE、GEOMETRY_TEST_GDI_HARNESS
+[4/31] py:test_axiom_reader …
+[10/31] py:test_engineering_model_compatibility …
+[12/31] py:test_engineering_transport …
+[13/31] py:test_feedback_store …
+[14/31] py:test_gdi_contract …
+[16/31] py:test_guide_panels …
+[18/31] py:test_modeling_degenerate …
+[19/31] py:test_modeling_runtime …
+[23/31] py:test_serve …
+[24/31] py:test_space_modeling …
+[26/31] py:test_witness_diagnostics …
+[27/31] py:test_witness_marks …
+[29/31] node:model_viewer …
+
+--update-expected 拒絕執行（這次跑不能當作數量的依據）：
+  - c:integrity 沒有跑（環境：二進位過期或缺少，未跑（integrity=stale；修法：加 --build 或 python tests/binaries.py build））
+  - core:run_tests 沒有跑（環境：二進位過期或缺少，未跑（core=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_assembly_rules 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_bridge_integrity 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_cli_args 沒有跑（環境：二進位過期或缺少，未跑（core=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_datum_contract 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_engineering_core 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_engineering_json 沒有跑（環境：二進位過期或缺少，未跑（engjson=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_engineering_model_sources 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_grid_system_contract 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_infinite_grid_contract 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_modeling_transport 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_parameters_core 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_reference_contract 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - py:test_subgrid_contract 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - node:tests-js 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+  - node:polydraft 沒有跑（環境：二進位過期或缺少，未跑（core=stale；修法：加 --build 或 python tests/binaries.py build））
+  - node:canvas_direct 沒有跑（環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build））
+
+suite                                    測試數  pass  fail  skip     秒  備註
+--------------------------------------------------------------------------
+c:integrity                                   -     -     -     -      -  環境：二進位過期或缺少，未跑（integrity=stale；修法：加 --build 或 python tests/binaries.py build）
+core:run_tests                                -     -     -     -      -  環境：二進位過期或缺少，未跑（core=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_assembly_rules                        -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_axiom_reader                         25    25     0     0   40.6
+py:test_bridge_integrity                      -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_cli_args                              -     -     -     -      -  環境：二進位過期或缺少，未跑（core=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_datum_contract                        -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_engineering_core                      -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_engineering_json                      -     -     -     -      -  環境：二進位過期或缺少，未跑（engjson=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_engineering_model_compatibility      14    14     0     0   13.4
+py:test_engineering_model_sources             -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_engineering_transport                 5     5     0     0    0.8
+py:test_feedback_store                       11    11     0     0    1.9
+py:test_gdi_contract                          1     1     0     0    2.0
+py:test_grid_system_contract                  -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_guide_panels                          1     1     0     0    1.2
+py:test_infinite_grid_contract                -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_modeling_degenerate                  24    24     0     0   16.0
+py:test_modeling_runtime                     40    40     0     0   45.0
+py:test_modeling_transport                    -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_parameters_core                       -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_reference_contract                    -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_serve                                27    27     0     0    8.4
+py:test_space_modeling                       28    28     0     0  177.0
+py:test_subgrid_contract                      -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+py:test_witness_diagnostics                   2     2     0     0    1.4
+py:test_witness_marks                         6     6     0     0    1.3
+node:tests-js                                 -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+node:model_viewer                             -    ok     -     -    0.4  僅結束碼：腳本式，無 test 級計數，以 exit code 判定
+node:polydraft                                -     -     -     -      -  環境：二進位過期或缺少，未跑（core=stale；修法：加 --build 或 python tests/binaries.py build）
+node:canvas_direct                            -     -     -     -      -  環境：二進位過期或缺少，未跑（bridge=stale；修法：加 --build 或 python tests/binaries.py build）
+--------------------------------------------------------------------------
+合計(已執行、有計數者)                      184   184     0     0  309.5
+未納入                                        -     -     -     -      -  需 Chrome，另行執行：geometry-web/cdp_test.js、geometry-web/space_model_test.js
+
+有 suite 因二進位過期／缺少而未跑：執行 python tests/run_all.py --build（或 python tests/binaries.py build）。
+
+exit 1：有 fail／逾時／預期數不符／未登記檔
