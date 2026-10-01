@@ -107,6 +107,20 @@ class EngineeringCore(unittest.TestCase):
         self.assertTrue(self.command("line redo")["ok"])
         self.assertEqual(after, self.command("dump")["text"])
 
+    def test_assembly_commands_cannot_consume_engineering_token(self):
+        before = self.command("dump")["text"]
+        preview = self.request(self.seed())
+        self.assertTrue(preview["preview"]["valid"], preview)
+        token = preview["preview"]["token"]
+        self.assertFalse(self.command(f"assembly-confirm {token}")["ok"])
+        self.assertFalse(self.command(f"assembly-cancel {token}")["cancelled"])
+        self.assertEqual(before, self.command("dump")["text"])
+        confirmed = self.command(f"engineering-confirm {token}")
+        self.assertTrue(confirmed["ok"], confirmed)
+        self.assertTrue(confirmed["history_changed"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(before, self.command("dump")["text"])
+
     def test_roundtrip_fingerprints_validate_is_readonly(self):
         self.apply(self.seed())
         before = self.command("dump")

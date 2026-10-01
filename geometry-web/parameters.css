@@ -251,3 +251,142 @@ body.parameter-editing .sidebar-right { scroll-padding-bottom: 96px; }
   .param-actions .btn { padding: 0 8px; }
   .param-source select { max-width: 100%; }
 }
+
+/* GEO-227：參數套到網格的圖解。首次可關、收合後只留重開鈕，不佔常駐說明。 */
+#paramGridLesson {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+}
+#paramGridLesson[hidden] { display: none !important; }
+#paramGridLessonSlot { min-width: 0; }
+#paramGridLessonSlot:empty { display: none; }
+#paramGridLesson.is-canvas {
+  position: absolute;
+  z-index: 9;
+  top: 72px;
+  left: 12px;
+  width: min(420px, calc(100% - 24px));
+  max-height: calc(100% - 84px);
+  overflow: auto;
+}
+#paramGridLesson.is-canvas.is-open {
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 10px 28px rgba(23, 32, 51, .16);
+}
+#paramGridLesson.is-canvas.is-collapsed {
+  width: auto;
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+#paramGridLesson.is-grid {
+  position: static;
+  width: 100%;
+  max-height: none;
+  margin: 8px 0 0;
+}
+#paramGridLesson.is-grid.is-open { overflow: hidden; }
+#paramGridLesson .pgl-stage svg { min-width: 0; }
+#paramGridLesson .pgl-stage:not([hidden]) {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+}
+#paramGridLesson .pgl-stage:focus-visible,
+#paramGridLesson .pgl-bar button:focus-visible,
+#paramGridLessonOpen:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#paramGridLesson .pgl-stage svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+#paramGridLesson .pgl-f2 { display: none; }
+#paramGridLesson.is-frame-2 .pgl-f1 { display: none; }
+#paramGridLesson.is-frame-2 .pgl-f2 { display: block; }
+#paramGridLesson .pgl-bar:not([hidden]) {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  min-width: 0;
+}
+#paramGridLesson button {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 44px;
+  cursor: pointer;
+}
+#paramGridLesson .pgl-bar button {
+  flex: none;
+  width: 44px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+}
+#paramGridLesson .pgl-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #d0d5dd;
+}
+#paramGridLesson [aria-current="true"] .pgl-dot { background: #365bf5; }
+#paramGridLesson #paramGridLessonClose {
+  flex: 1;
+  width: auto;
+  padding: 0 12px;
+  border-color: #365bf5;
+  background: #365bf5;
+  color: #fff;
+  font: 600 14px/1 ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+}
+#paramGridLessonOpen:not([hidden]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 0 4px 14px rgba(23, 32, 51, .12);
+  font: 600 14px/1 ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+}
+#paramGridLesson.is-grid #paramGridLessonOpen { box-shadow: none; }
+#paramGridLessonOpen svg { width: 22px; height: 22px; flex: none; }
+/* 窄螢幕畫布被參數面板壓得很矮，展開的圖改貼在視窗下方，名稱欄留在圖的上方。
+   收合後的圖解留在畫布左上、繪圖工具下方，層級低於框選教學，避免蓋住那個「知道了」。 */
+@media (max-width: 900px) {
+  #paramGridLesson.is-canvas.is-open {
+    position: fixed;
+    z-index: 30;
+    top: auto;
+    right: 12px;
+    bottom: calc(var(--statusbar-h) + 8px);
+    left: 12px;
+    width: auto;
+    max-height: min(340px, calc(100dvh - var(--topbar-h) - var(--statusbar-h) - 220px));
+  }
+  #paramGridLesson.is-canvas.is-collapsed { z-index: 6; }
+}

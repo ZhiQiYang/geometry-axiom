@@ -1,4 +1,7 @@
-/* D29 / I37 / R32: reusable definitions, without an implicit surface. */
+/* D29 / D10b / I37 / R32: reusable definitions, without an implicit surface. */
+static char g_grid_stagger_error[256];
+static bool grid_axis_stagger_ok(const GridSystem *,int,char *,size_t);
+static bool grid_parameter_token(const char *,Coord *,ParameterRef *,bool);
 static bool grid_system_axis_valid(const GridAxisDef *a)
 {
     if (a->source==GRID_SRC_NONE) return true;
@@ -56,12 +59,13 @@ static bool grid_systems_rebuild(World *w,char *error,size_t cap)
     for (size_t i=0;i<w->grid_system_count;++i) {
         for(int axis=0;axis<2;++axis){
             GridAxisDef *a=&w->grid_systems[i].axis[axis];
-            Coord *values[]={&a->start,&a->step,&a->panel,&a->gap,&a->anchor};
-            for(int field=0;field<5;++field)if(a->parameters[field].set){
+            Coord *values[]={&a->start,&a->step,&a->panel,&a->gap,&a->anchor,&a->stagger};
+            for(int field=0;field<6;++field)if(a->parameters[field].set){
                 if(!grid_axis_is_infinite(a)||!parameter_coord(w,a->parameters[field],values[field])){
                     snprintf(error,cap,"grid-system %u %c: %.190s",w->grid_systems[i].id,axis?'v':'u',g_parameter_error);return false;
                 }
             }
+            if(!grid_axis_stagger_ok(&w->grid_systems[i],axis,error,cap)) return false;
         }
         if (!grid_system_valid(&w->grid_systems[i])) {
             snprintf(error,cap,"I37: grid-system %u has an invalid definition",w->grid_systems[i].id); return false;
@@ -103,6 +107,40 @@ static bool grid_system_read_name(const char *hex,char out[GRID_SYSTEM_NAME_MAX+
     }
     out[n/2]=0; return grid_system_name_valid((const unsigned char*)out,n/2);
 }
+static bool grid_axis_stagger_ok(const GridSystem *s,int axis,char *error,size_t cap)
+{
+    const GridAxisDef *a=&s->axis[axis],*other=&s->axis[1-axis];
+    Coord pitch; int64_t sum;
+    if(!a->stagger_set) return true;
+    if(!grid_axis_is_infinite(a) || !grid_axis_is_infinite(other)){
+        snprintf(error,cap,"I24: 相位差只接受兩軸都存在的無限排法"); return false;
+    }
+    pitch=grid_axis_pitch(a);
+    if(pitch<=0){ snprintf(error,cap,"I24: grid-system %u %c has no positive pitch",s->id,axis?'v':'u'); return false; }
+    if(a->stagger==0){
+        snprintf(error,cap,"I24: 相位差為 0。要貫通線請省略 stagger，不要寫 0"); return false;
+    }
+    if(a->stagger%pitch==0){
+        snprintf(error,cap,"I24: 相位差是間距的整數倍，奇數格與偶數格的線會重合。要貫通線請省略這個欄位"); return false;
+    }
+    if(!grid_i64_add(grid_axis_phase(a),a->stagger,&sum)){
+        snprintf(error,cap,"I24: 相位加相位差超出可表達範圍"); return false;
+    }
+    return true;
+}
+static bool grid_system_read_stagger(char **t,int count,int *at,GridAxisDef *a)
+{
+    int i=*at;
+    if(i>=count || strcmp(t[i],"stagger")) return true;
+    if(!grid_axis_is_infinite(a)){
+        snprintf(g_grid_stagger_error,sizeof g_grid_stagger_error,"I24: 相位差只接受無限軸"); return false;
+    }
+    if(i+1>=count || !grid_parameter_token(t[i+1],&a->stagger,&a->parameters[5],true)) return false;
+    if(!a->parameters[5].set && a->stagger==0){
+        snprintf(g_grid_stagger_error,sizeof g_grid_stagger_error,"I24: 相位差為 0。要貫通線請省略 stagger，不要寫 0"); return false;
+    }
+    a->stagger_set=true; *at=i+2; return true;
+}
 static bool grid_parameter_token(const char *text,Coord *value,ParameterRef *ref,bool allowed)
 {
     if(allowed&&!strncmp(text,"param:",6)){*value=1;return parameter_ref_parse(text,ref);}
@@ -137,15 +175,19 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a)
         if (!strcmp(t[i],"explicit")) ++i;
         a->source=GRID_SRC_EXPLICIT;
         while (i<count && strcmp(t[i],"u") && strcmp(t[i],"v")) {
+            if (!strcmp(t[i],"stagger")) {
+                snprintf(g_grid_stagger_error,sizeof g_grid_stagger_error,"I24: 相位差只接受無限軸"); return false;
+            }
             if (a->count==GRID_MAX_LINES || !parse_coord(t[i],&a->coords[a->count])) return false;
             ++a->count; ++i;
         }
     }
+    if (!grid_system_read_stagger(t,count,&i,a)) return false;
     *at=i; return grid_system_axis_valid(a);
 }
 static bool apply_grid_system_line(const char *path,int line_no,char **t,int count,World *w)
 {
-    GridSystem s={0}; int i=6;
+    GridSystem s={0}; int i=6; g_grid_stagger_error[0]=0;
     if (count<10 || !parse_u32(t[1],&s.id) || strcmp(t[2],"name-hex") ||
         !grid_system_read_name(t[3],s.name) || strcmp(t[4],"main-along")) goto invalid;
     if (!strcmp(t[5],"u")) s.main_along=1;
@@ -170,7 +212,7 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
     }
     *w=candidate; return true;
 invalid:
-    scene_error(path,line_no,"D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range"); return false;
+    scene_error(path,line_no,g_grid_stagger_error[0]?g_grid_stagger_error:"D29/I37: grid-system requires a valid UTF-8 name-hex, main-along, and complete u/v definitions in D1 range"); return false;
 }
 
 static bool apply_grid_system_application(const char *path,int line_no,char **t,int count,World *w)
@@ -228,9 +270,11 @@ static void grid_systems_dump(const World *w,FILE *out)
             } else if (a->source==GRID_SRC_SERIES) fprintf(out," series %lld %lld %u",(long long)a->start,(long long)a->step,(unsigned)a->series_count);
             else if(a->source==GRID_SRC_REPEAT) {
                 fputs(" repeat ",out);grid_parameter_dump(out,a->start,a->parameters[0]);fputc(' ',out);grid_parameter_dump(out,a->step,a->parameters[1]);
+                if(a->stagger_set){fputs(" stagger ",out);grid_parameter_dump(out,a->stagger,a->parameters[5]);}
             } else {
                 fprintf(out," %s ",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel");grid_parameter_dump(out,a->panel,a->parameters[2]);
                 fputs(" gap ",out);grid_parameter_dump(out,a->gap,a->parameters[3]);fputs(" from ",out);grid_parameter_dump(out,a->anchor,a->parameters[4]);
+                if(a->source==GRID_SRC_REPEAT_PANEL && a->stagger_set){fputs(" stagger ",out);grid_parameter_dump(out,a->stagger,a->parameters[5]);}
             }
         }
         fputc('\n',out);

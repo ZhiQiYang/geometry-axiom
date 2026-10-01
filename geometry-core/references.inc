@@ -135,6 +135,7 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
         if (!grid || grid->placement_id!=g->placement_id) return false;
         if (!strcmp(part[0],"grid")) {
             int64_t k;
+            if (grid->axis[axis].stagger_set) return false;
             return n==4 && parse_i64(part[3],&k) &&
                 grid_line_coord_in(w->grids,w->grid_count,grid,p,b,axis,k,out,NULL,NULL,0);
         }
@@ -331,7 +332,8 @@ static bool reference_place_geometry(World *w, size_t ti)
             const ReferenceGrid *g=world_find_grid(w,a->ref_grid); char err[180]="";
             if (!g || g->placement_id!=p->id || (a->ref_grid_axis==0)!=along)
                 return reference_issue(t->id,"I13/I23","same-face grid coordinate axis perpendicular to length","missing grid or face/axis mismatch (垂直)");
-            if (!grid_line_coord_in(w->grids,w->grid_count,g,p,b,a->ref_grid_axis,a->ref_grid_index,&center,NULL,err,sizeof err))
+            if (!grid_anchor_line_coord(w->grids,w->grid_count,g,p,b,a->ref_grid_axis,a->ref_grid_index,
+                    a->ref_grid_has_band,a->ref_grid_band,&center,err,sizeof err))
                 return reference_issue(t->id,"I23","referenced grid index exists",err);
             if (g->is_subgrid) {
                 if (!grid_cell_bounds(w->grids,w->grid_count,g,p,b,&child_scope,err,sizeof err))
@@ -597,6 +599,10 @@ static bool apply_reference_place(const char *p,int n,char **tokens,int count,Wo
                 scene_error(p,n,"I13: the grid must exist; finite grid indices must be nonnegative and below 64"); return false;
             }
             a.ref_grid_axis=!strcmp(tokens[i+2],"u")?0:1; a.ref_grid_index=index; i+=4;
+            if (i<count && !strcmp(tokens[i],"band")) {
+                if (i+1>=count || !parse_i64(tokens[i+1],&a.ref_grid_band)) return false;
+                a.ref_grid_has_band=true; i+=2;
+            }
         } else { scene_error(p,n,"I13: at-line guide id | grid id u|v index"); return false; }
     } else if (!strcmp(tokens[4],"at-face")) {
         ReferenceFace r;
@@ -679,7 +685,10 @@ static void reference_dump(const World *w,FILE *out)
         const Timber *t=&w->timbers[at]; const TimberAnchor *a=&w->anchors[at];
         fprintf(out,"place %u on %u ",t->id,a->placement_id);
         if (a->anchor_kind==ANCHOR_AT_LINE) fprintf(out,"at-line guide %u",a->ref_guide);
-        else if (a->anchor_kind==ANCHOR_AT_GRID) fprintf(out,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
+        else if (a->anchor_kind==ANCHOR_AT_GRID) {
+            fprintf(out,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
+            if (a->ref_grid_has_band) fprintf(out," band %lld",(long long)a->ref_grid_band);
+        }
         else { ReferenceFace r={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber}; fputs("at-face ",out); reference_face_format(out,&r); }
         if (a->has_through) fprintf(out," through %lld",(long long)a->through);
         if (a->has_between) { fputs(" between ",out); reference_face_format(out,&a->between[0]); fputc(' ',out); reference_face_format(out,&a->between[1]); }
@@ -720,6 +729,7 @@ static bool reference_snap(World *w,uint32_t pid,GuideDirection dir,uint32_t exc
     for (size_t i=0;i<w->grid_count;++i) if (w->grids[i].placement_id==pid) {
         const ReferenceGrid *grid=&w->grids[i];
         Coord coords[GRID_MAX_LINES]; int64_t indices[GRID_MAX_LINES]; size_t count=0; int a=axis=='u'?0:1;
+        if (grid->axis[a].stagger_set) continue;
         if (grid->from_binding) {
             /* Snapping uses the actual nearest lattice lines, even when display
              * sampling hides them. It never snaps to a sample-array ordinal. */

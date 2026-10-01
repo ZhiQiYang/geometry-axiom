@@ -63,7 +63,7 @@
             <h3 class="file-section-label">匯入與匯出</h3>
             <button id="btnImportReference" class="menu-item" type="button">匯入參考資料… <small>PDF／圖片</small></button>
             <button id="btnOpen" class="menu-item" type="button">開啟場景檔… <small>.scene</small></button>
-            <button id="btnExport" class="menu-item" type="button" title="包含幾何與工程來源；不含底圖、未發布草稿及已建立空間" aria-label="匯出 .scene">匯出場景檔… <small>.scene</small></button>
+            <button id="btnExport" class="menu-item" type="button" title="匯出 .scene，包含幾何與工程來源" aria-label="匯出 .scene，不含底圖、草稿、空間模型">匯出場景檔… <small>不含底圖、草稿、空間模型</small></button>
           </section>
           <section data-file-section="resources" role="group" aria-label="工程與範例">
             <h3 class="file-section-label">工程與範例</h3>
@@ -174,12 +174,9 @@
           <button id="filterAll" class="chip-reset" type="button">全部顯示</button>
         </div>
         <div class="chip-row">
-          <button class="chip" type="button" data-filter-type="face" aria-pressed="true"><span class="dot face"></span>面<strong id="faceCount">—</strong></button>
-          <button class="chip" type="button" data-filter-type="space" aria-pressed="true"><span class="dot space"></span>空間<strong id="spaceCount">—</strong></button>
-          <button class="chip" type="button" data-filter-type="column" aria-pressed="true"><span class="dot column"></span>柱<strong id="columnCount">—</strong></button>
-          <button class="chip" type="button" data-filter-type="beam" aria-pressed="true"><span class="dot beam"></span>樑<strong id="beamCount">—</strong></button>
-          <button class="chip" type="button" data-filter-type="grid-system" aria-pressed="true"><span class="dot grid-system"></span>網格系統<strong id="gridSystemCount">—</strong></button>
-          <button class="chip" type="button" data-filter-type="grid-binding" aria-pressed="true"><span class="dot grid-binding"></span>網格配置<strong id="gridBindingCount">—</strong></button>
+          <button class="chip" type="button" data-filter-group="sources" aria-pressed="true"><span class="dot face"></span>來源<strong id="sourceCount">—</strong></button>
+          <button class="chip" type="button" data-filter-group="bindings" aria-pressed="true"><span class="dot grid-binding"></span>配置<strong id="bindingCount">—</strong></button>
+          <button class="chip" type="button" data-filter-group="structures" aria-pressed="true"><span class="dot space"></span>空間與構件<strong id="structureCount">—</strong></button>
         </div>
       </section>
         </details>

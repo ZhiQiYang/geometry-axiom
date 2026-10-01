@@ -188,36 +188,6 @@ static bool world_default(World *world)
     return ok;
 }
 
-/* 命中物 → 一行描述；與 gdi_describe_pick 相同邏輯（那支在 _WIN32 裡碰不到）。 */
-static void describe_pick(const Scene *scene, const World *world,
-                          const ScenePick *p, char *buf, size_t cap)
-{
-    buf[0] = '\0';
-    if (p == NULL || scene_pick_is_none(p)) return;
-
-    if (p->column >= 0 && p->column < (int)scene->column_count) {
-        snprintf(buf, cap, "柱%" PRIu32,
-                 scene->columns[p->column].id);
-        return;
-    }
-    if (p->beam >= 0 && p->beam < (int)scene->beam_count) {
-        snprintf(buf, cap, "樑%" PRIu32,
-                 scene->beams[p->beam].id);
-        return;
-    }
-    if (p->timber >= 0 && p->timber < (int)scene->timber_count) {
-        snprintf(buf, cap, "角材%" PRIu32 " %s",
-                 scene->timbers[p->timber].id, timber_face_name(p->face));
-        return;
-    }
-    if (p->guide >= 0 && p->guide < (int)world->guide_count) {
-        const GuideLine *gd = &world->guides[p->guide];
-        snprintf(buf, cap, "參考線%" PRIu32 " 沿%s offset=%" PRId64,
-                 gd->id, gd->direction == GUIDE_ALONG_U ? "U" : "V",
-                 (int64_t)gd->offset);
-    }
-}
-
 /* ---------------- 指令處理 ---------------- */
 
 static void cmd_render(void)
@@ -266,7 +236,7 @@ static void cmd_pick(int v, Coord x, Coord y, Coord r)
     }
 
     char desc[160];
-    describe_pick(&scene, &g_world, &p, desc, sizeof desc);
+    scene_describe_pick(&scene, &g_world, &p, desc, sizeof desc);
 
     printf("{\"ok\":true,\"none\":%s,\"desc\":",
            scene_pick_is_none(&p) ? "true" : "false");
