@@ -15,13 +15,15 @@ static void json_grid_axis_definition(const GridAxisDef *d,bool subgrid,unsigned
             (long long)d->start,(long long)d->step,d->series_count);
     } else if (d->source==GRID_SRC_REPEAT) {
         printf(",\"phase\":%lld,\"step\":%lld",(long long)d->start,(long long)d->step);
+        if (d->stagger_set) printf(",\"stagger\":%lld",(long long)d->stagger);
     } else if (d->source==GRID_SRC_PANEL || d->source==GRID_SRC_REPEAT_PANEL) {
         printf(",\"panel\":%lld,\"gap\":%lld,\"anchor\":%lld,\"anchorExplicit\":%s",
             (long long)d->panel,(long long)d->gap,(long long)d->anchor,
             d->anchor_explicit?"true":"false");
+        if (d->stagger_set) printf(",\"stagger\":%lld",(long long)d->stagger);
     }
-    bool first=true;const char *names[]={"phase","step","panel","gap","anchor"};
-    for(int i=0;i<5;++i)if(d->parameters[i].set){if(first)fputs(",\"parameterRefs\":{",stdout);printf("%s\"%s\":{\"kind\":\"parameter\",\"parameterId\":%u,\"fieldId\":%u}",first?"":",",names[i],d->parameters[i].parameter_id,d->parameters[i].field_id);first=false;}
+    bool first=true;const char *names[]={"phase","step","panel","gap","anchor","stagger"};
+    for(int i=0;i<6;++i)if(d->parameters[i].set){if(first)fputs(",\"parameterRefs\":{",stdout);printf("%s\"%s\":{\"kind\":\"parameter\",\"parameterId\":%u,\"fieldId\":%u}",first?"":",",names[i],d->parameters[i].parameter_id,d->parameters[i].field_id);first=false;}
     if(!first)putchar('}');putchar('}');
 }
 

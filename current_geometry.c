@@ -8353,6 +8353,7 @@ static bool world_validate_derived(const World *world)
             const PlacementSurface *ap =
                 ag != NULL ? world_find_placement(world, ag->placement_id)
                            : NULL;
+            char anchor_error[256] = "";
 
             if (ag == NULL || ap == NULL ||
                 !grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,
@@ -8361,8 +8362,8 @@ static bool world_validate_derived(const World *world)
                                  a->ref_grid_index,
                                  a->ref_grid_has_band,
                                  a->ref_grid_band,
-                                 NULL, grid_error, sizeof grid_error)) {
-                set_revalidate_error(grid_error[0] ? grid_error : "被網格錨定的格線已不存在");
+                                 NULL, anchor_error, sizeof anchor_error)) {
+                set_revalidate_error(anchor_error[0] ? anchor_error : "被網格錨定的格線已不存在");
                 return false;
             }
         }
