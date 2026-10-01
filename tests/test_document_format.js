@@ -1,0 +1,47 @@
+'use strict';
+const assert=require('assert/strict');
+const F=require('../geometry-web/document-format.js');
+for(const name of ['a.__proto__','x.constructor','x.toString','x.docx','x.html'])assert.throws(()=>F.fileKind({name,size:10}));
+assert.equal(F.fileKind({name:'TEST.MD',size:10}),'markdown');
+assert.throws(()=>F.fileKind({name:'x.md',size:0}));
+assert.throws(()=>F.fileKind({name:'x.md',size:2*1024*1024+1}));
+assert.throws(()=>F.fileKind({name:'x.pdf',size:24*1024*1024+1}));
+assert.equal(F.decodeText(new TextEncoder().encode('\ufeff中文\r\nhello')),'中文\nhello');
+assert.throws(()=>F.decodeText(new Uint8Array([255,254])));
+assert.throws(()=>F.decodeText(new Uint8Array([0])));
+for(const url of ['javascript:alert(1)','data:text/html,x','file:///etc/passwd','//example.org','https://u:p@example.org','https://example.org/\nprivate'])assert.equal(F.safeURL(url),null);
+assert.equal(F.safeURL('https://example.org/a'),'https://example.org/a');
+assert.deepEqual(F.preferences({font:Infinity,line:99,width:-50,theme:'__proto__'}),{font:17,line:2.2,width:560,theme:'light'});
+assert.equal(F.parse('# Root\n\n## Child\n\n- One\n  - Two\n\n```js\n<script>x</script>\n```').filter(b=>b.type==='heading').length,2);
+assert.equal(F.parse('<script>alert(1)</script>')[0].text,'<script>alert(1)</script>');
+assert.equal(F.parse('| A | B |\n| --- | --- |\n| 1 | 2 |')[0].type,'table');
+assert.throws(()=>F.parse('x'.repeat(2*1024*1024+1)));
+assert.throws(()=>F.parse('# A\n'.repeat(1002)),/標題/);
+assert.throws(()=>F.parse('*a* '.repeat(10000)),/複雜/);
+assert.throws(()=>F.parse('['.repeat(100000)),/複雜/);
+assert.throws(()=>F.parse('|'+Array(300).fill('a').join('|')+'|\n|---|---|'),/256/);
+assert.throws(()=>F.parse('| A | B |\n|---|---|\n'+('| 1 | 2 |\n').repeat(1001)),/1,000/);
+assert.equal({}.polluted,undefined);
+// Run adversarial whitespace separately: a regression fails within a bounded
+// interval rather than hanging native CI (or the user's unsaved app state).
+const {spawnSync}=require('child_process');
+const parserPath=require.resolve('../geometry-web/document-format.js');
+const timed=spawnSync(process.execPath,['-e',`const F=require(${JSON.stringify(parserPath)});F.parse('# a'+' '.repeat(200000)+'#x');F.parse('|a|\\n'+' '.repeat(200000));F.parse('- '+' '.repeat(200000)+'\\u2028');`],{timeout:5000,encoding:'utf8'});
+assert.equal(timed.status,0,'Adversarial parser exceeded five seconds: '+(timed.error?.message||timed.stderr));
+console.log('Document format validation: passed');
+
+const C=require('../geometry-web/document-cases.js').helpers;
+const fixture=()=>[{schema_version:'1.0',id:'S1',title:'Synthetic',assets:[{id:'A1',kind:'plan',path:'cases/S1/a.png'}]}];
+assert.equal(C.validateManifest(fixture()).assetCount,1);
+for(const bad of ['../x','/absolute','https://example.com/x','a\\b','a/%2e%2e/b','a//b','a/constructor/b'])assert.throws(()=>C.normalizePath(bad));
+assert.equal(C.normalizePath('cases/S1/a.png'),'cases/S1/a.png');
+assert.throws(()=>C.safeJSON(JSON.parse('{"__proto__":{"polluted":true}}')));
+assert.throws(()=>C.validateManifest([{...fixture()[0],schema_version:'2.0'}]));
+assert.throws(()=>C.validateManifest([...fixture(),...fixture()]));
+assert.throws(()=>C.validateManifest([{...fixture()[0],assets:[{id:'A1',path:'x.png',source_url:'javascript:alert(1)'}]}]));
+assert.throws(()=>C.validateManifest([{...fixture()[0],assets:[{id:'A1',path:'x.png'},{id:'A2',path:'X.png'}]}]));
+assert.throws(()=>C.imageDimensions(new Uint8Array([60,115,118,103,62])));
+const oversized=new Uint8Array(24);oversized.set([137,80,78,71,13,10,26,10]);new DataView(oversized.buffer).setUint32(8,13);oversized.set([73,72,68,82],12);new DataView(oversized.buffer).setUint32(16,20000);new DataView(oversized.buffer).setUint32(20,20000);assert.throws(()=>C.imageDimensions(oversized),/上限/);
+const onePixel=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/lXkAAAAASUVORK5CYII=','base64');assert.equal(C.imageDimensions(onePixel).width,1);
+assert.equal({}.polluted,undefined);
+console.log('Case manifest/path/pixel safety validation: passed');

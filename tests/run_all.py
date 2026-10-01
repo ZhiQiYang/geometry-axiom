@@ -88,6 +88,10 @@ NODE_TEST_FILES = [
     'tests/test_space_model_store.js',
 ]
 NODE_SCRIPT_FILE = 'tests/test_model_viewer.cjs'
+NODE_DOCUMENT_SCRIPT_FILES = {
+    'node:document_format': 'tests/test_document_format.js',
+    'node:document_cases': 'tests/test_document_cases.js',
+}
 NODE_EXCLUDED = {
     'tests/reference_pdf_fixture.js': '夾具產生器，不是測試：node --test 會把它算成 1 個假的通過 test',
 }
@@ -156,9 +160,9 @@ def check_registry():
     for stem in sorted(set(PY_NEEDS) - disk_py):
         problems.append('PY_NEEDS 登記了 %s，但 tests/%s.py 不存在' % (stem, stem))
     disk_js = {'tests/' + p.name for pattern in ('*.js', '*.cjs', '*.mjs') for p in HERE.glob(pattern)}
-    known = set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_EXCLUDED)
+    known = set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) | set(NODE_EXCLUDED)
     for rel in sorted(disk_js - known):
-        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_EXCLUDED 三選一）；未登記的檔不會被跑' % rel)
+        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
     for rel in sorted(known - disk_js):
         problems.append('run_all.py 登記了 %s，但該檔不存在' % rel)
     return problems
@@ -184,6 +188,8 @@ def build_suites():
         Suite('node:canvas_direct', 'node-canvas', ['geometry-web/canvas_test.js', 'direct'], ['bridge'], 900,
               needs_node=True, label='geometry-web/canvas_test.js direct'),
     ]
+    suites += [Suite(name, 'node-script', [file], [], 300, needs_node=True, label=file)
+               for name, file in NODE_DOCUMENT_SCRIPT_FILES.items()]
     return suites
 
 

@@ -257,11 +257,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if self.path == "/" or self.path == "/index.html":
             self._send((HERE / "index.html").read_bytes(),
                        "text/html; charset=utf-8")
-        elif self.path in {"/assembly-workspace.css", "/parameters.css", "/app.css", "/space-workspace.css", "/engineering-workspace.css", "/grid-system-workspace.css", "/grid-inspector.css",
+        elif self.path in {"/documents.css", "/document-cases.css", "/assembly-workspace.css", "/parameters.css", "/app.css", "/space-workspace.css", "/engineering-workspace.css", "/grid-system-workspace.css", "/grid-inspector.css",
                            "/canvas-labels.css", "/workspace-guidance.css", "/project-ui.css", "/workspace-shell.css"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/css; charset=utf-8")
-        elif self.path in {"/assembly-workspace.js", "/parameters.js", "/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js",
+        elif self.path in {"/document-format.js", "/document-cases.js", "/documents.js", "/assembly-workspace.js", "/parameters.js", "/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js",
                            "/project-store.js", "/reference-workspace.js", "/project-ui.js", "/workspace-guidance.js", "/workspace-shell.js",
                            "/model-viewer.js", "/space-workspace.js", "/engineering-workspace.js", "/engineering-adapter.js", "/grid-system-workspace.js", "/grid-inspector.js", "/grid-trial.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
@@ -272,6 +272,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
                      ".mjs": "text/javascript; charset=utf-8",
                      ".wasm": "application/wasm"}.get(path.suffix, "application/octet-stream")
             self._send(path.read_bytes(), ctype)
+        elif self.path in {"/documents/finish", "/documents/vision", "/documents/guide", "/documents/engineering"}:
+            # Explicit catalog only: no filesystem path or local upload endpoint.
+            documents = {
+                "/documents/finish": SCENE_DIR / "geometry-guide/docs/finish-surface-dependencies.md",
+                "/documents/vision": SCENE_DIR / "geometry-guide/PRODUCT-VISION.md",
+                "/documents/guide": HERE / "docs/DOCUMENTS.md",
+                "/documents/engineering": HERE / "docs/ENGINEERING-SPEC-USE.md",
+            }
+            self._send(documents[self.path].read_bytes(), "text/plain; charset=utf-8")
         elif self.path == "/axioms":
             self._send((SCENE_DIR / "geometry-guide" / "公理層-閱讀器.html").read_bytes(),
                        "text/html; charset=utf-8")
