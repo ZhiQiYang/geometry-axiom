@@ -12,7 +12,7 @@ window.AssemblyWorkspace=(()=>{
   const btn=(id,text,off=false)=>`<button type="button" id="${id}"${off?' disabled':''}>${text}</button>`;
   const select=(id,items,value)=>`<select id="${id}">${items.map(([v,t])=>`<option value="${esc(String(v))}"${String(v)===String(value)?' selected':''}>${esc(t)}</option>`).join('')}</select>`;
   const input=(id,v,type='text')=>`<input id="${id}" type="${type}" value="${esc(String(v??''))}"${type==='number'?' min="1" step="1"':''}>`;
-  const field=(t,control)=>`<label>${t}${control}</label>`;
+  const field=(t,control)=>`<label>${esc(t)}${control}</label>`;
   function report(t,error=false){if(dialog.open&&$('asmStatus')){$('asmStatus').textContent=t;$('asmStatus').classList.toggle('asm-error',error);}else if(error)toast(t);}
   const safe=fn=>async e=>{try{await fn(e);}catch(error){report(error.message,true);}};
   function bind(id,event,fn){$(id)?.addEventListener(event,safe(fn));}

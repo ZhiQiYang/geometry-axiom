@@ -30,9 +30,11 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  check('發布後原生卡片可找到且不生成角材',await read(`oc.assemblyRules.length===1&&oc.faces.length===0&&apiRequest('objects').then(r=>r.timbers.length===0)`));
  await ctl('[data-asm-rule="1:1"]');await ctl('#asmBind');await fill('#asmName','未完成配置');await publish();
  check('未選材料保存為未完成',await read(`oc.assemblyBindings.length===1&&!oc.assemblyBindings[0].complete`));
- await ctl('[data-asm-rule="1:1"]');await ctl('#asmEdit');await fill('#asmName','新版雙框');await ctl('#asmSwap1');await ctl('#asmSwap1');await publish();
+ await ctl('[data-asm-rule="1:1"]');await ctl('#asmEdit');await fill('#asmName','新版雙框');await fill('#asmSlot1','長框 <i>文字</i>');await ctl('#asmSwap1');await ctl('#asmSwap1');await publish();
  check('新版本不升級既有配置',await read(`apiRequest('assembly-read').then(r=>r.state.rules.length===2&&r.state.bindings[0].value.rule.version===1)`));
- await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');await choose('#asmBindingRule','1:2');await choose('#asmMap1','1');await choose('#asmMap2','2');await ctl('#asmApplyMapping');await ctl('#asmPreview');await wait(`!$('asmConfirm').disabled`);await ctl('#asmCancel');
+ await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');await choose('#asmBindingRule','1:2');
+ check('槽位名稱在換版對應中只當文字顯示',await read(`$('asmMapping').textContent.includes('長框 <i>文字</i>')&&!$('asmMapping').querySelector('i')`));
+ await choose('#asmMap1','1');await choose('#asmMap2','2');await ctl('#asmApplyMapping');await ctl('#asmPreview');await wait(`!$('asmConfirm').disabled`);await ctl('#asmCancel');
  check('取消換版不改正式配置',await read(`apiRequest('assembly-read').then(r=>r.state.bindings[0].value.rule.version===1)`));
  await ctl('#asmDeleteDraft');await ctl('[data-asm-rule="1:1"]');await ctl('#asmCopy');await fill('#asmName','獨立規則');await publish();
  check('複製有新原生身分',await read(`apiRequest('assembly-read').then(r=>new Set(r.state.rules.map(x=>x.value.id)).size===2)`));
