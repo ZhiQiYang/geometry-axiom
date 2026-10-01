@@ -4676,10 +4676,24 @@ async function main() {
   await pressKey('Escape', 'Escape', 27);
 
   console.log('=== P44. 面內工作區的四種游標互動(GEO-192) ===');
-  /* 場景:surface 1 4000×3000,fe.zoom=1/panX=panY=0 讓 feMmToPx(mx,my) 直接等於
-     螢幕相對 org 的位移,座標好推算(視窗放大到能整份看到 4000×3000,不然右上角頂點
-     會落在瀏覽器視窗外,CDP 點不到)。每個大情境前重新 setupRemaining,互不干擾。
+  /* 場景:surface 1 4000×3000,初始 camera 為 zoom=1/pan=0；視窗放大到能整份看到
+     4000×3000。版面 settling 可能調整 camera，必須以實際 SVG CTM 換算螢幕座標，
+     不能把 mm 直接加在 SVG 原點上，也不能再疊加 pan。每個大情境重新 setupRemaining。
      關掉吸附格線,避免縮放相依格距(feGridStep)干擾精確的 mm 斷言。 */
+  // A failed edit must stop here: Undo would otherwise undo the fixture itself.
+  const check44 = bodyCheck({detail:'empty',detailWhenPassing:true,throwOnFail:true});
+  const requireFaceHit44 = async (name, point, expected) => {
+    const hit = await eval_(`(()=>{const p=${JSON.stringify(point)},e=document.elementFromPoint(p.x,p.y),
+      target=e?.closest('[data-face-hit]'),r=$('faceEditorViewport').getBoundingClientRect(),m=$('faceEditorRoot').getScreenCTM();
+      return {point:p,expected:${JSON.stringify(expected)},actual:target?.dataset.faceHit||null,
+        element:e?.outerHTML?.slice(0,300)||null,inViewport:p.x>=r.left&&p.x<r.right&&p.y>=r.top&&p.y<r.bottom,
+        viewport:{left:r.left,top:r.top,right:r.right,bottom:r.bottom},
+        camera:{zoom:fe.zoom,panX:fe.panX,panY:fe.panY},matrix:{a:m.a,b:m.b,c:m.c,d:m.d,e:m.e,f:m.f}};})()`);
+    console.log('[P44 pointer precondition]', name, JSON.stringify(hit));
+    // Preconditions strengthen existing cases without changing their golden assertion count.
+    if (!hit.inViewport || hit.actual !== expected) check44(name+' 命中預期頂點／邊', false, hit);
+    return hit;
+  };
   await send('Emulation.setDeviceMetricsOverride', { width: 5400, height: 3800, deviceScaleFactor: 1, mobile: false });
   const openFace44 = async (panY = 0) => {
     await setupRemaining(['surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000']);
@@ -4687,49 +4701,52 @@ async function main() {
       const t = document.getElementById('faceSnapToggle'); if (t) t.checked = false; })()`);
     await sleep(250);
     const org = await feOrigin();
-    return (mx, my) => ({ x: org.x + mx, y: org.y + my + panY });
+    return (mx, my) => org.point(mx, my);
   };
   const P44_TR = [4000, 0];      /* 右上角頂點 */
   const P44_EDGE_R_MID = [4000, 1500];   /* 右邊中點 */
 
   /* (1) 不按 Alt 拖右上角頂點往左下 500,500 → 外環仍 4 頂點、尺寸變 3500×2500 */
   let pt = await openFace44();
+  const p44_1hit = await requireFaceHit44('P44-1 drag start', pt(...P44_TR), 'v:0:1');
   await drag(pt(...P44_TR).x, pt(...P44_TR).y, pt(3500, 500).x, pt(3500, 500).y);
   await sleep(200);
   const p44_1 = await eval_(`(async()=>{const b=await api('boundary 1');return {n:b.loops[0].verts.length, bb:loopsBBox(b.loops)};})()`);
-  check('P44-1 不按 Alt 拖頂點:外環仍 4 頂點、尺寸變 3500×2500',
-    p44_1.n === 4 && p44_1.bb[2] - p44_1.bb[0] === 3500 && p44_1.bb[3] - p44_1.bb[1] === 2500, p44_1);
+  check44('P44-1 不按 Alt 拖頂點:外環仍 4 頂點、尺寸變 3500×2500',
+    p44_1.n === 4 && p44_1.bb[2] - p44_1.bb[0] === 3500 && p44_1.bb[3] - p44_1.bb[1] === 2500, {...p44_1, hit:p44_1hit});
   await pressKey('z', 'KeyZ', 90, 2);
   const p44_1u = await eval_(`(async()=>{const b=await api('boundary 1');return b.loops[0].verts.length;})()`);
-  check('P44-1u Ctrl+Z 復原回 4 頂點', p44_1u === 4, p44_1u);
+  check44('P44-1u Ctrl+Z 復原回 4 頂點', p44_1u === 4, p44_1u);
 
   /* (2) Alt 拖右上角頂點往左下(換算 1000,1000)→ 外環 6 頂點、指定形狀;
      fe.feats[1] 有一筆 type corner;形狀頁列出它。 */
   pt = await openFace44();
+  await requireFaceHit44('P44-2 drag start', pt(...P44_TR), 'v:0:1');
   await dragMod(pt(4000, 0).x, pt(4000, 0).y, pt(3000, 1000).x, pt(3000, 1000).y, 6, 1);
   await sleep(200);
   const p44_2 = await eval_(`(async()=>{const b=await api('boundary 1');
     return {verts: b.loops[0].verts, feats: (fe.feats[1]||[]).map(f=>f.type)};})()`);
   const want2 = [[0,0],[3000,0],[3000,1000],[4000,1000],[4000,3000],[0,3000]];
-  check('P44-2 Alt 拖頂點捏缺口:外環 6 頂點且形狀正確', JSON.stringify(p44_2.verts) === JSON.stringify(want2), p44_2);
-  check('P44-2b fe.feats[1] 有一筆 type corner', p44_2.feats.length === 1 && p44_2.feats[0] === 'corner', p44_2.feats);
+  check44('P44-2 Alt 拖頂點捏缺口:外環 6 頂點且形狀正確', JSON.stringify(p44_2.verts) === JSON.stringify(want2), p44_2);
+  check44('P44-2b fe.feats[1] 有一筆 type corner', p44_2.feats.length === 1 && p44_2.feats[0] === 'corner', p44_2.feats);
   await clickSelector('[data-fi-tab="shape"]');
   const p44_2c = await eval_(`document.querySelectorAll('.fe-feat[data-feat]').length`);
-  check('P44-2c 形狀頁列出這筆特徵', p44_2c === 1, p44_2c);
+  check44('P44-2c 形狀頁列出這筆特徵', p44_2c === 1, p44_2c);
   await clickSelector('[data-fi-tab="prop"]');
   await pressKey('z', 'KeyZ', 90, 2);
   const p44_2u = await eval_(`(async()=>{const b=await api('boundary 1');return b.loops[0].verts.length;})()`);
-  check('P44-2u Ctrl+Z 復原回 4 頂點', p44_2u === 4, p44_2u);
+  check44('P44-2u Ctrl+Z 復原回 4 頂點', p44_2u === 4, p44_2u);
 
   /* (3) Alt 拖到一半按 Esc → 外環不變、無 .fe-ghost */
   pt = await openFace44();
   const before3 = await eval_(`(async()=>(await api('boundary 1')).loops[0].verts)()`);
+  await requireFaceHit44('P44-3 drag start', pt(...P44_TR), 'v:0:1');
   await pressDownMod(pt(4000, 0).x, pt(4000, 0).y, 1);
   await moveMod(pt(3400, 600).x, pt(3400, 600).y, 1);
   await sleep(150);
   await pressKey('Escape', 'Escape', 27);
   const after3 = await eval_(`(async()=>({verts:(await api('boundary 1')).loops[0].verts, ghost: !!document.querySelector('[data-fe-ghost]'), drag: fe.drag}))()`);
-  check('P44-3 Alt 拖到一半按 Esc:外環不變、無 .fe-ghost、fe.drag 清空',
+  check44('P44-3 Alt 拖到一半按 Esc:外環不變、無 .fe-ghost、fe.drag 清空',
     JSON.stringify(after3.verts) === JSON.stringify(before3) && !after3.ghost && after3.drag === null, { before3, after3 });
   /* 收尾:放開滑鼠鍵(避免殘留 pressed 狀態影響後續情境) */
   await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: pt(3400, 600).x, y: pt(3400, 600).y, button: 'left', clickCount: 1 });
@@ -4738,23 +4755,25 @@ async function main() {
      Enter 套用後頂點數 8。(規則:B 的手把——沿邊方向的邊界動 w,垂直於邊且不與母邊重合的
      邊界動 d/dist,詳見 app.js feApplyGhostDrag 註解) */
   pt = await openFace44();
+  await requireFaceHit44('P44-4 edge selection', pt(...P44_EDGE_R_MID), 'e:0:1');
   await click(pt(...P44_EDGE_R_MID).x, pt(...P44_EDGE_R_MID).y);
   await sleep(150);
   await clickSelector('[data-fe-act="op:notch"]');
   await sleep(150);
   const before4 = await eval_(`({...fe.op.params})`);
   const rect4 = await eval_(`feOpRect()`);   /* [3700,1200,4000,1800] */
+  pt = (await feOrigin()).point;
   const hx = pt(rect4[0], (rect4[1] + rect4[3]) / 2);   /* 左邊界(depth)中點 */
   await dragMod(hx.x, hx.y, pt(rect4[0] - 200, (rect4[1] + rect4[3]) / 2).x, hx.y, 6, 0);
   await sleep(150);
   const after4 = await eval_(`({...fe.op.params})`);
-  check('P44-4a 拖預覽矩形「左」邊(depth 邊界)往左 200 → d 欄位 +200、其他欄位不變',
+  check44('P44-4a 拖預覽矩形「左」邊(depth 邊界)往左 200 → d 欄位 +200、其他欄位不變',
     after4.d === before4.d + 200 && after4.w === before4.w && after4.anchor === before4.anchor && after4.dist === before4.dist,
     { before4, after4 });
   await clickSelector('#feOpApply');
   await sleep(200);
   const p44_4b = await eval_(`(async()=>(await api('boundary 1')).loops[0].verts.length)()`);
-  check('P44-4b 套用後頂點數 8', p44_4b === 8, p44_4b);
+  check44('P44-4b 套用後頂點數 8', p44_4b === 8, p44_4b);
   await pressKey('z', 'KeyZ', 90, 2);
 
   /* (5) 右鍵點右邊 → fe.sel 為 edge、#feCtxMenu 可見、其 [data-fe-act] 清單與 #feActionBar 逐一相同;

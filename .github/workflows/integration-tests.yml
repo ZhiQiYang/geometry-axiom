@@ -56,11 +56,17 @@ jobs:
             sleep 1
           done
           curl --fail --silent "$GEOMETRY_TEST_URL" > /dev/null
-          # Run both independent harnesses even if one fails, retaining honest exits.
+          # Run the changed grid flow independently so an earlier full-harness
+          # failure cannot hide it. Preserve every exit status, including the
+          # timber groups omitted by the default space suite.
           set +e
+          GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js
+          grid_status=$?
           node geometry-web/cdp_test.js
           canvas_status=$?
           GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js
           space_status=$?
+          GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js
+          timber_status=$?
           cat /tmp/geometry-integration-server.log
-          test "$canvas_status" -eq 0 && test "$space_status" -eq 0
+          test "$grid_status" -eq 0 && test "$canvas_status" -eq 0 && test "$space_status" -eq 0 && test "$timber_status" -eq 0
