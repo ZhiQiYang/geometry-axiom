@@ -52,7 +52,7 @@
 .documents-toc-link {display:block;width:100%;text-align:left;padding:9px 8px 9px calc(8px + var(--toc-depth,0)*9px);line-height:1.6;font-size:12px;color:var(--doc-subtle);border-radius:6px;background:transparent;overflow-wrap:anywhere;}
 .documents-toc-link:hover {background:var(--doc-bg);color:var(--accent);}
 .documents-toc p {color:var(--doc-subtle);font-size:12px;line-height:1.8;}
-.documents-scroll {min-width:0;overflow:auto;overscroll-behavior:contain;scroll-behavior:auto;}
+.documents-scroll {min-width:0;overflow:auto;overscroll-behavior:contain;scroll-behavior:auto;scrollbar-gutter:stable;}
 .documents-article {max-width:calc(var(--document-width,720px) + 64px);margin:0 auto;padding:34px 32px 100px;font-size:var(--document-font,17px);line-height:var(--document-line,1.8);overflow-wrap:anywhere;color:var(--doc-ink);}
 .documents-article h1 {font-size:1.8em;line-height:1.4;letter-spacing:-.025em;margin:0 0 1em;}
 .documents-article h2 {font-size:1.35em;margin:2.2em 0 .8em;padding-top:.3em;line-height:1.6;}
