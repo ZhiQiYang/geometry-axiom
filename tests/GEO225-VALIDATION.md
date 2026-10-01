@@ -31,15 +31,16 @@
 - Windows `run_all.py`：已執行 857 個計數項目，856 通過、0 失敗、1 個 `/dev/full` 平台略過。另有來源相符但尚被 SAC 阻擋的 integrity／GDI／model-base，所需 suites 明確未執行，退出碼 2；不稱完整通過。
 - WSL 補跑建模相關 7 套共 132 tests 通過；C integrity 80/80 檢查點通過。另以同版本 Node v24.15.0 執行 Linux 全套（runtime 僅置於 `/tmp`，核對官方 SHA-256，未新增專案依賴）。
 - Linux 初輪完整回歸：1173 通過、6 失敗、1 略過；6 個失敗均為多邊形測試未使用傳入核心路徑。修正後該套 75/75 通過，另以明示不存在的核心路徑確認它不會偷偷退回預設程式。完整重跑（同一入口、無篩選）結果為 1180 個計數項目：1179 通過、0 失敗、1 個 Windows GDI 略過，退出碼 3。
-- 變異完整重跑：48 筆＝39 killed、5 equivalent、3 retired、1 blocked（M20）；0 survived、0 invalid、0 stale。Windows 再執行 `--check` 得到相同分類與雜湊結果。M20 在正常基準 138/138 通過後，Linux 仍連續 3 次因 SIGSEGV（-11）被原政策列為 blocked。
+- 變異完整重跑：48 筆＝39 killed、5 equivalent、3 retired、1 blocked（M20）；0 survived、0 invalid、0 stale。Windows 再執行 `--check` 得到相同分類與雜湊結果。M20 在正常基準 138/138 通過後，Linux 仍連續 3 次因 SIGSEGV（-11）被當時的政策列為 blocked。
 - 快取守門修正後，Windows 與 Linux 的 81 項自測皆通過；M16/M24 以同指紋快取重新執行，仍由兩個新增夾具抓到，未重編。
 - 首輪新核心完整 CDP 在 P68 中止：899 通過、1 個 P61 失敗、P68 逾時。P61 為接手執行時漏設 WSL 檔案路徑轉換；P68 另以獨立模式重現為點擊早於介面刷新。修正後 P68 在 WSL 環境 36/36 通過，P61 在原生 Windows 服務重測通過；該次 reference-only 執行共 422 通過、0 失敗（部分模式，不比對完整 golden）。
 - 第二輪 CDP 使用 Windows 服務與新 Windows bridge；模型 adapter 經暫存啟動器呼叫同源 WSL/GCC 執行檔（Windows 版本仍遭 SAC 阻擋）。872 通過、0 斷言失敗後，P65 等待預覽逾時：WSL 閒置關閉，重新啟動超過 adapter 的 20 秒預算，且 `/tmp` 執行檔隨重啟消失。測試環境已加上暫時保持 WSL 運作的行程、重建 adapter，實際範例端點 3.99 秒回傳 3 筆；沒有放寬產品或測試時限。
 - 環境修復後，新核心完整 CDP：1490 通過斷言、0 失敗、0 略過，72 段與既有 golden 逐段相符，退出碼 0。唯一瀏覽器例外為 P38 主動注入的回報探針。P61 檔案載入、P65 建模預覽、P68 來源編輯均通過；未更新 golden。完整日誌位於 `%TEMP%/geometry-tests/geo225-cdp-final.log`。
 
+- Q28 🔒 採 A 後，`mutate.py` 自測 113 項通過。WSL/GCC 重跑 M20：未變異基準 138/138 通過，變異版連跑 3 次都在 `_test_lshape.scene` 以 SIGSEGV（-11）結束，判決 `crashed`。`--check` 為 39 killed、1 crashed、5 equivalent、3 retired，結束碼 0。同一輪 Windows 快取基準執行檔被 WinError 4551 擋下，沒有拿它重判；`0xC0000005` 的分類由自測覆蓋。
+
 ## 尚待事項
 
-- Q28：是否把「正常基準線＋變異版穩定崩潰」獨立列為 crashed，待使用者選擇。目前維持 blocked，不計 killed。
 - Windows SAC（WinError 4551）擋住部分新編執行檔；收尾再次執行 GDI 測試仍在啟動前受阻。GDI 僅能在 Windows 驗證，仍列未驗證；其他所需非瀏覽器測試已於 Linux 通過。
 
 斷言數、測試案例數、C 檢查點與變異數是不同單位，不相加宣稱端到端情境數。

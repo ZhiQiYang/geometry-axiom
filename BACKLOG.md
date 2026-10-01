@@ -3833,8 +3833,9 @@ P70 定向真實瀏覽器 52 個斷言已通過：未放置邊界、兩份配置
 
 接手核對與執行結果見 [GEO-225 驗證紀錄](tests/GEO225-VALIDATION.md)。新核心完整瀏覽器回歸
 1490 斷言通過、0 失敗、0 略過，72 段與既有基準相符；Linux 非瀏覽器全套 1179 通過、
-0 失敗，僅 Windows GDI 略過。GDI 在 Windows 仍遭 SAC 阻擋；Q28 的崩潰分類仍待使用者回覆，
-這兩項完成前保留「進行中」。
+0 失敗，僅 Windows GDI 略過。GDI 在 Windows 仍遭 SAC 阻擋，完成前保留「進行中」。
+Q28 🔒 已採 A：同一夾具連續存取違規記 `crashed`（算被偵測到，與 `killed` 分開），
+啟動失敗與 WinError 4551 仍是 `blocked`。
 
 ## GEO-226：組構規則 authoring 與材料配置（PR #26）
 

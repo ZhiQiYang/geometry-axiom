@@ -196,7 +196,10 @@ python3 tests/test_axiom_reader.py                   # 冪等 + 補丁 + 資料�
   平行跑幾個 id 時各寫各的、事後合併,別讓多個行程同時寫 `mutants_results.json`。
   變異 exe **依指紋快取**(GEO-225 起:mutant + include 閉包 + 編譯指令相符就沿用,不重編),
   所以只有變異定義或核心來源變了才會產生新二進位;新二進位第一次可能被 SAC 擋,
-  腳本會等 12 秒重試 3 次並把「環境阻擋」與「killed」分開記(受阻不算 killed)。
+  腳本會重試 3 次。啟動失敗、逾時、WinError 4551 記 `blocked`(受阻不算 killed,結束碼 2),
+  這種受阻仍間隔 12 秒再試。基準線通過後,同一夾具連三次都以存取違規結束
+  (Windows `0xC0000005` 或 Linux SIGSEGV `-11`)記 `crashed`:算被偵測到,與 `killed` 分開計,
+  不把結束碼變成 2。其他異常結束碼仍是 `blocked`。
   每筆結果帶來源、閉包、變異、**裁判**(`run_tests.py` + 被 `TESTS` 引用的夾具)四組雜湊,
   任一不符就標 `stale`、不計入 killed——改了夾具要重跑 `mutate.py`,不然結果檔會自己說過期。
   `python tests/mutate.py --check` 只讀不跑;`--selftest` 驗它自己的誠實性機制。

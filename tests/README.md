@@ -177,7 +177,7 @@ Node（`node --test tests/*.js` 一次跑；`test_model_viewer.cjs` 是腳本式
 每筆判決帶來源／include 閉包／變異／裁判（`run_tests.py` + 被 `TESTS` 引用的夾具）四組雜湊，任一與現況不符即標 `stale`、不計入 killed；
 錨點找不到或不唯一標 `invalid`。變異 exe 依指紋快取在 `%TEMP%\geometry-tests\mutants\<id>\`，來源沒變就不重編（避免撞 Smart App Control）。
 缺少 sidecar，或 sidecar 是舊版只憑結果紀錄補發的 `adopted` 身分，皆須重建；結果雜湊不能證明磁碟上的 exe 內容。
-判決類別：killed / survived / equivalent / retired / blocked（環境阻擋或崩潰，見 決策佇列 Q28）/ invalid / stale。
+判決類別：killed / crashed（基準通過後，同一夾具連續存取違規；算被偵測到，與 killed 分開計，Q28 🔒）/ survived / equivalent / retired / blocked（啟動失敗、WinError 4551、逾時或其他異常結束）/ invalid / stale。`blocked` 使結束碼為 2；`crashed` 不占 1 也不占 2。
 
 Windows 的 SAC 持續擋住新編 exe 時，可使用已安裝的 WSL/GCC 執行同一裁判：
 

@@ -8,8 +8,10 @@
   equivalent  等價變異(理由文字),不編譯,但錨點仍須存在。
   retired     邏輯已從產品整個移除(寫明依據),不編譯;舊錨點若又出現會被判 invalid。
 
-結果: killed(某測試失敗) / survived(全過) / equivalent / retired /
-      invalid(編譯失敗或錨點不在、不唯一) / blocked(環境阻擋,不算 killed) /
+結果: killed(某測試失敗) / crashed(基準通過後,同一夾具連續存取違規;
+      算被偵測到,但不是斷言殺死) / survived(全過) / equivalent / retired /
+      invalid(編譯失敗或錨點不在、不唯一) / blocked(啟動失敗、WinError 4551、
+      逾時或其他非存取違規的異常結束,不算 killed) /
       stale(紀錄的來源雜湊、變異定義雜湊與現況不符,不計入 killed)。
 
 誠實性規則(審查 2026-10-01 後立):
@@ -24,8 +26,9 @@
     killed / survived 的 oracle_sha256 與現行裁判不符,或根本沒帶雜湊 -> stale;
     stale 會寫回結果檔(原判決存 stale_from),原因消失(例如還原原始碼 / 夾具)後自動復原。
   - killed 紀錄帶 killed_by:讓它失敗的夾具名(前 5 個),日後看得到牙齒在哪。
+  - crashed 紀錄帶 crashed_on:連續存取違規的夾具名。來源或裁判變了同樣標 stale。
   - 結束碼:blocked -> 2;否則 survived / invalid / stale(完整跑與 --check 另含 unrun)
-    任一存在 -> 1;否則 0。
+    任一存在 -> 1;否則 0。crashed 算被偵測到,不占 1 也不占 2。
 
 exe 指紋快取(治本:Smart App Control 會擋「新出現」的未簽章 exe,沒改就不重編):
   %TEMP%\\geometry-tests\\mutants\\<id>\\_mut.exe 旁邊放 _mut.exe.fingerprint.json:
@@ -72,7 +75,7 @@ RESULTS = pathlib.Path(os.environ.get("MUTATE_RESULTS", str(HERE / "mutants_resu
 # 環境失敗(SAC 間歇封鎖新編譯的 exe)時重跑幾次才放棄
 RUN_RETRIES = 3
 
-VERDICTS = ("killed", "survived", "equivalent", "invalid", "stale", "blocked", "retired")
+VERDICTS = ("killed", "crashed", "survived", "equivalent", "invalid", "stale", "blocked", "retired")
 
 # ============================================================
 # 變異表:針對核心幾何 / 座標 / 碰撞 / 驗證
@@ -313,6 +316,87 @@ def failed_scenes(proc, limit=KILLED_BY_MAX):
         return [case["scene"] for case in json.loads(rows[0])["cases"] if case["status"] == "fail"][:limit]
     except (IndexError, ValueError, TypeError, KeyError):
         return []
+
+
+# Python 在 POSIX 以負信號碼回報 SIGSEGV。Windows 的 STATUS_ACCESS_VIOLATION
+# 是 0xC0000005;GetExitCodeProcess 給無號 3221225477,有的包裝會收成有號。
+_AV_DETAIL = re.compile(r"^INFRA abnormal executable exit (-?\d+):")
+
+
+def is_access_violation_detail(detail):
+    match = _AV_DETAIL.match(detail or "")
+    if not match:
+        return False
+    code = int(match.group(1))
+    if code == -11:
+        return True
+    return (code & 0xFFFFFFFF) == 0xC0000005
+
+
+def access_violation_scenes(proc):
+    """完整結果裡唯一的問題是存取違規時,回傳夾具名(TESTS 順序);否則 None。
+
+    斷言失敗、逾時、缺檔、其他異常結束碼、結果不完整,都不是這個型態。
+    單次存取違規仍由 classify_test_run 記成 blocked;要連續同一組夾具才升級。
+    """
+    rows = [line.removeprefix("GEOMETRY_TEST_RESULT ") for line in proc.stdout.splitlines()
+            if line.startswith("GEOMETRY_TEST_RESULT ")]
+    if len(rows) != 1 or getattr(proc, "returncode", None) != 2:
+        return None
+    try:
+        result = json.loads(rows[0])
+        cases = result["cases"]
+        if result["schema"] != "geometry-native-tests/1" or result["total"] != len(TESTS):
+            return None
+        if [case["scene"] for case in cases] != [spec["scene"] for spec in TESTS]:
+            return None
+        counts = {key: sum(case["status"] == key for case in cases)
+                  for key in ("pass", "fail", "infrastructure")}
+        if sum(counts.values()) != len(TESTS) or counts != result["counts"]:
+            return None
+        if counts["fail"] or not counts["infrastructure"]:
+            return None
+        scenes = []
+        for case in cases:
+            if case["status"] != "infrastructure":
+                continue
+            if not is_access_violation_detail(case.get("detail")):
+                return None
+            scenes.append(case["scene"])
+        return tuple(scenes)
+    except (ValueError, TypeError, KeyError):
+        return None
+
+
+def verdict_from_attempts(attempts):
+    """attempts: (outcome, why, crash_scenes 或 None, killers)。
+
+    最後一次已是 killed / survived 就採用它。否則只有跑滿 RUN_RETRIES、
+    每次都是同一組非空的存取違規夾具,才記 crashed。其餘維持 blocked。
+    """
+    if not attempts:
+        return "blocked", "沒有任何一次執行結果", [], []
+    outcome, why, _scenes, killers = attempts[-1]
+    if outcome in ("killed", "survived"):
+        return outcome, why, list(killers), []
+    signatures = [item[2] for item in attempts]
+    if (len(attempts) == RUN_RETRIES and signatures[0]
+            and all(sig == signatures[0] for sig in signatures)):
+        names = list(signatures[0])
+        shown = ", ".join(names[:KILLED_BY_MAX])
+        return (
+            "crashed",
+            f"基準線已通過；連跑 {RUN_RETRIES} 次都在同一夾具以存取違規結束"
+            f"（{shown}；{why}）。算被偵測到，但不是斷言殺死。",
+            [],
+            names,
+        )
+    blocked_why = f"連跑 {RUN_RETRIES} 次都是環境失敗,結果不可信 <- {why}"
+    if "abnormal executable exit" in why:
+        blocked_why += "(有異常結束碼，但不是連續相同夾具上的存取違規；仍算環境阻擋，不算 killed)"
+    elif "4551" in why or "啟動失敗" in why:
+        blocked_why += "(啟動失敗或 Smart App Control，不是變異崩潰)"
+    return "blocked", blocked_why, [], []
 
 
 # ============================================================
@@ -559,10 +643,12 @@ def build_mutant_source(m, src):
     return main.replace(line, body, 1)
 
 
-def make_record(m, src, verdict, why, today, oracle_sha, killed_by=None):
+def make_record(m, src, verdict, why, today, oracle_sha, killed_by=None, crashed_on=None):
     rec = {"desc": m["desc"], "verdict": verdict, "why": why}
     if verdict == "killed" and killed_by:
         rec["killed_by"] = list(killed_by)
+    if verdict == "crashed" and crashed_on:
+        rec["crashed_on"] = list(crashed_on)
     if verdict == "invalid" and m.get("equivalent"):
         rec["equivalent_why"] = m["equivalent"]
     f = mutant_file(m)
@@ -584,9 +670,9 @@ def effective_record(m, rec, src, today, oracle_sha):
         return make_record(m, src, "invalid", why, today, oracle_sha)
     verdict = rec.get("verdict")
     base = rec.get("stale_from") if verdict == "stale" else verdict
-    if base not in ("killed", "survived", "equivalent", "retired"):
+    if base not in ("killed", "survived", "crashed", "equivalent", "retired"):
         return rec                       # invalid / blocked / 不認得的值:不因雜湊翻案
-    want = ("killed", "survived") if kind == "run" else (kind,)
+    want = ("killed", "survived", "crashed") if kind == "run" else (kind,)
     problems = []
     if base not in want:
         problems.append(f"變異表現在把它定為 {kind},紀錄卻是 {base}")
@@ -602,7 +688,7 @@ def effective_record(m, rec, src, today, oracle_sha):
             problems.append("沒有 include 閉包雜湊")
         elif rec["closure_sha256"] != src.closure:
             problems.append("#include 閉包內有檔案已變")
-        if base in ("killed", "survived"):
+        if base in ("killed", "survived", "crashed"):
             # 判決是「跑裁判」得來的:裁判(run_tests.py 或它引用的夾具)變了就不能沿用。
             if not rec.get("oracle_sha256"):
                 problems.append("沒有裁判雜湊(oracle_sha256)")
@@ -654,7 +740,8 @@ def tally(table, ids=None):
 
 def exit_code(counts, strict):
     """blocked -> 2(結果不完整,先於其他);survived / invalid / stale -> 1;
-    strict(完整跑、--check)時沒跑到的 id(unrun)也算不及格。"""
+    strict(完整跑、--check)時沒跑到的 id(unrun)也算不及格。
+    crashed 與 killed 一樣算被偵測到,不改變結束碼。"""
     if counts["blocked"]:
         return 2
     bad = counts["survived"] + counts["invalid"] + counts["stale"] + (counts["unrun"] if strict else 0)
@@ -663,7 +750,8 @@ def exit_code(counts, strict):
 
 def format_counts(counts):
     text = " / ".join(f"{name} {counts[key]}" for name, key in (
-        ("殺死 killed", "killed"), ("存活 survived", "survived"), ("等價 equivalent", "equivalent"),
+        ("殺死 killed", "killed"), ("崩潰 crashed", "crashed"),
+        ("存活 survived", "survived"), ("等價 equivalent", "equivalent"),
         ("無效 invalid", "invalid"), ("過期 stale", "stale"), ("受阻 blocked", "blocked"),
         ("退役 retired", "retired")))
     return text + (f" / 未跑 unrun {counts['unrun']}" if counts["unrun"] else "")
@@ -801,41 +889,32 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
         print(f"{m['id']}  exe " + {"cached": "沿用快取",
                                    "built": "已重編"}[status])
 
-        # 環境失敗(SAC 封鎖、逾時)會讓每一筆測試都失敗、returncode 非 0,
-        # 看起來跟「變異被抓到」一模一樣。所以跑完要先問:這次的死因
-        # 是測試斷言,還是執行檔根本沒跑起來?後者一律重跑,重跑不過就判 blocked,
-        # 絕不計入 killed。
-        verdict = None
-        why = ""
-        killers = []
-
+        # 啟動失敗、逾時、WinError 4551 重跑後仍是 blocked,絕不計入 killed。
+        # 基準線已通過時,同一夾具連續存取違規則是 crashed:算被偵測到,但與斷言分開。
+        # 存取違規不等 SAC,不必空等 12 秒;其他受阻仍等,讓新 exe 有機會被放行。
+        attempts = []
         for attempt in range(1, RUN_RETRIES + 1):
             try:
                 test = run_cmd([sys.executable, str(HERE / "run_tests.py"),
                                 str(MUT_EXE)], cwd=root, timeout=600)
             except (OSError, subprocess.TimeoutExpired) as exc:
-                why = f"啟動失敗: {exc}"
-                time.sleep(12)
-                continue
-
-            outcome, why = classify_test_run(test)
-            if outcome == "blocked":
+                attempts.append(("blocked", f"啟動失敗: {exc}", None, []))
                 if attempt < RUN_RETRIES:
                     time.sleep(12)
                 continue
-            verdict = outcome
-            if outcome == "killed":
-                killers = failed_scenes(test)
-            break
 
-        if verdict is None:
-            verdict = "blocked"
-            why = f"連跑 {RUN_RETRIES} 次都是環境失敗,結果不可信 <- {why}"
-            if "abnormal executable exit" in why:
-                why += ("(不是 SAC 的 WinError 4551:執行檔自己異常結束,重試結果相同,"
-                        "多半是變異讓它崩潰;run_tests.py 規定崩潰不算 killed,需人工判斷)")
+            outcome, why = classify_test_run(test)
+            scenes = access_violation_scenes(test)
+            killers = failed_scenes(test) if outcome == "killed" else []
+            attempts.append((outcome, why, scenes, killers))
+            if outcome in ("killed", "survived"):
+                break
+            if attempt < RUN_RETRIES and scenes is None:
+                time.sleep(12)
 
-        results[m["id"]] = make_record(m, src, verdict, why, today, oracle_sha, killed_by=killers)
+        verdict, why, killers, crashed_on = verdict_from_attempts(attempts)
+        results[m["id"]] = make_record(
+            m, src, verdict, why, today, oracle_sha, killed_by=killers, crashed_on=crashed_on)
         print(f"{m['id']}  {verdict.upper():<9} {m['desc']}"
               + (f"  <- {why}" if why else ""))
         persist(False)
@@ -853,6 +932,8 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
               + format_counts(tally(table)))
         print("  (過期明細用 --check 列出)")
 
+    if counts["crashed"]:
+        print("崩潰（crashed）已算被偵測到，與斷言殺死分開計，不影響結束碼。")
     if counts["blocked"]:
         print("⚠ 有受阻的變異,這一輪的結果不完整——受阻的沒有被驗證過,"
               "不要當成殺死。等環境穩定後只重跑那幾個。")
@@ -870,8 +951,11 @@ def check_pass(mutants, root=ROOT, results_path=RESULTS, killers=False, oracle=N
     print(format_counts(counts))
     print_stale(table)
     for rid, rec in table.items():
-        if rec is not None and rec.get("verdict") in ("survived", "invalid", "blocked"):
-            print(f"  {rec['verdict'].upper()} {rid}  {rec.get('desc')}  <- {rec.get('why')}")
+        if rec is not None and rec.get("verdict") in ("survived", "invalid", "blocked", "crashed"):
+            where = ""
+            if rec.get("verdict") == "crashed" and rec.get("crashed_on"):
+                where = " [" + ", ".join(rec["crashed_on"]) + "]"
+            print(f"  {rec['verdict'].upper()} {rid}{where}  {rec.get('desc')}  <- {rec.get('why')}")
     if killers:
         for rid, rec in table.items():
             if rec is not None and rec.get("verdict") == "killed":
@@ -1111,6 +1195,96 @@ def selftest():
         with contextlib.redirect_stdout(buf):
             check_pass(ms, root=root, results_path=results, killers=True, oracle=h0)
         ok("KILLED MA  <- a.scene" in buf.getvalue(), "--check --killers 列出 killed_by")
+
+        # 10b) crashed：連續同一夾具的存取違規，與 SAC / 其他異常結束分開
+        ok(is_access_violation_detail("INFRA abnormal executable exit -11: "), "Linux SIGSEGV -11 是存取違規")
+        ok(is_access_violation_detail("INFRA abnormal executable exit 3221225477: "), "Windows 0xC0000005 無號是存取違規")
+        ok(is_access_violation_detail("INFRA abnormal executable exit -1073741819: "), "Windows 0xC0000005 有號是存取違規")
+        ok(not is_access_violation_detail("INFRA abnormal executable exit -6: "), "SIGABRT 不是存取違規")
+        ok(not is_access_violation_detail("啟動失敗: [WinError 4551]"), "WinError 4551 不是存取違規結束碼")
+
+        def structured(overrides, returncode):
+            cases = [{"scene": spec["scene"], "status": "pass", "detail": "ok", "oracle": "x"}
+                     for spec in TESTS]
+            for idx, status, detail in overrides:
+                cases[idx]["status"] = status
+                cases[idx]["detail"] = detail
+            counts = {key: sum(case["status"] == key for case in cases)
+                      for key in ("pass", "fail", "infrastructure")}
+            payload = {"schema": "geometry-native-tests/1", "total": len(TESTS),
+                       "counts": counts, "cases": cases}
+            return types.SimpleNamespace(
+                stdout="GEOMETRY_TEST_RESULT " + json.dumps(payload, ensure_ascii=False) + "\n",
+                returncode=returncode)
+
+        scene_a = TESTS[0]["scene"]
+        scene_b = TESTS[1]["scene"]
+        av_proc = structured([(0, "infrastructure", "INFRA abnormal executable exit -11: ")], 2)
+        ok(access_violation_scenes(av_proc) == (scene_a,), "單次 -11 能抽出夾具")
+        ok(classify_test_run(av_proc)[0] == "blocked", "單次存取違規仍是 blocked，不直接變 crashed")
+        win_proc = structured([(0, "infrastructure", "INFRA abnormal executable exit 3221225477: ")], 2)
+        ok(access_violation_scenes(win_proc) == (scene_a,), "Windows 無號存取違規能抽出夾具")
+        signed_proc = structured([(0, "infrastructure", "INFRA abnormal executable exit -1073741819: ")], 2)
+        ok(access_violation_scenes(signed_proc) == (scene_a,), "Windows 有號存取違規能抽出夾具")
+        abort_proc = structured([(0, "infrastructure", "INFRA abnormal executable exit -6: ")], 2)
+        ok(access_violation_scenes(abort_proc) is None, "其他異常結束碼不抽出夾具")
+        mixed = structured([
+            (0, "infrastructure", "INFRA abnormal executable exit -11: "),
+            (1, "fail", "FAIL x"),
+        ], 2)
+        ok(access_violation_scenes(mixed) is None, "夾雜斷言失敗就不是純崩潰")
+        two = structured([
+            (0, "infrastructure", "INFRA abnormal executable exit -11: "),
+            (1, "infrastructure", "INFRA abnormal executable exit -11: "),
+        ], 2)
+        ok(access_violation_scenes(two) == (scene_a, scene_b), "多個存取違規依 TESTS 順序保留")
+
+        av = ("blocked", "INFRA abnormal executable exit -11: ", (scene_a,), [])
+        verdict, why, killers, crashed_on = verdict_from_attempts([av, av, av])
+        ok(verdict == "crashed" and crashed_on == [scene_a] and killers == [], "三次同一夾具 -> crashed")
+        ok(scene_a in why and "不是斷言殺死" in why, "crashed 理由寫明夾具且與 killed 分開")
+        ok(verdict_from_attempts([av, av])[0] == "blocked", "少於三次不算 crashed")
+        other = ("blocked", "INFRA abnormal executable exit -11: ", (scene_b,), [])
+        ok(verdict_from_attempts([av, other, av])[0] == "blocked", "夾具不一致仍是 blocked")
+        pair = ("blocked", "INFRA abnormal executable exit 3221225477: ", (scene_a, scene_b), [])
+        pair_verdict = verdict_from_attempts([pair, pair, pair])
+        ok(pair_verdict[0] == "crashed" and pair_verdict[3] == [scene_a, scene_b], "同一組多夾具也算 crashed")
+        startup = ("blocked", "啟動失敗: [WinError 4551] Application Control", None, [])
+        startup_verdict, startup_why, _, _ = verdict_from_attempts([startup, startup, startup])
+        ok(startup_verdict == "blocked" and "4551" in startup_why, "連續 WinError 4551 仍是 blocked")
+        abort_attempt = ("blocked", "INFRA abnormal executable exit -6: ", None, [])
+        abort_verdict, abort_why, _, _ = verdict_from_attempts([abort_attempt, abort_attempt, abort_attempt])
+        ok(abort_verdict == "blocked" and "異常結束碼" in abort_why, "連續非存取違規的異常結束仍是 blocked")
+        killed_attempt = ("killed", "scene: FAIL", None, ["a.scene"])
+        ok(verdict_from_attempts([av, killed_attempt])[0] == "killed", "後一次被斷言抓住就記 killed")
+        ok(verdict_from_attempts([("survived", "all passed", None, [])])[0] == "survived", "全過不等於 crashed")
+
+        blank = {key: 0 for key in list(VERDICTS) + ["unrun"]}
+        blank["killed"] = 1
+        blank["crashed"] = 1
+        ok(exit_code(blank, True) == 0, "只有 killed 與 crashed -> 0")
+        ok("崩潰 crashed 1" in format_counts(blank), "彙總分開顯示 crashed")
+        blank["blocked"] = 1
+        ok(exit_code(blank, True) == 2, "blocked 仍先於 crashed -> 2")
+        blank["blocked"] = 0
+        blank["survived"] = 1
+        ok(exit_code(blank, False) == 1, "survived 不因 crashed 被抵消")
+
+        crec = make_record(ms[0], src, "crashed", "存取違規", today, h0, crashed_on=[scene_a])
+        ok(crec.get("crashed_on") == [scene_a] and "killed_by" not in crec, "crashed 帶 crashed_on，不帶 killed_by")
+        ok(evaluate_table(ms, {"MA": crec}, src, today, h0)["MA"]["verdict"] == "crashed", "裁判沒變 -> crashed 保留")
+        stale_c = evaluate_table(ms, {"MA": crec}, src, today, h_fixture)["MA"]
+        ok(stale_c["verdict"] == "stale" and stale_c["stale_from"] == "crashed", "裁判變了 -> crashed 變 stale")
+        restored = evaluate_table(ms, {"MA": stale_c}, src, today, h0)["MA"]
+        ok(restored["verdict"] == "crashed" and "stale_from" not in restored, "裁判還原 -> crashed 復原")
+        ok(evaluate_table(ms, {"MA": crec}, src2, today, h0)["MA"]["verdict"] == "stale", "來源變了 -> crashed 變 stale")
+        crash_counts = tally({"MA": {"verdict": "crashed"}})
+        ok(crash_counts["killed"] == 0 and crash_counts["crashed"] == 1, "crashed 不計入 killed")
+        save_records(results, {"MA": crec})
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            check_pass(ms, root=root, results_path=results, oracle=h0)
+        ok(f"CRASHED MA [{scene_a}]" in buf.getvalue(), "--check 列出 crashed_on")
 
         # 11) exe 指紋快取
         calls = []

@@ -311,8 +311,11 @@
   },
   "M20": {
     "desc": "R6(d)：拿掉「起點必須有擋面」檢查(懸空端放行)",
-    "verdict": "blocked",
-    "why": "連跑 3 次都是環境失敗,結果不可信 <- INFRA abnormal executable exit -11: (不是 SAC 的 WinError 4551:執行檔自己異常結束,重試結果相同,多半是變異讓它崩潰;run_tests.py 規定崩潰不算 killed,需人工判斷)",
+    "verdict": "crashed",
+    "why": "基準線已通過；連跑 3 次都在同一夾具以存取違規結束（_test_lshape.scene；INFRA abnormal executable exit -11: ）。算被偵測到，但不是斷言殺死。",
+    "crashed_on": [
+      "_test_lshape.scene"
+    ],
     "date": "2026-10-01",
     "source_file": "current_geometry.c",
     "source_sha256": "7a00d35154e575bd577bc3d6d7670ae180321856c19c8266c4f052e464c68702",
