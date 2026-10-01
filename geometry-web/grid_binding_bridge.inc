@@ -80,8 +80,10 @@ static void json_grid_query_axes(const GridQueryAxis axes[2])
                 (long long)line->index,(long long)line->coordinate);
             for (size_t j=0;j<line->segment_count;++j) {
                 const SurfaceSegment2 *s=&line->segments[j];
-                printf("%s{\"a\":[%lld,%lld],\"b\":[%lld,%lld]}",j?",":"",
+                printf("%s{\"a\":[%lld,%lld],\"b\":[%lld,%lld]",j?",":"",
                     (long long)s->start.u,(long long)s->start.v,(long long)s->end.u,(long long)s->end.v);
+                if (line->segment_has_band[j]) printf(",\"band\":\"%lld\"",(long long)line->segment_band[j]);
+                putchar('}');
             }
             fputs("]}",stdout);
         }

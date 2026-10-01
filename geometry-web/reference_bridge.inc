@@ -271,9 +271,14 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
             const SurfaceSegment2 *segments=finite_segments; size_t n;
             if (g->from_binding) { segments=sampled[axis].lines[k].segments; n=sampled[axis].lines[k].segment_count; }
             else n=grid_line_segments(w->grids,w->grid_count,g,p,b,axis,k,finite_segments,POLY_MAX_VERTICES);
-            for (size_t j=0;j<n;++j) printf("%s[[%lld,%lld],[%lld,%lld]]",j?",":"",
-                (long long)segments[j].start.u,(long long)segments[j].start.v,
-                (long long)segments[j].end.u,(long long)segments[j].end.v);
+            for (size_t j=0;j<n;++j) {
+                printf("%s[[%lld,%lld],[%lld,%lld]",j?",":"",
+                    (long long)segments[j].start.u,(long long)segments[j].start.v,
+                    (long long)segments[j].end.u,(long long)segments[j].end.v);
+                if (g->from_binding && sampled[axis].lines[k].segment_has_band[j])
+                    printf(",\"%lld\"",(long long)sampled[axis].lines[k].segment_band[j]);
+                fputs("]",stdout);
+            }
             fputs("]}",stdout);
         }
     }
