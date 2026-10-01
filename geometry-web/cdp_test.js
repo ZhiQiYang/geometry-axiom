@@ -6393,10 +6393,16 @@ async function main() {
     check('P59-2 取消選頁不建立物件',await eval_(`(async()=>!$('referenceDialog').open&&(await api('dump')).text===${JSON.stringify(cancelDump)})()`));
     await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);await field('refPageNumber','2');
     await until(`!$('refApply').disabled&&document.querySelector('#refPagePreview img')?.alt==='第 2 頁預覽'`);
-    const crop=await eval_(`(()=>{const r=$('refPagePreview').getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})()`);
+    // Ready controls precede asynchronous image decode and thumbnail layout.
+    // Measure only a decoded, stable preview; retain the original 240px oracle.
+    await until(`(()=>{const imgs=[...document.querySelectorAll('#refPagePreview img,.ref-thumbnail img')];return imgs.length===3&&imgs.every(img=>img.complete&&img.naturalWidth>0);})()`);
+    const crop=await eval_(`(async()=>{const imgs=[...document.querySelectorAll('#refPagePreview img,.ref-thumbnail img')];await Promise.all(imgs.map(img=>img.decode()));let previous='',stable=0;for(let i=0;i<60;i++){await new Promise(requestAnimationFrame);const r=$('refPagePreview').getBoundingClientRect(),current={x:r.x,y:r.y,w:r.width,h:r.height};const encoded=JSON.stringify(current);stable=encoded===previous?stable+1:0;previous=encoded;if(stable>=2&&r.width>0&&r.height>0)return current;}throw Error('PDF crop preview did not stabilize');})()`);
     await drag(crop.x+crop.w*.03,crop.y+crop.h*.1,crop.x+crop.w*.83,crop.y+crop.h*.9);
+    const cropAfter=await eval_(`(()=>{const r=$('refPagePreview').getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,overlay:$('refCropOverlay').getAttribute('style'),page:$('refPageNumber').value}})()`);
     await ctl('#refApply');await until(`!$('referenceDialog').open`);
-    check('P59-3 PDF 取景使用固定頁面座標，與圖片共用面',await eval_(`(()=>{const p=ReferenceWorkspace.active(1);return p.page===2&&p.imgW===300&&p.imgH===200&&Math.abs(p.crop[2]-240)<1&&ReferenceWorkspace.group(1).pages.length===2;})()`));
+    const cropActual=await eval_(`(()=>{const p=ReferenceWorkspace.active(1);return {page:p.page,imgW:p.imgW,imgH:p.imgH,crop:p.crop,pages:ReferenceWorkspace.group(1).pages.length,sourceId:p.sourceId};})()`);
+    console.log('[PDF_CROP_COORDINATES]',JSON.stringify({expectedWidth:240,before:crop,after:cropAfter,actual:cropActual}));
+    check('P59-3 PDF 取景使用固定頁面座標，與圖片共用面',cropActual.page===2&&cropActual.imgW===300&&cropActual.imgH===200&&Math.abs(cropActual.crop[2]-240)<1&&cropActual.pages===2,cropActual);
     await ctl('#ulCalibStart');await eval_(`feUnderlayCalibPoint([20,70]);feUnderlayCalibPoint([220,70]);`);
     await field('ulCalibDist','2000');await ctl('#ulCalibApply');
     check('P59-4 PDF 校準後座標與縮放算繪一致',await eval_(`(async()=>{const p=ReferenceWorkspace.active(1),before=feUlImgToMm(p,100,100);await ReferenceWorkspace.preparePage(p,g198PDF);const after=feUlImgToMm(p,100,100);return p.mmPerPx===10&&before.every((v,i)=>Math.abs(v-after[i])<1e-8);})()`));
