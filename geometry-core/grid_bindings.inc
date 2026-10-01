@@ -18,7 +18,16 @@ static bool grid_binding_cache(const World *w,const GridBinding *binding,Referen
             if(err)snprintf(err,cap,"D1/I37: anchor must have an exact integer-millimetre offset");return false;
         }
         g->axis[a]=s->axis[a];g->lattice_step[a]=pitch;g->lattice_index[a]=binding->cell[a];
-        g->lattice_base[a]=(a?v.v:v.u)-(Coord)(((uint64_t)pitch*n)/d);
+        Coord base=(a?v.v:v.u)-(Coord)(((uint64_t)pitch*n)/d);
+        /* D10b: shift 0 keeps the subtraction above unchanged. An odd selected cell pins the staggered corner. */
+        if(s->axis[a].stagger_set && (binding->cell[1-a]&1)){
+            int64_t shifted;
+            if(!grid_i64_add(base,-(int64_t)s->axis[a].stagger,&shifted)){
+                if(err)snprintf(err,cap,"D10b/D30: 錯開後的錨點超出可表達範圍");return false;
+            }
+            base=(Coord)shifted;
+        }
+        g->lattice_base[a]=base;
     }
     return true;
 invalid:
@@ -156,6 +165,73 @@ static void grid_bindings_dump(const World *w,FILE *out)
     }
 }
 
+/* D10b / R22: one segment per other-axis cell. Unstaggered lines do not enter here. */
+static bool grid_query_stagger_segments(const ReferenceGrid *g,const PlacementSurface *p,
+    const SpaceBoundarySurface *boundary,const char *kind,int axis,GridQueryLine *line,
+    const Coord rect[4],bool sample,GridQueryAxis *q,char *err,size_t cap)
+{
+    int other=1-axis;
+    int64_t step=g->lattice_step[other],base=g->lattice_base[other],origin=g->lattice_index[other];
+    if(step<=0){if(err)snprintf(err,cap,"I24: 相位差需要另一軸");return false;}
+    Coord blo=rect[other],bhi=rect[other+2],orig_lo=rect[axis],orig_hi=rect[axis+2];
+    int64_t first_delta=grid_floor_div(blo-base,step),last_delta=grid_floor_div(bhi-base,step);
+    if(first_delta>last_delta) return true;
+    int64_t first,last;
+    if(!grid_i64_add(origin,first_delta,&first)||!grid_i64_add(origin,last_delta,&last)){
+        if(err)snprintf(err,cap,"R32: INDEX_RANGE exceeds signed int64");return false;
+    }
+    uint64_t bands=(uint64_t)(last_delta-first_delta)+1,stride=1;
+    if(bands>(uint64_t)POLY_MAX_VERTICES && !sample){
+        if(err)snprintf(err,cap,"R32: QUERY_CAPACITY requires %llu segments; limit %u",(unsigned long long)bands,(unsigned)POLY_MAX_VERTICES);
+        return false;
+    }
+    if(sample && bands>(uint64_t)POLY_MAX_VERTICES) stride=(bands+(uint64_t)POLY_MAX_VERTICES-1)/(uint64_t)POLY_MAX_VERTICES;
+    if(stride>q->stride) q->stride=stride;
+    for(uint64_t n=0;n<bands;n+=stride){
+        int64_t band,next; Coord band_lo,band_hi,coord;
+        if(!grid_i64_add(first,(int64_t)n,&band)) break;
+        if(!grid_lattice_coord(g,other,band,&band_lo)||!grid_i64_add(band,1,&next)||!grid_lattice_coord(g,other,next,&band_hi)||
+            !grid_lattice_coord_band(g,axis,line->index,band,&coord)){
+            if(!sample){if(err)snprintf(err,cap,"D10b/D1: 錯開後的格線座標超出可表達範圍");return false;}
+            continue;
+        }
+        if(coord<orig_lo || coord>orig_hi) continue;
+        Coord alo=band_lo>blo?band_lo:blo,ahi=band_hi<bhi?band_hi:bhi;
+        if(alo>=ahi) continue;
+        if(!strcmp(kind,"system")){
+            if(line->segment_count>=POLY_MAX_VERTICES){
+                if(!sample){if(err)snprintf(err,cap,"R32: QUERY_CAPACITY");return false;}
+                return true;
+            }
+            SurfaceSegment2 seg=axis?(SurfaceSegment2){(SurfacePoint2){alo,coord},(SurfacePoint2){ahi,coord}}
+                :(SurfaceSegment2){(SurfacePoint2){coord,alo},(SurfacePoint2){coord,ahi}};
+            line->segments[line->segment_count]=seg;
+            line->segment_band[line->segment_count]=band;
+            line->segment_has_band[line->segment_count]=true;
+            ++line->segment_count;
+            continue;
+        }
+        GuideLine guide={0}; guide.placement_id=p->id; guide.direction=axis?GUIDE_ALONG_U:GUIDE_ALONG_V; guide.offset=coord;
+        SurfaceSegment2 clips[POLY_MAX_VERTICES];
+        size_t cn=guide_line_get_local_segments(p,boundary,&guide,clips,POLY_MAX_VERTICES);
+        for(size_t j=0;j<cn;++j){
+            SurfaceSegment2 seg=clips[j];
+            Coord *start=axis?&seg.start.u:&seg.start.v,*end=axis?&seg.end.u:&seg.end.v;
+            if(*start<alo)*start=alo; if(*end>ahi)*end=ahi;
+            if(*start>=*end) continue;
+            if(line->segment_count>=POLY_MAX_VERTICES){
+                if(!sample){if(err)snprintf(err,cap,"R32: QUERY_CAPACITY");return false;}
+                return true;
+            }
+            line->segments[line->segment_count]=seg;
+            line->segment_band[line->segment_count]=band;
+            line->segment_has_band[line->segment_count]=true;
+            ++line->segment_count;
+        }
+    }
+    return true;
+}
+
 /* Read-only finite query. The temporary placement below is only the existing
  * polygon clipper's local-frame adapter; it is never inserted into World. */
 static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord rect[4],
@@ -169,6 +245,7 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
         const GridSystem *s=world_find_grid_system(w,id);if(!s || !grid_system_is_infinite(s))goto invalid;
         cache.from_binding=true;
         for(int a=0;a<2;++a)if(grid_axis_is_infinite(&s->axis[a])){
+            cache.axis[a]=s->axis[a];cache.lattice_index[a]=0;
             cache.lattice_base[a]=grid_axis_phase(&s->axis[a]);cache.lattice_step[a]=grid_axis_pitch(&s->axis[a]);
         }
     }else if(!strcmp(kind,"binding")){
@@ -182,7 +259,18 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
     }else goto invalid;
     for(int a=0;a<2;++a){
         GridQueryAxis *q=&axes[a];
-        if(g->from_binding){if(!grid_lattice_window(g,a,rect[a],rect[a+2],limit,sample,q,err,cap))return false;}
+        if(g->from_binding){
+            Coord lo=rect[a],hi=rect[a+2];
+            if(g->axis[a].stagger_set){
+                Coord mag=g->axis[a].stagger>=0?g->axis[a].stagger:(g->axis[a].stagger==INT64_MIN?COORD_LIMIT:-g->axis[a].stagger);
+                int64_t elo,ehi;
+                if(!grid_i64_add(lo,-(int64_t)mag,&elo)) elo=-COORD_LIMIT;
+                if(!grid_i64_add(hi,mag,&ehi)) ehi=COORD_LIMIT;
+                if(elo<-COORD_LIMIT) elo=-COORD_LIMIT; if(ehi>COORD_LIMIT) ehi=COORD_LIMIT;
+                lo=(Coord)elo; hi=(Coord)ehi;
+            }
+            if(!grid_lattice_window(g,a,lo,hi,limit,sample,q,err,cap))return false;
+        }
         else {
             memset(q,0,sizeof *q);q->stride=1;
             if(g->axis[a].source==GRID_SRC_NONE && !g->is_subgrid)continue;
@@ -200,6 +288,10 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
         for(size_t i=0;i<q->count;++i){
             GridQueryLine *line=&q->lines[i];SurfaceSegment2 clips[POLY_MAX_VERTICES];size_t n;
             Coord lo=rect[1-a],hi=rect[3-a];
+            if(g->from_binding && g->axis[a].stagger_set){
+                if(!grid_query_stagger_segments(g,p,boundary,kind,a,line,rect,sample,q,err,cap)) return false;
+                continue;
+            }
             if(!strcmp(kind,"system")){
                 clips[0]=(SurfaceSegment2){a?(SurfacePoint2){lo,line->coordinate}:(SurfacePoint2){line->coordinate,lo},
                     a?(SurfacePoint2){hi,line->coordinate}:(SurfacePoint2){line->coordinate,hi}};n=1;

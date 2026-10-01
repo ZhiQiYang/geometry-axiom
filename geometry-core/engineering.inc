@@ -382,13 +382,6 @@ static void eng_target_json(const EngTarget *t,FILE *out)
     if (!t->kind) fprintf(out,"{\"axis\":\"%c\",\"field\":\"%s\",\"id\":%u,\"kind\":\"grid\"}",t->axis?'v':'u',t->field?"gap":"panel",t->id);
     else fprintf(out,"{\"field\":\"%s\",\"id\":%u,\"kind\":\"timber\"}",t->field?"B":"A",t->id);
 }
-static void eng_binding_value_json(const EngBinding *b,FILE *out)
-{
-    char value[640],override[640]; eng_source_json(&b->source,value,sizeof value);
-    if (b->has_override) eng_source_json(&b->override_value,override,sizeof override); else snprintf(override,sizeof override,"null");
-    fprintf(out,"{\"override\":%s,\"source\":%s}",override,value);
-}
-
 typedef struct { char text[1450]; size_t size; bool ok; } EngBuffer;
 static void eng_append(EngBuffer *b,const char *format,...)
 {

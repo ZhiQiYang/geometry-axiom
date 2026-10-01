@@ -19,6 +19,13 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
   await read(`(async()=>{ParameterUI.discard();InfiniteGridWorkspace.close(true);resetSceneFocus();await api('reset');await setView3(false);await renderObjects();})()`);
   await createCard();
+  const lessonShown=await read(`(()=>{const n=$('paramGridLesson'),name=$('paramName'),facts=ParamGridLesson.facts(),nr=name.getBoundingClientRect(),hit=document.elementFromPoint(nr.left+nr.width/2,nr.top+nr.height/2);const buttons=[...n.querySelectorAll('button')].filter(b=>!b.hidden&&b.getClientRects().length);const lessons=FeatureLessons.check();return {parent:n?.parentElement?.id||'',open:!!n?.classList.contains('is-open'),canvas:!!n?.classList.contains('is-canvas'),text:n?.textContent||'',width:facts.width,length:facts.length,source:facts.sourceLabel,next:facts.nextWidth,nameHit:hit===name||!!name.contains(hit),small:buttons.filter(b=>b.getBoundingClientRect().height<44).map(b=>b.id),wide:document.documentElement.scrollWidth>innerWidth,lessons};})()`);
+  check('第一次建立參數時畫布有圖解，名稱仍點得到',lessonShown.parent==='canvasViewport'&&lessonShown.open&&lessonShown.canvas&&lessonShown.lessons.some(item=>item.id==='param-grid'&&item.ok)&&lessonShown.lessons.every(item=>item.ok)&&lessonShown.text.includes(lessonShown.width)&&lessonShown.text.includes(lessonShown.length)&&lessonShown.text.includes(lessonShown.source)&&lessonShown.nameHit&&lessonShown.small.length===0&&!lessonShown.wide,lessonShown);
+  await ctl('#paramGridLessonFrame2');
+  const lessonNext=await read(`(()=>{const n=$('paramGridLesson'),g=n.querySelector('.pgl-f2'),facts=ParamGridLesson.facts();return {frame:n.dataset.frame,shown:getComputedStyle(g).display!=='none',text:g.textContent,still:n.textContent.includes(facts.length),next:facts.nextWidth,ok:FeatureLessons.check().some(item=>item.id==='param-grid'&&item.ok)};})()`);
+  check('圖解第二張改的是下一個寬，直向長度留著',lessonNext.frame==='2'&&lessonNext.shown&&lessonNext.text.includes(lessonNext.next)&&lessonNext.still&&lessonNext.ok,lessonNext);
+  await ctl('#paramGridLessonClose');
+  check('知道了之後只留圖解按鈕',await read(`localStorage.getItem(ParamGridLesson.storageKey)===ParamGridLesson.token()&&$('paramGridLesson').classList.contains('is-collapsed')&&!$('paramGridLessonOpen').hidden&&$('paramGridLessonStage').hidden`));
   await fill('#paramName','板材尺寸');await fill('#paramQuick','(915,1830)');await ctl('#paramParse');
   check('尺寸組先顯示欄位及單位',await read(`document.querySelectorAll('[data-param-field]').length===2&&[...document.querySelectorAll('[data-type]')].every(e=>e.value==='dimension')`));
   check('未提交草稿阻擋保存',await read(`ReferenceWorkspace.exportBytes().then(()=>false,e=>/參數草稿/.test(e.message))`));
@@ -30,6 +37,11 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const settings=await read(`oc.parameters.find(p=>p.name==='排格設定').card`);
   check('跨卡算式由核心試算',settings.fields[0].value.num==='917');
   await ctl('#btnQuickGrid');await wait(`document.querySelector('#infiniteGridWorkspace')?.open`);
+  const lessonGrid=await read(`(()=>{const n=$('paramGridLesson'),plot=$('igGridView').querySelector('[data-ig-plot]').getBoundingClientRect(),box=n.getBoundingClientRect();const overlap=!(box.right<plot.left||box.left>plot.right||box.bottom<plot.top||box.top>plot.bottom);return {slot:n.parentElement?.id==='paramGridLessonSlot',grid:n.classList.contains('is-grid'),collapsed:n.classList.contains('is-collapsed'),overlap,wide:document.documentElement.scrollWidth>innerWidth};})()`);
+  check('圖解收在網格來源表單，不蓋住格線',lessonGrid.slot&&lessonGrid.grid&&lessonGrid.collapsed&&!lessonGrid.overlap&&!lessonGrid.wide,lessonGrid);
+  await ctl('#paramGridLessonOpen');
+  check('網格裡重開仍是同一張圖',await read(`(()=>{const facts=ParamGridLesson.facts(),n=$('paramGridLesson');return n.classList.contains('is-open')&&$('paramGridLessonSlot').contains(n)&&FeatureLessons.check().some(item=>item.id==='param-grid'&&item.ok)&&n.textContent.includes(facts.width)&&n.textContent.includes(facts.length)&&n.textContent.includes(facts.sourceLabel);})()`));
+  await ctl('#paramGridLessonClose');
   await choose('#igUStepSource',settings.id+':'+settings.fields[0].id);await choose('#igVStepSource',panel.id+':'+length);
   check('網格來源顯示有效值',await read(`$('igUStep').readOnly&&$('igUStep').value==='917'&&$('igVStep').value==='1830'`));
   await ctl('#igSaveSource');await wait(`!!document.querySelector('#impact-confirm')`);await ctl('#impact-confirm');await wait(`document.querySelector('#igNewBinding')!=null`);

@@ -1226,49 +1226,6 @@ static size_t guide_line_get_local_segments(
     return n;
 }
 
-/*
- * 求同一承載面上一條 U 方向線與一條 V 方向線的交點。
- * 多邊形之後「offset 在外接區間」不再保證交點在有效區域
- * （可能落在凹區或孔裡），所以要另外檢查有效區域。
- */
-static bool guide_line_intersection(
-    const PlacementSurface *surface,
-    const SpaceBoundarySurface *boundary,
-    const GuideLine *a,
-    const GuideLine *b,
-    SurfacePoint2 *out_point
-)
-{
-    if (surface == NULL || a == NULL || b == NULL || out_point == NULL) {
-        return false;
-    }
-
-    if (a->placement_id != surface->id ||
-        b->placement_id != surface->id ||
-        a->direction == b->direction) {
-        return false;
-    }
-
-    const GuideLine *along_u =
-        a->direction == GUIDE_ALONG_U ? a : b;
-
-    const GuideLine *along_v =
-        a->direction == GUIDE_ALONG_V ? a : b;
-
-    SurfacePoint2 point = {
-        .u = along_v->offset,
-        .v = along_u->offset
-    };
-
-    /* 交點必須真的在有效區域內（輪廓內、孔外）。 */
-    if (!surface_contains_point(surface, boundary, point)) {
-        return false;
-    }
-
-    *out_point = point;
-    return true;
-}
-
 
 /* ============================================================
  * 參考網格（ReferenceGrid）：兩軸各一份「線的定義」
@@ -1313,7 +1270,9 @@ typedef struct {
     Coord gap;
     Coord anchor;
     bool anchor_explicit;   /* 只影響 dump 是否輸出 from，不影響推導 */
-    ParameterRef parameters[5]; /* phase, step, panel, gap, anchor */
+    ParameterRef parameters[6]; /* phase, step, panel, gap, anchor, stagger (D10b) */
+    Coord stagger;          /* D10b: odd-band offset; meaningful only when stagger_set */
+    bool stagger_set;
 } GridAxisDef;
 
 #define WORLD_MAX_GRID_SYSTEMS 16
@@ -1339,6 +1298,8 @@ typedef struct {
 typedef struct {
     int64_t index; Coord coordinate;
     size_t segment_count; SurfaceSegment2 segments[POLY_MAX_VERTICES];
+    int64_t segment_band[POLY_MAX_VERTICES]; /* D10b: other-axis cell, only when segment_has_band */
+    bool segment_has_band[POLY_MAX_VERTICES];
 } GridQueryLine;
 typedef struct {
     bool defined; int64_t first,last; uint64_t total,stride;
@@ -1521,54 +1482,6 @@ static bool grid_axis_lines(
     }
 
     *out_count = n;
-    return true;
-}
-
-/* 第 n 條格線（at-line grid 用的薄包裝）；索引越界回 false 並回填總條數。 */
-static bool grid_line_coord(
-    const ReferenceGrid *grid,
-    const PlacementSurface *placement,
-    const SpaceBoundarySurface *boundary,
-    int axis,
-    int64_t index,
-    Coord *out_coord,
-    size_t *out_total,
-    char *err,
-    size_t err_cap
-)
-{
-    if (grid && grid->from_binding) {
-        if (out_total) *out_total=0;
-        return grid_lattice_coord(grid,axis,index,out_coord);
-    }
-    Coord lines[GRID_MAX_LINES];
-    size_t n = 0;
-
-    if (out_total != NULL) {
-        *out_total = 0;
-    }
-
-    if (!grid_axis_lines(grid, placement, boundary, axis,
-                         lines, &n, err, err_cap)) {
-        return false;
-    }
-
-    if (out_total != NULL) {
-        *out_total = n;
-    }
-
-    if (index < 0 || (uint64_t)index >= n) {
-        if (err != NULL) {
-            snprintf(err, err_cap,
-                     "索引超出範圍（本軸共 %u 條）", (unsigned)n);
-        }
-        return false;
-    }
-
-    if (out_coord != NULL) {
-        *out_coord = lines[index];
-    }
-
     return true;
 }
 
@@ -3717,6 +3630,8 @@ typedef struct {
     uint32_t ref_grid;      /* ANCHOR_AT_GRID：網格 id */
     int ref_grid_axis;      /* 0 = u 座標集合，1 = v 座標集合 */
     int64_t ref_grid_index;
+    bool ref_grid_has_band; /* D10b: set only for a staggered axis */
+    int64_t ref_grid_band;
     int ref_hole;           /* ANCHOR_AT_EDGE：-1 外輪廓，否則孔 index */
     int ref_edge;           /* 邊 index */
     bool has_through;
@@ -3801,6 +3716,36 @@ static const GridSystem *world_find_grid_system(const World *w,uint32_t id)
 {
     for (size_t i=0;i<w->grid_system_count;++i) if (w->grid_systems[i].id==id) return &w->grid_systems[i];
     return NULL;
+}
+
+/* 命中物 → 一行描述。網頁橋接與 GDI 狀態列共用；無命中時寫入空字串。 */
+static void scene_describe_pick(const Scene *scene, const World *world,
+                                const ScenePick *p, char *buf, size_t cap)
+{
+    buf[0] = '\0';
+    if (p == NULL || scene_pick_is_none(p)) {
+        return;
+    }
+
+    if (p->column >= 0 && p->column < (int)scene->column_count) {
+        snprintf(buf, cap, "柱%" PRIu32, scene->columns[p->column].id);
+        return;
+    }
+    if (p->beam >= 0 && p->beam < (int)scene->beam_count) {
+        snprintf(buf, cap, "樑%" PRIu32, scene->beams[p->beam].id);
+        return;
+    }
+    if (p->timber >= 0 && p->timber < (int)scene->timber_count) {
+        snprintf(buf, cap, "角材%" PRIu32 " %s",
+                 scene->timbers[p->timber].id, timber_face_name(p->face));
+        return;
+    }
+    if (p->guide >= 0 && p->guide < (int)world->guide_count) {
+        const GuideLine *gd = &world->guides[p->guide];
+        snprintf(buf, cap, "參考線%" PRIu32 " 沿%s offset=%" PRId64,
+                 gd->id, gd->direction == GUIDE_ALONG_U ? "U" : "V",
+                 (int64_t)gd->offset);
+    }
 }
 static const GridBinding *world_find_grid_binding(const World *w,uint32_t id)
 {
@@ -4784,29 +4729,10 @@ static void gdi_set_hover(GdiApp *app, const char *utf8)
     SetWindowTextW(app->hover_label, wide);
 }
 
-/* 命中物 → 一行描述；無命中時寫入空字串。 */
+/* 命中物 → 一行描述；與網頁橋接共用 scene_describe_pick。 */
 static void gdi_describe_pick(const GdiApp *app, const ScenePick *p, char *buf, size_t cap)
 {
-    buf[0] = '\0';
-
-    if (p == NULL || scene_pick_is_none(p)) {
-        return;
-    }
-
-    if (p->timber >= 0 && p->timber < (int)app->scene.timber_count) {
-        snprintf(buf, cap, "角材%" PRIu32 " %s",
-                 app->scene.timbers[p->timber].id,
-                 timber_face_name(p->face));
-        return;
-    }
-
-    if (p->guide >= 0 && p->guide < (int)app->world->guide_count) {
-        const GuideLine *gd = &app->world->guides[p->guide];
-        snprintf(buf, cap, "參考線%" PRIu32 " 沿%s offset=%" PRId64,
-                 gd->id,
-                 gd->direction == GUIDE_ALONG_U ? "U" : "V",
-                 (int64_t)gd->offset);
-    }
+    scene_describe_pick(&app->scene, app->world, p, buf, cap);
 }
 
 /* 定義在下方；gdi_load_scene_file 要先看到原型。 */
@@ -8429,12 +8355,14 @@ static bool world_validate_derived(const World *world)
                            : NULL;
 
             if (ag == NULL || ap == NULL ||
-                !grid_line_coord_in(world->grids, world->grid_count, ag, ap,
+                !grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,
                                  world_placement_boundary(world, ap),
                                  a->ref_grid_axis,
                                  a->ref_grid_index,
-                                 NULL, NULL, NULL, 0)) {
-                set_revalidate_error("被網格錨定的格線已不存在");
+                                 a->ref_grid_has_band,
+                                 a->ref_grid_band,
+                                 NULL, grid_error, sizeof grid_error)) {
+                set_revalidate_error(grid_error[0] ? grid_error : "被網格錨定的格線已不存在");
                 return false;
             }
         }
@@ -8470,6 +8398,15 @@ static bool world_validate_derived(const World *world)
                     (!grid_cell_bounds(world->grids,world->grid_count,g,p,b,&cell,NULL,0) ||
                     f.min_u<cell.min_u || f.max_u>cell.max_u || f.min_v<cell.min_v || f.max_v>cell.max_v)) {
                     set_revalidate_error("I13：角材的完整足跡超出子格範圍"); return false;
+                }
+                if (g && g->from_binding && a->ref_grid_has_band && g->axis[a->ref_grid_axis].stagger_set) {
+                    int axis=a->ref_grid_axis, other=1-axis; int64_t next; Coord lo,hi;
+                    Coord flo=axis==0?f.min_v:f.min_u, fhi=axis==0?f.max_v:f.max_u;
+                    if (!grid_i64_add(a->ref_grid_band,1,&next) ||
+                        !grid_lattice_coord(g,other,a->ref_grid_band,&lo) ||
+                        !grid_lattice_coord(g,other,next,&hi) || flo<lo || fhi>hi) {
+                        set_revalidate_error("I24：角材沿線範圍超出該格子"); return false;
+                    }
                 }
             }
 

@@ -427,10 +427,9 @@ figcaption { font-size: 13px; color: var(--ink-3); margin-top: 8px; }
   <div class="eyebrow mono">§4 · 表面參考線</div>
   <h2 class="sec">一條線只記方向和一個 offset</h2>
   <div class="prose">
-    <p>參考線不是實體，只是定位工具。沿 U 的線是「固定 v = offset」，沿 V 的線是「固定 u = offset」。因此兩條不同方向的線交點只需要兩行：u 取沿 V 那條的 offset，v 取沿 U 那條的 offset。</p>
+    <p>參考線不是實體，只是定位工具。它存承載面、方向與位置引用式；offset 是求值後的快取。沿 U 的線固定 v = offset，沿 V 的線固定 u = offset。可見段不存進世界，要用時由 <code>guide_line_get_local_segments</code> 從外輪廓截出、再扣掉孔。</p>
   </div>
   <div data-panel='{"kind":"type","name":"GuideLine","label":"參考線的定義","callouts":[{"match":"Coord offset;","note":"沿 U 時它是 v，沿 V 時它是 u。上方註解寫得很清楚。"}]}'></div>
-  <div data-panel='{"kind":"fn","name":"guide_line_intersection","label":"兩條參考線的交點","callouts":[{"match":"a->direction == b->direction","note":"同方向的兩條線平行，或線不屬於這片承載面，直接拒絕。"},{"match":"\\.u = along_v->offset,","note":"交點的 u 來自沿 V 的線。"},{"match":"\\.v = along_u->offset","note":"交點的 v 來自沿 U 的線。"},{"match":"交點必須真的在有效區域內","note":"多邊形與孔洞下，offset 合法不保證交點在有效區域內——交點可能落在孔裡或凹區，要再過一次 surface_contains_point。"}]}'></div>
 </section>
 
 <section class="block" id="s5">
@@ -623,7 +622,6 @@ u = (e·d − b·f) / det      v = (a·f − e·c) / det     （Cramer 法則）
     <tr><td>2·面積 = Σ(xᵢ·yⱼ − xⱼ·yᵢ)</td><td><code>view_quad_area2</code></td><td>shoelace 公式：判斷面在此視圖是否退化成線</td></tr>
     <tr><td>sign(邊ᵢ × (p−vᵢ)) 全同號</td><td><code>view_quad_contains</code></td><td>凸四邊形包含測試——滑鼠命中的幾何核心</td></tr>
     <tr><td>t = (p−a)·(b−a) / |b−a|²</td><td><code>view_dist2_to_segment</code></td><td>點到線段距離²（夾 t 進 [0,1]，整數除法版）</td></tr>
-    <tr><td>u = v_線.offset, v = u_線.offset</td><td><code>guide_line_intersection</code></td><td>兩條參考線交點——兩行就解完</td></tr>
     <tr><td>d₄ = Σᵢ vᵢ·into</td><td><code>timber_project_faces</code></td><td>六面依「離觀者深度」排序（painter's algorithm）</td></tr>
     <tr><td>槽位 + 區間約束</td><td><code>room_bind</code></td><td>room 一致性：每片面釘住一個法向槽位與兩個軸區間</td></tr>
     <tr><td>px = origin + (mm + t)·scale</td><td><code>gdi_to_pixel</code></td><td>mm → 像素——全域唯二的浮點之一，另一處是上面 _near 反解的 llround</td></tr>

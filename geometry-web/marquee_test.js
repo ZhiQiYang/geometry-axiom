@@ -192,9 +192,9 @@ module.exports = async function marqueeTests({send,eval_,sleep,click,dblclick,dr
   await objectBox(25,25,530,490);
   check('S07 搜尋只顯示並框選面 1（不可空集合假通過）',same(visibleIds,['boundary:1'])&&same(await objectIds(),['boundary:1']),{visibleIds,selected:await objectIds()});
   await eval_(`$('searchInput').value='';$('searchInput').dispatchEvent(new Event('input',{bubbles:true}));document.activeElement?.blur()`);await sleep(220);
-  await ctl('[data-filter-type="face"]');await key('a','KeyA',65,2);
+  await ctl('[data-filter-group="sources"]');await key('a','KeyA',65,2);
   check('S07 類型隱藏的卡片不納入全選',same(await objectIds(),[])&&await eval_(`document.querySelectorAll('.ocard').length===0`));
-  await ctl('[data-filter-type="face"]');
+  await ctl('[data-filter-group="sources"]');
   await objectBox(40,40,520,235);
   const c0=await at(card(0));await dblclick(c0.x,c0.y);await sleep(350);
   check('S09 雙擊卡片仍進入面編輯',await eval_(`oc.focus?.t==='face'&&oc.edit?.bid===1`));

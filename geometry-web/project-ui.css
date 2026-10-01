@@ -21,6 +21,8 @@
 #fileMenuPop .menu-item { width:100%; min-height:34px; border:0; justify-content:flex-start; box-shadow:none; background:transparent; text-align:left; }
 #fileMenuPop .menu-item:hover { background:var(--panel-muted); }
 #fileMenuPop .menu-item small { font-size:11px; color:var(--muted); margin-left:auto; }
+#fileMenuPop #btnExport { height:auto; white-space:normal; }
+#fileMenuPop #btnExport small { white-space:normal; text-align:right; }
 #fileMenuPop .menu-item.danger { color:#a83b32; }
 #fileMenuPop .menu-nested > .menu-pop { position:static; width:auto; min-width:0; max-height:none; border:0; border-radius:6px; margin:4px 4px 6px 12px; padding:4px; box-shadow:none; background:var(--panel-muted); }
 #fileMenuPop #sceneList .menu-pop { max-height:180px; overflow:auto; }

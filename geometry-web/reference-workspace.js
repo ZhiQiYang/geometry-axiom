@@ -941,7 +941,7 @@ const ReferenceWorkspace = (() => {
     pendingLoad=null;sync();return true;
   }
   function mayLeave() {
-    if(window.ParameterUI && !ParameterUI.mayLeave())return false;
+    if(window.DraftGate && !window.DraftGate.ask())return false;
     if (Object.values(fe.feats || {}).some(items => items.length) &&
       !window.confirm("目前有只能在本次工作階段修改數字的形狀特徵。切換場景後仍保留輪廓，但特徵參數會消失。要繼續嗎？")) return false;
     return !context().dirty || window.confirm("目前專案有尚未保存的變更。要離開目前專案嗎？");

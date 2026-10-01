@@ -52,8 +52,8 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | `#canvasDrawToolbar` | 選取、平移、`#btnNewRect` 與 `#btnNewPoly` 浮於畫布，保留原工具識別與快捷鍵；不再位於主頂列 |
 | `#ocSelectionSummary` | 主畫布通常為 0／1 選取時視覺隱藏，僅多選或正在框選時顯示；保留 DOM 的實際 `data-count` 與 `aria-live` 狀態節點 |
 | `#btnCollapseLibrary` / `body.canvas-library-collapsed` | 桌面收合／展開左側物件庫並更新 `aria-expanded`；窄螢幕關閉左抽屜 |
-| `#filterDisclosure` | 物件庫底部的原生 `details`，內含既有 `[data-filter-type]` 與 `#filterAll`；收合篩選選單不改目前篩選值 |
-| `.object-group[data-object-group]` | `sources` 為來源（網格、邊界與面），`bindings` 為網格配置，`structures` 為空間與構件；空組不顯示。組內保留 `.object-row[data-kind][data-id]`、選取及鍵盤操作 |
+| `#filterDisclosure` | 物件庫底部的原生 `details`，內含 `[data-filter-group]` 與 `#filterAll`；收合篩選選單不改目前篩選值 |
+| `.object-group[data-object-group]` | `sources` 為來源（面、網格系統、參數、組構規則），`bindings` 為配置（網格配置、材料配置），`structures` 為空間與構件；空組不顯示。組內保留 `.object-row[data-kind][data-id]`、選取及鍵盤操作 |
 | `.grid-relation[data-binding-id][data-source-kind][data-source-id]` | 從來源卡連到配置卡；`data-source-kind` 為 `grid-system` 或 `boundary`，曲線為子節點 `path.grid-relation-path`。只有兩端卡片皆顯示時才繪製，拖移卡片會更新連線 |
 | `.grid-relation-label[data-binding-id][data-source-kind][data-source-id]` | 與對應曲線使用同一組身分，分別標「使用此網格」／「使用此邊界」。選取任一端時連線與標籤 `.active`；關係顯示不攔截畫布操作、不新增模型引用 |
 | `.ocard[data-kind="grid-system"] .ocard-body` | 無限來源縮圖每軸最多繪製 64 條線，以縮圖座標 8px 為最小取樣間距；僅控制顯示密度，不改幾何、格距或無限索引 |
@@ -202,7 +202,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | `#btnBox6` | 快速六面盒(Phase 4 才接對話框) | 存在性 |
 | `#btnBack` / `#crumb` / `#btnHole2` | focusBar 內控制 | `.click()`、textContent |
 | `#objectList` | 左欄物件清單容器 | 子列計數 |
-| `#objectCountBadge` / `#faceCount` / `#spaceCount` | 數量徽標 | textContent |
+| `#objectCountBadge` / `#sourceCount` / `#bindingCount` / `#structureCount` | 數量徽標。三個組合計不隨搜尋縮小：來源＝面＋網格系統＋參數＋組構規則，配置＝網格配置＋材料配置，空間與構件＝空間＋柱＋樑 | textContent |
 | `#inspectorContent` / `#inspectorEmpty` | 右欄檢視器 | `hidden` 切換檢查 |
 | `#emptyState` | 空狀態插圖 | `hidden` 切換檢查 |
 | `#snapToggle` / `#gridToggle` | 吸附/格線開關(`.canvas-controls` 內 `.mini-toggle` 鈕) | `.on` class、`aria-pressed` |
@@ -236,7 +236,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | `#feGuidePick` | 面內參考線 u/v 方向小選單 | `hidden`、`[data-axis]` 鈕 |
 | `#placeFlow` | 建面→放置→收成員流程條(S6 新增,兩處檢視器共用) | `.pf-step.done/.current` |
 | `#placeValid` | 放置表單 u⊥v 即時驗證(S6 新增) | textContent、`.ok/.bad` |
-| `[data-filter-type]` | 顯示類型篩選 chips(button,`aria-pressed`) | `aria-pressed`、`.click()` |
+| `[data-filter-group]` | 顯示組篩選 chips(button,`aria-pressed`)：`sources` 來源、`bindings` 配置、`structures` 空間與構件 | `aria-pressed`、`.click()` |
 | `#faceInspectorTabs` / `[data-fi-tab]` | 面內檢視器分頁 屬性／形狀／構件／底圖；構件頁有 guide/timber/grid 三段 | `.active`、`.click()`、`[data-fi-pane]` 顯隱 |
 | `#workspacePlaceTag` | 工作區放置膠囊(B9:天花·z=N / 游離) | textContent、`.placed/.free` |
 | `#faceCanvasHint` | 面內模式浮標——**限多步工具**(redraw)顯示 | `hidden`、textContent |
@@ -280,7 +280,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | `.ocard-frame` | 卡片外框 rect | hover/selected 視覺掛點 |
 | `.object-row` | 左欄清單列 | `dataset.kind`/`dataset.id`;`.selected` |
 | `[data-tool]` | 頂列工具鈕(select/pan); rect 由物件庫與 R 快捷鍵啟動,P 是一次性動作(建面卡→進面內,非工具態) | `dataset.tool`、`.active` |
-| `[data-filter-type]` | 顯示類型篩選(face/space) | `checked` 狀態 |
+| `[data-filter-group]` | 顯示組篩選(sources/bindings/structures) | `aria-pressed` |
 | `[data-icon]` | 圖示插槽 | hydrateIcons 填充 |
 | `[data-face-tool]` | 面內工具鈕(select/guide/hole/pan/timber/redraw;`insert` 已於 GEO-188 移除) | `dataset.faceTool`、`.active`、`.disabled`(游離面 guide 停用) |
 | `#faceShapeButton` `#shapeDialog` `#shapeW` `#shapeD` `#shapeA` `#shapeB` `shapeKind` | 形狀庫(RC P1:L/U/T 外環生成) | `.click()`、`value`、radio checked |
@@ -315,7 +315,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 
 | 名稱 | 內容 | 測試依賴點 |
 |---|---|---|
-| `oc` | 物件畫布狀態物件 | `oc.on`、`oc.faces`、`oc.spaces`、`oc.focus`、`oc.sel`、`oc.tool`、`oc.panX/panY/zoom`、`oc.drawTool`、`oc.rect/card/pan`、`oc.showFace/showSpace`、`oc.search`、`oc.surfs`、`oc.busy`、`oc.mmTf` |
+| `oc` | 物件畫布狀態物件 | `oc.on`、`oc.faces`、`oc.spaces`、`oc.focus`、`oc.sel`、`oc.tool`、`oc.panX/panY/zoom`、`oc.drawTool`、`oc.rect/card/pan`、`oc.groupOn`（sources/bindings/structures）、`oc.search`、`oc.surfs`、`oc.busy`、`oc.mmTf` |
 | `api` | `api(cmd)` → bridge | 測試直接送 `api("line …")`、`api("objects")` |
 | `layout` | 三視圖版面 | `screenToView` 等路徑間接依賴 |
 | `leaveFocus` | 退出工作區焦點 | 測試呼叫 `leaveFocus()` |
@@ -412,7 +412,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 ## RC Phase 4 柱樑一等物件(cdp_test §P11)
 
 - 物件庫:`#btnNewColumn`/`#btnNewBeam` → `#rcDialog`(`.dialog`),欄位 `#rcW/#rcD/#rcSpace/#rcX/#rcY/#rcZ0/#rcZ1`(柱)、`#rcAxis/#rcA/#rcB/#rcC/#rcTop`(樑);預設尺寸列 `#rcPresets`;`#rcSubmit` 建立。
-- 篩選列加 `data-filter-type="column"|"beam"`,計數 `#columnCount`/`#beamCount`。
+- 柱與樑納入物件庫。篩選已於 GEO-228 收成 `[data-filter-group="structures"]`，數量併入 `#structureCount`。
 - 卡片 `.ocard[data-kind="column"|"beam"]`:柱預覽=足跡矩形+h 標註,樑=跨度條帶+w×d。
 - `objects` 回傳 `columns[]`/`beams[]`,元素 `{id,space,box:[xlo,ylo,zlo,xhi,yhi,zhi],axis?,cx,cy,hasPos}`。
 - 空間→柱樑畫 `#edgeGroup .edge-group-item`,label `障礙·柱`/`障礙·樑`(非成員,語意=障礙物)。
@@ -920,6 +920,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `grid_system_test.js` 和 `infinite_grid_face_test.js` 由正式 CDP harness 執行，包含實際 SVG 拾取、signed 引用、保存重開及窄螢幕。
 - GEO-221：`#igGridView` 的 viewBox 等於元素實際像素，u、v 共用比例。`data-ig-camera="u0 v0 u1 v1"` 是目前（已貼合繪圖區）的模型矩形（mm，相對局部索引基準）；`[data-ig-plot]` 是繪圖區矩形，點擊只在其內選 cell。`[data-ig-ruler="u|v"][data-ig-ruler-index]` 為尺規索引（純數字、置中於格線），`[data-ig-origin]`／`[data-ig-origin-label]` 為基準點，`#igZoom` 顯示「1 格 U×V mm · N px」。
 - GEO-222：版面為單列 56px 標題（`.ig-header` 的 `#igClose`＋麵包屑 `.ig-crumb`，與共用 `#projectBar` 同列）、左側 `.ig-main`（`.ig-canvas` 內含 `#igGridView`、`#igViewNote` 浮動提示、`.ig-zoombar` 內的 `#igZoomOut`／`#igZoom`／`#igZoomIn`／`#igFit`）、右側 `.ig-inspector`（`.ig-settings` 捲動區＋底部 `.ig-footer`，`#igSaveSource`／`#igSaveBinding`／`#igStatus`／`#igDraftNote` 在 footer）。`#igCellPreview` 為格子縮圖；`#igInfo`（`#igInfoTitle`、`#igInfoCell`、`#igInfoRows`）顯示游標與已選取格。SVG 內 `[data-ig-hover="i,j"]`、`[data-ig-selected="i,j"]`（僅來源模式）與 `[data-ig-band=u|v]`（尺規高亮）。`#igDensity` 只在稀疏或大索引時顯示。麵包屑的專案名稱為 `.ig-crumb-project[data-project-name]`（390px 時為標題上方小字）；`[data-ig-origin-label]` 在第 0 線不在 0 mm 時附上 mm 位置。軸線查詢請用 `fieldset[data-ig-axis]`，`line[data-ig-axis]` 也帶同名屬性。
+- GEO-227：`#paramGridLesson` 是「參數套到網格間距」的同一張圖。無限網格來源表單開啟時，它以靜態排版放進 `#igSourceForm` 裡、`#igName` 之後的 `#paramGridLessonSlot`，不蓋 `#igGridView`。`#paramGridLessonFrame1`／`#paramGridLessonFrame2` 切換兩張；`#paramGridLessonClose`（知道了）把目前這組事實寫進 `localStorage` 鍵 `geometry-param-grid-lesson`（值是事實 token）。舊鍵 `geometry-param-grid-lesson-v1` 的 `'1'` 只對應最初那組事實。之後只留 `#paramGridLessonOpen`（圖解）。配置模式隱藏 `#igSourceForm` 時不顯示。
 
 ## GEO-223 畫布參數卡
 
@@ -946,12 +947,13 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - **一致性**：常駐操作說明維持 3 塊（`.param-help`、`#paramResult`、`#paramStatus`）；`#paramQuickHint` 是輸入時才出現的即時預告，不計入。所有可點控制（含晶片、上移、移除、範本鈕、種類下拉、`summary`）最小 44px，390px 無水平溢出。樣式只用 `app.css :root` 既有 token，不載入外部字型。
 - **畫布草稿卡**（GEO-224 最後一步）：建立新卡期間畫布顯示 `.parameter-card.is-draft`（虛線外框、右上角「草稿」標），內容跟著草稿欄位與試算結果更新；位置取 `nextCardPosition`（在右側欄版面定案之後才排，並平移視圖使草稿完整落在未被欄遮住的畫布內），確認時以同一組座標寫入真卡的 canvas-pos，所以真卡落在草稿卡的位置；不寫 canvas-pos、不進 `oc.parameters`、不影響保存內容與歷史，不可選取、不畫關係線；捨棄或確認後消失。
 - **測試**：`parameter_workflow_test.js`（P76）新增斷言（第二輪追加：多層循環與草稿 token 建邊、草稿位置＝真卡位置、選中卡不被右欄遮住、離開路徑清 class、特殊字元、過期回應、可及名稱、多筆違規與訊息解析、窄畫面面板高度、輸入法 Enter）：範本鈕與 `aria-pressed`、快速輸入預告與 Enter、每欄核心值、`=1/0` 只標該欄且不可套用、循環來源不出現於晶片、點晶片後試算成功、1280px 右側固定欄與頁尾可見（含離開後其他檢視器仍在下方）、390px 控制項 ≥44px 且無水平溢出、草稿卡出現／消失且不進保存內容。
+- GEO-227：參數編輯時同一張 `#paramGridLesson` 放在 `#canvasViewport`（不進 `#parameterEditor`，避免把 `#paramFields` 擠出窄畫面可視區），並避開上方繪圖工具。寬度 ≤900px 且展開時改為貼在視窗下方。知道了之後只留 `#paramGridLessonOpen`，窄螢幕時這顆鈕留在畫布內。圖解不是第四塊常駐說明。圖上的欄名、預設值、第二張的寬（預設寬 × 4/3）與來源控制的無障礙名稱，畫的時候向 `ParameterUI.panelTemplate`、`sourceControl` 標記與 `InfiniteGridWorkspace.lessonSurface` 讀；卡片標題向 `#btnNewParameter strong` 讀。`FeatureLessons.check()` 對不上時以教學 id `param-grid` 失敗。
 
 ## GEO-214 舊有限網格相容介面
 
 以下控制只保留給舊有限來源；新來源使用上方 GEO-215 工作區。
 
-- 選取既有舊有限來源時使用 `#gridSystemEditor`；不提供新建有限來源入口。`#btnNewGridSystem` 與空白畫布 `#emptyNewGridSystem` 建立的是 GEO-215 無限來源，開啟 `#infiniteGridWorkspace`。`[data-filter-type="grid-system"]` 與 `#gridSystemCount` 控制展示與數量；卡片、清單、搜尋、框選及小地圖均納入同一 `grid-system` 身分。
+- 選取既有舊有限來源時使用 `#gridSystemEditor`；不提供新建有限來源入口。`#btnNewGridSystem` 與空白畫布 `#emptyNewGridSystem` 建立的是 GEO-215 無限來源，開啟 `#infiniteGridWorkspace`。網格系統屬於來源組 `[data-filter-group="sources"]`，數量併入 `#sourceCount`；卡片、清單、搜尋、框選及小地圖均納入同一 `grid-system` 身分。
 - `#gsName`、`#gsMainAlong` 編輯名稱及可選主支方向；`[data-gs-axis="u"]`／`[data-gs-axis="v"]` 各含排法和數值欄位。面材模式提示未套用時只有排法，不能把卡片示意當實際範圍。
 - `#gsSave` 預覽新增／來源修改，`#gsReset` 重設未提交草稿，`#gsCancel` 取消建立；`#gsStatus[role="status"]` 呈現錯誤與結果。核心完整定義為唯一保存来源，名稱以 UTF-8 hex 安全傳輸。
 - `#gsSurface`、`#gsOriginU`／`#gsOriginV` 選擇套用目標與原點；`#gsApply` 建立套用候選。需更換既有主格來源時，先明勾 `#gsReplaceExisting`；工程綁定主格不能隱含轉換。

@@ -148,6 +148,31 @@ static bool grid_line_coord_in(const ReferenceGrid *grids,size_t count,const Ref
     return true;
 }
 
+/* D10b / I24: band shifts only a staggered lattice line. Index existence stays unstaggered. */
+static bool grid_anchor_line_coord(const ReferenceGrid *grids,size_t count,const ReferenceGrid *grid,
+    const PlacementSurface *p,const SpaceBoundarySurface *b,int axis,int64_t index,
+    bool has_band,int64_t band,Coord *out,char *err,size_t cap)
+{
+    bool staggered;
+    if(!grid || axis<0 || axis>1) return false;
+    if(grid->is_subgrid || !grid->from_binding){
+        if(has_band){ if(err) snprintf(err,cap,"I24: 沒有相位差的格線不能寫 band"); return false; }
+        return grid_line_coord_in(grids,count,grid,p,b,axis,index,out,NULL,err,cap);
+    }
+    staggered=grid->axis[axis].stagger_set;
+    if(staggered!=has_band){
+        if(err) snprintf(err,cap,staggered?"I24: 有相位差的格線必須寫 band，不默認第 0 格":"I24: 沒有相位差的格線不能寫 band");
+        return false;
+    }
+    if(!grid_line_coord_in(grids,count,grid,p,b,axis,index,out,NULL,err,cap)) return false;
+    if(!staggered) return true;
+    if(!grid_lattice_coord_band(grid,axis,index,band,out)){
+        if(err) snprintf(err,cap,"D10b/D1: 錯開後的格線座標超出可表達範圍");
+        return false;
+    }
+    return true;
+}
+
 /* Display/query sampling preserves the source index. A sampled pair is never a
  * cell definition; lattice-cell evaluation above always uses consecutive k. */
 static bool grid_sample_indices_in(const ReferenceGrid *grids,size_t count,const ReferenceGrid *grid,
@@ -183,6 +208,11 @@ static bool grid_is_valid_in(const ReferenceGrid *grids,size_t count,const Refer
     }
     if (grid->main_along || (grid->divisions[0]==1 && grid->divisions[1]==1)) {
         if (err) snprintf(err,cap,"I25：子格 %u 至少一軸須大於 1 等分；子格不設定主支方向",grid->id);
+        return false;
+    }
+    for (size_t i=0;i<count;++i) if (grids[i].id==grid->parent_id && !grids[i].is_subgrid &&
+        (grids[i].axis[0].stagger_set || grids[i].axis[1].stagger_set)) {
+        if (err) snprintf(err,cap,"I24：有相位差的主格 %u 不能建立子網格",grid->parent_id);
         return false;
     }
     for (size_t i=0;i<count;++i) {

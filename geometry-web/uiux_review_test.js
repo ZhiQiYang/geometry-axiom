@@ -50,11 +50,11 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
     check(selector+' 的常態文字可見，容器沒有額外淡化',await visible(selector)&&presentation.opacity>=.99&&presentation.contrast>=4.5,presentation);
   }
   if(!await read(`$('filterDisclosure').open`))await ctl('#filterDisclosure > summary');
-  if(await read(`document.querySelector('[data-filter-type="column"]').getAttribute('aria-pressed')==='false'`))await ctl('[data-filter-type="column"]');
-  await ctl('[data-filter-type="column"]');
-  const offFilter=await controlPresentation('[data-filter-type="column"]');
+  if(await read(`document.querySelector('[data-filter-group="structures"]').getAttribute('aria-pressed')==='false'`))await ctl('[data-filter-group="structures"]');
+  await ctl('[data-filter-group="structures"]');
+  const offFilter=await controlPresentation('[data-filter-group="structures"]');
   check('關閉篩選仍清楚可讀，沒有被當作停用操作淡化',offFilter.pressed==='false'&&!offFilter.disabled&&offFilter.opacity>=.99&&offFilter.contrast>=4.5,offFilter);
-  await ctl('[data-filter-type="column"]');check('關閉的篩選可真實點擊重新啟用',await read(`document.querySelector('[data-filter-type="column"]').getAttribute('aria-pressed')==='true' && oc.showColumn`));await ctl('#filterDisclosure > summary');
+  await ctl('[data-filter-group="structures"]');check('關閉的篩選可真實點擊重新啟用',await read(`document.querySelector('[data-filter-group="structures"]').getAttribute('aria-pressed')==='true' && oc.groupOn.structures`));await ctl('#filterDisclosure > summary');
   await ctl('#fileMenuBtn');await ctl('#exampleMenuBtn');
   // Mutation observation records an actually painted busy state. Do not use
   // sleep(), whose normal settle hook waits for the entire request to finish.

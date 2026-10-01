@@ -4,11 +4,6 @@ static bool grid_i64_add(int64_t a,int64_t b,int64_t *out)
     if ((b>0 && a>INT64_MAX-b)||(b<0 && a<INT64_MIN-b)) return false;
     *out=a+b; return true;
 }
-static bool grid_i64_mul_positive(int64_t a,int64_t b,int64_t *out)
-{
-    if (b<=0 || a>INT64_MAX/b || a<INT64_MIN/b) return false;
-    *out=a*b; return true;
-}
 static int64_t grid_floor_div(int64_t a,int64_t b)
 { int64_t q=a/b,r=a%b; return q-(r<0); }
 static int64_t grid_ceil_div(int64_t a,int64_t b)
@@ -74,4 +69,18 @@ static bool grid_lattice_window(const ReferenceGrid *g,int axis,Coord lo,Coord h
     return true;
 invalid:
     if(err) snprintf(err,cap,"R32: invalid lattice query or D1 coordinate"); return false;
+}
+
+/* D10b: the lowest bit selects the odd band, including negative odds. Shift 0 keeps the unstaggered coordinate. */
+static Coord grid_axis_stagger_shift(const GridAxisDef *a,int64_t band)
+{ return a && a->stagger_set && (band&1) ? a->stagger : 0; }
+
+static bool grid_lattice_coord_band(const ReferenceGrid *g,int axis,int64_t k,int64_t band,Coord *out)
+{
+    Coord base,shift; int64_t value;
+    if(!grid_lattice_coord(g,axis,k,&base)) return false;
+    shift=grid_axis_stagger_shift(&g->axis[axis],band);
+    if(!shift){ if(out) *out=base; return true; }
+    if(!grid_i64_add(base,shift,&value) || !coord_in_range(value)) return false;
+    if(out) *out=value; return true;
 }

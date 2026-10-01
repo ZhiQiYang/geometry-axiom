@@ -232,7 +232,9 @@ const ICON_PATHS = {
   /* GEO-188 形狀編輯 */
   extend: '<path d="M4 19V9h6V5h4v4h6v10z"/>',
   corner: '<path d="M4 19V5h10v6h6v8z"/>',
-  push: '<path d="M4 5h11v14H4z"/><path d="M19 8v8M17 12h4"/>'
+  push: '<path d="M4 5h11v14H4z"/><path d="M19 8v8M17 12h4"/>',
+  parameter: '<circle cx="7" cy="7" r="1.2" fill="currentColor" stroke="none"/><circle cx="7" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="7" cy="17" r="1.2" fill="currentColor" stroke="none"/><path d="M10.5 7h7M10.5 12h7M10.5 17h4"/>',
+  assembly: '<path d="m5 6 7 6-7 6M19 6l-7 6 7 6"/>'
 };
 function icon(name) {
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">${ICON_PATHS[name] || ""}</svg>`;
@@ -241,7 +243,54 @@ function hydrateIcons(root = document) {
   for (const slot of root.querySelectorAll("[data-icon]")) slot.innerHTML = icon(slot.dataset.icon);
 }
 
-const KIND_ZH = { "assembly-rule":"組構規則", "assembly-binding":"材料配置", parameter: "參數", boundary: "面", placement: "承載面", space: "空間", column: "柱", beam: "樑", "grid-system": "網格系統", "grid-binding": "網格配置" };
+/* 新物件只登記這裡：名稱、圖示、篩選組、卡片角標。KIND_ZH 由這張表導出。 */
+const OBJECT_KINDS = {
+  boundary: { label: "面", group: "sources", icon: "face", open: "workspace" },
+  placement: { label: "承載面", group: "sources", icon: "face", open: "inspector" },
+  "grid-system": { label: "網格系統", group: "sources", icon: "grid", open: o => o && o.mode === "infinite" ? "workspace" : "inspector" },
+  parameter: { label: "參數", group: "sources", icon: "parameter", open: "inspector" },
+  "assembly-rule": { label: "組構規則", group: "sources", icon: "assembly", open: "workspace" },
+  "grid-binding": { label: "網格配置", group: "bindings", icon: "layers", open: "workspace" },
+  "assembly-binding": { label: "材料配置", group: "bindings", icon: "assembly", open: "workspace" },
+  space: { label: "空間", group: "structures", icon: "space", open: "workspace" },
+  column: { label: "柱", group: "structures", icon: "column", open: "inspector" },
+  beam: { label: "樑", group: "structures", icon: "beam", open: "inspector" }
+};
+const KIND_ZH = Object.fromEntries(Object.entries(OBJECT_KINDS).map(([kind, meta]) => [kind, meta.label]));
+function kindGroupOn(kind) {
+  const group = OBJECT_KINDS[kind]?.group;
+  return !group || oc.groupOn[group] !== false;
+}
+function kindOpenMode(kind, obj) {
+  const open = OBJECT_KINDS[kind]?.open;
+  return typeof open === "function" ? open(obj) : (open || "inspector");
+}
+function pressObjectGroup(group) {
+  oc.groupOn[group] = true;
+  const chip = document.querySelector(`[data-filter-group="${group}"]`);
+  if (!chip) return;
+  chip.setAttribute("aria-pressed", "true");
+  chip.classList.remove("off");
+}
+/* 只收「離開會捨棄尚未套用的草稿」。專案未保存與形狀特徵確認留在各自的流程。 */
+window.DraftGate = (() => {
+  const guards = [];
+  return {
+    register(guard) { guards.push(guard); },
+    ask(intent = {}) {
+      for (const guard of guards) if (!guard(intent)) return false;
+      return true;
+    }
+  };
+})();
+function placeStudioLesson(host, key, text) {
+  if (!host || !window.WorkspaceGuidance) return;
+  const fresh = host.cloneNode(false);
+  fresh.classList.add("studio-first-lesson");
+  host.replaceWith(fresh);
+  fresh.textContent = text;
+  window.WorkspaceGuidance.apply(fresh, { key, eligible: true });
+}
 function sceneMenuDisplay(name) {
   return String(name || "內建示範").replace(/\.scene$/i, "").replace(/\.gcanvas$/i, "");
 }
@@ -403,7 +452,7 @@ function showConnectionState() {
   $("connectionRetry").disabled = connection.recovering;
   if (blocked) $("emptyState").hidden = true;
   if (!connection.known) {
-    for (const id of ["faceCount", "spaceCount", "columnCount", "beamCount", "gridSystemCount", "gridBindingCount", "objectCountBadge"]) $(id).textContent = "—";
+    for (const id of ["sourceCount", "bindingCount", "structureCount", "objectCountBadge"]) $(id).textContent = "—";
   }
   updateStatusSummary();
 }
@@ -1641,7 +1690,7 @@ const oc = {
   tool: "select",         /* select | pan */
   sel: null,              /* 選取 {kind,id} */
   selection: [],          /* GEO-209:展示選取；多選時 sel=null，不把單物件編輯套給其中一張 */
-  showFace: true, showSpace: true, showColumn: true, showBeam: true, showGridSystem: true, showGridBinding: true,
+  groupOn: { sources: true, bindings: true, structures: true },
   search: "",             /* 搜尋過濾字串 */
   surfs: [],              /* /surfaces 快照(法向→空間六槽) */
   faces: [], spaces: [], columns: [], beams: [], gridSystems: [], gridBindings: [], parameters: [], parameterUses: [], assemblyRules: [], assemblyBindings: [], parameterCreating: false,
@@ -2006,18 +2055,18 @@ function drawObjects() {
 
   const matchQ = o => ocMatchSearch(o);
   const visFaces = oc.faces.filter(f =>
-    (!inSpace || inSpace.has(f.id)) && oc.showFace && matchQ(f));
+    (!inSpace || inSpace.has(f.id)) && kindGroupOn(f.kind) && matchQ(f));
   const visSpaces = inSpace ? [] :
-    oc.spaces.filter(s => oc.showSpace && matchQ(s));
+    oc.spaces.filter(s => kindGroupOn("space") && matchQ(s));
   /* 空間焦點下:柱樑卡顯示屬於該空間的構件 */
   const visCols = oc.columns.filter(c =>
-    (!inSpace || c.space === oc.focus.id) && oc.showColumn && matchQ(c));
+    (!inSpace || c.space === oc.focus.id) && kindGroupOn("column") && matchQ(c));
   const visBeams = oc.beams.filter(b =>
-    (!inSpace || b.space === oc.focus.id) && oc.showBeam && matchQ(b));
-  const visGridSystems = inSpace ? [] : oc.gridSystems.filter(g => oc.showGridSystem && matchQ(g));
-  const visGridBindings = inSpace ? [] : oc.gridBindings.filter(g => oc.showGridBinding && matchQ(g));
-  const visParameters = inSpace ? [] : oc.parameters.filter(matchQ);
-  const visAssembly = inSpace ? [] : [...oc.assemblyRules,...oc.assemblyBindings].filter(matchQ);
+    (!inSpace || b.space === oc.focus.id) && kindGroupOn("beam") && matchQ(b));
+  const visGridSystems = inSpace ? [] : oc.gridSystems.filter(g => kindGroupOn("grid-system") && matchQ(g));
+  const visGridBindings = inSpace ? [] : oc.gridBindings.filter(g => kindGroupOn("grid-binding") && matchQ(g));
+  const visParameters = inSpace ? [] : oc.parameters.filter(p => kindGroupOn("parameter") && matchQ(p));
+  const visAssembly = inSpace ? [] : [...oc.assemblyRules,...oc.assemblyBindings].filter(o => kindGroupOn(o.kind) && matchQ(o));
   const visibleKeys = new Set([...visAssembly,...visFaces,...visSpaces,...visCols,...visBeams,...visGridSystems,...visGridBindings,...visParameters].map(o => `${o.members ? "space" : o.kind}:${o.id}`));
   const focusedSpaceSingle = oc.selection.length === 1 && oc.focus?.t === "space" &&
     oc.selection[0].kind === "space" && oc.selection[0].id === oc.focus.id && oc.spaces.some(s => s.id === oc.focus.id);
@@ -2064,10 +2113,11 @@ function drawObjects() {
   for (const card of cl.children) {
     const kind = card.dataset.kind, id = +card.dataset.id;
     const box = cardBox(ocFind(kind, id));
+    const verb = kindOpenMode(kind, ocFind(kind, id)) === "workspace" ? "進入" : "檢查";
     const action = el("g", { class: "card-enter", tabindex: 0, role: "button",
-      "aria-label": `${kind === "boundary" || kind === "space" ? "進入" : "檢查"}${KIND_ZH[kind]} ${id}` }, card);
+      "aria-label": `${verb}${KIND_ZH[kind] || ""} ${id}` }, card);
     el("rect", { x: box.w - 67, y: box.h - 58, width: 58, height: 24, rx: 6, fill: "#fff", stroke: "#dfe4eb" }, action);
-    el("text", { x: box.w - 38, y: box.h - 42, "font-size": 11, "text-anchor": "middle", fill: "var(--accent-strong)" }, action).textContent = kind === "boundary" || kind === "space" ? "進入 ›" : "檢查 ›";
+    el("text", { x: box.w - 38, y: box.h - 42, "font-size": 11, "text-anchor": "middle", fill: "var(--accent-strong)" }, action).textContent = `${verb} ›`;
     /* P/矩形工具作畫時,卡片的「進入›」熱區不能吃掉點擊——否則畫到卡片正上方那一點
        會被這顆按鈕攔截,變成跳進卡片工作區而不是落下多邊形頂點/矩形角點。 */
     action.addEventListener("pointerdown", e => { if (!oc.drawTool) e.stopPropagation(); });
@@ -2273,7 +2323,7 @@ function drawMinimap() {
   const vb = { minX: -oc.panX / oc.zoom, minY: -oc.panY / oc.zoom,
     maxX: (vr.width - oc.panX) / oc.zoom, maxY: (vr.height - oc.panY) / oc.zoom };
   const nodes = [...oc.faces, ...(oc.focus ? [] : [...oc.spaces,...oc.gridSystems,...oc.gridBindings,...oc.parameters,...oc.assemblyRules,...oc.assemblyBindings]),
-                 ...oc.columns, ...oc.beams];
+                 ...oc.columns, ...oc.beams].filter(n => kindGroupOn(n.members ? "space" : n.kind));
   if (!nodes.length && !oc.focus) return;
   const allMinX = Math.min(vb.minX, ...nodes.map(n => n.cx));
   const allMinY = Math.min(vb.minY, ...nodes.map(n => n.cy));
@@ -2328,7 +2378,7 @@ function drawCrumb() {
 
 /* ---- 焦點導航 ---- */
 async function enterFocus(t, id, options = {}) {
-  if(window.ParameterUI?.pending && !ParameterUI.mayLeave())return;
+  if (!window.DraftGate.ask()) return;
   const matchesTarget = oc.sel?.kind === (t === "space" ? "space" : "boundary") && oc.sel.id === id;
   clearCanvasSelections({keepSingleObject:matchesTarget});
   closePanels();
@@ -7467,7 +7517,7 @@ const GridSystemEditor = (() => {
       const ids=object ? null : await apiRequest("newid");if(ids && (!ids.ok || ids.gridSystem == null))throw Error("無法取得網格系統編號，請重試。");
       const id=object?.id ?? ids.gridSystem,proposal=command(s,id);await stillSame(s);
       if(!await preview(s,proposal.line,`${object ? "更新" : "建立"}「${proposal.name}」`,proposal))return;
-      oc.gridSystemCreating=false;oc.showGridSystem=true;document.querySelector('[data-filter-type="grid-system"]').setAttribute("aria-pressed","true");
+      oc.gridSystemCreating=false;pressObjectGroup("sources");
       oc.search="";$("searchInput").value="";
       // Candidate commit is complete; allow the normal refresh/selection flow.
       await renderObjects();selectObject("grid-system",id);centerOnNode("grid-system",id);
@@ -7526,7 +7576,7 @@ const GridSystemEditor = (() => {
     if(id == null) {oc.selection=[];oc.sel=null;drawObjects();}
     else {
       if(!ocFind("grid-system",id)){toast("網格系統已不存在，請重新讀取場景。");return;}
-      oc.showGridSystem=true;document.querySelector('[data-filter-type="grid-system"]').setAttribute("aria-pressed","true");
+      pressObjectGroup("sources");
       oc.search="";$("searchInput").value="";drawObjects();selectObject("grid-system",id);centerOnNode("grid-system",id);
     }
     closePanels();if(innerWidth<=900)openPanel("right",$("toggleRight"));
@@ -8236,7 +8286,7 @@ function feTimberSelected(id) {
   return fe.timberSelection.has(id) || (!fe.timberSelection.size && fe.sel?.kind === "timber" && fe.sel.id === id);
 }
 function ocSetSelection(items) {
-  if(window.ParameterUI?.pending && !(items.length===1 && items[0].kind==="parameter" && items[0].id===ParameterUI.editingId) && !ParameterUI.mayLeave())return;
+  if (!window.DraftGate.ask({ selection: items })) return;
   if(items.length)oc.parameterCreating=false;
   if(items.length)oc.gridSystemCreating=false;
   const seen = new Set();
@@ -8458,35 +8508,35 @@ function renderObjectList() {
   list.textContent = "";
   const rows = [];
   for (const f of oc.faces) {
-    if (!oc.showFace || !ocMatchSearch(f)) continue;
+    if (!kindGroupOn(f.kind) || !ocMatchSearch(f)) continue;
     const name = `${KIND_ZH[f.kind] || "面"} ${f.id}`;
     rows.push({ kind: f.kind, id: f.id, name, placed: !!f.placed,
       sub: f.kind === "placement" ? "自帶矩形"
         : `${FaceProjection.summary(f.id,feSurf(f.id)?.id)}${feSurf(f.id) ? ` · 放置 #${feSurf(f.id).id}` : " · 尚未放置"}${oc.spaces.some(s => s.members.includes(f.id)) ? " · 空間 " + oc.spaces.find(s => s.members.includes(f.id)).id : ""}` });
   }
   for (const s of oc.spaces) {
-    if (!oc.showSpace || !ocMatchSearch(s)) continue;
+    if (!kindGroupOn("space") || !ocMatchSearch(s)) continue;
     rows.push({ kind: "space", id: s.id, name: `空間 ${s.id}`,
       sub: `${s.closed ? "封閉" : "開放"} · ${s.members.length} 個邊界面` });
   }
   for (const c of oc.columns) {
-    if (!oc.showColumn || !ocMatchSearch(c)) continue;
+    if (!kindGroupOn("column") || !ocMatchSearch(c)) continue;
     rows.push({ kind: "column", id: c.id, name: `柱 ${c.id}`, space: c.space,
       sub: (c.space ? `空間 ${c.space}` : "游離") +
            ` · ${c.box[3] - c.box[0]}×${c.box[4] - c.box[1]}` });
   }
   for (const b of oc.beams) {
-    if (!oc.showBeam || !ocMatchSearch(b)) continue;
+    if (!kindGroupOn("beam") || !ocMatchSearch(b)) continue;
     rows.push({ kind: "beam", id: b.id, name: `樑 ${b.id}`, space: b.space,
       sub: (b.space ? `空間 ${b.space}` : "游離") + ` · ${b.axis} 向` });
   }
   for (const g of oc.gridSystems) {
-    if (!oc.showGridSystem || !ocMatchSearch(g)) continue;
+    if (!kindGroupOn("grid-system") || !ocMatchSearch(g)) continue;
     rows.push({kind:"grid-system",id:g.id,name:ReferenceWorkspace.escape(g.name),
       sub:`${g.mode === "infinite" ? "無限網格" : "舊版有限網格"} ${g.id} · ${g.applications.length} 個套用`});
   }
   for (const b of oc.gridBindings) {
-    if (!oc.showGridBinding || !ocMatchSearch(b)) continue;
+    if (!kindGroupOn("grid-binding") || !ocMatchSearch(b)) continue;
     rows.push({kind:"grid-binding",id:b.id,name:`網格配置 ${b.id}`,sub:`面 ${b.boundary} · 來源 ${b.system} · ${b.applications.length} 個套用`});
   }
   $("objectCountBadge").textContent = rows.length;
@@ -8497,9 +8547,9 @@ function renderObjectList() {
     const heading = document.createElement("h3"); heading.className = "object-group-title"; heading.textContent = title;
     group.append(heading); groups.set(key,group);
   }
-  for(const p of oc.parameters){if(ocMatchSearch(p))rows.push({kind:"parameter",id:p.id,name:ReferenceWorkspace.escape(p.name),sub:`${p.card.fields.length} 個欄位 · ${window.ParameterUI?.usage(p.id).length||0} 處使用`});}
+  for(const p of oc.parameters){if(kindGroupOn("parameter")&&ocMatchSearch(p))rows.push({kind:"parameter",id:p.id,name:ReferenceWorkspace.escape(p.name),sub:`${p.card.fields.length} 個欄位 · ${window.ParameterUI?.usage(p.id).length||0} 處使用`});}
   $("objectCountBadge").textContent = rows.length;
-  for(const o of [...oc.assemblyRules,...oc.assemblyBindings])if(ocMatchSearch(o))rows.push({kind:o.kind,id:o.id,name:ReferenceWorkspace.escape(o.name),sub:o.kind==="assembly-rule"?`組構規則 v${o.version}`:o.complete?"完整配置":"未完成配置"});
+  for(const o of [...oc.assemblyRules,...oc.assemblyBindings])if(kindGroupOn(o.kind)&&ocMatchSearch(o))rows.push({kind:o.kind,id:o.id,name:ReferenceWorkspace.escape(o.name),sub:o.kind==="assembly-rule"?`組構規則 v${o.version}`:o.complete?"完整配置":"未完成配置"});
   $("objectCountBadge").textContent = rows.length;
   const order = {"assembly-rule":0,"assembly-binding":3,parameter:0,"grid-system":0,boundary:1,placement:2,"grid-binding":3,space:4,column:5,beam:6};
   for (const r of rows.sort((a,b) => order[a.kind]-order[b.kind])) {
@@ -8513,9 +8563,7 @@ function renderObjectList() {
     const free = (r.kind === "boundary" && !r.placed) ||
       ((r.kind === "column" || r.kind === "beam") && !r.space);
     row.innerHTML =
-      `<span class="row-icon ${r.kind}">${icon(
-        r.kind === "space" ? "space" : r.kind === "column" ? "column" :
-        r.kind === "beam" ? "beam" : r.kind === "grid-binding" ? "layers" : r.kind === "grid-system" ? "grid" : "face")}</span>` +
+      `<span class="row-icon ${r.kind}">${icon(OBJECT_KINDS[r.kind]?.icon || "face")}</span>` +
       `<span class="row-copy"><strong>${r.name}</strong>` +
       `<small>${r.sub}</small></span>` +
       (free ? `<span class="row-badge" data-insp-scroll="place">未放置</span>` : "");
@@ -8544,19 +8592,16 @@ function renderObjectList() {
         list.querySelector(`.object-row[data-kind="${r.kind}"][data-id="${r.id}"]`)?.focus({preventScroll:true});
       }
     });
-    groups.get(["grid-binding","assembly-binding"].includes(r.kind) ? "bindings" : ["grid-system","boundary","placement","parameter","assembly-rule"].includes(r.kind) ? "sources" : "structures").appendChild(row);
+    groups.get(OBJECT_KINDS[r.kind]?.group || "structures").appendChild(row);
   }
   for (const group of groups.values()) if (group.children.length > 1) list.append(group);
   if (!rows.length) {
     const empty = document.createElement("p"); empty.className = "object-list-empty";
-    empty.textContent = oc.search ? "沒有符合的物件" : "從上方建立網格或邊界"; list.append(empty);
+    empty.textContent = oc.search ? "沒有符合的物件" : "用「建立物件」加入來源、配置或空間。"; list.append(empty);
   }
-  $("faceCount").textContent = oc.faces.length;
-  $("spaceCount").textContent = oc.spaces.length;
-  $("columnCount").textContent = oc.columns.length;
-  $("beamCount").textContent = oc.beams.length;
-  $("gridSystemCount").textContent = oc.gridSystems.length;
-  $("gridBindingCount").textContent = oc.gridBindings.length;
+  $("sourceCount").textContent = oc.faces.length + oc.gridSystems.length + oc.parameters.length + oc.assemblyRules.length;
+  $("bindingCount").textContent = oc.gridBindings.length + oc.assemblyBindings.length;
+  $("structureCount").textContent = oc.spaces.length + oc.columns.length + oc.beams.length;
   updateStatusSummary();
 }
 /* Composition uses the same inspector as a bottom sheet. Other workspaces
@@ -8605,6 +8650,7 @@ function syncParameterEditingLayout() {
   const editing = document.body.classList.contains("canvas-composition") && !!pane && !pane.hidden &&
     !!pane.querySelector('#parameterEditor[data-editor="card"]');
   document.body.classList.toggle("parameter-editing", editing);
+  window.ParamGridLesson?.place();
 }
 function renderInspectorBody() {
   syncCompositionLayout();
@@ -9040,7 +9086,7 @@ function ocCursor() {
   renderCanvasModeHint();
 }
 function setOcTool(t) {
-  if(t!=="select" && window.ParameterUI?.pending && !ParameterUI.mayLeave())return;
+  if (t !== "select" && !window.DraftGate.ask()) return;
   cancelCanvasMarquee();
   closePanels();
   if (t !== "rect") pendingSlot = null;
@@ -9123,26 +9169,22 @@ for (const id of ["snapToggle", "gridToggle"]) {
 }
 /* 篩選 chips(A3:aria-pressed + 計數徽章) */
 function applyFilterChips() {
-  for (const b of document.querySelectorAll("[data-filter-type]")) {
+  oc.groupOn = { sources: false, bindings: false, structures: false };
+  for (const b of document.querySelectorAll("[data-filter-group]")) {
     const on = b.getAttribute("aria-pressed") === "true";
     b.classList.toggle("off", !on);
+    if (on && b.dataset.filterGroup in oc.groupOn) oc.groupOn[b.dataset.filterGroup] = true;
   }
-  oc.showFace = document.querySelector('[data-filter-type="face"]').getAttribute("aria-pressed") === "true";
-  oc.showSpace = document.querySelector('[data-filter-type="space"]').getAttribute("aria-pressed") === "true";
-  oc.showColumn = document.querySelector('[data-filter-type="column"]').getAttribute("aria-pressed") === "true";
-  oc.showBeam = document.querySelector('[data-filter-type="beam"]').getAttribute("aria-pressed") === "true";
-  oc.showGridSystem = document.querySelector('[data-filter-type="grid-system"]').getAttribute("aria-pressed") === "true";
-  oc.showGridBinding = document.querySelector('[data-filter-type="grid-binding"]').getAttribute("aria-pressed") === "true";
   drawObjects();
 }
-for (const b of document.querySelectorAll("[data-filter-type]"))
+for (const b of document.querySelectorAll("[data-filter-group]"))
   b.addEventListener("click", () => {
     b.setAttribute("aria-pressed",
       b.getAttribute("aria-pressed") === "true" ? "false" : "true");
     applyFilterChips();
   });
 $("filterAll").addEventListener("click", () => {
-  for (const b of document.querySelectorAll("[data-filter-type]"))
+  for (const b of document.querySelectorAll("[data-filter-group]"))
     b.setAttribute("aria-pressed", "true");
   applyFilterChips();
 });

@@ -33,6 +33,9 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
         (existing && (!existing->is_subgrid || existing->parent_id!=candidate.parent_id || existing->lattice_cell!=lattice))) {
         scene_error(path,line_no,"D19/I25：父格必須是主網格；既有網格的類型與父格編號不能更換"); return false;
     }
+    if (parent->axis[0].stagger_set || parent->axis[1].stagger_set) {
+        scene_error(path,line_no,"I24：有相位差的主格不能建立子網格"); return false;
+    }
     if (parent->from_binding!=lattice) {
         char message[192];
         snprintf(message,sizeof message,"D19/I25：子格 %u 的父格 %u 必須使用 %s 參照形式",

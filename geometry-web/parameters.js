@@ -356,6 +356,14 @@ window.ParameterUI = (() => {
   function paintTemplates(s) {
     $('parameterEditor')?.querySelectorAll('[data-param-template]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.paramTemplate === s.template)));
   }
+  function quickSample() {
+    const panel = TEMPLATES.panel, section = TEMPLATES.section;
+    return `(${panel.defaults[0]},${panel.defaults[1]})、W${section.defaults[0]}H${section.defaults[1]}`;
+  }
+  function panelTemplate() {
+    const panel = TEMPLATES.panel;
+    return {names: panel.names.slice(), defaults: panel.defaults.slice()};
+  }
   /* 快速輸入：(a,b)、WaHb、單一數字。null = 空白，false = 看不懂。 */
   function quickPlan(text) {
     text = text.trim();
@@ -373,7 +381,7 @@ window.ParameterUI = (() => {
     const plan = quickPlan(input.value);
     $('paramParse').disabled = !plan;
     hint.dataset.state = plan === false ? 'error' : plan ? 'ok' : '';
-    if (plan === false) hint.textContent = '看不懂這個格式，試試 (915,1830)、W27H33 或單一數字';
+    if (plan === false) hint.textContent = `看不懂這個格式，試試 ${quickSample()} 或單一數字`;
     else if (plan) hint.textContent = `按 Enter 建立 ${plan.numbers.length} 欄：${TEMPLATES[plan.kind].names.map((n, i) => n + ' ' + plan.numbers[i]).join('、')}`;
     else hint.textContent = '';
   }
@@ -564,7 +572,7 @@ window.ParameterUI = (() => {
     const starter = s.fresh ? `<section class="param-start" aria-label="從範本開始">
         <span class="param-label">從範本開始</span>
         <div class="param-template-grid">${Object.entries(TEMPLATES).map(([kind, t]) => `<button type="button" class="param-template" data-param-template="${kind}" aria-pressed="${s.template === kind}"><span class="param-template-name">${esc(t.label)}</span><span class="param-template-sample">${esc(t.sample)}</span></button>`).join('')}</div>
-        <div class="param-quick"><input id="paramQuick" aria-label="快速輸入" placeholder="快速輸入：(915,1830) 或 W27H33" autocomplete="off" spellcheck="false"><button type="button" class="btn" id="paramParse" disabled aria-describedby="paramQuickHint">建立欄位</button></div>
+        <div class="param-quick"><input id="paramQuick" aria-label="快速輸入" placeholder="快速輸入：${quickSample().replace('、', ' 或 ')}" autocomplete="off" spellcheck="false"><button type="button" class="btn" id="paramParse" disabled aria-describedby="paramQuickHint">建立欄位</button></div>
         <p id="paramQuickHint" class="param-quick-hint" aria-live="polite"></p>
       </section>` : '';
     const usageBox = !s.fresh ? `<details id="paramUsage" class="param-details"><summary>使用關係與交換</summary>
@@ -845,5 +853,311 @@ window.ParameterUI = (() => {
   document.addEventListener('click',e=>{if(e.target.closest('#parameterSelectionExport'))exportPackage(oc.selection.filter(s=>s.kind==='parameter').map(s=>s.id));});
   window.addEventListener('project-info-changed',()=>{if(state&&!current(state)){clearTimeout(timer);state=null;paintDraft(null);oc.parameterCreating=false;++serial;}});
   $('btnNewParameter').onclick=()=>{ $('createObjectPop').hidden=true;create(); };
-  return {value,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,get pending(){return !!state&&(state.changed||state.busy);},get editingId(){return state?.card.id;}};
+  window.DraftGate?.register(intent => {
+    if (!state) return true;
+    const only = intent?.selection;
+    if (only?.length === 1 && only[0].kind === "parameter" && only[0].id === state.card?.id) return true;
+    return mayLeave();
+  });
+  return {value,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,panelTemplate,quickSample,get pending(){return !!state&&(state.changed||state.busy);},get editingId(){return state?.card.id;}};
+})();
+
+/* GEO-227：每張圖向 FeatureLessons 登記。檢查比對圖與功能當時的事實，失敗時帶教學 id。 */
+window.FeatureLessons = (() => {
+  'use strict';
+  const entries = [];
+  function register(entry) {
+    if (!entry || typeof entry.id !== 'string' || !entry.id || typeof entry.problems !== 'function') throw Error('FeatureLessons 需要 id 與 problems');
+    if (entries.some(item => item.id === entry.id)) throw Error('FeatureLessons 重複登記 ' + entry.id);
+    entries.push(entry);
+  }
+  function check() {
+    return entries.map(entry => {
+      let problems;
+      try { problems = entry.problems(); }
+      catch (e) { problems = [String(e && e.message || e)]; }
+      if (!Array.isArray(problems)) problems = ['problems() 沒有回傳清單'];
+      return {id: entry.id, ok: problems.length === 0, problems};
+    });
+  }
+  return {register, check};
+})();
+
+/* GEO-227: one picture showing a parameter field bound to grid spacing.
+   Words and numbers are read from the feature. Dismissal stores that fact token.
+   The node is moved, never duplicated. */
+window.ParamGridLesson = (() => {
+  'use strict';
+  const LESSON_ID = 'param-grid';
+  const KEY = 'geometry-param-grid-lesson';
+  const LEGACY_KEY = 'geometry-param-grid-lesson-v1';
+  const LEGACY_TOKEN = '["param-grid","參數","寬","長","915","1830","1220","引用來源","select","u→","v↓","間距","4/3"]';
+  const TAUGHT_SCALE = '4/3';
+  function xml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[ch]));
+  }
+  function parseScale(text) {
+    const match = /^(\d+)\/(\d+)$/.exec(String(text));
+    if (!match) return null;
+    const n = Number(match[1]), d = Number(match[2]);
+    if (!d) return null;
+    return {n, d, text: n + '/' + d};
+  }
+  function readFacts() {
+    const panel = ParameterUI.panelTemplate();
+    const probe = document.createElement('div');
+    probe.innerHTML = ParameterUI.sourceControl('pglProbe', null);
+    const select = probe.querySelector('select');
+    const labeled = select || probe.querySelector('[aria-label]');
+    const surface = InfiniteGridWorkspace.lessonSurface();
+    const heading = id => surface.axes.find(axis => axis.id === id)?.heading || '';
+    const scale = parseScale(TAUGHT_SCALE);
+    const width = String(panel.defaults[0] ?? '');
+    const length = String(panel.defaults[1] ?? '');
+    return {
+      id: LESSON_ID,
+      cardTitle: document.querySelector('#btnNewParameter strong')?.textContent.trim() || '',
+      widthName: String(panel.names[0] ?? ''),
+      lengthName: String(panel.names[1] ?? ''),
+      width, length,
+      nextWidth: scale ? String(Math.round(Number(width) * scale.n / scale.d)) : '',
+      sourceLabel: labeled?.getAttribute('aria-label')?.trim() || '',
+      control: select ? select.tagName.toLowerCase() : (labeled ? labeled.tagName.toLowerCase() : ''),
+      uHeading: heading('u'),
+      vHeading: heading('v'),
+      stepNoun: String(surface.stepNoun ?? ''),
+      stepTitle: String(surface.stepTitle ?? ''),
+      scale: TAUGHT_SCALE
+    };
+  }
+  function token(facts) {
+    return JSON.stringify([LESSON_ID, facts.cardTitle, facts.widthName, facts.lengthName, facts.width, facts.length, facts.nextWidth, facts.sourceLabel, facts.control, facts.uHeading, facts.vHeading, facts.stepNoun, facts.scale]);
+  }
+  function readSeen(current) {
+    try {
+      if (localStorage.getItem(KEY) === current) return true;
+      if (localStorage.getItem(LEGACY_KEY) === '1' && current === LEGACY_TOKEN) return true;
+    } catch (_) { /* private storage still shows the picture */ }
+    return false;
+  }
+  function picture(facts) {
+    const scale = parseScale(TAUGHT_SCALE);
+    if (!scale) throw Error('param-grid 的比例寫錯了');
+    const gap = 90, xLeft = 184;
+    const xOld = xLeft + gap;
+    const xNew = xLeft + Math.round(gap * scale.n / scale.d);
+    const mid1 = (xLeft + xOld) / 2, mid2 = (xLeft + xNew) / 2;
+    return `<svg viewBox="0 0 400 248" aria-hidden="true">
+    <defs>
+      <marker id="pglMkB" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 1.6 L9 5 L0 8.4 Z" fill="#365bf5"/>
+      </marker>
+      <marker id="pglMkA" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 1.6 L9 5 L0 8.4 Z" fill="#b86e00"/>
+      </marker>
+    </defs>
+    <rect width="400" height="248" rx="12" fill="#f4f6f8"/>
+    <rect x="8" y="8" width="148" height="232" rx="12" fill="#fff" stroke="#d8dee6"/>
+    <text x="22" y="32" fill="#667085" font-size="13" font-weight="700" data-pgl-title>${xml(facts.cardTitle)}</text>
+    <rect x="18" y="44" width="128" height="86" rx="8" fill="#eef2ff" stroke="#365bf5" stroke-width="1.5"/>
+    <rect x="30" y="56" width="16" height="16" rx="3" fill="#365bf5"/>
+    <text x="54" y="70" fill="#172033" font-size="16" font-weight="700">${xml(facts.widthName)}</text>
+    <rect x="18" y="140" width="128" height="86" rx="8" fill="#fff6e6" stroke="#b86e00" stroke-width="1.5"/>
+    <rect x="30" y="152" width="16" height="16" rx="3" fill="#b86e00"/>
+    <text x="54" y="166" fill="#172033" font-size="16" font-weight="700">${xml(facts.lengthName)}</text>
+    <text x="134" y="206" text-anchor="end" fill="#b86e00" font-size="28" font-weight="700">${xml(facts.length)}</text>
+    <rect x="168" y="8" width="224" height="232" rx="12" fill="#fff" stroke="#d8dee6"/>
+    <text x="182" y="34" fill="#365bf5" font-size="13" font-weight="700">${xml(facts.uHeading)}</text>
+    <text x="214" y="34" fill="#365bf5" font-size="12" font-weight="700">${xml(facts.stepNoun)}</text>
+    <text x="292" y="34" fill="#b86e00" font-size="13" font-weight="700">${xml(facts.vHeading)}</text>
+    <text x="324" y="34" fill="#b86e00" font-size="12" font-weight="700">${xml(facts.stepNoun)}</text>
+    <line x1="178" y1="48" x2="352" y2="48" stroke="#243044" stroke-width="1.6"/>
+    <line x1="178" y1="228" x2="352" y2="228" stroke="#243044" stroke-width="1.6"/>
+    <line data-pgl-left="1" x1="${xLeft}" y1="48" x2="${xLeft}" y2="228" stroke="#243044" stroke-width="1.6"/>
+    <line x1="360" y1="58" x2="360" y2="218" stroke="#b86e00" stroke-width="2.4" marker-start="url(#pglMkA)" marker-end="url(#pglMkA)"/>
+    <text transform="translate(378 142) rotate(-90)" text-anchor="middle" fill="#b86e00" font-size="16" font-weight="700">${xml(facts.length)}</text>
+    <text x="196" y="104" fill="#365bf5" font-size="12" font-weight="700">${xml(facts.sourceLabel)}</text>
+    <rect x="196" y="110" width="72" height="28" rx="6" fill="#fff" stroke="#365bf5" stroke-width="1.5"/>
+    <text x="206" y="129" fill="#172033" font-size="14" font-weight="700">${xml(facts.widthName)}</text>
+    <path d="M246 123 l5 5 l5 -5" fill="none" stroke="#365bf5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M146 80 C166 80 176 66 198 66" fill="none" stroke="#365bf5" stroke-width="2.2" marker-end="url(#pglMkB)"/>
+    <path d="M146 190 C200 220 300 216 348 188" fill="none" stroke="#b86e00" stroke-width="2.2" marker-end="url(#pglMkA)"/>
+    <g class="pgl-f1">
+      <line x1="${xOld}" y1="48" x2="${xOld}" y2="228" stroke="#243044" stroke-width="1.6"/>
+      <line x1="${xLeft}" y1="138" x2="${xOld}" y2="138" stroke="#365bf5" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.45"/>
+      <line x1="196" y1="66" x2="${xOld - 12}" y2="66" stroke="#365bf5" stroke-width="2.4" marker-start="url(#pglMkB)" marker-end="url(#pglMkB)"/>
+      <text x="${mid1}" y="88" text-anchor="middle" fill="#365bf5" font-size="18" font-weight="700">${xml(facts.width)}</text>
+      <text x="134" y="114" text-anchor="end" fill="#365bf5" font-size="28" font-weight="700">${xml(facts.width)}</text>
+      <path d="M250 116 l0 16 l3.4 -4 l4 5.6 l1.8 -1.2 l-4 -5.8 l4.6 -.2 z" fill="#172033"/>
+    </g>
+    <g class="pgl-f2">
+      <rect x="${xOld}" y="48" width="${xNew - xOld}" height="180" fill="#365bf5" fill-opacity="0.14"/>
+      <line data-pgl-old="1" x1="${xOld}" y1="48" x2="${xOld}" y2="228" stroke="#98a2b3" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <line data-pgl-new="1" x1="${xNew}" y1="48" x2="${xNew}" y2="228" stroke="#243044" stroke-width="1.6"/>
+      <line x1="196" y1="66" x2="${xNew - 10}" y2="66" stroke="#365bf5" stroke-width="2.4" marker-start="url(#pglMkB)" marker-end="url(#pglMkB)"/>
+      <text x="${mid2}" y="88" text-anchor="middle" fill="#365bf5" font-size="18" font-weight="700">${xml(facts.nextWidth)}</text>
+      <text x="134" y="96" text-anchor="end" fill="#98a2b3" font-size="13" font-weight="700">${xml(facts.width)}</text>
+      <line x1="108" y1="92" x2="136" y2="92" stroke="#98a2b3" stroke-width="1.4"/>
+      <text x="134" y="120" text-anchor="end" fill="#365bf5" font-size="26" font-weight="700">${xml(facts.nextWidth)}</text>
+    </g>
+  </svg>`;
+  }
+  function lineX(svg, name) {
+    const node = svg.querySelector(`[data-pgl-${name}]`);
+    if (!node) return null;
+    const x1 = Number(node.getAttribute('x1')), x2 = Number(node.getAttribute('x2'));
+    if (!Number.isFinite(x1) || x1 !== x2) return null;
+    return x1;
+  }
+  function problems() {
+    const issues = [];
+    const facts = readFacts();
+    const svg = stage.querySelector('svg');
+    if (!svg) return [`圖解 ${LESSON_ID} 沒有圖`];
+    const texts = [...svg.querySelectorAll('text')].map(node => node.textContent);
+    const allowed = new Set([facts.cardTitle, facts.widthName, facts.lengthName, facts.width, facts.length, facts.nextWidth, facts.sourceLabel, facts.uHeading, facts.vHeading, facts.stepNoun]);
+    for (const text of texts) if (text && !allowed.has(text)) issues.push(`圖解 ${LESSON_ID} 出現了功能裡沒有的「${text}」`);
+    for (const [label, value] of [['卡片標題', facts.cardTitle], ['欄名', facts.widthName], ['欄名', facts.lengthName], ['預設值', facts.width], ['預設值', facts.length], ['下一個寬', facts.nextWidth], ['來源名稱', facts.sourceLabel], ['橫軸', facts.uHeading], ['直軸', facts.vHeading], ['間距名稱', facts.stepNoun]]) {
+      if (!value) issues.push(`圖解 ${LESSON_ID} 讀不到${label}`);
+      else if (!texts.includes(value)) issues.push(`圖解 ${LESSON_ID} 沒畫出${label}「${value}」`);
+    }
+    const menu = document.querySelector('#btnNewParameter strong')?.textContent.trim() || '';
+    const shown = svg.querySelector('[data-pgl-title]')?.textContent ?? '';
+    if (shown !== menu) issues.push(`圖解 ${LESSON_ID} 的標題是「${shown}」，建立選單寫的是「${menu}」`);
+    for (const [label, value] of [['預設寬', facts.width], ['預設長', facts.length], ['下一個寬', facts.nextWidth]]) {
+      if ([...String(value)].length > 4) issues.push(`圖解 ${LESSON_ID} 的${label}「${value}」超過 4 位，這張圖只排得下 4 位`);
+    }
+    // 圖上畫的是下拉選單。這個屬性是字面 select，不跟事實裡的控制項種類一起改。
+    if ((root.dataset.pglControl || '') !== facts.control) issues.push(`圖解 ${LESSON_ID} 畫的控制項是「${root.dataset.pglControl || ''}」，功能上的引用來源是「${facts.control}」`);
+    const claimed = root.dataset.pglScale || '';
+    const parsed = parseScale(claimed);
+    if (!parsed || claimed !== facts.scale) issues.push(`圖解 ${LESSON_ID} 標的比例是「${claimed}」，這張圖要用的比例是「${facts.scale}」`);
+    if (parsed) {
+      const expectNext = String(Math.round(Number(facts.width) * parsed.n / parsed.d));
+      if (facts.nextWidth !== expectNext) issues.push(`圖解 ${LESSON_ID} 的下一個寬是「${facts.nextWidth}」，按 ${claimed} 應為「${expectNext}」`);
+      const left = lineX(svg, 'left'), oldX = lineX(svg, 'old'), newX = lineX(svg, 'new');
+      if (left == null || oldX == null || newX == null) issues.push(`圖解 ${LESSON_ID} 缺少對得上比例的橫向格線`);
+      else if ((newX - left) !== Math.round((oldX - left) * parsed.n / parsed.d)) issues.push(`圖解 ${LESSON_ID} 的橫向間距沒有按 ${claimed} 變寬`);
+    }
+    return issues;
+  }
+  const opening = readFacts();
+  const CAPTION = [
+    '',
+    `${opening.widthName} ${opening.width} 用${opening.sourceLabel}接到${opening.uHeading}${opening.stepNoun}，${opening.lengthName} ${opening.length} 接到${opening.vHeading}${opening.stepNoun}。點一下看改了${opening.widthName}之後。`,
+    `${opening.widthName}改成 ${opening.nextWidth}，${opening.uHeading}${opening.stepNoun}跟著變寬，${opening.vHeading}仍是 ${opening.length}。點一下回到對照。`
+  ];
+  let seen = readSeen(token(opening));
+  let expanded = !seen, frame = 1, timer = 0, hovering = false;
+  const root = document.createElement('div');
+  root.id = 'paramGridLesson';
+  root.setAttribute('role', 'region');
+  root.setAttribute('aria-label', '參數套到網格的圖解');
+  const stage = document.createElement('button');
+  stage.type = 'button';
+  stage.id = 'paramGridLessonStage';
+  stage.className = 'pgl-stage';
+  stage.innerHTML = picture(opening);
+  // 圖上畫的是下拉選單。字面 select 不從事實帶入，控制項換型時檢查才會失敗。
+  root.dataset.pglControl = 'select';
+  root.dataset.pglScale = TAUGHT_SCALE;
+  const bar = document.createElement('div');
+  bar.className = 'pgl-bar';
+  const frameBtn1 = document.createElement('button');
+  frameBtn1.type = 'button';
+  frameBtn1.id = 'paramGridLessonFrame1';
+  frameBtn1.setAttribute('aria-label', `第一張：${opening.widthName}與${opening.lengthName}對上格子的${opening.stepNoun}`);
+  frameBtn1.innerHTML = '<span class="pgl-dot"></span>';
+  const frameBtn2 = document.createElement('button');
+  frameBtn2.type = 'button';
+  frameBtn2.id = 'paramGridLessonFrame2';
+  frameBtn2.setAttribute('aria-label', `第二張：改${opening.widthName}之後${opening.uHeading}${opening.stepNoun}跟著變`);
+  frameBtn2.innerHTML = '<span class="pgl-dot"></span>';
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.id = 'paramGridLessonClose';
+  closeBtn.textContent = '知道了';
+  bar.append(frameBtn1, frameBtn2, closeBtn);
+  const openBtn = document.createElement('button');
+  openBtn.type = 'button';
+  openBtn.id = 'paramGridLessonOpen';
+  openBtn.setAttribute('aria-label', '打開參數套到網格的圖解');
+  openBtn.innerHTML = '<svg viewBox="0 0 22 22" aria-hidden="true"><rect x="2" y="3" width="8" height="16" rx="1.5" fill="#365bf5"/><rect x="12" y="3" width="8" height="8" rx="1.5" fill="#b86e00"/></svg>圖解';
+  root.append(stage, bar, openBtn);
+  function remember() {
+    seen = true;
+    try { localStorage.setItem(KEY, token(readFacts())); } catch (_) { /* this visit still stays dismissed */ }
+  }
+  function stop() { if (!timer) return; clearInterval(timer); timer = 0; }
+  function start() { if (timer) return; timer = setInterval(tick, 3200); }
+  function tick() {
+    if (!playing()) { stop(); return; }
+    frame = frame === 1 ? 2 : 1;
+    paint();
+  }
+  function playing() {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return root.isConnected && !root.hidden && expanded && !seen && !hovering && !reduce && !document.hidden;
+  }
+  function syncPlayback() { if (playing()) start(); else stop(); }
+  function paint() {
+    root.classList.toggle('is-open', expanded);
+    root.classList.toggle('is-collapsed', !expanded);
+    root.classList.toggle('is-frame-2', frame === 2);
+    root.dataset.frame = String(frame);
+    stage.hidden = !expanded;
+    bar.hidden = !expanded;
+    openBtn.hidden = expanded;
+    stage.setAttribute('aria-label', CAPTION[frame]);
+    frameBtn1.setAttribute('aria-current', frame === 1 ? 'true' : 'false');
+    frameBtn2.setAttribute('aria-current', frame === 2 ? 'true' : 'false');
+    openBtn.setAttribute('aria-expanded', String(expanded));
+    syncPlayback();
+  }
+  function place() {
+    const dialog = document.getElementById('infiniteGridWorkspace');
+    const slot = document.getElementById('paramGridLessonSlot');
+    const form = document.getElementById('igSourceForm');
+    let parent = null, mode = '';
+    if (dialog?.open && slot && form && !form.hidden) { parent = slot; mode = 'grid'; }
+    else if (document.body.classList.contains('parameter-editing')) {
+      parent = document.getElementById('canvasViewport');
+      mode = 'canvas';
+    }
+    if (!parent) {
+      root.hidden = true;
+      root.remove();
+      syncPlayback();
+      return;
+    }
+    root.classList.toggle('is-canvas', mode === 'canvas');
+    root.classList.toggle('is-grid', mode === 'grid');
+    if (root.parentElement !== parent) { hovering = false; parent.appendChild(root); }
+    root.hidden = false;
+    syncPlayback();
+  }
+  stage.addEventListener('click', () => { frame = frame === 1 ? 2 : 1; paint(); });
+  frameBtn1.addEventListener('click', () => { frame = 1; paint(); });
+  frameBtn2.addEventListener('click', () => { frame = 2; paint(); });
+  closeBtn.addEventListener('click', () => {
+    remember();
+    expanded = false;
+    frame = 1;
+    paint();
+    openBtn.focus({ preventScroll: true });
+  });
+  openBtn.addEventListener('click', () => {
+    expanded = true;
+    frame = 1;
+    paint();
+    closeBtn.focus({ preventScroll: true });
+  });
+  root.addEventListener('pointerenter', () => { hovering = true; syncPlayback(); });
+  root.addEventListener('pointerleave', () => { hovering = false; syncPlayback(); });
+  document.addEventListener('visibilitychange', syncPlayback);
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', syncPlayback);
+  paint();
+  place();
+  window.FeatureLessons.register({id: LESSON_ID, problems});
+  return {place, storageKey: KEY, facts: readFacts, token() { return token(readFacts()); }};
 })();

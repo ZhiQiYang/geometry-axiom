@@ -45,9 +45,10 @@ static bool reference_guide_changed(const World *,const World *,uint32_t);
 static void reference_subgrid_text(const World *,uint32_t,FILE *);
 static void reference_object_preview(FILE *);
 
+static bool grid_axis_stagger_equal(const GridAxisDef *,const GridAxisDef *);
 static bool reference_axis_definition_equal(const GridAxisDef *a,const GridAxisDef *z)
 {
-    if (a->source!=z->source) return false;
+    if (a->source!=z->source || !grid_axis_stagger_equal(a,z)) return false;
     if (a->source==GRID_SRC_NONE) return true;
     if (a->source==GRID_SRC_EXPLICIT)
         return a->count==z->count && a->count<=GRID_MAX_LINES &&
@@ -57,6 +58,14 @@ static bool reference_axis_definition_equal(const GridAxisDef *a,const GridAxisD
             (a->source==GRID_SRC_REPEAT || a->series_count==z->series_count);
     return a->panel==z->panel && a->gap==z->gap && a->anchor==z->anchor &&
         a->anchor_explicit==z->anchor_explicit;
+}
+
+static bool grid_axis_stagger_equal(const GridAxisDef *a,const GridAxisDef *z)
+{
+    if(a->stagger_set!=z->stagger_set || a->stagger!=z->stagger) return false;
+    if(a->parameters[5].set!=z->parameters[5].set) return false;
+    return !a->parameters[5].set || (a->parameters[5].parameter_id==z->parameters[5].parameter_id &&
+        a->parameters[5].field_id==z->parameters[5].field_id);
 }
 
 static bool reference_system_changed(const World *before,const World *after,uint32_t id)

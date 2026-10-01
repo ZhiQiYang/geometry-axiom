@@ -35,6 +35,7 @@ window.EngineeringWorkspace = (() => {
     dialog = document.createElement('dialog');
     dialog.id = 'ewWorkspace'; dialog.className = 'ew-workspace'; dialog.setAttribute('aria-labelledby', 'ewTitle');
     dialog.innerHTML = `<header class="ew-header"><div><h1 id="ewTitle">工程規格</h1></div><div class="ew-header-actions"><button type="button" id="ewClose" aria-label="返回畫布">返回畫布</button></div></header>
+      <p id="ewWorkspaceLesson" class="studio-first-lesson" hidden></p>
       <nav class="ew-nav" aria-label="工程規格工作區"><button type="button" data-ew-section="apply" aria-current="page">套用至面</button><button type="button" data-ew-section="materials">材料規格</button><button type="button" data-ew-section="methods">工程做法</button><button type="button" data-ew-section="transfer">匯入／匯出</button></nav>
       <p id="ewStatus" class="ew-status" role="status" aria-live="polite"></p>
       <div id="ewContent" class="ew-content"></div>
@@ -100,7 +101,7 @@ window.EngineeringWorkspace = (() => {
     for (const key of ['material','method','application','section','inlineKind','activePlacement','importText']) if (Object.hasOwn(value,key))state[key]=clone(value[key]);
   }
   async function open(options = {}) {
-    if(window.ParameterUI?.pending && !ParameterUI.mayLeave())return;
+    if(window.DraftGate && !window.DraftGate.ask())return;
     ensure(); opener = document.activeElement;
     invalidate();
     const nextContext = context();
@@ -118,6 +119,7 @@ window.EngineeringWorkspace = (() => {
     $('ewTitle').textContent=state.mode==='grid'?'材料規格排格':'工程規格';
     dialog.querySelector('.ew-nav').hidden=state.mode==='grid';
     if (!dialog.open)dialog.showModal();
+    placeStudioLesson($('ewWorkspaceLesson'), 'engineering:first', '這裡改面材與角材來源；預覽確認後才影響用到它的物件。');
     WorkspaceShell.attach(dialog, {saveBlocked:()=>state.busy || !adapter?.saveProject,
       saveReason:()=>state.busy?'正在處理工程變更，完成後即可保存。':'工程規格服務尚未連接。', onProjectState:syncProjectStatus});
     await load(true, options);

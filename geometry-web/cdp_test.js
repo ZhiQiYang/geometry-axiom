@@ -2627,15 +2627,15 @@ async function main() {
   const qc = await eval_(`(()=>{const pop=$('createObjectPop'),ids=['btnQuickGrid','btnCreateRect','btnCreatePoly','btnBox6','btnNewSpace','btnNewColumn','btnNewBeam'];return {open:!pop.hidden,entries:ids.map(id=>({id,inside:pop.contains($(id)),label:$(id)?.textContent.trim()})),onlyCreation:!pop.querySelector('[data-project-action="import"],#btnSpaceModelTrial,#btnSpaceModels'),permanent:['btnNewGridSystem','btnQuickBoundary'].every(id=>$(id).closest('.sidebar-left')&&$(id).getBoundingClientRect().height>=44)};})()`);
   console.log('P17 物件庫:',explicitVerdict(qc.open&&qc.permanent&&qc.onlyCreation&&qc.entries.every(e=>e.inside&&e.label)?'✓':'✗ '+JSON.stringify(qc)));
   await clickControl('#btnCreateObject');
-  /* (b) chips:關柱 → showColumn=false + aria-pressed;全部顯示還原 */
-  await clickControl('[data-filter-type="column"]');
+  /* (b) chips:關空間與構件 → groupOn.structures=false + aria-pressed;全部顯示還原 */
+  await clickControl('[data-filter-group="structures"]');
   await sleep(300);
-  const ch1 = await eval_(`(()=>({sc:oc.showColumn,
-    ap:document.querySelector('[data-filter-type="column"]').getAttribute("aria-pressed")}))()`);
-  console.log("P17 chip關柱:",explicitVerdict(!ch1.sc && ch1.ap === "false" ? "✓" : "✗ " + JSON.stringify(ch1)));
+  const ch1 = await eval_(`(()=>({on:oc.groupOn.structures,
+    ap:document.querySelector('[data-filter-group="structures"]').getAttribute("aria-pressed")}))()`);
+  console.log("P17 chip關空間與構件:",explicitVerdict(!ch1.on && ch1.ap === "false" ? "✓" : "✗ " + JSON.stringify(ch1)));
   await clickControl('#filterAll');
   await sleep(300);
-  const ch2 = await eval_(`oc.showColumn && oc.showFace && oc.showSpace && oc.showBeam`);
+  const ch2 = await eval_(`oc.groupOn.sources && oc.groupOn.bindings && oc.groupOn.structures`);
   console.log("P17 全部顯示:",explicitVerdict(ch2 ? "✓" : "✗"));
   /* (c) compact:zoom 0.5 → .ocard.compact;1.0 → 無 */
   await eval_(`oc.zoom=0.5; ocApply()`);
