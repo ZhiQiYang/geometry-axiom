@@ -363,9 +363,15 @@ class InfiniteGridContract(unittest.TestCase):
             stride = int(data["stride"])
             self.assertGreater(stride, 1)
             self.assertLessEqual(len(data["lines"]), 12)
-            for index, coordinate in self.coordinates(sample, axis).items():
-                self.assertEqual(0, index % stride, "sampling is phased at global k=0")
-                self.assertEqual(index, coordinate)
+            # R32 fixes the phase, not the implementation's choice of stride.
+            # Compare the complete declared sample so empty/partial arrays cannot
+            # pass a vacuous per-row check. In particular k=0 must survive.
+            expected = {k: k for k in range(-1000, 1001) if k % stride == 0}
+            self.assertIn(0, expected)
+            self.assertEqual(expected, self.coordinates(sample, axis))
+            self.assertEqual(len(expected), len(data["lines"]), "no duplicate indices")
+            self.assertEqual(-1000, int(data["firstIndex"]))
+            self.assertEqual(1000, int(data["lastIndex"]))
         zoomed = self.query(rect=(-2, -2, 2, 2), limit=12)
         self.assertTrue(zoomed["exact"])
         self.assertEqual({-2: -2, -1: -1, 0: 0, 1: 1, 2: 2}, self.coordinates(zoomed, "u"))
@@ -633,7 +639,29 @@ class InfiniteGridContract(unittest.TestCase):
         self.assertEqual("QUERY_CAPACITY", exact["code"])
         sample = self.query(rect=(0, 0, 4000, 2000), mode="sample")
         self.assertTrue(sample["ok"], sample)
+        self.assertFalse(sample["exact"], "R22: thinning bands must disclose incompleteness")
         self.assertGreater(int(self.axis(sample, "v")["stride"]), 1)
+        for axis, last, total, pitch in (("u", 40, 41, 100), ("v", 1, 2, 1830)):
+            data = self.axis(sample, axis)
+            self.assertEqual((0, last, total), tuple(int(data[key]) for key in
+                             ("firstIndex", "lastIndex", "total")))
+            coordinates = self.coordinates(sample, axis)
+            self.assertIn(0, coordinates, "the global origin is retained in this view")
+            self.assertLessEqual(len(data["lines"]), 64)
+            self.assertEqual(len(coordinates), len(data["lines"]))
+            for index, coordinate in coordinates.items():
+                self.assertTrue(0 <= index <= last)
+                self.assertEqual(index * pitch, coordinate)
+            for line in data["lines"]:
+                self.assertTrue(line["segments"], "visible sampled lines must have geometry")
+        # R22 determines each returned segment independently of the chosen
+        # thinning policy; do not require a particular stride or band subset.
+        for index, band, a, b in self.band_segments(sample, "v"):
+            self.assertTrue(0 <= band < 40)
+            coordinate = index * 1830 + (400 if band & 1 else 0)
+            self.assertTrue(0 <= coordinate <= 2000)
+            self.assertEqual([band * 100, coordinate], a)
+            self.assertEqual([(band + 1) * 100, coordinate], b)
 
 
 if __name__ == "__main__":

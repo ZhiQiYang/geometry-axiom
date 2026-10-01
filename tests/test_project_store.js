@@ -4,6 +4,27 @@ const assert = require('node:assert/strict');
 const P = require('../geometry-web/project-store.js');
 const zip = require('../geometry-web/vendor/fflate/umd/index.js');
 const clone = x => JSON.parse(JSON.stringify(x));
+// Use a sequence, not zipSync's filename-keyed object: an object cannot encode
+// two ZIP members with the same path. Stored entries keep this fixture simple.
+function archiveMembers(members) {
+  const chunks=[];
+  const archive=new zip.Zip((error,chunk)=>{if(error)throw error;chunks.push(chunk);});
+  for(const [name,bytes] of members){
+    const member=new zip.ZipPassThrough(name);archive.add(member);member.push(bytes,true);
+  }
+  archive.end();
+  const bytes=new Uint8Array(chunks.reduce((n,chunk)=>n+chunk.length,0));
+  let at=0;for(const chunk of chunks){bytes.set(chunk,at);at+=chunk.length;}
+  return bytes;
+}
+function archiveNames(bytes) {
+  const names=[];
+  const archive=new zip.Unzip(member=>{
+    names.push(member.name);
+    member.ondata=error=>{if(error)throw error;};member.start();
+  });
+  archive.push(bytes,true);return names;
+}
 async function fixture() {
   const bytes = new TextEncoder().encode('original source bytes'), hash = await P.sha(bytes);
   const page = {id:'page-a',sourceId:hash,page:1,imgW:100,imgH:80,crop:[10,5,80,70],
@@ -31,6 +52,14 @@ test('rejects damaged scene, source, unknown version, duplicate paths and missin
   const missing={...entries};delete missing['sources/'+f.hash];
   await assert.rejects(()=>P.unpack(zip.zipSync(missing),zip),/完整性/);
   await assert.rejects(()=>P.unpack(zip.zipSync({...entries,'../outside':new Uint8Array([1])}),zip),/不支援/);
+  const members=Object.entries(entries), control=archiveMembers(members);
+  assert.deepEqual(archiveNames(control),members.map(([name])=>name));
+  assert.equal((await P.unpack(control,zip)).scene,f.scene);
+  // All bytes/hashes remain valid; only the repeated archive path is illegal.
+  // Removing the duplicate guard must therefore make this rejection fail.
+  const duplicate=archiveMembers([...members,['world.scene',entries['world.scene']]]);
+  assert.equal(archiveNames(duplicate).filter(name=>name==='world.scene').length,2);
+  await assert.rejects(()=>P.unpack(duplicate,zip),{message:'專案內含重複或不支援的檔案。'});
 });
 test('rejects inconsistent, out-of-page and non-finite reference data',async()=>{
   const f=await fixture();
