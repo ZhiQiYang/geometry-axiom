@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Noto+Sans+TC:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#e9edf3;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;color:#172033}
+a{color:#4e67e8}a:hover{color:#3a52d6}
+input::placeholder{color:#98a2b3}
+</style>
+</helmet>
+<div style="display:flex;flex-direction:column;gap:20px;padding:40px">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:1440px">
+<div style="display:flex;align-items:center;gap:10px"><span style="background:#4e67e8;color:#fff;font-weight:700;font-size:14px;padding:4px 10px;border-radius:6px">4a</span><h1 style="margin:0;font-size:22px">建立參數 · 重新設計</h1></div>
+<p style="margin:0;font-size:13px;color:#596679">右側 Tweaks 可切換「建立新卡」與「編輯既有卡」。試著改欄位數值、點欄位插入引用、在快速輸入打 W27H33。</p>
+</div>
+
+<div data-screen-label="4a 建立參數" style="width:1440px;height:900px;display:flex;flex-direction:column;background:#f7f8fa;border:1px solid #dfe4eb;overflow:hidden;position:relative">
+<div style="height:56px;flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 16px 0 20px;background:#fff;border-bottom:1px solid #dfe4eb">
+<div style="display:flex;align-items:center;gap:8px;font-size:13px;min-width:0">
+<span style="font-weight:600">住宅案 A</span><span style="color:#98a2b3">/</span><span style="color:#596679">畫布</span><span style="color:#98a2b3">/</span><span style="font-weight:600">{{ crumb }}</span>
+</div>
+<div style="display:flex;align-items:center;gap:10px">
+<span style="font-size:12px;color:#596679">{{ saveNote }}</span>
+<button type="button" style="flex:none;white-space:nowrap;height:34px;padding:0 14px;border:1px solid #dfe4eb;border-radius:6px;background:#fff;color:#172033;font:inherit;font-size:13px;font-weight:600;cursor:pointer;opacity:{{ saveOpacity }}">保存專案</button>
+</div>
+</div>
+
+<div style="flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 420px">
+<div style="position:relative;overflow:hidden;background-color:#f7f8fa;background-image:radial-gradient(#d5dbe4 1px,transparent 1px);background-size:20px 20px">
+<svg width="100%" height="100%" style="position:absolute;inset:0;pointer-events:none;opacity:{{ relOpacity }}">
+<path d="M 300 170 C 350 170, 330 350, 390 350" fill="none" stroke="#4e67e8" stroke-width="1.5" stroke-dasharray="5 4"></path>
+<path d="M 620 350 C 680 350, 660 190, 720 190" fill="none" stroke="#4e67e8" stroke-width="1.5" stroke-dasharray="5 4"></path>
+</svg>
+
+<div style="position:absolute;left:80px;top:110px;width:220px;background:#fff;border:{{ panelCardBorder }};border-radius:8px;box-shadow:0 1px 2px rgba(22,31,51,.06)">
+<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #eef1f5"><span style="width:20px;height:20px;border-radius:5px;background:#eef1ff;color:#4e67e8;display:grid;place-items:center;font-size:12px;font-style:italic;font-weight:700">ƒ</span><span style="font-size:13px;font-weight:600">{{ panelCardName }}</span></div>
+<div style="padding:8px 12px;display:flex;flex-direction:column;gap:4px;font-size:12px">
+<div style="display:flex;justify-content:space-between"><span style="color:#596679">寬</span><span style="font-family:'IBM Plex Mono',monospace">{{ panelW }} mm</span></div>
+<div style="display:flex;justify-content:space-between"><span style="color:#596679">長</span><span style="font-family:'IBM Plex Mono',monospace">{{ panelL }} mm</span></div>
+</div>
+</div>
+
+<div style="position:absolute;left:390px;top:300px;width:230px;background:#fff;border:1px solid #dfe4eb;border-radius:8px;box-shadow:0 1px 2px rgba(22,31,51,.06)">
+<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #eef1f5"><span style="width:20px;height:20px;border-radius:5px;background:#eef1ff;color:#4e67e8;display:grid;place-items:center;font-size:12px;font-style:italic;font-weight:700">ƒ</span><span style="font-size:13px;font-weight:600">排格設定</span></div>
+<div style="padding:8px 12px;display:flex;flex-direction:column;gap:4px;font-size:12px">
+<div style="display:flex;justify-content:space-between"><span style="color:#596679">間距</span><span style="font-family:'IBM Plex Mono',monospace">{{ gapCard }} mm</span></div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#98a2b3">= 板材尺寸.寬 + 7 mm</div>
+</div>
+</div>
+
+<div style="position:absolute;left:720px;top:140px;width:200px;background:#fff;border:1px solid #dfe4eb;border-radius:8px;box-shadow:0 1px 2px rgba(22,31,51,.06)">
+<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #eef1f5"><span style="width:20px;height:20px;border-radius:5px;background:#f1f3f6;color:#596679;display:grid;place-items:center;font-size:12px">#</span><span style="font-size:13px;font-weight:600">立面 A 網格</span></div>
+<div style="padding:8px 12px;display:flex;flex-direction:column;gap:4px;font-size:12px">
+<div style="display:flex;justify-content:space-between"><span style="color:#596679">u 間距</span><span style="font-family:'IBM Plex Mono',monospace">{{ gapCard }} mm</span></div>
+<div style="display:flex;justify-content:space-between"><span style="color:#596679">v 間距</span><span style="font-family:'IBM Plex Mono',monospace">600 mm</span></div>
+</div>
+</div>
+
+<sc-if value="{{ isCreate }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;left:420px;top:540px;width:220px;background:rgba(255,255,255,.9);border:1.5px dashed #4e67e8;border-radius:8px">
+<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px dashed #cfd6fb"><span style="width:20px;height:20px;border-radius:5px;background:#eef1ff;color:#4e67e8;display:grid;place-items:center;font-size:12px;font-style:italic;font-weight:700">ƒ</span><span style="flex:1;min-width:0;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ nameShown }}</span><span style="font-size:10px;font-weight:600;color:#4e67e8;letter-spacing:.04em">草稿</span></div>
+<div style="padding:8px 12px;display:flex;flex-direction:column;gap:4px;font-size:12px">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="2">
+<div style="display:flex;justify-content:space-between;gap:8px"><span style="color:#596679;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.nameShown }}</span><span style="font-family:'IBM Plex Mono',monospace;color:{{ r.resColor }}">{{ r.resShort }}</span></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<div style="position:absolute;left:16px;bottom:16px;font-size:12px;color:#596679;background:#fff;border:1px solid #dfe4eb;border-radius:6px;padding:6px 10px">{{ canvasHint }}</div>
+</div>
+
+<aside style="display:flex;flex-direction:column;min-height:0;background:#fff;border-left:1px solid #dfe4eb">
+<div style="flex:none;padding:16px 20px 14px;border-bottom:1px solid #eef1f5;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#596679">{{ panelTitle }}</span>
+<span style="font-size:11px;font-weight:600;padding:2px 7px;border-radius:999px;background:{{ badgeBg }};color:{{ badgeInk }}">{{ badgeText }}</span>
+</div>
+<input value="{{ name }}" onChange="{{ onName }}" aria-label="卡片名稱" placeholder="卡片名稱" style="border:0;outline:none;padding:0;font:inherit;font-size:20px;font-weight:600;color:#172033;background:transparent;width:100%">
+</div>
+
+<div style="flex:1;min-height:0;overflow:auto;padding:16px 20px;display:flex;flex-direction:column;gap:20px">
+<sc-if value="{{ isCreate }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:12px;font-weight:600;color:#596679">從範本開始</span>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px">
+<sc-for list="{{ templates }}" as="t" hint-placeholder-count="3">
+<button type="button" onClick="{{ t.pick }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px;border:1px solid {{ t.border }};border-radius:6px;background:{{ t.bg }};font:inherit;cursor:pointer;text-align:left" style-hover="border-color:#4e67e8">
+<span style="font-size:13px;font-weight:600;color:#172033">{{ t.label }}</span>
+<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#596679">{{ t.sample }}</span>
+</button>
+</sc-for>
+</div>
+<div style="display:flex;align-items:center;gap:6px;height:36px;border:1px solid #dfe4eb;border-radius:6px;padding:0 4px 0 10px;background:#fff">
+<span style="font-size:12px;color:#98a2b3">⌨</span>
+<input value="{{ quick }}" onChange="{{ onQuick }}" onKeyDown="{{ onQuickKey }}" placeholder="快速輸入：(915,1830) 或 W27H33" spellcheck="false" style="flex:1;min-width:0;border:0;outline:none;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#172033;background:transparent">
+<button type="button" onClick="{{ applyQuick }}" style="height:28px;padding:0 10px;border:0;border-radius:4px;background:{{ quickBtnBg }};color:{{ quickBtnInk }};font:inherit;font-size:12px;font-weight:600;cursor:pointer">建立欄位</button>
+</div>
+<span style="font-size:12px;color:{{ quickHintColor }};min-height:16px">{{ quickHint }}</span>
+</div>
+</sc-if>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font-size:12px;font-weight:600;color:#596679">欄位</span><span style="font-size:11px;color:#98a2b3">{{ fieldCount }}</span></div>
+<div style="display:flex;flex-direction:column;border:1px solid #dfe4eb;border-radius:8px;overflow:hidden">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="2">
+<div onClick="{{ r.focus }}" style="display:flex;flex-direction:column;gap:8px;padding:10px 12px;background:{{ r.bg }};border-top:{{ r.divider }};box-shadow:{{ r.bar }}">
+<div style="display:flex;align-items:center;gap:8px">
+<input value="{{ r.name }}" onChange="{{ r.onName }}" aria-label="欄位名稱" style="flex:1;min-width:0;border:0;outline:none;padding:0;font:inherit;font-size:13px;font-weight:600;color:#172033;background:transparent">
+<button type="button" onClick="{{ r.cycleType }}" title="切換種類" style="flex:none;white-space:nowrap;height:22px;padding:0 8px;border:1px solid #dfe4eb;border-radius:999px;background:#fff;font:inherit;font-size:11px;color:#596679;cursor:pointer" style-hover="border-color:#4e67e8;color:#4e67e8">{{ r.typeLabel }}</button>
+<span style="min-width:84px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:{{ r.resColor }}">{{ r.resText }}</span>
+</div>
+<div style="display:flex;align-items:center;height:34px;border:1px solid {{ r.inputBorder }};border-radius:6px;background:#fff;padding:0 10px;gap:6px">
+<input value="{{ r.input }}" onChange="{{ r.onInput }}" onFocus="{{ r.focus }}" aria-label="數值或算式" spellcheck="false" autocomplete="off" style="flex:1;min-width:0;border:0;outline:none;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#172033;background:transparent">
+<span style="font-size:11px;color:#98a2b3">{{ r.unit }}</span>
+</div>
+<sc-if value="{{ r.hasError }}" hint-placeholder-val="{{ false }}">
+<span style="font-size:12px;color:#c2410c">{{ r.error }}</span>
+</sc-if>
+<sc-if value="{{ r.active }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:11px;color:#596679">插入引用</span>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ refOptions }}" as="o" hint-placeholder-count="3">
+<button type="button" onClick="{{ o.insert }}" style="display:flex;align-items:center;gap:6px;height:26px;padding:0 8px;border:1px solid #cfd6fb;border-radius:4px;background:#f3f5ff;font:inherit;font-size:12px;color:#172033;cursor:pointer" style-hover="background:#e6eaff"><span>{{ o.label }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#596679">{{ o.val }}</span></button>
+</sc-for>
+</div>
+<div style="display:flex;gap:6px;justify-content:flex-end">
+<button type="button" onClick="{{ r.up }}" style="height:28px;padding:0 10px;border:1px solid #dfe4eb;border-radius:4px;background:#fff;font:inherit;font-size:12px;color:#172033;cursor:pointer">上移</button>
+<button type="button" onClick="{{ r.remove }}" style="height:28px;padding:0 10px;border:1px solid #dfe4eb;border-radius:4px;background:#fff;font:inherit;font-size:12px;color:#b42318;cursor:pointer">移除</button>
+</div>
+</div>
+</sc-if>
+</div>
+</sc-for>
+<button type="button" onClick="{{ addField }}" style="height:40px;border:0;border-top:1px solid #eef1f5;background:#fafbfc;font:inherit;font-size:13px;font-weight:600;color:#4e67e8;cursor:pointer;text-align:left;padding:0 12px" style-hover="background:#f3f5ff">＋ 欄位</button>
+</div>
+<span style="font-size:12px;color:#596679;line-height:1.6">可填小數或分數（457.5、1/3）。以 = 開頭寫算式，尺寸常數加 mm；引用請從上方插入。</span>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:12px;font-weight:600;color:#596679">套用後的影響</span>
+<sc-if value="{{ hasImpact }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;border:1px solid #dfe4eb;border-radius:8px">
+<sc-for list="{{ impact }}" as="m" hint-placeholder-count="2">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:9px 12px;border-top:{{ m.divider }};font-size:12px">
+<span style="color:#172033">{{ m.label }}</span>
+<span style="font-family:'IBM Plex Mono',monospace;color:{{ m.color }}">{{ m.delta }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<span style="font-size:12px;color:#596679;line-height:1.6">{{ impactNote }}</span>
+</div>
+
+<details style="font-size:13px;color:#596679">
+<summary style="cursor:pointer;font-size:12px;font-weight:600">匯入參數包／既有具名規格</summary>
+<div style="display:flex;gap:6px;padding-top:10px">
+<button type="button" style="height:32px;padding:0 12px;border:1px solid #dfe4eb;border-radius:6px;background:#fff;font:inherit;font-size:12px;color:#172033;cursor:pointer">匯入參數包…</button>
+<button type="button" style="height:32px;padding:0 12px;border:1px solid #dfe4eb;border-radius:6px;background:#fff;font:inherit;font-size:12px;color:#172033;cursor:pointer">編輯具名規格</button>
+</div>
+</details>
+</div>
+
+<div style="flex:none;padding:12px 20px;border-top:1px solid #dfe4eb;display:flex;flex-direction:column;gap:10px;background:#fafbfc">
+<div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:8px;height:8px;border-radius:50%;background:{{ statusDot }}"></span><span style="color:#172033">{{ statusText }}</span></div>
+<div style="display:flex;gap:8px">
+<button type="button" onClick="{{ discard }}" style="height:40px;padding:0 14px;border:1px solid #dfe4eb;border-radius:6px;background:#fff;font:inherit;font-size:13px;font-weight:600;color:#172033;cursor:pointer">{{ discardLabel }}</button>
+<button type="button" onClick="{{ confirm }}" style="flex:1;height:40px;border:0;border-radius:6px;background:#4e67e8;color:#fff;font:inherit;font-size:13px;font-weight:600;cursor:pointer;opacity:{{ confirmOpacity }}" style-hover="background:#3a52d6">{{ confirmLabel }}</button>
+</div>
+</div>
+</aside>
+</div>
+
+<sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:#172033;color:#fff;font-size:13px;padding:10px 14px;border-radius:8px;display:flex;gap:12px;align-items:center;box-shadow:0 6px 20px rgba(22,31,51,.2)"><span>{{ toast }}</span><button type="button" onClick="{{ undo }}" style="border:0;background:transparent;color:#aab8ff;font:inherit;font-size:13px;font-weight:600;cursor:pointer">復原</button></div>
+</sc-if>
+</div>
+
+<div style="max-width:1440px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;font-size:13px;line-height:1.7;color:#172033">
+<div style="display:flex;flex-direction:column;gap:4px"><strong>範本變成三個按鈕</strong><span style="color:#596679">原本藏在下拉選單。按鈕上直接顯示會建立的欄位；快速輸入邊打邊預告欄位，Enter 就建立。</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><strong>欄位改成緊湊列表</strong><span style="color:#596679">不再每欄一個 fieldset。每列是名稱、種類、試算結果、輸入框；引用和上移／移除只在選中的那列出現。</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><strong>自動試算，免按「重新試算」</strong><span style="color:#596679">每欄右側即時顯示結果或錯誤。底部列出引用者的前後值，確認鈕固定在面板底部。</span></div>
+<div style="display:flex;flex-direction:column;gap:4px"><strong>畫布同步草稿</strong><span style="color:#596679">新卡片以虛線草稿出現在畫布上；編輯既有卡片時，只畫出與它相關的引用線。</span></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;create&quot;,&quot;edit&quot;],&quot;default&quot;:&quot;create&quot;,&quot;tsType&quot;:&quot;'create'|'edit'&quot;,&quot;section&quot;:&quot;情境&quot;},&quot;showRelations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;情境&quot;}}">
+const TEMPLATES = {
+  single: { label: '單值', sample: '尺寸', fields: [['尺寸', 'dimension', '0']] },
+  panel: { label: '寬 × 長', sample: '寬 · 長', fields: [['寬', 'dimension', '915'], ['長', 'dimension', '1830']] },
+  section: { label: 'W × H', sample: 'W · H', fields: [['W', 'dimension', '27'], ['H', 'dimension', '33']] },
+};
+const TYPES = ['dimension', 'count', 'ratio'];
+const TYPE_LABEL = { dimension: '尺寸', count: '數量', ratio: '比例' };
+const TYPE_UNIT = { dimension: 'mm', count: '個', ratio: '×' };
+let uid = 100;
+const mk = (arr) => arr.map(([name, type, input]) => ({ id: ++uid, name, type, input }));
+
+function parseQuick(s) {
+  s = (s || '').trim();
+  if (!s) return null;
+  let m = s.match(/^\(?\s*(\d+(?:\.\d+)?)\s*[,，x×]\s*(\d+(?:\.\d+)?)\s*\)?$/i);
+  if (m) return [['寬', 'dimension', m[1]], ['長', 'dimension', m[2]]];
+  m = s.match(/^W\s*(\d+(?:\.\d+)?)\s*H\s*(\d+(?:\.\d+)?)$/i);
+  if (m) return [['W', 'dimension', m[1]], ['H', 'dimension', m[2]]];
+  m = s.match(/^(\d+(?:\.\d+)?)$/);
+  if (m) return [['尺寸', 'dimension', m[1]]];
+  return false;
+}
+function fmt(v) {
+  if (!isFinite(v)) return '—';
+  const r = Math.round(v * 1000) / 1000;
+  return String(r);
+}
+function evaluate(input, type, env) {
+  let s = (input || '').trim();
+  if (!s) return { ok: false, error: '請輸入數值或算式' };
+  let v;
+  if (/^[=＝]/.test(s)) {
+    let expr = s.slice(1), missing = null;
+    expr = expr.replace(/@([^\s.+\-*/()×÷−]+)\.([^\s+\-*/()×÷−]+)/g, (_, c, f) => {
+      const k = c + '.' + f;
+      if (!(k in env)) { missing = k; return '0'; }
+      if (env[k] == null) { missing = k + '（尚未有效）'; return '0'; }
+      return '(' + env[k] + ')';
+    });
+    if (missing) return { ok: false, error: '找不到引用 ' + missing };
+    expr = expr.replace(/mm/g, '').replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+    if (!/^[\d.\s+\-*/()]+$/.test(expr)) return { ok: false, error: '算式含無法辨識的符號' };
+    try { v = Function('return (' + expr + ')')(); } catch (e) { return { ok: false, error: '算式不完整' }; }
+  } else if (/^-?\d+(\.\d+)?$/.test(s)) v = Number(s);
+  else if (/^\d+\s*\/\s*\d+$/.test(s)) { const [a, b] = s.split('/').map(Number); if (!b) return { ok: false, error: '分母不能為 0' }; v = a / b; }
+  else return { ok: false, error: '數值格式不正確；算式請以 = 開頭' };
+  if (!isFinite(v)) return { ok: false, error: '結果無效（除以 0？）' };
+  if (type === 'count' && (v < 0 || !Number.isInteger(v))) return { ok: false, error: '數量須為非負整數' };
+  if (type === 'dimension' && v <= 0) return { ok: false, error: '尺寸須大於 0' };
+  return { ok: true, v };
+}
+
+class Component extends DCLogic {
+  state = this.initial(this.props.mode ?? 'create');
+  initial(mode) {
+    if (mode === 'edit') return { mode, name: '板材尺寸', fields: mk([['寬', 'dimension', '915'], ['長', 'dimension', '1830']]), template: null, quick: '', active: null, toast: '', applied: null };
+    return { mode, name: '角材截面', fields: mk(TEMPLATES.section.fields), template: 'section', quick: '', active: null, toast: '', applied: null };
+  }
+  componentDidUpdate() {
+    const m = this.props.mode ?? 'create';
+    if (m !== this.state.mode) this.setState(this.initial(m));
+  }
+  setField(id, patch) { this.setState(s => ({ fields: s.fields.map(f => f.id === id ? { ...f, ...patch } : f), toast: '' })); }
+  renderVals() {
+    const s = this.state, isCreate = s.mode === 'create', showRel = this.props.showRelations ?? true;
+    const cardName = s.name.trim() || '未命名參數';
+    const baseW = 915, baseL = 1830;
+    const env = {};
+    if (isCreate) { env['板材尺寸.寬'] = baseW; env['板材尺寸.長'] = baseL; env['排格設定.間距'] = baseW + 7; }
+    const names = s.fields.map(f => f.name.trim());
+    const results = s.fields.map(f => {
+      let r = evaluate(f.input, f.type, env);
+      const nm = f.name.trim();
+      if (!nm) r = { ok: false, error: '欄位需要名稱' };
+      else if (names.filter(n => n === nm).length > 1) r = { ok: false, error: '同卡欄位名稱重複' };
+      env[cardName + '.' + nm] = r.ok ? r.v : null;
+      return r;
+    });
+    const allOk = s.name.trim() && s.fields.length && results.every(r => r.ok);
+    const errCount = results.filter(r => !r.ok).length;
+    const rows = s.fields.map((f, i) => {
+      const r = results[i], active = s.active === f.id;
+      return {
+        name: f.name, nameShown: f.name || '—', input: f.input, typeLabel: TYPE_LABEL[f.type], unit: f.input.trim().startsWith('=') ? '算式' : TYPE_UNIT[f.type],
+        resText: r.ok ? '= ' + fmt(r.v) + (f.type === 'dimension' ? ' mm' : f.type === 'ratio' ? ' ×' : '') : '無效',
+        resShort: r.ok ? fmt(r.v) + (f.type === 'dimension' ? ' mm' : '') : '無效',
+        resColor: r.ok ? '#172033' : '#c2410c', hasError: !r.ok, error: r.error || '',
+        inputBorder: !r.ok ? '#f3b58f' : active ? '#4e67e8' : '#dfe4eb',
+        active, bg: active ? '#f7f8ff' : '#fff', divider: i ? '1px solid #eef1f5' : '0', bar: active ? 'inset 3px 0 0 #4e67e8' : 'none',
+        focus: () => { if (s.active !== f.id) this.setState({ active: f.id }); },
+        onName: e => this.setField(f.id, { name: e.target.value }),
+        onInput: e => this.setField(f.id, { input: e.target.value }),
+        cycleType: e => { e.stopPropagation(); this.setField(f.id, { type: TYPES[(TYPES.indexOf(f.type) + 1) % 3] }); },
+        up: e => { e.stopPropagation(); if (!i) return; this.setState(st => { const a = [...st.fields];[a[i - 1], a[i]] = [a[i], a[i - 1]]; return { fields: a }; }); },
+        remove: e => { e.stopPropagation(); this.setState(st => ({ fields: st.fields.filter(x => x.id !== f.id), active: null })); },
+      };
+    });
+    const activeField = s.fields.find(f => f.id === s.active);
+    const refOptions = [];
+    if (activeField) {
+      const avail = isCreate ? [['板材尺寸', '寬', baseW], ['板材尺寸', '長', baseL], ['排格設定', '間距', baseW + 7]] : [];
+      s.fields.forEach((f, i) => { if (f.id !== activeField.id && f.name.trim()) avail.push([cardName, f.name.trim(), results[i].ok ? results[i].v : null]); });
+      for (const [c, fn, v] of avail) refOptions.push({
+        label: c + '.' + fn, val: v == null ? '—' : fmt(v),
+        insert: e => { e.stopPropagation(); let t = activeField.input.trim(); if (!/^[=＝]/.test(t)) t = '='; this.setField(activeField.id, { input: t + (t.length > 1 && !/[+\-*/(×÷]\s*$/.test(t) ? ' + ' : '') + '@' + c + '.' + fn }); },
+      });
+    }
+    let impact = [], impactNote = '';
+    const newW = !isCreate ? env[cardName + '.寬'] : null;
+    if (!isCreate) {
+      if (newW == null) impactNote = '「寬」目前無效，引用它的物件無法試算；修正前不能套用。';
+      else {
+        const b = baseW + 7, a = newW + 7, ch = a !== b;
+        impact = [
+          { label: '排格設定 · 間距', delta: ch ? `${fmt(b)} → ${fmt(a)} mm` : `${fmt(b)} mm 不變`, color: ch ? '#4e67e8' : '#596679' },
+          { label: '立面 A 網格 · u 間距', delta: ch ? `${fmt(b)} → ${fmt(a)} mm` : `${fmt(b)} mm 不變`, color: ch ? '#4e67e8' : '#596679' },
+        ].map((m, i) => ({ ...m, divider: i ? '1px solid #eef1f5' : '0' }));
+        impactNote = Number.isInteger(a) ? '參數與引用物件會整筆一起更新，可一次復原。' : `間距 ${fmt(a)} mm 不是整數 mm，網格會拒絕；參數與網格都保留舊值。`;
+      }
+    } else impactNote = '新卡片還沒有被引用。套用後，網格和角材的來源選單就能選用它。';
+    const gridBad = !isCreate && newW != null && !Number.isInteger(newW + 7);
+    const canApply = allOk && !gridBad;
+    const dirty = isCreate || s.fields.some((f, i) => f.input !== ['915', '1830'][i]) || s.name !== '板材尺寸' || s.fields.length !== 2;
+    const q = parseQuick(s.quick);
+    const displayW = !isCreate && s.applied ? s.applied.w : baseW;
+    return {
+      isCreate, name: s.name, nameShown: cardName, rows, refOptions, fieldCount: `${s.fields.length} / 16`,
+      crumb: isCreate ? '建立參數' : '板材尺寸',
+      panelTitle: isCreate ? '建立參數' : '參數卡',
+      badgeText: isCreate ? '草稿 · 未套用' : dirty ? '有未套用修改' : '已同步',
+      badgeBg: isCreate || dirty ? '#fff4e5' : '#ecfdf3', badgeInk: isCreate || dirty ? '#b54708' : '#067647',
+      saveNote: isCreate || dirty ? '參數草稿未套用，暫時無法保存' : '', saveOpacity: isCreate || dirty ? '.5' : '1',
+      onName: e => this.setState({ name: e.target.value, toast: '' }),
+      templates: Object.entries(TEMPLATES).map(([k, t]) => ({
+        label: t.label, sample: t.sample, border: s.template === k ? '#4e67e8' : '#dfe4eb', bg: s.template === k ? '#f3f5ff' : '#fff',
+        pick: () => this.setState({ template: k, fields: mk(t.fields), active: null, quick: '' }),
+      })),
+      quick: s.quick,
+      onQuick: e => this.setState({ quick: e.target.value }),
+      applyQuick: () => { if (q) this.setState({ fields: mk(q), template: null, quick: '', active: null }); },
+      onQuickKey: e => { if (e.key === 'Enter' && q) this.setState({ fields: mk(q), template: null, quick: '', active: null }); },
+      quickHint: q ? `按 Enter 建立 ${q.length} 欄：${q.map(x => x[0] + ' ' + x[2]).join('、')}` : q === false ? '看不懂這個格式，試試 (915,1830)、W27H33 或單一數字' : '',
+      quickHintColor: q === false ? '#c2410c' : '#4e67e8',
+      quickBtnBg: q ? '#4e67e8' : '#f1f3f6', quickBtnInk: q ? '#fff' : '#98a2b3',
+      addField: () => { const id = ++uid; this.setState(st => st.fields.length >= 16 ? null : { fields: [...st.fields, { id, name: '欄位 ' + (st.fields.length + 1), type: 'dimension', input: '' }], active: id }); },
+      hasImpact: impact.length > 0, impact, impactNote,
+      statusDot: canApply ? '#12b76a' : '#f79009',
+      statusText: canApply ? (isCreate ? '全部欄位有效，可建立卡片' : dirty ? '試算通過，可套用' : '沒有未套用的修改') : errCount ? `${errCount} 個欄位需要修正` : gridBad ? '引用物件不接受這個值' : '請填寫卡片名稱',
+      confirmLabel: isCreate ? '建立參數卡' : '確認套用',
+      confirmOpacity: canApply && dirty ? '1' : '.45',
+      discardLabel: isCreate ? '捨棄草稿' : '還原',
+      discard: () => this.setState(this.initial(s.mode)),
+      confirm: () => { if (!canApply || !dirty) return; this.setState({ toast: isCreate ? `已建立「${cardName}」` : '參數與 2 個引用物件已更新', applied: { w: newW } }); },
+      toast: s.toast, undo: () => this.setState({ toast: '', applied: null }),
+      panelCardName: '板材尺寸', panelW: isCreate ? fmt(baseW) : fmt(newW ?? displayW), panelL: isCreate ? fmt(baseL) : (env[cardName + '.長'] != null ? fmt(env[cardName + '.長']) : '—'),
+      gapCard: fmt((isCreate || newW == null ? baseW : newW) + 7),
+      panelCardBorder: !isCreate ? '2px solid #4e67e8' : '1px solid #dfe4eb',
+      relOpacity: !isCreate && showRel ? '1' : '0',
+      canvasHint: isCreate ? '虛線卡片是草稿，套用後才加入畫布' : '只顯示所選卡片的引用關係',
+    };
+  }
+}
+</script>
+</body>
+</html>

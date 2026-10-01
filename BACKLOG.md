@@ -3809,7 +3809,26 @@ P70 定向真實瀏覽器 52 個斷言已通過：未放置邊界、兩份配置
   136 既有場景及完整介面 1482 斷言全部通過，自動驗收結果見
   [驗收報告](geometry-web/docs/PARAMETERS-VALIDATION.md)。依 Q23-b，實體手機鍵盤與作業系統
   下載提示仍待使用者人工確認，完成前不標「已交付」。Q25／GEO-224 的參數編輯面板重設計
-  已定案、尚未實作，屬後續工作。
+  已實作並通過自動驗收，見下方 GEO-224 條目。
+
+## GEO-224 — 參數編輯面板重做（設計稿 4a，2026-09-30，已完成）
+
+來源：使用者看過設計稿「建立參數 · 重新設計」（4a）與 agent 列出的六處缺口後，授權補全並落地（`決策佇列.md` Q25 🔒）；設計稿存於 `geometry-web/docs/uiux-review/建議-建立參數 4a.dc.html`。範圍是網頁版「建立參數／參數卡」編輯面板：純前端（`parameters.js`、`parameters.css`、`app.js` 版面旗標）加 DOM 契約與瀏覽器測試。不改公理、核心、橋接器、`PARAMETERS-CONTRACT.md` 或專案檔案格式；前端仍不做算式求值，有效值與錯誤全由核心預覽交易提供（Q25-2）。
+
+- 版面：參數編輯（建立或編輯既有卡）時 `body.parameter-editing`；視窗 >900px 時檢視器改成畫布右側固定欄（寬 `clamp(380px, 30vw, 480px)`、內部捲動），畫布取其餘寬度。其他檢視器與 ≤900px（含 390px）維持畫布下方，既有版面決定不動。
+- 面板結構：標頭（名稱、狀態徽章：草稿·未套用／已套用／有未套用修改）→ 從範本開始（三顆範本鈕 `[data-param-template]`、快速輸入與即時預告 `#paramQuickHint`，Enter 等同「建立欄位」）→ 緊湊欄位列表（每欄名稱、種類原生 `select`、核心算出的結果、輸入框，計數 n / 16）→ 說明 → 套用後的影響 → 摺疊區 `#paramUsage`／`#paramExchange` → 固定頁尾（狀態點與狀態、捨棄、重新試算、確認）。加欄、移除、上移、套範本只重繪欄位列，焦點落在新欄名稱、相鄰列或被移動列。
+- 逐欄試算與錯誤（Q25-2、Q25-3）：沿用 450ms 防抖與過期守門。成功時每欄顯示核心回傳的精確值；核心 fail-fast 只指認第一個出錯欄，前端解析 `[pid:fid 卡.欄] -> … -> 根因` 前綴標紅該欄，其餘欄顯示「待試算」；核心錯誤碼對照中文短句（`ParameterUI.errorText`），原文收在該列 `<details>`。
+- 引用晶片（Q25-6）：選中列才展開「卡名.欄名 值」晶片；排除自己與會造成循環的來源（以 AST 與草稿輸入內的引用 token 求傳遞閉包）；超過 8 個來源出現篩選框並限高。
+- 畫布草稿卡：建立新卡期間畫布顯示虛線「草稿」卡（`.parameter-card.is-draft`），內容跟著欄位與試算結果更新；不寫 canvas-pos、不進 `oc.parameters`、不可選取或拖曳、不畫關係線。草稿卡是最後一個獨立 commit，未動選取、拖曳與小地圖邏輯（畫在獨立的 `#draftLayer`、`pointer-events: none`、不帶 `.ocard`）。
+- 樣式：只用 `app.css :root` 既有 token，修掉 `parameters.css` 裡未定義的 `--text`、`--surface`；不載入設計稿的外部字型；所有可點控制（含晶片、範本鈕、上移、移除）≥44px。
+
+減項（GEO-219 紀律）：範本下拉 `#paramTemplate` 併入三顆範本按鈕；每欄 `fieldset`／`legend` 拿掉，改緊湊列；「插入引用」下拉 `select[data-insert]` 併入帶值晶片；「轉成欄位草稿」併入「建立欄位」（也可直接 Enter）。新增的可見入口只有範本鈕（取代下拉）、晶片（取代下拉）與頁尾狀態點，沒有新增獨立按鈕入口。常駐說明區塊維持 3 塊（說明、`#paramResult`、`#paramStatus`）；`#paramQuickHint` 只在輸入時出現，屬即時預告，不計入。
+
+驗證：`parameter_workflow_test.js`（P76）既有 35 條斷言語意不變，只把摺疊區選擇器由 `details:first-of-type`／`details:last-child` 改為 `#paramUsage`／`#paramExchange`；新增 21 條（第一輪 9 條：範本鈕、快速輸入預告與 Enter、每欄核心值、`=1/0` 只標出錯欄、循環來源排除、點晶片後試算成功、1280px 右側固定欄與 sticky 頁尾、390px 控制 ≥44px 與無溢出、畫布草稿卡；第二輪 12 條：見下段）。`GEOMETRY_PARAMETERS_ONLY=1` 56 通過；完整 `cdp_test.js` 1503 通過、0 失敗、0 略過群組；`tests/test_parameters_project_store.js`（5/5）、`tests.test_parameters_core`（19）、`tests/test_space_model_store.js`（17）、`tests/test_axiom_reader.py`（25）全部通過。突變證據：拿掉出錯欄歸屬、循環排除、`body.parameter-editing` 右側欄規則、sticky 頁尾、草稿卡繪製，對應斷言各自變紅。桌面與 390px 截圖（`docs/screens/parameters-*.png`）核對。
+
+第二輪（對抗審查後）：合入 main 的 2caf00c（`createCard` 等待穩定化）；草稿卡位置改在右側欄版面定案後才排並平移入可視區，確認時以草稿座標寫入真卡（原本草稿用寬畫布、真卡用窄畫布，位置會不同）；進入參數編輯時選中卡平移入可視區；欄位列 `role="group"` 與各控制的可及名稱、`[data-error]` `role="alert"`、快速輸入預告 live region；多筆違規逐筆列出，欄位歸屬與錯誤碼改為只認分節開頭與根因段；≤900px 參數編輯時底部面板高度上限放寬為 `min(62dvh, 560px)`；輸入法組字中的 Enter 不建立欄位；明確按「重新試算」時撤掉尚在防抖的自動試算（否則它會再建一個候選，讓剛拿到的確認 token 失效）。新增測試：三層依賴鏈與草稿 token 建邊、草稿位置＝真卡位置、選中卡不被右欄遮住、離開路徑清除 class、特殊字元只當文字、過期回應不覆寫逐欄結果、可及名稱、多筆違規與訊息解析純函式、窄畫面面板高度、輸入法 Enter；「保存內容不含草稿」改為草稿還在畫布上時取 scene dump。
+
+併入組立規則之後的 main 時，參數預覽的影響清單保留組構配置槽位 A／B 的前後值。上面的 1503 斷言是合入前的瀏覽器回歸，沒有覆蓋這一列。
 
 ## GEO-225 — 測試可信度與入口精煉（2026-10-01，進行中）
 
