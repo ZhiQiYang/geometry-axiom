@@ -4,6 +4,7 @@ const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
 const floor = require('./cdp_floor.js');
 const cdp = require('./cdp_helpers.js');
+const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const SCOPE_FLAGS = ['GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
 function runConfiguration(env = process.env) {
@@ -6251,7 +6252,9 @@ async function main() {
     console.log('P53 setup isolated connection fixture');
     await scene(['boundary 1 outline 0,0 4000,0 4000,3000 0,3000']);
     const beforeConnection = await eval_(`api('dump').then(r=>r.text)`);
+    const navigationMarker = require('crypto').randomUUID();
     const injected = await send('Page.addScriptToEvaluateOnNewDocument', { source: `
+      window.__cdpExpectedNavigationMarker = ${JSON.stringify(navigationMarker)};
       window.__g197NativeFetch = window.fetch.bind(window);
       window.__g197Mode = '403'; window.__g197Commands = [];
       window.fetch = async (input, init) => {
@@ -6270,7 +6273,8 @@ async function main() {
     console.log('P53 reload with expected test-project leave protection');
     await send('Page.reload');
     console.log('P53 wait for injected connection error');
-    await until(`typeof connection !== 'undefined' && connection.phase === 'error'`);
+    await waitForExpectedNavigation({evaluate:eval_, marker:navigationMarker, label:'P53 injected connection error',
+      condition:`typeof connection !== 'undefined' && connection.phase === 'error'`});
     const failedStart = await eval_(`({message:$('connectionMessage').textContent,empty:$('emptyState').hidden,count:$('objectCountBadge').textContent,inert:$('app').inert})`);
     check('P53-1 初始 403 明示錯誤、未知數量、停用編輯', failedStart.message.includes('403') && failedStart.empty && failedStart.count === '—' && failedStart.inert, failedStart);
     const offlineRequests = await eval_(`__g197Commands.length`);

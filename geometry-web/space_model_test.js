@@ -14,6 +14,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { installConfirmationDumpGate } = require('./cdp_confirmation_gate.js');
 function spaceRunConfiguration(env = process.env) {
   if(!env.GEOMETRY_TEST_URL)throw Error('GEOMETRY_TEST_URL is required; use an explicitly isolated test service. No browser or reset was started.');
   const target=new globalThis.URL(env.GEOMETRY_TEST_URL);
@@ -345,8 +346,11 @@ async function flowInlineGuardsRegression() {
   const fixture=['surface 331 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000','surface 332 origin 0 0 2600 u +x v +y outline 0,0 2000,0 2000,2000 0,2000'];
   for(const action of ['close','source','context','direction']) {
     await setup(fixture);await openFlowFace(331);
-    await evaluate(`(()=>{const original=window.fetch;window.__flowProjectionHeld=false;const gate=new Promise(resolve=>window.__releaseFlowProjection=resolve);window.fetch=async(...args)=>{const response=await original(...args);let cmd;try{cmd=JSON.parse(args[1]?.body||'{}').cmd}catch{}if(String(args[0]).includes('/api')&&cmd==='dump'){window.fetch=original;const json=response.json.bind(response);response.json=async()=>{const data=await json();window.__flowProjectionHeld=true;await gate;window.__flowProjectionHeld=false;return data;};}return response;};})()`);
+    await evaluate(`(${installConfirmationDumpGate.toString()})(window)`);
     await click('#smConfirmProjection');await wait(`window.__flowProjectionHeld===true`,'held inline projection '+action);
+    const gateEvidence=await evaluate(`({gate:window.__flowProjectionGate,open:document.querySelector('#smWorkspace').open,pending:document.querySelector('#smProjectionCallout').getAttribute('aria-busy')==='true',projections:[ReferenceWorkspace.getFaceProjection(331,331),ReferenceWorkspace.getFaceProjection(332,332)]})`);
+    console.log('INLINE_PROJECTION_GATE',JSON.stringify({action,...gateEvidence}));
+    if(!gateEvidence.gate?.matched||gateEvidence.gate.phase!=='held'||!gateEvidence.open||!gateEvidence.pending||gateEvidence.projections.some(p=>p!=null))throw Error('Inline confirmation was not exclusively held before '+action+': '+JSON.stringify(gateEvidence));
     if(action==='close')await closeWorkspace();
     if(action==='source')await select('#smSourceSelect','332');
     if(action==='context')await evaluate(`(async()=>{resetSceneFocus();await api('reset');await renderObjects();})()`);
@@ -357,7 +361,9 @@ async function flowInlineGuardsRegression() {
       await evaluate(`(()=>{const e=document.querySelector('#smProjectionView');e.value='bottom';e.dispatchEvent(new Event('change',{bubbles:true}));})()`);
     }
     await evaluate(`window.__releaseFlowProjection()`);await wait(`window.__flowProjectionHeld===false`,'release inline projection '+action);await settle();
-    check('GEO210 late inline confirmation cannot save after '+action,await evaluate(`ReferenceWorkspace.getFaceProjection(331,331)==null && ReferenceWorkspace.getFaceProjection(332,332)==null`));
+    const projectionsAfter=await evaluate(`[ReferenceWorkspace.getFaceProjection(331,331),ReferenceWorkspace.getFaceProjection(332,332)]`);
+    console.log('INLINE_PROJECTION_RELEASE',JSON.stringify({action,projectionsAfter}));
+    check('GEO210 late inline confirmation cannot save after '+action,projectionsAfter[0]==null&&projectionsAfter[1]==null);
     await closeWorkspace();
   }
 }
