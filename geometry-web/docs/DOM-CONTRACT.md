@@ -967,7 +967,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `#asmKindN`、`#asmEndN`、`#asmSideN`、`#asmDirN` 與示意的 `[data-joint][data-face]` 寫入局部型別與固定身分。`#asmRotate`／`#asmZoomIn`／`#asmZoomOut` 只改檢視。
 - `#asmSourceNA`／`#asmSourceNB`、`#asmValueNA`／`#asmValueNB`、`#asmContactN`、`#asmOrientationN` 編輯材料配置；空值可存草稿或合法未完成配置。
 - `#asmBindingRule` 換版先開 `#asmMapping`；`#asmMapN` 及 `#asmApplyMapping` 明確對應槽位，`#asmCancelMapping` 撤回選擇。
-- `#asmPreview`／`#asmPreviewResult`／`#asmConfirm`／`#asmCancel` 使用原生交易，`#asmStatus` 顯示拒絕原因。異步回應核對 context、編輯代次及序號。
+- `#asmFooter` 只在有草稿或待確認預覽時出現。`#asmPreview` 在尚未取得預覽時顯示；預覽回來後改顯示 `#asmConfirm`（`.primary-button`，無效時 disabled）與 `#asmCancel`，兩者固定在對話框底部。沒有待確認變更時這三個鈕都隱藏。`#asmPreviewResult` 貼在底部按鈕上方、不跟表單一起捲動，先寫槽位名稱、截面前後值或規則版本，違反原因仍列在外面；完整 JSON 在「完整資料，給除錯對照」。`#asmStatus` 顯示拒絕原因。異步回應核對 context、編輯代次及序號。示意圖 `#asmDiagram` 的圖說使用槽位名稱與右側／左側／上側／下側，`[data-face]` 的值仍是 `+u`／`-u`／`+v`／`-v`。已發布配置用 `.asm-slot` 顯示槽位名稱與截面。
 - `.assembly-card[data-kind="assembly-rule"|"assembly-binding"][data-id]` 沿用畫布身分、拖曳、搜尋、小地圖和選取。`#asmInspectorOpen` 返回工作區。
 - `#asmClose` 返回畫布，草稿留在專案；需使用共用保存寫入檔案。新建／開啟專案會關閉舊工作區。
 - 空間工作區在寬高皆 ≤720px 時收起 `.sm-source-actions` 的重複範例捷徑；設定區來源選擇、返回畫布與保存列仍保留，確認／建立按鈕須完整可見。

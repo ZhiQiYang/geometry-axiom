@@ -32,9 +32,10 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  check('未選材料保存為未完成',await read(`oc.assemblyBindings.length===1&&!oc.assemblyBindings[0].complete`));
  await ctl('[data-asm-rule="1:1"]');await ctl('#asmEdit');await fill('#asmName','新版雙框');await fill('#asmSlot1','長框 <i>文字</i>');await ctl('#asmSwap1');await ctl('#asmSwap1');await publish();
  check('新版本不升級既有配置',await read(`apiRequest('assembly-read').then(r=>r.state.rules.length===2&&r.state.bindings[0].value.rule.version===1)`));
+ await ctl('[data-asm-rule="1:2"]');check('已發布圖說用名字與側面',await read(`$('asmDiagram').textContent.includes('抵住')&&$('asmDiagram').textContent.includes('右側')&&!$('asmDiagram').textContent.includes('dir ')&&$('asmFooter').hidden&&$('asmCancel').hidden`));
  await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');await choose('#asmBindingRule','1:2');
  check('槽位名稱在換版對應中只當文字顯示',await read(`$('asmMapping').textContent.includes('長框 <i>文字</i>')&&!$('asmMapping').querySelector('i')`));
- await choose('#asmMap1','1');await choose('#asmMap2','2');await ctl('#asmApplyMapping');await ctl('#asmPreview');await wait(`!$('asmConfirm').disabled`);await ctl('#asmCancel');
+ await choose('#asmMap1','1');await choose('#asmMap2','2');await ctl('#asmApplyMapping');await ctl('#asmPreview');await wait(`!$('asmConfirm').disabled`);check('預覽寫出換了哪一版',await read(`$('asmPreviewResult').textContent.includes('第 2 版')&&!$('asmCancel').hidden&&$('asmConfirm').classList.contains('primary-button')`));await ctl('#asmCancel');
  check('取消換版不改正式配置',await read(`apiRequest('assembly-read').then(r=>r.state.bindings[0].value.rule.version===1)`));
  await ctl('#asmDeleteDraft');await ctl('[data-asm-rule="1:1"]');await ctl('#asmCopy');await fill('#asmName','獨立規則');await publish();
  check('複製有新原生身分',await read(`apiRequest('assembly-read').then(r=>new Set(r.state.rules.map(x=>x.value.id)).size===2)`));
@@ -50,7 +51,7 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');await fill('#asmName','手機角材配置');
  for(const id of [1,2]){for(const axis of ['A','B']){await choose(`#asmSource${id}${axis}`,'literal');await fill(`#asmValue${id}${axis}`,axis==='A'?27:33);}await choose('#asmContact'+id,'A');await choose('#asmOrientation'+id,'B');}
  await publish();check('390px 完成 A/B 材料配置',await read(`apiRequest('assembly-read').then(r=>r.state.bindings[0].complete&&r.state.bindings[0].effective.every(v=>v.A.value===27&&v.B.value===33))`));
- await ctl('[data-asm-binding="1"]');check('390px 無橫向溢出與小於44px操作',await read(`document.documentElement.scrollWidth<=innerWidth&&$('assemblyWorkspace').scrollWidth<=innerWidth&&[...$('assemblyWorkspace').querySelectorAll('button,input,select')].filter(n=>n.getBoundingClientRect().height).every(n=>n.getBoundingClientRect().height>=44)`));
+ await ctl('[data-asm-binding="1"]');check('已發布配置寫出槽位名與截面',await read(`$('asmEditor').textContent.includes('中支')&&$('asmEditor').textContent.includes('截面 27 × 33 mm')&&$('asmEditor').textContent.includes('接觸面是 A 面')&&$('asmEditor').textContent.includes('B 沿局部 u')&&$('asmFooter').hidden`));check('390px 無橫向溢出與小於44px操作',await read(`document.documentElement.scrollWidth<=innerWidth&&$('assemblyWorkspace').scrollWidth<=innerWidth&&[...$('assemblyWorkspace').querySelectorAll('button,input,select')].filter(n=>n.getBoundingClientRect().height).every(n=>n.getBoundingClientRect().height>=44)`));
  fs.writeFileSync(path.join(os.tmpdir(),'geometry-tests','assembly-mobile.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
  await ctl('#asmClose');await read(`(async()=>{window.__assemblySaved=await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.importBytes(window.__assemblySaved,'組構驗收.gcanvas');await renderObjects();})()`);
  check('保存重開保留所有版本配置與卡片位置',await read(`apiRequest('assembly-read').then(r=>r.state.rules.length===3&&r.state.bindings[0].complete&&oc.assemblyRules.every(o=>o.hasPos))`));
