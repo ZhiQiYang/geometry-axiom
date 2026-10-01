@@ -85,7 +85,12 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   check('匯入先預覽新增卡片',await read(`oc.parameters.length===3&&$('paramResult').textContent.includes('排格設定')`));
   await ctl('#paramConfirm');await wait('!ParameterUI.pending');
   check('同名參數包匯入為獨立副本',await read(`oc.parameters.length===5&&oc.parameters.filter(p=>p.name==='板材尺寸').length===2&&oc.parameters.filter(p=>p.name==='排格設定').length===2`));
-  await read(`ParameterUI.jump('parameter',${panel.id})`);await fill(`[data-param-field="${width}"] [data-input]`,'930');await confirm();
+  await read(`ParameterUI.jump('parameter',${panel.id})`);
+  await read(`window.__manualPreviewOriginal=EngineeringAdapter.preview;window.__manualPreviewCalls=0;window.__manualPreviewReleases=[];EngineeringAdapter.preview=async request=>{window.__manualPreviewCalls++;const result=await window.__manualPreviewOriginal(request);return new Promise(resolve=>window.__manualPreviewReleases.push(()=>resolve(result)));};void 0`);
+  await fill(`[data-param-field="${width}"] [data-input]`,'930');await ctl('#paramPreview');await wait(`window.__manualPreviewReleases.length>0`);await sleep(650);
+  check('手動試算取消待執行的自動試算，回覆前不能確認',await read(`window.__manualPreviewCalls===1&&$('paramConfirm').disabled`));
+  await read(`EngineeringAdapter.preview=window.__manualPreviewOriginal;window.__manualPreviewReleases.forEach(release=>release());void 0`);
+  await wait(`!$('paramConfirm').disabled`);await ctl('#paramConfirm');await wait(`!ParameterUI.pending`);
   check('修改原卡不影響匯入副本',await read(`oc.parameters.filter(p=>p.name==='排格設定').map(p=>p.card.fields[0].value.num).sort().join(',')==='922,932'`));
   await read(`ParameterUI.jump('parameter',${panel.id});void 0`);await wait(`$('paramName')?.value==='板材尺寸'`);await editorTop();await sleep(4500);
   fs.writeFileSync(path.join(os.tmpdir(),'geometry-tests','parameter-desktop.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));

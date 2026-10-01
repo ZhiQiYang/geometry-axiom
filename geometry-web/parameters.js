@@ -103,7 +103,10 @@ window.ParameterUI = (() => {
   }
   async function preview(s,quiet=false,operations=null) {
     if(!current(s)||s.busy)return;
-    if(operations){clearTimeout(timer);s.generation++;if(s.preview)EngineeringAdapter.cancel({token:s.preview.token}).catch(()=>{});s.preview=null;$('paramConfirm')?.setAttribute('disabled','');}
+    clearTimeout(timer);
+    if(operations)s.generation++;
+    if(s.preview)EngineeringAdapter.cancel({token:s.preview.token}).catch(()=>{});
+    s.preview=null;$('paramConfirm')?.setAttribute('disabled','');
     const generation=s.generation,request=++serial;
     try{
       const ops=operations||[buildOperation(s)];
