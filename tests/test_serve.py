@@ -229,6 +229,7 @@ class BridgeServerTests(unittest.TestCase):
     def test_reference_assets_are_local_and_path_allowlisted(self):
         with self.http_server() as base:
             for route, ctype in [("/project-store.js", "text/javascript"),
+                                 ("/grid-trial.js", "text/javascript"),
                                  ("/reference-workspace.js", "text/javascript"),
                                  ("/vendor/pdfjs-dist/build/pdf.mjs", "text/javascript"),
                                  ("/vendor/pdfjs-dist/build/pdf.worker.mjs", "text/javascript"),

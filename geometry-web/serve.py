@@ -263,7 +263,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                        "text/css; charset=utf-8")
         elif self.path in {"/assembly-workspace.js", "/parameters.js", "/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js",
                            "/project-store.js", "/reference-workspace.js", "/project-ui.js", "/workspace-guidance.js", "/workspace-shell.js",
-                           "/model-viewer.js", "/space-workspace.js", "/engineering-workspace.js", "/engineering-adapter.js", "/grid-system-workspace.js", "/grid-inspector.js"}:
+                           "/model-viewer.js", "/space-workspace.js", "/engineering-workspace.js", "/engineering-adapter.js", "/grid-system-workspace.js", "/grid-inspector.js", "/grid-trial.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")
         elif self.path in VENDOR_FILES:

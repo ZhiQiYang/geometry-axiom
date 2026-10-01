@@ -197,7 +197,7 @@ async function connect() {
     } catch(error) {if(error.code==='BROWSER_OWNERSHIP')throw error;}
     await sleep(250);
   }
-  throw new Error("no CDP");
+  throw new Error("no CDP; Chrome startup output: " + browserStartupOutput);
 }
 function send(method, params = {}, sessionId = null) {
   if(method==='Page.reload'||method==='Page.navigate')expectedBeforeUnloadUntil=Date.now()+15000;
