@@ -2,14 +2,15 @@
  * user operations use trusted CDP pointer/keyboard input. No geometry or load
  * response is mocked. All evidence is written outside the checkout.
  */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount}) {
   console.log('=== P73. UI/UX 審查：可見動作、視角、空狀態與專案回饋 ===');
   const fs=require('fs'),path=require('path'),errors=exceptionCount();
-  const check=(name,ok,detail=ok)=>{console.log('P73 '+name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));if(ok!==true)throw Error('P73 assertion failed: '+name+' '+JSON.stringify(detail));};
-  const read=async expression=>{const value=await eval_(expression);if(value?.__err)throw Error(value.__err);return value;};
-  const wait=expression=>waitForUI(expression,30000);
+  const check=cdp.makeCheck({prefix:'P73 ',throwOnFail:true});
+  const read=cdp.makeRead(eval_);
+  const wait=cdp.makeWait(waitForUI,30000);
   const viewport=async(width,height=844)=>{await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width===390});await sleep(220);};
-  const key=async(key,code,vk,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});};
+  const key=cdp.makeKey({send,sleep});
   const point=async(selector,scroll=true)=>{
     if(scroll)await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'nearest',inline:'nearest'});void 0`);
     let p;
@@ -20,9 +21,9 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
     if(!p.hit||!p.width||!p.height)throw Error('UI review target is unreachable '+selector+' '+JSON.stringify(p));return p;
   };
   const ctl=async(selector,settle=true)=>{const p=await point(selector);if(p.disabled)throw Error('UI review target is disabled '+selector);await click(p.x,p.y);if(settle)await sleep(160);};
-  const fill=async(selector,value)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(value)});await sleep(100);};
+  const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:100});
   const choose=async(selector,value)=>{const index=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return [...e.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(value)});})()`);if(index<0)throw Error('Missing option '+selector+'='+value);await ctl(selector);await key('Home','Home',36);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)}).value===${JSON.stringify(value)}`);};
-  const shot=async name=>{const dir=process.env.GEOMETRY_UIUX_SCREENSHOT_DIR;if(!dir)return;fs.mkdirSync(dir,{recursive:true});const image=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(dir,name+'.png'),Buffer.from(image.result.data,'base64'));};
+  const shot=cdp.makeShot(send,['GEOMETRY_UIUX_SCREENSHOT_DIR']);
   const dump=()=>read(`apiRequest('dump').then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r.text;})`);
   const fitGeometry=()=>read(`(()=>{const r=$('faceEditorViewport').getBoundingClientRect(),root=$('faceEditorRoot'),m=root.getScreenCTM(),bb=loopsBBox(oc.bmap[oc.edit.bid]),points=[[bb[0],bb[1]],[bb[2],bb[3]]].map(([x,y])=>new DOMPoint(x,y).matrixTransform(m));return {zoom:fe.zoom,fitted:!!fe.fittedBounds,left:points[0].x,right:points[1].x,top:points[0].y,bottom:points[1].y,viewport:{left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height},center:[(r.width/2-fe.panX)/fe.zoom,(r.height/2-fe.panY)/fe.zoom]};})()`);
   const fits=g=>g.fitted&&g.left>=g.viewport.left-1&&g.right<=g.viewport.right+1&&g.top>=g.viewport.top-1&&g.bottom<=g.viewport.bottom+1;

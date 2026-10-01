@@ -1,30 +1,31 @@
 /* Real browser controls, native candidate read-back, and portable project bytes. */
+const cdp=require('./cdp_helpers.js');
 module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const fs=require('fs'),path=require('path'),os=require('os'),errors=exceptionCount();
-  const check=(name,ok,detail)=>{console.log('P76 '+name,ok===true?'✓':'✗',ok?'':JSON.stringify(detail));if(ok!==true)throw Error('P76 '+name);};
-  const read=eval_,wait=expr=>waitForUI(expr,15000);
+  const check=cdp.makeCheck({prefix:'P76 ',throwOnFail:true,detail:'none',failMessage:name=>'P76 '+name});
+  const read=eval_,wait=cdp.makeWait(waitForUI,15000);
   const editorTop=async()=>{await read(`(()=>{let n=$('parameterEditor');while(n){n.scrollTop=0;n=n.parentElement;}})()`);};
-  const key=async(k,code,n,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key:k,code,windowsVirtualKeyCode:n,modifiers});};
-  const ctl=async selector=>{
-    if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await ctl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));
-    await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'center'});void 0`);await sleep(130);
-    const p=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y)),disabled:e.disabled,w:r.width,h:r.height};})()`);
-    if(!p.hit||p.disabled||!p.w||!p.h)throw Error('P76 unreachable '+selector+' '+JSON.stringify(p));await click(p.x,p.y);await sleep(120);
-  };
-  const fill=async(selector,text)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(text)});};
+  const key=cdp.makeKey({send,sleep});
+  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:1,pollMs:130,settleMs:120,missing:'missing ',
+    unreachable:(selector,p)=>'P76 unreachable '+selector+' '+JSON.stringify(p),
+    before:cdp.openCreateObjectMenu(read,selector=>ctl(selector))});
+  const fill=cdp.makeFill({ctl,key,send,sleep});
+  // Creating fetches capabilities and a new ID before replacing the old editor.
+  // Its existing name input alone does not prove the new form is ready.
+  const createCard=async()=>{await ctl('#btnNewParameter');await wait(`!!$('paramQuick') && $('paramName')?.value==='參數'`);};
   const choose=async(selector,v)=>{const i=await read(`Array.from(document.querySelector(${JSON.stringify(selector)}).options).findIndex(o=>o.value===${JSON.stringify(String(v))})`);if(i<0)throw Error('P76 option missing '+v);await ctl(selector);await key('Home','Home',36);for(let n=0;n<i;n++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await sleep(160);};
   const confirm=async()=>{await ctl('#paramPreview');await wait(`!!document.querySelector('#paramConfirm')&&!document.querySelector('#paramConfirm').disabled`);await ctl('#paramConfirm');await wait(`!ParameterUI.pending`);};
   console.log('=== P76 畫布參數卡 ===');
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
   await read(`(async()=>{ParameterUI.discard();InfiniteGridWorkspace.close(true);resetSceneFocus();await api('reset');await setView3(false);await renderObjects();})()`);
-  await ctl('#btnNewParameter');await wait(`!!document.querySelector('#paramName')`);
+  await createCard();
   await fill('#paramName','板材尺寸');await fill('#paramQuick','(915,1830)');await ctl('#paramParse');
   check('尺寸組先顯示欄位及單位',await read(`document.querySelectorAll('[data-param-field]').length===2&&[...document.querySelectorAll('[data-type]')].every(e=>e.value==='dimension')`));
   check('未提交草稿阻擋保存',await read(`ReferenceWorkspace.exportBytes().then(()=>false,e=>/參數草稿/.test(e.message))`));
   await confirm();
   const panel=await read(`oc.parameters.find(p=>p.name==='板材尺寸').card`),width=panel.fields.find(f=>f.name==='寬').id,length=panel.fields.find(f=>f.name==='長').id;
   check('建立真正參數卡',panel.fields.map(f=>f.value.num).join(',')==='915,1830',panel);
-  await ctl('#btnNewParameter');await fill('#paramName','排格設定');
+  await createCard();await fill('#paramName','排格設定');
   await fill('[data-name]','u 格距');await fill('[data-input]',`=@${panel.id}:${width}+2 mm`);await confirm();
   const settings=await read(`oc.parameters.find(p=>p.name==='排格設定').card`);
   check('跨卡算式由核心試算',settings.fields[0].value.num==='917');
@@ -49,7 +50,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   await read(`ReferenceWorkspace.importBytes(window.__parameterSaved,'參數驗收.gcanvas')`);await read(`renderObjects()`);
   check('保存重開仍連動',await read(`oc.parameters.length===2&&oc.gridSystems[0].uDefinition.step===922`));
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
-  await ctl('#btnNewParameter');await wait(`!!$('paramName')`);await fill('#paramName','角材截面');await fill('#paramQuick','W27H33');await ctl('#paramParse');await confirm();
+  await createCard();await fill('#paramName','角材截面');await fill('#paramQuick','W27H33');await ctl('#paramParse');await confirm();
   check('390px 建立 W/H 尺寸卡',await read(`oc.parameters.some(p=>p.name==='角材截面'&&p.card.fields.map(f=>f.value.num).join(',')==='27,33')`));
   check('手機欄位與確認觸控目標',await read(`['paramName','paramPreview','paramConfirm'].every(id=>$(id).getBoundingClientRect().height>=44)`));
   check('手機無水平溢出',await read(`document.documentElement.scrollWidth<=innerWidth`));
@@ -84,7 +85,12 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   check('匯入先預覽新增卡片',await read(`oc.parameters.length===3&&$('paramResult').textContent.includes('排格設定')`));
   await ctl('#paramConfirm');await wait('!ParameterUI.pending');
   check('同名參數包匯入為獨立副本',await read(`oc.parameters.length===5&&oc.parameters.filter(p=>p.name==='板材尺寸').length===2&&oc.parameters.filter(p=>p.name==='排格設定').length===2`));
-  await read(`ParameterUI.jump('parameter',${panel.id})`);await fill(`[data-param-field="${width}"] [data-input]`,'930');await confirm();
+  await read(`ParameterUI.jump('parameter',${panel.id})`);
+  await read(`window.__manualPreviewOriginal=EngineeringAdapter.preview;window.__manualPreviewCalls=0;window.__manualPreviewReleases=[];EngineeringAdapter.preview=async request=>{window.__manualPreviewCalls++;const result=await window.__manualPreviewOriginal(request);return new Promise(resolve=>window.__manualPreviewReleases.push(()=>resolve(result)));};void 0`);
+  await fill(`[data-param-field="${width}"] [data-input]`,'930');await ctl('#paramPreview');await wait(`window.__manualPreviewReleases.length>0`);await sleep(650);
+  check('手動試算取消待執行的自動試算，回覆前不能確認',await read(`window.__manualPreviewCalls===1&&$('paramConfirm').disabled`));
+  await read(`EngineeringAdapter.preview=window.__manualPreviewOriginal;window.__manualPreviewReleases.forEach(release=>release());void 0`);
+  await wait(`!$('paramConfirm').disabled`);await ctl('#paramConfirm');await wait(`!ParameterUI.pending`);
   check('修改原卡不影響匯入副本',await read(`oc.parameters.filter(p=>p.name==='排格設定').map(p=>p.card.fields[0].value.num).sort().join(',')==='922,932'`));
   await read(`ParameterUI.jump('parameter',${panel.id});void 0`);await wait(`$('paramName')?.value==='板材尺寸'`);await editorTop();await sleep(4500);
   fs.writeFileSync(path.join(os.tmpdir(),'geometry-tests','parameter-desktop.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));

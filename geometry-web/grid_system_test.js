@@ -2,19 +2,17 @@
  * Geometry fixtures supply host boundaries/placements only. Cell and vertex
  * selection use real CDP pointers; declarations are checked against hand oracles.
  */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount}) {
   console.log('=== P70. 無限格線、獨立邊界與 cell 對齊 ===');
   const fs=require('fs'),path=require('path'),os=require('os'),same=require('util').isDeepStrictEqual,exceptions=exceptionCount();
-  const check=(name,value,detail=value)=>{console.log('P70 '+name,value===true?'✓':'✗',value===true?'':JSON.stringify(detail));if(value!==true)throw Error('P70 assertion failed: '+name+' '+JSON.stringify(detail));};
-  const read=async expression=>{const value=await eval_(expression);if(value?.__err)throw Error(value.__err);return value;};
-  const wait=expression=>waitForUI(expression,20000);
-  const ctl=async selector=>{
-    await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'center',inline:'nearest'});void 0`);let p;
-    for(let attempt=0;attempt<12;attempt++){await sleep(80);p=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing '+${JSON.stringify(selector)});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,w:r.width,h:r.height,hit:e.contains(document.elementFromPoint(x,y)),disabled:!!e.disabled};})()`);if(p.hit&&!p.disabled&&p.w&&p.h)break;}
-    if(!p.hit||p.disabled||!p.w||!p.h)throw Error('Grid control unreachable '+selector+' '+JSON.stringify(p));await click(p.x,p.y);await sleep(140);
-  };
-  const key=async(key,code,vk,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});};
-  const fill=async(selector,value)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(value)});await sleep(60);};
+  const check=cdp.makeCheck({prefix:'P70 ',throwOnFail:true});
+  const read=cdp.makeRead(eval_);
+  const wait=cdp.makeWait(waitForUI,20000);
+  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:80,settleMs:140,missing:'Missing ',
+    unreachable:(selector,p)=>'Grid control unreachable '+selector+' '+JSON.stringify(p)});
+  const key=cdp.makeKey({send,sleep});
+  const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:60});
   const choose=async(selector,value)=>{const index=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return [...e.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(String(value))});})()`);if(index<0)throw Error('Missing enabled option '+selector+'='+value);await ctl(selector);await key('Home','Home',36);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)})?.value===${JSON.stringify(String(value))}`);};
   const query=command=>read(`apiRequest(${JSON.stringify(command)}).then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;})`);
   const dump=async()=>(await query('dump')).text,objects=()=>query('objects'),refs=()=>query('references');
@@ -24,7 +22,7 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   const cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
   const card=(kind,id)=>`.ocard[data-kind="${kind}"][data-id="${id}"]`;
   const close=async(discard=false)=>{if(await read(`!!$('infiniteGridWorkspace')?.open`)){const action=()=>ctl('#igClose');if(discard)await expectNativeDialog(action,{message:'這個網格工作區有尚未建立或套用的草稿。離開會捨棄這些草稿；已保存到場景的網格保持不變。確定離開？',accept:true});else await action();}};
-  const open=async(kind,id)=>{await close();await ctl('#btnZoom');await ctl(card(kind,id));await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open && !!$('igGridView')`);};
+  const open=async(kind,id)=>{await close();await ctl('#btnZoom');await ctl(card(kind,id));await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open && !!$('igGridView')`);if(kind==='grid-binding')await wait(`$('igVertex').value!=='' && $('igSurface').options.length>0`);};
   const axis=async(letter,source,fields)=>{await choose('#ig'+letter+'Source',source);for(const [field,value] of Object.entries(fields))await fill('#ig'+letter+field,value);};
   const saveSource=async()=>{await ctl('#igSaveSource');await impact();await confirm();};
   const create=async(name,u=['repeat',{Phase:0,Step:600}],v=['repeat',{Phase:0,Step:400}],entry='#btnNewGridSystem')=>{
@@ -36,7 +34,7 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
     await open('grid-system',source);await ctl('#igNewBinding');await choose('#igBoundary',boundary);await wait(`!!document.querySelector('[data-ig-vertex="${vertex}"]')`);await ctl(`[data-ig-vertex="${vertex}"]`);await pickCell(-900,600);await ctl(`[data-ig-anchor="${anchor}"]`);
     check('真正點選負索引格子與邊界頂點',await read(`$('igCellI').value==='-2' && $('igCellJ').value==='1' && $('igVertex').value===${JSON.stringify(vertex)}`));const before=await dump(),ids=new Set((await objects()).gridBindings.map(b=>b.id));await ctl('#igSaveBinding');await impact();check('配置與首次頂點 key 一起預覽，確認前沒有保存',(await dump())===before);await confirm();const added=(await objects()).gridBindings.filter(b=>!ids.has(b.id));check('配置保存精確 cell 與手算平移',added.length===1&&same(added[0].cell,['-2','1'])&&same(added[0].translation,expected),added);return added[0].id;
   };
-  const shot=async name=>{const directory=process.env.GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR;if(!directory)return;fs.mkdirSync(directory,{recursive:true});const r=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(directory,name+'.png'),Buffer.from(r.result.data,'base64'));};
+  const shot=cdp.makeShot(send,['GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR']);
   const fixture=async lines=>read(`(async()=>{for(const line of ${JSON.stringify(lines)}){const r=await apiRequest('line '+line);if(!r.ok||r.preview)throw Error(line+' '+JSON.stringify(r));}if(!await renderObjects())throw Error('Fixture render failed '+JSON.stringify(connection));return true;})()`);
   const reset=async()=>read(`(async()=>{for(const d of document.querySelectorAll('dialog[open]'))d.close();resetSceneFocus();await setView3(false);closePanels();const r=await api('reset');if(!r.ok)throw Error(JSON.stringify(r));if(!await renderObjects())throw Error('Reset render failed');setOcTool('select');return true;})()`);
 

@@ -4,15 +4,18 @@ Run with GEOMETRY_TEST_BRIDGE pointing at the current native bridge. The old
 test_grid_system_contract.py remains the independent legacy-finite regression.
 Expected coordinates below are hand-calculated; no application evaluator is an
 oracle. Query views, previews and failed operations must never alter definitions.
+Refusals use the shared reject(command, why=...) from test_grid_system_contract.py: `why` pins the
+reason (substring, or tuple of substrings) the bridge reports, see that module's docstring.
 """
 import json
 from pathlib import Path
+import sys
 import unittest
 
-try:
-    from . import test_grid_system_contract as _legacy
-except ImportError:
-    import test_grid_system_contract as _legacy
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:  # `python tests/x.py` puts tests/ first, not the repo root
+    sys.path.insert(0, str(ROOT))
+from tests import test_grid_system_contract as _legacy  # noqa: E402
 
 native_path = _legacy.native_path
 finite_system = _legacy.system
@@ -30,7 +33,6 @@ class InfiniteGridContract(unittest.TestCase):
         _legacy.GridSystemContract.setUpClass.__func__(cls)
 
     setUp = _legacy.GridSystemContract.setUp
-    stop = _legacy.GridSystemContract.stop
     command = _legacy.GridSystemContract.command
     line = _legacy.GridSystemContract.line
     commit = _legacy.GridSystemContract.commit
@@ -223,7 +225,7 @@ class InfiniteGridContract(unittest.TestCase):
         geometry_hash = self.fingerprint()
         self.commit(infinite(u="repeat 0 601"))
         before = self.snapshot()
-        self.reject(self.binding_command(anchor=(1, 2, 1, 2)))
+        self.reject(self.binding_command(anchor=(1, 2, 1, 2)), ("D1/I37", "integer-millimetre"))
         self.assertEqual(before, self.snapshot())
         self.assertNotIn("boundary-vertex-keys", self.dump())
         preview = self.preview(self.binding_command())
@@ -242,14 +244,17 @@ class InfiniteGridContract(unittest.TestCase):
         self.commit(infinite())
         self.binding(anchor=(2, 4, 3, 6))
         self.assertIn("anchor 1 2 1 2", self.dump())
-        for anchor in ((-1, 2, 0, 1), (3, 2, 0, 1), (0, 0, 0, 1), (0, -1, 0, 1), (1, 7, 0, 1)):
+        bad_fraction = ("D30/I37", "rational anchor declaration")   # weak: one line for every malformed fraction
+        for anchor, why in (((-1, 2, 0, 1), bad_fraction), ((3, 2, 0, 1), bad_fraction), ((0, 0, 0, 1), bad_fraction),
+                            ((0, -1, 0, 1), bad_fraction), ((1, 7, 0, 1), ("D1/I37", "integer-millimetre"))):
             with self.subTest(anchor=anchor):
-                self.reject(self.binding_command(1, anchor=anchor))
+                self.reject(self.binding_command(1, anchor=anchor), why)
         self.commit(infinite(1, v="none"))
-        self.reject(self.binding_command(1, source=1))
-        self.reject(infinite(2, u="repeat 0 600", v="series 0 400 3"))
-        self.reject(infinite(2, u="repeat 0 0"))
-        self.reject(infinite(2, u="repeat 0 -1"))
+        self.reject(self.binding_command(1, source=1), ("D30/I37", "two infinite axes"))
+        # weak: the same D29/I37 definition-guard line for every malformed grid-system
+        self.reject(infinite(2, u="repeat 0 600", v="series 0 400 3"), "D29/I37")
+        self.reject(infinite(2, u="repeat 0 0"), "D29/I37")
+        self.reject(infinite(2, u="repeat 0 -1"), "D29/I37")
 
     def test_geometry_hash_rejects_stale_initial_pick_and_keyed_edit(self):
         self.boundary()
@@ -260,12 +265,13 @@ class InfiniteGridContract(unittest.TestCase):
         reordered = self.RECT[1:] + self.RECT[:1]
         self.boundary(outer=reordered)
         self.assertNotEqual(old_hash, self.fingerprint())
-        self.reject(self.binding_command(fingerprint=old_hash))
+        self.reject(self.binding_command(fingerprint=old_hash), ("D30", "STALE_GEOMETRY"))
         self.assertNotIn("boundary-vertex-keys", self.dump())
         self.binding(vertex="outer 3")
         old_hash = self.fingerprint()
         self.commit(self.keyed_command(1, [self.RECT], [self.keymap()[0][-1:] + self.keymap()[0][:-1]]))
-        self.reject(self.keyed_command(1, [[(100, 200), (1900, 200), (1900, 1000), (100, 1000)]], fingerprint=old_hash))
+        self.reject(self.keyed_command(1, [[(100, 200), (1900, 200), (1900, 1000), (100, 1000)]], fingerprint=old_hash),
+                    ("D30", "geometry-hash is stale"))
 
     def test_expand_four_sides_keeps_hole_anchor_and_absolute_line_identities(self):
         outer = [(-1100, -1000), (1900, -1000), (1900, 1800), (-1100, 1800)]
@@ -294,17 +300,20 @@ class InfiniteGridContract(unittest.TestCase):
         self.fixture()
         keys = self.keymap()
         moved = [(200, 300), (1400, 300), (1400, 1100), (200, 1100)]
-        self.reject("boundary 1 outline " + " ".join(f"{u},{v}" for u, v in moved))
+        # Weak pin: an unkeyed `boundary` redeclaration is refused by the world-revalidation path, whose wording
+        # does not name D30/I37; this shows the refusal is the revalidation, not which rule.
+        self.reject("boundary 1 outline " + " ".join(f"{u},{v}" for u, v in moved), "重宣告後有物件失效")
         self.commit(self.keyed_command(1, [moved]))
         self.assertEqual([1400, -100], self.bindings()[0]["translation"])
         self.assertEqual(keys, self.keymap())
         bad_keys = [keys[0][:]]
         bad_keys[0][0] = 999
-        self.reject(self.keyed_command(1, [moved], bad_keys))
+        self.reject(self.keyed_command(1, [moved], bad_keys), ("D30/I37", "references a missing boundary vertex key"))
         duplicated = [keys[0][:]]
         duplicated[0][1] = duplicated[0][0]
-        self.reject(self.keyed_command(1, [moved], duplicated))
-        self.reject("boundary-vertex-keys 1 outer 91 92 93 94 next-key 95")
+        self.reject(self.keyed_command(1, [moved], duplicated), ("D30", "duplicate, missing, or inconsistent vertex keys"))
+        self.reject("boundary-vertex-keys 1 outer 91 92 93 94 next-key 95",
+                    ("D30", "cannot rebind an existing identity table"))
         # Ordinary reordered geometry keeps keys by coordinates, not old array indices.
         rotated = moved[1:] + moved[:1]
         self.boundary(outer=rotated)
@@ -322,7 +331,7 @@ class InfiniteGridContract(unittest.TestCase):
         self.commit(self.keyed_command(1, [self.RECT], [keys[:-1]]))
         self.assertIn(f"next-key {retired + 1}", self.dump())
         self.roundtrip()
-        self.reject(self.keyed_command(1, [with_extra], [keys]))
+        self.reject(self.keyed_command(1, [with_extra], [keys]), ("D30", "cannot reuse a retired vertex key"))
         self.commit(self.keyed_command(1, [with_extra], [keys[:-1] + [retired + 1]]))
         self.assertEqual(retired + 1, self.keymap()[0][-1])
         self.assertIn(f"next-key {retired + 2}", self.dump())
@@ -336,7 +345,7 @@ class InfiniteGridContract(unittest.TestCase):
         self.commit(self.keyed_command(1, [self.RECT], [[1, 2, 3, 4]]))
         self.assertIn("next-key 0", self.dump())
         self.roundtrip()
-        self.reject(self.keyed_command(1, [with_extra], [[1, 2, 3, 4, 5]]))
+        self.reject(self.keyed_command(1, [with_extra], [[1, 2, 3, 4, 5]]), ("D30", "cannot reuse a retired vertex key"))
 
     def test_dense_definitions_remain_valid_exact_rejects_and_sample_is_honest(self):
         self.boundary(outer=[(-1000, -1000), (1000, -1000), (1000, 1000), (-1000, 1000)])
@@ -410,8 +419,11 @@ class InfiniteGridContract(unittest.TestCase):
             with self.subTest(rect=rect, limit=limit):
                 self.assertFalse(self.query(rect=rect, limit=limit)["ok"])
                 self.assertEqual(before, self.snapshot())
-        for cell in ((9223372036854775807, 0), (9223372036854775808, 0), (-9223372036854775809, 0)):
-            self.reject(self.binding_command(identifier=1, cell=cell))
+        # INT64_MAX parses but its upper line index overflows; 2^63 and -2^63-1 are refused at declaration (weak pin).
+        for cell, why in (((9223372036854775807, 0), ("D29/R32", "exceeds signed int64")),
+                          ((9223372036854775808, 0), ("D30/I37", "signed cell")),
+                          ((-9223372036854775809, 0), ("D30/I37", "signed cell"))):
+            self.reject(self.binding_command(identifier=1, cell=cell), why)
         edge = self.query(rect=(-100000000, -100000000, -99999000, -99999000))
         self.assertTrue(edge["ok"], edge)
 
@@ -444,7 +456,7 @@ class InfiniteGridContract(unittest.TestCase):
         self.assertEqual([400], self.grids()[11]["u"])
         self.assertEqual([400], self.grids()[11]["v"])
         self.commit("timber 2 27 33 role primary")
-        self.reject("place 2 on 1 at-line grid 10 u -10 +v +n")
+        self.reject("place 2 on 1 at-line grid 10 u -10 +v +n", "中線上沒有任何合法跨距")
         # Remove the unplaced fixture before testing save/reload completeness.
         self.commit("delete timber 2")
         expanded = [(100, 200), (2500, 200), (2500, 1800), (100, 1800)]
@@ -454,24 +466,29 @@ class InfiniteGridContract(unittest.TestCase):
         self.assertEqual(-4700, next(g for g in self.refs()["guides"] if g["id"] == 2)["off"])
         self.assertEqual({-2: 100, -1: 700, 0: 1300, 1: 1900, 2: 2500},
                          self.coordinates(self.query("grid", 10, rect=(100, 200, 2500, 1800)), "u"))
-        for command in ["delete grid-binding 0", "delete grid-system 0", "grid 10 on 1 u 500 1000",
-                        "grid 10 on 1 main-along u", "grid 10 on 1 from-system 0 origin 0 0",
-                        "subgrid 12 parent 10 cell u line:0 line:1 v min line:0 divisions u 2 v 2"]:
-            self.reject(command)
+        for command, why in [("delete grid-binding 0", ("I37", "grid-binding is still referenced by a grid")),
+                             ("delete grid-system 0", ("I37", "grid-system is still referenced by a grid-binding")),
+                             ("grid 10 on 1 u 500 1000", ("D29", "direct axis edits are not allowed")),
+                             ("grid 10 on 1 main-along u", ("D29", "direct axis edits are not allowed")),
+                             ("grid 10 on 1 from-system 0 origin 0 0", ("I37", "existing grid identity")),
+                              # I25: an infinite parent requires signed lattice-cell references.
+                              ("subgrid 12 parent 10 cell u line:0 line:1 v min line:0 divisions u 2 v 2",
+                               ("D19/I25", "子格 12", "父格 10", "lattice-cell"))]:
+            self.reject(command, why)
         self.roundtrip()
 
     def test_wrong_placement_boundary_and_binding_capacity_are_atomic(self):
         self.fixture()
         self.boundary(2)
         self.commit("placement 2 on boundary 2 origin 0 0 0 u +x v +y")
-        self.reject("grid 10 on 2 from-binding 0")
-        self.reject("delete boundary 1")
+        self.reject("grid 10 on 2 from-binding 0", ("D30/I37", "invalid grid-binding identity, capacity or application"))
+        self.reject("delete boundary 1", ("I37", "boundary is still referenced by a grid-binding"))
         key = self.bindings()[0]["vertexKey"]
         for identifier in range(1, 31):
             self.binding(identifier, key=key)
         self.binding(4294967295, key=key)
         self.assertEqual(32, len(self.bindings()))
-        self.reject(self.binding_command(identifier=31, key=key))
+        self.reject(self.binding_command(identifier=31, key=key), ("I37", "grid-binding capacity is 32"))
 
     def test_source_or_vertex_failure_rolls_back_every_binding_and_dependent_geometry(self):
         self.fixture(second=True)
@@ -504,13 +521,13 @@ class InfiniteGridContract(unittest.TestCase):
         self.assertEqual("legacy-finite", self.objects()["gridSystems"][0]["mode"])
         self.assertEqual("ordinal", self.grids()[10]["indexSpace"])
         self.assertEqual([100, 300, 500], self.grids()[10]["u"])
-        self.reject(infinite())
+        self.reject(infinite(), ("D29/I37", "cannot be converted implicitly"))
         self.assertEqual(before, self.snapshot())
         self.roundtrip()
         self.assertEqual(before, self.snapshot())
         self.commit(infinite(1))
         self.binding(1, source=1)
-        self.reject("grid 10 on 1 from-binding 1")
+        self.reject("grid 10 on 1 from-binding 1", ("D30/I37", "requires an available lattice grid identity"))
 
 
 if __name__ == "__main__":

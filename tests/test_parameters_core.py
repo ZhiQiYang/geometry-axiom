@@ -1,7 +1,14 @@
 """Parameters are evaluated by the real native bridge, never by a test evaluator."""
 import json
+import os
+from pathlib import Path
+import sys
 import unittest
-from tests import test_engineering_core as harness
+
+_ROOT = Path(__file__).resolve().parents[1]
+if str(_ROOT) not in sys.path:  # `python tests/x.py` puts tests/ first, not the repo root
+    sys.path.insert(0, str(_ROOT))
+from tests import test_engineering_core as harness  # noqa: E402
 
 
 def card(id=1, name="板材", fields=None):
@@ -18,7 +25,6 @@ def field(id, text, type="dimension", name=None):
 class ParametersCore(unittest.TestCase):
     setUpClass = classmethod(harness.EngineeringCore.setUpClass.__func__)
     setUp = harness.EngineeringCore.setUp
-    stop = harness.EngineeringCore.stop
     command = harness.EngineeringCore.command
     read = harness.EngineeringCore.read
     request = harness.EngineeringCore.request
@@ -69,28 +75,40 @@ class ParametersCore(unittest.TestCase):
         self.rejected([card(2, fields=[field(1, "="+"("*34+"1 mm"+")"*34)])], "CAPACITY")
         self.rejected([card(2, fields=[field(1, "9223372036854775808")])], "PRECISION")
 
-    def test_native_block_is_atomic_and_model_source_retains_parameters(self):
-        from copy import deepcopy
-        import sys
-        sys.path.insert(0, str(harness.ROOT / "geometry-core"))
-        from modeling import build_package, verify_package, ModelError, INFINITE_GRID_AXIOM_VERSIONS
+    def seed_native_block_world(self):
+        """Shared scene for the two tests below: two cards, a timber whose width is sourced from a card."""
         self.apply([card(), card(2, "未使用分數", [field(1, "457.5")])])
         self.apply_line("timber 10 27 33 role boundary")
         self.apply_line("place 10 on 1 at-face e0 +u +n")
         self.apply([{"op":"set-source","target":{"kind":"timber","id":10,"field":"A"},"source":{"kind":"parameter","parameterId":1,"fieldId":1}}])
-        before=self.command("dump")["text"]
+        return self.command("dump")["text"]
+
+    def test_native_block_is_atomic_and_model_source_retains_parameters(self):
+        before=self.seed_native_block_world()
         for malformed in [before.replace("parameters end\n", ""), before.replace("parameters end", "spec forbidden 2\nparameters end")]:
             path=self.directory / "broken.scene";path.write_text(malformed,encoding="utf-8")
             self.assertFalse(self.command("loadfile "+str(path))["ok"])
             self.assertEqual(before,self.command("dump")["text"])
         self.assertFalse(self.command("line parameters begin")["ok"])
-        if not __import__('os').environ.get('GEOMETRY_MODEL_BASE'):
-            return
+
+    # Second half of the test above, split out so a missing model adapter shows up as a
+    # visible skip instead of the assertions silently not running (it used to `return`).
+    @unittest.skipUnless(os.environ.get("GEOMETRY_MODEL_BASE"), "set GEOMETRY_MODEL_BASE to a freshly built model adapter")
+    def test_model_package_retains_parameters_and_verifies_hashes(self):
+        from copy import deepcopy
+        import sys
+        sys.path.insert(0, str(harness.ROOT / "geometry-core"))
+        from modeling import build_package, verify_package, ModelError, INFINITE_GRID_AXIOM_VERSIONS
+        before=self.seed_native_block_world()
         package=build_package({"base_scene":before,"extensions":[]},{"roots":[{"kind":"timber","id":10}],"role":"geometry","target":"solid-set","allow_partial":False})
         self.assertIn("parameters/1",package["manifest"]["capabilities"])
         self.assertEqual(2,package["definitions"]["base_scene"].count("parameters card "))
         self.assertEqual(str(4000*915*33),package["derived"]["objects"][0]["volume_mm3"])
         self.assertEqual(package["derived"],verify_package(package)["derived"])
+        previous=deepcopy(package)
+        previous["manifest"]["axiom_revision"]="802f9bda1b1b8ab046f059e115dbf05a44da10df"
+        previous["manifest"]["axiom_sha256"]="b19009682ba5b3e7150341ae1b5190629cb03985d500d382aa918438fb548c0b"
+        self.assertEqual(package["derived"],verify_package(previous)["derived"])
         invalid=deepcopy(package);invalid["manifest"]["capabilities"].remove("parameters/1")
         with self.assertRaises(ModelError):verify_package(invalid)
         invalid=deepcopy(package);invalid["manifest"]["axiom_revision"],invalid["manifest"]["axiom_sha256"]=next(iter(INFINITE_GRID_AXIOM_VERSIONS))

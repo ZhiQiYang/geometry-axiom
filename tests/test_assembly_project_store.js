@@ -1,0 +1,29 @@
+const {test}=require('node:test'),assert=require('node:assert/strict');
+const P=require('../geometry-web/project-store.js'),zip=require('../geometry-web/vendor/fflate/umd/index.js');
+const manifest=()=>({projectId:'assembly-test',name:'組構',sources:[],faces:[]});
+const draft=()=>({id:'draft-1',kind:'rule',base_ref:null,data:{id:1,version:1,name:'未完成',slots:[],members:[],joints:[]},updated_at:'2026-10-01T00:00:00Z'});
+const pack=(scene='reset\n',extra={})=>P.pack(scene,{...manifest(),...extra},new Map(),zip);
+function rewrite(bytes,fn){const files=zip.unzipSync(bytes),m=JSON.parse(new TextDecoder().decode(files['manifest.json']));fn(m);files['manifest.json']=new TextEncoder().encode(JSON.stringify(m));return zip.zipSync(files);}
+test('draft-only projects require assembly capability and format 7, preserving incomplete values',async()=>{
+ const records=[draft()],p=await P.unpack(await pack('reset\n',{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records}}),zip);
+ assert.equal(p.manifest.format,'geometry-canvas/7');assert.deepEqual(p.manifest.requiredCapabilities,['assembly-rule-authoring/1']);assert.deepEqual(p.manifest.assemblyDrafts.records,records);
+ assert.throws(()=>P.assertProjectCapabilities(p.manifest,['engineering-spec/1','parameters/1']));
+});
+test('scene authoring survives capability inference and coexists with prior capabilities',async()=>{
+ const scene='requires parameters/1\nrequires engineering-spec/1\nassembly begin\nassembly end\n',p=await P.unpack(await pack(scene),zip);
+ assert.equal(p.scene,scene);assert.equal(p.manifest.format,P.ASSEMBLY_FORMAT);assert.deepEqual(p.manifest.requiredCapabilities,['assembly-rule-authoring/1','engineering-spec/1','parameters/1']);
+ assert.deepEqual(P.sceneCapabilities('# assembly begin\n'),[]);
+});
+test('draft capability stripping, old format, unknown schema and duplicate IDs reject',async()=>{
+ const bytes=await pack('reset\n',{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[draft()]}});
+ for(const fn of [m=>m.requiredCapabilities=[],m=>m.format='geometry-canvas/6',m=>m.assemblyDrafts.schema='assembly-drafts/2',m=>m.assemblyDrafts.records.push(draft()),m=>m.assemblyDrafts.records[0].unexpected=1,m=>m.assemblyDrafts.records[0].data.members=null])await assert.rejects(()=>P.unpack(rewrite(bytes,fn),zip));
+ await assert.rejects(()=>pack('requires assembly-rule-authoring/2\n'));
+});
+test('assembly drafts and native confirmation share undo and redo without losing incomplete edits',()=>{
+ const h=new P.ContextHistory(()=>({assemblyDrafts:[],models:[],faceProjections:new Map()}));
+ h.push(h.snapshot(),'local');h.frame.context.assemblyDrafts=[draft()];
+ h.observe('assembly-confirm 1',{ok:true,history_changed:true});h.frame.context.assemblyDrafts=[];
+ h.observe('line undo',{ok:true});assert.deepEqual(h.frame.context.assemblyDrafts,[draft()]);
+ assert.equal(h.undo.length,1);h.observe('line redo',{ok:true});assert.deepEqual(h.frame.context.assemblyDrafts,[]);
+ const count=h.undo.length;h.observe('assembly-confirm 2',{ok:true,history_changed:false});assert.equal(h.undo.length,count);
+});

@@ -1,13 +1,14 @@
 /* P75: selection remains usable after grid inspection, and cursor badges render
  * as readable text after the final CSS cascade. Only the isolated CDP service
  * is mutated for fixtures; actions under test are trusted pointer/key events. */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function selectionCursor({send,eval_,sleep,click,drag,waitForUI,exceptionCount}) {
   console.log('=== P75. 網格退出選取與游標文字實際呈現 ===');
   const fs=require('fs'),path=require('path'),errors=exceptionCount();
-  const check=(name,ok,detail=ok)=>{console.log('P75 '+name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));if(ok!==true)throw Error('P75 '+name+' '+JSON.stringify(detail));};
-  const read=code=>eval_(code),wait=code=>waitForUI(code,15000);
+  const check=cdp.makeCheck({prefix:'P75 ',throwOnFail:true,failMessage:(name,detail)=>'P75 '+name+' '+JSON.stringify(detail)});
+  const read=code=>eval_(code),wait=cdp.makeWait(waitForUI,15000);
   const dump=()=>read(`apiRequest('dump').then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r.text;})`);
-  const key=async(key,code,vk,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers});await sleep(80);};
+  const key=cdp.makeKey({send,sleep},{afterMs:80});
   const point=async selector=>{
     await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'nearest',inline:'nearest'});void 0`);
     const p=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)}),r=e?.getBoundingClientRect();if(!r)return null;const x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,w:r.width,h:r.height,hit:e.contains(document.elementFromPoint(x,y)),disabled:!!e.disabled};})()`);
@@ -20,7 +21,7 @@ module.exports = async function selectionCursor({send,eval_,sleep,click,drag,wai
   const faceClick=async(x,y,hit)=>{const p=await facePoint(x,y);await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:p.x,y:p.y,button:'none'});const actual=await read(`document.elementFromPoint(${p.x},${p.y})?.closest('[data-face-hit]')?.dataset.faceHit`);check('真實命中 '+hit,actual===hit,{actual,p});await click(p.x,p.y);await sleep(160);};
   const selected=()=>read(`[...fe.timberSelection].sort((a,b)=>a-b)`);
   const isSelected=async id=>JSON.stringify(await selected())===JSON.stringify([id]);
-  const shot=async name=>{const dir=process.env.GEOMETRY_SELECTION_CURSOR_SCREENSHOT_DIR;if(!dir)return;fs.mkdirSync(dir,{recursive:true});const result=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(dir,name+'.png'),Buffer.from(result.result.data,'base64'));};
+  const shot=cdp.makeShot(send,['GEOMETRY_SELECTION_CURSOR_SCREENSHOT_DIR']);
   const selectionMode=()=>read(`fe.tool==='select'&&document.querySelector('[data-face-tool="select"]').classList.contains('active')&&!document.querySelector('[data-face-tool="grid"]').classList.contains('active')`);
   const snapshotDraft=()=>read(`({u:$('gridU')?.value,v:$('gridV')?.value,main:$('gridMainAlong')?.value,preview:fe.gridPreview?.u})`);
   const fixture=async()=>{

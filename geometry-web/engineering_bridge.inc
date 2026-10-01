@@ -16,9 +16,10 @@ static bool eng_definition_hash(const World *w,char hash[65])
 }
 static void json_engineering_capabilities(const World *w)
 {
-    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\"],\"required_capabilities\":[",stdout);
+    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\"],\"required_capabilities\":[",stdout);
     if(engineering_used(w))js_string("engineering-spec/1");
-    if(w->parameters.card_count){if(engineering_used(w))putchar(',');js_string("parameters/1");}putchar(']');
+    if(w->parameters.card_count){if(engineering_used(w))putchar(',');js_string("parameters/1");}
+    if(assembly_used(w)){if(engineering_used(w)||w->parameters.card_count)putchar(',');js_string(ASM_CAPABILITY);}putchar(']');
 }
 static void json_engineering_sources(const World *w)
 {
@@ -29,6 +30,7 @@ static void json_engineering_sources(const World *w)
         if(eng_effective((World*)w,b,&value,path,sizeof path)){printf("%lld,\"path\":",(long long)value);js_string(path);}else{fputs("null,\"path\":null,\"error\":",stdout);js_string(g_engineering_error);}putchar('}');
     }putchar(']');
 }
+static void json_assembly_state(const World *w,bool geometry);
 static void json_engineering_state(const World *w,bool geometry)
 {
     putchar('{');json_engineering_capabilities(w);fputs(",\"materials\":[",stdout);
@@ -42,6 +44,7 @@ static void json_engineering_state(const World *w,bool geometry)
     fputs("],\"sources\":",stdout);json_engineering_sources(w);
     fputs(",\"parameters\":[",stdout);
     for(size_t i=0;i<w->parameters.card_count;++i){if(i)putchar(',');parameter_json_card(w,&w->parameters.cards[i],stdout,true);}putchar(']');
+    fputs(",\"assembly\":",stdout);json_assembly_state(w,false);
     if(geometry){fputs(",\"geometry\":{\"grids\":[",stdout);for(size_t i=0;i<w->grid_count;++i){if(i)putchar(',');json_reference_grid(w,&w->grids[i]);}
         fputs("],\"gridSystems\":[",stdout);for(size_t i=0;i<w->grid_system_count;++i){if(i)putchar(',');json_grid_system(w,&w->grid_systems[i]);}
         fputs("],\"datums\":[",stdout);for(size_t i=0;i<w->datum_count;++i){const DatumPlane *d=&w->datums[i];printf("%s{\"id\":%u,\"position\":%lld,\"expression\":",i?",":"",d->id,(long long)d->position);js_string(d->expression);putchar('}');}
@@ -94,7 +97,7 @@ static void cmd_engineering_preview(const char *path)
 }
 static void cmd_engineering_confirm(const char *arg)
 {
-    uint32_t token;if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!g_preview.engineering_batch||g_preview.token!=token||!g_preview.valid){eng_bridge_error("TOKEN","Missing, invalid or unrelated engineering preview token");return;}
+    uint32_t token;if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!g_preview.engineering_batch||g_preview.assembly_batch||g_preview.token!=token||!g_preview.valid){eng_bridge_error("TOKEN","Missing, invalid or unrelated engineering preview token");return;}
     if(g_hist_grouping||g_preview.revision!=g_definition_revision||!world_definitions_equal(&g_world,&g_preview.before)){g_preview.ready=false;eng_bridge_error("STALE","Engineering preview expired; preview the current definitions again");return;}
     const World *previous=g_subgrid_before;g_subgrid_before=&g_world;bool valid=world_revalidate(&g_preview.after);g_subgrid_before=previous;
     if(!valid){g_preview.ready=false;eng_bridge_error("INVALID",g_revalidate_error);return;}
@@ -107,7 +110,7 @@ static void cmd_engineering_confirm(const char *arg)
 static void cmd_engineering_cancel(const char *arg)
 {
     uint32_t token;if(!arg||!parse_u32(arg,&token)){eng_bridge_error("TOKEN","Cancel requires an engineering preview token");return;}
-    bool cancelled=g_preview.ready&&g_preview.engineering_batch&&g_preview.token==token;if(cancelled)g_preview.ready=false;
+    bool cancelled=g_preview.ready&&g_preview.engineering_batch&&!g_preview.assembly_batch&&g_preview.token==token;if(cancelled)g_preview.ready=false;
     printf("{\"ok\":true,\"cancelled\":%s,\"revision\":%llu}\n",cancelled?"true":"false",(unsigned long long)g_definition_revision);
 }
 static void cmd_engineering_validate(const char *path)

@@ -1033,6 +1033,7 @@ typedef enum {
 #include "geometry-core/reference_types.h"
 #include "geometry-core/parameter_types.h"
 #include "geometry-core/engineering_types.h"
+#include "geometry-core/assembly_types.h"
 
 typedef struct {
     GuideLineId id;
@@ -3739,7 +3740,8 @@ typedef enum {
     CANVAS_POS_BEAM,           /* 樑卡：以樑 id 為鍵 */
     CANVAS_POS_GRID_BINDING,
     CANVAS_POS_PARAMETER,
-    CANVAS_POS_GRID_SYSTEM     /* D29: independent reusable grid definition */
+    CANVAS_POS_GRID_SYSTEM,     /* D29: independent reusable grid definition */
+    CANVAS_POS_ASSEMBLY_RULE, CANVAS_POS_ASSEMBLY_BINDING
 } CanvasPosKind;
 
 typedef struct {
@@ -3790,6 +3792,7 @@ typedef struct World {
 
     CanvasPos canvas_pos[WORLD_MAX_CANVAS_POS];
     size_t canvas_pos_count;
+    AssemblyState assembly;
     EngineeringState engineering;
     ParameterState parameters;
 } World;
@@ -3814,6 +3817,9 @@ static bool apply_grid_binding_application(const char *,int,char **,int,World *)
 static bool grid_systems_rebuild(World *,char *,size_t);
 static bool eng_object_bound(const World *,int,uint32_t);
 static uint64_t g_definition_revision;
+static bool assembly_rebuild(World *,char *,size_t);
+static const AsmRuleVersion *assembly_rule(const World *,uint32_t,uint32_t);
+static AsmBinding *assembly_binding(World *,uint32_t);
 static bool engineering_rebuild(World *,char *,size_t);
 static bool parameters_rebuild(World *,char *,size_t);
 static const ParameterSet *parameter_find(const World *,uint32_t);
@@ -3823,10 +3829,11 @@ static char g_parameter_error[512];
 static bool engineering_dump_timber(const World *,const Timber *,FILE *);
 static bool world_definitions_equal(const World *a,const World *b)
 {
-    World x=*a,y=*b;
-    x.canvas_pos_count=y.canvas_pos_count=0;
-    memset(x.canvas_pos,0,sizeof x.canvas_pos);memset(y.canvas_pos,0,sizeof y.canvas_pos);
-    return memcmp(&x,&y,sizeof x)==0;
+    /* Compare around display-only metadata without two multi-megabyte stack copies. */
+    const unsigned char *x=(const unsigned char*)a,*y=(const unsigned char*)b;
+    size_t first=(const unsigned char*)&a->canvas_pos-x;
+    size_t last=(const unsigned char*)(&a->canvas_pos_count+1)-x;
+    return !memcmp(x,y,first) && !memcmp(x+last,y+last,sizeof *a-last);
 }
 
 static const World *g_subgrid_before;
@@ -3925,6 +3932,8 @@ static bool world_canvas_target_exists(const World *w, int kind, uint32_t id)
         kind == CANVAS_POS_SPACE     ? world_find_space(w, id)     != NULL :
         kind == CANVAS_POS_COLUMN    ? world_find_column(w, id)    != NULL :
         kind == CANVAS_POS_GRID_BINDING ? world_find_grid_binding(w,id) != NULL :
+        kind == CANVAS_POS_ASSEMBLY_RULE ? assembly_rule(w,id,0) != NULL :
+        kind == CANVAS_POS_ASSEMBLY_BINDING ? assembly_binding((World*)w,id) != NULL :
         kind == CANVAS_POS_PARAMETER ? parameter_find(w,id) != NULL :
         kind == CANVAS_POS_GRID_SYSTEM ? world_find_grid_system(w,id) != NULL :
                                        world_find_beam(w, id)      != NULL;
@@ -6068,11 +6077,13 @@ static bool gdi_show_three_views(World *world)
 static void bench_paint(const Scene *scene, const SceneLayout *layout, int iters)
 {
     RECT client = { 0, 0, 1100, 800 };
+    if (iters <= 0) {
+        fprintf(stderr, "bench：次數無效。\n");
+        return;
+    }
     HDC screen = GetDC(NULL);
-
-    if (screen == NULL || iters <= 0) {
-        fprintf(stderr, "bench：拿不到螢幕 DC 或次數無效。\n");
-        if (screen) ReleaseDC(NULL, screen);
+    if (screen == NULL) {
+        fprintf(stderr, "bench：拿不到螢幕 DC。\n");
         return;
     }
 
@@ -8630,6 +8641,9 @@ static bool world_revalidate(World *world)
     if (!engineering_rebuild(&candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
     }
+    if (!assembly_rebuild(&candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    }
     if (!grid_systems_rebuild(&candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
     }
@@ -10005,6 +10019,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/boundary_vertex_keys.inc"
 #include "geometry-core/grid_bindings.inc"
 #include "geometry-core/engineering_commands.inc"
+#include "geometry-core/assembly.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -12169,6 +12184,7 @@ static void world_dump_dsl(const World *world, FILE *out)
                 (long long)b->z_hi);
     }
 
+    assembly_dump(world,out);
     /* 畫布座標最後寫：它引用的物件要先存在。 */
     for (size_t i = 0; i < world->canvas_pos_count; ++i) {
         const CanvasPos *p = &world->canvas_pos[i];
@@ -12178,7 +12194,7 @@ static void world_dump_dsl(const World *world, FILE *out)
                 p->kind == CANVAS_POS_PLACEMENT ? "placement" :
                 p->kind == CANVAS_POS_SPACE     ? "space"     :
                 p->kind == CANVAS_POS_COLUMN    ? "column"    :
-                p->kind == CANVAS_POS_PARAMETER ? "parameter" : p->kind == CANVAS_POS_GRID_BINDING ? "grid-binding" : p->kind == CANVAS_POS_GRID_SYSTEM ? "grid-system" : "beam",
+                p->kind == CANVAS_POS_ASSEMBLY_RULE ? "assembly-rule" : p->kind == CANVAS_POS_ASSEMBLY_BINDING ? "assembly-binding" : p->kind == CANVAS_POS_PARAMETER ? "parameter" : p->kind == CANVAS_POS_GRID_BINDING ? "grid-binding" : p->kind == CANVAS_POS_GRID_SYSTEM ? "grid-system" : "beam",
                 (unsigned)p->id, (long long)p->x, (long long)p->y);
     }
 }
@@ -12210,6 +12226,10 @@ static bool apply_canvaspos_line(
         kind = CANVAS_POS_COLUMN;
     } else if (strcmp(tokens[1], "beam") == 0) {
         kind = CANVAS_POS_BEAM;
+    } else if (strcmp(tokens[1], "assembly-rule") == 0) {
+        kind = CANVAS_POS_ASSEMBLY_RULE;
+    } else if (strcmp(tokens[1], "assembly-binding") == 0) {
+        kind = CANVAS_POS_ASSEMBLY_BINDING;
     } else if (strcmp(tokens[1], "parameter") == 0) {
         kind = CANVAS_POS_PARAMETER;
     } else if (strcmp(tokens[1], "grid-system") == 0) {
@@ -12239,6 +12259,8 @@ static bool apply_canvaspos_line(
         kind == CANVAS_POS_SPACE     ? world_find_space(world, id)     != NULL :
         kind == CANVAS_POS_COLUMN    ? world_find_column(world, id)    != NULL :
         kind == CANVAS_POS_GRID_BINDING ? world_find_grid_binding(world,id) != NULL :
+        kind == CANVAS_POS_ASSEMBLY_RULE ? assembly_rule(world,id,0) != NULL :
+        kind == CANVAS_POS_ASSEMBLY_BINDING ? assembly_binding(world,id) != NULL :
         kind == CANVAS_POS_PARAMETER ? parameter_find(world,id) != NULL :
         kind == CANVAS_POS_GRID_SYSTEM ? world_find_grid_system(world,id) != NULL :
                                        world_find_beam(world, id)      != NULL;
@@ -12285,6 +12307,7 @@ static const struct {
     { "boundary-vertex-keys", 7, SCENE_MAX_TOKENS, false, "boundary-vertex-keys id outer keys [hole keys] next-key n", apply_boundary_keys_line },
     { "boundary-keyed", 9, SCENE_MAX_TOKENS, false, "boundary-keyed id geometry-hash hash outline key:u,v ...", apply_boundary_keyed_line },
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
+    { "assembly", 2, 3, false, "assembly begin|record|data|commit|end", apply_assembly_line },
     { "parameters", 2, 3, false, "parameters begin|card|field|end", apply_parameters_line },
     { "requires", 2, 2, false, "requires engineering-spec/1", apply_requires_line },
     { "engineering", 3, 3, false, "engineering kind base64-json", apply_engineering_line },
@@ -12513,6 +12536,9 @@ static bool parse_scene_file(const char *path, World *out_world)
             continue;
         }
 
+        if (out_world->assembly.loading && strcmp(tokens[0],"assembly")) {
+            scene_error(path,line_no,"I41: assembly blocks may only contain assembly records"); ok=false; break;
+        }
         if (out_world->parameters.loading && strcmp(tokens[0],"parameters")) {
             scene_error(path,line_no,"I39: parameter block may only contain parameter records"); ok=false; break;
         }

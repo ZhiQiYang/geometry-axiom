@@ -241,7 +241,7 @@ function hydrateIcons(root = document) {
   for (const slot of root.querySelectorAll("[data-icon]")) slot.innerHTML = icon(slot.dataset.icon);
 }
 
-const KIND_ZH = { parameter: "參數", boundary: "面", placement: "承載面", space: "空間", column: "柱", beam: "樑", "grid-system": "網格系統", "grid-binding": "網格配置" };
+const KIND_ZH = { "assembly-rule":"組構規則", "assembly-binding":"材料配置", parameter: "參數", boundary: "面", placement: "承載面", space: "空間", column: "柱", beam: "樑", "grid-system": "網格系統", "grid-binding": "網格配置" };
 function sceneMenuDisplay(name) {
   return String(name || "內建示範").replace(/\.scene$/i, "").replace(/\.gcanvas$/i, "");
 }
@@ -456,7 +456,7 @@ document.addEventListener("keydown", e => {
 }, true);
 async function apiRequest(cmd) {
   const rollback = cmd === "line history-abort";
-  if (!rollback && /^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm )/.test(cmd)) {
+  if (!rollback && /^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd)) {
     try { ReferenceWorkspace.assertEditable?.(); }
     catch (error) { return {ok:false,error:error.message}; }
   }
@@ -467,7 +467,7 @@ async function apiRequest(cmd) {
   const localHistory = ReferenceWorkspace.tryLocalHistory?.(cmd);
   if (localHistory) return localHistory;
   const t0 = performance.now();
-  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm )/.test(cmd) ? crypto.randomUUID() : null;
+  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let res;
   try {
@@ -503,7 +503,7 @@ async function apiRequest(cmd) {
   if (requestId) { pendingApiResults.delete(requestId); for (const id of ack) acknowledgedApiResults.delete(id); acknowledgedApiResults.add(requestId); }
   ReferenceWorkspace.observe(cmd, res);
   if (res.ok && !res.preview && res.history_changed !== false &&
-      /^(line |drag |reset$|default$|loadfile |engineering-confirm )/.test(cmd) &&
+      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
     window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
   window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
@@ -1644,7 +1644,7 @@ const oc = {
   showFace: true, showSpace: true, showColumn: true, showBeam: true, showGridSystem: true, showGridBinding: true,
   search: "",             /* 搜尋過濾字串 */
   surfs: [],              /* /surfaces 快照(法向→空間六槽) */
-  faces: [], spaces: [], columns: [], beams: [], gridSystems: [], gridBindings: [], parameters: [], parameterUses: [], parameterCreating: false,
+  faces: [], spaces: [], columns: [], beams: [], gridSystems: [], gridBindings: [], parameters: [], parameterUses: [], assemblyRules: [], assemblyBindings: [], parameterCreating: false,
   gridSystemCreating: false,
   stack: [],              // 焦點堆疊：世界 → 空間 → 面
   focus: null,            // null | {t:'space'|'face', id}
@@ -1955,6 +1955,7 @@ async function renderObjects({ persistPositions = true } = {}) {
   oc.gridSystems = r.gridSystems || [];
   oc.parameters = r.parameters || [];
   oc.parameterUses = r.parameterUses || [];
+  oc.assemblyRules = r.assemblyRules || []; oc.assemblyBindings = r.assemblyBindings || [];
   oc.gridBindings = r.gridBindings || [];
   oc.surfs = sf.surfaces; oc.bmap = boundaries;
 
@@ -1966,7 +1967,7 @@ async function renderObjects({ persistPositions = true } = {}) {
                     ...oc.columns.filter(c => !c.hasPos),
                     ...oc.beams.filter(b => !b.hasPos),
                     ...oc.gridSystems.filter(g => !g.hasPos),
-                    ...oc.gridBindings.filter(g => !g.hasPos), ...oc.parameters.filter(g => !g.hasPos)];
+                    ...oc.gridBindings.filter(g => !g.hasPos), ...oc.parameters.filter(g => !g.hasPos), ...oc.assemblyRules.filter(g=>!g.hasPos), ...oc.assemblyBindings.filter(g=>!g.hasPos)];
   for (const o of homeless) {
     const [cx, cy] = nextCardPosition(o, occupied);
     o.cx = cx; o.cy = cy;
@@ -2016,7 +2017,8 @@ function drawObjects() {
   const visGridSystems = inSpace ? [] : oc.gridSystems.filter(g => oc.showGridSystem && matchQ(g));
   const visGridBindings = inSpace ? [] : oc.gridBindings.filter(g => oc.showGridBinding && matchQ(g));
   const visParameters = inSpace ? [] : oc.parameters.filter(matchQ);
-  const visibleKeys = new Set([...visFaces,...visSpaces,...visCols,...visBeams,...visGridSystems,...visGridBindings,...visParameters].map(o => `${o.members ? "space" : o.kind}:${o.id}`));
+  const visAssembly = inSpace ? [] : [...oc.assemblyRules,...oc.assemblyBindings].filter(matchQ);
+  const visibleKeys = new Set([...visAssembly,...visFaces,...visSpaces,...visCols,...visBeams,...visGridSystems,...visGridBindings,...visParameters].map(o => `${o.members ? "space" : o.kind}:${o.id}`));
   const focusedSpaceSingle = oc.selection.length === 1 && oc.focus?.t === "space" &&
     oc.selection[0].kind === "space" && oc.selection[0].id === oc.focus.id && oc.spaces.some(s => s.id === oc.focus.id);
   oc.selection = oc.selection.filter(s => visibleKeys.has(`${s.kind}:${s.id}`) || focusedSpaceSingle);
@@ -2058,6 +2060,7 @@ function drawObjects() {
     cl.appendChild(c);
   }
   for (const o of visParameters) if(window.ParameterUI) cl.appendChild(ParameterUI.card(o));
+  for (const o of visAssembly) if(window.AssemblyWorkspace) cl.appendChild(AssemblyWorkspace.card(o));
   for (const card of cl.children) {
     const kind = card.dataset.kind, id = +card.dataset.id;
     const box = cardBox(ocFind(kind, id));
@@ -2072,6 +2075,7 @@ function drawObjects() {
       if (oc.drawTool) return;
       e.stopPropagation(); closePanels();
       if (kind === "boundary" || kind === "space") enterFocus(kind === "space" ? "space" : "face", id);
+      else if (kind.startsWith("assembly-")) window.AssemblyWorkspace.open(kind,id);
       else if (kind === "grid-binding") window.InfiniteGridWorkspace.openBinding(id);
       else if (kind === "grid-system" && ocFind(kind,id)?.mode === "infinite") window.InfiniteGridWorkspace.openSystem(id);
       else { selectObject(kind, id); if (["grid-system","parameter"].includes(kind) && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
@@ -2085,6 +2089,7 @@ function drawObjects() {
   drawOcEdges(eg, visSpaces, visFaces, visCols, visBeams, labels);
   drawGridRelations(eg, labels, visibleKeys);
   window.ParameterUI?.relations(eg, visibleKeys);
+  for(const b of oc.assemblyBindings){if(!visibleKeys.has(`assembly-binding:${b.id}`)||!visibleKeys.has(`assembly-rule:${b.ruleId}`))continue;const a=cardCenter('assembly-rule',b.ruleId),z=cardCenter('assembly-binding',b.id);if(a&&z)el('line',{x1:a.x,y1:a.y,x2:z.x,y2:z.y,stroke:'#9299b2','stroke-width':2,'stroke-dasharray':'5 4'},eg);}
   updateEdgeLabels();
   drawCrumb();
   renderObjectList();
@@ -2097,6 +2102,7 @@ function drawObjects() {
 
 /* ---- 搜尋比對:名稱 / id / kind ---- */
 function ocCardName(o) {
+  if(o.kind?.startsWith("assembly-"))return `${KIND_ZH[o.kind]} ${o.id} ${o.name}`;
   if(o.kind === "parameter")return `參數 ${o.id} ${o.name} ${o.card.fields.map(f=>f.name).join(" ")}`;
   if (o.kind === "grid-binding") return `網格配置 ${o.id} 面 ${o.boundary} 來源 ${o.system}`;
   if (o.kind === "grid-system") return `網格系統 ${o.id} ${o.name}`;
@@ -2264,7 +2270,7 @@ function drawMinimap() {
   const vr = ocv.getBoundingClientRect();
   const vb = { minX: -oc.panX / oc.zoom, minY: -oc.panY / oc.zoom,
     maxX: (vr.width - oc.panX) / oc.zoom, maxY: (vr.height - oc.panY) / oc.zoom };
-  const nodes = [...oc.faces, ...(oc.focus ? [] : [...oc.spaces,...oc.gridSystems,...oc.gridBindings,...oc.parameters]),
+  const nodes = [...oc.faces, ...(oc.focus ? [] : [...oc.spaces,...oc.gridSystems,...oc.gridBindings,...oc.parameters,...oc.assemblyRules,...oc.assemblyBindings]),
                  ...oc.columns, ...oc.beams];
   if (!nodes.length && !oc.focus) return;
   const allMinX = Math.min(vb.minX, ...nodes.map(n => n.cx));
@@ -8415,9 +8421,11 @@ for (const target of [ocv,$("faceEditorViewport")]) {
   });
 }
 function ocAllObjects() {
-  return [...oc.faces, ...oc.spaces, ...oc.columns, ...oc.beams, ...oc.gridSystems, ...oc.gridBindings, ...oc.parameters];
+  return [...oc.faces, ...oc.spaces, ...oc.columns, ...oc.beams, ...oc.gridSystems, ...oc.gridBindings, ...oc.parameters, ...oc.assemblyRules, ...oc.assemblyBindings];
 }
 function ocFind(kind, id) {
+  if(kind === "assembly-rule")return oc.assemblyRules.find(o=>o.id===id)||null;
+  if(kind === "assembly-binding")return oc.assemblyBindings.find(o=>o.id===id)||null;
   if(kind === "parameter")return oc.parameters.find(p=>p.id===id)||null;
   if (kind === "grid-binding") return oc.gridBindings.find(g => g.id === id) || null;
   if (kind === "grid-system") return oc.gridSystems.find(g => g.id === id) || null;
@@ -8489,7 +8497,9 @@ function renderObjectList() {
   }
   for(const p of oc.parameters){if(ocMatchSearch(p))rows.push({kind:"parameter",id:p.id,name:ReferenceWorkspace.escape(p.name),sub:`${p.card.fields.length} 個欄位 · ${window.ParameterUI?.usage(p.id).length||0} 處使用`});}
   $("objectCountBadge").textContent = rows.length;
-  const order = {parameter:0,"grid-system":0,boundary:1,placement:2,"grid-binding":3,space:4,column:5,beam:6};
+  for(const o of [...oc.assemblyRules,...oc.assemblyBindings])if(ocMatchSearch(o))rows.push({kind:o.kind,id:o.id,name:ReferenceWorkspace.escape(o.name),sub:o.kind==="assembly-rule"?`組構規則 v${o.version}`:o.complete?"完整配置":"未完成配置"});
+  $("objectCountBadge").textContent = rows.length;
+  const order = {"assembly-rule":0,"assembly-binding":3,parameter:0,"grid-system":0,boundary:1,placement:2,"grid-binding":3,space:4,column:5,beam:6};
   for (const r of rows.sort((a,b) => order[a.kind]-order[b.kind])) {
     const row = document.createElement("div");
     row.className = "object-row";
@@ -8517,6 +8527,7 @@ function renderObjectList() {
     });
     row.addEventListener("dblclick", () => {
       if (r.kind === "placement") setStatus("自帶矩形面沒有邊界可編輯");
+      else if (r.kind.startsWith("assembly-")) window.AssemblyWorkspace.open(r.kind,r.id);
       else if (r.kind === "grid-binding") window.InfiniteGridWorkspace.openBinding(r.id);
       else if (r.kind === "grid-system" && ocFind(r.kind,r.id)?.mode === "infinite") window.InfiniteGridWorkspace.openSystem(r.id);
       else if (r.kind === "column" || r.kind === "beam" || r.kind === "grid-system" || r.kind === "parameter") {
@@ -8531,7 +8542,7 @@ function renderObjectList() {
         list.querySelector(`.object-row[data-kind="${r.kind}"][data-id="${r.id}"]`)?.focus({preventScroll:true});
       }
     });
-    groups.get(r.kind === "grid-binding" ? "bindings" : ["grid-system","boundary","placement","parameter"].includes(r.kind) ? "sources" : "structures").appendChild(row);
+    groups.get(["grid-binding","assembly-binding"].includes(r.kind) ? "bindings" : ["grid-system","boundary","placement","parameter","assembly-rule"].includes(r.kind) ? "sources" : "structures").appendChild(row);
   }
   for (const group of groups.values()) if (group.children.length > 1) list.append(group);
   if (!rows.length) {
@@ -8594,6 +8605,7 @@ function renderInspector() {
   const o = ocFind(sel.kind, sel.id);
   if (sel.kind === "grid-binding" || sel.kind === "grid-system" && o.mode === "infinite") {renderGridObjectInspector(pane,o);return;}
   if (sel.kind === "grid-system") { GridSystemEditor.render(pane, o); return; }
+  if (sel.kind.startsWith("assembly-")) { window.AssemblyWorkspace?.inspector(pane,o);return; }
   if (sel.kind === "parameter") { window.ParameterUI?.render(pane, o); return; }
   pane.textContent = "";
   /* RC 構件檢視器(B-3):欄位表單 → DSL 重宣告(交易式);雙擊也只到這裡(Q10)。 */
@@ -8755,6 +8767,7 @@ function renderRcInspector(pane, kind, o) {
    C4:不用 confirm()——直接刪除,成功後 toast 提示可 Ctrl+Z 復原
    (對齊空間工作區 renderSpaceRc 構件列 ✕ 的既有做法)。 */
 async function deleteObject(kind, id) {
+  if(kind.startsWith("assembly-")){await AssemblyWorkspace.remove(kind,id);return;}
   if(kind === "parameter"){selectObject(kind,id);document.getElementById("paramDelete")?.click();return;}
   if (oc.selection.length > 1) { toast("請先單選一個物件，再編輯或刪除"); return; }
   const name = kind === "space" ? `空間 ${id}`
@@ -8787,6 +8800,7 @@ function canvasCardClickEligible(e) {
     ["box6Dialog","memberDialog","shapeDialog","rcDialog"].every(id => $(id).hidden);
 }
 async function openCanvasObject(kind, id) {
+  if(kind.startsWith("assembly-")){await AssemblyWorkspace.open(kind,id);return;}
   if (ocObjectOpening || !ocFind(kind,id)) return;
   ocObjectOpening = true;
   try {

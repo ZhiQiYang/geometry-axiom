@@ -6,6 +6,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
   const FORMAT = "geometry-canvas/1", MODEL_FORMAT = "geometry-canvas/2", PROJECTION_FORMAT = "geometry-canvas/3", TIMBER_FORMAT = "geometry-canvas/4", ENGINEERING_FORMAT = "geometry-canvas/5", MAX_SOURCE = 128 * 1024 * 1024;
+  const ASSEMBLY_FORMAT = "geometry-canvas/7", ASSEMBLY_CAPABILITY = "assembly-rule-authoring/1", ASSEMBLY_DRAFT_SCHEMA = "assembly-drafts/1";
   const PARAMETER_FORMAT = "geometry-canvas/6", PARAMETER_CAPABILITY = "parameters/1";
   const ENGINEERING_CAPABILITY = "engineering-spec/1", DRAFT_SCHEMA = "engineering-drafts/1", MAX_ENGINEERING_DRAFTS = 256;
   const MAX_MANIFEST = 8 * 1024 * 1024, MAX_MODELS = 64;
@@ -76,9 +77,10 @@
       const line = raw.split("#", 1)[0].trim();
       if (/^engineering(?:\s|$)/.test(line) || /(?:^|\s)eng:/.test(line)) result.add(ENGINEERING_CAPABILITY);
       if (/^parameters(?:\s|$)/.test(line) || /(?:^|[^\w])param:\d+:\d+/.test(line)) result.add(PARAMETER_CAPABILITY);
+      if (/^assembly(?:\s|$)/.test(line)) result.add(ASSEMBLY_CAPABILITY);
       const requires = line.match(/^requires\s+(.+)$/);
       if (requires) {
-        if (![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY].includes(requires[1])) fail("場景需要尚未支援的工程能力。");
+        if (![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY].includes(requires[1])) fail("場景需要尚未支援的工程能力。");
         result.add(requires[1]);
       }
     }
@@ -90,6 +92,7 @@
       (typeof pkg?.definitions?.base_scene === "string" && sceneCapabilities(pkg.definitions.base_scene).length));
   }
   function projectFormat(manifest, scene = "") {
+    if (projectCapabilities(manifest, scene).includes(ASSEMBLY_CAPABILITY)) return ASSEMBLY_FORMAT;
     if (projectCapabilities(manifest, scene).includes(PARAMETER_CAPABILITY)) return PARAMETER_FORMAT;
     if (manifest.requiredCapabilities?.length || manifest.engineeringDrafts?.records?.length ||
         sceneCapabilities(scene).length || manifest.models?.some(modelRequiresEngineering)) return ENGINEERING_FORMAT;
@@ -119,9 +122,45 @@
     }
     return drafts;
   }
+  function validateAssemblyDraft(record) {
+    jsonData(record);
+    if (!keys(record, ["id", "kind", "base_ref", "data", "updated_at"]) || !id(record.id) ||
+        !["rule", "binding"].includes(record.kind) || !object(record.data) ||
+        !str(record.updated_at, 100) || !Number.isFinite(Date.parse(record.updated_at))) fail("組構草稿不合法。");
+    const ref = record.base_ref;
+    if (ref !== null && (!keys(ref, ["id", "version", "fingerprint"]) || !positiveId(ref.id) ||
+        !positiveId(ref.version) || !hashRE.test(ref.fingerprint))) fail("組構草稿的固定版本不合法。");
+    if (new TextEncoder().encode(JSON.stringify(record)).length > 256 * 1024) fail("單份組構草稿超過 256 KB。");
+    const d=record.data, list=(a,n,check)=>Array.isArray(a)&&a.length<=n&&a.every(check);
+    const source=v=>v===null || object(v)&&(
+      v.kind==='literal'&&keys(v,['kind','value'])&&(typeof v.value==='string'||Number.isSafeInteger(v.value)) ||
+      v.kind==='spec'&&keys(v,['kind','name'])&&str(v.name,100) ||
+      v.kind==='parameter'&&keys(v,['kind','parameterId','fieldId'])&&positiveId(v.parameterId)&&positiveId(v.fieldId) ||
+      v.kind==='material'&&keys(v,['kind','id','version','field'])&&id(v.id)&&positiveId(v.version)&&['A','B'].includes(v.field));
+    if(record.kind==='rule'){
+      const joint=j=>keys(j,j.kind==='end-to-side'?['id','kind','scope','terminatedMember','targetMember','end','side','dir']:['id','kind','scope','continuousMember','splitMembers','side','dir'])&&positiveId(j.id)&&str(j.scope,256)&&['+u','-u','+v','-v'].includes(j.side)&&['u','v'].includes(j.dir)&&
+        (j.kind==='end-to-side'?positiveId(j.terminatedMember)&&positiveId(j.targetMember)&&['start','finish'].includes(j.end):j.kind==='ortho-split'&&positiveId(j.continuousMember)&&Array.isArray(j.splitMembers)&&j.splitMembers.length===2&&j.splitMembers.every(positiveId));
+      if(!keys(d,['id','version','name','slots','members','joints'])||!positiveId(d.id)||!positiveId(d.version)||!str(d.name,256)||
+        !list(d.slots,8,v=>keys(v,['id','name'])&&positiveId(v.id)&&str(v.name,256))||
+        !list(d.members,12,v=>keys(v,['id','slotId'])&&positiveId(v.id)&&positiveId(v.slotId))||!list(d.joints,16,joint))fail('組構規則草稿結構不合法。');
+    }else if(!keys(d,['id','name','rule','slots'])||!positiveId(d.id)||!str(d.name,256)||!keys(d.rule,['id','version'])||!positiveId(d.rule.id)||!positiveId(d.rule.version)||
+      !list(d.slots,8,v=>keys(v,['slotId','A','B','contactFace','orientation'])&&positiveId(v.slotId)&&source(v.A)&&source(v.B)&&[null,'A','B'].includes(v.contactFace)&&[null,'A','B'].includes(v.orientation)))fail('組構配置草稿結構不合法。');
+    return record;
+  }
+  function validateAssemblyDrafts(drafts) {
+    if (!keys(drafts, ["schema", "records"]) || drafts.schema !== ASSEMBLY_DRAFT_SCHEMA ||
+        !Array.isArray(drafts.records) || drafts.records.length > 256) fail("組構草稿版本或清單不合法。");
+    const ids = new Set();
+    for (const record of drafts.records) {
+      validateAssemblyDraft(record);
+      if (ids.has(record.id)) fail("組構草稿 ID 重複。");
+      ids.add(record.id);
+    }
+    return drafts;
+  }
   function validateProjectCapabilities(capabilities) {
-    if (!Array.isArray(capabilities) || capabilities.length > 2 || new Set(capabilities).size !== capabilities.length ||
-        capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY].includes(capability))) fail("專案需要尚未支援的工程能力。");
+    if (!Array.isArray(capabilities) || capabilities.length > 3 || new Set(capabilities).size !== capabilities.length ||
+        capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY].includes(capability))) fail("專案需要尚未支援的工程能力。");
     return capabilities;
   }
   function assertProjectCapabilities(manifest, available) {
@@ -132,10 +171,11 @@
   }
   function projectCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
+    if (manifest.assemblyDrafts?.records?.length) required.add(ASSEMBLY_CAPABILITY);
     for (const model of manifest.models || []) {
       for (const c of sceneCapabilities(model.input?.base_scene || "")) required.add(c);
       for (const pkg of Object.values(model.result || {})) {
-        for (const c of pkg?.manifest?.capabilities || []) if ([ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY].includes(c)) required.add(c);
+        for (const c of pkg?.manifest?.capabilities || []) if ([ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY].includes(c)) required.add(c);
         for (const c of sceneCapabilities(pkg?.definitions?.base_scene || "")) required.add(c);
       }
     }
@@ -144,8 +184,9 @@
   function validateEngineeringScene(manifest, scene) {
     const needed = projectCapabilities({...manifest, requiredCapabilities: []}, scene);
     if (needed.some(c => !manifest.requiredCapabilities?.includes(c)) ||
-        (needed.includes(PARAMETER_CAPABILITY) && manifest.format !== PARAMETER_FORMAT) ||
-        (needed.length && ![ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(manifest.format)))
+        (needed.includes(PARAMETER_CAPABILITY) && ![PARAMETER_FORMAT, ASSEMBLY_FORMAT].includes(manifest.format)) ||
+        (needed.includes(ASSEMBLY_CAPABILITY) && manifest.format !== ASSEMBLY_FORMAT) ||
+        (needed.length && ![ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT].includes(manifest.format)))
       fail("含參數的專案必須使用第 6 版，含工程來源須使用第 5 版以上，並保留所需能力。");
   }
   // Bound and reject non-JSON values before cloning: JSON.stringify otherwise hides NaN.
@@ -290,20 +331,21 @@
     return Array.from(new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes)), b => b.toString(16).padStart(2, "0")).join("");
   }
   function validate(m) {
-    if (!m || ![FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format)) fail("專案版本不支援，請使用相容版本開啟。");
-    if ([ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format)) {
-      if (!keys(m, ["format", "projectId", "name", "sceneHash", "sources", "faces", "models", "faceProjections", "requiredCapabilities"], ["engineeringDrafts"]))
+    if (!m || ![FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT].includes(m.format)) fail("專案版本不支援，請使用相容版本開啟。");
+    if ([ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT].includes(m.format)) {
+      if (!keys(m, ["format", "projectId", "name", "sceneHash", "sources", "faces", "models", "faceProjections", "requiredCapabilities"], ["engineeringDrafts", ...(m.format === ASSEMBLY_FORMAT ? ["assemblyDrafts"] : [])]))
         fail("第 5 版工程專案的欄位不完整或含未知定義。");
       validateProjectCapabilities(m.requiredCapabilities);
+      if (Object.hasOwn(m, "assemblyDrafts")) validateAssemblyDrafts(m.assemblyDrafts);
       if (Object.hasOwn(m, "engineeringDrafts")) validateEngineeringDrafts(m.engineeringDrafts);
-    } else if (Object.hasOwn(m, "requiredCapabilities") || Object.hasOwn(m, "engineeringDrafts"))
+    } else if (Object.hasOwn(m, "assemblyDrafts") || Object.hasOwn(m, "requiredCapabilities") || Object.hasOwn(m, "engineeringDrafts"))
       fail("工程能力與草稿必須使用第 5 版格式。");
     if (m.format === FORMAT && Object.hasOwn(m, "models") && (!Array.isArray(m.models) || m.models.length)) fail("含空間模型的專案必須使用第 2 版格式。");
     if (m.format === MODEL_FORMAT && (!Array.isArray(m.models) || m.models.length > MAX_MODELS)) fail("空間模型清單不合法。");
-    if ([PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format) && (!Array.isArray(m.models) || m.models.length > MAX_MODELS || !Array.isArray(m.faceProjections))) fail("平面投影專案清單不合法。");
+    if ([PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT].includes(m.format) && (!Array.isArray(m.models) || m.models.length > MAX_MODELS || !Array.isArray(m.faceProjections))) fail("平面投影專案清單不合法。");
     if (Object.hasOwn(m, "faceProjections")) validateFaceProjectionList(m.faceProjections);
-    if (![PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format) && (m.faceProjections?.length || m.models?.some(model => Object.hasOwn(model.source || {}, "projection")))) fail("含平面投影定義的專案必須使用第 3 版格式。");
-    if (![TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format) && m.models?.some(model => Object.hasOwn(model.input || {}, "timbers") || model.result?.schema === "geometry-space-preview/2")) fail("含角材模型的專案必須使用第 4 版格式。");
+    if (![PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT].includes(m.format) && (m.faceProjections?.length || m.models?.some(model => Object.hasOwn(model.source || {}, "projection")))) fail("含平面投影定義的專案必須使用第 3 版格式。");
+    if (![TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT].includes(m.format) && m.models?.some(model => Object.hasOwn(model.input || {}, "timbers") || model.result?.schema === "geometry-space-preview/2")) fail("含角材模型的專案必須使用第 4 版格式。");
     validateEngineeringScene(m, "");
     const modelIds = new Set();
     for (const model of m.models || []) {
@@ -363,14 +405,16 @@
     for (const model of manifest.models || []) validateSpaceModel(model);
     if (Object.hasOwn(manifest, "faceProjections")) validateFaceProjectionList(manifest.faceProjections);
     if (Object.hasOwn(manifest, "requiredCapabilities")) validateProjectCapabilities(manifest.requiredCapabilities);
+    if (Object.hasOwn(manifest, "assemblyDrafts")) validateAssemblyDrafts(manifest.assemblyDrafts);
     if (Object.hasOwn(manifest, "engineeringDrafts")) validateEngineeringDrafts(manifest.engineeringDrafts);
     const m = { ...copy(manifest), format: projectFormat(manifest, scene), sceneHash: await sha(sceneBytes) };
-    if ([ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format)) {
+    if ([ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT].includes(m.format)) {
       m.requiredCapabilities = projectCapabilities(manifest, scene);
+      if (!m.assemblyDrafts?.records.length) delete m.assemblyDrafts;
       if (!m.engineeringDrafts?.records.length) delete m.engineeringDrafts;
-    } else { delete m.requiredCapabilities; delete m.engineeringDrafts; }
+    } else { delete m.requiredCapabilities; delete m.engineeringDrafts; delete m.assemblyDrafts; }
     if (m.format === FORMAT) delete m.models;
-    if ([PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT].includes(m.format)) { m.models ||= []; m.faceProjections ||= []; }
+    if ([PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT].includes(m.format)) { m.models ||= []; m.faceProjections ||= []; }
     else delete m.faceProjections;
     validate(m);
     validateEngineeringScene(m, scene);
@@ -453,11 +497,13 @@
     }
     snapshot() {
       return { context: this.frame.context, ids: new Map(this.frame.ids),
+        assemblyDrafts: copy(this.frame.context.assemblyDrafts || []),
         ...(Array.isArray(this.frame.context.models) ? { models: copy(this.frame.context.models) } : {}),
         ...(this.frame.context.faceProjections instanceof Map ? { faceProjections: new Map([...this.frame.context.faceProjections].map(([key, value]) => [key, copy(value)])) } : {}) };
     }
     restore(frame) {
       this.frame = { context: frame.context, ids: new Map(frame.ids) };
+      this.frame.context.assemblyDrafts = copy(frame.assemblyDrafts || []);
       if (frame.models) this.frame.context.models = copy(frame.models);
       if (frame.faceProjections) this.frame.context.faceProjections = new Map([...frame.faceProjections].map(([key, value]) => [key, copy(value)]));
     }
@@ -533,7 +579,7 @@
         this.pruneFaceProjections((bid, pid) => result.surfaces.some(s => s.id === pid && s.boundary === bid && s.u?.[2] === 0 && s.v?.[2] === 0));
         return;
       }
-      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm )/.test(command)) return;
+      if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(command)) return;
       const op = command.startsWith("line ") ? command.slice(5).trim().split(/\s+/)[0] : command.split(/\s+/)[0];
       if (!result.ok) {
         // A preview rejection preserves the core's open group; other failures roll it back.
@@ -542,7 +588,7 @@
         }
         return;
       }
-      if (op === "engineering-confirm" && result.history_changed === false) return;
+      if (["engineering-confirm", "assembly-confirm"].includes(op) && result.history_changed === false) return;
       if (op === "canvas-pos" || op === "preview" || op === "cancel-preview") return;
       if (op === "history-begin") { this.group = { base: this.snapshot(), dirty: false }; return; }
       if (op === "history-abort") { if (this.group) this.restore(this.group.base); this.group = null; return; }
@@ -553,8 +599,10 @@
           // Earlier core history has no trustworthy reference associations. Independent
           // models and unpublished drafts remain saved values; a core-only step
           // cannot silently delete them.
+          const assemblyDrafts = copy(this.frame.context.assemblyDrafts || []);
           const models = this.frame.context.models, engineeringDrafts = this.frame.context.engineeringDrafts;
           this.frame = { context: this.makeContext(), ids: new Map() };
+          this.frame.context.assemblyDrafts = assemblyDrafts;
           if (models) this.frame.context.models = copy(models);
           if (engineeringDrafts) this.frame.context.engineeringDrafts = copy(engineeringDrafts);
           const to = op === "undo" ? this.redo : this.undo;
@@ -579,7 +627,7 @@
         (changedPlacement && pid === +changedPlacement[1] && (placed?.bid !== bid || !placed.horizontal))));
     }
   }
-  return { PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
+  return { ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
     MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage,
     validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, assertProjectCapabilities, sceneCapabilities,
     validateFaceProjection, validateFaceProjectionRefs, projectFormat, reference, pack, unpack, ContextHistory };

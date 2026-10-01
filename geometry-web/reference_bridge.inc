@@ -1,5 +1,6 @@
 /* Structured I8a report, derived geometry for UI, and reference snapping. */
 static void json_reference_grid(const World *w,const ReferenceGrid *g);
+static void json_assembly_state(const World *w,bool geometry);
 static void json_reference_geometry(const World *w,int i)
 {
     if (i<0 || !w->timbers[i].placed) { fputs("null",stdout); return; }
@@ -97,6 +98,8 @@ static void json_reference_preview(void)
     json_grid_system_preview();
     json_grid_binding_preview();
     json_boundary_preview();
+    fputs(",\"assembly\":{\"before\":",stdout);json_assembly_state(&g_preview.before,false);
+    fputs(",\"after\":",stdout);json_assembly_state(&g_preview.after,false);putchar('}');
     fputs(",\"violations\":[",stdout);
     for (size_t i=0;i<g_preview.issue_count;++i) {
         const ReferenceIssue *e=&g_preview.issues[i];

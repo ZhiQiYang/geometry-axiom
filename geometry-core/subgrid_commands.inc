@@ -30,9 +30,15 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
     ReferenceGrid *existing=world_find_grid_mut(world,candidate.id);
     const ReferenceGrid *parent=world_find_grid(world,candidate.parent_id);
     if (!parent || parent->is_subgrid || candidate.id==candidate.parent_id ||
-        parent->from_binding!=lattice ||
         (existing && (!existing->is_subgrid || existing->parent_id!=candidate.parent_id || existing->lattice_cell!=lattice))) {
         scene_error(path,line_no,"D19/I25：父格必須是主網格；既有網格的類型與父格編號不能更換"); return false;
+    }
+    if (parent->from_binding!=lattice) {
+        char message[192];
+        snprintf(message,sizeof message,"D19/I25：子格 %u 的父格 %u 必須使用 %s 參照形式",
+                    candidate.id,parent->id,parent->from_binding?"lattice-cell":"cell");
+        scene_error(path,line_no,message);
+        return false;
     }
     candidate.is_subgrid=true; candidate.lattice_cell=lattice; candidate.placement_id=parent->placement_id;
     candidate.divisions[0]=du; candidate.divisions[1]=dv;

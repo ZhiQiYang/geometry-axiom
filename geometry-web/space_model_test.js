@@ -605,8 +605,8 @@ async function fontLayoutRegression() {
   await fontCheck('existing face workspace');
   for(const width of [1382,1160,900,680,600]){
     await viewport(width,804);
-    const rows=await evaluate(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('#faceWorkspaceTools').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect();return {header:h.height,status:s.height,actionsRight:a.right,toolsRight:t.right,actionsLeft:a.left,titleWidth:title.width,width:innerWidth};})()`);
-    check('existing face toolbar fits after adding projection controls at '+width+'px',rows.header===56&&rows.status===32&&rows.actionsRight<=rows.width&&rows.toolsRight<=rows.actionsLeft+1&&rows.titleWidth>0,rows);
+    const rows=await evaluate(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('#faceWorkspaceTools').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect();return {header:h.height,status:s.height,actionsRight:a.right,toolsRight:t.right,actionsLeft:a.left,toolsTop:t.top,toolsBottom:t.bottom,actionsTop:a.top,actionsBottom:a.bottom,docWidth:document.documentElement.scrollWidth,titleWidth:title.width,width:innerWidth};})()`);
+    check('documented face header rows fit at '+width+'px',rows.header===(width<=720?122:116)&&rows.status===32&&rows.actionsRight<=rows.width&&rows.docWidth<=rows.width+1&&(rows.toolsRight<=rows.actionsLeft+1||rows.toolsTop>=rows.actionsBottom-1||rows.toolsBottom<=rows.actionsTop+1)&&rows.titleWidth>0,rows);
   }
   await viewport(1382,804);
   await evaluate(`(async()=>{await leaveFocus();await enterFocus('space',1);})()`); await settle();
@@ -913,7 +913,23 @@ async function timberRegression() {
   check('GEO208 mobile timber preview has no horizontal overflow and touch-sized layer controls',mobile.scroll<=mobile.width+1&&mobile.left>=-1&&mobile.right<=mobile.width+1&&mobile.labels.every(h=>h>=44),mobile);
   await shot('timber-frame-mobile-timbers-bottom');
   await click('#smTabSetup');await point('#smIncludeTimbers');
-  const mobileSetup=await evaluate(`(()=>{const e=document.querySelector('#smIncludeTimbers'),d=document.querySelector('#smWorkspace'),fonts=[...d.querySelectorAll('*')].filter(n=>!n.closest('svg')&&n.getClientRects().length&&getComputedStyle(n).visibility!=='hidden'&&[...n.childNodes].some(c=>c.nodeType===3&&c.textContent.trim())).map(n=>parseFloat(getComputedStyle(n).fontSize));return {height:e.closest('label').getBoundingClientRect().height,minFont:Math.min(...fonts),overflow:d.scrollWidth-d.clientWidth};})()`);
+  const mobileSetup=await evaluate(`(()=>{
+    const e=document.querySelector('#smIncludeTimbers'),d=document.querySelector('#smWorkspace'),fonts=[];
+    for(const n of d.querySelectorAll('*')){
+      if(n.closest('svg')||!n.getClientRects().length||getComputedStyle(n).visibility==='hidden')continue;
+      // Compact project status hides its long text at 0px and renders an 11px ::after label.
+      // Measure rendered text, including generated labels, rather than the hidden source text.
+      for(const c of n.childNodes)if(c.nodeType===3&&c.textContent.trim()){
+        const range=document.createRange();range.selectNodeContents(c);
+        if([...range.getClientRects()].some(r=>r.width>0&&r.height>0))fonts.push(parseFloat(getComputedStyle(n).fontSize));
+      }
+      for(const pseudo of ['::before','::after']){
+        const cs=getComputedStyle(n,pseudo);
+        if(cs.display!=='none'&&cs.visibility!=='hidden'&&cs.content&&!['none','normal','""'].includes(cs.content))fonts.push(parseFloat(cs.fontSize));
+      }
+    }
+    return {height:e.closest('label').getBoundingClientRect().height,minFont:Math.min(...fonts),overflow:d.scrollWidth-d.clientWidth};
+  })()`);
   check('GEO208 mobile selection is reachable with >=44px target and all visible text >=11px',mobileSetup.height>=44&&mobileSetup.minFont>=11&&mobileSetup.overflow<=1,mobileSetup);
   await shot('timber-frame-mobile-settings');
   await point('#smConfirmFaces');await checked('#smConfirmFaces',true);const mobileCreate=await point('#smCreate');

@@ -2,27 +2,21 @@
  * under test are exercised with trusted pointer/keyboard input. The fixture is
  * an existing project, so a hidden empty-canvas shortcut cannot make this pass.
  */
+const cdp=require('./cdp_helpers.js');
 module.exports = async function compositionCanvasTests({send,eval_,sleep,click,drag,waitForUI,exceptionCount}) {
   console.log('=== P72. 來源、配置與底部編輯面板 ===');
   const fs=require('fs'),path=require('path'),os=require('os'),same=require('util').isDeepStrictEqual;
   const initialExceptions=exceptionCount();
-  const check=(name,ok,detail=ok)=>{
-    console.log('P72 '+name,ok===true?'✓':'✗',ok===true?'':JSON.stringify(detail));
-    if(ok!==true)throw Error('P72 '+name+' '+JSON.stringify(detail));
-  };
-  const read=async expression=>{const r=await eval_(expression);if(r?.__err)throw Error(r.__err);return r;};
-  const wait=expression=>waitForUI(expression,20000);
+  const check=cdp.makeCheck({prefix:'P72 ',throwOnFail:true,failMessage:(name,detail)=>'P72 '+name+' '+JSON.stringify(detail)});
+  const read=cdp.makeRead(eval_);
+  const wait=cdp.makeWait(waitForUI,20000);
   const settle=()=>wait(`!oc.busy && !ReferenceWorkspace.busy && !document.querySelector('.reference-impact[open]')`);
   const box=selector=>read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)return null;const r=e.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;return {x,y,left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,hit:e.contains(document.elementFromPoint(x,y)),disabled:!!e.disabled};})()`);
   const visible=b=>!!b&&b.width>0&&b.height>0&&b.hit&&!b.disabled;
-  const ctl=async selector=>{
-    await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'nearest',inline:'nearest'});void 0`);
-    let b;for(let i=0;i<12;i++){await sleep(70);b=await box(selector);if(visible(b))break;}
-    if(!visible(b))throw Error('Unreachable composition control '+selector+' '+JSON.stringify(b));
-    await click(b.x,b.y);await sleep(130);
-  };
-  const key=async(key,code,vk,modifiers=0)=>{for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:vk,modifiers,...(type==='keyDown'&&key==='Enter'?{text:'\r'}:{})});await sleep(50);};
-  const fill=async(selector,text)=>{await ctl(selector);await key('a','KeyA',65,2);await send('Input.insertText',{text:String(text)});await sleep(90);};
+  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'nearest',attempts:12,pollMs:70,settleMs:130,probe:box,ready:visible,
+    unreachable:(selector,b)=>'Unreachable composition control '+selector+' '+JSON.stringify(b)});
+  const key=cdp.makeKey({send,sleep},{afterMs:50,enterText:true});
+  const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:90});
   const choose=async(selector,value)=>{
     const index=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return [...e.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(String(value))});})()`);
     if(index<0)throw Error('No enabled option '+selector+'='+value);
@@ -42,11 +36,7 @@ module.exports = async function compositionCanvasTests({send,eval_,sleep,click,d
     if(await read(`$('filterDisclosure').open`))await ctl('#filterDisclosure > summary');
     await ctl(row(kind,id));await wait(`oc.sel?.kind===${JSON.stringify(kind)} && oc.sel.id===${id}`);
   };
-  const shot=async name=>{
-    const folder=process.env.GEOMETRY_COMPOSITION_SCREENSHOT_DIR;if(!folder)return;
-    fs.mkdirSync(folder,{recursive:true});const r=await send('Page.captureScreenshot',{format:'png'});
-    fs.writeFileSync(path.join(folder,name+'.png'),Buffer.from(r.result.data,'base64'));
-  };
+  const shot=cdp.makeShot(send,['GEOMETRY_COMPOSITION_SCREENSHOT_DIR']);
   const reset=()=>read(`(async()=>{for(const d of document.querySelectorAll('dialog[open]'))d.close();resetSceneFocus();await setView3(false);closePanels();const r=await apiRequest('reset');if(!r.ok)throw Error(JSON.stringify(r));if(!await renderObjects())throw Error('reset render failed');setOcTool('select');return true;})()`);
   const fixture=lines=>read(`(async()=>{for(const line of ${JSON.stringify(lines)}){let r=await apiRequest('line '+line);if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok)throw Error(JSON.stringify(r));}if(!await renderObjects())throw Error('fixture render failed');return true;})()`);
 
@@ -119,7 +109,7 @@ module.exports = async function compositionCanvasTests({send,eval_,sleep,click,d
   check('建立選單支援 Home End 與方向鍵逐項操作',lastMenuFocus&&firstMenuFocus&&await read(`document.activeElement.id==='btnCreateRect'`));
   await key('Escape','Escape',27);check('Escape 關閉建立選單並回到發起按鈕',await read(`$('createObjectPop').hidden && document.activeElement.id==='btnCreateObject'`));
   await key('Enter','Enter',13);check('鍵盤 Enter 可重新打開選單且聚焦第一項',await read(`!$('createObjectPop').hidden && document.activeElement.id==='btnQuickGrid'`));
-  const beforeSpace=await dump();await ctl('#btnNewSpace');await settle();
+  const beforeSpace=await dump();await ctl('#btnNewSpace');await wait(`oc.spaces.length===1`);await settle();
   check('選單的空間入口仍建立原生空容器',(await objects()).spaces.length===1&&await read(`$('createObjectPop').hidden || !$('createObjectPop').getClientRects().length`));
   await ctl('#btnUndo');await settle();check('選單建立仍可完整復原',(await dump())===beforeSpace);
   await ctl('#btnQuickBoundary');await ctl('#btnQuickRect');check('常駐邊界入口啟動真正矩形工具',await read(`oc.drawTool==='rect' && $('btnNewRect').classList.contains('active')`));await key('Escape','Escape',27);

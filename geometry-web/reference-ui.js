@@ -12,6 +12,11 @@ async function confirmReferenceImpact(preview) {
   const code = document.createElement('code'); code.textContent = preview.command;
   dialog.append(code);
   appendGridDefinitionImpact(dialog, preview);
+  const assemblyChanges=document.createElement('ul');
+  for(const binding of preview.assembly?.after?.bindings||[]){const before=preview.assembly.before.bindings.find(b=>b.value.id===binding.value.id);
+    for(const slot of binding.effective)for(const axis of ['A','B']){const a=before?.effective.find(v=>v.slotId===slot.slotId)?.[axis]?.value,b=slot[axis]?.value;
+      if(a!==b){const row=document.createElement('li');row.dataset.impactAssembly=binding.value.id;row.textContent=`組構配置 ${binding.value.id} 槽位 ${slot.slotId}.${axis}：${a??'未設定'} → ${b??'未設定'} mm`;assemblyChanges.append(row);}}}
+  if(assemblyChanges.children.length)dialog.append(assemblyChanges);
   const datumChanges=(preview.datums||[]).filter(row=>JSON.stringify(row.before)!==JSON.stringify(row.after));
   if(datumChanges.length){
     const list=document.createElement('ul');list.className='impact-datums';

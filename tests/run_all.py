@@ -1,0 +1,794 @@
+#!/usr/bin/env python3
+"""One entry point for every non-browser test; reports pass/fail/skip and environment problems honestly.
+
+    python tests/run_all.py                 # check binaries; stale/missing ones are NOT used and their suites are not run
+    python tests/run_all.py --build         # build stale/missing binaries first (tests/binaries.py), then run
+    python tests/run_all.py --only bridge   # only suites whose name contains "bridge"  (repeatable)   [PARTIAL run]
+    python tests/run_all.py --list          # show the suites and what each needs
+    python tests/run_all.py --allow-skip    # skips no longer affect the exit code
+    python tests/run_all.py --simulate-missing GEOMETRY_MODEL_BASE   # run as if that variable were unset [DEMO run, never exit 0]
+    python tests/run_all.py --update-expected   # full run only: rewrite tests/run_all.expected.json from what was discovered
+
+Exit codes (lowest number wins): 1 any test failed / suite crashed / timed out / discovered count differs from
+run_all.expected.json / unregistered test file; 2 environment problem (stale or missing binary, SAC block, node missing,
+canvas shim did not redirect, run_tests exit 2, another run_all or build is running); 3 only skips (unless --allow-skip);
+4 a --simulate-missing demo that would otherwise have been 0; 0 everything that was selected passed.
+A complete run (no --only / --extra-py / --simulate-missing) that exits 0 means: every suite ran, every suite found exactly
+the number of tests listed in tests/run_all.expected.json, none failed, none was skipped (the only exemption is the named
+allowlist ALLOWED_SKIPS, e.g. the POSIX-only /dev/full test on Windows).  Partial/demo runs say so in their last lines.
+
+NOT covered (needs Chrome, run them separately): geometry-web/cdp_test.js, geometry-web/space_model_test.js.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import signal
+import subprocess
+import sys
+import time
+import unicodedata
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+sys.path.insert(0, str(HERE))
+import binaries  # noqa: E402
+
+IS_WIN = os.name == 'nt'
+LOG_DIR = binaries.OUT_DIR / 'run_all-logs'
+RUNNER = HERE / '_unittest_runner.py'
+EXPECTED_FILE = HERE / 'run_all.expected.json'
+
+# ---------------------------------------------------------------- registries
+# Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
+# A test file that is on disk but not listed makes run_all fail and name it.
+PY_NEEDS = {
+    'test_assembly_rules': ['bridge'],
+    'test_axiom_reader': [],
+    'test_bridge_integrity': ['bridge'],
+    'test_cli_args': ['core'],
+    'test_datum_contract': ['bridge'],
+    'test_engineering_core': ['bridge'],
+    'test_engineering_json': ['engjson'],
+    'test_engineering_model_compatibility': ['model-base'],
+    'test_engineering_model_sources': ['bridge', 'model-base'],
+    'test_engineering_transport': [],
+    'test_feedback_store': [],
+    'test_gdi_contract': ['gdi'],
+    'test_grid_system_contract': ['bridge'],
+    'test_guide_panels': [],
+    'test_infinite_grid_contract': ['bridge'],
+    'test_modeling_degenerate': ['model-base'],
+    'test_modeling_runtime': ['model-base'],
+    'test_modeling_transport': ['bridge', 'model-base'],
+    'test_parameters_core': ['bridge', 'model-base'],
+    'test_reference_contract': ['bridge'],
+    'test_serve': [],
+    'test_space_modeling': ['model-base'],
+    'test_subgrid_contract': ['bridge'],
+    'test_witness_diagnostics': [],
+    'test_witness_marks': [],
+}
+# Every tests/*.js|*.cjs|*.mjs MUST be in exactly one of these three (run by `node --test`, run as a script, or a
+# reasoned exclusion).  Unlisted files make run_all fail and name them.
+NODE_TEST_FILES = [
+    'tests/test_assembly_project_store.js',
+    'tests/test_cdp_floor.js',
+    'tests/test_engineering_project_store.js',
+    'tests/test_face_projection_store.js',
+    'tests/test_parameters_project_store.js',
+    'tests/test_project_store.js',
+    'tests/test_reference_workspace_races.js',
+    'tests/test_space_model_store.js',
+]
+NODE_SCRIPT_FILE = 'tests/test_model_viewer.cjs'
+NODE_EXCLUDED = {
+    'tests/reference_pdf_fixture.js': '夾具產生器，不是測試：node --test 會把它算成 1 個假的通過 test',
+}
+
+# Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
+# Any other skip (even one whose reason mentions POSIX) stays a skip.
+ALLOWED_SKIPS = [
+    {'suite': 'py:test_cli_args',
+     'test': 'test_cli_args.CliArgs.test_svg_write_failure_is_reported_without_unlinking_device',
+     'reason': 'requires POSIX full device',
+     'platforms': ('nt',),
+     'why': '/dev/full 是 POSIX 裝置，Windows 上不存在'},
+]
+SAC_FACES = ['橋接器連線中斷', 'WinError 4551', 'BASE_COMPILER', 'UNSUPPORTED', '應用程式控制原則', 'Smart App Control']
+UNIT = {'integrity': 'C 檢查點', 'run_tests': '場景', 'unittest': 'test', 'node-test': 'node test', 'node-canvas': '斷言'}
+
+
+class Suite:
+    def __init__(self, name, kind, cmd, needs=(), timeout=900, needs_node=False, extra_env=None, label=''):
+        self.name = name
+        self.kind = kind
+        self.cmd = cmd
+        self.needs = list(needs)
+        self.timeout = timeout
+        self.needs_node = needs_node
+        self.extra_env = extra_env or {}
+        self.label = label
+
+    @property
+    def counted(self):
+        return self.kind != 'node-script'   # node-script suites only have an exit code, no test count
+
+
+class Row:
+    def __init__(self, suite_name, counted=True):
+        self.name = suite_name
+        self.counted = counted
+        self.total = self.passed = self.failed = self.skipped = 0
+        self.seconds = 0.0
+        self.note = ''
+        self.ran = False
+        self.allowed_skips = 0      # skips matched by the named ALLOWED_SKIPS list: shown, but not an exit-3 reason
+        self.env_problem = False    # counts towards exit code 2
+        self.crashed = False        # counts towards exit code 1 even without a failed test
+        self.expected_problem = ''  # discovered count differs from run_all.expected.json
+        self.details = []
+
+
+def node_exe():
+    return shutil.which('node')
+
+
+# ------------------------------------------------------------------ registry checks
+
+def check_registry():
+    """Problems (list of str) between what is on disk under tests/ and what this file registers."""
+    problems = []
+    disk_py = {p.stem for p in HERE.glob('test_*.py')}
+    for stem in sorted(disk_py - set(PY_NEEDS)):
+        problems.append('tests/%s.py 沒有登記在 run_all.py 的 PY_NEEDS（沒有二進位需求也要明確登記成 []）；未登記的檔不會被跑' % stem)
+    for stem in sorted(set(PY_NEEDS) - disk_py):
+        problems.append('PY_NEEDS 登記了 %s，但 tests/%s.py 不存在' % (stem, stem))
+    disk_js = {'tests/' + p.name for pattern in ('*.js', '*.cjs', '*.mjs') for p in HERE.glob(pattern)}
+    known = set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_EXCLUDED)
+    for rel in sorted(disk_js - known):
+        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_EXCLUDED 三選一）；未登記的檔不會被跑' % rel)
+    for rel in sorted(known - disk_js):
+        problems.append('run_all.py 登記了 %s，但該檔不存在' % rel)
+    return problems
+
+
+def build_suites():
+    py = sys.executable
+    suites = [
+        Suite('c:integrity', 'integrity', None, ['integrity'], 300, label='tests/test_core_integrity.c'),
+        Suite('core:run_tests', 'run_tests', None, ['core'], 900, label='tests/run_tests.py <core>'),
+    ]
+    for stem in sorted(PY_NEEDS):
+        f = HERE / (stem + '.py')
+        if f.is_file():
+            suites.append(Suite('py:' + stem, 'unittest', [py, str(RUNNER), str(f)], PY_NEEDS[stem], 1200, label='tests/%s' % f.name))
+    js = [rel for rel in sorted(NODE_TEST_FILES) if (ROOT / rel).is_file()]
+    suites += [
+        Suite('node:tests-js', 'node-test', ['--test', '--test-reporter=spec', *js], ['bridge', 'model-base'], 900,
+              needs_node=True, label='node --test tests/*.js（已登記的 %d 檔；不含夾具）' % len(js)),
+        Suite('node:model_viewer', 'node-script', [NODE_SCRIPT_FILE], [], 300, needs_node=True, label=NODE_SCRIPT_FILE),
+        Suite('node:polydraft', 'node-test', ['--test', '--test-reporter=spec', 'geometry-web/polydraft_test.js'],
+              ['core'], 900, needs_node=True, label='geometry-web/polydraft_test.js'),
+        Suite('node:canvas_direct', 'node-canvas', ['geometry-web/canvas_test.js', 'direct'], ['bridge'], 900,
+              needs_node=True, label='geometry-web/canvas_test.js direct'),
+    ]
+    return suites
+
+
+# ------------------------------------------------------------------ environment
+
+def inherited_geometry_vars():
+    return sorted(k for k in os.environ if k.upper().startswith('GEOMETRY_'))
+
+
+def child_env(infos, simulate_missing):
+    """Children get the caller's environment MINUS every GEOMETRY_* variable, PLUS only what run_all itself sets.
+    (A stale GEOMETRY_TEST_VIEWER / GEOMETRY_TEST_REFERENCE_WORKSPACE / GEOMETRY_BRIDGE in the shell must not leak in.)"""
+    env = {k: v for k, v in os.environ.items() if not k.upper().startswith('GEOMETRY_')}
+    env['PYTHONIOENCODING'] = 'utf-8'
+    env['PYTHONUTF8'] = '1'
+    env['PYTHONDONTWRITEBYTECODE'] = '1'
+    env.update(binaries.env_vars(infos, only_fresh=True))
+    for var in simulate_missing:
+        env.pop(var, None)
+    return env
+
+
+def write_node_shim():
+    """canvas_test.js direct hard-codes geometry-web/web_bridge.exe (a repo-local, possibly stale exe) and has no
+    override.  This preload redirects exactly that spawn to GEOMETRY_TEST_BRIDGE and, only when it really rewrote the
+    command, appends a line to the file named by GEOMETRY_SHIM_MARKER; run_all trusts the result only when it sees it."""
+    shim = binaries.OUT_DIR / '_canvas_bridge_shim.cjs'
+    shim.parent.mkdir(parents=True, exist_ok=True)
+    shim.write_text(
+        "const cp = require('child_process');\n"
+        "const fs = require('fs');\n"
+        "const orig = cp.spawn;\n"
+        "cp.spawn = function (cmd, args, opts) {\n"
+        "  const exe = process.env.GEOMETRY_TEST_BRIDGE;\n"
+        "  const marker = process.env.GEOMETRY_SHIM_MARKER;\n"
+        "  if (exe && typeof cmd === 'string' && /web_bridge\\.exe/i.test(cmd)) {\n"
+        "    const before = cmd;\n"
+        "    cmd = cmd.replace(/\"[^\"]*web_bridge\\.exe\"/i, () => '\"' + exe + '\"');\n"
+        "    if (marker && cmd !== before) {\n"
+        "      try { fs.appendFileSync(marker, 'REDIRECT ' + exe + '\\n'); } catch (e) { /* no marker => run_all distrusts the run */ }\n"
+        "    }\n"
+        "  }\n"
+        "  return orig.call(this, cmd, args, opts);\n"
+        "};\n", encoding='utf-8')
+    return shim
+
+
+# ------------------------------------------------------------------ result parsing
+
+def sac_hits(text):
+    return [face for face in SAC_FACES if face in text]
+
+
+def parse_node_spec(text, row):
+    def grab(label):
+        m = re.search(r'^ℹ %s (\d+)\s*$' % label, text, re.M)
+        return int(m.group(1)) if m else None
+    total, passed, failed = grab('tests'), grab('pass'), grab('fail')
+    cancelled, skipped, todo = grab('cancelled') or 0, grab('skipped') or 0, grab('todo') or 0
+    if total is None:
+        return False
+    row.total, row.skipped = total, skipped + todo
+    row.failed = (failed or 0) + cancelled
+    row.passed = passed or 0
+    for line in text.splitlines():
+        if line.startswith('✖') and len(row.details) < 12:
+            row.details.append(line.strip()[:200])
+    return True
+
+
+class ProcResult:
+    def __init__(self, code, out, seconds, timed_out, reap_note=''):
+        self.code, self.out, self.seconds, self.timed_out, self.reap_note = code, out, seconds, timed_out, reap_note
+
+
+def kill_tree(proc):
+    """Kill the process and every descendant (taskkill /T on Windows, the process group on POSIX)."""
+    if IS_WIN:
+        try:
+            subprocess.run(['taskkill', '/T', '/F', '/PID', str(proc.pid)], capture_output=True, timeout=30)
+        except (OSError, subprocess.SubprocessError):
+            pass
+    else:
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except (ProcessLookupError, PermissionError, OSError):
+            pass
+    try:
+        proc.kill()
+    except OSError:
+        pass
+
+
+def _decode(data):
+    return (data or b'').decode('utf-8', errors='replace')
+
+
+def run_process(cmd, env, timeout, cwd=ROOT):
+    started = time.time()
+    kwargs = {} if IS_WIN else {'start_new_session': True}   # POSIX: own process group, so killpg reaches grandchildren
+    try:
+        proc = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
+    except OSError as exc:
+        return ProcResult(None, 'OSError: %s' % exc, time.time() - started, False)
+    try:
+        out_b, err_b = proc.communicate(timeout=timeout)
+        return ProcResult(proc.returncode, _decode(out_b) + _decode(err_b), time.time() - started, False)
+    except subprocess.TimeoutExpired:
+        kill_tree(proc)
+        note = '已終止整棵行程樹（%s）' % ('taskkill /T /F' if IS_WIN else 'killpg SIGKILL')
+        try:
+            out_b, err_b = proc.communicate(timeout=20)
+        except subprocess.TimeoutExpired:
+            # an escaped descendant still holds the output pipes: give up on the tail of the output, never hang
+            out_b = err_b = b''
+            note += '；有後代行程仍占著輸出管線，放棄收尾輸出'
+            for pipe in (proc.stdout, proc.stderr):
+                try:
+                    pipe.close()
+                except OSError:
+                    pass
+        return ProcResult(None, _decode(out_b) + _decode(err_b), time.time() - started, True, note)
+    except BaseException:
+        kill_tree(proc)    # Ctrl-C on run_all must not leave test processes behind
+        raise
+
+
+def classify_skips(suite_name, data):
+    """How many of this unittest file's skips are covered by the named ALLOWED_SKIPS entries (each entry at most once)."""
+    used, allowed = set(), 0
+    for item in data.get('skip_items') or []:
+        if item.get('scope') != 'test':
+            continue
+        for i, entry in enumerate(ALLOWED_SKIPS):
+            if (i not in used and entry['suite'] == suite_name and entry['test'] == item.get('test')
+                    and entry['reason'] in (item.get('reason') or '') and os.name in entry['platforms']):
+                used.add(i)
+                allowed += 1
+                break
+    return allowed
+
+
+def run_suite(suite, env, infos):
+    row = Row(suite.name, suite.counted)
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    log_file = LOG_DIR / (suite.name.replace(':', '_') + '.log')
+    marker = None
+
+    if suite.kind == 'integrity':
+        res = run_process([str(infos['integrity'].path)], env, suite.timeout)
+    elif suite.kind == 'run_tests':
+        # cwd = the output dir: the core writes current_geometry.svg into its working directory, and that must not be the repo root
+        res = run_process([sys.executable, str(HERE / 'run_tests.py'), str(infos['core'].path)], env, suite.timeout,
+                          cwd=binaries.OUT_DIR)
+    elif suite.kind == 'unittest':
+        json_path = LOG_DIR / (suite.name.replace(':', '_') + '.json')
+        json_path.unlink(missing_ok=True)
+        res = run_process([*suite.cmd, '--json-out', str(json_path), '--log', str(log_file.with_suffix('.unittest.log'))],
+                          env, suite.timeout)
+    elif suite.kind == 'node-canvas':
+        shim = write_node_shim()
+        marker = LOG_DIR / 'canvas_shim.marker'
+        marker.unlink(missing_ok=True)
+        canvas_env = dict(env)
+        canvas_env['GEOMETRY_SHIM_MARKER'] = str(marker)
+        res = run_process([node_exe(), '--require', str(shim), *suite.cmd], canvas_env, suite.timeout)
+    else:
+        res = run_process([node_exe(), *suite.cmd], env, suite.timeout)
+    code, out, secs, timed_out = res.code, res.out, res.seconds, res.timed_out
+    row.seconds = secs
+    row.ran = True
+    log_file.write_text(out, encoding='utf-8')
+
+    if timed_out:
+        row.crashed = True
+        row.failed = max(row.failed, 1)
+        row.total = max(row.total, 1)
+        row.note = '逾時（%d 秒）被終止，%s（%.1f 秒後收完）；日誌 %s' % (suite.timeout, res.reap_note, secs, log_file)
+        return row
+
+    if suite.kind == 'integrity':
+        m = re.search(r'(\d+)/(\d+) integrity checks passed', out)
+        if m:
+            row.passed, row.total = int(m.group(1)), int(m.group(2))
+            row.failed = row.total - row.passed
+            row.note = 'C 檢查點數（非 test 級）'
+        else:
+            row.crashed, row.total, row.failed = True, 1, 1
+            row.note = '沒有看到結果行（exit %s）' % code
+    elif suite.kind == 'run_tests':
+        m = re.search(r'^GEOMETRY_TEST_RESULT (.*)$', out, re.M)
+        if m:
+            data = json.loads(m.group(1))
+            row.total = data['total']
+            row.passed = data['counts']['pass']
+            row.failed = data['counts']['fail']
+            infra = data['counts']['infrastructure']
+            if infra:
+                row.env_problem = True
+                row.note = '環境／執行失敗 %d 案（run_tests exit %s）；' % (infra, code)
+                row.skipped = infra
+            for case in data['cases']:
+                if case['status'] != 'pass' and len(row.details) < 10:
+                    row.details.append('%s: %s' % (case['scene'], case['detail'][:160]))
+        else:
+            row.crashed, row.total, row.failed = True, 1, 1
+            row.note = 'run_tests 沒有輸出結果行（exit %s）' % code
+        if code == 2 and not row.env_problem:
+            row.env_problem = True
+            row.note += 'run_tests exit 2（環境失敗）；'
+    elif suite.kind == 'unittest':
+        json_path = LOG_DIR / (suite.name.replace(':', '_') + '.json')
+        try:
+            data = json.loads(json_path.read_text(encoding='utf-8'))
+        except (OSError, ValueError):
+            row.crashed, row.total, row.failed = True, 1, 1
+            row.note = 'runner 沒有產出結果（exit %s）：%s' % (code, out.strip().splitlines()[-1][:160] if out.strip() else '')
+            return row
+        row.total, row.passed, row.failed, row.skipped = data['total'], data['passed'], data['failed'], data['skipped']
+        for f in data.get('failures', [])[:12]:
+            row.details.append('%s [%s] %s' % (f['test'], f['kind'], f['message'][:160]))
+        if data.get('import_error'):
+            row.crashed = True
+            row.note = '模組載入失敗；'
+        if data['skipped']:
+            reasons = '；'.join('%s ×%d' % (r[:70], n) for r, n in list(data.get('skip_reasons', {}).items())[:2])
+            row.note += 'skip：%s' % reasons
+            if data.get('skip_count_basis') == 'ast':
+                row.note += '（模組載入時就 SkipTest：test 數由 AST 數出）'
+            elif data.get('skip_count_basis') == 'at-least-1':
+                row.note += '（模組載入時就 SkipTest：數不出 test 數，「至少 1」）'
+            row.allowed_skips = classify_skips(suite.name, data)
+            if row.allowed_skips:
+                row.note += '（其中 %d 個在具名允許清單，平台固有，不計入 exit 3）' % row.allowed_skips
+        if data.get('blocked_by_error'):
+            row.note += ' 另有 %d 個 test 因 setUpClass 錯誤未執行（已計入 fail）' % data['blocked_by_error']
+    elif suite.kind in ('node-test', ):
+        if not parse_node_spec(out, row):
+            row.crashed, row.total, row.failed = True, 1, 1
+            row.note = 'node 沒有輸出摘要（exit %s）' % code
+    elif suite.kind == 'node-script':
+        row.passed, row.failed = (1 if code == 0 else 0), (0 if code == 0 else 1)
+        row.note = '僅結束碼：腳本式，無 test 級計數，以 exit code 判定'
+        if code:
+            row.details.append(out.strip().splitlines()[-1][:200] if out.strip() else '')
+    elif suite.kind == 'node-canvas':
+        m = re.search(r'(\d+) pass / (\d+) fail', out)
+        if m:
+            row.passed, row.failed = int(m.group(1)), int(m.group(2))
+            row.total = row.passed + row.failed
+            for line in out.splitlines():
+                if line.lstrip().startswith('FAIL') and len(row.details) < 10:
+                    row.details.append(line.strip()[:200])
+        else:
+            row.crashed, row.total, row.failed = True, 1, 1
+            row.note = 'canvas_test 沒有輸出摘要（exit %s）' % code
+        # did the preload really redirect the spawn?  Only the marker file it writes counts as proof.
+        want = env.get('GEOMETRY_TEST_BRIDGE')
+        seen = []
+        try:
+            seen = [ln.strip() for ln in marker.read_text(encoding='utf-8').splitlines() if ln.strip()]
+        except OSError:
+            pass
+        if want and ('REDIRECT ' + want) in seen:
+            row.note = ('斷言數；preload 已把 web_bridge.exe 的 spawn 轉向 %s（標記檔 %d 筆為證）' % (want, len(seen))) + (
+                '；' + row.note if row.note else '')
+        else:
+            row.env_problem = True
+            why = ('GEOMETRY_TEST_BRIDGE 未設定' if not want else '沒有留下轉向標記')
+            row.note = ('環境：canvas shim 沒有攔到 bridge 的 spawn（%s；canvas_test.js 啟動 bridge 的寫法可能變了）——'
+                        '這次結果可能來自 geometry-web/web_bridge.exe，不採信' % why) + ('；' + row.note if row.note else '')
+    if row.counted and row.total == 0 and not row.crashed:
+        row.crashed = True
+        row.failed = max(row.failed, 1)
+        row.note += '；發現 0 個測試（0 個 test 不算通過）'
+        row.details.append('這個 suite 沒有發現任何測試')
+    if code not in (0, None) and not row.failed and not row.crashed and not row.env_problem and suite.kind != 'run_tests':
+        # exit code nonzero but no failed test recorded (e.g. tearDownModule, process abort): never call that green
+        row.crashed = True
+        row.failed = max(row.failed, 1)
+        row.note += '；子行程 exit %s 但沒有記到失敗的 test' % code
+    if row.failed or row.crashed:
+        hits = sac_hits(out + ' '.join(row.details))
+        if hits:
+            row.note += '；疑似環境阻擋（命中：%s）' % '、'.join(hits)
+    if row.failed or row.crashed or row.skipped or row.env_problem:
+        row.note += '；日誌 %s' % log_file
+    row.note = row.note.strip('；; ')
+    return row
+
+
+# ------------------------------------------------------------------ expected counts
+
+def load_expected():
+    """(data or None, error message or '')"""
+    try:
+        data = json.loads(EXPECTED_FILE.read_text(encoding='utf-8'))
+    except OSError:
+        return None, '找不到 %s（先做一次完整跑再加 --update-expected 產生）' % EXPECTED_FILE.name
+    except ValueError as exc:
+        return None, '%s 不是合法 JSON：%s' % (EXPECTED_FILE.name, exc)
+    if not isinstance(data.get('suites'), dict):
+        return None, '%s 缺少 "suites" 物件' % EXPECTED_FILE.name
+    return data, ''
+
+
+def compare_expected(rows, suites, expected, err, full):
+    """Strict equality of each suite's discovered count with run_all.expected.json.  Returns [(suite, message)]."""
+    if expected is None:
+        return [('(expected 檔)', err)]
+    entries = expected['suites']
+    by_name = {s.name: s for s in suites}
+    problems = []
+    for r in rows:
+        s = by_name[r.name]
+        if s.name.startswith('extra:') or not r.ran or r.crashed or r.env_problem:
+            continue   # extras are unregistered by design; crashed/env rows are already red/exit 2
+        e = entries.get(r.name)
+        if e is None:
+            msg = '沒有登記在 %s（新 suite 必須明確登記預期數；--update-expected）' % EXPECTED_FILE.name
+        elif s.kind == 'node-script':
+            msg = '' if e.get('mode') == 'exit-code-only' else 'expected 對這個「僅結束碼」suite 登記成 %r，應為 exit-code-only' % e.get('mode')
+        elif e.get('mode') != 'count' or not isinstance(e.get('count'), int):
+            msg = 'expected 登記的是 %r，但這個 suite 有計數，應為 {"mode":"count","count":N}' % e
+        elif r.total != e['count']:
+            msg = '預期 %d、實得 %d（%s；新增／減少 test 後須明確 --update-expected）' % (e['count'], r.total, UNIT.get(s.kind, ''))
+        else:
+            msg = ''
+        if msg:
+            r.expected_problem = msg
+            problems.append((r.name, msg))
+    if full:
+        for name in entries:
+            if name not in by_name:
+                problems.append((name, '%s 登記了這個 suite，但 run_all 已沒有它' % EXPECTED_FILE.name))
+    return problems
+
+
+def update_expected(rows, suites, registry_errors):
+    """Rewrite run_all.expected.json from a complete run.  Refuses when the run cannot be trusted as a census."""
+    blockers = list(registry_errors)
+    for r in rows:
+        if not r.ran:
+            blockers.append('%s 沒有跑（%s）' % (r.name, r.note))
+        elif r.env_problem or r.crashed:
+            blockers.append('%s 有環境問題／崩潰／逾時（%s）' % (r.name, r.note[:100]))
+        elif r.counted and r.total == 0:
+            blockers.append('%s 發現 0 個測試' % r.name)
+        elif r.skipped - r.allowed_skips > 0:
+            blockers.append('%s 有 %d 個不在允許清單的 skip' % (r.name, r.skipped - r.allowed_skips))
+    if blockers:
+        print('\n--update-expected 拒絕執行（這次跑不能當作數量的依據）：')
+        for b in blockers:
+            print('  - %s' % b)
+        return False
+    old, _ = load_expected()
+    old_entries = old['suites'] if old else {}
+    suites_out = {}
+    for s, r in zip(suites, rows):
+        suites_out[s.name] = ({'mode': 'exit-code-only'} if s.kind == 'node-script'
+                              else {'mode': 'count', 'count': r.total, 'unit': UNIT.get(s.kind, '')})
+    data = {
+        '_說明': 'run_all.py 的各 suite「發現到的測試／斷言數」；完整跑時逐 suite 嚴格相等，不符即 fail。'
+                 '新增或刪除測試後請在一次完整跑之後用 --update-expected 明確更新（並在 commit 中說明）。'
+                 'exit-code-only 表示該 suite 只有結束碼、沒有可數的 test。',
+        'suites': suites_out,
+    }
+    EXPECTED_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    print('\n已重寫 %s：' % EXPECTED_FILE)
+    changed = False
+    for name, e in suites_out.items():
+        before = old_entries.get(name)
+        if before != e:
+            changed = True
+            print('  %-24s %s -> %s' % (name, before if before else '(新)', e))
+    for name in old_entries:
+        if name not in suites_out:
+            changed = True
+            print('  %-24s %s -> (移除)' % (name, old_entries[name]))
+    if not changed:
+        print('  （與原檔相同）')
+    failing = [r.name for r in rows if r.failed]
+    if failing:
+        print('  注意：下列 suite 目前有 fail，但仍照實記下「發現到的數量」（fail 與數量無關）：%s' % '、'.join(failing))
+    return True
+
+
+# ------------------------------------------------------------------ table
+
+def width(text):
+    return sum(2 if unicodedata.east_asian_width(c) in 'WF' else 1 for c in text)
+
+
+def pad(text, size, right=False):
+    gap = ' ' * max(0, size - width(text))
+    return gap + text if right else text + gap
+
+
+def print_table(rows):
+    header = ['suite', '測試數', 'pass', 'fail', 'skip', '秒', '備註']
+    body = []
+    for r in rows:
+        note = r.note
+        if r.ran and not r.counted:
+            body.append([r.name, '-', 'ok' if r.passed else '-', 'FAIL' if r.failed else '-', '-', '%.1f' % r.seconds, note])
+        elif r.ran:
+            if r.expected_problem:
+                note = ('預期數不符：' + r.expected_problem + ('；' + note if note else ''))
+            body.append([r.name, str(r.total), str(r.passed), str(r.failed), str(r.skipped), '%.1f' % r.seconds, note])
+        else:
+            body.append([r.name, '-', '-', '-', '-', '-', note])
+    counted = [r for r in rows if r.ran and r.counted]
+    tot = [sum(r.total for r in counted), sum(r.passed for r in counted), sum(r.failed for r in counted),
+           sum(r.skipped for r in counted), sum(r.seconds for r in rows if r.ran)]
+    body.append(['合計(已執行、有計數者)', str(tot[0]), str(tot[1]), str(tot[2]), str(tot[3]), '%.1f' % tot[4], ''])
+    body.append(['未納入', '-', '-', '-', '-', '-', '需 Chrome，另行執行：geometry-web/cdp_test.js、geometry-web/space_model_test.js'])
+    sizes = [max(width(row[i]) for row in body + [header]) for i in range(6)]
+    def fmt(row):
+        cells = [pad(row[0], sizes[0])] + [pad(row[i], sizes[i], right=True) for i in range(1, 6)] + [row[6]]
+        return '  '.join(cells).rstrip()
+    print(fmt(header))
+    print('-' * min(150, sum(sizes) + 12))
+    for row in body[:-2]:
+        print(fmt(row))
+    print('-' * min(150, sum(sizes) + 12))
+    print(fmt(body[-2]))
+    print(fmt(body[-1]))
+
+
+# ------------------------------------------------------------------ main
+
+def partial_flags(args):
+    flags = []
+    if args.only:
+        flags.append('--only ' + ' --only '.join(args.only))
+    for extra in args.extra_py:
+        flags.append('--extra-py ' + extra)
+    for var in args.simulate_missing:
+        flags.append('--simulate-missing ' + var)
+    return flags
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split('\n\n')[0], formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('--build', action='store_true', help='先建置 stale/missing 的二進位（沿用 fresh 的，不碰）')
+    parser.add_argument('--only', action='append', default=[], metavar='SUBSTR', help='只跑名稱含此子字串的 suite（可重複；局部跑，不能當完整驗收）')
+    parser.add_argument('--list', action='store_true', help='列出 suite 與其需要的二進位後結束')
+    parser.add_argument('--allow-skip', action='store_true', help='skip 不影響 exit code')
+    parser.add_argument('--extra-py', action='append', default=[], metavar='FILE',
+                        help='另外加一個 unittest 檔（例如放在 %%TEMP%% 的故意失敗檔，用來驗證 fail 會被報出來；示範跑，不能當完整驗收）')
+    parser.add_argument('--simulate-missing', action='append', default=[], metavar='ENVVAR',
+                        help='模擬缺少某環境變數（僅供驗證 skip 是否可見；示範跑，exit code 絕不為 0）')
+    parser.add_argument('--update-expected', action='store_true',
+                        help='完整跑之後重寫 tests/run_all.expected.json（不能與 --only／--extra-py／--simulate-missing 併用）')
+    args = parser.parse_args(argv)
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+    partial = partial_flags(args)
+    if args.update_expected and partial:
+        print('--update-expected 只能在完整跑使用；你同時給了：%s' % '、'.join(partial))
+        return 2
+    registry_errors = check_registry()
+
+    suites = build_suites()
+    for extra in args.extra_py:
+        extra_path = Path(extra).resolve()
+        suites.append(Suite('extra:' + extra_path.stem, 'unittest', [sys.executable, str(RUNNER), str(extra_path)], [], 300,
+                            label=str(extra_path)))
+    if args.only:
+        suites = [s for s in suites if any(sub in s.name for sub in args.only)]
+    if args.list:
+        for s in suites:
+            print('%-32s 需要：%-22s %s' % (s.name, ', '.join(s.needs) or '-', s.label + ('（需 node）' if s.needs_node else '')))
+        print('%-32s 未納入（需 Chrome）：geometry-web/cdp_test.js、geometry-web/space_model_test.js' % '-')
+        for p in registry_errors:
+            print('登記問題：%s' % p)
+        return 1 if registry_errors else 0
+    if not suites:
+        print('沒有名稱含 %s 的 suite（用 --list 看全部）' % args.only)
+        return 2
+    try:
+        with binaries.ProcessLock('run_all'):
+            return run(args, suites, registry_errors, partial)
+    except binaries.LockBusy as exc:
+        print('錯誤：%s' % exc)
+        return 2
+
+
+def run(args, suites, registry_errors, partial):
+    # which binaries the selected suites need (a binary whose every env variable is simulated-missing is not needed)
+    simulated = set(args.simulate_missing)
+    ignored = {b.name for b in binaries.REGISTRY if b.envs and all(v in simulated for v in b.envs)}
+    needed = sorted({n for s in suites for n in s.needs if n not in ignored} | ({'core'} if any(s.kind == 'run_tests' for s in suites) else set()))
+    print('二進位輸出目錄：%s' % binaries.OUT_DIR)
+    if args.build:
+        print('[build] 只建置 stale/missing：%s' % ', '.join(needed))
+        try:
+            with binaries.ProcessLock('build'):
+                results = binaries.build(needed)
+        except binaries.LockBusy as exc:
+            print('錯誤：%s' % exc)
+            return 2
+        for name, r in results.items():
+            head = r.detail.splitlines()[0] if r.detail else ''
+            print('  %-10s %-14s %s' % (name, r.status, head))
+    infos = binaries.inspect_all()
+    print('[binaries]')
+    for name in needed:
+        info = infos[name]
+        print('  %-10s %-8s %s' % (name, info.state, info.reason))
+
+    env = child_env(infos, simulated)
+    cleared = inherited_geometry_vars()
+    print('[環境] CC=%s（繼承自外殼；僅影響 binaries.py 在非 Windows 的編譯）' % (os.environ.get('CC') or '未設定'))
+    print('[環境] 已清除外殼繼承的 GEOMETRY_*：%s' % ('、'.join(cleared) or '（無）'))
+    print('[環境] run_all 設給子行程的 GEOMETRY_*：%s' % ('、'.join(sorted(k for k in env if k.startswith('GEOMETRY_'))) or '（無）'))
+    for var in ('NODE_OPTIONS', 'PYTHONPATH', 'PYTHONSTARTUP'):
+        if os.environ.get(var):
+            print('[環境] 注意：外殼設了 %s=%s，子行程會繼承' % (var, os.environ[var]))
+    if registry_errors:
+        print('\n登記檢查失敗（run_all 直接判 fail；修法：把檔案明確登記進 run_all.py）：')
+        for p in registry_errors:
+            print('  - %s' % p)
+        print()
+
+    rows = []
+    stale_fix = False
+    try:
+        for i, s in enumerate(suites, 1):
+            row = Row(s.name, s.counted)
+            blockers = [n for n in s.needs if n not in ignored and infos[n].state not in ('fresh', 'n/a')]
+            if s.needs_node and not node_exe():
+                row.env_problem = True
+                row.note = '環境：缺 node'
+            elif blockers:
+                row.env_problem = True
+                stale_fix = True
+                row.note = '環境：二進位過期或缺少，未跑（%s；修法：加 --build 或 python tests/binaries.py build）' % '、'.join(
+                    '%s=%s' % (n, infos[n].state) for n in blockers)
+            else:
+                print('[%d/%d] %s …' % (i, len(suites), s.name), flush=True)
+                row = run_suite(s, env, infos)
+            rows.append(row)
+    except KeyboardInterrupt:
+        print('\n被中斷：已終止正在跑的行程樹；此次不產生結論。')
+        return 130
+
+    full = not partial
+    expected_problems = []
+    updated = None
+    if args.update_expected:
+        updated = update_expected(rows, suites, registry_errors)
+    else:
+        expected, exp_err = load_expected()
+        expected_problems = compare_expected(rows, suites, expected, exp_err, full)
+
+    print()
+    print_table(rows)
+    failed_rows = [r for r in rows if r.details and (r.failed or r.crashed)]
+    if failed_rows:
+        print('\n失敗明細（每個 suite 至多前幾筆，完整內容見日誌）：')
+        for r in failed_rows:
+            print('  %s' % r.name)
+            for d in r.details[:8]:
+                print('    - %s' % d)
+    if expected_problems:
+        print('\n預期數不符（%s）：' % EXPECTED_FILE.name)
+        for name, msg in expected_problems:
+            print('  %s：%s' % (name, msg))
+    if registry_errors:
+        print('\n未登記／登記有誤的測試檔（判 fail）：')
+        for p in registry_errors:
+            print('  - %s' % p)
+    if stale_fix:
+        print('\n有 suite 因二進位過期／缺少而未跑：執行 python tests/run_all.py --build（或 python tests/binaries.py build）。')
+
+    any_fail = (any(r.failed or r.crashed for r in rows) or bool(expected_problems) or bool(registry_errors)
+                or (args.update_expected and not updated))
+    any_env = any(r.env_problem for r in rows)
+    any_skip = any(r.skipped - r.allowed_skips > 0 for r in rows if r.ran)
+    if any_fail:
+        code = 1
+    elif any_env:
+        code = 2
+    elif any_skip and not args.allow_skip:
+        code = 3
+    elif args.simulate_missing:
+        code = 4
+    else:
+        code = 0
+    if partial:
+        print('\n==== 部分／示範執行，不可當完整驗收 ====')
+        print('使用了：%s' % '；'.join(partial))
+        meaning = {
+            0: '所選 suite 沒有 fail、沒有環境問題、沒有可避免的 skip（只代表所選範圍，沒選到的沒跑）',
+            1: '有 fail／預期數不符／未登記檔', 2: '有環境阻擋／二進位過期', 3: '所選範圍只有 skip（沒有 fail）',
+            4: '--simulate-missing 示範跑：結果只供檢視 skip 是否看得見（部分測試缺變數時會改用舊預設 exe），刻意不回 0',
+        }[code]
+    else:
+        meaning = {
+            0: '完整跑：全部 suite 都跑了、數量與 expected 相符、沒有 fail、沒有環境問題、沒有可避免的 skip（具名允許清單不算）',
+            1: '有 fail／逾時／預期數不符／未登記檔', 2: '有環境阻擋／二進位過期', 3: '只有 skip（沒有 fail）',
+        }[code]
+    if args.allow_skip and code == 0 and any_skip:
+        skipped_total = sum(r.skipped - r.allowed_skips for r in rows if r.ran)
+        meaning = '沒有 fail，但有 %d 個 skip 被 --allow-skip 放行：不等於全部都跑過' % skipped_total
+    elif args.allow_skip:
+        meaning += '；注意：本次用了 --allow-skip，skip 已不影響結果'
+    print('\nexit %d：%s' % (code, meaning))
+    return code
+
+
+if __name__ == '__main__':
+    sys.exit(main())

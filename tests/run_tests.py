@@ -186,6 +186,10 @@ TESTS = [{'scene': '_wit_d30_infinite_grid_binding.scene', 'expect': 'accept'},
  {'scene': '_ax_i4_no_carrier.scene', 'expect': 'reject', 'error': '沒有承載面'},
  # GEO-172 M10 殺手：孔頂點 (320,250) 落在角材矩形下邊界 v=250 上（貼邊允許，不算相交）。
  {'scene': '_ax_i5_hole_vertex_touches_rect_edge.scene', 'expect': 'accept', 'lengths': [120]},
+ # M16 殺手(hi 側):終點壓在孔邊擋面 u 範圍的 hi 端外 → 端面懸空(D11 / R6(d))。
+ {'scene': '_edge_straddle_hi.scene', 'expect': 'reject', 'error': '端面懸空'},
+ # M24 殺手:合法區間與 at-face 引用邊範圍只相接於一點 → 不算重疊(R6(c) / I11 用語)。
+ {'scene': '_edge_face_touch_only.scene', 'expect': 'reject', 'error': '都不接觸引用的邊'},
 ]
 
 

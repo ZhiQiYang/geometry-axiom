@@ -1,35 +1,78 @@
 # -*- coding: utf-8 -*-
-"""輕量變異測試:對 current_geometry.c 做單點替換 -> 編譯 -> 跑測試套件。
+"""輕量變異測試:對核心 C 原始碼做單點替換 -> 編譯 -> 跑測試套件。
 
-變異定義 = (id, 說明, old, new);old 必須在原始碼中恰好出現一次。
-結果: killed(某測試失敗) / survived(全過) / invalid(編譯失敗或錨點不唯一)。
+變異定義 = (id, 說明, old, new[, file]);old 必須在目標檔中恰好出現一次。
+  file   預設 current_geometry.c;邏輯搬到 geometry-core/*.inc 時指名該檔。
+         暫存複本把對應的 #include 行原地換成變異後的內容(只支援 current_geometry.c
+         直接 #include 的檔),所以 #include 的相對路徑解析與 AGENTS.md 所述一致。
+  equivalent  等價變異(理由文字),不編譯,但錨點仍須存在。
+  retired     邏輯已從產品整個移除(寫明依據),不編譯;舊錨點若又出現會被判 invalid。
+
+結果: killed(某測試失敗) / survived(全過) / equivalent / retired /
+      invalid(編譯失敗或錨點不在、不唯一) / blocked(環境阻擋,不算 killed) /
+      stale(紀錄的來源雜湊、變異定義雜湊與現況不符,不計入 killed)。
+
+誠實性規則(審查 2026-10-01 後立):
+  - 錨點找不到或不唯一 -> invalid,覆蓋任何舊判決。
+  - 每筆結果帶 source_file / source_sha256(被變異那個檔)/ closure_sha256(整個
+    #include 閉包)/ oracle_sha256(裁判)/ mutant_sha256(file+old+new)/ date。
+  - oracle_sha256 = sha256(tests/run_tests.py + 依檔名排序、被 TESTS 引用的每個 .scene
+    內容;全部 CRLF->LF)。它取代舊的 runner_sha256:裁判 = 判定邏輯 + 夾具,
+    兩者任一改了,killed / survived 就不再是「這個裁判」下的判決。
+    (equivalent 不是靠跑裁判得來的,不受 oracle 約束;retired 不帶來源類雜湊。)
+  - 載入與彙總時,source_sha256、closure_sha256、mutant_sha256 任一與現況不符,
+    killed / survived 的 oracle_sha256 與現行裁判不符,或根本沒帶雜湊 -> stale;
+    stale 會寫回結果檔(原判決存 stale_from),原因消失(例如還原原始碼 / 夾具)後自動復原。
+  - killed 紀錄帶 killed_by:讓它失敗的夾具名(前 5 個),日後看得到牙齒在哪。
+  - 結束碼:blocked -> 2;否則 survived / invalid / stale(完整跑與 --check 另含 unrun)
+    任一存在 -> 1;否則 0。
+
+exe 指紋快取(治本:Smart App Control 會擋「新出現」的未簽章 exe,沒改就不重編):
+  %TEMP%\\geometry-tests\\mutants\\<id>\\_mut.exe 旁邊放 _mut.exe.fingerprint.json:
+  mutant_sha256 + closure_sha256 + compile_sha256(Windows 的 _cl.bat 內容或 Linux 的 cc 參數)+ exe 自身雜湊。
+  四者都相符 -> 沿用、不呼叫 cl;任一不符(含 exe 被動過)-> 重編。
+  沒有 sidecar 的 exe 一律重編：結果檔的來源雜湊不能證明磁碟上這支 exe 的內容或編譯指令。
+  baseline(未變異原始碼)的 exe 同樣以 closure + 編譯指令快取在 mutants\\_baseline\\。
 
 用法:
   python tests/mutate.py            # 全部變異
-  python tests/mutate.py M03 M14    # 只跑指定 id
+  python tests/mutate.py M03 M14    # 只跑指定 id(結束碼只看這幾個)
+  python tests/mutate.py --check    # 不編譯、不跑,只依現行來源核對結果檔並彙總
+  python tests/mutate.py --check --killers   # 同上,另列每個 killed 的 killed_by
+  python tests/mutate.py --selftest # 對誠實性規則與快取本身的自我測試(不編譯)
 """
-import json
+import contextlib
+import datetime
 import hashlib
+import io
+import json
 import os
 import pathlib
+import posixpath
+import re
+import shutil
 import subprocess
 import sys
 import tempfile
 import time
+import types
 from run_tests import TESTS
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
-SRC = ROOT / "current_geometry.c"
+MAIN_REL = "current_geometry.c"
+SRC = ROOT / MAIN_REL
 # 每個變異一個獨立目錄,放在 %TEMP%:
 #   - repo 目錄的新編 exe 會被 Smart App Control 擋(WinError 4551),%TEMP% 不會(或機率低很多)
 #   - 平行跑兩個 mutate.py 不會互相覆蓋同一個 _mut.exe
-MUT_ROOT = pathlib.Path(os.environ.get("TEMP", str(HERE))) / "geometry-tests" / "mutants"
+MUT_ROOT = pathlib.Path(tempfile.gettempdir()) / "geometry-tests" / "mutants"
 # 結果檔:平行執行時各自寫到 MUTATE_RESULTS 指定的檔,由指揮官事後合併,避免競態。
 RESULTS = pathlib.Path(os.environ.get("MUTATE_RESULTS", str(HERE / "mutants_results.json")))
 
 # 環境失敗(SAC 間歇封鎖新編譯的 exe)時重跑幾次才放棄
 RUN_RETRIES = 3
+
+VERDICTS = ("killed", "survived", "equivalent", "invalid", "stale", "blocked", "retired")
 
 # ============================================================
 # 變異表:針對核心幾何 / 座標 / 碰撞 / 驗證
@@ -91,15 +134,15 @@ MUTANTS = [
          new="f.min_v, f.min_v, f.max_v\n            };\n            out[count++] = (StopFace){\n                STOP_TIMBER_SIDE, 0, t->id, -1, 1, EDGE_FIXED,\n                f.max_v, f.min_v, f.max_v"),
     # ---- pick_stop:唯一全寬擋面 ----
     dict(id="M16", desc="D11：擋面涵蓋檢查:丟掉 hi 側檢查(半寬也算涵蓋)",
-         old="if (f->fixed != at || f->lo > lo || f->hi < hi) {\n            continue;",
-         new="if (f->fixed != at || f->lo > lo) {\n            continue;"),
+         old="if (f->fixed != at || f->lo > lo || f->hi < hi || stop_face_shadowed(faces,i,lo,hi)) {",
+         new="if (f->fixed != at || f->lo > lo || stop_face_shadowed(faces,i,lo,hi)) {"),
     dict(id="M17", desc="D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)",
-         old="if (f->fixed != at || f->lo > lo || f->hi < hi) {\n            continue;",
-         new="if (f->fixed != at || f->lo >= lo || f->hi <= hi) {\n            continue;"),
+         old="if (f->fixed != at || f->lo > lo || f->hi < hi || stop_face_shadowed(faces,i,lo,hi)) {",
+         new="if (f->fixed != at || f->lo >= lo || f->hi <= hi || stop_face_shadowed(faces,i,lo,hi)) {"),
     # ---- count_legal_stops:重驗用 ----
     dict(id="M18", desc="D11：重驗擋面:FREE 邊也算合法(!= 改 ==)",
-         old="f->fixity != EDGE_FREE) {",
-         new="f->fixity == EDGE_FREE) {"),
+         old="f->fixity != EDGE_FREE && !stop_face_shadowed(faces,i,lo,hi)) {",
+         new="f->fixity == EDGE_FREE && !stop_face_shadowed(faces,i,lo,hi)) {"),
     # ---- resolve_auto_span ----
     dict(id="M19", desc="R6(c)：through 選段:邊界座標不算在區間內(<= 改 <)",
          old="if (through >= intervals[i].start &&\n                through <= intervals[i].end) {",
@@ -133,15 +176,18 @@ MUTANTS = [
          new="    Vector3 axis_b =\n        depth_side == SURFACE_DEPTH_POSITIVE_NORMAL\n            ? vector_negate(surface->frame.normal)\n            : surface->frame.normal;\n\n    Vector3 axis_a = vector_cross(axis_b, axis_length);\n\n    SurfacePoint2 far_pt = {"),
     # ---- at-grid 中線:奇數寬拆分 ----
     dict(id="M28", desc="I13：奇數寬多的 1mm 改放 -cross 側",
-         old="            cross_lo = centerline - w / 2;\n            cross_hi = cross_lo + w;",
-         new="            cross_lo = centerline - (w + 1) / 2;\n            cross_hi = cross_lo + w;"),
+         file="geometry-core/references.inc",
+         old="widths[0][0]=center-t->size_a/2;",
+         new="widths[0][0]=center-(t->size_a+1)/2;"),
     # ---- at-edge 材料側 ----
     dict(id="M29", desc="I13：外輪廓材料側反轉(footprint 長到面外)",
-         old="                Coord in = ref_hole < 0 ? -outward.u : outward.u;",
-         new="                Coord in = ref_hole < 0 ? outward.u : outward.u;"),
+         file="geometry-core/references.inc",
+         old="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:1);",
+         new="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?(along?1:-1):1);"),
     dict(id="M30", desc="I13：孔邊材料側反轉(footprint 長進孔裡)",
-         old="                Coord in = ref_hole < 0 ? -outward.v : outward.v;",
-         new="                Coord in = ref_hole < 0 ? -outward.v : -outward.v;"),
+         file="geometry-core/references.inc",
+         old="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:1);",
+         new="Coord inward=(along?normal.u:normal.v)*(a->ref_hole<0?-1:(along?1:-1));"),
     # ---- grid ----
     dict(id="M31", desc="I10：格線座標遞增改非嚴格(<= 改 <)",
          old="        if (i > 0 && coords[i] <= coords[i - 1]) {",
@@ -158,6 +204,7 @@ MUTANTS = [
          new="                bool inside = true;"),
     # ---- GEO-099:網格引用鎖（I23）----
     dict(id="M51", desc="I23：I23(a) 拿掉座標比對(移動已錨定的線也放行)",
+         retired="GEO-125(commit bc87d02,2026-09-18)解除 I23(a) 引用鎖:apply_grid_line 已無 was/now 座標比對區塊(整段刪除);公理層 I23(a) 改為「不再直接拒絕,重新推導引用它的角材並走 I8a 影響預覽」。取代它的是重算 + 預覽機制,不是同一判定的新寫法,故退役。",
          old="            if (!had || !has || was != now) {",
          new="            if (!had || !has) {"),
     dict(id="M52", desc="I10：重宣告改成疊加而非整軸換掉",
@@ -166,8 +213,8 @@ MUTANTS = [
     # ---- GEO-100:I23(b) 重驗時的索引存在性 ----
     dict(id="M56", desc="I23：I23(b) 不再檢查被錨定的索引是否仍推導得出",
          equivalent="等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild 對每個 AT_GRID 角材已先跑同一個 grid_line_coord,索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
-         old="                !grid_line_coord(ag, ap,",
-         new="                (false) && grid_line_coord(ag, ap,"),
+         old="                !grid_line_coord_in(world->grids, world->grid_count, ag, ap,",
+         new="                (false) && grid_line_coord_in(world->grids, world->grid_count, ag, ap,"),
     # ---- GEO-100:面材推導（D10a）----
     dict(id="M53", desc="D10a：縫中心線改成縫起點(少加 gap/2)",
          old="                     + def->panel + def->gap / 2;",
@@ -176,23 +223,28 @@ MUTANTS = [
          old="            if (gap_hi >= hi) {",
          new="            if (gap_hi > hi) {"),
     dict(id="M55", desc="D10a：縫寬奇數不再拒絕(改成只擋負數)",
+         retired="GEO-122 / GEO-125(commit bc87d02,2026-09-18)刪除奇數縫寬拒絕:apply_grid_line 的 `p_gap % 2 != 0` 檢查已移除(只剩一行過期註解),公理層 D10a「gap 為奇數不拒絕」,縫中心線取下界(錨點在 current_geometry.c:1495 `def->anchor + k*T + def->panel + def->gap / 2`,該公式仍由 M53 變異)。被變異的拒絕已不屬於產品。",
          old="            if (p_gap % 2 != 0) {",
          new="            if (p_gap < 0) {"),
     dict(id="M33", desc="I13：at-grid 軸向守門員反轉",
-         old="            if ((ref_grid_axis == 0) != along_v) {",
-         new="            if ((ref_grid_axis == 0) == along_v) {"),
+         file="geometry-core/references.inc",
+         old="g->placement_id!=p->id || (a->ref_grid_axis==0)!=along)",
+         new="g->placement_id!=p->id || (a->ref_grid_axis==0)==along)"),
     # ---- at-edge 方向守門員 ----
     dict(id="M34", desc="I13：at-edge 平行守門員反轉",
-         old="            if (edge_runs_v != along_v) {",
-         new="            if (edge_runs_v == along_v) {"),
+         file="geometry-core/references.inc",
+         old="if ((e.start.u==e.end.u)!=along)",
+         new="if ((e.start.u==e.end.u)==along)"),
     # ---- timber_construct ----
     dict(id="M35", desc="明寫長度允許 L=0(<= 改 <)",
+         retired="GEO-125(commit bc87d02,2026-09-18)廢除明寫長度:timber_construct 現在以 `!auto_length ||` 一律拒絕明寫長度(current_geometry.c timber_construct),`(!auto_length && length <= 0)` 這條判定隨整個分支消失;apply_timber_line 的訊息亦改為「明寫長度已廢除」,公理層 D7/I18/R4 同。沒有可對應的現行判定,不另編變異湊數。",
          old="        (!auto_length && length <= 0) ||",
          new="        (!auto_length && length < 0) ||"),
     # ---- world_revalidate ----
-    dict(id="M36", desc="R6(e)：重驗跳過 auto 端點擋面檢查",
-         old="        if (a->span_mode == SPAN_AUTO) {",
-         new="        if (0 && a->span_mode == SPAN_AUTO) {"),
+    dict(id="M36", desc="R6(e)：重驗跳過端點擋面檢查",
+         equivalent="等價變異(冗餘檢查,2026-10-01 實證):被變異的是 world_validate_derived 內的 R6(d)/R21 端面唯一擋面檢查,它唯一的呼叫者是 world_revalidate,而 world_revalidate 在它之前(同一個 candidate、reference_rebuild 之後)先跑 reference_check_all(references.inc:485-491),對每支已放角材算同一個 collect_stop_faces / count_legal_stops / 同一個 hits==0||(!has_between&&hits!=1) 條件,不過就 return false、根本到不了 world_validate_derived;兩處輸入(candidate 的 timbers/anchors/placements/boundaries)逐項相同,中間只改 candidate.spaces,不影響擋面。差分測試:基準 exe 與 M36 變異 exe 對 7143 個輸入(根目錄 143 個 .scene + tests/fuzz_scene.py 語料 3000 案 seed 1 + 4000 個 surface/grid 重宣告擾動,其中基準接受 362、重驗拒絕 612)比 exit code / stdout / stderr,零分歧;基準輸出從未出現 world_validate_derived 的專屬訊息「R6(d): 端面需要恰好一個涵蓋全寬的合法擋面」。另:同時拿掉兩處檢查 136/136 仍全過(前一輪探針)。此塊是 reference_check_all 的重複防線,不是獨立判定。",
+         old="            /* R6(d)/R21: the full world must still have unique support,\n             * unless between explicitly selects valid stop faces. */\n            {\n                StopFace faces[STOP_FACE_MAX];",
+         new="            /* R6(d)/R21: the full world must still have unique support,\n             * unless between explicitly selects valid stop faces. */\n            if (0) {\n                StopFace faces[STOP_FACE_MAX];"),
     dict(id="M37", desc="I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)",
          old="        for (size_t j = i + 1; j < world->timber_count; ++j) {",
          new="        for (size_t j = i; j < world->timber_count; ++j) {"),
@@ -217,11 +269,15 @@ def run_cmd(cmd, cwd, timeout=120):
                           timeout=timeout)
 
 
+KILLED_BY_MAX = 5
+
+
 def classify_test_run(proc):
     """Only a complete, structured assertion run can kill a mutation.
 
     Tracebacks, shell errors and incomplete runs never become 'killed' merely
-    because their process exit code is nonzero.
+    because their process exit code is nonzero.  Returns (verdict, why); use
+    failed_scenes(proc) for the fixtures that made the run fail.
     """
     rows = [line.removeprefix("GEOMETRY_TEST_RESULT ") for line in proc.stdout.splitlines()
             if line.startswith("GEOMETRY_TEST_RESULT ")]
@@ -244,38 +300,483 @@ def classify_test_run(proc):
             raise ValueError("exit code contradicts assertion result")
         if counts["fail"]:
             return "killed", next(case["scene"] + ": " + case["detail"] for case in cases if case["status"] == "fail")
-        return "survived", "all declared assertions passed"
+        return "survived", f"all {len(TESTS)} declared assertions passed"
     except (ValueError, TypeError, KeyError) as exc:
         return "blocked", "invalid runner result: " + str(exc)
 
 
-def main() -> int:
-    only = set(sys.argv[1:])
-    unknown = only - {m["id"] for m in MUTANTS}
-    if unknown:
-        print("Unknown mutant IDs: " + ", ".join(sorted(unknown)))
-        return 2
-    # The SSOT repository requires binary reads of this CRLF source.
-    source_bytes = SRC.read_bytes().replace(b"\r\n", b"\n")
-    src = source_bytes.decode("utf-8")
-    provenance = {"source_sha256": hashlib.sha256(source_bytes).hexdigest(),
-                  "runner_sha256": hashlib.sha256((HERE / "run_tests.py").read_bytes().replace(b"\r\n", b"\n")).hexdigest()}
-    results = {}
-    selected = [m for m in MUTANTS if not only or m["id"] in only]
-    print("Mutation scope: " + ("partial " if only else "full ") + ", ".join(m["id"] for m in selected))
-    if any(not m.get("equivalent") for m in selected):
-        MUT_ROOT.mkdir(parents=True, exist_ok=True)
-        baseline_dir = pathlib.Path(tempfile.mkdtemp(prefix="baseline-", dir=MUT_ROOT))
-        baseline_exe = baseline_dir / "baseline.exe"
-        baseline_exe.unlink(missing_ok=True)
+def failed_scenes(proc, limit=KILLED_BY_MAX):
+    """classify_test_run 判 killed 時,失敗的夾具名(依 TESTS 順序,最多 limit 個)。"""
+    rows = [line.removeprefix("GEOMETRY_TEST_RESULT ") for line in proc.stdout.splitlines()
+            if line.startswith("GEOMETRY_TEST_RESULT ")]
+    try:
+        return [case["scene"] for case in json.loads(rows[0])["cases"] if case["status"] == "fail"][:limit]
+    except (IndexError, ValueError, TypeError, KeyError):
+        return []
+
+
+# ============================================================
+# 來源模型與 provenance
+# ============================================================
+INCLUDE_RE = re.compile(r'^[ \t]*#[ \t]*include[ \t]+"([^"]+)"', re.M)
+
+
+def _sha(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+class Sources:
+    """current_geometry.c 與它的 #include "…" 閉包(LF 正規化後的文字與雜湊)。
+
+    這份 CRLF 原始碼只能用二進位模式讀;雜湊算在 CRLF->LF 之後,與舊 provenance 相容。
+    """
+
+    def __init__(self, root):
+        self.root = pathlib.Path(root).resolve()
+        self.texts = {}
+        self.hashes = {}
+        self._visit(self.root / MAIN_REL)
+        self.closure = _sha("\n".join(f"{r} {self.hashes[r]}" for r in sorted(self.hashes)).encode("utf-8"))
+
+    def _visit(self, path):
+        path = path.resolve()
         try:
-            build = run_cmd(["cmd", "/c", str(HERE / "_cl.bat"), str(SRC), str(baseline_exe)], cwd=baseline_dir, timeout=300)
-            if build.returncode != 0 or not baseline_exe.exists():
-                print("BASELINE BLOCKED: unmodified source could not be compiled")
+            rel = path.relative_to(self.root).as_posix()
+        except ValueError:
+            return
+        if rel in self.texts:
+            return
+        data = path.read_bytes().replace(b"\r\n", b"\n")
+        self.texts[rel] = data.decode("utf-8")
+        self.hashes[rel] = _sha(data)
+        for name in INCLUDE_RE.findall(self.texts[rel]):
+            target = path.parent / name
+            if target.is_file():
+                self._visit(target)
+
+
+def oracle_hash(runner_path=None, scene_root=None, tests=None):
+    """裁判的雜湊:run_tests.py 內容 + 依檔名排序、被 TESTS 引用的每個 .scene 內容(CRLF->LF)。
+
+    夾具被改壞(例如 M24 的舊殺手在 GEO-125 被改成別的用途)或判定邏輯改了,
+    舊的 killed / survived 就不再是同一個裁判下的判決。缺檔以固定標記入雜湊
+    (run_tests 自己會把缺檔記成 INFRA,這裡只需要讓雜湊跟著變)。
+    """
+    runner_path = pathlib.Path(runner_path or HERE / "run_tests.py")
+    scene_root = pathlib.Path(scene_root or ROOT)
+    names = sorted({spec["scene"] for spec in (TESTS if tests is None else tests)})
+    lines = []
+    for name in names:
+        f = scene_root / name
+        lines.append(f"{name} " + (_sha(f.read_bytes().replace(b"\r\n", b"\n")) if f.is_file() else "MISSING"))
+    body = _sha(runner_path.read_bytes().replace(b"\r\n", b"\n")) + "\n" + "\n".join(lines)
+    return _sha(body.encode("utf-8"))
+
+
+def compile_hash():
+    """編譯指令的雜湊：Windows 用 _cl.bat 內容，Linux 用實際 cc 參數。"""
+    if os.name != "nt":
+        return _sha(json.dumps(compile_command("<source>", "<output>"), ensure_ascii=False).encode("utf-8"))
+    return _sha((HERE / "_cl.bat").read_bytes().replace(b"\r\n", b"\n"))
+
+
+def compile_command(source, output):
+    """Keep native Windows builds and the documented WSL/GCC fallback reproducible."""
+    if os.name == "nt":
+        return ["cmd", "/c", str(HERE / "_cl.bat"), str(source), str(output)]
+    return [os.environ.get("CC", "cc"), "-std=c11", "-O2", str(source), "-o", str(output), "-lm"]
+
+
+# ============================================================
+# exe 指紋快取
+# ============================================================
+SIDECAR_SUFFIX = ".fingerprint.json"
+
+
+def _file_sha(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def sidecar_path(exe):
+    exe = pathlib.Path(exe)
+    return exe.with_name(exe.name + SIDECAR_SUFFIX)
+
+
+def mutant_fingerprint(m, src, compile_sha=None):
+    """這個變異 exe 的來歷:變異定義 + 整個 include 閉包 + 編譯指令。三者決定 exe 的內容。"""
+    return {"mutant_sha256": mutant_key(m), "closure_sha256": src.closure,
+            "compile_sha256": compile_sha or compile_hash()}
+
+
+def baseline_fingerprint(src, compile_sha=None):
+    return {"kind": "baseline", "closure_sha256": src.closure,
+            "compile_sha256": compile_sha or compile_hash()}
+
+
+def cache_state(exe, fp):
+    """hit / missing / nosidecar / stale / tampered。只有 hit 可以沿用。"""
+    exe = pathlib.Path(exe)
+    if not exe.is_file():
+        return "missing"
+    sc = sidecar_path(exe)
+    if not sc.is_file():
+        return "nosidecar"
+    try:
+        data = json.loads(sc.read_text(encoding="utf-8"))
+        if str(data.get("note", "")).startswith("adopted:"):
+            return "stale"  # Legacy metadata was inferred from results, not from this build.
+        if data.get("fingerprint") != fp:
+            return "stale"
+        if data.get("exe_sha256") != _file_sha(exe):
+            return "tampered"
+    except (OSError, ValueError):
+        return "stale"
+    return "hit"
+
+
+def write_sidecar(exe, fp, note=""):
+    exe = pathlib.Path(exe)
+    data = {"fingerprint": fp, "exe_sha256": _file_sha(exe), "note": note,
+            "written": datetime.datetime.now().isoformat(timespec="seconds")}
+    sc = sidecar_path(exe)
+    tmp = sc.with_name(sc.name + ".tmp")
+    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
+    os.replace(tmp, sc)
+
+
+def prepare_mutant_exe(m, src, mut_dir, compile_fn, rec=None, compile_sha=None):
+    """讓 mut_dir/_mut.exe 處於可用狀態。回傳 (status, exe, message)。
+
+    status: cached(沿用)/ built(重編)/ invalid(編譯失敗)。
+    compile_fn(m, exe) -> (ok, message) 只在非 cached 時被呼叫。
+    rec 是舊呼叫端的相容參數；結果紀錄不作為採用未驗證 exe 的證據。
+    """
+    mut_dir = pathlib.Path(mut_dir)
+    exe = mut_dir / "_mut.exe"
+    fp = mutant_fingerprint(m, src, compile_sha)
+    state = cache_state(exe, fp)
+    if state == "hit":
+        return "cached", exe, ""
+    mut_dir.mkdir(parents=True, exist_ok=True)
+    exe.unlink(missing_ok=True)                    # 舊二進位不得冒充這次的編譯結果
+    sidecar_path(exe).unlink(missing_ok=True)
+    ok, msg = compile_fn(m, exe)
+    if not ok or not exe.exists():
+        exe.unlink(missing_ok=True)
+        return "invalid", exe, msg
+    write_sidecar(exe, fp, "built")
+    return "built", exe, msg
+
+
+def prepare_baseline_exe(src, base_dir, compile_fn, compile_sha=None):
+    """未變異原始碼的 exe:來源閉包與編譯指令沒變就沿用。回傳 (cached|built|invalid, exe, message)。
+
+    先編到 baseline.<pid>.exe 再換名,兩個 mutate.py 同時跑時不會在同一個檔上互踩。
+    """
+    base_dir = pathlib.Path(base_dir)
+    exe = base_dir / "baseline.exe"
+    fp = baseline_fingerprint(src, compile_sha)
+    if cache_state(exe, fp) == "hit":
+        return "cached", exe, ""
+    base_dir.mkdir(parents=True, exist_ok=True)
+    tmp = base_dir / f"baseline.{os.getpid()}.exe"
+    tmp.unlink(missing_ok=True)
+    ok, msg = compile_fn(tmp)
+    if not ok or not tmp.exists():
+        tmp.unlink(missing_ok=True)
+        return "invalid", exe, msg
+    sidecar_path(exe).unlink(missing_ok=True)
+    os.replace(tmp, exe)
+    write_sidecar(exe, fp, "built")
+    return "built", exe, msg
+
+
+def sweep_old_baseline_dirs(mut_root, max_age_s=3600):
+    """舊版每輪 mkdtemp 一個 baseline-* 目錄,異常中斷會留下;清掉超過一小時的。"""
+    now = time.time()
+    for d in pathlib.Path(mut_root).glob("baseline-*"):
+        try:
+            if d.is_dir() and now - d.stat().st_mtime > max_age_s:
+                shutil.rmtree(d, ignore_errors=True)
+        except OSError:
+            pass
+
+
+def mutant_file(m):
+    return m.get("file", MAIN_REL)
+
+
+def mutant_key(m):
+    """變異定義本身的雜湊:改了 file/old/new 就不能沿用舊判決。"""
+    return _sha(json.dumps([mutant_file(m), m["old"], m["new"]], ensure_ascii=False).encode("utf-8"))
+
+
+def definition_kind(m, src):
+    """回傳 (kind, why);kind 為 run / equivalent / retired / invalid。
+
+    不編譯、不跑測試,只看錨點在現行來源的狀況。等價與退役的變異也要過這一關:
+    等價變異的錨點不在了,「等價」的說法就沒有對象;退役變異的舊錨點若又出現,
+    「邏輯已移除」的依據就失效。
+    """
+    f = mutant_file(m)
+    text = src.texts.get(f)
+    if text is None:
+        return "invalid", f"目標檔 {f} 不在 {MAIN_REL} 的 #include 閉包內"
+    n = text.count(m["old"])
+    if m.get("retired"):
+        if n:
+            return "invalid", f"已標 retired,但舊錨點在 {f} 又出現 {n} 次——退役依據失效,請重新判斷"
+        return "retired", m["retired"]
+    if n != 1:
+        return "invalid", f"錨點在 {f} 出現 {n} 次(需要 1)"
+    if m.get("equivalent"):
+        return "equivalent", m["equivalent"]
+    return "run", ""
+
+
+def build_mutant_source(m, src):
+    """回傳要編譯的 .c 全文。
+
+    目標是 current_geometry.c:直接單點替換。
+    目標是它 #include 的檔:把那行 #include 原地換成變異後的檔內容(檔內的相對
+    #include 改寫成相對於 repo 根的路徑),暫存複本仍只有一個 _mutant_<id>.c。
+    """
+    f = mutant_file(m)
+    mutated = src.texts[f].replace(m["old"], m["new"], 1)
+    if f == MAIN_REL:
+        return mutated
+    main = src.texts[MAIN_REL]
+    line = f'#include "{f}"'
+    if main.count(line) != 1:
+        raise ValueError(f"{MAIN_REL} 中 `{line}` 出現 {main.count(line)} 次(需要 1);巢狀 include 的目標不支援")
+    base = posixpath.dirname(f)
+    body = INCLUDE_RE.sub(
+        lambda mo: '#include "%s"' % posixpath.normpath(posixpath.join(base, mo.group(1))), mutated)
+    return main.replace(line, body, 1)
+
+
+def make_record(m, src, verdict, why, today, oracle_sha, killed_by=None):
+    rec = {"desc": m["desc"], "verdict": verdict, "why": why}
+    if verdict == "killed" and killed_by:
+        rec["killed_by"] = list(killed_by)
+    if verdict == "invalid" and m.get("equivalent"):
+        rec["equivalent_why"] = m["equivalent"]
+    f = mutant_file(m)
+    rec["date"] = today
+    rec["source_file"] = f
+    if verdict != "retired":
+        rec["source_sha256"] = src.hashes.get(f)
+        rec["closure_sha256"] = src.closure
+        rec["oracle_sha256"] = oracle_sha
+    rec["mutant_sha256"] = mutant_key(m)
+    return rec
+
+
+def effective_record(m, rec, src, today, oracle_sha):
+    """把一筆既有紀錄對照現行來源與變異定義,必要時標 stale。"""
+    kind, why = definition_kind(m, src)
+    if kind == "invalid":
+        # 錨點現在就壞了:不論舊判決是什麼,都以 invalid 覆蓋。
+        return make_record(m, src, "invalid", why, today, oracle_sha)
+    verdict = rec.get("verdict")
+    base = rec.get("stale_from") if verdict == "stale" else verdict
+    if base not in ("killed", "survived", "equivalent", "retired"):
+        return rec                       # invalid / blocked / 不認得的值:不因雜湊翻案
+    want = ("killed", "survived") if kind == "run" else (kind,)
+    problems = []
+    if base not in want:
+        problems.append(f"變異表現在把它定為 {kind},紀錄卻是 {base}")
+    if rec.get("mutant_sha256") != mutant_key(m):
+        problems.append("變異定義(file/old/new)與紀錄不符或紀錄沒有 mutant_sha256")
+    if base != "retired":
+        f = mutant_file(m)
+        if not rec.get("source_sha256"):
+            problems.append("沒有來源雜湊(provenance)")
+        elif rec["source_sha256"] != src.hashes.get(f):
+            problems.append(f"{f} 已變(紀錄 {rec['source_sha256'][:10]} / 現行 {str(src.hashes.get(f))[:10]})")
+        if not rec.get("closure_sha256"):
+            problems.append("沒有 include 閉包雜湊")
+        elif rec["closure_sha256"] != src.closure:
+            problems.append("#include 閉包內有檔案已變")
+        if base in ("killed", "survived"):
+            # 判決是「跑裁判」得來的:裁判(run_tests.py 或它引用的夾具)變了就不能沿用。
+            if not rec.get("oracle_sha256"):
+                problems.append("沒有裁判雜湊(oracle_sha256)")
+            elif rec["oracle_sha256"] != oracle_sha:
+                problems.append("裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同)")
+    if problems:
+        out = dict(rec)
+        out.update(verdict="stale", stale_from=base, stale_why=";".join(problems))
+        return out
+    if verdict == "stale":               # 來源還原了:復原成原判決
+        out = dict(rec)
+        out["verdict"] = base
+        out.pop("stale_from", None)
+        out.pop("stale_why", None)
+        return out
+    return rec
+
+
+def evaluate_table(mutants, records, src, today, oracle_sha):
+    """每個 id 的有效紀錄;沒有紀錄的 id 是 None(unrun);不在變異表的紀錄一律 stale。"""
+    table = {}
+    known = set()
+    for m in mutants:
+        known.add(m["id"])
+        rec = records.get(m["id"])
+        table[m["id"]] = effective_record(m, rec, src, today, oracle_sha) if isinstance(rec, dict) else None
+    for rid, rec in records.items():
+        if rid in known or not isinstance(rec, dict):
+            continue
+        out = dict(rec)
+        out.update(verdict="stale", stale_from=rec.get("stale_from") or rec.get("verdict"),
+                   stale_why="這個 id 已不在變異表")
+        table[rid] = out
+    return table
+
+
+def tally(table, ids=None):
+    counts = {v: 0 for v in VERDICTS}
+    counts["unrun"] = 0
+    for rid, rec in table.items():
+        if ids is not None and rid not in ids:
+            continue
+        if rec is None:
+            counts["unrun"] += 1
+        else:
+            counts[rec["verdict"] if rec.get("verdict") in VERDICTS else "invalid"] += 1
+    return counts
+
+
+def exit_code(counts, strict):
+    """blocked -> 2(結果不完整,先於其他);survived / invalid / stale -> 1;
+    strict(完整跑、--check)時沒跑到的 id(unrun)也算不及格。"""
+    if counts["blocked"]:
+        return 2
+    bad = counts["survived"] + counts["invalid"] + counts["stale"] + (counts["unrun"] if strict else 0)
+    return 1 if bad else 0
+
+
+def format_counts(counts):
+    text = " / ".join(f"{name} {counts[key]}" for name, key in (
+        ("殺死 killed", "killed"), ("存活 survived", "survived"), ("等價 equivalent", "equivalent"),
+        ("無效 invalid", "invalid"), ("過期 stale", "stale"), ("受阻 blocked", "blocked"),
+        ("退役 retired", "retired")))
+    return text + (f" / 未跑 unrun {counts['unrun']}" if counts["unrun"] else "")
+
+
+def load_records(path):
+    path = pathlib.Path(path)
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            raise ValueError("top level is not an object")
+        return data
+    except (OSError, ValueError) as exc:
+        print(f"⚠ 結果檔讀不了({exc}),視為空白:{path}")
+        return {}
+
+
+def save_records(path, records):
+    path = pathlib.Path(path)
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(json.dumps(dict(sorted(records.items())), ensure_ascii=False, indent=2),
+                   encoding="utf-8", newline="\n")
+    os.replace(tmp, path)
+
+
+def print_stale(table, ids=None):
+    for rid, rec in table.items():
+        if rec is not None and rec.get("verdict") == "stale" and (ids is None or rid in ids):
+            print(f"  STALE {rid}(原 {rec.get('stale_from')}):{rec.get('stale_why')}")
+
+
+# ============================================================
+# 主流程
+# ============================================================
+def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=None):
+    today = today or datetime.date.today().isoformat()
+    root = pathlib.Path(root)
+    src = Sources(root)
+    oracle_sha = oracle or oracle_hash()
+    selected = [m for m in mutants if not only or m["id"] in only]
+    print("Mutation scope: " + ("partial " if only else "full ") + ", ".join(m["id"] for m in selected))
+
+    results = {}
+    runnable = []
+    for m in selected:
+        kind, why = definition_kind(m, src)
+        if kind == "run":
+            runnable.append(m)
+            continue
+        results[m["id"]] = make_record(m, src, kind, why, today, oracle_sha)
+        label = {"equivalent": "EQUIVALENT", "retired": "RETIRED", "invalid": "INVALID"}[kind]
+        print(f"{m['id']}  {label:<10} {m['desc']}" + (f"  <- {why}" if kind == "invalid" else ""))
+
+    existing = load_records(results_path)
+
+    def persist(final):
+        merged = dict(existing)
+        merged.update(results)
+        if final:
+            merged = {rid: rec for rid, rec in
+                      evaluate_table(mutants, merged, src, today, oracle_sha).items() if rec is not None}
+        save_records(results_path, merged)
+        return merged
+
+    compile_sha = compile_hash()
+
+    def compile_baseline(exe):
+        """編未變異的原始碼到 exe(參數分開傳:_cl.bat 用 %~1 %~2 剝引號)。"""
+        try:
+            build = run_cmd(compile_command(root / MAIN_REL, exe),
+                            cwd=exe.parent, timeout=300)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            return False, str(exc)
+        if build.returncode != 0 or not exe.exists():
+            return False, "unmodified source could not be compiled"
+        return True, ""
+
+    def compile_mutant(m, exe):
+        # .c 必須跟 current_geometry.c 同目錄:它的 #include "geometry-core/…" 是相對於
+        # 被包含檔所在目錄解析的。每個變異用自己的檔名,平行跑不互撞;允許清單制的
+        # .gitignore 會忽略它,而且編完就刪。exe 才放 %TEMP%(SAC 在意的是 exe 的位置)。
+        mut_src = root / f"_mutant_{m['id']}.c"
+        try:
+            mut_src.write_text(build_mutant_source(m, src), encoding="utf-8", newline="\n")
+        except ValueError as exc:
+            return False, str(exc)
+        try:
+            build = run_cmd(compile_command(mut_src, exe),
+                            cwd=exe.parent, timeout=300)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            return False, "編譯失敗: " + str(exc)
+        finally:
+            mut_src.unlink(missing_ok=True)      # 成敗都清掉,不在 repo 留暫存
+        if not exe.exists() or build.returncode != 0:
+            return False, "編譯失敗: " + (build.stderr or build.stdout)[-200:]
+        return True, ""
+
+    if runnable:
+        MUT_ROOT.mkdir(parents=True, exist_ok=True)
+        sweep_old_baseline_dirs(MUT_ROOT)
+        try:
+            b_status, baseline_exe, b_msg = prepare_baseline_exe(
+                src, MUT_ROOT / "_baseline", compile_baseline, compile_sha)
+            if b_status == "invalid":
+                print("BASELINE BLOCKED: " + b_msg)
                 return 2
+            print("BASELINE exe " + {"cached": "沿用快取(來源與編譯指令沒變)", "built": "已重編"}[b_status])
             baseline_verdict, baseline_reason = "blocked", "not executed"
             for attempt in range(RUN_RETRIES):
-                result = run_cmd([sys.executable, str(HERE / "run_tests.py"), str(baseline_exe)], cwd=ROOT, timeout=600)
+                result = run_cmd([sys.executable, str(HERE / "run_tests.py"), str(baseline_exe)],
+                                 cwd=root, timeout=600)
                 baseline_verdict, baseline_reason = classify_test_run(result)
                 if baseline_verdict != "blocked":
                     break
@@ -284,55 +785,21 @@ def main() -> int:
             if baseline_verdict != "survived":
                 print("BASELINE BLOCKED: unmodified source must pass first: " + baseline_reason)
                 return 2
+            print(f"BASELINE OK: {len(TESTS)}/{len(TESTS)} 全過(未變異原始碼)")
         except (OSError, subprocess.TimeoutExpired) as exc:
             print("BASELINE BLOCKED: " + str(exc))
             return 2
 
-    for m in MUTANTS:
-        if only and m["id"] not in only:
+    for m in runnable:
+        status, MUT_EXE, msg = prepare_mutant_exe(
+            m, src, MUT_ROOT / m["id"], compile_mutant, existing.get(m["id"]), compile_sha)
+        if status == "invalid":
+            results[m["id"]] = make_record(m, src, "invalid", msg, today, oracle_sha)
+            print(f"{m['id']}  INVALID  {msg}")
+            persist(False)
             continue
-
-        # 等價變異:改了程式碼但行為不變,survived 是正確結果、不是測試缺口。
-        # 不編譯、不跑,直接記錄理由;硬湊夾具去殺它只會寫出假測試。
-        if m.get("equivalent"):
-            results[m["id"]] = {
-                "desc": m["desc"], "verdict": "equivalent", "why": m["equivalent"]
-            }
-            print(f"{m['id']}  EQUIVALENT  {m['desc']}")
-            continue
-
-        n = src.count(m["old"])
-        if n != 1:
-            results[m["id"]] = {
-                "desc": m["desc"], "verdict": "invalid",
-                "why": f"錨點出現 {n} 次(需要 1)"
-            }
-            print(f"{m['id']}  INVALID  錨點×{n}  {m['desc']}")
-            continue
-
-        mut_dir = MUT_ROOT / m["id"]
-        mut_dir.mkdir(parents=True, exist_ok=True)
-        # .c 必須跟 current_geometry.c 同目錄:它的 #include "geometry-core/…" 是相對於
-        # 被包含檔所在目錄解析的。每個變異用自己的檔名,平行跑不互撞;允許清單制的
-        # .gitignore 會忽略它,而且編完就刪。exe 才放 %TEMP%(SAC 在意的是 exe 的位置)。
-        MUT_SRC = ROOT / f"_mutant_{m['id']}.c"
-        MUT_EXE = mut_dir / "_mut.exe"
-        MUT_EXE.unlink(missing_ok=True)          # 舊二進位不得冒充這次的編譯結果
-        MUT_SRC.write_text(src.replace(m["old"], m["new"], 1),
-                           encoding="utf-8", newline="\n")
-
-        # 參數分開傳:_cl.bat 用 %~1 %~2 剝引號,塞成一個字串時剝不掉
-        build = run_cmd(["cmd", "/c", str(HERE / "_cl.bat"), str(MUT_SRC), str(MUT_EXE)],
-                        cwd=mut_dir, timeout=300)
-        MUT_SRC.unlink(missing_ok=True)          # 成敗都清掉,不在 repo 留暫存
-        if not MUT_EXE.exists() or build.returncode != 0:
-            results[m["id"]] = {
-                "desc": m["desc"], "verdict": "invalid",
-                "why": "編譯失敗: " + (build.stderr or build.stdout)[-200:]
-            }
-            print(f"{m['id']}  INVALID  編譯失敗  {m['desc']}")
-            MUT_EXE.unlink(missing_ok=True)
-            continue
+        print(f"{m['id']}  exe " + {"cached": "沿用快取",
+                                   "built": "已重編"}[status])
 
         # 環境失敗(SAC 封鎖、逾時)會讓每一筆測試都失敗、returncode 非 0,
         # 看起來跟「變異被抓到」一模一樣。所以跑完要先問:這次的死因
@@ -340,11 +807,12 @@ def main() -> int:
         # 絕不計入 killed。
         verdict = None
         why = ""
+        killers = []
 
         for attempt in range(1, RUN_RETRIES + 1):
             try:
                 test = run_cmd([sys.executable, str(HERE / "run_tests.py"),
-                                str(MUT_EXE)], cwd=ROOT, timeout=600)
+                                str(MUT_EXE)], cwd=root, timeout=600)
             except (OSError, subprocess.TimeoutExpired) as exc:
                 why = f"啟動失敗: {exc}"
                 time.sleep(12)
@@ -356,51 +824,390 @@ def main() -> int:
                     time.sleep(12)
                 continue
             verdict = outcome
+            if outcome == "killed":
+                killers = failed_scenes(test)
             break
 
         if verdict is None:
             verdict = "blocked"
             why = f"連跑 {RUN_RETRIES} 次都是環境失敗,結果不可信 <- {why}"
+            if "abnormal executable exit" in why:
+                why += ("(不是 SAC 的 WinError 4551:執行檔自己異常結束,重試結果相同,"
+                        "多半是變異讓它崩潰;run_tests.py 規定崩潰不算 killed,需人工判斷)")
 
-        results[m["id"]] = {"desc": m["desc"], "verdict": verdict, "why": why}
+        results[m["id"]] = make_record(m, src, verdict, why, today, oracle_sha, killed_by=killers)
         print(f"{m['id']}  {verdict.upper():<9} {m['desc']}"
               + (f"  <- {why}" if why else ""))
+        persist(False)
 
-    # 跑子集時把結果「併回」既有紀錄,不是整份覆寫——
-    # 直接覆寫會把沒跑到的那些判決清掉,看起來像它們消失了。
-    for result in results.values():
-        result.update(provenance)
-    merged = {}
-    if RESULTS.exists():
-        try:
-            merged = json.loads(RESULTS.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            merged = {}
-    merged.update(results)
-    merged = dict(sorted(merged.items()))
+    # 跑子集時把結果「併回」既有紀錄,不是整份覆寫——直接覆寫會把沒跑到的判決清掉。
+    # 併回後整張表再對照一次現行來源:不符的標 stale 寫回去,不讓舊 killed 原樣留著。
+    merged = persist(True)
+    table = {rid: merged.get(rid) for rid in [m["id"] for m in mutants]}
+    table.update({rid: rec for rid, rec in merged.items() if rid not in table})
+    ids_run = {m["id"] for m in selected}
+    counts = tally(table, ids_run)
+    print("\n本次 " + str(len(ids_run)) + ":" + format_counts(counts))
+    if set(table) != ids_run:
+        print("歷次紀錄(不是本次覆蓋)" + str(len([r for r in table.values() if r is not None])) + ":"
+              + format_counts(tally(table)))
+        print("  (過期明細用 --check 列出)")
 
-    RESULTS.write_text(
-        json.dumps(merged, ensure_ascii=False, indent=2),
-        encoding="utf-8")
-    k = sum(1 for r in results.values() if r["verdict"] == "killed")
-    s = sum(1 for r in results.values() if r["verdict"] == "survived")
-    i = sum(1 for r in results.values() if r["verdict"] == "invalid")
-    b = sum(1 for r in results.values() if r["verdict"] == "blocked")
-    print(f"\n本次 {len(results)}:殺死 {k} / 存活 {s} / 等價 {sum(1 for v in results.values() if v['verdict']=='equivalent')} / 無效 {i} / 受阻 {b}")
-
-    if len(merged) != len(results):
-        mk = sum(1 for r in merged.values() if r["verdict"] == "killed")
-        ms = sum(1 for r in merged.values() if r["verdict"] == "survived")
-        mi = sum(1 for r in merged.values() if r["verdict"] == "invalid")
-        mb = sum(1 for r in merged.values() if r["verdict"] == "blocked")
-        print(f"歷次紀錄（不是本次覆蓋）{len(merged)}:殺死 {mk} / 存活 {ms} / 等價 {sum(1 for v in merged.values() if v['verdict']=='equivalent')} / 無效 {mi} / 受阻 {mb}")
-
-    if b:
+    if counts["blocked"]:
         print("⚠ 有受阻的變異,這一輪的結果不完整——受阻的沒有被驗證過,"
               "不要當成殺死。等環境穩定後只重跑那幾個。")
-        return 2
+    return exit_code(counts, strict=not only)
 
-    return 1 if s or i else 0
+
+def check_pass(mutants, root=ROOT, results_path=RESULTS, killers=False, oracle=None):
+    """不編譯、不跑:把結果檔對照現行來源與變異表,彙總並給結束碼。"""
+    src = Sources(root)
+    today = datetime.date.today().isoformat()
+    table = evaluate_table(mutants, load_records(results_path), src, today, oracle or oracle_hash())
+    counts = tally(table)
+    print(f"結果檔 {results_path}")
+    print(f"變異表 {len(mutants)} 筆,紀錄 {len([r for r in table.values() if r is not None])} 筆")
+    print(format_counts(counts))
+    print_stale(table)
+    for rid, rec in table.items():
+        if rec is not None and rec.get("verdict") in ("survived", "invalid", "blocked"):
+            print(f"  {rec['verdict'].upper()} {rid}  {rec.get('desc')}  <- {rec.get('why')}")
+    if killers:
+        for rid, rec in table.items():
+            if rec is not None and rec.get("verdict") == "killed":
+                print(f"  KILLED {rid}  <- {', '.join(rec.get('killed_by') or ['(舊紀錄,沒有 killed_by)'])}")
+    return exit_code(counts, strict=True)
+
+
+# ============================================================
+# 誠實性規則的自我測試(不編譯、不碰 repo 的檔案)
+# ============================================================
+def selftest():
+    checks = 0
+
+    def quiet(fn, *args, **kwargs):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return fn(*args, **kwargs)
+
+    def ok(cond, msg):
+        nonlocal checks
+        checks += 1
+        if not cond:
+            print("SELFTEST FAIL: " + msg)
+            raise SystemExit(1)
+
+    with tempfile.TemporaryDirectory(prefix="mutate-selftest-") as tmp:
+        root = pathlib.Path(tmp)
+        (root / "geometry-core").mkdir()
+        main_path = root / MAIN_REL
+        inc_path = root / "geometry-core" / "a.inc"
+        other_path = root / "geometry-core" / "b.inc"
+        # 故意用 CRLF:雜湊與錨點都必須在 LF 正規化後計算
+        main_path.write_bytes(b'#include "geometry-core/a.inc"\r\n#include "geometry-core/b.inc"\r\n'
+                              b'int main_v = 1;\r\nint keep = 2;\r\n')
+        inc_path.write_bytes(b'#include "b_helper.h"\r\nint a_v = 10;\r\n')
+        (root / "geometry-core" / "b_helper.h").write_bytes(b'int helper = 0;\r\n')
+        other_path.write_bytes(b'int b_v = 20;\r\n')
+        results = root / "results.json"
+        oracle = "r" * 64
+        today = "2026-01-01"
+
+        def defs(**over):
+            base = {
+                "MA": dict(id="MA", desc="main", old="main_v = 1", new="main_v = 2"),
+                "MB": dict(id="MB", desc="inc", file="geometry-core/a.inc", old="a_v = 10", new="a_v = 11"),
+                "ME": dict(id="ME", desc="equiv", old="keep = 2", new="keep = 3", equivalent="等價理由原文"),
+                "MR": dict(id="MR", desc="retired", old="gone_token", new="x", retired="退役依據原文"),
+            }
+            base.update(over)
+            return list(base.values())
+
+        # 1) 定義分類與暫存複本
+        src = Sources(root)
+        ms = defs()
+        ok([definition_kind(m, src)[0] for m in ms] == ["run", "run", "equivalent", "retired"], "definition_kind 分類")
+        ok(set(src.texts) == {MAIN_REL, "geometry-core/a.inc", "geometry-core/b.inc", "geometry-core/b_helper.h"},
+           "include 閉包(含巢狀)")
+        built = build_mutant_source(ms[1], src)
+        ok("a_v = 11" in built and "a_v = 10" not in built and '#include "geometry-core/a.inc"' not in built,
+           "對 .inc 的變異必須把 #include 行原地換掉")
+        ok('#include "geometry-core/b_helper.h"' in built, "內嵌檔的相對 include 要改成相對 repo 根")
+        ok(build_mutant_source(ms[0], src).count("main_v = 2") == 1, "對主檔的單點替換")
+
+        # 2) 新紀錄 -> 帶雜湊,且對現況有效
+        recs = {m["id"]: make_record(m, src, v, "w", today, oracle)
+                for m, v in zip(ms, ("killed", "survived", "equivalent", "retired"))}
+        ok(all(recs[i].get("source_sha256") for i in ("MA", "MB", "ME")), "非 retired 紀錄帶 source_sha256")
+        ok("source_sha256" not in recs["MR"], "retired 紀錄不帶來源雜湊")
+        ok(recs["MB"]["source_file"] == "geometry-core/a.inc"
+           and recs["MB"]["source_sha256"] == src.hashes["geometry-core/a.inc"], "雜湊是被變異那個檔的")
+        table = evaluate_table(ms, recs, src, today, oracle)
+        ok([table[i]["verdict"] for i in ("MA", "MB", "ME", "MR")] == ["killed", "survived", "equivalent", "retired"],
+           "來源未變時判決原樣保留")
+        counts = tally(table)
+        ok(counts["killed"] == 1 and counts["stale"] == 0, "彙總 killed=1 stale=0")
+
+        # 3) 牙:原本 killed,現在錨點找不到 -> 必須是 invalid,不是 killed(走完整 run_pass 寫檔路徑)
+        save_records(results, {"MA": recs["MA"], "MB": recs["MB"]})
+        broken = defs(MA=dict(id="MA", desc="main", old="main_v = 1 /*不存在*/", new="main_v = 2"))
+        code = quiet(run_pass, broken, {"MA"}, root=root, results_path=results, today=today, oracle=oracle)
+        saved = json.loads(results.read_text(encoding="utf-8"))
+        ok(saved["MA"]["verdict"] == "invalid", "錨點壞掉的舊 killed 必須被 invalid 覆蓋,實得 " + saved["MA"]["verdict"])
+        ok("錨點" in saved["MA"]["why"], "invalid 的理由要講錨點")
+        ok(code == 1, "含 invalid 的結束碼非零,實得 " + str(code))
+        ok(saved["MB"]["verdict"] == "survived", "沒選到的 id 的有效紀錄原樣保留")
+
+        # 3b) 錨點不唯一同樣 invalid
+        dup = defs(MA=dict(id="MA", desc="main", old="int", new="long"))
+        save_records(results, {"MA": recs["MA"]})
+        quiet(run_pass, dup, {"MA"}, root=root, results_path=results, today=today, oracle=oracle)
+        saved = json.loads(results.read_text(encoding="utf-8"))
+        ok(saved["MA"]["verdict"] == "invalid" and "出現" in saved["MA"]["why"], "錨點不唯一 -> invalid")
+
+        # 4) 等價變異:錨點在 -> 保留理由;不在 -> invalid 且理由文字另存
+        gone = defs(ME=dict(id="ME", desc="equiv", old="keep = 99", new="keep = 3", equivalent="等價理由原文"))
+        save_records(results, {})
+        quiet(run_pass, gone, {"ME"}, root=root, results_path=results, today=today, oracle=oracle)
+        saved = json.loads(results.read_text(encoding="utf-8"))
+        ok(saved["ME"]["verdict"] == "invalid" and saved["ME"]["equivalent_why"] == "等價理由原文",
+           "等價變異錨點不在 -> invalid,且保留等價理由文字")
+        quiet(run_pass, ms, {"ME"}, root=root, results_path=results, today=today, oracle=oracle)
+        saved = json.loads(results.read_text(encoding="utf-8"))
+        ok(saved["ME"]["verdict"] == "equivalent" and saved["ME"]["why"] == "等價理由原文", "等價變異錨點在 -> 理由原文")
+
+        # 5) 退役:舊錨點又出現 -> invalid
+        revived = defs(MR=dict(id="MR", desc="retired", old="keep = 2", new="x", retired="退役依據原文"))
+        ok(definition_kind(revived[3], src)[0] == "invalid", "退役變異的舊錨點又出現 -> invalid")
+
+        # 6) stale:被變異檔改了、沒帶雜湊、變異定義改了、閉包內別的檔改了、id 不在表內
+        old_main = main_path.read_bytes()
+        main_path.write_bytes(old_main + b"/* edit */\r\n")
+        src2 = Sources(root)
+        t2 = evaluate_table(ms, recs, src2, today, oracle)
+        ok(t2["MA"]["verdict"] == "stale" and t2["MA"]["stale_from"] == "killed", "主檔改了 -> killed 變 stale")
+        ok(t2["MB"]["verdict"] == "stale", "閉包內的檔(主檔)改了 -> 連目標檔沒變的 .inc 變異也 stale")
+        ok(tally(t2)["killed"] == 0, "stale 不計入 killed")
+        main_path.write_bytes(old_main)
+        t3 = evaluate_table(ms, recs, Sources(root), today, oracle)
+        ok(t3["MA"]["verdict"] == "killed", "還原來源後 stale 不是單向的,純來源還原要復原")
+        # 把 stale 寫回再還原
+        save_records(results, {k: v for k, v in t2.items() if v})
+        back = evaluate_table(ms, load_records(results), Sources(root), today, oracle)
+        ok(back["MA"]["verdict"] == "killed" and "stale_from" not in back["MA"], "寫回的 stale 紀錄可在來源還原後復原")
+
+        other_path.write_bytes(other_path.read_bytes() + b"/* edit */\r\n")
+        t4 = evaluate_table(ms, recs, Sources(root), today, oracle)
+        ok(t4["MA"]["verdict"] == "stale" and "閉包" in t4["MA"]["stale_why"], "別的 include 檔改了 -> stale(閉包雜湊)")
+        other_path.write_bytes(b"int b_v = 20;\r\n")
+
+        naked = {k: {kk: vv for kk, vv in v.items() if kk not in ("source_sha256", "closure_sha256", "oracle_sha256")}
+                 for k, v in recs.items()}
+        t5 = evaluate_table(ms, naked, Sources(root), today, oracle)
+        ok(t5["MA"]["verdict"] == "stale" and "provenance" in t5["MA"]["stale_why"], "沒有雜湊的舊紀錄 -> stale")
+        ok(t5["ME"]["verdict"] == "stale", "沒有雜湊的 equivalent 也 stale")
+
+        edited = defs(MA=dict(id="MA", desc="main", old="main_v = 1", new="main_v = 3"))
+        t6 = evaluate_table(edited, recs, Sources(root), today, oracle)
+        ok(t6["MA"]["verdict"] == "stale" and "變異定義" in t6["MA"]["stale_why"], "改了變異的 new -> 不能沿用舊判決")
+
+        t7 = evaluate_table(ms[:1], recs, Sources(root), today, oracle)
+        ok(t7["MB"]["verdict"] == "stale" and "不在變異表" in t7["MB"]["stale_why"], "孤兒紀錄 -> stale")
+
+        # 7) 表與結束碼
+        c = tally(table)
+        ok(c["survived"] == 1 and exit_code(c, True) == 1, "表裡有 survived -> 1")
+        c["survived"] = 0
+        ok(exit_code(c, True) == 0, "全乾淨 -> 0")
+        c = tally(table)
+        c["survived"] = 1
+        ok(exit_code(c, False) == 1, "survived -> 1")
+        c = tally(table)
+        c["invalid"] = 1
+        ok(exit_code(c, False) == 1, "invalid -> 1")
+        c = tally(table)
+        c["stale"] = 1
+        ok(exit_code(c, False) == 1, "stale -> 1")
+        c = tally(table)
+        c["blocked"] = 1
+        c["survived"] = 1
+        ok(exit_code(c, False) == 2, "blocked 先於 survived -> 2")
+        c = tally(evaluate_table(ms, {}, Sources(root), today, oracle))
+        ok(c["unrun"] == 4 and exit_code(c, True) == 1 and exit_code(c, False) == 0, "unrun 只在完整跑/--check 才算不及格")
+
+        # 8) check_pass 端到端:killed 但沒帶雜湊的舊檔 -> 非零
+        save_records(results, {"MA": {"desc": "main", "verdict": "killed", "why": "x"}})
+        ok(quiet(check_pass, ms, root=root, results_path=results, oracle=oracle) != 0, "--check:舊式無雜湊 killed 不得放行")
+
+        # 9) 裁判雜湊:run_tests.py 或被引用的夾具變了 -> killed / survived 變 stale
+        fake_runner = root / "fake_run_tests.py"
+        fake_runner.write_bytes(b"TESTS = []\r\n")
+        (root / "a.scene").write_bytes(b"surface 1\r\ntimber 1\r\n")
+        (root / "b.scene").write_bytes(b"surface 2\r\n")
+        (root / "unused.scene").write_bytes(b"not referenced\r\n")
+        fake_tests = [{"scene": "b.scene"}, {"scene": "a.scene"}]
+
+        def oh(tests=fake_tests):
+            return oracle_hash(fake_runner, root, tests)
+
+        h0 = oh()
+        ok(len(h0) == 64 and oh() == h0, "oracle_hash 決定性")
+        ok(oracle_hash(fake_runner, root, list(reversed(fake_tests))) == h0, "oracle_hash 與 TESTS 順序無關(依檔名排序)")
+        (root / "a.scene").write_bytes(b"surface 1\ntimber 1\n")
+        ok(oh() == h0, "夾具 CRLF/LF 不影響裁判雜湊")
+        (root / "unused.scene").write_bytes(b"edited but not referenced\n")
+        ok(oh() == h0, "沒被 TESTS 引用的 .scene 不影響裁判雜湊")
+        (root / "a.scene").write_bytes(b"surface 1\ntimber 2\n")
+        h_fixture = oh()
+        ok(h_fixture != h0, "改了被引用的夾具內容 -> 裁判雜湊改變")
+        (root / "a.scene").write_bytes(b"surface 1\ntimber 1\n")
+        fake_runner.write_bytes(b"TESTS = []  # edited\r\n")
+        h_runner = oh()
+        ok(h_runner != h0 and h_runner != h_fixture, "改了 run_tests.py -> 裁判雜湊改變")
+        fake_runner.write_bytes(b"TESTS = []\r\n")
+        ok(oh() == h0, "還原後雜湊復原")
+        (root / "b.scene").unlink()
+        ok(oh() != h0, "被引用的夾具不見 -> 裁判雜湊改變")
+        (root / "b.scene").write_bytes(b"surface 2\r\n")
+        ok(oh() == h0, "夾具補回 -> 雜湊復原")
+        ok(oracle_hash() == oracle_hash() and all((ROOT / spec["scene"]).is_file() for spec in TESTS),
+           "真正的 TESTS 引用的夾具都在(裁判雜湊沒有 MISSING 標記)")
+
+        orecs = {m["id"]: make_record(m, src, v, "w", today, h0, killed_by=["a.scene"] if v == "killed" else None)
+                 for m, v in zip(ms, ("killed", "survived", "equivalent", "retired"))}
+        ok(orecs["MA"]["oracle_sha256"] == h0 and "runner_sha256" not in orecs["MA"], "新紀錄帶 oracle_sha256(沒有 runner_sha256)")
+        ok(evaluate_table(ms, orecs, src, today, h0)["MA"]["verdict"] == "killed", "裁判沒變 -> killed 保留")
+        t_or = evaluate_table(ms, orecs, src, today, h_fixture)
+        ok(t_or["MA"]["verdict"] == "stale" and "裁判" in t_or["MA"]["stale_why"] and t_or["MA"]["stale_from"] == "killed",
+           "夾具內容改了 -> killed 變 stale")
+        ok(t_or["MB"]["verdict"] == "stale", "裁判變了 -> survived 也 stale")
+        ok(t_or["ME"]["verdict"] == "equivalent" and t_or["MR"]["verdict"] == "retired", "equivalent / retired 不受裁判雜湊約束")
+        ok(tally(t_or)["killed"] == 0 and tally(t_or)["stale"] == 2, "stale 不計入 killed")
+        t_rn = evaluate_table(ms, orecs, src, today, h_runner)
+        ok(t_rn["MA"]["verdict"] == "stale", "run_tests.py 改了 -> killed 變 stale")
+        save_records(results, {k: v for k, v in t_or.items() if v})
+        ok(evaluate_table(ms, load_records(results), src, today, h0)["MA"]["verdict"] == "killed", "裁判還原後 stale 自動復原")
+        ok(quiet(check_pass, ms, root=root, results_path=results, oracle=h_fixture) != 0, "--check:裁判變了 -> 結束碼非零")
+        old_style = {k: {kk: vv for kk, vv in v.items() if kk != "oracle_sha256"} for k, v in orecs.items()}
+        for v in old_style.values():
+            v["runner_sha256"] = "x" * 64
+        t_old = evaluate_table(ms, old_style, src, today, h0)
+        ok(t_old["MA"]["verdict"] == "stale" and "裁判雜湊" in t_old["MA"]["stale_why"], "只有舊 runner_sha256 的 killed -> stale")
+
+        # 10) killed_by
+        ok(orecs["MA"]["killed_by"] == ["a.scene"] and "killed_by" not in orecs["MB"], "killed 紀錄帶 killed_by,其他不帶")
+        cases = [{"scene": spec["scene"], "status": "pass", "detail": "ok", "oracle": "x"} for spec in TESTS]
+        for idx in (3, 7, 9, 11, 13, 15, 17):
+            cases[idx]["status"] = "fail"
+            cases[idx]["detail"] = "FAIL x"
+        row = {"schema": "geometry-native-tests/1", "total": len(TESTS),
+               "counts": {"pass": len(TESTS) - 7, "fail": 7, "infrastructure": 0}, "cases": cases}
+        fake_proc = types.SimpleNamespace(stdout="noise\nGEOMETRY_TEST_RESULT " + json.dumps(row) + "\n", returncode=1)
+        ok(classify_test_run(fake_proc)[0] == "killed", "classify_test_run 判 killed")
+        fb = failed_scenes(fake_proc)
+        ok(fb == [TESTS[i]["scene"] for i in (3, 7, 9, 11, 13)] and len(fb) == KILLED_BY_MAX, "failed_scenes 依 TESTS 順序取前 5 個")
+        ok(failed_scenes(types.SimpleNamespace(stdout="garbage", returncode=1)) == [], "failed_scenes 遇到壞輸出回空")
+        save_records(results, {"MA": orecs["MA"]})
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            check_pass(ms, root=root, results_path=results, killers=True, oracle=h0)
+        ok("KILLED MA  <- a.scene" in buf.getvalue(), "--check --killers 列出 killed_by")
+
+        # 11) exe 指紋快取
+        calls = []
+
+        def fake_compile(m, exe):
+            calls.append(m["id"])
+            pathlib.Path(exe).write_bytes(("EXE:" + m["new"] + ":" + src.closure).encode("utf-8"))
+            return True, ""
+
+        csha = "c" * 64
+        mdir = root / "mutants" / "MA"
+        st, exe, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, None, csha)
+        ok(st == "built" and exe.is_file() and sidecar_path(exe).is_file() and len(calls) == 1, "第一次:編譯並寫 sidecar")
+        mtime0 = exe.stat().st_mtime_ns
+        st, exe, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, None, csha)
+        ok(st == "cached" and len(calls) == 1 and exe.stat().st_mtime_ns == mtime0, "第二次:沿用,不呼叫編譯、exe 沒被動")
+        changed = dict(ms[0], new="main_v = 7")
+        st, _, _ = prepare_mutant_exe(changed, src, mdir, fake_compile, None, csha)
+        ok(st == "built" and len(calls) == 2, "改了變異的替換字串 -> 重編")
+        st, _, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, None, csha)
+        ok(st == "built" and len(calls) == 3, "變異定義換回原本那份(與 sidecar 不同)也要重編")
+        other_path.write_bytes(other_path.read_bytes() + b"/* edit */\r\n")
+        src_b = Sources(root)
+        st, _, _ = prepare_mutant_exe(ms[0], src_b, mdir, fake_compile, None, csha)
+        ok(st == "built" and len(calls) == 4, "include 閉包內別的檔改了 -> 重編")
+        other_path.write_bytes(b"int b_v = 20;\r\n")
+        st, _, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, None, csha)
+        ok(st == "built" and len(calls) == 5, "來源還原後,指紋與上一次(已改來源)的 exe 不同 -> 重編")
+        st, _, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, None, "d" * 64)
+        ok(st == "built" and len(calls) == 6, "編譯指令(_cl.bat)變了 -> 重編")
+        st, exe, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, None, "d" * 64)
+        ok(st == "cached" and len(calls) == 6, "指紋都相符 -> 沿用")
+        exe.write_bytes(b"tampered")
+        st, _, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, None, "d" * 64)
+        ok(st == "built" and len(calls) == 7, "exe 內容被動過(與 sidecar 的 exe 雜湊不符)-> 重編")
+        # 結果紀錄相符也不能證明一支缺失 sidecar 的 exe；以被替換的檔案驗證。
+        sidecar_path(exe).unlink()
+        exe.write_bytes(b"unverified replacement")
+        good_rec = {"closure_sha256": src.closure, "mutant_sha256": mutant_key(ms[0])}
+        st, _, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, good_rec, "d" * 64)
+        ok(st == "built" and len(calls) == 8 and sidecar_path(exe).is_file()
+           and exe.read_bytes() != b"unverified replacement", "沒有 sidecar，即使結果檔雜湊相符仍須重編")
+        st, _, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, good_rec, "d" * 64)
+        ok(st == "cached" and len(calls) == 8, "重編建立可信 sidecar 後，下一輪沿用")
+        write_sidecar(exe, mutant_fingerprint(ms[0], src, "d" * 64), "adopted: legacy migration")
+        st, _, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, good_rec, "d" * 64)
+        ok(st == "built" and len(calls) == 9, "舊版憑結果紀錄補發的 adopted sidecar 也必須重編")
+        sidecar_path(exe).unlink()
+        for bad in (None, dict(good_rec, closure_sha256="0" * 64), dict(good_rec, mutant_sha256="0" * 64), {}):
+            sidecar_path(exe).unlink(missing_ok=True)
+            n = len(calls)
+            st, _, _ = prepare_mutant_exe(ms[0], src, mdir, fake_compile, bad, "d" * 64)
+            ok(st == "built" and len(calls) == n + 1, "沒有 sidecar 且結果檔沒有相符雜湊 -> 不採用,重編 " + repr(bad)[:30])
+
+        def failing_compile(m, exe):
+            return False, "編譯失敗: boom"
+
+        bad_dir = root / "mutants" / "MB"
+        st, exe_b, msg = prepare_mutant_exe(ms[1], src, bad_dir, failing_compile, None, csha)
+        ok(st == "invalid" and "boom" in msg and not exe_b.exists() and not sidecar_path(exe_b).exists(), "編譯失敗 -> invalid,不留 exe / sidecar")
+
+        bcalls = []
+
+        def base_compile(exe):
+            bcalls.append(1)
+            pathlib.Path(exe).write_bytes(b"BASE" + src.closure.encode("utf-8"))
+            return True, ""
+
+        bdir = root / "mutants" / "_baseline"
+        st, bexe, _ = prepare_baseline_exe(src, bdir, base_compile, csha)
+        ok(st == "built" and bexe.name == "baseline.exe" and bexe.is_file() and len(bcalls) == 1
+           and not list(bdir.glob("baseline.*.exe")), "baseline 第一次編譯(pid 暫名已換成正名)")
+        st, _, _ = prepare_baseline_exe(src, bdir, base_compile, csha)
+        ok(st == "cached" and len(bcalls) == 1, "baseline 沿用快取")
+        other_path.write_bytes(other_path.read_bytes() + b"/* edit */\r\n")
+        st, _, _ = prepare_baseline_exe(Sources(root), bdir, base_compile, csha)
+        ok(st == "built" and len(bcalls) == 2, "baseline:來源變了 -> 重編")
+        other_path.write_bytes(b"int b_v = 20;\r\n")
+
+    print(f"SELFTEST OK ({checks} checks)")
+    return 0
+
+
+def main() -> int:
+    args = sys.argv[1:]
+    if args == ["--selftest"]:
+        return selftest()
+    if args == ["--check"]:
+        return check_pass(MUTANTS)
+    if args == ["--check", "--killers"]:
+        return check_pass(MUTANTS, killers=True)
+    only = set(args)
+    unknown = only - {m["id"] for m in MUTANTS}
+    if unknown:
+        print("Unknown mutant IDs: " + ", ".join(sorted(unknown)))
+        return 2
+    return run_pass(MUTANTS, only)
 
 
 if __name__ == "__main__":

@@ -92,6 +92,15 @@ class EngineeringJson(unittest.TestCase):
         cls.temp = tempfile.TemporaryDirectory(prefix='engineering-json-', dir=parent)
         cls.addClassCleanup(cls.temp.cleanup)
         cls.work = Path(cls.temp.name)
+        # tests/binaries.py builds this helper once (source-fingerprint cached, so SAC only
+        # sees it once) and hands it over here; recompiling per class run is what collided with SAC.
+        prebuilt = os.environ.get('GEOMETRY_TEST_ENGINEERING_JSON')
+        if prebuilt:
+            cls.exe = Path(prebuilt)
+            if not cls.exe.is_file():
+                raise AssertionError('GEOMETRY_TEST_ENGINEERING_JSON does not exist: ' + prebuilt)
+            cls.compiler_output = 'prebuilt: ' + prebuilt
+            return
         src = cls.work / 'engineering-json-test.c'
         src.write_text(HARNESS, encoding='utf-8')
         cls.exe = cls.work / ('engineering-json-test.exe' if os.name == 'nt' else 'engineering-json-test')

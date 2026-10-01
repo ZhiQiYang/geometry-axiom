@@ -46,7 +46,7 @@ test('parameter definitions retained only inside model snapshots still require /
 /* 驗收矩陣「移除能力標記、未知版本」：未知版本與被拿掉的宣告一律拒絕，不降級、不半套開啟。 */
 test('matrix: unknown project versions and stripped or unknown capability markers are rejected',async()=>{
   const bytes=await pack();
-  await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.format='geometry-canvas/7'),zip),/專案版本不支援/);
+  await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.format='geometry-canvas/999'),zip),/專案版本不支援/);
   await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.requiredCapabilities=['parameters/2']),zip),/尚未支援/);
   await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.requiredCapabilities=['parameters/1','parameters/2']),zip),/尚未支援/);
   await assert.rejects(()=>P.unpack(rewrite(bytes,m=>{delete m.requiredCapabilities;}),zip));
