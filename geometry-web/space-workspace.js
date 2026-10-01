@@ -515,6 +515,8 @@ window.SpaceModelWorkspace = (() => {
   function openLibrary(){if(state.editing)cancelHeightEdit();if(!show(openLibrary))return;libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;dialog.classList.add("sm-in-library");}
   function openRecord(id, display = true) {
     const record=ReferenceWorkspace.getSpaceModels().find(m=>m.id===id); if(!record)return;
+    // show() refreshes saved records; clear the previous signature before entering it.
+    state.recordSignature=null;
     if(display&&!show(()=>openRecord(id,display)))return;
     state.recordSignature=null;startSource();const input=record.input,s=record.result.summary;
     // A saved definition keeps its source snapshot. Height editing changes only its explicit height.

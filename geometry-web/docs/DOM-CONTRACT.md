@@ -955,3 +955,4 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `#asmPreview`／`#asmPreviewResult`／`#asmConfirm`／`#asmCancel` 使用原生交易，`#asmStatus` 顯示拒絕原因。異步回應核對 context、編輯代次及序號。
 - `.assembly-card[data-kind="assembly-rule"|"assembly-binding"][data-id]` 沿用畫布身分、拖曳、搜尋、小地圖和選取。`#asmInspectorOpen` 返回工作區。
 - `#asmClose` 返回畫布，草稿留在專案；需使用共用保存寫入檔案。新建／開啟專案會關閉舊工作區。
+- 空間工作區在寬高皆 ≤720px 時收起 `.sm-source-actions` 的重複範例捷徑；設定區來源選擇、返回畫布與保存列仍保留，確認／建立按鈕須完整可見。

@@ -11,7 +11,7 @@
 /* Keep the model large on common laptop screens without shrinking hit targets. */
 @media(min-width:721px) and (max-height:800px){
   .sm-workspace{height:calc(100dvh - 16px);width:min(1540px,calc(100vw - 24px));border-radius:12px}
-  .sm-header{padding:8px 20px;min-height:60px;flex-shrink:0}
+  .sm-workspace.workspace-shell>.sm-header{padding:8px 20px;min-height:60px;flex-shrink:0}
   .sm-header h1{font-size:18px}.sm-header h1 span{font-size:11px}
   .sm-source-actions{padding:0 20px 8px;flex-shrink:0}
   .sm-steps{padding:7px 20px;gap:32px;flex-shrink:0}
@@ -64,6 +64,9 @@
 .sm-setup-scroll>.sm-guide{margin-top:4px;margin-bottom:14px}
 @media(max-width:720px){.sm-setup-scroll{padding:12px 16px 3px}.sm-setup-footer{max-height:55%;padding:10px 16px max(12px,env(safe-area-inset-bottom))}.sm-section{padding-bottom:15px;margin-bottom:14px}.sm-section-heading{margin-bottom:10px}.sm-projection-callout strong{font-size:12px}.sm-advanced>summary{font-size:12px}.sm-commit-summary{line-height:1.5!important}.sm-setup-footer:has(#smCommitReview:not([hidden])) .sm-status{max-height:35px}.sm-material-common{margin-top:10px;margin-bottom:0;padding-bottom:0}}
 @media(max-width:720px) and (max-height:720px){.sm-steps{display:none}}
+/* Short screens retain the source selector in setup and the canvas return action;
+   hide redundant example shortcuts so confirmation and creation remain visible. */
+@media(max-width:720px) and (max-height:720px){.sm-source-actions{display:none}}
 /* Secondary instructions must remain readable on both the white setup and pale preview surfaces. */
 .sm-workspace{--sm-muted:#526579}
 .sm-eyebrow,.sm-steps li,.sm-steps small,.sm-welcome small,.sm-gesture,.sm-display-options small,.sm-metrics small,.sm-guide p,.sm-section-heading>span,.sm-section-heading h2 small,.sm-source-summary small,.sm-field>span,.sm-help,.sm-edge small,.sm-check small,.sm-face-summary span,.sm-status,.sm-setup-footer p,.sm-library-panel header p:last-child,.sm-model-card small,.sm-mobile-tabs button{color:#526579}

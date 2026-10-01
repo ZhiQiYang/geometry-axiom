@@ -60,14 +60,32 @@ Windows Chrome 連 WSL 服務時加 `GEOMETRY_TEST_SERVER_PATH_STYLE=wsl`，feed
 `tests/assembly_mutation_check.py` 在暫存來源副本編譯三種故障，先跑正常基準。
 略過衝突檢查、略過尺寸來源解析、允許已取消預覽確認，均須由指定案例的 AssertionError 偵測。
 編譯失敗、崩潰、skip 不算抓到缺陷；不修改工作區，也不覆寫既有全庫 mutation 結果。
+另以 `GEOMETRY_ASSEMBLY_ONLY=1 GEOMETRY_ASSEMBLY_INJECT_SWAP=1` 跑 CDP，攔截交換按鈕、只改文字：
+P77 的核心草稿身分斷言如預期失敗。正常執行不帶注入變數；完整模式禁止此注入。
 
 ## 環境限制與計數紀律
 
-Windows SAC 仍阻擋部分 core／model adapter／GDI 執行檔；未停用安全設定。
-WSL 的 Windows GDI 案例會 skip，不能說成全數通過。既有全庫 mutation 結果因核心改動會 stale；
+Windows SAC 仍阻擋部分預設路徑 core／model adapter 執行檔；未停用安全設定。
+WSL 的 Windows GDI 案例會 skip，該案例已另以目前原始碼重編 Windows GDI harness 實際通過。
+Windows 專用路徑的 bridge 另跑 28 個組構／共用基準案例通過。既有全庫 mutation 結果因核心改動會 stale；
 本次只宣稱上述三項新功能故障注入結果，不冒用舊結果。
 新增 suite 的 19 個 test 與 Node 的 4 個 test，依完整執行實際 census 更新 expected；
 自動更新因 GDI skip 拒絕，故本次明確只調整這兩個數量，保留 skip 守門及非零退出碼。
 斷言、單元案例、scene 案例與 C 檢查點分列，不相加宣稱端到端流程數。
 
 最終執行摘要與可供審查的日誌見本目錄 `assembly-validation/`。
+
+## 回歸中修復的缺陷
+
+- 混合能力保存：原生回傳清單次序與專案的排序不同；比較前排序，仍拒絕真正缺失能力。
+- Windows 確認交易：規則資料擴大 World，遞迴確認路徑的三份多 MB 區域副本導致堆疊耗盡。
+  比對改為略過畫布區段直接比較原資料，保留原有版本與完整性守門；原失敗 datum 案例重新通過。
+- 空間庫重開舊格式模型：`show → refresh → openRecord → show` 在舊指紋仍有效時遞迴。
+  進入 show 前清除舊記錄指紋，正常模型載入再寫回；舊 v1/v2 開啟及牆高編輯回歸驗證。
+- 小筆電／短螢幕：共用標題列的樣式優先序壓縮預覽；短螢幕的重複來源捷徑擠走確認。
+  恢復 compact 標題高度，寬高皆 ≤720px 時收起捷徑，保留來源設定和返回入口。
+- 空間測試仍要求已作廢的 56px 面工具列；改依 DOM-CONTRACT 的 116／122px 雙列配置，
+  同時驗證視窗寬度、操作區不重疊及標題可見。
+
+追溯矩陣的紅黃綠量的是條號引用，不是測試結果；本次輸出 62 綠／23 黃／27 紅。
+它仍未涵蓋所有獨立模組，組構逐條實測對應以上矩陣，不以修改燈號冒充覆蓋。

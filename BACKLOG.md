@@ -3845,4 +3845,5 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 規則只 authoring，不生成施工角材；#25 仍是獨立後續工作。
 - 可重開範例：`geometry-web/examples/assembly-rules-v1.gcanvas`；由 `tests/build_assembly_example.py` 經原生核心產生，含兩版、完整／未完成配置及草稿。
 - 驗證、可重現命令、逐項矩陣與環境限制見 [組構驗收](geometry-web/docs/ASSEMBLY-RULES-VALIDATION.md)。
-- **待人工驗收（open）**：A24 實體手機鍵盤、OS 檔案選擇器與下載位置。Windows GDI 仍受 SAC 環境阻擋，未冒充通過。保留總工單 open。
+- **連帶回歸修正**：保存能力按集合比對；交易確認移除巨大堆疊副本；重開舊格式模型避免遞迴刷新。小筆電恢復預覽高度，短螢幕收起重複範例捷徑，把空間留給設定與確認。面工具列測試改依現行 116／122px 契約驗證，仍檢查控制項不遮擋。
+- **待人工驗收（open）**：A24 實體手機鍵盤、OS 檔案選擇器與下載位置。Windows GDI 已以重編版本單獨通過；其餘受 SAC 阻擋的全套執行改用同源 WSL 驗證。保留總工單 open。

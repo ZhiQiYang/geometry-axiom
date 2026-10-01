@@ -163,6 +163,13 @@ class AssemblyRules(unittest.TestCase):
         self.reject([{"op":"delete-rule","id":1,"version":1}],"missing rule 1@1")
         self.apply([{"op":"put-binding","value":binding(version=2)},{"op":"delete-rule","id":1,"version":1}])
         self.assertEqual([2],[r["value"]["version"] for r in self.read()["state"]["rules"]])
+        after=self.command("dump")["text"]
+        self.assertTrue(self.command("line undo")["ok"])
+        restored=self.read()["state"]
+        self.assertEqual([1,2],[r["value"]["version"] for r in restored["rules"]])
+        self.assertEqual(1,restored["bindings"][0]["value"]["rule"]["version"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(after,self.command("dump")["text"])
 
     def test_cancel_and_protocol_tokens_do_not_commit(self):
         r=self.request([{"op":"publish-rule","value":rule()}]);token=r["preview"]["token"]
