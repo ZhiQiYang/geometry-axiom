@@ -33,6 +33,21 @@ console.log('Document format validation: passed');
 const C=require('../geometry-web/document-cases.js').helpers;
 const fixture=()=>[{schema_version:'1.0',id:'S1',title:'Synthetic',assets:[{id:'A1',kind:'plan',path:'cases/S1/a.png'}]}];
 assert.equal(C.validateManifest(fixture()).assetCount,1);
+const mixed=C.validateManifest([{schema_version:'1.0',id:'R1',assets:[
+  {id:'mixed',kind:'drawing',path:'mixed.png',document_roles:['plan','section','elevation','section','unknown','constructor',null,{}]},
+  {id:'plan',kind:'plan',path:'plan.png',document_roles:['plan','section']},
+  {id:'legacy',kind:'photo',path:'legacy.png'},
+  {id:'malformed',kind:'drawing',path:'malformed.png',document_roles:'section'},
+]}]).cases[0].assets;
+assert.deepEqual(mixed[0].document_roles,['plan','section','elevation']);
+assert.deepEqual(C.roleOptions(mixed),['drawing','plan','photo','section','elevation']);
+assert.deepEqual(mixed.filter(a=>C.matchesRole(a,'plan')).map(a=>a.id),['mixed','plan']);
+assert.deepEqual(mixed.filter(a=>C.matchesRole(a,'section')).map(a=>a.id),['mixed','plan']);
+assert.deepEqual(mixed.filter(a=>C.matchesRole(a,'elevation')).map(a=>a.id),['mixed']);
+assert.equal(C.matchesRole(mixed[2],'photo'),true);
+assert.equal(C.matchesRole(mixed[3],'section'),false);
+assert.equal(C.matchesRole(mixed[0],'constructor'),false);
+assert.equal(mixed[0].kind,'drawing');
 for(const bad of ['../x','/absolute','https://example.com/x','a\\b','a/%2e%2e/b','a//b','a/constructor/b'])assert.throws(()=>C.normalizePath(bad));
 assert.equal(C.normalizePath('cases/S1/a.png'),'cases/S1/a.png');
 assert.throws(()=>C.safeJSON(JSON.parse('{"__proto__":{"polluted":true}}')));
