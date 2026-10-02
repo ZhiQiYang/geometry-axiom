@@ -3,10 +3,10 @@ window.AssemblyWorkspace=(()=>{
   'use strict';
   const esc=ReferenceWorkspace.escape,clone=structuredClone,$=id=>document.getElementById(id);
   const dialog=document.createElement('dialog');dialog.id='assemblyWorkspace';dialog.setAttribute('aria-label','組構規則');document.body.append(dialog);
-  let s=null,ownConfirm=false,ownDraft=false,serial=0;
+  let s=null,ownDraft=false,serial=0;
   const token=()=>ReferenceWorkspace.getProjectState().contextToken;
-  const current=x=>s===x&&x.context===token();
-  const checked=r=>{if(!r?.ok)throw Error(r?.error||'組構操作失敗。');return r;};
+  const current=x=>!!x&&s===x&&x.context===token();
+  const checked=r=>{if(!r?.ok)throw Object.assign(Error(r?.error||'組構操作失敗。'),{transport:!!r?.transport});return r;};
   const command=async c=>checked(await apiRequest(c));
   const next=xs=>Math.max(0,...xs.map(x=>x.id))+1;
   const btn=(id,text,off=false,cls='')=>`<button type="button" id="${id}"${cls?` class="${cls}"`:''}${off?' disabled':''}>${text}</button>`;
@@ -18,16 +18,20 @@ window.AssemblyWorkspace=(()=>{
   const input=(id,v,type='text')=>`<input id="${id}" type="${type}" value="${esc(String(v??''))}"${type==='number'?' min="1" step="1"':''}>`;
   const field=(t,control)=>`<label>${esc(t)}${control}</label>`;
   function report(t,error=false){if(dialog.open&&$('asmStatus')){$('asmStatus').textContent=t;$('asmStatus').classList.toggle('asm-error',error);}else if(error)toast(t);}
-  const safe=fn=>async e=>{try{await fn(e);}catch(error){report(error.message,true);}};
+  const confirming=()=>!!s?.confirming;
+  const pendingMessage='正在確認套用；編輯、切換與關閉暫停，請等候結果。';
+  const safe=fn=>async e=>{try{if(confirming()&&!(s.confirming.uncertain&&e?.currentTarget?.id==='asmClose')){report(pendingMessage);return;}await fn(e);}catch(error){report(error.message,true);}};
+  function lockConfirm(){if(!confirming())return;const controls=s.confirming.controls||=new Map();for(const n of dialog.querySelectorAll('button,input,select')){if(!controls.has(n))controls.set(n,n.disabled);n.disabled=true;}for(const n of dialog.querySelectorAll('[data-face]')){n.setAttribute('aria-disabled','true');n.setAttribute('tabindex','-1');}dialog.setAttribute('aria-busy','true');report(pendingMessage);}
+  function unlockConfirm(x){for(const [n,disabled] of x.confirming?.controls||[])n.disabled=disabled;x.confirming=null;}
   function bind(id,event,fn){$(id)?.addEventListener(event,safe(fn));}
   function invalidate(){if(s?.preview)command('assembly-cancel '+s.preview.token).catch(()=>{});if(s){s.preview=null;s.generation++;}if($('asmConfirm'))$('asmConfirm').disabled=true;if($('asmPreviewResult'))$('asmPreviewResult').textContent='';syncFooter();}
   function flush(){if(!s?.draft||!current(s))return;const old=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft.id);if(old&&JSON.stringify(old.data)===JSON.stringify(s.draft.data))return;s.draft.updated_at=new Date().toISOString();ownDraft=true;try{ReferenceWorkspace.setAssemblyDraft(s.draft,s.context);}finally{ownDraft=false;}s.draftsRef=ReferenceWorkspace.context().assemblyDrafts;}
   function changed(redraw=false){invalidate();flush();if(redraw)render();else diagram();report('草稿已保留；保存專案可寫入檔案。');}
   async function readState(x){const a=await command('assembly-read'),e=await command('engineering-read'),r=await command('references'),b=await command('assembly-read');if(!current(x))throw Error('專案或工作區已切換。');if(a.revision!==b.revision||e.revision!==b.revision)throw Error('來源已變更，請重新開啟。');x.read=b;x.engineering={...e.state,specs:r.specs||[]};}
-  async function open(kind=null,id=null){flush();ReferenceWorkspace.assertEditable();if(window.DraftGate&&!window.DraftGate.ask())return;invalidate();const x={context:token(),generation:0,kind,id,rotation:0,zoom:1,draftsRef:ReferenceWorkspace.context().assemblyDrafts};s=x;await readState(x);if(!current(x))return;if(kind==='assembly-rule')x.record=x.read.state.rules.filter(r=>r.value.id===id).sort((a,b)=>b.value.version-a.value.version)[0];if(kind==='assembly-binding')x.record=x.read.state.bindings.find(r=>r.value.id===id);render();if(!dialog.open)dialog.showModal();WorkspaceShell.attach(dialog);}
-  function close(){flush();invalidate();s=null;++serial;dialog.close();WorkspaceShell.detach(dialog);}
+  async function open(kind=null,id=null){if(confirming()){report(pendingMessage);return;}flush();ReferenceWorkspace.assertEditable();if(window.DraftGate&&!window.DraftGate.ask())return;invalidate();const x={context:token(),generation:0,kind,id,rotation:0,zoom:1,draftsRef:ReferenceWorkspace.context().assemblyDrafts};s=x;await readState(x);if(!current(x))return;if(kind==='assembly-rule')x.record=x.read.state.rules.filter(r=>r.value.id===id).sort((a,b)=>b.value.version-a.value.version)[0];if(kind==='assembly-binding')x.record=x.read.state.bindings.find(r=>r.value.id===id);render();if(!dialog.open)dialog.showModal();WorkspaceShell.attach(dialog);}
+  function close(){if(confirming()&&!s.confirming.uncertain){report(pendingMessage);return;}flush();invalidate();s=null;++serial;dialog.close();WorkspaceShell.detach(dialog);}
   async function newDraft(kind,source=null,revision=false){
-    flush();const x=s;await readState(x);const ids=await command('newid');if(!current(x))return;
+    if(confirming())return;flush();const x=s,g=x.generation;await readState(x);if(!current(x)||x.confirming||g!==x.generation)return;const ids=await command('newid');if(!current(x)||x.confirming||g!==x.generation)return;
     let id=kind==='rule'?ids.assemblyRule:ids.assemblyBinding;const reserved=ReferenceWorkspace.getAssemblyDrafts().filter(d=>d.kind===kind).map(d=>d.data.id);while(reserved.includes(id))++id;
     let data,base=null;
     if(kind==='rule'){data=source?clone(source.value):{name:'',slots:[],members:[],joints:[]};data.id=revision?source.value.id:id;data.version=revision?Math.max(...x.read.state.rules.filter(r=>r.value.id===data.id).map(r=>r.value.version))+1:1;if(revision)base={id:source.value.id,version:source.value.version,fingerprint:source.fingerprint};}
@@ -45,7 +49,7 @@ window.AssemblyWorkspace=(()=>{
     bind('asmPreview','click',preview);bind('asmConfirm','click',confirm);bind('asmCancel','click',()=>{s.operations=null;invalidate();report('已取消預覽；正式來源未變更。');});
     if(s.draft){if(s.draft.kind==='rule')ruleForm();else bindingForm();}
     else if(s.record)published();else $('asmEditor').innerHTML='<h3>建立自己的接合關係</h3><p>新增規則後，依序建立槽位、構件與局部接合。</p>';
-    syncFooter();placeStudioLesson(dialog.querySelector('#asmWorkspaceLesson'),'assembly:first','這裡定義誰抵住誰；尺寸在材料配置，確認後才寫進場景。');WorkspaceShell.refresh(dialog);
+    syncFooter();placeStudioLesson(dialog.querySelector('#asmWorkspaceLesson'),'assembly:first','這裡定義誰抵住誰；尺寸在材料配置，確認後才寫進場景。');WorkspaceShell.refresh(dialog);dialog.removeAttribute('aria-busy');lockConfirm();
   }
   function ruleForm(){
     const d=s.draft.data,options=d.members.map(m=>[m.id,`構件 #${m.id} · ${d.slots.find(x=>x.id===m.slotId)?.name||'未命名槽位'}`]);
@@ -68,13 +72,21 @@ window.AssemblyWorkspace=(()=>{
   function bindDeleteDraft(){bind('asmDeleteDraft','click',()=>{const id=s.draft.id;s.draft=null;ReferenceWorkspace.removeAssemblyDraft(id,s.context);invalidate();render();});}
   function diagram(){
     const container=$('asmDiagram'),d=s?.draft?.kind==='rule'?s.draft.data:s?.record?.value;if(!container||!d?.joints)return;
-    const caption=j=>j.kind==='end-to-side'?`${spoken(d,j.terminatedMember)}的${endWord[j.end]||j.end}抵住${spoken(d,j.targetMember)}的${sideWord[j.side]||j.side}`:`${spoken(d,j.continuousMember)}在此連續通過，${j.splitMembers.map(id=>spoken(d,id)).join('、')}在此分成兩段`;
+    const caption=j=>(j.kind==='end-to-side'?`${spoken(d,j.terminatedMember)}的${endWord[j.end]||j.end}抵住${spoken(d,j.targetMember)}的${sideWord[j.side]||j.side}`:`${spoken(d,j.continuousMember)}在此連續通過；分段一 ${spoken(d,j.splitMembers[0])}的終點抵住${sideWord[j.side]}，分段二 ${spoken(d,j.splitMembers[1])}的起點抵住相反側`)+`；局部走向 ${j.dir}。規則示意，非施工尺寸。`;
     container.innerHTML=d.joints.map(j=>{
       const angle={'+u':0,'-u':180,'+v':90,'-v':270}[j.side],target=j.targetMember??j.continuousMember;
-      const branch=(id,a)=>`<g transform="rotate(${a})"><rect x="48" y="-14" width="78" height="28" fill="#daac71"/><line x1="40" y1="0" x2="48" y2="0" stroke="#334" stroke-width="3"/><circle cx="48" cy="0" r="4" fill="#334"/><clipPath id="asmWood${j.id}_${id}"><rect x="50" y="-12" width="74" height="24"/></clipPath><text x="87" y="5" text-anchor="middle" clip-path="url(#asmWood${j.id}_${id})" transform="rotate(${-a},87,0)">${esc(plainName(d,id))}</text></g>`;
-      return `<figure><figcaption>${esc(caption(j))}</figcaption><svg viewBox="0 0 360 280" role="img" aria-label="${esc(caption(j))}"><g transform="translate(180 140) rotate(${s.rotation}) scale(${s.zoom})"><rect x="-40" y="-40" width="80" height="80" fill="#889bc7"/><clipPath id="asmBox${j.id}"><rect x="-36" y="-28" width="72" height="40"/></clipPath><text x="0" y="5" text-anchor="middle" clip-path="url(#asmBox${j.id})">${esc(plainName(d,target))}</text>${branch(j.terminatedMember??j.splitMembers?.[0],angle)}${j.kind==='ortho-split'?branch(j.splitMembers[1],(angle+180)%360):''}${['+u','-u','+v','-v'].map((v,i)=>{const [x,y]=[[42,-52],[-85,-52],[-20,65],[-20,-60]][i];return `<g role="button" tabindex="0" data-face="${v}" data-joint="${j.id}" aria-label="接合 ${j.id} 目標側面 ${sideWord[v]}"><rect x="${x-6}" y="${y-18}" width="44" height="32" rx="4" fill="${j.side===v?'#f8dc6b':'#f3f5fa'}" stroke="#445"/><text x="${x+16}" y="${y+3}" text-anchor="middle" transform="rotate(${-s.rotation},${x+16},${y-2})">${sideWord[v]}</text></g>`;}).join('')}</g></svg></figure>`;
+      const opposite={'+u':'-u','-u':'+u','+v':'-v','-v':'+v'};
+      const branch=(id,a,end,side)=>{
+        const start=end==='start'?48:126,finish=end==='finish'?48:126;
+        const marker=(e,x)=>e==='start'?`<circle data-end="start" cx="${x}" cy="0" r="5" fill="white" stroke="#334" stroke-width="2"/>`:`<rect data-end="finish" x="${x-5}" y="-5" width="10" height="10" fill="#334"/>`;
+        return `<g data-member="${id}" data-contact-end="${end}" data-contact-side="${side}" transform="rotate(${a})"><title>${esc(spoken(d,id))} #${id}：${endWord[end]}接觸${sideWord[side]}</title><rect x="48" y="-14" width="78" height="28" fill="#daac71"/><line x1="40" y1="0" x2="48" y2="0" stroke="#334" stroke-width="3"/>${marker('start',start)}${marker('finish',finish)}<line data-member-axis="start-finish" x1="${start}" y1="20" x2="${finish}" y2="20" stroke="#334" stroke-width="2"/><path d="M ${finish+(finish>start?-7:7)} 16 L ${finish} 20 L ${finish+(finish>start?-7:7)} 24" fill="none" stroke="#334" stroke-width="2"/><text x="48" y="-23" text-anchor="middle" transform="rotate(${-a-s.rotation},48,-27)">${endWord[end]}</text><text x="126" y="-23" text-anchor="middle" transform="rotate(${-a-s.rotation},126,-27)">${endWord[end==='start'?'finish':'start']}</text><text x="88" y="4" text-anchor="middle" transform="rotate(${-a-s.rotation},88,0)">#${id}</text></g>`;
+      };
+      // The contact map is topological. A separate local-axis key displays dir
+      // without deriving geometry or rewriting local identities from SVG pixels.
+      const dx=j.dir==='u'?30:0,dy=j.dir==='v'?30:0;
+      return `<figure data-diagram-joint="${j.id}"><figcaption>${esc(caption(j))}</figcaption><svg viewBox="0 0 360 424" role="img" aria-label="${esc(caption(j))}"><g data-local-direction="${j.dir}" transform="translate(45 42) rotate(${s.rotation})"><path d="M -18 0 H 18 M 0 -18 V 18" stroke="#889bc7" fill="none"/><line data-direction-axis="${j.dir}" x1="0" y1="0" x2="${dx}" y2="${dy}" stroke="#334" stroke-width="3"/><path d="${j.dir==='u'?'M 23 -5 L 30 0 L 23 5':'M -5 23 L 0 30 L 5 23'}" stroke="#334" fill="none" stroke-width="3"/></g><text x="95" y="47">局部走向 ${esc(j.dir)}（箭頭）</text><g data-contact-map="${j.id}" transform="translate(180 200) rotate(${s.rotation}) scale(${s.zoom*.65})"><rect data-member="${target}" data-continuous="${j.kind==='ortho-split'}" x="-40" y="-40" width="80" height="80" fill="#889bc7"/><text x="0" y="5" text-anchor="middle" transform="rotate(${-s.rotation})">#${target}${j.kind==='ortho-split'?' 連續':''}</text>${['+u','-u','+v','-v'].map((v,i)=>{const [x,y]=[[40,0],[-40,0],[0,40],[0,-40]][i];return `<text data-local-side="${v}" x="${x}" y="${y-6}" text-anchor="middle" transform="rotate(${-s.rotation},${x},${y-10})">${v}</text>`;}).join('')}${branch(j.terminatedMember??j.splitMembers?.[0],angle,j.kind==='ortho-split'?'finish':j.end,j.side)}${j.kind==='ortho-split'?branch(j.splitMembers[1],(angle+180)%360,'start',opposite[j.side]):''}</g>${['+u','-u','+v','-v'].map((v,i)=>{const x=8+i*88;return `<g role="button" tabindex="0" data-face="${v}" data-joint="${j.id}" aria-pressed="${j.side===v}" aria-label="接合 ${j.id} 目標側面 ${sideWord[v]}"><rect x="${x}" y="348" width="80" height="68" rx="4" fill="${j.side===v?'#f8dc6b':'#f3f5fa'}" stroke="#445"/><text x="${x+40}" y="387" text-anchor="middle">${sideWord[v]} ${v}</text></g>`;}).join('')}</svg></figure>`;
     }).join('')||'<p>加入接合後會顯示局部構件與可選側面。</p>';
-    for(const n of container.querySelectorAll('[data-face]')){const pick=()=>{if(!s.draft)return;d.joints.find(j=>j.id===Number(n.dataset.joint)).side=n.dataset.face;changed(true);};n.onclick=pick;n.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();}};}
+    for(const n of container.querySelectorAll('[data-face]')){const pick=()=>{if(!s.draft||confirming())return;d.joints.find(j=>j.id===Number(n.dataset.joint)).side=n.dataset.face;changed(true);};n.onclick=pick;n.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();}};}
   }
   function sources(axis){const a=[['','尚未選擇'],['literal','直接輸入 mm']];for(const r of s.engineering.materials||[]){const m=r.value||r;if(m.kind==='timber')a.push([JSON.stringify({kind:'material',id:m.id,version:m.version,field:axis}),`${m.name} v${m.version} · ${axis} ${m[axis]} mm`]);}for(const c of s.engineering.parameters||[])for(const f of c.fields)if(f.type==='dimension')a.push([JSON.stringify({kind:'parameter',parameterId:c.id,fieldId:f.id}),`${c.name}.${f.name}`]);for(const v of s.engineering.specs||[])a.push([JSON.stringify({kind:'spec',name:v.name}),`尺寸 ${v.name}`]);return a;}
   function bindingForm(){
@@ -93,6 +105,15 @@ window.AssemblyWorkspace=(()=>{
   function previewCopy(p){
     const rows=[],beforeR=new Map(p.before.rules.map(r=>[`${r.value.id}:${r.value.version}`,r])),afterR=new Map(p.after.rules.map(r=>[`${r.value.id}:${r.value.version}`,r]));
     const ruleTitle=r=>`「${r.value.name||'未命名規則'}」第 ${r.value.version} 版`,mmPair=slot=>`${slot?.A?.value??'未設定'}×${slot?.B?.value??'未設定'}`;
+    const sourceKey=src=>JSON.stringify(!src?null:src.kind==='literal'?['literal']:src.kind==='parameter'?['parameter',src.parameterId,src.fieldId]:src.kind==='material'?['material',src.id,src.version,src.field]:src.kind==='spec'?['spec',src.name]:src);
+    const sourceWords=src=>{
+      if(!src)return '尚未選擇';
+      if(src.kind==='literal')return '直接數值';
+      if(src.kind==='parameter'){const card=s?.engineering?.parameters?.find(c=>c.id===src.parameterId),field=card?.fields.find(f=>f.id===src.fieldId);return `參數卡${card?.name?'「'+card.name+'」':''} #${src.parameterId} 的欄位${field?.name?'「'+field.name+'」':''} #${src.fieldId}`;}
+      if(src.kind==='material'){const material=s?.engineering?.materials?.map(r=>r.value||r).find(m=>m.id===src.id&&m.version===src.version);return `材料${material?.name?'「'+material.name+'」':''} #${src.id} 第 ${src.version} 版 · ${src.field}`;}
+      if(src.kind==='spec')return `尺寸「${src.name}」`;
+      return JSON.stringify(src);
+    };
     let added=0,removed=0;
     for(const [k,r] of afterR) if(!beforeR.has(k)){rows.push([`發布${ruleTitle(r)}`,'新增']);added++;}
     for(const [k,r] of beforeR) if(!afterR.has(k)){rows.push([`刪除${ruleTitle(r)}`,'移除']);removed++;}
@@ -110,8 +131,10 @@ window.AssemblyWorkspace=(()=>{
       for(const slotId of ids){
         const o=old.value.slots.find(v=>v.slotId===slotId),n=b.value.slots.find(v=>v.slotId===slotId);
         const name=rule?.slots.find(v=>v.id===slotId)?.name?.trim()||oldRule?.slots.find(v=>v.id===slotId)?.name?.trim()||'未命名槽位';
-        const from=mmPair(old.effective.find(v=>v.slotId===slotId)),to=mmPair(b.effective.find(v=>v.slotId===slotId));
-        rows.push([name,from===to?'沒有改':`截面 ${from} → ${to} mm`]);
+        const before=old.effective.find(v=>v.slotId===slotId),after=b.effective.find(v=>v.slotId===slotId),from=mmPair(before),to=mmPair(after);
+        const sourcesChanged=['A','B'].filter(axis=>sourceKey(o?.[axis])!==sourceKey(n?.[axis]));
+        rows.push([name,from===to?(sourcesChanged.length?`截面仍為 ${to} mm`:'沒有改'):`截面 ${from} → ${to} mm`]);
+        for(const axis of sourcesChanged){const a=before?.[axis]?.value,b=after?.[axis]?.value,dimension=a===b?`尺寸仍為 ${b??'未設定'}${b==null?'':' mm'}`:`尺寸 ${a??'未設定'} → ${b??'未設定'} mm`;rows.push([`${name} ${axis} 來源`,`${dimension}；${sourceWords(o?.[axis])} → ${sourceWords(n?.[axis])}`]);}
         if((o?.contactFace??null)!==(n?.contactFace??null)||(o?.orientation??null)!==(n?.orientation??null)){contactSame=false;rows.push([`${name}的接觸面與擺向`,`${faceWords(o)} → ${faceWords(n)}`]);}
       }
       if(contactSame) rows.push(['接觸面與擺向','沒有改']);
@@ -124,16 +147,46 @@ window.AssemblyWorkspace=(()=>{
     return `<h4>${esc(title)}</h4>${rows.length?`<div class="asm-diff">${rows.map(([a,b])=>`<p><span>${esc(a)}</span><span>${esc(b)}</span></p>`).join('')}</div>`:'<p>正式內容不會改變。</p>'}`;
   }
   async function preview(){
-    flush();ReferenceWorkspace.assertEditable();invalidate();const x=s,g=x.generation,seq=++serial,operations=x.operations||[{op:x.draft.kind==='rule'?'publish-rule':'put-binding',value:clone(x.draft.data)}],read=await command('assembly-read');if(!current(x)||g!==x.generation)return;
+    if(confirming())return;flush();ReferenceWorkspace.assertEditable();invalidate();const x=s,g=x.generation,seq=++serial,operations=x.operations||[{op:x.draft.kind==='rule'?'publish-rule':'put-binding',value:clone(x.draft.data)}],read=await command('assembly-read');if(!current(x)||g!==x.generation)return;
     const response=await fetch('/assembly/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:'assembly-transaction/1',expectedRevision:read.revision,operations}),signal:AbortSignal.timeout(30000)});checkApiSession(response);if(!response.ok)throw Error('預覽服務失敗（'+response.status+'）。');const p=checked(await response.json()).preview;
     if(!current(x)||g!==x.generation||seq!==serial){command('assembly-cancel '+p.token).catch(()=>{});return;}x.preview=p;$('asmConfirm').disabled=!p.valid;
     $('asmPreviewResult').innerHTML=`${previewCopy(p)}<ul>${(p.violations||[]).map(v=>`<li>${esc(v.message||v.actual||'驗證拒絕')}</li>`).join('')}</ul><details><summary>完整資料，給除錯對照</summary><h5>變更前</h5><pre>${esc(JSON.stringify(p.before,null,2))}</pre><h5>變更後</h5><pre>${esc(JSON.stringify(p.after,null,2))}</pre></details>`;syncFooter();report(p.valid?'驗證通過，確認後才會套用。':'尚不能套用，請依上列原因修正。',!p.valid);
   }
-  async function confirm(){const x=s;if(!current(x)||!x.preview?.valid)return;ReferenceWorkspace.assertEditable();flush();ownConfirm=true;try{await command('assembly-confirm '+x.preview.token);}finally{ownConfirm=false;}if(!current(x))return;const draftId=x.draft?.id;x.draft=null;if(draftId)ReferenceWorkspace.removeAssemblyDraft(draftId,x.context,false);x.record=null;x.operations=null;x.preview=null;await readState(x);await renderObjects();if(current(x)){render();report('已套用，可使用畫布復原；請保存專案。');}}
+  async function confirm(){
+    const x=s;if(!current(x)||!x.preview?.valid||x.confirming)return;ReferenceWorkspace.assertEditable();flush();
+    // Capture the candidate before awaiting. The lock keeps local edits out of the
+    // native history step; identity/content checks also protect external updates.
+    const tx={context:x.context,generation:x.generation,token:x.preview.token,draftId:x.draft?.id,draft:JSON.stringify(x.draft)};
+    x.confirming=tx;lockConfirm();let committed=false;
+    try{
+      await command('assembly-confirm '+tx.token);
+      committed=true;
+      if(!current(x))return;
+      const saved=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===tx.draftId);
+      const unchanged=x.generation===tx.generation&&x.draft?.id===tx.draftId&&JSON.stringify(x.draft)===tx.draft&&JSON.stringify(saved)===tx.draft;
+      if(unchanged&&tx.draftId){x.draft=null;ownDraft=true;try{ReferenceWorkspace.removeAssemblyDraft(tx.draftId,tx.context,false);}finally{ownDraft=false;}}
+      else if(tx.draftId&&JSON.stringify(x.draft)===tx.draft&&JSON.stringify(saved)!==tx.draft)x.draft=saved||null;
+      x.record=null;x.operations=null;x.preview=null;
+      await readState(x);await renderObjects();
+      if(current(x)){unlockConfirm(x);render();report(x.draft?'已套用送出時的內容；後續草稿仍保留，請重新預覽。':'已套用，可使用畫布復原；請保存專案。');}
+    }catch(error){
+      if(error.transport&&typeof connection!=='undefined'){
+        if(current(x)){x.preview=null;x.confirming.uncertain=true;$('asmClose').disabled=false;report(committed?'已套用，但畫面更新失敗；返回畫布後重新連線，勿重送。':'套用結果尚未確認，草稿仍保留；返回畫布後重新連線，勿重送。',true);}
+        // Keep inputs locked while the shared transport resolves its receipt.
+        // A recovered result is read back, never inferred or re-submitted here.
+        while(current(x)&&connection.phase!=='ready')await new Promise(resolve=>setTimeout(resolve,250));
+        if(current(x)){await readState(x);unlockConfirm(x);render();report(committed?'已套用且畫面已更新；請保存專案。':'連線已恢復，草稿仍保留；請核對已發布內容，再重新預覽。');}
+        return;
+      }
+      if(current(x)){x.preview=null;unlockConfirm(x);render();}
+      // Never retry an uncertain commit. apiRequest owns exact receipt recovery.
+      throw error;
+    }finally{unlockConfirm(x);if(current(x))dialog.removeAttribute('aria-busy');}
+  }
   function card(o){const g=el('g',{class:'ocard assembly-card','data-kind':o.kind,'data-id':o.id,transform:`translate(${o.cx},${o.cy})`,cursor:'pointer'});g.classList.toggle('selected',ocSelected(o.kind,o.id));el('rect',{width:OC_W,height:OC_H,rx:12,fill:'#fff',stroke:'#9299b2','stroke-width':1.5},g);const t=el('text',{x:14,y:28,'font-size':14,fill:'#343e58'},g);t.textContent=Array.from(o.name).slice(0,16).join('');el('title',{},t).textContent=o.name;el('text',{x:14,y:65,'font-size':13,fill:'#667085'},g).textContent=o.kind==='assembly-rule'?`組構規則 #${o.id} v${o.version}`:`材料配置 #${o.id}`;el('text',{x:14,y:95,'font-size':13,fill:'#667085'},g).textContent=o.kind==='assembly-rule'?'局部接合 · 固定版本':o.complete?'配置完整':'未完成配置';return g;}
   function inspector(pane,o){pane.innerHTML=`<h3>${esc(o.name)}</h3><p>${o.kind==='assembly-rule'?'組構規則 v'+o.version:o.complete?'材料配置完整':'材料配置未完成'}</p>${btn('asmInspectorOpen','開啟組構工作區')}`;bind('asmInspectorOpen','click',()=>open(o.kind,o.id));}
-  async function remove(kind,id){await open(kind,id);if(!s?.record)return;s.operations=[kind==='assembly-rule'?{op:'delete-rule',id,version:s.record.value.version}:{op:'delete-binding',id}];await preview();}
-  dialog.addEventListener('cancel',e=>{e.preventDefault();close();});window.addEventListener('geometry-definition-changed',()=>{if(s&&!ownConfirm){invalidate();report('工程來源已變更，請重新預覽。');}});window.addEventListener('project-info-changed',()=>{if(s&&!current(s)){s=null;dialog.close();WorkspaceShell.detach(dialog);}else if(s?.read&&!ownDraft&&s.draftsRef!==ReferenceWorkspace.context().assemblyDrafts){const saved=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft?.id);if(s.draft)s.draft=saved||null;invalidate();render();}});
+  async function remove(kind,id){if(confirming())return;await open(kind,id);if(!s?.record||confirming())return;s.operations=[kind==='assembly-rule'?{op:'delete-rule',id,version:s.record.value.version}:{op:'delete-binding',id}];await preview();}
+  dialog.addEventListener('cancel',e=>{e.preventDefault();close();});window.addEventListener('geometry-definition-changed',()=>{if(s&&!confirming()){invalidate();report('工程來源已變更，請重新預覽。');}});window.addEventListener('project-info-changed',()=>{if(s&&!current(s)){unlockConfirm(s);s=null;dialog.close();WorkspaceShell.detach(dialog);}else if(s?.read&&!ownDraft&&s.draftsRef!==ReferenceWorkspace.context().assemblyDrafts){const saved=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft?.id);if(s.draft)s.draft=saved||null;invalidate();render();}});
   $('btnNewAssembly').onclick=safe(async()=>{$('createObjectPop').hidden=true;await open();});
-  return {open,close,flush,card,inspector,remove,get isOpen(){return dialog.open;}};
+  return {open,close,flush,card,inspector,remove,get isOpen(){return dialog.open;},get canCloseForRecovery(){return dialog.open&&!!s?.confirming?.uncertain&&current(s);}};
 })();

@@ -10,6 +10,7 @@ const ReferenceWorkspace = (() => {
   const revisions = new WeakMap(), selections = new WeakMap(), contextTokens = new WeakMap();
   let pdfLib, modal = null, busy = false, busyLabel = "", busyShort = "處理中", sequence = 0, pendingLoad = null;
   let importRenderingContext = null;
+  let assemblyConfirmation = null, preparingSceneLoad = false;
   let presentedModelContext = null, presentedModels = null;
   let presentedProjectionContext = null, presentedProjections = null;
   let presentedDraftContext = null, presentedDrafts = null;
@@ -31,12 +32,25 @@ const ReferenceWorkspace = (() => {
     recoveryMessage("external","另一個分頁已修改服務中的場景，本分頁已暫停編輯、保存及恢復資料更新。請開啟正確專案或建立新專案，避免混用不同專案的附件。");
   };
   function notifySceneChange(){recoveryChannel?.postMessage({peer:recoveryPeer,session:typeof connection!=="undefined"?connection.session:null});}
+  function assertAssemblyIdle(){
+    if(assemblyConfirmation)throw new Error("組構確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
+  }
   function assertWritableLease(){
+    assertAssemblyIdle();
     if(editorLease==="readonly" || editorLease==="unavailable")throw new Error("另一個分頁正在編輯這份工作，或瀏覽器無法確認編輯權限。本分頁僅供查看；請關閉原編輯分頁，再從專案資訊重新連接。");
     if(editorLeaseSession && connection.session!==editorLeaseSession)throw new Error("服務工作階段已變更，請重新連接後再編輯。");
   }
   function assertEditable(){assertWritableLease();if(contextConflict)throw new Error("另一個分頁已變更目前場景。請先開啟正確的 .gcanvas 專案或建立新專案，再編輯或保存。");}
   const context = () => history.frame.context;
+  // The native commit and its local history observation must finish before
+  // another project or mutation can become the current history frame.
+  function beginAssemblyConfirmation(){
+    assertEditable();
+    if(busy || oc.busy || preparingSceneLoad || pendingLoad || history.group)throw new Error("請先完成目前操作，再確認組構變更。");
+    assemblyConfirmation={context:context(),frame:history.frame};schedulePresentation();return assemblyConfirmation;
+  }
+  function assemblyConfirmationCurrent(stamp){return context()===stamp.context && history.frame===stamp.frame;}
+  function finishAssemblyConfirmation(stamp){if(assemblyConfirmation===stamp){assemblyConfirmation=null;schedulePresentation();scheduleRecovery();}}
   const safe = fn => async (...args) => { try { return await fn(...args); } catch (e) { toast(e.message || "參考資料操作失敗"); } };
   function group(bid, create = false) {
     if(create)assertEditable();
@@ -63,7 +77,7 @@ const ReferenceWorkspace = (() => {
       lastSavedAt:p.lastSavedAt || null,lastDownloadAt:p.lastDownloadAt || null,statusText:statusText(c),
       undoLabel:history.actionLabel("undo") || (history.undo.length ? "上一步模型修改" : null),
       historyNote:history.undo.length ? "可復原本頁已記錄的操作；開啟專案、新專案及清空內容也各算一步。" : "本頁尚無可確認的復原記錄；服務較早的幾何歷史不保證能恢復附件與工程草稿。",
-      recovery:{...recovery},editingBlocked:contextConflict || editorLease==="readonly" || editorLease==="unavailable"};
+      recovery:{...recovery},editingBlocked:!!assemblyConfirmation || contextConflict || editorLease==="readonly" || editorLease==="unavailable"};
   }
   function markSceneSource(label,kind="scene") {
     assertWritableLease();
@@ -90,7 +104,7 @@ const ReferenceWorkspace = (() => {
   async function persistSession() {
     if(!recoveryReady)return;
     if(recoveryWriting){recoveryAgain=true;return;}
-    if(busy || oc.busy || history.group || pendingLoad){scheduleRecovery();return;}
+    if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation){scheduleRecovery();return;}
     if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.WorkspaceShell?.saveState().blocked){
       recoveryMessage("draft","本次外環、校準或工作區草稿尚未套用；恢復資料只保留上次完成的工作內容。");return;
     }
@@ -885,12 +899,15 @@ const ReferenceWorkspace = (() => {
   }
   async function uploadScene(text,replacement=null,assertCurrent=()=>{}) {
     assertWritableLease();
-    if(pendingLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");
+    if(pendingLoad || preparingSceneLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");
     assertCurrent();
-    const before = await api("dump");
-    assertCurrent();
-    if (!before.ok) throw new Error(before.error || "無法讀取載入前的場景。");
-    pendingLoad = { text, before: before.text, context: replacement?.context || fresh(), ids: replacement?.ids, action:replacement?.action || null, isolateHistory:contextConflict };
+    preparingSceneLoad=true;
+    try {
+      const before = await api("dump");
+      assertWritableLease();assertCurrent();
+      if (!before.ok) throw new Error(before.error || "無法讀取載入前的場景。");
+      pendingLoad = { text, before: before.text, context: replacement?.context || fresh(), ids: replacement?.ids, action:replacement?.action || null, isolateHistory:contextConflict };
+    } finally {preparingSceneLoad=false;}
     let result;
     try {
       const r=await fetch("/upload",{method:"POST",body:text,signal:AbortSignal.timeout(30000)});
@@ -1001,6 +1018,7 @@ const ReferenceWorkspace = (() => {
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
+    assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
     manifest,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,

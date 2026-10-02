@@ -47,6 +47,7 @@ EXPECTED_FILE = HERE / 'run_all.expected.json'
 # Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
 # A test file that is on disk but not listed makes run_all fail and name it.
 PY_NEEDS = {
+    'test_assembly_parameter_refs': ['bridge'],
     'test_assembly_rules': ['bridge'],
     'test_axiom_reader': [],
     'test_bridge_integrity': ['bridge'],
@@ -78,6 +79,8 @@ PY_NEEDS = {
 # reasoned exclusion).  Unlisted files make run_all fail and name them.
 NODE_TEST_FILES = [
     'tests/test_assembly_project_store.js',
+    'tests/test_assembly_transport_context.js',
+    'tests/test_assembly_workspace.js',
     'tests/test_cdp_floor.js',
     'tests/test_engineering_project_store.js',
     'tests/test_face_projection_store.js',

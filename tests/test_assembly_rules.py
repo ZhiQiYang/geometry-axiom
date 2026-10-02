@@ -132,6 +132,77 @@ class AssemblyRules(unittest.TestCase):
         self.assertEqual([1,2],[r["value"]["id"] for r in copies])
         self.assertEqual(copies[0]["value"]["joints"],copies[1]["value"]["joints"])
 
+    def test_same_transaction_delete_republish_cannot_change_fixed_version(self):
+        self.apply([{"op":"publish-rule","value":rule()},{"op":"put-binding","value":binding()}])
+        before = self.read(), self.command("dump")["text"]
+        changed=rule();changed["name"]="Different content under old identity"
+        changed["joints"][0]["side"]="-u"
+        self.reject([{"op":"publish-rule","value":changed}],"D32: published rule 1@1 is immutable")
+        self.reject([{"op":"delete-rule","id":1,"version":1}],"missing rule 1@1")
+        self.reject([{"op":"delete-rule","id":1,"version":1},
+                     {"op":"publish-rule","value":changed}],"D32: published rule 1@1 is immutable")
+        self.assertEqual(before,(self.read(),self.command("dump")["text"]))
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual([],self.read()["state"]["rules"])
+        self.assertEqual([],self.read()["state"]["bindings"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(before[0]["state"],self.read()["state"])
+        self.assertEqual(before[1],self.command("dump")["text"])
+
+    def test_unreferenced_delete_republish_also_preserves_immutable_identity(self):
+        self.publish()
+        changed=rule();changed["joints"][0]["side"]="-u"
+        self.reject([{"op":"delete-rule","id":1,"version":1},
+                     {"op":"publish-rule","value":changed}],"D32: published rule 1@1 is immutable")
+
+    def test_delete_copy_cannot_replace_published_identity(self):
+        self.publish();other=rule(2);other["name"]="Different rule"
+        self.publish(other)
+        self.reject([{"op":"delete-rule","id":1,"version":1},
+                     {"op":"copy-rule","id":2,"version":1,"newId":1}],"D32: published rule 1@1 is immutable")
+
+    def test_intermediate_identity_replacement_is_rejected_before_later_restore(self):
+        self.publish()
+        changed=rule();changed["name"]="Intermediate replacement"
+        self.reject([{"op":"delete-rule","id":1,"version":1},
+                     {"op":"publish-rule","value":changed},
+                     {"op":"delete-rule","id":1,"version":1},
+                     {"op":"publish-rule","value":rule()}],"D32: published rule 1@1 is immutable")
+
+    def test_identical_delete_republish_has_no_revision_or_history_change(self):
+        self.apply([{"op":"publish-rule","value":rule()},{"op":"put-binding","value":binding()}])
+        before=self.read(),self.command("dump")["text"]
+        done=self.apply([{"op":"delete-rule","id":1,"version":1},
+                         {"op":"publish-rule","value":rule()}])
+        self.assertFalse(done["history_changed"])
+        self.assertEqual(before,(self.read(),self.command("dump")["text"]))
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual([],self.read()["state"]["rules"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(before[0]["state"],self.read()["state"])
+
+    def test_atomic_new_version_rebind_delete_cancels_and_commits(self):
+        self.apply([{"op":"publish-rule","value":rule()},{"op":"put-binding","value":binding()}])
+        before=self.read(),self.command("dump")["text"]
+        changed=rule(version=2);changed["joints"][0]["side"]="-u"
+        operations=[{"op":"publish-rule","value":changed},
+                    {"op":"put-binding","value":binding(version=2)},
+                    {"op":"delete-rule","id":1,"version":1}]
+        preview=self.request(operations)["preview"]
+        self.assertTrue(preview["valid"])
+        self.assertTrue(self.command("assembly-cancel "+str(preview["token"]))["cancelled"])
+        self.assertFalse(self.command("assembly-confirm "+str(preview["token"]))["ok"])
+        self.assertEqual(before,(self.read(),self.command("dump")["text"]))
+        self.assertTrue(self.apply(operations)["history_changed"])
+        after=self.read()["state"],self.command("dump")["text"]
+        self.assertEqual([2],[r["value"]["version"] for r in after[0]["rules"]])
+        self.assertEqual(2,after[0]["bindings"][0]["value"]["rule"]["version"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(before[0]["state"],self.read()["state"])
+        self.assertEqual(before[1],self.command("dump")["text"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(after,(self.read()["state"],self.command("dump")["text"]))
+
     def test_unselected_binding_is_saved_as_incomplete(self):
         self.publish();self.apply([{"op":"put-binding","value":binding(False)}])
         self.assertFalse(self.read()["state"]["bindings"][0]["complete"])

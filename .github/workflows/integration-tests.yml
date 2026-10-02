@@ -36,6 +36,8 @@ jobs:
       max-parallel: 2
       matrix:
         include:
+          - suite: assembly
+            timeout: 15
           - suite: documents
             timeout: 10
           - suite: grid
@@ -85,6 +87,7 @@ jobs:
           # The full canvas run retains its strict golden comparison.
           set +e
           case "$GEOMETRY_BROWSER_SUITE" in
+            assembly) GEOMETRY_CDP_PORT=9367 GEOMETRY_ASSEMBLY_ONLY=1 node geometry-web/cdp_test.js ;;
             grid) GEOMETRY_CDP_PORT=9334 GEOMETRY_GRID_SYSTEM_ONLY=1 node geometry-web/cdp_test.js ;;
             canvas) node geometry-web/cdp_test.js ;;
             space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js ;;
@@ -95,6 +98,14 @@ jobs:
           status=$?
           cat /tmp/geometry-integration-server.log
           exit "$status"
+      - name: Preserve assembly authoring screenshots
+        if: always() && matrix.suite == 'assembly'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: assembly-review-screens
+          path: /tmp/geometry-tests/assembly-*.png
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Preserve grid trial screenshots
         if: always() && (matrix.suite == 'grid' || matrix.suite == 'canvas')
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

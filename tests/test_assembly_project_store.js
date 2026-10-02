@@ -27,3 +27,30 @@ test('assembly drafts and native confirmation share undo and redo without losing
  assert.equal(h.undo.length,1);h.observe('line redo',{ok:true});assert.deepEqual(h.frame.context.assemblyDrafts,[]);
  const count=h.undo.length;h.observe('assembly-confirm 2',{ok:true,history_changed:false});assert.equal(h.undo.length,count);
 });
+const parameterDraft=(parameterId,fieldId)=>({id:'parameter-binding-draft',kind:'binding',base_ref:null,
+ data:{id:1,name:'參數配置',rule:{id:1,version:1},slots:[{slotId:1,A:{kind:'parameter',parameterId,fieldId},B:null,contactFace:null,orientation:null}]},
+ updated_at:'2026-10-02T00:00:00Z'});
+test('assembly ParameterRef preserves the complete uint32 identity range through archive reopen',async()=>{
+ for(const [parameterId,fieldId] of [[1,1],[0,1],[1,0],[0,0],[4294967295,4294967295]]){
+  const record=parameterDraft(parameterId,fieldId);assert.equal(P.validateAssemblyDraft(record),record);
+  const bytes=await pack('reset\n',{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[record]}});
+  const reopened=await P.unpack(new Uint8Array(bytes),zip);
+  assert.deepEqual(reopened.manifest.assemblyDrafts.records,[record]);
+ }
+});
+test('assembly ParameterRef rejects malformed and out-of-range identities independently on either field',()=>{
+ for(const invalid of [-1,0.5,'0',null,true,4294967296])for(const field of ['parameterId','fieldId']){
+  const record=parameterDraft(1,1);record.data.slots[0].A[field]=invalid;
+  assert.throws(()=>P.validateAssemblyDraft(record),/組構配置草稿結構不合法/);
+ }
+});
+test('zero ParameterRef support does not relax positive assembly identities or null source handling',()=>{
+ for(const change of [r=>r.data.id=0,r=>r.data.rule.id=0,r=>r.data.rule.version=0,r=>r.data.slots[0].slotId=0]){
+  const record=parameterDraft(1,1);change(record);assert.throws(()=>P.validateAssemblyDraft(record));
+ }
+ for(const change of [r=>r.data.id=0,r=>r.data.version=0,r=>r.data.slots=[{id:0,name:'槽位'}],
+  r=>r.data.members=[{id:0,slotId:1}],r=>r.base_ref={id:0,version:1,fingerprint:'0'.repeat(64)}]){
+  const record=draft();change(record);assert.throws(()=>P.validateAssemblyDraft(record));
+ }
+ const record=parameterDraft(1,1);record.data.slots[0].A=null;assert.equal(P.validateAssemblyDraft(record),record);
+});
