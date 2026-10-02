@@ -82,6 +82,17 @@ static bool asm_publish(World *w,EngJson *j,int t,const char *expected)
     if(w->assembly.rule_count==ASM_RULE_MAX)return asm_error("CAPACITY: at most 32 published assembly versions");
     w->assembly.rules[w->assembly.rule_count++]=rule;return true;
 }
+/* Compare with transaction-entry identities, not only the mutable candidate.
+ * Removed versions may stay absent after explicit unbinding; an identity that
+ * reappears must retain its original content, including delete/copy/reinsert. */
+static bool assembly_versions_immutable(const World *before,const World *after)
+{
+    for(size_t i=0;i<before->assembly.rule_count;++i){const AsmRuleVersion *old=&before->assembly.rules[i];
+        const AsmRuleVersion *next=assembly_rule(after,old->id,old->version);
+        if(next&&strcmp(old->fingerprint,next->fingerprint))return asm_error("D32: published rule %u@%u is immutable",old->id,old->version);
+    }
+    return true;
+}
 static bool asm_binding_parse(World *w,EngJson *j,int t,AsmBinding *b,bool resolve)
 {
     memset(b,0,sizeof *b);int rule=eng_json_member(j,t,"rule"),array=eng_json_member(j,t,"slots");

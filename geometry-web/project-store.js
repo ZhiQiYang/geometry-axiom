@@ -135,7 +135,7 @@
     const source=v=>v===null || object(v)&&(
       v.kind==='literal'&&keys(v,['kind','value'])&&(typeof v.value==='string'||Number.isSafeInteger(v.value)) ||
       v.kind==='spec'&&keys(v,['kind','name'])&&str(v.name,100) ||
-      v.kind==='parameter'&&keys(v,['kind','parameterId','fieldId'])&&positiveId(v.parameterId)&&positiveId(v.fieldId) ||
+      v.kind==='parameter'&&keys(v,['kind','parameterId','fieldId'])&&uint(v.parameterId)&&uint(v.fieldId) ||
       v.kind==='material'&&keys(v,['kind','id','version','field'])&&id(v.id)&&positiveId(v.version)&&['A','B'].includes(v.field));
     if(record.kind==='rule'){
       const joint=j=>keys(j,j.kind==='end-to-side'?['id','kind','scope','terminatedMember','targetMember','end','side','dir']:['id','kind','scope','continuousMember','splitMembers','side','dir'])&&positiveId(j.id)&&str(j.scope,256)&&['+u','-u','+v','-v'].includes(j.side)&&['u','v'].includes(j.dir)&&

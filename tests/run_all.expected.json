@@ -11,9 +11,14 @@
    "count": 138,
    "unit": "場景"
   },
+  "py:test_assembly_parameter_refs": {
+   "mode": "count",
+   "count": 3,
+   "unit": "test"
+  },
   "py:test_assembly_rules": {
    "mode": "count",
-   "count": 19,
+   "count": 25,
    "unit": "test"
   },
   "py:test_axiom_reader": {
@@ -143,11 +148,21 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 122,
+   "count": 150,
    "unit": "node test"
   },
   "node:model_viewer": {
    "mode": "exit-code-only"
+  },
+  "node:polydraft": {
+   "mode": "count",
+   "count": 75,
+   "unit": "node test"
+  },
+  "node:canvas_direct": {
+   "mode": "count",
+   "count": 408,
+   "unit": "斷言"
   },
   "node:document_format": {
    "mode": "exit-code-only"
@@ -160,16 +175,6 @@
   },
   "node:cdp_confirmation_gate": {
    "mode": "exit-code-only"
-  },
-  "node:polydraft": {
-   "mode": "count",
-   "count": 75,
-   "unit": "node test"
-  },
-  "node:canvas_direct": {
-   "mode": "count",
-   "count": 408,
-   "unit": "斷言"
   }
  }
 }

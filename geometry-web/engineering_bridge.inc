@@ -89,7 +89,10 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     int count=eng_json_size(&j,operations);if(count<1||count>ENG_OPERATION_MAX){eng_bridge_error("CAPACITY","Transaction needs 1..256 operations");eng_json_free(&j);free(text);return;}
     World *candidate=malloc(sizeof *candidate);if(!candidate){eng_bridge_error("MEMORY",memory_message);eng_json_free(&j);free(text);return;}*candidate=g_world;
     g_engineering_error[0]=0;g_scene_last_error[0]=0;g_reference_issue_count=0;bool ok=true;
-    for(int i=0;i<count&&ok;++i)ok=operation(candidate,&j,eng_json_at(&j,operations,i));
+    for(int i=0;i<count&&ok;++i){
+        ok=operation(candidate,&j,eng_json_at(&j,operations,i));
+        if(ok)ok=assembly_versions_immutable(&g_world,candidate);
+    }
     if(ok){const World *previous=g_subgrid_before;g_subgrid_before=&g_world;ok=world_revalidate(candidate);g_subgrid_before=previous;if(!ok&&!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}
     for(size_t i=0;i<candidate->timber_count&&ok;++i)if(!candidate->timbers[i].placed){ok=eng_fail("I9: candidate still contains an unplaced timber");}
     char *stage_label=(char *)label;reference_stage(&g_world,candidate,&stage_label,1,ok);g_preview.engineering_batch=true;if(assembly)g_preview.assembly_batch=true;
@@ -101,6 +104,7 @@ static void batch_confirm(const char *arg,bool assembly,const char *token_messag
     uint32_t token;bool mine=assembly?g_preview.assembly_batch:(g_preview.engineering_batch&&!g_preview.assembly_batch);
     if(!arg||!parse_u32(arg,&token)||!g_preview.ready||!mine||g_preview.token!=token||!g_preview.valid){eng_bridge_error("TOKEN",token_message);return;}
     if(g_hist_grouping||g_preview.revision!=g_definition_revision||!world_definitions_equal(&g_world,&g_preview.before)){g_preview.ready=false;eng_bridge_error("STALE",stale_message);return;}
+    if(!assembly_versions_immutable(&g_world,&g_preview.after)){g_preview.ready=false;eng_bridge_error("INVALID",g_engineering_error);return;}
     const World *previous=g_subgrid_before;g_subgrid_before=&g_world;bool valid=world_revalidate(&g_preview.after);g_subgrid_before=previous;
     if(!valid){g_preview.ready=false;eng_bridge_error("INVALID",g_revalidate_error);return;}
     bool changed=!world_definitions_equal(&g_world,&g_preview.after);uint64_t before=g_definition_revision;

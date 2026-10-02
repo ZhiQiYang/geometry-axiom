@@ -399,6 +399,7 @@ let pickSeq = 0;
 /* ---- 通訊 ---- */
 const connection = { phase: "loading", known: false, error: "", recovering: false };
 const pendingApiResults = new Map(), acknowledgedApiResults = new Set();
+const pendingAssemblyConfirmations = new Map();
 let apiRecoveryNeedsAbort = false;
 function checkApiSession(response) {
   const session = response.headers.get("X-Geometry-Session");
@@ -417,23 +418,32 @@ async function readApiReceipt(requestId) {
   return receipt.result;
 }
 async function recoverApiResults() {
-  apiRecoveryNeedsAbort ||= !!ReferenceWorkspace.history.group;
+  const confirmations = [...pendingApiResults.keys()].map(id => pendingAssemblyConfirmations.get(id));
+  const currentResults = () => !confirmations.length || confirmations.some(stamp =>
+    !stamp || ReferenceWorkspace.assemblyConfirmationCurrent(stamp));
+  if (currentResults()) apiRecoveryNeedsAbort ||= !!ReferenceWorkspace.history.group;
   for (const [requestId, cmd] of pendingApiResults) {
     const result = await readApiReceipt(requestId);
-    ReferenceWorkspace.observe(cmd, result);
+    const stamp = pendingAssemblyConfirmations.get(requestId);
+    const current = !stamp || ReferenceWorkspace.assemblyConfirmationCurrent(stamp);
+    if (current) ReferenceWorkspace.observe(cmd, result);
     // A not-delivered command did not reach the core's automatic rollback path.
     // Keep the pre-recovery group state even if metadata handled it as a failure.
-    if (result.ok && /^line history-(end|abort)$/.test(cmd)) apiRecoveryNeedsAbort = false;
-    else apiRecoveryNeedsAbort ||= !!ReferenceWorkspace.history.group;
+    if (current) {
+      if (result.ok && /^line history-(end|abort)$/.test(cmd)) apiRecoveryNeedsAbort = false;
+      else apiRecoveryNeedsAbort ||= !!ReferenceWorkspace.history.group;
+    }
     pendingApiResults.delete(requestId); acknowledgedApiResults.add(requestId);
-    if (result.ok && cmd.startsWith("loadfile ")) {
+    if (stamp) { ReferenceWorkspace.finishAssemblyConfirmation(stamp); pendingAssemblyConfirmations.delete(requestId); }
+    if (current && result.ok && cmd.startsWith("loadfile ")) {
       resetSceneFocus();curScene={path:cmd.slice(9),name:cmd.slice(9).split(/[\\/]/).pop()};
       $("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);markSceneItem();
     }
   }
   // A caller that lost history-begin or an interior command has already stopped.
   // Abort that unfinished group after observing its actual results, never after a committed history-end.
-  if (apiRecoveryNeedsAbort || ReferenceWorkspace.history.group) {
+  if (!currentResults()) apiRecoveryNeedsAbort = false;
+  else if (apiRecoveryNeedsAbort || ReferenceWorkspace.history.group) {
     const result = await api("line history-abort");
     if (!result.ok) throw new Error("尚未能回復未完成操作，請重試。");
     apiRecoveryNeedsAbort = false;
@@ -500,13 +510,16 @@ $("connectionRetry").addEventListener("click", recoverConnection);
 document.addEventListener("keydown", e => {
   if (connection.phase !== "ready") {
     e.stopImmediatePropagation();
+    if (e.key === "Escape" && window.AssemblyWorkspace?.canCloseForRecovery) {
+      e.preventDefault();AssemblyWorkspace.close();$("connectionRetry").focus();return;
+    }
     if (!e.target.closest?.("#connectionNotice")) e.preventDefault();
   }
 }, true);
 async function apiRequest(cmd) {
   const rollback = cmd === "line history-abort";
-  if (!rollback && /^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd)) {
-    try { ReferenceWorkspace.assertEditable?.(); }
+  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd)) {
+    try { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); }
     catch (error) { return {ok:false,error:error.message}; }
   }
   if (rollback && pendingApiResults.size) return { ok: false, transport: true, error: "操作結果尚未確認，重新連線後再回復。" };
@@ -518,6 +531,15 @@ async function apiRequest(cmd) {
   const t0 = performance.now();
   const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
+  let confirmation = null;
+  if (cmd.startsWith('assembly-confirm ')) {
+    if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
+    try { confirmation = ReferenceWorkspace.beginAssemblyConfirmation(); }
+    catch (error) { return {ok:false,error:error.message}; }
+    // Keep this lease through an unknown response, including workspace closure.
+    // Only the exact request receipt may resolve it; never resend the mutation.
+    pendingAssemblyConfirmations.set(requestId, confirmation);
+  }
   let res;
   try {
     const r = await fetch("/api", {
@@ -550,8 +572,10 @@ async function apiRequest(cmd) {
     }
   }
   if (requestId) { pendingApiResults.delete(requestId); for (const id of ack) acknowledgedApiResults.delete(id); acknowledgedApiResults.add(requestId); }
-  ReferenceWorkspace.observe(cmd, res);
-  if (res.ok && !res.preview && res.history_changed !== false &&
+  const current = !confirmation || ReferenceWorkspace.assemblyConfirmationCurrent(confirmation);
+  if (current) ReferenceWorkspace.observe(cmd, res);
+  if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation); pendingAssemblyConfirmations.delete(requestId); }
+  if (current && res.ok && !res.preview && res.history_changed !== false &&
       /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
     window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
