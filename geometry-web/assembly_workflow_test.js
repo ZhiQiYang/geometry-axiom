@@ -25,7 +25,7 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  await fill('#asmScope2','junction-2');await fill('#asmSlot1','長框');await ctl('#asmSlotUp2');
  check('改名排序不改接合身分',await read(`ReferenceWorkspace.getAssemblyDrafts()[0].data.joints.map(j=>j.targetMember).join(',')==='1,2'`));
  const bytes=await read(`(async()=>{window.__assemblyDraftBytes=await ReferenceWorkspace.exportBytes();const p=await GeometryProject.unpack(window.__assemblyDraftBytes,fflate);return {format:p.manifest.format,name:p.manifest.assemblyDrafts.records[0].data.name};})()`);
- check('開啟中的草稿保存最新值',bytes.format==='geometry-canvas/7'&&bytes.name==='雙框交接');
+ check('開啟中的草稿保存最新值',bytes.format==='geometry-canvas/8'&&bytes.name==='雙框交接');
  await ctl('#asmClose');await read(`ReferenceWorkspace.importBytes(window.__assemblyDraftBytes,'組構草稿.gcanvas')`);await ctl('#btnNewAssembly');await wait(`AssemblyWorkspace.isOpen&&!!document.querySelector('[data-asm-draft]')`);await ctl('[data-asm-draft]');await publish();
  check('發布後原生卡片可找到且不生成角材',await read(`oc.assemblyRules.length===1&&oc.faces.length===0&&apiRequest('objects').then(r=>r.timbers.length===0)`));
  await ctl('[data-asm-rule="1:1"]');await ctl('#asmBind');await fill('#asmName','未完成配置');await publish();
@@ -56,7 +56,7 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  await ctl('#asmClose');await read(`(async()=>{window.__assemblySaved=await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.importBytes(window.__assemblySaved,'組構驗收.gcanvas');await renderObjects();})()`);
  check('保存重開保留所有版本配置與卡片位置',await read(`apiRequest('assembly-read').then(r=>r.state.rules.length===3&&r.state.bindings[0].complete&&oc.assemblyRules.every(o=>o.hasPos))`));
  await read(`(async()=>{const response=await fetch('/examples/assembly-rules-v1.gcanvas');if(!response.ok)throw Error('Example not found');await ReferenceWorkspace.importBytes(new Uint8Array(await response.arrayBuffer()),'組構範例.gcanvas');await renderObjects();})()`);
- check('正式範例重開含兩版、配置與未完成草稿',await read(`apiRequest('assembly-read').then(r=>r.state.rules.length===2&&r.state.bindings.length===2&&r.state.bindings.filter(b=>b.complete).length===1&&ReferenceWorkspace.getAssemblyDrafts().length===1)`));
+ check('正式範例重開含兩版、各版配置與未完成草稿',await read(`apiRequest('assembly-read').then(r=>r.state.rules.length===2&&r.state.bindings.length===2&&r.state.bindings.filter(b=>b.complete).length===1&&r.state.bindings.find(b=>b.value.id===1).value.rule.version===1&&r.state.bindings.find(b=>b.value.id===2).value.rule.version===2&&ReferenceWorkspace.getAssemblyDrafts().length===1)`));
  await ctl('#btnNewAssembly');await wait(`AssemblyWorkspace.isOpen`);await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');
  await wait(`!!$('asmSource1A')`);check('範例材料與參數均可從正式來源選擇',await read(`[...$('asmSource1A').options].some(o=>o.value.includes('parameter'))&&[...$('asmSource1B').options].some(o=>o.value.includes('material'))`));await ctl('#asmClose');
  await ctl('#btnNewAssembly');await wait(`AssemblyWorkspace.isOpen`);await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');await wait(`!!$('asmSource1A')`);

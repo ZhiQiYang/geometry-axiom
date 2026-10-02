@@ -84,7 +84,7 @@ Every rule slot must appear exactly once. A/B accept the existing engineering so
 
 - `publish-rule`, legacy `put-binding`: `value` contains the shapes above.
 - `create-binding`: `value` contains a complete Binding definition; a currently existing `value.id` is rejected rather than overwritten.
-- `edit-binding`: `id`, `expectedFingerprint`, `value`; the Binding must exist, `id` must equal `value.id`, and the fingerprint must match its current canonical content. A stale fingerprint rejects with `STALE`. Obtain it from `assembly-read.state.bindings[].fingerprint`, not from derived effective dimensions. The UI uses this operation for edits and explicit fixed-rule-version remapping.
+- `edit-binding`: `id`, `expectedFingerprint`, `value`; the Binding must exist, `id` must equal `value.id`, and the fingerprint must match its current canonical content. A stale fingerprint rejects with `STALE`; missing bindings, inconsistent ids and invalid shapes reject with `I40`. Obtain it from `assembly-read.state.bindings[].fingerprint`, not from derived effective dimensions. The UI uses this operation for edits and explicit fixed-rule-version remapping.
 - `delete-rule`: `id`, `version`; still-used versions reject final validation.
 - `delete-binding`: `id`.
 - `copy-rule`: `id`, `version`, `newId`; destination must be unused, starts at version 1.
@@ -92,11 +92,13 @@ Every rule slot must appear exactly once. A/B accept the existing engineering so
 
 `assembly-read` returns revision, definition SHA-256, all published versions with fingerprints, bindings with canonical fingerprints, derived completeness and per-slot effective values/source paths, and allocator high-water marks. Preview returns complete before/after assembly states and violations. Cancel is a no-op on World/history. Confirm checks token protocol, revision, unchanged definitions and all invariants again. Display-only card moves survive confirmation and do not stale the token. Repeating an identical publication creates no history step. Legacy `newid` returns `assemblyRule` and `assemblyBinding` in their independent native ID spaces, with zero as the exhausted sentinel; new authoring uses `assembly-newid` with reservations and explicit capacity errors.
 
+The returned state represents counters as `"highWater":{"rule":34,"binding":12}`. Rule and Binding fingerprints are respectively `state.rules[].fingerprint` and `state.bindings[].fingerprint`.
+
 ## Project and history
 
 `manifest.assemblyDrafts={"schema":"assembly-drafts/1","records":[...]}` is independent of engineering drafts. Each record contains string `id`, `kind` (`rule`/`binding`), `base_ref` (null or fixed rule id/version/fingerprint), editable `data`, and ISO `updated_at`. At most 256 drafts, 256 KiB each. Incomplete draft values are preserved without publishing them.
 
-New draft metadata uses `intent:{"kind":"create"}` or, for an existing binding, `intent:{"kind":"edit","fingerprint":"<64 lowercase hex>"}`. Per-rule counters use singular keys, `localHighWater:{"slot":0,"member":0,"joint":0}`. Import validates these fields and the format/capability pair before replacing the project; removing the identity capability or downgrading a format-8 attachment is rejected. Metadata-only counter changes are saved even when editable `data` is unchanged. Legacy drafts acquire counters from their current ids and, for a fixed existing rule id, all published versions before the first edit/deletion.
+New draft metadata uses `intent:{"kind":"create"}` or, for an existing binding, `intent:{"kind":"edit","fingerprint":"<64 lowercase hex>"}`. Only rule drafts may contain `localHighWater`; its three singular keys are all required, `localHighWater:{"slot":0,"member":0,"joint":0}`. Import validates these fields and the format/capability pair before replacing the project; removing the archive's required identity capability or downgrading a format-8 attachment is rejected. Metadata-only counter changes are saved even when editable `data` is unchanged. Legacy drafts acquire counters from their current ids and, for a fixed existing rule id, all published versions before the first edit/deletion.
 
 Native successful load, reset and default-world creation assign a fresh session-only namespace tag. Same-namespace history restoration merges counter maxima and persistent-identity state; cross-namespace restoration restores the destination snapshot without current-project counters or canvas positions. The tag is neither serialized nor part of definition equality. Frontend counter merging likewise requires the same context object and draft UUID: matching saved project UUIDs across separate loads do not establish the same context.
 
