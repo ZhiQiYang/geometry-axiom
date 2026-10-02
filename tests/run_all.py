@@ -78,6 +78,7 @@ PY_NEEDS = {
 # Every tests/*.js|*.cjs|*.mjs MUST be in exactly one of these three (run by `node --test`, run as a script, or a
 # reasoned exclusion).  Unlisted files make run_all fail and name them.
 NODE_TEST_FILES = [
+    'tests/test_assembly_id_project_store.js',
     'tests/test_assembly_project_store.js',
     'tests/test_assembly_transport_context.js',
     'tests/test_assembly_workspace.js',

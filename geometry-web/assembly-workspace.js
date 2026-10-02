@@ -158,11 +158,41 @@ window.AssemblyWorkspace=(()=>{
     else if(added===1&&changed.length===0&&removed===0){const only=[...afterR].find(([k])=>!beforeR.has(k));if(only) title=`這次會發布${ruleTitle(only[1])}`;}
     return `<h4>${esc(title)}</h4>${rows.length?`<div class="asm-diff">${rows.map(([a,b])=>`<p><span>${esc(a)}</span><span>${esc(b)}</span></p>`).join('')}</div>`:'<p>正式內容不會改變。</p>'}`;
   }
-  async function preview(){
-    if(confirming())return;flush();ReferenceWorkspace.assertEditable();invalidate();const x=s,g=x.generation,seq=++serial,operations=x.operations||[x.draft.kind==='rule'?{op:'publish-rule',value:clone(x.draft.data)}:x.draft.intent?.kind==='edit'?{op:'edit-binding',id:x.draft.data.id,expectedFingerprint:x.draft.intent.fingerprint,value:clone(x.draft.data)}:{op:'create-binding',value:clone(x.draft.data)}],read=await command('assembly-read');if(!current(x)||g!==x.generation)return;
+  const draftOperation=d=>d.kind==='rule'?{op:'publish-rule',value:clone(d.data)}:d.intent?.kind==='edit'?{op:'edit-binding',id:d.data.id,expectedFingerprint:d.intent.fingerprint,value:clone(d.data)}:{op:'create-binding',value:clone(d.data)};
+  const identityValue=v=>JSON.stringify(v,(_,value)=>value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(Object.keys(value).sort().map(key=>[key,value[key]])):value);
+  async function requestPreview(x,g,seq,read,operations,candidate=null){
     const response=await fetch('/assembly/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:'assembly-transaction/1',expectedRevision:read.revision,operations}),signal:AbortSignal.timeout(30000)});checkApiSession(response);if(!response.ok)throw Error('預覽服務失敗（'+response.status+'）。');const p=checked(await response.json()).preview;
-    if(!current(x)||g!==x.generation||seq!==serial){command('assembly-cancel '+p.token).catch(()=>{});return;}x.preview=p;$('asmConfirm').disabled=!p.valid;
+    if(!current(x)||g!==x.generation||seq!==serial){command('assembly-cancel '+p.token).catch(()=>{});return;}if(candidate&&p.valid){x.draft=candidate;flush();}x.preview=p;$('asmConfirm').disabled=!p.valid;
     $('asmPreviewResult').innerHTML=`${previewCopy(p)}<ul>${(p.violations||[]).map(v=>`<li>${esc(v.message||v.actual||'驗證拒絕')}</li>`).join('')}</ul><details><summary>完整資料，給除錯對照</summary><h5>變更前</h5><pre>${esc(JSON.stringify(p.before,null,2))}</pre><h5>變更後</h5><pre>${esc(JSON.stringify(p.after,null,2))}</pre></details>`;syncFooter();report(p.valid?'驗證通過，確認後才會套用。':'尚不能套用，請依上列原因修正。',!p.valid);
+  }
+  function legacyBindingChoice(x,g,seq,read,record){
+    const original=JSON.stringify(x.draft),fingerprint=record.fingerprint;
+    $('asmPreviewResult').innerHTML=`<p>這份舊版草稿未記錄編輯基準，請選擇如何保留草稿中的變更。</p>${btn('asmLegacyEdit','採用目前配置為編輯基準')}${btn('asmLegacyNew','另建配置')}`;
+    const fresh=()=>current(x)&&g===x.generation&&seq===serial&&JSON.stringify(x.draft)===original;
+    const adopt=async edit=>{
+      ReferenceWorkspace.assertEditable();if(!fresh())return;
+      $('asmLegacyEdit').disabled=true;$('asmLegacyNew').disabled=true;
+      const latest=await command('assembly-read');if(!fresh())return;
+      const present=latest.state.bindings.find(b=>b.value.id===x.draft.data.id);
+      if(latest.revision!==read.revision||present?.fingerprint!==fingerprint)throw Error('來源已變更，請重新預覽並選擇編輯基準。');
+      const candidate=clone(x.draft);delete candidate.binding_intent;
+      if(edit){if(!/^[a-f0-9]{64}$/.test(fingerprint||''))throw Error('請重新讀取原生配置後再編輯。');candidate.intent={kind:'edit',fingerprint};}
+      else{const reserved=ReferenceWorkspace.getAssemblyDrafts().filter(d=>d.kind==='binding').map(d=>d.data.id),allocation=await command('assembly-newid '+JSON.stringify({kind:'binding',reserved}));if(!fresh())return;if(allocation.revision!==latest.revision)throw Error('來源已變更，請重新預覽。');candidate.data.id=allocation.id;candidate.intent={kind:'create'};}
+      await requestPreview(x,g,seq,latest,[draftOperation(candidate)],candidate);
+    };
+    bind('asmLegacyEdit','click',()=>adopt(true));bind('asmLegacyNew','click',()=>adopt(false));
+    report('請選擇編輯目前配置，或為草稿配置取得新的編號。');
+  }
+  async function preview(){
+    if(confirming())return;flush();ReferenceWorkspace.assertEditable();invalidate();const x=s,g=x.generation,seq=++serial,read=await command('assembly-read');if(!current(x)||g!==x.generation||seq!==serial)return;
+    if(!x.operations&&x.draft.binding_intent){
+      const candidate=clone(x.draft),legacy=candidate.binding_intent;delete candidate.binding_intent;
+      if(legacy.mode==='create')candidate.intent={kind:'create'};
+      else{const record=read.state.bindings.find(b=>b.value.id===candidate.data.id);if(!record||identityValue(record.value)!==identityValue(legacy.source))throw Error('原始配置已變更，請重新開啟；草稿已保留。');candidate.intent={kind:'edit',fingerprint:record.fingerprint};}
+      await requestPreview(x,g,seq,read,[draftOperation(candidate)],candidate);return;
+    }
+    if(!x.operations&&x.draft.kind==='binding'&&!x.draft.intent){const record=read.state.bindings.find(b=>b.value.id===x.draft.data.id);if(record){legacyBindingChoice(x,g,seq,read,record);return;}}
+    await requestPreview(x,g,seq,read,x.operations||[draftOperation(x.draft)]);
   }
   async function confirm(){
     const x=s;if(!current(x)||!x.preview?.valid||x.confirming)return;ReferenceWorkspace.assertEditable();flush();

@@ -3901,7 +3901,7 @@ static void history_restore_world(World *w, const World *snap)
     uint32_t binding_water = same_namespace ? w->assembly.binding_high_water : 0;
     bool identity_persistent = same_namespace && w->assembly.identity_persistent;
     CanvasPos cur[WORLD_MAX_CANVAS_POS];
-    size_t cur_n = same_namespace ? w->canvas_pos_count : 0;
+    size_t cur_n = w->canvas_pos_count;
 
     if (cur_n > 0) {
         memcpy(cur, w->canvas_pos, cur_n * sizeof *cur);

@@ -128,10 +128,19 @@
   }
   function validateAssemblyDraft(record) {
     jsonData(record);
-    if (!keys(record, ["id", "kind", "base_ref", "data", "updated_at"], ["intent", "localHighWater"]) || !id(record.id) ||
+    if (!keys(record, ["id", "kind", "base_ref", "data", "updated_at"], ["intent", "localHighWater", "binding_intent"]) || !id(record.id) ||
         !["rule", "binding"].includes(record.kind) || !object(record.data) ||
         !str(record.updated_at, 100) || !Number.isFinite(Date.parse(record.updated_at))) fail("組構草稿不合法。");
     const ref = record.base_ref;
+    if (Object.hasOwn(record, 'binding_intent')) {
+      const legacy=record.binding_intent;
+      if(record.kind!=='binding'||Object.hasOwn(record,'intent')||!object(legacy)||
+        !(legacy.mode==='create'&&keys(legacy,['mode'])||legacy.mode==='update'&&keys(legacy,['mode','source'])))fail('組構配置草稿的操作意圖不合法。');
+      if(legacy.mode==='update'){
+        const sourceRecord={...record,data:legacy.source};delete sourceRecord.binding_intent;validateAssemblyDraft(sourceRecord);
+        if(legacy.source.id!==record.data.id)fail('組構配置草稿的原始身分不一致。');
+      }
+    }
     if (ref !== null && (!keys(ref, ["id", "version", "fingerprint"]) || !positiveId(ref.id) ||
         !positiveId(ref.version) || !hashRE.test(ref.fingerprint))) fail("組構草稿的固定版本不合法。");
     if (new TextEncoder().encode(JSON.stringify(record)).length > 256 * 1024) fail("單份組構草稿超過 256 KB。");
