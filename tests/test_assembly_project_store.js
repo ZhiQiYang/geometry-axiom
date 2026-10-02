@@ -54,3 +54,21 @@ test('zero ParameterRef support does not relax positive assembly identities or n
  }
  const record=parameterDraft(1,1);record.data.slots[0].A=null;assert.equal(P.validateAssemblyDraft(record),record);
 });
+
+test('binding create/update intent and exact original source survive formal archive reopen',async()=>{
+ const original=parameterDraft(0,0);
+ for(const intent of [{mode:'create'},{mode:'update',source:structuredClone(original.data)},undefined]){
+  const record=structuredClone(original);if(intent)record.binding_intent=intent;
+  record.data.name='尚未套用的編輯';
+  const bytes=await pack('reset\n',{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[record]}});
+  const reopened=await P.unpack(bytes,zip);assert.deepEqual(reopened.manifest.assemblyDrafts.records,[record]);
+  if(intent?.mode==='update')assert.equal(reopened.manifest.assemblyDrafts.records[0].binding_intent.source.name,original.data.name);
+ }
+});
+test('binding intent rejects unknown modes, malformed sources, wrong IDs and rule attachments',()=>{
+ for(const intent of [null,{mode:'upsert'},{mode:'update'},{mode:'create',source:{}},{mode:'update',source:{}},
+  {mode:'update',source:{...parameterDraft(0,0).data,id:99}},{mode:'update',source:{...parameterDraft(0,0).data,unknown:true}}]){
+  const record=parameterDraft(0,0);record.binding_intent=intent;assert.throws(()=>P.validateAssemblyDraft(record));
+ }
+ const record=draft();record.binding_intent={mode:'create'};assert.throws(()=>P.validateAssemblyDraft(record));
+});

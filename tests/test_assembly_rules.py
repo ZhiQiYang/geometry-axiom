@@ -125,6 +125,22 @@ class AssemblyRules(unittest.TestCase):
         self.assertEqual(1,state["bindings"][0]["value"]["rule"]["version"])
         self.assertEqual(rule()["joints"],state["rules"][1]["value"]["joints"])
 
+    def test_newid_wraps_past_max_in_independent_assembly_namespaces(self):
+        for identifier in (1, 2, 4, 0xffffffff):
+            self.publish(rule(identifier=identifier))
+        for identifier in (2, 3, 0xffffffff):
+            self.apply([{"op": "put-binding", "value": binding(identifier=identifier)}])
+        before = self.read()["state"]
+        allocated = self.command("newid")
+        self.assertEqual(3, allocated["assemblyRule"])
+        self.assertEqual(1, allocated["assemblyBinding"])
+        self.assertEqual(before, self.read()["state"], "Allocation must not reserve by mutating World")
+        self.publish(rule(identifier=allocated["assemblyRule"]))
+        self.apply([{"op": "put-binding", "value": binding(identifier=allocated["assemblyBinding"])}])
+        after = self.read()["state"]
+        self.assertEqual(before["rules"], after["rules"][:-1])
+        self.assertEqual(before["bindings"], after["bindings"][:-1])
+
     def test_copy_and_idempotent_publication(self):
         self.publish();done=self.publish();self.assertFalse(done["history_changed"])
         self.apply([{"op":"copy-rule","id":1,"version":1,"newId":2}])

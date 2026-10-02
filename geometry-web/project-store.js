@@ -124,12 +124,21 @@
   }
   function validateAssemblyDraft(record) {
     jsonData(record);
-    if (!keys(record, ["id", "kind", "base_ref", "data", "updated_at"]) || !id(record.id) ||
+    if (!keys(record, ["id", "kind", "base_ref", "data", "updated_at"], ["binding_intent"]) || !id(record.id) ||
         !["rule", "binding"].includes(record.kind) || !object(record.data) ||
         !str(record.updated_at, 100) || !Number.isFinite(Date.parse(record.updated_at))) fail("組構草稿不合法。");
     const ref = record.base_ref;
     if (ref !== null && (!keys(ref, ["id", "version", "fingerprint"]) || !positiveId(ref.id) ||
         !positiveId(ref.version) || !hashRE.test(ref.fingerprint))) fail("組構草稿的固定版本不合法。");
+    if (Object.hasOwn(record, 'binding_intent')) {
+      const intent=record.binding_intent;
+      if(record.kind!=='binding'||!object(intent)||
+        !(intent.mode==='create'&&keys(intent,['mode'])||intent.mode==='update'&&keys(intent,['mode','source'])))fail('組構配置草稿的操作意圖不合法。');
+      if(intent.mode==='update'){
+        validateAssemblyDraft({...record,data:intent.source,binding_intent:{mode:'create'}});
+        if(intent.source.id!==record.data.id)fail('組構配置草稿的原始身分不一致。');
+      }
+    }
     if (new TextEncoder().encode(JSON.stringify(record)).length > 256 * 1024) fail("單份組構草稿超過 256 KB。");
     const d=record.data, list=(a,n,check)=>Array.isArray(a)&&a.length<=n&&a.every(check);
     const source=v=>v===null || object(v)&&(

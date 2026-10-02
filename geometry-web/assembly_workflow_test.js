@@ -30,7 +30,13 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  check('發布後原生卡片可找到且不生成角材',await read(`oc.assemblyRules.length===1&&oc.faces.length===0&&apiRequest('objects').then(r=>r.timbers.length===0)`));
  await ctl('[data-asm-rule="1:1"]');await ctl('#asmBind');await fill('#asmName','未完成配置');await publish();
  check('未選材料保存為未完成',await read(`oc.assemblyBindings.length===1&&!oc.assemblyBindings[0].complete`));
- await ctl('[data-asm-rule="1:1"]');await ctl('#asmEdit');await fill('#asmName','新版雙框');await fill('#asmSlot1','長框 <i>文字</i>');await ctl('#asmSwap1');await ctl('#asmSwap1');await publish();
+ await ctl('[data-asm-rule="1:1"]');await ctl('#asmEdit');await fill('#asmName','新版雙框');await fill('#asmSlot1','長框 <i>文字</i>');
+ const localBefore=await read(`ReferenceWorkspace.getAssemblyDrafts().find(d=>d.kind==='rule'&&d.data.id===1&&d.data.version===2).data`);
+ await ctl('#asmSwap1');
+ const localExpected=structuredClone(localBefore);[localExpected.joints[0].targetMember,localExpected.joints[0].terminatedMember]=[localExpected.joints[0].terminatedMember,localExpected.joints[0].targetMember];
+ check('A04 單次局部交換精確改第一接合並保留第二接合',require('node:util').isDeepStrictEqual(await read(`ReferenceWorkspace.getAssemblyDrafts().find(d=>d.kind==='rule'&&d.data.id===1&&d.data.version===2).data`),localExpected));
+ await publish();
+ check('A04 不同局部配置真正寫進原生發布版本',require('node:util').isDeepStrictEqual(await read(`apiRequest('assembly-read').then(r=>r.state.rules.find(x=>x.value.id===1&&x.value.version===2).value)`),localExpected));
  check('新版本不升級既有配置',await read(`apiRequest('assembly-read').then(r=>r.state.rules.length===2&&r.state.bindings[0].value.rule.version===1)`));
  await ctl('[data-asm-rule="1:2"]');check('已發布圖說用名字與側面',await read(`$('asmDiagram').textContent.includes('抵住')&&$('asmDiagram').textContent.includes('右側')&&!$('asmDiagram').textContent.includes('dir ')&&$('asmFooter').hidden&&$('asmCancel').hidden`));
  await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');await choose('#asmBindingRule','1:2');
@@ -55,8 +61,15 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  fs.writeFileSync(path.join(os.tmpdir(),'geometry-tests','assembly-mobile.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
  await ctl('#asmClose');await read(`(async()=>{window.__assemblySaved=await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.importBytes(window.__assemblySaved,'組構驗收.gcanvas');await renderObjects();})()`);
  check('保存重開保留所有版本配置與卡片位置',await read(`apiRequest('assembly-read').then(r=>r.state.rules.length===3&&r.state.bindings[0].complete&&oc.assemblyRules.every(o=>o.hasPos))`));
+ check('A04 真正保存重開後兩處不同接合與完整定義不變',require('node:util').isDeepStrictEqual(await read(`apiRequest('assembly-read').then(r=>r.state.rules.find(x=>x.value.id===1&&x.value.version===2).value)`),localExpected));
  await read(`(async()=>{const response=await fetch('/examples/assembly-rules-v1.gcanvas');if(!response.ok)throw Error('Example not found');await ReferenceWorkspace.importBytes(new Uint8Array(await response.arrayBuffer()),'組構範例.gcanvas');await renderObjects();})()`);
  check('正式範例重開含兩版、配置與未完成草稿',await read(`apiRequest('assembly-read').then(r=>r.state.rules.length===2&&r.state.bindings.length===2&&r.state.bindings.filter(b=>b.complete).length===1&&ReferenceWorkspace.getAssemblyDrafts().length===1)`));
+ const example=await read(`apiRequest('assembly-read').then(r=>r.state)`),example1=example.bindings.find(b=>b.value.id===1),example2=example.bindings.find(b=>b.value.id===2),same=require('node:util').isDeepStrictEqual;
+ const sourceSlot=id=>({slotId:id,A:{kind:'parameter',parameterId:1,fieldId:1},B:{kind:'material',id:'pine',version:1,field:'B'},contactFace:'A',orientation:'B'});
+ const values=record=>record.effective.map(s=>({slotId:s.slotId,A:s.A?.value??null,B:s.B?.value??null}));
+ check('A18 範例配置一固定第1版且逐槽來源與有效值正確',same(example1.value.rule,{id:1,version:1})&&same(example1.value.slots,[sourceSlot(1),sourceSlot(2)])&&same(values(example1),[{slotId:1,A:27,B:33},{slotId:2,A:27,B:33}]));
+ check('A18 範例配置二固定第2版且保留精確未完成槽位',same(example2.value.rule,{id:1,version:2})&&same(example2.value.slots,[sourceSlot(1),{slotId:2,A:null,B:null,contactFace:null,orientation:null}])&&!example2.complete&&same(values(example2),[{slotId:1,A:27,B:33},{slotId:2,A:null,B:null}]));
+ check('A18 範例版本槽位排序與未發布草稿不混為另一版',same(example.rules.find(r=>r.value.version===1).value.slots.map(s=>s.id),[1,2])&&same(example.rules.find(r=>r.value.version===2).value.slots.map(s=>s.id),[2,1])&&await read(`ReferenceWorkspace.getAssemblyDrafts()[0].data.id===2&&ReferenceWorkspace.getAssemblyDrafts()[0].data.version===1&&ReferenceWorkspace.getAssemblyDrafts()[0].data.members.length===0`));
  await ctl('#btnNewAssembly');await wait(`AssemblyWorkspace.isOpen`);await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');
  await wait(`!!$('asmSource1A')`);check('範例材料與參數均可從正式來源選擇',await read(`[...$('asmSource1A').options].some(o=>o.value.includes('parameter'))&&[...$('asmSource1B').options].some(o=>o.value.includes('material'))`));await ctl('#asmClose');
  await ctl('#btnNewAssembly');await wait(`AssemblyWorkspace.isOpen`);await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');await wait(`!!$('asmSource1A')`);
@@ -64,6 +77,7 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  await ctl('#asmPreview');await wait(`window.__asmHeld===true`);await read(`ReferenceWorkspace.importBytes(window.__assemblyDraftBytes,'切換驗證.gcanvas')`);await read(`window.__asmRelease();void 0`);await sleep(300);
  check('切專案後延遲預覽不污染新專案',await read(`!AssemblyWorkspace.isOpen&&ReferenceWorkspace.getAssemblyDrafts().length===1&&ReferenceWorkspace.getAssemblyDrafts()[0].data.name==='雙框交接'&&apiRequest('assembly-read').then(r=>r.state.rules.length===0)`));
  await require('./assembly_review_test.js')({send,read,sleep,click,ctl,fill,choose,publish,wait,key,check});
+ await require('./assembly_id_test.js')({send,read,sleep,ctl,fill,choose,publish,wait,check});
  check('沒有未處理瀏覽器例外',exceptionCount()===errors);
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
 };

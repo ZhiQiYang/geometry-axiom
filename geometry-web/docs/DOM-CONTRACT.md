@@ -964,6 +964,8 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 
 ## 組構規則（GEO-226）
 
+- 新增／複製在 uint32 回繞時仍避開 native 與所有同類草稿身分；下一版保留規則 ID，版本到上限則在既有 `#asmStatus` 拒絕，保留草稿。`#asmPreview` 提交前檢查新增配置 ID 未占用、明確編輯的原始配置內容未改，拒絕時不送 native 預覽；沒有新增 UI 入口。
+
 - `#btnNewAssembly` 開啟唯一 `#assemblyWorkspace`。草稿、全部固定版本、材料配置同列於側欄；共用 WorkspaceShell 保存列。
 - `[data-asm-draft]`、`[data-asm-rule="id:version"]`、`[data-asm-binding="id"]` 選來源。草稿 ID 作 HTML 屬性前必須 escape。
 - `#asmNewRule`、`#asmName`、`#asmAddSlot`、`#asmAddMember`、`#asmAddJoint` 從空白定義開始；`#asmSwapN` 交換該接合的連續構件。

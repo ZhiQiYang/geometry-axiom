@@ -21,8 +21,8 @@ CASES = [
     ('missing-source', 'geometry-core/assembly.inc',
      '(resolve&&!eng_resolve(w,&source,&target,UINT32_MAX,0,&effective,path,sizeof path))', 'false',
      'test_bad_dimension_sources_rejected_not_incomplete'),
-    ('cancelled-preview', 'geometry-web/assembly_bridge.inc',
-     '||!g_preview.ready||!g_preview.assembly_batch', '||!g_preview.assembly_batch',
+    ('cancelled-preview', 'geometry-web/engineering_bridge.inc',
+     '||!g_preview.ready||!mine||g_preview.token!=token', '||!mine||g_preview.token!=token',
      'test_cancel_and_protocol_tokens_do_not_commit'),
 ]
 
@@ -42,7 +42,8 @@ def main():
                     target = source / path.relative_to(ROOT)
                     target.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(path, target)
-        for name, filename, before, after, test in [('baseline', '', '', '', '')] + CASES:
+        for name, filename, before, after, test in ([('baseline', '', '', '', '')] + CASES
+                                                   + [('baseline-restored', '', '', '', '')]):
             target = source / filename if filename else None
             if target:
                 original = target.read_bytes()
@@ -56,7 +57,7 @@ def main():
                     env={**os.environ, 'GEOMETRY_TEST_BRIDGE': str(exe)}, capture_output=True, text=True, timeout=120)
                 log = run.stdout + run.stderr
                 print(name, log, flush=True)
-                passed = run.returncode == 0 if name == 'baseline' else (run.returncode == 1 and 'AssertionError' in log and 'errors=' not in log and 'skipped=' not in log)
+                passed = run.returncode == 0 if name.startswith('baseline') else (run.returncode == 1 and 'AssertionError' in log and 'errors=' not in log and 'skipped=' not in log)
                 results.append({'case': name, 'passed': passed, 'binary_sha256': hashlib.sha256(exe.read_bytes()).hexdigest()})
                 if not passed:
                     raise RuntimeError('Fault-injection validation failed: ' + name)
