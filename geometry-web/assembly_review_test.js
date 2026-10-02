@@ -5,6 +5,9 @@
 'use strict';
 module.exports=async({send,read,sleep,click,ctl,fill,choose,publish,wait,key,check})=>{
  const fs=require('fs'),path=require('path'),os=require('os');
+ // Native button Enter activation needs the character/keypress as well as
+ // keyDown/keyUp. Use the existing CDP helper option, as P72 does.
+ const activationKey=require('./cdp_helpers.js').makeKey({send,sleep},{enterText:true});
  const shot=async name=>fs.writeFileSync(path.join(os.tmpdir(),'geometry-tests',`assembly-review-${name}.png`),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
  const literal=value=>({kind:'literal',value});
  const rule={id:1,version:1,name:'回覆測試',slots:[{id:1,name:'主支'},{id:2,name:'副支'}],members:[{id:1,slotId:1},{id:2,slotId:2},{id:3,slotId:2}],joints:[{id:1,kind:'end-to-side',scope:'one',targetMember:1,terminatedMember:2,end:'start',side:'+u',dir:'u'}]};
@@ -56,8 +59,10 @@ module.exports=async({send,read,sleep,click,ctl,fill,choose,publish,wait,key,che
 
  await edit();await fill('#asmName','未知結果保留草稿');await preview();await hold('unknown');await ctl('#asmConfirm');await wait(`window.__asmReply.held`);await release();await wait(`connection.phase==='error'&&$('asmStatus').textContent.includes('尚未確認')`);
  check('回執也失敗時保留草稿並鎖住編輯',await read(`$('asmName').disabled&&$('asmName').value==='未知結果保留草稿'&&ReferenceWorkspace.getAssemblyDrafts().some(d=>d.data.name==='未知結果保留草稿')&&window.__asmReply.confirm===1`));
- await key('Escape','Escape',27);await wait(`!AssemblyWorkspace.isOpen`);const retryFocused=await read(`document.activeElement===$('connectionRetry')`);await restore();await key('Enter','Enter',13);await wait(`connection.phase==='ready'`);await ctl('#btnNewAssembly');
- check('未知结果只用鍵盤返回重連再開不盲送也不刪草稿',retryFocused&&await read(`window.__asmReply.confirm===1&&ReferenceWorkspace.getAssemblyDrafts().some(d=>d.data.name==='未知結果保留草稿')&&apiRequest('assembly-read').then(r=>r.state.bindings[0].value.name==='未知結果保留草稿')`));
+ await key('Escape','Escape',27);await wait(`!AssemblyWorkspace.isOpen`);const retryFocused=await read(`document.activeElement===$('connectionRetry')`);await restore();
+ await read(`(()=>{window.__asmRetryKeyboard=[];for(const type of ['keypress','click'])$('connectionRetry').addEventListener(type,e=>window.__asmRetryKeyboard.push({type:e.type,charCode:e.charCode||0,trusted:e.isTrusted}),{once:true});})()`);
+ await activationKey('Enter','Enter',13);await wait(`connection.phase==='ready'`);console.log('P77 native Retry keyboard events',await read(`window.__asmRetryKeyboard`));await ctl('#btnNewAssembly');
+ check('未知结果只用鍵盤返回重連再開不盲送也不刪草稿',retryFocused&&await read(`window.__asmRetryKeyboard.some(e=>e.type==='keypress'&&e.charCode===13&&e.trusted)&&window.__asmRetryKeyboard.some(e=>e.type==='click'&&e.trusted)&&window.__asmReply.confirm===1&&ReferenceWorkspace.getAssemblyDrafts().some(d=>d.data.name==='未知結果保留草稿')&&apiRequest('assembly-read').then(r=>r.state.bindings[0].value.name==='未知結果保留草稿')`));
  await ctl(`[data-asm-draft]`);await ctl('#asmDeleteDraft');
 
  // Actual authoring controls must alter visible SVG coordinates/markers.
