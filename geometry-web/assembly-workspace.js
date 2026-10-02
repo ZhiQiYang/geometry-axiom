@@ -8,7 +8,15 @@ window.AssemblyWorkspace=(()=>{
   const current=x=>!!x&&s===x&&x.context===token();
   const checked=r=>{if(!r?.ok)throw Object.assign(Error(r?.error||'組構操作失敗。'),{transport:!!r?.transport});return r;};
   const command=async c=>checked(await apiRequest(c));
-  const next=xs=>Math.max(0,...xs.map(x=>x.id))+1;
+  const MAX_ID=0xffffffff;
+  function freeId(start,used){
+    if(!Number.isInteger(start)||start<1||start>MAX_ID)throw Error('配號超出有效範圍，請重新開啟工作區。');
+    let id=start;
+    for(let i=0;i<=used.size;i++){if(!used.has(id))return id;id=id===MAX_ID?1:id+1;}
+    throw Error('找不到可用的組構身分。');
+  }
+  const next=xs=>{const max=Math.max(0,...xs.map(x=>x.id));return freeId(max===MAX_ID?1:max+1,new Set(xs.map(x=>x.id)));};
+  const identityValue=v=>JSON.stringify(v,(_,value)=>value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(Object.keys(value).sort().map(key=>[key,value[key]])):value);
   const btn=(id,text,off=false,cls='')=>`<button type="button" id="${id}"${cls?` class="${cls}"`:''}${off?' disabled':''}>${text}</button>`;
   const sideWord={'+u':'右側','-u':'左側','+v':'下側','-v':'上側'},endWord={start:'起點',finish:'終點'};
   const plainName=(rule,id)=>rule.slots.find(v=>v.id===rule.members.find(m=>m.id===id)?.slotId)?.name?.trim()||'未命名槽位';
@@ -32,12 +40,27 @@ window.AssemblyWorkspace=(()=>{
   function close(){if(confirming()&&!s.confirming.uncertain){report(pendingMessage);return;}flush();invalidate();s=null;++serial;dialog.close();WorkspaceShell.detach(dialog);}
   async function newDraft(kind,source=null,revision=false){
     if(confirming())return;flush();const x=s,g=x.generation;await readState(x);if(!current(x)||x.confirming||g!==x.generation)return;const ids=await command('newid');if(!current(x)||x.confirming||g!==x.generation)return;
-    let id=kind==='rule'?ids.assemblyRule:ids.assemblyBinding;const reserved=ReferenceWorkspace.getAssemblyDrafts().filter(d=>d.kind===kind).map(d=>d.data.id);while(reserved.includes(id))++id;
-    let data,base=null;
-    if(kind==='rule'){data=source?clone(source.value):{name:'',slots:[],members:[],joints:[]};data.id=revision?source.value.id:id;data.version=revision?Math.max(...x.read.state.rules.filter(r=>r.value.id===data.id).map(r=>r.value.version))+1:1;if(revision)base={id:source.value.id,version:source.value.version,fingerprint:source.fingerprint};}
-    else if(source?.value?.rule)data=clone(source.value);
+    const drafts=ReferenceWorkspace.getAssemblyDrafts().filter(d=>d.kind===kind),records=kind==='rule'?x.read.state.rules:x.read.state.bindings;
+    const used=new Set([...records.map(r=>r.value.id),...drafts.map(d=>d.data.id)]);
+    const id=freeId(kind==='rule'?ids.assemblyRule:ids.assemblyBinding,used);
+    let data,base=null,bindingIntent=null;
+    if(kind==='rule'){
+      data=source?clone(source.value):{name:'',slots:[],members:[],joints:[]};data.id=revision?source.value.id:id;data.version=1;
+      if(revision){
+        const original=records.find(r=>r.value.id===source.value.id&&r.value.version===source.value.version);
+        if(!original||original.fingerprint!==source.fingerprint)throw Error('原始規則版本已變更，請重新開啟。');
+        const version=Math.max(...records.filter(r=>r.value.id===data.id).map(r=>r.value.version),...drafts.filter(d=>d.data.id===data.id).map(d=>d.data.version));
+        if(version>=MAX_ID)throw Error('規則版本已達上限，請複製成新規則。');
+        data.version=version+1;base={id:source.value.id,version:source.value.version,fingerprint:source.fingerprint};
+      }
+    }
+    else if(source?.value?.rule){
+      const original=records.find(r=>r.value.id===source.value.id);
+      if(!original||identityValue(original.value)!==identityValue(source.value))throw Error('原始配置已變更，請重新開啟。');
+      data=clone(source.value);bindingIntent={mode:'update',source:clone(source.value)};
+    }
     else {const r=source?.value||x.read.state.rules.at(-1)?.value;if(!r)throw Error('請先發布一份規則。');data={id,name:'',rule:{id:r.id,version:r.version},slots:r.slots.map(slot=>({slotId:slot.id,A:null,B:null,contactFace:null,orientation:null}))};}
-    invalidate();x.draft={id:crypto.randomUUID(),kind,base_ref:base,data,updated_at:new Date().toISOString()};x.record=null;x.operations=null;flush();render();
+    invalidate();x.draft={id:crypto.randomUUID(),kind,base_ref:base,data,updated_at:new Date().toISOString(),...(kind==='binding'?{binding_intent:bindingIntent||{mode:'create'}}:{})};x.record=null;x.operations=null;flush();render();
   }
   function render(){
     if(!s||!current(s))return;s.draftsRef=ReferenceWorkspace.context().assemblyDrafts;const x=s,header=dialog.querySelector(':scope > .workspace-project-header');header?.remove();
@@ -148,6 +171,18 @@ window.AssemblyWorkspace=(()=>{
   }
   async function preview(){
     if(confirming())return;flush();ReferenceWorkspace.assertEditable();invalidate();const x=s,g=x.generation,seq=++serial,operations=x.operations||[{op:x.draft.kind==='rule'?'publish-rule':'put-binding',value:clone(x.draft.data)}],read=await command('assembly-read');if(!current(x)||g!==x.generation)return;
+    if(!x.operations){
+      const d=x.draft;
+      if(d.kind==='binding'){
+        const original=read.state.bindings.find(r=>r.value.id===d.data.id),intent=d.binding_intent;
+        if(intent?.mode==='update'){
+          if(!original||identityValue(original.value)!==identityValue(intent.source))throw Error('原始配置已變更或移除；草稿仍保留，請從已發布配置重新開啟編輯。');
+        }else if(original)throw Error('新增或舊版草稿的配置身分已被占用；草稿仍保留，請另建配置，或從已發布配置明確開啟編輯。');
+      }else if(d.base_ref){
+        const ref=d.base_ref,original=read.state.rules.find(r=>r.value.id===ref.id&&r.value.version===ref.version);
+        if(d.data.id!==ref.id||!original||original.fingerprint!==ref.fingerprint)throw Error('原始規則版本已變更或移除；草稿仍保留，請重新開啟。');
+      }else if(read.state.rules.some(r=>r.value.id===d.data.id))throw Error('新規則身分已被占用；草稿仍保留，請另建或複製規則。');
+    }
     const response=await fetch('/assembly/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:'assembly-transaction/1',expectedRevision:read.revision,operations}),signal:AbortSignal.timeout(30000)});checkApiSession(response);if(!response.ok)throw Error('預覽服務失敗（'+response.status+'）。');const p=checked(await response.json()).preview;
     if(!current(x)||g!==x.generation||seq!==serial){command('assembly-cancel '+p.token).catch(()=>{});return;}x.preview=p;$('asmConfirm').disabled=!p.valid;
     $('asmPreviewResult').innerHTML=`${previewCopy(p)}<ul>${(p.violations||[]).map(v=>`<li>${esc(v.message||v.actual||'驗證拒絕')}</li>`).join('')}</ul><details><summary>完整資料，給除錯對照</summary><h5>變更前</h5><pre>${esc(JSON.stringify(p.before,null,2))}</pre><h5>變更後</h5><pre>${esc(JSON.stringify(p.after,null,2))}</pre></details>`;syncFooter();report(p.valid?'驗證通過，確認後才會套用。':'尚不能套用，請依上列原因修正。',!p.valid);

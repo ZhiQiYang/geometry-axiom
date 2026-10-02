@@ -16,18 +16,18 @@
 | ID | 證據與觀察 |
 |---|---|
 | A01–A02 | `test_publish_without_geometry_and_native_identity`；P77 由空專案建立槽位、構件、接合，保存未發布草稿，不生成面或角材。 |
-| A03–A05 | `test_orthogonal_split_and_geometric_loop`；P77 真正點選局部交換、端點與側面；旋轉縮放後定義逐字相同。 |
+| A03–A05 | `test_orthogonal_split_and_geometric_loop`；P77 真正點選局部交換、端點與側面；旋轉縮放後定義逐字相同。A04 單次交換第一接合，逐欄核對第二接合未變，並完整比對發布及 `.gcanvas` 重開後的兩处定義。 |
 | A06 | `test_duplicate_scope_and_endpoint_rejected`；P77 預覽指出兩個接合，World 不變。 |
 | A07–A08 | `test_immutable_version_rename_reorder_and_fixed_binding`、`test_missing_duplicate_and_unknown_fields_rejected`；P77 改名重排不改身分，使用中槽位不得直接刪除。 |
 | A09 | `test_orthogonal_split_and_geometric_loop` 接受四邊鄰接環。 |
 | A10 | 首版無巢狀規則、規則求值引用；未知引用欄位在 schema 層拒絕。未宣稱有不存在的循環求值器。 |
-| A11–A13 | `test_material_source_and_parameter_recomputation`、`test_unselected_binding_is_saved_as_incomplete`、`test_bad_dimension_sources_rejected_not_incomplete`；同材、不同來源、未選齊、錯型與失效來源分別驗證。 |
+| A11–A13 | `test_material_source_and_parameter_recomputation`、`test_unselected_binding_is_saved_as_incomplete`、`test_bad_dimension_sources_rejected_not_incomplete`；另由 `test_assembly_capacity.py` 驗材料型別／軸／固定版本、槽位8／構件12／接合16、發布版本32／配置64，以及 UTF-8 名稱／scope 的合法上界與下一筆原子拒絕。 |
 | A14 | `test_canvas_move_preserves_preview_and_history`；P77 真拖卡片、旋轉縮放後指紋不變。 |
-| A15–A17 | `test_copy_and_idempotent_publication`、`test_immutable_version_rename_reorder_and_fixed_binding`、`test_cancel_and_protocol_tokens_do_not_commit`；P77 真複製、發布下一版、明選對應後取消。 |
-| A18–A19 | `test_scene_roundtrip_in_fresh_process`、`test_referenced_rule_delete_and_atomic_rebind`、`test_canvas_move_preserves_preview_and_history`；Node `test_assembly_project_store.js`；P77 保存重開、草稿復原及發布復原重做。 |
+| A15–A17 | `test_copy_and_idempotent_publication`、`test_newid_wraps_past_max_in_independent_assembly_namespaces`、`test_immutable_version_rename_reorder_and_fixed_binding`、`test_cancel_and_protocol_tokens_do_not_commit`；Node workspace 驗 MAX 回繞、交錯 native／草稿占用、版本上限與來源變更拒絕。P77 `assembly_id_test.js` 真新增／複製／編輯、意圖保存重開、碰撞與刪後重建不覆寫；既有換版取消守門仍驗。 |
+| A18–A19 | `test_scene_roundtrip_in_fresh_process`、`test_referenced_rule_delete_and_atomic_rebind`、`test_canvas_move_preserves_preview_and_history`；Node `test_assembly_project_store.js`；P77 保存重開、草稿復原及發布復原重做。正式範例的完整配置引用第1版、未完成配置引用第2版，逐槽核對來源、有效值及原固定版本。 |
 | A20–A21 | Node assembly/project/parameter 格式測試，原生 `test_truncated_corrupt_and_duplicate_records_are_atomic`；能力遭移除、未知格式、殘缺記錄均拒絕，既有格式保留。 |
 | A22 | `test_authoring_capability_does_not_enable_model_generation`；既有 138 個 scene 案例持續驗證 D15/I19。 |
-| A23 | P77 桌面與 390px 真實輸入、點選、返回、保存重開；無水平溢出、表單按鈕至少 44px。 |
+| A23 | P77 桌面與 390px 真實輸入、點選、返回、保存重開；新增 `assembly_id_test.js` 從 390px 空白專案建立槽位／構件／接合，保存未發布草稿、重開編輯、發布並再重開，完整定義與預期全等。無水平溢出、表單按鈕至少 44px；不是 A24 實機。 |
 | A24 | **待實體手機驗收**：手機鍵盤、OS 原生檔案選擇器與下載目的地。窄版 Chrome 不等於實機。保留 open 追蹤。 |
 
 ## A24 實機驗收交接（未執行）
@@ -63,7 +63,17 @@ M5：未驗
 施工構件生成 #25 依 2026-10-02 使用者決定繼續保留；最小求值輸入、公理差異與開工條件整理在
 [既有契約的後續交接節](../../geometry-core/ASSEMBLY-RULES-CONTRACT.md#deferred-generator-handoff--25-2026-10-02)，沒有改動現行公理或啟用生成能力。
 
-## 2026-10-02 收尾查核
+## 2026-10-02 A15 修復與補驗
+
+起點 `4e90a1c89256a96ed28a7a1096c9ca627912fc91`（PR #42）。修正 JS 對 native 配號回繞只跳過草稿而撞上既有配置；native `newid` 本身沒有此缺陷，沒有修改公理或 Core。配置草稿新增可選的 `binding_intent`；來源與意圖保護、舊資料相容邊界見[既有契約](../../geometry-core/ASSEMBLY-RULES-CONTRACT.md#project-and-history)。
+
+本輪驗證來源雜湊、命令、二進位雜湊與日志集中在[驗證紀錄](assembly-validation/README.md)及 [a15-provenance.json](assembly-validation/a15-provenance.json)。Linux 非瀏覽器全套 1282 通過／0 失敗／1 具名 Windows GDI 平台略過；ASan＋UBSan assembly 34 tests 無略過、無 sanitizer 診斷；Node assembly 三檔 41 tests 通過。舊 workspace 對新配號／碰撞三個 oracle 全部如預期失敗，正常版本恢復通過。
+
+完整 CDP 完成 1684 功能斷言，原 exit 1 僅因 P77 計數表仍為 84、實得新增後的 108；其餘 73 段吻合。已依完整觀察值提高計數表且逐段比較相符，精確 PR head 仍由 CI 無 filter 全跑。UI 交換只改文字的故障注入如預期失敗，正常 P77 還原重跑 108／0／0、exit 0。原始結果、設定例外及剩餘 A24 分開記錄。
+
+#19／#24 仍保留 A24 實機驗收；本次不使用 `Closes #19` 或 `Closes #24`。#25 及 #43–#49 不在本輪實作範圍。
+
+## 2026-10-02 第一輪收尾查核（PR #42 歷史紀錄）
 
 查核程式碼：`fd8f38b42bc0eb9eb8ea16595dfc76e83e7bdea2`（PR #41 已合併；首版 PR #26 已於 2026-10-01 合併）。
 [同 SHA 的 GitHub integration](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/36972304794) 已完成：native 與 assembly、documents、grid、canvas、space、timber 六組真實瀏覽器工作皆 success。

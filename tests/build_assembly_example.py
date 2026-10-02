@@ -26,7 +26,7 @@ def build():
                   "joints":[{"id":i,"kind":"end-to-side","scope":"frame-"+str(i),"terminatedMember":3,"targetMember":i,"end":"start" if i==1 else "finish","side":"+u" if i==1 else "-u","dir":"u"} for i in [1,2]]}
             newer=deepcopy(rule);newer["version"]=2;newer["name"]="雙框與中支（新版名稱）";newer["slots"].reverse()
             binding={"id":1,"name":"松木配置","rule":{"id":1,"version":1},"slots":[{"slotId":i,"A":{"kind":"parameter","parameterId":1,"fieldId":1},"B":{"kind":"material","id":"pine","version":1,"field":"B"},"contactFace":"A","orientation":"B"} for i in [1,2]]}
-            incomplete=deepcopy(binding);incomplete["id"]=2;incomplete["name"]="待選材料";incomplete["slots"][1].update(A=None,B=None,contactFace=None,orientation=None)
+            incomplete=deepcopy(binding);incomplete["id"]=2;incomplete["name"]="待選材料";incomplete["rule"]["version"]=2;incomplete["slots"][1].update(A=None,B=None,contactFace=None,orientation=None)
             operations=[{"op":"publish-material","value":{"id":"pine","version":1,"kind":"timber","name":"松木角材","A":27,"B":33}},
                         {"op":"put-parameter","value":{"id":1,"name":"角材截面","fields":[{"id":1,"name":"A","type":"dimension","input":"27"}]}},
                         *[{"op":"publish-rule","value":r} for r in [rule,newer]],

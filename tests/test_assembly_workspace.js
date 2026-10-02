@@ -16,7 +16,7 @@ function fixture(){
   const elements=new Map(),listeners=new Map(),calls=[],removed=[],gate=deferred();
   const element=id=>{if(!elements.has(id))elements.set(id,{id,disabled:false,hidden:false,innerHTML:'',textContent:'',dataset:{},classList:{toggle(){}},attrs:{},
     setAttribute(k,v){this.attrs[k]=v;},removeAttribute(k){delete this.attrs[k];},append(){},prepend(){},remove(){},
-    addEventListener(){},querySelector:()=>null,querySelectorAll:()=>[],close(){this.open=false;},showModal(){this.open=true;}});return elements.get(id);};
+    addEventListener(name,fn){(this.handlers||={})[name]=fn;},querySelector:()=>null,querySelectorAll:()=>[],close(){this.open=false;},showModal(){this.open=true;}});return elements.get(id);};
   const dialog=element('dialog');dialog.open=true;dialog.querySelectorAll=selector=>selector==='button,input,select'?[...elements.values()].filter(e=>e!==dialog):[];
   for(const id of ['asmName','asmConfirm','asmPreview','asmCancel','asmClose','asmNewRule','projectSave','asmDiagram','asmStatus'])element(id);
   const history=new ContextHistory(()=>({id:crypto.randomUUID(),assemblyDrafts:[],models:[],faceProjections:new Map()}));
@@ -25,22 +25,89 @@ function fixture(){
   const notify=()=>listeners.get('project-info-changed')?.();
   const ref={escape:v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'),context,
     getProjectState:()=>({contextToken:context().id}),assertEditable(){},getAssemblyDrafts:()=>copy(context().assemblyDrafts),
-    setAssemblyDraft(d,token){assert.equal(token,context().id);history.push(history.snapshot(),'local');context().assemblyDrafts=context().assemblyDrafts.map(x=>x.id===d.id?copy(d):x);notify();},
+    setAssemblyDraft(d,token){assert.equal(token,context().id);history.push(history.snapshot(),'local');const found=context().assemblyDrafts.some(x=>x.id===d.id);context().assemblyDrafts=context().assemblyDrafts.map(x=>x.id===d.id?copy(d):x);if(!found)context().assemblyDrafts.push(copy(d));notify();},
     removeAssemblyDraft(id,token,record=true){assert.equal(token,context().id);if(record)history.push(history.snapshot(),'local');removed.push(id);context().assemblyDrafts=context().assemblyDrafts.filter(d=>d.id!==id);notify();}};
-  let result={ok:true},world={rules:[],bindings:[]},failRead=false;
+  let result={ok:true},world={rules:[],bindings:[]},failRead=false,ids={assemblyRule:2,assemblyBinding:1};
   const env={ReferenceWorkspace:ref,structuredClone,crypto,Map,Set,console,AbortSignal,setTimeout,
     window:{addEventListener:(name,fn)=>listeners.set(name,fn)},document:{createElement:()=>dialog,body:{append(){}},getElementById:element},
     WorkspaceShell:{attach(){},detach(){},refresh(){}},placeStudioLesson(){},renderObjects:async()=>{},toast(){},connection:{phase:'ready'},
     apiRequest:async cmd=>{calls.push(cmd);if(cmd.startsWith('assembly-confirm ')){await gate.promise;history.observe(cmd,result);notify();return result;}
       if(cmd==='assembly-read'){if(failRead){failRead=false;env.connection.phase='error';return {ok:false,transport:true,error:'Refresh unavailable'};}return {ok:true,revision:1,state:copy(world)};}
       if(cmd==='engineering-read')return {ok:true,revision:1,state:{materials:[],parameters:[]}};
+      if(cmd==='newid')return {ok:true,...ids};
       return {ok:true,specs:[]};}};
   let source=fs.readFileSync(process.env.GEOMETRY_TEST_ASSEMBLY_WORKSPACE||require.resolve('../geometry-web/assembly-workspace.js'),'utf8');
-  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,previewCopy,render,safe,changed},open,close,flush,card,inspector,remove,');
+  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,preview,previewCopy,render,safe,changed,newDraft},open,close,flush,card,inspector,remove,');
   vm.runInNewContext(source,env);const w=env.window.AssemblyWorkspace,t=w.test;
   const state={context:context().id,generation:1,draft:copy(context().assemblyDrafts[0]),draftsRef:context().assemblyDrafts,read:{state:world},engineering:{parameters:[],materials:[],specs:[]},preview:{valid:true,token:'candidate-A'},rotation:0,zoom:1};t.setState(state);
-  return {w,t,state,context,history,ref,calls,removed,gate,element,env,notify,setResult:r=>result=r,setWorld:w=>world=w,failNextRead:()=>failRead=true};
+  return {w,t,state,context,history,ref,calls,removed,gate,element,env,notify,setResult:r=>result=r,setWorld:w=>world=w,setIds:v=>ids=v,failNextRead:()=>failRead=true};
 }
+
+const bindingValue=id=>({id,name:'配置',rule:{id:1,version:1},slots:[1,2].map(slotId=>({slotId,A:null,B:null,contactFace:null,orientation:null}))});
+function idFixture(kind,occupied,reserved,start){
+  const f=fixture();f.state.draft=null;f.state.preview=null;
+  const rules=kind==='rule'?occupied.map(id=>({value:{...rule(),id},fingerprint:'a'.repeat(64)})):[{value:rule(),fingerprint:'a'.repeat(64)}];
+  f.setWorld({rules,bindings:kind==='binding'?occupied.map(id=>({value:bindingValue(id)})):[]});
+  f.context().assemblyDrafts=reserved.map(id=>({id:'reserved-'+id,kind,base_ref:null,data:kind==='rule'?{...rule(),id}:bindingValue(id),updated_at:'2026-10-01T00:00:00Z'}));
+  f.setIds({assemblyRule:start,assemblyBinding:start});return f;
+}
+test('new and copied rules/bindings skip interleaved native and draft IDs after uint32 wrap',async()=>{
+  for(const kind of ['rule','binding'])for(const copied of [false,true]){
+    const f=idFixture(kind,[2,4,0xffffffff],[1,3,5],1),source=copied&&kind==='rule'?{value:{...rule(),id:2},fingerprint:'a'.repeat(64)}:null;
+    const before=JSON.stringify(f.context().assemblyDrafts);await f.t.newDraft(kind,source);
+    assert.equal(f.state.draft.data.id,6);assert.equal(JSON.stringify(f.context().assemblyDrafts.slice(0,3)),before);
+    if(kind==='binding')assert.equal(f.state.draft.binding_intent.mode,'create');
+    if(source){assert.equal(source.value.id,2);assert.deepEqual(f.state.draft.data.joints,source.value.joints);}
+  }
+});
+test('reserved MAX wraps to a positive free ID without exceeding uint32',async()=>{
+  for(const kind of ['rule','binding']){const f=idFixture(kind,[1,3],[0xffffffff,2],0xffffffff);await f.t.newDraft(kind);assert.equal(f.state.draft.data.id,4);}
+});
+test('new rule versions retain identity, reserve draft versions and reject the version ceiling atomically',async()=>{
+  const source={value:rule(),fingerprint:'a'.repeat(64)},f=idFixture('rule',[1],[1],2);
+  f.context().assemblyDrafts[0].data.version=2;await f.t.newDraft('rule',source,true);
+  assert.equal(f.state.draft.data.id,1);assert.equal(f.state.draft.data.version,3);assert.equal(f.state.draft.base_ref.fingerprint,source.fingerprint);
+  f.context().assemblyDrafts[0].data.version=0xffffffff;
+  const before=JSON.stringify(f.context().assemblyDrafts),active=f.state.draft.id;
+  await assert.rejects(f.t.newDraft('rule',source,true),/版本已達上限/);
+  assert.equal(f.state.draft.id,active);assert.equal(JSON.stringify(f.context().assemblyDrafts),before);
+});
+test('local slot/member/joint controls wrap MAX without changing existing identities',async()=>{
+  const f=fixture(),d=f.state.draft.data;
+  d.slots=[{id:0xffffffff,name:'極限槽位'}];d.members=[{id:1,slotId:0xffffffff},{id:0xffffffff,slotId:0xffffffff}];
+  d.joints=[{...d.joints[0],id:0xffffffff,targetMember:1,terminatedMember:0xffffffff}];f.t.render();
+  for(const [button,list,id] of [['asmAddSlot','slots',1],['asmAddMember','members',2],['asmAddJoint','joints',1]]){
+    await f.element(button).handlers.click();assert.equal(d[list].at(-1).id,id);assert.ok(d[list].some(item=>item.id===0xffffffff));
+  }
+});
+test('a new or legacy binding draft never previews an update to a subsequently occupied ID',async()=>{
+  for(const legacy of [false,true]){const f=idFixture('binding',[],[],1);await f.t.newDraft('binding');
+    if(legacy)delete f.state.draft.binding_intent;
+    f.setWorld({rules:[{value:rule()}],bindings:[{value:bindingValue(1)}]});
+    const before=JSON.stringify(f.context().assemblyDrafts);f.env.fetch=()=>{throw Error('must not submit');};
+    await assert.rejects(f.t.preview(),/身分已被占用/);assert.equal(JSON.stringify(f.context().assemblyDrafts),before);assert.equal(f.state.preview,null);
+  }
+});
+test('explicit binding edits keep identity and reject changed, removed or replaced source values',async()=>{
+  for(const changed of ['changed','removed','replaced']){
+    const f=idFixture('binding',[2],[],3),source={value:bindingValue(2)};await f.t.newDraft('binding',source);
+    assert.equal(f.state.draft.data.id,2);assert.equal(f.state.draft.binding_intent.mode,'update');
+    assert.deepEqual(f.state.draft.binding_intent.source,source.value);f.state.draft.data.name='編輯值';
+    f.setWorld({rules:[{value:rule()}],bindings:changed==='removed'?[]:[{value:{...bindingValue(2),name:changed}}]});
+    f.env.fetch=()=>{throw Error('must not submit');};await assert.rejects(f.t.preview(),/原始配置已變更或移除/);
+    assert.equal(f.state.draft.data.name,'編輯值');assert.equal(f.state.preview,null);
+  }
+});
+test('unchanged explicit binding edits and unoccupied legacy creations reach revision-scoped preview',async()=>{
+  for(const editing of [false,true]){
+    const f=idFixture('binding',editing?[2]:[],[],3);await f.t.newDraft('binding',editing?{value:bindingValue(2)}:null);
+    if(!editing)delete f.state.draft.binding_intent;
+    else f.state.draft.binding_intent.source=Object.fromEntries(Object.entries(f.state.draft.binding_intent.source).reverse());
+    f.state.draft.data.name='確定編輯';let submitted;f.env.checkApiSession=()=>{};
+    f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'p',valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
+    await f.t.preview();assert.equal(submitted.expectedRevision,1);assert.equal(submitted.operations[0].value.id,editing?2:3);assert.equal(f.state.preview.valid,true);
+  }
+});
 
 test('confirm locks actual handlers, inputs, navigation and repeated clicks until reply',async()=>{
   const f=fixture(),pending=f.t.confirm();await tick();let entered=false;
