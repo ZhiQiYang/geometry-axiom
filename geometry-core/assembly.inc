@@ -11,7 +11,7 @@ static AsmBinding *assembly_binding(World *w,uint32_t id)
     for(size_t i=0;i<w->assembly.binding_count;++i)if(w->assembly.bindings[i].id==id)return &w->assembly.bindings[i];
     return NULL;
 }
-static bool assembly_used(const World *w){return w->assembly.rule_count||w->assembly.binding_count;}
+static bool assembly_used(const World *w){return w->assembly.rule_count||w->assembly.binding_count||w->assembly.rule_high_water||w->assembly.binding_high_water||w->assembly.identity_persistent;}
 static bool asm_error(const char *format,...)
 {
     va_list args;va_start(args,format);vsnprintf(g_engineering_error,sizeof g_engineering_error,format,args);va_end(args);
@@ -80,7 +80,7 @@ static bool asm_publish(World *w,EngJson *j,int t,const char *expected)
     const AsmRuleVersion *old=assembly_rule(w,rule.id,rule.version);
     if(old)return !strcmp(old->fingerprint,rule.fingerprint)||asm_error("D32: published rule %u@%u is immutable",rule.id,rule.version);
     if(w->assembly.rule_count==ASM_RULE_MAX)return asm_error("CAPACITY: at most 32 published assembly versions");
-    w->assembly.rules[w->assembly.rule_count++]=rule;return true;
+    w->assembly.rules[w->assembly.rule_count++]=rule;if(rule.id>w->assembly.rule_high_water)w->assembly.rule_high_water=rule.id;if(!w->assembly.loading)w->assembly.identity_persistent=true;return true;
 }
 /* Compare with transaction-entry identities, not only the mutable candidate.
  * Removed versions may stay absent after explicit unbinding; an identity that
@@ -122,11 +122,12 @@ static bool asm_put_binding(World *w,EngJson *j,int t)
 {
     AsmBinding value;if(!asm_binding_parse(w,j,t,&value,false))return false;AsmBinding *b=assembly_binding(w,value.id);
     if(!b){if(w->assembly.binding_count==ASM_BINDING_MAX)return asm_error("CAPACITY: at most 64 assembly bindings");b=&w->assembly.bindings[w->assembly.binding_count++];}
-    *b=value;return true;
+    bool changed=strcmp(b->content,value.content)!=0;
+    *b=value;if(changed&&!w->assembly.loading)w->assembly.identity_persistent=true;if(value.id>w->assembly.binding_high_water)w->assembly.binding_high_water=value.id;return true;
 }
 static bool assembly_rebuild(World *w,char *error,size_t cap)
 {
-    if(w->assembly.loading){snprintf(error,cap,"I41: truncated assembly block");return false;}
+    if(w->assembly.loading){snprintf(error,cap,"I41: truncated assembly block or missing required identity record");return false;}
     for(size_t i=0;i<w->assembly.binding_count;++i){AsmBinding b;EngJson j;bool ok=eng_json_parse(&j,w->assembly.bindings[i].content)&&asm_binding_parse(w,&j,0,&b,true);eng_json_free(&j);
         if(!ok){snprintf(error,cap,"%s",g_engineering_error);return false;}w->assembly.bindings[i]=b;}
     return true;
@@ -156,15 +157,30 @@ static bool assembly_operation(World *w,EngJson *j,int t)
 {
     char op[32];if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return asm_error("I40: assembly operation needs op");
     if(!strcmp(op,"publish-rule"))return eng_json_keys(j,t,"op,value","")?asm_publish(w,j,eng_json_member(j,t,"value"),NULL):asm_error("I40: invalid publish operation");
+    if(!strcmp(op,"create-binding")){
+        uint32_t id;int value=eng_json_member(j,t,"value");
+        if(!eng_json_keys(j,t,"op,value","")||!eng_u32(j,eng_json_member(j,value,"id"),&id,true))return asm_error("I40: invalid new binding identity");
+        if(assembly_binding(w,id))return asm_error("I40: new binding %u already exists; edit it explicitly",id);
+        return asm_put_binding(w,j,value);
+    }
     if(!strcmp(op,"put-binding"))return eng_json_keys(j,t,"op,value","")?asm_put_binding(w,j,eng_json_member(j,t,"value")):asm_error("I40: invalid binding operation");
+    if(!strcmp(op,"edit-binding")){
+        uint32_t id,value_id;char expected[65],actual[65];int value=eng_json_member(j,t,"value");
+        if(!eng_json_keys(j,t,"op,id,expectedFingerprint,value","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true)||
+           !eng_u32(j,eng_json_member(j,value,"id"),&value_id,true)||value_id!=id||
+           !eng_json_string(j,eng_json_member(j,t,"expectedFingerprint"),expected,sizeof expected))return asm_error("I40: invalid explicit binding edit");
+        AsmBinding *b=assembly_binding(w,id);if(!b)return asm_error("I40: edited binding %u does not exist",id);
+        eng_sha256(b->content,strlen(b->content),actual);if(strcmp(expected,actual))return asm_error("STALE: binding %u changed; reopen before editing",id);
+        return asm_put_binding(w,j,value);
+    }
     if(!strcmp(op,"delete-binding")){
         uint32_t id;if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true))return asm_error("I40: invalid binding id");
-        AsmBinding *b=assembly_binding(w,id);if(!b)return asm_error("I40: binding %u does not exist",id);size_t at=(size_t)(b-w->assembly.bindings);
+        AsmBinding *b=assembly_binding(w,id);if(!b)return asm_error("I40: binding %u does not exist",id);w->assembly.identity_persistent=true;size_t at=(size_t)(b-w->assembly.bindings);
         memmove(b,b+1,(w->assembly.binding_count-at-1)*sizeof *b);memset(&w->assembly.bindings[--w->assembly.binding_count],0,sizeof *b);asm_remove_position(w,CANVAS_POS_ASSEMBLY_BINDING,id);return true;
     }
     if(!strcmp(op,"delete-rule")){
         uint32_t id,version;if(!eng_json_keys(j,t,"op,id,version","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true)||!eng_u32(j,eng_json_member(j,t,"version"),&version,true))return asm_error("I40: invalid rule identity");
-        const AsmRuleVersion *r=assembly_rule(w,id,version);if(!r)return asm_error("I40: rule version does not exist");size_t at=(size_t)(r-w->assembly.rules);
+        const AsmRuleVersion *r=assembly_rule(w,id,version);if(!r)return asm_error("I40: rule version does not exist");w->assembly.identity_persistent=true;size_t at=(size_t)(r-w->assembly.rules);
         memmove(&w->assembly.rules[at],&w->assembly.rules[at+1],(w->assembly.rule_count-at-1)*sizeof *r);memset(&w->assembly.rules[--w->assembly.rule_count],0,sizeof *r);
         if(!assembly_rule(w,id,0))asm_remove_position(w,CANVAS_POS_ASSEMBLY_RULE,id);return true;
     }
@@ -188,24 +204,26 @@ static void asm_dump_record(FILE *out,const char *kind,const char *text)
 }
 static void assembly_dump(const World *w,FILE *out)
 {
-    if(!assembly_used(w))return;fputs("requires assembly-rule-authoring/1\nassembly begin\n",out);
+    if(!assembly_used(w))return;fputs("requires assembly-rule-authoring/1\n",out);if(w->assembly.identity_persistent)fputs("requires assembly-rule-identities/1\n",out);fputs("assembly begin\n",out);
     for(size_t i=0;i<w->assembly.rule_count;++i)asm_dump_record(out,"rule",w->assembly.rules[i].content);
     for(size_t i=0;i<w->assembly.binding_count;++i)asm_dump_record(out,"binding",w->assembly.bindings[i].content);
+    if(w->assembly.identity_persistent){char identity[128];snprintf(identity,sizeof identity,"{\"bindingHighWater\":%u,\"ruleHighWater\":%u}",w->assembly.binding_high_water,w->assembly.rule_high_water);asm_dump_record(out,"identity",identity);}
     fputs("assembly end\n",out);
 }
 static bool apply_assembly_line(const char *path,int line_no,char **t,int count,World *w)
 {
     bool ok=false;
     if(!g_parsing_scene_file){scene_error(path,line_no,"I41: assembly records require atomic scene loading; edit through preview/confirm");return false;}
-    if(count==2&&!strcmp(t[1],"begin")){if(w->assembly.loading)goto fail;w->assembly.loading=true;memset(&g_assembly_record,0,sizeof g_assembly_record);return true;}
+    if(count==2&&!strcmp(t[1],"begin")){if(w->assembly.loading||w->assembly.identity_persistent||(g_parsing_scene_file&&g_assembly_file_identity_seen))goto fail;w->assembly.loading=true;w->assembly.identity_loaded=false;memset(&g_assembly_record,0,sizeof g_assembly_record);return true;}
     if(!w->assembly.loading)goto fail;
-    if(count==2&&!strcmp(t[1],"end")){if(g_assembly_record.active)goto fail;w->assembly.loading=false;char e[256];if(!assembly_rebuild(w,e,sizeof e)){scene_error(path,line_no,e);return false;}return true;}
+    if(count==2&&!strcmp(t[1],"end")){if(g_assembly_record.active||(w->assembly.identity_required&&!w->assembly.identity_loaded))goto fail;w->assembly.loading=false;w->assembly.identity_loaded=false;w->assembly.identity_required=false;char e[256];if(!assembly_rebuild(w,e,sizeof e)){scene_error(path,line_no,e);return false;}return true;}
     if(count==2&&!strcmp(t[1],"commit")){
-        if(!g_assembly_record.active||g_assembly_record.used!=g_assembly_record.expected)goto fail;char hash[65];eng_sha256(g_assembly_record.text,g_assembly_record.used,hash);
+        if(w->assembly.identity_loaded||!g_assembly_record.active||g_assembly_record.used!=g_assembly_record.expected)goto fail;char hash[65];eng_sha256(g_assembly_record.text,g_assembly_record.used,hash);
         if(strcmp(hash,g_assembly_record.hash))goto fail;EngJson j;
         if(eng_json_parse_n(&j,g_assembly_record.text,g_assembly_record.used)){
             if(!strcmp(g_assembly_record.kind,"rule")){uint32_t id,version;ok=eng_u32(&j,eng_json_member(&j,0,"id"),&id,true)&&eng_u32(&j,eng_json_member(&j,0,"version"),&version,true)&&!assembly_rule(w,id,version)&&asm_publish(w,&j,0,g_assembly_record.hash);}
-            else {uint32_t id;ok=eng_u32(&j,eng_json_member(&j,0,"id"),&id,true)&&!assembly_binding(w,id)&&asm_put_binding(w,&j,0);}
+            else if(!strcmp(g_assembly_record.kind,"binding")){uint32_t id;ok=eng_u32(&j,eng_json_member(&j,0,"id"),&id,true)&&!assembly_binding(w,id)&&asm_put_binding(w,&j,0);}
+            else {uint32_t r,b;ok=!w->assembly.identity_loaded&&eng_json_keys(&j,0,"bindingHighWater,ruleHighWater","")&&eng_u32(&j,eng_json_member(&j,0,"ruleHighWater"),&r,false)&&eng_u32(&j,eng_json_member(&j,0,"bindingHighWater"),&b,false)&&r>=w->assembly.rule_high_water&&b>=w->assembly.binding_high_water;if(ok){w->assembly.rule_high_water=r;w->assembly.binding_high_water=b;w->assembly.identity_loaded=true;w->assembly.identity_persistent=true;if(g_parsing_scene_file)g_assembly_file_identity_seen=true;}}
         }
         eng_json_free(&j);g_assembly_record.active=false;if(ok)return true;goto fail;
     }
@@ -215,7 +233,7 @@ static bool apply_assembly_line(const char *path,int line_no,char **t,int count,
         if(g_assembly_record.active)goto fail;memset(&g_assembly_record,0,sizeof g_assembly_record);EngJson j;int64_t length;
         ok=eng_json_parse_n(&j,(char*)decoded,n)&&eng_json_keys(&j,0,"kind,bytes,sha256","")&&
            eng_json_string(&j,eng_json_member(&j,0,"kind"),g_assembly_record.kind,sizeof g_assembly_record.kind)&&
-           (!strcmp(g_assembly_record.kind,"rule")||!strcmp(g_assembly_record.kind,"binding"))&&eng_json_integer(&j,eng_json_member(&j,0,"bytes"),&length)&&length>0&&length<ASM_RECORD_MAX&&
+           (!strcmp(g_assembly_record.kind,"rule")||!strcmp(g_assembly_record.kind,"binding")||!strcmp(g_assembly_record.kind,"identity"))&&eng_json_integer(&j,eng_json_member(&j,0,"bytes"),&length)&&length>0&&length<ASM_RECORD_MAX&&
            eng_json_string(&j,eng_json_member(&j,0,"sha256"),g_assembly_record.hash,sizeof g_assembly_record.hash)&&strlen(g_assembly_record.hash)==64;
         eng_json_free(&j);if(ok){g_assembly_record.active=true;g_assembly_record.expected=(size_t)length;return true;}
     }else if(!strcmp(t[1],"data")){

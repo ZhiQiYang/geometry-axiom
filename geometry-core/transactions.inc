@@ -610,6 +610,7 @@ static bool reference_default_world(World *world)
         "timber 3 27 33 role primary", "place 3 on 1 at-line guide 1 +v +n"
     };
     memset(world,0,sizeof *world);
+    world->allocation_namespace=++g_world_namespace_counter;
     for (size_t i=0;i<sizeof lines/sizeof lines[0];++i) {
         char buf[SCENE_MAX_LINE],*tokens[SCENE_MAX_TOKENS];
         snprintf(buf,sizeof buf,"%s",lines[i]); int n=split_tokens(buf,tokens,SCENE_MAX_TOKENS);

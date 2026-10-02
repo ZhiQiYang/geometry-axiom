@@ -92,6 +92,149 @@ class AssemblyRules(unittest.TestCase):
         self.assertEqual(1, self.command("objects")["assemblyRules"][0]["id"])
         self.assertEqual(2, self.command("newid")["assemblyRule"])
 
+    def test_new_binding_cannot_overwrite_existing_formal_identity(self):
+        self.publish()
+        original = binding(identifier=2)
+        self.apply([{"op": "create-binding", "value": original}])
+        before = self.command("dump")["text"], self.read()
+        replacement = binding(identifier=2)
+        replacement["name"] = "unintended replacement"
+        self.reject([{"op": "create-binding", "value": replacement}],
+                    "new binding 2 already exists")
+        self.assertEqual(before, (self.command("dump")["text"], self.read()))
+        # An explicit edit remains an intentional operation.
+        self.apply([{"op": "put-binding", "value": replacement}])
+        self.assertEqual(replacement, self.read()["state"]["bindings"][0]["value"])
+
+    def allocate(self, kind="binding", reserved=None):
+        return self.command("assembly-newid " + json.dumps({"kind": kind, "reserved": reserved or []}))
+
+    def test_allocation_accounts_for_native_world_and_all_draft_reservations(self):
+        self.publish()
+        self.apply([{"op": "create-binding", "value": binding(identifier=2)}])
+        before = self.command("dump")["text"], self.read()
+        self.assertEqual(3, self.allocate(reserved=[1])["id"])
+        self.assertEqual(11, self.allocate(reserved=[1, 3, 10])["id"])
+        self.assertEqual(2, self.allocate("rule", [1])["id"])
+        self.assertEqual(before, (self.command("dump")["text"], self.read()))
+
+    def test_uint32_exhaustion_never_wraps_into_formal_or_reserved_ids(self):
+        self.publish()
+        self.apply([{"op": "create-binding", "value": binding(identifier=2)},
+                    {"op": "create-binding", "value": binding(identifier=4294967295)}])
+        before = self.command("dump")["text"], self.read()
+        result = self.allocate(reserved=[1])
+        self.assertFalse(result["ok"], result)
+        self.assertEqual("CAPACITY", result["code"])
+        self.assertEqual(0, self.command("newid")["assemblyBinding"])
+        self.assertEqual(before, (self.command("dump")["text"], self.read()))
+        self.assertFalse(self.allocate("rule", [4294967295])["ok"])
+
+    def test_allocation_rejects_malformed_reserved_id_space_without_changes(self):
+        before = self.command("dump")["text"], self.read()
+        for request in [{"kind": "timber", "reserved": []}, {"kind": "binding", "reserved": [0]},
+                        {"kind": "binding", "reserved": [4294967296]}, {"kind": "binding", "reserved": [1.5]},
+                        {"kind": "binding", "reserved": "1"}, {"kind": "binding", "reserved": [1] * 257},
+                        {"kind": "binding", "reserved": [], "unexpected": True}]:
+            with self.subTest(request=request):
+                self.assertFalse(self.command("assembly-newid " + json.dumps(request))["ok"])
+        self.assertEqual(before, (self.command("dump")["text"], self.read()))
+
+    def test_high_water_survives_delete_undo_redo_and_fresh_scene_reopen(self):
+        self.publish(rule(identifier=20))
+        self.apply([{"op": "delete-rule", "id": 20, "version": 1}])
+        self.assertEqual(21, self.allocate("rule")["id"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(21, self.allocate("rule")["id"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual([], self.read()["state"]["rules"])
+        self.assertEqual(21, self.allocate("rule")["id"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertTrue(self.command("line redo")["ok"])
+        scene = self.command("dump")["text"]
+        path = self.directory / "retired-identities.scene"
+        path.write_text(scene, encoding="utf-8")
+        with BridgeSession(self.bridge, cwd=self.directory) as fresh:
+            self.assertTrue(fresh.command("loadfile " + str(path))["ok"])
+            self.assertEqual(scene, fresh.command("dump")["text"])
+            request = 'assembly-newid {"kind":"rule","reserved":[]}'
+            self.assertEqual(21, fresh.command(request)["id"])
+
+    def test_cross_project_history_keeps_separate_allocator_namespaces(self):
+        self.publish(rule(identifier=20))
+        project_a = self.command("dump")["text"]
+        path_b = self.directory / "project-b.scene"
+        with BridgeSession(self.bridge, cwd=self.directory) as fresh:
+            request = {"schema": "assembly-transaction/1", "expectedRevision": fresh.command("assembly-read")["revision"],
+                       "operations": [{"op": "publish-rule", "value": rule(identifier=4294967295)}]}
+            transaction = self.directory / "project-b.json"
+            transaction.write_text(json.dumps(request), encoding="utf-8")
+            preview = fresh.command("assembly-preview " + str(transaction))["preview"]
+            self.assertTrue(preview["valid"])
+            self.assertTrue(fresh.command("assembly-confirm " + str(preview["token"]))["ok"])
+            path_b.write_text(fresh.command("dump")["text"], encoding="utf-8")
+        self.assertTrue(self.command("loadfile " + str(path_b))["ok"])
+        self.assertEqual("CAPACITY", self.allocate("rule")["code"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(project_a, self.command("dump")["text"])
+        self.assertEqual(21, self.allocate("rule")["id"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual("CAPACITY", self.allocate("rule")["code"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual([], self.read()["state"]["rules"])
+        self.assertEqual(21, self.allocate("rule")["id"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(21, self.allocate("rule")["id"])
+        empty = self.directory / "new-project.scene"
+        empty.write_text("reset\n", encoding="utf-8")
+        self.assertTrue(self.command("loadfile " + str(empty))["ok"])
+        self.assertEqual(1, self.allocate("rule")["id"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(21, self.allocate("rule")["id"])
+        reset_result=self.command("line reset")
+        self.assertFalse(reset_result["ok"],reset_result)
+        self.assertTrue(reset_result["preview"]["valid"],reset_result)
+        self.assertEqual(21,self.allocate("rule")["id"])
+        self.assertTrue(self.command("line confirm "+str(reset_result["preview"]["token"]))["ok"])
+        self.assertEqual(1,self.allocate("rule")["id"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(21,self.allocate("rule")["id"])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(1,self.allocate("rule")["id"])
+        self.assertTrue(self.command("reset")["ok"])
+        self.assertEqual(1,self.allocate("rule")["id"])
+        self.assertFalse(self.command("line undo")["ok"])
+
+    def test_identity_capability_requires_one_record_and_cannot_be_reset(self):
+        self.publish()
+        scene = self.command("dump")["text"]
+        self.assertIn("requires assembly-rule-identities/1\n", scene)
+        block = scene.index("assembly begin\n")
+        for text in [scene[:block], scene[:block]+"reset\n"+scene[block:],
+                     scene+scene[block:], scene+"reset\n"+scene[block:]]:
+            with self.subTest(text=text):
+                path = self.directory / "invalid-identity.scene"
+                path.write_text(text, encoding="utf-8")
+                rejected = self.command("loadfile " + str(path))
+                self.assertFalse(rejected["ok"], rejected)
+                self.assertEqual(scene, self.command("dump")["text"])
+        # Intermediate geometric commands before the final identity block remain valid.
+        valid = scene[:block]+"spec BeforeAssembly 27\n"+scene[block:]
+        path = self.directory / "identity-after-geometry.scene"
+        path.write_text(valid, encoding="utf-8")
+        self.assertTrue(self.command("loadfile " + str(path))["ok"])
+
+    def test_explicit_binding_edit_rejects_stale_or_changed_identity(self):
+        self.publish()
+        self.apply([{"op": "create-binding", "value": binding()}])
+        fingerprint = self.read()["state"]["bindings"][0]["fingerprint"]
+        edited = binding(); edited["name"] = "intentional edit"
+        self.apply([{"op": "edit-binding", "id": 1, "expectedFingerprint": fingerprint, "value": edited}])
+        self.reject([{"op": "edit-binding", "id": 1, "expectedFingerprint": fingerprint, "value": binding()}], "STALE")
+        edited["id"] = 2
+        self.reject([{"op": "edit-binding", "id": 1, "expectedFingerprint": fingerprint, "value": edited}], "invalid explicit binding edit")
+
     def test_duplicate_scope_and_endpoint_rejected(self):
         for change in ("scope", "end"):
             value = rule(); value["joints"][1][change] = value["joints"][0][change]

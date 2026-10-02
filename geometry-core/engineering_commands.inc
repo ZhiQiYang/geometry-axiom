@@ -165,5 +165,5 @@ static bool apply_engineering_line(const char *path,int line_no,char **tokens,in
 }
 static bool apply_requires_line(const char *path,int line_no,char **tokens,int count,World *w)
 {
-    (void)count;(void)w;if(!strcmp(tokens[1],"engineering-spec/1")||!strcmp(tokens[1],"parameters/1")||!strcmp(tokens[1],ASM_CAPABILITY))return true;scene_error(path,line_no,"I32: unsupported required scene capability");return false;
+    (void)count;if(!strcmp(tokens[1],ASM_ID_CAPABILITY)){if(g_parsing_scene_file){g_assembly_file_identity_required=true;if(!w->assembly.identity_persistent)w->assembly.identity_required=true;}return true;}if(!strcmp(tokens[1],"engineering-spec/1")||!strcmp(tokens[1],"parameters/1")||!strcmp(tokens[1],ASM_CAPABILITY))return true;scene_error(path,line_no,"I32: unsupported required scene capability");return false;
 }

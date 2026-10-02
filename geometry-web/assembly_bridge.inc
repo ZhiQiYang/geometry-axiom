@@ -1,12 +1,13 @@
 /* The same native candidate/history machinery as engineering transactions. */
 static void json_assembly_state(const World *w,bool geometry)
 {
-    (void)geometry;fputs("{\"capabilities\":[\"assembly-rule-authoring/1\"],\"rules\":[",stdout);
+    (void)geometry;printf("{\"capabilities\":[\"assembly-rule-authoring/1\",\"assembly-rule-identities/1\"],\"highWater\":{\"rule\":%u,\"binding\":%u},\"rules\":[",w->assembly.rule_high_water,w->assembly.binding_high_water);
     for(size_t i=0;i<w->assembly.rule_count;++i){const AsmRuleVersion *r=&w->assembly.rules[i];
         printf("%s{\"value\":%s,\"fingerprint\":\"%s\"}",i?",":"",r->content,r->fingerprint);}
     fputs("],\"bindings\":[",stdout);
     for(size_t i=0;i<w->assembly.binding_count;++i){const AsmBinding *b=&w->assembly.bindings[i];
-        printf("%s{\"value\":%s,\"complete\":%s,\"effective\":[",i?",":"",b->content,b->complete?"true":"false");
+        char fingerprint[65];eng_sha256(b->content,strlen(b->content),fingerprint);
+        printf("%s{\"value\":%s,\"fingerprint\":\"%s\",\"complete\":%s,\"effective\":[",i?",":"",b->content,fingerprint,b->complete?"true":"false");
         EngJson j;if(eng_json_parse(&j,b->content)){int array=eng_json_member(&j,0,"slots");
             for(int k=0;k<eng_json_size(&j,array);++k){int slot=eng_json_at(&j,array,k);uint32_t id=0;eng_u32(&j,eng_json_member(&j,slot,"slotId"),&id,true);printf("%s{\"slotId\":%u",k?",":"",id);
                 for(int axis=0;axis<2;++axis){int token=eng_json_member(&j,slot,axis?"B":"A");EngDimensionSource source;EngTarget target={1,0,0,axis};Coord value;char path[192];
@@ -22,6 +23,19 @@ static void cmd_assembly_read(void)
     char hash[65];if(!eng_definition_hash(&g_world,hash)){eng_bridge_error("IO","Cannot hash definitions");return;}
     printf("{\"ok\":true,\"revision\":%llu,\"definition_sha256\":\"%s\",\"state\":",(unsigned long long)g_definition_revision,hash);
     json_assembly_state(&g_world,false);fputs("}\n",stdout);
+}
+
+/* Pure native allocation accounts for formal high water and draft reservations. */
+static void cmd_assembly_newid(const char *request)
+{
+    EngJson j;char kind[16];uint32_t high=0;bool ok=eng_json_parse(&j,request)&&eng_json_keys(&j,0,"kind,reserved","")&&eng_json_string(&j,eng_json_member(&j,0,"kind"),kind,sizeof kind);
+    if(ok){if(!strcmp(kind,"rule"))high=g_world.assembly.rule_high_water;else if(!strcmp(kind,"binding"))high=g_world.assembly.binding_high_water;else ok=false;}
+    int reserved=ok?eng_json_member(&j,0,"reserved"):-1;if(ok)ok=eng_json_is_array(&j,reserved)&&eng_json_size(&j,reserved)<=256;
+    for(int i=0;ok&&i<eng_json_size(&j,reserved);++i){uint32_t id;ok=eng_u32(&j,eng_json_at(&j,reserved,i),&id,true);if(ok&&id>high)high=id;}
+    eng_json_free(&j);
+    if(!ok){eng_bridge_error("I40","Allocation needs rule/binding kind and at most 256 positive uint32 draft reservations");return;}
+    if(high==UINT32_MAX){eng_bridge_error("CAPACITY","Assembly identity allocation exhausted; IDs never wrap or reuse holes");return;}
+    printf("{\"ok\":true,\"id\":%u,\"revision\":%llu}\n",high+1,(unsigned long long)g_definition_revision);
 }
 
 static void json_assembly_preview(void)

@@ -483,8 +483,9 @@ static void cmd_newid(size_t surface_count)
     WORLD_NEXT_ID(md,  g_world.datums,     g_world.datum_count,     false);
     WORLD_NEXT_ID(mparam, g_world.parameters.cards, g_world.parameters.card_count, false);
 
-    WORLD_NEXT_ID(mar,g_world.assembly.rules,g_world.assembly.rule_count,true);
-    WORLD_NEXT_ID(mab,g_world.assembly.bindings,g_world.assembly.binding_count,true);
+    /* 0 means exhausted for these positive-ID namespaces only. */
+    mar=g_world.assembly.rule_high_water==UINT32_MAX?0:g_world.assembly.rule_high_water+1;
+    mab=g_world.assembly.binding_high_water==UINT32_MAX?0:g_world.assembly.binding_high_water+1;
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"gridSystem\":%u,\"gridBinding\":%u,\"timber\":%u,\"space\":%u,"
@@ -900,6 +901,7 @@ int main(void)
                   stdout);
         } else if (strcmp(line, "reset") == 0) {
             memset(&g_world, 0, sizeof g_world);
+            g_world.allocation_namespace=++g_world_namespace_counter;
             history_clear();
             ++g_definition_revision;
             fputs("{\"ok\":true}\n", stdout);
@@ -907,6 +909,8 @@ int main(void)
             cmd_line(arg);
         } else if (strcmp(line,"assembly-read")==0 && !arg) {
             cmd_assembly_read();
+        } else if (strcmp(line,"assembly-newid")==0 && arg) {
+            cmd_assembly_newid(arg);
         } else if (strcmp(line,"assembly-preview")==0 && arg) {
             cmd_assembly_preview(arg);
         } else if (strcmp(line,"assembly-confirm")==0) {

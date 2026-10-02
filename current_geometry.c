@@ -3707,6 +3707,8 @@ typedef struct World {
 
     CanvasPos canvas_pos[WORLD_MAX_CANVAS_POS];
     size_t canvas_pos_count;
+    /* Session-only identity scope; not part of saved geometry definitions. */
+    uint64_t allocation_namespace;
     AssemblyState assembly;
     EngineeringState engineering;
     ParameterState parameters;
@@ -3772,12 +3774,16 @@ static bool parameter_ref_parse(const char *,ParameterRef *);
 static bool parameter_coord(const World *,ParameterRef,Coord *);
 static char g_parameter_error[512];
 static bool engineering_dump_timber(const World *,const Timber *,FILE *);
+static uint64_t g_world_namespace_counter;
+/* File parser provenance must be visible to capability commands. */
+static bool g_assembly_file_identity_required, g_assembly_file_identity_seen;
+
 static bool world_definitions_equal(const World *a,const World *b)
 {
     /* Compare around display-only metadata without two multi-megabyte stack copies. */
     const unsigned char *x=(const unsigned char*)a,*y=(const unsigned char*)b;
     size_t first=(const unsigned char*)&a->canvas_pos-x;
-    size_t last=(const unsigned char*)(&a->canvas_pos_count+1)-x;
+    size_t last=(const unsigned char*)&a->assembly-x;
     return !memcmp(x,y,first) && !memcmp(x+last,y+last,sizeof *a-last);
 }
 
@@ -3890,13 +3896,21 @@ static bool world_canvas_target_exists(const World *w, int kind, uint32_t id)
  * 還原後已不存在的物件,其殘留位丟棄。 */
 static void history_restore_world(World *w, const World *snap)
 {
+    bool same_namespace = w->allocation_namespace == snap->allocation_namespace;
+    uint32_t rule_water = same_namespace ? w->assembly.rule_high_water : 0;
+    uint32_t binding_water = same_namespace ? w->assembly.binding_high_water : 0;
+    bool identity_persistent = same_namespace && w->assembly.identity_persistent;
     CanvasPos cur[WORLD_MAX_CANVAS_POS];
-    size_t cur_n = w->canvas_pos_count;
+    size_t cur_n = same_namespace ? w->canvas_pos_count : 0;
 
     if (cur_n > 0) {
         memcpy(cur, w->canvas_pos, cur_n * sizeof *cur);
     }
     *w = *snap;
+    /* Undo/redo restore definitions; issued assembly identities stay retired. */
+    if (rule_water > w->assembly.rule_high_water) w->assembly.rule_high_water = rule_water;
+    if (binding_water > w->assembly.binding_high_water) w->assembly.binding_high_water = binding_water;
+    w->assembly.identity_persistent = w->assembly.identity_persistent || identity_persistent;
 
     for (size_t i = 0; i < cur_n; ++i) {
         const CanvasPos *cp = &cur[i];
@@ -11883,7 +11897,12 @@ static bool apply_reset_line(
     (void)line_no;
     (void)tokens;
 
+    if (g_parsing_scene_file && (g_assembly_file_identity_required || g_assembly_file_identity_seen)) {
+        scene_error(path, line_no, "I41: reset cannot discard assembly identity metadata declared in this file");
+        return false;
+    }
     *world = (World){ 0 };
+    world->allocation_namespace = ++g_world_namespace_counter;
     return true;
 }
 
@@ -12405,6 +12424,8 @@ static bool parse_scene_file(const char *path, World *out_world)
 
     g_parsing_scene_file = true;
     g_parameter_scene_loading = true;
+    g_assembly_file_identity_required = false;
+    g_assembly_file_identity_seen = false;
 
     char line[SCENE_MAX_LINE];
     int line_no = 0;
@@ -12484,6 +12505,10 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     fclose(in);
+    if (ok && g_assembly_file_identity_required && !g_assembly_file_identity_seen) {
+        scene_error(path, line_no, "I41: missing required assembly identity record");
+        ok = false;
+    }
 
     /*
      * 沒放置的角材沒有位置，既印不出也畫不出，一定是場景檔漏了 place。
@@ -12513,6 +12538,9 @@ static bool parse_scene_file(const char *path, World *out_world)
 
     g_parsing_scene_file = false;
     g_parameter_scene_loading = false;
+    /* A successful load/new/clear starts a distinct construction identity scope.
+     * History keeps this tag so crossing projects never merges retired IDs. */
+    if (ok) out_world->allocation_namespace = ++g_world_namespace_counter;
     return ok;
 }
 

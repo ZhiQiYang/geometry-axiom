@@ -8,6 +8,8 @@ Refs #19 #20. Capability `assembly-rule-authoring/1` is editing, validation, bin
 - `slotId` is a role. `memberId` is an occurrence. Two main members may share a slot and must not share a member id.
 - `jointId` is local to the rule. Conflict uses junction scope, not joint id.
 - Copy allocates a new rule id and keeps internal slot/member/joint ids. Published versions are immutable.
+- Automatic rule/binding allocation advances above the published namespace high-water mark and all live draft reservations. It never wraps at uint32 maximum or searches deleted holes. Explicit creation still accepts a currently unused lower id, so drafts reserved before another publication can be published out of order; this is not a global tombstone registry.
+- A draft UUID identifies an unpublished attachment. Discarding that draft releases its provisional rule/binding reservation. Its slot/member/joint counters advance independently, are hydrated before editing legacy drafts, and survive deletion, undo and metadata-only saving within the same draft/context.
 
 ## Joints
 
@@ -21,9 +23,11 @@ Sources are an existing timber material version, a dimension parameter field, or
 
 ## API
 
-`assembly-read`, `assembly-preview <file>`, `assembly-confirm <token>`, `assembly-cancel <token>`.
+`assembly-read`, `assembly-newid <JSON>`, `assembly-preview <file>`, `assembly-confirm <token>`, `assembly-cancel <token>`.
 Transaction schema `assembly-transaction/1` with `expectedRevision` and `operations`.
 Errors include `I40` conflicts/dangling refs, `TOKEN`, `STALE`, `SCHEMA`, capacity as capacity rather than geometry.
+
+`assembly-newid {"kind":"binding","reserved":[12,15]}` returns `{"ok":true,"id":16,"revision":N}` when the formal binding high-water mark is at most 15. `kind` is exactly `rule` or `binding`; `reserved` is required, may be empty, and contains at most 256 positive uint32 values. The result is one above the maximum of the selected formal high-water mark and reservations. This is a read-only query: it does not reserve an id or change World, revision or history. Invalid input returns `I40`; an exhausted namespace returns `CAPACITY`. The UI passes every live draft reservation and uses create-only publication.
 
 ## Scene
 
@@ -42,9 +46,19 @@ assembly commit
 assembly end
 ```
 
-`kind` is exactly `rule` or `binding`. `bytes` and SHA-256 cover the complete canonical JSON payload; the rule fingerprint is the same hash. Chunks may split a UTF-8 character because decoding joins bytes before JSON parsing. A record must fit 8191 bytes. Extra fields, duplicate identities, missing sources, truncated blocks, wrong lengths and hashes reject the entire scene. Rules and material/parameter definitions precede bindings. No persisted derived geometry or effective-value cache substitutes for definitions.
+Legacy `kind` is `rule` or `binding`; `assembly-rule-identities/1` additionally permits the final `identity` record described below. `bytes` and SHA-256 cover the complete canonical JSON payload; the rule fingerprint is the same hash. Chunks may split a UTF-8 character because decoding joins bytes before JSON parsing. A record must fit 8191 bytes. Extra fields, duplicate identities, missing sources, truncated blocks, wrong lengths and hashes reject the entire scene. Rules and material/parameter definitions precede bindings. No persisted derived geometry or effective-value cache substitutes for definitions.
 
-Project format `geometry-canvas/7` is required when the capability or an assembly draft is present. Drafts are project attachments, not World definitions.
+Legacy assembly definitions and drafts without identity metadata use `geometry-canvas/7`. New identity records or draft `intent`/`localHighWater` metadata require `geometry-canvas/8` and `assembly-rule-identities/1`; formats 1–7 remain readable with their original semantics. Drafts are project attachments, not World definitions.
+
+### Persisted allocator record
+
+After identity tracking becomes persistent, native dump declares `requires assembly-rule-identities/1` and emits one final `assembly record/data/commit` with header `{"kind":"identity","bytes":42,"sha256":"<64 lowercase hex>"}` and this 42-byte UTF-8 payload, without a newline:
+
+```json
+{"bindingHighWater":12,"ruleHighWater":34}
+```
+
+The header has only `kind`, `bytes`, `sha256`; the payload has only these two uint32 counters, which may be zero and must be at least the maxima implied by loaded definitions. There is no payload schema/kind field. Counters retain successful formal identities after deletion and undo. Draft reservations, draft-local counters and the session namespace tag are not in this record. A duplicate record, any record after it, a missing identity record when required, or a scene reset after its requirement/record was declared rejects the whole load. Required-record presence is checked at block/file completion, so geometry and source definitions may precede the assembly block.
 
 ## Exact JSON shapes
 
@@ -68,17 +82,23 @@ Every rule slot must appear exactly once. A/B accept the existing engineering so
 
 `POST /assembly/preview` accepts `{"schema":"assembly-transaction/1","expectedRevision":N,"operations":[...]}` and uses the shared bounded file transport. Supported operations:
 
-- `publish-rule`, `put-binding`: `value` contains the shapes above.
+- `publish-rule`, legacy `put-binding`: `value` contains the shapes above.
+- `create-binding`: `value` contains a complete Binding definition; a currently existing `value.id` is rejected rather than overwritten.
+- `edit-binding`: `id`, `expectedFingerprint`, `value`; the Binding must exist, `id` must equal `value.id`, and the fingerprint must match its current canonical content. A stale fingerprint rejects with `STALE`. Obtain it from `assembly-read.state.bindings[].fingerprint`, not from derived effective dimensions. The UI uses this operation for edits and explicit fixed-rule-version remapping.
 - `delete-rule`: `id`, `version`; still-used versions reject final validation.
 - `delete-binding`: `id`.
 - `copy-rule`: `id`, `version`, `newId`; destination must be unused, starts at version 1.
 - Existing engineering operations may join the same candidate, so unbinding and source deletion can be atomic. Parameters resolve after all operations, before bindings validate.
 
-`assembly-read` returns revision, definition SHA-256, all published versions with fingerprints, and bindings with derived completeness and per-slot effective values/source paths. Preview returns complete before/after assembly states and violations. Cancel is a no-op on World/history. Confirm checks token protocol, revision, unchanged definitions and all invariants again. Display-only card moves survive confirmation and do not stale the token. Repeating an identical publication creates no history step. `newid` returns `assemblyRule` and `assemblyBinding` in their independent native ID spaces.
+`assembly-read` returns revision, definition SHA-256, all published versions with fingerprints, bindings with canonical fingerprints, derived completeness and per-slot effective values/source paths, and allocator high-water marks. Preview returns complete before/after assembly states and violations. Cancel is a no-op on World/history. Confirm checks token protocol, revision, unchanged definitions and all invariants again. Display-only card moves survive confirmation and do not stale the token. Repeating an identical publication creates no history step. Legacy `newid` returns `assemblyRule` and `assemblyBinding` in their independent native ID spaces, with zero as the exhausted sentinel; new authoring uses `assembly-newid` with reservations and explicit capacity errors.
 
 ## Project and history
 
 `manifest.assemblyDrafts={"schema":"assembly-drafts/1","records":[...]}` is independent of engineering drafts. Each record contains string `id`, `kind` (`rule`/`binding`), `base_ref` (null or fixed rule id/version/fingerprint), editable `data`, and ISO `updated_at`. At most 256 drafts, 256 KiB each. Incomplete draft values are preserved without publishing them.
+
+New draft metadata uses `intent:{"kind":"create"}` or, for an existing binding, `intent:{"kind":"edit","fingerprint":"<64 lowercase hex>"}`. Per-rule counters use singular keys, `localHighWater:{"slot":0,"member":0,"joint":0}`. Import validates these fields and the format/capability pair before replacing the project; removing the identity capability or downgrading a format-8 attachment is rejected. Metadata-only counter changes are saved even when editable `data` is unchanged. Legacy drafts acquire counters from their current ids and, for a fixed existing rule id, all published versions before the first edit/deletion.
+
+Native successful load, reset and default-world creation assign a fresh session-only namespace tag. Same-namespace history restoration merges counter maxima and persistent-identity state; cross-namespace restoration restores the destination snapshot without current-project counters or canvas positions. The tag is neither serialized nor part of definition equality. Frontend counter merging likewise requires the same context object and draft UUID: matching saved project UUIDs across separate loads do not establish the same context.
 
 The common project bar saves current edits. Import validates the complete archive, capability declarations and native scene before replacing the current context. Local draft changes and native confirmations share ContextHistory; undoing publication restores its draft. Async responses are scoped to the original project context and edit generation. Formats 1–6 retain their original meaning. The modeling executor rejects assembly scenes as unsupported, even when a `requires` line was stripped: authoring does not imply construction generation.
 

@@ -11,7 +11,7 @@ const copy=structuredClone;
 const deferred=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};};
 const tick=()=>new Promise(r=>setImmediate(r));
 const rule=()=>({id:1,version:1,name:'框',slots:[{id:1,name:'主支'},{id:2,name:'副支'}],members:[{id:1,slotId:1},{id:2,slotId:2},{id:3,slotId:2}],joints:[{id:1,kind:'end-to-side',scope:'one',targetMember:1,terminatedMember:2,end:'start',side:'+u',dir:'u'}]});
-const draft=(id='draft-A')=>({id,kind:'rule',base_ref:null,data:rule(),updated_at:'2026-10-01T00:00:00.000Z'});
+const draft=(id='draft-A')=>({id,kind:'rule',base_ref:null,intent:{kind:'create'},localHighWater:{slot:2,member:3,joint:1},data:rule(),updated_at:'2026-10-01T00:00:00.000Z'});
 function fixture(){
   const elements=new Map(),listeners=new Map(),calls=[],removed=[],gate=deferred();
   const element=id=>{if(!elements.has(id))elements.set(id,{id,disabled:false,hidden:false,innerHTML:'',textContent:'',dataset:{},classList:{toggle(){}},attrs:{},
@@ -36,7 +36,7 @@ function fixture(){
       if(cmd==='engineering-read')return {ok:true,revision:1,state:{materials:[],parameters:[]}};
       return {ok:true,specs:[]};}};
   let source=fs.readFileSync(process.env.GEOMETRY_TEST_ASSEMBLY_WORKSPACE||require.resolve('../geometry-web/assembly-workspace.js'),'utf8');
-  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,previewCopy,render,safe,changed},open,close,flush,card,inspector,remove,');
+  source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,previewCopy,render,safe,changed,hydrateLocalIdentities,next},open,close,flush,card,inspector,remove,');
   vm.runInNewContext(source,env);const w=env.window.AssemblyWorkspace,t=w.test;
   const state={context:context().id,generation:1,draft:copy(context().assemblyDrafts[0]),draftsRef:context().assemblyDrafts,read:{state:world},engineering:{parameters:[],materials:[],specs:[]},preview:{valid:true,token:'candidate-A'},rotation:0,zoom:1};t.setState(state);
   return {w,t,state,context,history,ref,calls,removed,gate,element,env,notify,setResult:r=>result=r,setWorld:w=>world=w,failNextRead:()=>failRead=true};
@@ -125,4 +125,20 @@ test('source names are escaped and identical names do not hide distinct identiti
   const f=fixture();f.state.engineering.parameters=[7,8].map(id=>({id,name:'<img src=x onerror="bad">',fields:[{id:2,name:'A & "B"'}]}));
   const text=diff(f,{kind:'parameter',parameterId:7,fieldId:2},{kind:'parameter',parameterId:8,fieldId:2});
   assert.ok(text.includes('#7'));assert.ok(text.includes('#8'));assert.ok(text.includes('&lt;img'));assert.ok(text.includes('&amp;'));assert.ok(text.includes('&quot;'));assert.ok(!text.includes('<img'));
+});
+
+
+test('legacy rule drafts hydrate counters before deletion from all published versions and persist metadata-only changes',()=>{
+ const f=fixture(),older=rule();delete f.state.draft.localHighWater;delete f.state.draft.intent;delete f.context().assemblyDrafts[0].localHighWater;delete f.context().assemblyDrafts[0].intent;older.slots.push({id:20,name:'retired'});older.members.push({id:30,slotId:1});older.joints.push({...older.joints[0],id:40,scope:'retired'});
+ f.state.read.state.rules=[{value:older}];f.t.hydrateLocalIdentities();
+ assert.deepEqual(f.ref.getAssemblyDrafts()[0].localHighWater,{slot:20,member:30,joint:40});
+ const count=f.history.undo.length;assert.equal(count,1);f.t.hydrateLocalIdentities();assert.equal(f.history.undo.length,count);
+ assert.equal(f.t.next(f.state.draft.data.slots,'slot'),21);assert.equal(f.t.next(f.state.draft.data.members,'member'),31);assert.equal(f.t.next(f.state.draft.data.joints,'joint'),41);
+ f.w.flush();assert.deepEqual(f.ref.getAssemblyDrafts()[0].localHighWater,{slot:21,member:31,joint:41});
+});
+test('local counters do not reuse the highest deleted identity and fail explicitly at uint32 exhaustion',()=>{
+ const f=fixture();f.t.hydrateLocalIdentities();const d=f.state.draft;
+ d.data.members=d.data.members.filter(m=>m.id!==3);assert.equal(f.t.next(d.data.members,'member'),4);
+ d.localHighWater.member=4294967295;assert.throws(()=>f.t.next(d.data.members,'member'),/CAPACITY/);
+ assert.equal(d.localHighWater.member,4294967295);
 });

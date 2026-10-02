@@ -11,6 +11,7 @@
 #define ASM_RECORD_MAX 8192
 #define ASM_SCHEMA "assembly-rule/1"
 #define ASM_CAPABILITY "assembly-rule-authoring/1"
+#define ASM_ID_CAPABILITY "assembly-rule-identities/1"
 
 typedef enum { ASM_JOINT_END_TO_SIDE = 1, ASM_JOINT_ORTHO_SPLIT = 2 } AsmJointKind;
 typedef enum { ASM_END_START = 1, ASM_END_FINISH = 2 } AsmEnd;
@@ -56,6 +57,9 @@ typedef struct {
     size_t rule_count;
     AsmBinding bindings[ASM_BINDING_MAX];
     size_t binding_count;
+    uint32_t rule_high_water, binding_high_water;
+    bool identity_persistent, identity_required;
+    bool identity_loaded;
     bool loading;
 } AssemblyState;
 #endif
