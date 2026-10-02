@@ -30,6 +30,62 @@
 | A23 | P77 桌面與 390px 真實輸入、點選、返回、保存重開；無水平溢出、表單按鈕至少 44px。 |
 | A24 | **待實體手機驗收**：手機鍵盤、OS 原生檔案選擇器與下載目的地。窄版 Chrome 不等於實機。保留 open 追蹤。 |
 
+## A24 實機驗收交接（未執行）
+
+#19／#24 保留 A24 追蹤；不因桌面測試或文件更新而關閉。先依下方命令啟動隔離測試服務，
+由實體手機連到同一版服務。使用全新測試專案與隔離 feedback 目錄，記錄可達 URL、完整 commit SHA、
+手機型號、OS／瀏覽器版本、直橫向與鍵盤種類。至少分別記錄實際支援的 iOS Safari、Android Chrome；
+未取得的裝置標「未驗」，不得以其他裝置或模擬器代替。
+
+| 步驟 | 實機操作 | 通過條件 |
+|---|---|---|
+| M1 鍵盤與輸入 | 空白專案 → 建立物件 → 組構規則；新增角色、構件、接合，以中文輸入法改名，再編輯材料尺寸。鍵盤開啟時捲動、切換欄位及返回；直橫向各一次。 | 組字完成後文字正確；焦點未跳到別欄；目前欄位及保存／返回入口可到達，不被鍵盤或底列永久擋住。 |
+| M2 草稿保存與下載 | 未發布且未填完時按共用「保存」，在 OS 提示中選擇目的地／檔名；實際到該位置找檔案。 | 取得非空 `.gcanvas`，可辨識檔名及目的地；不只看到程式顯示已保存。記錄瀏覽器自動下載或系統選擇器的真實行為。 |
+| M3 原生選檔重開 | 建立另一個空白測試專案，透過「開啟專案」的 OS 原生選檔器選 M2 的實體檔。 | 未完成內容、來源引用及卡片位置均恢復，沒有靠原頁記憶體假重開。 |
+| M4 完整資料 | 以操作說明的範例開始，改名並保留兩個發布版本、完整／未完成配置及草稿；保存、換專案，再從 OS 選檔重開。 | 版本、來源與草稿未混淆，仍可編輯；只有 authoring 資料，不宣稱已生成施工角材。 |
+| M5 取消與離開 | 在有未保存草稿時返回／切專案；分別取消離開提示、取消 OS 選檔及可取消的保存提示。 | 取消後仍是原專案與草稿；選檔取消不清空；放棄離開或丟棄草稿的選項效果與提示一致。 |
+
+將以下紀錄填入 #24；如有失敗，附最短重現、截圖／錄影或測試專案，修復後重驗同一步。
+不收集私有專案或個人下載目錄內容。全部預定裝置的必要步驟完成且剩餘缺陷處理後，再由擁有者確認 #24／#19 結案。
+
+```text
+A24 日期／驗收者：未填
+commit SHA／測試 URL：未填
+裝置／OS／瀏覽器／鍵盤：未填
+M1：未驗（直向／橫向）
+M2：未驗（實際檔名、目的地類型、大小；不需個人路徑）
+M3：未驗
+M4：未驗
+M5：未驗
+證據連結／失敗重現／待修工單：未填
+```
+
+施工構件生成 #25 依 2026-10-02 使用者決定繼續保留；最小求值輸入、公理差異與開工條件整理在
+[既有契約的後續交接節](../../geometry-core/ASSEMBLY-RULES-CONTRACT.md#deferred-generator-handoff--25-2026-10-02)，沒有改動現行公理或啟用生成能力。
+
+## 2026-10-02 收尾查核
+
+查核程式碼：`fd8f38b42bc0eb9eb8ea16595dfc76e83e7bdea2`（PR #41 已合併；首版 PR #26 已於 2026-10-01 合併）。
+[同 SHA 的 GitHub integration](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/36972304794) 已完成：native 與 assembly、documents、grid、canvas、space、timber 六組真實瀏覽器工作皆 success。
+這是既有 CI 的查核，不冒稱本輪在本機重跑完整瀏覽器或實體手機。
+
+本輪 Linux 乾淨 clone 聚焦重現如下；所有命令 exit 0，沒有跳過測試。先設定 `ulimit -s 16384`，
+原生測試使用 `GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge`、`GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base`。
+
+| 命令 | 結果 |
+|---|---|
+| `python3 tests/binaries.py build core bridge model-base` | 三支由目前來源編譯，fresh。 |
+| `python3 -m unittest tests.test_assembly_rules tests.test_assembly_parameter_refs` | 28 tests 通過，含固定版本不可替換、原子改綁、取消／過期 token、原生重放及參數身分範圍。 |
+| `node --test tests/test_assembly_project_store.js tests/test_assembly_transport_context.js tests/test_assembly_workspace.js` | 32 tests 通過，含真正封包重開、確認期間專案守門、延遲／遺失回覆與草稿保留。 |
+| `python3 tests/build_assembly_example.py --check` | 範例與原生重建一致。 |
+| `python3 geometry-guide/sync_axiom_reader.py` | 99 個補丁、五道 assert 與獨立 SSOT 通過；正典未產生 diff。 |
+| `python3 geometry-guide/sync_axiom_reader.py --check` | 現有產物檢查通過。 |
+| `python3 tests/test_axiom_reader.py` | 25 tests 通過；既有矩陣讀檔產生 ResourceWarning，沒有失敗。 |
+
+`feedback_cli.py list` 在這份遠端 clone 沒有回報，不能推論使用者本機沒有回報。
+#20–#23 已有實作、同版 CI 與上述補查可供結案；#19／#24 仍需 A24 實機簽核，#25 保留後續規格。
+本輪只更新既有交接文件，沒有改產品程式、公理、能力宣告或現行保存格式。
+
 ## 可重現命令
 
 在 WSL／Linux，所有二進位都放 `/tmp/geometry-tests`：

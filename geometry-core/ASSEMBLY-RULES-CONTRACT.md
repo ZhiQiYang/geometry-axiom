@@ -81,3 +81,47 @@ Every rule slot must appear exactly once. A/B accept the existing engineering so
 `manifest.assemblyDrafts={"schema":"assembly-drafts/1","records":[...]}` is independent of engineering drafts. Each record contains string `id`, `kind` (`rule`/`binding`), `base_ref` (null or fixed rule id/version/fingerprint), editable `data`, and ISO `updated_at`. At most 256 drafts, 256 KiB each. Incomplete draft values are preserved without publishing them.
 
 The common project bar saves current edits. Import validates the complete archive, capability declarations and native scene before replacing the current context. Local draft changes and native confirmations share ContextHistory; undoing publication restores its draft. Async responses are scoped to the original project context and edit generation. Formats 1–6 retain their original meaning. The modeling executor rejects assembly scenes as unsupported, even when a `requires` line was stripped: authoring does not imply construction generation.
+
+## Deferred generator handoff — #25 (2026-10-02)
+
+The user chose to finish repairs and closeout while retaining the previous product decisions and organizing future specifications. #25 remains deferred. This section is a review proposal, not an adopted axiom, implemented API, or authorization to generate timber. [公理層.md](../公理層.md) remains the behavior SSOT; [issue #25](https://github.com/ZhiQiYang/geometry-axiom/issues/25) tracks the outstanding decision.
+
+### Reuse and missing inputs
+
+Reuse immutable rule versions/fingerprints, typed A/B sources, local member/joint identities, native candidate validation, revision/token confirmation and project context guards above. A complete authoring binding only establishes material input completeness; it does not supply placement or establish geometric validity.
+
+The smallest proposed evaluator accepts one binding plus an explicit finite placement definition:
+
+| Input | Required contract before implementation |
+|---|---|
+| Rule/material source | Fixed rule version and fingerprint; binding id; typed source references. A material or rule upgrade is an explicit action. |
+| Coordinate context | Explicit placement surface/frame and boundary references; never use the currently selected UI surface implicitly. |
+| Member mapping | Every member occurrence maps to a specified guide, actual signed grid index, or named existing member. Repetition lists its finite indices; screen samples and visible grid lines cannot select members. |
+| End conditions | Local contact face, section orientation, and both supporting/blocking faces must resolve uniquely under the approved rules. Missing inputs, ambiguity and contradictions retain separate diagnostics. |
+| Evaluation bounds | Explicit boundary/finite index range or finite member set, with capacity checked before expansion. An unbounded request is not an empty result. |
+
+Proposed output is an `AssemblyInstance` definition plus a derived preview: each member retains its rule/member identity, placement reference, source dimensions, contact relationships and computed finished dimensions. Instance/segment identity must derive from stable placement and segment keys, not list order or name. The exact key, split/merge correspondence and persisted schema are unresolved; no new capability name or format number is reserved here. Pure geometry export cannot substitute for a reconstructible source definition.
+
+For source edits, preview added/removed/changed members and per-member geometry/contact violations before confirmation. Cancel, failed validation, stale confirmation, transport retry and project replacement must preserve the original World/history; a lost response cannot cause duplicate creation. Save/reopen must preserve the placement definition and dependency closure, and recompute derived geometry for comparison.
+
+### Axiom review required before implementation
+
+| Current clause | Minimum proposal / unresolved difference |
+|---|---|
+| D1 / D7 | Retain exact integer-mm geometry and environment-derived length; no rounding, frozen final lengths or diagram coordinates as construction input. |
+| D15 | Current roles select global cutting priority. A first evaluator can accept only mappings that satisfy these roles. Supporting locally reversed priority needs an explicit clause diff; changing one global priority is insufficient. |
+| D17 | Current primary members share a surface axis; boundary/secondary directions are constrained. Keep this for the initial legal fixture. Mixed local axes need a separately approved scope and validation rule. |
+| I19 | End supports obey strict owner priority, outer-boundary restrictions and existing exceptions. Authoring a local contact does not waive these checks; any new exception needs its exact condition and negative tests. |
+| R6 | Retain legal footprint, finite span selection and unique full-width end support. A member segment must not be cut to a viewport/boundary without valid end support. Explicit member-to-span selection remains to be specified. |
+| D33 / I41 / R34 | Binding currently creates no timber and authoring declares no generation capability. Add a separate instance/evaluation contract, capability and persistence rules only after approval; old readers must reject required unsupported capabilities. |
+
+No clause is changed by this handoff. Before approval, the follow-up must present the exact clause edits (or establish that the initial restricted evaluator requires no relaxation), API/error shapes, identity/update rules and resource limits together.
+
+### Implementation gate and acceptance order
+
+1. Specify a legal fixture with two different main-member occurrences sharing one role and a cross member whose ends meet explicit sides, including all existing boundary/support requirements. Compare the exact expected member identities, sources, spans and contacts, not only an outer box or volume.
+2. Specify a second material/configuration case and a rejected ambiguous/unsupported case. Distinguish missing input, invalid definition and missing executor capability; never claim construction or structural safety from geometry alone.
+3. Obtain approval for the concrete evaluation contract and clause differences. Only then split #25 into native evaluator/transactions, persistence/update and formal UI implementation issues with measurable tests.
+4. Verify source edits, fixed-version upgrades, cancel/stale/lost-response behavior and save/reopen. Extend to concave bounds/holes only within the approved evaluator scope. Opposite assembly arrangements require their own approved clauses and identity-aware tests.
+
+Cabinet panels, fasteners, machining allowances, structural analysis, construction sequence and arbitrary nested rules remain outside this proposal. Completing #20–#24 does not close #25.
