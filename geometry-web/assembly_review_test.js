@@ -5,6 +5,7 @@
 'use strict';
 module.exports=async({send,read,sleep,click,ctl,fill,choose,publish,wait,key,check})=>{
  const fs=require('fs'),path=require('path'),os=require('os');
+ const sameSource=require('node:util').isDeepStrictEqual;
  // Native button Enter activation needs the character/keypress as well as
  // keyDown/keyUp. Use the existing CDP helper option, as P72 does.
  const activationKey=require('./cdp_helpers.js').makeKey({send,sleep},{enterText:true});
@@ -96,7 +97,9 @@ module.exports=async({send,read,sleep,click,ctl,fill,choose,publish,wait,key,che
    check(`同值換來源 ${index+1} 主摘要顯示型別身分與版本`,await read(`(()=>{const n=$('asmPreviewResult').querySelector('.asm-diff');return n.textContent.includes('主支 ${axis} 來源')&&n.textContent.includes(${JSON.stringify(needle)})&&n.textContent.includes('尺寸仍為 ${axis==='A'?27:33} mm')&&!n.querySelector('i');})()`));
    if(index===0){check('預覽與取消不改真核心且特殊名稱只作文字',await read(`$('asmPreviewResult').textContent.includes('同名 <i>尺寸</i>')&&apiRequest('assembly-read').then(r=>JSON.stringify(r.state)===${JSON.stringify(worldBefore)})`));await shot('sources-390');await ctl('#asmCancel');check('取消換來源仍保留原生直接值',await read(`apiRequest('assembly-read').then(r=>r.state.bindings[0].value.slots[0].A.kind==='literal')`));await preview();}
    if(index===6){await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});await shot('sources-desktop');}
-   await ctl('#asmConfirm');await wait(`$('asmStatus')?.textContent.includes('已套用')`);check(`同值換來源 ${index+1} 確認保留精確引用`,await read(`apiRequest('assembly-read').then(r=>JSON.stringify(r.state.bindings[0].value.slots[0][${JSON.stringify(axis)}])===${JSON.stringify(JSON.stringify(source))})`));
+   await ctl('#asmConfirm');await wait(`$('asmStatus')?.textContent.includes('已套用')`);
+   const actualSource=await read(`apiRequest('assembly-read').then(r=>r.state.bindings[0].value.slots[0][${JSON.stringify(axis)}])`);
+   check(`同值換來源 ${index+1} 確認保留精確引用`,sameSource(actualSource,source),{actual:actualSource,expected:source});
  }
  await ctl('#asmClose');await read(`api('line undo')`);check('換來源單步復原還原先前 B 引用',await read(`apiRequest('assembly-read').then(r=>r.state.bindings[0].value.slots[0].B.kind==='literal')`));await read(`api('line redo')`);
  await read(`(async()=>{const bytes=await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.importBytes(bytes,'來源摘要保存.gcanvas');await renderObjects();})()`);
@@ -107,11 +110,14 @@ module.exports=async({send,read,sleep,click,ctl,fill,choose,publish,wait,key,che
  await apply([0,1].map(id=>({op:'put-parameter',value:{id,name:'零身分 '+id,fields:[0,1].map(field=>({id:field,name:'尺寸 '+field,type:'dimension',input:'27'}))}})));
  for(const [parameterId,fieldId] of [[0,1],[1,0],[0,0],[1,1]]){
    const source={kind:'parameter',parameterId,fieldId};await ctl('#btnNewAssembly');await edit();await choose('#asmSource1A',JSON.stringify(source));
-   check(`ParameterRef ${parameterId}:${fieldId} 實際表單與草稿保留精確 ID`,await read(`$('asmSource1A').value===${JSON.stringify(JSON.stringify(source))}&&ReferenceWorkspace.getAssemblyDrafts().some(d=>JSON.stringify(d.data.slots?.[0]?.A)===${JSON.stringify(JSON.stringify(source))})`));
+   const draftSource=await read(`({selected:JSON.parse($('asmSource1A').value),saved:ReferenceWorkspace.getAssemblyDrafts().find(d=>d.kind==='binding'&&d.data.id===1)?.data.slots.find(slot=>slot.slotId===1)?.A})`);
+   check(`ParameterRef ${parameterId}:${fieldId} 實際表單與草稿保留精確 ID`,sameSource(draftSource.selected,source)&&sameSource(draftSource.saved,source),{actual:draftSource,expected:source});
    await read(`(async()=>{window.__asmZeroBytes=await ReferenceWorkspace.exportBytes();AssemblyWorkspace.close();await api('reset');await ReferenceWorkspace.importBytes(window.__asmZeroBytes,'零 ID 草稿.gcanvas');await renderObjects();})()`);
-   await ctl('#btnNewAssembly');await ctl('[data-asm-draft]');check(`ParameterRef ${parameterId}:${fieldId} 新專案重開草稿仍完整`,await read(`$('asmSource1A').value===${JSON.stringify(JSON.stringify(source))}`));await publish();await ctl('#asmClose');
+   await ctl('#btnNewAssembly');await ctl('[data-asm-draft]');const reopenedSource=await read(`JSON.parse($('asmSource1A').value)`);
+   check(`ParameterRef ${parameterId}:${fieldId} 新專案重開草稿仍完整`,sameSource(reopenedSource,source),{actual:reopenedSource,expected:source});await publish();await ctl('#asmClose');
    const parameter=await read(`apiRequest('engineering-read').then(r=>{const c=r.state.parameters.find(c=>c.id===${parameterId});return {id:c.id,name:c.name,fields:c.fields.map(f=>({id:f.id,name:f.name,type:f.type,expression:f.expression}))};})`);const field=parameter.fields.find(f=>f.id===fieldId);delete field.expression;field.input='29';await apply([{op:'put-parameter',value:parameter}]);
-   check(`ParameterRef ${parameterId}:${fieldId} 原生確認後仍追隨來源更新`,await read(`apiRequest('assembly-read').then(r=>JSON.stringify(r.state.bindings[0].value.slots[0].A)===${JSON.stringify(JSON.stringify(source))}&&r.state.bindings[0].effective[0].A.value===29)`));
+   const observed=await read(`apiRequest('assembly-read').then(r=>({source:r.state.bindings[0].value.slots[0].A,value:r.state.bindings[0].effective[0].A.value}))`);
+   check(`ParameterRef ${parameterId}:${fieldId} 原生確認後仍追隨來源更新`,sameSource(observed.source,source)&&observed.value===29,{actual:observed,expected:{source,value:29}});
    parameter.fields.find(f=>f.id===fieldId).input='27';await apply([{op:'put-parameter',value:parameter}]);
  }
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
