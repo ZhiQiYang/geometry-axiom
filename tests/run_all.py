@@ -91,6 +91,7 @@ NODE_TEST_FILES = [
     'tests/test_parameters_project_store.js',
     'tests/test_project_store.js',
     'tests/test_reference_workspace_races.js',
+    'tests/test_room_outline.js',
     'tests/test_space_model_store.js',
 ]
 NODE_SCRIPT_FILE = 'tests/test_model_viewer.cjs'
@@ -101,6 +102,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_EXCLUDED = {
+    'tests/room_outline_fixture.js': 'Self-authored PDF/scan fixture generator; not a node test',
     'tests/reference_pdf_fixture.js': '夾具產生器，不是測試：node --test 會把它算成 1 個假的通過 test',
 }
 
