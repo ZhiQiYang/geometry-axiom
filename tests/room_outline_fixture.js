@@ -34,7 +34,20 @@ function pdf() {
   chunks.push(Buffer.from(`xref\n0 ${objects.length+1}\n0000000000 65535 f \n${offsets.slice(1).map(n=>String(n).padStart(10,'0')+' 00000 n \n').join('')}trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${length}\n%%EOF\n`));
   return Buffer.concat(chunks);
 }
-module.exports={shapes,pdf};
+// A calibrated room lies well outside the unchanged 4000 x 3000 mm outer ring.
+// At 3235 mm / 100 page units, that ring covers the upper-left legend only.
+function calibrationRegressionPDF() {
+  const stream='4 w 220 250 m 420 250 l 420 100 l 320 100 l 320 150 l 220 150 l h S 20 330 100 50 re S';
+  const objects=['<< /Type /Catalog /Pages 2 0 R >>','<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 600 400] /Resources << >> /Contents 4 0 R >>',
+    `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`];
+  let text='%PDF-1.4\n',offsets=[0];
+  objects.forEach((o,i)=>{offsets.push(text.length);text+=`${i+1} 0 obj\n${o}\nendobj\n`;});
+  const xref=text.length;
+  return Buffer.from(text+`xref\n0 5\n0000000000 65535 f \n`+offsets.slice(1).map(n=>String(n).padStart(10,'0')+' 00000 n \n').join('')+
+    `trailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
+}
+module.exports={shapes,pdf,calibrationRegressionPDF};
 if(require.main===module) {
   const fs=require('node:fs'),path=require('node:path');
   const destination=process.argv[2];if(!destination)throw Error('Specify the public PDF output path');

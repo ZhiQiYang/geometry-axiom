@@ -4680,7 +4680,11 @@ function feUnderlayApplyScale(distMm, inputValue = distMm, inputUnit = "mm") {
   try { ReferenceWorkspace.calibrated(bid, fe.ulCalib.pts, distMm, inputValue, inputUnit); }
   catch (error) { ul.mmPerPx = previousScale; toast(error.message); return false; }
   fe.ulCalib = null;
+  RoomOutlineWorkspace.calibrated();
   drawFaceEditor(); renderFaceInspector();
+  // Inspector restoration preserves a user's previous disclosure state. A new
+  // calibration explicitly reveals the next step after that restoration.
+  document.getElementById("refOutlineDetails")?.setAttribute("open", "");
   return true;
 }
 function feUnderlayRemove(bid) {
@@ -6583,7 +6587,7 @@ function feUnderlayPaneHTML(bid) {
     `<nav class="reference-steps" aria-label="描面步驟">` +
     `<button type="button" id="refChoosePage" data-reference-step="page" data-project-action="${sourcePage ? "reference" : "import"}" class="${sourcePage ? "done" : "current"}">${sourcePage ? "✓" : "1"} 選頁</button>` +
     `<button type="button" id="refCalibrateStep" data-reference-step="calibrate" class="${calibrated ? "done" : sourcePage ? "current" : ""}"${sourcePage ? "" : " disabled"}>${calibrated ? "✓" : "2"} 校準</button>` +
-    `<button type="button" id="refDrawOutline" data-reference-step="draw" class="${outlined ? "done" : calibrated ? "current" : ""}"${calibrated ? "" : " disabled"}>${outlined ? "✓" : "3"} 描外環</button></nav>` +
+    `<button type="button" id="refDrawOutline" data-reference-step="draw" class="${outlined ? "done" : calibrated ? "current" : ""}"${calibrated ? "" : " disabled"}>${outlined ? "✓" : "3"} 選房間／描外環</button></nav>` +
     `<input type="file" id="ulFile" accept="application/pdf,image/png,image/jpeg,image/webp,image/gif" hidden>`;
   if (ul) {
     const calibOn = !!fe.ulCalib;

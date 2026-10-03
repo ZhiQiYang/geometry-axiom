@@ -26,8 +26,7 @@
 
 ## 2026-10-03 Issue #54 房間輪廓候選
 
-
-- 保留 `#refDrawOutline` 原步驟，在既有底圖 pane 啟動房間選點／框選；`#refOutlineDetails` 集中候選、人工修正與來源核對，移除重複 `.reference-intro`／`.calibration-instruction`。
+- 保留 `#refDrawOutline` 原步驟，標示「選房間／描外環」，在既有底圖 pane 啟動房間選點／框選；`#refOutlineDetails` 集中候選、人工修正與來源核對，套用校準後展開。既有 `#refFit` 從來源 disclosure 移入此區，只 fit 來源取景視野，不改幾何。移除重複 `.reference-intro`／`.calibration-instruction`。
 - `#refRoomMethod` 選向量優先／本地影像／人工描繪；`#refRoomMinWidth`、`#refRoomMinLength` 使用固定來源單位，`#refRoomPick` 啟動選房間。未校準停用。
 - `#refRoomHorizontal`／`#refRoomVertical` 與 `#refRoomClearBarriers` 是展開後的搜尋分隔控制，不寫正式牆。`#refRoomStatus` 明示取得失敗與過期。
 - `#roomCandidateOverlay` 疊在既有 `#feDraftLayer`；點仍是 `fe.draft.pts`。`#refRoomEdge`／`#refRoomLength`／`#refRoomSetLength` 核對入值，`#refRoomVertices`／`#refRoomApplyVertices` 局部補點，`#refRoomReviewed` 每次修正後清除。
