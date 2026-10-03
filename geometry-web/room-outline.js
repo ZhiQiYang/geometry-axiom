@@ -189,11 +189,15 @@
   // are painted path centreline points, never labelled as wall/inside corners.
   function pdfSnapFeatures(list, OPS, viewport) {
     if(list.fnArray.length>200000)throw error('capacity','PDF 向量超過吸附容量，請人工描繪。');
-    const segments=[];let state={matrix:[...viewport.transform],clip:false,dash:false,alpha:1,transparent:false,text:false},stack=[];
+    const segments=[];let state={matrix:[...viewport.transform],clip:false,dash:false,alpha:1,transparent:false,text:false,mask:false},stack=[],marked=[],groups=0;
     const paints=[OPS.stroke,OPS.closeStroke,OPS.fillStroke,OPS.eoFillStroke,OPS.closeFillStroke,OPS.closeEOFillStroke];
     for(let i=0;i<list.fnArray.length;i++) {
       const op=list.fnArray[i],a=list.argsArray[i];
-      if(op===OPS.save||op===OPS.paintFormXObjectBegin){stack.push({...state,matrix:[...state.matrix]});if(op===OPS.paintFormXObjectBegin){if(a[0])state.matrix=multiply(state.matrix,a[0]);if(a[1])state.clip=true;}}
+      if(op===OPS.beginMarkedContent||op===OPS.beginMarkedContentProps)marked.push(marked.at(-1)===true || op===OPS.beginMarkedContentProps&&a[0]==='OC');
+      else if(op===OPS.endMarkedContent)marked.pop();
+      else if(op===OPS.beginGroup){stack.push({...state,matrix:[...state.matrix]});groups++;}
+      else if(op===OPS.endGroup){state=stack.pop()||state;groups=Math.max(0,groups-1);}
+      else if(op===OPS.save||op===OPS.paintFormXObjectBegin){stack.push({...state,matrix:[...state.matrix]});if(op===OPS.paintFormXObjectBegin){if(a[0])state.matrix=multiply(state.matrix,a[0]);if(a[1])state.clip=true;}}
       else if(op===OPS.restore||op===OPS.paintFormXObjectEnd)state=stack.pop()||state;
       else if(op===OPS.transform)state.matrix=multiply(state.matrix,a);
       else if(op===OPS.clip||op===OPS.eoClip)state.clip=true;
@@ -202,8 +206,8 @@
       else if(op===OPS.setStrokeRGBColor)state.transparent=false;
       else if(op===OPS.beginText)state.text=true;
       else if(op===OPS.endText)state.text=false;
-      else if(op===OPS.setGState){for(const [k,v] of a[0]||[]){if(k==='CA')state.alpha=v;if(k==='D')state.dash=!!v[0]?.length;}}
-      else if(op===OPS.constructPath && !state.clip && !state.text && !state.dash && !state.transparent && state.alpha>0 && paints.includes(a[0])) {
+      else if(op===OPS.setGState){for(const [k,v] of a[0]||[]){if(k==='CA')state.alpha=v;if(k==='D')state.dash=!!v[0]?.length;if(k==='SMask')state.mask=!!v;}}
+      else if(op===OPS.constructPath && !groups && !marked.at(-1) && !state.mask && !state.clip && !state.text && !state.dash && !state.transparent && state.alpha>0 && paints.includes(a[0])) {
         const data=a[1]?.[0];if(!data || data.length>600000)throw error('capacity','PDF 路徑超過吸附容量，請人工描繪。');
         let pts=[],curved=false,part=0;
         const finish=(closed=false)=>{
