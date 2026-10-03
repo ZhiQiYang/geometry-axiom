@@ -2,6 +2,8 @@
 
 日期：2026-10-03。基準 `1805bb585a74f4a5759367aab7ef8de016d96d4d`，隔離分支 `codex/issue-54-room-outline`。本文件使用自製公開圖；沒有讀取、上傳或提交私人圖面。開工 feedback CLI 無待處理紀錄。
 
+最後整合 main `31ba2bec56adacea4e70fe2ad341a14425e04d13`；程式驗證 commit `4bb30b98fcb15e55251654c61d2715c761811083`。[完整 CI](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37111989788) 七組全部通過；後續僅補此報告與 BACKLOG，沒有改程式。
+
 ## 開發與範圍
 
 - A：`45bcd70` 綁定來源與輪廓核對，原有矩形不代表完成。
@@ -21,8 +23,18 @@
 | 完整空間瀏覽器回歸 | `GEOMETRY_TEST_URL=http://localhost:18855/`、隔離 feedback 與 Chrome profile，`node geometry-web/space_model_test.js`，未設 scope filter | 183 通過、0 失敗；0 uncaught exceptions／console errors；此預設 suite 不含選配 timber-material／timber-source-guards |
 | 新流程最後 focused browser | 同一隔離服務，`GEOMETRY_ROOM_OUTLINE_ONLY=1 node geometry-web/cdp_test.js` | 72 通過、0 失敗；0 uncaught exceptions；不是完整回歸 |
 | 完整 `cdp_test.js`（`0cca3a7`） | 另一隔離服務 18856、獨立 feedback／Chrome 9356，不設 scope filter，`GEOMETRY_CDP_UPDATE_GOLDEN=1` | 1,756 通過、0 失敗、0 略過群組；75 段。逐段 diff 僅新增 P79=72、total +72，既有 74 段逐一不變 |
+| **最後完整非瀏覽器 CI（`4bb30b9`）** | `npm run build`、`python3 tests/run_all.py --build`，Linux 固定提交 | **40 suites；1,335 通過、0 失敗、1 個具名 GDI 平台略過；exit 0** |
+| **最後完整畫布 CI（`4bb30b9`）** | `node geometry-web/cdp_test.js`，無 scope filter／golden 更新旗標 | **1,776 通過、0 失敗、0 略過群組；75 段與 golden 嚴格相符**。新 main 的 P77=128 完整保留，新增 P79=72 |
+| 最後空間 CI | `node geometry-web/space_model_test.js` | 183 通過、0 失敗；預設完整 scope |
+| 最後角材 CI | `GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js` | 79 通過、0 失敗；選配角材 scope，不能冒充完整空間 |
+| 最後組構／網格／文件 CI | 既有 matrix 的 assembly、grid、documents 三組 | 各 128／138／47 通過、0 失敗；組構／網格為 partial scope，完整畫布已另跑 |
+| 整合後 Node 來源／保存／投影／組構／候選 | `node --test tests/test_project_store.js tests/test_reference_workspace_races.js tests/test_face_projection_store.js tests/test_assembly_project_store.js tests/test_room_outline.js` | 87 通過、0 失敗；含 /9 收據與生成能力並存、刪能力時拒絕 |
 
 本機原 `bridge.exe` 被使用者服務鎖定，未終止該服務。另編獨立 adapter／bridge；原生指紋及啟動煙霧測試已驗證。Windows 安全設定未更動。使用者提供的封鎖通知檔名為 `axiom-model-base.exe`；本次服務與測試使用獨立 `issue54/model-base.exe`，上列完整結果未出現因封鎖而未執行的測試。
+
+整合新 main 後，新 bridge 確實持續被 WinError 4551 封鎖（registry 三次重試及稍後不重編重試仍受阻）。Windows 該輪只執行 503 通過、0 失敗、1 平台略過，多個 bridge 相依 suites 沒跑，**不能算完整通過**；同次 run 在 main 更新期間已載入舊 suite 清單，新增 runtime suite 導致 expected mismatch，exit 1。最終改以固定 `4bb30b9` 的完整 Linux CI 驗證，沒有用旧橋接器偽装新版。
+
+WSL/GCC 也編譯了同一來源並驗證 `/runtime` fresh，Windows Chrome 經 127.0.0.1 實跑過完整模式；該嘗試於 P4 六面盒等待超時（49 通過、1 失敗、未完成），**未算通過**。當下六面盒仍在約 1 秒一次的 bridge 請求中，晚到結果才建立完；未為此縮減驗收或更改核心。最後成功證據是上述 Linux CI。另保留上一輪 CI 的 P8 子格取消後 disabled 按鈕時機失敗；`4bb30b9` 只加等待有效預覽／按鈕就緒，沒有減少原斷言、改公理或降低 golden。
 
 完整 CDP 的 `uncaughtBrowserExceptions=1` 是既有 P38 回報測試明確注入並期待的 `Error: fb-auto-probe`，log 標為 `[EXPECTED EXCEPTION]`；没有非預期例外。P79 前後例外數不變。沒有把刻意注入的錯誤隱藏成 0。
 
@@ -91,7 +103,7 @@ node geometry-web/space_model_test.js
 
 空間圖證明既有引擎可建立封閉邊界模型；該凹口案例預覽仍明示「材料牆未能建立」，沒有將厚牆產生或材料工程量宣稱為通過。本次未改既有厚牆生成器。
 
-交付 PR：[#63](https://github.com/ZhiQiYang/geometry-axiom/pull/63)。主分支整合後正在重跑完整測試；上述先前基準通過結果保留，不冒充新整合版本結果。最新 CI 連結以 PR checks 中最後 head 為準，未將 pending CI 寫成通過。
+交付 PR：[#63](https://github.com/ZhiQiYang/geometry-axiom/pull/63)。可核對結果：[native](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37111989788/job/111171526401)、[完整 canvas](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37111989788/job/111171526653)、[space](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37111989788/job/111171526651)、[timber](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37111989788/job/111171526677)、[assembly](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37111989788/job/111171526701)、[grid](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37111989788/job/111171526619)、[documents](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37111989788/job/111171526660)。先前基準、本機受阻／失敗嘗試及最後成功結果各自標示，沒有把 pending 或未執行寫成通過。程式完整驗證後將 PR 標為 ready；本 agent 未合併本 PR、未關閉 issue、未部署。所有自建測試服務已停止，使用者原服務未操作。
 
 ## 已知限制
 
