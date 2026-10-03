@@ -32,7 +32,7 @@ D34/I42/R35 已採納；公理版本來源為 `cc6adff4c9c783ce78bcbd849754b6925
 ## 驗收證據
 
 2026-10-03 本機完整重新建置測試：1,311 項通過、0 失敗、1 項既有 Windows GDI 平台略過。
-新 native 生成 suite 16 項，使用真实 C bridge；archive／transport／舊模型版本相容回歸亦通過。
+新 native 生成 suite 在 PR #53 head `618da535` 為 17 項，使用真实 C bridge；archive／transport／舊模型版本相容回歸亦通過。
 `tests/build_assembly_generation_example.py --check` 由全新 native 流程重建並比對完整範例 bytes。
 實際 Chrome 工作區測試與完整七組 CI 的最終結果將附在 PR；尚未完成前不宣稱 G09/G10 通過。
 
