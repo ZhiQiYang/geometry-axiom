@@ -232,7 +232,7 @@ window.AssemblyWorkspace=(()=>{
     for(const id of new Set([...beforeI.keys(),...afterI.keys()])){const a=beforeI.get(id),b=afterI.get(id);if(identityValue(a)!==identityValue(b)){title=b?`這次會${a?'更新':'生成'}「${b.value.source.name}」`:`這次會刪除「${a.value.source.name}」與所屬角材`;rows.push(['來源',JSON.stringify(b?.value.source||a.value.source)]);}}
     // The native candidate supplies all geometry, including ordinary external
     // dependents. Membership labels are presentation only, never the impact set.
-    const describe=g=>g?`中心線 ${g.centerline} mm，長度 ${g.length} mm，局部位置 ${g.u},${g.v}，世界位置 ${g.origin.join(',')}，擺向 ${g.dir}/${g.side}，A ${g.A} / B ${g.B}，世界軸 ${g.axes.map(a=>a.join(',')).join(' / ')}`:'無';
+    const describe=g=>g?`承載面 #${g.surface}，中心線 ${g.centerline} mm，長度 ${g.length} mm，局部位置 ${g.u},${g.v}，世界位置 ${g.origin.join(',')}，擺向 ${g.dir}/${g.side}，A ${g.A} / B ${g.B}，世界軸 ${g.axes.map(a=>a.join(',')).join(' / ')}`:'無';
     const unchanged=[];
     for(const t of p.impact?.timbers||[]){
       const label=owned.get(t.id)||`角材 #${t.id}（組構外）`;

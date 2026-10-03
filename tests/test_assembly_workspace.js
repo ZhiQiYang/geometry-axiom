@@ -453,6 +453,11 @@ test('source-only instance edit keeps unchanged owned geometry in the preview',(
   const html=f.t.previewCopy({valid:true,before:{rules:[],bindings:[],instances:[before]},after:{rules:[],bindings:[],instances:[after]},impact:{schema:'candidate-geometry/1',timbers:[{id:7,before:geometry,after:geometry}],guides:[]}});
   assert.match(html,/構件 #3 → 角材 #7/);assert.match(html,/沒有幾何變更/);assert.match(html,/長度 1973 mm/);assert.match(html,/世界位置 514,1487,2500/);
 });
+test('surface-only reassignment names both placements in the visible geometry diff',()=>{
+  const f=fixture(),before={surface:1,centerline:1000,length:1960,u:520,v:987,dir:'+u',side:'+n',A:27,B:33,origin:[520,987,2500],axes:[[1,0,0],[0,1,0],[0,0,1]]},after={...before,surface:2};
+  const html=f.t.previewCopy({valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},impact:{schema:'candidate-geometry/1',timbers:[{id:92,before,after}],guides:[]}});
+  assert.match(html,/承載面 #1.* → 承載面 #2/);assert.match(html,/角材 #92（組構外）/);assert.doesNotMatch(html,/未變更角材/);
+});
 function diff(f,oldSource,newSource,oldValue=27,newValue=27,axis='A'){
   const binding={id:1,name:'配置',rule:{id:1,version:1},slots:[{slotId:1,A:literal(27),B:literal(33),contactFace:'A',orientation:'B'},{slotId:2,A:null,B:null,contactFace:null,orientation:null}]};
   const before={value:copy(binding),effective:[{slotId:1,A:{value:27},B:{value:33}}]},after=copy(before);before.value.slots[0][axis]=oldSource;after.value.slots[0][axis]=newSource;
