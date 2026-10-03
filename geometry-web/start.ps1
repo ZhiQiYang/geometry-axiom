@@ -4,6 +4,17 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
+$portProbe = [System.Net.Sockets.TcpClient]::new()
+try {
+    $null = $portProbe.ConnectAsync('127.0.0.1', $Port).Wait(500)
+    $portBusy = $portProbe.Connected
+} catch { $portBusy = $false } finally { $portProbe.Dispose() }
+if ($portBusy) {
+    & python (Join-Path $PSScriptRoot 'runtime_version.py') --probe $Port
+    if ($LASTEXITCODE -ne 0) { throw "連接埠 $Port 上的服務無法證明是目前版本。請先保存專案，再重啟；未開啟舊服務。" }
+    Write-Host "目前版本已在執行：http://localhost:$Port/"
+    exit 0
+}
 $linuxRepoOutput = & wsl.exe -d $Distro --user root --exec wslpath -u $repo.Replace('\', '/')
 if ($LASTEXITCODE -ne 0 -or !$linuxRepoOutput) { throw '無法取得 WSL 專案路徑。' }
 $linuxRepo = $linuxRepoOutput.Trim()

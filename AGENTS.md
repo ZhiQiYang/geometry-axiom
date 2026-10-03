@@ -83,6 +83,19 @@ agent 不得自行判定「這次情況特殊」。
 
 ## 使用者回報收件匣(GEO-183)
 
+### 開啟與重啟應用的版本紀律（GEO-231）
+
+使用者要求「開啟應用」時，以 `geometry-web/start.ps1` 為一般入口。
+已有服務不可只看網址能連線就沿用；先跑
+`python geometry-web/runtime_version.py --probe <port>`，成功才可宣稱為目前版本。
+404、指紋不符、不同 repository 或 `fresh:false` 都不能當成功。
+固定 `X-Geometry-Release` 是能力名稱，不是目前程式版本。
+
+需要重啟時先保全目前專案與核心 `dump`；只停止目標 port 的服務及其子 bridge，
+驗證或重編目前核心後啟動，載回場景並逐字核對 dump，再驗 `/runtime` 與實際畫面。
+不得把使用者在用的服務當測試服務重置。完整 `.gcanvas` 的附圖及草稿不可用 `.scene`
+備份冒充；保留瀏覽器分頁與既有專案恢復資料，不能擅清瀏覽器儲存。
+
 使用者測 geometry-web 時用 F8 / 右下「回報」鈕 / Shift+F8 當場留回報,程式錯誤也會自動存一筆。
 每筆在 repo 的 `feedback/<id>/`(不進 git):說明、指到的 DOM 元素、畫面狀態、回報前的操作黑盒子、
 當下世界 `world.scene`、畫面快照 `page.html`、選填截圖。

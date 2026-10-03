@@ -25,6 +25,9 @@ VENDOR_FILES = {"/" + p.relative_to(HERE).as_posix(): p
 SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根目錄
 sys.path.insert(0, str(HERE))
 import feedback_store  # noqa: E402
+from runtime_version import RuntimeSnapshot, RESTART_MESSAGE
+
+RUNTIME = RuntimeSnapshot(SCENE_DIR)
 FEEDBACK_MAX_BYTES = 32 * 1024 * 1024
 API_MAX_BYTES = 64 * 1024  # Escaped 4094-byte command, 256 receipt acknowledgements.
 UPLOAD_MAX_BYTES = 16 * 1024 * 1024
@@ -244,35 +247,42 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):  # 靜音
         pass
 
-    def _send(self, body: bytes, ctype="application/json; charset=utf-8"):
-        self.send_response(200)
+    def _send(self, body: bytes, ctype="application/json; charset=utf-8", status=200):
+        self.send_response(status)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("X-Geometry-Session", API_SESSION)
+        self.send_header("X-Geometry-Version", RUNTIME.version)
+        if status == 409:
+            self.send_header("X-Geometry-Stale", "1")
         self.send_header("X-Geometry-Release", "engineering-spec-v1-20260928")
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
         self.wfile.write(body)
 
     def do_GET(self):
+        if self.path == '/runtime':
+            self._send(json.dumps({'schema': 'geometry-runtime/1', 'version': RUNTIME.version,
+                                   'fresh': RUNTIME.fresh(), 'root': str(SCENE_DIR),
+                                   'pid': os.getpid(), 'session': API_SESSION}).encode())
+            return
         if self.path == "/" or self.path == "/index.html":
-            self._send((HERE / "index.html").read_bytes(),
+            if not RUNTIME.fresh():
+                self._send(('<!doctype html><html lang="zh-Hant"><meta charset="utf-8">'
+                            '<title>應用程式需要重新啟動</title><h1>應用程式需要重新啟動</h1><p>'
+                            + RESTART_MESSAGE + '</p></html>').encode(), 'text/html; charset=utf-8', status=409)
+                return
+            self._send(RUNTIME.index(),
                        "text/html; charset=utf-8")
-        elif self.path in {"/documents.css", "/document-cases.css", "/assembly-workspace.css", "/parameters.css", "/app.css", "/space-workspace.css", "/engineering-workspace.css", "/grid-system-workspace.css", "/grid-inspector.css",
-                           "/canvas-labels.css", "/workspace-guidance.css", "/project-ui.css", "/workspace-shell.css"}:
-            self._send((HERE / self.path[1:]).read_bytes(),
-                       "text/css; charset=utf-8")
-        elif self.path in {"/timber-schedule.js", "/document-format.js", "/document-cases.js", "/documents.js", "/assembly-workspace.js", "/parameters.js", "/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js",
-                           "/project-store.js", "/reference-workspace.js", "/project-ui.js", "/workspace-guidance.js", "/workspace-shell.js",
-                           "/model-viewer.js", "/space-workspace.js", "/engineering-workspace.js", "/engineering-adapter.js", "/grid-system-workspace.js", "/grid-inspector.js", "/grid-trial.js"}:
-            self._send((HERE / self.path[1:]).read_bytes(),
-                       "text/javascript; charset=utf-8")
+        elif self.path in RUNTIME.assets and self.path.endswith(('.js', '.css')):
+            self._send(RUNTIME.assets[self.path], 'text/css; charset=utf-8' if self.path.endswith('.css')
+                       else 'text/javascript; charset=utf-8')
         elif self.path in VENDOR_FILES:
             path = VENDOR_FILES[self.path]
             ctype = {".js": "text/javascript; charset=utf-8",
                      ".mjs": "text/javascript; charset=utf-8",
                      ".wasm": "application/wasm"}.get(path.suffix, "application/octet-stream")
-            self._send(path.read_bytes(), ctype)
+            self._send(RUNTIME.vendor[self.path], ctype)
         elif self.path in {"/documents/finish", "/documents/vision", "/documents/guide", "/documents/engineering"}:
             # Explicit catalog only: no filesystem path or local upload endpoint.
             documents = {
@@ -338,6 +348,23 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_error(413)
             return
         body = self.rfile.read(length)
+
+        # Keep dump/receipts available so a stale server can still be saved.
+        # All geometry mutations and derived previews require a current runtime.
+        readonly = False
+        if self.path == '/api':
+            try:
+                data = json.loads(body.decode('utf-8'))
+                readonly = isinstance(data, dict) and ('receipt' in data or
+                           data.get('cmd', '').split(' ', 1)[0] in
+                           {'dump', 'objects', 'surfaces', 'boundary', 'references', 'obstacles', 'render', 'pick', 'bhit'})
+            except (ValueError, UnicodeDecodeError, AttributeError):
+                pass
+        client_version = self.headers.get('X-Geometry-Version')
+        if (self.path != '/feedback' and not readonly and
+                (not RUNTIME.fresh() or client_version and client_version != RUNTIME.version)):
+            self._send(err_json(RESTART_MESSAGE), status=409)
+            return
 
         if self.path in {"/assembly/preview", "/assembly/generate-preview", "/engineering/preview", "/engineering/validate-project"}:
             from engineering_transport import file_request
@@ -410,10 +437,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"http://localhost:{PORT}  （Ctrl-C 結束；bridge={BRIDGE_CMD[0]}）")
     try:
         host = "0.0.0.0" if os.environ.get("GEOMETRY_MANAGED_PREVIEW") == "1" and PORT == 4173 else "127.0.0.1"
-        PreviewHTTPServer((host, PORT), Handler).serve_forever()
+        server = PreviewHTTPServer((host, PORT), Handler)
+        print(f"http://localhost:{PORT}  （Ctrl-C 結束；版本={RUNTIME.version[:12]}；bridge={BRIDGE_CMD[0]}）", flush=True)
+        server.serve_forever()
     finally:
         for path in _upload_temps:
             try:

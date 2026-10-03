@@ -89,6 +89,22 @@ python serve.py 8765       :: 啟動靜態檔 + /api 橋接服務
 
 瀏覽器開 `http://localhost:8765/`。
 
+### 啟動時的版本檢查（GEO-231）
+
+請以 `start.ps1` 作為一般開啟入口。連接埠已有服務時，它先呼叫 `/runtime`，
+核對 repository 路徑、目前來源指紋及服務是否過期；舊服務沒有這個端點也會拒絕沿用。
+不能只憑網址可連線或固定 `X-Geometry-Release` 標籤，宣稱已開啟目前版本。
+
+`serve.py` 在啟動時固定保存 HTML、JS、CSS 與 vendor 的同版內容，並核對首頁引用的
+元件存在。程式／核心來源更新後，新開首頁回 HTTP 409 的重啟提示；既有頁面的修改與
+推導請求也拒絕。`dump`、讀取及已提交指令的 receipt 仍可使用，讓目前專案能先保存。
+頁面送出的來源版本不同於服務時，也拒絕修改。服務不自動關閉或捨棄使用中的場景。
+
+人工或 agent 重啟時：先保存完整 `.gcanvas`，至少另存當下 `dump` 備份；只停止該
+連接埠的服務及其 bridge，重新編譯或驗證核心來源指紋，重啟後載回場景並核對 dump。
+最後以 `python geometry-web/runtime_version.py --probe 8765` 驗證（從 repo 根執行），
+再開啟頁面。`.scene` 備份只涵蓋核心世界，不能代替附圖與未套用草稿的完整專案。
+
 `serve.py` 行為：
 
 - `GET /` → `index.html`；`GET /app.css`、`/app.js`、`/reference-ui.js` → 同名靜態檔。
