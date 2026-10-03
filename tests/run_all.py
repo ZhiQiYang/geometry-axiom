@@ -102,6 +102,10 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_navigation': 'tests/test_cdp_navigation.js',
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
+NODE_PURE_TEST_FILES = {
+    'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',
+    'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
+}
 NODE_EXCLUDED = {
     'tests/room_outline_fixture.js': 'Self-authored PDF/scan fixture generator; not a node test',
     'tests/reference_pdf_fixture.js': '夾具產生器，不是測試：node --test 會把它算成 1 個假的通過 test',
@@ -171,9 +175,10 @@ def check_registry():
     for stem in sorted(set(PY_NEEDS) - disk_py):
         problems.append('PY_NEEDS 登記了 %s，但 tests/%s.py 不存在' % (stem, stem))
     disk_js = {'tests/' + p.name for pattern in ('*.js', '*.cjs', '*.mjs') for p in HERE.glob(pattern)}
-    known = set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) | set(NODE_EXCLUDED)
+    known = (set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) |
+             set(NODE_PURE_TEST_FILES.values()) | set(NODE_EXCLUDED))
     for rel in sorted(disk_js - known):
-        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
+        problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
     for rel in sorted(known - disk_js):
         problems.append('run_all.py 登記了 %s，但該檔不存在' % rel)
     return problems
@@ -201,6 +206,8 @@ def build_suites():
     ]
     suites += [Suite(name, 'node-script', [file], [], 300, needs_node=True, label=file)
                for name, file in NODE_DOCUMENT_SCRIPT_FILES.items()]
+    suites += [Suite(name, 'node-test', ['--test', '--test-reporter=spec', file], [], 300,
+                     needs_node=True, label=file) for name, file in NODE_PURE_TEST_FILES.items()]
     return suites
 
 

@@ -394,7 +394,6 @@ let zoom = 1, panX = 0, panY = 0;
 let selected = null;        /* 點選的 pick 結果 {ops} */
 let panning = null;         /* 中鍵平移狀態 */
 let dragging = null;        /* 參考線拖曳 {guide, view} */
-let pickSeq = 0;
 
 /* ---- 通訊 ---- */
 const connection = { phase: "loading", known: false, error: "", recovering: false };
@@ -802,6 +801,7 @@ function replay(ops, root) {
 
 /* ---- 重繪 ---- */
 async function render() {
+  hoverPickScheduler.cancel();
   const r = await api("render");
   if (!r.ok) { layout = null; world.textContent = ""; setStatus("✗ " + (r.error || "場景沒有可畫的表面")); toast(r.error || "場景沒有可畫的表面"); return; }
   layout = r.layout;
@@ -823,10 +823,87 @@ function showOverlay(ops) {
 }
 /* hover 與 selected 都要畫在同一個 mm 空間 → 放 world 內尾端最簡單。 */
 
-async function refreshHover(sv) {
-  const seq = ++pickSeq;
-  const p = await pickAt(sv);
-  if (seq !== pickSeq) return;            /* 滑鼠還在動，丟掉舊結果 */
+/* Hover is read-only: one request may be in flight and one latest point may
+   wait for the next frame. Exact pointerdown picks never use this queue. */
+function createHoverPickScheduler(request, scheduleFrame = requestAnimationFrame, cancelFrame = cancelAnimationFrame,
+                                  clearPresentation = () => {}) {
+  let pending = null, inFlight = false, frame = null, serial = 0;
+  function current(item) {
+    try { return item.serial === serial && item.current(); }
+    catch (error) { console.error("Hover context check failed", error); return false; }
+  }
+  function schedule() {
+    if (!inFlight && pending && frame === null) frame = scheduleFrame(run);
+  }
+  function run() {
+    frame = null;
+    if (inFlight || !pending) return;
+    const item = pending; pending = null;
+    if (!current(item)) return;
+    inFlight = true;
+    void (async () => {
+      let result;
+      try { result = await request(item.point); }
+      catch (error) { result = { ok: false, error: error.message || "拾取失敗" }; }
+      try {
+        if (current(item)) item.apply(result, item.point);
+      } catch (error) {
+        console.error("Hover update failed", error);
+      } finally {
+        inFlight = false;
+        schedule();
+      }
+    })();
+  }
+  return {
+    enqueue(point, current, apply) {
+      pending = { point: { ...point }, current, apply, serial: ++serial };
+      schedule();
+    },
+    cancel() {
+      serial++; pending = null;
+      if (frame !== null) { cancelFrame(frame); frame = null; }
+      try { clearPresentation(); }
+      catch (error) { console.error("Hover cleanup failed", error); }
+      /* Leave an already dispatched read to finish; never abort mutations. */
+    }
+  };
+}
+let projectedHoverOverlay = null;
+const hoverPickScheduler = createHoverPickScheduler(pickAt, requestAnimationFrame, cancelAnimationFrame,
+                                                   clearHoverPresentation);
+function hoverContextCurrent() {
+  const context = ReferenceWorkspace.context(), history = ReferenceWorkspace.history;
+  const frame = history.frame, top = history.undo.at(-1), group = history.group;
+  const focus = oc.focus, edit = oc.edit, objectMode = oc.on, session = connection.session;
+  return () => connection.phase === "ready" && connection.session === session && !oc.busy &&
+    ReferenceWorkspace.context() === context && history.frame === frame &&
+    history.undo.at(-1) === top && history.group === group && oc.focus === focus &&
+    oc.edit === edit && oc.on === objectMode;
+}
+function clearMainHover() {
+  setHover("");
+  const hi = $("v3HoverInfo"); if (hi) hi.textContent = "—";
+  if (!selected) overlay.textContent = "";
+}
+function clearProjectedHover() {
+  if (projectedHoverOverlay) projectedHoverOverlay.textContent = "";
+  projectedHoverOverlay = null;
+}
+function clearHoverPresentation() {
+  clearMainHover();
+  clearProjectedHover();
+}
+function refreshHover(sv) {
+  const current = hoverContextCurrent(), viewLayout = layout;
+  const z = zoom, px = panX, py = panY;
+  hoverPickScheduler.enqueue(sv, () => current() && tool === "view" && !dragging && !panning &&
+    cv.isConnected && !cv.hasAttribute("hidden") && layout === viewLayout && zoom === z && panX === px && panY === py,
+    showMainHover);
+}
+function showMainHover(p, sv) {
+  clearProjectedHover();
+  if (!p.ok) { clearMainHover(); return; }
   setHover(p.desc || "");
   /* D1:右欄 pick 面板 */
   const hi = $("v3HoverInfo");
@@ -838,6 +915,7 @@ async function refreshHover(sv) {
   if (show && show.length) replay(show, overlay);
   v3FixText(transform().s);
 }
+window.addEventListener("geometry-definition-changed", () => hoverPickScheduler.cancel());
 
 /* ---- 事件 ---- */
 /* 拖曳放開時選合法引用並預覽；同一手勢一筆歷史，單擊不改模型。 */
@@ -876,16 +954,17 @@ cv.addEventListener("pointermove", async e => {
     return;
   }
   const sv = screenToView(e.clientX, e.clientY);
-  if (tool !== "view") { if (sv) canvasMove(e, sv); return; }
+  if (tool !== "view") { hoverPickScheduler.cancel(); if (sv) canvasMove(e, sv); return; }
   if (dragging) {
     queueGuideDrag(dragging, sv);
     return;
   }
-  if (!sv) { setHover(""); if (!selected) overlay.textContent = ""; return; }
+  if (!sv || oc.busy) { hoverPickScheduler.cancel(); clearMainHover(); return; }
   refreshHover(sv);
 });
 
 cv.addEventListener("pointerdown", async e => {
+  hoverPickScheduler.cancel();
   if (e.button === 1) {                     /* 中鍵平移 */
     panning = { x: e.clientX, y: e.clientY };
     e.preventDefault();
@@ -929,7 +1008,8 @@ cv.addEventListener("pointerup", async e => {
   document.body.classList.toggle("v3-picked", !!selected);
   applyTransform();
 });
-cv.addEventListener("pointercancel", () => { panning = null; finishGuideDrag(true); });
+cv.addEventListener("pointerleave", () => { hoverPickScheduler.cancel(); clearMainHover(); });
+cv.addEventListener("pointercancel", () => { hoverPickScheduler.cancel(); panning = null; finishGuideDrag(true); });
 cv.addEventListener("lostpointercapture", () => { if (dragging) finishGuideDrag(true); });
 cv.addEventListener("wheel", e => {
   e.preventDefault();
@@ -1574,6 +1654,7 @@ function markSceneItem() {
 }
 /* 換場景前清工作區焦點與面面內快取——舊場景的 guide/timber 殘影會誤刪新場景同號物件 */
 function resetSceneFocus() {
+  hoverPickScheduler.cancel();
   clearCanvasSelections();
   GridEditor.clear();
   ReferenceVisibility.clear();
@@ -2777,6 +2858,45 @@ function feGridStep() {
   for (const s of SER) if (s * fe.zoom >= 24) return s;
   return SER[SER.length - 1];
 }
+/* Decorative grid only: source grids and snapping retain their own spacing.
+   Work follows the viewport, not the D1-sized face. Sample around global zero
+   when fit zoom is below the smallest display spacing, keeping major colors. */
+function feBackgroundGridPlan(bb, width, height, zoom, panX, panY, gridStep) {
+  if (!bb || bb.length !== 4 || ![...bb, width, height, zoom, panX, panY, gridStep].every(Number.isFinite) ||
+      width <= 0 || height <= 0 || zoom <= 0 || gridStep <= 0 || bb[0] > bb[2] || bb[1] > bb[3]) return null;
+  const spacing = Math.max(24, (width + height + 96) / 4096);
+  const stride = 4 ** Math.max(0, Math.ceil(Math.log(Math.max(1, spacing / (gridStep * zoom))) / Math.log(4)));
+  const step = gridStep * stride, margin = 24 / zoom, pad = 80 / zoom;
+  const x0 = Math.max(bb[0] - pad, -panX / zoom - margin);
+  const y0 = Math.max(bb[1] - pad, -panY / zoom - margin);
+  const x1 = Math.min(bb[2] + pad, (width - panX) / zoom + margin);
+  const y1 = Math.min(bb[3] + pad, (height - panY) / zoom + margin);
+  const xFirst = Math.ceil(x0 / step), xLast = Math.floor(x1 / step);
+  const yFirst = Math.ceil(y0 / step), yLast = Math.floor(y1 / step);
+  if (![step, pad, margin, x0, y0, x1, y1].every(Number.isFinite) || step <= 0 ||
+      x0 > x1 || y0 > y1 || ![xFirst, xLast, yFirst, yLast].every(Number.isSafeInteger)) return null;
+  return {x0, y0, x1, y1, xFirst, xLast, yFirst, yLast, step, stride, zoom};
+}
+function feUpdateBackgroundGrid(bb) {
+  const group = $("feBackgroundGrid"), viewport = $("faceEditorSvg");
+  if (!group || !viewport || !oc.edit || oc.focus?.t !== "face") return;
+  const loops = fe.work || oc.bmap[oc.edit.bid];
+  if (!bb && loops) bb = loopsBBox(loops);
+  const r = viewport.getBoundingClientRect();
+  const plan = $("faceGridToggle").checked ?
+    feBackgroundGridPlan(bb, r.width, r.height, fe.zoom, fe.panX, fe.panY, feGridStep()) : null;
+  const key = JSON.stringify(plan);
+  if (group._feGridKey === key) return;
+  group._feGridKey = key;
+  group.textContent = "";
+  if (!plan) return;
+  const {x0, y0, x1, y1, xFirst, xLast, yFirst, yLast, step, stride, zoom} = plan;
+  const line = (index, attrs) => el("line", {...attrs,
+    stroke: (index * stride) % 4 === 0 ? "#d3dae4" : "#e6eaf0",
+    "stroke-width": 1 / zoom, class: "fe-grid-line"}, group);
+  for (let i = xFirst; i <= xLast; i++) line(i, {x1:i * step, y1:y0, x2:i * step, y2:y1});
+  for (let i = yFirst; i <= yLast; i++) line(i, {x1:x0, y1:i * step, x2:x1, y2:i * step});
+}
 function feApply(keepFit = false) {
   if (!keepFit) fe.fittedBounds = null;
   cancelCanvasMarquee();
@@ -2784,6 +2904,7 @@ function feApply(keepFit = false) {
     `translate(${fe.panX},${fe.panY}) scale(${fe.zoom})`);
   const zl = $("feZoomLevel");
   if (zl) zl.textContent = Math.round(fe.zoom * 100) + "%";
+  feUpdateBackgroundGrid();
   fePlaceOverlays();
 }
 /* B4:縮放變動後要重選格距 → transform + 重繪 */
@@ -3321,6 +3442,7 @@ function renderSpaceInspector(sp) {
 
 /* 三視圖全開：ops 的 begin/end 自帶 tx/ty,viewBox 取三視圖聯集 */
 async function renderSpaceProjection() {
+  hoverPickScheduler.cancel();
   const svg = $("spaceProjSvg");
   svg.textContent = "";
   const r = await api("render");
@@ -4670,19 +4792,8 @@ function drawFaceEditor() {
   /* B4:格線依 zoom 選檔——螢幕間距 ≥24px,主格線每 4 格;
      (#faceGridSizeSelect 只管吸附,不再控制顯示格距；計算抽到 feGridStep()，diff#12
      面內 e 的 PolyDraft gridMm 共用同一份) */
-  if ($("faceGridToggle").checked) {
-    const g = feGridStep();
-    const x0 = Math.floor((bb[0] - pad) / g) * g, x1 = Math.ceil((bb[2] + pad) / g) * g;
-    const y0 = Math.floor((bb[1] - pad) / g) * g, y1 = Math.ceil((bb[3] + pad) / g) * g;
-    for (let x = x0; x <= x1; x += g)
-      el("line", { x1: x, y1: y0, x2: x, y2: y1,
-        stroke: (x / g) % 4 === 0 ? "#d3dae4" : "#e6eaf0",
-        "stroke-width": 1 / z, class: "fe-grid-line" }, root);
-    for (let y = y0; y <= y1; y += g)
-      el("line", { x1: x0, y1: y, x2: x1, y2: y,
-        stroke: (y / g) % 4 === 0 ? "#d3dae4" : "#e6eaf0",
-        "stroke-width": 1 / z, class: "fe-grid-line" }, root);
-  }
+  el("g", {id:"feBackgroundGrid", "pointer-events":"none"}, root);
+  feUpdateBackgroundGrid(bb);
   /* B5:原點標(GEO-190:加 fe-origin-mark,和 .fe-grid-line 一起在 CSS 設 pointer-events:none——
      這兩種線本來就沒有任何點擊處理,但底圖插在最底層時,滑鼠按在線上會讓事件目標變成這條線
      而不是 #feUnderlay,底圖就拖不動) */
@@ -8038,6 +8149,7 @@ function renderFaceInspector() {
   }
   const pt = pane.querySelector("#projectionDetails");
   pt.addEventListener("toggle", async () => {
+    hoverPickScheduler.cancel();
     fe.projOpen = pt.open;
     if (fe.projOpen && !fe.projViews.size) {
       const v = feDefaultView(bid);
@@ -8272,6 +8384,7 @@ function feDefaultView(bid) {
   return a[2] >= a[0] && a[2] >= a[1] ? 2 : (a[1] >= a[0] ? 0 : 1);
 }
 async function feRenderProjection() {
+  hoverPickScheduler.cancel();
   const box = $("projViews");
   if (!box || !fe.projOpen) return;
   const r = await api("render");
@@ -8324,22 +8437,37 @@ function bindProjInteract(svg, viewIdx, overlay, refresh) {
                          overlay, refresh, true);
 }
 function bindProjectedGuideDrag(svg, locate, overlay, repaint, localOverlay) {
-  let active = null, seq = 0;
-  svg.onpointermove = async e => {
+  let active = null;
+  const clearHover = () => {
+    overlay.textContent = ""; setHover("");
+    if (projectedHoverOverlay === overlay) projectedHoverOverlay = null;
+  };
+  svg.onpointermove = e => {
     const loc = locate(e);
     if (active) { queueGuideDrag(active, loc); return; }
-    if (!loc || oc.busy) return;
-    const my = ++seq;
-    const p = await api(`pick ${loc.v} ${loc.x} ${loc.y} 12`);
-    if (my !== seq || active) return;
-    setHover(p.desc || "");
-    overlay.textContent = "";
-    if (p.hover && p.hover.length)
-      replay(localOverlay ? p.hover.filter(o => o.op !== "begin" && o.op !== "end") : p.hover, overlay);
+    if (!loc || oc.busy) { hoverPickScheduler.cancel(); clearHover(); return; }
+    const current = hoverContextCurrent();
+    const bounds = svg.getAttribute("viewBox"), ctm = svg.getScreenCTM();
+    const matrix = ctm && [ctm.a, ctm.b, ctm.c, ctm.d, ctm.e, ctm.f].join(",");
+    hoverPickScheduler.enqueue({ ...loc, r: 12 }, () => {
+      const c = svg.getScreenCTM();
+      return current() && !active && svg.isConnected && !svg.closest("[hidden]") &&
+        (!localOverlay || fe.projOpen) && svg.getAttribute("viewBox") === bounds &&
+        c && [c.a, c.b, c.c, c.d, c.e, c.f].join(",") === matrix;
+    }, p => {
+      clearHoverPresentation();
+      clearHover();
+      if (!p.ok) return;
+      setHover(p.desc || "");
+      projectedHoverOverlay = overlay;
+      if (p.hover && p.hover.length)
+        replay(localOverlay ? p.hover.filter(o => o.op !== "begin" && o.op !== "end") : p.hover, overlay);
+    });
   };
   svg.onpointerdown = e => {
     if (e.button !== 0 || oc.busy) return;
     const loc = locate(e); if (!loc) return;
+    hoverPickScheduler.cancel(); clearHover();
     svg.setPointerCapture(e.pointerId);
     const d = { guide: -1, view: loc.v, origin: loc, started: false, failed: false, repaint };
     active = d;
@@ -8355,13 +8483,14 @@ function bindProjectedGuideDrag(svg, locate, overlay, repaint, localOverlay) {
     })().catch(err => { d.failed = true; toast(err.message || "選取失敗"); });
   };
   const finish = (cancel, e) => {
+    hoverPickScheduler.cancel();
     const d = active; active = null;
     if (d) finishGuideDrag(cancel, cancel ? null : locate(e), d);
   };
   svg.onpointerup = e => { if (e.button === 0) finish(false, e); };
   svg.onpointercancel = e => finish(true, e);
   svg.onlostpointercapture = e => finish(true, e);
-  svg.onpointerleave = () => { overlay.textContent = ""; };
+  svg.onpointerleave = () => { hoverPickScheduler.cancel(); clearHover(); };
 }
 
 /* ---- 世界層建立互動 ---- */
@@ -9834,6 +9963,7 @@ function feHandleDblClick(pt, ev, onOverlay) {
 async function setView3(on, { persistPositions = true } = {}) {
   clearCanvasSelections();
   if (on === view3) return;
+  hoverPickScheduler.cancel();
   closePanels(); pendingSlot = null;
   view3 = on;
   oc.on = !view3;

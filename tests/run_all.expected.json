@@ -133,7 +133,7 @@
   },
   "py:test_runtime_version": {
    "mode": "count",
-   "count": 5,
+   "count": 12,
    "unit": "test"
   },
   "py:test_serve": {
@@ -190,6 +190,16 @@
   },
   "node:cdp_confirmation_gate": {
    "mode": "exit-code-only"
+  },
+  "node:background_grid_viewport": {
+   "mode": "count",
+   "count": 9,
+   "unit": "node test"
+  },
+  "node:hover_pick_scheduler": {
+   "mode": "count",
+   "count": 19,
+   "unit": "node test"
   }
  }
 }
