@@ -86,39 +86,62 @@ window.EngineeringAdapter = (() => {
     return result.grids;
   }
   let navigationSequence=0;
-  async function navigateObject(target, { isCurrent = () => true } = {}) {
-    if(!target || !['timber','grid','placement'].includes(target.kind) || !Number.isSafeInteger(target.id) || target.id<0)
+  async function navigateObject(target, { isCurrent = () => true, sourceGraph = null } = {}) {
+    if(!target || !['guide','timber','grid','placement'].includes(target.kind) || !Number.isSafeInteger(target.id) || target.id<0 || target.id>4294967295)
       throw new Error('定位資料不完整，請返回本次設定查看。');
-    const sequence=++navigationSequence,expected=project(),initialFocus=oc.focus,initialObject=oc.sel,initialFaceSelection=fe.sel;
-    const active=()=>sequence===navigationSequence && same(expected,project()) && !EngineeringWorkspace.isOpen && isCurrent();
-    const snapshot=await read();
-    if(!active() || oc.focus!==initialFocus || oc.sel!==initialObject || fe.sel!==initialFaceSelection)return;
-    const item=target.kind==='placement'?snapshot.placements.find(p=>p.id===target.id)
-      :snapshot[target.kind==='timber'?'timbers':'grids'].find(p=>p.id===target.id);
-    const placementId=target.kind==='placement'?item?.id:item?.placement_id??item?.surface??item?.geometry?.surface;
-    const placement=snapshot.placements.find(p=>p.id===placementId);
-    if(!item || !placement)throw new Error('這個物件已不在目前工程，請重新讀取工程規格。');
-    if(!placement.loops?.length)throw new Error('這個放置面沒有可開啟的輪廓工作區，請由三視圖查看放置 #'+placement.id+'。');
+    const sequence=++navigationSequence,expected=project(),context=ReferenceWorkspace.context(),frame=ReferenceWorkspace.history?.frame;
+    const pages=()=>JSON.stringify([...context.groups||[]].map(([bid,g])=>[bid,g.activePageId]));
+    const pageContext=pages(),initialFocus=oc.focus,initialObject=oc.sel,initialFaceSelection=fe.sel;
+    const active=()=>sequence===navigationSequence && ReferenceWorkspace.context()===context && same(expected,project()) &&
+      project().revision===expected.revision && ReferenceWorkspace.history?.frame===frame && pages()===pageContext && !EngineeringWorkspace.isOpen;
+    const initial=()=>active() && isCurrent() && oc.focus===initialFocus && oc.sel===initialObject && fe.sel===initialFaceSelection;
+    const snapshot=SourceInspector.index(await command('source-inspect'));
+    if(!initial())return;
+    const pin=sourceGraph||snapshot;
+    const verify=graph=>{
+      if(graph.data.revision!==pin.data.revision || graph.data.sourceFingerprint!==pin.data.sourceFingerprint)
+        throw new Error('來源已變更或刪除，請重新檢查後定位。');
+    };
+    verify(snapshot);
+    const {placementId,boundaryId}=SourceInspector.resolveLocation(snapshot,target);
+    const boundary=await apiRequest('boundary '+boundaryId);
+    if(!initial())return;
+    if(!boundary.ok || !boundary.loops?.length)throw new Error('這個放置面沒有可開啟的輪廓工作區，請由三視圖查看放置 #'+placementId+'。');
+    const checkedSource=SourceInspector.index(await command('source-inspect'));
+    if(!initial())return;
+    verify(checkedSource);
+    // The source pane can unmount as a consequence of this navigation. Its
+    // cancellation guard owns the reads above; focus/context pins own the handoff.
+    // Ask before resetSceneFocus can discard any current workspace draft.
+    if(!window.DraftGate.ask())return;
     resetSceneFocus();
     const viewChange=setView3(false,{persistPositions:false}),canvasSelection=oc.sel,faceSelection=fe.sel;
     await viewChange;
     if(!active() || oc.focus!==null || oc.sel!==canvasSelection || fe.sel!==faceSelection)return;
     await renderObjects({persistPositions:false});
     if(!active() || oc.focus!==null || oc.sel!==canvasSelection || fe.sel!==faceSelection)return;
-    const pendingFocus=enterFocus('face',placement.boundary,{placementId:placement.id}),focus=oc.focus;
+    const pendingFocus=enterFocus('face',boundaryId,{placementId}),focus=oc.focus;
     await pendingFocus;
     if(!active() || oc.focus!==focus)return;
-    if(oc.focus?.t!=='face' || oc.focus.id!==placement.boundary || feSid(placement.boundary)!==placement.id)
+    if(oc.focus?.t!=='face' || oc.focus.id!==boundaryId || oc.focus.placementId!==placementId || feSid(boundaryId)!==placementId)
       throw new Error('定位期間畫布已切換，請重新選擇目標。');
+    const loadedSelection=fe.sel,final=SourceInspector.index(await command('source-inspect'));
+    if(!active() || oc.focus!==focus || fe.sel!==loadedSelection)return;
+    verify(final);
     if(target.kind==='timber') {
       if(!fe.timbers.some(t=>t.id===target.id))throw new Error('這支角材已變更，請重新讀取後定位。');
       feSelectTimber(target.id);fiShowTab('components');
     } else if(target.kind==='grid') {
       if(!fe.grids.some(g=>g.id===target.id))throw new Error('這個網格已變更，請重新讀取後定位。');
       GridEditor.open(target.id);
+    } else if(target.kind==='guide') {
+      if(!fe.guides.some(g=>g.id===target.id))throw new Error('這條參考線已變更，請重新檢查後定位。');
+      fiShowTab('guide');
+      const row=document.querySelector(`[data-guide-edit="${target.id}"]`);
+      row?.scrollIntoView({block:'nearest'});row?.focus({preventScroll:true});
     } else fiShowTab('prop');
     if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));
-    toast('已定位'+(target.kind==='timber'?'角材':target.kind==='grid'?'網格':'放置面')+' #'+target.id+'；本次工程變更尚未套用。');
+    toast('已定位'+(target.kind==='timber'?'角材':target.kind==='grid'?'網格':target.kind==='guide'?'參考線':'放置面')+' #'+target.id+(sourceGraph?'。':'；本次工程變更尚未套用。'));
   }
   let previousContext=project();
   function notify() { for(const listener of listeners)listener(); }

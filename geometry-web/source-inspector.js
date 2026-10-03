@@ -64,6 +64,26 @@
         if(d>=depth||rows.length>=limit){truncated=true;continue;}visited.add(target);rows.push({edge:e,node:graph.nodes.get(target)||null,key:target,depth:d+1});queue.push([target,d+1]);}
     }return {rows,truncated,missing:rows.some(r=>!r.node)};
   }
+  // Resolve only native, active typed relations. A boundary can have several
+  // placements; neither card order nor the first face with that boundary is identity.
+  function resolveLocation(graph,target){
+    if(!target||!['guide','grid','timber','placement'].includes(target.kind)||!id(target.id))throw Error('定位資料不完整，請重新檢查。');
+    const typed=(kind,identifier)=>{
+      const n=graph.nodes.get(key(kind,identifier));
+      if(!n||n.kind!==kind||n.id!==String(identifier)||n.key!==key(kind,identifier))throw Error('來源物件已缺失或型別不一致，請重新檢查。');
+      return n;
+    };
+    const follow=(n,field,kind)=>{
+      const edges=(graph.out.get(n.key)||[]).filter(e=>e.active&&e.relation==='position'&&e.field===field);
+      if(edges.length!==1)throw Error('來源放置關係缺失或不唯一，無法定位。');
+      const next=graph.nodes.get(edges[0].to),identifier=Number(next?.id);
+      if(!next||!id(identifier)||next.id!==String(identifier)||next.key!==key(kind,identifier))throw Error('來源放置身分無法核對，請重新檢查。');
+      return typed(kind,identifier);
+    };
+    const n=typed(target.kind,target.id),placement=target.kind==='placement'?n:follow(n,'surface','placement');
+    const boundary=follow(placement,'boundary','boundary');
+    return {placementId:Number(placement.id),boundaryId:Number(boundary.id)};
+  }
   function modelRoots(record){
     const input=record?.input;if(record?.source?.kind!=='scene'||!input||typeof input.base_scene!=='string')return [];
     return [...new Set([...(input.mode==='plan'&&input.placement_id!=null?[key('placement',input.placement_id)]:input.mode==='faces'&&Array.isArray(input.uses)?input.uses.map(u=>key('placement',u.placement_id)):[]),...(input.obstacles||[]).map(o=>key(o.kind,o.id)),...(input.timbers||[]).map(t=>key(t.kind,t.id))])];
@@ -239,10 +259,11 @@
       const path=e.target.closest('[data-source-path]');if(path&&result){if(!mounted()||!session.valid(result)){unavailable('來源已變更，請重新檢查。');return;}start=path.dataset.sourcePath;render();return;}
       const button=e.target.closest('[data-source-locate]');if(!button||!result)return;
       const captured=result,key=button.dataset.sourceLocate;button.disabled=true;
-      try{const fresh=index(await read());if(!session.valid(captured)||!mounted())return;if(fresh.data.revision!==captured.revision||fresh.data.sourceFingerprint!==captured.graph.data.sourceFingerprint||!fresh.nodes.has(key)){body.textContent='來源已變更或刪除，請重新檢查。';return;}await navigate(fresh.nodes.get(key),fresh);}catch(error){if(mounted())body.textContent=error.message;}finally{if(button.isConnected)button.disabled=false;}
+      const seq=loadSequence,isCurrent=()=>seq===loadSequence&&session.valid(captured)&&mounted();
+      try{const fresh=index(await read());if(!isCurrent())return;if(fresh.data.revision!==captured.revision||fresh.data.sourceFingerprint!==captured.graph.data.sourceFingerprint||!fresh.nodes.has(key)){body.textContent='來源已變更或刪除，請重新檢查。';return;}await navigate(fresh.nodes.get(key),fresh,{isCurrent});}catch(error){if(mounted())body.textContent=error.message;}finally{if(button.isConnected)button.disabled=false;}
     };
     const onChange=e=>{if(!schedule||!result||!mounted()||!session.valid(result)){if(result)unavailable('來源已變更，請重新核對。');return;}if(e.target.matches('[data-snapshot-order]')&&['id','length'].includes(e.target.value))order=e.target.value;else if(e.target.matches('[data-snapshot-unit]')&&['mm','cm'].includes(e.target.value))unit=e.target.value;else return;render();};
     body.addEventListener('click',onClick);body.addEventListener('change',onChange);if(detail.open)load();return {detail,cancel(){active=false;++loadSequence;session.cancel();detail.removeEventListener('toggle',onToggle);body.removeEventListener('click',onClick);body.removeEventListener('change',onChange);}};
   }
-  return {key,index,nearby,modelRoots,modelTimberIds,deriveModelSchedule,modelScheduleCSV,freshness,createSession,mount,LIMIT,DEPTH};
+  return {key,index,nearby,resolveLocation,modelRoots,modelTimberIds,deriveModelSchedule,modelScheduleCSV,freshness,createSession,mount,LIMIT,DEPTH};
 });

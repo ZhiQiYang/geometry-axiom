@@ -10,25 +10,16 @@
     link.href=url;link.download=`model-snapshot-${snapshot.modelId}.csv`;
     try{link.click();}finally{setTimeout(()=>URL.revokeObjectURL(url),0);}
   }
-  async function navigate(n,g){
+  async function navigate(n,g,{isCurrent=()=>true}={}){
     const id=Number(n.id);
+    if(['guide','grid','timber','placement'].includes(n.kind))return EngineeringAdapter.navigateObject({kind:n.kind,id},{sourceGraph:g,isCurrent});
     if(n.kind==='parameter-field')n={...n,kind:'parameter',hasField:true};
-    if(n.kind==='placement'&&!ocFind('placement',id)){const p=oc.surfs.find(p=>p.id===id);if(p&&ocFind('boundary',p.boundary)){if(oc.focus)leaveFocus();selectObject('boundary',p.boundary);centerOnNode('boundary',p.boundary);return;}}
     if(['boundary','placement','space','column','beam','grid-system','grid-binding','parameter','assembly-rule','assembly-binding'].includes(n.kind)){
       if(n.kind==='assembly-rule'){const active=ocFind(n.kind,id);if(active?.version!==n.version)throw Error(`固定 v${n.version} 保留；目前卡片顯示其他版本，請於既有組構工作區核對。`);}
       if(!ocFind(n.kind,id))throw Error('來源尚未在目前畫布提供定位。');
       if(oc.focus)leaveFocus();selectObject(n.kind,id);centerOnNode(n.kind,id);
       if(n.hasField){const row=document.querySelector(`[data-param-field="${n.fieldId}"]`);row?.scrollIntoView({block:'nearest'});row?.querySelector('[data-input]')?.focus({preventScroll:true});}
       if(innerWidth<=900)openPanel('right',document.getElementById('toggleRight'));return;
-    }
-    if(['guide','grid','timber'].includes(n.kind)){
-      const edge=(g.out.get(n.key)||[]).find(e=>e.relation==='position'&&e.field==='surface'),surface=edge&&g.nodes.get(edge.to);
-      const boundary=surface&&(g.out.get(surface.key)||[]).find(e=>e.field==='boundary'),bid=boundary&&Number(g.nodes.get(boundary.to)?.id);
-      if(!Number.isSafeInteger(bid)||!ocFind('boundary',bid))throw Error('來源面目前無法定位。');
-      const ctx=context();if(oc.focus?.t!=='face'||oc.focus.id!==bid)await enterFocus('face',bid);
-      if(context()!==ctx)throw Error('定位期間專案已切換。');
-      await feLoadGuides();if(context()!==ctx)throw Error('定位期間專案已切換。');if(n.kind==='timber')feSelectTimber(id);else if(n.kind==='grid'){fe.gridEditingId=id;renderFaceInspector();fiShowTab('grid');}else{fiShowTab('guide');document.querySelector(`[data-guide-edit="${id}"]`)?.scrollIntoView({block:'nearest'});document.querySelector(`[data-guide-edit="${id}"]`)?.focus({preventScroll:true});}
-      if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));return;
     }
     throw Error('此來源保留具型別身分；目前尚無欄位定位入口。');
   }

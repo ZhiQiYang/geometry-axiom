@@ -2,6 +2,79 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const S=require(process.env.GEOMETRY_SOURCE_INSPECTOR_JS||'../geometry-web/source-inspector.js');
 const hash=n=>String(n).padStart(64,'0');
+const fs=require('node:fs'),vm=require('node:vm');
+const locationData=(pid=20,tid=7)=>({ok:true,schema:'source-inspector/1',revision:5,sourceFingerprint:hash(5),complete:true,
+  nodes:[['boundary',1],['placement',10],['placement',pid],['timber',tid]].map(([kind,id])=>({kind,id:String(id),key:S.key(kind,id),definitionFingerprint:hash(1),valueFingerprint:hash(1)})),
+  edges:[{from:S.key('timber',tid),to:S.key('placement',pid),relation:'position',field:'surface',active:true},
+    {from:S.key('placement',pid),to:'boundary:1',relation:'position',field:'boundary',active:true}]});
+function navigationHarness(data=locationData()){
+  const calls=[],context={id:'project',groups:new Map([[1,{activePageId:'page-a'}]])},state={id:'project',contextToken:'token',revision:0},history={frame:{},undo:[],redo:[]};
+  const oc={focus:{t:'face',id:1,placementId:10},sel:null},fe={sel:null,timbers:[{id:7},{id:0}],grids:[],guides:[]};
+  const sandbox={console,AbortSignal,innerWidth:1400,SourceInspector:S,oc,fe,window:{addEventListener(){},DraftGate:{ask:()=>true}},
+    ReferenceWorkspace:{context:()=>context,getProjectState:()=>state,history},EngineeringWorkspace:{isOpen:false,configure(){}},
+    document:{addEventListener(){},getElementById:()=>({}),querySelector:()=>null},
+    apiRequest:async command=>{calls.push(command);return command==='source-inspect'?structuredClone(data):{ok:true,loops:[{verts:[[0,0],[4000,0],[4000,3000],[0,3000]]}]};},
+    resetSceneFocus(){calls.push('resetFocus');oc.focus=null;fe.sel=null;},async setView3(){calls.push('setView3');},async renderObjects(){calls.push('renderObjects');},
+    async enterFocus(t,id,options){calls.push(['enter',t,id,options]);oc.focus={t,id,...options};},feSid:()=>oc.focus?.placementId,
+    feSelectTimber(id){calls.push(['select',id]);fe.sel={kind:'timber',id};},fiShowTab(tab){calls.push(['tab',tab]);},GridEditor:{open:id=>calls.push(['grid',id])},openPanel(){},toast(){}};
+  vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/engineering-adapter.js'),'utf8'),sandbox);
+  return {sandbox,calls,data,context,state,history,oc,fe,navigate:sandbox.window.EngineeringAdapter.navigateObject};
+}
+test('native typed location preserves the second placement of a shared boundary and ID0',()=>{
+  for(const [pid,tid] of [[20,7],[0,0]]){
+    const g=S.index(locationData(pid,tid));
+    assert.deepEqual(S.resolveLocation(g,{kind:'timber',id:tid}),{placementId:pid,boundaryId:1});
+    assert.deepEqual(S.resolveLocation(g,{kind:'placement',id:pid}),{placementId:pid,boundaryId:1});
+  }
+});
+test('missing, inactive, ambiguous or mistyped native relations never guess a placement',()=>{
+  for(const mutate of [d=>d.edges=[],d=>d.edges[0].active=false,d=>d.nodes=d.nodes.filter(n=>n.kind!=='placement'||n.id!=='20'),
+    d=>d.edges.push({...d.edges[0],to:'placement:10'}),d=>d.nodes.find(n=>n.key==='placement:20').kind='boundary',
+    d=>d.nodes.find(n=>n.key==='placement:20').id='020',d=>d.nodes=d.nodes.filter(n=>n.kind!=='boundary')]){
+    const d=locationData();mutate(d);assert.throws(()=>S.resolveLocation(S.index(d),{kind:'timber',id:7}),/來源/);
+  }
+  for(const id of [-1,4294967296,NaN,'7'])assert.throws(()=>S.resolveLocation(S.index(locationData()),{kind:'timber',id}),/不完整/);
+});
+test('shared navigation uses explicit placement from canvas and an already open different placement',async()=>{
+  for(const open of [false,true])for(const [pid,tid] of [[20,7],[0,0]]){
+    const h=navigationHarness(locationData(pid,tid));if(!open)h.oc.focus=null;
+    await h.navigate({kind:'timber',id:tid},{sourceGraph:S.index(h.data)});
+    assert.equal(h.oc.focus.id,1);assert.equal(h.oc.focus.placementId,pid);assert.equal(h.fe.sel.id,tid);
+    assert.equal(h.state.revision,0);assert.equal(h.calls.filter(c=>Array.isArray(c)&&c[0]==='select').length,1);
+    assert.ok(h.calls.filter(c=>typeof c==='string').every(c=>['source-inspect','boundary 1','resetFocus','setView3','renderObjects'].includes(c)));
+  }
+});
+test('shared navigation refuses stale/reused ID pins and missing target before changing focus',async()=>{
+  for(const mutate of [d=>d.revision++,d=>d.sourceFingerprint=hash(8),d=>d.nodes=d.nodes.filter(n=>n.kind!=='timber')]){
+    const h=navigationHarness(),pin=S.index(structuredClone(h.data)),focus=h.oc.focus;mutate(h.data);
+    await assert.rejects(h.navigate({kind:'timber',id:7},{sourceGraph:pin}),/來源/);
+    assert.equal(h.oc.focus,focus);assert.ok(!h.calls.includes('resetFocus'));
+  }
+});
+test('pending navigation stops on cancellation, project/history/page context or user focus changes',async()=>{
+  for(const change of [h=>h.state.contextToken='other',h=>h.state.revision++,h=>h.history.frame={},
+    h=>h.context.groups.get(1).activePageId='page-b',h=>h.oc.focus={t:'face',id:9},h=>h.fe.sel={kind:'timber',id:8},h=>h.current=false]){
+    const h=navigationHarness();h.current=true;const read=h.sandbox.apiRequest;
+    h.sandbox.apiRequest=async text=>{const result=await read(text);change(h);return result;};
+    await h.navigate({kind:'timber',id:7},{isCurrent:()=>h.current});
+    assert.ok(!h.calls.includes('resetFocus'));assert.ok(!h.calls.some(c=>Array.isArray(c)&&c[0]==='select'));
+  }
+});
+test('draft cancellation leaves the current workspace intact and source changes during focus load cannot select a reused ID',async()=>{
+  const h=navigationHarness(),focus=h.oc.focus;h.sandbox.window.DraftGate.ask=()=>false;
+  await h.navigate({kind:'timber',id:7});assert.equal(h.oc.focus,focus);assert.ok(!h.calls.includes('resetFocus'));
+  const late=navigationHarness(),enter=late.sandbox.enterFocus;
+  late.sandbox.enterFocus=async(...args)=>{await enter(...args);late.data.revision++;late.data.sourceFingerprint=hash(8);};
+  await assert.rejects(late.navigate({kind:'timber',id:7}),/來源已變更/);assert.equal(late.fe.sel,null);
+});
+test('source app forwards native face targets to the common navigation entry and its cancellation guard',async()=>{
+  const calls=[],current=()=>true,g=S.index(locationData());
+  const sandbox={window:{SourceInspector:S},EngineeringAdapter:{navigateObject:(...args)=>calls.push(args)},ReferenceWorkspace:{context:()=>({})},
+    oc:{selection:[],sel:null,edit:null},fe:{timberSelection:new Set()},document:{getElementById:()=>null},queueMicrotask(){},MutationObserver:function(){}};
+  vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/source-inspector-app.js'),'utf8'),sandbox);
+  for(const kind of ['timber','guide','grid','placement'])await sandbox.window.SourceInspectorApp.navigate({kind,id:'7'},g,{isCurrent:current});
+  assert.equal(calls.length,4);for(const [target,options] of calls){assert.equal(target.id,7);assert.equal(options.sourceGraph,g);assert.equal(options.isCurrent,current);}
+});
 const node=(key,n=1)=>({key,definitionFingerprint:hash(n),valueFingerprint:hash(n),label:key});
 const edge=(from,to,relation='dimension',field='A',active=true)=>({from,to,relation,field,active});
 const graph=(nodes,edges=[],revision=1,complete=true)=>S.index({ok:true,schema:'source-inspector/1',nodes,edges,revision,complete});
