@@ -6,7 +6,7 @@
 - **本次拿掉／合併（GEO-219）**：單選規則檢查器的泛用「開啟組構工作區」按鈕一對一替換成「建立材料配置」；完整編輯仍由既有卡片／清單／建立選單到達。材料配置物件的既有開啟操作保留；不改 Q19 已鎖的建立入口，不加常駐工具列或工作區，SourceInspector 不重做。既有發布規則內「建立材料配置」使用同一操作描述與來源守門。
 - 一筆有型別 context operation registry 描述所需 authoring 能力、固定規則與輸出 binding。材料 A/B、接觸面與擺向可在既有表單補齊，合法 incomplete binding 不被禁；不宣稱生成幾何。
 - 新入口先在隔離讀取狀態驗 capability／版本／指紋／選取與 context；過期、缺來源或缺能力在 flush、取消舊 token、配號及寫草稿前拒絕。延遲回覆、重複點擊、換選取／專案與舊 workspace 編輯不接入另一份來源。沿用 PR68 newDraft 的原生配號／draft保留／preview／confirm／保存與來源 guard。
-- 實作／驗證進行中；完整同版測試、真桌面／390px、正式保存重開及獨立審查結果隨 draft PR 回填，不以本條目冒稱完成。grid-source＋boundary、未提交 grid 草稿附件、F2b 範圍擴張與 A24 實機仍分開。
+- 功能已落地於 draft PR69，尚未合併：workspace42＋registry12=54/54；native/ASan各35/35、舊main三新增assertion red；獨立79/79＋10/10與owner／repin mutant assertion red。P82真桌面／390px／原生preview-confirm／正式保存重開16/0，原P77=128/0。完整同版測試、無filter golden／runtime閉包仍以PR最新exact-head實測紀錄為準，不把部分測試冒稱全量完成。grid-source＋boundary、未提交 grid 草稿附件、F2b 範圍擴張與 A24 實機仍分開。
 
 > 2026-10-03 cloud 事實校正：PR52 已合併 `1805bb5`；PR55 合併至 PR53，PR53 的有限 D34/I42/R35 生成已合併 `68c4ac1`。其他 owner 的 PR63/#54 已合併 `c87be11`、PR64 已合併 `d40dee0`。以下較早工單內「未實作／未合併」保留當時歷史，不能作目前事實。A24 實體手機未驗。
 
