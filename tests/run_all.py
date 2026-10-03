@@ -91,6 +91,7 @@ NODE_TEST_FILES = [
     'tests/test_engineering_project_store.js',
     'tests/test_face_projection_store.js',
     'tests/test_grid_trial_geometry.js',
+    'tests/test_model_snapshot_schedule.js',
     'tests/test_parameters_project_store.js',
     'tests/test_project_store.js',
     'tests/test_reference_workspace_races.js',

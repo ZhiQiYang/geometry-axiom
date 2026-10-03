@@ -347,6 +347,50 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
     printf(",\"priority\":%lld}",(long long)t->cut_priority);
 }
 #include "timber_support_projection.inc"
+/* Both readers serialize one authoritative World and its already checked hash.
+ * No newline here: saved-source indexing embeds this same read-only payload. */
+static void json_references_world(const World *w,const char *fingerprint)
+{
+    printf("{\"ok\":true,\"sourceFingerprint\":\"%s\",\"guides\":[",fingerprint);
+    for (size_t i=0;i<w->guide_count;++i) {
+        if (i) putchar(','); json_reference_guide(w,i);
+    }
+    fputs("],\"grids\":[",stdout);
+    for (size_t i=0;i<w->grid_count;++i) {
+        const ReferenceGrid *g=&w->grids[i];
+        if (i) putchar(',');
+        json_reference_grid(w,g);
+    }
+    fputs("],\"timbers\":[",stdout); bool first=true;
+    for (size_t i=0;i<w->timber_count;++i) {
+        if (!w->timbers[i].placed) continue;
+        printf("%s{\"id\":%u,\"role\":",first?"":",",w->timbers[i].id); first=false;
+        js_string(timber_role_name(w->timbers[i].role)); fputs(",\"geometry\":",stdout);
+        json_reference_geometry(w,(int)i);
+        fputs(",\"definition\":",stdout); json_reference_timber_definition(&w->timbers[i],&w->anchors[i]); putchar('}');
+    }
+    fputs("],\"timberSupports\":",stdout);
+    json_timber_supports(w,fingerprint);
+    fputs(",\"specs\":[",stdout);
+    for (size_t i=0;i<w->spec_count;++i) {
+        printf("%s{\"name\":",i?",":""); js_string(w->specs[i].name);
+        printf(",\"value\":%lld}",(long long)w->specs[i].value);
+    }
+    fputs("],\"datums\":[",stdout);
+    for (size_t i=0;i<w->datum_count;++i) {
+        const DatumPlane *d=&w->datums[i];
+        printf("%s{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",i?",":"",d->id,"XYZ"[d->axis],(long long)d->position);
+        js_string(d->expression); fputs(",\"guides\":[",stdout); bool first=true;
+        for (size_t j=0;j<w->guide_count;++j) if (w->guides[j].source==GUIDE_DATUM && w->guides[j].datum_id==d->id) {
+            printf("%s%u",first?"":",",w->guides[j].id); first=false;
+        }
+        fputs("]}",stdout);
+    }
+    fputs("],\"engineeringSources\":",stdout);json_engineering_sources(w);
+    /* Reuse the authoritative typed read: owned timbers inherit binding
+       sources and must not be described as independent literal dimensions. */
+    fputs(",\"assembly\":",stdout);json_assembly_state(w,false);putchar('}');
+}
 static void cmd_references(void)
 {
     char fingerprint[65];
@@ -354,45 +398,7 @@ static void cmd_references(void)
         fputs("{\"ok\":false,\"error\":\"無法核對來源定義\"}\n",stdout);
         return;
     }
-    printf("{\"ok\":true,\"sourceFingerprint\":\"%s\",\"guides\":[",fingerprint);
-    for (size_t i=0;i<g_world.guide_count;++i) {
-        if (i) putchar(','); json_reference_guide(&g_world,i);
-    }
-    fputs("],\"grids\":[",stdout);
-    for (size_t i=0;i<g_world.grid_count;++i) {
-        const ReferenceGrid *g=&g_world.grids[i];
-        if (i) putchar(',');
-        json_reference_grid(&g_world,g);
-    }
-    fputs("],\"timbers\":[",stdout); bool first=true;
-    for (size_t i=0;i<g_world.timber_count;++i) {
-        if (!g_world.timbers[i].placed) continue;
-        printf("%s{\"id\":%u,\"role\":",first?"":",",g_world.timbers[i].id); first=false;
-        js_string(timber_role_name(g_world.timbers[i].role)); fputs(",\"geometry\":",stdout);
-        json_reference_geometry(&g_world,(int)i);
-        fputs(",\"definition\":",stdout); json_reference_timber_definition(&g_world.timbers[i],&g_world.anchors[i]); putchar('}');
-    }
-    fputs("],\"timberSupports\":",stdout);
-    json_timber_supports(&g_world,fingerprint);
-    fputs(",\"specs\":[",stdout);
-    for (size_t i=0;i<g_world.spec_count;++i) {
-        printf("%s{\"name\":",i?",":""); js_string(g_world.specs[i].name);
-        printf(",\"value\":%lld}",(long long)g_world.specs[i].value);
-    }
-    fputs("],\"datums\":[",stdout);
-    for (size_t i=0;i<g_world.datum_count;++i) {
-        const DatumPlane *d=&g_world.datums[i];
-        printf("%s{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",i?",":"",d->id,"XYZ"[d->axis],(long long)d->position);
-        js_string(d->expression); fputs(",\"guides\":[",stdout); bool first=true;
-        for (size_t j=0;j<g_world.guide_count;++j) if (g_world.guides[j].source==GUIDE_DATUM && g_world.guides[j].datum_id==d->id) {
-            printf("%s%u",first?"":",",g_world.guides[j].id); first=false;
-        }
-        fputs("]}",stdout);
-    }
-    fputs("],\"engineeringSources\":",stdout);json_engineering_sources(&g_world);
-    /* Reuse the authoritative typed read: owned timbers inherit binding
-       sources and must not be described as independent literal dimensions. */
-    fputs(",\"assembly\":",stdout);json_assembly_state(&g_world,false);fputs("}\n",stdout);
+    json_references_world(&g_world,fingerprint);putchar('\n');
 }
 static void cmd_snap_reference(const char *args)
 {

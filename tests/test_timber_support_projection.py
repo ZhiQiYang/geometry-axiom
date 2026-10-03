@@ -52,7 +52,12 @@ class TimberSupports(unittest.TestCase):
         mutant = Path(self.directory.name) / 'face_mutant.inc'
         redirected = _reference_with_projection(integrated, mutant)
         self.assertEqual(1, redirected.count(f'#include "{mutant.as_posix()}"'))
-        self.assertEqual(1, redirected.count('json_timber_supports(&g_world,fingerprint);'))
+        self.assertEqual(1, redirected.count('json_timber_supports(w,fingerprint);'))
+        self.assertNotIn('json_timber_supports(&g_world,fingerprint);', redirected)
+        for invalid in [integrated.replace('json_timber_supports(w,fingerprint);', ''),
+                        integrated + '\n    json_timber_supports(&g_world,fingerprint);\n']:
+            with self.assertRaises(AssertionError):
+                _reference_with_projection(invalid, projection)
 
     def supports(self):
         references = self.command('references')

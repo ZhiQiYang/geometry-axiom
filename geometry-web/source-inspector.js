@@ -68,6 +68,70 @@
     const input=record?.input;if(record?.source?.kind!=='scene'||!input||typeof input.base_scene!=='string')return [];
     return [...new Set([...(input.mode==='plan'&&input.placement_id!=null?[key('placement',input.placement_id)]:input.mode==='faces'&&Array.isArray(input.uses)?input.uses.map(u=>key('placement',u.placement_id)):[]),...(input.obstacles||[]).map(o=>key(o.kind,o.id)),...(input.timbers||[]).map(t=>key(t.kind,t.id))])];
   }
+  function modelTimberIds(record){
+    const refs=record?.input?.timbers;if(refs===undefined)return [];
+    if(!Array.isArray(refs)||refs.length>512||refs.some(r=>!r||Object.keys(r).length!==2||r.kind!=='timber'||!id(r.id))||new Set(refs.map(r=>r.id)).size!==refs.length)throw Error('保存模型的明選角材身分無效或重複。');
+    return refs.map(r=>r.id);
+  }
+  function checkDimensionSources(row,baseline){
+    if(row.assembly)return; // Owned members use the fixed binding/owner checks.
+    const fields=['width','length','A','B','u.panel','v.panel','u.gap','v.gap','boundary.A','boundary.B','primary.A','primary.B','secondary.A','secondary.B'];
+    const edges=baseline.out.get(key('timber',row.id))||[],seen=new Set();
+    const sourceKey=source=>{
+      if(!source)throw Error('快照尺寸來源缺失。');
+      if(source.kind==='literal'&&Number.isSafeInteger(source.value))return null;
+      if(source.kind==='parameter'&&id(source.parameterId)&&id(source.fieldId))return key('parameter-field',source.parameterId,0,source.fieldId);
+      if(source.kind==='spec'&&typeof source.name==='string')return key('spec',source.name);
+      if(source.kind==='material'&&typeof source.id==='string'&&id(source.version)&&source.version>0&&fields.slice(0,4).includes(source.field))return key('material',source.id,source.version);
+      if(source.kind==='application'&&typeof source.id==='string'&&fields.indexOf(source.field)>=4)return key('application-field',source.id,0,fields.indexOf(source.field));
+      throw Error('快照尺寸來源型別無效。');
+    };
+    const verify=(source,field,active)=>{const target=sourceKey(source),label=['material','application'].includes(source.kind)?field+' ← '+source.field:field,relation=source.kind==='material'?'material-version':'dimension';if(target&&(!baseline.nodes.has(target)||!edges.some(e=>e.to===target&&e.active===active&&e.relation===relation&&e.field===label)))throw Error('快照尺寸來源與原生具型別關係無法核對。');};
+    for(const s of row.sources){
+      const field=s.target?.field;if(s.target?.kind!=='timber'||s.target.id!==row.id||!['A','B'].includes(field)||seen.has(field)||s.effective!==row[field])throw Error('快照尺寸來源重複或與原生完成尺寸不一致。');seen.add(field);
+      const overridden=s.override!==null&&s.override!==undefined&&s.override!==false;
+      verify(s.source,field,!overridden);if(overridden)verify(s.override,field+' override',true);
+      const effective=overridden?s.override:s.source;if(effective.kind==='literal'&&effective.value!==row[field])throw Error('快照明設尺寸來源與有效值不一致。');
+    }
+    for(const e of edges)if(['dimension','material-version'].includes(e.relation)&&/^[AB](?: override)?(?: ← |$)/.test(e.field)&&!seen.has(e.field[0]))throw Error('快照尺寸來源資料未完整提供。');
+  }
+  function deriveModelSchedule(record,result,timberSchedule,project){
+    if(typeof project?.validateSpaceModel!=='function'||typeof timberSchedule?.derive!=='function')throw Error('保存快照料單能力尚未核對。');
+    project.validateSpaceModel(record);const ids=modelTimberIds(record),baseline=result?.baseline;
+    if(!baseline||baseline.data.live!==false||!hash(baseline.data.sourceFingerprint))throw Error('保存來源快照尚未核對。');
+    if(ids.length&&(!result.packageBaseline||result.packageBaseline.data.live!==false||result.packageBaseline.data.sourceFingerprint!==baseline.data.sourceFingerprint||result.packageSourceSha!==record.result.source_sha256))throw Error('保存模型輸入與角材套件定義尚未核對或不一致。');
+    const refs=baseline.data.timberReferences;
+    if(refs?.ok!==true||refs.sourceFingerprint!==baseline.data.sourceFingerprint||!Array.isArray(refs.timbers))throw Error('快照料單與原生來源版本不一致。');
+    if(JSON.stringify(refs.timberSupports)!==JSON.stringify(baseline.data.timberSupports))throw Error('快照支撐與同次原生來源無法核對。');
+    const seen=new Set(),native=new Map();for(const t of refs.timbers){if(!t||!id(t.id)||seen.has(t.id))throw Error('快照原生角材身分無效或重複。');seen.add(t.id);native.set(t.id,t);}
+    const groups=new Map();for(const timberId of ids){
+      const t=native.get(timberId),n=baseline.nodes.get(key('timber',timberId)),g=t?.geometry;
+      if(!n||n.kind!=='timber'||n.id!==String(timberId)||n.placed!==true||!id(g?.surface)||n.surface!==g.surface||n.lengthAxis!==(['+u','-u'].includes(g.dir)?'u':['+v','-v'].includes(g.dir)?'v':null))throw Error('明選角材不存在、未放置或與快照承載面無法核對。');
+      if(g.surface!==record.input.placement_id)throw Error('明選角材不在保存模型明定的承載面。');
+      if(!Array.isArray(g.axes)||g.axes.length!==3||g.axes.some(axis=>!Array.isArray(axis)||axis.length!==3||!axis.every(v=>[-1,0,1].includes(v))||axis.reduce((sum,v)=>sum+v*v,0)!==1)||g.axes.some((axis,i)=>g.axes.some((other,j)=>i!==j&&axis.reduce((sum,v,k)=>sum+v*other[k],0)!==0)))throw Error('快照角材原生軸資料無效。');
+      if(!groups.has(g.surface))groups.set(g.surface,[]);groups.get(g.surface).push(timberId);
+    }
+    const rows=[];for(const [surface,selected] of groups){
+      const schedule=timberSchedule.derive(refs,surface,selected);
+      for(const row of schedule.rows){
+        const n=baseline.nodes.get(key('timber',row.id)),entry=baseline.supportEntries.get(n.key),owner=row.supportOwner;
+        if(!ownerValid(owner)||(n.nativeOwner===null?owner!==null:owner===null||ownerFields.some(k=>owner[k]!==n.nativeOwner?.[k]))||!entry||JSON.stringify(row.supports)!==JSON.stringify({start:entry.start,finish:entry.finish}))throw Error('快照料單的支撐與固定所有權來源無法核對。');
+        checkDimensionSources(row,baseline);rows.push(row);
+      }
+    }
+    if(rows.length!==ids.length||new Set(rows.map(r=>r.id)).size!==ids.length||rows.some(r=>!ids.includes(r.id)))throw Error('快照料單範圍超出保存模型的明選角材。');
+    return {schema:'native-timber-schedule/1',scope:'saved-model-snapshot',ids:[...ids],rows,sourceFingerprint:refs.sourceFingerprint,
+      supportSourceFingerprint:refs.timberSupports.sourceFingerprint,modelId:record.id,modelName:record.name,contextId:result.context?.id||'',
+      identityContinuity:'unknown',freshness:freshness(baseline,result.graph,modelRoots(record)),liveSourceFingerprint:result.graph.data.sourceFingerprint};
+  }
+  function modelScheduleCSV(snapshot,timberSchedule,order='id',unit='mm'){
+    if(snapshot?.scope!=='saved-model-snapshot'||!['mm','cm'].includes(unit)||!['id','length'].includes(order))throw Error('快照料單範圍或顯示單位無效。');
+    const columns=['snapshot_kind','snapshot_model_id','snapshot_model_name','snapshot_context_id','snapshot_source_fingerprint','snapshot_units','snapshot_display_units','snapshot_source_status','snapshot_content_status','snapshot_identity_continuity','checked_live_source_fingerprint'];
+    const cells=['saved-model-snapshot',snapshot.modelId,snapshot.modelName,snapshot.contextId,snapshot.sourceFingerprint,'mm',unit,snapshot.freshness.status,snapshot.freshness.contentStatus,'unknown',snapshot.liveSourceFingerprint].map(timberSchedule.csvCell).join(',');
+    const header=timberSchedule.csv({...snapshot,rows:[]},order).slice(0,-2)+','+columns.map(timberSchedule.csvCell).join(',');
+    const rows=timberSchedule.sorted(snapshot.rows,order).map(row=>{const csv=timberSchedule.csv({...snapshot,rows:[row]},order);return csv.slice(csv.indexOf('\r\n')+2,-2)+','+cells;});
+    return [header,...rows].join('\r\n')+'\r\n';
+  }
   function freshness(before,now,roots,{deleted=new Set()}={}){
     if(!roots.length)return {status:'unknown',contentStatus:'unchecked',changes:[],message:'來源缺失或無法可靠追溯。'};
     // I9 candidates are possible stops, not confirmed sources. RC membership
@@ -95,16 +159,27 @@
     // Content equality cannot prove that a deleted ID is the same object after reopen.
     return {status:'unknown',contentStatus:complete?'consistent':'unchecked',changes:[],message:complete?'可追溯來源內容一致；物件延續性未知。':'來源資料不完整，尚未完成檢查。'};
   }
-  function createSession({context,stamp,read,readSnapshot}){
+  function createSession({context,stamp,read,readSnapshot,project=null}){
     let sequence=0,controller=null;
     const current=(ctx,token,seq)=>context()===ctx&&stamp()===token&&sequence===seq;
     async function inspect(record=null){
       controller?.abort();controller=new AbortController();const signal=controller.signal,seq=++sequence,ctx=context(),token=stamp();
       const first=index(await read());if(!current(ctx,token,seq))return null;
-      let baseline=null;if(record){if(typeof record.input?.base_scene!=='string')throw Error('來源快照缺失，尚未完成檢查。');baseline=index(await readSnapshot(record.input.base_scene,signal));if(!current(ctx,token,seq))return null;}
+      let baseline=null,packageBaseline=null,packageSourceSha=null;if(record){
+        const saved=clone(record);if(typeof saved.input?.base_scene!=='string')throw Error('來源快照缺失，尚未完成檢查。');
+        baseline=index(await readSnapshot(saved.input.base_scene,signal));if(!current(ctx,token,seq))return null;
+        if(modelTimberIds(saved).length){
+          if(typeof project?.validateSpaceModel!=='function'||typeof project?.sha!=='function')throw Error('保存套件核對能力尚未確認。');project.validateSpaceModel(saved);
+          const scene=saved.result.timbers.definitions.base_scene;
+          packageSourceSha=await project.sha(new TextEncoder().encode(scene));if(!current(ctx,token,seq))return null;
+          if(packageSourceSha!==saved.result.source_sha256)throw Error('保存角材套件的來源摘要不一致。');
+          packageBaseline=index(await readSnapshot(scene,signal));if(!current(ctx,token,seq))return null;
+          if(baseline.data.live!==false||packageBaseline.data.live!==false||!hash(baseline.data.sourceFingerprint)||baseline.data.sourceFingerprint!==packageBaseline.data.sourceFingerprint)throw Error('保存模型輸入與角材套件定義不一致。');
+        }
+      }
       const last=index(await read());if(!current(ctx,token,seq))return null;
       if(first.data.revision!==last.data.revision||first.data.sourceFingerprint!==last.data.sourceFingerprint)throw Error('來源已更新，請重新檢查。');
-      return {graph:last,baseline,revision:last.data.revision,context:ctx,stamp:token};
+      return {graph:last,baseline,packageBaseline,packageSourceSha,revision:last.data.revision,context:ctx,stamp:token};
     }
     return {inspect,cancel(){++sequence;controller?.abort();},valid(result){return context()===result.context&&stamp()===result.stamp;}};
   }
@@ -114,31 +189,60 @@
     const entry=graph.supportEntries.get(node.key),ownerText=o=>o?` · 組構實例 ${o.instanceId}／member ${o.memberId}／binding ${o.bindingId}／規則 ${o.ruleId} 固定 v${o.ruleVersion} · rule ${o.ruleFingerprint} · instance ${o.instanceFingerprint} · binding ${o.bindingFingerprint}`:'';
     return ['start','finish'].map((end,i)=>{const value=entry?.[end];if(value?.status!=='exact')return `<p data-source-support="${end}">${i?'末端':'起端'}支撐：未知／原生證據未提供或非唯一。</p>`;const r=value.relation,s=r.source,k=key(s.kind,s.id),label=r.kind==='timber-face'?`角材 ${s.id}／${r.localFace}`:`${s.kind==='boundary'?'邊界':'承載面'} ${s.id}／${r.kind==='hole-edge'?'h'+r.holeIndex:''}e${r.edgeIndex}`;return `<p data-source-support="${end}" data-source-support-status="exact">${i?'末端':'起端'}支撐：<button type="button" data-source-path="${esc(k)}">${esc(label)}</button>${esc(ownerText(r.owner))}</p>`;}).join('')+'<p>支撐為原生端點證據；物件延續性仍未知。檢視不重建模型。</p>';
   }
-  function mount(host,{selection,context,stamp,read,readSnapshot,navigate,record=null}){
+  function mount(host,{selection,context,stamp,read,readSnapshot,navigate,record=null,timberSchedule=null,project=null,getRecord=()=>record,isActive=()=>true,activate=()=>{},exportCSV=null}){
     const existing=host.querySelector(':scope > [data-source-inspector]');if(existing)existing.remove();
     const reuse=host.querySelector('#paramUsage'),detail=reuse||host.ownerDocument.createElement('details');detail.classList.add('source-inspector','inspector-block');detail.dataset.sourceInspector=selection||'model';
     if(reuse){reuse.querySelector('summary').textContent='來源／影響與參數交換';reuse.querySelector('ul')?.remove();reuse.querySelector('[data-source-body]')?.remove();const body=host.ownerDocument.createElement('div');body.dataset.sourceBody='';body.setAttribute('role','status');body.setAttribute('aria-live','polite');body.textContent='尚未檢查';reuse.append(body);}
     else {detail.innerHTML='<summary>來源／影響</summary><div data-source-body role="status" aria-live="polite">尚未檢查</div>';host.append(detail);}
-    const body=detail.querySelector('[data-source-body]'),session=createSession({context,stamp,read,readSnapshot});let result=null,start=selection,loadSequence=0;
+    const body=detail.querySelector('[data-source-body]'),session=createSession({context,stamp,read,readSnapshot,project}),recordPin=record&&JSON.stringify(record);
+    let result=null,schedule=null,start=selection,loadSequence=0,busy=false,active=true,order='id',unit='mm';
+    const hasTimbers=record&&Array.isArray(record.input?.timbers)&&record.input.timbers.length>0;
+    const refresh=()=>`<button type="button" data-source-refresh>${hasTimbers?'核對並匯出快照CSV':'重新檢查'}</button>`;
+    const recordCurrent=()=>!record||JSON.stringify(getRecord())===recordPin;
+    const mounted=()=>active&&detail.open&&detail.isConnected!==false&&body.isConnected&&isActive()&&recordCurrent();
+    function scheduleHTML(){
+      if(!schedule)return '';const table=timberSchedule.sorted(schedule.rows,order).map(row=>`<li data-snapshot-timber="${row.id}" data-snapshot-surface="${row.surface}"><strong>快照角材 ${row.id} · 承載面 ${row.surface}</strong><span>A ${esc(timberSchedule.dimension(row.A,unit))} × B ${esc(timberSchedule.dimension(row.B,unit))} · 完成 L ${esc(timberSchedule.dimension(row.L,unit))} ${unit}</span><span>${esc(timberSchedule.sourceText(row))}</span></li>`).join('');
+      return `<section data-model-schedule><h4>保存快照料單 · ${esc(schedule.modelName)}</h4><p>單一模型 ${esc(schedule.modelId)} · ${schedule.rows.length} 支明選角材；保存快照尺寸，物件延續性未知。${esc(schedule.freshness.message)}</p><code title="保存快照原生來源指紋">${esc(schedule.sourceFingerprint)}</code><label>排列<select data-snapshot-order><option value="id"${order==='id'?' selected':''}>角材 ID</option><option value="length"${order==='length'?' selected':''}>完成料長</option></select></label><label>顯示單位<select data-snapshot-unit><option value="mm"${unit==='mm'?' selected':''}>mm</option><option value="cm"${unit==='cm'?' selected':''}>cm</option></select></label><ol>${table||'<li>此模型沒有明選角材；未納入來源場景的其他角材。</li>'}</ol><p>CSV 尺寸保持整數 mm；材料與加工未設定。快照列不定位同 ID 的目前角材。</p></section>`;
+    }
     function render(){
       if(!result)return;const g=result.graph,n=g.nodes.get(start);
       const state=record?freshness(result.baseline,g,modelRoots(record)):null;
-      if(!n){body.innerHTML=`<p${state?` data-source-freshness="${state.status}"`:''}>${esc(state?.message||'來源缺失或目前型別尚未提供，無法可靠追溯。')}</p><button type="button" data-source-refresh>重新檢查</button>`;return;}
+      if(!n){body.innerHTML=`${scheduleHTML()}<p${state?` data-source-freshness="${state.status}"`:''}>${esc(state?.message||'來源缺失或目前型別尚未提供，無法可靠追溯。')}</p>${refresh()}`;return;}
       const sources=nearby(g,start),uses=nearby(g,start,{direction:'uses'});
       const rows=(entries,title)=>`<h4>${title}</h4><ol>${entries.rows.map((r,i)=>`<li><span>${esc(labels[r.edge.relation])} · ${esc(r.edge.field)}</span><button type="button" data-source-path="${esc(r.key)}">${esc(r.node?.label||'來源缺失')} · ${esc(r.key)}</button>${r.node?`<button type="button" data-source-locate="${esc(r.key)}" aria-label="定位 ${esc(r.node.label)}">定位</button>`:''}</li>`).join('')||'<li>目前沒有已知關係</li>'}</ol>${entries.truncated?'<p>已達容量／深度上限；關係清單不完整。</p>':''}`;
-      body.innerHTML=`${state?`<p data-source-freshness="${state.status}">${esc(state.message)}</p>${state.changes.map(c=>`<p>${esc(c.key)} · ${esc(c.kind)}</p>`).join('')}`:''}<p>${esc(n.label)} · ${esc(n.key)}${n.version?' · 固定 v'+n.version:''}</p><code title="原生來源指紋">${esc(n.definitionFingerprint)}</code>${rows(sources,'直接與間接來源')}${rows(uses,'修改可能涉及（未試算）')}${supportHTML(g,n)}<button type="button" data-source-refresh>重新檢查</button>`;
+      body.innerHTML=`${scheduleHTML()}${state?`<p data-source-freshness="${state.status}">${esc(state.message)}</p>${state.changes.map(c=>`<p>${esc(c.key)} · ${esc(c.kind)}</p>`).join('')}<h4>已核對的目前來源 · 與保存快照尺寸分開</h4>`:''}<p>${esc(n.label)} · ${esc(n.key)}${n.version?' · 固定 v'+n.version:''}</p><code title="原生來源指紋">${esc(n.definitionFingerprint)}</code>${rows(sources,'直接與間接來源')}${rows(uses,'修改可能涉及（未試算）')}${supportHTML(g,n)}${refresh()}`;
     }
-    const unavailable=message=>{result=null;body.innerHTML=`<p>${esc(message)}</p><button type="button" data-source-refresh>重新檢查</button>`;};
-    async function load(){const seq=++loadSequence,ctx=context(),token=stamp();body.textContent='正在唯讀檢查…';try{const loaded=await session.inspect(record);if(seq!==loadSequence||context()!==ctx||!detail.open||!body.isConnected)return;if(!loaded||stamp()!==token){unavailable('來源已變更，請重新檢查。');return;}result=loaded;if(record)start=modelRoots(record)[0];render();}catch(e){if(seq===loadSequence&&context()===ctx&&detail.open&&body.isConnected)unavailable(e.name==='AbortError'?'檢查已取消。':e.message);}}
-    const onToggle=()=>{if(detail.open)load();else{session.cancel();result=null;body.textContent='尚未檢查';}};
+    const unavailable=message=>{result=null;schedule=null;body.innerHTML=`<p>${esc(message)}</p>${refresh()}`;};
+    async function load(exportRequested=false){
+      if(busy)return;activate();if(!mounted())return;busy=true;const seq=++loadSequence,ctx=context(),token=stamp();body.textContent='正在唯讀檢查…';
+      try{
+        const loaded=await session.inspect(record);if(seq!==loadSequence||context()!==ctx||!mounted())return;
+        if(!loaded||stamp()!==token){unavailable('來源已變更，請重新檢查。');return;}
+        const candidate=hasTimbers?deriveModelSchedule(record,loaded,timberSchedule,project):null;
+        if(exportRequested&&candidate){
+          // Re-read after derivation as well. A delayed earlier reply must not
+          // authorize a download after native sources or the model have moved.
+          const final=index(await read());if(seq!==loadSequence||!mounted()||!session.valid(loaded))return;
+          if(final.data.revision!==loaded.revision||final.data.sourceFingerprint!==loaded.graph.data.sourceFingerprint)throw Error('來源已更新，快照CSV未匯出，請重新核對。');
+          if(typeof exportCSV!=='function')throw Error('快照CSV匯出能力尚未核對。');
+        }
+        if(seq!==loadSequence||!mounted()||!session.valid(loaded))return;
+        result=loaded;schedule=candidate;if(record)start=modelRoots(record)[0];render();
+        if(exportRequested&&candidate&&mounted()&&session.valid(loaded))exportCSV(modelScheduleCSV(candidate,timberSchedule,order,unit),candidate);
+      }catch(e){if(seq===loadSequence&&context()===ctx&&mounted())unavailable(e.name==='AbortError'?'檢查已取消。':e.message);}
+      finally{if(seq===loadSequence)busy=false;}
+    }
+    const onToggle=()=>{if(detail.open)load();else{++loadSequence;busy=false;session.cancel();result=null;schedule=null;body.textContent='尚未檢查';}};
     detail.addEventListener('toggle',onToggle);
     const onClick=async e=>{
-      if(e.target.closest('[data-source-refresh]')){load();return;}
-      const path=e.target.closest('[data-source-path]');if(path&&result){if(!session.valid(result)){unavailable('來源已變更，請重新檢查。');return;}start=path.dataset.sourcePath;render();return;}
+      if(e.target.closest('[data-source-refresh]')){await load(!!hasTimbers);return;}
+      const path=e.target.closest('[data-source-path]');if(path&&result){if(!mounted()||!session.valid(result)){unavailable('來源已變更，請重新檢查。');return;}start=path.dataset.sourcePath;render();return;}
       const button=e.target.closest('[data-source-locate]');if(!button||!result)return;
       const captured=result,key=button.dataset.sourceLocate;button.disabled=true;
-      try{const fresh=index(await read());if(!session.valid(captured)||!detail.open||!detail.isConnected)return;if(fresh.data.revision!==captured.revision||fresh.data.sourceFingerprint!==captured.graph.data.sourceFingerprint||!fresh.nodes.has(key)){body.textContent='來源已變更或刪除，請重新檢查。';return;}await navigate(fresh.nodes.get(key),fresh);}catch(error){if(detail.isConnected)body.textContent=error.message;}finally{if(button.isConnected)button.disabled=false;}
-    };body.addEventListener('click',onClick);if(detail.open)load();return {detail,cancel(){++loadSequence;session.cancel();detail.removeEventListener('toggle',onToggle);body.removeEventListener('click',onClick);}};
+      try{const fresh=index(await read());if(!session.valid(captured)||!mounted())return;if(fresh.data.revision!==captured.revision||fresh.data.sourceFingerprint!==captured.graph.data.sourceFingerprint||!fresh.nodes.has(key)){body.textContent='來源已變更或刪除，請重新檢查。';return;}await navigate(fresh.nodes.get(key),fresh);}catch(error){if(mounted())body.textContent=error.message;}finally{if(button.isConnected)button.disabled=false;}
+    };
+    const onChange=e=>{if(!schedule||!result||!mounted()||!session.valid(result)){if(result)unavailable('來源已變更，請重新核對。');return;}if(e.target.matches('[data-snapshot-order]')&&['id','length'].includes(e.target.value))order=e.target.value;else if(e.target.matches('[data-snapshot-unit]')&&['mm','cm'].includes(e.target.value))unit=e.target.value;else return;render();};
+    body.addEventListener('click',onClick);body.addEventListener('change',onChange);if(detail.open)load();return {detail,cancel(){active=false;++loadSequence;session.cancel();detail.removeEventListener('toggle',onToggle);body.removeEventListener('click',onClick);body.removeEventListener('change',onChange);}};
   }
-  return {key,index,nearby,modelRoots,freshness,createSession,mount,LIMIT,DEPTH};
+  return {key,index,nearby,modelRoots,modelTimberIds,deriveModelSchedule,modelScheduleCSV,freshness,createSession,mount,LIMIT,DEPTH};
 });

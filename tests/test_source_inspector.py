@@ -98,6 +98,134 @@ class SourceInspector(unittest.TestCase):
         self.assertNotEqual(live['sourceFingerprint'],saved['sourceFingerprint']);self.assertEqual(old['sourceFingerprint'],saved['sourceFingerprint'])
         self.assertEqual(old['timberSupports'],saved['timberSupports']);self.assertEqual(live,self.graph())
 
+    def saved_references(self, scene, expected):
+        saved = self.snapshot(scene)
+        self.assertTrue(saved['ok'], saved)
+        self.assertFalse(saved['live'])
+        self.assertIn('timberReferences', saved)
+        references = saved['timberReferences']
+        self.assertEqual(expected, references)
+        self.assertEqual(saved['sourceFingerprint'], references['sourceFingerprint'])
+        self.assertEqual(saved['timberSupports'], references['timberSupports'])
+        self.assertNotIn('revision', references)
+        return saved
+
+    def test_snapshot_references_keep_native_dimensions_origins_and_two_placement_roots(self):
+        self.line('boundary 1 outline 0,0 4000,0 4000,3000 0,3000 kind room_plan')
+        self.line('placement 0 on boundary 1 origin 0 0 2500 u +x v +y')
+        self.line('placement 2 on boundary 1 origin 6000 0 2500 u +x v +y')
+        for identifier, surface in [(0, 0), (4, 2)]:
+            self.line(f'timber {identifier} 27 33 role boundary')
+            self.line(f'place {identifier} on {surface} at-face e0 +u +n')
+        scene = self.command('dump')['text']
+        expected = self.command('references')
+        self.line('timber 0 29 35 role boundary')
+        self.line('delete timber 4')
+        live = self.command('dump')['text']
+        saved = self.saved_references(scene, expected)
+        timbers = saved['timberReferences']['timbers']
+        self.assertEqual([0, 4], [t['id'] for t in timbers])
+        for timber, surface, origin in zip(timbers, [0, 2], [[0, 0, 2500], [6000, 0, 2500]]):
+            g = timber['geometry']
+            self.assertEqual((27, 33, 4000, surface, '+u', '+n'),
+                             (g['A'], g['B'], g['length'], g['surface'], g['dir'], g['side']))
+            self.assertEqual(origin, g['origin'])
+            self.assertEqual([[1, 0, 0], [0, 1, 0], [0, 0, 1]], g['axes'])
+        self.assertEqual(live, self.command('dump')['text'])
+        self.assertNotIn('timberReferences', self.graph())
+        # Consume the actual native payload through the existing schedule adapter.
+        script = r"""
+          const assert=require('node:assert/strict'),fs=require('node:fs'),T=require('./geometry-web/timber-schedule.js');
+          const r=JSON.parse(fs.readFileSync(0,'utf8'));
+          for(const [surface,id,x] of [[0,0,0],[2,4,6000]]) {
+            const row=T.derive(r,surface,[id]).rows[0];
+            assert.deepEqual([row.id,row.A,row.B,row.L,row.origin,row.finish],
+              [id,27,33,4000,[x,0,2500],[x+4000,0,2500]]);
+            assert.equal(row.assembly,null);assert.deepEqual(row.sources,[]);
+          }
+          assert.throws(()=>T.derive(r,0,[4]));
+        """
+        result = subprocess.run(['node', '-e', script], input=json.dumps(saved['timberReferences']),
+                                cwd=Path(__file__).parents[1], text=True, capture_output=True)
+        self.assertEqual(0, result.returncode, result.stderr)
+
+    def test_snapshot_references_keep_typed_zero_parameter_source_and_saved_value(self):
+        self.apply([{'op': 'put-parameter', 'value': self.card('27')}])
+        self.line('surface 0 origin 0 0 2500 u +x v +y rect 0 0 4000 3000')
+        self.line('timber 0 27 33 role boundary');self.line('place 0 on 0 at-face e0 +u +n')
+        source = {'kind': 'parameter', 'parameterId': 0, 'fieldId': 0}
+        self.apply([{'op': 'set-source', 'target': {'kind': 'timber', 'id': 0, 'field': 'A'}, 'source': source}])
+        scene = self.command('dump')['text'];expected = self.command('references')
+        self.apply([{'op': 'put-parameter', 'value': self.card('29')}])
+        self.assertEqual(29, self.command('references')['timbers'][0]['geometry']['A'])
+        saved = self.saved_references(scene, expected)
+        references = saved['timberReferences']
+        self.assertEqual(27, references['timbers'][0]['geometry']['A'])
+        engineering = next(s for s in references['engineeringSources'] if s['target'] == {'kind': 'timber', 'id': 0, 'field': 'A'})
+        self.assertEqual(source, engineering['source'])
+        self.assertEqual(27, engineering['effective'])
+        self.assertIn('parameter-field:0:f0', {n['key'] for n in saved['nodes']})
+
+    def test_snapshot_references_keep_owned_assembly_dimensions_and_support_provenance(self):
+        self.generated();scene = self.command('dump')['text'];expected = self.command('references')
+        self.line('spec unrelated 77')
+        saved = self.saved_references(scene, expected)
+        references = saved['timberReferences']
+        self.assertNotEqual(self.command('references')['sourceFingerprint'], references['sourceFingerprint'])
+        self.assertEqual(5, len(references['timbers']))
+        script = r"""
+          const assert=require('node:assert/strict'),fs=require('node:fs'),T=require('./geometry-web/timber-schedule.js');
+          const r=JSON.parse(fs.readFileSync(0,'utf8')),rows=T.derive(r,1).rows;
+          assert.equal(rows.length,5);assert.equal(rows.filter(t=>t.assembly).length,3);
+          for(const row of rows.filter(t=>t.assembly)) {
+            assert.equal(row.A,27);assert.equal(row.B,33);
+            assert.equal(row.assembly.instanceId,1);assert.equal(row.assembly.bindingId,1);
+            assert.equal(row.assembly.ruleId,1);assert.equal(row.assembly.ruleVersion,1);
+            assert.equal(row.sources.length,2);
+            const owner=r.timberSupports.entries.find(e=>e.id===row.id).owner;
+            for(const key of ['instanceId','memberId','bindingId','ruleId','ruleVersion','ruleFingerprint','bindingFingerprint'])
+              assert.equal(row.assembly[key],owner[key]);
+          }
+          const secondary=rows.find(t=>t.assembly?.memberId===3);
+          assert.equal(secondary.L,1973);
+          const support=r.timberSupports.entries.find(e=>e.id===secondary.id);
+          assert.equal(support.start.relation.localFace,'B0');assert.equal(support.finish.relation.localFace,'B1');
+        """
+        result = subprocess.run(['node', '-e', script], input=json.dumps(references),
+                                cwd=Path(__file__).parents[1], text=True, capture_output=True)
+        self.assertEqual(0, result.returncode, result.stderr)
+
+    def test_snapshot_references_empty_world_and_invalid_unplaced_world_do_not_invent_rows(self):
+        expected = self.command('references')
+        self.saved_references(self.command('dump')['text'], expected)
+        self.line('timber 0 27 33 role primary')
+        before = self.command('dump')['text']
+        saved = self.snapshot(before)
+        self.assertFalse(saved['ok'], saved)
+        self.assertNotIn('timberReferences', saved)
+        self.assertEqual(before, self.command('dump')['text'])
+
+    def test_snapshot_references_success_and_failures_preserve_pending_assembly_and_engineering(self):
+        self.apply([{'op': 'put-parameter', 'value': self.card('27')}])
+        before = self.command('dump')['text'];revision = self.command('engineering-read')['revision']
+        expected = self.command('references')
+        engineering = self.apply([{'op': 'put-parameter', 'value': self.card('29')}], confirm=False)
+        assembly = self.apply([{'op': 'publish-rule', 'value': rule()}], assembly=True, confirm=False)
+        self.saved_references(before, expected)
+        for scene in ['not-a-definition', before + '\0', '#' + 'x' * (1048576 + 1)]:
+            failed = self.snapshot(scene)
+            self.assertFalse(failed['ok'], failed)
+            self.assertNotIn('timberReferences', failed)
+        self.assertEqual(before, self.command('dump')['text'])
+        self.assertEqual(revision, self.command('engineering-read')['revision'])
+        # The assembly preview replaces the shared pending token. Reads must
+        # neither resurrect the old engineering token nor consume its successor.
+        self.assertFalse(self.command('engineering-confirm ' + str(engineering))['ok'])
+        self.assertTrue(self.command('assembly-confirm ' + str(assembly))['ok'])
+        after = self.command('dump')['text']
+        self.command('line undo');self.assertEqual(before, self.command('dump')['text'])
+        self.command('line redo');self.assertEqual(after, self.command('dump')['text'])
+
     def test_owned_native_B0_B1_sources_pass_production_JS_and_reject_corrupt_provenance(self):
         self.generated();graph=self.graph();refs=self.command('references');nodes={n['key']:n for n in graph['nodes']}
         self.assertEqual(refs['timberSupports'],graph['timberSupports'])

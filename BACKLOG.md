@@ -6,9 +6,18 @@
 - **本次拿掉／合併（GEO-219）**：單選規則檢查器的泛用「開啟組構工作區」按鈕一對一替換成「建立材料配置」；完整編輯仍由既有卡片／清單／建立選單到達。材料配置物件的既有開啟操作保留；不改 Q19 已鎖的建立入口，不加常駐工具列或工作區，SourceInspector 不重做。既有發布規則內「建立材料配置」使用同一操作描述與來源守門。
 - 一筆有型別 context operation registry 描述所需 authoring 能力、固定規則與輸出 binding。材料 A/B、接觸面與擺向可在既有表單補齊，合法 incomplete binding 不被禁；不宣稱生成幾何。
 - 新入口先在隔離讀取狀態驗 capability／版本／指紋／選取與 context；過期、缺來源或缺能力在 flush、取消舊 token、配號及寫草稿前拒絕。延遲回覆、重複點擊、換選取／專案與舊 workspace 編輯不接入另一份來源。沿用 PR68 newDraft 的原生配號／draft保留／preview／confirm／保存與來源 guard。
-- 功能已落地於 draft PR69，尚未合併：workspace42＋registry12=54/54；native/ASan各35/35、舊main三新增assertion red；獨立79/79＋10/10與owner／repin mutant assertion red。P82真桌面／390px／原生preview-confirm／正式保存重開16/0，原P77=128/0。完整同版測試、無filter golden／runtime閉包仍以PR最新exact-head實測紀錄為準，不把部分測試冒稱全量完成。grid-source＋boundary、未提交 grid 草稿附件、F2b 範圍擴張與 A24 實機仍分開。
+- PR69 reviewed `175b308d2a2523aa1da81d679d536c7bc5de7905` 已合併 main `8993b03b91d27030d210d6478e08764af51385d7`，tree完全相同：完整47suites1499/0/1具名GDI、無filterChromium1839/0/78golden、native/ASan各35/35及獨立79/79＋10/10通過。合併後真P82入口16/0、既有binding16/0、P80/P81料單37/0、HTTP291public/205vendor bytes與headers及前後fresh/runtime核對成功。grid-source＋boundary、未提交 grid 草稿附件、F2b 範圍擴張與 A24 實機仍分開。
 
 > 2026-10-03 cloud 事實校正：PR52 已合併 `1805bb5`；PR55 合併至 PR53，PR53 的有限 D34/I42/R35 生成已合併 `68c4ac1`。其他 owner 的 PR63/#54 已合併 `c87be11`、PR64 已合併 `d40dee0`。以下較早工單內「未實作／未合併」保留當時歷史，不能作目前事實。A24 實體手機未驗。
+
+## GEO-241 — 單一保存模型的原生角材快照料單（2026-10-03，#47 bounded 切片，實作中）
+
+- 隔離分支起於 main f52，已整合 main899（PR69）；只計一個合法保存模型明選 `input.timbers`。同尺寸不同 placement 保留各件；不加入未選根、現行 World 或另一模型，不以 UUID／範本／尺寸／World hash 捏造實物去重。
+- 既有 snapshot 路由在同一 candidate World 追加既有原生 `timberReferences`，重用 pure serializer；尺寸、原點、typed 工程來源及精確支撐不借 live。live 輸出 bytes 保持不變，無新 command／route／保存 schema／公理。
+- 派生使用既有 decorated 料單 adapter，canonical 模型 scene／definitions JSON／native World 的 hash 領域分開。現行 changed／missing 不替換歷史快照尺寸；內容一致也保留 incarnation unknown。
+- 減項（GEO-219）：模型既有來源 disclosure 內，一對一將「重新檢查」升為「核對並匯出快照 CSV」；普通來源入口不變，無新工具列／工作區／永久說明或幾何附件。匯出前核對同模型 owner、context／history／revision、取消／遲到與連點。
+- Draft PR70：整合 main899 後完整47suites1530pass／0fail／1具名GDI，production121／121及ASan/UBSan121／121；獨立review APPROVE。JS63／63＋21實際native／lifecycle反證，五個新native案例在 immutable f52 baseline都assertion-red，wrong-World mutant3／5 assertion-red，兩World九種live回覆byte-identical。真P83桌面／390px、gcanvas重開、逐bytes下載、changed／missing歷史尺寸、model／context／close／late／repeat守門16／0；只新增P83=16，原1839段計數保留，最後無filter full與exact-head結果以PR70最新正文為準，不宣稱整張#47完成。
+- 既有 model engine 拒絕 assembly-owned snapshot（capability／definition whitelist）；不剝來源或製造保存正例。跨表示去重、模型內完整雙向定位、F4b加工／裁切、durable identity 與 A24實機仍分開。契約見 `geometry-web/docs/MODEL-SNAPSHOT-SCHEDULE.md`。
 
 ## GEO-239 — 現有材料配置的固定規則來源守門（2026-10-03，#45 既有流程修復）
 
