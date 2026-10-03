@@ -2,6 +2,15 @@
 
 > 2026-10-03 cloud 事實校正：PR52 已合併 `1805bb5`；PR55 合併至 PR53，PR53 的有限 D34/I42/R35 生成已合併 `68c4ac1`。其他 owner 的 PR63/#54 已合併 `c87be11`、PR64 已合併 `d40dee0`。以下較早工單內「未實作／未合併」保留當時歷史，不能作目前事實。A24 實體手機未驗。
 
+## GEO-241 — 單一保存模型的原生角材快照料單（2026-10-03，#47 bounded 切片，實作中）
+
+- 隔離 main f52，只計一個合法保存模型明選 `input.timbers`。同尺寸不同 placement 保留各件；不加入未選根、現行 World 或另一模型，不以 UUID／範本／尺寸／World hash 捏造實物去重。
+- 既有 snapshot 路由在同一 candidate World 追加既有原生 `timberReferences`，重用 pure serializer；尺寸、原點、typed 工程來源及精確支撐不借 live。live 輸出 bytes 保持不變，無新 command／route／保存 schema／公理。
+- 派生使用既有 decorated 料單 adapter，canonical 模型 scene／definitions JSON／native World 的 hash 領域分開。現行 changed／missing 不替換歷史快照尺寸；內容一致也保留 incarnation unknown。
+- 減項（GEO-219）：模型既有來源 disclosure 內，一對一將「重新檢查」升為「核對並匯出快照 CSV」；普通來源入口不變，無新工具列／工作區／永久說明或幾何附件。匯出前核對同模型 owner、context／history／revision、取消／遲到與連點。
+- Native commit4982fd1：production86／86、ASan/UBSan86／86，五個新案例在 immutable f52 baseline 都 assertion-red，wrong-World mutant 3／5 assertion-red，兩個 World 九種 live 回覆 byte-identical。JS／完整整合及真瀏覽器仍待完成與 exact-head 回填，不以 native 綠燈宣稱整張 #47 完成。
+- 既有 model engine 拒絕 assembly-owned snapshot（capability／definition whitelist）；不剝來源或製造保存正例。跨表示去重、模型內完整雙向定位、F4b加工／裁切、durable identity 與 A24實機仍分開。契約見 `geometry-web/docs/MODEL-SNAPSHOT-SCHEDULE.md`。
+
 ## GEO-239 — 現有材料配置的固定規則來源守門（2026-10-03，#45 既有流程修復）
 
 - 已重現規則同 ID／版本／槽位、不同 joint 內容刪除重建後，旧 asmBind 與 published-binding edit 可合法提交不同規則語義；配置自身 value／fingerprint 不足以辨識 underlying rule 改變。

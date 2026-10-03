@@ -11,6 +11,12 @@
 
 索引是可丟棄讀取資料，不保存到專案，不新增格式。UI 只適配及比較原生指紋，不自行求值。沒有模型生成／重建請求，不消耗既有 preview token。
 
+`live:false` 的保存来源回覆另帶同一 candidate World 的 `timberReferences`，
+重用原生 references serializer，供單一已保存模型的明選角材料單派生。
+巢狀 `sourceFingerprint` 與索引完全相同，不借 live revision／尺寸／支撐；
+live `source-inspect` 與 `references` 輸出保持不變。
+計量、模型雜湊領域及匯出 owner 邊界見 [MODEL-SNAPSHOT-SCHEDULE.md](MODEL-SNAPSHOT-SCHEDULE.md)。
+
 ## 先驗現況與 typed 邊界
 
 | 現有資料 | 可信來源及此次適配 |
