@@ -548,12 +548,14 @@ const ReferenceWorkspace = (() => {
     context().reconstructionReviews.set(reviewKey(bid,p),{basis:P.reviewBasis(p),geometry:P.outlineFingerprint(oc.bmap[bid]),method,warnings:[...warnings],confirmedAt:new Date().toISOString()});
     p.reviewRequired=false;dirty();schedulePresentation();
   }
-  function statusHTML(bid) {
+  function reconstructionStatusHTML(bid) {
     const p = active(bid); if (!p) return "";
     const state=reconstructionState(bid),label={unreviewed:"尚未依此來源核對輪廓（原有矩形不代表重建完成）",candidate:"輪廓候選 · 尚未確認",confirmed:"已依此來源核對輪廓",recheck:"來源或輪廓已變更 · 需要重新核對"}[state];
-    return `<p id="refCalibrationStatus" class="ref-status${p.calibration ? "" : " neutral"}">${p.calibration ? `已校準 · ${p.calibration.inputValue} ${p.calibration.inputUnit}` : "未校準 · 請使用圖上已知尺寸"}</p>` +
-      `<div class="reference-review" data-reconstruction-state="${state}" role="status"><p>${label}</p>${p.calibration && state!=="confirmed" && state!=="candidate" ? '<button id="refConfirmChecked" type="button" class="btn">已逐邊核對室內淨輪廓與尺寸</button>' : ""}</div>`;
-
+    return `<div class="reference-review" data-reconstruction-state="${state}" role="status"><p>${label}</p>${p.calibration && state!=="confirmed" && state!=="candidate" ? '<button id="refConfirmChecked" type="button" class="btn">已逐邊核對室內淨輪廓與尺寸</button>' : ""}</div>`;
+  }
+  function statusHTML(bid, includeOutline=true) {
+    const p=active(bid);if(!p)return "";
+    return `<p id="refCalibrationStatus" class="ref-status${p.calibration ? "" : " neutral"}">${p.calibration ? `已校準 · ${p.calibration.inputValue} ${p.calibration.inputUnit}` : "未校準 · 請使用圖上已知尺寸"}</p>`+(includeOutline?reconstructionStatusHTML(bid):"");
   }
   function bindPane(pane, bid) {
     pane.querySelector("#refImport")?.addEventListener("click", safe(() => chooseFile(bid)));
@@ -710,6 +712,7 @@ const ReferenceWorkspace = (() => {
     return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.OUTLINE_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
   }
   function assertSaveReady() {
+    if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
     assertEditable();
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
@@ -1036,7 +1039,7 @@ const ReferenceWorkspace = (() => {
     present();
   }
   return { init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,statusHTML,present,bindPane,active,group,context,history,
-    reconstructionState,markReconstructionReviewed,documentFor,library,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
+    reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,

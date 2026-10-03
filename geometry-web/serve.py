@@ -262,7 +262,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/css; charset=utf-8")
         elif self.path in {"/document-format.js", "/document-cases.js", "/documents.js", "/assembly-workspace.js", "/parameters.js", "/app.js", "/reference-ui.js", "/polydraft.js", "/feedback.js",
-                           "/project-store.js", "/reference-workspace.js", "/project-ui.js", "/workspace-guidance.js", "/workspace-shell.js",
+                           "/project-store.js", "/reference-workspace.js", "/room-outline.js", "/room-outline-workspace.js", "/project-ui.js", "/workspace-guidance.js", "/workspace-shell.js",
                            "/model-viewer.js", "/space-workspace.js", "/engineering-workspace.js", "/engineering-adapter.js", "/grid-system-workspace.js", "/grid-inspector.js", "/grid-trial.js"}:
             self._send((HERE / self.path[1:]).read_bytes(),
                        "text/javascript; charset=utf-8")

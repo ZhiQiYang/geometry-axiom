@@ -35,3 +35,8 @@ function pdf() {
   return Buffer.concat(chunks);
 }
 module.exports={shapes,pdf};
+if(require.main===module) {
+  const fs=require('node:fs'),path=require('node:path');
+  const destination=process.argv[2];if(!destination)throw Error('Specify the public PDF output path');
+  fs.mkdirSync(path.dirname(destination),{recursive:true});fs.writeFileSync(destination,pdf());
+}

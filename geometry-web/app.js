@@ -1370,7 +1370,7 @@ window.addEventListener("keydown", async e => {
   }
   /* Ctrl+Z 復原 / Ctrl+Y・Ctrl+Shift+Z 重做（輸入框裡讓給原生編輯）。 */
   if (e.ctrlKey && !e.altKey && (e.key === "z" || e.key === "y" || e.key === "Z" || e.key === "Y")) {
-    if (e.target.tagName === "INPUT") return;
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
     e.preventDefault();
     if (oc.busy) { toast("操作進行中,請稍候"); return; }
     const cmd = (e.key === "y" || e.key === "Y" || e.shiftKey) ? "redo" : "undo";
@@ -1392,6 +1392,7 @@ window.addEventListener("keydown", async e => {
     }
     if (oc.on) {
       if (oc.focus && oc.focus.t === "face") {
+        if (window.RoomOutlineWorkspace?.hasWork) { RoomOutlineWorkspace.cancel(); return; }
         /* UIUX-FIX-PLAN「Esc 三段式決定 🔒」既有七階梯不變(diff#12/§5.A.1.16只改下面
            兩級改呼叫 PolyDraft，其餘五級原樣)。Phase 2:鍵入長度中 Esc 先清輸入,不取消整段 */
         if (fe.lenBuf) {
@@ -1453,7 +1454,7 @@ window.addEventListener("keydown", async e => {
   }
   /* 面內工作區工具快捷鍵（§5.8）：v/l/r/h、f、1、空白暫時平移 */
   if (oc.on && oc.focus && oc.focus.t === "face") {
-    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA") return;
     const k = e.key.toLowerCase();
     if (k === " ") { fe.spaceDown = true; feCursor(); e.preventDefault(); return; }
     /* Phase 2 鍵入長度:重畫草稿中數字鍵累積到浮動輸入框(diff#12 改呼叫 PolyDraft.typeDigit
@@ -1461,6 +1462,12 @@ window.addEventListener("keydown", async e => {
        GEO-189:重畫工具下沒點過第一點就直接打數字 → 從原點 (0,0) 起畫;
        數字 + 方向鍵(← → ↑ ↓)= 明確方向的一段,不靠游標在哪一側;
        Backspace 沒有數字時退一點;Enter 沒有數字時閉合(自動補角由 PolyDraft.tryClose 處理)。 */
+    if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid)) {
+      if (k === "enter") { await feDraftTryClose(); return; }
+      if (/^[0-9]$/.test(e.key) || ["Backspace","ArrowRight","ArrowLeft","ArrowUp","ArrowDown"].includes(e.key)) {
+        e.preventDefault(); toast("請在底圖欄修正候選頂點或核對邊尺寸。"); return;
+      }
+    }
     let rd = fe.drag && fe.drag.kind === "redraw" ? fe.drag : null;
     if (!rd && fe.tool === "redraw" && /^[0-9]$/.test(e.key)) {
       const r0 = PolyDraft.place(fe.draft, [0, 0], feDraftOpts());
@@ -2438,6 +2445,7 @@ async function enterFocus(t, id, options = {}) {
 }
 
 async function leaveFocus() {
+  window.RoomOutlineWorkspace?.reset();
   clearCanvasSelections({keepSingleObject:true});
   GridEditor.clear();
   closePanels();
@@ -3482,6 +3490,9 @@ function faceToolTip(t) {
 }
 
 function feSetTool(t) {
+  if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid) && t !== "redraw" && t !== "pan") {
+    toast("請先確認或取消房間候選，再切換幾何工具。"); return;
+  }
   // Source-backed grids are informational here; their own workspace owns
   // editing. Do not enter a grid tool with no rulers or cell picker.
   if (t === "grid" && GridEditor.sourceOnly()) {
@@ -3509,7 +3520,7 @@ function feSetTool(t) {
   }
   const wasRedraw = fe.tool === "redraw";
   const wasTimber = fe.tool === "timber";  /* GEO-195:離開角材工具要補一次重繪清掉預示 */
-  if (fe.tool === "redraw" && t !== "redraw") {
+  if (fe.tool === "redraw" && t !== "redraw" && !window.RoomOutlineWorkspace?.pending(oc.edit?.bid)) {
     /* diff#12:切離 redraw 工具＝放棄草稿，PolyDraft state 一併重置（fe.drag/fe.lenBuf
        透過 feSyncDraftMirror 鏡射回去，維持既有相容欄位語意不變）。 */
     fe.panHold = null;
@@ -3587,13 +3598,17 @@ function feUpdateDraftNotice() {
   $("faceDraftTitle").textContent = `外環草稿 · ${fe.draft.pts.length} 個頂點 · 尚未套用`;
   $("faceDraftMessage").textContent = (isDefault ? "已建立預設矩形。" : "原輪廓仍保留。") +
     "逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。";
-  $("faceDraftFinish").disabled = fe.draft.pts.length < 3;
+  if (window.RoomOutlineWorkspace?.pending(oc.edit.bid)) {
+    $("faceDraftMessage").textContent = "原輪廓仍保留。請在底圖欄核對室內淨範圍、尺寸與警告，再確認；取消保留原面。";
+    $("faceDraftFinish").disabled = !RoomOutlineWorkspace.snapshot()?.reviewed;
+  } else $("faceDraftFinish").disabled = fe.draft.pts.length < 3;
   $("faceDraftCancel").disabled = !fe.draft.pts.length;
 }
 $("faceDraftFinish").addEventListener("click", async () => {
   await feDraftTryClose(); $("faceEditorViewport").focus();
 });
 $("faceDraftCancel").addEventListener("click", () => {
+  if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid) || RoomOutlineWorkspace.isPicking()) { RoomOutlineWorkspace.cancel(); return; }
   fe.draft = PolyDraft.createState(); fe.draftPreview = null;
   feSyncDraftMirror(); feLenShow(); drawFaceEditor();
   setStatus("草稿已清除，原面保留；Esc 返回畫布");
@@ -4925,6 +4940,7 @@ function drawFaceEditor() {
      這個 group，不再呼叫整份 drawFaceEditor()。 */
   el("g", { id: "feDraftLayer" }, root);
   renderFeDraftLayer();
+  window.RoomOutlineWorkspace?.draw(root);
   for (const controls of root.querySelectorAll(":scope > .grid-canvas-controls, :scope > .grid-canvas-label"))
     annotations.appendChild(controls);
   root.appendChild(annotations);
@@ -5026,6 +5042,8 @@ async function feDown(pt, ev) {
     return;
   }
   if (fe.tool === "grid") return;
+  if (window.RoomOutlineWorkspace?.down(pt)) return;
+  if (window.RoomOutlineWorkspace?.pending(e.bid) && fe.tool === "redraw") return;
   if (fe.tool === "redraw") {
     /* diff#12(§5.A.1.12):重畫外環改接共用 PolyDraft 狀態機——軸鎖/格線吸附(B4 zoom
        相依格距)/頂點吸附/共線延伸/CROSS·BACKTRACK 前端先驗全部交給 PolyDraft.place，
@@ -5229,6 +5247,8 @@ function feClickSelectHit(k, a, b) {
 }
 
 function feMove(pt, ev) {
+  if (window.RoomOutlineWorkspace?.move(pt)) return;
+  if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid) && fe.tool === "redraw") return;
   const d = fe.drag;
   /* diff#4/#6(§5.A.1.4/.6):redraw 工具的 pointermove 優先分派給 feDraftPreviewMove，
      涵蓋「尚未落第一點」(d 為 null)與「已落點」(d.kind==="redraw"，此時 d 只是
@@ -5341,6 +5361,7 @@ async function feAfterChange() {
 }
 
 async function feUp(pt) {
+  if (await window.RoomOutlineWorkspace?.up(pt)) return;
   const e = oc.edit;
   const d = fe.drag; fe.drag = null;
   if (!e || !d) { fe.panHold = null; drawFaceEditor(); return; }
@@ -5443,6 +5464,10 @@ function fePinchRect(d, pt) {
    失敗時「不」清空草稿(§5.A.1.7「停留原狀態」)，
    這點刻意比舊版(不論成敗都先清 fe.drag)更寬鬆——使用者可以留在原地修正再試。 */
 async function feDraftTryClose() {
+  if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid)) {
+    try { await feCommitDraft(fe.draft.pts.map(p=>[...p])); } catch (e) { toast(e.message); setStatus(e.message); }
+    return;
+  }
   if (fe.tool !== "redraw" || fe.draft.pts.length < 3) return;
   const r = PolyDraft.tryClose(fe.draft, { existingEdges: [] });
   if (!r.ok) {
@@ -5455,13 +5480,15 @@ async function feDraftTryClose() {
 async function feCommitDraft(pts, dropped = []) {
   const e = oc.edit;
   if (!e) return;
-  fe.draft = PolyDraft.createState(); fe.draftPreview = null;
-  feSyncDraftMirror(); feLenShow();
+  const room = window.RoomOutlineWorkspace?.beforeCommit();
   const loops = oc.bmap[e.bid].map(l =>
     ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
   loops[0] = { verts: pts, fixity: pts.map(() => 1) };
   if (await emitBoundary(e.bid, loops)) {
+    fe.draft = PolyDraft.createState(); fe.draftPreview = null;
+    feSyncDraftMirror(); feLenShow();
     fe.newOutline = null;
+    window.RoomOutlineWorkspace?.afterCommit(room, true);
     await feAfterChange(); feSetTool("select");
     if (ReferenceWorkspace.active(e.bid) && !feSurf(e.bid)) {
       const hint = $("faceCanvasHint");
@@ -5483,7 +5510,7 @@ async function feCommitDraft(pts, dropped = []) {
       setStatus(msg);
     }
   }
-  else drawFaceEditor();
+  else { window.RoomOutlineWorkspace?.afterCommit(room, false); drawFaceEditor(); }
 }
 
 /* Phase 2 鍵入長度:游標旁浮動輸入框顯示/隱藏 */
@@ -6431,7 +6458,7 @@ function feUnderlayPaneHTML(bid) {
   const calibrated = !!sourcePage?.calibration;
   const outlined = ReferenceWorkspace.reconstructionState(bid) === "confirmed";
   let html = `<div data-fi-pane="underlay"${fe.fiTab === "underlay" ? "" : " hidden"}>` +
-    `<div class="inspector-block reference-task"><h2>參考描面</h2><p class="reference-intro">先確認尺寸，再沿底圖建立邊界。</p>` +
+    `<div class="inspector-block reference-task"><h2>參考描面</h2>` +
     `<nav class="reference-steps" aria-label="描面步驟">` +
     `<button type="button" id="refChoosePage" data-reference-step="page" data-project-action="${sourcePage ? "reference" : "import"}" class="${sourcePage ? "done" : "current"}">${sourcePage ? "✓" : "1"} 選頁</button>` +
     `<button type="button" id="refCalibrateStep" data-reference-step="calibrate" class="${calibrated ? "done" : sourcePage ? "current" : ""}"${sourcePage ? "" : " disabled"}>${calibrated ? "✓" : "2"} 校準</button>` +
@@ -6441,8 +6468,7 @@ function feUnderlayPaneHTML(bid) {
     const calibOn = !!fe.ulCalib;
     const npts = calibOn ? fe.ulCalib.pts.length : 0;
     html += `<section class="calibration-task" aria-labelledby="calibrationTitle"><h3 id="calibrationTitle">校準尺寸</h3>` +
-      ReferenceWorkspace.statusHTML(bid) +
-      `<p class="calibration-instruction">在底圖上選一段已知長度的尺寸線，點選兩端。</p>` +
+      ReferenceWorkspace.statusHTML(bid, false) +
       `<button class="btn calibration-start" type="button" id="ulCalibStart"${ul.locked ? " disabled" : ""}>${calibOn ? "重新選取兩點" : "在底圖上選取兩點"}</button>` +
       `<div class="calibration-points${npts === 2 ? " ready" : ""}"><span>第一點 <b>${npts > 0 ? "已選取" : "待選取"}</b></span><span>第二點 <b>${npts > 1 ? "已選取" : "待選取"}</b></span></div>` +
       `<div class="place-form"><label>實際距離<input id="ulCalibDist" type="number" placeholder="圖上標示的長度" step="any" min="0.1"${npts < 2 ? " disabled" : ""}></label><label>單位<select id="ulCalibUnit"><option>mm</option><option>cm</option></select></label></div>` +
@@ -6460,15 +6486,16 @@ function feUnderlayPaneHTML(bid) {
       `<div class="kv"${ReferenceWorkspace.context().sources.get(ul.sourceId)?.meta.type === "application/pdf" ? " hidden" : ""}><span>比例尺</span><b id="ulScale">${ul.mmPerPx.toFixed(4)} mm/px</b></div>` +
       `<button class="btn" type="button" id="ulRemove">移除目前底圖</button></details>`;
   }
-  html += ReferenceWorkspace.paneHTML(bid) + `</div></div>`;
+  html += RoomOutlineWorkspace.paneHTML(bid) + ReferenceWorkspace.paneHTML(bid) + `</div></div>`;
   return html;
 }
 function feBindUnderlayPane(pane, bid) {
   ReferenceWorkspace.bindPane(pane, bid);
+  RoomOutlineWorkspace.bindPane(pane, bid);
   feSyncUnderlayReadonlyControls(pane);
   pane.querySelector("#refDrawOutline")?.addEventListener("click", () => {
     if (!feUnderlayEditable(bid)) return;
-    feSetTool("redraw"); if (innerWidth <= 680) closePanels(); $("faceEditorViewport").focus();
+    RoomOutlineWorkspace.start(bid, pane);
   });
   pane.querySelector("#refCalibrateStep")?.addEventListener("click", () => {
     pane.querySelector("#ulCalibStart")?.click();

@@ -428,11 +428,18 @@
       if (!p || seen.has(key)) fail("輪廓核對收據引用不存在或重複的來源頁。");
       seen.add(key);
       let basis,loops;try {basis=JSON.parse(r.basis);loops=JSON.parse(r.geometry);}catch {fail("輪廓核對指紋不合法。");}
-      if (!Array.isArray(basis) || basis.length!==11 || basis[0]!==p.sourceId || basis[1]!==p.id || basis[2]!==p.page || !basis[10] ||
-          !Array.isArray(loops) || !loops.length || loops.length>256 || loops.some(l=>!Array.isArray(l)||l.length!==2 || !Array.isArray(l[0]) || l[0].length<4 || l[0].length>1024 ||
-            !Array.isArray(l[1]) || l[0].length!==l[1].length || !l[1].every(v=>v===0||v===1) || l[0].some((p,i)=>!Array.isArray(p)||p.length!==2||!p.every(v=>Number.isSafeInteger(v)&&Math.abs(v)<=1e8) ||
-              ((p[0]===l[0][(i+1)%l[0].length][0])===(p[1]===l[0][(i+1)%l[0].length][1]))))) fail("輪廓核對收據的來源／幾何不合法。");
-      if (!seen || JSON.stringify(basis)!==r.basis || JSON.stringify(loops)!==r.geometry) fail("輪廓核對指紋必須使用標準編碼。");
+      if (!Array.isArray(basis) || basis.length!==11 || basis[0]!==p.sourceId || basis[1]!==p.id || basis[2]!==p.page ||
+          !finite(basis[3],1,1e7) || !finite(basis[4],1,1e7) || !finite(basis[6],1e-9,1e8) || !finite(basis[7],-1e8,1e8) || !finite(basis[8],-1e8,1e8) || ![0,90,180,270].includes(basis[9])) fail("輪廓核對收據的來源／幾何不合法。");
+      const crop=basis[5],q=basis[10];
+      if (!Array.isArray(crop) || crop.length!==4 || !crop.every(Number.isFinite) || crop[0]<0 || crop[1]<0 || crop[2]<=0 || crop[3]<=0 || crop[0]+crop[2]>basis[3]+.001 || crop[1]+crop[3]>basis[4]+.001 ||
+          !keys(q,["points","distanceMm","inputValue","inputUnit"]) || !Array.isArray(q.points) || q.points.length!==2 || !q.points.every(pt) || q.points.some(v=>v[0]>basis[3]||v[1]>basis[4]) ||
+          !Number.isSafeInteger(q.distanceMm) || !finite(q.distanceMm,1,1e8) || !finite(q.inputValue,1e-9,1e8) || !["mm","cm"].includes(q.inputUnit)) fail("輪廓核對收據的校準不合法。");
+      const distance=Math.hypot(q.points[0][0]-q.points[1][0],q.points[0][1]-q.points[1][1]);
+      if (!(distance>0) || Math.abs(q.distanceMm/distance-basis[6])>1e-8*basis[6] || Math.abs(q.inputValue*(q.inputUnit==="cm"?10:1)-q.distanceMm)>1e-7) fail("輪廓核對收據的校準與比例不一致。");
+      if (!Array.isArray(loops) || !loops.length || loops.length>256 || loops.some(l=>!Array.isArray(l)||l.length!==2 || !Array.isArray(l[0]) || l[0].length<4 || l[0].length>1024 ||
+            !Array.isArray(l[1]) || l[0].length!==l[1].length || !l[1].every(v=>v===0||v===1) || l[0].some(p=>!Array.isArray(p)||p.length!==2||!p.every(v=>Number.isSafeInteger(v)&&Math.abs(v)<=1e8)))) fail("輪廓核對收據的幾何不合法。");
+      if (loops.some(l=>l[0].some((p,i)=>((p[0]===l[0][(i+1)%l[0].length][0])===(p[1]===l[0][(i+1)%l[0].length][1]))))) fail("輪廓核對收據的幾何必須正交。");
+      if (JSON.stringify(basis)!==r.basis || JSON.stringify(loops)!==r.geometry) fail("輪廓核對指紋必須使用標準編碼。");
     }
   }
   function reference(p) {

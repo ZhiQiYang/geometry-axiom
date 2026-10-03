@@ -1,5 +1,15 @@
 # DOM 合約(測試依賴清單)
 
+## 2026-10-03 Issue #54 房間輪廓候選
+
+- 保留 `#refDrawOutline` 原步驟，在既有底圖 pane 啟動房間選點／框選；`#refOutlineDetails` 集中候選、人工修正與來源核對，移除重複 `.reference-intro`／`.calibration-instruction`。
+- `#refRoomMethod` 選向量優先／本地影像／人工描繪；`#refRoomMinWidth`、`#refRoomMinLength` 使用固定來源單位，`#refRoomPick` 啟動選房間。未校準停用。
+- `#refRoomHorizontal`／`#refRoomVertical` 與 `#refRoomClearBarriers` 是展開後的搜尋分隔控制，不寫正式牆。`#refRoomStatus` 明示取得失敗與過期。
+- `#roomCandidateOverlay` 疊在既有 `#feDraftLayer`；點仍是 `fe.draft.pts`。`#refRoomEdge`／`#refRoomLength`／`#refRoomSetLength` 核對入值，`#refRoomVertices`／`#refRoomApplyVertices` 局部補點，`#refRoomReviewed` 每次修正後清除。
+- `#refRoomConfirm`／`#refRoomCancel` 與既有 `#faceDraftFinish`／`#faceDraftCancel` 操作同一草稿。確認走核心 `emitBoundary`，依賴沿用 `.reference-impact`；取消／拒絕保留原面。H／空白鍵平移不清候選。
+- `[data-reconstruction-state]` 依實際來源頁、校準／變換、核心輪廓顯示 `unreviewed|candidate|confirmed|recheck`。`#refConfirmChecked` 在此區記錄人工流程核對；任意頂點不算完成。
+- `window.RoomOutlineWorkspace` 接合狀態與生命週期；`room_outline_test.js` 由完整 `cdp_test.js` 呼叫 P79，`GEOMETRY_ROOM_OUTLINE_ONLY=1` 僅是部分驗證。
+
 > 立案 2026-09-13(Phase 0 產出);Phase 1 改版更新。本檔列出自動測試依賴的 DOM id / class / 全域名稱;
 > 之後每階段改 DOM 都要對照本表,新增或改名需同步更新測試。
 
