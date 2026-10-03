@@ -1816,6 +1816,9 @@ async function main() {
     await subgridRead(`document.querySelector('.reference-impact .impact-actions button').click()`);
     await waitForUI(`!document.querySelector('.reference-impact')`,10000);
     subgridCheck('取消保留世界',await subgridRead(`(async()=>(await api('dump')).text===subgridSaved)()`));
+    // Cancellation refreshes the draft asynchronously. A disabled click is ignored;
+    // wait for the same valid proposal before testing the second I8a confirmation.
+    await waitForUI(`!oc.busy && $('gridCreate') && !$('gridCreate').disabled && fe.gridPreview?.u.length===3`,10000);
     await subgridRead(`$('gridCreate').click()`);await waitForUI(`!!$('impact-confirm')`,10000);
     await subgridRead(`$('impact-confirm').click()`);await waitForUI(`fe.grids.find(g=>g.id===subgridId)?.u.length===3`,10000);
     subgridCheck('確認更新與來源保留',await subgridRead(`fe.grids.find(g=>g.id===subgridId).u.join(',')==='1500,2000,2500'`));
