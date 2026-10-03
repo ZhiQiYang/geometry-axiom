@@ -6,7 +6,8 @@ static void json_assembly_state(const World *w,bool geometry)
         printf("%s{\"value\":%s,\"fingerprint\":\"%s\"}",i?",":"",r->content,r->fingerprint);}
     fputs("],\"bindings\":[",stdout);
     for(size_t i=0;i<w->assembly.binding_count;++i){const AsmBinding *b=&w->assembly.bindings[i];
-        printf("%s{\"value\":%s,\"complete\":%s,\"effective\":[",i?",":"",b->content,b->complete?"true":"false");
+        char fingerprint[65];eng_sha256(b->content,strlen(b->content),fingerprint);
+        printf("%s{\"value\":%s,\"fingerprint\":\"%s\",\"complete\":%s,\"effective\":[",i?",":"",b->content,fingerprint,b->complete?"true":"false");
         EngJson j;if(eng_json_parse(&j,b->content)){int array=eng_json_member(&j,0,"slots");
             for(int k=0;k<eng_json_size(&j,array);++k){int slot=eng_json_at(&j,array,k);uint32_t id=0;eng_u32(&j,eng_json_member(&j,slot,"slotId"),&id,true);printf("%s{\"slotId\":%u",k?",":"",id);
                 for(int axis=0;axis<2;++axis){int token=eng_json_member(&j,slot,axis?"B":"A");EngDimensionSource source;EngTarget target={1,0,0,axis};Coord value;char path[192];

@@ -25,6 +25,27 @@ Sources are an existing timber material version, a dimension parameter field, or
 Transaction schema `assembly-transaction/1` with `expectedRevision` and `operations`.
 Errors include `I40` conflicts/dangling refs, `TOKEN`, `STALE`, `SCHEMA`, capacity as capacity rather than geometry.
 
+### Guarded binding writes (2026-10-03)
+
+The formal workspace uses explicit intent:
+
+```json
+{"op":"create-binding","value":{"id":1,"name":"...","rule":{"id":1,"version":1},"slots":[]}}
+{"op":"edit-binding","id":1,"expectedFingerprint":"<64 lowercase hex>","value":{"id":1,"name":"...","rule":{"id":1,"version":1},"slots":[]}}
+```
+
+The abbreviated `slots` above must be replaced with the complete valid slot definitions.
+Create rejects an occupied positive uint32 ID, including identical content. Edit requires the existing ID,
+matching value ID and native definition fingerprint returned by `assembly-read`. The fingerprint is SHA-256
+of canonical binding JSON, independent of object key order and resolved-value changes.
+It is checked against the sequential transaction candidate, together with the existing revision/token guards;
+stale edits reject the whole transaction. Missing native fingerprints retain the UI draft and refuse preview.
+Legacy `put-binding` remains an upsert for existing callers; it is not the formal UI create/edit path.
+This adds no archive capability, high-water allocator or generation behavior; format 7 and free-ID wrap remain.
+
+The proposed generation contract and exact pending D34/I42/R35 additions are now in
+[ASSEMBLY-GENERATION-PROPOSAL.md](ASSEMBLY-GENERATION-PROPOSAL.md); they are not adopted axioms.
+
 ## Scene
 
 Native records use bounded Base64 chunks. This replaces the original draft's unimplemented `assembly-rule` / `assembly-slot` line proposal. Replay is atomic through the existing scene loader; individual `line assembly ...` edits are rejected. Canvas kinds `assembly-rule` and `assembly-binding` are display metadata only.

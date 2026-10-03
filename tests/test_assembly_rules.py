@@ -92,6 +92,68 @@ class AssemblyRules(unittest.TestCase):
         self.assertEqual(1, self.command("objects")["assemblyRules"][0]["id"])
         self.assertEqual(2, self.command("newid")["assemblyRule"])
 
+    def test_explicit_create_rejects_live_id_including_identical_content(self):
+        self.publish();self.apply([{"op":"create-binding","value":binding()}])
+        for value in [binding(),dict(binding(),name="must not overwrite")]:
+            self.reject([{"op":"create-binding","value":value}],"already exists")
+
+    def test_explicit_edit_uses_native_definition_fingerprint_and_shared_history(self):
+        import hashlib
+        self.publish();self.apply([{"op":"create-binding","value":binding()}])
+        original=self.read()["state"]["bindings"][0]
+        canonical=json.dumps(original["value"],ensure_ascii=False,sort_keys=True,separators=(",",":"))
+        self.assertEqual(hashlib.sha256(canonical.encode()).hexdigest(),original["fingerprint"])
+        edited=dict(binding(),name="explicit edit")
+        operation={"op":"edit-binding","id":1,"expectedFingerprint":original["fingerprint"],"value":edited}
+        preview=self.request([operation])["preview"]
+        self.assertTrue(preview["valid"]);self.assertEqual(original,self.read()["state"]["bindings"][0])
+        self.assertTrue(self.command(f'assembly-confirm {preview["token"]}')["ok"])
+        self.assertEqual(edited,self.read()["state"]["bindings"][0]["value"])
+        self.assertTrue(self.command("line undo")["ok"]);self.assertEqual(original,self.read()["state"]["bindings"][0])
+        self.assertTrue(self.command("line redo")["ok"]);self.assertEqual(edited,self.read()["state"]["bindings"][0]["value"])
+        # Canonical native fingerprints ignore JSON object key order.
+        reordered=dict(reversed(list(edited.items())))
+        current=self.read()["state"]["bindings"][0]
+        self.apply([{"op":"edit-binding","id":1,"expectedFingerprint":current["fingerprint"],"value":reordered}])
+        self.assertEqual(current,self.read()["state"]["bindings"][0])
+
+    def test_stale_explicit_edit_rejects_even_with_current_revision(self):
+        self.publish();self.apply([{"op":"create-binding","value":binding()}])
+        fingerprint=self.read()["state"]["bindings"][0]["fingerprint"]
+        self.apply([{"op":"put-binding","value":dict(binding(),name="new source")}])
+        self.reject([{"op":"edit-binding","id":1,"expectedFingerprint":fingerprint,"value":binding()}],"STALE")
+        self.apply([{"op":"delete-binding","id":1}])
+        self.reject([{"op":"edit-binding","id":1,"expectedFingerprint":fingerprint,"value":binding()}],"does not exist")
+
+    def test_explicit_edit_rejects_malformed_or_mismatched_identity_atomically(self):
+        self.publish();self.apply([{"op":"create-binding","value":binding()}])
+        fingerprint=self.read()["state"]["bindings"][0]["fingerprint"]
+        operation={"op":"edit-binding","id":1,"expectedFingerprint":fingerprint,"value":binding()}
+        for value in [dict(operation,id=2),dict(operation,value=binding(identifier=2)),
+                      dict(operation,expectedFingerprint="not-a-hash"),dict(operation,expectedFingerprint="g"*64),
+                      dict(operation,extra=1)]:
+            self.reject([value],"I40")
+
+    def test_guarded_operations_validate_candidate_order_without_partial_commit(self):
+        self.publish()
+        self.reject([{"op":"create-binding","value":binding()},{"op":"create-binding","value":binding()}],"already exists")
+        self.apply([{"op":"create-binding","value":binding()}])
+        fingerprint=self.read()["state"]["bindings"][0]["fingerprint"]
+        self.reject([{"op":"put-binding","value":dict(binding(),name="candidate change")},
+                     {"op":"edit-binding","id":1,"expectedFingerprint":fingerprint,"value":binding()}],"STALE")
+
+    def test_guarded_edit_cancel_and_stale_confirmation_leave_world_unchanged(self):
+        self.publish();self.apply([{"op":"create-binding","value":binding()}])
+        original=self.read()["state"]
+        operation={"op":"edit-binding","id":1,"expectedFingerprint":original["bindings"][0]["fingerprint"],"value":dict(binding(),name="preview only")}
+        preview=self.request([operation])["preview"]
+        self.assertTrue(self.command(f'assembly-cancel {preview["token"]}')["cancelled"])
+        self.assertFalse(self.command(f'assembly-confirm {preview["token"]}')["ok"]);self.assertEqual(original,self.read()["state"])
+        preview=self.request([operation])["preview"]
+        self.apply([{"op":"put-binding","value":dict(binding(),name="committed other edit")}])
+        before=self.command("dump")["text"]
+        self.assertFalse(self.command(f'assembly-confirm {preview["token"]}')["ok"]);self.assertEqual(before,self.command("dump")["text"])
+
     def test_duplicate_scope_and_endpoint_rejected(self):
         for change in ("scope", "end"):
             value = rule(); value["joints"][1][change] = value["joints"][0][change]
