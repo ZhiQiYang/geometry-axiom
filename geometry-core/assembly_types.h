@@ -51,11 +51,25 @@ typedef struct {
     char name[ASM_NAME_MAX], content[ASM_RECORD_MAX];
     bool complete;
 } AsmBinding;
+#define ASM_INSTANCE_MAX 16
+#define ASM_GENERATION_CAPABILITY "assembly-timber-generation/1"
+typedef struct {
+    uint32_t id,binding_id,surface_id,rule_id,rule_version;
+    char name[ASM_NAME_MAX],rule_hash[65],content[ASM_RECORD_MAX];
+    uint32_t member[3],timber[3],guide[3],ends[3][2];
+    bool secondary[3];
+} AsmInstance;
+typedef struct { uint32_t timber,instance,member; } AsmOwner;
 typedef struct {
     AsmRuleVersion rules[ASM_RULE_MAX];
     size_t rule_count;
     AsmBinding bindings[ASM_BINDING_MAX];
     size_t binding_count;
+    AsmInstance instances[ASM_INSTANCE_MAX];
+    size_t instance_count;
+    AsmOwner owners[ASM_INSTANCE_MAX*3];
+    size_t owner_count;
+    bool generation_required;
     bool loading;
 } AssemblyState;
 #endif

@@ -21,3 +21,13 @@
 ## space-model-v1.gcanvas
 
 既有空間建模範例，含矩形房間、L 形房間及 7 支角材骨架的三個模型。保留原本的直接數值來源與第 4 版格式，適合核對舊專案相容性。
+
+
+## assembly-generation-v1.gcanvas
+
+第 8 版原生生成範例：同面兩支邊界材、三條具名定位線、固定規則與 27×33 mm 材料配置，
+生成兩支 2960 mm 主支及一支 1973 mm 端接副支。從材料配置選「編輯來源」或建立新的實例，
+先預覽再確認；重開保留完整 source 與 member→timber 映射。
+
+只在支援 `assembly-timber-generation/1` 的服務開啟。重建：
+`GEOMETRY_TEST_BRIDGE=/fresh/bridge python3 tests/build_assembly_generation_example.py --check`。

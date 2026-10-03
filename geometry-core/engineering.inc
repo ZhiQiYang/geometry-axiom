@@ -101,6 +101,7 @@ static EngBinding *eng_binding(World *w,const EngTarget *target)
 }
 static bool eng_bind(World *w,const EngTarget *target,const EngDimensionSource *source)
 {
+    if(target->kind&&assembly_owned(w,target->id))return eng_fail("I42: owned timber dimensions come from its assembly binding");
     EngBinding *b=eng_binding(w,target);
     if (!b) {
         if (w->engineering.binding_count==ENG_BINDING_MAX) return eng_fail("I10: engineering dimension binding capacity exceeded");

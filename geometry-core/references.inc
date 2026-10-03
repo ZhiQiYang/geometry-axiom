@@ -584,6 +584,7 @@ static bool apply_reference_place(const char *p,int n,char **tokens,int count,Wo
 {
     uint32_t id,pid; int i=5;
     if (count<8 || !parse_u32(tokens[1],&id) || strcmp(tokens[2],"on") || !parse_u32(tokens[3],&pid)) return false;
+    if (assembly_owned(w,id)) { scene_error(p,n,"I42: edit the owning assembly instance"); return false; }
     int ti=reference_timber_index(w,id);
     if (ti<0) { scene_error(p,n,"I9: place 指的角材不存在"); return false; }
     TimberAnchor a={0}; a.placement_id=pid; a.ref_hole=-1; a.span_mode=SPAN_AUTO;
@@ -673,6 +674,7 @@ static void reference_dump(const World *w,FILE *out)
     for (size_t i=0;i<w->timber_count;++i) {
         const Timber *t=&w->timbers[i];
         if (engineering_dump_timber(w,t,out)) continue;
+        assembly_owned_prefix(w,t->id,"timber",out);
         fprintf(out,"timber %u %lld %lld role %s",t->id,(long long)t->size_a,(long long)t->size_b,timber_role_name(t->role));
         if (t->role==TIMBER_ROLE_CUSTOM) fprintf(out," priority %lld",(long long)t->cut_priority);
         fputc('\n',out);
@@ -683,6 +685,7 @@ static void reference_dump(const World *w,FILE *out)
         for (size_t i=0;i<w->timber_count;++i) if (w->timbers[i].placed && !placed[i] && w->anchors[i].order<order) { at=i; order=w->anchors[i].order; }
         if (at==w->timber_count) break;
         const Timber *t=&w->timbers[at]; const TimberAnchor *a=&w->anchors[at];
+        assembly_owned_prefix(w,t->id,"place",out);
         fprintf(out,"place %u on %u ",t->id,a->placement_id);
         if (a->anchor_kind==ANCHOR_AT_LINE) fprintf(out,"at-line guide %u",a->ref_guide);
         else if (a->anchor_kind==ANCHOR_AT_GRID) {

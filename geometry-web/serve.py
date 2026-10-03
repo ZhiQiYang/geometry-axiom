@@ -36,6 +36,7 @@ POST_MAX_BYTES = {
     "/model/verify": 16 * 1024 * 1024,
     "/model/space-preview": 16 * 1024 * 1024,
     "/assembly/preview": 1024 * 1024,
+    "/assembly/generate-preview": 1024 * 1024,
     "/engineering/preview": 1024 * 1024,
     "/engineering/validate-project": 1024 * 1024,
     "/engineering/read": 1024 * 1024,
@@ -105,7 +106,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
         return err_json("指令不得含換行或 NUL")
-    for prefix in ("loadfile ", "engineering-preview ", "engineering-validate ", "assembly-preview "):
+    for prefix in ("loadfile ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -284,7 +285,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif self.path == "/axioms":
             self._send((SCENE_DIR / "geometry-guide" / "公理層-閱讀器.html").read_bytes(),
                        "text/html; charset=utf-8")
-        elif self.path in {"/examples/engineering-spec-v1.gcanvas", "/examples/assembly-rules-v1.gcanvas"}:
+        elif self.path in {"/examples/engineering-spec-v1.gcanvas", "/examples/assembly-rules-v1.gcanvas", "/examples/assembly-generation-v1.gcanvas"}:
             self._send((HERE / "examples" / self.path.rsplit("/", 1)[1]).read_bytes(),
                        "application/octet-stream")
         elif self.path == "/scenes":
@@ -338,10 +339,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return
         body = self.rfile.read(length)
 
-        if self.path in {"/assembly/preview", "/engineering/preview", "/engineering/validate-project"}:
+        if self.path in {"/assembly/preview", "/assembly/generate-preview", "/engineering/preview", "/engineering/validate-project"}:
             from engineering_transport import file_request
             try:
-                self._send(file_request(body, ask_bridge, validate_scene=self.path.endswith('validate-project'), assembly=self.path == '/assembly/preview'))
+                self._send(file_request(body, ask_bridge, validate_scene=self.path.endswith('validate-project'), assembly=self.path == '/assembly/preview', generation=self.path == '/assembly/generate-preview'))
             except OSError:
                 self._send(err_json('無法建立工程資料暫存檔，場景未變更。'))
             return

@@ -1,7 +1,9 @@
-# AR-06 最小角材生成契約：待核准
+# AR-06 最小角材生成契約：已採納
 
 Refs #25。基準 main `fc4f08bd5ecb31f26179334b9b35a21de21e928d`。
-本文件是可審閱提案；未採納到公理、未新增生成能力，也不是生成器完成聲明。
+2026-10-03 使用者指示「開始實作」，核准本文件的 D34/I42/R35 差異。
+条文已採納；公理來源提交 `cc6adff4c9c783ce78bcbd849754b69254690cab`。
+實作、API 與驗收證據見 [生成器操作與驗收](../geometry-web/docs/ASSEMBLY-GENERATION.md)。下方 W1–W3 保留為提案階段的原生見證。
 
 ## 第一個可用流程
 
@@ -43,7 +45,7 @@ binding必須選contactFace=A、orientation=A；此處orientation=A明確表示�
 
 ## 提議的精確輸入
 
-以下欄位及token尚未實作。所有物件ID為正uint32，JSON不接受未知欄位；name不是身分。
+以下欄位已由原生生成交易實作。所有物件ID為正uint32，JSON不接受未知欄位；name不是身分。
 
 ```json
 {
@@ -104,7 +106,7 @@ PR #50的experimental `/8`＋`assembly-rule-identities/1`不是本提案資料�
 新增定義每筆最多8191 UTF-8 bytes，採既有768-byte原生scene分塊；專案附件按現有大小上限。
 容量超限回UNSUPPORTED/CAPACITY，不能部分新增或返回空成功。
 
-## 公理逐條提議（尚未寫入公理層）
+## 已採納的公理差異
 
 保留D1/D7/D15/D17/I19/R6及D33原文，不放寬任何支撐或方向底線。
 
@@ -131,7 +133,7 @@ PR #50的experimental `/8`＋`assembly-rule-identities/1`不是本提案資料�
 + 卡片位置、示意旋轉、視窗範圍與可見格線不決定生成分件或長度。
 ```
 
-## 實作後必須執行的驗收（現在未執行）
+## 必須執行的驗收（結果見生成器操作與驗收）
 
 G01真正UI從既有規則/binding＋指定來源建立三支native角材，完整核對來源與接觸。
 G02两種截面/configuration精確料長；同角色不同member不混淆；排序改名不換timberId。

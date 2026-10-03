@@ -77,6 +77,16 @@ class EngineeringModelCompatibility(unittest.TestCase):
             self.assertEqual(rebuilt[key], package[key])
         self.assertIn(LEGACY_VERSION, modeling.LEGACY_AXIOM_VERSIONS)
 
+    def test_exact_pre_generation_revision_still_rebuilds_existing_package(self):
+        package=self.build();package['manifest']['axiom_revision'],package['manifest']['axiom_sha256']=next(iter(modeling.PRE_GENERATION_AXIOM_VERSIONS))
+        self.assertEqual(package['derived'],verify_package(package)['derived'])
+
+    def test_generation_sources_are_gated_before_unsupported_model_adapter_runs(self):
+        for scene in ['requires assembly-timber-generation/1\n','owned 1 1 timber 1 27 33 role primary\n']:
+            self.assertIn('assembly-timber-generation/1',scene_required_capabilities(scene))
+            with self.assertRaises(ModelError) as caught:load_base(scene,executable='must-not-execute')
+            self.assertEqual('CAPABILITY',caught.exception.code)
+
     def test_unknown_revision_or_mixed_revision_hash_pair_is_rejected(self):
         for version in [("0" * 40, LEGACY_VERSION[1]), (LEGACY_VERSION[0], "0" * 64),
                         ("0" * 40, "0" * 64), (LEGACY_VERSION[0], modeling.AXIOM_SHA256),

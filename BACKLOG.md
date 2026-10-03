@@ -3912,3 +3912,13 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
   1 項 Windows GDI 平台略過；ASan/UBSan 32 通過；兩個防護故障注入須由行為斷言抓到。
 - #25 的[具體契約與逐條公理提案](geometry-core/ASSEMBLY-GENERATION-PROPOSAL.md)已備妥；
   現有 native 見證僅驗證幾何可行與支撐拒絕，不代表生成器已實作。條文仍待使用者看過核准。
+
+
+## AR06 — 使用者核准的最小角材生成（2026-10-03）
+
+- **公理**：D34/I42/R35，精確差異見 ASSEMBLY-GENERATION-PROPOSAL；不擴大到任意拓撲。
+- **新增**：材料配置選取後才出現生成／實例来源編輯；沿用組構工作區、預覽確認、共用歷史與保存。
+- **UI 減項**：移除發布配置檢視中重複的「尺寸都已填好」說明；不增常駐工具列或另一保存入口。
+- **原生**：三構件穩定映射、生成所有權、原子重算、明確換版本、持久化能力 assembly-timber-generation/1。
+- **驗收**：tests/test_assembly_generation.py、專案／傳輸／舊版本相容回歸及真瀏覽器 assembly_generation_test.js。
+- **限制**：實體手機的鍵盤與系統檔案操作仍未驗；Linux 執行不構成 Windows GDI 手測。
