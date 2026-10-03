@@ -56,6 +56,18 @@ class Generation(unittest.TestCase):
         a=self.instance();self.assertEqual(mapping,a['value']['mapping']);self.assertEqual([2960,2960,2260],[m['geometry']['length'] for m in a['members']]);self.assertTrue(all(m['geometry']['A']==40 and m['geometry']['B']==50 and m['geometry']['side']=='+n' for m in a['members']))
     def test_reorder_rename_keeps_member_to_timber_mapping(self):
         self.apply([self.create()]);before={m['memberId']:m['timberId'] for m in self.instance()['members']};v=deepcopy(self.instance()['value']['source']);v['members'].reverse();v['name']='renamed';self.apply([self.edit(v)]);self.assertEqual(before,{m['memberId']:m['timberId'] for m in self.instance()['members']})
+    def test_primary_support_selectors_follow_unordered_r21_not_physical_end_labels(self):
+        self.apply([self.create()])
+        before=deepcopy(self.instance())
+        value=deepcopy(before['value']['source'])
+        for member in value['members'][:2]:
+            member['ends']['start'],member['ends']['finish']=member['ends']['finish'],member['ends']['start']
+        self.apply([self.edit(value)])
+        after=self.instance()
+        self.assertEqual(before['value']['mapping'],after['value']['mapping'])
+        self.assertEqual([m['geometry'] for m in before['members']],[m['geometry'] for m in after['members']])
+        self.assertEqual(91,after['value']['source']['members'][0]['ends']['start']['id'])
+        self.assertEqual(20,after['members'][0]['geometry']['origin'][1])
     def test_missing_wrong_sources_and_inward_joint_geometry_are_atomic(self):
         for change,diagnostic in [('guide','I42'),('surface','I42'),('support','I42'),('side','I42')]:
             v=self.source()
