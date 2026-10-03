@@ -201,14 +201,14 @@
   // are painted path centreline points, never labelled as wall/inside corners.
   function pdfSnapFeatures(list, OPS, viewport) {
     if(list.fnArray.length>200000)throw error('capacity','PDF 向量超過吸附容量，請人工描繪。');
-    const segments=[];let state={matrix:[...viewport.transform],clip:false,dash:false,alpha:1,transparent:false,text:false,mask:false},stack=[],marked=[],groups=0;
+    const segments=[];let state={matrix:[...viewport.transform],clip:false,dash:false,alpha:1,transparent:false,text:false,textMode:0,mask:false},stack=[],marked=[],groups=0;
     const paints=[OPS.stroke,OPS.closeStroke,OPS.fillStroke,OPS.eoFillStroke,OPS.closeFillStroke,OPS.closeEOFillStroke];
     for(let i=0;i<list.fnArray.length;i++) {
       const op=list.fnArray[i],a=list.argsArray[i];
       if(op===OPS.beginMarkedContent||op===OPS.beginMarkedContentProps)marked.push(marked.at(-1)===true || op===OPS.beginMarkedContentProps&&a[0]==='OC');
       else if(op===OPS.endMarkedContent)marked.pop();
-      else if(op===OPS.beginGroup){stack.push({...state,matrix:[...state.matrix]});groups++;}
-      else if(op===OPS.endGroup){state=stack.pop()||state;groups=Math.max(0,groups-1);}
+      else if(op===OPS.beginGroup||op===OPS.beginAnnotation){stack.push({...state,matrix:[...state.matrix]});groups++;}
+      else if(op===OPS.endGroup||op===OPS.endAnnotation){state=stack.pop()||state;groups=Math.max(0,groups-1);}
       else if(op===OPS.save||op===OPS.paintFormXObjectBegin){stack.push({...state,matrix:[...state.matrix]});if(op===OPS.paintFormXObjectBegin){if(a[0])state.matrix=multiply(state.matrix,a[0]);if(a[1])state.clip=true;}}
       else if(op===OPS.restore||op===OPS.paintFormXObjectEnd)state=stack.pop()||state;
       else if(op===OPS.transform)state.matrix=multiply(state.matrix,a);
@@ -216,7 +216,10 @@
       else if(op===OPS.setDash)state.dash=!!a[0]?.length;
       else if(op===OPS.setStrokeTransparent)state.transparent=true;
       else if(op===OPS.setStrokeRGBColor)state.transparent=false;
-      else if(op===OPS.beginText)state.text=true;
+      // Glyph clipping (text modes 4..7) persists after ET until Q. We do
+      // not reconstruct glyph outlines or annotation-local transforms.
+      else if(op===OPS.setTextRenderingMode){state.textMode=a[0];if(state.text && a[0]>=4 && a[0]<=7)state.clip=true;}
+      else if(op===OPS.beginText){state.text=true;if(state.textMode>=4 && state.textMode<=7)state.clip=true;}
       else if(op===OPS.endText)state.text=false;
       else if(op===OPS.setGState){for(const [k,v] of a[0]||[]){if(k==='CA')state.alpha=v;if(k==='D')state.dash=!!v[0]?.length;if(k==='SMask')state.mask=!!v;}}
       else if(op===OPS.constructPath && !groups && !marked.at(-1) && !state.mask && !state.clip && !state.text && !state.dash && !state.transparent && state.alpha>0 && paints.includes(a[0])) {

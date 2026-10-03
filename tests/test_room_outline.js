@@ -57,7 +57,7 @@ test('PDF DrawOPS use viewport plus CTM; curves are excluded without orthogonali
   assert.throws(()=>R.pdfObstacles({fnArray:new Array(200001)},OPS,{transform:[1,0,0,1,0,0]}),/過多/);
 });
 
-const snapOPS={save:10,restore:11,transform:12,constructPath:91,stroke:20,closeStroke:21,setDash:6,beginText:30,endText:31,clip:32,setGState:33,setStrokeRGBColor:34,beginMarkedContent:69,beginMarkedContentProps:70,endMarkedContent:71,beginGroup:76,endGroup:77};
+const snapOPS={save:10,restore:11,transform:12,constructPath:91,stroke:20,closeStroke:21,setDash:6,beginText:30,endText:31,clip:32,setGState:33,setStrokeRGBColor:34,setTextRenderingMode:35,beginMarkedContent:69,beginMarkedContentProps:70,endMarkedContent:71,beginGroup:76,endGroup:77,beginAnnotation:80,endAnnotation:81};
 const snapPath=(points,closed=false)=>[0,...points[0],...points.slice(1).flatMap(p=>[1,...p]),...(closed?[4]:[])];
 const snapList=paths=>({fnArray:paths.map(()=>91),argsArray:paths.map(p=>[20,[new Float32Array(p)]])});
 test('manual PDF snap keeps original path endpoints, CTM and viewport; no text, curves, dashed or clipped paths',()=>{
@@ -71,6 +71,12 @@ test('manual PDF snap keeps original path endpoints, CTM and viewport; no text, 
   assert.equal(R.pdfSnapFeatures({fnArray:[33,91],argsArray:[[[['SMask',true]]],paint]},snapOPS,viewport).segments.length,0,'soft mask visibility is not guessed');
   const group=R.pdfSnapFeatures({fnArray:[76,12,91,77,91],argsArray:[{},[1,0,0,1,999,999],paint,{},paint]},snapOPS,viewport);
   assert.equal(group.segments.length,4,'unsupported group contributes no points');assert.deepEqual(group.segments[0].a,[3,5],'group transform does not leak');
+  const note=R.pdfSnapFeatures({fnArray:[80,12,91,81,91],argsArray:[[],[1,0,0,1,999,999],paint,[],paint]},snapOPS,viewport);
+  assert.equal(note.segments.length,4,'annotation-local paths are excluded');assert.deepEqual(note.segments[0].a,[3,5],'annotation transforms do not leak into page source');
+  for(const mode of [4,5,6,7]) {
+    const clipped=R.pdfSnapFeatures({fnArray:[10,30,35,31,91,11,91],argsArray:[[],[],[mode],[],paint,[],paint]},snapOPS,viewport);
+    assert.equal(clipped.segments.length,4,`glyph clip mode ${mode} persists beyond endText and ends at restore`);
+  }
 });
 test('PDF endpoints use an 8px radial tolerance, crop and exact draft axis; grid cannot steal targets',()=>{
   const features=R.pdfSnapFeatures(snapList([snapPath([[3,5],[27,5]])]),snapOPS,{transform:[1,0,0,1,0,0]});

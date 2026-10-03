@@ -11,6 +11,9 @@ module.exports=async function({send,read,sleep,ctl,key,setup,select,until,shot,n
     if(click){await send('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...r});await send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...r});await sleep(70);}
   }
   await setup();const original=await read(`api('dump').then(r=>r.text)`);
+  // P79's manual baseline deliberately leaves snapping off. Start this
+  // source-snapping scenario through the real control, independently of it.
+  if(!await read(`$('faceSnapToggle').checked`))await ctl('#faceSnapToggle');
   await manual();await move([300,300]);
   if(await read(`typeof ReferenceWorkspace.tracingFeatures==='function'`))await until(`ReferenceWorkspace.tracingFeatures(1).status==='ready'`);
   // CropBox and the PDF's CTM cancel to the authored points (30,30).
@@ -70,6 +73,16 @@ module.exports=async function({send,read,sleep,ctl,key,setup,select,until,shot,n
   await setup({page:5});await manual();await move([300,300]);await until(`ReferenceWorkspace.tracingFeatures(1).status==='manual'`);await move([300,300]);
   check('raster-only PDF discloses manual capability without fabricated endpoints',await read(`!fe.draftPreview.pdfTarget&&!document.querySelector('[data-pdf-snap-target]')&&$('faceCoordinateReadout').textContent.includes('人工描繪')`));
   await key('v','KeyV',86);
+  for(const [page,phantom,kind] of [[7,[700,1400],'annotation appearance'],[8,[900,1000],'glyph-clipped path']]) {
+    await setup({page});await manual();await until(`ReferenceWorkspace.tracingFeatures(1).status==='ready'`);
+    const pixel=await read(`(async()=>{const p=ReferenceWorkspace.active(1),r=await ReferenceWorkspace.renderPage(roomSource,p.page),k=r.canvas.width/r.width;return Array.from(r.canvas.getContext('2d').getImageData(Math.round(${phantom[0]/10}*k),Math.round(${phantom[1]/10}*k),1,1).data);})()`);
+    check(`${kind}: actual PDF render has no stroke at the phantom endpoint`,pixel.slice(0,3).every(n=>n===255),pixel);
+    await move(phantom,0,0);
+    check(`${kind}: invisible/unmapped stroke cannot provide a snap target`,await read(`!fe.draftPreview.pdfTarget&&!document.querySelector('[data-pdf-snap-target]')`),await read(`({target:fe.draftPreview.pdfTarget,readout:$('faceCoordinateReadout').textContent})`));
+    await move([300,300],2,1,true);
+    check(`${kind}: ordinary page source survives the graphics-state restore`,await read(`JSON.stringify(fe.draft.pts[0])==='[300,300]'&&fe.draftPreview.pdfTarget?.kind==='endpoint'`));
+    await shot(`pdf-${page}-excluded-phantom`);await key('v','KeyV',86);
+  }
   // Hold real extraction; switch pages and cancel before its result arrives.
   await setup();
   await read(`(async()=>{const page=await roomSource.doc.getPage(1),original=page.getOperatorList.bind(page),gate=new Promise(r=>window.snapRelease=r);page.getOperatorList=async()=>{const list=await original();window.snapHeld=true;await gate;window.snapHeld=false;return list;};})()`);
