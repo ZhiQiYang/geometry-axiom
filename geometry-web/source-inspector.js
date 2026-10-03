@@ -64,6 +64,28 @@
         if(d>=depth||rows.length>=limit){truncated=true;continue;}visited.add(target);rows.push({edge:e,node:graph.nodes.get(target)||null,key:target,depth:d+1});queue.push([target,d+1]);}
     }return {rows,truncated,missing:rows.some(r=>!r.node)};
   }
+  // Resolve only native, active typed relations. A boundary can have several
+  // placements; neither card order nor the first face with that boundary is identity.
+  function resolveLocation(graph,target){
+    if(!target||!['guide','grid','timber','placement'].includes(target.kind)||!id(target.id))throw Error('定位資料不完整，請重新檢查。');
+    const typed=(kind,identifier)=>{
+      const n=graph.nodes.get(key(kind,identifier));
+      if(!n||n.kind!==kind||n.id!==String(identifier)||n.key!==key(kind,identifier))throw Error('來源物件已缺失或型別不一致，請重新檢查。');
+      return n;
+    };
+    const follow=(n,field,kind)=>{
+      const edges=(graph.out.get(n.key)||[]).filter(e=>e.active&&e.relation==='position'&&e.field===field);
+      if(edges.length!==1)throw Error('來源放置關係缺失或不唯一，無法定位。');
+      const next=graph.nodes.get(edges[0].to),identifier=Number(next?.id);
+      if(!next||!id(identifier)||next.id!==String(identifier)||next.key!==key(kind,identifier))throw Error('來源放置身分無法核對，請重新檢查。');
+      return typed(kind,identifier);
+    };
+    const n=typed(target.kind,target.id),placement=target.kind==='placement'?n:follow(n,'surface','placement');
+    if(target.kind==='placement' && !(graph.out.get(placement.key)||[]).some(e=>e.active&&e.relation==='position'&&e.field==='boundary'))
+      return {placementId:Number(placement.id),boundaryId:null}; // Native surfaces must confirm the embedded rectangular case.
+    const boundary=follow(placement,'boundary','boundary');
+    return {placementId:Number(placement.id),boundaryId:Number(boundary.id)};
+  }
   function modelRoots(record){
     const input=record?.input;if(record?.source?.kind!=='scene'||!input||typeof input.base_scene!=='string')return [];
     return [...new Set([...(input.mode==='plan'&&input.placement_id!=null?[key('placement',input.placement_id)]:input.mode==='faces'&&Array.isArray(input.uses)?input.uses.map(u=>key('placement',u.placement_id)):[]),...(input.obstacles||[]).map(o=>key(o.kind,o.id)),...(input.timbers||[]).map(t=>key(t.kind,t.id))])];
@@ -195,7 +217,7 @@
     if(reuse){reuse.querySelector('summary').textContent='來源／影響與參數交換';reuse.querySelector('ul')?.remove();reuse.querySelector('[data-source-body]')?.remove();const body=host.ownerDocument.createElement('div');body.dataset.sourceBody='';body.setAttribute('role','status');body.setAttribute('aria-live','polite');body.textContent='尚未檢查';reuse.append(body);}
     else {detail.innerHTML='<summary>來源／影響</summary><div data-source-body role="status" aria-live="polite">尚未檢查</div>';host.append(detail);}
     const body=detail.querySelector('[data-source-body]'),session=createSession({context,stamp,read,readSnapshot,project}),recordPin=record&&JSON.stringify(record);
-    let result=null,schedule=null,start=selection,loadSequence=0,busy=false,active=true,order='id',unit='mm';
+    let result=null,schedule=null,start=selection,loadSequence=0,busy=false,active=true,order='id',unit='mm',navigationLease=null;
     const hasTimbers=record&&Array.isArray(record.input?.timbers)&&record.input.timbers.length>0;
     const refresh=()=>`<button type="button" data-source-refresh>${hasTimbers?'核對並匯出快照CSV':'重新檢查'}</button>`;
     const recordCurrent=()=>!record||JSON.stringify(getRecord())===recordPin;
@@ -232,17 +254,22 @@
       }catch(e){if(seq===loadSequence&&context()===ctx&&mounted())unavailable(e.name==='AbortError'?'檢查已取消。':e.message);}
       finally{if(seq===loadSequence)busy=false;}
     }
-    const onToggle=()=>{if(detail.open)load();else{++loadSequence;busy=false;session.cancel();result=null;schedule=null;body.textContent='尚未檢查';}};
+    const onToggle=()=>{if(detail.open)load();else{if(navigationLease)navigationLease.cancelled=true;++loadSequence;busy=false;session.cancel();result=null;schedule=null;body.textContent='尚未檢查';}};
     detail.addEventListener('toggle',onToggle);
     const onClick=async e=>{
       if(e.target.closest('[data-source-refresh]')){await load(!!hasTimbers);return;}
       const path=e.target.closest('[data-source-path]');if(path&&result){if(!mounted()||!session.valid(result)){unavailable('來源已變更，請重新檢查。');return;}start=path.dataset.sourcePath;render();return;}
       const button=e.target.closest('[data-source-locate]');if(!button||!result)return;
       const captured=result,key=button.dataset.sourceLocate;button.disabled=true;
-      try{const fresh=index(await read());if(!session.valid(captured)||!mounted())return;if(fresh.data.revision!==captured.revision||fresh.data.sourceFingerprint!==captured.graph.data.sourceFingerprint||!fresh.nodes.has(key)){body.textContent='來源已變更或刪除，請重新檢查。';return;}await navigate(fresh.nodes.get(key),fresh);}catch(error){if(mounted())body.textContent=error.message;}finally{if(button.isConnected)button.disabled=false;}
+      if(navigationLease)navigationLease.cancelled=true;
+      const seq=loadSequence,lease=navigationLease={cancelled:false,transferred:false};
+      const isCurrent=()=>!lease.cancelled&&session.valid(captured)&&recordCurrent()&&isActive()&&
+        (lease.transferred&&!record || seq===loadSequence&&mounted());
+      const beginNavigation=()=>{if(!isCurrent())return false;lease.transferred=true;return true;};
+      try{const fresh=index(await read());if(!isCurrent())return;if(fresh.data.revision!==captured.revision||fresh.data.sourceFingerprint!==captured.graph.data.sourceFingerprint||!fresh.nodes.has(key)){body.textContent='來源已變更或刪除，請重新檢查。';return;}await navigate(fresh.nodes.get(key),fresh,{isCurrent,beginNavigation});}catch(error){if(mounted())body.textContent=error.message;}finally{if(navigationLease===lease)navigationLease=null;if(button.isConnected)button.disabled=false;}
     };
     const onChange=e=>{if(!schedule||!result||!mounted()||!session.valid(result)){if(result)unavailable('來源已變更，請重新核對。');return;}if(e.target.matches('[data-snapshot-order]')&&['id','length'].includes(e.target.value))order=e.target.value;else if(e.target.matches('[data-snapshot-unit]')&&['mm','cm'].includes(e.target.value))unit=e.target.value;else return;render();};
-    body.addEventListener('click',onClick);body.addEventListener('change',onChange);if(detail.open)load();return {detail,cancel(){active=false;++loadSequence;session.cancel();detail.removeEventListener('toggle',onToggle);body.removeEventListener('click',onClick);body.removeEventListener('change',onChange);}};
+    body.addEventListener('click',onClick);body.addEventListener('change',onChange);if(detail.open)load();return {detail,cancel(){if(navigationLease&&(record||!navigationLease.transferred))navigationLease.cancelled=true;active=false;++loadSequence;session.cancel();detail.removeEventListener('toggle',onToggle);body.removeEventListener('click',onClick);body.removeEventListener('change',onChange);}};
   }
-  return {key,index,nearby,modelRoots,modelTimberIds,deriveModelSchedule,modelScheduleCSV,freshness,createSession,mount,LIMIT,DEPTH};
+  return {key,index,nearby,resolveLocation,modelRoots,modelTimberIds,deriveModelSchedule,modelScheduleCSV,freshness,createSession,mount,LIMIT,DEPTH};
 });
