@@ -236,7 +236,10 @@ window.AssemblyWorkspace=(()=>{
     const unchanged=[];
     for(const t of p.impact?.timbers||[]){
       const label=owned.get(t.id)||`角材 #${t.id}（組構外）`;
-      if(identityValue(t.before)===identityValue(t.after))unchanged.push(`#${t.id}`);
+      if(identityValue(t.before)===identityValue(t.after)){
+        unchanged.push(`#${t.id}`);
+        if(owned.has(t.id))rows.push([label,`沒有幾何變更；${describe(t.after)}`]);
+      }
       else rows.push([label,`${describe(t.before)} → ${describe(t.after)}`]);
     }
     if(unchanged.length)rows.push(['未變更角材',unchanged.join('、')]);

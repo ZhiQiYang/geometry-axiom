@@ -447,6 +447,12 @@ test('missing complete native candidate refuses confirmation and preserves the d
   assert.ok(f.calls.includes('assembly-cancel incomplete'));
   assert.equal(JSON.stringify(f.context().assemblyDrafts),before);
 });
+test('source-only instance edit keeps unchanged owned geometry in the preview',()=>{
+  const f=fixture(),geometry={surface:1,centerline:1500,length:1973,u:514,v:1487,dir:'+u',side:'+n',A:27,B:33,origin:[514,1487,2500],axes:[[1,0,0],[0,1,0],[0,0,1]]};
+  const before={value:{source:{id:1,name:'原名稱'}},members:[{memberId:3,timberId:7,geometry}]},after=copy(before);after.value.source.name='新名稱';
+  const html=f.t.previewCopy({valid:true,before:{rules:[],bindings:[],instances:[before]},after:{rules:[],bindings:[],instances:[after]},impact:{schema:'candidate-geometry/1',timbers:[{id:7,before:geometry,after:geometry}],guides:[]}});
+  assert.match(html,/構件 #3 → 角材 #7/);assert.match(html,/沒有幾何變更/);assert.match(html,/長度 1973 mm/);assert.match(html,/世界位置 514,1487,2500/);
+});
 function diff(f,oldSource,newSource,oldValue=27,newValue=27,axis='A'){
   const binding={id:1,name:'配置',rule:{id:1,version:1},slots:[{slotId:1,A:literal(27),B:literal(33),contactFace:'A',orientation:'B'},{slotId:2,A:null,B:null,contactFace:null,orientation:null}]};
   const before={value:copy(binding),effective:[{slotId:1,A:{value:27},B:{value:33}}]},after=copy(before);before.value.slots[0][axis]=oldSource;after.value.slots[0][axis]=newSource;
