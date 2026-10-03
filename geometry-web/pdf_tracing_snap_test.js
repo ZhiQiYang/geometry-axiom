@@ -11,6 +11,9 @@ module.exports=async function({send,read,sleep,ctl,key,setup,select,until,shot,n
     if(click){await send('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...r});await send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...r});await sleep(70);}
   }
   await setup();const original=await read(`api('dump').then(r=>r.text)`);
+  // P79's manual baseline deliberately leaves snapping off. Start this
+  // source-snapping scenario through the real control, independently of it.
+  if(!await read(`$('faceSnapToggle').checked`))await ctl('#faceSnapToggle');
   await manual();await move([300,300]);
   if(await read(`typeof ReferenceWorkspace.tracingFeatures==='function'`))await until(`ReferenceWorkspace.tracingFeatures(1).status==='ready'`);
   // CropBox and the PDF's CTM cancel to the authored points (30,30).
