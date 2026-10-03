@@ -72,7 +72,7 @@ PDF 預覽解析度、取景及縮放不改頁面座標。`mmPerPx` 沿用既有
 載入候選由同一原生 parser 建立，檢查完來源位元組、圖頁尺寸及 metadata 後，
 確認才一次替換 World 和專案上下文。確認使用已驗證的同一候選，核對前一 World 與版本，
 不重新解析檔案；取消、無效引用及失效候選不新增 undo。成功開啟仍是一筆可復原交易。
-確認回覆遺失時，Retry 先查詢／取消同一 token 的服務端終態；已取消的 token 永不接受晚到確認，已提交則依原回執與提交時的完整 dump SHA-256 恢復同份 context，不猜測相同 World 的結果。服務僅保留最多 256 筆記憶體回執；已淘汰或無法確認的結果維持編輯暫停。
+確認回覆遺失時，Retry 先查詢／取消同一 token 的服務端終態；已取消的 token 永不接受晚到確認，已提交則依原回執與提交時的 revision 與完整 dump SHA-256 恢復同份 context，不猜測相同 World 的結果。服務僅保留最多 256 筆記憶體回執；已淘汰或無法確認的結果維持編輯暫停。
 保存格式及既有公理未變更。封裝／解包負責結構和完整性，場景引用合法性由上述原生候選核定。
 
 - `GEOMETRY_TEST_BRIDGE=<fresh bridge> python -m unittest tests.test_scene_import`：最終物件、縮排／reset／delete／重宣告、placement 0、候選取消、失效／ABA、同一候選提交及畫布位置。

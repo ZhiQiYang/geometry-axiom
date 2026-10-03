@@ -60,7 +60,7 @@ module.exports=async({read,send,until,check,doUndoRedo})=>{
     check('P61 QR2 import undo restores original bytes references and World',await read(`(async()=>{const a=await __finalSnapshot(),b=JSON.parse(${JSON.stringify(before)});return a.id===b.id&&a.scene===b.scene&&JSON.stringify(a.faces)===JSON.stringify(b.faces)&&JSON.stringify(a.projections)===JSON.stringify(b.projections)&&JSON.stringify(a.reviews)===JSON.stringify(b.reviews)&&JSON.stringify(a.sourceBytes)===JSON.stringify(b.sourceBytes);})()`));
     await doUndoRedo('redo');
     check('P61 QR2 redo restores placement ID0 projection and source bytes',await read(`ReferenceWorkspace.context().id==='public-final-trim'&&ReferenceWorkspace.getFaceProjection(1,0)?.view==='top'&&ReferenceWorkspace.active(1)?.sourceId===__finalExpected.faces[0].pages[0].sourceId`));
-    for(const mode of ['delayedDistinct','delayedIdentical','committedLost']){
+    for(const mode of ['delayedDistinct','delayedIdentical','committedLost','committedABA']){
       await open('base');
       const outcome=await read(`(async()=>{
         const mode=${JSON.stringify(mode)},before=JSON.stringify(await __finalSnapshot()),original=window.fetch;
@@ -73,7 +73,7 @@ module.exports=async({read,send,until,check,doUndoRedo})=>{
         const gate=new Promise(resolve=>release=resolve);
         window.fetch=async(...args)=>{
           if(String(args[0])==='/upload/confirm'){
-            if(mode==='committedLost'){committed=await(await original(...args)).json();}
+            if(mode.startsWith('committed')){committed=await(await original(...args)).json();}
             else delivery=gate.then(()=>original(...args));
             throw Error('Injected unavailable confirmation reply with real native delivery');
           }
@@ -81,7 +81,15 @@ module.exports=async({read,send,until,check,doUndoRedo})=>{
         };
         let rejected=false;
         try{await ReferenceWorkspace.importBytes(bytes);}catch(_){rejected=true;}finally{window.fetch=original;}
-        const blocked=connection.phase==='error';await recoverConnection();
+        const blocked=connection.phase==='error';
+        if(mode==='committedABA'){
+          const native=async cmd=>(await original('/api',{method:'POST',body:JSON.stringify({cmd})})).json();
+          const afterCommit=(await native('dump')).text,spec=await native('line spec QR2_ABA 27'),undo=await native('line undo'),afterABA=await native('dump');
+          await recoverConnection();const after=await __finalSnapshot(),prior=JSON.parse(before);
+          return rejected&&blocked&&committed.ok&&spec.ok&&undo.ok&&afterABA.revision!==committed.revision&&connection.phase==='error'&&afterABA.text===afterCommit&&after.id===prior.id&&JSON.stringify(after.faces)===JSON.stringify(prior.faces)&&
+            JSON.stringify(after.projections)===JSON.stringify(prior.projections)&&JSON.stringify(after.reviews)===JSON.stringify(prior.reviews)&&JSON.stringify(after.sourceBytes)===JSON.stringify(prior.sourceBytes)&&after.undo===prior.undo&&after.redo===prior.redo;
+        }
+        await recoverConnection();
         if(delivery){release();const late=await(await delivery).json();return rejected&&blocked&&connection.phase==='ready'&&!late.ok&&JSON.stringify(await __finalSnapshot())===before;}
         const exported=await GeometryProject.unpack(await ReferenceWorkspace.exportBytes(),fflate),m=exported.manifest,e=__finalExpected;
         return rejected&&blocked&&committed.ok&&connection.phase==='ready'&&ReferenceWorkspace.context().id==='public-final-trim'&&ReferenceWorkspace.history.undo.length===JSON.parse(before).undo+1&&
@@ -89,6 +97,7 @@ module.exports=async({read,send,until,check,doUndoRedo})=>{
           JSON.stringify(Array.from(exported.sources.values().next().value))===JSON.stringify(e.bytes);
       })()`);
       check('P61 QR2 '+mode+' resolves terminal token without separating assets context and World',outcome);
+      if(mode==='committedABA'){await send('Page.reload');await until("typeof ReferenceWorkspace!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy");}
     }
   } finally {fs.rmSync(directory,{recursive:true,force:true});}
 };

@@ -350,13 +350,13 @@ test('retry cancels the token before a delayed confirm can mutate old or identic
 });
 
 test('retry uses the committed receipt for lost replies and refuses a later different World',async()=>{
-  for(const changed of [false,true]){
+  for(const changed of [false,true,'ABA']){
     const f=await openFixture(),old=f.w.context(),original=f.env.fetch;
     const committed='boundary 8 outline 0,0 800,0 800,700 0,700\n',hash=await P.sha(new TextEncoder().encode(committed));
     f.env.connectionFailed=()=>{f.env.connection.phase='error';};
     f.env.fetch=async(url,request)=>{
-      if(url==='/upload/confirm'){f.env.api=async()=>({ok:true,text:changed?'reset\n':committed});throw Error('lost committed reply');}
-      if(url==='/upload/cancel')return {ok:true,json:async()=>({ok:true,state:'committed',path:'committed.scene',scene_sha256:hash})};
+      if(url==='/upload/confirm'){f.env.api=async()=>({ok:true,text:changed===true?'reset\n':committed,revision:changed==='ABA'?9:7});throw Error('lost committed reply');}
+      if(url==='/upload/cancel')return {ok:true,json:async()=>({ok:true,state:'committed',revision:7,path:'committed.scene',scene_sha256:hash})};
       return original(url,request);
     };
     await assert.rejects(()=>f.w.importBytes(f.bytes),/lost committed reply/);

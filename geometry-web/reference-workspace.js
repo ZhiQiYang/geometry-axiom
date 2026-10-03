@@ -976,7 +976,7 @@ const ReferenceWorkspace = (() => {
       const before = await api("dump");
       assertWritableLease();assertCurrent();
       if (!before.ok) throw new Error(before.error || "無法讀取載入前的場景。");
-      nextLoad = { text, before: before.text, manifest:replacement?.manifest, context: replacement?.context || fresh(), ids: replacement?.ids, action:replacement?.action || null, isolateHistory:contextConflict,
+      nextLoad = { text, before: before.text, beforeRevision:before.revision, manifest:replacement?.manifest, context: replacement?.context || fresh(), ids: replacement?.ids, action:replacement?.action || null, isolateHistory:contextConflict,
         guard:{context:context(),frame:history.frame,revision:revision(context()),conflict:contextConflict} };
     } catch(error) {preparingSceneLoad=false;throw error;}
     let result,token=null;
@@ -1030,11 +1030,11 @@ const ReferenceWorkspace = (() => {
     let restoredNew = false, restoredPath = "";
     if(terminal){
       if(terminal.state==="committed" && terminal.ok===true){
-        if(!terminal.scene_sha256 || await P.sha(new TextEncoder().encode(dump.text))!==terminal.scene_sha256){
+        if(!Number.isSafeInteger(terminal.revision) || dump.revision!==terminal.revision || !terminal.scene_sha256 || await P.sha(new TextEncoder().encode(dump.text))!==terminal.scene_sha256){
           contextConflict=true;throw new Error("載入後的場景已有其他變更，未替換目前專案資料；請重新開啟。");
         }
         assertLoadContext(load);adoptLoadedContext();restoredNew=true;restoredPath=terminal.path||"";
-      } else if(!old){contextConflict=true;throw new Error("取消載入後場景已變更，請重新開啟目前專案。");}
+      } else if(!old || Number.isSafeInteger(load.beforeRevision)&&dump.revision!==load.beforeRevision){contextConflict=true;throw new Error("取消載入後場景已變更，請重新開啟目前專案。");}
     }
     else if (next && !old) { adoptLoadedContext(); restoredNew=true; }
     else if (!(old && !next)) {
