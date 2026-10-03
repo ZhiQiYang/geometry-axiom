@@ -4,7 +4,7 @@ const ReferenceWorkspace = (() => {
   const P = GeometryProject, uuid = () => crypto.randomUUID();
   const escape = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
   const fresh = () => ({ id: uuid(), name: "未命名專案", sources: new Map(), groups: new Map(), models: [], modelsDirty: false,
-    faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], assemblyDrafts: [], pending: new Set(), dirty: false,
+    reconstructionReviews: new Map(), faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], assemblyDrafts: [], pending: new Set(), dirty: false,
     provenance:{kind:"server",label:"服務目前保留的場景（來源未確認）",openedAt:null,lastSavedAt:null,lastDownloadAt:null} });
   const history = new P.ContextHistory(fresh);
   const revisions = new WeakMap(), selections = new WeakMap(), contextTokens = new WeakMap();
@@ -245,7 +245,7 @@ const ReferenceWorkspace = (() => {
     document.querySelectorAll("[data-reference-step]").forEach(el => {
       const step = el.dataset.referenceStep;
       const selected = !p && step === "page" || p && !p.calibration && step === "calibrate" ||
-        p && p.calibration && !oc.bmap[oc.edit?.bid]?.[0]?.verts?.length && step === "draw";
+        p && p.calibration && reconstructionState(oc.edit?.bid) !== "confirmed" && step === "draw";
       el.classList.toggle("current", selected);
       if (selected) el.setAttribute("aria-current", "step"); else el.removeAttribute("aria-current");
     });
@@ -532,16 +532,36 @@ const ReferenceWorkspace = (() => {
     html += `<label class="ib-row">項目<input id="refRecordLabel" maxlength="300" placeholder="例如：天花完成高度"></label><label class="ib-row">位置說明<input id="refRecordLocation" maxlength="1000" placeholder="例如：A202 主區域"></label><div class="place-form"><label>數值（留空表示待補）<input id="refRecordValue" type="number" step="any"></label><label>單位<select id="refRecordUnit"><option>mm</option><option>cm</option></select></label></div><label class="ib-row">基準<input id="refRecordDatum" maxlength="300" placeholder="例如：完成地坪 FFL"></label><button id="refRecordAdd" type="button" class="btn">新增來源紀錄</button><p class="fi-note">紀錄不會自動建立構件。天花完成高度與 RC 樑底高度請分開記錄。</p></details>`;
     return html;
   }
-  function statusHTML(bid) {
+  function reviewKey(bid, page=active(bid)) { return history.frame.ids.get(bid)+":"+page?.id; }
+  function reconstructionState(bid) {
+    const p=active(bid);if (!p) return "unreviewed";
+    if (window.RoomOutlineWorkspace?.pending?.(bid)) return "candidate";
+    const r=context().reconstructionReviews.get(reviewKey(bid,p));
+    if (!r) return "unreviewed";
+    return r.basis===P.reviewBasis(p) && r.geometry===P.outlineFingerprint(oc.bmap[bid]) ? "confirmed" : "recheck";
+  }
+  function markReconstructionReviewed(bid, {method="manual", warnings=[], local=true, expectedBasis=null}={}) {
+    assertEditable();const p=active(bid);
+    if (!p?.calibration || !oc.bmap[bid]?.[0]?.verts?.length) throw new Error("請先校準來源並完成合法輪廓，再核對。");
+    if (expectedBasis && expectedBasis!==P.reviewBasis(p)) throw new Error("來源對位已變更，請重新核對；正式面尺寸保持原值。");
+    if (local) {if (history.group) throw new Error("請先完成目前交易。");history.push(history.snapshot(),"local","核對來源輪廓");}
+    context().reconstructionReviews.set(reviewKey(bid,p),{basis:P.reviewBasis(p),geometry:P.outlineFingerprint(oc.bmap[bid]),method,warnings:[...warnings],confirmedAt:new Date().toISOString()});
+    p.reviewRequired=false;dirty();schedulePresentation();
+  }
+  function reconstructionStatusHTML(bid) {
     const p = active(bid); if (!p) return "";
-    return `<p id="refCalibrationStatus" class="ref-status${p.calibration ? "" : " neutral"}">${p.calibration ? `已校準 · ${p.calibration.inputValue} ${p.calibration.inputUnit}` : "未校準 · 請使用圖上已知尺寸"}</p>` +
-      (p.reviewRequired ? `<div class="reference-review"><p>幾何待核對：請依底圖確認已建立的輪廓。</p><button id="refConfirmChecked" type="button" class="btn">已核對此面的幾何</button></div>` : "");
+    const state=reconstructionState(bid),label={unreviewed:"尚未依此來源核對輪廓（原有矩形不代表重建完成）",candidate:"輪廓候選 · 尚未確認",confirmed:"已依此來源核對輪廓",recheck:"來源或輪廓已變更 · 需要重新核對"}[state];
+    return `<div class="reference-review" data-reconstruction-state="${state}" role="status"><p>${label}</p>${p.calibration && state!=="confirmed" && state!=="candidate" ? '<button id="refConfirmChecked" type="button" class="btn">已逐邊核對室內淨輪廓與尺寸</button>' : ""}</div>`;
+  }
+  function statusHTML(bid, includeOutline=true) {
+    const p=active(bid);if(!p)return "";
+    return `<p id="refCalibrationStatus" class="ref-status${p.calibration ? "" : " neutral"}">${p.calibration ? `已校準 · ${p.calibration.inputValue} ${p.calibration.inputUnit}` : "未校準 · 請使用圖上已知尺寸"}</p>`+(includeOutline?reconstructionStatusHTML(bid):"");
   }
   function bindPane(pane, bid) {
     pane.querySelector("#refImport")?.addEventListener("click", safe(() => chooseFile(bid)));
     pane.querySelector("#refMorePages")?.addEventListener("click", safe(() => openSource(context().sources.get(active(bid).sourceId), bid)));
     pane.querySelector("#refActivePage")?.addEventListener("change", safe(e => selectPage(bid,e.target.value)));
-    pane.querySelector("#refConfirmChecked")?.addEventListener("click", safe(() => { assertEditable();active(bid).reviewRequired = false; dirty(); redraw(); }));
+    pane.querySelector("#refConfirmChecked")?.addEventListener("click", safe(() => { markReconstructionReviewed(bid); redraw(); }));
     pane.querySelector("#refFit")?.addEventListener("click", fitReference);
     pane.querySelector("#refRecordAdd")?.addEventListener("click", safe(() => {
       assertEditable();
@@ -677,20 +697,22 @@ const ReferenceWorkspace = (() => {
   }
   async function manifest(c = context()) {
     await referencesReady(c); assertContext(c);
-    const faces=[], faceProjections=[]; const used=new Set();
+    const faces=[], faceProjections=[], reconstructionReviews=[]; const used=new Set();
     for (const [bid,key] of history.frame.ids) {
       for (const record of c.faceProjections.get(key) || []) faceProjections.push({bid,...JSON.parse(JSON.stringify(record))});
       const g=c.groups.get(key); if (!g?.pages.length) continue;
       faces.push({ bid,activePageId:g.activePageId,pages:g.pages.map(p=>{used.add(p.sourceId);return P.reference(p);}) });
+      for (const p of g.pages) {const r=c.reconstructionReviews.get(key+":"+p.id);if (r) reconstructionReviews.push({bid,pageId:p.id,...JSON.parse(JSON.stringify(r))});}
     }
-    const data = { projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
+    const data = { ...(reconstructionReviews.length?{reconstructionReviews}:{}),projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
       ...(c.models.length?{models:JSON.parse(JSON.stringify(c.models))}:{}),...(faceProjections.length?{faceProjections}:{}),
       ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.assemblyDrafts))}}:{}),
       ...(c.engineeringDrafts?.length?{engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.engineeringDrafts))}}:{}) };
     const format = P.projectFormat(data);
-    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
+    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
   }
   function assertSaveReady() {
+    if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
     assertEditable();
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
@@ -817,7 +839,7 @@ const ReferenceWorkspace = (() => {
     stage("正在檢查專案完整性…","驗證中");
     const loaded=await P.unpack(bytes,fflate),m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
     assertCurrent();
-    if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT].includes(m.format)) {
+    if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT].includes(m.format)) {
       stage("正在驗證工程來源與幾何…","驗證中");
       const response=await fetch("/engineering/validate-project",{method:"POST",body:loaded.scene,signal:AbortSignal.timeout(30000)});
       if(!response.ok)throw new Error("目前服務無法驗證工程專案，未變更目前專案。");
@@ -844,6 +866,9 @@ const ReferenceWorkspace = (() => {
     for(const record of m.faceProjections){
       const key=keyFor(record.bid),records=c.faceProjections.get(key)||[];
       records.push({placement_id:record.placement_id,projection:JSON.parse(JSON.stringify(record.projection))});c.faceProjections.set(key,records);
+    }
+    for (const record of m.reconstructionReviews || []) {
+      const {bid,pageId,...value}=record;c.reconstructionReviews.set(keyFor(bid)+":"+pageId,value);
     }
     for(const f of m.faces){
       stage("正在還原參考資料…");
@@ -1014,7 +1039,7 @@ const ReferenceWorkspace = (() => {
     present();
   }
   return { init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,statusHTML,present,bindPane,active,group,context,history,
-    sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
+    reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
