@@ -163,7 +163,7 @@
 
 | 順序／工單 | 最小切片／依賴 | 完成oracle／狀態 |
 |---|---|---|
-|A／[#54](https://github.com/ZhiQiYang/geometry-axiom/issues/54)|先修現行單房間實際失敗；重用既有向量/本地影像候選、Worker、輪廓修正與receipt；保持PR74/76snap及GEO-242呈現性能修正|實圖單房間反例逐項定位；來源基準、淨輪廓、凹口、歧義、取消與late reply可核對；目前私人案例全未驗，不能先宣稱成功率|
+|A／[#54](https://github.com/ZhiQiYang/geometry-axiom/issues/54)|先修現行單房間實際失敗；重用既有向量/本地影像候選、Worker、輪廓修正與receipt；保持PR74/76snap及GEO-242呈現性能修正|REAL-PDF-01在0f3c1a6匯入/323.5cm校準成功，但預設vector/image得到edge-open，width0.1得到tooManySegments，幾何不變/0 exceptions；這些歷史失敗保留。新版反例重跑與REAL-PDF-02未驗，不能宣稱已修或成功率|
 |B／[#87](https://github.com/ZhiQiYang/geometry-axiom/issues/87)|A穩定後，同頁有界多候選列表；session-only candidateId、source/page/basis revision、輪廓/警告；逐個明選核對/修正/排除。重用現有引擎，不先批量建正式面|雙房/三房向量與影像、門洞/相鄰連通/L形/孔/文字干擾核對拓樸，capacity不完整明示；換頁/校準/案/session使草稿失效；候選World/dirty/history不變；本輪未執行|
 |C／[#77](https://github.com/ZhiQiYang/geometry-axiom/issues/77)|B的明選候選接[WP77](CONTINUATION-WORK-PACKAGES-20261003.md#wp77)/[Q37](CONTINUATION-DECISIONS-20261003.md#q37)：同來源基準，原生配號新增獨立Boundary；新增/編輯意圖分開|先A再B不替換A；每room穩定metadata身分＋typed nativeRef；完整ZIP保存freshcontext重開；Q37新附件待採納，產品未開工|
 
@@ -172,13 +172,15 @@ B先只保有界session候選，不自行增加持久格式或正式能力。若
 **落點／並行與減項**：[room-outline.js](../geometry-web/room-outline.js)、[reference-workspace.js](../geometry-web/reference-workspace.js)、[reference-ui.js](../geometry-web/reference-ui.js)、既有PDF path與本地Worker、[project-store.js](../geometry-web/project-store.js)。A反例分類／非機密多房fixture／Q37schema規格可獨立並行；產品app/reference/history一owner，不與PR76競寫。沿原「取得候選→描外環」工作區合併單/多候選核對，不新增第二PDF app、常駐管理器或超過三段說明。真iOS/OSchooser/download單列人工，不以390px代替。
 
 <a id="private-cases"></a>
-## 私人 PDF 案例索引（只公開匿名狀態）
+## 私人 PDF 案例索引（匿名歷史與新版本狀態分列）
 
 使用者20:25已提供兩份私人PDF，可供後續授權測試重用；不需再次索取。Library是原檔持續來源，本輪未下載或開啟PDF。受限的case→Library映射與原文件名只留cloud TEMP，不提交repo，亦不將privatehash、地址、名稱、原圖或截圖放GitHub/CI。
 
-| 案例 | 匯入 | 校準/對位 | 單房辨識A | snap | 多候選B | 多房建立/保存C |
-|---|---|---|---|---|---|---|
-|REAL-PDF-01|未驗|未驗|未驗|未驗|未驗|未驗|
-|REAL-PDF-02|未驗|未驗|未驗|未驗|未驗|未驗|
+root回填的REAL-PDF-01（CaseA）歷史來源是本地 `0f3c1a6`：實際匯入及323.5cm校準成功；既有單房目標預設向量／影像辨識均edge-open，width=0.1時tooManySegments；辨識失敗前後geometry不變，0 exceptions。root與本地已核對原bytes一致，實際privatehash不公開。這是已驗證的失敗歷史，不能以「新版本未驗」覆寫，也不代表辨識已成功。本文件worker未重跑該私人案例。
 
-後續實圖結果只公開匿名失敗類別、步驟及非機密數值/狀態；需要共享反例時先合成非機密幾何。合成夾具pass不等於這兩份實圖pass，性能合成benchmark不等於日常圖紙倍率。
+| 案例 | 已核對歷史baseline | 歷史匯入/校準 | 歷史單房辨識A | 新head snap | 人工分區 | 整屋／多候選B／多房保存C | 新main反例重跑 |
+|---|---|---|---|---|---|---|---|
+|REAL-PDF-01／CaseA|本地0f3c1a6；root核對原bytes一致|成功；323.5cm|失敗：預設vector/image edge-open；width0.1 tooManySegments；geometry不變、0 exceptions|未驗|未驗|未驗|未驗|
+|REAL-PDF-02／CaseB|沒有已回填的實跑歷史|未驗|未驗|未驗|未驗|未驗|未驗|
+
+後續實圖結果只公開匿名失敗類別、步驟及非機密數值/狀態；需要共享反例時先合成非機密幾何。新baseline（a274cae及後續）的snap、人工分區、整屋/多房與反例重跑尚未驗證，CaseB各階段未驗。合成夾具pass不等於實圖pass；新版未驗不刪舊版失敗，性能合成benchmark不等於日常圖紙倍率。

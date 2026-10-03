@@ -6,7 +6,7 @@
 
 ## Readiness 與執行順序
 
-20:23追加的[九項優先缺陷／驗證收斂工作包](PROJECT-REVIEW-QUEUE-20261004.md)已去重建#78–86，排在下表一般新功能之前；前三項已由parent品質owner在9ebf52a真native/Chromium獨立重現，root已分配assembly-quality/import/navigation三owner修復中，非待重現或fixed。新maina274反例未重跑，本worker只文件不競寫。20:22自動辨識順序已納入[同頁A→B→C](PROJECT-REVIEW-QUEUE-20261004.md#auto-rooms)：#54先修單房間失敗→#87同頁多候選→#77共享基準的獨立Boundary。原13項工作包保留；PRIVATE案例只公開[REAL-PDF-01/02未驗索引](PROJECT-REVIEW-QUEUE-20261004.md#private-cases)，原檔留Library。
+20:23追加的[九項優先缺陷／驗證收斂工作包](PROJECT-REVIEW-QUEUE-20261004.md)已去重建#78–86，排在下表一般新功能之前；前三項已由parent品質owner在9ebf52a真native/Chromium獨立重現，root已分配assembly-quality/import/navigation三owner修復中，非待重現或fixed。新maina274反例未重跑，本worker只文件不競寫。20:22自動辨識順序已納入[同頁A→B→C](PROJECT-REVIEW-QUEUE-20261004.md#auto-rooms)：#54先修單房間失敗→#87同頁多候選→#77共享基準的獨立Boundary。原13項工作包保留；PRIVATE案例只公開[REAL-PDF-01/02歷史結果／新版本未驗索引](PROJECT-REVIEW-QUEUE-20261004.md#private-cases)，原檔留Library。
 
 「規格 ready」表示可準備精確契約、正反例與驗收稿；「既有契約可接續」表示不需要新增幾何語意，仍須另取得產品實作指令；「需決策」只能準備 proposal。這輪產品碼全部不開工。下表未填結果不是 pass；本輪未重跑任何產品驗收。
 
@@ -181,7 +181,7 @@
 
 **依賴／程式落點／並行**：Q37/sharedsourceplan附件、project-store/ContextHistory、reference-workspace/reference-ui與既有boundary/outlinepreview、project資料sourcebytespool。Q34共享原頁座標術語可用，EvidenceLink產品不是前置；房間幾何建立不需SGR/A/B功能。boundaryD3與placementD4不共享數字驗證器，刪重建同號未知需重新關聯，不靠roomUUID證明nativeincarnation。schema/合成雙房PDFfixture與操作稿可並行；同app/reference/store接線一owner，保留已合併snap/undoRedo，未開新產品分支競寫。
 
-**自動候選接續**：#54（A）先修現行單房間失敗、#87（B）同頁有界多候選逐一核對，再接本包（C）明選新增房間。MR-B的人工連續描繪規格不要求先完成B；自動C須B穩定並採納Q37，候選不批量變成geometry。私人REAL-PDF-01/02所有階段未驗，合成双房fixture不能替代實圖。
+**自動候選接續**：#54（A）先修現行單房間失敗、#87（B）同頁有界多候選逐一核對，再接本包（C）明選新增房間。MR-B的人工連續描繪規格不要求先完成B；自動C須B穩定並採納Q37，候選不批量變成geometry。REAL-PDF-01/CaseA本地0f3c1a6匯入/323.5cm校準成功、單房辨識edge-open/tooManySegments失敗已驗，geometry不變/0 exceptions；newhead snap/人工分區/整屋/新main重跑未驗，REAL-PDF-02/CaseB各階段未驗。合成双房fixture不能替代實圖，也不抹掉歷史失敗。
 
 **驗收稿**：同一自製雙房PDF一次calibration，連續新建兩个nativeboundary，A的dump/来源/身份不變；有孔的A不是多間room；A/B独立name/roomUUID/nativeRef/edit；基準变/同名异hash/换page旧review失效；cancel/invalid/latepage/切案/delete-recreate/unknowncap/badclosure原project/history完整；confirmpaint/busy保持、一笔native＋metadataundo，无半建room孤兒；真ZIP重开原PDFbytes/共用basis/两个native轮廓与typedRef一致；旧无collection/page资料原義正常，strict旧reader拒新capability。.scene不能宣稱攜共享來源。desktop/390px完成两间与总览，真iOSkeyboard/OSchooser/download单列未驗。
 

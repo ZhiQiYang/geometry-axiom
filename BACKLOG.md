@@ -32,7 +32,7 @@
 - **UI 減項（本輪）**：沒有新增產品 UI／常駐說明；未來 WP45 合併來源配置說明，WP61 沿用來源工作區合併手動／來源細分說明。各 slice 必須寫明具體移除／合併項，否則依 GEO-219 先進決策佇列。
 - 文件規格與正反例可並行；子網格產品 #59–61 先等 #58 精確採納；#46/48/49 新附件契約未採納；A24／SR24 真 iOS／OS 選檔與下載另列，不以390px冒充。#24 與總工單維持 open，使用 Refs。
 - 使用者20:19追加同PDF連續獨立房間，已查重建[#77](https://github.com/ZhiQiYang/geometry-axiom/issues/77)，加入[WP77](geometry-guide/CONTINUATION-WORK-PACKAGES-20261003.md#wp77)/[Q37](geometry-guide/CONTINUATION-DECISIONS-20261003.md#q37)。共享sourcebytes不是共享calibration，Space不是樓層房間樹；附件不存第二geometrytruth，新契約仍需採納。
-- 20:22自動房間依[A→B→C](geometry-guide/PROJECT-REVIEW-QUEUE-20261004.md#auto-rooms)：#54先修單房間實際失敗→新#87同頁多候選→#77確認獨立Boundary/共享基準；不用同一issue混稱全部完成。20:25两份私人PDF留Library，公開只記REAL-PDF-01/02各階段未驗；private映射僅cloud TEMP，不提交原文件名/地址/LibraryID/hash/截圖。
+- 20:22自動房間依[A→B→C](geometry-guide/PROJECT-REVIEW-QUEUE-20261004.md#auto-rooms)：#54先修單房間實際失敗→新#87同頁多候選→#77確認獨立Boundary/共享基準；不用同一issue混稱全部完成。私人PDF留Library；REAL-PDF-01/CaseA本地0f3c1a6已匯入及323.5cm校準成功，預設vector/image edge-open、width0.1 tooManySegments失敗，geometry不變/0 exceptions，root核對原bytes一致。保留該歷史；newhead snap/人工分區/整屋/新main重跑未驗，REAL-PDF-02/CaseB各階段未驗。private映射僅cloud TEMP，不提交原文件名/地址/LibraryID/hash/截圖。
 - PR75 first head `f742463`（外部已合併）只含第一批總表／WP45／WP24；後續draft補齐原12＋#77共13工作包、Q31–Q37選項、[#58逐條proposal](geometry-core/GRID-SUBDIVISION-RULES-PROPOSAL.md)，另納九項優先缺陷與自動房間順序。全部規格準備，決策未採納；本輪僅文件驗證，未重跑產品測試，沒有worker merge／部署。
 
 ## GEO-240 — #45 F2a 單選已發布規則銜接既有材料配置（2026-10-03）
