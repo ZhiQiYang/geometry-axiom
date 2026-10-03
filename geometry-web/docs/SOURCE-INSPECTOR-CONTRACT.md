@@ -32,7 +32,7 @@
 
 UI 預設最多 48 個關係、6 層；重複 key／環不重複展開，到容量明示不完整。原生容量不足也不給完整宣稱。下游用「修改可能涉及（未試算）」；F1a 不宣稱尺寸已試算會改。
 
-保存模型只比較明選根及 active 來源 closure，保留 source-definition 和 effective-value 差異。不用整場景 hash；不相關 spec、名稱／卡片移動不讓模型一律變更。來源缺失標 missing，指紋／typed edge 改變標 changed，能力不足／舊資料／範例標 unknown。
+保存模型只比較明選根及 active 求值來源 closure，保留 source-definition 和 effective-value 差異。I9 候選及凍結 RC 的空間歸屬仍可檢視，但不冒充實際求值依賴；原生結果值變動仍被檢出。不用整場景 hash；不相關 spec、名稱／卡片移動不讓模型一律變更。來源缺失標 missing，指紋／typed edge 改變標 changed，能力不足／舊資料／範例標 unknown。
 
 **內容相同也保留 unknown**：現有格式無法證明跨刪除重建及保存重開的物件延續性。呈現「可追溯來源內容一致；物件延續性未知」，不給綠燈。沒有由名稱找回來源，沒有新增第二份永久來源真相。
 

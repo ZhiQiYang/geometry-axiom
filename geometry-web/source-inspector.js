@@ -26,14 +26,17 @@
   }
   function freshness(before,now,roots,{deleted=new Set()}={}){
     if(!roots.length)return {status:'unknown',contentStatus:'unchecked',changes:[],message:'來源缺失或無法可靠追溯。'};
+    // I9 candidates are possible stops, not confirmed sources. RC membership
+    // names its container; these frozen world dimensions do not depend on every face.
+    const evaluationEdge=(g,e)=>e.active&&e.relation!=='span-candidate'&&!(e.relation==='member'&&['column','beam'].includes(g.nodes.get(e.from)?.kind));
     const closure=new Set(),pending=[...roots];let complete=before.data.complete&&now.data.complete,missing=[];
     while(pending.length){const at=pending.pop();if(closure.has(at))continue;if(closure.size===512){complete=false;break;}closure.add(at);
-      if(!before.nodes.has(at)){complete=false;continue;}for(const e of before.out.get(at)||[])if(e.active)pending.push(e.to);}
+      if(!before.nodes.has(at)){complete=false;continue;}for(const e of before.out.get(at)||[])if(evaluationEdge(before,e))pending.push(e.to);}
     const changes=[];
     for(const at of closure){const old=before.nodes.get(at),current=now.nodes.get(at);if(!current){missing.push(at);continue;}if(!old)continue;
       if(deleted.has(at))changes.push({key:at,kind:'identity-unknown'});
       else if(old.definitionFingerprint!==current.definitionFingerprint||old.valueFingerprint!==current.valueFingerprint)changes.push({key:at,kind:old.definitionFingerprint!==current.definitionFingerprint?(old.valueFingerprint===current.valueFingerprint?'source-definition':'source-and-value'):'value'});
-      const a=(before.out.get(at)||[]).filter(e=>e.active).map(e=>JSON.stringify([e.to,e.relation,e.field])).sort(),b=(now.out.get(at)||[]).filter(e=>e.active).map(e=>JSON.stringify([e.to,e.relation,e.field])).sort();
+      const a=(before.out.get(at)||[]).filter(e=>evaluationEdge(before,e)).map(e=>JSON.stringify([e.to,e.relation,e.field])).sort(),b=(now.out.get(at)||[]).filter(e=>evaluationEdge(now,e)).map(e=>JSON.stringify([e.to,e.relation,e.field])).sort();
       if(JSON.stringify(a)!==JSON.stringify(b)&&!changes.some(c=>c.key===at))changes.push({key:at,kind:'source-definition'});
     }
     if(missing.length)return {status:'missing',contentStatus:'missing',changes:missing.map(key=>({key,kind:'missing'})),message:'相關來源缺失，快照需核對。'};

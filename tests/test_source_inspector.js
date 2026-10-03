@@ -25,6 +25,15 @@ test('only actual closure changes matter; presentation and unrelated nodes do no
   assert.equal(S.freshness(a,b,['p']).contentStatus,'consistent');assert.equal(S.freshness(a,b,['p']).status,'unknown');
   const changed=graph([node('p'),node('x',2),node('unrelated')],[edge('p','x')]);assert.equal(S.freshness(a,changed,['p']).status,'changed');
 });
+test('possible span candidates and RC container membership are not fabricated evaluation dependencies',()=>{
+  const column={...node('column:1'),kind:'column'},space={...node('space:1'),kind:'space'};
+  const edges=[edge('timber:0','timber:1','span-candidate'),edge(column.key,space.key,'member'),edge(space.key,'boundary:2','member')];
+  const before=graph([node('timber:0'),node('timber:1'),column,space,node('boundary:2')],edges);
+  const now=graph([node('timber:0'),node('timber:1',2),column,space,node('boundary:2',2)],edges);
+  assert.equal(S.freshness(before,now,['timber:0',column.key]).contentStatus,'consistent');
+  assert.equal(S.nearby(before,'timber:0').rows[0].edge.relation,'span-candidate');
+  assert.equal(S.freshness(before,graph([node('timber:0',2),node('timber:1',2),column,space,node('boundary:2',2)],edges),['timber:0']).status,'changed');
+});
 test('same effective value with different typed source and fixed versions is detected',()=>{
   const n=node('p'),x=node('material:a:v1'),y=node('material:a:v2');const a=graph([n,x,y],[edge('p',x.key)]),b=graph([n,x,y],[edge('p',y.key)]);
   assert.equal(S.freshness(a,b,['p']).changes[0].kind,'source-definition');
