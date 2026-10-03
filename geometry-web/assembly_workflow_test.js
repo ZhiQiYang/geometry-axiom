@@ -1,6 +1,6 @@
 /* Trusted browser input, followed by native source read-back. */
 const cdp=require('./cdp_helpers.js');
-module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount})=>{
+module.exports=async({send,eval_:read,sleep,click,dblclick,drag,waitForUI,exceptionCount})=>{
  const fs=require('fs'),path=require('path'),os=require('os'),errors=exceptionCount();
  const check=cdp.makeCheck({prefix:'P77 ',throwOnFail:true}),wait=cdp.makeWait(waitForUI,15000),key=cdp.makeKey({send,sleep});
  const rawCtl=cdp.makeCtl({eval_:read,sleep,click},{scroll:'center',attempts:2,pollMs:130,settleMs:100,before:cdp.openCreateObjectMenu(read,selector=>ctl(selector))});
@@ -52,7 +52,8 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  await read(`oc.search='';drawObjects();selectObject('assembly-rule',1);centerOnNode('assembly-rule',1);void 0`);
  const position=await read(`({x:ocFind('assembly-rule',1).cx,y:ocFind('assembly-rule',1).cy})`),fingerprint=await read(`apiRequest('assembly-read').then(r=>r.state.rules[0].fingerprint)`);
  const hit=await read(`(()=>{const b=document.querySelector('.ocard[data-kind="assembly-rule"][data-id="1"]').getBoundingClientRect();return {x:b.x+50,y:b.y+25};})()`);await drag(hit.x,hit.y,hit.x+65,hit.y+40);await sleep(250);
- check('拖曳原生卡片只改位置',await read(`ocFind('assembly-rule',1).cx!==${position.x}&&apiRequest('assembly-read').then(r=>r.state.rules[0].fingerprint===${JSON.stringify(fingerprint)})`));await ctl('#asmInspectorOpen');await wait(`AssemblyWorkspace.isOpen`);
+ check('拖曳原生卡片只改位置',await read(`ocFind('assembly-rule',1).cx!==${position.x}&&apiRequest('assembly-read').then(r=>r.state.rules[0].fingerprint===${JSON.stringify(fingerprint)})`));
+ const movedHit=await read(`(()=>{const b=document.querySelector('.ocard[data-kind="assembly-rule"][data-id="1"]').getBoundingClientRect();return {x:b.x+50,y:b.y+25};})()`);await dblclick(movedHit.x,movedHit.y);await wait(`AssemblyWorkspace.isOpen`);
  fs.mkdirSync(path.join(os.tmpdir(),'geometry-tests'),{recursive:true});fs.writeFileSync(path.join(os.tmpdir(),'geometry-tests','assembly-desktop.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');await fill('#asmName','手機角材配置');
  for(const id of [1,2]){for(const axis of ['A','B']){await choose(`#asmSource${id}${axis}`,'literal');await fill(`#asmValue${id}${axis}`,axis==='A'?27:33);}await choose('#asmContact'+id,'A');await choose('#asmOrientation'+id,'B');}
