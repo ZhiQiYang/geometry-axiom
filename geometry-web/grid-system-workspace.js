@@ -463,6 +463,10 @@
   async function reopen(s) { await renderObjects();await open({system:s.source?.id,binding:s.binding?.id,mode:s.mode}, true);status('變更已保存，可從畫布復原或重做。'); }
   function reveal(kind,id) { pressObjectGroup(kind==='grid-binding'?'bindings':'sources');oc.search='';$('searchInput').value='';selectObject(kind,id);centerOnNode(kind,id); }
   async function open(options={}, committed=false) {
+    if (!window.GridTrial?.mount) {
+      toast('網格預覽元件未載入。請重新啟動應用服務，再重新整理頁面。');
+      return;
+    }
     if(!committed && window.DraftGate && !window.DraftGate.ask())return;
     if (dialog.open && !committed && (state?.busy || !mayLeave(state))) return;
     const ticket=++serial,context=ReferenceWorkspace.context();

@@ -401,6 +401,7 @@ const connection = { phase: "loading", known: false, error: "", recovering: fals
 const pendingApiResults = new Map(), acknowledgedApiResults = new Set();
 const pendingAssemblyConfirmations = new Map();
 let apiRecoveryNeedsAbort = false;
+const pageRuntimeVersion = document.querySelector('meta[name="geometry-runtime-version"]')?.content || '';
 function checkApiSession(response) {
   const session = response.headers.get("X-Geometry-Session");
   if (connection.session && session && session !== connection.session)
@@ -408,7 +409,7 @@ function checkApiSession(response) {
   if (session) connection.session = session;
 }
 async function readApiReceipt(requestId) {
-  const response = await fetch("/api", { method: "POST", headers: { "Content-Type": "application/json" },
+  const response = await fetch("/api", { method: "POST", headers: { "Content-Type": "application/json", "X-Geometry-Version": pageRuntimeVersion },
     body: JSON.stringify({ receipt: requestId, session: connection.session }), signal: AbortSignal.timeout(35000) });
   checkApiSession(response);
   if (!response.ok) throw new Error("仍無法讀取操作結果。");
@@ -543,9 +544,18 @@ async function apiRequest(cmd) {
   let res;
   try {
     const r = await fetch("/api", {
-      method: "POST", headers: { "Content-Type": "application/json" },
+      method: "POST", headers: { "Content-Type": "application/json", "X-Geometry-Version": pageRuntimeVersion },
       body: JSON.stringify({ cmd, ...(requestId ? {requestId,session:connection.session,ack} : {}) }), signal: AbortSignal.timeout(15000)
     });
+    if (r.headers.get('X-Geometry-Stale') === '1') {
+      // This rejection did not reach the core. Keep saving available and do
+      // not create an uncertain receipt or leave an assembly lease pending.
+      if (confirmation) {
+        ReferenceWorkspace.finishAssemblyConfirmation(confirmation);
+        pendingAssemblyConfirmations.delete(requestId);
+      }
+      return { ...(await r.json()), stale: true };
+    }
     checkApiSession(r);
     if (!r.ok) throw new Error(r.status === 403
       ? "此網址未獲服務允許（403）。請使用啟動服務時顯示的本機網址。"

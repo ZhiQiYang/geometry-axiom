@@ -12,6 +12,7 @@ import threading
 import time
 import unittest
 import urllib.request
+import urllib.error
 import uuid
 from unittest.mock import Mock, patch
 
@@ -191,6 +192,54 @@ class BridgeServerTests(unittest.TestCase):
             self.assertEqual(capabilities["space_preview_schemas"],
                              ["geometry-space-preview/1", "geometry-space-preview/2"])
             self.assertEqual(self.process.stdin.getvalue(), b"")
+
+    def test_runtime_identity_and_assets_are_from_the_same_snapshot(self):
+        with self.http_server() as base:
+            with urllib.request.urlopen(base + '/runtime') as response:
+                status = json.load(response)
+                self.assertTrue(status['fresh'])
+                self.assertEqual(status['version'], response.headers['X-Geometry-Version'])
+            with urllib.request.urlopen(base + '/') as response:
+                self.assertIn(status['version'].encode(), response.read())
+            with urllib.request.urlopen(base + '/grid-trial.js') as response:
+                self.assertIn(b'root.GridTrial', response.read())
+        self.assertEqual(self.process.stdin.getvalue(), b'')
+
+    def test_stale_server_refuses_new_pages_and_writes_but_preserves_dump(self):
+        with patch.object(self.server_module.RUNTIME, 'fresh', return_value=False), self.http_server() as base:
+            for path in ['/', '/index.html']:
+                with self.assertRaises(urllib.error.HTTPError) as error:
+                    urllib.request.urlopen(base + path)
+                self.assertEqual(error.exception.code, 409)
+                self.assertIn('重新啟動', error.exception.read().decode())
+            # A page that was already loading can finish with matching OLD assets.
+            with urllib.request.urlopen(base + '/app.js') as response:
+                self.assertEqual(response.read(), self.server_module.RUNTIME.assets['/app.js'])
+            for route, body in [('/api', {'cmd': 'reset'}), ('/upload', {}),
+                                ('/model/space-preview', {}), ('/assembly/preview', {})]:
+                request = urllib.request.Request(base + route, data=json.dumps(body).encode(),
+                                                 headers={'Content-Type': 'application/json'})
+                with self.assertRaises(urllib.error.HTTPError) as error:
+                    urllib.request.urlopen(request)
+                self.assertEqual(error.exception.code, 409)
+                self.assertEqual(error.exception.headers['X-Geometry-Stale'], '1')
+                self.assertFalse(json.load(error.exception)['ok'])
+            self.assertEqual(self.process.stdin.getvalue(), b'')
+            self.responses.put(b'{"ok":true,"text":"saved world"}\n')
+            request = urllib.request.Request(base + '/api', data=b'{"cmd":"dump"}',
+                                             headers={'Content-Type': 'application/json'})
+            with urllib.request.urlopen(request) as response:
+                self.assertEqual(json.load(response)['text'], 'saved world')
+            self.assertEqual(self.process.stdin.getvalue(), b'dump\n')
+
+    def test_old_browser_cannot_mutate_a_new_server_even_if_sources_are_fresh(self):
+        with self.http_server() as base:
+            request = urllib.request.Request(base + '/api', data=b'{"cmd":"reset"}',
+                       headers={'Content-Type': 'application/json', 'X-Geometry-Version': 'older-page'})
+            with self.assertRaises(urllib.error.HTTPError) as error:
+                urllib.request.urlopen(request)
+            self.assertEqual(error.exception.code, 409)
+            self.assertEqual(self.process.stdin.getvalue(), b'')
 
     def test_example_adapter_failure_is_reported_without_dropping_connection(self):
         sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "geometry-web"))
