@@ -4082,7 +4082,7 @@ function feGuidePickShow(u, v, cx, cy) {
 
 async function feLoadGuides() {
   const loadSeq = ++fe.guidesLoadSeq;
-  fe.guides = []; fe.specs = []; fe.timbers = []; fe.grids = []; fe.gridPreview = null; fe.obstacles = null;
+  fe.guides = []; fe.specs = []; fe.timbers = []; fe.timberReferenceData = null; fe.grids = []; fe.gridPreview = null; fe.obstacles = null;
   const edit = oc.edit, context = ReferenceWorkspace.context();
   const current = () => loadSeq === fe.guidesLoadSeq && oc.edit === edit && ReferenceWorkspace.context() === context;
   const bid = edit && edit.bid, sid = bid != null ? feSid(bid) : null;
@@ -4103,7 +4103,7 @@ async function feLoadGuides() {
   if (!current()) return;
   const gridRefs = [...(dump.text || "").matchAll(/^place (\d+) on \d+ at-line grid (\d+) ([uv]) (-?\d+)(?: band (-?\d+))?(?=\s|$)/gm)];
   for (const g of grids) g.references = gridRefs.filter(m => +m[2] === g.id).map(m => ({timber:+m[1],axis:m[3],index:g.indexSpace==="lattice" ? m[4] : +m[4]}));
-  fe.guides = guides; fe.specs = r.specs || []; fe.timbers = timbers; fe.grids = grids;
+  fe.guides = guides; fe.specs = r.specs || []; fe.timbers = timbers; fe.grids = grids; fe.timberReferenceData = r;
   const alive = new Set(timbers.map(t => t.id));
   const hadTimber = fe.timberSelection.size || fe.sel?.kind === "timber";
   fe.timberSelection = new Set([...fe.timberSelection].filter(id => alive.has(id)));
@@ -6664,6 +6664,32 @@ function feBindUnderlayPane(pane, bid) {
 }
 
 /* 左欄「面內物件」：外環 / 孔 / 參考線（§5.5.1） */
+function feTimberScheduleSnapshot() {
+  const sid = feSid(oc.edit?.bid), context = ReferenceWorkspace.context();
+  if (!fe.scheduleView || fe.scheduleView.surface !== sid || fe.scheduleView.context !== context)
+    fe.scheduleView = {surface:sid,context,ids:null,unit:"mm",order:"id"};
+  return TimberSchedule.derive(fe.timberReferenceData,sid,fe.scheduleView.ids);
+}
+async function feExportTimberSchedule() {
+  try {
+    const edit=oc.edit, context=ReferenceWorkspace.context(), view=fe.scheduleView, snapshot=feTimberScheduleSnapshot();
+    const referenceData=fe.timberReferenceData,loadSeq=fe.guidesLoadSeq;
+    const projectRevision=ReferenceWorkspace.getProjectState().revision;
+    const viewKey=JSON.stringify([view.ids,view.unit,view.order]);
+    const latest=await apiRequest("references");
+    if (oc.edit !== edit || ReferenceWorkspace.context() !== context || fe.scheduleView !== view || JSON.stringify([view.ids,view.unit,view.order])!==viewKey)
+      throw new Error("料單範圍已變更，請重新核對再匯出。");
+    if(!latest.ok || fe.timberReferenceData !== referenceData || fe.guidesLoadSeq !== loadSeq || ReferenceWorkspace.getProjectState().revision !== projectRevision)
+      throw new Error("料單來源已刷新或無法核對，請重新核對再匯出。");
+    if (latest.sourceFingerprint !== snapshot.sourceFingerprint) {
+      await feLoadGuides(); renderFaceLayers();
+      throw new Error("原生來源已變更，料單已更新；請核對後再匯出。");
+    }
+    const bytes=TimberSchedule.csv(snapshot,view.order),url=URL.createObjectURL(new Blob([bytes],{type:"text/csv;charset=utf-8"}));
+    const a=document.createElement("a");a.href=url;a.download=`timbers-surface-${snapshot.surface}.csv`;a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);return true;
+  } catch(error) {toast(error.message);return false;}
+}
 function renderFaceLayers() {
   const e = oc.edit;
   const list = $("faceLayerList");
@@ -6734,17 +6760,45 @@ function renderFaceLayers() {
     }
   } else emptyGroup("參考線", "尚無參考線 · 開啟建立表單", "guide");
   if ((fe.timbers || []).length) {
-    group("角材");
+    group("角材料單");
+    let schedule;
+    try { schedule=feTimberScheduleSnapshot(); }
+    catch(error) { const note=document.createElement("p");note.id="timberScheduleStatus";note.textContent=error.message;list.append(note); }
+    const view=fe.scheduleView;
+    const controls=document.createElement("div");controls.className="timber-schedule-controls";
+    controls.innerHTML='<label>範圍<select id="timberScheduleScope"><option value="surface">此承載面的全部角材</option><option value="selection">所選角材集合</option></select></label><label>顯示單位<select id="timberScheduleUnit"><option>mm</option><option>cm</option></select></label><label>排序<select id="timberScheduleOrder"><option value="id">構件身分</option><option value="length">完成長度</option></select></label><button type="button" id="timberScheduleCSV" class="btn">匯出精確 mm CSV</button>';
+    list.append(controls);
+    controls.querySelector('#timberScheduleScope').value=view.ids===null?'surface':'selection';
+    controls.querySelector('#timberScheduleScope').onchange=ev=>{
+      if(ev.target.value==='selection' && !fe.timberSelection.size){toast('請先選取角材，再選擇料單範圍。');ev.target.value=view.ids===null?'surface':'selection';return;}
+      view.ids=ev.target.value==='selection'?[...fe.timberSelection]:null;renderFaceLayers();
+    };
+    controls.querySelector('#timberScheduleUnit').value=view.unit;
+    controls.querySelector('#timberScheduleUnit').onchange=ev=>{view.unit=ev.target.value;renderFaceLayers();};
+    controls.querySelector('#timberScheduleOrder').value=view.order;
+    controls.querySelector('#timberScheduleOrder').onchange=ev=>{view.order=ev.target.value;renderFaceLayers();};
+    controls.querySelector('#timberScheduleCSV').disabled=!schedule?.rows.length;
+    controls.querySelector('#timberScheduleCSV').onclick=feExportTimberSchedule;
+    if(schedule){const status=document.createElement('p');status.id='timberScheduleStatus';status.className='fi-note';status.textContent=`承載面 ${schedule.surface} · ${schedule.rows.length} 支正式角材 · 材料／加工未設定者保持未知`;list.append(status);}
     /* GEO-191:角材列可選——不用共用的 row()(它沒有 hover/click/data-timber-id 掛鉤),
        hover → 畫布矩形加 .hover;點列(非 ✕ 鈕)→ 與畫布點選同一效果。 */
-    for (const t2 of fe.timbers) {
+    for (const item of TimberSchedule.sorted(schedule?.rows || [],view.order)) {
+      const t2=fe.timbers.find(t=>t.id===item.id);
       const selT = feTimberSelected(t2.id);
       const r = document.createElement("div");
       r.className = "face-layer-row" + (selT ? " sel" : "");
       r.dataset.timberId = t2.id;
-      r.innerHTML = `<span class="face-layer-icon">${icon("timber")}</span>` +
-        `<span class="face-layer-copy"><strong>角材 ${t2.id}</strong>` +
-        `<small>${t2.L || "auto"}×${t2.A}×${t2.B} @(${t2.u},${t2.v}) ${t2.dir}${t2.side}</small></span>`;
+      const copy=document.createElement('span');copy.className='face-layer-copy';
+      const pick=document.createElement('button');pick.type='button';pick.className='timber-schedule-pick';pick.dataset.scheduleTimber=item.id;
+      pick.setAttribute('aria-pressed',String(selT));pick.setAttribute('aria-label',`定位角材 ${item.id}`);
+      const name=document.createElement('strong');name.textContent=`角材 ${item.id}`;
+      const dims=document.createElement('small');dims.textContent=`完成 L ${TimberSchedule.dimension(item.L,view.unit)} × A ${TimberSchedule.dimension(item.A,view.unit)} × B ${TimberSchedule.dimension(item.B,view.unit)} ${view.unit} · ${item.dir}${item.side}`;
+      pick.append(name,dims);copy.append(pick);
+      const details=document.createElement('details');details.className='timber-schedule-source';
+      const title=document.createElement('summary');title.textContent='尺寸來源與端面';
+      const text=document.createElement('p');text.textContent=`${TimberSchedule.sourceText(item)}。定位：${item.anchor}。跨距：${item.selector}。起端世界 mm ${JSON.stringify(item.origin)}；末端 ${JSON.stringify(item.finish)}。材料／加工：未知或未設定。來源指紋 ${item.sourceFingerprint}`;
+      details.append(title,text);copy.append(details);
+      const symbol=document.createElement('span');symbol.className='face-layer-icon';symbol.innerHTML=icon('timber');r.append(symbol,copy);
       const del = document.createElement("button");
       del.className = "face-layer-del"; del.title = `刪除角材 ${t2.id}`; del.textContent = "✕";
       del.setAttribute("aria-label", del.title); del.disabled = fe.timberSelection.size > 1;
@@ -6752,7 +6806,12 @@ function renderFaceLayers() {
       r.appendChild(del);
       r.addEventListener("mouseenter", () => { fe.hoverTimber = t2.id; drawFaceEditor(); });
       r.addEventListener("mouseleave", () => { fe.hoverTimber = null; drawFaceEditor(); });
-      r.addEventListener("click", ev => feSelectTimber(t2.id, ev.shiftKey));
+      r.addEventListener("click", ev => {
+        if(ev.target.closest('details'))return;
+        feSelectTimber(t2.id,ev.shiftKey);
+        const box=feTimberRect(t2),cx=(box[0]+box[2])/2,cy=(box[1]+box[3])/2,vp=$('faceEditorViewport');
+        fe.panX=vp.clientWidth/2-cx*fe.zoom;fe.panY=vp.clientHeight/2-cy*fe.zoom;feApplyZoom();
+      });
       list.appendChild(r);
       ++n;
     }

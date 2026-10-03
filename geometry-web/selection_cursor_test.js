@@ -60,6 +60,9 @@ module.exports = async function selectionCursor({send,eval_,sleep,click,drag,wai
   await ctl('[data-face-tool="grid"]');
   await ctl('.face-layer-row[data-timber-id="10"]');
   check('網格中點側欄角材會退出網格並選該支',await selectionMode()&&await isSelected(10));
+  // The schedule row now centers this timber. Fit the surface with its real
+  // control before selecting the opposite support, which may be off-screen.
+  await ctl('#feZoomFit');
   await faceClick(1000,2950,'t:11');
   check('側欄選取後下一次畫布點選仍有效',await isSelected(11)&&(await dump())===before,await selected());
 
@@ -71,6 +74,7 @@ module.exports = async function selectionCursor({send,eval_,sleep,click,drag,wai
   await ctl('[data-face-tool="grid"]');
   check('工程來源網格開啟資訊時維持可選取工具',await selectionMode()&&await read(`fe.fiTab==='grid'&&!!document.querySelector('.engineering-grid-details')&&!document.querySelector('[data-grid-ruler]')`));
   await ctl('[data-fi-tab="components"]');await ctl('.face-layer-row[data-timber-id="10"]');
+  await ctl('#feZoomFit');
   await faceClick(1000,2985,'t:11');
   check('工程網格返回構件後可連續選側欄和畫布角材',await isSelected(11)&&(await dump())===engineeringBefore);
   const gridId=await read('fe.grids.find(g=>g.engineeringSources?.length).id');

@@ -18,7 +18,7 @@
   },
   "py:test_assembly_generation": {
    "mode": "count",
-   "count": 18,
+   "count": 21,
    "unit": "test"
   },
   "py:test_assembly_parameter_refs": {
@@ -128,7 +128,7 @@
   },
   "py:test_reference_contract": {
    "mode": "count",
-   "count": 33,
+   "count": 35,
    "unit": "test"
   },
   "py:test_runtime_version": {
@@ -163,7 +163,7 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 177,
+   "count": 186,
    "unit": "node test"
   },
   "node:model_viewer": {
@@ -192,6 +192,11 @@
    "mode": "exit-code-only"
   },
   "node:background_grid_viewport": {
+   "mode": "count",
+   "count": 9,
+   "unit": "node test"
+  },
+  "node:cdp_evaluation": {
    "mode": "count",
    "count": 9,
    "unit": "node test"

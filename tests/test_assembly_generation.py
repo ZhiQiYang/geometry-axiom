@@ -45,6 +45,74 @@ class Generation(unittest.TestCase):
         self.assertEqual([2960,2960,1973],[m['geometry']['length'] for m in r['preview']['after']['instances'][0]['members']]);self.assertTrue(self.command('assembly-confirm '+str(r['preview']['token']))['ok'])
         a=self.instance();self.assertEqual(3,len(set(m['timberId'] for m in a['members'])));self.assertEqual(5,len(self.command('references')['timbers']));self.assertIn('owned 1 3 place',self.dump())
         self.assertEqual([0,0,1],a['members'][0]['geometry']['axes'][2])
+    def test_member_slots_keep_unequal_sections_exact_geometry_and_identity(self):
+        b=self.read()['state']['bindings'][0];value=deepcopy(b['value'])
+        for slot in value['slots']:
+            A,B={1:(27,33),2:(40,50)}[slot['slotId']]
+            slot['A']={'kind':'literal','value':A};slot['B']={'kind':'literal','value':B}
+        self.apply([{'op':'edit-binding','id':1,'expectedFingerprint':b['fingerprint'],'value':value}],False)
+        # Independent integer oracle: guides x=500/2500, boundary bands y=0..20
+        # and 2980..3000. A27 occupies x=487..514 and2487..2514; L=2960.
+        # Secondary A40 starts y=1500-40//2=1480; L=2487-514=1973.
+        expected={
+            1:{'A':27,'B':33,'length':2960,'origin':[514,20,2500],'dir':'+v','side':'+n','axes':[[0,1,0],[-1,0,0],[0,0,1]]},
+            2:{'A':27,'B':33,'length':2960,'origin':[2514,20,2500],'dir':'+v','side':'+n','axes':[[0,1,0],[-1,0,0],[0,0,1]]},
+            3:{'A':40,'B':50,'length':1973,'origin':[514,1480,2500],'dir':'+u','side':'+n','axes':[[1,0,0],[0,1,0],[0,0,1]]},
+        }
+        def exact(instance):
+            actual={m['memberId']:m['geometry'] for m in instance['members']}
+            self.assertEqual(set(expected),set(actual))
+            for member,fields in expected.items():
+                with self.subTest(member=member):
+                    self.assertEqual(fields,{k:actual[member][k] for k in fields})
+        before=self.dump();p=self.request([self.create()]);self.assertTrue(p['preview']['valid'],p)
+        self.assertEqual(before,self.dump());exact(p['preview']['after']['instances'][0])
+        self.assertTrue(self.command('assembly-confirm '+str(p['preview']['token']))['ok']);exact(self.instance())
+        mapping={m['memberId']:m['timberId'] for m in self.instance()['value']['mapping']}
+        b=self.read()['state']['bindings'][0];value=deepcopy(b['value']);value['slots'].reverse()
+        self.apply([{'op':'edit-binding','id':1,'expectedFingerprint':b['fingerprint'],'value':value}],False);exact(self.instance())
+        source=deepcopy(self.instance()['value']['source']);source['members'].reverse()
+        self.apply([self.edit(source)]);exact(self.instance())
+        self.assertEqual(mapping,{m['memberId']:m['timberId'] for m in self.instance()['value']['mapping']})
+        path=self.directory/'unequal-member-slots.scene';path.write_text(self.dump())
+        with BridgeSession(find_bridge(),cwd=self.directory) as fresh:
+            loaded=fresh.command('loadfile '+str(path));self.assertTrue(loaded['ok'],loaded)
+            exact(fresh.command('assembly-read')['state']['instances'][0])
+    def test_sparse_member_slot_ids_and_independent_typed_section_update(self):
+        r=rule(8);r['slots']=[{'id':17,'name':'primary'},{'id':41,'name':'secondary'}]
+        ids={1:11,2:37,3:89}
+        r['members']=[{'id':ids[m['id']],'slotId':17 if m['slotId']==1 else 41} for m in r['members']]
+        for j in r['joints']:
+            j['terminatedMember']=ids[j['terminatedMember']];j['targetMember']=ids[j['targetMember']]
+        parameter=lambda A,B:{'id':10,'name':'only secondary','nextFieldId':18,'fields':[
+            {'id':5,'name':'A','type':'dimension','input':str(A)},
+            {'id':17,'name':'B','type':'dimension','input':str(B)}]}
+        ref=lambda f:{'kind':'parameter','parameterId':10,'fieldId':f}
+        b={'id':9,'name':'unequal typed slots','rule':{'id':8,'version':1},'slots':[
+            {'slotId':17,'A':{'kind':'literal','value':27},'B':{'kind':'literal','value':33},'contactFace':'A','orientation':'A'},
+            {'slotId':41,'A':ref(5),'B':ref(17),'contactFace':'A','orientation':'A'}]}
+        self.apply([{'op':'publish-rule','value':r},{'op':'put-parameter','value':parameter(40,50)},{'op':'create-binding','value':b}],False)
+        state=self.read()['state'];fixed=next(v for v in state['rules'] if v['value']['id']==8)
+        source=self.source(2);source['bindingId']=9;source['rule']={'id':8,'version':1,'fingerprint':fixed['fingerprint']}
+        for m in source['members']:
+            m['memberId']=ids[m['memberId']]
+            if m['role']=='secondary':
+                for end in m['ends'].values():end['memberId']=ids[end['memberId']]
+        source['members'].reverse()
+        bound=next(v for v in state['bindings'] if v['value']['id']==9)
+        self.apply([{'op':'create-instance','value':source,'expectedBindingFingerprint':bound['fingerprint']}])
+        def geometry():return {m['memberId']:m['geometry'] for m in self.instance()['members']}
+        actual=geometry();self.assertEqual({11,37,89},set(actual))
+        self.assertEqual((27,33,2960),(actual[11]['A'],actual[11]['B'],actual[11]['length']))
+        self.assertEqual((27,33,2960),(actual[37]['A'],actual[37]['B'],actual[37]['length']))
+        self.assertEqual((40,50,1973,[514,1480,2500]),(actual[89]['A'],actual[89]['B'],actual[89]['length'],actual[89]['origin']))
+        mapping=deepcopy(self.instance()['value']['mapping']);primary={k:deepcopy(actual[k]) for k in (11,37)}
+        self.apply([{'op':'put-parameter','value':parameter(42,61)}],False);actual=geometry()
+        self.assertEqual(mapping,self.instance()['value']['mapping'])
+        self.assertEqual(primary,{k:actual[k] for k in (11,37)})
+        self.assertEqual((42,61,1973,[514,1479,2500]),(actual[89]['A'],actual[89]['B'],actual[89]['length'],actual[89]['origin']))
+        slot=next(v for v in self.read()['state']['bindings'] if v['value']['id']==9)['value']['slots'][1]
+        self.assertEqual(ref(5),slot['A']);self.assertEqual(ref(17),slot['B'])
     def test_cancel_stale_confirm_and_current_revision_stale_instance(self):
         self.apply([self.create()]);before=self.dump();op=self.edit(dict(self.instance()['value']['source'],name='trial'));r=self.request([op]);self.command('assembly-cancel '+str(r['preview']['token']));self.assertEqual(before,self.dump())
         r=self.request([op]);self.line('spec unrelated 2');self.assertFalse(self.command('assembly-confirm '+str(r['preview']['token']))['ok']);self.assertEqual('two primary and cross',self.instance()['value']['source']['name'])
@@ -68,6 +136,15 @@ class Generation(unittest.TestCase):
         self.assertEqual([m['geometry'] for m in before['members']],[m['geometry'] for m in after['members']])
         self.assertEqual(91,after['value']['source']['members'][0]['ends']['start']['id'])
         self.assertEqual(20,after['members'][0]['geometry']['origin'][1])
+    def test_schedule_reference_read_preserves_native_owned_sources_and_pending_candidate(self):
+        self.apply([self.create()])
+        before=self.dump()
+        candidate=self.request([self.edit(dict(self.instance()['value']['source'],name='pending'))])
+        refs=self.command('references')
+        self.assertEqual(self.read()['state'],refs['assembly'])
+        self.assertEqual(5,len(refs['timbers']))
+        self.assertEqual(before,self.dump())
+        self.assertTrue(self.command('assembly-confirm '+str(candidate['preview']['token']))['ok'])
     def test_missing_wrong_sources_and_inward_joint_geometry_are_atomic(self):
         for change,diagnostic in [('guide','I42'),('surface','I42'),('support','I42'),('side','I42')]:
             v=self.source()

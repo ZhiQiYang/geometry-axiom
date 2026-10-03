@@ -1,5 +1,18 @@
 # DOM 合約(測試依賴清單)
 
+## 參數確認期間輸入保全（GEO-233）
+
+`#parameterEditor[aria-busy="true"]` 代表正式確認尚未完成；其 input/select/textarea/button 同步 disabled，包含 `loadLegacy` 遲到後插入的既有具名規格控制，不能先接受新輸入再被舊回覆清掉。補鎖不重置已捕捉的原 disabled 狀態。成功或原生拒絕後恢復這次捕捉的控制，拒絕時 `#paramConfirm` 仍停用、草稿保留，編輯後可重新試算。`parameter_confirmation_test.js` 由完整 P76 呼叫，以真鍵盤、延遲具名規格／成功回覆與真過期 token 驗證十項。
+
+## 原生角材料單（#47 F4a）
+
+`#faceLayerList` 的既有 `[data-timber-id]` 列直接提供料單，不另建清單工作區。
+`[data-schedule-timber]` 是可鍵盤操作的定位按鈕，`aria-pressed` 與畫布角材選取同步。
+`#timberScheduleScope` 明選承載面全部或當次選取的 ID 集合；`#timberScheduleUnit` 只格式化 mm/cm；
+`#timberScheduleOrder` 按身分或完成長度排序。`#timberScheduleCSV` 導出同一集合的精確 mm，
+`#timberScheduleStatus` 顯示正式件數／失效原因。來源細節在 `.timber-schedule-source` 展開。
+數據契約與剩餘追溯限制見 [TIMBER-SCHEDULE.md](TIMBER-SCHEDULE.md)。
+
 ## 2026-10-03 Issue #54 房間輪廓候選
 
 - 保留 `#refDrawOutline` 原步驟，在既有底圖 pane 啟動房間選點／框選；`#refOutlineDetails` 集中候選、人工修正與來源核對，移除重複 `.reference-intro`／`.calibration-instruction`。

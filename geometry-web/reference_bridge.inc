@@ -348,7 +348,12 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
 }
 static void cmd_references(void)
 {
-    fputs("{\"ok\":true,\"guides\":[",stdout);
+    char fingerprint[65];
+    if (!eng_definition_hash(&g_world,fingerprint)) {
+        fputs("{\"ok\":false,\"error\":\"無法核對來源定義\"}\n",stdout);
+        return;
+    }
+    printf("{\"ok\":true,\"sourceFingerprint\":\"%s\",\"guides\":[",fingerprint);
     for (size_t i=0;i<g_world.guide_count;++i) {
         if (i) putchar(','); json_reference_guide(&g_world,i);
     }
@@ -381,7 +386,10 @@ static void cmd_references(void)
         }
         fputs("]}",stdout);
     }
-    fputs("],\"engineeringSources\":",stdout);json_engineering_sources(&g_world);fputs("}\n",stdout);
+    fputs("],\"engineeringSources\":",stdout);json_engineering_sources(&g_world);
+    /* Reuse the authoritative typed read: owned timbers inherit binding
+       sources and must not be described as independent literal dimensions. */
+    fputs(",\"assembly\":",stdout);json_assembly_state(&g_world,false);fputs("}\n",stdout);
 }
 static void cmd_snap_reference(const char *args)
 {
