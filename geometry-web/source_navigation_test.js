@@ -51,13 +51,16 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
   // An embedded rectangular placement has a real canvas card and no boundary
   // relation. Locate that typed card through the existing timber's source UI.
   await setup();
-  await eval_(`(async()=>{resetSceneFocus();const scene='surface 0 origin 0 0 2500 u +x v +y rect 0 0 4000 3000\\ntimber 0 27 33 role boundary\\nplace 0 on 0 at-face e0 +u +n\\n';const bytes=await GeometryProject.pack(scene,{projectId:'embedded-placement',name:'公開矩形承載面',sources:[],faces:[]},new Map(),fflate);await ReferenceWorkspace.importBytes(bytes,'embedded.gcanvas');await renderObjects({persistPositions:false});selectObject('placement',0);SourceInspectorApp.sync();})()`);
-  await ctl('#inspectorContent [data-source-inspector] summary');
-  await waitForUI(`!!document.querySelector('[data-source-path="timber:0"]')`);
-  await ctl('[data-source-path="timber:0"]');
+  await eval_(`(async()=>{resetSceneFocus();const scene='surface 0 origin 0 0 2500 u +x v +y rect 0 0 4000 3000\\nsurface 1 origin 18000 0 2500 u +x v +y rect 0 0 4000 3000\\ntimber 0 27 33 role boundary\\nplace 0 on 0 at-face e0 +u +n\\n';const bytes=await GeometryProject.pack(scene,{projectId:'embedded-placement',name:'公開矩形承載面',sources:[],faces:[]},new Map(),fflate);await ReferenceWorkspace.importBytes(bytes,'embedded.gcanvas');await renderObjects({persistPositions:false});selectObject('placement',1);centerOnNode('placement',1);const input={mode:'plan',base_scene:(await api('dump')).text,placement_id:0,obstacles:[],settings:{bottom:0,height:3000,edges:[0,1,2,3],floor:'boundary',ceiling:'boundary',holes:'none',wall_thickness:null}};const response=await fetch('/model/space-preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)}),result=await response.json();if(!result.ok)throw Error(JSON.stringify(result));ReferenceWorkspace.addSpaceModel({id:'embedded-source',name:'embedded-source',created_at:new Date().toISOString(),source:{kind:'scene',placement_id:0,boundary_id:null,scene_hash:result.source_sha256},input,result});SpaceModelWorkspace.openLibrary();SourceInspectorApp.sync();})()`);
+  const embeddedRoot='#smLibraryList [data-source-inspector]';
+  await ctl(embeddedRoot+' summary');
+  await waitForUI(`!!document.querySelector(${JSON.stringify(embeddedRoot+' [data-source-path="timber:0"]')})`);
+  await ctl(embeddedRoot+' [data-source-path="timber:0"]');
+  if(!await eval_(`oc.sel?.kind==='placement'&&oc.sel.id===1`))throw Error('Embedded oracle must begin at the other placement');
   const embeddedBefore=await snapshot();
-  await ctl('[data-source-locate="placement:0"]');await waitForUI(`oc.sel?.kind==='placement'&&oc.sel.id===0`);
-  check('native boundaryless rectangular placement0 remains a selectable canvas card',await eval_(`(async()=>{const g=await apiRequest('source-inspect');return !g.edges.some(e=>e.from==='placement:0'&&e.field==='boundary')&&oc.focus===null&&oc.sel.kind==='placement'&&oc.sel.id===0;})()`));
+  await eval_(`(()=>{const original=EngineeringAdapter.navigateObject,g=window.__p85Embedded={done:false,error:null};EngineeringAdapter.navigateObject=async(...args)=>{try{return await original(...args);}catch(e){g.error=e.message;throw e;}finally{g.done=true;EngineeringAdapter.navigateObject=original;}};})()`);
+  await ctl(embeddedRoot+' [data-source-locate="placement:0"]');await waitForUI(`window.__p85Embedded.done`);
+  check('native boundaryless placement0 changes selection, centers its card and completes without error',await eval_(`(async()=>{const g=await apiRequest('source-inspect'),card=document.querySelector('.ocard[data-kind="placement"][data-id="0"] rect'),c=card?.getBoundingClientRect(),v=ocv.getBoundingClientRect();return __p85Embedded.error===null&&!g.edges.some(e=>e.from==='placement:0'&&e.field==='boundary')&&oc.focus===null&&oc.sel.kind==='placement'&&oc.sel.id===0&&!!c&&Math.abs(c.x+c.width/2-(v.x+v.width/2))<8&&Math.abs(c.y+c.height/2-(v.y+v.height/2))<8;})()`),await eval_(`({sel:oc.sel,error:__p85Embedded.error,card:document.querySelector('.ocard[data-kind="placement"][data-id="0"] rect')?.getBoundingClientRect().toJSON(),viewport:ocv.getBoundingClientRect().toJSON(),pan:[oc.panX,oc.panY],zoom:oc.zoom})`));
   check('embedded placement navigation preserves World and project state',JSON.stringify(await snapshot())===JSON.stringify(embeddedBefore));
   for(const stage of ['render','final'])for(const action of ['collapse','close','switch']){
     await setup({open:true});
