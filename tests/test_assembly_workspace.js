@@ -117,6 +117,106 @@ test('missing native binding fingerprint refuses an explicit edit without submit
   await assert.rejects(f.t.preview(),/缺少配置來源指紋/);assert.equal(JSON.stringify(f.context().assemblyDrafts),before);assert.equal(f.state.preview,null);
 });
 
+const publishedRule=(value=rule(),fingerprint='a'.repeat(64))=>({value,fingerprint});
+test('binding creation rejects replaced or removed captured rules without changing the active draft or history',async()=>{
+  for(const removed of [false,true]){
+    const f=fixture(),source=publishedRule(),fresh=publishedRule({...rule(),joints:rule().joints.map(j=>({...j,side:'-u'}))},'b'.repeat(64));
+    f.setWorld({rules:removed?[]:[fresh],bindings:[]});
+    f.state.draft.data.name='尚未 flush 的原草稿';
+    const before=JSON.stringify(f.context().assemblyDrafts),active=JSON.stringify(f.state.draft),preview=f.state.preview,history=f.history.undo.length;
+    await assert.rejects(f.t.newDraft('binding',source),/原始規則版本已變更或移除/);
+    assert.equal(JSON.stringify(f.context().assemblyDrafts),before);assert.equal(JSON.stringify(f.state.draft),active);
+    assert.equal(f.history.undo.length,history);assert.equal(f.state.preview,preview);
+    assert.ok(!f.calls.some(c=>c==='newid'||c.startsWith('assembly-preview')||c.startsWith('assembly-cancel')));
+  }
+});
+test('binding creation refuses malformed fixed rule identities and absent native fingerprints',async()=>{
+  const bad=[r=>r.value.id=0,r=>r.value.id=0x100000000,r=>r.value.id=1.5,r=>r.value.version=0,r=>r.value.version=0x100000000,
+    r=>r.fingerprint=null,r=>r.fingerprint='a'.repeat(63),r=>r.fingerprint='A'.repeat(64),r=>r.fingerprint='z'.repeat(64),r=>r.fingerprint=['a'.repeat(64)]];
+  for(const mutate of bad){const f=fixture(),source=publishedRule();mutate(source);f.setWorld({rules:[copy(source)],bindings:[]});
+    const active=JSON.stringify(f.state.draft),before=JSON.stringify(f.context().assemblyDrafts);
+    await assert.rejects(f.t.newDraft('binding',source),/固定規則來源不合法/);
+    assert.equal(JSON.stringify(f.state.draft),active);assert.equal(JSON.stringify(f.context().assemblyDrafts),before);assert.equal(f.history.undo.length,0);
+  }
+  const f=fixture();f.setWorld({rules:[{value:rule()}],bindings:[]});
+  await assert.rejects(f.t.newDraft('binding'),/固定規則來源不合法/);
+});
+test('new binding drafts retain the exact fresh rule provenance for both selected and null-source creation',async()=>{
+  for(const selected of [false,true]){const f=idFixture('binding',[],[],3),source=publishedRule();await f.t.newDraft('binding',selected?source:null);
+    assert.deepEqual(copy(f.state.draft.base_ref),{id:1,version:1,fingerprint:source.fingerprint});
+    assert.deepEqual(copy(f.state.draft.data.rule),{id:1,version:1});assert.equal(f.state.draft.binding_intent.mode,'create');
+    for(const slot of f.state.draft.data.slots)for(const field of ['A','B','contactFace','orientation'])assert.equal(slot[field],null);
+    const P=require('../geometry-web/project-store.js'),zip=require('../geometry-web/vendor/fflate/umd/index.js');
+    const bytes=await P.pack('reset\n',{projectId:'fixed-binding',name:'組構',sources:[],faces:[],assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[copy(f.state.draft)]}},new Map(),zip);
+    const archive=await P.unpack(bytes,zip);assert.equal(archive.manifest.format,P.ASSEMBLY_FORMAT);
+    assert.deepEqual(archive.manifest.assemblyDrafts.records[0],copy(f.state.draft));
+  }
+});
+test('binding preview rejects changed, removed, or mismatched captured rule provenance before any submission',async()=>{
+  for(const changed of ['replaced','removed','mismatched']){const f=idFixture('binding',[],[],3);await f.t.newDraft('binding',publishedRule());
+    f.state.draft.data.name='保留配置';f.w.flush();
+    const fresh=publishedRule({...rule(),joints:rule().joints.map(j=>({...j,side:'-u'}))},'b'.repeat(64));
+    if(changed==='mismatched'){f.state.draft.data.rule.version=2;f.w.flush();f.setWorld({rules:[publishedRule(),publishedRule({...rule(),version:2})],bindings:[]});}
+    else f.setWorld({rules:changed==='removed'?[]:[fresh],bindings:[]});
+    const before=JSON.stringify(f.context().assemblyDrafts),active=JSON.stringify(f.state.draft),history=f.history.undo.length;
+    let sends=0;f.env.fetch=()=>{sends++;throw Error('unexpected submission');};
+    await assert.rejects(f.t.preview(),/材料配置的規則來源已變更或移除/);
+    assert.equal(sends,0);assert.equal(JSON.stringify(f.context().assemblyDrafts),before);assert.equal(JSON.stringify(f.state.draft),active);
+    assert.equal(f.history.undo.length,history);assert.equal(f.state.preview,null);
+  }
+});
+test('explicit binding rule mapping captures only the applied selection and persists provenance-only changes',async()=>{
+  const f=idFixture('binding',[],[],3);await f.t.newDraft('binding',publishedRule());
+  const old=copy(f.state.draft.base_ref),fresh=publishedRule(rule(),'b'.repeat(64));f.state.read.state.rules=[fresh];
+  const before=JSON.stringify(f.state.draft.data);f.t.render();f.element('asmBindingRule').value='1:1';await f.element('asmBindingRule').handlers.change();
+  assert.deepEqual(copy(f.state.draft.base_ref),old);await f.element('asmCancelMapping').handlers.click();assert.deepEqual(copy(f.state.draft.base_ref),old);
+  f.element('asmBindingRule').value='1:1';await f.element('asmBindingRule').handlers.change();
+  for(const slot of fresh.value.slots)f.element('asmMap'+slot.id).value=String(slot.id);
+  await f.element('asmApplyMapping').handlers.click();
+  assert.equal(JSON.stringify(f.state.draft.data),before);assert.deepEqual(copy(f.state.draft.base_ref),{id:1,version:1,fingerprint:fresh.fingerprint});
+  assert.deepEqual(f.context().assemblyDrafts.find(d=>d.id===f.state.draft.id).base_ref,copy(f.state.draft.base_ref));
+  f.setWorld({rules:[fresh],bindings:[]});let submitted;f.env.checkApiSession=()=>{};
+  f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'new',valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
+  await f.t.preview();assert.equal(submitted.operations[0].op,'create-binding');assert.equal(f.state.preview.valid,true);
+});
+test('legacy null rule provenance still previews through native validation and existing binding edits keep their intent',async()=>{
+  for(const edit of [false,true]){const f=idFixture('binding',edit?[2]:[],[],3);await f.t.newDraft('binding',edit?{value:bindingValue(2)}:null);
+    f.state.draft.base_ref=null;f.state.draft.data.name='既有相容';let submitted;f.env.checkApiSession=()=>{};
+    f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'legacy',valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
+    await f.t.preview();assert.equal(submitted.operations[0].op,edit?'edit-binding':'create-binding');
+    if(edit){assert.equal(f.state.draft.binding_intent.mode,'update');assert.deepEqual(f.state.draft.binding_intent.source,bindingValue(2));}
+  }
+});
+test('binding rule provenance accepts uint32 MAX and rejects malformed stored refs before preview submission',async()=>{
+  const f=idFixture('binding',[],[],3),source=publishedRule({...rule(),id:0xffffffff,version:0xffffffff});f.setWorld({rules:[source],bindings:[]});
+  await f.t.newDraft('binding',source);assert.deepEqual(copy(f.state.draft.base_ref),{id:0xffffffff,version:0xffffffff,fingerprint:source.fingerprint});
+  for(const mutate of [ref=>ref.id=0,ref=>ref.version=0,ref=>ref.fingerprint='A'.repeat(64),ref=>ref.fingerprint=['a'.repeat(64)]]){
+    const g=idFixture('binding',[],[],3);await g.t.newDraft('binding');mutate(g.state.draft.base_ref);g.w.flush();
+    const before=JSON.stringify(g.context().assemblyDrafts);let sends=0;g.env.fetch=()=>{sends++;throw Error('unexpected submission');};
+    await assert.rejects(g.t.preview(),/材料配置的規則來源已變更或移除/);assert.equal(sends,0);assert.equal(JSON.stringify(g.context().assemblyDrafts),before);
+  }
+});
+test('explicit new-version mapping keeps typed sources and its fixed provenance through undo and redo',async()=>{
+  const f=idFixture('binding',[],[],3),old=publishedRule(),fresh=publishedRule({...rule(),version:2,slots:[{id:7,name:'新主支'},{id:8,name:'新副支'}]},'b'.repeat(64));
+  f.setWorld({rules:[old,fresh],bindings:[]});await f.t.newDraft('binding',old);
+  f.state.draft.data.slots[0].A={kind:'parameter',parameterId:0,fieldId:0};f.state.draft.data.slots[1].B={kind:'material',id:4,version:2,field:'B'};f.w.flush();
+  const previous=copy(f.state.draft);f.t.render();f.element('asmBindingRule').value='1:2';await f.element('asmBindingRule').handlers.change();
+  f.element('asmMap7').value='1';f.element('asmMap8').value='2';await f.element('asmApplyMapping').handlers.click();
+  const applied=copy(f.state.draft);assert.deepEqual(applied.data.rule,{id:1,version:2});assert.deepEqual(applied.base_ref,{id:1,version:2,fingerprint:fresh.fingerprint});
+  assert.deepEqual(applied.data.slots[0].A,previous.data.slots[0].A);assert.deepEqual(applied.data.slots[1].B,previous.data.slots[1].B);
+  assert.deepEqual(applied.data.slots.map(s=>s.slotId),[7,8]);
+  assert.equal(f.history.step('undo'),true);f.notify();assert.deepEqual(copy(f.state.draft),previous);
+  assert.equal(f.history.step('redo'),true);f.notify();assert.deepEqual(copy(f.state.draft),applied);
+});
+test('late binding allocation after a project switch never inserts its captured rule into the new project',async()=>{
+  const f=fixture(),source=publishedRule(),allocation=deferred(),original=f.env.apiRequest;f.setWorld({rules:[source],bindings:[]});
+  f.env.apiRequest=async cmd=>{const result=await original(cmd);if(cmd==='newid')await allocation.promise;return result;};
+  const oldContext=f.context(),before=JSON.stringify(oldContext.assemblyDrafts),pending=f.t.newDraft('binding',source);await tick();
+  const next={id:'other-context',assemblyDrafts:[draft('unrelated')],models:[],faceProjections:new Map()};f.history.frame={context:next,ids:new Map()};f.notify();
+  allocation.resolve();await pending;assert.equal(JSON.stringify(oldContext.assemblyDrafts),before);assert.deepEqual(next.assemblyDrafts,[draft('unrelated')]);
+  assert.equal(f.history.undo.length,0);assert.equal(f.w.isOpen,false);
+});
+
 test('confirm locks actual handlers, inputs, navigation and repeated clicks until reply',async()=>{
   const f=fixture(),pending=f.t.confirm();await tick();let entered=false;
   assert.equal(f.w.canCloseForRecovery,false);

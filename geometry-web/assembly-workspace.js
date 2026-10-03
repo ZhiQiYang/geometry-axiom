@@ -9,6 +9,9 @@ window.AssemblyWorkspace=(()=>{
   const checked=r=>{if(!r?.ok)throw Object.assign(Error(r?.error||'組構操作失敗。'),{transport:!!r?.transport});return r;};
   const command=async c=>checked(await apiRequest(c));
   const MAX_ID=0xffffffff;
+  const positiveId=v=>Number.isInteger(v)&&v>0&&v<=MAX_ID;
+  const validRuleRef=r=>!!r&&positiveId(r.id)&&positiveId(r.version)&&typeof r.fingerprint==='string'&&/^[a-f0-9]{64}$/.test(r.fingerprint);
+  function ruleReference(record){const ref={id:record?.value?.id,version:record?.value?.version,fingerprint:record?.fingerprint};if(!validRuleRef(ref))throw Error('固定規則來源不合法；請更新服務或重新開啟規則。');return ref;}
   function freeId(start,used){
     if(!Number.isInteger(start)||start<1||start>MAX_ID)throw Error('配號超出有效範圍，請重新開啟工作區。');
     let id=start;
@@ -33,13 +36,16 @@ window.AssemblyWorkspace=(()=>{
   function unlockConfirm(x){for(const [n,disabled] of x.confirming?.controls||[])n.disabled=disabled;x.confirming=null;}
   function bind(id,event,fn){$(id)?.addEventListener(event,safe(fn));}
   function invalidate(){if(s?.preview)command('assembly-cancel '+s.preview.token).catch(()=>{});if(s){s.preview=null;s.generation++;}if($('asmConfirm'))$('asmConfirm').disabled=true;if($('asmPreviewResult'))$('asmPreviewResult').textContent='';syncFooter();}
-  function flush(){if(!s?.draft||!current(s))return;const old=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft.id);if(old&&JSON.stringify(old.data)===JSON.stringify(s.draft.data))return;s.draft.updated_at=new Date().toISOString();ownDraft=true;try{ReferenceWorkspace.setAssemblyDraft(s.draft,s.context);}finally{ownDraft=false;}s.draftsRef=ReferenceWorkspace.context().assemblyDrafts;}
+  function flush(){if(!s?.draft||!current(s))return;const old=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft.id);if(old&&JSON.stringify(old.data)===JSON.stringify(s.draft.data)&&identityValue(old.base_ref)===identityValue(s.draft.base_ref))return;s.draft.updated_at=new Date().toISOString();ownDraft=true;try{ReferenceWorkspace.setAssemblyDraft(s.draft,s.context);}finally{ownDraft=false;}s.draftsRef=ReferenceWorkspace.context().assemblyDrafts;}
   function changed(redraw=false){invalidate();flush();if(redraw)render();else diagram();report('草稿已保留；保存專案可寫入檔案。');}
   async function readState(x){const a=await command('assembly-read'),e=await command('engineering-read'),r=await command('references'),b=await command('assembly-read');if(!current(x))throw Error('專案或工作區已切換。');if(a.revision!==b.revision||e.revision!==b.revision)throw Error('來源已變更，請重新開啟。');x.read=b;x.references=r;x.engineering={...e.state,specs:r.specs||[]};}
   async function open(kind=null,id=null){if(confirming()){report(pendingMessage);return;}flush();ReferenceWorkspace.assertEditable();if(window.DraftGate&&!window.DraftGate.ask())return;invalidate();const x={context:token(),generation:0,kind,id,rotation:0,zoom:1,draftsRef:ReferenceWorkspace.context().assemblyDrafts};s=x;await readState(x);if(!current(x))return;if(kind==='assembly-rule')x.record=x.read.state.rules.filter(r=>r.value.id===id).sort((a,b)=>b.value.version-a.value.version)[0];if(kind==='assembly-binding')x.record=x.read.state.bindings.find(r=>r.value.id===id);render();if(!dialog.open)dialog.showModal();WorkspaceShell.attach(dialog);}
   function close(){if(confirming()&&!s.confirming.uncertain){report(pendingMessage);return;}flush();invalidate();s=null;++serial;dialog.close();WorkspaceShell.detach(dialog);}
   async function newDraft(kind,source=null,revision=false){
-    if(confirming())return;flush();const x=s,g=x.generation;await readState(x);if(!current(x)||x.confirming||g!==x.generation)return;const ids=await command('newid');if(!current(x)||x.confirming||g!==x.generation)return;
+    if(confirming())return;const creatingBinding=kind==='binding'&&!source?.value?.rule;if(!creatingBinding)flush();const x=s,g=x.generation;await readState(x);if(!current(x)||x.confirming||g!==x.generation)return;
+    let selectedRule;
+    if(creatingBinding){selectedRule=source||x.read.state.rules.at(-1);if(!selectedRule)throw Error('請先發布一份規則。');const ref=ruleReference(selectedRule),fresh=x.read.state.rules.find(r=>r.value.id===ref.id&&r.value.version===ref.version);if(!fresh||fresh.fingerprint!==ref.fingerprint)throw Error('原始規則版本已變更或移除；請重新開啟規則。');selectedRule=fresh;}
+    const ids=await command('newid');if(!current(x)||x.confirming||g!==x.generation)return;
     const drafts=ReferenceWorkspace.getAssemblyDrafts().filter(d=>d.kind===kind),records=kind==='rule'?x.read.state.rules:x.read.state.bindings;
     const used=new Set([...records.map(r=>r.value.id),...drafts.map(d=>d.data.id)]);
     const id=freeId(kind==='rule'?ids.assemblyRule:ids.assemblyBinding,used);
@@ -59,7 +65,8 @@ window.AssemblyWorkspace=(()=>{
       if(!original||identityValue(original.value)!==identityValue(source.value))throw Error('原始配置已變更，請重新開啟。');
       data=clone(source.value);bindingIntent={mode:'update',source:clone(source.value)};
     }
-    else {const r=source?.value||x.read.state.rules.at(-1)?.value;if(!r)throw Error('請先發布一份規則。');data={id,name:'',rule:{id:r.id,version:r.version},slots:r.slots.map(slot=>({slotId:slot.id,A:null,B:null,contactFace:null,orientation:null}))};}
+    else {const r=selectedRule.value;base=ruleReference(selectedRule);data={id,name:'',rule:{id:r.id,version:r.version},slots:r.slots.map(slot=>({slotId:slot.id,A:null,B:null,contactFace:null,orientation:null}))};}
+    if(creatingBinding)flush();
     invalidate();x.draft={id:crypto.randomUUID(),kind,base_ref:base,data,updated_at:new Date().toISOString(),...(kind==='binding'?{binding_intent:bindingIntent||{mode:'create'}}:{})};x.record=null;x.operations=null;flush();render();
   }
   function render(){
@@ -116,9 +123,9 @@ window.AssemblyWorkspace=(()=>{
     const d=s.draft.data,r=s.read.state.rules.find(r=>r.value.id===d.rule.id&&r.value.version===d.rule.version)?.value;
     $('asmEditor').innerHTML=`<h3>材料配置草稿</h3>${field('名稱',input('asmName',d.name))}${field('固定規則版本',select('asmBindingRule',s.read.state.rules.map(r=>[r.value.id+':'+r.value.version,`${r.value.name} · 第 ${r.value.version} 版`]),d.rule.id+':'+d.rule.version))}<div id="asmMapping"></div>${d.slots.map(v=>`<fieldset><legend>${esc(r?.slots.find(x=>x.id===v.slotId)?.name||'遺失槽位')} #${v.slotId}</legend><div class="asm-grid">${['A','B'].map(axis=>{const src=v[axis],options=sources(axis),value=src?.kind==='literal'?'literal':src?JSON.stringify(src):'';if(value&&!options.some(o=>o[0]===value))options.push([value,'原來源（請預覽確認）']);return field(axis+' 尺寸來源',select(`asmSource${v.slotId}${axis}`,options,value))+field(axis+' mm',input(`asmValue${v.slotId}${axis}`,src?.kind==='literal'?src.value:'','number'));}).join('')}${field('接觸面',select('asmContact'+v.slotId,[['','尚未選擇'],['A','A 面'],['B','B 面']],v.contactFace||''))}${field('A/B 擺向',select('asmOrientation'+v.slotId,[['','尚未選擇'],['A','A 沿局部 u'],['B','B 沿局部 u']],v.orientation||''))}</div></fieldset>`).join('')}${btn('asmDeleteDraft','刪除草稿')}`;
     bind('asmName','input',e=>{d.name=e.target.value;changed();});
-    bind('asmBindingRule','change',()=>{invalidate();const [id,version]=$('asmBindingRule').value.split(':').map(Number),next=s.read.state.rules.find(r=>r.value.id===id&&r.value.version===version).value;
+    bind('asmBindingRule','change',()=>{invalidate();const [id,version]=$('asmBindingRule').value.split(':').map(Number),record=s.read.state.rules.find(r=>r.value.id===id&&r.value.version===version),ref=ruleReference(record),next=record.value;
       $('asmMapping').innerHTML=`<fieldset><legend>明確對應新版槽位</legend>${next.slots.map(v=>field(v.name,select('asmMap'+v.id,[['','未設定'],...d.slots.map(old=>[old.slotId,r?.slots.find(x=>x.id===old.slotId)?.name||'#'+old.slotId])],''))).join('')}${btn('asmApplyMapping','套用槽位對應到草稿')}${btn('asmCancelMapping','取消換版')}</fieldset>`;$('asmPreview').disabled=true;
-      bind('asmApplyMapping','click',()=>{d.slots=next.slots.map(v=>{const old=d.slots.find(x=>x.slotId===Number($('asmMap'+v.id).value));return old?{...clone(old),slotId:v.id}:{slotId:v.id,A:null,B:null,contactFace:null,orientation:null};});d.rule={id,version};changed(true);});bind('asmCancelMapping','click',render);
+      bind('asmApplyMapping','click',()=>{d.slots=next.slots.map(v=>{const old=d.slots.find(x=>x.slotId===Number($('asmMap'+v.id).value));return old?{...clone(old),slotId:v.id}:{slotId:v.id,A:null,B:null,contactFace:null,orientation:null};});d.rule={id,version};s.draft.base_ref=ref;changed(true);});bind('asmCancelMapping','click',render);
     });
     for(const v of d.slots){for(const axis of ['A','B']){const source=$(`asmSource${v.slotId}${axis}`),value=$(`asmValue${v.slotId}${axis}`);value.disabled=source.value!=='literal';source.onchange=safe(()=>{value.disabled=source.value!=='literal';v[axis]=source.value==='literal'?{kind:'literal',value:value.value===''?'':Number(value.value)}:source.value?JSON.parse(source.value):null;changed();});value.oninput=safe(()=>{v[axis]={kind:'literal',value:value.value===''?'':Number(value.value)};changed();});}for(const [p,k] of [['asmContact','contactFace'],['asmOrientation','orientation']])bind(p+v.slotId,'change',e=>{v[k]=e.target.value||null;changed();});}bindDeleteDraft();
   }
@@ -197,6 +204,7 @@ window.AssemblyWorkspace=(()=>{
           if(!/^[a-f0-9]{64}$/.test(original.fingerprint||''))throw Error('原生服務缺少配置來源指紋，請更新服務再預覽；草稿仍保留。');
           operations[0]={op:'edit-binding',id:d.data.id,expectedFingerprint:original.fingerprint,value:clone(d.data)};
         }else if(original)throw Error('新增或舊版草稿的配置身分已被占用；草稿仍保留，請另建配置，或從已發布配置明確開啟編輯。');
+        if(d.base_ref){const ref=d.base_ref,rule=read.state.rules.find(r=>r.value.id===ref.id&&r.value.version===ref.version);if(!validRuleRef(ref)||d.data.rule.id!==ref.id||d.data.rule.version!==ref.version||!rule||rule.fingerprint!==ref.fingerprint)throw Error('材料配置的規則來源已變更或移除；草稿仍保留，請明確重新選擇規則並對應槽位。');}
       }else if(d.kind==='instance'){
         const binding=read.state.bindings.find(r=>r.value.id===d.data.bindingId),original=read.state.instances?.find(r=>r.value.source.id===d.data.id);
         if(!binding?.fingerprint)throw Error('材料來源不存在或服務未支援生成。');
