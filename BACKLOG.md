@@ -4016,6 +4016,14 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
   更新皆有回歸驗證。正式 8765 重啟前後 dump 全等；使用者 Edge 的 915×1830 草稿
   已還原且格線可見；正式啟動器沿用目前版本的驗證通過。F-20261003-001/002 結案。
 
+## GEO-238 — #44 F1a 有界唯讀來源／影響與快照內容檢查（2026-10-03）
+
+- 自有 source-inspector native／JS／transport／adapter modules，由 World 型別建立可丟棄索引；不改公理或保存格式，不做 F1b、不隱含重建。原基線 main d40dee0，現整合 PR56/main 693a1c8，保留 PR63 format9，不重做 #54。
+- 減項（GEO-219）：既有參數 `paramUsage` 的局部使用清單合併到共用「來源／影響與參數交換」，匯出／刪除控制保留；其餘入口都是既有檢查器／模型庫的按需 disclosure，無新工作區或常駐教學。
+- 比對 native 逐來源指紋與 typed closure；來源缺失／變更／不完整明示。原格式缺 durable incarnation，內容一致仍註明延續性未知，不以整場景 hash 或名稱推斷現況。I9 candidate 不當成求值支撐；#47 原生 exact support 在同一 live／candidate World 原子適配，核對 typed placed/surface/lengthAxis 與八欄 owner，端點／來源改變即使幾何同值也列 source-definition。
+- 整合 main9e（已合併65／66），保留唯一 runtime 靜態 capture。暫存 snapshot partial-write／bridge-error cleanup 用真實 tempfiles 修正並有 assertion-red baseline；過期路徑展開先驗 context／stamp。沒有新 UI 入口、永久來源保存或間接支撐求值推定。
+- single owner 接線 adapter 不競寫 app.js、reference-workspace.js、project-store.js 或 native common。介面見 `geometry-web/docs/SOURCE-INSPECTOR-CONTRACT.md`；product head e30d4a2 同版完整非瀏覽器 1412/0/1 具名 GDI、無 filter CDP 1809/0/0 skip 且 76 段 golden matched、space 183/0、真 F1a browser 18/0、native 10/10、JS 9/9；native AST edge 遺漏 mutant 正確被抓（1 fail、編譯正常、無 skip）。完整命令、scope、版本、前次失敗及 PNG 見 `geometry-web/docs/SOURCE-INSPECTOR-VALIDATION.md`。未測實體手機；F1b、新公理／durable incarnation 與 #47 支撐 record 另案。
+
 ## GEO-232 — 畫布繪圖、hover 與版本檢查效能（2026-10-03）
 
 - 使用者依程式碼審查結果，授權三個 agent 並行修正背景格線、滑鼠拾取請求與來源版本檢查。
