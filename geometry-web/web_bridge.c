@@ -485,11 +485,12 @@ static void cmd_newid(size_t surface_count)
 
     WORLD_NEXT_ID(mar,g_world.assembly.rules,g_world.assembly.rule_count,true);
     WORLD_NEXT_ID(mab,g_world.assembly.bindings,g_world.assembly.binding_count,true);
+    uint32_t mai=1;WORLD_NEXT_ID(mai,g_world.assembly.instances,g_world.assembly.instance_count,true);
     /* 既有的純量欄位一個都沒動:舊的呼叫端(以及 canvas_test.js)照常可用。 */
     printf("{\"ok\":true,\"boundary\":%u,\"placement\":%u,\"guide\":%u,"
            "\"grid\":%u,\"gridSystem\":%u,\"gridBinding\":%u,\"timber\":%u,\"space\":%u,"
-           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"parameter\":%u,\"assemblyRule\":%u,\"assemblyBinding\":%u,\"surfaces\":[",
-           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab);
+           "\"column\":%u,\"beam\":%u,\"datum\":%u,\"parameter\":%u,\"assemblyRule\":%u,\"assemblyBinding\":%u,\"assemblyInstance\":%u,\"surfaces\":[",
+           mb, mp, mg, mgr, mgs, mgb, mt, ms, mc, mbm, md, mparam, mar, mab, mai);
     for (size_t i = 0; i < surface_count; ++i) {
         if (i) putchar(',');
         printf("%u", surfaces[i]);
@@ -905,6 +906,8 @@ int main(void)
             fputs("{\"ok\":true}\n", stdout);
         } else if (strcmp(line, "line") == 0 && arg != NULL) {
             cmd_line(arg);
+        } else if (strcmp(line,"assembly-generation-preview")==0 && arg) {
+            cmd_assembly_generation_preview(arg);
         } else if (strcmp(line,"assembly-read")==0 && !arg) {
             cmd_assembly_read();
         } else if (strcmp(line,"assembly-preview")==0 && arg) {

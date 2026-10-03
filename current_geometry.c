@@ -3762,7 +3762,13 @@ static bool apply_grid_binding_application(const char *,int,char **,int,World *)
 static bool grid_systems_rebuild(World *,char *,size_t);
 static bool eng_object_bound(const World *,int,uint32_t);
 static uint64_t g_definition_revision;
+static char g_engineering_error[256];
 static bool assembly_rebuild(World *,char *,size_t);
+static bool assembly_owned(const World *,uint32_t);
+static void assembly_owned_prefix(const World *,uint32_t,const char *,FILE *);
+static bool assembly_generation_prepare(World *);
+static bool assembly_generation_check(const World *);
+static bool assembly_generation_integrity(const World *);
 static const AsmRuleVersion *assembly_rule(const World *,uint32_t,uint32_t);
 static AsmBinding *assembly_binding(World *,uint32_t);
 static bool engineering_rebuild(World *,char *,size_t);
@@ -8588,6 +8594,9 @@ static bool world_revalidate(World *world)
     if (!grid_bindings_rebuild(&candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
     }
+    if (!assembly_generation_prepare(&candidate)) {
+        set_revalidate_error(g_engineering_error); return false;
+    }
     reference_capture_trial(&candidate);
     if (!subgrid_world_valid(&candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error[0]?grid_error:"I25: grid dependency invalid");
@@ -8620,6 +8629,7 @@ static bool world_revalidate(World *world)
         }
         return false;
     }
+    if (!assembly_generation_check(&candidate)) { set_revalidate_error(g_engineering_error); return false; }
     *world = candidate;
     return true;
 }
@@ -9422,6 +9432,7 @@ static bool apply_timber_line(
         }
     }
 
+    if (assembly_owned(world,id)) { scene_error(path,line_no,"I42: edit the owning assembly instance"); return false; }
     for (size_t i = 0; i < world->timber_count; ++i) {
         if (world->timbers[i].id == id) {
             Timber updated;
@@ -9958,6 +9969,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/grid_bindings.inc"
 #include "geometry-core/engineering_commands.inc"
 #include "geometry-core/assembly.inc"
+#include "geometry-core/assembly_generation.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -11524,6 +11536,7 @@ static bool apply_delete_line(
     }
 
     const char *kind = tokens[1];
+    if (!strcmp(kind,"timber") && assembly_owned(world,id)) { scene_error(path,line_no,"I42: delete the owning assembly instance"); return false; }
     World backup = *world;
 
     if (strcmp(kind, "boundary") == 0) {
@@ -12068,6 +12081,7 @@ static void world_dump_dsl(const World *world, FILE *out)
         fprintf(out,"subgrid %u parent %u cell u %s %s v %s %s divisions u %u v %u\n",
             g->id,g->parent_id,refs[0][0],refs[0][1],refs[1][0],refs[1][1],g->divisions[0],g->divisions[1]);
     }
+    if(world->assembly.instance_count)fputs("requires assembly-timber-generation/1\n",out);
     reference_dump(world, out);
 
     for (size_t i = 0; i < world->space_count; ++i) {
@@ -12245,6 +12259,7 @@ static const struct {
     { "boundary-vertex-keys", 7, SCENE_MAX_TOKENS, false, "boundary-vertex-keys id outer keys [hole keys] next-key n", apply_boundary_keys_line },
     { "boundary-keyed", 9, SCENE_MAX_TOKENS, false, "boundary-keyed id geometry-hash hash outline key:u,v ...", apply_boundary_keyed_line },
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
+    { "owned", 5, 20, false, "owned timber|place instance member native-arguments", apply_assembly_owned_line },
     { "assembly", 2, 3, false, "assembly begin|record|data|commit|end", apply_assembly_line },
     { "parameters", 2, 3, false, "parameters begin|card|field|end", apply_parameters_line },
     { "requires", 2, 2, false, "requires engineering-spec/1", apply_requires_line },
@@ -12501,6 +12516,8 @@ static bool parse_scene_file(const char *path, World *out_world)
             ok = false;
         }
     }
+
+    if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
 
     /* 全部擋面就位後才重驗（grid-ref / I19 / I23 都走這裡），失敗整份拒絕。 */
     if (ok && !world_revalidate(out_world)) {
