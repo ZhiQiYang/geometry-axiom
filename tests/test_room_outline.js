@@ -56,3 +56,39 @@ test('PDF DrawOPS use viewport plus CTM; curves are excluded without orthogonali
   assert.throws(()=>R.pdfObstacles(list,OPS,{transform:[2,0,0,1,0,0]}),/非等比例/);
   assert.throws(()=>R.pdfObstacles({fnArray:new Array(200001)},OPS,{transform:[1,0,0,1,0,0]}),/過多/);
 });
+
+const snapOPS={save:10,restore:11,transform:12,constructPath:91,stroke:20,closeStroke:21,setDash:6,beginText:30,endText:31,clip:32,setGState:33,setStrokeRGBColor:34};
+const snapPath=(points,closed=false)=>[0,...points[0],...points.slice(1).flatMap(p=>[1,...p]),...(closed?[4]:[])];
+const snapList=paths=>({fnArray:paths.map(()=>91),argsArray:paths.map(p=>[20,[new Float32Array(p)]])});
+test('manual PDF snap keeps original path endpoints, CTM and viewport; no text, curves, dashed or clipped paths',()=>{
+  const path=snapPath([[3,5],[27,5],[27,35],[3,35]],true);
+  const list={fnArray:[10,12,91,11,30,91,31,6,91,6,91,10,32,91,11,33,34,91],argsArray:[[],[2,0,0,3,7,11],[20,[new Float32Array(path)]],[],[],[20,[new Float32Array(path)]],[],[[2,2]],[20,[new Float32Array(path)]],[[]],[20,[new Float32Array([0,1,2,2,2,3,4,5,6,7])]],[],[],[20,[new Float32Array(path)]],[],[[['CA',0]]],['#000000'],[20,[new Float32Array(path)]]]};
+  const features=R.pdfSnapFeatures(list,snapOPS,{transform:[0,1,1,0,-4,-8]});
+  assert.equal(features.segments.length,4);
+  assert.deepEqual(features.segments[0].a,[22,5]);assert.deepEqual(features.segments[0].b,[22,53]);
+});
+test('PDF endpoints use an 8px radial tolerance, crop and exact draft axis; grid cannot steal targets',()=>{
+  const features=R.pdfSnapFeatures(snapList([snapPath([[3,5],[27,5]])]),snapOPS,{transform:[1,0,0,1,0,0]});
+  for(const zoom of [.09,.4,2]) {
+    const opts={map:p=>[p[0]*10+7,p[1]*10-11],zoom};
+    assert.deepEqual(R.nearestSnap(features,[37+7/zoom,39],opts).point,[37,39]);
+    assert.equal(R.nearestSnap(features,[37+9/zoom,39],opts),null);
+    assert.equal(R.nearestSnap(features,[37,39],{...opts,crop:[4,0,100,100]}),null);
+    assert.equal(R.nearestSnap(features,[37,39],{...opts,pts:[[0,0]]}),null);
+    assert.deepEqual(R.nearestSnap(features,[37,39],{...opts,pts:[[37,0]]}).point,[37,39]);
+  }
+});
+test('PDF intersections are finite segment crossings of closed paths; open dimension crossings and extensions excluded',()=>{
+  const a=snapPath([[0,0],[100,0],[100,100],[0,100]],true),b=snapPath([[50,-50],[150,-50],[150,50],[50,50]],true);
+  const features=R.pdfSnapFeatures(snapList([a,b]),snapOPS,{transform:[1,0,0,1,0,0]});
+  const opts={map:p=>p,zoom:1};
+  const hit=R.nearestSnap(features,[50,1],opts);
+  assert.equal(hit.kind,'intersection');assert.deepEqual(hit.point,[50,0]);assert.equal(hit.segments.length,2);
+  assert.equal(R.nearestSnap(features,[150,100],opts),null);
+  const dimensions=R.pdfSnapFeatures(snapList([snapPath([[0,50],[100,50]]),snapPath([[50,0],[50,100]])]),snapOPS,{transform:[1,0,0,1,0,0]});
+  assert.equal(R.nearestSnap(dimensions,[50,50],opts),null);
+});
+test('PDF snap refuses excessive source capacity instead of returning a misleading partial set',()=>{
+  assert.throws(()=>R.pdfSnapFeatures({fnArray:new Array(200001)},snapOPS,{transform:[1,0,0,1,0,0]}),/容量/);
+  assert.deepEqual(R.pdfSnapFeatures({fnArray:[],argsArray:[]},snapOPS,{transform:[1,0,0,1,0,0]}),{segments:[]});
+});

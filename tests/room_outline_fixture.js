@@ -28,6 +28,11 @@ function pdf() {
   const compressed=zlib.deflateSync(rgb),image=add(Buffer.concat([Buffer.from(`<< /Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /FlateDecode /Length ${compressed.length} >>\nstream\n`),compressed,Buffer.from('\nendstream')]));
   const stream='q 280 0 0 190 10 10 cm /Scan Do Q\n',content=add(`<< /Length ${stream.length} >>\nstream\n${stream}endstream`);
   kids.push(add(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 210] /CropBox [10 10 290 200] /Resources << /XObject << /Scan ${image} 0 R >> >> /Contents ${content} 0 R >>`));
+  // Actual closed-segment crossings at (100,30), (230,110) in viewport
+  // coordinates; the open dimension strokes cross at (160,70).
+  const crossings='q 1 0 0 1 10 0 cm 4 w 30 170 m 230 170 l 230 50 l 30 50 l h S 100 190 m 250 190 l 250 90 l 100 90 l h S .5 w 15 130 m 270 130 l S 160 10 m 160 190 l S Q\n';
+  const crossingContent=add(`<< /Length ${crossings.length} >>\nstream\n${crossings}endstream`);
+  kids.push(add(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 210] /CropBox [10 10 290 200] /Resources << >> /Contents ${crossingContent} 0 R >>`));
   objects[1]=`<< /Type /Pages /Kids [${kids.map(k=>k+' 0 R').join(' ')}] /Count ${kids.length} >>`;
   const chunks=[Buffer.from('%PDF-1.4\n')],offsets=[0];let length=chunks[0].length;
   objects.forEach((o,i)=>{offsets.push(length);const b=Buffer.concat([Buffer.from(`${i+1} 0 obj\n`),Buffer.isBuffer(o)?o:Buffer.from(o),Buffer.from('\nendobj\n')]);chunks.push(b);length+=b.length;});

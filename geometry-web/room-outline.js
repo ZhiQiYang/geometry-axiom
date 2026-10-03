@@ -197,5 +197,73 @@
     if(!orthogonal(next))throw error('dimension','此尺寸使相鄰邊退化，請調整頂點。');
     return next;
   }
-  return {pdfObstacles,imageObstacles,region,integerProposal,resizeEdge,orthogonal,contains,multiply,point};
+  // Source geometry for manual tracing, independent of room inference. These
+  // are painted path centreline points, never labelled as wall/inside corners.
+  function pdfSnapFeatures(list, OPS, viewport) {
+    if(list.fnArray.length>200000)throw error('capacity','PDF 向量超過吸附容量，請人工描繪。');
+    const segments=[];let state={matrix:[...viewport.transform],clip:false,dash:false,alpha:1,transparent:false,text:false},stack=[];
+    const paints=[OPS.stroke,OPS.closeStroke,OPS.fillStroke,OPS.eoFillStroke,OPS.closeFillStroke,OPS.closeEOFillStroke];
+    for(let i=0;i<list.fnArray.length;i++) {
+      const op=list.fnArray[i],a=list.argsArray[i];
+      if(op===OPS.save||op===OPS.paintFormXObjectBegin){stack.push({...state,matrix:[...state.matrix]});if(op===OPS.paintFormXObjectBegin){if(a[0])state.matrix=multiply(state.matrix,a[0]);if(a[1])state.clip=true;}}
+      else if(op===OPS.restore||op===OPS.paintFormXObjectEnd)state=stack.pop()||state;
+      else if(op===OPS.transform)state.matrix=multiply(state.matrix,a);
+      else if(op===OPS.clip||op===OPS.eoClip)state.clip=true;
+      else if(op===OPS.setDash)state.dash=!!a[0]?.length;
+      else if(op===OPS.setStrokeTransparent)state.transparent=true;
+      else if(op===OPS.setStrokeRGBColor)state.transparent=false;
+      else if(op===OPS.beginText)state.text=true;
+      else if(op===OPS.endText)state.text=false;
+      else if(op===OPS.setGState){for(const [k,v] of a[0]||[]){if(k==='CA')state.alpha=v;if(k==='D')state.dash=!!v[0]?.length;}}
+      else if(op===OPS.constructPath && !state.clip && !state.text && !state.dash && !state.transparent && state.alpha>0 && paints.includes(a[0])) {
+        const data=a[1]?.[0];if(!data || data.length>600000)throw error('capacity','PDF 路徑超過吸附容量，請人工描繪。');
+        let pts=[],curved=false,part=0;
+        const finish=(closed=false)=>{
+          if(!curved)for(let j=1;j<pts.length;j++)if(pts[j-1].every(Number.isFinite)&&pts[j].every(Number.isFinite)&&Math.hypot(pts[j][0]-pts[j-1][0],pts[j][1]-pts[j-1][1])>EPS)
+            segments.push({a:pts[j-1],b:pts[j],closed,path:`${i}:${part}`,id:`${i}:${part}:${j-1}`});
+          if(segments.length>12000)throw error('capacity','PDF 線段超過吸附容量，請人工描繪。');
+          pts=[];curved=false;part++;
+        };
+        for(let at=0;at<data.length;) {
+          const draw=data[at++];
+          if(draw===0){finish();pts.push(point(state.matrix,data[at++],data[at++]));}
+          else if(draw===1)pts.push(point(state.matrix,data[at++],data[at++]));
+          else if(draw===2||draw===3){at+=draw===2?6:4;curved=true;}
+          else if(draw===4){if(pts.length)pts.push(pts[0]);finish(true);}
+          else {curved=true;break;}
+        }
+        if([OPS.closeStroke,OPS.closeFillStroke,OPS.closeEOFillStroke].includes(a[0]) && pts.length){pts.push(pts[0]);finish(true);}else finish();
+      }
+    }
+    return {segments};
+  }
+  function nearestSnap(features, free, {map,zoom,crop,pts=[],radiusPx=8}) {
+    if(!(zoom>0)||!features)return null;
+    const radius=radiusPx/zoom, candidates=[],nearSegments=[];
+    const inside=p=>!crop || p[0]>=crop[0]&&p[1]>=crop[1]&&p[0]<=crop[0]+crop[2]&&p[1]<=crop[1]+crop[3];
+    const offer=(source,segments,kind)=>{
+      if(!inside(source))return;
+      const exact=map(source),mm=exact.map(Math.round),last=pts.at(-1);
+      // Preserve exact existing orthogonal draft axes; never project a PDF
+      // point onto an invented corner just to make it fit the draft.
+      if(last && mm[0]!==last[0] && mm[1]!==last[1])return;
+      const distance=Math.hypot(exact[0]-free[0],exact[1]-free[1]);
+      if(distance<=radius)candidates.push({point:mm,exact,source,segments,kind,distance});
+    };
+    for(const s of features.segments) {
+      offer(s.a,[s],'endpoint');offer(s.b,[s],'endpoint');
+      if(!s.closed)continue; // open dimension/extension strokes cannot create crossing targets
+      const a=map(s.a),b=map(s.b),dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((free[0]-a[0])*dx+(free[1]-a[1])*dy)/(dx*dx+dy*dy)));
+      if(Math.hypot(a[0]+t*dx-free[0],a[1]+t*dy-free[1])<=radius)nearSegments.push(s);
+    }
+    if(nearSegments.length<=100)for(let i=0;i<nearSegments.length;i++)for(let j=i+1;j<nearSegments.length;j++) {
+      const s=nearSegments[i],t=nearSegments[j],r=[s.b[0]-s.a[0],s.b[1]-s.a[1]],v=[t.b[0]-t.a[0],t.b[1]-t.a[1]],q=[t.a[0]-s.a[0],t.a[1]-s.a[1]],det=r[0]*v[1]-r[1]*v[0];
+      if(Math.abs(det)<EPS)continue;
+      const u=(q[0]*v[1]-q[1]*v[0])/det,w=(q[0]*r[1]-q[1]*r[0])/det;
+      if(u>=0&&u<=1&&w>=0&&w<=1)offer([s.a[0]+u*r[0],s.a[1]+u*r[1]],[s,t],'intersection');
+    }
+    candidates.sort((a,b)=>a.distance-b.distance);
+    return candidates[0]||null;
+  }
+  return {pdfSnapFeatures,nearestSnap,pdfObstacles,imageObstacles,region,integerProposal,resizeEdge,orthogonal,contains,multiply,point};
 });
