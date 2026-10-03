@@ -3,7 +3,7 @@ window.AssemblyWorkspace=(()=>{
   'use strict';
   const esc=ReferenceWorkspace.escape,clone=structuredClone,$=id=>document.getElementById(id);
   const dialog=document.createElement('dialog');dialog.id='assemblyWorkspace';dialog.setAttribute('aria-label','組構規則');document.body.append(dialog);
-  let s=null,ownDraft=false,serial=0;
+  let s=null,ownDraft=false,serial=0,entryBusy=false;
   const token=()=>ReferenceWorkspace.getProjectState().contextToken;
   const current=x=>!!x&&s===x&&x.context===token();
   const checked=r=>{if(!r?.ok)throw Object.assign(Error(r?.error||'組構操作失敗。'),{transport:!!r?.transport});return r;};
@@ -45,17 +45,24 @@ window.AssemblyWorkspace=(()=>{
   function invalidate(){if(s?.preview)command('assembly-cancel '+s.preview.token).catch(()=>{});if(s){s.preview=null;s.generation++;}if($('asmConfirm'))$('asmConfirm').disabled=true;if($('asmPreviewResult'))$('asmPreviewResult').textContent='';syncFooter();}
   function flush(){if(!s?.draft||!current(s))return;const old=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft.id);if(old&&JSON.stringify(old.data)===JSON.stringify(s.draft.data)&&identityValue(old.base_ref)===identityValue(s.draft.base_ref))return;s.draft.updated_at=new Date().toISOString();ownDraft=true;try{ReferenceWorkspace.setAssemblyDraft(s.draft,s.context);}finally{ownDraft=false;}s.draftsRef=ReferenceWorkspace.context().assemblyDrafts;}
   function changed(redraw=false){invalidate();flush();if(redraw)render();else diagram();report('草稿已保留；保存專案可寫入檔案。');}
-  async function readState(x){const a=await command('assembly-read'),e=await command('engineering-read'),r=await command('references'),b=await command('assembly-read');if(!current(x))throw Error('專案或工作區已切換。');if(a.revision!==b.revision||e.revision!==b.revision)throw Error('來源已變更，請重新開啟。');x.read=b;x.references=r;x.engineering={...e.state,specs:r.specs||[]};}
+  async function readState(x,isCurrent=()=>current(x)){const a=await command('assembly-read'),e=await command('engineering-read'),r=await command('references'),b=await command('assembly-read');if(!isCurrent())throw Error('專案或工作區已切換。');if(a.revision!==b.revision||e.revision!==b.revision)throw Error('來源已變更，請重新開啟。');x.read=b;x.references=r;x.engineering={...e.state,specs:r.specs||[]};}
   async function open(kind=null,id=null){if(confirming()){report(pendingMessage);return;}flush();ReferenceWorkspace.assertEditable();if(window.DraftGate&&!window.DraftGate.ask())return;invalidate();const x={context:token(),generation:0,kind,id,rotation:0,zoom:1,draftsRef:ReferenceWorkspace.context().assemblyDrafts};s=x;await readState(x);if(!current(x))return;if(kind==='assembly-rule')x.record=x.read.state.rules.filter(r=>r.value.id===id).sort((a,b)=>b.value.version-a.value.version)[0];if(kind==='assembly-binding')x.record=x.read.state.bindings.find(r=>r.value.id===id);render();if(!dialog.open)dialog.showModal();WorkspaceShell.attach(dialog);}
   function close(){if(confirming()&&!s.confirming.uncertain){report(pendingMessage);return;}flush();invalidate();s=null;++serial;dialog.close();WorkspaceShell.detach(dialog);}
   async function newDraft(kind,source=null,revision=false){
-    if(confirming())return;const creatingBinding=kind==='binding'&&!source?.value?.rule,editingBinding=kind==='binding'&&!!source?.value?.rule;if(kind!=='binding')flush();const x=s,g=x.generation;
+    if(confirming())return;if(kind!=='binding')flush();const x=s,g=x.generation;
+    const draft=await prepareDraft(x,kind,source,revision,()=>current(x)&&!x.confirming&&g===x.generation);
+    if(!draft)return;if(kind==='binding')flush();
+    invalidate();x.draft=draft;x.record=null;x.operations=null;flush();render();
+  }
+  async function prepareDraft(x,kind,source,revision,isCurrent,resolveSource=null){
+    const creatingBinding=kind==='binding'&&!source?.value?.rule,editingBinding=kind==='binding'&&!!source?.value?.rule;
     const capturedRule=editingBinding?captureBindingRule(source):null;if(editingBinding&&!validRuleRef(capturedRule))throw Error('固定規則來源不合法；請更新服務或重新開啟規則。');
-    await readState(x);if(!current(x)||x.confirming||g!==x.generation)return;
+    await readState(x,isCurrent);if(!isCurrent())return;
+    if(resolveSource)source=resolveSource(x.read);
     let selectedRule;
     if(creatingBinding){selectedRule=source||x.read.state.rules.at(-1);if(!selectedRule)throw Error('請先發布一份規則。');const ref=ruleReference(selectedRule),fresh=x.read.state.rules.find(r=>r.value.id===ref.id&&r.value.version===ref.version);if(!fresh||fresh.fingerprint!==ref.fingerprint)throw Error('原始規則版本已變更或移除；請重新開啟規則。');selectedRule=fresh;}
     else if(editingBinding){selectedRule=x.read.state.rules.find(r=>r.value.id===capturedRule.id&&r.value.version===capturedRule.version);if(!selectedRule||selectedRule.fingerprint!==capturedRule.fingerprint)throw Error('原始配置的固定規則版本已變更或移除；請重新開啟配置。');const original=x.read.state.bindings.find(r=>r.value.id===source.value.id);if(!original||identityValue(original.value)!==identityValue(source.value))throw Error('原始配置已變更，請重新開啟。');}
-    const ids=await command('newid');if(!current(x)||x.confirming||g!==x.generation)return;
+    const ids=await command('newid');if(!isCurrent())return;
     const drafts=ReferenceWorkspace.getAssemblyDrafts().filter(d=>d.kind===kind),records=kind==='rule'?x.read.state.rules:x.read.state.bindings;
     const used=new Set([...records.map(r=>r.value.id),...drafts.map(d=>d.data.id)]);
     const id=freeId(kind==='rule'?ids.assemblyRule:ids.assemblyBinding,used);
@@ -74,8 +81,30 @@ window.AssemblyWorkspace=(()=>{
       data=clone(source.value);base=ruleReference(selectedRule);bindingIntent={mode:'update',source:clone(source.value)};
     }
     else {const r=selectedRule.value;base=ruleReference(selectedRule);data={id,name:'',rule:{id:r.id,version:r.version},slots:r.slots.map(slot=>({slotId:slot.id,A:null,B:null,contactFace:null,orientation:null}))};}
-    if(kind==='binding')flush();
-    invalidate();x.draft={id:crypto.randomUUID(),kind,base_ref:base,data,updated_at:new Date().toISOString(),...(kind==='binding'?{binding_intent:bindingIntent||{mode:'create'}}:{})};x.record=null;x.operations=null;flush();render();
+    return {id:crypto.randomUUID(),kind,base_ref:base,data,updated_at:new Date().toISOString(),...(kind==='binding'?{binding_intent:bindingIntent||{mode:'create'}}:{})};
+  }
+  async function createBindingFromRule(selection,isSelected){
+    if(entryBusy||confirming())return false;
+    ReferenceWorkspace.assertEditable();
+    const pinned=clone(selection),old=s,g=old?.generation,context=token(),entrySerial=serial;
+    const isCurrent=()=>context===token()&&s===old&&g===old?.generation&&entrySerial===serial&&!confirming()&&isSelected();
+    if(!isCurrent())return false;
+    const x={context,generation:0,kind:'assembly-rule',id:pinned.id,rotation:0,zoom:1,draftsRef:ReferenceWorkspace.context().assemblyDrafts};
+    entryBusy=true;
+    try{
+      // Stage reads/allocation without replacing, flushing or cancelling the
+      // old owner. A stale entry cannot consume its pending preview or inputs.
+      const draft=await prepareDraft(x,'binding',null,false,isCurrent,read=>{
+        const resolved=window.ContextOperations.resolveBindingCreate(pinned,read);
+        if(!resolved.ok)throw Error(resolved.message);return resolved.record;
+      });
+      if(!draft||!isCurrent())return false;
+      ReferenceWorkspace.assertEditable();
+      if(window.DraftGate&&!window.DraftGate.ask())return false;
+      if(!isCurrent())return false;
+      flush();invalidate();s=x;x.draft=draft;flush();render();
+      if(!dialog.open)dialog.showModal();WorkspaceShell.attach(dialog);return true;
+    }catch(error){if(!isCurrent())return false;throw error;}finally{entryBusy=false;}
   }
   function render(){
     if(!s||!current(s))return;s.draftsRef=ReferenceWorkspace.context().assemblyDrafts;const x=s,header=dialog.querySelector(':scope > .workspace-project-header');header?.remove();
@@ -139,7 +168,7 @@ window.AssemblyWorkspace=(()=>{
   }
   function faceWords(slot){const contact=slot?.contactFace==='A'?'接觸面是 A 面':slot?.contactFace==='B'?'接觸面是 B 面':'接觸面尚未選擇',orient=slot?.orientation==='A'?'A 沿局部 u':slot?.orientation==='B'?'B 沿局部 u':'擺向尚未選擇';return `${contact}，${orient}`;}
   function bindingCards(record){const d=record.value,rule=s.read.state.rules.find(r=>r.value.id===d.rule.id&&r.value.version===d.rule.version)?.value;return d.slots.map(slot=>{const eff=record.effective.find(v=>v.slotId===slot.slotId),name=rule?.slots.find(v=>v.id===slot.slotId)?.name?.trim()||'未命名槽位',a=eff?.A?.value,b=eff?.B?.value,section=a==null||b==null?`A ${a??'未設定'} / B ${b??'未設定'} mm`:`截面 ${a} × ${b} mm`;return `<article class="asm-slot"><strong>${esc(name)}</strong><p>${esc(section)}</p><p class="asm-note">${esc(faceWords(slot))}</p></article>`;}).join('');}
-  function published(){const r=s.record,d=r.value,isRule=s.kind==='assembly-rule',rule=isRule?null:s.read.state.rules.find(x=>x.value.id===d.rule.id&&x.value.version===d.rule.version)?.value;if(!isRule)captureBindingRule(r);$('asmEditor').innerHTML=`<h3>${esc(d.name)}</h3><p>${isRule?`第 ${d.version} 版已發布，內容固定。要改就做成下一版。`:`用「${esc(rule?.name||'規則')}」第 ${d.rule.version} 版。${r.complete?'':'還有尺寸或方向沒選。'}`}</p><div class="asm-actions">${isRule?btn('asmEdit','編輯為下一版',false,'primary-button')+btn('asmCopy','複製成新規則')+btn('asmBind','建立材料配置'):btn('asmEdit','編輯材料配置',false,'primary-button')}${btn('asmDeletePublished','刪除'+(isRule?'此版本':'配置'))}</div>${isRule?'<h4>只表示誰抵住誰，尺寸見材料配置</h4><p class="asm-note">右側、左側、上側、下側對應資料裡的 +u、-u、+v、-v。</p><div id="asmDiagram"></div>':bindingCards(r)}${isRule?'':generationActions(d.id,r.complete)}`;if(!isRule)bindGenerationActions(d.id);bind('asmEdit','click',()=>newDraft(isRule?'rule':'binding',r,isRule));bind('asmCopy','click',()=>newDraft('rule',r));bind('asmBind','click',()=>newDraft('binding',r));bind('asmDeletePublished','click',async()=>{s.operations=[isRule?{op:'delete-rule',id:d.id,version:d.version}:{op:'delete-binding',id:d.id}];await preview();});diagram();}
+  function published(){const r=s.record,d=r.value,isRule=s.kind==='assembly-rule',rule=isRule?null:s.read.state.rules.find(x=>x.value.id===d.rule.id&&x.value.version===d.rule.version)?.value;if(!isRule)captureBindingRule(r);$('asmEditor').innerHTML=`<h3>${esc(d.name)}</h3><p>${isRule?`第 ${d.version} 版已發布，內容固定。要改就做成下一版。`:`用「${esc(rule?.name||'規則')}」第 ${d.rule.version} 版。${r.complete?'':'還有尺寸或方向沒選。'}`}</p><div class="asm-actions">${isRule?btn('asmEdit','編輯為下一版',false,'primary-button')+btn('asmCopy','複製成新規則')+btn('asmBind',window.ContextOperations.getOperation('assembly-binding.create').label):btn('asmEdit','編輯材料配置',false,'primary-button')}${btn('asmDeletePublished','刪除'+(isRule?'此版本':'配置'))}</div>${isRule?'<h4>只表示誰抵住誰，尺寸見材料配置</h4><p class="asm-note">右側、左側、上側、下側對應資料裡的 +u、-u、+v、-v。</p><div id="asmDiagram"></div>':bindingCards(r)}${isRule?'':generationActions(d.id,r.complete)}`;if(!isRule)bindGenerationActions(d.id);bind('asmEdit','click',()=>newDraft(isRule?'rule':'binding',r,isRule));bind('asmCopy','click',()=>newDraft('rule',r));bind('asmBind','click',()=>newDraft('binding',r));bind('asmDeletePublished','click',async()=>{s.operations=[isRule?{op:'delete-rule',id:d.id,version:d.version}:{op:'delete-binding',id:d.id}];await preview();});diagram();}
   function generationActions(bindingId,complete){return `<section><h4>角材實例</h4>${btn('asmGenerate','依來源生成角材',!complete)}${(s.read.state.instances||[]).filter(r=>r.value.source.bindingId===bindingId).map(r=>`<article class="asm-slot"><strong>${esc(r.value.source.name)}</strong><p>${r.members.map(m=>`角材 #${m.timberId} · ${m.geometry?.length??'?'} mm`).join('；')}</p>${btn('asmInstanceEdit'+r.value.source.id,'編輯來源')}${btn('asmInstanceDelete'+r.value.source.id,'刪除實例')}</article>`).join('')}</section>`;}
   function bindGenerationActions(bindingId){bind('asmGenerate','click',()=>newInstance(bindingId));for(const r of s.read.state.instances||[])if(r.value.source.bindingId===bindingId){bind('asmInstanceEdit'+r.value.source.id,'click',()=>newInstance(bindingId,r));bind('asmInstanceDelete'+r.value.source.id,'click',async()=>{s.operations=[{op:'delete-instance',id:r.value.source.id,expectedFingerprint:r.fingerprint}];await preview();});}}
   async function newInstance(bindingId,record=null){
@@ -260,9 +289,16 @@ window.AssemblyWorkspace=(()=>{
     }finally{unlockConfirm(x);if(current(x))dialog.removeAttribute('aria-busy');}
   }
   function card(o){const g=el('g',{class:'ocard assembly-card','data-kind':o.kind,'data-id':o.id,transform:`translate(${o.cx},${o.cy})`,cursor:'pointer'});g.classList.toggle('selected',ocSelected(o.kind,o.id));el('rect',{width:OC_W,height:OC_H,rx:12,fill:'#fff',stroke:'#9299b2','stroke-width':1.5},g);const t=el('text',{x:14,y:28,'font-size':14,fill:'#343e58'},g);t.textContent=Array.from(o.name).slice(0,16).join('');el('title',{},t).textContent=o.name;el('text',{x:14,y:65,'font-size':13,fill:'#667085'},g).textContent=o.kind==='assembly-rule'?`組構規則 #${o.id} v${o.version}`:`材料配置 #${o.id}`;el('text',{x:14,y:95,'font-size':13,fill:'#667085'},g).textContent=o.kind==='assembly-rule'?'局部接合 · 固定版本':o.complete?'配置完整':'未完成配置';return g;}
-  function inspector(pane,o){pane.innerHTML=`<h3>${esc(o.name)}</h3><p>${o.kind==='assembly-rule'?'組構規則 v'+o.version:o.complete?'材料配置完整':'材料配置未完成'}</p>${btn('asmInspectorOpen','開啟組構工作區')}`;bind('asmInspectorOpen','click',()=>open(o.kind,o.id));}
+  function inspector(pane,o){
+    if(o.kind!=='assembly-rule'){pane.innerHTML=`<h3>${esc(o.name)}</h3><p>${o.complete?'材料配置完整':'材料配置未完成'}</p>${btn('asmInspectorOpen','開啟組構工作區')}`;bind('asmInspectorOpen','click',()=>open(o.kind,o.id));return;}
+    const selection={kind:o.kind,id:o.id,version:o.version,fingerprint:o.fingerprint},context=token();
+    const valid=validRuleRef(selection),operation=window.ContextOperations.getOperation('assembly-binding.create');
+    pane.innerHTML=`<h3>${esc(o.name)}</h3><p>組構規則 v${esc(String(o.version))} · ${valid?'材料與接觸方向可在配置中補齊；配置本身不產生角材。':'缺少固定來源，請更新服務後重新選取。'}</p>${btn('asmInspectorOpen',operation.label,!valid,'primary-button')}`;
+    const button=$('asmInspectorOpen'),selected=()=>pane.isConnected!==false&&pane.contains(button)&&context===token()&&typeof oc!=='undefined'&&oc.selection.length===1&&oc.sel?.kind===o.kind&&oc.sel.id===o.id&&ocFind(o.kind,o.id)===o;
+    bind('asmInspectorOpen','click',async()=>{button.disabled=true;try{await createBindingFromRule(selection,selected);}finally{if(pane.contains(button))button.disabled=!valid;}});
+  }
   async function remove(kind,id){if(confirming())return;await open(kind,id);if(!s?.record||confirming())return;s.operations=[kind==='assembly-rule'?{op:'delete-rule',id,version:s.record.value.version}:{op:'delete-binding',id}];await preview();}
   dialog.addEventListener('cancel',e=>{e.preventDefault();close();});window.addEventListener('geometry-definition-changed',()=>{if(s&&!confirming()){invalidate();report('工程來源已變更，請重新預覽。');}});window.addEventListener('project-info-changed',()=>{if(s&&!current(s)){unlockConfirm(s);s=null;dialog.close();WorkspaceShell.detach(dialog);}else if(s?.read&&!ownDraft&&s.draftsRef!==ReferenceWorkspace.context().assemblyDrafts){const saved=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft?.id);if(s.draft)s.draft=saved||null;invalidate();render();}});
   $('btnNewAssembly').onclick=safe(async()=>{$('createObjectPop').hidden=true;await open();});
-  return {open,close,flush,card,inspector,remove,get isOpen(){return dialog.open;},get canCloseForRecovery(){return dialog.open&&!!s?.confirming?.uncertain&&current(s);}};
+  return {open,close,flush,card,inspector,remove,createBindingFromRule,get isOpen(){return dialog.open;},get canCloseForRecovery(){return dialog.open&&!!s?.confirming?.uncertain&&current(s);}};
 })();

@@ -29,7 +29,7 @@ function fixture(){
     removeAssemblyDraft(id,token,record=true){assert.equal(token,context().id);if(record)history.push(history.snapshot(),'local');removed.push(id);context().assemblyDrafts=context().assemblyDrafts.filter(d=>d.id!==id);notify();}};
   let result={ok:true},world={rules:[],bindings:[]},failRead=false,ids={assemblyRule:2,assemblyBinding:1};
   const env={ReferenceWorkspace:ref,structuredClone,crypto,Map,Set,console,AbortSignal,setTimeout,
-    window:{addEventListener:(name,fn)=>listeners.set(name,fn)},document:{createElement:()=>dialog,body:{append(){}},getElementById:element},
+    window:{ContextOperations:require('../geometry-web/context-operations.js'),addEventListener:(name,fn)=>listeners.set(name,fn)},document:{createElement:()=>dialog,body:{append(){}},getElementById:element},
     WorkspaceShell:{attach(){},detach(){},refresh(){}},placeStudioLesson(){},renderObjects:async()=>{},toast(){},connection:{phase:'ready'},
     apiRequest:async cmd=>{calls.push(cmd);if(cmd.startsWith('assembly-confirm ')){await gate.promise;history.observe(cmd,result);notify();return result;}
       if(cmd==='assembly-read'){if(failRead){failRead=false;env.connection.phase='error';return {ok:false,transport:true,error:'Refresh unavailable'};}return {ok:true,revision:1,state:copy(world)};}
@@ -44,6 +44,60 @@ function fixture(){
 }
 
 const bindingValue=id=>({id,name:'配置',rule:{id:1,version:1},slots:[1,2].map(slotId=>({slotId,A:null,B:null,contactFace:null,orientation:null}))});
+function contextFixture(){
+  const f=fixture(),record={value:rule(),fingerprint:'a'.repeat(64)};
+  f.setWorld({capabilities:['assembly-rule-authoring/1'],rules:[record,{value:{...rule(),version:2},fingerprint:'b'.repeat(64)}],bindings:[]});
+  f.selection={kind:'assembly-rule',id:1,version:1,fingerprint:record.fingerprint};return f;
+}
+const localSnapshot=f=>JSON.stringify({drafts:f.context().assemblyDrafts,active:f.state.draft,preview:f.state.preview,generation:f.state.generation,undo:f.history.undo.length,redo:f.history.redo.length});
+test('context entry pins the displayed exact version and leaves all material input explicitly unset',async()=>{
+  const f=contextFixture();assert.equal(await f.w.createBindingFromRule(f.selection,()=>true),true);
+  const d=f.t.getState().draft;assert.equal(d.data.rule.id,1);assert.equal(d.data.rule.version,1);assert.equal(d.base_ref.fingerprint,'a'.repeat(64));
+  assert.equal(d.binding_intent.mode,'create');assert.ok(d.data.slots.every(v=>v.A===null&&v.B===null&&v.contactFace===null&&v.orientation===null));
+  assert.equal(f.calls.filter(c=>c==='newid').length,1);assert.equal(f.calls.filter(c=>c==='assembly-cancel candidate-A').length,1);
+});
+test('same tuple changed or missing context source rejects before old input flush token cancellation and native allocation',async()=>{
+  for(const kind of ['changed','missing','invalid-pin','capability','unchecked']){
+    const f=contextFixture();f.state.draft.data.name='未失焦舊輸入';
+    const world={capabilities:['assembly-rule-authoring/1'],rules:[{value:rule(),fingerprint:'a'.repeat(64)}],bindings:[]};
+    if(kind==='changed')world.rules[0].fingerprint='c'.repeat(64);
+    if(kind==='missing')world.rules=[];
+    if(kind==='invalid-pin')f.selection.fingerprint=null;
+    if(kind==='capability')world.capabilities=['assembly-timber-generation/1'];
+    if(kind==='unchecked')delete world.capabilities;
+    f.setWorld(world);const before=localSnapshot(f);
+    await assert.rejects(f.w.createBindingFromRule(f.selection,()=>true));
+    assert.equal(localSnapshot(f),before);assert.equal(f.calls.filter(c=>c==='newid'||c.startsWith('assembly-cancel ')).length,0);
+  }
+});
+test('a repeated rejected context entry keeps the original displayed fingerprint',async()=>{
+  const f=contextFixture();f.setWorld({capabilities:['assembly-rule-authoring/1'],rules:[{value:rule(),fingerprint:'b'.repeat(64)}],bindings:[]});const before=localSnapshot(f);
+  for(let i=0;i<2;i++)await assert.rejects(f.w.createBindingFromRule(f.selection,()=>true));
+  assert.equal(localSnapshot(f),before);assert.equal(f.selection.fingerprint,'a'.repeat(64));assert.ok(!f.calls.includes('newid'));
+});
+test('late context entry discards results after selection project or old-owner edit changes',async()=>{
+  for(const change of ['selection','project','edit','close-reopen']){
+    const f=contextFixture(),gate=deferred(),original=f.env.apiRequest;let selected=true,held=false;
+    f.env.apiRequest=async cmd=>{if(cmd==='assembly-read'&&!held){held=true;await gate.promise;}return original(cmd);};
+    const pending=f.w.createBindingFromRule(f.selection,()=>selected);await tick();
+    if(change==='selection')selected=false;
+    if(change==='project')f.history.frame={context:{id:'different-project',assemblyDrafts:[draft('different-draft')],models:[],faceProjections:new Map()},ids:new Map()};
+    if(change==='edit'){f.state.draft.data.name='後續輸入';f.state.generation++;}
+    if(change==='close-reopen'){f.w.close();await f.w.open();}
+    const before=JSON.stringify(f.context().assemblyDrafts),undo=f.history.undo.length;
+    gate.resolve();assert.equal(await pending,false);assert.equal(JSON.stringify(f.context().assemblyDrafts),before);assert.equal(f.history.undo.length,undo);assert.ok(!f.calls.includes('newid'));
+  }
+});
+test('double context activation creates only one draft and one native ID request',async()=>{
+  const f=contextFixture(),gate=deferred(),original=f.env.apiRequest;let held=false;
+  f.env.apiRequest=async cmd=>{if(cmd==='assembly-read'&&!held){held=true;await gate.promise;}return original(cmd);};
+  const first=f.w.createBindingFromRule(f.selection,()=>true);await tick();assert.equal(await f.w.createBindingFromRule(f.selection,()=>true),false);gate.resolve();assert.equal(await first,true);
+  assert.equal(f.context().assemblyDrafts.filter(d=>d.kind==='binding').length,1);assert.equal(f.calls.filter(c=>c==='newid').length,1);
+});
+test('declining the existing leave gate preserves the old draft owner and pending token',async()=>{
+  const f=contextFixture();f.env.window.DraftGate={ask:()=>false};const before=localSnapshot(f);
+  assert.equal(await f.w.createBindingFromRule(f.selection,()=>true),false);assert.equal(localSnapshot(f),before);assert.equal(f.calls.filter(c=>c.startsWith('assembly-cancel ')).length,0);
+});
 function idFixture(kind,occupied,reserved,start){
   const f=fixture();f.state.draft=null;f.state.preview=null;
   const rules=kind==='rule'?occupied.map(id=>({value:{...rule(),id},fingerprint:'a'.repeat(64)})):[{value:rule(),fingerprint:'a'.repeat(64)}];
