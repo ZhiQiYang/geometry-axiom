@@ -10,7 +10,7 @@ function csvRows(text){
   if(cell||row.length){row.push(cell);rows.push(row);}if(quoted)throw Error('Unclosed CSV cell');
   const header=rows.shift();return rows.map(row=>Object.fromEntries(header.map((h,i)=>[h,row[i]])));
 }
-module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
+module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount})=>{
   console.log('=== P83 單一保存模型快照料單 ===');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,30000),initialErrors=exceptionCount();
   const check=cdp.makeCheck({prefix:'P83 ',throwOnFail:true}),key=cdp.makeKey({send,sleep},{enterText:true});
@@ -51,7 +51,10 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
     await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
     await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:directory,eventsEnabled:true});
     await wait(`window.SourceInspector?.deriveModelSchedule&&window.TimberSchedule&&window.SpaceModelWorkspace&&connection.phase==='ready'`);
-    await read(`(async()=>{SpaceModelWorkspace.close();AssemblyWorkspace.close();ParameterUI.discard();InfiniteGridWorkspace.close(true);resetSceneFocus();await setView3(false);await ReferenceWorkspace.newProject();window.__p83={originalApi:apiRequest,originalFetch:window.fetch,originalURL:URL.createObjectURL,originalAnchor:HTMLAnchorElement.prototype.click,urls:new Map(),downloads:[],blobCreates:0};
+    await read(`(async()=>{SpaceModelWorkspace.close();AssemblyWorkspace.close();ParameterUI.discard();InfiniteGridWorkspace.close(true);resetSceneFocus();await setView3(false);})()`);
+    const newProjectMessage='建立一份空白新專案，切換為新的專案識別及「未命名專案」。'+(await read('ReferenceWorkspace.context().dirty')?'目前尚未保存的變更不會自動寫入檔案。':'')+'本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？';
+    await expectNativeDialog(()=>read('ReferenceWorkspace.newProject()'),{message:newProjectMessage,accept:true});
+    await read(`(async()=>{window.__p83={originalApi:apiRequest,originalFetch:window.fetch,originalURL:URL.createObjectURL,originalAnchor:HTMLAnchorElement.prototype.click,urls:new Map(),downloads:[],blobCreates:0};
       __p83.line=async line=>{let r=await __p83.originalApi('line '+line);if(r.preview?.valid)r=await __p83.originalApi('line confirm '+r.preview.token);if(!r.ok)throw Error(JSON.stringify(r));return r;};
       URL.createObjectURL=function(blob){if(blob.type.startsWith('text/csv'))__p83.blobCreates++;const url=__p83.originalURL.call(URL,blob);__p83.urls.set(url,blob);return url;};
       HTMLAnchorElement.prototype.click=function(){if(this.download.endsWith('.csv')){const entry={name:this.download,href:this.href};__p83.downloads.push(entry);const blob=__p83.urls.get(this.href);if(!blob)throw Error('CSV anchor has no actual Blob');blob.text().then(text=>entry.text=text);}return __p83.originalAnchor.call(this);};
