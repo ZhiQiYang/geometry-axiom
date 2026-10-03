@@ -227,7 +227,20 @@ window.AssemblyWorkspace=(()=>{
     else if(changed.length===1&&added===0&&removed===0) title=`這次會改「${changed[0].value.name||'未命名配置'}」`;
     else if(added===1&&changed.length===0&&removed===0){const only=[...afterR].find(([k])=>!beforeR.has(k));if(only) title=`這次會發布${ruleTitle(only[1])}`;}
     const beforeI=new Map((p.before.instances||[]).map(r=>[r.value.source.id,r])),afterI=new Map((p.after.instances||[]).map(r=>[r.value.source.id,r]));
-    for(const id of new Set([...beforeI.keys(),...afterI.keys()])){const a=beforeI.get(id),b=afterI.get(id);if(identityValue(a)!==identityValue(b)){title=b?`這次會${a?'更新':'生成'}「${b.value.source.name}」`:`這次會刪除「${a.value.source.name}」與所屬角材`;for(const m of b?.members||a?.members||[]){const old=a?.members.find(v=>v.memberId===m.memberId),now=b?.members.find(v=>v.memberId===m.memberId);const describe=v=>v?.geometry?`${v.geometry.length} mm，位置 ${v.geometry.origin.join(',')}，${v.geometry.dir}，A ${v.geometry.A} / B ${v.geometry.B}`:'無';rows.push([`構件 #${m.memberId} → 角材 #${m.timberId}`,`${describe(old)} → ${describe(now)}`]);}rows.push(['來源',JSON.stringify(b?.value.source||a.value.source)]);}}
+    const owned=new Map();
+    for(const records of [beforeI,afterI])for(const r of records.values())for(const m of r.members||[])owned.set(m.timberId,`構件 #${m.memberId} → 角材 #${m.timberId}`);
+    for(const id of new Set([...beforeI.keys(),...afterI.keys()])){const a=beforeI.get(id),b=afterI.get(id);if(identityValue(a)!==identityValue(b)){title=b?`這次會${a?'更新':'生成'}「${b.value.source.name}」`:`這次會刪除「${a.value.source.name}」與所屬角材`;rows.push(['來源',JSON.stringify(b?.value.source||a.value.source)]);}}
+    // The native candidate supplies all geometry, including ordinary external
+    // dependents. Membership labels are presentation only, never the impact set.
+    const describe=g=>g?`中心線 ${g.centerline} mm，長度 ${g.length} mm，局部位置 ${g.u},${g.v}，世界位置 ${g.origin.join(',')}，擺向 ${g.dir}/${g.side}，A ${g.A} / B ${g.B}，世界軸 ${g.axes.map(a=>a.join(',')).join(' / ')}`:'無';
+    const unchanged=[];
+    for(const t of p.impact?.timbers||[]){
+      const label=owned.get(t.id)||`角材 #${t.id}（組構外）`;
+      if(identityValue(t.before)===identityValue(t.after))unchanged.push(`#${t.id}`);
+      else rows.push([label,`${describe(t.before)} → ${describe(t.after)}`]);
+    }
+    if(unchanged.length)rows.push(['未變更角材',unchanged.join('、')]);
+    for(const g of p.impact?.guides||[])if(identityValue(g.before)!==identityValue(g.after))rows.push([`定位線 #${g.id}`,`${JSON.stringify(g.before)} → ${JSON.stringify(g.after)}`]);
     return `<h4>${esc(title)}</h4>${rows.length?`<div class="asm-diff">${rows.map(([a,b])=>`<p><span>${esc(a)}</span><span>${esc(b)}</span></p>`).join('')}</div>`:'<p>正式內容不會改變。</p>'}`;
   }
   async function preview(){
@@ -254,8 +267,10 @@ window.AssemblyWorkspace=(()=>{
     }
     const generation=operations.some(o=>o.op.endsWith('-instance'));
     const response=await fetch(generation?'/assembly/generate-preview':'/assembly/preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema:generation?'assembly-generation-transaction/1':'assembly-transaction/1',expectedRevision:read.revision,operations}),signal:AbortSignal.timeout(30000)});checkApiSession(response);if(!response.ok)throw Error('預覽服務失敗（'+response.status+'）。');const p=checked(await response.json()).preview;
-    if(!current(x)||g!==x.generation||seq!==serial){command('assembly-cancel '+p.token).catch(()=>{});return;}x.preview=p;$('asmConfirm').disabled=!p.valid;
-    $('asmPreviewResult').innerHTML=`${previewCopy(p)}<ul>${(p.violations||[]).map(v=>`<li>${esc(v.message||v.actual||'驗證拒絕')}</li>`).join('')}</ul><details><summary>完整資料，給除錯對照</summary><h5>變更前</h5><pre>${esc(JSON.stringify(p.before,null,2))}</pre><h5>變更後</h5><pre>${esc(JSON.stringify(p.after,null,2))}</pre></details>`;syncFooter();report(p.valid?'驗證通過，確認後才會套用。':'尚不能套用，請依上列原因修正。',!p.valid);
+    if(!current(x)||g!==x.generation||seq!==serial){command('assembly-cancel '+p.token).catch(()=>{});return;}
+    if(p.impact?.schema!=='candidate-geometry/1'||!Array.isArray(p.impact.timbers)||!Array.isArray(p.impact.guides)){await command('assembly-cancel '+p.token);throw Error('原生服務缺少完整幾何預覽，請更新服務再預覽；草稿仍保留。');}
+    x.preview=p;$('asmConfirm').disabled=!p.valid;
+    $('asmPreviewResult').innerHTML=`${previewCopy(p)}<ul>${(p.violations||[]).map(v=>`<li>${esc(v.message||v.actual||'驗證拒絕')}</li>`).join('')}</ul><details><summary>完整資料，給除錯對照</summary><h5>變更前</h5><pre>${esc(JSON.stringify(p.before,null,2))}</pre><h5>變更後</h5><pre>${esc(JSON.stringify(p.after,null,2))}</pre><h5>完整幾何對照</h5><pre>${esc(JSON.stringify(p.impact,null,2))}</pre></details>`;syncFooter();report(p.valid?'驗證通過，確認後才會套用。':'尚不能套用，請依上列原因修正。',!p.valid);
   }
   async function confirm(){
     const x=s;if(!current(x)||!x.preview?.valid||x.confirming)return;ReferenceWorkspace.assertEditable();flush();

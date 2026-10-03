@@ -159,7 +159,7 @@ test('unchanged explicit binding edits and unoccupied legacy creations reach rev
     if(!editing)delete f.state.draft.binding_intent;
     else f.state.draft.binding_intent.source=Object.fromEntries(Object.entries(f.state.draft.binding_intent.source).reverse());
     f.state.draft.data.name='確定編輯';let submitted;f.env.checkApiSession=()=>{};
-    f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'p',valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
+    f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'p',valid:true,impact:{schema:'candidate-geometry/1',timbers:[],guides:[]},before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
     await f.t.preview();assert.equal(submitted.expectedRevision,1);assert.equal(submitted.operations[0].value.id,editing?2:3);assert.equal(f.state.preview.valid,true);
     assert.equal(submitted.operations[0].op,editing?'edit-binding':'create-binding');
     if(editing){assert.equal(submitted.operations[0].id,2);assert.equal(submitted.operations[0].expectedFingerprint,'b'.repeat(64));}
@@ -231,13 +231,13 @@ test('explicit binding rule mapping captures only the applied selection and pers
   assert.equal(JSON.stringify(f.state.draft.data),before);assert.deepEqual(copy(f.state.draft.base_ref),{id:1,version:1,fingerprint:fresh.fingerprint});
   assert.deepEqual(f.context().assemblyDrafts.find(d=>d.id===f.state.draft.id).base_ref,copy(f.state.draft.base_ref));
   f.setWorld({rules:[fresh],bindings:[]});let submitted;f.env.checkApiSession=()=>{};
-  f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'new',valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
+  f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'new',valid:true,impact:{schema:'candidate-geometry/1',timbers:[],guides:[]},before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
   await f.t.preview();assert.equal(submitted.operations[0].op,'create-binding');assert.equal(f.state.preview.valid,true);
 });
 test('legacy null rule provenance still previews through native validation and existing binding edits keep their intent',async()=>{
   for(const edit of [false,true]){const f=idFixture('binding',edit?[2]:[],[],3);await f.t.newDraft('binding',edit?{value:bindingValue(2)}:null);
     f.state.draft.base_ref=null;f.state.draft.data.name='既有相容';let submitted;f.env.checkApiSession=()=>{};
-    f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'legacy',valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
+    f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'legacy',valid:true,impact:{schema:'candidate-geometry/1',timbers:[],guides:[]},before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
     await f.t.preview();assert.equal(submitted.operations[0].op,edit?'edit-binding':'create-binding');
     if(edit){assert.equal(f.state.draft.binding_intent.mode,'update');assert.deepEqual(f.state.draft.binding_intent.source,bindingValue(2));}
   }
@@ -362,7 +362,7 @@ test('explicit published binding version mapping updates its rule pin while reta
   assert.deepEqual(copy(f.state.draft.binding_intent),{mode:'update',source:source.value});
   assert.deepEqual(copy(f.state.draft.data.slots[0].A),{kind:'parameter',parameterId:0,fieldId:0});
   let submitted;f.env.checkApiSession=()=>{};
-  f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'mapped-edit',valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
+  f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'mapped-edit',valid:true,impact:{schema:'candidate-geometry/1',timbers:[],guides:[]},before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
   await f.t.preview();assert.equal(submitted.operations[0].op,'edit-binding');
   assert.deepEqual(submitted.operations[0].value.rule,{id:1,version:2});assert.equal(f.state.preview.valid,true);
 });
@@ -427,6 +427,26 @@ test('all four sides and ortho-split preserve exact occurrence and endpoint iden
 });
 
 const literal=value=>({kind:'literal',value});
+test('candidate impact renders external and transitive geometry without selecting instance members',()=>{
+  const f=fixture(),geometry=(length,x)=>({surface:1,centerline:1000,length,u:x,v:987,dir:'+u',side:'+n',A:27,B:33,origin:[x,987,2500],axes:[[1,0,0],[0,1,0],[0,0,1]]});
+  const p={valid:true,before:{rules:[],bindings:[],instances:[]},after:{rules:[],bindings:[],instances:[]},impact:{schema:'candidate-geometry/1',timbers:[
+    {id:92,before:geometry(1973,514),after:geometry(1960,520)},
+    {id:94,before:geometry(2960,2788),after:geometry(2960,2781)},
+    {id:90,before:geometry(4000,0),after:geometry(4000,0)}],guides:[{id:6,before:{off:2774},after:{off:2767}}]}};
+  const html=f.t.previewCopy(p);
+  for(const expected of ['角材 #92（組構外）','角材 #94（組構外）','長度 1973 mm','長度 1960 mm','世界位置 514,987,2500','世界位置 520,987,2500','中心線 1000 mm','擺向 +u/+n','世界軸 1,0,0 / 0,1,0 / 0,0,1','未變更角材','定位線 #6'])assert.ok(html.includes(expected),expected);
+  assert.equal((html.match(/角材 #92（組構外）/g)||[]).length,1);
+});
+test('missing complete native candidate refuses confirmation and preserves the draft',async()=>{
+  const f=fixture();f.state.draft=copy(draft());f.context().assemblyDrafts[0]=copy(f.state.draft);
+  f.env.checkApiSession=()=>{};
+  const before=JSON.stringify(f.context().assemblyDrafts);
+  f.env.fetch=async()=>({ok:true,json:async()=>({ok:true,preview:{token:'incomplete',valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})});
+  await assert.rejects(f.t.preview(),/缺少完整幾何預覽/);
+  assert.equal(f.state.preview,null);assert.equal(f.element('asmConfirm').disabled,true);
+  assert.ok(f.calls.includes('assembly-cancel incomplete'));
+  assert.equal(JSON.stringify(f.context().assemblyDrafts),before);
+});
 function diff(f,oldSource,newSource,oldValue=27,newValue=27,axis='A'){
   const binding={id:1,name:'配置',rule:{id:1,version:1},slots:[{slotId:1,A:literal(27),B:literal(33),contactFace:'A',orientation:'B'},{slotId:2,A:null,B:null,contactFace:null,orientation:null}]};
   const before={value:copy(binding),effective:[{slotId:1,A:{value:27},B:{value:33}}]},after=copy(before);before.value.slots[0][axis]=oldSource;after.value.slots[0][axis]=newSource;
