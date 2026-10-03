@@ -20,6 +20,14 @@ class EngineeringTransport(unittest.TestCase):
         self.assertEqual(transport.file_request(payload, bridge), b'{"ok":true}')
         self.assertFalse(paths[0].exists())
 
+    def test_generation_schema_dispatch_preserves_exact_payload_and_cleans_file(self):
+        payload=json.dumps({'schema':'assembly-generation-transaction/1','expectedRevision':3,'operations':[{'op':'create-instance','value':{'name':'來源'}}]},ensure_ascii=False).encode()
+        paths=[]
+        def bridge(command):
+            self.assertTrue(command.startswith('assembly-generation-preview '));path=Path(command.split(' ',1)[1]);paths.append(path);self.assertEqual(payload,path.read_bytes());return b'{"ok":true}'
+        self.assertTrue(json.loads(transport.file_request(payload,bridge,generation=True))['ok']);self.assertFalse(paths[0].exists())
+        self.assertFalse(json.loads(transport.file_request(payload,lambda _:self.fail('wrong schema dispatched'),assembly=True))['ok'])
+
     def test_cleanup_after_bridge_failure(self):
         paths = []
         def bridge(command):
