@@ -3996,7 +3996,7 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 自有 source-inspector native／JS／transport／adapter modules，由 World 型別建立可丟棄索引；不改公理或保存格式，不做 F1b、不隱含重建。原基線 main d40dee0，現整合 PR56/main 693a1c8，保留 PR63 format9，不重做 #54。
 - 減項（GEO-219）：既有參數 `paramUsage` 的局部使用清單合併到共用「來源／影響與參數交換」，匯出／刪除控制保留；其餘入口都是既有檢查器／模型庫的按需 disclosure，無新工作區或常駐教學。
 - 比對 native 逐來源指紋與 typed closure；來源缺失／變更／不完整明示。原格式缺 durable incarnation，內容一致仍註明延續性未知，不以整場景 hash 或名稱推斷現況。I9 candidate 不當成求值支撐；#47 新資料待獨立適配。
-- single owner 接線 adapter 不競寫 app.js、reference-workspace.js、project-store.js 或 native common。介面與驗收界線見 `geometry-web/docs/SOURCE-INSPECTOR-CONTRACT.md`；同版執行結果於交付記錄補齊。
+- single owner 接線 adapter 不競寫 app.js、reference-workspace.js、project-store.js 或 native common。介面見 `geometry-web/docs/SOURCE-INSPECTOR-CONTRACT.md`；product head e30d4a2 同版完整非瀏覽器 1412/0/1 具名 GDI、無 filter CDP 1809/0/0 skip 且 76 段 golden matched、space 183/0、真 F1a browser 18/0、native 10/10、JS 9/9；native AST edge 遺漏 mutant 正確被抓（1 fail、編譯正常、無 skip）。完整命令、scope、版本、前次失敗及 PNG 見 `geometry-web/docs/SOURCE-INSPECTOR-VALIDATION.md`。未測實體手機；F1b、新公理／durable incarnation 與 #47 支撐 record 另案。
 
 ## GEO-232 — 畫布繪圖、hover 與版本檢查效能（2026-10-03）
 
