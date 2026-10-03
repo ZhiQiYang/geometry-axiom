@@ -73,3 +73,9 @@ baseline 新案例與 wrong-World 變異必須是 assertion-red，不能拿編�
 
 跨表示實物計量／durable incarnation、assembly-owned 保存模型能力、模型內完整
 雙向定位、F4b 加工／裁切／餘料，以及 A24 實體手機／OS 操作仍需獨立處理。
+
+正式 CDP 的 P83 使用既有真 producer、兩支明選零號／多原點角材及獨立未選根，
+真正下載 CSV 逐位元組核對 Blob（含 UTF-8 BOM），每次下載目錄隔離以容納同名覆寫。
+負例只延遲真正 native 回覆，保留來源／專案／紀錄替換移除／關閉重開／改選／連點的
+零 Blob 或單次 Blob 斷言；新專案視窗必須精確匹配既有確認訊息。P83 為 16 項，
+原 1839 個 Chromium 斷言不減少；正式全量須不設 scope 或 update-golden。
