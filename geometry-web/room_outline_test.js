@@ -91,6 +91,7 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   await setup({image:true,scenario:'gap'});if(!await read(`$('refOutlineDetails').open`))await ctl('#refOutlineDetails > summary');
   operations=0;const failureBegin=Date.now();await propose();
   check('open doorway fails visibly and leaves default geometry unchanged',await read(`!RoomOutlineWorkspace.pending(1)&&$('refRoomStatus').textContent.includes('未取得候選')&&$('refRoomStatus').textContent.includes('未補牆')`)&&JSON.stringify(await nativePoints())===original);await shot('open-doorway-failure');
+  check('failed acquisition clears busy state and its cancel control before rendering failure',await read(`!RoomOutlineWorkspace.hasWork&&!$('refRoomCancel')&&$('refRoomStatus').textContent.includes('未取得候選')&&!$('refRoomPick').disabled`)&&JSON.stringify(await nativePoints())===original);
   const rectangle=shapes[0].inside.map(v=>v.map(n=>n*10));await manualBaseline(rectangle);
   check('failed acquisition has a real manual fallback to the same reviewed room',normalized(await nativePoints())===normalized(rectangle)&&await read(`ReferenceWorkspace.reconstructionState(1)==='confirmed'`));
   const fallback={actions:operations,elapsedMs:Date.now()-failureBegin};await setup({image:true,scenario:'gap'});if(!await read(`$('refOutlineDetails').open`))await ctl('#refOutlineDetails > summary');

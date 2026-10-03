@@ -98,7 +98,7 @@ const RoomOutlineWorkspace=(()=>{
       fe.draft={...PolyDraft.createState(),pts:integer.points};fe.draftPreview=null;feSyncDraftMirror();
       message='候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。';refresh();
       if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));
-    }catch(e){if(ticket===generation&&sourceCurrent(s)){draft=null;notice('未取得候選：'+e.message);if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));}}
+    }catch(e){if(ticket===generation&&sourceCurrent(s)){acquiring=null;draft=null;notice('未取得候選：'+e.message);if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));}}
     finally {if(ticket===generation){acquiring=null;W.present();}}
   }
   function editPoints(points,dimensions=[]) {
