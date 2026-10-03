@@ -43,6 +43,7 @@ POST_MAX_BYTES = {
     "/engineering/preview": 1024 * 1024,
     "/engineering/validate-project": 1024 * 1024,
     "/engineering/read": 1024 * 1024,
+    "/sources/snapshot": 1024 * 1024,
 }
 # 預設用同目錄的 Windows 橋接器。GEOMETRY_BRIDGE 可覆寫，且可帶參數，例如：
 #   GEOMETRY_BRIDGE="wsl.exe -d Ubuntu-24.04 --user root -- /opt/geometry/web_bridge"
@@ -109,7 +110,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
         return err_json("指令不得含換行或 NUL")
-    for prefix in ("loadfile ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview "):
+    for prefix in ("loadfile ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "source-inspect-file "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -357,7 +358,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 data = json.loads(body.decode('utf-8'))
                 readonly = isinstance(data, dict) and ('receipt' in data or
                            data.get('cmd', '').split(' ', 1)[0] in
-                           {'dump', 'objects', 'surfaces', 'boundary', 'references', 'obstacles', 'render', 'pick', 'bhit'})
+                           {'dump', 'objects', 'surfaces', 'boundary', 'references', 'obstacles', 'render', 'pick', 'bhit', 'source-inspect'})
             except (ValueError, UnicodeDecodeError, AttributeError):
                 pass
         client_version = self.headers.get('X-Geometry-Version')
@@ -375,6 +376,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return
         if self.path == "/engineering/read":
             self._send(ask_bridge('engineering-read'))
+            return
+        if self.path == "/sources/snapshot":
+            from source_inspector_transport import snapshot_request
+            try:
+                self._send(snapshot_request(body, ask_bridge))
+            except OSError:
+                self._send(err_json('無法讀取來源快照，專案未變更。'))
             return
 
         if self.path == "/feedback":
