@@ -43,8 +43,10 @@ stale edits reject the whole transaction. Missing native fingerprints retain the
 Legacy `put-binding` remains an upsert for existing callers; it is not the formal UI create/edit path.
 This adds no archive capability, high-water allocator or generation behavior; format 7 and free-ID wrap remain.
 
-The proposed generation contract and exact pending D34/I42/R35 additions are now in
-[ASSEMBLY-GENERATION-PROPOSAL.md](ASSEMBLY-GENERATION-PROPOSAL.md); they are not adopted axioms.
+The finite generation contract and D34/I42/R35 source additions are in
+[ASSEMBLY-GENERATION-PROPOSAL.md](ASSEMBLY-GENERATION-PROPOSAL.md) and draft PR #53.
+They are present on the PR branch, which has not been merged into main; final adoption and merge scope
+remain subject to the project owner's review. The preceding format 7 note describes authoring closeout.
 
 ## Scene
 

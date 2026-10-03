@@ -44,5 +44,24 @@ module.exports=async({send,read,sleep,ctl,fill,choose,publish,wait,check})=>{
  fs.writeFileSync(path.join(os.tmpdir(),'geometry-tests','assembly-generation-mobile.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
  await ctl('#asmDeleteDraft');await ctl('[data-asm-binding="1"]');await ctl('#asmInstanceDelete1');await wait(`!$('asmConfirm').disabled`);await ctl('#asmConfirm');await wait(`$('asmStatus')?.textContent.includes('已套用')`);
  check('G08 刪除整個實例與三支原生角材',(await state()).instances.length===0&&await read(`apiRequest('references').then(r=>r.timbers.length===2)`));await ctl('#asmClose');await read(`api('line undo')`);check('G08 單步復原映射與實例',same((await state()).instances[0].value.mapping,mapping));await read(`api('line redo')`);check('G08 單步重做刪除',(await state()).instances.length===0);
+ const insufficient=await read(`(async()=>{
+   const saved=await GeometryProject.unpack(window.__generationBytes,fflate),draft=saved.manifest.assemblyDrafts.records.find(d=>d.kind==='instance');
+   const bytes=await GeometryProject.pack('reset\\n',{projectId:'generation-draft-only',name:'未完成實例',sources:[],faces:[],assemblyDrafts:{schema:GeometryProject.ASSEMBLY_DRAFT_SCHEMA,records:[draft]}},new Map(),fflate);
+   const snapshot=async()=>({project:ReferenceWorkspace.getProjectState(),scene:(await apiRequest('dump')).text,drafts:ReferenceWorkspace.getAssemblyDrafts(),undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length});
+   const before=await snapshot(),original=window.fetch;let validations=0,uploads=0,error=null;
+   window.fetch=async(...args)=>{
+     if(String(args[0])==='/upload')uploads++;
+     const response=await original(...args);
+     if(String(args[0])==='/engineering/validate-project'){
+       validations++;const result=await response.json();
+       return new Response(JSON.stringify({...result,capabilities:result.capabilities.filter(c=>c!==GeometryProject.GENERATION_CAPABILITY)}),{status:200,headers:{'Content-Type':'application/json'}});
+     }
+     return response;
+   };
+   try{await ReferenceWorkspace.importBytes(bytes,'未完成實例.gcanvas');}catch(e){error=e.message;}finally{window.fetch=original;}
+   return {validations,uploads,error,before,after:await snapshot()};
+ })()`);
+ check('G06 第8版僅實例草稿也先驗服務生成能力',insufficient.validations===1&&insufficient.error?.includes('目前服務不支援'));
+ check('G06 能力不足拒絕匯入且世界草稿歷史不變',insufficient.uploads===0&&same(insufficient.before,insufficient.after));
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
 };
