@@ -1,11 +1,13 @@
 # #44 F1a 唯讀來源／影響檢查器
 
-基線：main `693a1c8`（已合併 PR56，並含 PR63 / geometry-canvas/9、PR64；開工基線 d40dee0）。行為依公理 D6–D9、D26–D34、I8/I9/I38–I42；產品願景仍是草案。未改公理；F1b 受控重建另案。
+整合基線：main `9e252ae`（已合併 PR56、PR63 / geometry-canvas/9、PR64、PR65 支撐與 PR66 靜態來源閉包；原切片基線 693a1c8）。行為依公理 D6–D9、D26–D34、I8/I9/I38–I42；產品願景仍是草案。未改公理；F1b 受控重建另案。
 
 ## 原生讀取與能力
 
 `source-inspect` 回傳 `source-inspector/1`、目前 definition revision、最多 2048 nodes / 8192 edges、`complete`、原生逐節點 definition/value SHA256。
 `source-inspect-file <server-owned scene>` 只在獨立 World 驗證保存來源，再建立同一索引；保留 live World、history、revision、pending preview/token。HTTP `/sources/snapshot` 接收上限 1 MiB UTF-8，伺服器建立並清理暫存檔；不收使用者提供路徑。
+
+暫存檔建立後，部分寫入、close 與 bridge 例外都經同一 cleanup finally；真實 partial-write／bridge-error 檔案回歸驗證，不留下 snapshot。原版 partial-write 反例有 assertion failure，修正版通過；此修正不改 1 MiB 或 UTF-8／NUL 契約。
 
 索引是可丟棄讀取資料，不保存到專案，不新增格式。UI 只適配及比較原生指紋，不自行求值。沒有模型生成／重建請求，不消耗既有 preview token。
 
@@ -79,4 +81,4 @@ single owner 可將 adapter 的 `SourceInspectorApp.sync()` 移到既有 render 
 `tests/test_source_inspector.js` 含有界 traversal、closure freshness、來源身分差異、late async / project switch / cancel。
 `geometry-web/source_inspector_browser_check.js` 在明示隔離服務執行正式 app／native model／完整專案保存重開／390px；檢查晚到真實原生回應、取消、context switch、來源 revision 改變和欄位零定位。
 
-未宣稱實體手機、多點觸控或 OS 選檔已驗證。GitHub Actions 額度已耗盡：只用充分 cloud local checks 後一次 draft PR，不 rerun、不付費／改設定、不 merge/deploy；整合 owner 負責後續。
+未宣稱實體手機、多點觸控或 OS 選檔已驗證。GitHub Actions 額度已耗盡：使用 exact source 的 cloud 實測與獨立審查，不重跑未變 CI、不付費或改設定。Parent 已明確授權整合 owner 在完整證據及 review 後依序合併 65→66→67；本契約不作部署授權。
