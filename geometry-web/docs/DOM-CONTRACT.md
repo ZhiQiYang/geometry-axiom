@@ -13,7 +13,19 @@
 `#timberScheduleStatus` 顯示正式件數／失效原因。來源細節在 `.timber-schedule-source` 展開。
 數據契約與剩餘追溯限制見 [TIMBER-SCHEDULE.md](TIMBER-SCHEDULE.md)。
 
+## 保存模型角材快照料單（#47 GEO-241）
+
+既有 `#smLibraryList .sm-model-card [data-source-inspector]` disclosure 內，
+`[data-model-schedule]` 只呈現該模型明選角材；`[data-snapshot-timber]`／
+`[data-snapshot-surface]` 是保存 World 的 typed 身分，不能定位同 ID 的 live 新角材。
+`[data-snapshot-order]`／`[data-snapshot-unit]` 只改排列與 mm/cm 顯示，CSV 永遠保留精確 mm。
+有明選角材時，唯一既有 `[data-source-refresh]` 改為「核對並匯出快照CSV」；
+展開先唯讀呈現，真正匯出須再次核對同模型／context／history／原生來源，失效或遲到不建 Blob。
+表格標「保存快照料單」與 fingerprint／未知身分；另段目前來源的 changed／missing 不偷換快照尺寸。
+資料契約與既有 owned-model 能力缺口見 [MODEL-SNAPSHOT-SCHEDULE.md](MODEL-SNAPSHOT-SCHEDULE.md)。
+
 ## 2026-10-03 Issue #54 房間輪廓候選
+
 
 - 保留 `#refDrawOutline` 原步驟，在既有底圖 pane 啟動房間選點／框選；`#refOutlineDetails` 集中候選、人工修正與來源核對，移除重複 `.reference-intro`／`.calibration-instruction`。
 - `#refRoomMethod` 選向量優先／本地影像／人工描繪；`#refRoomMinWidth`、`#refRoomMinLength` 使用固定來源單位，`#refRoomPick` 啟動選房間。未校準停用。
