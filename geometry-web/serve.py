@@ -7,6 +7,7 @@
 World 狀態住在它裡面，所以所有請求用一支 lock 串行。
 """
 import http.server
+import hashlib
 import json
 import os
 import pathlib
@@ -67,6 +68,7 @@ bridge_failure = None
 BRIDGE_TIMEOUT = 30.0
 _upload_temps = []
 _prepared_upload = None
+_upload_outcomes = {}  # Bounded terminal receipts; unknown tokens never authorize a commit.
 upload_lock = threading.Lock()
 API_SESSION = uuid.uuid4().hex
 api_receipts = {}
@@ -195,6 +197,14 @@ def recorded_api(data):
         receipt_lock.release()
 
 
+def remember_upload_outcome(token, result):
+    encoded = json.dumps(result, ensure_ascii=False).encode("utf-8")
+    _upload_outcomes[token] = encoded
+    if len(_upload_outcomes) > MAX_RECEIPTS:
+        del _upload_outcomes[next(iter(_upload_outcomes))]
+    return encoded
+
+
 def upload_scene(body: bytes, phase=None) -> bytes:
     """Keep successful load order and source-file retirement in one transaction."""
     global _prepared_upload
@@ -214,17 +224,29 @@ def upload_scene(body: bytes, phase=None) -> bytes:
                     raise ValueError("Invalid import token")
             except (ValueError, UnicodeError):
                 return err_json("無效的專案載入確認識別。")
+            if token in _upload_outcomes:
+                terminal = _upload_outcomes[token]
+                if phase == "confirm" and json.loads(terminal).get("state") == "cancelled":
+                    return err_json("專案候選已取消，未變更目前專案。")
+                return terminal
             if _prepared_upload is None or _prepared_upload[0] != token:
                 return err_json("專案候選已失效，請重新開啟。")
             tmp = _prepared_upload[1]
             _prepared_upload = None
             resp = ask_bridge(f"load-{phase} {token}")
             if phase == "cancel":
-                return resp
+                result = json.loads(resp)
+                if result.get("ok") is True:
+                    result["state"] = "cancelled"
+                else:
+                    result["state"] = "unknown"
+                return remember_upload_outcome(token, result)
         else:
             if _prepared_upload is not None:
                 old_token, old_path = _prepared_upload
-                ask_bridge(f"load-cancel {old_token}")
+                cancelled = json.loads(ask_bridge(f"load-cancel {old_token}"))
+                cancelled["state"] = "cancelled" if cancelled.get("ok") is True else "unknown"
+                remember_upload_outcome(old_token, cancelled)
                 os.unlink(old_path)
                 _prepared_upload = None
         # Assign the path before writing, so a failed write also cleans its file.
@@ -238,6 +260,10 @@ def upload_scene(body: bytes, phase=None) -> bytes:
         except (ValueError, UnicodeDecodeError):
             merged = None
         if not isinstance(merged, dict) or merged.get("ok") is not True:
+            if phase == "confirm":
+                rejected = merged if isinstance(merged, dict) else {"ok": False, "error": "無效的載入回應。"}
+                rejected["state"] = "rejected" if rejected.get("code") else "unknown"
+                return remember_upload_outcome(token, rejected)
             return resp
         if phase == "prepare":
             _prepared_upload = (merged["token"], tmp)
@@ -252,6 +278,12 @@ def upload_scene(body: bytes, phase=None) -> bytes:
         _upload_temps.append(tmp)
         merged["path"] = tmp
         tmp = None  # The successful scene owns this source until the next load.
+        if phase == "confirm":
+            merged["state"] = "committed"
+            snapshot = json.loads(ask_bridge("dump"))
+            if snapshot.get("ok") is True and isinstance(snapshot.get("text"), str):
+                merged["scene_sha256"] = hashlib.sha256(snapshot["text"].encode("utf-8")).hexdigest()
+            return remember_upload_outcome(token, merged)
         return json.dumps(merged, ensure_ascii=False).encode("utf-8")
     except OSError:
         return err_json("無法寫入場景暫存檔，請稍後再試。")

@@ -57,8 +57,38 @@ module.exports=async({read,send,until,check,doUndoRedo})=>{
     const before=await read(`(async()=>JSON.stringify(await __finalSnapshot()))()`);
     await open('trim');
     await doUndoRedo('undo');
-    check('P61 QR2 import undo restores original bytes references and World',await read(`(async()=>{const a=await __finalSnapshot(),b=JSON.parse(${JSON.stringify(before)});return a.id===b.id&&a.scene===b.scene&&JSON.stringify(a.faces)===JSON.stringify(b.faces)&&JSON.stringify(a.sourceBytes)===JSON.stringify(b.sourceBytes);})()`));
+    check('P61 QR2 import undo restores original bytes references and World',await read(`(async()=>{const a=await __finalSnapshot(),b=JSON.parse(${JSON.stringify(before)});return a.id===b.id&&a.scene===b.scene&&JSON.stringify(a.faces)===JSON.stringify(b.faces)&&JSON.stringify(a.projections)===JSON.stringify(b.projections)&&JSON.stringify(a.reviews)===JSON.stringify(b.reviews)&&JSON.stringify(a.sourceBytes)===JSON.stringify(b.sourceBytes);})()`));
     await doUndoRedo('redo');
     check('P61 QR2 redo restores placement ID0 projection and source bytes',await read(`ReferenceWorkspace.context().id==='public-final-trim'&&ReferenceWorkspace.getFaceProjection(1,0)?.view==='top'&&ReferenceWorkspace.active(1)?.sourceId===__finalExpected.faces[0].pages[0].sourceId`));
+    for(const mode of ['delayedDistinct','delayedIdentical','committedLost']){
+      await open('base');
+      const outcome=await read(`(async()=>{
+        const mode=${JSON.stringify(mode)},before=JSON.stringify(await __finalSnapshot()),original=window.fetch;
+        const entries=fflate.unzipSync(new Uint8Array(${JSON.stringify(fixtures.trim)})),manifest=JSON.parse(new TextDecoder().decode(entries['manifest.json']));
+        if(mode==='delayedDistinct'){
+          entries['world.scene']=new TextEncoder().encode(new TextDecoder().decode(entries['world.scene']).replace('900 900','60 60'));
+          manifest.sceneHash=await GeometryProject.sha(entries['world.scene']);entries['manifest.json']=new TextEncoder().encode(JSON.stringify(manifest));
+        }
+        const bytes=fflate.zipSync(entries);let release,delivery,committed;
+        const gate=new Promise(resolve=>release=resolve);
+        window.fetch=async(...args)=>{
+          if(String(args[0])==='/upload/confirm'){
+            if(mode==='committedLost'){committed=await(await original(...args)).json();}
+            else delivery=gate.then(()=>original(...args));
+            throw Error('Injected unavailable confirmation reply with real native delivery');
+          }
+          return original(...args);
+        };
+        let rejected=false;
+        try{await ReferenceWorkspace.importBytes(bytes);}catch(_){rejected=true;}finally{window.fetch=original;}
+        const blocked=connection.phase==='error';await recoverConnection();
+        if(delivery){release();const late=await(await delivery).json();return rejected&&blocked&&connection.phase==='ready'&&!late.ok&&JSON.stringify(await __finalSnapshot())===before;}
+        const exported=await GeometryProject.unpack(await ReferenceWorkspace.exportBytes(),fflate),m=exported.manifest,e=__finalExpected;
+        return rejected&&blocked&&committed.ok&&connection.phase==='ready'&&ReferenceWorkspace.context().id==='public-final-trim'&&ReferenceWorkspace.history.undo.length===JSON.parse(before).undo+1&&
+          JSON.stringify(m.faces)===JSON.stringify(e.faces)&&JSON.stringify(m.faceProjections)===JSON.stringify(e.faceProjections)&&JSON.stringify(m.reconstructionReviews)===JSON.stringify(e.reviews)&&
+          JSON.stringify(Array.from(exported.sources.values().next().value))===JSON.stringify(e.bytes);
+      })()`);
+      check('P61 QR2 '+mode+' resolves terminal token without separating assets context and World',outcome);
+    }
   } finally {fs.rmSync(directory,{recursive:true,force:true});}
 };

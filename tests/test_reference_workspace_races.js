@@ -218,7 +218,7 @@ async function openFixture(options={}) {
   const f=await fixture(options),requests=[],refreshed=deferred();
   const scene='boundary 8 outline 0,0 800,0 800,700 0,700\n';
   const bytes=await P.pack(scene,{format:P.FORMAT,projectId:'opened',name:'試用工程',sources:[],faces:[]},new Map(),zip);
-  f.env.curScene={};f.env.resetSceneFocus=()=>{};f.env.sceneMenuDisplay=name=>name;
+  f.env.curScene={};f.env.resetSceneFocus=()=>{};f.env.markSceneItem=()=>{};f.env.sceneMenuDisplay=name=>name;
   f.env.refreshActive=async()=>{
     if(options.autoLayout)f.w.observe('line canvas-pos boundary 8 60 60',{ok:true});
     refreshed.resolve();
@@ -326,6 +326,43 @@ test('native prepare blocks direct scene upload reentry until its commit finishe
   await assert.rejects(()=>f.w.uploadScene('reset\n'),/上一筆場景載入/);
   gate.resolve();await opening;
   assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/confirm']);
+});
+
+test('retry cancels the token before a delayed confirm can mutate old or identical Worlds',async()=>{
+  for(const identical of [false,true]){
+    const f=await openFixture(),old=f.w.context(),before=JSON.stringify(f.w.history),original=f.env.fetch;
+    let cancelled=false,committed=false,delivery;
+    if(identical)f.env.api=async()=>({ok:true,text:'boundary 8 outline 0,0 800,0 800,700 0,700\n'});
+    f.env.connectionFailed=()=>{f.env.connection.phase='error';};
+    f.env.fetch=async(url,request)=>{
+      if(url==='/upload/confirm'){
+        delivery=()=>{if(!cancelled)committed=true;return {ok:!cancelled};};
+        throw Error('delayed real delivery');
+      }
+      if(url==='/upload/cancel'){cancelled=true;return {ok:true,json:async()=>({ok:true,state:'cancelled'})};}
+      return original(url,request);
+    };
+    await assert.rejects(()=>f.w.importBytes(f.bytes),/delayed real delivery/);
+    await f.w.recoverLoad();assert.equal(delivery().ok,false);assert.equal(committed,false);
+    assert.equal(f.w.context(),old);assert.equal(JSON.stringify(f.w.history),before);
+    assert.equal(f.w.context().sources.get(f.source.meta.id),f.source);
+  }
+});
+
+test('retry uses the committed receipt for lost replies and refuses a later different World',async()=>{
+  for(const changed of [false,true]){
+    const f=await openFixture(),old=f.w.context(),original=f.env.fetch;
+    const committed='boundary 8 outline 0,0 800,0 800,700 0,700\n',hash=await P.sha(new TextEncoder().encode(committed));
+    f.env.connectionFailed=()=>{f.env.connection.phase='error';};
+    f.env.fetch=async(url,request)=>{
+      if(url==='/upload/confirm'){f.env.api=async()=>({ok:true,text:changed?'reset\n':committed});throw Error('lost committed reply');}
+      if(url==='/upload/cancel')return {ok:true,json:async()=>({ok:true,state:'committed',path:'committed.scene',scene_sha256:hash})};
+      return original(url,request);
+    };
+    await assert.rejects(()=>f.w.importBytes(f.bytes),/lost committed reply/);
+    if(changed){await assert.rejects(()=>f.w.recoverLoad(),/已有其他變更/);assert.equal(f.w.context(),old);}
+    else{await f.w.recoverLoad();assert.equal(f.w.context().id,'opened');assert.equal(f.w.history.undo.length,1);}
+  }
 });
 
 test('failed reading or unpacking releases busy state and leaves the existing project untouched',async()=>{

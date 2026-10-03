@@ -465,6 +465,7 @@ class BridgeServerTests(unittest.TestCase):
             prior.write_bytes(b'prior')
             mod._upload_temps[:] = [str(prior)]
             for rejected in ['cancel', 'stale', 'success']:
+                mod._upload_outcomes.clear()
                 self.responses.put(b'{"ok":true,"token":7,"final_objects":{"boundaries":[1],"placements":[]}}\n')
                 prepared = json.loads(mod.upload_scene(b'boundary 1 outline 0,0 80,0 80,70 0,70\n', 'prepare'))
                 self.assertEqual(prepared['token'], 7)
@@ -477,6 +478,8 @@ class BridgeServerTests(unittest.TestCase):
                 phase = 'cancel' if rejected == 'cancel' else 'confirm'
                 reply = b'{"ok":false,"code":"STALE"}\n' if rejected == 'stale' else b'{"ok":true,"cancelled":true}\n'
                 self.responses.put(reply)
+                if rejected == 'success':
+                    self.responses.put(b'{"ok":true,"text":"committed scene\\n"}\n')
                 result = json.loads(mod.upload_scene(b'7', phase))
                 self.assertIsNone(mod._prepared_upload)
                 if rejected == 'success':
@@ -489,6 +492,36 @@ class BridgeServerTests(unittest.TestCase):
                     self.assertTrue(prior.exists())
                     self.assertEqual(mod._upload_temps, [str(prior)])
             mod._upload_temps.clear()
+
+    def test_terminal_cancel_blocks_a_confirm_that_arrives_after_retry(self):
+        mod = self.server_module
+        self.responses.put(b'{"ok":true,"token":31}\n')
+        mod.upload_scene(b'reset\n', 'prepare')
+        self.responses.put(b'{"ok":true,"cancelled":true}\n')
+        cancelled = json.loads(mod.upload_scene(b'31', 'cancel'))
+        self.assertEqual(cancelled['state'], 'cancelled')
+        commands = self.process.stdin.getvalue()
+        self.assertFalse(json.loads(mod.upload_scene(b'31', 'confirm'))['ok'])
+        self.assertEqual(json.loads(mod.upload_scene(b'31', 'cancel')), cancelled)
+        self.assertEqual(self.process.stdin.getvalue(), commands)
+        self.assertEqual(mod._upload_temps, [])
+
+    def test_lost_confirm_is_recovered_as_committed_without_a_second_native_load(self):
+        mod = self.server_module
+        self.responses.put(b'{"ok":true,"token":32}\n')
+        mod.upload_scene(b'reset\n', 'prepare')
+        self.responses.put(b'{"ok":true,"revision":2}\n')
+        self.responses.put(b'{"ok":true,"text":"reset\\n"}\n')
+        committed = json.loads(mod.upload_scene(b'32', 'confirm'))
+        self.assertEqual(committed['state'], 'committed')
+        self.assertEqual(committed['scene_sha256'], mod.hashlib.sha256(b'reset\n').hexdigest())
+        commands = self.process.stdin.getvalue()
+        self.assertEqual(json.loads(mod.upload_scene(b'32', 'cancel')), committed)
+        self.assertEqual(json.loads(mod.upload_scene(b'32', 'confirm')), committed)
+        self.assertEqual(self.process.stdin.getvalue(), commands)
+        for source in mod._upload_temps:
+            os.unlink(source)
+        mod._upload_temps.clear()
 
     def test_concurrent_uploads_preserve_load_and_source_retirement_order(self):
         for reject_second in [False, True]:

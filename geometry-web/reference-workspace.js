@@ -982,7 +982,7 @@ const ReferenceWorkspace = (() => {
     let result,token=null;
     try {
       if(replacement?.manifest)token=await prepareProjectScene(text,replacement.manifest,assertCurrent);
-      assertWritableLease();assertCurrent();pendingLoad=nextLoad;
+      assertWritableLease();assertCurrent();nextLoad.token=token;pendingLoad=nextLoad;
     } catch(error) {
       if(token!==null)try{await cancelProjectScene(token);}catch(_){}
       throw error;
@@ -1013,13 +1013,30 @@ const ReferenceWorkspace = (() => {
   async function recoverLoad() {
     if (!pendingLoad) return true;
     const load=pendingLoad;assertLoadContext(load);
+    let terminal=null;
+    if(load.token!=null){
+      // Cancellation and confirmation share the server/native lock. A terminal
+      // cancellation invalidates even a confirm request that has not arrived yet.
+      const response=await fetch("/upload/cancel",{method:"POST",body:JSON.stringify(load.token),signal:AbortSignal.timeout(30000)});
+      if(!response.ok)throw new Error("仍無法確認專案載入終態，已保留目前專案並暫停編輯。");
+      terminal=await response.json();assertLoadContext(load);
+      if(!["cancelled","committed","rejected"].includes(terminal.state))throw new Error("服務未能確認專案載入終態，請保持目前專案並重新連接服務。");
+    }
     const dump = await api("dump"); if (!dump.ok) return false;
     assertLoadContext(load);
     const normalized = s => s.replace(/\r\n/g,"\n").trim();
     const old = normalized(dump.text) === normalized(pendingLoad.before);
     const next = normalized(dump.text) === normalized(pendingLoad.text);
     let restoredNew = false, restoredPath = "";
-    if (next && !old) { adoptLoadedContext(); restoredNew=true; }
+    if(terminal){
+      if(terminal.state==="committed" && terminal.ok===true){
+        if(!terminal.scene_sha256 || await P.sha(new TextEncoder().encode(dump.text))!==terminal.scene_sha256){
+          contextConflict=true;throw new Error("載入後的場景已有其他變更，未替換目前專案資料；請重新開啟。");
+        }
+        assertLoadContext(load);adoptLoadedContext();restoredNew=true;restoredPath=terminal.path||"";
+      } else if(!old){contextConflict=true;throw new Error("取消載入後場景已變更，請重新開啟目前專案。");}
+    }
+    else if (next && !old) { adoptLoadedContext(); restoredNew=true; }
     else if (!(old && !next)) {
       // The user pressed retry; repeat the pending load if identical worlds make its outcome ambiguous.
       const token=load.manifest?await prepareProjectScene(load.text,load.manifest,()=>assertLoadContext(load)):null;

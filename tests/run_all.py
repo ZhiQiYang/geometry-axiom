@@ -74,6 +74,7 @@ PY_NEEDS = {
     'test_source_inspector': ['bridge'],
     'test_source_inspector_transport': [],
     'test_runtime_version': [],
+    'test_scene_import': ['bridge'],
     'test_serve': [],
     'test_space_modeling': ['model-base'],
     'test_subgrid_contract': ['bridge'],
