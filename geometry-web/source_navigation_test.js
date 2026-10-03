@@ -75,5 +75,6 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
     check(stage+'/'+action+' explicitly cancelled saved-model owner cannot enter/select the late target',await eval_(`fe.sel?.id!==7&&${stage==='render'?"oc.focus===null":"oc.focus?.placementId===20"}`));
     check(stage+'/'+action+' cancellation preserves World, dirty and history',JSON.stringify(await snapshot())===JSON.stringify(before));
   }
+  await eval_(`SpaceModelWorkspace.close()`);
   check('source navigation has no new browser exceptions',exceptionCount()===errors);
 };
