@@ -3719,20 +3719,26 @@ function feSetTool(t) {
   if (hadTimberSelection) { drawFaceEditor(); renderFaceLayers(); renderFaceInspector(); }
 }
 
+let feDraftNoticeState = null;
 function feUpdateDraftNotice() {
   const active = fe.tool === "redraw" && oc.edit;
+  const pending = !!window.RoomOutlineWorkspace?.pending(oc.edit?.bid);
+  const reviewed = pending && !!RoomOutlineWorkspace.snapshot()?.reviewed;
+  const isDefault = !!active && fe.newOutline?.bid === oc.edit.bid &&
+    fe.newOutline.outline === JSON.stringify(oc.bmap[oc.edit.bid]);
+  const state = [active, oc.edit, fe.draft.pts.length, pending, reviewed, isDefault];
+  if (feDraftNoticeState && state.every((v, i) => v === feDraftNoticeState[i])) return;
+  feDraftNoticeState = state;
   ReferenceWorkspace.present();
   $("faceDraftNotice").hidden = !active;
   $("objectWorkspace").classList.toggle("drawing-outer", !!active);
   if (!active) return;
-  const isDefault = fe.newOutline?.bid === oc.edit.bid &&
-    fe.newOutline.outline === JSON.stringify(oc.bmap[oc.edit.bid]);
   $("faceDraftTitle").textContent = `外環草稿 · ${fe.draft.pts.length} 個頂點 · 尚未套用`;
   $("faceDraftMessage").textContent = (isDefault ? "已建立預設矩形。" : "原輪廓仍保留。") +
     "逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。";
-  if (window.RoomOutlineWorkspace?.pending(oc.edit.bid)) {
+  if (pending) {
     $("faceDraftMessage").textContent = "原輪廓仍保留。請在底圖欄核對室內淨範圍、尺寸與警告，再確認；取消保留原面。";
-    $("faceDraftFinish").disabled = !RoomOutlineWorkspace.snapshot()?.reviewed;
+    $("faceDraftFinish").disabled = !reviewed;
   } else $("faceDraftFinish").disabled = fe.draft.pts.length < 3;
   $("faceDraftCancel").disabled = !fe.draft.pts.length;
 }
@@ -3886,18 +3892,37 @@ function cxRender(h, x, y, alt, shift) {
   const res = h.resolve ? h.resolve(x, y, alt, shift) : null;
   h.vp.classList.toggle("cx-on", !!res);
   h.svg.style.visibility = res ? "visible" : "hidden";
-  if (!res) { h.marks.textContent = ""; h.cur.innerHTML = ""; return; }
+  if (!res) { h.marks.textContent = ""; h.cur.innerHTML = ""; h.markHTML = h.glyphHTML = ""; return; }
   h.cur.setAttribute("transform", `translate(${x - r.left},${y - r.top})`);
-  h.marks.innerHTML = (res.marks || []).map(m => cxSnapMark(m.k, m.x, m.y)).join("");
-  h.cur.innerHTML = cxGlyphB(res.key) + (res.tip ? cxTip(res.tip) : "");
+  const marks = (res.marks || []).map(m => cxSnapMark(m.k, m.x, m.y)).join("");
+  const glyph = cxGlyphB(res.key) + (res.tip ? cxTip(res.tip) : "");
+  if (h.markHTML !== marks) { h.marks.innerHTML = marks; h.markHTML = marks; }
+  if (h.glyphHTML !== glyph) { h.cur.innerHTML = glyph; h.glyphHTML = glyph; }
 }
 function cxMove(key, ev) {
   const h = cxUI[key];
-  if (h) cxRender(h, ev.clientX, ev.clientY, ev.altKey, ev.shiftKey);
+  if (!h) return;
+  h.last = {x:ev.clientX, y:ev.clientY};
+  const latest = {x:ev.clientX, y:ev.clientY, alt:ev.altKey, shift:ev.shiftKey};
+  if (ev.type === "pointermove") {
+    h.pending = latest;
+    if (h.paintFrame == null) h.paintFrame = requestAnimationFrame(() => {
+      const p = h.pending; h.pending = null; h.paintFrame = null;
+      if (p) cxRender(h, p.x, p.y, p.alt, p.shift);
+    });
+  } else {
+    cxCancelPaint(h);
+    cxRender(h, latest.x, latest.y, latest.alt, latest.shift);
+  }
+}
+function cxCancelPaint(h) {
+  if (h.paintFrame != null) cancelAnimationFrame(h.paintFrame);
+  h.paintFrame = h.pending = null;
 }
 function cxHide(key) {
   const h = cxUI[key];
   if (!h) return;
+  cxCancelPaint(h);
   h.last = null; h.svg.style.visibility = "hidden";
   h.vp.classList.remove("cx-on");
 }
@@ -3906,6 +3931,7 @@ let cxAlt = false, cxShift = false;
 function cxRefreshAll() {
   for (const key in cxUI) {
     const h = cxUI[key];
+    cxCancelPaint(h);
     if (h.last) cxRender(h, h.last.x, h.last.y, cxAlt, cxShift);
   }
 }
@@ -4754,7 +4780,37 @@ function feDrawEdgeDimensions(root, verts, z) {
   }
 }
 
+/* Input coordinates and draft validation stay synchronous. Only presentation
+   is coalesced; a pending paint cannot migrate to another editing session. */
+function createFacePaintScheduler(paint, owner, request = requestAnimationFrame, cancel = cancelAnimationFrame) {
+  let frame = null, pending = null, stamp = null;
+  function clear() { if (frame !== null) cancel(frame); frame = null; pending = stamp = null; }
+  function flush() {
+    const work = pending, expected = stamp;
+    clear();
+    if (work && expected === owner()) paint(work);
+  }
+  function schedule(work) {
+    const current = owner();
+    if (pending && stamp !== current) clear();
+    stamp = current; pending = {...pending, ...work};
+    if (frame === null) frame = request(flush);
+  }
+  function take() { const work = stamp === owner() ? pending : null; clear(); return work; }
+  return {schedule, flush, cancel:take};
+}
+const facePaintScheduler = createFacePaintScheduler(work => {
+  if (work.readout != null) $("faceCoordinateReadout").textContent = work.readout;
+  if (work.camera) feApply();
+  if (work.scene) drawFaceEditor();
+  else if (work.draft) { renderFeDraftLayer(); feLenShow(); }
+}, () => oc.edit);
+function feSchedulePaint(work) { facePaintScheduler.schedule(work); }
+
 function drawFaceEditor() {
+  const pendingPaint = facePaintScheduler.cancel();
+  if (pendingPaint?.camera) feApply();
+  if (pendingPaint?.readout != null) $("faceCoordinateReadout").textContent = pendingPaint.readout;
   renderSelectionSummary();
   for (const id of ["faceSnapToggle", "faceGridToggle"]) {
     const input = $(id);
@@ -4768,7 +4824,9 @@ function drawFaceEditor() {
   ReferenceVisibility.update();
   feCalibrationPrompt();
   const root = $("faceEditorRoot");
-  root.textContent = "";
+  /* Keep the decoded underlay attached across zoom and geometry redraws. */
+  const underlayLayer = root.querySelector(":scope > #feUnderlayLayer");
+  for (const child of [...root.childNodes]) if (child !== underlayLayer) child.remove();
   const annotations = el("g", {id:"feAnnotationLayer"});
   const z = fe.zoom;
   const bb = loopsBBox(loops);
@@ -4779,19 +4837,22 @@ function drawFaceEditor() {
      也不該吃事件),其餘時候整片透明,不擋既有的點邊/點角/點面/畫外環。 */
   const ul = oc.underlays[e.bid];
   if (ul) {
+    const layer = underlayLayer || el("g", {id:"feUnderlayLayer"}, root);
     const [ucx, ucy] = feUlCenter(ul);
     const crop = ul.crop || [0, 0, ul.imgW, ul.imgH];
-    const clip = el("clipPath", { id: "feUnderlayClip", clipPathUnits: "userSpaceOnUse" }, root);
-    el("rect", { x: crop[0], y: crop[1], width: crop[2], height: crop[3] }, clip);
-    el("image", {
-      id: "feUnderlay", href: ul.src,
+    const clip = layer.querySelector("clipPath") || el("clipPath", { id: "feUnderlayClip", clipPathUnits: "userSpaceOnUse" }, layer);
+    const cropRect = clip.firstElementChild || el("rect", {}, clip);
+    for (const [key, value] of Object.entries({x:crop[0], y:crop[1], width:crop[2], height:crop[3]})) cropRect.setAttribute(key, value);
+    const image = layer.querySelector("image") || el("image", {id:"feUnderlay"}, layer);
+    if (image._underlaySource !== ul.src) { image.setAttribute("href", ul.src); image._underlaySource = ul.src; }
+    for (const [key, value] of Object.entries({
       x: 0, y: 0, width: ul.imgW, height: ul.imgH,
       "clip-path": "url(#feUnderlayClip)", preserveAspectRatio: "none",
       opacity: ul.opacity,
       transform: `rotate(${ul.rot},${ucx},${ucy}) translate(${ul.x},${ul.y}) scale(${ul.mmPerPx})`,
       "pointer-events": (fe.fiTab === "underlay" && fe.tool === "select" && !ul.locked && !ReferenceWorkspace.getProjectInfo?.().editingBlocked) ? "auto" : "none",
-    }, root);
-  }
+    })) image.setAttribute(key, value);
+  } else underlayLayer?.remove();
 
   /* B4:格線依 zoom 選檔——螢幕間距 ≥24px,主格線每 4 格;
      (#faceGridSizeSelect 只管吸附,不再控制顯示格距；計算抽到 feGridStep()，diff#12
@@ -5149,13 +5210,13 @@ function feSyncDraftMirror() {
    cur 併回 fe.draft 才能讓 feDraftApplyLen 讀到方向(previewMove 是純函式，
    不會自己寫回 state——呼叫端要自己把 cur 併回，否則 state.cur 永遠是初始值 null,
    鍵入長度會被誤判成 NO_DIRECTION)。 */
-function feDraftPreviewMove(pt) {
+function feDraftPreviewMove(pt, defer = false) {
   if (fe.tool !== "redraw") return;
   fe.draftPreview = PolyDraft.previewMove(fe.draft, [pt.x, pt.y], feDraftOpts());
   fe.draft = Object.assign({}, fe.draft, { cur: fe.draftPreview.cur });
   feSyncDraftMirror();
-  renderFeDraftLayer();
-  feLenShow();
+  if (defer) feSchedulePaint({draft:true});
+  else { renderFeDraftLayer(); feLenShow(); }
 }
 
 async function feDown(pt, ev) {
@@ -5188,7 +5249,7 @@ async function feDown(pt, ev) {
     }
     fe.draft = r.state;
     feSyncDraftMirror();
-    feDraftPreviewMove(pt);
+    feDraftPreviewMove(pt, true);
     return;
   }
   if (fe.tool === "hole") {
@@ -5379,7 +5440,7 @@ function feMove(pt, ev) {
      涵蓋「尚未落第一點」(d 為 null)與「已落點」(d.kind==="redraw"，此時 d 只是
      fe.draft 的鏡射)兩種情況——只清空重繪 #feDraftLayer，不呼叫整份 drawFaceEditor()。 */
   if (fe.tool === "redraw" && (!d || d.kind === "redraw")) {
-    feDraftPreviewMove(pt);
+    feDraftPreviewMove(pt, true);
     return;
   }
   /* GEO-196:角材工具下(不管是否正在拖曳——實務上角材工具沒有拖曳,d 恆為 null)
@@ -5407,7 +5468,7 @@ function feMove(pt, ev) {
   if (d.kind === "pan") {
     fe.panX += ev.clientX - d.cx; fe.panY += ev.clientY - d.cy;
     d.cx = ev.clientX; d.cy = ev.clientY;
-    feApply();
+    feSchedulePaint({camera:true});
     return;
   }
   if (d.kind === "holeRect" || d.kind === "guideNew") {
@@ -9748,6 +9809,7 @@ $("faceSnapToggle").addEventListener("change", drawFaceEditor);
 
 const fevp = $("faceEditorViewport");
 fevp.addEventListener("pointerdown", async e => {
+  facePaintScheduler.flush();
   // Native viewport controls own their pointer sequence. Capturing them as a
   // canvas drag retargets pointerup/click and makes a real zoom click vanish.
   if (e.target.closest?.(".selection-summary, .face-canvas-controls, .workspace-guidance")) { fe.lastPD = null; return; }
@@ -9846,11 +9908,11 @@ fevp.addEventListener("pointermove", e => {
   }
   const pt = fe.tool === "redraw" ? fePoint(e) : feSnap(fePoint(e));
   /* B8:讀數 `u 1850 v 600 mm` */
-  $("faceCoordinateReadout").textContent =
-    `u ${Math.round(pt.x)} v ${Math.round(pt.y)} mm`;
   feMove(pt, e);
+  feSchedulePaint({readout:`u ${Math.round(pt.x)} v ${Math.round(pt.y)} mm`});
 });
 fevp.addEventListener("pointerup", async e => {
+  facePaintScheduler.flush();
   if (finishCanvasMarquee(e)) return;
   if (fevp.hasPointerCapture(e.pointerId))
     fevp.releasePointerCapture(e.pointerId);
@@ -9903,7 +9965,7 @@ fevp.addEventListener("wheel", e => {
   fe.zoom = nz;
   fe.panX = px - (px - fe.panX) * ke;
   fe.panY = py - (py - fe.panY) * ke;
-  feApplyZoom();
+  feSchedulePaint({camera:true, scene:true});
 }, { passive: false });
 /* GEO-192 C:右鍵選單——先做與左鍵單擊完全相同的選取(feClickSelectBlank/feClickSelectHit,
    不複製一份),再在游標處顯示。面外空白右鍵 = 只清選取,不顯示選單。 */

@@ -113,6 +113,8 @@ NODE_PURE_TEST_FILES = {
     'node:cdp_evaluation': 'tests/test_cdp_evaluation.js',
     'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
+    'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
+    'node:room_outline_worker': 'tests/test_room_outline_worker.js',
 }
 NODE_EXCLUDED = {
     'tests/room_outline_fixture.js': 'Self-authored PDF/scan fixture generator; not a node test',

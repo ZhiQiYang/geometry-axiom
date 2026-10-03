@@ -139,7 +139,19 @@
     if(nx*ny>150000||boxes.length>12000||fills.length>2000||nx*ny*fills.reduce((n,p)=>n+p.length,0)>5000000)throw error('capacity','目標區域線段過多，請縮小取景或提高線寬／最短線門檻。');
     const blocked=new Uint8Array(nx*ny),seen=new Uint8Array(nx*ny),queue=[];
     const xi=new Map(x.map((v,i)=>[v,i])),yi=new Map(y.map((v,i)=>[v,i]));
-    for(const b of boxes)for(let j=yi.get(b[1]);j<yi.get(b[3]);j++)for(let i=xi.get(b[0]);i<xi.get(b[2]);i++)blocked[j*nx+i]=1;
+    // Exact union on the same compressed coordinates: four updates per box
+    // and one prefix pass, rather than repainting every overlapped cell.
+    const stride=nx+1,coverage=new Int32Array(stride*(ny+1));
+    for(const b of boxes) {
+      const x0=xi.get(b[0]),x1=xi.get(b[2]),y0=yi.get(b[1]),y1=yi.get(b[3]);
+      coverage[y0*stride+x0]++;coverage[y0*stride+x1]--;
+      coverage[y1*stride+x0]--;coverage[y1*stride+x1]++;
+    }
+    for(let j=0;j<ny;j++)for(let i=0;i<nx;i++) {
+      const n=j*stride+i;
+      coverage[n]+=(i?coverage[n-1]:0)+(j?coverage[n-stride]:0)-(i&&j?coverage[n-stride-1]:0);
+      blocked[j*nx+i]=coverage[n]>0?1:0;
+    }
     if(fills.length)for(let j=0;j<ny;j++)for(let i=0;i<nx;i++)if(fills.some(p=>contains(p,[(x[i]+x[i+1])/2,(y[j]+y[j+1])/2])))blocked[j*nx+i]=1;
     const sx=x.findIndex((v,i)=>i<nx&&seed[0]>=v&&seed[0]<x[i+1]),sy=y.findIndex((v,i)=>i<ny&&seed[1]>=v&&seed[1]<y[i+1]),start=sy*nx+sx;
     if(blocked[start])throw error('wall','選點落在線條／牆體上，請改點房間內空白處。');

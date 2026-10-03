@@ -3,6 +3,27 @@
 const RoomOutlineWorkspace=(()=>{
   const R=RoomOutline,P=GeometryProject,W=ReferenceWorkspace,esc=W.escape;
   let draft=null,picking=null,acquiring=null,generation=0,message='',options=null,barriers=[],barrierStamp=null;
+  let analysisJob=null;
+  function stopAnalysis(){analysisJob?.cancel();}
+  function analyze(data,transfer=[]) {
+    stopAnalysis();
+    return new Promise((resolve,reject)=>{
+      const worker=new Worker('room-outline-worker.js');
+      let timer,settled=false;
+      const job={cancel:()=>finish(null,new Error('輪廓分析已取消。'))};
+      const finish=(value,error)=>{
+        if(settled)return;settled=true;
+        clearTimeout(timer);worker.terminate();if(analysisJob===job)analysisJob=null;
+        if(error)reject(error);else resolve(value);
+      };
+      analysisJob=job;
+      worker.onmessage=({data:r})=>finish(r.result,r.ok?null:Object.assign(new Error(r.error.message),{code:r.error.code}));
+      worker.onerror=e=>{e.preventDefault();finish(null,new Error('本地輪廓分析未能完成：'+e.message));};
+      worker.onmessageerror=()=>finish(null,new Error('輪廓分析資料無法讀取。'));
+      timer=setTimeout(()=>finish(null,new Error('輪廓分析逾時，請縮小取景或人工描繪。')),30000);
+      try {worker.postMessage(data,transfer);}catch(error){finish(null,error);}
+    });
+  }
   const pending=bid=>!!draft&&draft.bid===bid;
   const sourceCurrent=d=>!!d&&oc.edit?.bid===d.bid&&W.getProjectState().contextToken===d.contextToken&&W.history.frame.ids.get(d.bid)===d.incarnation&&W.active(d.bid)?.id===d.pageId&&P.reviewBasis(W.active(d.bid))===d.basis;
   const current=d=>sourceCurrent(d)&&P.outlineFingerprint(oc.bmap[d.bid])===d.baseGeometry;
@@ -14,7 +35,7 @@ const RoomOutlineWorkspace=(()=>{
   function refresh(){if(oc.edit){drawFaceEditor();renderFaceInspector();document.getElementById('refOutlineDetails')?.setAttribute('open','');}W.present();}
   function notice(text){message=text;setStatus(text);refresh();}
   function calibrated(){message='';}
-  function reset(clear=true){generation++;picking=null;acquiring=null;draft=null;barriers=[];barrierStamp=null;options=null;message='';if(clear&&typeof fe!=='undefined'){fe.draft=PolyDraft.createState();fe.draftPreview=null;feSyncDraftMirror();feLenShow();}}
+  function reset(clear=true){generation++;stopAnalysis();picking=null;acquiring=null;draft=null;barriers=[];barrierStamp=null;options=null;message='';if(clear&&typeof fe!=='undefined'){fe.draft=PolyDraft.createState();fe.draftPreview=null;feSyncDraftMirror();feLenShow();}}
   function invalidate(){if((draft&&!draft.committing&&!current(draft))||(picking&&!current(picking))||(acquiring&&!current(acquiring))||(barrierStamp&&!current(barrierStamp))){reset();message='來源頁、校準／對位或原面已變更，舊候選已失效。請重新取得；正式面尺寸未縮放。';if(oc.edit){drawFaceEditor();renderFaceInspector();}}}
   window.addEventListener('project-info-changed',invalidate);
   function readOptions(pane,bid) {
@@ -29,7 +50,7 @@ const RoomOutlineWorkspace=(()=>{
       if(barrierStamp&&!current(barrierStamp)){barriers=[];barrierStamp=null;}
       if(fe.draft?.pts?.length&&!draft)throw Error('請先套用或取消人工外環草稿。');
       if(o.mode==='manual'&&mode==='room'){reset();feSetTool('redraw');if(innerWidth<=680)closePanels();return;}
-      generation++;draft=null;acquiring=null;fe.draft=PolyDraft.createState();fe.draftPreview=null;feSyncDraftMirror();feSetTool('redraw');options=o;picking={...s,mode,down:null,move:null};
+      generation++;stopAnalysis();draft=null;acquiring=null;fe.draft=PolyDraft.createState();fe.draftPreview=null;feSyncDraftMirror();feSetTool('redraw');options=o;picking={...s,mode,down:null,move:null};
       message=mode==='room'?'點房間內空白處，或拖框限縮來源取景內的搜尋範圍；不受既有外環裁切，框選不會建立矩形。':`依兩端明確畫出${mode==='horizontal'?'水平':'垂直'}分隔；不會寫入正式面。`;
       refresh();if(innerWidth<=680)closePanels();document.getElementById('faceEditorViewport').focus();
     }catch(e){notice(e.message);}
@@ -37,7 +58,7 @@ const RoomOutlineWorkspace=(()=>{
   function cancel(){reset();message='候選已取消，原面保留。';feSetTool('select');refresh();}
   const isPicking=()=>!!picking&&fe.tool==='redraw';
   function down(pt){if(!isPicking())return false;picking.down=[pt.x,pt.y];picking.move=[pt.x,pt.y];return true;}
-  function move(pt){if(!isPicking())return false;if(picking.down){picking.move=[pt.x,pt.y];drawFaceEditor();}return true;}
+  function move(pt){if(!isPicking())return false;if(picking.down){picking.move=[pt.x,pt.y];feSchedulePaint({scene:true});}return true;}
   async function up(pt) {
     if(!isPicking()||!picking.down)return false;
     const s=picking,a=s.down,b=[pt.x,pt.y];picking=null;
@@ -57,21 +78,25 @@ const RoomOutlineWorkspace=(()=>{
     }
     await acquire(s,seed,crop,options);return true;
   }
-  function addBarriers(o) {
+  function analysisConstraints() {
     const boxes=barriers.map(([a,b])=>{const w=.001;return [Math.min(a[0],b[0])-w,Math.min(a[1],b[1])-w,Math.max(a[0],b[0])+w,Math.max(a[1],b[1])+w];});
-    return {...o,boxes:[...o.boxes,...boxes],warnings:[...o.warnings,...(boxes.length?['使用人工分隔，請核對門洞與相鄰房間的連通關係；分隔不代表實際牆體。']:[])]};
+    return {barriers:boxes,warnings:boxes.length?['使用人工分隔，請核對門洞與相鄰房間的連通關係；分隔不代表實際牆體。']:[]};
   }
-  async function rasterObstacles(p,source,crop,o) {
-    const render=await W.renderPage(source,p.page),pdf=source.meta.type==='application/pdf';
+  async function rasterRegion(p,source,crop,o,seed,extraWarnings,isCurrent) {
+    // The current page already has a rendered PNG. Do not rerender/encode the
+    // whole PDF whenever vector acquisition falls back or the user reselects.
+    const image=new Image();image.src=p.src;await image.decode();
+    if(!isCurrent())return null;
+    const pdf=source.meta.type==='application/pdf';
     const scale=Math.min(pdf?2:1,1800/Math.max(crop[2],crop[3])),canvas=document.createElement('canvas');
     canvas.width=Math.max(1,Math.ceil(crop[2]*scale));canvas.height=Math.max(1,Math.ceil(crop[3]*scale));
     const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.drawImage(render.canvas,crop[0]*render.canvas.width/p.imgW,crop[1]*render.canvas.height/p.imgH,crop[2]*render.canvas.width/p.imgW,crop[3]*render.canvas.height/p.imgH,0,0,canvas.width,canvas.height);
+    ctx.drawImage(image,crop[0]*image.naturalWidth/p.imgW,crop[1]*image.naturalHeight/p.imgH,crop[2]*image.naturalWidth/p.imgW,crop[3]*image.naturalHeight/p.imgH,0,0,canvas.width,canvas.height);
     const kx=canvas.width/crop[2],ky=canvas.height/crop[3];
-    const result=R.imageObstacles(ctx.getImageData(0,0,canvas.width,canvas.height),{minWidth:Math.max(1,o.minWidth*Math.min(kx,ky)),minLength:o.minLength*Math.min(kx,ky)});
-    result.boxes=result.boxes.map(b=>[crop[0]+b[0]/kx,crop[1]+b[1]/ky,crop[0]+b[2]/kx,crop[1]+b[3]/ky]);
-    if(scale<1)result.warnings.push('影像分析已降低解析度；小凹口與薄牆可能遺漏，請核對並局部補點。');
-    return result;
+    const constraints=analysisConstraints(),pixels=ctx.getImageData(0,0,canvas.width,canvas.height);
+    return analyze({kind:'image',image:pixels,crop,kx,ky,seed,
+      options:{minWidth:Math.max(1,o.minWidth*Math.min(kx,ky)),minLength:o.minLength*Math.min(kx,ky)},
+      ...constraints,prefixWarnings:extraWarnings,warnings:[...(scale<1?['影像分析已降低解析度；小凹口與薄牆可能遺漏，請核對並局部補點。']:[]),...constraints.warnings]},[pixels.data.buffer]);
   }
   async function acquire(s,seed,crop,o) {
     const ticket=++generation,p=W.active(s.bid),source=W.context().sources.get(p.sourceId);
@@ -83,13 +108,13 @@ const RoomOutlineWorkspace=(()=>{
         try {
           const doc=await W.documentFor(source),page=await doc.getPage(p.page),lib=await W.library();
           const list=await page.getOperatorList({intent:'display',annotationMode:lib.AnnotationMode.DISABLE});
-          result=R.region(addBarriers(R.pdfObstacles(list,lib.OPS,page.getViewport({scale:1}),o)),seed,crop);
+          if(ticket!==generation||!current(s))return;
+          result=await analyze({kind:'pdf',list,OPS:lib.OPS,viewport:{transform:page.getViewport({scale:1}).transform},options:o,seed,crop,...analysisConstraints()});
         }catch(e){vectorFailure=e.message;}
       }
       if(!result) {
-        const obstacles=await rasterObstacles(p,source,crop,o);
-        if(vectorFailure)obstacles.warnings.unshift('原始向量未取得閉合區域，改用影像輔助：'+vectorFailure);
-        result=R.region(addBarriers(obstacles),seed,crop);
+        if(ticket!==generation||!current(s))return;
+        result=await rasterRegion(p,source,crop,o,seed,vectorFailure?['原始向量未取得閉合區域，改用影像輔助：'+vectorFailure]:[],()=>ticket===generation&&current(s));
       }
       if(ticket!==generation||!current(s))return;
       W.assertEditable();

@@ -33,6 +33,7 @@
 - `#refRoomConfirm`／`#refRoomCancel` 與既有 `#faceDraftFinish`／`#faceDraftCancel` 操作同一草稿。確認走核心 `emitBoundary`，依賴沿用 `.reference-impact`；取消／拒絕保留原面。H／空白鍵平移不清候選。
 - `[data-reconstruction-state]` 依實際來源頁、校準／變換、核心輪廓顯示 `unreviewed|candidate|confirmed|recheck`。`#refConfirmChecked` 在此區記錄人工流程核對；任意頂點不算完成。
 - `window.RoomOutlineWorkspace` 接合狀態與生命週期；`room_outline_test.js` 由完整 `cdp_test.js` 呼叫 P79，`GEOMETRY_ROOM_OUTLINE_ONLY=1` 僅是部分驗證。
+- GEO-242：向量／影像線段分析與房間搜尋在本地 `room-outline-worker.js` 執行；取消、重取、來源或編輯對象變更時終止舊工作，回覆仍驗來源身分。影像輔助沿用目前頁已渲染底圖，不重渲整頁 PDF。搜尋分隔、候選核對與核心提交契約不變。
 
 > 立案 2026-09-13(Phase 0 產出);Phase 1 改版更新。本檔列出自動測試依賴的 DOM id / class / 全域名稱;
 > 之後每階段改 DOM 都要對照本表,新增或改名需同步更新測試。
@@ -519,7 +520,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | id / class | 歸屬 | 契約 |
 |---|---|---|
 | `#canvasModeHint` | 主畫布 | 三段結構容器:`.hint-tool`/`.hint-context`/`.hint-kbd` 三個子元素常駐(`renderCanvasModeHint()` 產生);GEO-186(b) 後只有 rect 工具使用,`hidden = oc.drawTool !== "rect"`、三段為固定文字(「矩形」「在畫布上拖出範圍建立游離面」「Esc 取消」);`enterFocus`/`leaveFocus`/`ocCursor` 都會重算 |
-| `#feDraftLayer` | 面內 | `<g>` 掛在 `#faceEditorRoot` 內、`drawFaceEditor()` 每次清空重建時掛在最後一個子節點(在其他內容之上);動態建立,不寫進 `index.html`。`renderFeDraftLayer()` 只清空重繪這個 group,pointermove 走 `feDraftPreviewMove()`,不觸發 `drawFaceEditor()` |
+| `#feDraftLayer` | 面內 | `<g>` 掛在 `#faceEditorRoot` 內、`drawFaceEditor()` 重建幾何時掛在最後一個子節點(在其他內容之上);動態建立,不寫進 `index.html`。`renderFeDraftLayer()` 只清空重繪這個 group,pointermove 同步更新 `feDraftPreviewMove()` 的座標，合併至下一幀呈現，不觸發整份 `drawFaceEditor()`。pointerdown/up 先呈現最後狀態；跨編輯工作階段丟棄舊待繪工作。 |
 | `.draft-edge` / `.draft-rubber` / `.draft-preview-face` / `.draft-vertex` / `.draft-start-vertex` / `.draft-edge-len` / `.draft-corner-preview` / `.draft-align-guide` | 面內 | 草稿層內部元素 class(定義在 `app.css`);GEO-186(b) 後只有 `#feDraftLayer` 使用;`.draft-rubber.error` = 交叉/回頭警示態(變紅) |
 | `#feLenInput` | 面內 | 鍵入長度浮動框;`feLenShow()` 讀 `fe.lenBuf`/`fe.drag.cur`/`fe.drag.pts`(兩者皆是鏡射 `fe.draft` 的相容欄位,見下) |
 | `#mainEdgeLength${i}` / `#mainEdgeFixed${i}` / `#mainEdgeFree${i}` | 主畫布 | 主畫布 boundary 檢視器「外環邊 · 尺寸確認」清單(RC-POLYGON-PLAN §5.A.1.10);與面內 `#edgeLength${i}`/`#edgeFixed${i}`/`#edgeFree${i}` 同構,id 前綴不同(同一 DOM 中兩個檢視器面板同時存在,避免撞號);`data-edge-len`/`data-fix-edge`/`data-fix-val` 屬性沿用既有命名 |
@@ -586,8 +587,8 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 - 分頁欄位:`#ulOpacity`(range 0–1)、`#ulLock`(checkbox)、`#ulX`/`#ulY`(number mm,左上角在面座標的 mm,
   含義不因旋轉改變)、`#ulRot`(select 0/90/180/270)、`#ulScale`(唯讀顯示 `<mmPerPx> mm/px`)、
   `#ulCalibStart`(按鈕,進入量比例尺)、`#ulCalibDist`(number mm)+`#ulCalibApply`、`#ulRemove`。
-- 畫布:`#feUnderlay`(`<image>`)是 `#faceEditorRoot` **第一個子節點**(在格線/面之下),
-  `drawFaceEditor()` 每次清空重建時依 `oc.underlays[bid]` 重掛。
+- 畫布:`#feUnderlay`(`<image>`)位於 `#faceEditorRoot` 第一個 group `#feUnderlayLayer`(在格線/面之下)，同 group 內有 `#feUnderlayClip`。
+  `drawFaceEditor()` 保留底圖 group 與 image、只重建其餘幾何；依 `oc.underlays[bid]` 同步裁切與變換，來源改變才換 `href`，移除底圖時移除 group。縮放、平移與房間框選呈現合併至下一幀；幾何座標更新仍同步，不延後核心交易。
   `transform="rotate(rot,cx,cy) translate(x,y) scale(mmPerPx)"`(`cx,cy` 是未旋轉時圖片中心的面座標)、
   `opacity` 依 `ul.opacity`。**只有**「底圖」分頁作用中(`fe.fiTab==="underlay"`)、`fe.tool==="select"`、
   且未鎖定(`!ul.locked`)時 `pointer-events="auto"`,其餘情況 `"none"`——不擋既有的點邊/點角/點面/畫外環。
