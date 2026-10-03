@@ -23,7 +23,7 @@ D34/I42/R35 已採納；公理版本來源為 `cc6adff4c9c783ce78bcbd849754b6925
 - 建立／更新必須帶目前 binding 來源指紋；更新／刪除另帶實例指紋。
 - 原生 `assembly-read` 回傳 instances 的完整 source、穩定 mapping、來源指紋、原生 geometry／definition。
 - 沿用 `assembly-confirm`／`assembly-cancel`、共用歷史與回執；確認綁定同一世界版本與候選，服務故障時不重送確認。
-- `geometry-canvas/8` 必須含 `assembly-timber-generation/1`。沒有實例或實例草稿的既有專案仍保存原格式；/1–7 相容。
+- `geometry-canvas/8` 必須含 `assembly-timber-generation/1`。匯入前先核對服務能力，即使只有未完成實例草稿也不省略；能力不足時不載入場景、不替換專案或草稿。沒有實例或實例草稿的既有專案仍保存原格式；/1–7 相容。
 - scene 有能力宣告、`owned <instance> <member> timber|place ...` 與 assembly instance source/mapping 記錄。
   owned 僅允許完整原子場景載入；载入核對存量角材來源與映射，拒絕缺能力或壞資料，不能默默修復。
 - 早期 #50 的實驗第 8 版不符合此契約，不併入本功能。
