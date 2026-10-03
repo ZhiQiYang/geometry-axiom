@@ -853,6 +853,7 @@ static void cmd_dump(void)
 
 #include "engineering_bridge.inc"
 #include "assembly_bridge.inc"
+#include "source-inspector-bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -916,6 +917,10 @@ int main(void)
             cmd_assembly_confirm(arg);
         } else if (strcmp(line,"assembly-cancel")==0) {
             cmd_assembly_cancel(arg);
+        } else if (strcmp(line,"source-inspect")==0 && !arg) {
+            cmd_source_inspect();
+        } else if (strcmp(line,"source-inspect-file")==0 && arg) {
+            cmd_source_inspect_file(arg);
         } else if (strcmp(line,"engineering-read")==0 && !arg) {
             cmd_engineering_read();
         } else if (strcmp(line,"engineering-preview")==0 && arg) {
