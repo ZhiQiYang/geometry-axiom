@@ -53,6 +53,7 @@ PY_NEEDS = {
     'test_assembly_rules': ['bridge'],
     'test_assembly_generation': ['bridge'],
     'test_axiom_reader': [],
+    'test_binaries': [],
     'test_bridge_integrity': ['bridge'],
     'test_cli_args': ['core'],
     'test_datum_contract': ['bridge'],

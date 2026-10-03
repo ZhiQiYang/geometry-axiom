@@ -21,9 +21,15 @@ python tests/run_all.py --update-expected # 完整跑之後重寫 tests/run_all.
 
 **不重編的原因**：這台機器的 Smart App Control（SAC）會擋「新出現」的未簽章 exe（WinError 4551、`橋接器連線中斷`）。
 `binaries.py` 給每支 exe 一個來源指紋（sha256：編譯指令＋主來源＋`current_geometry.c`＋`geometry-core/` 與
-`geometry-web/` 下所有 `.c/.h/.inc`，CRLF 先換成 LF），寫在 exe 旁的 `*.fingerprint.json`；來源沒變就絕不重編。
+`geometry-web/` 下所有 `.c/.h/.inc`，CRLF 先換成 LF），另以 `mutate.py` 相同領域的 SHA-256 核對 binary 原始 bytes，
+寫在 exe 旁的 `*.fingerprint.json`。來源、指令、binary hash 與既有 size/mtime 全符才沿用；舊版無 `exe_sha256`
+的 sidecar/pending 記錄一律 stale，不從現有 exe 補發憑證。sidecar/pending 以 atomic replace 發布，建置或啟動期間來源／binary 變更不發 fresh 憑證。
 編完會先啟動一次讓 SAC 評估，被擋就等 15 秒重試、最多 3 次，仍被擋則報「環境阻擋」且**不寫 sidecar**
 （這支就不算 fresh；再跑 build 只重試啟動，不會再編一支新的）。「環境阻擋」與「編譯失敗」分開報。
+明示 `GEOMETRY_TEST_BRIDGE`／舊 alias 也須通過此核對，每次 lookup 重驗 bytes；core/GDI/engjson 測試及 aggregate
+Python runner 的 native overrides 共用 `require_fresh`。缺 sidecar 的手編檔請改由 registry 建置。
+直接傳給 `BridgeSession(path)` 的專用 instrumented harness 仍由其建置呼叫者負責；registry 路徑或帶 registry sidecar
+的副本必驗。產品 modeling API 的 trusted executable 契約不變。這不是 OS 安全機制或供惡意程式防偽的簽章。
 所有產物在 `%TEMP%\geometry-tests\`（非 Windows 是 `/tmp/geometry-tests/`），不會寫進 repo。
 
 | 二進位 | 來源 | 環境變數（`run_all.py` 會替子行程全部設好） |

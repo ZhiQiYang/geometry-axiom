@@ -14,6 +14,10 @@ import subprocess
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
+try:
+    from tests import binaries
+except ModuleNotFoundError:
+    import binaries
 
 HARNESS = os.environ.get('GEOMETRY_TEST_GDI_HARNESS')
 
@@ -21,6 +25,7 @@ HARNESS = os.environ.get('GEOMETRY_TEST_GDI_HARNESS')
 @unittest.skipUnless(os.name == 'nt' and HARNESS, 'requires compiled Windows GDI contract harness')
 class GdiContract(unittest.TestCase):
     def test_confirmed_failures_release_real_resources(self):
+        binaries.require_fresh('gdi', HARNESS)
         with tempfile.TemporaryDirectory(prefix='geometry-gdi-contract-') as directory:
             result = subprocess.run([HARNESS], cwd=directory, capture_output=True, timeout=30)
             log = result.stdout.decode('utf-8', errors='replace')

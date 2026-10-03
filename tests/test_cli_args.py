@@ -9,6 +9,10 @@ import subprocess
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
+try:
+    from tests import binaries
+except ModuleNotFoundError:
+    import binaries
 
 CORE = os.environ.get('GEOMETRY_TEST_CORE')
 
@@ -16,6 +20,7 @@ CORE = os.environ.get('GEOMETRY_TEST_CORE')
 @unittest.skipUnless(CORE, 'set GEOMETRY_TEST_CORE to a freshly compiled executable')
 class CliArgs(unittest.TestCase):
     def run_core(self, args, ok):
+        binaries.require_fresh('core', CORE)
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'result.svg'
             result = subprocess.run([CORE, '--no-window', '--out', str(output), *args],
