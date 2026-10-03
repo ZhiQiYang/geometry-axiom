@@ -39,7 +39,7 @@ class Generation(unittest.TestCase):
     def edit(self,value=None):
         a=self.instance();return {'op':'edit-instance','id':a['value']['source']['id'],'value':value or a['value']['source'],'expectedFingerprint':a['fingerprint'],'expectedBindingFingerprint':self.read()['state']['bindings'][0]['fingerprint']}
     def reject(self,ops,message,generation=True):
-        before=self.dump();r=self.request(ops,generation);self.assertTrue(r.get('ok'),r);self.assertFalse(r['preview']['valid'],r);self.assertIn(message,json.dumps(r,ensure_ascii=False));self.assertEqual(before,self.dump());self.assertFalse(self.command('assembly-confirm '+str(r['preview']['token']))['ok'])
+        before=self.dump();r=self.request(ops,generation);self.assertTrue(r.get('ok'),r);self.assertFalse(r['preview']['valid'],r);self.assertIn(message,'\n'.join(v.get('message','') for v in r['preview']['violations']));self.assertEqual(before,self.dump());self.assertFalse(self.command('assembly-confirm '+str(r['preview']['token']))['ok'])
     def test_preview_then_create_exact_three_native_timbers(self):
         before=self.dump();r=self.request([self.create()]);self.assertTrue(r['preview']['valid'],r);self.assertEqual(before,self.dump());self.assertEqual([],r['preview']['before']['instances'])
         self.assertEqual([2960,2960,1973],[m['geometry']['length'] for m in r['preview']['after']['instances'][0]['members']]);self.assertTrue(self.command('assembly-confirm '+str(r['preview']['token']))['ok'])
@@ -67,6 +67,16 @@ class Generation(unittest.TestCase):
     def test_unsupported_section_orientation_and_joint_topology(self):
         b=self.read()['state']['bindings'][0];v=deepcopy(b['value']);v['slots'][0]['orientation']='B';self.apply([{'op':'edit-binding','id':1,'expectedFingerprint':b['fingerprint'],'value':v}],False);self.reject([self.create()],'UNSUPPORTED')
         v=self.source();v['members'][0]['dir']='-v';self.reject([self.create(v)],'UNSUPPORTED')
+    def test_unselected_sources_report_i42_and_preserve_world_on_create_and_edit(self):
+        for edit in [False,True]:
+            if edit:self.apply([self.create()])
+            for field in ['surface','primary-guide','secondary-guide','start-support','finish-support']:
+                with self.subTest(edit=edit,field=field):
+                    value=deepcopy(self.instance()['value']['source']) if edit else self.source()
+                    if field=='surface':value['surfaceId']=0
+                    elif field.endswith('guide'):value['members'][2 if field=='secondary-guide' else 0]['guideId']=0
+                    else:value['members'][0]['ends'][field.split('-')[0]]['id']=0
+                    self.reject([self.edit(value) if edit else self.create(value)],'I42:')
     def test_owned_members_refuse_native_place_delete_dimensions_and_record_ingress(self):
         self.apply([self.create()]);tid=self.instance()['members'][0]['timberId'];before=self.dump()
         for c in [f'timber {tid} 40 50 role primary',f'place {tid} on 1 at-line guide 1 +v +n',f'delete timber {tid}',f'owned 1 1 timber {tid} 40 50 role primary']:

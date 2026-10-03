@@ -11,20 +11,24 @@ static bool asm_instance_parse(World *w,EngJson *j,int t,AsmInstance *a)
 {
     memset(a,0,sizeof *a);int r=eng_json_member(j,t,"rule"),m=eng_json_member(j,t,"members");
     if(!eng_json_keys(j,t,"id,name,bindingId,rule,surfaceId,members","")||!eng_u32(j,eng_json_member(j,t,"id"),&a->id,true)||!asm_name(j,eng_json_member(j,t,"name"),a->name)||
-       !eng_u32(j,eng_json_member(j,t,"bindingId"),&a->binding_id,true)||!eng_u32(j,eng_json_member(j,t,"surfaceId"),&a->surface_id,true)||
+       !eng_u32(j,eng_json_member(j,t,"bindingId"),&a->binding_id,true)||
        !eng_json_keys(j,r,"id,version,fingerprint","")||!eng_u32(j,eng_json_member(j,r,"id"),&a->rule_id,true)||!eng_u32(j,eng_json_member(j,r,"version"),&a->rule_version,true)||!asm_hash_token(j,eng_json_member(j,r,"fingerprint"),a->rule_hash)||
        !eng_json_is_array(j,m)||eng_json_size(j,m)!=3)return asm_error("D34/UNSUPPORTED: instance needs exactly three typed members and fixed sources");
+    if(!eng_u32(j,eng_json_member(j,t,"surfaceId"),&a->surface_id,true))return asm_error("I42: select a valid instance surface");
     const AsmRuleVersion *rule=assembly_rule(w,a->rule_id,a->rule_version);AsmBinding *binding=assembly_binding(w,a->binding_id);
     if(!rule||strcmp(rule->fingerprint,a->rule_hash)||!binding||binding->rule_id!=a->rule_id||binding->rule_version!=a->rule_version)return asm_error("I42: missing binding or mismatched fixed rule fingerprint/version");
     EngJson q;if(!eng_json_parse(&q,rule->content)){eng_json_free(&q);return false;}int members=eng_json_member(&q,0,"members"),joints=eng_json_member(&q,0,"joints");bool ok=eng_json_size(&q,members)==3&&eng_json_size(&q,joints)==2;int sec=-1,primary=0;
     for(int i=0;i<3&&ok;++i){int v=eng_json_at(j,m,i),e=eng_json_member(j,v,"ends");char role[16],dir[8],depth[8];
-        ok=eng_json_keys(j,v,"memberId,role,guideId,dir,depthSide,ends","")&&eng_u32(j,eng_json_member(j,v,"memberId"),&a->member[i],true)&&eng_u32(j,eng_json_member(j,v,"guideId"),&a->guide[i],true)&&
+        ok=eng_json_keys(j,v,"memberId,role,guideId,dir,depthSide,ends","")&&eng_u32(j,eng_json_member(j,v,"memberId"),&a->member[i],true)&&
            eng_json_string(j,eng_json_member(j,v,"role"),role,sizeof role)&&eng_json_string(j,eng_json_member(j,v,"dir"),dir,sizeof dir)&&eng_json_string(j,eng_json_member(j,v,"depthSide"),depth,sizeof depth)&&!strcmp(depth,"+n")&&eng_json_keys(j,e,"start,finish","");
-        if(!ok)break; a->secondary[i]=!strcmp(role,"secondary");if(a->secondary[i]){if(sec>=0)ok=false;sec=i;}else if(!strcmp(role,"primary"))++primary;else ok=false;
+        if(!ok)break;
+        if(!eng_u32(j,eng_json_member(j,v,"guideId"),&a->guide[i],true)){eng_json_free(&q);return asm_error("I42: member %u needs a valid selected guide",a->member[i]);}
+        a->secondary[i]=!strcmp(role,"secondary");if(a->secondary[i]){if(sec>=0)ok=false;sec=i;}else if(!strcmp(role,"primary"))++primary;else ok=false;
         if(strcmp(dir,a->secondary[i]?"+u":"+v"))ok=false;
         for(int k=0;k<i;++k)if(a->member[k]==a->member[i]||a->guide[k]==a->guide[i])ok=false;
         bool found=false;for(int k=0;k<3;++k){uint32_t id;if(eng_u32(&q,eng_json_member(&q,eng_json_at(&q,members,k),"id"),&id,true)&&id==a->member[i])found=true;}if(!found)ok=false;
-        for(int k=0;k<2&&ok;++k){int end=eng_json_member(j,e,k?"finish":"start");char kind[16];ok=eng_json_string(j,eng_json_member(j,end,"kind"),kind,sizeof kind)&&!strcmp(kind,a->secondary[i]?"member":"timber")&&eng_json_keys(j,end,a->secondary[i]?"kind,memberId":"kind,id","")&&eng_u32(j,eng_json_member(j,end,a->secondary[i]?"memberId":"id"),&a->ends[i][k],true);}
+        for(int k=0;k<2&&ok;++k){int end=eng_json_member(j,e,k?"finish":"start");char kind[16];ok=eng_json_string(j,eng_json_member(j,end,"kind"),kind,sizeof kind)&&!strcmp(kind,a->secondary[i]?"member":"timber")&&eng_json_keys(j,end,a->secondary[i]?"kind,memberId":"kind,id","");
+            if(ok&&!eng_u32(j,eng_json_member(j,end,a->secondary[i]?"memberId":"id"),&a->ends[i][k],true)){eng_json_free(&q);return asm_error("I42: member %u needs a valid selected %s support",a->member[i],k?"finish":"start");}}
     }
     if(sec<0||primary!=2)ok=false;
     for(int k=0;k<2&&ok;++k){int target=-1;for(int i=0;i<3;++i)if(a->member[i]==a->ends[sec][k]&&!a->secondary[i])target=i;if(target<0||a->ends[sec][0]==a->ends[sec][1]){ok=false;break;}
