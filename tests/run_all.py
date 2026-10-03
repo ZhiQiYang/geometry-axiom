@@ -75,6 +75,7 @@ PY_NEEDS = {
     'test_serve': [],
     'test_space_modeling': ['model-base'],
     'test_subgrid_contract': ['bridge'],
+    'test_timber_support_projection': [],
     'test_witness_diagnostics': [],
     'test_witness_marks': [],
 }
@@ -94,6 +95,7 @@ NODE_TEST_FILES = [
     'tests/test_room_outline.js',
     'tests/test_space_model_store.js',
     'tests/test_timber_schedule.js',
+    'tests/test_timber_supports.js',
 ]
 NODE_SCRIPT_FILE = 'tests/test_model_viewer.cjs'
 NODE_DOCUMENT_SCRIPT_FILES = {
