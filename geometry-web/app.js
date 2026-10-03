@@ -9409,36 +9409,43 @@ for (const b of document.querySelectorAll("[data-tool]"))
 /* undo / redo(§5.6) */
 async function doUndoRedo(verb) {
   if (oc.busy) { toast("操作進行中,請稍候"); return; }
-  const contextId = ReferenceWorkspace.context().id;
-  const actionLabel = ReferenceWorkspace.historyActionLabel?.(verb);
-  const successText = `${verb === "undo" ? "✓ 已復原" : "✓ 已重做"}${actionLabel ? `：${actionLabel}（可${verb === "undo" ? "重做" : "復原"}）` : ""}`;
-  clearCanvasSelections({keepSingleObject:true,keepSingleTimber:true});
-  const r = await api(`line ${verb}`);
-  if (ReferenceWorkspace.context().id !== contextId) clearCanvasSelections();
-  if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }
-  if (oc.on) {
-    await renderObjects();
-    const exists = f => f.t === "face"
-      ? oc.faces.some(o => o.kind === "boundary" && o.id === f.id)
-      : oc.spaces.some(o => o.id === f.id);
-    if (oc.focus && !exists(oc.focus)) {
-      /* Undo may remove the object currently being edited. Return to a live
-         ancestor (or the canvas), and discard its stale drawing and drafts. */
-      oc.stack = oc.stack.filter(exists);
-      $("faceEditorRoot").textContent = "";
-      $("faceInspectorContent").dataset.bid = "";
-      if (oc.sel && !ocFind(oc.sel.kind, oc.sel.id)) oc.sel = null;
-      await leaveFocus();
-      setStatus(successText);
-      return;
+  oc.busy = true;
+  document.body.classList.add("oc-busy");
+  try {
+    const contextId = ReferenceWorkspace.context().id;
+    const actionLabel = ReferenceWorkspace.historyActionLabel?.(verb);
+    const successText = `${verb === "undo" ? "✓ 已復原" : "✓ 已重做"}${actionLabel ? `：${actionLabel}（可${verb === "undo" ? "重做" : "復原"}）` : ""}`;
+    clearCanvasSelections({keepSingleObject:true,keepSingleTimber:true});
+    const r = await api(`line ${verb}`);
+    if (ReferenceWorkspace.context().id !== contextId) clearCanvasSelections();
+    if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }
+    if (oc.on) {
+      await renderObjects();
+      const exists = f => f.t === "face"
+        ? oc.faces.some(o => o.kind === "boundary" && o.id === f.id)
+        : oc.spaces.some(o => o.id === f.id);
+      if (oc.focus && !exists(oc.focus)) {
+        /* Undo may remove the object currently being edited. Return to a live
+           ancestor (or the canvas), and discard its stale drawing and drafts. */
+        oc.stack = oc.stack.filter(exists);
+        $("faceEditorRoot").textContent = "";
+        $("faceInspectorContent").dataset.bid = "";
+        if (oc.sel && !ocFind(oc.sel.kind, oc.sel.id)) oc.sel = null;
+        await leaveFocus();
+        setStatus(successText);
+        return;
+      }
+      /* 面內焦點:undo/redo 後 guide/timber/grid 快取與面板要重拉 */
+      if (oc.focus && oc.focus.t === "face") await feAfterChange();
+    } else {
+      await render();
+      await refreshSurfaces();
     }
-    /* 面內焦點:undo/redo 後 guide/timber/grid 快取與面板要重拉 */
-    if (oc.focus && oc.focus.t === "face") await feAfterChange();
-  } else {
-    await render();
-    await refreshSurfaces();
+    setStatus(successText);
+  } finally {
+    oc.busy = false;
+    document.body.classList.remove("oc-busy");
   }
-  setStatus(successText);
 }
 $("btnUndo").addEventListener("click", () => doUndoRedo("undo"));
 $("btnRedo").addEventListener("click", () => doUndoRedo("redo"));
