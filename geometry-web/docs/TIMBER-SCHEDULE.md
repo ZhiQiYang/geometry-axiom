@@ -37,7 +37,7 @@ CSV 匯出逐件相同資料，包含 typed timber/surface 身分、方向、定
 
 `tests/test_timber_schedule.js` 驗精確範圍、同尺寸不同身分、失效拒絕、單位／排序與 CSV 安全。
 `tests/test_reference_contract.py` 驗原生指紋只讀、排除畫布擺位、來源變動與 undo/redo。
-`geometry-web/timber_schedule_test.js` 是完整 `cdp_test.js` 的 P79 外掛，使用真原生服務與真 Chrome。
+`geometry-web/timber_schedule_test.js` 是完整 `cdp_test.js` 的 P80 外掛，使用真原生服務與真 Chrome。P79 保留給 #54 房間候選；整合時兩段均須保留。
 實際命令、計數與尚未驗項在 PR 與 BACKLOG 回填；測試存在本身不代表通過。
 獨立審查追加合法零號與延遲預驗負例：資料刷新、原生提交後尚未刷新、範圍／context改變，
 或錯誤讀回都拒絕導出；同時核對没有新增 CSV Blob，不只看提示與快取是否更新。

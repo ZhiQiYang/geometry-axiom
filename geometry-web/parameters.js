@@ -394,7 +394,7 @@ window.ParameterUI = (() => {
   }
 
   function invalidate(s) {
-    if (!current(s)) return;
+    if (!current(s) || s.busy) return;
     s.changed = true;
     s.generation++;
     if (s.preview) EngineeringAdapter.cancel({token: s.preview.token}).catch(() => {});
@@ -406,7 +406,7 @@ window.ParameterUI = (() => {
   }
   function capture(s) {
     const root = $('parameterEditor');
-    if (!root || !current(s)) return;
+    if (!root || !current(s) || s.busy) return;
     s.card.name = $('paramName').value;
     for (const row of root.querySelectorAll('[data-param-field]')) {
       const f = s.card.fields.find(f => f.id === Number(row.dataset.paramField));
@@ -536,9 +536,28 @@ window.ParameterUI = (() => {
       }
     }
   }
+  function lockConfirmation(s) {
+    const root = $('parameterEditor');
+    s.confirmRoot = root;
+    s.confirmControls = new Map();
+    if (!root) return;
+    root.setAttribute('aria-busy', 'true');
+    for (const control of root.querySelectorAll('button,input,select,textarea')) {
+      s.confirmControls.set(control, control.disabled);
+      control.disabled = true;
+    }
+  }
+  function unlockConfirmation(s) {
+    for (const [control, disabled] of s.confirmControls || []) control.disabled = disabled;
+    s.confirmRoot?.removeAttribute('aria-busy');
+    s.confirmControls = null;
+    s.confirmRoot = null;
+  }
   async function confirm(s) {
     if (!current(s) || s.busy || !s.preview?.valid) return;
     s.busy = true;
+    clearTimeout(timer);
+    lockConfirmation(s);
     const p = s.preview;
     status('正在套用…');
     try {
@@ -564,6 +583,8 @@ window.ParameterUI = (() => {
       }
     } finally {
       s.busy = false;
+      unlockConfirmation(s);
+      if (current(s) && $('paramConfirm')) $('paramConfirm').disabled = !s.preview?.valid;
     }
   }
 
@@ -680,6 +701,7 @@ window.ParameterUI = (() => {
   }
   function bindEditor(s, root) {
     root.addEventListener('input', e => {
+      if (s.busy) return;
       const target = e.target;
       if (target.matches('#paramName,[data-name],[data-type],[data-input]')) {
         capture(s);
@@ -703,12 +725,14 @@ window.ParameterUI = (() => {
       e.target.dataset.caretEnd = e.target.selectionEnd;
     });
     root.addEventListener('keydown', e => {
+      if (s.busy) return;
       if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229 && e.target.id === 'paramQuick') {
         e.preventDefault();
         applyQuick(s);
       }
     });
     root.addEventListener('click', e => {
+      if (s.busy) return;
       const button = e.target.closest('button');
       if (!button || !root.contains(button)) return;
       const row = button.closest('[data-param-field]');

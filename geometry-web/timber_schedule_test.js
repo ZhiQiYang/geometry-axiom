@@ -1,8 +1,8 @@
 /* Native source -> existing list/canvas selection -> exact CSV; part of full CDP. */
 const cdp=require('./cdp_helpers.js'),fs=require('fs'),path=require('path');
 module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount}){
- console.log('=== P79. 原生角材完成尺寸料單 ===');
- const check=cdp.makeCheck({prefix:'P79 '}),errors=exceptionCount();
+ console.log('=== P80. 原生角材完成尺寸料單 ===');
+ const check=cdp.makeCheck({prefix:'P80 '}),errors=exceptionCount();
  const ctl=async selector=>{
   const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('missing '+${JSON.stringify(selector)});e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y))};})()`);
   if(!p.hit)throw Error('Schedule control covered: '+selector);await click(p.x,p.y);await sleep(150);
@@ -46,6 +46,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  check('390px 可點料單並定位同一構件',await eval_(`fe.timberSelection.has(3)&&document.querySelector('[data-schedule-timber="3"]').getAttribute('aria-pressed')==='true'`));
  check('390px 控制大於44px且沒有橫向溢出',await eval_(`document.documentElement.scrollWidth<=innerWidth&&[...document.querySelectorAll('.timber-schedule-controls button,.timber-schedule-controls select,.timber-schedule-pick')].every(e=>e.getBoundingClientRect().height>=44)`));
  const out=process.env.GEOMETRY_SCHEDULE_SCREENSHOT_DIR || '/tmp/geometry47-screens';fs.mkdirSync(out,{recursive:true});
+ await waitForUI(`!document.querySelector('#toastRegion .toast')`,6000);
  fs.writeFileSync(path.join(out,'schedule-mobile.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
  await eval_(`openPanel('left',$('workspaceToggleLeft'));`);await sleep(100);

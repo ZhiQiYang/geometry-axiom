@@ -349,5 +349,6 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const elided=await explain(['[5:1 a.b] -> ... -> [5:3 a.d] -> I38 UNIT: unit mismatch']);
   const arrowName=await explain(['[7:1 甲 -> [5:2 乙.z] -> I38 DIV_ZERO: division by zero']);
   check('欄位歸屬只認分節開頭、錯誤碼只取根因段；名稱含 ` -> ` 寧可不歸屬',nested.fieldId===null&&trap.fieldId===2&&trap.short==='除以零'&&elided.fieldId===3&&elided.short==='單位不合'&&arrowName.fieldId===null,{nested,trap,elided,arrowName});
+  await require('./parameter_confirmation_test.js')({send,eval_,sleep,click,waitForUI,check});
   check('無未捕捉瀏覽器例外',exceptionCount()===errors);
 };
