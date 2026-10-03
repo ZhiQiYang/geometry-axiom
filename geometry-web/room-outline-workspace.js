@@ -13,6 +13,7 @@ const RoomOutlineWorkspace=(()=>{
   }
   function refresh(){if(oc.edit){drawFaceEditor();renderFaceInspector();document.getElementById('refOutlineDetails')?.setAttribute('open','');}W.present();}
   function notice(text){message=text;setStatus(text);refresh();}
+  function calibrated(){message='';}
   function reset(clear=true){generation++;picking=null;acquiring=null;draft=null;barriers=[];barrierStamp=null;options=null;message='';if(clear&&typeof fe!=='undefined'){fe.draft=PolyDraft.createState();fe.draftPreview=null;feSyncDraftMirror();feLenShow();}}
   function invalidate(){if((draft&&!draft.committing&&!current(draft))||(picking&&!current(picking))||(acquiring&&!current(acquiring))||(barrierStamp&&!current(barrierStamp))){reset();message='來源頁、校準／對位或原面已變更，舊候選已失效。請重新取得；正式面尺寸未縮放。';if(oc.edit){drawFaceEditor();renderFaceInspector();}}}
   window.addEventListener('project-info-changed',invalidate);
@@ -29,7 +30,7 @@ const RoomOutlineWorkspace=(()=>{
       if(fe.draft?.pts?.length&&!draft)throw Error('請先套用或取消人工外環草稿。');
       if(o.mode==='manual'&&mode==='room'){reset();feSetTool('redraw');if(innerWidth<=680)closePanels();return;}
       generation++;draft=null;acquiring=null;fe.draft=PolyDraft.createState();fe.draftPreview=null;feSyncDraftMirror();feSetTool('redraw');options=o;picking={...s,mode,down:null,move:null};
-      message=mode==='room'?'點房間內空白處，或拖框選目標範圍；框選只限搜尋範圍，不會建立矩形。':`依兩端明確畫出${mode==='horizontal'?'水平':'垂直'}分隔；不會寫入正式面。`;
+      message=mode==='room'?'點房間內空白處，或拖框限縮來源取景內的搜尋範圍；不受既有外環裁切，框選不會建立矩形。':`依兩端明確畫出${mode==='horizontal'?'水平':'垂直'}分隔；不會寫入正式面。`;
       refresh();if(innerWidth<=680)closePanels();document.getElementById('faceEditorViewport').focus();
     }catch(e){notice(e.message);}
   }
@@ -97,7 +98,7 @@ const RoomOutlineWorkspace=(()=>{
       fe.draft={...PolyDraft.createState(),pts:integer.points};fe.draftPreview=null;feSyncDraftMirror();
       message='候選尚未提交；請疊圖核對、修正頂點與尺寸，再確認。';refresh();
       if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));
-    }catch(e){if(ticket===generation&&sourceCurrent(s)){draft=null;notice('未取得候選：'+e.message);if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));}}
+    }catch(e){if(ticket===generation&&sourceCurrent(s)){acquiring=null;draft=null;notice('未取得候選：'+e.message);if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));}}
     finally {if(ticket===generation){acquiring=null;W.present();}}
   }
   function editPoints(points,dimensions=[]) {
@@ -108,14 +109,15 @@ const RoomOutlineWorkspace=(()=>{
   function paneHTML(bid) {
     const p=W.active(bid);if(!p)return '';
     const pdf=W.context().sources.get(p.sourceId)?.meta.type==='application/pdf',o=options||{mode:'auto',minWidth:pdf?1:2,minLength:pdf?8:24};
-    let html=`<details id="refOutlineDetails" class="ref-section"${draft||picking||message?' open':''}><summary>房間輪廓候選與人工修正</summary><p id="refRoomStatus" role="status">${esc(message||'先校準，選房間內空白處；候選須核對室內淨輪廓。')}</p>`;
+    const needsOutline=p.calibration&&W.reconstructionState(bid)!=='confirmed';
+    let html=`<details id="refOutlineDetails" class="ref-section"${needsOutline||draft||picking||message?' open':''}><summary>房間輪廓候選與人工修正</summary><p id="refRoomStatus" role="status">${esc(message||(p.calibration?'搜尋來源取景範圍，不受既有外環裁切。選房間取得候選，核對後替換目前面的外環；也可選人工描繪。':'先校準，選房間內空白處；候選須核對室內淨輪廓。'))}</p><button id="refFit" type="button" class="btn">顯示取景範圍</button>`;
     html+=W.reconstructionStatusHTML(bid);
     html+=`<label class="ib-row">取得方式<select id="refRoomMethod"><option value="auto"${o.mode==='auto'?' selected':''}>${pdf?'PDF 原始向量優先':'本地影像輔助'}</option><option value="image"${o.mode==='image'?' selected':''}>本地影像輔助</option><option value="manual"${o.mode==='manual'?' selected':''}>人工逐點描繪</option></select></label><div class="place-form"><label>線寬至少（${pdf?'頁面單位':'原圖 px'}）<input id="refRoomMinWidth" type="number" min="0.01" step="any" value="${o.minWidth}"></label><label>最短線（${pdf?'頁面單位':'原圖 px'}）<input id="refRoomMinLength" type="number" min="1" step="any" value="${o.minLength}"></label></div><button id="refRoomPick" class="btn" type="button"${p.calibration?'':' disabled'}>在圖上選房間／框選重取</button>`;
     html+=`<details class="ref-section"><summary>缺口與連通房間：明確分隔後重取</summary><div class="ref-actions"><button id="refRoomHorizontal" class="btn" type="button">畫水平分隔</button><button id="refRoomVertical" class="btn" type="button">畫垂直分隔</button><button id="refRoomClearBarriers" class="btn" type="button">清除分隔（${barriers.length}）</button></div></details>`;
     if(pending(bid)) {
       const pts=fe.draft.pts;
-      html+=`<section id="refRoomCandidate"><strong>待核對候選 · ${draft.method==='pdf-vector'?'PDF 原始向量內緣推估':'影像暗線內緣推估'}</strong><p>轉成整數 mm 最大座標偏差 ${draft.deviation.toFixed(4)} mm。圖上標註尺寸不會自動入值。</p><ul>${draft.warnings.map(w=>`<li>${esc(w)}</li>`).join('')}</ul><ol data-room-dimensions>${pts.map((a,i)=>{const b=pts[(i+1)%pts.length];return `<li>邊 ${i+1}：擬提交 ${Math.abs(b[0]-a[0])+Math.abs(b[1]-a[1])} mm${draft.dimensions.some(d=>d.edge===i)?'（人工核對入值）':''}</li>`;}).join('')}</ol><div class="place-form"><label>核對邊<select id="refRoomEdge">${pts.map((_,i)=>`<option value="${i}">邊 ${i+1}</option>`).join('')}</select></label><label>圖上標註／核對尺寸（mm）<input id="refRoomLength" type="number" min="1" step="1"></label></div><button id="refRoomSetLength" class="btn" type="button">將核對尺寸寫入候選</button><details class="ref-section"><summary>局部補點／凹口與頂點修正</summary><label>沿外環順序輸入 u,v（mm）；可插入凹口與補邊<textarea id="refRoomVertices" rows="6" spellcheck="false">${esc(pts.map(p=>p.join(',')).join('\n'))}</textarea></label><button id="refRoomApplyVertices" class="btn" type="button">更新候選頂點</button></details><label class="ib-row"><input id="refRoomReviewed" type="checkbox"${draft.reviewed?' checked':''}> 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告</label><div class="ref-actions"><button id="refRoomConfirm" class="btn primary" type="button"${draft.reviewed?'':' disabled'}>確認輪廓，交核心驗證</button><button id="refRoomCancel" class="btn" type="button">取消候選</button></div></section>`;
-    } else if(picking)html+='<button id="refRoomCancel" class="btn" type="button">取消取點</button>';
+      html+=`<section id="refRoomCandidate"><strong>待核對候選 · ${draft.method==='pdf-vector'?'PDF 原始向量內緣推估':'影像暗線內緣推估'}</strong><p>確認將替換目前面 #${bid} 的外環；取消保留原面，確認後可復原。轉成整數 mm 最大座標偏差 ${draft.deviation.toFixed(4)} mm。圖上標註尺寸不會自動入值。</p><ul>${draft.warnings.map(w=>`<li>${esc(w)}</li>`).join('')}</ul><ol data-room-dimensions>${pts.map((a,i)=>{const b=pts[(i+1)%pts.length];return `<li>邊 ${i+1}：擬提交 ${Math.abs(b[0]-a[0])+Math.abs(b[1]-a[1])} mm${draft.dimensions.some(d=>d.edge===i)?'（人工核對入值）':''}</li>`;}).join('')}</ol><div class="place-form"><label>核對邊<select id="refRoomEdge">${pts.map((_,i)=>`<option value="${i}">邊 ${i+1}</option>`).join('')}</select></label><label>圖上標註／核對尺寸（mm）<input id="refRoomLength" type="number" min="1" step="1"></label></div><button id="refRoomSetLength" class="btn" type="button">將核對尺寸寫入候選</button><details class="ref-section"><summary>局部補點／凹口與頂點修正</summary><label>沿外環順序輸入 u,v（mm）；可插入凹口與補邊<textarea id="refRoomVertices" rows="6" spellcheck="false">${esc(pts.map(p=>p.join(',')).join('\n'))}</textarea></label><button id="refRoomApplyVertices" class="btn" type="button">更新候選頂點</button></details><label class="ib-row"><input id="refRoomReviewed" type="checkbox"${draft.reviewed?' checked':''}> 已逐邊核對室內淨範圍、連通關係、尺寸及上述修整／警告</label><div class="ref-actions"><button id="refRoomConfirm" class="btn primary" type="button"${draft.reviewed?'':' disabled'}>確認替換外環，交核心驗證</button><button id="refRoomCancel" class="btn" type="button">取消候選</button></div></section>`;
+    } else if(picking||acquiring)html+=`<button id="refRoomCancel" class="btn" type="button">${acquiring?'取消辨識':'取消取點'}</button>`;
     return html+'</details>';
   }
   function bindPane(pane,bid) {
@@ -159,7 +161,7 @@ const RoomOutlineWorkspace=(()=>{
       else el('line',{x1:a[0],y1:a[1],x2:picking.mode==='horizontal'?b[0]:a[0],y2:picking.mode==='horizontal'?a[1]:b[1],stroke:'#d78532','stroke-width':3/fe.zoom,'pointer-events':'none'},root);
     }
   }
-  return {pending,isPicking,start,down,move,up,paneHTML,bindPane,beforeCommit,afterCommit,draw,cancel,reset,invalidate,
+  return {pending,isPicking,start,down,move,up,paneHTML,bindPane,beforeCommit,afterCommit,draw,cancel,reset,invalidate,calibrated,
     get hasWork(){return !!(draft||picking||acquiring);},
     snapshot:()=>draft?structuredClone({...draft,points:fe.draft.pts}):null};
 })();

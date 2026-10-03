@@ -5,7 +5,7 @@
  */
 'use strict';
 module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitForUI,exceptionCount}) {
-  const H=require('./cdp_helpers.js'),{shapes,pdf}=require('../tests/room_outline_fixture.js');
+  const H=require('./cdp_helpers.js'),{shapes,pdf,calibrationRegressionPDF}=require('../tests/room_outline_fixture.js');
   const check=H.makeCheck({prefix:'P79 ',throwOnFail:true}),read=H.makeRead(eval_);
   const key=H.makeKey({send,sleep}),capture=H.makeShot(send,['GEOMETRY_ROOM_SCREENSHOT_DIR']);
   async function shot(name) {
@@ -29,11 +29,11 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   async function facePoint(x,y){const p=await read(`(()=>{const r=$('faceEditorSvg').getBoundingClientRect();return {x:r.left+fe.panX+${x}*fe.zoom,y:r.top+fe.panY+${y}*fe.zoom};})()`);await inputClick(p.x,p.y);}
   async function sourcePoint(x,y){const p=await read(`feUlImgToMm(ReferenceWorkspace.active(1),${x},${y})`);await facePoint(...p);}
   async function sourceDrag(a,b){const coords=await read(`(()=>{const p=ReferenceWorkspace.active(1),r=$('faceEditorSvg').getBoundingClientRect();return ${JSON.stringify([a,b])}.map(v=>{const m=feUlImgToMm(p,...v);return [r.left+fe.panX+m[0]*fe.zoom,r.top+fe.panY+m[1]*fe.zoom];});})()`);operations++;await drag(...coords[0],...coords[1]);await sleep(80);}
-  async function setup({page=1,image=false,shape=0,calibrate=true,scenario=''}={}) {
+  async function setup({page=1,image=false,shape=0,calibrate=true,scenario='',enlarged=false}={}) {
     await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
-    await read(`(async()=>{resetSceneFocus();await api('reset');await api('line boundary 1 outline 0,0 3000,0 3000,2000 0,2000');await renderObjects();await enterFocus('face',1);fiShowTab('underlay');})()`);
+    await read(`(async()=>{resetSceneFocus();await api('reset');await api('line boundary 1 outline 0,0 ${enlarged?'4000,0 4000,3000 0,3000':'3000,0 3000,2000 0,2000'}');await renderObjects();await enterFocus('face',1);fiShowTab('underlay');})()`);
     if(image)await read(`(async()=>{const c=document.createElement('canvas');c.width=280;c.height=190;const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,280,190);ctx.strokeStyle='#000';ctx.lineWidth=4;ctx.beginPath();${shapes[shape].points.map((p,i)=>`ctx.${i?'lineTo':'moveTo'}(${p});`).join('')}ctx.closePath();ctx.stroke();ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(15,10);ctx.lineTo(265,10);ctx.stroke();ctx.setLineDash([2,2]);ctx.beginPath();ctx.moveTo(15,20);ctx.lineTo(15,170);ctx.stroke();ctx.setLineDash([]);ctx.lineWidth=2;ctx.beginPath();ctx.arc(170,120,15,0,Math.PI/2);ctx.stroke();ctx.font='10px sans-serif';ctx.fillStyle='#000';ctx.fillText('public fixture',70,65);ctx.fillStyle='#fff';${scenario==='gap'?"ctx.fillRect(100,27,50,6);":scenario==='neighbor'?"ctx.lineWidth=4;ctx.strokeRect(230,70,40,80);ctx.fillRect(227,90,6,20);":''}const blob=await new Promise(r=>c.toBlob(r));window.roomSource=await ReferenceWorkspace.sourceFromFile(new File([blob],'public-${shapes[shape].name}${scenario?'-'+scenario:''}.png',{type:'image/png'}));await ReferenceWorkspace.openSource(roomSource,1);})()`);
-    else await read(`(async()=>{window.roomSource=await ReferenceWorkspace.sourceFromFile(new File([Uint8Array.from(atob(${JSON.stringify(pdf().toString('base64'))}),c=>c.charCodeAt(0))],'public-rooms.pdf',{type:'application/pdf'}));await ReferenceWorkspace.openSource(roomSource,1);})()`);
+    else await read(`(async()=>{window.roomSource=await ReferenceWorkspace.sourceFromFile(new File([Uint8Array.from(atob(${JSON.stringify((enlarged?calibrationRegressionPDF():pdf()).toString('base64'))}),c=>c.charCodeAt(0))],'public-rooms.pdf',{type:'application/pdf'}));await ReferenceWorkspace.openSource(roomSource,1);})()`);
     if(!image&&page!==1){await fill('#refPageNumber',page);await until(`!$('refApply').disabled&&$('refPagePreview').querySelector('img')?.alt==='第 ${page} 頁預覽'`);}
     await ctl('#refApply');await until(`!$('referenceDialog').open&&!!ReferenceWorkspace.active(1)`);
     if(calibrate){await ctl('#ulCalibStart');await sourcePoint(30,30);await sourcePoint(...(!image&&page===4?[30,230]:[230,30]));await fill('#ulCalibDist',2000);await ctl('#ulCalibApply');await until(`Math.abs(ReferenceWorkspace.active(1).mmPerPx-10)<.001`);}
@@ -91,6 +91,7 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   await setup({image:true,scenario:'gap'});if(!await read(`$('refOutlineDetails').open`))await ctl('#refOutlineDetails > summary');
   operations=0;const failureBegin=Date.now();await propose();
   check('open doorway fails visibly and leaves default geometry unchanged',await read(`!RoomOutlineWorkspace.pending(1)&&$('refRoomStatus').textContent.includes('未取得候選')&&$('refRoomStatus').textContent.includes('未補牆')`)&&JSON.stringify(await nativePoints())===original);await shot('open-doorway-failure');
+  check('failed acquisition clears busy state and its cancel control before rendering failure',await read(`!RoomOutlineWorkspace.hasWork&&!$('refRoomCancel')&&$('refRoomStatus').textContent.includes('未取得候選')&&!$('refRoomPick').disabled`)&&JSON.stringify(await nativePoints())===original);
   const rectangle=shapes[0].inside.map(v=>v.map(n=>n*10));await manualBaseline(rectangle);
   check('failed acquisition has a real manual fallback to the same reviewed room',normalized(await nativePoints())===normalized(rectangle)&&await read(`ReferenceWorkspace.reconstructionState(1)==='confirmed'`));
   const fallback={actions:operations,elapsedMs:Date.now()-failureBegin};await setup({image:true,scenario:'gap'});if(!await read(`$('refOutlineDetails').open`))await ctl('#refOutlineDetails > summary');
@@ -179,5 +180,39 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   await read(`(async()=>{const c=document.createElement('canvas');c.width=280;c.height=190;const blob=await new Promise(r=>c.toBlob(r));window.roomReplacement=await ReferenceWorkspace.sourceFromFile(new File([blob],'public-replacement.png',{type:'image/png'}));await ReferenceWorkspace.openSource(roomReplacement,1);})()`);await ctl('#refApply');await until(`!$('referenceDialog').open&&!RoomOutlineWorkspace.hasWork`);
   check('source replacement invalidates draft and never transfers old completion',await read(`!RoomOutlineWorkspace.hasWork&&ReferenceWorkspace.active(1).sourceId===roomReplacement.meta.id&&!ReferenceWorkspace.active(1).calibration&&ReferenceWorkspace.reconstructionState(1)==='unreviewed'`)&&JSON.stringify(await nativePoints())===original);
   await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+  // Reproduce the reported 4000 x 3000 ring covering only the legend after 323.5 cm calibration.
+  await setup({enlarged:true,calibrate:false});
+  const enlargedOriginal=await read(`api('dump').then(r=>r.text)`);
+  await ctl('#ulCalibStart');await sourcePoint(220,150);await sourcePoint(320,150);
+  await fill('#ulCalibDist',323.5);await select('#ulCalibUnit','cm');await ctl('#ulCalibApply');
+  await until(`ReferenceWorkspace.active(1).calibration?.distanceMm===3235`);
+  check('323.5 cm calibration expands only PDF while preserving exact native scene',await read(`api('dump').then(r=>r.text)`)===enlargedOriginal&&await read(`Math.abs(ReferenceWorkspace.active(1).mmPerPx-32.35)<1e-8&&ReferenceWorkspace.reconstructionState(1)==='unreviewed'`));
+  check('calibration exposes room choice and the single relocated crop-fit control',await read(`$('refOutlineDetails').open&&$('refDrawOutline').textContent.includes('選房間')&&document.querySelectorAll('#refFit').length===1&&$('refFit').closest('#refOutlineDetails')!==null&&$('refRoomStatus').textContent.includes('不受既有外環裁切')`));
+  await shot('calibrated-legend-before-fit');
+  await ctl('#refFit');
+  check('crop-fit reaches room beyond existing ring without changing World',await read(`(()=>{const p=ReferenceWorkspace.active(1),m=feUlImgToMm(p,270,200),r=$('faceEditorSvg').getBoundingClientRect(),x=fe.panX+m[0]*fe.zoom,y=fe.panY+m[1]*fe.zoom;return x>0&&x<r.width&&y>0&&y<r.height;})()`)&&await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
+  await ctl('#refDrawOutline');await sourcePoint(270,200);await until(`!!RoomOutlineWorkspace.snapshot()`);
+  // Independently authored inside-corner oracle; no production-derived expected points.
+  const enlargedExpected=[[222,152],[418,152],[418,298],[322,298],[322,248],[222,248]].map(v=>v.map(n=>Math.round(n*32.35)));
+  check('PDF room beyond old outer ring yields exact six-corner candidate, not crop rectangle',normalized((await read(`RoomOutlineWorkspace.snapshot()`)).points)===normalized(enlargedExpected)&&await read(`RoomOutlineWorkspace.snapshot().method==='pdf-vector'&&RoomOutlineWorkspace.snapshot().crop.join(',')==='0,0,600,400'`)&&await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
+  check('pending candidate states replacement and keeps confirmation gated by review',await read(`$('refRoomCandidate').textContent.includes('替換目前面 #1 的外環')&&$('refRoomConfirm').textContent.includes('確認替換外環')&&$('refRoomConfirm').disabled`));
+  await shot('calibrated-room-candidate');await ctl('#refRoomCancel');
+  check('cancel of enlarged room preserves exact native scene and unreviewed state',await read(`api('dump').then(r=>r.text)`)===enlargedOriginal&&await read(`!RoomOutlineWorkspace.hasWork&&ReferenceWorkspace.reconstructionState(1)==='unreviewed'`));
+  await read(`(async()=>{const page=await roomSource.doc.getPage(1),original=page.getOperatorList.bind(page),gate=new Promise(r=>window.enlargedRelease=r);page.getOperatorList=async options=>{const result=await original(options);window.enlargedHeld=true;await gate;window.enlargedHeld=false;return result;};window.enlargedRestore=()=>{page.getOperatorList=original;};})()`);
+  await ctl('#refRoomPick');await sourcePoint(270,200);await until(`window.enlargedHeld===true`);
+  await ctl('#refRoomCancel');await read(`enlargedRelease()`);await until(`window.enlargedHeld===false`);await sleep(200);
+  check('visible cancel during PDF acquisition prevents late candidate revival',await read(`!RoomOutlineWorkspace.hasWork&&!RoomOutlineWorkspace.snapshot()`)&&await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
+  await read(`enlargedRestore()`);await propose([270,200]);await commit();
+  check('confirmation replaces one existing ring through native validation',normalized(await nativePoints())===normalized(enlargedExpected)&&await read(`Object.keys(oc.bmap).length===1&&ReferenceWorkspace.reconstructionState(1)==='confirmed'`));
+  await key('z','KeyZ',90,2);await until(`ReferenceWorkspace.reconstructionState(1)==='unreviewed'`);
+  check('actual undo restores original rectangle and source review state',await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
+  await key('y','KeyY',89,2);await until(`ReferenceWorkspace.reconstructionState(1)==='confirmed'`);
+  check('actual redo restores calibrated room and its source-bound receipt',normalized(await nativePoints())===normalized(enlargedExpected));
+  const enlargedBytes=await read(`ReferenceWorkspace.exportBytes().then(b=>Array.from(b))`),enlargedMarker='enlarged-room-'+Date.now();
+  await send('Page.addScriptToEvaluateOnNewDocument',{source:`window.__cdpExpectedNavigationMarker=${JSON.stringify(enlargedMarker)}`});await send('Page.reload',{ignoreCache:true});
+  await require('./cdp_navigation.js').waitForExpectedNavigation({evaluate:read,marker:enlargedMarker,condition:`typeof api==='function'&&typeof connection==='object'&&connection.phase==='ready'`,label:'P79 calibrated room reopen',timeout:20000});
+  await read(`(async()=>{await ReferenceWorkspace.importBytes(new Uint8Array(${JSON.stringify(enlargedBytes)}));await enterFocus('face',1);fiShowTab('underlay');})()`);
+  check('save and real reload/reopen retain enlarged concave room, calibration and completion',normalized(await nativePoints())===normalized(enlargedExpected)&&await read(`ReferenceWorkspace.active(1).calibration.inputValue===323.5&&ReferenceWorkspace.active(1).calibration.inputUnit==='cm'&&ReferenceWorkspace.reconstructionState(1)==='confirmed'`));
+  await shot('calibrated-room-reopened');
   check('new workflow has no uncaught browser exceptions',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
 };
