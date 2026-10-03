@@ -17,13 +17,18 @@ ROOT = Path(__file__).resolve().parents[1]
 def _reference_with_projection(reference, projection):
     include = '#include "timber_support_projection.inc"'
     target = f'#include "{Path(projection).as_posix()}"'
-    call = '    json_timber_supports(&g_world,fingerprint);'
+    calls = ['    json_timber_supports(&g_world,fingerprint);',
+             '    json_timber_supports(w,fingerprint);']
+    pure = 'static void json_references_world(const World *w,const char *fingerprint)'
+    call = calls[1] if pure in reference else calls[0]
     supports = '    fputs("],\\\"timberSupports\\\":",stdout);'
     specs = '    fputs(",\\\"specs\\\":[",stdout);'
     if include in reference:
         assert reference.count(include) == 1, 'Duplicate support projection include'
         assert all(reference.count(hook) == 1 for hook in [call, supports, specs]), \
             'Integrated reference support hooks changed'
+        assert sum(reference.count(hook) for hook in calls) == 1, \
+            'Duplicate support projection call'
         return reference.replace(include, target)
     assert call not in reference and supports not in reference, \
         'Partially integrated reference support hooks'
