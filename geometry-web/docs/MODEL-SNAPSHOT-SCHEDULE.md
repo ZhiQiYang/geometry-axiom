@@ -2,7 +2,7 @@
 
 這個切片沿用 D1/D12、既有模型保存與原生角材料單契約，不修改公理或保存格式。
 計量對象是一個已保存、通過既有模型驗證的紀錄內明選 `input.timbers`。
-每個 typed timber ID 在該保存來源 World 中只計一次；兩個相同尺寸但不同放置的角材仍是兩件。
+每個 typed timber ID 在該保存來源 World 中只計一次；兩個相同尺寸但不同 typed 根的角材仍是兩件。
 不加入來源場景裡未明選的角材，不把現行 World 或另一個模型的表示相加。
 
 ## 原生資料與雜湊領域
@@ -36,6 +36,8 @@ World、同一個 canonical `sourceFingerprint`，並帶該 World 的原生截�
 保存模型引擎目前不接受 assembly-owned 場景：既有 modeling capability／definition
 whitelist 明確拒絕。原生 snapshot 的 owned projection 可以独立核對，但不能製造
 已保存 owned 模型正例或剝除能力／provenance 通過模型驗證；此限制另列缺口。
+現有 `faces` 模型 producer 也拒絕 `timbers` 設定；不假造跨承載面保存模型正例。
+合法 plan 模型中，同面兩個不同原點的明選角材可由真 producer 建立，仍逐件保留。
 
 ## 既有模型庫接線與匯出
 
