@@ -22,11 +22,15 @@ const deferred=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {
     check('selected face uses existing inspector with native relationships',await detail.getByText('修改可能涉及（未試算）',{exact:true}).isVisible()&&(await detail.innerText()).includes('timber:0'));
     assert.deepEqual(await state(),before);check('readonly inspection preserves dump dirty revision history and models',true);
     await detail.locator('[data-source-path="timber:0"]').click();
-    check('bounded path expansion displays ID0 and support unknown',(await detail.innerText()).includes('timber:0')&&(await detail.innerText()).includes('求值支撐身分：未知'));
+    check('bounded path expansion displays ID0 with actual native endpoints without asserting global continuity',(await detail.innerText()).includes('timber:0')&&await detail.locator('[data-source-support-status="exact"]').count()===2&&(await detail.innerText()).includes('物件延續性仍未知'));
     await page.screenshot({path:path.join(output,'desktop.png')});
     await detail.locator('[data-source-path="placement:1"]').click();
     await detail.locator('[data-source-locate="timber:0"]').click();await page.waitForFunction(()=>oc.edit?.bid===1&&fe.sel?.kind==='timber'&&fe.sel.id===0);
     check('actual ID0 source navigation selects timber and preserves core history dirty',(await state()).scene===before.scene&&(await state()).undo===before.undo&&(await state()).project.dirty===before.project.dirty);
+    detail=await open('#faceInspectorContent');
+    await page.evaluate(async()=>{const r=await apiRequest('line spec readonly_guard 13');if(!r.ok)throw Error(r.error);});
+    await detail.locator('[data-source-path="placement:1"]').click();
+    check('stale path expansion refuses to repaint captured native relationships',(await detail.innerText()).includes('來源已變更，請重新檢查')&&await detail.locator('[data-source-support-status="exact"]').count()===0);
     // Build one real saved model through the established source/preview/create flow.
     await page.evaluate(async()=>{selectObject('boundary',1);await enterFocus('face',1);});
     await page.evaluate(()=>SpaceModelWorkspace.openCurrentFace());await page.waitForFunction(()=>SpaceModelWorkspace.snapshot().phase==='ready');
@@ -78,6 +82,41 @@ const deferred=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {
     await detail.locator('[data-source-locate="parameter-field:0:f0"]').click();
     await page.waitForFunction(()=>oc.sel?.kind==='parameter'&&oc.sel.id===0&&document.activeElement.closest('[data-param-field]')?.dataset.paramField==='0');
     check('actual native parameter field zero navigation preserves definitions and history',(await state()).scene===parameterBefore.scene&&(await state()).undo===parameterBefore.undo);
+    // Actual three-member assembly; source support ID0 remains covered above,
+    // while this existing finite generator requires positive selected support IDs.
+    await page.evaluate(async()=>{
+      await ReferenceWorkspace.newProject();for(const cmd of ['surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
+        'timber 90 20 20 role boundary','place 90 on 1 at-face e0 +u +n','timber 91 20 20 role boundary','place 91 on 1 at-face e2 +u +n',
+        'spec pos1 500','guide 1 1 v spec:pos1','spec pos2 2500','guide 2 1 v spec:pos2','spec pos3 1500','guide 3 1 u spec:pos3']){let r=await apiRequest('line '+cmd);if(r.preview?.valid)r=await apiRequest('line confirm '+r.preview.token);if(!r.ok)throw Error(JSON.stringify(r));}
+      const rule={id:1,version:1,name:'native support source',slots:[{id:1,name:'主支'},{id:2,name:'副支'}],members:[{id:1,slotId:1},{id:2,slotId:1},{id:3,slotId:2}],joints:[
+        {id:1,kind:'end-to-side',scope:'left',terminatedMember:3,targetMember:1,end:'start',side:'+u',dir:'u'},
+        {id:2,kind:'end-to-side',scope:'right',terminatedMember:3,targetMember:2,end:'finish',side:'-u',dir:'u'}]};
+      const binding={id:1,name:'native material',rule:{id:1,version:1},slots:[1,2].map(slotId=>({slotId,A:{kind:'literal',value:27},B:{kind:'literal',value:33},contactFace:'A',orientation:'A'}))};
+      async function apply(url,schema,operations){const read=await apiRequest('assembly-read'),r=await (await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({schema,expectedRevision:read.revision,operations})})).json();if(!r.preview?.valid)throw Error(JSON.stringify(r));const c=await apiRequest('assembly-confirm '+r.preview.token);if(!c.ok)throw Error(JSON.stringify(c));}
+      await apply('/assembly/preview','assembly-transaction/1',[{op:'publish-rule',value:rule},{op:'create-binding',value:binding}]);
+      const state=(await apiRequest('assembly-read')).state,source={id:1,name:'three native members',bindingId:1,rule:{id:1,version:1,fingerprint:state.rules[0].fingerprint},surfaceId:1,members:[1,2,3].map(memberId=>({memberId,role:memberId<3?'primary':'secondary',guideId:memberId,dir:memberId<3?'+v':'+u',depthSide:'+n',ends:memberId<3?{start:{kind:'timber',id:91},finish:{kind:'timber',id:90}}:{start:{kind:'member',memberId:1},finish:{kind:'member',memberId:2}}}))};
+      await apply('/assembly/generate-preview','assembly-generation-transaction/1',[{op:'create-instance',value:source,expectedBindingFingerprint:state.bindings[0].fingerprint}]);
+      const instance=(await apiRequest('assembly-read')).state.instances[0];window.__f1aOwnedTimber=instance.members.find(m=>m.memberId===3).timberId;
+      await renderObjects();selectObject('boundary',1);await enterFocus('face',1);await feLoadGuides();feSelectTimber(__f1aOwnedTimber);
+    });
+    detail=await open('#faceInspectorContent');const ownedBefore=await state();
+    check('actual owned endpoints display B0 B1 exact member owner and fixed rule versions',(await detail.innerText()).includes('／B0')&&(await detail.innerText()).includes('／B1')&&(await detail.innerText()).includes('member 1')&&(await detail.innerText()).includes('member 2')&&(await detail.innerText()).includes('規則 1 固定 v1')&&await detail.locator('[data-source-support-status="exact"]').count()===2);
+    assert.deepEqual(await state(),ownedBefore);check('owned source disclosure is readonly in actual World and history',true);
+    await page.screenshot({path:path.join(output,'owned-support-desktop.png')});await page.setViewportSize({width:390,height:844});await page.evaluate(()=>openPanel('right',$('workspaceToggleRight')));
+    check('390px owned support disclosure remains accessible and does not overflow',await detail.locator('[data-source-support-status="exact"]').first().isVisible()&&await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    await page.screenshot({path:path.join(output,'owned-support-390.png')});await page.setViewportSize({width:1280,height:900});
+    await page.evaluate(()=>{window.__f1aOriginalApi=apiRequest;window.__f1aBlobCount=0;window.__f1aOriginalBlob=URL.createObjectURL;URL.createObjectURL=function(...args){__f1aBlobCount++;return __f1aOriginalBlob.apply(this,args);};});
+    try{
+      for(const mutation of ['instanceFingerprint','memberId','ruleVersion','missingTimber','surface','staleHash']){
+        await page.evaluate(mutation=>{apiRequest=async function(command,...args){const result=await __f1aOriginalApi(command,...args);if(command!=='source-inspect')return result;const data=structuredClone(result),entry=data.timberSupports.entries.find(e=>e.id===__f1aOwnedTimber),r=entry.start.relation;
+          if(mutation==='missingTimber')r.source.id=999999;else if(mutation==='surface')entry.surface=0;else if(mutation==='staleHash')data.timberSupports.sourceFingerprint='a'.repeat(64);else r.owner[mutation]=mutation==='instanceFingerprint'?'a'.repeat(64):999999;return data;};},mutation);
+        await detail.locator('[data-source-refresh]').click();await detail.locator('[data-source-body]').filter({hasText:/無法核對|版本不一致/}).waitFor();
+        check('corrupt native support '+mutation+' refuses confirmed presentation and creates no Blob',await detail.locator('[data-source-support-status="exact"]').count()===0&&await page.evaluate(()=>__f1aBlobCount===0));
+        assert.deepEqual(await state(),ownedBefore);
+      }
+      await page.evaluate(()=>{apiRequest=__f1aOriginalApi;});await detail.locator('[data-source-refresh]').click();await detail.locator('[data-source-support-status="exact"]').first().waitFor();
+      check('restoring authoritative data restores endpoint display without mutation or export',await detail.locator('[data-source-support-status="exact"]').count()===2&&await page.evaluate(()=>__f1aBlobCount===0));
+    }finally{await page.evaluate(()=>{apiRequest=__f1aOriginalApi;URL.createObjectURL=__f1aOriginalBlob;delete window.__f1aOriginalApi;delete window.__f1aOriginalBlob;});}
     check('no relevant console or page errors',errors.length===0);
     console.log(JSON.stringify({passed,failed:0,url,viewports:[1280,390],browser:'Chromium/Playwright; Browser plugin unavailable',screenshots:output}));
   }finally{await browser.close();}

@@ -161,14 +161,16 @@ static SiIndex *si_build(const World *w)
     for(size_t i=0;i<w->assembly.instance_count;++i){const AsmInstance *a=&w->assembly.instances[i];si_numkey(from,"assembly-instance",a->id,0,0);si_reset(s);si_content(s,a->content,"");si_nnode(s,"assembly-instance",a->id,0,0,a->name);si_ref(s,from,"assembly-binding",a->binding_id,0,0,"dimension","binding");si_ref(s,from,"assembly-rule",a->rule_id,a->rule_version,0,"rule-version",a->rule_hash);si_ref(s,from,"placement",a->surface_id,0,0,"position","surface");for(int k=0;k<3;++k){char key[240],detail[100];si_numkey(key,"timber",a->timber[k],0,0);snprintf(detail,sizeof detail,"member:%u",a->member[k]);si_edge(s,key,from,"member",detail,true);}}
     return s;
 }
-static void si_json(SiIndex *s,bool live)
+static void si_json(SiIndex *s,const World *w,bool live)
 {
+    char fingerprint[65];if(!eng_definition_hash(w,fingerprint)){eng_bridge_error("SOURCE_UNCHECKED","Cannot fingerprint readonly source World");return;}
     printf("{\"ok\":true,\"schema\":\"source-inspector/1\",\"revision\":%llu,\"live\":%s,\"complete\":%s,\"limits\":{\"nodes\":%d,\"edges\":%d},\"identityContinuity\":\"unknown\",\"supportStatus\":\"unknown\",\"nodes\":[",(unsigned long long)g_definition_revision,live?"true":"false",s->complete?"true":"false",SI_NODE_MAX,SI_EDGE_MAX);
-    for(size_t i=0;i<s->nn;++i){SiNode *n=&s->nodes[i];if(i)putchar(',');fputs("{\"key\":",stdout);js_string(n->key);fputs(",\"kind\":",stdout);js_string(n->kind);fputs(",\"id\":",stdout);js_string(n->id);fputs(",\"label\":",stdout);js_string(n->label);printf(",\"version\":%u,\"fieldId\":%u,\"definitionFingerprint\":\"%s\",\"valueFingerprint\":\"%s\"}",n->version,n->field,n->definition,n->value);}
-    fputs("],\"edges\":[",stdout);for(size_t i=0;i<s->ne;++i){SiEdge *e=&s->edges[i];if(i)putchar(',');fputs("{\"from\":",stdout);js_string(e->from);fputs(",\"to\":",stdout);js_string(e->to);fputs(",\"relation\":",stdout);js_string(e->relation);fputs(",\"field\":",stdout);js_string(e->field);printf(",\"active\":%s}",e->active?"true":"false");}fputs("]}\n",stdout);
+    for(size_t i=0;i<s->nn;++i){SiNode *n=&s->nodes[i];if(i)putchar(',');fputs("{\"key\":",stdout);js_string(n->key);fputs(",\"kind\":",stdout);js_string(n->kind);fputs(",\"id\":",stdout);js_string(n->id);fputs(",\"label\":",stdout);js_string(n->label);printf(",\"version\":%u,\"fieldId\":%u,\"definitionFingerprint\":\"%s\",\"valueFingerprint\":\"%s\"",n->version,n->field,n->definition,n->value);
+        if(!strcmp(n->kind,"timber")){uint32_t id=0;int at=parse_u32(n->id,&id)?reference_timber_index(w,id):-1;if(at>=0){const Timber *t=&w->timbers[at];const TimberAnchor *a=&w->anchors[at];bool along_v=a->length_direction==SURFACE_DIRECTION_POS_V||a->length_direction==SURFACE_DIRECTION_NEG_V;printf(",\"placed\":%s,\"surface\":%u,\"lengthAxis\":\"%c\",\"nativeOwner\":",t->placed?"true":"false",a->placement_id,along_v?'v':'u');json_schedule_support_owner(w,id);}}putchar('}');}
+    fputs("],\"edges\":[",stdout);for(size_t i=0;i<s->ne;++i){SiEdge *e=&s->edges[i];if(i)putchar(',');fputs("{\"from\":",stdout);js_string(e->from);fputs(",\"to\":",stdout);js_string(e->to);fputs(",\"relation\":",stdout);js_string(e->relation);fputs(",\"field\":",stdout);js_string(e->field);printf(",\"active\":%s}",e->active?"true":"false");}printf("],\"sourceFingerprint\":\"%s\",\"timberSupports\":",fingerprint);json_timber_supports(w,fingerprint);fputs("}\n",stdout);
 }
 static void cmd_source_inspect(void)
-{SiIndex *s=si_build(&g_world);if(!s){eng_bridge_error("MEMORY","Cannot allocate readonly source index");return;}si_json(s,true);free(s);}
+{SiIndex *s=si_build(&g_world);if(!s){eng_bridge_error("MEMORY","Cannot allocate readonly source index");return;}si_json(s,&g_world,true);free(s);}
 static void cmd_source_inspect_file(const char *path)
 {
     size_t length=0;char *text=eng_read_file(path,&length);if(!text){eng_bridge_error("INPUT","Cannot read bounded source snapshot");return;}bool encoded=!memchr(text,0,length)&&utf8_is_valid(text);free(text);if(!encoded){eng_bridge_error("ENCODING","Snapshot must be UTF-8 without NUL");return;}
@@ -176,5 +178,5 @@ static void cmd_source_inspect_file(const char *path)
     *saved=g_preview;uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;const World *previous=g_subgrid_before;g_subgrid_before=NULL;
     bool ok=parse_scene_file(path,candidate);SiIndex *s=ok?si_build(candidate):NULL;
     g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;
-    if(s){si_json(s,false);free(s);}else eng_bridge_error("SNAPSHOT_UNCHECKED","Cannot validate or index saved source snapshot");free(candidate);free(saved);
+    if(s){si_json(s,candidate,false);free(s);}else eng_bridge_error("SNAPSHOT_UNCHECKED","Cannot validate or index saved source snapshot");free(candidate);free(saved);
 }

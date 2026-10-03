@@ -1,6 +1,6 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
-const S=require('../geometry-web/source-inspector.js');
+const S=require(process.env.GEOMETRY_SOURCE_INSPECTOR_JS||'../geometry-web/source-inspector.js');
 const hash=n=>String(n).padStart(64,'0');
 const node=(key,n=1)=>({key,definitionFingerprint:hash(n),valueFingerprint:hash(n),label:key});
 const edge=(from,to,relation='dimension',field='A',active=true)=>({from,to,relation,field,active});
@@ -56,4 +56,87 @@ test('late async project switch, source revision change and cancellation never r
 });
 test('invalid native response or duplicate source identities cannot yield green state',()=>{
   assert.throws(()=>S.index({ok:false}));assert.throws(()=>graph([node('p'),node('p')]));assert.throws(()=>graph([{...node('p'),valueFingerprint:'guessed'}]));
+});
+
+const typed=(kind,id,version=0,fieldId=0)=>({...node(S.key(kind,id,version,fieldId)),kind,id:String(id),version,fieldId});
+const supportEnd=(source,face,at,owner=null)=>({status:'exact',at,crossRange:[400,427],relation:{kind:'timber-face',source:{kind:'timber',id:source},localFace:face,normalWorld:[0,at===20?1:-1,0],owner,surface:0,stop:{axis:'v',at,range:[0,4000],fixity:'fixed'}}});
+function supportData(owned=false){
+  const owner=memberId=>({instanceId:1,memberId,bindingId:2,ruleId:3,ruleVersion:2,ruleFingerprint:hash(4),bindingFingerprint:hash(5),instanceFingerprint:hash(6)});
+  const timbers=[7,0,91].map((id,i)=>({...typed('timber',id),placed:true,surface:0,lengthAxis:id===7?'v':'u',nativeOwner:owned?owner(i===0?3:i):null}));
+  const nodes=[typed('placement',0),...timbers],edges=timbers.map(n=>edge(n.key,'placement:0','position','surface'));
+  if(owned){nodes.push(typed('assembly-instance',1),typed('assembly-binding',2),{...typed('assembly-rule',3,2),definitionFingerprint:hash(4)},...['1','2','3'].map(m=>typed('assembly-member',3,2,Number(m))));
+    edges.push(edge('assembly-instance:1','assembly-binding:2','dimension','binding'),edge('assembly-instance:1','assembly-rule:3:v2','rule-version',hash(4)),edge('assembly-binding:2','assembly-rule:3:v2','rule-version','rule'));
+    for(const n of timbers){edges.push(edge(n.key,'assembly-instance:1','member','member:'+n.nativeOwner.memberId));}
+    for(const m of [1,2,3])edges.push(edge('assembly-rule:3:v2','assembly-member:3:v2:f'+m,'member','members'));
+  }
+  return {ok:true,schema:'source-inspector/1',revision:1,complete:true,identityContinuity:'unknown',supportStatus:'unknown',sourceFingerprint:hash(9),nodes,edges,
+    timberSupports:{schema:'native-timber-supports/1',sourceFingerprint:hash(9),entries:[{id:7,surface:0,owner:owned?owner(3):null,start:supportEnd(0,'B1',20,owned?owner(1):null),finish:supportEnd(91,'B0',2980,owned?owner(2):null)}]}};
+}
+test('native exact supports produce typed endpoint edges including ID0 without changing raw data or claiming complete identity',()=>{
+  const data=supportData(),before=JSON.stringify(data),g=S.index(data),edges=g.out.get('timber:7').filter(e=>e.relation==='confirmed-support');
+  assert.deepEqual(edges.map(e=>[e.to,e.field,e.provenance.relation.localFace]),[['timber:0','start','B1'],['timber:91','finish','B0']]);
+  assert.equal(g.data.identityContinuity,'unknown');assert.equal(g.data.supportStatus,'unknown');assert.equal(JSON.stringify(data),before);
+  edges[0].provenance.relation.source.id=99;assert.equal(data.timberSupports.entries[0].start.relation.source.id,0);
+});
+test('all eight row and support owner fields are independently validated without comparing unrelated custom node hashes',()=>{
+  const data=supportData(true),g=S.index(data);assert.equal(g.supportEntries.get('timber:7').start.relation.owner.memberId,1);
+  assert.notEqual(g.nodes.get('assembly-binding:2').definitionFingerprint,data.timberSupports.entries[0].owner.bindingFingerprint);
+  for(const target of ['row','support'])for(const field of ['instanceId','memberId','bindingId','ruleId','ruleVersion','ruleFingerprint','instanceFingerprint','bindingFingerprint']){
+    const bad=structuredClone(data),o=target==='row'?bad.timberSupports.entries[0].owner:bad.timberSupports.entries[0].start.relation.owner;
+    o[field]=typeof o[field]==='number'?99:hash(99);assert.throws(()=>S.index(bad),/來源|核對/);
+  }
+  const bad=structuredClone(data);bad.edges=bad.edges.filter(e=>e.from!=='timber:0'||e.relation!=='member');assert.throws(()=>S.index(bad),/成員/);
+});
+test('projection corruption never becomes confirmed support or silently replaces native source facts',()=>{
+  const mutations=[d=>d.timberSupports.sourceFingerprint=hash(8),d=>d.timberSupports.schema='other',d=>d.timberSupports.entries.push(structuredClone(d.timberSupports.entries[0])),
+    d=>d.timberSupports.entries[0].id=null,d=>d.timberSupports.entries[0].surface=1,d=>d.nodes.find(n=>n.key==='timber:7').placed=false,
+    d=>d.nodes=d.nodes.filter(n=>n.key!=='timber:0'),d=>d.nodes.find(n=>n.key==='timber:0').surface=1,d=>d.nodes.find(n=>n.key==='timber:0').placed=false,
+    d=>d.nodes.find(n=>n.key==='timber:0').id='91',d=>d.timberSupports.entries[0].start.relation.source.id=7,
+    d=>d.timberSupports.entries[0].start.relation.localFace='min_v',d=>d.timberSupports.entries[0].start.relation.normalWorld=[0,0,0],
+    d=>d.timberSupports.entries[0].start.relation.stop.range=[0,420],d=>d.timberSupports.entries[0].start.relation.stop.axis='u',d=>d.timberSupports.entries[0].start.relation.owner={}];
+  for(const mutate of mutations){const bad=supportData();mutate(bad);assert.throws(()=>S.index(bad),/來源|核對|版本|無效|重複/);}
+  const bad=supportData();bad.edges.push(edge('timber:7','timber:0','confirmed-support','start'));assert.throws(()=>S.index(bad),/型別/);
+});
+test('embedded placement, real boundary and hole0 preserve their typed native source',()=>{
+  const data=supportData(),e=data.timberSupports.entries[0],r={kind:'outline-edge',source:{kind:'placement',id:0},edgeIndex:0,holeIndex:null,localFace:null,normalWorld:null,owner:null,surface:0,stop:{axis:'v',at:20,range:[0,4000],fixity:'fixed'}};
+  e.start.relation=r;assert.equal(S.index(data).supportEntries.get('timber:7').start.relation.source.id,0);
+  data.nodes.push(typed('boundary',1));data.edges.push(edge('placement:0','boundary:1','position','boundary'));
+  e.start.relation={...r,kind:'hole-edge',source:{kind:'boundary',id:1},holeIndex:0};assert.equal(S.index(data).supportEntries.get('timber:7').start.relation.holeIndex,0);
+  e.start.relation.source.id=0;assert.throws(()=>S.index(data),/來源/);
+});
+test('unknown, missing capability, missing entry and truncated native facts stay unknown rather than upgrading candidates',()=>{
+  const data=supportData();data.edges.push(edge('timber:7','timber:0','span-candidate','I9 candidate, not confirmed support'));
+  data.timberSupports.entries[0].start={status:'unknown',relation:{source:{id:99}}};
+  let g=S.index(data);assert.deepEqual(g.supportEntries.get('timber:7').start,{status:'unknown',relation:null});assert.equal(g.out.get('timber:7').filter(e=>e.relation==='confirmed-support').length,1);
+  data.timberSupports.entries=[];g=S.index(data);assert.equal(g.supportEntries.size,0);
+  delete data.timberSupports;assert.equal(S.index(data).hasSupportProjection,false);
+  const partial=supportData();partial.complete=false;partial.nodes=partial.nodes.filter(n=>n.key!=='timber:0');g=S.index(partial);
+  assert.equal(g.supportEntries.get('timber:7').start.status,'unknown');assert.equal(S.nearby(g,'timber:7').truncated,true);
+});
+test('equal timber geometry with changed exact support source, local face or fixed owner marks source-definition without arbitrary dependency expansion',()=>{
+  for(const mutate of [d=>{d.timberSupports.entries[0].start.relation.source.id=91;d.timberSupports.entries[0].start.relation.owner=structuredClone(d.nodes.find(n=>n.key==='timber:91').nativeOwner);},d=>d.timberSupports.entries[0].start.relation.localFace='B0',
+    d=>{for(const n of d.nodes)if(n.nativeOwner?.memberId===1)n.nativeOwner.bindingFingerprint=hash(8);d.timberSupports.entries[0].start.relation.owner.bindingFingerprint=hash(8);}]){
+    const before=supportData(true),now=structuredClone(before);mutate(now);
+    const result=S.freshness(S.index(before),S.index(now),['timber:7']);assert.equal(result.status,'changed');assert.deepEqual(result.changes,[{key:'timber:7',kind:'source-definition'}]);
+  }
+  const before=supportData(),now=structuredClone(before);now.sourceFingerprint=now.timberSupports.sourceFingerprint=hash(10);now.nodes.find(n=>n.key==='timber:0').valueFingerprint=hash(12);
+  assert.equal(S.freshness(S.index(before),S.index(now),['timber:7']).contentStatus,'consistent');
+  now.timberSupports.entries[0].finish={status:'unknown',relation:null};assert.equal(S.freshness(S.index(before),S.index(now),['timber:7']).contentStatus,'unchecked');
+});
+test('stale path expansion cannot repaint an old snapshot in the actual mount adapter',async()=>{
+  let stamp=1;const ctx={},handlers={},body={innerHTML:'',textContent:'',isConnected:true,addEventListener:(name,fn)=>handlers[name]=fn,removeEventListener(){}};
+  const detail={open:false,isConnected:true,dataset:{},classList:{add(){}},querySelector:()=>body,addEventListener:(name,fn)=>handlers[name]=fn,removeEventListener(){},remove(){}};
+  const host={querySelector:()=>null,ownerDocument:{createElement:()=>detail},append(){}};
+  const data=graph([node('p'),node('x')],[edge('p','x')]).data;
+  S.mount(host,{selection:'p',context:()=>ctx,stamp:()=>stamp,read:async()=>data,readSnapshot:async()=>data,navigate:async()=>{}});
+  detail.open=true;handlers.toggle();await new Promise(r=>setImmediate(r));assert.match(body.innerHTML,/原生來源指紋/);
+  stamp++;await handlers.click({target:{closest:selector=>selector==='[data-source-path]'?{dataset:{sourcePath:'x'}}:null}});
+  assert.match(body.innerHTML,/來源已變更，請重新檢查/);assert.doesNotMatch(body.innerHTML,/原生來源指紋/);
+});
+test('a canonical source change cannot pass a stable native revision or late context boundary',async()=>{
+  let ctx={},stamp=1,reads=0;const old=supportData(),fresh=structuredClone(old);fresh.sourceFingerprint=fresh.timberSupports.sourceFingerprint=hash(10);
+  const session=S.createSession({context:()=>ctx,stamp:()=>stamp,read:async()=>++reads===1?old:fresh,readSnapshot:async()=>old});
+  await assert.rejects(session.inspect(),/來源已更新/);
+  const gate=deferred(),delayed=S.createSession({context:()=>ctx,stamp:()=>stamp,read:()=>gate.promise,readSnapshot:async()=>old});
+  const pending=delayed.inspect();ctx={};stamp++;gate.resolve(old);assert.equal(await pending,null);
 });

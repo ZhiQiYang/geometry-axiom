@@ -24,7 +24,36 @@
 | model_base.dependencies | 現有幾何 closure，只涵蓋部分 placement/timber、含 I9 候選；不能當成確切支撐圖 |
 | saved model input/source | 原有完整 base_scene、明選 placement/uses/obstacles/timbers、生成 settings；未提供 durable incarnation receipt |
 
-`span-candidate` 是 I9 求值候選，與 `position` 引用分開；不當成已確認止端／支撐。不完整 AssemblyBinding 不虛構構件。第一 slice 不從鄰接幾何猜接合；#47 support-source worker 的新原生支撐 record 可另適配，未提供前明示未知。
+`span-candidate` 是 I9 求值候選，與 `position` 引用分開；不當成已確認止端／支撐。不完整 AssemblyBinding 不虛構構件。不從鄰接幾何猜接合；#47 的原生精確端點投影按下述契約適配，證據缺失或非唯一仍未知。
+
+## #47 精確支撐的原子適配
+
+`source-inspect` 與 `source-inspect-file` 在同一個被讀取 World 追加 canonical
+`sourceFingerprint` 與既有 `native-timber-supports/1`；saved snapshot 使用 candidate World，
+不能借 live World 的指紋、支撐或 owner。沒有額外 JS references 請求，也不改 World。
+角材節點附實際 `placed`、`surface`、`lengthAxis` 與 `nativeOwner`，由同一原生 owner helper 讀取。
+
+JS 核對 projection schema、同次來源 fingerprint、unique typed ID（包含 timber/placement 0）、
+實際 placed／same-surface facts、原生端面 axis／range／fixity 與局部面／法向格式。
+row owner 與支撐 owner 的 instance/member/binding/rule/version 及三個 canonical fingerprints
+共八欄，逐項對照獨立 native node facts，并核對現有 typed member／fixed-rule edges。
+binding/instance 的 source node definitionFingerprint 使用自訂來源指紋方案；
+不得把它與 canonical JSON owner fingerprint 比較。沒有在 JS 求面或解析 selector。
+
+只有驗證過的 `exact` 才產生派生 `confirmed-support` 邊，按起端／末端保存完整 provenance；
+原生 raw edges 不可自稱 `confirmed-support`。缺 projection、缺 entry、unknown／nonunique
+或原生容量不足而缺 facts 時保持未知；明確矛盾、偽造 owner／型別／來源拒絕顯示。
+既有 disclosure 顯示兩端局部面和固定版本，不新增 toolbar／工作區。
+`identityContinuity` 與全域 `supportStatus` 保留 unknown，不由個別端點證據聲稱全部已確認。
+
+模型比較仍排除 I9 candidates。`confirmed-support` 是接觸證據，**不遞迴擴張求值 closure**；
+但對 roots／既有 closure 中每支角材逐端比較 authoritative endpoint tuple 及 owner provenance。
+即使長度／幾何與節點指紋相同，exact source／localFace／固定 owner 改變仍標
+`source-definition`。任一端證據缺失則該角材比較不宣稱完整一致；舊／雙方都無投影
+沿用 legacy unknown 身分狀態。此策略不聲稱已核對所有間接支撐內容。
+
+讀取前後同时核對 native revision 與 canonical source fingerprint；展開舊路徑／定位前
+核對 session context／stamp，過期資料不得重新呈現為當前來源。
 
 ## 索引與快照狀態
 

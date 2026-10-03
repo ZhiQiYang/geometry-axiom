@@ -2,7 +2,9 @@
 from copy import deepcopy
 import importlib.util
 import json
+import os
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 from tests._bridge import BridgeSession, find_bridge
@@ -57,6 +59,76 @@ class SourceInspector(unittest.TestCase):
 
     def card(self, value='600', name='Spacing'):
         return {'id': 0, 'name': name, 'fields': [{'id': 0, 'name': 'pitch', 'type': 'dimension', 'input': value}]}
+
+    def generated(self):
+        self.line('surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000')
+        for line in ['timber 90 20 20 role boundary','place 90 on 1 at-face e0 +u +n','timber 91 20 20 role boundary','place 91 on 1 at-face e2 +u +n',
+                     'spec pos1 500','guide 1 1 v spec:pos1','spec pos2 2500','guide 2 1 v spec:pos2','spec pos3 1500','guide 3 1 u spec:pos3']:
+            self.line(line)
+        value=binding()
+        for slot in value['slots']:slot['orientation']='A'
+        self.apply([{'op':'publish-rule','value':rule()},{'op':'create-binding','value':value}],assembly=True)
+        state=self.command('assembly-read')['state']
+        source={'id':1,'name':'native support source','bindingId':1,'rule':{'id':1,'version':1,'fingerprint':state['rules'][0]['fingerprint']},'surfaceId':1,
+                'members':[{'memberId':m,'role':'primary' if m<3 else 'secondary','guideId':m,'dir':'+v' if m<3 else '+u','depthSide':'+n',
+                            'ends':{'start':{'kind':'timber','id':91},'finish':{'kind':'timber','id':90}} if m<3 else {'start':{'kind':'member','memberId':1},'finish':{'kind':'member','memberId':2}}} for m in [1,2,3]]}
+        request={'schema':'assembly-generation-transaction/1','expectedRevision':self.command('assembly-read')['revision'],
+                 'operations':[{'op':'create-instance','value':source,'expectedBindingFingerprint':state['bindings'][0]['fingerprint']}]}
+        path=self.path/'generation.json';path.write_text(json.dumps(request))
+        result=self.command('assembly-generation-preview '+str(path));self.assertTrue(result['ok'],result);self.assertTrue(result['preview']['valid'],result)
+        self.assertTrue(self.command('assembly-confirm '+str(result['preview']['token']))['ok'])
+
+    def test_support_projection_is_atomic_with_independent_placed_zero_id_node_facts(self):
+        self.line('surface 0 origin 0 0 2500 u +x v +y rect 0 0 4000 3000')
+        self.line('timber 0 27 33 role boundary');self.line('place 0 on 0 at-face e0 +u +n');self.line('timber 55 27 33 role primary')
+        graph=self.graph();refs=self.command('references');nodes={n['key']:n for n in graph['nodes']}
+        self.assertEqual(refs['sourceFingerprint'],graph['sourceFingerprint']);self.assertEqual(refs['timberSupports'],graph['timberSupports'])
+        self.assertEqual({'placed':True,'surface':0,'lengthAxis':'u','nativeOwner':None},{k:nodes['timber:0'][k] for k in ['placed','surface','lengthAxis','nativeOwner']})
+        self.assertFalse(nodes['timber:55']['placed']);self.assertEqual([0],[e['id'] for e in graph['timberSupports']['entries']])
+        entry=graph['timberSupports']['entries'][0]
+        for end in ['start','finish']:
+            self.assertEqual('exact',entry[end]['status']);self.assertEqual({'kind':'placement','id':0},entry[end]['relation']['source'])
+        self.assertEqual('unknown',graph['supportStatus']);self.assertEqual('unknown',graph['identityContinuity'])
+
+    def test_saved_world_support_hash_and_projection_do_not_borrow_live_world(self):
+        self.line('surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000')
+        self.line('timber 0 27 33 role boundary');self.line('place 0 on 1 at-face e0 +u +n')
+        scene=self.command('dump')['text'];old=self.graph();self.line('spec unrelated 77');live=self.graph()
+        saved=self.snapshot(scene);self.assertTrue(saved['ok'],saved);self.assertFalse(saved['live'])
+        self.assertNotEqual(live['sourceFingerprint'],saved['sourceFingerprint']);self.assertEqual(old['sourceFingerprint'],saved['sourceFingerprint'])
+        self.assertEqual(old['timberSupports'],saved['timberSupports']);self.assertEqual(live,self.graph())
+
+    def test_owned_native_B0_B1_sources_pass_production_JS_and_reject_corrupt_provenance(self):
+        self.generated();graph=self.graph();refs=self.command('references');nodes={n['key']:n for n in graph['nodes']}
+        self.assertEqual(refs['timberSupports'],graph['timberSupports'])
+        entries={e['id']:e for e in graph['timberSupports']['entries']}
+        secondary=next(e for e in entries.values() if e['owner'] and e['owner']['memberId']==3)
+        for end,face,member in [('start','B0',1),('finish','B1',2)]:
+            relation=secondary[end]['relation'];self.assertEqual(face,relation['localFace']);self.assertEqual(member,relation['owner']['memberId'])
+            self.assertEqual(nodes['timber:'+str(relation['source']['id'])]['nativeOwner'],relation['owner'])
+        self.assertEqual(nodes['timber:'+str(secondary['id'])]['nativeOwner'],secondary['owner'])
+        proof=os.environ.get('GEOMETRY_SOURCE_INSPECTOR_PROOF_DIR')
+        if proof:
+            output=Path(proof);output.mkdir(parents=True,exist_ok=True);(output/'native-owned-index.json').write_text(json.dumps(graph),encoding='utf-8')
+        script=r"""
+          const assert=require('node:assert/strict'),fs=require('node:fs');
+          const S=require('./geometry-web/source-inspector.js'),data=JSON.parse(fs.readFileSync(0,'utf8'));
+          const entry=data.timberSupports.entries.find(e=>e.owner?.memberId===3),key='timber:'+entry.id;
+          const g=S.index(data);assert.equal(g.supportEntries.get(key).start.relation.localFace,'B0');assert.equal(g.supportEntries.get(key).finish.relation.localFace,'B1');
+          assert.equal(g.supportEntries.get(key).start.relation.owner.memberId,1);assert(g.nodes.has('timber:90'));
+          let rejected=0;
+          for(const target of ['row','support'])for(const field of ['instanceId','memberId','bindingId','ruleId','ruleVersion','ruleFingerprint','instanceFingerprint','bindingFingerprint']){
+            const bad=structuredClone(data),e=bad.timberSupports.entries.find(e=>e.id===entry.id),owner=target==='row'?e.owner:e.start.relation.owner;
+            owner[field]=typeof owner[field]==='number'?999:'a'.repeat(64);assert.throws(()=>S.index(bad));rejected++;
+          }
+          for(const mutate of [e=>e.start.relation.source.id=999,e=>e.surface=0,e=>e.start.relation.localFace='min_u',e=>e.start.relation.stop.axis='v']){
+            const bad=structuredClone(data);mutate(bad.timberSupports.entries.find(e=>e.id===entry.id));assert.throws(()=>S.index(bad));rejected++;
+          }
+          assert.equal(rejected,20);console.log('actual-native-shaped negative cases='+rejected);
+        """
+        result=subprocess.run(['node','-e',script],input=json.dumps(graph),cwd=Path(__file__).parents[1],text=True,capture_output=True)
+        self.assertEqual(0,result.returncode,result.stderr)
+        self.assertIn('negative cases=20',result.stdout)
 
     def test_legal_zero_card_field_placement_and_timber_namespaces(self):
         self.apply([{'op': 'put-parameter', 'value': self.card()}])
