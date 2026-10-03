@@ -459,6 +459,8 @@ test('readonly reference mutation APIs preserve all page metadata and do not ope
 test('reference records and review UI reject readonly writes while the owning page can edit them',async()=>{
   for(const writable of [false,true]) {
     const f=await openFixture(),p=f.w.active(1);p.reviewRequired=true;
+    p.calibration={points:[[0,0],[10,0]],distanceMm:100,inputValue:100,inputUnit:'mm'};
+    f.env.oc.bmap[1]=[{verts:[[0,0],[800,0],[800,700],[0,700]],fixity:[1,1,1,1]}];
     p.records=[{id:'old-note',label:'原紀錄',value:100,unit:'mm',location:'舊位置',datum:''}];
     recoveryEnvironment(f,{locked:writable});await f.w.restoreSession();
     const controls=new Map(),handlers=new Map();
@@ -479,4 +481,34 @@ test('source attachment rechecks edit ownership after navigation before writing 
   f.env.enterFocus=async()=>{await gate.promise;f.env.oc.edit={bid:1};};
   const applying=f.element('refApply').onclick();await turn();channel.onmessage({data:{peer:'external-editor',session:'service-one'}});gate.resolve();await applying;
   assert.equal(JSON.stringify(await f.w.manifest()),before);assert.match(f.statuses.at(-1),/另一個分頁/);assert.equal(f.w.busy,false);assert.equal(f.element('refApply').disabled,true);
+});
+
+test('outline completion belongs to source page, calibration, transform and exact geometry; opacity is irrelevant',async()=>{
+  const f=await fixture(),p=f.w.active(1),loops=[{verts:[[0,0],[800,0],[800,700],[0,700]],fixity:[1,1,1,1]}];
+  f.env.oc.bmap[1]=loops;
+  assert.equal(f.w.reconstructionState(1),'unreviewed');
+  assert.throws(()=>f.w.markReconstructionReviewed(1),/校準/);
+  f.w.calibrated(1,[[0,0],[10,0]],100);
+  f.w.markReconstructionReviewed(1);assert.equal(f.w.reconstructionState(1),'confirmed');
+  p.opacity=.2;p.locked=true;assert.equal(f.w.reconstructionState(1),'confirmed');
+  p.x=1;assert.equal(f.w.reconstructionState(1),'recheck');p.x=0;
+  loops[0].verts[1][0]=801;assert.equal(f.w.reconstructionState(1),'recheck');loops[0].verts[1][0]=800;
+  await f.w.selectPage(1,'page-2');assert.equal(f.w.reconstructionState(1),'unreviewed');
+  await f.w.selectPage(1,'page-1');assert.equal(f.w.reconstructionState(1),'confirmed');
+  p.mmPerPx=20;f.w.calibrated(1,[[0,0],[10,0]],200);
+  assert.equal(f.w.reconstructionState(1),'recheck');assert.equal(loops[0].verts[1][0],800);
+});
+
+test('review receipts undo with core changes and local review without inheriting reused face ids',async()=>{
+  const f=await fixture();f.env.oc.bmap[1]=[{verts:[[0,0],[800,0],[800,700],[0,700]],fixity:[1,1,1,1]}];
+  f.w.calibrated(1,[[0,0],[10,0]],100);f.w.markReconstructionReviewed(1);
+  f.w.observe('line undo',{ok:true});assert.equal(f.w.reconstructionState(1),'unreviewed');
+  f.w.observe('line redo',{ok:true});assert.equal(f.w.reconstructionState(1),'confirmed');
+  f.w.observe('line boundary 1 outline 0,0 800,0 800,700 0,700',{ok:true});
+  f.w.markReconstructionReviewed(1,{local:false,method:'pdf-vector'});
+  f.w.observe('line undo',{ok:true});assert.equal(f.w.reconstructionState(1),'confirmed');
+  assert.equal(f.w.context().reconstructionReviews.values().next().value.method,'manual');
+  f.w.observe('line redo',{ok:true});assert.equal(f.w.context().reconstructionReviews.values().next().value.method,'pdf-vector');
+  f.w.observe('line delete boundary 1',{ok:true});f.w.observe('line boundary 1 outline 0,0 800,0 800,700 0,700',{ok:true});
+  assert.equal(f.w.reconstructionState(1),'unreviewed');
 });

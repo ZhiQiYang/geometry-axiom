@@ -41,6 +41,19 @@ test('portable project retains full source bytes, calibration and unknown record
   assert.equal(got.scene,f.scene);assert.deepEqual(got.sources.get(f.hash),f.bytes);
   assert.deepEqual(got.manifest.faces,f.manifest.faces);assert.equal(got.manifest.projectId,'project-a');
 });
+
+test('v9 review receipts retain source basis and require real page and face references; old formats refuse receipts',async()=>{
+  const f=await fixture(),p=f.manifest.faces[0].pages[0];
+  f.manifest.reconstructionReviews=[{bid:1,pageId:p.id,basis:P.reviewBasis(p),geometry:P.outlineFingerprint([{verts:[[0,0],[800,0],[800,700],[0,700]],fixity:[1,1,1,1]}]),method:'manual',warnings:[],confirmedAt:'2026-10-03T00:00:00.000Z'}];
+  const bytes=await P.pack(f.scene,f.manifest,f.sources,zip),loaded=await P.unpack(bytes,zip);
+  assert.equal(loaded.manifest.format,P.OUTLINE_FORMAT);assert.deepEqual(loaded.manifest.reconstructionReviews,f.manifest.reconstructionReviews);
+  const old=clone(loaded.manifest);old.format=P.ASSEMBLY_FORMAT;assert.throws(()=>P.validate(old),/第 9 版/);
+  for(const change of [r=>r.pageId='missing',r=>r.bid=2,r=>r.method='guess',r=>r.geometry='[]',r=>r.basis='[]']) {
+    const bad=clone(loaded.manifest);change(bad.reconstructionReviews[0]);assert.throws(()=>P.validate(bad));
+  }
+  await assert.rejects(()=>P.pack('boundary 2 outline 0,0 800,0 800,700 0,700\n',f.manifest,f.sources,zip),/不存在/);
+  assert.equal(P.projectFormat({...f.manifest,reconstructionReviews:[]}),P.FORMAT);
+});
 test('rejects damaged scene, source, unknown version, duplicate paths and missing source',async()=>{
   const f=await fixture(), bytes=await P.pack(f.scene,f.manifest,f.sources,zip), entries=zip.unzipSync(bytes);
   for(const path of ['world.scene','sources/'+f.hash]){

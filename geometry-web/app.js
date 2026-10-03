@@ -6429,7 +6429,7 @@ function feUnderlayPaneHTML(bid) {
   const ul = oc.underlays[bid];
   const sourcePage = ReferenceWorkspace.active(bid);
   const calibrated = !!sourcePage?.calibration;
-  const outlined = !!oc.bmap[bid]?.[0]?.verts?.length;
+  const outlined = ReferenceWorkspace.reconstructionState(bid) === "confirmed";
   let html = `<div data-fi-pane="underlay"${fe.fiTab === "underlay" ? "" : " hidden"}>` +
     `<div class="inspector-block reference-task"><h2>參考描面</h2><p class="reference-intro">先確認尺寸，再沿底圖建立邊界。</p>` +
     `<nav class="reference-steps" aria-label="描面步驟">` +
