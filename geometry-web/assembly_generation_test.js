@@ -50,9 +50,9 @@ module.exports=async({send,read,sleep,ctl,fill,choose,publish,wait,check})=>{
    const snapshot=async()=>({project:ReferenceWorkspace.getProjectState(),scene:(await apiRequest('dump')).text,drafts:ReferenceWorkspace.getAssemblyDrafts(),undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length});
    const before=await snapshot(),original=window.fetch;let validations=0,uploads=0,error=null;
    window.fetch=async(...args)=>{
-     if(String(args[0])==='/upload')uploads++;
+     if(['/upload','/upload/confirm'].includes(String(args[0])))uploads++;
      const response=await original(...args);
-     if(String(args[0])==='/engineering/validate-project'){
+     if(String(args[0])==='/upload/prepare'){
        validations++;const result=await response.json();
        return new Response(JSON.stringify({...result,capabilities:result.capabilities.filter(c=>c!==GeometryProject.GENERATION_CAPABILITY)}),{status:200,headers:{'Content-Type':'application/json'}});
      }

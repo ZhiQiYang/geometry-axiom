@@ -73,6 +73,20 @@
       if (!placement.horizontal) fail("平面投影必須關聯水平放置面。");
     }
   }
+  function validateProjectObjectRefs(manifest, objects) {
+    if (!objects || !Array.isArray(objects.boundaries) || !Array.isArray(objects.placements) ||
+        !objects.boundaries.every(positiveId) || !objects.placements.every(p =>
+          keys(p,["id","bid","horizontal"]) && uint(p.id) && uint(p.bid) && typeof p.horizontal === "boolean"))
+      fail("服務未提供完整的原生候選物件清單，未變更目前專案。");
+    const boundaries = new Set(objects.boundaries), placements = new Map(objects.placements.map(p => [p.id,p]));
+    for (const face of manifest.faces) if (!boundaries.has(face.bid)) fail("來源關聯的面不存在於原生候選場景。");
+    for (const record of manifest.reconstructionReviews || []) if (!boundaries.has(record.bid)) fail("輪廓核對收據的面不存在於原生候選場景。");
+    for (const record of manifest.faceProjections || []) {
+      const placement = placements.get(record.placement_id);
+      if (!boundaries.has(record.bid) || placement?.bid !== record.bid) fail("平面投影關聯的面或放置不存在於原生候選場景。");
+      if (!placement.horizontal) fail("平面投影必須關聯水平放置面。");
+    }
+  }
   function sceneCapabilities(scene) {
     const result = new Set();
     for (const raw of scene.replace(/\r\n/g, "\n").split("\n")) {
@@ -473,8 +487,6 @@
     else delete m.faceProjections;
     validate(m);
     validateEngineeringScene(m, scene);
-    validateFaceProjectionRefs(m.faceProjections || [], scene);
-    validateReconstructionRefs(m.reconstructionReviews || [], scene);
     const manifestBytes = new TextEncoder().encode(JSON.stringify(m));
     if (manifestBytes.length > MAX_MANIFEST) fail("專案清單超過 8 MB，請拆成較小的專案。");
     const entries = { "world.scene": sceneBytes, "manifest.json": manifestBytes };
@@ -540,13 +552,9 @@
     if (!m.faceProjections) m.faceProjections = [];
     const scene = decoder.decode(entries["world.scene"]);
     validateEngineeringScene(m, scene);
-    validateFaceProjectionRefs(m.faceProjections, scene);
-    validateReconstructionRefs(m.reconstructionReviews || [], scene);
+    // Top-level scene references are resolved from the native import candidate,
+    // after all reset/delete/redeclaration commands, before its atomic commit.
     return { manifest: m, scene, sources };
-  }
-  function validateReconstructionRefs(records, scene) {
-    const refs=sceneProjectionRefs(scene);
-    for (const r of records) if (!refs.boundaries.has(r.bid)) fail("輪廓核對收據的面不存在於場景。");
   }
   // Core entries mirror bridge transactions; local entries change saved metadata.
   // Sources stay shared (PDF runtime objects cannot be cloned), saved values are snapshots.
@@ -693,5 +701,5 @@
   return { OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
     MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage,
     validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, assertProjectCapabilities, sceneCapabilities,
-    validateFaceProjection, validateFaceProjectionRefs, projectFormat, reference, pack, unpack, ContextHistory };
+    validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, projectFormat, reference, pack, unpack, ContextHistory };
 });

@@ -61,7 +61,7 @@ test('v9 review receipts retain source basis and require real page and face refe
   for(const change of [r=>r.pageId='missing',r=>r.bid=2,r=>r.method='guess',r=>r.geometry='[]',r=>r.basis='[]']) {
     const bad=clone(loaded.manifest);change(bad.reconstructionReviews[0]);assert.throws(()=>P.validate(bad));
   }
-  await assert.rejects(()=>P.pack('boundary 2 outline 0,0 800,0 800,700 0,700\n',f.manifest,f.sources,zip),/不存在/);
+  assert.throws(()=>P.validateProjectObjectRefs(f.manifest,{boundaries:[2],placements:[]}),/不存在/);
   assert.equal(P.projectFormat({...f.manifest,reconstructionReviews:[]}),P.FORMAT);
 });
 test('rejects damaged scene, source, unknown version, duplicate paths and missing source',async()=>{
