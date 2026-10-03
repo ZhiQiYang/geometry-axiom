@@ -133,7 +133,7 @@ body.workspace-ready .review-block{scroll-margin-top:calc(var(--workspace-top) +
 <button class="review-only review-primary" data-review-action="export" type="button" hidden="">匯出／交給 AI</button></div><button aria-label="閱讀設定" class="settings-button js-only" id="open-settings" type="button" hidden=""><svg aria-hidden="true" class="icon" viewBox="0 0 24 24"><path d="M3 18 8.5 5 14 18M5 14h7M16 10h6M19 10v10"></path></svg></button></div></header><aside aria-label="條文導覽" class="workspace-left workspace-chrome" id="workspace-left"></aside>
 <aside aria-label="批註與參照工作區" class="workspace-right workspace-chrome" id="workspace-right">
 <div id="dock-hub"></div>
-<section aria-label="目前條文的見證圖" class="js-only" id="workspace-witness" hidden=""><h3>見證圖 <small id="workspace-witness-clause"></small></h3><figure id="workspace-witness-img" hidden=""></figure><p class="hint" id="workspace-witness-none" hidden="">這一條沒有見證圖(89 條中有 31 條有)。</p></section>
+<section aria-label="目前條文的見證圖" class="js-only" id="workspace-witness" hidden=""><h3>見證圖 <small id="workspace-witness-clause"></small></h3><figure id="workspace-witness-img" hidden=""></figure><p class="hint" id="workspace-witness-none" hidden="">這一條沒有見證圖(118 條中有 31 條有)。</p></section>
 <div aria-label="校對工作區" class="workspace-tabs" role="tablist">
 <button aria-controls="review-dialog" aria-selected="true" id="workspace-notes-tab" role="tab" tabindex="0" type="button">批註 <span class="workspace-mini-count" id="workspace-clause-count">0</span></button>
 <button aria-controls="reference-sheet" aria-selected="false" id="workspace-reference-tab" role="tab" tabindex="-1" type="button">參照條文</button></div>
@@ -3644,29 +3644,6 @@ const dialogs=['review-dialog','reference-sheet'];
 const docked=()=>ready&&dockQuery.matches;
 const sideNavigation=()=>ready&&navQuery.matches;
 function measure(){document.documentElement.style.setProperty('--workspace-top',Math.ceil(document.querySelector('.masthead').getBoundingClientRect().height)+'px');}
- /* GEO-138(🔒 Q4):右欄上半固定顯示「目前這一條」的見證圖,不與參照/批註互斥。
-    圖直接取自條文卡裡那張(同一個 data URI),不另存第二份。 */
- function toast(text){
-  const t=document.getElementById('toast');if(!t)return;
-  t.textContent=text;t.hidden=false;
-  clearTimeout(toast._timer);toast._timer=setTimeout(()=>{t.hidden=true;},2200);
- }
- function renderWitness(id){
-  const pane=document.getElementById('workspace-witness');if(!pane)return;
-  const label=document.getElementById('workspace-witness-clause');
-  const img=document.getElementById('workspace-witness-img');
-  const none=document.getElementById('workspace-witness-none');
-  const article=id?document.getElementById(id):null;
-  const source=article?article.querySelector('.witness-section figure img'):null;
-  if(label)label.textContent=id||'';
-  if(source){
-   img.src=source.getAttribute('src');img.alt=source.getAttribute('alt')||'';
-   img.hidden=false;none.hidden=true;
-  }else{
-   img.removeAttribute('src');img.hidden=true;none.hidden=false;
-  }
- }
- document.addEventListener('axiom:current',e=>renderWitness(e.detail&&e.detail.id));
  /* GEO-138(🔒 Q4):右欄上半固定顯示「目前這一條」的見證圖,不與參照/批註互斥。
     GEO-141(🔒 Q8):見證圖已是 inline <svg>,直接複製節點,不另存第二份酬載。 */
  function toast(text){

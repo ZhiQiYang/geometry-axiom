@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import re
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("reader_sync", ROOT / "geometry-guide/sync_axiom_reader.py")
@@ -269,6 +270,97 @@ class CanonicalReader(unittest.TestCase):
         regenerated = reader.rebuild(self.html, self.axiom, self.plain)
         self.assertGreater(len(reader.PATCHES), 50)          # 有真的登記,不是空跑
         self.assertEqual(reader.PATCHES.verify(regenerated), [])
+
+    def test_force_marker_registers_new_applied_and_evolved_paths(self):
+        for source in ("OLD", "NEW MARK", "later UI MARK"):
+            with self.subTest(source=source), mock.patch.object(reader, "PATCHES", reader.PatchLog()):
+                out = reader.force(source, "OLD", "NEW MARK", "QR4", marker="MARK")
+                self.assertEqual(reader.PATCHES.present, [("QR4", "MARK")])
+                self.assertEqual(reader.PATCHES.verify(out), [])
+                self.assertTrue(reader.PATCHES.verify(out.replace("MARK", "")))
+                self.assertEqual(reader.force(out, "OLD", "NEW MARK", "QR4", marker="MARK"), out)
+
+    def test_force_marker_rejects_ambiguity_and_drift_before_registering(self):
+        cases = [("OLD OLD", "NEW MARK", "MARK"), ("MARK MARK", "NEW MARK", "MARK"),
+                 ("neither", "NEW MARK", "MARK"), ("OLD", "NEW", "MARK"),
+                 ("OLD", "NEW MARK MARK", "MARK"), ("OLD", "NEW", "")]
+        for source, new, marker in cases:
+            with self.subTest(source=source, new=new, marker=marker), mock.patch.object(reader, "PATCHES", reader.PatchLog()):
+                with self.assertRaisesRegex(ValueError, "reader template"):
+                    reader.force(source, "OLD", new, "QR4", marker=marker)
+                self.assertEqual(len(reader.PATCHES), 0)
+
+    def test_force_unmarked_success_paths_keep_registry_and_uniqueness(self):
+        for source, old, new, expected in [("OLD", "OLD", "NEW", "NEW"),
+                ("NEW", "OLD", "NEW", "NEW"), ("OLD", "OLD", "OLD PLUS", "OLD PLUS"),
+                ("OLD PLUS", "OLD", "OLD PLUS", "OLD PLUS"),
+                ("OLD", "OLD", "", ""), ("gone", "OLD", "", "gone")]:
+            with self.subTest(source=source, new=new), mock.patch.object(reader, "PATCHES", reader.PatchLog()):
+                out = reader.force(source, old, new, "QR4")
+                self.assertEqual(out, expected)
+                self.assertEqual(len(reader.PATCHES), 1)
+                self.assertEqual(reader.PATCHES.verify(out), [])
+                broken = out + old if not new else out.replace(new, "")
+                self.assertTrue(reader.PATCHES.verify(broken))
+        for source in ("OLD OLD", "NEW NEW", "neither"):
+            with self.subTest(source=source), self.assertRaises(ValueError):
+                reader.force(source, "OLD", "NEW", "QR4")
+
+    def test_visible_witness_counts_reject_independent_tampering(self):
+        counts = json.loads(reader.script_text(self.html, reader.COUNTS_ID))
+        for n, w in [(counts["clauses"] + 1, counts["witness"]),
+                     (counts["clauses"], counts["witness"] + 1)]:
+            corrupted = re.sub(r'(id="workspace-witness-none"[^>]*>)[^<]*',
+                lambda m: m[1] + f"這一條沒有見證圖({n} 條中有 {w} 條有)。", self.html)
+            with self.subTest(n=n, w=w), self.assertRaisesRegex(AssertionError, "workspace-witness-none"):
+                reader.validate(corrupted, self.axiom, self.plain)
+
+    def test_clause_and_witness_fixture_add_remove_updates_visible_counts(self):
+        # In-memory source/manifest fixtures only; never edit SSOT or witness files.
+        axiom = self.axiom.replace("## 四、", "R900 測試計數：本條僅為同步測試夾具。\n\n## 四、", 1)
+        plain = self.plain + "\n\n## R900\n僅為同步測試夾具。\n"
+        manifest = reader.load_witness_manifest()
+        witness = next(cid for cid in manifest if (reader.WITNESS_DIR / f"{cid}.svg").exists())
+        reduced = {cid: entry for cid, entry in manifest.items() if cid != witness}
+        with mock.patch.object(reader, "load_witness_manifest", return_value=reduced):
+            added = reader.rebuild(self.html, axiom, plain)
+            report = reader.validate(added, axiom, plain)
+        self.assertEqual(report["clauses"], len(self.state["clauses"]) + 1)
+        counts = json.loads(reader.script_text(self.html, reader.COUNTS_ID))
+        self.assertEqual(report["witness"], counts["witness"] - 1)
+        self.assertIn(f'這一條沒有見證圖({report["clauses"]} 條中有 {report["witness"]} 條有)。', added)
+        restored = reader.rebuild(added, self.axiom, self.plain)
+        restored_report = reader.validate(restored, self.axiom, self.plain)
+        self.assertEqual(restored_report["clauses"], counts["clauses"])
+        self.assertEqual(restored_report["witness"], counts["witness"])
+        restored_counts = json.loads(reader.script_text(restored, reader.COUNTS_ID))
+        self.assertEqual(reader.stale_counts(restored, restored_counts), [])
+        for output in (added, restored):
+            state = json.loads(reader.script_text(output, "axiom-review-data"))
+            for key in ("documentId", "baseDocumentHash", "comments", "proposals", "revisions", "draft"):
+                self.assertEqual(state[key], self.state[key], key)
+
+    def test_workspace_has_one_witness_function_and_event_handler(self):
+        js = reader.script_text(self.html, "workspace-script")
+        self.assertEqual(js.count("function renderWitness("), 1)
+        self.assertEqual(js.count("function toast("), 1)
+        self.assertEqual(js.count("e=>renderWitness(e.detail&&e.detail.id)"), 1)
+        self.assertIn("source.cloneNode(true)", js)
+        self.assertNotIn("article.querySelector('.witness-section figure img')", js)
+        for extra in ("function renderWitness(id){}", "document.addEventListener('axiom:current',e=>renderWitness(e.detail&&e.detail.id));"):
+            corrupted = reader.replace_script(self.html, "workspace-script", js + extra)
+            with self.subTest(extra=extra), self.assertRaisesRegex(AssertionError, "QR5"):
+                reader.validate(corrupted, self.axiom, self.plain)
+
+    def test_legacy_image_handler_retires_without_changing_live_svg_handler(self):
+        legacy = reader.LEGACY_WITNESS_PANE_JS
+        js = reader.script_text(self.html, "workspace-script")
+        historical = reader.replace_script(self.html, "workspace-script", legacy + js)
+        updated = reader.rebuild(historical, self.axiom, self.plain)
+        self.assertEqual(updated, self.html)
+        malformed = reader.replace_script(self.html, "workspace-script", js + "article.querySelector('.witness-section figure img');")
+        with self.assertRaisesRegex(ValueError, "歷史見證圖面板"):
+            reader.rebuild(malformed, self.axiom, self.plain)
 
     def test_counts_have_a_single_source(self):
         # GEO-140:HTML 裡出現的每個計數都必須等於由資料算出的值,且與 #reader-counts 一致。
