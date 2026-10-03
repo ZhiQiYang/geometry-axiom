@@ -12,6 +12,7 @@
 - 初次交付時真 Chromium 完整回歸尚未完成；後續同版 native Linux Chrome／服務無 filter full 完成，79 段 frozen golden 相符、1867 通過斷言、0 失敗、0 略過群組。唯一 exception 是回報測試刻意注入的 `fb-auto-probe`。先前 Windows／WSL 混合測試遇到預設 stack、建模 adapter 設定及一次連線中斷；Windows 新編 bridge/core 被 SAC 阻擋，未改安全設定。
 - 另定位到既有房間取點／候選狀態的空白鍵平移被 `RoomOutlineWorkspace.move()`／`feMove()` 前置守門攔截；這批尚未修改該手勢規則，後續需補實際移動量的反例並修復。辨識中的空草稿也需另驗輸入互斥，不能把背景分析的結果覆蓋成使用者的人工意圖。
 - 修正在 managed worktree `canvas-performance`；目前使用者 8765 服務及完整專案恢復資料保持原狀。啟用仍须依 GEO-231 保全 `.gcanvas`（含底圖與草稿）及核心 dump 後切換並核對版本，不以 `.scene` 備份冒充。
+- 2026-10-04 使用者明示要求提交全部現行修正並合併遠端／本地 main：整合 PR73 `b0f9e5a`、PR74 `3300db6` 與本工單性能修正。合併測試先以 P84 重現延後的通用座標讀數覆蓋 PDF 來源吸附讀數；`bf10b82` 讓來源讀數與草稿同幀呈現，通用讀數先排程。修後真 Chromium 房間／PDF partial P79=84、P84=27，共 111 通過、0 失敗、0 exception，相關 Node 32/32；889 檔 Linux 測試副本與提交來源逐位元相同（工單文字除外）。這份整合版尚未重跑無 filter full Chromium，不借用性能分支的 1867 當整合版結果。遠端 Actions 七個 jobs 均零 steps 而失敗，保留環境失敗，不宣稱 CI 綠燈。舊身分政策原型／備份不在本次已核准修正範圍內。
 
 ## PR70 補驗 follow-up — 復原／重做保持忙碌直到操作完成（2026-10-04）
 
