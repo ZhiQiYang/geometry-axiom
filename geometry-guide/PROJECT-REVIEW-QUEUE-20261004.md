@@ -58,7 +58,7 @@
 
 **報告反例**：boundary1由placement10/20引用，timber7在20；source graph完整保留20，導航只傳boundary1而進10，從畫布與已開10皆錯。
 
-**最小切片／刪除責任**：共用既有按typed boundary/placement身分定位入口，核對目標、目前工作區與context；移除兩條路徑各猜first匹配的責任。不涉及已取消#47雙向料單—模型導航。
+**最小切片／刪除責任**：讓source path復用既有按typed boundary/placement身分定位的工程入口，核對目標、目前工作區與context；engineering-adapter已傳placementId並後驗，不重寫該正確邏輯。移除source path省略placement而落入first匹配的錯誤假設，顯式目標失效時拒絕fallback。不涉及已取消#47雙向料單—模型導航。
 
 **落點與依賴**：[geometry-web/source-inspector-app.js](../geometry-web/source-inspector-app.js)、[geometry-web/engineering-adapter.js](../geometry-web/engineering-adapter.js)、[geometry-web/app.js](../geometry-web/app.js)。parent品質執行者重現；本輪未跑真browser。既有live locator修復，可獨立於F1b新身份契約。Refs #44。
 
