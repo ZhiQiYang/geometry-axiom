@@ -6,7 +6,7 @@ const cdp=require('./cdp_helpers.js'),same=require('node:util').isDeepStrictEqua
 module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   console.log('=== P82 單選固定規則建立材料配置 ===');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),errors=exceptionCount();
-  const check=cdp.makeCheck({prefix:'P82 ',throwOnFail:true}),key=cdp.makeKey({send,sleep});
+  const check=cdp.makeCheck({prefix:'P82 ',throwOnFail:true}),key=cdp.makeKey({send,sleep},{enterText:true});
   const rawCtl=cdp.makeCtl({eval_:read,sleep,click},{scroll:'center',attempts:3,pollMs:100,settleMs:100,
     before:cdp.openCreateObjectMenu(read,selector=>ctl(selector))});
   const ctl=async selector=>{await wait(`!!document.querySelector(${JSON.stringify(selector)})`);return rawCtl(selector);};
@@ -45,15 +45,15 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
     const created=await draftFor(77),selected=await read(`ocFind('assembly-rule',77)`),afterDesktop=await snapshot();
     check('桌面鍵盤入口只建固定來源草稿，槽位全空且正式 World 不變',created?.base_ref.fingerprint===selected.fingerprint&&created.base_ref.version===selected.version&&created.binding_intent.mode==='create'&&created.data.slots.every(s=>s.A===null&&s.B===null&&s.contactFace===null&&s.orientation===null)&&beforeDesktop.dump===afterDesktop.dump&&afterDesktop.drafts.length===beforeDesktop.drafts.length+1);
     await fill('#asmName','P82 桌面未完成');await shot('context-desktop-form');
-    const savedDraft=await draftFor(77);await read(`__p82.draftArchive=await ReferenceWorkspace.exportBytes()`);await ctl('#asmClose');
+    const savedDraft=await draftFor(77);await read(`(async()=>{__p82.draftArchive=await ReferenceWorkspace.exportBytes();})()`);await ctl('#asmClose');
     await read(`ReferenceWorkspace.importBytes(__p82.draftArchive,'P82-draft-reopen.gcanvas')`);
     check('真 gcanvas 保存重開保留固定 pin 與未完成具型別槽位',same(await draftFor(77),savedDraft));
     await selectCard('assembly-rule',77);
     const origin=await read(`({cx:ocFind('assembly-rule',77).cx,cy:ocFind('assembly-rule',77).cy,zoom:oc.zoom,panX:oc.panX,panY:oc.panY})`);
     await ctl('#btnNewAssembly');await wait(`AssemblyWorkspace.isOpen`);await ctl(`[data-asm-draft="${savedDraft.id}"]`);
-    const timbers=await read(`(await __p82.originalApi('objects')).timbers`);await publish();
-    const desktopBinding=await read(`(await __p82.originalApi('assembly-read')).state.bindings.find(b=>b.value.id===${savedDraft.data.id})`);
-    check('真預覽確認發布合法未完成配置，不暗生角材',desktopBinding?.complete===false&&desktopBinding.value.rule.id===77&&desktopBinding.value.rule.version===savedDraft.base_ref.version&&same(await read(`(await __p82.originalApi('objects')).timbers`),timbers));
+    const timbers=await read(`(async()=>(await __p82.originalApi('objects')).timbers)()`);await publish();
+    const desktopBinding=await read(`(async()=>(await __p82.originalApi('assembly-read')).state.bindings.find(b=>b.value.id===${savedDraft.data.id}))()`);
+    check('真預覽確認發布合法未完成配置，不暗生角材',desktopBinding?.complete===false&&desktopBinding.value.rule.id===77&&desktopBinding.value.rule.version===savedDraft.base_ref.version&&same(await read(`(async()=>(await __p82.originalApi('objects')).timbers)()`),timbers));
     await ctl('#asmClose');
     check('返回畫布保留原選取與卡片位置',await read(`(()=>{const o=ocFind('assembly-rule',77);return oc.sel?.kind==='assembly-rule'&&oc.sel.id===77&&o.cx===${origin.cx}&&o.cy===${origin.cy}&&oc.zoom===${origin.zoom}&&oc.panX===${origin.panX}&&oc.panY===${origin.panY};})()`));
     await selectCard('assembly-binding',desktopBinding.value.id);const legacyLabel=await read(`$('asmInspectorOpen').textContent`);await ctl('#asmInspectorOpen');await wait(`AssemblyWorkspace.isOpen&&!!$('asmEdit')`);const bindingOpen=await read(`$('asmEditor').textContent.includes('P82 桌面未完成')`);await ctl('#asmClose');
@@ -62,12 +62,12 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
 
     await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await selectCard('assembly-rule',77);await ctl('#asmInspectorOpen');await wait(`AssemblyWorkspace.isOpen&&!!$('asmName')`);await fill('#asmName','P82 手機未完成');
     const mobileDraft=await draftFor(77),mobileUI=await read(`document.documentElement.scrollWidth<=innerWidth+1&&$('assemblyWorkspace').scrollWidth<=innerWidth+1&&[...$('assemblyWorkspace').querySelectorAll('button,input,select')].filter(n=>n.getBoundingClientRect().height).every(n=>n.getBoundingClientRect().height>=44)`);await shot('context-390-form');await publish();
-    check('390px 同一 context 表單可操作並真發布未完成固定配置',mobileUI&&await read(`(await __p82.originalApi('assembly-read')).state.bindings.some(b=>b.value.id===${mobileDraft.data.id}&&b.value.rule.id===77&&b.value.rule.version===${mobileDraft.base_ref.version}&&!b.complete)`));await ctl('#asmClose');
+    check('390px 同一 context 表單可操作並真發布未完成固定配置',mobileUI&&await read(`(async()=>(await __p82.originalApi('assembly-read')).state.bindings.some(b=>b.value.id===${mobileDraft.data.id}&&b.value.rule.id===77&&b.value.rule.version===${mobileDraft.base_ref.version}&&!b.complete))()`));await ctl('#asmClose');
     await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
 
-    await selectCard('assembly-rule',78);const old78=await read(`(await __p82.originalApi('assembly-read')).state.rules.find(r=>r.value.id===78&&r.value.version===1)`);
+    await selectCard('assembly-rule',78);const old78=await read(`(async()=>(await __p82.originalApi('assembly-read')).state.rules.find(r=>r.value.id===78&&r.value.version===1))()`);
     await read(`(async()=>{const value=structuredClone(__p82.originalRule);value.id=78;value.name='P82 同名來源';value.joints[0].side=value.joints[0].side==='+u'?'-u':'+u';await __p82.tx([{op:'delete-rule',id:78,version:1}]);await __p82.tx([{op:'publish-rule',value}]);})()`);
-    const changed78=await read(`(await __p82.originalApi('assembly-read')).state.rules.find(r=>r.value.id===78&&r.value.version===1)`),staleBefore=await snapshot();
+    const changed78=await read(`(async()=>(await __p82.originalApi('assembly-read')).state.rules.find(r=>r.value.id===78&&r.value.version===1))()`),staleBefore=await snapshot();
     let stalePreserved=old78.fingerprint!==changed78.fingerprint&&same(old78.value.slots,changed78.value.slots);
     for(let i=0;i<2;i++){await clearToast();await ctl('#asmInspectorOpen');await wait(`!$('asmInspectorOpen').disabled&&$('toastRegion').textContent.includes('所選固定規則內容已變更')`);stalePreserved&&=same(await snapshot(),staleBefore)&&await read(`!AssemblyWorkspace.isOpen`);}
     check('真同 tuple 換語義後首次與重試均拒絕，不暗採新指紋',stalePreserved);
