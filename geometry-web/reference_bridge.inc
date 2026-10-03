@@ -44,34 +44,58 @@ static void json_reference_datum(const DatumPlane *d)
     if(!d){fputs("null",stdout);return;}
     printf("{\"id\":%u,\"axis\":\"%c\",\"position\":%lld,\"expression\":",d->id,'X'+d->axis,(long long)d->position);js_string(d->expression);putchar('}');
 }
+/* Serialize the rebuilt candidate, never an ownership-selected dependency set.
+ * Reference previews retain their existing before-only timber list; assembly
+ * also needs newly generated timbers. Both use the same native geometry. */
+static void json_candidate_timbers(const World *before,const World *after,bool include_new)
+{
+    putchar('[');bool first=true;
+    for (int pass=0;pass<(include_new?2:1);++pass) {
+        const World *w=pass?after:before;
+        for (size_t i=0;i<w->timber_count;++i) {
+            const Timber *t=&w->timbers[i];if (!t->placed) continue;
+            int old=reference_timber_index(before,t->id),now=reference_timber_index(after,t->id);
+            if (pass && old>=0 && before->timbers[old].placed) continue;
+            if (!first) putchar(',');first=false;
+            printf("{\"id\":%u,\"before\":",t->id);json_reference_geometry(before,old);
+            fputs(",\"after\":",stdout);json_reference_geometry(after,now);putchar('}');
+        }
+    }
+    putchar(']');
+}
+static void json_candidate_guides(const World *before,const World *after)
+{
+    putchar('[');
+    for (size_t i=0;i<before->guide_count;++i) {
+        const GuideLine *g=&before->guides[i];
+        printf("%s{\"id\":%u,\"before\":",i?",":"",g->id); json_reference_guide(before,i);
+        fputs(",\"after\":",stdout); size_t j=0;
+        while (j<after->guide_count && after->guides[j].id!=g->id) ++j;
+        if (j==after->guide_count) fputs("null",stdout); else json_reference_guide(after,j);
+        putchar('}');
+    }
+    bool first=before->guide_count==0;
+    for (size_t i=0;i<after->guide_count;++i) {
+        const GuideLine *g=&after->guides[i];
+        if (world_find_guide(before,g->id)) continue;
+        printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
+        json_reference_guide(after,i); putchar('}');
+    }
+    putchar(']');
+}
+static void json_candidate_geometry(const World *before,const World *after)
+{
+    fputs("{\"schema\":\"candidate-geometry/1\",\"timbers\":",stdout);
+    json_candidate_timbers(before,after,true);
+    fputs(",\"guides\":",stdout);json_candidate_guides(before,after);putchar('}');
+}
 static void json_reference_preview(void)
 {
     printf("{\"token\":%u,\"valid\":%s,\"command\":",g_preview.token,g_preview.valid?"true":"false");
-    js_string(g_preview.command); fputs(",\"timbers\":[",stdout); bool first=true;
-    for (size_t i=0;i<g_preview.before.timber_count;++i) {
-        const Timber *t=&g_preview.before.timbers[i]; if (!t->placed) continue;
-        int j=reference_timber_index(&g_preview.after,t->id);
-        if (!first) putchar(','); first=false;
-        printf("{\"id\":%u,\"before\":",t->id); json_reference_geometry(&g_preview.before,(int)i);
-        fputs(",\"after\":",stdout); json_reference_geometry(&g_preview.after,j); putchar('}');
-    }
-    fputs("],\"guides\":[",stdout);
-    for (size_t i=0;i<g_preview.before.guide_count;++i) {
-        const GuideLine *g=&g_preview.before.guides[i];
-        printf("%s{\"id\":%u,\"before\":",i?",":"",g->id); json_reference_guide(&g_preview.before,i);
-        fputs(",\"after\":",stdout); size_t j=0;
-        while (j<g_preview.after.guide_count && g_preview.after.guides[j].id!=g->id) ++j;
-        if (j==g_preview.after.guide_count) fputs("null",stdout); else json_reference_guide(&g_preview.after,j);
-        putchar('}');
-    }
-    first=g_preview.before.guide_count==0;
-    for (size_t i=0;i<g_preview.after.guide_count;++i) {
-        const GuideLine *g=&g_preview.after.guides[i];
-        if (world_find_guide(&g_preview.before,g->id)) continue;
-        printf("%s{\"id\":%u,\"before\":null,\"after\":",first?"":",",g->id); first=false;
-        json_reference_guide(&g_preview.after,i); putchar('}');
-    }
-    fputs("],\"grids\":[",stdout); first=true;
+    js_string(g_preview.command);fputs(",\"timbers\":",stdout);
+    json_candidate_timbers(&g_preview.before,&g_preview.after,false);
+    fputs(",\"guides\":",stdout);json_candidate_guides(&g_preview.before,&g_preview.after);
+    fputs(",\"grids\":[",stdout); bool first=true;
     for (size_t i=0;i<g_preview.before.grid_count;++i) {
         const ReferenceGrid *g=&g_preview.before.grids[i];
         const ReferenceGrid *after=world_find_grid(&g_preview.after,g->id);
