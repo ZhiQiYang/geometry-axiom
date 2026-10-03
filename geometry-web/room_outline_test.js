@@ -215,4 +215,6 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   check('save and real reload/reopen retain enlarged concave room, calibration and completion',normalized(await nativePoints())===normalized(enlargedExpected)&&await read(`ReferenceWorkspace.active(1).calibration.inputValue===323.5&&ReferenceWorkspace.active(1).calibration.inputUnit==='cm'&&ReferenceWorkspace.reconstructionState(1)==='confirmed'`));
   await shot('calibrated-room-reopened');
   check('new workflow has no uncaught browser exceptions',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
+  await require('./pdf_tracing_snap_test.js')({send,read,sleep,ctl,key,setup,select,until,shot,nativePoints,sourcePoint,fill});
+  if(exceptionCount()!==initialExceptions)throw Error('PDF snap workflow raised an uncaught browser exception');
 };

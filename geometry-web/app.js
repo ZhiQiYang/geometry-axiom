@@ -2858,6 +2858,21 @@ function feGridStep() {
   for (const s of SER) if (s * fe.zoom >= 24) return s;
   return SER[SER.length - 1];
 }
+function feSyncGridSize() {
+  const select=$("faceGridSizeSelect");if(!select)return;
+  const automatic=select.querySelector('[data-tracing-grid]');
+  if(fe.tool==='redraw') {
+    if(!automatic)select.dataset.manualGrid=select.value;
+    const option=automatic||document.createElement('option');
+    option.dataset.tracingGrid='true';option.value='tracing';option.textContent=String(feGridStep());
+    if(!automatic)select.appendChild(option);
+    select.value='tracing';select.disabled=true;
+    select.title='描外環實際吸附格距，隨縮放調整';
+  } else {
+    if(automatic){automatic.remove();select.value=select.dataset.manualGrid||'50';}
+    select.disabled=false;select.title='吸附格距';
+  }
+}
 /* Decorative grid only: source grids and snapping retain their own spacing.
    Work follows the viewport, not the D1-sized face. Sample around global zero
    when fit zoom is below the smallest display spacing, keeping major colors. */
@@ -2898,6 +2913,7 @@ function feUpdateBackgroundGrid(bb) {
   for (let i = yFirst; i <= yLast; i++) line(i, {x1:x0, y1:i * step, x2:x1, y2:i * step});
 }
 function feApply(keepFit = false) {
+  feSyncGridSize();
   if (!keepFit) fe.fittedBounds = null;
   cancelCanvasMarquee();
   $("faceEditorRoot").setAttribute("transform",
@@ -3669,6 +3685,7 @@ function feSetTool(t) {
   /* GEO-196:切離角材工具就清掉滑鼠命中線 hover 狀態,不跨工具沿用。 */
   if (t !== "timber") fe.timberHoverAnchor = null;
   fe.tool = t;
+  feSyncGridSize();
   if (t !== "select") fe.queuedShapeAction = null;
   if (!keepTimberSelection || !hadTimberSelection) { fe.timberSelection.clear(); fe.sel = null; }
   fe.op = null; feSyncOverlays();
@@ -5081,6 +5098,16 @@ function renderFeDraftLayer() {
   if (!g) return;
   g.textContent = "";
   if (fe.tool !== "redraw") return;
+  const target=fe.draftPreview?.pdfTarget,page=oc.edit&&ReferenceWorkspace.active(oc.edit.bid);
+  if(target && $("faceSnapToggle").checked && page===fe.draftPreview.pdfPage && fePdfSnapBasis(page)===fe.draftPreview.pdfBasis) {
+    const z=fe.zoom||1;
+    for(const segment of target.segments) {
+      const a=feUlImgToMm(page,...segment.a),b=feUlImgToMm(page,...segment.b);
+      el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'#38bdf8','stroke-width':2/z,'pointer-events':'none','data-pdf-snap-segment':segment.id},g);
+    }
+    const dot=el('circle',{cx:target.point[0],cy:target.point[1],r:6/z,fill:'none',stroke:'#38bdf8','stroke-width':2/z,'pointer-events':'none','data-pdf-snap-target':target.kind},g);
+    el('title',{},dot).textContent=`PDF 原始${target.kind==='endpoint'?'端點':'閉合路徑交點'} · 第 ${page.page} 頁（取整 mm；請核對用途）`;
+  }
   const pts = fe.draft.pts;
   if (!pts.length) return;
   const preview = fe.draftPreview || {};
@@ -5135,6 +5162,27 @@ function feDraftOpts() {
     existingEdges: [],
   };
 }
+function fePdfSnapBasis(p) {return JSON.stringify([p.id,p.sourceId,p.page,p.crop,p.x,p.y,p.rot,p.mmPerPx,p.calibration]);}
+function feDraftSample(pt) {
+  const opts=feDraftOpts(),page=oc.edit&&ReferenceWorkspace.active(oc.edit.bid),last=fe.draft.pts.at(-1);
+  let fallback={point:[pt.x,pt.y],opts};
+  // A source endpoint may be off-grid. Keep the draft's fixed axis exact
+  // when the next sample falls back to grid; never shift that prior endpoint.
+  if(opts.snapOn && last && (last[0]%opts.gridMm || last[1]%opts.gridMm)) {
+    const locked=PolyDraft.axisLock(fe.draft.pts,[pt.x,pt.y]);
+    const horizontal=locked[1]===last[1],axis=horizontal?0:1;
+    locked[axis]=Math.round(locked[axis]/opts.gridMm)*opts.gridMm;
+    fallback={point:locked,opts:{...opts,gridMm:0}};
+  }
+  if(!opts.snapOn || !page?.calibration)return fallback;
+  const job=ReferenceWorkspace.tracingFeatures(oc.edit.bid);
+  const target=job.status==='ready' && RoomOutline.nearestSnap(job.features,[pt.x,pt.y],{
+    map:p=>feUlImgToMm(page,...p),zoom:fe.zoom,crop:page.crop,pts:fe.draft.pts});
+  if(!target)return {...fallback,status:job.status};
+  // Feed the known source point through the existing validation pipeline with
+  // grid/draft-axis attraction suppressed for this sample only.
+  return {point:target.point,opts:{...opts,gridMm:0,vertexSnapPx:0},target,page,basis:fePdfSnapBasis(page)};
+}
 
 /* fe.drag/fe.lenBuf 是既有相容欄位(cdp_test §P9/§P10 與面內既有 Esc 七階梯直接讀取)：
    每次 fe.draft 變動後在這裡鏡射回去，讓舊呼叫端看到的形狀不變。 */
@@ -5151,7 +5199,12 @@ function feSyncDraftMirror() {
    鍵入長度會被誤判成 NO_DIRECTION)。 */
 function feDraftPreviewMove(pt) {
   if (fe.tool !== "redraw") return;
-  fe.draftPreview = PolyDraft.previewMove(fe.draft, [pt.x, pt.y], feDraftOpts());
+  const sample=feDraftSample(pt);
+  fe.draftPreview = PolyDraft.previewMove(fe.draft, sample.point, sample.opts);
+  Object.assign(fe.draftPreview,{pdfTarget:sample.target,pdfPage:sample.page,pdfBasis:sample.basis});
+  const cur=fe.draftPreview.cur;
+  const status=sample.target?`PDF ${sample.target.kind==='endpoint'?'端點':'閉合路徑交點'} · 第 ${sample.page.page} 頁（取整 mm）`:sample.status==='loading'?'PDF 端點讀取中':sample.status==='manual'?'無可用原始直線端點；人工描繪':sample.status==='unavailable'?'PDF 端點無法取得；人工描繪':'';
+  $("faceCoordinateReadout").textContent=`u ${cur[0]} v ${cur[1]} mm${status?' · '+status:''}`;
   fe.draft = Object.assign({}, fe.draft, { cur: fe.draftPreview.cur });
   feSyncDraftMirror();
   renderFeDraftLayer();
@@ -5180,7 +5233,8 @@ async function feDown(pt, ev) {
       await feDraftTryClose();
       return;
     }
-    const r = PolyDraft.place(fe.draft, [pt.x, pt.y], feDraftOpts());
+    const sample=feDraftSample(pt);
+    const r = PolyDraft.place(fe.draft, sample.point, sample.opts);
     if (r.error) {
       /* diff#8:CROSS/BACKTRACK 前端先驗擋下，不落點；重算一次 preview 讓橡皮筋維持紅態 */
       feDraftPreviewMove(pt);

@@ -421,6 +421,26 @@ const ReferenceWorkspace = (() => {
     }
     return s.doc;
   }
+  // Runtime-only immutable source features: never added to history or saved
+  // project metadata. A late extraction only fills its source/page cache.
+  const tracingCache = new WeakMap();
+  function tracingFeatures(bid) {
+    const p=active(bid),s=p&&context().sources.get(p.sourceId);
+    if(!s || s.meta.type!=="application/pdf")return {status:"manual"};
+    let pages=tracingCache.get(s);if(!pages){pages=new Map();tracingCache.set(s,pages);}
+    if(!pages.has(p.page)) {
+      const job={status:"loading"};pages.set(p.page,job);
+      (async()=>{
+        try {
+          const lib=await library(),doc=await documentFor(s),page=await doc.getPage(p.page);
+          const list=await page.getOperatorList();
+          job.features=RoomOutline.pdfSnapFeatures(list,lib.OPS,page.getViewport({scale:1}));
+          job.status=job.features.segments.length?"ready":"manual";
+        } catch(_) {job.status="unavailable";}
+      })();
+    }
+    return pages.get(p.page);
+  }
   function imageFor(s) {
     if (!s.image) s.image = new Promise((resolve, reject) => {
       const url = URL.createObjectURL(new Blob([s.bytes], { type: s.meta.type })), img = new Image();
@@ -1039,7 +1059,7 @@ const ReferenceWorkspace = (() => {
     present();
   }
   return { init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,statusHTML,present,bindPane,active,group,context,history,
-    reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
+    reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,tracingFeatures,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
