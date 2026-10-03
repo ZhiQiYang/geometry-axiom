@@ -1,5 +1,19 @@
 # 組構規則第一階段驗收（GEO-226／PR #26）
 
+## GEO-240：固定來源的情境材料配置入口（PR69，2026-10-03）
+
+本切片沿用已採納 D32/D33/I40/I41/R34；選取單一已發布規則後，既有 inspector 按鈕直接建立材料配置，沒有新公理、保存格式或生成語義。完整規則編輯仍由卡片雙擊／原有入口到達，配置 inspector 保持既有 open。Grid source＋boundary、未提交 grid 草稿附件與 F2b 擴大生成另案。
+
+- `ContextOperations.resolveBindingCreate` 只接受固定 typed id/version/canonical fingerprint，核對原生成功 envelope、authoring 能力、唯一版本與 typed slot 身分。generation 能力不能替代 authoring；null 材料／接觸面／擺向表示 incomplete，仍可使用既有配置表單／原生驗證。
+- `createBindingFromRule` 先在 detached owner 讀取／驗來源。成功前不 flush 舊輸入、不取消旧 preview、不換 owner 或寫草稿；配號仍由唯讀 native `newid` 與既有 reservation 防撞執行。遲到回覆受 project context、單一選取、卡片／pane、owner、generation 及關閉 serial 核對；連點只建立一份。
+- 顯示卡片直接取得原生既有 fingerprint。同 tuple 刪除重建後，首次與重試都拒絕原 pin；若 native 在配號等待途中未通知又變更，草稿仍保存舊 pin，後續 preview 精確拒絕而不送 POST。沒有承諾連續快照或新增第二讀取契約。
+- 原生三個 card fingerprint 回歸在 production/ASan/UBSan 各35/35；同三例在 immutable main baseline 皆 assertion red。前端 workspace42＋registry12=54/54；獨立快照79/79與額外時序／inspector10/10，移除 owner guard／fresh-hash repin 的合法 mutant 分別有1／3 assertion red。
+- 正式 CDP 註冊 `assembly_context_entry_test.js` 的 P82，16項含桌面真 Enter／390px 點選、真 native preview/confirm、真 `.gcanvas` 保存重開、保留選取與原入口、同 tuple 換語義／latest新增、遲到配號／來源、連點與能力負例。能力和缺卡片 hash 的 fault injection 只作明示負例；正例均為 native 真資料。P77原128斷言保留，拖卡後由真雙擊開完整編輯。
+
+同 exact head 的完整套件、無 filter CDP/golden、HTTP/runtime 閉包與剩餘未驗項以 PR69 實測紀錄為準。歷史 expected-count、服務來源變更與外掛動態字串／Enter 的失敗保留，不冒稱 green。A24實機仍未驗；390px不能替代手機鍵盤或OS檔案操作。
+
+## 原第一階段基準（歷史紀錄）
+
 起點：PR 草稿 `1ac155e`，整合既有主線 `17bd432`。條文定案與正典同步：`8207401`。
 正式功能與驗證腳本在本文件同一提交；PR 使用 Refs #19，不自動關閉尚待實機驗收的總工單。
 

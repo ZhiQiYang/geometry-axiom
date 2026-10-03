@@ -1,5 +1,6 @@
 """Authoring acceptance against the actual native bridge and scene loader."""
 from copy import deepcopy
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -91,6 +92,63 @@ class AssemblyRules(unittest.TestCase):
         self.assertEqual([], self.command("surfaces")["surfaces"])
         self.assertEqual(1, self.command("objects")["assemblyRules"][0]["id"])
         self.assertEqual(2, self.command("newid")["assemblyRule"])
+
+    def test_rule_cards_expose_exact_latest_native_definition_fingerprints(self):
+        values = [rule(77, 1), rule(77, 3), rule(77, 2), rule(78, 1)]
+        values[1]["joints"][0]["side"] = "-u"
+        for value in values:
+            self.publish(value)
+        for identifier in (77, 78):
+            self.assertTrue(self.command(f"line canvas-pos assembly-rule {identifier} 17 -8")["ok"])
+        before = self.command("dump")["text"], self.read()["revision"]
+        cards = self.command("objects")["assemblyRules"]
+        self.assertEqual({(77, 3), (78, 1)}, {(c["id"], c["version"]) for c in cards})
+        records = {(r["value"]["id"], r["value"]["version"]): r for r in self.read()["state"]["rules"]}
+        for card in cards:
+            self.assertIn("fingerprint", card)
+            record = records[card["id"], card["version"]]
+            canonical = json.dumps(record["value"], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+            self.assertEqual(hashlib.sha256(canonical.encode("utf-8")).hexdigest(), card["fingerprint"])
+            self.assertEqual(record["fingerprint"], card["fingerprint"])
+        self.assertEqual(cards[0]["name"], cards[1]["name"])
+        self.assertNotEqual(cards[0]["fingerprint"], cards[1]["fingerprint"])
+        self.assertEqual(before, (self.command("dump")["text"], self.read()["revision"]))
+
+    def test_rule_card_fingerprint_detects_same_tuple_replacement(self):
+        self.publish()
+        self.assertTrue(self.command("line canvas-pos assembly-rule 1 17 -8")["ok"])
+        original = self.command("objects")["assemblyRules"][0]
+        self.assertIn("fingerprint", original)
+        self.apply([{"op": "delete-rule", "id": 1, "version": 1}])
+        replacement = rule()
+        replacement["joints"][0]["side"] = "-u"
+        self.publish(replacement)
+        self.assertTrue(self.command("line canvas-pos assembly-rule 1 17 -8")["ok"])
+        changed = self.command("objects")["assemblyRules"][0]
+        self.assertIn("fingerprint", changed)
+        self.assertEqual({k: v for k, v in original.items() if k != "fingerprint"},
+                         {k: v for k, v in changed.items() if k != "fingerprint"})
+        canonical = json.dumps(replacement, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        self.assertEqual(hashlib.sha256(canonical.encode("utf-8")).hexdigest(), changed["fingerprint"])
+        self.assertEqual(self.read()["state"]["rules"][0]["fingerprint"], changed["fingerprint"])
+        self.assertNotEqual(original["fingerprint"], changed["fingerprint"])
+
+    def test_rule_card_fingerprint_reads_and_moves_preserve_pending_preview(self):
+        self.publish()
+        original = self.command("objects")["assemblyRules"][0]
+        self.assertIn("fingerprint", original)
+        preview = self.request([{"op": "create-binding", "value": binding(False)}])["preview"]
+        self.assertTrue(preview["valid"])
+        before = self.command("dump")["text"], self.read()["revision"]
+        self.assertEqual(original, self.command("objects")["assemblyRules"][0])
+        self.assertEqual(before, (self.command("dump")["text"], self.read()["revision"]))
+        self.assertTrue(self.command("line canvas-pos assembly-rule 1 -21 34")["ok"])
+        moved = self.command("objects")["assemblyRules"][0]
+        self.assertEqual(original["fingerprint"], moved["fingerprint"])
+        self.assertNotEqual(original, moved)
+        self.assertEqual(before[1], self.read()["revision"])
+        self.assertTrue(self.command(f'assembly-confirm {preview["token"]}')["ok"])
+        self.assertEqual(binding(False), self.read()["state"]["bindings"][0]["value"])
 
     def test_explicit_create_rejects_live_id_including_identical_content(self):
         self.publish();self.apply([{"op":"create-binding","value":binding()}])

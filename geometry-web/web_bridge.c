@@ -754,7 +754,7 @@ static void cmd_objects(void)
     }
     fputs("],\"assemblyRules\":[",stdout);bool first_rule=true;
     for(size_t i=0;i<g_world.assembly.rule_count;++i){const AsmRuleVersion *r=&g_world.assembly.rules[i];if(assembly_rule(&g_world,r->id,0)!=r)continue;
-        printf("%s{\"kind\":\"assembly-rule\",\"id\":%u,\"version\":%u,\"name\":",first_rule?"":",",r->id,r->version);first_rule=false;js_string(r->name);putchar(',');cpos_json(CANVAS_POS_ASSEMBLY_RULE,r->id);putchar('}');}
+        printf("%s{\"kind\":\"assembly-rule\",\"id\":%u,\"version\":%u,\"fingerprint\":\"%s\",\"name\":",first_rule?"":",",r->id,r->version,r->fingerprint);first_rule=false;js_string(r->name);putchar(',');cpos_json(CANVAS_POS_ASSEMBLY_RULE,r->id);putchar('}');}
     fputs("],\"assemblyBindings\":[",stdout);
     for(size_t i=0;i<g_world.assembly.binding_count;++i){const AsmBinding *b=&g_world.assembly.bindings[i];printf("%s{\"kind\":\"assembly-binding\",\"id\":%u,\"ruleId\":%u,\"version\":%u,\"complete\":%s,\"name\":",i?",":"",b->id,b->rule_id,b->rule_version,b->complete?"true":"false");js_string(b->name);putchar(',');cpos_json(CANVAS_POS_ASSEMBLY_BINDING,b->id);putchar('}');}
     fputs("],\"parameterUses\":",stdout);json_parameter_uses(&g_world);

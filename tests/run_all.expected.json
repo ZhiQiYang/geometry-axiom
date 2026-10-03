@@ -28,7 +28,7 @@
   },
   "py:test_assembly_rules": {
    "mode": "count",
-   "count": 32,
+   "count": 35,
    "unit": "test"
   },
   "py:test_axiom_reader": {
@@ -178,7 +178,7 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 230,
+   "count": 236,
    "unit": "node test"
   },
   "node:model_viewer": {
@@ -205,6 +205,11 @@
   },
   "node:cdp_confirmation_gate": {
    "mode": "exit-code-only"
+  },
+  "node:context_operations": {
+   "mode": "count",
+   "count": 12,
+   "unit": "node test"
   },
   "node:cdp_evaluation": {
    "mode": "count",

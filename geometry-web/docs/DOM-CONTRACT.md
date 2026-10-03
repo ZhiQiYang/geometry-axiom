@@ -996,6 +996,6 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `#asmSourceNA`／`#asmSourceNB`、`#asmValueNA`／`#asmValueNB`、`#asmContactN`、`#asmOrientationN` 編輯材料配置；空值可存草稿或合法未完成配置。
 - `#asmBindingRule` 換版先開 `#asmMapping`；`#asmMapN` 及 `#asmApplyMapping` 明確對應槽位，`#asmCancelMapping` 撤回選擇。
 - `#asmFooter` 只在有草稿或待確認預覽時出現。`#asmPreview` 在尚未取得預覽時顯示；預覽回來後改顯示 `#asmConfirm`（`.primary-button`，無效時 disabled）與 `#asmCancel`，兩者固定在對話框底部。沒有待確認變更時這三個鈕都隱藏。`#asmPreviewResult` 貼在底部按鈕上方、不跟表單一起捲動，先寫槽位名稱、截面前後值或規則版本，違反原因仍列在外面；完整 JSON 在「完整資料，給除錯對照」。`#asmStatus` 顯示拒絕原因。異步回應核對 context、編輯代次及序號。示意圖 `#asmDiagram` 的圖說使用槽位名稱與右側／左側／上側／下側，`[data-face]` 的值仍是 `+u`／`-u`／`+v`／`-v`。已發布配置用 `.asm-slot` 顯示槽位名稱與截面。
-- `.assembly-card[data-kind="assembly-rule"|"assembly-binding"][data-id]` 沿用畫布身分、拖曳、搜尋、小地圖和選取。`#asmInspectorOpen` 返回工作區。
+- `.assembly-card[data-kind="assembly-rule"|"assembly-binding"][data-id]` 沿用畫布身分、拖曳、搜尋、小地圖和選取。規則檢查器的既有 `#asmInspectorOpen`（GEO-240）一對一改為「建立材料配置」：捕捉卡片原生 id/version/fingerprint，再由 `ContextOperations` 的 `assembly-binding.create` 核對 authoring 能力及固定來源，進入唯一 `#assemblyWorkspace` 的既有配置表單。缺材料／接觸面／擺向可保留合法未完成配置；不表示生成幾何。固定來源或能力不能核對時拒絕，保持舊工作區、草稿與預覽。非同步開啟綁定 project context、selection、owner、編輯代次及關閉序號，重複點擊只開一次。配置檢查器仍開啟既有配置；規則完整編輯沿用卡片雙擊、既有側欄或 `#btnNewAssembly`，Q19建立入口不變。
 - `#asmClose` 返回畫布，草稿留在專案；需使用共用保存寫入檔案。新建／開啟專案會關閉舊工作區。
 - 空間工作區在寬高皆 ≤720px 時收起 `.sm-source-actions` 的重複範例捷徑；設定區來源選擇、返回畫布與保存列仍保留，確認／建立按鈕須完整可見。
