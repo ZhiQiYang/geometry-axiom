@@ -42,9 +42,12 @@ window.AssemblyWorkspace=(()=>{
   async function open(kind=null,id=null){if(confirming()){report(pendingMessage);return;}flush();ReferenceWorkspace.assertEditable();if(window.DraftGate&&!window.DraftGate.ask())return;invalidate();const x={context:token(),generation:0,kind,id,rotation:0,zoom:1,draftsRef:ReferenceWorkspace.context().assemblyDrafts};s=x;await readState(x);if(!current(x))return;if(kind==='assembly-rule')x.record=x.read.state.rules.filter(r=>r.value.id===id).sort((a,b)=>b.value.version-a.value.version)[0];if(kind==='assembly-binding')x.record=x.read.state.bindings.find(r=>r.value.id===id);render();if(!dialog.open)dialog.showModal();WorkspaceShell.attach(dialog);}
   function close(){if(confirming()&&!s.confirming.uncertain){report(pendingMessage);return;}flush();invalidate();s=null;++serial;dialog.close();WorkspaceShell.detach(dialog);}
   async function newDraft(kind,source=null,revision=false){
-    if(confirming())return;const creatingBinding=kind==='binding'&&!source?.value?.rule;if(!creatingBinding)flush();const x=s,g=x.generation;await readState(x);if(!current(x)||x.confirming||g!==x.generation)return;
+    if(confirming())return;const creatingBinding=kind==='binding'&&!source?.value?.rule,editingBinding=kind==='binding'&&!!source?.value?.rule;if(kind!=='binding')flush();const x=s,g=x.generation;
+    const capturedRule=editingBinding?ruleReference((x.read?.state?.rules||[]).find(r=>r.value.id===source.value.rule.id&&r.value.version===source.value.rule.version)):null;
+    await readState(x);if(!current(x)||x.confirming||g!==x.generation)return;
     let selectedRule;
     if(creatingBinding){selectedRule=source||x.read.state.rules.at(-1);if(!selectedRule)throw Error('請先發布一份規則。');const ref=ruleReference(selectedRule),fresh=x.read.state.rules.find(r=>r.value.id===ref.id&&r.value.version===ref.version);if(!fresh||fresh.fingerprint!==ref.fingerprint)throw Error('原始規則版本已變更或移除；請重新開啟規則。');selectedRule=fresh;}
+    else if(editingBinding){selectedRule=x.read.state.rules.find(r=>r.value.id===capturedRule.id&&r.value.version===capturedRule.version);if(!selectedRule||selectedRule.fingerprint!==capturedRule.fingerprint)throw Error('原始配置的固定規則版本已變更或移除；請重新開啟配置。');const original=x.read.state.bindings.find(r=>r.value.id===source.value.id);if(!original||identityValue(original.value)!==identityValue(source.value))throw Error('原始配置已變更，請重新開啟。');}
     const ids=await command('newid');if(!current(x)||x.confirming||g!==x.generation)return;
     const drafts=ReferenceWorkspace.getAssemblyDrafts().filter(d=>d.kind===kind),records=kind==='rule'?x.read.state.rules:x.read.state.bindings;
     const used=new Set([...records.map(r=>r.value.id),...drafts.map(d=>d.data.id)]);
@@ -60,13 +63,11 @@ window.AssemblyWorkspace=(()=>{
         data.version=version+1;base={id:source.value.id,version:source.value.version,fingerprint:source.fingerprint};
       }
     }
-    else if(source?.value?.rule){
-      const original=records.find(r=>r.value.id===source.value.id);
-      if(!original||identityValue(original.value)!==identityValue(source.value))throw Error('原始配置已變更，請重新開啟。');
-      data=clone(source.value);bindingIntent={mode:'update',source:clone(source.value)};
+    else if(editingBinding){
+      data=clone(source.value);base=ruleReference(selectedRule);bindingIntent={mode:'update',source:clone(source.value)};
     }
     else {const r=selectedRule.value;base=ruleReference(selectedRule);data={id,name:'',rule:{id:r.id,version:r.version},slots:r.slots.map(slot=>({slotId:slot.id,A:null,B:null,contactFace:null,orientation:null}))};}
-    if(creatingBinding)flush();
+    if(kind==='binding')flush();
     invalidate();x.draft={id:crypto.randomUUID(),kind,base_ref:base,data,updated_at:new Date().toISOString(),...(kind==='binding'?{binding_intent:bindingIntent||{mode:'create'}}:{})};x.record=null;x.operations=null;flush();render();
   }
   function render(){
