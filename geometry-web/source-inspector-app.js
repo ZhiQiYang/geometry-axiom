@@ -11,9 +11,9 @@
     link.href=url;link.download=`model-snapshot-${snapshot.modelId}.csv`;
     try{link.click();}finally{setTimeout(()=>URL.revokeObjectURL(url),0);}
   }
-  async function navigate(n,g,{isCurrent=()=>true}={}){
+  async function navigate(n,g,{isCurrent=()=>true,beginNavigation=()=>true}={}){
     const id=Number(n.id);
-    if(['guide','grid','timber','placement'].includes(n.kind))return EngineeringAdapter.navigateObject({kind:n.kind,id},{sourceGraph:g,isCurrent});
+    if(['guide','grid','timber','placement'].includes(n.kind))return EngineeringAdapter.navigateObject({kind:n.kind,id},{sourceGraph:g,isCurrent,beginNavigation});
     if(n.kind==='parameter-field')n={...n,kind:'parameter',hasField:true};
     if(['boundary','placement','space','column','beam','grid-system','grid-binding','parameter','assembly-rule','assembly-binding'].includes(n.kind)){
       if(n.kind==='assembly-rule'){const active=ocFind(n.kind,id);if(active?.version!==n.version)throw Error(`固定 v${n.version} 保留；目前卡片顯示其他版本，請於既有組構工作區核對。`);}

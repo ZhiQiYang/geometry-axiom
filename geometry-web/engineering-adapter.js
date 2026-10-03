@@ -86,13 +86,13 @@ window.EngineeringAdapter = (() => {
     return result.grids;
   }
   let navigationSequence=0;
-  async function navigateObject(target, { isCurrent = () => true, sourceGraph = null } = {}) {
+  async function navigateObject(target, { isCurrent = () => true, beginNavigation = () => true, sourceGraph = null } = {}) {
     if(!target || !['guide','timber','grid','placement'].includes(target.kind) || !Number.isSafeInteger(target.id) || target.id<0 || target.id>4294967295)
       throw new Error('定位資料不完整，請返回本次設定查看。');
     const sequence=++navigationSequence,expected=project(),context=ReferenceWorkspace.context(),frame=ReferenceWorkspace.history?.frame;
     const pages=()=>JSON.stringify([...context.groups||[]].map(([bid,g])=>[bid,g.activePageId]));
     const pageContext=pages(),initialFocus=oc.focus,initialObject=oc.sel,initialFaceSelection=fe.sel;
-    const active=()=>sequence===navigationSequence && ReferenceWorkspace.context()===context && same(expected,project()) &&
+    const active=()=>isCurrent() && sequence===navigationSequence && ReferenceWorkspace.context()===context && same(expected,project()) &&
       project().revision===expected.revision && ReferenceWorkspace.history?.frame===frame && pages()===pageContext && !EngineeringWorkspace.isOpen;
     const initial=()=>active() && isCurrent() && oc.focus===initialFocus && oc.sel===initialObject && fe.sel===initialFaceSelection;
     const snapshot=SourceInspector.index(await command('source-inspect'));
@@ -104,16 +104,30 @@ window.EngineeringAdapter = (() => {
     };
     verify(snapshot);
     const {placementId,boundaryId}=SourceInspector.resolveLocation(snapshot,target);
+    if(boundaryId===null){
+      const surfaces=await command('surfaces');if(!initial())return;
+      const placements=surfaces.surfaces.filter(p=>p.id===placementId);
+      if(placements.length!==1 || placements[0].boundary!==0)throw new Error('來源放置關係缺失，請重新檢查。');
+      const final=SourceInspector.index(await command('source-inspect'));if(!initial())return;verify(final);
+      if(!window.DraftGate.ask() || !beginNavigation())return;
+      resetSceneFocus();const selection=oc.sel,faceSelection=fe.sel;
+      const canvasCurrent=()=>active()&&oc.focus===null&&oc.sel===selection&&fe.sel===faceSelection;
+      await setView3(false,{persistPositions:false});if(!canvasCurrent())return;
+      await renderObjects({persistPositions:false});if(!canvasCurrent())return;
+      const loaded=SourceInspector.index(await command('source-inspect'));if(!canvasCurrent())return;verify(loaded);
+      if(!ocFind('placement',placementId))throw new Error('來源放置卡片目前無法定位。');
+      selectObject('placement',placementId);centerOnNode('placement',placementId);
+      if(innerWidth<=900)openPanel('right',document.getElementById('toggleRight'));return;
+    }
     const boundary=await apiRequest('boundary '+boundaryId);
     if(!initial())return;
     if(!boundary.ok || !boundary.loops?.length)throw new Error('這個放置面沒有可開啟的輪廓工作區，請由三視圖查看放置 #'+placementId+'。');
     const checkedSource=SourceInspector.index(await command('source-inspect'));
     if(!initial())return;
     verify(checkedSource);
-    // The source pane can unmount as a consequence of this navigation. Its
-    // cancellation guard owns the reads above; focus/context pins own the handoff.
-    // Ask before resetSceneFocus can discard any current workspace draft.
-    if(!window.DraftGate.ask())return;
+    // The source owner transfers its lease across its own pane replacement;
+    // explicit cancellation and saved-model ownership remain checked throughout.
+    if(!window.DraftGate.ask() || !beginNavigation())return;
     resetSceneFocus();
     const viewChange=setView3(false,{persistPositions:false}),canvasSelection=oc.sel,faceSelection=fe.sel;
     await viewChange;

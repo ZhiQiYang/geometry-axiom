@@ -43,6 +43,13 @@ test('shared navigation uses explicit placement from canvas and an already open 
     assert.equal(h.state.revision,0);assert.equal(h.calls.filter(c=>Array.isArray(c)&&c[0]==='select').length,1);
     assert.ok(h.calls.filter(c=>typeof c==='string').every(c=>['source-inspect','boundary 1','resetFocus','setView3','renderObjects'].includes(c)));
   }
+  const h=navigationHarness(locationData(0,0));h.data.edges=h.data.edges.filter(e=>e.field!=='boundary');
+  const read=h.sandbox.apiRequest;h.sandbox.apiRequest=text=>text==='surfaces'?Promise.resolve({ok:true,surfaces:[{id:0,boundary:0}]}):read(text);
+  h.sandbox.ocFind=(kind,id)=>kind==='placement'&&id===0;h.sandbox.selectObject=(kind,id)=>h.oc.sel={kind,id};h.sandbox.centerOnNode=()=>{};
+  await h.navigate({kind:'placement',id:0});assert.equal(h.oc.sel.kind,'placement');assert.equal(h.oc.sel.id,0);assert.equal(h.oc.focus,null);
+  const broken=navigationHarness();broken.data.edges=broken.data.edges.filter(e=>e.field!=='boundary');
+  const brokenRead=broken.sandbox.apiRequest;broken.sandbox.apiRequest=text=>text==='surfaces'?Promise.resolve({ok:true,surfaces:[{id:20,boundary:1}]}):brokenRead(text);
+  await assert.rejects(broken.navigate({kind:'placement',id:20}),/放置關係缺失/);
 });
 test('shared navigation refuses stale/reused ID pins and missing target before changing focus',async()=>{
   for(const mutate of [d=>d.revision++,d=>d.sourceFingerprint=hash(8),d=>d.nodes=d.nodes.filter(n=>n.kind!=='timber')]){
@@ -66,6 +73,16 @@ test('draft cancellation leaves the current workspace intact and source changes 
   const late=navigationHarness(),enter=late.sandbox.enterFocus;
   late.sandbox.enterFocus=async(...args)=>{await enter(...args);late.data.revision++;late.data.sourceFingerprint=hash(8);};
   await assert.rejects(late.navigate({kind:'timber',id:7}),/來源已變更/);assert.equal(late.fe.sel,null);
+});
+test('the navigation owner can cancel during render or the final native read before enter/select',async()=>{
+  for(const stage of ['render','final']){
+    const h=navigationHarness();let current=true,reads=0;const read=h.sandbox.apiRequest;
+    h.sandbox.apiRequest=async text=>{const r=await read(text);if(text==='source-inspect'&&++reads===3&&stage==='final')current=false;return r;};
+    if(stage==='render')h.sandbox.renderObjects=async()=>{current=false;};
+    await h.navigate({kind:'timber',id:7},{isCurrent:()=>current});
+    assert.equal(h.fe.sel,null);assert.ok(!h.calls.some(c=>Array.isArray(c)&&c[0]==='select'));
+    if(stage==='render')assert.ok(!h.calls.some(c=>Array.isArray(c)&&c[0]==='enter'));
+  }
 });
 test('source app forwards native face targets to the common navigation entry and its cancellation guard',async()=>{
   const calls=[],current=()=>true,g=S.index(locationData()),context={groups:new Map([[1,{activePageId:'a'}]])};let options;

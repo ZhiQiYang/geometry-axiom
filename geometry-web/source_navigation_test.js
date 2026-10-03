@@ -42,11 +42,35 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
     await click(p.x,p.y);await waitForUI(`window.__p85Gate.held`);
     if(mode==='cancel')await ctl('#faceInspectorContent [data-source-inspector] summary');
     else if(mode==='page')await eval_(`ReferenceWorkspace.context().groups.set('p85-test',{activePageId:'changed',pages:[]})`);
-    else await eval_(`(async()=>{for(const line of ${JSON.stringify(mode==='reuse'?['delete timber 7','timber 7 29 35 role boundary','place 7 on 10 at-face e0 +u +n']:['delete timber 7'])}){let r=await api('line '+line);if(r.preview?.valid)r=await api('line confirm '+r.preview.token);if(!r.ok)throw Error(JSON.stringify(r));}})()`);
+    else await eval_(`(async()=>{for(const line of ${JSON.stringify(mode==='reuse'?['delete timber 7','timber 7 29 35 role boundary','place 7 on 10 at-face e0 +u +n']:['delete timber 7'])}){let r=await apiRequest('line '+line);if(r.preview?.valid)r=await apiRequest('line confirm '+r.preview.token);if(!r.ok)throw Error(JSON.stringify(r));}})()`);
     await eval_(`window.__p85Gate.restore();window.__p85Gate.release();`);await sleep(200);
     check(mode+' late source result never selects a stale/reused ID or switches placement',await eval_(`oc.focus?.placementId===10&&fe.sel===null`));
     if(mode==='cancel')check('cancelled read preserves World and project state',JSON.stringify(await snapshot())===JSON.stringify(before));
     if(mode==='page')await eval_(`ReferenceWorkspace.context().groups.delete('p85-test')`);
+  }
+  // An embedded rectangular placement has a real canvas card and no boundary
+  // relation. Locate that typed card through the existing timber's source UI.
+  await setup();
+  await eval_(`(async()=>{resetSceneFocus();const scene='surface 0 origin 0 0 2500 u +x v +y rect 0 0 4000 3000\\ntimber 0 27 33 role boundary\\nplace 0 on 0 at-face e0 +u +n\\n';const bytes=await GeometryProject.pack(scene,{projectId:'embedded-placement',name:'公開矩形承載面',sources:[],faces:[]},new Map(),fflate);await ReferenceWorkspace.importBytes(bytes,'embedded.gcanvas');await renderObjects({persistPositions:false});selectObject('placement',0);SourceInspectorApp.sync();})()`);
+  await ctl('#inspectorContent [data-source-inspector] summary');
+  await waitForUI(`!!document.querySelector('[data-source-path="timber:0"]')`);
+  await ctl('[data-source-path="timber:0"]');
+  const embeddedBefore=await snapshot();
+  await ctl('[data-source-locate="placement:0"]');await waitForUI(`oc.sel?.kind==='placement'&&oc.sel.id===0`);
+  check('native boundaryless rectangular placement0 remains a selectable canvas card',await eval_(`(async()=>{const g=await apiRequest('source-inspect');return !g.edges.some(e=>e.from==='placement:0'&&e.field==='boundary')&&oc.focus===null&&oc.sel.kind==='placement'&&oc.sel.id===0;})()`));
+  check('embedded placement navigation preserves World and project state',JSON.stringify(await snapshot())===JSON.stringify(embeddedBefore));
+  for(const stage of ['render','final'])for(const action of ['collapse','close','switch']){
+    await setup({open:true});
+    await eval_(`(async()=>{const input={mode:'plan',base_scene:(await api('dump')).text,placement_id:20,obstacles:[],settings:{bottom:0,height:3000,edges:[0,1,2,3],floor:'boundary',ceiling:'boundary',holes:'none',wall_thickness:null}};const response=await fetch('/model/space-preview',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)});const result=await response.json();if(!result.ok)throw Error(JSON.stringify(result));for(const id of ['p85-a','p85-b'])ReferenceWorkspace.addSpaceModel({id,name:id,created_at:new Date().toISOString(),source:{kind:'scene',placement_id:20,boundary_id:1,scene_hash:result.source_sha256},input,result});SpaceModelWorkspace.openLibrary();SourceInspectorApp.sync();})()`);
+    const selector='[data-sm-open-model="p85-a"]',root='#smLibraryList .sm-model-card:first-child [data-source-inspector]';
+    await ctl(root+' summary');await waitForUI(`!!document.querySelector(${JSON.stringify(root+' [data-source-locate="timber:7"]')})`);
+    const before=await snapshot();
+    await eval_(`(()=>{const originalRead=apiRequest,originalRender=renderObjects,g=window.__p85Late={held:false,count:0};const gate=new Promise(resolve=>g.release=resolve);g.restore=()=>{apiRequest=originalRead;renderObjects=originalRender;};apiRequest=async(...args)=>{const r=await originalRead(...args);if(args[0]==='source-inspect'&&++g.count===4&&${JSON.stringify(stage)}==='final'){g.held=true;await gate;}return r;};renderObjects=async(...args)=>{const r=await originalRender(...args);if(${JSON.stringify(stage)}==='render'&&!g.held){g.held=true;await gate;}return r;};})()`);
+    await ctl(root+' [data-source-locate="timber:7"]');await waitForUI(`window.__p85Late.held`);
+    await ctl(action==='collapse'?root+' summary':action==='close'?'#smClose':'[data-sm-open-model="p85-b"]');
+    await eval_(`window.__p85Late.restore();window.__p85Late.release();`);await sleep(200);
+    check(stage+'/'+action+' explicitly cancelled saved-model owner cannot enter/select the late target',await eval_(`fe.sel?.id!==7&&${stage==='render'?"oc.focus===null":"oc.focus?.placementId===20"}`));
+    check(stage+'/'+action+' cancellation preserves World, dirty and history',JSON.stringify(await snapshot())===JSON.stringify(before));
   }
   check('source navigation has no new browser exceptions',exceptionCount()===errors);
 };
