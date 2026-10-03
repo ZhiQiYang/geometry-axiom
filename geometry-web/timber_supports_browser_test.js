@@ -1,11 +1,12 @@
 /* #47 support slice: plugin for the existing isolated CDP/Playwright harness.
  * The integration owner loads timber-supports.js after timber-schedule.js and
  * adds timberSupports to references; no shared app implementation is changed. */
-const cdp=require('./cdp_helpers.js'),fs=require('fs'),path=require('path');
+const cdp=require('./cdp_helpers.js'),fs=require('fs'),path=require('path'),os=require('os');
 module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount}){
+  console.log('=== P81. 原生角材支撐來源與局部面 ===');
   const check=cdp.makeCheck({prefix:'support ',throwOnFail:true}),errors=exceptionCount();
-  const out=process.env.GEOMETRY_SUPPORT_SCREENSHOT_DIR;
-  if(!out||!path.isAbsolute(out))throw Error('Use an isolated absolute screenshot directory');
+  const out=process.env.GEOMETRY_SUPPORT_SCREENSHOT_DIR||path.join(os.tmpdir(),'geometry-support-screens-'+process.pid);
+  if(!path.isAbsolute(out))throw Error('Use an isolated absolute screenshot directory');
   fs.mkdirSync(out,{recursive:true});
   const ctl=async selector=>{
     const p=await eval_(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw Error('Missing control');e.scrollIntoView({block:'nearest'});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;return {x,y,hit:e.contains(document.elementFromPoint(x,y))};})()`);
@@ -28,6 +29,20 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
   await ctl('#timberScheduleCSV');await waitForUI(`!!window.__supportBlob`);
   check('actual CSV export contains exact support provenance and fixed native source versions',await eval_(`(async()=>{const csv=await __supportBlob.text(),s=feTimberScheduleSnapshot();return csv.includes('start_support_provenance')&&csv.includes('finish_support_provenance')&&csv.includes('instanceFingerprint')&&csv.includes('B0')&&csv.includes(s.sourceFingerprint)&&csv.includes('"1973"');})()`));
   check('selection, source details and CSV export preserve World, dirty and history',JSON.stringify(before)===JSON.stringify(await snapshot()));
+  // Corrupt only the received projection, retaining its real native fingerprint.
+  // The existing export handler must reject before constructing any CSV Blob.
+  await eval_(`window.__supportOriginalReferences=fe.timberReferenceData;`);
+  for(const [name,mutation] of [
+    ['false instance fingerprint',`e.owner.instanceFingerprint='e'.repeat(64)`],
+    ['false supporting member',`e.start.relation.owner.memberId=999`],
+    ['false supporting rule version',`e.start.relation.owner.ruleVersion=999`],
+    ['nonexistent supporting timber',`e.start.relation.source.id=4294967295`],
+  ]){
+    await eval_(`(()=>{const r=JSON.parse(JSON.stringify(__supportOriginalReferences)),e=r.timberSupports.entries.find(x=>x.id===${id});${mutation};fe.timberReferenceData=r;window.__supportBlob=null;})()`);
+    await ctl('#timberScheduleCSV');
+    check('actual CSV rejects '+name+' before Blob creation',await eval_(`window.__supportBlob===null`));
+    await eval_(`fe.timberReferenceData=__supportOriginalReferences;`);
+  }
   await eval_(`URL.createObjectURL=__supportURL;void 0`);
   await waitForUI(`!document.querySelector('#toastRegion .toast')`,6000);
   await eval_(`document.querySelector('[data-timber-id="${id}"] .timber-schedule-source p').scrollIntoView({block:'start'});`);
@@ -46,4 +61,5 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
   await sleep(100);
   fs.writeFileSync(path.join(out,'support-mobile.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
   check('support flow has no new browser exceptions',exceptionCount()===errors);
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
 };

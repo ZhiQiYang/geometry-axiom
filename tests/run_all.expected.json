@@ -151,6 +151,11 @@
    "count": 31,
    "unit": "test"
   },
+  "py:test_timber_support_projection": {
+   "mode": "count",
+   "count": 13,
+   "unit": "test"
+  },
   "py:test_witness_diagnostics": {
    "mode": "count",
    "count": 2,
@@ -163,7 +168,7 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 186,
+   "count": 197,
    "unit": "node test"
   },
   "node:model_viewer": {
@@ -191,12 +196,12 @@
   "node:cdp_confirmation_gate": {
    "mode": "exit-code-only"
   },
-  "node:background_grid_viewport": {
+  "node:cdp_evaluation": {
    "mode": "count",
    "count": 9,
    "unit": "node test"
   },
-  "node:cdp_evaluation": {
+  "node:background_grid_viewport": {
    "mode": "count",
    "count": 9,
    "unit": "node test"

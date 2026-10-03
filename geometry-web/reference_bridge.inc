@@ -346,6 +346,7 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
     fputs(",\"selector\":",stdout); js_string(selector);
     printf(",\"priority\":%lld}",(long long)t->cut_priority);
 }
+#include "timber_support_projection.inc"
 static void cmd_references(void)
 {
     char fingerprint[65];
@@ -371,7 +372,9 @@ static void cmd_references(void)
         json_reference_geometry(&g_world,(int)i);
         fputs(",\"definition\":",stdout); json_reference_timber_definition(&g_world.timbers[i],&g_world.anchors[i]); putchar('}');
     }
-    fputs("],\"specs\":[",stdout);
+    fputs("],\"timberSupports\":",stdout);
+    json_timber_supports(&g_world,fingerprint);
+    fputs(",\"specs\":[",stdout);
     for (size_t i=0;i<g_world.spec_count;++i) {
         printf("%s{\"name\":",i?",":""); js_string(g_world.specs[i].name);
         printf(",\"value\":%lld}",(long long)g_world.specs[i].value);

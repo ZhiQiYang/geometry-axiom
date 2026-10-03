@@ -7017,6 +7017,7 @@ async function main() {
   if(scope.mode==='full'||process.env.GEOMETRY_PARAMETERS_ONLY)await require('./parameter_workflow_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   if(scope.mode==='full'||process.env.GEOMETRY_ASSEMBLY_ONLY)await require('./assembly_workflow_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
   if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_schedule_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
+  if(scope.mode==='full'||process.env.GEOMETRY_TIMBER_SCHEDULE_ONLY)await require('./timber_supports_browser_test.js')({send,eval_,sleep,click,waitForUI,exceptionCount:()=>excN});
   }
   if(scope.mode==='full'||process.env.GEOMETRY_ROOM_OUTLINE_ONLY)await require('./room_outline_test.js')({send,eval_,sleep,click,drag,waitForUI,exceptionCount:()=>excN});
   chrome.kill();

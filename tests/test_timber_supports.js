@@ -6,12 +6,12 @@ const timber=(id,surface=0)=>({id,role:'primary',geometry:{surface,length:2960,A
 const endpoint=(id,face,at,normal)=>({status:'exact',at,crossRange:[487,514],relation:{kind:'timber-face',
   source:{kind:'timber',id},localFace:face,normalWorld:normal,owner:null,surface:0,
   stop:{axis:'v',at,range:[0,4000],fixity:'fixed'}}});
-function refs(){return {ok:true,sourceFingerprint:hash,timbers:[timber(7),timber(8)],engineeringSources:[],
+function refs(){return {ok:true,sourceFingerprint:hash,timbers:[timber(7),timber(8),timber(0),timber(91)],engineeringSources:[],
   timberSupports:{schema:'native-timber-supports/1',sourceFingerprint:hash,entries:[7,8].map(id=>({id,surface:0,owner:null,
     start:endpoint(0,'B1',20,[0,1,0]),finish:endpoint(91,'B0',2980,[0,-1,0])}))}};}
 
 test('decorates each native placement once and preserves typed zero support and surface identities',()=>{
-  const r=refs(),before=JSON.stringify(r),s=S.derive(r,0);
+  const r=refs(),before=JSON.stringify(r),s=S.derive(r,0,[7,8]);
   assert.deepEqual(s.ids,[7,8]);assert.equal(s.rows[0].supports.start.relation.source.id,0);
   assert.equal(s.supportSourceFingerprint,hash);
   assert.equal(s.rows[0].selector,'依 R6 自動推導');
@@ -64,7 +64,7 @@ test('boundary and embedded placement edges keep different typed sources; hole z
 function owned(){
   const r=refs(),p={instanceId:4,memberId:12,bindingId:9,ruleId:7,ruleVersion:2,
     ruleFingerprint:'b'.repeat(64),bindingFingerprint:'c'.repeat(64),instanceFingerprint:'d'.repeat(64)};
-  r.assembly={instances:[{value:{source:{id:4,bindingId:9,rule:{id:7,version:2,fingerprint:p.ruleFingerprint}}},members:[{memberId:12,timberId:7}]}],
+  r.assembly={instances:[{fingerprint:p.instanceFingerprint,value:{source:{id:4,bindingId:9,rule:{id:7,version:2,fingerprint:p.ruleFingerprint}}},members:[{memberId:12,timberId:7}]}],
     rules:[{value:{id:7,version:2,members:[{id:12,slotId:5}]},fingerprint:p.ruleFingerprint}],
     bindings:[{value:{id:9,slots:[{slotId:5,A:{kind:'literal',value:27},B:{kind:'literal',value:33}}]},complete:true,
       fingerprint:p.bindingFingerprint,effective:[{slotId:5,A:{value:27,path:'直接值 27'},B:{value:33,path:'直接值 33'}}]}]};
@@ -74,7 +74,7 @@ function owned(){
 test('checks exact owned member and fixed source versions against the schedule dependency',()=>{
   const r=owned(),row=S.derive(r,0).rows[0];assert.equal(row.supportOwner.memberId,12);
   assert.equal(row.supportOwner.instanceFingerprint,'d'.repeat(64));
-  for(const field of ['instanceId','memberId','ruleVersion','ruleFingerprint','bindingFingerprint']){
+  for(const field of ['instanceId','memberId','bindingId','ruleId','ruleVersion','ruleFingerprint','instanceFingerprint','bindingFingerprint']){
     const broken=clone(r);broken.timberSupports.entries[0].owner[field]=typeof row.supportOwner[field]==='number'?99:'e'.repeat(64);
     assert.throws(()=>S.derive(broken,0),/來源無法核對/);
   }
@@ -97,7 +97,7 @@ function parseCSV(text){
 }
 test('CSV retains all original schedule cells, safe multiline labels and exact per-row provenance',()=>{
   const r=refs();r.timbers[0].definition.anchor='\t=HYPERLINK("danger")\nsecond line';
-  const snapshot=S.derive(r,0),base=parseCSV(core.csv(snapshot)),csv=parseCSV(S.csv(snapshot));
+  const snapshot=S.derive(r,0,[7,8]),base=parseCSV(core.csv(snapshot)),csv=parseCSV(S.csv(snapshot));
   assert.equal(csv.length,3);assert.equal(csv[0].length,base[0].length+3);
   for(let i=0;i<base.length;i++)assert.deepEqual(csv[i].slice(0,base[i].length),base[i]);
   assert.equal(csv[1].at(-3),hash);
@@ -108,10 +108,39 @@ test('CSV retains all original schedule cells, safe multiline labels and exact p
 
 test('sorting and CSV export are read-only and preserve selections and unknown provenance',()=>{
   const r=refs();r.timbers[0].geometry.length=3000;
-  const snapshot=S.derive(r,0),before=JSON.stringify(snapshot);
+  const snapshot=S.derive(r,0,[7,8]),before=JSON.stringify(snapshot);
   assert.deepEqual(S.sorted(snapshot.rows,'length').map(r=>r.id),[8,7]);
   assert.equal(parseCSV(S.csv(snapshot,'length'))[1][1],'8');assert.equal(JSON.stringify(snapshot),before);
   delete r.timberSupports;const csv=parseCSV(S.csv(S.derive(r,0)));
   assert.deepEqual(JSON.parse(csv[1].at(-2)),{status:'unknown',relation:null});
   assert.equal(parseCSV(S.csv(S.derive(refs(),0,[]))).length,1);
+});
+
+test('surface scope includes real support placements while selection scope preserves exact quantities',()=>{
+  const r=refs(),s=S.derive(r,0);
+  assert.deepEqual(s.ids,[7,8,0,91]);assert.equal(s.rows.length,4);
+  assert.deepEqual(s.rows[2].supports.start,{status:'unknown',relation:null});
+  assert.equal(S.derive(r,0,[7,8]).rows.length,2);
+});
+
+test('exact timber supports must exist as placed native timbers on the same surface',()=>{
+  for(const mutate of [
+    r=>r.timberSupports.entries[0].start.relation.source.id=4294967295,
+    r=>delete r.timbers.find(t=>t.id===0).geometry,
+    r=>r.timbers.find(t=>t.id===0).geometry.surface=1,
+    r=>r.timberSupports.entries[0].id=999,
+  ]){const r=refs();mutate(r);assert.throws(()=>S.derive(r,0,[7,8]),/核對|放置|計量/);}
+});
+
+test('support owner provenance is checked against the actual owned supporting member in native assembly',()=>{
+  const r=owned(),relation=r.timberSupports.entries[1].start.relation;
+  relation.source.id=7;relation.owner=clone(r.timberSupports.entries[0].owner);
+  assert.equal(S.derive(r,0,[8]).rows[0].supports.start.relation.owner.memberId,12);
+  for(const field of ['instanceId','memberId','bindingId','ruleId','ruleVersion','ruleFingerprint','instanceFingerprint','bindingFingerprint']){
+    const broken=clone(r),owner=broken.timberSupports.entries[1].start.relation.owner;
+    owner[field]=typeof owner[field]==='number'?99:'e'.repeat(64);
+    assert.throws(()=>S.derive(broken,0,[8]),/來源無法核對/);
+  }
+  const absent=clone(r);absent.timberSupports.entries[1].start.relation.owner=null;
+  assert.throws(()=>S.derive(absent,0,[8]),/來源無法核對/);
 });

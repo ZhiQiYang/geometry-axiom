@@ -14,7 +14,23 @@
     return a===null || a && ['instanceId','memberId','bindingId','ruleId','ruleVersion'].every(k=>id(a[k])&&a[k]>0)&&
       ['ruleFingerprint','instanceFingerprint','bindingFingerprint'].every(k=>hash(a[k]));
   }
-  function endpoint(value,row,end){
+  const ownerFields=['instanceId','memberId','bindingId','ruleId','ruleVersion','ruleFingerprint','instanceFingerprint','bindingFingerprint'];
+  const sameOwner=(value,expected)=>expected===null?value===null:ownerValid(value)&&value!==null&&ownerFields.every(key=>value[key]===expected[key]);
+  function nativeFacts(references,snapshot){
+    const rows=core.derive(references,snapshot.surface).rows,facts=new Map();
+    for(const row of rows){
+      let owner=null;
+      if(row.assembly){
+        const instances=(references.assembly?.instances||[]).filter(instance=>instance.value?.source?.id===row.assembly.instanceId&&
+          instance.members?.some(member=>member.timberId===row.id&&member.memberId===row.assembly.memberId));
+        if(instances.length!==1||!hash(instances[0].fingerprint))throw Error(`角材 ${row.id} 的支撐所有權來源無法核對。`);
+        owner={...row.assembly,instanceFingerprint:instances[0].fingerprint};
+      }
+      facts.set(row.id,{surface:row.surface,owner});
+    }
+    return facts;
+  }
+  function endpoint(value,row,end,facts){
     if(!value || value.status==='unknown')return unknown();
     const r=value.relation,s=r?.source,axis=['+v','-v'].includes(row.dir)?'v':'u';
     if(value.status!=='exact'||!Number.isSafeInteger(value.at)||!pair(value.crossRange)||!r||
@@ -22,9 +38,10 @@
       !pair(r.stop.range)||r.stop.range[0]>value.crossRange[0]||r.stop.range[1]<value.crossRange[1]||r.stop.fixity!=='fixed')
       throw Error(`角材 ${row.id} 的${end}支撐原生資料無法核對。`);
     if(r.kind==='timber-face'){
+      const support=facts.get(s.id);
       if(s.kind!=='timber'||s.id===row.id||!['A0','A1','B0','B1','START','END'].includes(r.localFace)||
         !Array.isArray(r.normalWorld)||r.normalWorld.length!==3||!r.normalWorld.every(n=>[-1,0,1].includes(n))||
-        r.normalWorld.reduce((v,n)=>v+n*n,0)!==1||!ownerValid(r.owner))throw Error(`角材 ${row.id} 的支撐局部面無法核對。`);
+        r.normalWorld.reduce((v,n)=>v+n*n,0)!==1||!support||support.surface!==row.surface||!sameOwner(r.owner,support.owner))throw Error(`角材 ${row.id} 的支撐局部面與所有權來源無法核對。`);
     }else if(['outline-edge','hole-edge'].includes(r.kind)){
       if(!['boundary','placement'].includes(s.kind)||s.kind==='boundary'&&s.id===0||
         s.kind==='placement'&&s.id!==row.surface||!id(r.edgeIndex)||
@@ -38,17 +55,17 @@
     if(!projection){return {...snapshot,rows:snapshot.rows.map(row=>({...row,supports:{start:unknown(),finish:unknown()}}))};}
     if(projection.schema!=='native-timber-supports/1'||projection.sourceFingerprint!==snapshot.sourceFingerprint||
       !Array.isArray(projection.entries))throw Error('料單支撐來源版本不一致，請重新讀取。');
-    const entries=new Map();
+    const entries=new Map(),facts=nativeFacts(references,snapshot);
+    const nativeTimbers=new Map(references.timbers.map(t=>[t.id,t]));
     for(const e of projection.entries){
-      if(!id(e.id)||!id(e.surface)||entries.has(e.id)||!ownerValid(e.owner))throw Error('料單支撐身分重複或無效。');
+      if(!id(e.id)||!id(e.surface)||entries.has(e.id)||!ownerValid(e.owner)||nativeTimbers.get(e.id)?.geometry?.surface!==e.surface)throw Error('料單支撐身分重複、無效或與原生來源無法核對。');
       entries.set(e.id,e);
     }
     const rows=snapshot.rows.map(row=>{
       const e=entries.get(row.id);
       if(!e)return {...row,supports:{start:unknown(),finish:unknown()}};
-      if(e.surface!==row.surface || row.assembly && (!e.owner || Object.keys(row.assembly).some(k=>e.owner[k]!==row.assembly[k])) ||
-         !row.assembly && e.owner)throw Error(`角材 ${row.id} 的支撐所有權來源無法核對。`);
-      const supports={start:endpoint(e.start,row,'起端'),finish:endpoint(e.finish,row,'末端')};
+      if(e.surface!==row.surface || !sameOwner(e.owner,facts.get(row.id).owner))throw Error(`角材 ${row.id} 的支撐所有權來源無法核對。`);
+      const supports={start:endpoint(e.start,row,'起端',facts),finish:endpoint(e.finish,row,'末端',facts)};
       const selector=row.selector==='依 R6 自動推導；支撐身分未提供'&&supports.start.status==='exact'&&supports.finish.status==='exact'?'依 R6 自動推導':row.selector;
       return {...row,selector,supports,supportOwner:clone(e.owner)};
     });

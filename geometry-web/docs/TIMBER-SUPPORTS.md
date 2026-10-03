@@ -66,7 +66,21 @@ edgeIndex/holeIndex，localFace/normalWorld/owner 為 null。
 追加 support_source_fingerprint/start_support_provenance/finish_support_provenance。
 引號、換行、公式樣式防護仍使用原 CSV 實作。
 
-## 整合 owner 的最小接線（尚未寫入共用檔）
+## 正式整合與獨立審查修正
+
+本次整合已將唯一 native hook 接入正式 `reference_bridge.inc`，在既有 timbers 後追加投影；
+`index.html` 於 schedule 後載入 adapter。既有料單、可展開來源與 CSV 入口直接使用投影，
+沒有新增按鈕或常駐說明，沒有改 `app.js`、公理、正常核心幾何或保存格式。
+
+獨立審查在原 author head `af588eb` 證實：同一正式 fingerprint 下，偽造 instance fingerprint、
+支撐 member、rule version 或不存在的 timber ID 仍能導出 CSV。修正要求 exact timber 支撐
+存在於同面正式放置集合；本件及支撐所有權的全部八欄與原生 assembly／instance fingerprint
+逐項核對。未選取的真支撐仍可核對，不能把支撐加入選取料單改變數量；不在 JS 重算接觸。
+
+正式 registry 加入 native 13 tests、adapter 11 tests；P81 加入原 10 項流程及四項實際 CSV
+負例。截圖預設只寫 TEMP，明確指定位置時仍須絕對路徑。最終整合 head 的完整驗證附 PR。
+
+## 原 author head 的接線交接與驗證歷史（不是最終整合結果）
 
 本分支只有新檔，沒有修改 app.js、reference-workspace.js、project-store.js、
 index.html、reference_bridge.inc、測試總註冊／golden、公理或核心。
