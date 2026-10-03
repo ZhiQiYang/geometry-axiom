@@ -22,7 +22,7 @@
       source:JSON.parse(JSON.stringify(slot[field])),effective:effective[field].value,path:effective[field].path,override:false}))};
   }
   function derive(references,surface,ids=null){
-    if(!references?.ok || !/^[a-f0-9]{64}$/.test(references.sourceFingerprint || '') || !positive(surface) || !Array.isArray(references.timbers))
+    if(!references?.ok || !/^[a-f0-9]{64}$/.test(references.sourceFingerprint || '') || !timberId(surface) || !Array.isArray(references.timbers))
       throw Error('無法核對原生角材來源，料單尚未就緒。');
     const selected=ids===null?null:new Set(ids),seen=new Set(),rows=[];
     if(selected && [...selected].some(id=>!timberId(id)))throw Error('料單範圍身分不合法。');

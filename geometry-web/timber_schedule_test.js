@@ -31,13 +31,13 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  check('cm 保留原生 mm，不暗取整',await eval_(`document.querySelector('[data-schedule-timber="3"] small').textContent.includes('294.6')&&feTimberScheduleSnapshot().rows[0].L===2946`));
  await choose('timberScheduleScope','surface');await choose('timberScheduleOrder','length');
  check('排序後身份與全部範圍保留',await eval_(`[...document.querySelectorAll('[data-schedule-timber]')].map(x=>x.dataset.scheduleTimber).join(',')==='3,1,2'&&feTimberScheduleSnapshot().rows.length===3`));
- await eval_(`window.__s47Blob=null;window.__s47URL=URL.createObjectURL;URL.createObjectURL=b=>{window.__s47Blob=b;return __s47URL.call(URL,b);};`);
+ await eval_(`window.__s47Blob=null;window.__s47Exports=0;window.__s47URL=URL.createObjectURL;URL.createObjectURL=b=>{window.__s47Exports++;window.__s47Blob=b;return __s47URL.call(URL,b);};`);
  await ctl('#timberScheduleCSV');await waitForUI(`!!window.__s47Blob`);
  check('CSV 導出同一排序與精確 mm、來源指紋',await eval_(`(async()=>{const csv=await __s47Blob.text(),s=feTimberScheduleSnapshot();return csv.includes('"2946"')&&csv.includes(s.sourceFingerprint)&&csv.split('\\r\\n')[1].startsWith('"timber","3","1"');})()`));
  check('選取、排序、顯示單位與匯出均不改 World 或歷史',JSON.stringify(immutable)===JSON.stringify(await snapshot()));
  await eval_(`api('line spec schedule_stale 99')`);
  await ctl('#timberScheduleCSV');
- check('來源改動先更新且拒絕匯出過期料單',await eval_(`(async()=>fe.timberReferenceData.sourceFingerprint===(await apiRequest('references')).sourceFingerprint&&feTimberScheduleSnapshot().sourceFingerprint!==${JSON.stringify(await eval_(`(async()=>{const csv=await __s47Blob.text();return csv.match(/[a-f0-9]{64}/)?.[0];})()`))})()`));
+ check('來源改動先更新且拒絕匯出過期料單',await eval_(`(async()=>__s47Exports===1&&fe.timberReferenceData.sourceFingerprint===(await apiRequest('references')).sourceFingerprint&&feTimberScheduleSnapshot().sourceFingerprint!==${JSON.stringify(await eval_(`(async()=>{const csv=await __s47Blob.text();return csv.match(/[a-f0-9]{64}/)?.[0];})()`))})()`));
  await eval_(`(async()=>{URL.createObjectURL=__s47URL;window.__s47Saved=await ReferenceWorkspace.exportBytes();window.__s47Rows=JSON.stringify(feTimberScheduleSnapshot().rows);await ReferenceWorkspace.importBytes(__s47Saved,'schedule.gcanvas');await renderObjects();await enterFocus('face',1);})()`);
  check('正式保存重開後可重新導出相同逐件料單',await eval_(`JSON.stringify(feTimberScheduleSnapshot().rows)===__s47Rows`));
  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
@@ -53,5 +53,31 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  await eval_(`(async()=>{resetSceneFocus();const r=await fetch('/examples/assembly-generation-v1.gcanvas');if(!r.ok)throw Error('Generation example absent');await ReferenceWorkspace.importBytes(new Uint8Array(await r.arrayBuffer()),'原生生成料單.gcanvas');await renderObjects();await enterFocus('face',1);})()`);
  check('生成實例只計三支 owned 角材與兩支既有支撐，不重複計量',await eval_(`(()=>{const s=feTimberScheduleSnapshot(),a=fe.timberReferenceData.assembly.instances[0];return s.rows.length===5&&s.rows.filter(r=>r.assembly).length===3&&new Set(s.ids).size===5&&a.members.every(m=>s.rows.some(r=>r.id===m.timberId&&r.assembly.memberId===m.memberId&&r.L===m.geometry.length));})()`));
  check('生成料單保留原生配置尺寸來源與固定規則，CSV可追溯同身分',await eval_(`(()=>{const s=feTimberScheduleSnapshot(),r=s.rows.find(r=>r.assembly),a=fe.timberReferenceData.assembly.instances[0],b=fe.timberReferenceData.assembly.bindings[0];return r.assembly.instanceId===a.value.source.id&&r.assembly.bindingFingerprint===b.fingerprint&&r.assembly.ruleFingerprint===a.value.source.rule.fingerprint&&r.sources.length===2&&document.querySelector('[data-timber-id="'+r.id+'"] .timber-schedule-source p').textContent.includes('組構實例')&&TimberSchedule.csv(s).includes(r.assembly.ruleFingerprint)&&TimberSchedule.csv(s).includes('dimension_source_definitions');})()`));
+ const zeroScene='reset\nboundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 0 on boundary 1 origin 0 0 2500 u +x v +y\ntimber 0 27 33 role boundary\nplace 0 on 0 at-face e0 +u +n\n';
+ const zeroFixture=async()=>{
+  await eval_(`(async()=>{resetSceneFocus();const bytes=await GeometryProject.pack(${JSON.stringify(zeroScene)},{projectId:'schedule-zero',name:'合法零號料單',sources:[],faces:[]},new Map(),fflate);await ReferenceWorkspace.importBytes(bytes,'零號料單.gcanvas');await renderObjects();await enterFocus('face',1);})()`);
+  await waitForUI(`!!$('timberScheduleCSV')&&!$('timberScheduleCSV').disabled`);
+ };
+ await zeroFixture();
+ check('合法 placement0／timber0 真專案重開仍可選取與導出',await eval_(`(()=>{const s=feTimberScheduleSnapshot();return s.surface===0&&s.ids.join(',')==='0'&&s.rows[0].L===4000&&!!document.querySelector('[data-schedule-timber="0"]')&&TimberSchedule.csv(s).includes('"timber","0","0"');})()`));
+ for(const mode of ['source','refresh','revision','scope','context','failure']){
+  await zeroFixture();
+  await eval_(`(()=>{const g=window.__s47Guard={held:false,blobs:0},fetchOriginal=window.fetch,urlOriginal=URL.createObjectURL;
+   const gate=new Promise(resolve=>g.release=resolve);g.restore=()=>{window.fetch=fetchOriginal;URL.createObjectURL=urlOriginal;};
+   window.fetch=async(...args)=>{const body=String(args[0])==='/api'?JSON.parse(args[1]?.body||'{}'):{};const response=await fetchOriginal(...args);
+    if(body.cmd==='references'&&!g.held){g.held=true;await gate;if(${JSON.stringify(mode)}==='failure'){const data=await response.json();return new Response(JSON.stringify({...data,ok:false}),{status:200,headers:{'Content-Type':'application/json'}});}}return response;};
+   URL.createObjectURL=b=>{g.blobs++;return urlOriginal.call(URL,b);};
+   const button=$('timberScheduleCSV'),handler=button.onclick;button.onclick=()=>{g.pending=handler();};
+  })()`);
+  await ctl('#timberScheduleCSV');await waitForUI(`window.__s47Guard.held`);
+  try{
+   if(mode==='source'||mode==='revision')await eval_(`(async()=>{let r=await apiRequest('line boundary 1 outline 0,0 4200,0 4200,3000 0,3000');if(r.preview?.valid)r=await apiRequest('line confirm '+r.preview.token);if(!r.ok)throw Error(JSON.stringify(r));${mode==='source'?'await feLoadGuides();renderFaceLayers();':'ReferenceWorkspace.changed(1);'}})()`);
+   if(mode==='refresh')await eval_(`(async()=>{await feLoadGuides();renderFaceLayers();})()`);
+   if(mode==='scope')await choose('timberScheduleUnit','cm');
+   if(mode==='context')await eval_(`(async()=>{const bytes=await GeometryProject.pack(${JSON.stringify('reset\n')},{projectId:'schedule-other',name:'另一專案',sources:[],faces:[]},new Map(),fflate);await ReferenceWorkspace.importBytes(bytes,'另一專案.gcanvas');await renderObjects();})()`);
+   const result=await eval_(`(async()=>{const g=__s47Guard;g.release();const ok=await g.pending;return {ok,blobs:g.blobs};})()`);
+   check('延遲預驗 '+mode+' 變更後拒絕且零 CSV Blob',result.ok===false&&result.blobs===0,result);
+  }finally{await eval_(`__s47Guard.release();__s47Guard.restore();void 0`);}
+ }
  check('流程沒有新增未處理的瀏覽器例外',exceptionCount()===errors);
 };

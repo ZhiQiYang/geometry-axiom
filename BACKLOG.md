@@ -9,6 +9,7 @@
 - 不改公理、專案格式、工程交易或私人圖源；F4b 裁切／餘料／採購不在本批。#54 已由其他 ChatGPT 執行者接手，本分支不寫底圖狀態／候選流程。
 - 原 main 首版實測：Node 料單 7/7、原生 references 34/34；完整非瀏覽器 1297 pass／0 fail／1 Windows GDI 平台略過。真 Chromium P79 14/14、0 例外。完整回歸抓到 P75 仍假設點角材列不會平移畫布；以真實「適合」按鈕再看對側構件，保留全部命中／游標斷言，修後 P75 37/37。
 - 已隔離整合 PR53 reviewed head `edb0fe68` 的 format8／生成來源；references 重用原生 assembly typed read，owned 角材保留 instance/member/binding/rule 與截面 source，核對有效值相等。新增原生唯讀不消耗待確認 token、Node typed source 與真生成範例料單測試。整合候選完整非瀏覽器 1323 pass／0 fail／1 GDI 平台略過，Node 料單8/8、generation19/19，真 Chromium P79 16/16、0 例外。完整無 filter CDP 預期 1720，exact-head CI 另回填；未跑完不得宣稱全綠。
+- **再次獨立審查修正（P2）**：合法 placement0 原先被正號檢查誤拒，改按原生 uint32 含0，null／超界仍拒；追加 Node 與原生讀回。匯出預驗等待中若資料身分、載入序號、專案revision／context或範圍改變，或原生ok=false，均拒絕建立CSV。原生A長4000→B長4200的舊回覆問題已重現；修後真Chromium P79 23/23、0例外，其中六種延遲負例均零CSV Blob。Node9/9、references35/35通過（16MiB stack）。最新完整golden1727與完整非瀏覽器／CI待最終提交後回填。
 - 剩餘：自動跨距的確切支撐身分／局部面適配、空間模型快照導出及 F4b；保持 #47 open。不能以這個首批切片宣稱整張工單完成。
 
 > 產生日期：2026-09-12，對象 `current_geometry.c` @ 4,567 行。

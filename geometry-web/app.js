@@ -6525,10 +6525,14 @@ function feTimberScheduleSnapshot() {
 async function feExportTimberSchedule() {
   try {
     const edit=oc.edit, context=ReferenceWorkspace.context(), view=fe.scheduleView, snapshot=feTimberScheduleSnapshot();
+    const referenceData=fe.timberReferenceData,loadSeq=fe.guidesLoadSeq;
+    const projectRevision=ReferenceWorkspace.getProjectState().revision;
     const viewKey=JSON.stringify([view.ids,view.unit,view.order]);
     const latest=await apiRequest("references");
     if (oc.edit !== edit || ReferenceWorkspace.context() !== context || fe.scheduleView !== view || JSON.stringify([view.ids,view.unit,view.order])!==viewKey)
       throw new Error("料單範圍已變更，請重新核對再匯出。");
+    if(!latest.ok || fe.timberReferenceData !== referenceData || fe.guidesLoadSeq !== loadSeq || ReferenceWorkspace.getProjectState().revision !== projectRevision)
+      throw new Error("料單來源已刷新或無法核對，請重新核對再匯出。");
     if (latest.sourceFingerprint !== snapshot.sourceFingerprint) {
       await feLoadGuides(); renderFaceLayers();
       throw new Error("原生來源已變更，料單已更新；請核對後再匯出。");

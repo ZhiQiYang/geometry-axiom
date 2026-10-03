@@ -10,6 +10,11 @@ test('native timber ID zero remains a real, selectable identity',()=>{
  const r=refs();r.timbers.unshift(timber(0));assert.deepEqual(S.derive(r,1,[0]).ids,[0]);
  assert.ok(S.csv(S.derive(r,1,[0])).includes('"timber","0","1"'));
 });
+test('native placement surface zero remains valid while missing or malformed scope is rejected',()=>{
+ const r=refs();r.timbers=[timber(0,0)];const s=S.derive(r,0,[0]);assert.deepEqual(s.ids,[0]);assert.equal(s.surface,0);
+ assert.ok(S.csv(s).includes('"timber","0","0"'));
+ for(const surface of [null,-1,4294967296,'0'])assert.throws(()=>S.derive(r,surface),/尚未就緒/);
+});
 test('rejects disappeared or wrong-surface selected IDs rather than changing the selected quantity',()=>{
  assert.throws(()=>S.derive(refs(),1,[1,3]),/重新選定/);assert.throws(()=>S.derive(refs(),1,[9]),/重新選定/);
  assert.equal(S.derive(refs(),1,[]).rows.length,0);

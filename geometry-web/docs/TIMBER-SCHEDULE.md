@@ -20,6 +20,7 @@ CSV 匯出逐件相同資料，包含 typed timber/surface 身分、方向、定
 - `references.sourceFingerprint` 由原生 `eng_definition_hash` 對正式定義計算，排除畫布擺位。
   目前讀取整個 World 定義指紋，無關來源變動也會保守要求重新核對。
 - 只計原生 placed Timber，每個 `timber:id` 一次。兩個同截面／同長的實際構件各自保留，Timber 0 亦是有效身分。
+  獨立 placement 0 亦合法，和保留的 boundary 0 是不同型別；null 不是 0。
   不計未生成規則／Binding，不混入空間模型的已保存 mesh 快照，不估算影像或外接盒長度。
 - A/B/L 及方向讀原生資料；兩端世界座標只是以原生長度與軸展開供核對，不是另算料長。
 - 已與 PR53 的 format8／生成來源整合。生成的 owned Timber 仍逐件一次；原生 references
@@ -38,3 +39,5 @@ CSV 匯出逐件相同資料，包含 typed timber/surface 身分、方向、定
 `tests/test_reference_contract.py` 驗原生指紋只讀、排除畫布擺位、來源變動與 undo/redo。
 `geometry-web/timber_schedule_test.js` 是完整 `cdp_test.js` 的 P79 外掛，使用真原生服務與真 Chrome。
 實際命令、計數與尚未驗項在 PR 與 BACKLOG 回填；測試存在本身不代表通過。
+獨立審查追加合法零號與延遲預驗負例：資料刷新、原生提交後尚未刷新、範圍／context改變，
+或錯誤讀回都拒絕導出；同時核對没有新增 CSV Blob，不只看提示與快取是否更新。

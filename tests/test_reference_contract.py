@@ -49,6 +49,19 @@ class ReferenceContract(unittest.TestCase):
         self.ok('redo')
         self.assertEqual(changed, self.refs()['sourceFingerprint'])
 
+    def test_schedule_reference_preserves_legal_zero_placement_and_timber_identity(self):
+        self.ok('reset')
+        self.ok('boundary 1 outline 0,0 4000,0 4000,3000 0,3000')
+        self.ok('placement 0 on boundary 1 origin 0 0 2500 u +x v +y')
+        self.ok('timber 0 27 33 role boundary')
+        self.ok('place 0 on 0 at-face e0 +u +n')
+        before=self.dump()
+        refs=self.refs()
+        self.assertEqual(0,refs['timbers'][0]['id'])
+        self.assertEqual(0,refs['timbers'][0]['geometry']['surface'])
+        self.assertEqual(4000,refs['timbers'][0]['geometry']['length'])
+        self.assertEqual(before,self.dump())
+
     def geom(self, tid):
         return next(t['geometry'] for t in self.refs()['timbers'] if t['id'] == tid)
 
