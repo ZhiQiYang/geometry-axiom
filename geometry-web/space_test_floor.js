@@ -27,7 +27,11 @@ function createGroupCensus(included) {
       if (current || !Object.hasOwn(groups, name) || started.has(name)) throw Error('Unexpected or duplicate space group: ' + name);
       started.add(name);
       current = name;
-      try { await action(); groups[name].completed = true; }
+      try {
+        await action();
+        const group = groups[name];
+        group.completed = group.passed === group.expected && group.failed === 0;
+      }
       finally { current = null; }
     },
     record(ok) {

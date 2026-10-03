@@ -38,6 +38,7 @@ test('early return inside a group fails the fixed count after a resolved action'
   await census.run('font-layout', async () => { census.record(true); return; });
   await complete(census, 'browser-health');
   assert.equal(census.report(true).completed, false);
+  assert.equal(census.report(true).groups['font-layout'].completed, false);
   assert.match(census.report(true).completenessProblems.join('\n'), /expected 19 passed assertions, got 1/);
 });
 test('throwing after all assertions still leaves the group and run incomplete', async () => {
