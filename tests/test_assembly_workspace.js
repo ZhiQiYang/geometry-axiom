@@ -242,6 +242,45 @@ test('published binding edits require a valid previously displayed native rule f
     assert.equal(f.state.draft,null);assert.deepEqual(f.calls,[]);
   }
 });
+test('repeated published binding edit attempts retain the first captured rule despite fresh reads',async()=>{
+  const f=idFixture('binding',[2],[],3),source={value:bindingValue(2),fingerprint:'b'.repeat(64)};
+  f.setWorld({rules:[publishedRule({...rule(),joints:rule().joints.map(j=>({...j,side:'-u'}))},'c'.repeat(64))],bindings:[copy(source)]});
+  const before=JSON.stringify(f.context().assemblyDrafts);
+  for(let attempt=0;attempt<2;attempt++)await assert.rejects(f.t.newDraft('binding',source),/固定規則版本已變更或移除/);
+  assert.equal(f.state.read.state.rules[0].fingerprint,'c'.repeat(64));
+  assert.equal(f.state.draft,null);assert.equal(JSON.stringify(f.context().assemblyDrafts),before);assert.equal(f.history.undo.length,0);
+  assert.ok(!f.calls.some(c=>c==='newid'||c.startsWith('assembly-cancel')||c.startsWith('assembly-preview')));
+});
+test('published edit handlers pin the displayed rule before any refresh and reject repeated old UI clicks',async()=>{
+  for(const refreshedBeforeClick of [false,true]){
+    const f=idFixture('binding',[2],[],3),source={value:bindingValue(2),fingerprint:'b'.repeat(64),complete:false,effective:[]};
+    f.setWorld({rules:[publishedRule()],bindings:[source]});f.captureWorld();
+    f.state.record=f.state.read.state.bindings[0];f.state.kind='assembly-binding';f.t.render();
+    const click=f.element('asmEdit').handlers.click,before=JSON.stringify(f.context().assemblyDrafts);
+    const fresh=publishedRule({...rule(),joints:rule().joints.map(j=>({...j,side:'-u'}))},'c'.repeat(64));
+    f.setWorld({rules:[fresh],bindings:[copy(source)]});if(refreshedBeforeClick)f.captureWorld();
+    for(let attempt=0;attempt<2;attempt++){await click();assert.equal(f.state.draft,null);assert.match(f.element('asmStatus').textContent,/固定規則版本已變更或移除/);}
+    assert.equal(JSON.stringify(f.context().assemblyDrafts),before);assert.equal(f.history.undo.length,0);
+    assert.ok(!f.calls.some(c=>c==='newid'||c.startsWith('assembly-cancel')||c.startsWith('assembly-preview')));
+    await f.w.open('assembly-binding',2);await f.element('asmEdit').handlers.click();
+    const reopened=f.t.getState();assert.equal(reopened.draft.binding_intent.mode,'update');
+    assert.deepEqual(copy(reopened.draft.base_ref),{id:1,version:1,fingerprint:fresh.fingerprint});
+  }
+});
+test('a missing displayed rule fingerprint cannot be upgraded by retry but a fresh reopen can edit',async()=>{
+  for(const missing of [false,true]){
+    const f=idFixture('binding',[2],[],3),source={value:bindingValue(2),fingerprint:'b'.repeat(64),complete:false,effective:[]};
+    const old=publishedRule();if(missing)f.setWorld({rules:[],bindings:[source]});else f.setWorld({rules:[{...old,fingerprint:null}],bindings:[source]});
+    f.captureWorld();f.state.record=f.state.read.state.bindings[0];f.state.kind='assembly-binding';f.t.render();
+    const click=f.element('asmEdit').handlers.click;
+    await click();assert.match(f.element('asmStatus').textContent,/固定規則來源不合法/);
+    f.setWorld({rules:[old],bindings:[source]});f.captureWorld();await click();
+    assert.match(f.element('asmStatus').textContent,/固定規則來源不合法/);assert.equal(f.state.draft,null);
+    assert.equal(f.history.undo.length,0);assert.deepEqual(f.calls,[]);
+    await f.w.open('assembly-binding',2);await f.element('asmEdit').handlers.click();
+    assert.deepEqual(copy(f.t.getState().draft.base_ref),{id:1,version:1,fingerprint:old.fingerprint});
+  }
+});
 test('published binding edit provenance survives archive and rejects a same-value recreation with changed rule contents',async()=>{
   const f=idFixture('binding',[2],[],3),source={value:bindingValue(2),fingerprint:'b'.repeat(64)};
   await f.t.newDraft('binding',source);f.state.draft.data.name='保留編輯';f.w.flush();
