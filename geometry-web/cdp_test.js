@@ -6494,15 +6494,15 @@ async function main() {
     check('P61-9 PDF 讀取失敗保留原場景',await eval_(`api('dump').then(r=>r.text===${JSON.stringify(lastDump)})`));
     check('P61-10 載入未送達時，重試連線保留原幾何與來源',await eval_(`(async()=>{
       const oldFetch=window.fetch.bind(window),before=(await api('dump')).text,ref=ReferenceWorkspace.active(1).id;
-      window.fetch=async(input,init)=>{if(input==='/upload')throw new TypeError('test upload disconnected');return oldFetch(input,init);};
+      window.fetch=async(input,init)=>{if(input==='/upload/confirm')throw new TypeError('test upload disconnected');return oldFetch(input,init);};
       let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
       await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===before&&ReferenceWorkspace.active(1).id===ref;
     })()`));
     check('P61-11 載入已送達但回應遺失時，核對核心後恢復正確來源',await eval_(`(async()=>{
       const oldFetch=window.fetch.bind(window);
-      window.fetch=async(input,init)=>{if(input==='/upload'){await oldFetch(input,init);throw new TypeError('test response lost');}return oldFetch(input,init);};
+      window.fetch=async(input,init)=>{if(input==='/upload/confirm'){await oldFetch(input,init);throw new TypeError('test response lost');}return oldFetch(input,init);};
       let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&curScene.path==='';
+      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&typeof curScene.path==='string'&&curScene.path.endsWith('.scene');
     })()`));
     await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);
     await field('refTarget','new');
@@ -6569,6 +6569,7 @@ async function main() {
       return blocked&&retryBlocked&&restored&&next&&connection.phase==='ready'&&(await api('dump')).text===before;
     })()`));
     check('P61-17 參考資料流程沒有未處理的瀏覽器例外',excN===referenceExceptions);
+    await require('./project_import_final_objects_test.js')({read:eval_,send,until,check,doUndoRedo:op=>eval_('doUndoRedo('+JSON.stringify(op)+')')});
   }
 
   { /* ===== P62. 自訂 SVG 游標 — 設計方向 1b「箭頭+文字膠囊」 =====

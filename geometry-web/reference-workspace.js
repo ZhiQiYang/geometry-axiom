@@ -180,7 +180,7 @@ const ReferenceWorkspace = (() => {
         recoveryMessage("mismatch","先前專案與目前服務工作階段或場景不一致，未恢復附件、草稿及專案身份，也未覆寫目前場景。請開啟正確的 .gcanvas 檔案。");return {...recovery};
       }
       const stage=label=>{busyLabel=label;present();};
-      const {loaded,c,ids}=await readProjectContext(record.bytes,"本機恢復專案",stage,assertInitial);
+      const {loaded,c,ids}=await readProjectContext(record.bytes,"本機恢復專案",stage,assertInitial,true);
       if(await sceneFingerprint(loaded.scene)!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
       const verify=await api("dump");assertInitial();
       if(!verify.ok || connection.session!==session || await sceneFingerprint(verify.text)!==record.sceneHash)throw new Error("恢復期間服務場景已變更，未恢復專案。");
@@ -855,22 +855,10 @@ const ReferenceWorkspace = (() => {
     }
   }
   function importBytes(bytes,name="匯入專案") { return openProject(()=>bytes,name); }
-  async function readProjectContext(bytes,name,stage,assertCurrent) {
+  async function readProjectContext(bytes,name,stage,assertCurrent,verifyOnly=false) {
     stage("正在檢查專案完整性…","驗證中");
     const loaded=await P.unpack(bytes,fflate),m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
     assertCurrent();
-    if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT].includes(m.format)) {
-      stage("正在驗證工程來源與幾何…","驗證中");
-      const response=await fetch("/engineering/validate-project",{method:"POST",body:loaded.scene,signal:AbortSignal.timeout(30000)});
-      if(!response.ok)throw new Error("目前服務無法驗證工程專案，未變更目前專案。");
-      const verified=await response.json();
-      if(verified.ok!==true)throw new Error("工程專案驗證失敗："+(verified.error||verified.code||"版本或來源不合法")+"。未變更目前專案。");
-      P.assertProjectCapabilities(m,verified.capabilities);
-      P.validateProjectCapabilities(verified.required_capabilities);
-      if(!sameModelData([...verified.required_capabilities].sort(),P.sceneCapabilities(loaded.scene)))
-        throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
-      assertCurrent();
-    }
     // Rebuild every embedded package before uploading anything. Stored definitions
     // are self-contained and do not depend on the current live source scene.
     for (const [index,model] of m.models.entries()) {
@@ -881,7 +869,7 @@ const ReferenceWorkspace = (() => {
     c.assemblyDrafts=JSON.parse(JSON.stringify(m.assemblyDrafts?.records||[]));
     c.engineeringDrafts=JSON.parse(JSON.stringify(m.engineeringDrafts?.records||[]));
     for(const meta of m.sources)c.sources.set(meta.id,{meta,bytes:loaded.sources.get(meta.id)});
-    const bids=new Set([...loaded.scene.matchAll(/^(?:boundary|surface)\s+(\d+)\s/gm)].map(v=>+v[1])),ids=[],keys=new Map();
+    const ids=[],keys=new Map();
     const keyFor = bid => { if(!keys.has(bid)){const key=uuid();keys.set(bid,key);ids.push([bid,key]);}return keys.get(bid); };
     for(const record of m.faceProjections){
       const key=keyFor(record.bid),records=c.faceProjections.get(key)||[];
@@ -892,7 +880,6 @@ const ReferenceWorkspace = (() => {
     }
     for(const f of m.faces){
       stage("正在還原參考資料…");
-      if(!bids.has(f.bid))throw new Error("來源關聯的面不存在於場景。");
       const key=keyFor(f.bid);
       // Never trust runtime fields (for example a remote image src) from a project file.
       const pages=f.pages.map(p=>P.reference(p));
@@ -908,14 +895,19 @@ const ReferenceWorkspace = (() => {
       await preparePage(g.pages.find(p=>p.id===g.activePageId),c.sources.get(g.pages.find(p=>p.id===g.activePageId).sourceId));c.groups.set(key,g);
       assertCurrent();
     }
-    assertCurrent();return {loaded,c,ids};
+    assertCurrent();
+    if(verifyOnly){
+      const token=await prepareProjectScene(loaded.scene,m,assertCurrent);
+      await cancelProjectScene(token);assertCurrent();
+    }
+    return {loaded,c,ids};
   }
   async function importProjectData(bytes,name,stage,assertCurrent,options={}) {
     const {loaded,c,ids}=await readProjectContext(bytes,name,stage,assertCurrent);
     c.saved=options.source!=="example";
     c.provenance={kind:options.source==="example"?"example":"file",label:options.source==="example"?"內建範例「"+c.name+"」":"專案檔案「"+name+"」",openedAt:new Date().toISOString(),lastSavedAt:null,lastDownloadAt:null};
     assertCurrent();stage("正在載入專案場景…","載入中");
-    const r=await uploadScene(loaded.scene,{context:c,ids,action:"開啟專案「"+c.name+"」"},assertCurrent);
+    const r=await uploadScene(loaded.scene,{context:c,ids,manifest:loaded.manifest,action:"開啟專案「"+c.name+"」"},assertCurrent);
     if(!r.ok)throw new Error(r.error||"場景載入失敗。");
     curScene={path:r.path||"",name:c.name+".gcanvas"};
     resetSceneFocus();sync();document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
@@ -942,20 +934,61 @@ const ReferenceWorkspace = (() => {
       await refreshActive();recoveryReady=!!recoveryDB && !!recoveryKey;setStatus(keepIdentity?"✓ 已清空專案內容，保留專案名稱；可復原。":"✓ 已建立空白新專案；可復原回上一份專案。");return true;
     } finally {busy=false;busyLabel="";present();scheduleRecovery();}
   }
+  async function cancelProjectScene(token) {
+    const response=await fetch("/upload/cancel",{method:"POST",body:JSON.stringify(token),signal:AbortSignal.timeout(30000)});
+    if(!response.ok || (await response.json()).ok!==true)throw new Error("無法確認專案候選已取消；目前場景未被替換。");
+  }
+  async function prepareProjectScene(text,manifest,assertCurrent) {
+    let token=null;
+    try {
+      const response=await fetch("/upload/prepare",{method:"POST",body:text,signal:AbortSignal.timeout(30000)});
+      if(!response.ok)throw new Error("目前服務無法驗證專案，未變更目前專案。");
+      const candidate=await response.json();
+      if(candidate.ok!==true)throw new Error(candidate.error||"場景驗證失敗。");
+      if(!Number.isInteger(candidate.token)||candidate.token<1||candidate.token>4294967295)throw new Error("服務未回傳有效的專案候選識別。");
+      token=candidate.token;
+      assertWritableLease();assertCurrent();
+      P.validateProjectObjectRefs(manifest,candidate.final_objects);
+      if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT].includes(manifest.format)) {
+        P.assertProjectCapabilities(manifest,candidate.capabilities);
+        P.validateProjectCapabilities(candidate.required_capabilities);
+        if(!sameModelData([...candidate.required_capabilities].sort(),P.sceneCapabilities(text)))
+          throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
+      }
+      return token;
+    } catch(error) {
+      if(token!==null)try{await cancelProjectScene(token);}catch(_){}
+      throw error;
+    }
+  }
+  function assertLoadContext(load) {
+    assertWritableLease();
+    if(context()!==load.guard.context || history.frame!==load.guard.frame || revision(context())!==load.guard.revision || contextConflict!==load.guard.conflict)
+      throw new Error("載入結果晚到，目前工程已有變更；未替換目前專案資料，請重新開啟。");
+  }
   async function uploadScene(text,replacement=null,assertCurrent=()=>{}) {
     assertWritableLease();
     if(pendingLoad || preparingSceneLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");
     assertCurrent();
     preparingSceneLoad=true;
+    let nextLoad;
     try {
       const before = await api("dump");
       assertWritableLease();assertCurrent();
       if (!before.ok) throw new Error(before.error || "無法讀取載入前的場景。");
-      pendingLoad = { text, before: before.text, context: replacement?.context || fresh(), ids: replacement?.ids, action:replacement?.action || null, isolateHistory:contextConflict };
-    } finally {preparingSceneLoad=false;}
-    let result;
+      nextLoad = { text, before: before.text, beforeRevision:before.revision, manifest:replacement?.manifest, context: replacement?.context || fresh(), ids: replacement?.ids, action:replacement?.action || null, isolateHistory:contextConflict,
+        guard:{context:context(),frame:history.frame,revision:revision(context()),conflict:contextConflict} };
+    } catch(error) {preparingSceneLoad=false;throw error;}
+    let result,token=null;
     try {
-      const r=await fetch("/upload",{method:"POST",body:text,signal:AbortSignal.timeout(30000)});
+      if(replacement?.manifest)token=await prepareProjectScene(text,replacement.manifest,assertCurrent);
+      assertWritableLease();assertCurrent();nextLoad.token=token;pendingLoad=nextLoad;
+    } catch(error) {
+      if(token!==null)try{await cancelProjectScene(token);}catch(_){}
+      throw error;
+    } finally {preparingSceneLoad=false;}
+    try {
+      const r=await fetch(token===null?"/upload":"/upload/confirm",{method:"POST",body:token===null?text:JSON.stringify(token),signal:AbortSignal.timeout(30000)});
       if(!r.ok)throw new Error("場景載入失敗（HTTP "+r.status+"）。");
       result=await r.json();
       if(!result || typeof result.ok!=="boolean")throw new Error("服務未回傳有效的載入結果。");
@@ -963,6 +996,7 @@ const ReferenceWorkspace = (() => {
       connectionFailed("無法確認載入結果，已暫停編輯。請確認服務後重試。");
       throw e;
     }
+    try{assertLoadContext(nextLoad);}catch(error){pendingLoad=null;contextConflict=true;sync();throw error;}
     if(result.ok){adoptLoadedContext();notifySceneChange();}
     pendingLoad=null;sync();
     return result;
@@ -978,17 +1012,39 @@ const ReferenceWorkspace = (() => {
   }
   async function recoverLoad() {
     if (!pendingLoad) return true;
+    const load=pendingLoad;assertLoadContext(load);
+    let terminal=null;
+    if(load.token!=null){
+      // Cancellation and confirmation share the server/native lock. A terminal
+      // cancellation invalidates even a confirm request that has not arrived yet.
+      const response=await fetch("/upload/cancel",{method:"POST",body:JSON.stringify(load.token),signal:AbortSignal.timeout(30000)});
+      if(!response.ok)throw new Error("仍無法確認專案載入終態，已保留目前專案並暫停編輯。");
+      terminal=await response.json();assertLoadContext(load);
+      if(!["cancelled","committed","rejected"].includes(terminal.state))throw new Error("服務未能確認專案載入終態，請保持目前專案並重新連接服務。");
+    }
     const dump = await api("dump"); if (!dump.ok) return false;
+    assertLoadContext(load);
     const normalized = s => s.replace(/\r\n/g,"\n").trim();
     const old = normalized(dump.text) === normalized(pendingLoad.before);
     const next = normalized(dump.text) === normalized(pendingLoad.text);
     let restoredNew = false, restoredPath = "";
-    if (next && !old) { adoptLoadedContext(); restoredNew=true; }
+    if(terminal){
+      if(terminal.state==="committed" && terminal.ok===true){
+        if(!Number.isSafeInteger(terminal.revision) || dump.revision!==terminal.revision || !terminal.scene_sha256 || await P.sha(new TextEncoder().encode(dump.text))!==terminal.scene_sha256){
+          contextConflict=true;throw new Error("載入後的場景已有其他變更，未替換目前專案資料；請重新開啟。");
+        }
+        assertLoadContext(load);adoptLoadedContext();restoredNew=true;restoredPath=terminal.path||"";
+      } else if(!old || Number.isSafeInteger(load.beforeRevision)&&dump.revision!==load.beforeRevision){contextConflict=true;throw new Error("取消載入後場景已變更，請重新開啟目前專案。");}
+    }
+    else if (next && !old) { adoptLoadedContext(); restoredNew=true; }
     else if (!(old && !next)) {
       // The user pressed retry; repeat the pending load if identical worlds make its outcome ambiguous.
-      const response = await fetch("/upload",{method:"POST",body:pendingLoad.text,signal:AbortSignal.timeout(30000)});
+      const token=load.manifest?await prepareProjectScene(load.text,load.manifest,()=>assertLoadContext(load)):null;
+      assertLoadContext(load);
+      const response = await fetch(token===null?"/upload":"/upload/confirm",{method:"POST",body:token===null?load.text:JSON.stringify(token),signal:AbortSignal.timeout(30000)});
       if (!response.ok) throw new Error("仍無法確認場景載入結果。");
       const r = await response.json(); if (r.ok !== true) throw new Error(r.error || "重試載入失敗。");
+      assertLoadContext(load);
       // Earlier core history remains usable, but unprovable reference associations must not be guessed.
       history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;history.frame={context:fresh(),ids:new Map()};
       adoptLoadedContext();
