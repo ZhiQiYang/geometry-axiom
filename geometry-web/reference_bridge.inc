@@ -348,7 +348,12 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
 }
 static void cmd_references(void)
 {
-    fputs("{\"ok\":true,\"guides\":[",stdout);
+    char fingerprint[65];
+    if (!eng_definition_hash(&g_world,fingerprint)) {
+        fputs("{\"ok\":false,\"error\":\"無法核對來源定義\"}\n",stdout);
+        return;
+    }
+    printf("{\"ok\":true,\"sourceFingerprint\":\"%s\",\"guides\":[",fingerprint);
     for (size_t i=0;i<g_world.guide_count;++i) {
         if (i) putchar(','); json_reference_guide(&g_world,i);
     }

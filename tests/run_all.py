@@ -90,6 +90,7 @@ NODE_TEST_FILES = [
     'tests/test_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_space_model_store.js',
+    'tests/test_timber_schedule.js',
 ]
 NODE_SCRIPT_FILE = 'tests/test_model_viewer.cjs'
 NODE_DOCUMENT_SCRIPT_FILES = {

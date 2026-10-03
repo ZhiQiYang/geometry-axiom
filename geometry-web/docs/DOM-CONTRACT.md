@@ -1,5 +1,14 @@
 # DOM 合約(測試依賴清單)
 
+## 原生角材料單（#47 F4a）
+
+`#faceLayerList` 的既有 `[data-timber-id]` 列直接提供料單，不另建清單工作區。
+`[data-schedule-timber]` 是可鍵盤操作的定位按鈕，`aria-pressed` 與畫布角材選取同步。
+`#timberScheduleScope` 明選承載面全部或當次選取的 ID 集合；`#timberScheduleUnit` 只格式化 mm/cm；
+`#timberScheduleOrder` 按身分或完成長度排序。`#timberScheduleCSV` 導出同一集合的精確 mm，
+`#timberScheduleStatus` 顯示正式件數／失效原因。來源細節在 `.timber-schedule-source` 展開。
+數據契約與剩餘追溯限制見 [TIMBER-SCHEDULE.md](TIMBER-SCHEDULE.md)。
+
 > 立案 2026-09-13(Phase 0 產出);Phase 1 改版更新。本檔列出自動測試依賴的 DOM id / class / 全域名稱;
 > 之後每階段改 DOM 都要對照本表,新增或改名需同步更新測試。
 

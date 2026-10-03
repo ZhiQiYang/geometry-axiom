@@ -1314,6 +1314,14 @@ body.oc-busy .face-layer-row { pointer-events: none; }
 .fe-ob-cut { font-size: 12px; display: flex; align-items: center; gap: 4px; }
 .fe-ob-note { color: #888; font-size: 11px; }
 /* B7:圖層分組標題 */
+.timber-schedule-controls { display:grid; grid-template-columns:1fr; gap:6px; padding:6px 8px; }
+.timber-schedule-controls label { display:grid; gap:3px; font-size:12px; color:var(--muted); }
+.timber-schedule-controls select, .timber-schedule-controls button { min-height:44px; width:100%; min-width:0; }
+.timber-schedule-pick { display:block; width:100%; min-height:44px; padding:4px 0; text-align:left; color:inherit; background:none; border:0; cursor:pointer; }
+.timber-schedule-pick strong, .timber-schedule-pick small { display:block; }
+.timber-schedule-source { font-size:12px; overflow-wrap:anywhere; }
+.timber-schedule-source summary { min-height:44px; display:flex; align-items:center; cursor:pointer; color:var(--muted); }
+.timber-schedule-source p { white-space:normal; }
 .fl-group { font-size: 11px; font-weight: 700; letter-spacing: .4px;
   color: #8893a6; text-transform: uppercase;
   padding: 8px 10px 3px; }

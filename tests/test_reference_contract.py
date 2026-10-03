@@ -32,6 +32,23 @@ class ReferenceContract(unittest.TestCase):
     def refs(self):
         return self.s.send('references')
 
+    def test_schedule_fingerprint_is_native_read_only_and_tracks_definitions(self):
+        before = self.dump()
+        refs = self.refs()
+        fingerprint = refs['sourceFingerprint']
+        self.assertRegex(fingerprint, r'^[a-f0-9]{64}$')
+        self.assertEqual(before, self.dump())
+        self.assertEqual(fingerprint, self.refs()['sourceFingerprint'])
+        self.ok('canvas-pos boundary 1 100 200')
+        self.assertEqual(fingerprint, self.refs()['sourceFingerprint'])
+        self.ok('spec schedule_revision 99')
+        changed = self.refs()['sourceFingerprint']
+        self.assertNotEqual(fingerprint, changed)
+        self.ok('undo')
+        self.assertEqual(fingerprint, self.refs()['sourceFingerprint'])
+        self.ok('redo')
+        self.assertEqual(changed, self.refs()['sourceFingerprint'])
+
     def geom(self, tid):
         return next(t['geometry'] for t in self.refs()['timbers'] if t['id'] == tid)
 
