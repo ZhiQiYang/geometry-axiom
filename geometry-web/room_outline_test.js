@@ -203,9 +203,9 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   check('visible cancel during PDF acquisition prevents late candidate revival',await read(`!RoomOutlineWorkspace.hasWork&&!RoomOutlineWorkspace.snapshot()`)&&await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
   await read(`enlargedRestore()`);await propose([270,200]);await commit();
   check('confirmation replaces one existing ring through native validation',normalized(await nativePoints())===normalized(enlargedExpected)&&await read(`Object.keys(oc.bmap).length===1&&ReferenceWorkspace.reconstructionState(1)==='confirmed'`));
-  await ctl('#faceUndoButton');await until(`ReferenceWorkspace.reconstructionState(1)==='unreviewed'`);
+  await key('z','KeyZ',90,2);await until(`ReferenceWorkspace.reconstructionState(1)==='unreviewed'`);
   check('actual undo restores original rectangle and source review state',await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
-  await ctl('#faceRedoButton');await until(`ReferenceWorkspace.reconstructionState(1)==='confirmed'`);
+  await key('y','KeyY',89,2);await until(`ReferenceWorkspace.reconstructionState(1)==='confirmed'`);
   check('actual redo restores calibrated room and its source-bound receipt',normalized(await nativePoints())===normalized(enlargedExpected));
   const enlargedBytes=await read(`ReferenceWorkspace.exportBytes().then(b=>Array.from(b))`),enlargedMarker='enlarged-room-'+Date.now();
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`window.__cdpExpectedNavigationMarker=${JSON.stringify(enlargedMarker)}`});await send('Page.reload',{ignoreCache:true});
