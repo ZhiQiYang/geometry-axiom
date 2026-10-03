@@ -101,7 +101,7 @@ CaseReceipt {caseId,definitionHash,status,
  executor:{nativeBinaryHash,validatorVersion,axiomHash,assertionSchemaHash},
  actualOutcome,actualDiagnostics,assertionResults,conditions}
 ```
-finite predicates：recordexists/exacttypedref/completeflag/jointtupleequal/recordpinunchanged/diagnosticexact/rejectionWorldunchanged，僅有限typedkind/id/version/member/joint/field和常量，沒有任意JSONPath/eval/uploadJS/Python/shell。首批6case：合法rule、same-role不同member、只換一joint另一不變、合法incompletebinding、wrongtypedimensionref、fixedversionimmutable/renameorderindependence。25現有有限幾何case可後接，不增拓樸。
+finite predicates：recordexists/exacttypedref/completeflag/jointtupleequal/recordpinunchanged/diagnosticexact/rejectionWorldunchanged，僅有限typedkind/id/version/member/joint/field和常量，沒有任意JSONPath/eval/uploadJS/Python/shell。首個可交付集合共6case：合法rule、same-role不同member、修改authoring draft／發布新version時只換一joint另一不變（不覆寫固定published rule）、合法incompletebinding、wrongtypedimensionref、fixedversionimmutable/renameorderindependence。WP49-A先做其中member/joint/wrong-type3case，WP49-B補齊另外3case；25現有有限幾何case可後接，不增拓樸。
 
 現native只有部分`ASSEMBLY_INVALID`/clause/message和timberissues，不能宣稱每failure有typedfieldPath/ref；若精確負例不能由currentcode獨立區分，就標需補typeddiagnosticcontract，不反解析文字或anyerror當pass。author expected與executoractual分欄；status=not-run/missing-capability/blocked/timeout/crashed/failed/passed/stale/unknown-runtime。binary未知不能green；input/source/native/validator/predicates变即stale，label是否影響definitionhash需明寫。
 
@@ -114,7 +114,7 @@ finite predicates：recordexists/exacttypedref/completeflag/jointtupleequal/reco
 
 |子決策|A（建議，待採納）|B／其他選項|阻擋範圍|
 |---|---|---|---|
-|Q36a所有權／範圍|GridSystem一層rule，all-cells或signedcell；無stagger雙軸REPEAT/PANEL；1…65、非1×1、完整pitch整除；source無面及零visible合法|先single-cell（不完成SR02/11）；或維持manual全部blocked|sourcefamily/59-A/61|
+|Q36a所有權／範圍|GridSystem一層rule，all-cells或signedcell；無stagger雙軸REPEAT/REPEAT_PANEL；1…65、非1×1、完整pitch整除；source無面及零visible合法|先single-cell（不完成SR02/11）；或維持manual全部blocked|sourcefamily/59-A/61|
 |Q36b身分|source-local非零uint32key，0=耗盡；delete不倒退；draftUUID→candidate選key→confirm消耗；當前沿革不reuse、undo恢復完整World|key含0需額外耗盡表示；預先reservation需Q31；跨discardedundo分支永不reuse需undo外allocator/reopen新契約|create/edit/key/highwater、60保存／草稿|
 |Q36c引用|正式tuple=appliedGrid/system/key/signedcell/axis/innerIndex；runtimecontext/revision另envelope；guide僅coord，directat-line完整footprint+真支撐|每cell展開gridId不建議，碰16容量/取樣identity|59-B typedref/60閉包/61placed操作|
 |Q36d更新／衝突|**只新source-rule**有ref鎖divisions/selector/delete；all/single/manual雙向衝突拒；舊source宣告省略rules保留既有|比manualI23仍存在index可重算需更大ref差異契約；已有rule舊無rules宣告fail-closed；省略清空不選|sourceupdate、全部writer、依賴交易|
@@ -143,10 +143,13 @@ A的候選定義：
 SourcePlane {planeId,sourceHash,page,coordinateSpace,pageSize,
  calibration,alignment, basisRevision}
 RoomCollection {collectionId,planeId,roomIds}
-RoomRecord {roomId,name,boundaryRef:{kind:boundary,id,associationPin},
- optionalPlacementRef,sourcePlaneId,acceptedBasisRevision,reviewState}
+RoomRecord {roomId,name,boundaryRef:{kind:'boundary',id,associationPin},
+ optionalPlacementRef:null|{kind:'placement',id,boundaryId,associationPin},
+ sourcePlaneId,acceptedBasisRevision,reviewState}
 ```
 沒有第二份roompolygon/vertex/frame/volume，亦不把Space ID拿來表示PDFparent。SourcePlane的calibration/alignment是原頁→共同來源工作UV的唯一描圖／呈現基準，不是nativePlacementSurface.frame。新房間唯一outline照D1/現nativepreview確認；已有房間因sharedbasis改變不自動縮放/平移/旋轉。若要批次更新既有geometry，另明選nativepreview/完整差異並另審擴充，不因調PDF對位順帶改。
+
+純Boundary room的optionalPlacementRef可null；存在時以native最終定義核對placement引用的boundaryId等於本room boundaryRef.id。缺失／pin失效保留需重新關聯狀態，不能fallback第一個同boundary placement；編輯／定位走QR3的顯式typed入口，不靠room名稱推導位置。
 
 sharedroom view只存sourcePlaneRef与展示crop，不再各保存可獨立編輯的calibration/x/y shadow；adapter由同SourcePlane派生現有reference渲染資料。旧獨立ReferencePage不轉義；新正式schema/能力dispatch，strict舊reader拒。來源換hash/page/size/rotation基準不偷接旧review，參照缺失保留room關聯描述並標待複核；資料庫不以同名圖自動替換。
 

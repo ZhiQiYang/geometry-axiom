@@ -98,7 +98,7 @@
 
 **現有與缺口**：repo有 assemblyfixtures、tests/build_assembly_example.py 和固定規則原生 read/preview；應用內尚無可攜 case library。原生 `assembly-preview` 目前不保證所有失敗都有 typed fieldPath/ref；`ASSEMBLY_INVALID`＋clause/message 與部分 timber issue 是既有回覆。不能反解析message就宣稱精確欄位诊斷已實作。
 
-**最小切片**：WP49-A先固定3個非機密case定義：同角色不同member不混配；只換一個joint另一joint保持；錯型來源依精確指定檢查拒絕。輸入包含固定rule/draft內容、typed closure、expected接受/拒絕、有限typed predicates；獨立process/World真載入并驗證，結果記casegeneration/input hash/validator fingerprint。WP49-B才做既有assemblyworkspace按需「案例」列表及完整專案保存讀回。若現有diagnostic不足，API擴充須先把型別契約定清楚，負例不能任意error都算pass。
+**最小切片**：WP49-A先固定3個非機密case定義：同角色不同member不混配；修改authoring draft／發布新version時只換一個joint、另一joint保持，不覆寫既有固定published rule；錯型來源依精確指定檢查拒絕。輸入包含固定rule/draft內容、typed closure、expected接受/拒絕、有限typed predicates；獨立process/World真載入并驗證，結果記casegeneration/input hash/validator fingerprint。WP49-B補至Q35首個可交付集合共6case，再做既有assemblyworkspace按需「案例」列表及完整專案保存讀回；A的3case不是宣稱六例全部完成。若現有diagnostic不足，API擴充須先把型別契約定清楚，負例不能任意error都算pass。
 
 **依賴／落點／並行**：Q35、`assembly.inc`/`assembly_bridge.inc`、現有 batch preview、`tests/build_assembly_example.py`、`assembly-workspace.js`、`project-store.js`新case附件。shared候選/read方法可與 #46共規格，但自己的隔離World，不用live reset或消耗用戶唯一token。fixture和獨立expected可先並行；native diagnostic一個owner、保存一個owner、正式app接線一個owner。第一版不依賴 #25 任意拓樸／SGR產品。
 
@@ -133,7 +133,7 @@
 
 **依賴／落點／並行**：#58/Q36採納才寫產品；`current_geometry.c`的World與dispatch、`grid_systems.inc`/`grid_bindings.inc`/`grid_lattice.inc`/`subgrid_world.inc`/`subgrid_rebind.inc`、typedreference資料與web bridge。C主檔CRLF不normalize；與#60共用一位World/sceneserializerowner，helper純query可分責，產品commands/保存不能競寫。#62oracle不與implementation共用計算公式。
 
-**验收稿**：U200/400、V200及pitch917/U7內距131；拒600/7、0/66/1×1、缺軸/stagger/legacyfinite；2^53以上cell以decimalstring/relativeanchor无Number溢位；manual/source雙向衝突；guide外越與at-linefootprint/真实端面分開；第二面下游非法全部dump/token/history不變；capacityerror不是sourceinvalid。ASan/UBSan與略過clipping/等分/第二面依赖mutants須由行為断言抓到。
+**验收稿**：U200/400、V200及pitch917/U7內距131；拒600/7、0/66/1×1、缺軸/stagger/legacyfinite；2^53以上cell以decimalstring/relativeanchor无Number溢位；manual/source雙向衝突；guide外越與at-linefootprint/真实端面分開；第二面下游非法時World/dump/geometry/history不變，readonly query/validate保留原pending，explicit impact preview依既有交易以新候選／invalid token替換舊preview；capacityerror不是sourceinvalid。ASan/UBSan與略過clipping/等分/第二面依赖mutants須由行為断言抓到。
 
 **readiness**：現在只能準備fixture／oracle規格；產品blocked by #58，不能從讀到issue diff視作採納。
 
@@ -144,7 +144,7 @@
 
 **依賴／落點／並行**：Q36原生來源保存及Q31草稿契約，#59固定typedinterfaces；`project-store.js`、`reference-workspace.js`、gridworkspace flush hooks、native dump/load、model-base/model驗證與能力預驗。現在/1–/9可讀，/8生成與/9來源核對不重用；formal新format/capability由單一保存owner在各功能採納後協調，不能四個工作包各自搶/10。schema負例矩陣和旧reader refusal fixture規格可先並行；World/scene寫入與59串行整合。
 
-**验收稿**：未套用來源不丟、decimalcell不取Number、samekey不同system不串；rawinvalid draft重開仍raw不自動确认；刪cap/偽舊version/未知欄/壞source/hash/超量都在World替換前拒絕且原檔可保留；完整source+draft+assets+history依既有上下文原子恢復；reopen後新producer真能力支持，不只JSON自洽；模型adapter unsupported保持明示，不换hash假支援。
+**验收稿**：未套用來源不丟、decimalcell不取Number、samekey不同system不串；rawinvalid draft重開仍raw不自動确认；刪cap/偽舊version/未知欄/壞source/hash/超量都在World替換前拒絕且原檔可保留；新context恢復完整source+draft+assets，不保存或恢復舊undo/redo stacks；本頁native/metadata交易history原子undo/redo，成功開檔按既有ContextHistory記一步、失敗保持原狀；reopen後新producer真能力支持，不只JSON自洽；模型adapter unsupported保持明示，不换hash假支援。
 
 **readiness**：proposal/相容table ready；產品blocked by58/59/Q31，草稿schema及正式version未採納。
 
@@ -153,7 +153,7 @@
 
 **最小切片**：WP61-A空白sourceworkspace建立一條rule→預覽／確認，不需房間；WP61-B從真邊界vertex／signedcell配置到兩面，查／選真子線並走既有guide或明寫角色角材流程；WP61-C改sourcepitch看兩面及有限下游差異、取消／確認、保存重開與草稿。不是把existingmanualsubgrid換名字，不造平行manager。
 
-**依賴／落點／並行**：#58採納、#59真core与#60草稿／完整保存；`grid-system-workspace.js`、`grid-inspector.js`、`app.js`既有singleowner整合、`WorkspaceShell`、nativequery/hittest。流程文案、typedDOM_contract与keyboard/触控规格可独立并行；不把mock/shots當成已接core，产品app整合避免73/74写入期。
+**依賴／落點／並行**：#58採納、#59真core与#60草稿／完整保存；`grid-system-workspace.js`、`grid-inspector.js`、`app.js`既有singleowner整合、`WorkspaceShell`、nativequery/hittest。流程文案、typedDOM_contract与keyboard/触控规格可独立并行；不把mock/shots當成已接core。PR73/74已合併，以其新接口再核對執行當下open PR並指定app接線owner。
 
 **验收稿**：错误与未填保留草稿；两面共享一source，pitch改完整重算；真cell命中不用sample序号、hugeindex显示保持字串；遲到query／取消／换source／切案无oldstate回填；desktop與390px真实关键步骤所有DOM能操作/焦點正確，控件触控面积≥44px，無水平overflow；實體iOSkeyboard/OSfilechooser/download另SR24未驗。
 

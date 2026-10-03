@@ -126,6 +126,8 @@ RuleLineRef = {
 
 正式native owner採納前凍結命名；以下是可審查候選，不是目前已有commands：
 
+建立／編輯／刪除沿既有ReferencePreview與批次候選交易管線，不新增獨立token、history或geometry solver；新操作只擴充正式typed輸入／差異契約。
+
 - read：sourceID → rules/highwater/native source fingerprint；無修改或pending token消耗。
 - create/edit/delete：`grid-subdivision-rule-transaction/1 {expectedRevision,sourcePin,operations}`，create有systemId/draftId/name/selector/divisions，edit有systemId/ruleKey及預期定義，delete有systemId/ruleKey；preview回proposedKey/前後差異/typedviolations，confirm同token/revision才正式提交，cancel不消耗key。
 - readonlyquery：沿現`grid-query system|binding|grid`明寫target、rule、rect/cell、exact/sample/limit，返回真signedcell及線seg；system/binding無appliedgrid只previewline，不能產生假placedref。

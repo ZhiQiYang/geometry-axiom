@@ -134,9 +134,9 @@
 <a id="qr9"></a>
 ## QR9 — P3 / #86 獨立 space 瀏覽器驗收補逐群組數量基準，避免整段漏跑仍綠
 
-**報告反例**：報告獨立空間browser腳本沒有完整CDP逐群組counts基準，存在整段漏跑而只看成功結束的缺口；尚未重現產品錯誤。
+**報告缺口**：獨立空間browser腳本已有行為assert、exception/consoleErrors與失敗exit守門；尚缺完整CDP逐群組counts基準，可能整段漏跑仍綠。報告尚未據此重現產品錯誤。
 
-**最小切片／刪除責任**：沿完整CDP已有frozen group expected/完成旗標及異常fail機制，移除獨立script只靠exit的驗收責任；核對腳本真正名稱與現有groups，保持平台skip具名。
+**最小切片／刪除責任**：沿完整CDP已有frozen group expected/完成旗標，補逐群組census與漏跑拒絕；保留space_model_test.js既有行為assert及異常fail，移除群組驗收缺乏基準的猜測責任，保持平台skip具名。
 
 **落點與依賴**：[geometry-web/space_model_test.js](../geometry-web/space_model_test.js)。低優先可獨立規格；實作前核實現行腳本，與產品缺陷聲明分開。
 
@@ -170,4 +170,3 @@ B先只保有界session候選，不自行增加持久格式或正式能力。若
 |REAL-PDF-02|未驗|未驗|未驗|未驗|未驗|未驗|
 
 後續實圖結果只公開匿名失敗類別、步驟及非機密數值/狀態；需要共享反例時先合成非機密幾何。合成夾具pass不等於這兩份實圖pass，性能合成benchmark不等於日常圖紙倍率。
-
