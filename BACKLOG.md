@@ -7,7 +7,8 @@
 - 範圍可以是此承載面，或使用者明選的角材 ID 集合；排序／mm 或 cm 顯示不改身分或原生值。CSV 匯出同一列集合，防護公式樣式字串。
 - **本次拿掉／合併（GEO-219）**：將既有左欄角材尺寸列直接升為料單，共用其選取、高亮與刪除；不另建料單對話框／第二份清單。座標與來源細節按需展開，沿用既有構件操作入口。
 - 不改公理、專案格式、工程交易或私人圖源；F4b 裁切／餘料／採購不在本批。#54 已由其他 ChatGPT 執行者接手，本分支不寫底圖狀態／候選流程。
-- 實測：Node 料單 7/7、原生 references 34/34；完整非瀏覽器 1297 pass／0 fail／1 Windows GDI 平台略過。真 Chromium P79 14/14、0 例外，桌面／390px 截圖在隔離暫存路徑。完整無 filter CDP 和遠端 exact-head CI 正在驗證，未完成前不宣稱全綠。
+- 原 main 首版實測：Node 料單 7/7、原生 references 34/34；完整非瀏覽器 1297 pass／0 fail／1 Windows GDI 平台略過。真 Chromium P79 14/14、0 例外。完整回歸抓到 P75 仍假設點角材列不會平移畫布；以真實「適合」按鈕再看對側構件，保留全部命中／游標斷言，修後 P75 37/37。
+- 已隔離整合 PR53 reviewed head `edb0fe68` 的 format8／生成來源；references 重用原生 assembly typed read，owned 角材保留 instance/member/binding/rule 與截面 source，核對有效值相等。新增原生唯讀不消耗待確認 token、Node typed source 與真生成範例料單測試。整合候選完整非瀏覽器 1323 pass／0 fail／1 GDI 平台略過，Node 料單8/8、generation19/19，真 Chromium P79 16/16、0 例外。完整無 filter CDP 預期 1720，exact-head CI 另回填；未跑完不得宣稱全綠。
 - 剩餘：自動跨距的確切支撐身分／局部面適配、空間模型快照導出及 F4b；保持 #47 open。不能以這個首批切片宣稱整張工單完成。
 
 > 產生日期：2026-09-12，對象 `current_geometry.c` @ 4,567 行。

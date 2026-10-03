@@ -35,3 +35,12 @@ test('only placed native timbers are included, bindings and stored mesh snapshot
  const r=refs();r.timbers=[];r.bindings=[{id:1,complete:true}];r.models=[{timbers:[{id:1}]}];
  assert.equal(S.derive(r,1).rows.length,0);
 });
+test('owned timber dimensions keep the native member, fixed rule and typed binding source instead of becoming literals',()=>{
+ const r=refs();r.assembly={instances:[{value:{source:{id:4,bindingId:9,rule:{id:7,version:2,fingerprint:'b'.repeat(64)}}},members:[{memberId:12,timberId:1}]}],
+  rules:[{value:{id:7,version:2,members:[{id:12,slotId:5}]},fingerprint:'b'.repeat(64)}],
+  bindings:[{value:{id:9,slots:[{slotId:5,A:{kind:'parameter',parameterId:6,fieldId:1},B:{kind:'literal',value:33}}]},complete:true,fingerprint:'c'.repeat(64),effective:[{slotId:5,A:{value:27,path:'參數 6／欄 1'},B:{value:33,path:'直接值 33'}}]}]};
+ const s=S.derive(r,1),row=s.rows[0];assert.equal(s.rows.length,2);assert.equal(row.assembly.memberId,12);
+ assert.equal(row.assembly.ruleVersion,2);assert.equal(row.sources[0].source.kind,'parameter');assert.ok(S.sourceText(row).includes('組構實例 4'));
+ assert.ok(S.csv(s).includes('"4","12","9","7","2","'+'b'.repeat(64)+'"'));
+ r.assembly.bindings[0].effective[0].A.value=40;assert.throws(()=>S.derive(r,1),/尚未核對/);
+});

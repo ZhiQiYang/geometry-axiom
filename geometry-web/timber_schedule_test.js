@@ -50,5 +50,8 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,exceptionCount})
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
  await eval_(`openPanel('left',$('workspaceToggleLeft'));`);await sleep(100);
  fs.writeFileSync(path.join(out,'schedule-desktop.png'),Buffer.from((await send('Page.captureScreenshot',{format:'png'})).result.data,'base64'));
+ await eval_(`(async()=>{resetSceneFocus();const r=await fetch('/examples/assembly-generation-v1.gcanvas');if(!r.ok)throw Error('Generation example absent');await ReferenceWorkspace.importBytes(new Uint8Array(await r.arrayBuffer()),'原生生成料單.gcanvas');await renderObjects();await enterFocus('face',1);})()`);
+ check('生成實例只計三支 owned 角材與兩支既有支撐，不重複計量',await eval_(`(()=>{const s=feTimberScheduleSnapshot(),a=fe.timberReferenceData.assembly.instances[0];return s.rows.length===5&&s.rows.filter(r=>r.assembly).length===3&&new Set(s.ids).size===5&&a.members.every(m=>s.rows.some(r=>r.id===m.timberId&&r.assembly.memberId===m.memberId&&r.L===m.geometry.length));})()`));
+ check('生成料單保留原生配置尺寸來源與固定規則，CSV可追溯同身分',await eval_(`(()=>{const s=feTimberScheduleSnapshot(),r=s.rows.find(r=>r.assembly),a=fe.timberReferenceData.assembly.instances[0],b=fe.timberReferenceData.assembly.bindings[0];return r.assembly.instanceId===a.value.source.id&&r.assembly.bindingFingerprint===b.fingerprint&&r.assembly.ruleFingerprint===a.value.source.rule.fingerprint&&r.sources.length===2&&document.querySelector('[data-timber-id="'+r.id+'"] .timber-schedule-source p').textContent.includes('組構實例')&&TimberSchedule.csv(s).includes(r.assembly.ruleFingerprint)&&TimberSchedule.csv(s).includes('dimension_source_definitions');})()`));
  check('流程沒有新增未處理的瀏覽器例外',exceptionCount()===errors);
 };

@@ -22,6 +22,10 @@ CSV 匯出逐件相同資料，包含 typed timber/surface 身分、方向、定
 - 只計原生 placed Timber，每個 `timber:id` 一次。兩個同截面／同長的實際構件各自保留，Timber 0 亦是有效身分。
   不計未生成規則／Binding，不混入空間模型的已保存 mesh 快照，不估算影像或外接盒長度。
 - A/B/L 及方向讀原生資料；兩端世界座標只是以原生長度與軸展開供核對，不是另算料長。
+- 已與 PR53 的 format8／生成來源整合。生成的 owned Timber 仍逐件一次；原生 references
+  重用 assembly-read 的型別來源，保留 instance/member、binding、固定 rule version/fingerprint 及 A/B 來源。
+  binding 有效尺寸須與正式 Timber 核對相等，資料不足時拒絕，不把生成來源展平成「直接尺寸」。
+  CSV 同時保存完整 typed dimension source definitions 與生成身分／來源指紋。
 - 直接尺寸沒有材料名稱，保持「材料未設定」。工程來源保留 typed source、固定版本、path、override。
   自動推導跨距的確切支撐構件／局部面 selector 尚未由現有 bridge 提供，明示「支撐身分未提供」。
   這是 #47 的剩餘追溯適配項，不能將端點座標當成支撐關係已完整辨識。

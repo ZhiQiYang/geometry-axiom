@@ -386,7 +386,10 @@ static void cmd_references(void)
         }
         fputs("]}",stdout);
     }
-    fputs("],\"engineeringSources\":",stdout);json_engineering_sources(&g_world);fputs("}\n",stdout);
+    fputs("],\"engineeringSources\":",stdout);json_engineering_sources(&g_world);
+    /* Reuse the authoritative typed read: owned timbers inherit binding
+       sources and must not be described as independent literal dimensions. */
+    fputs(",\"assembly\":",stdout);json_assembly_state(&g_world,false);fputs("}\n",stdout);
 }
 static void cmd_snap_reference(const char *args)
 {

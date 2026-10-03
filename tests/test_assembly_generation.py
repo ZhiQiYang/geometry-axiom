@@ -68,6 +68,15 @@ class Generation(unittest.TestCase):
         self.assertEqual([m['geometry'] for m in before['members']],[m['geometry'] for m in after['members']])
         self.assertEqual(91,after['value']['source']['members'][0]['ends']['start']['id'])
         self.assertEqual(20,after['members'][0]['geometry']['origin'][1])
+    def test_schedule_reference_read_preserves_native_owned_sources_and_pending_candidate(self):
+        self.apply([self.create()])
+        before=self.dump()
+        candidate=self.request([self.edit(dict(self.instance()['value']['source'],name='pending'))])
+        refs=self.command('references')
+        self.assertEqual(self.read()['state'],refs['assembly'])
+        self.assertEqual(5,len(refs['timbers']))
+        self.assertEqual(before,self.dump())
+        self.assertTrue(self.command('assembly-confirm '+str(candidate['preview']['token']))['ok'])
     def test_missing_wrong_sources_and_inward_joint_geometry_are_atomic(self):
         for change,diagnostic in [('guide','I42'),('surface','I42'),('support','I42'),('side','I42')]:
             v=self.source()
