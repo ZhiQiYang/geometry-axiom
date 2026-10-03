@@ -80,6 +80,7 @@ module.exports=async({send,eval_:read,sleep,click,dblclick,drag,waitForUI,except
  await require('./assembly_review_test.js')({send,read,sleep,click,ctl,fill,choose,publish,wait,key,check});
  await require('./assembly_id_test.js')({send,read,sleep,ctl,fill,choose,publish,wait,check});
  await require('./assembly_generation_test.js')({send,read,sleep,ctl,fill,choose,publish,wait,check});
+ await require('./assembly_candidate_impact_test.js')({read,ctl,fill,wait,check});
  check('沒有未處理瀏覽器例外',exceptionCount()===errors);
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
 };

@@ -33,7 +33,9 @@ static void json_assembly_preview(void)
 {
     char error[512];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"before\":",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
-    json_assembly_state(&g_preview.before,true);fputs(",\"after\":",stdout);json_assembly_state(&g_preview.after,true);fputs(",\"violations\":[",stdout);
+    json_assembly_state(&g_preview.before,true);fputs(",\"after\":",stdout);json_assembly_state(&g_preview.after,true);
+    fputs(",\"impact\":",stdout);json_candidate_geometry(&g_preview.before,&g_preview.after);
+    fputs(",\"violations\":[",stdout);
     if(!g_preview.valid){fprintf(stdout,"{\"code\":\"ASSEMBLY_INVALID\",\"clause\":\"%s\",\"message\":",strstr(g_preview.command,"generation")?"I42":"I40/I41");js_string(error);putchar('}');}
     for(size_t i=0;i<g_preview.issue_count;++i){const ReferenceIssue *e=&g_preview.issues[i];printf("%s{\"timber\":%u,\"clause\":",(!g_preview.valid||i)?",":"",e->timber);js_string(e->clause);fputs(",\"expected\":",stdout);js_string(e->expected);fputs(",\"message\":",stdout);js_string(e->actual);putchar('}');}fputs("]}",stdout);
 }
