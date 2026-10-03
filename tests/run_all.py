@@ -72,6 +72,7 @@ PY_NEEDS = {
     'test_parameters_core': ['bridge', 'model-base'],
     'test_reference_contract': ['bridge'],
     'test_source_inspector': ['bridge'],
+    'test_source_inspector_transport': [],
     'test_runtime_version': [],
     'test_serve': [],
     'test_space_modeling': ['model-base'],

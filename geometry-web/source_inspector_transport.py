@@ -15,10 +15,12 @@ def snapshot_request(body, ask_bridge):
             raise ValueError('來源快照不得含 NUL。')
     except (UnicodeError, ValueError):
         return json.dumps({'ok': False, 'code': 'ENCODING', 'error': '來源快照須為完整 UTF-8。'}).encode()
-    with tempfile.NamedTemporaryFile('wb', suffix='.scene', delete=False) as stream:
-        stream.write(body)
-        path = Path(stream.name)
+    path = None
     try:
+        with tempfile.NamedTemporaryFile('wb', suffix='.scene', delete=False) as stream:
+            path = Path(stream.name)
+            stream.write(body)
         return ask_bridge('source-inspect-file ' + str(path))
     finally:
-        path.unlink(missing_ok=True)
+        if path is not None:
+            path.unlink(missing_ok=True)
