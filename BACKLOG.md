@@ -2,6 +2,15 @@
 
 > 2026-10-03 cloud 事實校正：PR52 已合併 `1805bb5`；PR55 合併至 PR53，PR53 的有限 D34/I42/R35 生成已合併 `68c4ac1`。其他 owner 的 PR63/#54 已合併 `c87be11`、PR64 已合併 `d40dee0`。以下較早工單內「未實作／未合併」保留當時歷史，不能作目前事實。A24 實體手機未驗。
 
+## GEO-237 — Runtime 公開靜態來源閉包與精確位元版本（2026-10-03）
+
+- 獨立審查證實既有205個vendor中195個未參與版本，公開documents／正典reader／examples仍live讀；同version可提供不同bytes且fresh仍true。
+- 同一allowlist決定公開路由、來源集合、啟動capture、版本與freshness；所有副檔名及無副檔名vendor、既有四documents／reader／三examples均固定提供capture bytes，不增加公開路由。
+- 公開artifact逐位元識別，二進位／字體／archives不正規化CRLF；未提供的source及SSOT保留LF同一性。私有圖紙、專案、feedback、上傳及動態場景不納入部署版本。
+- 啟動缺檔／競態拒絕，增刪檔及同尺寸同時間戳改動仍拒絕fresh；沿用現行保全dump與過期拒絕策略。
+- 減項：合併server與runtime兩份vendor路由枚舉；不新增UI入口、常駐說明、公理、保存或安全設定。
+- 隔離四檔修正44592ec由另一agent獨立審查，55/55 tests及兩個assertion-red故障注入；282static／205vendor路由集合不變。最終整合head完整驗證另附PR，未部署或觸碰用戶服務。
+
 ## GEO-236 — 原生角材支撐來源正式接線與 CSV 核對（2026-10-03，#47 F4a）
 
 - 沿用 D11/R6/R21 原生擋面與唯一候選，正式 references 追加支撐來源、局部面、世界法向與 owned 版本；無唯一證據保持 unknown，不以座標、名稱或材料習慣補造關係。

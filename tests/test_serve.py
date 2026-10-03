@@ -292,6 +292,47 @@ class BridgeServerTests(unittest.TestCase):
                 self.assertEqual(result.exception.code, 404)
                 result.exception.close()
 
+    def test_catalog_and_vendor_get_use_the_same_captured_bytes_and_routes(self):
+        from runtime_version import RuntimeSnapshot, static_catalog
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            web = root / 'geometry-web'
+            web.mkdir()
+            (root / 'geometry-core').mkdir()
+            (web / 'index.html').write_bytes(b'<head></head>')
+            for route, path in static_catalog(root).items():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(route.encode() + b' old bytes\r\n')
+            vendor = web / 'vendor'
+            vendor.mkdir()
+            (vendor / 'map.bcmap').write_bytes(b'old cmap\r\n')
+            runtime = RuntimeSnapshot(root)
+            self.server_module.RUNTIME = runtime
+            # Files may be changed/deleted later; requests still use this one
+            # startup capture and an added file cannot expand its route set.
+            (vendor / 'map.bcmap').unlink()
+            (vendor / 'new.ttf').write_bytes(b'new unversioned font')
+            for path in static_catalog(root).values():
+                path.write_bytes(b'new live bytes')
+            for route in [*static_catalog(root), '/vendor/map.bcmap']:
+                with self.subTest(route=route), patch.object(pathlib.Path, 'read_bytes',
+                        side_effect=AssertionError('HTTP static request reread filesystem')):
+                    handler = object.__new__(self.server_module.Handler)
+                    handler.path = route
+                    handler._send = Mock()
+                    handler.send_error = Mock()
+                    handler.do_GET()
+                    self.assertEqual(handler._send.call_args.args[0], runtime.static[route])
+                    expected = ('text/html; charset=utf-8' if route == '/axioms' else
+                                'text/plain; charset=utf-8' if route.startswith('/documents/') else
+                                'application/octet-stream')
+                    self.assertEqual(handler._send.call_args.args[1], expected)
+                    handler.send_error.assert_not_called()
+            handler.path = '/vendor/new.ttf'
+            handler.send_error.reset_mock()
+            handler.do_GET()
+            handler.send_error.assert_called_once_with(404)
+
     def receipt_request(self, **fields):
         return {"session": self.server_module.API_SESSION, **fields}
 
