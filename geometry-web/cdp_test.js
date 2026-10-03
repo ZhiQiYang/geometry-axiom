@@ -6502,7 +6502,7 @@ async function main() {
       const oldFetch=window.fetch.bind(window);
       window.fetch=async(input,init)=>{if(input==='/upload/confirm'){await oldFetch(input,init);throw new TypeError('test response lost');}return oldFetch(input,init);};
       let blocked=false;try{await ReferenceWorkspace.importBytes(g198Saved);}catch(e){blocked=connection.phase==='error';}finally{window.fetch=oldFetch;}
-      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&curScene.path==='';
+      await recoverConnection();return blocked&&connection.phase==='ready'&&(await api('dump')).text===g198Dump&&ReferenceWorkspace.active(1).calibration.distanceMm===1600&&typeof curScene.path==='string'&&curScene.path.endsWith('.scene');
     })()`));
     await eval_(`ReferenceWorkspace.openSource(g198PDF,1)`);
     await field('refTarget','new');
