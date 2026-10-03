@@ -170,13 +170,15 @@ window.AssemblyWorkspace=(()=>{
     return `<h4>${esc(title)}</h4>${rows.length?`<div class="asm-diff">${rows.map(([a,b])=>`<p><span>${esc(a)}</span><span>${esc(b)}</span></p>`).join('')}</div>`:'<p>正式內容不會改變。</p>'}`;
   }
   async function preview(){
-    if(confirming())return;flush();ReferenceWorkspace.assertEditable();invalidate();const x=s,g=x.generation,seq=++serial,operations=x.operations||[{op:x.draft.kind==='rule'?'publish-rule':'put-binding',value:clone(x.draft.data)}],read=await command('assembly-read');if(!current(x)||g!==x.generation)return;
+    if(confirming())return;flush();ReferenceWorkspace.assertEditable();invalidate();const x=s,g=x.generation,seq=++serial,operations=x.operations||[{op:x.draft.kind==='rule'?'publish-rule':'create-binding',value:clone(x.draft.data)}],read=await command('assembly-read');if(!current(x)||g!==x.generation)return;
     if(!x.operations){
       const d=x.draft;
       if(d.kind==='binding'){
         const original=read.state.bindings.find(r=>r.value.id===d.data.id),intent=d.binding_intent;
         if(intent?.mode==='update'){
           if(!original||identityValue(original.value)!==identityValue(intent.source))throw Error('原始配置已變更或移除；草稿仍保留，請從已發布配置重新開啟編輯。');
+          if(!/^[a-f0-9]{64}$/.test(original.fingerprint||''))throw Error('原生服務缺少配置來源指紋，請更新服務再預覽；草稿仍保留。');
+          operations[0]={op:'edit-binding',id:d.data.id,expectedFingerprint:original.fingerprint,value:clone(d.data)};
         }else if(original)throw Error('新增或舊版草稿的配置身分已被占用；草稿仍保留，請另建配置，或從已發布配置明確開啟編輯。');
       }else if(d.base_ref){
         const ref=d.base_ref,original=read.state.rules.find(r=>r.value.id===ref.id&&r.value.version===ref.version);

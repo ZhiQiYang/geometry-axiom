@@ -156,6 +156,25 @@ static bool assembly_operation(World *w,EngJson *j,int t)
 {
     char op[32];if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return asm_error("I40: assembly operation needs op");
     if(!strcmp(op,"publish-rule"))return eng_json_keys(j,t,"op,value","")?asm_publish(w,j,eng_json_member(j,t,"value"),NULL):asm_error("I40: invalid publish operation");
+    if(!strcmp(op,"create-binding")){
+        uint32_t id;int value=eng_json_member(j,t,"value");
+        if(!eng_json_keys(j,t,"op,value","")||!eng_u32(j,eng_json_member(j,value,"id"),&id,true))return asm_error("I40: invalid new binding identity");
+        if(assembly_binding(w,id))return asm_error("I40: new binding %u already exists; edit it explicitly",id);
+        return asm_put_binding(w,j,value);
+    }
+    if(!strcmp(op,"edit-binding")){
+        uint32_t id,value_id;char expected[65],actual[65];int value=eng_json_member(j,t,"value");
+        if(!eng_json_keys(j,t,"op,id,expectedFingerprint,value","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true)||
+           !eng_u32(j,eng_json_member(j,value,"id"),&value_id,true)||value_id!=id||
+           !eng_json_string(j,eng_json_member(j,t,"expectedFingerprint"),expected,sizeof expected)||strlen(expected)!=64)
+            return asm_error("I40: invalid explicit binding edit");
+        for(size_t i=0;i<64;++i)if(!((expected[i]>='0'&&expected[i]<='9')||(expected[i]>='a'&&expected[i]<='f')))
+            return asm_error("I40: invalid binding fingerprint");
+        AsmBinding *b=assembly_binding(w,id);if(!b)return asm_error("I40: edited binding %u does not exist",id);
+        eng_sha256(b->content,strlen(b->content),actual);
+        if(strcmp(expected,actual))return asm_error("STALE: binding %u changed; reopen before editing",id);
+        return asm_put_binding(w,j,value);
+    }
     if(!strcmp(op,"put-binding"))return eng_json_keys(j,t,"op,value","")?asm_put_binding(w,j,eng_json_member(j,t,"value")):asm_error("I40: invalid binding operation");
     if(!strcmp(op,"delete-binding")){
         uint32_t id;if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,true))return asm_error("I40: invalid binding id");

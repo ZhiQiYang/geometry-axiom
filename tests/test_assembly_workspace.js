@@ -47,7 +47,7 @@ const bindingValue=id=>({id,name:'配置',rule:{id:1,version:1},slots:[1,2].map(
 function idFixture(kind,occupied,reserved,start){
   const f=fixture();f.state.draft=null;f.state.preview=null;
   const rules=kind==='rule'?occupied.map(id=>({value:{...rule(),id},fingerprint:'a'.repeat(64)})):[{value:rule(),fingerprint:'a'.repeat(64)}];
-  f.setWorld({rules,bindings:kind==='binding'?occupied.map(id=>({value:bindingValue(id)})):[]});
+  f.setWorld({rules,bindings:kind==='binding'?occupied.map(id=>({value:bindingValue(id),fingerprint:'b'.repeat(64)})):[]});
   f.context().assemblyDrafts=reserved.map(id=>({id:'reserved-'+id,kind,base_ref:null,data:kind==='rule'?{...rule(),id}:bindingValue(id),updated_at:'2026-10-01T00:00:00Z'}));
   f.setIds({assemblyRule:start,assemblyBinding:start});return f;
 }
@@ -106,7 +106,15 @@ test('unchanged explicit binding edits and unoccupied legacy creations reach rev
     f.state.draft.data.name='確定編輯';let submitted;f.env.checkApiSession=()=>{};
     f.env.fetch=async(url,request)=>{submitted=JSON.parse(request.body);return {ok:true,json:async()=>({ok:true,preview:{token:'p',valid:true,before:{rules:[],bindings:[]},after:{rules:[],bindings:[]},violations:[]}})};};
     await f.t.preview();assert.equal(submitted.expectedRevision,1);assert.equal(submitted.operations[0].value.id,editing?2:3);assert.equal(f.state.preview.valid,true);
+    assert.equal(submitted.operations[0].op,editing?'edit-binding':'create-binding');
+    if(editing){assert.equal(submitted.operations[0].id,2);assert.equal(submitted.operations[0].expectedFingerprint,'b'.repeat(64));}
   }
+});
+test('missing native binding fingerprint refuses an explicit edit without submitting or discarding its draft',async()=>{
+  const f=idFixture('binding',[2],[],3);await f.t.newDraft('binding',{value:bindingValue(2)});
+  f.setWorld({rules:[{value:rule()}],bindings:[{value:bindingValue(2)}]});
+  f.env.fetch=()=>{throw Error('must not submit');};const before=JSON.stringify(f.context().assemblyDrafts);
+  await assert.rejects(f.t.preview(),/缺少配置來源指紋/);assert.equal(JSON.stringify(f.context().assemblyDrafts),before);assert.equal(f.state.preview,null);
 });
 
 test('confirm locks actual handlers, inputs, navigation and repeated clicks until reply',async()=>{
