@@ -20,8 +20,6 @@ import threading
 import uuid
 
 HERE = pathlib.Path(__file__).resolve().parent
-VENDOR_FILES = {"/" + p.relative_to(HERE).as_posix(): p
-                for p in (HERE / "vendor").rglob("*") if p.is_file()}
 SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根目錄
 sys.path.insert(0, str(HERE))
 import feedback_store  # noqa: E402
@@ -277,27 +275,18 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif self.path in RUNTIME.assets and self.path.endswith(('.js', '.css')):
             self._send(RUNTIME.assets[self.path], 'text/css; charset=utf-8' if self.path.endswith('.css')
                        else 'text/javascript; charset=utf-8')
-        elif self.path in VENDOR_FILES:
-            path = VENDOR_FILES[self.path]
+        elif self.path in RUNTIME.vendor:
             ctype = {".js": "text/javascript; charset=utf-8",
                      ".mjs": "text/javascript; charset=utf-8",
-                     ".wasm": "application/wasm"}.get(path.suffix, "application/octet-stream")
+                     ".wasm": "application/wasm"}.get(pathlib.Path(self.path).suffix, "application/octet-stream")
             self._send(RUNTIME.vendor[self.path], ctype)
-        elif self.path in {"/documents/finish", "/documents/vision", "/documents/guide", "/documents/engineering"}:
-            # Explicit catalog only: no filesystem path or local upload endpoint.
-            documents = {
-                "/documents/finish": SCENE_DIR / "geometry-guide/docs/finish-surface-dependencies.md",
-                "/documents/vision": SCENE_DIR / "geometry-guide/PRODUCT-VISION.md",
-                "/documents/guide": HERE / "docs/DOCUMENTS.md",
-                "/documents/engineering": HERE / "docs/ENGINEERING-SPEC-USE.md",
-            }
-            self._send(documents[self.path].read_bytes(), "text/plain; charset=utf-8")
-        elif self.path == "/axioms":
-            self._send((SCENE_DIR / "geometry-guide" / "公理層-閱讀器.html").read_bytes(),
-                       "text/html; charset=utf-8")
-        elif self.path in {"/examples/engineering-spec-v1.gcanvas", "/examples/assembly-rules-v1.gcanvas", "/examples/assembly-generation-v1.gcanvas"}:
-            self._send((HERE / "examples" / self.path.rsplit("/", 1)[1]).read_bytes(),
-                       "application/octet-stream")
+        elif self.path in RUNTIME.static:
+            # The public catalog shares the versioned startup capture. Mutable
+            # project/feedback data keeps its existing separate lifecycle.
+            ctype = ('text/html; charset=utf-8' if self.path == '/axioms' else
+                     'text/plain; charset=utf-8' if self.path.startswith('/documents/') else
+                     'application/octet-stream')
+            self._send(RUNTIME.static[self.path], ctype)
         elif self.path == "/scenes":
             items = [{"name": p.name, "path": str(p)}
                      for p in sorted(SCENE_DIR.glob("*.scene"))]
