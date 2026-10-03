@@ -365,6 +365,52 @@ test('retry uses the committed receipt for lost replies and refuses a later diff
   }
 });
 
+nodeTest('real native HTTP committed ABA keeps the old project bytes references and undo',{
+  timeout:20000,skip:!process.env.GEOMETRY_TEST_BRIDGE
+},async()=>{
+  const {spawn}=require('node:child_process'),net=require('node:net'),os=require('node:os'),path=require('node:path'),{once}=require('node:events');
+  const listener=net.createServer();await new Promise(resolve=>listener.listen(0,'127.0.0.1',resolve));
+  const port=listener.address().port;await new Promise(resolve=>listener.close(resolve));
+  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-import-http-')),root=path.resolve(__dirname,'..'),base='http://127.0.0.1:'+port;
+  const child=spawn(process.env.PYTHON || 'python',[path.join(root,'geometry-web','serve.py'),String(port)],{
+    cwd:root,env:{...process.env,GEOMETRY_BRIDGE:process.env.GEOMETRY_TEST_BRIDGE,GEOMETRY_FEEDBACK_DIR:directory},stdio:['ignore','pipe','pipe']
+  });let failure='';child.stdout.on('data',()=>{});child.stderr.on('data',bytes=>{failure+=bytes;});
+  const closed=once(child,'close'),ownedPaths=[];
+  const post=async(route,body)=>{const response=await fetch(base+route,{method:'POST',body:typeof body==='string'?body:JSON.stringify(body)});assert.equal(response.status,200);return response.json();};
+  try{
+    let ready=false;
+    for(let i=0;i<100&&!ready;i++){
+      try{ready=(await fetch(base+'/runtime')).ok;}catch(_){}
+      if(!ready){if(child.exitCode!==null)throw Error(failure||'Native HTTP service exited');await new Promise(resolve=>setTimeout(resolve,20));}
+    }
+    assert.equal(ready,true,failure||'Native HTTP service did not start');
+    const initial=await post('/upload','boundary 1 outline 0,0 800,0 800,700 0,700\n');assert.equal(initial.ok,true);ownedPaths.push(initial.path);
+    const f=await openFixture(),old=f.w.context(),oldHistory=JSON.stringify(f.w.history),oldGroups=JSON.stringify([...old.groups]);
+    const bytes=f.source.bytes.slice();let committed;
+    f.env.api=command=>post('/api',{cmd:command});f.env.connectionFailed=()=>{f.env.connection.phase='error';};
+    f.env.fetch=async(url,request)=>{
+      const response=await fetch(base+url,request);
+      if(url==='/upload/confirm'){committed=await response.json();ownedPaths.push(committed.path);throw Error('Lost real committed HTTP reply');}
+      return response;
+    };
+    await assert.rejects(()=>f.w.importBytes(f.bytes),/Lost real committed HTTP reply/);
+    assert.equal(committed.ok,true);assert.equal(committed.state,'committed');
+    const afterCommit=await post('/api',{cmd:'dump'});assert.equal(afterCommit.revision,committed.revision);
+    assert.equal((await post('/api',{cmd:'line spec IMPORT_RECOVERY_ABA 27'})).ok,true);
+    assert.equal((await post('/api',{cmd:'line undo'})).ok,true);
+    const afterABA=await post('/api',{cmd:'dump'});
+    assert.equal(afterABA.text,afterCommit.text);assert.notEqual(afterABA.revision,committed.revision);
+    await assert.rejects(()=>f.w.recoverLoad(),/已有其他變更/);
+    assert.equal(f.w.context(),old);assert.equal(JSON.stringify(f.w.history),oldHistory);assert.equal(JSON.stringify([...old.groups]),oldGroups);
+    assert.equal(old.sources.get(f.source.meta.id),f.source);assert.deepEqual(f.source.bytes,bytes);
+    assert.equal(f.env.connection.phase,'error');assert.equal((await post('/api',{cmd:'dump'})).text,afterABA.text);
+  }finally{
+    child.kill();await closed;
+    for(const filename of ownedPaths)if(filename)fs.rmSync(filename,{force:true});
+    fs.rmSync(directory,{recursive:true,force:true});
+  }
+});
+
 test('failed reading or unpacking releases busy state and leaves the existing project untouched',async()=>{
   for(const failRead of [true,false]) {
     const f=await openFixture(),old=f.w.context();
