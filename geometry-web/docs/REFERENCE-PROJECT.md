@@ -67,6 +67,15 @@ PDF 預覽解析度、取景及縮放不改頁面座標。`mmPerPx` 沿用既有
 
 ## 驗證
 
+完整專案匯入、本機恢復與載入重試的附件／平面投影／輪廓核對收據，
+依原生解析完成後的 boundary 與 placement 清單核對；不從 DSL 宣告文字猜測最後存在的面。
+載入候選由同一原生 parser 建立，檢查完來源位元組、圖頁尺寸及 metadata 後，
+確認才一次替換 World 和專案上下文。確認使用已驗證的同一候選，核對前一 World 與版本，
+不重新解析檔案；取消、無效引用及失效候選不新增 undo。成功開啟仍是一筆可復原交易。
+保存格式及既有公理未變更。封裝／解包負責結構和完整性，場景引用合法性由上述原生候選核定。
+
+- `GEOMETRY_TEST_BRIDGE=<fresh bridge> python -m unittest tests.test_scene_import`：最終物件、縮排／reset／delete／重宣告、placement 0、候選取消、失效／ABA、同一候選提交及畫布位置。
+
 - `node --test tests/test_project_store.js`：封裝、完整性、數值檢查、場景與實例隔離；含群組內刪除後立即重建同編號面。
 - `python -m unittest tests.test_serve tests.test_feedback_store`：服務路由、既有來源限制與回報功能。
 - 完整 `geometry-web/cdp_test.js`；新增 P57–P61 涵蓋圖片／PDF、cm 校準、正交輪廓、保存重開、取消、讀取與寫檔失敗、手機版。

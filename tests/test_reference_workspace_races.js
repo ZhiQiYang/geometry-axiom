@@ -225,8 +225,8 @@ async function openFixture(options={}) {
     await options.refreshGate?.promise;
   };
   f.env.fetch=async(url,request)=>{
-    requests.push({url,request});assert.equal(url,'/upload');
-    return {ok:true,json:async()=>({ok:true,path:'opened.scene'})};
+    requests.push({url,request});assert.ok(['/upload','/upload/prepare','/upload/confirm','/upload/cancel'].includes(url));
+    return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,final_objects:{boundaries:[8],placements:[]}}:{ok:true,path:'opened.scene'})};
   };
   return {...f,bytes,requests,refreshed};
 }
@@ -239,7 +239,7 @@ test('opening owns the busy state from first byte read through rendering and ref
   await assert.rejects(()=>f.w.importBytes(f.bytes),/目前的操作/);
   await assert.rejects(()=>f.w.save(),/操作進行中/);
   readGate.resolve(f.bytes);await f.refreshed.promise;
-  assert.equal(f.w.busy,true);assert.equal(f.requests.length,1);
+  assert.equal(f.w.busy,true);assert.equal(f.requests.length,2);
   assert.match(f.statuses.at(-1),/整理畫布/);
   refreshGate.resolve();await turn();assert.equal(f.w.busy,true);
   assert.match(f.statuses.at(-1),/開啟工程規格/);
@@ -261,6 +261,43 @@ test('changes during project reading or its pre-upload dump prevent replacement 
     assert.equal(f.requests.length,0);assert.equal(f.w.busy,false);
     assert.equal(f.w.historyActionLabel('undo'),null);
   }
+});
+
+test('late native candidate is cancelled before commit after a context or metadata change',async()=>{
+  for(const switchContext of [false,true]) {
+    const f=await openFixture(),gate=deferred(),reached=deferred(),old=f.w.context(),fetch=f.env.fetch;
+    f.env.fetch=async(url,request)=>{
+      const response=await fetch(url,request);
+      if(url==='/upload/prepare'){reached.resolve();await gate.promise;}
+      return response;
+    };
+    const opening=f.w.importBytes(f.bytes),rejected=assert.rejects(opening,/目前工程已有變更/);
+    await reached.promise;
+    if(switchContext)f.w.observe('line reset',{ok:true});
+    else f.w.calibrated(1,[[0,0],[10,0]],100);
+    const current=f.w.context(),history=f.w.history.undo.length;
+    gate.resolve();await rejected;
+    assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,history);
+    assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+    if(!switchContext){assert.equal(current,old);assert.equal(current.sources.size,1);assert.equal(f.w.active(1).calibration.distanceMm,100);}
+    assert.equal(f.w.busy,false);
+  }
+});
+
+test('missing final native targets cancel without losing source bytes, metadata or undo',async()=>{
+  const f=await openFixture(),old=f.w.context(),fetch=f.env.fetch;
+  f.env.fetch=async(url,request)=>{
+    const response=await fetch(url,request);
+    return url==='/upload/prepare'?{ok:true,json:async()=>({ok:true,token:1,final_objects:{boundaries:[],placements:[]}})}:response;
+  };
+  // Keep the transport fixture independent from a scene-text parser.
+  const originalUnpack=f.env.GeometryProject.unpack;
+  f.env.GeometryProject.unpack=async(...args)=>{const value=await originalUnpack(...args);value.manifest.faceProjections=[{bid:8,placement_id:0,projection:{kind:'space-boundary-plan',view:'top',region:'interior',wallSide:'outside'}}];return value;};
+  const undo=f.w.history.undo.length;
+  await assert.rejects(()=>f.w.importBytes(f.bytes),/放置不存在/);
+  assert.equal(f.w.context(),old);assert.equal(f.w.history.undo.length,undo);
+  assert.deepEqual(old.sources.get(f.source.meta.id).bytes,f.source.bytes);
+  assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
 });
 
 test('failed reading or unpacking releases busy state and leaves the existing project untouched',async()=>{
@@ -355,7 +392,7 @@ async function recoveryRecord(f,scene) {
 test('matching reload restores complete project context without uploading or inventing undo',async()=>{
   const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene);
   const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
-  assert.equal((await f.w.restoreSession()).state,'restored');assert.equal(f.requests.length,0);
+  assert.equal((await f.w.restoreSession()).state,'restored');assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
   assert.equal(f.w.context().id,'opened');assert.equal(f.w.context().name,'試用工程');assert.equal(f.w.context().dirty,true);
   assert.equal(f.w.getProjectInfo().sourceKind,'example');assert.equal(f.w.getProjectInfo().undoLabel,null);
   assert.match(f.w.getProjectInfo().historyNote,/較早/);
@@ -404,7 +441,7 @@ test('external mutation during final reload fingerprint cannot commit the earlie
   recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
   const restoring=f.w.restoreSession();await reached.promise;
   channel.onmessage({data:{peer:'other-tab',session:'service-one'}});gate.resolve();
-  assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.equal(f.requests.length,0);
+  assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
   assert.equal(f.w.getProjectInfo().editingBlocked,true);
 });
 

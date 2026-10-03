@@ -32,6 +32,9 @@ UPLOAD_MAX_BYTES = 16 * 1024 * 1024
 POST_MAX_BYTES = {
     "/api": API_MAX_BYTES,
     "/upload": UPLOAD_MAX_BYTES,
+    "/upload/prepare": UPLOAD_MAX_BYTES,
+    "/upload/confirm": 1024,
+    "/upload/cancel": 1024,
     "/feedback": FEEDBACK_MAX_BYTES,
     "/model": 16 * 1024 * 1024,
     "/model/verify": 16 * 1024 * 1024,
@@ -63,6 +66,7 @@ bridge_responses = queue.Queue()
 bridge_failure = None
 BRIDGE_TIMEOUT = 30.0
 _upload_temps = []
+_prepared_upload = None
 upload_lock = threading.Lock()
 API_SESSION = uuid.uuid4().hex
 api_receipts = {}
@@ -108,7 +112,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
         return err_json("指令不得含換行或 NUL")
-    for prefix in ("loadfile ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "source-inspect-file "):
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "source-inspect-file "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -191,8 +195,9 @@ def recorded_api(data):
         receipt_lock.release()
 
 
-def upload_scene(body: bytes) -> bytes:
+def upload_scene(body: bytes, phase=None) -> bytes:
     """Keep successful load order and source-file retirement in one transaction."""
+    global _prepared_upload
     if not upload_lock.acquire(timeout=BRIDGE_TIMEOUT):
         return err_json("場景上傳仍在處理，請稍後再試。")
     # Include ordinary /api reloads in the ordering. ask_bridge re-enters this
@@ -202,17 +207,41 @@ def upload_scene(body: bytes) -> bytes:
         return err_json("橋接器忙碌，請稍後再試")
     tmp = None
     try:
+        if phase in {"confirm", "cancel"}:
+            try:
+                token = json.loads(body.decode("utf-8"))
+                if type(token) is not int or not 1 <= token <= 4294967295:
+                    raise ValueError("Invalid import token")
+            except (ValueError, UnicodeError):
+                return err_json("無效的專案載入確認識別。")
+            if _prepared_upload is None or _prepared_upload[0] != token:
+                return err_json("專案候選已失效，請重新開啟。")
+            tmp = _prepared_upload[1]
+            _prepared_upload = None
+            resp = ask_bridge(f"load-{phase} {token}")
+            if phase == "cancel":
+                return resp
+        else:
+            if _prepared_upload is not None:
+                old_token, old_path = _prepared_upload
+                ask_bridge(f"load-cancel {old_token}")
+                os.unlink(old_path)
+                _prepared_upload = None
         # Assign the path before writing, so a failed write also cleans its file.
-        with tempfile.NamedTemporaryFile("wb", suffix=".scene", delete=False) as f:
-            tmp = f.name
-            f.write(body)
+            with tempfile.NamedTemporaryFile("wb", suffix=".scene", delete=False) as f:
+                tmp = f.name
+                f.write(body)
         # GEO-154: a rejected load leaves the previous world and its source alive.
-        resp = ask_bridge("loadfile " + tmp)
+            resp = ask_bridge(("load-prepare " if phase == "prepare" else "loadfile ") + tmp)
         try:
             merged = json.loads(resp.decode("utf-8"))
         except (ValueError, UnicodeDecodeError):
             merged = None
         if not isinstance(merged, dict) or merged.get("ok") is not True:
+            return resp
+        if phase == "prepare":
+            _prepared_upload = (merged["token"], tmp)
+            tmp = None
             return resp
         while _upload_temps:
             stale = _upload_temps.pop(0)
@@ -426,9 +455,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send(err_json("指令超過單行上限"))
                 return
             self._send(recorded_api(data))
-        elif self.path == "/upload":
+        elif self.path in {"/upload", "/upload/prepare", "/upload/confirm", "/upload/cancel"}:
             # Release upload_lock before sending a response to a slow client.
-            self._send(upload_scene(body))
+            self._send(upload_scene(body, self.path.rsplit("/", 1)[-1] if self.path != "/upload" else None))
         else:
             self.send_error(404)
 

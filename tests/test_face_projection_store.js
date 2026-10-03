@@ -40,7 +40,7 @@ function workspace() {
     api:async cmd=>({ok:true,text:liveScene}),resetSceneFocus:()=>{},refreshActive:async()=>{},setStatus:()=>{},
     sceneMenuDisplay:x=>x,curScene:{},
     fetch:async(url,opts)=>{calls.push(url);if(url==='/upload')liveScene=opts.body;
-      return {ok:true,json:async()=>({ok:true,path:'loaded'})};}
+      return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,final_objects:{boundaries:[1,2],placements:[{id:0,bid:1,horizontal:true},{id:11,bid:1,horizontal:true},{id:12,bid:1,horizontal:true},{id:21,bid:2,horizontal:false}]}}:{ok:true,path:'loaded'})};}
   };
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/reference-workspace.js'),'utf8')+'\nglobalThis.workspace=ReferenceWorkspace;',env);
   env.workspace.history.sync([1,2]);
@@ -81,7 +81,7 @@ test('a face with no PDF or model saves and reopens its definition as v3, indepe
   assert.deepEqual(asPlain(restored.api.getFaceProjection(1,11)),top);
   assert.deepEqual(asPlain(restored.api.getFaceProjection(1,12)),bottom);
   assert.equal(restored.api.getFaceProjection(2,11),null);
-  assert.deepEqual(restored.calls,['/upload']);
+  assert.deepEqual(restored.calls,['/upload/prepare','/upload/confirm']);
 });
 test('old projects stay v1/v2 without defining existing faces; an empty definition list is not a forced upgrade',async()=>{
   const legacy=await P.unpack(await P.pack(scene,manifest(),new Map(),zip),zip);
@@ -171,8 +171,9 @@ test('strict metadata schema rejects extra keys, missing fields, unsupported val
   assert.throws(()=>w.api.setFaceProjection(2,21,top),/水平/);
   assert.throws(()=>w.api.setFaceProjection(1,21,top),/水平/);
   assert.throws(()=>w.api.setFaceProjection(9,11,top),/找不到/);
-  for(const records of [[record(),record()], [record(1,21)], [record(1,999)], [record(2,21)], [record(9,11)]])
-    await assert.rejects(()=>P.pack(scene,manifest(records),new Map(),zip));
+  await assert.rejects(()=>P.pack(scene,manifest([record(),record()]),new Map(),zip));
+  for(const records of [[record(1,21)], [record(1,999)], [record(2,21)], [record(9,11)]])
+    assert.throws(()=>P.validateProjectObjectRefs(manifest(records),{boundaries:[1,2],placements:[{id:11,bid:1,horizontal:true},{id:21,bid:2,horizontal:false}]}));
   for(const invalid of [{},null,'bad'])await assert.rejects(()=>P.pack(scene,{...manifest(),faceProjections:invalid},new Map(),zip));
   assert.equal(w.api.getFaceProjection(1,11),null);assert.equal(w.api.history.undo.length,0);
 });
@@ -183,7 +184,7 @@ test('forged saved definitions and references fail before upload without changin
     m=>m.format=P.MODEL_FORMAT,m=>delete m.faceProjections,m=>delete m.models]) {
     const w=workspace();w.api.setFaceProjection(1,12,bottom);const id=w.api.context().id;
     await assert.rejects(()=>w.api.importBytes(forge(bytes,change)));
-    assert.deepEqual(w.calls,[]);assert.equal(w.api.context().id,id);assert.deepEqual(asPlain(w.api.getFaceProjection(1,12)),bottom);
+    assert.ok(w.calls.every(url=>['/upload/prepare','/upload/cancel'].includes(url)));assert.equal(w.api.context().id,id);assert.deepEqual(asPlain(w.api.getFaceProjection(1,12)),bottom);
   }
 });
 test('a model retains its own source projection snapshot even after live source removal; new snapshots require consistent plan sources',async()=>{

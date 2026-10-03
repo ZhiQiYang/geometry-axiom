@@ -458,6 +458,38 @@ class BridgeServerTests(unittest.TestCase):
                 os.unlink(path)
         temps.clear()
 
+    def test_prepared_upload_cancel_stale_and_confirm_preserve_source_ownership(self):
+        mod = self.server_module
+        with tempfile.TemporaryDirectory() as directory:
+            prior = pathlib.Path(directory) / 'prior.scene'
+            prior.write_bytes(b'prior')
+            mod._upload_temps[:] = [str(prior)]
+            for rejected in ['cancel', 'stale', 'success']:
+                self.responses.put(b'{"ok":true,"token":7,"final_objects":{"boundaries":[1],"placements":[]}}\n')
+                prepared = json.loads(mod.upload_scene(b'boundary 1 outline 0,0 80,0 80,70 0,70\n', 'prepare'))
+                self.assertEqual(prepared['token'], 7)
+                path = mod._prepared_upload[1]
+                self.assertTrue(os.path.exists(path))
+                self.assertEqual(mod._upload_temps, [str(prior)])
+                self.assertTrue(prior.exists())
+                self.assertFalse(json.loads(mod.upload_scene(b'8', 'confirm'))['ok'])
+                self.assertTrue(os.path.exists(path))
+                phase = 'cancel' if rejected == 'cancel' else 'confirm'
+                reply = b'{"ok":false,"code":"STALE"}\n' if rejected == 'stale' else b'{"ok":true,"cancelled":true}\n'
+                self.responses.put(reply)
+                result = json.loads(mod.upload_scene(b'7', phase))
+                self.assertIsNone(mod._prepared_upload)
+                if rejected == 'success':
+                    self.assertEqual(mod._upload_temps, [path])
+                    self.assertEqual(result['path'], path)
+                    self.assertFalse(prior.exists())
+                    os.unlink(path)
+                else:
+                    self.assertFalse(os.path.exists(path))
+                    self.assertTrue(prior.exists())
+                    self.assertEqual(mod._upload_temps, [str(prior)])
+            mod._upload_temps.clear()
+
     def test_concurrent_uploads_preserve_load_and_source_retirement_order(self):
         for reject_second in [False, True]:
             with self.subTest(reject_second=reject_second), tempfile.TemporaryDirectory() as directory:
