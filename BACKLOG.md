@@ -9,7 +9,7 @@
 - 方法評估：vendor PDF.js 為 6.3.289，`getOperatorList` 的 `constructPath` 使用 DrawOPS（非舊版座標格式）；重用 CTM＋原始頁旋轉後 viewport 的直線／填色障礙。向量不表示牆語意，需人工選線寬門檻及核對。影像取長正交暗線作障礙，再取點所在連通區；不閉合、觸及取景邊界、孔／多輪廓與忽略的斜／曲線均明示，不偷偷封門或轉矩形。
 - UI 減項（GEO-219）：既有「描外環」步驟容納「選房間／人工描繪」；移除重複 reference-intro 與 calibration-instruction，合併底圖核對說明至單一輪廓區；原 `refConfirmChecked` 併入這裡的實際來源核對。候選頂點／邊尺寸使用同一面內草稿層，不新增工作區。常駐說明限三塊；狀態、錯誤及草稿才出現的核對內容另計。
 - 開工基線：61 個來源／保存／投影 Node 測試通過；38 個服務／回報 Python 測試通過。完整瀏覽器與空間測試使用另編 `%TEMP%/geometry-tests/issue54/` 的橋接器與隔離服務；不終止使用者持有的 bridge.exe。後續結果與未驗項目見交付證據文件。
-- 交付：[PR #63](https://github.com/ZhiQiYang/geometry-axiom/pull/63)；A／B／C 已實作，整合最新 main `31ba2be`。程式 `4bb30b9` 的七組 CI 全過：完整非瀏覽器 1,335 通過、0 失敗、1 個具名 GDI 平台略過；完整空間 183 通過；完整 CDP 1,776 通過、0 失敗、0 略過群組，75 段嚴格符合 golden；另角材 79、組構 128、網格 138、文件 47 通過。[驗收證據](geometry-web/docs/ISSUE54-VALIDATION.md) 含命令、CI 連結、公開夾具／畫面與實測比較，以及 Windows 受阻／WSL 失敗嘗試的精確紀錄。程式驗證後 ready，後續只補報告；未合併本 PR、關閉 issue 或部署。
+- 交付：[草稿 PR #63](https://github.com/ZhiQiYang/geometry-axiom/pull/63)；A／B／C 已實作，整合最新 main `31ba2be`。程式 `4bb30b9` 的七組 CI 全過：完整非瀏覽器 1,335 通過、0 失敗、1 個具名 GDI 平台略過；完整空間 183 通過；完整 CDP 1,776 通過、0 失敗、0 略過群組，75 段嚴格符合 golden；另角材 79、組構 128、網格 138、文件 47 通過。[驗收證據](geometry-web/docs/ISSUE54-VALIDATION.md) 含命令、CI 連結、公開夾具／畫面與實測比較，以及 Windows 受阻／WSL 失敗嘗試。後續只補報告，但文件提交 CI 因 GitHub 帳戶付款／支出上限未啟動，明確保留 draft；解除後須對最新 head 重跑。不更動帳務，不把未跑寫成通過；未合併本 PR、關閉 issue 或部署。
 
 > 產生日期：2026-09-12，對象 `current_geometry.c` @ 4,567 行。
 > 估時以「熟悉此 codebase 的工程師」為準（30 分鐘～3 小時）。
