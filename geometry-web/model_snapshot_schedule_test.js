@@ -32,13 +32,13 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   const downloads=()=>read('__p83.downloads.length');
   const noBlob=()=>read('__p83.blobCreates===__p83.gate.blobStart');
   const exportCSV=async(id,expectedUnit='mm')=>{
-    const before=await downloads(),filesBefore=new Set(fs.readdirSync(directory));await ctl(action(id));await wait(`__p83.downloads.length===${before+1}&&typeof __p83.downloads[${before}].text==='string'&&Array.isArray(__p83.downloads[${before}].bytes)`);
+    const before=await downloads(),exportDirectory=fs.mkdtempSync(path.join(directory,'export-'));await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:exportDirectory,eventsEnabled:true});await ctl(action(id));await wait(`__p83.downloads.length===${before+1}&&typeof __p83.downloads[${before}].text==='string'&&Array.isArray(__p83.downloads[${before}].bytes)`);
     const download=await read(`__p83.downloads[${before}]`);let target;
-    for(let i=0;i<200&&!target;i++){target=fs.readdirSync(directory).find(f=>!filesBefore.has(f)&&f.endsWith('.csv'));if(!target)await sleep(50);}
-    if(!target)throw Error('No completed actual CSV download in '+directory);
-    const buffer=fs.readFileSync(path.join(directory,target));if(!buffer.equals(Buffer.from(download.bytes)))throw Error('Actual downloaded CSV differs from Blob bytes');const bytes=buffer.toString('utf8');
+    for(let i=0;i<200&&!target;i++){target=fs.readdirSync(exportDirectory).find(f=>f.endsWith('.csv'));if(!target)await sleep(50);}
+    if(!target)throw Error('No completed actual CSV download in '+exportDirectory);
+    const buffer=fs.readFileSync(path.join(exportDirectory,target));if(!buffer.equals(Buffer.from(download.bytes)))throw Error('Actual downloaded CSV differs from Blob bytes');const bytes=buffer.toString('utf8');
     const rows=csvRows(bytes);if(rows.length!==2||rows.some(row=>row.snapshot_display_units!==expectedUnit))throw Error('Unexpected CSV scope/unit '+JSON.stringify(rows));
-    return {download,rows,bytes,file:path.join(directory,target)};
+    return {download,rows,bytes,file:path.join(exportDirectory,target)};
   };
   const create=async name=>{
     await read('SpaceModelWorkspace.openCurrentFace(0)');await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`);
