@@ -16,6 +16,7 @@ const os = require('os');
 const path = require('path');
 const { installConfirmationDumpGate } = require('./cdp_confirmation_gate.js');
 const { createRetainedEvaluator } = require('./cdp_evaluation.js');
+const { FULL_SPACE_GROUPS, createGroupCensus } = require('./space_test_floor.js');
 function spaceRunConfiguration(env = process.env) {
   if(!env.GEOMETRY_TEST_URL)throw Error('GEOMETRY_TEST_URL is required; use an explicitly isolated test service. No browser or reset was started.');
   const target=new globalThis.URL(env.GEOMETRY_TEST_URL);
@@ -35,6 +36,9 @@ function spaceRunConfiguration(env = process.env) {
   return {mode:filters.length?'partial':'full-space-suite',filters:[...filters,...(env.GEOMETRY_TIMBER_HISTORY_ONLY?['GEOMETRY_TIMBER_HISTORY_ONLY']:[])],included,omitted:all.filter(name=>!included.includes(name)),url:target.href,feedbackDirectory:path.resolve(env.GEOMETRY_FEEDBACK_DIR)};
 }
 const SCOPE=spaceRunConfiguration();
+const census = createGroupCensus(SCOPE.mode === 'full-space-suite' ? FULL_SPACE_GROUPS : SCOPE.included);
+const runGroup = (name, action) => census.run(name, action);
+let runFinished = false;
 const CHROME = process.env.GEOMETRY_CHROME || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const URL = SCOPE.url;
 const RELEASE='engineering-spec-v1-20260928', RELEASE_LABEL='工程規格版 2026.09.28';
@@ -51,7 +55,8 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function check(name, value, detail) {
   const ok = value === true;
-  results.push({ name, ok, ...(ok ? {} : { detail }) });
+  const group = census.record(ok);
+  results.push({ name, ok, ...(group ? { group } : {}), ...(ok ? {} : { detail }) });
   if (ok) passed++; else failed++;
   console.log((ok ? 'PASS ' : 'FAIL ') + name + (!ok && detail !== undefined ? ' ' + JSON.stringify(detail) : ''));
   return ok;
@@ -990,6 +995,7 @@ async function timberRegression() {
 
 async function run() {
   console.log('SPACE_SCOPE '+JSON.stringify(SCOPE));
+  await runGroup('setup', async () => {
   const response = await fetch(URL);
   check('server serves the intended space-model release', response.ok && response.headers.get('x-geometry-release') === RELEASE, { status: response.status, release: response.headers.get('x-geometry-release') });
   if(!response.ok||response.headers.get('x-geometry-release')!==RELEASE)throw Error('Wrong test-service release; browser and fixture reset were not started');
@@ -1004,41 +1010,33 @@ async function run() {
   await send('Emulation.setDeviceMetricsOverride', { width: 1400, height: 900, deviceScaleFactor: 1, mobile: false });
   await send('Page.navigate', { url: URL });
   await wait(`typeof SpaceModelWorkspace==='object' && typeof api==='function' && connection.phase==='ready'`, 'application ready',90000);
+  });
   if (process.env.GEOMETRY_SPACE_FLOW_ONLY) {
-    await spaceFlowRegression();
-    check('no uncaught browser exceptions',exceptions.length===0,exceptions);
-    check('no browser console errors',consoleErrors.length===0,consoleErrors);
+    await runGroup('space-flow', spaceFlowRegression);
     return;
   }
   if (process.env.GEOMETRY_TIMBER_ONLY) {
-    await timberRegression();
-    await timberSourceGuardsRegression();
-    await fontLayoutRegression();
-    check('no uncaught browser exceptions', exceptions.length === 0, exceptions);
-    check('no browser console errors', consoleErrors.length === 0, consoleErrors);
+    await runGroup('timber-material', timberRegression);
+    await runGroup(process.env.GEOMETRY_TIMBER_HISTORY_ONLY ? 'timber-history-guard' : 'timber-source-guards', timberSourceGuardsRegression);
+    await runGroup('font-layout', fontLayoutRegression);
     return;
   }
   if (process.env.GEOMETRY_TIMBER_GUARDS_ONLY) {
-    await timberSourceGuardsRegression();
-    check('no uncaught browser exceptions', exceptions.length === 0, exceptions);
-    check('no browser console errors', consoleErrors.length === 0, consoleErrors);
+    await runGroup(process.env.GEOMETRY_TIMBER_HISTORY_ONLY ? 'timber-history-guard' : 'timber-source-guards', timberSourceGuardsRegression);
     return;
   }
   // Focused check for the typography fix, without rerunning all modeling flows.
   if (process.env.GEOMETRY_SPACE_STYLE_ONLY) {
-    await fontLayoutRegression();
-    check('no uncaught browser exceptions', exceptions.length === 0, exceptions);
-    check('no browser console errors', consoleErrors.length === 0, consoleErrors);
+    await runGroup('font-layout', fontLayoutRegression);
     return;
   }
   if(process.env.GEOMETRY_PROJECTION_PLACEMENT_ONLY){
-    await projectionPlacementRegression();
-    await fontLayoutRegression();
-    check('no uncaught browser exceptions',exceptions.length===0,exceptions);
-    check('no browser console errors',consoleErrors.length===0,consoleErrors);
+    await runGroup('projection-placement', projectionPlacementRegression);
+    await runGroup('font-layout', fontLayoutRegression);
     return;
   }
-  await projectionLifecycleRegression();
+  await runGroup('projection-lifecycle', projectionLifecycleRegression);
+  await runGroup('space-height-library', async () => {
   await setup(['surface 101 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000']);
   const originalScene = await scene();
   await click('#btnSpaceModelTrial');
@@ -1291,15 +1289,21 @@ async function run() {
   check('one-face open space can be stored independently', (await models()).length === 2 && singleFaceStored?.input.uses.length === 1 && singleFaceStored.result.summary.closed === false, singleFaceStored?.input.uses);
   check('open-face creation also preserves the original placed faces', await scene() === sixFacesScene);
   await shot('single-existing-face-open-created');
-  await projectionPlacementRegression();
-  await fontLayoutRegression();
-  await spaceFlowRegression();
+  });
+  await runGroup('projection-placement', projectionPlacementRegression);
+  await runGroup('font-layout', fontLayoutRegression);
+  await runGroup('space-flow', spaceFlowRegression);
+}
 
+async function browserHealth() {
   check('no uncaught browser exceptions', exceptions.length === 0, exceptions);
   check('no browser console errors', consoleErrors.length === 0, consoleErrors);
 }
 
-run().catch(error => {
+run().then(async () => {
+  await runGroup('browser-health', browserHealth);
+  runFinished = true;
+}).catch(error => {
   check('complete browser flow', false, error.stack || error.message);
 }).finally(async () => {
   if (ws?.readyState === 1) {
@@ -1312,7 +1316,11 @@ run().catch(error => {
     if(chrome.exitCode===null)chrome.kill('SIGKILL');
     chrome.stdout.destroy();chrome.stderr.destroy();chrome.unref();
   }
-  fs.writeFileSync(path.join(RUN_DIR, 'result.json'), JSON.stringify({ url: URL, scope:SCOPE,passed, failed, exceptions, consoleErrors, coverage:'Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.',results }, null, 2));
-  console.log(`RESULT ${passed} passed / ${failed} failed; scope: ${SCOPE.mode}; omitted groups: ${SCOPE.omitted.join(',')}; artifacts: ${RUN_DIR}`);
+  const completion = census.report(runFinished);
+  if (!completion.completed) check('space group completeness', false, completion.completenessProblems);
+  const result = { url: URL, scope:SCOPE,...completion,passed, failed, exceptions, consoleErrors, coverage:'Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.',results };
+  fs.writeFileSync(path.join(RUN_DIR, 'result.json'), JSON.stringify(result, null, 2));
+  console.log('SPACE_RESULT '+JSON.stringify({schema:'geometry-space-result/1',scope:SCOPE,...completion,passed,failed,exceptions,consoleErrors}));
+  console.log(`RESULT ${passed} passed / ${failed} failed; completed: ${completion.completed}; scope: ${SCOPE.mode}; omitted groups: ${SCOPE.omitted.join(',')}; artifacts: ${RUN_DIR}`);
   process.exitCode = failed ? 1 : 0;
 });
