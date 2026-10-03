@@ -1,5 +1,7 @@
 # BACKLOG — current_geometry.c 工單庫
 
+> 2026-10-03 cloud 事實校正：PR52 已合併 `1805bb5`；PR55 合併至 PR53，PR53 的有限 D34/I42/R35 生成已合併 `68c4ac1`。其他 owner 的 PR63/#54 已合併 `c87be11`、PR64 已合併 `d40dee0`。以下較早工單內「未實作／未合併」保留當時歷史，不能作目前事實。A24 實體手機未驗。
+
 ## GEO-233 — 確認期間參數輸入保全與異槽生成 oracle（2026-10-03，開發中）
 
 - main `31ba2be` 的參數確認只設 busy，欄位仍可輸入；獨立審查及本 worker 真 Chromium 均重現 native 已確認27、回覆未到時輸入99、回覆後27覆蓋99且 pending=false。
@@ -9,9 +11,9 @@
 - 正常生成21/21，ASan/UBSan21/21；first-slot mutant兩個新tests出現12個Assertion failure、exit1，無編譯失敗或skip。未改正常核心或公理。
 - PR63已由其他owner合併main `c87be11`；本分支整合其format9、房間P79=72並保留料單P80=23。完整整合驗證與最終exact head待回填；GitHub Actions帳務阻塞不冒稱綠，未改billing。
 - 整合候選 `a5e9d6e` 完整非瀏覽器1349/0/1具名GDI略過、真Chromium1805/0/0skip且76段golden matched，獨立space183/0、ASan/UBSan56/56。但獨立審查另抓到 `loadLegacy` 遲到插入三個enabled控制；真瀏覽器已反證確認途中可輸入99。因此不能因全量綠就停止修復。
-- 補鎖遲到控制只增補既有Map，不重捕已disabled舊控制；成功／拒絕恢復新增控制的原狀，legacy handlers亦守busy。新增真延遲讀回與鍵盤反例，P76改72、完整預期1809；最終同head完整驗證／root審查待回填，未push或merge此修正。Actions included minutes已2000/2000、11月1日重置；未重跑相同CI、改billing／policy或付費。
+- 補鎖遲到控制只增補既有Map，不重捕已disabled舊控制；成功／拒絕恢復新增控制的原狀，legacy handlers亦守busy。修正 b064646 已push且獨立review無P0/P1/P2；同head完整native1349/0/1具名GDI、P76focused72/0/raw0、space183/0、完整無filterChromium1809/0/0skip且76段golden全等（首次CDP中斷及重跑紀錄另保留）。PR56尚未合併；發現最新main d40又增PR64，因此整合新main并驗GEO235測試基礎設施修正後再合併。Actions included minutes已2000/2000、11月1日重置；七CI jobs未執行，不冒称綠，未重跑相同CI、改billing／policy或付費。
 
-## GEO-232 — 原生角材完成尺寸料單（2026-10-03，#47 F4a，開發中）
+## GEO-234 — 原生角材完成尺寸料單（2026-10-03，#47 F4a，原 GEO-232 編號避重）
 
 - 自 main `1805bb585a74f4a5759367aab7ef8de016d96d4d` 隔離實作。只導出目前明選承載面的正式已放置角材；不計未生成規則／材料配置，也不混入空間模型快照。
 - 原生 references 提供來源定義指紋；每列保留 timber ID、surface ID、原生 A/B/L、dir/side、定位／跨距選擇器及工程尺寸來源。未提供的材料、加工與求值支撐身分明示未知，不自行猜定。
@@ -23,6 +25,13 @@
 - **再次獨立審查修正（P2）**：合法 placement0 原先被正號檢查誤拒，改按原生 uint32 含0，null／超界仍拒；追加 Node 與原生讀回。匯出預驗等待中若資料身分、載入序號、專案revision／context或範圍改變，或原生ok=false，均拒絕建立CSV。原生A長4000→B長4200的舊回覆問題已重現；修後真Chromium P79 23/23、0例外，其中六種延遲負例均零CSV Blob。Node9/9、references35/35通過（16MiB stack）。最新完整golden1727與完整非瀏覽器／CI待最終提交後回填。
 - head `1fd5956` 實測完整非瀏覽器1333 pass/0 fail/1具名GDI平台略過；完整無filter Chromium1727/0/0skip，75段golden matched，raw1為既有P38刻意probe、未預期0；CI37111777904七jobs success。CSV移除兩個source guard的隔離mutation17pass/6fail、exit1，四種延遲反例實際產生Blob而被抓。後續料單改P80避開PR63的房間P79；以上數字仍精確屬於1fd5956，整合後重新驗证。
 - 剩餘：自動跨距的確切支撐身分／局部面適配、空間模型快照導出及 F4b；保持 #47 open。不能以這個首批切片宣稱整張工單完成。
+
+## GEO-235 — 全量 CDP 非同步求值的 Promise 保全（2026-10-03）
+
+- b064 原全量首次在 P52 因 CDP `Promise was collected` 中断，687 個斷言通過、0斷言失敗但 completed:false；保留原log。無source改動的新World重跑完整1809/0/0skip、76段golden全等。整合其他執行者 PR64/main d40 的候選97be836又於P52同類中断，713/0且不完整，不能以重試碰運氣交付。
+- test-only `cdp_evaluation.js` 在頁面以每次求值獨立Map項強持有原expression返回值，收到CDP回應後finally釋放。原expression僅執行一次，協定失敗不重送可能已提交的native mutation；原錯誤不被cleanup次要失敗覆蓋，成功後cleanup失敗則仍報错。
+- 9個登記純Node回歸驗global lexical／statement、pending／並行持有、拒絕／syntax清理、協定失敗單次mutation、錯誤保存與更換document不污染。真Chromium強制GC正反例／独立review／最終同head完整CDP另回填PR，未完成不得宣稱。
+- 不改產品功能、公理、正常native核心、保存格式或UI；不新增可見入口／常駐說明。GEO-234料單改號避免與另一執行者已合併的GEO-232效能工單重號，原歷史證據仍按exact head保留。
 
 ## Issue #54 — 來源房間輪廓候選（2026-10-03，PR #63 待審）
 

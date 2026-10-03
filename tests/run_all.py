@@ -103,6 +103,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:cdp_evaluation': 'tests/test_cdp_evaluation.js',
     'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
 }

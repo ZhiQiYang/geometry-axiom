@@ -4,6 +4,7 @@ const fs = require('fs'), path = require('path'), os = require('os');
 const net = require('net');
 const floor = require('./cdp_floor.js');
 const cdp = require('./cdp_helpers.js');
+const {createRetainedEvaluator} = require('./cdp_evaluation.js');
 const {waitForExpectedNavigation} = require('./cdp_navigation.js');
 const SCOPE_FLAGS = ['GEOMETRY_ROOM_OUTLINE_ONLY','GEOMETRY_TIMBER_SCHEDULE_ONLY','GEOMETRY_ASSEMBLY_ONLY','GEOMETRY_PARAMETERS_ONLY','GEOMETRY_SELECTION_CURSOR_ONLY','GEOMETRY_UX_REFINEMENT_ONLY','GEOMETRY_UIUX_FIX_ONLY','GEOMETRY_MARQUEE_ONLY','GEOMETRY_PROJECT_AUDIT_ONLY','GEOMETRY_ENGINEERING_WORKFLOW_ONLY','GEOMETRY_GRID_SYSTEM_ONLY','GEOMETRY_INFINITE_FACE_ONLY','GEOMETRY_COMPOSITION_ONLY','GEOMETRY_UI_REVIEW_ONLY','GEOMETRY_REPAIR_ONLY','GEOMETRY_FLOW_REPAIR_ONLY','GEOMETRY_REFERENCE_ONLY','GEOMETRY_CDP_FROM_P31'];
 const ENGINEERING_MODIFIERS=['GEOMETRY_ENGINEERING_EXAMPLE_ONLY','GEOMETRY_ENGINEERING_NAVIGATION_ONLY','GEOMETRY_ENGINEERING_SUBGRID_ONLY'];
@@ -208,10 +209,7 @@ function send(method, params = {}, sessionId = null) {
     ws.send(JSON.stringify({id,method,params,...(sessionId?{sessionId}:{})}));
   });
 }
-async function eval_(expr) {
-  const r = await send("Runtime.evaluate", { expression: expr, returnByValue: true, awaitPromise: true });
-  return evaluationValue(r,expr);
-}
+const eval_ = createRetainedEvaluator(send, evaluationValue);
 async function waitForUI(expr, timeout=5000) {
   const end=Date.now()+timeout;
   while(Date.now()<end){if(await eval_(expr)===true)return;await sleep(50);}
