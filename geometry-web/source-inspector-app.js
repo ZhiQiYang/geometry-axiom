@@ -2,7 +2,8 @@
 (() => {
   'use strict';
   const S=window.SourceInspector,context=()=>ReferenceWorkspace.context();
-  const stamp=()=>JSON.stringify([ReferenceWorkspace.history?.frame,ReferenceWorkspace.getProjectState?.().revision]);
+  const stamp=()=>JSON.stringify([ReferenceWorkspace.history?.frame,ReferenceWorkspace.getProjectState?.().revision,
+    [...context().groups||[]].map(([bid,g])=>[bid,g.activePageId])]);
   const read=()=>apiRequest('source-inspect');
   async function readSnapshot(scene,signal){const r=await fetch('/sources/snapshot',{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:scene,signal});if(!r.ok)throw Error('來源快照尚未檢查；服務能力不足。');return r.json();}
   function exportSnapshotCSV(csv,snapshot){

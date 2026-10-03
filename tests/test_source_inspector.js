@@ -68,12 +68,15 @@ test('draft cancellation leaves the current workspace intact and source changes 
   await assert.rejects(late.navigate({kind:'timber',id:7}),/來源已變更/);assert.equal(late.fe.sel,null);
 });
 test('source app forwards native face targets to the common navigation entry and its cancellation guard',async()=>{
-  const calls=[],current=()=>true,g=S.index(locationData());
-  const sandbox={window:{SourceInspector:S},EngineeringAdapter:{navigateObject:(...args)=>calls.push(args)},ReferenceWorkspace:{context:()=>({})},
+  const calls=[],current=()=>true,g=S.index(locationData()),context={groups:new Map([[1,{activePageId:'a'}]])};let options;
+  const sandbox={window:{SourceInspector:{...S,mount:(host,value)=>{options=value;return {detail:{isConnected:true},cancel(){}};}}},EngineeringAdapter:{navigateObject:(...args)=>calls.push(args)},ReferenceWorkspace:{context:()=>context},
     oc:{selection:[],sel:null,edit:null},fe:{timberSelection:new Set()},document:{getElementById:()=>null},queueMicrotask(){},MutationObserver:function(){}};
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/source-inspector-app.js'),'utf8'),sandbox);
   for(const kind of ['timber','guide','grid','placement'])await sandbox.window.SourceInspectorApp.navigate({kind,id:'7'},g,{isCurrent:current});
   assert.equal(calls.length,4);for(const [target,options] of calls){assert.equal(target.id,7);assert.equal(options.sourceGraph,g);assert.equal(options.isCurrent,current);}
+  sandbox.oc.sel={kind:'boundary',id:1};sandbox.oc.selection=[sandbox.oc.sel];sandbox.ocFind=()=>({id:1});sandbox.document.getElementById=id=>id==='inspectorContent'?{}:null;
+  sandbox.window.SourceInspectorApp.sync();const pin=options.stamp();context.groups.get(1).activePageId='b';
+  assert.notEqual(options.stamp(),pin,'page context invalidates the initial source read before navigation owns it');
 });
 const node=(key,n=1)=>({key,definitionFingerprint:hash(n),valueFingerprint:hash(n),label:key});
 const edge=(from,to,relation='dimension',field='A',active=true)=>({from,to,relation,field,active});
