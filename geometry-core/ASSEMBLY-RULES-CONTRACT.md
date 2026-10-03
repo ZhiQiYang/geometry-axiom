@@ -43,8 +43,10 @@ stale edits reject the whole transaction. Missing native fingerprints retain the
 Legacy `put-binding` remains an upsert for existing callers; it is not the formal UI create/edit path.
 This adds no archive capability, high-water allocator or generation behavior; format 7 and free-ID wrap remain.
 
-The proposed generation contract and exact pending D34/I42/R35 additions are now in
-[ASSEMBLY-GENERATION-PROPOSAL.md](ASSEMBLY-GENERATION-PROPOSAL.md); they are not adopted axioms.
+The finite generation contract and D34/I42/R35 source additions are in
+[ASSEMBLY-GENERATION-PROPOSAL.md](ASSEMBLY-GENERATION-PROPOSAL.md) and draft PR #53.
+They are present on the PR branch, which has not been merged into main; final adoption and merge scope
+remain subject to the project owner's review. The preceding format 7 note describes authoring closeout.
 
 ## Scene
 
@@ -109,7 +111,9 @@ Draft allocation combines the native `newid` suggestion with all published and r
 
 The common project bar saves current edits. Import validates the complete archive, capability declarations and native scene before replacing the current context. Local draft changes and native confirmations share ContextHistory; undoing publication restores its draft. Async responses are scoped to the original project context and edit generation. Formats 1–6 retain their original meaning. The modeling executor rejects assembly scenes as unsupported, even when a `requires` line was stripped: authoring does not imply construction generation.
 
-## Deferred generator handoff — #25 (2026-10-02)
+## Historical generator handoff — #25 (2026-10-02)
+
+Superseded on 2026-10-03 by the user-approved [AR06 contract](ASSEMBLY-GENERATION-PROPOSAL.md) and [generation implementation](../geometry-web/docs/ASSEMBLY-GENERATION.md). The following records the earlier deferred decision.
 
 The user chose to finish repairs and closeout while retaining the previous product decisions and organizing future specifications. #25 remains deferred. This section is a review proposal, not an adopted axiom, implemented API, or authorization to generate timber. [公理層.md](../公理層.md) remains the behavior SSOT; [issue #25](https://github.com/ZhiQiYang/geometry-axiom/issues/25) tracks the outstanding decision.
 

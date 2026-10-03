@@ -1,3 +1,4 @@
+static bool asm_instance_load(World *,EngJson *,int);
 /* Authoring validates sources and local topology; it never generates timber. */
 static const AsmRuleVersion *assembly_rule(const World *w,uint32_t id,uint32_t version)
 {
@@ -210,6 +211,7 @@ static void assembly_dump(const World *w,FILE *out)
     if(!assembly_used(w))return;fputs("requires assembly-rule-authoring/1\nassembly begin\n",out);
     for(size_t i=0;i<w->assembly.rule_count;++i)asm_dump_record(out,"rule",w->assembly.rules[i].content);
     for(size_t i=0;i<w->assembly.binding_count;++i)asm_dump_record(out,"binding",w->assembly.bindings[i].content);
+    for(size_t i=0;i<w->assembly.instance_count;++i)asm_dump_record(out,"instance",w->assembly.instances[i].content);
     fputs("assembly end\n",out);
 }
 static bool apply_assembly_line(const char *path,int line_no,char **t,int count,World *w)
@@ -224,6 +226,7 @@ static bool apply_assembly_line(const char *path,int line_no,char **t,int count,
         if(strcmp(hash,g_assembly_record.hash))goto fail;EngJson j;
         if(eng_json_parse_n(&j,g_assembly_record.text,g_assembly_record.used)){
             if(!strcmp(g_assembly_record.kind,"rule")){uint32_t id,version;ok=eng_u32(&j,eng_json_member(&j,0,"id"),&id,true)&&eng_u32(&j,eng_json_member(&j,0,"version"),&version,true)&&!assembly_rule(w,id,version)&&asm_publish(w,&j,0,g_assembly_record.hash);}
+            else if(!strcmp(g_assembly_record.kind,"instance"))ok=asm_instance_load(w,&j,0);
             else {uint32_t id;ok=eng_u32(&j,eng_json_member(&j,0,"id"),&id,true)&&!assembly_binding(w,id)&&asm_put_binding(w,&j,0);}
         }
         eng_json_free(&j);g_assembly_record.active=false;if(ok)return true;goto fail;
@@ -234,7 +237,7 @@ static bool apply_assembly_line(const char *path,int line_no,char **t,int count,
         if(g_assembly_record.active)goto fail;memset(&g_assembly_record,0,sizeof g_assembly_record);EngJson j;int64_t length;
         ok=eng_json_parse_n(&j,(char*)decoded,n)&&eng_json_keys(&j,0,"kind,bytes,sha256","")&&
            eng_json_string(&j,eng_json_member(&j,0,"kind"),g_assembly_record.kind,sizeof g_assembly_record.kind)&&
-           (!strcmp(g_assembly_record.kind,"rule")||!strcmp(g_assembly_record.kind,"binding"))&&eng_json_integer(&j,eng_json_member(&j,0,"bytes"),&length)&&length>0&&length<ASM_RECORD_MAX&&
+           (!strcmp(g_assembly_record.kind,"rule")||!strcmp(g_assembly_record.kind,"binding")||!strcmp(g_assembly_record.kind,"instance"))&&eng_json_integer(&j,eng_json_member(&j,0,"bytes"),&length)&&length>0&&length<ASM_RECORD_MAX&&
            eng_json_string(&j,eng_json_member(&j,0,"sha256"),g_assembly_record.hash,sizeof g_assembly_record.hash)&&strlen(g_assembly_record.hash)==64;
         eng_json_free(&j);if(ok){g_assembly_record.active=true;g_assembly_record.expected=(size_t)length;return true;}
     }else if(!strcmp(t[1],"data")){

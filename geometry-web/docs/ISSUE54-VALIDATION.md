@@ -7,8 +7,8 @@
 - A：`45bcd70` 綁定來源與輪廓核對，原有矩形不代表完成。
 - B：`8689a51` 本地 PDF 原始向量／影像暗線連通區候選，保留 L 形與凹口。
 - C：`0cca3a7` 同一外環草稿的尺寸與頂點修正、核心／I8a 確認、復原／重做與 /9 核對收據；完整操作與契約見 [ROOM-OUTLINE.md](ROOM-OUTLINE.md)。後續補強：修改點列會清除舊邊號的人工入值標記，尺寸變形後僅保留此次核對邊的入值紀錄。
-- 開工檢查 PR #53，/8 未採入；交付前另檢查新 PR #56（角材尺寸清單）。兩者仍是草稿且未合併；本分支沒有覆寫／合併其工作。再次 fetch 預設分支仍為上述基準。
-- UI 減項：移除 reference-intro、calibration-instruction，來源核對按鈕與候選集中在同一輪廓區，不新增工作區。公理、核心 C 與正典閱讀器未改。
+- 開工 PR #53 與後續 #56 原為草稿。開發期間 #53 由其他工作合併至 main `68c4ac13ec963dae4c9776fb67dac7eff003be06`，本分支整合該已合併主分支，保留原組構生成與 /8 能力；/9 延伸保存核對收據。沒有覆寫 #56。
+- UI 減項：移除 reference-intro、calibration-instruction，來源核對按鈕與候選集中在同一輪廓區，不新增工作區。本 issue 的公理、核心 C 與正典閱讀器相對新 main 無修改；merge 帶入的變更完全來自已合併 #53。
 
 ## 已執行測試
 
@@ -58,7 +58,7 @@ node geometry-web/space_model_test.js
 | 復原／重做 | 六組來源／形狀均驗證核對收據及原面；I8a 還原完整依賴場景 |
 | 保存關閉／重開與接續投影 | 實際 Page.reload 後 importBytes；來源頁 3／校準／凹口一致；實際放置、用途設定、明填牆底 0／牆高 3000／厚度 100，再 preview／建立空間 |
 | 完成狀態與來源變更 | reconstructionState；來源 hash／頁／校準／取景／對位／輪廓指紋；Node race tests、P79 重新校準、過期 PDF、來源替換 |
-| 舊專案相容／引用驗證 | project-store.js；舊 /1–/7、/9、收據頁／面引用、來源雜湊、校準、非法版本；舊讀取器拒絕新版 |
+| 舊專案相容／引用驗證 | project-store.js；舊 /1–/8、/9、收據頁／面引用、來源雜湊、校準、非法版本；/9 保留 generation 能力且缺少能力拒絕；舊讀取器拒絕新版 |
 | 桌面／窄版與原流程 | P79 1440×1000 與 390×844 真點擊；完整 cdp／space suite，舊 DOM 與無限畫布保留 |
 
 新增測試使用獨立的預期內緣點列；L／凹口同時驗證缺口內外點，不只比面積、頂點數或外接框。PDF 夾具含 CropBox、CTM、原頁旋轉、文字、細尺寸線、虛線及門扇曲線；圖片有文字、細線及弧線。正式程式沒有夾具座標或檔名特判。
@@ -91,7 +91,7 @@ node geometry-web/space_model_test.js
 
 空間圖證明既有引擎可建立封閉邊界模型；該凹口案例預覽仍明示「材料牆未能建立」，沒有將厚牆產生或材料工程量宣稱為通過。本次未改既有厚牆生成器。
 
-交付 PR：[#63](https://github.com/ZhiQiYang/geometry-axiom/pull/63)。首次 [CI run](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37110800304) 已啟動，native／documents 已通過，其餘在排程／執行；此 run 尚未含更新後的 P79 golden，完整 canvas 可能因此拒絕。最後提交將觸發新的完整 CI，以 PR checks 中最後 head 的結果為準。尚未將 pending CI 寫成通過。
+交付 PR：[#63](https://github.com/ZhiQiYang/geometry-axiom/pull/63)。主分支整合後正在重跑完整測試；上述先前基準通過結果保留，不冒充新整合版本結果。最新 CI 連結以 PR checks 中最後 head 為準，未將 pending CI 寫成通過。
 
 ## 已知限制
 

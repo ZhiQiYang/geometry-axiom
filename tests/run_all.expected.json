@@ -16,6 +16,11 @@
    "count": 5,
    "unit": "test"
   },
+  "py:test_assembly_generation": {
+   "mode": "count",
+   "count": 18,
+   "unit": "test"
+  },
   "py:test_assembly_parameter_refs": {
    "mode": "count",
    "count": 3,
@@ -58,7 +63,7 @@
   },
   "py:test_engineering_model_compatibility": {
    "mode": "count",
-   "count": 22,
+   "count": 24,
    "unit": "test"
   },
   "py:test_engineering_model_sources": {
@@ -68,7 +73,7 @@
   },
   "py:test_engineering_transport": {
    "mode": "count",
-   "count": 5,
+   "count": 6,
    "unit": "test"
   },
   "py:test_feedback_store": {
@@ -153,7 +158,7 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 174,
+   "count": 177,
    "unit": "node test"
   },
   "node:model_viewer": {

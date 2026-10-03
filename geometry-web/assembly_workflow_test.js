@@ -78,6 +78,7 @@ module.exports=async({send,eval_:read,sleep,click,drag,waitForUI,exceptionCount}
  check('切專案後延遲預覽不污染新專案',await read(`!AssemblyWorkspace.isOpen&&ReferenceWorkspace.getAssemblyDrafts().length===1&&ReferenceWorkspace.getAssemblyDrafts()[0].data.name==='雙框交接'&&apiRequest('assembly-read').then(r=>r.state.rules.length===0)`));
  await require('./assembly_review_test.js')({send,read,sleep,click,ctl,fill,choose,publish,wait,key,check});
  await require('./assembly_id_test.js')({send,read,sleep,ctl,fill,choose,publish,wait,check});
+ await require('./assembly_generation_test.js')({send,read,sleep,ctl,fill,choose,publish,wait,check});
  check('沒有未處理瀏覽器例外',exceptionCount()===errors);
  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
 };

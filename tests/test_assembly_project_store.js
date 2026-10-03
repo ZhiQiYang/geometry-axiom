@@ -72,3 +72,18 @@ test('binding intent rejects unknown modes, malformed sources, wrong IDs and rul
  }
  const record=draft();record.binding_intent={mode:'create'};assert.throws(()=>P.validateAssemblyDraft(record));
 });
+
+const instanceDraft=()=>({id:'generation-draft',kind:'instance',base_ref:{id:1,fingerprint:'a'.repeat(64)},updated_at:'2026-10-03T00:00:00Z',data:{id:1,name:'未完成角材來源',bindingId:1,rule:{id:1,version:1,fingerprint:'b'.repeat(64)},surfaceId:0,members:[1,2,3].map(memberId=>({memberId,role:memberId===3?'secondary':'primary',guideId:0,dir:memberId===3?'+u':'+v',depthSide:'+n',ends:memberId===3?{start:{kind:'member',memberId:1},finish:{kind:'member',memberId:2}}:{start:{kind:'timber',id:0},finish:{kind:'timber',id:0}}}))}});
+test('generation draft archive preserves typed incomplete sources and requires format 8',async()=>{
+ const record=instanceDraft(),bytes=await pack('reset\n',{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:[record]}}),p=await P.unpack(bytes,zip);
+ assert.equal(p.manifest.format,P.GENERATION_FORMAT);assert.deepEqual(p.manifest.assemblyDrafts.records,[record]);assert.ok(p.manifest.requiredCapabilities.includes(P.GENERATION_CAPABILITY));assert.throws(()=>P.assertProjectCapabilities(p.manifest,[P.ASSEMBLY_CAPABILITY]));
+ for(const change of [m=>m.format=P.ASSEMBLY_FORMAT,m=>m.requiredCapabilities=m.requiredCapabilities.filter(c=>c!==P.GENERATION_CAPABILITY),m=>m.assemblyDrafts.records[0].base_ref.version=1])await assert.rejects(()=>P.unpack(rewrite(bytes,change),zip));
+});
+test('owned scene syntax infers generation capability even when requires is stripped',async()=>{
+ const p=await P.unpack(await pack('owned 1 1 timber 1 27 33 role primary\n'),zip);assert.equal(p.manifest.format,P.GENERATION_FORMAT);assert.ok(p.manifest.requiredCapabilities.includes(P.GENERATION_CAPABILITY));
+ const bytes=await pack('requires assembly-timber-generation/1\n');await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.format=P.ASSEMBLY_FORMAT),zip));
+});
+test('experimental format 8 without generation capability and malformed instance sources reject',async()=>{
+ const bytes=await pack();await assert.rejects(()=>P.unpack(rewrite(bytes,m=>m.format=P.GENERATION_FORMAT),zip));
+ for(const change of [r=>r.data.rule.fingerprint='x'.repeat(64),r=>r.data.members[0].ends.start.kind='member',r=>r.data.members[0].guideId=-1,r=>r.binding_intent={mode:'create'}]){const r=instanceDraft();change(r);assert.throws(()=>P.validateAssemblyDraft(r));}
+});
