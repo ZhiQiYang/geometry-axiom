@@ -6,7 +6,7 @@
 
 ## Readiness 與執行順序
 
-20:23追加的[九項優先缺陷／驗證收斂工作包](PROJECT-REVIEW-QUEUE-20261004.md)已去重建#78–86，排在下表一般新功能之前；前三項由parent品質執行者獨立重現，本worker未重跑或競寫產品。20:22自動辨識順序已納入[同頁A→B→C](PROJECT-REVIEW-QUEUE-20261004.md#auto-rooms)：#54先修單房間失敗→#87同頁多候選→#77共享基準的獨立Boundary。原13項工作包保留；PRIVATE案例只公開[REAL-PDF-01/02未驗索引](PROJECT-REVIEW-QUEUE-20261004.md#private-cases)，原檔留Library。
+20:23追加的[九項優先缺陷／驗證收斂工作包](PROJECT-REVIEW-QUEUE-20261004.md)已去重建#78–86，排在下表一般新功能之前；前三項已由parent品質owner在9ebf52a真native/Chromium獨立重現，root已分配assembly-quality/import/navigation三owner修復中，非待重現或fixed。新maina274反例未重跑，本worker只文件不競寫。20:22自動辨識順序已納入[同頁A→B→C](PROJECT-REVIEW-QUEUE-20261004.md#auto-rooms)：#54先修單房間失敗→#87同頁多候選→#77共享基準的獨立Boundary。原13項工作包保留；PRIVATE案例只公開[REAL-PDF-01/02未驗索引](PROJECT-REVIEW-QUEUE-20261004.md#private-cases)，原檔留Library。
 
 「規格 ready」表示可準備精確契約、正反例與驗收稿；「既有契約可接續」表示不需要新增幾何語意，仍須另取得產品實作指令；「需決策」只能準備 proposal。這輪產品碼全部不開工。下表未填結果不是 pass；本輪未重跑任何產品驗收。
 

@@ -27,7 +27,7 @@
 
 - 使用者 2026-10-03 19:47 指定 #45、#44、#46、#48、#49、#57–62、#24：整理最小切片、依賴、驗收、落點、並行與 readiness，加入佇列並提交 draft 文件 PR。初始基底 `0f3c1a6fdd88bbcce4484a256d45900bd1d92313`，後續文件基底 `9ebf52a1b6519356e9ff677e55b9cf167c47b70d`；不改公理或產品契約。
 - 集中入口：[可接續工作包](geometry-guide/CONTINUATION-WORK-PACKAGES-20261003.md)；[決策包](geometry-guide/CONTINUATION-DECISIONS-20261003.md) 的 Q31–Q36 全部待採納。規格 ready 不代表產品已授權／已實作／已驗收。
-- 20:23使用者專案檢視報告已完整讀取，去重建立#78–86：[九項優先缺陷／驗證收斂包](geometry-guide/PROJECT-REVIEW-QUEUE-20261004.md)，排在一般新功能之前。每項有報告counterexample、移除重複責任、完成oracle與未驗界線；前三項由parent品質執行者重現，本文件worker未重跑／修復。
+- 20:23使用者專案檢視報告已完整讀取，去重建立#78–86：[九項優先缺陷／驗證收斂包](geometry-guide/PROJECT-REVIEW-QUEUE-20261004.md)，排在一般新功能之前。20:54完整讀取品質獨立報告，前三項在9ebf52a真native/Chromium已reproduced，root分派assembly-quality/import/navigation三owner修復中，不再只是排隊；新a274尚未重跑這三反例、本worker未改產品。P2最小檔案/交易/typedlocator分工界線已備，禁止另派重做。
 - 已取消的 #47 雙向定位不排入本佇列；PR73 undo/redo 與 PR74 PDF snap 已由原 owner 交付並外部合併，本文件分支不改其產品碼／驗收。保存與共用 app.js 接線另指定一個整合 owner，不競寫。
 - **UI 減項（本輪）**：沒有新增產品 UI／常駐說明；未來 WP45 合併來源配置說明，WP61 沿用來源工作區合併手動／來源細分說明。各 slice 必須寫明具體移除／合併項，否則依 GEO-219 先進決策佇列。
 - 文件規格與正反例可並行；子網格產品 #59–61 先等 #58 精確採納；#46/48/49 新附件契約未採納；A24／SR24 真 iOS／OS 選檔與下載另列，不以390px冒充。#24 與總工單維持 open，使用 Refs。
