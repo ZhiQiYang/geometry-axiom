@@ -110,7 +110,7 @@ const deferred=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {
       for(const mutation of ['instanceFingerprint','memberId','ruleVersion','missingTimber','surface','staleHash']){
         await page.evaluate(mutation=>{apiRequest=async function(command,...args){const result=await __f1aOriginalApi(command,...args);if(command!=='source-inspect')return result;const data=structuredClone(result),entry=data.timberSupports.entries.find(e=>e.id===__f1aOwnedTimber),r=entry.start.relation;
           if(mutation==='missingTimber')r.source.id=999999;else if(mutation==='surface')entry.surface=0;else if(mutation==='staleHash')data.timberSupports.sourceFingerprint='a'.repeat(64);else r.owner[mutation]=mutation==='instanceFingerprint'?'a'.repeat(64):999999;return data;};},mutation);
-        await detail.locator('[data-source-refresh]').click();await detail.locator('[data-source-body]').filter({hasText:/無法核對|版本不一致/}).waitFor();
+        await detail.locator('[data-source-refresh]').click();await detail.locator('[data-source-body]').filter({hasText:/無法核對|版本不一致|來源不存在/}).waitFor();
         check('corrupt native support '+mutation+' refuses confirmed presentation and creates no Blob',await detail.locator('[data-source-support-status="exact"]').count()===0&&await page.evaluate(()=>__f1aBlobCount===0));
         assert.deepEqual(await state(),ownedBefore);
       }

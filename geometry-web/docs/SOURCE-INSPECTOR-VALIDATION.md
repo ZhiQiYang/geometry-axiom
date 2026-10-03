@@ -1,5 +1,15 @@
 # #44 F1a cloud 本機驗收
 
+## Cloud production integration（2026-10-03）
+
+整合基線 main `9e252ae`，保留已合併65／66。產品與完整驗證 head `a64024deedcf44e7fbdbf7465cf7c60005cd70f8`：46套非瀏覽器1462pass／0fail／1具名WindowsGDI略過；完整無filter Chromium1823／0／0skip／completedtrue、77段goldenmatched；獨立space183／0。原生直接production81／81及ASan／UBSan81／81、Node來源17／17，零sanitizer診斷；same-source20metadata負例、saved/live World分離、pending token、1MiB及容量external oracle均通過。raw exception1僅預期P38，未預期0。
+
+正式來源browser第一次已過24項後，missingTimber負例等待regex漏列實際拒絕訊息「來源不存在」而timeout，log保留 `/tmp/geometry67-source-browser-first-matcher-failure.log`；沒有不存在來源被接受。此次只補測試matcher，不改產品錯誤訊息／來源adapter／native。最終head與重跑完整結果以 [PR67](https://github.com/ZhiQiYang/geometry-axiom/pull/67) 精確紀錄為準。產品修復、端點契約及cleanup界線見 [SOURCE-INSPECTOR-CONTRACT.md](SOURCE-INSPECTOR-CONTRACT.md)。
+
+整合證據 `/tmp/geometry67-integration-review.md`；獨立native `/tmp/pr67-final-core-review/packet.md`、cleanup `/tmp/pr67-cleanup-independent`、adapter `/tmp/source-support-review/review-packet.md`。獨立審查指出partial-write暫存檔leak，實際檔案2／2回歸通過、原7dc9同test1assertfail；JSdb8 baseline9pass／8fail，wrong-live World與漏owner欄位mutants均assertion-red。下面保留原作者歷史驗證，不代表最新整合head。
+
+## 原切片作者歷史驗證
+
 產品程式 head：`e30d4a2`；整合基線 main `693a1c8`（已含 PR56、PR63 format9、PR64）。未改 `app.js`、`reference-workspace.js`、`project-store.js`、原生共用模組或公理。實作／接線契約見 [SOURCE-INSPECTOR-CONTRACT.md](SOURCE-INSPECTOR-CONTRACT.md)。
 
 同版 runtime：`8d8701720d1282e6a1723132ed922787f6e378fe8ccc8086dd1591c81c2f6b23`，`runtime_version.py --probe 18892` 回 `fresh:true`。原生使用 `tests/binaries.py` 登記且指紋相符的 Linux GCC C11/O2 bridge/model-base；16 MiB stack 與既有 Windows build 的 stack 設定一致。Chromium 151／Playwright，隔離 TEMP feedback／browser profile／三個獨立測試 World。
