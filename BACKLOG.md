@@ -1,6 +1,6 @@
 # BACKLOG — current_geometry.c 工單庫
 
-## Issue #54 — 來源房間輪廓候選（2026-10-03，開發中）
+## Issue #54 — 來源房間輪廓候選（2026-10-03，PR #63 待審）
 
 - 基準：main `1805bb585a74f4a5759367aab7ef8de016d96d4d`；隔離分支 `codex/issue-54-room-outline`。已檢查進行中 PR #53（組構生成，未合併），不採入其公理／格式 /8 變更。
 - 順序：A 完成狀態綁定實際來源頁、校準／變換、核心輪廓；B 點選目標的 PDF 原始向量優先、影像本地半自動候選；C 既有面工作區修正、整數入值核對、核心交易、歷史與保存重開。
@@ -9,6 +9,7 @@
 - 方法評估：vendor PDF.js 為 6.3.289，`getOperatorList` 的 `constructPath` 使用 DrawOPS（非舊版座標格式）；重用 CTM＋原始頁旋轉後 viewport 的直線／填色障礙。向量不表示牆語意，需人工選線寬門檻及核對。影像取長正交暗線作障礙，再取點所在連通區；不閉合、觸及取景邊界、孔／多輪廓與忽略的斜／曲線均明示，不偷偷封門或轉矩形。
 - UI 減項（GEO-219）：既有「描外環」步驟容納「選房間／人工描繪」；移除重複 reference-intro 與 calibration-instruction，合併底圖核對說明至單一輪廓區；原 `refConfirmChecked` 併入這裡的實際來源核對。候選頂點／邊尺寸使用同一面內草稿層，不新增工作區。常駐說明限三塊；狀態、錯誤及草稿才出現的核對內容另計。
 - 開工基線：61 個來源／保存／投影 Node 測試通過；38 個服務／回報 Python 測試通過。完整瀏覽器與空間測試使用另編 `%TEMP%/geometry-tests/issue54/` 的橋接器與隔離服務；不終止使用者持有的 bridge.exe。後續結果與未驗項目見交付證據文件。
+- 交付：[PR #63](https://github.com/ZhiQiYang/geometry-axiom/pull/63)；A／B／C 已實作。完整非瀏覽器 1,303 通過、0 失敗、1 個具名平台略過；完整空間瀏覽器 183 通過；完整 CDP 1,756 通過、0 失敗、0 略過群組，僅新增 P79，原 74 段數量全部保留。[驗收證據](geometry-web/docs/ISSUE54-VALIDATION.md) 含公開夾具／画面／實測比較。CI 最新 head 未完成前仍為 draft；未合併、關閉 issue 或部署。
 
 > 產生日期：2026-09-12，對象 `current_geometry.c` @ 4,567 行。
 > 估時以「熟悉此 codebase 的工程師」為準（30 分鐘～3 小時）。

@@ -100,10 +100,10 @@ const RoomOutlineWorkspace=(()=>{
     }catch(e){if(ticket===generation&&sourceCurrent(s)){draft=null;notice('未取得候選：'+e.message);if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));}}
     finally {if(ticket===generation){acquiring=null;W.present();}}
   }
-  function editPoints(points) {
+  function editPoints(points,dimensions=[]) {
     W.assertEditable();if(!current(draft))throw Error('候選已過期，請重新取得。');
     if(points.length<4||points.length>256||!points.every(p=>p.length===2&&p.every(n=>Number.isSafeInteger(n)&&Math.abs(n)<=1e8))||!R.orthogonal(points))throw Error('頂點須為整數 mm、至少四點且每邊正交，不能偷偷修整斜邊。');
-    fe.draft={...fe.draft,pts:points.map(p=>[...p])};draft.reviewed=false;fe.draftPreview=null;feSyncDraftMirror();refresh();
+    fe.draft={...fe.draft,pts:points.map(p=>[...p])};draft.dimensions=dimensions;draft.reviewed=false;fe.draftPreview=null;feSyncDraftMirror();refresh();
   }
   function paneHTML(bid) {
     const p=W.active(bid);if(!p)return '';
@@ -128,7 +128,7 @@ const RoomOutlineWorkspace=(()=>{
     pane.querySelector('#refRoomApplyVertices')?.addEventListener('click',safe(()=>editPoints(pane.querySelector('#refRoomVertices').value.trim().split(/\n/).map(line=>line.trim().split(',').map(Number)))));
     pane.querySelector('#refRoomSetLength')?.addEventListener('click',safe(()=>{
       const edge=Number(pane.querySelector('#refRoomEdge').value),length=Number(pane.querySelector('#refRoomLength').value);
-      const points=R.resizeEdge(fe.draft.pts,edge,length);draft.dimensions=draft.dimensions.filter(d=>d.edge!==edge).concat({edge,length,kind:'user-confirmed-mm'});editPoints(points);
+      const points=R.resizeEdge(fe.draft.pts,edge,length);editPoints(points,[{edge,length,kind:'user-confirmed-mm'}]);
     }));
     pane.querySelector('#refRoomReviewed')?.addEventListener('change',safe(()=>{W.assertEditable();if(!current(draft))throw Error('候選已過期。');draft.reviewed=pane.querySelector('#refRoomReviewed').checked;pane.querySelector('#refRoomConfirm').disabled=!draft.reviewed;document.getElementById('faceDraftFinish').disabled=!draft.reviewed;}));
     pane.querySelector('#refRoomConfirm')?.addEventListener('click',safe(()=>feDraftTryClose()));

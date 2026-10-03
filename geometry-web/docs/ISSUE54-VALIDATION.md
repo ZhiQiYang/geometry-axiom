@@ -6,7 +6,7 @@
 
 - A：`45bcd70` 綁定來源與輪廓核對，原有矩形不代表完成。
 - B：`8689a51` 本地 PDF 原始向量／影像暗線連通區候選，保留 L 形與凹口。
-- C：同一外環草稿的尺寸與頂點修正、核心／I8a 確認、復原／重做與 /9 核對收據；完整操作與契約見 [ROOM-OUTLINE.md](ROOM-OUTLINE.md)。
+- C：`0cca3a7` 同一外環草稿的尺寸與頂點修正、核心／I8a 確認、復原／重做與 /9 核對收據；完整操作與契約見 [ROOM-OUTLINE.md](ROOM-OUTLINE.md)。後續補強：修改點列會清除舊邊號的人工入值標記，尺寸變形後僅保留此次核對邊的入值紀錄。
 - 開工檢查 PR #53，/8 未採入；交付前另檢查新 PR #56（角材尺寸清單）。兩者仍是草稿且未合併；本分支沒有覆寫／合併其工作。再次 fetch 預設分支仍為上述基準。
 - UI 減項：移除 reference-intro、calibration-instruction，來源核對按鈕與候選集中在同一輪廓區，不新增工作區。公理、核心 C 與正典閱讀器未改。
 
@@ -20,14 +20,31 @@
 | 完整非瀏覽器回歸 | `tests/run_all.py`，使用獨立 `%TEMP%/geometry-tests/issue54/` 的 binaries registry，先 `--build --update-expected` 再完整無篩選重跑 | 38 suites；1,303 通過、0 失敗；1 個 Windows `/dev/full` 具名允許略過；exit 0 |
 | 完整空間瀏覽器回歸 | `GEOMETRY_TEST_URL=http://localhost:18855/`、隔離 feedback 與 Chrome profile，`node geometry-web/space_model_test.js`，未設 scope filter | 183 通過、0 失敗；0 uncaught exceptions／console errors；此預設 suite 不含選配 timber-material／timber-source-guards |
 | 新流程最後 focused browser | 同一隔離服務，`GEOMETRY_ROOM_OUTLINE_ONLY=1 node geometry-web/cdp_test.js` | 72 通過、0 失敗；0 uncaught exceptions；不是完整回歸 |
-| 最後完整 `cdp_test.js` | 另一隔離服務 18856、獨立 feedback／Chrome 9356，不設 scope filter | 執行中；完成前不宣稱通過 |
+| 完整 `cdp_test.js`（`0cca3a7`） | 另一隔離服務 18856、獨立 feedback／Chrome 9356，不設 scope filter，`GEOMETRY_CDP_UPDATE_GOLDEN=1` | 1,756 通過、0 失敗、0 略過群組；75 段。逐段 diff 僅新增 P79=72、total +72，既有 74 段逐一不變 |
 
 本機原 `bridge.exe` 被使用者服務鎖定，未終止該服務。另編獨立 adapter／bridge；原生指紋及啟動煙霧測試已驗證。Windows 安全設定未更動。使用者提供的封鎖通知檔名為 `axiom-model-base.exe`；本次服務與測試使用獨立 `issue54/model-base.exe`，上列完整結果未出現因封鎖而未執行的測試。
+
+完整 CDP 的 `uncaughtBrowserExceptions=1` 是既有 P38 回報測試明確注入並期待的 `Error: fb-auto-probe`，log 標為 `[EXPECTED EXCEPTION]`；没有非預期例外。P79 前後例外數不變。沒有把刻意注入的錯誤隱藏成 0。
 
 完整非瀏覽器重跑的實際入口（PowerShell）：
 
 ```powershell
 python -c "import sys,pathlib,tempfile;sys.path.insert(0,'tests');import binaries;binaries.OUT_DIR=pathlib.Path(tempfile.gettempdir())/'geometry-tests'/'issue54';import run_all;sys.exit(run_all.main([]))"
+```
+
+瀏覽器重跑（先以同一 feedback 目錄與原生 adapter 啟動隔離服務；`space_model_test.js` 是另一支完整流程，不能省略）：
+
+```powershell
+$env:GEOMETRY_BRIDGE = "$env:TEMP/geometry-tests/issue54/bridge.exe"
+$env:GEOMETRY_MODEL_BASE = "$env:TEMP/geometry-tests/issue54/model-base.exe"
+$env:GEOMETRY_FEEDBACK_DIR = "$env:TEMP/geometry-tests/issue54/feedback-full"
+python geometry-web/serve.py 18856
+# 另一個終端，設定相同 GEOMETRY_FEEDBACK_DIR：
+$env:GEOMETRY_TEST_URL = 'http://localhost:18856/'
+$env:GEOMETRY_CDP_PORT = '9356'
+node geometry-web/cdp_test.js
+$env:GEOMETRY_CDP_PORT = '9357'
+node geometry-web/space_model_test.js
 ```
 
 ## 原始驗收與證據位置
@@ -74,7 +91,7 @@ python -c "import sys,pathlib,tempfile;sys.path.insert(0,'tests');import binarie
 
 空間圖證明既有引擎可建立封閉邊界模型；該凹口案例預覽仍明示「材料牆未能建立」，沒有將厚牆產生或材料工程量宣稱為通過。本次未改既有厚牆生成器。
 
-完整瀏覽器驗收結束前保持 draft PR。CI 狀態與連結在提交後補入。
+交付 PR：[#63](https://github.com/ZhiQiYang/geometry-axiom/pull/63)。首次 [CI run](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37110800304) 已啟動，native／documents 已通過，其餘在排程／執行；此 run 尚未含更新後的 P79 golden，完整 canvas 可能因此拒絕。最後提交將觸發新的完整 CI，以 PR checks 中最後 head 的結果為準。尚未將 pending CI 寫成通過。
 
 ## 已知限制
 

@@ -130,7 +130,7 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   await fill('#refRoomLength',1960);await ctl('#refRoomSetLength');
   await fill('#refRoomVertices','320,320\n2280,320\n2280,1480\n320,1480');await ctl('#refRoomApplyVertices');
   await fill('#refRoomVertices',notch.map(v=>v.join(',')).join('\n'));await ctl('#refRoomApplyVertices');
-  check('local point insertion restores real notch concavity and invalidates review',await read(`!RoomOutlineWorkspace.snapshot().reviewed&&RoomOutlineWorkspace.snapshot().points.length===8&&!RoomOutline.contains(RoomOutlineWorkspace.snapshot().points,[1500,1300])`));
+  check('local point insertion restores real notch concavity and clears old dimension evidence/review',await read(`!RoomOutlineWorkspace.snapshot().reviewed&&RoomOutlineWorkspace.snapshot().dimensions.length===0&&RoomOutlineWorkspace.snapshot().points.length===8&&!RoomOutline.contains(RoomOutlineWorkspace.snapshot().points,[1500,1300])`));
   // Self-crossing orthogonal candidate is left to native transaction validation.
   await fill('#refRoomVertices','320,320\n2280,320\n2280,1200\n1000,1200\n1000,200\n500,200\n500,1480\n320,1480');await ctl('#refRoomApplyVertices');
   await ctl('#refRoomReviewed');await ctl('#refRoomConfirm');await until(`!oc.busy&&!RoomOutlineWorkspace.snapshot()?.committing`);
