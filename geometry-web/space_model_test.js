@@ -15,6 +15,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { installConfirmationDumpGate } = require('./cdp_confirmation_gate.js');
+const { createRetainedEvaluator } = require('./cdp_evaluation.js');
 function spaceRunConfiguration(env = process.env) {
   if(!env.GEOMETRY_TEST_URL)throw Error('GEOMETRY_TEST_URL is required; use an explicitly isolated test service. No browser or reset was started.');
   const target=new globalThis.URL(env.GEOMETRY_TEST_URL);
@@ -67,11 +68,10 @@ function send(method, params = {}) {
     ws.send(JSON.stringify({ id, method, params }));
   });
 }
-async function evaluate(expression) {
-  const result = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
+const evaluate = createRetainedEvaluator(send, result => {
   if (result.exceptionDetails) throw Error(result.exceptionDetails.exception?.description || result.exceptionDetails.text);
   return result.result?.value;
-}
+});
 async function wait(expression, label, timeout = 30000) {
   const end = Date.now() + timeout;
   while (Date.now() < end) {
