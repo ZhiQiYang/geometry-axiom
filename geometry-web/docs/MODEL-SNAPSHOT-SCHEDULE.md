@@ -21,12 +21,20 @@ World、同一個 canonical `sourceFingerprint`，並帶該 World 的原生截�
 `sourceFingerprint` 是不同領域。合法 `input.base_scene` 可保留註解而 canonical scene
 不保留；不能要求 raw input bytes 的 SHA 與上述任一值相等。
 先走既有 `GeometryProject.validateSpaceModel`，再核對同次 native snapshot 資料。
+有角材的模型另以同一條唯讀 snapshot 路由檢查已保存套件的
+`result.timbers.definitions.base_scene`；它與 input candidate 的 **native World**
+fingerprint 必須相等。套件 canonical scene 的原字節 SHA 另外只與既有
+`result.source_sha256` 比較；不跨上述領域。這避免輸入場景被換成 29 mm，
+卻仍掛著 27 mm 的已生成模型。live 前後讀取包住兩個 candidate，沒有新的 parser／route。
 
 ## 派生與計量邊界
 
 前端只把 typed 明選根按原生 surface 分組，交給既有、含支撐核對的
 `TimberSchedule.derive`；不從 mesh、selector 字串、圖像或座標猜尺寸／端面。
 零號 timber 與 placement 合法，重複、缺失、未放置、非精確或錯型根全部拒絕，不能補零。
+既有 plan 模型的每支角材必須屬於保存的 `input.placement_id`。
+工程尺寸來源核對同次 native typed edge 的對象、active／override 與 effective 值，
+缺失、重複或不同欄位不能退化成直接尺寸；不解析 selector／path 或錯誤文字。
 每列保留原生 A/B/L、dir/side、surface、來源與支撐；未知材料、加工及身分延續仍明示未知。
 
 模型紀錄 UUID、範本、名稱、尺寸和整個 World fingerprint 都不能證明實物是否相同。
