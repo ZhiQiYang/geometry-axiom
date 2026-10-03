@@ -815,14 +815,17 @@ async function main() {
   await sleep(900);
   await clickControl('#btnZoom');
   const freeCard = await eval_(`(()=>{
-    const c = document.querySelector('.ocard[data-id="${ids6}"]');
+    const c = document.querySelector('.ocard[data-kind="boundary"][data-id="${ids6}"]');
     if (!c) return null;
     const r = c.getBoundingClientRect();
     return {x: r.left + r.width/2, y: r.top + r.height/2};
   })()`);
   if (freeCard) {
-    await dblclick(freeCard.x, freeCard.y);
-    await sleep(900);
+    /* Compact cards hide their entry button. Expand the target, then open it
+       without relying on the two-click timing gate already tested above. */
+    await eval_(`centerOnNode('boundary',${ids6})`);
+    await clickControl(`.ocard[data-kind="boundary"][data-id="${ids6}"] .card-enter`);
+    await waitForUI(`oc.focus?.t==='face' && oc.focus.id===${ids6} && oc.edit?.bid===${ids6} && !$('objectWorkspace').hidden && document.querySelector('#faceInspectorContent #placeSubmit')?.dataset.bid==='${ids6}'`,10000);
     const gDis = await eval_(
       `document.querySelector('[data-face-tool="guide"]').disabled`);
     console.log("guide 工具 disabled（游離）:",explicitVerdict(gDis ? "✓" : "✗"));
@@ -997,6 +1000,15 @@ async function main() {
         }
     }
     if (!hit) return {err:"guide 在三視圖都掃不到"};
+    /* Hover only runs on a visible projection; open the user's existing tab
+       before converting coordinates and dispatching the pointer event. */
+    const previousTab = document.querySelector("#spaceStageTabs [data-ss-tab].active");
+    document.querySelector('#spaceStageTabs [data-ss-tab="proj"]').click();
+    await window.__cdpSettleUI(0);
+    const box = svg.getBoundingClientRect();
+    if (svg.closest("[hidden]") || !box.width || !box.height) {
+      previousTab?.click(); return {err:"三視圖分頁尚未顯示"};
+    }
     const L = views[hit.v];
     const pt = svg.createSVGPoint();
     pt.x = hit.x + L.tx; pt.y = hit.y + L.ty;
@@ -1006,6 +1018,7 @@ async function main() {
     await window.__cdpSettleUI(600);
     const ov = svg.querySelector("g:last-child").childElementCount;
     const hov = document.getElementById("hovertxt").textContent;
+    previousTab?.click();
     return {hit, ov, hov};
   })()`);
   console.log("proj hover:", JSON.stringify(projR),explicitVerdict(projR.ov > 0 ? "✓ pick/hover 有回應" : "✗"));
