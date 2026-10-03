@@ -2,6 +2,14 @@
 
 > 2026-10-03 cloud 事實校正：PR52 已合併 `1805bb5`；PR55 合併至 PR53，PR53 的有限 D34/I42/R35 生成已合併 `68c4ac1`。其他 owner 的 PR63/#54 已合併 `c87be11`、PR64 已合併 `d40dee0`。以下較早工單內「未實作／未合併」保留當時歷史，不能作目前事實。A24 實體手機未驗。
 
+## GEO-239 — 現有材料配置的固定規則來源守門（2026-10-03，#45 既有流程修復）
+
+- 已重現規則同 ID／版本／槽位、不同 joint 內容刪除重建後，旧 asmBind 與 published-binding edit 可合法提交不同規則語義；配置自身 value／fingerprint 不足以辨識 underlying rule 改變。
+- 建立／編輯在 flush／配號前核對顯示來源與 fresh native rule fingerprint，沿用既有 base_ref 保存 fixed rule 身分；preview 再驗 native source、rule tuple 與 update intent。失敗不能藉第二次同一舊 UI 操作採用已刷新的快取，只有明確重開／換版對應才能更新來源。
+- Legacy null 草稿保留原生驗證；明確 mapping 更新 base_ref 而保留 typed slot sources 與 create/edit 意圖，metadata-only pin 變更仍經原有 history 保存。
+- 減項：合併進現有 asmBind／材料配置編輯／preview，沒有新 context 入口、操作 registry、工作區、保存格式、公理或原生生成能力；不得稱 #45 F2a 完成。
+- 以真 native 同 tuple／不同語義反例、Node assert-red baseline、正式 Chromium 控制／保存重開／零 preview POST負例與完整整合測試驗證，精確結果另附 PR。A24、F2a 新入口／網格附件契約仍分開追蹤。
+
 ## GEO-237 — Runtime 公開靜態來源閉包與精確位元版本（2026-10-03）
 
 - 獨立審查證實既有205個vendor中195個未參與版本，公開documents／正典reader／examples仍live讀；同version可提供不同bytes且fresh仍true。
