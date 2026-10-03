@@ -538,12 +538,14 @@ window.ParameterUI = (() => {
   }
   function lockConfirmation(s) {
     const root = $('parameterEditor');
-    s.confirmRoot = root;
-    s.confirmControls = new Map();
-    if (!root) return;
+    if (!s.confirmControls) {
+      s.confirmRoot = root;
+      s.confirmControls = new Map();
+    }
+    if (!root || root !== s.confirmRoot) return;
     root.setAttribute('aria-busy', 'true');
     for (const control of root.querySelectorAll('button,input,select,textarea')) {
-      s.confirmControls.set(control, control.disabled);
+      if (!s.confirmControls.has(control)) s.confirmControls.set(control, control.disabled);
       control.disabled = true;
     }
   }
@@ -845,8 +847,9 @@ window.ParameterUI = (() => {
   async function loadLegacy(s) {
     const r=await apiRequest('references');if(!current(s)||!$('paramLegacy')||!r.ok)return;
     $('paramLegacy').innerHTML=`<label>既有具名規格<select id="paramSpec"><option value="">選擇原規格</option>${r.specs.map(x=>`<option value="${esc(x.name)}">${esc(x.name)} · ${x.value} mm</option>`).join('')}</select></label><label>數值 mm<input id="paramSpecValue" type="number" step="1"></label><button class="btn" id="paramSpecSave">預覽更新原規格</button>`;
-    $('paramSpec').onchange=e=>{$('paramSpecValue').value=r.specs.find(x=>x.name===e.target.value)?.value??'';};
-    $('paramSpecSave').onclick=async()=>{const name=$('paramSpec').value,raw=$('paramSpecValue').value;if(!name||!/^[-+]?\d+$/.test(raw)){status('請選規格並輸入整數 mm。',true);return;}if(s.changed){status('請先完成或捨棄參數草稿，再更新原規格。',true);return;}if(await emitLine(`spec ${name} ${raw}`)){state=null;await refreshActive();}};
+    if (s.busy) lockConfirmation(s);
+    $('paramSpec').onchange=e=>{if(s.busy)return;$('paramSpecValue').value=r.specs.find(x=>x.name===e.target.value)?.value??'';};
+    $('paramSpecSave').onclick=async()=>{if(s.busy)return;const name=$('paramSpec').value,raw=$('paramSpecValue').value;if(!name||!/^[-+]?\d+$/.test(raw)){status('請選規格並輸入整數 mm。',true);return;}if(s.changed){status('請先完成或捨棄參數草稿，再更新原規格。',true);return;}if(await emitLine(`spec ${name} ${raw}`)){state=null;await refreshActive();}};
   }
   async function openLegacy() {
     if(!mayLeave())return;

@@ -2,7 +2,7 @@
 
 ## 參數確認期間輸入保全（GEO-233）
 
-`#parameterEditor[aria-busy="true"]` 代表正式確認尚未完成；其 input/select/textarea/button 同步 disabled，不能先接受新輸入再被舊回覆清掉。成功或原生拒絕後恢復這次捕捉的控制，拒絕時 `#paramConfirm` 仍停用、草稿保留，編輯後可重新試算。`parameter_confirmation_test.js` 由完整 P76 呼叫，以真鍵盤、延遲成功回覆與真過期 token 驗證六項。
+`#parameterEditor[aria-busy="true"]` 代表正式確認尚未完成；其 input/select/textarea/button 同步 disabled，包含 `loadLegacy` 遲到後插入的既有具名規格控制，不能先接受新輸入再被舊回覆清掉。補鎖不重置已捕捉的原 disabled 狀態。成功或原生拒絕後恢復這次捕捉的控制，拒絕時 `#paramConfirm` 仍停用、草稿保留，編輯後可重新試算。`parameter_confirmation_test.js` 由完整 P76 呼叫，以真鍵盤、延遲具名規格／成功回覆與真過期 token 驗證十項。
 
 ## 原生角材料單（#47 F4a）
 

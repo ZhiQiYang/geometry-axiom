@@ -8,6 +8,8 @@
 - 生成 production 目前正確；舊19項在「每個 member 讀第一材料槽」mutant仍全綠。新增獨立整數 oracle：主支27×33，副支40×50，逐 member 精確截面／料長／原點／軸；另驗槽位與 member 重排、稀疏ID、僅副支typed參數更新、穩定mapping與fresh replay。
 - 正常生成21/21，ASan/UBSan21/21；first-slot mutant兩個新tests出現12個Assertion failure、exit1，無編譯失敗或skip。未改正常核心或公理。
 - PR63已由其他owner合併main `c87be11`；本分支整合其format9、房間P79=72並保留料單P80=23。完整整合驗證與最終exact head待回填；GitHub Actions帳務阻塞不冒稱綠，未改billing。
+- 整合候選 `a5e9d6e` 完整非瀏覽器1349/0/1具名GDI略過、真Chromium1805/0/0skip且76段golden matched，獨立space183/0、ASan/UBSan56/56。但獨立審查另抓到 `loadLegacy` 遲到插入三個enabled控制；真瀏覽器已反證確認途中可輸入99。因此不能因全量綠就停止修復。
+- 補鎖遲到控制只增補既有Map，不重捕已disabled舊控制；成功／拒絕恢復新增控制的原狀，legacy handlers亦守busy。新增真延遲讀回與鍵盤反例，P76改72、完整預期1809；最終同head完整驗證／root審查待回填，未push或merge此修正。Actions included minutes已2000/2000、11月1日重置；未重跑相同CI、改billing／policy或付費。
 
 ## GEO-232 — 原生角材完成尺寸料單（2026-10-03，#47 F4a，開發中）
 
