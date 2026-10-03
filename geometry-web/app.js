@@ -5265,11 +5265,11 @@ function feDraftPreviewMove(pt, defer = false) {
   Object.assign(fe.draftPreview,{pdfTarget:sample.target,pdfPage:sample.page,pdfBasis:sample.basis});
   const cur=fe.draftPreview.cur;
   const status=sample.target?`PDF ${sample.target.kind==='endpoint'?'端點':'閉合路徑交點'} · 第 ${sample.page.page} 頁（取整 mm）`:sample.status==='loading'?'PDF 端點讀取中':sample.status==='manual'?'無可用原始直線端點；人工描繪':sample.status==='unavailable'?'PDF 端點無法取得；人工描繪':'';
-  $("faceCoordinateReadout").textContent=`u ${cur[0]} v ${cur[1]} mm${status?' · '+status:''}`;
+  const readout=`u ${cur[0]} v ${cur[1]} mm${status?' · '+status:''}`;
   fe.draft = Object.assign({}, fe.draft, { cur: fe.draftPreview.cur });
   feSyncDraftMirror();
-  if (defer) feSchedulePaint({draft:true});
-  else { renderFeDraftLayer(); feLenShow(); }
+  if (defer) feSchedulePaint({draft:true,readout});
+  else { $("faceCoordinateReadout").textContent=readout; renderFeDraftLayer(); feLenShow(); }
 }
 
 async function feDown(pt, ev) {
@@ -9969,8 +9969,8 @@ fevp.addEventListener("pointermove", e => {
   }
   const pt = fe.tool === "redraw" ? fePoint(e) : feSnap(fePoint(e));
   /* B8:讀數 `u 1850 v 600 mm` */
-  feMove(pt, e);
   feSchedulePaint({readout:`u ${Math.round(pt.x)} v ${Math.round(pt.y)} mm`});
+  feMove(pt, e);
 });
 fevp.addEventListener("pointerup", async e => {
   facePaintScheduler.flush();

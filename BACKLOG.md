@@ -9,7 +9,7 @@
 - **本次拿掉／合併（GEO-219）**：合併同幀的重繪、座標及草稿提示，移除每次 pointermove 的全域通知與未變游標 DOM 重寫，去除重複 PDF 渲染及重疊格掃描；沒有新增可見 UI 入口或常駐說明。
 - 初步固定 120 事件批次：wheel 與房間框選從 120 次全畫布重繪降為 1 次，底圖節點保留，native dump 逐字相同。高重疊 11774 障礙的純 region 合成案例三次中位數 5531→9.9 ms，結果逐字相同；不得把它當作一般圖紙或日常操作的倍率。
 - 已整合 main `0f3c1a6`，保留新校準／選房間入口、取消辨識及失敗清理。新增 13 項排程／Worker 故障與取消測試、登記全庫 runner，相關 84 項再次通過。完整非瀏覽器 49 suites：1543 通過、0 失敗、1 項具名 Windows GDI 略過；該 GDI 另以同版 Windows fresh harness 補驗 1/1。Linux 來源副本 887 檔逐位元核對相同（工單紀錄除外），expected 由完整 census 產生，只增加 7+6 項新測試。
-- 使用者要求先交付目前成果：真 Chromium 完整回歸尚未完成，不宣稱全量瀏覽器綠燈。先前 Windows／WSL 混合測試遇到預設 stack、建模 adapter 設定及一次連線中斷；同版已改以 native Linux Chrome／服務繼續驗證。Windows 新編 bridge/core 被 SAC 阻擋，未改安全設定。
+- 初次交付時真 Chromium 完整回歸尚未完成；後續同版 native Linux Chrome／服務無 filter full 完成，79 段 frozen golden 相符、1867 通過斷言、0 失敗、0 略過群組。唯一 exception 是回報測試刻意注入的 `fb-auto-probe`。先前 Windows／WSL 混合測試遇到預設 stack、建模 adapter 設定及一次連線中斷；Windows 新編 bridge/core 被 SAC 阻擋，未改安全設定。
 - 另定位到既有房間取點／候選狀態的空白鍵平移被 `RoomOutlineWorkspace.move()`／`feMove()` 前置守門攔截；這批尚未修改該手勢規則，後續需補實際移動量的反例並修復。辨識中的空草稿也需另驗輸入互斥，不能把背景分析的結果覆蓋成使用者的人工意圖。
 - 修正在 managed worktree `canvas-performance`；目前使用者 8765 服務及完整專案恢復資料保持原狀。啟用仍须依 GEO-231 保全 `.gcanvas`（含底圖與草稿）及核心 dump 後切換並核對版本，不以 `.scene` 備份冒充。
 
