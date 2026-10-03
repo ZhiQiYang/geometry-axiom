@@ -11,29 +11,45 @@ from urllib.request import urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 RESTART_MESSAGE = '應用程式檔案已更新，這個服務需要重新啟動。請先保存目前專案，再重啟服務並重新整理頁面。'
+SOURCE_SUFFIXES = {'.py', '.js', '.mjs', '.wasm', '.css', '.html', '.c', '.h', '.inc', '.ps1', '.bat'}
+SOURCE_EXCLUDES = {'__pycache__', 'docs', 'prototypes', 'node_modules', '.git'}
 
 
 def source_files(root):
-    files = [root / 'current_geometry.c', root / '公理層.md']
+    files = [p for p in (root / 'current_geometry.c', root / '公理層.md') if p.is_file()]
+
+    def collect(directory):
+        # DirEntry retains the file type from enumeration. Avoid a separate stat
+        # for every source path (especially costly on Windows).
+        try:
+            entries = os.scandir(directory)
+        except FileNotFoundError:
+            return
+        with entries:
+            for entry in entries:
+                if entry.is_dir(follow_symlinks=False):
+                    if entry.name not in SOURCE_EXCLUDES:
+                        collect(entry.path)
+                elif Path(entry.name).suffix in SOURCE_SUFFIXES and entry.is_file():
+                    files.append(Path(entry.path))
+
     for directory in ('geometry-web', 'geometry-core'):
-        for base, dirs, names in os.walk(root / directory):
-            dirs[:] = [d for d in dirs if d not in {'__pycache__', 'docs', 'prototypes', 'node_modules', '.git'}]
-            for name in names:
-                path = Path(base) / name
-                if path.suffix in {'.py', '.js', '.mjs', '.wasm', '.css', '.html', '.c', '.h', '.inc', '.ps1', '.bat'}:
-                    files.append(path)
-    return sorted(p for p in files if p.is_file())
+        collect(root / directory)
+    return sorted(files)
 
 
-def source_version(root=ROOT):
+def _content_version(root, contents):
     digest = hashlib.sha256()
-    for path in source_files(root):
+    for path, content in contents:
         digest.update(path.relative_to(root).as_posix().encode('utf-8') + b'\0')
-        content = path.read_bytes()
         if path.suffix != '.wasm':
             content = content.replace(b'\r\n', b'\n')
         digest.update(hashlib.sha256(content).digest())
     return digest.hexdigest()
+
+
+def source_version(root=ROOT):
+    return _content_version(root, ((p, p.read_bytes()) for p in source_files(root)))
 
 
 class RuntimeSnapshot:
@@ -41,10 +57,15 @@ class RuntimeSnapshot:
         self.root = root
         self._lock = threading.Lock()
         self._files = self._signature()
-        self.version = source_version(root)
-        self.assets = {'/' + p.name: p.read_bytes() for p in (root / 'geometry-web').iterdir()
-                       if p.is_file() and p.suffix in {'.html', '.js', '.css'}}
-        self.vendor = {'/vendor/' + p.relative_to(root / 'geometry-web/vendor').as_posix(): p.read_bytes()
+        self._source_contents = {p: p.read_bytes() for p in source_files(root)}
+        self.version = _content_version(root, self._source_contents.items())
+        web = root / 'geometry-web'
+        # Fingerprinted assets must use the exact bytes that produced version,
+        # rather than rereading a potentially different revision for serving.
+        self.assets = {'/' + p.name: content for p, content in self._source_contents.items()
+                       if p.parent == web and p.suffix in {'.html', '.js', '.css'}}
+        self.vendor = {'/vendor/' + p.relative_to(web / 'vendor').as_posix():
+                       self._source_contents[p] if p in self._source_contents else p.read_bytes()
                        for p in (root / 'geometry-web/vendor').rglob('*') if p.is_file()}
         for reference in re.findall(rb'(?:src|href)="([^"]+)"', self.assets['/index.html']):
             path = reference.decode('utf-8')
@@ -62,8 +83,19 @@ class RuntimeSnapshot:
         with self._lock:
             try:
                 # File systems can give two same-size writes the same timestamp.
-                # Content, rather than mtime, decides whether the runtime is current.
-                return source_version(self.root) == self.version
+                # Read every file on every check; metadata or a TTL cannot safely
+                # authorize a mutation. Unchanged bytes need no copies or hashing.
+                paths = source_files(self.root)
+                if paths != list(self._source_contents):
+                    return False
+                for path in paths:
+                    content = path.read_bytes()
+                    original = self._source_contents[path]
+                    if content != original and (path.suffix == '.wasm' or
+                            content.replace(b'\r\n', b'\n') != original.replace(b'\r\n', b'\n')):
+                        return False
+                # Also reject a source added/deleted while the files were read.
+                return source_files(self.root) == paths
             except OSError:
                 return False
 
