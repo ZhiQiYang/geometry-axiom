@@ -14,4 +14,3 @@
 |Q36|GridSystem 保存來源子規則、規則 key、selector、typed lineRef、跨配置交易、新能力|一層 all-cells／signed cell；按需求值，原手動子格原義不改|阻擋 #59–61；#58 proposal／#62 驗收稿可準備|
 
 容量常數、TEMP 路徑、部署與工具版本不要求使用者投票；接手者以有界實测固定，超限必須 typed diagnostic。新增可見入口必須寫明拿掉／合併項（GEO-219）；無減項不直接標產品 ready。
-

@@ -14,6 +14,8 @@
 - 修正在 managed worktree `canvas-performance`；目前使用者 8765 服務及完整專案恢復資料保持原狀。啟用仍须依 GEO-231 保全 `.gcanvas`（含底圖與草稿）及核心 dump 後切換並核對版本，不以 `.scene` 備份冒充。
 - 2026-10-04 使用者明示要求提交全部現行修正並合併遠端／本地 main：整合 PR73 `b0f9e5a`、PR74 `3300db6` 與本工單性能修正。合併測試先以 P84 重現延後的通用座標讀數覆蓋 PDF 來源吸附讀數；`bf10b82` 讓來源讀數與草稿同幀呈現，通用讀數先排程。修後真 Chromium 房間／PDF partial P79=84、P84=27，共 111 通過、0 失敗、0 exception，相關 Node 32/32；889 檔 Linux 測試副本與提交來源逐位元相同（工單文字除外）。這份整合版尚未重跑無 filter full Chromium，不借用性能分支的 1867 當整合版結果。遠端 Actions 七個 jobs 均零 steps 而失敗，保留環境失敗，不宣稱 CI 綠燈。舊身分政策原型／備份不在本次已核准修正範圍內。
 
+- 整合來源 `bf10b82` 另完成完整非瀏覽器 50 suites：1551 通過、0 失敗、1 具名 Windows GDI 略過，所有 frozen expected 相符。最後納入 PR74 可見性排除 `7263b83` 及 PR75 規格提案 `f742463`，Node 32/32 再次通過；沒有把提案採納或實作。這兩筆後沒有重跑 full Chromium／全庫，不宣稱最後 main 的全量 exact-head 驗收。
+
 ## PR70 補驗 follow-up — 復原／重做保持忙碌直到操作完成（2026-10-04）
 
 - PR70 已由外部流程合併為 `d5ea531`；原切片、原生快照及保存契約不重做。此 follow-up 基底是包含 PR71／72 的 main `0f3c1a6`。
