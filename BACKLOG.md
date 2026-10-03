@@ -25,12 +25,15 @@
 
 ## CONT-20261003 — 可接續工作包與集中決策（規格準備，未開產品實作）
 
-- 使用者 2026-10-03 19:47 指定 #45、#44、#46、#48、#49、#57–62、#24：整理最小切片、依賴、驗收、落點、並行與 readiness，加入佇列並提交 draft 文件 PR。基底 `0f3c1a6fdd88bbcce4484a256d45900bd1d92313`，不改公理或產品契約。
+- 使用者 2026-10-03 19:47 指定 #45、#44、#46、#48、#49、#57–62、#24：整理最小切片、依賴、驗收、落點、並行與 readiness，加入佇列並提交 draft 文件 PR。初始基底 `0f3c1a6fdd88bbcce4484a256d45900bd1d92313`，後續文件基底 `9ebf52a1b6519356e9ff677e55b9cf167c47b70d`；不改公理或產品契約。
 - 集中入口：[可接續工作包](geometry-guide/CONTINUATION-WORK-PACKAGES-20261003.md)；[決策包](geometry-guide/CONTINUATION-DECISIONS-20261003.md) 的 Q31–Q36 全部待採納。規格 ready 不代表產品已授權／已實作／已驗收。
-- 已取消的 #47 雙向定位不排入本佇列；PR73 undo/redo 與 PR74 PDF snap 由原 owner 執行，本文件分支不改其產品碼／驗收。保存與共用 app.js 接線另指定一個整合 owner，不競寫。
+- 20:23使用者專案檢視報告已完整讀取，去重建立#78–86：[九項優先缺陷／驗證收斂包](geometry-guide/PROJECT-REVIEW-QUEUE-20261004.md)，排在一般新功能之前。每項有報告counterexample、移除重複責任、完成oracle與未驗界線；前三項由parent品質執行者重現，本文件worker未重跑／修復。
+- 已取消的 #47 雙向定位不排入本佇列；PR73 undo/redo 與 PR74 PDF snap 已由原 owner 交付並外部合併，本文件分支不改其產品碼／驗收。保存與共用 app.js 接線另指定一個整合 owner，不競寫。
 - **UI 減項（本輪）**：沒有新增產品 UI／常駐說明；未來 WP45 合併來源配置說明，WP61 沿用來源工作區合併手動／來源細分說明。各 slice 必須寫明具體移除／合併項，否則依 GEO-219 先進決策佇列。
 - 文件規格與正反例可並行；子網格產品 #59–61 先等 #58 精確採納；#46/48/49 新附件契約未採納；A24／SR24 真 iOS／OS 選檔與下載另列，不以390px冒充。#24 與總工單維持 open，使用 Refs。
-- 第一批已備工作總表、WP45／WP24，其他包與具體選項在同一 draft 文件 PR 接續補齊；本輪僅文件驗證，未重跑產品測試，沒有 merge／部署。
+- 使用者20:19追加同PDF連續獨立房間，已查重建[#77](https://github.com/ZhiQiYang/geometry-axiom/issues/77)，加入[WP77](geometry-guide/CONTINUATION-WORK-PACKAGES-20261003.md#wp77)/[Q37](geometry-guide/CONTINUATION-DECISIONS-20261003.md#q37)。共享sourcebytes不是共享calibration，Space不是樓層房間樹；附件不存第二geometrytruth，新契約仍需採納。
+- 20:22自動房間依[A→B→C](geometry-guide/PROJECT-REVIEW-QUEUE-20261004.md#auto-rooms)：#54先修單房間實際失敗→新#87同頁多候選→#77確認獨立Boundary/共享基準；不用同一issue混稱全部完成。20:25两份私人PDF留Library，公開只記REAL-PDF-01/02各階段未驗；private映射僅cloud TEMP，不提交原文件名/地址/LibraryID/hash/截圖。
+- PR75 first head `f742463`（外部已合併）只含第一批總表／WP45／WP24；後續draft補齐原12＋#77共13工作包、Q31–Q37選項、[#58逐條proposal](geometry-core/GRID-SUBDIVISION-RULES-PROPOSAL.md)，另納九項優先缺陷與自動房間順序。全部規格準備，決策未採納；本輪僅文件驗證，未重跑產品測試，沒有worker merge／部署。
 
 ## GEO-240 — #45 F2a 單選已發布規則銜接既有材料配置（2026-10-03）
 
