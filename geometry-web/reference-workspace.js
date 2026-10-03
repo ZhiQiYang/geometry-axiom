@@ -935,7 +935,8 @@ const ReferenceWorkspace = (() => {
     } finally {busy=false;busyLabel="";present();scheduleRecovery();}
   }
   async function cancelProjectScene(token) {
-    await fetch("/upload/cancel",{method:"POST",body:JSON.stringify(token),signal:AbortSignal.timeout(30000)});
+    const response=await fetch("/upload/cancel",{method:"POST",body:JSON.stringify(token),signal:AbortSignal.timeout(30000)});
+    if(!response.ok || (await response.json()).ok!==true)throw new Error("無法確認專案候選已取消；目前場景未被替換。");
   }
   async function prepareProjectScene(text,manifest,assertCurrent) {
     let token=null;

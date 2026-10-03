@@ -300,6 +300,34 @@ test('missing final native targets cancel without losing source bytes, metadata 
   assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
 });
 
+test('late confirm preserves the newer context and metadata without appending import history',async()=>{
+  const f=await openFixture(),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
+  f.env.fetch=async(url,request)=>{
+    const response=await fetch(url,request);
+    if(url==='/upload/confirm'){entered.resolve();await gate.promise;}
+    return response;
+  };
+  const opening=f.w.importBytes(f.bytes),rejected=assert.rejects(opening,/載入結果晚到/);
+  await entered.promise;f.w.calibrated(1,[[0,0],[10,0]],100);
+  const current=f.w.context(),count=f.w.history.undo.length;
+  gate.resolve();await rejected;
+  assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,count);
+  assert.equal(f.w.active(1).calibration.distanceMm,100);
+});
+
+test('native prepare blocks direct scene upload reentry until its commit finishes',async()=>{
+  const f=await openFixture(),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
+  f.env.fetch=async(url,request)=>{
+    const response=await fetch(url,request);
+    if(url==='/upload/prepare'){entered.resolve();await gate.promise;}
+    return response;
+  };
+  const opening=f.w.importBytes(f.bytes);await entered.promise;
+  await assert.rejects(()=>f.w.uploadScene('reset\n'),/上一筆場景載入/);
+  gate.resolve();await opening;
+  assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/confirm']);
+});
+
 test('failed reading or unpacking releases busy state and leaves the existing project untouched',async()=>{
   for(const failRead of [true,false]) {
     const f=await openFixture(),old=f.w.context();
