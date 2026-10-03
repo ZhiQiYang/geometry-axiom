@@ -17,7 +17,18 @@ module.exports=async({send,read,sleep,ctl,fill,choose,publish,wait,check})=>{
  await ctl('#asmCancel');check('G02 取消不改來源',same((await state()).instances[0],original));await publish();
  check('G05 編輯來源保留構件映射',same((await state()).instances[0].value.mapping,mapping));
  await ctl('[data-asm-binding="1"]');await ctl('#asmEdit');for(const slot of [1,2])for(const axis of ['A','B'])await fill(`#asmValue${slot}${axis}`,axis==='A'?40:50);await publish();
- await read(`(async()=>{const r=await api('line spec position2 2800');if(!r.ok)throw Error(JSON.stringify(r));if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));await api('line confirm '+r.preview.token);}await renderObjects();})()`);
+ const beforeSourceEdit=await read(`apiRequest('dump').then(r=>r.text)`);
+ // api() resolves only after the I8a dialog is confirmed or cancelled. Keep the
+ // evaluation free so the harness can inspect the preview and send trusted input.
+ const editSource=()=>read(`window.__generationSourceEdit=api('line spec position2 2800');void 0`);
+ const sourceImpact=()=>wait(`!!document.querySelector('.reference-impact[open] #impact-confirm')&&!$('impact-confirm').disabled`);
+ await editSource();await sourceImpact();
+ check('G03 定位來源預覽列出連動長度且正式世界未變',await read(`(async()=>document.querySelector('.reference-impact code').textContent==='spec position2 2800'&&document.querySelector('.reference-impact').textContent.includes('1960 → 2260')&&(await apiRequest('dump')).text===${JSON.stringify(beforeSourceEdit)})()`));
+ await ctl('.reference-impact .impact-actions button:first-child');await wait(`!document.querySelector('.reference-impact[open]')`);
+ const cancelledSourceEdit=await read(`window.__generationSourceEdit`);
+ check('G03 取消定位來源變更保留正式世界',cancelledSourceEdit.ok===false&&await read(`apiRequest('dump').then(r=>r.text===${JSON.stringify(beforeSourceEdit)})`));
+ await editSource();await sourceImpact();await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]')`);
+ await read(`(async()=>{const r=await window.__generationSourceEdit;if(!r.ok)throw Error(JSON.stringify(r));await renderObjects();})()`);
  const changed=(await state()).instances[0];check('G03 配置與定位來源改變由原生重算',same(changed.value.mapping,mapping)&&changed.members.map(m=>m.geometry.length).join(',')==='2960,2960,2260'&&changed.members.every(m=>m.geometry.A===40&&m.geometry.B===50));
  await ctl('[data-asm-binding="1"]');await ctl('#asmInstanceEdit1');await fill('#asmInstanceName','保留未完成來源');await choose('#asmInstanceGuide1',0);await ctl('#asmClose');
  const saved=await read(`(async()=>{window.__generationBytes=await ReferenceWorkspace.exportBytes();const p=await GeometryProject.unpack(window.__generationBytes,fflate);return {format:p.manifest.format,drafts:p.manifest.assemblyDrafts.records};})()`);
