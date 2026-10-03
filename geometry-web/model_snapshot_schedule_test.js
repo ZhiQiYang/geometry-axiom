@@ -32,11 +32,11 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
   const downloads=()=>read('__p83.downloads.length');
   const noBlob=()=>read('__p83.blobCreates===__p83.gate.blobStart');
   const exportCSV=async(id,expectedUnit='mm')=>{
-    const before=await downloads(),filesBefore=new Set(fs.readdirSync(directory));await ctl(action(id));await wait(`__p83.downloads.length===${before+1}&&typeof __p83.downloads[${before}].text==='string'`);
+    const before=await downloads(),filesBefore=new Set(fs.readdirSync(directory));await ctl(action(id));await wait(`__p83.downloads.length===${before+1}&&typeof __p83.downloads[${before}].text==='string'&&Array.isArray(__p83.downloads[${before}].bytes)`);
     const download=await read(`__p83.downloads[${before}]`);let target;
     for(let i=0;i<200&&!target;i++){target=fs.readdirSync(directory).find(f=>!filesBefore.has(f)&&f.endsWith('.csv'));if(!target)await sleep(50);}
     if(!target)throw Error('No completed actual CSV download in '+directory);
-    const bytes=fs.readFileSync(path.join(directory,target),'utf8');if(bytes!==download.text)throw Error('Actual downloaded CSV differs from Blob bytes');
+    const buffer=fs.readFileSync(path.join(directory,target));if(!buffer.equals(Buffer.from(download.bytes)))throw Error('Actual downloaded CSV differs from Blob bytes');const bytes=buffer.toString('utf8');
     const rows=csvRows(bytes);if(rows.length!==2||rows.some(row=>row.snapshot_display_units!==expectedUnit))throw Error('Unexpected CSV scope/unit '+JSON.stringify(rows));
     return {download,rows,bytes,file:path.join(directory,target)};
   };
@@ -57,7 +57,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,expectNativeDialog,except
     await read(`(async()=>{window.__p83={originalApi:apiRequest,originalFetch:window.fetch,originalURL:URL.createObjectURL,originalAnchor:HTMLAnchorElement.prototype.click,urls:new Map(),downloads:[],blobCreates:0};
       __p83.line=async line=>{let r=await __p83.originalApi('line '+line);if(r.preview?.valid)r=await __p83.originalApi('line confirm '+r.preview.token);if(!r.ok)throw Error(JSON.stringify(r));return r;};
       URL.createObjectURL=function(blob){if(blob.type.startsWith('text/csv'))__p83.blobCreates++;const url=__p83.originalURL.call(URL,blob);__p83.urls.set(url,blob);return url;};
-      HTMLAnchorElement.prototype.click=function(){if(this.download.endsWith('.csv')){const entry={name:this.download,href:this.href};__p83.downloads.push(entry);const blob=__p83.urls.get(this.href);if(!blob)throw Error('CSV anchor has no actual Blob');blob.text().then(text=>entry.text=text);}return __p83.originalAnchor.call(this);};
+      HTMLAnchorElement.prototype.click=function(){if(this.download.endsWith('.csv')){const entry={name:this.download,href:this.href};__p83.downloads.push(entry);const blob=__p83.urls.get(this.href);if(!blob)throw Error('CSV anchor has no actual Blob');Promise.all([blob.text(),blob.arrayBuffer()]).then(([text,bytes])=>{entry.text=text;entry.bytes=Array.from(new Uint8Array(bytes));});}return __p83.originalAnchor.call(this);};
       for(const line of ['boundary 1 outline 0,0 4000,0 4000,3000 0,3000 kind room_plan','placement 0 on boundary 1 origin 0 0 2500 u +x v +y','placement 2 on boundary 1 origin 0 0 3500 u +x v +y','timber 0 27 33 role boundary','timber 4 27 33 role boundary','timber 9 27 33 role boundary','place 0 on 0 at-face e0 +u +n','place 4 on 0 at-face e2 +u +n','place 9 on 2 at-face e0 +u +n'])await __p83.line(line);
       await renderObjects();ReferenceWorkspace.setFaceProjection(1,0,{kind:'space-boundary-plan',view:'top',region:'interior',wallSide:'outside'});await enterFocus('face',1);})()`);
     const first=await create('P83 實際兩支保存快照');const second=await create('P83 另一保存檢視');
