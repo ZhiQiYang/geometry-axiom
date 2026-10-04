@@ -71,8 +71,20 @@ baseline 新案例與 wrong-World 變異必須是 assertion-red，不能拿編�
 前端另驗合法模型與不同雜湊領域、明選根、CSV 安全及 owner 時序；正式瀏覽器操作、
 完整 suites、golden 與 exact head 結果在交付 PR 回填，未跑完不宣稱全綠。
 
-跨表示實物計量／durable incarnation、assembly-owned 保存模型能力、模型內完整
+跨表示實物計量／durable incarnation、assembly-owned 保存模型能力、此有限切片外的
 雙向定位、F4b 加工／裁切／餘料，以及 A24 實體手機／OS 操作仍需獨立處理。
+
+2026-10-04 使用者恢復 #47 的有限雙向定位：已驗證 ordinary plan 的 `input.timbers`
+與同一保存 record 的唯一完整 `result.timbers.derived.objects[].root` 對照。
+readonly 3D 原有 ID／世界 z 重複列併為快照料單；點列高亮並置中該 mesh，沿用
+角材顯示／材料牆開關（定位時顯示角材、隱藏材料牆），點 3D 角材回選同列。
+命中使用呈現中的實際三角形；不穿過不透明牆，半透明空間邊界作檢視輔助。
+拖曳、平移、pinch 與取消不算點選。所有操作只改選取與 camera，沒有幾何回寫。
+對照只在 native snapshot 與保存套件雙端核對後啟用；同一 context object、唯一
+record 的 exact bytes、可見 workspace／disclosure 與 read session 持續守門。
+模型替換、移除、切專案／模型、關閉或遲到回覆撤銷舊授權；重開需重新核對。
+typed root 保留 uint32（含 0），不以 live ID、label、尺寸、component 或 array index
+認物件；沒有新公理、保存 schema、route 或 F1b。
 
 正式 CDP 的 P83 使用既有真 producer、兩支明選零號／多原點角材及獨立未選根，
 真正下載 CSV 逐位元組核對 Blob（含 UTF-8 BOM），每次下載目錄隔離以容納同名覆寫。
