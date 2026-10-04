@@ -9,6 +9,7 @@ const {test,after}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
+const os=require('node:os');
 const {execFile}=require('node:child_process');
 const P=require('../geometry-web/project-store.js');
 const S=require('../geometry-web/scenario-snapshots.js');
@@ -40,6 +41,30 @@ async function native(data) {
     child.stdin.on('error',reject);child.stdin.end(payload);
   });
   return promise;
+}
+
+async function fullBoundaryPins(scene,ids) {
+  const bridge=process.env.GEOMETRY_TEST_BRIDGE;
+  assert.ok(bridge,'A fresh GEOMETRY_TEST_BRIDGE is required for the isolated full-boundary oracle');
+  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'scenario-pin-oracle-'));
+  try {
+    const source=path.join(directory,'oracle.scene');fs.writeFileSync(source,scene,'utf8');
+    // Independent actual native World, not scenario_verify or load-prepare.
+    const commands=['loadfile '+source,...ids.map(id=>'boundary '+id)].join('\n')+'\n';
+    const stdout=await new Promise((resolve,reject)=>{
+      const child=execFile(bridge,[],{cwd:directory,env:process.env,timeout:10000,maxBuffer:2*1024*1024,encoding:'utf8'},
+        (error,output,stderr)=>error?reject(new Error('Native boundary oracle exited abnormally: '+(stderr||error.message))):resolve(output));
+      child.stdin.on('error',reject);child.stdin.end(commands);
+    });
+    const rows=stdout.trimEnd().split(/\r?\n/).map(row=>JSON.parse(row));
+    assert.equal(rows.length,ids.length+1);assert.equal(rows[0].ok,true);
+    return rows.slice(1).map((row,index)=>{
+      assert.equal(row.ok,true);assert.equal(row.id,ids[index]);
+      assert.equal(typeof row.geometryFingerprint,'string');assert.equal(row.geometryFingerprint.length,64);
+      assert.match(row.geometryFingerprint,/^[0-9a-f]{64}$/);
+      return {id:row.id,geometryFingerprint:row.geometryFingerprint};
+    });
+  } finally {fs.rmSync(directory,{recursive:true,force:true});}
 }
 
 function observedArchive() {
@@ -170,7 +195,13 @@ test('real reset and delete/recreate of the same native IDs erase copy origins b
     const initial=await project(),replacement=await project(scene);
     const oldNative=await native({manifest:initial.manifest,scene:initial.scene});
     const newNative=await native({manifest:replacement.manifest,scene:replacement.scene});
-    assert.deepEqual(newNative.final_objects,oldNative.final_objects,'The final native IDs deliberately collide');
+    assert.deepEqual(newNative.final_objects.boundaries,oldNative.final_objects.boundaries,'The final native IDs deliberately collide');
+    assert.deepEqual(newNative.final_objects.placements,oldNative.final_objects.placements);
+    assert.deepEqual(oldNative.final_objects.boundaries,[1]);
+    assert.deepEqual(oldNative.final_objects.boundaryFingerprints,await fullBoundaryPins(initial.scene,[1]));
+    assert.deepEqual(newNative.final_objects.boundaryFingerprints,await fullBoundaryPins(replacement.scene,[1]));
+    assert.notEqual(newNative.final_objects.boundaryFingerprints[0].geometryFingerprint,
+      oldNative.final_objects.boundaryFingerprints[0].geometryFingerprint,'Matching typed IDs cannot conceal different native geometry');
     assert.deepEqual(newNative.objects,oldNative.objects);
     assert.ok(!newNative.objects.some(object=>object.kind==='spec'&&object.id==='discarded_reset_probe'),
       'Reset must discard definitions loaded earlier in this same native parse');
