@@ -53,6 +53,9 @@
   function flush(s=state){
     if(!current(s)||s.busy)return;
     if(s.initializing)throw Error('網格原始輸入仍在還原，請待邊界讀取完成後保存。');
+    // save() already captured the form before locking these controls. The
+    // nested export must use that snapshot while ReferenceWorkspace is busy.
+    if(s.projectControls)return;
     const form=rawForm(s),hasDraft=!!ReferenceWorkspace.readFeatureAttachment(rawKind);
     if(!hasDraft&&JSON.stringify(form)===s.initialRaw&&!!(s.mode==='source'?s.source:s.binding))return;
     const value=rawValue(s);ReferenceWorkspace.setFeatureAttachment(rawKind,value,s.contextToken);s.rawError=null;return value;
