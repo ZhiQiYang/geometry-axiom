@@ -188,7 +188,8 @@ The only expected-count changes are the added genuine regressions in
 `node:tests-js` and `py:test_scenario_verify`; original JSON ordering is preserved.
 This is an intermediate-tree census, not the final frozen-head gate.
 
-Required root response is explicit, not just a PR-body note:
+Historical stage2 requests (resolved by the parent assignment and the user's
+specific 10:30 Q+A approval recorded in stage3 below; no permission hold):
 1. Assign the sole native owner for candidate hashes from `g_load_after`, using
    existing `boundary_geometry_hash`; no World capacity or axiom change. Minimum
    true-native repro/interface packet lives at
@@ -208,7 +209,7 @@ by missing native candidate pins. This draft remains unfinished and non-merge-re
 
 ## Saved-cloud continuation stage 3: approved archival migration (2026-10-04)
 
-The parent supplied the user's explicit approval for finite archival preservation
+At 10:30 on 2026-10-04, the parent supplied the user's specific Q+A approval for finite archival preservation
 of complete selected-page records and original receipts. Earlier refusal packets
 remain historical negative evidence, not successful migration. The native bridge
 writer is separately assigned to cloud thread `01a10671-a27d-7331-ac8b-a5bf8d4200a5`;
@@ -274,3 +275,27 @@ captured source version; no fixture/adoption/publication ran. Its log/screenshot
 remain `/77-legacy-archive-preflight-1`, never treated as a product pass. Frozen
 archive browser acceptance and the complete native/consumer combined head remain
 required before merge. This PR stays draft and does not claim #77 complete.
+
+Stage3 `125232f` frozen archival acceptance has now completed actualexit0:
+125 real owner/browser assertions,15 before/after refusal-preservation cases and
+5 actual old-reader/v1 checks. Actual native ID23 has9 loops (outer4,8 holes×32),
+and its genuine original receipt geometry4735chars survives visible adoption,
+one undo/redo and full source/manifest/payload ZIP comparisons. Desktop and390px
+read-only history UI preserve native/context/revision/history. No unexpected
+browser error/warning or upload/publication request occurred. Independent artifact
+audit confirmed commit/tree/source hashes, runtime catalog, actual native geometry
+and successful ZIP closures. Packet `/77-legacy-archive-stage3/REPORT.md` is complete;
+it does not certify fresh-context native import or later code revisions.
+
+The complete intermediate source census finished66suites2065pass/0fail, one named
+allowedWindowsGDI, actualexit0. It discovered JS442→455 from the13 new regressions;
+the expected JSON's original ordering is preserved. Logs and all suite outputs
+are durable in `/77-archive-census/`. Subsequent independent review found the common
+inherited byte guard serialized an entire value before rejecting8MiB. A legal
+1000-record alias graph can fit508030nodes/depth7 yet expand to2,048,000,000bytes;
+the reviewer intercepted serialization safely, without allocating that result.
+The common visitor now charges exact escaped UTF8 bytes while traversing, before
+serialization/cloning, keeping all capacities/schema paths unchanged. The existing
+capacity regression now proves record/envelope rejection before any container
+serialization. Focused26/26 pass, actualexit0; this followup remains distinct from
+the125232f packet and will be frozen/retested with coordinated native integration.

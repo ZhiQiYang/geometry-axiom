@@ -151,6 +151,22 @@ test('legacy history capacity allows 10000 distinct entries and 1000 original re
   F.record(F.ROOM_KIND,recordsOnly);
   recordsOnly.legacyHistory[0].records.push({...clone(recordsOnly.legacyHistory[0].records[0]),id:'too-many'});
   assert.throws(()=>F.record(F.ROOM_KIND,recordsOnly));
+  // A small aliased caller graph can expand to gigabytes of legal JSON while
+  // fitting the node/array/schema limits. Reject before any container is serialized.
+  const shared = Array(500).fill('a'.repeat(4096)), expanded = clone(f.payload);
+  expanded.legacyHistory = [{...clone(expanded.legacyHistory[1]),records:Array.from({length:1000},(_,i) =>
+    ({id:'expanded-'+i,label:'',location:'',datum:'',unit:'mm',value:null,unknown:shared}))}];
+  S.validate(expanded);
+  const serialize = JSON.stringify;let containerCalls = 0;
+  JSON.stringify = (value,...args) => {
+    if (value !== null && typeof value === 'object') {containerCalls++;throw new Error('oversized container reached serialization');}
+    return serialize(value,...args);
+  };
+  try {
+    assert.throws(()=>F.record(F.ROOM_KIND,expanded),/容量上限/);
+    assert.throws(()=>F.validate({schema:F.SCHEMA,records:[{kind:F.ROOM_KIND,schema:S.HISTORY_SCHEMA,value:expanded}]}),/容量上限/);
+  } finally {JSON.stringify = serialize;}
+  assert.equal(containerCalls,0);
 });
 
 test('receipt-only archived history survives ZIP without adding historical IDs to native candidate membership',async()=>{

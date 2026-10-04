@@ -43,18 +43,33 @@
       return offset >= 0 && path[offset] === "value" && path[offset+1] === "legacyHistory" && Number.isInteger(path[offset+2]) &&
         path[offset+3] === "reconstructionReview" && path[offset+4] === "geometry";
     }
-    let count = 0;
+    const maxBytes = roomEnvelope ? MAX_ROOM_BYTES : MAX_BYTES;
+    let count = 0, bytes = 0;
+    const charge = size => {bytes += size;if (bytes > maxBytes) fail("功能附件超過容量上限。");};
+    function stringBytes(value) {
+      charge(2);
+      for (let index = 0; index < value.length; index++) {
+        const code = value.charCodeAt(index);
+        if (code < 128) charge(code < 32 ? [8,9,10,12,13].includes(code) ? 2 : 6 : code === 34 || code === 92 ? 2 : 1);
+        else if (code < 2048) charge(2);
+        else if (code >= 0xd800 && code <= 0xdbff && value.charCodeAt(index+1) >= 0xdc00 && value.charCodeAt(index+1) <= 0xdfff) {charge(4);index++;}
+        else charge(code >= 0xd800 && code <= 0xdfff ? 6 : 3);
+      }
+    }
     function visit(item, depth, path = []) {
       if (++count > maxNodes || depth > 12) fail("功能附件過大或巢狀過深。");
-      if (item === null || typeof item === "boolean") return;
-      if (typeof item === "number" && Number.isFinite(item)) return;
-      if (typeof item === "string" && item.length <= (legacyGeometry(path) ? 100000 : MAX_STRING)) return;
+      if (item === null) {charge(4);return;}
+      if (typeof item === "boolean") {charge(item ? 4 : 5);return;}
+      if (typeof item === "number" && Number.isFinite(item)) {charge(JSON.stringify(item).length);return;}
+      if (typeof item === "string" && item.length <= (legacyGeometry(path) ? 100000 : MAX_STRING)) {stringBytes(item);return;}
       if (Array.isArray(item)) {
         const proto = Object.getPrototypeOf(item);
         if (!nativePrototype(proto, "Array") ||
             !objectPrototype(Object.getPrototypeOf(proto)) || Object.getOwnPropertySymbols(item).length ||
             item.length > maxArray || Object.getOwnPropertyNames(item).length !== item.length + 1) fail("功能附件陣列不合法。");
+        charge(2);
         for (let index = 0; index < item.length; index++) {
+          if (index) charge(1);
           const descriptor = Object.getOwnPropertyDescriptor(item, index);
           if (!descriptor?.enumerable || !Object.hasOwn(descriptor, "value")) fail("功能附件陣列不完整。");
           visit(descriptor.value, depth + 1, [...path,index]);
@@ -63,10 +78,13 @@
       }
       if (object(item) && plainObject(item)) {
         if (Object.getOwnPropertySymbols(item).length) fail("功能附件欄位不合法。");
+        charge(2);let fields = 0;
         for (const key of Object.getOwnPropertyNames(item)) {
           const descriptor = Object.getOwnPropertyDescriptor(item, key);
           if (["__proto__", "constructor", "prototype"].includes(key) || key.length > 100 ||
               !descriptor.enumerable || !Object.hasOwn(descriptor, "value")) fail("功能附件欄位不合法。");
+          if (fields++) charge(1);
+          stringBytes(key);charge(1);
           visit(descriptor.value, depth + 1, [...path,key]);
         }
         return;
@@ -74,7 +92,6 @@
       fail("功能附件必須是有界 plain JSON。");
     }
     visit(value, 0);
-    if (new TextEncoder().encode(JSON.stringify(value)).length > (roomEnvelope ? MAX_ROOM_BYTES : MAX_BYTES)) fail("功能附件超過容量上限。");
   }
   function validateReference(ref) {
     if (ref?.kind === "parameter-field") {
