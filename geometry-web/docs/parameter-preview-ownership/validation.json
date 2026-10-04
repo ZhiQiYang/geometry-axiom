@@ -1,6 +1,6 @@
 {
   "schema": "geometry-parameter-preview-ownership-evidence/1",
-  "recordedAt": "2026-10-04T17:45:25.872223+00:00",
+  "recordedAt": "2026-10-04T17:53:33.783215+00:00",
   "implementationCommit": "d93d6a9c1c4a77a4675efe66ec1aaa3ceca53835",
   "baseMain": "4bea91a3ff3af25d1062040b2c2ea776b60a8daf",
   "originalPR125": "2b53a032947e67866c75351e50c88d970fb4fd02",
@@ -1376,7 +1376,209 @@
     "errors": [],
     "consoleMessages": []
   },
-  "fullCDP": null,
+  "fullCDP": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "full",
+      "filters": [],
+      "modifiers": [],
+      "url": "http://127.0.0.1:18880/",
+      "feedbackDirectory": "/tmp/geometry-p76/fb-full",
+      "browserProfile": "/tmp/geometry-cdp-mxcFvS",
+      "cdpPort": 9333,
+      "browserPid": 4405
+    },
+    "completed": true,
+    "passedAssertions": 1987,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "1": 14,
+      "2": 3,
+      "3": 1,
+      "4": 1,
+      "5": 1,
+      "6": 1,
+      "7": 1,
+      "8": 0,
+      "9": 12,
+      "10": 0,
+      "Setup": 0,
+      "P3": 14,
+      "P4": 11,
+      "P5": 2,
+      "P6": 4,
+      "P7": 54,
+      "P8": 116,
+      "P9": 9,
+      "P10": 9,
+      "P11": 12,
+      "P12": 8,
+      "P13": 4,
+      "P14": 16,
+      "P15": 6,
+      "P16": 10,
+      "P17": 11,
+      "P18": 20,
+      "P19": 17,
+      "BF2": 5,
+      "BF3": 1,
+      "BF4": 9,
+      "P20": 10,
+      "P21": 4,
+      "P22": 45,
+      "P32": 34,
+      "P33": 9,
+      "P34": 7,
+      "P35": 14,
+      "P36": 2,
+      "P37": 19,
+      "P38": 13,
+      "P39": 8,
+      "P40": 4,
+      "P41": 3,
+      "P42": 12,
+      "P43": 12,
+      "P44": 19,
+      "P45": 2,
+      "P46": 7,
+      "P47": 9,
+      "P48": 14,
+      "P49": 17,
+      "P50": 33,
+      "P51": 13,
+      "P52": 43,
+      "P53": 23,
+      "P57": 56,
+      "P62": 38,
+      "P63": 18,
+      "P64": 24,
+      "P65": 5,
+      "P66": 4,
+      "P68": 36,
+      "P69": 160,
+      "P67": 96,
+      "P70": 106,
+      "P71": 9,
+      "P78": 23,
+      "P72": 52,
+      "P73": 65,
+      "P74": 52,
+      "P75": 37,
+      "P76": 86,
+      "P77": 134,
+      "P82": 16,
+      "P80": 23,
+      "P81": 14,
+      "P85": 29,
+      "P79": 87,
+      "P84": 33,
+      "P83": 16,
+      "P86": 20
+    },
+    "goldenCompare": "golden updated",
+    "uncaughtBrowserExceptions": 1,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "fullCDPExceptionClassification": {
+    "expected": 1,
+    "expectedMessage": "Error: fb-auto-probe",
+    "unexpected": 0,
+    "note": "cdp_test counts the expected feedback auto-capture probe in uncaughtBrowserExceptions; terminal result preserves its actual value of 1."
+  },
+  "fullGoldenPreservation": {
+    "baseTotal": 1973,
+    "newTotal": 1987,
+    "onlySectionDelta": {
+      "P76": [
+        72,
+        86
+      ]
+    },
+    "P79": 87,
+    "otherSectionsUnchanged": true
+  },
+  "hostedCI": {
+    "headSHA": "16f0835a2f03f6ebc469c3ab19fe2849c17a0169",
+    "workflowRuns": [
+      {
+        "id": 37221770778,
+        "name": "Geometry integration",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 260,
+        "jobs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/37221770778/jobs",
+        "logs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/37221770778/logs",
+        "workflow_id": 372360895
+      }
+    ],
+    "jobs": [
+      {
+        "id": 111493375704,
+        "name": "native",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_id": 37221770778,
+        "logs_url": null,
+        "steps": null
+      },
+      {
+        "id": 111493375833,
+        "name": "browser (grid)",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_id": 37221770778,
+        "logs_url": null,
+        "steps": null
+      },
+      {
+        "id": 111493375874,
+        "name": "browser (canvas)",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_id": 37221770778,
+        "logs_url": null,
+        "steps": null
+      },
+      {
+        "id": 111493375888,
+        "name": "browser (assembly)",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_id": 37221770778,
+        "logs_url": null,
+        "steps": null
+      },
+      {
+        "id": 111493375895,
+        "name": "browser (documents)",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_id": 37221770778,
+        "logs_url": null,
+        "steps": null
+      },
+      {
+        "id": 111493375974,
+        "name": "browser (space)",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_id": 37221770778,
+        "logs_url": null,
+        "steps": null
+      },
+      {
+        "id": 111493376017,
+        "name": "browser (timber)",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_id": 37221770778,
+        "logs_url": null,
+        "steps": null
+      }
+    ],
+    "note": "All jobs are failure with null steps/logs. No runner output or account-level cause was exposed by these connector reads."
+  },
   "registeredNativeTests": {
     "completed": true,
     "passed": 41,
@@ -1402,7 +1604,10 @@
   "untested": [
     "Windows execution on this cloud worker",
     "PR125 merged head (external owner is integrating)",
-    "GitHub-hosted CI",
-    "cross-browser and physical iOS/IME/OS picker"
+    "GitHub-hosted CI actual execution (jobs failed without steps/logs)",
+    "cross-browser and physical iOS/IME/OS picker",
+    "New session/version-restart cases",
+    "Pre-native request reordering",
+    "Project-switch context guard in isolation (the added switch case discards first)"
   ]
 }
