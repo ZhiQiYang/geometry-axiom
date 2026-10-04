@@ -13,6 +13,7 @@
   dialog.setAttribute('aria-labelledby', 'igTitle');
   document.body.append(dialog);
   const current = s => state === s && dialog.open && s.context === ReferenceWorkspace.context() && s.contextToken === ReferenceWorkspace.getProjectState().contextToken;
+  const canEdit=s=>current(s)&&!s.initializing&&!s.busy&&!s.heldControls&&!s.projectControls;
   const F=GeometryProject.Features,rawKind='grid-draft',copy=value=>JSON.parse(JSON.stringify(value));
   const pinKey=ref=>ref.kind==='parameter-field'?`parameter-field:${ref.parameterId}:${ref.fieldId}`:`${ref.kind}:${ref.id}`;
   const samePin=(a,b)=>!!a&&!!b&&pinKey(a)===pinKey(b)&&a.fingerprint===b.fingerprint&&a.vertexKeysFingerprint===b.vertexKeysFingerprint;
@@ -50,7 +51,8 @@
       baseRef:s.restored?s.restored.baseRef:s.baseRef,inputRefs:[...refs.values()].map(copy),rawForm:form};
   }
   function flush(s=state){
-    if(!current(s)||s.initializing||s.busy)return;
+    if(!current(s)||s.busy)return;
+    if(s.initializing)throw Error('網格原始輸入仍在還原，請待邊界讀取完成後保存。');
     const form=rawForm(s),hasDraft=!!ReferenceWorkspace.readFeatureAttachment(rawKind);
     if(!hasDraft&&JSON.stringify(form)===s.initialRaw&&!!(s.mode==='source'?s.source:s.binding))return;
     const value=rawValue(s);ReferenceWorkspace.setFeatureAttachment(rawKind,value,s.contextToken);s.rawError=null;return value;
@@ -122,7 +124,7 @@
   const bindingKey = o => JSON.stringify(o && [o.id, o.system, o.boundary, o.vertexKey, o.cell, o.anchor]);
   function status(text, error = false) {
     if (!$('igStatus')) return;
-    $('igStatus').textContent = text; $('igStatus').classList.toggle('ig-error', error);
+    ($('igDraftNote')||$('igStatus')).textContent = text; $('igStatus').classList.toggle('ig-error', error);
   }
   function sourceEditorKey() {
     const values = [$('igName').value.trim(), $('igMainAlong').value];
@@ -195,8 +197,8 @@
     placeStudioLesson(dialog.querySelector('#igWorkspaceLesson'), 'grid:infinite-first', '這裡定無限格線；要套到邊界時再建立配置。');
     const footer = dialog.querySelector('.ig-footer'), notes = document.createElement('div'), actions = document.createElement('div');
     notes.className = 'ig-footer-notes'; actions.className = 'ig-footer-actions';
-    const draftNote = document.createElement('p'); draftNote.id = 'igDraftNote';
-    notes.append($('igStatus'), draftNote);
+    const draftNote = document.createElement('span'); draftNote.id = 'igDraftNote';
+    $('igStatus').replaceChildren(draftNote);notes.append($('igStatus'));
     for (const id of ['igSaveSource','igSaveBinding']) { $(id).hidden = id === 'igSaveSource' ? s.mode === 'binding' : s.mode !== 'binding'; actions.append($(id)); }
     const discard=document.createElement('button');discard.id='igDiscardDraft';discard.type='button';discard.className='btn';discard.textContent='捨棄原始草稿';
     discard.onclick=()=>{if(!current(s)||s.busy||!window.confirm('捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。'))return;
@@ -207,7 +209,8 @@
     $('igClose').onclick = () => close();
     $('igSaveSource').onclick = () => operation(s, () => saveSource(s));
     $('igNewBinding')?.addEventListener('click', () => open({system: s.source.id, mode: 'binding', expectedSource:sourceKey(s.source)}));
-    $('igEditSource').onclick = () => open({system: s.source.id, expectedSource:sourceKey(s.source)});
+    $('igEditSource').disabled=!s.source;
+    $('igEditSource').onclick = () => {if(s.source)return open({system: s.source.id, expectedSource:sourceKey(s.source)});};
     for (const b of dialog.querySelectorAll('[data-ig-open-binding]')) b.onclick = () => {
       const binding=s.bindings.find(row=>row.id===Number(b.dataset.igOpenBinding));
       return open({binding:binding.id,expectedSource:sourceKey(s.source),expectedBinding:bindingKey(binding)});
@@ -247,14 +250,16 @@
     for(const a of axes)for(const key of ['Step','Phase','Panel','Gap','Anchor','Stagger'])window.ParameterUI?.bindSource('ig'+a.toUpperCase()+key,()=>{drawGrid(s);syncDraftState(s);},{preserveValue:!!s.restored});
     s.initialSourceKey=sourceEditorKey();
     syncFields(); drawGrid(s);
+    const loadingControls=[...dialog.querySelectorAll('input,select,button')].map(node=>[node,node.disabled]);
+    for(const [node] of loadingControls)node.disabled=true;
     if(s.mode==='binding'&&$('igBoundary').value){await loadBoundary(s,Number($('igBoundary').value),!!s.binding);
-      if(!current(s))return;if(s.restored){restoreRaw(s,s.restored.rawForm);
+      if(!current(s))return;if(s.restored){restoreRaw(s,{igVertex:s.restored.rawForm.igVertex});
         const ref=s.restored.inputRefs.find(ref=>ref.kind==='boundary'&&String(ref.id)===s.restored.rawForm.igBoundary);
         s.vertex=samePin(ref,s.boundaryPin)?s.vertices.find(v=>vertexId(v)===s.restored.rawForm.igVertex)||null:null;drawBoundary(s);alignment(s);}}
     if(s.binding&&!s.restored)locate(s);
     if(!s.restored)s.initialRaw=JSON.stringify(rawForm(s));
-    s.initializing=false;capture(s);
-    WorkspaceShell.attach(dialog, {saveBlocked:()=>!current(s) || s.busy || !!s.rawError || draftState(s).boundary || draftState(s).application,
+    s.initializing=false;for(const [node,disabled] of loadingControls)node.disabled=disabled;capture(s);
+    WorkspaceShell.attach(dialog, {saveBlocked:()=>!current(s) || s.initializing || s.busy || !!s.heldControls || !!s.rawError || draftState(s).boundary || draftState(s).application,
       saveReason:()=>s.busy?'正在處理網格變更，完成後即可保存。':'先預覽並確認未套用的設定，再保存專案。', describedBy:'igDraftNote'});
     syncDraftState(s);
     window.ParamGridLesson?.place();
@@ -331,9 +336,9 @@
   function inPlot(event) { const view=$('igGridView'),r=view.getBoundingClientRect();return event.clientX-r.left-view.clientLeft>=RL&&event.clientY-r.top-view.clientTop>=RT; }
   function bindCamera(s) {
     const view=$('igGridView');let drag=null;
-    view.addEventListener('pointerdown',e=>{if(e.button!==0&&e.button!==1)return;fitCamera(s,box(view));s.hover=null;drag={x:e.clientX,y:e.clientY,c:s.camera.slice(),moved:false,id:e.pointerId};view.setPointerCapture(e.pointerId);});
+    view.addEventListener('pointerdown',e=>{if(!canEdit(s)||e.button!==0&&e.button!==1)return;fitCamera(s,box(view));s.hover=null;drag={x:e.clientX,y:e.clientY,c:s.camera.slice(),moved:false,id:e.pointerId};view.setPointerCapture(e.pointerId);});
     view.addEventListener('pointermove',e=>{if(!drag){hoverCell(s,e);return;}const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved ||= Math.hypot(dx,dy)>5;if(!drag.moved)return;const k=(drag.c[2]-drag.c[0])/box(view).pw;s.camera=[drag.c[0]-dx*k,drag.c[1]-dy*k,drag.c[2]-dx*k,drag.c[3]-dy*k];drawGrid(s);});
-    view.addEventListener('pointerup',e=>{if(!drag)return;const moved=drag.moved;drag=null;if(view.hasPointerCapture(e.pointerId))view.releasePointerCapture(e.pointerId);if(moved||!inPlot(e)||s.mode!=='binding'&&!s.defs?.every(Boolean))return;
+    view.addEventListener('pointerup',e=>{if(!drag)return;const moved=drag.moved;drag=null;if(view.hasPointerCapture(e.pointerId))view.releasePointerCapture(e.pointerId);if(!canEdit(s)||moved||!inPlot(e)||s.mode!=='binding'&&!s.defs?.every(Boolean))return;
       try{const cell=cellAtPoint(s,e);if(s.mode!=='binding'){s.sel=s.sel&&s.sel.join()===cell.join()?null:cell;drawGrid(s);return;}$('igCellI').value=cell[0].toString();$('igCellJ').value=cell[1].toString();alignment(s);drawGrid(s);}catch(err){status(err.message,true);}});
     view.addEventListener('pointerleave',()=>{if(!drag&&s.hover){s.hover=null;drawGrid(s);}});
     view.addEventListener('pointercancel',()=>drag=null);view.addEventListener('lostpointercapture',()=>drag=null);
@@ -452,7 +457,7 @@
     const view=$('igBoundaryView');view.replaceChildren();if(!s.boundary)return;
     const t=boundaryTransform(s.boundary);
     svg('path',{d:boundaryPath(s.boundary,t),fill:'#e8f5f0','fill-rule':'evenodd',stroke:'#4f8b7c','stroke-width':1.6},view);
-    for(const v of s.vertices) {const [cx,cy]=t.point([v.u,v.v]),selected=v===s.vertex;const node=svg('circle',{cx,cy,r:selected?9:7,fill:selected?'#c66b2c':'#fff',stroke:selected?'#9e4c15':'#267562','stroke-width':2,'data-ig-vertex':vertexId(v),...(v.key ? {'data-ig-vertex-key':v.key} : {}),tabindex:0,role:'button','aria-label':`${vertexTitle(v)} (${v.u}, ${v.v})`},view);const pick=()=>{s.vertex=v;$('igVertex').value=vertexId(v);drawBoundary(s);alignment(s);};node.addEventListener('click',pick);node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();}});label(view,cx+11,cy-9,(v.loop<0?'外':'孔'+(v.loop+1)+'·')+(v.index+1),{'font-size':12,fill:'#285c51'});}
+    for(const v of s.vertices) {const [cx,cy]=t.point([v.u,v.v]),selected=v===s.vertex;const node=svg('circle',{cx,cy,r:selected?9:7,fill:selected?'#c66b2c':'#fff',stroke:selected?'#9e4c15':'#267562','stroke-width':2,'data-ig-vertex':vertexId(v),...(v.key ? {'data-ig-vertex-key':v.key} : {}),tabindex:0,role:'button','aria-label':`${vertexTitle(v)} (${v.u}, ${v.v})`},view);const pick=()=>{if(!canEdit(s))return;s.vertex=v;$('igVertex').value=vertexId(v);drawBoundary(s);alignment(s);};node.addEventListener('click',pick);node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();}});label(view,cx+11,cy-9,(v.loop<0?'外':'孔'+(v.loop+1)+'·')+(v.index+1),{'font-size':12,fill:'#285c51'});}
     $('igVertexSummary').textContent=s.vertex?`2 · 已選 ${vertexTitle(s.vertex)} (${s.vertex.u}, ${s.vertex.v})。`:'2 · 點選圖中的實際頂點，包括孔洞。';
   }
   async function drawResult(s) {
@@ -522,6 +527,7 @@
     const d=sourceDraft(s);await validateDraftPins(s);await stillSame(s);
     const ids=s.source?null:await apiRequest('newid'),id=s.source?.id??ids?.gridSystem;
     if(id==null)throw Error('無法取得網格系統編號。');
+    s.publishTarget={kind:'grid-system',id};
     if(!await commit(s,sourceCommand(d,id),`${s.source?'更新':'建立'}無限網格「${d.name}」`,s.source?null:['gridSystems',id],true))return;
     await renderObjects();reveal('grid-system',id);await open({system:id}, true);status('來源已保存；可選擇邊界與格子建立配置。');
   }
@@ -532,6 +538,7 @@
     const i=signed('igCellI','cell i'),j=signed('igCellJ','cell j'),a=anchor();await stillSame(s);
     await validateDraftPins(s);
     const ids=s.binding?null:await apiRequest('newid'),id=s.binding?.id??ids?.gridBinding;if(id==null)throw Error('無法取得網格配置編號。');
+    s.publishTarget={kind:'grid-binding',id};
     const v=s.vertex,vertex=v.key!=null?`vertex-key ${v.key}`:`vertex ${v.loop<0?'outer '+v.index:'hole '+v.loop+' '+v.index} geometry-hash ${s.boundary.geometryFingerprint}`;
     const line=`grid-binding ${id} on-boundary ${s.boundaryId} from-system ${s.source.id} ${vertex} cell ${i} ${j} anchor ${a.join(' ')}`;
     if(await commit(s,line,`${s.binding?'更新':'建立'}配置：面 ${s.boundaryId} · ${vertexTitle(v)} ↔ cell (${i}, ${j})`,s.binding?null:['gridBindings',id],true)){await renderObjects();reveal('grid-binding',id);await open({binding:id}, true);status('配置已保存。可繼續將它套用到引用同一邊界的承載面。');}
@@ -549,17 +556,36 @@
     if(!current(s)){if(result.preview)await apiRequest('line cancel-preview');return false;}
     if(!result.preview)throw Error(result.error||'無法取得預覽。');
     if(expectNew&&result.preview[expectNew[0]]?.some(row=>row.id===expectNew[1]&&row.before!=null)){await apiRequest('line cancel-preview');throw Error('新編號已被其他操作使用，請重新預覽建立。');}
-    if(clearDraft&&result.preview.valid){const draft=ReferenceWorkspace.readFeatureAttachment(rawKind);
-      if(draft)ReferenceWorkspace.prepareFeatureConfirmation(result.preview.token,rawKind,draft,s.contextToken);}
+    try{if(clearDraft&&result.preview.valid){await validateDraftPins(s);await stillSame(s);
+      const draft=ReferenceWorkspace.readFeatureAttachment(rawKind);
+      if(draft)ReferenceWorkspace.prepareFeatureConfirmation(result.preview.token,rawKind,draft,s.contextToken);}}
+    catch(error){const cancelled=await apiRequest('line cancel-preview');
+      if(!cancelled.ok)throw Error(error.message+' 預覽取消结果尚未確認，請重新連線。');throw error;}
     const promise=confirmReferenceImpact(result.preview),impact=document.querySelector('dialog.reference-impact:last-of-type');
     if(impact){const p=document.createElement('p');p.className='ig-impact-title';p.textContent=title;impact.querySelector('h2')?.after(p);const code=impact.querySelector(':scope > code');if(code){const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent='進階：完整指令';details.append(summary);code.replaceWith(details);details.append(code);}}
-    const done=await promise;ReferenceWorkspace.cancelFeatureConfirmation(result.preview.token);if(!done.ok){status(done.error||'未套用',true);return false;}return true;
+    let done;try{done=await promise;}catch(error){if(!ReferenceWorkspace.featureConfirmationPending())await apiRequest('line cancel-preview');throw error;}
+    finally{ReferenceWorkspace.cancelFeatureConfirmation(result.preview.token);}
+    if(!done.ok){status(done.error||'未套用',true);return false;}return true;
   }
   async function operation(s,run) {
     if(!current(s)||s.busy||oc.busy)return;s.busy=true;oc.busy=true;dialog.classList.add('ig-busy');
     const controls=[...dialog.querySelectorAll('button,input,select')].map(n=>[n,n.disabled]);controls.forEach(([n])=>n.disabled=true);invalidField=null;
     try{await run();}catch(e){if(current(s))status(e.message,true);}
-    finally{s.busy=false;oc.busy=false;dialog.classList.remove('ig-busy');if(current(s)){controls.forEach(([n,disabled])=>n.disabled=disabled);applicationState(s);if(invalidField)$(invalidField)?.focus();}invalidField=null;}
+    finally{s.busy=false;oc.busy=false;if(current(s)){
+      if(ReferenceWorkspace.featureConfirmationPending()){s.heldControls=controls;$('igClose').disabled=false;status('確認結果尚未取得。原始草稿仍保留；返回畫布重新連線後才會依同一操作回執更新。',true);}
+      else{dialog.classList.remove('ig-busy');controls.forEach(([n,disabled])=>n.disabled=disabled);applicationState(s);if(invalidField)$(invalidField)?.focus();}}
+      invalidField=null;}
+  }
+  async function releaseHeldControls(s){
+    if(!current(s)||!s.heldControls||s.releasing||ReferenceWorkspace.featureConfirmationPending()||connection.phase!=='ready')return;
+    s.releasing=true;const controls=s.heldControls;s.heldControls=null;dialog.classList.remove('ig-busy');
+    for(const [node,disabled] of controls)node.disabled=disabled;
+    try{if(s.publishTarget&&!ReferenceWorkspace.readFeatureAttachment(rawKind)){
+      const target=s.publishTarget;await renderObjects();if(!current(s))return;
+      reveal(target.kind,target.id);await open(target.kind==='grid-system'?{system:target.id}:{binding:target.id},true);
+      status('已依同一操作回執确认保存，原始草稿已隨場景同一步收起。');
+    }else{applicationState(s);syncDraftState(s);status('已確認操作結果；未發布的原始草稿仍保留。');}}
+    catch(error){if(current(s))status(error.message,true);}finally{s.releasing=false;}
   }
   async function reopen(s) { await renderObjects();await open({system:s.source?.id,binding:s.binding?.id,mode:s.mode}, true);status('變更已保存，可從畫布復原或重做。'); }
   function reveal(kind,id) { pressObjectGroup(kind==='grid-binding'?'bindings':'sources');oc.search='';$('searchInput').value='';selectObject(kind,id);centerOnNode(kind,id); }
@@ -619,10 +645,10 @@
     if(!source||(options.binding!=null&&!binding)){toast('請更新畫布後，明確選取目前的網格來源或配置。');return Promise.resolve(false);}
     return open({...options,expectedSource:sourceKey(source),...(binding?{expectedBinding:bindingKey(binding)}:{})});
   }
-  function close(force=false,discard=false) { if(!force && (state?.busy || !mayLeave(state)))return false;if(!discard)capture(state);state?.trial?.dispose();state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
+  function close(force=false,discard=false) { if(!force && (state?.busy || state?.initializing || !mayLeave(state)))return false;if(!discard&&!state?.heldControls)capture(state);state?.trial?.dispose();state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
   dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
   window.addEventListener('face-projections-changed',()=>{if(state&&state.context!==ReferenceWorkspace.context())close(true);});
-  window.addEventListener('project-info-changed',()=>{if(state&&!current(state))close(true,true);});
+  window.addEventListener('project-info-changed',()=>{if(state&&!current(state))close(true,true);else if(state)void releaseHeldControls(state);});
   const cardCache=new Map();let cardQueue=Promise.resolve();
   function cardBinding(o) {
     const width=OC_W,height=OC_H,header=48,footer=47;
