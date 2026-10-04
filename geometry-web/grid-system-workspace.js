@@ -321,7 +321,7 @@
       const wrap = card.querySelector('[data-ig-stagger]');
       if (wrap) {
         wrap.hidden = value === 'none';
-        const open = !!state?.staggerOpen?.[a] || $(p + 'Stagger').value.trim() !== '';
+        const open = !!state?.staggerOpen?.[a] || $(p + 'Stagger').value !== '';
         wrap.querySelector('[data-ig-add-stagger]').hidden = open; wrap.querySelector('[data-ig-stagger-field]').hidden = !open;
       }
     }
