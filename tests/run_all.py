@@ -113,6 +113,7 @@ NODE_TEST_FILES = [
     'tests/test_model_update.js',
     'tests/test_parameters_project_store.js',
     'tests/test_project_store.js',
+    'tests/test_subdivision_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
     'tests/test_room_collection.js',

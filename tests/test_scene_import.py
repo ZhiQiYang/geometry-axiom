@@ -47,13 +47,14 @@ class SceneImportTests(unittest.TestCase):
             self.assertRegex(row['geometryFingerprint'], r'^[0-9a-f]{64}$')
         path = Path(self.directory.name) / 'oracle.scene'
         path.write_text(scene, encoding='utf-8')
-        commands = ['loadfile ' + str(path), *('boundary ' + str(row['id']) for row in entries)]
+        commands = ['loadfile ' + str(path), *('boundary ' + str(row['id']) for row in entries), 'dump']
         oracle = subprocess.run([os.environ['GEOMETRY_TEST_BRIDGE']], input='\n'.join(commands) + '\n',
                                 capture_output=True, text=True, timeout=10, check=True)
         responses = [json.loads(line) for line in oracle.stdout.splitlines()]
         self.assertTrue(responses[0]['ok'], responses)
         self.assertEqual(entries, [{'id': row['id'], 'geometryFingerprint': row['geometryFingerprint']}
-                                   for row in responses[1:]])
+                                   for row in responses[1:-1]])
+        self.assertEqual(candidate['final_scene'], responses[-1]['text'])
         return entries
 
     def test_final_objects_trim_reset_delete_redeclare_and_zero(self):

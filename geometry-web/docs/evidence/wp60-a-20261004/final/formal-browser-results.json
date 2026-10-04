@@ -1,0 +1,84 @@
+{
+  "completed": true,
+  "checks": [
+    {
+      "name": "page identity",
+      "status": "pass"
+    },
+    {
+      "name": "nonblank application",
+      "status": "pass"
+    },
+    {
+      "name": "no framework overlay",
+      "status": "pass"
+    },
+    {
+      "name": "native formal definitions include all rules and exact refs",
+      "status": "pass"
+    },
+    {
+      "name": "existing source-room history and raw grid draft preserved",
+      "status": "pass"
+    },
+    {
+      "name": "rule highwater and unused sources preserved",
+      "status": "pass"
+    },
+    {
+      "name": "source PDF bytes preserved",
+      "status": "pass"
+    },
+    {
+      "name": "v11 keeps existing source-room/history/draft capabilities",
+      "status": "pass"
+    },
+    {
+      "name": "actual download retains native scene and saved layout",
+      "status": "pass"
+    },
+    {
+      "name": "actual download retains original source",
+      "status": "pass"
+    },
+    {
+      "name": "fresh browser context restores full native scene",
+      "status": "pass"
+    },
+    {
+      "name": "fresh browser context preserves formal references",
+      "status": "pass"
+    },
+    {
+      "name": "fresh browser context preserves raw attachments",
+      "status": "pass"
+    },
+    {
+      "name": "fresh open does not restore previous undo stack",
+      "status": "pass"
+    },
+    {
+      "name": "tampered file preserves world and project context",
+      "status": "pass"
+    },
+    {
+      "name": "console and page errors",
+      "status": "pass"
+    }
+  ],
+  "errors": [],
+  "browserPlugin": "absent",
+  "agentBrowserCLI": "unavailable",
+  "browser": "Chromium",
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "fixtureCreation": "native/codec, not #61 rule editor UI"
+}

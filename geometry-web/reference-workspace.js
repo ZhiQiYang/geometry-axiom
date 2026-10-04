@@ -963,9 +963,9 @@ const ReferenceWorkspace = (() => {
     groups.set(key,{...old,pages,activePageId:append || replace ? page.id : old?.activePageId});
     assertMetadataCapacity({...overrides,groups},ids);
   }
-  async function manifest(c = context()) {
+  async function manifest(c = context(), scene = null) {
     await referencesReady(c); assertContext(c);
-    const data = manifestData(c);P.assertManifestCapacity(data);
+    const data = manifestData(c);P.assertManifestCapacity(data,scene);
     return JSON.parse(JSON.stringify(data));
   }
   function assertSaveReady() {
@@ -991,7 +991,7 @@ const ReferenceWorkspace = (() => {
     const stamp = { context:c, frame:history.frame, revision:revision(c) };
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
     assertSnapshot(stamp);
-    const m=await manifest(c); assertSnapshot(stamp);
+    const m=await manifest(c,r.text); assertSnapshot(stamp);
     const data=new Map([...c.sources].map(([k,s])=>[k,s.bytes]));
     const bytes=await P.pack(r.text,m,data,fflate); assertSnapshot(stamp);
     return {bytes,stamp,scene:r.text};
@@ -1203,8 +1203,11 @@ const ReferenceWorkspace = (() => {
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
       P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
       P.validateProjectCapabilities(candidate.required_capabilities);
-      if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].includes(manifest.format)) {
-        if(!sameModelData([...candidate.required_capabilities].sort(),P.sceneCapabilities(text)))
+      if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT,P.SUBDIVISION_FORMAT].includes(manifest.format)) {
+        if(manifest.format===P.SUBDIVISION_FORMAT&&typeof candidate.final_scene!=="string")
+          throw new Error("服務未提供原生候選場景，未變更目前專案。");
+        const finalScene=manifest.format===P.SUBDIVISION_FORMAT?candidate.final_scene:text;
+        if(!sameModelData([...candidate.required_capabilities].sort(),P.sceneCapabilities(finalScene)))
           throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
       }
       return token;

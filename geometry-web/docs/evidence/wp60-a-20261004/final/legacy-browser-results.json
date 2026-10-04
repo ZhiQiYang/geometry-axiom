@@ -1,0 +1,62 @@
+{
+  "completed": true,
+  "checks": [
+    {
+      "name": "old near-limit v10 opens through official reader",
+      "status": "pass"
+    },
+    {
+      "name": "new metadata edit retains five-capability admission budget",
+      "status": "pass"
+    },
+    {
+      "name": "rejected edit preserves context, native world and history",
+      "status": "pass"
+    },
+    {
+      "name": "actual shared save preserves entire original non-scene metadata",
+      "status": "pass"
+    },
+    {
+      "name": "scene hash describes the actual saved native dump and layout",
+      "status": "pass"
+    },
+    {
+      "name": "actual shared save preserves original PDF bytes",
+      "status": "pass"
+    },
+    {
+      "name": "actual shared save retains native dump and layout",
+      "status": "pass"
+    },
+    {
+      "name": "fresh 390px context reopens exact saved native dump",
+      "status": "pass"
+    },
+    {
+      "name": "fresh context preserves source-room history",
+      "status": "pass"
+    },
+    {
+      "name": "fresh context has one import history entry",
+      "status": "pass"
+    },
+    {
+      "name": "console and page errors",
+      "status": "pass"
+    }
+  ],
+  "errors": [],
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "fixture": "main4bea actual v10 archive",
+  "save": "actual download via existing shared save"
+}
