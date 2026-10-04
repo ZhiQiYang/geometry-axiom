@@ -136,6 +136,61 @@ COLOR_REWRITES = [
      ":root[data-theme=dark] .sheet .full-ref{color:var(--sheet-ref-ink)}"),
 ]
 
+# Completed color migrations remain compatible with exact historical input,
+# but current CSS is guarded by declarations, not historical full-rule spelling.
+COLOR_CONTRACTS = [
+    ("a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible", {"outline": "2px solid var(--accent)", "outline-offset": "4px"}),
+    (".review-save-state.dirty", {"color": "var(--note-strong)"}),
+    (".stale-note", {"color": "var(--note-strong)"}),
+    (".review-block.has-comments>.review-target", {"border-left": "3px solid var(--note)"}),
+    (".review-block.target-flash", {"outline": "2px solid var(--note)"}),
+    (".inline-note", {"border-left": "3px solid var(--note)"}),
+    (".recovery-banner", {"border": "1px solid var(--note)"}),
+    (".review-error", {"color": "var(--danger)"}),
+    (".proposal-before", {"border-left": "3px solid var(--proposal)"}),
+    (".ex figure img", {"background": "var(--figure-bg)"}),
+    (".witness-section figure img", {"background": "var(--figure-bg)"}),
+    (".image-viewport", {"background": "var(--figure-bg)"}),
+    (".ex.no .badge", {"background": "var(--reject-bg)", "color": "var(--reject-ink)"}),
+    (".ex.no .expect", {"background": "var(--reject-bg)"}),
+    (".ex.tr .badge", {"background": "var(--transcript-bg)", "color": "var(--transcript-ink)"}),
+    (".dsl>span.hit", {"background": "var(--hit-bg)", "border-left": "2px solid var(--hit-line)"}),
+    (".copy .reference-link", {"text-decoration-color": "var(--link-underline)"}),
+    (":root[data-theme=dark] .ex.no .badge,:root[data-theme=dark] .ex.no .expect", None),
+    (":root[data-theme=dark] .dsl>span.hit", None),
+    (":root[data-theme=dark] .sheet .full-ref", {"color": "var(--sheet-ref-ink)"}),
+]
+
+
+def color_contract_regressions(template: str) -> list[str]:
+    def selector_key(selector):
+        return re.sub(r"\s*([>,])\s*", r"\1", " ".join(selector.split()))
+
+    def value_key(value):
+        value = " ".join(value.strip().split())
+        return re.sub(r"var\(\s*(--[\w-]+)\s*\)", r"var(\1)", value)
+
+    css = "\n".join(re.findall(r"<style\b[^>]*>(.*?)</style>", template, re.S))
+    rules = {}
+    for match in re.finditer(r"([^{}]+)\{([^{}]*)\}", css):
+        declarations = {}
+        for declaration in match[2].split(";"):
+            if ":" in declaration:
+                key, value = declaration.split(":", 1)
+                declarations[key.strip()] = value_key(value)
+        for selector in match[1].split(","):
+            rules.setdefault(selector_key(selector), {}).update(declarations)
+    bad = []
+    for selectors, required in COLOR_CONTRACTS:
+        for selector in selectors.split(","):
+            actual = rules.get(selector_key(selector))
+            if required is None:
+                if actual is not None:
+                    bad.append("retired dark override: " + selector)
+            elif actual is None or any(actual.get(key) != value_key(value) for key, value in required.items()):
+                bad.append("color declaration contract: " + selector)
+    return bad
+
 
 def apply_color_tokens(template: str) -> str:
     """把 token 定義併進 :root / :root[data-theme=dark],再把規則裡寫死的色碼換成 token。"""
@@ -163,7 +218,11 @@ def apply_color_tokens(template: str) -> str:
                 PATCHES.expect_present("色彩 token " + name,
                                        "%s:%s" % (name, pair[index]))
     for old_css, new_css in COLOR_REWRITES:
-        template = force(template, old_css, new_css, "色碼→token: " + new_css[:40])
+        if old_css in template:
+            template = force(template, old_css, new_css, "歷史色碼相容: " + new_css[:40])
+    regressions = color_contract_regressions(template)
+    if regressions:
+        raise ValueError("reader color contract: " + "; ".join(regressions))
     return template
 
 
@@ -686,6 +745,7 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     for mark in ('badge-trace', 'badge-hub', 'trace-section', 'data-trace='):
         assert mark in source, "GEO-139 追溯類功能又丟失了(GEO-120 連帶約束): " + mark
     assert not hardcoded_colors(source), "GEO-141 規則裡仍有寫死的色碼: " + "; ".join(hardcoded_colors(source)[:6])
+    assert not color_contract_regressions(source), "reader color contract: " + "; ".join(color_contract_regressions(source))
     assert ".review-block>.block-tools{opacity:0" in source, "GEO-145 段落工具又變成常駐了"
     assert "pressTimer" in script_text(source, "reader-script"), "GEO-145 觸控長按沒了"
     assert 'class="toc-facets' in source, "GEO-149 篩選 chip 不見了"

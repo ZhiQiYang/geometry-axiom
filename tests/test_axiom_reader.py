@@ -216,6 +216,55 @@ class CanonicalReader(unittest.TestCase):
         self.assertIn("outline:2px solid var(--accent);outline-offset:4px", self.html)
         self.assertNotIn("#288b9c", self.html)
 
+    def test_retired_color_migrations_keep_each_historical_input_compatible(self):
+        for old, new in reader.COLOR_REWRITES:
+            with self.subTest(old=old):
+                if new:
+                    self.assertIn(new, self.html)
+                    historical = self.html.replace(new, old, 1)
+                else:
+                    historical = self.html.replace("</style>", old + "</style>", 1)
+                reader.PATCHES.reset()
+                current = reader.apply_color_tokens(historical)
+                self.assertEqual(current, self.html)
+                self.assertEqual(reader.PATCHES.verify(current), [])
+                self.assertTrue(any(label.startswith("歷史色碼相容:") for label, _ in reader.PATCHES.present + reader.PATCHES.absent))
+
+    def test_retired_color_migrations_allow_format_and_unrelated_layout_changes(self):
+        formatted = self.html
+        for old, new in reader.COLOR_REWRITES:
+            if not new:
+                continue
+            # Format declarations only. Whitespace in a descendant selector has
+            # meaning and must not be blindly stripped or introduced.
+            if "{" in new:
+                selector, declarations = new.split("{", 1)
+                replacement = selector + "{ " + declarations.replace(":", ": ").replace(";", "; ")
+            else:
+                replacement = new.replace(":", ": ").replace(";", "; ")
+            self.assertIn(new, formatted)
+            formatted = formatted.replace(new, replacement, 1)
+        formatted = formatted.replace(".stale-note{ font-size: 12px;", ".stale-note{ font-size: 13px;", 1)
+        rebuilt = reader.rebuild(formatted, self.axiom, self.plain)
+        self.assertEqual(formatted, rebuilt)
+        self.assertEqual(reader.validate(rebuilt, self.axiom, self.plain)["five_asserts"], "pass")
+        self.assertFalse(any(label.startswith("歷史色碼相容:") for label, _ in reader.PATCHES.present + reader.PATCHES.absent))
+
+    def test_retired_color_contracts_reject_each_lost_or_wrong_declaration(self):
+        for selector, required in reader.COLOR_CONTRACTS:
+            if required is None:
+                addition = selector + "{color:var(--ink)}"
+            else:
+                property_name = next(iter(required))
+                addition = selector + "{" + property_name + ":var(--ink)}"
+            broken = self.html.replace('<script id="reader-counts"', '<style>' + addition + '</style><script id="reader-counts"', 1)
+            with self.subTest(selector=selector):
+                self.assertTrue(reader.color_contract_regressions(broken))
+                with self.assertRaisesRegex(ValueError, "reader color contract"):
+                    reader.rebuild(broken, self.axiom, self.plain)
+                with self.assertRaisesRegex(AssertionError, "reader color contract"):
+                    reader.validate(broken, self.axiom, self.plain)
+
     def test_traceability_lights_and_hub_badges_exist(self):
         # GEO-139(4):GEO-120 的連帶約束明列「追溯燈號 / 三向連結 / 樞紐徽章」不得丟失。
         # 判準:綠 = 原始碼且夾具、黃 = 其一、紅 = 皆無;樞紐 = 被引用數 >= 3。
