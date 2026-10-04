@@ -374,6 +374,21 @@
   }
   function drawDefinition(s, data) {
     const stage = $('igDefStage'), PL = 76, PT = 52, PR = 320, PB = 210;
+    // input has already rendered the current definition. A subsequent change
+    // or focus update must keep its buttons alive through the native click.
+    // The cache belongs to this stage, so a new editor always renders afresh.
+    const drawingKey = JSON.stringify(data);
+    if (stage.igDefinitionKey === drawingKey) {
+      for (const node of stage.querySelectorAll('[data-ig-chip]')) {
+        const [a, key] = node.dataset.igChip.split(':'), x = data.find(x => x.a === a);
+        const on = s.defFocus.a === a && s.defFocus.key === key;
+        node.classList.toggle('is-focus', on); node.setAttribute('aria-pressed', String(on));
+        const field = x.all.find(f => f.key === key);
+        node.classList.toggle('is-bound', !!(field && $(field.id + 'Source')?.value));
+      }
+      return;
+    }
+    stage.igDefinitionKey = drawingKey;
     stage.replaceChildren();
     const [U, V] = data, du = U.shape, dv = V.shape, both = !!(du && dv), put = (cls, style) => stage.append(mk('div', cls, {style}));
     put('ig-def-plot', `left:${PL}px;top:${PT}px;right:0;bottom:0`);
