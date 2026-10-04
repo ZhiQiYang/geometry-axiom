@@ -165,3 +165,9 @@ contextToken-based attachment writes, formal save/reopen and browser/late-result
 acceptance, plus registration of these suites/count floors in the shared runner.
 No new app API, archive capability or UI is claimed complete here. Both exact
 negative diagnostics need the native owner interface listed above.
+
+The later [PR100 draft comparison](INTEGRATION-PR100.md) records the remaining
+bundle-validator/reference/generation seams and the unregistered
+`run_case_request` helper for the shared serve owner. Its five focused tests
+are `python -m unittest tests.test_rule_case_request`; changing this helper
+also changes validatorVersion, so previous receipts are rechecked as history.
