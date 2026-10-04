@@ -18,6 +18,8 @@ PR107 已提供 source-local uint32 非零 ruleKey、`nextRuleKey` 高水位（0
 
 /11 可共存原有工程／參數／組構、原始 sources bytes、圖頁、projection、reconstructionReviews、`featureAttachments` 的 grid-editor-draft/source-rooms/source-room-history。這些資料保持既有 schema 與驗證器。沒有 rules 的檔案仍依既有 /1…/10 選格式，不新增規則或預設細分。含 rules 的模型 input/package 明確拒絕；獨立且不含 rules 的合法歷史模型可與目前 rules scene 共存。
 
+房間 metadata 在沒有 scene 讀取時，預留全部五種 reader 支援的 native 能力字串與既有 lifecycle 成長。原四能力預留在接近 8 MB 的合法 metadata 上可重現「預驗通過但含 rules 保存失敗」；最小修補僅補 `grid-subdivision-rules/1` 的 bytes，不擴 8 MB 或其他容量。邊界測試找出最後可准入 bytes，真 pack/unpack 同時保留 rules 與房間/history/raw附件，+1 byte metadata 拒絕。
+
 ## owner 接點與尚未交付
 
 - #61 規則 editor 的 raw 未提交草稿目前沒有對應正式 schema／UI adapter。本切片只證明既有 source/binding raw grid 草稿共存，**不聲稱規則草稿已保存**。請由共用 owner 擴既有 finite attachment validator，沿用 context token、flush、共同保存與 ContextHistory；不保存 preview token／key reservation。

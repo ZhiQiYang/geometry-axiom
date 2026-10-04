@@ -265,6 +265,17 @@ test('rules coexist with existing raw drafts, source rooms and historical record
   for(const change of [m=>{m.featureAttachments.schema='geometry-features/99';},m=>{m.featureAttachments.records[0].schema='grid-editor-draft/99';},
     m=>{m.featureAttachments.records[0].kind='rule-draft';},m=>{m.sources=[];}])
     await assert.rejects(()=>rewrite(archive,change).then(bytes=>P.unpack(bytes,zip)));
+  // A metadata transaction has no scene read. At its admitted limit there must
+  // still be room to save native rules and all lifecycle status growth.
+  const budget={...f.base,format:P.FEATURE_FORMAT,featureAttachments,engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:
+    Array.from({length:75},(_,n)=>({id:'budget-'+n,kind:'material',base_ref:null,data:{raw:'x'.repeat(110000)},updated_at:'2026-10-04T00:00:00Z'}))}};
+  let low=0,high=250000;
+  while(low<high){const mid=Math.ceil((low+high)/2);budget.engineeringDrafts.records[0].data.raw='x'.repeat(mid);
+    try{P.assertManifestCapacity(budget);low=mid;}catch{high=mid-1;}}
+  budget.engineeringDrafts.records[0].data.raw='x'.repeat(low);P.assertManifestCapacity(budget);
+  const full=await P.pack(loaded.scene,budget,f.sources,zip);
+  assert.equal((await P.unpack(full,zip)).manifest.format,P.SUBDIVISION_FORMAT);
+  budget.engineeringDrafts.records[0].data.raw+='x';assert.throws(()=>P.assertManifestCapacity(budget),/容量|8 MB/);
 });
 
 test('formal import is one recoverable history operation and never imports another context undo stack',nativeOptions,async()=>{

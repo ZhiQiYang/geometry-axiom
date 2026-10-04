@@ -422,7 +422,7 @@
     const m = {...manifest,format:projectFormat(manifest,scene),sceneHash};
     if ([ENGINEERING_FORMAT,PARAMETER_FORMAT,ASSEMBLY_FORMAT,GENERATION_FORMAT,OUTLINE_FORMAT,FEATURE_FORMAT,SUBDIVISION_FORMAT].includes(m.format)) {
       m.requiredCapabilities = projectCapabilities(manifest,scene);
-      if (reserveNative) m.requiredCapabilities = [...new Set([...m.requiredCapabilities,ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY])].sort();
+      if (reserveNative) m.requiredCapabilities = [...new Set([...m.requiredCapabilities,ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY,SUBDIVISION_CAPABILITY])].sort();
       if (!m.assemblyDrafts?.records.length) delete m.assemblyDrafts;
       if (!m.engineeringDrafts?.records.length) delete m.engineeringDrafts;
     } else {delete m.requiredCapabilities;delete m.engineeringDrafts;delete m.assemblyDrafts;}
