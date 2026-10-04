@@ -82,3 +82,48 @@ GEOMETRY_FEEDBACK_DIR=/tmp/issue77-formal-feedback \
 
 既有 `geometry-web/cdp_test.js` 與 `geometry-web/space_model_test.js`
 仍另外執行，各自完成及 floor 相符才是其範圍的證據。
+
+
+## #46 獨立快照模組的登錄與外部門檻
+
+snapshot/diff/review-native 三個 Node 檔（23／18／18）加入
+NODE_TEST_FILES，完整 census 發現 Node 374 → 433；Python
+test_scenario_verify 35 tests 加入 PY_NEEDS，要求 fresh bridge＋model-base。
+既有 floors 及 ALLOWED_SKIPS 不變；新增數量取自完整 census，不以空腳本或 skip 補足。
+Linux cloud 的完整 candidate census 在 process-local 16 MiB stack 下實跑；
+8 MiB stack 曾使未修改的 native integrity／subgrid 基線崩潰，不能用它的 fail／skip
+調低 floor。owner 套用登錄後，POSIX 的正式凍結 head 驗收命令為：
+
+    ulimit -s 16384
+    python tests/run_all.py --build
+
+本 patch 的 candidate census 不能替代正式已發布 runner 在最終 head 的 strict 驗收。
+這些測試只證明獨立快照／原 bytes／格式／origins／隔離 native 核驗，
+不代表產品 A/B 入口、whole adopt 或 recoverable history 已完成。
+
+以下兩個既有腳本在 NODE_EXCLUDED 逐檔登記原因，aggregate 未執行、
+不計 pass/skip；仍須另外執行並保留證據。
+
+先用 tests/binaries.py 建置 receipt-backed runtime；一般 npm .build 產物
+沒有這份 freshness receipt，不能替代。Playwright／Chromium由驗證環境提供。
+
+    python tests/binaries.py build bridge model-base
+    GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base node tests/scenario_browser_check.cjs
+
+這是 ephemeral loopback 的獨立 module browser gate：1280／390、
+真正 ZIP download／file input 重開、原 bytes、B 不改 A、fork／replacement diff、
+latecontext／tamper；禁止 live upload。沒有正式產品 UI/adoption 的驗收語意。
+
+    GEOMETRY_SCENARIO_PROJECT_MODULE=/absolute/path/to/actual-owner/project-store.js GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base node --test tests/test_scenario_grid_interface.js
+
+GridDraft 使用真正 owner project-store／同目錄 feature-attachments validator；
+PR104 尚未在 main 的這個 slice 維持注入 interface，
+不是以 unsupported 丟棄已批准 raw 草稿。缺 owner 注入時原腳本的具名 skip
+絕不能當 compatibility pass，也不加入 ALLOWED_SKIPS。
+真正 validator 必須實跑 raw 非法／未完成輸入、獨立 A/B、ZIP 重開、unknown kind/cap 拒絕。
+正式 saving adapter 合 main 後，owner 再把此檔移入 NODE_TEST_FILES、重做 census；
+不能在本 patch 預先假算第 434 項。
+
+Linux cloud 的 scenario Python suite 為 35/35；Windows 目前有 8 個
+temporary-shebang fixture skips。這些沒有平台豁免，Windows strict 會拒絕全過；
+須由後續 test owner 解決 fixture portability，不能使用 allow-skip 冒充完整驗收。
