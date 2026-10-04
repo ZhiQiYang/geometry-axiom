@@ -9,11 +9,13 @@ import sys
 import tempfile
 import unittest
 from unittest import mock
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "geometry-web"))
 import model_update as update
 import space_modeling
+import modeling
 from modeling import ModelError, canonical_bytes, verify_package
 from modeling.base import load_base
 from modeling.common import digest
@@ -503,6 +505,52 @@ class ModelUpdate(unittest.TestCase):
             return result
         with mock.patch.object(update, "_runtime", side_effect=changed):
             self.failure(self.request(), "UPDATE_RUNTIME_CHANGED", status="UNSUPPORTED")
+
+
+    def test_real_historical_missing_wall_record_can_be_replaced_by_complete_legal_source(self):
+        with zipfile.ZipFile(ROOT / "tests/fixtures/issue119-legacy-missing-walls.gcanvas") as archive:
+            legacy = json.loads(archive.read("manifest.json"))["models"][0]
+        data = self.request(record=legacy)
+        data["selection"]["timbers"] = []
+        before = canonical_bytes(data)
+        replacement = self.prepare(data)["record"]
+        self.assertEqual(before, canonical_bytes(data))
+        self.assertEqual(replacement["id"], legacy["id"])
+        self.assertEqual(replacement["input"]["settings"]["wall_thickness"], 100)
+        self.assertEqual(replacement["result"]["walls"]["derived"]["status"], "COMPLETE")
+        self.assertEqual(replacement["result"]["summary"]["wall_volume_mm3"], "4320000000")
+        self.assertEqual(replacement["result"]["summary"]["wall_diagnostics"], [])
+        self.assertEqual(space_modeling.preview(replacement["input"], base_executable=self.base), replacement["result"])
+
+    def test_historical_replay_does_not_allow_tampering_or_another_incomplete_replacement(self):
+        with zipfile.ZipFile(ROOT / "tests/fixtures/issue119-legacy-missing-walls.gcanvas") as archive:
+            legacy = json.loads(archive.read("manifest.json"))["models"][0]
+        data = self.request(legacy["input"]["base_scene"], record=legacy,
+                            placement=legacy["input"]["placement_id"], boundary=legacy["source"]["boundary_id"])
+        data["selection"]["edges"] = deepcopy(legacy["input"]["settings"]["edges"])
+        data["selection"]["timbers"] = []
+        self.failure(data, "SPACE_CAPACITY", status="UNSUPPORTED")
+        for change in (
+            lambda r: r["input"]["settings"].update(height=3200),
+            lambda r: r["result"]["summary"]["wall_diagnostics"][0].update(code="forged"),
+            lambda r: r["result"]["summary"].update(volume_mm3="1"),
+        ):
+            damaged = self.request(record=legacy); damaged["selection"]["timbers"] = []
+            change(damaged["record"])
+            self.failure(damaged, "UPDATE_OLD_REPLAY")
+
+    def test_legal_historical_package_provenance_does_not_prevent_strict_replacement(self):
+        old = self.record(scene(), timbers=False)
+        for key in ("space", "volume", "clearance", "walls"):
+            package = old["result"][key]
+            if package is not None:
+                package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = next(iter(modeling.LEGACY_AXIOM_VERSIONS))
+                package["manifest"]["generator"] = {"name": "historical-author", "version": "0.9"}
+        data = self.request(record=old); data["selection"]["timbers"] = []
+        before = canonical_bytes(data)
+        replacement = self.prepare(data)["record"]
+        self.assertEqual(before, canonical_bytes(data))
+        self.assertEqual(replacement["result"]["walls"]["derived"]["status"], "COMPLETE")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,21 @@
+✔ 全等 → 無差異 (3.089872ms)
+✔ 某段數字變小 → 有差異,訊息指名該段與兩個數字 (0.382768ms)
+✔ 某段數字變大 → 有差異(嚴格相等,新增斷言須明確更新 golden) (0.287112ms)
+✔ 某段消失 → 有差異 (0.211779ms)
+✔ 多出 golden 沒有的段 → 有差異 (0.36179ms)
+✔ 多種差異同時出現 → 逐條列出,不只報第一條 (0.349074ms)
+✔ 段被保留但計數為 0 與整段消失是兩回事,0 也要與 golden 相等 (0.178573ms)
+✔ {min:N} 下限:達到(含超過)通過,低於才算差異;消失仍算差異 (0.204101ms)
+✔ golden 缺 sections 或 actual 缺 sections 不會丟例外 (0.275328ms)
+✔ sectionOf 只取主編號,子標頭歸到同一段 (0.555233ms)
+✔ buildGolden 總數等於各段加總,且自己通過 validateGolden 與 compare (0.337762ms)
+✔ validateGolden 擋下格式錯誤 (0.384146ms)
+✔ 已提交的 cdp_sections.golden.json 結構合格,且 total 等於各段加總(無 min 段時) (0.706513ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 115.847512

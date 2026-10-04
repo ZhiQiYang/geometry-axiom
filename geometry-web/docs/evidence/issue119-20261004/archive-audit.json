@@ -1,0 +1,272 @@
+[
+  {
+    "file": "baseline/legacy-bundle.gcanvas",
+    "sha256": "d5b8904453273fd3c3c65c6f730ea35b0fb41f61e7ac43dfbb5976809e746b12",
+    "format": "geometry-canvas/3",
+    "world_sha256": "07670c790387ad4a6f0319790c33c84e229ca5dd72ac20645aeb892f106d5caa",
+    "sources": [
+      {
+        "path": "sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "sha256": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "bytes": 1498
+      }
+    ],
+    "models": [
+      {
+        "id": "68122732-27f5-4239-a903-e85c6f9aa619",
+        "wall_thickness": 100,
+        "height": 3000,
+        "walls_present": false,
+        "volume": "71820000000",
+        "wall_volume": null,
+        "wall_diagnostics": [
+          {
+            "clause": "I33",
+            "code": "SPACE_CAPACITY",
+            "message": "本版最多保存 16 個邊界面與 16 個承載面；新增面會超過容量。請減少選邊或改用較小的來源場景。",
+            "path": [],
+            "root": null
+          }
+        ]
+      },
+      {
+        "id": "ef03bcbc-5856-4e3e-8c41-ad0dad58a7b1",
+        "wall_thickness": 100,
+        "height": 3000,
+        "walls_present": true,
+        "volume": "36000000000",
+        "wall_volume": "4320000000",
+        "wall_diagnostics": []
+      }
+    ]
+  },
+  {
+    "file": "fixed-stable/boundary-only.gcanvas",
+    "sha256": "917f5b1763acbc2e9129bfa85f01cad6f2b654553f75ae4e4f8eab5e0fe4d081",
+    "format": "geometry-canvas/3",
+    "world_sha256": "07670c790387ad4a6f0319790c33c84e229ca5dd72ac20645aeb892f106d5caa",
+    "sources": [
+      {
+        "path": "sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "sha256": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "bytes": 1498
+      }
+    ],
+    "models": [
+      {
+        "id": "c1db5718-87a6-4f49-9c93-574374c7a1ef",
+        "wall_thickness": null,
+        "height": 3000,
+        "walls_present": false,
+        "volume": "71820000000",
+        "wall_volume": null,
+        "wall_diagnostics": []
+      }
+    ]
+  },
+  {
+    "file": "fixed-stable/updated-boundary.gcanvas",
+    "sha256": "02338c67e4c05be81f7de8d1bba9724e9e2405508fadcde5386aabe66d1d82db",
+    "format": "geometry-canvas/3",
+    "world_sha256": "07670c790387ad4a6f0319790c33c84e229ca5dd72ac20645aeb892f106d5caa",
+    "sources": [
+      {
+        "path": "sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "sha256": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "bytes": 1498
+      }
+    ],
+    "models": [
+      {
+        "id": "c1db5718-87a6-4f49-9c93-574374c7a1ef",
+        "wall_thickness": null,
+        "height": 3200,
+        "walls_present": false,
+        "volume": "76608000000",
+        "wall_volume": null,
+        "wall_diagnostics": []
+      }
+    ]
+  },
+  {
+    "file": "fixed-stable/two-models.gcanvas",
+    "sha256": "73b9e7fbbc76f6a7a4e644ed9c396ec6076caa1b72a33982d3a738c933a77a33",
+    "format": "geometry-canvas/3",
+    "world_sha256": "07670c790387ad4a6f0319790c33c84e229ca5dd72ac20645aeb892f106d5caa",
+    "sources": [
+      {
+        "path": "sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "sha256": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "bytes": 1498
+      }
+    ],
+    "models": [
+      {
+        "id": "c1db5718-87a6-4f49-9c93-574374c7a1ef",
+        "wall_thickness": null,
+        "height": 3200,
+        "walls_present": false,
+        "volume": "76608000000",
+        "wall_volume": null,
+        "wall_diagnostics": []
+      },
+      {
+        "id": "e11768e9-424f-449b-8088-8d0feee181ea",
+        "wall_thickness": 100,
+        "height": 3000,
+        "walls_present": true,
+        "volume": "36000000000",
+        "wall_volume": "4320000000",
+        "wall_diagnostics": []
+      }
+    ]
+  },
+  {
+    "file": "guards-stable/updated-material.gcanvas",
+    "sha256": "002f25d0b64a5b4c1f048b2ad86f96eb05c104f499147fdee4fe01c9ab5be3d0",
+    "format": "geometry-canvas/3",
+    "world_sha256": "07670c790387ad4a6f0319790c33c84e229ca5dd72ac20645aeb892f106d5caa",
+    "sources": [
+      {
+        "path": "sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "sha256": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "bytes": 1498
+      }
+    ],
+    "models": [
+      {
+        "id": "c1db5718-87a6-4f49-9c93-574374c7a1ef",
+        "wall_thickness": null,
+        "height": 3200,
+        "walls_present": false,
+        "volume": "76608000000",
+        "wall_volume": null,
+        "wall_diagnostics": []
+      },
+      {
+        "id": "e11768e9-424f-449b-8088-8d0feee181ea",
+        "wall_thickness": 100,
+        "height": 3400,
+        "walls_present": true,
+        "volume": "40800000000",
+        "wall_volume": "4896000000",
+        "wall_diagnostics": []
+      }
+    ]
+  },
+  {
+    "file": "compat/legacy-preserved.gcanvas",
+    "sha256": "a3984decbbd2d09579a0f280de512bf0d4000356be7f3e7ab99db7c09d03370a",
+    "format": "geometry-canvas/3",
+    "world_sha256": "07670c790387ad4a6f0319790c33c84e229ca5dd72ac20645aeb892f106d5caa",
+    "sources": [
+      {
+        "path": "sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "sha256": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "bytes": 1498
+      }
+    ],
+    "models": [
+      {
+        "id": "68122732-27f5-4239-a903-e85c6f9aa619",
+        "wall_thickness": 100,
+        "height": 3000,
+        "walls_present": false,
+        "volume": "71820000000",
+        "wall_volume": null,
+        "wall_diagnostics": [
+          {
+            "clause": "I33",
+            "code": "SPACE_CAPACITY",
+            "message": "本版最多保存 16 個邊界面與 16 個承載面；新增面會超過容量。請減少選邊或改用較小的來源場景。",
+            "path": [],
+            "root": null
+          }
+        ]
+      },
+      {
+        "id": "ef03bcbc-5856-4e3e-8c41-ad0dad58a7b1",
+        "wall_thickness": 100,
+        "height": 3000,
+        "walls_present": true,
+        "volume": "36000000000",
+        "wall_volume": "4320000000",
+        "wall_diagnostics": []
+      }
+    ]
+  },
+  {
+    "file": "compat/legacy-repaired.gcanvas",
+    "sha256": "1fbd9a6cddea41e5c6d40e84694e59e34f6d10f47d76809c431b2ad141c26fde",
+    "format": "geometry-canvas/3",
+    "world_sha256": "07670c790387ad4a6f0319790c33c84e229ca5dd72ac20645aeb892f106d5caa",
+    "sources": [
+      {
+        "path": "sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "sha256": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "bytes": 1498
+      }
+    ],
+    "models": [
+      {
+        "id": "68122732-27f5-4239-a903-e85c6f9aa619",
+        "wall_thickness": 100,
+        "height": 3000,
+        "walls_present": true,
+        "volume": "36000000000",
+        "wall_volume": "4320000000",
+        "wall_diagnostics": []
+      },
+      {
+        "id": "ef03bcbc-5856-4e3e-8c41-ad0dad58a7b1",
+        "wall_thickness": 100,
+        "height": 3000,
+        "walls_present": true,
+        "volume": "36000000000",
+        "wall_volume": "4320000000",
+        "wall_diagnostics": []
+      }
+    ]
+  },
+  {
+    "file": "compat/legacy-provenance-preserved.gcanvas",
+    "sha256": "c1a0388bcfe3687b52468000acf881db5c6f103a246c3f3ada28c425fcc77035",
+    "format": "geometry-canvas/3",
+    "world_sha256": "07670c790387ad4a6f0319790c33c84e229ca5dd72ac20645aeb892f106d5caa",
+    "sources": [
+      {
+        "path": "sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "sha256": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+        "bytes": 1498
+      }
+    ],
+    "models": [
+      {
+        "id": "68122732-27f5-4239-a903-e85c6f9aa619",
+        "wall_thickness": 100,
+        "height": 3000,
+        "walls_present": false,
+        "volume": "71820000000",
+        "wall_volume": null,
+        "wall_diagnostics": [
+          {
+            "clause": "I33",
+            "code": "SPACE_CAPACITY",
+            "message": "本版最多保存 16 個邊界面與 16 個承載面；新增面會超過容量。請減少選邊或改用較小的來源場景。",
+            "path": [],
+            "root": null
+          }
+        ]
+      },
+      {
+        "id": "ef03bcbc-5856-4e3e-8c41-ad0dad58a7b1",
+        "wall_thickness": 100,
+        "height": 3000,
+        "walls_present": true,
+        "volume": "36000000000",
+        "wall_volume": "4320000000",
+        "wall_diagnostics": []
+      }
+    ]
+  }
+]
