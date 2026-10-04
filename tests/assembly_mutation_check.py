@@ -53,11 +53,20 @@ def main():
                 exe = source / ('bridge-' + name)
                 subprocess.run(['cc', '-std=c11', '-O2', str(source/'geometry-web/web_bridge.c'), '-lm', '-o', str(exe)], check=True)
                 tests = ['tests.test_assembly_rules.AssemblyRules.' + (test or c[4]) for c in (CASES if not test else [CASES[0]])]
-                run = subprocess.run([sys.executable, '-m', 'unittest', *tests], cwd=ROOT,
-                    env={**os.environ, 'GEOMETRY_TEST_BRIDGE': str(exe)}, capture_output=True, text=True, timeout=120)
+                # This freshly compiled, deliberately fault-injected harness is
+                # caller-owned, not a registry binary from the unmodified ROOT.
+                # Use the existing direct BridgeSession(path) contract rather
+                # than declaring it a fresh GEOMETRY_TEST_BRIDGE override.
+                child = ('import sys, unittest\nfrom unittest.mock import patch\n'
+                         'from tests import test_assembly_rules\n'
+                         'exe = sys.argv.pop(1)\n'
+                         'with patch.object(test_assembly_rules, "find_bridge", return_value=exe):\n'
+                         '    unittest.main(module=None)\n')
+                run = subprocess.run([sys.executable, '-c', child, str(exe), *tests], cwd=ROOT,
+                    capture_output=True, text=True, timeout=120)
                 log = run.stdout + run.stderr
                 print(name, log, flush=True)
-                passed = run.returncode == 0 if name.startswith('baseline') else (run.returncode == 1 and 'AssertionError' in log and 'errors=' not in log and 'skipped=' not in log)
+                passed = (run.returncode == 0 and 'skipped=' not in log) if name.startswith('baseline') else (run.returncode == 1 and 'AssertionError' in log and 'errors=' not in log and 'skipped=' not in log)
                 results.append({'case': name, 'passed': passed, 'binary_sha256': hashlib.sha256(exe.read_bytes()).hexdigest()})
                 if not passed:
                     raise RuntimeError('Fault-injection validation failed: ' + name)

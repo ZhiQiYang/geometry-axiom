@@ -96,7 +96,11 @@ class EngineeringJson(unittest.TestCase):
         # sees it once) and hands it over here; recompiling per class run is what collided with SAC.
         prebuilt = os.environ.get('GEOMETRY_TEST_ENGINEERING_JSON')
         if prebuilt:
-            cls.exe = Path(prebuilt)
+            try:
+                from tests import binaries
+            except ModuleNotFoundError:
+                import binaries
+            cls.exe = Path(binaries.require_fresh('engjson', prebuilt))
             if not cls.exe.is_file():
                 raise AssertionError('GEOMETRY_TEST_ENGINEERING_JSON does not exist: ' + prebuilt)
             cls.compiler_output = 'prebuilt: ' + prebuilt
