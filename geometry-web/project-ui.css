@@ -12,6 +12,9 @@
 #projectInfoDetails { display:grid; grid-template-columns:90px minmax(0,1fr); gap:12px 10px; margin:0; font-size:12px; line-height:1.6; }
 #projectInfoDetails dt { color:var(--muted); }
 #projectInfoDetails dd { margin:0; overflow-wrap:anywhere; }
+.project-info-panel [data-room-source-overview] label { display:grid; gap:4px; margin:10px 0; }
+.project-info-panel [data-room-source-overview] select { width:100%; min-width:0; min-height:44px; }
+.project-info-panel [data-room-source-associate] { width:100%; min-height:44px; white-space:normal; }
 .project-concepts { margin-top:18px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; line-height:1.65; }
 .project-concepts summary { cursor:pointer; color:var(--accent-strong); }
 .project-concepts p { margin:10px 0 0; }

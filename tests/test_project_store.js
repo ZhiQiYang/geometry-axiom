@@ -100,7 +100,7 @@ test('rejects damaged scene, source, unknown version, duplicate paths and missin
   const newer=[...supported,'grid-subdivision-rules/1'];
   assert.deepEqual(require('./fixtures/native_available_capabilities.json'),newer);
   assert.deepEqual(P.nativeReaderCapabilities(newer),supported);
-  assert.deepEqual(P.readerCapabilities(newer),[...supported,P.Features.GRID_SCHEMA]);
+  assert.deepEqual(P.readerCapabilities(newer),[...supported,P.Features.GRID_SCHEMA,P.Features.ROOM_CAPABILITY,P.Features.ROOM_HISTORY_CAPABILITY]);
   assert.deepEqual(newer,[...supported,'grid-subdivision-rules/1']);
   assert.deepEqual(P.nativeReaderCapabilities(['grid-subdivision-rules/1']),[]);
   P.assertProjectCapabilities({requiredCapabilities:[P.PARAMETER_CAPABILITY]},P.nativeReaderCapabilities(newer));
@@ -267,4 +267,53 @@ test('history failures, previews, canvas positions and capacity do not lose cont
   assert.equal(h.undo.length,2);h.observe('line undo',{ok:false});assert.equal(h.frame.context,before);
   h.observe('line reset',{ok:true});assert.notEqual(h.frame.context,before);
   h.observe('line undo',{ok:true});assert.equal(h.frame.context,before);
+});
+
+function roomHistory() {
+  const value={schema:'source-rooms/1',planes:[{id:'plane',sourceId:'a'.repeat(64),page:1,coordinateSpace:'pdf-page-viewport/1',
+    pageSize:[600,400],calibration:null,alignment:{x:0,y:0,mmPerPx:20,rotation:0},basisRevision:1}],
+    collections:[{id:'collection',planeId:'plane',roomIds:['room']}],rooms:[{id:'room',name:'A',
+      boundaryRef:{kind:'boundary',id:1,associationPin:'b'.repeat(64)},acceptedBasisRevision:1,reviewState:'confirmed'}]};
+  const h=new P.ContextHistory(()=>({groups:new Map(),featureAttachments:[]}));h.sync([1]);
+  h.frame.context.featureAttachments=[P.Features.record('source-rooms',value)];
+  return h;
+}
+test('native candidate boundary changes enter attachment history only on exact confirmation',()=>{
+  const h=roomHistory(), frame=h.frame, initial=clone(h.frame.context.featureAttachments);
+  const preview={valid:true,token:77,boundaries:[{id:1,before:{id:1},after:{id:1}}]};
+  // Native automatic impact previews report ok:false with a valid candidate.
+  h.observe('line boundary 1 outline ...',{ok:false,preview},'native-session');
+  assert.equal(h.undo.length,0);assert.equal(h.frame,frame);assert.deepEqual(h.frame.context.featureAttachments,initial);
+  h.observe('line confirm 77',{ok:true},'native-session');
+  assert.equal(h.frame.context.featureAttachments[0].value.rooms[0].reviewState,'needs-review');
+  assert.equal(h.undo.length,1);
+  h.observe('line undo',{ok:true},'native-session');assert.deepEqual(h.frame.context.featureAttachments,initial);
+  assert.notEqual(h.frame,frame);
+  h.observe('line redo',{ok:true},'native-session');
+  assert.equal(h.frame.context.featureAttachments[0].value.rooms[0].reviewState,'needs-review');
+});
+test('cancel and session-unknown confirmations cannot revive room associations',()=>{
+  for(const outcome of ['cancelled','session-changed','deleted']) {
+    const h=roomHistory(), oldIdentity=h.frame.ids.get(1);
+    h.observe('line preview delete boundary 1',{ok:true,preview:{valid:true,token:1,boundaries:[{id:1,after:null}]}},'before');
+    if(outcome==='cancelled')h.observe('line cancel-preview',{ok:true},'before');
+    h.observe('line confirm 1',{ok:true},outcome==='session-changed'?'after':'before');
+    assert.equal(h.frame.context.featureAttachments[0].value.rooms[0].reviewState,'needs-reassociation');
+    if(outcome==='deleted') {
+      assert.equal(h.frame.ids.has(1),false);
+      h.observe('line boundary 1 outline ...',{ok:true});
+      assert.notEqual(h.frame.ids.get(1),oldIdentity);
+      assert.equal(h.frame.context.featureAttachments[0].value.rooms[0].reviewState,'needs-reassociation');
+    }
+  }
+});
+test('current group rollback preserves its frame lease while undo creates a fresh frame',()=>{
+  for(const failure of ['abort','rejection']) {
+    const h=roomHistory(), frame=h.frame, initial=clone(h.frame.context.featureAttachments);
+    h.observe('line history-begin',{ok:true});h.observe('line boundary 1 outline ...',{ok:true});
+    assert.equal(h.frame.context.featureAttachments[0].value.rooms[0].reviewState,'needs-review');
+    h.observe(failure==='abort'?'line history-abort':'line confirm 99',{ok:failure==='abort'});
+    assert.equal(h.frame,frame);assert.equal(h.group,null);assert.deepEqual(h.frame.context.featureAttachments,initial);
+    h.observe('line boundary 1 outline ...',{ok:true});h.observe('line undo',{ok:true});assert.notEqual(h.frame,frame);
+  }
 });

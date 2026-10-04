@@ -1918,7 +1918,7 @@ body.fb-picking, body.fb-picking * { cursor: crosshair !important; }
 .ref-preview-scroll { padding:12px; }
 #refPagePreview { margin-inline:auto; }
 @media(min-width:1161px) {
-  .reference-editor { --left-w:clamp(260px,20vw,300px); --right-w:clamp(340px,27vw,400px); --project-bar-h:76px; --topbar-h:72px; }
+  .reference-editor { --left-w:clamp(260px,20vw,300px); --right-w:clamp(340px,27vw,400px); --project-bar-h:76px; }
   .reference-editor .project-brand { font-size:18px; }
   .reference-editor .project-name { font-size:16px; }
   .reference-editor .project-state { font-size:13px; }

@@ -11,19 +11,20 @@ const vm = require('node:vm');
 const {webcrypto} = require('node:crypto');
 const S = require('../geometry-web/source-plane.js');
 const R = require('../geometry-web/room-collection.js');
+const F = require('../geometry-web/feature-attachments.js');
 const workspaceSource = readFileSync(path.join(__dirname, '../geometry-web/room-collection-workspace.js'), 'utf8');
 const clone = value => structuredClone(value);
 const outline = [[0,0],[4000,0],[4000,3000],[0,3000]];
-const callbacks = ['readSource','readIncarnation','beginTransaction','assertTransaction','endTransaction','groupOpen','labelTransaction','adoptLegacySource'];
+const callbacks = ['readSource','readIncarnation','beginTransaction','assertTransaction','endTransaction','preflightAttachment','groupOpen','labelTransaction','adoptLegacySource'];
 
-function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = false, existingRoom = false} = {}) {
+function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = false, rejectAbortKnown = false, rejectCancelKnown = false, existingRoom = false} = {}) {
   const plane = S.fromPage({sourceId:'a'.repeat(64), page:1, imgW:600, imgH:400, x:0, y:0, mmPerPx:20, rot:0,
     calibration:{points:[[50,300],[250,300]],distanceMm:4000,inputValue:4000,inputUnit:'mm'}}, 'application/pdf', 'shared-plane');
   const native = {ok:true, kind:'room_plan', geometryFingerprint:'f'.repeat(64), loops:[{verts:clone(outline),fixity:[1,1,1,1]}]};
   const initial = {...S.empty(), planes:[plane], collections:[{id:'shared-rooms',planeId:plane.id,roomIds:existingRoom ? ['room-a'] : []}],
     rooms:existingRoom ? [{id:'room-a',name:'Room A',boundaryRef:{kind:'boundary',id:1,associationPin:native.geometryFingerprint},acceptedBasisRevision:1,reviewState:'confirmed'}] : []};
   const owner = {attachment:clone(initial), revision:1, lease:null, ended:[], group:false, confirmed:existingRoom,
-    requests:[], sources:[], incarnations:[], writes:0, labels:[], expectRecovery:false};
+    requests:[], protocol:[], preflights:0, sources:[], incarnations:[], writes:0, labels:[], expectRecovery:false,blockCancel:rejectCancelKnown};
   const ui={draft:{pts:[]},draftPreview:null,panHold:null,newOutline:null,tool:'select',events:[]};
   let roomWorkspace;
   const connection = {phase:'ready'};
@@ -50,6 +51,11 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     readIncarnation:(id, token) => {owner.incarnations.push([id,token]);return 'native-incarnation-1';},
     beginTransaction:token => {assert.equal(owner.lease,null);assert.equal(token,'fixture-context');return owner.lease={contextToken:token};},
     assertTransaction:lease => {assert.ok(lease);assert.equal(lease,owner.lease);},
+    preflightAttachment:(proposal,lease) => {
+      assert.ok(lease);assert.equal(lease,owner.lease);
+      F.validate({schema:F.SCHEMA,records:[F.record(F.ROOM_KIND,proposal)]});
+      owner.preflights++;owner.protocol.push('preflight');
+    },
     endTransaction:lease => {
       assert.equal(lease,owner.lease);
       if(owner.expectRecovery) {
@@ -67,18 +73,24 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     adoptLegacySource:() => {throw new Error('source adoption is outside this failure fixture');},
   };
   const apiRequest = async (command, lease) => {
-    owner.requests.push(command);
+    owner.requests.push(command);owner.protocol.push(command);
     if (lease) assert.equal(lease,owner.lease);
     if (command==='newid') return {ok:true,boundary:1};
     if (command==='boundary 1') return owner.confirmed ? clone(native) : {ok:false,error:'boundary does not exist'};
-    if (command.startsWith('line preview ')) return {ok:true,preview:{valid:true,token:123}};
-    if (command==='line cancel-preview') return {ok:true};
-    if (command==='line history-begin') {owner.group=true;return {ok:true};}
+    if (command.startsWith('line preview ')) return {ok:true,preview:{valid:true,token:123,
+      boundaries:[{id:1,before:owner.confirmed ? {...clone(native),id:1} : null,after:{...clone(native),id:1}}]}};
+    if (command==='line cancel-preview') return owner.blockCancel ? {ok:false,error:'cancellation rejected before delivery',stale:true} : {ok:true};
+    if (command==='line history-begin') {
+      assert.equal(owner.protocol.at(-2),'preflight','admission precedes native history publication');
+      owner.group=true;return {ok:true};
+    }
     if (command==='line confirm 123') {
-      if (rejectConfirm) {owner.group=false;return {ok:false,error:'preview is stale'};}
+      assert.ok(owner.preflights>0,'the owned proposal is admitted before native confirmation');
+      if (rejectConfirm) {if (!rejectAbortKnown) owner.group=false;return {ok:false,error:'preview is stale'};}
       owner.confirmed=true;return {ok:true};
     }
     if (command==='line history-abort') {
+      if (rejectAbortKnown) return {ok:false,error:'rollback rejected before delivery',stale:true};
       if (loseAbort) {connection.phase='error';return {ok:false,error:'rollback receipt unavailable',transport:true};}
       owner.group=false;owner.confirmed=existingRoom;return {ok:true};
     }
@@ -94,6 +106,7 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     ui.events.push(stage);
   };
   const context = {GeometrySourcePlane:S,GeometryRoomCollection:R,ReferenceWorkspace:workspace,apiRequest,connection,
+    connectionFailed:message => {connection.phase='error';connection.error=message;},
     crypto:webcrypto,structuredClone,window:{},fe:ui,
     PolyDraft:{createState:()=>({pts:[]})},
     feSyncDraftMirror:()=>recordUI('draft-mirror'),feLenShow:()=>recordUI('length-ui'),
@@ -154,6 +167,37 @@ test('a lost rollback reply retains the owner lease until receipt recovery settl
   assert.notEqual(f.roomWorkspace.controller,controller,'the settled operation retires its previous controller');
   assert.equal(f.roomWorkspace.controller.intent,null);assert.equal(f.roomWorkspace.controller.preview,null);
   f.roomWorkspace.controller.beginNew('shared-rooms');await f.roomWorkspace.controller.cancel();
+});
+
+test('a known rollback rejection retains an open native group and exposes receipt recovery', async () => {
+  const f=fixture({rejectConfirm:true,rejectAbortKnown:true}), controller=await preview(f), lease=f.roomWorkspace.transactionLease;
+  await assert.rejects(controller.confirm(),error => error.transport===true && /rollback rejected before delivery/.test(error.message));
+  assert.equal(f.owner.group,true,'a rejection before delivery cannot close the native transaction');
+  assert.equal(f.connection.phase,'error','the existing connection retry becomes available');
+  assert.match(f.connection.error,/房間交易尚未回復/);
+  assert.equal(controller.preview.token,123,'the owned candidate remains guarded until native rollback is confirmed');
+  assert.equal(f.roomWorkspace.transactionLease,lease);assert.equal(f.roomWorkspace.busy,true);
+  assert.equal(f.owner.ended.length,0);assert.deepEqual(f.owner.attachment,f.initial);
+  // Receipt recovery performs the real abort externally; this VM checks only
+  // that its confirmed outcome is the prerequisite for owner/UI cleanup.
+  f.owner.group=false;f.connection.phase='ready';
+  f.roomWorkspace.observeNativeResult('line history-abort',{ok:true});
+  f.owner.expectRecovery=true;await f.roomWorkspace.settleRecoveredTransaction();
+  assert.equal(f.roomWorkspace.transactionLease,null);assert.equal(f.roomWorkspace.hasWork,false);
+  assert.deepEqual(f.owner.ended,[lease]);assert.deepEqual(f.owner.attachment,f.initial);
+});
+
+test('a known cancellation rejection retains the candidate lease and exposes recovery without inventing a receipt', async () => {
+  const f=fixture({rejectCancelKnown:true}),controller=await preview(f),lease=f.roomWorkspace.transactionLease;
+  await assert.rejects(controller.cancel(),error=>error.transport===true && /cancellation rejected before delivery/.test(error.message));
+  assert.equal(f.connection.phase,'error');assert.equal(controller.preview.token,123);
+  assert.equal(f.roomWorkspace.transactionLease,lease);assert.equal(f.roomWorkspace.busy,true);assert.equal(f.owner.group,false);
+  assert.equal(f.owner.ended.length,0);assert.deepEqual(f.owner.attachment,f.initial);
+  f.owner.blockCancel=false;f.connection.phase='loading';f.owner.expectRecovery=true;
+  await f.roomWorkspace.settleRecoveredTransaction();
+  assert.equal(f.roomWorkspace.transactionLease,null);assert.equal(f.roomWorkspace.hasWork,false);
+  assert.deepEqual(f.owner.ended,[lease]);assert.deepEqual(f.owner.attachment,f.initial);
+  assert.equal(f.owner.requests.filter(command=>command==='line cancel-preview').length,2,'retry cancels once after the first request was rejected before delivery');
 });
 
 test('receipt recovery clears draft candidate and redraw while lease ownership still blocks other operations', async () => {
