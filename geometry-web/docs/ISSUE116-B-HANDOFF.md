@@ -85,6 +85,6 @@ source-plane 的原插入區不衝突，也必須保留；不以只選 ours/thei
 
 - [旋轉修正前](issue116/preview-rotation-before.png)、[相同角度修正後](issue116/preview-rotation-after.png)、[手機](issue116/preview-rotation-mobile.png)
 - 本次結構化證據：`issue116/validation.json` 的 `main_update_20261005`，舊資料保留為歷史紀錄。
-- 8817 已由本分支重啟，fresh probe 通過，之前完整保存檔的核心場景逐字載回。使用者明示可載回之前保存檔；原完整檔、完整檔備份及更新前的新 dump 均保留本機。Edge 的完整專案檔案選取仍需完成，未宣稱 PDF／草稿已恢復；未清瀏覽器儲存、未重置 8765。
+- 8817 已由本分支重啟，fresh probe 通過，之前完整保存檔的核心場景逐字載回。使用者明示可載回之前保存檔；原完整檔、完整檔備份及更新前的新 dump 均保留本機。Edge 的未保存離開確認／完整專案選檔未能由工具完成，使用者隨後表示全部關閉；未宣稱 PDF／草稿已恢復，下次開啟時可載回原完整檔。未清瀏覽器儲存、未重置 8765。
 
 PR #125 仍交 dot 審查整合，沒有直接合入 main。Hosted CI、最終 head／owner 及實體裝置 gate 維持原限制。
