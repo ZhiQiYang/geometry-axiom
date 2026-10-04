@@ -111,6 +111,23 @@ class ModelUpdate(unittest.TestCase):
         self.assertEqual(runtime["axiom_sha256"], hashlib.sha256((ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")).hexdigest())
         self.assertRegex(runtime["producer_sha256"], r"^[a-f0-9]{64}$")
 
+    def test_native_update_bridge_only_replays_with_compiler_result_and_actual_pins(self):
+        from modeling.base import startup_base_transport
+        environment = dict(os.environ)
+        environment.pop("GEOMETRY_MODEL_BASE", None)
+        environment.pop("GEOMETRY_MODEL_BASE_WSL_DISTRO", None)
+        environment["GEOMETRY_MODEL_UPDATE_BRIDGE"] = self.bridge
+        # Use the registry's actual native adapter as the compiler result. This
+        # contract must also run on native Windows installs without a C compiler.
+        with mock.patch.dict(os.environ, environment, clear=True), mock.patch.object(update, "_build_adapter", return_value=self.base) as build:
+            self.assertEqual(startup_base_transport(), "native")
+            candidate = update.prepare_update(self.request())
+        build.assert_called_once_with()
+        self.assertEqual(candidate["runtime"]["base_binary_sha256"], hashlib.sha256(Path(self.base).read_bytes()).hexdigest())
+        self.assertEqual(candidate["runtime"]["bridge_binary_sha256"], hashlib.sha256(Path(self.bridge).read_bytes()).hexdigest())
+        self.assertEqual(candidate["record"]["result"]["summary"]["timber_volume_mm3"], str(4000 * 29 * 33))
+        self.assertEqual(self.old["result"]["summary"]["timber_volume_mm3"], str(4000 * 27 * 33))
+
     def test_explicit_different_and_same_ids_never_claim_identity_continuity(self):
         for ids in ((1, 1, 0), (0, 2, 7), (8, 9, 10)):
             placement, boundary, timber = ids
