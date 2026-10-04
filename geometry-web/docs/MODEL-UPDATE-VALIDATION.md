@@ -1,15 +1,17 @@
 # #44 F1b validation and delivery
 
-Validated on 2026-10-04 against main
+Original validation on 2026-10-04 against main
 `1075058be37d37b98a2a910f4f67b87583be85b3`, with the four product modules at
-commit `37c1be5`. Later changes only document the PR100 contract mapping and
-correct the owner patch's saved-source explanatory sentence. No existing
+commit `37c1be5`. The original handoff then documented the PR100 contract mapping
+and corrected the owner patch's saved-source explanatory sentence. No existing
 schema/store/history/app/native files are changed on this branch.
 Latest main `8d08f1aceda7f26b6f05c64010f4b47a41df9c31` was then incorporated;
 its #24 merge changes only assembly tests/evidence. The strengthened assembly
-suite was rerun on that base: 35 pass, zero fail/skip, exit 0. Product modules
-remain byte-identical; the older full-run count is not represented as a new-head
-full run.
+suite was rerun on that base: 35 pass, zero fail/skip, exit 0. At that stage the
+product modules remained byte-identical; the older full-run count is not represented as a new-head
+full run. Root review subsequently identified missing narrow acceptance cases
+and an unsupported inline-rectangle timber fixture; the separate incremental
+implementation and its own evidence are recorded below.
 
 Draft PR: https://github.com/ZhiQiYang/geometry-axiom/pull/99.
 Shared owner contract compared at PR100 head
@@ -17,7 +19,76 @@ Shared owner contract compared at PR100 head
 The candidate mapping and owner-only wiring are in
 `MODEL-UPDATE-INTEGRATION.md` and `MODEL-UPDATE-INTEGRATION.patch`.
 
-## Focused acceptance
+## Incremental root review: implementation `509aa4e`
+
+The producer now explicitly refuses timber models whose old boundary metadata
+is null/zero and current timber selections on an embedded rectangle, with
+`UPDATE_TIMBER_BOUNDARY`. This follows the existing strict store requirement
+for a positive boundary and matching native timber references. Shared schema
+is untouched. The UI hides those rectangle timber choices, explains the limit
+in Chinese and refuses programmatically checked timber inputs. Rectangles
+without selected timbers remain supported and pass the actual JS store.
+Controller receipt/context/history/source/runtime guards are unchanged.
+
+| Run on frozen implementation `509aa4e` | Result |
+|---|---|
+| All focused producer tests | exit 0; 22 pass, 0 fail/skip |
+| All controller tests, now eight true-native cases | exit 0; 39 pass, 0 fail/skip |
+| Real app/native, actual shared-owner edit entry, no module injection | exit 0; 28 pass, 0 browser/console errors |
+| Real app/native, direct-module injection scope | exit 0; 28 pass, 0 browser/console errors |
+
+New proof includes nonempty column **and** beam selections on a real native
+scene: independent old clearance 36,000,000,000 − 120,000,000 − 1,000,000,000 =
+34,880,000,000 mm³; enlarging the column makes clearance 34,760,000,000 mm³.
+The complete candidate input/diff/package changes and native replay are checked.
+The removal test now starts with those actual selected obstacles and requires
+restored clearance 36,000,000,000 mm³ after explicit empty selection.
+
+The non-exact-support negative is a **compiled test-local C read-projection
+fault**, not a naturally legal ambiguous scene. Normal native placement checks
+require unique stops; attempts at duplicate stops were rejected by the core.
+Only the temporary reader's collected stop count is zeroed for one real placed
+timber. The unchanged native endpoint function emits unknown/null support
+facts; the actual producer returns `UNSUPPORTED / UPDATE_SUPPORT_UNCHECKED`.
+Tests assert the record/input, live native dump/source/allocator, controller
+review/commit and undo/redo remain unchanged. Compilation ignores unrelated
+`GEOMETRY_TEST_SUPPORT_BRIDGE` overrides; the Python run explicitly supplied a
+normal override to verify fixture isolation.
+
+The actual native inline preview is demonstrated to fail existing JS strict
+store validation when timbers are present; old null/zero metadata and current
+rectangle timber selection are refused, while the no-timber case validates,
+commits once and restores its entire old record with one undo. The final
+confirmation hash-await test holds a fresh real-native receipt during SHA
+calculation and proves cancel, context replacement and same-ID record changes
+prevent review/commit without altering history/source.
+
+The browser harness adds three rectangle checks: no unsupported timber choices,
+programmatic checked input rejected before producer/history write, and a true
+native no-timber candidate accepted by strict store. Its owner mode requires
+actual index/serve/edit wiring in an isolated checkout and uses the existing
+model edit action then `smCurrentSourceUpdate` for every open. It cannot inject
+modules. Direct-module mode alone does not prove that entry; the two 28-check
+runs exercise the same assertions in different entry scopes and are not added
+together as independent feature scenarios. The owner patch registry is updated
+to Python22 / Node39 (combined existing Node count333).
+
+New logs: `/tmp/geometry-f1b-review-python.log`,
+`/tmp/geometry-f1b-review-node.log`,
+`/tmp/geometry-f1b-review-owner-browser.log`,
+`/tmp/geometry-f1b-review-direct-browser.log`. Artifacts are in
+`/tmp/geometry-f1b/review-owner-browser/` and
+`/tmp/geometry-f1b/review-direct-browser/`; each evidence JSON names its entry
+scope. Manual before/after fresh runtime probes are retained separately at
+`/tmp/geometry-f1b/review-runtime.json`. Owner runtime:
+`7a343187fddd53d5730d9a88f15797dab836225cd21ea3b81659778fb84c8289`;
+direct-module runtime:
+`32361b18cc0fa9b68de88d8916717a4494779b0afa98a8e2003952c48830e0dc`.
+The broader results below belong to the earlier implementation and are not
+claimed as reruns of this new product head. No broadened product capability,
+shared-file write or weakened golden is included in this review follow-up.
+
+## Original focused acceptance before incremental review
 
 | Actual run | Passed | Failed / skipped | Evidence |
 |---|---:|---:|---|
@@ -53,8 +124,10 @@ geometry; mocks do not stand in for native domain correctness.
 ## Broader regression in an isolated integration checkout
 
 The owner wiring patch was applied only in `/tmp/geometry-f1b-integration`.
-The four product modules and both focused test files there are byte-identical
-to this branch. Full test registration exists only in that owner patch.
+The four product modules and both focused test files there match the original
+`37c1be5` implementation. The later review checkout
+`/tmp/geometry-f1b-review-integration` matches `509aa4e` before applying only
+the owner wiring patch. Full registration still belongs to that owner patch.
 
 | Actual run | Result |
 |---|---|
@@ -98,6 +171,9 @@ binaries, a separate `/tmp` feedback directory and unused ports. Use
 and the container flags above for the existing browser suites. The new F1b
 script also accepts `GEOMETRY_MODEL_UPDATE_TEST_DIR` for output and injects its
 scripts only if shared-owner index wiring is absent.
+Set `GEOMETRY_MODEL_UPDATE_ENTRY=owner` to require the true edit entry with
+actual owner wiring and no module injection. Without that flag the scope is
+direct-module acceptance, which does not certify the shared owner entry.
 
 Focused browser artifacts are at `/tmp/geometry-f1b/browser/`: `evidence.json`,
 desktop/mobile review screenshots, committed screenshot and `updated.gcanvas`.
