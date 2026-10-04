@@ -64,11 +64,32 @@
     "passed": 1,
     "skipped": 0
   },
-  "scenario_official_harness": "Pre-existing missing dependency scripts reproduced on main4bea; temporary corrected harness passes; official entry not claimed passing.",
+  "scenario_official_harness": {
+    "entry": "tests/scenario_browser_check.cjs",
+    "exit": 0,
+    "viewports": [
+      1280,
+      390
+    ],
+    "nativeCalls": 12,
+    "forbiddenCalls": 0,
+    "errors": [],
+    "scope": "independent module; no product adoption/history/UI claim",
+    "evidence": "required-scenario-results-2ef9.json"
+  },
   "owner_five": {
-    "adapter_configured": false,
-    "executed": 0,
-    "exit": 3
+    "adapter_configured": true,
+    "adapter": "tests/integration/wp60_actual_owner_adapter.js",
+    "executed": 5,
+    "passed": 5,
+    "skipped": 0,
+    "exit": 0,
+    "history_and_guards_formats": [
+      10,
+      11
+    ],
+    "evidence": "required-owner-results-2ef9.json",
+    "unknown_history_case": "real native preview outside owner observation; actual confirm observed by owner; requires reassociation, preserves pins/raw history/PDF"
   },
   "evidence_links": {
     "checks": 67,
@@ -77,5 +98,28 @@
   "artifacts": {
     "source-subdivision-rooms-v11.gcanvas": "89e54399b53adf834b4cd0e47a738831ee0fcf545a819ab2855b08d0a5760ddd",
     "wp60-a-main4bea-near-capacity.gcanvas": "313b1bf08e62c011d8eea7fecdd6f659f108a614d90895f37c4432d8ced0f3f2"
+  },
+  "required_gate_tested_head": "2ef9a22209a2f05d1c6e72fc15fcc0602c587d16",
+  "historical_unconfigured_owner_five": {
+    "adapter_configured": false,
+    "executed": 0,
+    "exit": 3
+  },
+  "historical_scenario_harness": "Pre-existing missing dependency scripts reproduced on main4bea; temporary corrected harness passes; official entry not claimed passing.",
+  "additional_test_blobs": {
+    "tests/integration/wp60_actual_owner_adapter.js": "ba2ba4df29068a7dce5f32ce16ba59b7698b8ba7",
+    "tests/scenario_browser_check.cjs": "74baa37ab0ea3700422f71fd0f3efbc3ca1e5def"
+  },
+  "previous_code_blobs_unchanged": true,
+  "hosted_ci": {
+    "head": "e95424292d34d1d8af986d447b56608f1693a0d3",
+    "run_id": 37224821273,
+    "jobs": 7,
+    "all_conclusions": "failure",
+    "all_steps_empty": true,
+    "all_runner_ids": 0,
+    "executed": false,
+    "green_claim": false,
+    "evidence": "hosted-ci-e954-jobs.json"
   }
 }

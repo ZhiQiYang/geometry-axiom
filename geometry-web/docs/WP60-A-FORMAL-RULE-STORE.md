@@ -50,7 +50,7 @@ python3 tests/run_all.py --build
 
 ## 最終 exact-head 驗證
 
-已凍結、root source review 通過、完整 gates 的 code head 是 `65e733c05aa1d5b3c8b080601ca31419398ced06`，main `417f4c0ee67235e5042b22f94318b7bca0c0baee` 位於 ancestry。後續提交只增加本交接、原始 evidence／截圖與上述實際下載範例，可執行 code/test blobs 保持相同；不為文件／證據重跑長測試。
+已凍結、root source review 通過、完整 gates 的產品 code head 是 `65e733c05aa1d5b3c8b080601ca31419398ced06`，main `417f4c0ee67235e5042b22f94318b7bca0c0baee` 位於 ancestry。後續 `e954242` 增加文件／原始 evidence／實際下載範例；`2ef9a22209a2f05d1c6e72fc15fcc0602c587d16` 只修官方 scenario 測試 harness 依賴，並新增正式 owner test adapter。產品、strict runner／floors、CDP golden 及原專屬測試 blobs 與 `65e733c` 相同；保留已通過的 strict／SPACE／full CDP 證據，兩個補齊入口另在 exact `2ef9a22` 實跑。
 
 | Gate | 實際終態／範圍 |
 | --- | --- |
@@ -62,9 +62,13 @@ python3 tests/run_all.py --build
 | 原 main 近上限 legacy browser | 11 checks，官方 open→save→390px 新 context reopen；保留 non-scene metadata、PDF bytes、saved dump；新 metadata edit 與新增 rules 超限仍拒絕。 |
 | 原房間 browser gates | official owner API 的 browser／exit／recovery／remove 全部 exit 0，分別 37／61／111／46 checks；recovery 的預期 HTTP409 與真正 errors 分開記錄。 |
 | Scenario GridDraft | real-owner validator/native 1/1 Node test，0 skip。 |
+| 必需正式 owner 五項 | 原 `tests/integration/issue77_attachment_owner.js` 五個 tests 全實跑，5/5／0 skip／exit 0；repo test-only adapter 直接映射正式 registry／ZIP／ContextHistory／transaction。後兩項各驗真 /10 與 /11，包括 same-ID retirement、unknown owner-preview history、immutable 原始紀錄／PDF、真跨 context 晚到讀取拒絕、一次 native+metadata undo/redo、錯 native pin 候選拒絕。 |
+| 官方 scenario module browser | 原 `tests/scenario_browser_check.cjs` 補實際 source-plane／feature-attachments script 與 route；1280／390 真 ZIP download/file input、原 bytes、A/B 隔離、latecontext／tamper 通過；nativeCalls=12／forbidden liveCalls=0／errors=0／exit 0。仍只證明獨立模組，不宣稱產品 A/B adoption/UI 完成。 |
 | I/O fault injection | open／write／read 三種模式皆回 IO、失效候選、不改 World/revision；Linux LD_PRELOAD 的實際故障，不代表 Windows 已驗。 |
 | Evidence Links adapter browser | 67 checks 通過；attachment backend 是原 harness 的 injected-memory，**不是正式 ZIP evidence-links 整合**。 |
 
 原始 logs、browser result JSON、desktop/mobile 截圖與 code blob pins 位於 `docs/evidence/wp60-a-20261004/final/`。最終 browser 私有服務 `/runtime` 皆 fresh=true；未使用使用者服務、圖紙、PC 或清理其儲存。
 
-保留不適用／未驗：Windows GDI、physical Windows/iOS/OS file picker、#61 rule UI／未提交規則草稿，以及 SPACE 列出的兩個 omitted groups。獨立 `scenario_browser_check.cjs` 官方 harness 在原 main4bea 已缺 source-plane/feature-attachments scripts；只在 /tmp harness 補實際依賴後，1280／390 模組 ZIP browser 通過，nativeCalls=12／forbidden liveCalls=0／errors=0，不能聲稱未改官方入口通過。#77 owner-five 入口未配置 test adapter，實跑 exit 3／executed=0；其預設 pending_implementation 訊息不是本輪產品盤點，亦不把四個 browser gates 冒充該五項測試。
+保留不適用／未驗：Windows GDI、physical Windows/iOS/OS file picker、#61 rule UI／未提交規則草稿，以及 SPACE 列出的兩個 omitted groups。原 `65e733c` 的 unconfigured owner-five exit 3／executed=0 與臨時 scenario harness 證據仍保留為歷史 raw logs；目前以 `2ef9a22` 的兩個正式入口成功證據為準，不把四個房間 browser gates 冒充五項 tests。
+
+GitHub hosted CI 沒有 green 聲明：`e954242` 的 [run 37224821273](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37224821273) 七個 jobs 均 failure、steps=[]、runner_id=0／runner_name 空，未實際執行驗證。保留 REST 原始 jobs 回覆；private cloud 的上述成功不能代稱 hosted CI 成功。此 runner 啟動缺口交 root 處理，不變更付費或權限設定。

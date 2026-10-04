@@ -1,0 +1,70 @@
+c:integrity                      需要：integrity              tests/test_core_integrity.c
+core:run_tests                   需要：core                   tests/run_tests.py <core>
+mutation:check                   需要：-                      tests/mutate.py --check (saved current-source mutation receipts)
+py:test_assembly_candidate_impact 需要：bridge                 tests/test_assembly_candidate_impact.py
+py:test_assembly_capacity        需要：bridge                 tests/test_assembly_capacity.py
+py:test_assembly_generation      需要：bridge                 tests/test_assembly_generation.py
+py:test_assembly_native_diagnostics 需要：bridge                 tests/test_assembly_native_diagnostics.py
+py:test_assembly_parameter_refs  需要：bridge                 tests/test_assembly_parameter_refs.py
+py:test_assembly_rules           需要：bridge                 tests/test_assembly_rules.py
+py:test_axiom_reader             需要：-                      tests/test_axiom_reader.py
+py:test_binaries                 需要：-                      tests/test_binaries.py
+py:test_bridge_integrity         需要：bridge                 tests/test_bridge_integrity.py
+py:test_cli_args                 需要：core                   tests/test_cli_args.py
+py:test_datum_contract           需要：bridge                 tests/test_datum_contract.py
+py:test_engineering_core         需要：bridge                 tests/test_engineering_core.py
+py:test_engineering_json         需要：engjson                tests/test_engineering_json.py
+py:test_engineering_model_compatibility 需要：model-base             tests/test_engineering_model_compatibility.py
+py:test_engineering_model_sources 需要：bridge, model-base     tests/test_engineering_model_sources.py
+py:test_engineering_transport    需要：-                      tests/test_engineering_transport.py
+py:test_evidence_link_native     需要：bridge                 tests/test_evidence_link_native.py（需 node）
+py:test_feedback_store           需要：-                      tests/test_feedback_store.py
+py:test_gdi_contract             需要：gdi                    tests/test_gdi_contract.py
+py:test_grid_subdivision_oracle  需要：bridge                 tests/test_grid_subdivision_oracle.py
+py:test_grid_system_contract     需要：bridge                 tests/test_grid_system_contract.py
+py:test_grid_trial_contract      需要：bridge                 tests/test_grid_trial_contract.py
+py:test_guide_panels             需要：-                      tests/test_guide_panels.py
+py:test_infinite_grid_contract   需要：bridge                 tests/test_infinite_grid_contract.py
+py:test_model_update             需要：bridge, model-base     tests/test_model_update.py
+py:test_modeling_degenerate      需要：model-base             tests/test_modeling_degenerate.py
+py:test_modeling_runtime         需要：model-base             tests/test_modeling_runtime.py
+py:test_modeling_transport       需要：bridge, model-base     tests/test_modeling_transport.py
+py:test_mutation_freshness       需要：-                      tests/test_mutation_freshness.py
+py:test_parameters_core          需要：bridge, model-base     tests/test_parameters_core.py
+py:test_reference_contract       需要：bridge                 tests/test_reference_contract.py
+py:test_rule_case_catalog        需要：bridge                 tests/test_rule_case_catalog.py
+py:test_rule_case_definition     需要：-                      tests/test_rule_case_definition.py
+py:test_rule_case_executor       需要：bridge                 tests/test_rule_case_executor.py
+py:test_rule_case_request        需要：bridge                 tests/test_rule_case_request.py
+py:test_runtime_version          需要：-                      tests/test_runtime_version.py
+py:test_scenario_verify          需要：bridge, model-base     tests/test_scenario_verify.py
+py:test_scene_import             需要：bridge                 tests/test_scene_import.py
+py:test_serve                    需要：-                      tests/test_serve.py
+py:test_source_inspector         需要：bridge                 tests/test_source_inspector.py
+py:test_source_inspector_transport 需要：-                      tests/test_source_inspector_transport.py
+py:test_space_modeling           需要：model-base             tests/test_space_modeling.py
+py:test_subgrid_contract         需要：bridge                 tests/test_subgrid_contract.py
+py:test_timber_support_projection 需要：-                      tests/test_timber_support_projection.py
+py:test_witness_diagnostics      需要：-                      tests/test_witness_diagnostics.py
+py:test_witness_marks            需要：-                      tests/test_witness_marks.py
+node:tests-js                    需要：bridge, model-base     node --test tests/*.js（已登記的 26 檔；不含夾具）（需 node）
+node:model_viewer                需要：-                      tests/test_model_viewer.cjs（需 node）
+node:polydraft                   需要：core                   geometry-web/polydraft_test.js（需 node）
+node:canvas_direct               需要：bridge                 geometry-web/canvas_test.js direct（需 node）
+node:document_format             需要：-                      tests/test_document_format.js（需 node）
+node:document_cases              需要：-                      tests/test_document_cases.js（需 node）
+node:cdp_navigation              需要：-                      tests/test_cdp_navigation.js（需 node）
+node:cdp_confirmation_gate       需要：-                      tests/test_cdp_confirmation_gate.js（需 node）
+node:space_test_floor            需要：-                      tests/test_space_test_floor.js（需 node）
+node:history_operation           需要：-                      tests/test_history_operation.js（需 node）
+node:context_operations          需要：-                      tests/test_context_operations.js（需 node）
+node:cdp_evaluation              需要：-                      tests/test_cdp_evaluation.js（需 node）
+node:background_grid_viewport    需要：-                      tests/test_background_grid_viewport.js（需 node）
+node:hover_pick_scheduler        需要：-                      tests/test_hover_pick_scheduler.js（需 node）
+node:face_paint_scheduler        需要：-                      tests/test_face_paint_scheduler.js（需 node）
+node:room_outline_worker         需要：-                      tests/test_room_outline_worker.js（需 node）
+node:evidence_links              需要：-                      tests/test_evidence_links.js（需 node）
+-                                未納入（需 Chrome）：geometry-web/cdp_test.js、geometry-web/space_model_test.js
+必要正式整合入口：tests/integration/issue77_attachment_owner.js（5項；未實作時 exit3）
+另外4個 #77 真瀏覽器入口：見 tests/INTEGRATION-GATES.md；本命令未驗。
+  geometry-web/evidence_links_browser_check.js：67 runtime adapter checks required；本 aggregate 未驗；正式 reader/ZIP/history 待 owner。
