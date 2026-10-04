@@ -27,6 +27,7 @@ import collections
 import importlib.util
 import io
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -160,6 +161,14 @@ def main(argv) -> int:
     module = importlib.util.module_from_spec(spec)
     sys.modules[stem] = module
     try:
+        # Test-only boundary: model-base's product API still accepts a caller's
+        # trusted program. Aggregate evidence must verify every native override.
+        import binaries
+        for binary in binaries.REGISTRY:
+            if binary.applicable():
+                for var in binary.envs:
+                    if os.environ.get(var):
+                        os.environ[var] = binaries.require_fresh(binary.name, os.environ[var])
         spec.loader.exec_module(module)
     except unittest.SkipTest as exc:
         # A SkipTest at import time blocks every test of the file: count them (AST), never just "1".

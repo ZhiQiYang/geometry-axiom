@@ -10,7 +10,7 @@ JSON line -> stop".  This module is the one copy.
     p = _bridge.run_once('reset\\ndump\\n')  # one-shot batch (stdin in, CompletedProcess out)
 
 Which exe (find_bridge), first match wins:
-  1. $GEOMETRY_TEST_BRIDGE (run_all.py sets it to a fresh exe).  Explicit, so it is used as given, but it must exist.
+  1. $GEOMETRY_TEST_BRIDGE (run_all.py sets it to a fresh exe). Its sidecar and actual bytes must be fresh.
   2. $GEOMETRY_ENGINEERING_BRIDGE: the old name of the same variable; still read, prints a deprecation notice once.
   3. tests/binaries.py: the bridge it built, only when its source fingerprint is fresh.  On non-Windows a stale or
      missing one is (re)built with `cc` into /tmp/geometry-tests (binaries.build_one, under the build lock).
@@ -40,31 +40,28 @@ ENV_LEGACY = 'GEOMETRY_ENGINEERING_BRIDGE'   # deprecated alias, kept so existin
 BUILD_HINT = ('python tests/binaries.py build（只重編 stale/missing 的；Windows 上 Smart App Control 會擋新編的 exe，'
               '所以不會在測試裡自動編），或用 %s 指向你自己編好的 bridge' % ENV_PRIMARY)
 
-_resolved = {}          # (primary env, legacy env) -> ('ok', path) | ('skip', message); one lookup per process
 _warned_legacy = False
 
 
-def _exists(value: str) -> bool:
-    # a launcher may be a bare command name (e.g. a WSL wrapper on PATH), not only a file path
-    return Path(value).is_file() or shutil.which(value) is not None
+def _explicit(value):
+    info = binaries.inspect_one(binaries.BY_NAME['bridge'], path=value)
+    if info.state == 'fresh':
+        return 'ok', str(info.path)
+    return 'skip', 'explicit bridge 不是 fresh：%s（%s）；%s' % (info.state, info.reason, BUILD_HINT)
 
 
 def _lookup():
     global _warned_legacy
     primary = os.environ.get(ENV_PRIMARY)
     if primary:
-        if _exists(primary):
-            return 'ok', primary
-        return 'skip', '%s=%s 指向的檔案不存在；%s' % (ENV_PRIMARY, primary, BUILD_HINT)
+        return _explicit(primary)
     legacy = os.environ.get(ENV_LEGACY)
     if legacy:
         if not _warned_legacy:
             _warned_legacy = True
             print('[tests/_bridge] %s 已棄用，請改設 %s（同一支 bridge；目前暫時沿用舊名）。' % (ENV_LEGACY, ENV_PRIMARY),
                   file=sys.stderr)
-        if _exists(legacy):
-            return 'ok', legacy
-        return 'skip', '%s=%s 指向的檔案不存在；%s' % (ENV_LEGACY, legacy, BUILD_HINT)
+        return _explicit(legacy)
 
     info = binaries.inspect_one(binaries.BY_NAME['bridge'])
     if info.state == 'n/a':
@@ -89,13 +86,24 @@ def _lookup():
 
 def find_bridge() -> str:
     """Path of the bridge exe to test against; raises unittest.SkipTest (never falls back to geometry-web/web_bridge.exe)."""
-    key = (os.environ.get(ENV_PRIMARY), os.environ.get(ENV_LEGACY))
-    if key not in _resolved:
-        _resolved[key] = _lookup()
-    kind, value = _resolved[key]
+    kind, value = _lookup()
     if kind == 'skip':
         raise unittest.SkipTest(value)
     return value
+
+
+def _checked_explicit(value):
+    # Direct callers also use freshly compiled, deliberately instrumented harnesses
+    # (e.g. _timber_support_bridge). Those are outside the registry contract.
+    # Registry paths and copied registry sidecars must never bypass freshness.
+    path = binaries.resolve_executable(value)
+    if (path != binaries.BY_NAME['bridge'].path.resolve()
+            and not path.with_name(path.name + binaries.SIDECAR_SUFFIX).exists()):
+        return str(path)
+    kind, path = _explicit(path)
+    if kind == 'skip':
+        raise unittest.SkipTest(path)
+    return path
 
 
 class BridgeSession:
@@ -106,7 +114,7 @@ class BridgeSession:
     (on Windows Popen.kill() *is* TerminateProcess, i.e. terminate())."""
 
     def __init__(self, bridge=None, *, stop_timeout=10, cwd=None, env=None):
-        self.bridge = str(bridge) if bridge is not None else find_bridge()
+        self.bridge = _checked_explicit(bridge) if bridge is not None else find_bridge()
         self.stop_timeout = stop_timeout
         self._stopped = False
         self.stderr = tempfile.TemporaryFile(mode='w+b')
@@ -165,4 +173,4 @@ def run_once(data, *, text=True, timeout=20, bridge=None):
     kwargs = dict(input=data, capture_output=True, timeout=timeout)
     if text:
         kwargs.update(text=True, encoding='utf-8')
-    return subprocess.run([str(bridge) if bridge is not None else find_bridge()], **kwargs)
+    return subprocess.run([_checked_explicit(bridge) if bridge is not None else find_bridge()], **kwargs)

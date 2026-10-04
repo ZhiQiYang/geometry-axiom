@@ -35,6 +35,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -86,7 +87,7 @@ class Binary:
             if self.win_link:
                 parts += ['/link', *self.win_link]
             return ' '.join(parts) + ' -> ' + self.exe
-        parts = ['cc', *self.posix_flags]
+        parts = [os.environ.get('CC', 'cc'), *self.posix_flags]
         if self.include:
             parts += ['-I', self.include]
         parts += [src, '-lm'] if self.name != 'engjson' else [src]
@@ -179,6 +180,45 @@ def _normalized_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 
 
+def _binary_identity(path: Path):
+    """Hash raw bytes (same domain as mutate.py), rejecting a changing file."""
+    def signature(st):
+        return st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns
+    before = path.stat()
+    h = hashlib.sha256()
+    with path.open('rb') as fh:
+        if signature(os.fstat(fh.fileno())) != signature(before):
+            raise OSError('binary changed before hashing')
+        for chunk in iter(lambda: fh.read(1 << 20), b''):
+            h.update(chunk)
+        if signature(os.fstat(fh.fileno())) != signature(before):
+            raise OSError('binary changed during hashing')
+    if signature(path.stat()) != signature(before):
+        raise OSError('binary replaced during hashing')
+    return {'exe_size': before.st_size, 'exe_mtime_ns': before.st_mtime_ns,
+            'exe_sha256': h.hexdigest()}
+
+
+def _identity_matches(record, identity):
+    return isinstance(record, dict) and all(record.get(k) == v for k, v in identity.items())
+
+
+def _write_json_atomic(path: Path, data):
+    """Publish one complete credential; failed writes never leave a partial sidecar."""
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', newline='\n',
+                                         dir=path.parent, suffix='.tmp', delete=False) as fh:
+            temporary = Path(fh.name)
+            json.dump(data, fh, ensure_ascii=False, indent=1)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
 def _scan_shared():
     """Files every native binary depends on (by #include of the core)."""
     files = [ROOT / 'current_geometry.c']
@@ -217,36 +257,58 @@ def compute_fingerprint(b: Binary):
 
 # ---------------------------------------------------------------- status
 
+def resolve_executable(value) -> Path:
+    """Keep existing local-file/PATH precedence, then pin the chosen absolute target.
+
+    Hashing and subprocess callers must use this same path; a child cwd or PATH
+    must not re-resolve a relative/bare override to different bytes.
+    """
+    value = os.fspath(value)
+    chosen = value if Path(value).is_file() else (shutil.which(value) or value)
+    return Path(chosen).resolve()
+
+
 class Info:
-    def __init__(self, binary, state, reason, fingerprint=None):
+    def __init__(self, binary, state, reason, fingerprint=None, path=None):
         self.binary = binary
         self.name = binary.name
         self.state = state          # fresh | stale | missing | n/a
         self.reason = reason
-        self.path = binary.path
+        self.path = Path(path) if path is not None else binary.path
         self.fingerprint = fingerprint
 
     def as_dict(self):
         return {'name': self.name, 'state': self.state, 'reason': self.reason, 'path': str(self.path)}
 
 
-def inspect_one(b: Binary) -> Info:
+def inspect_one(b: Binary, path=None) -> Info:
+    """Check registry or explicit binary path against this binary's current sources."""
+    requested = path if path is not None else b.path
+    try:
+        path = resolve_executable(requested)
+    except (OSError, RuntimeError) as exc:
+        return Info(b, 'stale', '無法解析 binary 路徑：%s' % exc, path=Path(requested).absolute())
+    sidecar = path.with_name(path.name + SIDECAR_SUFFIX)
+    def info(state, reason, fingerprint=None):
+        return Info(b, state, reason, fingerprint, path)
     if not b.applicable():
-        return Info(b, 'n/a', '僅 Windows')
+        return info('n/a', '僅 Windows')
     try:
         fingerprint, hashes, _ = compute_fingerprint(b)
     except (OSError, RuntimeError, SyntaxError) as exc:
-        return Info(b, 'stale', '無法計算來源指紋：%s' % exc)
-    if not b.path.is_file():
-        return Info(b, 'missing', '找不到 %s' % b.path, fingerprint)
-    if not b.sidecar.is_file():
-        if _pending_matches(b, fingerprint):
-            return Info(b, 'stale', '已由 binaries.py 編好但尚未通過 SAC 評估（環境阻擋中；再跑 build 只重試啟動，不重編）', fingerprint)
-        return Info(b, 'stale', '沒有 sidecar（這支 exe 不是 binaries.py 建的，來源是否相符無從證明）', fingerprint)
+        return info('stale', '無法計算來源指紋：%s' % exc)
+    if not path.is_file():
+        return info('missing', '找不到 %s' % path, fingerprint)
+    if not sidecar.is_file():
+        if path == b.path and _pending_matches(b, fingerprint):
+            return info('stale', '已由 binaries.py 編好但尚未通過 SAC 評估（環境阻擋中；再跑 build 只重試啟動，不重編）', fingerprint)
+        return info('stale', '沒有 sidecar（這支 exe 不是 binaries.py 建的，來源是否相符無從證明）', fingerprint)
     try:
-        side = json.loads(b.sidecar.read_text(encoding='utf-8'))
+        side = json.loads(sidecar.read_text(encoding='utf-8'))
+        if not isinstance(side, dict) or not isinstance(side.get('files'), dict):
+            raise ValueError('sidecar 必須是含 files 物件的 JSON 物件')
     except (OSError, ValueError) as exc:
-        return Info(b, 'stale', 'sidecar 讀不了：%s' % exc, fingerprint)
+        return info('stale', 'sidecar 讀不了：%s' % exc, fingerprint)
     if side.get('fingerprint') != fingerprint:
         old = side.get('files') or {}
         changed = sorted({k for k in set(old) | set(hashes) if old.get(k) != hashes.get(k)})
@@ -255,17 +317,30 @@ def inspect_one(b: Binary) -> Info:
             detail = '；變動：' + ', '.join(changed[:4]) + (' 等 %d 個檔' % len(changed) if len(changed) > 4 else '')
         if side.get('command') != b.command_string() and not changed:
             detail = '；編譯指令改了'
-        return Info(b, 'stale', '來源指紋不符（exe 建於 %s，指紋 %s… ≠ 現在 %s…）%s' % (
+        return info('stale', '來源指紋不符（exe 建於 %s，指紋 %s… ≠ 現在 %s…）%s' % (
             side.get('built_at', '?'), str(side.get('fingerprint'))[:10], fingerprint[:10], detail), fingerprint)
-    st = b.path.stat()
-    if side.get('exe_size') != st.st_size or side.get('exe_mtime_ns') != st.st_mtime_ns:
-        return Info(b, 'stale', 'exe 的大小／mtime 與 sidecar 記錄不符（建好之後被別處覆寫過）', fingerprint)
-    return Info(b, 'fresh', '指紋相符（建於 %s）' % side.get('built_at', '?'), fingerprint)
+    try:
+        identity = _binary_identity(path)
+    except OSError as exc:
+        return info('stale', '無法核對 binary SHA-256：%s' % exc, fingerprint)
+    if side.get('exe_sha256') != identity['exe_sha256']:
+        return info('stale', 'exe SHA-256 與 sidecar 不符或缺失（舊版 sidecar 須重建）', fingerprint)
+    if not _identity_matches(side, identity):
+        return info('stale', 'exe 的大小／mtime 與 sidecar 記錄不符（建好之後被別處覆寫過）', fingerprint)
+    return info('fresh', '來源與 binary SHA-256 相符（建於 %s）' % side.get('built_at', '?'), fingerprint)
 
 
 def inspect_all(names=None):
     selected = _select(names)
     return {b.name: inspect_one(b) for b in selected}
+
+
+def require_fresh(name, path):
+    """Explicit test overrides use the same source/content oracle as registry reuse."""
+    info = inspect_one(BY_NAME[name], path)
+    if info.state != 'fresh':
+        raise RuntimeError('%s 不是 fresh：%s（%s）' % (path, info.state, info.reason))
+    return str(info.path)
 
 
 def _select(names):
@@ -386,6 +461,10 @@ def _compile(b: Binary, src: Path):
 
 def _smoke_once(b: Binary):
     """Launch the exe briefly so SAC evaluates it.  Only the *launch* matters, not the exit code."""
+    # Recheck each SAC retry too: a source/binary change during the wait must
+    # stop the next launch, even if size and mtime were preserved.
+    if not _pending_matches(b, compute_fingerprint(b)[0]):
+        raise OSError('source/binary identity changed before smoke')
     work = OUT_DIR / 'smoke' / b.name
     work.mkdir(parents=True, exist_ok=True)
     exe = str(b.path)
@@ -437,11 +516,11 @@ def _pending_matches(b: Binary, fingerprint: str) -> bool:
     """True when the exe on disk is one *we* compiled from exactly these sources but SAC has not released yet."""
     try:
         pend = json.loads(_pending_path(b).read_text(encoding='utf-8'))
-        st = b.path.stat()
+        identity = _binary_identity(b.path)
     except (OSError, ValueError):
         return False
-    return (pend.get('fingerprint') == fingerprint and pend.get('exe_size') == st.st_size
-            and pend.get('exe_mtime_ns') == st.st_mtime_ns)
+    return (isinstance(pend, dict) and pend.get('fingerprint') == fingerprint
+            and _identity_matches(pend, identity))
 
 
 def _looks_blocked(err: str) -> bool:
@@ -449,6 +528,15 @@ def _looks_blocked(err: str) -> bool:
 
 
 def build_one(b: Binary, log=print, force=False) -> BuildResult:
+    try:
+        return _build_one(b, log, force)
+    except (OSError, ValueError, RuntimeError, SyntaxError) as exc:
+        b.sidecar.unlink(missing_ok=True)
+        _pending_path(b).unlink(missing_ok=True)
+        return BuildResult(b.name, 'compile-failed', '無法建立可信 binary 記錄：%s' % exc)
+
+
+def _build_one(b: Binary, log=print, force=False) -> BuildResult:
     if not b.applicable():
         return BuildResult(b.name, 'n/a', '僅 Windows')
     info = inspect_one(b)
@@ -467,6 +555,7 @@ def build_one(b: Binary, log=print, force=False) -> BuildResult:
         # brand-new binary for SAC to evaluate; just try to launch this one again.
         log('  %s：上次已編好但被 SAC 擋，來源沒變；不重編，只重試啟動' % b.name)
     else:
+        _pending_path(b).unlink(missing_ok=True)
         src = _materialize_source(b)
         before = b.path.stat().st_mtime_ns if b.path.exists() else None
         log('  %s：%s（%s）…' % (b.name, '重建' if info.state == 'stale' else '建置', info.reason))
@@ -485,23 +574,31 @@ def build_one(b: Binary, log=print, force=False) -> BuildResult:
             if 'LNK1104' in output:
                 why += '（LNK1104：exe 被鎖住）'
             return BuildResult(b.name, 'compile-failed', '%s\n%s' % (why, tail))
-        st = b.path.stat()
-        _pending_path(b).write_text(json.dumps({'fingerprint': fingerprint, 'exe_size': st.st_size,
-                                                'exe_mtime_ns': st.st_mtime_ns}), encoding='utf-8')
+        identity = _binary_identity(b.path)
+        if compute_fingerprint(b)[0] != fingerprint:
+            return BuildResult(b.name, 'compile-failed', '建置期間來源指紋改變；未啟動、未寫 sidecar')
+        _write_json_atomic(_pending_path(b), {'fingerprint': fingerprint, **identity})
+    # Never smoke an old/tampered pending binary, nor bless bytes changed by the smoke.
+    pending = json.loads(_pending_path(b).read_text(encoding='utf-8'))
+    if compute_fingerprint(b)[0] != fingerprint or not _pending_matches(b, fingerprint):
+        _pending_path(b).unlink(missing_ok=True)
+        return BuildResult(b.name, 'compile-failed', '啟動前來源／binary 指紋改變；未寫 sidecar')
     err = smoke_with_sac_retry(b, log)
     if err:
         if _looks_blocked(err):
             return BuildResult(b.name, 'blocked', 'SAC 擋住新二進位（重試 %d 次仍被擋；未寫 sidecar；再跑 build 只會重試啟動、不會重編）：%s' % (SAC_RETRIES, err))
         _pending_path(b).unlink(missing_ok=True)
         return BuildResult(b.name, 'compile-failed', '編得出來但無法啟動：%s' % err)
-    st = b.path.stat()
-    b.sidecar.write_text(json.dumps({
+    if compute_fingerprint(b)[0] != fingerprint or not _identity_matches(pending, _binary_identity(b.path)):
+        _pending_path(b).unlink(missing_ok=True)
+        return BuildResult(b.name, 'compile-failed', '啟動期間來源／binary 指紋改變；未寫 sidecar')
+    _write_json_atomic(b.sidecar, {
         'name': b.name, 'fingerprint': fingerprint, 'command': command,
         'built_at': datetime.datetime.now().astimezone().isoformat(timespec='seconds'),
         'build_seconds': round(time.time() - started, 1),
-        'exe': b.exe, 'exe_size': st.st_size, 'exe_mtime_ns': st.st_mtime_ns,
+        'exe': b.exe, **{k: pending[k] for k in ('exe_size', 'exe_mtime_ns', 'exe_sha256')},
         'files': hashes,
-    }, ensure_ascii=False, indent=1), encoding='utf-8')
+    })
     _pending_path(b).unlink(missing_ok=True)
     return BuildResult(b.name, 'built', '建好 %s' % b.path)
 
