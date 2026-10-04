@@ -10,6 +10,8 @@ introduced. F1a is already delivered and is not repeated here.
 
 Implementation branch: `feat/issue-44-f1b-controlled-update-20261004`, initially
 based on main `1c83b5e76cb0226bfd9c6c92289c8ab0760413e4`.
+Rebased onto main `1075058be37d37b98a2a910f4f67b87583be85b3` after the existing
+#85 owner's merge; this branch makes no changes to that work.
 
 This branch owns new files only: `model_update.py`, `model-update.js`,
 `model-update-app.js`, `model-update.css`, their dedicated acceptance tests and
@@ -42,7 +44,11 @@ current source is parsed in fresh native processes. The producer reuses
 solver. Typed fixed material/method/rule tuples and fingerprints in the selected
 closure, including inactive overridden definitions, must match. A changed
 fixed-version closure fails with `UPDATE_FIXED_VERSION`. Unrelated versions do
-not affect the selected closure. Faces, assembly-owned/assembly-capability
+not affect the selected closure. The guard also compares fixed fields and
+explicit root associations, preventing A/B or two-root version swaps with an
+unchanged global set. Endpoint support comes only from the existing native
+exact support projection. Unknown support or a different protected root
+without explicit correspondence is unsupported. Faces, assembly-owned/assembly-capability
 sources, unknown capabilities, incomplete graphs, missing binaries and failed
 native execution remain unsupported.
 
@@ -92,11 +98,11 @@ and requires explicit selection.
 ## UI wiring and verification
 
 The new adapter exports `ModelUpdateApp.open(modelId)` and `close()`; its source
-picker starts blank. The wiring patch merges the existing model-edit action
-into one chooser for height editing or current-source updating, preserving one
-top-level edit action. Integration owner should record this reduction in the
-existing BACKLOG #44 entry while adopting the patch. No new permanent global
-help area is added.
+picker starts blank. The wiring patch uses the existing model-edit action for
+height editing or current-source updating, preserving one top-level edit
+action. Its height editor summary and separate help paragraph become one
+paragraph. The patch records this reduction in BACKLOG for the integration
+owner. No new permanent global help area is added.
 
 Dedicated tests are directly runnable before registry integration:
 

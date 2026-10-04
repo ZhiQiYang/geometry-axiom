@@ -41,6 +41,7 @@
   function create(host) {
     for (const key of ['getState', 'getRecord', 'readSource', 'produce', 'validateRecord', 'sha', 'commit'])
       if (typeof host[key] !== 'function') throw Error('模型更新缺少接口：' + key);
+    if (host.commit.constructor.name === 'AsyncFunction') throw Error('模型提交接口必須同步且原子。');
     let generation = 0, operation = null, phase = 'idle', lastError = null;
     const digest = async value => {
       const pin = await host.sha(new TextEncoder().encode(value));
@@ -49,7 +50,8 @@
     };
     function state() {
       const s = host.getState();
-      if (!s || !s.context || !s.frame || !Number.isSafeInteger(s.revision) || s.revision < 0 ||
+      if (!s || !['context', 'frame', 'revision', 'contextToken', 'undo', 'redo', 'group', 'blocked'].every(key => Object.hasOwn(s, key)) ||
+          !s.context || !s.frame || !Number.isSafeInteger(s.revision) || s.revision < 0 ||
           typeof s.contextToken !== 'string' || !s.contextToken || typeof s.blocked !== 'boolean')
         throw Error('專案狀態無法可靠核對，請重新開啟模型。');
       if (s.blocked || s.group) throw Error('請先完成目前操作，再更新模型來源。');
@@ -73,7 +75,7 @@
     function begin(id) {
       retire('selecting');
       try {
-        const stamp = state(), record = host.getRecord(id);
+        const stamp = {...state()}, record = host.getRecord(id);
         if (!record) throw Error('找不到要更新的模型。');
         host.validateRecord(record);
         if (record.input.mode !== 'plan') throw Error('本版只支援普通單一平面模型更新。');
@@ -102,7 +104,9 @@
           after: after.result[kind] ? await digest(canonical(after.result[kind].manifest)) : null})))};
     }
     async function checkedCandidate(op, request, source) {
-      const candidate = await host.produce(clone(request), {signal: op.controller.signal});
+      // Detach immediately: producers must not retain an alias across hash awaits.
+      const response = await host.produce(clone(request), {signal: op.controller.signal});
+      const candidate = clone(response);
       guard(op);
       if (!own(candidate, ['ok', 'schema', 'identity', 'old_record_sha256', 'current_scene_sha256',
           'selection', 'record', 'diff', 'runtime']) || candidate.ok !== true ||
@@ -173,6 +177,10 @@
         // No await between the final guards and the existing single-history write.
         const result = host.commit(op.id, clone(op.candidate.record));
         if (result && typeof result.then === 'function') throw Error('模型提交接口必須同步且原子。');
+        // Existing store events may synchronously open/cancel another intent.
+        if (operation !== op) return clone(result || replay.record);
+        if (result === false || result?.ok === false || !same(host.getRecord(op.id), replay.record))
+          throw Error('完整模型提交未確認，請重新核對專案中的模型。');
         phase = 'committed'; op.review = null; op.candidate = null;
         return clone(result || replay.record);
       } catch (error) { return failed(op, error); }
