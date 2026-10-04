@@ -316,6 +316,12 @@ window.AssemblyWorkspace=(()=>{
     bind('asmInspectorOpen','click',async()=>{button.disabled=true;try{await createBindingFromRule(selection,selected);}finally{if(pane.contains(button))button.disabled=!valid;}});
   }
   async function remove(kind,id){if(confirming())return;await open(kind,id);if(!s?.record||confirming())return;s.operations=[kind==='assembly-rule'?{op:'delete-rule',id,version:s.record.value.version}:{op:'delete-binding',id}];await preview();}
+  window.addEventListener('project-local-history',event=>{
+    if(!s?.read||!dialog.open||confirming()||s.context!==event.detail?.previousContextToken||token()!==event.detail.contextToken)return;
+    invalidate();s.context=event.detail.contextToken;
+    const saved=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft?.id);
+    if(s.draft)s.draft=saved||null;render();
+  });
   dialog.addEventListener('cancel',e=>{e.preventDefault();close();});window.addEventListener('geometry-definition-changed',()=>{if(s&&!confirming()){invalidate();report('工程來源已變更，請重新預覽。');}});window.addEventListener('project-info-changed',()=>{if(s&&!current(s)){unlockConfirm(s);s=null;dialog.close();WorkspaceShell.detach(dialog);}else if(s?.read&&!ownDraft&&s.draftsRef!==ReferenceWorkspace.context().assemblyDrafts){const saved=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft?.id);if(s.draft)s.draft=saved||null;invalidate();render();}});
   $('btnNewAssembly').onclick=safe(async()=>{$('createObjectPop').hidden=true;await open();});
   return {open,close,flush,card,inspector,remove,createBindingFromRule,get isOpen(){return dialog.open;},get canCloseForRecovery(){return dialog.open&&!!s?.confirming?.uncertain&&current(s);}};

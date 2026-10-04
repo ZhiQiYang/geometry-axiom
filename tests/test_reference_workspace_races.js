@@ -10,6 +10,9 @@ const nativeCapabilities = require('./fixtures/native_available_capabilities.jso
 const zip = require('../geometry-web/vendor/fflate/umd/index.js');
 const deferred = () => { let resolve, reject; const promise = new Promise((a,b) => {resolve=a;reject=b;}); return {promise,resolve,reject}; };
 const turn = () => new Promise(resolve => setImmediate(resolve));
+const rawGridDraft=()=>({schema:P.Features.GRID_SCHEMA,draftId:'raw-grid',kind:'binding',intent:'create',baseRef:null,
+  inputRefs:[{kind:'grid-system',id:0,fingerprint:'a'.repeat(64)}],
+  rawForm:{igSystem:'0',igBoundary:'',igVertex:'',igCellI:'-',igCellJ:' 001 ',igAnchorUN:'1',igAnchorUD:'0',igAnchorVN:'',igAnchorVD:''}});
 
 async function fixture(options = {}) {
   const writes = [], statuses = [], written = deferred(), writeGate = options.writeGate || deferred();
@@ -53,11 +56,33 @@ const legacyResponse=bytes=>({blob:async()=>new Blob([bytes],{type:'image/png'})
 
 test('saving during PDF selection writes the selected page and its original bytes',async()=>{
   const f=await fixture(),gate=deferred();f.pageGates.set(2,gate);
+  const token=f.w.getProjectState().contextToken,value=rawGridDraft(),count=f.w.history.undo.length;
+  const saved=f.w.setFeatureAttachment('grid-draft',value,token);
+  assert.equal(f.w.history.undo.length,count+1);value.rawForm.igCellI='changed caller';saved.rawForm.igCellI='changed result';
+  assert.equal(f.w.readFeatureAttachment('grid-draft').rawForm.igCellI,'-');
+  const info=f.w.getProjectState();f.w.setFeatureAttachment('grid-draft',rawGridDraft(),token);
+  assert.equal(f.w.history.undo.length,count+1);assert.equal(f.w.getProjectState().revision,info.revision);
+  assert.throws(()=>f.w.setFeatureAttachment('grid-draft',rawGridDraft()),/上下文/);
+  assert.throws(()=>f.w.setFeatureAttachment('grid-draft',rawGridDraft(),'old-token'),/上下文/);
+  assert.throws(()=>f.w.readFeatureAttachment('unknown'),/種類/);
+  f.env.oc.busy=true;assert.throws(()=>f.w.setFeatureAttachment('grid-draft',null,token),/目前操作/);f.env.oc.busy=false;
+  f.w.history.group={base:f.w.history.snapshot(),dirty:false};assert.throws(()=>f.w.setFeatureAttachment('grid-draft',null,token),/目前操作/);f.w.history.group=null;
+  const invalid=rawGridDraft();invalid.rawForm.igCellI=NaN;assert.throws(()=>f.w.setFeatureAttachment('grid-draft',invalid,token));
+  assert.equal(f.w.history.undo.length,count+1);assert.equal(f.w.readFeatureAttachment('grid-draft').rawForm.igCellI,'-');
+  const events=[];f.env.CustomEvent=class {constructor(type,options){this.type=type;this.detail=options?.detail;}};
+  f.env.window.dispatchEvent=event=>{if(event.type==='project-local-history')events.push(event);};
+  const previousToken=f.w.getProjectState().contextToken;
+  assert.equal(f.w.tryLocalHistory('line undo').ok,true);assert.equal(f.w.readFeatureAttachment('grid-draft'),null);
+  assert.equal(events.length,1);assert.equal(events[0].type,'project-local-history');
+  assert.equal(events[0].detail.previousContextToken,previousToken);assert.equal(events[0].detail.contextToken,f.w.getProjectState().contextToken);
+  assert.notEqual(previousToken,events[0].detail.contextToken);
+  assert.equal(f.w.tryLocalHistory('line redo').ok,true);assert.equal(f.w.readFeatureAttachment('grid-draft').rawForm.igCellI,'-');
   const selection=f.w.selectPage(1,'page-2'),saving=f.w.save();
   await turn();gate.resolve();await selection;await f.written.promise;f.writeGate.resolve();await saving;
   const loaded=await P.unpack(f.writes[0],zip);
   assert.equal(loaded.manifest.faces[0].activePageId,'page-2');
   assert.deepEqual(loaded.sources.get(f.source.meta.id),f.source.bytes);
+  assert.equal(loaded.manifest.format,P.FEATURE_FORMAT);assert.deepEqual(loaded.manifest.featureAttachments.records[0].value,rawGridDraft());
   assert.equal(f.w.active(1).id,'page-2');assert.equal(f.w.context().dirty,false);
 });
 
@@ -206,10 +231,18 @@ test('manifest refuses a context switch while legacy source conversion is pendin
 });
 
 test('edits while obtaining the scene or packing prevent a mixed snapshot from reaching the writer',async()=>{
-  for (const stage of ['dump','pack']) {
-    const gate=deferred(),f=await fixture(stage==='dump'?{dumpGate:gate}:{packGate:gate});
-    const saving=f.w.save(),failed=assert.rejects(saving,/專案.*變更/);
-    await turn();f.w.calibrated(1,[[0,0],[10,0]],100);
+  for (const stage of ['dump','pack','feature-dump','feature-pack']) {
+    const feature=stage.startsWith('feature-'),phase=stage.replace('feature-','');
+    const gate=deferred(),f=await fixture(phase==='dump'?{dumpGate:gate}:{packGate:gate});
+    const saving=f.w.save(),failed=feature?null:assert.rejects(saving,/專案.*變更/);
+    await turn();
+    if(feature){const before=f.w.getProjectState(),undo=f.w.history.undo.length;
+      assert.throws(()=>f.w.setFeatureAttachment('grid-draft',rawGridDraft(),before.contextToken),/目前操作/);
+      assert.equal(f.w.getProjectState().revision,before.revision);assert.equal(f.w.history.undo.length,undo);
+      gate.resolve({ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'});
+      f.writeGate.resolve();await saving;assert.equal(f.writes.length,1);continue;
+    }
+    f.w.calibrated(1,[[0,0],[10,0]],100);
     gate.resolve({ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'});
     await failed;assert.equal(f.writes.length,0);assert.equal(f.w.context().dirty,true);assert.equal(f.w.busy,false);
   }
@@ -218,7 +251,8 @@ test('edits while obtaining the scene or packing prevent a mixed snapshot from r
 async function openFixture(options={}) {
   const f=await fixture(options),requests=[],refreshed=deferred();
   const scene='boundary 8 outline 0,0 800,0 800,700 0,700\n';
-  const bytes=await P.pack(scene,{format:P.FORMAT,projectId:'opened',name:'試用工程',sources:[],faces:[]},new Map(),zip);
+  const bytes=await P.pack(scene,{format:P.FORMAT,projectId:'opened',name:'試用工程',sources:[],faces:[],
+    ...(options.featureDraft?{featureAttachments:{schema:P.Features.SCHEMA,records:[P.Features.record('grid-draft',options.featureDraft)]}}:{})},new Map(),zip);
   f.env.curScene={};f.env.resetSceneFocus=()=>{};f.env.markSceneItem=()=>{};f.env.sceneMenuDisplay=name=>name;
   f.env.refreshActive=async()=>{
     if(options.autoLayout)f.w.observe('line canvas-pos boundary 8 60 60',{ok:true});
@@ -249,6 +283,18 @@ test('opening owns the busy state from first byte read through rendering and ref
   assert.equal(f.w.context().dirty,false);assert.equal(f.w.context().saved,true);
   assert.equal(f.w.historyActionLabel('undo'),'開啟專案「試用工程」');
   assert.match(f.statuses.at(-1),/✓ 已開啟/);
+  const g=await openFixture({featureDraft:rawGridDraft()}),previous=g.w.context(),oldToken=g.w.getProjectState().contextToken;
+  g.w.setFeatureAttachment('grid-draft',{...rawGridDraft(),draftId:'old-draft'},oldToken);
+  await g.w.importBytes(g.bytes);
+  assert.equal(JSON.stringify(g.w.readFeatureAttachment('grid-draft')),JSON.stringify(rawGridDraft()));
+  assert.notEqual(g.w.getProjectState().contextToken,oldToken);assert.equal(g.w.context().dirty,false);
+  assert.throws(()=>g.w.setFeatureAttachment('grid-draft',null,oldToken),/上下文/);
+  g.w.observe('line undo',{ok:true});assert.equal(g.w.context(),previous);assert.equal(g.w.readFeatureAttachment('grid-draft').draftId,'old-draft');
+  const returnedState=JSON.stringify(g.w.getProjectState()),returnedUndo=g.w.history.undo.length;
+  assert.notEqual(g.w.getProjectState().contextToken,oldToken);
+  assert.throws(()=>g.w.setFeatureAttachment('grid-draft',null,oldToken),/上下文/);
+  assert.equal(JSON.stringify(g.w.getProjectState()),returnedState);assert.equal(g.w.history.undo.length,returnedUndo);
+  g.w.observe('line redo',{ok:true});assert.equal(JSON.stringify(g.w.readFeatureAttachment('grid-draft')),JSON.stringify(rawGridDraft()));
 });
 
 test('changes during project reading or its pre-upload dump prevent replacement without swallowing edits',async()=>{
@@ -460,13 +506,16 @@ test('download mode records generation separately from a confirmed disk write',a
 test('new project and clear contents have distinct identities and undo restores full context',async()=>{
   for(const keep of [false,true]) {
     const f=await openFixture(),before=f.w.context();before.name='原工程';before.dirty=true;
+    f.w.setFeatureAttachment('grid-draft',rawGridDraft(),f.w.getProjectState().contextToken);
     const prompts=[];f.env.window.confirm=text=>{prompts.push(text);return true;};
     assert.equal(await (keep?f.w.clearContents():f.w.newProject()),true);
     const next=f.w.context();assert.notEqual(next,before);assert.equal(next.sources.size,0);assert.equal(next.groups.size,0);assert.equal(next.models.length,0);
+    assert.equal(f.w.readFeatureAttachment('grid-draft'),null);
     assert.equal(next.id===before.id,keep);assert.equal(next.name,keep?'原工程':'未命名專案');assert.equal(next.dirty,keep);
     assert.equal(f.requests[0].request.body,'reset\n');assert.match(prompts[0],keep?/保留專案名稱/:/新的專案識別/);
     assert.match(f.w.historyActionLabel('undo'),keep?/清空/:/新專案/);
     f.w.observe('line undo',{ok:true});assert.equal(f.w.context(),before);assert.equal(f.w.context().sources.size,1);
+    assert.equal(JSON.stringify(f.w.readFeatureAttachment('grid-draft')),JSON.stringify(rawGridDraft()));
   }
 });
 
@@ -540,6 +589,7 @@ test('another tab invalidates saving, metadata editing and local undo until expl
   assert.throws(()=>f.w.assertEditable(),/另一個分頁/);await assert.rejects(()=>f.w.exportBytes(),/另一個分頁/);
   await assert.rejects(()=>f.w.save(),/另一個分頁/);assert.throws(()=>f.w.tryLocalHistory('line undo'),/另一個分頁/);
   assert.throws(()=>f.w.setEngineeringDraft({}),/另一個分頁/);assert.equal(f.writes.length,0);
+  assert.throws(()=>f.w.setFeatureAttachment('grid-draft',rawGridDraft(),f.w.getProjectState().contextToken),/另一個分頁/);
   await f.w.importBytes(f.bytes);assert.equal(f.w.getProjectInfo().editingBlocked,false);f.w.assertEditable();
   f.w.observe('line undo',{ok:true});assert.equal(f.w.context().sources.size,0);assert.equal(f.w.context().groups.size,0);
   assert.equal(f.w.getProjectInfo().sourceKind,'server');assert.equal(f.w.history.undo.length,0);

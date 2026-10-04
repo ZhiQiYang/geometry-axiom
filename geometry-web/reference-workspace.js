@@ -4,7 +4,7 @@ const ReferenceWorkspace = (() => {
   const P = GeometryProject, uuid = () => crypto.randomUUID();
   const escape = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
   const fresh = () => ({ id: uuid(), name: "未命名專案", sources: new Map(), groups: new Map(), models: [], modelsDirty: false,
-    reconstructionReviews: new Map(), faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], assemblyDrafts: [], pending: new Set(), dirty: false,
+    reconstructionReviews: new Map(), faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], assemblyDrafts: [], featureAttachments: [], pending: new Set(), dirty: false,
     provenance:{kind:"server",label:"服務目前保留的場景（來源未確認）",openedAt:null,lastSavedAt:null,lastDownloadAt:null} });
   const history = new P.ContextHistory(fresh);
   const revisions = new WeakMap(), selections = new WeakMap(), contextTokens = new WeakMap();
@@ -64,8 +64,11 @@ const ReferenceWorkspace = (() => {
   let presentationFrame = 0;
   function revision(c) { return revisions.get(c) || 0; }
   function getProjectState() {
-    const c = context(); if (!contextTokens.has(c)) contextTokens.set(c, uuid());
-    return {id:c.id,contextToken:contextTokens.get(c),revision:revision(c),dirty:!!c.dirty,saved:!!c.saved};
+    const c = context(), frame = history.frame;
+    // Undo may return to the same context object. A former asynchronous owner
+    // must not regain write permission merely because that project is visible.
+    if (!contextTokens.has(frame)) contextTokens.set(frame, uuid());
+    return {id:c.id,contextToken:contextTokens.get(frame),revision:revision(c),dirty:!!c.dirty,saved:!!c.saved};
   }
   function dirty(reason = "") { const c = context(); revisions.set(c, revision(c) + 1); c.dirty = true; c.dirtyReason = reason; c.downloaded = false; schedulePresentation(); scheduleRecovery(); }
   function statusText(c = context()) {
@@ -299,6 +302,27 @@ const ReferenceWorkspace = (() => {
   }
   function getSpaceModels() { return JSON.parse(JSON.stringify(context().models)); }
   function getAssemblyDrafts() { return structuredClone(context().assemblyDrafts || []); }
+  function readFeatureAttachment(kind) {
+    P.Features.assertKind(kind);
+    const record = (context().featureAttachments || []).find(record => record.kind === kind);
+    return record ? JSON.parse(JSON.stringify(record.value)) : null;
+  }
+  function setFeatureAttachment(kind, value, expectedContextToken) {
+    P.Features.assertKind(kind); assertEditable();
+    if (typeof expectedContextToken !== "string" || expectedContextToken !== getProjectState().contextToken)
+      throw new Error("專案已切換或缺少編輯上下文，未寫入功能附件。");
+    if (busy || oc.busy || history.group || preparingSceneLoad || pendingLoad)
+      throw new Error("請先完成目前操作，再變更功能附件。");
+    const record = value === null ? null : P.Features.record(kind, value);
+    const previous = readFeatureAttachment(kind);
+    if (sameModelData(previous, value)) return previous;
+    const next = (context().featureAttachments || []).filter(record => record.kind !== kind);
+    if (record) next.push(JSON.parse(JSON.stringify(record)));
+    P.Features.validate({schema:P.Features.SCHEMA, records:next});
+    history.push(history.snapshot(), "local", value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    context().featureAttachments = next; dirty(); sync();
+    return readFeatureAttachment(kind);
+  }
   function setAssemblyDraft(record, token, recordHistory = true) {
     assertDraftContext(token); P.validateAssemblyDraft(record);
     const next=getAssemblyDrafts(), index=next.findIndex(item=>item.id===record.id);
@@ -387,8 +411,15 @@ const ReferenceWorkspace = (() => {
   function tryLocalHistory(cmd) {
     if (pendingLoad) return null;
     if(/^line\s+(undo|redo)\b/.test(cmd))assertEditable();
+    const previousContext=context(),previousContextToken=getProjectState().contextToken;
     const result = history.tryLocal(cmd);
-    if (result?.ok) { context().modelsDirty = true; context().faceProjectionsDirty = true; dirty(); sync(); }
+    if (result?.ok) {
+      // A live editor may follow a local draft undo in the same project. This
+      // explicit notification never renews a former editor after a project switch.
+      if(context()===previousContext)window.dispatchEvent(new CustomEvent("project-local-history",{
+        detail:{previousContextToken,contextToken:getProjectState().contextToken}}));
+      context().modelsDirty = true; context().faceProjectionsDirty = true; dirty(); sync();
+    }
     return result;
   }
   async function library() {
@@ -727,9 +758,10 @@ const ReferenceWorkspace = (() => {
     const data = { ...(reconstructionReviews.length?{reconstructionReviews}:{}),projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
       ...(c.models.length?{models:JSON.parse(JSON.stringify(c.models))}:{}),...(faceProjections.length?{faceProjections}:{}),
       ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.assemblyDrafts))}}:{}),
+      ...(c.featureAttachments?.length?{featureAttachments:{schema:P.Features.SCHEMA,records:JSON.parse(JSON.stringify(c.featureAttachments))}}:{}),
       ...(c.engineeringDrafts?.length?{engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.engineeringDrafts))}}:{}) };
     const format = P.projectFormat(data);
-    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
+    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
   }
   function assertSaveReady() {
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
@@ -867,6 +899,7 @@ const ReferenceWorkspace = (() => {
     }
     c.models=JSON.parse(JSON.stringify(m.models));
     c.assemblyDrafts=JSON.parse(JSON.stringify(m.assemblyDrafts?.records||[]));
+    c.featureAttachments=JSON.parse(JSON.stringify(m.featureAttachments?.records||[]));
     c.engineeringDrafts=JSON.parse(JSON.stringify(m.engineeringDrafts?.records||[]));
     for(const meta of m.sources)c.sources.set(meta.id,{meta,bytes:loaded.sources.get(meta.id)});
     const ids=[],keys=new Map();
@@ -949,9 +982,9 @@ const ReferenceWorkspace = (() => {
       token=candidate.token;
       assertWritableLease();assertCurrent();
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
-      P.assertProjectCapabilities(manifest,P.nativeReaderCapabilities(candidate.capabilities));
+      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
       P.validateProjectCapabilities(candidate.required_capabilities);
-      if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT].includes(manifest.format)) {
+      if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].includes(manifest.format)) {
         if(!sameModelData([...candidate.required_capabilities].sort(),P.sceneCapabilities(text)))
           throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
       }
@@ -1118,6 +1151,7 @@ const ReferenceWorkspace = (() => {
     reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,tracingFeatures,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
+    readFeatureAttachment,setFeatureAttachment,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
