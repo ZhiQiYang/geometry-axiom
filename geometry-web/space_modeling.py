@@ -245,7 +245,7 @@ def _timbers(value, base, placement_id, options):
                          missing=exc.missing, diagnostics=diagnostics) from exc
 
 
-def _plan(data, base, declarations):
+def _plan(data, base, declarations, *, historical_walls=False):
     _keys(data, ("base_scene", "mode", "placement_id", "settings", "obstacles"), ("timbers",))
     selected = _uid(data["placement_id"], "來源面編號")
     source = next((p for p in base["placements"] if p["id"] == selected), None)
@@ -282,7 +282,8 @@ def _plan(data, base, declarations):
     # its actual allocation plan, before generating or evaluating packages.
     material_faces = (sum(1 for _ in _convex_corners(outline, edges)) + 1
                       if thickness is not None else 0)
-    declarations.check_plan_capacity(shell_faces, material_faces, thickness is not None)
+    if not historical_walls:
+        declarations.check_plan_capacity(shell_faces, material_faces, thickness is not None)
     uses, generated, sides, missing = [], [], {}, []
 
     def add_use(identifier, label, orientation=1, purpose="boundary"):
@@ -387,6 +388,32 @@ def _walls(declarations, wall, options):
 
 def preview(data, *, base_executable=None, max_cells=200000):
     """Build an isolated candidate; never mutate input data or the user's world."""
+    return _preview(data, base_executable=base_executable, max_cells=max_cells)
+
+
+def replay_stored(data, expected, *, base_executable=None, max_cells=200000):
+    """Verify an existing result, including the original optional-wall contract.
+
+    History replay is never a generation candidate. A missing material package
+    must reproduce the entire saved result, including its original diagnostics;
+    no package, setting, or summary is trusted merely because walls is null.
+    The caller must retain the saved input/result rather than replacing it.
+    """
+    canonical_bytes(expected)
+    settings = data.get("settings") if type(data) is dict else None
+    summary = expected.get("summary") if type(expected) is dict else None
+    historical_walls = (type(settings) is dict and settings.get("wall_thickness") is not None
+                        and type(expected) is dict and expected.get("walls") is None
+                        and type(summary) is dict and bool(summary.get("wall_diagnostics")))
+    rebuilt = _preview(data, base_executable=base_executable, max_cells=max_cells,
+                       historical_walls=historical_walls)
+    if canonical_bytes(rebuilt) != canonical_bytes(expected):
+        _fail("SPACE_STORED_REPLAY", "保存的模型、設定、幾何或診斷與歷史重播不一致。",
+              path=["result"], clause="I31")
+    return rebuilt
+
+
+def _preview(data, *, base_executable=None, max_cells=200000, historical_walls=False):
     canonical_bytes(data)
     if type(data) is not dict or data.get("mode") not in ("plan", "faces"):
         _fail("SPACE_MODE", "請選擇沿平面輪廓建立，或組合已有面。")
@@ -395,7 +422,7 @@ def preview(data, *, base_executable=None, max_cells=200000):
     base = load_base(data["base_scene"], executable=base_executable)
     declarations = Declarations(base)
     if data["mode"] == "plan":
-        uses, summary, wall = _plan(data, base, declarations)
+        uses, summary, wall = _plan(data, base, declarations, historical_walls=historical_walls)
     else:
         uses, summary, wall = _faces(data, base)
     obstacles = _obstacles(data["obstacles"], base)
@@ -418,23 +445,28 @@ def preview(data, *, base_executable=None, max_cells=200000):
         diagnostics.extend(exc.diagnostics or [exc.diagnostic()])
         if not summary["missing"]:
             summary["missing"].append("邊界仍有開口，尚不能確定空間體積與淨空。")
-    walls = None
+    walls, wall_diagnostics = None, []
     if wall and wall["thickness"] is not None:
         try:
             walls = _walls(deepcopy(declarations), wall, options)
         except ModelError as exc:
-            # Like explicitly selected timbers, selected walls are mandatory.
-            # I31 forbids downgrading UNSUPPORTED/INVALID into partial success.
-            diagnostics = deepcopy(exc.diagnostics or [exc.diagnostic()])
-            for diagnostic in diagnostics:
-                diagnostic["message"] = "材料牆無法完整建模：" + diagnostic.get("message", exc.message)
-            raise ModelError(exc.status, exc.code, exc.clause,
-                             "材料牆無法完整建模：" + exc.message,
-                             path=["settings", "wall_thickness", *exc.path], root=exc.root,
-                             missing=exc.missing, diagnostics=diagnostics) from exc
+            if historical_walls:
+                # Reproduce old definitions and the actual old failure. The
+                # complete expected result is compared by replay_stored.
+                wall_diagnostics.extend(exc.diagnostics or [exc.diagnostic()])
+            else:
+                # Like explicitly selected timbers, selected walls are mandatory.
+                # I31 forbids downgrading UNSUPPORTED/INVALID into partial success.
+                diagnostics = deepcopy(exc.diagnostics or [exc.diagnostic()])
+                for diagnostic in diagnostics:
+                    diagnostic["message"] = "材料牆無法完整建模：" + diagnostic.get("message", exc.message)
+                raise ModelError(exc.status, exc.code, exc.clause,
+                                 "材料牆無法完整建模：" + exc.message,
+                                 path=["settings", "wall_thickness", *exc.path], root=exc.root,
+                                 missing=exc.missing, diagnostics=diagnostics) from exc
     summary.update({"face_count": len(uses), "closed": volume is not None,
                     "volume_mm3": _volume(volume), "clearance_mm3": _volume(clearance),
-                    "wall_volume_mm3": _volume(walls), "wall_diagnostics": []})
+                    "wall_volume_mm3": _volume(walls), "wall_diagnostics": wall_diagnostics})
     result = {"ok": True, "schema": "geometry-space-preview/1", "space": space,
               "volume": volume, "clearance": clearance, "walls": walls,
               "summary": summary, "diagnostics": diagnostics,

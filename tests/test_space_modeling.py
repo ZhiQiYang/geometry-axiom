@@ -10,6 +10,7 @@ from pathlib import Path
 import sys
 import unittest
 from unittest import mock
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "geometry-web"))
@@ -572,6 +573,53 @@ class SpaceTimberAcceptance(unittest.TestCase):
         self.assertIsNone(result["clearance"])
         self.assertEqual(result["timbers"]["derived"]["status"], "COMPLETE")
         self.assertEqual(result["summary"]["timber_count"], 1)
+
+
+class HistoricalWallReplay(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        with zipfile.ZipFile(ROOT / "tests/fixtures/issue119-legacy-missing-walls.gcanvas") as archive:
+            cls.records = json.loads(archive.read("manifest.json"))["models"]
+            pdf = archive.read("sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110")
+        assert hashlib.sha256(pdf).hexdigest() == "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110"
+
+    def test_actual_old_archive_replays_both_records_without_changing_requests(self):
+        before = deepcopy(self.records)
+        for record in self.records:
+            self.assertEqual(sm.replay_stored(record["input"], record["result"]), record["result"])
+        self.assertEqual(self.records, before)
+        legacy = self.records[0]
+        self.assertEqual(legacy["input"]["settings"]["wall_thickness"], 100)
+        self.assertIsNone(legacy["result"]["walls"])
+        with self.assertRaises(ModelError) as caught:
+            sm.preview(legacy["input"])
+        self.assertEqual(caught.exception.status, "UNSUPPORTED")
+
+    def test_historical_missing_walls_still_require_exact_geometry_settings_and_diagnostics(self):
+        changes = (
+            lambda r: r["input"]["settings"].update(height=3200),
+            lambda r: r["input"]["settings"].update(wall_thickness=None),
+            lambda r: r["result"].update(source_sha256="a" * 64),
+            lambda r: r["result"]["space"]["derived"]["objects"][0]["vertices_mm"][0].__setitem__(0, 999),
+            lambda r: r["result"]["summary"].update(volume_mm3="1"),
+            lambda r: r["result"]["summary"]["wall_diagnostics"][0].update(message="forged failure"),
+            lambda r: r["result"]["summary"].update(wall_diagnostics=[]),
+        )
+        for change in changes:
+            record = deepcopy(self.records[0]); change(record)
+            before = deepcopy(record)
+            with self.assertRaises(ModelError):
+                sm.replay_stored(record["input"], record["result"])
+            self.assertEqual(record, before)
+
+    def test_removing_a_complete_wall_package_cannot_forge_a_historical_failure(self):
+        record = deepcopy(self.records[1])
+        record["result"]["walls"] = None
+        record["result"]["summary"]["wall_volume_mm3"] = None
+        record["result"]["summary"]["wall_diagnostics"] = deepcopy(self.records[0]["result"]["summary"]["wall_diagnostics"])
+        with self.assertRaises(ModelError) as caught:
+            sm.replay_stored(record["input"], record["result"])
+        self.assertEqual(caught.exception.code, "SPACE_STORED_REPLAY")
 
 
 if __name__ == "__main__":
