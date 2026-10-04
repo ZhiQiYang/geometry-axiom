@@ -1049,8 +1049,8 @@ const ReferenceWorkspace = (() => {
       throw new Error("空間模型「"+model.name+"」的角材來源摘要不一致，未變更目前專案。");
     // A valid mesh alone cannot establish that the displayed height/settings describe
     // that mesh. Replay the saved declarations, never the current canvas world.
-    const response = await fetch("/model/space-preview", {method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(model.input),signal:AbortSignal.timeout(30000)});
+    const response = await fetch("/model/space-replay", {method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({input:model.input,result:model.result}),signal:AbortSignal.timeout(30000)});
     if (!response.ok) throw new Error("空間設定核對服務失敗，未變更目前專案。");
     const rebuilt = await response.json(), original = model.result;
     if (rebuilt.ok !== true || rebuilt.schema !== original.schema || rebuilt.source_sha256 !== original.source_sha256)

@@ -40,6 +40,7 @@ POST_MAX_BYTES = {
     "/model": 16 * 1024 * 1024,
     "/model/verify": 16 * 1024 * 1024,
     "/model/space-preview": 16 * 1024 * 1024,
+    "/model/space-replay": 16 * 1024 * 1024,
     "/model/update-preview": 8 * 1024 * 1024,
     "/assembly/preview": 1024 * 1024,
     "/assembly/generate-preview": 1024 * 1024,
@@ -445,7 +446,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send(json.dumps(result, ensure_ascii=False).encode("utf-8"))
             return
 
-        if self.path in {"/model", "/model/verify", "/model/space-preview", "/model/update-preview"}:
+        if self.path in {"/model", "/model/verify", "/model/space-preview", "/model/space-replay", "/model/update-preview"}:
             sys.path.insert(0, str(SCENE_DIR / "geometry-core"))
             from modeling import (ModelError, build_package, verify_package,
                                   canonical_bytes, strict_json_loads)
@@ -462,6 +463,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 elif self.path == "/model/space-preview":
                     import space_modeling
                     result = space_modeling.preview(data)
+                elif self.path == "/model/space-replay":
+                    import space_modeling
+                    if type(data) is not dict or set(data) != {"input", "result"}:
+                        raise ModelError("INVALID", "INPUT_SCHEMA", "D25", "Expected saved input and result")
+                    result = space_modeling.replay_stored(data["input"], data["result"])
                 elif self.path == "/model/verify":
                     result = verify_package(data)
                 else:
