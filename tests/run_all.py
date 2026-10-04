@@ -71,6 +71,7 @@ PY_NEEDS = {
     'test_modeling_degenerate': ['model-base'],
     'test_modeling_runtime': ['model-base'],
     'test_modeling_transport': ['bridge', 'model-base'],
+    'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_reference_contract': ['bridge'],
     'test_source_inspector': ['bridge'],
@@ -157,7 +158,7 @@ class Suite:
 
     @property
     def counted(self):
-        return self.kind != 'node-script'   # node-script suites only have an exit code, no test count
+        return self.kind not in ('node-script', 'mutation-check')
 
 
 class Row:
@@ -204,6 +205,8 @@ def build_suites():
     suites = [
         Suite('c:integrity', 'integrity', None, ['integrity'], 300, label='tests/test_core_integrity.c'),
         Suite('core:run_tests', 'run_tests', None, ['core'], 900, label='tests/run_tests.py <core>'),
+        Suite('mutation:check', 'mutation-check', [py, str(HERE / 'mutate.py'), '--check'], [], 120,
+              label='tests/mutate.py --check (saved current-source mutation receipts)'),
     ]
     for stem in sorted(PY_NEEDS):
         f = HERE / (stem + '.py')
@@ -382,6 +385,10 @@ def run_suite(suite, env, infos):
         json_path.unlink(missing_ok=True)
         res = run_process([*suite.cmd, '--json-out', str(json_path), '--log', str(log_file.with_suffix('.unittest.log'))],
                           env, suite.timeout)
+    elif suite.kind == 'mutation-check':
+        mutation_env = dict(env)
+        mutation_env['MUTATE_RESULTS'] = str(HERE / 'mutants_results.json')
+        res = run_process(suite.cmd, mutation_env, suite.timeout)
     elif suite.kind == 'node-canvas':
         shim = write_node_shim()
         marker = LOG_DIR / 'canvas_shim.marker'
@@ -401,6 +408,16 @@ def run_suite(suite, env, infos):
         row.failed = max(row.failed, 1)
         row.total = max(row.total, 1)
         row.note = '逾時（%d 秒）被終止，%s（%.1f 秒後收完）；日誌 %s' % (suite.timeout, res.reap_note, secs, log_file)
+        return row
+
+    if suite.kind == 'mutation-check':
+        row.failed = int(code != 0)
+        row.env_problem = code == 2
+        row.note = 'mutation inventory freshness (not test assertions); exit %s' % code
+        if code != 0:
+            row.details = [line.strip() for line in out.splitlines()
+                           if 'STALE ' in line or 'INVALID ' in line or 'BLOCKED ' in line][:10]
+            row.note += '；日誌 %s' % log_file
         return row
 
     if suite.kind == 'integrity':
