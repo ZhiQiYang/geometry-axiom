@@ -14,11 +14,7 @@
   const $ = id => dialog.querySelector('#' + id);
 
   function hostState() {
-    const workspace = ReferenceWorkspace, history = workspace.history, project = workspace.getProjectState();
-    return {context:workspace.context(),frame:history.frame,revision:project.revision,contextToken:project.contextToken,
-      undo:history.undo.at(-1),redo:history.redo.at(-1),group:history.group,
-      blocked:!!workspace.busy || !!workspace.getProjectInfo?.().editingBlocked || !!history.group ||
-        (typeof oc !== 'undefined' && !!oc.busy) || (typeof connection !== 'undefined' && connection.phase !== 'ready')};
+    return ReferenceWorkspace.getModelOperationState();
   }
   function record(id) {
     const found = ReferenceWorkspace.getSpaceModels().filter(item => item.id === id);

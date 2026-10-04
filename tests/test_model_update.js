@@ -449,10 +449,18 @@ test('native complete record survives actual workspace save ZIP reopen, fresh ve
   const before=clone(w.getSpaceModels()),undoBefore=history.undo.length,sceneBefore=data.scene;
   const f=harness({history,record:data.record,scene:data.scene,produce:async request=>engine('update',request),
     commit:(id,record)=>w.updateSpaceModel(id,record)});
-  // Use the real workspace's mutation revision and context token as the adapter.
-  f.host.getState=()=>({context:w.context(),frame:history.frame,revision:w.getProjectState().revision,
-    contextToken:w.getProjectState().contextToken,blocked:false,undo:history.undo.at(-1)||null,
-    redo:history.redo.at(-1)||null,group:history.group});
+  // The actual owner supplies opaque immutable operation identities and guards.
+  f.host.getState=()=>w.getModelOperationState();
+  const ownerState=w.getModelOperationState();
+  assert.ok(Object.isFrozen(ownerState));assert.equal(Reflect.set(ownerState,'revision',999),false);
+  assert.ok(Object.values(ownerState).every(value=>value===null||['string','number','boolean'].includes(typeof value)));
+  assert.deepEqual(w.getModelOperationState(),ownerState);assert.equal(ownerState.blocked,false);
+  ws.env.oc.busy=true;assert.equal(w.getModelOperationState().blocked,true);
+  assert.throws(()=>f.update.begin(data.record.id),/完成目前操作/);ws.env.oc.busy=false;
+  ws.env.connection.phase='reconnecting';assert.equal(w.getModelOperationState().blocked,true);ws.env.connection.phase='ready';
+  const lease=w.beginAssemblyConfirmation();assert.equal(w.getModelOperationState().blocked,true);w.finishAssemblyConfirmation(lease);
+  ws.env.connection.session='replacement-service';assert.notEqual(w.getModelOperationState().contextToken,ownerState.contextToken);
+  assert.equal(ownerState.revision,w.getProjectState().revision);assert.deepEqual(w.getSpaceModels(),before);
   f.update.begin(data.record.id);const reviewed=await f.update.prepare(data.selection);
   await f.update.confirm(reviewed.reviewId);const saved=clone(w.getSpaceModels());
   assert.equal(history.undo.length,undoBefore+1);assert.equal(history.undo.at(-1).kind,'local');
