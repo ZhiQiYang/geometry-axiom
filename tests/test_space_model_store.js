@@ -121,7 +121,7 @@ function workspace(verify, rebuild = () => model().result) {
     api:async cmd=>({ok:true,text:'old scene'}),resetSceneFocus:()=>{},refreshActive:async()=>{},setStatus:()=>{},
     sceneMenuDisplay:x=>x,curScene:{},
     fetch:async (url,opts)=>{calls.push(url);requests.push({url,body:['/upload','/upload/prepare'].includes(url)?opts.body:JSON.parse(opts.body)});return {ok:true,json:async()=>url==='/model/verify'?verify(JSON.parse(opts.body)):
-      url==='/model/space-preview'?rebuild(JSON.parse(opts.body)):url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[],placements:[]}}:{ok:true,path:'loaded'}};}
+      url==='/model/space-replay'?rebuild(JSON.parse(opts.body).input):url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[],placements:[]}}:{ok:true,path:'loaded'}};}
   };
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/reference-workspace.js'),'utf8')+'\nglobalThis.workspace=ReferenceWorkspace;',env);
   return {api:env.workspace,events,calls,requests};
@@ -138,11 +138,11 @@ test('import verifies all model packages before the scene transaction; verificat
   const m=model(),second=model('second');
   const bytes=await P.pack('',manifest([m,second]),new Map(),zip);
   const success=workspace(p=>p);await success.api.importBytes(bytes);
-  assert.deepEqual(success.calls,['/model/verify','/model/space-preview','/model/verify','/model/space-preview','/upload/prepare','/upload/confirm']);assert.equal(success.api.getSpaceModels().length,2);
+  assert.deepEqual(success.calls,['/model/verify','/model/space-replay','/model/verify','/model/space-replay','/upload/prepare','/upload/confirm']);assert.equal(success.api.getSpaceModels().length,2);
   let calls=0;const failure=workspace(p=>++calls===1?p:{status:'INVALID',diagnostics:[{message:'bad hash'}]});
   failure.api.addSpaceModel(model('existing'));const contextId=failure.api.context().id;
   await assert.rejects(()=>failure.api.importBytes(bytes),/bad hash/);
-  assert.deepEqual(failure.calls,['/model/verify','/model/space-preview','/model/verify']);assert.equal(failure.api.context().id,contextId);
+  assert.deepEqual(failure.calls,['/model/verify','/model/space-replay','/model/verify']);assert.equal(failure.api.context().id,contextId);
   assert.equal(failure.api.getSpaceModels()[0].id,'existing');assert.equal(failure.api.history.undo.length,1);
 });
 test('valid packages with forged settings summaries are refused before scene upload', async () => {
@@ -150,7 +150,7 @@ test('valid packages with forged settings summaries are refused before scene upl
   const bytes=await P.pack('',manifest([m]),new Map(),zip),w=workspace(p=>p);
   const contextId=w.api.context().id;
   await assert.rejects(()=>w.api.importBytes(bytes),/摘要與定義/);
-  assert.deepEqual(w.calls,['/model/verify','/model/space-preview']);assert.equal(w.api.context().id,contextId);
+  assert.deepEqual(w.calls,['/model/verify','/model/space-replay']);assert.equal(w.api.context().id,contextId);
 });
 
 async function timberModel(ids = [0, 4]) {
@@ -225,9 +225,9 @@ test('rejects incomplete or mismatched timber selections, roots, roles, source f
 test('timber import verifies its independent package and replays the stored scene before upload', async () => {
   const m=await timberModel(),bytes=await P.pack('',manifest([m]),new Map(),zip);
   const w=workspace(p=>p,()=>clone(m.result));await w.api.importBytes(bytes);
-  assert.deepEqual(w.calls,['/model/verify','/model/verify','/model/space-preview','/upload/prepare','/upload/confirm']);
-  assert.deepEqual(w.requests[1].body,m.result.timbers);assert.deepEqual(w.requests[2].body,m.input);
-  assert.notEqual(w.requests[2].body.base_scene,'old scene');
+  assert.deepEqual(w.calls,['/model/verify','/model/verify','/model/space-replay','/upload/prepare','/upload/confirm']);
+  assert.deepEqual(w.requests[1].body,m.result.timbers);assert.deepEqual(w.requests[2].body,{input:m.input,result:m.result});
+  assert.notEqual(w.requests[2].body.input.base_scene,'old scene');
   assert.deepEqual(clone(w.api.getSpaceModels()),[m]);
 });
 test('timber package verification failure, replay divergence and wrong source hash leave current project intact', async () => {
