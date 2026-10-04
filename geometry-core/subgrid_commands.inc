@@ -77,6 +77,8 @@ static bool apply_subgrid_line(const char *path,int line_no,char **t,int count,W
 
 static bool grid_guide_references(const GuideLine *guide,uint32_t id)
 {
+    char rule_key[48];snprintf(rule_key,sizeof rule_key,"gridrule:%u:",id);
+    if(strstr(guide->expression,rule_key))return true;
     char key[40]; snprintf(key,sizeof key,"grid:%u:",id);
     const char *at=guide->expression;
     while ((at=strstr(at,key))!=NULL) {

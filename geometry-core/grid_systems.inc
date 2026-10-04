@@ -1,5 +1,6 @@
 /* D29 / D10b / I37 / R32: reusable definitions, without an implicit surface. */
 static char g_grid_stagger_error[256];
+static void grid_rules_dump(const GridSystem *,FILE *);
 static bool grid_axis_stagger_ok(const GridSystem *,int,char *,size_t);
 static bool grid_parameter_token(const char *,Coord *,ParameterRef *,bool);
 static bool grid_system_axis_valid(const GridAxisDef *a)
@@ -70,6 +71,7 @@ static bool grid_systems_rebuild(World *w,char *error,size_t cap)
         if (!grid_system_valid(&w->grid_systems[i])) {
             snprintf(error,cap,"I37: grid-system %u has an invalid definition",w->grid_systems[i].id); return false;
         }
+        if(!grid_rules_valid(&w->grid_systems[i],error,cap)) return false;
         for (size_t j=0;j<i;++j) if (w->grid_systems[j].id==w->grid_systems[i].id) {
             snprintf(error,cap,"I37: duplicate grid-system identity"); return false;
         }
@@ -187,7 +189,7 @@ static bool grid_system_read_axis(char **t,int count,int *at,GridAxisDef *a)
 }
 static bool apply_grid_system_line(const char *path,int line_no,char **t,int count,World *w)
 {
-    GridSystem s={0}; int i=6; g_grid_stagger_error[0]=0;
+    GridSystem s={0}; s.next_rule_key=1; int i=6; g_grid_stagger_error[0]=0;
     if (count<10 || !parse_u32(t[1],&s.id) || strcmp(t[2],"name-hex") ||
         !grid_system_read_name(t[3],s.name) || strcmp(t[4],"main-along")) goto invalid;
     if (!strcmp(t[5],"u")) s.main_along=1;
@@ -205,6 +207,11 @@ static bool apply_grid_system_line(const char *path,int line_no,char **t,int cou
     if (slot==candidate.grid_system_count) {
         if (slot==WORLD_MAX_GRID_SYSTEMS) { scene_error(path,line_no,"I37: grid-system capacity is 16"); return false; }
         ++candidate.grid_system_count;
+    }
+    if(slot<w->grid_system_count) {
+        s.rule_count=w->grid_systems[slot].rule_count;
+        s.next_rule_key=w->grid_systems[slot].next_rule_key;
+        memcpy(s.rules,w->grid_systems[slot].rules,sizeof s.rules);
     }
     candidate.grid_systems[slot]=s; reference_capture_trial(&candidate);
     if (!world_revalidate(&candidate)) {
@@ -278,5 +285,6 @@ static void grid_systems_dump(const World *w,FILE *out)
             }
         }
         fputc('\n',out);
+        grid_rules_dump(s,out);
     }
 }
