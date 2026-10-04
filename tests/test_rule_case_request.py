@@ -70,10 +70,16 @@ class NativeRequestSeam(unittest.TestCase):
             self.assertNotIn(field, receipt)
         self.assertIsInstance(json.dumps(receipt, ensure_ascii=False), str)
 
-    def test_negative_capability_and_cancellation_keep_nonpass_results(self):
+    def test_precise_negative_passes_while_capability_and_cancellation_keep_nonpass_results(self):
         negative = self.run_request("fixed-version-immutable")
-        self.assertEqual(("blocked", "diagnostic-unavailable"), (negative["status"], negative["reason"]))
+        self.assertEqual("passed", negative["status"], negative)
         self.assertEqual("rejected", negative["actualOutcome"])
+        expected = {"code": "RULE_VERSION_IMMUTABLE", "clause": "D32",
+                    "ref": {"kind": "rule", "id": 17, "version": 1}}
+        actual = [{key: d.get(key) for key in ("code", "clause", "ref")}
+                  for d in negative["actualDiagnostics"]]
+        self.assertIn(canonical(expected), [canonical(d) for d in actual])
+        self.assertTrue(negative["conditions"]["privateDirectoryRemoved"])
         cancelled = threading.Event()
         cancelled.set()
         receipt = self.run_request("legal-rule", cancel=cancelled)
