@@ -41,6 +41,9 @@ BRIDGE_TIMEOUT = 20
 MODEL_TIMEOUT = 60
 NATIVE_CAPABILITIES = frozenset(("engineering-spec/1", "parameters/1",
                                "assembly-rule-authoring/1", "assembly-timber-generation/1"))
+# PR107's current bridge offers this capability even for legacy scenes. Its
+# portable reader/model adapter is pending, so it is not a supported input pin.
+BRIDGE_CAPABILITIES = NATIVE_CAPABILITIES | {"grid-subdivision-rules/1"}
 OBJECT_KINDS = frozenset(("boundary", "placement", "space", "column", "beam", "spec", "parameter",
                           "datum", "guide", "grid-system", "grid-binding", "grid", "material", "method",
                           "application", "timber", "assembly-rule", "assembly-binding", "assembly-instance"))
@@ -142,10 +145,10 @@ def _scene(value, path):
     return encoded
 
 
-def _capabilities(value, path):
-    if type(value) is not list or len(value) > 4 or any(type(item) is not str for item in value) or len(set(value)) != len(value):
+def _capabilities(value, path, *, supported=NATIVE_CAPABILITIES):
+    if type(value) is not list or len(value) > len(supported) or any(type(item) is not str for item in value) or len(set(value)) != len(value):
         _fail("SCENARIO_CAPABILITY", "Native capability list is invalid.", status="UNSUPPORTED", path=path)
-    if set(value) - NATIVE_CAPABILITIES:
+    if set(value) - supported:
         _fail("SCENARIO_CAPABILITY", "Required native capability is unsupported.", status="UNSUPPORTED", path=path)
     return set(value)
 
@@ -531,7 +534,7 @@ def verify_project(data, *, bridge_executable=None, base_executable=None):
         receipt, graph = rows
         if receipt.get("ok") is not True:
             _fail("SCENARIO_SCENE_INVALID", "Native parser rejected the scene.")
-        available = _capabilities(receipt.get("capabilities"), ("native", "capabilities"))
+        available = _capabilities(receipt.get("capabilities"), ("native", "capabilities"), supported=BRIDGE_CAPABILITIES)
         native_required = _capabilities(receipt.get("required_capabilities"), ("native", "required_capabilities"))
         # Native receipts report capabilities used by actual objects; an empty
         # scene may still explicitly require a supported capability. Preserve

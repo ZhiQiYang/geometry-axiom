@@ -499,6 +499,46 @@ class ScenarioNativeAcceptance(unittest.TestCase):
                 self.assertEqual(receipt["requiredCapabilities"], [capability])
                 self.assertIn(capability, receipt["capabilities"])
 
+    def test_legacy_scene_accepts_current_bridge_offer_without_promoting_requirements(self):
+        scene = "boundary 3 outline 0,0 100,0 100,100 0,100\nspec stable 500\n"
+        receipt = self.verify(project(scene, requiredCapabilities=["engineering-spec/1"]))
+        self.assertTrue(receipt["ok"])
+        self.assertIn("grid-subdivision-rules/1", receipt["capabilities"])
+        self.assertEqual(receipt["requiredCapabilities"], ["engineering-spec/1"])
+        self.assertEqual(receipt["final_objects"], {"boundaries": [3], "placements": []})
+        self.assertEqual(receipt["scene_sha256"], hashlib.sha256(scene.encode()).hexdigest())
+
+    def test_actual_source_rule_scene_is_explicitly_unsupported_until_reader_owner_lands(self):
+        with tempfile.TemporaryDirectory(prefix="scenario-source-rule-") as directory:
+            with _bridge.BridgeSession(self.bridge, cwd=directory) as native:
+                self.assertTrue(native.command("reset")["ok"])
+                for command in (
+                        "grid-system 0 name-hex 736f75726365 main-along none u repeat 0 600 v repeat 0 400",
+                        "grid-source-rule 0 create name-hex 72756c65 selector all-cells divide 3 2"):
+                    result = native.line(command)
+                    if "preview" in result:
+                        self.assertTrue(result["preview"]["valid"], result)
+                        result = native.line("confirm " + str(result["preview"]["token"]))
+                    self.assertTrue(result["ok"], result)
+                scene = native.command("dump")["text"]
+                self.assertIn("grid-source-rule", scene)
+                self.assertIn("requires grid-subdivision-rules/1\n", scene)
+                source = Path(directory) / "original.scene"
+                source.write_text(scene, encoding="utf-8")
+                prepared = native.command("load-prepare " + str(source))
+                self.assertTrue(prepared["ok"], prepared)
+                self.assertIn("grid-subdivision-rules/1", prepared["required_capabilities"])
+                for required in ([], ["grid-subdivision-rules/1"]):
+                    error = self.reject(project(scene, requiredCapabilities=required), "SCENARIO_CAPABILITY")
+                    self.assertEqual(error.status, "UNSUPPORTED")
+                without_marker = scene.replace("requires grid-subdivision-rules/1\n", "")
+                stripped = Path(directory) / "stripped.scene"
+                stripped.write_text(without_marker, encoding="utf-8")
+                self.assertFalse(native.command("load-prepare " + str(stripped))["ok"])
+                self.assertEqual(self.reject(project(without_marker), "SCENARIO_CAPABILITY").status, "UNSUPPORTED")
+                self.assertEqual(source.read_text(encoding="utf-8"), scene)
+                self.assertEqual(native.command("dump")["text"], scene)
+
     def test_generation_scene_preserves_three_owned_members(self):
         with zipfile.ZipFile(ROOT / "geometry-web/examples/assembly-generation-v1.gcanvas") as archive:
             scene = archive.read("world.scene").decode("utf-8")
