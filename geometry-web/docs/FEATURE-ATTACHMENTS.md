@@ -63,7 +63,7 @@ readFeatureAttachment("grid-draft") -> deep copy | null
 setFeatureAttachment("grid-draft", validValue | null, expectedContextToken)
 ```
 
-寫入必須提供目前 `getProjectState().contextToken`；過期 token、專案／核心 busy、history group、prepare/load 未完成、只讀或另一分頁衝突都先拒，沒有 dirty/history 變更。成功新增、替換或捨棄是一筆既有 local history；值相同或不存在時刪除是 no-op。呼叫者與回傳值的修改不改 saved record。完整 snapshots、切專案、清空／新專案、恢復資料及 browser history window 以外的 core undo 都保留相應附件資料；不建立第二條歷史。
+寫入必須提供目前 `getProjectState().contextToken`；token 綁目前 history frame，undo 回同一 context 也產生新 token，舊非同步 owner 不會復活。過期 token、專案／核心 busy、history group、prepare/load 未完成、只讀或另一分頁衝突都先拒，沒有 dirty/history 變更。成功新增、替換或捨棄是一筆既有 local history；值相同或不存在時刪除是 no-op。呼叫者與回傳值的修改不改 saved record。完整 snapshots、切專案、清空／新專案、恢復資料及 browser history window 以外的 core undo 都保留相應附件資料；不建立第二條歷史。
 
 其他已批准種類（#77 `source-rooms`、#49 `rule-cases`）待各自正式 validator 與閉包接入再加入白名單，現在明確拒。#49 匯入的歷史 receipt 不能只靠自洽指紋冒稱可信新 pass；須明示歷史／待重跑，或由目前受控 executor 重跑。
 
