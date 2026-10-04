@@ -91,6 +91,8 @@
     const result = new Set();
     for (const raw of scene.replace(/\r\n/g, "\n").split("\n")) {
       const line = raw.split("#", 1)[0].trim();
+      if(/^grid-source-rule(?:-highwater)?\b/.test(line)||/(?:^|\s)gridrule:/.test(line)||/\bat-line\s+rule\b/.test(line))
+        fail('場景需要尚未支援的工程能力。');
       if (/^engineering(?:\s|$)/.test(line) || /(?:^|\s)eng:/.test(line)) result.add(ENGINEERING_CAPABILITY);
       if (/^parameters(?:\s|$)/.test(line) || /(?:^|[^\w])param:\d+:\d+/.test(line)) result.add(PARAMETER_CAPABILITY);
       if (/^owned(?:\s|$)/.test(line)) result.add(GENERATION_CAPABILITY);
