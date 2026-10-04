@@ -387,6 +387,7 @@
         yaw -= (event.clientX - previous.x) * 0.007;
         pitch = clamp(pitch + (event.clientY - previous.y) * 0.007, -Math.PI / 2, Math.PI / 2);
         view = 'custom';
+        fitScale();
       }
       schedule(); notify();
     });
@@ -419,7 +420,7 @@
       else if (key === '-' || key === '_') zoom = clamp(zoom / 1.15, 0.1, 12);
       else if (key.toLowerCase() === 'f' || key === 'Home') { event.preventDefault(); fit(); return; }
       else return;
-      if (key.startsWith('Arrow')) view = 'custom';
+      if (key.startsWith('Arrow')) { view = 'custom'; fitScale(); }
       event.preventDefault(); schedule(); notify();
     });
 
