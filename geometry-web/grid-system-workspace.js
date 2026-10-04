@@ -261,7 +261,7 @@
         s.vertex=samePin(ref,s.boundaryPin)?s.vertices.find(v=>vertexId(v)===s.restored.rawForm.igVertex)||null:null;drawBoundary(s);alignment(s);}}
     if(s.binding&&!s.restored)locate(s);
     if(!s.restored)s.initialRaw=JSON.stringify(rawForm(s));
-    s.initializing=false;for(const [node,disabled] of loadingControls)node.disabled=disabled;capture(s);
+    s.initializing=false;dialog.classList.remove('ig-busy');for(const [node,disabled] of loadingControls)node.disabled=disabled;capture(s);
     WorkspaceShell.attach(dialog, {saveBlocked:()=>!current(s) || s.initializing || s.busy || !!s.heldControls || !!s.rawError || draftState(s).boundary || draftState(s).application,
       saveReason:()=>s.busy?'正在處理網格變更，完成後即可保存。':'先預覽並確認未套用的設定，再保存專案。', describedBy:'igDraftNote'});
     syncDraftState(s);
