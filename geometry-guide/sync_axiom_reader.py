@@ -691,6 +691,9 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     assert 'class="toc-facets' in source, "GEO-149 篩選 chip 不見了"
     assert "facetMatch" in script_text(source, "reader-script"), "GEO-149 篩選條件沒接上 filterToc"
     assert 'id="workspace-witness"' in source, "GEO-138 右欄見證圖面板不見了"
+    workspace_js = script_text(source, "workspace-script")
+    assert len(re.findall(r"\bfunction\s+renderWitness\s*\(", workspace_js)) == 1, "QR5 見證圖函式必須唯一"
+    assert len(re.findall(r"e\s*=>\s*renderWitness\s*\(e\.detail\s*&&\s*e\.detail\.id\)", workspace_js)) == 1, "QR5 見證圖 event handler 必須唯一"
     assert "草稿已保留" in script_text(source, "workspace-script"), "GEO-146 切分頁沒有保留草稿"
     assert "halfSheet()" in script_text(source, "workspace-script"), "GEO-148 中間寬度仍走全螢幕 modal"
     assert "body.half-sheet-open" in source, "GEO-148 半高 sheet 樣式不見了"
@@ -777,6 +780,16 @@ def inject_css(template: str, css: str, marker: str) -> str:
 
 
 def force(text: str, old: str, new: str, label: str, marker: str | None = None) -> str:
+    result = _force_result(text, old, new, label, marker)
+    # All successful paths, including marker no-ops, share the same registration.
+    if new == "":
+        PATCHES.expect_absent(label, old)
+    else:
+        PATCHES.expect_present(label, marker if marker is not None else new)
+    return result
+
+
+def _force_result(text: str, old: str, new: str, label: str, marker: str | None) -> str:
     """冪等模板補丁:先找 old 換成 new;已經是 new 就不動;兩者都找不到 = 模板漂移,失敗不靜默略過。
 
     old 與 new 都必須在全文唯一。GEO-142 施工時踩過:new 的尾巴
@@ -784,19 +797,20 @@ def force(text: str, old: str, new: str, label: str, marker: str | None = None) 
     補丁整個被跳過而沒有任何人知道。不唯一就是判準有問題,寧可失敗。
     """
     if marker is not None:
+        if not marker or new.count(marker) != 1:
+            raise ValueError("reader template patch (%s): 標記必須在改後字串中唯一" % label)
         # 同一段會被多個補丁先後修改時,old/new 都判定不了狀態(第二個補丁會把第一個的 new 改掉)。
         # 這時由呼叫端給一個「只要套用過就一定在」的標記。GEO-149 的 resetSearch 實際踩到:
         # apply_search_fixes 先加 keyboardIndex、apply_facets 再加 activeFacet,重建時兩邊都認不得。
         if marker in text:
+            if text.count(marker) != 1:
+                raise ValueError("reader template patch (%s): 已套用標記不唯一" % label)
             return text
         if old not in text:
             raise ValueError("reader template drift (%s): 找不到改前字串,也沒有已套用標記" % label)
+        if not old or text.count(old) != 1:
+            raise ValueError("reader template patch (%s): 改前字串不唯一" % label)
         return text.replace(old, new, 1)
-    # 登記這個補丁「套用後一定看得到 / 一定看不到」的標記,同步結束時一次驗完。
-    if new == "":
-        PATCHES.expect_absent(label, old)
-    else:
-        PATCHES.expect_present(label, marker or new)
 
     if new == "":
         # 刪除型:空字串在任何文字裡都「存在」,不能走下面的判定。
@@ -874,6 +888,32 @@ def apply_half_sheet(template: str) -> str:
     return replace_script(template, "workspace-script", js)
 
 
+LEGACY_WITNESS_PANE_JS = """
+ /* GEO-138(🔒 Q4):右欄上半固定顯示「目前這一條」的見證圖,不與參照/批註互斥。
+    圖直接取自條文卡裡那張(同一個 data URI),不另存第二份。 */
+ function toast(text){
+  const t=document.getElementById('toast');if(!t)return;
+  t.textContent=text;t.hidden=false;
+  clearTimeout(toast._timer);toast._timer=setTimeout(()=>{t.hidden=true;},2200);
+ }
+ function renderWitness(id){
+  const pane=document.getElementById('workspace-witness');if(!pane)return;
+  const label=document.getElementById('workspace-witness-clause');
+  const img=document.getElementById('workspace-witness-img');
+  const none=document.getElementById('workspace-witness-none');
+  const article=id?document.getElementById(id):null;
+  const source=article?article.querySelector('.witness-section figure img'):null;
+  if(label)label.textContent=id||'';
+  if(source){
+   img.src=source.getAttribute('src');img.alt=source.getAttribute('alt')||'';
+   img.hidden=false;none.hidden=true;
+  }else{
+   img.removeAttribute('src');img.hidden=true;none.hidden=false;
+  }
+ }
+ document.addEventListener('axiom:current',e=>renderWitness(e.detail&&e.detail.id));"""
+
+
 def apply_witness_pane(template: str) -> str:
     """GEO-138 + GEO-146(🔒 Q4):右欄上半固定見證圖;下半維持 tab,但切換前先保留草稿。"""
     # 面板內容日後還會改,所以不用「改前/改後」判定(那會在內容一變就卡住,GEO-141 Q8 實際踩到)。
@@ -883,12 +923,11 @@ def apply_witness_pane(template: str) -> str:
     anchor = '<div id="dock-hub"></div>\n<div aria-label="校對工作區" class="workspace-tabs" role="tablist">'
     if anchor not in template:
         raise ValueError("reader template drift:找不到右欄的 dock-hub / workspace-tabs 錨點")
-    witness_total = template.count('<section class="witness-section">')
     pane = ('<section aria-label="目前條文的見證圖" class="js-only" id="workspace-witness" hidden="">'
             '<h3>見證圖 <small id="workspace-witness-clause"></small></h3>'
             '<figure id="workspace-witness-img" hidden=""></figure>'
             '<p class="hint" id="workspace-witness-none" hidden="">'
-            + ("這一條沒有見證圖(89 條中有 %d 條有)。" % witness_total) +
+            '這一條沒有見證圖。' +
             '</p></section>')
     template = template.replace(
         anchor,
@@ -896,6 +935,11 @@ def apply_witness_pane(template: str) -> str:
         1)
 
     js = script_text(template, "workspace-script")
+    # Retire only the known image/data-URI pane migration. Its function is dead
+    # (shadowed by the SVG function), but its listener invokes the live function.
+    js = force(js, LEGACY_WITNESS_PANE_JS, "", "退役 data URI 見證圖 handler")
+    if ".witness-section figure img" in js:
+        raise ValueError("reader template drift:歷史見證圖面板無法唯一退役")
     js = force(js, "\nfunction reflectTabs(){", WITNESS_PANE_JS.rstrip("\n") + "\nfunction reflectTabs(){",
                "見證圖面板腳本")
     # GEO-146:切走批註分頁前先保留草稿,並明確告知——否則寫到一半點條號就沒了。
@@ -1206,6 +1250,8 @@ def apply_counts(template: str, counts: dict) -> str:
     cut = template.index('<script id="%s"' % COUNTS_ID)
     head, tail = template[:cut], template[cut:]
     subs = [
+        (r'(id="workspace-witness-none"[^>]*>)[^<]*(<)',
+         lambda m: m[1] + "這一條沒有見證圖(%d 條中有 %d 條有)。" % (n, counts["witness"]) + m[2]),
         (r"<title>[^<]*</title>", "<title>公理層 · %s · %d 條 · %d 則批註</title>" % (rev, n, c)),
         (r'(id="review-revision">)[^<]*(<)', lambda m: m[1] + rev + m[2]),
         (r'(id="review-count">)\d+(<)', lambda m: m[1] + str(c) + m[2]),
@@ -1231,6 +1277,8 @@ def stale_counts(template: str, counts: dict) -> list[str]:
     if not title or title[1] != want:
         bad.append("title=%r 應為 %r" % (title[1] if title else None, want))
     for label, pattern, expect in [
+        ("workspace-witness-none", r'id="workspace-witness-none"[^>]*>([^<]*)<',
+         "這一條沒有見證圖(%d 條中有 %d 條有)。" % (n, counts["witness"])),
         ("read-position", r'id="read-position">([^<]*)<', "1 / %d" % n),
         ("workspace-position", r'id="workspace-position">([^<]*)<', "1 / %d" % n),
         ("review-count", r'id="review-count">([^<]*)<', str(c)),
