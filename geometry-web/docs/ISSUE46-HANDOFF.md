@@ -94,6 +94,8 @@ browser harness 自建僅服務本 slice 的 ephemeral loopback server，實際 
 
 Refs #46 #45 #44 #48 #77 #43；不以本第一 slice 關閉 #46，draft PR 交 root 獨立 review，未 merge／deploy。
 
+settings 在驗證允許欄位後立即深拷貝／凍結，在 state callbacks 及任何 await 前取得自有 options；fork 的 basis／origins 使用獨立私有參數，不能由 caller 在 pending verifier／hash await 期間晚注入。新增 held-verifier 回歸先在 `78b4e14` 重現非 fork 配對，再驗 capture 的原 namespace／label／空 basis／origins、外來或不存在 basis 注入無效、正常 fork 對應及 fresh ZIP 重開。
+
 PR110 增量複審回歸涵蓋：真 native 接受但正式 raw ZIP reader 拒絕的 parameters／assembly／generation 保留能力降 `/5` 反例、正式 `/1`～`/9` 原資料與模型正例、真正 reset／delete-recreate 同 IDs、foreign project 同 IDs 以及 fresh ZIP／diff 不誤配；unit 另驗 public capture 自填 origins、重算 hash 的 edited／foreign／typed remap ZIP、完全相同 bytes 的 replacement 清配對與 B→C 新 fork。reader format 守門已與目前 main 和實際 PR104 的 raw ZIP reader 作 4,864 個矩陣案例獨立核對，零落差。完整 app CDP、產品 A/B adoption、recoverable undo/redo、正式手機入口未在此 slice 驗收。
 
-本次同實作 bytes 驗證：snapshot/diff 39/39，加既有 model／parameters 保存回歸 61/61、0 skip；新增 JS＋真 native CLI 端到端 18/18、46 次隔離 CLI；native/model Python 33/33；注入實際 PR104 的 GridDraft compatibility 1/1；1280／390 browser 16 個 checks、12 次真 native CLI、0 forbidden live requests、0 browser exceptions。獨立 identity ZIP 複審含合法 fork、edited B→C 及重算 hash 的反例，沒有剩餘 object correspondence 缺口。
+本次同實作 bytes 驗證：snapshot/diff 41/41，加既有 model／parameters 保存回歸 63/63、0 skip；新增 JS＋真 native CLI 端到端 18/18、46 次隔離 CLI；native/model Python 33/33；注入實際 PR104 的 GridDraft compatibility 1/1；1280／390 browser 16 個 checks、12 次真 native CLI、0 forbidden live requests、0 browser exceptions。獨立 identity ZIP 複審含合法 fork、edited B→C、重算 hash 及 settings TOCTOU 的反例。

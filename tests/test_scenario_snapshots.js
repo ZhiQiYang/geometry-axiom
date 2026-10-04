@@ -180,6 +180,45 @@ test('only explicit fork establishes origins; even byte-identical replacement re
   assert.equal(D.compare(current,C).originPairs.length,current.objects.length);
 });
 
+test('held verifier cannot inject capture origins, another project basis or late namespace and label',async()=>{
+  let gate;
+  const a=archive({verifyProject:async()=>{if(gate){gate.entered.resolve();await gate.release.promise;}return receipt();}}),input=await fixture();
+  const A=await a.capture(input,{scenarioId:'A',label:'A'}),foreign=await fixture();foreign.manifest.projectId='foreign-project';
+  const F=await a.capture(foreign,{scenarioId:'foreign',label:'foreign'});
+  const changes=[
+    settings=>Object.assign(settings,{basis:{scenarioId:'A',snapshotHash:A.closureHash},
+      originMapping:A.objects.map(v=>({from:{scenarioId:'A',...v},to:{scenarioId:settings.scenarioId,...v},snapshotHash:A.closureHash}))}),
+    settings=>Object.assign(settings,{basis:{scenarioId:'foreign',snapshotHash:F.closureHash},originMapping:[]}),
+    settings=>Object.assign(settings,{scenarioId:'late-namespace',label:'late label',basis:{scenarioId:'absent',snapshotHash:HASH},originMapping:[]})
+  ];
+  for(const early of [false,true])for(let i=0;i<changes.length;i++) {
+    gate={entered:deferred(),release:deferred()};
+    const id='capture-'+Number(early)+'-'+i,label='original '+i,settings={scenarioId:id,label},before=a.list();
+    const pending=a.capture(input,settings);if(!early)await gate.entered.promise;
+    changes[i](settings);gate.release.resolve();
+    const captured=await pending;gate=null;
+    assert.equal(captured.scenarioId,id);assert.equal(captured.label,label);
+    assert.equal(captured.basis,null);assert.deepEqual(captured.originMapping,[]);
+    assert.deepEqual(a.list().slice(0,before.length),before);
+    const diff=D.compare(A,captured);assert.deepEqual(diff.originPairs,[]);
+    assert.equal(diff.unmatched.before.length,A.objects.length);assert.equal(diff.unmatched.after.length,captured.objects.length);
+  }
+  const fresh=archive();await fresh.unpack(await a.pack(zip),zip);assert.deepEqual(fresh.list(),a.list());
+});
+
+test('held verifier preserves explicit fork options and private origins despite late caller mutation',async()=>{
+  const entered=deferred(),release=deferred();let hold=false;
+  const a=archive({verifyProject:async()=>{if(hold){entered.resolve();await release.promise;}return receipt();}});
+  const A=await a.capture(await fixture(),{scenarioId:'A',label:'A'}),settings={scenarioId:'B',label:'original B'};
+  hold=true;const pending=a.fork('A',settings);await entered.promise;
+  Object.assign(settings,{scenarioId:'late',label:'late',basis:{scenarioId:'absent',snapshotHash:HASH},originMapping:[]});
+  release.resolve();const B=await pending;
+  assert.equal(B.scenarioId,'B');assert.equal(B.label,'original B');
+  assert.deepEqual(B.basis,{scenarioId:'A',snapshotHash:A.closureHash});
+  assert.equal(D.compare(A,B).originPairs.length,A.objects.length);
+  const fresh=archive();await fresh.unpack(await a.pack(zip),zip);assert.deepEqual(fresh.list(),a.list());
+});
+
 test('rehashed ZIP cannot retain edited-copy origins, cross-project basis or remapped same-kind IDs',async()=>{
   const native=async()=>({...receipt(),objects:[{kind:'spec',id:'first',version:null},{kind:'spec',id:'second',version:null}]}),
     a=archive({verifyProject:native});

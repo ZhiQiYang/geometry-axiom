@@ -348,13 +348,20 @@
       pool.clear();for(const [hash,bytes]of assets)pool.set(hash,bytes);
       return copy(s);
     }
-    async function captureCopy(project,settings) {const op=start();boundedJSON(settings,limits,limits.descriptorBytes);
+    async function captureCopy(project,settings,copyOrigin=null) {
+      boundedJSON(settings,limits,limits.descriptorBytes);boundedJSON(copyOrigin,limits,limits.descriptorBytes);
+      // Own every option before state callbacks or verification can yield.
+      // Only the private fork path can supply the separate origin envelope.
+      const combinedSettings={...settings,basis:copyOrigin?.basis||null,originMapping:copyOrigin?.originMapping||[]};
+      boundedJSON(combinedSettings,limits,limits.descriptorBytes);
+      const ownedSettings=freeze(copy(combinedSettings));
+      const op=start();
       if(snapshots.size>=limits.scenarios)fail('LIMIT','Too many complete scenarios.');
-      const data=await verified(project,op);const s=await seal(data,settings,op);return commit(s,data,op);}
+      const data=await verified(project,op);const s=await seal(data,ownedSettings,op);return commit(s,data,op);}
     async function capture(project,settings) {
       boundedJSON(settings,limits,limits.descriptorBytes);
       if(!exact(settings,['scenarioId','label']))fail('ORIGIN','Only an explicit archived fork can establish a copy basis and typed origins.');
-      return captureCopy(project,settings);
+      return captureCopy(project,freeze(copy(settings)));
     }
     function project(id) {
       const s=snapshots.get(id);if(!s)fail('SCENARIO','Scenario does not exist.');
@@ -365,8 +372,9 @@
       const base=snapshots.get(id);if(!base)fail('SCENARIO','Copy basis does not exist.');
       boundedJSON(settings,limits,limits.descriptorBytes);
       if(!exact(settings,['scenarioId','label']))fail('SCENARIO','Fork requires a new namespace and label.');
-      const originMapping=base.objects.map(v=>({from:{scenarioId:id,...v},to:{scenarioId:settings.scenarioId,...v},snapshotHash:base.closureHash}));
-      return captureCopy(project(id),{...settings,basis:{scenarioId:id,snapshotHash:base.closureHash},originMapping});
+      const ownedSettings=freeze(copy(settings));
+      const originMapping=base.objects.map(v=>({from:{scenarioId:id,...v},to:{scenarioId:ownedSettings.scenarioId,...v},snapshotHash:base.closureHash}));
+      return captureCopy(project(id),ownedSettings,{basis:{scenarioId:id,snapshotHash:base.closureHash},originMapping});
     }
     async function replace(id,input) {
       const old=snapshots.get(id);if(!old)fail('SCENARIO','Scenario does not exist.');
