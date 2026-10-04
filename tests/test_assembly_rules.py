@@ -344,6 +344,39 @@ class AssemblyRules(unittest.TestCase):
         self.assertFalse(self.read()["state"]["bindings"][0]["complete"])
         self.assertIsNone(self.read()["state"]["bindings"][0]["effective"][0]["A"])
 
+        # A12: selecting dimensions does not silently choose a face/orientation.
+        material={"id":"cedar","version":1,"kind":"timber","name":"杉木","A":13,"B":19}
+        self.apply([{"op":"publish-material","value":material}])
+        expected_effective=[{"slotId":1,"A":{"value":27,"path":"explicit integer mm"},"B":{"value":33,"path":"explicit integer mm"}},
+                            {"slotId":2,"A":{"value":13,"path":"material:cedar@1.A"},"B":{"value":19,"path":"material:cedar@1.B"}}]
+        identifier=2
+        for field in ("contactFace","orientation"):
+            for slot_index in (0,1):
+                with self.subTest(missing=field,slotId=slot_index+1):
+                    value=binding(identifier=identifier)
+                    value["slots"][1].update(A={"kind":"material","id":"cedar","version":1,"field":"A"},
+                                             B={"kind":"material","id":"cedar","version":1,"field":"B"},
+                                             contactFace="B",orientation="A")
+                    value["slots"][slot_index][field]=None
+                    self.apply([{"op":"put-binding","value":value}])
+                    actual=next(b for b in self.read()["state"]["bindings"] if b["value"]["id"]==identifier)
+                    self.assertEqual(value,actual["value"])
+                    self.assertFalse(actual["complete"])
+                    self.assertEqual(expected_effective,actual["effective"])
+                    invalid=deepcopy(value);invalid["slots"][slot_index][field]="unknown"
+                    self.reject([{"op":"put-binding","value":invalid}],f"binding {identifier} slot {slot_index+1}")
+                    identifier+=1
+        before=self.read()["state"]
+        self.assertEqual([],before["instances"])
+        self.assertEqual([],self.command("objects")["timbers"])
+        self.assertEqual([],self.command("surfaces")["surfaces"])
+        scene=self.command("dump")["text"];path=self.directory/"partial-orientation.scene"
+        path.write_text(scene,encoding="utf-8")
+        with BridgeSession(self.bridge,cwd=self.directory) as fresh:
+            self.assertTrue(fresh.command("loadfile "+str(path))["ok"])
+            self.assertEqual(scene,fresh.command("dump")["text"])
+            self.assertEqual(before,fresh.command("assembly-read")["state"])
+
     def test_material_source_and_parameter_recomputation(self):
         self.publish()
         material={"id":"pine","version":1,"kind":"timber","name":"松木","A":27,"B":33}
@@ -357,6 +390,47 @@ class AssemblyRules(unittest.TestCase):
         self.reject([{"op":"delete-parameter","id":1}],"binding 1 slot 1.A")
         self.apply([{"op":"delete-binding","id":1},{"op":"delete-parameter","id":1}])
         self.assertEqual([],self.read()["state"]["bindings"])
+
+        # A11: role identity, rather than slot order or the latest material,
+        # determines each fixed dimension source.
+        self.apply([{"op":"publish-material","value":dict(material,version=2,A=41,B=53)},
+                    {"op":"publish-material","value":{"id":"oak","version":1,"kind":"timber","name":"橡木","A":37,"B":49}}])
+        dimensions={("pine",1):(27,33),("pine",2):(41,53),("oak",1):(37,49)}
+        expected={}
+        for identifier,secondary in enumerate((("pine",1),("pine",2),("oak",1)),1):
+            with self.subTest(secondary=secondary):
+                value=binding(identifier=identifier);effective=[]
+                for slot,fixed in zip(value["slots"],(("pine",1),secondary)):
+                    material_id,version=fixed
+                    for axis in ("A","B"):
+                        slot[axis]={"kind":"material","id":material_id,"version":version,"field":axis}
+                    if slot["slotId"]==2:
+                        slot.update(contactFace="B",orientation="A")
+                    effective.append({"slotId":slot["slotId"],**{
+                        axis:{"value":dimensions[fixed][index],"path":f"material:{material_id}@{version}.{axis}"}
+                        for index,axis in enumerate(("A","B"))}})
+                value["slots"].reverse()
+                self.apply([{"op":"put-binding","value":value}])
+                expected[identifier]=(value,{slot["slotId"]:slot for slot in effective})
+                actual=next(b for b in self.read()["state"]["bindings"] if b["value"]["id"]==identifier)
+                self.assertTrue(actual["complete"])
+                self.assertEqual(value,actual["value"])
+                self.assertEqual(expected[identifier][1],{slot["slotId"]:slot for slot in actual["effective"]})
+        self.apply([{"op":"publish-material","value":dict(material,version=3,A=61,B=71)},
+                    {"op":"publish-material","value":{"id":"oak","version":2,"kind":"timber","name":"橡木新版","A":79,"B":83}}])
+        before=self.read()["state"]
+        self.assertEqual({1,2,3},{b["value"]["id"] for b in before["bindings"]})
+        for actual in before["bindings"]:
+            value,effective=expected[actual["value"]["id"]]
+            self.assertTrue(actual["complete"])
+            self.assertEqual(value,actual["value"])
+            self.assertEqual(effective,{slot["slotId"]:slot for slot in actual["effective"]})
+        scene=self.command("dump")["text"];path=self.directory/"fixed-materials.scene"
+        path.write_text(scene,encoding="utf-8")
+        with BridgeSession(self.bridge,cwd=self.directory) as fresh:
+            self.assertTrue(fresh.command("loadfile "+str(path))["ok"])
+            self.assertEqual(scene,fresh.command("dump")["text"])
+            self.assertEqual(before,fresh.command("assembly-read")["state"])
 
     def test_bad_dimension_sources_rejected_not_incomplete(self):
         self.publish()
