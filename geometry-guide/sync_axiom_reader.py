@@ -171,6 +171,7 @@ def color_contract_regressions(template: str) -> list[str]:
         return re.sub(r"var\(\s*(--[\w-]+)\s*\)", r"var(\1)", value)
 
     css = "\n".join(re.findall(r"<style\b[^>]*>(.*?)</style>", template, re.S))
+    css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
     rules = {}
     for match in re.finditer(r"([^{}]+)\{([^{}]*)\}", css):
         declarations = {}

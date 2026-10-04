@@ -239,7 +239,7 @@ class CanonicalReader(unittest.TestCase):
             # meaning and must not be blindly stripped or introduced.
             if "{" in new:
                 selector, declarations = new.split("{", 1)
-                replacement = selector + "{ " + declarations.replace(":", ": ").replace(";", "; ")
+                replacement = selector + "{ /* formatted declarations */ " + declarations.replace(":", ": ").replace(";", "; ")
             else:
                 replacement = new.replace(":", ": ").replace(";", "; ")
             self.assertIn(new, formatted)
