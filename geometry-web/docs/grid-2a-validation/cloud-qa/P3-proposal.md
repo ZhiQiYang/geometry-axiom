@@ -1,6 +1,6 @@
 # P3 proposal: restore positioned dimension chips
 
-This is an evaluated proposal, **not a product CSS change**. It addresses the existing CSS responsibility boundary without redesigning the diagram.
+This records the **historical browser-only proposal at `fab77152`**. Root subsequently authorized the one-rule product repair in `b824c0f`; see [P3-acceptance.md](P3-acceptance.md) for its exact-head validation and retained first-click finding. The prototype results below still belong to `0b2cbe3` and do not represent that later product test head.
 
 The renderer supplies explicit `left`/`top` coordinates for the u/v dimension chips, which are direct children of `.ig-def-stage`. `.ig-def-stage > * { position:absolute }` is overridden by the more specific `.ig-workspace .ig-chip { position:relative }`. Consequently the v chip also inherits the u chip's inline-flow width and moves into the plot.
 
@@ -22,7 +22,7 @@ A temporary browser style override was tested against repair `0b2cbe3` at 1400×
 
 Both viewports return the v chip to the left gutter, preserve all four chip-to-field focus interactions, have no document horizontal overflow, and preserve the entire native dump. The visual direction matches the existing reference PNG. This prototype is not included in the full-1994 product test head, and must not be represented as a committed fix.
 
-If root authorizes the one-rule change, apply it as a separate bounded CSS commit, verify desktop/390px spacing and actual chip hit points (including single-axis/panel cases), and rerun the affected grid gate. No redesign or core changes are needed.
+The original proposed follow-up was a separate bounded CSS commit, desktop/390px spacing and actual chip hit points (including single-axis/panel cases), and the affected grid gate. That authorized work is now recorded in [P3-acceptance.md](P3-acceptance.md). No redesign or core changes were made.
 
 Desktop before:
 ![Desktop before](p3-1400-before.png)

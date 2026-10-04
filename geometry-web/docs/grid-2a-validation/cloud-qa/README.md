@@ -6,6 +6,8 @@ Review the repair independently: [code commit](https://github.com/ZhiQiYang/geom
 
 Only synthetic QA parameters/grids/Worlds and repository-authored test fixtures are included. No user Downloads HTML, private case data, browser profiles, or original project attachments were uploaded. The existing design reference PNG was inspected in place and was not duplicated. Local comprehensive evidence remains outside this repository.
 
+**Authorized CSS follow-up:** `b824c0f7985ae5b245b4f06679966cd7737d2e79` adds the one-rule P3 positioning fix. [P3-acceptance.md](P3-acceptance.md) records its new exact runtime, desktop/touch-390 mode matrix and affected grid gate. It also retains a newly reproduced pre-existing first-click defect; the earlier full-mode counts below belong to `0b2cbe3` and were not rerun for the CSS-only change.
+
 ## Verified repairs
 
 - **Panel zero-line coordinate:** panel 400, gap 5, raw anchor -100 produces effective phase 302 under D29. The original diagram labels raw `u -100` under “第 0 線”, while the main plot shows 302mm. The repair labels `shape.phase`, preserving the anchor field and ParameterRef/click target.
@@ -36,10 +38,10 @@ Runtime, binary hashes, trees and clean worktree states are recorded in [identit
 
 ## Remaining scoped findings
 
-- A newly identified P3 dimension-chip positioning issue remains in the repair. See [P3-proposal.md](P3-proposal.md) for the one-line CSS proposal and browser-only prototype evidence. Product CSS has not been changed.
+- The P3 dimension-chip positioning issue in `0b2cbe3` is fixed by the authorized CSS follow-up `b824c0f`; [P3-proposal.md](P3-proposal.md) retains the historical browser-only prototype. An existing input-change redraw can swallow the first chip click after editing; its before/after reproduction and bounded CSS validation are in [P3-acceptance.md](P3-acceptance.md).
 - At 390px, the feedback button covers the center of the create-grid menu item after editing a parameter. Base `8d134fc` and delivered PR130 have the same hit rectangles; this is a pre-existing issue. The normal flow used the unobscured lower edge, without hiding the feedback UI or forcing clicks. It is outside this diagram repair.
 - CI run `37229673271` has seven failed jobs with no runner steps, so it supplies no product execution evidence. Local gates above ran independently.
 - PR130's original author short-gate raw receipts were not present in the delivered files. The four claimed counts were independently reproduced here.
 - PR126 store/reference/native interfaces and PR125 were not modified. This does not claim completion of the #61 source-subrule editor. Advanced trial remains presentation-only; `space_model_test.js` is outside full CDP and was not additionally certified.
 
-The remote review branch contains the repair followed by this evidence-only commit. Neither main nor the original PR130 branch was changed or force-pushed. Root should independently review the code commit before arranging a safe return to PR130.
+The remote review branch contains the diagram repair, its evidence, the separately authorized one-rule CSS repair and CSS evidence. Neither main nor the original PR130 branch was changed or force-pushed. Root should independently review the code commits before arranging a safe return to PR130.

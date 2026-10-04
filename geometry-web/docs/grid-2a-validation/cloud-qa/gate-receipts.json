@@ -428,5 +428,39 @@
     "log": "logs/fix-full-cdp-terminal.log.gz",
     "logModifiedUTC": "2026-10-04T20:33:36.604304+00:00",
     "compression": "gzip; decoded bytes are the original terminal receipt"
+  },
+  "p3-grid": {
+    "testedHead": "b824c0f7985ae5b245b4f06679966cd7737d2e79",
+    "receipt": {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_GRID_SYSTEM_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:8807/",
+        "feedbackDirectory": "/tmp/pr130-qa-e06ff2a/p3-grid-feedback",
+        "browserProfile": "/tmp/pr130-qa-e06ff2a/p3-chrome-grid",
+        "cdpPort": 9336,
+        "browserPid": 51939
+      },
+      "completed": true,
+      "passedAssertions": 145,
+      "failedAssertions": 0,
+      "skipped": [],
+      "sections": {
+        "P70": 113,
+        "P71": 9,
+        "P78": 23
+      },
+      "goldenCompare": "not compared (partial mode)",
+      "uncaughtBrowserExceptions": 0,
+      "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+    },
+    "lastLine": "CDP_RESULT {\"schema\":\"geometry-cdp-result/1\",\"scope\":{\"mode\":\"partial\",\"filters\":[\"GEOMETRY_GRID_SYSTEM_ONLY\"],\"modifiers\":[],\"url\":\"http://127.0.0.1:8807/\",\"feedbackDirectory\":\"/tmp/pr130-qa-e06ff2a/p3-grid-feedback\",\"browserProfile\":\"/tmp/pr130-qa-e06ff2a/p3-chrome-grid\",\"cdpPort\":9336,\"browserPid\":51939},\"completed\":true,\"passedAssertions\":145,\"failedAssertions\":0,\"skipped\":[],\"sections\":{\"P70\":113,\"P71\":9,\"P78\":23},\"goldenCompare\":\"not compared (partial mode)\",\"uncaughtBrowserExceptions\":0,\"coverage\":\"Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.\"}",
+    "log": "p3-acceptance/p3-grid.log.gz",
+    "compression": "gzip; decoded bytes are the original complete terminal receipt",
+    "exitCode": 0
   }
 }

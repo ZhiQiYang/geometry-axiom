@@ -1,0 +1,722 @@
+[
+  {
+    "port": 8808,
+    "viewport": [
+      1400,
+      1000
+    ],
+    "touch": false,
+    "activeBefore": "igVPhase",
+    "firstFocus": false,
+    "secondFocus": true,
+    "firstEvents": [
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 1314.8999999999069
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 1315.2000000001863
+      },
+      {
+        "type": "change",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 1315.6000000000931
+      },
+      {
+        "type": "focusout",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 1319.2000000001863
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1321.5
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1321.5
+      }
+    ],
+    "allEvents": [
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 1314.8999999999069
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 1315.2000000001863
+      },
+      {
+        "type": "change",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 1315.6000000000931
+      },
+      {
+        "type": "focusout",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 1319.2000000001863
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1321.5
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1321.5
+      },
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1504.5
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1504.8999999999069
+      },
+      {
+        "type": "focusin",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1505.3000000002794
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1506.5
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1506.5
+      },
+      {
+        "type": "click",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1506.6000000000931
+      },
+      {
+        "type": "focusout",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1507.3000000002794
+      },
+      {
+        "type": "focusin",
+        "target": "igUStep",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "igUStep",
+        "time": 1511.3000000002794
+      }
+    ],
+    "nativeUnchanged": true,
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "6582cf686aeab1c3ecac775bc4c3fbb046dd6705888f4fe6bfacbeca040983ba",
+      "fresh": true,
+      "root": "/workspace/pr130-p3-before",
+      "pid": 53719,
+      "session": "6b6a3a0397bd4344a366c0ac9491f28f"
+    }
+  },
+  {
+    "port": 8808,
+    "viewport": [
+      390,
+      844
+    ],
+    "touch": true,
+    "activeBefore": "igVPhase",
+    "firstFocus": false,
+    "secondFocus": true,
+    "firstEvents": [
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 775
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 775.7000000001863
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 776.7000000001863
+      },
+      {
+        "type": "change",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 776.8000000002794
+      },
+      {
+        "type": "focusout",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 778.2000000001863
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 780.1000000000931
+      }
+    ],
+    "allEvents": [
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 775
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 775.7000000001863
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 776.7000000001863
+      },
+      {
+        "type": "change",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 776.8000000002794
+      },
+      {
+        "type": "focusout",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 778.2000000001863
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 780.1000000000931
+      },
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 858.8000000002794
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 859.6000000000931
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 860.6000000000931
+      },
+      {
+        "type": "focusin",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 860.7000000001863
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 861
+      },
+      {
+        "type": "click",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 861
+      },
+      {
+        "type": "focusout",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 861.8000000002794
+      }
+    ],
+    "nativeUnchanged": true,
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "6582cf686aeab1c3ecac775bc4c3fbb046dd6705888f4fe6bfacbeca040983ba",
+      "fresh": true,
+      "root": "/workspace/pr130-p3-before",
+      "pid": 53719,
+      "session": "6b6a3a0397bd4344a366c0ac9491f28f"
+    }
+  },
+  {
+    "port": 8806,
+    "viewport": [
+      1400,
+      1000
+    ],
+    "touch": false,
+    "activeBefore": "igVPhase",
+    "firstFocus": false,
+    "secondFocus": true,
+    "firstEvents": [
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 955.6000000000931
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 955.7000000001863
+      },
+      {
+        "type": "change",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 956.1000000000931
+      },
+      {
+        "type": "focusout",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 957.4000000003725
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 959.3000000002794
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 959.3000000002794
+      }
+    ],
+    "allEvents": [
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 955.6000000000931
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 955.7000000001863
+      },
+      {
+        "type": "change",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 956.1000000000931
+      },
+      {
+        "type": "focusout",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 957.4000000003725
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 959.3000000002794
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 959.3000000002794
+      },
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1144.3000000002794
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1144.8000000002794
+      },
+      {
+        "type": "focusin",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1145
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1145.7000000001863
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1145.7000000001863
+      },
+      {
+        "type": "click",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1145.7000000001863
+      },
+      {
+        "type": "focusout",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 1146.3000000002794
+      },
+      {
+        "type": "focusin",
+        "target": "igUStep",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "igUStep",
+        "time": 1149.3000000002794
+      }
+    ],
+    "nativeUnchanged": true,
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "e4a3e719643839bf230c8d3cc536898936fa94dd9be29c52ccba05ad8ad257cd",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 51914,
+      "session": "afbfbb895b844cbca5aba182c00e3859"
+    }
+  },
+  {
+    "port": 8806,
+    "viewport": [
+      390,
+      844
+    ],
+    "touch": true,
+    "activeBefore": "igVPhase",
+    "firstFocus": false,
+    "secondFocus": true,
+    "firstEvents": [
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 775.2999999998137
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 776.2999999998137
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 777.1999999997206
+      },
+      {
+        "type": "change",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 777.1999999997206
+      },
+      {
+        "type": "focusout",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 778.3999999999069
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 789.5999999996275
+      }
+    ],
+    "allEvents": [
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 775.2999999998137
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 776.2999999998137
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "igVPhase",
+        "time": 777.1999999997206
+      },
+      {
+        "type": "change",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 777.1999999997206
+      },
+      {
+        "type": "focusout",
+        "target": "igVPhase",
+        "tag": "INPUT",
+        "connected": true,
+        "active": "",
+        "time": 778.3999999999069
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 789.5999999996275
+      },
+      {
+        "type": "pointerdown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 856.5
+      },
+      {
+        "type": "pointerup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 871.8999999999069
+      },
+      {
+        "type": "mousedown",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 872.8999999999069
+      },
+      {
+        "type": "focusin",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 873.0999999996275
+      },
+      {
+        "type": "mouseup",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 873.3999999999069
+      },
+      {
+        "type": "click",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 873.3999999999069
+      },
+      {
+        "type": "focusout",
+        "target": "u:step",
+        "tag": "BUTTON",
+        "connected": true,
+        "active": "",
+        "time": 874.0999999996275
+      }
+    ],
+    "nativeUnchanged": true,
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "e4a3e719643839bf230c8d3cc536898936fa94dd9be29c52ccba05ad8ad257cd",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 51914,
+      "session": "afbfbb895b844cbca5aba182c00e3859"
+    }
+  }
+]
