@@ -44,10 +44,9 @@ _warned_legacy = False
 
 
 def _explicit(value):
-    path = value if Path(value).is_file() else (shutil.which(value) or value)
-    info = binaries.inspect_one(binaries.BY_NAME['bridge'], path=path)
+    info = binaries.inspect_one(binaries.BY_NAME['bridge'], path=value)
     if info.state == 'fresh':
-        return 'ok', path
+        return 'ok', str(info.path)
     return 'skip', 'explicit bridge 不是 fresh：%s（%s）；%s' % (info.state, info.reason, BUILD_HINT)
 
 
@@ -97,11 +96,11 @@ def _checked_explicit(value):
     # Direct callers also use freshly compiled, deliberately instrumented harnesses
     # (e.g. _timber_support_bridge). Those are outside the registry contract.
     # Registry paths and copied registry sidecars must never bypass freshness.
-    path = Path(value)
-    if (path.resolve() != binaries.BY_NAME['bridge'].path.resolve()
+    path = binaries.resolve_executable(value)
+    if (path != binaries.BY_NAME['bridge'].path.resolve()
             and not path.with_name(path.name + binaries.SIDECAR_SUFFIX).exists()):
-        return str(value)
-    kind, path = _explicit(str(value))
+        return str(path)
+    kind, path = _explicit(path)
     if kind == 'skip':
         raise unittest.SkipTest(path)
     return path

@@ -100,8 +100,7 @@ class EngineeringJson(unittest.TestCase):
                 from tests import binaries
             except ModuleNotFoundError:
                 import binaries
-            binaries.require_fresh('engjson', prebuilt)
-            cls.exe = Path(prebuilt)
+            cls.exe = Path(binaries.require_fresh('engjson', prebuilt))
             if not cls.exe.is_file():
                 raise AssertionError('GEOMETRY_TEST_ENGINEERING_JSON does not exist: ' + prebuilt)
             cls.compiler_output = 'prebuilt: ' + prebuilt

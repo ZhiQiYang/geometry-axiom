@@ -1,5 +1,7 @@
 """Public, non-destructive binary freshness oracles; fixture bytes are never executed."""
 import hashlib
+import contextlib
+import importlib
 import io
 import json
 import os
@@ -33,7 +35,8 @@ class BinaryFreshnessTests(unittest.TestCase):
             self.addCleanup(p.stop)
         self.compile = patch.object(binaries, '_compile', side_effect=self.fake_compile).start()
         self.addCleanup(patch.stopall)
-        self.smoke = patch.object(binaries, 'smoke_with_sac_retry', return_value=None).start()
+        self.smoke_patch = patch.object(binaries, 'smoke_with_sac_retry', return_value=None)
+        self.smoke = self.smoke_patch.start()
 
     def fake_compile(self, binary, source):
         binary.path.write_bytes(b'public fixture\r\nnever execute')
@@ -52,6 +55,23 @@ class BinaryFreshnessTests(unittest.TestCase):
         os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns))
         self.assertEqual(path.stat().st_size, before.st_size)
         self.assertEqual(path.stat().st_mtime_ns, before.st_mtime_ns)
+
+    @contextlib.contextmanager
+    def working_directory(self, path):
+        previous = Path.cwd()
+        os.chdir(path)
+        try:
+            yield
+        finally:
+            os.chdir(previous)
+
+    def copied_binary(self, directory):
+        directory.mkdir(parents=True, exist_ok=True)
+        copied = directory / self.b.exe
+        shutil.copy2(self.b.path, copied)
+        shutil.copy2(self.b.sidecar, copied.with_name(copied.name + binaries.SIDECAR_SUFFIX))
+        copied.chmod(0o755)
+        return copied
 
     def test_same_size_mtime_byte_change_is_stale_and_not_exported(self):
         self.build()
@@ -235,6 +255,157 @@ class BinaryFreshnessTests(unittest.TestCase):
             before = binaries.compute_fingerprint(self.b)[0]
             with patch.dict(os.environ, {'CC': 'another-compiler'}):
                 self.assertNotEqual(before, binaries.compute_fingerprint(self.b)[0])
+
+    def test_bare_bridge_override_cannot_spawn_a_path_shadow(self):
+        self.build()
+        verified = self.copied_binary(self.root)
+        shadow = self.copied_binary(self.root / 'shadow')
+        self.tamper(shadow)
+        with self.working_directory(self.root), patch.dict(os.environ,
+                {'GEOMETRY_TEST_BRIDGE': self.b.exe, 'PATH': str(shadow.parent)}, clear=True):
+            # All spawns are mocked; even the deliberately different shadow is never executed.
+            self.assertEqual(binaries.require_fresh('bridge', self.b.exe), str(verified.resolve()))
+            with patch.object(_bridge.subprocess, 'Popen') as spawn:
+                with _bridge.BridgeSession():
+                    pass
+                self.assertEqual(spawn.call_args.args[0], [str(verified.resolve())])
+            with patch.object(_bridge.subprocess, 'run') as run:
+                _bridge.run_once('reset\n')
+                self.assertEqual(run.call_args.args[0], [str(verified.resolve())])
+            if os.name == 'posix':
+                alias = self.root / ('alias-' + self.b.exe)
+                alias.symlink_to(self.b.path)
+                with patch.dict(os.environ, {'GEOMETRY_TEST_BRIDGE': str(alias)}), \
+                        patch.object(_bridge.subprocess, 'Popen') as spawn:
+                    with _bridge.BridgeSession(cwd=shadow.parent):
+                        pass
+                    self.assertEqual(spawn.call_args.args[0], [str(self.b.path.resolve())])
+
+    def test_relative_bridge_override_cannot_move_with_child_cwd(self):
+        self.build()
+        verified = self.copied_binary(self.root)
+        shadow = self.copied_binary(self.root / 'child')
+        self.tamper(shadow)
+        value = './' + self.b.exe
+        with self.working_directory(self.root), patch.dict(os.environ,
+                {'GEOMETRY_TEST_BRIDGE': value}, clear=True), patch.object(_bridge.subprocess, 'Popen') as spawn:
+            for explicit in [None, value]:
+                with self.subTest(explicit=explicit), _bridge.BridgeSession(explicit, cwd=shadow.parent):
+                    pass
+                self.assertEqual(spawn.call_args.args[0], [str(verified.resolve())])
+
+    def test_path_only_override_is_fixed_before_child_environment_changes(self):
+        self.build()
+        verified = self.copied_binary(self.root / 'path-only')
+        shadow = self.copied_binary(self.root / 'shadow')
+        self.tamper(shadow)
+        with self.working_directory(self.root), patch.dict(os.environ,
+                {'GEOMETRY_TEST_BRIDGE': self.b.exe, 'PATH': str(verified.parent)}, clear=True), \
+                patch.object(_bridge.subprocess, 'Popen') as spawn:
+            self.assertEqual(binaries.require_fresh('bridge', self.b.exe), str(verified.resolve()))
+            with _bridge.BridgeSession(env={'PATH': str(shadow.parent)}, cwd=shadow.parent):
+                pass
+            self.assertEqual(spawn.call_args.args[0], [str(verified.resolve())])
+
+    def test_core_and_gdi_consumers_spawn_the_verified_absolute_path(self):
+        self.build()
+        verified = self.copied_binary(self.root)
+        binaries.BY_NAME.update({'core': self.b, 'gdi': self.b})
+        consumers = [('test_cli_args', 'CORE', 'CliArgs', 'test_unknown_option'),
+                     ('test_gdi_contract', 'HARNESS', 'GdiContract', 'test_confirmed_failures_release_real_resources')]
+        for module_name, variable, class_name, method in consumers:
+            module = importlib.import_module(module_name)
+            case = getattr(module, class_name)(method)
+            with self.subTest(module=module_name), self.working_directory(self.root), \
+                    patch.object(module, 'binaries', binaries), patch.object(module, variable, './' + self.b.exe), \
+                    patch.object(module.subprocess, 'run', side_effect=RuntimeError('captured mock spawn')) as spawn:
+                with self.assertRaisesRegex(RuntimeError, 'captured mock spawn'):
+                    if variable == 'CORE':
+                        case.run_core([], True)
+                    else:
+                        getattr(case, method)()
+                self.assertEqual(spawn.call_args.args[0][0], str(verified.resolve()))
+
+    def test_engineering_json_prebuilt_uses_the_verified_absolute_path(self):
+        self.build()
+        verified = self.copied_binary(self.root)
+        binaries.BY_NAME['engjson'] = self.b
+        helper = importlib.import_module('test_engineering_json').EngineeringJson
+        with self.working_directory(self.root), patch.dict(os.environ,
+                {'GEOMETRY_TEST_ENGINEERING_JSON': './' + self.b.exe}, clear=True), \
+                patch.dict(sys.modules, {'tests': None}):
+            try:
+                helper.setUpClass()
+                self.assertEqual(helper.exe, verified.resolve())
+            finally:
+                helper.doClassCleanups()
+
+    def test_unittest_preflight_passes_canonical_override_to_test_module(self):
+        self.build()
+        verified = self.copied_binary(self.root)
+        fixture = self.root / 'test_canonical_override_receipt.py'
+        fixture.write_text('import os, unittest\nclass Fixture(unittest.TestCase):\n'
+                           '    def test_override(self):\n'
+                           '        self.assertEqual(os.environ["GEOMETRY_TEST_BRIDGE"], %r)\n' % str(verified.resolve()))
+        runner = importlib.import_module('_unittest_runner')
+        with self.working_directory(self.root), patch.dict(os.environ,
+                {'GEOMETRY_TEST_BRIDGE': './' + self.b.exe}, clear=True), \
+                patch('sys.stdout', new_callable=io.StringIO):
+            self.assertEqual(runner.main([str(fixture)]), 0)
+
+    def test_actual_sac_retry_rejects_identity_changed_during_wait(self):
+        self.smoke_patch.stop()
+        denied = PermissionError('controlled denied')
+        denied.winerror = 4551
+        with patch.object(binaries.subprocess, 'run', side_effect=denied) as spawn, \
+                patch.object(binaries.time, 'sleep', side_effect=lambda _: self.tamper()) as wait, \
+                patch.object(binaries, '_smoke_once', wraps=binaries._smoke_once) as attempts:
+            result = binaries.build_one(self.b, log=lambda *_: None)
+        self.assertEqual(result.status, 'compile-failed')
+        self.assertIn('identity changed before smoke', result.detail)
+        self.assertEqual(wait.call_count, 1)
+        self.assertEqual(attempts.call_count, 2)
+        self.assertEqual(spawn.call_count, 1)  # second retry rejects before a subprocess call
+        self.assertFalse(self.b.sidecar.exists())
+        self.assertFalse(binaries._pending_path(self.b).exists())
+
+    def test_binary_replacement_during_hash_cannot_return_an_identity(self):
+        self.build()
+        replacement = self.root / 'replacement'
+        data = self.b.path.read_bytes()
+        replacement.write_bytes(bytes([data[0] ^ 1]) + data[1:])
+        before = self.b.path.stat()
+        os.utime(replacement, ns=(before.st_atime_ns, before.st_mtime_ns))
+        original_open = Path.open
+        target = self.b.path
+
+        class ReplacingReader:
+            def __init__(self, fh):
+                self.fh, self.replaced = fh, False
+            def __enter__(self):
+                return self
+            def __exit__(self, *_):
+                self.fh.close()
+            def fileno(self):
+                return self.fh.fileno()
+            def read(self, size):
+                chunk = self.fh.read(size)
+                if not self.replaced:
+                    self.replaced = True
+                    os.replace(replacement, target)
+                return chunk
+
+        def open_replacing(path, *args, **kwargs):
+            fh = original_open(path, *args, **kwargs)
+            return ReplacingReader(fh) if path == target and args == ('rb',) else fh
+
+        with patch.object(Path, 'open', autospec=True, side_effect=open_replacing):
+            with self.assertRaises(OSError):
+                binaries._binary_identity(target)
+        if os.name == 'posix':
+            self.assertFalse(replacement.exists())
+            self.assertEqual(target.read_bytes(), bytes([data[0] ^ 1]) + data[1:])
+            self.assertEqual(binaries.inspect_one(self.b).state, 'stale')
 
     def test_full_runner_refuses_tampered_binary_without_invoking_suite(self):
         self.build()

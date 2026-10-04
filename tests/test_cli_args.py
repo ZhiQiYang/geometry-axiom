@@ -20,10 +20,10 @@ CORE = os.environ.get('GEOMETRY_TEST_CORE')
 @unittest.skipUnless(CORE, 'set GEOMETRY_TEST_CORE to a freshly compiled executable')
 class CliArgs(unittest.TestCase):
     def run_core(self, args, ok):
-        binaries.require_fresh('core', CORE)
+        core = binaries.require_fresh('core', CORE)
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'result.svg'
-            result = subprocess.run([CORE, '--no-window', '--out', str(output), *args],
+            result = subprocess.run([core, '--no-window', '--out', str(output), *args],
                                     cwd=directory, capture_output=True, timeout=20)
             self.assertEqual(result.returncode, 0 if ok else 1,
                              result.stderr.decode('utf-8', errors='replace'))

@@ -28,6 +28,8 @@ python tests/run_all.py --update-expected # 完整跑之後重寫 tests/run_all.
 （這支就不算 fresh；再跑 build 只重試啟動，不會再編一支新的）。「環境阻擋」與「編譯失敗」分開報。
 明示 `GEOMETRY_TEST_BRIDGE`／舊 alias 也須通過此核對，每次 lookup 重驗 bytes；core/GDI/engjson 測試及 aggregate
 Python runner 的 native overrides 共用 `require_fresh`。缺 sidecar 的手編檔請改由 registry 建置。
+relative／bare override 保留既有「父 cwd 檔案優先，否則 PATH」解析，核對後一律傳回 canonical absolute path；
+bridge/core/GDI/engjson spawn 及 runner 的子測試環境使用同一路徑，child cwd／PATH 不再重新選檔。
 直接傳給 `BridgeSession(path)` 的專用 instrumented harness 仍由其建置呼叫者負責；registry 路徑或帶 registry sidecar
 的副本必驗。產品 modeling API 的 trusted executable 契約不變。這不是 OS 安全機制或供惡意程式防偽的簽章。
 所有產物在 `%TEMP%\geometry-tests\`（非 Windows 是 `/tmp/geometry-tests/`），不會寫進 repo。

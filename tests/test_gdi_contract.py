@@ -25,9 +25,9 @@ HARNESS = os.environ.get('GEOMETRY_TEST_GDI_HARNESS')
 @unittest.skipUnless(os.name == 'nt' and HARNESS, 'requires compiled Windows GDI contract harness')
 class GdiContract(unittest.TestCase):
     def test_confirmed_failures_release_real_resources(self):
-        binaries.require_fresh('gdi', HARNESS)
+        harness = binaries.require_fresh('gdi', HARNESS)
         with tempfile.TemporaryDirectory(prefix='geometry-gdi-contract-') as directory:
-            result = subprocess.run([HARNESS], cwd=directory, capture_output=True, timeout=30)
+            result = subprocess.run([harness], cwd=directory, capture_output=True, timeout=30)
             log = result.stdout.decode('utf-8', errors='replace')
             self.assertEqual(result.returncode, 0, log + result.stderr.decode('utf-8', errors='replace'))
             failures = [line for line in log.splitlines() if line.startswith('PASS bench injected-failure ')]

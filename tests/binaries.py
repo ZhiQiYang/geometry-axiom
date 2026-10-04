@@ -35,6 +35,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -256,6 +257,17 @@ def compute_fingerprint(b: Binary):
 
 # ---------------------------------------------------------------- status
 
+def resolve_executable(value) -> Path:
+    """Keep existing local-file/PATH precedence, then pin the chosen absolute target.
+
+    Hashing and subprocess callers must use this same path; a child cwd or PATH
+    must not re-resolve a relative/bare override to different bytes.
+    """
+    value = os.fspath(value)
+    chosen = value if Path(value).is_file() else (shutil.which(value) or value)
+    return Path(chosen).resolve()
+
+
 class Info:
     def __init__(self, binary, state, reason, fingerprint=None, path=None):
         self.binary = binary
@@ -271,7 +283,11 @@ class Info:
 
 def inspect_one(b: Binary, path=None) -> Info:
     """Check registry or explicit binary path against this binary's current sources."""
-    path = Path(path) if path is not None else b.path
+    requested = path if path is not None else b.path
+    try:
+        path = resolve_executable(requested)
+    except (OSError, RuntimeError) as exc:
+        return Info(b, 'stale', '無法解析 binary 路徑：%s' % exc, path=Path(requested).absolute())
     sidecar = path.with_name(path.name + SIDECAR_SUFFIX)
     def info(state, reason, fingerprint=None):
         return Info(b, state, reason, fingerprint, path)

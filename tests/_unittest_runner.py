@@ -168,7 +168,7 @@ def main(argv) -> int:
             if binary.applicable():
                 for var in binary.envs:
                     if os.environ.get(var):
-                        binaries.require_fresh(binary.name, os.environ[var])
+                        os.environ[var] = binaries.require_fresh(binary.name, os.environ[var])
         spec.loader.exec_module(module)
     except unittest.SkipTest as exc:
         # A SkipTest at import time blocks every test of the file: count them (AST), never just "1".
