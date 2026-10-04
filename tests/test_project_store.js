@@ -4,6 +4,16 @@ const assert = require('node:assert/strict');
 const P = require('../geometry-web/project-store.js');
 const zip = require('../geometry-web/vendor/fflate/umd/index.js');
 const clone = x => JSON.parse(JSON.stringify(x));
+function gridDraft(kind = 'source') {
+  const fields = kind === 'source' ? P.Features.sourceFields : P.Features.bindingFields;
+  const rawForm = Object.fromEntries(fields.map(field => [field, '']));
+  Object.assign(rawForm, kind === 'source' ? {igName:'  未完成  ',igUSource:'repeat',igUStep:'-',igUPhase:' 001 ',igVSource:'none',igVPanel:'1e',igVStagger:'0'} :
+    {igSystem:'0',igBoundary:'999',igVertex:'key:0',igCellI:'-9223372036854775809',igCellJ:'  +01 ',igAnchorUN:'1',igAnchorUD:'0'});
+  return {schema:P.Features.GRID_SCHEMA,draftId:'grid-raw',kind,intent:'create',baseRef:null,
+    inputRefs:kind === 'binding' ? [{kind:'grid-system',id:0,fingerprint:'a'.repeat(64)},
+      {kind:'boundary',id:999,fingerprint:'b'.repeat(64),vertexKeysFingerprint:'c'.repeat(64)}] : [],rawForm};
+}
+const featureEnvelope = value => ({schema:P.Features.SCHEMA,records:[P.Features.record('grid-draft',value)]});
 // Use a sequence, not zipSync's filename-keyed object: an object cannot encode
 // two ZIP members with the same path. Stored entries keep this fixture simple.
 function archiveMembers(members) {
@@ -40,6 +50,23 @@ test('portable project retains full source bytes, calibration and unknown record
   const f=await fixture(), bytes=await P.pack(f.scene,f.manifest,f.sources,zip), got=await P.unpack(bytes,zip);
   assert.equal(got.scene,f.scene);assert.deepEqual(got.sources.get(f.hash),f.bytes);
   assert.deepEqual(got.manifest.faces,f.manifest.faces);assert.equal(got.manifest.projectId,'project-a');
+  for (const kind of ['source','binding']) {
+    const value=gridDraft(kind),manifest={...f.manifest,featureAttachments:featureEnvelope(value)};
+    const archive=await P.pack(f.scene,manifest,f.sources,zip), reopened=await P.unpack(archive.slice(),zip);
+    assert.equal(reopened.manifest.format,P.FEATURE_FORMAT);
+    assert.deepEqual(reopened.manifest.featureAttachments,featureEnvelope(value));
+    assert.deepEqual(reopened.manifest.requiredCapabilities,[P.Features.GRID_SCHEMA]);
+    assert.equal(reopened.scene,f.scene);assert.deepEqual(reopened.sources.get(f.hash),f.bytes);
+    assert.deepEqual(reopened.manifest.faces,f.manifest.faces);
+    assert.throws(()=>P.assertProjectCapabilities(reopened.manifest,[]));
+    P.assertProjectCapabilities(reopened.manifest,P.readerCapabilities([]));
+    assert.throws(()=>P.validateProjectCapabilities([P.Features.GRID_SCHEMA]));
+    assert.throws(()=>P.sceneCapabilities('requires '+P.Features.GRID_SCHEMA+'\n'));
+    const again=await P.unpack(await P.pack(reopened.scene,reopened.manifest,reopened.sources,zip),zip);
+    assert.deepEqual(again.manifest,reopened.manifest);
+  }
+  const empty=await P.unpack(await P.pack(f.scene,{...f.manifest,featureAttachments:{schema:P.Features.SCHEMA,records:[]}},f.sources,zip),zip);
+  assert.equal(empty.manifest.format,P.FORMAT);assert.equal(Object.hasOwn(empty.manifest,'featureAttachments'),false);
 });
 
 test('v9 review receipts retain source basis and require real page and face references; old formats refuse receipts',async()=>{
@@ -63,6 +90,10 @@ test('v9 review receipts retain source basis and require real page and face refe
   }
   assert.throws(()=>P.validateProjectObjectRefs(f.manifest,{boundaries:[2],placements:[]}),/不存在/);
   assert.equal(P.projectFormat({...f.manifest,reconstructionReviews:[]}),P.FORMAT);
+  const withDraft=await P.unpack(await P.pack(generated.scene,{...generated.manifest,featureAttachments:featureEnvelope(gridDraft())},f.sources,zip),zip);
+  assert.equal(withDraft.manifest.format,P.FEATURE_FORMAT);
+  assert.deepEqual(withDraft.manifest.reconstructionReviews,generated.manifest.reconstructionReviews);
+  assert.deepEqual(withDraft.manifest.requiredCapabilities,[P.GENERATION_CAPABILITY,P.Features.GRID_SCHEMA].sort());
 });
 test('rejects damaged scene, source, unknown version, duplicate paths and missing source',async()=>{
   const f=await fixture(), bytes=await P.pack(f.scene,f.manifest,f.sources,zip), entries=zip.unzipSync(bytes);
@@ -83,6 +114,37 @@ test('rejects damaged scene, source, unknown version, duplicate paths and missin
   const duplicate=archiveMembers([...members,['world.scene',entries['world.scene']]]);
   assert.equal(archiveNames(duplicate).filter(name=>name==='world.scene').length,2);
   await assert.rejects(()=>P.unpack(duplicate,zip),{message:'專案內含重複或不支援的檔案。'});
+  const featureBytes=await P.pack(f.scene,{...f.manifest,featureAttachments:featureEnvelope(gridDraft())},f.sources,zip);
+  const featureFiles=zip.unzipSync(featureBytes),featureManifest=JSON.parse(new TextDecoder().decode(featureFiles['manifest.json']));
+  const changes=[m=>m.requiredCapabilities=[],m=>delete m.featureAttachments,m=>m.featureAttachments.records=[],
+    m=>m.featureAttachments.schema='geometry-feature-attachments/2',m=>m.featureAttachments.records[0].kind='rule-cases',
+    m=>m.featureAttachments.records[0].schema='grid-editor-draft/2',m=>m.featureAttachments.records[0].value.schema='grid-editor-draft/2',
+    m=>m.featureAttachments.records.push(clone(m.featureAttachments.records[0])),
+    m=>m.featureAttachments.records[0].value.rawForm.igUStep=600,
+    m=>delete m.featureAttachments.records[0].value.rawForm.igVPanel,
+    m=>m.featureAttachments.records[0].value.previewToken=1,
+    m=>m.featureAttachments.records[0].value.baseRef={kind:'grid-system',id:1,fingerprint:'a'.repeat(64)},
+    m=>m.featureAttachments.records[0].value.inputRefs=[{kind:'draft',id:'other'}],
+    ...Array.from({length:9},(_,i)=>m=>m.format='geometry-canvas/'+(i+1))];
+  for(const change of changes){const m=clone(featureManifest);change(m);await assert.rejects(()=>P.unpack(zip.zipSync({...featureFiles,'manifest.json':new TextEncoder().encode(JSON.stringify(m))}),zip));}
+  for(const invalid of [NaN,Infinity,undefined,()=>{},new Date(),new (class Raw {})(),new Array(1)]){
+    const value=gridDraft();value.rawForm.igUStep=invalid;
+    await assert.rejects(()=>P.pack(f.scene,{...f.manifest,featureAttachments:{schema:P.Features.SCHEMA,records:[{kind:'grid-draft',schema:P.Features.GRID_SCHEMA,value}]}},f.sources,zip));
+  }
+  for(const change of [v=>v.rawForm.igName='x'.repeat(4097),v=>v.inputRefs=new Array(21).fill({kind:'grid-system',id:0,fingerprint:'a'.repeat(64)}),
+    v=>v.inputRefs=[{kind:'boundary',id:0,fingerprint:'a'.repeat(64),vertexKeysFingerprint:'a'.repeat(64)}],
+    v=>v.inputRefs=[{kind:'boundary',id:1,fingerprint:'a'.repeat(64)}],
+    v=>v.inputRefs=[{kind:'parameter-field',parameterId:4294967296,fieldId:0,fingerprint:'a'.repeat(64)}]]){
+    const value=gridDraft();change(value);assert.throws(()=>P.Features.validateGridDraft(value));
+  }
+  let getterCalls=0;const accessor=gridDraft();Object.defineProperty(accessor.rawForm,'igUStep',{enumerable:true,get(){getterCalls++;return '600';}});
+  assert.throws(()=>P.Features.validateGridDraft(accessor));assert.equal(getterCalls,0);
+  for(const kind of ['source','binding']){
+    const value=gridDraft(kind);value.intent='edit';value.baseRef={kind:kind==='source'?'grid-system':'grid-binding',id:0,fingerprint:'a'.repeat(64)};
+    P.Features.validateGridDraft(value);
+    value.inputRefs=[{kind:'parameter-field',parameterId:0,fieldId:4294967295,fingerprint:'b'.repeat(64)}];P.Features.validateGridDraft(value);
+    value.inputRefs.push(clone(value.inputRefs[0]));assert.throws(()=>P.Features.validateGridDraft(value));
+  }
 });
 test('rejects inconsistent, out-of-page and non-finite reference data',async()=>{
   const f=await fixture();
@@ -116,6 +178,17 @@ test('scene contexts follow grouped transactions and transactional import',()=>{
   h.replace({id:'import'},[[1,'different-boundary']]);assert.equal(h.frame.context.id,'import');
   h.observe('line undo',{ok:true});assert.equal(h.frame.context.id,first.context.id);assert.equal(h.frame.ids.get(1),first.ids.get(1));
   h.observe('line redo',{ok:true});assert.equal(h.frame.context.id,'import');
+  const attachment=featureEnvelope(gridDraft('binding')).records;
+  h.push(h.snapshot(),'local');h.frame.context.featureAttachments=clone(attachment);
+  h.observe('line spec width 20',{ok:true});h.frame.context.featureAttachments=[];
+  h.observe('line undo',{ok:true});assert.deepEqual(h.frame.context.featureAttachments,attachment);
+  h.frame.context.featureAttachments[0].value.rawForm.igCellI='later';
+  h.observe('line redo',{ok:true});assert.deepEqual(h.frame.context.featureAttachments,[]);
+  h.observe('line undo',{ok:true});assert.equal(h.frame.context.featureAttachments[0].value.rawForm.igCellI,'later');
+  h.tryLocal('line undo');assert.deepEqual(h.frame.context.featureAttachments,[]);
+  h.tryLocal('line redo');assert.equal(h.frame.context.featureAttachments[0].value.rawForm.igCellI,'later');
+  const old=new P.ContextHistory(()=>({id:'fallback',featureAttachments:[]}));old.frame.context.featureAttachments=clone(attachment);
+  old.observe('line undo',{ok:true});assert.deepEqual(old.frame.context.featureAttachments,attachment);
 });
 test('project-open action follows its transaction through undo/redo without leaking to ordinary edits',()=>{
   const h=new P.ContextHistory(()=>({id:'original',name:'原工程'}));

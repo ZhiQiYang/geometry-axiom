@@ -48,7 +48,7 @@ kind為共用owner有限白名單，每kind至多一record（case/rooms可在其
 
 | 單 writer | 獨占檔案／範圍 | 下一個可執行切片 |
 |---|---|---|
-| 此 cloud：共用格式／整合owner | project-store.js、reference-workspace.js、schema/capability、ContextHistory、app.js、共用index/serve/操作入口接線；#45 grid-system-workspace/context registry；決策隊列 | #24 PR97與新main相關gate；#45單rawdraft真ZIP/history/context骨架，沿既有來源→邊界入口。 |
+| 此 cloud：共用格式／整合owner | project-store.js、reference-workspace.js、schema/capability、ContextHistory、app.js、共用index/serve/操作入口接線；#45 grid-system-workspace/context registry；決策隊列 | #24 PR97 `377440fb`已由root合main `8d08f1ac`，整樹相同且兩條新增native oracle重驗通過；#24/A24仍open。#45單rawdraft真ZIP/history/context骨架見[附件契約](../geometry-web/docs/FEATURE-ATTACHMENTS.md)，表單及既有來源→邊界入口接線下一stage。 |
 | #85原owner | mutation/freshness/runner/expected必要修復 | PR98已合併；其他worker保留新scene139/integrity88/gate，不競寫基準。 |
 | #44 thread `01a104fc-5524-76ea-93f1-9e6e632f709a` | 新候選／模型差異模組與独立tests；producer改動先協調 | 普通plan明選來源、真producer候選、cancel/stale差異oracle；store/app由共用owner接。 |
 | #77 thread `01a104fc-a75a-728a-8d74-2e323f84d08c` | 新纯source-rooms模組、validator/雙房fixtures/tests | 共享basis、兩房refs/名稱、new vs edit、basis變更不改舊geometry；不競寫#54求解同檔。 |
