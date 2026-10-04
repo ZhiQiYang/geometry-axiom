@@ -25,7 +25,22 @@ static bool scene_load_prepare(const char *path)
 static void cmd_load_prepare(const char *path)
 {
     if(!scene_load_prepare(path))return;
+    /* Serialize this detached World completely before publishing a receipt.
+     * Input syntax can require a capability that replay removes from the World. */
+    FILE *file=tmpfile();char *canonical=NULL;long size=-1;
+    if(file){world_dump_dsl(g_load_after,file);
+        if(!ferror(file)&&!fflush(file)&&!fseek(file,0,SEEK_END))size=ftell(file);
+        if(size>=0&&(uint64_t)size<SIZE_MAX&&!fseek(file,0,SEEK_SET)){
+            canonical=malloc((size_t)size+1);
+            if(canonical){size_t got=fread(canonical,1,(size_t)size,file);
+                if(got!=(size_t)size||ferror(file)){free(canonical);canonical=NULL;}
+                else{char *out=canonical;for(size_t i=0;i<got;++i)if(canonical[i]!='\r')*out++=canonical[i];*out=0;}}
+        }
+        fclose(file);
+    }
+    if(!canonical){g_load_ready=false;eng_bridge_error("IO","Cannot serialize scene import candidate");return;}
     printf("{\"ok\":true,\"token\":%u,",g_load_token);json_engineering_capabilities(g_load_after);
+    fputs(",\"final_scene\":",stdout);js_string(canonical);free(canonical);
     fputs(",\"final_objects\":{\"boundaries\":[",stdout);
     for(size_t i=0;i<g_load_after->boundary_count;++i)printf("%s%u",i?",":"",g_load_after->boundaries[i].id);
     fputs("],\"boundaryFingerprints\":[",stdout);

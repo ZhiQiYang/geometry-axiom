@@ -4,7 +4,7 @@
 
 ## 邊界與盤點
 
-本分支修改 `project-store.js`、專屬測試／runner 登記及本文件；已正常合流 main `4bea91a`（PR124）。PR125 的 app/index/contextmenu 不競寫，`model_update`、space producer 不改。root 已允許有界修正 reference 的 /11 capability 守門；獨審發現需要區分輸入與最終 World，目前列出 native/reference 最小接點交 root 協調，尚未套用。沒有公理、能力容量、其他 owner worktree、部署或使用者 PC 變更，沒有重做 PR107 native core。
+本分支修改 `project-store.js`、專屬測試／runner 登記及本文件；已正常合流 main `4bea91a`（PR124）。PR125 的 app/index/contextmenu 不競寫，`model_update`、space producer 不改。依 root 後續明示授權，增加既有 load-prepare 的候選 canonical scene，並完成 reference 的 /11 能力守門與實際 dump 容量檢查窄接點。沒有公理、能力容量、其他 owner worktree、部署或使用者 PC 變更，沒有重做 PR107 native core。
 
 PR107 已提供 source-local uint32 非零 ruleKey、`nextRuleKey` 高水位（0 表耗盡）、all-cells／單一 signed cell、decimal-string cell、guide `gridrule:` 與直接 `at-line rule`。dump 包含未套用來源、刪完 rules 的非預設高水位、依賴順序與 native 能力標記；load-prepare 在獨立 World 驗完整來源閉包，confirm 才原子替換。這些都是沿用的 native 能力。
 
@@ -23,14 +23,14 @@ PR107 已提供 source-local uint32 非零 ruleKey、`nextRuleKey` 高水位（0
 ## owner 接點與尚未交付
 
 - #61 規則 editor 的 raw 未提交草稿目前沒有對應正式 schema／UI adapter。本切片只證明既有 source/binding raw grid 草稿共存，**不聲稱規則草稿已保存**。請由共用 owner 擴既有 finite attachment validator，沿用 context token、flush、共同保存與 ContextHistory；不保存 preview token／key reservation。
-- **獨審 hold：/11 candidate capability 核對仍未完成。** 原候選只提供最終 World 的 required capabilities／typed objects，沒有其 canonical scene；輸入 scene 的 marker-bearing default-only allocator、稍後刪除 source 或 reset 均合法，但最終 required capabilities 是空陣列。不能直接以輸入 lexical capability 等值核對，也不能只改成 subset 而放過 canonical mismatch。建議在既有 native `cmd_load_prepare` 增加候選的 `final_scene`（同一次 parse 的 World dump，不另跑 solver），/11 明確要求此欄位並獨立核對它與 candidate.required_capabilities；输入 lexical／manifest／service 檢查保持原狀。舊 /5…/10 守門、/model/space-replay 與 #77 atomic hooks 保留。
-- **獨審 hold：舊近上限正式 browser 保存接點。** 真 Chromium 已成功開啟上述 main 舊檔，但 `manifest()` 的無 scene metadata 預留仍會拒絕 export。最小接點是 `manifest(c, scene = null)` 將 scene 傳給容量檢查，`exportSnapshot` 將已有 `r.text` 傳入；所有新 metadata edit 仍省略 scene，保留五能力預留。此接點尚待 root 協調，不能聲稱正式 browser 舊近上限 roundtrip 通過。
+- 已完成 /11 candidate capability 核對。既有 native `cmd_load_prepare` 新增候選的 `final_scene`（同一次 parse 的 World dump，不另跑 solver）。序列化完整成功後才輸出 ok；open/write/read I/O fault injection 均回 IO error、失效候選、保留 World/revision。/11 明確要求此欄位並獨立核對它與 candidate.required_capabilities；輸入 lexical／manifest／service 檢查保持原狀。marker-bearing default-only allocator、稍後刪除 source 或 reset 合法匯入，最終能力可為空；canonical mismatch／缺欄候選則 cancel、零 confirm。舊 /5…/10 守門、/model/space-replay 與 #77 atomic hooks 保留。receipt consumers 盤點：formal reader、HTTP passthrough、scenario verifier/native CLI 均不鎖死 native receipt 頂層欄位；模型 package 嚴格 schema 未改。真 native import／scenario tests 46/46。
+- 已完成舊近上限正式 browser 保存接點。`manifest(c, scene = null)` 將 scene 傳給容量檢查，`exportSnapshot` 將已有 `r.text` 傳入；所有新 metadata edit 仍省略 scene，保留五能力預留。真 Chromium 正式 open→共同保存按鈕下載→390px 新 context reopen 11 checks 通過，保留整份 non-scene metadata、PDF bytes 與保存 dump。原 fixture 沒有 canvas-pos，瀏覽器既有自動排版加入位置，因此 sceneHash 正常依實際保存 dump 重算；沒有改模型 hash 或刪除資料以繞容量。新 metadata edit 拒絕仍保留 World/context/history；該近上限資料加入 rules 的 codec 保存明確超限拒絕。
 - `manifestData` 的格式列舉亦止於 /10。實際 exportSnapshot 將真 dump 交給 `P.pack`，由 store 選 /11／补齐模型與 projection containers，真 browser 保存已驗。owner 要在 metadata 顯示 /11 時使用 `P.SUBDIVISION_FORMAT`，不要另存一份 rules。
 - #61 全流程空白 → 用 UI 建 rule／preview／confirm → 選子線、跨面來源改動，以及未失焦規則草稿、物理手機／OS 選檔仍未驗。完整 #60 依這些接點後續交付；fresh context 不載入舊 undo/redo stacks。
 
 ## 可重現驗收
 
-先 red：最小 pack 測試於原基底以「尚未支援的工程能力」失敗。獨審 checkpoint 的 `tests/test_subdivision_project_store.js` 為 32 個 Node tests：31 pass、1 fail、0 skip；唯一 red 是 /11 canonical candidate mismatch 尚未拒絕。新增 4 個真 formal replay、main 近上限完整 archive、同時降版／移除 manifest capability 並重算合法 hash 的負例；降版負例不呼叫 prepare/confirm，replay 的輸入 service 能力不足仍取消候選。不能把這個 checkpoint 稱為綠燈或完整 #60。
+先 red：最小 pack 測試於原基底以「尚未支援的工程能力」失敗；獨審 checkpoint `70d5e21` 的 canonical mismatch 仍 red，證據保留。補齊窄接點後 `tests/test_subdivision_project_store.js` 33/33 Node tests 通過、0 skip；新增 4 個真 formal replay、main 近上限完整 archive、同時降版／移除 manifest capability 並重算合法 hash、canonical mismatch 與缺 candidate scene 負例。降版負例不呼叫 prepare/confirm，replay 的輸入 service 能力不足仍取消候選。這不代表整項 #60／#61 完成。
 
 ```sh
 ulimit -s 16384

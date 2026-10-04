@@ -222,6 +222,7 @@ test('a complete main4bea near-capacity v10 archive still opens and roundtrips w
   const opened=await P.unpack(bytes,zip);
   const reopened=await P.unpack(await P.pack(opened.scene,opened.manifest,opened.sources,zip),zip);
   assert.deepEqual(reopened,opened);assert.deepEqual(opened.manifest,saved);
+  await assert.rejects(()=>P.pack(opened.scene+scene,opened.manifest,opened.sources,zip),/容量|8 MB/);
   const oversized=await rewrite(bytes,m=>{m.engineeringDrafts.records[0].data.raw+='x'.repeat(200);});
   await assert.rejects(()=>P.unpack(oversized,zip),/容量|大小|8 MB/);
 });
@@ -265,6 +266,18 @@ test('v11 candidate capability mismatch cancels without confirming or changing n
   }
 });
 
+test('v11 explicitly refuses a service receipt without a canonical candidate scene and cancels its token',nativeOptions,async()=>{
+  for(const invalid of [undefined,null,42]){
+    let preparations=0,token;
+    const transport=async(url,options)=>{const r=await backend(url,options);if(url!=='/upload/prepare')return r;
+      const candidate=await r.json();if(++preparations===1)return {ok:r.ok,json:async()=>candidate};
+      token=candidate.token;candidate.final_scene=invalid;return {ok:r.ok,json:async()=>candidate};};
+    const seen=await rejectedImport(fixture.bytes,/服務未提供原生候選場景/,transport);
+    assert.equal(seen.filter(url=>url==='/upload/cancel').length,1);assert.equal(seen.includes('/upload/confirm'),false);
+    assert.equal((await ask('load-confirm '+token)).ok,false);
+  }
+});
+
 for(const [label,input,finalCapability] of [
   ['default-only allocator',scene.split('\n').slice(0,2).join('\n')+'\ngrid-source-rule-highwater 0 next 1\n',false],
   ['removed source',scene+'delete grid-system 0\n',false],
@@ -284,6 +297,7 @@ for(const [label,input,finalCapability] of [
   assert.equal(receipt.ok,true,JSON.stringify(receipt));
   assert.equal(receipt.required_capabilities.includes(capability),finalCapability);
   const actual=(await ask('dump')).text;assert.equal(P.sceneCapabilities(actual).includes(capability),finalCapability);
+  assert.equal(receipt.final_scene,actual,'receipt describes the exact detached World later confirmed');
   const roundtrip=await P.unpack(await w.exportBytes(),zip);assert.equal(roundtrip.scene,actual);
   // Input marker claims remain independently required even after replay removes
   // all formal rule state; re-saving uses the actual native canonical dump.
