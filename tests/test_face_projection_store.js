@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const P = require('../geometry-web/project-store.js');
+const nativeCapabilities = require('./fixtures/native_available_capabilities.json');
 const zip = require('../geometry-web/vendor/fflate/umd/index.js');
 const clone = value => JSON.parse(JSON.stringify(value));
 const top = {kind:'space-boundary-plan',view:'top',region:'interior',wallSide:'outside'};
@@ -40,7 +41,7 @@ function workspace() {
     api:async cmd=>({ok:true,text:liveScene}),resetSceneFocus:()=>{},refreshActive:async()=>{},setStatus:()=>{},
     sceneMenuDisplay:x=>x,curScene:{},
     fetch:async(url,opts)=>{calls.push(url);if(url==='/upload')liveScene=opts.body;
-      return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:['engineering-spec/1','parameters/1','assembly-authoring/1','assembly-generation/1','grid-subdivision-rules/1'],required_capabilities:[],final_objects:{boundaries:[1,2],placements:[{id:0,bid:1,horizontal:true},{id:11,bid:1,horizontal:true},{id:12,bid:1,horizontal:true},{id:21,bid:2,horizontal:false}]}}:{ok:true,path:'loaded'})};}
+      return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[1,2],placements:[{id:0,bid:1,horizontal:true},{id:11,bid:1,horizontal:true},{id:12,bid:1,horizontal:true},{id:21,bid:2,horizontal:false}]}}:{ok:true,path:'loaded'})};}
   };
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/reference-workspace.js'),'utf8')+'\nglobalThis.workspace=ReferenceWorkspace;',env);
   env.workspace.history.sync([1,2]);

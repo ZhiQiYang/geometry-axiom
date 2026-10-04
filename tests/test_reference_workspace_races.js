@@ -6,6 +6,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const P = require('../geometry-web/project-store.js');
+const nativeCapabilities = require('./fixtures/native_available_capabilities.json');
 const zip = require('../geometry-web/vendor/fflate/umd/index.js');
 const deferred = () => { let resolve, reject; const promise = new Promise((a,b) => {resolve=a;reject=b;}); return {promise,resolve,reject}; };
 const turn = () => new Promise(resolve => setImmediate(resolve));
@@ -260,7 +261,7 @@ async function openFixture(options={}) {
   };
   f.env.fetch=async(url,request)=>{
     requests.push({url,request});assert.ok(['/upload','/upload/prepare','/upload/confirm','/upload/cancel'].includes(url));
-    return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:['engineering-spec/1','parameters/1','assembly-authoring/1','assembly-generation/1','grid-subdivision-rules/1'],required_capabilities:[],final_objects:{boundaries:[8],placements:[]}}:{ok:true,path:'opened.scene'})};
+    return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[8],placements:[]}}:{ok:true,path:'opened.scene'})};
   };
   return {...f,bytes,requests,refreshed};
 }
@@ -334,7 +335,7 @@ test('missing final native targets cancel without losing source bytes, metadata 
   const f=await openFixture(),old=f.w.context(),fetch=f.env.fetch;
   f.env.fetch=async(url,request)=>{
     const response=await fetch(url,request);
-    return url==='/upload/prepare'?{ok:true,json:async()=>({ok:true,token:1,capabilities:['engineering-spec/1','parameters/1','assembly-authoring/1','assembly-generation/1','grid-subdivision-rules/1'],required_capabilities:[],final_objects:{boundaries:[],placements:[]}})}:response;
+    return url==='/upload/prepare'?{ok:true,json:async()=>({ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[],placements:[]}})}:response;
   };
   // Keep the transport fixture independent from a scene-text parser.
   const originalUnpack=f.env.GeometryProject.unpack;
