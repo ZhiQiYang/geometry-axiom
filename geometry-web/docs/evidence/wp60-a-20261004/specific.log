@@ -1,0 +1,33 @@
+✔ committed rules use a versioned archive with native scene as the only formal source (1220.907539ms)
+✔ rule syntax independently requires the native marker, even without remaining objects (0.565996ms)
+✔ highwater syntax independently requires the native marker, even without remaining objects (0.150988ms)
+✔ guide syntax independently requires the native marker, even without remaining objects (0.133902ms)
+✔ direct anchor syntax independently requires the native marker, even without remaining objects (0.312593ms)
+✔ manifest capability removal, duplicate/unknown capabilities and unknown fields reject before native load (9.37934ms)
+✔ every older schema refuses rules rather than silently downgrading the scene (8.280307ms)
+✔ scene marker stripping and scene hash tampering refuse even if manifest claims support (9.484789ms)
+✔ old formats and current defaults remain readable without invented rules or new capabilities (236.219851ms)
+✔ model records and packages explicitly refuse rules while unrelated historical models coexist (161.394232ms)
+✔ formal reader opens a real archive in a fresh project context and preserves every native identity (305.921528ms)
+✔ formal import rejects capability/format/hash changes before asking native to prepare (298.746083ms)
+✔ service without the required native capability cancels its candidate without replacing project or history (234.186386ms)
+✔ native source closure preflight rejects missing highwater atomically (149.847024ms)
+✔ native source closure preflight rejects missing source atomically (126.747538ms)
+✔ native source closure preflight rejects missing rule atomically (132.443595ms)
+✔ native source closure preflight rejects wrong source ref atomically (146.436754ms)
+✔ native source closure preflight rejects invalid line index atomically (128.968218ms)
+✔ native source closure preflight rejects non-integral divisions atomically (156.693105ms)
+✔ native source closure preflight rejects unknown rule syntax atomically (171.581574ms)
+✔ native source closure preflight rejects native rule capacity atomically (181.550551ms)
+✔ native C snapshot preserves rules but the supported Python model adapter refuses them explicitly (75.486633ms)
+✔ rules coexist with existing raw drafts, source rooms and historical records without schema conversion (121.539324ms)
+✔ formal import is one recoverable history operation and never imports another context undo stack (237.166849ms)
+✔ a legacy native scene remains byte-identical after formal open and save in a new context (82.75921ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4297.075983
