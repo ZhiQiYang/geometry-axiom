@@ -36,6 +36,8 @@
 
 已提交真舊檔 fixture：[issue119-legacy-missing-walls.gcanvas](../../tests/fixtures/issue119-legacy-missing-walls.gcanvas)。它由 baseline 正式 UI 保存，包含兩個模型和 PDF；不是用新 producer 編造的舊結果。材料量是材料模型包及網格的量，沒有把牆材料冒充既有角材 CSV。
 
+遠端可直接審查的[結果及 SHA256](evidence/issue119-20261004/results.json)、[完整66-suite日誌](evidence/issue119-20261004/run-all.log)、[完整CDP日誌](evidence/issue119-20261004/cdp.log)、[P79同輸入兩版回應](evidence/issue119-20261004/p79-capacity-diagnosis.json)。真實下載檔包括 [舊檔保存](evidence/issue119-20261004/legacy-preserved.gcanvas)、[合法替換後保存](evidence/issue119-20261004/legacy-repaired.gcanvas)、[舊provenance保存](evidence/issue119-20261004/legacy-provenance-preserved.gcanvas)、[完整100mm材料更新](evidence/issue119-20261004/updated-material.gcanvas)、[十邊明確只建邊界](evidence/issue119-20261004/boundary-only.gcanvas)、[十邊＋完整矩形](evidence/issue119-20261004/two-models.gcanvas)；[ZIP/input/material audit](evidence/issue119-20261004/archive-audit.json) 列出實際內容及原PDF摘要。
+
 最終 source 實測：正式 PDF journey 17/17；legacy/provenance/tamper/replacement journey 20/20；材料更新、匯出、取消與手機尺寸 guards 11/11；獨立 ZIP、signed tetrahedron mesh volume、點佔有及 PDF byte 檢查 40/40。producer/model_update native 61/61；相關 metadata／工程交付／replacement native JS 53/53；store 20/20。
 
 完整非瀏覽器 66-suite：2090 discovered、2089 pass、0 fail、1 具名 Windows GDI skip，exit 0。SPACE 完整 suite 原樣重跑 202/202、所有 groups completed；另 timber profile 79/79（明確 partial profile）。第一次最終 source SPACE 的一個像素量測失敗，當時 screenshot 顯示正確輪廓；失敗日誌保留，沒有降低 assertion 或 floor。project-switch regression 使用真正 `newProject()`，不再把 raw core reset 當成專案身分切換；斷言不變。
