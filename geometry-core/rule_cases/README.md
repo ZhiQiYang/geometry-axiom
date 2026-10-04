@@ -171,3 +171,10 @@ bundle-validator/reference/generation seams and the unregistered
 `run_case_request` helper for the shared serve owner. Its five focused tests
 are `python -m unittest tests.test_rule_case_request`; changing this helper
 also changes validatorVersion, so previous receipts are rechecked as history.
+
+Follow-up code/test head `cc0010e07c29b94f70404b959a3021e9962c5768` passed all
+81 focused tests (2.401s); independent review reran the five request tests
+(0.310s) with no blocking findings. Its six native receipts again record four
+passed and two diagnostic-unavailable, exit 2, six distinct PIDs and all private
+directories removed. Evidence is `/tmp/geometry-rule-cases-49/receipts-cc0010e.json`;
+validatorVersion is `af23e5d466ddd01d5273c05c64a616c02fff61dcacd0792b48034bb9c1b2c382`.
