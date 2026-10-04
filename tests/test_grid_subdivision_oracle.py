@@ -486,6 +486,64 @@ class NativeSubdivisionOracle(unittest.TestCase):
             self.assertEqual(coordinate, by_line[identity]["coordinate"])
             self.assertEqual(normalized(segments), normalized(by_line[identity]["segments"]))
 
+    def test_legal_comb_holes_preserve_all_41_visible_segments_across_queries_and_guides(self):
+        # Five disjoint legal holes, each with 32 literal vertices and eight
+        # teeth. The u=500 line crosses 40 removed intervals, so its complete
+        # visible geometry consists of the 41 literal endpoint pairs below.
+        # This fixture exposed a former shared 32-segment truncation; neither
+        # a clipped subset nor complete=true on that subset is acceptable.
+        fixture = VECTORS["complex_clipping_fixture"]
+        self.assertEqual(16, len(CASES), "complex clipping does not redefine the numerical vector catalog")
+        self.assertEqual([32] * 5, [len(hole) for hole in fixture["holes"]])
+        points = lambda ring: " ".join(f"{u},{v}" for u, v in ring)
+        outline = points(fixture["outer"]) + "".join(" hole " + points(hole) for hole in fixture["holes"])
+        self.boundary(outline=outline)
+        geometry = self.command("boundary 1")
+        self.assertTrue(geometry["ok"], geometry)
+        self.assertEqual([4, 32, 32, 32, 32, 32], [len(loop["verts"]) for loop in geometry["loops"]])
+        self.commit(self.source(u="repeat 0 1000", v="repeat 0 2000"))
+        self.commit(self.rule(divisions=(2, 1)))
+        self.binding(cell=("0", "0"))
+        self.apply_grid()
+        self.commit("guide 9 1 v gridrule:10:0:1:0:0:u:0")
+        normalize = lambda segments: sorted(tuple(sorted(map(tuple, segment))) for segment in segments)
+        expected = normalize(fixture["expectedSegments"])
+        self.assertEqual(41, len(expected))
+        before = self.snapshot()
+        pending = self.preview(self.rule(key=1, divisions=(2, 1), name="pending complete clipping"))
+        for kind, identifier in (("binding", 0), ("grid", 10)):
+            with self.subTest(target=kind):
+                cell = self.query(kind, identifier)
+                self.assertTrue(cell["ok"], cell)
+                self.assertEqual(fixture["cell"], cell["cell"])
+                self.assertEqual(fixture["bounds"], cell["bounds"])
+                self.assertEqual(1, len(cell["lines"]))
+                line = cell["lines"][0]
+                self.assertEqual(("u", 0, 500), (line["axis"], line["innerIndex"], line["coordinate"]))
+                self.assertEqual(expected, normalize(line["segments"]))
+                for mode in ("exact", "sample"):
+                    rectangle = self.rect_query((0, 0, 1000, 2000), kind=kind, identifier=identifier,
+                                                mode=mode, limit=1)
+                    self.assertTrue(rectangle["ok"], rectangle)
+                    if mode == "exact":
+                        self.assertTrue(rectangle["complete"], rectangle)
+                    self.assertEqual("1", rectangle["requiredCells"])
+                    self.assertEqual("1", rectangle["stride"])
+                    self.assertEqual(1, len(rectangle["cells"]))
+                    row = rectangle["cells"][0]
+                    self.assertEqual(fixture["cell"], row["cell"])
+                    self.assertEqual(1, len(row["lines"]))
+                    self.assertEqual(expected, normalize(row["lines"][0]["segments"]))
+        guide = next(row for row in self.command("references")["guides"] if row["id"] == 9)
+        self.assertEqual(500, guide["off"])
+        self.assertEqual(expected, normalize(guide["segments"]))
+        self.assertEqual(before, self.snapshot(), "all clipping reads must leave the complete live World untouched")
+        self.commit("confirm " + str(pending["token"]))
+        self.assertEqual("pending complete clipping", self.owner()["rules"][0]["name"])
+        self.commit("undo")
+        self.assertEqual(before, self.snapshot(), "clipping reads must preserve pending confirmation and history")
+        self.roundtrip()
+
     def real_supports(self, surface=1, first=1, positions=(120, 680)):
         for timber, edge in ((first + 80, "e0"), (first + 81, "e2")):
             self.commit(f"timber {timber} 20 20 role boundary")
