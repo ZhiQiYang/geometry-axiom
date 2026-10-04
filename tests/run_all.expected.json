@@ -96,6 +96,11 @@
    "count": 6,
    "unit": "test"
   },
+  "py:test_evidence_link_native": {
+   "mode": "count",
+   "count": 6,
+   "unit": "test"
+  },
   "py:test_feedback_store": {
    "mode": "count",
    "count": 11,
@@ -204,6 +209,11 @@
   "node:tests-js": {
    "mode": "count",
    "count": 374,
+   "unit": "node test"
+  },
+  "node:evidence_links": {
+   "mode": "count",
+   "count": 28,
    "unit": "node test"
   },
   "node:model_viewer": {
