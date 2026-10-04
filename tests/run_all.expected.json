@@ -1,16 +1,6 @@
 {
  "_說明": "run_all.py 的各 suite「發現到的測試／斷言數」；完整跑時逐 suite 嚴格相等，不符即 fail。新增或刪除測試後請在一次完整跑之後用 --update-expected 明確更新（並在 commit 中說明）。exit-code-only 表示該 suite 只有結束碼、沒有可數的 test。",
  "suites": {
-  "node:space_test_floor": {
-   "mode": "count",
-   "count": 10,
-   "unit": "node test"
-  },
-  "node:history_operation": {
-   "mode": "count",
-   "count": 4,
-   "unit": "node test"
-  },
   "c:integrity": {
    "mode": "count",
    "count": 88,
@@ -20,6 +10,9 @@
    "mode": "count",
    "count": 139,
    "unit": "場景"
+  },
+  "mutation:check": {
+   "mode": "exit-code-only"
   },
   "py:test_assembly_candidate_impact": {
    "mode": "count",
@@ -34,6 +27,11 @@
   "py:test_assembly_generation": {
    "mode": "count",
    "count": 21,
+   "unit": "test"
+  },
+  "py:test_assembly_native_diagnostics": {
+   "mode": "count",
+   "count": 8,
    "unit": "test"
   },
   "py:test_assembly_parameter_refs": {
@@ -141,6 +139,11 @@
    "count": 2,
    "unit": "test"
   },
+  "py:test_mutation_freshness": {
+   "mode": "count",
+   "count": 24,
+   "unit": "test"
+  },
   "py:test_parameters_core": {
    "mode": "count",
    "count": 20,
@@ -231,6 +234,16 @@
   "node:cdp_confirmation_gate": {
    "mode": "exit-code-only"
   },
+  "node:space_test_floor": {
+   "mode": "count",
+   "count": 10,
+   "unit": "node test"
+  },
+  "node:history_operation": {
+   "mode": "count",
+   "count": 4,
+   "unit": "node test"
+  },
   "node:context_operations": {
    "mode": "count",
    "count": 12,
@@ -260,14 +273,6 @@
    "mode": "count",
    "count": 6,
    "unit": "node test"
-  },
-  "mutation:check": {
-   "mode": "exit-code-only"
-  },
-  "py:test_mutation_freshness": {
-   "mode": "count",
-   "count": 24,
-   "unit": "test"
   }
  }
 }
