@@ -34,7 +34,7 @@ const ReferenceWorkspace = (() => {
   };
   function notifySceneChange(){recoveryChannel?.postMessage({peer:recoveryPeer,session:typeof connection!=="undefined"?connection.session:null});}
   function assertAssemblyIdle(){
-    if(assemblyConfirmation)throw new Error("變更確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
+    if(assemblyConfirmation)throw new Error((assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
   }
   function assertWritableLease(){
     assertAssemblyIdle();

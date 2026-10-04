@@ -598,8 +598,9 @@
       toast('網格預覽元件未載入。請重新啟動應用服務，再重新整理頁面。');
       return;
     }
+    if(!committed&&ReferenceWorkspace.busy){toast('專案正在保存或讀取，完成後再開啟網格工作區。');return;}
     if(!committed && window.DraftGate && !window.DraftGate.ask())return;
-    if (dialog.open && !committed && (state?.busy || state?.initializing || state?.heldControls || state?.releasing || !mayLeave(state))) return;
+    if (dialog.open && !committed && (state?.busy || state?.initializing || state?.heldControls || state?.projectControls || state?.releasing || !mayLeave(state))) return;
     const saved=ReferenceWorkspace.readFeatureAttachment(rawKind),restored=options.draft||(!committed&&saved&&matchesDraft(saved,options)?saved:null);
     if(!committed&&saved&&!restored&&!window.confirm('專案已保留一份原始網格草稿。改開另一個來源／配置將取代它；已發布場景保持不變。確定取代？'))return;
     const ticket=++serial,context=ReferenceWorkspace.context(),contextToken=ReferenceWorkspace.getProjectState().contextToken;
@@ -649,7 +650,7 @@
     if(!source||(options.binding!=null&&!binding)){toast('請更新畫布後，明確選取目前的網格來源或配置。');return Promise.resolve(false);}
     return open({...options,expectedSource:sourceKey(source),...(binding?{expectedBinding:bindingKey(binding)}:{})});
   }
-  function close(force=false,discard=false) { if(!force && (state?.busy || state?.initializing || !mayLeave(state)))return false;if(!discard&&!state?.heldControls)capture(state);state?.trial?.dispose();state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
+  function close(force=false,discard=false) { if(!force && (state?.busy || state?.initializing || state?.projectControls || !mayLeave(state)))return false;if(!discard&&!state?.heldControls)capture(state);state?.trial?.dispose();state=null;++serial;dialog.close();WorkspaceShell.detach(dialog);window.ParamGridLesson?.place();return true; }
   dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
   window.addEventListener('face-projections-changed',()=>{if(state&&state.context!==ReferenceWorkspace.context())close(true);});
   window.addEventListener('project-info-changed',()=>{if(state&&!current(state))close(true,true);else if(state)void releaseHeldControls(state);});
