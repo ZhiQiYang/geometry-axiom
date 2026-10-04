@@ -67,6 +67,7 @@ test('v9 review receipts retain source basis and require real page and face refe
 test('rejects damaged scene, source, unknown version, duplicate paths and missing source',async()=>{
   const supported=[P.ENGINEERING_CAPABILITY,P.PARAMETER_CAPABILITY,P.ASSEMBLY_CAPABILITY,P.GENERATION_CAPABILITY];
   const newer=[...supported,'grid-subdivision-rules/1'];
+  assert.deepEqual(require('./fixtures/native_available_capabilities.json'),newer);
   assert.deepEqual(P.nativeReaderCapabilities(newer),supported);
   assert.deepEqual(newer,[...supported,'grid-subdivision-rules/1']);
   assert.deepEqual(P.nativeReaderCapabilities(['grid-subdivision-rules/1']),[]);
