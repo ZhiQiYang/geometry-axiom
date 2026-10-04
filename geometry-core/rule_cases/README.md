@@ -133,3 +133,35 @@ from a separate World with a pending native preview. Small test-owned process
 controls verify crash/timeout/output cleanup; those are never accepted as
 product case passes. Existing #85 mutation inventory/runner remains its owner's
 responsibility. No deployment or merge is performed by this module.
+
+## Validation evidence for this draft slice
+
+Module/test code head `26854b1fe257b32a808a123bd2ca36f10d940010`, based on main
+`1075058be37d37b98a2a910f4f67b87583be85b3` (including the #85 owner's PR).
+This section is documentation only; the implementation/test blobs at that head
+identify the verified code. No existing app/native/serializer/test-runner file
+is modified by this slice.
+
+- Independent review: all 76 tests in the three new suites passed (exit 0,
+  2.272 seconds); `git diff --check` passed. The review's malformed-green receipt,
+  cleanup and bool/integer diagnostic findings were corrected and rechecked.
+- Existing native regression: `python -m unittest tests.test_assembly_rules
+  tests.test_assembly_capacity tests.test_assembly_parameter_refs` passed all
+  43 tests (exit 0). These are source-compatible authoring checks, not browser
+  integration acceptance.
+- Six-case CLI on the same code returned exit 2, with four passed and two
+  blocked/diagnostic-unavailable. Six distinct native PIDs were observed and
+  all private directories removed. Cloud receipts are in
+  `/tmp/geometry-rule-cases-49/receipts-26854b1.json` for root inspection; the
+  command above regenerates them without a live user service.
+- Native source fingerprint:
+  `605b584465fa835b205c21a0ae4ac584c2d3f667e694d20ca4a590ad2fa7ff5b`.
+  Native binary SHA-256:
+  `13725afc9d7cbfbd49874727c9e26f7c8c076bd7b3021f2192debeaa5ba53854`.
+
+Remaining integration work belongs to root/shared owners: final attachment
+envelope/schema/capability, bounded background transport to this executor,
+contextToken-based attachment writes, formal save/reopen and browser/late-result
+acceptance, plus registration of these suites/count floors in the shared runner.
+No new app API, archive capability or UI is claimed complete here. Both exact
+negative diagnostics need the native owner interface listed above.
