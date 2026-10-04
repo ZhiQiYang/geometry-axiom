@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "geometry-web"))
 import model_update as update
 import space_modeling
+import modeling
 from modeling import ModelError, canonical_bytes, verify_package
 from modeling.base import load_base
 from modeling.common import digest
@@ -537,6 +538,19 @@ class ModelUpdate(unittest.TestCase):
             damaged = self.request(record=legacy); damaged["selection"]["timbers"] = []
             change(damaged["record"])
             self.failure(damaged, "UPDATE_OLD_REPLAY")
+
+    def test_legal_historical_package_provenance_does_not_prevent_strict_replacement(self):
+        old = self.record(scene(), timbers=False)
+        for key in ("space", "volume", "clearance", "walls"):
+            package = old["result"][key]
+            if package is not None:
+                package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = next(iter(modeling.LEGACY_AXIOM_VERSIONS))
+                package["manifest"]["generator"] = {"name": "historical-author", "version": "0.9"}
+        data = self.request(record=old); data["selection"]["timbers"] = []
+        before = canonical_bytes(data)
+        replacement = self.prepare(data)["record"]
+        self.assertEqual(before, canonical_bytes(data))
+        self.assertEqual(replacement["result"]["walls"]["derived"]["status"], "COMPLETE")
 
 
 if __name__ == "__main__":

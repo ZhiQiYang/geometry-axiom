@@ -386,7 +386,7 @@ def prepare_update(data, *, base_executable=None, bridge_executable=None, max_ce
         replay = space_modeling.replay_stored(record["input"], record["result"],
                                              base_executable=base, max_cells=max_cells)
     except ModelError as exc:
-        if exc.code != "SPACE_STORED_REPLAY":
+        if exc.code != "SPACE_STORED_REPLAY" and exc.status != "INVALID":
             raise
         _fail("UPDATE_OLD_REPLAY", "舊模型紀錄與原生歷史重播不一致。", path=("record", "result"))
     if canonical_bytes(replay) != canonical_bytes(record["result"]) or record["source"]["scene_hash"] != replay["source_sha256"]:

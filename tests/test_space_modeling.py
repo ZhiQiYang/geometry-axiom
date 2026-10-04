@@ -15,6 +15,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "geometry-web"))
 import space_modeling as sm
+import modeling
 from modeling import ModelError, verify_package
 from modeling.base import load_base
 
@@ -620,6 +621,23 @@ class HistoricalWallReplay(unittest.TestCase):
         with self.assertRaises(ModelError) as caught:
             sm.replay_stored(record["input"], record["result"])
         self.assertEqual(caught.exception.code, "SPACE_STORED_REPLAY")
+
+    def test_supported_historical_package_metadata_is_verified_and_preserved(self):
+        for original in self.records:
+            record = deepcopy(original)
+            for key in ("space", "volume", "clearance", "walls"):
+                if record["result"][key] is not None:
+                    manifest = record["result"][key]["manifest"]
+                    manifest["axiom_revision"], manifest["axiom_sha256"] = next(iter(modeling.LEGACY_AXIOM_VERSIONS))
+                    manifest["generator"] = {"name": "historical-author", "version": "0.9"}
+            before = deepcopy(record)
+            self.assertEqual(sm.replay_stored(record["input"], record["result"]), record["result"])
+            self.assertEqual(record, before)
+        damaged = deepcopy(record)
+        damaged["result"]["space"]["manifest"]["axiom_sha256"] = "0" * 64
+        with self.assertRaises(ModelError) as caught:
+            sm.replay_stored(damaged["input"], damaged["result"])
+        self.assertEqual(caught.exception.code, "AXIOM_VERSION")
 
 
 if __name__ == "__main__":

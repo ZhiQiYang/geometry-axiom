@@ -395,7 +395,7 @@ def replay_stored(data, expected, *, base_executable=None, max_cells=200000):
     """Verify an existing result, including the original optional-wall contract.
 
     History replay is never a generation candidate. A missing material package
-    must reproduce the entire saved result, including its original diagnostics;
+    must reproduce the saved semantics, including its original diagnostics;
     no package, setting, or summary is trusted merely because walls is null.
     The caller must retain the saved input/result rather than replacing it.
     """
@@ -407,10 +407,24 @@ def replay_stored(data, expected, *, base_executable=None, max_cells=200000):
                         and type(summary) is dict and bool(summary.get("wall_diagnostics")))
     rebuilt = _preview(data, base_executable=base_executable, max_cells=max_cells,
                        historical_walls=historical_walls)
-    if canonical_bytes(rebuilt) != canonical_bytes(expected):
+    if type(expected) is not dict:
+        _fail("SPACE_STORED_REPLAY", "保存的空間結果必須為完整記錄。", path=["result"], clause="I31")
+    saved_semantics, rebuilt_semantics = deepcopy(expected), deepcopy(rebuilt)
+    for key in ("space", "volume", "clearance", "walls", "timbers"):
+        package = expected.get(key)
+        if package is not None:
+            # Keep the existing exchange-package version/provenance contract.
+            # verify_package validates all metadata/digests and actual native
+            # geometry, while allowing enumerated legacy revisions/generators.
+            verify_package(package, base_executable=base_executable, max_cells=max_cells)
+            saved_semantics[key] = {field: package[field] for field in ("definitions", "request", "derived")}
+        if rebuilt.get(key) is not None:
+            rebuilt_semantics[key] = {field: rebuilt[key][field] for field in ("definitions", "request", "derived")}
+    if canonical_bytes(rebuilt_semantics) != canonical_bytes(saved_semantics):
         _fail("SPACE_STORED_REPLAY", "保存的模型、設定、幾何或診斷與歷史重播不一致。",
               path=["result"], clause="I31")
-    return rebuilt
+    # Reading history must not replace valid archival provenance with today's.
+    return deepcopy(expected)
 
 
 def _preview(data, *, base_executable=None, max_cells=200000, historical_walls=False):
