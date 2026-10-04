@@ -272,6 +272,13 @@ test('scene capability stripping, generation marker stripping and native capabil
   await assert.rejects(()=>archive().capture(f,{scenarioId:'A',label:'A'}),/生成能力/);
   const full=await fixture({rich:true}),a=archive({verifyProject:async()=>({...receipt(),capabilities:[]})});
   await unchanged(a,()=>a.capture(full,{scenarioId:'A',label:'A'}),{code:'CAPABILITY'});
+  const reader={...P,readerCapabilities:native=>P.validateProjectCapabilities(native)};
+  const offered=[...capabilities,'grid-subdivision-rules/1'];
+  const compatible=archive({project:reader,verifyProject:async()=>({...receipt(),capabilities:offered})});
+  await compatible.capture(full,{scenarioId:'A',label:'complete old project'});
+  assert.deepEqual(compatible.project('A'),full);
+  const missing=archive({project:reader,verifyProject:async()=>({...receipt(),capabilities:offered.filter(c=>c!==P.GENERATION_CAPABILITY)})});
+  await unchanged(missing,()=>missing.capture(full,{scenarioId:'A',label:'missing required native capability'}),{code:'CAPABILITY'});
   for(const bad of [{ok:false},{ok:true,capabilities:[]},{...receipt(),final_objects:{boundaries:[2],placements:[]}}])
     await assert.rejects(async()=>archive({verifyProject:async()=>bad}).capture(await fixture(),{scenarioId:'A',label:'A'}));
 });

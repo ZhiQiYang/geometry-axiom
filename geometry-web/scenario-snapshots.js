@@ -262,7 +262,12 @@
       if(receipt?.ok!==true||!Array.isArray(receipt.capabilities)||!receipt.final_objects)
         fail('NATIVE','Isolated native/model verification did not succeed.');
       P.validateProjectObjectRefs(data.manifest,receipt.final_objects);
-      const available=typeof P.readerCapabilities==='function'?P.readerCapabilities(receipt.capabilities):receipt.capabilities;
+      // A current native may offer capabilities beyond this portable reader.
+      // Negotiate declared requirements without altering the native receipt;
+      // missing native requirements still cannot be supplied by the reader.
+      const declared=data.manifest.requiredCapabilities||[];
+      const available=typeof P.readerCapabilities==='function'?
+        P.readerCapabilities(receipt.capabilities.filter(c=>declared.includes(c))):receipt.capabilities;
       for(const c of data.manifest.requiredCapabilities||[])if(!available.includes(c))fail('CAPABILITY','Native/reader capability is unavailable: '+c);
       const objects=[];
       for(const v of receipt.objects||[])objects.push(copy(v));
