@@ -1,0 +1,30 @@
+{
+  "original": {
+    "root": "/workspace/pr130-qa",
+    "head": "e06ff2a136fccc42d55a5b86f6bb2873ff146a4a",
+    "tree": "1b39fcfc3f74fe94581214caadac2e8af89e0a00",
+    "status": "",
+    "port": 8799
+  },
+  "fix": {
+    "root": "/workspace/pr130-fix",
+    "head": "0b2cbe34c571605f3c62aa652ee42815f747c96e",
+    "tree": "58434a11327562f8f26c564d77443b54fe55be63",
+    "status": "",
+    "port": 8801
+  },
+  "base": {
+    "root": "/workspace/geometry-axiom",
+    "head": "8d134fcb08041708ac174c11185f175cfa369c4a",
+    "tree": "411b433662cd00a088edb918f199b89bfe4bbe76",
+    "status": "",
+    "port": 8804
+  },
+  "capturedAtUTC": "2026-10-04T20:34:10.127094+00:00",
+  "binaries": {
+    "core": "4f57afe5bff192fee4eaee3e6a817dcc51e9e577946f8f07ebf3ef6b4e3012cb",
+    "web_bridge": "2c04785191a6216e8557a7776364abb927f068b8c352cd9084d817f331b5d2cf",
+    "model_base": "cf9272a5ca70a44c8f299f08c4a4282161b7f1b9221cd73ff1d64c8a0dfb4374"
+  },
+  "coverage": "Synthetic QA-only parameters, grids, native Worlds and repository-authored fixtures; no user Downloads/private case files."
+}
