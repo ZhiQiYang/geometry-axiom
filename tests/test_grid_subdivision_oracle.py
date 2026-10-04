@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import threading
 import unittest
 
 
@@ -90,16 +91,14 @@ class IndependentSubdivisionVectors(unittest.TestCase):
                     self.assertEqual(case["bounds"][axis][0],
                                      case["vertex"][position] + (cell_delta - fraction) * case["pitch"][position])
 
-    def test_panel_uses_pitch917_not_panel915(self):
-        self.assertEqual(131, Fraction(915 + 2, 7))
-        self.assertEqual(Fraction(915, 7), Fraction(130 * 7 + 5, 7))
-        self.assertNotEqual(131, Fraction(915, 7))
-        self.assertEqual([916, 1833], CASES["panel-full-pitch-origin"]["bounds"]["u"])
+    def test_repeat_pitch917_divides_exactly_into_seven(self):
+        self.assertEqual(131, Fraction(917, 7))
+        self.assertEqual([916, 1833], CASES["repeat-pitch917-origin"]["bounds"]["u"])
         self.assertEqual([1047, 1178, 1309, 1440, 1571, 1702],
-                         CASES["panel-full-pitch-origin"]["coordinates"]["u"])
+                         CASES["repeat-pitch917-origin"]["coordinates"]["u"])
         self.assertEqual([130, 261, 392, 523, 654, 785],
-                         CASES["panel-full-pitch-negative-cell"]["coordinates"]["u"])
-        self.assertEqual([], CASES["panel-full-pitch-binding"]["coordinates"]["v"])
+                         CASES["repeat-pitch917-negative-cell"]["coordinates"]["u"])
+        self.assertEqual([], CASES["repeat-pitch917-binding"]["coordinates"]["v"])
 
     def test_signed_cells_are_exact_decimal_strings_with_representable_upper_neighbor(self):
         for case in CASES.values():
@@ -388,6 +387,57 @@ class NativeSubdivisionOracle(unittest.TestCase):
         self.commit(self.source())
         self.reject(self.rule(selector="cell 9223372036854775807 0"), "CELL_RANGE")
         self.reject(self.rule(selector="cell -9223372036854775809 0"), "CELL_RANGE")
+
+    def test_source_rules_require_dual_repeat_while_ordinary_panel_sources_remain_supported(self):
+        cases = [case for case in VECTORS["negative_cases"]
+                 if case["id"].startswith("panel-") and case["id"].endswith("source-rule-rejected")]
+        self.assertEqual(3, len(cases))
+        for case in cases:
+            with self.subTest(case=case["id"]):
+                self.commit("reset")
+                self.commit(self.source(u=case["axes"]["u"], v=case["axes"]["v"]))
+                ordinary = self.command("grid-query system 0 rect 0 0 2000 2000 mode exact limit 64")
+                self.assertTrue(ordinary["ok"], ordinary)
+                for axis in ("u", "v"):
+                    expected = [916, 1833] if "repeat-panel" in case["axes"][axis] else [0, 917, 1834]
+                    self.assertEqual(expected, [line["coordinate"] for line in ordinary["axes"][axis]["lines"]])
+                self.boundary(outline="0,0 2500,0 2500,2500 0,2500")
+                self.binding(cell=("0", "0"))
+                self.apply_grid()
+                bound = self.command("grid-query binding 0 rect 0 0 2000 2000 mode exact limit 64")
+                self.assertTrue(bound["ok"], bound)
+                for axis in ("u", "v"):
+                    self.assertEqual([0, 917, 1834],
+                                     [line["coordinate"] for line in bound["axes"][axis]["lines"]])
+                # 917 / 7 is exactly 131: this must be a kind refusal, not an
+                # incidental divisibility refusal on an otherwise legal panel.
+                self.assertTrue(all(917 % n == 0 for n in case["divisions"]))
+                self.reject(self.rule(divisions=case["divisions"]), case["reason"])
+                self.assertEqual([], self.owner()["rules"])
+                self.roundtrip()
+
+        self.commit("reset")
+        self.commit(self.source(u="repeat 0 917", v="repeat 0 917"))
+        self.commit(self.rule(divisions=(7, 7)))
+        self.boundary(outline="0,0 2500,0 2500,2500 0,2500")
+        self.binding(cell=("0", "0"))
+        self.apply_grid()
+        self.commit("guide 9 1 v gridrule:10:0:1:0:0:u:0")
+        for case in cases:
+            with self.subTest(source_edit=case["id"]):
+                self.reject(self.source(u=case["axes"]["u"], v=case["axes"]["v"]), "SOURCE_KIND")
+        before = self.snapshot()
+        pending = self.preview(self.rule(key=1, divisions=(7, 7), name="pending panel guard"))
+        path = Path(self.directory.name) / "panel-source-with-rule.scene"
+        path.write_text(before[0].replace("u repeat 0 917", "u repeat-panel 915 gap 2 from 0"),
+                        encoding="utf-8")
+        restored = self.command("loadfile " + str(path))
+        self.assertFalse(restored["ok"], restored)
+        self.assertIn("SOURCE_KIND", rejection_reason(restored))
+        self.assertEqual(before, self.snapshot(), "rejected panel-rule restoration changed the complete World")
+        self.commit("confirm " + str(pending["token"]))
+        self.commit("undo")
+        self.assertEqual(before, self.snapshot(), "panel-rule refusal changed revision, pending state or history")
 
     def test_single_cell_and_all_cells_overlap_rules_are_explicit(self):
         self.commit(self.source())
@@ -733,6 +783,93 @@ class NativeSubdivisionOracle(unittest.TestCase):
             self.assertEqual(128, len(cell["lines"]))
             self.assertEqual(128, sum(len(line["segments"]) for line in cell["lines"]))
 
+    def test_single_cell_4232_segments_rejects_unthinnable_sampling_with_counts_and_bounded_termination(self):
+        fixture = VECTORS["unthinnable_clipping_fixture"]
+        self.assertEqual([32] * 8, [len(hole) for hole in fixture["holes"]])
+        coordinates = fixture["interiorCoordinates"]
+        self.assertEqual(list(range(100, 6500, 100)), coordinates)
+        self.assertEqual(65, len(fixture["verticalVisibleIntervals"]))
+
+        # Independent orthogonal intersection counting, confined to this test.
+        # No native result supplies either expected count. All line positions
+        # avoid hole vertices, so each pair of strict crossings removes one
+        # interval from a line that starts and ends inside the outer rectangle.
+        def removed_intervals(axis, coordinate):
+            total = 0
+            for hole in fixture["holes"]:
+                crossings = sum(a[1 - axis] == b[1 - axis]
+                                and min(a[axis], b[axis]) < coordinate < max(a[axis], b[axis])
+                                for a, b in zip(hole, hole[1:] + hole[:1]))
+                self.assertEqual(0, crossings % 2)
+                total += crossings // 2
+            return total
+
+        self.assertEqual([64] * 64, [removed_intervals(0, value) for value in coordinates])
+        self.assertEqual(fixture["horizontalSplitCoordinates"],
+                         [value for value in coordinates if removed_intervals(1, value)])
+        vertical = sum(1 + removed_intervals(0, value) for value in coordinates)
+        horizontal = sum(1 + removed_intervals(1, value) for value in coordinates)
+        self.assertEqual(4160, vertical)
+        self.assertEqual(72, horizontal)
+        self.assertEqual(fixture["expectedVerticalSegments"], vertical)
+        self.assertEqual(fixture["expectedHorizontalSegments"], horizontal)
+        self.assertEqual(4232, vertical + horizontal)
+        self.assertEqual(fixture["expectedTotalSegments"], vertical + horizontal)
+        self.assertEqual(4096, fixture["querySegmentCapacity"])
+        self.assertGreater(vertical + horizontal, fixture["querySegmentCapacity"])
+        points = lambda ring: " ".join(f"{u},{v}" for u, v in ring)
+        outline = points(fixture["outer"]) + "".join(" hole " + points(hole) for hole in fixture["holes"])
+        self.boundary(outline=outline)
+        geometry = self.command("boundary 1")
+        self.assertTrue(geometry["ok"], geometry)
+        self.assertEqual([4] + [32] * 8, [len(loop["verts"]) for loop in geometry["loops"]])
+        self.commit(self.source(u=fixture["axes"]["u"], v=fixture["axes"]["v"]))
+        self.commit(self.rule(divisions=fixture["divisions"]))
+        self.binding(cell=fixture["cell"])
+        self.apply_grid()
+        before = self.snapshot()
+        pending = self.preview(self.rule(key=1, divisions=(65, 65), name="pending unthinnable query"))
+
+        def bounded_query(command):
+            results, failures = [], []
+
+            def run():
+                try:
+                    results.append(self.command(command))
+                except BaseException as error:
+                    failures.append(error)
+
+            worker = threading.Thread(target=run, daemon=True)
+            worker.start()
+            worker.join(timeout=5)
+            if worker.is_alive():
+                self.session.process.kill()
+                worker.join(timeout=1)
+                self.fail("an indivisible over-capacity cell must terminate within five seconds: " + command)
+            if failures:
+                raise failures[0]
+            self.assertEqual(1, len(results))
+            return results[0]
+
+        for command, required_cells in (
+                ("grid-rule-query binding 0 rule 1 cell 0 0", "1"),
+                ("grid-rule-query binding 0 rule 1 rect 0 0 6500 6500 mode exact limit 1", "1"),
+                ("grid-rule-query binding 0 rule 1 rect 0 0 6500 6500 mode sample limit 1", "1"),
+                ("grid-rule-query binding 0 rule 1 rect 0 0 13000 6500 mode sample limit 1", "2")):
+            with self.subTest(query=command):
+                rejected = bounded_query(command)
+                self.assertFalse(rejected["ok"], rejected)
+                self.assertIn("QUERY_CAPACITY", rejection_reason(rejected))
+                self.assertEqual(required_cells, rejected["requiredCells"])
+                self.assertEqual("4232", rejected["requiredSegments"])
+                self.assertEqual(before, self.snapshot(), "capacity refusal changed definitions or resolved references")
+        # A successful confirmation proves the readonly failures did not advance
+        # the exact revision gate; undo also proves their history was untouched.
+        self.commit("confirm " + str(pending["token"]))
+        self.commit("undo")
+        self.assertEqual(before, self.snapshot())
+        self.roundtrip()
+
     def test_native_save_requires_capability_and_load_failures_preserve_live_world(self):
         self.commit(self.source())
         self.commit(self.rule())
@@ -765,6 +902,31 @@ class NativeSubdivisionOracle(unittest.TestCase):
                 self.commit("confirm " + str(pending["token"]))
                 self.commit("undo")
                 self.assertEqual(before, self.snapshot(), "failed load damaged the existing history")
+
+    def test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default(self):
+        self.commit(self.source())
+        self.commit(self.rule())
+        before = self.snapshot()
+        pending = self.preview(self.rule(key=1, name="pending allocator capability guard"))
+        source_only = self.source() + "\ngrid-source-rule-highwater 0 next 1\n"
+        path = Path(self.directory.name) / "default-highwater-without-required-capability.scene"
+        path.write_text(source_only, encoding="utf-8")
+        rejected = self.command("loadfile " + str(path))
+        self.assertFalse(rejected["ok"], rejected)
+        self.assertIn("capability", rejection_reason(rejected).lower())
+        self.assertEqual(before, self.snapshot(), "missing input capability replaced the complete live World")
+        self.commit("confirm " + str(pending["token"]))
+        self.commit("undo")
+        self.assertEqual(before, self.snapshot(), "missing input capability damaged revision, pending state or history")
+
+        path.write_text("requires grid-subdivision-rules/1\n" + source_only, encoding="utf-8")
+        accepted = self.command("loadfile " + str(path))
+        self.assertTrue(accepted["ok"], accepted)
+        self.assertEqual([], self.owner()["rules"])
+        self.assertEqual(1, self.owner()["nextRuleKey"])
+        # A redundant default highwater need not remain in canonical output;
+        # the input syntax still requires its explicit capability declaration.
+        self.roundtrip()
 
     def test_saved_rule_reference_missing_key_wrong_source_and_index_reject_atomic_load(self):
         self.commit(self.source())
