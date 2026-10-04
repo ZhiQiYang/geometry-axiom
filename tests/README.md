@@ -204,5 +204,5 @@ python3 tests/mutate.py
 ```
 
 Linux 變異程式快取在 `/tmp/geometry-tests/mutants/`，編譯指令也納入指紋；不共用 Windows exe。
-結果仍由同一份 `run_tests.py` 與 138 個夾具判定。這不驗證 Windows 專用 GDI。
+結果仍由同一份 `run_tests.py` 與 139 個夾具判定。這不驗證 Windows 專用 GDI。
 逐筆現版 anchor／proof 與本次執行證據見 [#85 review](MUTATION-FRESHNESS-REVIEW.md)。

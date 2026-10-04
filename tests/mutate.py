@@ -5,7 +5,7 @@
   file   預設 current_geometry.c;邏輯搬到 geometry-core/*.inc 時指名該檔。
          暫存複本把對應的 #include 行原地換成變異後的內容(只支援 current_geometry.c
          直接 #include 的檔),所以 #include 的相對路徑解析與 AGENTS.md 所述一致。
-  equivalent  等價變異(理由文字),不編譯,但錨點仍須存在。
+  equivalent  等價變異(理由文字),每輪仍編譯並跑完整 oracle;錨點須存在。
   retired     邏輯已從產品整個移除(寫明依據),不編譯;舊錨點若又出現會被判 invalid。
 
 結果: killed(某測試失敗) / crashed(基準通過後,同一夾具連續存取違規;
@@ -84,7 +84,6 @@ VERDICTS = ("killed", "crashed", "survived", "equivalent", "invalid", "stale", "
 MUTANTS = [
     # ---- poly_point_on_edge:邊上判定 ----
     dict(id="M01", desc="I5：邊上判定:含端點改嚴格(端點不在邊上)",
-         equivalent="等價變異(GEO-173 實證,與 2026-09-16 稽核一致):只變異直立邊分支的端點判定;軸平行多邊形的任一頂點必同時是一條直立邊與一條水平邊的端點,未變異的水平邊分支必接住。夾具 M01_hole_corner_touch(兩孔角對角相碰)原始版與變異版輸出逐字相同。",
          old="p.v >= coord_min(a.v, b.v) && p.v <= coord_max(a.v, b.v)",
          new="p.v > coord_min(a.v, b.v) && p.v < coord_max(a.v, b.v)"),
     # ---- poly_contains_point:射線法 ----
@@ -216,7 +215,7 @@ MUTANTS = [
          new="            (void)blank;   /* 重宣告 = 整軸換掉，不是疊加 */"),
     # ---- GEO-100:I23(b) 重驗時的索引存在性 ----
     dict(id="M56", desc="I23：I23(b) 不再檢查被錨定的索引是否仍推導得出",
-         equivalent="等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/boundary/axis/index/has_band/band),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
+         equivalent="等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
          old="                !grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,",
          new="                (false) && grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,"),
     # ---- GEO-100:面材推導（D10a）----

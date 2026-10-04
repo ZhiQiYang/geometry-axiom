@@ -20,24 +20,38 @@ current_geometry.c 的 `world_validate_derived` 改用 `grid_anchor_line_coord`�
 has_band/band 參數。恢復這個 anchor；沒有移除有效 mutant 或增加 retired。
 三個既有 retired（M35、M51、M55）仍保留原移除依據，且舊 anchor 沒有復活。
 
-## 五項既有 equivalence 的現版依據
+## M01 反例與四項 equivalence 重新核對
 
-- M01／I5：直立邊端點不收時，相同軸平行多邊形頂點仍是相鄰水平邊端點；未變異
-  的水平分支仍收它。只改直立端點，沒有變異另一分支。
+獨立 reviewer 指出原 M01 proof 錯誤：I2／現行 poly_loop_is_valid 容許相鄰共線邊，
+不是每個頂點都有水平邊接住。六頂點 loop (0,0),(100,0),(100,50),(100,100),
+(0,100),(0,50) 在 baseline 與 M01 都合法；p=(100,50) 的 edge/point 判定，及
+[80,20,100,50] 的 poly/boundary/surface 矩形包含，baseline 全 true、M01 全 false。
+TEMP include harness 已實跑。撤回 M01 equivalent，由完整 oracle 給實際判決。
+
+公開 `_ax_i5_collinear_vertex_rect_corner.scene` 在既有 L 形凹角輪廓兩側加入直邊
+共線頂點；baseline 接受 4000 mm 角材，M01 拒絕。它納入 run_tests（139 scenes）
+及 bridge 的接受型往返；test_core_integrity 增加八項合法性／包含／越界檢查（80→88）。
+未改產品來排除反例，未減少任何既有 floor。
+
 - M09／I5：hole bbox 恰相切時，孔點全部在矩形開內部的一側，三道細查（孔頂點
   嚴格在內、孔邊穿開內部、孔含四角）均為 false；快退改為細查不改結果。
-- M23／R6(d)：collect_stop_faces 仍只枚舉 outer/hole 邊及同面已放 timber 側面。
-  合法簡單輪廓無同線重疊邊，孔不能相碰或貼輪廓；同線 timber 由既有
-  D11 dedup／stop_face_shadowed 保留先佔用支撐。因此 hits>1 分支仍不影響合法輸入。
+  共線分段不改 bbox 或這些幾何半平面關係。
+- M23／R6(d)：collect_stop_faces 枚舉 outer/hole 邊及同面已放 timber 側面。
+  合法輪廓的共線相鄰邊只在端點相接，不能同時涵蓋正寬 [lo,hi]；反向回走
+  會使後續非相鄰邊相交而被 poly_loop_is_valid 拒絕。非相鄰共線重疊亦被拒絕。
+  孔不能相碰或貼輪廓；同線 timber 由 D11 dedup／stop_face_shadowed 保留先佔用
+  支撐。因此此合法輸入 hits>1 proof 不依賴水平／垂直交替。
 - M36／R6(e)：唯一呼叫鏈仍是 world_revalidate → reference_rebuild →
-  reference_check_all → world_validate_derived。前一檢查已用相同 faces、ends、lo/hi、
-  has_between 條件驗端面；之間只重建 spaces，不改支撐來源。
-- M56／I23(b)：reference_rebuild → reference_place_geometry 對 AT_GRID 先用
-  相同 grids/count/grid/placement/boundary/axis/index/has_band/band 求值；失敗已返回。
-  後續 world_validate_derived 的同一索引 guard 是冗餘檢查。兩處呼叫已逐參數核對。
+  reference_check_all → world_validate_derived。前一檢查已用相同 collect_stop_faces、
+  footprint、ends、lo/hi、has_between 條件驗端面；之間只重建 spaces，不改支撐來源。
+- M56／I23(b)：reference_place_geometry 先用 grid_anchor_line_coord 求相同
+  grid/index/axis/has_band/band；重建失敗已返回。掛 boundary 時兩處傳同一 pointer；
+  自帶 rect 時前處用合成 outline，後處用 NULL，placement_local_bounds 得同 bounds，
+  subgrid 面積計算亦得相同 rect 面積（無 holes）。同一 guard 仍冗餘；不宣稱兩處
+  boundary pointer 字面相同。spaces 重建不修改 grid/placement/anchor。
 
-上述是現版呼叫鏈／幾何推理，不把有限測試當形式證明。本輪亦實際編譯這五個 mutant
-並跑完整現版 oracle；若執行結果與 proof 衝突，記 invalid，絕不以 equivalent 掩蓋。
+以上是現版呼叫鏈／幾何推理，不把有限測試當形式證明。四項亦實際跑完整現版 oracle；
+若結果與 proof 衝突，記 invalid，絕不以 equivalent 掩蓋。
 
 ## freshness 與結果 receipt
 
