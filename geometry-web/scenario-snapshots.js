@@ -183,8 +183,8 @@
       if(!Object.hasOwn(limits,key)||!Number.isSafeInteger(value)||value<1||value>limits[key])fail('LIMIT','Limits may only be lowered.');
       limits[key]=value;
     }
-    if(!P||typeof P.validate!=='function'||typeof P.sha!=='function'||typeof options.verifyProject!=='function')
-      fail('MISSING_CAPABILITY','Complete snapshots require the project validator and an isolated native/model verifier.');
+    if(!P||typeof P.validate!=='function'||typeof P.projectFormat!=='function'||typeof P.sha!=='function'||typeof options.verifyProject!=='function')
+      fail('MISSING_CAPABILITY','Complete snapshots require the project/scene format validator and an isolated native/model verifier.');
     const snapshots=new Map(), pool=new Map();
     let generation=0;
     function state() {
@@ -213,6 +213,14 @@
           fail('ASSET_CLOSURE','Feature attachment original assets are missing from the manifest.');
       }
       P.validate(m);
+      // Reuse the reader's scene-dependent format selector without repacking:
+      // pack() would upgrade the format and silently normalize the original data.
+      // P.validate already checks registered formats and manifest-only requirements.
+      const formats=[P.FORMAT,P.MODEL_FORMAT,P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,
+        P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].filter(v=>v!==undefined);
+      const minimum=P.projectFormat({...m,requiredCapabilities:[]},scene),actualRank=formats.indexOf(m.format),minimumRank=formats.indexOf(minimum);
+      if(actualRank<0||minimumRank<0)fail('MISSING_CAPABILITY','Reader scene-dependent format ordering is unavailable.');
+      if(actualRank<minimumRank)fail('FORMAT','Project format is below the reader requirement for its complete scene and definitions.');
       if(typeof P.sceneCapabilities==='function') {
         const required=P.sceneCapabilities(scene);
         if(required.some(c=>!m.requiredCapabilities?.includes(c)))fail('CAPABILITY','Scene capabilities were stripped from the project manifest.');
@@ -289,10 +297,14 @@
         fail('ORIGIN','Invalid scenario copy basis.');
       const from=new Set(),to=new Set(),ownObjects=new Set(s.objects.map(refKey));
       const base=s.basis===null?null:table.get(s.basis.scenarioId),baseObjects=new Set((base?.objects||[]).map(refKey));
+      if(base&&s.snapshot.projectManifest.projectId!==base.snapshot.projectManifest.projectId)
+        fail('PROJECT_IDENTITY','A copy basis cannot cross project identities.');
+      if(s.originMapping.length&&(!base||canonical(s.snapshot)!==canonical(base.snapshot)))
+        fail('ORIGIN','Copy origins require an exact archived fork; replacement has no proven object continuity.');
       for(const pair of s.originMapping) {
         if(!exact(pair,['from','to','snapshotHash'])||!validRef(pair.from)||!validRef(pair.to)||
           pair.to.scenarioId!==s.scenarioId||pair.from.scenarioId!==s.basis?.scenarioId||pair.snapshotHash!==s.basis?.snapshotHash||
-          pair.from.kind!==pair.to.kind||pair.from.version!==pair.to.version||
+          pair.from.kind!==pair.to.kind||pair.from.id!==pair.to.id||pair.from.version!==pair.to.version||
           !ownObjects.has(refKey(pair.to))||from.has(refKey(pair.from))||to.has(refKey(pair.to)))fail('ORIGIN','Invalid typed copy-origin pair.');
         if(!base||base.closureHash!==pair.snapshotHash||!baseObjects.has(refKey(pair.from)))
           fail('ORIGIN','Copy-origin basis is absent or changed.');
@@ -336,9 +348,14 @@
       pool.clear();for(const [hash,bytes]of assets)pool.set(hash,bytes);
       return copy(s);
     }
-    async function capture(project,settings) {const op=start();boundedJSON(settings,limits,limits.descriptorBytes);
+    async function captureCopy(project,settings) {const op=start();boundedJSON(settings,limits,limits.descriptorBytes);
       if(snapshots.size>=limits.scenarios)fail('LIMIT','Too many complete scenarios.');
       const data=await verified(project,op);const s=await seal(data,settings,op);return commit(s,data,op);}
+    async function capture(project,settings) {
+      boundedJSON(settings,limits,limits.descriptorBytes);
+      if(!exact(settings,['scenarioId','label']))fail('ORIGIN','Only an explicit archived fork can establish a copy basis and typed origins.');
+      return captureCopy(project,settings);
+    }
     function project(id) {
       const s=snapshots.get(id);if(!s)fail('SCENARIO','Scenario does not exist.');
       return {manifest:copy(s.snapshot.projectManifest),scene:s.snapshot.worldScene,
@@ -349,14 +366,17 @@
       boundedJSON(settings,limits,limits.descriptorBytes);
       if(!exact(settings,['scenarioId','label']))fail('SCENARIO','Fork requires a new namespace and label.');
       const originMapping=base.objects.map(v=>({from:{scenarioId:id,...v},to:{scenarioId:settings.scenarioId,...v},snapshotHash:base.closureHash}));
-      return capture(project(id),{...settings,basis:{scenarioId:id,snapshotHash:base.closureHash},originMapping});
+      return captureCopy(project(id),{...settings,basis:{scenarioId:id,snapshotHash:base.closureHash},originMapping});
     }
     async function replace(id,input) {
       const old=snapshots.get(id);if(!old)fail('SCENARIO','Scenario does not exist.');
       const op=start(),data=await verified(input,op);
-      // Origins of removed objects cease to be current copy correspondences.
-      const objects=new Set(data.objects.map(refKey));
-      const originMapping=old.originMapping.filter(pair=>objects.has(refKey(pair.to)));
+      if(data.manifest.projectId!==old.snapshot.projectManifest.projectId)
+        fail('PROJECT_IDENTITY','A foreign project must be captured in a new scenario namespace.');
+      // A validated whole replacement proves content, not object incarnation
+      // continuity. Same kind/id/version after reset or recreation is insufficient.
+      // Keep the historical basis, but only an explicit fork creates copy origins.
+      const originMapping=[];
       const s=await seal(data,{scenarioId:id,label:old.label,basis:old.basis,originMapping},op);return commit(s,data,op,true);
     }
     function remove(id) {

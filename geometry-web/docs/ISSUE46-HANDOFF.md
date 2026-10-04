@@ -16,7 +16,7 @@
 
 ## 模組介面及保證
 
-`scenario-snapshots.js` 為 UMD，browser `GeometryScenarioSnapshots`。建立時必須注入 `verifyProject({manifest,scene})`，它只准使用隔離原生／model verifier。`project` 預設目前正式保存器，可注入 PR104 或共享 owner 後續正式 validator。`getState()` 可提供 `{context,frame,contextToken,revision,blocked:false}`；每次 await 核對所有 stamp／generation，cancel 或晚到結果不會提交任何 snapshot／pool 部分資料。host callbacks 為受信任工程 adapter；輸入必須是普通 JSON，任意 JS Proxy 不在可攜資料契約內。
+`scenario-snapshots.js` 為 UMD，browser `GeometryScenarioSnapshots`。建立時必須注入 `verifyProject({manifest,scene})`，它只准使用隔離原生／model verifier。`project` 預設目前正式保存器，可注入 PR104 或共享 owner 後續正式 validator，必須提供現有 `projectFormat(manifest,scene)`。封存先核對 reader 的場景依賴最低格式，再進 native；不能靠保留 capability 讓低版格式通過，也不用 `pack()` 自動升版／正規化掩蓋輸入問題。沒有實際場景需求的既有額外 capability pins 不造成誤升版。`getState()` 可提供 `{context,frame,contextToken,revision,blocked:false}`；每次 await 核對所有 stamp／generation，cancel 或晚到結果不會提交任何 snapshot／pool 部分資料。host callbacks 為受信任工程 adapter；輸入必須是普通 JSON，任意 JS Proxy 不在可攜資料契約內。
 
 ```js
 const archive = GeometryScenarioSnapshots.create({
@@ -51,7 +51,7 @@ const portableModuleBytes = await archive.pack(fflate);
 
 每 snapshot 保留原始 manifest（models 的完整 input/source/result、formal scene、engineering/assembly drafts、face projections、reference pages/calibration/crop/observations/reviews、所有正式附件），不降版或 rebuild 成另一份定義。scene／asset hashes、完整 closure hash、typed native/model/draft/page inventory 及 copy basis 都會核對。資產 pool 私有，只共享不變 bytes 的儲存；輸入、讀取、list、verifier argument 都是副本，無 shared mutable Map／PDF runtime 物件。來源 hash 是內容身分；scenario namespace＋kind＋id＋version 才是 comparison key，不把相同數字／名稱／外形當同一物件。
 
-`fork` 自動記錄原案 exact closureHash 的 typed copy-origin；它表示獨立複製關係，**沒有實物數量合併的語意**。`replace(B)` 保留其 basis，去掉已刪除物件的 current origin pair；原 A 和 assets 不變。被子方案使用的 exact basis 不能替換／刪除；單案刪除僅回收 archive 中無引用的 bytes。`pack/unpack` 全資料及 original bytes 真 ZIP round trip，解壓、semantic verification 完成才一次 publish。closure hashes 為內容完整性，不是簽章或不受信任 runtime 的授權證明。
+只有明確 `fork` 自動記錄原案 exact closureHash 的 typed copy-origin；public `capture` 不接受自填 basis／origins。它表示獨立複製關係，**沒有實物數量合併的語意**。`replace(B)` 拒絕不同 `projectId`，同案 replacement 保留歷史 basis 並清除全部 current origin pairs；即使 bytes 或 kind/id/version 相同，也不代表 reset／delete-recreate 後物件沿革仍連續。diff／重新匯入均呈 unmatched／unknown；從已編輯 B 明確 fork C 時可建立新的 B→C 配對。ZIP 匯入有 origins 必須是 exact 完整 base snapshot 且 typed IDs 一致，所有有 basis 的 record 都須保持相同 projectId；重算 closure hash 不能讓 edited snapshot 延用舊 origins 或繞過 foreign-project 拒絕。原 A 和 assets 不變。被子方案使用的 exact basis 不能替換／刪除；單案刪除僅回收 archive 中無引用的 bytes。`pack/unpack` 全資料及 original bytes 真 ZIP round trip，解壓、semantic verification 完成才一次 publish。closure hashes 為內容完整性，不是簽章或不受信任 runtime 的授權證明。
 
 `scenario-diff.js` browser `ScenarioDiff` 只接受已通過 archive hash／能力／native 檢查的 plain JSON 輸出。完整逐段 definition compare 保留同值換來源、同外形換接合／分件差異；只有 exact pinned typed copy-origin 配對，其他 unmatched。返回 `scope:'definitions'`、`geometry.status:'not-evaluated'`、`physicalIdentity:'unknown'`；不假稱幾何／料長／施工安全已求值。
 
@@ -73,6 +73,8 @@ ZIP 設 central/local member 白名單及數量上限，拒重複 member、未�
 python tests/binaries.py build bridge model-base
 node --test tests/test_scenario_snapshots.js tests/test_scenario_diff.js
 GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base \
+  node --test tests/test_scenario_review_native.js
+GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base \
   python -m unittest tests.test_scenario_verify -q
 GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base \
   node tests/scenario_browser_check.cjs
@@ -88,8 +90,10 @@ GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_MODEL_BASE=/tmp/geometr
 
 該 compatibility 未注入時會具名 skip，不能冒充 GridDraft 主線支持。已注入真 PR104 `b2163165` validator 跑到實際 isolated native／ZIP：非法 raw A/B、B 改 raw 不動 A、fresh reopen、unknown kind／能力剝除拒絕。不是另造 GridDraft schema。
 
-browser harness 自建僅服務本 slice 的 ephemeral loopback server，實際 Chromium 1280／390、DOM 下載與 file input 重開、真 native CLI、bytes/diff/latecontext/tamper oracle。證據及可重開兩份 archive 在 `/tmp/geometry-scenario/browser/`，未提交 build／私人圖紙／截圖。這是 module browser acceptance，不是正式產品 A/B 建立／採用 UI acceptance。shared whole adopt／history、保存附件 registry、產品入口及實體手機留给原 owner；沒有改 runner/goldens 或跟 #77/#48 競寫。
+browser harness 自建僅服務本 slice 的 ephemeral loopback server，實際 Chromium 1280／390、DOM 下載與 file input 重開、真 native CLI、bytes/diff/latecontext/tamper oracle，另明查 explicit fork 配對及 replacement 後 unmatched／unknown。證據及可重開兩份 archive 在 `/tmp/geometry-scenario/browser/`，未提交 build／私人圖紙／截圖。這是 module browser acceptance，不是正式產品 A/B 建立／採用 UI acceptance。shared whole adopt／history、保存附件 registry、產品入口及實體手機留给原 owner；沒有改 runner/goldens 或跟 #77/#48 競寫。
 
 Refs #46 #45 #44 #48 #77 #43；不以本第一 slice 關閉 #46，draft PR 交 root 獨立 review，未 merge／deploy。
 
-本次 focused 驗證：snapshot/diff 36/36；加既有模型／參數保存回歸共 58/58、無 skip；隔離 native/models 33/33；實際 PR104 validator compatibility 1/1；1280／390 browser 12 個 closure/file/diff/latecontext/tamper checks、12 次真 native CLI、0 forbidden live requests、0 browser exceptions。獨立 source review 修正並重驗 namespace、聚合 byte budget、JSON duplicate keys、sparse array、typed native string ID、完整 metadata cap 及模型舊版相容性。完整 app CDP、產品 A/B adoption、recoverable undo/redo、正式手機入口未在此 slice 驗收。
+PR110 增量複審回歸涵蓋：真 native 接受但正式 raw ZIP reader 拒絕的 parameters／assembly／generation 保留能力降 `/5` 反例、正式 `/1`～`/9` 原資料與模型正例、真正 reset／delete-recreate 同 IDs、foreign project 同 IDs 以及 fresh ZIP／diff 不誤配；unit 另驗 public capture 自填 origins、重算 hash 的 edited／foreign／typed remap ZIP、完全相同 bytes 的 replacement 清配對與 B→C 新 fork。reader format 守門已與目前 main 和實際 PR104 的 raw ZIP reader 作 4,864 個矩陣案例獨立核對，零落差。完整 app CDP、產品 A/B adoption、recoverable undo/redo、正式手機入口未在此 slice 驗收。
+
+本次同實作 bytes 驗證：snapshot/diff 39/39，加既有 model／parameters 保存回歸 61/61、0 skip；新增 JS＋真 native CLI 端到端 18/18、46 次隔離 CLI；native/model Python 33/33；注入實際 PR104 的 GridDraft compatibility 1/1；1280／390 browser 16 個 checks、12 次真 native CLI、0 forbidden live requests、0 browser exceptions。獨立 identity ZIP 複審含合法 fork、edited B→C 及重算 hash 的反例，沒有剩餘 object correspondence 缺口。

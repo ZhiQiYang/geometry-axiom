@@ -65,7 +65,10 @@ const server=http.createServer(async(req,res)=>{
         const manifest={format:P.FORMAT,projectId:'original-project',name:'A/B independent',sceneHash:await P.sha(new TextEncoder().encode(scene)),
           sources:[{id:hash,hash,name:'original.png',type:'image/png',size:bytes.length,path:'sources/'+hash}],faces:[{bid:1,activePageId:page.id,pages:[page]}]};
         const a=await archive.capture({manifest,scene,sources:new Map([[hash,bytes]])},{scenarioId:'A',label:'A'});
-        await archive.fork('A',{scenarioId:'B',label:'B'});const b=archive.project('B');
+        await archive.fork('A',{scenarioId:'B',label:'B'});
+        const copied=ScenarioDiff.compare(...archive.list());
+        if(copied.originPairs.length!==a.objects.length)throw Error('Explicit fork origin pairs missing');
+        const b=archive.project('B');
         b.scene=b.scene.replace('spec pitch 27','spec other_pitch 27');b.manifest.sceneHash=await P.sha(new TextEncoder().encode(b.scene));
         b.manifest.faces[0].pages[0].records[0].datum='measured';
         await archive.replace('B',b);
@@ -74,11 +77,17 @@ const server=http.createServer(async(req,res)=>{
         if(archive.project('A').sources.get(hash)[0]!==137||archive.project('B').sources.get(hash)[0]!==137)throw Error('Mutable asset sharing');
         if(JSON.stringify(archive.list()[0])!==JSON.stringify(a))throw Error('B changed A');
         return {hash,original:[...archive.project('A').sources.get(hash)],snapshots:archive.list(),stats:archive.stats(),
-          diff:{fields:diff.sections.map(v=>v.field),physicalIdentity:diff.physicalIdentity,geometry:diff.geometry}};
+          copiedOriginCount:copied.originPairs.length,
+          diff:{fields:diff.sections.map(v=>v.field),physicalIdentity:diff.physicalIdentity,geometry:diff.geometry,
+            originPairs:diff.originPairs,unmatched:diff.unmatched}};
       });
       assert.equal(result.stats.scenarios,2);assert.equal(result.stats.assets,1);
       assert.ok(result.diff.fields.includes('worldScene'));assert.ok(result.diff.fields.includes('projectManifest.faces'));
       assert.equal(result.diff.physicalIdentity,'unknown');assert.equal(result.diff.geometry.status,'not-evaluated');
+      assert.ok(result.copiedOriginCount>0);assert.deepEqual(result.snapshots[1].originMapping,[]);
+      assert.deepEqual(result.diff.originPairs,[]);
+      assert.equal(result.diff.unmatched.before.length,result.snapshots[0].objects.length);
+      assert.equal(result.diff.unmatched.after.length,result.snapshots[1].objects.length);
       const downloadWait=page.waitForEvent('download');await page.locator('#save').click();const download=await downloadWait;
       const saved=path.join(output,'AB-'+width+'.scenario.zip');await download.saveAs(saved);
       await page.locator('#open').setInputFiles(saved);await page.waitForFunction(()=>document.querySelector('#status').textContent==='reopened');
@@ -100,7 +109,8 @@ const server=http.createServer(async(req,res)=>{
       },result.hash);
       assert.equal(tamper.code,'TAMPER');assert.equal(tamper.unchanged,true);
       await page.screenshot({path:path.join(output,'harness-'+width+'.png')});
-      checks.push({width,completeSnapshot:true,originalBytes:true,independentCopies:true,zipFileReopen:true,lateContext:true,tamperRejected:true});
+      checks.push({width,completeSnapshot:true,originalBytes:true,independentCopies:true,zipFileReopen:true,lateContext:true,tamperRejected:true,
+        explicitForkOrigins:true,replacementIdentityUnknown:true});
       await context.close();
     }
     assert.equal(errors.length,0,errors.join('\n'));assert.equal(forbiddenCalls,0);assert.ok(nativeCalls>=12);

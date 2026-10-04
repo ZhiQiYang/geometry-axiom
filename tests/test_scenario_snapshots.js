@@ -6,6 +6,7 @@ const {test} = require('node:test');
 const assert = require('node:assert/strict');
 const P = require('../geometry-web/project-store.js');
 const S = require('../geometry-web/scenario-snapshots.js');
+const D = require('../geometry-web/scenario-diff.js');
 const zip = require('../geometry-web/vendor/fflate/umd/index.js');
 const enc = new TextEncoder(), dec = new TextDecoder();
 const clone = x => JSON.parse(JSON.stringify(x));
@@ -95,6 +96,21 @@ async function unchanged(a,run,error) {
 function filesOf(bytes) {return zip.unzipSync(bytes);}
 function rewrite(bytes,change) {const files=filesOf(bytes);change(files);return zip.zipSync(files,{level:0});}
 function editJSON(files,name,change) {const value=JSON.parse(dec.decode(files[name]));change(value);files[name]=enc.encode(JSON.stringify(value));}
+async function rehashedRecordZip(bytes,id,change) {
+  const files=filesOf(bytes),descriptor=JSON.parse(dec.decode(files['scenarios.json']));
+  const meta=descriptor.scenarios.find(v=>v.scenarioId===id),{assetHashes,...fields}=meta;
+  const record={...fields,snapshot:{projectManifest:JSON.parse(dec.decode(files['scenarios/'+id+'/manifest.json'])),
+    worldScene:dec.decode(files['scenarios/'+id+'/world.scene']),assetHashes}};
+  change(record);
+  record.snapshot.projectManifest.sceneHash=await P.sha(enc.encode(record.snapshot.worldScene));
+  delete record.closureHash;record.closureHash=await P.sha(enc.encode(S.canonical(record)));
+  const {snapshot,...metadata}=record;
+  Object.assign(meta,metadata,{assetHashes:snapshot.assetHashes});
+  files['scenarios/'+id+'/manifest.json']=enc.encode(JSON.stringify(snapshot.projectManifest));
+  files['scenarios/'+id+'/world.scene']=enc.encode(snapshot.worldScene);
+  files['scenarios.json']=enc.encode(JSON.stringify(descriptor));
+  return zip.zipSync(files,{level:0});
+}
 function archiveMembers(members) {
   const chunks=[],writer=new zip.Zip((error,chunk)=>{if(error)throw error;chunks.push(chunk);});
   for(const [name,bytes] of members) {const item=new zip.ZipPassThrough(name);writer.add(item);item.push(bytes,true);}
@@ -139,10 +155,54 @@ test('replacing B keeps A and its exact basis, deduplicates bytes, then collects
   const A=a.list()[0],beforeA=a.project('A');await a.replace('B',two);
   assert.deepEqual(a.list()[0],A);assert.deepEqual(a.project('A'),beforeA);assert.deepEqual(a.project('B'),two);
   assert.equal(a.stats().assets,2);assert.equal(a.list()[1].basis.snapshotHash,A.closureHash);
+  assert.deepEqual(a.list()[1].originMapping,[]);
   assert.throws(()=>a.remove('A'),{code:'RETENTION'});
   await unchanged(a,()=>a.replace('A',two),{code:'ORIGIN'});
   assert.equal(a.remove('B'),true);assert.equal(a.stats().assets,1);
   assert.equal(a.remove('A'),true);assert.deepEqual(a.stats(),{scenarios:0,assets:0,assetBytes:0});assert.equal(a.remove('A'),false);
+});
+
+test('only explicit fork establishes origins; even byte-identical replacement retires them before reopen and diff',async()=>{
+  let calls=0;const a=archive({verifyProject:async()=>{calls++;return receipt();}}),input=await fixture();
+  const A=await a.capture(input,{scenarioId:'A',label:'A'}),B=await a.fork('A',{scenarioId:'B',label:'B'});
+  const count=calls;
+  const forgedSettings={scenarioId:'C',label:'forged capture',basis:B.basis,
+    originMapping:B.originMapping.map(p=>({...p,to:{...p.to,scenarioId:'C'}}))};
+  await unchanged(a,()=>a.capture(input,forgedSettings),{code:'ORIGIN'});assert.equal(calls,count);
+  assert.equal(D.compare(A,B).originPairs.length,A.objects.length);
+  await a.replace('B',a.project('B'));
+  const current=a.list()[1];assert.deepEqual(current.originMapping,[]);assert.deepEqual(current.basis,B.basis);
+  const fresh=archive();await fresh.unpack(await a.pack(zip),zip);
+  const diff=D.compare(...fresh.list());assert.deepEqual(diff.originPairs,[]);
+  assert.equal(diff.unmatched.before.length,A.objects.length);assert.equal(diff.unmatched.after.length,current.objects.length);
+  assert.equal(diff.physicalIdentity,'unknown');
+  const C=await fresh.fork('B',{scenarioId:'C',label:'explicit new copy'});
+  assert.equal(D.compare(current,C).originPairs.length,current.objects.length);
+});
+
+test('rehashed ZIP cannot retain edited-copy origins, cross-project basis or remapped same-kind IDs',async()=>{
+  const native=async()=>({...receipt(),objects:[{kind:'spec',id:'first',version:null},{kind:'spec',id:'second',version:null}]}),
+    a=archive({verifyProject:native});
+  await a.capture(await fixture(),{scenarioId:'A',label:'A'});await a.fork('A',{scenarioId:'B',label:'B'});
+  const bytes=await a.pack(zip);
+  for(const [change,code]of [
+    [r=>r.snapshot.worldScene+='\n# replaced scene with coinciding IDs\n','ORIGIN'],
+    [r=>r.snapshot.projectManifest.name='changed metadata','ORIGIN'],
+    [r=>{r.originMapping=[];r.snapshot.projectManifest.projectId='foreign';},'PROJECT_IDENTITY'],
+    [r=>{for(const p of r.originMapping)if(p.to.kind==='spec')p.to.id=p.to.id==='first'?'second':'first';},'ORIGIN']
+  ]) {
+    const edited=await rehashedRecordZip(bytes,'B',change);
+    await unchanged(a,()=>a.unpack(edited,zip),{code});
+  }
+});
+
+test('reader format selector is required and retained unused capabilities do not upgrade valid legacy data',async()=>{
+  assert.throws(()=>archive({project:{...P,projectFormat:undefined}}),{code:'MISSING_CAPABILITY'});
+  const input=await fixture();Object.assign(input.manifest,{format:P.ENGINEERING_FORMAT,models:[],faceProjections:[],requiredCapabilities:capabilities});
+  const a=archive();await a.capture(input,{scenarioId:'legacy',label:'retained capability pins'});
+  const fresh=archive();await fresh.unpack(await a.pack(zip),zip);assert.deepEqual(fresh.project('legacy'),input);
+  const unknown=archive({project:{...P,projectFormat:()=> 'unregistered/999'}});
+  await unchanged(unknown,()=>unknown.capture(input,{scenarioId:'unknown',label:'unknown minimum'}),{code:'MISSING_CAPABILITY'});
 });
 
 test('incomplete original source inventory and altered bytes/scene fail before archive writes',async()=>{

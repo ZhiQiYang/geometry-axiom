@@ -31,12 +31,13 @@ test('approved GridDraft raw bytes close with the injected real owner validator 
     const options={project:P,featureAttachments:adapter,verifyProject};
     const archive=S.create(options);
     await archive.capture({manifest,scene,sources:new Map()},{scenarioId:'A',label:'A'});await archive.fork('A',{scenarioId:'B',label:'B'});
+    assert.ok(archive.list()[1].originMapping.some(p=>p.to.kind==='grid-draft'&&p.to.id==='raw-draft'));
     const b=archive.project('B');b.manifest.featureAttachments.records[0].value.rawForm.igCellI='changed invalid';await archive.replace('B',b);
     assert.deepEqual(archive.project('A').manifest.featureAttachments.records[0].value.rawForm,rawForm);
     const reopened=S.create(options);await reopened.unpack(await archive.pack(zip),zip);
     assert.deepEqual(reopened.project('A').manifest.featureAttachments,featureAttachments);
     assert.equal(reopened.project('B').manifest.featureAttachments.records[0].value.rawForm.igCellI,'changed invalid');
-    assert.ok(reopened.list()[1].originMapping.some(v=>v.to.kind==='grid-draft'));assert.equal(nativeCalls,5);
+    assert.deepEqual(reopened.list()[1].originMapping,[]);assert.equal(nativeCalls,5);
     const unsupported=S.create({verifyProject});
     await assert.rejects(unsupported.capture({manifest,scene,sources:new Map()},{scenarioId:'A',label:'A'}),e=>e.code==='MISSING_CAPABILITY');
     const unknown=structuredClone(manifest);unknown.featureAttachments.records[0].kind='unfinished-unknown';
