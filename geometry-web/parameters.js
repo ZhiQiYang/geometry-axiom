@@ -393,13 +393,18 @@ window.ParameterUI = (() => {
     paintQuick();
   }
 
+  function retirePreview(s) {
+    const previous = s.preview;
+    s.preview = null;
+    s.previewRequest = null;
+    if (current(s)) $('paramConfirm')?.setAttribute('disabled', '');
+    if (previous) EngineeringAdapter.cancel({token: previous.token}).catch(() => {});
+  }
   function invalidate(s) {
     if (!current(s) || s.busy) return;
     s.changed = true;
     s.generation++;
-    if (s.preview) EngineeringAdapter.cancel({token: s.preview.token}).catch(() => {});
-    s.preview = null;
-    $('paramConfirm')?.setAttribute('disabled', '');
+    retirePreview(s);
     clearTimeout(timer);
     timer = setTimeout(() => preview(s, true), 450);
     markPending(s);
@@ -507,33 +512,37 @@ window.ParameterUI = (() => {
     if (operations) {
       clearTimeout(timer);
       s.generation++;
-      if (s.preview) EngineeringAdapter.cancel({token: s.preview.token}).catch(() => {});
-      s.preview = null;
-      $('paramConfirm')?.setAttribute('disabled', '');
     }
+    // A replacement owns the next receipt, never the previous confirm token.
+    // Clear it before even the initial read; that read can also finish late.
+    retirePreview(s);
     const generation = s.generation, request = ++serial;
-    status('試算中…', false, 'wait');
+    s.previewRequest = request;
+    markPending(s);
     try {
       const ops = operations || [buildOperation(s)];
       const read = await apiRequest('engineering-read');
       if (!read.ok) throw Error(read.error);
-      if (!current(s) || generation !== s.generation || request !== serial) return;
+      if (!current(s) || generation !== s.generation || request !== serial || s.previewRequest !== request) return;
       if (s.fresh && read.state.parameters.some(c => c.id === s.card.id)) throw Error('卡片編號已被其他操作使用，請捨棄草稿並重新建立。');
       if (!s.fresh && JSON.stringify(definition(read.state.parameters.find(c => c.id === s.card.id) || {fields: []})) !== s.base) throw Error('參數已由其他操作變更，請捨棄草稿並重新開啟。');
       const p = await EngineeringAdapter.preview({operations: ops, expectedRevision: read.revision});
-      if (!current(s) || generation !== s.generation || request !== serial) {
+      if (!current(s) || generation !== s.generation || request !== serial || s.previewRequest !== request) {
         EngineeringAdapter.cancel({token: p.token}).catch(() => {});
         return;
       }
+      s.previewRequest = null;
       s.preview = p;
       s.operations = ops;
       s.previewKind = ops[0]?.op === 'put-parameter' ? 'put' : 'other';
       showPreview(s, p);
     } catch (e) {
-      if (current(s) && request === serial) {
+      if (current(s) && request === serial && s.previewRequest === request) {
         status(e.message, true);
         if (!quiet) $('paramStatus')?.scrollIntoView({block: 'nearest'});
       }
+    } finally {
+      if (s.previewRequest === request) s.previewRequest = null;
     }
   }
   function lockConfirmation(s) {
@@ -556,7 +565,7 @@ window.ParameterUI = (() => {
     s.confirmRoot = null;
   }
   async function confirm(s) {
-    if (!current(s) || s.busy || !s.preview?.valid) return;
+    if (!current(s) || s.busy || s.previewRequest != null || !s.preview?.valid) return;
     s.busy = true;
     clearTimeout(timer);
     lockConfirmation(s);
@@ -802,7 +811,7 @@ window.ParameterUI = (() => {
   function discard(s = state) {
     if (s?.busy) return;
     clearTimeout(timer);
-    if (s?.preview) EngineeringAdapter.cancel({token: s.preview.token}).catch(() => {});
+    if (s) retirePreview(s);
     const id = s?.card.id;
     state = null;
     paintDraft(null);
@@ -876,7 +885,7 @@ window.ParameterUI = (() => {
   }
   document.addEventListener('click',e=>{const b=e.target.closest('[data-param-jump-for]');if(!b)return;const [id]=$ (b.dataset.paramJumpFor).value.split(':');jump('parameter',Number(id));});
   window.addEventListener('beforeunload',e=>{if(state?.changed){e.preventDefault();e.returnValue='';}});
-  window.addEventListener('geometry-definition-changed',()=>{if(state&&!state.busy){state.preview=null;state.generation++;++serial;clearTimeout(timer);if(!state.changed)state=null;else{markPending(state);status('來源或物件已變更，請重新試算。');}if($('paramConfirm'))$('paramConfirm').disabled=true;}});
+  window.addEventListener('geometry-definition-changed',()=>{if(state&&!state.busy){retirePreview(state);state.generation++;++serial;clearTimeout(timer);if(!state.changed)state=null;else{markPending(state);status('來源或物件已變更，請重新試算。');}if($('paramConfirm'))$('paramConfirm').disabled=true;}});
   document.addEventListener('click',e=>{if(e.target.closest('#parameterSelectionExport'))exportPackage(oc.selection.filter(s=>s.kind==='parameter').map(s=>s.id));});
   window.addEventListener('project-info-changed',()=>{if(state&&!current(state)){clearTimeout(timer);state=null;paintDraft(null);oc.parameterCreating=false;++serial;}});
   $('btnNewParameter').onclick=()=>{ $('createObjectPop').hidden=true;create(); };
@@ -886,7 +895,7 @@ window.ParameterUI = (() => {
     if (only?.length === 1 && only[0].kind === "parameter" && only[0].id === state.card?.id) return true;
     return mayLeave();
   });
-  return {value,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,panelTemplate,quickSample,get pending(){return !!state&&(state.changed||state.busy);},get editingId(){return state?.card.id;}};
+  return {value,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,panelTemplate,quickSample,get previewing(){return state?.previewRequest != null;},get pending(){return !!state&&(state.changed||state.busy||state.previewRequest != null);},get editingId(){return state?.card.id;}};
 })();
 
 /* GEO-227：每張圖向 FeatureLessons 登記。檢查比對圖與功能當時的事實，失敗時帶教學 id。 */
