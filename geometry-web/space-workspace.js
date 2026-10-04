@@ -161,7 +161,7 @@ window.SpaceModelWorkspace = (() => {
   function setTab(tab) { $("smMain").dataset.tab = tab; for (const [id, key] of [["smTabPreview", "preview"], ["smTabSetup", "setup"]]) $(id).setAttribute("aria-selected", String(tab === key)); }
   function viewChanged(viewState) {
     for(const button of dialog.querySelectorAll("[data-sm-view]")){const active=button.dataset.smView===viewState.view;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active));}
-    $("smViewDirection").textContent=({top:"俯視：沿 −Z 看。",bottom:"仰視：沿 +Z 看。",front:"正視：沿 +Y 看，+Z 朝上。"}[viewState.view]||"立體檢視。")+"只改視角，不改幾何。";
+    $("smViewDirection").textContent=({top:"俯視：沿 −Z 看，來源 U 軸朝右。",bottom:"仰視：沿 +Z 看，來源 U 軸朝右。",front:"正視：沿 +Y 看，+Z 朝上。"}[viewState.view]||"立體檢視。")+"只改視角，不改幾何。";
   }
   function loadViewer() {
     if (window.GeometryModelViewer?.create) return Promise.resolve();
@@ -408,6 +408,9 @@ window.SpaceModelWorkspace = (() => {
     if(JSON.stringify(projection)===JSON.stringify(state.source.projection))return;
     const projectionOnly=onlyProjectionChanged(state.source);
     state.controller?.abort();state.controller=new AbortController();state.sequence++;state.phase="ready";state.source.projection=projection;
+    // A committed definition replaces the inline draft. Ordinary rendering
+    // must not overwrite a direction the user has selected but not confirmed.
+    $('smProjectionView').value=projection?.view||'top';
     if(projectionOnly)state.source.history_token=sourceHistoryToken();
     stale();renderOutline(state.source.loops||[]);
     if(!projectionOnly){state.phase="stale";state.previewRevision=-1;message("投影定義已保存，但來源讀取後還有其他編輯、復原或重做。請重新「使用目前面」取得最新來源；修改投影不能恢復過期預覽。","warning");updateActions();return;}

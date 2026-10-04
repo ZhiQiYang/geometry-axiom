@@ -232,6 +232,11 @@ powershell -NoProfile -File .\geometry-web\start.ps1
 `base_executable` 仍優先，不受 WSL 環境設定影響。每次啟動使用獨立暫存執行目錄，
 不覆寫其他連接埠正在使用的二進位。
 
+已有 `GEOMETRY_MODEL_BASE` 設定時，啟動器保留該 adapter 及原有 transport 設定，
+先執行相同的 smoke check，不強制切換為 WSL。`GEOMETRY_MODEL_UPDATE_BRIDGE` 也保留。
+預設 WSL 啟動支援空間預覽；「採用目前來源更新模型」仍需可核對身分的原生
+update bridge 與 model-base，預設 WSL transport 未支援這個更新流程。
+
 `GEOMETRY_BRIDGE_WSL=1` 會把 `loadfile` 的 Windows 路徑翻成 `/mnt/…`，
 否則 `/scenes` 與 `/upload` 給的路徑 Linux 端的橋接器開不了。
 

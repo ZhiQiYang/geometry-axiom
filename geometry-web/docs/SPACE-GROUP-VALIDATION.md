@@ -16,7 +16,7 @@
 |setup|服務 release 與 capabilities 各一|2|
 |space-height-library|run 的建模／保存／legacy／既有面流程 74；wallHeightEditingRegression 12|86|
 |projection-lifecycle|projectionLifecycleRegression 18|18|
-|projection-placement|projectionPlacementRegression 14；source race 兩次各一，closeFirst 額外一；GEO-244 原圖方向、保存重開及拒絕／取消 13|30|
+|projection-placement|projectionPlacementRegression 14；source race 兩次各一，closeFirst 額外一；GEO-244 原圖方向、保存重開及拒絕／取消 13；正式投影方向與未確認選單同步 6|36|
 |font-layout|固定 check 8；fontCheck 六次各一；header width 1382/1160/900/680/600 各一|19|
 |space-flow|固定 check 21；兩個 viewport 迴圈各兩次；draft 9；inline guards 四種 action 各一，direction 額外一|39|
 |timber-material|固定 check 42；六種 tamper 各一|48|
@@ -24,7 +24,7 @@
 |timber-history-guard|既有 HISTORY_ONLY 前段，原提前返回仍保留|5|
 |browser-health|uncaught exceptions 與 console errors 各一|2|
 
-預設 **full-space-suite = 196**：五個 space 功能群組 192，加 setup／health 4。
+預設 **full-space-suite = 202**：五個 space 功能群組 198，加 setup／health 4。原 GEO-244 的 196 保留，另增方向同步 6。
 它原本就不含 timber-material／timber-source-guards，不新增這些執行責任。
 
 所有既有 primary filter 與 HISTORY_ONLY 的範圍保持：
@@ -33,7 +33,7 @@
 |---|---|---:|
 |SPACE_FLOW_ONLY|space-flow|43|
 |SPACE_STYLE_ONLY|font-layout|23|
-|PROJECTION_PLACEMENT_ONLY|projection-placement、font-layout|53|
+|PROJECTION_PLACEMENT_ONLY|projection-placement、font-layout|59|
 |TIMBER_ONLY|timber-material、timber-source-guards、font-layout|79|
 |TIMBER_ONLY + TIMBER_HISTORY_ONLY|timber-material、timber-history-guard、font-layout|76|
 |TIMBER_GUARDS_ONLY|timber-source-guards|12|

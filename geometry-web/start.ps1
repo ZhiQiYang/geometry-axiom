@@ -24,13 +24,15 @@ if ($LASTEXITCODE -ne 0) { throw '無法建立執行檔目錄。' }
 Write-Host '正在編譯目前的幾何核心…'
 & wsl.exe -d $Distro --user root --exec gcc -std=c11 -O1 "$linuxRepo/geometry-web/web_bridge.c" -lm -o "$runtime/web_bridge"
 if ($LASTEXITCODE -ne 0) { throw '編譯失敗，服務未啟動。' }
-Write-Host '正在編譯空間建模元件…'
-& wsl.exe -d $Distro --user root --exec gcc -std=c11 -O1 "$linuxRepo/geometry-core/model_base.c" -lm -o "$runtime/model-base"
-if ($LASTEXITCODE -ne 0) { throw '空間建模元件編譯失敗，服務未啟動。' }
+if (!$env:GEOMETRY_MODEL_BASE) {
+    Write-Host '正在編譯空間建模元件…'
+    & wsl.exe -d $Distro --user root --exec gcc -std=c11 -O1 "$linuxRepo/geometry-core/model_base.c" -lm -o "$runtime/model-base"
+    if ($LASTEXITCODE -ne 0) { throw '空間建模元件編譯失敗，服務未啟動。' }
+    $env:GEOMETRY_MODEL_BASE = "$runtime/model-base"
+    $env:GEOMETRY_MODEL_BASE_WSL_DISTRO = $Distro
+}
 $env:GEOMETRY_BRIDGE = "wsl.exe -d $Distro --user root -- $runtime/web_bridge"
 $env:GEOMETRY_BRIDGE_WSL = '1'
-$env:GEOMETRY_MODEL_BASE = "$runtime/model-base"
-$env:GEOMETRY_MODEL_BASE_WSL_DISTRO = $Distro
 & python -c 'import sys; sys.path.insert(0, sys.argv[1]); from modeling.base import load_base; load_base(str())' (Join-Path $repo 'geometry-core')
 if ($LASTEXITCODE -ne 0) { throw '空間建模元件無法執行，服務未啟動。' }
 Write-Host "請開啟 http://localhost:$Port/ （Ctrl+C 結束）"

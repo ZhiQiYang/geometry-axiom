@@ -225,7 +225,7 @@ async function projectionLifecycleRegression() {
   await click('#smSetProjection');
   await wait(`document.querySelector('#fpDialog').open`, 'fresh projection dialog');
   check('projection dialog defaults to general purpose without a saved projection or interior role', await evaluate(`document.querySelector('#fpPurpose').value==='general' && !document.querySelector('#fpInterior').checked && ReferenceWorkspace.getFaceProjection(71,71)==null`));
-  check('projection dialog shows the actual z and source outline', await evaluate(`/2500|2,500/.test(document.querySelector('#fpZ').textContent) && document.querySelector('#fpOutline').getBoundingClientRect().height>0`));
+  check('projection dialog shows source z and a visible outline container', await evaluate(`/2500|2,500/.test(document.querySelector('#fpZ').textContent) && document.querySelector('#fpOutline').getBoundingClientRect().height>0`));
   await select('#fpPurpose','space-boundary-plan');
   await select('#fpView','bottom');
   await checked('#fpInterior',true);
@@ -239,7 +239,7 @@ async function projectionLifecycleRegression() {
   check('source summary explains bottom view, interior and outward walls', await evaluate(`(()=>{const s=document.querySelector('#smProjectionSummary').textContent;return /仰視/.test(s)&&/淨空/.test(s)&&/外側/.test(s)})()`));
   await preview();
   await click('[data-sm-view="bottom"]');
-  check('bottom-view control uses the actual underside camera', (await snapshot()).viewer?.view==='bottom');
+  check('bottom-view control selects bottom and the camera looks from negative world Z', (await snapshot()).viewer?.view==='bottom' && Math.abs((await snapshot()).viewer?.pitch+Math.PI/2)<1e-12);
   await shot('projection-bottom-preview');
   await input('#smHeight','3200');
   await evaluate(`(()=>{const original=window.fetch;window.__projectionPreviewHeld=false;const gate=new Promise(resolve=>window.__releaseProjectionPreview=resolve);window.fetch=async(...args)=>{const response=await original(...args);if(String(args[0]).includes('/model/space-preview')){window.fetch=original;const json=response.json.bind(response);response.json=async()=>{const data=await json();window.__projectionPreviewHeld=true;await gate;window.__projectionPreviewHeld=false;return data;};}return response;};})()`);
@@ -526,6 +526,28 @@ async function projectionPlacementRegression() {
   await viewport(1400,900);
   await projectionSourceRaceRegression();
   await drawingAlignmentRegression();
+  await projectionDirectionSyncRegression();
+}
+
+async function projectionDirectionSyncRegression() {
+  await setup(['boundary 2 outline 100,200 3100,200 3100,1800 100,1800',
+    'placement 2 on boundary 2 origin 0 0 2700 u +x v +y']);
+  await evaluate(`ReferenceWorkspace.setFaceProjection(2,2,{kind:'space-boundary-plan',view:'bottom',region:'interior',wallSide:'outside'});enterFocus('face',2)`);
+  await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`,'direction sync source');
+  await input('#smBottom','0');await input('#smHeight','3200');
+  const original=await scene();await projectionDialog('top');
+  check('committing top in the full dialog synchronizes the inline selector and alignment action',await evaluate(`document.querySelector('#smProjectionView').value==='top' && ReferenceWorkspace.getFaceProjection(2,2)?.view==='top' && /依原圖對齊/.test(document.querySelector('#smConfirmProjection').textContent)`) && await scene()===original);
+  await select('#smProjectionView','bottom');await input('#smHeight','3300');
+  check('ordinary settings rendering preserves the unconfirmed inline direction without saving it',await evaluate(`document.querySelector('#smProjectionView').value==='bottom' && ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`));
+  await click('#smSetProjection');await wait(`document.querySelector('#fpDialog').open`,'cancel direction dialog');await select('#fpView','bottom');await click('#fpCancel');
+  check('cancelling the full dialog preserves the saved top definition and unconfirmed inline draft',await evaluate(`document.querySelector('#smProjectionView').value==='bottom' && ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`) && await scene()===original);
+  await projectionDialog('bottom');
+  check('committing bottom synchronizes the selector and preserves height without changing placement',await evaluate(`document.querySelector('#smProjectionView').value==='bottom' && document.querySelector('#smHeight').value==='3300' && document.querySelector('#smInlineProjection').hidden`) && await scene()===original);
+  await projectionDialog('top');await click('#smConfirmProjection');await wait(`document.querySelector('#smInlineProjection').hidden && !document.querySelector('#smConfirmProjection').disabled`,'sync aligned top');
+  check('the synchronized top action aligns native V instead of writing bottom back',await scene()===original.replace('origin 0 0 2700 u +x v +y','origin 0 2000 2700 u +x v -y') && await evaluate(`ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`));
+  await closeWorkspace();await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`,'direction sync reopen');
+  check('reopening retains the committed top direction and aligned native placement',await evaluate(`document.querySelector('#smProjectionView').value==='top' && document.querySelector('#smInlineProjection').hidden && ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`));
+  await closeWorkspace();
 }
 
 async function drawingCornerPixels() {

@@ -12,7 +12,7 @@ async function complete(census, name, count = EXPECTED[name]) {
 }
 async function finish(census, names) { for (const name of ['setup', ...names, 'browser-health']) await complete(census, name); }
 
-test('independent census is frozen; default full space totals 196 without optional timber', async () => {
+test('independent census is frozen; default full space totals 202 without optional timber', async () => {
   assert.ok(Object.isFrozen(EXPECTED));
   assert.ok(Object.isFrozen(FULL_SPACE_GROUPS));
   assert.deepEqual(FULL_SPACE_GROUPS, full);
@@ -21,7 +21,7 @@ test('independent census is frozen; default full space totals 196 without option
   await finish(census, full);
   const report = census.report(true);
   assert.equal(report.completed, true);
-  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 196);
+  assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 202);
   assert.equal(Object.hasOwn(report.groups, 'timber-material'), false);
 });
 test('omitting a whole expected group fails even if every executed assertion passes', async () => {
