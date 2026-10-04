@@ -14,7 +14,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   // Its existing name input alone does not prove the new form is ready.
   const createCard=async()=>{await ctl('#btnNewParameter');await wait(`!!$('paramQuick') && $('paramName')?.value==='參數'`);};
   const choose=async(selector,v)=>{const i=await read(`Array.from(document.querySelector(${JSON.stringify(selector)}).options).findIndex(o=>o.value===${JSON.stringify(String(v))})`);if(i<0)throw Error('P76 option missing '+v);await ctl(selector);await key('Home','Home',36);for(let n=0;n<i;n++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await sleep(160);};
-  const confirm=async()=>{await ctl('#paramPreview');await wait(`!!document.querySelector('#paramConfirm')&&!document.querySelector('#paramConfirm').disabled`);await ctl('#paramConfirm');await wait(`!ParameterUI.pending`);};
+  const confirm=async()=>{await ctl('#paramPreview');await wait(`!ParameterUI.previewing&&!!document.querySelector('#paramConfirm')&&!document.querySelector('#paramConfirm').disabled`);await ctl('#paramConfirm');await wait(`!ParameterUI.pending`);};
   console.log('=== P76 畫布參數卡 ===');
   await send('Emulation.setDeviceMetricsOverride',{width:1400,height:1000,deviceScaleFactor:1,mobile:false});
   await read(`(async()=>{ParameterUI.discard();InfiniteGridWorkspace.close(true);resetSceneFocus();await api('reset');await setView3(false);await renderObjects();})()`);
@@ -350,5 +350,6 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
   const arrowName=await explain(['[7:1 甲 -> [5:2 乙.z] -> I38 DIV_ZERO: division by zero']);
   check('欄位歸屬只認分節開頭、錯誤碼只取根因段；名稱含 ` -> ` 寧可不歸屬',nested.fieldId===null&&trap.fieldId===2&&trap.short==='除以零'&&elided.fieldId===3&&elided.short==='單位不合'&&arrowName.fieldId===null,{nested,trap,elided,arrowName});
   await require('./parameter_confirmation_test.js')({send,eval_,sleep,click,waitForUI,check});
+  await require('./parameter_preview_ownership_test.js')({send,eval_,sleep,click,waitForUI,check});
   check('無未捕捉瀏覽器例外',exceptionCount()===errors);
 };

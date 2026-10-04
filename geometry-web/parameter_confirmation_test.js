@@ -17,7 +17,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,check})=>{
   })()`);
   await read(`ParameterUI.jump('parameter',1)`);await wait(`__paramLegacyGuard.held`);
   await ctl('#paramExchange > summary');
-  await fill('[data-param-field="1"] [data-input]','27');await ctl('#paramPreview');await wait(`!$('paramConfirm').disabled`);
+  await fill('[data-param-field="1"] [data-input]','27');await ctl('#paramPreview');await wait(`!ParameterUI.previewing&&!$('paramConfirm').disabled`);
   await read(`(()=>{const original=window.fetch,g=window.__paramConfirmGuard={held:false,calls:0};const gate=new Promise(resolve=>g.release=resolve);
    g.restore=()=>window.fetch=original;
    window.fetch=async(...args)=>{const body=String(args[0])==='/api'?JSON.parse(args[1]?.body||'{}'):{};
@@ -45,7 +45,7 @@ module.exports=async({send,eval_,sleep,click,waitForUI,check})=>{
   check('確認 '+mode+' 延遲載入舊規格也鎖定，不接受途中99',late.input===''&&late.controls.every(e=>e.disabled),late);
   check('確認 '+mode+' 完成後解鎖並保留正確正式值／草稿',after.input==='27'&&!after.disabled&&after.native===(mode==='success'?'27':'11')&&after.pending===(mode!=='success')&&after.calls===1,after);
   check('確認 '+mode+' 新插入控制於結束後恢復可操作',await read(`['paramSpec','paramSpecValue','paramSpecSave'].every(id=>!$(id).disabled)`));
-  await fill('[data-param-field="1"] [data-input]','99');await ctl('#paramPreview');await wait(`!$('paramConfirm').disabled`);await ctl('#paramConfirm');await wait(`!ParameterUI.pending`);
+  await fill('[data-param-field="1"] [data-input]','99');await ctl('#paramPreview');await wait(`!ParameterUI.previewing&&!$('paramConfirm').disabled`);await ctl('#paramConfirm');await wait(`!ParameterUI.pending`);
   check('確認 '+mode+' 恢復後可明確試算並提交99',await read(`(async()=>(await apiRequest('engineering-read')).state.parameters[0].fields[0].value.num==='99'&&document.querySelector('[data-param-field="1"] [data-input]').value==='99')()`));
  }
 };
