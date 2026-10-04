@@ -111,7 +111,7 @@ Node floor 374→433；其餘 61 份 expected entries 的數值及順序保留�
 browser 及實際 PR104 Grid interface 逐檔列入 NODE_EXCLUDED，保留必要外部 gate，
 不能把未注入 GridDraft validator 的 skip 算入完成。
 獨立 read-only 複審已批准此 patch；其 SHA-256 為
-`79f9be8b918cd59ce233bb2560f791b2ddd4554b30f28177b3c14e17111f17fd`。
+`ec586862e1f571415262ec1dddd6febf53ea48aa8f9cd0ee9ed5f72295754283`。
 獨立記憶體套用後 registry 為空錯誤，六檔各登記一處，patched expected
 與完成 census 的 parsed JSON 相同；原 ALLOWED_SKIPS／REQUIRED_OWNER_GATES 逐值不變。
 

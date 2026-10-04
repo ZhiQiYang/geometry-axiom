@@ -42,7 +42,7 @@ diff --git a/tests/run_all.py b/tests/run_all.py
 +        if rel.startswith('tests/test_issue77_') or rel in ('tests/scenario_browser_check.cjs', 'tests/test_scenario_grid_interface.js'):
 +            print('  %s：%s；獨立執行，本 aggregate 未驗。' % (rel, NODE_EXCLUDED[rel]))
 
- 
+
  # ------------------------------------------------------------------ main
 diff --git a/tests/run_all.expected.json b/tests/run_all.expected.json
 --- a/tests/run_all.expected.json
