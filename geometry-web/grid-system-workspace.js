@@ -568,7 +568,7 @@
     if(!done.ok){status(done.error||'未套用',true);return false;}return true;
   }
   async function operation(s,run) {
-    if(!current(s)||s.busy||oc.busy)return;s.busy=true;oc.busy=true;dialog.classList.add('ig-busy');
+    if(!canEdit(s)||oc.busy)return;s.busy=true;oc.busy=true;dialog.classList.add('ig-busy');
     const controls=[...dialog.querySelectorAll('button,input,select')].map(n=>[n,n.disabled]);controls.forEach(([n])=>n.disabled=true);invalidField=null;
     try{await run();}catch(e){if(current(s))status(e.message,true);}
     finally{s.busy=false;oc.busy=false;if(current(s)){
@@ -578,13 +578,13 @@
   }
   async function releaseHeldControls(s){
     if(!current(s)||!s.heldControls||s.releasing||ReferenceWorkspace.featureConfirmationPending()||connection.phase!=='ready')return;
-    s.releasing=true;const controls=s.heldControls;s.heldControls=null;dialog.classList.remove('ig-busy');
-    for(const [node,disabled] of controls)node.disabled=disabled;
+    s.releasing=true;const controls=s.heldControls;
     try{if(s.publishTarget&&!ReferenceWorkspace.readFeatureAttachment(rawKind)){
       const target=s.publishTarget;await renderObjects();if(!current(s))return;
       reveal(target.kind,target.id);await open(target.kind==='grid-system'?{system:target.id}:{binding:target.id},true);
       status('已依同一操作回執确认保存，原始草稿已隨場景同一步收起。');
-    }else{applicationState(s);syncDraftState(s);status('已確認操作結果；未發布的原始草稿仍保留。');}}
+    }else{s.heldControls=null;dialog.classList.remove('ig-busy');for(const [node,disabled] of controls)node.disabled=disabled;
+      applicationState(s);syncDraftState(s);status('已確認操作結果；未發布的原始草稿仍保留。');}}
     catch(error){if(current(s))status(error.message,true);}finally{s.releasing=false;}
   }
   async function reopen(s) { await renderObjects();await open({system:s.source?.id,binding:s.binding?.id,mode:s.mode}, true);status('變更已保存，可從畫布復原或重做。'); }
@@ -595,7 +595,7 @@
       return;
     }
     if(!committed && window.DraftGate && !window.DraftGate.ask())return;
-    if (dialog.open && !committed && (state?.busy || !mayLeave(state))) return;
+    if (dialog.open && !committed && (state?.busy || state?.initializing || state?.heldControls || state?.releasing || !mayLeave(state))) return;
     const saved=ReferenceWorkspace.readFeatureAttachment(rawKind),restored=options.draft||(!committed&&saved&&matchesDraft(saved,options)?saved:null);
     if(!committed&&saved&&!restored&&!window.confirm('專案已保留一份原始網格草稿。改開另一個來源／配置將取代它；已發布場景保持不變。確定取代？'))return;
     const ticket=++serial,context=ReferenceWorkspace.context(),contextToken=ReferenceWorkspace.getProjectState().contextToken;
