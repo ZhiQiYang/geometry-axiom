@@ -13,6 +13,7 @@
 - [桌面實際畫面](issue116/desktop-notch-final.png)
 - [390×844](issue116/responsive-390.png)、[720×480](issue116/responsive-720.png)
 - [孔邊提示](issue116/cursor-denied.png)
+- [未放置面：既有工具與B建立入口一致停用](issue116/unplaced-guide.png)
 - 本地並排：`%TEMP%/geometry-tests/issue116-evidence/source-vs-implementation.png` 及 `source-vs-implementation-detail.png`
 - 設計 QA、歷次修正與五個視覺面向：repo 根目錄 `design-qa.md`
 
@@ -30,12 +31,15 @@
 
 ## 已驗與外部 gate
 
-- `tests/test_issue116_browser.js`：79/79，Chrome 真右鍵、真欄位、真 preview drag、取消 dump 逐字不變、確認精確 8 頂點、單步 undo/redo、正式 Save 的下載分支、完整 `.gcanvas` 重開 dump 一致。過期 selection/frame/session/edit 與未知命令拒寫；子選單、方向鍵／Home／End／Enter／Esc、disabled reason、多選、cursor 時序、390/720px 及 compact cancel 均通過；未預期 console/page errors 為 0。參考線／孔 hover 及切換角材 ID 後重新展開均由真指標驗證。
-- 接上 #114 後 ProjectStore、ReferenceWorkspace races、model update UI、context operations：73/73，包含真 HTTP/native committed ABA；無略過。另以既有 WSL Node/GCC 跑 #77 history/workspace/room-collection：56/56；Windows 缺 GCC 的初次失敗未計為通過。
-- 完整 `cdp_test.js` 最終結果待本輪執行完成後更新。上一輪1336通過／10失敗、未完成：9項P62舊規格已改驗附件v2，保留38項原固定門檻；參考線標籤與孔辨識一併修正。P72配置卡拖移失敗；main單項52/52通過，正比對雙方全量，不先宣稱無關。更早因畫面修正／rebase中止的回歸亦不計為通過。
-- 所有測試用獨立 8816 及 TEMP feedback，使用者 8765 未重置、未清瀏覽器儲存。預覽用另一個 8817，`/runtime` 要求本 worktree、`fresh:true`。
+- `tests/test_issue116_browser.js`：87/87，Chrome 真右鍵、真欄位、真 preview drag、取消 dump 逐字不變、確認精確 8 頂點、單步 undo/redo、正式 Save 的下載分支、完整 `.gcanvas` 重開 dump 一致。過期 selection/frame/session/edit 與未知命令拒寫；子選單、方向鍵／Home／End／Enter／Esc、disabled reason、多選、cursor 時序、390/720px 及 compact cancel 均通過；未預期 console/page errors 為 0。真指標驗參考線／孔及角材ID；dot獨立來源審查的未放置P2已修於dce2975，新增8項驗卡片／搜尋／Create一致停用，保留理由且0原生guide命令。
+- 接上 #114 後 ProjectStore、ReferenceWorkspace races、context operations：Windows73/73，包含真 HTTP/native committed ABA；無略過。模型更新WSL/GCC39/39，含真原生producer、完整ZIP／歷史及missing-support拒寫；#77 history/workspace/room-collection：WSL56/56。模型39項來自WSL112項run，其另一個HTTP啟動案例逾時（aggregate111/112）；該案例另在Windows73項通過，不說成112整批通過。Windows包含模型的初跑缺compiler不計為通過。
+- 最終`dce2975`／ee9f版本完整 `cdp_test.js`：1586通過／0失敗，但在P76等待逾時而未完成，未比對golden。實際trace為參數卡engineering-confirm拒絕Missing, invalid or unrelated engineering preview token後，等待!ParameterUI.pending逾時；沒有把0失敗斷言說成全量通過。詳細fatal與分段見validation.json。 同一最終runtime的reference部分模式437/437（P62維持38）、P72配置卡52/52，皆完成、0失敗、0瀏覽器例外；main的P72亦52/52。部分模式不代替完整流程。 較早本分支與未改動main各746/1止於P56角色／重試夾具（歸入P53）；另一輪1336/10止於P72，也不計為通過。最終完整run是另一次乾淨服務的結果，不把早期中斷混入通過數；未改golden門檻。
+- 所有測試用獨立8816／8818 main基準／8819與TEMP feedback，使用者8765未重置、未清瀏覽器儲存。預覽8817要求本worktree、`fresh:true`。測試修正也會改runtime，舊服務失效的partial不算通過；未放置修正後87項與回歸用ee9f版本。
+- GitHub Actions jobs受帳戶執行限制未啟動、無runner logs，另列CI gate；草稿PR #125不自動合併。
 
-最終記錄在 `%TEMP%/geometry-tests/issue116-browser.log`、`issue116-unit.log`、`issue116-cdp-full.log`。專項 result 為 `issue116-evidence/result.json`。保存分支是真下載 ZIP，不模擬 writable handle；OS picker、本機 IME／實體 iOS、跨瀏覽器及 PR #114 多房間 owner 驗收未完成，不冒充通過。
+最終結構化證據見 [validation.json](issue116/validation.json)。本地記錄在 `%TEMP%/geometry-tests/issue116-browser.log`、`issue116-unit.log`、`issue116-unit-wsl.log`、`issue116-rooms-wsl.log`、`issue116-cdp-full.log`、`issue116-baseline-full.log`、`issue116-reference-partial.log`與`issue116-composition-partial.log`。專項 result 為 `issue116-evidence/result.json`。保存分支是真下載 ZIP，不模擬 writable handle；OS picker、本機 IME／實體 iOS、跨瀏覽器及 PR #114 多房間 owner 驗收未完成，不冒充通過。
+
+最終完整回歸的P76阻擋已另外用乾淨main `861b65e`／runtime `85c56c2572e0`核對：最終分支與main在`GEOMETRY_PARAMETERS_ONLY=1`均57項通過後，在特殊字元修正為3→重新試算→建立參數卡流程收到`Missing, invalid or unrelated engineering preview token`，繼而等待`!ParameterUI.pending`逾時。兩邊的parameters.js、parameter_workflow_test.js、parameter_confirmation_test.js、engineering-adapter.js逐字相同，核心沒有diff。獨立記錄為`issue116-parameters-partial.log`及`issue116-main-parameters-partial.log`，並收入validation.json；這是main既有阻擋的重現，不是全量通過。請dot交參數功能owner診斷候選／確認時序；未變更該功能或移除token拒絕。來源閱讀的疑點是`parameters.js::preview`開始手動試算時仍保留已啟用的舊確認候選，而`parameter_workflow_test.js::confirm`以按鈕啟用判試算完成；此為待驗假設，不能當已確認原因。
 
 ## PR #114 重疊與整合順序
 
@@ -65,6 +69,6 @@
 
 source-plane 的原插入區不衝突，也必須保留；不以只選 ours/theirs 解掉此衝突。演練紀錄 `%TEMP%/geometry-tests/issue116-pr114-merge-tree.txt`。
 
-上述唯一 index 衝突已在本分支 rebase 時依雙方 script 順序解決；不是讓 dot 再解已知衝突。新 main 下79項專項、73項共用 owner 單元與56項多房間原生測試已重跑。過期 session 測試保留 #114 的唯讀保護，另讀 native dump 證明零寫入，不清除保護讓測試過。
+上述唯一index衝突已依雙方script順序解決。新main下87項專項、73項共用owner、39項模型更新與56項多房間原生測試；過期session保留#114唯讀保護，另讀native dump證明零寫入，不清除保護讓測試過。dot的首輪独立source review見PR #125：一項未放置P2已由87項實機browser/native驗收修正，仍需對最終head復查；未把其餘source review代替獨立像素或全量驗收。
 
 交 dot 核對最新 main 下的小接線、獨立只讀規則審查，並跑 #114 正式多房間正常／中斷／保存重開／歷史／model update browser acceptance。草稿不自動關閉 #116；iOS／IME／OS picker 與其他工作區未宣稱完成。
