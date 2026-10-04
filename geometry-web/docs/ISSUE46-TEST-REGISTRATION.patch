@@ -1,0 +1,122 @@
+diff --git a/tests/run_all.py b/tests/run_all.py
+--- a/tests/run_all.py
++++ b/tests/run_all.py
+@@ -84,6 +84,7 @@
+     'test_source_inspector': ['bridge'],
+     'test_source_inspector_transport': [],
+     'test_runtime_version': [],
++    'test_scenario_verify': ['bridge', 'model-base'],
+     'test_scene_import': ['bridge'],
+     'test_serve': [],
+     'test_space_modeling': ['model-base'],
+@@ -112,6 +113,9 @@
+     'tests/test_reference_workspace_races.js',
+     'tests/test_room_outline.js',
+     'tests/test_room_collection.js',
++    'tests/test_scenario_diff.js',
++    'tests/test_scenario_review_native.js',
++    'tests/test_scenario_snapshots.js',
+     'tests/test_source_inspector.js',
+     'tests/test_space_model_store.js',
+     'tests/test_timber_schedule.js',
+@@ -135,6 +139,8 @@
+     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
+ }
+ NODE_EXCLUDED = {
++    'tests/scenario_browser_check.cjs': 'Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)',
++    'tests/test_scenario_grid_interface.js': 'Required real GridDraft owner-validator compatibility; PR104 is not on main; execute with actual owner validator, never count missing-injection skip as pass (INTEGRATION-GATES.md)',
+     'tests/issue77_attachment_fixture.js': 'Shared self-authored PDF/payload fixture; registers no tests',
+     'tests/test_issue77_browser.js': 'Required real app/native/Chromium room acceptance; formal owner interfaces pending; see INTEGRATION-GATES.md',
+     'tests/test_issue77_exit_browser.js': 'Required real app/native/Chromium room draft-exit gate; formal owner interfaces pending; see INTEGRATION-GATES.md',
+@@ -692,12 +698,12 @@
+     print('-' * min(150, sum(sizes) + 12))
+     print(fmt(body[-2]))
+     print(fmt(body[-1]))
+-    print('正式產品整合另驗（不計入上述 pass/skip）：')
++    print('必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：')
+     for rel,count in REQUIRED_OWNER_GATES.items():
+         print('  %s：%d項 required；source-rooms owner 接口未實作時 exit3/pending_implementation，不是環境 skip或pass。' % (rel,count))
+     for rel in sorted(NODE_EXCLUDED):
+-        if rel.startswith('tests/test_issue77_'):
+-            print('  %s：required real app/native/Chromium，獨立執行；本 aggregate 未驗。' % rel)
++        if rel.startswith('tests/test_issue77_') or rel in ('tests/scenario_browser_check.cjs', 'tests/test_scenario_grid_interface.js'):
++            print('  %s：%s；獨立執行，本 aggregate 未驗。' % (rel, NODE_EXCLUDED[rel]))
+
+ 
+ # ------------------------------------------------------------------ main
+diff --git a/tests/run_all.expected.json b/tests/run_all.expected.json
+--- a/tests/run_all.expected.json
++++ b/tests/run_all.expected.json
+@@ -203,7 +203,7 @@
+   },
+   "node:tests-js": {
+    "mode": "count",
+-   "count": 374,
++   "count": 433,
+    "unit": "node test"
+   },
+   "node:model_viewer": {
+@@ -297,6 +297,11 @@
+   "py:test_assembly_native_diagnostics": {
+    "mode": "count",
+    "count": 8,
++   "unit": "test"
++  },
++  "py:test_scenario_verify": {
++   "mode": "count",
++   "count": 33,
+    "unit": "test"
+   }
+  }
+diff --git a/tests/INTEGRATION-GATES.md b/tests/INTEGRATION-GATES.md
+--- a/tests/INTEGRATION-GATES.md
++++ b/tests/INTEGRATION-GATES.md
+@@ -82,3 +82,48 @@
+
+ 既有 `geometry-web/cdp_test.js` 與 `geometry-web/space_model_test.js`
+ 仍另外執行，各自完成及 floor 相符才是其範圍的證據。
++
++
++## #46 獨立快照模組的登錄與外部門檻
++
++snapshot/diff/review-native 三個 Node 檔（23／18／18）加入
++NODE_TEST_FILES，完整 census 發現 Node 374 → 433；Python
++test_scenario_verify 33 tests 加入 PY_NEEDS，要求 fresh bridge＋model-base。
++既有 floors 及 ALLOWED_SKIPS 不變；新增數量取自完整 census，不以空腳本或 skip 補足。
++Linux cloud 的完整 candidate census 在 process-local 16 MiB stack 下實跑；
++8 MiB stack 曾使未修改的 native integrity／subgrid 基線崩潰，不能用它的 fail／skip
++調低 floor。owner 套用登錄後，POSIX 的正式凍結 head 驗收命令為：
++
++    ulimit -s 16384
++    python tests/run_all.py --build
++
++本 patch 的 candidate census 不能替代正式已發布 runner 在最終 head 的 strict 驗收。
++這些測試只證明獨立快照／原 bytes／格式／origins／隔離 native 核驗，
++不代表產品 A/B 入口、whole adopt 或 recoverable history 已完成。
++
++以下兩個既有腳本在 NODE_EXCLUDED 逐檔登記原因，aggregate 未執行、
++不計 pass/skip；仍須另外執行並保留證據。
++
++先用 tests/binaries.py 建置 receipt-backed runtime；一般 npm .build 產物
++沒有這份 freshness receipt，不能替代。Playwright／Chromium由驗證環境提供。
++
++    python tests/binaries.py build bridge model-base
++    GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base node tests/scenario_browser_check.cjs
++
++這是 ephemeral loopback 的獨立 module browser gate：1280／390、
++真正 ZIP download／file input 重開、原 bytes、B 不改 A、fork／replacement diff、
++latecontext／tamper；禁止 live upload。沒有正式產品 UI/adoption 的驗收語意。
++
++    GEOMETRY_SCENARIO_PROJECT_MODULE=/absolute/path/to/actual-owner/project-store.js GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base node --test tests/test_scenario_grid_interface.js
++
++GridDraft 使用真正 owner project-store／同目錄 feature-attachments validator；
++PR104 尚未在 main 的這個 slice 維持注入 interface，
++不是以 unsupported 丟棄已批准 raw 草稿。缺 owner 注入時原腳本的具名 skip
++絕不能當 compatibility pass，也不加入 ALLOWED_SKIPS。
++真正 validator 必須實跑 raw 非法／未完成輸入、獨立 A/B、ZIP 重開、unknown kind/cap 拒絕。
++正式 saving adapter 合 main 後，owner 再把此檔移入 NODE_TEST_FILES、重做 census；
++不能在本 patch 預先假算第 434 項。
++
++Linux cloud 的 scenario Python suite 為 33/33；Windows 目前有 8 個
++temporary-shebang fixture skips。這些沒有平台豁免，Windows strict 會拒絕全過；
++須由後續 test owner 解決 fixture portability，不能使用 allow-skip 冒充完整驗收。

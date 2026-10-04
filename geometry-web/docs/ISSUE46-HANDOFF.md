@@ -1,6 +1,6 @@
 # #46 完整獨立快照第一 slice
 
-本分支由最新 main `d1a161f` 建立，只新增模組、測試及本文／未套用 patch。依使用者接受的第 4 項及 Q33：完整 A/B、原圖內容定址去重、B 不改 A、比較後整體採用可回復；不做 object merge，不攜舊 undo。`project-store.js`、`reference-workspace.js`、ContextHistory、app／serve／SSOT／native C 皆未修改。本 slice 不宣稱產品入口、整體採用或 recoverable history 已完成。
+本分支原由 main `d1a161f` 建立，已合入最新 main `e80c56b`（merge `4210199`）；本 PR 相對該 main 只新增模組、測試及本文／未套用 patch。依使用者接受的第 4 項及 Q33：完整 A/B、原圖內容定址去重、B 不改 A、比較後整體採用可回復；不做 object merge，不攜舊 undo。`project-store.js`、`reference-workspace.js`、ContextHistory、app／serve／SSOT／native C 及正式 runner／expected 相對 main 沒有本 PR 的改動。本 slice 不宣稱產品入口、整體採用或 recoverable history 已完成。
 
 ## 給唯一共享 owner 的需求
 
@@ -90,7 +90,7 @@ GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_MODEL_BASE=/tmp/geometr
 
 該 compatibility 未注入時會具名 skip，不能冒充 GridDraft 主線支持。已注入真 PR104 `b2163165` validator 跑到實際 isolated native／ZIP：非法 raw A/B、B 改 raw 不動 A、fresh reopen、unknown kind／能力剝除拒絕。不是另造 GridDraft schema。
 
-browser harness 自建僅服務本 slice 的 ephemeral loopback server，實際 Chromium 1280／390、DOM 下載與 file input 重開、真 native CLI、bytes/diff/latecontext/tamper oracle，另明查 explicit fork 配對及 replacement 後 unmatched／unknown。證據及可重開兩份 archive 在 `/tmp/geometry-scenario/browser/`，未提交 build／私人圖紙／截圖。這是 module browser acceptance，不是正式產品 A/B 建立／採用 UI acceptance。shared whole adopt／history、保存附件 registry、產品入口及實體手機留给原 owner；沒有改 runner/goldens 或跟 #77/#48 競寫。
+browser harness 自建僅服務本 slice 的 ephemeral loopback server，實際 Chromium 1280／390、DOM 下載與 file input 重開、真 native CLI、bytes/diff/latecontext/tamper oracle，另明查 explicit fork 配對及 replacement 後 unmatched／unknown。最新 main 的證據及可重開兩份 archive 在 `/tmp/geometry-scenario/e80c56b-browser/`，未提交 build／私人圖紙／截圖。這是 module browser acceptance，不是正式產品 A/B 建立／採用 UI acceptance。shared whole adopt／history、保存附件 registry、產品入口及實體手機留给原 owner；沒有改 runner/goldens 或跟 #77/#48 競寫。
 
 Refs #46 #45 #44 #48 #77 #43；不以本第一 slice 關閉 #46，draft PR 交 root 獨立 review，未 merge／deploy。
 
@@ -99,3 +99,59 @@ settings 在驗證允許欄位後立即深拷貝／凍結，在 state callbacks 
 PR110 增量複審回歸涵蓋：真 native 接受但正式 raw ZIP reader 拒絕的 parameters／assembly／generation 保留能力降 `/5` 反例、正式 `/1`～`/9` 原資料與模型正例、真正 reset／delete-recreate 同 IDs、foreign project 同 IDs 以及 fresh ZIP／diff 不誤配；unit 另驗 public capture 自填 origins、重算 hash 的 edited／foreign／typed remap ZIP、完全相同 bytes 的 replacement 清配對與 B→C 新 fork。reader format 守門已與目前 main 和實際 PR104 的 raw ZIP reader 作 4,864 個矩陣案例獨立核對，零落差。完整 app CDP、產品 A/B adoption、recoverable undo/redo、正式手機入口未在此 slice 驗收。
 
 本次同實作 bytes 驗證：snapshot/diff 41/41，加既有 model／parameters 保存回歸 63/63、0 skip；新增 JS＋真 native CLI 端到端 18/18、46 次隔離 CLI；native/model Python 33/33；注入實際 PR104 的 GridDraft compatibility 1/1；1280／390 browser 16 個 checks、12 次真 native CLI、0 forbidden live requests、0 browser exceptions。獨立 identity ZIP 複審含合法 fork、edited B→C、重算 hash 及 settings TOCTOU 的反例。
+
+## main e80c56b 的正式測試登錄交接
+
+runner／expected 唯一 writer 仍是 IMPLEMENTATION-QUEUE 的 #85 原 owner。
+`ISSUE46-TEST-REGISTRATION.patch` 是已可套用但**未套用**的小 patch，
+僅觸及 `tests/run_all.py`、`tests/run_all.expected.json`、`tests/INTEGRATION-GATES.md`：
+Python scenario 33 項要求 fresh bridge＋model-base，三個 Node 檔合計 59 項，
+Node floor 374→433；其餘 61 份 expected entries 的數值及順序保留，
+沒有降低 floor、新增 ALLOWED_SKIPS、移除 #77 required owner gates。
+browser 及實際 PR104 Grid interface 逐檔列入 NODE_EXCLUDED，保留必要外部 gate，
+不能把未注入 GridDraft validator 的 skip 算入完成。
+獨立 read-only 複審已批准此 patch；其 SHA-256 為
+`79f9be8b918cd59ce233bb2560f791b2ddd4554b30f28177b3c14e17111f17fd`。
+獨立記憶體套用後 registry 為空錯誤，六檔各登記一處，patched expected
+與完成 census 的 parsed JSON 相同；原 ALLOWED_SKIPS／REQUIRED_OWNER_GATES 逐值不變。
+
+候選 runner／expected 僅放 `/tmp/geometry-scenario/registration/`，
+overlay 與提案 runner 唯一 bootstrap 差異是 HERE 和 EXPECTED_FILE。
+以最新 main 加 `fbec7b4` 的實際 source/test bytes，完整建置及 census：
+63 suites、1967 counted assertions/tests、1966 pass、0 fail、
+1 個既有具名 Windows GDI harness 的 Linux 平台 skip，terminal exit 0。
+這是 candidate-registration-overlay 證據，**不是已發布正式 runner 的 exact-head aggregate pass**；
+現在正式 check_registry 仍會拒絕六個未登錄 scenario 檔，root 不可略過此門檻合併。
+中央 owner 套用小 patch 後，在最後凍結 commit 上跑正式 strict gate：
+
+```sh
+git apply --check geometry-web/docs/ISSUE46-TEST-REGISTRATION.patch
+git apply geometry-web/docs/ISSUE46-TEST-REGISTRATION.patch
+ulimit -s 16384
+python tests/run_all.py --build
+```
+
+16 MiB 是本次程序的 stack 上限，沒有修改 durable 系統設定或核心程式。
+同一基線在 8 MiB 曾導致 integrity／subgrid 崩潰；16 MiB 的
+integrity 88/88、subgrid 31/31 及完整 candidate census 都已實跑通過。
+runner 套用後仍須按 INTEGRATION-GATES 重跑／核對外部必要 gate，
+由 root 在独立 review 後按 stage 合併；不等待其他無關功能全部完工。
+
+最新 browser/Grid 證據在 `e80c56b-verification.json`（tested merge head `4210199`）：
+browser 16/16、12 真 CLI、0 live request、0 exception；
+PR104 exact `b2163165` validator compatibility 1/1、5 真 CLI、0 skip。
+`fbec7b4` 僅修 native review 的 ZIP oracle：強制每次 pack 的 DOS timestamp 不同，
+再比較全部 member 名稱與原始 bytes；descriptor／manifest／scene／pool 全保留。
+container 包裝時間變化不能造成假失敗，也不能掩蓋 bytes 損失。
+此測試 18/18 已被完整候選 census 重新執行，並有獨立 read-only 複審。
+
+證據索引 `/tmp/geometry-scenario/registration/scope.json`；census log SHA-256
+`7442e65d6dc0fe6d18e10b54ce6d5da82d191fdf70f13271a3b02377ac5db085`。
+snapshot 模組 SHA-256 維持
+`1c3fe35d3bdf24b0ce11e4efed3d129c78d1fe3c15d7b1a0e6aa5a037239a78f`；
+fresh bridge `8b9178227970a664b0ac1a8c2dbe92b7e0c6bfbd85a582d21925c1cef50a80fe`，
+fresh model-base `1cc11780aa9885ed6ae314f74ce824113f9127081ce89c642284b40e76bb71ae`。
+原生 runtime 前後 receipt/source/binary pins 均核對。Windows 本次未執行；
+decorator 檢查顯示 scenario Python 有 8 個 POSIX shebang fixture skips，
+未新增豁免，Windows strict 將拒絕全過，後續 test owner 需修 fixture portability。
+Linux cloud 的完成聲明不冒充 Windows／正式手機／product adoption 驗收。
