@@ -262,18 +262,63 @@ class SpaceModelingAcceptance(unittest.TestCase):
         data["obstacles"] = [{"kind": "beam", "id": 2}]
         self.rejects(data, "SPACE_OBSTACLES")
 
-    def test_capacity_rejects_space_and_separately_reports_wall_limit(self):
+    def test_selected_wall_capacity_rejects_whole_request_before_building_packages(self):
         data = request(walls=True)
         # 1 source + 5 unused boundaries + 6 new shell boundaries = 12.
-        # Material needs 5 extra carriers, which must not invalidate the space.
+        # Material needs 5 extra carriers: the whole selected request needs 17.
         data["base_scene"] += "".join(f"boundary {i} outline 0,0 10,0 10,10 0,10\n" for i in range(20, 25))
+        before = deepcopy(data)
+        with mock.patch.object(sm, "_package") as package, mock.patch.object(sm.Declarations, "face") as face:
+            error = self.rejects(data, "SPACE_CAPACITY")
+        package.assert_not_called()
+        face.assert_not_called()
+        self.assertEqual(error.status, "UNSUPPORTED")
+        self.assertEqual(error.clause, "I33")
+        self.assertEqual(error.path, ["settings", "wall_thickness"])
+        self.assertIn("邊界面需 17/16，承載面需 12/16", error.message)
+        self.assertIn("取消", error.message)
+        self.assertEqual(data, before)
+        # Boundary-only is a separate, explicitly chosen request.
+        data["settings"]["wall_thickness"] = None
         result = sm.preview(data)
         self.assertTrue(result["summary"]["closed"])
         self.assertIsNone(result["walls"])
-        self.assertEqual(result["summary"]["wall_diagnostics"][0]["code"], "SPACE_CAPACITY")
+        self.assertEqual(result["summary"]["wall_diagnostics"], [])
         data["base_scene"] += "".join(f"boundary {i} outline 0,0 10,0 10,10 0,10\n" for i in range(25, 30))
         error = self.rejects(data, "SPACE_CAPACITY")
         self.assertEqual(error.status, "UNSUPPORTED")
+
+    def test_exact_native_limit_remains_admitted_and_placement_capacity_is_independent(self):
+        data = request(walls=True)
+        data["base_scene"] += "".join(f"boundary {i} outline 0,0 10,0 10,10 0,10\n" for i in range(20, 24))
+        result = sm.preview(data)
+        self.assertEqual(result["summary"]["wall_volume_mm3"], "4032000000")
+        candidate = load_base(result["walls"]["definitions"]["base_scene"])
+        self.assertEqual(sum(line.startswith("boundary ") for line in candidate["base_scene"].splitlines()), 16)
+        data = request(walls=True)
+        data["base_scene"] += "".join(f"placement {i} on boundary 1 origin {i*10000} 0 0 u +x v +y\n" for i in range(20, 25))
+        error = self.rejects(data, "SPACE_CAPACITY")
+        self.assertIn("邊界面需 12/16，承載面需 17/16", error.message)
+
+    def test_selected_material_specs_are_preflighted_without_changing_requirement(self):
+        data = request(walls=True)
+        data["base_scene"] += "".join(f"spec unused_{i} {i}\n" for i in range(62))
+        with mock.patch.object(sm, "_package") as package:
+            error = self.rejects(data, "SPACE_CAPACITY")
+        package.assert_not_called()
+        self.assertIn("具名規格需 65/64", error.message)
+        self.assertEqual(data["settings"]["wall_thickness"], 100)
+
+    def test_material_solver_failure_is_not_downgraded_to_success(self):
+        for status, code in (("UNSUPPORTED", "PRECISION"), ("INVALID", "SHELL_ORIENTATION")):
+            with self.subTest(status=status):
+                data = request(walls=True)
+                before = deepcopy(data)
+                with mock.patch.object(sm, "_walls", side_effect=ModelError(status, code, "I33", "material solver failure")):
+                    error = self.rejects(data, code)
+                self.assertEqual(error.status, status)
+                self.assertIn("材料牆", error.as_dict()["diagnostics"][0]["message"])
+                self.assertEqual(data, before)
 
     def test_all_namespaces_and_uint_max_ids_are_preserved(self):
         data = request()
