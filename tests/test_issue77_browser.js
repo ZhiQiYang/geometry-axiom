@@ -114,6 +114,7 @@ async function main() {
     check((await snapshot(reopened)).data.rooms.length,3,"undo restores room association");
     await reopened.setViewportSize({width:390,height:844});
     await reopened.evaluate(() => {fiShowTab("underlay");openPanel("right",$("workspaceToggleRight"));});
+    await reopened.locator("#roomNew").scrollIntoViewIfNeeded();
     await reopened.screenshot({path:path.join(evidence,"mobile-room-list.png")});
     check(await reopened.locator("#roomNew").isVisible(),true,"390px has visible continuous-room entry");
     check(await reopened.locator("[data-room-id]").count(),3,"390px lists all room records");

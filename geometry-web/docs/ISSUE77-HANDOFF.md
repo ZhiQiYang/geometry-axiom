@@ -58,6 +58,10 @@ patch 載入三個模組、路由逐點外環至 new/edit、保存阻擋草稿�
 
 5 skip 等 `GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER` 映射 owner 的正式 registry/store/history：真 ZIP、未知 envelope/kind/schema/capability、原圖／native閉包、完整歷史、context/native commit 原子守門。不能將這五項當已通過。`tests/test_issue77_browser.js` 需明設隔離 URL 與 TEMP feedback；optional browser adapter 只映射測試接線，須報 provenance。實體 iOS／使用者本地未測、未啟動。
 
+最新 TEMP Chromium 測試：37 assertions pass，1440×1000／390×844，實際 pointer 描房、零點取消、pending save 拒絕、new 保留 A、明選 edit、rename/undo、basis review、明選逐房複核、新 basis 房、真 ZIP 別的 browser context 重開、unlink/undo，console/pageerror 為空。整份 prototype manifest 無所選來源舊 basis shadow、PDF asset 只有一份。當時 `/runtime` fresh=true，root `/tmp/issue77-integrated`，版本 `30b7edfcdf7d3eecfbd4caebc7f72c960e90c0ec513dfd6ddfa4c740c9f2f269`；test-only shim `/tmp/issue77-browser-owner-adapter.js` 映射已退役 dedicated prototype store 加 configure callbacks。這些結果只證明目前模組與 UI 接線可運作，不證明 PR100 generic store 支援或有 records 的舊頁遷移。截圖 `/tmp/issue77-browser-evidence/desktop-two-rooms.png`、`mobile-room-list.png`；含自製夾具，無私人圖資。
+
+程式與文案 diff whitespace 檢查通過；PDF xref 的標準 20-byte records 必含行末空白，unified patch 的空 context 行也必含一個前綴空白，這兩個 artifact 不以移除空白修飾。PDF deterministic byte check 與 main patch apply-check 另驗。
+
 自製 PDF `tests/fixtures/issue77-two-rooms.pdf`，生成器 `tests/build_issue77_fixture.py`，600×400 viewport，A/B 分離矩形；200pt 校準為4000mm。SHA256 `7e63ee59ffafe7baed86847f849131f35baab4c9802679686351a8549cfd6e44`。沒有私人原圖。保存證據不得附帶使用者資產。
 
 完整 #77 驗收仍需 owner 正式附件分支、adoptLegacySource records 保全／無 basis shadow、同交易 metadata、未知能力拒絕、actual ContextHistory 與 fresh-context browser 全部通過，再交 root review 決定合併。此獨立模組 PR 是可審小 slice；Refs #77，不關 issue。
