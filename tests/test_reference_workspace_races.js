@@ -218,15 +218,15 @@ async function openFixture(options={}) {
   const f=await fixture(options),requests=[],refreshed=deferred();
   const scene='boundary 8 outline 0,0 800,0 800,700 0,700\n';
   const bytes=await P.pack(scene,{format:P.FORMAT,projectId:'opened',name:'試用工程',sources:[],faces:[]},new Map(),zip);
-  f.env.curScene={};f.env.resetSceneFocus=()=>{};f.env.sceneMenuDisplay=name=>name;
+  f.env.curScene={};f.env.resetSceneFocus=()=>{};f.env.markSceneItem=()=>{};f.env.sceneMenuDisplay=name=>name;
   f.env.refreshActive=async()=>{
     if(options.autoLayout)f.w.observe('line canvas-pos boundary 8 60 60',{ok:true});
     refreshed.resolve();
     await options.refreshGate?.promise;
   };
   f.env.fetch=async(url,request)=>{
-    requests.push({url,request});assert.equal(url,'/upload');
-    return {ok:true,json:async()=>({ok:true,path:'opened.scene'})};
+    requests.push({url,request});assert.ok(['/upload','/upload/prepare','/upload/confirm','/upload/cancel'].includes(url));
+    return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,final_objects:{boundaries:[8],placements:[]}}:{ok:true,path:'opened.scene'})};
   };
   return {...f,bytes,requests,refreshed};
 }
@@ -239,7 +239,7 @@ test('opening owns the busy state from first byte read through rendering and ref
   await assert.rejects(()=>f.w.importBytes(f.bytes),/目前的操作/);
   await assert.rejects(()=>f.w.save(),/操作進行中/);
   readGate.resolve(f.bytes);await f.refreshed.promise;
-  assert.equal(f.w.busy,true);assert.equal(f.requests.length,1);
+  assert.equal(f.w.busy,true);assert.equal(f.requests.length,2);
   assert.match(f.statuses.at(-1),/整理畫布/);
   refreshGate.resolve();await turn();assert.equal(f.w.busy,true);
   assert.match(f.statuses.at(-1),/開啟工程規格/);
@@ -260,6 +260,154 @@ test('changes during project reading or its pre-upload dump prevent replacement 
     assert.equal(f.w.context(),old);assert.equal(old.dirty,true);
     assert.equal(f.requests.length,0);assert.equal(f.w.busy,false);
     assert.equal(f.w.historyActionLabel('undo'),null);
+  }
+});
+
+test('late native candidate is cancelled before commit after a context or metadata change',async()=>{
+  for(const switchContext of [false,true]) {
+    const f=await openFixture(),gate=deferred(),reached=deferred(),old=f.w.context(),fetch=f.env.fetch;
+    f.env.fetch=async(url,request)=>{
+      const response=await fetch(url,request);
+      if(url==='/upload/prepare'){reached.resolve();await gate.promise;}
+      return response;
+    };
+    const opening=f.w.importBytes(f.bytes),rejected=assert.rejects(opening,/目前工程已有變更/);
+    await reached.promise;
+    if(switchContext)f.w.observe('line reset',{ok:true});
+    else f.w.calibrated(1,[[0,0],[10,0]],100);
+    const current=f.w.context(),history=f.w.history.undo.length;
+    gate.resolve();await rejected;
+    assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,history);
+    assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+    if(!switchContext){assert.equal(current,old);assert.equal(current.sources.size,1);assert.equal(f.w.active(1).calibration.distanceMm,100);}
+    assert.equal(f.w.busy,false);
+  }
+});
+
+test('missing final native targets cancel without losing source bytes, metadata or undo',async()=>{
+  const f=await openFixture(),old=f.w.context(),fetch=f.env.fetch;
+  f.env.fetch=async(url,request)=>{
+    const response=await fetch(url,request);
+    return url==='/upload/prepare'?{ok:true,json:async()=>({ok:true,token:1,final_objects:{boundaries:[],placements:[]}})}:response;
+  };
+  // Keep the transport fixture independent from a scene-text parser.
+  const originalUnpack=f.env.GeometryProject.unpack;
+  f.env.GeometryProject.unpack=async(...args)=>{const value=await originalUnpack(...args);value.manifest.faceProjections=[{bid:8,placement_id:0,projection:{kind:'space-boundary-plan',view:'top',region:'interior',wallSide:'outside'}}];return value;};
+  const undo=f.w.history.undo.length;
+  await assert.rejects(()=>f.w.importBytes(f.bytes),/放置不存在/);
+  assert.equal(f.w.context(),old);assert.equal(f.w.history.undo.length,undo);
+  assert.deepEqual(old.sources.get(f.source.meta.id).bytes,f.source.bytes);
+  assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+});
+
+test('late confirm preserves the newer context and metadata without appending import history',async()=>{
+  const f=await openFixture(),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
+  f.env.fetch=async(url,request)=>{
+    const response=await fetch(url,request);
+    if(url==='/upload/confirm'){entered.resolve();await gate.promise;}
+    return response;
+  };
+  const opening=f.w.importBytes(f.bytes),rejected=assert.rejects(opening,/載入結果晚到/);
+  await entered.promise;f.w.calibrated(1,[[0,0],[10,0]],100);
+  const current=f.w.context(),count=f.w.history.undo.length;
+  gate.resolve();await rejected;
+  assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,count);
+  assert.equal(f.w.active(1).calibration.distanceMm,100);
+});
+
+test('native prepare blocks direct scene upload reentry until its commit finishes',async()=>{
+  const f=await openFixture(),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
+  f.env.fetch=async(url,request)=>{
+    const response=await fetch(url,request);
+    if(url==='/upload/prepare'){entered.resolve();await gate.promise;}
+    return response;
+  };
+  const opening=f.w.importBytes(f.bytes);await entered.promise;
+  await assert.rejects(()=>f.w.uploadScene('reset\n'),/上一筆場景載入/);
+  gate.resolve();await opening;
+  assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/confirm']);
+});
+
+test('retry cancels the token before a delayed confirm can mutate old or identical Worlds',async()=>{
+  for(const identical of [false,true]){
+    const f=await openFixture(),old=f.w.context(),before=JSON.stringify(f.w.history),original=f.env.fetch;
+    let cancelled=false,committed=false,delivery;
+    if(identical)f.env.api=async()=>({ok:true,text:'boundary 8 outline 0,0 800,0 800,700 0,700\n'});
+    f.env.connectionFailed=()=>{f.env.connection.phase='error';};
+    f.env.fetch=async(url,request)=>{
+      if(url==='/upload/confirm'){
+        delivery=()=>{if(!cancelled)committed=true;return {ok:!cancelled};};
+        throw Error('delayed real delivery');
+      }
+      if(url==='/upload/cancel'){cancelled=true;return {ok:true,json:async()=>({ok:true,state:'cancelled'})};}
+      return original(url,request);
+    };
+    await assert.rejects(()=>f.w.importBytes(f.bytes),/delayed real delivery/);
+    await f.w.recoverLoad();assert.equal(delivery().ok,false);assert.equal(committed,false);
+    assert.equal(f.w.context(),old);assert.equal(JSON.stringify(f.w.history),before);
+    assert.equal(f.w.context().sources.get(f.source.meta.id),f.source);
+  }
+});
+
+test('retry uses the committed receipt for lost replies and refuses a later different World',async()=>{
+  for(const changed of [false,true,'ABA']){
+    const f=await openFixture(),old=f.w.context(),original=f.env.fetch;
+    const committed='boundary 8 outline 0,0 800,0 800,700 0,700\n',hash=await P.sha(new TextEncoder().encode(committed));
+    f.env.connectionFailed=()=>{f.env.connection.phase='error';};
+    f.env.fetch=async(url,request)=>{
+      if(url==='/upload/confirm'){f.env.api=async()=>({ok:true,text:changed===true?'reset\n':committed,revision:changed==='ABA'?9:7});throw Error('lost committed reply');}
+      if(url==='/upload/cancel')return {ok:true,json:async()=>({ok:true,state:'committed',revision:7,path:'committed.scene',scene_sha256:hash})};
+      return original(url,request);
+    };
+    await assert.rejects(()=>f.w.importBytes(f.bytes),/lost committed reply/);
+    if(changed){await assert.rejects(()=>f.w.recoverLoad(),/已有其他變更/);assert.equal(f.w.context(),old);}
+    else{await f.w.recoverLoad();assert.equal(f.w.context().id,'opened');assert.equal(f.w.history.undo.length,1);}
+  }
+});
+
+nodeTest('real native HTTP committed ABA keeps the old project bytes references and undo',{
+  timeout:20000,skip:!process.env.GEOMETRY_TEST_BRIDGE
+},async()=>{
+  const {spawn}=require('node:child_process'),net=require('node:net'),os=require('node:os'),path=require('node:path'),{once}=require('node:events');
+  const listener=net.createServer();await new Promise(resolve=>listener.listen(0,'127.0.0.1',resolve));
+  const port=listener.address().port;await new Promise(resolve=>listener.close(resolve));
+  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-import-http-')),root=path.resolve(__dirname,'..'),base='http://127.0.0.1:'+port;
+  const child=spawn(process.env.PYTHON || 'python',[path.join(root,'geometry-web','serve.py'),String(port)],{
+    cwd:root,env:{...process.env,GEOMETRY_BRIDGE:process.env.GEOMETRY_TEST_BRIDGE,GEOMETRY_FEEDBACK_DIR:directory},stdio:['ignore','pipe','pipe']
+  });let failure='';child.stdout.on('data',()=>{});child.stderr.on('data',bytes=>{failure+=bytes;});
+  const closed=once(child,'close'),ownedPaths=[];
+  const post=async(route,body)=>{const response=await fetch(base+route,{method:'POST',body:typeof body==='string'?body:JSON.stringify(body)});assert.equal(response.status,200);return response.json();};
+  try{
+    let ready=false;
+    for(let i=0;i<100&&!ready;i++){
+      try{ready=(await fetch(base+'/runtime')).ok;}catch(_){}
+      if(!ready){if(child.exitCode!==null)throw Error(failure||'Native HTTP service exited');await new Promise(resolve=>setTimeout(resolve,20));}
+    }
+    assert.equal(ready,true,failure||'Native HTTP service did not start');
+    const initial=await post('/upload','boundary 1 outline 0,0 800,0 800,700 0,700\n');assert.equal(initial.ok,true);ownedPaths.push(initial.path);
+    const f=await openFixture(),old=f.w.context(),oldHistory=JSON.stringify(f.w.history),oldGroups=JSON.stringify([...old.groups]);
+    const bytes=f.source.bytes.slice();let committed;
+    f.env.api=command=>post('/api',{cmd:command});f.env.connectionFailed=()=>{f.env.connection.phase='error';};
+    f.env.fetch=async(url,request)=>{
+      const response=await fetch(base+url,request);
+      if(url==='/upload/confirm'){committed=await response.json();ownedPaths.push(committed.path);throw Error('Lost real committed HTTP reply');}
+      return response;
+    };
+    await assert.rejects(()=>f.w.importBytes(f.bytes),/Lost real committed HTTP reply/);
+    assert.equal(committed.ok,true);assert.equal(committed.state,'committed');
+    const afterCommit=await post('/api',{cmd:'dump'});assert.equal(afterCommit.revision,committed.revision);
+    assert.equal((await post('/api',{cmd:'line spec IMPORT_RECOVERY_ABA 27'})).ok,true);
+    assert.equal((await post('/api',{cmd:'line undo'})).ok,true);
+    const afterABA=await post('/api',{cmd:'dump'});
+    assert.equal(afterABA.text,afterCommit.text);assert.notEqual(afterABA.revision,committed.revision);
+    await assert.rejects(()=>f.w.recoverLoad(),/已有其他變更/);
+    assert.equal(f.w.context(),old);assert.equal(JSON.stringify(f.w.history),oldHistory);assert.equal(JSON.stringify([...old.groups]),oldGroups);
+    assert.equal(old.sources.get(f.source.meta.id),f.source);assert.deepEqual(f.source.bytes,bytes);
+    assert.equal(f.env.connection.phase,'error');assert.equal((await post('/api',{cmd:'dump'})).text,afterABA.text);
+  }finally{
+    child.kill();await closed;
+    for(const filename of ownedPaths)if(filename)fs.rmSync(filename,{force:true});
+    fs.rmSync(directory,{recursive:true,force:true});
   }
 });
 
@@ -355,7 +503,7 @@ async function recoveryRecord(f,scene) {
 test('matching reload restores complete project context without uploading or inventing undo',async()=>{
   const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene);
   const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
-  assert.equal((await f.w.restoreSession()).state,'restored');assert.equal(f.requests.length,0);
+  assert.equal((await f.w.restoreSession()).state,'restored');assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
   assert.equal(f.w.context().id,'opened');assert.equal(f.w.context().name,'試用工程');assert.equal(f.w.context().dirty,true);
   assert.equal(f.w.getProjectInfo().sourceKind,'example');assert.equal(f.w.getProjectInfo().undoLabel,null);
   assert.match(f.w.getProjectInfo().historyNote,/較早/);
@@ -404,7 +552,7 @@ test('external mutation during final reload fingerprint cannot commit the earlie
   recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
   const restoring=f.w.restoreSession();await reached.promise;
   channel.onmessage({data:{peer:'other-tab',session:'service-one'}});gate.resolve();
-  assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.equal(f.requests.length,0);
+  assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
   assert.equal(f.w.getProjectInfo().editingBlocked,true);
 });
 

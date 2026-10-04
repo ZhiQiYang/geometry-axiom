@@ -1,6 +1,11 @@
 {
  "_說明": "run_all.py 的各 suite「發現到的測試／斷言數」；完整跑時逐 suite 嚴格相等，不符即 fail。新增或刪除測試後請在一次完整跑之後用 --update-expected 明確更新（並在 commit 中說明）。exit-code-only 表示該 suite 只有結束碼、沒有可數的 test。",
  "suites": {
+  "node:space_test_floor": {
+   "mode": "count",
+   "count": 10,
+   "unit": "node test"
+  },
   "node:history_operation": {
    "mode": "count",
    "count": 4,
@@ -43,7 +48,7 @@
   },
   "py:test_axiom_reader": {
    "mode": "count",
-   "count": 25,
+   "count": 32,
    "unit": "test"
   },
   "py:test_bridge_integrity": {
@@ -146,9 +151,14 @@
    "count": 24,
    "unit": "test"
   },
+  "py:test_scene_import": {
+   "mode": "count",
+   "count": 6,
+   "unit": "test"
+  },
   "py:test_serve": {
    "mode": "count",
-   "count": 31,
+   "count": 34,
    "unit": "test"
   },
   "py:test_source_inspector": {
@@ -188,7 +198,7 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 270,
+   "count": 285,
    "unit": "node test"
   },
   "node:model_viewer": {

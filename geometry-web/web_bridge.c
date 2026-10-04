@@ -852,6 +852,7 @@ static void cmd_dump(void)
 }
 
 #include "engineering_bridge.inc"
+#include "scene-import-bridge.inc"
 #include "assembly_bridge.inc"
 #include "source-inspector-bridge.inc"
 
@@ -937,6 +938,12 @@ int main(void)
             cmd_grid_query(arg);
         } else if (strcmp(line, "grid-trial-query") == 0) {
             cmd_grid_trial_query(arg);
+        } else if (strcmp(line, "load-prepare") == 0 && arg != NULL) {
+            cmd_load_prepare(arg);
+        } else if (strcmp(line, "load-confirm") == 0 && arg != NULL) {
+            cmd_load_confirm(arg);
+        } else if (strcmp(line, "load-cancel") == 0 && arg != NULL) {
+            cmd_load_cancel(arg);
         } else if (strcmp(line, "loadfile") == 0 && arg != NULL) {
             cmd_loadfile(arg);
         } else if (strcmp(line, "pick") == 0 && arg != NULL) {
