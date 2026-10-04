@@ -1,4 +1,4 @@
-CDP_SCOPE {"mode":"full","filters":[],"modifiers":[],"url":"http://127.0.0.1:18840/","feedbackDirectory":"/tmp/geometry-119/fb-stable-gates","browserProfile":"/tmp/geometry-119/cdp-stable-profile","cdpPort":9361,"browserPid":68446}
+CDP_SCOPE {"mode":"full","filters":[],"modifiers":[],"url":"http://127.0.0.1:18840/","feedbackDirectory":"/tmp/geometry-119/fb-p79-adjusted","browserProfile":"/tmp/geometry-119/full-p79-adjusted-profile","cdpPort":9361,"browserPid":97755}
 === Setup. 確認重置隔離驗收專案 ===
 === 1. Phase 1 版面檢查點(§6) ===
 app rows: {"n":3,"cls":"topbar,workspace,statusbar","h":[60,812,28]} ✓ 三列殼
@@ -14,7 +14,7 @@ statusbar: ✓ status/cmd 在狀態列
 S2 結構: {"searchInSide":true,"fileKids":true,"vsHasObj":true,"zoomInCtl":true,"kbd":4} ✓
 清單樣式 row-copy strong: 14px ✓
 E8 800px 面內工具鈕: 8 ✓
-screenshot: /tmp/geometry-119/cdp-stable-screen.png
+screenshot: /tmp/geometry-tests/cdp-97748/phase1-shell.png
 screenshot PNG: 93106 bytes ✓ 截圖非空且為 PNG
 初始:oc.on= true ocv.hidden= false cv.hidden= true cards= 1
 === 2. 三視圖覆層開/關 ===
@@ -84,7 +84,7 @@ loops: 2 ✓ 開口成功
 === P3-4. 投影面板：天花面 → 恰一個 data-view=2 ===
 proj groups: 1 view2: 1 ✓ 只顯示仰視
 === P3-5. 非法編輯 → toast + boundary 不變 ===
-本次非法輪廓錯誤 toast: [{"text":"line 24: 邊界面輪廓不合法：邊要軸平行、不零長、不自交；孔要在外輪廓內且互不重疊","classes":["toast","error"],"visible":true,"bounds":{"left":521,"top":256.16455078125,"right":861,"bottom":310.03955078125},"state":null}] ✓ | boundary 未變: ✓
+本次非法輪廓錯誤 toast: [{"text":"line 131: 邊界面輪廓不合法：邊要軸平行、不零長、不自交；孔要在外輪廓內且互不重疊","classes":["toast","error"],"visible":true,"bounds":{"left":521,"top":195.28945922851562,"right":861,"bottom":249.16445922851562},"state":null}] ✓ | boundary 未變: ✓
 === P3-6. Esc 回世界；游離面放置表單 ===
 focus: null
 guide 工具 disabled（游離）: ✓
@@ -110,7 +110,7 @@ h→ pan | v→ select | 1→zoom 1 | space→ true | / →搜尋 true ✓
 === P5b. 空間工作區投影 hover/pick ===
 proj hover: {"hit":{"v":2,"x":2000,"y":110},"ov":2,"hov":"參考線1 沿V offset=2000"} ✓ pick/hover 有回應
 === P6. delete(Q1)===
-boundary 拒絕: ✓ line 57: 這個邊界面還有承載面掛著，先刪它的承載面（placement） | 刪除後面數: 0 ✓ | guide 已刪: ✓ | 空間已刪: ✓
+boundary 拒絕: ✓ line 164: 這個邊界面還有承載面掛著，先刪它的承載面（placement） | 刪除後面數: 0 ✓ | guide 已刪: ✓ | 空間已刪: ✓
 === P7. 插入凹口(Q2)===
 select 工具: ✓ | 面板: ✓ | 頂點 4→ 8 ✓ | fixity 同步: ✓ | 全正交: ✓
 凹口加深: ✓ | 頂點: 8 ✓
@@ -132,7 +132,7 @@ undo 後堆疊驗活: ✓ | 特徵 1 ✓
 === P8. 角材與網格(Q3)===
 角材放置: ✓ | 足跡繪製: ✓ | 空白座標提示且世界不變: ✓ | 網格建立: ✓ | 網格線數與角色: 4 ✓ | 圖層列: ✓
 網格來源即時預覽: ✓ | 預覽不改世界: ✓ | 來源儲存與回填: ✓ | 錯誤草稿拒絕且世界不變: ✓
-重複定位拒絕: ✓ | toast: ✓ [{"text":"外輪廓邊 0已被角材 1 占滿——請換定位引用(可用:外輪廓邊 1、外輪廓邊 2、外輪廓邊 3、主網格 1 · u 第 0 條（從 0 起） · u=500 mm · 主支 2、主網格 1 · u 第 1 條（從 0 起） · u=1500 mm · 主支 2、主網格 1 · v 第 0 條（從 0 起） · v=402 mm · 副支 3、主網格 1 · v 第 1 條（從 0 起） · v=807 mm · 副支 3、主網格 1 · v 第 2 條（從 0 起） · v=1212 mm · 副支 3、主網格 1 · v 第 3 條（從 0 起） · v=1617 mm · 副支 3、主網格 1 · v 第 4 條（從 0 起） · v=2022 mm · 副支 3、主網格 1 · v 第 5 條（從 0 起） · v=2427 mm · 副支 3、主網格 1 · v 第 6 條（從 0 起） · v=2832 mm · 副支 3、角材 1 側面（須有唯一解）)\nline 117: R6/I5/I6 timber 2: 中線上沒有任何合法跨距","classes":["toast","error"],"visible":true,"bounds":{"left":521,"top":195.29025268554688,"right":861,"bottom":408.5402526855469},"state":null}]
+重複定位拒絕: ✓ | toast: ✓ [{"text":"外輪廓邊 0已被角材 1 占滿——請換定位引用(可用:外輪廓邊 1、外輪廓邊 2、外輪廓邊 3、主網格 1 · u 第 0 條（從 0 起） · u=500 mm · 主支 2、主網格 1 · u 第 1 條（從 0 起） · u=1500 mm · 主支 2、主網格 1 · v 第 0 條（從 0 起） · v=402 mm · 副支 3、主網格 1 · v 第 1 條（從 0 起） · v=807 mm · 副支 3、主網格 1 · v 第 2 條（從 0 起） · v=1212 mm · 副支 3、主網格 1 · v 第 3 條（從 0 起） · v=1617 mm · 副支 3、主網格 1 · v 第 4 條（從 0 起） · v=2022 mm · 副支 3、主網格 1 · v 第 5 條（從 0 起） · v=2427 mm · 副支 3、主網格 1 · v 第 6 條（從 0 起） · v=2832 mm · 副支 3、角材 1 側面（須有唯一解）)\nline 224: R6/I5/I6 timber 2: 中線上沒有任何合法跨距","classes":["toast","error"],"visible":true,"bounds":{"left":521,"top":195.29193115234375,"right":861,"bottom":408.54193115234375},"state":null}]
 角材已刪: ✓ | 網格已刪: ✓
 格線角色預填: ✓ | 手動覆寫保留: ✓ | 套用建議: ✓ | 清單引用數: ✓ | 格線放材角色卡: ✓ | 點格線放材: ✓ 
 P8v2 linked locked ✓
@@ -275,16 +275,16 @@ rcDialog: ✓ 開啟
 切參考線:狀態列標明工具 ✓ | 工具教學可重新開啟 ✓ | 游標類 ✓
 參考線點一下→方向選單: ✓
 選 v 後建線: ✓ guide 1 1 v spec:點放定位
-開口只點→toast: ✓ [{"text":"開口：請拖出矩形","classes":["toast","error"],"visible":true,"bounds":{"left":590,"top":179.35104370117188,"right":810,"bottom":217.28854370117188},"state":null}]
+開口只點→toast: ✓ [{"text":"開口：請拖出矩形","classes":["toast","error"],"visible":true,"bounds":{"left":590,"top":179.35128784179688,"right":810,"bottom":217.28878784179688},"state":null}]
 點面內→點選取+開口: ✓ | 舊凹口工具已移除: ✓
-角材A空→toast: ✓ [{"text":"角材截面 A/B 須為正整數 mm","classes":["toast","error"],"visible":true,"bounds":{"left":590,"top":178.1031494140625,"right":810,"bottom":216.0406494140625},"state":null}] | tbA標紅: ✓
+角材A空→toast: ✓ [{"text":"角材截面 A/B 須為正整數 mm","classes":["toast","error"],"visible":true,"bounds":{"left":590,"top":224.28810119628906,"right":810,"bottom":262.2255859375},"state":null}] | tbA標紅: ✓
 切回選取→狀態列=手勢: ✓
 Esc一次離開: ✓
-Esc清草稿: ✓ | toast再按Esc: ✓ [{"text":"草稿已清除，原面保留；再按 Esc 返回","classes":["toast","ok"],"visible":true,"bounds":{"left":581.4140625,"top":134.41004943847656,"right":818.5859375,"bottom":172.34754943847656},"state":null}] | 仍在工作區: ✓
+Esc清草稿: ✓ | toast再按Esc: ✓ [{"text":"草稿已清除，原面保留；再按 Esc 返回","classes":["toast","ok"],"visible":true,"bounds":{"left":581.4140625,"top":224.288330078125,"right":818.5859375,"bottom":262.225830078125},"state":null}] | 仍在工作區: ✓
 第二次Esc離開: ✓
 === P15. 主畫布模式回饋 E7 ===
 E7 rect 浮標: ✓ | 游標: ✓
-E7 rect 單點 toast: ✓ [{"text":"矩形：請拖出範圍","classes":["toast","error"],"visible":true,"bounds":{"left":581.4140625,"top":227.35162353515625,"right":818.5859375,"bottom":265.28912353515625},"state":null}]
+E7 rect 單點 toast: ✓ [{"text":"矩形：請拖出範圍","classes":["toast","error"],"visible":true,"bounds":{"left":581.4140625,"top":227.35543823242188,"right":818.5859375,"bottom":265.2929382324219},"state":null}]
 E7 P 鍵建面卡進面內: ✓
 E7 Esc 回畫布: ✓
 E7 select 游標復原: ✓
@@ -305,7 +305,7 @@ P17 連線: ✓ 包含,包含,障礙
 P17 槽位語意: ✓
 P17 footer管理: ✓
 P17 狀態列: ✓ 4 物件 · 1 空間開放 · 0 游離
-P17 成功toast: ✓ [{"text":"boundary 99 outline 0,0 500,0 500,400 0,400","classes":["toast","ok"],"visible":true,"bounds":{"left":563.234375,"top":144.4142303466797,"right":836.765625,"bottom":182.3517303466797},"state":null}]
+P17 成功toast: ✓ [{"text":"boundary 99 outline 0,0 500,0 500,400 0,400","classes":["toast","ok"],"visible":true,"bounds":{"left":563.234375,"top":144.41299438476562,"right":836.765625,"bottom":182.35049438476562},"state":null}]
 P17 畫布控制: ✓
 P17 格線切換: ✓
 === P18. 面內工作區 B1-B9 ===
@@ -429,7 +429,7 @@ M3 M5 M7 T3 contextual controls ✓ ""
 M7 command shortcut opens focused input ✓ ""
 M7 command executes ✓ ""
 M7 command Escape closes only command ✓ ""
-M10 toast above canvas, away from minimap ✓ [{"text":"畫布頂部驗證","classes":["toast","ok"],"visible":true,"bounds":{"left":581,"top":144.41310119628906,"right":801,"bottom":182.35060119628906},"state":null}]
+M10 toast above canvas, away from minimap ✓ [{"text":"畫布頂部驗證","classes":["toast","ok"],"visible":true,"bounds":{"left":581,"top":144.41343688964844,"right":801,"bottom":182.35093688964844},"state":null}]
 M8 explicit card entry ✓ ""
 F1 F3 F4 four tabs, seven tools, five persistent groups ✓ ""
 F2 real length edit retains next keyboard target ✓ {"focus":"edgeFixed0","a":"500","b":"500","status":"✓ boundary 1 outline 0,0 500,0 500,300 0,300","loops":[{"loop":-1,"verts":[[0,0],[500,0],[500,300],[0,300]],"fixity":[1,1,1,1],"vertices":[{"index":0,"key":null,"uv":[0,0]},{"index":1,"key":null,"uv":[500,0]},{"index":2,"key":null,"uv":[500,300]},{"index":3,"key":null,"uv":[0,300]}]}]}
@@ -517,18 +517,18 @@ P38 F8 開面板且焦點在說明欄 ✓ ""
 P38 面板內 Esc 只關面板,不退出面工作區 ✓ ""
 P38 回報鈕開面板 ✓ ""
 P38 指出位置記下元素、且那一下沒有交給 app ✓ ""
-P38 Ctrl+Enter 送出後寫出一筆回報且面板關閉 ✓ ["F-20261004-001"]
-P38 回報帶分類、說明、指到的元素與畫面 ✓ {"id":"F-20261004-001","kind":"unexpected","status":"open","resolution":"","created":"2026-10-04 15:45:28","note":"P38 測試:這裡怪怪的","auto_reason":"","target":{"el":"button.fi-tab[data-fi-tab=\"components\"] < nav#faceInspectorTabs","text":"構件","rect":[1216,122,71,33]},"context":{"view":"面工作區 · 面 1(工具 select)","scene":"room_a.scene(/workspace/geometry-axiom-119/room_a.scene)","viewport":"1382×900 @1x","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36","state":{"oc":{"on":true,"tool":"select","drawTool":null,"focus":{"t":"face","id":1},"stack":[],"sel":null,"zoom":1,"counts":{"faces":1,"spaces":0,"columns":0,"beams":0}},"fe":{"tool":"select","fiTab":"prop","draftPts":0,"lenBuf":""},"threeView":{"open":false,"tool":"view"},"pendingSlot":null,"dialogs":[],"bodyClass":"","activeElement":"textarea#fbNote"}},"t_mark":1791128728096,"version":{"commit":"b22c4fd","dirty":true}}
+P38 Ctrl+Enter 送出後寫出一筆回報且面板關閉 ✓ ["F-20261004-004"]
+P38 回報帶分類、說明、指到的元素與畫面 ✓ {"id":"F-20261004-004","kind":"unexpected","status":"open","resolution":"","created":"2026-10-04 16:39:48","note":"P38 測試:這裡怪怪的","auto_reason":"","target":{"el":"button.fi-tab[data-fi-tab=\"components\"] < nav#faceInspectorTabs","text":"構件","rect":[1216,122,71,33]},"context":{"view":"面工作區 · 面 1(工具 select)","scene":"room_a.scene(/workspace/geometry-axiom-119/room_a.scene)","viewport":"1382×900 @1x","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36","state":{"oc":{"on":true,"tool":"select","drawTool":null,"focus":{"t":"face","id":1},"stack":[],"sel":null,"zoom":1,"counts":{"faces":1,"spaces":0,"columns":0,"beams":0}},"fe":{"tool":"select","fiTab":"prop","draftPts":0,"lenBuf":""},"threeView":{"open":false,"tool":"view"},"pendingSlot":null,"dialogs":[],"bodyClass":"","activeElement":"textarea#fbNote"}},"t_mark":1791131988777,"version":{"commit":"2dda7db","dirty":false}}
 P38 回報帶被拒指令、世界與紅框畫面快照 ✓ ""
 P38 送出後面板欄位已清空 ✓ ""
-P38 規則拒絕(ok:false)不自動存 ✓ {"rejected":{"ok":false,"error":"line 738: 欄位數不對，用法：place 角材id on 承載面id at-line guide 線id｜grid 網id u|v 索引 或 at-face e索引｜h孔e邊｜t角材，可加 through 座標 或 between 擋面 擋面）"},"added":[]}
+P38 規則拒絕(ok:false)不自動存 ✓ {"rejected":{"ok":false,"error":"line 845: 欄位數不對，用法：place 角材id on 承載面id at-line guide 線id｜grid 網id u|v 索引 或 at-face e索引｜h孔e邊｜t角材，可加 through 座標 或 between 擋面 擋面）"},"added":[]}
 [EXPECTED EXCEPTION] Error: fb-auto-probe
     at eval (eval at <anonymous> (:1:142), <anonymous>:1:23)
-P38 未捕捉的 JS 例外自動存一筆 kind=auto ✓ ["F-20261004-002"]
+P38 未捕捉的 JS 例外自動存一筆 kind=auto ✓ ["F-20261004-005"]
 P38 預期的單次例外確實抵達 ✓ ""
 === P39. 主畫布 Delete/Backspace 刪除選取的卡片 ===
 P39 Delete 刪除選取的面 ✓ ""
-P39 刪除後 toast 提示可復原 ✓ [{"text":"面 51 已刪除,可 Ctrl+Z 復原","classes":["toast","error"],"visible":true,"bounds":{"left":574.8359375,"top":189.34732055664062,"right":807.1640625,"bottom":227.28482055664062},"state":null}]
+P39 刪除後 toast 提示可復原 ✓ [{"text":"面 51 已刪除,可 Ctrl+Z 復原","classes":["toast","error"],"visible":true,"bounds":{"left":574.8359375,"top":189.35308837890625,"right":807.1640625,"bottom":227.29058837890625},"state":null}]
 P39 Ctrl+Z 復原被 Delete 刪掉的面 ✓ ""
 P39 Backspace 同樣刪除選取的面 ✓ ""
 P39 焦點在輸入框時 Backspace 不刪卡片 ✓ ""
@@ -537,7 +537,7 @@ P39 刪除被引用的面先跳影響預覽,不直接刪 ✓ ""
 P39 影響預覽 Esc 取消後世界不變 ✓ ""
 === P40. 建面 UI/UX 審查修正(GEO-185 存活路徑;GEO-186 後) ===
 P40-1 一般模式格線 24 單位、無吸附格線類別 ✓ {"size":"24px","cls":false}
-P40-2 rect 浮標在 toast 出現時仍可見、toast 排在浮標下方 ✓ {"hintVis":true,"hintBottom":182,"toastTop":182.413330078125,"toastText":"矩形：請拖出範圍"}
+P40-2 rect 浮標在 toast 出現時仍可見、toast 排在浮標下方 ✓ {"hintVis":true,"hintBottom":182,"toastTop":182.4127655029297,"toastText":"矩形：請拖出範圍"}
 P40-3 建面成功只跳一則 toast ✓ {"v":"+y","u":"+x","err":false,"toasts":1}
 P40-4 新面的放置表單預設 u=+x、v=+y,沒有「必須垂直」錯誤 ✓ {"v":"+y","u":"+x","err":false,"toasts":1}
 === P41. 縮到很小後找回卡片(GEO-187) ===
@@ -555,7 +555,7 @@ P42-5 底圖分頁拖 100px → x 改變量換算 mm 後與 #ulX 一致(誤差 �
 P42-5b 切到「屬性」分頁後同樣拖曳 x 不變 ✓ {"beforeDrag2":100,"afterDrag2":100}
 P42-6 底圖存在時鍵盤重畫外環(3000→ 2000↓ Enter)仍成功 ✓ {"ok":true,"nverts":4,"tool":"select","hasUnderlay":true}
 P42-7 量比例尺進行中按 Esc → fe.ulCalib 為 null 且仍在工作區 ✓ {"startedCalib":true,"ul7":{"calib":null,"stillIn":true}}
-P42-8 離開面再進同一面底圖仍在;dump 不含底圖資訊 ✓ {"ul8":{"hasUnderlay":true,"imgExists":true},"dumpLen":78}
+P42-8 離開面再進同一面底圖仍在;dump 不含底圖資訊 ✓ {"ul8":{"hasUnderlay":true,"imgExists":true},"dumpLen":80}
 P42-9 feUnderlayRemove 後底圖與調整欄位移除，保留匯入入口 ✓ {"imgGone":true,"othersLeft":0,"importKept":true}
 === P43. 面內角材可選取(GEO-191) ===
 P43-1 畫布有 .face-timber[data-face-hit="t:10"] ✓ ""
@@ -611,14 +611,14 @@ P47-2a 角材工具保留定位預示及即時定位與截面摘要 ✓ {"hi":1,
 P47-2b 切回 select → 預示消失 ✓ {"hi":0,"band":0}
 P47-3a 方向 +u(垂直主支軸)→ primary disabled、boundary 可選 ✓ {"primary":true,"boundary":false,"secondary":false,"custom":false}
 P47-3b 方向 +v(平行主支軸)→ boundary/secondary disabled、primary 可選 ✓ {"primary":false,"boundary":true,"secondary":true,"custom":false}
-P47-4 e0 已被角材 1 占滿 → toast 含「已被角材 1 占滿」與「可用:」;仍 3 支;#tbAnchor invalid ✓ {"timbers":[1,2,3],"anchorInvalid":true,"toast":"外輪廓邊 0已被角材 1 占滿——請換定位引用(可用:外輪廓邊 1、外輪廓邊 3、角材 1 側面（須有唯一解）、角材 2 側面（須有唯一解）、角材 3 側面（須有唯一解）)\nline 832: R6/I5/I6 timber 4: 中線上沒有任何合法跨距"}
+P47-4 e0 已被角材 1 占滿 → toast 含「已被角材 1 占滿」與「可用:」;仍 3 支;#tbAnchor invalid ✓ {"timbers":[1,2,3],"anchorInvalid":true,"toast":"外輪廓邊 0已被角材 1 占滿——請換定位引用(可用:外輪廓邊 1、外輪廓邊 3、角材 1 側面（須有唯一解）、角材 2 側面（須有唯一解）、角材 3 側面（須有唯一解）)\nline 939: R6/I5/I6 timber 4: 中線上沒有任何合法跨距"}
 P47-5 依預設值(自動挑到的空線)點面內 → 成功,fe.timbers 4 支 ✓ {"p47_5":[1,2,3,4],"p47_5line":{"constAxis":"u","value":4000},"p47_5runAxis":"v","p47_5role":"primary"}
 P47-5u Ctrl+Z → 回 3 支 ✓ [1,2,3]
-P47-6 強制 boundary + 方向 v(平行主支軸)→ toast 含「主支軸是 v」;仍 3 支 ✓ {"timbers":[1,2,3],"toast":"主支軸是 v(由既有 primary 推導)：沿主支軸放只能選主支；邊框材與副支要垂直於它\nline 841: V_PRIMARY_AXIS:角材 4（boundary）長度軸沿 v,與主支軸平行——boundary/secondary 必須垂直於主支軸"}
+P47-6 強制 boundary + 方向 v(平行主支軸)→ toast 含「主支軸是 v」;仍 3 支 ✓ {"timbers":[1,2,3],"toast":"主支軸是 v(由既有 primary 推導)：沿主支軸放只能選主支；邊框材與副支要垂直於它\nline 948: V_PRIMARY_AXIS:角材 4（boundary）長度軸沿 v,與主支軸平行——boundary/secondary 必須垂直於主支軸"}
 === P48. 角材工具下「點畫布上的線」直接放置(GEO-196) ===
 P48-1 真滑鼠點外輪廓邊 1 靠內側 → 4 支,新支 dir=+v/side=+n/role=primary,表單同步 ✓ {"ids":[1,2,3,4],"newT":{"id":4,"role":"primary","definition":{"anchor":"at-face e1","selector":"","priority":2},"surface":1,"centerline":3986,"length":2946,"u":4000,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[4000,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]],"L":2946,"engineeringSources":[]},"anchor":"at-face e1","role":"primary"}
 P48-1u Ctrl+Z → 回 3 支 ✓ [1,2,3]
-P48-2 點已占滿的外輪廓邊 0 → 照舊送出、引擎拒絕,toast 含「已被角材 1 占滿」;仍 3 支 ✓ {"ids":[1,2,3],"toast":"外輪廓邊 0已被角材 1 占滿——請換定位引用(可用:外輪廓邊 1、外輪廓邊 3、角材 1 側面（須有唯一解）、角材 2 側面（須有唯一解）、角材 3 側面（須有唯一解）)\nline 851: R6/I5/I6 timber 4: 中線上沒有任何合法跨距"}
+P48-2 點已占滿的外輪廓邊 0 → 照舊送出、引擎拒絕,toast 含「已被角材 1 占滿」;仍 3 支 ✓ {"ids":[1,2,3],"toast":"外輪廓邊 0已被角材 1 占滿——請換定位引用(可用:外輪廓邊 1、外輪廓邊 3、角材 1 側面（須有唯一解）、角材 2 側面（須有唯一解）、角材 3 側面（須有唯一解）)\nline 958: R6/I5/I6 timber 4: 中線上沒有任何合法跨距"}
 P48-3 點新參考線 → 4 支,新支 role=primary/side 依表單(+n),#tbAnchor 同步該參考線(G196-R02) ✓ {"p48_3":{"ids":[1,2,3,4],"newT":{"id":4,"role":"primary","definition":{"anchor":"at-line guide 2","selector":"","priority":2},"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]],"L":2946,"engineeringSources":[]},"anchor":"at-line guide 2","side":"+n"},"p48_3info":{"constAxis":"u","value":2000},"p48_3pt":{"x":1997,"y":1500}}
 P48-3u Ctrl+Z → 回 3 支 ✓ [1,2,3]
 P48-4 點面內空白 → 照舊走表單 e3，落在左外邊；共 4 支 ✓ {"ids":[1,2,3,4],"anchor":"at-face e3","centerline":13,"placeLine":"line place 4 on 1 at-face e3  +v +n"}
@@ -626,7 +626,7 @@ P48-4u Ctrl+Z → 回 3 支 ✓ [1,2,3]
 P48-5a hover 邊 1(不點)→ .fe-anchor-hi 是 x=4000 的邊,fe.timberHoverAnchor=at-face e1 ✓ {"x1":"4000","x2":"4000","hoverAnchor":"at-face e1"}
 P48-5b 移開到面內空白 → hoverAnchor 清空,預示回到表單值(#tbAnchor=at-face e0,v=0) ✓ {"y1":"0","y2":"0","hoverAnchor":null,"side":"-n","hasHoverSide":false}
 P48-5c G196-R02:hover 過線不改 #tbSide(仍 -n)且 fe 無 timberHoverSide 殘留欄位 ✓ {"y1":"0","y2":"0","hoverAnchor":null,"side":"-n","hasHoverSide":false}
-P48-6a setup helper:不合法指令(不存在的 spec)→ 當步失敗、不繼續送後面的指令 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"guide 1 1 v spec:不存在","ok":false,"error":"line 865: 這個指令前面要先有 placement 或 surface","preview":false}]
+P48-6a setup helper:不合法指令(不存在的 spec)→ 當步失敗、不繼續送後面的指令 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"guide 1 1 v spec:不存在","ok":false,"error":"line 972: 這個指令前面要先有 placement 或 surface","preview":false}]
 P48-6b F-HOLE setup 全部成功且無 preview ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1000,1000 2000,1000 2000,2000 1000,2000","ok":true,"error":null,"preview":false}]
 P48-6c 前置:孔存在(2 環)且 (1500,1000) elementFromPoint 命中孔邊 e:1:0 ✓ {"loops":2,"holeVerts":4,"hitAtPoint":"e:1:0","cx":1760,"cy":1116}
 P48-6d 點孔邊 → toast 說明快捷不支援並指路右欄、無 timber/place 指令送出、世界 dump 逐字不變、零角材 ✓ {"toast":"目前不支援直接點孔邊——請從右欄「定位引用」選孔邊(at-face h<i>e<j>)","sent":[],"bridgeTimbers":0}
@@ -685,10 +685,10 @@ P50 命中線引用失效 → 報錯、不送指令、不退回表單引用 ✓ 
 === P51. D17 主支軸推導與自動角色(G196-R04) ===
 P51-1 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
 P51-1a F-SUPPORT 無 primary、兩支 boundary 沿 u → 主支軸推導 v(src=boundary) ✓ {"axis":"v","conflict":false,"src":"boundary"}
-P51-1b 點 e1 → 自動角色 primary、核心接受、cross u 3973..4000、長度 v 27..2973 ✓ {"sent":["newid","history-begin","timber 3 27 33 role primary","place 3 on 1 at-face e1  +v +n","history-end","obstacles 1","references","dump","dump","references"],"g":{"surface":1,"centerline":3986,"length":2946,"u":4000,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[4000,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P51-1b 點 e1 → 自動角色 primary、核心接受、cross u 3973..4000、長度 v 27..2973 ✓ {"sent":["dump","newid","history-begin","timber 3 27 33 role primary","place 3 on 1 at-face e1  +v +n","history-end","obstacles 1","references","dump","references"],"g":{"surface":1,"centerline":3986,"length":2946,"u":4000,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[4000,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
 P51-2 setup 全過(垂直 boundary 於 e1/e3) ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e1 +v +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e3 +v +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 u spec:測試中線","ok":true,"error":null,"preview":false}]
 P51-2a boundary 沿 v → 主支軸推導 u ✓ {"axis":"u","conflict":false,"src":"boundary"}
-P51-2b 點 e0(平行主支軸 u)→ 角色 primary、核心接受、跨 u 27..3973(長度 3946) ✓ {"sent":["newid","history-begin","timber 3 27 33 role primary","place 3 on 1 at-face e0  +u +n","history-end","obstacles 1","references","dump","references"],"g":{"surface":1,"centerline":13,"length":3946,"u":27,"v":0,"dir":"+u","side":"+n","A":27,"B":33,"origin":[27,0,2500],"axes":[[1,0,0],[0,1,0],[0,0,1]]}}
+P51-2b 點 e0(平行主支軸 u)→ 角色 primary、核心接受、跨 u 27..3973(長度 3946) ✓ {"sent":["dump","newid","history-begin","timber 3 27 33 role primary","place 3 on 1 at-face e0  +u +n","history-end","obstacles 1","references","dump","references"],"g":{"surface":1,"centerline":13,"length":3946,"u":27,"v":0,"dir":"+u","side":"+n","A":27,"B":33,"origin":[27,0,2500],"axes":[[1,0,0],[0,1,0],[0,0,1]]}}
 P51-3a 空面 → 主支軸未定義(非矛盾) ✓ {"axis":null,"conflict":false,"src":"none"}
 P51-3b 只有 custom → 主支軸仍未定義(D15:custom 不定義軸) ✓ {"axis":null,"conflict":false,"src":"none"}
 P51-3c 空面 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
@@ -1309,7 +1309,7 @@ P70 正式重開前已清空來源與配置 ✓
 [TEST PROJECT DIALOG] 目前專案有尚未保存的變更。要離開目前專案嗎？
 P70 正式開檔按鈕觸發檔案選擇 ✓ 
 P70 正式重開恢復規則、key、負索引、比例與卡片位置 ✓ 
-P70 saved artifact /tmp/geometry-infinite-grid-download-hnXU9G/未命名專案.gcanvas
+P70 saved artifact /tmp/geometry-infinite-grid-download-JqY44l/未命名專案.gcanvas
 P70 正式保存重開保留直接與參數相位差，省略欄位仍不存在 ✓ 
 P70 新增來源先預覽，沒有提前寫入世界 ✓ 
 P70 確認建立無限來源並保存名稱 ✓ 
@@ -1944,7 +1944,7 @@ P79 open doorway fails visibly and leaves default geometry unchanged ✓
 P79 failed acquisition clears busy state and its cancel control before rendering failure ✓ 
 P79 failed acquisition has a real manual fallback to the same reviewed room ✓ 
 P79 gap comparison manual baseline reaches the identical confirmed endpoint ✓ 
-ROOM_OUTLINE_MEASUREMENTS [{"source":"pdf-vector","shape":"rectangle","candidate":{"actions":7,"elapsedMs":1493},"manual":{"actions":12,"elapsedMs":1823},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"pdf-vector","shape":"l","candidate":{"actions":7,"elapsedMs":1084},"manual":{"actions":14,"elapsedMs":2005},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"pdf-vector","shape":"notch","candidate":{"actions":7,"elapsedMs":1354},"manual":{"actions":16,"elapsedMs":2041},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"image","shape":"rectangle","candidate":{"actions":7,"elapsedMs":1248},"manual":{"actions":12,"elapsedMs":1895},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"image","shape":"l","candidate":{"actions":7,"elapsedMs":1405},"manual":{"actions":14,"elapsedMs":1860},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"image","shape":"notch","candidate":{"actions":7,"elapsedMs":1184},"manual":{"actions":16,"elapsedMs":2229},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"image","shape":"rectangle-open-doorway","candidate":{"actions":14,"elapsedMs":2207},"manual":{"actions":12,"elapsedMs":1902},"definition":"new flow fails explicitly, then user manually defines the closed room scope; includes fallback, dimension entry and review; no improvement claimed"}]
+ROOM_OUTLINE_MEASUREMENTS [{"source":"pdf-vector","shape":"rectangle","candidate":{"actions":7,"elapsedMs":1583},"manual":{"actions":12,"elapsedMs":1718},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"pdf-vector","shape":"l","candidate":{"actions":7,"elapsedMs":1376},"manual":{"actions":14,"elapsedMs":1969},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"pdf-vector","shape":"notch","candidate":{"actions":7,"elapsedMs":1492},"manual":{"actions":16,"elapsedMs":1813},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"image","shape":"rectangle","candidate":{"actions":7,"elapsedMs":1188},"manual":{"actions":12,"elapsedMs":1582},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"image","shape":"l","candidate":{"actions":7,"elapsedMs":1163},"manual":{"actions":14,"elapsedMs":1829},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"image","shape":"notch","candidate":{"actions":7,"elapsedMs":1488},"manual":{"actions":16,"elapsedMs":2197},"definition":"trusted pointer activations + text replacements; setup excluded; automated wall time includes harness settling, not human reading time; both enter the same known edge dimension and explicitly review all edges"},{"source":"image","shape":"rectangle-open-doorway","candidate":{"actions":14,"elapsedMs":2052},"manual":{"actions":12,"elapsedMs":1674},"definition":"new flow fails explicitly, then user manually defines the closed room scope; includes fallback, dimension entry and review; no improvement claimed"}]
 P79 connected neighbor remains in candidate with explicit ambiguity warning ✓ 
 P79 explicit separation changes only search connectivity, preserving native face ✓ 
 P79 confirmation reaches existing I8a preview before changing native scene ✓ 
@@ -1962,7 +1962,110 @@ P79 native rejection retains original scene and editable candidate ✓
 P79 confirmed project uses /9 with source-bound receipt ✓ 
 [TEST PAGE LEAVE] === P79. 房間輪廓候選與核對 (#54) === 
 P79 reload and reopen retain exact notch, PDF page and calibrated alignment ✓ 
-FATAL: UI condition timed out at === P79. 房間輪廓候選與核對 (#54) ===: SpaceModelWorkspace.snapshot().resultSummary!==null&&!SpaceModelWorkspace.snapshot().stale
-FATAL_NETWORK: {"failures":[],"pendingAssets":[{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"FF5334DA553C1CC48BB6B08346649586","sessionId":null,"step":"=== P57–P61. PDF 與專案保存(GEO-198) ===","requestedAt":"2026-10-04T15:50:04.121Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"287D68C7888940BDF63EA824CD983BC8","sessionId":null,"step":"=== P57–P61. PDF 與專案保存(GEO-198) ===","requestedAt":"2026-10-04T15:50:04.602Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"C5C9D0A750B9F768BC32B784DE53AEBB","sessionId":null,"step":"=== P57–P61. PDF 與專案保存(GEO-198) ===","requestedAt":"2026-10-04T15:50:06.047Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"8C98ECBFED17BB2A5AF549E267BA94AC","sessionId":null,"step":"=== P57–P61. PDF 與專案保存(GEO-198) ===","requestedAt":"2026-10-04T15:50:08.328Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"9EC8E0122EB059FE7FB3D2DD3DAAC081","sessionId":null,"step":"=== P57–P61. PDF 與專案保存(GEO-198) ===","requestedAt":"2026-10-04T15:50:09.314Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"0A673ED46CF2120A8A1C8085ED16ED13","sessionId":null,"step":"=== P63. 參考描面新版介面 ===","requestedAt":"2026-10-04T15:50:25.367Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"5639EB5393AEA4C16937AE7E9155494D","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:03.653Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"BACD0B0A6BC022A7AF6EFE8F3FD471D1","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:05.471Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"51D4A3C5E122124336DC78C5E03DD7C1","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:07.945Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"BA82D08D3711DF5468040B14A817843D","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:08.823Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"224FD65C2CD95FB24640D5B4EB49D90A","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:10.562Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"9F05E17207B60FF37D2323ED062479E6","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:14.851Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"EF27B194AEAB6020D86270338F5A5B02","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:16.477Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"FF2996B4EBACC2A3A4C4EFA12BDBD509","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:20.421Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"D28E41B86C96675C1F149A5941C4AAB8","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:22.424Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"A76A3DDF731A00CD27AEFDD9542704F4","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:28.508Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"03285AD7420FD2E47D2098A601386577","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:34.752Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"8A77EB2980274F057C2E87A0EB782C94","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:41.014Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"77E44A0FB731C70A0A095DD36C777880","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:45.384Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"FAA34AB08E76956970FEAD0689605995","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:47.221Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"59BDAD9CBA4B59B33EBD304F18981124","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:49.918Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"5EBDD5FCA60816F77FED1FCFE3DFE214","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:58.220Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"97B36B4422F51D32C9A9B09BF20D312B","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:04:59.148Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"AD29931AF83174F8362CEF3D21703750","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:00.080Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"B4F9D3E39280FEF04793EDE74D932636","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:03.263Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"4092186AEF205A839A93E9FD2CAC1364","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:05.579Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"FD86C8F87011339A0737B955A4871C5E","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:07.727Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"BE7888A518F5EADA4823AD27ACD1A7AE","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:07.809Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"F28DC3C01C497B713EAFC18950177E16","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:08.652Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"0DE503781D9BB289C09135828F6F2393","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:10.728Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"2B361F59CC0EA913B7DC78E22C2B91A0","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:11.358Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"E450AE512565FA26134F81723B2BF2DD","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:11.985Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"7254EE3ECAC12345D34D9936AFF29BB0","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:12.557Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"1B6EB2809C5369E63599C179F9FE9A03","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:13.229Z"},{"url":"http://127.0.0.1:18840/room-outline-worker.js","type":"Script","requestId":"E82494962A0D2BE555169D801F58B220","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:15.625Z"},{"url":"http://127.0.0.1:18840/vendor/pdfjs-dist/build/pdf.worker.mjs","type":"Script","requestId":"BF8BA5868F0029D0F01EB7E600149639","sessionId":null,"step":"=== P79. 房間輪廓候選與核對 (#54) ===","requestedAt":"2026-10-04T16:05:20.560Z"}]}
-FATAL_UI: {"ready":"complete","focus":{"t":"face","id":1},"connection":{"phase":"ready","error":""},"events":[{"k":"key","key":"Tab","el":"input#smBottom","t":1791129924178},{"k":"change","el":"input#smBottom","value":"0","t":1791129924181},{"k":"click","el":"input#smHeight","text":"3000","x":1317.25,"y":853.4375,"t":1791129924324},{"k":"key","key":"Ctrl+a","el":"input#smHeight","t":1791129924480},{"k":"key","key":"Tab","el":"input#smHeight","t":1791129924594},{"k":"click","el":"input#smThickness","text":"100","x":1225.5,"y":798.5625,"t":1791129924789},{"k":"key","key":"Ctrl+a","el":"input#smThickness","t":1791129924939},{"k":"key","key":"Tab","el":"input#smThickness","t":1791129924976},{"k":"click","el":"button#smPreview","text":"更新預覽","x":1136.75,"y":960,"t":1791129925285},{"k":"api","cmd":"dump","ok":true,"ms":70,"t":1791129925427}],"dialogs":[{"id":"smWorkspace","classes":"sm-workspace workspace-shell","text":"\n        未命名專案.gcanvas\n        \n        \n          目前專案關閉\n          來源專案檔案「匯入專案」專案狀態有未保存的變更上次確認寫入尚無可確認的檔案寫入紀錄下一次復原上一步模型修改復原範圍可復原本頁已記錄的操作；開啟專案、新專案及清空內容也各算一步。接續工作已在本機保留本分頁的專案恢復資料；這不等於已保存成檔案。未套用的工具草稿與復原歷史不會保留。\n          重新連接此工作\n          專案與場景有何不同？專案 .gcanvas 包含場景、參考圖、工程草稿及已建立的空間模型。場景 .scene 包含幾何、放置與已發布工程定義。單獨匯出場景不會帶走完整專案。本機暫存用於接續工作，不代表已保存到你的專案檔。\n        \n        有未保存的變更\n        保存\n      \n    ▱空間建模 返回畫布\n    試用角材骨架範例試用矩形範例試用 L 形範例使用目前面已建立空間 0\n    1選擇來源從平面輪廓或既有面開始2補齊幾何資料明確指定高度、邊界與厚度3預覽並建立核對各面，保存到專案\n    3D 預覽設定與建立\n    \n      模型預覽面 #1預覽未完成\n        ◇先用現成範例，走一次完整流程輪廓、牆高與牆厚已填好。預覽完成後，確認各面並按「建立空間」。開始試用 4 × 3 m 房間 →範例獨立預覽，不會改動畫布裡的面。\n        立體俯視仰視正視置中拖曳旋轉 · 滾輪縮放 · Shift 拖曳平移\n        立體檢視。只改視角，不改幾何。空間邊界材料牆角材結構顯示頂面頂面僅在檢視中隱藏，幾何仍保留。\n        空間體積—尚未扣除障礙物扣除後淨空—只扣除明確選取的柱樑材料牆體積—依指定厚度與外側方向角材體積合計—各支材料量，非布林聯集下一步：設定與建立 →\n      \n      \n        \n        01來源與名稱面 #1 · 目前專案放置面 #1 · 圖面 z = 2500 mm · 0 支角材空間邊界平面投影 · 俯視（沿 −Z）輪廓內為室內淨空，材料牆朝外側加厚；圖面高度與牆高獨立。原圖觀看方向俯視（從 +Z 往下看）仰視（從 −Z 往上看）目前放置與輪廓編輯圖的上下方向相反。若此輪廓按原圖描繪，請對齊放置方向；保留局部輪廓、外框位置與圖面高度。已放角材會先顯示影響預覽，這次對齊可復原。依原圖對齊放置方向修改平面投影定義空間名稱其他建模方式與來源放置建模方式由平面輪廓建立空間組合已有的放置面來源放置面放置面 #1 · 輪廓 #1\n        02修改已建立空間新牆高 mm採用現行來源…取消修改，保留原模型\n          02高度、材料與角材牆底標高 mm牆高 mm牆底設為 0 mm牆底需另外指"}],"active":"","feedback":true,"status":"工具：選取"}
-CDP_RESULT {"schema":"geometry-cdp-result/1","scope":{"mode":"full","filters":[],"modifiers":[],"url":"http://127.0.0.1:18840/","feedbackDirectory":"/tmp/geometry-119/fb-stable-gates","browserProfile":"/tmp/geometry-119/cdp-stable-profile","cdpPort":9361,"browserPid":68446},"completed":false,"passedAssertions":1879,"failedAssertions":0,"fatal":"UI condition timed out at === P79. 房間輪廓候選與核對 (#54) ===: SpaceModelWorkspace.snapshot().resultSummary!==null&&!SpaceModelWorkspace.snapshot().stale","skipped":[],"sections":{"1":14,"2":3,"3":1,"4":1,"5":1,"6":1,"7":1,"8":0,"9":12,"10":0,"Setup":0,"P3":14,"P4":11,"P5":2,"P6":4,"P7":54,"P8":116,"P9":9,"P10":9,"P11":12,"P12":8,"P13":4,"P14":16,"P15":6,"P16":10,"P17":11,"P18":20,"P19":17,"BF2":5,"BF3":1,"BF4":9,"P20":10,"P21":4,"P22":45,"P32":34,"P33":9,"P34":7,"P35":14,"P36":2,"P37":19,"P38":13,"P39":8,"P40":4,"P41":3,"P42":12,"P43":12,"P44":19,"P45":2,"P46":7,"P47":9,"P48":14,"P49":17,"P50":33,"P51":13,"P52":43,"P53":23,"P57":56,"P62":38,"P63":18,"P64":24,"P65":5,"P66":4,"P68":36,"P69":160,"P67":96,"P70":106,"P71":9,"P78":23,"P72":52,"P73":65,"P74":52,"P75":37,"P76":72,"P77":134,"P82":16,"P80":23,"P81":14,"P85":29,"P79":62},"currentSection":"P79","goldenCompare":"not compared (run did not complete)"}
+P79 selected 100mm notch walls refuse SPACE_CAPACITY without changing source models or history ✓ 
+P79 explicitly deselecting walls still requires a fresh notch preview before create ✓ 
+P79 reopened notch feeds actual boundary-only preview with explicitly entered height/thickness ✓ 
+P79 existing space creation stores a model without replacing source notch ✓ 
+P79 actual saved notch archive retains explicit boundary-only request and exact source ✓ 
+P79 recalibration requests review without scaling confirmed native geometry ✓ 
+P79 vertex textarea accepts actual numeric keys without editing native geometry ✓ 
+P79 textarea undo stays local to text, retaining pending candidate and source scene ✓ 
+P79 alignment change invalidates pending draft, preserving native geometry ✓ 
+P79 narrow candidate controls fit the drawer and are hit-testable ✓ 
+P79 narrow actual confirmation produces six-corner reviewed L ✓ 
+P79 late PDF proposal cannot revive a draft after alignment changes ✓ 
+P79 source replacement invalidates draft and never transfers old completion ✓ 
+P79 323.5 cm calibration expands only PDF while preserving exact native scene ✓ 
+P79 calibration exposes room choice and the single relocated crop-fit control ✓ 
+P79 crop-fit reaches room beyond existing ring without changing World ✓ 
+P79 PDF room beyond old outer ring yields exact six-corner candidate, not crop rectangle ✓ 
+P79 pending candidate states replacement and keeps confirmation gated by review ✓ 
+P79 cancel of enlarged room preserves exact native scene and unreviewed state ✓ 
+P79 visible cancel during PDF acquisition prevents late candidate revival ✓ 
+P79 confirmation replaces one existing ring through native validation ✓ 
+P79_HISTORY_TIMELINE {"phase":"undo-render-held","legacyReady":true,"ready":false,"busy":true,"bodyBusy":true,"prematureRedoRejected":true}
+P79_HISTORY_TIMELINE {"phase":"undo-ready","ready":true}
+P79 actual undo restores original rectangle and source review state ✓ 
+P79 actual redo restores calibrated room and its source-bound receipt ✓ 
+[TEST PAGE LEAVE] === P79. 房間輪廓候選與核對 (#54) === 
+P79 save and real reload/reopen retain enlarged concave room, calibration and completion ✓ 
+P79 new workflow has no uncaught browser exceptions ✓ 
+=== P84. PDF 原始線段描繪吸附 ===
+P84 9% quarter turn 0: source point preview beats 500mm grid ✓ 
+P84 9% quarter turn 0: toolbar states actual 500mm tracing spacing ✓ 
+P84 quarter turn 0: actual click lands at source point ✓ 
+P84 off-grid source first point keeps its fixed draft axis during grid fallback ✓ 
+P84 9% quarter turn 90: source point preview beats 500mm grid ✓ 
+P84 9% quarter turn 90: toolbar states actual 500mm tracing spacing ✓ 
+P84 quarter turn 90: actual click lands at source point ✓ 
+P84 9% quarter turn 180: source point preview beats 500mm grid ✓ 
+P84 9% quarter turn 180: toolbar states actual 500mm tracing spacing ✓ 
+P84 quarter turn 180: actual click lands at source point ✓ 
+P84 9% quarter turn 270: source point preview beats 500mm grid ✓ 
+P84 9% quarter turn 270: toolbar states actual 500mm tracing spacing ✓ 
+P84 quarter turn 270: actual click lands at source point ✓ 
+P84 hover and draft clicks preserve exact native scene ✓ 
+P84 cancel clears target and restores manual toolbar spacing ✓ 
+P84 snap off removes PDF target and accepts unsnapped manual first point ✓ 
+P84 manual source tracing commits authored centreline rectangle through core ✓ 
+P84 native undo restores original rectangle after PDF-assisted manual tracing ✓ 
+P84 native redo restores exact source endpoint trace ✓ 
+P84 actual fractional calibration maps source endpoint to declared rounded millimetres ✓ 
+P84 real PDF finite closed-path intersection has source preview and both supporting segments ✓ 
+P84 actual intersection click lands at independently authored crossing ✓ 
+P84 real open dimension-line crossing is not offered as a source corner ✓ 
+P84 changed alignment immediately removes old source target ✓ 
+P84 PDF inherent 90 degree rotation and CropBox map to independently authored endpoint ✓ 
+P84 raster-only PDF discloses manual capability without fabricated endpoints ✓ 
+P84 annotation appearance: actual PDF render has no stroke at the phantom endpoint ✓ 
+P84 annotation appearance: invisible/unmapped stroke cannot provide a snap target ✓ 
+P84 annotation appearance: ordinary page source survives the graphics-state restore ✓ 
+P84 glyph-clipped path: actual PDF render has no stroke at the phantom endpoint ✓ 
+P84 glyph-clipped path: invisible/unmapped stroke cannot provide a snap target ✓ 
+P84 glyph-clipped path: ordinary page source survives the graphics-state restore ✓ 
+P84 late extraction after cancel/page switch cannot restore old preview or draft ✓ 
+=== P83 單一保存模型快照料單 ===
+[EXPECTED NATIVE DIALOG] 建立一份空白新專案，切換為新的專案識別及「未命名專案」。目前尚未保存的變更不會自動寫入檔案。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？ accept=true
+P83 既有真原生 producer 建立兩支同尺寸明選 ID0/4，未納入另一承載面 ID9 ✓ 
+P83 同一 disclosure 換成唯一快照CSV入口，展開純讀且不定位同ID live角材 ✓ 
+P83 桌面真正下載CSV帶精確明選數量尺寸與model/context/nativeFP，原World/history不變 ✓ 
+P83 排列與cm只改呈現，實際CSV仍保留整數mm且不修改保存模型 ✓ 
+P83 真gcanvas保存重開保留producer模型與明選身份並重新取得原生快照 ✓ 
+P83 390px同入口可真下載相同快照，44px控制可操作且無水平溢出 ✓ 
+P83 真live尺寸29/35改變後保存27/33仍可查量，CSV明記changed與identityunknown ✓ 
+P83 真live ID0消失仍保留兩支歷史快照，來源missing不採另一live量 ✓ 
+P83 遲到真candidate遇native來源變更零CSV且不修改新World ✓ 
+P83 遲到真candidate遇切專案零CSV且不污染新context/models/history ✓ 
+P83 遲到真candidate遇同ID模型記錄替換零CSV，不回填舊版本 ✓ 
+P83 真移除模型後遲到回覆零CSV，保留剩餘model而不復活舊記錄 ✓ 
+P83 關閉立即重開使舊回覆零CSV且新owner恢復表格及下一次明確匯出 ✓ 
+P83 真連點只執行一輪input/package核對並下載一次 ✓ 
+P83 改選另一模型後舊owner零CSV，兩個同量保存檢視不合併 ✓ 
+P83 完整slice沒有未捕獲browser例外，所有delivery攔截已還原 ✓ 
+P83_EVIDENCE {"downloads":"/tmp/geometry-p83-download-Gnl7zN","models":["651d67cb-bef4-4f7a-892d-091768609aac","d5e8cf8d-0a1d-4c29-b3bc-44bbc9999bf6"],"assertions":16,"scope":"actual existing single-model ordinary snapshot; owned producer remains unsupported"}
+=== P86 保存模型料單與3D雙向定位 ===
+P86 真保存模型在3D畫面共用料單，只有明選0/4且移除重複z列 ✓ 
+P86 實際料單列選取合法ID0並定位高亮，沿用顯示開關 ✓ 
+P86 同尺寸ID4另行定位，沒有按尺寸或陣列順序合併 ✓ 
+P86 DPR2真正3D三角形點擊回選同保存ID0列 ✓ 
+P86 實際按住指標後滾輪再放開不誤選ID4且不改保存資料 ✓ 
+P86 另一3D角材回選ID4，保存模型／dump／history逐值不變 ✓ 
+P86 重新核對CSV清除兩端舊選取，不留下假選中列 ✓ 
+P86 已建立空間返回原模型會重新核對及恢复同一料單 ✓ 
+P86 實際拖曳旋轉不觸發新構件點擊或改模型 ✓ 
+P86 live同ID已改尺寸仍只選保存27/33構件 ✓ 
+P86 live ID0刪除仍可定位其保存mesh，無live定位回退 ✓ 
+P86 390px同料單44px可操作、定位顯示3D且無橫向溢出 ✓ 
+P86 390px真touch點3D從ID0切至ID4且顯示同料單選中列 ✓ 
+P86 關閉料單即撤銷舊選取及3D授權 ✓ 
+P86 關閉工作區後遲到真snapshot不回填選取或改資料 ✓ 
+P86 切另一同量model丟棄舊owner，選取只屬目前保存模型 ✓ 
+P86 移除owner即清除舊mesh及選取且不能復活 ✓ 
+P86 同ID保存record替換後舊回覆不恢復舊選取，重新核對新版本 ✓ 
+P86 同ID專案重開後遲到回覆不跨context授權或改資料 ✓ 
+P86 真gcanvas重開重新核對後恢復雙向選取且零新增例外 ✓ 
+CDP_SECTIONS 82 段,合計 1973 通過斷言
+[CDP FLOOR] 已重寫 /workspace/geometry-axiom-119/geometry-web/cdp_sections.golden.json(請檢視 git diff 後再提交)
+
+=== 結果:1973 通過斷言 / 0 失敗斷言 / 0 略過群組 (full) ===
+CDP_RESULT {"schema":"geometry-cdp-result/1","scope":{"mode":"full","filters":[],"modifiers":[],"url":"http://127.0.0.1:18840/","feedbackDirectory":"/tmp/geometry-119/fb-p79-adjusted","browserProfile":"/tmp/geometry-119/full-p79-adjusted-profile","cdpPort":9361,"browserPid":97755},"completed":true,"passedAssertions":1973,"failedAssertions":0,"skipped":[],"sections":{"1":14,"2":3,"3":1,"4":1,"5":1,"6":1,"7":1,"8":0,"9":12,"10":0,"Setup":0,"P3":14,"P4":11,"P5":2,"P6":4,"P7":54,"P8":116,"P9":9,"P10":9,"P11":12,"P12":8,"P13":4,"P14":16,"P15":6,"P16":10,"P17":11,"P18":20,"P19":17,"BF2":5,"BF3":1,"BF4":9,"P20":10,"P21":4,"P22":45,"P32":34,"P33":9,"P34":7,"P35":14,"P36":2,"P37":19,"P38":13,"P39":8,"P40":4,"P41":3,"P42":12,"P43":12,"P44":19,"P45":2,"P46":7,"P47":9,"P48":14,"P49":17,"P50":33,"P51":13,"P52":43,"P53":23,"P57":56,"P62":38,"P63":18,"P64":24,"P65":5,"P66":4,"P68":36,"P69":160,"P67":96,"P70":106,"P71":9,"P78":23,"P72":52,"P73":65,"P74":52,"P75":37,"P76":72,"P77":134,"P82":16,"P80":23,"P81":14,"P85":29,"P79":87,"P84":33,"P83":16,"P86":20},"goldenCompare":"golden updated","uncaughtBrowserExceptions":1,"coverage":"Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."}

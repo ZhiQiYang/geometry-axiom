@@ -575,15 +575,14 @@
       "filters": [],
       "modifiers": [],
       "url": "http://127.0.0.1:18840/",
-      "feedbackDirectory": "/tmp/geometry-119/fb-stable-gates",
-      "browserProfile": "/tmp/geometry-119/cdp-stable-profile",
+      "feedbackDirectory": "/tmp/geometry-119/fb-p79-adjusted",
+      "browserProfile": "/tmp/geometry-119/full-p79-adjusted-profile",
       "cdpPort": 9361,
-      "browserPid": 68446
+      "browserPid": 97755
     },
-    "completed": false,
-    "passedAssertions": 1879,
+    "completed": true,
+    "passedAssertions": 1973,
     "failedAssertions": 0,
-    "fatal": "UI condition timed out at === P79. 房間輪廓候選與核對 (#54) ===: SpaceModelWorkspace.snapshot().resultSummary!==null&&!SpaceModelWorkspace.snapshot().stale",
     "skipped": [],
     "sections": {
       "1": 14,
@@ -664,10 +663,14 @@
       "P80": 23,
       "P81": 14,
       "P85": 29,
-      "P79": 62
+      "P79": 87,
+      "P84": 33,
+      "P83": 16,
+      "P86": 20
     },
-    "currentSection": "P79",
-    "goldenCompare": "not compared (run did not complete)"
+    "goldenCompare": "golden updated",
+    "uncaughtBrowserExceptions": 1,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
   },
   "space": {
     "schema": "geometry-space-result/1",
@@ -820,18 +823,203 @@
     "session": "c37c3ecb960a45d98981a359f7ab0212"
   },
   "files_sha256": {
-    "updated-material.gcanvas": "002f25d0b64a5b4c1f048b2ad86f96eb05c104f499147fdee4fe01c9ab5be3d0",
-    "cdp.log": "f6f3bc040c1a21d0b71782752b541920a9fa46baac6a24f63167edf786516404",
-    "legacy-repaired.gcanvas": "1fbd9a6cddea41e5c6d40e84694e59e34f6d10f47d76809c431b2ad141c26fde",
-    "p79-capacity-diagnosis.json": "8d3bec8599846ccb114bb9a3818ed0691d658858b3d680d5a1f49c5176f1e777",
     "archive-audit.json": "64ab3b9a6eb6e5707ed47a81beb86c77efed30ebf310103aa9ebfd5dbdb162e5",
-    "legacy-provenance-preserved.gcanvas": "c1a0388bcfe3687b52468000acf881db5c6f103a246c3f3ada28c425fcc77035",
+    "asymmetric-ten.pdf": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
     "boundary-only.gcanvas": "917f5b1763acbc2e9129bfa85f01cad6f2b654553f75ae4e4f8eab5e0fe4d081",
-    "two-models.gcanvas": "73b9e7fbbc76f6a7a4e644ed9c396ec6076caa1b72a33982d3a738c933a77a33",
+    "cdp-floor.log": "5782fcf79e349b6ee96bddeac23ac2bab835d4fdbfbc196dcd1c5c1dc9f8e282",
+    "cdp-prior-p79-blocked.log": "f6f3bc040c1a21d0b71782752b541920a9fa46baac6a24f63167edf786516404",
+    "cdp.log": "032a718b9412f1d020c3038f01313736b05c084c0e760cea5b06f82e560638ce",
+    "focused-p79-p84.log": "cab760ad66200c0ab840733b6e52fea27b2e77de99798bb284a4c149e3c13192",
+    "hosted-ci-2dda.json": "c72add2ad63c8f43174947f0a07e2c328cbe11ca4be8886c32e8704e06fd07f2",
     "legacy-open-warning.png": "903772eb55a31c1571ae165f45308e7985d89292fffbc32ee5f83dae166cc26b",
     "legacy-preserved.gcanvas": "a3984decbbd2d09579a0f280de512bf0d4000356be7f3e7ab99db7c09d03370a",
-    "asymmetric-ten.pdf": "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110",
+    "legacy-provenance-preserved.gcanvas": "c1a0388bcfe3687b52468000acf881db5c6f103a246c3f3ada28c425fcc77035",
+    "legacy-repaired.gcanvas": "1fbd9a6cddea41e5c6d40e84694e59e34f6d10f47d76809c431b2ad141c26fde",
+    "notch-material-capacity-refusal.png": "0c5571afe408a3f96d23752fc3e066ea53de038f801cedfa3aed5de4237d3790",
+    "notch-space-preview.png": "6e001776e04c0b9c5e226efba380a672cad9136d28113b1289b92f14fa7e03db",
+    "p79-capacity-diagnosis.json": "8d3bec8599846ccb114bb9a3818ed0691d658858b3d680d5a1f49c5176f1e777",
     "rectangle-updated.png": "92745572e064d615c4c5791bda9fdabd6f0b8e360201d90b6eb712ffeee53c45",
-    "run-all.log": "f5bfe2ff2d23e0bfa66a42342ab826ed3aab20f7f7f1b2d06d1c32d9e42e3b0d"
+    "run-all.log": "f5bfe2ff2d23e0bfa66a42342ab826ed3aab20f7f7f1b2d06d1c32d9e42e3b0d",
+    "runtime-final-cdp.json": "57d91eeea24ca7e96bd96072496a7dde8a92907c1612bf823dbfd403344740da",
+    "two-models.gcanvas": "73b9e7fbbc76f6a7a4e644ed9c396ec6076caa1b72a33982d3a738c933a77a33",
+    "updated-material.gcanvas": "002f25d0b64a5b4c1f048b2ad86f96eb05c104f499147fdee4fe01c9ab5be3d0"
+  },
+  "prior_full_cdp_attempts": [
+    {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "full",
+        "filters": [],
+        "modifiers": [],
+        "url": "http://127.0.0.1:18840/",
+        "feedbackDirectory": "/tmp/geometry-119/fb-stable-gates",
+        "browserProfile": "/tmp/geometry-119/cdp-stable-profile",
+        "cdpPort": 9361,
+        "browserPid": 68446
+      },
+      "completed": false,
+      "passedAssertions": 1879,
+      "failedAssertions": 0,
+      "fatal": "UI condition timed out at === P79. 房間輪廓候選與核對 (#54) ===: SpaceModelWorkspace.snapshot().resultSummary!==null&&!SpaceModelWorkspace.snapshot().stale",
+      "skipped": [],
+      "sections": {
+        "1": 14,
+        "2": 3,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 12,
+        "10": 0,
+        "Setup": 0,
+        "P3": 14,
+        "P4": 11,
+        "P5": 2,
+        "P6": 4,
+        "P7": 54,
+        "P8": 116,
+        "P9": 9,
+        "P10": 9,
+        "P11": 12,
+        "P12": 8,
+        "P13": 4,
+        "P14": 16,
+        "P15": 6,
+        "P16": 10,
+        "P17": 11,
+        "P18": 20,
+        "P19": 17,
+        "BF2": 5,
+        "BF3": 1,
+        "BF4": 9,
+        "P20": 10,
+        "P21": 4,
+        "P22": 45,
+        "P32": 34,
+        "P33": 9,
+        "P34": 7,
+        "P35": 14,
+        "P36": 2,
+        "P37": 19,
+        "P38": 13,
+        "P39": 8,
+        "P40": 4,
+        "P41": 3,
+        "P42": 12,
+        "P43": 12,
+        "P44": 19,
+        "P45": 2,
+        "P46": 7,
+        "P47": 9,
+        "P48": 14,
+        "P49": 17,
+        "P50": 33,
+        "P51": 13,
+        "P52": 43,
+        "P53": 23,
+        "P57": 56,
+        "P62": 38,
+        "P63": 18,
+        "P64": 24,
+        "P65": 5,
+        "P66": 4,
+        "P68": 36,
+        "P69": 160,
+        "P67": 96,
+        "P70": 106,
+        "P71": 9,
+        "P78": 23,
+        "P72": 52,
+        "P73": 65,
+        "P74": 52,
+        "P75": 37,
+        "P76": 72,
+        "P77": 134,
+        "P82": 16,
+        "P80": 23,
+        "P81": 14,
+        "P85": 29,
+        "P79": 62
+      },
+      "currentSection": "P79",
+      "goldenCompare": "not compared (run did not complete)"
+    }
+  ],
+  "focused_p79_p84": {
+    "schema": "geometry-cdp-result/1",
+    "scope": {
+      "mode": "partial",
+      "filters": [
+        "GEOMETRY_ROOM_OUTLINE_ONLY"
+      ],
+      "modifiers": [],
+      "url": "http://127.0.0.1:18840/",
+      "feedbackDirectory": "/tmp/geometry-119/fb-p79-adjusted",
+      "browserProfile": "/tmp/geometry-119/p79-adjusted-profile",
+      "cdpPort": 9361,
+      "browserPid": 96650
+    },
+    "completed": true,
+    "passedAssertions": 120,
+    "failedAssertions": 0,
+    "skipped": [],
+    "sections": {
+      "P79": 87,
+      "P84": 33
+    },
+    "goldenCompare": "not compared (partial mode)",
+    "uncaughtBrowserExceptions": 0,
+    "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+  },
+  "cdp_test_source": "2dda7dbe529f5a3ca7209e987040b13e6ec43329",
+  "executable_source_scope": "Product source b22 unchanged; root-authorized P79 fixture test at 2dda; golden recorded only after this successful full run.",
+  "full_cdp_runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "4c60396ca8f1acd357d92872a02fbe9e8ce082e76e192b129326db6ca332a2e6",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom-119",
+    "pid": 96629,
+    "session": "a1ae98093ba744b88eb1a4f0d9600257"
+  },
+  "golden_delta": {
+    "total": {
+      "before": 1970,
+      "after": 1973
+    },
+    "sections": {
+      "P79": {
+        "before": 84,
+        "after": 87
+      }
+    },
+    "unchanged_sections": 81,
+    "floor_reductions": 0
+  },
+  "browser_exception_accounting": {
+    "raw_count": 1,
+    "expected_count": 1,
+    "unexpected_count": 0,
+    "expected_probe": "P38 fb-auto-probe",
+    "original_handler": "cdp_test.js:165-170 records unexpected exceptions as failures; original P38:4345-4359 deliberately injects and verifies one exception."
+  },
+  "cdp_full_execution": {
+    "start_utc": "2026-10-04 16:34:42",
+    "terminal_utc": "2026-10-04 16:59:45",
+    "exit_code": 0,
+    "node_pid": 97748,
+    "exec_session": 16317
+  },
+  "floor_units": {
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0
+  },
+  "golden_comparison": {
+    "matched": true,
+    "sections": 82,
+    "actual_full_result": "cdp.log terminal CDP_RESULT",
+    "method": "existing cdp_floor.compare(golden, actual) returns []"
   }
 }
