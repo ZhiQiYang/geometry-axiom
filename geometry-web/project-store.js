@@ -93,7 +93,7 @@
       if (rooms?.rooms.some(room => room.reviewState !== "needs-reassociation")) {
         const entries = objects.boundaryFingerprints;
         if (!Array.isArray(entries) || entries.length !== boundaries.size || entries.some(entry =>
-            !keys(entry, ["id", "geometryFingerprint"]) || !positiveId(entry.id) || !boundaries.has(entry.id) || !hashRE.test(entry.geometryFingerprint)) ||
+            !keys(entry, ["id", "geometryFingerprint"]) || !positiveId(entry.id) || !boundaries.has(entry.id) || typeof entry.geometryFingerprint !== "string" || !hashRE.test(entry.geometryFingerprint)) ||
             new Set(entries.map(entry => entry.id)).size !== entries.length)
           fail("服務未提供完整的原生候選邊界指紋，未變更目前專案。");
         Features.validateNativePins(manifest.featureAttachments, new Map(entries.map(entry => [entry.id, entry])));
@@ -228,13 +228,13 @@
   // Editor capabilities are checked by this reader, never advertised as native
   // scene or model-producer capabilities.
   function validateManifestCapabilities(capabilities) {
-    if (!Array.isArray(capabilities) || capabilities.length > 6 || new Set(capabilities).size !== capabilities.length ||
-        capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, Features.GRID_SCHEMA, Features.ROOM_CAPABILITY].includes(capability)))
+    if (!Array.isArray(capabilities) || capabilities.length > 7 || new Set(capabilities).size !== capabilities.length ||
+        capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, Features.GRID_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY].includes(capability)))
       fail("專案需要尚未支援的能力。");
     return capabilities;
   }
   function readerCapabilities(nativeCapabilities) {
-    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.ROOM_CAPABILITY];
+    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
@@ -255,9 +255,10 @@
     if (manifest.format === FEATURE_FORMAT && !manifest.featureAttachments?.records.length) fail("第 10 版專案缺少功能附件。");
     if (manifest.requiredCapabilities?.includes(Features.GRID_SCHEMA) && !needed.includes(Features.GRID_SCHEMA)) fail("網格草稿能力缺少對應附件。");
     if (manifest.requiredCapabilities?.includes(Features.ROOM_CAPABILITY) && !Features.sourceRooms(manifest.featureAttachments || {schema:Features.SCHEMA,records:[]})) fail("房間來源能力缺少對應附件。");
+    if (manifest.requiredCapabilities?.includes(Features.ROOM_HISTORY_CAPABILITY) && !needed.includes(Features.ROOM_HISTORY_CAPABILITY)) fail("來源歷史能力缺少對應附件。");
     if(manifest.format===GENERATION_FORMAT&&!manifest.requiredCapabilities?.includes(GENERATION_CAPABILITY))fail("第 8 版專案缺少組構生成能力。");
     if (needed.some(c => !manifest.requiredCapabilities?.includes(c)) ||
-        (needed.some(capability => [Features.GRID_SCHEMA, Features.ROOM_CAPABILITY].includes(capability)) && manifest.format !== FEATURE_FORMAT) ||
+        (needed.some(capability => [Features.GRID_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY].includes(capability)) && manifest.format !== FEATURE_FORMAT) ||
         (needed.includes(PARAMETER_CAPABILITY) && ![PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(manifest.format)) ||
         (needed.includes(ASSEMBLY_CAPABILITY) && ![ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(manifest.format)) ||
         (needed.includes(GENERATION_CAPABILITY) && ![GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(manifest.format)) ||
@@ -466,13 +467,7 @@
           if (!(d > 0) || Math.abs(q.distanceMm / d - p.mmPerPx) > 1e-8 * p.mmPerPx ||
               Math.abs(q.inputValue * (q.inputUnit === "cm" ? 10 : 1) - q.distanceMm) > 1e-7) fail("校準紀錄與比例不一致。");
         }
-        if (!Array.isArray(p.records) || p.records.length > 1000) fail("來源紀錄不合法。");
-        const recordIds = new Set();
-        for (const r of p.records) {
-          if (!r || !id(r.id) || recordIds.has(r.id) || !str(r.label, 300) || !str(r.location, 1000) || !str(r.datum, 300) ||
-              !["mm", "cm"].includes(r.unit) || !(r.value === null || finite(r.value, -1e8, 1e8))) fail("來源紀錄欄位不合法。");
-          recordIds.add(r.id);
-        }
+        Features.validateSourceRecords(p.records);
       }
       if (!f.pages.some(p => p.id === f.activePageId)) fail("目前顯示的圖頁不存在。");
     }
@@ -484,31 +479,7 @@
   function outlineFingerprint(loops) {
     return JSON.stringify((loops || []).map(l=>[l.verts,l.fixity]));
   }
-  function validateReconstructionReviews(records, faces) {
-    if (!Array.isArray(records) || records.length > 10000) fail("輪廓核對收據清單不合法。");
-    const seen=new Set();
-    for (const r of records) {
-      if (!keys(r,["bid","pageId","basis","geometry","method","warnings","confirmedAt"]) || !positiveId(r.bid) || !id(r.pageId) ||
-          !str(r.basis,4000) || !str(r.geometry,100000) || !["manual","pdf-vector","image-lines"].includes(r.method) ||
-          !Array.isArray(r.warnings) || r.warnings.length>100 || !r.warnings.every(w=>str(w,1000)) || !str(r.confirmedAt,40) || !Number.isFinite(Date.parse(r.confirmedAt))) fail("輪廓核對收據欄位不合法。");
-      const key=r.bid+":"+r.pageId, p=faces?.find(f=>f.bid===r.bid)?.pages.find(p=>p.id===r.pageId);
-      if (!p || seen.has(key)) fail("輪廓核對收據引用不存在或重複的來源頁。");
-      seen.add(key);
-      let basis,loops;try {basis=JSON.parse(r.basis);loops=JSON.parse(r.geometry);}catch {fail("輪廓核對指紋不合法。");}
-      if (!Array.isArray(basis) || basis.length!==11 || basis[0]!==p.sourceId || basis[1]!==p.id || basis[2]!==p.page ||
-          !finite(basis[3],1,1e7) || !finite(basis[4],1,1e7) || !finite(basis[6],1e-9,1e8) || !finite(basis[7],-1e8,1e8) || !finite(basis[8],-1e8,1e8) || ![0,90,180,270].includes(basis[9])) fail("輪廓核對收據的來源／幾何不合法。");
-      const crop=basis[5],q=basis[10];
-      if (!Array.isArray(crop) || crop.length!==4 || !crop.every(Number.isFinite) || crop[0]<0 || crop[1]<0 || crop[2]<=0 || crop[3]<=0 || crop[0]+crop[2]>basis[3]+.001 || crop[1]+crop[3]>basis[4]+.001 ||
-          !keys(q,["points","distanceMm","inputValue","inputUnit"]) || !Array.isArray(q.points) || q.points.length!==2 || !q.points.every(pt) || q.points.some(v=>v[0]>basis[3]||v[1]>basis[4]) ||
-          !Number.isSafeInteger(q.distanceMm) || !finite(q.distanceMm,1,1e8) || !finite(q.inputValue,1e-9,1e8) || !["mm","cm"].includes(q.inputUnit)) fail("輪廓核對收據的校準不合法。");
-      const distance=Math.hypot(q.points[0][0]-q.points[1][0],q.points[0][1]-q.points[1][1]);
-      if (!(distance>0) || Math.abs(q.distanceMm/distance-basis[6])>1e-8*basis[6] || Math.abs(q.inputValue*(q.inputUnit==="cm"?10:1)-q.distanceMm)>1e-7) fail("輪廓核對收據的校準與比例不一致。");
-      if (!Array.isArray(loops) || !loops.length || loops.length>256 || loops.some(l=>!Array.isArray(l)||l.length!==2 || !Array.isArray(l[0]) || l[0].length<4 || l[0].length>1024 ||
-            !Array.isArray(l[1]) || l[0].length!==l[1].length || !l[1].every(v=>v===0||v===1) || l[0].some(p=>!Array.isArray(p)||p.length!==2||!p.every(v=>Number.isSafeInteger(v)&&Math.abs(v)<=1e8)))) fail("輪廓核對收據的幾何不合法。");
-      if (loops.some(l=>l[0].some((p,i)=>((p[0]===l[0][(i+1)%l[0].length][0])===(p[1]===l[0][(i+1)%l[0].length][1]))))) fail("輪廓核對收據的幾何必須正交。");
-      if (JSON.stringify(basis)!==r.basis || JSON.stringify(loops)!==r.geometry) fail("輪廓核對指紋必須使用標準編碼。");
-    }
-  }
+  function validateReconstructionReviews(records, faces) { return Features.validateReconstructionReviews(records, faces); }
   function reference(p) {
     const keys = ["id","sourceId","page","imgW","imgH","crop","mmPerPx","x","y","rot","opacity","locked","calibration","reviewRequired","records"];
     return Object.fromEntries(keys.map(k => [k, copy(p[k])]));

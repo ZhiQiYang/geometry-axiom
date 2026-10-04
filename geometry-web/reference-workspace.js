@@ -413,27 +413,45 @@ const ReferenceWorkspace = (() => {
     const c = context(), frame = history.frame, key = frame.ids.get(boundaryId), g = group(boundaryId), source = c.sources.get(plane.sourceId);
     if (busy || oc.busy || preparingSceneLoad || contextToken !== getProjectState().contextToken || !key || active(boundaryId) !== page || !source)
       throw new Error("來源選取已過期，未轉入共享房間。");
-    if (page.records.length || c.reconstructionReviews.has(key + ":" + page.id))
-      throw new Error("此來源頁含保存紀錄或核對證據；目前共享房間格式無保全位置，請保留原頁。");
-    const stamp = getModelOperationState(), originalPage = P.reference(page), original = readFeatureAttachment(P.Features.ROOM_KIND),
+    const reviewKey = key + ":" + page.id, readReview = () => c.reconstructionReviews.has(reviewKey) ? c.reconstructionReviews.get(reviewKey) : null,
+      originalReview = readReview();
+    const stamp = getModelOperationState(), original = readFeatureAttachment(P.Features.ROOM_KIND),
       incarnation = frame.ids.get(boundaryId);
     if (!sameModelData(GeometrySourcePlane.fromPage(page, source.meta.type, plane.id), plane)) throw new Error("共享來源基準與明選原頁不一致。");
-    const native = await apiRequest("boundary " + boundaryId);
-    if (!native.ok || await GeometryRoomCollection.boundaryPin(native) !== associationPin) throw new Error("原生邊界已變更，未轉入共享房間。");
-    const next = original || GeometrySourcePlane.empty();
+    const next = structuredClone(original || GeometrySourcePlane.empty());
     next.planes.push(structuredClone(plane)); next.collections.push({id:collectionId,planeId:plane.id,roomIds:[roomId]});
     next.rooms.push({id:roomId,name,boundaryRef:{kind:"boundary",id:boundaryId,associationPin},acceptedBasisRevision:plane.basisRevision,reviewState:"confirmed"});
-    const record = P.Features.record(P.Features.ROOM_KIND, next);
+    if (page.records.length || originalReview !== null) {
+      next.schema = GeometrySourcePlane.HISTORY_SCHEMA;
+      (next.legacyHistory ||= []).push({planeId:plane.id,boundaryId,pageId:page.id,records:page.records,reconstructionReview:originalReview});
+    }
+    // Validate the original JSON before taking detached snapshots; serialization
+    // must not erase unsupported values or unknown historical record fields.
+    const record = structuredClone(P.Features.record(P.Features.ROOM_KIND, next));
+    const originalPage = P.reference(page), reviewSnapshot = structuredClone(originalReview);
     const records = c.featureAttachments.filter(record => record.kind !== P.Features.ROOM_KIND).concat(record);
     P.Features.sourceRooms({schema:P.Features.SCHEMA,records},c.sources);
+    const native = await apiRequest("boundary " + boundaryId);
+    if (!native.ok || await GeometryRoomCollection.boundaryPin(native) !== associationPin) throw new Error("原生邊界已變更，未轉入共享房間。");
     assertModelReady();
+    if (record.value.legacyHistory) {
+      // Revalidate caller-owned historical JSON after the native await: JSON
+      // equality alone would treat a late NaN as an unchanged saved null.
+      const current = structuredClone(record.value), entry = current.legacyHistory.at(-1);
+      if (entry.planeId === plane.id && entry.pageId === page.id) {
+        entry.records = page.records; entry.reconstructionReview = readReview();
+        P.Features.record(P.Features.ROOM_KIND, current);
+      }
+    }
     if (context() !== c || history.frame !== frame || frame.ids.get(boundaryId) !== incarnation || active(boundaryId) !== page ||
         !sameModelData(getModelOperationState(), stamp) || !sameModelData(P.reference(page), originalPage) ||
+        !sameModelData(readReview(), reviewSnapshot) ||
         !sameModelData(readFeatureAttachment(P.Features.ROOM_KIND), original)) throw new Error("來源轉入結果晚到，未改動目前專案。");
     history.push(history.snapshot(), "local", "轉入共享房間來源");
     const pages = g.pages.filter(candidate => candidate !== page), groups = new Map(c.groups);
     if (pages.length) groups.set(key, {...g,pages,activePageId:pages[0].id}); else groups.delete(key);
-    c.groups = groups; c.featureAttachments = records; dirty(); sync();
+    const reviews = new Map(c.reconstructionReviews); reviews.delete(reviewKey);
+    c.groups = groups; c.reconstructionReviews = reviews; c.featureAttachments = records; dirty(); sync();
   }
   const roomIntegration = Object.freeze({
     readSource:(id,token) => {if (token !== getProjectState().contextToken) throw new Error("來源讀取上下文已過期。"); return context().sources.get(id) || null;},

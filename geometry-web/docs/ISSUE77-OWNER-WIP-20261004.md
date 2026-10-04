@@ -205,3 +205,72 @@ settlement findings. Latest scoped review proofs are under
 `/workspace/handoffs/geometry-axiom-20261004/77-review/`; formal/frozen-head
 acceptance remains separate. Full fresh-context room ZIP reopen is still blocked
 by missing native candidate pins. This draft remains unfinished and non-merge-ready.
+
+## Saved-cloud continuation stage 3: approved archival migration (2026-10-04)
+
+The parent supplied the user's explicit approval for finite archival preservation
+of complete selected-page records and original receipts. Earlier refusal packets
+remain historical negative evidence, not successful migration. The native bridge
+writer is separately assigned to cloud thread `01a10671-a27d-7331-ac8b-a5bf8d4200a5`;
+PR115 provides detached candidate pins. This shared writer does not edit C/World.
+Parent exclusively assigned `scenario_verify.py`, `test_scenario_verify.py` and
+`test_scenario_review_native.js` receipt compatibility to that native owner;
+these files have no uncommitted edits here. Existing PR114 decoder is retained.
+
+Projects without archived evidence retain `source-rooms/1`. Archived payloads
+use `source-rooms/2` and require both `source-room-collection/1` and
+`source-room-history/1` in the existing format10 feature envelope. Old readers
+refuse explicitly; stripping the capability cannot make schema2 silently load.
+`legacyHistory` is a nonempty array of at most10000 exact entries:
+`{planeId,boundaryId,pageId,records,reconstructionReview}`. The provenance triple
+is unique. `planeId` retains the actual source plane/PDF asset closure;
+`boundaryId` is historical and need not be a live native boundary. Each original
+record is preserved with unknown finite JSON fields and nulls, under the existing
+1000-record bound. Original receipts are null or the complete raw five-field
+`{basis,geometry,method,warnings,confirmedAt}` value. Source/page identity and
+original page dimensions must match the retained source; historical calibration,
+alignment and geometry do not equal or confirm the current basis by inference.
+
+Room attachments remain bounded to8MiB/600000nodes/depth12/10000 array items,
+planes/collections256 and rooms10000. Ordinary strings remain4096. Only the exact
+schema2 archived receipt geometry path accepts the existing receipt limit100000;
+the exception is anchored to the record/envelope root using data descriptors.
+Unknown nested lookalikes, accessor hooks, nonfinite values and oversized content
+reject before copying. Grid128KiB/128items/4096nodes limits remain independent.
+The existing source-record and original-receipt validators now live once in the
+lower SourcePlane layer, exposed through Features and reused by ProjectStore.
+
+Adoption validates original historical JSON and takes detached snapshots before
+the native boundary read. It rechecks native pin, context/frame/incarnation,
+operation stamp, selected page, original receipt and attachment after the await;
+raw JSON is revalidated so a late NaN cannot disguise a saved null. One local
+history snapshot then removes only the selected legacy page/receipt, preserving
+unrelated pages/evidence and saving the archive atomically. Duplicate canonical
+source-page adoption still refuses without overwrite. Undo restores the complete
+original legacy page and live receipt; redo restores the complete archive. Old
+receipts are never reinstalled as current reconstruction acceptance on reopen.
+Unlinking a room retains history/source/native geometry; a source plane with
+archived evidence refuses removal. Basis changes only mark current rooms review.
+
+The old editable record/review area merges into a read-only disclosure in the
+existing room-source pane and project-information overview. It renders one
+selected original entry on demand; there is no new toolbar or workspace. Known
+record fields, nulls, review date/method and warnings are viewable; all original
+fields remain intact in ZIP. Context and entry checks guard stale disclosures.
+
+Stage2 exact `5e125f3` acceptance is now terminal: strict66suites2052pass/0fail,
+one named allowedWindowsGDI; full nofilterCDP1970pass/0fail/0skip,82 golden sections
+matched including P69=160; defaultspace183/0 and timber79/0, all actualexit0 and
+completed. The one expectedP38 auto-feedback browser exception is classified by
+the unchanged harness; no unexpected exceptions. These packets remain stage2,
+not proof for this new archive or future native integration. Durable packets:
+`/77-strict-stage2/summary.json`, `/77-full-stage2/REPORT.md` and
+`/77-formal-stage2/REPORT.md` under the existing persistent handoff directory.
+
+Initial archive unit/ZIP checks:26/26 (13 new history regressions plus13 original
+ProjectStore tests), actualexit0/0skip. Runtime readiness stopped the first mutable
+browser preflight at exit1 when concurrent new test-file writes invalidated its
+captured source version; no fixture/adoption/publication ran. Its log/screenshot
+remain `/77-legacy-archive-preflight-1`, never treated as a product pass. Frozen
+archive browser acceptance and the complete native/consumer combined head remain
+required before merge. This PR stays draft and does not claim #77 complete.

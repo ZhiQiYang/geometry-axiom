@@ -4137,6 +4137,13 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 證據仍須真 desktop／390px app、完整 ZIP 保存重開、載入／晚回覆負例、native 取消／確認與一步 undo/redo、未知結果 receipt recovery；CLI／VM 模擬不代替真瀏覽器，A24 實機 IME／chooser／下載另留未驗。
 - restored raw 解讀／來源回歸：未知排格 enum 原字串可保存，解讀時明拒；保存與被動重開不補目前 catalog 的 pin，明選才建立證據。`grid_raw_provenance_browser_test.py` 必須跑真 v10 檔案入口、缺／錯 pin、native 刪除重建、真 ZIP 保存與 fresh browser 重開、明選正例、取消／確認及一步 undo/redo；local raw 編輯依既有 metadata history 記錄，不能冒稱 native 變更。
 
+## ISSUE-77 — 來源歷史保全與多房間共享基準（2026-10-04，接線驗證中）
+
+- 經使用者批准，含紀錄或原核對收據的明選原頁轉入 `source-rooms/2` 有界歷史附件；原紀錄未知 JSON 欄位、待補 null 與完整原收據保留。`source-room-history/1` 能力標記使不支援的閱讀器明拒，無歷史的既有 `source-rooms/1` 維持原格式。來源原檔隨歷史平面閉包保存；歷史邊界號不推定仍是現行原生物件。
+- 減項（GEO-219）：原頁的可編輯紀錄與舊核對狀態合併到既有房間來源區／專案資訊的按需唯讀歷史，不增工具列或工作區。一次顯示所選原頁，舊收據不確認目前房間；共享基準改變只標記現行房間需複核。
+- 明選 adoption 先驗原始 JSON 並凍結原頁、收據與附件，原生指紋回覆後再守住上下文；一筆 local undo 同時恢復原頁、紀錄、原收據與附件。解除房間列表保留歷史及原生幾何；含歷史的平面拒絕移除，避免默刪原檔或證據。
+- 驗證須包含真 owner/browser 明選、完整 ZIP／fresh-context 原檔與原資料全等、一步 undo/redo、basis-change、stale/cancel/未知回執、新 ID 拒覆蓋與版本／容量拒絕保全；native 候選指紋由獨立 native owner 提供，同版 consumer 與完整 gates 通過前保持 draft。
+
 ## ISSUE-44 — 明選現行來源更新同一模型（2026-10-04，接線驗證中）
 
 - 既有模型修改入口保留保存來源的牆高修改，另明選現行放置面、外環邊、角材／柱樑及投影用途；準備與差異候選不寫模型。確認前重讀來源、重跑完整 producer，最後 guard 後同步 `updateSpaceModel` 替換同 record，一筆 local undo 保存完整舊來源／input／全部結果包。

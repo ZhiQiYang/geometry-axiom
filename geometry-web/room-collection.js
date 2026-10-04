@@ -180,6 +180,7 @@
     unlinkPlane(planeId) {
       const next = this.state(), collections = next.collections.filter(c => c.planeId === planeId), removed = new Set(collections.flatMap(c => c.roomIds));
       if (!next.planes.some(p => p.id === planeId)) fail("來源平面不存在。");
+      if (next.legacyHistory?.some(entry => entry.planeId === planeId)) fail("此來源含保存的歷史紀錄；請保留來源，房間仍可解除列表關聯。");
       next.planes = next.planes.filter(p => p.id !== planeId); next.collections = next.collections.filter(c => c.planeId !== planeId);
       next.rooms = next.rooms.filter(r => !removed.has(r.id)); return this.change(next, "解除共享來源與房間列表關聯");
     }

@@ -155,7 +155,36 @@ const RoomCollectionWorkspace = (() => {
           `<button type="button" class="text-button" data-room-rename="${room.id}"${intent ? " disabled" : ""}>改名</button>` +
           `<button type="button" class="text-button" data-room-unlink="${room.id}"${intent ? " disabled" : ""}>解除列表關聯</button>` +
           (room.reviewState === "needs-review" ? `<button type="button" class="text-button" data-room-review="${room.id}"${intent ? " disabled" : ""}>已逐邊核對</button>` : "") + "</article>";
-      }).join("") + "</details>";
+      }).join("") + historyHTML(data, collection.planeId) + "</details>";
+  }
+  function historyHTML(data, planeId) {
+    const entries = (data.legacyHistory || []).filter(entry => entry.planeId === planeId), plane = data.planes.find(plane => plane.id === planeId);
+    if (!entries.length) return "";
+    return `<details class="ref-section" data-room-source-history="${planeId}"><summary>原頁歷史紀錄與核對（${entries.length}）</summary>` +
+      `<label>歷史來源<select data-room-history-entry>${entries.map((entry,index) => `<option value="${index}">原邊界 ${entry.boundaryId} · 第 ${plane.page} 頁</option>`).join("")}</select></label>` +
+      `<div data-room-history-content></div></details>`;
+  }
+  function bindHistory(host) {
+    const contextToken = token();
+    for (const details of host.querySelectorAll("[data-room-source-history]")) {
+      const planeId = details.dataset.roomSourceHistory, entries = (state().legacyHistory || []).filter(entry => entry.planeId === planeId);
+      const show = () => {
+        if (!details.open) return;
+        if (token() !== contextToken) {details.querySelector("[data-room-history-content]").textContent = "來源歷史已過期，請重新開啟。";return;}
+        const index = Number(details.querySelector("[data-room-history-entry]").value), entry = entries[index];
+        const current = (state().legacyHistory || []).filter(entry => entry.planeId === planeId)[index];
+        if (!entry || JSON.stringify(entry) !== JSON.stringify(current)) {details.querySelector("[data-room-history-content]").textContent = "來源歷史已變更，請重新開啟。";return;}
+        const receipt = entry.reconstructionReview;
+        details.querySelector("[data-room-history-content]").innerHTML = entry.records.map(record =>
+          `<article class="ref-record"><strong>${escape(record.label || "未命名紀錄")}</strong><span>${record.value === null ? "待補" : escape(record.value) + " " + record.unit}</span>` +
+          `<p>${escape(record.location)}${record.datum ? " · 基準：" + escape(record.datum) : ""}</p></article>`).join("") +
+          (receipt ? `<p>原頁核對：${escape(receipt.confirmedAt)} · ${{manual:"人工逐邊", "pdf-vector":"PDF 線段", "image-lines":"圖片線段"}[receipt.method]}</p>` +
+            receipt.warnings.map(warning => `<p>${escape(warning)}</p>`).join("") : "") +
+          `<p role="note">原頁歷史保留供查閱；房間現況依目前共同基準重新核對。</p>`;
+      };
+      details.addEventListener("toggle", show);
+      details.querySelector("[data-room-history-entry]").addEventListener("change", show);
+    }
   }
   const safe = operation => async () => {try {await operation();} catch (error) {toast(error.message);}};
   function overviewHTML() {
@@ -179,9 +208,10 @@ const RoomCollectionWorkspace = (() => {
         `<option value="${room.id}">${escape(room.name)} · ${room.reviewState === "needs-reassociation" ? "需重新關聯" : room.reviewState === "needs-review" ? "需複核" : "已核對"}</option>`).join("")}</select></label>` +
       `<label>既有邊界<select data-room-source-boundary${disabled ? " disabled" : ""}><option value="">明選已有邊界</option>${(oc.faces || []).filter(face => face.kind === "boundary").map(face =>
         `<option value="${face.id}">邊界 ${face.id}</option>`).join("")}</select></label>` +
-      `<button type="button" class="btn" data-room-source-associate${disabled ? " disabled" : ""}>核對並關聯既有邊界</button></details>`;
+      `<button type="button" class="btn" data-room-source-associate${disabled ? " disabled" : ""}>核對並關聯既有邊界</button>` + historyHTML(data, plane.id) + `</details>`;
   }
   function bindOverview(host) {
+    bindHistory(host);
     const contextToken = token(), collectionId = overviewCollectionId;
     host.querySelector("[data-room-source-collection]")?.addEventListener("change", event => {
       overviewCollectionId = event.target.value; window.ProjectInfoUI?.render();
@@ -204,6 +234,7 @@ const RoomCollectionWorkspace = (() => {
     }));
   }
   function bindPane(pane, bid) {
+    bindHistory(pane);
     pane.querySelector("#roomSourceCreate")?.addEventListener("click", safe(async () => {
       const page = W().active(bid), stamp = W().getProjectState(), source = integration.readSource(page.sourceId, stamp.contextToken);
       const plane = S.fromPage(page, source.meta.type, crypto.randomUUID()), collectionId = crypto.randomUUID();

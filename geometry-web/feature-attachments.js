@@ -8,6 +8,7 @@
   const SCHEMA = "geometry-feature-attachments/1";
   const GRID_SCHEMA = "grid-editor-draft/1", GRID_KIND = "grid-draft";
   const ROOM_KIND = "source-rooms", ROOM_SCHEMA = "source-rooms/1", ROOM_CAPABILITY = "source-room-collection/1";
+  const ROOM_HISTORY_SCHEMA = "source-rooms/2", ROOM_HISTORY_CAPABILITY = "source-room-history/1";
   const MAX_BYTES = 128 * 1024, MAX_STRING = 4096;
   const MAX_ROOM_BYTES = 8 * 1024 * 1024;
   const sourceFields = ["igName", "igMainAlong", ...["U", "V"].flatMap(axis => [
@@ -31,12 +32,23 @@
   // before serializing or copying caller-owned data.
   function boundedJSON(value, roomEnvelope = false) {
     const maxNodes = roomEnvelope ? 600000 : 4096, maxArray = roomEnvelope ? 10000 : 128;
+    const ownValue = (node,key) => node !== null && typeof node === "object" ? Object.getOwnPropertyDescriptor(node,key)?.value : undefined;
+    const historyRecord = node => ownValue(node,"kind") === ROOM_KIND && ownValue(node,"schema") === ROOM_HISTORY_SCHEMA &&
+      ownValue(ownValue(node,"value"),"schema") === ROOM_HISTORY_SCHEMA;
+    function legacyGeometry(path) {
+      if (!roomEnvelope) return false;
+      const offset = path.length === 5 && historyRecord(value) ? 0 :
+        path.length === 7 && ownValue(value,"schema") === SCHEMA && path[0] === "records" && Number.isInteger(path[1]) &&
+        historyRecord(ownValue(ownValue(value,"records"),path[1])) ? 2 : -1;
+      return offset >= 0 && path[offset] === "value" && path[offset+1] === "legacyHistory" && Number.isInteger(path[offset+2]) &&
+        path[offset+3] === "reconstructionReview" && path[offset+4] === "geometry";
+    }
     let count = 0;
-    function visit(item, depth) {
+    function visit(item, depth, path = []) {
       if (++count > maxNodes || depth > 12) fail("功能附件過大或巢狀過深。");
       if (item === null || typeof item === "boolean") return;
       if (typeof item === "number" && Number.isFinite(item)) return;
-      if (typeof item === "string" && item.length <= MAX_STRING) return;
+      if (typeof item === "string" && item.length <= (legacyGeometry(path) ? 100000 : MAX_STRING)) return;
       if (Array.isArray(item)) {
         const proto = Object.getPrototypeOf(item);
         if (!nativePrototype(proto, "Array") ||
@@ -45,7 +57,7 @@
         for (let index = 0; index < item.length; index++) {
           const descriptor = Object.getOwnPropertyDescriptor(item, index);
           if (!descriptor?.enumerable || !Object.hasOwn(descriptor, "value")) fail("功能附件陣列不完整。");
-          visit(descriptor.value, depth + 1);
+          visit(descriptor.value, depth + 1, [...path,index]);
         }
         return;
       }
@@ -55,7 +67,7 @@
           const descriptor = Object.getOwnPropertyDescriptor(item, key);
           if (["__proto__", "constructor", "prototype"].includes(key) || key.length > 100 ||
               !descriptor.enumerable || !Object.hasOwn(descriptor, "value")) fail("功能附件欄位不合法。");
-          visit(descriptor.value, depth + 1);
+          visit(descriptor.value, depth + 1, [...path,key]);
         }
         return;
       }
@@ -109,8 +121,9 @@
       fail("功能附件種類或版本不支援。");
     if (record.kind === GRID_KIND && record.schema === GRID_SCHEMA) {
       boundedJSON(record); validateGridDraft(record.value);
-    } else if (record.kind === ROOM_KIND && record.schema === ROOM_SCHEMA) {
-      if (!Rooms || Rooms.SCHEMA !== ROOM_SCHEMA || Rooms.CAPABILITY !== ROOM_CAPABILITY) fail("房間來源驗證器尚未就緒。");
+    } else if (record.kind === ROOM_KIND && [ROOM_SCHEMA,ROOM_HISTORY_SCHEMA].includes(record.schema)) {
+      if (!Rooms || Rooms.SCHEMA !== ROOM_SCHEMA || Rooms.CAPABILITY !== ROOM_CAPABILITY || Rooms.HISTORY_SCHEMA !== ROOM_HISTORY_SCHEMA || Rooms.HISTORY_CAPABILITY !== ROOM_HISTORY_CAPABILITY) fail("房間來源驗證器尚未就緒。");
+      if (record.value?.schema !== record.schema) fail("房間來源附件版本不一致。");
       Rooms.validate(record.value);
     } else fail("功能附件種類或版本不支援。");
     return record;
@@ -129,8 +142,13 @@
     return envelope;
   }
   function assertKind(kind) { if (![GRID_KIND, ROOM_KIND].includes(kind)) fail("功能附件種類不支援。"); }
-  function record(kind, value) { assertKind(kind); return validateRecord({kind, schema:kind === GRID_KIND ? GRID_SCHEMA : ROOM_SCHEMA, value}); }
-  function capabilities(envelope) { validate(envelope); return envelope.records.map(record => record.kind === GRID_KIND ? GRID_SCHEMA : ROOM_CAPABILITY).sort(); }
+  function record(kind, value) {
+    assertKind(kind);
+    const schema = kind === GRID_KIND ? GRID_SCHEMA : value !== null && typeof value === "object" ? Object.getOwnPropertyDescriptor(value,"schema")?.value : undefined;
+    return validateRecord({kind, schema, value});
+  }
+  function capabilities(envelope) { validate(envelope); return envelope.records.flatMap(record => record.kind === GRID_KIND ? [GRID_SCHEMA] :
+    record.schema === ROOM_HISTORY_SCHEMA ? [ROOM_CAPABILITY,ROOM_HISTORY_CAPABILITY] : [ROOM_CAPABILITY]).sort(); }
   function sourceRooms(envelope, sources) {
     validate(envelope);
     const value = envelope.records.find(record => record.kind === ROOM_KIND)?.value || null;
@@ -147,7 +165,8 @@
   function changedRoomBoundary(value, id) { return Rooms.boundaryChanged(validateRecord(record(ROOM_KIND, value)).value, id); }
   function unknownRoomHistory(value) { return Rooms.unknownHistory(validateRecord(record(ROOM_KIND, value)).value); }
   function references(value) { validateGridDraft(value); return JSON.parse(JSON.stringify([...(value.baseRef === null ? [] : [value.baseRef]), ...value.inputRefs])); }
-  return {SCHEMA, GRID_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
+  return {SCHEMA, GRID_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
+    validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
     sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields),
     validate, validateRecord, validateGridDraft, assertKind, record, capabilities, references, sourceRooms, validateNativeRefs, validateNativePins,
     retireRoomBoundary, changedRoomBoundary, unknownRoomHistory};
