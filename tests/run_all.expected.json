@@ -96,6 +96,11 @@
    "count": 6,
    "unit": "test"
   },
+  "py:test_evidence_link_native": {
+   "mode": "count",
+   "count": 6,
+   "unit": "test"
+  },
   "py:test_feedback_store": {
    "mode": "count",
    "count": 11,
@@ -206,6 +211,11 @@
    "count": 374,
    "unit": "node test"
   },
+  "node:evidence_links": {
+   "mode": "count",
+   "count": 28,
+   "unit": "node test"
+  },
   "node:model_viewer": {
    "mode": "exit-code-only"
   },
@@ -292,6 +302,16 @@
   "py:test_rule_case_request": {
    "mode": "count",
    "count": 5,
+   "unit": "test"
+  },
+  "py:test_assembly_native_diagnostics": {
+   "mode": "count",
+   "count": 8,
+   "unit": "test"
+  },
+  "py:test_grid_subdivision_oracle": {
+   "mode": "count",
+   "count": 40,
    "unit": "test"
   }
  }

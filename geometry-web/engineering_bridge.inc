@@ -16,11 +16,12 @@ static bool eng_definition_hash(const World *w,char hash[65])
 }
 static void json_engineering_capabilities(const World *w)
 {
-    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\"],\"required_capabilities\":[",stdout);
+    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\"],\"required_capabilities\":[",stdout);
     if(engineering_used(w))js_string("engineering-spec/1");
     if(w->parameters.card_count){if(engineering_used(w))putchar(',');js_string("parameters/1");}
     if(assembly_used(w)){if(engineering_used(w)||w->parameters.card_count)putchar(',');js_string(ASM_CAPABILITY);}
-    if(w->assembly.instance_count){if(engineering_used(w)||w->parameters.card_count||assembly_used(w))putchar(',');js_string(ASM_GENERATION_CAPABILITY);}putchar(']');
+    if(w->assembly.instance_count){if(engineering_used(w)||w->parameters.card_count||assembly_used(w))putchar(',');js_string(ASM_GENERATION_CAPABILITY);}
+    if(grid_subdivision_used(w)){if(engineering_used(w)||w->parameters.card_count||assembly_used(w)||w->assembly.instance_count)putchar(',');js_string(GRID_SUBDIVISION_CAPABILITY);}putchar(']');
 }
 static void json_engineering_sources(const World *w)
 {
@@ -79,6 +80,7 @@ static void json_engineering_preview(void)
 /* Shared candidate flow. Each caller keeps its schema, operation, preview JSON, and token kind. */
 static void batch_preview(const char *path,const char *schema_name,const char *schema_error,const char *stale_message,const char *memory_message,const char *label,bool assembly,bool (*operation)(World *,EngJson *,int),void (*write_preview)(void))
 {
+    g_asm_diagnostic=(AsmDiagnostic){0};
     if(g_hist_grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return;}
     size_t size;char *text=eng_read_file(path,&size);if(!text){eng_bridge_error("INPUT",g_engineering_error);return;}
     EngJson j;if(!eng_json_parse_n(&j,text,size)){eng_bridge_error("JSON",j.error);eng_json_free(&j);free(text);return;}
@@ -97,6 +99,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     if(ok){const World *previous=g_subgrid_before;g_subgrid_before=&g_world;ok=world_revalidate(candidate);g_subgrid_before=previous;if(!ok&&!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}
     for(size_t i=0;i<candidate->timber_count&&ok;++i)if(!candidate->timbers[i].placed){ok=eng_fail("I9: candidate still contains an unplaced timber");}
     char *stage_label=(char *)label;reference_stage(&g_world,candidate,&stage_label,1,ok);g_preview.engineering_batch=true;if(assembly)g_preview.assembly_batch=true;
+    if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
     fputs("{\"ok\":true,\"preview\":",stdout);write_preview();fputs("}\n",stdout);
     free(candidate);eng_json_free(&j);free(text);
 }

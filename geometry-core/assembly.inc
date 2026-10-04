@@ -1,3 +1,6 @@
+/* Transient candidate evidence. Never part of World/dump or capability data. */
+typedef struct { int kind;uint32_t id,field_id,version; } AsmDiagnostic;
+static AsmDiagnostic g_asm_diagnostic;
 static bool asm_instance_load(World *,EngJson *,int);
 /* Authoring validates sources and local topology; it never generates timber. */
 static const AsmRuleVersion *assembly_rule(const World *w,uint32_t id,uint32_t version)
@@ -15,8 +18,14 @@ static AsmBinding *assembly_binding(World *w,uint32_t id)
 static bool assembly_used(const World *w){return w->assembly.rule_count||w->assembly.binding_count;}
 static bool asm_error(const char *format,...)
 {
+    g_asm_diagnostic=(AsmDiagnostic){0};
     va_list args;va_start(args,format);vsnprintf(g_engineering_error,sizeof g_engineering_error,format,args);va_end(args);
     utf8_trim_tail(g_engineering_error);return false;
+}
+static bool asm_rule_immutable(uint32_t id,uint32_t version)
+{
+    bool result=asm_error("D32: published rule %u@%u is immutable",id,version);
+    g_asm_diagnostic=(AsmDiagnostic){2,id,0,version};return result;
 }
 static bool asm_name(EngJson *j,int t,char out[ASM_NAME_MAX])
 {return eng_json_string(j,t,out,ASM_NAME_MAX)&&out[0];}
@@ -79,7 +88,7 @@ static bool asm_publish(World *w,EngJson *j,int t,const char *expected)
     AsmRuleVersion rule;if(!asm_validate_rule(j,t,&rule))return false;
     if(expected&&strcmp(expected,rule.fingerprint))return asm_error("I41: rule %u@%u fingerprint mismatch",rule.id,rule.version);
     const AsmRuleVersion *old=assembly_rule(w,rule.id,rule.version);
-    if(old)return !strcmp(old->fingerprint,rule.fingerprint)||asm_error("D32: published rule %u@%u is immutable",rule.id,rule.version);
+    if(old)return !strcmp(old->fingerprint,rule.fingerprint)||asm_rule_immutable(rule.id,rule.version);
     if(w->assembly.rule_count==ASM_RULE_MAX)return asm_error("CAPACITY: at most 32 published assembly versions");
     w->assembly.rules[w->assembly.rule_count++]=rule;return true;
 }
@@ -90,7 +99,7 @@ static bool assembly_versions_immutable(const World *before,const World *after)
 {
     for(size_t i=0;i<before->assembly.rule_count;++i){const AsmRuleVersion *old=&before->assembly.rules[i];
         const AsmRuleVersion *next=assembly_rule(after,old->id,old->version);
-        if(next&&strcmp(old->fingerprint,next->fingerprint))return asm_error("D32: published rule %u@%u is immutable",old->id,old->version);
+        if(next&&strcmp(old->fingerprint,next->fingerprint))return asm_rule_immutable(old->id,old->version);
     }
     return true;
 }
@@ -109,9 +118,16 @@ static bool asm_binding_parse(World *w,EngJson *j,int t,AsmBinding *b,bool resol
         seen[i]=id;
         for(int axis=0;axis<2;++axis){int value=eng_json_member(j,s,axis?"B":"A");
             if(eng_json_is_null(j,value)){b->complete=false;continue;}
-            EngDimensionSource source;EngTarget target={1,0,0,axis};Coord effective;char path[192];
+            g_parameter_dimension_error=(ParameterRef){0};
+            EngDimensionSource source={0};EngTarget target={1,0,0,axis};Coord effective;char path[192];
             if(!eng_source_parse(j,value,&source,false)||source.kind==ENG_APPLICATION||(resolve&&!eng_resolve(w,&source,&target,UINT32_MAX,0,&effective,path,sizeof path))){
-                char error[256];snprintf(error,sizeof error,"%s",g_engineering_error);return asm_error("I40: binding %u slot %u.%c: %.155s",b->id,id,axis?'B':'A',error);}
+                char error[256];snprintf(error,sizeof error,"%s",g_engineering_error);
+                bool result=asm_error("I40: binding %u slot %u.%c: %.155s",b->id,id,axis?'B':'A',error);
+                if(source.kind==ENG_PARAMETER && g_parameter_dimension_error.set &&
+                    g_parameter_dimension_error.parameter_id==source.parameter.parameter_id &&
+                    g_parameter_dimension_error.field_id==source.parameter.field_id)
+                    g_asm_diagnostic=(AsmDiagnostic){1,source.parameter.parameter_id,source.parameter.field_id,0};
+                return result;}
         }
         const char *keys[]={"contactFace","orientation"};for(int axis=0;axis<2;++axis){int value=eng_json_member(j,s,keys[axis]);
             if(!asm_enum(j,value,"A,B",true))return asm_error("I40: binding %u slot %u needs explicit A/B or unset %s",b->id,id,keys[axis]);

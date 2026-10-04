@@ -1,0 +1,77 @@
+# #48 EvidenceLink independent slice / shared-owner handoff
+
+Based on main `067cbdc` (PR100 adopted scope, then PR101/105). This slice supplies independent modules and tests. It does **not** register an attachment kind, allocate a project format, modify native World, or edit `project-store.js`, `reference-workspace.js`, `ContextHistory`, `app.js`, `index.html`, or #77's module. Shared reader/save integration belongs to the `01a100b5…` owner. No private PDF fixture is included.
+
+## Candidate registration (coordinate with the shared owner)
+
+- Candidate kind: `evidence-links`; feature schema: `geometry-evidence-links/1`.
+- `EvidenceLinks.validate(value)` throws on unsupported schema, extra fields, invalid typed refs, malformed page/region/hash, executable/exotic data, duplicates, or bounds; returns `true` on success.
+- Bounds: 256 links, 2 MiB encoded JSON; manual raw text/note 2000 characters, raw value 256 characters. This is an engineering bound, not a new geometry rule.
+- `EvidenceLinks.references(value)` returns `{sources: sourceHashes[], targets: [{kind:'parameter-field',projectScope,parameterId,fieldId}]}`. Repeated evidence for one field remains independent. Formal model values are never saved inside the annotation.
+- Attachment read/write injection uses `readFeatureAttachment(kind)` and `setFeatureAttachment(kind,value,expectedContextToken)` only. Shared owner must register validator/schema/capability and the current project format; this worker has not claimed `/10` or any other format number. Unknown kind/schema/capability must reject before live state replacement.
+- The attachment setter is a **synchronous local history commit**. It must finish validation, token/history/busy checks and the entire mutation in one JavaScript turn. It cannot be an async function or return a Promise/thenable; remote save acknowledgments use the separate archive owner. The controller rejects async setters and has no await between its final guard and this local mutation.
+
+## Source closure and coordinates
+
+`documentFromReference(p,sourcePoolEntry)` requires the authoritative existing source entry: its plain metadata must have `type === 'application/pdf'` and `meta.id === meta.hash === p.sourceId`. PNG/JPEG, missing or mismatched metadata reject **before selection can create a link**, independently of the archive closure check. Do not synthesize PDF metadata from the page's shape or a filename. The function reads page/metadata data descriptors, rejecting getters or executable JSON without invocation, then snapshots only existing reference identity, source hash, page, scale-1 full-page dimensions, crop and rotation markers. PDF coordinates are the existing `page.getViewport({scale:1})` top-left, Y-down coordinates, **including intrinsic PDF rotation**. `rotationBasis` records the additional existing underlay `p.rot` at selection; it does not cause a second rotation. `cropBasis` is a marker, not a new coordinate origin. Region is `[x,y,width,height]` in the full page. There is no second calibration: `mmPerPx`, `x`, `y`, calibration points and world geometry stay exclusively in the reference owner. Rendering scale, zoom, DPR, crop and subsequent underlay rotations do not rewrite the evidence rectangle.
+
+Pass the existing `feUlMmToImg` / `feUlImgToMm` as `canvas.toPage` / `canvas.fromPage`. Existing `fePoint(event)` supplies face millimetres. An evidence selection intercepts existing canvas input only during its explicit selection operation; cancellation removes its overlay and permits ordinary canvas input again. It never invokes OCR, source extraction, native preview, or a geometry confirm.
+
+Complete project export must union `references(value).sources` into the original-source closure. Currently `ReferenceWorkspace.manifest()` collects sources from face pages only; evidence-only sources would otherwise fall out after removal of a reference page/boundary. Keep exact original bytes keyed by SHA256, never rendered PNG, blob/cache URL, filename, or filesystem search. `validateSourceClosure(value,{readSource,hashBytes,readPage})` checks source metadata/type/byte length/hash, page existence and original viewport dimensions before the shared owner commits a prepared project. It snapshots the candidate and source bytes for asynchronous validation, and rejects candidate edits during validation. The shared owner must atomically commit the same immutable prepared attachment/source snapshot that was validated; a boolean validation result is not a lease for a subsequently modified candidate. `readSource(hash)` returns `{meta:{id,hash,type,size},bytes:Uint8Array}`; `readPage(source,page)` returns `{width,height}` from the existing PDF API. Target refs must be checked against the prepared final native state. A matching field fingerprint is content evidence, not an incarnation proof.
+
+## Controller injection and identity
+
+```text
+EvidenceLinks.createController({
+  readFeatureAttachment, setFeatureAttachment,
+  getStamp, readCurrent, locateDocument, uuid?, now?
+})
+
+getStamp() -> {projectScope,contextToken,revision,nativeRevision,...history stamp?}
+readCurrent(document,target) -> {document: currentDescriptor|null,
+  target: currentTypedTarget|null, modelValue: {num,den,unit}|null,nativeRevision}
+locateDocument(document,region,{isCurrent}) -> guarded staged reference navigation
+```
+
+`getStamp()` must return a deterministic plain snapshot, using the shared project ID/context token, project revision/history frame where relevant, and the latest native revision. It must be refreshed when native state changes; cached revisions cannot prove continuity. `readCurrent` must return a native target from the current snapshot; use `SourceInspector.index(await apiRequest('source-inspect'))`, `SourceInspector.key('parameter-field',parameterId,0,fieldId)` and `EvidenceLinks.targetFromNode(projectScope,node)`. Get the exact model value from current `engineering-read.state.parameters[].fields[].value`; it is read-only and can remain fractional. Return the actual `source-inspect.revision` as `nativeRevision`, requiring the engineering read and source graph to agree. The controller rejects a current read whose native revision differs from its stamp. Native ID0/field0 are legal. Do not use names, array indexes or nearby geometry as identity. The shared setter must reject stale context/history/busy writes atomically, including late replies; the controller's before/after guards complement that guarantee.
+
+Resolve `readCurrent`'s recorded document argument independently of the active page: find its recorded reference page, hash and original page in the shared reader snapshot/source pool. Merely selecting another page or face is not source replacement. If the reference linkage was removed but original bytes remain, the source-only locator can still validate and display the original page; this does not assert native target continuity.
+
+Native target validation must retain historical missing/uncertain targets as unresolved annotations. Legal parameter deletion must not make the whole project unsaveable: verify present targets by exact typed IDs and pins, derive `target-missing` or `needs-reassociation` for absent/unknown ones, preserve the observations and historical confirmation, and require explicit rebind. This does not relax the strict annotation schema or mandatory original PDF byte closure.
+
+Controller methods: `add({document,region,target,observations})`, `readView() -> {stamp,links}`, `setReviewed(evidenceId,boolean)`, `rebind(evidenceId,explicitTarget)`, `locate(evidenceId)`, `cancel()`. `readView.links[]` includes saved link fields plus derived `status`, `canConfirm`, and current `modelValue`. Drawing and measurement each retain `{rawText,rawValue:string|null,unit:mm|cm|null,note}`, including conflicting or fractional text. Checking writes a human annotation only. No value adoption API exists here.
+
+`add(input)` checks the whole plain bounded schema before destructuring, cloning, UUID generation, current-state reads or attachment writes. Root/nested getters and `toJSON` reject with zero invocation; explicit rebind targets follow the same plain-data rule. Persisted link shape is unchanged.
+
+Only an explicit `add` or `rebind` grants a runtime association lease, bound to the exact context token, native revision and target pin. Any changed native revision or reopened controller makes identity unknown, even if typed IDs, names and fingerprints match. The historical confirmation record remains, but derived status becomes `needs-reassociation` and checking is blocked until manual field selection. This conservative behavior avoids a persistent incarnation ledger. Source hash/page/dimensions or locator replacement derives `source-changed`; absent bytes/page derives `source-missing`; absent field derives `target-missing`. Presentation-only crop/rotation changes retain the same original evidence region.
+
+## UI adapter handoff
+
+`evidence-links-ui.js` mounts into a child of existing `#refRecordDetails`, merging evidence into existing source records. The shared owner alone adds this small host and script wiring, destroys/remounts on inspector repaint, and exposes target-to-evidence listing through the existing parameter source disclosure. No new PDF application or persistent manager is created by this slice.
+
+The adapter receives `controller`, `getStamp`, guarded `readSelection() -> {stamp,document,targets:[{target,label,modelValue}]}`, and the existing canvas functions. Both `readSelection` and `readCurrent` must pass the actual source-pool entry to `documentFromReference`. A source-only locator can show the original PDF even when its former face linkage is gone; do not silently substitute a new reference by filename. For reverse listing, filter the same link bundle by its typed target or source hash/page; do not maintain a second lookup truth.
+
+Use `EvidenceLinks.createLocator({prepare,commit,getSourceStamp})` for navigation:
+
+```text
+getSourceStamp(recordedDocument) -> plain snapshot of source identity/type,
+  existing GeometryProject.reviewBasis(page), current navigation/focus/selection/view intent
+prepare(document,region,{assertCurrent}) -> Promise<detached prepared page>
+commit(prepared,document,region) -> synchronous result (never a Promise/thenable)
+```
+
+`getSourceStamp` must validate the current authoritative PDF entry and include source ID/hash/type, recorded page identity/dimensions, the existing reader's `reviewBasis(page)`, current active page/selection intent, and camera intent (the owner's navigation epoch, or existing `fe.panX/panY/zoom` scalars). This is an ephemeral guard, not a second saved calibration. A newer user pan/zoom cancels a pending locator's final fit without changing saved evidence coordinates. The controller's fixed `isCurrent()` covers context/history/native revision/cancellation, and the locator compares the fixed source/navigation stamp before and after preparation. `prepare` performs **only detached read-only work**: copy original assets, verify hash/page/dimensions and render through the existing PDF API; call `assertCurrent()` immediately after **every** awaited load/hash/page/render operation, before the next stage. Never mutate a live page's `src`, active page or canvas during preparation. Return the exact prepared source/page described by the passed document.
+
+After the final guard, `commit` checks its expected live context/history/source/navigation stamp and synchronously adopts that prepared page, navigates, fits and paints the recorded region in one JavaScript turn. There must be no asynchronous navigation inside this commit. The successful navigation may increment the reader's own revision; it must not be reported as stale by comparing its completed transition to the old revision. A cancel, source replacement/basis change, ordinary page switch, context switch or native/history change during either asynchronous preparation stage must cause **zero navigation, fit or paint**.
+
+**Required shared-reader seam:** current `ReferenceWorkspace.selectPage` increments revision before an optional awaited `preparePage`, then activates and redraws internally. A check after awaiting that public method is already too late. The reader owner must expose a detached `prepareReferencePage` and guarded **synchronous** `commitPreparedReferencePage(prepared,expected)` (or an equivalent externally guard-aware staged API). The latter validates the expected token/history/navigation/basis and exact prepared source/page before any mutation. The browser harness uses only the explicitly warmed, synchronous branch of current `selectPage` after detached rendering; it verifies activation immediately and catches the method's Promise separately. This demonstrates the independent adapter but is not a production replacement for the owner seam. Do not call cold `selectPage`, recapture a newer stamp after an await, or apply a check only after its internal paint. This branch intentionally does not patch the shared reader.
+
+The proposed seam arguments are ephemeral, not archive fields: prepared `{document,sourceMeta,verifiedBytes,pageRender}` must match the exact requested source hash/page/original dimensions; expected `{contextToken,historyRevision,nativeRevision,sourceHash,referencePageId,reviewBasis,navigationStamp,region}` supplies the fixed operation guard and full-page region. The owner may retain its own detached runtime PDF handles alongside these values. A wrong prepared source/page/dimension rejects before adopting `src` or changing active page. Commit must apply the owner's existing coordinate conversion/fit/paint, with no independent calibration or durable locator record.
+
+Mount signature: `EvidenceLinksUI.mount(host,{controller,readSelection,getStamp,canvas})`; `canvas` supplies `{svg,layer(),eventPoint(event),toPage(point),fromPage(point),pageIdentity()}`. Returned methods are `refresh`, `cancel`, `destroy`, `redraw`, `snapshot`. The evidence polygon is a child of the existing transformed canvas layer with a fixed screen stroke; existing pan/zoom applies naturally. The shared owner calls `redraw()` after `drawFaceEditor`/`feApplyZoom` rebuilds the layer, and destroys/remounts after the inspector host is rebuilt. It does not need a second transform, calibration, or pixel-to-page formula. `pageIdentity` should include reference page ID/hash/page and current basis markers; guarded selection rejects stale reads before writing.
+
+## Validation and remaining integration gate
+
+Focused Node tests, actual native bridge tests, and an isolated Chromium adapter check cover strict data, conflicting exact observations, parameter0/field0, source closure, four rotations/crop/zoom/DPR, annotation-only review, recreated IDs, cancellation/late/context replies and responsive safe text. Browser tests inject the new scripts and a bounded in-memory attachment adapter into the real existing app; this proves the independent slice, **not** complete project archive persistence.
+
+Complete true ZIP save/reopen (including evidence-only original bytes), history/dirty/undo/redo, prepared import atomicity, unknown project capability and A/B attachment closure remain mandatory at the shared-owner integration stage. Their implementation is intentionally absent from this branch. Physical iOS/OS picker/keyboard checks are unverified. Hand off as a draft PR for root's independent review; do not merge or deploy from this worker.

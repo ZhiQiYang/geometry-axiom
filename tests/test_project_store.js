@@ -96,6 +96,23 @@ test('v9 review receipts retain source basis and require real page and face refe
   assert.deepEqual(withDraft.manifest.requiredCapabilities,[P.GENERATION_CAPABILITY,P.Features.GRID_SCHEMA].sort());
 });
 test('rejects damaged scene, source, unknown version, duplicate paths and missing source',async()=>{
+  const supported=[P.ENGINEERING_CAPABILITY,P.PARAMETER_CAPABILITY,P.ASSEMBLY_CAPABILITY,P.GENERATION_CAPABILITY];
+  const newer=[...supported,'grid-subdivision-rules/1'];
+  assert.deepEqual(P.nativeReaderCapabilities(newer),supported);
+  assert.deepEqual(P.readerCapabilities(newer),[...supported,P.Features.GRID_SCHEMA]);
+  assert.deepEqual(newer,[...supported,'grid-subdivision-rules/1']);
+  assert.deepEqual(P.nativeReaderCapabilities(['grid-subdivision-rules/1']),[]);
+  P.assertProjectCapabilities({requiredCapabilities:[P.PARAMETER_CAPABILITY]},P.nativeReaderCapabilities(newer));
+  assert.throws(()=>P.assertProjectCapabilities({requiredCapabilities:[P.PARAMETER_CAPABILITY]},P.nativeReaderCapabilities(['grid-subdivision-rules/1'])));
+  for(const unknown of ['grid-subdivision-rules/1','future-native/1']){
+    assert.throws(()=>P.validateProjectCapabilities([unknown]));
+    assert.throws(()=>P.assertProjectCapabilities({requiredCapabilities:[unknown]},newer));
+    assert.throws(()=>P.sceneCapabilities('requires '+unknown+'\n'));
+  }
+  for(const syntax of ['grid-source-rule-highwater 1 next 1','grid-source-rule-highwater 1 next 2','grid-source-rule 1 create divisions 2 2','gridrule:1:1','subgrid 2 at-line rule 1'])
+    assert.throws(()=>P.sceneCapabilities(syntax+'\n'));
+  for(const bad of [null,'parameters/1',[null],[''],[42],[{}],['x'.repeat(101)],Array(43).fill('cap'),[P.PARAMETER_CAPABILITY,P.PARAMETER_CAPABILITY]])
+    assert.throws(()=>P.nativeReaderCapabilities(bad));
   const f=await fixture(), bytes=await P.pack(f.scene,f.manifest,f.sources,zip), entries=zip.unzipSync(bytes);
   for(const path of ['world.scene','sources/'+f.hash]){
     const corrupt={...entries,[path]:new Uint8Array([1,2,3])};
