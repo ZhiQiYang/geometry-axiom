@@ -534,7 +534,7 @@ def write_sidecar(exe, fp, note=""):
 def prepare_mutant_exe(m, src, mut_dir, compile_fn, rec=None, compile_sha=None):
     """讓 mut_dir/_mut.exe 處於可用狀態。回傳 (status, exe, message)。
 
-    status: cached(沿用)/ built(重編)/ invalid(編譯失敗)。
+    status: cached(沿用)/ built(重編)/ invalid(編譯失敗)/ blocked(來源變更或身分發布失敗)。
     compile_fn(m, exe) -> (ok, message) 只在非 cached 時被呼叫。
     rec 是舊呼叫端的相容參數；結果紀錄不作為採用未驗證 exe 的證據。
     """
@@ -550,12 +550,12 @@ def prepare_mutant_exe(m, src, mut_dir, compile_fn, rec=None, compile_sha=None):
     ok, msg = compile_fn(m, exe)
     if not ok or not exe.exists():
         exe.unlink(missing_ok=True)
-        return "invalid", exe, msg
+        return "blocked" if msg.startswith("INFRA ") else "invalid", exe, msg
     try:
         write_sidecar(exe, fp, "built")
     except OSError as exc:
         sidecar_path(exe).unlink(missing_ok=True)
-        return "invalid", exe, "cannot publish binary identity: " + str(exc)
+        return "blocked", exe, "cannot publish binary identity: " + str(exc)
     return "built", exe, msg
 
 
@@ -582,7 +582,7 @@ def prepare_baseline_exe(src, base_dir, compile_fn, compile_sha=None):
         write_sidecar(exe, fp, "built")
     except OSError as exc:
         sidecar_path(exe).unlink(missing_ok=True)
-        return "invalid", exe, "cannot publish baseline identity: " + str(exc)
+        return "blocked", exe, "cannot publish baseline identity: " + str(exc)
     return "built", exe, msg
 
 
@@ -930,13 +930,15 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
         return merged
 
     compile_sha = compile_hash()
+    execution_tool_sha = tool_hash()
     head_proc = run_cmd(["git", "rev-parse", "HEAD"], cwd=root)
     execution_head = head_proc.stdout.strip() if head_proc.returncode == 0 else ""
     baseline_receipt = None
     baseline_hash = None
 
     def inputs_unchanged(exe, fp, exe_hash):
-        return (Sources(root).closure == src.closure and (oracle or oracle_hash()) == oracle_sha
+        return (tool_hash() == execution_tool_sha and compile_hash() == compile_sha
+                and Sources(root).closure == src.closure and (oracle or oracle_hash()) == oracle_sha
                 and cache_state(exe, fp) == "hit" and _file_sha(exe) == exe_hash)
 
     def compile_baseline(exe):
@@ -949,7 +951,7 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
         if build.returncode != 0 or not exe.exists():
             return False, "unmodified source could not be compiled"
         if Sources(root).closure != src.closure:
-            return False, "source changed during baseline compilation"
+            return False, "INFRA source changed during baseline compilation"
         return True, ""
 
     def compile_mutant(m, exe):
@@ -965,13 +967,13 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
             build = run_cmd(compile_command(mut_src, exe),
                             cwd=exe.parent, timeout=300)
         except (OSError, subprocess.TimeoutExpired) as exc:
-            return False, "編譯失敗: " + str(exc)
+            return False, "INFRA compiler launch/timeout: " + str(exc)
         finally:
             mut_src.unlink(missing_ok=True)      # 成敗都清掉,不在 repo 留暫存
         if not exe.exists() or build.returncode != 0:
             return False, "編譯失敗: " + (build.stderr or build.stdout)[-200:]
         if Sources(root).closure != src.closure:
-            return False, "source changed during mutant compilation"
+            return False, "INFRA source changed during mutant compilation"
         return True, ""
 
     if runnable:
@@ -980,7 +982,7 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
         try:
             b_status, baseline_exe, b_msg = prepare_baseline_exe(
                 src, MUT_ROOT / "_baseline", compile_baseline, compile_sha)
-            if b_status == "invalid":
+            if b_status in ("invalid", "blocked"):
                 print("BASELINE BLOCKED: " + b_msg)
                 return 2
             print("BASELINE exe " + {"cached": "沿用快取(來源與編譯指令沒變)", "built": "已重編"}[b_status])
@@ -1012,9 +1014,9 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
     for m in runnable:
         status, MUT_EXE, msg = prepare_mutant_exe(
             m, src, MUT_ROOT / m["id"], compile_mutant, existing.get(m["id"]), compile_sha)
-        if status == "invalid":
-            results[m["id"]] = make_record(m, src, "invalid", msg, today, oracle_sha)
-            print(f"{m['id']}  INVALID  {msg}")
+        if status in ("invalid", "blocked"):
+            results[m["id"]] = make_record(m, src, status, msg, today, oracle_sha)
+            print(f"{m['id']}  {status.upper()}  {msg}")
             persist(False)
             continue
         print(f"{m['id']}  exe " + {"cached": "沿用快取",
@@ -1059,7 +1061,7 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
             verdict, why = "invalid", "current execution contradicts equivalence proof: " + why
         why = why.replace(str(root.resolve()), "<repo>")
         execution = {"schema": "geometry-mutation-execution/1", "head": execution_head,
-                     "platform": os.name, "tool_sha256": tool_hash(),
+                     "platform": os.name, "tool_sha256": execution_tool_sha,
                      "compile_exit_code": 0,
                      "compile_sha256": compile_sha, "compile_command": portable_compile_command(),
                      "test_command": ["<python>", "tests/run_tests.py", "<binary>"],

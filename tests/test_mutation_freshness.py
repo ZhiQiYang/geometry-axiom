@@ -184,12 +184,15 @@ class MutationFreshnessTests(unittest.TestCase):
 
     def run_fixture(self, mode='killed'):
         oracle_calls = []
+        tool_changed = False
+        tool_sha = mutate.tool_hash()
 
         def command(cmd, cwd, timeout=120):
+            nonlocal tool_changed
             if cmd[0] == 'git':
                 return subprocess.CompletedProcess(cmd, 0, 'a' * 40 + '\n', '')
-            if '-o' in cmd:
-                target = Path(cmd[cmd.index('-o') + 1])
+            if '-o' in cmd or (cmd[0] == 'cmd' and Path(cmd[2]).name == '_cl.bat'):
+                target = Path(cmd[cmd.index('-o') + 1] if '-o' in cmd else cmd[-1])
                 if mode == 'compilefail' and target.name == '_mut.exe':
                     return subprocess.CompletedProcess(cmd, 1, '', 'public compiler failure')
                 target.write_bytes(b'harmless compiled fixture')
@@ -197,6 +200,8 @@ class MutationFreshnessTests(unittest.TestCase):
             exe = Path(cmd[-1])
             oracle_calls.append(exe.name)
             if exe.name == 'baseline.exe':
+                if mode == 'toolchange':
+                    tool_changed = True
                 return self.proc()
             if mode == 'retrytamper':
                 return subprocess.CompletedProcess(cmd, 2, 'public infrastructure failure', '')
@@ -213,9 +218,10 @@ class MutationFreshnessTests(unittest.TestCase):
 
         with mock.patch.object(mutate, 'run_cmd', side_effect=command), \
                 mock.patch.object(mutate.time, 'sleep', side_effect=wait), \
+                mock.patch.object(mutate, 'tool_hash', side_effect=lambda: 'd' * 64 if tool_changed else tool_sha), \
                 contextlib.redirect_stdout(io.StringIO()):
             code = mutate.run_pass([self.m], set(), root=self.root, results_path=self.results, oracle=self.oracle)
-        return code, mutate.load_records(self.results)[self.m['id']], oracle_calls
+        return code, mutate.load_records(self.results).get(self.m['id']), oracle_calls
 
     def test_real_run_pass_publishes_traceable_assertion_receipt(self):
         code, rec, launches = self.run_fixture()
@@ -259,6 +265,31 @@ class MutationFreshnessTests(unittest.TestCase):
             row = run_all.run_suite(suite, dict(os.environ, MUTATE_RESULTS='untrusted override'), {})
         self.assertEqual(probe.call_args.args[1]['MUTATE_RESULTS'], str(run_all.HERE / 'mutants_results.json'))
         self.assertEqual(row.failed, 1)
+
+    def test_failed_inventory_gate_cannot_update_census(self):
+        suite = next(s for s in run_all.build_suites() if s.name == 'mutation:check')
+        row = run_all.Row(suite.name, suite.counted)
+        row.ran, row.failed = True, 1
+        with mock.patch.object(run_all, 'EXPECTED_FILE', self.root / 'expected.json'), \
+                contextlib.redirect_stdout(io.StringIO()):
+            self.assertFalse(run_all.update_expected([row], [suite], []))
+        self.assertFalse((self.root / 'expected.json').exists())
+
+    def test_identity_publication_failure_is_blocked_not_compiler_invalid(self):
+        def compile_fixture(_mutant, exe):
+            exe.write_bytes(b'harmless fixture')
+            return True, ''
+        with mock.patch.object(mutate.binaries.os, 'replace', side_effect=OSError('public write failure')):
+            status, exe, why = mutate.prepare_mutant_exe(self.m, self.src, self.cache / self.m['id'], compile_fixture)
+        self.assertEqual(status, 'blocked')
+        self.assertIn('identity', why)
+        self.assertFalse(mutate.sidecar_path(exe).exists())
+
+    def test_tool_change_during_baseline_cannot_certify_new_tool(self):
+        code, rec, launches = self.run_fixture('toolchange')
+        self.assertEqual(code, 2)
+        self.assertIsNone(rec)
+        self.assertEqual(launches, ['baseline.exe'])
 
 
 if __name__ == '__main__':
