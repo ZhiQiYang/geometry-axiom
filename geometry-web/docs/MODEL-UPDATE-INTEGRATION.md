@@ -12,6 +12,8 @@ Implementation branch: `feat/issue-44-f1b-controlled-update-20261004`, initially
 based on main `1c83b5e76cb0226bfd9c6c92289c8ab0760413e4`.
 Rebased onto main `1075058be37d37b98a2a910f4f67b87583be85b3` after the existing
 #85 owner's merge; this branch makes no changes to that work.
+Then incorporated main `8d08f1aceda7f26b6f05c64010f4b47a41df9c31` (#24's
+tests/evidence-only merge), rerunning its strengthened 35-test assembly suite.
 
 This branch owns new files only: `model_update.py`, `model-update.js`,
 `model-update-app.js`, `model-update.css`, their dedicated acceptance tests and
@@ -66,6 +68,31 @@ Each package pin is SHA-256 of canonical JSON of its whole manifest, or null
 when absent. Raw current source bytes, canonical full record, native graph node
 fingerprints, package source/geometry hashes and actual binary hashes have
 separate domains. The receipt never enters the saved strict record.
+
+### Mapping to the shared-owner draft
+
+Compared directly with PR100's
+`geometry-guide/IMPLEMENTATION-QUEUE-20261004.md` at
+`0230e436870ec3ba06fcb0735ffabc3b7427979d`; that draft is not treated as main.
+The shared owner's accepted candidate envelope maps without a schema change:
+
+```text
+modelId           = receipt.record.id
+previousSignature = receipt.old_record_sha256
+record            = receipt.record
+diff              = receipt.diff
+sourcePins        = {current_scene_sha256: receipt.current_scene_sha256,
+                     runtime: receipt.runtime}
+```
+
+`previousSignature` is SHA-256 of canonical JSON of the entire previous strict
+record, not the source scene hash or the model ID. The controller independently
+checks that hash and also compares the complete current record with its captured
+canonical value. Native revision, context/frame identity, history entry references,
+project revision and cancellation generation remain transient host/controller
+guards; they do not become model fields or feature attachments. The integration
+owner supplies those host callbacks and the synchronous replacement callback.
+This #44 slice needs neither `manifest.featureAttachments` nor its new format.
 
 ## Controller and atomic commit
 

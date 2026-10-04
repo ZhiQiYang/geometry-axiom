@@ -76,7 +76,7 @@
      state.editing={record:copy(record),context_id:contextId()};state.createdId=null;state.phase="editing";state.previewRevision=-1;
      $("smEditHeight").value=record.input.settings.height;$("smConfirmFaces").checked=false;
 -    $("smHeightEditSummary").textContent=`目前牆高 ${record.input.settings.height} mm，牆底 ${record.input.settings.bottom} mm。保存更新前，原模型會完整保留。`;
-+    $("smHeightEditSummary").textContent=`目前牆高 ${record.input.settings.height} mm，牆底 ${record.input.settings.bottom} mm。此處沿用完整舊來源，只改牆高；若要採用現行來源，請使用下方明選更新。兩種修改均先核對預覽，再確認完整更新。`;
++    $("smHeightEditSummary").textContent=`目前牆高 ${record.input.settings.height} mm，牆底 ${record.input.settings.bottom} mm。此處沿用已保存的完整原來源，只改牆高；若要採用現行來源，請使用下方明選更新。兩種修改均先核對預覽，再確認完整更新。`;
      $("smResultBadge").textContent="原模型 · 修改後請更新預覽";$("smResultBadge").dataset.state="stale";
      updateActions();setTab("setup");$("smHeightEditPanel").scrollIntoView({block:"start"});$("smEditHeight").focus();
      message("輸入新牆高後，按「更新預覽」。只有核對並按「更新空間」才會修改原模型。");
