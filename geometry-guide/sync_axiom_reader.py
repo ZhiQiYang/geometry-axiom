@@ -162,6 +162,32 @@ COLOR_CONTRACTS = [
 ]
 
 
+def color_property_overlaps(key: str, required: dict) -> bool:
+    """Conservative overlap table for the small set of guarded CSS properties."""
+    if key == "all":
+        return True
+    # Treat vendor aliases as overlaps too, without accepting them as the
+    # ordinary declaration required by the contract.
+    key = re.sub(r"^-(?:webkit|moz|ms|o)-", "", key)
+    if key in required:
+        return True
+    if "background" in required and key.startswith("background-"):
+        return True
+    if "outline" in required and key in {"outline-color", "outline-style", "outline-width"}:
+        return True
+    if "text-decoration-color" in required and key == "text-decoration":
+        return True
+    if "border" in required or "border-left" in required:
+        # Logical sides can map to the left edge depending on writing mode.
+        sides = ["block", "block-start", "block-end", "inline", "inline-start", "inline-end"]
+        sides += ["top", "right", "bottom", "left"] if "border" in required else ["left"]
+        overlaps = {"border", "border-width", "border-style", "border-color"}
+        overlaps.update("border-" + side for side in sides)
+        overlaps.update("border-" + side + "-" + part for side in sides for part in ("width", "style", "color"))
+        return key in overlaps
+    return False
+
+
 def color_contract_regressions(template: str) -> list[str]:
     def selector_key(selector):
         return re.sub(r"\s*([>,])\s*", r"\1", " ".join(selector.split()))
@@ -172,7 +198,8 @@ def color_contract_regressions(template: str) -> list[str]:
 
     # Restricted template guard, not a cascade engine: required declarations
     # must be unconditional. Scoped or important overrides of those properties
-    # are rejected conservatively, rather than guessed to be applicable.
+    # and overlapping shorthand/longhand/alias/all overrides are rejected
+    # conservatively, rather than guessed to be applicable.
     brace_tokens = re.compile(r"'(?:\\.|[^'\\])*'|\"(?:\\.|[^\"\\])*\"|[{}]")
 
     def blocks(css):
@@ -219,13 +246,24 @@ def color_contract_regressions(template: str) -> list[str]:
         return [str(error)]
     for selectors, body, scoped in parsed:
         declarations = {}
-        for declaration in body.split(";"):
+        parts = body.split(";")
+        for index, declaration in enumerate(parts):
             if ":" in declaration:
                 key, value = declaration.split(":", 1)
                 key = key.strip().lower()
                 for selector in selectors.split(","):
                     required = contracts.get(selector_key(selector))
-                    if required is not None and key in required:
+                    if required is not None and color_property_overlaps(key, required):
+                        # Current templates use these two base shorthands,
+                        # followed in the SAME ordinary rule by the guarded
+                        # longhand. Only that locally provable ordering is
+                        # supported; later/cross-rule aliases still fail.
+                        covered = {"border": "border-left", "text-decoration": "text-decoration-color"}.get(key)
+                        later = dict(part.split(":", 1) for part in parts[index + 1:] if ":" in part)
+                        later = {name.strip().lower(): value_key(value) for name, value in later.items()}
+                        safe_base = (covered in required and later.get(covered) == value_key(required[covered]))
+                        if key not in required and not safe_base:
+                            bad.append("overlapping color property unsupported: " + selector.strip() + ": " + key)
                         if scoped:
                             bad.append("scoped color declaration unsupported: " + selector.strip())
                         if re.search(r"!\s*important\b", value, re.I):

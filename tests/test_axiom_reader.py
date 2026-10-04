@@ -298,6 +298,70 @@ class CanonicalReader(unittest.TestCase):
                 with self.assertRaisesRegex(AssertionError, "reader color contract"):
                     reader.validate(broken, self.axiom, self.plain)
 
+    def test_color_contract_rejects_reviewer_background_and_border_overrides(self):
+        for css in (".ex.no .badge{background:var(--reject-bg);background-color:var(--ink);color:var(--reject-ink)}",
+                    ".dsl>span.hit{background:var(--hit-bg);border-left:2px solid var(--hit-line);border:0}",
+                    ".copy .reference-link{text-decoration-color:var(--link-underline);text-decoration:none}",
+                    ".inline-note{border-left:3px solid var(--note);border:0}"):
+            broken = self.html.replace('<script id="reader-counts"', '<style>' + css + '</style><script id="reader-counts"', 1)
+            with self.subTest(css=css):
+                self.assertTrue(any("overlapping" in error for error in reader.color_contract_regressions(broken)))
+                with self.assertRaisesRegex(ValueError, "reader color contract"):
+                    reader.rebuild(broken, self.axiom, self.plain)
+                with self.assertRaisesRegex(AssertionError, "reader color contract"):
+                    reader.validate(broken, self.axiom, self.plain)
+
+    def test_color_contract_rejects_tracked_property_family_overlaps_and_all(self):
+        cases = {
+            ".ex.no .badge": ("background-color:var(--ink)", "background-image:none", "background-position-x:0", "-webkit-background:var(--ink)"),
+            ".dsl>span.hit": ("border:0", "border-left-color:var(--ink)", "border-left-width:0", "border-left-style:none", "border-color:var(--ink)", "border-width:0", "border-style:none", "border-inline:0", "border-inline-start-color:var(--ink)", "border-block-end-width:0"),
+            ".recovery-banner": ("border-top:0", "border-right-color:var(--ink)", "border-bottom-width:0", "border-inline-end-style:none"),
+            ".review-block.target-flash": ("outline-color:var(--ink)", "outline-style:none", "outline-width:0", "-webkit-outline:0"),
+            ".copy .reference-link": ("text-decoration:none", "-webkit-text-decoration-color:var(--ink)"),
+            ".stale-note": ("all:initial", "all:unset", "all:revert", "all:revert-layer"),
+        }
+        for selector, declarations in cases.items():
+            for declaration in declarations:
+                # Reject even before normal declarations; we do not infer
+                # alias priority, logical mapping or conditional applicability.
+                for scoped in (False, True):
+                    css = selector + "{" + declaration + "}"
+                    if scoped:
+                        css = "@media print{" + css + "}"
+                    extra = "<style>" + css + "</style>"
+                    broken = self.html.replace("<style>", extra + "<style>", 1)
+                    with self.subTest(selector=selector, declaration=declaration, scoped=scoped):
+                        errors = reader.color_contract_regressions(broken)
+                        self.assertTrue(any("overlapping" in error for error in errors), errors)
+                        if scoped:
+                            self.assertTrue(any("scoped" in error for error in errors), errors)
+            # Exercise real rebuild/validate for every tracked family.
+            css = selector + "{" + declarations[0] + "}"
+            broken = self.html.replace('<script id="reader-counts"', '<style>' + css + '</style><script id="reader-counts"', 1)
+            with self.subTest(selector=selector):
+                with self.assertRaisesRegex(ValueError, "reader color contract"):
+                    reader.rebuild(broken, self.axiom, self.plain)
+                with self.assertRaisesRegex(AssertionError, "reader color contract"):
+                    reader.validate(broken, self.axiom, self.plain)
+
+    def test_color_contract_allows_unrelated_properties_and_untracked_selectors(self):
+        css = (".stale-note{font-size:13px;padding:4px;border-radius:3px;background:var(--ink)}"
+               ".dsl>span.hit{border-radius:4px;border-right:0;padding-left:8px}"
+               ".review-block.target-flash{outline-offset:5px}"
+               ".copy .reference-link{text-decoration-thickness:2px}"
+               ".untracked-example{all:initial;background-color:var(--ink);border:0}")
+        changed = self.html.replace('<script id="reader-counts"', '<style>' + css + '</style><script id="reader-counts"', 1)
+        self.assertEqual(reader.color_contract_regressions(changed), [])
+        self.assertEqual(reader.rebuild(changed, self.axiom, self.plain), changed)
+        self.assertEqual(reader.validate(changed, self.axiom, self.plain)["five_asserts"], "pass")
+        # Existing base shorthands may precede the explicit guarded longhand
+        # in the same ordinary rule. Reverse order is tested above.
+        ordinary = '<style>.inline-note{border:0;border-left:3px solid var(--note)}.copy .reference-link{text-decoration:underline;text-decoration-color:var(--link-underline)}</style>'
+        self.assertEqual(reader.color_contract_regressions(self.html + ordinary), [])
+        for unsafe in (ordinary.replace("border:0", "border:0!important"),
+                       ordinary.replace("<style>", "<style>@media print{").replace("</style>", "}</style>")):
+            self.assertTrue(reader.color_contract_regressions(self.html + unsafe))
+
     def test_retired_color_contracts_reject_each_lost_or_wrong_declaration(self):
         for selector, required in reader.COLOR_CONTRACTS:
             if required is None:

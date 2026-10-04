@@ -74,6 +74,13 @@ PR92 先修 #81／#83 與重複見證事件；本後續只退出已完成的色�
 26 個 JS 遷移保留完整 drift 保護，不聲稱所有互動任意格式改動都已解除限制。
 審查補強另釘住已改字級的 canonical 仍能跑歷史／格式測試、print／supports／style media
 不可充當普通宣告、以及錯誤 important 值先於普通 expected 值等覆蓋情境。
+受管屬性的重疊 shorthand／longhand／vendor alias 及 `all` 重設保守拒絕：
+background family、outline 線條、border 的寬／型／色與邏輯邊、text-decoration-color
+的 shorthand。跨 rule、反向順序、print scope 與 important 均拒絕，不推算完整 cascade。
+現行模板已有的 border／text-decoration 基底 shorthand，只有在同一普通 rule 內
+先於正確的受管 longhand 時可接受；不綁該基底的歷史字串。其他 alias 與 `all` 無此例外。
+字級、padding、border-radius、非受管邊線與非受管 selector 的正常修改另有正例，
+不因歷史色码相容而重新鎖住完整 CSS rule。
 
 ## 重跑
 
