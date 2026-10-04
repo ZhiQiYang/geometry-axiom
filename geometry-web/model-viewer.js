@@ -378,6 +378,7 @@
     listen('pointerup', release); listen('pointercancel', release); listen('lostpointercapture', release);
     listen('wheel', event => {
       event.preventDefault();
+      cancelPointers();
       const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? height : 1);
       zoom = clamp(zoom * Math.exp(-delta * 0.0015), 0.1, 12); schedule(); notify();
     }, { passive: false });

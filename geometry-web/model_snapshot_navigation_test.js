@@ -31,6 +31,11 @@ module.exports=async({send,eval_,sleep,click,waitForUI,exceptionCount})=>{
     check('同尺寸ID4另行定位，沒有按尺寸或陣列順序合併',same(await selected(),{kind:'timber',id:4})&&!same(firstPan,await read('SpaceModelWorkspace.snapshot().viewer.pan')));
     await clickCanvas(0);
     check('DPR2真正3D三角形點擊回選同保存ID0列',same(await selected(),{kind:'timber',id:0})&&await read(`document.querySelector(${JSON.stringify(row(0))}).getAttribute('aria-pressed')==='true'&&document.querySelector(${JSON.stringify(row(4))}).getAttribute('aria-pressed')==='false'`));
+    const held=await canvasPoint(4);
+    await send('Input.dispatchMouseEvent',{type:'mousePressed',x:held.x,y:held.y,button:'left',clickCount:1});
+    await send('Input.dispatchMouseEvent',{type:'mouseWheel',x:held.x,y:held.y,deltaX:0,deltaY:30,buttons:1});
+    await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:held.x,y:held.y,button:'left'});
+    check('實際按住指標後滾輪再放開不誤選ID4且不改保存資料',same(await selected(),{kind:'timber',id:0})&&same(await state(),before));
     await clickCanvas(4);
     check('另一3D角材回選ID4，保存模型／dump／history逐值不變',same(await selected(),{kind:'timber',id:4})&&same(await state(),before));await shot('navigation-desktop-dpr2');
     await ctl('#smTimberReviewList [data-source-refresh]');await wait(`!!document.querySelector(${JSON.stringify(row(0))})`);

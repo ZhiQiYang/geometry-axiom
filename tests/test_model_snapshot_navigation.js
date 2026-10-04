@@ -54,6 +54,17 @@ test('drag, pinch, cancellation, shift-pan and wheel never emit a component clic
   h.event('pointerdown',300,196);h.viewer.setSelectableRoots([]);h.viewer.setSelectableRoots([ref(4)]);h.event('pointerup',300,196);
   assert.deepEqual(h.picks,[],'a gesture cannot transfer to replacement geometry or a new native proof');
 });
+test('wheel cancels a held click and a later separate click still works',()=>{
+  const h=harness([box(ref(0))]);
+  assert.deepEqual(h.viewer.hitTest(300,196),ref(0));
+  h.event('pointerdown',300,196);
+  h.event('wheel',300,196,1,{deltaY:30,deltaMode:0});
+  h.event('pointerup',300,196);
+  assert.deepEqual(h.picks,[],'pointerdown → wheel → pointerup must not pick');
+  assert.ok(h.viewer.getState().zoom<1,'wheel must still zoom');
+  h.event('pointerdown',300,196);h.event('pointerup',300,196);
+  assert.deepEqual(h.picks,[ref(0)],'a fresh click after wheel remains usable');
+});
 test('hidden/malformed/replaced meshes reset selection and picking authority',()=>{
   const h=harness([box(ref(0))]);h.viewer.selectRoot(ref(0));h.viewer.setObjects([box(ref(4))]);
   assert.equal(h.viewer.getState().selection,null);assert.equal(h.viewer.hitTest(300,196),null);
