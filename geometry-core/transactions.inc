@@ -594,13 +594,18 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
     bool rule_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-source-rule");
     bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
-    if (explicit_preview || (!g_parsing_scene_file && !g_preview_confirming &&
+    if (explicit_preview || (!g_preview_confirming &&
         (engineering_edit || assembly_dimensions_changed(world,candidate) || system_edit || application_edit || binding_edit || rule_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
         (affects && (!ok || reference_geometry_changed(world,candidate)))))) {
+        char replay_error[512];snprintf(replay_error,sizeof replay_error,"%s",g_scene_last_error);
         reference_stage(world,ok?candidate:&g_reference_trial,tokens,count,ok);
         reference_preview_text();
         if (explicit_preview) return true;
-        scene_error(path,line_no,"I8a: impact preview required; inspect preview, then confirm token (World unchanged)");
+        if(g_parsing_scene_file&&!ok&&replay_error[0]){
+            char message[768];snprintf(message,sizeof message,"I8a: impact preview required (World unchanged); %s",replay_error);
+            scene_error(path,line_no,message);
+        }
+        else scene_error(path,line_no,"I8a: impact preview required; inspect preview, then confirm token (World unchanged)");
         return false;
     }
     if (!ok) {
