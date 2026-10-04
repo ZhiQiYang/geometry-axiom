@@ -11,14 +11,19 @@ import unittest
 class SceneImportTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
+        self.stderr = tempfile.TemporaryFile()
         self.bridge = subprocess.Popen([os.environ['GEOMETRY_TEST_BRIDGE']], stdin=subprocess.PIPE,
-                                       stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+                                       stdout=subprocess.PIPE, stderr=self.stderr, text=True)
 
     def tearDown(self):
         self.bridge.stdin.close()
-        self.bridge.wait(timeout=5)
+        exit_code = self.bridge.wait(timeout=5)
         self.bridge.stdout.close()
+        self.stderr.seek(0)
+        diagnostics = self.stderr.read().decode('utf-8', errors='replace')
+        self.stderr.close()
         self.directory.cleanup()
+        self.assertEqual(exit_code, 0, diagnostics)
 
     def ask(self, command):
         self.bridge.stdin.write(command + '\n')
