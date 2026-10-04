@@ -116,8 +116,8 @@ static void reference_guide_clip_text(const World *w,uint32_t id,FILE *out)
     const GuideLine *g=world_find_guide(w,id);
     const PlacementSurface *p=g?world_find_placement(w,g->placement_id):NULL;
     if (!g || !p || !g->resolved) { fputs("unavailable",out); return; }
-    SurfaceSegment2 segs[POLY_MAX_VERTICES];
-    size_t n=guide_line_get_local_segments(p,world_placement_boundary(w,p),g,segs,POLY_MAX_VERTICES);
+    SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
+    size_t n=guide_line_get_local_segments(p,world_placement_boundary(w,p),g,segs,GUIDE_MAX_SEGMENTS);
     fputc('{',out);
     for (size_t i=0;i<n;++i) fprintf(out,"%s[%lld,%lld]-[%lld,%lld]",i?",":"",
         (long long)segs[i].start.u,(long long)segs[i].start.v,(long long)segs[i].end.u,(long long)segs[i].end.v);
@@ -237,9 +237,9 @@ static bool reference_grid_changed(const World *before,const World *after,uint32
         bool zv=grid_axis_lines_in(after->grids,after->grid_count,z,zp,zb,axis,zx,&zn,NULL,0);
         if (!av || !zv || an!=zn || (an && memcmp(ax,zx,an*sizeof *ax))) return true;
         for (size_t k=0;k<an;++k) {
-            SurfaceSegment2 as[POLY_MAX_VERTICES],zs[POLY_MAX_VERTICES];
-            size_t na=grid_line_segments(before->grids,before->grid_count,a,ap,ab,axis,k,as,POLY_MAX_VERTICES);
-            size_t nz=grid_line_segments(after->grids,after->grid_count,z,zp,zb,axis,k,zs,POLY_MAX_VERTICES);
+            SurfaceSegment2 as[GUIDE_MAX_SEGMENTS],zs[GUIDE_MAX_SEGMENTS];
+            size_t na=grid_line_segments(before->grids,before->grid_count,a,ap,ab,axis,k,as,GUIDE_MAX_SEGMENTS);
+            size_t nz=grid_line_segments(after->grids,after->grid_count,z,zp,zb,axis,k,zs,GUIDE_MAX_SEGMENTS);
             if (na!=nz || (na && memcmp(as,zs,na*sizeof *as))) return true;
         }
     }
@@ -254,9 +254,9 @@ static bool reference_guide_changed(const World *before,const World *after,uint3
     if (!a || !z || !ap || !zp || !a->resolved || !z->resolved ||
         a->placement_id!=z->placement_id || a->direction!=z->direction || a->offset!=z->offset ||
         memcmp(&ap->frame,&zp->frame,sizeof ap->frame)) return true;
-    SurfaceSegment2 as[POLY_MAX_VERTICES],zs[POLY_MAX_VERTICES];
-    size_t na=guide_line_get_local_segments(ap,world_placement_boundary(before,ap),a,as,POLY_MAX_VERTICES);
-    size_t nz=guide_line_get_local_segments(zp,world_placement_boundary(after,zp),z,zs,POLY_MAX_VERTICES);
+    SurfaceSegment2 as[GUIDE_MAX_SEGMENTS],zs[GUIDE_MAX_SEGMENTS];
+    size_t na=guide_line_get_local_segments(ap,world_placement_boundary(before,ap),a,as,GUIDE_MAX_SEGMENTS);
+    size_t nz=guide_line_get_local_segments(zp,world_placement_boundary(after,zp),z,zs,GUIDE_MAX_SEGMENTS);
     return na!=nz || (na && memcmp(as,zs,na*sizeof *as));
 }
 

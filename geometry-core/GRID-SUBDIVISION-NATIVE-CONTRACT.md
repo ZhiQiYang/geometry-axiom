@@ -30,6 +30,8 @@ Cell query returns `systemId`, `ruleKey`, decimal-string `cell`, `bounds:[minU,m
 
 Engineering budgets are 32 rules per source, 1024 returned cells and 4096 emitted segments per query. Exact mode refuses excess rather than truncating. Sample mode returns whole cells at a stated row-major stride and validates only those returned cells; it never presents omitted cells as verified. A query budget failure does not invalidate an otherwise legal source. Direct anchors may retain existing `through` or `between` placement clauses; the rule line remains a position reference and contributes no support.
 
+The existing guide clipper is shared by rule queries and formal guides. Its temporary segment storage covers the outline and all eight allowed 32-vertex holes (conservative bound 288); a legal 41-segment line is returned in full. This storage belongs to temporary query/clip buffers, does not grow World/history, and does not raise the source query's 4096-segment budget.
+
 Rule use protects divisions/selector/delete whenever any formal guide or timber references it. Guide expressions take coordinates only; direct anchors also enforce whole footprint inside parent cell and retain real support checks. Every source candidate validates every configuration, application, manual conflict and finite reference atomically. Existing manual subgrid behavior remains separate.
 
 ## Integration and verification boundaries

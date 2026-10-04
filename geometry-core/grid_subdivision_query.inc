@@ -111,12 +111,12 @@ static bool grid_rule_query_visit(const World *w,const char *kind,uint32_t id,
         }
         for (uint32_t inner=0;inner+1<rule->divisions[axis];++inner) {
             Coord coordinate=lo+(Coord)(inner+1)*step;
-            SurfaceSegment2 clips[POLY_MAX_VERTICES]; size_t count=0;
+            SurfaceSegment2 clips[GUIDE_MAX_SEGMENTS]; size_t count=0;
             if (clip_lo<clip_hi && (!rect || (coordinate>=rect[axis] && coordinate<=rect[axis+2]))) {
                 if (placement) {
                     GuideLine guide={0}; guide.placement_id=placement->id;
                     guide.direction=axis?GUIDE_ALONG_U:GUIDE_ALONG_V; guide.offset=coordinate;
-                    count=guide_line_get_local_segments(placement,boundary,&guide,clips,POLY_MAX_VERTICES);
+                    count=guide_line_get_local_segments(placement,boundary,&guide,clips,GUIDE_MAX_SEGMENTS);
                 } else {
                     clips[0]=axis?(SurfaceSegment2){ {clip_lo,coordinate},{clip_hi,coordinate} }
                         :(SurfaceSegment2){ {coordinate,clip_lo},{coordinate,clip_hi} };

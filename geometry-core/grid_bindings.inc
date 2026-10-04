@@ -212,8 +212,8 @@ static bool grid_query_stagger_segments(const ReferenceGrid *g,const PlacementSu
             continue;
         }
         GuideLine guide={0}; guide.placement_id=p->id; guide.direction=axis?GUIDE_ALONG_U:GUIDE_ALONG_V; guide.offset=coord;
-        SurfaceSegment2 clips[POLY_MAX_VERTICES];
-        size_t cn=guide_line_get_local_segments(p,boundary,&guide,clips,POLY_MAX_VERTICES);
+        SurfaceSegment2 clips[GUIDE_MAX_SEGMENTS];
+        size_t cn=guide_line_get_local_segments(p,boundary,&guide,clips,GUIDE_MAX_SEGMENTS);
         for(size_t j=0;j<cn;++j){
             SurfaceSegment2 seg=clips[j];
             Coord *start=axis?&seg.start.u:&seg.start.v,*end=axis?&seg.end.u:&seg.end.v;
@@ -286,7 +286,7 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
             }
         }
         for(size_t i=0;i<q->count;++i){
-            GridQueryLine *line=&q->lines[i];SurfaceSegment2 clips[POLY_MAX_VERTICES];size_t n;
+            GridQueryLine *line=&q->lines[i];SurfaceSegment2 clips[GUIDE_MAX_SEGMENTS];size_t n;
             Coord lo=rect[1-a],hi=rect[3-a];
             if(g->from_binding && g->axis[a].stagger_set){
                 if(!grid_query_stagger_segments(g,p,boundary,kind,a,line,rect,sample,q,err,cap)) return false;
@@ -296,10 +296,10 @@ static bool grid_query(const World *w,const char *kind,uint32_t id,const Coord r
                 clips[0]=(SurfaceSegment2){a?(SurfacePoint2){lo,line->coordinate}:(SurfacePoint2){line->coordinate,lo},
                     a?(SurfacePoint2){hi,line->coordinate}:(SurfacePoint2){line->coordinate,hi}};n=1;
             }else if(g->is_subgrid){
-                n=grid_line_segments(w->grids,w->grid_count,g,p,boundary,a,line->index,clips,POLY_MAX_VERTICES);
+                n=grid_line_segments(w->grids,w->grid_count,g,p,boundary,a,line->index,clips,GUIDE_MAX_SEGMENTS);
             }else {
                 GuideLine guide={0};guide.placement_id=p->id;guide.direction=a?GUIDE_ALONG_U:GUIDE_ALONG_V;guide.offset=line->coordinate;
-                n=guide_line_get_local_segments(p,boundary,&guide,clips,POLY_MAX_VERTICES);
+                n=guide_line_get_local_segments(p,boundary,&guide,clips,GUIDE_MAX_SEGMENTS);
             }
             for(size_t j=0;j<n;++j){
                 SurfaceSegment2 seg=clips[j];Coord *start=a?&seg.start.u:&seg.start.v,*end=a?&seg.end.u:&seg.end.v;

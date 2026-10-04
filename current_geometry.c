@@ -198,6 +198,9 @@ static bool surface_frame_is_valid(const SurfaceFrame *frame)
 
 #define POLY_MAX_VERTICES 32
 #define POLY_MAX_HOLES     8
+/* A line may gain one interval per hole interval; this conservative
+ * bound covers the outline and every allowed hole without truncation. */
+#define GUIDE_MAX_SEGMENTS (POLY_MAX_VERTICES * (POLY_MAX_HOLES + 1))
 
 typedef enum {
     EDGE_FREE = 0,      /* 外側無垂直實體面可釘（挑空/陽角/門洞…） */
@@ -1136,7 +1139,7 @@ static size_t guide_line_get_local_segments(
     }
 
     /* 外輪廓截線。 */
-    SurfaceSegment2 segs[POLY_MAX_VERTICES];
+    SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
     size_t seg_count =
         poly_clip_line(&boundary->outline, along_u, guide->offset,
                        segs, POLY_MAX_VERTICES);
@@ -1160,7 +1163,7 @@ static size_t guide_line_get_local_segments(
             }
 
             /* 每條現有線段與孔區間做差集，可能裂成兩段。 */
-            SurfaceSegment2 next[POLY_MAX_VERTICES];
+            SurfaceSegment2 next[GUIDE_MAX_SEGMENTS];
             size_t next_count = 0;
 
             for (size_t s = 0; s < seg_count; ++s) {
@@ -1204,7 +1207,7 @@ static size_t guide_line_get_local_segments(
                 ++next_count;
 
                 /* 孔區間把線段剖成兩段的情形：h_lo > s_lo 且 h_hi < s_hi。 */
-                if (h_lo > s_lo && h_hi < s_hi && next_count < POLY_MAX_VERTICES) {
+                if (h_lo > s_lo && h_hi < s_hi && next_count < GUIDE_MAX_SEGMENTS) {
                     if (along_u) {
                         next[next_count].start = (SurfacePoint2){ h_hi, guide->offset };
                         next[next_count].end   = (SurfacePoint2){ s_hi, guide->offset };
@@ -1315,9 +1318,9 @@ typedef struct {
 } BoundaryVertexKeys;
 typedef struct {
     int64_t index; Coord coordinate;
-    size_t segment_count; SurfaceSegment2 segments[POLY_MAX_VERTICES];
-    int64_t segment_band[POLY_MAX_VERTICES]; /* D10b: other-axis cell, only when segment_has_band */
-    bool segment_has_band[POLY_MAX_VERTICES];
+    size_t segment_count; SurfaceSegment2 segments[GUIDE_MAX_SEGMENTS];
+    int64_t segment_band[GUIDE_MAX_SEGMENTS]; /* D10b: other-axis cell, only when segment_has_band */
+    bool segment_has_band[GUIDE_MAX_SEGMENTS];
 } GridQueryLine;
 typedef struct {
     bool defined; int64_t first,last; uint64_t total,stride;
@@ -2122,9 +2125,9 @@ static void print_guide_line(
     const GuideLine *guide
 )
 {
-    SurfaceSegment2 segs[POLY_MAX_VERTICES];
+    SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
     size_t n = guide_line_get_local_segments(
-        surface, boundary, guide, segs, POLY_MAX_VERTICES);
+        surface, boundary, guide, segs, GUIDE_MAX_SEGMENTS);
 
     if (n == 0) {
         printf("參考線 %" PRIu32 "：（落在有效區域之外，無線段）\n",
@@ -2770,7 +2773,7 @@ static void scene_draw_view(
         /* 4. 這片面的參考線：虛線，多邊形下可能被截成多段 */
         for (size_t i = 0; i < scene->guide_count; ++i) {
             const GuideLine *guide = &scene->guides[i];
-            SurfaceSegment2 segs[POLY_MAX_VERTICES];
+            SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
             size_t seg_count;
 
             if (guide->placement_id != surface->id) {
@@ -2778,7 +2781,7 @@ static void scene_draw_view(
             }
 
             seg_count = guide_line_get_local_segments(
-                surface, boundary, guide, segs, POLY_MAX_VERTICES);
+                surface, boundary, guide, segs, GUIDE_MAX_SEGMENTS);
 
             for (size_t k = 0; k < seg_count; ++k) {
                 ViewPoint2 a = view_project(view,
@@ -2817,10 +2820,10 @@ static void scene_draw_view(
                 }
 
                 for (size_t li = 0; li < n; ++li) {
-                    SurfaceSegment2 segs[POLY_MAX_VERTICES];
+                    SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
                     size_t seg_count = grid_line_segments(
                         scene->grids, scene->grid_count, grid, surface, boundary,
-                        axis, indices[li], segs, POLY_MAX_VERTICES);
+                        axis, indices[li], segs, GUIDE_MAX_SEGMENTS);
 
                     for (size_t k = 0; k < seg_count; ++k) {
                         ViewPoint2 a = view_project(view,
@@ -3293,7 +3296,7 @@ static ScenePick scene_pick_at(
         const PlacementSurface *surface =
             scene_find_placement(scene, guide->placement_id);
         const SpaceBoundarySurface *boundary;
-        SurfaceSegment2 segs[POLY_MAX_VERTICES];
+        SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
         size_t seg_count;
 
         if (surface == NULL) {
@@ -3302,7 +3305,7 @@ static ScenePick scene_pick_at(
 
         boundary = scene_placement_boundary(scene, surface);
         seg_count = guide_line_get_local_segments(
-            surface, boundary, guide, segs, POLY_MAX_VERTICES);
+            surface, boundary, guide, segs, GUIDE_MAX_SEGMENTS);
 
         for (size_t k = 0; k < seg_count; ++k) {
             ViewPoint2 a = view_project(view,
@@ -3377,14 +3380,14 @@ static void scene_draw_pick(
         const GuideLine *guide = &scene->guides[pick->guide];
         const PlacementSurface *surface =
             scene_find_placement(scene, guide->placement_id);
-        SurfaceSegment2 segs[POLY_MAX_VERTICES];
+        SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
         size_t seg_count = 0;
 
         if (surface != NULL) {
             seg_count = guide_line_get_local_segments(
                 surface,
                 scene_placement_boundary(scene, surface),
-                guide, segs, POLY_MAX_VERTICES);
+                guide, segs, GUIDE_MAX_SEGMENTS);
         }
 
         for (size_t k = 0; k < seg_count; ++k) {
