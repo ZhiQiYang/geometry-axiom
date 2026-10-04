@@ -67,6 +67,8 @@ setFeatureAttachment("grid-draft", validValue | null, expectedContextToken)
 
 其他已批准種類（#77 `source-rooms`、#49 `rule-cases`）待各自正式 validator 與閉包接入再加入白名單，現在明確拒。#49 匯入的歷史 receipt 不能只靠自洽指紋冒稱可信新 pass；須明示歷史／待重跑，或由目前受控 executor 重跑。
 
+同一專案的 local undo/redo 另發出 `project-local-history`，攜前後 token；仍開啟的組構草稿編輯器可取消舊預覽後載入復原值，採用新 token。這不保留原 token，不在核心切案 undo/redo 發出，也不使已關閉或已離案的 owner 復活。
+
 ## 驗證方法
 
 現有 `test_project_store.js` 的可攜、版本拒絕、核對收據共存與 history 案例擴充來源／配置完整 raw 往返、能力分離、降版／剝除／未知 kind/schema/超限負例。`test_reference_workspace_races.js` 擴充真 adapter 的 clone/no-op/token/busy/group、ZIP、匯入與切案 undo、新案／清空及跨分頁拒寫；VM DOM/PDF 是 fakes，不能冒稱實際瀏覽器 UI。既有測試方法數不變。root另授權共用owner註冊已合 PR101 的四個 #49 Python suite，三個需真 bridge、一個純 validator；完整跑後新增四個 expected 計數，全部原凍結計數（scene139、integrity88等）、mutation/golden維持，不覆寫 #85 證據。

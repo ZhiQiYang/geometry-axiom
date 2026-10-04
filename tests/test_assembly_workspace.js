@@ -12,7 +12,7 @@ const deferred=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {
 const tick=()=>new Promise(r=>setImmediate(r));
 const rule=()=>({id:1,version:1,name:'框',slots:[{id:1,name:'主支'},{id:2,name:'副支'}],members:[{id:1,slotId:1},{id:2,slotId:2},{id:3,slotId:2}],joints:[{id:1,kind:'end-to-side',scope:'one',targetMember:1,terminatedMember:2,end:'start',side:'+u',dir:'u'}]});
 const draft=(id='draft-A')=>({id,kind:'rule',base_ref:null,data:rule(),updated_at:'2026-10-01T00:00:00.000Z'});
-function fixture(){
+function fixture(options={}){
   const elements=new Map(),listeners=new Map(),calls=[],removed=[],gate=deferred();
   const element=id=>{if(!elements.has(id))elements.set(id,{id,disabled:false,hidden:false,innerHTML:'',textContent:'',dataset:{},classList:{toggle(){}},attrs:{},
     setAttribute(k,v){this.attrs[k]=v;},removeAttribute(k){delete this.attrs[k];},append(){},prepend(){},remove(){},
@@ -21,12 +21,13 @@ function fixture(){
   for(const id of ['asmName','asmConfirm','asmPreview','asmCancel','asmClose','asmNewRule','projectSave','asmDiagram','asmStatus'])element(id);
   const history=new ContextHistory(()=>({id:crypto.randomUUID(),assemblyDrafts:[],models:[],faceProjections:new Map()}));
   const context=()=>history.frame.context;
+  const frameTokens=new WeakMap(),token=()=>{if(!options.frameTokens)return context().id;if(!frameTokens.has(history.frame))frameTokens.set(history.frame,crypto.randomUUID());return frameTokens.get(history.frame);};
   context().assemblyDrafts=[draft(),draft('draft-B')];
   const notify=()=>listeners.get('project-info-changed')?.();
   const ref={escape:v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'),context,
-    getProjectState:()=>({contextToken:context().id}),assertEditable(){},getAssemblyDrafts:()=>copy(context().assemblyDrafts),
-    setAssemblyDraft(d,token){assert.equal(token,context().id);history.push(history.snapshot(),'local');const found=context().assemblyDrafts.some(x=>x.id===d.id);context().assemblyDrafts=context().assemblyDrafts.map(x=>x.id===d.id?copy(d):x);if(!found)context().assemblyDrafts.push(copy(d));notify();},
-    removeAssemblyDraft(id,token,record=true){assert.equal(token,context().id);if(record)history.push(history.snapshot(),'local');removed.push(id);context().assemblyDrafts=context().assemblyDrafts.filter(d=>d.id!==id);notify();}};
+    getProjectState:()=>({contextToken:token()}),assertEditable(){},getAssemblyDrafts:()=>copy(context().assemblyDrafts),
+    setAssemblyDraft(d,expectedToken){assert.equal(expectedToken,token());history.push(history.snapshot(),'local');const found=context().assemblyDrafts.some(x=>x.id===d.id);context().assemblyDrafts=context().assemblyDrafts.map(x=>x.id===d.id?copy(d):x);if(!found)context().assemblyDrafts.push(copy(d));notify();},
+    removeAssemblyDraft(id,expectedToken,record=true){assert.equal(expectedToken,token());if(record)history.push(history.snapshot(),'local');removed.push(id);context().assemblyDrafts=context().assemblyDrafts.filter(d=>d.id!==id);notify();}};
   let result={ok:true},world={rules:[],bindings:[]},failRead=false,ids={assemblyRule:2,assemblyBinding:1};
   const env={ReferenceWorkspace:ref,structuredClone,crypto,Map,Set,console,AbortSignal,setTimeout,
     window:{ContextOperations:require('../geometry-web/context-operations.js'),addEventListener:(name,fn)=>listeners.set(name,fn)},document:{createElement:()=>dialog,body:{append(){}},getElementById:element},
@@ -39,8 +40,8 @@ function fixture(){
   let source=fs.readFileSync(process.env.GEOMETRY_TEST_ASSEMBLY_WORKSPACE||require.resolve('../geometry-web/assembly-workspace.js'),'utf8');
   source=source.replace('return {open,close,flush,card,inspector,remove,','return {test:{setState:x=>s=x,getState:()=>s,confirm,diagram,preview,previewCopy,render,safe,changed,newDraft},open,close,flush,card,inspector,remove,');
   vm.runInNewContext(source,env);const w=env.window.AssemblyWorkspace,t=w.test;
-  const state={context:context().id,generation:1,draft:copy(context().assemblyDrafts[0]),draftsRef:context().assemblyDrafts,read:{state:world},engineering:{parameters:[],materials:[],specs:[]},preview:{valid:true,token:'candidate-A'},rotation:0,zoom:1};t.setState(state);
-  return {w,t,state,context,history,ref,calls,removed,gate,element,env,notify,setResult:r=>result=r,setWorld:w=>world=w,captureWorld:()=>{state.read={revision:1,state:copy(world)};},setIds:v=>ids=v,failNextRead:()=>failRead=true};
+  const state={context:token(),generation:1,draft:copy(context().assemblyDrafts[0]),draftsRef:context().assemblyDrafts,read:{state:world},engineering:{parameters:[],materials:[],specs:[]},preview:{valid:true,token:'candidate-A'},rotation:0,zoom:1};t.setState(state);
+  return {w,t,state,context,history,ref,calls,removed,gate,element,env,notify,notifyLocal:previousContextToken=>listeners.get('project-local-history')?.({detail:{previousContextToken,contextToken:token()}}),setResult:r=>result=r,setWorld:w=>world=w,captureWorld:()=>{state.read={revision:1,state:copy(world)};},setIds:v=>ids=v,failNextRead:()=>failRead=true};
 }
 
 const bindingValue=id=>({id,name:'配置',rule:{id:1,version:1},slots:[1,2].map(slotId=>({slotId,A:null,B:null,contactFace:null,orientation:null}))});
@@ -262,6 +263,14 @@ test('explicit new-version mapping keeps typed sources and its fixed provenance 
   assert.deepEqual(applied.data.slots.map(s=>s.slotId),[7,8]);
   assert.equal(f.history.step('undo'),true);f.notify();assert.deepEqual(copy(f.state.draft),previous);
   assert.equal(f.history.step('redo'),true);f.notify();assert.deepEqual(copy(f.state.draft),applied);
+  const live=fixture({frameTokens:true}),initial=copy(live.state.draft);
+  live.state.draft.data.name='follow local undo';live.w.flush();const edited=copy(live.state.draft),firstToken=live.state.context;
+  assert.equal(live.history.step('undo'),true);live.notifyLocal(firstToken);live.notify();
+  assert.equal(live.w.isOpen,true);assert.deepEqual(copy(live.state.draft),initial);assert.notEqual(live.state.context,firstToken);
+  const undoToken=live.state.context;assert.equal(live.history.step('redo'),true);live.notifyLocal(undoToken);live.notify();
+  assert.equal(live.w.isOpen,true);assert.deepEqual(copy(live.state.draft),edited);
+  const originalContext=live.context();live.history.replace({id:'other-project',assemblyDrafts:[],models:[],faceProjections:new Map()});live.notify();assert.equal(live.w.isOpen,false);
+  live.history.step('undo');assert.equal(live.context(),originalContext);live.notify();assert.equal(live.w.isOpen,false);
 });
 test('late binding allocation after a project switch never inserts its captured rule into the new project',async()=>{
   const f=fixture(),source=publishedRule(),allocation=deferred(),original=f.env.apiRequest;f.setWorld({rules:[source],bindings:[]});

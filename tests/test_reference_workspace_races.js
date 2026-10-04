@@ -68,7 +68,13 @@ test('saving during PDF selection writes the selected page and its original byte
   f.w.history.group={base:f.w.history.snapshot(),dirty:false};assert.throws(()=>f.w.setFeatureAttachment('grid-draft',null,token),/目前操作/);f.w.history.group=null;
   const invalid=rawGridDraft();invalid.rawForm.igCellI=NaN;assert.throws(()=>f.w.setFeatureAttachment('grid-draft',invalid,token));
   assert.equal(f.w.history.undo.length,count+1);assert.equal(f.w.readFeatureAttachment('grid-draft').rawForm.igCellI,'-');
+  const events=[];f.env.CustomEvent=class {constructor(type,options){this.type=type;this.detail=options?.detail;}};
+  f.env.window.dispatchEvent=event=>{if(event.type==='project-local-history')events.push(event);};
+  const previousToken=f.w.getProjectState().contextToken;
   assert.equal(f.w.tryLocalHistory('line undo').ok,true);assert.equal(f.w.readFeatureAttachment('grid-draft'),null);
+  assert.equal(events.length,1);assert.equal(events[0].type,'project-local-history');
+  assert.equal(events[0].detail.previousContextToken,previousToken);assert.equal(events[0].detail.contextToken,f.w.getProjectState().contextToken);
+  assert.notEqual(previousToken,events[0].detail.contextToken);
   assert.equal(f.w.tryLocalHistory('line redo').ok,true);assert.equal(f.w.readFeatureAttachment('grid-draft').rawForm.igCellI,'-');
   const selection=f.w.selectPage(1,'page-2'),saving=f.w.save();
   await turn();gate.resolve();await selection;await f.written.promise;f.writeGate.resolve();await saving;

@@ -411,8 +411,15 @@ const ReferenceWorkspace = (() => {
   function tryLocalHistory(cmd) {
     if (pendingLoad) return null;
     if(/^line\s+(undo|redo)\b/.test(cmd))assertEditable();
+    const previousContext=context(),previousContextToken=getProjectState().contextToken;
     const result = history.tryLocal(cmd);
-    if (result?.ok) { context().modelsDirty = true; context().faceProjectionsDirty = true; dirty(); sync(); }
+    if (result?.ok) {
+      // A live editor may follow a local draft undo in the same project. This
+      // explicit notification never renews a former editor after a project switch.
+      if(context()===previousContext)window.dispatchEvent(new CustomEvent("project-local-history",{
+        detail:{previousContextToken,contextToken:getProjectState().contextToken}}));
+      context().modelsDirty = true; context().faceProjectionsDirty = true; dirty(); sync();
+    }
     return result;
   }
   async function library() {
