@@ -1,6 +1,7 @@
 /* D19a/I25a/R32: source-owned rules; one authoritative cell evaluator. */
 static bool g_rule_scene_highwater[WORLD_MAX_GRID_SYSTEMS];
 static bool g_rule_scene_required;
+static bool g_rule_scene_encountered;
 
 static const GridSubdivisionRule *grid_rule_find(const GridSystem *s,uint32_t key)
 {
@@ -16,7 +17,7 @@ static bool grid_rules_valid(const GridSystem *s,char *err,size_t cap)
 {
     if(s->rule_count>GRID_MAX_SUBDIVISION_RULES)return grid_rule_error(err,cap,"RULE_CAPACITY",s->id,0);
     if(!s->rule_count)return true;
-    for(int a=0;a<2;++a)if(!grid_axis_is_infinite(&s->axis[a]) || s->axis[a].stagger_set)
+    for(int a=0;a<2;++a)if(s->axis[a].source!=GRID_SRC_REPEAT || s->axis[a].stagger_set)
         return grid_rule_error(err,cap,"SOURCE_KIND",s->id,0);
     for(size_t i=0;i<s->rule_count;++i){
         const GridSubdivisionRule *r=&s->rules[i];
@@ -124,7 +125,7 @@ static bool grid_rule_target(const World *w,const char *kind,uint32_t id,Referen
         *source=world_find_grid_system(w,binding->system_id);
         *boundary=*placement?world_placement_boundary(w,*placement):world_find_boundary(w,binding->boundary_id);
     }
-    if(!*source || !grid_axis_is_infinite(&(*source)->axis[0]) || !grid_axis_is_infinite(&(*source)->axis[1]) ||
+    if(!*source || (*source)->axis[0].source!=GRID_SRC_REPEAT || (*source)->axis[1].source!=GRID_SRC_REPEAT ||
         (*source)->axis[0].stagger_set || (*source)->axis[1].stagger_set)return grid_rule_error(err,cap,"SOURCE_KIND",*source?(*source)->id:0,0);
     return true;
 }
@@ -157,6 +158,7 @@ static bool grid_rule_line(const World *w,const GridRuleLineRef *ref,SurfaceId p
 
 static bool apply_grid_source_rule(const char *path,int line_no,char **t,int count,World *w)
 {
+    if(g_parsing_scene_file)g_rule_scene_encountered=true;
     uint32_t sid,key=0;int at=3;bool create=false,remove=false;GridSubdivisionRule r={0};char err[256]="";
     if(count<4 || !parse_u32(t[1],&sid))goto invalid;
     const GridSystem *old=world_find_grid_system(w,sid);if(!old){scene_error(path,line_no,"I25a: WRONG_SOURCE");return false;}
@@ -202,6 +204,7 @@ invalid:
 }
 static bool apply_grid_source_rule_highwater(const char *path,int line_no,char **t,int count,World *w)
 {
+    if(g_parsing_scene_file)g_rule_scene_encountered=true;
     uint32_t sid,next;
     if(!g_parsing_scene_file || count!=4 || !parse_u32(t[1],&sid) || strcmp(t[2],"next") ||
         (strcmp(t[3],"exhausted") && (!parse_u32(t[3],&next) || !next))){scene_error(path,line_no,"I25a: HIGHWATER replay-only declaration");return false;}
@@ -221,6 +224,7 @@ static bool grid_subdivision_used(const World *w)
 }
 static bool grid_rules_scene_integrity(const World *w)
 {
+    if(g_rule_scene_encountered && !g_rule_scene_required)return false;
     if(!grid_subdivision_used(w))return true;
     if(!g_rule_scene_required)return false;
     for(size_t i=0;i<w->grid_system_count;++i)if((w->grid_systems[i].rule_count || w->grid_systems[i].next_rule_key!=1) && !g_rule_scene_highwater[i])return false;

@@ -15,8 +15,8 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "12b75b050c3b1aa18a1b66adea79b7f5216e5976"
-AXIOM_SHA256 = "ac2b4ede9d6687111e9ef2f4c6194cb3d8f97543b55d41c455ec9db9b01a96b1"
+AXIOM_REVISION = "73b9ba1d417c1b6c9885951b24139b67f8550312"
+AXIOM_SHA256 = "d4bd69cd3dcbcef10802dd401a66b293afdaa09abccc6853d7a39f478cefe29a"
 PRE_SUBDIVISION_AXIOM_VERSIONS = frozenset({
     ("cc6adff4c9c783ce78bcbd849754b69254690cab", "d5eb43d077e7408fb032ee09f552795215fbf5fb7b097b57f7ac7ef6f2ed08f7"),
 })

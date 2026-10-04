@@ -253,15 +253,19 @@ static bool grid_rule_query_rect(const World *w,const char *kind,uint32_t id,
                                       &out->required_segments,err,cap)) return false;
         out->segments_counted=true;
         if (out->required_segments<=GRID_RULE_QUERY_MAX_SEGMENTS) break;
-        if (!sample) {
+        /* Every stride retains ordinal zero. Once only that whole cell is
+         * selected, no further sampling can satisfy the segment budget. */
+        if (!sample || out->stride>=out->required_cells) {
             if (err && cap) snprintf(err,cap,"R32: QUERY_CAPACITY requires %llu segments; limit %u",
                 (unsigned long long)out->required_segments,(unsigned)GRID_RULE_QUERY_MAX_SEGMENTS);
             return false;
         }
         uint64_t factor=(out->required_segments-1)/GRID_RULE_QUERY_MAX_SEGMENTS+1;
-        if (out->stride>UINT64_MAX/factor)
-            return grid_rule_query_error(err,cap,"R32: QUERY_OVERFLOW computing sample stride");
-        out->stride*=factor;
+        /* Clamp to the terminal first-cell-only selection. This also avoids
+         * overflow; every retry at least doubles the stride until terminal. */
+        if (out->stride>(out->required_cells-1)/factor)
+            out->stride=out->required_cells;
+        else out->stride*=factor;
     }
     size_t selected=(size_t)((out->required_cells-1)/out->stride+1);
     if (!grid_rule_query_allocate(out,selected,err,cap)) return false;

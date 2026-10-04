@@ -12478,6 +12478,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     g_parsing_scene_file = true;
     memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
     g_rule_scene_required=false;
+    g_rule_scene_encountered=false;
     g_parameter_scene_loading = true;
 
     char line[SCENE_MAX_LINE];
