@@ -54,7 +54,7 @@ kind為共用owner有限白名單，每kind至多一record（case/rooms可在其
 | #77 thread `01a104fc-a75a-728a-8d74-2e323f84d08c` | 新纯source-rooms模組、validator/雙房fixtures/tests | 共享basis、兩房refs/名稱、new vs edit、basis變更不改舊geometry；不競寫#54求解同檔。 |
 | #49 thread `01a104ff-3a10-74c4-b1c8-8217c6fd308d` | 新有限案例／隔離executor與6fixtures/tests | 真隔離與crash/timeout/freshness/nonpass；保存／入口待共用骨架。 |
 | #58契約／oracle準備 | GRID-SUBDIVISION-RULES-PROPOSAL.md與独立數學oracle | 下節精確差異／oracle，review後由root另指定native writer。 |
-| native World：root預定另派#58/59唯一owner | current_geometry.c、native inc/dump/parser/allocator/preview | #58契約後單owner；不與#54 native改動競寫；與共用owner協調native capability/dump，而不競寫project schema/app。 |
+| #58/59 native thread `01a1050d-60bf-7207-844c-08bf99a520b0` | current_geometry.c、native inc/dump/parser/allocator/preview、web_bridge子網格核心 | 先六條精確差異/oracle再核心小slice；不與#54競寫；與共用owner協調native capability/dump，project schema/app及新format號由共用owner統一。 |
 
 第一波#85/#24收尾、#45骨架、#44候選、#77人工多房、#49案例可並行。第二波共用接口穩定後接#46完整A/B、#48EvidenceLink、#49保存/入口。子網格分契約→native→保存→UI；自動辨識不阻擋人工多房。每slice先focused必要正反例／mutant，review可並行；同exact head跑stage必要完整gate，交root逐stage決定合併。按實際blob變動重跑受影響gate，不每個文案patch無差別全庫、不借舊head冒新pass；expected/golden由唯一owner協調。
 
