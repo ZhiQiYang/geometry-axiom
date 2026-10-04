@@ -194,6 +194,15 @@
         capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY].includes(capability))) fail("專案需要尚未支援的工程能力。");
     return capabilities;
   }
+  function nativeReaderCapabilities(available) {
+    // A native service can offer more capabilities than this reader supports.
+    // Keep its supported subset; required manifest/scene capabilities still
+    // pass their separate finite validation and must be present in the subset.
+    if(!Array.isArray(available)||available.length>42||new Set(available).size!==available.length||
+       available.some(capability=>!str(capability,100)||!capability.length))fail('服務可用能力清單不合法。');
+    const supported=available.filter(capability=>[ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY].includes(capability));
+    return validateProjectCapabilities(supported);
+  }
   function assertProjectCapabilities(manifest, available) {
     const required = manifest.requiredCapabilities || [];
     validateProjectCapabilities(required);
@@ -700,6 +709,6 @@
   }
   return { OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
     MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage,
-    validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, assertProjectCapabilities, sceneCapabilities,
+    validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, nativeReaderCapabilities, assertProjectCapabilities, sceneCapabilities,
     validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, projectFormat, reference, pack, unpack, ContextHistory };
 });
