@@ -146,3 +146,14 @@ PR104 尚未在 main 的這個 slice 維持注入 interface，
 Linux cloud 的 scenario Python suite 為 35/35；Windows 目前有 8 個
 temporary-shebang fixture skips。這些沒有平台豁免，Windows strict 會拒絕全過；
 須由後續 test owner 解決 fixture portability，不能使用 allow-skip 冒充完整驗收。
+
+## #116 B 情境選單
+
+`tests/test_issue116_browser.js` 是必跑的真原生／瀏覽器 gate，獨立於非瀏覽器 aggregate。
+提供隔離 `GEOMETRY_TEST_URL`、TEMP `GEOMETRY_FEEDBACK_DIR`，並以 `NODE_PATH` 指向
+既有 Playwright runtime（本機可用 Codex bundled packages），執行 `node tests/test_issue116_browser.js`。
+它驗 `/runtime` repository/fresh、真右鍵及數值欄位、取消不改、精確凹口確認、單步 undo/redo、
+完整 `.gcanvas` 保存／重開、過期上下文拒寫、鍵盤及搜尋、孔邊快捷限制與核心角色拒絕、390/720px 可達性。
+截圖／驗證專案只寫 TEMP；不寫使用者 feedback 或已提交 golden。
+另跑無 scope flag 的 `geometry-web/cdp_test.js`，包括原選取／游標及所有既有共用介面回歸。
+PR #114 正式多房間 owner 與實體 iOS／IME／系統選檔仍須 dot 整合後驗收，不能以本 gate 代替。

@@ -4168,6 +4168,21 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 完整 `run_all.py --build --update-expected` 受 Windows `Path.stat()`／`os.fstat()` ctime 不一致阻擋，原生執行檔註冊失敗，不能視為全套通過；工具拒絕更新數量清單，新增測試的 census 更新仍待完成。未降低門檻或繞過執行檔來源驗證。
 - 使用者後續画面已能預覽，8765 runtime 為目前來源的 `fresh:true`，面 #2 原 dump 保留；另一個方向一致性問題另記 GEO-244，本項測試不等於原圖方向驗收。
 
+## #116 — 面內游標 v2 與 B 右鍵選單（2026-10-05，草稿 PR #125 交 dot；合併 gate 受阻）
+
+- 採使用者提供圖片的 B／1b：272px 動作卡＋搜尋精簡清單、296px 側接參數表單，邊緣翻轉；資料與提交使用原有操作、預覽、影響確認、取消及歷史，不另建命令來源。
+- 減項（GEO-219）：取代原右鍵純動作清單；右鍵開啟時收起重複浮動操作列，關閉再還原。停用理由合併至選單既有 footer，未增加常駐教學；側接表單重用唯一 `feOpPanel`。
+- 先驗收面內完整切片；物件畫布、空間平面圖與三視圖仍列後續範圍。複製／貼上／重複與多選批改、觸控長按／偏移準星／雙指不假稱完成。
+- PR #114 共用 app／index 的接線以最小 diff 保留；不動 ReferenceWorkspace、project-store、room-collection 或核心。整合交 dot，不自行合併或部署。
+- 正式 gate：`tests/test_issue116_browser.js`＋`geometry-web/cdp_test.js`；證據與限制見 `geometry-web/docs/ISSUE116-B-HANDOFF.md` 和根目錄 `design-qa.md`。
+- 87項真browser/native、共用73項、模型更新39項、多房間56項通過；dot首輪source review的未放置參考線P2已修正並補8項真驗收。最終`dce2975`／ee9f版本完整 `cdp_test.js`：1586通過／0失敗，但在P76等待逾時而未完成，未比對golden。實際trace為參數卡engineering-confirm拒絕Missing, invalid or unrelated engineering preview token後，等待!ParameterUI.pending逾時；沒有把0失敗斷言說成全量通過。詳細fatal與分段見validation.json。 CI未啟動及dot最終head／owner／實體裝置gate未驗，保持草稿。已rebase到#114合入後861b65e並保留雙方scripts；詳細分段與來源hashes見validation.json。
+
+- 2026-10-05 更新：普通 merge 納入最新 main `4bea91a`／#124，原 B 與 owner 修改都保留。使用者追加 3D 旋轉裁切回報，`0e555ed` 補齊拖曳／方向鍵的投影 fit scale；沿用置中、缩放與平移，未新增 UI、未改網格／體積。B87、共用73、模型39、預設完整空間202及桌面／手機旋轉畫面驗證通過；原全量CDP／CI／dot gate維持，細節與限制見交接報告的本次更新段落。
+
+- 同日再同步 main `417f4c0`／#127（普通 merge `b38c417`）：新版B87/87、預設完整空間202/202；完整CDP1407/1未完成止於P73引用線，native命令成功而斷言false，原因待定；未比對golden、不宣稱越過P76。掛載磁碟19/7及Linux browser746/1、8/2未完成均保留為失敗。8817 d6d來源當時fresh、保存場景逐字恢復，最終服務已停止，未重開使用者視窗。仍為草稿交dot，full／CI／owner／實體裝置gate保留。
+
+- 最後同步 #126／main `8d134fc`，普通merge `1a21b5d`；共用保存／載入owner檔逐字保留，bridge依新include重編。最新來源B87/87、共用＋formal store106/106（0skip）通過；凍結b38來源的full／SPACE收據另列checkpoint，不冒稱為最新head完整回歸。最新combined full／SPACE及CI／owner交dot，草稿不自行合main；8817已關閉，原檔／備份保留。
+
 ## GEO-244 — 描面畫布與空間俯視方向不一致（2026-10-04，方向修正驗收通過；全量驗證限制見下）
 
 - 使用者面 #2 的 191×913 mm 凸角在輪廓編輯圖左下，3D 俯視顯示在左上。編輯圖沿局部 u→／v↓，承載面卻是 U=+X／V=+Y，而世界俯視是 +X→／+Y↑。既有 GEO-207 的局部編輯圖／世界投影區分確實產生相反的上下畫面方向。

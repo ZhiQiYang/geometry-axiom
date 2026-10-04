@@ -299,7 +299,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | `#rcErr` | RC 對話框表單內錯誤提示(BF4:驗證失敗顯示) | `hidden`、textContent |
 | `#feActionBar` / `[data-fe-act]` | 面內選邊/角/點/角材後的浮動操作列(GEO-188;`op:notch`/`op:extend`/`op:push`/`op:corner`/`op:hole`/`fixity`;GEO-191 角材選取只有 `delete`) | `hidden`、`.click()`、`.on` |
 | `#feOpPanel` / `[data-fe-param]` / `[data-fe-keep]` / `[data-fe-anchor]` / `[data-fe-dir]` / `[data-fe-ax]` / `[data-fe-ay]` / `#feOpApply` / `#feOpCancel` | 就地參數面板(GEO-188/170;`input` 事件即時預覽,`[data-fe-keep]` 是「留下」欄與切掉連動,Enter/`#feOpApply` 套用) | `hidden`、`value`、`.click()` |
-| `#feCtxMenu` | 面內右鍵選單(GEO-192;內容 = `feActionsFor(fe.sel)`,與 `#feActionBar` 同一份資料來源) | `hidden`、`[data-fe-act]` 清單與 `#feActionBar` 逐一相同、`.click()` |
+| `#feCtxMenu` | #116 B 面內右鍵選單；幾何動作重用 `feActionsFor`，另有真實建立／檢視入口、搜尋與停用原因 | `hidden`、`[data-fe-act]` 包含浮動列真動作、`aria-disabled`、`.fcm-search input`、`.click()` |
 
 ### 已移除(Phase 6)
 
@@ -653,13 +653,19 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
   `anchor:"start"`/`dist` 讓另一側不動)、垂直於母邊且不與母邊重合的邊界動 `d`(或 push
   的 `dist`);point/corner 目標比照對應欄位。`feSyncOverlays()` 的 `show` 判斷放行
   `fe.drag.kind==="opHandle"`,拖曳中面板才不會被既有的「有 `fe.drag` 就隱藏」邏輯關掉。
-- **C. 右鍵選單**:`#feCtxMenu`(`role="menu"`,動態填 `[data-fe-act]` 按鈕)。內容來自
-  `feActionsFor(fe.sel)`——`#feActionBar` 與 `#feCtxMenu` 共用這個函式,清單保證逐一相同;
-  點擊都走共用的 `feRunAction(act)`。`fevp` 的 `contextmenu` 事件先呼叫
-  `feClickSelectBlank`/`feClickSelectHit`(與左鍵單擊、`feUp` 的未移動分支、雙擊共用同一段
-  選取邏輯,不複製)再 `feCtxMenuShow(clientX,clientY)`;面外空白右鍵不顯示選單。關閉走
-  `feCtxMenuHide()`:點選單外(`document` capture 階段的 `pointerdown`)、Esc(階梯在
-  「量比例尺」之前新增一階)、滾輪/縮放、`feSyncOverlays()` 發現不該顯示浮動列時。
+- **C. #116 B 右鍵選單**：`#feCtxMenu`（`role="menu"`）的 tile／row 都是
+  `[data-fe-act]`、`role="menuitem"`，停用用 `aria-disabled="true"`，hover／focus
+  原因統一顯示 `.fcm-footer`。幾何動作來自 `feActionsFor(fe.sel)` 並重用
+  `feRunAction`／`feStartOp`；另一組 `create/view` 子選單及 `guide-u/guide-v/guide-edit/
+  guide-timber/fit/z100/grid/snap/props` 路由到既有控制項，不新增核心命令。
+  `.fcm-search input` 搜尋真指令；方向鍵、Home/End、Enter、左右子選單、Esc 使用
+  `FaceContextMenu`。第一個 Esc 取消表單、第二個關選單；IME composition 不搶鍵。
+  右鍵仍重用 `feClickSelectBlank`／`feClickSelectHit`；右鍵已選角材群保留多選。
+  面外空白提供檢視，孔邊快捷角材停用不代表 I13 禁止明選定位。
+  選單在頁面浮層；唯一 `#feOpPanel.fcm-panel` 開啟時暫移同層，關閉歸位。
+  B 期間 `.fcm-suppressed` 收起 `#feActionBar`；`.fcm-anchor` 保存右鍵真落點。
+  點選單／表單／`[data-fe-handle]` 外部、焦點離開、工具／選取／場景／連線情境改變
+  會取消舊預覽；所有提交仍過既有交易及影響確認守門。
 - **D. 雙擊**:**不掛原生 `dblclick` 事件**——單擊選取本身會呼叫 `drawFaceEditor()` 整份
   重繪 SVG、`feSyncOverlays()` 重建 `#feActionBar` 的按鈕,第一下處理完那個節點就已經被
   拔掉,原生 `dblclick` 的 target 常常冒泡不到任何監聽器(`ev.detail` 在這個測試 harness

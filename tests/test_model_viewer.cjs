@@ -177,6 +177,37 @@ for (const [x, y] of renderedFaces.flat(1)) {
     `Fitted geometry must stay on canvas: ${x},${y} outside ${rect.width}x${rect.height}`);
 }
 
+// Fitting must follow the projected extent during orbit, including short panes.
+// This failed before the fix: ArrowDown 14 moved an engine-exported vertex above
+// an 860x130 canvas even though the user had neither zoomed nor panned.
+function assertOrbitFits() {
+  assert.equal(renderedFaces.length, prepared.triangleCount);
+  for (const [x,y] of renderedFaces.flat(1)) {
+    assert.ok(x>=0 && x<=rect.width && y>=0 && y<=rect.height,
+      `Orbit must keep fitted geometry on ${rect.width}x${rect.height}: ${x},${y}`);
+  }
+  assert.deepEqual(visibleViewer.getState().bounds, prepared.bounds);
+  assert.equal(visibleViewer.getState().zoom, 1);
+  assert.deepEqual(visibleViewer.getState().pan, {x:0,y:0});
+}
+for (const size of [{width:860,height:130},{width:390,height:230}]) {
+  rect=size; windowEvents.get('resize')();
+  for (const key of ['ArrowDown','ArrowUp','ArrowLeft','ArrowRight']) {
+    visibleViewer.setView('iso'); flush();
+    for (let step=0;step<26;step++) {
+      listeners.get('keydown')({key,preventDefault:noop}); flush(); assertOrbitFits();
+    }
+  }
+  visibleViewer.setView('iso'); flush();
+  listeners.get('pointerdown')({pointerId:2,pointerType:'mouse',button:0,clientX:150,clientY:50,preventDefault:noop});
+  for (let step=1;step<=30;step++) {
+    listeners.get('pointermove')({pointerId:2,clientX:150+step*6,clientY:50-step*6,shiftKey:false});
+    flush(); assertOrbitFits();
+  }
+  listeners.get('pointerup')({pointerId:2,clientX:330,clientY:-130});
+}
+rect={width:860,height:130}; windowEvents.get('resize')(); visibleViewer.setView('iso'); flush();
+
 // Actual drawn legend/scale text must stay legible on the light workspace.
 function luminance(hex) {
   const values = [1, 3, 5].map(start => parseInt(hex.slice(start, start + 2), 16) / 255)
@@ -201,6 +232,9 @@ assert.equal(renderedFaces.length, beforePan.length);
 renderedFaces.forEach((face, i) => face.forEach(([x, y], j) => {
   near(x - beforePan[i][j][0], 35); near(y - beforePan[i][j][1], 10);
 }));
+listeners.get('keydown')({key:'ArrowDown',preventDefault:noop}); flush();
+assert.equal(visibleViewer.getState().zoom,zoomed,'Orbit retains intentional magnification.');
+assert.deepEqual(visibleViewer.getState().pan,{x:35,y:10},'Orbit retains intentional panning.');
 visibleViewer.setObjects(room.derived.objects); flush();
 assert.equal(visibleViewer.getState().zoom, 1);
 assert.deepEqual(visibleViewer.getState().pan, { x: 0, y: 0 });
