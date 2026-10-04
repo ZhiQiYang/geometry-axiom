@@ -259,6 +259,29 @@ test('height updates preserve timber snapshots and coexist with core undo/redo w
   w.api.observe('line undo',{ok:true});assert.deepEqual(clone(w.api.getSpaceModels()[0]),changed);
   assert.deepEqual(w.requests,[]);
 });
+function spacePreviewRequest(reply, httpOk=true) {
+  const source=require('node:fs').readFileSync(require.resolve('../geometry-web/space-workspace.js'),'utf8');
+  const start=source.indexOf('  async function request('),end=source.indexOf('  function startSource()',start);
+  assert.ok(start>=0&&end>start);
+  return require('node:vm').runInNewContext(source.slice(start,end)+'\nrequest',{
+    fetch:async()=>({ok:httpOk,json:async()=>reply}),state:{controller:null},Error
+  });
+}
+test('space preview reports missing runtime instead of accepting an unsupported HTTP-200 result',async()=>{
+  const request=spacePreviewRequest({status:'UNSUPPORTED',diagnostics:[{code:'BASE_COMPILER',clause:'I32',message:'C compiler is unavailable'}]});
+  await assert.rejects(request('/model/space-preview',{}),/空間建模服務尚未就緒/);
+});
+test('space preview rejects incomplete and invalid model responses with every diagnostic',async()=>{
+  for(const status of ['INCOMPLETE','INVALID']){
+    const request=spacePreviewRequest({status,diagnostics:[{code:'OPEN_SHELL',clause:'I28',message:'邊界開放'},{code:'SOURCE',clause:'I31',message:'來源無效'}]});
+    await assert.rejects(request('/model/space-preview',{}),error=>/邊界開放.*I28/.test(error.message)&&/來源無效.*I31/.test(error.message));
+  }
+});
+test('space preview keeps successful payloads and existing API failure handling',async()=>{
+  const reply={ok:true,summary:{closed:false},space:{}};
+  assert.equal(await spacePreviewRequest(reply)('/model/space-preview',{}),reply);
+  await assert.rejects(spacePreviewRequest({ok:false,error:'來源已變更'})('/model/space-preview',{}),/來源已變更/);
+});
 test('real timber package round trip, verification, replay and height update use only saved definitions', {
   skip: !process.env.GEOMETRY_MODEL_BASE && 'Set GEOMETRY_MODEL_BASE to run the actual modeling adapter.'
 }, async () => {

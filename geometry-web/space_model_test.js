@@ -225,7 +225,7 @@ async function projectionLifecycleRegression() {
   await click('#smSetProjection');
   await wait(`document.querySelector('#fpDialog').open`, 'fresh projection dialog');
   check('projection dialog defaults to general purpose without a saved projection or interior role', await evaluate(`document.querySelector('#fpPurpose').value==='general' && !document.querySelector('#fpInterior').checked && ReferenceWorkspace.getFaceProjection(71,71)==null`));
-  check('projection dialog shows the actual z and source outline', await evaluate(`/2500|2,500/.test(document.querySelector('#fpZ').textContent) && document.querySelector('#fpOutline').getBoundingClientRect().height>0`));
+  check('projection dialog shows source z and a visible outline container', await evaluate(`/2500|2,500/.test(document.querySelector('#fpZ').textContent) && document.querySelector('#fpOutline').getBoundingClientRect().height>0`));
   await select('#fpPurpose','space-boundary-plan');
   await select('#fpView','bottom');
   await checked('#fpInterior',true);
@@ -239,7 +239,7 @@ async function projectionLifecycleRegression() {
   check('source summary explains bottom view, interior and outward walls', await evaluate(`(()=>{const s=document.querySelector('#smProjectionSummary').textContent;return /仰視/.test(s)&&/淨空/.test(s)&&/外側/.test(s)})()`));
   await preview();
   await click('[data-sm-view="bottom"]');
-  check('bottom-view control uses the actual underside camera', (await snapshot()).viewer?.view==='bottom');
+  check('bottom-view control selects bottom and the camera looks from negative world Z', (await snapshot()).viewer?.view==='bottom' && Math.abs((await snapshot()).viewer?.pitch+Math.PI/2)<1e-12);
   await shot('projection-bottom-preview');
   await input('#smHeight','3200');
   await evaluate(`(()=>{const original=window.fetch;window.__projectionPreviewHeld=false;const gate=new Promise(resolve=>window.__releaseProjectionPreview=resolve);window.fetch=async(...args)=>{const response=await original(...args);if(String(args[0]).includes('/model/space-preview')){window.fetch=original;const json=response.json.bind(response);response.json=async()=>{const data=await json();window.__projectionPreviewHeld=true;await gate;window.__projectionPreviewHeld=false;return data;};}return response;};})()`);
@@ -302,7 +302,7 @@ async function keyboardActivate(selector) {
 async function inlineProjection(view='top',keyboard=false) {
   await select('#smProjectionView',view);
   if(keyboard)await keyboardActivate('#smConfirmProjection');else await click('#smConfirmProjection');
-  await wait(`document.querySelector('#smInlineProjection').hidden && !document.querySelector('#smPreview').disabled`, 'inline projection confirmed');
+  await wait(`(()=>{const d=ReferenceWorkspace.getFaceProjection(oc.edit.bid,Number(document.querySelector('#smSourceSelect').value));return d?.kind==='space-boundary-plan'&&d.view===${JSON.stringify(view)}&&d.region==='interior'&&d.wallSide==='outside'&&!document.querySelector('#smPreview').disabled&&!document.querySelector('#smConfirmProjection').disabled;})()`, 'inline projection confirmed');
 }
 async function flowFields() {
   return evaluate(`(()=>{const q=id=>document.getElementById(id);return {bottom:q('smBottom').value,height:q('smHeight').value,thickness:q('smThickness').value,name:q('smModelName').value,holes:q('smHoles').value,floor:q('smFloor').value,ceiling:q('smCeiling').value,walls:q('smWallsEnabled').checked,timbers:q('smIncludeTimbers').checked,edges:[...document.querySelectorAll('[data-sm-edge]:checked')].map(e=>e.dataset.smEdge),obstacles:[...document.querySelectorAll('[data-sm-obstacle]:checked')].map(e=>e.dataset.smObstacle+':'+e.value)};})()`);
@@ -525,6 +525,77 @@ async function projectionPlacementRegression() {
   await closeWorkspace();
   await viewport(1400,900);
   await projectionSourceRaceRegression();
+  await drawingAlignmentRegression();
+  await projectionDirectionSyncRegression();
+}
+
+async function projectionDirectionSyncRegression() {
+  await setup(['boundary 2 outline 100,200 3100,200 3100,1800 100,1800',
+    'placement 2 on boundary 2 origin 0 0 2700 u +x v +y']);
+  await evaluate(`ReferenceWorkspace.setFaceProjection(2,2,{kind:'space-boundary-plan',view:'bottom',region:'interior',wallSide:'outside'});enterFocus('face',2)`);
+  await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`,'direction sync source');
+  await input('#smBottom','0');await input('#smHeight','3200');
+  const original=await scene();await projectionDialog('top');
+  check('committing top in the full dialog synchronizes the inline selector and alignment action',await evaluate(`document.querySelector('#smProjectionView').value==='top' && ReferenceWorkspace.getFaceProjection(2,2)?.view==='top' && /依原圖對齊/.test(document.querySelector('#smConfirmProjection').textContent)`) && await scene()===original);
+  await select('#smProjectionView','bottom');await input('#smHeight','3300');
+  check('ordinary settings rendering preserves the unconfirmed inline direction without saving it',await evaluate(`document.querySelector('#smProjectionView').value==='bottom' && ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`));
+  await click('#smSetProjection');await wait(`document.querySelector('#fpDialog').open`,'cancel direction dialog');await select('#fpView','bottom');await click('#fpCancel');
+  check('cancelling the full dialog preserves the saved top definition and unconfirmed inline draft',await evaluate(`document.querySelector('#smProjectionView').value==='bottom' && ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`) && await scene()===original);
+  await projectionDialog('bottom');
+  check('committing bottom synchronizes the selector and preserves height without changing placement',await evaluate(`document.querySelector('#smProjectionView').value==='bottom' && document.querySelector('#smHeight').value==='3300' && document.querySelector('#smInlineProjection').hidden`) && await scene()===original);
+  await projectionDialog('top');await click('#smConfirmProjection');await wait(`document.querySelector('#smInlineProjection').hidden && !document.querySelector('#smConfirmProjection').disabled`,'sync aligned top');
+  check('the synchronized top action aligns native V instead of writing bottom back',await scene()===original.replace('origin 0 0 2700 u +x v +y','origin 0 2000 2700 u +x v -y') && await evaluate(`ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`));
+  await closeWorkspace();await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`,'direction sync reopen');
+  check('reopening retains the committed top direction and aligned native placement',await evaluate(`document.querySelector('#smProjectionView').value==='top' && document.querySelector('#smInlineProjection').hidden && ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`));
+  await closeWorkspace();
+}
+
+async function drawingCornerPixels() {
+  const footprint=await canvasFootprint();
+  return evaluate(`(()=>{const c=document.querySelector('#smCanvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data,w=${footprint.pixelWidth},h=${footprint.pixelHeight};const sample=(x,y)=>{const px=Math.round((c.width-w)/2+w*x),py=Math.round((c.height-h)/2-4+h*y),i=(py*c.width+px)*4;return [...d.slice(i,i+3)];};const bg=[...d.slice(0,3)],diff=p=>p.reduce((n,v,i)=>n+Math.abs(v-bg[i]),0);return {upper:diff(sample(.025,.15)),lower:diff(sample(.025,.85)),width:w,height:h};})()`);
+}
+
+async function drawingAlignmentRegression() {
+  await closeWorkspace();await viewport(1400,900);
+  const fixture=['boundary 2 outline 5002,1165 8635,1165 8635,4538 4811,4538 4811,3625 5002,3625',
+    'placement 2 on boundary 2 origin 0 0 2700 u +x v +y',
+    'placement 3 on boundary 2 origin 10000 10000 2700 u +x v +y'];
+  await setup(fixture);
+  await evaluate(`ReferenceWorkspace.setFaceProjection(2,2,{kind:'space-boundary-plan',view:'top',region:'interior',wallSide:'outside'})`);
+  const before=await scene();await evaluate(`enterFocus('face',2)`);await shot('drawing-original-left-bottom');
+  await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`,'drawing source');
+  await input('#smBottom','0');await input('#smHeight','3200');await input('#smThickness','123');
+  check('GEO244 reuses projection confirmation to expose a real placement alignment',await evaluate(`!document.querySelector('#smInlineProjection').hidden && /依原圖對齊/.test(document.querySelector('#smConfirmProjection').textContent) && /相反/.test(document.querySelector('#smProjectionHelp').textContent)`));
+  await click('#smConfirmProjection');await wait(`!document.querySelector('#smConfirmProjection').disabled && document.querySelector('#smInlineProjection').hidden`,'aligned drawing source');
+  const aligned=await scene();
+  check('GEO244 alignment changes only the selected frame and preserves local outline, sibling placement and world bounds',aligned===before.replace('placement 2 on boundary 2 origin 0 0 2700 u +x v +y','placement 2 on boundary 2 origin 0 5703 2700 u +x v -y'));
+  check('GEO244 alignment preserves the entered wall bottom, height and thickness',await evaluate(`document.querySelector('#smBottom').value==='0' && document.querySelector('#smHeight').value==='3200' && document.querySelector('#smThickness').value==='123' && SpaceModelWorkspace.snapshot().resultSummary===null`));
+  await preview();await checked('#smShowWalls',false);await click('[data-sm-view="top"]');await click('#smFit');
+  const ready=await snapshot();
+  check('GEO244 the actual aligned model preserves source z and exact volume',ready.resultSummary?.source_z===2700 && ready.resultSummary.top===3200 && ready.resultSummary.volume_mm3==='39771174400',ready.resultSummary);
+  const pixels=await drawingCornerPixels();
+  check('GEO244 real top-view pixels retain the asymmetric left-bottom extension and empty left-top corner',pixels.lower>25 && pixels.upper<10,pixels);
+  await shot('drawing-aligned-top-left-bottom');
+  check('GEO244 creating a preview does not mutate the aligned source',await scene()===aligned);
+  await closeWorkspace();await click('#faceUndoButton');
+  check('GEO244 one undo restores the exact old placement and retains its projection',await scene()===before && await evaluate(`ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`));
+  await click('#faceRedoButton');
+  check('GEO244 one redo restores the exact aligned placement',await scene()===aligned);
+  await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`,'reopen aligned face');await input('#smBottom','0');await preview();const made=await create();
+  const saved=await evaluate(`(async()=>{window.__drawingBytes=await ReferenceWorkspace.exportBytes();const p=await GeometryProject.unpack(__drawingBytes,fflate);return {scene:p.scene,models:p.manifest.models};})()`);
+  check('GEO244 complete project saving records the aligned placement and actual producer input',saved.scene===aligned && saved.models?.find(m=>m.id===made.createdId)?.input.base_scene.includes('origin 0 5703 2700 u +x v -y'));
+  await closeWorkspace();await evaluate(`ReferenceWorkspace.importBytes(__drawingBytes,'aligned-drawing')`);
+  check('GEO244 project import restores aligned source and saved model without inferred geometry',await scene()===aligned && JSON.stringify(await models())===JSON.stringify(saved.models));
+  await click('#btnSpaceModels');await click('[data-sm-open-model="'+made.createdId+'"]');await checked('#smShowWalls',false);await click('[data-sm-view="top"]');await click('#smFit');
+  const reopened=await drawingCornerPixels();
+  check('GEO244 saved-model top view preserves the same original-drawing corner after reopening',reopened.lower>25 && reopened.upper<10,reopened);await shot('drawing-saved-reopened-top');
+  await closeWorkspace();await setup(fixture);await evaluate(`ReferenceWorkspace.setFaceProjection(2,2,{kind:'space-boundary-plan',view:'top',region:'interior',wallSide:'outside'});enterFocus('face',2)`);await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`,'stale drawing source');
+  await evaluate(`api('line spec changed_after_source_read 7')`);const staleWorld=await scene();await click('#smConfirmProjection');
+  check('GEO244 stale source alignment is rejected without changing the current world',await scene()===staleWorld && await evaluate(`/來源|變更/.test(document.querySelector('#smStatus').textContent)`));
+  await closeWorkspace();await setup([...fixture,'timber 11 27 33 role boundary','place 11 on 2 at-face e0 +u +n']);await evaluate(`ReferenceWorkspace.setFaceProjection(2,2,{kind:'space-boundary-plan',view:'top',region:'interior',wallSide:'outside'});enterFocus('face',2)`);await openFaceModel();await wait(`SpaceModelWorkspace.snapshot().phase==='ready'`,'timber drawing source');
+  const timberWorld=await scene();await click('#smConfirmProjection');await wait(`!!document.querySelector('.reference-impact[open] #impact-confirm')`,'native timber impact preview');await click('.reference-impact .impact-actions button:first-child');await wait(`!oc.busy && !document.querySelector('.reference-impact[open]')`,'cancel native alignment');
+  check('GEO244 cancelling the native timber impact preview preserves the exact scene and projection',await scene()===timberWorld && await evaluate(`ReferenceWorkspace.getFaceProjection(2,2)?.view==='top'`));
+  await closeWorkspace();
 }
 
 async function projectionSourceRaceRegression() {

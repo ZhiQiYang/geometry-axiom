@@ -29,6 +29,24 @@ near(viewer.projectPlanPoint([1200,400],reverseV,'top')[1],400);
 assert.deepEqual(local,localBefore); assert.equal(JSON.stringify(frame),frameBefore);
 assert.throws(()=>viewer.projectPlanPoint(local,frame,'front'),/方向/);
 assert.throws(()=>viewer.projectPlanPoint(local,{},'top'),/框架/);
+// Original-drawing orientation is a placement change. Exercise all eight
+// horizontal frames and both viewing sides with an asymmetric, offset outline.
+const drawingLoops=[{verts:[[11,17],[4011,17],[4011,3018],[7,3018],[7,2017],[11,2017]]}];
+const drawingBefore=JSON.stringify(drawingLoops);
+for(const u of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0]])for(const sign of [-1,1])for(const view of ['top','bottom']) {
+  const v=[-u[1]*sign,u[0]*sign,0].map(n=>n||0),originalFrame={origin:[500,700,2700],u,v};
+  const originalJSON=JSON.stringify(originalFrame),alignment=viewer.drawingAlignment(originalFrame,drawingLoops,view);
+  const worldBounds=f=>[0,1,2].map(axis=>{const coords=drawingLoops[0].verts.map(p=>f.origin[axis]+p[0]*f.u[axis]+p[1]*f.v[axis]);return [Math.min(...coords),Math.max(...coords)];});
+  assert.deepEqual(worldBounds(alignment.frame),worldBounds(originalFrame));
+  const a=viewer.projectPlanPoint([11,17],alignment.frame,view,true),right=viewer.projectPlanPoint([12,17],alignment.frame,view,true),down=viewer.projectPlanPoint([11,18],alignment.frame,view,true);
+  near(right[0]-a[0],1);near(right[1]-a[1],0);near(down[0]-a[0],0);near(down[1]-a[1],1);
+  assert.equal(viewer.drawingAlignment(alignment.frame,drawingLoops,view).changed,false);
+  assert.equal(JSON.stringify(originalFrame),originalJSON);
+}
+assert.equal(JSON.stringify(drawingLoops),drawingBefore);
+assert.throws(()=>viewer.drawingAlignment({origin:[0,0,0],u:[1,1,0],v:[0,1,0]},drawingLoops,'top'),/水平正交/);
+assert.deepEqual(viewer.placementFrame('placement 2 on boundary 2 origin 0 5703 2700 u +x v -y\n',2),{origin:[0,5703,2700],u:[1,0,0],v:[0,-1,0]});
+assert.equal(viewer.placementFrame('placement 2 on boundary 2 origin 0 0 2700 u +x v +y',0),null);
 near(viewer.project([0, 0, 1], front.yaw, front.pitch)[1], -1);
 assert.ok(viewer.project([0, 0, 1], iso.yaw, iso.pitch)[1] < 0);
 // The orthographic change of basis must preserve 3D distances at every angle.
@@ -94,6 +112,18 @@ near(instance.getState().pitch,-Math.PI/2);
 instance.setView('top');
 assert.deepEqual(instance.getState().bounds,beforeViews.bounds);
 assert.equal(instance.getState().triangleCount,beforeViews.triangleCount);
+// The live camera keeps local U to the right for rotated and reversed plans,
+// while top/bottom still look from opposite world Z sides and keep real meshes.
+for(const u of [[0,1,0],[-1,0,0],[0,-1,0]])for(const name of ['top','bottom']) {
+  instance.setPlanFrame({u});instance.setView(name);
+  const camera=instance.getState(),screenU=viewer.project(u,camera.yaw,camera.pitch);
+  near(screenU[0],1);near(screenU[1],0);
+  near(viewer.project([0,0,1],camera.yaw,camera.pitch)[2],name==='top'?1:-1);
+  assert.deepEqual(camera.bounds,beforeViews.bounds);
+  assert.equal(camera.triangleCount,beforeViews.triangleCount);
+}
+instance.setPlanFrame(null);instance.setView('top');
+near(viewer.project([1,0,0],instance.getState().yaw,instance.getState().pitch)[0],1);
 instance.setObjects([]);
 assert.equal(instance.getState().triangleCount, 0);
 assert.equal(instance.getState().bounds, null);

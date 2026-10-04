@@ -36,14 +36,40 @@
 
   // A plan view looks along world -Z (top) or +Z (bottom). Local u/v are
   // mapped through the saved placement frame before choosing a screen axis.
-  function projectPlanPoint(point, frame, view) {
+  function projectPlanPoint(point, frame, view, alongU = false) {
     if (!['top', 'bottom'].includes(view)) throw new TypeError('平面檢視方向必須是 top 或 bottom。');
     if (!Array.isArray(point) || point.length !== 2 || !point.every(Number.isSafeInteger) ||
         !frame || !['origin', 'u', 'v'].every(key => Array.isArray(frame[key]) && frame[key].length === 3 && frame[key].every(Number.isSafeInteger))) {
       throw new TypeError('平面預覽需要完整承載面框架與局部整數座標。');
     }
     const world = frame.origin.map((value, axis) => value + point[0] * frame.u[axis] + point[1] * frame.v[axis]);
-    return project(world, VIEWS[view].yaw, VIEWS[view].pitch);
+    return project(world, alongU ? Math.atan2(frame.u[1], frame.u[0]) : VIEWS[view].yaw, VIEWS[view].pitch);
+  }
+
+  // A traced drawing uses u right and v down. Align the placement, never the
+  // exported mesh or the camera handedness. Reflect about the local V bounds
+  // so its world bounding box, height and local drawing coordinates survive.
+  function drawingAlignment(frame, loops, view) {
+    projectPlanPoint([0, 0], frame, view);
+    const normalZ = frame.u[0] * frame.v[1] - frame.u[1] * frame.v[0];
+    if (frame.u[2] || frame.v[2] || Math.abs(normalZ) !== 1 || dot(frame.u, frame.u) !== 1 || dot(frame.v, frame.v) !== 1 || dot(frame.u, frame.v) !== 0 ||
+        [...frame.u, ...frame.v].some(n => ![-1, 0, 1].includes(n))) throw new TypeError('原圖對齊需要水平正交放置。');
+    const verts = loops?.[0]?.verts;
+    if (!Array.isArray(verts) || !verts.length || verts.some(p => !Array.isArray(p) || p.length !== 2 || !p.every(Number.isSafeInteger))) throw new TypeError('原圖對齊需要完整輪廓。');
+    const changed = normalZ !== (view === 'top' ? -1 : 1);
+    const sumV = Math.min(...verts.map(p => p[1])) + Math.max(...verts.map(p => p[1]));
+    const origin = frame.origin.map((n, i) => n + (changed ? sumV * frame.v[i] : 0));
+    if (!origin.every(Number.isSafeInteger)) throw new TypeError('對齊放置超出整數座標範圍。');
+    return {changed, frame:{origin, u:frame.u.slice(), v:frame.v.map(n => changed && n ? -n : n)}};
+  }
+
+  function placementFrame(scene, id) {
+    const axes = {'+x':[1,0,0],'-x':[-1,0,0],'+y':[0,1,0],'-y':[0,-1,0],'+z':[0,0,1],'-z':[0,0,-1]};
+    for (const line of String(scene || '').split(/\r?\n/)) {
+      const m = line.match(/^(?:placement|surface)\s+(\d+)\s+(?:on\s+boundary\s+\d+\s+)?origin\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+u\s+([+-][xyz])\s+v\s+([+-][xyz])(?:\s|$)/);
+      if (m && Number(m[1]) === id) return {origin:m.slice(2,5).map(Number),u:axes[m[5]].slice(),v:axes[m[6]].slice()};
+    }
+    return null;
   }
 
   // Assemble display layers from verified packages without changing any saved
@@ -138,7 +164,7 @@
     };
     const win = canvas.ownerDocument && canvas.ownerDocument.defaultView || (typeof window !== 'undefined' ? window : null);
     let prepared = prepareObjects([]), width = 1, height = 1, dpr = 1;
-    let yaw = VIEWS.iso.yaw, pitch = VIEWS.iso.pitch, view = 'iso';
+    let yaw = VIEWS.iso.yaw, pitch = VIEWS.iso.pitch, view = 'iso', planYaw = 0;
     let scale = 1, zoom = 1, frame = null, destroyed = false;
     let panX = 0, panY = 0;
     let selectable = new Set(), selected = null;
@@ -423,7 +449,12 @@
     function setView(name) {
       if (!Object.prototype.hasOwnProperty.call(VIEWS, name)) throw new TypeError('檢視方向必須是 iso、top、bottom 或 front。');
       if (destroyed) return;
-      yaw = VIEWS[name].yaw; pitch = VIEWS[name].pitch; view = name; fit();
+      yaw = ['top','bottom'].includes(name) ? planYaw : VIEWS[name].yaw; pitch = VIEWS[name].pitch; view = name; fit();
+    }
+
+    function setPlanFrame(frame) {
+      planYaw = frame && frame.u?.[2] === 0 ? Math.atan2(frame.u[1], frame.u[0]) : 0;
+      if (['top','bottom'].includes(view)) {yaw = planYaw; fit();}
     }
 
     function setSelectableRoots(roots) {
@@ -485,8 +516,8 @@
     }
 
     resize(); schedule();
-    return { setObjects, fit, setView, destroy, getState, setSelectableRoots, selectRoot, hitTest };
+    return { setObjects, fit, setView, setPlanFrame, destroy, getState, setSelectableRoots, selectRoot, hitTest };
   }
 
-  return { create, project, projectPlanPoint, spacePreviewObjects, prepareObjects, views: VIEWS };
+  return { create, project, projectPlanPoint, drawingAlignment, placementFrame, spacePreviewObjects, prepareObjects, views: VIEWS };
 });
