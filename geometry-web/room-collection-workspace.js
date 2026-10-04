@@ -260,3 +260,4 @@ const RoomCollectionWorkspace = (() => {
     get hasWork() {return !!instance?.intent || !!lease;}, get busy() {return !!instance?.busy || !!lease;}, get transactionLease() {return lease;}, get controller() {return controller();}};
 })();
 window.RoomCollectionWorkspace = RoomCollectionWorkspace;
+if (typeof ReferenceWorkspace !== "undefined" && ReferenceWorkspace.getRoomIntegration) RoomCollectionWorkspace.configure(ReferenceWorkspace.getRoomIntegration());

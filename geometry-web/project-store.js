@@ -87,6 +87,18 @@
       if (!boundaries.has(record.bid) || placement?.bid !== record.bid) fail("平面投影關聯的面或放置不存在於原生候選場景。");
       if (!placement.horizontal) fail("平面投影必須關聯水平放置面。");
     }
+    if (manifest.featureAttachments) {
+      Features.validateNativeRefs(manifest.featureAttachments, objects);
+      const rooms = Features.sourceRooms(manifest.featureAttachments);
+      if (rooms?.rooms.some(room => room.reviewState !== "needs-reassociation")) {
+        const entries = objects.boundaryFingerprints;
+        if (!Array.isArray(entries) || entries.length !== boundaries.size || entries.some(entry =>
+            !keys(entry, ["id", "geometryFingerprint"]) || !positiveId(entry.id) || !boundaries.has(entry.id) || !hashRE.test(entry.geometryFingerprint)) ||
+            new Set(entries.map(entry => entry.id)).size !== entries.length)
+          fail("服務未提供完整的原生候選邊界指紋，未變更目前專案。");
+        Features.validateNativePins(manifest.featureAttachments, new Map(entries.map(entry => [entry.id, entry])));
+      }
+    }
   }
   function sceneCapabilities(scene) {
     const result = new Set();
@@ -216,13 +228,13 @@
   // Editor capabilities are checked by this reader, never advertised as native
   // scene or model-producer capabilities.
   function validateManifestCapabilities(capabilities) {
-    if (!Array.isArray(capabilities) || capabilities.length > 5 || new Set(capabilities).size !== capabilities.length ||
-        capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, Features.GRID_SCHEMA].includes(capability)))
+    if (!Array.isArray(capabilities) || capabilities.length > 6 || new Set(capabilities).size !== capabilities.length ||
+        capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, Features.GRID_SCHEMA, Features.ROOM_CAPABILITY].includes(capability)))
       fail("專案需要尚未支援的能力。");
     return capabilities;
   }
   function readerCapabilities(nativeCapabilities) {
-    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA];
+    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.ROOM_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
@@ -242,9 +254,10 @@
     const needed = projectCapabilities({...manifest, requiredCapabilities: []}, scene);
     if (manifest.format === FEATURE_FORMAT && !manifest.featureAttachments?.records.length) fail("第 10 版專案缺少功能附件。");
     if (manifest.requiredCapabilities?.includes(Features.GRID_SCHEMA) && !needed.includes(Features.GRID_SCHEMA)) fail("網格草稿能力缺少對應附件。");
+    if (manifest.requiredCapabilities?.includes(Features.ROOM_CAPABILITY) && !Features.sourceRooms(manifest.featureAttachments || {schema:Features.SCHEMA,records:[]})) fail("房間來源能力缺少對應附件。");
     if(manifest.format===GENERATION_FORMAT&&!manifest.requiredCapabilities?.includes(GENERATION_CAPABILITY))fail("第 8 版專案缺少組構生成能力。");
     if (needed.some(c => !manifest.requiredCapabilities?.includes(c)) ||
-        (needed.includes(Features.GRID_SCHEMA) && manifest.format !== FEATURE_FORMAT) ||
+        (needed.some(capability => [Features.GRID_SCHEMA, Features.ROOM_CAPABILITY].includes(capability)) && manifest.format !== FEATURE_FORMAT) ||
         (needed.includes(PARAMETER_CAPABILITY) && ![PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(manifest.format)) ||
         (needed.includes(ASSEMBLY_CAPABILITY) && ![ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(manifest.format)) ||
         (needed.includes(GENERATION_CAPABILITY) && ![GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(manifest.format)) ||
@@ -429,6 +442,7 @@
           !Number.isSafeInteger(s.size) || s.size < 1 || s.size > MAX_SOURCE || s.path !== "sources/" + s.id) fail("來源檔案清單不合法。");
       sources.set(s.id, s);
     }
+    if (m.featureAttachments) Features.sourceRooms(m.featureAttachments, sources);
     for (const f of m.faces) {
       if (!f || !Number.isInteger(f.bid) || f.bid < 1 || f.bid > 4294967295 || faces.has(f.bid) ||
           !Array.isArray(f.pages) || !f.pages.length || f.pages.length > 500) fail("面的來源關聯不合法。");
@@ -598,6 +612,7 @@
     }
     snapshot() {
       return { context: this.frame.context, ids: new Map(this.frame.ids),
+        groups: this.copyGroups(this.frame.context.groups),
         reconstructionReviews: new Map([...(this.frame.context.reconstructionReviews || new Map())].map(([k,v])=>[k,copy(v)])),
         assemblyDrafts: copy(this.frame.context.assemblyDrafts || []),
         featureAttachments: copy(this.frame.context.featureAttachments || []),
@@ -606,11 +621,17 @@
     }
     restore(frame) {
       this.frame = { context: frame.context, ids: new Map(frame.ids) };
+      if (frame.groups) this.frame.context.groups = this.copyGroups(frame.groups);
       this.frame.context.reconstructionReviews = new Map([...(frame.reconstructionReviews || new Map())].map(([k,v])=>[k,copy(v)]));
       this.frame.context.assemblyDrafts = copy(frame.assemblyDrafts || []);
       this.frame.context.featureAttachments = copy(frame.featureAttachments || []);
       if (frame.models) this.frame.context.models = copy(frame.models);
       if (frame.faceProjections) this.frame.context.faceProjections = new Map([...frame.faceProjections].map(([key, value]) => [key, copy(value)]));
+    }
+    copyGroups(groups) {
+      return new Map([...(groups || new Map())].map(([key, group]) => [key, {...group,
+        ...(Array.isArray(group.pages) ? {pages:group.pages.map(page => ({...page,
+          ...Object.fromEntries(["crop","calibration","records"].filter(field => Object.hasOwn(page,field)).map(field => [field,copy(page[field])]))}))} : {})}]));
     }
     push(frame, kind = "core", action = null) {
       this.undo.push({ ...frame, kind, action }); if (this.undo.length > this.limit) this.undo.shift(); this.redo = [];
@@ -664,9 +685,17 @@
     }
     sync(ids) {
       const live = new Set(ids);
-      for (const bid of this.frame.ids.keys()) if (!live.has(bid)) this.frame.ids.delete(bid);
+      for (const bid of this.frame.ids.keys()) if (!live.has(bid)) {
+        this.frame.ids.delete(bid); this.roomBoundaryChanged(bid, true);
+      }
       for (const bid of live) if (!this.frame.ids.has(bid)) this.frame.ids.set(bid, globalThis.crypto.randomUUID());
       this.pruneFaceProjections(() => true);
+    }
+    roomBoundaryChanged(id, retired = false) {
+      const records = this.frame.context.featureAttachments || [], room = records.find(record => record.kind === Features.ROOM_KIND);
+      if (!room) return;
+      const value = retired ? Features.retireRoomBoundary(room.value, id) : Features.changedRoomBoundary(room.value, id);
+      this.frame.context.featureAttachments = records.map(record => record === room ? Features.record(Features.ROOM_KIND, value) : record);
     }
     replace(context, ids, action = null) {
       this.push(this.snapshot(), "core", action); this.group = null;
@@ -706,10 +735,15 @@
           // cannot silently delete them.
           const assemblyDrafts = copy(this.frame.context.assemblyDrafts || []);
           const featureAttachments = copy(this.frame.context.featureAttachments || []);
+          const room = featureAttachments.find(record => record.kind === Features.ROOM_KIND);
+          const roomSources = room ? new Map([...new Set(room.value.planes.map(plane => plane.sourceId))]
+            .filter(id => this.frame.context.sources?.has(id)).map(id => [id, this.frame.context.sources.get(id)])) : null;
+          if (room) room.value = Features.unknownRoomHistory(room.value);
           const models = this.frame.context.models, engineeringDrafts = this.frame.context.engineeringDrafts;
           this.frame = { context: this.makeContext(), ids: new Map() };
           this.frame.context.assemblyDrafts = assemblyDrafts;
           this.frame.context.featureAttachments = featureAttachments;
+          if (roomSources) this.frame.context.sources = roomSources;
           if (models) this.frame.context.models = copy(models);
           if (engineeringDrafts) this.frame.context.engineeringDrafts = copy(engineeringDrafts);
           const to = op === "undo" ? this.redo : this.undo;
@@ -724,9 +758,10 @@
       // A batch may recreate a deleted id before the next objects refresh.
       // Retire the old incarnation at the successful delete, not at render time.
       const deletion = command.match(/^line\s+delete\s+boundary\s+(\d+)(?:\s|$)/);
-      if (deletion) this.frame.ids.delete(+deletion[1]);
+      if (deletion) {this.frame.ids.delete(+deletion[1]); this.roomBoundaryChanged(+deletion[1], true);}
       const birth = command.match(/^line\s+(?:boundary|surface)\s+(\d+)\s/);
       if (birth && !this.frame.ids.has(+birth[1])) this.frame.ids.set(+birth[1], globalThis.crypto.randomUUID());
+      if (birth) this.roomBoundaryChanged(+birth[1]);
       const removedPlacement = command.match(/^line\s+delete\s+placement\s+(\d+)(?:\s|$)/);
       const changedPlacement = command.match(/^line\s+(?:placement|surface)\s+(\d+)\s/);
       const placed = changedPlacement && sceneProjectionRefs(command.slice(5)).placements.get(+changedPlacement[1]);

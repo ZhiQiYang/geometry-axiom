@@ -12,6 +12,7 @@ const ReferenceWorkspace = (() => {
   let pdfLib, modal = null, busy = false, busyLabel = "", busyShort = "處理中", sequence = 0, pendingLoad = null;
   let importRenderingContext = null;
   let assemblyConfirmation = null, preparingSceneLoad = false;
+  let roomTransaction = null;
   const featureConfirmations=new Map();
   let presentedModelContext = null, presentedModels = null;
   let presentedProjectionContext = null, presentedProjections = null;
@@ -34,14 +35,15 @@ const ReferenceWorkspace = (() => {
     recoveryMessage("external","另一個分頁已修改服務中的場景，本分頁已暫停編輯、保存及恢復資料更新。請開啟正確專案或建立新專案，避免混用不同專案的附件。");
   };
   function notifySceneChange(){recoveryChannel?.postMessage({peer:recoveryPeer,session:typeof connection!=="undefined"?connection.session:null});}
-  function assertAssemblyIdle(){
+  function assertConfirmationIdle(){
     if(assemblyConfirmation)throw new Error((assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
   }
-  function assertWritableLease(){
-    assertAssemblyIdle();
+  function assertAssemblyIdle(){assertConfirmationIdle();if(roomTransaction)throw new Error("房間操作尚未確認，請先確認、取消或恢復結果。");}
+  function assertEditorLease(){
     if(editorLease==="readonly" || editorLease==="unavailable")throw new Error("另一個分頁正在編輯這份工作，或瀏覽器無法確認編輯權限。本分頁僅供查看；請關閉原編輯分頁，再從專案資訊重新連接。");
     if(editorLeaseSession && connection.session!==editorLeaseSession)throw new Error("服務工作階段已變更，請重新連接後再編輯。");
   }
+  function assertWritableLease(){assertAssemblyIdle();assertEditorLease();}
   function assertEditable(){assertWritableLease();if(contextConflict)throw new Error("另一個分頁已變更目前場景。請先開啟正確的 .gcanvas 專案或建立新專案，再編輯或保存。");}
   const context = () => history.frame.context;
   // The native commit and its local history observation must finish before
@@ -87,7 +89,7 @@ const ReferenceWorkspace = (() => {
     if (!context().groups.has(key) && create) context().groups.set(key, { activePageId: "", pages: [] });
     return context().groups.get(key) || null;
   }
-  function active(bid) { const g = group(bid); return g?.pages.find(p => p.id === g.activePageId) || null; }
+  function active(bid) { const shared = window.RoomCollectionWorkspace?.sourcePage(bid); if (shared) return shared; const g = group(bid); return g?.pages.find(p => p.id === g.activePageId) || null; }
   let presentationFrame = 0;
   function revision(c) { return revisions.get(c) || 0; }
   function getProjectState() {
@@ -327,6 +329,8 @@ const ReferenceWorkspace = (() => {
     const hadProjections = context().faceProjections.size || context().faceProjectionsDirty;
     const previousProjections = context().faceProjections;
     history.observe(cmd, result);
+    if (roomTransaction && result.ok && cmd === "line history-begin") roomTransaction.group = history.group;
+    if (roomTransaction && result.ok && cmd === "line history-end") roomTransaction.entry = history.undo.at(-1);
     const feature=assemblyConfirmation;
     if(result.ok&&feature?.featureCommand===cmd&&assemblyConfirmationCurrent(feature)&&sameModelData(readFeatureAttachment(feature.kind),feature.value))
       context().featureAttachments=context().featureAttachments.filter(record=>record.kind!==feature.kind);
@@ -343,16 +347,24 @@ const ReferenceWorkspace = (() => {
   }
   function getSpaceModels() { return JSON.parse(JSON.stringify(context().models)); }
   function getAssemblyDrafts() { return structuredClone(context().assemblyDrafts || []); }
-  function readFeatureAttachment(kind) {
+  function readFeatureAttachment(kind, expectedContextToken) {
     P.Features.assertKind(kind);
+    if (expectedContextToken !== undefined && expectedContextToken !== getProjectState().contextToken)
+      throw new Error("專案已切換，未讀取其他專案的功能附件。");
     const record = (context().featureAttachments || []).find(record => record.kind === kind);
     return record ? JSON.parse(JSON.stringify(record.value)) : null;
   }
-  function setFeatureAttachment(kind, value, expectedContextToken) {
-    P.Features.assertKind(kind); assertEditable();
+  function setFeatureAttachment(kind, value, expectedContextToken, options = {}) {
+    P.Features.assertKind(kind);
+    const groupedRoom = kind === P.Features.ROOM_KIND && options.recordHistory === false;
+    if (groupedRoom) {
+      assertRoomTransaction(options.roomLease);
+      if (!roomTransaction.group || history.group !== roomTransaction.group || !history.group.dirty)
+        throw new Error("房間來源必須與已確認的原生變更同一交易，未寫入。");
+    } else {assertEditable(); if (options.recordHistory === false) throw new Error("此功能附件不能略過復原紀錄。");}
     if (typeof expectedContextToken !== "string" || expectedContextToken !== getProjectState().contextToken)
       throw new Error("專案已切換或缺少編輯上下文，未寫入功能附件。");
-    if (busy || oc.busy || history.group || preparingSceneLoad || pendingLoad)
+    if (busy || oc.busy || (!groupedRoom && history.group) || preparingSceneLoad || pendingLoad)
       throw new Error("請先完成目前操作，再變更功能附件。");
     const record = value === null ? null : P.Features.record(kind, value);
     const previous = readFeatureAttachment(kind);
@@ -360,10 +372,65 @@ const ReferenceWorkspace = (() => {
     const next = (context().featureAttachments || []).filter(record => record.kind !== kind);
     if (record) next.push(JSON.parse(JSON.stringify(record)));
     P.Features.validate({schema:P.Features.SCHEMA, records:next});
-    history.push(history.snapshot(), "local", value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     return readFeatureAttachment(kind);
   }
+  function assertRoomTransaction(lease) {
+    if (!roomTransaction || lease !== roomTransaction.lease || context() !== roomTransaction.context ||
+        history.frame !== roomTransaction.frame || connection.session !== roomTransaction.session ||
+        getProjectState().contextToken !== lease.contextToken) throw new Error("房間交易已過期，未變更目前專案。");
+    assertConfirmationIdle(); assertEditorLease();
+    if (contextConflict || busy || pendingLoad || preparingSceneLoad) throw new Error("專案狀態已變更，房間交易尚未完成。");
+  }
+  function beginRoomTransaction(contextToken) {
+    assertModelReady();
+    if (roomTransaction || busy || oc.busy || preparingSceneLoad || contextToken !== getProjectState().contextToken)
+      throw new Error("房間預覽尚未就緒，未開始交易。");
+    const lease = Object.freeze({contextToken});
+    roomTransaction = {lease, context:context(), frame:history.frame, session:connection.session, group:null, entry:null};
+    return lease;
+  }
+  function endRoomTransaction(lease) {
+    assertRoomTransaction(lease);
+    if (history.group) throw new Error("房間原生交易尚未完成，請先恢復結果。");
+    roomTransaction = null; sync();
+  }
+  async function adoptRoomSource({plane, collectionId, boundaryId, page, roomId, name, associationPin, contextToken}) {
+    assertModelReady();
+    const c = context(), frame = history.frame, key = frame.ids.get(boundaryId), g = group(boundaryId), source = c.sources.get(plane.sourceId);
+    if (busy || oc.busy || preparingSceneLoad || contextToken !== getProjectState().contextToken || !key || active(boundaryId) !== page || !source)
+      throw new Error("來源選取已過期，未轉入共享房間。");
+    if (page.records.length || c.reconstructionReviews.has(key + ":" + page.id))
+      throw new Error("此來源頁含保存紀錄或核對證據；目前共享房間格式無保全位置，請保留原頁。");
+    const stamp = getModelOperationState(), originalPage = P.reference(page), original = readFeatureAttachment(P.Features.ROOM_KIND),
+      incarnation = frame.ids.get(boundaryId);
+    if (!sameModelData(GeometrySourcePlane.fromPage(page, source.meta.type, plane.id), plane)) throw new Error("共享來源基準與明選原頁不一致。");
+    const native = await apiRequest("boundary " + boundaryId);
+    if (!native.ok || await GeometryRoomCollection.boundaryPin(native) !== associationPin) throw new Error("原生邊界已變更，未轉入共享房間。");
+    const next = original || GeometrySourcePlane.empty();
+    next.planes.push(structuredClone(plane)); next.collections.push({id:collectionId,planeId:plane.id,roomIds:[roomId]});
+    next.rooms.push({id:roomId,name,boundaryRef:{kind:"boundary",id:boundaryId,associationPin},acceptedBasisRevision:plane.basisRevision,reviewState:"confirmed"});
+    const record = P.Features.record(P.Features.ROOM_KIND, next);
+    const records = c.featureAttachments.filter(record => record.kind !== P.Features.ROOM_KIND).concat(record);
+    P.Features.sourceRooms({schema:P.Features.SCHEMA,records},c.sources);
+    assertModelReady();
+    if (context() !== c || history.frame !== frame || frame.ids.get(boundaryId) !== incarnation || active(boundaryId) !== page ||
+        !sameModelData(getModelOperationState(), stamp) || !sameModelData(P.reference(page), originalPage) ||
+        !sameModelData(readFeatureAttachment(P.Features.ROOM_KIND), original)) throw new Error("來源轉入結果晚到，未改動目前專案。");
+    history.push(history.snapshot(), "local", "轉入共享房間來源");
+    const pages = g.pages.filter(candidate => candidate !== page), groups = new Map(c.groups);
+    if (pages.length) groups.set(key, {...g,pages,activePageId:pages[0].id}); else groups.delete(key);
+    c.groups = groups; c.featureAttachments = records; dirty(); sync();
+  }
+  const roomIntegration = Object.freeze({
+    readSource:(id,token) => {if (token !== getProjectState().contextToken) throw new Error("來源讀取上下文已過期。"); return context().sources.get(id) || null;},
+    readIncarnation:(id,token) => {if (token !== getProjectState().contextToken) throw new Error("房間身份上下文已過期。"); return history.frame.ids.get(id) || null;},
+    beginTransaction:beginRoomTransaction, assertTransaction:assertRoomTransaction, endTransaction:endRoomTransaction,
+    groupOpen:lease => {assertRoomTransaction(lease); return !!roomTransaction.group && history.group === roomTransaction.group;},
+    labelTransaction:(lease,label) => {assertRoomTransaction(lease); if (history.group || !roomTransaction.entry || history.undo.at(-1) !== roomTransaction.entry || typeof label !== "string" || label.length > 500) throw new Error("房間歷史步驟已變更。"); roomTransaction.entry.action = label;},
+    adoptLegacySource:adoptRoomSource
+  });
   function setAssemblyDraft(record, token, recordHistory = true) {
     assertDraftContext(token); P.validateAssemblyDraft(record);
     const next=getAssemblyDrafts(), index=next.findIndex(item=>item.id===record.id);
@@ -796,6 +863,8 @@ const ReferenceWorkspace = (() => {
       faces.push({ bid,activePageId:g.activePageId,pages:g.pages.map(p=>{used.add(p.sourceId);return P.reference(p);}) });
       for (const p of g.pages) {const r=c.reconstructionReviews.get(key+":"+p.id);if (r) reconstructionReviews.push({bid,pageId:p.id,...JSON.parse(JSON.stringify(r))});}
     }
+    const roomSources = P.Features.sourceRooms({schema:P.Features.SCHEMA,records:c.featureAttachments || []},c.sources);
+    for (const plane of roomSources?.planes || []) used.add(plane.sourceId);
     const data = { ...(reconstructionReviews.length?{reconstructionReviews}:{}),projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
       ...(c.models.length?{models:JSON.parse(JSON.stringify(c.models))}:{}),...(faceProjections.length?{faceProjections}:{}),
       ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.assemblyDrafts))}}:{}),
@@ -805,6 +874,7 @@ const ReferenceWorkspace = (() => {
     return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
   }
   function assertSaveReady() {
+    if(window.RoomCollectionWorkspace?.hasWork)throw new Error("房間草稿尚未確認。請確認、取消或恢復結果，再保存專案。");
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
     assertEditable();
@@ -1195,7 +1265,7 @@ const ReferenceWorkspace = (() => {
     reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,tracingFeatures,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
-    readFeatureAttachment,setFeatureAttachment,
+    readFeatureAttachment,setFeatureAttachment,getRoomIntegration:()=>roomIntegration,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getModelOperationState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
