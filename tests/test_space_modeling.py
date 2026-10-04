@@ -10,10 +10,12 @@ from pathlib import Path
 import sys
 import unittest
 from unittest import mock
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "geometry-web"))
 import space_modeling as sm
+import modeling
 from modeling import ModelError, verify_package
 from modeling.base import load_base
 
@@ -262,18 +264,63 @@ class SpaceModelingAcceptance(unittest.TestCase):
         data["obstacles"] = [{"kind": "beam", "id": 2}]
         self.rejects(data, "SPACE_OBSTACLES")
 
-    def test_capacity_rejects_space_and_separately_reports_wall_limit(self):
+    def test_selected_wall_capacity_rejects_whole_request_before_building_packages(self):
         data = request(walls=True)
         # 1 source + 5 unused boundaries + 6 new shell boundaries = 12.
-        # Material needs 5 extra carriers, which must not invalidate the space.
+        # Material needs 5 extra carriers: the whole selected request needs 17.
         data["base_scene"] += "".join(f"boundary {i} outline 0,0 10,0 10,10 0,10\n" for i in range(20, 25))
+        before = deepcopy(data)
+        with mock.patch.object(sm, "_package") as package, mock.patch.object(sm.Declarations, "face") as face:
+            error = self.rejects(data, "SPACE_CAPACITY")
+        package.assert_not_called()
+        face.assert_not_called()
+        self.assertEqual(error.status, "UNSUPPORTED")
+        self.assertEqual(error.clause, "I33")
+        self.assertEqual(error.path, ["settings", "wall_thickness"])
+        self.assertIn("邊界面需 17/16，承載面需 12/16", error.message)
+        self.assertIn("取消", error.message)
+        self.assertEqual(data, before)
+        # Boundary-only is a separate, explicitly chosen request.
+        data["settings"]["wall_thickness"] = None
         result = sm.preview(data)
         self.assertTrue(result["summary"]["closed"])
         self.assertIsNone(result["walls"])
-        self.assertEqual(result["summary"]["wall_diagnostics"][0]["code"], "SPACE_CAPACITY")
+        self.assertEqual(result["summary"]["wall_diagnostics"], [])
         data["base_scene"] += "".join(f"boundary {i} outline 0,0 10,0 10,10 0,10\n" for i in range(25, 30))
         error = self.rejects(data, "SPACE_CAPACITY")
         self.assertEqual(error.status, "UNSUPPORTED")
+
+    def test_exact_native_limit_remains_admitted_and_placement_capacity_is_independent(self):
+        data = request(walls=True)
+        data["base_scene"] += "".join(f"boundary {i} outline 0,0 10,0 10,10 0,10\n" for i in range(20, 24))
+        result = sm.preview(data)
+        self.assertEqual(result["summary"]["wall_volume_mm3"], "4032000000")
+        candidate = load_base(result["walls"]["definitions"]["base_scene"])
+        self.assertEqual(sum(line.startswith("boundary ") for line in candidate["base_scene"].splitlines()), 16)
+        data = request(walls=True)
+        data["base_scene"] += "".join(f"placement {i} on boundary 1 origin {i*10000} 0 0 u +x v +y\n" for i in range(20, 25))
+        error = self.rejects(data, "SPACE_CAPACITY")
+        self.assertIn("邊界面需 12/16，承載面需 17/16", error.message)
+
+    def test_selected_material_specs_are_preflighted_without_changing_requirement(self):
+        data = request(walls=True)
+        data["base_scene"] += "".join(f"spec unused_{i} {i}\n" for i in range(62))
+        with mock.patch.object(sm, "_package") as package:
+            error = self.rejects(data, "SPACE_CAPACITY")
+        package.assert_not_called()
+        self.assertIn("具名規格需 65/64", error.message)
+        self.assertEqual(data["settings"]["wall_thickness"], 100)
+
+    def test_material_solver_failure_is_not_downgraded_to_success(self):
+        for status, code in (("UNSUPPORTED", "PRECISION"), ("INVALID", "SHELL_ORIENTATION")):
+            with self.subTest(status=status):
+                data = request(walls=True)
+                before = deepcopy(data)
+                with mock.patch.object(sm, "_walls", side_effect=ModelError(status, code, "I33", "material solver failure")):
+                    error = self.rejects(data, code)
+                self.assertEqual(error.status, status)
+                self.assertIn("材料牆", error.as_dict()["diagnostics"][0]["message"])
+                self.assertEqual(data, before)
 
     def test_all_namespaces_and_uint_max_ids_are_preserved(self):
         data = request()
@@ -527,6 +574,70 @@ class SpaceTimberAcceptance(unittest.TestCase):
         self.assertIsNone(result["clearance"])
         self.assertEqual(result["timbers"]["derived"]["status"], "COMPLETE")
         self.assertEqual(result["summary"]["timber_count"], 1)
+
+
+class HistoricalWallReplay(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        with zipfile.ZipFile(ROOT / "tests/fixtures/issue119-legacy-missing-walls.gcanvas") as archive:
+            cls.records = json.loads(archive.read("manifest.json"))["models"]
+            pdf = archive.read("sources/3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110")
+        assert hashlib.sha256(pdf).hexdigest() == "3a87c8d7705c15b6a269207c0add8771c1dfa68ad9c33807f109c88a3c76c110"
+
+    def test_actual_old_archive_replays_both_records_without_changing_requests(self):
+        before = deepcopy(self.records)
+        for record in self.records:
+            self.assertEqual(sm.replay_stored(record["input"], record["result"]), record["result"])
+        self.assertEqual(self.records, before)
+        legacy = self.records[0]
+        self.assertEqual(legacy["input"]["settings"]["wall_thickness"], 100)
+        self.assertIsNone(legacy["result"]["walls"])
+        with self.assertRaises(ModelError) as caught:
+            sm.preview(legacy["input"])
+        self.assertEqual(caught.exception.status, "UNSUPPORTED")
+
+    def test_historical_missing_walls_still_require_exact_geometry_settings_and_diagnostics(self):
+        changes = (
+            lambda r: r["input"]["settings"].update(height=3200),
+            lambda r: r["input"]["settings"].update(wall_thickness=None),
+            lambda r: r["result"].update(source_sha256="a" * 64),
+            lambda r: r["result"]["space"]["derived"]["objects"][0]["vertices_mm"][0].__setitem__(0, 999),
+            lambda r: r["result"]["summary"].update(volume_mm3="1"),
+            lambda r: r["result"]["summary"]["wall_diagnostics"][0].update(message="forged failure"),
+            lambda r: r["result"]["summary"].update(wall_diagnostics=[]),
+        )
+        for change in changes:
+            record = deepcopy(self.records[0]); change(record)
+            before = deepcopy(record)
+            with self.assertRaises(ModelError):
+                sm.replay_stored(record["input"], record["result"])
+            self.assertEqual(record, before)
+
+    def test_removing_a_complete_wall_package_cannot_forge_a_historical_failure(self):
+        record = deepcopy(self.records[1])
+        record["result"]["walls"] = None
+        record["result"]["summary"]["wall_volume_mm3"] = None
+        record["result"]["summary"]["wall_diagnostics"] = deepcopy(self.records[0]["result"]["summary"]["wall_diagnostics"])
+        with self.assertRaises(ModelError) as caught:
+            sm.replay_stored(record["input"], record["result"])
+        self.assertEqual(caught.exception.code, "SPACE_STORED_REPLAY")
+
+    def test_supported_historical_package_metadata_is_verified_and_preserved(self):
+        for original in self.records:
+            record = deepcopy(original)
+            for key in ("space", "volume", "clearance", "walls"):
+                if record["result"][key] is not None:
+                    manifest = record["result"][key]["manifest"]
+                    manifest["axiom_revision"], manifest["axiom_sha256"] = next(iter(modeling.LEGACY_AXIOM_VERSIONS))
+                    manifest["generator"] = {"name": "historical-author", "version": "0.9"}
+            before = deepcopy(record)
+            self.assertEqual(sm.replay_stored(record["input"], record["result"]), record["result"])
+            self.assertEqual(record, before)
+        damaged = deepcopy(record)
+        damaged["result"]["space"]["manifest"]["axiom_sha256"] = "0" * 64
+        with self.assertRaises(ModelError) as caught:
+            sm.replay_stored(damaged["input"], damaged["result"])
+        self.assertEqual(caught.exception.code, "AXIOM_VERSION")
 
 
 if __name__ == "__main__":

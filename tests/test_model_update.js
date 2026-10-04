@@ -389,6 +389,7 @@ const PYTHON = [
   '            result={"graph":graph,"refusal":refusal}',
   '    elif sys.argv[1]=="update": result=mu.prepare_update(data)',
   '    elif sys.argv[1]=="verify": result=verify_package(data)',
+  '    elif sys.argv[1]=="replay": result=sm.replay_stored(data["input"],data["result"])',
   '    else: result=sm.preview(data)',
   'except ModelError as error: result=error.as_dict()',
   'print(json.dumps(result,ensure_ascii=False))'
@@ -420,7 +421,7 @@ function nativeWorkspace(record, scene) {
     resetSceneFocus(){},refreshActive:async()=>{},setStatus(){},sceneMenuDisplay:value=>value,curScene:{},
     fetch:async (url,options)=>{const body=url==='/upload/prepare'?options.body:JSON.parse(options.body);requests.push({url,body});
       if(url==='/model/verify')return {ok:true,json:async()=>engine('verify',body)};
-      if(url==='/model/space-preview')return {ok:true,json:async()=>engine('preview',body)};
+      if(url==='/model/space-replay')return {ok:true,json:async()=>engine('replay',body)};
       if(url==='/upload/prepare')return {ok:true,json:async()=>({ok:true,token:1,capabilities:require('./fixtures/native_available_capabilities.json'),required_capabilities:[],final_objects:{boundaries:[],placements:[]}})};
       if(url==='/upload/confirm')return {ok:true,json:async()=>({ok:true,path:'isolated reopened scene'})};
       throw Error('Unexpected workspace request '+url);}};
@@ -474,8 +475,8 @@ test('native complete record survives actual workspace save ZIP reopen, fresh ve
   const fresh=nativeWorkspace(null,sceneBefore);await fresh.w.importBytes(bytes);
   assert.deepEqual(clone(fresh.w.getSpaceModels()),saved);
   assert.equal(fresh.requests.filter(r=>r.url==='/model/verify').length,5);
-  assert.equal(fresh.requests.filter(r=>r.url==='/model/space-preview').length,1);
-  assert.deepEqual(fresh.requests.find(r=>r.url==='/model/space-preview').body,saved[0].input);
+  assert.equal(fresh.requests.filter(r=>r.url==='/model/space-replay').length,1);
+  assert.deepEqual(fresh.requests.find(r=>r.url==='/model/space-replay').body,{input:saved[0].input,result:saved[0].result});
 });
 
 test('late native candidate delivery after cancellation or project replacement cannot write', nativeOptions, async () => {

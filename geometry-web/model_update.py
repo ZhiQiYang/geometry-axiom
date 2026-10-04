@@ -382,7 +382,13 @@ def prepare_update(data, *, base_executable=None, bridge_executable=None, max_ce
     old_base = load_base(record["input"]["base_scene"], executable=base)
     _placement(old_base, record["source"]["placement_id"], record["source"]["boundary_id"],
                record["source"].get("projection"), ("record", "source"))
-    replay = space_modeling.preview(record["input"], base_executable=base, max_cells=max_cells)
+    try:
+        replay = space_modeling.replay_stored(record["input"], record["result"],
+                                             base_executable=base, max_cells=max_cells)
+    except ModelError as exc:
+        if exc.code != "SPACE_STORED_REPLAY" and exc.status != "INVALID":
+            raise
+        _fail("UPDATE_OLD_REPLAY", "舊模型紀錄與原生歷史重播不一致。", path=("record", "result"))
     if canonical_bytes(replay) != canonical_bytes(record["result"]) or record["source"]["scene_hash"] != replay["source_sha256"]:
         _fail("UPDATE_OLD_REPLAY", "完整舊模型紀錄與原生重播不一致。", path=("record", "result"))
     new_base = load_base(data["current_scene"], executable=base)

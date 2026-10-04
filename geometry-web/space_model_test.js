@@ -607,7 +607,7 @@ async function projectionSourceRaceRegression() {
     await openFaceModel();
     await wait(`window.__sourceDumpHeld===true`, 'delayed original-context source dump');
     if(closeFirst)await closeWorkspace();
-    await evaluate(`(async()=>{resetSceneFocus();await api('reset');await api('line surface 84 origin 0 0 4500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');await renderObjects();})()`);
+    await evaluate(`(async()=>{resetSceneFocus();await ReferenceWorkspace.newProject();await api('line surface 84 origin 0 0 4500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');await renderObjects();})()`);
     await evaluate(`window.__releaseSourceDump()`);
     await wait(`window.__sourceDumpHeld===false`, 'late source dump delivered');
     await settle();
