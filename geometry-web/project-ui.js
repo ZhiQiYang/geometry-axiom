@@ -16,6 +16,7 @@ window.ProjectInfoUI = (() => {
     const term = document.createElement('dt'), definition = document.createElement('dd');
     term.textContent = label; definition.textContent = value;
     details.append(term, definition);
+    return definition;
   }
   function render() {
     if (!panel || !details || typeof ReferenceWorkspace === 'undefined') return;
@@ -29,6 +30,11 @@ window.ProjectInfoUI = (() => {
     row('下一次復原', info.undoLabel || '目前沒有可確認的具名步驟');
     row('復原範圍', info.historyNote || '專案檔不包含復原紀錄；重新整理前的完整專案歷史無法復原。');
     row('接續工作', info.recovery?.message || '正在確認本機暫存');
+    const roomOverview = window.RoomCollectionWorkspace?.overviewHTML();
+    if (roomOverview) {
+      const source = row('共享房間來源', ''); source.innerHTML = roomOverview;
+      window.RoomCollectionWorkspace.bindOverview(source);
+    }
     if (retry) { retry.hidden = info.recovery?.state !== 'readonly'; retry.disabled = retrying; }
     button.title = '專案資訊：' + (info.statusText || '來源、保存與復原');
   }

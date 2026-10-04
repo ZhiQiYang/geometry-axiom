@@ -4,6 +4,12 @@
 
 - 使用者已明示接受八項建議，並授權自行安排順序／並行／批次；[目前接口／owner／採納範圍](geometry-guide/IMPLEMENTATION-QUEUE-20261004.md)。舊準備階段的「全部待採納」保留為歷史，不擴大未明寫條文，也不拿來阻塞已批准工作。
 - 第一波#85/#24收尾、#45單份rawdraft/來源→邊界、#44受控ordinary模型、#77人工多房與#49隔離案例準備；第二波#46/#48與案例保存；#58先六條精確差異/oracle後native→保存→UI。共用project-store/history/app及nativeWorld各單writer，root決定逐stage合併。
+
+## #77 saved-cloud owner 接續 — 共享來源與明選重新關聯（2026-10-04，WIP）
+
+- 沿 PR114 保存實作接線，不另造 PDF app／module／native parent。共享來源在既有專案資訊顯示；全房 unlink 或原生刪除後仍能明選 source collection／既有 boundary／房間、逐邊核對後重新關聯，不建 placeholder geometry。原圖 asset 與來源集合保留。
+- **本次拿掉／合併（GEO-219）**：共享房間的舊獨立參考頁選單、移除底圖與自動辨識入口合併為同來源房間操作；來源概覽合入既有專案資訊，不新增工具列／常駐教學／工作區。普通面原功能保留。
+- native candidate 指紋與 selected legacy records／receipt 無損遷移仍待 root／sole native owner 協調；拒絕保全不等於成功遷移，draft 不代表 #77 完成。同 head native、browser、ZIP／歷史及必要 full gates 結果回填交接文件與 PR114。
 - #85 PR98已合併main1075058；#24 PR97待root審查，A24實機保留。具體測試／exact head另以各stage真實證據回填，不宣稱採納等於功能完成。
 
 ## F4a 保存模型雙向定位 — #47 恢復的有限切片（2026-10-04）

@@ -1,7 +1,7 @@
 /* Real UI receipt recovery. Run only against an isolated owner-patched server:
  * GEOMETRY_TEST_URL=http://localhost:8815 GEOMETRY_FEEDBACK_DIR=/tmp/... \
  * GEOMETRY_ISSUE77_BROWSER_ADAPTER=/tmp/... node tests/test_issue77_recovery_browser.js
- * The TEMP adapter is explicit prototype evidence, not production-owner proof.
+ * An optional adapter is prototype evidence; no adapter exercises formal owner wiring.
  */
 "use strict";
 const assert = require("node:assert/strict"), fs = require("node:fs"), path = require("node:path"), os = require("node:os");
@@ -70,6 +70,96 @@ async function loseExecutedReply(page, target) {
     };
   },target);
 }
+async function rejectBeforeNativeDelivery(page, target = "confirm") {
+  await page.evaluate(target => {
+    const originalFetch=window.fetch.bind(window);
+    window.__stale={rejected:[],accepted:[],block:true,previewToken:RoomCollectionWorkspace.controller.preview.token};
+    window.fetch=async (input,options) => {
+      let body;try {body=JSON.parse(options?.body || "null");}catch {}
+      if (!body?.cmd) return originalFetch(input,options);
+      const stale=window.__stale;
+      if (stale.block && (target==="cancel" ? body.cmd==="line cancel-preview" : /^line confirm \d+$/.test(body.cmd) || body.cmd==="line history-abort")) {
+        // Exercise serve.py's real version gate. It returns HTTP 409 before
+        // bridge delivery, so this is a known rejection, not a lost receipt.
+        const headers=new Headers(options.headers);headers.set("X-Geometry-Version","issue77-known-stale-test");
+        const response=await originalFetch(input,{...options,headers});
+        stale.rejected.push({cmd:body.cmd,status:response.status,header:response.headers.get("X-Geometry-Stale"),result:await response.clone().json()});
+        return response;
+      }
+      const response=await originalFetch(input,options);
+      stale.accepted.push({cmd:body.cmd,status:response.status,result:await response.clone().json()});
+      return response;
+    };
+  },target);
+}
+async function knownStaleRollback(browser, errors) {
+  const context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage();
+  const expectedNetworkErrors=[];
+  page.on("pageerror",error=>errors.push(error.message));
+  page.on("console",message=>{
+    if(message.type()!=="error")return;
+    if(/Failed to load resource.*409/.test(message.text()))expectedNetworkErrors.push(message.text());
+    else errors.push(message.text());
+  });
+  page.on("dialog",dialog=>dialog.accept(dialog.message().includes("目前房間") ? "Room A" : "Room B"));
+  try {
+    await setup(page);const before=await snapshot(page);
+    await page.locator("#roomNew").click();await draw(page);await page.locator("#faceDraftFinish").click();
+    await page.waitForSelector("#roomConfirm");await rejectBeforeNativeDelivery(page);await page.locator("#roomConfirm").click();
+    await page.waitForFunction(()=>connection.phase==="error" && RoomCollectionWorkspace.busy);
+    const blocked=await page.evaluate(()=>({rejected:__stale.rejected,accepted:__stale.accepted,pending:pendingApiResults.size,
+      preview:RoomCollectionWorkspace.controller.preview.token,originalToken:__stale.previewToken,group:!!ReferenceWorkspace.history.group,
+      lease:!!RoomCollectionWorkspace.transactionLease,hasWork:RoomCollectionWorkspace.hasWork}));
+    check(blocked.rejected.map(row=>[row.cmd,row.status,row.header,row.result.ok]),[["line confirm "+blocked.originalToken,409,"1",false],["line history-abort",409,"1",false]],
+      "real server rejects stale confirm and rollback before native delivery");
+    check(blocked.accepted.map(row=>[row.cmd,row.result.ok]),[["line history-begin",true]],"native group really opened before known rejections");
+    check(blocked.pending,0,"known stale rejections require no invented pending receipt");
+    check(blocked.preview,blocked.originalToken,"known failed rollback retains its owned preview");
+    check([blocked.group,blocked.lease,blocked.hasWork],[true,true,true],"unsettled native group keeps editing and ownership guarded");
+    await page.screenshot({path:path.join(evidence,"known-stale-rollback-blocked.png")});
+    await page.evaluate(()=>{__stale.block=false;});await page.locator("#connectionRetry").click();
+    await page.waitForFunction(()=>connection.phase==="ready" && !RoomCollectionWorkspace.busy);
+    check(await snapshot(page),before,"known stale recovery restores original native scene and metadata");
+    check(await page.evaluate(()=>({preview:RoomCollectionWorkspace.controller.preview,lease:!!RoomCollectionWorkspace.transactionLease,
+      group:!!ReferenceWorkspace.history.group,tool:fe.tool,points:fe.draft.pts})),
+      {preview:null,lease:false,group:false,tool:"select",points:[]},"confirmed real rollback retires guarded draft before editing resumes");
+    check(await page.evaluate(()=>__stale.accepted.filter(row=>row.cmd==="line history-abort" && row.result.ok).length),1,"recovery performs one accepted native rollback");
+    check(await page.evaluate(()=>__stale.accepted.filter(row=>/^line confirm /.test(row.cmd)).length),0,"recovery never executes rejected confirmation");
+    check(await page.evaluate(async()=> (await apiRequest("line confirm "+__stale.previewToken)).ok),false,"real rollback retired the old native candidate");
+    console.log(JSON.stringify({case:"known-stale-rollback",expectedNetworkErrors}));
+  } catch(error) {
+    await page.screenshot({path:path.join(evidence,"known-stale-rollback-failure.png")});throw error;
+  } finally {await context.close();}
+}
+async function knownStaleCancel(browser, errors) {
+  const context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage();
+  const expectedNetworkErrors=[];
+  page.on("pageerror",error=>errors.push(error.message));
+  page.on("console",message=>{
+    if(message.type()!=="error")return;
+    if(/Failed to load resource.*409/.test(message.text()))expectedNetworkErrors.push(message.text());else errors.push(message.text());
+  });
+  page.on("dialog",dialog=>dialog.accept(dialog.message().includes("目前房間") ? "Room A" : "Room B"));
+  try {
+    await setup(page);const before=await snapshot(page);
+    await page.locator("#roomNew").click();await draw(page);await page.locator("#faceDraftFinish").click();await page.waitForSelector("#roomConfirm");
+    await rejectBeforeNativeDelivery(page,"cancel");await page.getByRole("button",{name:"取消，保留原狀",exact:true}).click();
+    await page.waitForFunction(()=>connection.phase==="error" && RoomCollectionWorkspace.busy);
+    check(await page.evaluate(()=>__stale.rejected.map(row=>[row.cmd,row.status,row.header,row.result.ok])),[["line cancel-preview",409,"1",false]],"real known stale cancellation is rejected before native delivery");
+    check(await page.evaluate(()=>({pending:pendingApiResults.size,group:!!ReferenceWorkspace.history.group,lease:!!RoomCollectionWorkspace.transactionLease,
+      preview:RoomCollectionWorkspace.controller.preview.token===__stale.previewToken})),{pending:0,group:false,lease:true,preview:true},"known cancellation rejection keeps the native candidate owned with no invented receipt");
+    await page.screenshot({path:path.join(evidence,"known-stale-cancel-blocked.png")});
+    await page.evaluate(()=>{__stale.block=false;});await page.locator("#connectionRetry").click();
+    await page.waitForFunction(()=>connection.phase==="ready" && !RoomCollectionWorkspace.busy);
+    check(await snapshot(page),before,"known stale cancellation recovery changes no native geometry or room metadata");
+    check(await page.evaluate(()=>__stale.accepted.filter(row=>row.cmd==="line cancel-preview"&&row.result.ok).length),1,"recovery sends one accepted native cancellation after rejected delivery");
+    check(await page.evaluate(async()=> (await apiRequest("line confirm "+__stale.previewToken)).ok),false,"known stale cancellation recovery retires the actual old candidate");
+    check(await page.evaluate(()=>({hasWork:RoomCollectionWorkspace.hasWork,group:!!ReferenceWorkspace.history.group,lease:!!RoomCollectionWorkspace.transactionLease,
+      preview:fe.draftPreview,tool:fe.tool,pts:fe.draft.pts})),{hasWork:false,group:false,lease:false,preview:null,tool:"select",pts:[]},"known stale cancellation retires all draft state before editing resumes");
+    console.log(JSON.stringify({case:"known-stale-cancel",expectedNetworkErrors}));
+  } catch(error) {await page.screenshot({path:path.join(evidence,"known-stale-cancel-failure.png")});throw error;}
+  finally {await context.close();}
+}
 async function main() {
   const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME || "/usr/bin/chromium",headless:true,args:["--no-sandbox"]});
   const errors=[];
@@ -137,6 +227,8 @@ async function main() {
         throw error;
       } finally {await context.close();}
     }
+    await knownStaleRollback(browser,errors);
+    await knownStaleCancel(browser,errors);
     check(errors,[],"no relevant app page/console errors");
     console.log(JSON.stringify({checks,evidence,browser:"Chromium via Playwright; Browser plugin unavailable",viewports:["1440x1000","390x844"],ownerAdapter:process.env.GEOMETRY_ISSUE77_BROWSER_ADAPTER || "official owner API",iOS:"not tested"}));
   } finally {await browser.close();}

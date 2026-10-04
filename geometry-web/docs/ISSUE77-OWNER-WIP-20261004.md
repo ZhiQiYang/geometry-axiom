@@ -140,3 +140,68 @@ source overview/reassociation path after all rooms unlink/retire. The new writer
 requested the first two decisions and does not alter native World/bridge or the
 payload schema without that coordination. Draft PR114 stays non-merge-ready;
 Refs #77, no merge/deploy or #54 work.
+
+## Saved-cloud continuation stage 2 (2026-10-04)
+
+Remote main is now `b972dafbc0b9838ecab13032bbd4ed3b71b63609` after
+root merged PR113. Its tree matches the inherited PR113 `b72044d` tree;
+the #44 model entry, immutable snapshots and HTTP update-preview are preserved.
+
+The existing project-information popover now exposes shared source collections
+even after every room unlinks or retires. Explicit native-boundary association
+uses the actual full native pin, preserves stable room identity on reassociation,
+and records metadata-only undo. New-room choice uses the empty value outside the
+persisted room-ID domain, so a valid imported ID `new` remains independent.
+390px controls were rendered and inspected. The real browser removal/overview
+gate reached 46 checks, including cold-source late navigation rejection and
+one-undo preservation. No placeholder native geometry or new toolbar was added.
+
+Known pre-delivery rejection can leave a native history group or owned candidate
+unsettled. The owner now exposes the existing connection recovery and retains
+its lease until native rollback/cancellation succeeds. True native history-abort
+of an untouched group does not retire the candidate: recovery explicitly cancels
+the still-owned candidate before releasing ownership. A central owned-candidate
+cancel path handles both ordinary cancel and recovery. The real browser recovery
+gate reached 111 checks across five executed-reply losses and real HTTP409 stale
+confirm/abort/cancel rejections; old preview tokens cannot apply after recovery.
+No pending receipt is invented for a known rejection. Expired service-session
+receipts remain blocked and require reopening a saved project; no synthetic
+receipt or new-session adoption is permitted.
+
+Stage1 `4076c568` full CDP genuinely failed P69 timber navigation; the isolated
+same harness passes on PR113. The shared source await had preceded synchronous
+focus identity publication. It now runs after that identity and checks existing
+focus/context guards before native reads. Room navigation delegates to that one
+preparation path and rejects late continuation before starting an old edit.
+Stage1 default-space also failed during source loading; baseline PR113 passes,
+but a dialog-open readiness race is not yet excluded. These failures remain
+durable evidence, never relabelled as success; stage2 exact-head reruns are needed.
+
+Shared #44 scenario receipt decoding now accepts only the optional complete
+`boundaryFingerprints` summary, validating exact fields, typed IDs, uniqueness,
+membership and lowercase 64-hex hashes. Existing receipts remain valid; unknown
+fields and incomplete summaries still reject. Native output is still missing:
+no native writer is assigned, and no native file has been changed here.
+
+A complete non-browser census ran with `--build --update-expected` and exit0.
+The only expected-count changes are the added genuine regressions in
+`node:tests-js` and `py:test_scenario_verify`; original JSON ordering is preserved.
+This is an intermediate-tree census, not the final frozen-head gate.
+
+Required root response is explicit, not just a PR-body note:
+1. Assign the sole native owner for candidate hashes from `g_load_after`, using
+   existing `boundary_geometry_hash`; no World capacity or axiom change. Minimum
+   true-native repro/interface packet lives at
+   `/workspace/handoffs/geometry-axiom-20261004/77-native-candidate-contract/README.md`.
+2. Decide the finite legacy historical-evidence storage contract. Recommended:
+   selected-page records belong to the unique source plane; the original receipt
+   belongs to the selected room as read-only history, with existing validation
+   and limits. Its old basis/geometry are evidence only, never a second editable
+   basis or automatic acceptance of a later shared basis. No such payload fields
+   have been added. Selected records/receipt still refuse adoption without loss.
+
+Independent review fixed concrete ID-sentinel, late-navigation and candidate
+settlement findings. Latest scoped review proofs are under
+`/workspace/handoffs/geometry-axiom-20261004/77-review/`; formal/frozen-head
+acceptance remains separate. Full fresh-context room ZIP reopen is still blocked
+by missing native candidate pins. This draft remains unfinished and non-merge-ready.

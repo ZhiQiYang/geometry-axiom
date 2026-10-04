@@ -725,7 +725,8 @@
         // and retirement flags until this exact candidate is confirmed.
         const preview = result.preview, rows = preview.boundaries;
         this.boundaryPreview = preview.valid === true && uint(preview.token) && preview.token > 0 &&
-          Array.isArray(rows) && rows.length <= 10000 && rows.every(row => positiveId(row.id) && (row.after === null || row.after?.id === row.id)) ?
+          Array.isArray(rows) && rows.length <= 10000 && rows.every(row => object(row) && positiveId(row.id) && (row.after === null || row.after?.id === row.id)) &&
+          new Set(rows.map(row => row.id)).size === rows.length ?
           {token:String(preview.token),frame:this.frame,session,changes:rows.map(row => ({id:row.id,retired:row.after === null}))} : null;
         return;
       }

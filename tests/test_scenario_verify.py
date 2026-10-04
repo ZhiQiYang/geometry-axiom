@@ -59,6 +59,31 @@ def fresh_model_base():
 
 
 class ScenarioNativeAcceptance(unittest.TestCase):
+    def test_candidate_boundary_fingerprint_summary_is_optional_complete_typed_and_exact(self):
+        old = {"boundaries": [1, 2], "placements": []}
+        self.assertEqual(verifier._final_objects(deepcopy(old)), old)
+        entries = [{"id": 1, "geometryFingerprint": "a" * 64}, {"id": 2, "geometryFingerprint": "b" * 64}]
+        complete = {**old, "boundaryFingerprints": entries}
+        before = deepcopy(complete)
+        self.assertIs(verifier._final_objects(complete), complete)
+        self.assertEqual(complete, before)
+        self.assertEqual(verifier._final_objects({"boundaries": [], "placements": [], "boundaryFingerprints": []})["boundaryFingerprints"], [])
+        invalid = [None, [], entries[:1], [entries[0], entries[0]],
+                   [entries[0], {"id": 3, "geometryFingerprint": "b" * 64}],
+                   [entries[0], {"id": True, "geometryFingerprint": "b" * 64}],
+                   [entries[0], {"id": "2", "geometryFingerprint": "b" * 64}],
+                   [entries[0], {"id": 2, "geometryFingerprint": "B" * 64}],
+                   [entries[0], {"id": 2, "geometryFingerprint": "b" * 63}],
+                   [entries[0], {"id": 2}], [entries[0], {**entries[1], "kind": "boundary"}]]
+        for summary in invalid:
+            with self.subTest(summary=summary):
+                with self.assertRaises(ModelError) as caught:
+                    verifier._final_objects({**old, "boundaryFingerprints": summary})
+                self.assertEqual(caught.exception.code, "SCENARIO_NATIVE_PROTOCOL")
+        with self.assertRaises(ModelError) as caught:
+            verifier._final_objects({**complete, "unknown": []})
+        self.assertEqual(caught.exception.code, "SCENARIO_NATIVE_PROTOCOL")
+
     @classmethod
     def setUpClass(cls):
         cls.bridge = _bridge.find_bridge()

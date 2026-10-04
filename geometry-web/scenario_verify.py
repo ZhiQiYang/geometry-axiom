@@ -279,7 +279,7 @@ def _run_bounded(command, payload, *, cwd, timeout, output_limit=None, allowed_e
 
 
 def _final_objects(value):
-    if type(value) is not dict or set(value) != {"boundaries", "placements"}:
+    if type(value) is not dict or set(value) not in ({"boundaries", "placements"}, {"boundaries", "placements", "boundaryFingerprints"}):
         _fail("SCENARIO_NATIVE_PROTOCOL", "Native final object receipt is incomplete.", status="UNSUPPORTED")
     boundaries, placements = value["boundaries"], value["placements"]
     if type(boundaries) is not list or type(placements) is not list or len(boundaries) > 2048 or len(placements) > 2048:
@@ -295,6 +295,19 @@ def _final_objects(value):
         if type(item["horizontal"]) is not bool or item["id"] in ids or (item["bid"] and item["bid"] not in boundaries):
             _fail("SCENARIO_NATIVE_PROTOCOL", "Native placement identity or boundary is invalid.", status="UNSUPPORTED")
         ids.add(item["id"])
+    # A load candidate may include the existing native geometry hashes. Keep
+    # the old receipt valid, but never accept a partial or untyped new summary.
+    if "boundaryFingerprints" in value:
+        entries = value["boundaryFingerprints"]
+        if type(entries) is not list or len(entries) != len(boundaries):
+            _fail("SCENARIO_NATIVE_PROTOCOL", "Native candidate boundary fingerprints are incomplete.", status="UNSUPPORTED")
+        seen = set()
+        for entry in entries:
+            if (type(entry) is not dict or set(entry) != {"id", "geometryFingerprint"} or
+                    type(entry["id"]) is not int or entry["id"] not in boundaries or entry["id"] in seen or
+                    type(entry["geometryFingerprint"]) is not str or not HASH.fullmatch(entry["geometryFingerprint"])):
+                _fail("SCENARIO_NATIVE_PROTOCOL", "Native candidate boundary fingerprint identity is invalid.", status="UNSUPPORTED")
+            seen.add(entry["id"])
     return value
 
 

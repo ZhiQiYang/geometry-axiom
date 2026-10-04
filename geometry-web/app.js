@@ -2517,7 +2517,6 @@ function drawCrumb() {
 /* ---- 焦點導航 ---- */
 async function enterFocus(t, id, options = {}) {
   if (window.RoomCollectionWorkspace?.hasWork && oc.focus && (oc.focus.t !== t || oc.focus.id !== id)) throw new Error("請先完成或取消目前房間草稿。");
-  if (t === "face" && window.RoomCollectionWorkspace) await RoomCollectionWorkspace.prepareSharedPages();
   if (!window.DraftGate.ask()) return;
   const matchesTarget = oc.sel?.kind === (t === "space" ? "space" : "boundary") && oc.sel.id === id;
   clearCanvasSelections({keepSingleObject:matchesTarget});
@@ -2532,6 +2531,10 @@ async function enterFocus(t, id, options = {}) {
   renderCanvasModeHint();
 
   if (t === "face") {
+    // Publish the existing focus identity synchronously before source loading;
+    // source-navigation owners retain that identity across this async work.
+    if (window.RoomCollectionWorkspace) await RoomCollectionWorkspace.prepareSharedPages();
+    if (oc.focus !== focus || ReferenceWorkspace.context().id !== contextId) return;
     const b = await api("boundary " + id);
     if (oc.focus !== focus || ReferenceWorkspace.context().id !== contextId) return;
     if (!b.ok) {

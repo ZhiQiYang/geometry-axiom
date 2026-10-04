@@ -3,6 +3,7 @@ const RoomCollectionWorkspace = (() => {
   "use strict";
   const S = GeometrySourcePlane, R = GeometryRoomCollection;
   const pages = new Map();
+  let overviewCollectionId = null, overviewContextToken = null;
   let instance = null, activeBid = null, lease = null, ownedPreviewToken = null, ownedPreviewCommand = null, currentDialog = null, retireDialog = null, integration = null, cleaningUI = false;
   const W = () => ReferenceWorkspace;
   const token = () => W().getProjectState().contextToken;
@@ -22,6 +23,17 @@ const RoomCollectionWorkspace = (() => {
     const result = await request(command);
     if (!result.ok) throw Object.assign(new Error(result.error || "房間操作失敗。"), {transport: result.transport});
     return result;
+  }
+  async function cancelOwnedCandidate() {
+    try {
+      await checked("line cancel-preview"); ownedPreviewToken = null; ownedPreviewCommand = null;
+    } catch (error) {
+      // A known rejection before delivery still leaves our native candidate
+      // unsettled. Keep ownership and expose the existing recovery path.
+      error.transport = true;
+      if (connection.phase !== "error" && typeof connectionFailed === "function") connectionFailed("房間候選尚未取消：" + error.message);
+      throw error;
+    }
   }
   function boundaryCommand(id, outline, existing) {
     return R.buildBoundaryCommand(id, outline, existing);
@@ -50,8 +62,7 @@ const RoomCollectionWorkspace = (() => {
         // The workspace owns the only pending draft; callers cannot cancel a foreign token.
         if (!lease || ownedPreviewToken !== previewToken) throw new Error("房間預覽識別已變更，未取消其他工作的候選。");
         integration.assertTransaction(lease);
-        await checked("line cancel-preview");
-        ownedPreviewToken = null; ownedPreviewCommand = null; integration.endTransaction(lease); lease = null;
+        await cancelOwnedCandidate(); integration.endTransaction(lease); lease = null;
       },
       changeMetadata: (next, {label, stamp}) => W().setFeatureAttachment("source-rooms", next, stamp.contextToken, {recordHistory: true, reason: label}),
       commitWithMetadata: async ({token: previewToken, boundaryId, label, assertCurrent, makeAttachment}) => {
@@ -69,11 +80,23 @@ const RoomCollectionWorkspace = (() => {
           return {ok: true};
         } catch (error) {
           unknown = !!error.transport || connection.phase === "error";
-          if (begun && !unknown && integration.groupOpen(lease)) {
-            try {await checked("line history-abort");}
+          if (!unknown) {
+            try {
+              if (begun && integration.groupOpen(lease)) await checked("line history-abort");
+              // Aborting an unchanged native group does not necessarily retire
+              // its unconfirmed candidate. Settle it before releasing ownership.
+              if (ownedPreviewToken !== null) {
+                await cancelOwnedCandidate();
+              }
+            }
             catch (rollbackError) {
               // A rollback with no confirmed outcome still owns the native group.
               unknown = !!rollbackError.transport || connection.phase === "error";
+              if (!unknown) {
+                try {unknown = integration.groupOpen(lease) || ownedPreviewToken !== null;} catch (_) {unknown = true;}
+              }
+              if (unknown && connection.phase !== "error" && typeof connectionFailed === "function")
+                connectionFailed("房間交易尚未回復：" + rollbackError.message);
               rollbackError.transport = unknown;
               throw rollbackError;
             }
@@ -135,6 +158,51 @@ const RoomCollectionWorkspace = (() => {
       }).join("") + "</details>";
   }
   const safe = operation => async () => {try {await operation();} catch (error) {toast(error.message);}};
+  function overviewHTML() {
+    if (!integration || !W().readFeatureAttachment) return "";
+    const data = state(); if (!data.collections.length) return "";
+    const contextToken = token();
+    if (overviewContextToken !== contextToken) {overviewContextToken = contextToken; overviewCollectionId = null;}
+    const collection = data.collections.find(item => item.id === overviewCollectionId) || data.collections[0];
+    overviewCollectionId = collection.id;
+    const plane = data.planes.find(item => item.id === collection.planeId), rooms = data.rooms.filter(room => collection.roomIds.includes(room.id));
+    const sourceLabel = item => {
+      const sourcePlane = data.planes.find(plane => plane.id === item.planeId), source = integration.readSource(sourcePlane.sourceId, contextToken);
+      return (source?.meta.name || "共享來源") + " · 第 " + sourcePlane.page + " 頁";
+    };
+    const disabled = instance?.intent || instance?.busy || lease || W().getModelOperationState().blocked;
+    return `<details class="ref-section" data-room-source-overview><summary>${escape(sourceLabel(collection))} · ${rooms.length} 個房間</summary>` +
+      `<label>共享來源<select data-room-source-collection${disabled ? " disabled" : ""}>${data.collections.map(item =>
+        `<option value="${item.id}"${item.id === collection.id ? " selected" : ""}>${escape(sourceLabel(item))}</option>`).join("")}</select></label>` +
+      `<p role="status">共同基準 ${plane.basisRevision} · ${rooms.filter(room => room.reviewState === "needs-reassociation").length} 個需重新關聯</p>` +
+      `<label>房間<select data-room-source-room${disabled ? " disabled" : ""}><option value="">關聯新的房間</option>${rooms.map(room =>
+        `<option value="${room.id}">${escape(room.name)} · ${room.reviewState === "needs-reassociation" ? "需重新關聯" : room.reviewState === "needs-review" ? "需複核" : "已核對"}</option>`).join("")}</select></label>` +
+      `<label>既有邊界<select data-room-source-boundary${disabled ? " disabled" : ""}><option value="">明選已有邊界</option>${(oc.faces || []).filter(face => face.kind === "boundary").map(face =>
+        `<option value="${face.id}">邊界 ${face.id}</option>`).join("")}</select></label>` +
+      `<button type="button" class="btn" data-room-source-associate${disabled ? " disabled" : ""}>核對並關聯既有邊界</button></details>`;
+  }
+  function bindOverview(host) {
+    const contextToken = token(), collectionId = overviewCollectionId;
+    host.querySelector("[data-room-source-collection]")?.addEventListener("change", event => {
+      overviewCollectionId = event.target.value; window.ProjectInfoUI?.render();
+    });
+    host.querySelector("[data-room-source-associate]")?.addEventListener("click", safe(async () => {
+      if (token() !== contextToken) throw new Error("來源總覽已過期，請重新選擇。");
+      if (RoomOutlineWorkspace.hasWork || fe.draft.pts.length || fe.ulCalib?.pts?.length) throw new Error("請先完成或取消目前輪廓或校準草稿。");
+      const roomId = host.querySelector("[data-room-source-room]").value, boundaryId = Number(host.querySelector("[data-room-source-boundary]").value);
+      if (!Number.isInteger(boundaryId) || boundaryId < 1) throw new Error("請明確選擇既有原生邊界。");
+      const data = state(), collection = data.collections.find(item => item.id === collectionId);
+      const room = roomId ? data.rooms.find(room => room.id === roomId && collection?.roomIds.includes(room.id)) : null;
+      if (roomId && !room) throw new Error("所選房間已變更，請重新選擇。");
+      const name = room ? room.name : prompt("房間名稱", "房間 " + boundaryId);
+      if (name === null) return;
+      if (!confirm("請確認已逐邊核對所選來源基準與邊界 " + boundaryId + " 的輪廓及尺寸，再關聯至「" + name + "」。")) return;
+      const next = await controller().associate(collectionId, boundaryId, name, roomId || null);
+      const associated = next.rooms.find(room => room.boundaryRef.id === boundaryId);
+      await openRoom(associated.id);
+      document.getElementById("projectInfoPanel")?.hidePopover();
+    }));
+  }
   function bindPane(pane, bid) {
     pane.querySelector("#roomSourceCreate")?.addEventListener("click", safe(async () => {
       const page = W().active(bid), stamp = W().getProjectState(), source = integration.readSource(page.sourceId, stamp.contextToken);
@@ -173,9 +241,15 @@ const RoomCollectionWorkspace = (() => {
     cleanDraft(); renderFaceInspector(); setStatus("新增房間：逐點描繪外環，確認後建立獨立邊界；取消保留原房間。");
   }
   async function openRoom(roomId) {
-    const room = state().rooms.find(r => r.id === roomId);
+    const contextToken = token(), room = state().rooms.find(r => r.id === roomId);
     if (!room || room.reviewState === "needs-reassociation") throw new Error("房間原生邊界需要重新關聯。");
-    await prepareSharedPages(); await enterFocus("face", room.boundaryRef.id); fiShowTab("underlay");
+    const pendingFocus = enterFocus("face", room.boundaryRef.id), focus = oc.focus;
+    await pendingFocus;
+    if (token() !== contextToken || oc.focus !== focus || focus?.t !== "face" || focus.id !== room.boundaryRef.id || oc.edit?.bid !== room.boundaryRef.id)
+      throw new Error("房間開啟結果晚到，請重新選擇。");
+    const current = state().rooms.find(r => r.id === roomId);
+    if (!current || current.reviewState === "needs-reassociation" || current.boundaryRef.id !== room.boundaryRef.id) throw new Error("房間關聯已變更，請重新選擇。");
+    fiShowTab("underlay");
   }
   async function beginEdit(roomId) {
     if (RoomOutlineWorkspace.hasWork || fe.draft.pts.length) throw new Error("請先完成或取消目前外環草稿。");
@@ -244,14 +318,13 @@ const RoomCollectionWorkspace = (() => {
     if (!lease || !result.ok) return;
     if (command === ownedPreviewCommand && result.preview?.valid === true && Number.isInteger(result.preview.token) && result.preview.token > 0)
       ownedPreviewToken = result.preview.token;
-    if (command === "line cancel-preview" || command === "line history-abort" || command === "line confirm " + ownedPreviewToken)
+    if (command === "line cancel-preview" || command === "line confirm " + ownedPreviewToken)
       ownedPreviewToken = null;
   }
   async function settleRecoveredTransaction() {
     if (lease && ownedPreviewToken !== null) {
       integration.assertTransaction(lease);
-      await checked("line cancel-preview");
-      ownedPreviewToken = null;
+      await cancelOwnedCandidate();
     }
     recoveredTransaction();
   }
@@ -271,7 +344,7 @@ const RoomCollectionWorkspace = (() => {
     if (settledLease) integration.endTransaction(settledLease);
     lease = null;
   }
-  return {configure, assertTransaction, paneHTML, bindPane, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeBasis, observeNativeResult, settleRecoveredTransaction, recoveredTransaction,
+  return {configure, assertTransaction, paneHTML, bindPane, overviewHTML, bindOverview, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeBasis, observeNativeResult, settleRecoveredTransaction, recoveredTransaction,
     get cleaningUI() {return cleaningUI;}, get dialogOpen() {return !!currentDialog?.open;},
     get hasWork() {return !!instance?.intent || !!lease;}, get busy() {return !!instance?.busy || !!lease;}, get transactionLease() {return lease;}, get controller() {return controller();}};
 })();
