@@ -23,7 +23,8 @@ sys.path.insert(0, str(ROOT))
 
 from rule_cases.catalog import case
 from rule_cases.definition import definition_hash, digest
-from rule_cases.executor import NativeExecutor, _Child, _Stop, refresh_receipt
+from rule_cases.executor import (MAX_RECEIPT_BYTES, NativeExecutor, ReceiptValidationError,
+                                 _Child, _Stop, _diagnostic_matches, refresh_receipt)
 from rule_cases.runtime import runtime_identity
 from tests import binaries
 from tests._bridge import BridgeSession, find_bridge
@@ -237,6 +238,160 @@ class TrueNativeExecutor(unittest.TestCase):
         self.assertEqual("rejected", refreshed["actualOutcome"])
         self.assertEqual(receipt["actualDiagnostics"], refreshed["actualDiagnostics"])
         self.assertEqual("blocked", receipt["status"])
+
+    def test_minimal_matching_green_claim_lacks_required_native_evidence(self):
+        claimed = {"status": "passed", "caseId": self.definition["caseId"],
+                   "definitionHash": definition_hash(self.definition),
+                   "sourceHash": digest(self.definition["sourcePins"]),
+                   "executor": deepcopy(self.identity)}
+        with self.assertRaises(ReceiptValidationError):
+            refresh_receipt(claimed, self.definition, self.identity)
+
+    def test_green_receipt_rejects_each_missing_native_evidence_field(self):
+        paths = [(key,) for key in ("actualOutcome", "actualDiagnostics", "authorExpected",
+                                    "observations", "conditions", "executor", "assertionResults")]
+        paths += [("authorExpected", key) for key in ("outcome", "diagnostic")]
+        paths += [("conditions", key) for key in ("isolated", "privateDirectoryRemoved", "nativePid")]
+        paths += [("executor", key) for key in ("known", "nativeBinaryHash", "nativeSourceHash",
+                                                "validatorVersion", "axiomHash", "assertionSchemaHash")]
+        paths += [("observations", key) for key in ("before", "after", "beforeRevision", "afterRevision",
+                                                    "beforeDumpHash", "afterDumpHash")]
+        paths += [("assertionResults", 0, key) for key in ("kind", "passed", "predicate")]
+        for path in paths:
+            changed = deepcopy(self.receipt)
+            parent = changed
+            for selector in path[:-1]:
+                parent = parent[selector]
+            del parent[path[-1]]
+            with self.subTest(missing=path), self.assertRaises(ReceiptValidationError):
+                refresh_receipt(changed, self.definition, self.identity)
+
+    def test_green_receipt_rejects_wrong_outcome_flags_and_evidence_types(self):
+        controls = [(("actualOutcome",), "rejected"), (("actualDiagnostics",), {}),
+                    (("status",), []), (("recordedStatus",), []),
+                    (("conditions", "isolated"), 1), (("conditions", "privateDirectoryRemoved"), False),
+                    (("conditions", "nativePid"), True), (("conditions", "nativePid"), 0),
+                    (("executor", "known"), 1), (("executor", "nativeBinaryHash"), "G" * 64),
+                    (("observations", "before"), []), (("observations", "after"), None),
+                    (("observations", "beforeRevision"), True), (("observations", "afterRevision"), -1),
+                    (("observations", "beforeDumpHash"), "not-a-hash"),
+                    (("observations", "afterDumpHash"), "F" * 64), (("assertionResults",), {}),
+                    (("assertionResults",), [])]
+        for path, value in controls:
+            changed = deepcopy(self.receipt)
+            parent = changed
+            for selector in path[:-1]:
+                parent = parent[selector]
+            parent[path[-1]] = value
+            with self.subTest(field=path, value=value), self.assertRaises(ReceiptValidationError):
+                refresh_receipt(changed, self.definition, self.identity)
+
+    def test_green_assertions_are_recomputed_and_must_match_exact_case_contract(self):
+        controls = []
+        false_assertion = deepcopy(self.receipt)
+        false_assertion["assertionResults"][0]["passed"] = False
+        controls.append(false_assertion)
+        false_native_observation = deepcopy(self.receipt)
+        false_native_observation["observations"]["after"]["rules"] = []
+        controls.append(false_native_observation)
+        changed_predicate = deepcopy(self.receipt)
+        changed_predicate["assertionResults"][1]["predicate"]["slotId"] = 13
+        controls.append(changed_predicate)
+        missing_true_predicates = deepcopy(self.receipt)
+        missing_true_predicates["assertionResults"] = missing_true_predicates["assertionResults"][:1]
+        controls.append(missing_true_predicates)
+        mismatched_kind = deepcopy(self.receipt)
+        mismatched_kind["assertionResults"][0]["kind"] = "member_slot"
+        controls.append(mismatched_kind)
+        changed_unasserted_definition = deepcopy(self.receipt)
+        changed_unasserted_definition["observations"]["after"]["rules"][0]["value"]["name"] = "altered receipt source"
+        controls.append(changed_unasserted_definition)
+        for index, changed in enumerate(controls):
+            with self.subTest(control=index), self.assertRaises(ReceiptValidationError):
+                refresh_receipt(changed, self.definition, self.identity)
+
+    def test_receipt_json_guard_rejects_cycles_depth_size_and_non_json_values(self):
+        controls = [set(), (), b"bytes", object(), float("nan"), float("inf"), 2**80, "\ud800",
+                    "x" * (MAX_RECEIPT_BYTES + 1)]
+        nested = []
+        for _ in range(40):
+            nested = [nested]
+        controls.append(nested)
+        cycle = {}
+        cycle["self"] = cycle
+        controls.append(cycle)
+        controls.append([None] * 65536)
+        for index, value in enumerate(controls):
+            changed = deepcopy(self.receipt)
+            changed["syntheticMalformedPayload"] = value
+            with self.subTest(control=index), self.assertRaises(ReceiptValidationError):
+                refresh_receipt(changed, self.definition, self.identity)
+
+    def test_valid_old_green_evidence_remains_stale_under_a_changed_current_oracle(self):
+        changed_definition = deepcopy(self.definition)
+        changed_definition["assertions"][1]["slotId"] = 13
+        retained = refresh_receipt(self.receipt, changed_definition, self.identity)
+        again = refresh_receipt(retained, changed_definition, self.identity)
+        self.assertEqual("stale", again["status"])
+        self.assertEqual("passed", again["recordedStatus"])
+        self.assertEqual(["definition"], again["staleReasons"])
+        for field in ("executor", "authorExpected", "actualOutcome", "actualDiagnostics", "observations", "assertionResults"):
+            self.assertEqual(self.receipt[field], again[field])
+        self.assertEqual("passed", self.receipt["status"])
+
+    def test_stale_historical_green_evidence_still_rejects_false_assertion(self):
+        changed_definition = deepcopy(self.definition)
+        changed_definition["label"] += " changed"
+        retained = refresh_receipt(self.receipt, changed_definition, self.identity)
+        retained["assertionResults"][0]["passed"] = False
+        with self.assertRaises(ReceiptValidationError):
+            refresh_receipt(retained, changed_definition, self.identity)
+
+    def test_generic_or_wrong_typed_diagnostics_cannot_promote_native_negative_to_green(self):
+        value = case("fixed-version-immutable")
+        receipt = self.run_case(value)
+        expected = value["expect"]["diagnostic"]
+        alternatives = [receipt["actualDiagnostics"]]
+        for key, replacement in (("code", "OTHER_REJECTION"), ("clause", "I40"),
+                                 ("ref", {"kind": "rule", "id": 17, "version": 2})):
+            diagnostic = deepcopy(expected)
+            diagnostic[key] = replacement
+            alternatives.append([diagnostic])
+        for diagnostics in alternatives:
+            claimed = deepcopy(receipt)
+            claimed["status"] = "passed"
+            claimed["actualDiagnostics"] = diagnostics
+            with self.subTest(diagnostics=diagnostics), self.assertRaises(ReceiptValidationError):
+                refresh_receipt(claimed, value, receipt["executor"])
+
+
+class TypedDiagnosticControls(unittest.TestCase):
+    def test_literal_refs_require_exact_json_types_and_keys(self):
+        expected = {"code": "RULE_VERSION_IMMUTABLE", "clause": "D32",
+                    "ref": {"kind": "rule", "id": 17, "version": 1}}
+        for ref in ({"kind": "rule", "id": 17, "version": True},
+                    {"kind": "rule", "id": 17, "version": 1.0},
+                    {"kind": "rule", "id": 17, "version": 1, "fieldId": 9}):
+            actual = {"code": "RULE_VERSION_IMMUTABLE", "clause": "D32", "ref": ref}
+            with self.subTest(ref=ref):
+                self.assertFalse(_diagnostic_matches(actual, expected))
+        string_expected = {"code": "MATERIAL_DIMENSION", "clause": "D33",
+                           "ref": {"kind": "material", "id": "pine", "version": 1}}
+        string_actual = {"code": "MATERIAL_DIMENSION", "clause": "D33",
+                         "ref": {"version": 1, "id": "pine", "kind": "material"}}
+        self.assertTrue(_diagnostic_matches(string_actual, string_expected))
+
+    def test_only_exact_typed_diagnostic_fields_match_human_text_never_does(self):
+        expected = case("fixed-version-immutable")["expect"]["diagnostic"]
+        exact = dict(deepcopy(expected), message="Human wording can change")
+        self.assertTrue(_diagnostic_matches(exact, expected))
+        controls = [{"code": "ASSEMBLY_INVALID", "clause": "I40/I41", "message": str(expected)},
+                    {"code": expected["code"], "clause": expected["clause"], "message": str(expected["ref"])},
+                    dict(exact, ref={"kind": "rule", "id": 17, "version": 2}),
+                    dict(exact, clause="I40"), dict(exact, code="UNRELATED_ERROR")]
+        for actual in controls:
+            with self.subTest(actual=actual):
+                self.assertFalse(_diagnostic_matches(actual, expected))
 
 
 SYNTHETIC_BOUNDARY_C = r'''

@@ -57,7 +57,7 @@ def _fail(code, path, message):
 def _json_tree(value):
     # Bound work before recursive encoding/deepcopy. Exact builtin types avoid
     # invoking custom mapping/string/number implementations.
-    pending, nodes = [(value, 0)], 0
+    pending, nodes, string_bytes = [(value, 0)], 0, 0
     while pending:
         item, depth = pending.pop()
         nodes += 1
@@ -75,12 +75,15 @@ def _json_tree(value):
                 _fail("CAPACITY", "$", "array exceeds remaining JSON node budget")
             pending.extend((child, depth + 1) for child in item)
         elif type(item) is str:
+            if len(item) > MAX_CASE_BYTES:
+                _fail("CAPACITY", "$", "string exceeds case byte limit")
             try:
                 size = len(item.encode("utf-8"))
             except UnicodeEncodeError:
                 _fail("SCHEMA", "$", "strings must be valid UTF-8")
-            if size > MAX_CASE_BYTES:
-                _fail("CAPACITY", "$", "string exceeds case byte limit")
+            string_bytes += size
+            if string_bytes > MAX_CASE_BYTES:
+                _fail("CAPACITY", "$", "total strings exceed case byte limit")
         elif type(item) is int:
             if not -INT64_MAX <= item <= INT64_MAX:
                 _fail("SCHEMA", "$", "integer exceeds signed 64-bit range")
@@ -230,6 +233,7 @@ def _expression(value, path, refs, counter):
         _fail("CAPACITY", path, "at most 128 expression nodes are allowed")
     _object(value, ("op",), ("num", "den", "unit", "parameterId", "fieldId", "left", "right"), path)
     op = value["op"]
+    _enum(op, {"literal", "ref", "add", "sub", "mul", "div", "neg"}, path + ".op")
     if op == "literal":
         _object(value, ("op", "num", "den", "unit"), path=path)
         for key in ("num", "den"):
@@ -441,7 +445,7 @@ def validate_case(value):
     refs, capabilities, definitions, setup = [], set(), {}, {}
     for stage in ("setup", "transaction"):
         operations = value["input"][stage]
-        _array(operations, MAX_OPERATIONS, "$.input." + stage)
+        _array(operations, MAX_OPERATIONS, "$.input." + stage, 1 if stage == "transaction" else 0)
         for index, operation in enumerate(operations):
             path = f"$.input.{stage}[{index}]"
             identity, data = _operation(operation, path, refs, capabilities)
@@ -450,6 +454,11 @@ def validate_case(value):
                 if identity in setup:
                     _fail("CLOSURE", path, "duplicate setup record identity")
                 setup[identity] = data
+        if stage == "setup":
+            # Setup is seeded and confirmed before the tested transaction.
+            # Its dependency closure must therefore stand on its own; a later
+            # transaction cannot supply a source to the baseline World.
+            _closure(refs, definitions)
     _array(value["sourcePins"], MAX_OPERATIONS, "$.sourcePins")
     pins = {}
     for index, pin in enumerate(value["sourcePins"]):
@@ -468,6 +477,8 @@ def validate_case(value):
     _object(value["expect"], ("outcome", "diagnostic"), path="$.expect")
     _enum(value["expect"]["outcome"], {"accepted", "rejected"}, "$.expect.outcome")
     diagnostic = value["expect"]["diagnostic"]
+    if diagnostic is None and value["expect"]["outcome"] == "rejected":
+        _fail("SCHEMA", "$.expect", "rejected outcome requires an exact diagnostic")
     if diagnostic is not None:
         if value["expect"]["outcome"] != "rejected":
             _fail("SCHEMA", "$.expect", "accepted outcome cannot require a rejection diagnostic")
@@ -478,7 +489,7 @@ def validate_case(value):
         identity = _ref(ref, "$.expect.diagnostic.ref", diagnostic=True)
         refs.append((identity, "field" if "fieldId" in ref else "slot" if "slotId" in ref else None,
                      ref.get("fieldId", ref.get("slotId")), "$.expect.diagnostic.ref"))
-    _array(value["assertions"], MAX_ASSERTIONS, "$.assertions")
+    _array(value["assertions"], MAX_ASSERTIONS, "$.assertions", 1)
     for index, assertion in enumerate(value["assertions"]):
         _assertion(assertion, f"$.assertions[{index}]", refs, pins, capabilities)
     _closure(refs, definitions)

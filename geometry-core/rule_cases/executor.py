@@ -25,6 +25,13 @@ from .runtime import runtime_identity
 MAX_OUTPUT_BYTES = 2 * 1024 * 1024
 MAX_CONCURRENT_RUNS = 2
 _SLOTS = threading.BoundedSemaphore(MAX_CONCURRENT_RUNS)
+MAX_RECEIPT_BYTES = 4 * 1024 * 1024
+_STATUSES = {"not-run", "missing-capability", "blocked", "timeout", "crashed",
+             "failed", "passed", "stale", "unknown-runtime"}
+
+
+class ReceiptValidationError(ValueError):
+    """Malformed retained host data; preserve its original blob outside this module."""
 
 
 class _Stop(Exception):
@@ -98,7 +105,7 @@ class _Child:
                 self._exit()
             try:
                 value = json.loads(data.decode("utf-8"))
-            except (ValueError, UnicodeError):
+            except (ValueError, UnicodeError, RecursionError):
                 raise _Stop("failed", "invalid-native-json")
             if not isinstance(value, dict):
                 raise _Stop("failed", "invalid-native-response")
@@ -180,19 +187,20 @@ def _assert(predicate, before, after, unchanged):
         passed = len(matches) == 1 and matches[0]["slotId"] == predicate["slotId"]
     elif kind == "joint_tuple":
         actual = _joint(after, predicate)
-        passed = actual is not None and actual == predicate["value"]
+        passed = actual is not None and canonical(actual) == canonical(predicate["value"])
     elif kind == "joint_tuple_equal":
         left, right = _joint(before, predicate["before"]), _joint(after, predicate["after"])
-        passed = left is not None and right is not None and left == right
+        passed = left is not None and right is not None and canonical(left) == canonical(right)
     elif kind == "complete_flag":
         passed = record is not None and record.get("complete") is predicate["value"]
     elif kind == "exact_typed_ref":
         slots = record["value"].get("slots", []) if record else []
         matches = [s for s in slots if s["slotId"] == predicate["slotId"]]
-        passed = len(matches) == 1 and matches[0][predicate["axis"]] == predicate["value"]
+        passed = (len(matches) == 1
+                  and canonical(matches[0][predicate["axis"]]) == canonical(predicate["value"]))
     elif kind == "record_pin_unchanged":
         old = _record(before, predicate["ref"])
-        passed = old is not None and record is not None and old == record
+        passed = old is not None and record is not None and canonical(old) == canonical(record)
     elif kind == "rejection_world_unchanged":
         passed = unchanged
     else:
@@ -202,7 +210,17 @@ def _assert(predicate, before, after, unchanged):
 
 def _diagnostic_matches(actual, expected):
     # Human messages are preserved as evidence but never influence verdicts.
-    return all(actual.get(key) == expected[key] for key in ("code", "clause", "ref"))
+    if type(actual) is not dict or type(expected) is not dict:
+        return False
+    if any(type(actual.get(key)) is not str or actual[key] != expected.get(key)
+           for key in ("code", "clause")):
+        return False
+    if type(actual.get("ref")) is not dict:
+        return False
+    try:
+        return canonical(actual["ref"]) == canonical(expected["ref"])
+    except ValueError:
+        return False
 
 
 def _verify_record_pins(state, operations):
@@ -236,9 +254,123 @@ compared with the input spelling. No effective-value cache substitutes for pins.
             raise _Stop("failed", "native-record-pin-mismatch")
 
 
+def _validate_receipt(receipt, definition):
+    """Bound retained JSON before copying, and require actual evidence for green.
+
+This is a local host-data guard, not an archive schema or proof of authenticity.
+An import policy remains the shared integration owner's responsibility.
+"""
+    pending, nodes, text_bytes = [(receipt, 0)], 0, 0
+    while pending:
+        value, depth = pending.pop()
+        nodes += 1
+        if nodes > 65536 or depth > 32:
+            raise ReceiptValidationError("Receipt exceeds node/depth limit")
+        if type(value) is dict:
+            if len(value) * 2 + nodes + len(pending) > 65536 or any(type(k) is not str for k in value):
+                raise ReceiptValidationError("Invalid or oversized receipt object")
+            pending.extend((v, depth + 1) for v in value.values())
+            pending.extend((k, depth + 1) for k in value)
+        elif type(value) is list:
+            if len(value) + nodes + len(pending) > 65536:
+                raise ReceiptValidationError("Receipt array exceeds node limit")
+            pending.extend((v, depth + 1) for v in value)
+        elif type(value) is str:
+            if len(value) > MAX_RECEIPT_BYTES:
+                raise ReceiptValidationError("Receipt string exceeds byte limit")
+            try:
+                text_bytes += len(value.encode("utf-8"))
+            except UnicodeEncodeError as error:
+                raise ReceiptValidationError("Receipt is not UTF-8 JSON") from error
+            if text_bytes > MAX_RECEIPT_BYTES:
+                raise ReceiptValidationError("Receipt exceeds byte limit")
+        elif type(value) in (int, float):
+            if (type(value) is float and not math.isfinite(value)
+                    or type(value) is int and not -(2**63 - 1) <= value <= 2**63 - 1):
+                raise ReceiptValidationError("Invalid receipt number")
+        elif value is not None and type(value) is not bool:
+            raise ReceiptValidationError("Receipt contains a non-JSON value")
+    if len(json.dumps(receipt, ensure_ascii=False, separators=(",", ":")).encode()) > MAX_RECEIPT_BYTES:
+        raise ReceiptValidationError("Receipt exceeds encoded byte limit")
+    if (type(receipt) is not dict or type(receipt.get("status")) is not str
+            or receipt["status"] not in _STATUSES):
+        raise ReceiptValidationError("Receipt needs a known nonpass/pass status")
+    if "recordedStatus" in receipt and (type(receipt["recordedStatus"]) is not str
+            or receipt["recordedStatus"] not in _STATUSES - {"stale"}):
+        raise ReceiptValidationError("Unknown recorded receipt status")
+    if receipt["status"] != "passed" and receipt.get("recordedStatus") != "passed":
+        return
+    try:
+        expected, observed = receipt["authorExpected"], receipt["observations"]
+        conditions, identity = receipt["conditions"], receipt["executor"]
+        assertions = receipt["assertionResults"]
+        diagnostics, scope = receipt["actualDiagnostics"], receipt["context"]
+        if (expected["outcome"] not in ("accepted", "rejected")
+                or receipt["actualOutcome"] != expected["outcome"]
+                or conditions["isolated"] is not True or conditions["privateDirectoryRemoved"] is not True
+                or type(conditions["nativePid"]) is not int or conditions["nativePid"] <= 0
+                or identity["known"] is not True or type(assertions) is not list
+                or not 1 <= len(assertions) <= 32 or type(diagnostics) is not list
+                or any(type(d) is not dict for d in diagnostics)
+                or type(scope["projectId"]) is not str or not 1 <= len(scope["projectId"].encode()) <= 128
+                or type(scope["generation"]) is not int or not 0 <= scope["generation"] <= 2**53 - 1
+                or type(conditions["timeoutSeconds"]) not in (int, float)
+                or not .01 <= conditions["timeoutSeconds"] <= 30
+                or type(conditions["maxOutputBytes"]) is not int
+                or not 1 <= conditions["maxOutputBytes"] <= MAX_OUTPUT_BYTES
+                or type(conditions["capabilities"]) is not list
+                or any(type(c) is not str for c in conditions["capabilities"])
+                or type(conditions["elapsedSeconds"]) not in (int, float) or conditions["elapsedSeconds"] < 0):
+            raise ReceiptValidationError("Passed receipt lacks native evidence")
+        for key in ("nativeBinaryHash", "nativeSourceHash", "validatorVersion", "axiomHash", "assertionSchemaHash"):
+            value = identity[key]
+            if type(value) is not str or len(value) != 64 or set(value) - set("0123456789abcdef"):
+                raise ReceiptValidationError("Passed receipt lacks exact runtime identity")
+        for key in ("beforeDumpHash", "afterDumpHash"):
+            value = observed[key]
+            if type(value) is not str or len(value) != 64 or set(value) - set("0123456789abcdef"):
+                raise ReceiptValidationError("Passed receipt lacks dump evidence")
+        for key in ("beforeRevision", "afterRevision"):
+            if type(observed[key]) is not int or observed[key] < 0:
+                raise ReceiptValidationError("Passed receipt lacks native revisions")
+        if type(observed["before"]) is not dict or type(observed["after"]) is not dict:
+            raise ReceiptValidationError("Passed receipt lacks native states")
+        unchanged = (receipt["actualOutcome"] == "rejected" and observed["before"] == observed["after"]
+                     and observed["beforeRevision"] == observed["afterRevision"]
+                     and observed["beforeDumpHash"] == observed["afterDumpHash"])
+        if expected["outcome"] == "rejected" and (not unchanged or expected["diagnostic"] is None
+                or not any(_diagnostic_matches(d, expected["diagnostic"]) for d in receipt["actualDiagnostics"])):
+            raise ReceiptValidationError("Passed negative receipt lacks exact rejection evidence")
+        predicates = []
+        for assertion in assertions:
+            predicate = assertion["predicate"]
+            if (assertion["passed"] is not True or assertion["kind"] != predicate["kind"]
+                    or not _assert(predicate, observed["before"], observed["after"], unchanged)["passed"]):
+                raise ReceiptValidationError("Passed receipt contains an invalid assertion")
+            predicates.append(predicate)
+        if receipt.get("definitionHash") == definition_hash(definition):
+            if (canonical(predicates) != canonical(definition["assertions"])
+                    or canonical(expected) != canonical(definition["expect"])):
+                raise ReceiptValidationError("Passed receipt differs from the exact case contract")
+            if not set(definition["requiredCapabilities"]) <= set(conditions["capabilities"]):
+                raise ReceiptValidationError("Passed receipt lacks required native capabilities")
+            _verify_record_pins(observed["before"], definition["input"]["setup"])
+            if expected["outcome"] == "accepted":
+                _verify_record_pins(observed["after"], definition["input"]["transaction"])
+    except _Stop as error:
+        raise ReceiptValidationError("Passed receipt changed exact native record pins") from error
+    except ValueError as error:
+        if isinstance(error, ReceiptValidationError):
+            raise
+        raise ReceiptValidationError("Passed receipt has invalid typed evidence") from error
+    except (KeyError, TypeError, AttributeError, IndexError) as error:
+        raise ReceiptValidationError("Passed receipt has malformed native evidence") from error
+
+
 def refresh_receipt(receipt, definition, identity, *, project_id=None, generation=None):
     """Copy a retained receipt; changed exact domains become stale without losing evidence."""
     definition = validate_case(definition)
+    _validate_receipt(receipt, definition)
     result = deepcopy(receipt)
     reasons = []
     if result.get("caseId") != definition["caseId"] or result.get("definitionHash") != definition_hash(definition):
@@ -310,7 +442,7 @@ class NativeExecutor:
             receipt.update(status=stop.status, reason=stop.reason)
         except (OSError, subprocess.SubprocessError) as error:
             receipt.update(status="blocked", reason="native-environment", detail=str(error))
-        except (KeyError, TypeError, ValueError) as error:
+        except (KeyError, TypeError, ValueError, AttributeError, RecursionError, IndexError) as error:
             receipt.update(status="failed", reason="native-contract", detail=str(error))
         finally:
             _SLOTS.release()
