@@ -164,8 +164,9 @@ try:
                     check(label + ' explicit reselection records the selected current field evidence',
                           selected['inputRefs'] == [field_pin(page)])
                 selected = snapshot(page)
-                check(label + ' explicit reselection only changes owned raw', selected['world'] == reopened['world'] and
-                      selected['undo'] == reopened['undo'] and selected['revision'] == reopened['revision'])
+                check(label + ' explicit reselection edits raw through local history without native mutation',
+                      selected['world'] == reopened['world'] and selected['undo'] > reopened['undo'] and
+                      selected['revision'] == reopened['revision'])
                 page.locator('#igSaveSource').click()
                 page.wait_for_selector('dialog.reference-impact[open]')
                 check(label + ' true native preview remains detached', snapshot(page) == selected)

@@ -4129,6 +4129,7 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 接線：既有無限網格建立入口續編保存的草稿；輸入事件與保存前 flush 擷取原字串；載入期间原始欄位鎖定且保存拒絕；遲到回覆不重寫整份 raw form。未知確認結果保留原稿及回執租約，暫停編輯，返回畫布後按同一 request receipt 恢復，不重送 mutation。
 - 減項（GEO-219）：原 footer 的 `igStatus`、`igDraftNote` 兩個獨立段落合為同一個狀態段落，拿掉重複常駐「所有變更先預覽」說明；原始輸入保存與預覽／錯誤共用該狀態行。新增的「捨棄原始草稿」是明确放棄目前唯一 F 草稿的入口，不另增工作區、續編按鈕或常駐教學。既有建立入口同時負責續編，取消發布保留 raw、返回畫布保留 raw，只有明確捨棄才清稿。
 - 證據仍須真 desktop／390px app、完整 ZIP 保存重開、載入／晚回覆負例、native 取消／確認與一步 undo/redo、未知結果 receipt recovery；CLI／VM 模擬不代替真瀏覽器，A24 實機 IME／chooser／下載另留未驗。
+- restored raw 解讀／來源回歸：未知排格 enum 原字串可保存，解讀時明拒；保存與被動重開不補目前 catalog 的 pin，明選才建立證據。`grid_raw_provenance_browser_test.py` 必須跑真 v10 檔案入口、缺／錯 pin、native 刪除重建、真 ZIP 保存與 fresh browser 重開、明選正例、取消／確認及一步 undo/redo；local raw 編輯依既有 metadata history 記錄，不能冒稱 native 變更。
 
 ## GEO-242 — PDF 人工描繪原始線段吸附（2026-10-03）
 
