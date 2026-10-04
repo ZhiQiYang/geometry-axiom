@@ -70,3 +70,58 @@ old check exit0；修復後 exit1。沒有执行 binary。
 
 完整現版 mutation 執行、final exact head 的 ordinary strict 及每筆處置表於完成後補錄。
 本修復不聲稱新增公理、端到端產品功能、Windows SAC/GDI、實體 iOS 或 hosted CI green。
+
+<!-- inventory:start -->
+## 全部 48 項處置與 oracle
+
+| ID | 開工問題 | 現版結果 | anchor file/count | 具體 oracle／理由 |
+|---|---|---|---|---|
+| M01 | stale source/closure | equivalent | current_geometry.c / 1 | same output; proof above |
+| M02 | stale source/closure | killed | current_geometry.c / 1 | _test_lshape.scene, _role_priority_ext_primary.scene, _role_ext_stop_primary.scene |
+| M03 | stale source/closure | killed | current_geometry.c / 1 | _wit_d30_infinite_grid_binding.scene, _wit_d29_grid_system.scene, subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene |
+| M04 | stale source/closure | killed | current_geometry.c / 1 | _wit_d30_infinite_grid_binding.scene, _wit_d29_grid_system.scene, subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene |
+| M05 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M06 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M07 | stale source/closure | killed | current_geometry.c / 1 | _test_lshape.scene, _edge_concave.scene, _role_priority_mutant.scene, _role_priority_ext_custom.scene, _role_ext_stop_primary.scene |
+| M08 | stale source/closure | killed | current_geometry.c / 1 | _role_cover_short.scene |
+| M09 | stale source/closure | equivalent | current_geometry.c / 1 | same output; proof above |
+| M10 | stale source/closure | killed | current_geometry.c / 1 | _ax_i5_hole_vertex_touches_rect_edge.scene |
+| M11 | stale source/closure | killed | current_geometry.c / 1 | _test_hole_auto.scene, _test_ambiguous.scene, _demo_ceiling.scene, _edge_upper_seg.scene, _mut_reval_free_hole.scene |
+| M12 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M13 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M14 | stale source/closure | killed | current_geometry.c / 1 | _test_hole_auto.scene, _demo_ceiling.scene, _edge_hole_bottom.scene, _edge_rect_only.scene, _edge_rect_stops.scene |
+| M15 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M16 | stale source/closure | killed | current_geometry.c / 1 | _edge_straddle_hi.scene |
+| M17 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M18 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M19 | stale source/closure | killed | current_geometry.c / 1 | _mut_through_boundary.scene |
+| M20 | stale source/closure | crashed | current_geometry.c / 1 | _test_lshape.scene |
+| M21 | stale source/closure | killed | current_geometry.c / 1 | _edge_straddle.scene, _mut_notch_straddle.scene, _role_cover_short.scene, _edge_straddle_hi.scene |
+| M22 | stale source/closure | killed | current_geometry.c / 1 | _test_free.scene, _edge_free.scene, _mut_free_hole_end.scene |
+| M23 | stale source/closure | equivalent | current_geometry.c / 1 | same output; proof above |
+| M24 | stale source/closure | killed | current_geometry.c / 1 | _edge_face_touch_only.scene |
+| M25 | stale source/closure | killed | current_geometry.c / 1 | _test_ambiguous.scene |
+| M26 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M27 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M28 | stale source/closure | killed | geometry-core/references.inc / 1 | _test_grid_panel.scene, _edge_grid_panel_from.scene, _role_ext_stop_primary.scene, _wit_i13_odd_width.scene |
+| M29 | stale source/closure | killed | geometry-core/references.inc / 1 | _demo_ceiling.scene, _edge_hole_anchor.scene, _edge_hole_bottom.scene, _edge_rect_stops.scene, _edge_stop_ambiguous.scene |
+| M30 | stale source/closure | killed | geometry-core/references.inc / 1 | _edge_hole_anchor.scene, _edge_hole_bottom.scene, _ax_i5_hole_vertex_touches_rect_edge.scene |
+| M31 | stale source/closure | killed | current_geometry.c / 1 | _mut_grid_dup.scene |
+| M32 | stale source/closure | killed | current_geometry.c / 1 | _edge_grid_at_border.scene |
+| M57 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, demo-two-timbers.scene, _edge_rect_stops.scene, _test_between.scene, _edge_between_blocked.scene |
+| M58 | stale source/closure | killed | current_geometry.c / 1 | demo-two-timbers.scene, _edge_rect_stops.scene, _test_between.scene, _edge_between_blocked.scene, _role_between_priority.scene |
+| M51 | retired | retired | current_geometry.c / 0 | existing removal proof |
+| M52 | stale source/closure | killed | current_geometry.c / 1 | _test_grid_redeclare.scene, _edge_grid_locked.scene |
+| M56 | invalid anchor | equivalent | current_geometry.c / 1 | same output; proof above |
+| M53 | stale source/closure | killed | current_geometry.c / 1 | _test_grid_panel.scene, _edge_grid_panel_from.scene |
+| M54 | stale source/closure | killed | current_geometry.c / 1 | _mut_grid_panel_edge.scene |
+| M55 | retired | retired | current_geometry.c / 0 | existing removal proof |
+| M33 | stale source/closure | killed | geometry-core/references.inc / 1 | subgrid-local.scene, _test_grid.scene, _test_lshape.scene, _test_hole_auto.scene, _test_ambiguous.scene |
+| M34 | stale source/closure | killed | geometry-core/references.inc / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M35 | retired | retired | current_geometry.c / 0 | existing removal proof |
+| M36 | stale source/closure | equivalent | current_geometry.c / 1 | same output; proof above |
+| M37 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M38 | stale source/closure | killed | current_geometry.c / 1 | _mut_neg_hole_ref.scene |
+| M39 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+| M40 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
+<!-- inventory:end -->

@@ -260,6 +260,14 @@
    "mode": "count",
    "count": 6,
    "unit": "node test"
+  },
+  "mutation:check": {
+   "mode": "exit-code-only"
+  },
+  "py:test_mutation_freshness": {
+   "mode": "count",
+   "count": 24,
+   "unit": "test"
   }
  }
 }
