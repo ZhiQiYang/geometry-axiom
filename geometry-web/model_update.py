@@ -93,6 +93,9 @@ def _selection(value):
         _fail("UPDATE_EDGES", "請明選非空、無重複的整數輪廓邊清單。", path=("selection", "edges"))
     _references(value["obstacles"], ("column", "beam"), ("selection", "obstacles"))
     _references(value["timbers"], ("timber",), ("selection", "timbers"))
+    if value["timbers"] and value["boundary_id"] == 0:
+        _fail("UPDATE_TIMBER_BOUNDARY", "納入角材必須明選有正式邊界輪廓的放置面；內含矩形目前不支援保存角材模型。",
+              status="UNSUPPORTED", clause="I32", path=("selection", "boundary_id"))
     if value["projection"] is not None:
         _projection(value["projection"], ("selection", "projection"))
         if value["boundary_id"] == 0:
@@ -132,6 +135,9 @@ def _record(record):
     _references(inputs["obstacles"], ("column", "beam"), ("record", "input", "obstacles"))
     if "timbers" in inputs:
         _references(inputs["timbers"], ("timber",), ("record", "input", "timbers"), nonempty=True)
+        if not source["boundary_id"]:
+            _fail("UPDATE_TIMBER_BOUNDARY", "舊角材模型缺少正式邊界輪廓，不符合現行保存契約；請重新建立有輪廓來源的模型。",
+                  status="UNSUPPORTED", clause="I32", path=("record", "source", "boundary_id"))
 
 
 def _program(value, *, base=False):

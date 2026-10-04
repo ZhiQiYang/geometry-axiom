@@ -358,18 +358,48 @@ const PYTHON = [
   '        preview=sm.preview(source)',
   '        record={"id":"native-old27","name":"27 到 29 完整紀錄","created_at":"2026-10-04T00:00:00.000Z","source":{"kind":"scene","placement_id":1,"boundary_id":1,"scene_hash":preview["source_sha256"]},"input":source,"result":preview}',
   '        result={"record":record,"scene":source["base_scene"].replace("timber 10 27 33", "timber 10 29 33"),"selection":{"placement_id":1,"boundary_id":1,"edges":[0,1,2,3],"obstacles":[],"timbers":[{"kind":"timber","id":10}],"projection":None}}',
+  '    elif sys.argv[1]=="inline-fixture":',
+  '        scene="placement 0 origin 0 0 2500 u +x v +y rect 0 0 4000 3000\\n"',
+  '        if data.get("timbers",True): scene+="timber 10 27 33 role boundary\\nplace 10 on 0 at-face e0 +u +n\\n"',
+  '        source={"mode":"plan","base_scene":load_base(scene)["base_scene"],"placement_id":0,"obstacles":[],"settings":{"bottom":0,"height":3000,"edges":[0,1,2,3],"floor":"boundary","ceiling":"boundary","holes":"none","wall_thickness":100}}',
+  '        if data.get("timbers",True): source["timbers"]=[{"kind":"timber","id":10}]',
+  '        preview=sm.preview(source)',
+  '        record={"id":"native-inline-rectangle","name":"嵌入矩形保存契約","created_at":"2026-10-04T00:00:00.000Z","source":{"kind":"scene","placement_id":0,"boundary_id":0,"scene_hash":preview["source_sha256"]},"input":source,"result":preview}',
+  '        result={"record":record,"scene":source["base_scene"],"selection":{"placement_id":0,"boundary_id":0,"edges":[0,1,2,3],"obstacles":[],"timbers":source.get("timbers",[]),"projection":None}}',
+  '    elif sys.argv[1]=="unchecked-support":',
+  '        import os,subprocess,tempfile',
+  '        from pathlib import Path',
+  '        from tests._timber_support_bridge import build',
+  '        with tempfile.TemporaryDirectory(prefix="update-support-read-fault-") as directory:',
+  '            projection=Path("geometry-web/timber_support_projection.inc").read_text()',
+  '            marker="size_t count=collect_stop_faces(w,p,world_placement_boundary(w,p),along_v,t,faces,STOP_FACE_MAX);"',
+  '            assert projection.count(marker)==1',
+  '            projection=projection.replace(marker,marker+"\\n        if(t->id==10) count=0; /* test-local missing read fact; World remains unchanged */")',
+  '            projection_path=Path(directory)/"unchecked_projection.inc"',
+  '            projection_path.write_text(projection)',
+  '            os.environ.pop("GEOMETRY_TEST_SUPPORT_BRIDGE",None)',
+  '            binary=build(directory,projection=projection_path)',
+  '            source_path=Path(directory)/"source.scene"',
+  '            source_path.write_text(data["current_scene"])',
+  '            native=subprocess.run([binary],input="source-inspect-file "+str(source_path)+"\\n",text=True,capture_output=True,check=True,cwd=directory)',
+  '            graph=json.loads(native.stdout)',
+  '            try: mu.prepare_update(data,bridge_executable=binary)',
+  '            except ModelError as error: refusal=error.as_dict()',
+  '            else: raise AssertionError("Actual producer accepted unknown native support")',
+  '            result={"graph":graph,"refusal":refusal}',
   '    elif sys.argv[1]=="update": result=mu.prepare_update(data)',
   '    elif sys.argv[1]=="verify": result=verify_package(data)',
   '    else: result=sm.preview(data)',
   'except ModelError as error: result=error.as_dict()',
   'print(json.dumps(result,ensure_ascii=False))'
 ].join('\n');
-function engine(operation, payload={}) {
+function engine(operation, payload={}, expectedCode=null) {
   const run=spawnSync(process.env.PYTHON || 'python',['-c',PYTHON,operation],{cwd:ROOT,
     input:JSON.stringify(payload),encoding:'utf8',maxBuffer:16*1024*1024,timeout:60000});
   assert.equal(run.status,0,run.stderr || run.error?.message || 'native producer did not exit successfully');
   const result=JSON.parse(run.stdout);
-  assert.ok(!result.status, 'Native '+operation+' failed: '+JSON.stringify(result));
+  if(expectedCode)assert.equal(result.diagnostics?.[0]?.code,expectedCode,JSON.stringify(result));
+  else assert.ok(!result.status, 'Native '+operation+' failed: '+JSON.stringify(result));
   return result;
 }
 let nativeData;
@@ -474,4 +504,82 @@ test('native final confirmation refuses changed source and changed runtime recei
     f.update.begin(data.record.id);const reviewed=await f.update.prepare(data.selection);
     await assert.rejects(f.update.confirm(reviewed.reviewId),/變更/);unchanged(f);assert.equal(f.h.undo.length,0);
   }
+});
+
+test('native final receipt hashing cannot complete after cancel, context switch or same-ID replacement', nativeOptions, async () => {
+  for(const mode of ['cancel','context','same-ID']) {
+    const data=nativeFixture(),gate=deferred(),reached=deferred();
+    const f=harness({record:data.record,scene:data.scene,produce:async request=>engine('update',request)});
+    let held=false;
+    f.host.sha=async bytes=>{
+      if(!held&&f.update.status().phase==='confirming'){held=true;reached.resolve();await gate.promise;}
+      return hash(bytes);
+    };
+    f.update.begin(data.record.id);const reviewed=await f.update.prepare(data.selection);
+    const pending=f.update.confirm(reviewed.reviewId),refused=assert.rejects(pending,/取消|取代|變更|替換/);
+    await reached.promise;
+    assert.equal(f.calls.length,2,'Hash await must hold a fresh, real native replay receipt');
+    if(mode==='cancel')f.update.cancel();
+    else if(mode==='context')f.h.frame={context:{...f.h.frame.context},ids:new Map()};
+    else f.h.frame.context.models=[{...f.h.frame.context.models[0],name:'同 ID 替換紀錄'}];
+    const completeBefore=clone(f.h.frame.context.models),undoBefore=f.h.undo.slice(),redoBefore=f.h.redo.slice(),sourceBefore=clone(f.source);
+    gate.resolve();await refused;
+    assert.deepEqual(f.h.frame.context.models,completeBefore);assert.deepEqual(f.h.undo,undoBefore);assert.deepEqual(f.h.redo,redoBefore);
+    assert.deepEqual(f.source,sourceBefore);assert.equal(f.commits.length,0);assert.equal(f.update.getReview(),null);
+  }
+});
+
+test('native embedded rectangle timber update respects strict saved-model boundary contract; zero timbers remain supported', nativeOptions, async () => {
+  const inline=engine('inline-fixture'),old=clone(inline.record);
+  // Native preview geometry can exist although the existing project-store
+  // requires a positive explicit boundary for a saved timber model.
+  assert.equal(old.result.summary.timber_count,1);
+  assert.throws(()=>P.validateSpaceModel(old),/角材模型與來源放置面不一致/);
+  for(const boundary of [0,null]) {
+    const invalid=clone(old);invalid.source.boundary_id=boundary;
+    const request={record:invalid,current_scene:inline.scene,selection:inline.selection};
+    const before=clone(request),refusal=engine('update',request,'UPDATE_TIMBER_BOUNDARY');
+    assert.equal(refusal.status,'UNSUPPORTED');assert.deepEqual(request,before);
+  }
+  const f=harness({record:old,scene:inline.scene,produce:async request=>engine('update',request,'UPDATE_TIMBER_BOUNDARY')});
+  assert.throws(()=>f.update.begin(old.id),/角材模型與來源放置面不一致/);
+  unchanged(f);assert.equal(f.calls.length,0);assert.equal(f.h.undo.length,0);assert.equal(f.update.getReview(),null);
+  const named=nativeFixture(),selected=harness({record:named.record,scene:inline.scene,
+    produce:async request=>engine('update',request,'UPDATE_TIMBER_BOUNDARY')});
+  selected.update.begin(named.record.id);await assert.rejects(selected.update.prepare(inline.selection),/邊界|boundary|角材/);
+  unchanged(selected);assert.equal(selected.calls.length,1);assert.equal(selected.h.undo.length,0);assert.equal(selected.update.getReview(),null);
+  const noTimber=engine('inline-fixture',{timbers:false});P.validateSpaceModel(noTimber.record);
+  const supported=harness({record:noTimber.record,scene:noTimber.scene,produce:async request=>engine('update',request)});
+  supported.update.begin(noTimber.record.id);const reviewed=await supported.update.prepare(noTimber.selection);
+  P.validateSpaceModel(reviewed.after);await supported.update.confirm(reviewed.reviewId);
+  assert.equal(supported.commits.length,1);assert.equal(supported.h.undo.length,1);
+  assert.equal(supported.h.tryLocal('line undo').ok,true);assert.deepEqual(supported.h.frame.context.models,supported.initial);
+});
+
+test('actual native missing-support read fact returns UPDATE_SUPPORT_UNCHECKED and controller writes nothing', nativeOptions, async () => {
+  const data=nativeFixture(),request={record:data.record,current_scene:data.scene,selection:data.selection};
+  const before=clone(request);let native;
+  // The host adapter actually invokes the native failure path during prepare.
+  const f=harness({record:data.record,scene:data.scene,produce:async candidateRequest=>{
+    assert.deepEqual(candidateRequest,request);native=engine('unchecked-support',candidateRequest);return native.refusal;}});
+  f.h.push(f.h.snapshot(),'local');
+  const undoBefore=f.h.undo.slice(),redoBefore=f.h.redo.slice(),sourceBefore=clone(f.source);
+  f.update.begin(data.record.id);await assert.rejects(f.update.prepare(data.selection),/支撐|不確定/);
+  const refusal=native.refusal;
+  // Only a temporary C projection copy loses the selected timber's collected
+  // stop facts. The real native parser still reports it placed; the existing
+  // endpoint implementation emits unknown. This is failure injection, not a
+  // claim that this otherwise legal scene naturally has unknown supports.
+  assert.equal(native.graph.ok,true);assert.equal(native.graph.complete,true);
+  assert.equal(native.graph.nodes.find(node=>node.key==='timber:10').placed,true);
+  const entry=native.graph.timberSupports.entries.find(row=>row.id===10);
+  for(const end of ['start','finish']) {
+    assert.equal(entry[end].status,'unknown');assert.equal(entry[end].relation,null);
+  }
+  assert.equal(refusal.status,'UNSUPPORTED');assert.equal(refusal.diagnostics[0].code,'UPDATE_SUPPORT_UNCHECKED');
+  assert.deepEqual(request,before);
+  assert.equal(f.calls.length,1);unchanged(f);assert.deepEqual(f.h.undo,undoBefore);assert.deepEqual(f.h.redo,redoBefore);
+  assert.deepEqual(f.source,sourceBefore);assert.equal(f.update.getReview(),null);
+  await assert.rejects(f.update.confirm('no successful native review'),/核對/);
+  assert.equal(f.commits.length,0);
 });

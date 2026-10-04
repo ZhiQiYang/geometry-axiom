@@ -9,6 +9,7 @@
   const packages = ['space', 'volume', 'clearance', 'walls', 'timbers'];
   const packageNames = {space:'空間邊界',volume:'空間實體',clearance:'扣除後淨空',walls:'材料牆',timbers:'角材結構'};
   const purposeNames = {boundary:'實際邊界','calculation-cap':'體積計算封口',none:'不建立',through:'上下貫通孔'};
+  const embeddedTimberWarning = '內含矩形沒有正式邊界來源，本版不可納入角材；如需角材，請明選有輪廓的放置面。';
   let dialog, session = null, serial = 0, timer = null;
   const $ = id => dialog.querySelector('#' + id);
 
@@ -218,7 +219,7 @@
       const fixed = current.loops[0].fixity?.[index], fixity = fixed === 0 || fixed === false || fixed === 'FREE' ? 'FREE' : fixed === 1 || fixed === true || fixed === 'FIXED' ? 'FIXED' : '未提供 fixity';
       return `<label class="mu-choice"><input type="checkbox" data-mu-edge="${index}"><span>邊 ${index+1}<small>(${point.join(', ')}) → (${end.join(', ')}) · ${length} mm · ${fixity}</small></span></label>`;
     }).join('');
-    $('muTimbers').innerHTML = current.timbers.length ? current.timbers.map(item => `<label class="mu-choice"><input type="checkbox" data-mu-timber="${item.id}"><span>角材 #${item.id}<small>${esc(item.role || '未指定角色')} · 放置 #${surface.id} · ${esc(item.geometry.length)} × ${esc(item.geometry.A)} × ${esc(item.geometry.B)} mm</small></span></label>`).join('') : '<p class="mu-note">此放置面没有可選角材；本次清單為空。</p>';
+    $('muTimbers').innerHTML = surface.boundary <= 0 ? `<p class="mu-note">${embeddedTimberWarning}</p>` : current.timbers.length ? current.timbers.map(item => `<label class="mu-choice"><input type="checkbox" data-mu-timber="${item.id}"><span>角材 #${item.id}<small>${esc(item.role || '未指定角色')} · 放置 #${surface.id} · ${esc(item.geometry.length)} × ${esc(item.geometry.A)} × ${esc(item.geometry.B)} mm</small></span></label>`).join('') : '<p class="mu-note">此放置面没有可選角材；本次清單為空。</p>';
     $('muObstacles').innerHTML = current.obstacles.length ? current.obstacles.map(item => `<label class="mu-choice"><input type="checkbox" data-mu-obstacle="${esc(item.kind)}" value="${item.id}"><span>${item.kind === 'column' ? '柱' : '樑'} #${item.id}<small>世界範圍 ${esc(json(item.box))} mm</small></span></label>`).join('') : '<p class="mu-note">目前沒有可選柱樑；本次清單為空。</p>';
     counts(); renderOutline(current);
   }
@@ -233,7 +234,7 @@
     $('muOutline').innerHTML = `<svg viewBox="0 0 ${width*scale+60} ${height*scale+50}" role="img" aria-label="本次現行輪廓與外環邊編號"><path d="${path}" fill-rule="evenodd"/>${loops[0].map((p,index) => {const a=map(p),b=map(loops[0][(index+1)%loops[0].length]),mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;return `<circle cx="${mx}" cy="${my}" r="12"/><text x="${mx}" y="${my+4}">${index+1}</text>`;}).join('')}</svg><p class="mu-note">${validProjection(current.projection) ? `依現行放置框架顯示${current.projection.view === 'top' ? '俯視' : '仰視'}` : '現行輪廓的局部 u、v 座標'} · ${current.loops.length-1} 個孔洞</p>`;
   }
   function counts() {
-    $('muTimberCount').textContent = `${dialog.querySelectorAll('[data-mu-timber]:checked').length} / ${session?.timbers?.length || 0} 支`;
+    $('muTimberCount').textContent = session?.surface?.boundary === 0 ? '本版不可納入' : `${dialog.querySelectorAll('[data-mu-timber]:checked').length} / ${session?.timbers?.length || 0} 支`;
     $('muObstacleCount').textContent = `${dialog.querySelectorAll('[data-mu-obstacle]:checked').length} / ${session?.obstacles?.length || 0} 個`;
   }
   function selectionChanged() {
@@ -243,10 +244,12 @@
   }
   function selection() {
     const current = session;
+    const timbers = [...dialog.querySelectorAll('[data-mu-timber]:checked')].map(input => ({kind:'timber',id:Number(input.dataset.muTimber)}));
+    if (current.surface.boundary <= 0 && timbers.length) throw Error(embeddedTimberWarning);
     return {placement_id:current.surface.id,boundary_id:current.surface.boundary,
       edges:[...dialog.querySelectorAll('[data-mu-edge]:checked')].map(input => Number(input.dataset.muEdge)),
       obstacles:[...dialog.querySelectorAll('[data-mu-obstacle]:checked')].map(input => ({kind:input.dataset.muObstacle,id:Number(input.value)})),
-      timbers:[...dialog.querySelectorAll('[data-mu-timber]:checked')].map(input => ({kind:'timber',id:Number(input.dataset.muTimber)})),projection:clone(current.projection)};
+      timbers,projection:clone(current.projection)};
   }
   function guardSelection(current) {
     if (current.selectionSignature && (Number($('muPlacement').value) !== current.surface.id || $('muPlacement').value === '' || json(selection()) !== current.selectionSignature))

@@ -37,6 +37,12 @@ Every selection field is required. Placement IDs may be zero. Edge indexes are
 explicit picks on the new outline, never a mapping inferred from old indexes.
 Timbers and obstacles are typed, explicitly selected lists including empty
 lists. Projection is the selected source's existing typed projection or null.
+Models containing timbers require a positive, matching named boundary under
+the existing strict saved-model schema. Embedded rectangles (`boundary_id:0`)
+remain selectable only without timbers; the UI explains that limit and exposes
+no timber choices. Both invalid old timber metadata (`null`/`0`) and current
+embedded-rectangle timber selection fail with `UPDATE_TIMBER_BOUNDARY` before
+candidate creation. No shared schema is relaxed.
 The original height, bottom, floor/ceiling/holes purpose and thickness are
 preserved; only the explicit new source references and edges change.
 
@@ -130,6 +136,19 @@ height editing or current-source updating, preserving one top-level edit
 action. Its height editor summary and separate help paragraph become one
 paragraph. The patch records this reduction in BACKLOG for the integration
 owner. No new permanent global help area is added.
+
+The browser harness distinguishes direct module acceptance (injects missing
+modules and opens directly) from `GEOMETRY_MODEL_UPDATE_ENTRY=owner` acceptance
+(requires real index wiring, never injects, and enters every update via the
+existing model edit action and `smCurrentSourceUpdate`). Direct module scope
+alone does not prove the owner entry. The owner patch registers 22 Python
+tests and 39 controller tests, so the combined existing Node registry count is
+333. Additional review cases cover actual nonempty column/beam selections,
+true-native confirmation hash-await races and strict-store rectangle limits.
+The support-unknown negative case is explicitly a compiled test-local C read
+projection fault: real placed timber, real native parser/endpoint function and
+true producer rejection; it is not claimed to be a naturally legal ambiguous
+placement. No live World, stored record or history is changed.
 
 Dedicated tests are directly runnable before registry integration:
 

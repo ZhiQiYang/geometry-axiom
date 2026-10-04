@@ -2,6 +2,8 @@
  * Browser plugin is unavailable; use the installed Playwright/Chromium.
  * Run with explicit GEOMETRY_TEST_URL and GEOMETRY_FEEDBACK_DIR under /tmp.
  * Optional: GEOMETRY_MODEL_UPDATE_PATH, GEOMETRY_MODEL_UPDATE_TEST_DIR.
+ * GEOMETRY_MODEL_UPDATE_ENTRY=owner requires actual shared-owner edit wiring;
+ * the default direct-module scope injects missing modules and opens directly.
  * This harness delays real HTTP replies; it never fabricates native success.
  */
 'use strict';
@@ -14,6 +16,7 @@ if (!url || !process.env.GEOMETRY_FEEDBACK_DIR?.startsWith('/tmp/'))
   throw Error('An explicit isolated GEOMETRY_TEST_URL and /tmp feedback directory are required.');
 const output = process.env.GEOMETRY_MODEL_UPDATE_TEST_DIR || '/tmp/geometry-f1b/browser';
 const routePath = process.env.GEOMETRY_MODEL_UPDATE_PATH || '/model/update-preview';
+const ownerEntry = process.env.GEOMETRY_MODEL_UPDATE_ENTRY === 'owner';
 fs.mkdirSync(output, {recursive: true});
 const deferred = () => {let resolve, reject; const promise = new Promise((r, j) => {resolve = r; reject = j;}); return {promise, resolve, reject};};
 const selectors = {dialog: '#muDialog', placement: '#muPlacement', edge: '[data-mu-edge]',
@@ -61,7 +64,11 @@ const selectors = {dialog: '#muDialog', placement: '#muPlacement', edge: '[data-
   const waitPhase = phase => page.waitForFunction(phase =>
     window.ModelUpdateApp?.snapshot?.().phase === phase, phase);
   const open = async () => {
-    await page.evaluate(id => ModelUpdateApp.open(id), fixtureId);
+    if (ownerEntry) {
+      await page.evaluate(() => SpaceModelWorkspace.openLibrary());
+      await page.locator(`[data-sm-edit-height="${fixtureId}"]`).click();
+      await page.locator('#smCurrentSourceUpdate').click();
+    } else await page.evaluate(id => ModelUpdateApp.open(id), fixtureId);
     await page.locator(selectors.dialog).waitFor({state: 'visible'});
     await waitPhase('selecting');
   };
@@ -134,10 +141,12 @@ const selectors = {dialog: '#muDialog', placement: '#muPlacement', edge: '[data-
     check('page identity and meaningful app content', /幾何|Geometry|geometry|工程|物件|應用/.test(title) && body.length > 100);
     check('no framework error overlay', await page.locator('vite-error-overlay,nextjs-portal,[data-nextjs-dialog]').count() === 0);
     await page.screenshot({path: path.join(output, 'app-desktop.png')});
-    if (!await page.evaluate(() => !!window.ModelUpdate)) await page.addScriptTag({path: path.join(__dirname, 'model-update.js')});
+    if (ownerEntry) assert.equal(await page.evaluate(() => !!window.ModelUpdate && !!window.ModelUpdateApp), true,
+      'owner-entry scope requires actual index wiring; modules cannot be injected');
+    if (!ownerEntry && !await page.evaluate(() => !!window.ModelUpdate)) await page.addScriptTag({path: path.join(__dirname, 'model-update.js')});
     const css = ['model-update-app.css', 'model-update.css'].map(file => path.join(__dirname, file)).find(file => fs.existsSync(file));
-    if (css) await page.addStyleTag({path: css});
-    if (!await page.evaluate(() => !!window.ModelUpdateApp)) await page.addScriptTag({path: path.join(__dirname, 'model-update-app.js')});
+    if (!ownerEntry && css) await page.addStyleTag({path: css});
+    if (!ownerEntry && !await page.evaluate(() => !!window.ModelUpdateApp)) await page.addScriptTag({path: path.join(__dirname, 'model-update-app.js')});
     await page.waitForFunction(() => !!window.ModelUpdateApp);
     fixtureId = await page.evaluate(async () => {
       await ReferenceWorkspace.newProject();
@@ -241,11 +250,45 @@ const selectors = {dialog: '#muDialog', placement: '#muPlacement', edge: '[data-
       if (result.preview?.valid) result = await apiRequest('line confirm ' + result.preview.token);
       if (!result.ok) throw Error(JSON.stringify(result));
     }), false, 'confirm');
+    await restore();
+    await page.evaluate(async id => {
+      const saved = ReferenceWorkspace.getSpaceModels().find(model => model.id === id);
+      delete saved.source.projection; ReferenceWorkspace.updateSpaceModel(id, saved);
+      for (const line of ['surface 8 origin 0 0 2500 u +x v +y rect 0 0 4000 3000',
+        'timber 8 27 33 role boundary', 'place 8 on 8 at-face e0 +u +n']) {
+        let result = await apiRequest('line ' + line);
+        if (result.preview?.valid) result = await apiRequest('line confirm ' + result.preview.token);
+        if (!result.ok) throw Error(JSON.stringify(result));
+      }
+      await refreshSurfaces(); await renderObjects();
+    }, fixtureId);
+    const rectangleBefore = await state();
+    await open(); await page.locator(selectors.placement).selectOption('8');
+    await page.waitForFunction(() => ModelUpdateApp.snapshot().placementId === 8 && !ModelUpdateApp.snapshot().busy);
+    for (const edge of await page.locator(selectors.edge).all()) await edge.check();
+    check('embedded rectangle with a real placed timber exposes no unsupported timber choices',
+      await page.locator(selectors.timber).count() === 0 && /內含矩形.*不可納入角材/.test(await page.locator('#muTimbers').innerText()));
+    const requestsBeforeForge = producerRequests;
+    await page.evaluate(() => {const input = document.createElement('input'); input.type = 'checkbox';
+      input.dataset.muTimber = '8'; input.checked = true; document.querySelector('#muTimbers').append(input);});
+    await page.locator(selectors.preview).click(); await waitPhase('failed');
+    assert.deepEqual(await state(), rectangleBefore);
+    check('forged embedded rectangle timber selection is refused before producer or record/history write',
+      producerRequests === requestsBeforeForge && /內含矩形.*不可納入角材/.test(await page.locator(selectors.status).innerText()));
+    await close(); await open(); await page.locator(selectors.placement).selectOption('8');
+    await page.waitForFunction(() => ModelUpdateApp.snapshot().placementId === 8 && !ModelUpdateApp.snapshot().busy);
+    for (const edge of await page.locator(selectors.edge).all()) await edge.check();
+    await preview(); assert.deepEqual(await state(), rectangleBefore);
+    check('embedded rectangle without selected timbers remains a true-native strict-store-valid candidate',
+      await page.evaluate(() => /未納入/.test(document.querySelector('#muDiff').innerText) && ModelUpdateApp.snapshot().phase === 'review'));
+    await close();
     check('no uncaught browser exceptions or relevant console errors', errors.length === 0, errors);
     fs.writeFileSync(path.join(output, 'evidence.json'), JSON.stringify({url, title, browser: 'Playwright Chromium',
       browserPlugin: 'unavailable', viewports: [{width: 1280, height: 900}, {width: 390, height: 844}],
       checks, errors, warnings, modelId: fixtureId, routePath, producerRequests,
-      limitations: ['Physical iOS Safari and native OS file dialogs were not exercised.', 'Shared owner wiring is provided by the test service or injected scripts.']}, null, 2));
+      entryMode: ownerEntry ? 'actual-owner-edit-entry' : 'direct-module',
+      limitations: ['Physical iOS Safari and native OS file dialogs were not exercised.',
+        ownerEntry ? 'Actual owner index/serve/edit wiring is required; no module injection.' : 'Direct module scope does not verify the shared-owner edit entry.']}, null, 2));
     console.log('F1B_EVIDENCE ' + JSON.stringify({assertions: checks.length, output, modelId: fixtureId, errors: errors.length}));
   } finally {
     for (const held of heldResponses) held.release.resolve();

@@ -40,10 +40,10 @@ class ModelUpdate(unittest.TestCase):
         cls.old = cls.record(scene())
 
     @classmethod
-    def record(cls, source, *, timbers=True, edges=None, projection=None):
+    def record(cls, source, *, timbers=True, edges=None, projection=None, obstacles=None):
         base = load_base(source, executable=cls.base)
         placement = base["placements"][0]
-        inputs = {"mode": "plan", "base_scene": base["base_scene"], "placement_id": placement["id"], "obstacles": [],
+        inputs = {"mode": "plan", "base_scene": base["base_scene"], "placement_id": placement["id"], "obstacles": deepcopy(obstacles or []),
                   "settings": {"bottom": 0, "height": 3000, "edges": edges or [0, 1, 2, 3], "floor": "boundary",
                                "ceiling": "boundary", "holes": "none", "wall_thickness": 100}}
         if timbers:
@@ -135,13 +135,49 @@ class ModelUpdate(unittest.TestCase):
             self.failure(data, "UPDATE_SHAPE")
 
     def test_empty_current_material_and_obstacles_are_explicit_removal_not_old_fallback(self):
-        data = self.request(); data["selection"]["timbers"] = []
+        source = scene() + ("column 90 at 500 500 size 200 200 z 0 3000\n"
+                            "beam 91 along x from 1000 to 2000 at 1500 width 1000 depth 1000 top 2000\n")
+        refs = [{"kind": "column", "id": 90}, {"kind": "beam", "id": 91}]
+        old = self.record(source, obstacles=refs)
+        self.assertEqual(old["input"]["obstacles"], refs)
+        self.assertEqual(old["result"]["summary"]["clearance_mm3"], "34880000000")
+        data = self.request(source.replace("27 33", "29 33"), record=old)
+        data["selection"]["timbers"] = []
         replacement = self.prepare(data)["record"]
         self.assertNotIn("timbers", replacement["input"])
         self.assertNotIn("timbers", replacement["result"])
         self.assertEqual(replacement["result"]["schema"], "geometry-space-preview/1")
         self.assertEqual(replacement["input"]["obstacles"], [])
+        self.assertEqual(replacement["result"]["summary"]["clearance_mm3"], "36000000000")
         self.assertNotIn("timber_count", replacement["result"]["summary"])
+
+    def test_explicit_nonempty_column_and_beam_sources_replay_complete_clearance_change(self):
+        source = scene() + ("column 90 at 500 500 size 200 200 z 0 3000\n"
+                            "beam 91 along x from 1000 to 2000 at 1500 width 1000 depth 1000 top 2000\n")
+        refs = [{"kind": "column", "id": 90}, {"kind": "beam", "id": 91}]
+        old = self.record(source, obstacles=refs)
+        data = self.request(source.replace("27 33", "29 33").replace("size 200 200", "size 400 200"), record=old)
+        data["selection"]["obstacles"] = deepcopy(refs)
+        before = canonical_bytes(data)
+        candidate = self.prepare(data)
+        self.assertEqual(canonical_bytes(data), before)
+        replacement = candidate["record"]
+        self.assertEqual(replacement["input"]["obstacles"], refs)
+        self.assertEqual(candidate["identity"], "unknown")
+        self.assertEqual(candidate["old_record_sha256"], digest(old))
+        self.assertEqual(replacement["id"], old["id"])
+        self.assertEqual(replacement["input"]["settings"], old["input"]["settings"])
+        self.assertEqual(replacement["result"]["summary"]["volume_mm3"], "36000000000")
+        self.assertEqual(old["result"]["summary"]["clearance_mm3"], "34880000000")
+        self.assertEqual(replacement["result"]["summary"]["clearance_mm3"], "34760000000")
+        clearance = next(row for row in candidate["diff"]["packages"] if row["kind"] == "clearance")
+        self.assertNotEqual(clearance["before"], clearance["after"])
+        self.assertEqual(candidate["diff"]["summary"]["after"], replacement["result"]["summary"])
+        self.assertEqual(space_modeling.preview(replacement["input"], base_executable=self.base), replacement["result"])
+        for kind in update.PACKAGES:
+            package = replacement["result"].get(kind)
+            if package is not None:
+                self.assertEqual(verify_package(package, base_executable=self.base), package)
 
     def test_edges_reselected_and_original_other_settings_preserved(self):
         data = self.request(scene(a=29, width=5000)); data["selection"]["edges"] = [0, 2]
@@ -192,13 +228,24 @@ class ModelUpdate(unittest.TestCase):
         data = self.request(); data["record"]["source"]["boundary_id"] = 88
         self.failure(data, "UPDATE_SOURCE")
 
-    def test_ordinary_inline_rect_boundary_null_remains_supported_with_explicit_zero(self):
+    def test_inline_rect_supports_no_timber_model_but_rejects_unsavable_timber_combination(self):
         source = "surface 0 origin 0 0 2500 u +x v +y rect 0 0 4000 3000\ntimber 0 27 33 role boundary\nplace 0 on 0 at-face e0 +u +n\n"
         old = self.record(source)
         self.assertIsNone(old["source"]["boundary_id"])
         data = self.request(source.replace("27 33", "29 33"), record=old, placement=0, boundary=0)
+        self.failure(data, "UPDATE_TIMBER_BOUNDARY", status="UNSUPPORTED")
+        for metadata_boundary in (None, 0):
+            data["record"]["source"]["boundary_id"] = metadata_boundary
+            self.failure(data, "UPDATE_TIMBER_BOUNDARY", status="UNSUPPORTED")
+        data = self.request(source, placement=0, boundary=0)
+        self.failure(data, "UPDATE_TIMBER_BOUNDARY", status="UNSUPPORTED")
+        old = self.record(source, timbers=False)
+        data = self.request(source, record=old, placement=0, boundary=0)
+        data["selection"]["timbers"] = []
         candidate = self.prepare(data)
         self.assertEqual(candidate["record"]["source"]["boundary_id"], 0)
+        self.assertNotIn("timbers", candidate["record"]["input"])
+        self.assertNotIn("timbers", candidate["record"]["result"])
         self.assertEqual(candidate["identity"], "unknown")
 
     def test_faces_assembly_owned_unknown_capability_and_unplaced_sources_reject(self):
@@ -377,6 +424,43 @@ class ModelUpdate(unittest.TestCase):
         record["input"]["timbers"] = [{"kind": "timber", "id": 2}]
         record["result"] = space_modeling.preview(record["input"], base_executable=self.base)
         self.failure(self.request(changed, record=record, timber=2), "UPDATE_FIXED_VERSION")
+
+    def test_placed_timber_nonexact_native_projection_refuses_without_writing_record_or_live_world(self):
+        # Normal valid native placement guarantees unique stops. Exercise the
+        # defensive reader boundary with a test-local C read-projection fault,
+        # not a fabricated JSON graph or a claimed legal ambiguous scene.
+        from tests._timber_support_bridge import build
+        with tempfile.TemporaryDirectory(prefix="update-support-read-fault-") as directory:
+            projection = (ROOT / "geometry-web/timber_support_projection.inc").read_text()
+            marker = "size_t count=collect_stop_faces(w,p,world_placement_boundary(w,p),along_v,t,faces,STOP_FACE_MAX);"
+            self.assertEqual(projection.count(marker), 1)
+            projection = projection.replace(marker, marker + "\n        if(t->id==0) count=0; /* test-only read projection */")
+            path = Path(directory) / "support-read-fault.inc"
+            path.write_text(projection)
+            with mock.patch.dict(os.environ):
+                # This fixture must compile its own fault projection, even if
+                # another native test configured a normal bridge override.
+                os.environ.pop("GEOMETRY_TEST_SUPPORT_BRIDGE", None)
+                fault_bridge = build(directory, projection=path)
+            data = self.request()
+            with _bridge.BridgeSession(fault_bridge, cwd=directory) as fault:
+                source = Path(directory) / "legal.scene"
+                source.write_text(data["current_scene"])
+                self.assertTrue(fault.command("loadfile " + str(source))["ok"])
+                graph = fault.command("source-inspect")
+                node = next(node for node in graph["nodes"] if node["key"] == "timber:0")
+                self.assertTrue(node["placed"])
+                support = next(entry for entry in graph["timberSupports"]["entries"] if entry["id"] == 0)
+                for end in ("start", "finish"):
+                    self.assertEqual(support[end]["status"], "unknown")
+                    self.assertIsNone(support[end]["relation"])
+                before = {command: fault.command(command) for command in ("dump", "source-inspect", "newid 2")}
+                old_record = canonical_bytes(data["record"])
+                error = self.failure(data, "UPDATE_SUPPORT_UNCHECKED", status="UNSUPPORTED", bridge_executable=fault_bridge)
+                self.assertIn("timber:0", str(error))
+                self.assertEqual(canonical_bytes(data["record"]), old_record)
+                for command, expected in before.items():
+                    self.assertEqual(fault.command(command), expected)
 
     def test_different_protected_root_keys_require_explicit_correspondence(self):
         old, catalogue, _ = self.engineering_scenes()
