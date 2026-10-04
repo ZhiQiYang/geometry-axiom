@@ -91,6 +91,12 @@ consistency and freshness; it is not a signature proving a receipt's authenticit
 
 Required native-owner interface, **reported rather than implemented here**:
 
+Root explicitly assigned the unique native writer at 2026-10-04 04:14:
+thread `01a1050d-60bf-7207-844c-08bf99a520b0`, precise #49 diagnostics first,
+then subdivision. The [UI/adapter handoff draft](UI-DRAFT.md) references these
+existing expectations and identifies the tests to adapt when its native head
+arrives; it registers no transport or saved schema.
+
 - Wrong dimension type: a specific typed code and clause, source
   `{kind:"parameter", id:41, fieldId:9}`, ideally also the binding slot/axis.
   Built-in expected token is `DIMENSION_TYPE / D33`; root/native owner must
