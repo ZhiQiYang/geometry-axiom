@@ -33,7 +33,7 @@ module.exports = async function gridWorkspaceDrafts({send,eval_,sleep,click,wait
   try {
     await ctl('#gridObjectOpen');await wait('window.__gridDraftDelay.captured && !!window.__gridDraftDelay.release');
     check('邊界讀取未完成時鎖定原始輸入且保存拒絕',await eval_(`$('igCellI').disabled && document.querySelector('#projectBar [data-project-action="save"]').disabled && $('igSaveBinding').disabled`)&&(await dump())===baseline);
-    await eval_('window.__gridDraftDelay.release();void 0');await wait(`!$('igSaveBinding').disabled && !!$('igKeyedVertices').firstElementChild`);
+    await eval_('window.__gridDraftDelay.release();void 0');await wait(`!$('igCellI').disabled && !!$('igKeyedVertices').firstElementChild`);
     await fill('#igCellI','-3');
     check('原生回應到達後輸入確實進入可保存原始草稿',await eval_(`$('igCellI').value==='-3' && !document.querySelector('#projectBar [data-project-action="save"]').disabled && !$('igSaveBinding').disabled && ReferenceWorkspace.readFeatureAttachment('grid-draft').rawForm.igCellI==='-3'`)&&(await dump())===baseline);
     await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:discardMessage,accept:false});
