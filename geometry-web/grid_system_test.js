@@ -28,7 +28,11 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
       await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});
     else await ctl('#igClose');
   }};
-  const open=async(kind,id)=>{await close();await ctl('#btnZoom');await ctl(card(kind,id));await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open && !!$('igGridView')`);if(kind==='grid-binding')await wait(`$('igVertex').value!=='' && $('igSurface').options.length>0`);};
+  const open=async(kind,id)=>{await close();await ctl('#btnZoom');
+    // A fresh partial-run profile has not dismissed this existing canvas
+    // lesson. Use its real action before hitting a card behind the lesson.
+    if(await read(`(()=>{const b=document.querySelector('#ocSelectionSummary .guidance-dismiss');return !!b&&b.getBoundingClientRect().width>0&&!b.hidden;})()`))await ctl('#ocSelectionSummary .guidance-dismiss');
+    await ctl(card(kind,id));await ctl('#gridObjectOpen');await wait(`!!$('infiniteGridWorkspace')?.open && !!$('igGridView')`);if(kind==='grid-binding')await wait(`$('igVertex').value!=='' && $('igSurface').options.length>0`);};
   const axis=async(letter,source,fields)=>{await choose('#ig'+letter+'Source',source);for(const [field,value] of Object.entries(fields))await fill('#ig'+letter+field,value);};
   const saveSource=async()=>{await ctl('#igSaveSource');await impact();await confirm();};
   const create=async(name,u=['repeat',{Phase:0,Step:600}],v=['repeat',{Phase:0,Step:400}],entry='#btnNewGridSystem')=>{
