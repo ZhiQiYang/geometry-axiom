@@ -21,6 +21,14 @@ CASE_IDS = (
     "wrong-type-dimension-reference", "legal-rule",
     "legal-incomplete-binding", "fixed-version-immutable",
 )
+NEGATIVE_DIAGNOSTICS = {
+    "wrong-type-dimension-reference": {
+        "code": "DIMENSION_TYPE", "clause": "D33",
+        "ref": {"kind": "parameter", "id": 41, "fieldId": 9}},
+    "fixed-version-immutable": {
+        "code": "RULE_VERSION_IMMUTABLE", "clause": "D32",
+        "ref": {"kind": "rule", "id": 17, "version": 1}},
+}
 
 
 def canonical_hash(value):
@@ -134,24 +142,26 @@ class RuleCaseCatalogNative(unittest.TestCase):
         cls.receipts = {value["caseId"]: cls.executor.run(
             value, project_id="independent-catalog-oracle", generation=1) for value in cases()}
 
-    def test_six_true_native_runs_keep_precise_negative_diagnostic_gaps_nonpass(self):
+    def test_six_true_native_runs_satisfy_exact_positive_and_negative_expectations(self):
         expected = {
-            "same-role-distinct-members": "passed", "one-local-joint-new-version": "passed",
-            "wrong-type-dimension-reference": "blocked", "legal-rule": "passed",
-            "legal-incomplete-binding": "passed", "fixed-version-immutable": "blocked",
+            "same-role-distinct-members": "accepted", "one-local-joint-new-version": "accepted",
+            "wrong-type-dimension-reference": "rejected", "legal-rule": "accepted",
+            "legal-incomplete-binding": "accepted", "fixed-version-immutable": "rejected",
         }
         pids = []
-        for case_id, status in expected.items():
+        for case_id, outcome in expected.items():
             receipt = self.receipts[case_id]
             with self.subTest(case=case_id):
-                self.assertEqual(status, receipt["status"], receipt)
+                self.assertEqual("passed", receipt["status"], receipt)
+                self.assertEqual(outcome, receipt["authorExpected"]["outcome"])
+                self.assertEqual(outcome, receipt["actualOutcome"])
                 self.assertTrue(receipt["executor"]["known"])
                 self.assertTrue(receipt["conditions"]["isolated"])
                 self.assertTrue(receipt["conditions"]["privateDirectoryRemoved"])
                 self.assertIsInstance(receipt["conditions"]["nativePid"], int)
                 self.assertTrue(all(item["passed"] for item in receipt["assertionResults"]))
-                if status == "blocked":
-                    self.assertEqual("diagnostic-unavailable", receipt["reason"])
+                if case_id in NEGATIVE_DIAGNOSTICS:
+                    self.assertEqual(NEGATIVE_DIAGNOSTICS[case_id], receipt["authorExpected"]["diagnostic"])
                 pids.append(receipt["conditions"]["nativePid"])
         self.assertEqual(6, len(set(pids)), "Each run requires a fresh native process")
 
@@ -215,16 +225,20 @@ class RuleCaseCatalogNative(unittest.TestCase):
         for case_id in ("wrong-type-dimension-reference", "fixed-version-immutable"):
             receipt = self.receipts[case_id]
             with self.subTest(case=case_id):
+                self.assertEqual("passed", receipt["status"], receipt)
                 self.assertEqual("rejected", receipt["actualOutcome"])
                 observed = receipt["observations"]
                 self.assertEqual(observed["before"], observed["after"])
                 self.assertEqual(observed["beforeRevision"], observed["afterRevision"])
                 self.assertEqual(observed["beforeDumpHash"], observed["afterDumpHash"])
-                generic = [item for item in receipt["actualDiagnostics"]
-                           if item.get("code") == "ASSEMBLY_INVALID"]
-                self.assertEqual(1, len(generic))
-                self.assertEqual("I40/I41", generic[0]["clause"])
-                self.assertNotIn("ref", generic[0])
+                expected = NEGATIVE_DIAGNOSTICS[case_id]
+                precise = [item for item in receipt["actualDiagnostics"]
+                           if item.get("code") == expected["code"]]
+                self.assertEqual(1, len(precise))
+                actual = {key: precise[0].get(key) for key in ("code", "clause", "ref")}
+                self.assertEqual(canonical_hash(expected), canonical_hash(actual))
+                self.assertFalse(any(item.get("code") == "ASSEMBLY_INVALID"
+                                     for item in receipt["actualDiagnostics"]))
 
 
 if __name__ == "__main__":
