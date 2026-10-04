@@ -44,9 +44,20 @@
   }
   const empty=()=>({schema:SCHEMA,links:[]});
   function references(value){validate(value);return {sources:[...new Set(value.links.map(l=>l.document.sourceHash))],targets:value.links.map(l=>({kind:l.target.kind,projectScope:l.target.projectScope,parameterId:l.target.parameterId,fieldId:l.target.fieldId}))};}
-  function documentFromReference(p){
-    const d={sourceHash:p.sourceId,referencePageId:p.id,page:p.page,coordinateSpace:COORDINATES,pageWidth:p.imgW,pageHeight:p.imgH,rotationBasis:p.rot,cropBasis:clone(p.crop)};
-    if(!documentValid(d))fail('EVIDENCE_DOCUMENT','請選擇有效的既有 PDF 原頁。');return d;
+  function documentFromReference(p,source){
+    // Use the existing source-pool entry, not its filename or page shape. Its
+    // bytes/runtime PDF cache are deliberately outside the JSON descriptor.
+    const metaDescriptor=source&&Object.getOwnPropertyDescriptor(source,'meta'),meta=metaDescriptor?.value;
+    if(!metaDescriptor||!Object.hasOwn(metaDescriptor,'value')||!plain(meta))fail('EVIDENCE_DOCUMENT','請選擇有效的既有 PDF 原頁。');
+    boundedJSON(meta);
+    const fields={};for(const key of ['sourceId','id','page','imgW','imgH','rot','crop']){
+      const descriptor=p&&Object.getOwnPropertyDescriptor(p,key);
+      if(!descriptor||!Object.hasOwn(descriptor,'value'))fail('EVIDENCE_DOCUMENT','原頁資訊無法安全核對。');fields[key]=descriptor.value;
+    }
+    boundedJSON(fields);
+    if(!['id','hash','type'].every(k=>Object.hasOwn(meta,k))||meta.type!=='application/pdf'||meta.id!==fields.sourceId||meta.hash!==fields.sourceId)fail('EVIDENCE_DOCUMENT','證據只接受身分相符的既有 PDF 原頁。');
+    const d={sourceHash:fields.sourceId,referencePageId:fields.id,page:fields.page,coordinateSpace:COORDINATES,pageWidth:fields.imgW,pageHeight:fields.imgH,rotationBasis:fields.rot,cropBasis:fields.crop};
+    if(!documentValid(d))fail('EVIDENCE_DOCUMENT','請選擇有效的既有 PDF 原頁。');return clone(d);
   }
   function targetFromNode(projectScope,n){
     if(n?.kind!=='parameter-field'||typeof n.id!=='string'||!/^\d+$/.test(n.id)||n.key!==`parameter-field:${Number(n.id)}:f${n.fieldId}`)fail('EVIDENCE_TARGET','請明選參數欄位。');
@@ -83,6 +94,24 @@
     validate(value);if(JSON.stringify(value)!==JSON.stringify(snapshot))fail('EVIDENCE_STALE_CLOSURE','驗證期間證據附件已變更，未接受來源閉包。');
     return true;
   }
+  // Prepare may await only detached, read-only work. Navigation/fit/paint are
+  // one synchronous final commit, after every asynchronous stage is guarded.
+  function createLocator({prepare,commit,getSourceStamp}){
+    if(typeof prepare!=='function'||typeof getSourceStamp!=='function'||typeof commit!=='function'||commit.constructor?.name==='AsyncFunction')fail('EVIDENCE_ADAPTER','定位需要離線準備與同步導航接口。');
+    const sourceStamp=d=>{const value=getSourceStamp(d);boundedJSON(value);if(!plain(value))fail('EVIDENCE_ADAPTER','定位來源基準無法確認。');return JSON.stringify(value);};
+    return async function locateDocument(document,region,{isCurrent}){
+      boundedJSON(document);boundedJSON(region);
+      if(!documentValid(document)||!rect(region,document.pageWidth,document.pageHeight)||typeof isCurrent!=='function')fail('EVIDENCE_DOCUMENT','定位頁面或範圍不合法。');
+      const d=clone(document),r=clone(region),basis=sourceStamp(d);
+      const assertCurrent=()=>{if(!isCurrent()||sourceStamp(d)!==basis)fail('EVIDENCE_STALE','定位已取消或原圖基準已變更。');};
+      assertCurrent();const prepared=await prepare(clone(d),clone(r),{assertCurrent});assertCurrent();
+      const result=commit(prepared,clone(d),clone(r));
+      if(result&&typeof result.then==='function')fail('EVIDENCE_ADAPTER','定位導航接口不能回傳非同步作業。');
+      // A successful synchronous navigation may change the project's own
+      // revision. Never reclassify that completed navigation as a late reply.
+      return result;
+    };
+  }
   function createController({readFeatureAttachment,setFeatureAttachment,getStamp,readCurrent,locateDocument,uuid=()=>crypto.randomUUID(),now=()=>new Date().toISOString()}){
     if(typeof setFeatureAttachment!=='function'||setFeatureAttachment.constructor?.name==='AsyncFunction')fail('EVIDENCE_ADAPTER','證據附件需要同步、原子的一步本地寫入接口。');
     let sequence=0;const leases=new Map();
@@ -106,8 +135,13 @@
       const end=stamp();if(l&&seq===sequence&&end.contextToken===s.contextToken&&end.nativeRevision===s.nativeRevision)bind(l,end);return clone(v);
     }
     async function current(l,s,seq){const c=await readCurrent(clone(l.document),clone(l.target));guard(s,seq);if(c?.nativeRevision!==s.nativeRevision)fail('EVIDENCE_STALE','原生來源版本已變更，請重新核對。');return c;}
-    async function add({document,region,target,observations}){
-      const seq=++sequence,s=stamp(),v=bundle(),l={evidenceId:uuid(),document:clone(document),region:clone(region),target:clone(target),observations:clone(observations),humanConfirmation:null};
+    async function add(input){
+      // Do not destructure or stringify caller data until accessors/functions
+      // and its complete bounded shape have been rejected without invocation.
+      boundedJSON(input);if(!keys(input,['document','region','target','observations']))fail('EVIDENCE_INVALID','新增證據欄位不合法。');
+      validate({schema:SCHEMA,links:[{evidenceId:'preflight',...input,humanConfirmation:null}]});
+      const {document,region,target,observations}=clone(input);
+      const seq=++sequence,s=stamp(),v=bundle(),l={evidenceId:uuid(),document,region,target,observations,humanConfirmation:null};
       validate({schema:SCHEMA,links:[l]});if(l.target.projectScope!==s.projectScope)fail('EVIDENCE_SCOPE','參數欄位屬於另一份專案。');
       const c=await current(l,s,seq),state=assess(l,c,{identityKnown:true});if(!state.canConfirm)fail('EVIDENCE_ASSOCIATION','明選的來源或參數欄位已變更。');v.links.push(l);commit(v,s,seq,l);return clone(l);
     }
@@ -123,7 +157,7 @@
       commit(v,s,seq,leaseKnown(l,s)?l:null);return clone(l);
     }
     async function rebind(evidenceId,target){
-      const seq=++sequence,s=stamp(),v=bundle(),l=find(v,evidenceId);if(!targetValid(target)||target.projectScope!==s.projectScope)fail('EVIDENCE_SCOPE','請明選本專案的參數欄位。');
+      boundedJSON(target);const seq=++sequence,s=stamp(),v=bundle(),l=find(v,evidenceId);if(!targetValid(target)||target.projectScope!==s.projectScope)fail('EVIDENCE_SCOPE','請明選本專案的參數欄位。');
       l.target=clone(target);l.humanConfirmation=null;const c=await current(l,s,seq);if(!assess(l,c,{identityKnown:true}).canConfirm)fail('EVIDENCE_ASSOCIATION','來源或參數欄位已變更，請重新選擇。');commit(v,s,seq,l);return clone(l);
     }
     async function locate(evidenceId){
@@ -133,5 +167,5 @@
     }
     return {add,readView,setReviewed,rebind,locate,cancel(){++sequence;}};
   }
-  return Object.freeze({KIND,SCHEMA,COORDINATES,MAX_LINKS,MAX_BYTES,empty,validate,references,documentFromReference,targetFromNode,targetKey,assess,validateSourceClosure,createController});
+  return Object.freeze({KIND,SCHEMA,COORDINATES,MAX_LINKS,MAX_BYTES,empty,validate,references,documentFromReference,targetFromNode,targetKey,assess,validateSourceClosure,createLocator,createController});
 });

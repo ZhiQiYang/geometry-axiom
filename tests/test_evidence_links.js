@@ -6,6 +6,8 @@ const E=require('../geometry-web/evidence-links.js');
 const hash='a'.repeat(64),pin='b'.repeat(64);
 const copy=v=>structuredClone(v);
 const doc=()=>({sourceHash:hash,referencePageId:'reference-0',page:1,coordinateSpace:E.COORDINATES,pageWidth:300,pageHeight:200,rotationBasis:0,cropBasis:[20,30,200,120]});
+const source=()=>({meta:{id:hash,hash,type:'application/pdf',size:123},bytes:new Uint8Array(123),pdf:{runtimeCache:true}});
+const reference=()=>({id:'reference-0',sourceId:hash,page:1,imgW:300,imgH:200,rot:90,crop:[20,30,200,120],mmPerPx:32.37,x:500,y:600});
 const target=()=>({projectScope:'project-a',kind:'parameter-field',parameterId:0,fieldId:0,definitionPin:pin,incarnation:null});
 const obs=()=>({drawing:{rawText:'標註 323.5 cm',rawValue:'323.5',unit:'cm',note:'<script>text only</script>'},measurement:{rawText:'現場 3234.7mm',rawValue:'3234.7',unit:'mm',note:'保留衝突'}});
 const link=()=>({evidenceId:'evidence-0',document:doc(),region:[30,40,80,25],target:target(),observations:obs(),humanConfirmation:null});
@@ -36,8 +38,29 @@ test('duplicate IDs, capacity, exotic objects and executable/accessor data rejec
   class ExecutableArray extends Array{toJSON(){called=true;return [];}}assert.throws(()=>E.validate({schema:E.SCHEMA,links:new ExecutableArray()}),{code:'EVIDENCE_JSON'});assert.equal(called,false);
 });
 test('document is copied from existing reference without second calibration',()=>{
-  const p={id:'reference-0',sourceId:hash,page:1,imgW:300,imgH:200,rot:90,crop:[20,30,200,120],mmPerPx:32.37,x:500,y:600};
-  const d=E.documentFromReference(p);assert.equal(d.rotationBasis,90);assert.equal('mmPerPx' in d,false);p.crop[0]=0;assert.equal(d.cropBasis[0],20);
+  const p=reference();
+  const d=E.documentFromReference(p,source());assert.equal(d.rotationBasis,90);assert.equal('mmPerPx' in d,false);p.crop[0]=0;assert.equal(d.cropBasis[0],20);
+});
+test('new PDF descriptors require explicit matching canonical source metadata',()=>{
+  assert.throws(()=>E.documentFromReference(reference()),{code:'EVIDENCE_DOCUMENT'});
+  for(const type of ['image/png','image/jpeg','APPLICATION/PDF','application/pdf; charset=utf-8','']){const s=source();s.meta.type=type;assert.throws(()=>E.documentFromReference(reference(),s),{code:'EVIDENCE_DOCUMENT'});}
+  for(const mutate of [s=>s.meta.id='c'.repeat(64),s=>s.meta.hash='c'.repeat(64),s=>delete s.meta.type,s=>delete s.meta.hash]){const s=source();mutate(s);assert.throws(()=>E.documentFromReference(reference(),s),{code:'EVIDENCE_DOCUMENT'});}
+});
+test('PDF descriptor rejects source/page getters and toJSON without invocation',()=>{
+  let calls=0;const trap=()=>{calls++;return hash;};
+  const cases=[()=>{const s=source();Object.defineProperty(s,'meta',{get:trap});return [reference(),s];},()=>{const s=source();Object.defineProperty(s.meta,'type',{get:trap});return [reference(),s];},()=>{const s=source();s.meta.toJSON=trap;return [reference(),s];},()=>{const p=reference();Object.defineProperty(p,'sourceId',{get:trap});return [p,source()];},()=>{const p=reference();Object.defineProperty(p.crop,'0',{get:trap});return [p,source()];}];
+  for(const make of cases){assert.throws(()=>E.documentFromReference(...make()));assert.equal(calls,0);}
+});
+test('add rejects plain-data accessors and toJSON before any caller callback',async()=>{
+  let calls=0;const trap=()=>{calls++;return doc();};
+  for(const mutate of [data=>Object.defineProperty(data,'document',{enumerable:true,get:trap}),data=>Object.defineProperty(data.document,'page',{enumerable:true,get:trap}),data=>Object.defineProperty(data.observations.drawing,'rawText',{enumerable:true,get:trap}),data=>data.toJSON=trap,data=>data.document.toJSON=trap]){
+    const {state,options}=harness();let reads=0;const c=E.createController({...options,getStamp:()=>{reads++;return options.getStamp();},readFeatureAttachment:()=>{reads++;return null;},readCurrent:()=>{reads++;},uuid:()=>{calls++;return 'unsafe';}}),data=input();mutate(data);
+    await assert.rejects(c.add(data),{code:'EVIDENCE_JSON'});assert.equal(calls,0);assert.equal(reads,0);assert.equal(state.writes,0);assert.equal(state.world,'native dump unchanged');
+  }
+  const {controller:c,state}=harness(),data=input();data.extra='unsupported';await assert.rejects(c.add(data),{code:'EVIDENCE_INVALID'});assert.equal(state.writes,0);
+});
+test('rebind rejects target accessor/toJSON without invocation or annotation write',async()=>{
+  for(const mutate of [t=>Object.defineProperty(t,'parameterId',{enumerable:true,get(){throw Error('invoked');}}),t=>t.toJSON=()=>{throw Error('invoked');}]){const {controller:c,state}=harness(),l=await c.add(input()),t=target();mutate(t);await assert.rejects(c.rebind(l.evidenceId,t),{code:'EVIDENCE_JSON'});assert.equal(state.writes,1);}
 });
 test('positive subnormal extent at the page edge cannot pass rounded addition',()=>{
   for(const region of [[300,0,Number.MIN_VALUE,1],[0,200,1,Number.MIN_VALUE]]){const v=bundle();v.links[0].region=region;assert.throws(()=>E.validate(v),{code:'EVIDENCE_INVALID'});}
@@ -90,6 +113,22 @@ test('cancelled, late page and context/hash/revision changes reject before write
 test('cancelled view and late navigation callback cannot paint wrong context',async()=>{
   const {controller:c,state,options}=harness();const l=await c.add(input());const delay=deferred();state.read=async(d,t)=>{await delay.promise;return {document:d,target:t,modelValue:nativeValue};};const pending=c.readView();c.cancel();delay.resolve();await assert.rejects(pending,{code:'EVIDENCE_STALE'});
   state.read=async(d,t)=>({document:d,target:t,modelValue:nativeValue});const guard=deferred();let captured;const opts={...options,locateDocument:async(d,r,g)=>{captured=g;await guard.promise;return g.isCurrent();}};const n=E.createController(opts),locating=n.locate(l.evidenceId);await new Promise(r=>setImmediate(r));state.stamp.contextToken='ctx-b';guard.resolve();assert.equal(await locating,false);assert.equal(captured.isCurrent(),false);
+});
+test('staged locator guards every detached await and makes one synchronous navigation',async()=>{
+  const stages=[deferred(),deferred()],state={basis:{sourceHash:hash,reviewBasis:'existing-owner-basis',activePage:'other',selection:0},current:true,nav:0,fit:0,paint:0};let stage=0;
+  const locate=E.createLocator({getSourceStamp:()=>copy(state.basis),prepare:async(d,r,{assertCurrent})=>{for(const gate of stages){stage++;await gate.promise;assertCurrent();}return {render:'detached'};},commit:(prepared,d,r)=>{assert.equal(prepared.render,'detached');state.nav++;state.basis.activePage=d.referencePageId;state.current=false;state.fit++;state.paint++;return 'located';}});
+  const pending=locate(doc(),[30,40,80,25],{isCurrent:()=>state.current});assert.equal(stage,1);stages[0].resolve();await new Promise(r=>setImmediate(r));assert.equal(stage,2);assert.equal(state.nav,0);stages[1].resolve();assert.equal(await pending,'located');assert.deepEqual([state.nav,state.fit,state.paint],[1,1,1]);
+});
+test('cancel/source/basis/page/context/native changes during either load block all navigation and paint',async()=>{
+  for(const delayedStage of [0,1])for(const change of [s=>s.current=false,s=>s.basis.sourceHash='c'.repeat(64),s=>s.basis.reviewBasis='changed-crop-or-rotation',s=>s.basis.activePage='new-page',s=>s.basis.selection++,s=>s.context='ctx-b',s=>s.nativeRevision++]){
+    const stages=[deferred(),deferred()],state={basis:{sourceHash:hash,reviewBasis:'existing-owner-basis',activePage:'old-page',selection:0},current:true,context:'ctx-a',nativeRevision:7,nav:0,fit:0,paint:0};let stage=0;
+    const locate=E.createLocator({getSourceStamp:()=>copy(state.basis),prepare:async(d,r,{assertCurrent})=>{for(const gate of stages){stage++;await gate.promise;assertCurrent();}return {};},commit:()=>{state.nav++;state.fit++;state.paint++;}});
+    const pending=locate(doc(),[30,40,80,25],{isCurrent:()=>state.current&&state.context==='ctx-a'&&state.nativeRevision===7});if(delayedStage===1){stages[0].resolve();await new Promise(r=>setImmediate(r));assert.equal(stage,2);}change(state);stages[delayedStage].resolve();await assert.rejects(pending,{code:'EVIDENCE_STALE'});assert.deepEqual([state.nav,state.fit,state.paint],[0,0,0]);assert.equal(stage,delayedStage+1);
+  }
+});
+test('locator checks final returned prepare even when injected prepare omits its own guard',async()=>{
+  const gate=deferred();let current=true,writes=0;const locate=E.createLocator({getSourceStamp:()=>({sourceHash:hash}),prepare:async()=>{await gate.promise;return {};},commit:()=>writes++});const pending=locate(doc(),[30,40,80,25],{isCurrent:()=>current});current=false;gate.resolve();await assert.rejects(pending,{code:'EVIDENCE_STALE'});assert.equal(writes,0);
+  assert.throws(()=>E.createLocator({getSourceStamp:()=>({}),prepare:async()=>{},commit:async()=>writes++}),{code:'EVIDENCE_ADAPTER'});assert.equal(writes,0);
 });
 test('source-only closure requires original bytes/hash/type/page dimensions',async()=>{
   const bytes=new TextEncoder().encode('%PDF-self-authored-fixture'),sha=b=>createHash('sha256').update(b).digest('hex'),h=sha(bytes),v=bundle();v.links[0].document.sourceHash=h;
