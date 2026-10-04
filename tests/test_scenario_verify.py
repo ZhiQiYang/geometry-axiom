@@ -67,22 +67,35 @@ class ScenarioNativeAcceptance(unittest.TestCase):
         before = deepcopy(complete)
         self.assertIs(verifier._final_objects(complete), complete)
         self.assertEqual(complete, before)
+        # Row order is not an identity rule; complete membership is required.
+        self.assertEqual(verifier._final_objects({**old, "boundaryFingerprints": entries[::-1]})["boundaryFingerprints"], entries[::-1])
         self.assertEqual(verifier._final_objects({"boundaries": [], "placements": [], "boundaryFingerprints": []})["boundaryFingerprints"], [])
-        invalid = [None, [], entries[:1], [entries[0], entries[0]],
+        invalid = [None, {}, "summary", [], entries[:1], [entries[0], entries[0]], entries + [entries[0]],
                    [entries[0], {"id": 3, "geometryFingerprint": "b" * 64}],
                    [entries[0], {"id": True, "geometryFingerprint": "b" * 64}],
                    [entries[0], {"id": "2", "geometryFingerprint": "b" * 64}],
+                   [entries[0], {"id": 2.0, "geometryFingerprint": "b" * 64}],
+                   [entries[0], {"id": 0, "geometryFingerprint": "b" * 64}],
+                   [entries[0], {"id": -1, "geometryFingerprint": "b" * 64}],
+                   [entries[0], {"id": 0x100000000, "geometryFingerprint": "b" * 64}],
                    [entries[0], {"id": 2, "geometryFingerprint": "B" * 64}],
                    [entries[0], {"id": 2, "geometryFingerprint": "b" * 63}],
+                   [entries[0], {"id": 2, "geometryFingerprint": "b" * 65}],
+                   [entries[0], {"id": 2, "geometryFingerprint": "g" * 64}],
+                   [entries[0], {"id": 2, "geometryFingerprint": "b" * 64 + "\n"}],
+                   [entries[0], {"id": 2, "geometryFingerprint": None}],
                    [entries[0], {"id": 2}], [entries[0], {**entries[1], "kind": "boundary"}]]
         for summary in invalid:
             with self.subTest(summary=summary):
                 with self.assertRaises(ModelError) as caught:
                     verifier._final_objects({**old, "boundaryFingerprints": summary})
                 self.assertEqual(caught.exception.code, "SCENARIO_NATIVE_PROTOCOL")
-        with self.assertRaises(ModelError) as caught:
-            verifier._final_objects({**complete, "unknown": []})
-        self.assertEqual(caught.exception.code, "SCENARIO_NATIVE_PROTOCOL")
+        for bad in [{**complete, "unknown": []}, {"boundaries": [1], "boundaryFingerprints": [entries[0]]},
+                    {"boundaries": [], "placements": [], "boundaryFingerprints": [entries[0]]}]:
+            with self.subTest(receipt=bad):
+                with self.assertRaises(ModelError) as caught:
+                    verifier._final_objects(bad)
+                self.assertEqual(caught.exception.code, "SCENARIO_NATIVE_PROTOCOL")
 
     @classmethod
     def setUpClass(cls):
@@ -106,6 +119,28 @@ class ScenarioNativeAcceptance(unittest.TestCase):
                                            base_executable=self.base)
         finally:
             self.assertEqual(value, original, "verification must leave snapshot input untouched")
+
+    def assert_final_objects(self, receipt, expected, scene):
+        final = receipt['final_objects']
+        self.assertEqual({key: final[key] for key in ('boundaries', 'placements')}, expected)
+        self.assertEqual(set(final), {'boundaries', 'placements', 'boundaryFingerprints'})
+        # Separate actual native World and full boundary reads. Never derive
+        # expected pins with verify_project, _final_objects or load-prepare.
+        with tempfile.TemporaryDirectory(prefix='scenario-boundary-oracle-') as directory:
+            source = Path(directory) / 'oracle.scene'
+            source.write_text(scene, encoding='utf-8')
+            with _bridge.BridgeSession(self.bridge, cwd=directory) as oracle:
+                self.assertTrue(oracle.command('loadfile ' + str(source))['ok'])
+                entries = []
+                for identifier in expected['boundaries']:
+                    boundary = oracle.command('boundary ' + str(identifier))
+                    self.assertTrue(boundary['ok'], boundary)
+                    self.assertEqual(boundary['id'], identifier)
+                    entries.append({'id': identifier, 'geometryFingerprint': boundary['geometryFingerprint']})
+            self.assertEqual(oracle.process.returncode, 0)
+        self.assertEqual(sorted(final['boundaryFingerprints'], key=lambda row: row['id']),
+                         sorted(entries, key=lambda row: row['id']))
+        return entries
 
     def reject(self, value, code):
         with self.assertRaises(ModelError) as caught:
@@ -165,8 +200,13 @@ class ScenarioNativeAcceptance(unittest.TestCase):
                 self.assertTrue(receipt_b["ok"])
                 expected = {"boundaries": [1],
                             "placements": [{"id": 1, "bid": 1, "horizontal": True}]}
-                self.assertEqual(receipt_a["final_objects"], expected)
-                self.assertEqual(receipt_b["final_objects"], expected)
+                pins_a = self.assert_final_objects(receipt_a, expected, scene_a)
+                pins_b = self.assert_final_objects(receipt_b, expected, b["scene"])
+                self.assertNotEqual(pins_a, pins_b, 'Same native IDs do not prove identical geometry')
+                forged = deepcopy(receipt_b)
+                forged['final_objects']['boundaryFingerprints'] = pins_a
+                with self.assertRaises(AssertionError):
+                    self.assert_final_objects(forged, expected, b['scene'])
                 self.assertEqual(receipt_a["scene_sha256"], hashlib.sha256(scene_a.encode()).hexdigest())
                 self.assertNotEqual(receipt_a["scene_sha256"], receipt_b["scene_sha256"])
                 self.assertNotEqual(receipt_a["inventory"]["sourceFingerprint"],
@@ -190,7 +230,7 @@ class ScenarioNativeAcceptance(unittest.TestCase):
     def test_deleted_boundary_is_checked_against_final_native_world(self):
         scene = "boundary 99 outline 0,0 100,0 100,100 0,100\ndelete boundary 99\n"
         receipt = self.verify(project(scene))
-        self.assertEqual(receipt["final_objects"], {"boundaries": [], "placements": []})
+        self.assert_final_objects(receipt, {"boundaries": [], "placements": []}, scene)
         self.reject(project(scene, faces=[{"bid": 99}]), "SCENARIO_REFERENCE")
         self.reject(project(scene, reconstructionReviews=[{"bid": 99}]), "SCENARIO_REFERENCE")
 
@@ -224,8 +264,9 @@ class ScenarioNativeAcceptance(unittest.TestCase):
         model["source"].update(boundary_id=None, scene_hash=model["result"]["source_sha256"])
         self.assertEqual(model["result"]["summary"]["volume_mm3"], "33600000000")
         receipt = self.verify(project(model["input"]["base_scene"], models=[model]))
-        self.assertEqual(receipt["final_objects"],
-                         {"boundaries": [], "placements": [{"id": 1, "bid": 0, "horizontal": True}]})
+        self.assert_final_objects(receipt,
+                                 {"boundaries": [], "placements": [{"id": 1, "bid": 0, "horizontal": True}]},
+                                 model['input']['base_scene'])
 
     def test_faces_model_replays_full_multi_carrier_source_and_provenance(self):
         cases = json.loads((ROOT / "geometry-core/modeling-cases.json").read_text())["cases"]
@@ -481,7 +522,7 @@ class ScenarioNativeAcceptance(unittest.TestCase):
         raw = json.dumps(project(scene), ensure_ascii=False).encode("utf-8")
         receipt = verifier.verify_bytes(raw, bridge_executable=self.bridge, base_executable=self.base)
         self.assertTrue(receipt["ok"])
-        self.assertEqual(receipt["final_objects"], {"boundaries": [3], "placements": []})
+        self.assert_final_objects(receipt, {"boundaries": [3], "placements": []}, scene)
         self.assertEqual(receipt["scene_sha256"], hashlib.sha256(scene.encode("utf-8")).hexdigest())
         self.assertEqual({(row["kind"], row["id"]) for row in receipt["objects"]},
                          {("boundary", 3), ("spec", "尺寸")})
@@ -530,7 +571,7 @@ class ScenarioNativeAcceptance(unittest.TestCase):
         self.assertTrue(receipt["ok"])
         self.assertIn("grid-subdivision-rules/1", receipt["capabilities"])
         self.assertEqual(receipt["requiredCapabilities"], ["engineering-spec/1"])
-        self.assertEqual(receipt["final_objects"], {"boundaries": [3], "placements": []})
+        self.assert_final_objects(receipt, {"boundaries": [3], "placements": []}, scene)
         self.assertEqual(receipt["scene_sha256"], hashlib.sha256(scene.encode()).hexdigest())
 
     def test_actual_source_rule_scene_is_explicitly_unsupported_until_reader_owner_lands(self):

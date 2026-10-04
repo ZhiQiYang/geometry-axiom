@@ -299,3 +299,22 @@ serialization/cloning, keeping all capacities/schema paths unchanged. The existi
 capacity regression now proves record/envelope rejection before any container
 serialization. Focused26/26 pass, actualexit0; this followup remains distinct from
 the125232f packet and will be frozen/retested with coordinated native integration.
+
+## Combined candidate: parent-merged native PR115 (2026-10-04)
+
+Parent approved and merged PR115 `a35695d` into main
+`e09d78d800d80066c773456ee3c674f7703ddee7`. Native producer, the existing strict
+optional decoder and compatible exact receipt assertions now arrive together.
+The shared branch integrates that main commit without hand-editing native C.
+The sole merge conflict is the previously added Python optional-summary test;
+it takes the native owner's complete committed test, including all prior strict
+cases and added full-boundary native oracles. Decoder, scene-import producer,
+scene-import tests and both scenario receipt-test files are byte-identical to
+main. Required floors remain Python36/native10; the discovered shared JS count
+is455. The common byte guard review independently passed82 encoding/exact-border
+cases and proved zero container-serialization calls before rejecting the legal
+2GB alias graph; no capacity change. All archive/stale/lifecycle/overview probes
+also pass. Final combined frozen native/browser/fresh-ZIP and full regression
+gates are now required, with new native binaries and runtime/source hashes.
+These are pending gates, not borrowed stage2/stage3 passes. Legacy approval stays
+active within the user's specific10:30 Q+A; no renewed permission is requested.
