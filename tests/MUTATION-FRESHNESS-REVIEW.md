@@ -100,7 +100,10 @@ strict 結果與 exact head 在交付 PR 正文回填。既有 113 selftests 與
 原因是新 M01 killer 改變衍生見證清單。按 AGENTS 的正典追溯同步契約重建唯一 HTML；
 TEMP 差分驗證只增加三處 `<code>` 場景名稱（165 bytes），移除這三個 token 後與舊
 HTML 完全相同，沒有版面／互動／補丁改動。sync rebuild／check 通過；reader=41
-保留，後續 full gate 再驗冪等。main PR96 已合併為 `1c83b5e`，沿用它的 Node floor=294。
+保留；整合 main 的成功 full census 在 `77a6f327`：56 suites、1679 discovered／1678 pass／
+0 fail／1 既定 GDI skip，exit0（180.0s），亦驗過 reader 冪等。只新增 c:integrity 80→88
+及 core:run_tests 138→139；其他 floors 沿用 main。最終普通 strict 的 exact head／
+exit／log 在 cloud handoff 記錄。main PR96 已合併為 `1c83b5e`，沿用它的 Node floor=294。
 
 只讀 strict check 30 次 warm 中位數 137.845ms、p95 153.221ms；45 支 fresh mutant
 沿用，compiler／oracle／sidecar writes=0，artifact bytes／mtime 不變。這是單機 warm
