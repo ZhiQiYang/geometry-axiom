@@ -1,5 +1,11 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## CONT-20261004 — 八項採納與單writer整合
+
+- 使用者已明示接受八項建議，並授權自行安排順序／並行／批次；[目前接口／owner／採納範圍](geometry-guide/IMPLEMENTATION-QUEUE-20261004.md)。舊準備階段的「全部待採納」保留為歷史，不擴大未明寫條文，也不拿來阻塞已批准工作。
+- 第一波#85/#24收尾、#45單份rawdraft/來源→邊界、#44受控ordinary模型、#77人工多房與#49隔離案例準備；第二波#46/#48與案例保存；#58先六條精確差異/oracle後native→保存→UI。共用project-store/history/app及nativeWorld各單writer，root決定逐stage合併。
+- #85 PR98已合併main1075058；#24 PR97待root審查，A24實機保留。具體測試／exact head另以各stage真實證據回填，不宣稱採納等於功能完成。
+
 ## F4a 保存模型雙向定位 — #47 恢復的有限切片（2026-10-04）
 
 - 使用者明示恢復先前取消的工作；隔離分支 `feat/model-snapshot-schedule-navigation-20261004`，基底 main `4e5f5df`。只處理已驗證 ordinary plan 的明選 `input.timbers`，不接管 #54／PR92／PR93；交 draft PR，由 root 獨立驗收後決定合併。
