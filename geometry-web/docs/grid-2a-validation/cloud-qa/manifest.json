@@ -2,11 +2,17 @@
   "schema": "geometry-pr130-synthetic-review-evidence/1",
   "testedFixHead": "0b2cbe34c571605f3c62aa652ee42815f747c96e",
   "testedCSSHead": "b824c0f7985ae5b245b4f06679966cd7737d2e79",
+  "testedFocusHead": "ec4834eca6018b2506e2e822b53d82b02dc605fe",
   "files": [
     {
+      "path": "FOCUS-acceptance.md",
+      "bytes": 9063,
+      "sha256": "7476a32a20be589b5c2c203f7c7312b7b44e861bb5e8f39bd8e5b3fcf873b204"
+    },
+    {
       "path": "P3-acceptance.md",
-      "bytes": 5829,
-      "sha256": "26f7c6b671b39379004e60b60ebc08dd87e93217063240881eaaca41c759066f"
+      "bytes": 6296,
+      "sha256": "c04c4fdadfbfbc76104b73916028055d71f8498c6c6235c959d257263862c4a7"
     },
     {
       "path": "P3-proposal.md",
@@ -15,8 +21,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 6760,
-      "sha256": "36027ee0e37011b379f5f4b5c667bf619ecc7fc435a27c8c10cc794d46fb99a9"
+      "bytes": 7485,
+      "sha256": "a421b3811451ae0b0089883b67bc0420e319a8e7e474aded5b218c757306bbce"
     },
     {
       "path": "fix-extreme-geometry.json",
@@ -39,14 +45,177 @@
       "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     {
+      "path": "focus-repair/after-1400-inline-error.png",
+      "bytes": 82359,
+      "sha256": "85c9be63f6688b7b9fbe454acd1ef015c43e2e66c582decd9ec28d3689abc54d"
+    },
+    {
+      "path": "focus-repair/after-1400-panel-first-click.png",
+      "bytes": 99147,
+      "sha256": "6032913c47724c573057f2783d83d1a64d60cc956be2bf43f404537513c146dd"
+    },
+    {
+      "path": "focus-repair/after-1400-repeat-first-click.png",
+      "bytes": 89362,
+      "sha256": "3fa40bc066f7e37e36ee69fd9d514b41443bc81970320ef55537aded5f967f65"
+    },
+    {
+      "path": "focus-repair/after-390-inline-error.png",
+      "bytes": 48980,
+      "sha256": "1b827cbc6f9c3858da6fdfc753d9d14d4d88b6211cb8eee51913981a2b6301b5"
+    },
+    {
+      "path": "focus-repair/after-390-panel-first-click.png",
+      "bytes": 54862,
+      "sha256": "89308beda820094a8e27234d2349dd703f3ff1cc56000ed81250277fef0cf245"
+    },
+    {
+      "path": "focus-repair/after-390-repeat-first-click.png",
+      "bytes": 53136,
+      "sha256": "73d811f06f8348a50542a1d916517e99300229787c854fb578f7b3841543021c"
+    },
+    {
+      "path": "focus-repair/after-results.json",
+      "bytes": 275288,
+      "sha256": "68758fabbbab3820550a9f7ff3d36eb0fa0ae0fbd510bcfb2de8986878336908"
+    },
+    {
+      "path": "focus-repair/before-1400-inline-error.png",
+      "bytes": 82248,
+      "sha256": "2254e421b4843c5ec2cc8e38076806cc62e82c62758a6bdb3c90354f97f293c0"
+    },
+    {
+      "path": "focus-repair/before-1400-panel-first-click.png",
+      "bytes": 98926,
+      "sha256": "c687a8d526c1873d35b8e8e6aae0cafb26773a85f640bca536d0d78aca524d80"
+    },
+    {
+      "path": "focus-repair/before-1400-repeat-first-click.png",
+      "bytes": 89251,
+      "sha256": "6bf63dc7e18aecd6bd5d76dc086f3319c8a038f9afff829164a30cd0c4d02319"
+    },
+    {
+      "path": "focus-repair/before-390-inline-error.png",
+      "bytes": 48975,
+      "sha256": "9b43d478c3c4b83a2aa9b27aeb1d7f6c118d55859fa1ecdaa605433249ec9997"
+    },
+    {
+      "path": "focus-repair/before-390-panel-first-click.png",
+      "bytes": 55098,
+      "sha256": "a680b5d7db429435e73b31775f166c21fb0ebb39fb1fe8a472d6ecd42b092f0d"
+    },
+    {
+      "path": "focus-repair/before-390-repeat-first-click.png",
+      "bytes": 53098,
+      "sha256": "a9cf60b1828b9f8d83497afac7a1f5bca8446491bc0ba11ced47aa08d370b119"
+    },
+    {
+      "path": "focus-repair/before-results.json",
+      "bytes": 296035,
+      "sha256": "04230781c539564f749f80cc65cecca32680c252a613efb83a18684330a9078f"
+    },
+    {
+      "path": "focus-repair/focus-final-after.log.gz",
+      "bytes": 1930,
+      "sha256": "bda6cbdf406db4a9fdf1259cea4ecef7422cdd68af1b4e145cb7b765922cc96d",
+      "decodedBytes": 20647,
+      "decodedSha256": "4fd83c41a1df57ded022442d1847544c71e38926eee6de41935f3447aa2c850e"
+    },
+    {
+      "path": "focus-repair/focus-final-before.log.gz",
+      "bytes": 1946,
+      "sha256": "1deeea7bf7de3f8cd5e6337df9b567dec86d4d3b79b51fa08af6e618a610be74",
+      "decodedBytes": 20657,
+      "decodedSha256": "c0b7cc046313664b53a547e39de137ec4935539fde1040dd877d0d4851887cde"
+    },
+    {
+      "path": "focus-repair/focus-final-diagram-unit.log.gz",
+      "bytes": 406,
+      "sha256": "551b3b55b1c88de6f83e8676ae2379c7650ec18af197742514f8e56e852c36db",
+      "decodedBytes": 786,
+      "decodedSha256": "bf5fce5cc8de623eaa1bcb23e6ce9c4affb90579f861d4eba74fc914f74f9180"
+    },
+    {
+      "path": "focus-repair/focus-final-fresh-zip.log.gz",
+      "bytes": 117,
+      "sha256": "eae6d9139e9e132fdf73242980d787da8bbc6826de1c6a5748b6d5cb5e26be22",
+      "decodedBytes": 186,
+      "decodedSha256": "9ad234d18f657f8fb7ae2f2f583821899e1587e0d6c87039a26b0f99f7160fec"
+    },
+    {
+      "path": "focus-repair/focus-final-full-terminal.log.gz",
+      "bytes": 884,
+      "sha256": "c4befdb46d8cb2bdff4aa8568ce2e2cc2374e4a38471d3dba76e88911ce9129e",
+      "decodedBytes": 1473,
+      "decodedSha256": "52a04e85d0238c98b1039f619092ca5ca18d2996fbcad9a251b73de35add0658"
+    },
+    {
+      "path": "focus-repair/focus-final-grid.log.gz",
+      "bytes": 4645,
+      "sha256": "6b5bd4b9e5ac879104d202276cd376e9d40b91bacc0f9feb02776f39fae217df",
+      "decodedBytes": 11446,
+      "decodedSha256": "e206fbc20607c19277b6dfc9ec6617cd18f776e1a099a249582f7eb61cab2613"
+    },
+    {
+      "path": "focus-repair/focus-final-normal.log.gz",
+      "bytes": 964,
+      "sha256": "e92da4aca46e4baf320303e56376e2dd9cd6129f67e974a417b46194b02ba996",
+      "decodedBytes": 3861,
+      "decodedSha256": "919b037490af67e66f8677c601180b31b97d1d00ca9dda32650316b9c3c54a17"
+    },
+    {
+      "path": "focus-repair/focus-final-portable.log.gz",
+      "bytes": 1475,
+      "sha256": "378a54e321d5725f805739f368036ee66ce258fc9687ebaf3c4ec824f231e925",
+      "decodedBytes": 5748,
+      "decodedSha256": "192020b59308d49af07f4d28ef1d85d7e75a448a1b8456cc08a3f0dc5e475f8e"
+    },
+    {
+      "path": "focus-repair/focus-final-provenance.log.gz",
+      "bytes": 1077,
+      "sha256": "1c283c1fd7651c24b286d781a3dea28a554953aa77d86677304812b1304c1963",
+      "decodedBytes": 9100,
+      "decodedSha256": "5d36ad695bd1efd9fa15bef022e9d08895f0da8f4938754ce34c9961e2a68acb"
+    },
+    {
+      "path": "focus-repair/fresh-zip-results.json",
+      "bytes": 3213,
+      "sha256": "492ed968126b77b226f1784ee6f84b702b3d92eb22729f021e0ee8cb14b4e841"
+    },
+    {
+      "path": "focus-repair/identity.json",
+      "bytes": 4364,
+      "sha256": "5a7e1c29d876345ff1c5c6b71aa43afb9fe0e051660844a03586694d4c7446aa"
+    },
+    {
+      "path": "focus-repair/normal-browser-errors.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "focus-repair/normal-checks.json",
+      "bytes": 19221,
+      "sha256": "daa92cdee9a020c32f12524f7b921d808dd93ae2a92e0b4ef8977cbb464e210f"
+    },
+    {
+      "path": "focus-repair/normal-console.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "focus-repair/unchanged-bytes.json",
+      "bytes": 1226,
+      "sha256": "230c3a3999d110a47e3a8b3a85f0f753f8ebd5522cc56a05622a45120824cdde"
+    },
+    {
       "path": "fresh-zip-results.json",
       "bytes": 6362,
       "sha256": "82f88507eacdc66db975760e2c5f9ce6b63f7afb1aa9daa371d8a14bde4d9b29"
     },
     {
       "path": "gate-receipts.json",
-      "bytes": 22092,
-      "sha256": "aae2184da90c3d51d3ef95f165d44c0c6e682f20f3aaf5b1752b597b7b567ede"
+      "bytes": 30951,
+      "sha256": "e1bb4e1f77dda49827053b2ff570808be78d7a44216e7920bf2b8bc3868bafa0"
     },
     {
       "path": "identity.json",

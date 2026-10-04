@@ -8,6 +8,8 @@ Only synthetic QA parameters/grids/Worlds and repository-authored test fixtures 
 
 **Authorized CSS follow-up:** `b824c0f7985ae5b245b4f06679966cd7737d2e79` adds the one-rule P3 positioning fix. [P3-acceptance.md](P3-acceptance.md) records its new exact runtime, desktop/touch-390 mode matrix and affected grid gate. It also retains a newly reproduced pre-existing first-click defect; the earlier full-mode counts below belong to `0b2cbe3` and were not rerun for the CSS-only change.
 
+**Latest authorized first-click repair:** `ec4834eca6018b2506e2e822b53d82b02dc605fe` preserves definition controls across input-change/focus updates. [FOCUS-acceptance.md](FOCUS-acceptance.md) records the same trusted-pointer gate failing **189/54** on pre-JS `07b844d` and passing **243/0** on the repair, all **36/36 first clicks** delivered without pre-blur, new grid/portable/provenance gates, a repeated real 915/1830/ZIP/history workflow, and a **new full CDP 1994/0/0** receipt on this JS head. Its runtime is `af56c70a18b10975474542e5bbdc9f4d0b2de1a7301d4b1d539ef860f0573c3c`, `fresh:true`; the one expected P38 exception is retained as 1.
+
 ## Verified repairs
 
 - **Panel zero-line coordinate:** panel 400, gap 5, raw anchor -100 produces effective phase 302 under D29. The original diagram labels raw `u -100` under “第 0 線”, while the main plot shows 302mm. The repair labels `shape.phase`, preserving the anchor field and ParameterRef/click target.
@@ -38,10 +40,10 @@ Runtime, binary hashes, trees and clean worktree states are recorded in [identit
 
 ## Remaining scoped findings
 
-- The P3 dimension-chip positioning issue in `0b2cbe3` is fixed by the authorized CSS follow-up `b824c0f`; [P3-proposal.md](P3-proposal.md) retains the historical browser-only prototype. An existing input-change redraw can swallow the first chip click after editing; its before/after reproduction and bounded CSS validation are in [P3-acceptance.md](P3-acceptance.md).
+- The P3 dimension-chip positioning issue in `0b2cbe3` is fixed by CSS follow-up `b824c0f`; [P3-proposal.md](P3-proposal.md) retains the historical prototype. The subsequently reproduced first-click loss recorded in [P3-acceptance.md](P3-acceptance.md) is now fixed and newly certified at `ec4834e`; see [FOCUS-acceptance.md](FOCUS-acceptance.md). Historical failures remain preserved.
 - At 390px, the feedback button covers the center of the create-grid menu item after editing a parameter. Base `8d134fc` and delivered PR130 have the same hit rectangles; this is a pre-existing issue. The normal flow used the unobscured lower edge, without hiding the feedback UI or forcing clicks. It is outside this diagram repair.
 - CI run `37229673271` has seven failed jobs with no runner steps, so it supplies no product execution evidence. Local gates above ran independently.
 - PR130's original author short-gate raw receipts were not present in the delivered files. The four claimed counts were independently reproduced here.
 - PR126 store/reference/native interfaces and PR125 were not modified. This does not claim completion of the #61 source-subrule editor. Advanced trial remains presentation-only; `space_model_test.js` is outside full CDP and was not additionally certified.
 
-The remote review branch contains the diagram repair, its evidence, the separately authorized one-rule CSS repair and CSS evidence. Neither main nor the original PR130 branch was changed or force-pushed. Root should independently review the code commits before arranging a safe return to PR130.
+The remote review branch contains the diagram repair, the separately authorized one-rule CSS repair, the separately authorized shared-renderer first-click repair, and their evidence commits. Neither main nor the original PR130 branch was changed or force-pushed. Root should independently review the code commits before arranging a safe return to PR130.

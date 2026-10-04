@@ -2,9 +2,11 @@
 
 The authorized one-rule repair is **`b824c0f7985ae5b245b4f06679966cd7737d2e79`**, following evidence commit `fab77152deda0f876eb58b937369833732a045a9`. It adds only `.ig-workspace .ig-def-stage > .ig-chip { position: absolute; }` after the generic chip rule. The dimension chips now use their supplied stage coordinates; nested phase chips remain relative. JavaScript, native sources, raw schemas, references and the earlier eight geometric fixtures are byte-identical to `0b2cbe3`.
 
+**Historical CSS-head acceptance:** the first-click finding below was later authorized for a shared-renderer fix in `ec4834e`. [FOCUS-acceptance.md](FOCUS-acceptance.md) contains the corrected direct-first-click regression and new JS-head full CDP. The 241/4 initial CSS-head failures and 245/0 settled-input matrix below remain historical receipts and were not rewritten.
+
 ## Finding retained: first click after editing an input
 
-An existing interaction defect remains outside this CSS authorization. At both 1400×1000 and touch-enabled 390×844, edit `igVPhase` to `-50` and click the u spacing chip without first finishing input editing. The first click hits the correct chip but does not highlight the u spacing field. A second click works. The entire native dump remains unchanged.
+At this historical CSS head, an existing interaction defect was outside its CSS authorization. At both 1400×1000 and touch-enabled 390×844, edit `igVPhase` to `-50` and click the u spacing chip without first finishing input editing. The first click hits the correct chip but does not highlight the u spacing field. A second click works. The entire native dump remains unchanged. It is now repaired by the separately authorized `ec4834e` follow-up.
 
 This reproduces on both pre-CSS `fab77152` (runtime `6582cf68…`) and CSS repair `b824c0f` (runtime `e4a3e719…`): four out of four first clicks fail and all four second clicks work. Capture-phase event traces show `pointerdown`/`mousedown` on `u:step`, followed by input `change` and `focusout`; the first attempt has no `click` event. The dialog's existing `onchange` calls `syncDraftState` → `syncDefinition` → `drawDefinition`, which replaces the chip DOM during the pointer interaction. This was not repaired or hidden by a test/oracle change.
 
