@@ -67,6 +67,7 @@ PY_NEEDS = {
     'test_feedback_store': [],
     'test_gdi_contract': ['gdi'],
     'test_grid_system_contract': ['bridge'],
+    'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],
     'test_guide_panels': [],
     'test_infinite_grid_contract': ['bridge'],

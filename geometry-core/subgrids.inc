@@ -239,8 +239,8 @@ static size_t grid_line_segments(const ReferenceGrid *grids,size_t count,const R
     if (!grid_line_coord_in(grids,count,grid,p,b,axis,index,&coord,NULL,NULL,0)) return 0;
     if (grid->is_subgrid && !grid_cell_bounds(grids,count,grid,p,b,&cell,NULL,0)) return 0;
     GuideLine line={.placement_id=p->id,.direction=axis==0?GUIDE_ALONG_V:GUIDE_ALONG_U,.offset=coord};
-    SurfaceSegment2 segments[POLY_MAX_VERTICES];
-    size_t n=guide_line_get_local_segments(p,b,&line,segments,POLY_MAX_VERTICES), written=0;
+    SurfaceSegment2 segments[GUIDE_MAX_SEGMENTS];
+    size_t n=guide_line_get_local_segments(p,b,&line,segments,GUIDE_MAX_SEGMENTS), written=0;
     for (size_t i=0;i<n && written<cap;++i) {
         SurfaceSegment2 s=segments[i];
         if (grid->is_subgrid) {

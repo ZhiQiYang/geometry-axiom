@@ -40,7 +40,14 @@ static void json_grid_system(const World *w,const GridSystem *system)
         printf(",\"%cDefinition\":",axis?'v':'u');
         json_grid_axis_definition(&system->axis[axis],false,0);
     }
-    fputs(",\"applications\":[",stdout); bool first=true;
+    printf(",\"nextRuleKey\":%u,\"rules\":[",system->next_rule_key);
+    for(size_t i=0;i<system->rule_count;++i){const GridSubdivisionRule *r=&system->rules[i];
+        printf("%s{\"ruleKey\":%u,\"name\":",i?",":"",r->key);js_string(r->name);
+        fputs(",\"selector\":{\"kind\":",stdout);js_string(r->all_cells?"all-cells":"cell");
+        if(!r->all_cells)printf(",\"cell\":[\"%lld\",\"%lld\"]",(long long)r->cell[0],(long long)r->cell[1]);
+        printf("},\"divisions\":[%u,%u]}",r->divisions[0],r->divisions[1]);
+    }
+    fputs("],\"applications\":[",stdout); bool first=true;
     for (size_t i=0;i<w->grid_count;++i) {
         const ReferenceGrid *grid=&w->grids[i];
         const GridBinding *binding=grid->from_binding?world_find_grid_binding(w,grid->binding_id):NULL;
