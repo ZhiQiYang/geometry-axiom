@@ -411,7 +411,7 @@ def run_suite(suite, env, infos):
         return row
 
     if suite.kind == 'mutation-check':
-        row.failed = int(code != 0)
+        row.failed = int(code not in (0, 2))
         row.env_problem = code == 2
         row.note = 'mutation inventory freshness (not test assertions); exit %s' % code
         if code != 0:

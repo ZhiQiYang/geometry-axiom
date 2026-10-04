@@ -265,6 +265,12 @@ class MutationFreshnessTests(unittest.TestCase):
             row = run_all.run_suite(suite, dict(os.environ, MUTATE_RESULTS='untrusted override'), {})
         self.assertEqual(probe.call_args.args[1]['MUTATE_RESULTS'], str(run_all.HERE / 'mutants_results.json'))
         self.assertEqual(row.failed, 1)
+        probe.return_value = run_all.ProcResult(2, 'BLOCKED public environment probe', 0, False)
+        with mock.patch.object(run_all, 'LOG_DIR', self.root / 'logs'), \
+                mock.patch.object(run_all, 'run_process', probe):
+            blocked = run_all.run_suite(suite, os.environ.copy(), {})
+        self.assertEqual(blocked.failed, 0)
+        self.assertTrue(blocked.env_problem)
 
     def test_failed_inventory_gate_cannot_update_census(self):
         suite = next(s for s in run_all.build_suites() if s.name == 'mutation:check')
