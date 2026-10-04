@@ -3,7 +3,7 @@ const RoomCollectionWorkspace = (() => {
   "use strict";
   const S = GeometrySourcePlane, R = GeometryRoomCollection;
   const pages = new Map();
-  let instance = null, activeBid = null, lease = null, ownedPreviewToken = null, currentDialog = null, integration = null;
+  let instance = null, activeBid = null, lease = null, ownedPreviewToken = null, currentDialog = null, retireDialog = null, integration = null, cleaningUI = false;
   const W = () => ReferenceWorkspace;
   const token = () => W().getProjectState().contextToken;
   const state = () => W().readFeatureAttachment("source-rooms", token()) || S.empty();
@@ -182,10 +182,12 @@ const RoomCollectionWorkspace = (() => {
     controller().beginEdit(collection.id, roomId); activeBid = room.boundaryRef.id; feSetTool("redraw"); cleanDraft(); renderFaceInspector();
   }
   async function commitDraft(pts) {
-    const intent = controller().intent; if (!intent || activeBid !== oc.edit?.bid) throw new Error("房間工作區已切換，請取消草稿。");
+    const operation = controller(), intent = operation.intent;
+    if (!intent || activeBid !== oc.edit?.bid) throw new Error("房間工作區已切換，請取消草稿。");
     const name = intent.room ? intent.room.name : prompt("新房間名稱", "房間 " + (state().rooms.length + 1));
     if (name === null) return false;
-    const preview = await controller().prepare(pts, name);
+    const preview = await operation.prepare(pts, name);
+    if (instance !== operation) return false;
     const dialog = document.createElement("dialog"); dialog.className = "reference-impact"; currentDialog = dialog;
     const title = document.createElement("h2"); title.textContent = intent.room ? "確認編輯「" + name + "」" : "確認新增「" + name + "」";
     const note = document.createElement("p"); note.textContent = intent.room ? "明確替換所選房間外環；既有孔與其他房間保持原狀。" : "建立新的獨立房間邊界；既有房間保持原狀。";
@@ -196,18 +198,40 @@ const RoomCollectionWorkspace = (() => {
     dialog.append(cancel, apply); document.body.append(dialog);
     const accepted = await new Promise(resolve => {
       let settled = false;
+      const closeOwnedDialog = () => {
+        dialog.close(); dialog.remove();
+        if (currentDialog === dialog) {currentDialog = null; retireDialog = null;}
+      };
+      retireDialog = () => {
+        if (settled) return;
+        settled = true; cancel.disabled = apply.disabled = true;
+        resolve(false); closeOwnedDialog();
+      };
       const finish = async value => {if (settled) return; settled = true; cancel.disabled = apply.disabled = true;
-        try {if (!value) await controller().cancel(); resolve(value);} catch (error) {toast(error.message); resolve(false);}
-        finally {dialog.close(); dialog.remove(); currentDialog = null;}};
+        try {if (!value) await operation.cancel(); resolve(value);} catch (error) {toast(error.message); resolve(false);}
+        finally {closeOwnedDialog();}};
       cancel.onclick = () => finish(false); apply.onclick = () => finish(true);
       dialog.addEventListener("cancel", event => {event.preventDefault(); finish(false);}); dialog.showModal(); cancel.focus();
     });
-    if (!accepted) {activeBid = null; cleanDraft(); renderFaceInspector(); return false;}
-    const room = await controller().confirm(); activeBid = null; cleanDraft();
-    await renderObjects(); await prepareSharedPages(); await enterFocus("face", room.boundaryId); fiShowTab("underlay"); feSetTool("select");
+    if (instance !== operation) return false;
+    if (!accepted) {activeBid = null; cleanDraft(); if (!lease) feSetTool("select"); renderFaceInspector(); return false;}
+    const room = await operation.confirm();
+    if (instance !== operation) return false;
+    activeBid = null; cleanDraft();
+    const settledGeneration = operation.generation, settledContext = token();
+    const current = () => instance === operation && operation.generation === settledGeneration && token() === settledContext;
+    await renderObjects(); if (!current()) return true;
+    await prepareSharedPages(); if (!current()) return true;
+    await enterFocus("face", room.boundaryId); if (!current()) return true;
+    fiShowTab("underlay"); feSetTool("select");
     setStatus("✓ 房間「" + name + "」已保存為獨立邊界 · 可復原"); return true;
   }
-  async function cancel() {if (currentDialog) {currentDialog.dispatchEvent(new Event("cancel", {cancelable: true})); return;} await controller().cancel(); activeBid = null; cleanDraft(); renderFaceInspector();}
+  async function cancel() {
+    if (currentDialog) {currentDialog.dispatchEvent(new Event("cancel", {cancelable: true})); return;}
+    const operation = controller(); await operation.cancel();
+    if (instance !== operation) return;
+    activeBid = null; cleanDraft(); feSetTool("select"); renderFaceInspector();
+  }
   function changeBasis(bid, changes, calibration = undefined) {
     const room = roomForBoundary(bid); if (!room) return false;
     const plane = S.planeForRoom(state(), room.id), alignment = {...plane.alignment};
@@ -215,8 +239,24 @@ const RoomCollectionWorkspace = (() => {
     controller().basis(plane.id, calibration === undefined ? plane.calibration : calibration, alignment);
     W().sync(); renderFaceInspector(); return true;
   }
-  function recoveredTransaction() {if (lease) {integration.endTransaction(lease); lease = null;} ownedPreviewToken = null; instance = null; activeBid = null;}
+  function recoveredTransaction() {
+    // A settled native receipt retires the whole room operation. Clear its
+    // editor state while the owner lease still blocks unrelated mutations;
+    // otherwise Finish could reinterpret a New-room outline as an old-room edit.
+    const settledLease = lease;
+    cleaningUI = true;
+    try {
+      retireDialog?.();
+      if (currentDialog) {currentDialog.close(); currentDialog.remove(); currentDialog = null;}
+      instance = null; activeBid = null; ownedPreviewToken = null;
+      fe.panHold = null; fe.newOutline = null;
+      cleanDraft(); feSetTool("select"); renderFaceInspector();
+    } finally {cleaningUI = false;}
+    if (settledLease) integration.endTransaction(settledLease);
+    lease = null;
+  }
   return {configure, assertTransaction, paneHTML, bindPane, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeBasis, recoveredTransaction,
+    get cleaningUI() {return cleaningUI;}, get dialogOpen() {return !!currentDialog?.open;},
     get hasWork() {return !!instance?.intent || !!lease;}, get busy() {return !!instance?.busy || !!lease;}, get transactionLease() {return lease;}, get controller() {return controller();}};
 })();
 window.RoomCollectionWorkspace = RoomCollectionWorkspace;

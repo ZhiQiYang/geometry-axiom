@@ -94,11 +94,14 @@ test('confirmed room pins require the full native fingerprint, and references co
 
 const adapterPath = process.env.GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER;
 const owner = adapterPath ? require(path.resolve(adapterPath)) : null;
-const ownerTest = (name, fn) => test(name, {
-  skip:owner ? false : 'Await the integration owner exact generic attachment contract and GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER.',
+if (adapterPath) for (const method of ['register','manifest','attachment','pack','unpack','corrupt','validateNativeRefs','verifyHistory','verifyWorkspaceGuards']) {
+  assert.equal(typeof owner?.[method],'function','Configured owner test adapter is missing '+method+'; this is a setup failure, not a skip.');
+}
+const ownerTest = (name, dependency, fn) => test(name, {
+  skip:owner ? false : dependency+' Await the real owner implementation and GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER; native/ZIP runtime is available.',
 }, fn);
 // Shim-only operations:
-// register({schema,capability,validate,validateNativeRefs}) maps owner registry.
+// register({kind,schema,capability,validate,references,validateNativeRefs,validateNativePins}) maps owner registry.
 // manifest(base,payload) / attachment(manifest) map the exact owner envelope.
 // pack(scene,manifest,sources,zip), unpack(bytes,zip), validateNativeRefs(...)
 // delegate to real owner store code, never implement a parallel store.
@@ -109,11 +112,11 @@ const ownerTest = (name, fn) => test(name, {
 
 async function registeredFixture() {
   const f = await fixture();
-  owner.register({schema:S.SCHEMA,capability:S.CAPABILITY,validate:S.validate,references:S.references,validateNativeRefs:S.validateNativeRefs,validateNativePins:S.validateNativePins});
+  owner.register({kind:'source-rooms',schema:S.SCHEMA,capability:S.CAPABILITY,validate:S.validate,references:S.references,validateNativeRefs:S.validateNativeRefs,validateNativePins:S.validateNativePins});
   return {...f,manifest:owner.manifest(clone(f.base),clone(f.payload))};
 }
 
-ownerTest('registered attachment roundtrips true ZIP and original PDF exactly once', async () => {
+ownerTest('registered attachment roundtrips true ZIP and original PDF exactly once', 'Missing formal source-rooms registry, envelope and pack/unpack dispatch.', async () => {
   const f = await registeredFixture();
   const bytes = await owner.pack(f.scene,f.manifest,f.sources,zip);
   const loaded = await owner.unpack(bytes,zip);
@@ -125,7 +128,7 @@ ownerTest('registered attachment roundtrips true ZIP and original PDF exactly on
   assert.deepEqual(owner.attachment(reopened.manifest),f.payload);
 });
 
-ownerTest('owner registry rejects unknown envelope version, kind, schema and capability without dropping data', async () => {
+ownerTest('owner registry rejects unknown envelope version, kind, schema and capability without dropping data', 'Missing formal envelope/whitelist/schema/frontend-capability rejection gates.', async () => {
   const f = await registeredFixture();
   const bytes = await owner.pack(f.scene,f.manifest,f.sources,zip);
   for (const invalid of ['unknown-envelope-version','unknown-kind','unknown-schema','unknown-capability','missing-kind-capability','duplicate-kind']) {
@@ -137,17 +140,17 @@ ownerTest('owner registry rejects unknown envelope version, kind, schema and cap
   }
 });
 
-ownerTest('generic owner source closure and native final-object hooks validate room payload', async () => {
+ownerTest('generic owner source closure and native final-object hooks validate room payload', 'Missing generic owner dispatch of source closure and native final-object validators.', async () => {
   const f = await registeredFixture();
   await assert.rejects(() => owner.pack(f.scene,f.manifest,new Map(),zip));
   assert.throws(() => owner.validateNativeRefs(f.manifest,{boundaries:[11],placements:[]}));
   owner.validateNativeRefs(f.manifest,{boundaries:[11,22],placements:[]});
 });
 
-ownerTest('owner attachment snapshots survive rename unlink native delete same-ID undo redo and unknown history', async () => {
+ownerTest('owner attachment snapshots survive rename unlink native delete same-ID undo redo and unknown history', 'Missing formal feature-attachment ContextHistory snapshots and native lifecycle hooks.', async () => {
   await owner.verifyHistory(await registeredFixture());
 });
 
-ownerTest('owner workspace guards exclude late-context writes and pair room metadata with native transaction', async () => {
+ownerTest('owner workspace guards exclude late-context writes and pair room metadata with native transaction', 'Missing formal read/setFeatureAttachment context guard and native metadata transaction integration.', async () => {
   await owner.verifyWorkspaceGuards(await registeredFixture());
 });

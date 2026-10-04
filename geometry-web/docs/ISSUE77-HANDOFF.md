@@ -52,15 +52,41 @@ basis 變更只改共享 plane、增加 revision，舊房變 needs-review；不�
 
 patch 載入三個模組、路由逐點外環至 new/edit、保存阻擋草稿與未知交易、共用比例／對位、房間列表、明選改名／複核／unlink。進共享房間時收起原本自動辨識與舊來源列表，仍保留原校準／對位 controls。草稿提示依 new/edit 改寫，取消包括零點草稿，避免仍顯示「取代目前面」的舊引導。全房間 unlink 或 native delete 後的來源概覽／重新關聯入口需 owner 既有 project/source 概覽接線；不要為此建立另一套原生樹。
 
+共享底圖不顯示舊版「移除目前底圖」；`feUnderlayRemove` 與公共 `ReferenceWorkspace.remove` 均拒共享房間，使用房間列表 unlink。全域匯入 modal 排除共享房間作舊參考頁 target，applySource/addPage/selectPage 提交前也守門；其他普通面仍可匯入／顯示新來源。第三步直接開人工 new-room draft，沒有走 RoomOutline 自動辨識。Back／Esc／離開描繪工具完整取消房間 intent；未知 native 結果則保持 lease 和可恢復入口，禁止離開。receipt settlement 先清整份 room UI draft/候選、切回 select、重繪，再解鎖，避免 New B points 被下一次 Finish 當成 A 的 ordinary replacement。
+
 ## 驗證與未完成項
 
-`node --test tests/test_room_collection.js tests/test_issue77_attachment.js tests/test_issue77_workspace.js`：40 pass、0 fail、5 **明示 skip**。31 native/controller cases 真編譯執行 bridge；包含 new/cancel/replace、holes/fixity/kind、basis review、新 basis、rename/unlink/native delete、undo/redo、fresh native context、未知／錯 payload、各 late-context 時點與 owned preview。5 workspace tests 直接 VM 載現行 adapter，涵蓋 known fail、metadata rollback、lost rollback lease、configure 和禁止 private Map/history 存取；改回舊 cleanup 的 mutation 被抓到。
+`node --test tests/test_room_collection.js tests/test_issue77_attachment.js tests/test_issue77_workspace.js` 最新 review 修正：41 pass、0 fail、5 **明示 skip**（46 tests），log `/tmp/issue77-review-final-test.log`。原 ce72adb 的 40 pass/5 skip 保留不覆寫。31 native/controller cases 真編譯執行 bridge；包含 new/cancel/replace、holes/fixity/kind、basis review、新 basis、rename/unlink/native delete、undo/redo、fresh native context、未知／錯 payload、各 late-context 時點與 owned preview。6 workspace tests 直接 VM 載現行 adapter，涵蓋 known fail、metadata rollback、lost rollback lease、UI 退休先於解鎖的順序、configure 和禁止 private Map/history 存取；改回舊 cleanup 的 mutation 被抓到。
 
 5 skip 等 `GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER` 映射 owner 的正式 registry/store/history：真 ZIP、未知 envelope/kind/schema/capability、原圖／native閉包、完整歷史、context/native commit 原子守門。不能將這五項當已通過。`tests/test_issue77_browser.js` 需明設隔離 URL 與 TEMP feedback；optional browser adapter 只映射測試接線，須報 provenance。實體 iOS／使用者本地未測、未啟動。
+
+### 五項 skip 逐項查核（不是 native setup 缺失）
+
+原始 exact-head `ce72adb` 結果留在 `/tmp/issue77-final-test.log`：45 tests＝40 pass、0 fail、5 skip，不覆寫。再次唯讀核對遠端 main `b3c2107`、owner docs branch `f04c758e`、PR102 `ce72adb`，三者的正式 project-store/reference-workspace 均無 featureAttachments registry、source-rooms registration 或 read/setFeatureAttachment；所有遠端 heads 未見正式附件產品實作分支。Node v24.19.0、WebCrypto、vendor fflate zip/unzip 均可用；31 native cases 的 before hook 真 GCC 編譯並執行 bridge，沒有 native skip。四項純 payload/refs/pins tests 無條件執行。
+
+以下全部屬完整 #77 **必須完成**的跨 owner 整合驗收，沒有從批准範圍排除。不能補一個自行序列化的假 owner adapter，或使用退役 dedicated prototype，把它們變成正式 pass。
+
+| 完整測試名稱 | 現在未跑的實際依賴 | 何時可跑 |
+|---|---|---|
+| `registered attachment roundtrips true ZIP and original PDF exactly once` | 正式 source-rooms registry、owner envelope 格式及 pack/unpack dispatch 未實作；ZIP 函式庫本身可用。 | owner 註冊本 payload validator/capability/references 並接正式 pack/unpack 後，用 test-only shim 映射 `register/manifest/attachment/pack/unpack`。 |
+| `owner registry rejects unknown envelope version, kind, schema and capability without dropping data` | 正式 envelope／有限 kind whitelist／payload schema／frontend capability 守門未實作，不能只測 payload validator 冒充整份包守門。 | 上項可 roundtrip 且 owner 可拒 unknown/missing/duplicate 六種 manifest 反例後，以 `corrupt` 只改真格式欄位來驗。 |
+| `generic owner source closure and native final-object hooks validate room payload` | owner 未把 SourceRooms asset refs 和 native final-object validator 接 pack/import；獨立模組相同正反例已跑。 | registry 的 references 用於來源閉包、正式 `validateProjectObjectRefs` 等 dispatch 可接 source-rooms validator 後，映射 `validateNativeRefs`；candidate pins 原子守門另外仍要前述 native 摘要。 |
+| `owner attachment snapshots survive rename unlink native delete same-ID undo redo and unknown history` | 真 ContextHistory 尚無此附件 snapshot/restore/native-delete/unknown-history hooks；本模組控制器的真 native + 模擬 metadata timeline 已跑，不能代替實際 history。 | owner 接 immutable attachment snapshots、local/native 單步歷史與 lifecycle hooks 後，`verifyHistory` 必須執行真 ContextHistory、檢查完整附件復原。 |
+| `owner workspace guards exclude late-context writes and pair room metadata with native transaction` | 正式 read/setFeatureAttachment context token/busy/lease 與同 native history 寫入未實作；VM 薄 adapter 的 unknown rollback 回歸已跑。 | owner 公布正式 read/set、configure callbacks 和 native 同交易 metadata 語義後，`verifyWorkspaceGuards` 執行真 ReferenceWorkspace，而非替身 store。 |
+
+正式 owner code 到位後，worker 可在隔離 checkout 合入 owner exact commit，再提供 **只轉呼叫真 owner code** 的 test-only adapter，執行 `GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER=/absolute/path/adapter.cjs node --test tests/test_issue77_attachment.js`。環境變數現在缺省只是這五 gate 的可見開關，補變數不能補不存在的產品 API。已配置 adapter 若不存在／缺方法／方法失敗，測試直接 fail，不會 skip；註冊資料現在也明寫 `kind:"source-rooms"`，減少未来 mapping setup 歧義。
 
 最新 TEMP Chromium 測試：37 assertions pass，1440×1000／390×844，實際 pointer 描房、零點取消、pending save 拒絕、new 保留 A、明選 edit、rename/undo、basis review、明選逐房複核、新 basis 房、真 ZIP 別的 browser context 重開、unlink/undo，console/pageerror 為空。整份 prototype manifest 無所選來源舊 basis shadow、PDF asset 只有一份。當時 `/runtime` fresh=true，root `/tmp/issue77-integrated`，版本 `30b7edfcdf7d3eecfbd4caebc7f72c960e90c0ec513dfd6ddfa4c740c9f2f269`；test-only shim `/tmp/issue77-browser-owner-adapter.js` 映射已退役 dedicated prototype store 加 configure callbacks。這些結果只證明目前模組與 UI 接線可運作，不證明 PR100 generic store 支援或有 records 的舊頁遷移。截圖 `/tmp/issue77-browser-evidence/desktop-two-rooms.png`、`mobile-room-list.png`；含自製夾具，無私人圖資。
 
 程式與文案 diff whitespace 檢查通過；PDF xref 的標準 20-byte records 必含行末空白，unified patch 的空 context 行也必含一個前綴空白，這兩個 artifact 不以移除空白修飾。PDF deterministic byte check 與 main patch apply-check 另驗。
+
+新增 review 回歸：`tests/test_issue77_remove_browser.js` 真 UI 21 assertions pass，adopt 時保留兩張不相關自製 legacy PDF 與兩份 records，實際 stale 舊移除按鈕及 public remove 都不刪資料；真 ZIP 保留 records／無所選 source 的 basis shadow；全域 file chooser/import modal 排除 shared target，強塞舊 target 拒寫，普通面仍正常匯入。禁用 shared-room guard 的記憶體 mutant 在 stale-button 後精確因 legacy-0/record 消失而 fail，log `/tmp/issue77-remove-mutant.log`；不是將錯誤輸出改成 expected。
+
+`tests/test_issue77_exit_browser.js` 真 UI 61 assertions pass：Back／Esc／V 各零點與四點，pending 跨面拒絕，退出 intent/lease/points 全退、真 ZIP 可保存、再開其他面沒有沿用草稿。TEMP viewport 1440×1000，截圖 `/tmp/issue77-exit-browser-evidence/`。這些測試仍使用明示 prototype adapter，不能代替前述正式 owner 五 gate 或所選頁已有 records 的遷移驗收。
+
+`tests/test_issue77_recovery_browser.js` 真 UI 71 assertions pass：history-begin／confirm／history-end／cancel-preview **確實 native 執行**後丟失 reply，第一次自動 receipt 也不可用，再按真 connectionRetry 從既有同 requestId receipt 核實，沒有重送 mutation。unfinished group rollback；successful history-end 保留独立 B。所有恢復先清 points/preview/drag/typed/panHold/newOutline、關自己 dialog、切 select、重繪，再釋放 lease。恢復後真 Finish／Enter／feDraftTryClose 不修改 A 或 B，fresh new/cancel 仍可用且 known cancel 回 select。桌面 1440×1000／390×844，無 page/console errors；截圖 `/tmp/issue77-recovery-evidence/`。舊 async continuation 使用捕獲的 operation/dialog，instance/generation/context token 變更後不清新草稿或搶另一案焦點。
+
+最後將固定新版 module 複製至隔離 `/tmp/issue77-integrated`，port8819 `/runtime` fresh=true，版本 `402e4dd04820e4ffa614be20f281997ffe0f87a666d006b349ba27b83e2c8dab`；原流程／多legacy刪除／退出另依序復跑，結果存 `/tmp/issue77-review-browser.log`、`issue77-review-remove.log`、`issue77-review-exit.log`。這仍是 TEMP owner adapter 的接線證據，不把任何正式保存 gate 的 skip 算 pass。
 
 自製 PDF `tests/fixtures/issue77-two-rooms.pdf`，生成器 `tests/build_issue77_fixture.py`，600×400 viewport，A/B 分離矩形；200pt 校準為4000mm。SHA256 `7e63ee59ffafe7baed86847f849131f35baab4c9802679686351a8549cfd6e44`。沒有私人原圖。保存證據不得附帶使用者資產。
 

@@ -23,7 +23,9 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
   const initial = {...S.empty(), planes:[plane], collections:[{id:'shared-rooms',planeId:plane.id,roomIds:existingRoom ? ['room-a'] : []}],
     rooms:existingRoom ? [{id:'room-a',name:'Room A',boundaryRef:{kind:'boundary',id:1,associationPin:native.geometryFingerprint},acceptedBasisRevision:1,reviewState:'confirmed'}] : []};
   const owner = {attachment:clone(initial), revision:1, lease:null, ended:[], group:false, confirmed:existingRoom,
-    requests:[], sources:[], incarnations:[], writes:0, labels:[]};
+    requests:[], sources:[], incarnations:[], writes:0, labels:[], expectRecovery:false};
+  const ui={draft:{pts:[]},draftPreview:null,panHold:null,newOutline:null,tool:'select',events:[]};
+  let roomWorkspace;
   const connection = {phase:'ready'};
   const workspace = {
     getProjectState:() => ({contextToken:'fixture-context',revision:owner.revision}),
@@ -48,7 +50,18 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     readIncarnation:(id, token) => {owner.incarnations.push([id,token]);return 'native-incarnation-1';},
     beginTransaction:token => {assert.equal(owner.lease,null);assert.equal(token,'fixture-context');return owner.lease={contextToken:token};},
     assertTransaction:lease => {assert.ok(lease);assert.equal(lease,owner.lease);},
-    endTransaction:lease => {assert.equal(lease,owner.lease);owner.ended.push(lease);owner.lease=null;},
+    endTransaction:lease => {
+      assert.equal(lease,owner.lease);
+      if(owner.expectRecovery) {
+        assert.equal(roomWorkspace.transactionLease,lease,'UI cleanup must finish before the owner releases the room lease');
+        assert.equal(roomWorkspace.hasWork,true,'the settled lease still guards mutations while cleanup completes');
+        assert.equal(roomWorkspace.cleaningUI,false,'cleanup protection closes before publishing lease completion');
+        assert.equal(ui.draft.pts.length,0);assert.equal(ui.draftPreview,null);
+        assert.equal(ui.panHold,null);assert.equal(ui.newOutline,null);assert.equal(ui.tool,'select');
+        ui.events.push('owner-end');
+      }
+      owner.ended.push(lease);owner.lease=null;
+    },
     groupOpen:lease => {assert.equal(lease,owner.lease);return owner.group;},
     labelTransaction:(lease,label) => {assert.equal(lease,owner.lease);owner.labels.push(label);},
     adoptLegacySource:() => {throw new Error('source adoption is outside this failure fixture');},
@@ -72,12 +85,29 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     if (command==='line history-end') {owner.group=false;return {ok:true};}
     throw new Error('Unexpected API request: '+command);
   };
+  const recordUI=stage => {
+    if(owner.expectRecovery) {
+      assert.ok(owner.lease,'room ownership must remain held throughout editor cleanup');
+      assert.equal(roomWorkspace.transactionLease,owner.lease);
+      assert.equal(roomWorkspace.cleaningUI,true,'cleanup callbacks run inside the guarded internal cleanup phase');
+    }
+    ui.events.push(stage);
+  };
   const context = {GeometrySourcePlane:S,GeometryRoomCollection:R,ReferenceWorkspace:workspace,apiRequest,connection,
-    crypto:webcrypto,structuredClone,window:{}};
+    crypto:webcrypto,structuredClone,window:{},fe:ui,
+    PolyDraft:{createState:()=>({pts:[]})},
+    feSyncDraftMirror:()=>recordUI('draft-mirror'),feLenShow:()=>recordUI('length-ui'),
+    drawFaceEditor:()=>recordUI('draw'),renderFaceInspector:()=>recordUI('inspector'),
+    feSetTool:tool => {
+      // This models only the shared UI patch's pending-room guard. It does not
+      // implement recovery or Controller behavior; the loaded workspace does.
+      if(roomWorkspace.hasWork && !roomWorkspace.cleaningUI && tool!=='redraw') return false;
+      recordUI('tool:'+tool);ui.tool=tool;return true;
+    }};
   vm.runInNewContext(workspaceSource,context,{filename:'room-collection-workspace.js'});
-  const roomWorkspace=context.window.RoomCollectionWorkspace;
+  roomWorkspace=context.window.RoomCollectionWorkspace;
   roomWorkspace.configure(integration);
-  return {owner,connection,integration,roomWorkspace,initial};
+  return {owner,connection,integration,roomWorkspace,initial,ui,context};
 }
 
 async function preview(f) {
@@ -112,11 +142,32 @@ test('a lost rollback reply retains the owner lease until receipt recovery settl
   assert.equal(f.owner.group,true);assert.equal(f.owner.writes,0);assert.deepEqual(f.owner.attachment,f.initial);
   assert.equal(f.roomWorkspace.transactionLease,lease,'unknown rollback cannot release mutation ownership');
   assert.equal(f.owner.ended.length,0);assert.equal(f.roomWorkspace.busy,true);assert.equal(controller.preview.token,123);
+  f.ui.draft={pts:clone(outline)};f.ui.draftPreview={token:123};f.ui.panHold={pts:clone(outline)};f.ui.newOutline=clone(outline);f.ui.tool='redraw';
+  assert.equal(f.context.feSetTool('select'),false,'ordinary tool changes cannot bypass the unresolved room lease');
+  assert.equal(f.ui.tool,'redraw');assert.equal(f.ui.draft.pts.length,4);
   // The external receipt recovery owns settlement; only then may the workspace release its lease.
   f.owner.group=false;f.owner.confirmed=false;f.connection.phase='ready';
+  f.owner.expectRecovery=true;
   f.roomWorkspace.recoveredTransaction();assert.equal(f.roomWorkspace.transactionLease,null);assert.equal(f.roomWorkspace.hasWork,false);
   assert.deepEqual(f.owner.ended,[lease]);
+  assert.deepEqual(f.ui.events,['draft-mirror','length-ui','draw','tool:select','inspector','owner-end']);
+  assert.notEqual(f.roomWorkspace.controller,controller,'the settled operation retires its previous controller');
+  assert.equal(f.roomWorkspace.controller.intent,null);assert.equal(f.roomWorkspace.controller.preview,null);
   f.roomWorkspace.controller.beginNew('shared-rooms');await f.roomWorkspace.controller.cancel();
+});
+
+test('receipt recovery clears draft candidate and redraw while lease ownership still blocks other operations', async () => {
+  const f=fixture(), controller=await preview(f), lease=f.roomWorkspace.transactionLease;
+  f.ui.draft={pts:clone(outline)};f.ui.draftPreview={token:123};f.ui.panHold={pts:clone(outline)};f.ui.newOutline=clone(outline);f.ui.tool='redraw';
+  f.owner.expectRecovery=true;
+  const requests=f.owner.requests.length;
+  f.roomWorkspace.recoveredTransaction();
+  assert.deepEqual(f.ui.events,['draft-mirror','length-ui','draw','tool:select','inspector','owner-end']);
+  assert.equal(f.owner.requests.length,requests,'settled receipt cleanup does not cancel a possibly newer native candidate');
+  assert.deepEqual(f.owner.ended,[lease]);assert.equal(f.roomWorkspace.hasWork,false);assert.equal(f.roomWorkspace.busy,false);
+  assert.equal(f.roomWorkspace.cleaningUI,false);assert.equal(f.roomWorkspace.dialogOpen,false);
+  assert.notEqual(f.roomWorkspace.controller,controller);assert.equal(f.roomWorkspace.controller.intent,null);
+  assert.deepEqual(f.owner.attachment,f.initial);assert.equal(f.owner.writes,0);
 });
 
 test('configure rejects each missing owner callback before replacing the integration adapter', () => {
