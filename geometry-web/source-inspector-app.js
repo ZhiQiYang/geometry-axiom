@@ -25,21 +25,27 @@
     throw Error('此來源保留具型別身分；目前尚無欄位定位入口。');
   }
   const watched=new Map();let modelHost=null,modelSequence=0;
-  function install(host,selection,record=null){
+  function install(host,selection,record=null,snapshotOnly=false){
     if(!host||!selection||host.hidden)return;
     const tag=JSON.stringify([context().id,selection,record,stamp()]);const current=watched.get(host);
     if(current?.tag===tag&&current.mount.detail.isConnected)return;
     current?.mount.cancel();
-    const getRecord=()=>{const found=ReferenceWorkspace.getSpaceModels().filter(m=>m.id===record.id);return found.length===1?found[0]:null;};
-    const mount=S.mount(host,{selection,record,context,stamp:record?()=>JSON.stringify([stamp(),modelSequence]):stamp,read,readSnapshot,navigate,
+    const getRecord=()=>{if(snapshotOnly)return SpaceModelWorkspace.snapshotRecord();const found=ReferenceWorkspace.getSpaceModels().filter(m=>m.id===record.id);return found.length===1?found[0]:null;};
+    const mount=S.mount(host,{selection,record,context,stamp:record&&!snapshotOnly?()=>JSON.stringify([stamp(),modelSequence]):stamp,read,readSnapshot,navigate,
       ...(record?{getRecord,project:window.GeometryProject,timberSchedule:window.TimberSchedule,exportCSV:exportSnapshotCSV,
         activate(){if(modelHost!==host){modelHost=host;++modelSequence;}},
-        isActive:()=>modelHost===host&&host.isConnected!==false&&!host.closest('[hidden]')&&host.closest('dialog')?.open!==false}: {})});watched.set(host,{tag,mount});
+        isActive:()=>modelHost===host&&host.isConnected!==false&&!host.closest('[hidden]')&&host.closest('dialog')?.open!==false}: {}),
+      ...(snapshotOnly?{snapshotOnly,activate(){},isActive:()=>!!SpaceModelWorkspace.snapshotRecord(),
+        onSchedule:(schedule,proof)=>SpaceModelWorkspace.authorizeSnapshotSchedule(record,schedule,proof),
+        onSelect:id=>SpaceModelWorkspace.selectSnapshotTimber(id)}:{})});watched.set(host,{tag,mount});
   }
   function sync(){
     const pane=document.getElementById('inspectorContent');if(oc.sel&&!oc.parameterCreating&&oc.selection.length===1){const o=ocFind(oc.sel.kind,oc.sel.id);if(o)install(pane,S.key(oc.sel.kind,o.id,oc.sel.kind==='assembly-rule'?o.version:0));}
     const face=document.getElementById('faceInspectorContent');if(oc.edit&&fe.timberSelection.size<=1){const selected=fe.sel?.kind==='timber'?S.key('timber',fe.sel.id):fe.fiTab==='grid'&&fe.gridEditingId!=null?S.key('grid',fe.gridEditingId):S.key('boundary',oc.edit.bid);install(face,selected);}
     const list=document.getElementById('smLibraryList');for(const button of list?.querySelectorAll('[data-sm-open-model]')||[]){const model=ReferenceWorkspace.getSpaceModels().find(m=>m.id===button.dataset.smOpenModel),host=button.closest('.sm-model-card');if(model)install(host,S.modelRoots(model)[0]||'untraceable',model);}
+    const host=document.getElementById('smTimberReviewList'),model=window.SpaceModelWorkspace?.snapshotRecord();
+    if(model?.input.mode==='plan'&&model.input.timbers?.length)install(host,S.modelRoots(model)[0]||'untraceable',model,true);
+    else if(watched.has(host)){watched.get(host).mount.cancel();watched.delete(host);host.querySelector('[data-source-inspector]')?.remove();}
   }
   let scheduled=false;function queue(){if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;sync();});}
   for(const id of ['inspectorContent','faceInspectorContent']){const host=document.getElementById(id);if(host)new MutationObserver(records=>{if(records.some(r=>!r.target.closest?.('[data-source-inspector]')))queue();}).observe(host,{childList:true,subtree:true});}
@@ -50,5 +56,10 @@
     library.addEventListener('click',event=>{if(event.target.closest('[data-sm-open-model],[data-sm-edit-height],[data-sm-remove-model],[data-sm-library-trial]')){modelHost=null;++modelSequence;}});
     new MutationObserver(records=>{if(records.some(r=>!r.target.closest?.('[data-source-inspector]')))queue();}).observe(library,{childList:true,subtree:true});
   }
+  for(const event of ['space-model-view-changed','space-models-changed'])window.addEventListener(event,queue);
+  window.addEventListener('space-model-timber-selected',event=>{
+    const record=SpaceModelWorkspace.snapshotRecord(),mount=watched.get(document.getElementById('smTimberReviewList'))?.mount;
+    if(record?.id===event.detail.modelId&&JSON.stringify(record)===event.detail.signature&&!mount?.selectSnapshot(event.detail.id))SpaceModelWorkspace.authorizeSnapshotSchedule(record,null);
+  });
   window.SourceInspectorApp={sync,navigate};queue();
 })();

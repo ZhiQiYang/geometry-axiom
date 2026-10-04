@@ -8,6 +8,28 @@ window.SpaceModelWorkspace = (() => {
   const EXAMPLE_PROJECTION = {kind:"space-boundary-plan",view:"top",region:"interior",wallSide:"outside"};
   const state = { source: null, result: null, input: null, revision: 0, previewRevision: -1, sequence: 0, phase: "empty", createdId: null, examples: null, viewer: null, controller: null, readonly: false, editing: null, committingId: null, recordSignature: null, projectionPending: false, projectionSequence: 0 };
   let draft = null, viewerLoad = null, viewerOpenSequence = 0;
+  let savedContext=null, snapshotNavigation=null;
+  function clearSnapshotNavigation(){snapshotNavigation=null;state.viewer?.setSelectableRoots([]);state.viewer?.selectRoot(null);}
+  function snapshotRecord(){
+    if(!dialog.open||$('smMain').hidden||!state.readonly||state.editing||savedContext!==ReferenceWorkspace.context())return null;
+    const records=ReferenceWorkspace.getSpaceModels().filter(m=>m.id===state.createdId);
+    return records.length===1&&JSON.stringify(records[0])===state.recordSignature?records[0]:null;
+  }
+  function authorizeSnapshotSchedule(record,schedule,{isCurrent=()=>false}={}){
+    if(!schedule){clearSnapshotNavigation();return false;}
+    const current=snapshotRecord();
+    if(!current||JSON.stringify(current)!==JSON.stringify(record)||!isCurrent()||schedule.modelId!==current.id)return false;
+    snapshotNavigation={ids:new Set(schedule.ids),isCurrent};
+    state.viewer.setSelectableRoots(current.input.timbers);
+    return true;
+  }
+  function selectSnapshotTimber(id,focus=true){
+    if(!snapshotRecord()||!snapshotNavigation?.isCurrent()||id!==null&&!snapshotNavigation.ids.has(id)){clearSnapshotNavigation();return false;}
+    if(id!==null&&focus){$('smShowTimbers').checked=true;$('smShowWalls').checked=false;drawResult();}
+    if(!state.viewer.selectRoot(id===null?null:{kind:'timber',id},focus))return false;
+    window.dispatchEvent(new CustomEvent('space-model-timber-selected',{detail:{modelId:state.createdId,id,signature:state.recordSignature}}));
+    if(focus)setTab('preview');return true;
+  }
   const dialog = document.createElement("dialog");
   dialog.id = "smWorkspace"; dialog.className = "sm-workspace";
   dialog.setAttribute("aria-labelledby", "smTitle");
@@ -31,7 +53,7 @@ window.SpaceModelWorkspace = (() => {
           <section class="sm-section"><div class="sm-section-heading"><span>03</span><h2>材料牆 <small>選用</small></h2></div><label class="sm-check"><input id="smWallsEnabled" type="checkbox" checked><span>同時建立有厚度的牆</span></label><label class="sm-field">牆厚 <span>mm</span><input id="smThickness" type="number" value="100" min="1" step="1" inputmode="numeric"></label><p class="sm-help">朝空間外側加厚，採方角接合，保留輪廓內的淨尺寸。100 mm 是可修改的工作預設。</p></section>
         </div><section id="smFaceSettings" class="sm-section" hidden><div class="sm-section-heading"><span>02</span><h2>明確選取空間的各個面</h2></div><p class="sm-help">只使用下方勾選的已有放置面。方向是相對該面法向的正負；封閉空間的方向須朝外。</p><div id="smFaceUses"></div></section>
         <details class="sm-obstacles"><summary>納入淨空計算的柱樑 <span id="smObstacleCount">0</span></summary><p class="sm-help">只扣除明確選取且幾何完整的障礙物，不自動加入附近物件。</p><div id="smObstacles"></div></details></fieldset>
-        <section id="smPreviewDetails" class="sm-section" hidden><div class="sm-section-heading"><span>04</span><h2>核對預覽結果</h2></div><p id="smPreviewDescription" class="sm-help"></p><ul id="smGeneratedFaces" class="sm-face-summary"></ul><div id="smTimberReview" class="sm-timber-review"></div><ul id="smTimberReviewList" class="sm-timber-list" hidden></ul><div id="smMissing" class="sm-missing" hidden></div><label class="sm-check sm-confirm"><input id="smConfirmFaces" type="checkbox"><span>我已核對以上各面、朝向與用途</span></label><p class="sm-help">建立時保存這次的明確定義。牆高可事後修改；來源面的修改不會自動套入，若要採用新輪廓請重新建立。</p></section>
+        <section id="smPreviewDetails" class="sm-section" hidden><div class="sm-section-heading"><span>04</span><h2>核對預覽結果</h2></div><p id="smPreviewDescription" class="sm-help"></p><ul id="smGeneratedFaces" class="sm-face-summary"></ul><div id="smTimberReview" class="sm-timber-review"></div><div id="smTimberReviewList" class="sm-timber-list" hidden></div><div id="smMissing" class="sm-missing" hidden></div><label class="sm-check sm-confirm"><input id="smConfirmFaces" type="checkbox"><span>我已核對以上各面、朝向與用途</span></label><p class="sm-help">建立時保存這次的明確定義。牆高可事後修改；來源面的修改不會自動套入，若要採用新輪廓請重新建立。</p></section>
       </div><footer class="sm-setup-footer"><div id="smStatus" class="sm-status" role="status" aria-live="polite">選一個範例即可開始，無須先畫圖。</div><button id="smReviewJump" class="sm-review-jump" type="button" hidden>查看面清單並確認 ↓</button><div class="sm-footer-actions"><button id="smPreview" class="sm-button" type="button" disabled>更新預覽</button><button id="smCreate" class="sm-button sm-primary" type="button" disabled>建立空間</button></div><div id="smCreatedActions" hidden><button id="smEditHeightButton" class="sm-button sm-edit-height-button" type="button" hidden>修改牆高</button><div class="sm-export"><select id="smExportKind" aria-label="要匯出的模型"><option value="space">空間邊界</option><option value="volume">空間實體</option><option value="clearance">扣除後淨空</option><option value="walls">材料牆</option><option value="timbers">角材結構</option></select><button id="smExport" class="sm-button" type="button">匯出 .model.json</button></div><p>保存後可由「檔案 → 開啟 .gcanvas 專案」還原全部模型。</p></div></footer></aside>
     </div>
     <section id="smLibraryPanel" class="sm-library-panel" hidden><header><div><p class="sm-eyebrow">專案空間</p><h2>已建立空間</h2><p>模型保存在目前專案中；保存 .gcanvas 後可再次開啟。</p></div><button id="smBackToBuild" class="sm-button" type="button">返回建模</button></header><div id="smLibraryList"></div></section>`;
@@ -135,7 +157,7 @@ window.SpaceModelWorkspace = (() => {
     state.controller?.abort();state.sequence++;state.phase=state.source?"ready":"empty";state.previewRevision=-1;$("smConfirmFaces").checked=false;
     $("smResultBadge").textContent="建模操作已取消";updateActions();
   }
-  function close() { viewerOpenSequence++;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(dialog.open)dialog.close();WorkspaceShell.detach(dialog); }
+  function close() { viewerOpenSequence++;clearSnapshotNavigation();rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(dialog.open)dialog.close();WorkspaceShell.detach(dialog); }
   function setTab(tab) { $("smMain").dataset.tab = tab; for (const [id, key] of [["smTabPreview", "preview"], ["smTabSetup", "setup"]]) $(id).setAttribute("aria-selected", String(tab === key)); }
   function viewChanged(viewState) {
     for(const button of dialog.querySelectorAll("[data-sm-view]")){const active=button.dataset.smView===viewState.view;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active));}
@@ -176,7 +198,7 @@ window.SpaceModelWorkspace = (() => {
       return false;
     }
     state.viewerLoading = false;
-    try { if (!state.viewer) state.viewer = window.GeometryModelViewer.create($("smCanvas"), { emptyText: "", background: "#edf2f5", onChange:viewChanged }); }
+    try { if (!state.viewer) state.viewer = window.GeometryModelViewer.create($("smCanvas"), { emptyText: "", background: "#edf2f5", onChange:viewChanged, onPick:ref=>selectSnapshotTimber(ref?.id??null,false) }); }
     catch (error) { message(`3D 檢視器無法啟動：${error.message}`, "error"); updateActions(); return false; }
     refresh();
     return true;
@@ -210,7 +232,7 @@ window.SpaceModelWorkspace = (() => {
     if(holes&&$('smHoles').value==='none')warnings.push(`有 ${holes} 個孔洞，請先指定下方孔洞用途，才可預覽。`);
     $('smBoundaryWarning').hidden=!warnings.length;$('smBoundaryWarning').textContent=warnings.join(' ');
   }
-  function buildView() { $("smLibraryPanel").hidden = true; $("smMain").hidden = false; dialog.classList.remove("sm-in-library"); }
+  function buildView() { $("smLibraryPanel").hidden = true; $("smMain").hidden = false; dialog.classList.remove("sm-in-library");window.dispatchEvent(new Event('space-model-view-changed')); }
   function updateActions() {
     const busy = state.viewerLoading || !state.viewer || state.projectionPending || state.phase === "loading" || state.phase === "previewing" || state.phase === "creating";
     WorkspaceShell.refresh(dialog);
@@ -249,6 +271,7 @@ window.SpaceModelWorkspace = (() => {
     return data;
   }
   function startSource() {
+    clearSnapshotNavigation();savedContext=null;
     rememberDraft();cancelProjectionConfirmation();
     state.controller?.abort(); state.controller = new AbortController(); state.sequence++; state.phase = "loading";
     state.result = null; state.input = null; state.source = null; state.createdId = null; state.readonly = false; state.editing = null; state.recordSignature = null; state.revision++; state.previewRevision = -1;
@@ -431,7 +454,13 @@ window.SpaceModelWorkspace = (() => {
     const timberObjects=result.timbers?.derived?.objects||[],count=s.timber_count||0;
     $("smTimberReview").textContent=count?`本次納入 ${count} 支角材。它們各自保留原位置及尺寸，不會變成空間殼或自動扣除淨空。`:(state.input?.mode==="faces"?"本次組合已有面，未納入角材。":"本次未納入角材；已保存模型不會自動補入來源中其他角材。");
     $("smTimberReviewList").hidden=!count;
-    $("smTimberReviewList").innerHTML=timberObjects.map(o=>{const zs=o.vertices_mm.map(p=>p[2]),lo=Math.min(...zs),hi=Math.max(...zs);return `<li><strong>角材 #${esc(o.root?.id)}</strong><span>世界 z：${esc(lo)}～${esc(hi)} mm${typeof s.top==="number"&&hi>s.top?" · 高於空間牆頂，保留原位置":""}</span></li>`;}).join("");
+    const list=$("smTimberReviewList");
+    if(state.readonly&&!state.editing&&state.input?.mode==='plan'&&count){
+      $('smShowTimbers').closest('.sm-display-options').after(list);
+    }else{
+      $('smTimberReview').after(list);
+      list.innerHTML=timberObjects.map(o=>{const zs=o.vertices_mm.map(p=>p[2]),lo=Math.min(...zs),hi=Math.max(...zs);return `<li><strong>角材 #${esc(o.root?.id)}</strong><span>世界 z：${esc(lo)}～${esc(hi)} mm${typeof s.top==="number"&&hi>s.top?" · 高於空間牆頂，保留原位置":""}</span></li>`;}).join("");
+    }
     $("smResultBadge").textContent=s.closed?"已封閉 · 可計算體積":"開放空間 · 體積未定"; $("smResultBadge").dataset.state=s.closed?"complete":"open";
     $("smPreviewDetails").hidden=false;
     $("smPreviewDescription").textContent=`共 ${s.face_count} 個面${typeof s.bottom==="number"?`，牆底 ${s.bottom} mm、牆頂 ${s.top} mm`:""}。${s.closed?"邊界已封閉。空間體積、扣除後淨空與材料量分別呈現。":"可建立部分空間；尚未封閉，因此沒有確定的內部體積。"}`;
@@ -449,7 +478,9 @@ window.SpaceModelWorkspace = (() => {
   function drawResult(fit = false) {
     if(!state.result||!state.viewer)return;
     const objects=GeometryModelViewer.spacePreviewObjects(state.result,{space:$("smShowSpace").checked,walls:$("smShowWalls").checked,timbers:$("smShowTimbers").checked,roof:$("smShowRoof").checked});
+    const selected=state.viewer.getState().selection;
     state.viewer.setObjects(objects); if(fit)state.viewer.fit();
+    if(snapshotRecord()&&snapshotNavigation?.isCurrent()){state.viewer.setSelectableRoots(state.input.timbers);if(selected&&!state.viewer.selectRoot(selected))selectSnapshotTimber(null,false);}
   }
   async function preview() {
     let input; try{input=makeInput();}catch(e){state.phase="error";state.previewRevision=-1;$("smConfirmFaces").checked=false;$("smResultBadge").textContent="預覽已失效，請重新確認來源與設定";$("smResultBadge").dataset.state="stale";message(e.message,"error");setTab("setup");updateActions();return;}
@@ -512,18 +543,21 @@ window.SpaceModelWorkspace = (() => {
     const models=ReferenceWorkspace.getSpaceModels?.()||[]; $("smModelCount").textContent=String(models.length); if($("spaceModelCount"))$("spaceModelCount").textContent=String(models.length);
     $("smLibraryList").innerHTML=models.length?models.map(m=>`<article class="sm-model-card"><div class="sm-model-symbol" aria-hidden="true">▱</div><div><h3>${esc(m.name)}</h3><p>${m.result.summary.closed?"封閉空間":"開放空間"} · ${m.result.summary.face_count} 個面 · ${esc(metric(m.result.summary.volume_mm3))} · 角材 ${esc(m.result.summary.timber_count||0)} 支</p><small>${esc(new Date(m.created_at).toLocaleString("zh-TW"))} · 來源${m.source.kind==="example"?"範例":"面 #"+m.source.boundary_id}</small></div><div class="sm-model-actions"><button class="sm-button" data-sm-open-model="${esc(m.id)}" type="button">開啟 3D</button>${m.input.mode==="plan"?`<button class="sm-button" data-sm-edit-height="${esc(m.id)}" type="button">修改牆高</button>`:""}<button class="sm-button sm-danger" data-sm-remove-model="${esc(m.id)}" type="button">移除</button></div></article>`).join(""):'<div class="sm-library-empty"><h3>還沒有建立空間</h3><p>選一個範例，核對預覽後按「建立空間」，它就會出現在這裡。</p><button class="sm-button sm-primary" data-sm-library-trial type="button">試用矩形範例 →</button></div>';
   }
-  function openLibrary(){if(state.editing)cancelHeightEdit();if(!show(openLibrary))return;libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;dialog.classList.add("sm-in-library");}
+  function openLibrary(){clearSnapshotNavigation();if(state.editing)cancelHeightEdit();if(!show(openLibrary))return;libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;dialog.classList.add("sm-in-library");window.dispatchEvent(new Event('space-model-view-changed'));}
   function openRecord(id, display = true) {
     const record=ReferenceWorkspace.getSpaceModels().find(m=>m.id===id); if(!record)return;
+    const ctx=ReferenceWorkspace.context(),pin=JSON.stringify(record);
     // show() refreshes saved records; clear the previous signature before entering it.
     state.recordSignature=null;
-    if(display&&!show(()=>openRecord(id,display)))return;
+    if(display&&!show(()=>{const current=ReferenceWorkspace.getSpaceModels().filter(m=>m.id===id);if(ReferenceWorkspace.context()===ctx&&current.length===1&&JSON.stringify(current[0])===pin)openRecord(id,display);}))return;
     state.recordSignature=null;startSource();const input=record.input,s=record.result.summary;
     // A saved definition keeps its source snapshot. Height editing changes only its explicit height.
     state.source={kind:record.source.kind,name:record.name,base_scene:input.base_scene,placement_id:record.source.placement_id,boundary_id:record.source.boundary_id,source_z:s.source_z,projection:record.source.projection?copy(record.source.projection):null,context_id:contextId()};
     state.result=copy(record.result);state.input=copy(input);state.previewRevision=state.revision;state.createdId=id;state.recordSignature=JSON.stringify(record);state.phase="created";state.readonly=true;
+    savedContext=ctx;
     $("smPreviewTitle").textContent=record.name;$("smModelName").value=record.name;$("smSourceSummary").innerHTML=`<strong>${esc(record.name)}</strong><span>已建立的空間 · ${s.face_count} 個面 · 角材 ${s.timber_count||0} 支${input.mode==="plan"?` · 牆高 ${esc(input.settings.height)} mm`:""}</span><small>${input.mode==="plan"?"可用「修改牆高」更新此模型。輪廓沿用保存的定義，不會自動讀取畫布的新變更。":"這是保存的各面定義。若要改變成員，請重新選取放置面建立。"}</small>`;
     $("smMode").value=input.mode;$("smSourceSelectWrap").hidden=true;$("smSettings").disabled=true;$("smConfirmFaces").checked=true;toggleMode(false);renderResult(state.result);updateActions();$("smPreview").disabled=true;setTab("preview");message("已開啟保存的模型。可旋轉查看、匯出模型或保存專案。","success");
+    window.dispatchEvent(new Event('space-model-view-changed'));
   }
   function assertEditableRecord() {
     const editing=state.editing;
@@ -559,7 +593,7 @@ window.SpaceModelWorkspace = (() => {
       const current=ReferenceWorkspace.getSpaceModels().find(m=>m.id===state.createdId);
       if(current && JSON.stringify(current)!==state.recordSignature){openRecord(current.id);message("模型已更新或復原，目前顯示專案中的最新保存內容。");return;}
     }
-    if(state.createdId && !(ReferenceWorkspace.getSpaceModels?.()||[]).some(m=>m.id===state.createdId)){state.createdId=null;state.previewRevision=-1;state.phase="stale";message("這個模型已移除或復原。請重新選取來源再建立。","warning");updateActions();}
+    if(state.createdId && !(ReferenceWorkspace.getSpaceModels?.()||[]).some(m=>m.id===state.createdId)){clearSnapshotNavigation();state.viewer?.setObjects([]);state.result=null;state.createdId=null;state.previewRevision=-1;state.phase="stale";message("這個模型已移除或復原。請重新選取來源再建立。","warning");updateActions();}
     if(state.source&&state.source.context_id!==contextId()&&state.previewRevision===state.revision){state.previewRevision=-1;message("目前專案已切換。請重新選擇來源，以免使用上個專案的預覽。","warning");updateActions();}
   }
   function exportModel(){const pack=state.result?.[$("smExportKind").value];if(!pack){message("這個結果尚未確定，沒有可匯出的模型。","warning");return;}const a=document.createElement("a"),url=URL.createObjectURL(new Blob([JSON.stringify(pack,null,2)],{type:"application/json"}));a.href=url;a.download=($("smModelName").value.trim()||"空間").replace(/[\\/:*?"<>|]/g,"_")+"-"+$("smExportKind").value+".model.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);message("模型下載已開始；.model.json 保留完整定義與推導資料。","success");}
@@ -572,7 +606,7 @@ window.SpaceModelWorkspace = (() => {
   $('smProjectionView').onchange=()=>{const pending=state.projectionPending;cancelProjectionConfirmation();if(pending)message('觀看方向已變更，請重新確認用途與觀看方向。');};
   $('smBottomZero').onclick=()=>{$('smBottom').value='0';stale();message('牆底已明確設為 0 mm；圖面維持原來的 z。確認設定後按「更新預覽」。');$('smBottom').focus();};
   dialog.addEventListener("cancel",()=>{viewerOpenSequence++;state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();});
-  dialog.addEventListener("close",()=>{viewerOpenSequence++;state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(state.editing)cancelHeightEdit();});
+  dialog.addEventListener("close",()=>{viewerOpenSequence++;clearSnapshotNavigation();state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(state.editing)cancelHeightEdit();window.dispatchEvent(new Event('space-model-view-changed'));});
   const reviewJump=()=>{setTab("setup");if(state.result&&state.previewRevision===state.revision){$('smReviewFaces').open=true;$("smPreviewDetails").scrollIntoView({block:"start"});}};$("smReviewJump").onclick=reviewJump;
   $('smMobileNext').onclick=()=>{setTab('setup');if(state.result&&state.previewRevision===state.revision&&!state.createdId)$('smConfirmFaces').focus({preventScroll:true});};
   $("smSourceSelect").onchange=()=>openCurrentFace($("smSourceSelect").value);$("smMode").onchange=()=>toggleMode();$("smFit").onclick=()=>state.viewer?.fit();
@@ -587,5 +621,5 @@ window.SpaceModelWorkspace = (() => {
   $("btnSpaceModelTrial")?.addEventListener("click",()=>openExample());$("btnSpaceModels")?.addEventListener("click",openLibrary);
   probeCapabilities();
   if(["#space-model-v1","#timber-space-v1"].includes(location.hash)) { const deadline=Date.now()+30000; const autoOpen=()=>{if(connection.phase==="ready")openExample(location.hash==="#timber-space-v1"?"timber-frame":"rectangle");else if(Date.now()<deadline)setTimeout(autoOpen,150);};setTimeout(autoOpen,0); }
-  return {openCurrentFace,openLibrary,openExample,close,refresh,snapshot:()=>({phase:state.phase,sourceKind:state.source?.kind||null,resultSummary:state.result?copy(state.result.summary):null,createdId:state.createdId,editingId:state.editing?.record.id||null,supportsTimbers,timberCandidates:copy(state.source?.timbers||[]),stale:state.previewRevision!==state.revision,previewRevision:state.previewRevision,inputRevision:state.revision,viewer:state.viewer?.getState()||null})};
+  return {openCurrentFace,openLibrary,openExample,close,refresh,snapshotRecord,authorizeSnapshotSchedule,selectSnapshotTimber,snapshot:()=>({phase:state.phase,sourceKind:state.source?.kind||null,resultSummary:state.result?copy(state.result.summary):null,createdId:state.createdId,editingId:state.editing?.record.id||null,supportsTimbers,timberCandidates:copy(state.source?.timbers||[]),stale:state.previewRevision!==state.revision,previewRevision:state.previewRevision,inputRevision:state.revision,viewer:state.viewer?.getState()||null})};
 })();

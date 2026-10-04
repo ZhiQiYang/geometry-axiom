@@ -211,22 +211,24 @@
     const entry=graph.supportEntries.get(node.key),ownerText=o=>o?` · 組構實例 ${o.instanceId}／member ${o.memberId}／binding ${o.bindingId}／規則 ${o.ruleId} 固定 v${o.ruleVersion} · rule ${o.ruleFingerprint} · instance ${o.instanceFingerprint} · binding ${o.bindingFingerprint}`:'';
     return ['start','finish'].map((end,i)=>{const value=entry?.[end];if(value?.status!=='exact')return `<p data-source-support="${end}">${i?'末端':'起端'}支撐：未知／原生證據未提供或非唯一。</p>`;const r=value.relation,s=r.source,k=key(s.kind,s.id),label=r.kind==='timber-face'?`角材 ${s.id}／${r.localFace}`:`${s.kind==='boundary'?'邊界':'承載面'} ${s.id}／${r.kind==='hole-edge'?'h'+r.holeIndex:''}e${r.edgeIndex}`;return `<p data-source-support="${end}" data-source-support-status="exact">${i?'末端':'起端'}支撐：<button type="button" data-source-path="${esc(k)}">${esc(label)}</button>${esc(ownerText(r.owner))}</p>`;}).join('')+'<p>支撐為原生端點證據；物件延續性仍未知。檢視不重建模型。</p>';
   }
-  function mount(host,{selection,context,stamp,read,readSnapshot,navigate,record=null,timberSchedule=null,project=null,getRecord=()=>record,isActive=()=>true,activate=()=>{},exportCSV=null}){
+  function mount(host,{selection,context,stamp,read,readSnapshot,navigate,record=null,timberSchedule=null,project=null,getRecord=()=>record,isActive=()=>true,activate=()=>{},exportCSV=null,snapshotOnly=false,onSchedule=()=>{},onSelect=null}){
     const existing=host.querySelector(':scope > [data-source-inspector]');if(existing)existing.remove();
     const reuse=host.querySelector('#paramUsage'),detail=reuse||host.ownerDocument.createElement('details');detail.classList.add('source-inspector','inspector-block');detail.dataset.sourceInspector=selection||'model';
     if(reuse){reuse.querySelector('summary').textContent='來源／影響與參數交換';reuse.querySelector('ul')?.remove();reuse.querySelector('[data-source-body]')?.remove();const body=host.ownerDocument.createElement('div');body.dataset.sourceBody='';body.setAttribute('role','status');body.setAttribute('aria-live','polite');body.textContent='尚未檢查';reuse.append(body);}
-    else {detail.innerHTML='<summary>來源／影響</summary><div data-source-body role="status" aria-live="polite">尚未檢查</div>';host.append(detail);}
+    else {detail.innerHTML=`<summary>${snapshotOnly?'保存角材料單':'來源／影響'}</summary><div data-source-body role="status" aria-live="polite">尚未檢查</div>`;host.append(detail);}
     const body=detail.querySelector('[data-source-body]'),session=createSession({context,stamp,read,readSnapshot,project}),recordPin=record&&JSON.stringify(record);
     let result=null,schedule=null,start=selection,loadSequence=0,busy=false,active=true,order='id',unit='mm',navigationLease=null;
+    let selectedTimber=null;
     const hasTimbers=record&&Array.isArray(record.input?.timbers)&&record.input.timbers.length>0;
     const refresh=()=>`<button type="button" data-source-refresh>${hasTimbers?'核對並匯出快照CSV':'重新檢查'}</button>`;
     const recordCurrent=()=>!record||JSON.stringify(getRecord())===recordPin;
     const mounted=()=>active&&detail.open&&detail.isConnected!==false&&body.isConnected&&isActive()&&recordCurrent();
     function scheduleHTML(){
-      if(!schedule)return '';const table=timberSchedule.sorted(schedule.rows,order).map(row=>`<li data-snapshot-timber="${row.id}" data-snapshot-surface="${row.surface}"><strong>快照角材 ${row.id} · 承載面 ${row.surface}</strong><span>A ${esc(timberSchedule.dimension(row.A,unit))} × B ${esc(timberSchedule.dimension(row.B,unit))} · 完成 L ${esc(timberSchedule.dimension(row.L,unit))} ${unit}</span><span>${esc(timberSchedule.sourceText(row))}</span></li>`).join('');
-      return `<section data-model-schedule><h4>保存快照料單 · ${esc(schedule.modelName)}</h4><p>單一模型 ${esc(schedule.modelId)} · ${schedule.rows.length} 支明選角材；保存快照尺寸，物件延續性未知。${esc(schedule.freshness.message)}</p><code title="保存快照原生來源指紋">${esc(schedule.sourceFingerprint)}</code><label>排列<select data-snapshot-order><option value="id"${order==='id'?' selected':''}>角材 ID</option><option value="length"${order==='length'?' selected':''}>完成料長</option></select></label><label>顯示單位<select data-snapshot-unit><option value="mm"${unit==='mm'?' selected':''}>mm</option><option value="cm"${unit==='cm'?' selected':''}>cm</option></select></label><ol>${table||'<li>此模型沒有明選角材；未納入來源場景的其他角材。</li>'}</ol><p>CSV 尺寸保持整數 mm；材料與加工未設定。快照列不定位同 ID 的目前角材。</p></section>`;
+      if(!schedule)return '';const table=timberSchedule.sorted(schedule.rows,order).map(row=>{const content=`<strong>快照角材 ${row.id} · 承載面 ${row.surface}</strong><span>A ${esc(timberSchedule.dimension(row.A,unit))} × B ${esc(timberSchedule.dimension(row.B,unit))} · 完成 L ${esc(timberSchedule.dimension(row.L,unit))} ${unit}</span><span>${esc(timberSchedule.sourceText(row))}</span>`;return `<li data-snapshot-timber="${row.id}" data-snapshot-surface="${row.surface}">${onSelect?`<button type="button" data-snapshot-select="${row.id}" aria-pressed="${selectedTimber===row.id}" aria-label="3D定位快照角材 ${row.id}">${content}</button>`:content}</li>`;}).join('');
+      return `<section data-model-schedule><h4>保存快照料單 · ${esc(schedule.modelName)}</h4><p>單一模型 ${esc(schedule.modelId)} · ${schedule.rows.length} 支明選角材；保存快照尺寸，物件延續性未知。${esc(schedule.freshness.message)}</p><code title="保存快照原生來源指紋">${esc(schedule.sourceFingerprint)}</code><label>排列<select data-snapshot-order><option value="id"${order==='id'?' selected':''}>角材 ID</option><option value="length"${order==='length'?' selected':''}>完成料長</option></select></label><label>顯示單位<select data-snapshot-unit><option value="mm"${unit==='mm'?' selected':''}>mm</option><option value="cm"${unit==='cm'?' selected':''}>cm</option></select></label><ol>${table||'<li>此模型沒有明選角材；未納入來源場景的其他角材。</li>'}</ol><p>CSV 尺寸保持整數 mm；材料與加工未設定。${onSelect?'點料單列定位此保存模型的構件（隱藏材料牆）；點 3D 角材回選同列。':'快照列不定位同 ID 的目前角材。'}</p></section>`;
     }
     function render(){
+      if(snapshotOnly){body.innerHTML=`${scheduleHTML()}${refresh()}`;return;}
       if(!result)return;const g=result.graph,n=g.nodes.get(start);
       const state=record?freshness(result.baseline,g,modelRoots(record)):null;
       if(!n){body.innerHTML=`${scheduleHTML()}<p${state?` data-source-freshness="${state.status}"`:''}>${esc(state?.message||'來源缺失或目前型別尚未提供，無法可靠追溯。')}</p>${refresh()}`;return;}
@@ -234,9 +236,9 @@
       const rows=(entries,title)=>`<h4>${title}</h4><ol>${entries.rows.map((r,i)=>`<li><span>${esc(labels[r.edge.relation])} · ${esc(r.edge.field)}</span><button type="button" data-source-path="${esc(r.key)}">${esc(r.node?.label||'來源缺失')} · ${esc(r.key)}</button>${r.node?`<button type="button" data-source-locate="${esc(r.key)}" aria-label="定位 ${esc(r.node.label)}">定位</button>`:''}</li>`).join('')||'<li>目前沒有已知關係</li>'}</ol>${entries.truncated?'<p>已達容量／深度上限；關係清單不完整。</p>':''}`;
       body.innerHTML=`${scheduleHTML()}${state?`<p data-source-freshness="${state.status}">${esc(state.message)}</p>${state.changes.map(c=>`<p>${esc(c.key)} · ${esc(c.kind)}</p>`).join('')}<h4>已核對的目前來源 · 與保存快照尺寸分開</h4>`:''}<p>${esc(n.label)} · ${esc(n.key)}${n.version?' · 固定 v'+n.version:''}</p><code title="原生來源指紋">${esc(n.definitionFingerprint)}</code>${rows(sources,'直接與間接來源')}${rows(uses,'修改可能涉及（未試算）')}${supportHTML(g,n)}${refresh()}`;
     }
-    const unavailable=message=>{result=null;schedule=null;body.innerHTML=`<p>${esc(message)}</p>${refresh()}`;};
+    const unavailable=message=>{result=null;schedule=null;selectedTimber=null;onSchedule(null);body.innerHTML=`<p>${esc(message)}</p>${refresh()}`;};
     async function load(exportRequested=false){
-      if(busy)return;activate();if(!mounted())return;busy=true;const seq=++loadSequence,ctx=context(),token=stamp();body.textContent='正在唯讀檢查…';
+      if(busy)return;activate();if(!mounted())return;busy=true;selectedTimber=null;onSchedule(null);const seq=++loadSequence,ctx=context(),token=stamp();body.textContent='正在唯讀檢查…';
       try{
         const loaded=await session.inspect(record);if(seq!==loadSequence||context()!==ctx||!mounted())return;
         if(!loaded||stamp()!==token){unavailable('來源已變更，請重新檢查。');return;}
@@ -250,14 +252,20 @@
         }
         if(seq!==loadSequence||!mounted()||!session.valid(loaded))return;
         result=loaded;schedule=candidate;if(record)start=modelRoots(record)[0];render();
+        if(candidate)onSchedule(candidate,{isCurrent:()=>seq===loadSequence&&mounted()&&session.valid(loaded)});
         if(exportRequested&&candidate&&mounted()&&session.valid(loaded))exportCSV(modelScheduleCSV(candidate,timberSchedule,order,unit),candidate);
       }catch(e){if(seq===loadSequence&&context()===ctx&&mounted())unavailable(e.name==='AbortError'?'檢查已取消。':e.message);}
       finally{if(seq===loadSequence)busy=false;}
     }
-    const onToggle=()=>{if(detail.open)load();else{if(navigationLease)navigationLease.cancelled=true;++loadSequence;busy=false;session.cancel();result=null;schedule=null;body.textContent='尚未檢查';}};
+    const onToggle=()=>{if(detail.open)load();else{onSchedule(null);selectedTimber=null;if(navigationLease)navigationLease.cancelled=true;++loadSequence;busy=false;session.cancel();result=null;schedule=null;body.textContent='尚未檢查';}};
     detail.addEventListener('toggle',onToggle);
     const onClick=async e=>{
       if(e.target.closest('[data-source-refresh]')){await load(!!hasTimbers);return;}
+      const row=e.target.closest('[data-snapshot-select]');if(row&&onSelect){
+        if(!schedule||!result||!mounted()||!session.valid(result)){unavailable('來源已變更，請重新核對。');return;}
+        const id=Number(row.dataset.snapshotSelect);if(!schedule.ids.includes(id))return;
+        if(onSelect(id)!==false){selectSnapshot(id,false);body.querySelector(`[data-snapshot-select="${id}"]`)?.focus({preventScroll:true});}return;
+      }
       const path=e.target.closest('[data-source-path]');if(path&&result){if(!mounted()||!session.valid(result)){unavailable('來源已變更，請重新檢查。');return;}start=path.dataset.sourcePath;render();return;}
       const button=e.target.closest('[data-source-locate]');if(!button||!result)return;
       const captured=result,key=button.dataset.sourceLocate;button.disabled=true;
@@ -269,7 +277,11 @@
       try{const fresh=index(await read());if(!isCurrent())return;if(fresh.data.revision!==captured.revision||fresh.data.sourceFingerprint!==captured.graph.data.sourceFingerprint||!fresh.nodes.has(key)){body.textContent='來源已變更或刪除，請重新檢查。';return;}await navigate(fresh.nodes.get(key),fresh,{isCurrent,beginNavigation});}catch(error){if(mounted())body.textContent=error.message;}finally{if(navigationLease===lease)navigationLease=null;if(button.isConnected)button.disabled=false;}
     };
     const onChange=e=>{if(!schedule||!result||!mounted()||!session.valid(result)){if(result)unavailable('來源已變更，請重新核對。');return;}if(e.target.matches('[data-snapshot-order]')&&['id','length'].includes(e.target.value))order=e.target.value;else if(e.target.matches('[data-snapshot-unit]')&&['mm','cm'].includes(e.target.value))unit=e.target.value;else return;render();};
-    body.addEventListener('click',onClick);body.addEventListener('change',onChange);if(detail.open)load();return {detail,cancel(){if(navigationLease&&(record||!navigationLease.transferred))navigationLease.cancelled=true;active=false;++loadSequence;session.cancel();detail.removeEventListener('toggle',onToggle);body.removeEventListener('click',onClick);body.removeEventListener('change',onChange);}};
+    function selectSnapshot(id,scroll=true){
+      if(!schedule||!result||!mounted()||!session.valid(result)||id!==null&&!schedule.ids.includes(id))return false;
+      selectedTimber=id;render();if(scroll&&id!==null)body.querySelector(`[data-snapshot-select="${id}"]`)?.scrollIntoView({block:'nearest'});return true;
+    }
+    body.addEventListener('click',onClick);body.addEventListener('change',onChange);if(snapshotOnly)detail.open=true;else if(detail.open)load();return {detail,selectSnapshot,cancel(){onSchedule(null);if(navigationLease&&(record||!navigationLease.transferred))navigationLease.cancelled=true;active=false;++loadSequence;session.cancel();detail.removeEventListener('toggle',onToggle);body.removeEventListener('click',onClick);body.removeEventListener('change',onChange);}};
   }
   return {key,index,nearby,resolveLocation,modelRoots,modelTimberIds,deriveModelSchedule,modelScheduleCSV,freshness,createSession,mount,LIMIT,DEPTH};
 });

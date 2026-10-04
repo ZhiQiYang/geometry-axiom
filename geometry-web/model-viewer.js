@@ -113,6 +113,7 @@
       });
       objects.push({
         vertices, triangles, featureEdges,
+        root: object.root?.kind === 'timber' && Number.isInteger(object.root.id) && object.root.id >= 0 && object.root.id <= 0xffffffff ? {kind:'timber',id:object.root.id} : null,
         color: rgb(object.color, PALETTE[index % PALETTE.length]),
         opacity: Number.isFinite(object.opacity) ? clamp(object.opacity, 0, 1) : object.role === 'enclosure' ? 0.28 : 0.9,
         label: typeof object.label === 'string' ? object.label : object.root ? `${object.root.kind} #${object.root.id}` : `物件 ${index + 1}`
@@ -140,6 +141,8 @@
     let yaw = VIEWS.iso.yaw, pitch = VIEWS.iso.pitch, view = 'iso';
     let scale = 1, zoom = 1, frame = null, destroyed = false;
     let panX = 0, panY = 0;
+    let selectable = new Set(), selected = null;
+    const rootKey = ref => ref?.kind === 'timber' && Number.isInteger(ref.id) && ref.id>=0 && ref.id<=0xffffffff ? `timber:${ref.id}` : null;
     let emptyText = options.emptyText || '建立預覽後，這裡會顯示 3D 模型';
     const pointers = new Map();
     const listeners = [];
@@ -262,6 +265,36 @@
       ctx.restore();
     }
 
+    function screenFaces() {
+      if (!prepared.objects.length) return [];
+      const projected = projectedData(), faces = [];
+      const xoff = (projected.xmin + projected.xmax) / 2, yoff = (projected.ymin + projected.ymax) / 2;
+      const screen = p => [(p[0] - xoff) * scale * zoom + width / 2 + panX, (p[1] - yoff) * scale * zoom + height / 2 - 4 + panY];
+      projected.items.forEach(({object,points}) => object.triangles.forEach(triangle => {
+        const ps=triangle.indices.map(i=>points[i]);
+        faces.push({object,triangle,points:ps.map(screen),depth:ps.reduce((sum,p)=>sum+p[2],0)/3});
+      }));
+      return faces.sort((a,b)=>a.depth-b.depth);
+    }
+
+    function hitTest(x,y) {
+      if (destroyed || !Number.isFinite(x) || !Number.isFinite(y)) return null;
+      const faces=screenFaces();
+      for(let i=faces.length-1;i>=0;i--){
+        const {object,points}=faces[i];
+        // Match the rendered triangles, never a bounding rectangle. The
+        // translucent space shell is a display guide; opaque walls occlude.
+        if(object.opacity < 0.9)continue;
+        const [a,b,c]=points, area=(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+        if(Math.abs(area)<1e-8)continue;
+        const u=((b[0]-x)*(c[1]-y)-(b[1]-y)*(c[0]-x))/area;
+        const v=((c[0]-x)*(a[1]-y)-(c[1]-y)*(a[0]-x))/area,w=1-u-v;
+        if(Math.min(u,v,w)<-1e-8)continue;
+        return selectable.has(rootKey(object.root)) ? {...object.root} : null;
+      }
+      return null;
+    }
+
     function draw() {
       if (destroyed) return;
       resize(false);
@@ -273,26 +306,17 @@
         ctx.fillText(emptyText, width / 2, height / 2, Math.max(1, width - 36));
         ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'; axes(); return;
       }
-      const projected = projectedData(), faces = [];
-      const xoff = (projected.xmin + projected.xmax) / 2;
-      const yoff = (projected.ymin + projected.ymax) / 2;
-      const screen = p => [(p[0] - xoff) * scale * zoom + width / 2 + panX, (p[1] - yoff) * scale * zoom + height / 2 - 4 + panY];
-      projected.items.forEach(({ object, points }) => {
-        object.triangles.forEach(triangle => {
-          const trianglePoints = triangle.indices.map(index => points[index]);
-          faces.push({ object, triangle, points: trianglePoints.map(screen), depth: trianglePoints.reduce((sum, p) => sum + p[2], 0) / 3 });
-        });
-      });
-      faces.sort((a, b) => a.depth - b.depth);
+      const faces = screenFaces();
       ctx.lineJoin = 'round'; ctx.lineCap = 'round';
       faces.forEach(face => {
         const { object, triangle, points } = face;
         // Fixed world light makes orientation and the true creases legible.
         const light = 0.68 + 0.32 * Math.abs(dot(triangle.normal, [-0.35, -0.25, 0.9027735]));
-        ctx.fillStyle = `rgb(${object.color.map(v => Math.round(v * light)).join(',')})`;
+        const highlighted=selected && rootKey(object.root)===rootKey(selected);
+        ctx.fillStyle = highlighted ? '#efad38' : `rgb(${object.color.map(v => Math.round(v * light)).join(',')})`;
         ctx.globalAlpha = object.opacity;
         path(points); ctx.fill();
-        ctx.strokeStyle = '#182b38'; ctx.globalAlpha = Math.min(0.95, object.opacity + 0.26); ctx.lineWidth = 1;
+        ctx.strokeStyle = highlighted ? '#633600' : '#182b38'; ctx.globalAlpha = Math.min(0.95, object.opacity + 0.26); ctx.lineWidth = highlighted ? 2.5 : 1;
         triangle.edges.forEach((edge, side) => {
           if (!object.featureEdges.has(edge)) return;
           const a = points[side], b = points[(side + 1) % 3];
@@ -315,14 +339,18 @@
       if (event.pointerType === 'mouse' && event.button !== 0) return;
       event.preventDefault();
       canvas.focus({ preventScroll: true });
-      pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      pointers.set(event.pointerId, { x: event.clientX, y: event.clientY, startX:event.clientX, startY:event.clientY, moved:false, multi:false });
+      if(pointers.size>1)pointers.forEach(p=>p.multi=true);
       canvas.setPointerCapture(event.pointerId); canvas.style.cursor = 'grabbing';
     });
     listen('pointermove', event => {
       const previous = pointers.get(event.pointerId);
       if (!previous) return;
       const previousDistance = pinchDistance();
-      pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      const next={...previous,x:event.clientX,y:event.clientY};
+      next.moved ||= Math.hypot(next.x-next.startX,next.y-next.startY)>4;
+      pointers.set(event.pointerId,next);
+      if(!next.moved && !next.multi)return;
       if (pointers.size >= 2) {
         const nextDistance = pinchDistance();
         if (previousDistance > 2 && nextDistance > 2) zoom = clamp(zoom * nextDistance / previousDistance, 0.1, 12);
@@ -337,9 +365,15 @@
       schedule(); notify();
     });
     function release(event) {
+      const pointer=pointers.get(event.pointerId);
       pointers.delete(event.pointerId);
       if (canvas.hasPointerCapture && canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
       canvas.style.cursor = pointers.size ? 'grabbing' : 'grab';
+      if(event.type==='pointerup' && pointer && !pointer.moved && !pointer.multi && !event.shiftKey &&
+         Math.hypot(event.clientX-pointer.startX,event.clientY-pointer.startY)<=4){
+        const rect=canvas.getBoundingClientRect();
+        options.onPick?.(hitTest(event.clientX-rect.left,event.clientY-rect.top));
+      }
     }
     listen('pointerup', release); listen('pointercancel', release); listen('lostpointercapture', release);
     listen('wheel', event => {
@@ -369,8 +403,10 @@
 
     function setObjects(objects) {
       if (destroyed) return;
+      cancelPointers();
       // Clear first: malformed or empty new output must never leave an old model.
       prepared = prepareObjects([]); zoom = 1; panX = 0; panY = 0;
+      selectable.clear(); selected=null;
       try { prepared = prepareObjects(objects); }
       catch (error) { emptyText = '網格資料無法顯示，請查看建模診斷'; schedule(); notify(); throw error; }
       emptyText = options.emptyText || '建立預覽後，這裡會顯示 3D 模型';
@@ -389,12 +425,44 @@
       yaw = VIEWS[name].yaw; pitch = VIEWS[name].pitch; view = name; fit();
     }
 
+    function setSelectableRoots(roots) {
+      cancelPointers();
+      selectable=new Set((roots||[]).map(rootKey).filter(Boolean));
+      if(!selectable.has(rootKey(selected)))selected=null;
+      schedule();
+    }
+
+    function cancelPointers(){
+      const ids=[...pointers.keys()];pointers.clear();
+      ids.forEach(id=>{if(canvas.hasPointerCapture?.(id))canvas.releasePointerCapture(id);});
+      canvas.style.cursor='grab';
+    }
+
+    function selectRoot(ref, focus=false) {
+      if(destroyed)return false;
+      if(ref===null){selected=null;schedule();return true;}
+      const key=rootKey(ref), matches=prepared.objects.filter(o=>rootKey(o.root)===key);
+      if(!selectable.has(key)||matches.length!==1)return false;
+      selected={...matches[0].root};
+      if(focus){
+        resize(false);fitScale();
+        const faces=screenFaces().filter(f=>rootKey(f.object.root)===key),points=faces.flatMap(f=>f.points);
+        const xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);
+        const xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...ys),ymax=Math.max(...ys);
+        const factor=Math.min(width*.65/Math.max(1,xmax-xmin),height*.65/Math.max(1,ymax-ymin));
+        const oldZoom=zoom;zoom=clamp(zoom*factor,.1,12);
+        panX=(panX+(width/2-(xmin+xmax)/2))*zoom/oldZoom;
+        panY=(panY+(height/2-4-(ymin+ymax)/2))*zoom/oldZoom;
+      }
+      schedule();notify();return true;
+    }
+
     function getState() {
       return {
         objectCount: prepared.objects.length, triangleCount: prepared.triangleCount,
         bounds: prepared.bounds ? { min: prepared.bounds.min.slice(), max: prepared.bounds.max.slice() } : null,
         labels: prepared.objects.map(object => object.label), view, yaw, pitch, zoom, pan: { x: panX, y: panY },
-        width, height, destroyed
+        width, height, destroyed, selection:selected?{...selected}:null
       };
     }
 
@@ -408,7 +476,7 @@
       pointers.forEach((_, id) => {
         if (canvas.hasPointerCapture && canvas.hasPointerCapture(id)) canvas.releasePointerCapture(id);
       });
-      pointers.clear(); prepared = prepareObjects([]);
+      pointers.clear(); prepared = prepareObjects([]);selectable.clear();selected=null;
       ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
       canvas.style.touchAction = oldTouchAction; canvas.style.cursor = oldCursor;
       if (oldTabIndex === null) canvas.removeAttribute('tabindex'); else canvas.setAttribute('tabindex', oldTabIndex);
@@ -416,7 +484,7 @@
     }
 
     resize(); schedule();
-    return { setObjects, fit, setView, destroy, getState };
+    return { setObjects, fit, setView, destroy, getState, setSelectableRoots, selectRoot, hitTest };
   }
 
   return { create, project, projectPlanPoint, spacePreviewObjects, prepareObjects, views: VIEWS };
