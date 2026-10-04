@@ -121,10 +121,19 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   check('scan-only PDF uses image assistance and discloses vector failure',await read(`RoomOutlineWorkspace.snapshot()?.method==='image-lines'&&RoomOutlineWorkspace.snapshot().warnings.some(w=>w.includes('改用影像'))`));await ctl('#refRoomCancel');
   // PDF CropBox + inherent rotation; then independent underlay quarter turns and camera.
   await setup({page:4});
+  // Page 4 viewport is 190x280. Its inside corners are (158,32),
+  // (158,228), (42,228), (42,32); scale 10 and offset (-200,150)
+  // give centre (750,1550). These quarter turns are hand-calculated.
+  const rotatedInside = {
+    0:[[1380,470],[1380,2430],[220,2430],[220,470]],
+    90:[[1830,2180],[-130,2180],[-130,1020],[1830,1020]],
+    180:[[120,2630],[120,670],[1280,670],[1280,2630]],
+    270:[[-330,920],[1630,920],[1630,2080],[-330,2080]]
+  };
   for(const rot of [0,90,180,270]) {
     await read(`(()=>{const p=ReferenceWorkspace.active(1);p.rot=${rot};p.x=-200;p.y=150;p.crop=[20,20,150,230];ReferenceWorkspace.changed(1);fe.zoom=.2;fe.panX=240;fe.panY=210;feApply(true);renderFaceInspector();})()`);
     await propose([120,70]);
-    const expected=await read(`(()=>{const p=ReferenceWorkspace.active(1);return ${JSON.stringify(shapes[0].inside)}.map(([x,y])=>feUlImgToMm(p,190-y,x).map(Math.round));})()`);
+    const expected=rotatedInside[rot];
     check(`CropBox/inherent rotation + underlay ${rot} + pan/zoom retain inside source points`,normalized((await read(`RoomOutlineWorkspace.snapshot()`))?.points||[])===normalized(expected));await ctl('#refRoomCancel');
   }
   await setup({page:3});await propose();
