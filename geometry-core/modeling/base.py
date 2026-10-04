@@ -7,9 +7,11 @@ from functools import lru_cache
 import json
 import os
 from pathlib import Path
+import re
 import shlex
 import shutil
 import subprocess
+import sys
 import tempfile
 
 from .common import ModelError, ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, scene_required_capabilities
@@ -50,6 +52,26 @@ def _build_adapter() -> str:
     return str(target)
 
 
+def _adapter_command(program, source, *, wsl_distro=None):
+    """Keep native overrides literal; translate only an explicitly WSL adapter."""
+    if wsl_distro is None:
+        return [os.fspath(program), str(source)]
+    if not re.fullmatch(r"[A-Za-z0-9._-]+", wsl_distro) or not os.fspath(program).startswith("/"):
+        raise ModelError("UNSUPPORTED", "BASE_EXECUTABLE", "I32", "Invalid WSL scene adapter configuration.")
+    prefix = ["wsl.exe", "-d", wsl_distro, "--user", "root", "--exec"]
+    converted = subprocess.run(
+        [*prefix, "wslpath", "-u", str(source).replace("\\", "/")],
+        capture_output=True, timeout=10, check=False,
+    )
+    try:
+        path = converted.stdout.decode("utf-8").strip()
+    except UnicodeDecodeError as exc:
+        raise ModelError("UNSUPPORTED", "BASE_EXECUTABLE", "I32", "Cannot resolve the scene input in WSL.") from exc
+    if converted.returncode or not path.startswith("/") or any(c in path for c in "\r\n\0"):
+        raise ModelError("UNSUPPORTED", "BASE_EXECUTABLE", "I32", "Cannot resolve the scene input in WSL.")
+    return [*prefix, os.fspath(program), path]
+
+
 def load_base(scene_text: str, executable=None) -> dict:
     """Validate the whole scene atomically and return geometry-base-snapshot/1.
 
@@ -69,12 +91,14 @@ def load_base(scene_text: str, executable=None) -> dict:
     if source_capabilities - {ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY}:
         raise ModelError("UNSUPPORTED", "CAPABILITY", "I32", "Unsupported required scene capability")
     program = executable or os.environ.get("GEOMETRY_MODEL_BASE") or _build_adapter()
+    wsl_distro = (os.environ.get("GEOMETRY_MODEL_BASE_WSL_DISTRO")
+                  if sys.platform == "win32" and executable is None else None)
     try:
         with tempfile.TemporaryDirectory(prefix="geometry-model-scene-") as directory:
             source = Path(directory) / "input.scene"
             source.write_bytes(encoded)
             result = subprocess.run(
-                [os.fspath(program), str(source)], capture_output=True,
+                _adapter_command(program, source, wsl_distro=wsl_distro), capture_output=True,
                 timeout=20, check=False,
             )
     except subprocess.TimeoutExpired as exc:

@@ -711,5 +711,43 @@ class AxiomSourceIdentity(unittest.TestCase):
         self.assertEqual((diagnostic["code"], diagnostic["clause"]), ("AXIOM_VERSION", "I32"))
 
 
+class WslBaseAdapterTests(unittest.TestCase):
+    def test_wsl_scene_path_is_translated_and_passed_as_one_literal_argument(self):
+        from modeling.base import _adapter_command
+        converted = mock.Mock(returncode=0, stdout=b"/mnt/c/scene folder/input.scene\n")
+        with mock.patch("modeling.base.subprocess.run", return_value=converted) as run:
+            command = _adapter_command("/opt/geometry/model-base", r"C:\scene folder\input.scene", wsl_distro="Ubuntu-24.04")
+        self.assertEqual(command, ["wsl.exe", "-d", "Ubuntu-24.04", "--user", "root", "--exec", "/opt/geometry/model-base", "/mnt/c/scene folder/input.scene"])
+        self.assertEqual(run.call_args.args[0][-1], "C:/scene folder/input.scene")
+        self.assertNotIn("shell", run.call_args.kwargs)
+
+    def test_failed_or_malformed_wsl_path_conversion_is_rejected(self):
+        from modeling.base import _adapter_command
+        for code, output in [(1, b"/mnt/c/input.scene"), (0, b"relative.scene"), (0, b"/mnt/c/input.scene\nextra"), (0, b"\xff")]:
+            with self.subTest(code=code, output=output), mock.patch("modeling.base.subprocess.run", return_value=mock.Mock(returncode=code, stdout=output)):
+                with self.assertRaises(ModelError) as caught:
+                    _adapter_command("/opt/geometry/model-base", "input.scene", wsl_distro="Ubuntu-24.04")
+                self.assertEqual(caught.exception.code, "BASE_EXECUTABLE")
+
+    def test_native_executable_override_ignores_wsl_environment(self):
+        from modeling.base import load_base
+        snapshot = {"ok": True, "schema": "geometry-base-snapshot/1", "base_scene": "", "specs": [], "placements": [], "solids": [], "unplaced_timbers": [], "dependencies": []}
+        result = mock.Mock(returncode=0, stdout=json.dumps(snapshot).encode())
+        with mock.patch("modeling.base.sys.platform", "win32"), mock.patch.dict("os.environ", {"GEOMETRY_MODEL_BASE_WSL_DISTRO": "Ubuntu-24.04"}), mock.patch("modeling.base.subprocess.run", return_value=result) as run:
+            self.assertEqual(load_base("", executable="native adapter.exe"), snapshot)
+        run.assert_called_once()
+        self.assertEqual(run.call_args.args[0][0], "native adapter.exe")
+
+    def test_windows_environment_runs_the_configured_wsl_adapter(self):
+        from modeling.base import load_base
+        snapshot = {"ok": True, "schema": "geometry-base-snapshot/1", "base_scene": "", "specs": [], "placements": [], "solids": [], "unplaced_timbers": [], "dependencies": []}
+        converted = mock.Mock(returncode=0, stdout=b"/mnt/c/temp/input.scene\n")
+        result = mock.Mock(returncode=0, stdout=json.dumps(snapshot).encode())
+        with mock.patch("modeling.base.sys.platform", "win32"), mock.patch.dict("os.environ", {"GEOMETRY_MODEL_BASE": "/opt/geometry/model-base", "GEOMETRY_MODEL_BASE_WSL_DISTRO": "Ubuntu-24.04"}), mock.patch("modeling.base.subprocess.run", side_effect=[converted, result]) as run:
+            self.assertEqual(load_base(""), snapshot)
+        self.assertEqual(run.call_count, 2)
+        self.assertEqual(run.call_args.args[0][-2:], ["/opt/geometry/model-base", "/mnt/c/temp/input.scene"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

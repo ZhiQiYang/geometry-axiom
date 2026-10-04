@@ -219,11 +219,18 @@ GEOMETRY_FEEDBACK_DIR=/tmp/geometry-tests/fb-cdp \
 `localhost`），只把橋接器交給 `wsl.exe` 執行 Linux 版。`wsl.exe` 本身有簽章、
 不受 Smart App Control 封鎖，所以用到的是**當前核心**而非舊二進位。
 
-```bat
-set GEOMETRY_BRIDGE=wsl.exe -d Ubuntu-24.04 --user root -- /opt/geometry/web_bridge
-set GEOMETRY_BRIDGE_WSL=1
-python serve.py 8765
+從 repository 根目錄使用一般入口；它同時編譯畫布核心與空間建模 adapter，
+並先實際執行 adapter，通過才啟動服務：
+
+```powershell
+powershell -NoProfile -File .\geometry-web\start.ps1
 ```
+
+啟動器設定 `GEOMETRY_MODEL_BASE` 為 Linux adapter 路徑，
+`GEOMETRY_MODEL_BASE_WSL_DISTRO` 指定其 WSL 發行版。Windows Python 以獨立 argv
+呼叫 WSL，將暫存場景路徑轉為 adapter 可讀的 Linux 路徑；明確傳入的原生
+`base_executable` 仍優先，不受 WSL 環境設定影響。每次啟動使用獨立暫存執行目錄，
+不覆寫其他連接埠正在使用的二進位。
 
 `GEOMETRY_BRIDGE_WSL=1` 會把 `loadfile` 的 Windows 路徑翻成 `/mnt/…`，
 否則 `/scenes` 與 `/upload` 給的路徑 Linux 端的橋接器開不了。

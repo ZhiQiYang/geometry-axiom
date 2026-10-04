@@ -7,7 +7,7 @@ const EXPECTED = Object.freeze({
   setup: 2,
   'space-height-library': 86,
   'projection-lifecycle': 18,
-  'projection-placement': 17,
+  'projection-placement': 30,
   'font-layout': 19,
   'space-flow': 39,
   'timber-material': 48,

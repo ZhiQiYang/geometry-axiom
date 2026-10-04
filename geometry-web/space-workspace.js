@@ -67,7 +67,7 @@ window.SpaceModelWorkspace = (() => {
     sourceAdvanced.innerHTML='<summary>其他建模方式與來源放置</summary>';
     sourceAdvanced.append($('smMode').parentElement,$('smSourceSelectWrap'));sourceSection.append(sourceAdvanced);
     const inline=document.createElement('div');inline.id='smInlineProjection';
-    inline.innerHTML='<label class="sm-field">觀看方向<select id="smProjectionView"><option value="top">俯視（從 +Z 往下看）</option><option value="bottom">仰視（從 −Z 往上看）</option></select></label><p class="sm-help">確認後，這片面將作為空間邊界的平面投影；輪廓內是室內淨空，材料牆向外加厚。圖面 z 不代替牆底或牆高。</p><button id="smConfirmProjection" class="sm-button sm-primary" type="button">確認用途與觀看方向</button>';
+    inline.innerHTML='<label class="sm-field">原圖觀看方向<select id="smProjectionView"><option value="top">俯視（從 +Z 往下看）</option><option value="bottom">仰視（從 −Z 往上看）</option></select></label><p id="smProjectionHelp" class="sm-help"></p><button id="smConfirmProjection" class="sm-button sm-primary" type="button">確認用途與觀看方向</button>';
     $('smProjectionCallout').insertBefore(inline,$('smSetProjection'));
     const common=$('smPlanSettings').firstElementChild;common.id='smCommonSettings';common.querySelector('h2').textContent='高度、材料與角材';
     const bottomShortcut=document.createElement('button');bottomShortcut.id='smBottomZero';bottomShortcut.className='sm-button sm-bottom-shortcut';bottomShortcut.type='button';bottomShortcut.textContent='牆底設為 0 mm';
@@ -206,16 +206,22 @@ window.SpaceModelWorkspace = (() => {
   function validProjection(def) { return !!def && def.kind==="space-boundary-plan" && ["top","bottom"].includes(def.view) && def.region==="interior" && def.wallSide==="outside"; }
   function currentProjection(source=state.source) { return source?.kind==="scene" ? ReferenceWorkspace.getFaceProjection?.(source.boundary_id,source.placement_id)||null : source?.projection||null; }
   function needsProjection() { return !!state.source && $("smMode").value==="plan" && !state.editing && !state.readonly && !state.createdId; }
+  function needsDrawingAlignment(source=state.source, view=source?.projection?.view) {
+    if(source?.kind!=="scene"||!validProjection(source.projection)||!source.frame||!source.loops?.length)return false;
+    return GeometryModelViewer.drawingAlignment(source.frame,source.loops,view).changed;
+  }
   function renderProjection() {
     const source=state.source,plan=$("smMode").value==="plan",def=source?.projection;
     const editable=source?.kind==="scene"&&!state.readonly&&!state.createdId&&!state.editing;
     const horizontal=source?.frame?.u?.[2]===0&&source?.frame?.v?.[2]===0&&Math.abs(source.frame.u[0]*source.frame.v[1]-source.frame.u[1]*source.frame.v[0])===1;
     $("smProjectionCallout").hidden=!source||!plan;
     $("smSetProjection").hidden=!editable;
-    $("smInlineProjection").hidden=!editable||validProjection(def)||!horizontal;
+    const alignment=editable&&horizontal&&validProjection(def)&&needsDrawingAlignment(source);
+    $("smInlineProjection").hidden=!editable||validProjection(def)&&!alignment||!horizontal;
     $("smProjectionView").disabled=state.projectionPending;
     $("smConfirmProjection").disabled=state.projectionPending||!editable||!horizontal||["loading","creating","previewing"].includes(state.phase);
-    $("smConfirmProjection").textContent=state.projectionPending?"正在核對來源…":"確認用途與觀看方向";
+    $("smConfirmProjection").textContent=state.projectionPending?"正在核對來源…":alignment&&$('smProjectionView').value===def.view?"依原圖對齊放置方向":"確認用途與觀看方向";
+    $('smProjectionHelp').textContent=alignment?'目前放置與輪廓編輯圖的上下方向相反。若此輪廓按原圖描繪，請對齊放置方向；保留局部輪廓、外框位置與圖面高度。已放角材會先顯示影響預覽，這次對齊可復原。':'確認這片面為空間邊界的平面投影；輪廓內是室內淨空、材料牆向外加厚。圖面 z 不代替牆底或牆高。';
     $("smSetProjection").disabled=state.projectionPending;
     $("smProjectionCallout").setAttribute("aria-busy",String(state.projectionPending));
     $("smProjectionCallout").dataset.state=validProjection(def)?"defined":"missing";
@@ -267,7 +273,12 @@ window.SpaceModelWorkspace = (() => {
   async function request(url, body) {
     const response = await fetch(url, { method: body ? "POST" : "GET", headers: body ? {"Content-Type":"application/json"} : {}, body: body ? JSON.stringify(body) : undefined, signal: state.controller?.signal });
     let data; try { data = await response.json(); } catch (_) { throw new Error("服務未傳回可讀取的模型資料，請確認目前開啟的是空間建模第一版。"); }
-    if (!response.ok || data.ok === false) { const d = data.error && typeof data.error === "object" ? data.error : data; throw new Error([d.message || d.error || "無法建立預覽", d.code, d.clause].filter(Boolean).join(" · ")); }
+    if (!response.ok || data.ok === false || ["INCOMPLETE", "UNSUPPORTED", "INVALID"].includes(data.status)) {
+      const diagnostics = Array.isArray(data.diagnostics) && data.diagnostics.length ? data.diagnostics : [data.error && typeof data.error === "object" ? data.error : data];
+      throw new Error(diagnostics.map(d => ["BASE_COMPILER", "BASE_EXECUTABLE"].includes(d.code)
+        ? "空間建模服務尚未就緒，請保存專案並重新啟動應用。"
+        : [d.message || d.error || "無法建立預覽", d.code, d.clause].filter(Boolean).join(" · ")).join("\n"));
+    }
     return data;
   }
   function startSource() {
@@ -301,12 +312,12 @@ window.SpaceModelWorkspace = (() => {
     const verts = loops?.[0]?.verts || []; if (!verts.length) { $("smPlanOutline").innerHTML = ""; return; }
     const source=state.source,def=source?.projection;
     if(!validProjection(def)||!source.frame) {$("smPlanOutline").innerHTML="";$("smOutlineViewHelp").textContent="設定平面投影後，這裡會依承載面框架顯示實際俯視或仰視輪廓。";return;}
-    const project=p=>GeometryModelViewer.projectPlanPoint(p,source.frame,def.view),projected=verts.map(project);
+    const project=p=>GeometryModelViewer.projectPlanPoint(p,source.frame,def.view,true),projected=verts.map(project);
     const xs = projected.map(p => p[0]), ys = projected.map(p => p[1]), x0 = Math.min(...xs), y0 = Math.min(...ys), w = Math.max(...xs) - x0 || 1, h = Math.max(...ys) - y0 || 1;
     const scale = Math.min(250 / w, 115 / h), map = p => {const q=project(p);return [32 + (q[0] - x0) * scale, 28 + (q[1] - y0) * scale];};
     const paths = loops.map(l => "M" + l.verts.map(map).map(p => p.join(",")).join("L") + "Z").join(" ");
     $("smPlanOutline").innerHTML = `<svg viewBox="0 0 320 175" role="img" aria-label="來源面輪廓，外環各邊對應下方編號"><path d="${paths}" fill-rule="evenodd"/>${verts.map((p,i) => { const a=map(p), b=map(verts[(i+1)%verts.length]);return `<g><circle cx="${(a[0]+b[0])/2}" cy="${(a[1]+b[1])/2}" r="10"/><text x="${(a[0]+b[0])/2}" y="${(a[1]+b[1])/2+3}">${i+1}</text></g>`; }).join("")}</svg>`;
-    $("smOutlineViewHelp").textContent=`此圖為世界座標${def.view==="top"?"俯視（沿 −Z）":"仰視（沿 +Z）"}，已依來源面的 U、V 軸轉換；面編輯器顯示局部 u、v，因此畫面方向可能不同。邊編號對應同一條原始邊。`;
+    $("smOutlineViewHelp").textContent=`此圖沿原面 U 軸向右，以${def.view==="top"?"俯視（沿 −Z）":"仰視（沿 +Z）"}顯示實際放置。${GeometryModelViewer.drawingAlignment(source.frame,loops,def.view).changed?'上下方向與輪廓編輯圖相反；可在投影設定依原圖對齊放置。':'方向與輪廓編輯圖一致。'}邊編號對應同一條原始邊。`;
   }
   function renderSource(source, settings = {}) {
     state.source = source; state.phase = "ready";
@@ -416,6 +427,27 @@ window.SpaceModelWorkspace = (() => {
       const checked=await api('dump');if(!active())return;
       if(source.context_id!==contextId()||source.face_key!==faceKey(source.boundary_id)||!sameSourceHistory(source.history_token)||!checked.ok||checked.text!==source.base_scene||!surface||JSON.stringify({origin:surface.origin,u:surface.u,v:surface.v})!==JSON.stringify(source.frame)||JSON.stringify(currentProjection(source))!==original)throw new Error('核對期間來源面、放置或定義已變更。請重新「使用目前面」再設定。');
       if(surface.u?.[2]!==0||surface.v?.[2]!==0||Math.abs(surface.u[0]*surface.v[1]-surface.u[1]*surface.v[0])!==1||!['top','bottom'].includes(view))throw new Error('平面投影需要水平放置與明確觀看方向。');
+      if(validProjection(source.projection)&&source.projection.view===view&&needsDrawingAlignment(source,view)) {
+        const candidate=GeometryModelViewer.drawingAlignment(source.frame,source.loops,view).frame;
+        const axis=a=>AXIS_WORD[a.join()];
+        const line=`placement ${source.placement_id} on boundary ${source.boundary_id} origin ${candidate.origin.join(' ')} u ${axis(candidate.u)} v ${axis(candidate.v)}`;
+        // The ordinary native path owns I8/I8a preview, cancellation and one undo.
+        // Projection metadata stays unchanged; no mixed native/local transaction.
+        if(!await mutate([line])) {if(active())message('方向對齊未套用；原放置保持不變。','warning');return;}
+        if(!active()||source.context_id!==contextId()||source.face_key!==faceKey(source.boundary_id))return;
+        await renderObjects();if(!active())return;
+        const token=sourceHistoryToken(),updated=await api('surfaces'),references=await api('references'),nextDump=await api('dump');
+        if(!active())return;
+        const placed=updated.ok&&updated.surfaces?.find(s=>s.id===source.placement_id&&s.boundary===source.boundary_id);
+        if(!sameSourceHistory(token)||!nextDump.ok||!placed||JSON.stringify({origin:placed.origin,u:placed.u,v:placed.v})!==JSON.stringify(candidate))throw new Error('對齊後來源又有變更，請重新「使用目前面」核對。');
+        source.base_scene=nextDump.text;source.frame=candidate;source.history_token=token;source.timbers=sourceTimbers(references,source.placement_id);
+        const includeTimbers=$('smIncludeTimbers').checked;renderTimberCandidates(source);$('smIncludeTimbers').checked=includeTimbers;
+        state.result=null;state.input=null;state.phase='ready';state.previewRevision=-1;state.viewer?.setObjects([]);$('smResultBadge').textContent='方向已對齊，待預覽';
+        $('smPreviewDetails').hidden=true;$('smGeneratedFaces').innerHTML='';
+        for(const id of ['smVolume','smClearance','smWallVolume','smTimberVolume'])$(id).textContent='—';
+        stale();renderOutline(source.loops);message('放置已依原圖方向對齊，尺寸、外框位置及圖面高度保留。牆底、牆高與材料設定也保留；請更新預覽。','success');
+        return;
+      }
       ReferenceWorkspace.setFaceProjection(source.boundary_id,source.placement_id,{kind:'space-boundary-plan',view,region:'interior',wallSide:'outside'});
       projectionChanged();
       message('已確認用途與觀看方向，現有設定已保留。指定牆底後按「更新預覽」；定義會隨專案保存。','success');
@@ -480,6 +512,7 @@ window.SpaceModelWorkspace = (() => {
     if(!state.result||!state.viewer)return;
     const objects=GeometryModelViewer.spacePreviewObjects(state.result,{space:$("smShowSpace").checked,walls:$("smShowWalls").checked,timbers:$("smShowTimbers").checked,roof:$("smShowRoof").checked});
     const selected=state.viewer.getState().selection;
+    state.viewer.setPlanFrame(state.source?.frame||GeometryModelViewer.placementFrame(state.input?.base_scene,state.source?.placement_id));
     state.viewer.setObjects(objects); if(fit)state.viewer.fit();
     if(snapshotRecord()&&snapshotNavigation?.isCurrent()){state.viewer.setSelectableRoots(state.input.timbers);if(selected&&!state.viewer.selectRoot(selected))selectSnapshotTimber(null,false);}
   }
@@ -605,7 +638,7 @@ window.SpaceModelWorkspace = (() => {
   $("smEditHeightButton").onclick=()=>beginHeightEdit();$("smCancelHeightEdit").onclick=cancelHeightEdit;$("smEditHeight").addEventListener("input",stale);
   $("smSetProjection").onclick=editProjection;
   $('smConfirmProjection').onclick=confirmProjection;
-  $('smProjectionView').onchange=()=>{const pending=state.projectionPending;cancelProjectionConfirmation();if(pending)message('觀看方向已變更，請重新確認用途與觀看方向。');};
+  $('smProjectionView').onchange=()=>{const pending=state.projectionPending;cancelProjectionConfirmation();updateActions();if(pending)message('觀看方向已變更，請重新確認用途與觀看方向。');};
   $('smBottomZero').onclick=()=>{$('smBottom').value='0';stale();message('牆底已明確設為 0 mm；圖面維持原來的 z。確認設定後按「更新預覽」。');$('smBottom').focus();};
   dialog.addEventListener("cancel",()=>{viewerOpenSequence++;state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();});
   dialog.addEventListener("close",()=>{viewerOpenSequence++;clearSnapshotNavigation();state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(state.editing)cancelHeightEdit();window.dispatchEvent(new Event('space-model-view-changed'));});
