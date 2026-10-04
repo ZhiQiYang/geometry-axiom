@@ -1,5 +1,7 @@
 # 來源子網格規則提案：Q36 / #58（未採納）
 
+**2026-10-04：**使用者已接受六條明寫的來源子規則建議；[精確六條／現行差異／oracle與writer順序](../geometry-guide/IMPLEMENTATION-QUEUE-20261004.md#58-六條採納映射與oracle先準備未改ssotnative)。下方保留原完整proposal歷史；額外allocator/query/工程預算等不整包採納。此文件提交尚未改SSOT/native，下一契約patch依六條逐段diff並獨立review，不以舊「未採納」停止已批准準備。
+
 原始逐條來源查核基線：`ZhiQiYang/geometry-axiom` main `0f3c1a6fdd88bbcce4484a256d45900bd1d92313`，2026-10-03。後續文件基底 `9ebf52a1b6519356e9ff677e55b9cf167c47b70d`；核心及公理在兩基底間未變。工單需求見 [#57](https://github.com/ZhiQiYang/geometry-axiom/issues/57) 至 [#62](https://github.com/ZhiQiYang/geometry-axiom/issues/62)。本提案只有建議與待採納差異；本輪只整理文件／工單，不改公理、產品、服務，不重跑產品測試。行號對應原始查核基底，正式產品接手須再核最新版本。本提案是規格文件，不是已採納契約，且本輪未執行新產品測試。集中[選項與門檻](../geometry-guide/CONTINUATION-DECISIONS-20261003.md#q36)／[工作包](../geometry-guide/CONTINUATION-WORK-PACKAGES-20261003.md#wp58)。
 
 **結論：#58 proposal、API/閉包草案、數值 oracle 與 #62 驗收準備可立即並行；#59–61 的新來源規則產品須先採納 Q36 的精確差異。未提交 grid 草稿保存另外依賴 Q31。** #57 原始授權是規劃／開工單，沒有因此採納全格批次、rule 身分或新保存能力。公理 `:1042` 仍明寫全格批次、by_span、巢狀子格未定案；願景 `geometry-guide/PRODUCT-VISION.md:3–5` 不是實作授權。
