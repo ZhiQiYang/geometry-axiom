@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const P = require('../geometry-web/project-store.js');
+const nativeCapabilities = require('./fixtures/native_available_capabilities.json');
 const zip = require('../geometry-web/vendor/fflate/umd/index.js');
 const clone = x => JSON.parse(JSON.stringify(x));
 const hash = 'a'.repeat(64);
@@ -120,7 +121,7 @@ function workspace(verify, rebuild = () => model().result) {
     api:async cmd=>({ok:true,text:'old scene'}),resetSceneFocus:()=>{},refreshActive:async()=>{},setStatus:()=>{},
     sceneMenuDisplay:x=>x,curScene:{},
     fetch:async (url,opts)=>{calls.push(url);requests.push({url,body:['/upload','/upload/prepare'].includes(url)?opts.body:JSON.parse(opts.body)});return {ok:true,json:async()=>url==='/model/verify'?verify(JSON.parse(opts.body)):
-      url==='/model/space-preview'?rebuild(JSON.parse(opts.body)):url==='/upload/prepare'?{ok:true,token:1,final_objects:{boundaries:[],placements:[]}}:{ok:true,path:'loaded'}};}
+      url==='/model/space-preview'?rebuild(JSON.parse(opts.body)):url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[],placements:[]}}:{ok:true,path:'loaded'}};}
   };
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/reference-workspace.js'),'utf8')+'\nglobalThis.workspace=ReferenceWorkspace;',env);
   return {api:env.workspace,events,calls,requests};
