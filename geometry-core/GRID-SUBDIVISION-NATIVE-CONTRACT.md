@@ -1,6 +1,6 @@
 # Source subdivision native slice — #58 / #59
 
-Base: main `1075058`, 2026-10-04. Authorization: user accepted the eight explicitly written recommendations; item 7 contains six source subdivision behaviors. Only those behaviors are adopted. Q36 alternatives are design history, not blanket authorization. Formal geometry truth remains `公理層.md` D19a/I25a and related clauses; this file specifies transport and implementation boundaries.
+Merged base: main `d1a161f6b1ed50d100d316a0b90be9d7d34451f6`, 2026-10-04; initial implementation started from `1075058`. Authorization: user accepted the eight explicitly written recommendations; item 7 contains six source subdivision behaviors. Only those behaviors are adopted. Q36 alternatives are design history, not blanket authorization. Formal geometry truth remains `公理層.md` D19a/I25a and related clauses; this file specifies transport and implementation boundaries.
 
 Native owner: this delegated #58/59 worker. Owns `current_geometry.c`, source/binding/subgrid/reference/transaction native integration, native scene serialization, `web_bridge.c` and subdivision bridge transport. Internal parallel workers may contribute new helper modules under this owner. Integration owner `01a100b5-800b-75f2-9a02-71ee53e550ba` owns project-store, project schema/capability preflight and ContextHistory; native capability is `grid-subdivision-rules/1`. #44, #77, #49 modules/tests and #54 are outside this slice.
 
