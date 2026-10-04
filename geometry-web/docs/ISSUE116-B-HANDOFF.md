@@ -72,3 +72,19 @@ source-plane 的原插入區不衝突，也必須保留；不以只選 ours/thei
 上述唯一index衝突已依雙方script順序解決。新main下87項專項、73項共用owner、39項模型更新與56項多房間原生測試；過期session保留#114唯讀保護，另讀native dump證明零寫入，不清除保護讓測試過。dot的首輪独立source review見PR #125：一項未放置P2已由87項實機browser/native驗收修正，仍需對最終head復查；未把其餘source review代替獨立像素或全量驗收。
 
 交 dot 核對最新 main 下的小接線、獨立只讀規則審查，並跑 #114 正式多房間正常／中斷／保存重開／歷史／model update browser acceptance。草稿不自動關閉 #116；iOS／IME／OS picker 與其他工作區未宣稱完成。
+
+## 2026-10-05 最新 main 與 3D 旋轉預覽更新
+
+使用者要求更新後，以普通 merge 納入 main `4bea91a`（含 #124），merge 為 `b9893a6`，沒有衝突；保留原 `2b53a03` ancestry。`app.js`、B 選單、游標與 C 核心沒有因這次同步被覆寫。main 的共用 workspace／空間建模修改完整保留，golden 變更只繼承 #124，沒有為本分支降低門檻。
+
+使用者另回報 3D 預覽上下截斷。檢視器旋轉時未重算投影外框的 fit scale，已在 `0e555ed` 對拖曳與方向鍵補齊；沿用既有「置中」、缩放與平移，沒有新增 UI、重建網格或修改體積。手動放大仍可超出畫布，按置中會恢復全景。此項只證明旋轉適配缺漏已重現並修正，不能從使用者截圖反推其當時的 zoom 數值。
+
+修正後來源指紋為 `a1aa7fad9755e0d800c2728e4b442ccb43d48fa2997d183bd05cb035d1afda4f`。本次獨立隔離服務／Chrome：B 87/87、共用 Windows 73/73、模型更新 WSL/GCC 39/39（均無 skip）、預設完整空間套件 202/202（完成，0例外／console error；另外的 timber-material／timber-source-guards 不在預設模式）。完整 CDP 的歷史 P76 gate 保留；這次 viewer 跟進未重新跑全量 CDP，不把部分通過取代全量。
+
+另以真正空間工作區選 L 形範例、牆高 1000 mm、更新預覽、置中，再旋轉至同一仰視角：舊版在 1020×152.59375 的實際 canvas 畫出 y=-17.055 至 161.649；修正版桌面 1440×650／手機390×844完整可見。拖曳旋轉、置中恢復、手動 zoom 保留及逐字 native dump／精確體積不變皆通過。引擎 L 房間的 canvas 契約也涵蓋 860×130／390×230，舊 viewer 敏感度測試在 ArrowDown 第14次確實失敗。此測試使用公開範例，沒有將使用者的私人專案提交。
+
+- [旋轉修正前](issue116/preview-rotation-before.png)、[相同角度修正後](issue116/preview-rotation-after.png)、[手機](issue116/preview-rotation-mobile.png)
+- 本次結構化證據：`issue116/validation.json` 的 `main_update_20261005`，舊資料保留為歷史紀錄。
+- 8817 已由本分支重啟，fresh probe 通過，之前完整保存檔的核心場景逐字載回。使用者明示可載回之前保存檔；原完整檔、完整檔備份及更新前的新 dump 均保留本機。Edge 的完整專案檔案選取仍需完成，未宣稱 PDF／草稿已恢復；未清瀏覽器儲存、未重置 8765。
+
+PR #125 仍交 dot 審查整合，沒有直接合入 main。Hosted CI、最終 head／owner 及實體裝置 gate 維持原限制。

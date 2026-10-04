@@ -4177,6 +4177,8 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 正式 gate：`tests/test_issue116_browser.js`＋`geometry-web/cdp_test.js`；證據與限制見 `geometry-web/docs/ISSUE116-B-HANDOFF.md` 和根目錄 `design-qa.md`。
 - 87項真browser/native、共用73項、模型更新39項、多房間56項通過；dot首輪source review的未放置參考線P2已修正並補8項真驗收。最終`dce2975`／ee9f版本完整 `cdp_test.js`：1586通過／0失敗，但在P76等待逾時而未完成，未比對golden。實際trace為參數卡engineering-confirm拒絕Missing, invalid or unrelated engineering preview token後，等待!ParameterUI.pending逾時；沒有把0失敗斷言說成全量通過。詳細fatal與分段見validation.json。 CI未啟動及dot最終head／owner／實體裝置gate未驗，保持草稿。已rebase到#114合入後861b65e並保留雙方scripts；詳細分段與來源hashes見validation.json。
 
+- 2026-10-05 更新：普通 merge 納入最新 main `4bea91a`／#124，原 B 與 owner 修改都保留。使用者追加 3D 旋轉裁切回報，`0e555ed` 補齊拖曳／方向鍵的投影 fit scale；沿用置中、缩放與平移，未新增 UI、未改網格／體積。B87、共用73、模型39、預設完整空間202及桌面／手機旋轉畫面驗證通過；原全量CDP／CI／dot gate維持，細節與限制見交接報告的本次更新段落。
+
 ## GEO-244 — 描面畫布與空間俯視方向不一致（2026-10-04，方向修正驗收通過；全量驗證限制見下）
 
 - 使用者面 #2 的 191×913 mm 凸角在輪廓編輯圖左下，3D 俯視顯示在左上。編輯圖沿局部 u→／v↓，承載面卻是 U=+X／V=+Y，而世界俯視是 +X→／+Y↑。既有 GEO-207 的局部編輯圖／世界投影區分確實產生相反的上下畫面方向。

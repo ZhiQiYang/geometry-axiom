@@ -414,5 +414,578 @@
       "engineering-adapter.js"
     ],
     "observation": "Both final branch and untouched main complete 57 P76 assertions then fail with the same preview-token rejection and !ParameterUI.pending timeout. A baseline reproduction, not a green full run."
+  },
+  "main_update_20261005": {
+    "main_commit": "4bea91a3ff3af25d1062040b2c2ea776b60a8daf",
+    "merge_commit": "b9893a63bcbf28d9cd92c70a7f6ea6560a9ac175",
+    "source_commit": "0e555ed881f891e71397bb7e99ef01bea871b953",
+    "merge_strategy": "ordinary merge, no conflict, retains original 2b53 ancestry",
+    "runtime": "a1aa7fad9755e0d800c2728e4b442ccb43d48fa2997d183bd05cb035d1afda4f",
+    "source_and_test_sha256": {
+      "geometry-web/model-viewer.js": "e1f45bf593cd62da5936e6a603dfbe67411a35e79af8d0a4a7edea7e830b4ff1",
+      "tests/test_model_viewer.cjs": "373f1cfb7a5b4df2fa4967d327bb5b11ccf4f2488e9fe0d8d475ed041f6f9669",
+      "geometry-web/app.js": "8cfd1dcc42d0173a71e4fc9106c26eae52e597e056e768614d8c7c02bf48ea5d",
+      "geometry-web/reference-workspace.js": "acc963969b7f11e63eb80c6636f430f562e6d118690d6eba44fd44dd8d06bb78",
+      "geometry-web/serve.py": "4caeb8514ded97a4a8525a983ef48a8a6ccb9e55a3a9e4badd007141bf6152b2",
+      "geometry-web/space-workspace.js": "17e6858f21624da2b1f3098b6dc408d606e36d9489971220630a224d80128357",
+      "geometry-web/model_update.py": "cba0cbe3dbff84261f0bbd860b966900dd911b11eedad8dc3622f78add21a427",
+      "geometry-web/space_modeling.py": "0107d0534779b543fc4b6f3faed17bd05ac7d1d764d84ac5623c96d063a031df",
+      "geometry-web/face-context-menu.js": "358c9bc6264f0edbddd15f64109b5b7d1a8911a38bb0da8b1c00148b6f7ef81a",
+      "geometry-web/face-context-menu.css": "adbe98cc2486340f947554dc749d7e365e3c3a4860008d35a4625f641b78d1c7",
+      "geometry-web/cursor-v2.js": "2c2b53d2ab3b058a00638740092e1b1e0a557383e7fe2434671976d7946ead32",
+      "geometry-web/cdp_sections.golden.json": "723d82225e92a9b5cdb926167de29b1548085dca1915d1e55eee30b2119d5014",
+      "tests/test_issue116_browser.js": "222aecfe49ad9d3ea74d71868d9c4a2b59e28cf962aad75a3d3974336be97d1d"
+    },
+    "b_browser_acceptance": {
+      "checks": 87,
+      "records": [
+        "runtime fresh before mutation",
+        "runtime belongs to this worktree",
+        "app title and nonblank shell",
+        "B menu remains while form opens",
+        "four edge actions reuse existing commands",
+        "duplicate floating action bar is suppressed",
+        "form flips left at right edge",
+        "keep depth derives from current geometry",
+        "preview coordinates independently match input dimensions",
+        "numeric preview never writes native geometry",
+        "desktop menu and form stay inside viewport",
+        "menu footer is not obscured by the persistent report button",
+        "B preview retains genuine drag handles",
+        "dragging preview updates existing numeric parameters",
+        "dragging preview performs no native write",
+        "cancel preserves native dump byte for byte",
+        "cancel closes form",
+        "cancel retains B menu",
+        "confirm applies exact expected notch via native core",
+        "confirmed geometry differs",
+        "one real undo restores complete native scene",
+        "one real redo restores confirmed scene",
+        "full project ZIP saved through actual Save button",
+        "full saved project reopened with identical native dump",
+        "selection stale form refuses all native writes",
+        "selection stale form retires preview",
+        "frame stale form refuses all native writes",
+        "frame stale form retires preview",
+        "session stale form refuses all native writes",
+        "session stale form retires preview",
+        "context stale form refuses all native writes",
+        "context stale form retires preview",
+        "unknown/mismatched actions never fall through to a default command",
+        "search finds a real existing command",
+        "Enter on search activates matching command",
+        "Esc first cancels parameter preview",
+        "Esc second closes menu",
+        "search and Esc leave native world unchanged",
+        "arrow navigation selects first enabled action",
+        "End selects last menu action",
+        "Home returns to first enabled action",
+        "disabled reason stays visible in footer",
+        "disabled Copy performs no write",
+        "hole edge shortcut remains disabled while explicit form positioning is available",
+        "hole-edge reason distinguishes shortcut from axiom authority",
+        "hole shape refusal is explicit",
+        "native core rejects boundary role on an inner hole edge",
+        "hole edge is rejected for the actual I20 role requirement",
+        "outside-face menu provides real view controls",
+        "outside-face opening entry remains unavailable",
+        "hovering a submenu child retains its usable menu",
+        "real submenu item toggles existing grid control",
+        "view submenu cannot alter native geometry",
+        "convex corner exposes the existing corner operation",
+        "concave corner explains why cut is unavailable",
+        "existing Shift selection produces real timber multi-selection",
+        "right-click preserves existing multi-selection",
+        "multi-delete follows existing single-selection requirement",
+        "hover badge reads actual first timber ID",
+        "changing hovered timber re-expands the badge with its actual ID",
+        "inside-point target preserves right-click location",
+        "moving pointer does not rewrite stored create anchor",
+        "opening starts at retained real snapped anchor",
+        "guide context uses actual guide id",
+        "guide editing routes to existing reference-source form",
+        "guide source expression preserved",
+        "reference-line hover describes the real placement source",
+        "unplaced face has the existing disabled reference-line tool",
+        "unplaced point tiles share the real placement prerequisite",
+        "disabled unplaced tile keeps the menu and explains the prerequisite",
+        "search retains both unplaced guide refusals",
+        "Create submenu shares the same unplaced guide prerequisite",
+        "disabled Create guide keeps its explanation visible",
+        "all unplaced guide entries preserve the native dump byte for byte",
+        "unplaced guide refusals send zero native guide commands",
+        "real edge hover shows intent badge",
+        "stationary cursor collapses after 1.2 seconds",
+        "temporary pan modifier is visible",
+        "selection hover retains the actual hole context",
+        "denial reason remains after normal collapse delay",
+        "390px menu/form are inside actual face viewport",
+        "390px cancel uses same preview mechanism",
+        "390px cancel restores the compact menu",
+        "720px menu/form are inside actual face viewport",
+        "720px cancel uses same preview mechanism",
+        "720px cancel restores the compact menu",
+        "no app page or console errors during acceptance"
+      ],
+      "errors": [],
+      "evidence": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\issue116-main-update-final-evidence",
+      "viewport": "1440x900",
+      "density": 1,
+      "runtime": "a1aa7fad9755e0d800c2728e4b442ccb43d48fa2997d183bd05cb035d1afda4f"
+    },
+    "shared_tests": {
+      "environment": "Windows with verified WSL native bridge",
+      "passed": 73,
+      "failed": 0,
+      "skipped": 0
+    },
+    "model_update_tests": {
+      "environment": "WSL/GCC, PYTHON=python3, verified unchanged native executables",
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0
+    },
+    "space_browser_suite": {
+      "schema": "geometry-space-result/1",
+      "scope": {
+        "mode": "full-space-suite",
+        "filters": [],
+        "included": [
+          "space-height-library",
+          "projection-lifecycle",
+          "projection-placement",
+          "font-layout",
+          "space-flow"
+        ],
+        "omitted": [
+          "timber-material",
+          "timber-source-guards"
+        ],
+        "url": "http://localhost:8816/",
+        "feedbackDirectory": "C:\\Users\\Yang\\AppData\\Local\\Temp\\geometry-tests\\fb-issue116-main-update"
+      },
+      "completed": true,
+      "groups": {
+        "setup": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        },
+        "space-height-library": {
+          "expected": 86,
+          "passed": 86,
+          "failed": 0,
+          "completed": true
+        },
+        "projection-lifecycle": {
+          "expected": 18,
+          "passed": 18,
+          "failed": 0,
+          "completed": true
+        },
+        "projection-placement": {
+          "expected": 36,
+          "passed": 36,
+          "failed": 0,
+          "completed": true
+        },
+        "font-layout": {
+          "expected": 19,
+          "passed": 19,
+          "failed": 0,
+          "completed": true
+        },
+        "space-flow": {
+          "expected": 39,
+          "passed": 39,
+          "failed": 0,
+          "completed": true
+        },
+        "browser-health": {
+          "expected": 2,
+          "passed": 2,
+          "failed": 0,
+          "completed": true
+        }
+      },
+      "completenessProblems": [],
+      "passed": 202,
+      "failed": 0,
+      "exceptions": [],
+      "consoleErrors": []
+    },
+    "orbit_browser": {
+      "environment": "Chrome / bundled Playwright, isolated 8816",
+      "page_identity": true,
+      "nonblank": true,
+      "no_overlay": true,
+      "errors": [],
+      "runs": [
+        {
+          "before": true,
+          "viewport": {
+            "width": 1440,
+            "height": 650
+          },
+          "rotated": {
+            "width": 1020,
+            "height": 152.59375,
+            "faces": 150,
+            "xmin": 406.38971301200496,
+            "xmax": 613.6102869879951,
+            "ymin": -17.05511561350032,
+            "ymax": 161.64886561350033,
+            "camera": {
+              "objectCount": 2,
+              "triangleCount": 150,
+              "bounds": {
+                "min": [
+                  -100,
+                  -100,
+                  0
+                ],
+                "max": [
+                  6100,
+                  4600,
+                  1000
+                ]
+              },
+              "labels": [
+                "空間邊界",
+                "材料牆"
+              ],
+              "view": "custom",
+              "yaw": -0.7853981633974483,
+              "pitch": -1.5707963267948966,
+              "zoom": 1,
+              "pan": {
+                "x": 0,
+                "y": 0
+              },
+              "width": 1020,
+              "height": 152.59375,
+              "destroyed": false,
+              "selection": null
+            },
+            "summary": {
+              "bottom": 0,
+              "clearance_mm3": "24300000000",
+              "closed": true,
+              "face_count": 8,
+              "generated_faces": [
+                {
+                  "label": "外環第 1 邊",
+                  "orientation": 1,
+                  "placement_id": 2,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 2 邊",
+                  "orientation": 1,
+                  "placement_id": 3,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 3 邊",
+                  "orientation": 1,
+                  "placement_id": 4,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 4 邊",
+                  "orientation": 1,
+                  "placement_id": 5,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 5 邊",
+                  "orientation": 1,
+                  "placement_id": 6,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 6 邊",
+                  "orientation": 1,
+                  "placement_id": 7,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "底面",
+                  "orientation": -1,
+                  "placement_id": 8,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "頂面",
+                  "orientation": 1,
+                  "placement_id": 9,
+                  "purpose": "boundary"
+                }
+              ],
+              "missing": [],
+              "source_placement": 1,
+              "source_z": 2500,
+              "top": 1000,
+              "volume_mm3": "24300000000",
+              "wall_diagnostics": [],
+              "wall_volume_mm3": "2140000000"
+            }
+          },
+          "fitRecovered": true
+        },
+        {
+          "before": false,
+          "viewport": {
+            "width": 1440,
+            "height": 650
+          },
+          "rotated": {
+            "width": 1020,
+            "height": 152.59375,
+            "faces": 150,
+            "xmin": 437.4530352393617,
+            "xmax": 582.5469647606383,
+            "ymin": 9.7334375,
+            "ymax": 134.8603125,
+            "camera": {
+              "objectCount": 2,
+              "triangleCount": 150,
+              "bounds": {
+                "min": [
+                  -100,
+                  -100,
+                  0
+                ],
+                "max": [
+                  6100,
+                  4600,
+                  1000
+                ]
+              },
+              "labels": [
+                "空間邊界",
+                "材料牆"
+              ],
+              "view": "custom",
+              "yaw": -0.7853981633974483,
+              "pitch": -1.5707963267948966,
+              "zoom": 1,
+              "pan": {
+                "x": 0,
+                "y": 0
+              },
+              "width": 1020,
+              "height": 152.59375,
+              "destroyed": false,
+              "selection": null
+            },
+            "summary": {
+              "bottom": 0,
+              "clearance_mm3": "24300000000",
+              "closed": true,
+              "face_count": 8,
+              "generated_faces": [
+                {
+                  "label": "外環第 1 邊",
+                  "orientation": 1,
+                  "placement_id": 2,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 2 邊",
+                  "orientation": 1,
+                  "placement_id": 3,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 3 邊",
+                  "orientation": 1,
+                  "placement_id": 4,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 4 邊",
+                  "orientation": 1,
+                  "placement_id": 5,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 5 邊",
+                  "orientation": 1,
+                  "placement_id": 6,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 6 邊",
+                  "orientation": 1,
+                  "placement_id": 7,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "底面",
+                  "orientation": -1,
+                  "placement_id": 8,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "頂面",
+                  "orientation": 1,
+                  "placement_id": 9,
+                  "purpose": "boundary"
+                }
+              ],
+              "missing": [],
+              "source_placement": 1,
+              "source_z": 2500,
+              "top": 1000,
+              "volume_mm3": "24300000000",
+              "wall_diagnostics": [],
+              "wall_volume_mm3": "2140000000"
+            }
+          },
+          "fitRecovered": true
+        },
+        {
+          "before": false,
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "rotated": {
+            "width": 390,
+            "height": 130,
+            "faces": 150,
+            "xmin": 133.19468085106385,
+            "xmax": 256.8053191489362,
+            "ymin": 7.70000000000001,
+            "ymax": 114.29999999999998,
+            "camera": {
+              "objectCount": 2,
+              "triangleCount": 150,
+              "bounds": {
+                "min": [
+                  -100,
+                  -100,
+                  0
+                ],
+                "max": [
+                  6100,
+                  4600,
+                  1000
+                ]
+              },
+              "labels": [
+                "空間邊界",
+                "材料牆"
+              ],
+              "view": "custom",
+              "yaw": -0.7853981633974483,
+              "pitch": -1.5707963267948966,
+              "zoom": 1,
+              "pan": {
+                "x": 0,
+                "y": 0
+              },
+              "width": 390,
+              "height": 130,
+              "destroyed": false,
+              "selection": null
+            },
+            "summary": {
+              "bottom": 0,
+              "clearance_mm3": "24300000000",
+              "closed": true,
+              "face_count": 8,
+              "generated_faces": [
+                {
+                  "label": "外環第 1 邊",
+                  "orientation": 1,
+                  "placement_id": 2,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 2 邊",
+                  "orientation": 1,
+                  "placement_id": 3,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 3 邊",
+                  "orientation": 1,
+                  "placement_id": 4,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 4 邊",
+                  "orientation": 1,
+                  "placement_id": 5,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 5 邊",
+                  "orientation": 1,
+                  "placement_id": 6,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "外環第 6 邊",
+                  "orientation": 1,
+                  "placement_id": 7,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "底面",
+                  "orientation": -1,
+                  "placement_id": 8,
+                  "purpose": "boundary"
+                },
+                {
+                  "label": "頂面",
+                  "orientation": 1,
+                  "placement_id": 9,
+                  "purpose": "boundary"
+                }
+              ],
+              "missing": [],
+              "source_placement": 1,
+              "source_z": 2500,
+              "top": 1000,
+              "volume_mm3": "24300000000",
+              "wall_diagnostics": [],
+              "wall_volume_mm3": "2140000000"
+            }
+          },
+          "fitRecovered": true
+        }
+      ],
+      "mesh_and_native_dump_unchanged": true,
+      "fit_recovered": true,
+      "manual_zoom_retained": true
+    },
+    "orbit_canvas_contract": {
+      "passed": true,
+      "desktop": [
+        860,
+        130
+      ],
+      "mobile": [
+        390,
+        230
+      ],
+      "keyboard_and_pointer": true,
+      "old_viewer_sensitivity": "fails at ArrowDown 14; drawn y=-0.9114897756210425",
+      "preserves_mesh_zoom_pan": true
+    },
+    "live_preview": {
+      "port": 8817,
+      "fresh_probe": true,
+      "saved_scene_restored_exactly": true,
+      "private_full_archive_and_current_dump": "preserved locally, no private files submitted",
+      "browser_full_project_restore": "pending native file selection; prior saved archive retained"
+    },
+    "full_cdp": "Not rerun for this viewer-only follow-up. Historical P76 incomplete runs above remain an integration gate; scoped passes are not a full CDP pass.",
+    "hosted_ci": "External gate; not claimed passed",
+    "golden_change": "Only inherited main #124 changes; no thresholds edited by this follow-up"
   }
 }

@@ -57,3 +57,11 @@ P3：保留現行右欄及工作區版面；來源 hover 灰底／實作靜止�
 P76阻擋已在最終分支與未修改main `861b65e`的獨立服務／Chrome重現：兩者部分模式各57項通過後，在同一個特殊字元修正／重新試算／確認流程收到相同preview token拒絕及pending逾時。`parameters.js`、`parameter_workflow_test.js`、`parameter_confirmation_test.js`、`engineering-adapter.js`逐字相同，核心也無diff；未據此放寬token檢查或修改參數功能。結果只證明阻擋在main已存在，不代表完整回歸通過。
 
 交接詳細映射、衝突與命令见 `geometry-web/docs/ISSUE116-B-HANDOFF.md`。
+
+## 2026-10-05 同步與追加旋轉預覽驗證
+
+普通 merge 保留 main `4bea91a` 與原 `2b53a03`，source `0e555ed`。B 原稿／實作差異不變；新增的是使用者回報的 3D 鏡頭適配修正，沒有新增入口或說明。
+
+Chrome／Playwright 隔離 8816：頁面標題與 URL、非空白、無錯誤覆蓋、console、實際畫面與操作皆通過。L 形1000 mm高範例在同一旋轉角度比較舊／新 viewer；桌面1440×650與手機390×844修正後完整可見。真拖曳／方向鍵旋轉、既有置中、手動放大保持，以及場景／體積不變通過。原始使用者截圖只證明超出預覽框，不能確定當時手動 zoom；放大後的裁切仍由置中恢復。公開範例對照見 `geometry-web/docs/issue116/preview-rotation-*.png`。
+
+最終a1aa來源 B87、共用73、模型39、預設完整空間202全部通過；空間模式不含另列timber兩組。viewer canvas真繪製座標回歸與舊版敏感度通過。原完整CDP、CI及dot整合gate沒有以這些部分驗收取代。完整專案的Edge原生檔案選取尚待完成；8817來源fresh、保存場景逐字還原，私人檔留本機。
