@@ -619,8 +619,12 @@
         ...(Array.isArray(this.frame.context.models) ? { models: copy(this.frame.context.models) } : {}),
         ...(this.frame.context.faceProjections instanceof Map ? { faceProjections: new Map([...this.frame.context.faceProjections].map(([key, value]) => [key, copy(value)])) } : {}) };
     }
-    restore(frame) {
-      this.frame = { context: frame.context, ids: new Map(frame.ids) };
+    restore(frame, preserveFrame = false) {
+      this.boundaryPreview = null;
+      // Rolling back the currently open group restores its data while its
+      // owner still holds the same frame lease. Undo/redo create a fresh frame.
+      if (preserveFrame && this.frame.context === frame.context) this.frame.ids = new Map(frame.ids);
+      else this.frame = { context: frame.context, ids: new Map(frame.ids) };
       if (frame.groups) this.frame.context.groups = this.copyGroups(frame.groups);
       this.frame.context.reconstructionReviews = new Map([...(frame.reconstructionReviews || new Map())].map(([k,v])=>[k,copy(v)]));
       this.frame.context.assemblyDrafts = copy(frame.assemblyDrafts || []);
@@ -698,10 +702,11 @@
       this.frame.context.featureAttachments = records.map(record => record === room ? Features.record(Features.ROOM_KIND, value) : record);
     }
     replace(context, ids, action = null) {
+      this.boundaryPreview = null;
       this.push(this.snapshot(), "core", action); this.group = null;
       this.frame = { context, ids: new Map(ids || []) };
     }
-    observe(command, result) {
+    observe(command, result, session = null) {
       // The bridge accepts blank/comment lines without a native history step.
       // Treating one as a mutation would also unblock an abandoned core redo.
       if (command.startsWith("line ")) {
@@ -715,17 +720,28 @@
       }
       if (!/^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(command)) return;
       const op = command.startsWith("line ") ? command.slice(5).trim().split(/\s+/)[0] : command.split(/\s+/)[0];
+      if (result.preview) {
+        // Candidate geometry remains native. Keep only the affected typed IDs
+        // and retirement flags until this exact candidate is confirmed.
+        const preview = result.preview, rows = preview.boundaries;
+        this.boundaryPreview = preview.valid === true && uint(preview.token) && preview.token > 0 &&
+          Array.isArray(rows) && rows.length <= 10000 && rows.every(row => positiveId(row.id) && (row.after === null || row.after?.id === row.id)) ?
+          {token:String(preview.token),frame:this.frame,session,changes:rows.map(row => ({id:row.id,retired:row.after === null}))} : null;
+        return;
+      }
       if (!result.ok) {
+        if (op === "confirm" || op === "cancel-preview") this.boundaryPreview = null;
         // A preview rejection preserves the core's open group; other failures roll it back.
         if (this.group && !result.preview && op !== "history-begin" && op !== "loadfile") {
-          this.restore(this.group.base); this.group = null;
+          this.restore(this.group.base, true); this.group = null;
         }
         return;
       }
       if (["engineering-confirm", "assembly-confirm"].includes(op) && result.history_changed === false) return;
-      if (op === "canvas-pos" || op === "preview" || op === "cancel-preview") return;
+      if (op === "cancel-preview") {this.boundaryPreview = null; return;}
+      if (op === "canvas-pos" || op === "preview") return;
       if (op === "history-begin") { this.group = { base: this.snapshot(), dirty: false }; return; }
-      if (op === "history-abort") { if (this.group) this.restore(this.group.base); this.group = null; return; }
+      if (op === "history-abort") { if (this.group) this.restore(this.group.base, true); this.group = null; return; }
       if (op === "history-end") { if (this.group?.dirty) this.push(this.group.base); this.group = null; return; }
       if (op === "undo" || op === "redo") {
         const before = this.snapshot();
@@ -755,6 +771,20 @@
       else if (this.group) this.group.dirty = true;
       else this.push(this.snapshot());
       if (op === "reset" || op === "default" || op === "loadfile") this.frame = { context: this.makeContext(), ids: new Map() };
+      if (op === "confirm") {
+        const preview = this.boundaryPreview, token = command.match(/^line\s+confirm\s+(\d+)\s*$/)?.[1];
+        if (preview && preview.frame === this.frame && preview.session === session && preview.token === token) {
+          for (const change of preview.changes) {
+            if (change.retired) this.frame.ids.delete(change.id);
+            this.roomBoundaryChanged(change.id, change.retired);
+          }
+        } else {
+          const records = this.frame.context.featureAttachments || [];
+          this.frame.context.featureAttachments = records.map(record => record.kind === Features.ROOM_KIND ?
+            Features.record(Features.ROOM_KIND, Features.unknownRoomHistory(record.value)) : record);
+        }
+        this.boundaryPreview = null;
+      }
       // A batch may recreate a deleted id before the next objects refresh.
       // Retire the old incarnation at the successful delete, not at render time.
       const deletion = command.match(/^line\s+delete\s+boundary\s+(\d+)(?:\s|$)/);

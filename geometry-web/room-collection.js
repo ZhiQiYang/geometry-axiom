@@ -97,6 +97,13 @@
           if (preview?.token) await this.a.cancelPreview(preview.token);
           fail(preview?.error || "原生房間預覽未通過。");
         }
+        if (!intent.room) {
+          const rows = Array.isArray(preview.boundaries) ? preview.boundaries.filter(row => row?.id === id) : [];
+          if (rows.length !== 1 || rows[0].before !== null || rows[0].after?.id !== id) {
+            await this.a.cancelPreview(preview.token);
+            fail("新房間編號已被使用或候選身份無法確認，未覆蓋既有邊界。");
+          }
+        }
         this.preview = {token: preview.token, id, name: name.trim(), command};
         return {...copy(this.preview), review: preview};
       } finally { this.busy = false; }

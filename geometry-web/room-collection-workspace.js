@@ -3,7 +3,7 @@ const RoomCollectionWorkspace = (() => {
   "use strict";
   const S = GeometrySourcePlane, R = GeometryRoomCollection;
   const pages = new Map();
-  let instance = null, activeBid = null, lease = null, ownedPreviewToken = null, currentDialog = null, retireDialog = null, integration = null, cleaningUI = false;
+  let instance = null, activeBid = null, lease = null, ownedPreviewToken = null, ownedPreviewCommand = null, currentDialog = null, retireDialog = null, integration = null, cleaningUI = false;
   const W = () => ReferenceWorkspace;
   const token = () => W().getProjectState().contextToken;
   const state = () => W().readFeatureAttachment("source-rooms", token()) || S.empty();
@@ -37,9 +37,10 @@ const RoomCollectionWorkspace = (() => {
       boundaryCommand,
       previewBoundary: async command => {
         lease = integration.beginTransaction(token());
+        ownedPreviewCommand = "line preview " + command;
         const result = await request("line preview " + command);
         if (!result.ok) {
-          if (!result.transport) {integration.endTransaction(lease); lease = null;}
+          if (!result.transport) {integration.endTransaction(lease); lease = null; ownedPreviewCommand = null;}
           throw Object.assign(new Error(result.error || "房間預覽失敗。"), {transport: result.transport});
         }
         ownedPreviewToken = result.preview?.token;
@@ -50,7 +51,7 @@ const RoomCollectionWorkspace = (() => {
         if (!lease || ownedPreviewToken !== previewToken) throw new Error("房間預覽識別已變更，未取消其他工作的候選。");
         integration.assertTransaction(lease);
         await checked("line cancel-preview");
-        ownedPreviewToken = null; integration.endTransaction(lease); lease = null;
+        ownedPreviewToken = null; ownedPreviewCommand = null; integration.endTransaction(lease); lease = null;
       },
       changeMetadata: (next, {label, stamp}) => W().setFeatureAttachment("source-rooms", next, stamp.contextToken, {recordHistory: true, reason: label}),
       commitWithMetadata: async ({token: previewToken, boundaryId, label, assertCurrent, makeAttachment}) => {
@@ -81,7 +82,7 @@ const RoomCollectionWorkspace = (() => {
           throw error;
         } finally {
           // Unknown transport outcomes retain the lease until the existing receipt recovery aborts/settles the group.
-          if (!unknown) {integration.endTransaction(lease); lease = null; ownedPreviewToken = null;}
+          if (!unknown) {integration.endTransaction(lease); lease = null; ownedPreviewToken = null; ownedPreviewCommand = null;}
         }
       }
     });
@@ -239,6 +240,21 @@ const RoomCollectionWorkspace = (() => {
     controller().basis(plane.id, calibration === undefined ? plane.calibration : calibration, alignment);
     W().sync(); renderFaceInspector(); return true;
   }
+  function observeNativeResult(command, result) {
+    if (!lease || !result.ok) return;
+    if (command === ownedPreviewCommand && result.preview?.valid === true && Number.isInteger(result.preview.token) && result.preview.token > 0)
+      ownedPreviewToken = result.preview.token;
+    if (command === "line cancel-preview" || command === "line history-abort" || command === "line confirm " + ownedPreviewToken)
+      ownedPreviewToken = null;
+  }
+  async function settleRecoveredTransaction() {
+    if (lease && ownedPreviewToken !== null) {
+      integration.assertTransaction(lease);
+      await checked("line cancel-preview");
+      ownedPreviewToken = null;
+    }
+    recoveredTransaction();
+  }
   function recoveredTransaction() {
     // A settled native receipt retires the whole room operation. Clear its
     // editor state while the owner lease still blocks unrelated mutations;
@@ -248,14 +264,14 @@ const RoomCollectionWorkspace = (() => {
     try {
       retireDialog?.();
       if (currentDialog) {currentDialog.close(); currentDialog.remove(); currentDialog = null;}
-      instance = null; activeBid = null; ownedPreviewToken = null;
+      instance = null; activeBid = null; ownedPreviewToken = null; ownedPreviewCommand = null;
       fe.panHold = null; fe.newOutline = null;
       cleanDraft(); feSetTool("select"); renderFaceInspector();
     } finally {cleaningUI = false;}
     if (settledLease) integration.endTransaction(settledLease);
     lease = null;
   }
-  return {configure, assertTransaction, paneHTML, bindPane, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeBasis, recoveredTransaction,
+  return {configure, assertTransaction, paneHTML, bindPane, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeBasis, observeNativeResult, settleRecoveredTransaction, recoveredTransaction,
     get cleaningUI() {return cleaningUI;}, get dialogOpen() {return !!currentDialog?.open;},
     get hasWork() {return !!instance?.intent || !!lease;}, get busy() {return !!instance?.busy || !!lease;}, get transactionLease() {return lease;}, get controller() {return controller();}};
 })();

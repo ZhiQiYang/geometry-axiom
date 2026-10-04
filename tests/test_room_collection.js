@@ -200,6 +200,37 @@ test('cancel before preview allocates no ID, and a colliding new ID refuses nati
   assert.deepEqual(await sceneAndState(f), before); await f.controller.cancel();
 });
 
+test('new ID occupied after the absent read rejects the owned native candidate without overwrite', async t => {
+  const f = await fixture(t), state = f.owner.readAttachment();
+  f.controller.beginNew('shared-rooms');
+  let occupied;
+  f.owner.hooks.read = async () => {
+    delete f.owner.hooks.read;
+    await f.bridge.ok(commandFor(1, f.map(f.A), null).replace(/^boundary/, 'line boundary'));
+    occupied = await f.bridge.dump();
+  };
+  await assert.rejects(f.controller.prepare(f.map(f.B), 'B'), /編號已被使用|候選身份/);
+  assert.equal(await f.bridge.dump(), occupied);
+  assert.deepEqual(f.owner.readAttachment(), state);
+  assert.equal(f.owner.ownedPreview, null);
+  assert.equal(f.owner.confirmCount, 0);
+  await f.controller.cancel();
+});
+
+for (const corruption of ['missing', 'duplicate', 'wrong-after']) test('new candidate identity rejects ' + corruption + ' row', async t => {
+  const f = await fixture(t), before = await sceneAndState(f), original = f.owner.previewBoundary.bind(f.owner);
+  f.owner.previewBoundary = async command => {
+    const result = await original(command), row = result.boundaries[0];
+    result.boundaries = corruption === 'missing' ? [] : corruption === 'duplicate' ? [row, clone(row)] : [{...row,after:{...row.after,id:99}}];
+    return result;
+  };
+  f.controller.beginNew('shared-rooms');
+  await assert.rejects(f.controller.prepare(f.map(f.B), 'B'), /候選身份/);
+  assert.deepEqual(await sceneAndState(f), before);
+  assert.equal(f.owner.ownedPreview, null);
+  await f.controller.cancel();
+});
+
 test('one source page has one shared basis even when a second plane has a different ID', async t => {
   const f = await fixture(t), before = await sceneAndState(f), duplicate = clone(f.owner.attachment.planes[0]);
   duplicate.id = 'duplicate-plane'; duplicate.alignment.x = 500;

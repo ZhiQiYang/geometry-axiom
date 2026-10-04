@@ -93,3 +93,50 @@ heads survive. Never relabel the interrupted CDP as success.
 
 No native source, SSOT, deployment, paid service, safety policy or private
 drawing changed. User service8765 was never used.
+
+## Saved-cloud continuation stage 1 (2026-10-04)
+
+The new sole writer recovered the exact PR114 head/tree from origin into
+`/workspace/geometry-axiom`; the initial checkout was clean. Remote main remains
+`f1b9f9d`, PR113 remains `b72044d`. No existing uncommitted work was replaced.
+The prior native repro directory was absent; independently reproduced evidence
+is stored at `/workspace/handoffs/geometry-axiom-20261004/77-native-repro-new/`.
+Frozen `4cad268` different-geometry and identical-geometry occupancy baselines
+both fail prohibition assertions (exit1; bridge exit0). The fixed controller
+requires exactly one matching candidate boundary row, `before === null` and
+matching `after.id`, otherwise cancels its owned token. Six fresh-native probes
+pass, including missing/duplicate/wrong-after candidate rows. This is targeted
+native/controller evidence, not product completion.
+
+Owner responsibility fixes now route public shared calibration/alignment through
+the canonical attachment, guard legacy page add/remove/select/import, render
+shared summaries without a legacy group, reject project/source switching during
+zero-point room intent, and validate shared source closure before metadata writes.
+Import checks the actual PDF/image page dimensions before native publication.
+Current-group rollback restores data in the same frame, allowing the owned lease
+to finish; undo/redo still create fresh frames. A transient bounded native preview
+summary stores only token/frame/session and changed boundary IDs/retirement flags;
+confirmed affected boundaries become review/retired, unknown confirmation retires
+associations. Automatic native impact previews may report `ok:false` with a valid
+candidate; they still remain uncommitted. No native geometry is copied into it.
+
+Receipt recovery now adopts the exact owned recovered preview token and cancels
+it before clearing the draft/releasing its lease; only valid owned cancellation
+with no pending receipts is allowed during connection loading. A real browser
+preview-loss case was added to the four previous recovery scenarios.
+
+Working-tree focused checks reached 54 pass/0 fail/0 skip. Formal owner gates
+first run reached 5/5 (the history gate explicitly uses actual ContextHistory
+with synthetic observed receipts; workspace gate uses actual native/browser).
+The first no-injection room browser run passed 29 checks, then correctly failed
+fresh-context ZIP publication because the native candidate fingerprint interface
+is still missing. Logs, exact hashes and scope are in
+`/workspace/handoffs/geometry-axiom-20261004/77-formal/`.
+These are intermediate trees; final frozen-head reruns remain required.
+
+Still blocked/incomplete: root-coordinated detached candidate fingerprints,
+root-reviewed lossless selected-page records/receipt migration, and the shared
+source overview/reassociation path after all rooms unlink/retire. The new writer
+requested the first two decisions and does not alter native World/bridge or the
+payload schema without that coordination. Draft PR114 stays non-merge-ready;
+Refs #77, no merge/deploy or #54 work.

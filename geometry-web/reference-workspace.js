@@ -90,6 +90,16 @@ const ReferenceWorkspace = (() => {
     return context().groups.get(key) || null;
   }
   function active(bid) { const shared = window.RoomCollectionWorkspace?.sourcePage(bid); if (shared) return shared; const g = group(bid); return g?.pages.find(p => p.id === g.activePageId) || null; }
+  function sharedRoom(bid) {
+    return (context().featureAttachments || []).find(record => record.kind === P.Features.ROOM_KIND)?.value.rooms
+      .find(room => room.boundaryRef.id === bid && room.reviewState !== "needs-reassociation") || null;
+  }
+  function assertLegacyTarget(bid) {
+    if (sharedRoom(bid)) throw new Error("共享房間使用共同來源；請從房間列表編輯或解除列表關聯。");
+  }
+  function assertRoomDraftIdle() {
+    if (window.RoomCollectionWorkspace?.hasWork) throw new Error("請先完成、取消或恢復目前房間草稿，再切換專案或來源。");
+  }
   let presentationFrame = 0;
   function revision(c) { return revisions.get(c) || 0; }
   function getProjectState() {
@@ -277,7 +287,7 @@ const ReferenceWorkspace = (() => {
     const p = oc.edit && active(oc.edit.bid), source = p && c.sources.get(p.sourceId);
     const summary = document.getElementById("faceReferenceSummary");
     if (summary) {
-      const html = p ? `<button type="button" class="reference-source" data-project-action="reference"><strong>${escape(source?.meta.name || "參考圖片")}</strong><span>第 ${p.page} 頁 · ${group(oc.edit.bid).pages.length} 張參考頁</span><small>${p.calibration ? "已校準" : "未校準"}${p.reviewRequired ? " · 幾何待核對" : ""}</small></button>` : `<p class="reference-empty">尚未加入來源。也可以直接使用上方工具繪製。</p>`;
+      const html = p ? `<button type="button" class="reference-source" data-project-action="reference"><strong>${escape(source?.meta.name || "參考圖片")}</strong><span>第 ${p.page} 頁 · ${sharedRoom(oc.edit.bid) ? "共享房間來源" : (group(oc.edit.bid)?.pages.length || 0) + " 張參考頁"}</span><small>${p.calibration ? "已校準" : "未校準"}${p.reviewRequired ? " · 幾何待核對" : ""}</small></button>` : `<p class="reference-empty">尚未加入來源。也可以直接使用上方工具繪製。</p>`;
       if (summary.innerHTML !== html) summary.innerHTML = html;
     }
     document.getElementById("objectWorkspace")?.classList.toggle("reference-editor", !!p && fe.fiTab === "underlay");
@@ -328,19 +338,20 @@ const ReferenceWorkspace = (() => {
     const hadModels = context().models.length || context().modelsDirty;
     const hadProjections = context().faceProjections.size || context().faceProjectionsDirty;
     const previousProjections = context().faceProjections;
-    history.observe(cmd, result);
+    history.observe(cmd, result, connection.session);
     if (roomTransaction && result.ok && cmd === "line history-begin") roomTransaction.group = history.group;
     if (roomTransaction && result.ok && cmd === "line history-end") roomTransaction.entry = history.undo.at(-1);
+    window.RoomCollectionWorkspace?.observeNativeResult?.(cmd, result);
     const feature=assemblyConfirmation;
     if(result.ok&&feature?.featureCommand===cmd&&assemblyConfirmationCurrent(feature)&&sameModelData(readFeatureAttachment(feature.kind),feature.value))
       context().featureAttachments=context().featureAttachments.filter(record=>record.kind!==feature.kind);
     if (hadModels && result.ok && /^line\s+(reset|default)\s*$/.test(cmd)) context().modelsDirty = true;
     if (hadProjections && result.ok && /^line\s+(reset|default)\s*$/.test(cmd)) context().faceProjectionsDirty = true;
-    const edited = result.ok && cmd.match(/^line\s+(?:boundary|surface)\s+(\d+)\s/);
+    const edited = result.ok && !result.preview && cmd.match(/^line\s+(?:boundary|surface)\s+(\d+)\s/);
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
-    if (result.ok && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
+    if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
     if (result.ok && /^(engineering-confirm|assembly-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
@@ -372,6 +383,7 @@ const ReferenceWorkspace = (() => {
     const next = (context().featureAttachments || []).filter(record => record.kind !== kind);
     if (record) next.push(JSON.parse(JSON.stringify(record)));
     P.Features.validate({schema:P.Features.SCHEMA, records:next});
+    P.Features.sourceRooms({schema:P.Features.SCHEMA, records:next}, context().sources);
     if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     return readFeatureAttachment(kind);
@@ -615,12 +627,12 @@ const ReferenceWorkspace = (() => {
     p.src = r.src; return p;
   }
   function addPage(bid, p) {
-    assertEditable();
+    assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
     const g = group(bid, true); cancelSelection(context(), g); g.pages.push(p); g.activePageId = p.id;
     dirty(); sync(); return p;
   }
   function adoptLegacy(bid, ul) {
-    assertEditable();
+    assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
     const c = context();
     const p = Object.assign(ul, { id: uuid(), sourceId: "pending", page: 1, crop: [0,0,ul.imgW,ul.imgH],
       calibration: null, reviewRequired: false, records: [] });
@@ -636,12 +648,18 @@ const ReferenceWorkspace = (() => {
   function calibrated(bid, points, distMm, inputValue = distMm, inputUnit = "mm") {
     assertEditable();
     const p = active(bid); if (!p) return;
+    if (sharedRoom(bid)) return RoomCollectionWorkspace.changeBasis(bid, {mmPerPx:p.mmPerPx},
+      {points:points.map(v => [...v]),distanceMm:distMm,inputValue,inputUnit});
     p.calibration = { points: points.map(v => [...v]), distanceMm: distMm, inputValue, inputUnit };
     p.reviewRequired = true; dirty();
   }
-  function changed(bid, recheck = false) { assertEditable();const p = active(bid); if (p && recheck) p.reviewRequired = true; dirty(); }
+  function changed(bid, recheck = false) {
+    assertEditable(); const p = active(bid);
+    if (sharedRoom(bid)) return RoomCollectionWorkspace.changeBasis(bid, {x:p.x,y:p.y,rot:p.rot,mmPerPx:p.mmPerPx});
+    if (p && recheck) p.reviewRequired = true; dirty();
+  }
   function remove(bid) {
-    assertEditable();
+    assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
     const g = group(bid); if (!g) return;
     cancelSelection(context(), g);
     g.pages = g.pages.filter(p => p.id !== g.activePageId); g.activePageId = g.pages[0]?.id || "";
@@ -660,7 +678,7 @@ const ReferenceWorkspace = (() => {
     drawFaceEditor();
   }
   async function selectPage(bid, pageId) {
-    assertEditable();
+    assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
     const g = group(bid), p = g?.pages.find(p => p.id === pageId); if (!p) return;
     const c = context(); cancelSelection(c, g); const request = g.selection;
     if (!selections.has(c)) selections.set(c, new Map());
@@ -671,7 +689,7 @@ const ReferenceWorkspace = (() => {
     try {
       if (!p.src) await preparePage(p, c.sources.get(p.sourceId));
       if (context() !== c || group(bid) !== g || g.selection !== request) return;
-      assertEditable();
+      assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
       g.activePageId = p.id; fe.ulCalib = null; fe.ulDrag = null; dirty(); redraw(); fitReference();
     } catch (e) { error = e; throw e; }
     finally {
@@ -680,6 +698,7 @@ const ReferenceWorkspace = (() => {
     }
   }
   function paneHTML(bid) {
+    if (sharedRoom(bid)) return window.RoomCollectionWorkspace?.paneHTML(bid) || "";
     const g = group(bid), p = active(bid);
     let html = `<details id="refSourceDetails" class="ref-section"${p ? "" : " open"}><summary>參考頁與來源</summary><div class="ref-actions"><button id="refImport" class="btn" type="button">匯入 PDF／圖片</button>`;
     if (p) html += `<button id="refMorePages" class="btn" type="button">從此來源選其他頁</button>`;
@@ -693,6 +712,7 @@ const ReferenceWorkspace = (() => {
   }
   function reviewKey(bid, page=active(bid)) { return history.frame.ids.get(bid)+":"+page?.id; }
   function reconstructionState(bid) {
+    const room = sharedRoom(bid); if (room) return room.reviewState === "confirmed" ? "confirmed" : "recheck";
     const p=active(bid);if (!p) return "unreviewed";
     if (window.RoomOutlineWorkspace?.pending?.(bid)) return "candidate";
     const r=context().reconstructionReviews.get(reviewKey(bid,p));
@@ -700,7 +720,7 @@ const ReferenceWorkspace = (() => {
     return r.basis===P.reviewBasis(p) && r.geometry===P.outlineFingerprint(oc.bmap[bid]) ? "confirmed" : "recheck";
   }
   function markReconstructionReviewed(bid, {method="manual", warnings=[], local=true, expectedBasis=null}={}) {
-    assertEditable();const p=active(bid);
+    assertEditable(); assertLegacyTarget(bid); const p=active(bid);
     if (!p?.calibration || !oc.bmap[bid]?.[0]?.verts?.length) throw new Error("請先校準來源並完成合法輪廓，再核對。");
     if (expectedBasis && expectedBasis!==P.reviewBasis(p)) throw new Error("來源對位已變更，請重新核對；正式面尺寸保持原值。");
     if (local) {if (history.group) throw new Error("請先完成目前交易。");history.push(history.snapshot(),"local","核對來源輪廓");}
@@ -737,13 +757,14 @@ const ReferenceWorkspace = (() => {
     }));
   }
   function chooseFile(bid = null) {
-    assertEditable();
+    assertEditable(); assertRoomDraftIdle(); if (bid !== null && sharedRoom(bid)) bid = null;
     const input = document.getElementById("referenceFile"); input.dataset.bid = bid ?? ""; input.value = ""; input.click();
   }
   async function openSource(source, bid = null) {
+    assertEditable(); assertRoomDraftIdle(); if (bid !== null && sharedRoom(bid)) bid = null;
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
     const dialog = document.getElementById("referenceDialog"), token = ++sequence;
-    modal = { source, bid, context:context(), targets:new Map(history.frame.ids), page: 1, crop: null, width: 1, height: 1, token, zoom: "page", ready: false, drag: null };
+    modal = { source, bid, context:context(), targets:new Map([...history.frame.ids].filter(([id]) => !sharedRoom(id))), page: 1, crop: null, width: 1, height: 1, token, zoom: "page", ready: false, drag: null };
     document.getElementById("refZoom").value = "page";
     document.getElementById("refSourceName").textContent = source.meta.name;
     document.getElementById("refPreviewMessage").textContent = "正在讀取來源…";
@@ -754,8 +775,8 @@ const ReferenceWorkspace = (() => {
     document.getElementById("refPagePreview").replaceChildren();
     document.getElementById("refThumbnails").replaceChildren();
     const target = document.getElementById("refTarget");
-    target.innerHTML = `<option value="new">建立描繪用面（預設矩形）</option>` + oc.faces.filter(f=>f.kind==="boundary").map(f=>`<option value="${f.id}">套用至面 ${f.id}</option>`).join("");
-    target.value = bid != null && oc.faces.some(f=>f.kind==="boundary" && f.id===bid) ? String(bid) : "new";
+    target.innerHTML = `<option value="new">建立描繪用面（預設矩形）</option>` + oc.faces.filter(f=>f.kind==="boundary" && modal.targets.has(f.id)).map(f=>`<option value="${f.id}">套用至面 ${f.id}</option>`).join("");
+    target.value = bid != null && modal.targets.has(bid) ? String(bid) : "new";
     if (!dialog.open) dialog.showModal();
     try {
       const doc = await documentFor(source); if (!modal || modal.token !== token) return;
@@ -816,7 +837,7 @@ const ReferenceWorkspace = (() => {
     return [Math.max(0,Math.min(modal.width,(e.clientX-b.left)/b.width*modal.width)),Math.max(0,Math.min(modal.height,(e.clientY-b.top)/b.height*modal.height))];
   }
   async function applySource() {
-    assertEditable();
+    assertEditable(); assertRoomDraftIdle();
     if (!modal?.ready || busy) return;
     // Keep exactly the page and crop confirmed before asynchronous face creation.
     const m={...modal,crop:[...modal.crop]}, dialog=document.getElementById("referenceDialog");
@@ -827,6 +848,7 @@ const ReferenceWorkspace = (() => {
       if (bid==="new") { bid=await objNewPolyFace(); if (!bid) throw new Error("建立描繪用面失敗。"); }
       else {
         bid=Number(bid);
+        assertLegacyTarget(bid);
         if (!m.targets.has(bid) || history.frame.ids.get(bid)!==m.targets.get(bid)) throw new Error("目標面已變更，請重新選擇來源。");
         if (oc.focus?.t !== "face" || oc.focus.id !== bid) await enterFocus("face",bid);
         if (history.frame.ids.get(bid)!==m.targets.get(bid)) throw new Error("目標面已變更，請重新選擇來源。");
@@ -834,6 +856,7 @@ const ReferenceWorkspace = (() => {
       assertContext(m.context);
       assertEditable();
       if (!oc.edit || oc.edit.bid!==bid) throw new Error("目標面已不存在，請重新選擇。");
+      assertLegacyTarget(bid); assertRoomDraftIdle();
       const bb=loopsBBox(oc.bmap[bid]), crop=m.crop, mmPerPx=(bb[2]-bb[0])/crop[2];
       context().sources.set(m.source.meta.id,m.source);
       addPage(bid,{ id:uuid(),sourceId:m.source.meta.id,page:m.page,imgW:m.width,imgH:m.height,crop:[...crop],
@@ -970,7 +993,7 @@ const ReferenceWorkspace = (() => {
     if (!sameModelData(oldSummary, newSummary)) throw new Error("空間模型「"+model.name+"」的摘要與定義不一致，未變更目前專案。");
   }
   async function openProject(readBytes,name="匯入專案",onOpened=null,options={}) {
-    assertWritableLease();
+    assertWritableLease(); assertRoomDraftIdle();
     if (busy || oc.busy || history.group || pendingLoad) throw new Error("請先完成目前的操作再開啟專案。");
     const stamp={context:context(),frame:history.frame,revision:revision(context())};
     const assertCurrent=()=>{
@@ -1016,6 +1039,21 @@ const ReferenceWorkspace = (() => {
     c.featureAttachments=JSON.parse(JSON.stringify(m.featureAttachments?.records||[]));
     c.engineeringDrafts=JSON.parse(JSON.stringify(m.engineeringDrafts?.records||[]));
     for(const meta of m.sources)c.sources.set(meta.id,{meta,bytes:loaded.sources.get(meta.id)});
+    async function verifySourcePage(sourceId, number, width, height) {
+      const source = c.sources.get(sourceId);
+      if (source.meta.type === "application/pdf") {
+        const doc = await documentFor(source);
+        if (number > doc.numPages) throw new Error("來源關聯的 PDF 頁碼不存在。");
+        const page = await doc.getPage(number), size = page.getViewport({scale:1});
+        if (Math.abs(size.width-width)>0.01 || Math.abs(size.height-height)>0.01) throw new Error("來源頁面尺寸不一致。");
+      } else {
+        const image = await imageFor(source);
+        if (image.naturalWidth !== width || image.naturalHeight !== height) throw new Error("來源圖片尺寸不一致。");
+      }
+      assertCurrent();
+    }
+    for (const plane of P.Features.sourceRooms(m.featureAttachments || {schema:P.Features.SCHEMA,records:[]})?.planes || [])
+      await verifySourcePage(plane.sourceId, plane.page, ...plane.pageSize);
     const ids=[],keys=new Map();
     const keyFor = bid => { if(!keys.has(bid)){const key=uuid();keys.set(bid,key);ids.push([bid,key]);}return keys.get(bid); };
     for(const record of m.faceProjections){
@@ -1031,12 +1069,7 @@ const ReferenceWorkspace = (() => {
       // Never trust runtime fields (for example a remote image src) from a project file.
       const pages=f.pages.map(p=>P.reference(p));
       for(const p of pages){
-        const source=c.sources.get(p.sourceId);
-        if(source.meta.type==="application/pdf"){
-          const doc=await documentFor(source); if(p.page>doc.numPages)throw new Error("來源關聯的 PDF 頁碼不存在。");
-          const page=await doc.getPage(p.page),size=page.getViewport({scale:1});
-          if(Math.abs(size.width-p.imgW)>0.01||Math.abs(size.height-p.imgH)>0.01)throw new Error("來源頁面尺寸不一致。");
-        }else{const image=await imageFor(source);if(image.naturalWidth!==p.imgW||image.naturalHeight!==p.imgH)throw new Error("來源圖片尺寸不一致。");}
+        await verifySourcePage(p.sourceId,p.page,p.imgW,p.imgH);
       }
       const g={activePageId:f.activePageId,pages};
       await preparePage(g.pages.find(p=>p.id===g.activePageId),c.sources.get(g.pages.find(p=>p.id===g.activePageId).sourceId));c.groups.set(key,g);
@@ -1064,7 +1097,7 @@ const ReferenceWorkspace = (() => {
     setStatus(c.dirtyReason ? "✓ 已開啟專案；畫布已自動排版，請保存以保留排列。" : "✓ 已開啟專案，場景、工程來源與草稿、參考資料及空間模型已還原");return loaded;
   }
   async function replaceWithEmpty(keepIdentity) {
-    assertWritableLease();
+    assertWritableLease(); assertRoomDraftIdle();
     if(busy || oc.busy || history.group || pendingLoad)throw new Error("請先完成目前的操作。");
     const explanation=keepIdentity ? "清空目前專案的幾何、參考資料、空間模型與工程草稿，保留專案名稱及識別。" : "建立一份空白新專案，切換為新的專案識別及「未命名專案」。";
     const warning=context().dirty ? "目前尚未保存的變更不會自動寫入檔案。" : "";
@@ -1114,7 +1147,7 @@ const ReferenceWorkspace = (() => {
       throw new Error("載入結果晚到，目前工程已有變更；未替換目前專案資料，請重新開啟。");
   }
   async function uploadScene(text,replacement=null,assertCurrent=()=>{}) {
-    assertWritableLease();
+    assertWritableLease(); assertRoomDraftIdle();
     if(pendingLoad || preparingSceneLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");
     assertCurrent();
     preparingSceneLoad=true;
@@ -1206,6 +1239,7 @@ const ReferenceWorkspace = (() => {
     pendingLoad=null;sync();return true;
   }
   function mayLeave() {
+    if (window.RoomCollectionWorkspace?.hasWork) {toast("請先完成、取消或恢復目前房間草稿，再切換專案。"); return false;}
     if(window.DraftGate && !window.DraftGate.ask())return false;
     if (Object.values(fe.feats || {}).some(items => items.length) &&
       !window.confirm("目前有只能在本次工作階段修改數字的形狀特徵。切換場景後仍保留輪廓，但特徵參數會消失。要繼續嗎？")) return false;

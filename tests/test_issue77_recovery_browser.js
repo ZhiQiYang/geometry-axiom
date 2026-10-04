@@ -56,7 +56,7 @@ async function loseExecutedReply(page, target) {
       }
       if(body?.cmd) {
         loss.commands.push({cmd:body.cmd,requestId:body.requestId});
-        const matches=target==="confirm" ? /^line confirm \d+$/.test(body.cmd) : body.cmd==="line " + target;
+        const matches=target==="confirm" ? /^line confirm \d+$/.test(body.cmd) : target==="preview" ? /^line preview boundary \d+ /.test(body.cmd) : body.cmd==="line " + target;
         if(matches && !loss.lost) {
           const response=await originalFetch(input,options);
           loss.nativeResult=await response.clone().json(); loss.requestId=body.requestId; loss.lost=true;
@@ -74,7 +74,7 @@ async function main() {
   const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME || "/usr/bin/chromium",headless:true,args:["--no-sandbox"]});
   const errors=[];
   try {
-    for (const target of ["history-begin","confirm","history-end","cancel-preview"]) {
+    for (const target of ["preview","history-begin","confirm","history-end","cancel-preview"]) {
       const context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage();
       page.on("pageerror",error=>errors.push(error.message));
       page.on("console",message=>{if(message.type()==="error")errors.push(message.text());});
@@ -82,9 +82,12 @@ async function main() {
       try {
         await setup(page);const before=await snapshot(page);check(before.nativeA.loops[0].verts,A,"independent A oracle");
         await page.locator("#roomNew").click();await draw(page);await loseExecutedReply(page,target);
-        await page.locator("#faceDraftFinish").click();await page.waitForSelector("#roomConfirm");
-        if(target==="cancel-preview") await page.getByRole("button",{name:"取消，保留原狀",exact:true}).click();
-        else await page.locator("#roomConfirm").click();
+        await page.locator("#faceDraftFinish").click();
+        if(target!=="preview") {
+          await page.waitForSelector("#roomConfirm");
+          if(target==="cancel-preview") await page.getByRole("button",{name:"取消，保留原狀",exact:true}).click();
+          else await page.locator("#roomConfirm").click();
+        }
         await page.waitForFunction(()=>connection.phase==="error" && pendingApiResults.size===1);
         const lost=await page.evaluate(()=>({requestId:__loss.requestId,result:__loss.nativeResult,pending:[...pendingApiResults],receipts:__loss.receipts,hasWork:RoomCollectionWorkspace.hasWork,busy:RoomCollectionWorkspace.busy}));
         check(lost.result.ok,true,target+" actually executed before reply loss");assert.ok(lost.requestId,"mutation has exact native receipt ID");
@@ -100,6 +103,8 @@ async function main() {
           finishDisabled:$("faceDraftFinish").disabled,noticeHidden:$("faceDraftNotice").hidden,group:!!ReferenceWorkspace.history.group}));
         check(retired,{tool:"select",points:[],preview:null,drag:null,typed:"",panHold:null,newOutline:null,hasWork:false,lease:false,dialogOpen:false,finishDisabled:true,noticeHidden:true,group:false},target+" retires all room UI draft before editing resumes");
         const recovered=await snapshot(page);check(recovered.nativeA,before.nativeA,target+" recovery preserves original A");
+        if(target==="preview") check(await page.evaluate(async token=>(await apiRequest("line confirm "+token)).ok,lost.result.preview.token),false,
+          "recovered owned preview is cancelled natively before ownership is released");
         if(target==="history-end") {
           check(recovered.data.rooms.length,2,"committed end receipt preserves independent B metadata");
           check(await page.evaluate(async()=> (await api("boundary 2")).loops[0].verts),B,"committed end receipt preserves independent B geometry");

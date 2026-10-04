@@ -449,7 +449,7 @@ async function recoverApiResults() {
     if (!result.ok) throw new Error("尚未能回復未完成操作，請重試。");
     apiRecoveryNeedsAbort = false;
   }
-  if (recoveringRoom) window.RoomCollectionWorkspace.recoveredTransaction();
+  if (recoveringRoom) await window.RoomCollectionWorkspace.settleRecoveredTransaction();
 }
 function showConnectionState() {
   const blocked = connection.phase !== "ready";
@@ -526,7 +526,8 @@ async function apiRequest(cmd, roomLease = null) {
     catch (error) { return {ok:false,error:error.message}; }
   }
   if (rollback && pendingApiResults.size) return { ok: false, transport: true, error: "操作結果尚未確認，重新連線後再回復。" };
-  if (!rollback && (connection.phase === "error" || (connection.phase === "loading" &&
+  const recoveredRoomCancel = roomLease && cmd === "line cancel-preview" && connection.phase === "loading" && pendingApiResults.size === 0;
+  if (!rollback && !recoveredRoomCancel && (connection.phase === "error" || (connection.phase === "loading" &&
       !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump)(\s|$)/.test(cmd))))
     return { ok: false, transport: true, error: connection.error || "場景尚未讀取完成" };
   const localHistory = ReferenceWorkspace.tryLocalHistory?.(cmd);

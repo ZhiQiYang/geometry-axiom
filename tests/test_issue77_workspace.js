@@ -71,7 +71,8 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     if (lease) assert.equal(lease,owner.lease);
     if (command==='newid') return {ok:true,boundary:1};
     if (command==='boundary 1') return owner.confirmed ? clone(native) : {ok:false,error:'boundary does not exist'};
-    if (command.startsWith('line preview ')) return {ok:true,preview:{valid:true,token:123}};
+    if (command.startsWith('line preview ')) return {ok:true,preview:{valid:true,token:123,
+      boundaries:[{id:1,before:owner.confirmed ? {...clone(native),id:1} : null,after:{...clone(native),id:1}}]}};
     if (command==='line cancel-preview') return {ok:true};
     if (command==='line history-begin') {owner.group=true;return {ok:true};}
     if (command==='line confirm 123') {
