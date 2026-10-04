@@ -6,6 +6,7 @@ import json
 
 ENGINEERING_CAPABILITY = "engineering-spec/1"
 PARAMETER_CAPABILITY = "parameters/1"
+GRID_SUBDIVISION_CAPABILITY = "grid-subdivision-rules/1"
 
 
 def scene_required_capabilities(scene):
@@ -23,6 +24,8 @@ def scene_required_capabilities(scene):
             if len(tokens) != 2:
                 raise ModelError("INVALID", "CAPABILITY_DECLARATION", "I32", "Expected one required capability")
             result.add(tokens[1])
+        if tokens[0] in ("grid-source-rule", "grid-source-rule-highwater") or any("gridrule:" in token for token in tokens) or "at-line rule" in " ".join(tokens):
+            result.add(GRID_SUBDIVISION_CAPABILITY)
         if tokens[0] == "engineering" or any(token.startswith("eng:") for token in tokens):
             result.add(ENGINEERING_CAPABILITY)
         if tokens[0] == "owned":

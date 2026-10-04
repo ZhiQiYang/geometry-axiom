@@ -64,9 +64,11 @@ PY_NEEDS = {
     'test_engineering_model_compatibility': ['model-base'],
     'test_engineering_model_sources': ['bridge', 'model-base'],
     'test_engineering_transport': [],
+    'test_evidence_link_native': ['bridge'],
     'test_feedback_store': [],
     'test_gdi_contract': ['gdi'],
     'test_grid_system_contract': ['bridge'],
+    'test_grid_subdivision_oracle': ['bridge'],
     'test_grid_trial_contract': ['bridge'],
     'test_guide_panels': [],
     'test_infinite_grid_contract': ['bridge'],
@@ -133,6 +135,7 @@ NODE_PURE_TEST_FILES = {
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
     'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
+    'node:evidence_links': 'tests/test_evidence_links.js',
 }
 NODE_EXCLUDED = {
     'tests/issue77_attachment_fixture.js': 'Shared self-authored PDF/payload fixture; registers no tests',
@@ -145,6 +148,10 @@ NODE_EXCLUDED = {
 }
 REQUIRED_OWNER_GATES = {
     'tests/integration/issue77_attachment_owner.js': 5,
+}
+# Runtime adapter checks, separate from non-browser source suites and formal owner completion.
+REQUIRED_BROWSER_GATES = {
+    'geometry-web/evidence_links_browser_check.js': 67,
 }
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
@@ -220,6 +227,9 @@ def check_registry():
     for rel in REQUIRED_OWNER_GATES:
         if not (ROOT / rel).is_file():
             problems.append('必要正式整合驗證入口不存在：%s' % rel)
+    for rel in REQUIRED_BROWSER_GATES:
+        if not (ROOT / rel).is_file():
+            problems.append('必要獨立瀏覽器驗證入口不存在：%s' % rel)
     return problems
 
 
@@ -234,7 +244,8 @@ def build_suites():
     for stem in sorted(PY_NEEDS):
         f = HERE / (stem + '.py')
         if f.is_file():
-            suites.append(Suite('py:' + stem, 'unittest', [py, str(RUNNER), str(f)], PY_NEEDS[stem], 1200, label='tests/%s' % f.name))
+            suites.append(Suite('py:' + stem, 'unittest', [py, str(RUNNER), str(f)], PY_NEEDS[stem], 1200,
+                                needs_node=(stem == 'test_evidence_link_native'), label='tests/%s' % f.name))
     js = [rel for rel in sorted(NODE_TEST_FILES) if (ROOT / rel).is_file()]
     suites += [
         Suite('node:tests-js', 'node-test', ['--test', '--test-reporter=spec', *js], ['bridge', 'model-base'], 900,
@@ -698,6 +709,8 @@ def print_table(rows):
     for rel in sorted(NODE_EXCLUDED):
         if rel.startswith('tests/test_issue77_'):
             print('  %s：required real app/native/Chromium，獨立執行；本 aggregate 未驗。' % rel)
+    for rel, count in REQUIRED_BROWSER_GATES.items():
+        print('  %s：%d runtime adapter checks required；本 aggregate 未驗；正式 reader/ZIP/history 待 owner。' % (rel, count))
 
 
 # ------------------------------------------------------------------ main
@@ -748,6 +761,8 @@ def main(argv=None):
         print('%-32s 未納入（需 Chrome）：geometry-web/cdp_test.js、geometry-web/space_model_test.js' % '-')
         print('必要正式整合入口：tests/integration/issue77_attachment_owner.js（5項；未實作時 exit3）')
         print('另外4個 #77 真瀏覽器入口：見 tests/INTEGRATION-GATES.md；本命令未驗。')
+        for rel, count in REQUIRED_BROWSER_GATES.items():
+            print('  %s：%d runtime adapter checks required；本 aggregate 未驗；正式 reader/ZIP/history 待 owner。' % (rel, count))
         for p in registry_errors:
             print('登記問題：%s' % p)
         return 1 if registry_errors else 0

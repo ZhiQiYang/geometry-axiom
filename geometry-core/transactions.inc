@@ -73,7 +73,8 @@ static bool reference_system_changed(const World *before,const World *after,uint
 {
     const GridSystem *a=world_find_grid_system(before,id),*z=world_find_grid_system(after,id);
     if (!a || !z) return a!=z;
-    return strcmp(a->name,z->name) || a->main_along!=z->main_along ||
+    return a->rule_count!=z->rule_count || a->next_rule_key!=z->next_rule_key ||
+        memcmp(a->rules,z->rules,sizeof a->rules) || strcmp(a->name,z->name) || a->main_along!=z->main_along ||
         !reference_axis_definition_equal(&a->axis[0],&z->axis[0]) ||
         !reference_axis_definition_equal(&a->axis[1],&z->axis[1]);
 }
@@ -115,8 +116,8 @@ static void reference_guide_clip_text(const World *w,uint32_t id,FILE *out)
     const GuideLine *g=world_find_guide(w,id);
     const PlacementSurface *p=g?world_find_placement(w,g->placement_id):NULL;
     if (!g || !p || !g->resolved) { fputs("unavailable",out); return; }
-    SurfaceSegment2 segs[POLY_MAX_VERTICES];
-    size_t n=guide_line_get_local_segments(p,world_placement_boundary(w,p),g,segs,POLY_MAX_VERTICES);
+    SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
+    size_t n=guide_line_get_local_segments(p,world_placement_boundary(w,p),g,segs,GUIDE_MAX_SEGMENTS);
     fputc('{',out);
     for (size_t i=0;i<n;++i) fprintf(out,"%s[%lld,%lld]-[%lld,%lld]",i?",":"",
         (long long)segs[i].start.u,(long long)segs[i].start.v,(long long)segs[i].end.u,(long long)segs[i].end.v);
@@ -236,9 +237,9 @@ static bool reference_grid_changed(const World *before,const World *after,uint32
         bool zv=grid_axis_lines_in(after->grids,after->grid_count,z,zp,zb,axis,zx,&zn,NULL,0);
         if (!av || !zv || an!=zn || (an && memcmp(ax,zx,an*sizeof *ax))) return true;
         for (size_t k=0;k<an;++k) {
-            SurfaceSegment2 as[POLY_MAX_VERTICES],zs[POLY_MAX_VERTICES];
-            size_t na=grid_line_segments(before->grids,before->grid_count,a,ap,ab,axis,k,as,POLY_MAX_VERTICES);
-            size_t nz=grid_line_segments(after->grids,after->grid_count,z,zp,zb,axis,k,zs,POLY_MAX_VERTICES);
+            SurfaceSegment2 as[GUIDE_MAX_SEGMENTS],zs[GUIDE_MAX_SEGMENTS];
+            size_t na=grid_line_segments(before->grids,before->grid_count,a,ap,ab,axis,k,as,GUIDE_MAX_SEGMENTS);
+            size_t nz=grid_line_segments(after->grids,after->grid_count,z,zp,zb,axis,k,zs,GUIDE_MAX_SEGMENTS);
             if (na!=nz || (na && memcmp(as,zs,na*sizeof *as))) return true;
         }
     }
@@ -253,9 +254,9 @@ static bool reference_guide_changed(const World *before,const World *after,uint3
     if (!a || !z || !ap || !zp || !a->resolved || !z->resolved ||
         a->placement_id!=z->placement_id || a->direction!=z->direction || a->offset!=z->offset ||
         memcmp(&ap->frame,&zp->frame,sizeof ap->frame)) return true;
-    SurfaceSegment2 as[POLY_MAX_VERTICES],zs[POLY_MAX_VERTICES];
-    size_t na=guide_line_get_local_segments(ap,world_placement_boundary(before,ap),a,as,POLY_MAX_VERTICES);
-    size_t nz=guide_line_get_local_segments(zp,world_placement_boundary(after,zp),z,zs,POLY_MAX_VERTICES);
+    SurfaceSegment2 as[GUIDE_MAX_SEGMENTS],zs[GUIDE_MAX_SEGMENTS];
+    size_t na=guide_line_get_local_segments(ap,world_placement_boundary(before,ap),a,as,GUIDE_MAX_SEGMENTS);
+    size_t nz=guide_line_get_local_segments(zp,world_placement_boundary(after,zp),z,zs,GUIDE_MAX_SEGMENTS);
     return na!=nz || (na && memcmp(as,zs,na*sizeof *as));
 }
 
@@ -331,6 +332,14 @@ static void reference_system_text(const World *w,uint32_t id,FILE *out)
             fprintf(out," repeat %lld %lld",(long long)a->start,(long long)a->step);
         else fprintf(out," %s %lld gap %lld from %lld",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel",
             (long long)a->panel,(long long)a->gap,(long long)a->anchor);
+    }
+    fprintf(out," rule-next %u",s->next_rule_key);
+    for(size_t k=0;k<s->rule_count;++k){
+        const GridSubdivisionRule *r=&s->rules[k];
+        fprintf(out," rule %u name %s selector",r->key,r->name);
+        if(r->all_cells)fputs(" all-cells",out);
+        else fprintf(out," cell [%lld,%lld]",(long long)r->cell[0],(long long)r->cell[1]);
+        fprintf(out," divide %u %u",r->divisions[0],r->divisions[1]);
     }
 }
 
@@ -439,7 +448,7 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
     const char *c=tokens[0];
     if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||
         !strcmp(c,"boundary-keyed") || !strcmp(c,"grid-binding") ||
-        !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"grid-system") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
+        !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"grid-system") || !strcmp(c,"grid-source-rule") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
     if ((!strcmp(c,"place") || !strcmp(c,"timber")) && count>1) {
         uint32_t id;
         if (parse_u32(tokens[1],&id)) { int i=reference_timber_index(w,id); return i>=0 && w->timbers[i].placed; }
@@ -532,7 +541,7 @@ static void reference_preview_text(void)
     }
 }
 
-static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
+static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,World *candidate)
 {
     if (!count) return true;
     if (!strcmp(tokens[0],"cancel-preview")) {
@@ -561,7 +570,7 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
         if (count<2 || !strcmp(tokens[1],"preview") || !strcmp(tokens[1],"confirm")) return false;
         ++tokens; --count;
     }
-    World candidate=*world;
+    *candidate=*world;
     if (count>1 && (!strcmp(tokens[0],"grid") || !strcmp(tokens[0],"timber"))) {
         uint32_t id;
         if (parse_u32(tokens[1],&id) && eng_object_bound(world,!strcmp(tokens[0],"timber"),id)) {
@@ -569,37 +578,51 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
         }
     }
     g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
-    g_reference_trial=candidate; g_reference_capturing=true;
+    g_reference_trial=*candidate; g_reference_capturing=true;
     const World *previous_baseline=g_subgrid_before;
     g_subgrid_before=world;
-    bool ok=apply_scene_line_unchecked(path,line_no,tokens,count,&candidate);
+    bool ok=apply_scene_line_unchecked(path,line_no,tokens,count,candidate);
     g_subgrid_before=previous_baseline;
     g_reference_capturing=false;
     bool affects=reference_may_affect(world,tokens,count);
-    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate.engineering,sizeof world->engineering) || memcmp(&world->assembly,&candidate.assembly,sizeof world->assembly));
+    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate->engineering,sizeof world->engineering) || memcmp(&world->assembly,&candidate->assembly,sizeof world->assembly));
     uint32_t system_edit_id;
     bool system_edit=!g_parsing_scene_file && count>1 && !strcmp(tokens[0],"grid-system") &&
         parse_u32(tokens[1],&system_edit_id) && world_find_grid_system(world,system_edit_id);
     bool application_edit=!g_parsing_scene_file && count>4 && !strcmp(tokens[0],"grid") &&
         (!strcmp(tokens[4],"from-system") || !strcmp(tokens[4],"from-binding"));
     bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
+    bool rule_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-source-rule");
     bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
     if (explicit_preview || (!g_preview_confirming &&
-        (engineering_edit || assembly_dimensions_changed(world,&candidate) || system_edit || application_edit || binding_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
-        (affects && (!ok || reference_geometry_changed(world,&candidate)))))) {
-        reference_stage(world,ok?&candidate:&g_reference_trial,tokens,count,ok);
+        (engineering_edit || assembly_dimensions_changed(world,candidate) || system_edit || application_edit || binding_edit || rule_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
+        (affects && (!ok || reference_geometry_changed(world,candidate)))))) {
+        char replay_error[512];snprintf(replay_error,sizeof replay_error,"%s",g_scene_last_error);
+        reference_stage(world,ok?candidate:&g_reference_trial,tokens,count,ok);
         reference_preview_text();
         if (explicit_preview) return true;
-        scene_error(path,line_no,"I8a: impact preview required; inspect preview, then confirm token (World unchanged)");
+        if(g_parsing_scene_file&&!ok&&replay_error[0]){
+            char message[768];snprintf(message,sizeof message,"I8a: impact preview required (World unchanged); %s",replay_error);
+            scene_error(path,line_no,message);
+        }
+        else scene_error(path,line_no,"I8a: impact preview required; inspect preview, then confirm token (World unchanged)");
         return false;
     }
     if (!ok) {
         if (!g_scene_last_error[0]) scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
         return false;
     }
-    if (!g_parsing_scene_file && strcmp(tokens[0],"canvas-pos") && !world_definitions_equal(world,&candidate)) ++g_definition_revision;
-    *world=candidate;
+    if (!g_parsing_scene_file && strcmp(tokens[0],"canvas-pos") && !world_definitions_equal(world,candidate)) ++g_definition_revision;
+    *world=*candidate;
     return true;
+}
+
+static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
+{
+    World *candidate=malloc(sizeof *candidate);
+    if(!candidate){scene_error(path,line_no,"I32: candidate World allocation failed");return false;}
+    bool ok=apply_scene_line_candidate(path,line_no,tokens,count,world,candidate);
+    free(candidate);return ok;
 }
 
 static bool reference_default_world(World *world)
