@@ -101,6 +101,7 @@
     return value;
   }
   function validateRecord(record) {
+    boundedJSON(record);
     if (!keys(record, ["kind", "schema", "value"]) || record.kind !== GRID_KIND || record.schema !== GRID_SCHEMA)
       fail("功能附件種類或版本不支援。");
     validateGridDraft(record.value);

@@ -139,6 +139,13 @@ test('rejects damaged scene, source, unknown version, duplicate paths and missin
   }
   let getterCalls=0;const accessor=gridDraft();Object.defineProperty(accessor.rawForm,'igUStep',{enumerable:true,get(){getterCalls++;return '600';}});
   assert.throws(()=>P.Features.validateGridDraft(accessor));assert.equal(getterCalls,0);
+  for(const field of ['kind','schema','value']){
+    const wrapper=P.Features.record('grid-draft',gridDraft());let calls=0;
+    Object.defineProperty(wrapper,field,{enumerable:true,get(){calls++;return field==='value'?gridDraft():field==='kind'?'grid-draft':P.Features.GRID_SCHEMA;}});
+    assert.throws(()=>P.Features.validateRecord(wrapper));assert.equal(calls,0);
+  }
+  const symbolic=P.Features.record('grid-draft',gridDraft());symbolic[Symbol('hidden')]=true;
+  assert.throws(()=>P.Features.validateRecord(symbolic));
   let toJSONCalls=0;const inherited=gridDraft(),prototype=Object.create(null);
   prototype.constructor=Object;prototype.toJSON=()=>{toJSONCalls++;return {...inherited.rawForm,igUStep:'999'};};
   Object.setPrototypeOf(inherited.rawForm,prototype);assert.throws(()=>P.Features.validateGridDraft(inherited));assert.equal(toJSONCalls,0);
