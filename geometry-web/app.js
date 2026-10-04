@@ -8690,10 +8690,11 @@ function renderCanvasModeHint() {
    卡片,還被放在很遠的 bbox 左上角(GEO-187 的「找不到卡片」根因)。
    P 改成一次性動作:建一張預設外環的面卡 → 自動進入該面的工作區、啟用「重畫外環」
    (面內視野由 feFit 對齊面的大小,1 單位=1mm 的繪圖在面內進行)→ 畫完 Esc 返回畫布。 */
-async function objNewPolyFace() {
+async function objNewPolyFace({beforeCreate} = {}) {
   const ids = await api("newid");
   if (!ids.ok) { setStatus("✗ " + (ids.error || "取不到新編號")); toast(ids.error || "取不到新編號"); return; }
   const bid = ids.boundary;
+  if (beforeCreate) await beforeCreate(bid);
   /* 預設外環只是佔位,進面內後被 redraw 整份取代;取常見房間大小讓 feFit 給出合適視野 */
   const r = await api(`line boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`);
   if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }

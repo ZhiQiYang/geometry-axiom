@@ -28,6 +28,60 @@
   };
   const objectPrototype = proto => proto !== null && Object.getPrototypeOf(proto) === null && nativePrototype(proto, "Object");
   const plainObject = value => Object.getPrototypeOf(value) === null || objectPrototype(Object.getPrototypeOf(value));
+  // Count the escaped JSON's UTF-8 bytes before serialization or copying. The
+  // same counter serves feature records and the complete project manifest.
+  function byteCounter(maxBytes, message, reserve = 0) {
+    let bytes = reserve;
+    const charge = size => {bytes += size;if (bytes > maxBytes) fail(message);};
+    function string(value) {
+      charge(2);
+      for (let index = 0; index < value.length; index++) {
+        const code = value.charCodeAt(index);
+        if (code < 128) charge(code < 32 ? [8,9,10,12,13].includes(code) ? 2 : 6 : code === 34 || code === 92 ? 2 : 1);
+        else if (code < 2048) charge(2);
+        else if (code >= 0xd800 && code <= 0xdbff && value.charCodeAt(index+1) >= 0xdc00 && value.charCodeAt(index+1) <= 0xdfff) {charge(4);index++;}
+        else charge(code >= 0xd800 && code <= 0xdfff ? 6 : 3);
+      }
+    }
+    charge(0);
+    return {charge,string,bytes:()=>bytes};
+  }
+  function jsonBytes(value, maxBytes, reserve = 0, message = "功能附件超過容量上限。") {
+    const counter = byteCounter(maxBytes,message,reserve), ancestors = new Set(), stack = [{item:value}];
+    while (stack.length) {
+      const frame = stack.at(-1), item = frame.item;
+      if (!frame.keys) {
+        let scalar = true;
+        if (item === null) counter.charge(4);
+        else if (typeof item === "boolean") counter.charge(item ? 4 : 5);
+        else if (typeof item === "number" && Number.isFinite(item)) counter.charge(JSON.stringify(item).length);
+        else if (typeof item === "string") counter.string(item);
+        else scalar = false;
+        if (scalar) {stack.pop();continue;}
+        frame.array = Array.isArray(item);
+        if (!item || typeof item !== "object" || (!frame.array && !plainObject(item)) ||
+            (frame.array && !nativePrototype(Object.getPrototypeOf(item),"Array")) || Object.getOwnPropertySymbols(item).length || ancestors.has(item))
+          fail("專案資料必須是有限 plain JSON。");
+        ancestors.add(item);counter.charge(2);
+        frame.keys = Object.getOwnPropertyNames(item).filter(key=>!frame.array || key !== "length");frame.index = 0;
+      }
+      if (frame.index === frame.keys.length) {
+        if (frame.array && frame.index !== item.length) fail("專案資料陣列不完整。");
+        ancestors.delete(item);stack.pop();continue;
+      }
+      const key = frame.keys[frame.index], descriptor = Object.getOwnPropertyDescriptor(item,key);
+      if (!descriptor.enumerable || !Object.hasOwn(descriptor,"value") || frame.array && key !== String(frame.index)) fail("專案資料欄位不合法。");
+      if (frame.index++) counter.charge(1);
+      if (!frame.array) {counter.string(key);counter.charge(1);}
+      stack.push({item:descriptor.value});
+    }
+    return counter.bytes();
+  }
+  // Native edits may change every room to the longest finite lifecycle status.
+  // Reserve only that exact growth; history and the public 8 MiB limit stay intact.
+  function lifecycleReserve(value) {
+    return (value?.rooms || []).reduce((bytes,room) => bytes + "needs-reassociation".length - room.reviewState.length,0);
+  }
   // Reject values that JSON.stringify would silently change, and bound traversal
   // before serializing or copying caller-owned data.
   function boundedJSON(value, roomEnvelope = false) {
@@ -44,18 +98,8 @@
         path[offset+3] === "reconstructionReview" && path[offset+4] === "geometry";
     }
     const maxBytes = roomEnvelope ? MAX_ROOM_BYTES : MAX_BYTES;
-    let count = 0, bytes = 0;
-    const charge = size => {bytes += size;if (bytes > maxBytes) fail("功能附件超過容量上限。");};
-    function stringBytes(value) {
-      charge(2);
-      for (let index = 0; index < value.length; index++) {
-        const code = value.charCodeAt(index);
-        if (code < 128) charge(code < 32 ? [8,9,10,12,13].includes(code) ? 2 : 6 : code === 34 || code === 92 ? 2 : 1);
-        else if (code < 2048) charge(2);
-        else if (code >= 0xd800 && code <= 0xdbff && value.charCodeAt(index+1) >= 0xdc00 && value.charCodeAt(index+1) <= 0xdfff) {charge(4);index++;}
-        else charge(code >= 0xd800 && code <= 0xdfff ? 6 : 3);
-      }
-    }
+    let count = 0;
+    const counter = byteCounter(maxBytes,"功能附件超過容量上限。"), charge = counter.charge, stringBytes = counter.string;
     function visit(item, depth, path = []) {
       if (++count > maxNodes || depth > 12) fail("功能附件過大或巢狀過深。");
       if (item === null) {charge(4);return;}
@@ -91,7 +135,7 @@
       }
       fail("功能附件必須是有界 plain JSON。");
     }
-    visit(value, 0);
+    visit(value, 0);return counter.bytes();
   }
   function validateReference(ref) {
     if (ref?.kind === "parameter-field") {
@@ -133,7 +177,7 @@
     return value;
   }
   function validateRecord(record) {
-    boundedJSON(record, true);
+    const bytes = boundedJSON(record, true);
     if (!keys(record, ["kind", "schema", "value"]))
       fail("功能附件種類或版本不支援。");
     if (record.kind === GRID_KIND && record.schema === GRID_SCHEMA) {
@@ -142,11 +186,12 @@
       if (!Rooms || Rooms.SCHEMA !== ROOM_SCHEMA || Rooms.CAPABILITY !== ROOM_CAPABILITY || Rooms.HISTORY_SCHEMA !== ROOM_HISTORY_SCHEMA || Rooms.HISTORY_CAPABILITY !== ROOM_HISTORY_CAPABILITY) fail("房間來源驗證器尚未就緒。");
       if (record.value?.schema !== record.schema) fail("房間來源附件版本不一致。");
       Rooms.validate(record.value);
+      if (bytes + lifecycleReserve(record.value) > MAX_ROOM_BYTES) fail("功能附件未保留房間狀態更新所需容量。");
     } else fail("功能附件種類或版本不支援。");
     return record;
   }
   function validate(envelope) {
-    boundedJSON(envelope, true);
+    const bytes = boundedJSON(envelope, true);
     if (!keys(envelope, ["schema", "records"]) || envelope.schema !== SCHEMA || !Array.isArray(envelope.records) || envelope.records.length > 2)
       fail("功能附件版本或清單不支援。");
     const kinds = new Set();
@@ -156,6 +201,8 @@
       if (kinds.has(record.kind)) fail("功能附件種類重複。");
       kinds.add(record.kind);
     }
+    if (bytes + envelope.records.reduce((size,record) => size + (record.kind === ROOM_KIND ? lifecycleReserve(record.value) : 0),0) > MAX_ROOM_BYTES)
+      fail("功能附件未保留房間狀態更新所需容量。");
     return envelope;
   }
   function assertKind(kind) { if (![GRID_KIND, ROOM_KIND].includes(kind)) fail("功能附件種類不支援。"); }
@@ -185,6 +232,6 @@
   return {SCHEMA, GRID_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
     sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields),
-    validate, validateRecord, validateGridDraft, assertKind, record, capabilities, references, sourceRooms, validateNativeRefs, validateNativePins,
+    validate, validateRecord, validateGridDraft, assertKind, record, capabilities, references, sourceRooms, validateNativeRefs, validateNativePins, jsonBytes, lifecycleReserve,
     retireRoomBoundary, changedRoomBoundary, unknownRoomHistory};
 });

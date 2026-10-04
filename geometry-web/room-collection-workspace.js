@@ -13,7 +13,7 @@ const RoomCollectionWorkspace = (() => {
     if (!W().readFeatureAttachment || !W().setFeatureAttachment || !integration) throw new Error("房間來源接線尚未啟用。");
   }
   function configure(adapter) {
-    for (const name of ["readSource", "readIncarnation", "beginTransaction", "assertTransaction", "endTransaction", "groupOpen", "labelTransaction", "adoptLegacySource"])
+    for (const name of ["readSource", "readIncarnation", "beginTransaction", "assertTransaction", "endTransaction", "preflightAttachment", "groupOpen", "labelTransaction", "adoptLegacySource"])
       if (typeof adapter?.[name] !== "function") throw new Error("房間來源缺少 owner 接口：" + name);
     integration = adapter;
   }
@@ -65,11 +65,12 @@ const RoomCollectionWorkspace = (() => {
         await cancelOwnedCandidate(); integration.endTransaction(lease); lease = null;
       },
       changeMetadata: (next, {label, stamp}) => W().setFeatureAttachment("source-rooms", next, stamp.contextToken, {recordHistory: true, reason: label}),
-      commitWithMetadata: async ({token: previewToken, boundaryId, label, assertCurrent, makeAttachment}) => {
+      commitWithMetadata: async ({token: previewToken, boundaryId, label, assertCurrent, makeAttachment,proposeAttachment}) => {
         assertCurrent(); integration.assertTransaction(lease);
         if (ownedPreviewToken !== previewToken) throw new Error("房間預覽識別已變更。");
         let begun = false, unknown = false;
         try {
+          integration.preflightAttachment(proposeAttachment(),lease);
           assertCurrent(); await checked("line history-begin"); begun = true;
           assertCurrent(); await checked("line confirm " + previewToken);
           const native = await checked("boundary " + boundaryId);

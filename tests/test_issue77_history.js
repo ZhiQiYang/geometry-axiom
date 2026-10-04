@@ -167,6 +167,25 @@ test('legacy history capacity allows 10000 distinct entries and 1000 original re
     assert.throws(()=>F.validate({schema:F.SCHEMA,records:[{kind:F.ROOM_KIND,schema:S.HISTORY_SCHEMA,value:expanded}]}),/容量上限/);
   } finally {JSON.stringify = serialize;}
   assert.equal(containerCalls,0);
+  // The exact envelope limit includes all rooms' finite lifecycle growth.
+  const near = clone(f.payload), padding = Array(2030).fill('x'.repeat(4096));
+  near.legacyHistory[1].records[0].padding = padding;
+  const raw = {schema:F.SCHEMA,records:[{kind:F.ROOM_KIND,schema:S.HISTORY_SCHEMA,value:near}]},
+    reserve = F.lifecycleReserve(near), size = () => new TextEncoder().encode(JSON.stringify(raw)).length;
+  let remaining = F.MAX_ROOM_BYTES - reserve - size();
+  while (remaining > 4100) {padding.push('x'.repeat(4096));remaining -= 4099;}
+  padding.push('x'.repeat(remaining - 3));
+  assert.equal(size() + reserve,F.MAX_ROOM_BYTES);F.validate(raw);
+  const retired = clone(raw);retired.records[0].value = S.unknownHistory(near);
+  assert.equal(F.jsonBytes(retired,F.MAX_ROOM_BYTES),F.MAX_ROOM_BYTES);F.validate(retired);
+  const history = new P.ContextHistory(() => ({featureAttachments:[],groups:new Map(),sources:new Map()}));
+  history.frame.context.featureAttachments = clone(raw.records);
+  history.observe('line confirm 999',{ok:true},'unobserved-candidate');
+  assert.deepEqual(history.frame.context.featureAttachments,retired.records);
+  padding[padding.length-1] += 'x';
+  assert.throws(()=>F.validate(raw),/保留房間狀態/);
+  const grid = F.record(F.GRID_KIND,gridDraft());
+  assert.throws(()=>F.validate({...retired,records:[...retired.records,grid]}),/容量上限/);
 });
 
 test('receipt-only archived history survives ZIP without adding historical IDs to native candidate membership',async()=>{

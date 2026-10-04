@@ -406,9 +406,35 @@
   async function sha(bytes) {
     return Array.from(new Uint8Array(await globalThis.crypto.subtle.digest("SHA-256", bytes)), b => b.toString(16).padStart(2, "0")).join("");
   }
+  function normalizedManifest(manifest, scene = "", sceneHash = "0".repeat(64), reserveNative = false) {
+    const m = {...manifest,format:projectFormat(manifest,scene),sceneHash};
+    if ([ENGINEERING_FORMAT,PARAMETER_FORMAT,ASSEMBLY_FORMAT,GENERATION_FORMAT,OUTLINE_FORMAT,FEATURE_FORMAT].includes(m.format)) {
+      m.requiredCapabilities = projectCapabilities(manifest,scene);
+      if (reserveNative) m.requiredCapabilities = [...new Set([...m.requiredCapabilities,ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY])].sort();
+      if (!m.assemblyDrafts?.records.length) delete m.assemblyDrafts;
+      if (!m.engineeringDrafts?.records.length) delete m.engineeringDrafts;
+    } else {delete m.requiredCapabilities;delete m.engineeringDrafts;delete m.assemblyDrafts;}
+    if (!m.featureAttachments?.records.length) delete m.featureAttachments;
+    if (m.format === FORMAT) delete m.models;
+    if ([PROJECTION_FORMAT,TIMBER_FORMAT,ENGINEERING_FORMAT,PARAMETER_FORMAT,ASSEMBLY_FORMAT,GENERATION_FORMAT,OUTLINE_FORMAT,FEATURE_FORMAT].includes(m.format)) {m.models ||= [];m.faceProjections ||= [];}
+    else delete m.faceProjections;
+    return m;
+  }
+  function assertManifestCapacity(manifest, scene = "") {
+    Features.jsonBytes(manifest,MAX_MANIFEST,0,"專案清單超過 8 MB，請拆成較小的專案。");
+    const rooms = manifest.featureAttachments ? Features.sourceRooms(manifest.featureAttachments) : null;
+    const reserve = rooms ? Features.lifecycleReserve(rooms) : 0;
+    // Metadata preflight has no native scene read. Room projects retain the
+    // finite native capability overhead as well as every room's status growth.
+    Features.jsonBytes(normalizedManifest(manifest,scene,manifest.sceneHash || "0".repeat(64),!!rooms),MAX_MANIFEST,reserve,
+      "專案清單未保留完整保存與房間狀態更新所需容量（上限 8 MB）。");
+    return manifest;
+  }
   function validate(m) {
     if (!m || ![FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(m.format)) fail("專案版本不支援，請使用相容版本開啟。");
     if (Object.hasOwn(m, "featureAttachments") && m.format !== FEATURE_FORMAT) fail("功能附件須使用第 10 版格式。");
+    Features.jsonBytes(m,MAX_MANIFEST,0,"專案清單超過 8 MB，請拆成較小的專案。");
+    assertManifestCapacity(m);
     if ([ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(m.format)) {
       if (!keys(m, ["format", "projectId", "name", "sceneHash", "sources", "faces", "models", "faceProjections", "requiredCapabilities"], ["reconstructionReviews", "engineeringDrafts", ...([ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(m.format) ? ["assemblyDrafts"] : []), ...(m.format === FEATURE_FORMAT ? ["featureAttachments"] : [])]))
         fail("第 5 版工程專案的欄位不完整或含未知定義。");
@@ -486,22 +512,17 @@
   }
   async function pack(scene, manifest, sources, zip) {
     const sceneBytes = new TextEncoder().encode(scene);
+    assertManifestCapacity(manifest,scene);
     for (const model of manifest.models || []) validateSpaceModel(model);
     if (Object.hasOwn(manifest, "faceProjections")) validateFaceProjectionList(manifest.faceProjections);
     if (Object.hasOwn(manifest, "requiredCapabilities")) validateManifestCapabilities(manifest.requiredCapabilities);
     if (Object.hasOwn(manifest, "assemblyDrafts")) validateAssemblyDrafts(manifest.assemblyDrafts);
     if (Object.hasOwn(manifest, "engineeringDrafts")) validateEngineeringDrafts(manifest.engineeringDrafts);
     if (Object.hasOwn(manifest, "featureAttachments")) Features.validate(manifest.featureAttachments);
-    const m = { ...copy(manifest), format: projectFormat(manifest, scene), sceneHash: await sha(sceneBytes) };
-    if ([ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(m.format)) {
-      m.requiredCapabilities = projectCapabilities(manifest, scene);
-      if (!m.assemblyDrafts?.records.length) delete m.assemblyDrafts;
-      if (!m.engineeringDrafts?.records.length) delete m.engineeringDrafts;
-    } else { delete m.requiredCapabilities; delete m.engineeringDrafts; delete m.assemblyDrafts; }
-    if (!m.featureAttachments?.records.length) delete m.featureAttachments;
-    if (m.format === FORMAT) delete m.models;
-    if ([PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT].includes(m.format)) { m.models ||= []; m.faceProjections ||= []; }
-    else delete m.faceProjections;
+    // Freeze the admitted JSON before the asynchronous scene hash; late caller
+    // changes cannot reach a whole-container copy beyond the admitted budget.
+    const m = copy(normalizedManifest(manifest,scene));
+    m.sceneHash = await sha(sceneBytes);
     validate(m);
     validateEngineeringScene(m, scene);
     const manifestBytes = new TextEncoder().encode(JSON.stringify(m));
@@ -772,7 +793,7 @@
     }
   }
   return { Features, FEATURE_FORMAT, readerCapabilities, validateManifestCapabilities, OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
-    MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage,
+    MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage, assertManifestCapacity,
     validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, nativeReaderCapabilities, assertProjectCapabilities, sceneCapabilities,
     validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, projectFormat, reference, pack, unpack, ContextHistory };
 });

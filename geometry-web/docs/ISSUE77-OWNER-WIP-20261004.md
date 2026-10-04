@@ -318,3 +318,40 @@ also pass. Final combined frozen native/browser/fresh-ZIP and full regression
 gates are now required, with new native binaries and runtime/source hashes.
 These are pending gates, not borrowed stage2/stage3 passes. Legacy approval stays
 active within the user's specific10:30 Q+A; no renewed permission is requested.
+
+## Capacity lifecycle followup (2026-10-04)
+
+The combined `935caaf` small-fixture gates completed: full CDP1970/0/0 skipped,
+82 golden sections; timber79/0; formal room37 checks; archived fresh imports224
+checks across8 actual fresh contexts; negative asset gate59 checks/15 cases.
+The separate default-space gate still has a real rendering-readiness failure;
+its original and subsequent diagnostic/rerun packets remain preserved. These
+passes do not certify capacity admission or a later implementation head.
+
+Independent review found and actual native/browser runs reproduced two P2
+capacity defects. A legal8,388,607-byte saved manifest imported successfully,
+then a native boundary edit grew the room status by3 bytes and made full save
+fail. A legal8,388,607-byte feature envelope with6 actual native associations
+was accepted; actual native reset-confirm succeeded, but metadata retirement
+threw at the6th room, leaving5 retired rooms and1 falsely confirmed room.
+Original full ZIP, raw metadata, native HTTP/ACKs, actual dump changes and hashes
+are retained in `/77-capacity-lifecycle-repro/`; no synthetic-native claim.
+
+The shared fix reserves the exact finite growth to `needs-reassociation` for
+every room at record/envelope admission. The complete normalized manifest uses
+the same incremental escaped-UTF8 counter, a64-character scene hash, the finite
+native capability overhead and the same lifecycle reserve, before copying or
+publishing. Limits, original archival records and schema membership stay intact.
+The existing manifest serializer now has one synchronous proposal projection;
+owner writes that consume room-project headroom use it before history/metadata
+changes. Source adoption charges its final groups/reviews/archive state once.
+Legacy source creation preflights after actual ID allocation and before native
+publication. Room confirmation retains the genuine detached candidate pin,
+preflights the complete proposal inside the existing owned-candidate cleanup,
+then separately checks the actual committed native pin before publication.
+
+Focused regressions include exact feature-envelope reserve equality and+1
+refusal, all-room unknown-confirm retirement, unchanged grid limits, raw JSON
+guards and actual native unchanged/edit/cancel identity. Corrected near-limit
+native/browser/ZIP/one-undo and complete exact-head gates remain required.
+PR114 stays draft; no merge, deployment, native rewrite or #54 takeover occurred.

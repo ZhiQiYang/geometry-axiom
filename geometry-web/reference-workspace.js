@@ -365,6 +365,14 @@ const ReferenceWorkspace = (() => {
     const record = (context().featureAttachments || []).find(record => record.kind === kind);
     return record ? JSON.parse(JSON.stringify(record.value)) : null;
   }
+  function featureProposal(kind,value) {
+    const record = value === null ? null : P.Features.record(kind,value);
+    const next = (context().featureAttachments || []).filter(record => record.kind !== kind);
+    if (record) next.push(record);
+    P.Features.sourceRooms({schema:P.Features.SCHEMA,records:next},context().sources);
+    assertMetadataCapacity({featureAttachments:next});
+    return next;
+  }
   function setFeatureAttachment(kind, value, expectedContextToken, options = {}) {
     P.Features.assertKind(kind);
     const groupedRoom = kind === P.Features.ROOM_KIND && options.recordHistory === false;
@@ -377,13 +385,9 @@ const ReferenceWorkspace = (() => {
       throw new Error("專案已切換或缺少編輯上下文，未寫入功能附件。");
     if (busy || oc.busy || (!groupedRoom && history.group) || preparingSceneLoad || pendingLoad)
       throw new Error("請先完成目前操作，再變更功能附件。");
-    const record = value === null ? null : P.Features.record(kind, value);
-    const previous = readFeatureAttachment(kind);
+    const proposal = featureProposal(kind,value), previous = readFeatureAttachment(kind);
     if (sameModelData(previous, value)) return previous;
-    const next = (context().featureAttachments || []).filter(record => record.kind !== kind);
-    if (record) next.push(JSON.parse(JSON.stringify(record)));
-    P.Features.validate({schema:P.Features.SCHEMA, records:next});
-    P.Features.sourceRooms({schema:P.Features.SCHEMA, records:next}, context().sources);
+    const next = structuredClone(proposal);
     if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     return readFeatureAttachment(kind);
@@ -447,16 +451,18 @@ const ReferenceWorkspace = (() => {
         !sameModelData(getModelOperationState(), stamp) || !sameModelData(P.reference(page), originalPage) ||
         !sameModelData(readReview(), reviewSnapshot) ||
         !sameModelData(readFeatureAttachment(P.Features.ROOM_KIND), original)) throw new Error("來源轉入結果晚到，未改動目前專案。");
-    history.push(history.snapshot(), "local", "轉入共享房間來源");
     const pages = g.pages.filter(candidate => candidate !== page), groups = new Map(c.groups);
     if (pages.length) groups.set(key, {...g,pages,activePageId:pages[0].id}); else groups.delete(key);
     const reviews = new Map(c.reconstructionReviews); reviews.delete(reviewKey);
+    assertMetadataCapacity({groups,reconstructionReviews:reviews,featureAttachments:records});
+    history.push(history.snapshot(), "local", "轉入共享房間來源");
     c.groups = groups; c.reconstructionReviews = reviews; c.featureAttachments = records; dirty(); sync();
   }
   const roomIntegration = Object.freeze({
     readSource:(id,token) => {if (token !== getProjectState().contextToken) throw new Error("來源讀取上下文已過期。"); return context().sources.get(id) || null;},
     readIncarnation:(id,token) => {if (token !== getProjectState().contextToken) throw new Error("房間身份上下文已過期。"); return history.frame.ids.get(id) || null;},
     beginTransaction:beginRoomTransaction, assertTransaction:assertRoomTransaction, endTransaction:endRoomTransaction,
+    preflightAttachment:(value,lease) => {assertRoomTransaction(lease);featureProposal(P.Features.ROOM_KIND,value);},
     groupOpen:lease => {assertRoomTransaction(lease); return !!roomTransaction.group && history.group === roomTransaction.group;},
     labelTransaction:(lease,label) => {assertRoomTransaction(lease); if (history.group || !roomTransaction.entry || history.undo.at(-1) !== roomTransaction.entry || typeof label !== "string" || label.length > 500) throw new Error("房間歷史步驟已變更。"); roomTransaction.entry.action = label;},
     adoptLegacySource:adoptRoomSource
@@ -466,8 +472,9 @@ const ReferenceWorkspace = (() => {
     const next=getAssemblyDrafts(), index=next.findIndex(item=>item.id===record.id);
     if(index<0 && next.length>=256)throw new Error("單一專案最多 256 份組構草稿。");
     if(index>=0 && sameModelData(next[index],record))return next[index];
-    if(recordHistory)history.push(history.snapshot(),"local","編輯組構草稿");
     const saved=structuredClone(record);if(index<0)next.push(saved);else next[index]=saved;
+    assertMetadataCapacity({assemblyDrafts:next});
+    if(recordHistory)history.push(history.snapshot(),"local","編輯組構草稿");
     context().assemblyDrafts=next;dirty();sync();return structuredClone(saved);
   }
   function removeAssemblyDraft(id, token, recordHistory = true) {
@@ -489,6 +496,7 @@ const ReferenceWorkspace = (() => {
     if(index<0 && next.length>=P.MAX_ENGINEERING_DRAFTS)throw new Error("單一專案最多可保存 256 份工程規格草稿。");
     if(index>=0 && sameModelData(next[index],record))return next[index];
     const saved=JSON.parse(JSON.stringify(record));if(index<0)next.push(saved);else next[index]=saved;
+    assertMetadataCapacity({engineeringDrafts:next});
     context().engineeringDrafts=next;dirty();sync();return JSON.parse(JSON.stringify(saved));
   }
   function removeEngineeringDraft(id, expectedContextToken) {
@@ -518,6 +526,7 @@ const ReferenceWorkspace = (() => {
     if (projection !== null) records.push({placement_id:placementId,projection});
     records.sort((a,b) => a.placement_id-b.placement_id);
     if (records.length) next.set(key, records); else next.delete(key);
+    assertMetadataCapacity({faceProjections:next});
     history.changeFaceProjections(next); context().faceProjectionsDirty = true; dirty(); sync();
     return getFaceProjection(bid, placementId);
   }
@@ -530,14 +539,16 @@ const ReferenceWorkspace = (() => {
     assertModelReady(); P.validateSpaceModel(record);
     if (context().models.length >= P.MAX_MODELS) throw new Error("單一專案最多可保存 64 個空間模型。");
     if (context().models.some(m => m.id === record.id)) throw new Error("空間模型 ID 重複。");
-    history.changeModels([...context().models, record]); context().modelsDirty = true; dirty(); sync();
+    const next = [...context().models,record];assertMetadataCapacity({models:next});
+    history.changeModels(next); context().modelsDirty = true; dirty(); sync();
     return getSpaceModels().at(-1);
   }
   function updateSpaceModel(id, record) {
     assertModelReady(); P.validateSpaceModel(record);
     const index = context().models.findIndex(m => m.id === id);
     if (index < 0 || record.id !== id) throw new Error("找不到要更新的空間模型。");
-    history.changeModels(context().models.map((m, n) => n === index ? record : m)); context().modelsDirty = true; dirty(); sync();
+    const next = context().models.map((m,n) => n === index ? record : m);assertMetadataCapacity({models:next});
+    history.changeModels(next); context().modelsDirty = true; dirty(); sync();
     return getSpaceModels()[index];
   }
   function removeSpaceModel(id) {
@@ -646,19 +657,28 @@ const ReferenceWorkspace = (() => {
   }
   function addPage(bid, p) {
     assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
+    assertPageCapacity(bid,p,{append:true});
     const g = group(bid, true); cancelSelection(context(), g); g.pages.push(p); g.activePageId = p.id;
     dirty(); sync(); return p;
   }
   function adoptLegacy(bid, ul) {
     assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
-    const c = context();
-    const p = Object.assign(ul, { id: uuid(), sourceId: "pending", page: 1, crop: [0,0,ul.imgW,ul.imgH],
-      calibration: null, reviewRequired: false, records: [] });
+    const c = context(), frame = history.frame,
+      page = {...ul,id:uuid(),sourceId:"pending",page:1,crop:[0,0,ul.imgW,ul.imgH],calibration:null,reviewRequired:false,records:[]};
+    // Budget the future hash/asset entry before the synchronous legacy display
+    // changes. This placeholder is never published or used as source evidence.
+    let budgetId = "0".repeat(64);for (let index = 1;c.sources.has(budgetId);index++) budgetId = index.toString(16).padStart(64,"0");
+    const proposedSources = new Map(c.sources);proposedSources.set(budgetId,{meta:{id:budgetId,hash:budgetId,name:"參考圖片",type:"application/pdf",size:P.MAX_SOURCE,path:"sources/"+budgetId}});
+    assertPageCapacity(bid,{...page,sourceId:budgetId},{replace:true,sources:proposedSources});
+    const p = Object.assign(ul,page);
     const g = group(bid, true); cancelSelection(c, g); g.pages = [p]; g.activePageId = p.id; dirty();
     const pending = (async () => {
       const blob = await fetch(p.src).then(r => r.blob());
       const s = await sourceFromFile(new File([blob], "參考圖片", { type: blob.type }));
       assertEditable();assertContext(c);
+      if (history.frame !== frame || group(bid) !== g || active(bid) !== p) throw new Error("底圖來源結果晚到，未改動目前圖頁。");
+      const sources = new Map(c.sources);sources.set(s.meta.id,s);
+      assertPageCapacity(bid,{...p,sourceId:s.meta.id},{sources});
       c.sources.set(s.meta.id, s); p.sourceId = s.meta.id;
     })();
     c.pending.add(pending); pending.then(() => c.pending.delete(pending), () => {});
@@ -668,12 +688,15 @@ const ReferenceWorkspace = (() => {
     const p = active(bid); if (!p) return;
     if (sharedRoom(bid)) return RoomCollectionWorkspace.changeBasis(bid, {mmPerPx:p.mmPerPx},
       {points:points.map(v => [...v]),distanceMm:distMm,inputValue,inputUnit});
-    p.calibration = { points: points.map(v => [...v]), distanceMm: distMm, inputValue, inputUnit };
+    const calibration = {points:points.map(v=>[...v]),distanceMm:distMm,inputValue,inputUnit};
+    assertPageCapacity(bid,{...p,calibration,reviewRequired:true});
+    p.calibration = calibration;
     p.reviewRequired = true; dirty();
   }
   function changed(bid, recheck = false) {
     assertEditable(); const p = active(bid);
     if (sharedRoom(bid)) return RoomCollectionWorkspace.changeBasis(bid, {x:p.x,y:p.y,rot:p.rot,mmPerPx:p.mmPerPx});
+    if (p) assertPageCapacity(bid,{...p,reviewRequired:recheck ? true : p.reviewRequired});
     if (p && recheck) p.reviewRequired = true; dirty();
   }
   function remove(bid) {
@@ -708,6 +731,8 @@ const ReferenceWorkspace = (() => {
       if (!p.src) await preparePage(p, c.sources.get(p.sourceId));
       if (context() !== c || group(bid) !== g || g.selection !== request) return;
       assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
+      const groups = new Map(c.groups);groups.set(history.frame.ids.get(bid),{...g,activePageId:p.id});
+      assertMetadataCapacity({groups});
       g.activePageId = p.id; fe.ulCalib = null; fe.ulDrag = null; dirty(); redraw(); fitReference();
     } catch (e) { error = e; throw e; }
     finally {
@@ -741,8 +766,11 @@ const ReferenceWorkspace = (() => {
     assertEditable(); assertLegacyTarget(bid); const p=active(bid);
     if (!p?.calibration || !oc.bmap[bid]?.[0]?.verts?.length) throw new Error("請先校準來源並完成合法輪廓，再核對。");
     if (expectedBasis && expectedBasis!==P.reviewBasis(p)) throw new Error("來源對位已變更，請重新核對；正式面尺寸保持原值。");
+    const receipt = {basis:P.reviewBasis(p),geometry:P.outlineFingerprint(oc.bmap[bid]),method,warnings:[...warnings],confirmedAt:new Date().toISOString()},
+      reviews = new Map(context().reconstructionReviews);reviews.set(reviewKey(bid,p),receipt);
+    assertPageCapacity(bid,{...p,reviewRequired:false},{reconstructionReviews:reviews});
     if (local) {if (history.group) throw new Error("請先完成目前交易。");history.push(history.snapshot(),"local","核對來源輪廓");}
-    context().reconstructionReviews.set(reviewKey(bid,p),{basis:P.reviewBasis(p),geometry:P.outlineFingerprint(oc.bmap[bid]),method,warnings:[...warnings],confirmedAt:new Date().toISOString()});
+    context().reconstructionReviews = reviews;
     p.reviewRequired=false;dirty();schedulePresentation();
   }
   function reconstructionStatusHTML(bid) {
@@ -765,8 +793,9 @@ const ReferenceWorkspace = (() => {
       const raw = pane.querySelector("#refRecordValue").value, value = raw.trim()==="" ? null : Number(raw);
       const label = pane.querySelector("#refRecordLabel").value.trim();
       if (!label || (value !== null && (!Number.isFinite(value) || Math.abs(value)>1e8))) { toast("請填項目名稱及有效數值；未知值可留空。"); return; }
-      active(bid).records.push({ id: uuid(), label, value, unit: pane.querySelector("#refRecordUnit").value,
-        location: pane.querySelector("#refRecordLocation").value, datum: pane.querySelector("#refRecordDatum").value });
+      const p = active(bid), records = [...p.records,{ id: uuid(), label, value, unit: pane.querySelector("#refRecordUnit").value,
+        location: pane.querySelector("#refRecordLocation").value, datum: pane.querySelector("#refRecordDatum").value }];
+      assertPageCapacity(bid,{...p,records});p.records = records;
       dirty(); redraw(); document.getElementById("refRecordDetails").open = true;
     }));
     for (const b of pane.querySelectorAll("[data-ref-remove-record]")) b.addEventListener("click", safe(() => {
@@ -862,8 +891,15 @@ const ReferenceWorkspace = (() => {
     assertContext(m.context);
     busy=true; dialog.inert=true; document.getElementById("refApply").disabled=true;
     try {
+      const id = uuid(), sources = new Map(m.context.sources);sources.set(m.source.meta.id,m.source);
+      const pageFor = bb => ({id,sourceId:m.source.meta.id,page:m.page,imgW:m.width,imgH:m.height,crop:[...m.crop],
+        mmPerPx:(bb[2]-bb[0])/m.crop[2],x:bb[0]-m.crop[0]*(bb[2]-bb[0])/m.crop[2],y:bb[1]-m.crop[1]*(bb[2]-bb[0])/m.crop[2],
+        rot:0,opacity:0.5,locked:false,calibration:null,reviewRequired:false,records:[],src:m.render.src});
       let bid=document.getElementById("refTarget").value;
-      if (bid==="new") { bid=await objNewPolyFace(); if (!bid) throw new Error("建立描繪用面失敗。"); }
+      if (bid==="new") { bid=await objNewPolyFace({beforeCreate:allocated => {
+        assertContext(m.context);assertEditable();assertRoomDraftIdle();
+        assertPageCapacity(allocated,pageFor([0,0,4000,3000]),{append:true,sources});
+      }}); if (!bid) throw new Error("建立描繪用面失敗。"); }
       else {
         bid=Number(bid);
         assertLegacyTarget(bid);
@@ -875,11 +911,10 @@ const ReferenceWorkspace = (() => {
       assertEditable();
       if (!oc.edit || oc.edit.bid!==bid) throw new Error("目標面已不存在，請重新選擇。");
       assertLegacyTarget(bid); assertRoomDraftIdle();
-      const bb=loopsBBox(oc.bmap[bid]), crop=m.crop, mmPerPx=(bb[2]-bb[0])/crop[2];
+      const page = pageFor(loopsBBox(oc.bmap[bid]));
+      assertPageCapacity(bid,page,{append:true,sources});
       context().sources.set(m.source.meta.id,m.source);
-      addPage(bid,{ id:uuid(),sourceId:m.source.meta.id,page:m.page,imgW:m.width,imgH:m.height,crop:[...crop],
-        mmPerPx,x:bb[0]-crop[0]*mmPerPx,y:bb[1]-crop[1]*mmPerPx,rot:0,opacity:0.5,locked:false,
-        calibration:null,reviewRequired:false,records:[],src:m.render.src });
+      addPage(bid,page);
       closeSource(true); feSetTool("select"); fiShowTab("underlay"); redraw(); fitReference();
       if (innerWidth <= 680) openPanel("right",document.getElementById("workspaceToggleRight"));
       setStatus("已加入參考頁；請用圖上已知尺寸完成兩點校準。");
@@ -895,24 +930,40 @@ const ReferenceWorkspace = (() => {
       if(task)source.cleanup=task.destroy().catch(()=>{});
     }
   }
-  async function manifest(c = context()) {
-    await referencesReady(c); assertContext(c);
+  function manifestData(c = context(), ids = history.frame.ids) {
     const faces=[], faceProjections=[], reconstructionReviews=[]; const used=new Set();
-    for (const [bid,key] of history.frame.ids) {
-      for (const record of c.faceProjections.get(key) || []) faceProjections.push({bid,...JSON.parse(JSON.stringify(record))});
+    for (const [bid,key] of ids) {
+      for (const record of c.faceProjections.get(key) || []) faceProjections.push({bid,...record});
       const g=c.groups.get(key); if (!g?.pages.length) continue;
-      faces.push({ bid,activePageId:g.activePageId,pages:g.pages.map(p=>{used.add(p.sourceId);return P.reference(p);}) });
-      for (const p of g.pages) {const r=c.reconstructionReviews.get(key+":"+p.id);if (r) reconstructionReviews.push({bid,pageId:p.id,...JSON.parse(JSON.stringify(r))});}
+      faces.push({ bid,activePageId:g.activePageId,pages:g.pages.map(p=>{used.add(p.sourceId);return Object.fromEntries(["id","sourceId","page","imgW","imgH","crop","mmPerPx","x","y","rot","opacity","locked","calibration","reviewRequired","records"].map(key=>[key,p[key]]));}) });
+      for (const p of g.pages) {const r=c.reconstructionReviews.get(key+":"+p.id);if (r) reconstructionReviews.push({bid,pageId:p.id,...r});}
     }
     const roomSources = P.Features.sourceRooms({schema:P.Features.SCHEMA,records:c.featureAttachments || []},c.sources);
     for (const plane of roomSources?.planes || []) used.add(plane.sourceId);
     const data = { ...(reconstructionReviews.length?{reconstructionReviews}:{}),projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
-      ...(c.models.length?{models:JSON.parse(JSON.stringify(c.models))}:{}),...(faceProjections.length?{faceProjections}:{}),
-      ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.assemblyDrafts))}}:{}),
-      ...(c.featureAttachments?.length?{featureAttachments:{schema:P.Features.SCHEMA,records:JSON.parse(JSON.stringify(c.featureAttachments))}}:{}),
-      ...(c.engineeringDrafts?.length?{engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:JSON.parse(JSON.stringify(c.engineeringDrafts))}}:{}) };
+      ...(c.models.length?{models:c.models}:{}),...(faceProjections.length?{faceProjections}:{}),
+      ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:c.assemblyDrafts}}:{}),
+      ...(c.featureAttachments?.length?{featureAttachments:{schema:P.Features.SCHEMA,records:c.featureAttachments}}:{}),
+      ...(c.engineeringDrafts?.length?{engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:c.engineeringDrafts}}:{}) };
     const format = P.projectFormat(data);
-    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].includes(format)?{models:JSON.parse(JSON.stringify(c.models)),faceProjections}:{}) };
+    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].includes(format)?{models:c.models,faceProjections}:{}) };
+  }
+  function assertMetadataCapacity(overrides = {}, ids = history.frame.ids) {
+    const c = {...context(),...overrides};
+    if (!c.featureAttachments?.some(record => record.kind === P.Features.ROOM_KIND)) return;
+    P.assertManifestCapacity(manifestData(c,ids));
+  }
+  function assertPageCapacity(bid,page,{append = false,replace = false,...overrides} = {}) {
+    const c = context(), ids = new Map(history.frame.ids), key = ids.get(bid) || "capacity-proposal";
+    ids.set(bid,key);
+    const old = c.groups.get(key), groups = new Map(c.groups), pages = replace ? [page] : append ? [...(old?.pages || []),page] : (old?.pages || []).map(p=>p.id === page.id ? page : p);
+    groups.set(key,{...old,pages,activePageId:append || replace ? page.id : old?.activePageId});
+    assertMetadataCapacity({...overrides,groups},ids);
+  }
+  async function manifest(c = context()) {
+    await referencesReady(c); assertContext(c);
+    const data = manifestData(c);P.assertManifestCapacity(data);
+    return JSON.parse(JSON.stringify(data));
   }
   function assertSaveReady() {
     if(window.RoomCollectionWorkspace?.hasWork)throw new Error("房間草稿尚未確認。請確認、取消或恢復結果，再保存專案。");
@@ -1309,7 +1360,7 @@ const ReferenceWorkspace = (() => {
     preview.onpointermove=e=>{if(!modal?.drag)return;const p=cropPoint(e),s=modal.drag;modal.crop=[Math.min(p[0],s[0]),Math.min(p[1],s[1]),Math.max(1,Math.abs(p[0]-s[0])),Math.max(1,Math.abs(p[1]-s[1]))];drawCrop();};
     preview.onpointerup=()=>{if(modal){modal.drag=null;if(!modal.ready||!modal.crop)return;if(modal.crop[2]<2||modal.crop[3]<2)modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
     preview.onpointercancel=preview.onpointerup;
-    document.getElementById("btnProjectName").onclick=safe(()=>{assertEditable();const n=prompt("專案名稱",context().name);if(n?.trim()){assertEditable();context().name=n.trim().slice(0,200);dirty();sync();}});
+    document.getElementById("btnProjectName").onclick=safe(()=>{assertEditable();const n=prompt("專案名稱",context().name);if(n?.trim()){assertEditable();const name=n.trim().slice(0,200);assertMetadataCapacity({name});context().name=name;dirty();sync();}});
     window.addEventListener("beforeunload",e=>{if(context().dirty || Object.values(fe.feats || {}).some(items => items.length)){e.preventDefault();e.returnValue="";}});
     present();
   }
