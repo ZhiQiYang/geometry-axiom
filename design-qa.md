@@ -1,81 +1,93 @@
-# 組合畫布 UI — 第 3 個設計驗證
+# #116 B 面內切片：設計 QA
 
-日期：2026-09-28。工作區：`codex/canvas-grid`。交付入口：`http://127.0.0.1:18862/`。
+日期：2026-10-05（10-04 開工）。分支 `codex/issue116-context-menu-b`。正式應用預覽 `http://localhost:8817/`。
+本次報告取代根目錄的舊畫布報告；舊報告保留於 `06086ab:design-qa.md` 的 Git 歷史，不將舊驗收計入本次。
 
-本檔保存最新一輪設計驗證。前次「參考描面介面」報告保留於 Git `4eb8d1e:design-qa.md`，不以本次畫布檢查取代其功能驗收。
+final result: blocked
 
-final result: passed
+面內已實作範圍的視覺檢查通過，未發現尚待處理的P0/P1/P2；合併gate為blocked：完整CDP未全部通過；GitHub CI jobs受帳戶執行限制未啟動，dot最終head独立審查及#114 owner驗收仍待完成。最終`dce2975`／ee9f版本完整 `cdp_test.js`：1586通過／0失敗，但在P76等待逾時而未完成，未比對golden。實際trace為參數卡engineering-confirm拒絕Missing, invalid or unrelated engineering preview token後，等待!ParameterUI.pending逾時；沒有把0失敗斷言說成全量通過。詳細fatal與分段見validation.json。其他工作區、未實作手勢與實體裝置另列後續，不宣稱整個#116已關閉。草稿PR #125交dot整合。
 
-完整 CDP 回歸通過；最終產品以與來源相同的篩選關閉狀態重新截圖，已共同檢視全圖、窄版及未縮放局部。P0／P1／P2 問題均已處理，剩餘 P3 差異列於下方。
+## Source visual truth 與同狀態條件
 
-## 視覺真實來源與比對條件
+先看附件圖片再實作，視覺依據是《游標系統右鍵表單設計.zip》中的 `screenshots/01-spec2.png`、`04-proto-edge.png`，以及讀取後的 menu-v2／cursor-v2 source。沒有以附件指令擴大授權，也沒有執行原型支援腳本。ZIP 28 檔、931799 bytes；ZIP／PNG／source hashes 見 `geometry-web/docs/issue116/evidence.json`。
 
-- 使用者選擇的是三個實際顯示結果中的第 3 張。
-- source visual truth：`C:/Users/Yang/.codex/generated_images/01a0e68a-e9ac-7990-b122-786b4f7668c4/exec-39280946-3b5e-4aed-8aae-1e23d6671171.png`。
-- implementation screenshot：`C:/Users/Yang/AppData/Local/Temp/geometry-tests/composition-canvas/final-visual-screens/desktop-selected-binding.png`。
-- 窄版截圖：同目錄 `mobile-selected-binding.png`。
-- 來源與桌面實作均為 **1721×914 pixels**；瀏覽器 viewport 為 **1721×914 CSS px、deviceScaleFactor 1**，無縮放、無瀏覽器外框。沒有把原生成提示中的 1920×1020 誤作實際尺寸。
-- 手機實作為 **390×844 pixels / CSS px、deviceScaleFactor 1**。來源沒有手機稿，因此窄版驗收是功能、文字、觸及與排版適應，沒有宣稱手機逐像素還原。
-- 同一桌面狀態：400／600 mm 雙軸無限來源、一個 2400×2400 mm 未放置邊界、一個 cell (0,0)、左上對齊的配置，配置被選取、底部編輯器打開、篩選浮層關閉。全部是原生模型，不是靜態截圖嵌在產品中。
-- 設計場景與操作測試用獨立服務及回報目錄。18862 的使用者原場景沒有換成這份設計夾具。
-
-## 全圖與局部證據
-
-每輪以來源圖、桌面實作及窄版實作放在**同一次 comparison input** 共同檢視，不以分開觀看或程式碼閱讀冒充並列比對。
-
-另將實際來源與實作各自裁出未縮放局部，在同一次輸入比較：
-
-- `final-visual-screens/source-library.png` 與 `final-visual-screens/render-library.png`：左側 278 px，檢查建立入口、搜尋、群組、文字階層與圖示。
-- `final-visual-screens/source-dock.png` 與 `final-visual-screens/render-dock.png`：底部設定區，檢查欄位、對齊圖、九點、預覽按鈕與細字。來源 crop `(287,650)–(1721,914)`，實作 crop `(287,636)–(1721,886)`，均為 1:1 pixels，未拉伸。
-
-以上路徑均位於 `C:/Users/Yang/AppData/Local/Temp/geometry-tests/composition-canvas/`；歷次 `iteration-*.png` 在其 `screens/` 子目錄。完整回歸的 `accepted-final-screens/` 桌面圖保留當時展開的篩選狀態，最後以相同產品、未修改程式重新擷取 `final-visual-screens/` 作同狀態比對。截圖為執行證據，不提交為另一套應用程式或閱讀器。
+- 原圖：`C:/Users/Yang/AppData/Local/Temp/geometry-issue116-design/screenshots/04-proto-edge.png`，909×525 pixels 的工作区區域截圖；未提供可證明的原始全頁 viewport／density。
+- 實作全圖：`geometry-web/docs/issue116/desktop-notch-final.png`，實際 Chrome viewport **1440×900 CSS px / pixels、density 1**。
+- 比較區域：實作 `(520,225)–(1429,750)` 裁成 **909×525、scale 1**，不拉伸；表單與選單頂緣對齊到來源 y143 附近。
+- 同一操作狀態：邊 1、4000×3000、固定邊、凹口、距上 900、寬 1200、深 600、留底 3400。來源另有柱孔、線與料件；實作驗收用無孔的原生矩形以獨立確認凹口輸出。這些周邊幾何與既有右欄差異是明示保留，沒有宣稱整張圖逐像素相同。
+- 全區域與未縮放局部在同次工具輸入共同檢視：`%TEMP%/geometry-tests/issue116-evidence/source-vs-implementation.png`、`source-vs-implementation-detail.png`。來源位左，真實 app 位右；不是把設計圖嵌在產品中。
+- 響應式：390×844 與 720×480、density 1，來源無手機稿；驗收可達性、邊界、字與真取消，不宣稱手機逐像素復刻。圖片見 `geometry-web/docs/issue116/responsive-390.png`／`responsive-720.png`。
+- Codex 應用內瀏覽器也以真右鍵開啟表單，填入同組數值並觀察 3400 留底及 live ghost；87 項功能依 repo 要求用真 Chrome／native harness 驗收。沒有把程式碼閱讀當成瀏覽器驗收。
 
 ## 修正歷程
 
-| 輪次 | 發現與影響 | 修正 | 比對證據 |
-|---|---|---|---|
-| 1 | P2：常駐單選提示遮住來源卡標題。P2：側欄重複的「物件」標題推低清單。 | 一般 0／1 選取隱藏提示，多選與正在框選仍顯示；保留 DOM 身分，移除重複視覺列與額外留白。 | `iteration-1-desktop.png` → 最終 desktop 圖 |
-| 1 | P1：桌面縮成手機後選中配置仍在畫面外。P2：吸附／格點文字逐字折行。 | viewport 尺寸改變時只調整視野，讓所選卡片可見；按鈕不換行並調整窄版尺寸。 | `iteration-1-mobile.png` → 最終 mobile 圖 |
-| 1 | P2：夾具的邊界卡底部落在 dock 邊緣；底部設定留白過高。 | 邊界展示位置由 y350 改為 y320，對齊來源圖 y382 附近；dock 僅減少約 22 px 留白，不縮字。未改使用者物件位置或幾何。 | 初版與最終 desktop 圖 |
-| 2 | P2：手機卡片回到視野後，底端資訊仍被縮放工具蓋住。 | 視野計算為下方工具保留 72 px，窄高度時適度收斂留白。 | `iteration-2-mobile.png` → 最終 mobile 圖；P72 檢查兩者不重疊 |
-| 3 | P2：新表單的次要字太淡，可見 `key` 不利於辨識對齊點。 | 次要文字改 `#61738a`；以外環／孔洞、頂點與座標表示，內部穩定 key、資料屬性及精確比例不變。 | 最終 desktop／mobile 圖與重新產出的 library／dock 局部圖，已共同檢視 |
-| 4 | P1：第一次點擊開啟 dock 後，視野改變會讓同位置的第二下落空。P2：矩形工具提示與 toast 重疊。 | 選取不自動平移；沿用既有面內 450 ms／6 px 手勢判斷，記住第一次卡片身分並攔住落在新 dock 的第二下，非同卡片／其他控制項不接續；toast 移至工具與提示下方。 | P72 新增低處卡片、不同卡片、表單連點等 5 項檢查通過；最後完整執行的 P3／P4 開啟操作、P40 toast 及 P43 面內編輯均通過 |
-| 5 | P1：進入面工作區時，先用主畫布欄寬 fit，之後才移除主畫布樣式，造成放大中心漂移。 | 設定焦點後立即同步版面，再測量工作區。保留格線命中與密度判準，新增初始視野中心檢查。 | `p71-before-layout-fix.log`：中心應為 5000，實際為 2675.49；放大後可見範圍 1057–4294，原 4900 格線在視野外。修正後 `p70-p71-layout-fixed.log` 61／61 通過，最後完整回歸亦通過同一判準。 |
+| 輪次 | 問題及等級 | 修正與證據 |
+|---|---|---|
+| 1 | P1：側接表單 input／點擊被當成選單外操作，會關閉選單或取消預覽；子選單的 child hover 會移除自己。 | 將唯一表單與 ghost handle 納入同一互動邊界；child hover 保留子選單。75 項專項有真 input、drag、submenu hover／click 與 dump 不改的斷言。 |
+| 2 | P2：non-scaling stroke 又除 zoom，造成巨大藍色拖曳帶，與細虛線稿不符；Enter 字太暗。 | B 狀態下保留 14px 真 hit stroke、隱去粗帶，ghost 改細藍虚線；Enter 用白字。最終並排圖確認，真拖曳仍更新參數且不寫 native。 |
+| 3 | P1：compact cancel 後選單未恢復；右鍵既有多選會被改單選。 | 每次定位先量測真選單，取消恢復 compact menu；右鍵已選角材保留多選。390/720px 與 Shift 真多選斷言通過。 |
+| 4 | P2：回報鈕透過 workspace 的祖先 stacking 蓋住選單 footer／窄版表單；只提高子元素 z-index 無效。 | 選單使用頁面浮層，原表單暫移同層後歸位；F8／原回報機制保留。footer `elementFromPoint` 斷言與最新桌面／窄版重拍共同核對。 |
+| 4 | P2：來源「孔邊不能當定位」誤述 I13；停用提示不能當核心禁令。 | 改「孔邊請用右欄定位」；保留目前快捷限制，I13 明選引用仍可使用。原生拒絕斷言驗真實 `V_BOUNDARY_ROLE` 原因。 |
+| 5 | P2：完整回歸抓到 v2 沿參考線誤用「沿此邊」、孔邊懸停少了辨識、不同角材未重新展開；P62 仍驗舊圓膠囊。 | resolver 提供真線／孔／角材名稱，名稱也參與收合狀態；79 項新增真指標驗證。P62 改驗附件 h18/rx5/字11、獨立 Alt／Space 及手形，保留38項固定門檻與實際字樣檢查，沒有調低 golden。 |
+| 6 | P2：dot獨立來源審查指出未放置面仍啟用u/v參考線，原handler卻直接返回。 | 共用既有放置前提，點卡片／搜尋／Create同一停用原因，dispatch再核對且保留選單；87項真驗收新增8項未放置案例，dump逐字不變且送出0個原生guide命令。新圖 `unplaced-guide.png` 同時顯示既有toolbar停用與B子選單理由。 |
 
-靜態審查另發現並修復：極端合法間距產生過量 SVG（P1）、拖曳取消未還原關係線（P2）、compact 卡片連線端點懸空（P2）、建立選單的 Space／焦點／Esc 問題（P2）。P72 已實際驗證修正，不只驗證程式存在。
+修正遮擋及rebase時中止的完整CDP不計為通過。#114工作期間合入main，本分支已rebase到`861b65e`並保留雙方scripts。最終87/87重拍，runtime為`ee9f6a543b57b1d168af27baff0db8ac500319071ee0a9ea3b1d892a646b49c1`、`fresh:true`，repository為獨立worktree。歷史1336/10止於P72、以及下一輪與main同746/1均不計全量通過。P72在雙方新服務各52/52，只作診斷。P62-13b已修正測試語義：`stroke:none`禁描邊，unused SVG width 1不應判失敗，保留38門檻；改測試也會使runtime失效，舊服務拒绝的嘗試不算通過。之後dot的未放置P2修正提交為`dce2975`；對最終ee9f版本再跑專項、reference子集與完整CDP，結果見validation.json。
 
-## 五項必要視覺面向
+## 五項視覺面向
 
-| 面向 | 審查結論 |
+| 面向 | 實際比較與結論 |
 |---|---|
-| 字型與階層 | 延用既有系統 sans 字體疊，沒有引入外部字型。來源也是 sans UI，但生成圖無可驗證字型 metadata，因此不宣稱字型完全相同。標題、14 px 輸入、13 px 標籤及 12 px 說明分級；局部圖核對換行、截斷及閱讀大小。 |
-| 間距與布局 | 保留 278 px 來源庫、可移動卡片、兩條引用線、浮動工具列與選取後底部設定。一般提示不遮卡；手機表單垂直捲動，底部 cell 可真正聚焦且無水平溢出。 |
-| 顏色與 token | 白底、淡點陣、藍色主要操作、青綠色邊界，沿用產品 accent。次要文字由白底約 3.25:1 改為 4.85:1（`#8290a2` → `#61738a`），此數值不冒充全站無障礙稽核。 |
-| 圖像與圖示 | 沿用既有品牌與圖示系統；網格、邊界、選取頂點、關係線為真實模型的互動向量呈現，不以假圖取代幾何。這份目標無照片、插畫或需要另外生成的裝飾影像。來源卡示意依真實間距且有取樣上限，配置卡是核心裁切結果。 |
-| 文案與內容 | 建立入口直述網格／邊界；保存前有預覽確認。顯示真實物件名稱、位置與狀態，不為了像圖稿而假造邊界名稱或配置名稱欄位。原有限來源清楚標示原義。 |
+| 字型與階層 | 來源 Inter／Noto Sans TC／sans 疊與實作系統 fallback；標題12.5、摘要11、清單12、footer11、數值12，未加外部字型。PNG 有壓縮及不同 rasterization，不宣稱光學字重完全相同。 |
+| 間距與密度 | menu272、form296、gap8、tile56、search30、row28、field28、apply32；局部 1:1 圖直接對照。實作表單約244高，來源約239；原有語義與焦點樣式保留，約5px差屬P3。 |
+| 色彩、邊框與效果 | accent #4e67e8、face #2f8f7b、ink #172033、border #dfe4eb；12px圆角與原雙層陰影。凹口藍細虛線及留底淡綠與稿一致；disabled reason footer 是既有狀態用途。 |
+| 幾何、位置與比例 | 同寬、同一狀態左右翻轉；在1440/390/720實際viewport內。窄版空間不足時保留表單、暫藏選單，取消恢復。右鍵錨點保持真 snapped point；沒有因指標後移改建立位置。 |
+| 圖像、圖示與內容 | 游標直接沿用已閱讀的來源 SVG glyph；menu 沿用專案既有 icon。缺少的 x/check/chevron-right 使用 Lucide 官方圖示並附 ISC license。實際ID、尺寸、固定狀態與停用原因來自真場景，沒有假複製、假貼上或占位資料。 |
 
-## 有意保留的產品差異
+P3：保留現行右欄及工作區版面；來源 hover 灰底／實作靜止狀態不同；取消按鈕保持一行，比來源的兩字折行清楚；`在右欄編輯` 不加尚未接線的 Enter 快捷承諾。現有工具圖示與 source menu 有少量線條差異。
 
-- 圖稿的配置名稱欄位未加入模型未定義的可編輯欄位；顯示原生配置識別。來源名稱仍可編輯。
-- 圖稿的格內九宮改為同一 cell 的九個定位點，避免把不同子格誤當作角／邊中點／中心。
-- 真實頂點清單與縮圖並存，可處理非矩形及孔洞；沒有限定只有「左上角」這一種邊界。
-- 保存狀態、完整工作區、未放置提示、篩選及小地圖仍可使用。這些是既有產品能力，並非未完成的設計占位。
-- P3：既有矩形圖示仍為目前圖示系統的交叉矩形，與來源圖的簡單框線稍異；字型光學重量與生成圖有細微差異，無需阻擋本輪。
+## 驗證與交接界線
 
-## 功能與執行證據
+- 專項87/87、無未預期console/page error：真凹口 preview／drag／cancel／confirm、精確頂點、undo／redo、完整 ZIP 保存與重開、stale拒寫、keyboard／search／submenu／selection／cursor／responsive；未放置面的卡片／搜尋／Create停用理由與0guide命令。
+- #114 整合後 ProjectStore／ReferenceWorkspace races（含真 HTTP/native ABA）／context operations：Windows73/73、0略過；模型更新WSL/GCC39/39，含真原生producer、完整ZIP／歷史與missing-support拒寫；#77 history/workspace/room-collection：WSL56/56、0略過。模型39項來自WSL112項run，其另一個HTTP啟動案例逾時，aggregate為111/112；該案例另在Windows73項run通過，不冒稱112整批通過。Windows含模型的初跑受編譯器阻擋亦不算通過。
+- 最終`dce2975`／ee9f版本完整 `cdp_test.js`：1586通過／0失敗，但在P76等待逾時而未完成，未比對golden。實際trace為參數卡engineering-confirm拒絕Missing, invalid or unrelated engineering preview token後，等待!ParameterUI.pending逾時；沒有把0失敗斷言說成全量通過。詳細fatal與分段見validation.json。 同一最終runtime的reference部分模式437/437（P62維持38）、P72配置卡52/52，皆完成、0失敗、0瀏覽器例外；main的P72亦52/52。部分模式不代替完整流程。 較早本分支與未改動main各746/1止於P56角色／重試夾具（歸入P53）；另一輪1336/10止於P72，也不計為通過。最終完整run是另一次乾淨服務的結果，不把早期中斷混入通過數；未改golden門檻。
+- GitHub Actions未啟動、無runner logs，屬外部CI gate；未依紅色check假称產品測試已執行。
+- 原 ZIP與來源圖片保留本地，PR提交正式應用截圖與來源 hashes。唯讀規則獨審、多房間 #114 owner／實體 iOS、IME、OS picker、跨瀏覽器交 dot整合驗收。
+- 未實作：其他三工作區 v2 游標、複製／貼上／重複、多選批改、長按／偏移準星／雙指。保留 #116 後續範圍。
 
-- P72 的最終 51 項斷言已在完整回歸中全數通過。先前 `focused-gesture-final.log` 為 50 項版本，加入篩選真實收合後的 `focused-filter-final.log` 為 51 項；不混算成不同流程。
-- 原生來源／配置預覽、取消／確認、Undo／Redo、兩線引用、compact 端點、拖曳 Esc、極端間距、鍵盤選單、390px 的建立與底部欄位均有瀏覽器操作／整合檢查。
-- 保存只替代 OS picker 與 writable handle；內容由正式保存程式打包，正式開檔後比較 scene、objects、references。實體保存對話框未測。
-- 服務回歸 18／18 通過。新 assets allowlist、語法及 diff 檢查通過。
-- 最終完整 `cdp_test.js`：**1250 通過斷言、0 失敗、0 略過、exit 0**，`scope.mode=full`、`filters=[]`、`completed=true`。這是混合真實輸入、DOM 整合與原生 API 的斷言數，不是 1250 個完整流程。初輪的固定舊高度、卡片座標與篩選入口假設已按新布局更新，保留幾何斷言，沒有將失敗變成略過。
-- 完整證據：`C:/Users/Yang/AppData/Local/Temp/geometry-tests/composition-canvas/full-cdp-complete.log`、`full-cdp-result.json`、`final-validation-summary.json`。同目錄 `final-validation-hash-check.json` 證明 16 個產品／測試檔在執行前後雜湊全相等。先前未完成的 `full-cdp-verified.log` 保留為修正證據，未計入最終通過結果。
-- 同狀態視覺重拍另跑未修改的 P72：51／51 通過、0 例外，記於 `final-visual.log`；16 檔雜湊仍相等。已清理獨立測試服務與自建瀏覽器，18862 使用者試用服務保留並回應 200。
-- P67 的框選夾具依實際卡片尺寸調整（原 200×156，新 260×220），四象限、邊／角接觸及差 1 px 判準保留。跨專案復原的實際 dump 差異只有 `canvas-pos boundary 1 60 60` → `78 185`，符合既有 `geometry-web/docs/UIUX-FIX-PLAN.md` L1 的「復原保留卡片位置」。模型與位置改為分開驗證，不為通過測試修改核心復原語義。
-- 完整執行亦揭露 P72 的前序篩選狀態：展開的篩選浮層覆蓋配置列中心，`elementFromPoint` 確認命中篩選 chip。改為真點 summary 收起再點選，保留實際命中檢查；定向 51／51 通過，不以程式點擊穿透浮層。`focused-filter-final.log` 保存座標與診斷。
-- 三項獨立只讀核對通過：原生交易及過期守門、資源載入與修改範圍、真實序列化保存測試。只讀核對不冒充動態測試。
-- 最後獨立範圍核對 5／5 通過：SSOT／核心／閱讀器／保存模組及格式設定無 diff，服務僅擴充兩個靜態資源入口，原 D 工作區維持原 7 個 dirty paths，三個新檔均可被 Git 看見，既有截圖沒有變更。沒有原工作區開工雜湊，因此不宣稱其 bytes 與開工逐位相同。
-- console：完整 CDP 記錄 1 個例外，唯一是 P38 刻意注入並驗收的 `fb-auto-probe`；未預期例外為 0。P72 定向為 0 未處理例外。
-- 應用內瀏覽器曾無法接上預覽，稍後已讀到並顯示 18862 新版。其自動 click／press 仍出現送出逾時，不作本輪功能通過依據；功能證據來自專案 AGENTS 明定的 Chrome CDP harness。臨時 viewport override 已 reset。
+P76阻擋已在最終分支與未修改main `861b65e`的獨立服務／Chrome重現：兩者部分模式各57項通過後，在同一個特殊字元修正／重新試算／確認流程收到相同preview token拒絕及pending逾時。`parameters.js`、`parameter_workflow_test.js`、`parameter_confirmation_test.js`、`engineering-adapter.js`逐字相同，核心也無diff；未據此放寬token檢查或修改參數功能。結果只證明阻擋在main已存在，不代表完整回歸通過。
 
-尚未實測：實體手機觸控、作業系統原生保存視窗、跨所有瀏覽器與平台的字體呈現。
+交接詳細映射、衝突與命令见 `geometry-web/docs/ISSUE116-B-HANDOFF.md`。
+
+## 2026-10-05 同步與追加旋轉預覽驗證
+
+普通 merge 保留 main `4bea91a` 與原 `2b53a03`，source `0e555ed`。B 原稿／實作差異不變；新增的是使用者回報的 3D 鏡頭適配修正，沒有新增入口或說明。
+
+Chrome／Playwright 隔離 8816：頁面標題與 URL、非空白、無錯誤覆蓋、console、實際畫面與操作皆通過。L 形1000 mm高範例在同一旋轉角度比較舊／新 viewer；桌面1440×650與手機390×844修正後完整可見。真拖曳／方向鍵旋轉、既有置中、手動放大保持，以及場景／體積不變通過。原始使用者截圖只證明超出預覽框，不能確定當時手動 zoom；放大後的裁切仍由置中恢復。公開範例對照見 `geometry-web/docs/issue116/preview-rotation-*.png`。
+
+最終a1aa來源 B87、共用73、模型39、預設完整空間202全部通過；空間模式不含另列timber兩組。viewer canvas真繪製座標回歸與舊版敏感度通過。原完整CDP、CI及dot整合gate沒有以這些部分驗收取代。Edge原生確認／選檔未完成，使用者隨後表示全部關閉；8817來源fresh、保存場景逐字還原，私人完整檔留本機供下次開啟。
+
+
+## 2026-10-05 納入 #127 後的最終同步與完整回歸
+
+隨後 main 合入 #127，已再普通 merge 納入 `417f4c0`，無衝突；來源 merge `b38c417`。保留參數 owner 的 preview ownership 修正與原有 token 拒絕，沒有修改共用參數功能、C 核心、公理或 golden 門檻。D:\geometry-axiom 的乾淨 main 與 origin/main 已對齊 `417f4c0`。
+
+此来源 B 真 Chrome/native **87/87**；另跑預設完整空間套件 **202/202、completed:true、0例外／console error**（預設模式不含 timber-material／timber-source-guards）。完整 CDP **1407通過／1失敗、completed:false**，止於P73「選已知邊一半產生引用式，位置與走向用語一致」，未比對golden。log中native `line guide 4 1 v 1/2*edge:e1:u` 回ok:true並顯示成功toast；斷言仍false，原因未定案。未將之判為產品已修或擅改guide行為／測試。此輪尚未抵達P76，不能宣稱已越過歷史P76 gate。繼承main的total1987、P76=86、P79=87全部未改。預期fb-auto-probe仍在log，沒有UNEXPECTED EXCEPTION；未完成的terminal receipt沒有exception counter，不自行補成0或1。舊失敗收據完整保留。
+
+最新空間202收據来自 Windows Chrome／相同 Linux 本地 TEMP 後端副本／8814。Windows Python＋WSL橋接的另一次87/2未完成收據保留：完整4模型ZIP重開驗算時15秒signal逾時，無page／console error，不算該Windows後端的空間通過。原a1aa來源曾在Windows完成202項，不能據此代替新版Windows後端gate。Linux Chrome另兩輪完整／空間在原生角色／用途select後卡住，分別746/1和8/2未完成，亦完整保留，不算綠燈；相同後端／相同source改用Windows Chrome重跑，沒有改harness或選擇DOM值。原生select事件相容性是依trace推論，未單獨定案。未更改匯入驗證／逾時或模型核心；Windows後端多模型重開時序與Linux瀏覽器相容性仍交dot／owner評估。
+
+完整 CDP 初次从 WSL 的 Windows 掛載路徑執行時，版本 fresh 檢查單次4.151秒、早段 UI/native 逾時，19/7且未完成，不計通過。另建 1043 檔逐位元相同的 Linux 本地 TEMP 副本（解壓後每檔SHA256讀回相等），fresh 約0.173秒；Windows Chrome／Node 配 Linux 本地後端、完全相同 source／harness／golden／native core 重跑取得上述1407/1未完成收據。feedback在Windows TEMP，服務的/mnt/c路徑指向同一目錄；fixtures以現有wsl path-style傳入，沒有加延遲或降低門檻。Linux來源指紋 `6b910a40e4b5cdb109ba508cc9faae738a8e5fb5c3238806aa7672380abd9d12`；Windows／8817 `d6d3df43d69c82e9b4250368807df84c2325624b2663b36d117f5d700e1ba8aa`，在各自驗證當時fresh；8817最終已停止。
+
+先前 a1aa 來源的共用73／模型39及桌面手機旋轉證據保留原時間與來源；未把它們冒稱為 #127 後重跑。#127 僅加入獨立參數修正；本次完整回歸、87項專項與202項空間套件提供最新來源驗收。8817 再重啟後，原完整保存檔的核心 world.scene 逐字核對通過、當時d6d來源fresh:true；之後最終檢查時8817已停止服務，保留關閉狀況，不將先前fresh收據冒稱為目前仍在服務。完整原檔、1208-byte 原 dump 與再次重啟前 dump 均未覆蓋。使用者全部關閉視窗，未重開 Edge、未宣稱 PDF／草稿 UI 恢復，8765 未動。
+
+最新結構化證據為 `geometry-web/docs/issue116/validation.json` 的 `latest_main_update_20261005`。PR #125 維持草稿交 dot；Hosted CI、最終 head／owner、實體 iOS／IME／OS picker 及跨瀏覽器 gate 保留。
+
+
+## 2026-10-05 最後同步 #126／正式保存機制
+
+main 在回歸執行中合入 #126，最新為 `8d134fc`；普通 merge `1a21b5d` 沒有衝突。已逐字核對 project-store.js、reference-workspace.js、scene-import-bridge.inc 與繼承 golden，完整保留 main owner 的實作。C 幾何核心、公理及本次3D viewer程式沒有追加修改。依最新 scene-import include 重編隔離 bridge，binary SHA256 `29e735f32cbf857d398da5243c2a16916256ff04e700e4075ada270f137965a4`，已驗包含 final_scene；model-base 核心閉包不變而沿用已驗編譯物。
+
+最新合併來源 B 真 Windows Chrome/native **87/87**，完整 Save／reopen／取消零寫入／確認精確頂點／undo-redo／過期拒写與390／720px均完成，page／console errors為0。共用context／ProjectStore／ReferenceWorkspace races加正式subdivision store：**106/106、0fail、0skip**，含真native import、same-ID／來源閉包及formal archive往返。Linux本地來源副本1099檔解壓後逐檔SHA256相等；Windows B 用分支本身的隔離服務，指紋 `24ed41ec44020f6b729a0d0af672c15adeabe04645be758b71a16dcc16806cf1`、fresh:true，未繞過來源核對。
+
+完整／SPACE的b38／417f凍結checkpoint保留在 `checkpoint_after_pr127_20261005`，不能冒稱為最新#126合併head的完整回歸。最新來源的106與87收據在 `latest_main_update_20261005`；最新combined full／SPACE、Hosted CI與final head／owner審查交dot整合，golden未下修。B的原稿與實作對照、3D同角度／手機圖及0e555ed的真canvas／native dump／體積驗證不變。原sourceguard拒絕Linux不同root與Windows暫存PTY服務在導航前結束的紀錄均保留；最終以hidden獨立服務完成87項，沒有改harness或放寬任何源身分條件。
+
+本地乾淨main與origin/main已在8d134fc；本次修正仍在草稿PR #125。8817先前更新／保存場景逐字載回的成功收據保留，但最終查驗服務已關閉，維持關閉，不重開使用者視窗；完整私人檔與各份核心備份仍在本機，8765未重置。

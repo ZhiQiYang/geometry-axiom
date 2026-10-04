@@ -102,7 +102,7 @@ module.exports = async function selectionCursor({send,eval_,sleep,click,drag,wai
     let c=await cursorStyle();check('參考線游標白字無白色描邊 @'+width,c.visible==='visible'&&c.label?.text==='移動參考線'&&clearText(c.label)&&c.background!=='rgb(255, 255, 255)',c);
     await shot('p75-guide-cursor-'+width);
     await hover(1000,50);c=await cursorStyle();
-    check('深色角材膠囊白字保持清楚 @'+width,c.label?.text==='角材'&&clearText(c.label)&&c.background==='rgb(23, 32, 51)',c);
+    check('深色角材膠囊顯示實際編號且白字保持清楚 @'+width,c.label?.text==='角材 10'&&clearText(c.label)&&c.background==='rgb(23, 32, 51)',c);
     await shot('p75-timber-cursor-'+width);
     await ctl('[data-face-tool="timber"]');await read('closePanels();void 0');await hover(3000,2200);
     c=await cursorStyle();check('角材工具膠囊實際字樣可讀 @'+width,c.label?.text==='角材'&&clearText(c.label)&&c.background==='rgb(78, 103, 232)',c);

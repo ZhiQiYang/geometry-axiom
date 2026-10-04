@@ -4802,26 +4802,26 @@ async function main() {
     const menuActs = [...document.querySelectorAll('#feCtxMenu [data-fe-act]')].map(b=>b.dataset.feAct);
     return { sel: fe.sel, menuHidden: document.getElementById('feCtxMenu').hidden, barActs, menuActs };
   })()`);
-  check('P44-5a 右鍵選邊:fe.sel=edge、#feCtxMenu 可見、清單與浮動列逐一相同',
+  check('P44-5a B 右鍵選邊：保留浮動列真命令並加入建立與檢視',
     p44_5a.sel && p44_5a.sel.kind === 'edge' && !p44_5a.menuHidden &&
-    JSON.stringify(p44_5a.barActs) === JSON.stringify(p44_5a.menuActs), p44_5a);
+    p44_5a.barActs.every(act=>p44_5a.menuActs.includes(act)) && p44_5a.menuActs.includes('create') && p44_5a.menuActs.includes('view'), p44_5a);
   await clickSelector('#feCtxMenu [data-fe-act="op:notch"]');
   await sleep(150);
   const p44_5b = await eval_(`({ opType: fe.op && fe.op.type, menuHidden: document.getElementById('feCtxMenu').hidden })`);
-  check('P44-5b 點選單「凹口」→ fe.op.type==="notch"、選單關',
-    p44_5b.opType === 'notch' && p44_5b.menuHidden, p44_5b);
+  check('P44-5b B 凹口表單側接、選單保留',
+    p44_5b.opType === 'notch' && !p44_5b.menuHidden, p44_5b);
   await pressKey('Escape', 'Escape', 27);
   await pressKey('Escape', 'Escape', 27);
-  const p44_5c = await eval_(`({ opPanelHidden: document.getElementById('feOpPanel').hidden, sel: fe.sel })`);
-  check('P44-5c Esc 兩下 → 面板關、選取清', p44_5c.opPanelHidden && p44_5c.sel === null, p44_5c);
+  const p44_5c = await eval_(`({ opPanelHidden: document.getElementById('feOpPanel').hidden, menuHidden:document.getElementById('feCtxMenu').hidden, sel: fe.sel })`);
+  check('P44-5c B Esc 兩下 → 面板與選單關，原邊選取保留', p44_5c.opPanelHidden && p44_5c.menuHidden && p44_5c.sel?.kind === 'edge', p44_5c);
 
-  /* (6) 右鍵面外空白 → 選單不出現、fe.sel===null;右鍵角材 → 編輯與刪除 */
+  /* (6) B 面外空白提供檢視、fe.sel===null；角材保留編輯與刪除。 */
   pt = await openFace44();
   const outside6 = pt(4300, 1500);
   await rightClick(outside6.x, outside6.y);
   await sleep(150);
   const p44_6a = await eval_(`({ menuHidden: document.getElementById('feCtxMenu').hidden, sel: fe.sel })`);
-  check('P44-6a 右鍵面外空白 → 選單不出現、fe.sel===null', p44_6a.menuHidden && p44_6a.sel === null, p44_6a);
+  check('P44-6a B 右鍵面外空白 → 檢視選單、fe.sel===null', !p44_6a.menuHidden && p44_6a.sel === null, p44_6a);
   await setupRemaining([
     'surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
     'timber 10 27 33 role boundary',
@@ -4834,7 +4834,7 @@ async function main() {
   await rightClick(org6.x + tc6.x, org6.y + tc6.y);
   await sleep(150);
   const p44_6b = await eval_(`[...document.querySelectorAll('#feCtxMenu [data-fe-act]')].map(b=>b.dataset.feAct)`);
-  check('P44-6b 右鍵角材 → 選單有「編輯」與「刪除」', JSON.stringify(p44_6b) === JSON.stringify(['edit','delete']), p44_6b);
+  check('P44-6b 右鍵角材 → 選單保留「編輯」與「刪除」', ['edit','delete'].every(a=>p44_6b.includes(a)) && !p44_6b.some(a=>a.startsWith('op:')), p44_6b);
   await pressKey('Escape', 'Escape', 27);
 
   /* (7) 雙擊右邊 → notch 面板可見;雙擊右上角 → corner;雙擊面內空白(2000,1500) → hole 且
@@ -6572,13 +6572,13 @@ async function main() {
     await require('./project_import_final_objects_test.js')({read:eval_,send,until,check,doUndoRedo:op=>eval_('doUndoRedo('+JSON.stringify(op)+')')});
   }
 
-  { /* ===== P62. 自訂 SVG 游標 — 設計方向 1b「箭頭+文字膠囊」 =====
-       驗收:(a) 圖形層與設計稿常數一致(箭頭路徑、膠囊 h=19/rx=9.5/白描邊/色值、
-       文字 10.5px 650 白字含修飾鍵前綴);(b) 狀態解析跟真實行為一致——
+  { /* ===== P62. 自訂 SVG 游標 — #116 B 面內 v2 =====
+       驗收:(a) 圖形層與附件 v2 一致(箭頭路徑、狀態塊 h=18/rx=5/白描邊/色值、
+       文字 11px 650 白字、獨立修飾鍵);(b) 狀態解析跟真實行為一致——
        select 命中族(edge/vertex/alt-vertex/move-line/timber-pick/hole-pick)、
        工具族(guide/hole/timber 族)、拖曳尺寸膠囊、space-pan、busy;
        (c) overlay pointer-events:none 不干擾命中、進畫布隱原生游標、離開即隱藏。 */
-    console.log('=== P62. 自訂 SVG 游標(方向 1b) ===');
+    console.log('=== P62. 自訂 SVG 游標(#116 B 面內 v2) ===');
     const ck62 = (n, v, d) => {
       console.log(n,explicitVerdict(v === true ? '✓' : '✗'), v === true ? '' : JSON.stringify(d));
       // Attribute checks miss a global CSS rule overriding SVG presentation attributes.
@@ -6626,6 +6626,7 @@ async function main() {
           h:+cap.height.baseVal.value,rx:+cap.rx.baseVal.value,fill:cap.getAttribute('fill'),
           stroke:cap.getAttribute('stroke'),sw:cap.getAttribute('stroke-width')}:null,
         label:txt?txt.textContent:null, labelFill:txt?txt.getAttribute('fill'):null,
+        text:h.cur.textContent,modifierStyle:style([...h.cur.querySelectorAll('text')].find(e=>e.textContent==='Space')),
         labelStyle:style(txt),tipStyle:style(h.cur.querySelector('.cx-tip text')),
         labelFs:txt?txt.getAttribute('font-size'):null, labelFw:txt?txt.getAttribute('font-weight'):null,
         tip:(h.cur.querySelector('.cx-tip text')||{}).textContent||null,
@@ -6645,20 +6646,20 @@ async function main() {
 
     await mv62(2, 2);                                          /* 頂點 v0 把手圈(無角材世界,圈可直接點) */
     s62 = await cx62();
-    ck62('P62-2 指到凸角:「拉角」膠囊 face 綠 + 膠囊幾何 h19/rx9.5/白描邊1.3/字10.5-650',
+    ck62('P62-2 指到凸角:「拉角」face 綠 + v2 h18/rx5/白描邊1.5/字11-650',
       s62 && s62.label === '拉角' &&
-      s62.capsule && s62.capsule.fill === '#2f8f7b' && s62.capsule.h === 19 && s62.capsule.rx === 9.5 &&
-      s62.capsule.stroke === '#fff' && +s62.capsule.sw === 1.3 &&
-      s62.labelFs === '10.5' && s62.labelFw === '650' && s62.labelFill === '#fff', s62);
+      s62.capsule && s62.capsule.fill === '#2f8f7b' && s62.capsule.h === 18 && s62.capsule.rx === 5 &&
+      s62.capsule.stroke === '#fff' && +s62.capsule.sw === 1.5 &&
+      s62.labelFs === '11' && s62.labelFw === '650' && s62.labelFill === '#fff', s62);
 
     await mv62(2, 2, 1);                                       /* Alt=1 按住 */
     s62 = await cx62();
-    ck62('P62-3 Alt+凸角:「Alt · 捏缺口」danger 紅',
-      s62 && s62.label === 'Alt · 捏缺口' && s62.capsule && s62.capsule.fill === '#c2414f', s62);
+    ck62('P62-3 Alt+凸角:「捏缺口」face 綠與獨立 Alt 鍵',
+      s62 && s62.label === '捏缺口' && s62.text.includes('Alt') && s62.capsule && s62.capsule.fill === '#2f8f7b', s62);
 
     await mv62(3997, 1500);                                    /* 外輪廓邊 e1 */
     s62 = await cx62();
-    ck62('P62-4 指到外環邊:「選邊／推拉」', s62 && s62.label === '選邊／推拉', s62);
+    ck62('P62-4 指到外環邊:「推拉」', s62 && s62.label === '推拉', s62);
 
     await mv62(1000, 1500);                                    /* 孔左緣 e:1:x */
     s62 = await cx62();
@@ -6690,8 +6691,8 @@ async function main() {
       s62 && s62.label === '沿此線放置' && s62.capsule && s62.capsule.fill === '#2f8f7b', s62);
     await mv62(1000, 1500);                                    /* 孔的左緣 */
     s62 = await cx62();
-    ck62('P62-9 角材工具指到孔邊:「孔邊不可點」danger 紅',
-      s62 && s62.label === '孔邊不可點' && s62.capsule && s62.capsule.fill === '#c2414f', s62);
+    ck62('P62-9 角材工具指到孔邊:「孔邊請用右欄定位」danger 紅',
+      s62 && s62.label === '孔邊請用右欄定位' && s62.capsule && s62.capsule.fill === '#c2414f', s62);
     await mv62(3000, 2200);                                    /* 面內空白(避開 guide 2;面外亦同:走表單) */
     s62 = await cx62();
     ck62('P62-10 角材工具空白:「角材」accent 膠囊(依右欄設定放置)',
@@ -6706,12 +6707,15 @@ async function main() {
 
     await eval_(`feSetTool('pan')`); await sleep(80); await mv62(2000, 1500);
     s62 = await cx62();
-    ck62('P62-12 平移工具:「平移」hand 基底', s62 && s62.label === '平移', s62);
+    ck62('P62-12 平移工具:hand 基底', s62 && s62.arrowD === 'M7.5 11V6.8a1.4 1.4 0 0 1 2.8 0v3.4-5.6a1.4 1.4 0 0 1 2.8 0v5-4a1.4 1.4 0 0 1 2.8 0v4.6-2.4a1.4 1.4 0 0 1 2.8 0v5.1c0 4.3-2.5 7-6.6 7h-.8c-2.7 0-4.6-1.1-6.1-3L3 13.6a1.5 1.5 0 0 1 2.4-1.8Z', s62);
+    ck62('P62-12b 手形已表意，不疊多餘狀態塊',s62 && s62.capsule === null && s62.label === null,s62);
 
     await eval_(`fe.spaceDown=true; feSetTool('select'); cxRefreshAll();`);
     s62 = await cx62();
-    ck62('P62-13 按住空白:「Space · 平移」',
-      s62 && s62.label === 'Space · 平移', s62);
+    ck62('P62-13 按住空白:hand 基底與獨立 Space 鍵',
+      s62 && s62.arrowD === 'M7.5 11V6.8a1.4 1.4 0 0 1 2.8 0v3.4-5.6a1.4 1.4 0 0 1 2.8 0v5-4a1.4 1.4 0 0 1 2.8 0v4.6-2.4a1.4 1.4 0 0 1 2.8 0v5.1c0 4.3-2.5 7-6.6 7h-.8c-2.7 0-4.6-1.1-6.1-3L3 13.6a1.5 1.5 0 0 1 2.4-1.8Z' && s62.text === 'Space', s62);
+    // SVG's unused default stroke-width is 1 even when stroke:none disables it.
+    ck62('P62-13b Space 鍵實際字樣無描邊且保留深字',s62?.modifierStyle?.stroke === 'none' && s62.modifierStyle.fill === 'rgb(89, 99, 118)',s62);
     await eval_(`fe.spaceDown=false;`);
 
     await eval_(`oc.busy=true; document.body.classList.add('oc-busy'); cxRefreshAll();`);
@@ -6732,8 +6736,8 @@ async function main() {
     await sleep(350);
     await mv62(2000, 14);                                      /* 角材 1@e0 帶中央 */
     s62 = await cx62();
-    ck62('P62-16 指到角材:「角材」ink 膠囊',
-      s62 && s62.label === '角材' && s62.capsule && s62.capsule.fill === '#172033', s62);
+    ck62('P62-16 指到角材:真實「角材 1」ink 狀態塊',
+      s62 && s62.label === '角材 1' && s62.capsule && s62.capsule.fill === '#172033', s62);
 
     /* 物件畫布層 */
     await eval_(`(async()=>{ resetSceneFocus(); await renderObjects(); })()`); await sleep(300);
