@@ -17,7 +17,8 @@ A complete run (no --only / --extra-py / --simulate-missing) that exits 0 means:
 the number of tests listed in tests/run_all.expected.json, none failed, none was skipped (the only exemption is the named
 allowlist ALLOWED_SKIPS, e.g. the POSIX-only /dev/full test on Windows).  Partial/demo runs say so in their last lines.
 
-NOT covered (needs Chrome, run them separately): geometry-web/cdp_test.js, geometry-web/space_model_test.js.
+NOT covered: required production-owner integration and real-browser gates in
+tests/INTEGRATION-GATES.md; run them separately before claiming product completion.
 """
 from __future__ import annotations
 
@@ -71,6 +72,7 @@ PY_NEEDS = {
     'test_modeling_degenerate': ['model-base'],
     'test_modeling_runtime': ['model-base'],
     'test_modeling_transport': ['bridge', 'model-base'],
+    'test_model_update': ['bridge', 'model-base'],
     'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_reference_contract': ['bridge'],
@@ -95,12 +97,16 @@ NODE_TEST_FILES = [
     'tests/test_engineering_project_store.js',
     'tests/test_face_projection_store.js',
     'tests/test_grid_trial_geometry.js',
+    'tests/test_issue77_attachment.js',
+    'tests/test_issue77_workspace.js',
     'tests/test_model_snapshot_schedule.js',
     'tests/test_model_snapshot_navigation.js',
+    'tests/test_model_update.js',
     'tests/test_parameters_project_store.js',
     'tests/test_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
+    'tests/test_room_collection.js',
     'tests/test_source_inspector.js',
     'tests/test_space_model_store.js',
     'tests/test_timber_schedule.js',
@@ -124,8 +130,16 @@ NODE_PURE_TEST_FILES = {
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
 }
 NODE_EXCLUDED = {
+    'tests/issue77_attachment_fixture.js': 'Shared self-authored PDF/payload fixture; registers no tests',
+    'tests/test_issue77_browser.js': 'Required real app/native/Chromium room acceptance; formal owner interfaces pending; see INTEGRATION-GATES.md',
+    'tests/test_issue77_exit_browser.js': 'Required real app/native/Chromium room draft-exit gate; formal owner interfaces pending; see INTEGRATION-GATES.md',
+    'tests/test_issue77_recovery_browser.js': 'Required real app/native/Chromium room recovery gate; formal owner interfaces pending; see INTEGRATION-GATES.md',
+    'tests/test_issue77_remove_browser.js': 'Required real app/native/Chromium room unlink/removal gate; formal owner interfaces pending; see INTEGRATION-GATES.md',
     'tests/room_outline_fixture.js': 'Self-authored PDF/scan fixture generator; not a node test',
     'tests/reference_pdf_fixture.js': '夾具產生器，不是測試：node --test 會把它算成 1 個假的通過 test',
+}
+REQUIRED_OWNER_GATES = {
+    'tests/integration/issue77_attachment_owner.js': 5,
 }
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
@@ -198,6 +212,9 @@ def check_registry():
         problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
     for rel in sorted(known - disk_js):
         problems.append('run_all.py 登記了 %s，但該檔不存在' % rel)
+    for rel in REQUIRED_OWNER_GATES:
+        if not (ROOT / rel).is_file():
+            problems.append('必要正式整合驗證入口不存在：%s' % rel)
     return problems
 
 
@@ -670,6 +687,12 @@ def print_table(rows):
     print('-' * min(150, sum(sizes) + 12))
     print(fmt(body[-2]))
     print(fmt(body[-1]))
+    print('正式產品整合另驗（不計入上述 pass/skip）：')
+    for rel,count in REQUIRED_OWNER_GATES.items():
+        print('  %s：%d項 required；source-rooms owner 接口未實作時 exit3/pending_implementation，不是環境 skip或pass。' % (rel,count))
+    for rel in sorted(NODE_EXCLUDED):
+        if rel.startswith('tests/test_issue77_'):
+            print('  %s：required real app/native/Chromium，獨立執行；本 aggregate 未驗。' % rel)
 
 
 # ------------------------------------------------------------------ main
@@ -718,6 +741,8 @@ def main(argv=None):
         for s in suites:
             print('%-32s 需要：%-22s %s' % (s.name, ', '.join(s.needs) or '-', s.label + ('（需 node）' if s.needs_node else '')))
         print('%-32s 未納入（需 Chrome）：geometry-web/cdp_test.js、geometry-web/space_model_test.js' % '-')
+        print('必要正式整合入口：tests/integration/issue77_attachment_owner.js（5項；未實作時 exit3）')
+        print('另外4個 #77 真瀏覽器入口：見 tests/INTEGRATION-GATES.md；本命令未驗。')
         for p in registry_errors:
             print('登記問題：%s' % p)
         return 1 if registry_errors else 0
@@ -844,7 +869,7 @@ def run(args, suites, registry_errors, partial):
         }[code]
     else:
         meaning = {
-            0: '完整跑：全部 suite 都跑了、數量與 expected 相符、沒有 fail、沒有環境問題、沒有可避免的 skip（具名允許清單不算）',
+            0: '完整非瀏覽器登錄測試：全部 suite 都跑了、數量與 expected 相符、沒有 fail、沒有環境問題、沒有可避免的 skip（具名允許清單不算）；必要正式 owner／瀏覽器整合另驗',
             1: '有 fail／逾時／預期數不符／未登記檔', 2: '有環境阻擋／二進位過期', 3: '只有 skip（沒有 fail）',
         }[code]
     if args.allow_skip and code == 0 and any_skip:

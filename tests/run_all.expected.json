@@ -203,7 +203,7 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 294,
+   "count": 374,
    "unit": "node test"
   },
   "node:model_viewer": {
@@ -267,6 +267,11 @@
   "py:test_mutation_freshness": {
    "mode": "count",
    "count": 24,
+   "unit": "test"
+  },
+  "py:test_model_update": {
+   "mode": "count",
+   "count": 22,
    "unit": "test"
   }
  }
