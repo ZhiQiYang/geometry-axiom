@@ -28,7 +28,7 @@ window.SpaceModelWorkspace = (() => {
     if(id!==null&&focus){$('smShowTimbers').checked=true;$('smShowWalls').checked=false;drawResult();}
     if(!state.viewer.selectRoot(id===null?null:{kind:'timber',id},focus))return false;
     window.dispatchEvent(new CustomEvent('space-model-timber-selected',{detail:{modelId:state.createdId,id,signature:state.recordSignature}}));
-    if(focus)setTab('preview');return true;
+    if(focus){setTab('preview');$('smCanvas').scrollIntoView({block:'nearest'});}return true;
   }
   const dialog = document.createElement("dialog");
   dialog.id = "smWorkspace"; dialog.className = "sm-workspace";
