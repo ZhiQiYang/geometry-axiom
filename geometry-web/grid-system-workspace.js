@@ -397,17 +397,21 @@
     const ks = (origin, step, lo, hi) => { const out = []; for (let k = Math.ceil((lo - origin) / step); k <= Math.floor((hi - origin) / step) && out.length < 40; k++) out.push(k); return out; };
     if (du) {
       const shift = du.stagger ? du.stagger / du.pitch * cw : 0;
-      for (const k of ks(ox, cw, PL - Math.abs(shift), PR + Math.abs(shift))) {
-        if (shift && dv) for (const j of ks(oy, ch, PT - ch, PB)) line(true, ox + k * cw + ((j & 1) ? shift : 0), oy + j * ch, oy + (j + 1) * ch, k === 0);
-        else line(true, ox + k * cw, PT, PB, k === 0);
+      // Each band's visible indices depend on its own signed shift. Expanding
+      // one shared range then truncating it can discard every visible line.
+      if (shift && dv) for (const j of ks(oy, ch, PT - ch, PB)) {
+        const origin = ox + ((j & 1) ? shift : 0);
+        for (const k of ks(origin, cw, PL, PR)) line(true, origin + k * cw, oy + j * ch, oy + (j + 1) * ch, k === 0);
       }
+      else for (const k of ks(ox, cw, PL, PR)) line(true, ox + k * cw, PT, PB, k === 0);
     }
     if (dv) {
       const shift = dv.stagger ? dv.stagger / dv.pitch * ch : 0;
-      for (const j of ks(oy, ch, PT - Math.abs(shift), PB + Math.abs(shift))) {
-        if (shift && du) for (const k of ks(ox, cw, PL - cw, PR)) line(false, oy + j * ch + ((k & 1) ? shift : 0), ox + k * cw, ox + (k + 1) * cw, j === 0);
-        else line(false, oy + j * ch, PL, PR, j === 0);
+      if (shift && du) for (const k of ks(ox, cw, PL - cw, PR)) {
+        const origin = oy + ((k & 1) ? shift : 0);
+        for (const j of ks(origin, ch, PT, PB)) line(false, origin + j * ch, ox + k * cw, ox + (k + 1) * cw, j === 0);
       }
+      else for (const j of ks(oy, ch, PT, PB)) line(false, oy + j * ch, PL, PR, j === 0);
     }
     if (both) put('ig-def-origin', `left:${ox}px;top:${oy}px`);
     const bound = x => key => { const f = x.all.find(f => f.key === key); return !!(f && $(f.id + 'Source')?.value); };
@@ -429,7 +433,7 @@
     }
     const zero = mk('div', 'ig-def-zero', {}), phases = mk('div', 'ig-def-phases', {});
     zero.append(mk('span', 'ig-def-zero-title', {}, '第 0 線'), phases);
-    for (const x of data) if (x.shape) phases.append(chip(x, phaseKey(x), `${x.a} ${x.mode === 'repeat-panel' ? rawOf(x, 'anchor') : x.shape.phase}`, 'ig-chip-phase', ''));
+    for (const x of data) if (x.shape) phases.append(chip(x, phaseKey(x), `${x.a} ${x.shape.phase}`, 'ig-chip-phase', ''));
     stage.append(zero);
   }
   // Presentation only: raw inputs, native validation and confirmation are untouched.
