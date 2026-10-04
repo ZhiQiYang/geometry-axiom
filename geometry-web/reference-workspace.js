@@ -1014,9 +1014,9 @@ const ReferenceWorkspace = (() => {
       token=candidate.token;
       assertWritableLease();assertCurrent();
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
+      P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
+      P.validateProjectCapabilities(candidate.required_capabilities);
       if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].includes(manifest.format)) {
-        P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
-        P.validateProjectCapabilities(candidate.required_capabilities);
         if(!sameModelData([...candidate.required_capabilities].sort(),P.sceneCapabilities(text)))
           throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
       }
