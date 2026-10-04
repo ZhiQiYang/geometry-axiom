@@ -671,7 +671,7 @@ async function wallHeightEditingRegression(modelId, originalScene) {
     await wait(`!document.querySelector('#smHeightEditPanel').hidden`, 'saved height editor');
   };
   await openHeightEditor();
-  check('created plan model opens its existing height in a dedicated editor', await evaluate(`document.querySelector('#smEditHeight').value==='2800' && /已保存|原始|原來源|保存的/.test(document.querySelector('#smHeightEditPanel').textContent)`));
+  check('created plan model keeps saved-source height separate from explicit current-source adoption', await evaluate(`document.querySelector('#smEditHeight').value==='2800' && document.querySelector('#smHeightEditSummary').textContent.includes('沿用保存來源只改牆高') && document.querySelector('#smEditHeight').getAttribute('aria-describedby')==='smHeightEditSummary' && !document.querySelector('#smCurrentSourceUpdate').disabled && document.querySelector('#smCurrentSourceUpdate').textContent.includes('採用現行來源')`));
   await input('#smEditHeight', '3400');
   await click('#smCancelHeightEdit');
   check('cancelled height edit leaves the stored model and source intact', JSON.stringify(await stored()) === JSON.stringify(before) && await scene() === originalScene);
@@ -1145,7 +1145,7 @@ async function run() {
   await wait(`SpaceModelWorkspace.snapshot().resultSummary!=null`, 'library model preview');
   const reopened = await snapshot();
   check('library reopens real stored model geometry', reopened.viewer?.triangleCount === rectangle.viewer?.triangleCount, reopened);
-  check('saved plan model exposes a direct wall-height editing action', await evaluate(`document.querySelector('#smSettings').disabled && !document.querySelector('#smEditHeightButton').hidden && /牆高/.test(document.querySelector('#smEditHeightButton').textContent)`));
+  check('saved plan model exposes the existing model editing entry', await evaluate(`document.querySelector('#smSettings').disabled && !document.querySelector('#smEditHeightButton').hidden && !document.querySelector('#smEditHeightButton').disabled && document.querySelector('#smEditHeightButton').textContent==='修改模型'`));
   await example('#smTryRectangle');
   await input('#smHeight', '3200');
   check('changed inputs immediately invalidate prior preview', await evaluate(`SpaceModelWorkspace.snapshot().stale===true && document.querySelector('#smCreate').disabled`));

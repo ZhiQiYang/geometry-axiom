@@ -8,6 +8,20 @@ introduced. F1a is already delivered and is not repeated here.
 
 ## Delivery boundary
 
+2026-10-04 shared-owner integration slice: the existing model edit entry now
+offers saved-source height editing and explicit current-source adoption. The
+owner supplies `getModelOperationState()` with immutable opaque operation
+identities; the UI does not read context/history internals. Index and the finite
+8 MiB `/model/update-preview` route are wired to the existing modules. No new F
+schema or archive format is introduced. Owner-entry browser acceptance requires
+`GEOMETRY_MODEL_UPDATE_ENTRY=owner`, `GEOMETRY_VERIFY_ROOT`, a clean frozen tree
+and its actual fresh isolated runtime; source-only/module tests are separate.
+This slice is being verified; no integrated completion is claimed here yet.
+
+The following foundation delivery history describes PR99. Its historical patch
+is a reference only: registry portions are obsolete after later owner merges;
+do not apply the patch wholesale to current main.
+
 PR99 delivers independently reviewed producer/controller modules, an unloaded
 UI adapter, dedicated tests and an owner-only wiring artifact. Merging this PR
 does not add a UI entry or HTTP route: existing index/serve/workspace/store files

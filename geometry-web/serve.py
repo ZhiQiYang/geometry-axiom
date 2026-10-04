@@ -40,6 +40,7 @@ POST_MAX_BYTES = {
     "/model": 16 * 1024 * 1024,
     "/model/verify": 16 * 1024 * 1024,
     "/model/space-preview": 16 * 1024 * 1024,
+    "/model/update-preview": 8 * 1024 * 1024,
     "/assembly/preview": 1024 * 1024,
     "/assembly/generate-preview": 1024 * 1024,
     "/engineering/preview": 1024 * 1024,
@@ -444,13 +445,21 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send(json.dumps(result, ensure_ascii=False).encode("utf-8"))
             return
 
-        if self.path in {"/model", "/model/verify", "/model/space-preview"}:
+        if self.path in {"/model", "/model/verify", "/model/space-preview", "/model/update-preview"}:
             sys.path.insert(0, str(SCENE_DIR / "geometry-core"))
             from modeling import (ModelError, build_package, verify_package,
                                   canonical_bytes, strict_json_loads)
             try:
                 data = strict_json_loads(body)
-                if self.path == "/model/space-preview":
+                if self.path == "/model/update-preview":
+                    import model_update
+                    program = os.environ.get("GEOMETRY_MODEL_UPDATE_BRIDGE")
+                    if not program and len(BRIDGE_CMD) == 1 and not BRIDGE_WSL:
+                        program = BRIDGE_CMD[0]
+                    if not program:
+                        raise ModelError("UNSUPPORTED", "UPDATE_EXECUTABLE", "I32", "An actual isolated native executable is required.")
+                    result = model_update.prepare_update(data, bridge_executable=program)
+                elif self.path == "/model/space-preview":
                     import space_modeling
                     result = space_modeling.preview(data)
                 elif self.path == "/model/verify":

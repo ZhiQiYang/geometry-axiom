@@ -11,12 +11,14 @@ const {chromium} = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const {execFileSync} = require('node:child_process');
 const url = process.env.GEOMETRY_TEST_URL;
 if (!url || !process.env.GEOMETRY_FEEDBACK_DIR?.startsWith('/tmp/'))
   throw Error('An explicit isolated GEOMETRY_TEST_URL and /tmp feedback directory are required.');
 const output = process.env.GEOMETRY_MODEL_UPDATE_TEST_DIR || '/tmp/geometry-f1b/browser';
 const routePath = process.env.GEOMETRY_MODEL_UPDATE_PATH || '/model/update-preview';
 const ownerEntry = process.env.GEOMETRY_MODEL_UPDATE_ENTRY === 'owner';
+if(ownerEntry&&!process.env.GEOMETRY_VERIFY_ROOT)throw Error('Owner-entry acceptance requires an explicit clean frozen GEOMETRY_VERIFY_ROOT.');
 fs.mkdirSync(output, {recursive: true});
 const deferred = () => {let resolve, reject; const promise = new Promise((r, j) => {resolve = r; reject = j;}); return {promise, resolve, reject};};
 const selectors = {dialog: '#muDialog', placement: '#muPlacement', edge: '[data-mu-edge]',
@@ -30,7 +32,7 @@ const selectors = {dialog: '#muDialog', placement: '#muPlacement', edge: '[data-
   const page = await context.newPage();
   page.setDefaultTimeout(90000);
   const errors = [], warnings = [], checks = [], heldResponses = [];
-  let fixtureId, producerRequests = 0;
+  let fixtureId, producerRequests = 0, execution = null;
   page.on('request', request => {if (new URL(request.url()).pathname === routePath) producerRequests++;});
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => {
@@ -136,6 +138,15 @@ const selectors = {dialog: '#muDialog', placement: '#muPlacement', edge: '[data-
     const runtimeResponse = await page.request.get(new URL('/runtime', url).href);
     const runtime = await runtimeResponse.json();
     assert.equal(runtime.fresh, true, 'isolated test runtime must be fresh before browser acceptance');
+    if(ownerEntry){
+      const root=fs.realpathSync(process.env.GEOMETRY_VERIFY_ROOT),target=new URL(url);
+      assert.equal(target.hostname,'127.0.0.1');assert.notEqual(target.port,'8765');
+      assert.equal(fs.realpathSync(runtime.root),root,'runtime must match the frozen owner worktree');
+      assert.equal(execFileSync('git',['-C',root,'status','--porcelain'],{encoding:'utf8'}).trim(),'','frozen worktree must be clean');
+      execution={root,runtime,head:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),
+        tree:execFileSync('git',['-C',root,'rev-parse','HEAD^{tree}'],{encoding:'utf8'}).trim()};
+      console.log('ACTUAL_OWNER '+JSON.stringify(execution));
+    }
     await page.goto(url); await page.waitForFunction(() => typeof connection !== 'undefined' && connection.phase === 'ready' && window.GeometryProject);
     const title = await page.title(), body = await page.locator('body').innerText();
     check('page identity and meaningful app content', /幾何|Geometry|geometry|工程|物件|應用/.test(title) && body.length > 100);
@@ -283,7 +294,7 @@ const selectors = {dialog: '#muDialog', placement: '#muPlacement', edge: '[data-
       await page.evaluate(() => /未納入/.test(document.querySelector('#muDiff').innerText) && ModelUpdateApp.snapshot().phase === 'review'));
     await close();
     check('no uncaught browser exceptions or relevant console errors', errors.length === 0, errors);
-    fs.writeFileSync(path.join(output, 'evidence.json'), JSON.stringify({url, title, browser: 'Playwright Chromium',
+    fs.writeFileSync(path.join(output, 'evidence.json'), JSON.stringify({url, title, execution, completed:true, browser: 'Playwright Chromium',
       browserPlugin: 'unavailable', viewports: [{width: 1280, height: 900}, {width: 390, height: 844}],
       checks, errors, warnings, modelId: fixtureId, routePath, producerRequests,
       entryMode: ownerEntry ? 'actual-owner-edit-entry' : 'direct-module',

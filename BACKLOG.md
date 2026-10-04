@@ -4131,6 +4131,13 @@ Refs GitHub #19–#24。第一階段整合原生固定版本規則、局部型�
 - 證據仍須真 desktop／390px app、完整 ZIP 保存重開、載入／晚回覆負例、native 取消／確認與一步 undo/redo、未知結果 receipt recovery；CLI／VM 模擬不代替真瀏覽器，A24 實機 IME／chooser／下載另留未驗。
 - restored raw 解讀／來源回歸：未知排格 enum 原字串可保存，解讀時明拒；保存與被動重開不補目前 catalog 的 pin，明選才建立證據。`grid_raw_provenance_browser_test.py` 必須跑真 v10 檔案入口、缺／錯 pin、native 刪除重建、真 ZIP 保存與 fresh browser 重開、明選正例、取消／確認及一步 undo/redo；local raw 編輯依既有 metadata history 記錄，不能冒稱 native 變更。
 
+## ISSUE-44 — 明選現行來源更新同一模型（2026-10-04，接線驗證中）
+
+- 既有模型修改入口保留保存來源的牆高修改，另明選現行放置面、外環邊、角材／柱樑及投影用途；準備與差異候選不寫模型。確認前重讀來源、重跑完整 producer，最後 guard 後同步 `updateSpaceModel` 替換同 record，一筆 local undo 保存完整舊來源／input／全部結果包。
+- `ReferenceWorkspace.getModelOperationState()` 提供凍結的操作快照與 opaque scalar 身分；模型 UI 不再讀 context/history 內部。保存／載入／group／未知確認／連線／編輯權限等拒絕由 owner 判定；服務 session 變更使候選失效。候選、明選及 pin 只在對話框內，取消丟棄，不增保存 schema 或 F 附件。
+- 減項（GEO-219）：沿用「修改模型」與原牆高區；原高度摘要和獨立常駐說明合併，兩種來源差異在同摘要說明，移除重複 help 段，不另加模型列表或常駐更新提示。
+- 必要驗證：真 owner 入口、fresh runtime／exact head、真 producer 全部交換包、新舊差異、cancel/stale／late reply 零寫、明選及 one undo/redo、完整 ZIP 重開。空間／投影／牆高專用瀏覽器回歸另外執行，A24 實機界線保持。
+
 ## GEO-242 — PDF 人工描繪原始線段吸附（2026-10-03）
 
 - main `0f3c1a6` 真 Chromium 重現：人工描繪只吸網格／草稿頂點；9% 描繪實用 500 mm，工具列仍顯示 50 mm。原 main 在獨立來源端點 oracle 出現 assertion failure。

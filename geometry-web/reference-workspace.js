@@ -8,6 +8,7 @@ const ReferenceWorkspace = (() => {
     provenance:{kind:"server",label:"服務目前保留的場景（來源未確認）",openedAt:null,lastSavedAt:null,lastDownloadAt:null} });
   const history = new P.ContextHistory(fresh);
   const revisions = new WeakMap(), selections = new WeakMap(), contextTokens = new WeakMap();
+  const modelOperationIdentities = new WeakMap();
   let pdfLib, modal = null, busy = false, busyLabel = "", busyShort = "處理中", sequence = 0, pendingLoad = null;
   let importRenderingContext = null;
   let assemblyConfirmation = null, preparingSceneLoad = false;
@@ -95,6 +96,17 @@ const ReferenceWorkspace = (() => {
     // must not regain write permission merely because that project is visible.
     if (!contextTokens.has(frame)) contextTokens.set(frame, uuid());
     return {id:c.id,contextToken:contextTokens.get(frame),revision:revision(c),dirty:!!c.dirty,saved:!!c.saved};
+  }
+  function getModelOperationState() {
+    const identity=value=>{if(!value)return null;if(!modelOperationIdentities.has(value))modelOperationIdentities.set(value,uuid());return modelOperationIdentities.get(value);};
+    let blocked=busy||!!oc.busy||preparingSceneLoad||!!pendingLoad||!!history.group;
+    try{assertModelReady();}catch(_){blocked=true;}
+    const project=getProjectState(),session=typeof connection==='undefined'?'':connection.session||'';
+    // Only opaque scalar identities cross the model owner boundary. A caller
+    // cannot mutate a context, frame or history entry through this snapshot.
+    return Object.freeze({context:identity(context()),frame:identity(history.frame),revision:project.revision,
+      contextToken:project.contextToken+':'+session,undo:identity(history.undo.at(-1)),redo:identity(history.redo.at(-1)),
+      group:identity(history.group),blocked:!!blocked});
   }
   function dirty(reason = "") { const c = context(); revisions.set(c, revision(c) + 1); c.dirty = true; c.dirtyReason = reason; c.downloaded = false; schedulePresentation(); scheduleRecovery(); }
   function statusText(c = context()) {
@@ -1184,7 +1196,7 @@ const ReferenceWorkspace = (() => {
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
     readFeatureAttachment,setFeatureAttachment,
-    getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
+    getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getModelOperationState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
     featureConfirmationPending:()=>!!assemblyConfirmation?.featureCommand,
