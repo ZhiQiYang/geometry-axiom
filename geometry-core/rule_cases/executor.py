@@ -28,6 +28,9 @@ _SLOTS = threading.BoundedSemaphore(MAX_CONCURRENT_RUNS)
 MAX_RECEIPT_BYTES = 4 * 1024 * 1024
 _STATUSES = {"not-run", "missing-capability", "blocked", "timeout", "crashed",
              "failed", "passed", "stale", "unknown-runtime"}
+_RUNTIME_HASH_FIELDS = ("nativeBinaryHash", "nativeSourceHash", "validatorVersion",
+                        "axiomHash", "assertionSchemaHash")
+_STALE_REASONS = {"definition", "source", "unknown-runtime", "runtime", "project-context", "generation"}
 
 
 class ReceiptValidationError(ValueError):
@@ -298,6 +301,36 @@ An import policy remains the shared integration owner's responsibility.
     if "recordedStatus" in receipt and (type(receipt["recordedStatus"]) is not str
             or receipt["recordedStatus"] not in _STATUSES - {"stale"}):
         raise ReceiptValidationError("Unknown recorded receipt status")
+    # Refresh reads these fields for every status. Reject malformed retained
+    # scope/identity before the nonpass early return, rather than treating
+    # malformed JSON shapes as a stale result or leaking AttributeError.
+    scope, identity = receipt.get("context"), receipt.get("executor")
+    if (type(scope) is not dict or type(scope.get("projectId")) is not str
+            or not 1 <= len(scope["projectId"].encode()) <= 128
+            or type(scope.get("generation")) is not int
+            or not 0 <= scope["generation"] <= 2**53 - 1):
+        raise ReceiptValidationError("Receipt has malformed project context")
+    case_id = receipt.get("caseId")
+    if (type(case_id) is not str or not 1 <= len(case_id) <= 64 or not case_id.isascii()
+            or any(not (c.isalnum() or c in "_-") for c in case_id)):
+        raise ReceiptValidationError("Receipt has malformed case identity")
+
+    def exact_hash(value):
+        return type(value) is str and len(value) == 64 and not set(value) - set("0123456789abcdef")
+
+    if any(not exact_hash(receipt.get(key)) for key in ("definitionHash", "sourceHash")):
+        raise ReceiptValidationError("Receipt lacks exact freshness hashes")
+    if type(identity) is not dict or type(identity.get("known")) is not bool:
+        raise ReceiptValidationError("Receipt has malformed runtime identity")
+    if identity["known"] and any(not exact_hash(identity.get(key)) for key in _RUNTIME_HASH_FIELDS):
+        raise ReceiptValidationError("Receipt lacks exact runtime identity")
+    if "staleReasons" in receipt and (type(receipt["staleReasons"]) is not list
+            or not 1 <= len(receipt["staleReasons"]) <= len(_STALE_REASONS)
+            or any(type(reason) is not str or reason not in _STALE_REASONS
+                   for reason in receipt["staleReasons"])):
+        raise ReceiptValidationError("Receipt has malformed stale reasons")
+    if receipt["status"] == "stale" and ("recordedStatus" not in receipt or "staleReasons" not in receipt):
+        raise ReceiptValidationError("Stale receipt lacks its recorded status/reasons")
     if receipt["status"] != "passed" and receipt.get("recordedStatus") != "passed":
         return
     try:
@@ -322,13 +355,9 @@ An import policy remains the shared integration owner's responsibility.
                 or any(type(c) is not str for c in conditions["capabilities"])
                 or type(conditions["elapsedSeconds"]) not in (int, float) or conditions["elapsedSeconds"] < 0):
             raise ReceiptValidationError("Passed receipt lacks native evidence")
-        for key in ("nativeBinaryHash", "nativeSourceHash", "validatorVersion", "axiomHash", "assertionSchemaHash"):
-            value = identity[key]
-            if type(value) is not str or len(value) != 64 or set(value) - set("0123456789abcdef"):
-                raise ReceiptValidationError("Passed receipt lacks exact runtime identity")
         for key in ("beforeDumpHash", "afterDumpHash"):
             value = observed[key]
-            if type(value) is not str or len(value) != 64 or set(value) - set("0123456789abcdef"):
+            if not exact_hash(value):
                 raise ReceiptValidationError("Passed receipt lacks dump evidence")
         for key in ("beforeRevision", "afterRevision"):
             if type(observed[key]) is not int or observed[key] < 0:
@@ -381,7 +410,7 @@ def refresh_receipt(receipt, definition, identity, *, project_id=None, generatio
         reasons.append("unknown-runtime")
     elif result.get("executor") != identity:
         reasons.append("runtime")
-    scope = result.get("context", {})
+    scope = result["context"]
     if project_id is not None and scope.get("projectId") != project_id:
         reasons.append("project-context")
     if generation is not None and scope.get("generation") != generation:

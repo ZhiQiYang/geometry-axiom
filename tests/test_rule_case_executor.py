@@ -239,6 +239,105 @@ class TrueNativeExecutor(unittest.TestCase):
         self.assertEqual(receipt["actualDiagnostics"], refreshed["actualDiagnostics"])
         self.assertEqual("blocked", receipt["status"])
 
+    def test_all_statuses_reject_malformed_retained_context_before_scope_refresh(self):
+        statuses = ("not-run", "missing-capability", "blocked", "timeout", "crashed",
+                    "failed", "passed", "stale", "unknown-runtime")
+        contexts = ([], None, "malformed", 0, True, {}, {"projectId": "receipt-project"},
+                    {"generation": 7}, {"projectId": [], "generation": 7},
+                    {"projectId": "", "generation": 7}, {"projectId": "x" * 129, "generation": 7},
+                    {"projectId": "界" * 43, "generation": 7},
+                    {"projectId": "receipt-project", "generation": None},
+                    {"projectId": "receipt-project", "generation": True},
+                    {"projectId": "receipt-project", "generation": 7.0},
+                    {"projectId": "receipt-project", "generation": -1},
+                    {"projectId": "receipt-project", "generation": 2**53})
+        for status in statuses:
+            for context in contexts:
+                receipt = deepcopy(self.receipt)
+                receipt.update(status=status, context=context)
+                with self.subTest(status=status, context=context), self.assertRaisesRegex(
+                        ReceiptValidationError, "project context"):
+                    refresh_receipt(receipt, self.definition, self.identity,
+                                    project_id="receipt-project", generation=7)
+
+    def test_nonpass_missing_or_malformed_context_rejects_without_scope_arguments(self):
+        for context in (None, [], "malformed", {}):
+            receipt = deepcopy(self.receipt)
+            receipt.update(status="blocked", context=context)
+            with self.subTest(context=context), self.assertRaisesRegex(
+                    ReceiptValidationError, "project context"):
+                refresh_receipt(receipt, self.definition, self.identity)
+        receipt = deepcopy(self.receipt)
+        receipt["status"] = "blocked"
+        del receipt["context"]
+        with self.assertRaisesRegex(ReceiptValidationError, "project context"):
+            refresh_receipt(receipt, self.definition, self.identity)
+
+    def test_nonpass_rejects_malformed_freshness_fields_before_early_return(self):
+        controls = [(("caseId",), None), (("caseId",), []), (("caseId",), "x" * 65),
+                    (("caseId",), "case with spaces"), (("definitionHash",), None),
+                    (("sourceHash",), []), (("definitionHash",), "F" * 64),
+                    (("executor",), None), (("executor",), []), (("executor",), "runtime"),
+                    (("executor", "known"), None), (("executor", "known"), 1),
+                    (("executor", "nativeBinaryHash"), "not-a-hash"),
+                    (("staleReasons",), None), (("staleReasons",), "generation"),
+                    (("staleReasons",), []), (("staleReasons",), [1]),
+                    (("staleReasons",), ["unknown-reason"])]
+        for path, value in controls:
+            receipt = deepcopy(self.receipt)
+            receipt["status"] = "blocked"
+            parent = receipt
+            for selector in path[:-1]:
+                parent = parent[selector]
+            parent[path[-1]] = value
+            with self.subTest(field=path), self.assertRaises(ReceiptValidationError):
+                refresh_receipt(receipt, self.definition, self.identity)
+        for key in ("caseId", "definitionHash", "sourceHash", "executor"):
+            receipt = deepcopy(self.receipt)
+            receipt["status"] = "blocked"
+            del receipt[key]
+            with self.subTest(missing=key), self.assertRaises(ReceiptValidationError):
+                refresh_receipt(receipt, self.definition, self.identity)
+        for key in ("recordedStatus", "staleReasons"):
+            receipt = deepcopy(self.receipt)
+            receipt.update(status="stale", recordedStatus="blocked", staleReasons=["generation"])
+            del receipt[key]
+            with self.subTest(missing_stale=key), self.assertRaises(ReceiptValidationError):
+                refresh_receipt(receipt, self.definition, self.identity)
+
+    def test_matching_nonpass_and_stale_history_are_never_promoted(self):
+        for status in ("not-run", "missing-capability", "blocked", "timeout", "crashed", "failed", "stale"):
+            receipt = deepcopy(self.receipt)
+            receipt["status"] = status
+            if status == "stale":
+                receipt.update(recordedStatus="blocked", staleReasons=["generation"])
+            saved = deepcopy(receipt)
+            matching = refresh_receipt(receipt, self.definition, self.identity,
+                                       project_id="receipt-project", generation=7)
+            changed = refresh_receipt(receipt, self.definition, self.identity,
+                                      project_id="other-project", generation=8)
+            again = refresh_receipt(changed, self.definition, self.identity,
+                                    project_id="other-project", generation=8)
+            with self.subTest(status=status):
+                self.assertEqual(saved, receipt)
+                self.assertEqual(saved, matching)
+                self.assertEqual("stale", changed["status"])
+                self.assertEqual("blocked" if status == "stale" else status, changed["recordedStatus"])
+                self.assertEqual(changed, again)
+                self.assertEqual(saved["context"], changed["context"])
+
+    def test_unknown_runtime_nonpass_keeps_its_well_formed_scope_without_hashes(self):
+        receipt = NativeExecutor("/unavailable-retained-receipt-test-binary").run(
+            self.definition, project_id="receipt-project", generation=7)
+        self.assertEqual("unknown-runtime", receipt["status"])
+        refreshed = refresh_receipt(receipt, self.definition, receipt["executor"],
+                                    project_id="receipt-project", generation=7)
+        self.assertEqual("stale", refreshed["status"])
+        self.assertEqual("unknown-runtime", refreshed["recordedStatus"])
+        self.assertEqual(["unknown-runtime"], refreshed["staleReasons"])
+        self.assertEqual(receipt["context"], refreshed["context"])
+        self.assertFalse(refreshed["executor"]["known"])
+
     def test_minimal_matching_green_claim_lacks_required_native_evidence(self):
         claimed = {"status": "passed", "caseId": self.definition["caseId"],
                    "definitionHash": definition_hash(self.definition),
