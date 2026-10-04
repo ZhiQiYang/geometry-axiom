@@ -4160,8 +4160,8 @@ function feGuidePickShow(u, v, cx, cy) {
 async function feLoadGuides() {
   const loadSeq = ++fe.guidesLoadSeq;
   fe.guides = []; fe.specs = []; fe.timbers = []; fe.timberReferenceData = null; fe.grids = []; fe.gridPreview = null; fe.obstacles = null;
-  const edit = oc.edit, context = ReferenceWorkspace.context();
-  const current = () => loadSeq === fe.guidesLoadSeq && oc.edit === edit && ReferenceWorkspace.context() === context;
+  const edit = oc.edit, focus = oc.focus, context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame, session = connection.session;
+  const current = () => loadSeq === fe.guidesLoadSeq && oc.edit === edit && oc.focus === focus && ReferenceWorkspace.context() === context && ReferenceWorkspace.history.frame === frame && connection.session === session;
   const bid = edit && edit.bid, sid = bid != null ? feSid(bid) : null;
   if (sid == null) return;
   /* R7/R9：已放置面才有柱樑鬼影（不改 boundary） */
@@ -5630,12 +5630,20 @@ function feMove(pt, ev) {
 
 /* 邊界變更成功後：重拉 loops + guides + 面板 */
 async function feAfterChange() {
-  const bid = oc.edit && oc.edit.bid;
+  const edit = oc.edit, focus = oc.focus, frame = ReferenceWorkspace.history.frame, session = connection.session;
+  const current = () => oc.edit === edit && oc.focus === focus && ReferenceWorkspace.history.frame === frame && connection.session === session;
+  // Undo restores saved room metadata into a fresh history frame. Rebuild its
+  // derived PDF/image pages before redrawing the still-focused face workspace.
+  if (window.RoomCollectionWorkspace) await RoomCollectionWorkspace.prepareSharedPages();
+  if (!current()) return;
+  const bid = edit && edit.bid;
   if (bid) {
     const b = await api("boundary " + bid);
+    if (!current()) return;
     if (b.ok) oc.bmap[bid] = b.loops;
   }
   await feLoadGuides();
+  if (!current()) return;
   feAfterShapeChange();
   drawFaceEditor();
   renderFaceLayers();

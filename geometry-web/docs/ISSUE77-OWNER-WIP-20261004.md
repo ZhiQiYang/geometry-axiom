@@ -355,3 +355,46 @@ refusal, all-room unknown-confirm retirement, unchanged grid limits, raw JSON
 guards and actual native unchanged/edit/cancel identity. Corrected near-limit
 native/browser/ZIP/one-undo and complete exact-head gates remain required.
 PR114 stays draft; no merge, deployment, native rewrite or #54 takeover occurred.
+
+## Normal journey visual followup (2026-10-04)
+
+The first true product journey on `de677b6` completed94 checks: actual PDF old
+page adoption, two consecutive new rooms, individual selection/edit, full ZIP
+and fresh native import, one-step geometry/association undo and source closure.
+An independent screenshot audit then identified a missing visual assertion.
+Actual product unlink and the real face undo button restored the complete room,
+native World and source bytes but removed the displayed PDF underlay: prior
+active page/underlay/href/visibility were all present, and actual decoded PNG had
+34,557 dark pixels; after undo all four were absent. The original94-pass packet
+remains valid for its recorded metadata/geometry checks, not visual restoration.
+The true counterexample is durable in `/77-product-journey/final3-visual-ui/`.
+
+The existing face refresh now prepares shared source pages after history-frame
+restoration, before drawing, and rejects late edit/focus/frame changes after
+each await. It reuses the same PDF renderer and source cache; saved metadata and
+native geometry are untouched. Guide loading also checks frame/focus/session
+before publishing runtime caches. A controlled actual-function snapshot proof
+completed32/0 for late refresh/guide returns, without metadata changes.
+Initial legacy-page capacity rejection now also
+precedes selection cancellation/revision, with the existing final async check.
+Expanded normal journey gates must verify actual displayed PDF pixels through
+both local and native undo/redo on the next frozen head before long regressions.
+
+A separate actual desktop hit test found the reference editor's obsolete local
+72px topbar height overriding the common two-row116px toolbar. The real undo
+button extended from y64 to98 while the source viewport began at y72, and its
+center hit the PDF image. Removing only that old72px property in browser CSSOM
+restored header/viewport116px and the actual button hit; original source-image
+pointer dragging still changed only shared basis. The product change removes
+that one override and keeps source pointer interaction. The diagnostic's first
+drag history-count assertion was overly strict for three pointer moves and was
+retained as a harness failure; no complete click/visual gate is claimed from it.
+Durable counterexample: `/77-underlay-hit-test/`.
+
+The earlier de677b6 default-space183/0 and timber79/0 gates completed exit0 with
+original floors. Full CDP was superseded by this concrete visual fix. A strict
+attempt using an unnecessary inherited CC=gcc hit fixture compiler mismatches
+because isolated test environments clear CC; it was stopped at exit130, without
+a complete aggregate claim. A controlled default-compiler test_binaries27/0
+diagnosed that fixture-only issue; the next complete runner uses repo defaults,
+without changing tests, fingerprints or floors. Prior original failures remain.

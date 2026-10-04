@@ -721,7 +721,10 @@ const ReferenceWorkspace = (() => {
   async function selectPage(bid, pageId) {
     assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
     const g = group(bid), p = g?.pages.find(p => p.id === pageId); if (!p) return;
-    const c = context(); cancelSelection(c, g); const request = g.selection;
+    const c = context(), proposedGroups = new Map(c.groups);
+    proposedGroups.set(history.frame.ids.get(bid),{...g,activePageId:p.id});
+    assertMetadataCapacity({groups:proposedGroups});
+    cancelSelection(c, g); const request = g.selection;
     if (!selections.has(c)) selections.set(c, new Map());
     let resolve; const promise = new Promise(done => { resolve = done; });
     const job = { bid, request, promise, resolve }; selections.get(c).set(g, job);
