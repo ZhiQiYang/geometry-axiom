@@ -21,7 +21,7 @@
   const nativePrototype = (proto, name) => {
     const constructor = proto && Object.getOwnPropertyDescriptor(proto, "constructor")?.value;
     return typeof constructor === "function" && constructor.prototype === proto &&
-      Function.prototype.toString.call(constructor) === `function ${name}() { [native code] }` && !Object.hasOwn(proto, "toJSON");
+      Function.prototype.toString.call(constructor) === Function.prototype.toString.call(name === "Object" ? Object : Array) && !Object.hasOwn(proto, "toJSON");
   };
   const objectPrototype = proto => proto !== null && Object.getPrototypeOf(proto) === null && nativePrototype(proto, "Object");
   const plainObject = value => Object.getPrototypeOf(value) === null || objectPrototype(Object.getPrototypeOf(value));
