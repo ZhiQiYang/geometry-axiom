@@ -97,7 +97,19 @@
           if (preview?.token) await this.a.cancelPreview(preview.token);
           fail(preview?.error || "原生房間預覽未通過。");
         }
-        this.preview = {token: preview.token, id, name: name.trim(), command};
+        const rows = Array.isArray(preview.boundaries) ? preview.boundaries.filter(row => row?.id === id) : [];
+        let candidatePin;
+        try {
+          if (intent.room && Array.isArray(preview.boundaries) && preview.boundaries.length === 0)
+            candidatePin = await boundaryPin(existing); // An unchanged native candidate has no delta row.
+          else {
+            if (rows.length !== 1 || rows[0].after?.id !== id || !intent.room && rows[0].before !== null)
+              fail("新房間編號已被使用或候選身份無法確認，未覆蓋既有邊界。");
+            candidatePin = await boundaryPin(rows[0].after);
+          }
+          this.assertCurrent(intent);
+        } catch (error) {await this.a.cancelPreview(preview.token);throw error;}
+        this.preview = {token: preview.token, id, name: name.trim(), command,candidatePin};
         return {...copy(this.preview), review: preview};
       } finally { this.busy = false; }
     }
@@ -105,16 +117,26 @@
       this.assertCurrent(); if (!this.preview || this.busy) fail("請先核對原生房間預覽。");
       const intent = this.intent, preview = this.preview; this.busy = true;
       try {
-        const next = copy(intent.state), roomId = intent.roomId || this.a.uuid(), collection = next.collections.find(c => c.id === intent.collectionId);
-        // Pin is derived inside the owner's native+metadata transaction after confirm.
+        const roomId = intent.roomId || this.a.uuid();
+        const attachmentForPin = pin => {
+          const next = copy(intent.state), collection = next.collections.find(c => c.id === intent.collectionId),
+            room = {id:roomId,name:preview.name,boundaryRef:{kind:"boundary",id:preview.id,associationPin:pin},
+              acceptedBasisRevision:intent.plane.basisRevision,reviewState:"confirmed"};
+          if (intent.room) next.rooms[next.rooms.findIndex(r=>r.id === roomId)] = room;
+          else {next.rooms.push(room);collection.roomIds.push(roomId);}
+          return S.validate(next);
+        };
+        // Admission uses the real detached candidate pin. Publication still
+        // requires the committed native definition to match that exact pin.
         const result = await this.a.commitWithMetadata({token: preview.token, boundaryId: preview.id,
+          proposeAttachment:() => attachmentForPin(preview.candidatePin),
           label: intent.room ? "編輯房間「" + preview.name + "」" : "新增房間「" + preview.name + "」",
           assertCurrent: () => this.assertCurrent(intent), makeAttachment: async loops => {
-            const room = {id: roomId, name: preview.name, boundaryRef: {kind: "boundary", id: preview.id, associationPin: await boundaryPin(loops)},
-              acceptedBasisRevision: intent.plane.basisRevision, reviewState: "confirmed"};
-            if (intent.room) next.rooms[next.rooms.findIndex(r => r.id === roomId)] = room;
-            else { next.rooms.push(room); collection.roomIds.push(roomId); }
-            return S.validate(next);
+            const pin = await boundaryPin(loops);
+            // Complete native definitions retain their typed candidate pin;
+            // the legacy loops-only adapter derives its geometry-only pin.
+            if (!Array.isArray(loops) && pin !== preview.candidatePin) fail("原生候選與已確認邊界不一致，未寫入房間來源。");
+            return attachmentForPin(pin);
           }});
         if (!result?.ok) throw Object.assign(new Error(result?.error || "房間確認未完成。"), {transport: result?.transport});
         this.intent = null; this.preview = null; this.generation++;
@@ -173,6 +195,7 @@
     unlinkPlane(planeId) {
       const next = this.state(), collections = next.collections.filter(c => c.planeId === planeId), removed = new Set(collections.flatMap(c => c.roomIds));
       if (!next.planes.some(p => p.id === planeId)) fail("來源平面不存在。");
+      if (next.legacyHistory?.some(entry => entry.planeId === planeId)) fail("此來源含保存的歷史紀錄；請保留來源，房間仍可解除列表關聯。");
       next.planes = next.planes.filter(p => p.id !== planeId); next.collections = next.collections.filter(c => c.planeId !== planeId);
       next.rooms = next.rooms.filter(r => !removed.has(r.id)); return this.change(next, "解除共享來源與房間列表關聯");
     }

@@ -30,7 +30,7 @@ function fixture(options={}){
   vm.runInContext(fs.readFileSync(process.env.GEOMETRY_TEST_REFERENCE_WORKSPACE||require.resolve('../geometry-web/reference-workspace.js'),'utf8')+'\nglobalThis.workspace=ReferenceWorkspace;',env);
   const source=fs.readFileSync(process.env.GEOMETRY_TEST_APP||require.resolve('../geometry-web/app.js'),'utf8');
   const declarations=source.slice(source.indexOf('const connection = {'),source.indexOf('function showConnectionState()'));
-  const request=source.slice(source.indexOf('async function apiRequest(cmd) {'),source.indexOf('async function api(cmd) {'));
+  const request=source.slice(source.indexOf('async function apiRequest('),source.indexOf('async function api(cmd) {'));
   vm.runInContext(declarations+'\n'+request+`\nconnection.phase='ready';${options.session===false?'':"connection.session='test-session';"}
     function connectionFailed(message){connection.phase='error';connection.error=message;}
     globalThis.transport={request:apiRequest,recover:recoverApiResults,pending:pendingApiResults,connection};`,env);

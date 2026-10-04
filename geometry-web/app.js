@@ -418,6 +418,7 @@ async function readApiReceipt(requestId) {
   return receipt.result;
 }
 async function recoverApiResults() {
+  const recoveringRoom = !!window.RoomCollectionWorkspace?.busy;
   const confirmations = [...pendingApiResults.keys()].map(id => pendingAssemblyConfirmations.get(id));
   const currentResults = () => !confirmations.length || confirmations.some(stamp =>
     !stamp || ReferenceWorkspace.assemblyConfirmationCurrent(stamp));
@@ -444,10 +445,11 @@ async function recoverApiResults() {
   // Abort that unfinished group after observing its actual results, never after a committed history-end.
   if (!currentResults()) apiRecoveryNeedsAbort = false;
   else if (apiRecoveryNeedsAbort || ReferenceWorkspace.history.group) {
-    const result = await api("line history-abort");
+    const result = await apiRequest("line history-abort", window.RoomCollectionWorkspace?.transactionLease);
     if (!result.ok) throw new Error("尚未能回復未完成操作，請重試。");
     apiRecoveryNeedsAbort = false;
   }
+  if (recoveringRoom) await window.RoomCollectionWorkspace.settleRecoveredTransaction();
 }
 function showConnectionState() {
   const blocked = connection.phase !== "ready";
@@ -517,14 +519,15 @@ document.addEventListener("keydown", e => {
     if (!e.target.closest?.("#connectionNotice")) e.preventDefault();
   }
 }, true);
-async function apiRequest(cmd) {
+async function apiRequest(cmd, roomLease = null) {
   const rollback = cmd === "line history-abort";
   if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd)) {
-    try { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); }
+    try { if (roomLease) RoomCollectionWorkspace.assertTransaction(roomLease); else { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); } }
     catch (error) { return {ok:false,error:error.message}; }
   }
   if (rollback && pendingApiResults.size) return { ok: false, transport: true, error: "操作結果尚未確認，重新連線後再回復。" };
-  if (!rollback && (connection.phase === "error" || (connection.phase === "loading" &&
+  const recoveredRoomCancel = roomLease && cmd === "line cancel-preview" && connection.phase === "loading" && pendingApiResults.size === 0;
+  if (!rollback && !recoveredRoomCancel && (connection.phase === "error" || (connection.phase === "loading" &&
       !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump)(\s|$)/.test(cmd))))
     return { ok: false, transport: true, error: connection.error || "場景尚未讀取完成" };
   const localHistory = ReferenceWorkspace.tryLocalHistory?.(cmd);
@@ -1489,6 +1492,12 @@ window.addEventListener("keydown", async e => {
     }
     if (oc.on) {
       if (oc.focus && oc.focus.t === "face") {
+        if (window.RoomCollectionWorkspace?.hasWork) {
+          if (RoomCollectionWorkspace.dialogOpen) return;
+          if (RoomCollectionWorkspace.busy) {toast("房間操作尚未確認，請先恢復結果。"); return;}
+          try {await RoomCollectionWorkspace.cancel(); feSetTool("select");} catch (error) {toast(error.message);}
+          return;
+        }
         if (window.RoomOutlineWorkspace?.hasWork) { RoomOutlineWorkspace.cancel(); return; }
         /* UIUX-FIX-PLAN「Esc 三段式決定 🔒」既有七階梯不變(diff#12/§5.A.1.16只改下面
            兩級改呼叫 PolyDraft，其餘五級原樣)。Phase 2:鍵入長度中 Esc 先清輸入,不取消整段 */
@@ -2507,6 +2516,7 @@ function drawCrumb() {
 
 /* ---- 焦點導航 ---- */
 async function enterFocus(t, id, options = {}) {
+  if (window.RoomCollectionWorkspace?.hasWork && oc.focus && (oc.focus.t !== t || oc.focus.id !== id)) throw new Error("請先完成或取消目前房間草稿。");
   if (!window.DraftGate.ask()) return;
   const matchesTarget = oc.sel?.kind === (t === "space" ? "space" : "boundary") && oc.sel.id === id;
   clearCanvasSelections({keepSingleObject:matchesTarget});
@@ -2521,6 +2531,10 @@ async function enterFocus(t, id, options = {}) {
   renderCanvasModeHint();
 
   if (t === "face") {
+    // Publish the existing focus identity synchronously before source loading;
+    // source-navigation owners retain that identity across this async work.
+    if (window.RoomCollectionWorkspace) await RoomCollectionWorkspace.prepareSharedPages();
+    if (oc.focus !== focus || ReferenceWorkspace.context().id !== contextId) return;
     const b = await api("boundary " + id);
     if (oc.focus !== focus || ReferenceWorkspace.context().id !== contextId) return;
     if (!b.ok) {
@@ -2543,6 +2557,10 @@ async function enterFocus(t, id, options = {}) {
 }
 
 async function leaveFocus() {
+  if (window.RoomCollectionWorkspace?.hasWork) {
+    if (RoomCollectionWorkspace.busy || RoomCollectionWorkspace.dialogOpen) {toast("請先確認、取消或恢復目前房間交易，再返回。"); return;}
+    try {await RoomCollectionWorkspace.cancel();} catch (error) {toast(error.message); return;}
+  }
   window.RoomOutlineWorkspace?.reset();
   clearCanvasSelections({keepSingleObject:true});
   GridEditor.clear();
@@ -3645,6 +3663,11 @@ function faceToolTip(t) {
 }
 
 function feSetTool(t) {
+  if (window.RoomCollectionWorkspace?.hasWork && !RoomCollectionWorkspace.cleaningUI && t !== "redraw") {
+    if (RoomCollectionWorkspace.busy || RoomCollectionWorkspace.dialogOpen) {toast("請先確認、取消或恢復房間交易，再切換工具。"); return;}
+    RoomCollectionWorkspace.cancel().then(() => feSetTool(t)).catch(error => toast(error.message));
+    return;
+  }
   if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid) && t !== "redraw" && t !== "pan") {
     toast("請先確認或取消房間候選，再切換幾何工具。"); return;
   }
@@ -3757,19 +3780,23 @@ function feUpdateDraftNotice() {
   $("faceDraftNotice").hidden = !active;
   $("objectWorkspace").classList.toggle("drawing-outer", !!active);
   if (!active) return;
-  $("faceDraftTitle").textContent = `外環草稿 · ${fe.draft.pts.length} 個頂點 · 尚未套用`;
+  $("faceDraftTitle").textContent = `${window.RoomCollectionWorkspace?.hasWork ? "房間外環草稿" : "外環草稿"} · ${fe.draft.pts.length} 個頂點 · 尚未套用`;
   $("faceDraftMessage").textContent = (isDefault ? "已建立預設矩形。" : "原輪廓仍保留。") +
     "逐點畫外環，再點起點或「完成外環」套用。尺寸與面積屬於原面；返回會保留此面。";
+  if (window.RoomCollectionWorkspace?.hasWork) {
+    $("faceDraftMessage").textContent = RoomCollectionWorkspace.controller.intent?.roomId ? "正在編輯所選房間；逐點重畫外環，確認後替換，取消保留原狀。" : "正在新增房間；逐點描繪外環，確認後建立獨立邊界，取消保留原房間。";
+  }
   if (pending) {
     $("faceDraftMessage").textContent = "原輪廓仍保留。請在底圖欄核對室內淨範圍、尺寸與警告，再確認；取消保留原面。";
     $("faceDraftFinish").disabled = !reviewed;
   } else $("faceDraftFinish").disabled = fe.draft.pts.length < 3;
-  $("faceDraftCancel").disabled = !fe.draft.pts.length;
+  $("faceDraftCancel").disabled = !fe.draft.pts.length && !window.RoomCollectionWorkspace?.hasWork;
 }
 $("faceDraftFinish").addEventListener("click", async () => {
   await feDraftTryClose(); $("faceEditorViewport").focus();
 });
 $("faceDraftCancel").addEventListener("click", () => {
+  if (window.RoomCollectionWorkspace?.hasWork) {RoomCollectionWorkspace.cancel().catch(error => toast(error.message)); return;}
   if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid) || RoomOutlineWorkspace.isPicking()) { RoomOutlineWorkspace.cancel(); return; }
   fe.draft = PolyDraft.createState(); fe.draftPreview = null;
   feSyncDraftMirror(); feLenShow(); drawFaceEditor();
@@ -4133,8 +4160,8 @@ function feGuidePickShow(u, v, cx, cy) {
 async function feLoadGuides() {
   const loadSeq = ++fe.guidesLoadSeq;
   fe.guides = []; fe.specs = []; fe.timbers = []; fe.timberReferenceData = null; fe.grids = []; fe.gridPreview = null; fe.obstacles = null;
-  const edit = oc.edit, context = ReferenceWorkspace.context();
-  const current = () => loadSeq === fe.guidesLoadSeq && oc.edit === edit && ReferenceWorkspace.context() === context;
+  const edit = oc.edit, focus = oc.focus, context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame, session = connection.session;
+  const current = () => loadSeq === fe.guidesLoadSeq && oc.edit === edit && oc.focus === focus && ReferenceWorkspace.context() === context && ReferenceWorkspace.history.frame === frame && connection.session === session;
   const bid = edit && edit.bid, sid = bid != null ? feSid(bid) : null;
   if (sid == null) return;
   /* R7/R9：已放置面才有柱樑鬼影（不改 boundary） */
@@ -4650,6 +4677,9 @@ function feUnderlayEditable(bid, expected = null) {
 }
 function feChangeUnderlay(bid, ul, changes, recheck = false) {
   if (!feUnderlayEditable(bid, ul)) return false;
+  if (window.RoomCollectionWorkspace?.roomForBoundary(bid) && Object.keys(changes).some(key => ["x","y","rot","mmPerPx"].includes(key))) {
+    try {return RoomCollectionWorkspace.changeBasis(bid, changes);} catch(error) {toast(error.message); return false;}
+  }
   const previous = Object.fromEntries(Object.keys(changes).map(key => [key, ul[key]]));
   Object.assign(ul, changes);
   try { ReferenceWorkspace.changed(bid, recheck); return true; }
@@ -4727,7 +4757,11 @@ function feUnderlayApplyScale(distMm, inputValue = distMm, inputUnit = "mm") {
   if (!(pxDist > 0)) return false;
   const previousScale = ul.mmPerPx;
   ul.mmPerPx = distMm / pxDist;   /* x/y 保持不變(🔒 拍板) */
-  try { ReferenceWorkspace.calibrated(bid, fe.ulCalib.pts, distMm, inputValue, inputUnit); }
+  try {
+    if (window.RoomCollectionWorkspace?.roomForBoundary(bid)) {
+      RoomCollectionWorkspace.changeBasis(bid, {mmPerPx: ul.mmPerPx}, {points:fe.ulCalib.pts.map(p=>[...p]),distanceMm:distMm,inputValue,inputUnit});
+    } else ReferenceWorkspace.calibrated(bid, fe.ulCalib.pts, distMm, inputValue, inputUnit);
+  }
   catch (error) { ul.mmPerPx = previousScale; toast(error.message); return false; }
   fe.ulCalib = null;
   RoomOutlineWorkspace.calibrated();
@@ -4738,6 +4772,7 @@ function feUnderlayApplyScale(distMm, inputValue = distMm, inputUnit = "mm") {
   return true;
 }
 function feUnderlayRemove(bid) {
+  if (window.RoomCollectionWorkspace?.roomForBoundary(bid)) {toast("共享房間請使用房間列表的「解除列表關聯」；原生幾何與其他參考頁保留。"); return false;}
   if (!feUnderlayEditable(bid)) return false;
   try { ReferenceWorkspace.remove(bid); }
   catch (error) { toast(error.message); return false; }
@@ -5595,12 +5630,20 @@ function feMove(pt, ev) {
 
 /* 邊界變更成功後：重拉 loops + guides + 面板 */
 async function feAfterChange() {
-  const bid = oc.edit && oc.edit.bid;
+  const edit = oc.edit, focus = oc.focus, frame = ReferenceWorkspace.history.frame, session = connection.session;
+  const current = () => oc.edit === edit && oc.focus === focus && ReferenceWorkspace.history.frame === frame && connection.session === session;
+  // Undo restores saved room metadata into a fresh history frame. Rebuild its
+  // derived PDF/image pages before redrawing the still-focused face workspace.
+  if (window.RoomCollectionWorkspace) await RoomCollectionWorkspace.prepareSharedPages();
+  if (!current()) return;
+  const bid = edit && edit.bid;
   if (bid) {
     const b = await api("boundary " + bid);
+    if (!current()) return;
     if (b.ok) oc.bmap[bid] = b.loops;
   }
   await feLoadGuides();
+  if (!current()) return;
   feAfterShapeChange();
   drawFaceEditor();
   renderFaceLayers();
@@ -5727,6 +5770,10 @@ async function feDraftTryClose() {
 async function feCommitDraft(pts, dropped = []) {
   const e = oc.edit;
   if (!e) return;
+  if (window.RoomCollectionWorkspace?.hasWork) {
+    try { await RoomCollectionWorkspace.commitDraft(pts); } catch (error) { toast(error.message); }
+    return;
+  }
   const room = window.RoomOutlineWorkspace?.beforeCommit();
   const loops = oc.bmap[e.bid].map(l =>
     ({ verts: l.verts.map(p => [...p]), fixity: [...l.fixity] }));
@@ -6731,17 +6778,20 @@ function feUnderlayPaneHTML(bid) {
       [0, 90, 180, 270].map(r => `<option value="${r}"${ul.rot === r ? " selected" : ""}>${r}°</option>`).join("") +
       `</select></label></div>` +
       `<div class="kv"${ReferenceWorkspace.context().sources.get(ul.sourceId)?.meta.type === "application/pdf" ? " hidden" : ""}><span>比例尺</span><b id="ulScale">${ul.mmPerPx.toFixed(4)} mm/px</b></div>` +
-      `<button class="btn" type="button" id="ulRemove">移除目前底圖</button></details>`;
+      (window.RoomCollectionWorkspace?.roomForBoundary(bid) ? "" : `<button class="btn" type="button" id="ulRemove">移除目前底圖</button>`) + `</details>`;
   }
-  html += RoomOutlineWorkspace.paneHTML(bid) + ReferenceWorkspace.paneHTML(bid) + `</div></div>`;
+  html += window.RoomCollectionWorkspace?.roomForBoundary(bid) ? RoomCollectionWorkspace.paneHTML(bid) : RoomOutlineWorkspace.paneHTML(bid) + ReferenceWorkspace.paneHTML(bid) + (window.RoomCollectionWorkspace?.paneHTML(bid) || "");
+  html += `</div></div>`;
   return html;
 }
 function feBindUnderlayPane(pane, bid) {
   ReferenceWorkspace.bindPane(pane, bid);
   RoomOutlineWorkspace.bindPane(pane, bid);
+  window.RoomCollectionWorkspace?.bindPane(pane, bid);
   feSyncUnderlayReadonlyControls(pane);
   pane.querySelector("#refDrawOutline")?.addEventListener("click", () => {
     if (!feUnderlayEditable(bid)) return;
+    if (window.RoomCollectionWorkspace?.roomForBoundary(bid)) {RoomCollectionWorkspace.beginNew(bid).catch(error => toast(error.message)); return;}
     RoomOutlineWorkspace.start(bid, pane);
   });
   pane.querySelector("#refCalibrateStep")?.addEventListener("click", () => {
@@ -8648,10 +8698,11 @@ function renderCanvasModeHint() {
    卡片,還被放在很遠的 bbox 左上角(GEO-187 的「找不到卡片」根因)。
    P 改成一次性動作:建一張預設外環的面卡 → 自動進入該面的工作區、啟用「重畫外環」
    (面內視野由 feFit 對齊面的大小,1 單位=1mm 的繪圖在面內進行)→ 畫完 Esc 返回畫布。 */
-async function objNewPolyFace() {
+async function objNewPolyFace({beforeCreate} = {}) {
   const ids = await api("newid");
   if (!ids.ok) { setStatus("✗ " + (ids.error || "取不到新編號")); toast(ids.error || "取不到新編號"); return; }
   const bid = ids.boundary;
+  if (beforeCreate) await beforeCreate(bid);
   /* 預設外環只是佔位,進面內後被 redraw 整份取代;取常見房間大小讓 feFit 給出合適視野 */
   const r = await api(`line boundary ${bid} outline 0,0 4000,0 4000,3000 0,3000`);
   if (!r.ok) { setStatus("✗ " + (r.error || "")); toast(r.error || "指令失敗"); return; }

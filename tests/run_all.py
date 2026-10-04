@@ -106,6 +106,7 @@ NODE_TEST_FILES = [
     'tests/test_face_projection_store.js',
     'tests/test_grid_trial_geometry.js',
     'tests/test_issue77_attachment.js',
+    'tests/test_issue77_history.js',
     'tests/test_issue77_workspace.js',
     'tests/test_model_snapshot_schedule.js',
     'tests/test_model_snapshot_navigation.js',

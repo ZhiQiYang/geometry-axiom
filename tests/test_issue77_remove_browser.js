@@ -6,6 +6,8 @@ const url=process.env.GEOMETRY_TEST_URL;
 if(!url || !process.env.GEOMETRY_FEEDBACK_DIR?.startsWith(os.tmpdir()+path.sep))throw new Error('Explicit isolated URL and TEMP feedback directory required.');
 const fixture=fs.readFileSync(path.join(__dirname,'fixtures/issue77-two-rooms.pdf'));
 const ownerAdapter=process.env.GEOMETRY_ISSUE77_BROWSER_ADAPTER?fs.readFileSync(process.env.GEOMETRY_ISSUE77_BROWSER_ADAPTER,'utf8'):null;
+const evidence=process.env.GEOMETRY_ISSUE77_REMOVE_SCREENSHOTS||path.join(os.tmpdir(),'issue77-remove-evidence');
+fs.mkdirSync(evidence,{recursive:true});
 const changedPDF=label=>Buffer.from(fixture.toString('ascii').replace('Room A',label),'ascii'); // Equal-length labels retain exact xref offsets.
 let checks=0;
 const check=(actual,expected,label)=>{assert.deepEqual(actual,expected,label);checks++;console.log('PASS '+label);};
@@ -80,8 +82,87 @@ async function main(){
     check((await snapshot(page)).pages,before.pages,'explicit room unlink preserves every unrelated legacy page and record');
     check((await snapshot(page)).scene,before.scene,'explicit room unlink keeps native geometry');
     check((await snapshot(page)).attachment.rooms.length,0,'explicit room unlink removes only room association');
+    await page.locator('#projectInfoButton').click();
+    await page.locator('[data-room-source-overview] > summary').click();
+    check(await page.locator('[data-room-source-overview]').isVisible(),true,'existing project information retains shared source overview after all unlink');
+    check(await page.locator('[data-room-source-collection] option').count(),1,'shared source collection remains reachable with no rooms');
+    check(await page.evaluate(()=>RoomCollectionWorkspace.controller.state().planes),before.attachment.planes,'unlink retains exact shared basis');
+    await page.locator('[data-room-source-boundary]').selectOption('1');
+    await page.locator('[data-room-source-associate]').click();
+    await page.waitForFunction(()=>RoomCollectionWorkspace.controller.state().rooms.length===1&&oc.edit?.bid===1);
+    const reassociated=await snapshot(page), roomId=reassociated.attachment.rooms[0].id;
+    check(reassociated.scene,before.scene,'overview explicitly associates retained native geometry without replacing it');
+    check(reassociated.pages,before.pages,'overview association keeps unrelated legacy records');
+    check(reassociated.attachment.planes,before.attachment.planes,'overview association uses the existing unique basis');
+    const nativeBefore=await page.evaluate(async()=>await api('boundary 1'));
+    await page.evaluate(async()=>{await leaveFocus();const result=await api('line delete boundary 1');if(!result.ok)throw Error(result.error);await renderObjects();});
+    check((await snapshot(page)).attachment.rooms[0].reviewState,'needs-reassociation','native deletion retires relation without removing source plane');
+    const retiredArchive=await page.evaluate(async()=>{const entries=fflate.unzipSync(await ReferenceWorkspace.exportBytes());return {keys:Object.keys(entries),manifest:JSON.parse(new TextDecoder().decode(entries['manifest.json']))};});
+    check(retiredArchive.keys.includes('sources/'+before.attachment.planes[0].sourceId),true,'true ZIP keeps shared PDF after the only room boundary was deleted');
+    await page.evaluate(async()=>{const result=await api('line boundary 1 outline 1000,1000 4600,1000 4600,4000 1000,4000');if(!result.ok)throw Error(result.error);await renderObjects();});
+    check((await snapshot(page)).attachment.rooms[0].reviewState,'needs-reassociation','same-ID creation does not revive old room relation');
+    await page.locator('#projectInfoButton').click();
+    await page.locator('[data-room-source-overview] > summary').click();
+    await page.locator('[data-room-source-room]').selectOption(roomId);
+    await page.locator('[data-room-source-boundary]').selectOption('1');
+    await page.locator('[data-room-source-associate]').click();
+    await page.waitForFunction(()=>RoomCollectionWorkspace.controller.state().rooms[0].reviewState==='confirmed'&&oc.edit?.bid===1);
+    const rebuilt=await page.evaluate(async()=>await api('boundary 1'));
+    check(rebuilt.geometryFingerprint!==nativeBefore.geometryFingerprint,true,'explicit reassociation checks the changed full native fingerprint');
+    check((await snapshot(page)).attachment.rooms[0].id,roomId,'explicit reassociation preserves stable room ID');
+    check((await snapshot(page)).attachment.rooms[0].boundaryRef.associationPin,rebuilt.geometryFingerprint,'explicit reassociation pins the new native definition');
+    await page.evaluate(async()=>{await api('line undo');renderFaceInspector();});
+    check((await snapshot(page)).attachment.rooms[0].reviewState,'needs-reassociation','one metadata undo restores retired relation');
+    check((await page.evaluate(async()=>await api('boundary 1'))).geometryFingerprint,rebuilt.geometryFingerprint,'relation undo leaves new native geometry intact');
+    await page.evaluate(async()=>{await api('line redo');renderFaceInspector();});
+    check((await snapshot(page)).attachment.rooms[0].boundaryRef.associationPin,rebuilt.geometryFingerprint,'relation redo restores the explicitly accepted pin');
+    // The persisted schema allows nonempty string IDs, including "new". Admit
+    // that valid record through the formal owner API and exercise the real UI.
+    await page.evaluate(async()=>{
+      await leaveFocus();const next=RoomCollectionWorkspace.controller.state(),oldId=next.rooms[0].id;
+      next.rooms[0].id='new';for(const collection of next.collections)collection.roomIds=collection.roomIds.map(id=>id===oldId?'new':id);
+      ReferenceWorkspace.setFeatureAttachment('source-rooms',next,ReferenceWorkspace.getProjectState().contextToken,{reason:'valid saved string room ID fixture'});
+    });
+    const stringIdBefore=await snapshot(page);
+    await page.locator('#projectInfoButton').click();await page.locator('[data-room-source-overview] > summary').click();
+    check(await page.locator('[data-room-source-room]').inputValue(),'','new-room UI intent uses an empty sentinel outside the persisted ID domain');
+    check(await page.locator('[data-room-source-room] option[value="new"]').count(),1,'valid saved room ID new has exactly one existing-room option');
+    await page.locator('[data-room-source-boundary]').selectOption('2');await page.locator('[data-room-source-associate]').click();
+    await page.waitForFunction(()=>RoomCollectionWorkspace.controller.state().rooms.length===2&&oc.edit?.bid===2);
+    const stringIdAfter=await snapshot(page);
+    check(stringIdAfter.attachment.rooms.find(room=>room.id==='new'),stringIdBefore.attachment.rooms[0],'new-room choice preserves valid existing room named by ID new');
+    check(stringIdAfter.scene,stringIdBefore.scene,'new explicit relation never replaces either native boundary');
+    await page.evaluate(async()=>{await api('line undo');renderFaceInspector();});
+    check(await snapshot(page),stringIdBefore,'one metadata undo removes only the newly associated room');
+    // Hold the real derived-page preparation, then navigate to another actual
+    // native boundary. No source pixels or native success replies are faked.
+    await page.evaluate(async()=>{
+      await leaveFocus();const derived=RoomCollectionWorkspace.sourcePage(1);delete derived.src;
+      const original=ReferenceWorkspace.preparePage;let release;
+      window.__coldRoom={started:false,finished:null,release:()=>release(),original};
+      const gate=new Promise(resolve=>{release=resolve;});
+      ReferenceWorkspace.preparePage=async(page,source)=>{
+        if(!__coldRoom.started){__coldRoom.started=true;await gate;}
+        return original(page,source);
+      };
+      __coldRoom.pending=RoomCollectionWorkspace.beginEdit('new').then(()=>{__coldRoom.finished='opened';},error=>{__coldRoom.finished=error.message;});
+    });
+    await page.waitForFunction(()=>__coldRoom.started);
+    await page.evaluate(async()=>{await enterFocus('face',2);});
+    check(await page.evaluate(()=>oc.focus.id),2,'newer real native face navigation completes while old source load waits');
+    await page.evaluate(async()=>{__coldRoom.release();await __coldRoom.pending;ReferenceWorkspace.preparePage=__coldRoom.original;});
+    check(await page.evaluate(()=>/晚到/.test(__coldRoom.finished)),true,'old room edit rejects its late source load');
+    check(await page.evaluate(()=>({focus:oc.focus.id,edit:oc.edit.bid,tool:fe.tool,intent:RoomCollectionWorkspace.controller.intent})),
+      {focus:2,edit:2,tool:'select',intent:null},'late room open cannot replace newer navigation or start an old room draft');
+    check(await snapshot(page),stringIdBefore,'late navigation changes no native geometry, basis or saved metadata');
+    await page.setViewportSize({width:390,height:844});
+    await page.locator('#projectInfoButton').click();
+    await page.locator('[data-room-source-overview] > summary').click();
+    check(await page.locator('[data-room-source-associate]').isVisible(),true,'390px existing project info contains usable source relation controls');
+    await page.locator('[data-room-source-associate]').scrollIntoViewIfNeeded();
+    await page.screenshot({path:path.join(evidence,'mobile-source-overview.png')});
     check(errors,[],'no page or console errors');
-    console.log(JSON.stringify({checks,browser:'Chromium actual UI',ownerAdapter:process.env.GEOMETRY_ISSUE77_BROWSER_ADAPTER||'official owner API',privateAssets:false}));
+    console.log(JSON.stringify({checks,evidence,browser:'Chromium actual UI',ownerAdapter:process.env.GEOMETRY_ISSUE77_BROWSER_ADAPTER||'official owner API',privateAssets:false}));
   }finally{await browser.close();}
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

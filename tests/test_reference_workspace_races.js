@@ -27,7 +27,7 @@ async function fixture(options = {}) {
   };
   const handle = {createWritable:async () => ({write:async bytes => {writes.push(bytes.slice());written.resolve();await writeGate.promise;},
     close:async()=>{closes++;closing.resolve();await options.closeGate?.promise;},abort:async()=>{aborts++;}})};
-  const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
+  const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,structuredClone,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
     requestAnimationFrame:()=>1,CustomEvent:class {},ResizeObserver:class {observe(){}},File,Blob,
     fetch:async url=>{assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
       assert.ok(options.legacyGate,'Unexpected fetch: '+url);return options.legacyGate.promise;},
