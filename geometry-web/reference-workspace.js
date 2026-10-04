@@ -51,22 +51,31 @@ const ReferenceWorkspace = (() => {
     assemblyConfirmation={context:context(),frame:history.frame};schedulePresentation();return assemblyConfirmation;
   }
   function assemblyConfirmationCurrent(stamp){return context()===stamp.context && history.frame===stamp.frame;}
+  function featureTokenKey(token){
+    // Native preview emits a uint32 number; the confirm command carries its
+    // decimal text. Both representations must name the same prepared lease.
+    if(typeof token==='string'&&!/^[1-9]\d{0,9}$/.test(token))return null;
+    if(typeof token!=='number'&&typeof token!=='string')return null;
+    const value=Number(token);
+    return Number.isInteger(value)&&value>0&&value<=4294967295?String(value):null;
+  }
   function prepareFeatureConfirmation(token,kind,value,expectedContextToken){
     P.Features.assertKind(kind);P.Features.validateGridDraft(value);assertEditable();
-    if(typeof token!=="string"||!token||token.length>200||getProjectState().contextToken!==expectedContextToken||
+    const key=featureTokenKey(token);
+    if(key===null||getProjectState().contextToken!==expectedContextToken||
        busy||history.group||pendingLoad||preparingSceneLoad||!sameModelData(readFeatureAttachment(kind),value))
       throw new Error("草稿或專案已變更，請重新預覽確認。");
     featureConfirmations.clear();
-    featureConfirmations.set(token,{context:context(),frame:history.frame,kind,value:JSON.parse(JSON.stringify(value))});
+    featureConfirmations.set(key,{context:context(),frame:history.frame,kind,value:JSON.parse(JSON.stringify(value))});
   }
   function beginFeatureConfirmation(token){
-    const prepared=featureConfirmations.get(token);if(!prepared)return null;
-    featureConfirmations.delete(token);assertEditable();
+    const key=featureTokenKey(token),prepared=featureConfirmations.get(key);if(!prepared)return null;
+    featureConfirmations.delete(key);assertEditable();
     if(busy||history.group||pendingLoad||preparingSceneLoad||!assemblyConfirmationCurrent(prepared)||
        !sameModelData(readFeatureAttachment(prepared.kind),prepared.value))throw new Error("草稿確認已過期，未套用。");
-    assemblyConfirmation={...prepared,featureCommand:"line confirm "+token};schedulePresentation();return assemblyConfirmation;
+    assemblyConfirmation={...prepared,featureCommand:"line confirm "+key};schedulePresentation();return assemblyConfirmation;
   }
-  function cancelFeatureConfirmation(token){featureConfirmations.delete(token);}
+  function cancelFeatureConfirmation(token){featureConfirmations.delete(featureTokenKey(token));}
   function finishAssemblyConfirmation(stamp){if(assemblyConfirmation===stamp){assemblyConfirmation=null;schedulePresentation();scheduleRecovery();}}
   const safe = fn => async (...args) => { try { return await fn(...args); } catch (e) { toast(e.message || "參考資料操作失敗"); } };
   function group(bid, create = false) {
@@ -1177,7 +1186,7 @@ const ReferenceWorkspace = (() => {
     readFeatureAttachment,setFeatureAttachment,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
-    prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(token),
+    prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
     featureConfirmationPending:()=>!!assemblyConfirmation?.featureCommand,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
