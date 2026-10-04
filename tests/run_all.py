@@ -75,7 +75,7 @@ PY_NEEDS = {
     'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_reference_contract': ['bridge'],
-    'test_rule_case_catalog': [],
+    'test_rule_case_catalog': ['bridge'],
     'test_rule_case_definition': [],
     'test_rule_case_executor': ['bridge'],
     'test_rule_case_request': ['bridge'],
