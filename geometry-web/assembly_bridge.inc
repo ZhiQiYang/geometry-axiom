@@ -36,7 +36,13 @@ static void json_assembly_preview(void)
     json_assembly_state(&g_preview.before,true);fputs(",\"after\":",stdout);json_assembly_state(&g_preview.after,true);
     fputs(",\"impact\":",stdout);json_candidate_geometry(&g_preview.before,&g_preview.after);
     fputs(",\"violations\":[",stdout);
-    if(!g_preview.valid){fprintf(stdout,"{\"code\":\"ASSEMBLY_INVALID\",\"clause\":\"%s\",\"message\":",strstr(g_preview.command,"generation")?"I42":"I40/I41");js_string(error);putchar('}');}
+    if(!g_preview.valid){
+        const AsmDiagnostic *d=&g_preview.assembly_diagnostic;
+        if(d->kind==1)printf("{\"code\":\"DIMENSION_TYPE\",\"clause\":\"D33\",\"ref\":{\"kind\":\"parameter\",\"id\":%u,\"fieldId\":%u},\"message\":",d->id,d->field_id);
+        else if(d->kind==2)printf("{\"code\":\"RULE_VERSION_IMMUTABLE\",\"clause\":\"D32\",\"ref\":{\"kind\":\"rule\",\"id\":%u,\"version\":%u},\"message\":",d->id,d->version);
+        else fprintf(stdout,"{\"code\":\"ASSEMBLY_INVALID\",\"clause\":\"%s\",\"message\":",strstr(g_preview.command,"generation")?"I42":"I40/I41");
+        js_string(error);putchar('}');
+    }
     for(size_t i=0;i<g_preview.issue_count;++i){const ReferenceIssue *e=&g_preview.issues[i];printf("%s{\"timber\":%u,\"clause\":",(!g_preview.valid||i)?",":"",e->timber);js_string(e->clause);fputs(",\"expected\":",stdout);js_string(e->expected);fputs(",\"message\":",stdout);js_string(e->actual);putchar('}');}fputs("]}",stdout);
 }
 static void cmd_assembly_preview(const char *path)

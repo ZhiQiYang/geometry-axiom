@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <ctype.h>
 static bool g_parameter_scene_loading;
+static ParameterRef g_parameter_dimension_error;
 static bool parameter_fail(const char *format,...)
 {
     va_list a;va_start(a,format);vsnprintf(g_parameter_error,sizeof g_parameter_error,format,a);va_end(a);utf8_trim_tail(g_parameter_error);return false;
@@ -63,10 +64,11 @@ static bool parameter_ref_parse(const char *s,ParameterRef *r)
 }
 static bool parameter_value(const World *w,ParameterRef ref,ParamValue *v)
 {
+    g_parameter_dimension_error=(ParameterRef){0};
     int i=parameter_field_index(w,ref.parameter_id,ref.field_id);
     if(i<0)return parameter_fail("I38 MISSING: parameter %u field %u",ref.parameter_id,ref.field_id);
     const ParameterField *f=&w->parameters.fields[i];
-    if(f->type!=0)return parameter_fail("I38 UNIT: parameter %u field %u is not a dimension",ref.parameter_id,ref.field_id);
+    if(f->type!=0){g_parameter_dimension_error=ref;return parameter_fail("I38 UNIT: parameter %u field %u is not a dimension",ref.parameter_id,ref.field_id);}
     *v=f->value;return true;
 }
 static bool parameter_coord(const World *w,ParameterRef ref,Coord *out)

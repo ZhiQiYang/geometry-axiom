@@ -2,6 +2,7 @@
 typedef struct {
     bool ready, valid;
     bool engineering_batch, assembly_batch;
+    AsmDiagnostic assembly_diagnostic;
     uint64_t revision;
     uint32_t token;
     World before, after;
@@ -482,6 +483,7 @@ static bool parameter_reference_edit(const World *w,char **tokens,int count)
 static void reference_stage(const World *before,const World *after,char **tokens,int count,bool valid)
 {
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
+    g_preview.assembly_diagnostic=(AsmDiagnostic){0};
     g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.revision=g_definition_revision;
     g_preview.before=*before; g_preview.after=*after; g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));

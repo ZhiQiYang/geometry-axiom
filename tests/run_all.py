@@ -50,6 +50,7 @@ PY_NEEDS = {
     'test_assembly_capacity': ['bridge'],
     'test_assembly_candidate_impact': ['bridge'],
     'test_assembly_parameter_refs': ['bridge'],
+    'test_assembly_native_diagnostics': ['bridge'],
     'test_assembly_rules': ['bridge'],
     'test_assembly_generation': ['bridge'],
     'test_axiom_reader': [],
