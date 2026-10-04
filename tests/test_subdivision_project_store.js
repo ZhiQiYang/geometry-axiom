@@ -206,6 +206,26 @@ test('formal import rejects capability/format/hash changes before asking native 
   }
 });
 
+test('rehashing a rules scene cannot bypass the reader by stripping both version and manifest capability',nativeOptions,async()=>{
+  const bytes=await rewrite(fixture.bytes,(m,text)=>{m.format=P.ENGINEERING_FORMAT;m.requiredCapabilities=[];return text+'# correctly rehashed downgrade\n';});
+  const entries=zip.unzipSync(bytes),m=JSON.parse(dec.decode(entries['manifest.json']));
+  assert.equal(m.sceneHash,await P.sha(entries['world.scene']));
+  const seen=await rejectedImport(bytes,/第 11 版/);
+  assert.equal(seen.includes('/upload/prepare'),false);assert.equal(seen.includes('/upload/confirm'),false);
+});
+
+test('a complete main4bea near-capacity v10 archive still opens and roundtrips without losing any metadata or PDF',async()=>{
+  const bytes=new Uint8Array(fs.readFileSync(path.join(__dirname,'fixtures/wp60-a-main4bea-near-capacity.gcanvas')));
+  const entries=zip.unzipSync(bytes),saved=JSON.parse(dec.decode(entries['manifest.json']));
+  assert.equal(saved.format,P.FEATURE_FORMAT);assert.equal(saved.requiredCapabilities.includes(capability),false);
+  assert.ok(entries['manifest.json'].length> 8*1024*1024-200);
+  const opened=await P.unpack(bytes,zip);
+  const reopened=await P.unpack(await P.pack(opened.scene,opened.manifest,opened.sources,zip),zip);
+  assert.deepEqual(reopened,opened);assert.deepEqual(opened.manifest,saved);
+  const oversized=await rewrite(bytes,m=>{m.engineeringDrafts.records[0].data.raw+='x'.repeat(200);});
+  await assert.rejects(()=>P.unpack(oversized,zip),/容量|大小|8 MB/);
+});
+
 test('service without the required native capability cancels its candidate without replacing project or history',nativeOptions,async()=>{
   let deny=false;const restricted=async(url,options)=>{
     const r=await backend(url,options);
@@ -219,6 +239,59 @@ test('service without the required native capability cancels its candidate witho
   deny=true;calls.length=0;await assert.rejects(()=>w.importBytes(fixture.bytes),/目前服務不支援/);
   assert.deepEqual(await ask('dump'),before);assert.deepEqual(copy(w.getProjectState()),state);assert.equal(w.history.undo.length,undo);
   assert.ok(calls.includes('/upload/cancel'));assert.equal(calls.includes('/upload/confirm'),false);
+});
+
+test('v11 candidate capability mismatch cancels without confirming or changing native and project state',nativeOptions,async()=>{
+  let replacement=null,token=null;
+  const transport=async(url,options)=>{
+    const response=await backend(url,options);
+    if(replacement!==null&&url==='/upload/prepare'){
+      const candidate=await response.json();assert.equal(candidate.ok,true);token=candidate.token;
+      return {ok:response.ok,json:async()=>({...candidate,required_capabilities:replacement})};
+    }
+    return response;
+  };
+  const w=workspace(transport);await w.importBytes(fixture.bytes);
+  w.setEngineeringDraft({id:'guard-draft',kind:'material',base_ref:null,data:{raw:' 尚未提交 - '},updated_at:'2026-10-04T00:00:00Z'},w.getProjectState().contextToken);
+  const before={dump:await ask('dump'),state:copy(w.getProjectState()),archive:await P.unpack(await w.exportBytes(),zip),undo:w.history.undo.length,redo:w.history.redo.length};
+  for(const wrong of [[],[capability,P.ENGINEERING_CAPABILITY]]){
+    replacement=wrong;calls.length=0;
+    await assert.rejects(()=>w.importBytes(fixture.bytes),/工程場景能力與保存來源不一致/);
+    assert.equal(calls.filter(url=>url==='/upload/cancel').length,1);assert.equal(calls.includes('/upload/confirm'),false);
+    assert.deepEqual(await ask('dump'),before.dump);assert.deepEqual(copy(w.getProjectState()),before.state);
+    assert.equal(w.history.undo.length,before.undo);assert.equal(w.history.redo.length,before.redo);
+    assert.deepEqual(await P.unpack(await w.exportBytes(),zip),before.archive);
+    assert.equal((await ask('load-confirm '+token)).ok,false,'cancelled candidate cannot be confirmed later');
+  }
+});
+
+for(const [label,input,finalCapability] of [
+  ['default-only allocator',scene.split('\n').slice(0,2).join('\n')+'\ngrid-source-rule-highwater 0 next 1\n',false],
+  ['removed source',scene+'delete grid-system 0\n',false],
+  ['reset after rule declaration',scene+'reset\nrequires '+capability+'\n',false],
+  ['surviving source after earlier source deletion',scene+
+    'grid-system 1 name-hex 7375727669766f72 main-along none u repeat 0 600 v repeat 0 400\n'+
+    'grid-source-rule 1 key 1 name-hex 72 selector all-cells divide 3 2\n'+
+    'grid-source-rule-highwater 1 next 2\ndelete grid-system 0\n',true]
+])test('formal replay independently checks input and final native capability for '+label,nativeOptions,async()=>{
+  const archive=await P.pack(input,manifest(),new Map(),zip),stored=await P.unpack(archive,zip);
+  assert.equal(stored.manifest.format,P.SUBDIVISION_FORMAT);assert.ok(stored.manifest.requiredCapabilities.includes(capability));
+  assert.ok(P.sceneCapabilities(input).includes(capability));
+  let receipt;
+  const transport=async(url,options)=>{const r=await backend(url,options);if(url!=='/upload/prepare')return r;
+    receipt=await r.json();return {ok:r.ok,json:async()=>receipt};};
+  const w=workspace(transport);await w.importBytes(archive);
+  assert.equal(receipt.ok,true,JSON.stringify(receipt));
+  assert.equal(receipt.required_capabilities.includes(capability),finalCapability);
+  const actual=(await ask('dump')).text;assert.equal(P.sceneCapabilities(actual).includes(capability),finalCapability);
+  const roundtrip=await P.unpack(await w.exportBytes(),zip);assert.equal(roundtrip.scene,actual);
+  // Input marker claims remain independently required even after replay removes
+  // all formal rule state; re-saving uses the actual native canonical dump.
+  assert.equal(roundtrip.manifest.format===P.SUBDIVISION_FORMAT,finalCapability);
+  const missingInputSupport=async(url,options)=>{const r=await backend(url,options);if(url!=='/upload/prepare'||options.body!==input)return r;
+    const data=await r.json();return {ok:r.ok,json:async()=>({...data,capabilities:data.capabilities.filter(c=>c!==capability)})};};
+  const seen=await rejectedImport(archive,/目前服務不支援/,missingInputSupport);
+  assert.ok(seen.includes('/upload/cancel'));assert.equal(seen.includes('/upload/confirm'),false);
 });
 
 for(const [label,change,reason] of [

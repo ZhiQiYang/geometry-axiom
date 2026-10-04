@@ -422,7 +422,7 @@
     const m = {...manifest,format:projectFormat(manifest,scene),sceneHash};
     if ([ENGINEERING_FORMAT,PARAMETER_FORMAT,ASSEMBLY_FORMAT,GENERATION_FORMAT,OUTLINE_FORMAT,FEATURE_FORMAT,SUBDIVISION_FORMAT].includes(m.format)) {
       m.requiredCapabilities = projectCapabilities(manifest,scene);
-      if (reserveNative) m.requiredCapabilities = [...new Set([...m.requiredCapabilities,ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY,SUBDIVISION_CAPABILITY])].sort();
+      if (reserveNative) m.requiredCapabilities = [...new Set([...m.requiredCapabilities,ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY])].sort();
       if (!m.assemblyDrafts?.records.length) delete m.assemblyDrafts;
       if (!m.engineeringDrafts?.records.length) delete m.engineeringDrafts;
     } else {delete m.requiredCapabilities;delete m.engineeringDrafts;delete m.assemblyDrafts;}
@@ -432,13 +432,16 @@
     else delete m.faceProjections;
     return m;
   }
-  function assertManifestCapacity(manifest, scene = "") {
+  function assertManifestCapacity(manifest, scene = null) {
     Features.jsonBytes(manifest,MAX_MANIFEST,0,"專案清單超過 8 MB，請拆成較小的專案。");
     const rooms = manifest.featureAttachments ? Features.sourceRooms(manifest.featureAttachments) : null;
     const reserve = rooms ? Features.lifecycleReserve(rooms) : 0;
-    // Metadata preflight has no native scene read. Room projects retain the
-    // finite native capability overhead as well as every room's status growth.
-    Features.jsonBytes(normalizedManifest(manifest,scene,manifest.sceneHash || "0".repeat(64),!!rooms),MAX_MANIFEST,reserve,
+    // New metadata edits reserve all native capabilities without a scene read.
+    // Reads and saves retain the old four-capability allowance plus capabilities
+    // actually declared/used, so unused future syntax cannot shrink old files.
+    const admitted = normalizedManifest(manifest,scene || "",manifest.sceneHash || "0".repeat(64),!!rooms);
+    if (rooms && scene === null) admitted.requiredCapabilities = [...new Set([...admitted.requiredCapabilities,SUBDIVISION_CAPABILITY])].sort();
+    Features.jsonBytes(admitted,MAX_MANIFEST,reserve,
       "專案清單未保留完整保存與房間狀態更新所需容量（上限 8 MB）。");
     return manifest;
   }
@@ -446,7 +449,7 @@
     if (!m || ![FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT].includes(m.format)) fail("專案版本不支援，請使用相容版本開啟。");
     if (Object.hasOwn(m, "featureAttachments") && ![FEATURE_FORMAT, SUBDIVISION_FORMAT].includes(m.format)) fail("功能附件須使用第 10 版格式。");
     Features.jsonBytes(m,MAX_MANIFEST,0,"專案清單超過 8 MB，請拆成較小的專案。");
-    assertManifestCapacity(m);
+    assertManifestCapacity(m,"");
     if ([ENGINEERING_FORMAT, PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT].includes(m.format)) {
       if (!keys(m, ["format", "projectId", "name", "sceneHash", "sources", "faces", "models", "faceProjections", "requiredCapabilities"], ["reconstructionReviews", "engineeringDrafts", ...([ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT].includes(m.format) ? ["assemblyDrafts"] : []), ...([FEATURE_FORMAT, SUBDIVISION_FORMAT].includes(m.format) ? ["featureAttachments"] : [])]))
         fail("第 5 版工程專案的欄位不完整或含未知定義。");

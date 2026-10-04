@@ -4,7 +4,7 @@
 
 ## 邊界與盤點
 
-本分支只修改 `project-store.js`、專屬測試／runner 登記及本文件。PR124 sole owner 的 `reference-workspace.js`、`model_update`、space producer，以及 PR125 的 app/index/contextmenu 均不競寫。沒有 native、公理、能力容量、其他 worktree、部署或使用者 PC 變更。遠端 open PR 盤點只有 #124／#125，沒有重做 PR107 的 native core。
+本分支修改 `project-store.js`、專屬測試／runner 登記及本文件；已正常合流 main `4bea91a`（PR124）。PR125 的 app/index/contextmenu 不競寫，`model_update`、space producer 不改。root 已允許有界修正 reference 的 /11 capability 守門；獨審發現需要區分輸入與最終 World，目前列出 native/reference 最小接點交 root 協調，尚未套用。沒有公理、能力容量、其他 owner worktree、部署或使用者 PC 變更，沒有重做 PR107 native core。
 
 PR107 已提供 source-local uint32 非零 ruleKey、`nextRuleKey` 高水位（0 表耗盡）、all-cells／單一 signed cell、decimal-string cell、guide `gridrule:` 與直接 `at-line rule`。dump 包含未套用來源、刪完 rules 的非預設高水位、依賴順序與 native 能力標記；load-prepare 在獨立 World 驗完整來源閉包，confirm 才原子替換。這些都是沿用的 native 能力。
 
@@ -18,18 +18,19 @@ PR107 已提供 source-local uint32 非零 ruleKey、`nextRuleKey` 高水位（0
 
 /11 可共存原有工程／參數／組構、原始 sources bytes、圖頁、projection、reconstructionReviews、`featureAttachments` 的 grid-editor-draft/source-rooms/source-room-history。這些資料保持既有 schema 與驗證器。沒有 rules 的檔案仍依既有 /1…/10 選格式，不新增規則或預設細分。含 rules 的模型 input/package 明確拒絕；獨立且不含 rules 的合法歷史模型可與目前 rules scene 共存。
 
-房間 metadata 在沒有 scene 讀取時，預留全部五種 reader 支援的 native 能力字串與既有 lifecycle 成長。原四能力預留在接近 8 MB 的合法 metadata 上可重現「預驗通過但含 rules 保存失敗」；最小修補僅補 `grid-subdivision-rules/1` 的 bytes，不擴 8 MB 或其他容量。邊界測試找出最後可准入 bytes，真 pack/unpack 同時保留 rules 與房間/history/raw附件，+1 byte metadata 拒絕。
+房間 metadata 的新 edit 在沒有 scene 讀取時預留五種 native 能力字串與既有 lifecycle 成長。舊檔讀取及 codec 保存沿用原四能力預留，再加實際宣告／使用能力，不能因未使用的未來能力縮小舊檔上限。`tests/fixtures/wp60-a-main4bea-near-capacity.gcanvas` 由原 main 的真 pack/unpack 產出，清單 8,388,493 bytes，含 PDF 與 history，僅重新壓縮 ZIP；原 `7bc8682` reader 拒絕已重現。修正後 reader／codec 完整 roundtrip 通過、真超限拒絕。新 edit 邊界亦真 pack/unpack 含 rules 與房間/history/raw附件，+1 byte 拒絕；8 MB 與所有既有容量不變。
 
 ## owner 接點與尚未交付
 
 - #61 規則 editor 的 raw 未提交草稿目前沒有對應正式 schema／UI adapter。本切片只證明既有 source/binding raw grid 草稿共存，**不聲稱規則草稿已保存**。請由共用 owner 擴既有 finite attachment validator，沿用 context token、flush、共同保存與 ContextHistory；不保存 preview token／key reservation。
-- `reference-workspace.prepareProjectScene` 的現有格式列舉在 /10；owner 下次接線應把 `P.SUBDIVISION_FORMAT` 納入「candidate required capabilities 等於 sceneCapabilities」分支。現有 native 候選、manifest/service 能力、最終 objects／pins 與 atomic confirm 已實跑 /11，不因這個列舉缺口跳過 native 校驗。
+- **獨審 hold：/11 candidate capability 核對仍未完成。** 原候選只提供最終 World 的 required capabilities／typed objects，沒有其 canonical scene；輸入 scene 的 marker-bearing default-only allocator、稍後刪除 source 或 reset 均合法，但最終 required capabilities 是空陣列。不能直接以輸入 lexical capability 等值核對，也不能只改成 subset 而放過 canonical mismatch。建議在既有 native `cmd_load_prepare` 增加候選的 `final_scene`（同一次 parse 的 World dump，不另跑 solver），/11 明確要求此欄位並獨立核對它與 candidate.required_capabilities；输入 lexical／manifest／service 檢查保持原狀。舊 /5…/10 守門、/model/space-replay 與 #77 atomic hooks 保留。
+- **獨審 hold：舊近上限正式 browser 保存接點。** 真 Chromium 已成功開啟上述 main 舊檔，但 `manifest()` 的無 scene metadata 預留仍會拒絕 export。最小接點是 `manifest(c, scene = null)` 將 scene 傳給容量檢查，`exportSnapshot` 將已有 `r.text` 傳入；所有新 metadata edit 仍省略 scene，保留五能力預留。此接點尚待 root 協調，不能聲稱正式 browser 舊近上限 roundtrip 通過。
 - `manifestData` 的格式列舉亦止於 /10。實際 exportSnapshot 將真 dump 交給 `P.pack`，由 store 選 /11／补齐模型與 projection containers，真 browser 保存已驗。owner 要在 metadata 顯示 /11 時使用 `P.SUBDIVISION_FORMAT`，不要另存一份 rules。
 - #61 全流程空白 → 用 UI 建 rule／preview／confirm → 選子線、跨面來源改動，以及未失焦規則草稿、物理手機／OS 選檔仍未驗。完整 #60 依這些接點後續交付；fresh context 不載入舊 undo/redo stacks。
 
 ## 可重現驗收
 
-先 red：最小 pack 測試於原基底以「尚未支援的工程能力」失敗。修改後正式 `tests/test_subdivision_project_store.js` 為 25 個 Node tests：10 codec／syntax／schema／legacy/model tests，fresh native/formal import、能力不足候選 cancel、8 個真 source-closure/native 負例、C/Python adapter 區別、房間/history/raw附件、import 一次 undo/redo、native 舊 scene。
+先 red：最小 pack 測試於原基底以「尚未支援的工程能力」失敗。獨審 checkpoint 的 `tests/test_subdivision_project_store.js` 為 32 個 Node tests：31 pass、1 fail、0 skip；唯一 red 是 /11 canonical candidate mismatch 尚未拒絕。新增 4 個真 formal replay、main 近上限完整 archive、同時降版／移除 manifest capability 並重算合法 hash 的負例；降版負例不呼叫 prepare/confirm，replay 的輸入 service 能力不足仍取消候選。不能把這個 checkpoint 稱為綠燈或完整 #60。
 
 ```sh
 ulimit -s 16384
