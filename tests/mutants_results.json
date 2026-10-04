@@ -1,19 +1,22 @@
 {
  "M01": {
   "desc": "I5：邊上判定:含端點改嚴格(端點不在邊上)",
-  "verdict": "equivalent",
-  "why": "等價變異(GEO-173 實證,與 2026-09-16 稽核一致):只變異直立邊分支的端點判定;軸平行多邊形的任一頂點必同時是一條直立邊與一條水平邊的端點,未變異的水平邊分支必接住。夾具 M01_hole_corner_touch(兩孔角對角相碰)原始版與變異版輸出逐字相同。",
+  "verdict": "killed",
+  "why": "_ax_i5_collinear_vertex_rect_corner.scene: FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊",
+  "killed_by": [
+   "_ax_i5_collinear_vertex_rect_corner.scene"
+  ],
   "date": "2026-10-04",
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "ae55a07300ae815dcdc0ec9a43b1c21fb548027626f3215662975b04ccea9186",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -36,16 +39,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -177,6 +180,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -879,24 +888,24 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
     {
-     "exit_code": 0,
+     "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 138,
-       "fail": 0,
+       "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -1030,6 +1039,12 @@
         "scene": "_edge_concave.scene",
         "status": "pass",
         "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊",
         "oracle": "geometry-output"
        },
        {
@@ -1730,12 +1745,12 @@
        }
       ]
      },
-     "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+     "stdout_sha256": "8ac6d2da98df510da875abd65841a388ea7d4dca5f2259a99938a0651a53051c",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "eebb734ac69913562f866464d00ec5842e6b7185130bfa6128fded6ed4252e09"
+  "record_sha256": "15446fcb23712a20e14232e5c4129c9ad06c9baa171db902b8af1c0fd2bad363"
  },
  "M02": {
   "desc": "I5：射線半開區間 [v_min,v_max) 改 (v_min,v_max)",
@@ -1743,6 +1758,7 @@
   "why": "_test_lshape.scene: FAIL 錯誤不符: 期望含「沒有擋面」實得「<repo>/_test_lshape.scene:17: R6/I5/I6 timber 2: 中線上沒有任何合法跨距」",
   "killed_by": [
    "_test_lshape.scene",
+   "_ax_i5_collinear_vertex_rect_corner.scene",
    "_role_priority_ext_primary.scene",
    "_role_ext_stop_primary.scene"
   ],
@@ -1750,13 +1766,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "eb37820358b0fb178168f468e3c67f734e62bb17966740f66393de92db1190c3",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -1779,16 +1795,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -1920,6 +1936,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -2622,7 +2644,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -2630,16 +2652,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 135,
-       "fail": 3,
+       "fail": 4,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -2773,6 +2795,12 @@
         "scene": "_edge_concave.scene",
         "status": "pass",
         "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
         "oracle": "geometry-output"
        },
        {
@@ -3473,12 +3501,12 @@
        }
       ]
      },
-     "stdout_sha256": "ba3a5cb50746a8931a4fd71267e1d1787af5551fe0b4b4dfeed006aefa91d064",
+     "stdout_sha256": "e681feb9a098df4b7ed2e7cada9560a3de980d29f9ecd4de593827b5dde9e2a2",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "910a117bf4ffe40804ff43fbe3ba426e0bad5a904c2cd059093a229ae64946a3"
+  "record_sha256": "8335962dbb8c261a1ec1a5ffc4589e173ba9c1780ecf45ffa18a2b4a7d7d272c"
  },
  "M03": {
   "desc": "I5：射線只數直立邊 -> 改數水平邊",
@@ -3495,13 +3523,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "c8afc0fd8ec130f35d760fcec6096ed9155ba8367d7e0f1ae3fed4ed8ab52481",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -3524,16 +3552,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -3665,6 +3693,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -4367,7 +4401,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -4375,16 +4409,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 67,
-       "fail": 71,
+       "fail": 72,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -4518,6 +4552,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
         "oracle": "geometry-output"
        },
        {
@@ -5218,12 +5258,12 @@
        }
       ]
      },
-     "stdout_sha256": "7bd255b89aa82dd0c71bb4313e8a6df10e64525c51392de5ff03b6df0cb4a4a5",
+     "stdout_sha256": "a6e39628ab0cb3773d3b37f9f855ea15889c2fbcf02400eaed25dc3e44ad51e8",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "4eb2e8f582815c5237b1cc31bcbfe877fea094de8c8606a056492c1820774aa0"
+  "record_sha256": "594fd3da1e8b26fbfc885c56ee9f57c2b9659601f35fb1f05a9e03bca8ffde58"
  },
  "M04": {
   "desc": "I5：奇偶判定反轉(內外互換)",
@@ -5240,13 +5280,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "5936b5e5af45b23a7c73556b9080af268239032c092ace748e691c74175f30bc",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -5269,16 +5309,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -5410,6 +5450,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -6112,7 +6158,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -6120,16 +6166,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 67,
-       "fail": 71,
+       "fail": 72,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -6263,6 +6309,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
         "oracle": "geometry-output"
        },
        {
@@ -6963,12 +7015,12 @@
        }
       ]
      },
-     "stdout_sha256": "fa87c46455c271473c9a6dd65bef361e0b078b357f37c91686068221eee9d72d",
+     "stdout_sha256": "30bb75e5c14196c1822428e4c2fb50cdacf16f60dce53a3c61662ee1613d8457",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "48267bae8bbe3bb17c4fe0740e9257d71c01a7c661b60757c67929da89e94701"
+  "record_sha256": "01ed15983633d615182c5b7097edf9455138effeadbc89b25b1dbc276283ab3d"
  },
  "M05": {
   "desc": "I5：直立邊在矩形邊界上也算穿入(<= 改 <)",
@@ -6985,13 +7037,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "a0d421686e0a6f4609f4fe8a0ef9ad48a995cf3b3cde2174ef4d712ccb39c45f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -7014,16 +7066,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -7155,6 +7207,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -7857,7 +7915,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -7865,16 +7923,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 73,
-       "fail": 65,
+       "fail": 66,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -8008,6 +8066,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
         "oracle": "geometry-output"
        },
        {
@@ -8708,12 +8772,12 @@
        }
       ]
      },
-     "stdout_sha256": "bf6d4f8e6a77ef769c813db60b13c87128f28c60cc4bcd848925ce12ef4c3d70",
+     "stdout_sha256": "8dce45d33d07cb9ed8ab603c9fecfdb764f879a61f725f9a6c6feaa68f6cf50f",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "e5389f66df490c738d91d121c2ee6cdf56e9ec2a88e437f2e73c45ef13b8f480"
+  "record_sha256": "b64921fcd35e5a88e6618f6c55d1ff0329c5d12b3ebf08fcc5a13e3d4be767b0"
  },
  "M06": {
   "desc": "I5：水平邊在矩形邊界上也算穿入(<= 改 <)",
@@ -8730,13 +8794,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "8e7ce972ee543bb08d95b6578353ca1a92df6972861bca37c988ba60faaa6465",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -8759,16 +8823,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -8900,6 +8964,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -9602,7 +9672,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -9610,16 +9680,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 68,
-       "fail": 70,
+       "fail": 71,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -9753,6 +9823,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 有合法跨距但都不接觸引用的邊",
         "oracle": "geometry-output"
        },
        {
@@ -10453,12 +10529,12 @@
        }
       ]
      },
-     "stdout_sha256": "c661fedc4d79971b834c31199eec453f1bb956e7975512ff04079187e1178a59",
+     "stdout_sha256": "7df963f53212cdab630fa2527c2e500500770146bf81e9fb28698acfb1d58ef3",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "e33aa7906b96ad612ebe01aa0d75b69e86f695ef0864a324090715140bb63736"
+  "record_sha256": "ed8fea12fa63ef0ecec322cd58e1a4fe2ba9cfc531f700074f2313387e2e694c"
  },
  "M07": {
   "desc": "I5：直立邊 v 區間零長度接觸也算穿入(< 改 <=)",
@@ -10467,21 +10543,21 @@
   "killed_by": [
    "_test_lshape.scene",
    "_edge_concave.scene",
+   "_ax_i5_collinear_vertex_rect_corner.scene",
    "_role_priority_mutant.scene",
-   "_role_priority_ext_custom.scene",
-   "_role_ext_stop_primary.scene"
+   "_role_priority_ext_custom.scene"
   ],
   "date": "2026-10-04",
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "29f1d7295a8a6a5fd73ff8b13be58283844d74327962449d86593975899dba3f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -10504,16 +10580,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -10645,6 +10721,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -11347,7 +11429,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -11355,16 +11437,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 132,
-       "fail": 6,
+       "fail": 7,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -11498,6 +11580,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6/I5/I6 timber 1: I5/I6 footprint outside effective region or FREE edge",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: I5/I6 footprint outside effective region or FREE edge",
         "oracle": "geometry-output"
        },
        {
@@ -12198,12 +12286,12 @@
        }
       ]
      },
-     "stdout_sha256": "98827dc1003255c89c2c0134fb2224dfb9d497154d5ecce164240ab83b44183d",
+     "stdout_sha256": "ae780d253f729ec029c5922e4047a33f257b74cd781601741566662ed7ea540b",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "67a9e79c63bc798734aa8389dc58f9ed67cc70c4e98bbeb907a8faf5e2fc970d"
+  "record_sha256": "76327ef4c543fae4f53274ef799d5d60c6b6cc4d975e733186abebbe3ff4bbb8"
  },
  "M08": {
   "desc": "I5：拿掉「環邊不得穿矩形內部」檢查",
@@ -12216,13 +12304,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "52590d545b6d64a49bb78f34a65091bb40c52f167956c784502fd2f2156e07f0",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -12245,16 +12333,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -12386,6 +12474,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -13088,7 +13182,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -13096,16 +13190,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -13237,6 +13331,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -13939,12 +14039,12 @@
        }
       ]
      },
-     "stdout_sha256": "aeff9390d6c899a527c13fdcf9242d5aa7e07dedd08dde9befaee32642f1e93c",
+     "stdout_sha256": "7f92d2135ed15e681076b946058f62688607daa71a3cbcfb1be54c94a7162172",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "8c765842e3e5d09c32fd6d793c77d7c85885d0dbd49b5355d59041cc1206697b"
+  "record_sha256": "623dad1214681c98168fd0fc5630a807cc2ec2dc9da2abaa69f704b94a2d7103"
  },
  "M09": {
   "desc": "I5：孔 bbox 邊界相接也當相交(<= 改 <)",
@@ -13954,13 +14054,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "0a30f16585f0013f0a811e76053f85de15ee90ba5f549da2278e15f3a76354d1",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -13983,16 +14083,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -14124,6 +14224,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -14826,7 +14932,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -14834,16 +14940,16 @@
      "exit_code": 0,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 138,
+       "pass": 139,
        "fail": 0,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -14975,6 +15081,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -15677,12 +15789,12 @@
        }
       ]
      },
-     "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+     "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "d559ae96514d23a339d91d05274abfb7de23270c214251132849d5bce2310b72"
+  "record_sha256": "7a54ee71e44004fde5417b27d7a8f497a35b2adba93df63c8ecb5288196baca7"
  },
  "M10": {
   "desc": "I5：孔頂點嚴格在矩形內 -> 含邊界(> 改 >=)",
@@ -15695,13 +15807,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "b1356a3a3a4051ce662872a6e1cbd3ecbb748ec9967f7025a48c6a51c18cf499",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -15724,16 +15836,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -15865,6 +15977,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -16567,7 +16685,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -16575,16 +16693,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -16716,6 +16834,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -17418,12 +17542,12 @@
        }
       ]
      },
-     "stdout_sha256": "4099c17870b66d37629735d89b8132148128a101a65a75442c4641810a3e43a0",
+     "stdout_sha256": "526292937f4537969d867acfc8106bb76ea9c0889fbfc05fe2b989a8fe5ddd91",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "a243155269dbb71b31df73c5a3b7c9228e715a0abc32fa31c656ae178a8ac7e8"
+  "record_sha256": "20822b82e6fadbfdaba5ec2a1be34222bc49db8a1aa2ba4838c074f996cf1600"
  },
  "M11": {
   "desc": "I5：孔罩住矩形判定:inside==4 改 inside==0(罩住反而放行)",
@@ -17440,13 +17564,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "906ffbb1c748702b07ef73eb4adbc19503880df11603a5563bc4e639af1adcf3",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -17469,16 +17593,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -17610,6 +17734,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -18312,7 +18442,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -18320,16 +18450,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 129,
+       "pass": 130,
        "fail": 9,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -18461,6 +18591,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -19163,12 +19299,12 @@
        }
       ]
      },
-     "stdout_sha256": "39739bea63f71fd9577d182faf4c3b17736bb7d1d7643d477858f7f053b90983",
+     "stdout_sha256": "eafdff65fa41b79e5b153c770856e43dd3fe9402786cacbed3cb6f528253a99c",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "7d46ca41802cc1c4bad05d160f41d12960234151e4edd2a3ea27bab1475e4805"
+  "record_sha256": "442d3de472e4be1dbb1458e6facc3cd4d7d14621d510ce77e76a9c0eeccd14c3"
  },
  "M12": {
   "desc": "I11：正面積重疊:端點相接也算重疊(> 改 >=)",
@@ -19185,13 +19321,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "6f3338036e7b7dcf7c9e242dd2d694668f26c0331e9f44bd31ded0b66d1da05c",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -19214,16 +19350,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -19355,6 +19491,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -20057,7 +20199,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -20065,16 +20207,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 85,
+       "pass": 86,
        "fail": 53,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -20206,6 +20348,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -20908,12 +21056,12 @@
        }
       ]
      },
-     "stdout_sha256": "54fc217db17012fc07f3c00c702da9082c6d5b7d15d866ddca349ca44160ebc4",
+     "stdout_sha256": "63f9a7a84f6d0861882df8f5802de0036e606ce977f040d47b7bad945c399aa2",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "7b3a2ba0d4b61e65a7029078fa78c14cd23dda033922d16c30ad06cf3100995a"
+  "record_sha256": "c475506a4fd2c94855455731f92a1e75ebe46e18576124d404162531cba021b4"
  },
  "M13": {
   "desc": "I11：碰撞只看同承載面 -> 看不同承載面(!= 改 ==)",
@@ -20930,13 +21078,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "d5d4cc60292eab5ed895d246b449c22b46d0f5b51a5ac41372a81d71747ed143",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -20959,16 +21107,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -21100,6 +21248,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -21802,7 +21956,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -21810,16 +21964,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 89,
+       "pass": 90,
        "fail": 49,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -21951,6 +22105,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -22653,12 +22813,12 @@
        }
       ]
      },
-     "stdout_sha256": "f05260e26e9c8390cf69e9d349676b7686ab31930a0222b7d054dbe7cdddaa06",
+     "stdout_sha256": "d7a19523b117a6203d5e4e69457fcad2ff739bfe88df01aa7c08723354a92914",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "5ac0062e45926f718a4372f2b22a96a03aadab92bb60dcfa286b97f012f38c6f"
+  "record_sha256": "ec45c923ef9988db9fbf29243e2eee99b0b490af5de5f73d5d653f7f163ec34c"
  },
  "M14": {
   "desc": "D11：只收垂直邊 -> 只收平行邊(along_v 分支)",
@@ -22675,13 +22835,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "c255f1c47e3868de98f6b19e5cd3ba34671df7e4b1ab3d0711c0c03b229f685f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -22704,16 +22864,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -22845,6 +23005,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -23547,7 +23713,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -23555,16 +23721,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 118,
+       "pass": 119,
        "fail": 20,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -23696,6 +23862,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -24398,12 +24570,12 @@
        }
       ]
      },
-     "stdout_sha256": "e1e0f54f8d9094f968582b64b6f95b1c7193b56eb36764e4cd8fa6cea84e9b25",
+     "stdout_sha256": "7c44c6d8661cda8ab25ec58882484d4d1157fe5215acbca56334d73ab4c2ab13",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "b39f9de5c7eab563be7d3da098979cbd1ff753fc9ca8b7ac24bb0ef108464dd7"
+  "record_sha256": "ed6dd77821011c47d0e04313dd7ccd2e86378f63e9edce6cdfba6e49f49b2471"
  },
  "M15": {
   "desc": "D11：角材側面涵蓋範圍用錯軸(u 範圍改成 v 範圍)",
@@ -24420,13 +24592,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "613083fb68232378dad0d7f113e34464d9ee15a2c19b30ce2d1a3f3c53415b7f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -24449,16 +24621,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -24590,6 +24762,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -25292,7 +25470,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -25300,16 +25478,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 90,
+       "pass": 91,
        "fail": 48,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -25441,6 +25619,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -26143,12 +26327,12 @@
        }
       ]
      },
-     "stdout_sha256": "629d026612032eca040d19a9f861a9054e291f965451e5b42de413c653d2fcc6",
+     "stdout_sha256": "98ef5036456aaeb11726e66a7750f9f9696e63f8bad40d12d638680ba9ed91ea",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "a6d4be549bfc8b6cf43730cd512fb0313bdcb6fdf1f779b571bc0980a5995cc4"
+  "record_sha256": "78bb5cbe293ad42fecde4ee3e4ddebbd65ab8a7f7fe36eab7bce6d2caa9b9b9f"
  },
  "M16": {
   "desc": "D11：擋面涵蓋檢查:丟掉 hi 側檢查(半寬也算涵蓋)",
@@ -26161,13 +26345,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "0f0575851812ae0bf8e1eb789f2698dcbc5db2b8a7610892fb14cfd363db8690",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -26190,16 +26374,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -26331,6 +26515,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -27033,7 +27223,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -27041,16 +27231,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -27182,6 +27372,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -27884,12 +28080,12 @@
        }
       ]
      },
-     "stdout_sha256": "dce481fc0af5bac9e46cf00f9c941cb224dd379ee63d9ad65df055fbfae7242e",
+     "stdout_sha256": "9d4dc7f2952abde9f0f20b3ec2c8a927365688df39230c99170856c725a0c576",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "ab9907475afcacf260344eb27389e023a7c00e67aa7cb127c71cc44d9655f11c"
+  "record_sha256": "646515f425aaf83cdc20f33b9f7a633c3899321bd4ccf46bd7011e3105acf1d8"
  },
  "M17": {
   "desc": "D11：擋面涵蓋檢查:邊界相等不算涵蓋(> 改 >=)",
@@ -27906,13 +28102,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "0338932766ba4f87c488178d06bff00bd548c9544a9f510c9015791f7545482f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -27935,16 +28131,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -28076,6 +28272,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -28778,7 +28980,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -28786,16 +28988,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 77,
-       "fail": 61,
+       "fail": 62,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -28929,6 +29131,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6/I5/I6 timber 1: 跨距終點沒有擋面（端面懸空）",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 跨距起點沒有擋面（端面懸空）",
         "oracle": "geometry-output"
        },
        {
@@ -29629,12 +29837,12 @@
        }
       ]
      },
-     "stdout_sha256": "5034142617ede6766e9bf47343a1af6bba9e22f9dc5add95f4b7e35b5c23c6b3",
+     "stdout_sha256": "13e504227d9092196f7cd4cbe0b090307e8d18ac0d6771112200dbbaee8fcf45",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "3de4d3ad4f79ad3ba9ce1849e1b6272a7e9cb5cfd4ed0c5fe4c8fab834872c1e"
+  "record_sha256": "41866704e276c1cc8c12e339919e28905508b7ed6b140097a0c0d19d8bba7f10"
  },
  "M18": {
   "desc": "D11：重驗擋面:FREE 邊也算合法(!= 改 ==)",
@@ -29651,13 +29859,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "f32f48552271af3ea6321e97572a6a24375d5116dd859e731eff1f4fe92226a6",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -29680,16 +29888,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -29821,6 +30029,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -30523,7 +30737,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -30531,16 +30745,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 77,
-       "fail": 61,
+       "fail": 62,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -30674,6 +30888,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6(d)/I6 timber 1: end 1 at 4000 mm, cross [1000,1027], legal stops=0",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6(d)/I6 timber 1: end 1 at 4000 mm, cross [1000,1027], legal stops=0",
         "oracle": "geometry-output"
        },
        {
@@ -31374,12 +31594,12 @@
        }
       ]
      },
-     "stdout_sha256": "3bbb53244075343d49e28c097437e6c298a695bc8998669a143ed899ec4bb6ab",
+     "stdout_sha256": "705221ca613985a5f77c354268802f01bee63ffe9b7d4848b1039a27bf42409d",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "ae545fea3ec193a8b07b95e45904bbdc18aa360b944bc1c658c84422230a65ad"
+  "record_sha256": "0537e7ff94746e58fc61f870299cb8b71b8dd5d9f133bfabdb799545779553f7"
  },
  "M19": {
   "desc": "R6(c)：through 選段:邊界座標不算在區間內(<= 改 <)",
@@ -31392,13 +31612,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "d2585c2dc642cf6f745a09349b9de906f244db7d1c294f7a03db13d801dd0892",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -31421,16 +31641,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -31562,6 +31782,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -32264,7 +32490,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -32272,16 +32498,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -32413,6 +32639,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -33115,12 +33347,12 @@
        }
       ]
      },
-     "stdout_sha256": "a99dcdd486a8d79100907b17acb20504c42f742271f1536751b138fa41c39dbf",
+     "stdout_sha256": "247e1b86e5861d7cfd82b72b528f09ccca53978cc2d976c1c55e577e4537a45b",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "5b8d0f64d38857f73d4b4fb809c8747ed082f9648f05c0d63617c25989f61b83"
+  "record_sha256": "a818c632ec594c94bebdfe5ea1e3797ec90176a748cfc6e05d9cd5da6dfd2fe0"
  },
  "M20": {
   "desc": "R6(d)：拿掉「起點必須有擋面」檢查(懸空端放行)",
@@ -33133,13 +33365,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "d38138c5de0bd3caa2a7a6626dcbc84147d2a51d1527e456141730a79aa424c3",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -33162,16 +33394,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -33303,6 +33535,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -34005,7 +34243,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -34013,16 +34251,16 @@
      "exit_code": 2,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 0,
        "infrastructure": 1
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -34154,6 +34392,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -34856,23 +35100,23 @@
        }
       ]
      },
-     "stdout_sha256": "dadbeb497511a66fe46dad9ea36c724bebc013897bd22865b49115370758b542",
+     "stdout_sha256": "d36dcce2633136c97c6e37274fe8a82319c4f922fa1ed09fcbb136d47cd150c0",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
      "exit_code": 2,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 0,
        "infrastructure": 1
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -35004,6 +35248,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -35706,23 +35956,23 @@
        }
       ]
      },
-     "stdout_sha256": "dadbeb497511a66fe46dad9ea36c724bebc013897bd22865b49115370758b542",
+     "stdout_sha256": "d36dcce2633136c97c6e37274fe8a82319c4f922fa1ed09fcbb136d47cd150c0",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
      "exit_code": 2,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 0,
        "infrastructure": 1
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -35854,6 +36104,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -36556,12 +36812,12 @@
        }
       ]
      },
-     "stdout_sha256": "dadbeb497511a66fe46dad9ea36c724bebc013897bd22865b49115370758b542",
+     "stdout_sha256": "d36dcce2633136c97c6e37274fe8a82319c4f922fa1ed09fcbb136d47cd150c0",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "3c268f11a252ab635cbe99f7f8a30b1dd8900e3dfeef33e3a34a3c11c7516a62"
+  "record_sha256": "5c87b0a2f1aa9b66c7663f960113edeb911ce5e5f254f4f9d7fdfab5db0184cb"
  },
  "M21": {
   "desc": "R6(d)：拿掉「終點必須有擋面」檢查",
@@ -36577,13 +36833,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "4194657a4155d5304184e1a602fc40aceab8c5b8b8aeb282c91e58d8f2d109ff",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -36606,16 +36862,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -36747,6 +37003,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -37449,7 +37711,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -37457,16 +37719,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 134,
+       "pass": 135,
        "fail": 4,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -37598,6 +37860,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -38300,12 +38568,12 @@
        }
       ]
      },
-     "stdout_sha256": "c675eb8543b8c184271cc0297202b7b879fb642166440117ab2fc67ace2f6233",
+     "stdout_sha256": "5cc758c9a9202acdfefc884427070ad8b986b4e94809a2b7badf87432f61d059",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "ebe783c6fc8a0c6635b62f5ad668a9160c0492e7f6a00fef10e6b104cc7dfc77"
+  "record_sha256": "9acc7cdd58efbb3f1bc7736e87568287525a22dd63ef585cf7df0e075d7aa2b4"
  },
  "M22": {
   "desc": "R6(d)：拿掉 FREE 擋面拒絕",
@@ -38320,13 +38588,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "391ffab2fa68e7087053cf782f2a3f2d01373b682d170d5067a2e7dc2c2e2f46",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -38349,16 +38617,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -38490,6 +38758,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -39192,7 +39466,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -39200,16 +39474,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 135,
+       "pass": 136,
        "fail": 3,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -39341,6 +39615,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -40043,12 +40323,12 @@
        }
       ]
      },
-     "stdout_sha256": "5e359193dfd651bf9c21794515ecc77a49c267847d67322145bd8273f6524780",
+     "stdout_sha256": "a37699bd630ff17646fa2ebcc90897012d79c70ca773d345ad72fe931dc972a3",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "d6703fb9d88fdbe15b32098f239452cdd8fcf19bf01f9d2fc6b2cf060de30620"
+  "record_sha256": "e5cdfe66aa81a3d92e3c6bae85d2b16d35e93815b62ad3d7fcf146153e383073"
  },
  "M23": {
   "desc": "R6(d)：擋面歧義放行(hits>1 不拒絕)",
@@ -40058,13 +40338,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "a5db3dc3a3c6dbfe7500081d9ebfdc9acc68f2473206ad06c18e347a88faa113",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -40087,16 +40367,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -40228,6 +40508,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -40930,7 +41216,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -40938,16 +41224,16 @@
      "exit_code": 0,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 138,
+       "pass": 139,
        "fail": 0,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -41079,6 +41365,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -41781,12 +42073,12 @@
        }
       ]
      },
-     "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+     "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "57f5b330e29ce3ba14147a057726cc1ef8c454f73fcd75fb1aafeb49e3bd4c42"
+  "record_sha256": "2466d7034f64241d85b13b132b8f51afadc39e5f2e6b6a46f44bd7ced4ff2dea"
  },
  "M24": {
   "desc": "R6(c)：at-edge 接觸範圍:端點相接也算重疊(< 改 <=)",
@@ -41799,13 +42091,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "552a00013ac33518a2cbf0e54295b2b1193a932131d4cdb5ba017155b8fb88e1",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -41828,16 +42120,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -41969,6 +42261,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -42671,7 +42969,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -42679,16 +42977,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -42820,6 +43118,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -43522,12 +43826,12 @@
        }
       ]
      },
-     "stdout_sha256": "4b09d96d892ec55b760bf769e29bf2a906d30118d8111d43d2f94e34fa247042",
+     "stdout_sha256": "d68dbd76192511c8f9ec8bb53694d783ae9e783295038fb2d8478d20e330a41e",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "8e0ce8871a2048b443c054275a1505b0e6c71ea08ec7b0303311f2d4d6e76978"
+  "record_sha256": "7df1e8ee30f0235c229993e792024509fe8a3910965175829ccb800d04b95307"
  },
  "M25": {
   "desc": "R6(c)：跨距歧義放行:多區間自動選第一段",
@@ -43540,13 +43844,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "a3fa516cd72d8c23928914238d8ba22b93ce7ba07b84aa7ae0c48e1960f401fb",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -43569,16 +43873,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -43710,6 +44014,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -44412,7 +44722,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -44420,16 +44730,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -44561,6 +44871,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -45263,12 +45579,12 @@
        }
       ]
      },
-     "stdout_sha256": "67bd9f1ea49aa050b9386ff7f194e0bceeee84a3f98ef633580a332103054550",
+     "stdout_sha256": "ff0efc90f95d6ca9dbd3b792554cfcab0795ad7012f9029930178361d85da350",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "f1954d4ad3c4cf27ca9f5bc25d9f86f74235adc3eadcb49193566655cf30ca3a"
+  "record_sha256": "db2a7546b68f779d449414ac79be8afe03ef98ed28bddd930ba5c5c99313b381"
  },
  "M26": {
   "desc": "I13：錨角選錯邊(min/max 對調)",
@@ -45285,13 +45601,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "57f74daed563f3e2f594141f746261c7e6cedc86244e1a7a7fd339f38487642d",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -45314,16 +45630,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -45455,6 +45771,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -46157,7 +46479,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -46165,16 +46487,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 77,
-       "fail": 61,
+       "fail": 62,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -46308,6 +46630,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6/I5/I6 timber 1: I5/I6 footprint outside effective region or FREE edge",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: I5/I6 footprint outside effective region or FREE edge",
         "oracle": "geometry-output"
        },
        {
@@ -47008,12 +47336,12 @@
        }
       ]
      },
-     "stdout_sha256": "54c03f2a1767790d8f3e30b6d74b8792b8b5a14feeb333c17573c30d3f8876d2",
+     "stdout_sha256": "379bc2b9d42c9b5b53050653ed186f3938e29f28b2ba8701840b12cf53cc8710",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "0e67eea18370a0545407cb83d0a89ba5101f759ffdd8e4d057f0abfdc7175406"
+  "record_sha256": "107919d5666d7e2e34dc94b7a19ac5bed706a2ba9a5e1f38599b923905c21fa1"
  },
  "M27": {
   "desc": "深度側反轉:角材往面下長",
@@ -47030,13 +47358,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "714be2601168637ab8f8a51b304a098aea567df9ccff4429ee2288e4244ca86d",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -47059,16 +47387,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -47200,6 +47528,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -47902,7 +48236,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -47910,16 +48244,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 78,
-       "fail": 60,
+       "fail": 61,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -48053,6 +48387,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6(d)/I6 timber 1: end 1 at 4000 mm, cross [973,1000], legal stops=0",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6(d)/I6 timber 1: end 1 at 4000 mm, cross [973,1000], legal stops=0",
         "oracle": "geometry-output"
        },
        {
@@ -48753,12 +49093,12 @@
        }
       ]
      },
-     "stdout_sha256": "617e5bfa54c72887a408add67daf455850595a3e42a696ddf5abf507164e76ab",
+     "stdout_sha256": "115c477e7de36c72000084c3256755750ee0868aa3c535a09ef0f6e60b6f4971",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "561e8996f36dd332b639099359ea20f2fad8f5e13a7f9fe1a6086f6d44dc8345"
+  "record_sha256": "a792871f0fc12ca7af18f70501849108e18a564a1b797bb40bb3db4a52ae57ce"
  },
  "M28": {
   "desc": "I13：奇數寬多的 1mm 改放 -cross 側",
@@ -48774,13 +49114,13 @@
   "source_file": "geometry-core/references.inc",
   "source_sha256": "064fefb87b5a5da4d8cd145f4dac109bf0958ddd830d7305b32f80f19e9ff686",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "5f7c13c50d40ae599b5d951c9e9d720e4e16f6f845f349b37c558927fb753553",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -48803,16 +49143,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -48944,6 +49284,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -49646,7 +49992,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -49654,16 +50000,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 134,
+       "pass": 135,
        "fail": 4,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -49795,6 +50141,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -50497,12 +50849,12 @@
        }
       ]
      },
-     "stdout_sha256": "02db852b509df26d6f1ad6e27ac23ca55ca8a8b81922b8704f5ec267095ba2e3",
+     "stdout_sha256": "500464974072c6bfd62c0fcfed5b53883f49d10b0a7409d6f791984772dc60d5",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "3dc3c51b789171afe7ca7e7afb2076a18f1a1cc00087c05d5d3efb717607084b"
+  "record_sha256": "c6c8140c76cd1cc5f6f39bd84566e15fb9ba438412c6b0f0265ea3b45372e2d1"
  },
  "M29": {
   "desc": "I13：外輪廓材料側反轉(footprint 長到面外)",
@@ -50519,13 +50871,13 @@
   "source_file": "geometry-core/references.inc",
   "source_sha256": "064fefb87b5a5da4d8cd145f4dac109bf0958ddd830d7305b32f80f19e9ff686",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "7fab8731da7c92363f2eb752f4e5f4b860888e0f7e398ce10e5b47faa12a9513",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -50548,16 +50900,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -50689,6 +51041,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -51391,7 +51749,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -51399,16 +51757,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 126,
+       "pass": 127,
        "fail": 12,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -51540,6 +51898,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -52242,12 +52606,12 @@
        }
       ]
      },
-     "stdout_sha256": "7a10f0eec4c71bd378341b0804f8b48849fecf362ffb4342641e90ad61d85738",
+     "stdout_sha256": "31091d5ee2556e449ebef61a7477169bc36a72131f4ed9ec3c524dfdf7cbfcbc",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "24e61fc91c03ee41868456172b8160f55861571750479f25156e7e1864cf831a"
+  "record_sha256": "9a91ddb47b7f9a3e3756288832ddcb4045de2df1cc0ad6b90eb02cbe74add7d4"
  },
  "M30": {
   "desc": "I13：孔邊材料側反轉(footprint 長進孔裡)",
@@ -52262,13 +52626,13 @@
   "source_file": "geometry-core/references.inc",
   "source_sha256": "064fefb87b5a5da4d8cd145f4dac109bf0958ddd830d7305b32f80f19e9ff686",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "6d414bf99d9c896277686ca029109b9d69bfc1df088639d90fe6b7b86e433ae7",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -52291,16 +52655,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -52432,6 +52796,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -53134,7 +53504,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -53142,16 +53512,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 135,
+       "pass": 136,
        "fail": 3,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -53283,6 +53653,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -53985,12 +54361,12 @@
        }
       ]
      },
-     "stdout_sha256": "685747ae9c51c366e708d60afa23517b07d8b703548eec8bed07be81a116a980",
+     "stdout_sha256": "7f720bfe3cf7392b976ceab568ec12baad6cdc6761fe285bac67fe2e78db2c4a",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "d89a3c4f8ac1f063f291960a8314632ace02b85aef32d2b3d05e55cc598c431a"
+  "record_sha256": "c08d476691d826b6b788266a6930855b507117fc276ed634877869886acc5a7b"
  },
  "M31": {
   "desc": "I10：格線座標遞增改非嚴格(<= 改 <)",
@@ -54003,13 +54379,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "ce9a7c2cc5c09f1715231e63a643f61061cfe6b919428cdae0cb14104bd574dc",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -54032,16 +54408,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -54173,6 +54549,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -54875,7 +55257,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -54883,16 +55265,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -55024,6 +55406,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -55726,12 +56114,12 @@
        }
       ]
      },
-     "stdout_sha256": "4459aab33f26b7af69f5b06afd4cd3ae983827ea45592950f80fd232c14679b5",
+     "stdout_sha256": "1e721292f8c47bc2530b9b8502dd85f00628cae4b3436972827b769cb79c8a10",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "c26b2ebc7fb15fe908e295d228510a672849712baba380f59dd28c73478fe25e"
+  "record_sha256": "c2fd4135123b3876caeb8314da04c635466d4696742d322675530210af65b48f"
  },
  "M32": {
   "desc": "I10：格線座標上下界改成嚴格(壓邊界的格線拒絕)",
@@ -55744,13 +56132,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "8eafea1fdf987abd8fa473f45cea58c2917f8ac7ce747f11feec6b2e074f90c6",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -55773,16 +56161,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -55914,6 +56302,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -56616,7 +57010,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -56624,16 +57018,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -56765,6 +57159,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -57467,12 +57867,12 @@
        }
       ]
      },
-     "stdout_sha256": "172b46cd61cde98d788c247dd6598a484e8fb67bc89a319979b896e4c4234858",
+     "stdout_sha256": "240c6a06ca5a5340fdfee2a34c21dcae0ab6f92bd4fb3af62500cdff1d3cecd1",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "753bfc02245ec28902cf7213b93a8d6ada2f41f955d53eeb55e6bf4fa0f639a8"
+  "record_sha256": "97986883fd785e562879a635ebabfb85c1c4e442269d2cedfd150800bc004284"
  },
  "M33": {
   "desc": "I13：at-grid 軸向守門員反轉",
@@ -57489,13 +57889,13 @@
   "source_file": "geometry-core/references.inc",
   "source_sha256": "064fefb87b5a5da4d8cd145f4dac109bf0958ddd830d7305b32f80f19e9ff686",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "d8e4aa2a96774117b6fdb7a25e7b0c1288651bb3bd2782f4134b75a98109c973",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -57518,16 +57918,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -57659,6 +58059,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -58361,7 +58767,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -58369,16 +58775,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 95,
+       "pass": 96,
        "fail": 43,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -58510,6 +58916,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -59212,12 +59624,12 @@
        }
       ]
      },
-     "stdout_sha256": "fe58c4d8ea4bce51dc521535d80de7e6a788a38ad9400daf281040bfe0e32fba",
+     "stdout_sha256": "1d32fb3344532e37bea018bb03318c1bef20e5cca7b9df563276080fd4610d89",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "f557272de33711d8e3521f39066e047afc06b49415b25f1d66ef02e18aaddad9"
+  "record_sha256": "13330c3a55eddc506d39d21d877ed57a81117e5624d557d3ae2e884ebee36ffe"
  },
  "M34": {
   "desc": "I13：at-edge 平行守門員反轉",
@@ -59234,13 +59646,13 @@
   "source_file": "geometry-core/references.inc",
   "source_sha256": "064fefb87b5a5da4d8cd145f4dac109bf0958ddd830d7305b32f80f19e9ff686",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "4b721b9afbbdf8d63b78b375158891292614d093407b921f60e62695e93f0e9f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -59263,16 +59675,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -59404,6 +59816,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -60106,7 +60524,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -60114,16 +60532,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 73,
-       "fail": 65,
+       "fail": 66,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -60257,6 +60675,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: I13 timber 1: at-face 邊必須平行於長度軸",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: I13 timber 1: at-face 邊必須平行於長度軸",
         "oracle": "geometry-output"
        },
        {
@@ -60957,12 +61381,12 @@
        }
       ]
      },
-     "stdout_sha256": "ed96c4e78dff51a41c32bc5d9f186ef2bf56e14800701abda87d83a3734c42e6",
+     "stdout_sha256": "f63ef56e96a1abff4b7614ae3ae6a327b8195025bdc703c76c86f9c9e2fd40c7",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "a10edb5ff5b9f2c9ecd59902c0f6f0ac7bdbe30bcba56ba1c77aebdad14a06f5"
+  "record_sha256": "f22efc7aedb895203da610dce0e0ff0cea775d9cd804a21bafa3cd590ca8e925"
  },
  "M35": {
   "desc": "明寫長度允許 L=0(<= 改 <)",
@@ -60981,13 +61405,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "4d479111f4a39b8bac332d9011211ee8ecbe9cc8421b9bbdbbc5d091b8a4f241",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -61010,16 +61434,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -61151,6 +61575,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -61853,7 +62283,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -61861,16 +62291,16 @@
      "exit_code": 0,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 138,
+       "pass": 139,
        "fail": 0,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -62002,6 +62432,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -62704,12 +63140,12 @@
        }
       ]
      },
-     "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+     "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "58d8b458152990f4fb708551551baf043fd0fef20ba1fa8212e067dc1f39a5e9"
+  "record_sha256": "151b14cb729f6c6c399804739876f61652be4a696d41aa06ce2abeb8d0c6330f"
  },
  "M37": {
   "desc": "I11：碰撞兩兩檢查變成自己也算(j=i+1 改 j=i)",
@@ -62726,13 +63162,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "9058138d4bb0af2308a222c655d92d19f934d6b33819e9e3c366200d96deff51",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -62755,16 +63191,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -62896,6 +63332,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -63598,7 +64040,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -63606,16 +64048,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 76,
-       "fail": 62,
+       "fail": 63,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -63749,6 +64191,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: 場景重驗失敗",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: 場景重驗失敗",
         "oracle": "geometry-output"
        },
        {
@@ -64449,12 +64897,12 @@
        }
       ]
      },
-     "stdout_sha256": "8b83da02d26197cdd6f19b5353619c45cd0ffd02ac606cc1cb19625a2d7d428a",
+     "stdout_sha256": "74fd07d7c571e9551ec31064821ef628337f8b271d9ac7c78446354f3b4195a4",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "9794101cd29b59d6e9b51bff847e03cf1e3e8bfc0f8a01a59907c13a974ce479"
+  "record_sha256": "26cd0a8c9f0e84901bfcb28bd86c670c4f11617c17427850cf638d5b974c4c62"
  },
  "M38": {
   "desc": "I13：at-edge 邊參照:孔索引 <0 也放行(hole<0 檢查拿掉)",
@@ -64467,13 +64915,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "dc85a69c25e55c9b4b3a76c35d69bb42d6d6dcc69c94fc4f8b0ef44eea8c6632",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -64496,16 +64944,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -64637,6 +65085,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -65339,7 +65793,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -65347,16 +65801,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -65488,6 +65942,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -66190,12 +66650,12 @@
        }
       ]
      },
-     "stdout_sha256": "8ffbcd5b0f9a69432d02627340f3dddcd83aa34c352f492ab26d10a48bc7119a",
+     "stdout_sha256": "d3c65142d7cf7e593e8db149111d412f9481fee8cab18c885f189612d75693f9",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "a36fb9bf86fb997d33274c79c6c0f315666db2f7675f043b901d2ec41f01ec40"
+  "record_sha256": "c0e237095bd949754903411941e7408089def693c705801cd2d5d8f7616a035b"
  },
  "M39": {
   "desc": "R6(a)：切點去重用 < 不去重(零長 cell 出現)",
@@ -66212,13 +66672,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "d61046c10861234fa589b5b3fad934fb0d3c654d3e405e92e7b1bc13da2cb14a",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -66241,16 +66701,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -66382,6 +66842,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -67084,7 +67550,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -67092,16 +67558,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
        "pass": 65,
-       "fail": 73,
+       "fail": 74,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -67235,6 +67701,12 @@
         "scene": "_edge_concave.scene",
         "status": "fail",
         "detail": "FAIL 應接受但拒絕: <repo>/_edge_concave.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
+        "status": "fail",
+        "detail": "FAIL 應接受但拒絕: <repo>/_ax_i5_collinear_vertex_rect_corner.scene:7: R6/I5/I6 timber 1: 中線上沒有任何合法跨距",
         "oracle": "geometry-output"
        },
        {
@@ -67935,12 +68407,12 @@
        }
       ]
      },
-     "stdout_sha256": "2742b9076c6577b7e6431d6ae180d3952625db30f7d7665e8aece314e6605d15",
+     "stdout_sha256": "339c4ea1cba0f88d95f81336de905499b1214adc339ef1849ba7a9cdb1d4bf0f",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "f0019e00f69cda840eb542e5fa784dafc484f9da9100b3ea9ec213b3964835f1"
+  "record_sha256": "fc0a6d33a40f6e54d38444db662464055b1fd518380d9268e81c0f673f6e2879"
  },
  "M40": {
   "desc": "R6(b)：有效 cell 判定拿掉碰撞(只查包含)",
@@ -67957,13 +68429,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "b5a24e8846793126d6b86adfbad2dcf569a910731a50725e67bc8a4d0f0e62cf",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -67986,16 +68458,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -68127,6 +68599,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -68829,7 +69307,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -68837,16 +69315,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 89,
+       "pass": 90,
        "fail": 49,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -68978,6 +69456,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -69680,12 +70164,12 @@
        }
       ]
      },
-     "stdout_sha256": "f05260e26e9c8390cf69e9d349676b7686ab31930a0222b7d054dbe7cdddaa06",
+     "stdout_sha256": "d7a19523b117a6203d5e4e69457fcad2ff739bfe88df01aa7c08723354a92914",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "467a7447907794e75d3e5c3040277b310ff6b8830bf2186319baf0ece42c4a04"
+  "record_sha256": "9e6eac42dc13254cbeaccecff1023409a59f206128f6fda75657af39af7a8149"
  },
  "M51": {
   "desc": "I23：I23(a) 拿掉座標比對(移動已錨定的線也放行)",
@@ -69708,13 +70192,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "bafed119bde6b640d9253b8520492be45516586cb0c56c21175dc0590475e2b0",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -69737,16 +70221,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -69878,6 +70362,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -70580,7 +71070,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -70588,16 +71078,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 136,
+       "pass": 137,
        "fail": 2,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -70729,6 +71219,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -71431,12 +71927,12 @@
        }
       ]
      },
-     "stdout_sha256": "67585d9949e6b15c8e56dd8f6b26ba0d6df97d988c8f85088b75655911bbbca9",
+     "stdout_sha256": "7995f0cf24a62dcdb40956f2918952e5f4ee7cd6b83ee5a1c000048c4334fa9a",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "43486981302b267cf788a5c71b32152748bd470e76b824a5f53bce4023fca897"
+  "record_sha256": "b090e99a61a355aeebe0c13efca92da57b809e7e8de971eeec2bab7d75b1ca4f"
  },
  "M53": {
   "desc": "D10a：縫中心線改成縫起點(少加 gap/2)",
@@ -71450,13 +71946,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "598d2c41c25cafa8705492f9ea07cf0956e34f5aea90697a556dfc79b968d501",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -71479,16 +71975,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -71620,6 +72116,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -72322,7 +72824,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -72330,16 +72832,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 136,
+       "pass": 137,
        "fail": 2,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -72471,6 +72973,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -73173,12 +73681,12 @@
        }
       ]
      },
-     "stdout_sha256": "e2d718cb135c3a9eb0d9e59d87f948a212089a2625224e7bd3a44ea3b51ed8c0",
+     "stdout_sha256": "99dfa3e9fa0ebc8b2de4385a41831f9fa01e392f32b821eb5b8a6fbdc1b61a76",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "50b2c81cc1d3f39a9200a8f0cd4afb30e2f9be4b408c5cb7ccfda8524f2c296d"
+  "record_sha256": "7fdab087cc8418c85c325bc3d84f2ee10cb7a238da4f5f0bece636c551892c80"
  },
  "M54": {
   "desc": "D10a：產生條件由嚴格小於放寬成小於等於(多出尾端一條)",
@@ -73191,13 +73699,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "35dd01741c9cef7c529bf016d1682aa93a76f0ae883857537e894e35203215c3",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -73220,16 +73728,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -73361,6 +73869,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -74063,7 +74577,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -74071,16 +74585,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 137,
+       "pass": 138,
        "fail": 1,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -74212,6 +74726,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -74914,12 +75434,12 @@
        }
       ]
      },
-     "stdout_sha256": "02e6e4393b24e40a52244df88a8ea0053045aac07e2003dc9c1cea93cf2223ca",
+     "stdout_sha256": "e1edfa57291d3ac9e454e1e864fc03d1cb07207d57a6127fa076f93a99d3759a",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "73e9af73664a0ad934aa0c0f127f4728db7961e7db8bf69bf8b43e7c66fd55ec"
+  "record_sha256": "47d512a19842e5914a36ab48f6e37f85ad111bf253f5874abc4905b2bcaa2d38"
  },
  "M55": {
   "desc": "D10a：縫寬奇數不再拒絕(改成只擋負數)",
@@ -74933,18 +75453,18 @@
  "M56": {
   "desc": "I23：I23(b) 不再檢查被錨定的索引是否仍推導得出",
   "verdict": "equivalent",
-  "why": "等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/boundary/axis/index/has_band/band),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
+  "why": "等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
   "date": "2026-10-04",
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "570f1fc9fd9005c2595998fd62bdf6f916e4104f6055487b5b95f5a051baba92",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -74967,16 +75487,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -75108,6 +75628,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -75810,7 +76336,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -75818,16 +76344,16 @@
      "exit_code": 0,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 138,
+       "pass": 139,
        "fail": 0,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -75959,6 +76485,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -76661,12 +77193,12 @@
        }
       ]
      },
-     "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+     "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "3b57c4be4b7c5bf395f0a424a41b32e7d56ff1310b1541b92d789fc3f11a8710"
+  "record_sha256": "3b5e975c3725796947d2b5e989c116053e39a0ae6290a6a10f2b8751addf3d26"
  },
  "M57": {
   "desc": "R21：between 的 FREE 邊檢查反轉(明寫就放行自由邊)",
@@ -76683,13 +77215,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "2f04e96bc4e06187cebc8bbdb836fb34c9a04d12fbcf4a49177c44409b61f8b0",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -76712,16 +77244,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -76853,6 +77385,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -77555,7 +78093,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -77563,16 +78101,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 130,
+       "pass": 131,
        "fail": 8,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -77704,6 +78242,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -78406,12 +78950,12 @@
        }
       ]
      },
-     "stdout_sha256": "e5a04a8c1ead4ef489e7f514e31cb33cf70cd3b3914b2493b8fd735c5c06c352",
+     "stdout_sha256": "a63d6f8e364e106d3586da2364444257d03f85aa8d000bbefbc9d1f017a502ad",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "222a67eec2dd464388638c7b4b261903826406b68e119eb947540d38a893420a"
+  "record_sha256": "606f6c2adfa19488ea03f28cb7f4c54a6efafa6360db877685806bb12785f075"
  },
  "M58": {
   "desc": "R21：between 不再要求跨距落在合法區間內(可穿過實體)",
@@ -78428,13 +78972,13 @@
   "source_file": "current_geometry.c",
   "source_sha256": "5a0d8f90f1240905cd7316b19e9326810a8629ee3d547bb685232efa5df80ebb",
   "closure_sha256": "af3170a0f91504cfa439979c37dfaf36d3c94e5ac91948645845bb34ca7a8625",
-  "oracle_sha256": "1a16245c25593375de967ae9fc9a7bf6caebbf63f6332553f3b58fbac112b729",
+  "oracle_sha256": "eb5a850003998f3e2a5ca67dbbe56dc3d15038c0f19205bba36311c92fad3f63",
   "mutant_sha256": "4bbc7542d27c74057498ad0440beb3905da2ed0d2228e0de8101b8fd9ed95b4f",
   "execution": {
    "schema": "geometry-mutation-execution/1",
-   "head": "7a00afba319236a8c880b31f4323e4ad82c58ec5",
+   "head": "1c501cc52d1e81f06ea28a9850cfda9e0f8de176",
    "platform": "posix",
-   "tool_sha256": "839e008c20b720f7bd878a4532ce27cd3bd2211a9f53b710417322c131625ff0",
+   "tool_sha256": "25b6f6841655b71e22a3eb078dbcda016b4c5885bcd35b821a7b085338599a9d",
    "compile_exit_code": 0,
    "compile_sha256": "38f058ea0801edc120a8f48c296e92c4fb835b6ff3dd6d7db8b266a1b1c2873c",
    "compile_command": [
@@ -78457,16 +79001,16 @@
     "exit_code": 0,
     "result": {
      "schema": "geometry-native-tests/1",
-     "total": 138,
+     "total": 139,
      "counts": {
-      "pass": 138,
+      "pass": 139,
       "fail": 0,
       "infrastructure": 0
      },
      "oracle_counts": {
       "acceptance-and-absence": 1,
       "acceptance-only": 8,
-      "geometry-output": 49,
+      "geometry-output": 50,
       "rejection-diagnostic": 80
      },
      "cases": [
@@ -78598,6 +79142,12 @@
       },
       {
        "scene": "_edge_concave.scene",
+       "status": "pass",
+       "detail": "ok",
+       "oracle": "geometry-output"
+      },
+      {
+       "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
        "status": "pass",
        "detail": "ok",
        "oracle": "geometry-output"
@@ -79300,7 +79850,7 @@
       }
      ]
     },
-    "stdout_sha256": "22019ef730085de886bb545684fa61da887c6dfab96b84e0ac77ae3cfff488d1",
+    "stdout_sha256": "9901899767cc57b414878dd397009c42389d7006cd1f37109a03df190bf89ba1",
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
    },
    "attempts": [
@@ -79308,16 +79858,16 @@
      "exit_code": 1,
      "result": {
       "schema": "geometry-native-tests/1",
-      "total": 138,
+      "total": 139,
       "counts": {
-       "pass": 131,
+       "pass": 132,
        "fail": 7,
        "infrastructure": 0
       },
       "oracle_counts": {
        "acceptance-and-absence": 1,
        "acceptance-only": 8,
-       "geometry-output": 49,
+       "geometry-output": 50,
        "rejection-diagnostic": 80
       },
       "cases": [
@@ -79449,6 +79999,12 @@
        },
        {
         "scene": "_edge_concave.scene",
+        "status": "pass",
+        "detail": "ok",
+        "oracle": "geometry-output"
+       },
+       {
+        "scene": "_ax_i5_collinear_vertex_rect_corner.scene",
         "status": "pass",
         "detail": "ok",
         "oracle": "geometry-output"
@@ -80151,11 +80707,11 @@
        }
       ]
      },
-     "stdout_sha256": "6425fa736f42b71f1dc293925d865b1bcd176b7d5a4a7f1ee6fe6884a1b0fb36",
+     "stdout_sha256": "c73bdc5856450f612cf5dde783016fc0216b25232f5ccfd19fb86b1ee4ac2c52",
      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
    ]
   },
-  "record_sha256": "48d18aedb874c2a4b5d542571b59e9bc24c115566b183c8bfe43feab6c68f67c"
+  "record_sha256": "79d76f55a98adf0c50bf0aa1712b7def3de703ee44c7449c3cf8e47de5bfcc40"
  }
 }

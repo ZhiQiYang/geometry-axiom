@@ -82,17 +82,13 @@ run 途中改變。所有 byte fixtures 的 launch 都 mocked。既有 113 selft
 對 frozen d620b36，改寫 legacy killed 的 why/killed_by 且沒有 execution receipt，
 old check exit0；修復後 exit1。沒有执行 binary。
 
-本輪 mutation 實際 execution head：`7a00afba319236a8c880b31f4323e4ad82c58ec5`。
-stack 65536，`MUTATE_CACHE=/tmp/geometry-tests/issue85-f65d0b0-mutants python tests/mutate.py`
-完整 48 項 exit0：39 killed／1 crashed（M20 同一夾具連續三次 SIGSEGV）／5 equivalent／
-3 原有 retired；0 survived／invalid／stale／blocked。baseline 138/138；全部 45 raw
-binary hash 與 sidecar、execution receipt 相同。五個 equivalent 的完整 structured result
-及 raw stdout hash 與本輪 baseline 全等，僅為上述推理的輔助證據。
-
-首輪 cache 建置期間工具仍補強，該 preliminary 彙總 stale／exit1，沒有當作 final green；
-工具凍結後全量重跑所有 oracle，沒有借用首輪判決。結果內 head 是實際 oracle 執行的
-commit；之後 results／floor／review 文件 commit 與 main 整合沒有修改 mutation tool、
-核心 include 閉包或 run_tests oracle，這些 exact hash 由 check 核對。
+前次 7a00afb 的 39 killed／1 crashed／5 equivalent 與 138/138 場景結果已被
+獨立審查的 M01 反例否定為完整判據；其舊 proof 與交付綠燈不能證明 M01 equivalent。
+新增有效邊界回歸後，以工具／oracle 凍結的 head `1c501cc52d1e81f06ea28a9850cfda9e0f8de176`
+重新取得所有 45 支的判決：exit0，40 killed／1 crashed／4 equivalent／3 原有 retired；
+0 survived／invalid／stale／blocked，baseline 139/139。M01 的 killed_by 是新場景。
+全部 raw binary hash 與 sidecar、receipt 一致；四項 equivalent 的完整 result／stdout hash
+與 baseline 相同。其有限比較只支持前述幾何／呼叫鏈推理。
 
 修復 candidate 在 d620b36 基底的完整 census：56 suites、1652 discovered／1651 pass／
 0 fail／1 既定 GDI skip，exit0。只新增 py:test_mutation_freshness=24 與 mutation:check
@@ -100,7 +96,13 @@ exit-code-only，既有 floors 全部逐項相同。其後 main `28bac889f53c99f
 合併他人 PR95，reader floor 32→41；已整合，未競寫 reader，最終整合 head 的 ordinary
 strict 結果與 exact head 在交付 PR 正文回填。既有 113 selftests 與新增 24 tests 均通過。
 
-只讀 strict check 30 次 warm 中位數 135.168ms、p95 149.954ms；45 支 fresh mutant
+獨立修復首輪 full census 發現五項 reader 冪等失敗，未當作綠燈或更新 floor 的依據。
+原因是新 M01 killer 改變衍生見證清單。按 AGENTS 的正典追溯同步契約重建唯一 HTML；
+TEMP 差分驗證只增加三處 `<code>` 場景名稱（165 bytes），移除這三個 token 後與舊
+HTML 完全相同，沒有版面／互動／補丁改動。sync rebuild／check 通過；reader=41
+保留，後續 full gate 再驗冪等。main PR96 已合併為 `1c83b5e`，沿用它的 Node floor=294。
+
+只讀 strict check 30 次 warm 中位數 137.845ms、p95 153.221ms；45 支 fresh mutant
 沿用，compiler／oracle／sidecar writes=0，artifact bytes／mtime 不變。這是單機 warm
 量測，沒有跨平台性能聲明。實際 M02 TEMP native 副本 same-size/mtime 改 byte：old
 check exit0、fixed exit1；source/result 及重算 checksum 後仍矛盾的 receipt 亦 exit1。
@@ -113,13 +115,13 @@ control exit0，損壞副本從未執行。
 
 | ID | 開工問題 | 現版結果 | anchor file/count | 具體 oracle／理由 |
 |---|---|---|---|---|
-| M01 | stale source/closure | equivalent | current_geometry.c / 1 | same output; proof above |
-| M02 | stale source/closure | killed | current_geometry.c / 1 | _test_lshape.scene, _role_priority_ext_primary.scene, _role_ext_stop_primary.scene |
+| M01 | stale source/closure | killed | current_geometry.c / 1 | _ax_i5_collinear_vertex_rect_corner.scene |
+| M02 | stale source/closure | killed | current_geometry.c / 1 | _test_lshape.scene, _ax_i5_collinear_vertex_rect_corner.scene, _role_priority_ext_primary.scene, _role_ext_stop_primary.scene |
 | M03 | stale source/closure | killed | current_geometry.c / 1 | _wit_d30_infinite_grid_binding.scene, _wit_d29_grid_system.scene, subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene |
 | M04 | stale source/closure | killed | current_geometry.c / 1 | _wit_d30_infinite_grid_binding.scene, _wit_d29_grid_system.scene, subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene |
 | M05 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
 | M06 | stale source/closure | killed | current_geometry.c / 1 | subgrid-local.scene, ceiling-a.scene, demo-two-timbers.scene, room_a.scene, room_box.scene |
-| M07 | stale source/closure | killed | current_geometry.c / 1 | _test_lshape.scene, _edge_concave.scene, _role_priority_mutant.scene, _role_priority_ext_custom.scene, _role_ext_stop_primary.scene |
+| M07 | stale source/closure | killed | current_geometry.c / 1 | _test_lshape.scene, _edge_concave.scene, _ax_i5_collinear_vertex_rect_corner.scene, _role_priority_mutant.scene, _role_priority_ext_custom.scene |
 | M08 | stale source/closure | killed | current_geometry.c / 1 | _role_cover_short.scene |
 | M09 | stale source/closure | equivalent | current_geometry.c / 1 | same output; proof above |
 | M10 | stale source/closure | killed | current_geometry.c / 1 | _ax_i5_hole_vertex_touches_rect_edge.scene |
