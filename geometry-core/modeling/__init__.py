@@ -15,8 +15,11 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "cc6adff4c9c783ce78bcbd849754b69254690cab"
-AXIOM_SHA256 = "d5eb43d077e7408fb032ee09f552795215fbf5fb7b097b57f7ac7ef6f2ed08f7"
+AXIOM_REVISION = "73b9ba1d417c1b6c9885951b24139b67f8550312"
+AXIOM_SHA256 = "d4bd69cd3dcbcef10802dd401a66b293afdaa09abccc6853d7a39f478cefe29a"
+PRE_SUBDIVISION_AXIOM_VERSIONS = frozenset({
+    ("cc6adff4c9c783ce78bcbd849754b69254690cab", "d5eb43d077e7408fb032ee09f552795215fbf5fb7b097b57f7ac7ef6f2ed08f7"),
+})
 PRE_GENERATION_AXIOM_VERSIONS = frozenset({
     ("ccbec5fe9e4b056bcd5673fb9f69a54e888ea4e6", "264d8c5d2fa4e513418fbd611f2ef6f8d597def51d89805a75e9e21d0d24e8fe"),
 })
@@ -160,19 +163,21 @@ def verify_package(package, *, max_cells=200000, base_executable=None):
     supplied_version = (manifest["axiom_revision"], manifest["axiom_sha256"])
     if not all(type(part) is str for part in supplied_version) or supplied_version not in {
             current_version, *LEGACY_AXIOM_VERSIONS, *ENGINEERING_AXIOM_VERSIONS,
-            *FINITE_GRID_AXIOM_VERSIONS, *INFINITE_GRID_AXIOM_VERSIONS, *PARAMETER_AXIOM_VERSIONS, *PRE_GENERATION_AXIOM_VERSIONS}:
+            *FINITE_GRID_AXIOM_VERSIONS, *INFINITE_GRID_AXIOM_VERSIONS, *PARAMETER_AXIOM_VERSIONS, *PRE_GENERATION_AXIOM_VERSIONS, *PRE_SUBDIVISION_AXIOM_VERSIONS}:
         raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "This executor does not implement the supplied axiom revision")
     if supplied_version != current_version:
         definitions = package["definitions"]
         if (not isinstance(definitions, dict) or type(definitions.get("base_scene")) is not str):
             raise ModelError("INVALID", "PACKAGE_SCHEMA", "D25", "Expected complete source definitions")
-        if supplied_version not in PRE_GENERATION_AXIOM_VERSIONS and _scene_uses_stagger(definitions["base_scene"]):
+        if "grid-subdivision-rules/1" in scene_required_capabilities(definitions["base_scene"]):
+            raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Source subdivision requires its adopted axiom revision")
+        if supplied_version not in PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS and _scene_uses_stagger(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Stagger sources and band anchors require the stagger axiom revision")
-        if supplied_version not in PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS and (PARAMETER_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or PARAMETER_CAPABILITY in manifest["capabilities"]):
+        if supplied_version not in PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS and (PARAMETER_CAPABILITY in scene_required_capabilities(definitions["base_scene"]) or PARAMETER_CAPABILITY in manifest["capabilities"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Parameter sources require the parameter axiom revision")
-        if supplied_version not in INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS and _scene_uses_infinite_grid(definitions["base_scene"]):
+        if supplied_version not in INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS and _scene_uses_infinite_grid(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Infinite-grid sources require the infinite-grid axiom revision")
-        if supplied_version not in FINITE_GRID_AXIOM_VERSIONS | INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS and _scene_uses_grid_system(definitions["base_scene"]):
+        if supplied_version not in FINITE_GRID_AXIOM_VERSIONS | INFINITE_GRID_AXIOM_VERSIONS | PARAMETER_AXIOM_VERSIONS | PRE_GENERATION_AXIOM_VERSIONS | PRE_SUBDIVISION_AXIOM_VERSIONS and _scene_uses_grid_system(definitions["base_scene"]):
             raise ModelError("UNSUPPORTED", "AXIOM_VERSION", "I32", "Grid-system sources require the grid-system axiom revision")
         if supplied_version in LEGACY_AXIOM_VERSIONS and (
                 scene_required_capabilities(definitions["base_scene"]) or

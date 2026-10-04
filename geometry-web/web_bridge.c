@@ -256,6 +256,7 @@ static void cmd_pick(int v, Coord x, Coord y, Coord r)
 
 #include "grid_system_bridge.inc"
 #include "grid_binding_bridge.inc"
+#include "grid_subdivision_bridge.inc"
 #include "reference_bridge.inc"
 
 static void cmd_drag(int guide_idx, int v, Coord x, Coord y)
@@ -312,10 +313,14 @@ static void cmd_loadfile(const char *path)
     }
 
     /* 先記快照：失敗時世界不動，成功時載入本身可以 undo。 */
-    World before = g_world;
-    memset(&g_world, 0, sizeof g_world);
-    if (parse_scene_file(path, &g_world)) {
-        history_record(&before);
+    World *draft=calloc(1,sizeof *draft);ReferencePreview *saved=malloc(sizeof *saved);
+    if(!draft || !saved){free(draft);free(saved);fputs("{\"ok\":false,\"error\":\"Candidate memory unavailable\"}\n",stdout);return;}
+    *saved=g_preview;uint32_t serial=g_preview_serial;uint64_t revision=g_definition_revision;
+    const World *previous=g_subgrid_before;g_subgrid_before=NULL;
+    bool loaded=parse_scene_file(path,draft);
+    g_preview=*saved;g_preview_serial=serial;g_definition_revision=revision;g_subgrid_before=previous;free(saved);
+    if (loaded) {
+        history_record(&g_world);g_world=*draft;g_preview.ready=false;
         ++g_definition_revision;
         char hash[65]; bool hashed=eng_definition_hash(&g_world,hash);
         printf("{\"ok\":true,\"revision\":%llu,",(unsigned long long)g_definition_revision);
@@ -323,11 +328,11 @@ static void cmd_loadfile(const char *path)
         if(hashed)printf(",\"definition_sha256\":\"%s\"",hash);
         fputs("}\n",stdout);
     } else {
-        g_world = before;
         fputs("{\"ok\":false,\"error\":", stdout);
         js_string(scene_last_error());
         fputs("}\n", stdout);
     }
+    free(draft);
 }
 
 /* ---- 畫布指令 ---- */
@@ -934,6 +939,8 @@ int main(void)
             cmd_engineering_validate(arg);
         } else if (strcmp(line, "grid-preview") == 0 && arg != NULL) {
             cmd_grid_preview(arg);
+        } else if (strcmp(line, "grid-rule-query") == 0) {
+            cmd_grid_rule_query(arg);
         } else if (strcmp(line, "grid-query") == 0) {
             cmd_grid_query(arg);
         } else if (strcmp(line, "grid-trial-query") == 0) {

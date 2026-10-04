@@ -60,6 +60,12 @@ static void si_expression(SiIndex *s,const char *from,const char *expression,uin
         while(*end){if((*end=='+'||*end=='-')&&!(end>p&&end[-1]==':'&&isdigit((unsigned char)end[1])))break;++end;}
         size_t length=(size_t)(end-p);if(!length||length>=REF_EXPR_MAX){s->complete=false;return;}
         char term[REF_EXPR_MAX];memcpy(term,p,length);term[length]=0;char *q=strchr(term,'*');q=q?q+1:term;
+        if(local && !strncmp(q,"gridrule:",9)){
+            GridRuleLineRef r={0};
+            if(grid_rule_ref_text(q,&r)){si_ref(s,from,"grid",r.grid_id,0,0,"position","rule-line");si_ref(s,from,"grid-system",r.system_id,0,0,"position","rule-source");}
+            else s->complete=false;
+            p=end;continue;
+        }
         char *parts[5];int count=0;while(count<5){parts[count++]=q;char *colon=strchr(q,':');if(!colon)break;*colon=0;q=colon+1;}
         uint32_t id=0,field=0;char key[240];
         if(count==2&&!strcmp(parts[0],"spec")){si_key(key,"spec",parts[1],0,0);si_edge(s,from,key,"dimension","expression",true);}
@@ -78,6 +84,15 @@ static void si_axis(SiIndex *s,const char *from,const GridAxisDef *d,const char 
 }
 static void si_axis_value(SiIndex *s,const GridAxisDef *d)
 {si_text(s,"%lld:%lld:%lld:%lld:%lld:%lld:%zu:",(long long)d->start,(long long)d->step,(long long)d->panel,(long long)d->gap,(long long)d->anchor,(long long)d->stagger,d->count);for(size_t k=0;k<d->count;++k)si_text(s,"%lld,",(long long)d->coords[k]);}
+static void si_subdivision(SiIndex *s,const GridSystem *g)
+{
+    if(!g->rule_count && g->next_rule_key==1)return;
+    si_text(s,"rules:%u:%zu;",g->next_rule_key,g->rule_count);
+    for(size_t i=0;i<g->rule_count;++i){const GridSubdivisionRule *r=&g->rules[i];
+        si_text(s,"%u:%zu:%s:%d:%lld:%lld:%u:%u;",r->key,strlen(r->name),r->name,r->all_cells,
+            (long long)r->cell[0],(long long)r->cell[1],r->divisions[0],r->divisions[1]);
+    }
+}
 static void si_vector(SiIndex *s,Vector3 v){si_text(s,"%lld,%lld,%lld;",(long long)v.x,(long long)v.y,(long long)v.z);}
 static void si_point(SiIndex *s,Point3 v){si_text(s,"%lld,%lld,%lld;",(long long)v.x,(long long)v.y,(long long)v.z);}
 static void si_loop(SiIndex *s,const PolygonLoop2 *loop)
@@ -136,7 +151,7 @@ static SiIndex *si_build(const World *w)
         si_reset(s);si_text(s,"%lld/%lld:%d",(long long)f->value.num,(long long)f->value.den,f->value.unit);si_value(s,n);EngJson j;if(eng_json_parse(&j,f->expression))si_ast(s,from,&j,0,"expression");else s->complete=false;eng_json_free(&j);}
     for(size_t i=0;i<w->datum_count;++i){const DatumPlane *d=&w->datums[i];si_numkey(from,"datum",d->id,0,0);si_reset(s);si_text(s,"%d:%s",d->axis,d->expression);n=si_nnode(s,"datum",d->id,0,0,"共用基準");si_reset(s);si_text(s,"%d:%lld",d->axis,(long long)d->position);si_value(s,n);si_expression(s,from,d->expression,0,false);}
     for(size_t i=0;i<w->guide_count;++i){const GuideLine *g=&w->guides[i];si_numkey(from,"guide",g->id,0,0);si_reset(s);si_text(s,"%u:%d:%u:%d:%s",g->placement_id,g->source,g->datum_id,g->source==GUIDE_DATUM?0:g->direction,g->expression);n=si_nnode(s,"guide",g->id,0,0,"參考線");si_reset(s);si_text(s,"%d:%lld",g->direction,(long long)g->offset);si_value(s,n);si_ref(s,from,"placement",g->placement_id,0,0,"position","surface");if(g->source==GUIDE_DATUM)si_ref(s,from,"datum",g->datum_id,0,0,"position","datum");else si_expression(s,from,g->expression,g->placement_id,true);}
-    for(size_t i=0;i<w->grid_system_count;++i){const GridSystem *g=&w->grid_systems[i];si_numkey(from,"grid-system",g->id,0,0);si_reset(s);si_text(s,"%d;",g->main_along);si_axis(s,from,&g->axis[0],"u",NULL);si_axis(s,from,&g->axis[1],"v",NULL);n=si_nnode(s,"grid-system",g->id,0,0,g->name);si_reset(s);si_axis_value(s,&g->axis[0]);si_axis_value(s,&g->axis[1]);si_value(s,n);}
+    for(size_t i=0;i<w->grid_system_count;++i){const GridSystem *g=&w->grid_systems[i];si_numkey(from,"grid-system",g->id,0,0);si_reset(s);si_text(s,"%d;",g->main_along);si_axis(s,from,&g->axis[0],"u",NULL);si_axis(s,from,&g->axis[1],"v",NULL);si_subdivision(s,g);n=si_nnode(s,"grid-system",g->id,0,0,g->name);si_reset(s);si_axis_value(s,&g->axis[0]);si_axis_value(s,&g->axis[1]);si_subdivision(s,g);si_value(s,n);}
     for(size_t i=0;i<w->grid_binding_count;++i){const GridBinding *b=&w->grid_bindings[i];si_numkey(from,"grid-binding",b->id,0,0);si_reset(s);si_text(s,"%u:%u:%u:%lld:%lld:%u/%u:%u/%u",b->boundary_id,b->system_id,b->vertex_key,(long long)b->cell[0],(long long)b->cell[1],b->anchor_num[0],b->anchor_den[0],b->anchor_num[1],b->anchor_den[1]);si_nnode(s,"grid-binding",b->id,0,0,"網格配置");si_ref(s,from,"boundary",b->boundary_id,0,0,"position","vertex");si_ref(s,from,"grid-system",b->system_id,0,0,"position","system");}
     for(size_t i=0;i<w->grid_count;++i){const ReferenceGrid *g=&w->grids[i];bool bound[2][6]={{false}};for(size_t k=0;k<w->engineering.binding_count;++k){const EngBinding *b=&w->engineering.bindings[k];if(b->target.kind==0&&b->target.id==g->id)bound[b->target.axis][2+b->target.field]=true;}
         si_numkey(from,"grid",g->id,0,0);si_reset(s);si_text(s,"%u:%d:%d:%d;",g->placement_id,g->main_along,g->is_subgrid,g->from_binding);si_axis(s,from,&g->axis[0],"u",bound[0]);si_axis(s,from,&g->axis[1],"v",bound[1]);
@@ -149,11 +164,16 @@ static SiIndex *si_build(const World *w)
     for(size_t i=0;i<w->engineering.application_count;++i){const EngApplication *a=&w->engineering.applications[i];si_key(from,"application",a->id,0,0);si_reset(s);si_content(s,a->content,"anchorOptions");si_node(s,"application",a->id,0,0,a->id);char key[240];si_key(key,"method",a->method.id,a->method.version,0);si_edge(s,from,key,"rule-version","method",true);si_ref(s,from,"placement",a->placement_id,0,0,"position","surface");si_application_fields(s,w,a);}
     for(size_t i=0;i<w->timber_count;++i){const Timber *t=&w->timbers[i];const TimberAnchor *a=&w->anchors[i];bool bound[2]={false,false};for(size_t k=0;k<w->engineering.binding_count;++k){const EngBinding *b=&w->engineering.bindings[k];if(b->target.kind==1&&b->target.id==t->id)bound[b->target.field]=true;}
         si_numkey(from,"timber",t->id,0,0);si_reset(s);si_text(s,"%d:%lld:%lld:%lld:%u:%d:%d:%d:%d:%d:%lld:%d:%lld:%d:%lld:%d:%d;",t->role,(long long)t->cut_priority,(long long)(bound[0]?0:t->size_a),(long long)(bound[1]?0:t->size_b),a->placement_id,a->anchor_kind,a->length_direction,a->depth_side,a->ref_hole,a->ref_edge,(long long)a->ref_grid_index,a->ref_grid_axis,(long long)a->ref_grid_band,a->ref_grid_has_band,(long long)a->through,a->has_through,a->has_between);
+        if(a->anchor_kind==ANCHOR_AT_RULE){const GridRuleLineRef *r=&a->ref_rule;
+            si_text(s,"rule:%u:%u:%u:%lld:%lld:%d:%u;",r->grid_id,r->system_id,r->rule_key,
+                (long long)r->cell[0],(long long)r->cell[1],r->axis,r->inner_index);
+        }
         si_text(s,"refs:%u:%u:%d:%u;",a->ref_guide,a->ref_grid,a->ref_is_timber,a->ref_timber);if(a->anchor_kind==ANCHOR_AT)si_text(s,"uv:%lld:%lld;",(long long)a->uv.u,(long long)a->uv.v);
         for(int k=0;k<2;++k)if(a->has_between){const ReferenceFace *f=&a->between[k];si_text(s,"between:%d:%d:%d:%u;",f->kind,f->hole,f->edge,f->timber);if(f->kind)si_ref(s,from,"timber",f->timber,0,0,"position",k?"between.finish":"between.start");}
         for(size_t k=0;k<w->engineering.binding_count;++k){const EngBinding *b=&w->engineering.bindings[k];if(b->target.kind!=1||b->target.id!=t->id)continue;char src[640],over[640];eng_source_json(&b->source,src,sizeof src);if(b->has_override)eng_source_json(&b->override_value,over,sizeof over);else snprintf(over,sizeof over,"null");si_text(s,"%d:%s:%s;",b->target.field,src,over);si_source(s,from,&b->source,b->target.field?"B":"A",!b->has_override);if(b->has_override)si_source(s,from,&b->override_value,b->target.field?"B override":"A override",true);}
         n=si_nnode(s,"timber",t->id,0,0,"角材");si_reset(s);si_text(s,"%d:%lld:%lld:%lld;",t->placed,(long long)t->size_a,(long long)t->size_b,(long long)t->length);si_point(s,t->origin);si_vector(s,t->axis_length);si_vector(s,t->axis_a);si_vector(s,t->axis_b);si_value(s,n);
-        if(t->placed){si_ref(s,from,"placement",a->placement_id,0,0,"position","surface");if(a->anchor_kind==ANCHOR_AT_LINE)si_ref(s,from,"guide",a->ref_guide,0,0,"position","anchor");if(a->anchor_kind==ANCHOR_AT_GRID)si_ref(s,from,"grid",a->ref_grid,0,0,"position","anchor");if(a->ref_is_timber)si_ref(s,from,"timber",a->ref_timber,0,0,"position","anchor-face");
+        if(t->placed){si_ref(s,from,"placement",a->placement_id,0,0,"position","surface");if(a->anchor_kind==ANCHOR_AT_LINE)si_ref(s,from,"guide",a->ref_guide,0,0,"position","anchor");if(a->anchor_kind==ANCHOR_AT_GRID)si_ref(s,from,"grid",a->ref_grid,0,0,"position","anchor");
+        if(a->anchor_kind==ANCHOR_AT_RULE){si_ref(s,from,"grid",a->ref_rule.grid_id,0,0,"position","rule-line");si_ref(s,from,"grid-system",a->ref_rule.system_id,0,0,"position","rule-source");}if(a->ref_is_timber)si_ref(s,from,"timber",a->ref_timber,0,0,"position","anchor-face");
             for(size_t k=0;k<w->timber_count;++k)if(w->timbers[k].placed&&w->anchors[k].placement_id==a->placement_id&&w->anchors[k].order<a->order)si_ref(s,from,"timber",w->timbers[k].id,0,0,"span-candidate","I9 candidate, not confirmed support");}}
     for(size_t i=0;i<w->engineering.binding_count;++i){const EngBinding *b=&w->engineering.bindings[i];if(b->target.kind!=0)continue;si_numkey(from,"grid",b->target.id,0,0);char field[20];snprintf(field,sizeof field,"%c.%s",b->target.axis?'v':'u',b->target.field?"gap":"panel");si_source(s,from,&b->source,field,!b->has_override);if(b->has_override)si_source(s,from,&b->override_value,field,true);}
     for(size_t i=0;i<w->assembly.rule_count;++i){const AsmRuleVersion *r=&w->assembly.rules[i];si_reset(s);si_text(s,"%s",r->fingerprint);n=si_nnode(s,"assembly-rule",r->id,r->version,0,si_name(r->content,label,"組構規則"));if(n){snprintf(n->definition,65,"%s",r->fingerprint);snprintf(n->value,65,"%s",r->fingerprint);}si_rule_parts(s,r);}

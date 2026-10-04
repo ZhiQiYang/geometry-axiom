@@ -46,7 +46,7 @@ static bool model_source_check(const char *path, bool *capacity, char *error, si
 {
     static const char *allowed[] = {
         "spec", "boundary", "placement", "surface", "space", "datum", "guide",
-        "grid", "grid-system", "grid-binding", "boundary-keyed", "boundary-vertex-keys", "subgrid", "timber", "place", "column", "beam", "canvas-pos", "requires", "engineering", "parameters", NULL
+        "grid", "grid-system", "grid-source-rule", "grid-source-rule-highwater", "grid-binding", "boundary-keyed", "boundary-vertex-keys", "subgrid", "timber", "place", "column", "beam", "canvas-pos", "requires", "engineering", "parameters", NULL
     };
     FILE *in = fopen(path, "rb");
     if (!in) { snprintf(error, cap, "Cannot read source scene."); return false; }
@@ -342,6 +342,7 @@ int main(int argc, char **argv)
     fputs(",\"required_capabilities\":[",stdout);
     if(engineering_used(&world))model_string(stdout,"engineering-spec/1");
     if(world.parameters.card_count){if(engineering_used(&world))fputc(',',stdout);model_string(stdout,"parameters/1");}
+    if(grid_subdivision_used(&world)){if(engineering_used(&world)||world.parameters.card_count)fputc(',',stdout);model_string(stdout,GRID_SUBDIVISION_CAPABILITY);}
     fputs("],\"specs\":[", stdout);
     for (size_t i = 0; i < world.spec_count; ++i) {
         if (i) putchar(',');

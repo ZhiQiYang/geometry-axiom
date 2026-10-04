@@ -28,8 +28,8 @@ static bool reference_fragment_candidate(const World *base,SurfaceId source,Surf
     } else {
         const GuideLine *g=&candidate.guides[index];
         const PlacementSurface *p=world_find_placement(&candidate,target);
-        SurfaceSegment2 segs[POLY_MAX_VERTICES];
-        if (!p || !guide_line_get_local_segments(p,world_placement_boundary(&candidate,p),g,segs,POLY_MAX_VERTICES)) return false;
+        SurfaceSegment2 segs[GUIDE_MAX_SEGMENTS];
+        if (!p || !guide_line_get_local_segments(p,world_placement_boundary(&candidate,p),g,segs,GUIDE_MAX_SEGMENTS)) return false;
         *out_guide=*g;
     }
     return true;

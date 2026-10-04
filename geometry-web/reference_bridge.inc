@@ -32,8 +32,8 @@ static void json_reference_guide(const World *w,size_t i)
     printf(",\"worldPoint\":[%lld,%lld,%lld],\"worldDirection\":[%lld,%lld,%lld],\"segments\":[",
         (long long)(p->frame.origin.x+cross.x*g->offset),(long long)(p->frame.origin.y+cross.y*g->offset),(long long)(p->frame.origin.z+cross.z*g->offset),
         (long long)along.x,(long long)along.y,(long long)along.z);
-    SurfaceSegment2 segments[POLY_MAX_VERTICES];
-    size_t count=guide_line_get_local_segments(p,world_placement_boundary(w,p),g,segments,POLY_MAX_VERTICES);
+    SurfaceSegment2 segments[GUIDE_MAX_SEGMENTS];
+    size_t count=guide_line_get_local_segments(p,world_placement_boundary(w,p),g,segments,GUIDE_MAX_SEGMENTS);
     for (size_t j=0;j<count;++j) printf("%s[[%lld,%lld],[%lld,%lld]]",j?",":"",
         (long long)segments[j].start.u,(long long)segments[j].start.v,
         (long long)segments[j].end.u,(long long)segments[j].end.v);
@@ -177,12 +177,13 @@ static void json_grid_dependencies(const World *w,const ReferenceGrid *g)
     }
     fputs("],\"guides\":[",stdout); first=true;
     for (size_t i=0;i<w->guide_count;++i) {
-        if (!reference_expression_uses_grid(w->guides[i].expression,g->id)) continue;
+        if (!reference_expression_uses_grid(w->guides[i].expression,g->id) && !grid_guide_references(&w->guides[i],g->id)) continue;
         printf("%s%u",first?"":",",w->guides[i].id); first=false;
     }
     fputs("],\"timbers\":[",stdout); first=true;
     for (size_t i=0;i<w->timber_count;++i) {
-        if (!w->timbers[i].placed || w->anchors[i].anchor_kind!=ANCHOR_AT_GRID || w->anchors[i].ref_grid!=g->id) continue;
+        if (!w->timbers[i].placed || !((w->anchors[i].anchor_kind==ANCHOR_AT_GRID && w->anchors[i].ref_grid==g->id) ||
+            (w->anchors[i].anchor_kind==ANCHOR_AT_RULE && w->anchors[i].ref_rule.grid_id==g->id))) continue;
         printf("%s%u",first?"":",",w->timbers[i].id); first=false;
     }
     fputs("]}",stdout);
@@ -291,10 +292,10 @@ static void json_reference_grid(const World *w,const ReferenceGrid *g)
             else if (role==3) fputs("\"secondary\",\"priority\":3",stdout);
             else fputs("null,\"priority\":null",stdout);
             fputs(",\"segments\":[",stdout);
-            SurfaceSegment2 finite_segments[POLY_MAX_VERTICES];
+            SurfaceSegment2 finite_segments[GUIDE_MAX_SEGMENTS];
             const SurfaceSegment2 *segments=finite_segments; size_t n;
             if (g->from_binding) { segments=sampled[axis].lines[k].segments; n=sampled[axis].lines[k].segment_count; }
-            else n=grid_line_segments(w->grids,w->grid_count,g,p,b,axis,k,finite_segments,POLY_MAX_VERTICES);
+            else n=grid_line_segments(w->grids,w->grid_count,g,p,b,axis,k,finite_segments,GUIDE_MAX_SEGMENTS);
             for (size_t j=0;j<n;++j) {
                 printf("%s[[%lld,%lld],[%lld,%lld]",j?",":"",
                     (long long)segments[j].start.u,(long long)segments[j].start.v,
@@ -355,6 +356,11 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
             snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld band %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index,(long long)a->ref_grid_band);
         else
             snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
+    }
+    else if(a->anchor_kind==ANCHOR_AT_RULE){
+        const GridRuleLineRef *r=&a->ref_rule;
+        snprintf(anchor,sizeof anchor,"at-line rule %u %u %u %lld %lld %c %u",r->grid_id,r->system_id,r->rule_key,
+            (long long)r->cell[0],(long long)r->cell[1],r->axis?'v':'u',r->inner_index);
     }
     else {
         ReferenceFace ref={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber};
