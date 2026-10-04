@@ -69,6 +69,6 @@ setFeatureAttachment("grid-draft", validValue | null, expectedContextToken)
 
 ## 驗證方法
 
-現有 `test_project_store.js` 的可攜、版本拒絕、核對收據共存與 history 案例擴充來源／配置完整 raw 往返、能力分離、降版／剝除／未知 kind/schema/超限負例。`test_reference_workspace_races.js` 擴充真 adapter 的 clone/no-op/token/busy/group、ZIP、匯入與切案 undo、新案／清空及跨分頁拒寫；VM DOM/PDF 是 fakes，不能冒稱實際瀏覽器 UI。既有測試方法數不變，未改 #85 runner／expected／mutation/golden。
+現有 `test_project_store.js` 的可攜、版本拒絕、核對收據共存與 history 案例擴充來源／配置完整 raw 往返、能力分離、降版／剝除／未知 kind/schema/超限負例。`test_reference_workspace_races.js` 擴充真 adapter 的 clone/no-op/token/busy/group、ZIP、匯入與切案 undo、新案／清空及跨分頁拒寫；VM DOM/PDF 是 fakes，不能冒稱實際瀏覽器 UI。既有測試方法數不變。root另授權共用owner註冊已合 PR101 的四個 #49 Python suite，三個需真 bridge、一個純 validator；完整跑後新增四個 expected 計數，全部原凍結計數（scene139、integrity88等）、mutation/golden維持，不覆寫 #85 證據。
 
 原生 native/ZIP 能力與瀏覽器載入需在交付 exact head 執行；本文件不把舊 head 的 CI 或實體手機當作本切片證據。A24 實機仍未驗。
