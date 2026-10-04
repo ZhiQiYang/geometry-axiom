@@ -35,6 +35,7 @@ def check(label,value):
  assert value is True,label
 def snapshot(page):return js(page,"return {scene:(await apiRequest('dump')).text,parameters:(await apiRequest('objects')).parameters};")
 def open_file(page,path):
+ if not page.locator('#btnOpenProject').is_visible():page.locator('#fileMenuBtn').click()
  with page.expect_file_chooser() as chooser:page.locator('#btnOpenProject').click()
  chooser.value.set_files(path)
  page.wait_for_function('!ReferenceWorkspace.busy')
