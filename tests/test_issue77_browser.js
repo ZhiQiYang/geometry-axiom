@@ -72,8 +72,10 @@ async function main() {
     check((await snapshot(page)).data.rooms[1].name,"房間 B 改名","rename changes only selected room metadata");
     await page.evaluate(async () => {const r=await api("line undo");if(!r.ok)throw new Error(r.error);renderFaceInspector();});
     check((await snapshot(page)).data.rooms[1].name,"房間 B","metadata undo restores room name");
-    const editedB=[[6600,1000],[11600,1000],[11600,4000],[6600,4000]];
-    await page.locator(`[data-room-edit="${named}"]`).click(); await drawing(page,editedB);
+    const editedB=[[6600,1000],[10200,1000],[10200,4000],[6600,4000]];
+    await page.locator(`[data-room-edit="${named}"]`).click();
+    await page.waitForFunction(id => RoomCollectionWorkspace.controller.intent?.roomId===id && fe.tool==="redraw",named);
+    await drawing(page,editedB);
     await page.locator("#faceDraftFinish").click(); await page.locator("#roomConfirm").click();
     await page.waitForFunction(() => !RoomCollectionWorkspace.hasWork && fe.tool==="select");
     check((await native(page,2))[0].verts,editedB,"explicit edit replaces only selected B outer boundary");

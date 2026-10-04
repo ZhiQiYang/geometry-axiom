@@ -212,7 +212,8 @@ const RoomCollectionWorkspace = (() => {
     const room = roomForBoundary(bid); if (!room) return false;
     const plane = S.planeForRoom(state(), room.id), alignment = {...plane.alignment};
     for (const [key, value] of Object.entries(changes)) if (["x", "y", "mmPerPx", "rot"].includes(key)) alignment[key === "rot" ? "rotation" : key] = value;
-    controller().basis(plane.id, calibration === undefined ? plane.calibration : calibration, alignment); W().sync(); return true;
+    controller().basis(plane.id, calibration === undefined ? plane.calibration : calibration, alignment);
+    W().sync(); renderFaceInspector(); return true;
   }
   function recoveredTransaction() {if (lease) {integration.endTransaction(lease); lease = null;} ownedPreviewToken = null; instance = null; activeBid = null;}
   return {configure, assertTransaction, paneHTML, bindPane, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeBasis, recoveredTransaction,

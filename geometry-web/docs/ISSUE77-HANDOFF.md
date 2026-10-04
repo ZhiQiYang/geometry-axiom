@@ -1,6 +1,6 @@
 # #77 人工多房間切片：模組與 owner 接線交接
 
-範圍依使用者接受的第 8 項明文建議及 PR100 草案（`0230e436870ec3ba06fcb0735ffabc3b7427979d`），基底 main `1075058be37d37b98a2a910f4f67b87583be85b3`。只有人工連續描房；沒有批准整包 Q37 舊 proposal、原生房間樹、3D parent、自動 transform 或 #54/#87 自動辨識。原生 geometry 唯一來源仍為 native boundary。此 PR 沒有修改共享 app、index、project-store、reference-workspace、ContextHistory 或格式號，不能單獨宣稱 #77 已在產品啟用。
+範圍依使用者接受的第 8 項明文建議及 PR100（`0230e436870ec3ba06fcb0735ffabc3b7427979d`，已隨 main `b3c210791d128dc84c3222078df2472b70cc0e60` 合併）。程式驗證基底 `1075058be37d37b98a2a910f4f67b87583be85b3` 與 b3c2107 的相關程式 blob 相同；PR 分支已 fast-forward b3c2107。只有人工連續描房；沒有批准整包 Q37 舊 proposal、原生房間樹、3D parent、自動 transform 或 #54/#87 自動辨識。原生 geometry 唯一來源仍為 native boundary。此 PR 沒有修改共享 app、index、project-store、reference-workspace、ContextHistory 或格式號，不能單獨宣稱 #77 已在產品啟用。
 
 共用單 writer：thread `01a100b5-800b-75f2-9a02-71ee53e550ba`；#77 worker：`01a104fc-a75a-728a-8d74-2e323f84d08c`。共享附件框架依 PR100，不能將 TEMP 專用 prototype 的 `roomSources` 格式接入產品。
 
@@ -18,6 +18,8 @@ room: {id,name,boundaryRef:{kind:"boundary",id,associationPin:sha256},
 ```
 
 每 source/page 僅一份 calibration/alignment。rooms 沒有 polygon、geometry 或 basis 副本，也沒有 placement／parent 引用。`associationPin` 使用完整 native `boundary` 回覆的 `geometryFingerprint`，包括 native 分類；不能在產品以 loops-only 自算 hash 取代。`references(value)` 返回 `{sourceIds, boundaries:[{kind,id,associationPin,reviewState}]}`，供原圖閉包和 typed refs 檢查；`validateNativeRefs(value, candidate.final_objects)` 只驗 ID 存在，**不能單獨作身份驗證**。`validateNativePins(value, Map<boundaryId, fullNativeResponse>)` 檢查所有有效引用有 native 指紋，confirmed 必須完全相符。needs-review 保留明示複核，編輯仍拒舊 pin；未知沿革必須由 owner 呼叫 `unknownHistory`／`retireBoundary`，不能按同號重接。沒有擴建 durable incarnation ledger。
+
+目前 `scene-import-bridge.inc` 的 `load-prepare.final_objects` 只有 boundary IDs，沒有 candidate 指紋；live `boundary id` 查詢也不能冒充未發佈 candidate。因此 owner 需協調 native writer 增加最小 candidate 摘要（例如 `boundaryFingerprints:[{id,geometryFingerprint}]`）或提供等價隔離 candidate 核對，再於 publication 前驗 pins。只加 hash/id 摘要，不增加 metadata polygon，也不能先 confirm 換案才驗而失去失敗不改原案的保證。
 
 basis 變更只改共享 plane、增加 revision，舊房變 needs-review；不改 native geometry。新房接受目前 revision。刪 native boundary 時 owner 同一步標 needs-reassociation；同號重建不解除。undo/redo 恢復整份附件。解除列表關聯只移除 metadata；native delete 仍由既有明示刪除動作處理。
 
