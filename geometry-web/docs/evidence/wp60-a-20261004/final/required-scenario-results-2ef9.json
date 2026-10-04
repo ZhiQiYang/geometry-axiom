@@ -1,0 +1,30 @@
+{
+  "scope": "independent-module-only; no product adoption/history/UI claim",
+  "checks": [
+    {
+      "width": 1280,
+      "completeSnapshot": true,
+      "originalBytes": true,
+      "independentCopies": true,
+      "zipFileReopen": true,
+      "lateContext": true,
+      "tamperRejected": true,
+      "explicitForkOrigins": true,
+      "replacementIdentityUnknown": true
+    },
+    {
+      "width": 390,
+      "completeSnapshot": true,
+      "originalBytes": true,
+      "independentCopies": true,
+      "zipFileReopen": true,
+      "lateContext": true,
+      "tamperRejected": true,
+      "explicitForkOrigins": true,
+      "replacementIdentityUnknown": true
+    }
+  ],
+  "nativeCalls": 12,
+  "forbiddenCalls": 0,
+  "errors": []
+}

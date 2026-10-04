@@ -30,7 +30,7 @@ Python 新增獨立 22 tests，不併入 Node 數量。
 4. ContextHistory rename、unlink、native delete、同 ID undo/redo、unknown history 快照。
 5. 讀寫 context guard、遲到寫入隔離及房間 metadata 與 native 同一步交易。
 
-正式 `source-rooms` owner 接口尚未實作時，直接執行：
+未配置正式 owner test adapter 時，直接執行：
 
 ```sh
 node tests/integration/issue77_attachment_owner.js
@@ -38,7 +38,7 @@ node tests/integration/issue77_attachment_owner.js
 
 入口輸出機器可讀 JSON：`status: pending_implementation`、
 `required: 5`、`executed: 0`、`passed: 0`，逐項列出缺口，exit 3。
-這是實作缺口，不是環境受阻、skip 或 pass；不加入 `ALLOWED_SKIPS`。
+這表示五項尚未透過正式 adapter 執行，不能用它判定目前產品 owner 是否已實作；也不是 skip 或 pass，不加入 `ALLOWED_SKIPS`。
 `run_all.py` 顯示這個必需入口與範圍，不在非瀏覽器合計中假算五項。
 
 owner 實作後，以 test-only shim **映射真產品 registry／envelope／pack／unpack／history／transaction API**：
@@ -51,6 +51,25 @@ GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER=/tmp/real-owner-shim.js \
 shim 不得另造 store／ZIP envelope／history 來取代正式接線。
 配置了 shim 卻少必要方法會立即 setup fail（exit 1），不允許跳過。
 只有這五項真 owner gates 全部實跑通過，才可聲稱 attachment 正式整合通過。
+
+PR124 合流後，本 repo 已提供 `tests/integration/wp60_actual_owner_adapter.js`。
+它映射實際有限 registry、formal reader、ContextHistory 與房間交易；不註冊另一份 registry。
+後兩項各使用真 /10 與含已提交 native rule 的 /11 `.gcanvas`，保留原五個 test names：
+
+```sh
+ulimit -s 16384
+GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge \
+GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base \
+GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER=tests/integration/wp60_actual_owner_adapter.js \
+GEOMETRY_OWNER_GATE_DIR=/tmp/geometry-owner-five-evidence \
+  node --test tests/integration/issue77_attachment_owner.js
+```
+
+adapter 先檢查兩支 binary 的 freshness receipts，再自建 disposable loopback app/service，
+對 `/runtime` 驗 exact source／fresh／root。TEMP evidence 記錄原始 native receipts 所支持的
+條件，結束只關閉本測試 browser/service group。五項不加入非瀏覽器 floor，也不計內部
+checks 為額外 test cases。unknown-history 負例是未經本頁 observer 的真 native preview，
+再由正式 owner 觀察真 confirm，要求重新關聯並保留原始 pins／歷史值／PDF。
 
 ## #77 必需的四個真瀏覽器入口
 
