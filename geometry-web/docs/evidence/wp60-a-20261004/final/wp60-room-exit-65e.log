@@ -1,0 +1,62 @@
+PASS correct application identity
+PASS meaningful workspace shell is present
+PASS no framework error overlay
+PASS Back/0: room intent is active before exit
+PASS Back/0: another face cannot inherit the pending room intent
+PASS Back/0: rejected navigation leaves the draft on its original face
+PASS Back/0: exit clears the complete room operation
+PASS Back/0: exit preserves native geometry
+PASS Back/0: exit preserves the saved room attachment
+PASS Back/0: complete project save succeeds after cancellation
+PASS Back/0: the next face has no inherited room operation
+PASS Back/0: navigation does not create or replace a room
+PASS Escape/0: room intent is active before exit
+PASS Escape/0: another face cannot inherit the pending room intent
+PASS Escape/0: rejected navigation leaves the draft on its original face
+PASS Escape/0: exit clears the complete room operation
+PASS Escape/0: exit preserves native geometry
+PASS Escape/0: exit preserves the saved room attachment
+PASS Escape/0: complete project save succeeds after cancellation
+PASS Escape/0: the next face has no inherited room operation
+PASS Escape/0: navigation does not create or replace a room
+PASS v/0: room intent is active before exit
+PASS v/0: another face cannot inherit the pending room intent
+PASS v/0: rejected navigation leaves the draft on its original face
+PASS v/0: exit clears the complete room operation
+PASS v/0: exit preserves native geometry
+PASS v/0: exit preserves the saved room attachment
+PASS v/0: complete project save succeeds after cancellation
+PASS v/0: the next face has no inherited room operation
+PASS v/0: navigation does not create or replace a room
+PASS pointer input creates four unconfirmed room vertices
+PASS Back/4: room intent is active before exit
+PASS Back/4: another face cannot inherit the pending room intent
+PASS Back/4: rejected navigation leaves the draft on its original face
+PASS Back/4: exit clears the complete room operation
+PASS Back/4: exit preserves native geometry
+PASS Back/4: exit preserves the saved room attachment
+PASS Back/4: complete project save succeeds after cancellation
+PASS Back/4: the next face has no inherited room operation
+PASS Back/4: navigation does not create or replace a room
+PASS pointer input creates four unconfirmed room vertices
+PASS Escape/4: room intent is active before exit
+PASS Escape/4: another face cannot inherit the pending room intent
+PASS Escape/4: rejected navigation leaves the draft on its original face
+PASS Escape/4: exit clears the complete room operation
+PASS Escape/4: exit preserves native geometry
+PASS Escape/4: exit preserves the saved room attachment
+PASS Escape/4: complete project save succeeds after cancellation
+PASS Escape/4: the next face has no inherited room operation
+PASS Escape/4: navigation does not create or replace a room
+PASS pointer input creates four unconfirmed room vertices
+PASS v/4: room intent is active before exit
+PASS v/4: another face cannot inherit the pending room intent
+PASS v/4: rejected navigation leaves the draft on its original face
+PASS v/4: exit clears the complete room operation
+PASS v/4: exit preserves native geometry
+PASS v/4: exit preserves the saved room attachment
+PASS v/4: complete project save succeeds after cancellation
+PASS v/4: the next face has no inherited room operation
+PASS v/4: navigation does not create or replace a room
+PASS no application console errors or uncaught exceptions
+{"checks":61,"evidence":"/tmp/issue77-exit-browser-evidence","url":"http://127.0.0.1:18878/","viewport":"1440x1000","browser":"Chromium via Playwright; Browser plugin not available","ownerAdapter":"official owner API","scope":"Back/Escape/V with zero and four points","mobile":"not tested"}

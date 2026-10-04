@@ -1,0 +1,41 @@
+✔ committed rules use a versioned archive with native scene as the only formal source (1413.432228ms)
+✔ rule syntax independently requires the native marker, even without remaining objects (0.643573ms)
+✔ highwater syntax independently requires the native marker, even without remaining objects (0.161545ms)
+✔ guide syntax independently requires the native marker, even without remaining objects (0.143747ms)
+✔ direct anchor syntax independently requires the native marker, even without remaining objects (0.387396ms)
+✔ manifest capability removal, duplicate/unknown capabilities and unknown fields reject before native load (16.074932ms)
+✔ every older schema refuses rules rather than silently downgrading the scene (16.261405ms)
+✔ scene marker stripping and scene hash tampering refuse even if manifest claims support (3.711439ms)
+✔ old formats and current defaults remain readable without invented rules or new capabilities (271.863789ms)
+✔ model records and packages explicitly refuse rules while unrelated historical models coexist (121.347557ms)
+✔ formal reader opens a real archive in a fresh project context and preserves every native identity (300.774013ms)
+✔ formal import rejects capability/format/hash changes before asking native to prepare (307.849883ms)
+✔ rehashing a rules scene cannot bypass the reader by stripping both version and manifest capability (114.436226ms)
+✔ a complete main4bea near-capacity v10 archive still opens and roundtrips without losing any metadata or PDF (1930.381702ms)
+✔ service without the required native capability cancels its candidate without replacing project or history (159.994746ms)
+✔ v11 candidate capability mismatch cancels without confirming or changing native and project state (331.891267ms)
+✔ v11 explicitly refuses a service receipt without a canonical candidate scene and cancels its token (654.279697ms)
+✔ formal replay independently checks input and final native capability for default-only allocator (239.757059ms)
+✔ formal replay independently checks input and final native capability for removed source (236.15354ms)
+✔ formal replay independently checks input and final native capability for reset after rule declaration (241.990116ms)
+✔ formal replay independently checks input and final native capability for surviving source after earlier source deletion (235.986806ms)
+✔ native source closure preflight rejects missing highwater atomically (137.64402ms)
+✔ native source closure preflight rejects missing source atomically (129.782218ms)
+✔ native source closure preflight rejects missing rule atomically (157.582495ms)
+✔ native source closure preflight rejects wrong source ref atomically (154.224097ms)
+✔ native source closure preflight rejects invalid line index atomically (156.023653ms)
+✔ native source closure preflight rejects non-integral divisions atomically (139.543872ms)
+✔ native source closure preflight rejects unknown rule syntax atomically (166.686569ms)
+✔ native source closure preflight rejects native rule capacity atomically (165.294493ms)
+✔ native C snapshot preserves rules but the supported Python model adapter refuses them explicitly (76.578948ms)
+✔ rules coexist with existing raw drafts, source rooms and historical records without schema conversion (5588.649798ms)
+✔ formal import is one recoverable history operation and never imports another context undo stack (203.326944ms)
+✔ a legacy native scene remains byte-identical after formal open and save in a new context (81.900112ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13878.38409

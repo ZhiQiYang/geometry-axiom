@@ -4,7 +4,7 @@
 
 ## 邊界與盤點
 
-本分支修改 `project-store.js`、專屬測試／runner 登記及本文件；已正常合流 main `4bea91a`（PR124）。PR125 的 app/index/contextmenu 不競寫，`model_update`、space producer 不改。依 root 後續明示授權，增加既有 load-prepare 的候選 canonical scene，並完成 reference 的 /11 能力守門與實際 dump 容量檢查窄接點。沒有公理、能力容量、其他 owner worktree、部署或使用者 PC 變更，沒有重做 PR107 native core。
+本分支修改 `project-store.js`、專屬測試／runner 登記及本文件；已正常合流 main `4bea91a`（PR124）、`417f4c0`（PR127）。PR125 的 app/index/contextmenu 不競寫，`model_update`、space producer 不改。依 root 後續明示授權，增加既有 load-prepare 的候選 canonical scene，並完成 reference 的 /11 能力守門與實際 dump 容量檢查窄接點。沒有公理、能力容量、其他 owner worktree、部署或使用者 PC 變更，沒有重做 PR107 native core。
 
 PR107 已提供 source-local uint32 非零 ruleKey、`nextRuleKey` 高水位（0 表耗盡）、all-cells／單一 signed cell、decimal-string cell、guide `gridrule:` 與直接 `at-line rule`。dump 包含未套用來源、刪完 rules 的非預設高水位、依賴順序與 native 能力標記；load-prepare 在獨立 World 驗完整來源閉包，confirm 才原子替換。這些都是沿用的 native 能力。
 
@@ -44,4 +44,27 @@ python3 tests/run_all.py --build
 
 非機密範例：`geometry-web/examples/source-subdivision-v11.gcanvas`。含兩個配置、實際大 signed cell、guide 與有合法支撐的直接 rule-line 材料、同號不同 source 的未套用 rule、耗盡 allocator 及刪完 rules 的非預設高水位。原生 dump 在新服務/專案上下文逐字往返；不靠同一 JSON stringify/parse。
 
+完整範例 `geometry-web/examples/source-subdivision-rooms-v11.gcanvas` 是真 browser 共同保存按鈕下載的原 bytes，另含原 PDF、source-rooms/source-room-history 與既有 raw source-grid draft，以及實際保存的 canvas layout。它不是 #61 rule editor 產物；不把原生 scene 檔冒充完整 archive。
+
 驗證記錄與實際 ZIP／browser 證據將在完成 gates 後列於同版交接；不能把進行中 gate 當通過。assert 數與 case／test 數分列。Browser plugin 不可用，agent-browser CLI 也不存在；依技能 fallback 用已有 Playwright＋Chromium，不安裝依賴。瀏覽器保存驗證選用真 download fallback（測試上下文無 showSaveFilePicker，沒有模擬 writable handle），不代表原生 OS 檔案對話框。
+
+## 最終 exact-head 驗證
+
+已凍結、root source review 通過、完整 gates 的 code head 是 `65e733c05aa1d5b3c8b080601ca31419398ced06`，main `417f4c0ee67235e5042b22f94318b7bca0c0baee` 位於 ancestry。後續提交只增加本交接、原始 evidence／截圖與上述實際下載範例，可執行 code/test blobs 保持相同；不為文件／證據重跑長測試。
+
+| Gate | 實際終態／範圍 |
+| --- | --- |
+| `run_all.py --build` | 66 suites，exit 0。合計 2123 個各 suite 計數單位，2122 pass／0 fail／1 具名 Windows GDI 平台不適用；其中有 C checkpoints，不能稱 2123 test cases。Node aggregate 實際 491 tests 與 floor 相符。 |
+| 專屬 formal/native suite | 33/33 Node tests，0 skip；另真 native import／scenario Python suites 10+36 tests 均於 strict runner 通過。 |
+| full CDP | completed=true，1987 assertions／0 failure／0 skipped group；82 段逐段 golden matched，保留 main 的 P76=86／P79=87。exception count=1 是 P38 刻意注入且確認的 fb-auto-probe，沒有新增未預期例外。assertions 不是端到端案例數。 |
+| full SPACE | completed=true，202 assertions／0 failure，browser health clean；原範圍明列 omitted timber-material／timber-source-guards。 |
+| 完整 rules archive browser | 16 checks，1440×900／390×844，真 native、file input、共同保存下載、新 context 重開、PDF/history/raw draft/ref closure；console/page errors 0。 |
+| 原 main 近上限 legacy browser | 11 checks，官方 open→save→390px 新 context reopen；保留 non-scene metadata、PDF bytes、saved dump；新 metadata edit 與新增 rules 超限仍拒絕。 |
+| 原房間 browser gates | official owner API 的 browser／exit／recovery／remove 全部 exit 0，分別 37／61／111／46 checks；recovery 的預期 HTTP409 與真正 errors 分開記錄。 |
+| Scenario GridDraft | real-owner validator/native 1/1 Node test，0 skip。 |
+| I/O fault injection | open／write／read 三種模式皆回 IO、失效候選、不改 World/revision；Linux LD_PRELOAD 的實際故障，不代表 Windows 已驗。 |
+| Evidence Links adapter browser | 67 checks 通過；attachment backend 是原 harness 的 injected-memory，**不是正式 ZIP evidence-links 整合**。 |
+
+原始 logs、browser result JSON、desktop/mobile 截圖與 code blob pins 位於 `docs/evidence/wp60-a-20261004/final/`。最終 browser 私有服務 `/runtime` 皆 fresh=true；未使用使用者服務、圖紙、PC 或清理其儲存。
+
+保留不適用／未驗：Windows GDI、physical Windows/iOS/OS file picker、#61 rule UI／未提交規則草稿，以及 SPACE 列出的兩個 omitted groups。獨立 `scenario_browser_check.cjs` 官方 harness 在原 main4bea 已缺 source-plane/feature-attachments scripts；只在 /tmp harness 補實際依賴後，1280／390 模組 ZIP browser 通過，nativeCalls=12／forbidden liveCalls=0／errors=0，不能聲稱未改官方入口通過。#77 owner-five 入口未配置 test adapter，實跑 exit 3／executed=0；其預設 pending_implementation 訊息不是本輪產品盤點，亦不把四個 browser gates 冒充該五項測試。
