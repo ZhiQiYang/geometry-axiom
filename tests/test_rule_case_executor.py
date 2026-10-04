@@ -5,6 +5,7 @@ harness below tests only private pipe/process failure boundaries; it cannot
 produce a product case receipt or substitute for a geometry oracle.
 """
 from copy import deepcopy
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -230,14 +231,47 @@ class TrueNativeExecutor(unittest.TestCase):
 
     def test_blocked_negative_diagnostic_evidence_remains_blocked_when_staled(self):
         value = case("fixed-version-immutable")
-        receipt = self.run_case(value)
+        live = self.run_case(value)
+        self.assertEqual(("passed", "rejected"), (live["status"], live["actualOutcome"]), live)
+        self.assertTrue(any(_diagnostic_matches(d, value["expect"]["diagnostic"])
+                            for d in live["actualDiagnostics"]))
+        # A complete receipt captured from the previous real native bridge is
+        # historical evidence, never a substitute for this head's live result.
+        receipt = json.loads((ROOT / "tests" / "fixtures" /
+                              "rule_case_generic_immutable_receipt.json").read_text(encoding="utf-8"))
+        saved = deepcopy(receipt)
+        encoded = json.dumps(receipt, ensure_ascii=False, sort_keys=True,
+                             separators=(",", ":"), allow_nan=False).encode("utf-8")
+        self.assertEqual("4ce979de844171ac995c2c71d37d0958416ce6255f95f1a0c5bd9bb305662493",
+                         hashlib.sha256(encoded).hexdigest())
         self.assertEqual(("blocked", "diagnostic-unavailable"), (receipt["status"], receipt["reason"]))
-        refreshed = refresh_receipt(receipt, value, receipt["executor"], generation=4)
+        self.assertEqual("rejected", receipt["actualOutcome"])
+        self.assertEqual(value["expect"], receipt["authorExpected"])
+        generic = [d for d in receipt["actualDiagnostics"] if d.get("code") == "ASSEMBLY_INVALID"]
+        self.assertEqual(1, len(generic))
+        self.assertEqual("I40/I41", generic[0]["clause"])
+        self.assertNotIn("ref", generic[0])
+        self.assertFalse(any(_diagnostic_matches(d, value["expect"]["diagnostic"])
+                             for d in receipt["actualDiagnostics"]))
+        observed = receipt["observations"]
+        self.assertEqual(observed["before"], observed["after"])
+        self.assertEqual(observed["beforeRevision"], observed["afterRevision"])
+        self.assertEqual(observed["beforeDumpHash"], observed["afterDumpHash"])
+        self.assertTrue(all(a["passed"] for a in receipt["assertionResults"]))
+        refreshed = refresh_receipt(receipt, value, self.identity, generation=4)
         self.assertEqual("stale", refreshed["status"])
+        self.assertIn("runtime", refreshed["staleReasons"])
         self.assertEqual("blocked", refreshed["recordedStatus"])
         self.assertEqual("rejected", refreshed["actualOutcome"])
         self.assertEqual(receipt["actualDiagnostics"], refreshed["actualDiagnostics"])
         self.assertEqual("blocked", receipt["status"])
+        self.assertEqual(receipt["context"], refreshed["context"])
+        self.assertEqual(observed, refreshed["observations"])
+        self.assertEqual(saved, receipt)
+        claimed = deepcopy(receipt)
+        claimed["status"] = "passed"
+        with self.assertRaisesRegex(ReceiptValidationError, "exact rejection evidence"):
+            refresh_receipt(claimed, value, self.identity)
 
     def test_all_statuses_reject_malformed_retained_context_before_scope_refresh(self):
         statuses = ("not-run", "missing-capability", "blocked", "timeout", "crashed",
@@ -450,17 +484,24 @@ class TrueNativeExecutor(unittest.TestCase):
         value = case("fixed-version-immutable")
         receipt = self.run_case(value)
         expected = value["expect"]["diagnostic"]
-        alternatives = [receipt["actualDiagnostics"]]
+        self.assertEqual(("passed", "rejected"), (receipt["status"], receipt["actualOutcome"]), receipt)
+        self.assertTrue(any(_diagnostic_matches(d, expected) for d in receipt["actualDiagnostics"]))
+        alternatives = [[{"code": "ASSEMBLY_INVALID", "clause": "I40/I41",
+                          "message": "D32: published rule 17@1 is immutable"}],
+                        [{"code": "RULE_VERSION_IMMUTABLE", "clause": "D32",
+                          "message": "rule 17 version 1"}]]
         for key, replacement in (("code", "OTHER_REJECTION"), ("clause", "I40"),
                                  ("ref", {"kind": "rule", "id": 17, "version": 2})):
             diagnostic = deepcopy(expected)
             diagnostic[key] = replacement
             alternatives.append([diagnostic])
         for diagnostics in alternatives:
+            self.assertFalse(any(_diagnostic_matches(d, expected) for d in diagnostics))
             claimed = deepcopy(receipt)
             claimed["status"] = "passed"
             claimed["actualDiagnostics"] = diagnostics
-            with self.subTest(diagnostics=diagnostics), self.assertRaises(ReceiptValidationError):
+            with self.subTest(diagnostics=diagnostics), self.assertRaisesRegex(
+                    ReceiptValidationError, "exact rejection evidence"):
                 refresh_receipt(claimed, value, receipt["executor"])
 
 
