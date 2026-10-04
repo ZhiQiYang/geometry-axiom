@@ -27,6 +27,7 @@ assert not subprocess.check_output(['git','-C',str(root),'status','--porcelain']
 out=Path(os.environ['GEOMETRY_READER_BROWSER_OUT']).resolve()
 assert out!=Path(tempfile.gettempdir()).resolve() and out.is_relative_to(Path(tempfile.gettempdir()).resolve())
 out.mkdir(parents=True,exist_ok=True)
+native_capabilities=json.loads((root/'tests/fixtures/native_available_capabilities.json').read_text())
 checks=[];errors=[]
 def js(page,body):return page.evaluate('async()=>{'+body+'}')
 def check(label,value):
@@ -51,7 +52,7 @@ try:
    js(page,"const r=await apiRequest('line reset');if(!r.ok)throw Error(r.error);await renderObjects();const request={expectedRevision:(await apiRequest('engineering-read')).revision,operations:[{op:'put-parameter',value:{id:701,name:'舊版寬度',fields:[{id:1,name:'寬',type:'dimension',input:'600'}]}}]};const preview=await EngineeringAdapter.preview(request);if(!preview.valid)throw Error(JSON.stringify(preview));const done=await EngineeringAdapter.confirm({token:preview.token});if(!done.ok)throw Error(JSON.stringify(done));await renderObjects();")
    before=snapshot(page)
    advertised=js(page,"const scene=(await apiRequest('dump')).text;const response=await fetch('/upload/prepare',{method:'POST',body:scene});const candidate=await response.json();if(!candidate.ok)throw Error(JSON.stringify(candidate));const cancelled=await fetch('/upload/cancel',{method:'POST',body:JSON.stringify(candidate.token)});if(!(await cancelled.json()).ok)throw Error('cancel failed');return candidate;")
-   check(f'{width} actual native offers subdivision while old scene only needs parameters', 'grid-subdivision-rules/1' in advertised['capabilities'] and advertised['required_capabilities']==['parameters/1'])
+   check(f'{width} actual native offers exact shared five capabilities while old scene only needs parameters',advertised['capabilities']==native_capabilities and advertised['required_capabilities']==['parameters/1'])
    archive=out/f'{width}-legacy-v6.gcanvas'
    with page.expect_download() as download:page.locator('#projectBar [data-project-action="save"]').click()
    download.value.save_as(archive);page.wait_for_function('!ReferenceWorkspace.busy')
