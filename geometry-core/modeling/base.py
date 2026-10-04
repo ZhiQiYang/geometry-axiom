@@ -52,6 +52,19 @@ def _build_adapter() -> str:
     return str(target)
 
 
+def startup_base_transport() -> str:
+    """Select startup transport without replacing an explicit update runtime.
+
+    An update bridge alone uses the existing native compiler fallback, whose
+    executable can be resolved and fingerprinted by the update producer.
+    """
+    if os.environ.get("GEOMETRY_MODEL_BASE"):
+        return "configured"
+    if os.environ.get("GEOMETRY_MODEL_UPDATE_BRIDGE"):
+        return "native"
+    return "wsl"
+
+
 def _adapter_command(program, source, *, wsl_distro=None):
     """Keep native overrides literal; translate only an explicitly WSL adapter."""
     if wsl_distro is None:

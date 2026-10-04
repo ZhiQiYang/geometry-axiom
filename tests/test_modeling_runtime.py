@@ -712,6 +712,30 @@ class AxiomSourceIdentity(unittest.TestCase):
 
 
 class WslBaseAdapterTests(unittest.TestCase):
+    def test_startup_preserves_explicit_base_or_native_update_compiler_fallback(self):
+        from modeling.base import startup_base_transport
+        cases = [({}, "wsl"),
+                 ({"GEOMETRY_MODEL_BASE": "native adapter.exe"}, "configured"),
+                 ({"GEOMETRY_MODEL_BASE": "/opt/geometry/model-base", "GEOMETRY_MODEL_BASE_WSL_DISTRO": "Ubuntu-24.04"}, "configured"),
+                 ({"GEOMETRY_MODEL_UPDATE_BRIDGE": "native update bridge.exe"}, "native"),
+                 ({"GEOMETRY_MODEL_BASE": "native adapter.exe", "GEOMETRY_MODEL_UPDATE_BRIDGE": "native update bridge.exe"}, "configured")]
+        for environment, expected in cases:
+            with self.subTest(environment=environment), mock.patch.dict("os.environ", environment, clear=True):
+                self.assertEqual(startup_base_transport(), expected)
+
+    def test_update_bridge_only_uses_native_compiler_result_as_literal_argv(self):
+        from modeling.base import load_base, startup_base_transport
+        snapshot = {"ok": True, "schema": "geometry-base-snapshot/1", "base_scene": "", "specs": [], "placements": [], "solids": [], "unplaced_timbers": [], "dependencies": []}
+        result = mock.Mock(returncode=0, stdout=json.dumps(snapshot).encode())
+        with mock.patch("modeling.base.sys.platform", "win32"), mock.patch.dict("os.environ", {"GEOMETRY_MODEL_UPDATE_BRIDGE": "native update bridge.exe"}, clear=True), mock.patch("modeling.base._build_adapter", return_value="compiled native adapter.exe") as build, mock.patch("modeling.base.subprocess.run", return_value=result) as run:
+            self.assertEqual(startup_base_transport(), "native")
+            self.assertEqual(load_base(""), snapshot)
+        build.assert_called_once_with()
+        run.assert_called_once()
+        self.assertEqual(run.call_args.args[0][0], "compiled native adapter.exe")
+        self.assertEqual(len(run.call_args.args[0]), 2)
+        self.assertNotIn("shell", run.call_args.kwargs)
+
     def test_wsl_scene_path_is_translated_and_passed_as_one_literal_argument(self):
         from modeling.base import _adapter_command
         converted = mock.Mock(returncode=0, stdout=b"/mnt/c/scene folder/input.scene\n")

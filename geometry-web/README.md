@@ -234,6 +234,8 @@ powershell -NoProfile -File .\geometry-web\start.ps1
 
 已有 `GEOMETRY_MODEL_BASE` 設定時，啟動器保留該 adapter 及原有 transport 設定，
 先執行相同的 smoke check，不強制切換為 WSL。`GEOMETRY_MODEL_UPDATE_BRIDGE` 也保留。
+僅設定原生 `GEOMETRY_MODEL_UPDATE_BRIDGE` 時，不注入 WSL model-base；沿用既有
+原生 `CC` compiler fallback。原生 compiler 不可用時 smoke check 會拒絕啟動。
 預設 WSL 啟動支援空間預覽；「採用目前來源更新模型」仍需可核對身分的原生
 update bridge 與 model-base，預設 WSL transport 未支援這個更新流程。
 
