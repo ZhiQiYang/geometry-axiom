@@ -67,6 +67,7 @@
 .ig-def-zero-title { font-size: 10px; color: var(--muted); }
 .ig-def-phases { display: flex; gap: 3px; }
 .ig-workspace .ig-chip { position: relative; display: inline-flex; align-items: center; height: 22px; min-height: 0; padding: 0 7px; border: 1px solid var(--border-strong); border-radius: 6px; background: #fff; color: var(--ink); font: 600 11px/1 var(--ig-mono); white-space: nowrap; cursor: pointer; }
+.ig-workspace .ig-def-stage > .ig-chip { position: absolute; }
 .ig-workspace .ig-def-stage .ig-chip-h { transform: translateX(-50%); }
 .ig-workspace .ig-def-stage .ig-chip-v { transform: translate(-50%, -50%); padding: 0 6px; }
 .ig-workspace .ig-chip-phase { position: relative; height: 20px; padding: 0 5px; border-radius: 5px; font-size: 10px; }
