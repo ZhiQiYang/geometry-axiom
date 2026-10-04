@@ -11,7 +11,7 @@
 | #44／Q32 | 明選現行來源→看差異→確認更新同一模型，一步復原完整舊模型；先普通單一平面；身分不明重新指定、固定版本不暗升。 | durable incarnation ledger、任意多carrier、owned／faces+timbers producer、自動同名／同號重關聯。 |
 | #46／Q33 | A/B各保存完整独立專案快照，原圖去重共用；B不改A；比較後整體採用並可回復。 | 細部挑物件合併、搬舊undo堆疊。 |
 | #48／Q34 | 原PDF區域→指定參數欄位；圖面標值／量測／正式值分存；核對不直接改幾何；換圖或身分不明再核對；連結與原圖可攜。 | 全物件kind、核對直接採用模型值、durable target ledger。 |
-| #49／Q35 | 六個有限正反例：合法規則、同角色不同構件、只改一接合、合法未完成配置、錯參數型別、固定版本不可變；隔離執行；結果可留，規則／來源／validator變更即過期；crash/timeout/缺能力非pass。 | 任意脚本／JSONPath／eval、永久green、只靠截圖。 |
+| #49／Q35 | 六個有限正反例：合法規則、同角色不同構件、只改一接合、合法未完成配置、錯參數型別、固定版本不可變；隔離執行；結果可留，規則／來源／原生執行檔／runtime與驗證程式的相關版本指紋變更即過期；crash/timeout/缺能力非pass。 | 任意脚本／JSONPath／eval、永久green、只靠截圖。 |
 | #57–62／Q36 | 下節六條來源子規則語義；先契約／獨立oracle→單native writer→保存→UI。 | 整包舊proposal、跨discarded undo永久不reuse、額外query API；多層、任意區域、面別覆寫。具體容量／allocator為工程實測選擇。 |
 | #77／Q37 | 同PDF一份共用比例尺／對位；各房名稱與boundary獨立；新增不覆蓋，明選才編輯；基準變更舊房需複核而不變形、新房用新基準；解除列表關聯不刪geometry，不建3D父子。 | native房間樹、自動transform繼承／移動、自動多房辨識成功；辨識仍接#54/#87。 |
 
@@ -40,7 +40,7 @@ kind為共用owner有限白名單，每kind至多一record（case/rooms可在其
 | #45 | `GridDraft {schema,draftId,kind:source|binding,intent:create|edit,baseRef,inputRefs,rawForm,view?}`，一份或null；空值／非法值保留raw strings/selectors，不當World；typed已發布引用＋內容pin，缺失／變更stale且明選，不自動confirm。 |
 | #44 | 候選模块返回`{modelId,previousSignature,record,diff,sourcePins}`；record沿用現strict model schema，不增audit/incarnation。接線捕捉context/history/current signature，真producer驗後原子替換同record、一筆undo完整舊record；準備候選不改live。 |
 | #77 | 版本化SourceRooms bundle、validator、asset refs及typed boundary/可選placement refs；一份basis、rooms只存名稱／引用／accepted basis，沒有第二polygon。native create/edit仍走既有candidate，由共用owner把metadata接同confirm步。 |
-| #49 | 六個有界definitions/receipts、freshness pins與validator；每run新隔離process，不碰live token／World／feedback，未知runtime非pass。具體序列化字段由owner提報後統一接附件；不先競寫保存／入口／#85。 |
+| #49 | 六個有界definitions/receipts、freshness pins與validator；每run新隔離process，不碰live token／World／feedback，未知runtime非pass；即使是已知且有能力的原生執行檔／runtime，換版指紋或驗證程式指紋變更也使舊pass過期。具體序列化字段由owner提報後統一接附件；不先競寫保存／入口／#85。 |
 
 各模組可注入上述讀寫adapter獨立測試；不直接持有或修改`ReferenceWorkspace.context()`內Map。共享app/index/serve接線只有下表整合owner寫。
 
