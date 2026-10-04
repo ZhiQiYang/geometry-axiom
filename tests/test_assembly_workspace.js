@@ -271,6 +271,13 @@ test('explicit new-version mapping keeps typed sources and its fixed provenance 
   assert.equal(live.w.isOpen,true);assert.deepEqual(copy(live.state.draft),edited);
   const originalContext=live.context();live.history.replace({id:'other-project',assemblyDrafts:[],models:[],faceProjections:new Map()});live.notify();assert.equal(live.w.isOpen,false);
   live.history.step('undo');assert.equal(live.context(),originalContext);live.notify();assert.equal(live.w.isOpen,false);
+  const pending=fixture({frameTokens:true}),readGate=deferred(),request=pending.env.apiRequest;
+  pending.state.draft.data.name='pending reopen';pending.w.flush();
+  pending.env.apiRequest=cmd=>cmd==='assembly-read'?readGate.promise:request(cmd);
+  const reopening=pending.w.open(),rejected=assert.rejects(reopening,/專案或工作區已切換/),pendingToken=pending.ref.getProjectState().contextToken;
+  assert.equal(pending.history.step('undo'),true);pending.notifyLocal(pendingToken);pending.notify();
+  assert.equal(pending.w.isOpen,false);readGate.resolve({ok:true,revision:1,state:{rules:[],bindings:[]}});await rejected;
+  assert.equal(pending.w.isOpen,false);
 });
 test('late binding allocation after a project switch never inserts its captured rule into the new project',async()=>{
   const f=fixture(),source=publishedRule(),allocation=deferred(),original=f.env.apiRequest;f.setWorld({rules:[source],bindings:[]});

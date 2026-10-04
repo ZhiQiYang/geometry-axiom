@@ -317,7 +317,7 @@ window.AssemblyWorkspace=(()=>{
   }
   async function remove(kind,id){if(confirming())return;await open(kind,id);if(!s?.record||confirming())return;s.operations=[kind==='assembly-rule'?{op:'delete-rule',id,version:s.record.value.version}:{op:'delete-binding',id}];await preview();}
   window.addEventListener('project-local-history',event=>{
-    if(!s||!dialog.open||confirming()||s.context!==event.detail?.previousContextToken||token()!==event.detail.contextToken)return;
+    if(!s?.read||!dialog.open||confirming()||s.context!==event.detail?.previousContextToken||token()!==event.detail.contextToken)return;
     invalidate();s.context=event.detail.contextToken;
     const saved=ReferenceWorkspace.getAssemblyDrafts().find(d=>d.id===s.draft?.id);
     if(s.draft)s.draft=saved||null;render();
