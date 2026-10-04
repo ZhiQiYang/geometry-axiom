@@ -144,11 +144,12 @@ module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,e
   // Inspect the real save entry's transient activation and defer close(). Only
   // OS I/O is substituted; the application creates its actual .gcanvas bytes.
   await read(`window.__p74PickerDescriptor=Object.getOwnPropertyDescriptor(window,'showSaveFilePicker');window.__p74Write={picked:false,closed:false,activation:false,bytes:null};Object.defineProperty(window,'showSaveFilePicker',{configurable:true,value:async()=>{__p74Write.picked=true;__p74Write.activation=navigator.userActivation.isActive;return {createWritable:async()=>({write:async bytes=>{__p74Write.bytes=Array.from(bytes)},close:async()=>{await new Promise(r=>{__p74Write.finish=r});__p74Write.closed=true},abort:async()=>{}})}}});void 0`);
+  const priorSaveAt=await read('ReferenceWorkspace.getProjectInfo().lastSavedAt');
   await ctl(saveSelector,false);await wait(`typeof window.__p74Write?.finish==='function'`);
-  check('共用保存保留原生使用者手勢，寫入完成前不標已保存',await read(`__p74Write.activation&&ReferenceWorkspace.getProjectInfo().lastSavedAt===null&&ReferenceWorkspace.context().dirty`));
+  check('共用保存保留原生使用者手勢，寫入完成前保留待保存與前次保存時間',await read(`__p74Write.activation&&!__p74Write.closed&&ReferenceWorkspace.busy&&ReferenceWorkspace.getProjectInfo().lastSavedAt===${JSON.stringify(priorSaveAt)}&&ReferenceWorkspace.context().dirty`));
   await read(`__p74Write.finish();void 0`);await wait(`!ReferenceWorkspace.busy&&__p74Write.closed`);
   const savedAt=await read('ReferenceWorkspace.getProjectInfo().lastSavedAt');
-  check('僅在寫入close成功後記錄保存時間及完整專案',typeof savedAt==='string'&&!Number.isNaN(Date.parse(savedAt))&&await read(`ReferenceWorkspace.context().saved&&!ReferenceWorkspace.context().dirty&&__p74Write.bytes.length>0`));
+  check('僅在寫入close成功後記錄新保存時間及完整專案',typeof savedAt==='string'&&!Number.isNaN(Date.parse(savedAt))&&savedAt!==priorSaveAt&&await read(`ReferenceWorkspace.context().saved&&!ReferenceWorkspace.context().dirty&&__p74Write.bytes.length>0`));
   await ctl('[data-engineering-open]');await wait(`$('ewWorkspace')?.open&&$('ewPreview')?.disabled===false`);await ctl('.ew-nav [data-ew-section="materials"]');await fill('#ewField-material-A',30);await ctl('#ewClose');
   check('真實修改已保存草稿後待保存，仍保留前次檔案寫入時間',await read(`ReferenceWorkspace.context().dirty&&ReferenceWorkspace.getProjectInfo().lastSavedAt===${JSON.stringify(savedAt)}`));
   const downloads=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-ux-refinement-download-'));await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:downloads});

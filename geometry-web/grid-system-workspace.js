@@ -33,22 +33,20 @@
     const fields=s.mode==='source'?F.sourceFields:F.bindingFields;
     return Object.fromEntries(fields.map(id=>[id,id==='igSystem'?s.systemRaw:rawField(s,id)]));
   }
+  const parameterSelections=form=>Object.entries(form).filter(([id,value])=>value&&id.endsWith('Source')&&!['igUSource','igVSource'].includes(id)).map(([id,value])=>[id,'parameter-field:'+value]);
+  function selectParameterPin(s,node){
+    if(!canEdit(s)||!node.id.endsWith('Source')||['igUSource','igVSource'].includes(node.id))return;
+    const before=s.referenceSelections.get(node.id),form=rawForm(s),key=node.value?'parameter-field:'+node.value:null;
+    s.referenceSelections.set(node.id,key);
+    if(before&&!parameterSelections(form).some(([,selected])=>selected===before))s.inputPins.delete(before);
+    if(key){const pin=s.pins.get(key);if(pin)s.inputPins.set(key,copy(pin));else s.inputPins.delete(key);}
+  }
   function rawValue(s){
-    const form=rawForm(s),refs=new Map(),add=ref=>{if(ref)refs.set(pinKey(ref),ref);};
-    if(s.mode==='binding'){
-      add(s.pins.get('grid-system:'+form.igSystem));
-      if(s.boundaryPin?.id===Number(form.igBoundary))add(s.boundaryPin);
-    }else for(const id of F.sourceFields.filter(id=>id.endsWith('Source')&&!['igUSource','igVSource'].includes(id))){
-      if(form[id])add(s.pins.get('parameter-field:'+form[id]));
-    }
-    // Retain unavailable provenance on resume; a missing input remains a draft.
-    for(const ref of s.restored?.inputRefs||[]){
-      if(ref.kind==='parameter-field'&&Object.values(form).includes(`${ref.parameterId}:${ref.fieldId}`)||
-         ref.kind==='grid-system'&&form.igSystem===String(ref.id)||ref.kind==='boundary'&&form.igBoundary===String(ref.id))
-        add(ref);
-    }
+    // Serialization preserves owned selection evidence. Merely opening or
+    // saving a restored form must never associate it with today's catalog.
+    const form=rawForm(s);
     return {schema:F.GRID_SCHEMA,draftId:s.draftId,kind:s.mode,intent:s.restored?.intent||((s.mode==='source'?s.source:s.binding)?'edit':'create'),
-      baseRef:s.restored?s.restored.baseRef:s.baseRef,inputRefs:[...refs.values()].map(copy),rawForm:form};
+      baseRef:s.restored?s.restored.baseRef:s.baseRef,inputRefs:[...s.inputPins.values()].map(copy),rawForm:form};
   }
   function flush(s=state){
     if(!current(s)||s.busy)return;
@@ -78,6 +76,9 @@
     const value=ReferenceWorkspace.readFeatureAttachment(rawKind);
     if(!value&&JSON.stringify(rawForm(s))===s.initialRaw&&!!(s.mode==='source'?s.source:s.binding))return null;
     if(!value||value.draftId!==s.draftId)throw Error('目前網格草稿已變更，請重新開啟。');
+    const selectedPins=new Map(value.inputRefs.map(ref=>[pinKey(ref),ref]));
+    const required=value.kind==='binding'?['grid-system:'+value.rawForm.igSystem,'boundary:'+value.rawForm.igBoundary]:parameterSelections(value.rawForm).map(([,key])=>key);
+    if(required.some(key=>!selectedPins.has(key)))throw Error('草稿的來源身分證據缺失，請明確重新選取；不會自動關聯目前的同編號內容。');
     const objects=await apiRequest('objects');if(!objects.ok||!current(s))throw Error('無法核對目前草稿來源。');
     const pins=await catalogPins(objects);if(!current(s))throw Error('草稿上下文已切換。');
     for(const ref of [...(value.baseRef?[value.baseRef]:[]),...value.inputRefs]){
@@ -223,7 +224,7 @@
       if (boundaryDraftChanged(s) && !window.confirm('邊界有尚未套用的頂點草稿。切換邊界會捨棄這些草稿，確定切換？')) {
         $('igBoundary').value = s.boundaryId == null ? '' : String(s.boundaryId); syncDraftState(s); return;
       }
-      loadBoundary(s, Number($('igBoundary').value), false);
+      loadBoundary(s, Number($('igBoundary').value), false, true);
     };
     $('igVertex').onchange = () => { s.vertex = s.vertices.find(v => vertexId(v) === $('igVertex').value) || null; drawBoundary(s); alignment(s); };
     for (const node of dialog.querySelectorAll('[data-ig-anchor]')) node.onclick = () => { const [u,v] = node.dataset.igAnchor.split(',').map(Number); setAnchor(u, 2, v, 2); alignment(s); drawGrid(s); };
@@ -247,15 +248,20 @@
     setAnchor(a?.[0]?.num ?? 0, a?.[0]?.den ?? 1, a?.[1]?.num ?? 0, a?.[1]?.den ?? 1);
     s.restoringBoundary = !!s.binding;
     s.initialSourceKey = sourceEditorKey(); s.initialBindingKey = s.binding ? savedBindingKey(s.binding) : bindingEditorKey(s); s.bindingReady = !s.binding;
-    dialog.oninput = dialog.onchange = event => {s.rawOverrides.delete(event.target.id);syncDraftState(s);};
+    dialog.oninput = dialog.onchange = event => {s.rawOverrides.delete(event.target.id);selectParameterPin(s,event.target);syncDraftState(s);};
     s.initialRaw=JSON.stringify(rawForm(s));
     if(s.restored)restoreRaw(s,s.restored.rawForm);
+    s.referenceSelections=new Map(parameterSelections(rawForm(s)));
+    if(!s.restored){
+      for(const [,key] of s.referenceSelections){const pin=s.pins.get(key);if(pin)s.inputPins.set(key,copy(pin));}
+      if(s.mode==='binding'){const pin=s.pins.get('grid-system:'+s.systemRaw);if(pin)s.inputPins.set(pinKey(pin),copy(pin));}
+    }
     for(const a of axes)for(const key of ['Step','Phase','Panel','Gap','Anchor','Stagger'])window.ParameterUI?.bindSource('ig'+a.toUpperCase()+key,()=>{drawGrid(s);syncDraftState(s);},{preserveValue:!!s.restored});
     s.initialSourceKey=sourceEditorKey();
     syncFields(); drawGrid(s);
     const loadingControls=[...dialog.querySelectorAll('input,select,button')].map(node=>[node,node.disabled]);
     for(const [node] of loadingControls)node.disabled=true;
-    if(s.mode==='binding'&&$('igBoundary').value){await loadBoundary(s,Number($('igBoundary').value),!!s.binding);
+    if(s.mode==='binding'&&$('igBoundary').value){await loadBoundary(s,Number($('igBoundary').value),!!s.binding,!s.restored);
       if(!current(s))return;if(s.restored){restoreRaw(s,{igVertex:s.restored.rawForm.igVertex});
         const ref=s.restored.inputRefs.find(ref=>ref.kind==='boundary'&&String(ref.id)===s.restored.rawForm.igBoundary);
         s.vertex=samePin(ref,s.boundaryPin)?s.vertices.find(v=>vertexId(v)===s.restored.rawForm.igVertex)||null:null;drawBoundary(s);alignment(s);}}
@@ -279,8 +285,11 @@
     if (s.mode === 'binding') {if(!s.source)throw Error('草稿來源已遺失，請明確捨棄後重新選取。');return s.source;}
     const name = rawField(s,'igName').trim(), bytes = new TextEncoder().encode(name);
     if (!bytes.length || bytes.length > 96 || /[\u0000-\u001f\u007f]/.test(name)) throw Error('名稱需為 1–96 個 UTF-8 位元組，且不可包含控制字元。');
-    const result = {name, mainAlong: $('igMainAlong').value, hex: Array.from(bytes, b => b.toString(16).padStart(2,'0')).join('')};
+    const mainAlong=rawField(s,'igMainAlong');
+    if(!['none','u','v'].includes(mainAlong))throw Error('請明確重新選取主支方向。');
+    const result = {name, mainAlong, hex: Array.from(bytes, b => b.toString(16).padStart(2,'0')).join('')};
     for (const a of axes) { const p = 'ig' + a.toUpperCase(), source = $(p + 'Source').value;
+      if(!['none','repeat','repeat-panel'].includes(source))throw Error(a+' 排格方式無法解讀，請明確重新選取；原始值仍保留。');
       result[a + 'Definition'] = source === 'none' ? {source} : source === 'repeat' ? {source, phase: int(p+'Phase', a+' 第 0 線座標'), step: int(p+'Step', a+' 間距',1)} : {source, panel:int(p+'Panel',a+' 面材',1),gap:int(p+'Gap',a+' 縫寬',0),anchor:int(p+'Anchor',a+' 面材起點')};
       const d=result[a+'Definition'];d.parameterRefs={};
       if (source !== 'none') {
@@ -434,7 +443,7 @@
   const vertexId = v => v.loop < 0 ? `outer:${v.index}` : `hole:${v.loop}:${v.index}`;
   const vertexTitle = v => `${v.loop < 0 ? '外環' : '孔洞 '+(v.loop+1)}・頂點 ${v.index+1}`;
   function vertices(b) { return b.loops.flatMap((loop,li) => (loop.vertices || loop.verts.map((uv,index)=>({index,key:null,uv}))).map(v=>({key:v.key,loop:loop.loop ?? li-1,index:v.index,u:v.uv[0],v:v.uv[1]}))); }
-  async function loadBoundary(s, id, restore) {
+  async function loadBoundary(s, id, restore, selectPin=false) {
     const request=++s.boundarySerial;s.boundary=null;s.vertex=null;s.vertices=[];s.bindingReady=false;s.restoringBoundary=restore;$('igVertex').innerHTML='<option value="">讀取頂點…</option>';syncDraftState(s);
     $('igKeyedVertices').replaceChildren(); $('igKeyedEditor').hidden=true;
     for (const a of ['Left','Right','Top','Bottom']) $('igGrow'+a).value=0;
@@ -445,6 +454,7 @@
       if(!current(s)||request!==s.boundarySerial)return;
       if(!b.ok||!b.loops?.length)throw Error(b.error||'無法讀取邊界。');
       const pin=await boundaryPin(id,b);if(!current(s)||request!==s.boundarySerial)return;s.boundaryPin=pin;
+      if(selectPin){for(const [key,ref] of s.inputPins)if(ref.kind==='boundary')s.inputPins.delete(key);s.inputPins.set(pinKey(pin),copy(pin));}
       s.boundary=b;s.boundaryId=id;s.vertices=vertices(b);
       $('igVertex').innerHTML='<option value="">點選圖中的頂點</option>'+s.vertices.map(v=>`<option value="${vertexId(v)}">${vertexTitle(v)} (${v.u}, ${v.v})</option>`).join('');
       if(restore&&s.binding)s.vertex=s.vertices.find(v=>v.key===s.binding.vertexKey)||null;
@@ -523,6 +533,7 @@
     if(await commit(s,`grid ${ids.grid} on ${surface} from-binding ${s.binding.id}`,`將配置 ${s.binding.id} 套用到承載面 ${surface}`,['grids',ids.grid]))await reopen(s);
   }
   function sourceCommand(d,id) {
+    if(!axes.every(a=>['none','repeat','repeat-panel'].includes(d[a+'Definition'].source)))throw Error('請明確重新選取排格方式。');
     const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};if(v.source==='none')return `${a} none`;const body=v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;const stag=v.parameterRefs?.stagger?` stagger ${token('stagger')}`:(v.stagger!=null?` stagger ${v.stagger}`:'');return `${a} ${body}${stag}`;});
     return `grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong} ${parts.join(' ')}`;
   }
@@ -638,7 +649,7 @@
     state?.trial?.dispose();
     const mode=restored?.kind||(binding?'binding':options.mode||'source');
     if(saved&&!restored&&!committed&&!(mode==='source'?!source:!binding))ReferenceWorkspace.setFeatureAttachment(rawKind,null,contextToken);
-    state={context,contextToken,source,binding,mode,pins,rawOverrides:new Map(),restored:restored&&copy(restored),draftId:restored?.draftId||crypto.randomUUID(),
+    state={context,contextToken,source,binding,mode,pins,inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(ref)])),rawOverrides:new Map(),restored:restored&&copy(restored),draftId:restored?.draftId||crypto.randomUUID(),
       baseRef:mode==='source'?(source?pins.get('grid-system:'+source.id):null):(binding?pins.get('grid-binding:'+binding.id):null),
       systemRaw:restored?.rawForm.igSystem??String(source?.id??''),bindings:objects.gridBindings||[],boundaries:objects.faces.filter(b=>b.kind==='boundary'),surfaces:surfaces.surfaces,references,base:[0n,0n],camera:[-1800,-1200,2400,1600],vertices:[],boundarySerial:0,busy:false};
     if(!dialog.open)dialog.showModal();await render(state);if(!ownsEntry())return;
