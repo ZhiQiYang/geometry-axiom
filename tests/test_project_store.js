@@ -139,6 +139,10 @@ test('rejects damaged scene, source, unknown version, duplicate paths and missin
   }
   let getterCalls=0;const accessor=gridDraft();Object.defineProperty(accessor.rawForm,'igUStep',{enumerable:true,get(){getterCalls++;return '600';}});
   assert.throws(()=>P.Features.validateGridDraft(accessor));assert.equal(getterCalls,0);
+  let toJSONCalls=0;const inherited=gridDraft(),prototype=Object.create(null);
+  prototype.constructor=Object;prototype.toJSON=()=>{toJSONCalls++;return {...inherited.rawForm,igUStep:'999'};};
+  Object.setPrototypeOf(inherited.rawForm,prototype);assert.throws(()=>P.Features.validateGridDraft(inherited));assert.equal(toJSONCalls,0);
+  const nullPrototype=gridDraft();Object.setPrototypeOf(nullPrototype.rawForm,null);P.Features.validateGridDraft(nullPrototype);
   for(const kind of ['source','binding']){
     const value=gridDraft(kind);value.intent='edit';value.baseRef={kind:kind==='source'?'grid-system':'grid-binding',id:0,fingerprint:'a'.repeat(64)};
     P.Features.validateGridDraft(value);

@@ -18,8 +18,12 @@
     Object.keys(value).every(k => required.includes(k) || optional.includes(k));
   const uint = value => Number.isSafeInteger(value) && value >= 0 && value <= 4294967295;
   const hash = value => typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
-  const objectPrototype = proto => proto !== null && Object.getPrototypeOf(proto) === null &&
-    Object.getOwnPropertyDescriptor(proto, "constructor")?.value?.name === "Object";
+  const nativePrototype = (proto, name) => {
+    const constructor = proto && Object.getOwnPropertyDescriptor(proto, "constructor")?.value;
+    return typeof constructor === "function" && constructor.prototype === proto &&
+      Function.prototype.toString.call(constructor) === `function ${name}() { [native code] }` && !Object.hasOwn(proto, "toJSON");
+  };
+  const objectPrototype = proto => proto !== null && Object.getPrototypeOf(proto) === null && nativePrototype(proto, "Object");
   const plainObject = value => Object.getPrototypeOf(value) === null || objectPrototype(Object.getPrototypeOf(value));
   // Reject values that JSON.stringify would silently change, and bound traversal
   // before serializing or copying caller-owned data.
@@ -32,7 +36,7 @@
       if (typeof item === "string" && item.length <= MAX_STRING) return;
       if (Array.isArray(item)) {
         const proto = Object.getPrototypeOf(item);
-        if (!proto || Object.getOwnPropertyDescriptor(proto, "constructor")?.value?.name !== "Array" ||
+        if (!nativePrototype(proto, "Array") ||
             !objectPrototype(Object.getPrototypeOf(proto)) || Object.getOwnPropertySymbols(item).length ||
             item.length > 128 || Object.getOwnPropertyNames(item).length !== item.length + 1) fail("功能附件陣列不合法。");
         for (let index = 0; index < item.length; index++) {
