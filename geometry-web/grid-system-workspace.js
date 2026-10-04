@@ -573,10 +573,11 @@
   async function operation(s,run) {
     if(!canEdit(s)||oc.busy)return;s.busy=true;oc.busy=true;dialog.classList.add('ig-busy');
     const controls=[...dialog.querySelectorAll('button,input,select')].map(n=>[n,n.disabled]);controls.forEach(([n])=>n.disabled=true);invalidField=null;
-    try{await run();}catch(e){if(current(s))status(e.message,true);}
+    let failure=null;
+    try{await run();}catch(e){failure=e.message;if(current(s))status(failure,true);}
     finally{s.busy=false;oc.busy=false;if(current(s)){
       if(ReferenceWorkspace.featureConfirmationPending()){s.heldControls=controls;$('igClose').disabled=false;status('確認結果尚未取得。原始草稿仍保留；返回畫布重新連線後才會依同一操作回執更新。',true);}
-      else{dialog.classList.remove('ig-busy');controls.forEach(([n,disabled])=>n.disabled=disabled);applicationState(s);if(invalidField)$(invalidField)?.focus();}}
+      else{dialog.classList.remove('ig-busy');controls.forEach(([n,disabled])=>n.disabled=disabled);applicationState(s);if(failure)status(failure,true);if(invalidField)$(invalidField)?.focus();}}
       invalidField=null;}
   }
   async function releaseHeldControls(s){
