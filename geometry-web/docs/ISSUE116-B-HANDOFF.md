@@ -48,6 +48,21 @@
 | BACKLOG.md | #116 減項、範圍、gate | 保留 #77 owner 狀態與工單，不相互覆蓋 |
 | tests/run_all.py | 將 #116 真 browser gate 明列 excluded＋INTEGRATION-GATES | 保留 #77 suites/exclusions/census，不拿 browser exclusion 算成 aggregate 通過 |
 
-#116 使用新局部 CSS，未修改 #114 正在改的 app.css；不改 ReferenceWorkspace、project-store、room-collection、source-plane 或 feature-attachments。Git merge dry-run 結果待首個 commit 後補入。
+#116 使用新局部 CSS，未修改 #114 正在改的 app.css；不改 ReferenceWorkspace、project-store、room-collection、source-plane 或 feature-attachments。
+
+`git merge-tree --write-tree edaffa7 origin/pr114-review` 唯讀演練得到 **1 個內容衝突**：`index.html` 的 app.js 後 script 插入區。app.js、BACKLOG.md、tests/run_all.py 自動合併；這只證明文字可合，不代表 owner 的行為驗收已過。未在工作區 merge／checkout #114。
+
+解衝突時該區應同時保留：
+
+```html
+<script src="cursor-v2.js"></script>
+<script src="app.js"></script>
+<script src="room-collection.js"></script>
+<script src="room-collection-workspace.js"></script>
+<script src="face-menu-icons.js"></script>
+<script src="face-context-menu.js"></script>
+```
+
+source-plane 的原插入區不衝突，也必須保留；不以只選 ours/theirs 解掉此衝突。演練紀錄 `%TEMP%/geometry-tests/issue116-pr114-merge-tree.txt`。
 
 建議 dot 先決定 #114 的 owner 整合基準，再合此小接線；解 index script 插入衝突時保留雙方新增 script。整合後重跑這份專項、完整 CDP 與 #114 正式多房間正常／中斷／保存重開／歷史／model update acceptance。草稿不自動關閉 #116；獨立只讀規則審查交 dot，尚未宣稱完成。
