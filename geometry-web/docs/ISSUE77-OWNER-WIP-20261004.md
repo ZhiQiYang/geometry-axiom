@@ -398,3 +398,38 @@ because isolated test environments clear CC; it was stopped at exit130, without
 a complete aggregate claim. A controlled default-compiler test_binaries27/0
 diagnosed that fixture-only issue; the next complete runner uses repo defaults,
 without changing tests, fingerprints or floors. Prior original failures remain.
+
+## Shared project-information refresh followup (2026-10-04)
+
+Exact6583343 completed the true normal PDF journey and independent visual audit,
+six native capacity scenarios/18 full ZIPs, shared-owner capacity/adoption90,
+full CDP1970/0 with82 goldens/P69=160, default-space183/0 and timber79/0.
+The complete strict aggregate exited1: eight VM owner fixtures lacked the new
+required preflight callback and three lacked host structuredClone. The two
+fixture files now provide real finite attachment validation, owned-lease and
+preflight-before-native assertions, retaining all original rollback/recovery
+assertions and floors. Actual native-targeted56/56 passed without skips; the
+original strict failure is retained and a new complete aggregate is required.
+
+Formal mobile history reading then exposed a separate common presentation bug.
+After normal clicks opened both source/history disclosures, a genuine read-only
+native dump scheduled the existing owner presentation and replaced both with
+closed DOM nodes despite identical context/revision, native World, full owner,
+original sources and history. Durable causal evidence is in
+`/77-formal-final4/project-info-api-dump-repro/`; an explicit real owner-sync
+variant independently matches. Earlier removal/archival failures and reruns
+remain separate and do not erase this causal failure.
+
+The existing project-information renderer now retains its own overview host
+continuously connected only while context token, revision and generated source
+markup remain equal, including the existing owner operation's context/session
+key. Full source markup binds its stable collection/room/history IDs, and the
+renderer holds its own created nodes without restoring by DOM position or
+storing transient disclosure state in project metadata. Other status rows
+refresh around it; changed ownership,
+data, options or blocked state rebuilds and rebinds the guarded view. No saved
+metadata/native write or new UI/module is introduced. This bounded increment
+needs actual causal/mobile/history/form-state regression and independent review.
+The normal658 journey is already passed; do not repeat unrelated work or claim
+old-head complete gates as a later head's results. #117 room_outline_test and
+#121 space_model_test remain their separate owners' files; no local-PC update.

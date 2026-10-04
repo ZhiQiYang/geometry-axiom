@@ -11,10 +11,11 @@ const vm = require('node:vm');
 const {webcrypto} = require('node:crypto');
 const S = require('../geometry-web/source-plane.js');
 const R = require('../geometry-web/room-collection.js');
+const F = require('../geometry-web/feature-attachments.js');
 const workspaceSource = readFileSync(path.join(__dirname, '../geometry-web/room-collection-workspace.js'), 'utf8');
 const clone = value => structuredClone(value);
 const outline = [[0,0],[4000,0],[4000,3000],[0,3000]];
-const callbacks = ['readSource','readIncarnation','beginTransaction','assertTransaction','endTransaction','groupOpen','labelTransaction','adoptLegacySource'];
+const callbacks = ['readSource','readIncarnation','beginTransaction','assertTransaction','endTransaction','preflightAttachment','groupOpen','labelTransaction','adoptLegacySource'];
 
 function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = false, rejectAbortKnown = false, rejectCancelKnown = false, existingRoom = false} = {}) {
   const plane = S.fromPage({sourceId:'a'.repeat(64), page:1, imgW:600, imgH:400, x:0, y:0, mmPerPx:20, rot:0,
@@ -23,7 +24,7 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
   const initial = {...S.empty(), planes:[plane], collections:[{id:'shared-rooms',planeId:plane.id,roomIds:existingRoom ? ['room-a'] : []}],
     rooms:existingRoom ? [{id:'room-a',name:'Room A',boundaryRef:{kind:'boundary',id:1,associationPin:native.geometryFingerprint},acceptedBasisRevision:1,reviewState:'confirmed'}] : []};
   const owner = {attachment:clone(initial), revision:1, lease:null, ended:[], group:false, confirmed:existingRoom,
-    requests:[], sources:[], incarnations:[], writes:0, labels:[], expectRecovery:false,blockCancel:rejectCancelKnown};
+    requests:[], protocol:[], preflights:0, sources:[], incarnations:[], writes:0, labels:[], expectRecovery:false,blockCancel:rejectCancelKnown};
   const ui={draft:{pts:[]},draftPreview:null,panHold:null,newOutline:null,tool:'select',events:[]};
   let roomWorkspace;
   const connection = {phase:'ready'};
@@ -50,6 +51,11 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     readIncarnation:(id, token) => {owner.incarnations.push([id,token]);return 'native-incarnation-1';},
     beginTransaction:token => {assert.equal(owner.lease,null);assert.equal(token,'fixture-context');return owner.lease={contextToken:token};},
     assertTransaction:lease => {assert.ok(lease);assert.equal(lease,owner.lease);},
+    preflightAttachment:(proposal,lease) => {
+      assert.ok(lease);assert.equal(lease,owner.lease);
+      F.validate({schema:F.SCHEMA,records:[F.record(F.ROOM_KIND,proposal)]});
+      owner.preflights++;owner.protocol.push('preflight');
+    },
     endTransaction:lease => {
       assert.equal(lease,owner.lease);
       if(owner.expectRecovery) {
@@ -67,15 +73,19 @@ function fixture({rejectConfirm = false, rejectMetadata = false, loseAbort = fal
     adoptLegacySource:() => {throw new Error('source adoption is outside this failure fixture');},
   };
   const apiRequest = async (command, lease) => {
-    owner.requests.push(command);
+    owner.requests.push(command);owner.protocol.push(command);
     if (lease) assert.equal(lease,owner.lease);
     if (command==='newid') return {ok:true,boundary:1};
     if (command==='boundary 1') return owner.confirmed ? clone(native) : {ok:false,error:'boundary does not exist'};
     if (command.startsWith('line preview ')) return {ok:true,preview:{valid:true,token:123,
       boundaries:[{id:1,before:owner.confirmed ? {...clone(native),id:1} : null,after:{...clone(native),id:1}}]}};
     if (command==='line cancel-preview') return owner.blockCancel ? {ok:false,error:'cancellation rejected before delivery',stale:true} : {ok:true};
-    if (command==='line history-begin') {owner.group=true;return {ok:true};}
+    if (command==='line history-begin') {
+      assert.equal(owner.protocol.at(-2),'preflight','admission precedes native history publication');
+      owner.group=true;return {ok:true};
+    }
     if (command==='line confirm 123') {
+      assert.ok(owner.preflights>0,'the owned proposal is admitted before native confirmation');
       if (rejectConfirm) {if (!rejectAbortKnown) owner.group=false;return {ok:false,error:'preview is stale'};}
       owner.confirmed=true;return {ok:true};
     }
