@@ -9,11 +9,18 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   const check=cdp.makeCheck({prefix:'P70 ',throwOnFail:true});
   const read=cdp.makeRead(eval_);
   const wait=cdp.makeWait(waitForUI,20000);
-  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:80,settleMs:140,missing:'Missing ',
+  const baseCtl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:80,settleMs:140,missing:'Missing ',
     unreachable:(selector,p)=>'Grid control unreachable '+selector+' '+JSON.stringify(p)});
+  // 2a: 相鄰格子相位差 is added on demand. Reaching its field first uses the real「相鄰格子相位差」control.
+  const ctl=async(selector,...rest)=>{const m=/^#ig([UV])Stagger/.exec(String(selector));
+    if(m&&await eval_(`(()=>{const n=document.getElementById('ig${m[1]}Stagger');return !!n&&n.getClientRects().length===0;})()`))await baseCtl(`[data-ig-add-stagger="${m[1].toLowerCase()}"]`);
+    return baseCtl(selector,...rest);};
   const key=cdp.makeKey({send,sleep});
   const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:60});
-  const choose=async(selector,value)=>{const index=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return [...e.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(String(value))});})()`);if(index<0)throw Error('Missing enabled option '+selector+'='+value);await ctl(selector);await key('Home','Home',36);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)})?.value===${JSON.stringify(String(value))}`);};
+  const choose=async(selector,value)=>{
+    // 2a: 排格方式 is a segmented radio group, not a native select.
+    if(/^#ig[UV]Source$/.test(selector))return ctl(`${selector} input[value="${value}"]`);
+    const index=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return [...e.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(String(value))});})()`);if(index<0)throw Error('Missing enabled option '+selector+'='+value);await ctl(selector);await key('Home','Home',36);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)})?.value===${JSON.stringify(String(value))}`);};
   const query=command=>read(`apiRequest(${JSON.stringify(command)}).then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;})`);
   const dump=async()=>(await query('dump')).text,objects=()=>query('objects'),refs=()=>query('references');
   const snapshot=async()=>({scene:await dump(),objects:await objects(),references:await refs()});
@@ -65,12 +72,27 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   check('1b 工具列顯示目前比例（格距 mm 與一格像素）',gv.zoom===`1 格 600×400 mm · ${Math.round(600*gv.scale)} px`,gv.zoom);
   check('1b 網格拉高填滿主區，下方不再留大片空白',gv.slack<4&&gv.size[1]>=400,{slack:gv.slack,size:gv.size});
   // 審查 3a 製圖桌：單列麵包屑、右側檢查器、分段主支方向、格資訊與格子縮圖
-  const l3=await read(`(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),h=r('.ig-header'),p=r('.workspace-project-header'),m=r('.ig-main'),a=r('.ig-inspector'),th=r('.ig-cp-box'),save=document.querySelector('#projectBar [data-project-action="save"]');return {h:[h.top,h.height],p:[p.top,p.height],mainRight:m.right,inspLeft:a.left,inspW:a.width,crumb:[...document.querySelectorAll('.ig-crumb > *')].map(e=>e.textContent),headerParagraph:!!document.querySelector('.ig-header p'),heading:!!document.querySelector('.ig-view-heading')||[...document.querySelectorAll('.ig-main h2')].some(e=>e.offsetParent),intro:[...document.querySelectorAll('.ig-settings p')].some(x=>/不需要總條數/.test(x.textContent)),footerInInspector:!!document.querySelector('.ig-inspector > .ig-footer #igSaveSource'),footerRow:!!document.querySelector('.ig-layout ~ .ig-footer, dialog > .ig-footer'),saveBg:getComputedStyle(save).backgroundColor,thumb:th.width/th.height,thumbLabels:[document.querySelector('.ig-cp-u').textContent,document.querySelector('.ig-cp-v').textContent],mode:document.querySelector('#igMainAlong').getAttribute('role')};})()`);
+  const l3=await read(`(()=>{const r=s=>document.querySelector(s).getBoundingClientRect(),h=r('.ig-header'),p=r('.workspace-project-header'),m=r('.ig-main'),a=r('.ig-inspector'),th=r('.ig-def-cell'),save=document.querySelector('#projectBar [data-project-action="save"]');return {h:[h.top,h.height],p:[p.top,p.height],mainRight:m.right,inspLeft:a.left,inspW:a.width,crumb:[...document.querySelectorAll('.ig-crumb > *')].map(e=>e.textContent),headerParagraph:!!document.querySelector('.ig-header p'),heading:!!document.querySelector('.ig-view-heading')||[...document.querySelectorAll('.ig-main h2')].some(e=>e.offsetParent),intro:[...document.querySelectorAll('.ig-settings p')].some(x=>/不需要總條數/.test(x.textContent)),footerInInspector:!!document.querySelector('.ig-inspector > .ig-footer #igSaveSource'),footerRow:!!document.querySelector('.ig-layout ~ .ig-footer, dialog > .ig-footer'),saveBg:getComputedStyle(save).backgroundColor,thumb:th.width/th.height,thumbLabels:['u','v'].map(a=>document.querySelector('[data-ig-chip="'+a+':step"]').textContent.replace(/\\D/g,'')),mode:document.querySelector('#igMainAlong').getAttribute('role')};})()`);
   check('3a 專案列與工作區標題合併成單列麵包屑，返回在最前，只剩「預覽並建立」一個主動作',Math.abs(l3.h[0]-l3.p[0])<1&&l3.h[1]===56&&l3.p[1]===56&&l3.crumb.includes('無限網格')&&l3.crumb.includes('雙向 無限 <A & B>')&&!l3.headerParagraph&&l3.footerInInspector&&!l3.footerRow&&l3.saveBg==='rgb(255, 255, 255)',l3);
   check('3a 設定集中到右側 360px 檢查器，網格在左側成為畫面本體，沒有標題與說明卡',l3.inspLeft>=l3.mainRight-1&&l3.inspW===360&&!l3.heading&&!l3.intro,l3);
-  check('3a 格子縮圖維持 600:400 比例',Math.abs(l3.thumb-1.5)<.02&&l3.thumbLabels.join('/')==='600/400',l3);
+  check('2a 定義圖的格子維持 600:400 比例，尺寸標籤對應間距',Math.abs(l3.thumb-1.5)<.02&&l3.thumbLabels.join('/')==='600/400',l3);
   await ctl('#igMainAlong input[value="u"]');const seg=await read(`({value:$('igMainAlong').value,checked:document.querySelector('#igMainAlong input:checked')?.value,dirty:!$('igSaveSource').disabled})`);
   await ctl('#igMainAlong input[value="none"]');check('3a 主支方向為分段選擇，值仍由 #igMainAlong.value 讀取',seg.value==='u'&&seg.checked==='u'&&seg.dirty&&l3.mode==='radiogroup'&&await read(`$('igMainAlong').value==='none'`),seg);
+  { // 2a 定義圖＋分軸卡片：同一份原始輸入，圖、卡片、欄位與底部狀態互相對應
+  const def2a=()=>read(`(()=>{const card=a=>document.querySelector('.ig-axis[data-ig-axis="'+a+'"]'),vis=e=>!!e&&e.getClientRects().length>0;return {chips:[...document.querySelectorAll('#igDefStage [data-ig-chip]')].map(e=>e.dataset.igChip+'='+e.textContent),cards:['u','v'].map(a=>({a,focus:card(a).classList.contains('is-focus'),field:card(a).querySelector('[data-ig-field].is-focus')?.dataset.igField||'',role:card(a).querySelector('.ig-role').hidden?'':card(a).querySelector('.ig-role').textContent,sum:card(a).querySelector('.ig-axis-sum').textContent})),pill:$('igSourcePill').textContent,state:$('igStateText').textContent,stateTone:$('igStateLine').dataset.tone,stagger:['u','v'].map(a=>vis($('ig'+a.toUpperCase()+'Stagger'))),panel:vis($('igUPanel')),stepErr:$('igUStepErr').textContent,stepInvalid:$('igUStep').getAttribute('aria-invalid'),saveDisabled:$('igSaveSource').disabled};})()`);
+  const d0=await def2a();
+  check('2a 定義圖與兩張軸卡同時展開：間距與第 0 線尺寸標籤、已在場景狀態',['u:step=間距 600','v:step=間距 400','u:phase=u 0','v:phase=v 0'].every(x=>d0.chips.includes(x))&&d0.cards.map(c=>c.sum).join('|')==='每 600 mm|每 400 mm'&&d0.pill==='已在場景'&&d0.state==='已在目前場景'&&d0.saveDisabled,d0);
+  await ctl('[data-ig-chip="v:step"]');const dv=await def2a();await ctl('[data-ig-pick-axis="u"]');const du=await def2a();
+  check('2a 點定義圖尺寸或卡片標題：對應卡片加框、欄位反白，不改世界',dv.cards.find(c=>c.a==='v').focus&&dv.cards.find(c=>c.a==='v').field==='step'&&!dv.cards.find(c=>c.a==='u').focus&&du.cards.find(c=>c.a==='u').focus&&du.cards.find(c=>c.a==='u').field==='step'&&du.cards.find(c=>c.a==='u').sum===d0.cards[0].sum,{dv,du});
+  await fill('#igUStep','1e');const bad=await def2a();await fill('#igUStep',600);const good=await def2a();
+  check('2a 欄位錯誤就地標示並計入底部「N 個欄位需要修正」；改回後恢復',bad.stepErr.includes('u 間距須為')&&bad.stepInvalid==='true'&&bad.state==='1 個欄位需要修正'&&bad.stateTone==='error'&&good.stepErr===''&&good.stepInvalid==='false'&&good.state==='已在目前場景'&&good.saveDisabled,{bad,good});
+  await ctl('#igMainAlong input[value="u"]');const roleU=await def2a();await ctl('#igMainAlong input[value="v"]');const roleV=await def2a();await ctl('#igMainAlong input[value="none"]');const roleNone=await def2a();
+  check('2a 主支方向標在卡片上：沿 u 時 v 軸為主支線，沿 v 時 u 軸為主支線，不設定則不標',roleU.cards.map(c=>c.role).join('|')==='副支線|主支線'&&roleV.cards.map(c=>c.role).join('|')==='主支線|副支線'&&roleNone.cards.every(c=>c.role===''),{roleU,roleV,roleNone});
+  await ctl('#igUSource input[value="repeat-panel"]');const panel=await def2a();const panelValue=await read(`$('igUSource').value`);await ctl('#igUSource input[value="repeat"]');const back=await def2a();
+  check('2a 排格方式是分段選擇：切換顯示面材＋縫欄位，#igUSource.value 仍可讀，切回不留草稿',panel.panel&&panelValue==='repeat-panel'&&panel.chips.some(x=>x.startsWith('u:panel='))&&!back.panel&&back.chips.includes('u:step=間距 600')&&back.saveDisabled,{panel,panelValue,back});
+  await ctl('[data-ig-add-stagger="v"]');const added=await def2a();await fill('#igVStagger',300);const dirty=await def2a();await ctl('[data-ig-remove-stagger="v"]');const closed=await def2a();
+  check('2a 相鄰格子相位差按需加入，移除會清空欄位並收起；空白不留草稿',!d0.stagger[1]&&added.stagger[1]&&dirty.state==='有變更，尚未預覽'&&dirty.pill==='已變更'&&!closed.stagger[1]&&closed.saveDisabled&&await read(`$('igVStagger').value===''`),{added,dirty,closed});
+  }
   const spot=async(u,v)=>{await read(`$('igGridView').scrollIntoView({block:'center'});void 0`);await sleep(120);return read(`(()=>{const g=$('igGridView'),c=g.dataset.igCamera.split(' ').map(Number),r=g.querySelector('[data-ig-plot]').getBoundingClientRect(),k=r.width/(c[2]-c[0]);return {x:r.left+(${u}-c[0])*k,y:r.top+(${v}-c[1])*k};})()`);};
   const hoverPt=await spot(900,600),worldBefore=await dump();await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:hoverPt.x,y:hoverPt.y});await sleep(160);
   const hov=await read(`({cell:$('igInfoCell').textContent,title:$('igInfoTitle').textContent,rect:!!$('igGridView').querySelector('[data-ig-hover="1,1"]'),bands:$('igGridView').querySelectorAll('[data-ig-band]').length,rows:[...$('igInfoRows').children].map(e=>e.textContent)})`);
@@ -175,7 +197,9 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
     check('相位差參數引用顯示核心有效值 '+value,await read(`$('igUStagger').readOnly && $('igUStagger').value===${JSON.stringify(value)}`));
     await rejectStagger('拒絕求值為 '+value+' 的相位差參數，完整世界不變',field===1?['0','省略']:['重合','省略']);
   }
-  await choose('#igUStaggerSource','901:2');await saveSource();
+  await choose('#igUStaggerSource','901:2');
+  check('2a 參數引用收進欄位：欄位呈現來源名稱與核心值，可查看來源；改回直接輸入即解除',await read(`(()=>{const m=$('igUStagger').closest('.ig-pf-main'),n=m.querySelector('.ig-pf-name').textContent,j=m.querySelector('.param-jump');return m.hasAttribute('data-bound')&&n.includes('相位差驗收')&&$('igUStagger').readOnly&&$('igUStagger').value==='400'&&!j.hidden;})()`));
+  await saveSource();
   const referenceGrid=(await objects()).gridSystems.find(g=>!systemsBeforeReference.has(g.id));
   check('合法相位差保存參數來源，空白另一軸不補零',referenceGrid?.uDefinition.stagger===400&&referenceGrid.uDefinition.parameterRefs?.stagger?.parameterId===901&&referenceGrid.uDefinition.parameterRefs.stagger.fieldId===2&&!Object.hasOwn(referenceGrid.vDefinition,'stagger')&&(await dump()).includes('u repeat-panel 400 gap 5 from -100 stagger param:901:2 v repeat 0 1830'));
   await close();

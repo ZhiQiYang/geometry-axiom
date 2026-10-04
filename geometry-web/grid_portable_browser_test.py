@@ -102,7 +102,8 @@ try:
    js(page,"if(oc.focus)await leaveFocus();await renderObjects();")
    before=dump(page)
    create_entry(page);ready_editor(page)
-   page.locator('#igUSource').select_option('repeat-panel');page.locator('#igUPanel').fill('not-a-panel');page.locator('#igUSource').select_option('repeat')
+   page.locator('#igUSource input[value="repeat-panel"]').check();page.locator('#igUPanel').fill('not-a-panel');page.locator('#igUSource input[value="repeat"]').check()
+   page.locator('[data-ig-add-stagger="u"]').click()
    for selector,value in {'igName':'  未完成網格  ','igUStep':'1e','igUPhase':'-','igVStep':' 00400 ','igUStagger':'  '}.items():
     page.locator('#'+selector).fill(value)
    raw=draft(page)
