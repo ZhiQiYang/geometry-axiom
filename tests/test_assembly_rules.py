@@ -419,6 +419,7 @@ class AssemblyRules(unittest.TestCase):
         self.apply([{"op":"publish-material","value":dict(material,version=3,A=61,B=71)},
                     {"op":"publish-material","value":{"id":"oak","version":2,"kind":"timber","name":"橡木新版","A":79,"B":83}}])
         before=self.read()["state"]
+        self.assertEqual({1,2,3},{b["value"]["id"] for b in before["bindings"]})
         for actual in before["bindings"]:
             value,effective=expected[actual["value"]["id"]]
             self.assertTrue(actual["complete"])
