@@ -134,16 +134,24 @@ class _Child:
         """A completed verdict still requires a clean native exit and bounded output."""
         self._check()
         self.process.stdin.close()
-        try:
-            code = self.process.wait(timeout=max(.001, self.deadline - time.monotonic()))
-        except subprocess.TimeoutExpired:
-            raise _Stop("timeout", "wall-time-limit")
+        while self.process.poll() is None:
+            self._check()
+            try:
+                self.process.wait(timeout=min(.05, max(.001, self.deadline - time.monotonic())))
+            except subprocess.TimeoutExpired:
+                continue
+        code = self.process.returncode
         for reader in self.readers:
-            reader.join(timeout=max(.001, self.deadline - time.monotonic()))
+            while reader.is_alive():
+                self._check()
+                reader.join(timeout=.01)
         self._check()
         if code:
             crashed = code < 0 or code in (0xC0000005, -1073741819)
             raise _Stop("crashed" if crashed else "failed", "native-exit:" + str(code))
+        while not self.responses.empty():
+            if self.responses.get_nowait() is not None:
+                raise _Stop("failed", "unsolicited-native-response")
 
 
 def _record(state, ref):
@@ -195,6 +203,37 @@ def _assert(predicate, before, after, unchanged):
 def _diagnostic_matches(actual, expected):
     # Human messages are preserved as evidence but never influence verdicts.
     return all(actual.get(key) == expected[key] for key in ("code", "clause", "ref"))
+
+
+def _verify_record_pins(state, operations):
+    """Native rule/binding definitions must preserve the full typed submitted value.
+
+Parameter input is intentionally normalized into a native AST, so it is not
+compared with the input spelling. No effective-value cache substitutes for pins.
+"""
+    def normalized(value, kind):
+        value = deepcopy(value)
+        # Native authoring canonicalizes these finite identity arrays. Reordering
+        # is permitted by D32 and must not look like a changed member definition.
+        keys = {"slots": "id", "members": "id", "joints": "id"} if kind == "rule" else {"slots": "slotId"}
+        for field, key in keys.items():
+            value[field].sort(key=lambda item: item[key])
+        return value
+
+    expected = {}
+    for operation in operations:
+        if operation["op"] not in ("publish-rule", "create-binding", "put-binding"):
+            continue
+        value = operation["value"]
+        ref = {"kind": "rule" if operation["op"] == "publish-rule" else "binding", "id": value["id"]}
+        if ref["kind"] == "rule":
+            ref["version"] = value["version"]
+        expected[digest(ref)] = ref, value
+    for ref, value in expected.values():
+        actual = _record(state, ref)
+        if (actual is None or digest(normalized(actual["value"], ref["kind"]))
+                != digest(normalized(value, ref["kind"]))):
+            raise _Stop("failed", "native-record-pin-mismatch")
 
 
 def refresh_receipt(receipt, definition, identity, *, project_id=None, generation=None):
@@ -311,6 +350,7 @@ class NativeExecutor:
                 raise _Stop("failed", "invalid-source-closure")
             command("assembly-confirm " + str(seeded["token"]))
         before, before_dump = read(), command("dump")["text"]
+        _verify_record_pins(before["state"], definition["input"]["setup"])
         candidate = preview(definition["input"]["transaction"], "case.json")
         valid = candidate.get("valid")
         if type(valid) is not bool:
@@ -334,6 +374,8 @@ class NativeExecutor:
                                        for p in definition["assertions"]]
         if receipt["actualOutcome"] != definition["expect"]["outcome"]:
             raise _Stop("failed", "outcome-mismatch")
+        if valid:
+            _verify_record_pins(after["state"], definition["input"]["transaction"])
         if not valid and not unchanged:
             raise _Stop("failed", "rejected-world-changed")
         if not all(a["passed"] for a in receipt["assertionResults"]):

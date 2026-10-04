@@ -176,6 +176,17 @@ class RuleCaseCatalogNative(unittest.TestCase):
         self.assertEqual({"id": 17, "version": 1}, record(after, "binding", 29)["value"]["rule"])
         new = record(after, "rule", 17, 2)["value"]
         self.assertEqual({
+            "id": 17, "version": 2, "name": "有限主副支接合",
+            "slots": [{"id": 7, "name": "主支"}, {"id": 13, "name": "副支"}],
+            "members": [{"id": 11, "slotId": 7}, {"id": 37, "slotId": 7}, {"id": 89, "slotId": 13}],
+            "joints": [
+                {"id": 101, "kind": "end-to-side", "scope": "left", "terminatedMember": 89,
+                 "targetMember": 11, "end": "start", "side": "-u", "dir": "u"},
+                {"id": 203, "kind": "end-to-side", "scope": "right", "terminatedMember": 89,
+                 "targetMember": 37, "end": "finish", "side": "-u", "dir": "u"},
+            ],
+        }, new)
+        self.assertEqual({
             101: (89, 11, "start", "-u"),
             203: (89, 37, "finish", "-u"),
         }, {joint["id"]: (joint["terminatedMember"], joint["targetMember"], joint["end"], joint["side"])

@@ -17,6 +17,8 @@ def _sha(path):
 
 
 _LOADED_MODULES = {p.name: _sha(p) for p in Path(__file__).parent.glob("*.py")}
+_REGISTRY_PATH = ROOT / "tests" / "binaries.py"
+_LOADED_REGISTRY = _sha(_REGISTRY_PATH)
 
 
 def runtime_identity(binary=None):
@@ -28,11 +30,14 @@ def runtime_identity(binary=None):
     try:
         binary_hash = binaries._binary_identity(info.path)["exe_sha256"]
         modules = sorted(Path(__file__).parent.glob("*.py"))
-        if {p.name: _sha(p) for p in modules} != _LOADED_MODULES:
+        module_hashes = {p.name: _sha(p) for p in modules}
+        registry_hash = _sha(_REGISTRY_PATH)
+        if module_hashes != _LOADED_MODULES or registry_hash != _LOADED_REGISTRY:
             return {"known": False, "reason": "Validator changed; reload the Python process"}, info.path
         validator = hashlib.sha256()
-        for module in modules:
-            validator.update(module.name.encode() + b"\0" + bytes.fromhex(_sha(module)))
+        for name, module_hash in sorted(module_hashes.items()):
+            validator.update(name.encode() + b"\0" + bytes.fromhex(module_hash))
+        validator.update(b"tests/binaries.py\0" + bytes.fromhex(registry_hash))
         identity = {"known": True, "nativeBinaryHash": binary_hash,
                     "nativeSourceHash": info.fingerprint,
                     "validatorVersion": validator.hexdigest(),
@@ -41,7 +46,10 @@ def runtime_identity(binary=None):
         # A source/binary replacement between the two reads is never trusted.
         final = binaries.inspect_one(binaries.BY_NAME["bridge"], path=info.path)
         if (final.state != "fresh" or final.fingerprint != info.fingerprint
-                or binaries._binary_identity(info.path)["exe_sha256"] != binary_hash):
+                or binaries._binary_identity(info.path)["exe_sha256"] != binary_hash
+                or {p.name: _sha(p) for p in Path(__file__).parent.glob("*.py")} != module_hashes
+                or _sha(_REGISTRY_PATH) != registry_hash
+                or _sha(ROOT / "公理層.md") != identity["axiomHash"]):
             return {"known": False, "reason": "Runtime changed during verification"}, info.path
         return identity, info.path
     except (OSError, ValueError) as error:
