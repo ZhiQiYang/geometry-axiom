@@ -64,8 +64,11 @@ const ReferenceWorkspace = (() => {
   let presentationFrame = 0;
   function revision(c) { return revisions.get(c) || 0; }
   function getProjectState() {
-    const c = context(); if (!contextTokens.has(c)) contextTokens.set(c, uuid());
-    return {id:c.id,contextToken:contextTokens.get(c),revision:revision(c),dirty:!!c.dirty,saved:!!c.saved};
+    const c = context(), frame = history.frame;
+    // Undo may return to the same context object. A former asynchronous owner
+    // must not regain write permission merely because that project is visible.
+    if (!contextTokens.has(frame)) contextTokens.set(frame, uuid());
+    return {id:c.id,contextToken:contextTokens.get(frame),revision:revision(c),dirty:!!c.dirty,saved:!!c.saved};
   }
   function dirty(reason = "") { const c = context(); revisions.set(c, revision(c) + 1); c.dirty = true; c.dirtyReason = reason; c.downloaded = false; schedulePresentation(); scheduleRecovery(); }
   function statusText(c = context()) {

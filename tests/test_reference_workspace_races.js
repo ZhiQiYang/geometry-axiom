@@ -283,6 +283,10 @@ test('opening owns the busy state from first byte read through rendering and ref
   assert.notEqual(g.w.getProjectState().contextToken,oldToken);assert.equal(g.w.context().dirty,false);
   assert.throws(()=>g.w.setFeatureAttachment('grid-draft',null,oldToken),/上下文/);
   g.w.observe('line undo',{ok:true});assert.equal(g.w.context(),previous);assert.equal(g.w.readFeatureAttachment('grid-draft').draftId,'old-draft');
+  const returnedState=JSON.stringify(g.w.getProjectState()),returnedUndo=g.w.history.undo.length;
+  assert.notEqual(g.w.getProjectState().contextToken,oldToken);
+  assert.throws(()=>g.w.setFeatureAttachment('grid-draft',null,oldToken),/上下文/);
+  assert.equal(JSON.stringify(g.w.getProjectState()),returnedState);assert.equal(g.w.history.undo.length,returnedUndo);
   g.w.observe('line redo',{ok:true});assert.equal(JSON.stringify(g.w.readFeatureAttachment('grid-draft')),JSON.stringify(rawGridDraft()));
 });
 
