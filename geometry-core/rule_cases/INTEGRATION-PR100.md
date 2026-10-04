@@ -9,9 +9,11 @@ or app route is registered by this comparison.
 Rechecked merged main `b3c210791d128dc84c3222078df2472b70cc0e60`: the owner
 and shared seams are unchanged, and its added known/capable native runtime
 fingerprint freshness requirement is already covered by exact executor identity.
-That main has no new typed assembly diagnostics or designated assembly
-diagnostic writer. Root must coordinate that writer; the assigned subdivision
-native scope alone does not grant this module ownership of shared assembly files.
+That main has no new typed assembly diagnostics. Root's explicit 2026-10-04
+04:14 assignment designates thread `01a1050d-60bf-7207-844c-08bf99a520b0` as the
+unique native writer, with the precise #49 diagnostic slice before subdivision.
+This module owns only its finite cases/executor/tests; transport/save/app remain
+the shared integration owner's scope.
 
 ## Required shared-owner decisions
 
