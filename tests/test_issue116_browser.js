@@ -91,7 +91,10 @@ async function main(){
       },mode);
       await page.locator('#feOpApply').click();
       if(mode==='session')await page.evaluate(()=>{connection.session=window.__issue116Session;});
-      check(await dump(page),native,mode+' stale form refuses all native writes');
+      // #114 correctly makes the client read-only on a stale session. Read the
+      // native World independently; never clear that guard to make a test pass.
+      const afterStale=mode==='session'?await fetch(new URL('/api',url),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cmd:'dump'})}).then(async r=>{const j=await r.json();assert.equal(j.ok,true);return j.text;}):await dump(page);
+      check(afterStale,native,mode+' stale form refuses all native writes');
       check(await page.evaluate(()=>fe.op),null,mode+' stale form retires preview');
       if(mode==='session')await page.reload();await page.waitForFunction(()=>connection.phase==='ready');
     }
@@ -118,7 +121,7 @@ async function main(){
     const holeNative=await dump(page);
     const reject=await page.evaluate(async()=>{await api('line timber 10 100 33 role boundary');return api('line place 10 on 1 at-face h0e0 +v +n');});
     check(reject.ok,false,'native core rejects boundary role on an inner hole edge');
-    check(reject.error.includes('V_BOUNDARY_ROLE'),true,'hole edge is rejected for the actual I21 role requirement');
+    check(reject.error.includes('V_BOUNDARY_ROLE'),true,'hole edge is rejected for the actual I20 role requirement');
     await fixture(page);const f=await at(page,4100,1000);await page.mouse.click(f.x,f.y,{button:'right'});
     check(await page.locator('#feCtxMenu').isVisible(),true,'outside-face menu provides real view controls');
     await page.locator('#feCtxMenu [data-fe-act="create"]').click();check(await page.locator('.fcm-submenu [data-fe-act="op:hole"]').getAttribute('aria-disabled'),'true','outside-face opening entry remains unavailable');
@@ -136,6 +139,10 @@ async function main(){
     await page.keyboard.up('Shift');check(await page.evaluate(()=>[...fe.timberSelection].sort()),[10,11],'existing Shift selection produces real timber multi-selection');
     await right(page,1000,50);check(await page.locator('.fcm-heading strong').textContent(),'已選 2 支角材','right-click preserves existing multi-selection');
     check(await page.locator('#feCtxMenu [data-fe-act="delete"]').getAttribute('aria-disabled'),'true','multi-delete follows existing single-selection requirement');await page.keyboard.press('Escape');
+    let timberPoint=await at(page,1000,50);await page.mouse.move(timberPoint.x,timberPoint.y);
+    check(await page.locator('.cx-layer[data-cx-host="fe"] .cx-label').textContent(),'角材 10','hover badge reads actual first timber ID');
+    await page.waitForTimeout(1300);timberPoint=await at(page,1000,2950);await page.mouse.move(timberPoint.x,timberPoint.y);
+    check(await page.locator('.cx-layer[data-cx-host="fe"] .cx-label').textContent(),'角材 11','changing hovered timber re-expands the badge with its actual ID');
     await fixture(page);
     await right(page,2000,1500);check(await page.locator('.fcm-heading strong').textContent(),'面內一點','inside-point target preserves right-click location');
     const point=await page.evaluate(()=>({...fe.sel}));
@@ -145,12 +152,17 @@ async function main(){
     check(await page.locator('.fcm-heading strong').textContent(),'參考線 1','guide context uses actual guide id');
     await page.locator('#feCtxMenu .fcm-tile[data-fe-act="guide-edit"]').click();check(await page.evaluate(()=>fe.fiTab),'guide','guide editing routes to existing reference-source form');
     check(await page.locator('#refGuideExpr').inputValue(),'spec:guideAt','guide source expression preserved');
+    await page.locator('#guide-editor-close').click();
+    await page.locator('[data-face-tool="timber"]').click();const guidePoint=await at(page,2000,1700);await page.mouse.move(guidePoint.x,guidePoint.y);
+    check(await page.locator('.cx-layer[data-cx-host="fe"] .cx-label').textContent(),'沿此線放置','reference-line hover describes the real placement source');
     // Actual pointer cursor: expands on state change, shrinks after 1.2s, denial stays.
     await fixture(page);let p=await at(page,4000,1400);await page.mouse.move(p.x,p.y);
     check(await page.locator('.cx-layer[data-cx-host="fe"] .cx-label').textContent(),'推拉','real edge hover shows intent badge');
     await page.waitForTimeout(1300);check(await page.locator('.cx-layer[data-cx-host="fe"] .cx-label').count(),0,'stationary cursor collapses after 1.2 seconds');
     await page.keyboard.down('Space');check(await page.locator('.cx-layer[data-cx-host="fe"]').textContent(),'Space','temporary pan modifier is visible');await page.keyboard.up('Space');
-    await fixture(page,['line boundary 1 outline 0,0 4000,0 4000,3000 0,3000 hole 1200,1000 1200,1400 1600,1400 1600,1000']);await page.locator('[data-face-tool="timber"]').click();p=await at(page,1600,1200);await page.mouse.move(p.x,p.y);await page.waitForTimeout(1300);
+    await fixture(page,['line boundary 1 outline 0,0 4000,0 4000,3000 0,3000 hole 1200,1000 1200,1400 1600,1400 1600,1000']);p=await at(page,1600,1200);await page.mouse.move(p.x,p.y);
+    check(await page.locator('.cx-layer[data-cx-host="fe"] .cx-label').textContent(),'孔','selection hover retains the actual hole context');
+    await page.locator('[data-face-tool="timber"]').click();await page.mouse.move(p.x,p.y);await page.waitForTimeout(1300);
     check(await page.locator('.cx-layer[data-cx-host="fe"] .cx-label').textContent(),'孔邊請用右欄定位','denial reason remains after normal collapse delay');await shot(page,'cursor-denied');
     // Small-screen and compact landscape layout use the same commands/panel.
     for(const viewport of [{width:390,height:844},{width:720,height:480}]){

@@ -3952,13 +3952,15 @@ function cxRender(h, x, y, alt, shift) {
   if (h === cxUI.fe && window.CursorV2) {
     const keys = {edge:"edge-push", "resize-ew":"edge-push", "resize-ns":"edge-push",
       "alt-vertex":"alt-pinch", "move-line":"move-guide", "timber-pick":"hover-pick", "hole-pick":"select"};
-    const signature = res.key + ':' + alt + ':' + shift;
+    const signature = res.key + ':' + alt + ':' + shift + ':' + (res.label || '');
     if (h.v2State !== signature) {
       clearTimeout(h.v2Timer); h.v2State = signature; h.v2Since = performance.now();
       h.v2Timer = setTimeout(() => { if (h.last) cxRender(h,h.last.x,h.last.y,cxAlt,cxShift); }, 1200);
     }
     const opts = {expanded:performance.now()-h.v2Since<1200, readout:res.tip,
       mod:fe.spaceDown ? "Space" : alt ? "Alt" : shift ? "Shift" : null};
+    if (res.label) opts.label = res.label;
+    if (res.key === "hole-pick") opts.icon = "hole";
     if (res.key === "edge" || res.key === "resize-ns") opts.angle = 90;
     else if (res.key === "resize-ew") opts.angle = 0;
     if (res.key === "move-line") {
@@ -3970,10 +3972,6 @@ function cxRender(h, x, y, alt, shift) {
       const hit = document.elementFromPoint(x,y)?.closest?.('[data-face-hit]')?.dataset.faceHit.split(':');
       const a = hit && feCurLoops()[+hit[1]]?.verts[+hit[2]], b = hit && feCurLoops()[+hit[1]]?.verts[(+hit[2]+1)%feCurLoops()[+hit[1]].verts.length];
       if (a && b) opts.angle = a[1] === b[1] ? 90 : 0;
-    }
-    if (res.key === "timber-pick") {
-      const hit = document.elementFromPoint(x,y)?.closest?.('[data-face-hit]')?.dataset.faceHit.split(':');
-      opts.label = `角材 ${hit?.[1] || ''}`;
     }
     glyph = CursorV2.glyph(keys[res.key] || res.key,opts);
   }
@@ -4116,9 +4114,9 @@ function cxResolveFace(x, y, alt, shift) {
         }
         return { key: "vertex", marks };
       }
-      if (hit[0] === "e") return { key: +hit[1] === 0 ? "edge" : "hole-pick", marks };
+      if (hit[0] === "e") return { key: +hit[1] === 0 ? "edge" : "hole-pick", label: +hit[1] === 0 ? null : "孔", marks };
       if (hit[0] === "g") return { key: "move-line", marks };
-      if (hit[0] === "t") return { key: "timber-pick", marks };
+      if (hit[0] === "t") return { key: "timber-pick", label: `角材 ${hit[1]}`, marks };
     }
     return { key: "select", marks };
   }
@@ -4126,7 +4124,7 @@ function cxResolveFace(x, y, alt, shift) {
   if (fe.tool === "hole") return { key: "hole", marks };
   if (fe.tool === "timber") {
     if (hit && hit[0] === "e" && +hit[1] !== 0) return { key: "deny", marks };
-    if (hit && (hit[0] === "e" || hit[0] === "g")) return { key: "timber-ok", marks };
+    if (hit && (hit[0] === "e" || hit[0] === "g")) return { key: "timber-ok", label: hit[0] === "g" ? "沿此線放置" : "沿此邊放置", marks };
     /* 頂點/角材/面內外空白一律走右欄表單放置(實際行為,不報 deny-out) */
     return { key: "timber", marks };
   }

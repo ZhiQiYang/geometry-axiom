@@ -1,6 +1,6 @@
 # #116 B 面內切片：設計 QA
 
-日期：2026-10-04。分支 `codex/issue116-context-menu-b`。正式應用預覽 `http://localhost:8817/`。
+日期：2026-10-05（10-04 開工）。分支 `codex/issue116-context-menu-b`。正式應用預覽 `http://localhost:8817/`。
 本次報告取代根目錄的舊畫布報告；舊報告保留於 `06086ab:design-qa.md` 的 Git 歷史，不將舊驗收計入本次。
 
 final result: blocked
@@ -17,7 +17,7 @@ final result: blocked
 - 同一操作狀態：邊 1、4000×3000、固定邊、凹口、距上 900、寬 1200、深 600、留底 3400。來源另有柱孔、線與料件；實作驗收用無孔的原生矩形以獨立確認凹口輸出。這些周邊幾何與既有右欄差異是明示保留，沒有宣稱整張圖逐像素相同。
 - 全區域與未縮放局部在同次工具輸入共同檢視：`%TEMP%/geometry-tests/issue116-evidence/source-vs-implementation.png`、`source-vs-implementation-detail.png`。來源位左，真實 app 位右；不是把設計圖嵌在產品中。
 - 響應式：390×844 與 720×480、density 1，來源無手機稿；驗收可達性、邊界、字與真取消，不宣稱手機逐像素復刻。圖片見 `geometry-web/docs/issue116/responsive-390.png`／`responsive-720.png`。
-- Codex 應用內瀏覽器也以真右鍵開啟表單，填入同組數值並觀察 3400 留底及 live ghost；75 項功能依 repo 要求用真 Chrome／native harness 驗收。沒有把程式碼阅读當成瀏覽器驗收。
+- Codex 應用內瀏覽器也以真右鍵開啟表單，填入同組數值並觀察 3400 留底及 live ghost；79 項功能依 repo 要求用真 Chrome／native harness 驗收。沒有把程式碼閱讀當成瀏覽器驗收。
 
 ## 修正歷程
 
@@ -28,8 +28,9 @@ final result: blocked
 | 3 | P1：compact cancel 後選單未恢復；右鍵既有多選會被改單選。 | 每次定位先量測真選單，取消恢復 compact menu；右鍵已選角材保留多選。390/720px 與 Shift 真多選斷言通過。 |
 | 4 | P2：回報鈕透過 workspace 的祖先 stacking 蓋住選單 footer／窄版表單；只提高子元素 z-index 無效。 | 選單使用頁面浮層，原表單暫移同層後歸位；F8／原回報機制保留。footer `elementFromPoint` 斷言與最新桌面／窄版重拍共同核對。 |
 | 4 | P2：來源「孔邊不能當定位」誤述 I13；停用提示不能當核心禁令。 | 改「孔邊請用右欄定位」；保留目前快捷限制，I13 明選引用仍可使用。原生拒絕斷言驗真實 `V_BOUNDARY_ROLE` 原因。 |
+| 5 | P2：完整回歸抓到 v2 沿參考線誤用「沿此邊」、孔邊懸停少了辨識、不同角材未重新展開；P62 仍驗舊圓膠囊。 | resolver 提供真線／孔／角材名稱，名稱也參與收合狀態；79 項新增真指標驗證。P62 改驗附件 h18/rx5/字11、獨立 Alt／Space 及手形，保留38項固定門檻與實際字樣檢查，沒有調低 golden。 |
 
-前兩次完整 CDP 在修正遮擋時主動中止；不計為通過。最終專項與截圖的 runtime `2aac7802c7be9e2292c858daf7944d92d850b273bd55832e4824d6d147451473`，`fresh:true` 且 repository 為獨立 worktree。
+修正遮擋及後續 rebase 時中止的完整 CDP 不計為通過。#114 在工作期間合入 main，本分支已 rebase 到 `861b65e`；唯一 index script 衝突保留雙方新增 scripts。游標修正後79/79並重拍，runtime 為 `d3df0bfa9bbb00ca5a6b29c26ec56b0acbf4acc8c74e5dbfc9609b943ad9dc16`，`fresh:true` 且 repository 為獨立 worktree。上一輪完整 CDP 1336通過／10失敗、止於P72，包含9項舊P62斷言與配置卡拖移；不是全量通過。main的P72單項52/52通過，目前比對雙方全量，未先稱拖移失敗與本次無關。
 
 ## 五項視覺面向
 
@@ -45,8 +46,8 @@ P3：保留現行右欄及工作區版面；來源 hover 灰底／實作靜止�
 
 ## 驗證與交接界線
 
-- 專項75/75、無未預期console/page error：真凹口 preview／drag／cancel／confirm、精確頂點、undo／redo、完整 ZIP 保存與重開、stale拒寫、keyboard／search／submenu／selection／cursor／responsive。
-- ProjectStore／ReferenceWorkspace races（含真 HTTP/native ABA）／model update UI／context operations：70/70、0略過。
+- 專項79/79、無未預期console/page error：真凹口 preview／drag／cancel／confirm、精確頂點、undo／redo、完整 ZIP 保存與重開、stale拒寫、keyboard／search／submenu／selection／cursor／responsive。
+- #114 整合後 ProjectStore／ReferenceWorkspace races（含真 HTTP/native ABA）／model update UI／context operations：73/73、0略過。既有 WSL Node/GCC 的 #77 history/workspace/room-collection：56/56、0略過；Windows 缺gcc初次執行不計為通過。
 - 完整 `cdp_test.js`：本輪仍在執行，最終結果完成後補入；未以部分模式替代。
 - 原 ZIP與來源圖片保留本地，PR提交正式應用截圖與來源 hashes。唯讀規則獨審、多房間 #114 owner／實體 iOS、IME、OS picker、跨瀏覽器交 dot整合驗收。
 - 未實作：其他三工作區 v2 游標、複製／貼上／重複、多選批改、長按／偏移準星／雙指。保留 #116 後續範圍。

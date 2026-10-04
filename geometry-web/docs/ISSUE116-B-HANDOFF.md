@@ -30,16 +30,16 @@
 
 ## 已驗與外部 gate
 
-- `tests/test_issue116_browser.js`：75/75，Chrome 真右鍵、真欄位、真 preview drag、取消 dump 逐字不变、確認精確 8 頂點、單步 undo/redo、正式 Save 的下載分支、完整 `.gcanvas` 重開 dump 一致。過期 selection/frame/session/edit 與未知命令拒寫；子選單、方向鍵／Home／End／Enter／Esc、disabled reason、多選、cursor 時序、390/720px 及 compact cancel 均通過；未預期 console/page errors 為 0。
-- ProjectStore、ReferenceWorkspace races、model update UI、context operations：70/70，包含真 HTTP/native committed ABA；無略過。
-- 完整 `cdp_test.js` 最終結果待本輪執行完成後更新。前兩次因畫面遮擋修正主動中止，不能計為通過。
+- `tests/test_issue116_browser.js`：79/79，Chrome 真右鍵、真欄位、真 preview drag、取消 dump 逐字不變、確認精確 8 頂點、單步 undo/redo、正式 Save 的下載分支、完整 `.gcanvas` 重開 dump 一致。過期 selection/frame/session/edit 與未知命令拒寫；子選單、方向鍵／Home／End／Enter／Esc、disabled reason、多選、cursor 時序、390/720px 及 compact cancel 均通過；未預期 console/page errors 為 0。參考線／孔 hover 及切換角材 ID 後重新展開均由真指標驗證。
+- 接上 #114 後 ProjectStore、ReferenceWorkspace races、model update UI、context operations：73/73，包含真 HTTP/native committed ABA；無略過。另以既有 WSL Node/GCC 跑 #77 history/workspace/room-collection：56/56；Windows 缺 GCC 的初次失敗未計為通過。
+- 完整 `cdp_test.js` 最終結果待本輪執行完成後更新。上一輪1336通過／10失敗、未完成：9項P62舊規格已改驗附件v2，保留38項原固定門檻；參考線標籤與孔辨識一併修正。P72配置卡拖移失敗；main單項52/52通過，正比對雙方全量，不先宣稱無關。更早因畫面修正／rebase中止的回歸亦不計為通過。
 - 所有測試用獨立 8816 及 TEMP feedback，使用者 8765 未重置、未清瀏覽器儲存。預覽用另一個 8817，`/runtime` 要求本 worktree、`fresh:true`。
 
 最終記錄在 `%TEMP%/geometry-tests/issue116-browser.log`、`issue116-unit.log`、`issue116-cdp-full.log`。專項 result 為 `issue116-evidence/result.json`。保存分支是真下載 ZIP，不模擬 writable handle；OS picker、本機 IME／實體 iOS、跨瀏覽器及 PR #114 多房間 owner 驗收未完成，不冒充通過。
 
 ## PR #114 重疊與整合順序
 
-查核 PR #114 head `fe5c41eb6342cef45bc8693919ee33e01ca80d5f`，branch `feat/source-rooms-owner-77-20261004`。本分支基於 main `06086ab`；兩者共同祖先 `07d5dde`。重疊檔為 `app.js`、`index.html`、`BACKLOG.md`、`tests/run_all.py`。
+開工時查核 PR #114 head `fe5c41eb6342cef45bc8693919ee33e01ca80d5f`，branch `feat/source-rooms-owner-77-20261004`。初版基於 main `06086ab`，共同祖先 `07d5dde`。工作期間 #114 合入 main `861b65e`，本分支已 rebase 到 `861b65e` 並保留全部 #114 變更。重疊檔為 `app.js`、`index.html`、`BACKLOG.md`、`tests/run_all.py`。
 
 | 檔案 | #116 範圍 | #114 保留要點 |
 |---|---|---|
@@ -65,4 +65,6 @@
 
 source-plane 的原插入區不衝突，也必須保留；不以只選 ours/theirs 解掉此衝突。演練紀錄 `%TEMP%/geometry-tests/issue116-pr114-merge-tree.txt`。
 
-建議 dot 先決定 #114 的 owner 整合基準，再合此小接線；解 index script 插入衝突時保留雙方新增 script。整合後重跑這份專項、完整 CDP 與 #114 正式多房間正常／中斷／保存重開／歷史／model update acceptance。草稿不自動關閉 #116；獨立只讀規則審查交 dot，尚未宣稱完成。
+上述唯一 index 衝突已在本分支 rebase 時依雙方 script 順序解決；不是讓 dot 再解已知衝突。新 main 下79項專項、73項共用 owner 單元與56項多房間原生測試已重跑。過期 session 測試保留 #114 的唯讀保護，另讀 native dump 證明零寫入，不清除保護讓測試過。
+
+交 dot 核對最新 main 下的小接線、獨立只讀規則審查，並跑 #114 正式多房間正常／中斷／保存重開／歷史／model update browser acceptance。草稿不自動關閉 #116；iOS／IME／OS picker 與其他工作區未宣稱完成。
