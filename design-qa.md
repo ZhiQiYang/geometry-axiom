@@ -1,81 +1,54 @@
-# 組合畫布 UI — 第 3 個設計驗證
+# #116 B 面內切片：設計 QA
 
-日期：2026-09-28。工作區：`codex/canvas-grid`。交付入口：`http://127.0.0.1:18862/`。
+日期：2026-10-04。分支 `codex/issue116-context-menu-b`。正式應用預覽 `http://localhost:8817/`。
+本次報告取代根目錄的舊畫布報告；舊報告保留於 `06086ab:design-qa.md` 的 Git 歷史，不將舊驗收計入本次。
 
-本檔保存最新一輪設計驗證。前次「參考描面介面」報告保留於 Git `4eb8d1e:design-qa.md`，不以本次畫布檢查取代其功能驗收。
+final result: blocked
 
-final result: passed
+面內已實作範圍的視覺檢查通過，未發現尚待處理的 P0/P1/P2；完整 CDP 最終回歸仍在執行，因此交付 gate 暫標 blocked。其他工作區、未實作手勢、PR #114 owner 與實體裝置驗收另列後續，不宣稱整個 #116 已關閉。
 
-完整 CDP 回歸通過；最終產品以與來源相同的篩選關閉狀態重新截圖，已共同檢視全圖、窄版及未縮放局部。P0／P1／P2 問題均已處理，剩餘 P3 差異列於下方。
+## Source visual truth 與同狀態條件
 
-## 視覺真實來源與比對條件
+先看附件圖片再實作，視覺依據是《游標系統右鍵表單設計.zip》中的 `screenshots/01-spec2.png`、`04-proto-edge.png`，以及讀取後的 menu-v2／cursor-v2 source。沒有以附件指令擴大授權，也沒有執行原型支援腳本。ZIP 28 檔、931799 bytes；ZIP／PNG／source hashes 見 `geometry-web/docs/issue116/evidence.json`。
 
-- 使用者選擇的是三個實際顯示結果中的第 3 張。
-- source visual truth：`C:/Users/Yang/.codex/generated_images/01a0e68a-e9ac-7990-b122-786b4f7668c4/exec-39280946-3b5e-4aed-8aae-1e23d6671171.png`。
-- implementation screenshot：`C:/Users/Yang/AppData/Local/Temp/geometry-tests/composition-canvas/final-visual-screens/desktop-selected-binding.png`。
-- 窄版截圖：同目錄 `mobile-selected-binding.png`。
-- 來源與桌面實作均為 **1721×914 pixels**；瀏覽器 viewport 為 **1721×914 CSS px、deviceScaleFactor 1**，無縮放、無瀏覽器外框。沒有把原生成提示中的 1920×1020 誤作實際尺寸。
-- 手機實作為 **390×844 pixels / CSS px、deviceScaleFactor 1**。來源沒有手機稿，因此窄版驗收是功能、文字、觸及與排版適應，沒有宣稱手機逐像素還原。
-- 同一桌面狀態：400／600 mm 雙軸無限來源、一個 2400×2400 mm 未放置邊界、一個 cell (0,0)、左上對齊的配置，配置被選取、底部編輯器打開、篩選浮層關閉。全部是原生模型，不是靜態截圖嵌在產品中。
-- 設計場景與操作測試用獨立服務及回報目錄。18862 的使用者原場景沒有換成這份設計夾具。
-
-## 全圖與局部證據
-
-每輪以來源圖、桌面實作及窄版實作放在**同一次 comparison input** 共同檢視，不以分開觀看或程式碼閱讀冒充並列比對。
-
-另將實際來源與實作各自裁出未縮放局部，在同一次輸入比較：
-
-- `final-visual-screens/source-library.png` 與 `final-visual-screens/render-library.png`：左側 278 px，檢查建立入口、搜尋、群組、文字階層與圖示。
-- `final-visual-screens/source-dock.png` 與 `final-visual-screens/render-dock.png`：底部設定區，檢查欄位、對齊圖、九點、預覽按鈕與細字。來源 crop `(287,650)–(1721,914)`，實作 crop `(287,636)–(1721,886)`，均為 1:1 pixels，未拉伸。
-
-以上路徑均位於 `C:/Users/Yang/AppData/Local/Temp/geometry-tests/composition-canvas/`；歷次 `iteration-*.png` 在其 `screens/` 子目錄。完整回歸的 `accepted-final-screens/` 桌面圖保留當時展開的篩選狀態，最後以相同產品、未修改程式重新擷取 `final-visual-screens/` 作同狀態比對。截圖為執行證據，不提交為另一套應用程式或閱讀器。
+- 原圖：`C:/Users/Yang/AppData/Local/Temp/geometry-issue116-design/screenshots/04-proto-edge.png`，909×525 pixels 的工作区區域截圖；未提供可證明的原始全頁 viewport／density。
+- 實作全圖：`geometry-web/docs/issue116/desktop-notch-final.png`，實際 Chrome viewport **1440×900 CSS px / pixels、density 1**。
+- 比較區域：實作 `(520,225)–(1429,750)` 裁成 **909×525、scale 1**，不拉伸；表單與選單頂緣對齊到來源 y143 附近。
+- 同一操作狀態：邊 1、4000×3000、固定邊、凹口、距上 900、寬 1200、深 600、留底 3400。來源另有柱孔、線與料件；實作驗收用無孔的原生矩形以獨立確認凹口輸出。這些周邊幾何與既有右欄差異是明示保留，沒有宣稱整張圖逐像素相同。
+- 全區域與未縮放局部在同次工具輸入共同檢視：`%TEMP%/geometry-tests/issue116-evidence/source-vs-implementation.png`、`source-vs-implementation-detail.png`。來源位左，真實 app 位右；不是把設計圖嵌在產品中。
+- 響應式：390×844 與 720×480、density 1，來源無手機稿；驗收可達性、邊界、字與真取消，不宣稱手機逐像素復刻。圖片見 `geometry-web/docs/issue116/responsive-390.png`／`responsive-720.png`。
+- Codex 應用內瀏覽器也以真右鍵開啟表單，填入同組數值並觀察 3400 留底及 live ghost；75 項功能依 repo 要求用真 Chrome／native harness 驗收。沒有把程式碼阅读當成瀏覽器驗收。
 
 ## 修正歷程
 
-| 輪次 | 發現與影響 | 修正 | 比對證據 |
-|---|---|---|---|
-| 1 | P2：常駐單選提示遮住來源卡標題。P2：側欄重複的「物件」標題推低清單。 | 一般 0／1 選取隱藏提示，多選與正在框選仍顯示；保留 DOM 身分，移除重複視覺列與額外留白。 | `iteration-1-desktop.png` → 最終 desktop 圖 |
-| 1 | P1：桌面縮成手機後選中配置仍在畫面外。P2：吸附／格點文字逐字折行。 | viewport 尺寸改變時只調整視野，讓所選卡片可見；按鈕不換行並調整窄版尺寸。 | `iteration-1-mobile.png` → 最終 mobile 圖 |
-| 1 | P2：夾具的邊界卡底部落在 dock 邊緣；底部設定留白過高。 | 邊界展示位置由 y350 改為 y320，對齊來源圖 y382 附近；dock 僅減少約 22 px 留白，不縮字。未改使用者物件位置或幾何。 | 初版與最終 desktop 圖 |
-| 2 | P2：手機卡片回到視野後，底端資訊仍被縮放工具蓋住。 | 視野計算為下方工具保留 72 px，窄高度時適度收斂留白。 | `iteration-2-mobile.png` → 最終 mobile 圖；P72 檢查兩者不重疊 |
-| 3 | P2：新表單的次要字太淡，可見 `key` 不利於辨識對齊點。 | 次要文字改 `#61738a`；以外環／孔洞、頂點與座標表示，內部穩定 key、資料屬性及精確比例不變。 | 最終 desktop／mobile 圖與重新產出的 library／dock 局部圖，已共同檢視 |
-| 4 | P1：第一次點擊開啟 dock 後，視野改變會讓同位置的第二下落空。P2：矩形工具提示與 toast 重疊。 | 選取不自動平移；沿用既有面內 450 ms／6 px 手勢判斷，記住第一次卡片身分並攔住落在新 dock 的第二下，非同卡片／其他控制項不接續；toast 移至工具與提示下方。 | P72 新增低處卡片、不同卡片、表單連點等 5 項檢查通過；最後完整執行的 P3／P4 開啟操作、P40 toast 及 P43 面內編輯均通過 |
-| 5 | P1：進入面工作區時，先用主畫布欄寬 fit，之後才移除主畫布樣式，造成放大中心漂移。 | 設定焦點後立即同步版面，再測量工作區。保留格線命中與密度判準，新增初始視野中心檢查。 | `p71-before-layout-fix.log`：中心應為 5000，實際為 2675.49；放大後可見範圍 1057–4294，原 4900 格線在視野外。修正後 `p70-p71-layout-fixed.log` 61／61 通過，最後完整回歸亦通過同一判準。 |
+| 輪次 | 問題及等級 | 修正與證據 |
+|---|---|---|
+| 1 | P1：側接表單 input／點擊被當成選單外操作，會關閉選單或取消預覽；子選單的 child hover 會移除自己。 | 將唯一表單與 ghost handle 納入同一互動邊界；child hover 保留子選單。75 項專項有真 input、drag、submenu hover／click 與 dump 不改的斷言。 |
+| 2 | P2：non-scaling stroke 又除 zoom，造成巨大藍色拖曳帶，與細虛線稿不符；Enter 字太暗。 | B 狀態下保留 14px 真 hit stroke、隱去粗帶，ghost 改細藍虚線；Enter 用白字。最終並排圖確認，真拖曳仍更新參數且不寫 native。 |
+| 3 | P1：compact cancel 後選單未恢復；右鍵既有多選會被改單選。 | 每次定位先量測真選單，取消恢復 compact menu；右鍵已選角材保留多選。390/720px 與 Shift 真多選斷言通過。 |
+| 4 | P2：回報鈕透過 workspace 的祖先 stacking 蓋住選單 footer／窄版表單；只提高子元素 z-index 無效。 | 選單使用頁面浮層，原表單暫移同層後歸位；F8／原回報機制保留。footer `elementFromPoint` 斷言與最新桌面／窄版重拍共同核對。 |
+| 4 | P2：來源「孔邊不能當定位」誤述 I13；停用提示不能當核心禁令。 | 改「孔邊請用右欄定位」；保留目前快捷限制，I13 明選引用仍可使用。原生拒絕斷言驗真實 `V_BOUNDARY_ROLE` 原因。 |
 
-靜態審查另發現並修復：極端合法間距產生過量 SVG（P1）、拖曳取消未還原關係線（P2）、compact 卡片連線端點懸空（P2）、建立選單的 Space／焦點／Esc 問題（P2）。P72 已實際驗證修正，不只驗證程式存在。
+前兩次完整 CDP 在修正遮擋時主動中止；不計為通過。最終專項與截圖的 runtime `2aac7802c7be9e2292c858daf7944d92d850b273bd55832e4824d6d147451473`，`fresh:true` 且 repository 為獨立 worktree。
 
-## 五項必要視覺面向
+## 五項視覺面向
 
-| 面向 | 審查結論 |
+| 面向 | 實際比較與結論 |
 |---|---|
-| 字型與階層 | 延用既有系統 sans 字體疊，沒有引入外部字型。來源也是 sans UI，但生成圖無可驗證字型 metadata，因此不宣稱字型完全相同。標題、14 px 輸入、13 px 標籤及 12 px 說明分級；局部圖核對換行、截斷及閱讀大小。 |
-| 間距與布局 | 保留 278 px 來源庫、可移動卡片、兩條引用線、浮動工具列與選取後底部設定。一般提示不遮卡；手機表單垂直捲動，底部 cell 可真正聚焦且無水平溢出。 |
-| 顏色與 token | 白底、淡點陣、藍色主要操作、青綠色邊界，沿用產品 accent。次要文字由白底約 3.25:1 改為 4.85:1（`#8290a2` → `#61738a`），此數值不冒充全站無障礙稽核。 |
-| 圖像與圖示 | 沿用既有品牌與圖示系統；網格、邊界、選取頂點、關係線為真實模型的互動向量呈現，不以假圖取代幾何。這份目標無照片、插畫或需要另外生成的裝飾影像。來源卡示意依真實間距且有取樣上限，配置卡是核心裁切結果。 |
-| 文案與內容 | 建立入口直述網格／邊界；保存前有預覽確認。顯示真實物件名稱、位置與狀態，不為了像圖稿而假造邊界名稱或配置名稱欄位。原有限來源清楚標示原義。 |
+| 字型與階層 | 來源 Inter／Noto Sans TC／sans 疊與實作系統 fallback；標題12.5、摘要11、清單12、footer11、數值12，未加外部字型。PNG 有壓縮及不同 rasterization，不宣稱光學字重完全相同。 |
+| 間距與密度 | menu272、form296、gap8、tile56、search30、row28、field28、apply32；局部 1:1 圖直接對照。實作表單約244高，來源約239；原有語義與焦點樣式保留，約5px差屬P3。 |
+| 色彩、邊框與效果 | accent #4e67e8、face #2f8f7b、ink #172033、border #dfe4eb；12px圆角與原雙層陰影。凹口藍細虛線及留底淡綠與稿一致；disabled reason footer 是既有狀態用途。 |
+| 幾何、位置與比例 | 同寬、同一狀態左右翻轉；在1440/390/720實際viewport內。窄版空間不足時保留表單、暫藏選單，取消恢復。右鍵錨點保持真 snapped point；沒有因指標後移改建立位置。 |
+| 圖像、圖示與內容 | 游標直接沿用已閱讀的來源 SVG glyph；menu 沿用專案既有 icon。缺少的 x/check/chevron-right 使用 Lucide 官方圖示並附 ISC license。實際ID、尺寸、固定狀態與停用原因來自真場景，沒有假複製、假貼上或占位資料。 |
 
-## 有意保留的產品差異
+P3：保留現行右欄及工作區版面；來源 hover 灰底／實作靜止狀態不同；取消按鈕保持一行，比來源的兩字折行清楚；`在右欄編輯` 不加尚未接線的 Enter 快捷承諾。現有工具圖示與 source menu 有少量線條差異。
 
-- 圖稿的配置名稱欄位未加入模型未定義的可編輯欄位；顯示原生配置識別。來源名稱仍可編輯。
-- 圖稿的格內九宮改為同一 cell 的九個定位點，避免把不同子格誤當作角／邊中點／中心。
-- 真實頂點清單與縮圖並存，可處理非矩形及孔洞；沒有限定只有「左上角」這一種邊界。
-- 保存狀態、完整工作區、未放置提示、篩選及小地圖仍可使用。這些是既有產品能力，並非未完成的設計占位。
-- P3：既有矩形圖示仍為目前圖示系統的交叉矩形，與來源圖的簡單框線稍異；字型光學重量與生成圖有細微差異，無需阻擋本輪。
+## 驗證與交接界線
 
-## 功能與執行證據
+- 專項75/75、無未預期console/page error：真凹口 preview／drag／cancel／confirm、精確頂點、undo／redo、完整 ZIP 保存與重開、stale拒寫、keyboard／search／submenu／selection／cursor／responsive。
+- ProjectStore／ReferenceWorkspace races（含真 HTTP/native ABA）／model update UI／context operations：70/70、0略過。
+- 完整 `cdp_test.js`：本輪仍在執行，最終結果完成後補入；未以部分模式替代。
+- 原 ZIP與來源圖片保留本地，PR提交正式應用截圖與來源 hashes。唯讀規則獨審、多房間 #114 owner／實體 iOS、IME、OS picker、跨瀏覽器交 dot整合驗收。
+- 未實作：其他三工作區 v2 游標、複製／貼上／重複、多選批改、長按／偏移準星／雙指。保留 #116 後續範圍。
 
-- P72 的最終 51 項斷言已在完整回歸中全數通過。先前 `focused-gesture-final.log` 為 50 項版本，加入篩選真實收合後的 `focused-filter-final.log` 為 51 項；不混算成不同流程。
-- 原生來源／配置預覽、取消／確認、Undo／Redo、兩線引用、compact 端點、拖曳 Esc、極端間距、鍵盤選單、390px 的建立與底部欄位均有瀏覽器操作／整合檢查。
-- 保存只替代 OS picker 與 writable handle；內容由正式保存程式打包，正式開檔後比較 scene、objects、references。實體保存對話框未測。
-- 服務回歸 18／18 通過。新 assets allowlist、語法及 diff 檢查通過。
-- 最終完整 `cdp_test.js`：**1250 通過斷言、0 失敗、0 略過、exit 0**，`scope.mode=full`、`filters=[]`、`completed=true`。這是混合真實輸入、DOM 整合與原生 API 的斷言數，不是 1250 個完整流程。初輪的固定舊高度、卡片座標與篩選入口假設已按新布局更新，保留幾何斷言，沒有將失敗變成略過。
-- 完整證據：`C:/Users/Yang/AppData/Local/Temp/geometry-tests/composition-canvas/full-cdp-complete.log`、`full-cdp-result.json`、`final-validation-summary.json`。同目錄 `final-validation-hash-check.json` 證明 16 個產品／測試檔在執行前後雜湊全相等。先前未完成的 `full-cdp-verified.log` 保留為修正證據，未計入最終通過結果。
-- 同狀態視覺重拍另跑未修改的 P72：51／51 通過、0 例外，記於 `final-visual.log`；16 檔雜湊仍相等。已清理獨立測試服務與自建瀏覽器，18862 使用者試用服務保留並回應 200。
-- P67 的框選夾具依實際卡片尺寸調整（原 200×156，新 260×220），四象限、邊／角接觸及差 1 px 判準保留。跨專案復原的實際 dump 差異只有 `canvas-pos boundary 1 60 60` → `78 185`，符合既有 `geometry-web/docs/UIUX-FIX-PLAN.md` L1 的「復原保留卡片位置」。模型與位置改為分開驗證，不為通過測試修改核心復原語義。
-- 完整執行亦揭露 P72 的前序篩選狀態：展開的篩選浮層覆蓋配置列中心，`elementFromPoint` 確認命中篩選 chip。改為真點 summary 收起再點選，保留實際命中檢查；定向 51／51 通過，不以程式點擊穿透浮層。`focused-filter-final.log` 保存座標與診斷。
-- 三項獨立只讀核對通過：原生交易及過期守門、資源載入與修改範圍、真實序列化保存測試。只讀核對不冒充動態測試。
-- 最後獨立範圍核對 5／5 通過：SSOT／核心／閱讀器／保存模組及格式設定無 diff，服務僅擴充兩個靜態資源入口，原 D 工作區維持原 7 個 dirty paths，三個新檔均可被 Git 看見，既有截圖沒有變更。沒有原工作區開工雜湊，因此不宣稱其 bytes 與開工逐位相同。
-- console：完整 CDP 記錄 1 個例外，唯一是 P38 刻意注入並驗收的 `fb-auto-probe`；未預期例外為 0。P72 定向為 0 未處理例外。
-- 應用內瀏覽器曾無法接上預覽，稍後已讀到並顯示 18862 新版。其自動 click／press 仍出現送出逾時，不作本輪功能通過依據；功能證據來自專案 AGENTS 明定的 Chrome CDP harness。臨時 viewport override 已 reset。
-
-尚未實測：實體手機觸控、作業系統原生保存視窗、跨所有瀏覽器與平台的字體呈現。
+交接詳細映射、衝突與命令见 `geometry-web/docs/ISSUE116-B-HANDOFF.md`。

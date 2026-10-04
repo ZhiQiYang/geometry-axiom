@@ -143,6 +143,7 @@ NODE_PURE_TEST_FILES = {
     'node:evidence_links': 'tests/test_evidence_links.js',
 }
 NODE_EXCLUDED = {
+    'tests/test_issue116_browser.js': 'Required isolated native/browser B-menu gate, full Save/reopen and visual evidence; see INTEGRATION-GATES.md',
     'tests/scenario_browser_check.cjs': 'Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)',
     'tests/test_scenario_grid_interface.js': 'Required real GridDraft owner-validator compatibility; PR104 is not on main; execute with actual owner validator, never count missing-injection skip as pass (INTEGRATION-GATES.md)',
     'tests/issue77_attachment_fixture.js': 'Shared self-authored PDF/payload fixture; registers no tests',

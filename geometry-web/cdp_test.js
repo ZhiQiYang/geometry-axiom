@@ -4802,26 +4802,26 @@ async function main() {
     const menuActs = [...document.querySelectorAll('#feCtxMenu [data-fe-act]')].map(b=>b.dataset.feAct);
     return { sel: fe.sel, menuHidden: document.getElementById('feCtxMenu').hidden, barActs, menuActs };
   })()`);
-  check('P44-5a 右鍵選邊:fe.sel=edge、#feCtxMenu 可見、清單與浮動列逐一相同',
+  check('P44-5a B 右鍵選邊：保留浮動列真命令並加入建立與檢視',
     p44_5a.sel && p44_5a.sel.kind === 'edge' && !p44_5a.menuHidden &&
-    JSON.stringify(p44_5a.barActs) === JSON.stringify(p44_5a.menuActs), p44_5a);
+    p44_5a.barActs.every(act=>p44_5a.menuActs.includes(act)) && p44_5a.menuActs.includes('create') && p44_5a.menuActs.includes('view'), p44_5a);
   await clickSelector('#feCtxMenu [data-fe-act="op:notch"]');
   await sleep(150);
   const p44_5b = await eval_(`({ opType: fe.op && fe.op.type, menuHidden: document.getElementById('feCtxMenu').hidden })`);
-  check('P44-5b 點選單「凹口」→ fe.op.type==="notch"、選單關',
-    p44_5b.opType === 'notch' && p44_5b.menuHidden, p44_5b);
+  check('P44-5b B 凹口表單側接、選單保留',
+    p44_5b.opType === 'notch' && !p44_5b.menuHidden, p44_5b);
   await pressKey('Escape', 'Escape', 27);
   await pressKey('Escape', 'Escape', 27);
-  const p44_5c = await eval_(`({ opPanelHidden: document.getElementById('feOpPanel').hidden, sel: fe.sel })`);
-  check('P44-5c Esc 兩下 → 面板關、選取清', p44_5c.opPanelHidden && p44_5c.sel === null, p44_5c);
+  const p44_5c = await eval_(`({ opPanelHidden: document.getElementById('feOpPanel').hidden, menuHidden:document.getElementById('feCtxMenu').hidden, sel: fe.sel })`);
+  check('P44-5c B Esc 兩下 → 面板與選單關，原邊選取保留', p44_5c.opPanelHidden && p44_5c.menuHidden && p44_5c.sel?.kind === 'edge', p44_5c);
 
-  /* (6) 右鍵面外空白 → 選單不出現、fe.sel===null;右鍵角材 → 編輯與刪除 */
+  /* (6) B 面外空白提供檢視、fe.sel===null；角材保留編輯與刪除。 */
   pt = await openFace44();
   const outside6 = pt(4300, 1500);
   await rightClick(outside6.x, outside6.y);
   await sleep(150);
   const p44_6a = await eval_(`({ menuHidden: document.getElementById('feCtxMenu').hidden, sel: fe.sel })`);
-  check('P44-6a 右鍵面外空白 → 選單不出現、fe.sel===null', p44_6a.menuHidden && p44_6a.sel === null, p44_6a);
+  check('P44-6a B 右鍵面外空白 → 檢視選單、fe.sel===null', !p44_6a.menuHidden && p44_6a.sel === null, p44_6a);
   await setupRemaining([
     'surface 1 origin 0 0 0 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',
     'timber 10 27 33 role boundary',
@@ -4834,7 +4834,7 @@ async function main() {
   await rightClick(org6.x + tc6.x, org6.y + tc6.y);
   await sleep(150);
   const p44_6b = await eval_(`[...document.querySelectorAll('#feCtxMenu [data-fe-act]')].map(b=>b.dataset.feAct)`);
-  check('P44-6b 右鍵角材 → 選單有「編輯」與「刪除」', JSON.stringify(p44_6b) === JSON.stringify(['edit','delete']), p44_6b);
+  check('P44-6b 右鍵角材 → 選單保留「編輯」與「刪除」', ['edit','delete'].every(a=>p44_6b.includes(a)) && !p44_6b.some(a=>a.startsWith('op:')), p44_6b);
   await pressKey('Escape', 'Escape', 27);
 
   /* (7) 雙擊右邊 → notch 面板可見;雙擊右上角 → corner;雙擊面內空白(2000,1500) → hole 且

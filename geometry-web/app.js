@@ -1776,7 +1776,8 @@ document.addEventListener("click", e => {
    讓後續的一般選取/拖曳邏輯照舊進行)。 */
 document.addEventListener("pointerdown", e => {
   const m = $("feCtxMenu");
-  if (m && !m.hidden && !m.contains(e.target)) feCtxMenuHide();
+  if (m && (!m.hidden || window.FaceContextMenu?.open) && !m.contains(e.target) && !$("feOpPanel")?.contains(e.target) &&
+      !(window.FaceContextMenu?.open && fe.op && e.target.closest?.('#faceEditorSvg [data-fe-handle]'))) feCtxMenuHide();
 }, true);
 async function loadExampleRoomA() {
   try {
@@ -3945,8 +3946,37 @@ function cxRender(h, x, y, alt, shift) {
   h.svg.style.visibility = res ? "visible" : "hidden";
   if (!res) { h.marks.textContent = ""; h.cur.innerHTML = ""; h.markHTML = h.glyphHTML = ""; return; }
   h.cur.setAttribute("transform", `translate(${x - r.left},${y - r.top})`);
-  const marks = (res.marks || []).map(m => cxSnapMark(m.k, m.x, m.y)).join("");
-  const glyph = cxGlyphB(res.key) + (res.tip ? cxTip(res.tip) : "");
+  const marks = (res.marks || []).map(m => h === cxUI.fe && window.CursorV2
+    ? CursorV2.snap(m.k,m.x,m.y) : cxSnapMark(m.k, m.x, m.y)).join("");
+  let glyph = cxGlyphB(res.key) + (res.tip ? cxTip(res.tip) : "");
+  if (h === cxUI.fe && window.CursorV2) {
+    const keys = {edge:"edge-push", "resize-ew":"edge-push", "resize-ns":"edge-push",
+      "alt-vertex":"alt-pinch", "move-line":"move-guide", "timber-pick":"hover-pick", "hole-pick":"select"};
+    const signature = res.key + ':' + alt + ':' + shift;
+    if (h.v2State !== signature) {
+      clearTimeout(h.v2Timer); h.v2State = signature; h.v2Since = performance.now();
+      h.v2Timer = setTimeout(() => { if (h.last) cxRender(h,h.last.x,h.last.y,cxAlt,cxShift); }, 1200);
+    }
+    const opts = {expanded:performance.now()-h.v2Since<1200, readout:res.tip,
+      mod:fe.spaceDown ? "Space" : alt ? "Alt" : shift ? "Shift" : null};
+    if (res.key === "edge" || res.key === "resize-ns") opts.angle = 90;
+    else if (res.key === "resize-ew") opts.angle = 0;
+    if (res.key === "move-line") {
+      const hit = document.elementFromPoint(x,y)?.closest?.('[data-face-hit]')?.dataset.faceHit.split(':');
+      const axis = fe.drag?.kind === "guide" ? fe.drag.axis : hit?.[2];
+      opts.angle = axis === "u" ? 90 : 0;
+    }
+    if (res.key === "edge") {
+      const hit = document.elementFromPoint(x,y)?.closest?.('[data-face-hit]')?.dataset.faceHit.split(':');
+      const a = hit && feCurLoops()[+hit[1]]?.verts[+hit[2]], b = hit && feCurLoops()[+hit[1]]?.verts[(+hit[2]+1)%feCurLoops()[+hit[1]].verts.length];
+      if (a && b) opts.angle = a[1] === b[1] ? 90 : 0;
+    }
+    if (res.key === "timber-pick") {
+      const hit = document.elementFromPoint(x,y)?.closest?.('[data-face-hit]')?.dataset.faceHit.split(':');
+      opts.label = `角材 ${hit?.[1] || ''}`;
+    }
+    glyph = CursorV2.glyph(keys[res.key] || res.key,opts);
+  }
   if (h.markHTML !== marks) { h.marks.innerHTML = marks; h.markHTML = marks; }
   if (h.glyphHTML !== glyph) { h.cur.innerHTML = glyph; h.glyphHTML = glyph; }
 }
@@ -3974,6 +4004,7 @@ function cxHide(key) {
   const h = cxUI[key];
   if (!h) return;
   cxCancelPaint(h);
+  clearTimeout(h.v2Timer); h.v2State = null;
   h.last = null; h.svg.style.visibility = "hidden";
   h.vp.classList.remove("cx-on");
 }
@@ -4022,6 +4053,13 @@ function cxResolveFace(x, y, alt, shift) {
     }
   } else if (snapOn && (d || ["guide", "hole"].includes(fe.tool))) {
     const s = feSnap(pt);
+    if (d?.kind === "edge" && d.snapTo != null) {
+      const vs = fe.work?.[d.loop]?.verts;
+      if (vs?.[d.index] && vs[(d.index+1)%vs.length]) {
+        if (vs[d.index][1] === vs[(d.index+1)%vs.length][1]) s.y=d.snapTo;
+        else s.x=d.snapTo;
+      }
+    }
     if (s.x !== pt.x || s.y !== pt.y) {
       const p = cxFeSceneToVp(s.x, s.y);
       marks.push({ k: "grid", x: p.x, y: p.y });
@@ -4980,7 +5018,7 @@ function drawFaceEditor() {
       .textContent = `${opRect[2] - opRect[0]} × ${opRect[3] - opRect[1]}`;
     /* GEO-192 B:四條可拖曳邊,只在 select 工具下畫出(其餘工具沒有 fe.op)。 */
     if (fe.tool === "select") {
-      const hw = Math.max(10, 14 / z);
+      const hw = window.FaceContextMenu?.open ? 14 : Math.max(10, 14 / z);
       el("line", { x1: opRect[0], y1: opRect[1], x2: opRect[0], y2: opRect[3],
         class: "fe-ghost-handle", "data-fe-handle": "left", "stroke-width": hw }, root);
       el("line", { x1: opRect[2], y1: opRect[1], x2: opRect[2], y2: opRect[3],
@@ -6114,6 +6152,7 @@ function feFeatSub(f) {
 
 /* ---- 就地操作(fe.op)---- */
 function feStartOp(type, target, ref) {
+  if (!FE_OPS[type] || FE_OPS[type].target !== target || oc.busy) return;
   const outer = feCurLoops()[0]; if (!outer) return;
   const g = +($("faceGridSizeSelect") || {}).value || 50;
   const bb = loopsBBox([outer]);
@@ -6140,6 +6179,7 @@ function feStartOp(type, target, ref) {
     if (type === "notch") keep = { d: e.axis === "h" ? bb[3] - bb[1] : bb[2] - bb[0] };   /* 留底 = 垂直方向全寬 − 深 */
   }
   fe.op = { type, target, params, keep };
+  fe.op.contextStamp = window.FaceContextMenu?.stamp();
   if (target === "edge") fe.op.edge = ref; else if (target === "corner") fe.op.corner = ref; else fe.op.point = ref;
   feSyncOverlays(); drawFaceEditor();
 }
@@ -6237,6 +6277,9 @@ function feApplyGhostDrag(d, pt) {
 async function feApplyOp() {
   const e = oc.edit, op = fe.op;
   if (!e || !op || oc.busy) return;
+  if (op.contextStamp && !window.FaceContextMenu?.current(op.contextStamp)) {
+    feCancelOp(); feCtxMenuHide(); toast("操作情境已變更，請重新選擇。"); return;
+  }
   const rect = feOpRect(op);
   if (!rect) { toast("請先填尺寸(正整數 mm)"); return; }
   const loops = oc.bmap[e.bid];
@@ -6355,11 +6398,13 @@ function feActionsFor(sel) {
   if (sel.kind === "timber")
     return [{ act: "edit", label: "編輯…", iconName: "edit", title: "在右欄編輯角材", on: false },
       { act: "delete", label: "刪除", iconName: "trash", title: "刪除角材", on: false }];
+  if (sel.kind !== "corner") return [];
   return [{ act: "op:corner", label: FE_OPS.corner.name, iconName: FE_OPS.corner.icon,
     title: FE_OPS.corner.desc, on: fe.op && fe.op.type === "corner" }];
 }
 /* GEO-192 C:浮動列/右鍵選單共用的動作處理器。 */
 async function feRunAction(act) {
+  if (!feActionsFor(fe.sel).some(a => a.act === act) || oc.busy) return;
   if (act === "timber" && fe.sel?.kind === "edge" && fe.sel.loop === 0) {
     const bid = oc.edit?.bid;
     if (!feSid(bid)) { toast("請先放置這片面，再放角材"); return; }
@@ -6390,7 +6435,7 @@ async function feRunAction(act) {
     if (await emitBoundary(e.bid, work)) await feAfterChange();
     return;
   }
-  if (!fe.sel) return;
+  if (!fe.sel || !act.startsWith("op:") || !FE_OPS[act.slice(3)]) return;
   const t = act.slice(3);
   if (fe.op && fe.op.type === t) { feCancelOp(); return; }
   feStartOp(t, FE_OPS[t].target, fe.sel.kind === "point" ? [fe.sel.x, fe.sel.y] : fe.sel.i);
@@ -6419,10 +6464,12 @@ function feSyncOverlays() {
 }
 /* GEO-192 C:右鍵選單——內容 = feActionsFor(fe.sel),與浮動列同一份資料來源。 */
 function feCtxMenuHide() {
+  if (window.FaceContextMenu) { FaceContextMenu.hide(); return; }
   const m = $("feCtxMenu");
   if (m && !m.hidden) { m.hidden = true; m.innerHTML = ""; }
 }
 function feCtxMenuShow(clientX, clientY) {
+  if (window.FaceContextMenu) { FaceContextMenu.show(clientX, clientY); return; }
   const m = $("feCtxMenu"), vp = $("faceEditorViewport");
   if (!m || !vp || !fe.sel) return;
   const acts = feActionsFor(fe.sel);
@@ -6529,6 +6576,7 @@ function feSyncPanelValues(panel, src) {
 }
 /* 依 pan/zoom 重新擺放操作列與面板(feApply 每次平移都會呼叫,只算位置不重建 DOM) */
 function fePlaceOverlays() {
+  if (window.FaceContextMenu?.position()) return;
   const bar = $("feActionBar"), panel = $("feOpPanel"), vp = $("faceEditorViewport");
   if (!bar || !panel || !vp || bar.hidden) return;
   const r = vp.getBoundingClientRect(), a = feSelAnchor();
@@ -10072,6 +10120,7 @@ for (const b of document.querySelectorAll("#feGuidePick button"))
     drawFaceEditor(); renderFaceLayers();
   });
 fevp.addEventListener("wheel", e => {
+  if (e.target.closest?.("#feCtxMenu, #feOpPanel")) return;
   if (e.target.closest?.(".face-canvas-controls")) return;
   cancelCanvasMarquee();
   feCtxMenuHide();   /* GEO-192 C:滾輪/縮放時關右鍵選單 */
@@ -10087,7 +10136,7 @@ fevp.addEventListener("wheel", e => {
   feSchedulePaint({camera:true, scene:true});
 }, { passive: false });
 /* GEO-192 C:右鍵選單——先做與左鍵單擊完全相同的選取(feClickSelectBlank/feClickSelectHit,
-   不複製一份),再在游標處顯示。面外空白右鍵 = 只清選取,不顯示選單。 */
+   不複製一份),再在游標處顯示。#116 B 的面外選單提供檢視；已選角材群保留多選。 */
 fevp.addEventListener("contextmenu", e => {
   e.preventDefault();
   if (e.target.closest && e.target.closest("#feGuidePick, #feActionBar, #feOpPanel, #feCtxMenu")) return;
@@ -10098,10 +10147,18 @@ fevp.addEventListener("contextmenu", e => {
     feClickSelectBlank(feSnap(fePoint(e)));
   } else {
     const [k, a, b] = t.dataset.faceHit.split(":");
-    if (k === "g") return;   /* 參考線不在右鍵選單範圍內 */
-    feClickSelectHit(k, +a, +b);
+    if (k === "g" && window.FaceContextMenu) {
+      feClickSelectBlank(feSnap(fePoint(e)));
+      FaceContextMenu.show(e.clientX,e.clientY,{kind:"guide",id:+a}); return;
+    }
+    if (k === "g") return;
+    if (!(k === "t" && fe.timberSelection.size > 1 && fe.timberSelection.has(+a)))
+      feClickSelectHit(k, +a, +b);
+    if (k === "v" && !fe.sel && window.FaceContextMenu) {
+      FaceContextMenu.show(e.clientX,e.clientY,{kind:"concave",index:+b}); return;
+    }
   }
-  if (fe.sel) feCtxMenuShow(e.clientX, e.clientY);
+  if (fe.sel || window.FaceContextMenu) feCtxMenuShow(e.clientX, e.clientY);
 });
 /* GEO-192 D:雙擊 = 直接開該目標最常用的操作面板,依 fe.sel 的種類決定開哪個。 */
 function feDblOpenFor(sel) {
