@@ -91,6 +91,8 @@
     const result = new Set();
     for (const raw of scene.replace(/\r\n/g, "\n").split("\n")) {
       const line = raw.split("#", 1)[0].trim();
+      if(/^grid-source-rule(?:-highwater)?\b/.test(line)||/(?:^|\s)gridrule:/.test(line)||/\bat-line\s+rule\b/.test(line))
+        fail('場景需要尚未支援的工程能力。');
       if (/^engineering(?:\s|$)/.test(line) || /(?:^|\s)eng:/.test(line)) result.add(ENGINEERING_CAPABILITY);
       if (/^parameters(?:\s|$)/.test(line) || /(?:^|[^\w])param:\d+:\d+/.test(line)) result.add(PARAMETER_CAPABILITY);
       if (/^owned(?:\s|$)/.test(line)) result.add(GENERATION_CAPABILITY);
@@ -193,6 +195,15 @@
     if (!Array.isArray(capabilities) || capabilities.length > 4 || new Set(capabilities).size !== capabilities.length ||
         capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY].includes(capability))) fail("專案需要尚未支援的工程能力。");
     return capabilities;
+  }
+  function nativeReaderCapabilities(available) {
+    // A native service can offer more capabilities than this reader supports.
+    // Keep its supported subset; required manifest/scene capabilities still
+    // pass their separate finite validation and must be present in the subset.
+    if(!Array.isArray(available)||available.length>42||new Set(available).size!==available.length||
+       available.some(capability=>!str(capability,100)||!capability.length))fail('服務可用能力清單不合法。');
+    const supported=available.filter(capability=>[ENGINEERING_CAPABILITY,PARAMETER_CAPABILITY,ASSEMBLY_CAPABILITY,GENERATION_CAPABILITY].includes(capability));
+    return validateProjectCapabilities(supported);
   }
   function assertProjectCapabilities(manifest, available) {
     const required = manifest.requiredCapabilities || [];
@@ -700,6 +711,6 @@
   }
   return { OUTLINE_FORMAT, reviewBasis, outlineFingerprint, validateReconstructionReviews, GENERATION_FORMAT, GENERATION_CAPABILITY, ASSEMBLY_FORMAT, ASSEMBLY_CAPABILITY, ASSEMBLY_DRAFT_SCHEMA, validateAssemblyDraft, validateAssemblyDrafts, PARAMETER_FORMAT, PARAMETER_CAPABILITY, FORMAT, MODEL_FORMAT, PROJECTION_FORMAT, TIMBER_FORMAT, ENGINEERING_FORMAT, ENGINEERING_CAPABILITY, DRAFT_SCHEMA, MAX_ENGINEERING_DRAFTS,
     MAX_SOURCE, MAX_PACKAGE, MAX_MODELS, TYPES, sha, validate, validateSpaceModel, validateModelPackage,
-    validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, assertProjectCapabilities, sceneCapabilities,
+    validateEngineeringDraft, validateEngineeringDrafts, validateProjectCapabilities, nativeReaderCapabilities, assertProjectCapabilities, sceneCapabilities,
     validateFaceProjection, validateFaceProjectionRefs, validateProjectObjectRefs, projectFormat, reference, pack, unpack, ContextHistory };
 });

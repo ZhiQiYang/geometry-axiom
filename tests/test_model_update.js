@@ -421,7 +421,7 @@ function nativeWorkspace(record, scene) {
     fetch:async (url,options)=>{const body=url==='/upload/prepare'?options.body:JSON.parse(options.body);requests.push({url,body});
       if(url==='/model/verify')return {ok:true,json:async()=>engine('verify',body)};
       if(url==='/model/space-preview')return {ok:true,json:async()=>engine('preview',body)};
-      if(url==='/upload/prepare')return {ok:true,json:async()=>({ok:true,token:1,final_objects:{boundaries:[],placements:[]}})};
+      if(url==='/upload/prepare')return {ok:true,json:async()=>({ok:true,token:1,capabilities:require('./fixtures/native_available_capabilities.json'),required_capabilities:[],final_objects:{boundaries:[],placements:[]}})};
       if(url==='/upload/confirm')return {ok:true,json:async()=>({ok:true,path:'isolated reopened scene'})};
       throw Error('Unexpected workspace request '+url);}};
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/reference-workspace.js'),'utf8')+
