@@ -496,6 +496,7 @@ async function recoverConnection() {
     if (!oc.on) await render();
     if (connection.phase === "error") return;
     connection.phase = "ready"; connection.known = true;
+    ReferenceWorkspace.sync();
     showConnectionState(); drawObjects();
   } catch (e) {
     connectionFailed(e.message || "場景資料未能完整讀取，請確認服務後重試。");
