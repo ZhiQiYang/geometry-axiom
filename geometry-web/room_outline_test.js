@@ -26,6 +26,9 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   async function fill(selector,value){await ctl(selector);await key('a','KeyA',65,2);operations++;await send('Input.insertText',{text:String(value)});await key('Tab','Tab',9);await sleep(60);}
   async function select(selector,value){await ctl(selector);await key('Escape','Escape',27);await key('Home','Home',36);const index=await read(`[...document.querySelector(${JSON.stringify(selector)}).options].findIndex(o=>o.value===${JSON.stringify(String(value))})`);if(index<0)throw Error('Unknown option '+selector);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Tab','Tab',9);await sleep(80);}
   async function until(expression){await waitForUI(expression,20000);if(await read(expression)!==true)throw Error('Room wait '+expression+' '+JSON.stringify(await read(`({status:$('status').textContent,draft:RoomOutlineWorkspace.snapshot(),tool:fe.tool,busy:oc.busy})`)));}
+  // Native history changes before doUndoRedo finishes refreshing the face.
+  // Its busy lease and the rendered receipt must both finish before another key.
+  const historyReady=state=>`!oc.busy&&!ReferenceWorkspace.busy&&!document.body.classList.contains('oc-busy')&&!ReferenceWorkspace.history.group&&oc.focus?.t==='face'&&oc.focus.id===1&&oc.edit?.bid===1&&ReferenceWorkspace.reconstructionState(1)===${JSON.stringify(state)}&&document.querySelector('#faceInspectorContent [data-reconstruction-state]')?.dataset.reconstructionState===${JSON.stringify(state)}`;
   async function facePoint(x,y){const p=await read(`(()=>{const r=$('faceEditorSvg').getBoundingClientRect();return {x:r.left+fe.panX+${x}*fe.zoom,y:r.top+fe.panY+${y}*fe.zoom};})()`);await inputClick(p.x,p.y);}
   async function sourcePoint(x,y){const p=await read(`feUlImgToMm(ReferenceWorkspace.active(1),${x},${y})`);await facePoint(...p);}
   async function sourceDrag(a,b){const coords=await read(`(()=>{const p=ReferenceWorkspace.active(1),r=$('faceEditorSvg').getBoundingClientRect();return ${JSON.stringify([a,b])}.map(v=>{const m=feUlImgToMm(p,...v);return [r.left+fe.panX+m[0]*fe.zoom,r.top+fe.panY+m[1]*fe.zoom];});})()`);operations++;await drag(...coords[0],...coords[1]);await sleep(80);}
@@ -204,9 +207,23 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   check('visible cancel during PDF acquisition prevents late candidate revival',await read(`!RoomOutlineWorkspace.hasWork&&!RoomOutlineWorkspace.snapshot()`)&&await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
   await read(`enlargedRestore()`);await propose([270,200]);await commit();
   check('confirmation replaces one existing ring through native validation',normalized(await nativePoints())===normalized(enlargedExpected)&&await read(`Object.keys(oc.bmap).length===1&&ReferenceWorkspace.reconstructionState(1)==='confirmed'`));
-  await key('z','KeyZ',90,2);await until(`ReferenceWorkspace.reconstructionState(1)==='unreviewed'`);
-  check('actual undo restores original rectangle and source review state',await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
-  await key('y','KeyY',89,2);await until(`ReferenceWorkspace.reconstructionState(1)==='confirmed'`);
+  // Hold a real undo render after native history has advanced: the old receipt-
+  // only wait is already true, but an early trusted redo must still be rejected.
+  await read(`(()=>{const original=renderObjects,g=window.__roomUndoGate={held:false};const gate=new Promise(resolve=>g.release=resolve);g.restore=()=>renderObjects=original;renderObjects=async(...args)=>{const result=await original(...args);if(!g.held){g.held=true;await gate;}return result;};})()`);
+  let prematureRedoRejected=false;
+  try{
+    await key('z','KeyZ',90,2);await until(`window.__roomUndoGate.held&&oc.busy&&ReferenceWorkspace.reconstructionState(1)==='unreviewed'`);
+    const before=await read(`(async()=>({dump:(await api('dump')).text,undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length,project:ReferenceWorkspace.getProjectState()}))()`);
+    const held=await read(`({legacyReady:ReferenceWorkspace.reconstructionState(1)==='unreviewed',ready:${historyReady('unreviewed')},busy:oc.busy,bodyBusy:document.body.classList.contains('oc-busy')})`);
+    await key('y','KeyY',89,2);
+    const after=await read(`(async()=>({dump:(await api('dump')).text,undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length,project:ReferenceWorkspace.getProjectState()}))()`);
+    prematureRedoRejected=held.legacyReady&&!held.ready&&held.busy&&held.bodyBusy&&JSON.stringify(before)===JSON.stringify(after)&&await read(`oc.busy&&ReferenceWorkspace.reconstructionState(1)==='unreviewed'&&[...document.querySelectorAll('#toastRegion .toast')].some(e=>e.textContent.includes('操作進行中'))`);
+    console.log('P79_HISTORY_TIMELINE',JSON.stringify({phase:'undo-render-held',...held,prematureRedoRejected}));
+  }finally{await read(`window.__roomUndoGate.restore();window.__roomUndoGate.release();`);}
+  await until(historyReady('unreviewed'));
+  console.log('P79_HISTORY_TIMELINE',JSON.stringify({phase:'undo-ready',ready:await read(historyReady('unreviewed'))}));
+  check('actual undo restores original rectangle and source review state',prematureRedoRejected&&await read(`api('dump').then(r=>r.text)`)===enlargedOriginal);
+  await key('y','KeyY',89,2);await until(historyReady('confirmed'));
   check('actual redo restores calibrated room and its source-bound receipt',normalized(await nativePoints())===normalized(enlargedExpected));
   const enlargedBytes=await read(`ReferenceWorkspace.exportBytes().then(b=>Array.from(b))`),enlargedMarker='enlarged-room-'+Date.now();
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`window.__cdpExpectedNavigationMarker=${JSON.stringify(enlargedMarker)}`});await send('Page.reload',{ignoreCache:true});
