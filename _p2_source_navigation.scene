@@ -1,0 +1,5 @@
+boundary 1 outline 0,0 4000,0 4000,3000 0,3000
+placement 10 on boundary 1 origin 0 0 2500 u +x v +y
+placement 20 on boundary 1 origin 6000 0 2500 u +x v +y
+timber 7 27 33 role boundary
+place 7 on 20 at-face e0 +u +n

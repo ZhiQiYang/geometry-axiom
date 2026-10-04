@@ -75,6 +75,7 @@ PY_NEEDS = {
     'test_source_inspector': ['bridge'],
     'test_source_inspector_transport': [],
     'test_runtime_version': [],
+    'test_scene_import': ['bridge'],
     'test_serve': [],
     'test_space_modeling': ['model-base'],
     'test_subgrid_contract': ['bridge'],
@@ -110,6 +111,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:space_test_floor': 'tests/test_space_test_floor.js',
     'node:history_operation': 'tests/test_history_operation.js',
     'node:context_operations': 'tests/test_context_operations.js',
     'node:cdp_evaluation': 'tests/test_cdp_evaluation.js',

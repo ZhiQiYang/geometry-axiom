@@ -121,7 +121,7 @@ test('unfinished drafts survive older core undo after the browser history window
 });
 
 function workspace(validate = scene => ({ok:true,capabilities:['engineering-spec/1'],required_capabilities:P.sceneCapabilities(scene)}), backend = null, uploadResult = {ok:true,path:'loaded'}) {
-  const calls=[],events=[],listeners={},elements=new Map();let scene=geometry,confirmations=0;
+  const calls=[],events=[],listeners={},elements=new Map();let scene=geometry,candidateScene=null,confirmations=0;
   const element=id=>{if(!elements.has(id))elements.set(id,{textContent:'',dataset:{},style:{},classList:{toggle(){}},addEventListener(){},querySelector(){return null;}});return elements.get(id);};
   const env={GeometryProject:P,crypto,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,JSON,console,
     requestAnimationFrame:()=>1,CustomEvent:class{constructor(type){this.type=type;}},ResizeObserver:class{observe(){}},
@@ -129,8 +129,11 @@ function workspace(validate = scene => ({ok:true,capabilities:['engineering-spec
     document:{getElementById:element,querySelector:element,querySelectorAll:()=>[],addEventListener(){}},
     oc:{busy:false,surfs:[],bmap:{}},fe:{feats:{}},connection:{phase:'ready'},
     api:async cmd=>backend?(await backend('/api',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cmd})})).json():({ok:true,text:scene}),resetSceneFocus(){},refreshActive:async()=>{},setStatus(){},sceneMenuDisplay:x=>x,curScene:{},
-    fetch:async(url,options)=>{calls.push(url);if(backend)return backend(url,options);if(url==='/upload'&&uploadResult.ok)scene=options.body;
-      return {ok:true,json:async()=>url==='/engineering/validate-project'?validate(options.body):uploadResult};}};
+    fetch:async(url,options)=>{calls.push(url);if(backend)return backend(url,options);
+      if(url==='/upload/prepare')candidateScene=options.body;
+      if(url==='/upload/confirm'&&uploadResult.ok)scene=candidateScene;
+      if(url==='/upload'&&uploadResult.ok)scene=options.body;
+      return {ok:true,json:async()=>url==='/upload/prepare'?{token:1,final_objects:{boundaries:[],placements:[]},...validate(options.body)}:uploadResult};}};
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/reference-workspace.js'),'utf8')+'\nglobalThis.workspace=ReferenceWorkspace;',env);
   return {api:env.workspace,calls,events,listeners,get confirmations(){return confirmations;},get scene(){return scene;}};
 }
@@ -173,7 +176,7 @@ test('delivered engineering project reopens through a private real service, reta
     const state=(await core('engineering-read')).state;
     assert.equal(state.materials.length,2);assert.equal(state.methods.length,1);assert.equal(state.applications.length,1);assert.equal(state.sources.length,18);
     assert.deepEqual(state.sources.filter(item=>item.target.kind==='timber').map(item=>item.target.id).filter((id,index,all)=>all.indexOf(id)===index).sort((a,b)=>a-b),[10,11,12,13,20,30,31]);
-    assert.ok(w.calls.includes('/engineering/validate-project'));assert.equal(w.calls.filter(url=>url==='/model/verify').length,5);
+    assert.ok(w.calls.includes('/upload/prepare'));assert.equal(w.calls.filter(url=>url==='/model/verify').length,5);
     w.api.setEngineeringDraft(draft('roundtrip-unpublished'));
     const saved=await P.unpack(await w.api.exportBytes(),zip);
     assert.equal(saved.manifest.format,P.ENGINEERING_FORMAT);assert.deepEqual(saved.manifest.models,[model]);
@@ -213,7 +216,7 @@ test('delivered engineering project reopens through a private real service, reta
 
 test('v5 import validates complete source before mutation and capability or closure failure preserves context',async()=>{
   const bytes=await archive(engineering,{engineeringDrafts:drafts([draft()])}),good=workspace();
-  await good.api.importBytes(bytes);assert.deepEqual(good.calls,['/engineering/validate-project','/upload']);
+  await good.api.importBytes(bytes);assert.deepEqual(good.calls,['/upload/prepare','/upload/confirm']);
   assert.deepEqual(good.api.getEngineeringDrafts(),[draft()]);assert.equal(good.api.context().dirty,false);
   for(const result of [{ok:false,code:'MISSING_REFERENCE'},
     {ok:true,capabilities:[],required_capabilities:['engineering-spec/1']},
@@ -221,7 +224,7 @@ test('v5 import validates complete source before mutation and capability or clos
     const bad=workspace(()=>result);bad.api.setEngineeringDraft(draft('old'));
     const old=bad.api.context();await assert.rejects(()=>bad.api.importBytes(bytes));
     assert.equal(bad.api.context(),old);assert.equal(bad.api.getEngineeringDrafts()[0].id,'old');
-    assert.deepEqual(bad.calls,['/engineering/validate-project']);
+    assert.deepEqual(bad.calls,result.ok?['/upload/prepare','/upload/cancel']:['/upload/prepare']);
   }
 });
 
@@ -232,12 +235,12 @@ test('a definitive core upload rejection preserves the entire current draft cont
   const context=w.api.context(),state=w.api.getProjectState(),undo=[...w.api.history.undo],redo=[...w.api.history.redo],scene=w.scene;
   const incoming=await archive(engineering,{engineeringDrafts:drafts([draft('incoming')])});
   await assert.rejects(()=>w.api.importBytes(incoming),/atomic load rejected/);
-  assert.deepEqual(w.calls,['/engineering/validate-project','/upload']);
+  assert.deepEqual(w.calls,['/upload/prepare','/upload/confirm']);
   assert.equal(w.api.context(),context);assert.deepEqual(w.api.getProjectState(),state);
   assert.deepEqual(w.api.getEngineeringDrafts(),[draft('keep-original')]);
   assert.deepEqual(w.api.history.undo,undo);assert.deepEqual(w.api.history.redo,redo);
   assert.equal(w.scene,scene);assert.equal(await w.api.recoverLoad(),true);
-  assert.equal(w.calls.filter(url=>url==='/upload').length,1,'definitive rejection must not remain pending and retry later');
+  assert.equal(w.calls.filter(url=>url==='/upload/confirm').length,1,'definitive rejection must not remain pending and retry later');
 });
 
 test('clean and read-only startup do not warn; geometry, engineering and draft-only changes all do',()=>{
