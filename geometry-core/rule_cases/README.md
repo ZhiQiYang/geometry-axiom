@@ -79,7 +79,11 @@ save/reopen. The module neither reads nor writes those contexts; scope is echoed
 in each receipt and the freshness helper checks it before reuse. Actual
 save/reopen and browser context switching remain integration acceptance work.
 `refresh_receipt` bounds retained host JSON to 4 MiB, depth 32 and 65536 nodes
-before copying. A retained green also requires complete native evidence,
+before copying. Every status must have typed context, case/freshness hashes,
+runtime identity and valid stale-history fields before the nonpass early return;
+malformed context raises `ReceiptValidationError` even without optional scope
+comparison arguments. This validation never promotes nonpass evidence to green.
+A retained green also requires complete native evidence,
 successful finite assertions and matching rule/binding pins for the same
 definition. Malformed data raises `ReceiptValidationError`; the integration
 owner preserves its original blob and decides import policy. The helper checks
@@ -178,3 +182,15 @@ Follow-up code/test head `cc0010e07c29b94f70404b959a3021e9962c5768` passed all
 passed and two diagnostic-unavailable, exit 2, six distinct PIDs and all private
 directories removed. Evidence is `/tmp/geometry-rule-cases-49/receipts-cc0010e.json`;
 validatorVersion is `af23e5d466ddd01d5273c05c64a616c02fff61dcacd0792b48034bb9c1b2c382`.
+
+The later receipt-context fix is frozen at code/test head
+`46c9a9dd4a011fa7a1771d98cc404dc870f300b4`, including merged main
+`b3c210791d128dc84c3222078df2472b70cc0e60`. All 86 focused tests passed (2.883s)
+and the 43 existing native regression tests passed (5.086s). Independent review
+reran the five added malformed/nonpass receipt tests (0.226s), with no blockers.
+The context list/null/string reproducer now consistently returns
+`ReceiptValidationError`, and matching/staled nonpass receipts never become
+passed. Fresh six-case evidence is
+`/tmp/geometry-rule-cases-49/receipts-46c9a9d.json`: four passed, two
+diagnostic-unavailable, exit 2, six distinct native PIDs and all private TEMP
+directories removed. Earlier receipts remain historical evidence.

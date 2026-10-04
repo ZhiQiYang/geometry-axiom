@@ -6,12 +6,19 @@ Its single writer, bounded JSON, isolated execution, fixed six-case scope and
 context-token write rules agree with this module. No archive format/capability
 or app route is registered by this comparison.
 
+Rechecked merged main `b3c210791d128dc84c3222078df2472b70cc0e60`: the owner
+and shared seams are unchanged, and its added known/capable native runtime
+fingerprint freshness requirement is already covered by exact executor identity.
+That main has no new typed assembly diagnostics or designated assembly
+diagnostic writer. Root must coordinate that writer; the assigned subdivision
+native scope alone does not grant this module ownership of shared assembly files.
+
 ## Required shared-owner decisions
 
 | Draft seam | Current module / precise remaining interface |
 | --- | --- |
 | `records[{kind,schema,value}]` | Target kind `rule-cases`; shared owner assigns outer feature schema/capability. Singular `rule-case/1` describes one definition, not the attachment or a native capability. The saved value needs both a bounded `definitions` collection and a bounded `receipts` collection; CLI receipts alone cannot reproduce cases. These field names are a proposed mapping for owner review, not a registered saved format. |
-| `validate(value)` | `validate_cases(definitions)` validates at most six unique complete definitions. `refresh_receipt` validates bounded evidence/freshness but is **not** a persistence validator: nonpass host receipts can retain unrecognized metadata. Before registration, the feature adapter must reject unknown persisted fields, pair each receipt with its definition, specify receipt/history count and aggregate byte limit, and reject unknown bundle/receipt schema. |
+| `validate(value)` | `validate_cases(definitions)` validates at most six unique complete definitions. `refresh_receipt` checks consumed context/freshness/runtime/stale-history field shapes for every status and validates bounded evidence/freshness, but is **not** a persistence validator: well-formed nonpass host receipts can retain unrecognized metadata. Before registration, the feature adapter must reject unknown persisted fields, pair each receipt with its definition, specify receipt/history count and aggregate byte limit, and reject unknown bundle/receipt schema. |
 | `references(value)` | Draft has not fixed its return shape. All six fixtures' rule/binding/parameter/material identities belong to their private case World. The formal World and asset-reference collection is empty. Never translate `sourcePins.ref` to a live reference by ID/name. The feature adapter can return the agreed empty reference collection after validating the local case closure. |
 | fixtures | `catalog.cases()` / `case(id)` return independent editable copies of the fixed six fixtures. No shared context or mutable fixture is held. |
 | run transport | Shared serve owner can call `run_case_request(body, project_id=..., generation=..., binary=..., cancel=...)`. Body is one bounded UTF-8 `rule-case/1` JSON definition. Scope, verified executable path and cancellation are host arguments. The helper registers no HTTP endpoint, creates no attachment and touches no live bridge. |
