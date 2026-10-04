@@ -93,7 +93,7 @@ python3 tests/test_axiom_reader.py
 `test_feedback_store.py`（GEO-183）驗證回報收件匣的寫入、編號、INBOX 與 `feedback_cli.py`，寫在暫存目錄、不需要 bridge。
 `test_guide_panels.py`（GEO-175）驗證導讀頁每個面板的符號與 callout 都還在目前的 `current_geometry.c` 裡；
 改 C 後若紅燈，改 `geometry-guide/make_guide.py` 的面板設定並重跑它。
-`test_core_integrity.c` 驗證承載面重綁後的世界座標、Space 範圍、交易回滾及 undo/redo。
+`test_core_integrity.c` 驗證承載面重綁後的世界座標、Space 範圍、交易回滾、undo/redo，以及 I2 合法共線頂點的 I5 矩形包含。
 `test_bridge_integrity.py` 使用獨立 bridge 程序，驗證不完整指令、存檔重載、auto 支撐義務及所有接受型場景的幾何往返。
 
 以下輸出目錄須先建立；執行測試時可在專案外工作，避免 SVG 測試產物覆寫工作中的圖。
@@ -179,10 +179,18 @@ Node（`node --test tests/*.js` 一次跑；`test_model_viewer.cjs` 是腳本式
 - `test_model_viewer.cjs`：模型檢視畫布的繪製呼叫契約。`reference_pdf_fixture.js` 只是夾具產生器，不是測試。
 
 工具（不是 pass/fail 測試，`run_all.py` 不跑）：`fuzz_scene.py`（場景解析器的確定性 fuzz，固定使用已編好的 bridge）、
-`mutate.py` 與 `mutants_results.json`（核心 C 原始碼的變異測試與其逐筆判決）、`run_tests.py`（場景夾具的接受／拒絕裁判，`run_all.py` 會以 core 呼叫）。
+`run_tests.py`（場景夾具的接受／拒絕裁判，`run_all.py` 會以 core 呼叫）。
+
+`mutate.py` 與 `mutants_results.json` 是既有核心變異工具／逐筆判決。正常 `run_all.py`
+固定讀 versioned results 跑 `mutation:check`（exit-code-only；不編譯、不執行 mutant）；
+stale／invalid／blocked／survived／缺紀錄必拒絕，CI 沿同入口。48 mutant 不是產品 assertion 數。
 
 `mutate.py`（GEO-225 起）：`python tests/mutate.py` 整批跑、`<id>…` 只跑指定、`--check` 只讀結果檔並彙總、`--selftest` 驗它自己的誠實性機制。
 每筆判決帶來源／include 閉包／變異／裁判（`run_tests.py` + 被 `TESTS` 引用的夾具）四組雜湊，任一與現況不符即標 `stale`、不計入 killed；
+另保存 raw binary SHA-256、編譯／oracle 指令、執行 head、baseline 與每次 attempt 的完整 structured result／exit／output hashes，結果 checksum 抓誤改，不能充當安全簽章。既有 equivalent 每轮亦真跑現版 oracle，保留可審查 proof；不把有限測試當形式證明。
+baseline／mutant 每次 launch 前後核 source／oracle／binary；raw byte identity 與 atomic JSON write 共用 `binaries.py`。
+clean checkout 的 `--check` 核保存證據，不聲稱已核不存在的 TEMP binary；同平台 cache 若存在，必須與已執行 raw hash／sidecar 完全一致。
+`MUTATE_CACHE` 可指定隔離 TEMP cache，`MUTATE_RESULTS` 可指定獨立重跑輸出；normal aggregate 固定讀 versioned results，不能用繼承的結果 override 取代。
 錨點找不到或不唯一標 `invalid`。變異 exe 依指紋快取在 `%TEMP%\geometry-tests\mutants\<id>\`，來源沒變就不重編（避免撞 Smart App Control）。
 缺少 sidecar，或 sidecar 是舊版只憑結果紀錄補發的 `adopted` 身分，皆須重建；結果雜湊不能證明磁碟上的 exe 內容。
 判決類別：killed / crashed（基準通過後，同一夾具連續存取違規；算被偵測到，與 killed 分開計，Q28 🔒）/ survived / equivalent / retired / blocked（啟動失敗、WinError 4551、逾時或其他異常結束）/ invalid / stale。`blocked` 使結束碼為 2；`crashed` 不占 1 也不占 2。
@@ -196,4 +204,5 @@ python3 tests/mutate.py
 ```
 
 Linux 變異程式快取在 `/tmp/geometry-tests/mutants/`，編譯指令也納入指紋；不共用 Windows exe。
-結果仍由同一份 `run_tests.py` 與 138 個夾具判定。這不驗證 Windows 專用 GDI。
+結果仍由同一份 `run_tests.py` 與 139 個夾具判定。這不驗證 Windows 專用 GDI。
+逐筆現版 anchor／proof 與本次執行證據見 [#85 review](MUTATION-FRESHNESS-REVIEW.md)。
