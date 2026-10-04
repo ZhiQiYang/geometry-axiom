@@ -156,14 +156,16 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
   for(const width of [1382,900,390]){
     await viewport(width,width===1382?804:844);
     const primary=await point('#igSaveSource',false);
-    check('網格首屏主動作可見，專案保存不能吞掉未建立來源 @'+width,primary.top>=0&&primary.bottom<=(width===1382?804:844)&&primary.hit&&!primary.disabled&&await read(`$('igSaveSource').closest('.ig-footer')!==null && document.querySelector('#projectBar [data-project-action="save"]').disabled && /尚未|未套用|先|預覽/.test($('igDraftNote').textContent)`),primary);
+    check('網格首屏主動作可見，專案保存保留原始來源草稿 @'+width,primary.top>=0&&primary.bottom<=(width===1382?804:844)&&primary.hit&&!primary.disabled&&await read(`$('igSaveSource').closest('.ig-footer')!==null && !document.querySelector('#projectBar [data-project-action="save"]').disabled && ReferenceWorkspace.readFeatureAttachment('grid-draft')?.rawForm.igName===$('igName').value && /原始輸入.*保存/.test($('igDraftNote').textContent)`),primary);
     check('網格對話框不水平溢出 @'+width,await read(`document.documentElement.scrollWidth<=innerWidth && $('infiniteGridWorkspace').scrollWidth<=$('infiniteGridWorkspace').clientWidth+1`));
   }
   await fill('#igName','UI 審查保留中的草稿');
-  await expectNativeDialog(()=>ctl('#igClose'),{message:'這個網格工作區有尚未建立或套用的草稿。離開會捨棄這些草稿；已保存到場景的網格保持不變。確定離開？',accept:false});
+  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:false});
   check('取消捨棄確認保留完整草稿與視窗',await read(`$('infiniteGridWorkspace').open && $('igName').value==='UI 審查保留中的草稿'`));
-  const blocked=await point('#projectBar [data-project-action="save"]');await click(blocked.x,blocked.y);await sleep(100);
-  check('點擊停用保存不關閉視窗、不丟草稿、不改世界',await read(`$('infiniteGridWorkspace').open && $('igName').value==='UI 審查保留中的草稿' && document.querySelector('#projectBar [data-project-action="save"]').disabled`)&&(await dump())===sceneBeforeGrid);
+  await read(`window.__p73GridPicker=window.showSaveFilePicker;window.__p73GridWrite={bytes:null,closed:false};window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async bytes=>{__p73GridWrite.bytes=Array.from(bytes)},close:async()=>{__p73GridWrite.closed=true},abort:async()=>{}})});void 0`);
+  await ctl('#projectBar [data-project-action="save"]');await wait(`!ReferenceWorkspace.busy && window.__p73GridWrite.closed`);
+  check('可信保存將完整原始草稿放入真ZIP，不關閉視窗、不改世界',await read(`(async()=>{const saved=await GeometryProject.unpack(Uint8Array.from(__p73GridWrite.bytes),fflate),raw=ReferenceWorkspace.readFeatureAttachment('grid-draft');return $('infiniteGridWorkspace').open && $('igName').value==='UI 審查保留中的草稿' && !document.querySelector('#projectBar [data-project-action="save"]').disabled && JSON.stringify(saved.manifest.featureAttachments.records[0].value)===JSON.stringify(raw) && saved.scene===${JSON.stringify(sceneBeforeGrid)};})()` )&&(await dump())===sceneBeforeGrid);
+  await read(`window.showSaveFilePicker=window.__p73GridPicker;delete window.__p73GridPicker;delete window.__p73GridWrite;void 0`);
   await shot('06-grid-draft-mobile');await ctl('#igSaveSource');await wait(`!!document.querySelector('.reference-impact[open]')`);
   check('建立先給影響預覽，確認前仍未寫入',(await dump())===sceneBeforeGrid);await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]') && !document.querySelector('#projectBar [data-project-action="save"]').disabled`);
   check('確認後建立草稿來源並允許保存專案',await read(`apiRequest('objects').then(r=>r.gridSystems.some(g=>g.name==='UI 審查保留中的草稿'))`)&&await read(`$('infiniteGridWorkspace').open && !document.querySelector('#projectBar [data-project-action="save"]').disabled`));await ctl('#igClose');

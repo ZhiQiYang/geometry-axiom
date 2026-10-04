@@ -125,10 +125,13 @@ module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,e
   check('三視圖文字放在所有幾何上方的標註層',await read(`$('world').lastElementChild?.classList.contains('v3-annotation-layer')&&[...document.querySelectorAll('#cv text[data-timber-id]')].every(e=>!!e.closest('.v3-annotation-layer'))`));await shot('p74-three-view-labels');await ctl('#btnCanvasView');
 
   await ctl('#btnNewGridSystem');await wait(`$('infiniteGridWorkspace')?.open`);await shell('#infiniteGridWorkspace','#igClose','#igSaveSource');
-  await fill('#igName','第二輪尚未套用草稿');const gridBefore=await dump(),disabledSave=await point(saveSelector,true);await click(disabledSave.x,disabledSave.y);await sleep(120);
-  check('共用保存仍受網格草稿守門，不丟草稿或修改世界',disabledSave.disabled&&await read(`$('igName').value==='第二輪尚未套用草稿'&&$('infiniteGridWorkspace').open&&WorkspaceShell.saveState().blocked`)&&(await dump())===gridBefore);
-  const gridLeave='這個網格工作區有尚未建立或套用的草稿。離開會捨棄這些草稿；已保存到場景的網格保持不變。確定離開？';
-  await expectNativeDialog(()=>ctl('#igClose'),{message:gridLeave,accept:false});check('取消返回仍保留未套用草稿',await read(`$('infiniteGridWorkspace').open&&$('igName').value==='第二輪尚未套用草稿'`));await expectNativeDialog(()=>ctl('#igClose'),{message:gridLeave,accept:true});
+  await fill('#igName','第二輪尚未套用草稿');const gridBefore=await dump(),gridSave=await point(saveSelector,true);
+  await read(`window.__p74GridPicker=window.showSaveFilePicker;window.__p74GridWrite={bytes:null,closed:false};window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async bytes=>{__p74GridWrite.bytes=Array.from(bytes)},close:async()=>{__p74GridWrite.closed=true},abort:async()=>{}})});void 0`);
+  await click(gridSave.x,gridSave.y);await wait(`!ReferenceWorkspace.busy&&window.__p74GridWrite.closed`);
+  check('共用保存將完整網格原始草稿放入真ZIP，不丟草稿或修改世界',!gridSave.disabled&&await read(`(async()=>{const saved=await GeometryProject.unpack(Uint8Array.from(__p74GridWrite.bytes),fflate);return $('igName').value==='第二輪尚未套用草稿'&&$('infiniteGridWorkspace').open&&!WorkspaceShell.saveState().blocked&&JSON.stringify(saved.manifest.featureAttachments.records[0].value)===JSON.stringify(ReferenceWorkspace.readFeatureAttachment('grid-draft'))&&saved.scene===${JSON.stringify(gridBefore)};})()` )&&(await dump())===gridBefore);
+  await read(`window.showSaveFilePicker=window.__p74GridPicker;delete window.__p74GridPicker;delete window.__p74GridWrite;void 0`);
+  const gridLeave='捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。';
+  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:gridLeave,accept:false});check('取消明示捨棄仍保留未套用草稿',await read(`$('infiniteGridWorkspace').open&&$('igName').value==='第二輪尚未套用草稿'`));await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:gridLeave,accept:true});
   await ctl('#btnSpaceModelTrial');await wait(`$('smWorkspace')?.open&&SpaceModelWorkspace.snapshot().phase==='preview'&&SpaceModelWorkspace.snapshot().sourceKind==='example'&&!SpaceModelWorkspace.snapshot().stale`);
   check('空間範例入口確實完成來源與模型預覽',await read(`!!SpaceModelWorkspace.snapshot().resultSummary&&!!SpaceModelWorkspace.snapshot().viewer&&$('smResultBadge').dataset.state==='complete'`));await shell('#smWorkspace','#smClose','#smPreview');await ctl('#smClose');
 
