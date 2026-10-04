@@ -203,11 +203,19 @@ test('foreign project replacement with identical valid native IDs is rejected at
   assert.equal(proof.ok,true);
   const {archive}=observedArchive();await archive.capture(initial,{scenarioId:'A',label:'A'});
   await archive.fork('A',{scenarioId:'B',label:'B'});const before=state(archive);
-  const saved=await archive.pack(zip);
+  // ZIP timestamps are packaging metadata. Advance them deterministically so
+  // retention must be proved by every complete member's actual bytes.
+  let clock=0;
+  const timedZip={...zip,zip:(files,options,done)=>zip.zip(files,
+    {...options,mtime:new Date(2000,0,1,0,0,clock++*2)},done)};
+  const saved=await archive.pack(timedZip),savedMembers=zip.unzipSync(saved);
   assert.equal(before.stats.assets,1,'Retention includes a real original PNG byte pool');
   await assert.rejects(()=>archive.replace('B',foreign),{code:'PROJECT_IDENTITY'});
   assert.deepEqual(state(archive),before,'Project ID rejection must preserve A, B, basis, origins, pool and asset bytes');
-  assert.deepEqual(await archive.pack(zip),saved,'The full descriptor and pool ZIP must remain byte-for-byte unchanged');
+  const repacked=await archive.pack(timedZip);
+  assert.notDeepEqual(repacked,saved,'The test deliberately changes ZIP container timestamps');
+  assert.deepEqual(zip.unzipSync(repacked),savedMembers,
+    'Every descriptor, manifest, scene and original pool member must remain byte-for-byte unchanged');
   // A foreign manifest plus deliberately empty origins is still a cross-project
   // basis forgery, even after the attacker recomputes every relevant hash.
   const files=zip.unzipSync(saved),foreignB=copy(before.records.find(record=>record.scenarioId==='B'));
@@ -220,7 +228,8 @@ test('foreign project replacement with identical valid native IDs is rejected at
   files['scenarios.json']=enc.encode(JSON.stringify(descriptor));
   await assert.rejects(()=>archive.unpack(zip.zipSync(files,{level:0}),zip),{code:'PROJECT_IDENTITY'});
   assert.deepEqual(state(archive),before);
-  assert.deepEqual(await archive.pack(zip),saved,'Rehashed foreign-basis ZIP rejection must preserve descriptor and real asset pool bytes');
+  assert.deepEqual(zip.unzipSync(await archive.pack(timedZip)),savedMembers,
+    'Rehashed foreign-basis ZIP rejection must preserve every complete member and real asset pool byte');
   const reopened=observedArchive();await reopened.archive.unpack(await archive.pack(zip),zip);
   assert.deepEqual(reopened.archive.list(),before.records);
 });
