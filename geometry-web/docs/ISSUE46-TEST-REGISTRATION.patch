@@ -1,7 +1,7 @@
 diff --git a/tests/run_all.py b/tests/run_all.py
 --- a/tests/run_all.py
 +++ b/tests/run_all.py
-@@ -84,6 +84,7 @@
+@@ -86,6 +86,7 @@
      'test_source_inspector': ['bridge'],
      'test_source_inspector_transport': [],
      'test_runtime_version': [],
@@ -9,7 +9,7 @@ diff --git a/tests/run_all.py b/tests/run_all.py
      'test_scene_import': ['bridge'],
      'test_serve': [],
      'test_space_modeling': ['model-base'],
-@@ -112,6 +113,9 @@
+@@ -114,6 +115,9 @@
      'tests/test_reference_workspace_races.js',
      'tests/test_room_outline.js',
      'tests/test_room_collection.js',
@@ -19,8 +19,8 @@ diff --git a/tests/run_all.py b/tests/run_all.py
      'tests/test_source_inspector.js',
      'tests/test_space_model_store.js',
      'tests/test_timber_schedule.js',
-@@ -135,6 +139,8 @@
-     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
+@@ -138,6 +142,8 @@
+     'node:evidence_links': 'tests/test_evidence_links.js',
  }
  NODE_EXCLUDED = {
 +    'tests/scenario_browser_check.cjs': 'Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)',
@@ -28,7 +28,7 @@ diff --git a/tests/run_all.py b/tests/run_all.py
      'tests/issue77_attachment_fixture.js': 'Shared self-authored PDF/payload fixture; registers no tests',
      'tests/test_issue77_browser.js': 'Required real app/native/Chromium room acceptance; formal owner interfaces pending; see INTEGRATION-GATES.md',
      'tests/test_issue77_exit_browser.js': 'Required real app/native/Chromium room draft-exit gate; formal owner interfaces pending; see INTEGRATION-GATES.md',
-@@ -692,12 +698,12 @@
+@@ -703,12 +709,12 @@
      print('-' * min(150, sum(sizes) + 12))
      print(fmt(body[-2]))
      print(fmt(body[-1]))
@@ -41,13 +41,13 @@ diff --git a/tests/run_all.py b/tests/run_all.py
 -            print('  %s：required real app/native/Chromium，獨立執行；本 aggregate 未驗。' % rel)
 +        if rel.startswith('tests/test_issue77_') or rel in ('tests/scenario_browser_check.cjs', 'tests/test_scenario_grid_interface.js'):
 +            print('  %s：%s；獨立執行，本 aggregate 未驗。' % (rel, NODE_EXCLUDED[rel]))
+     for rel, count in REQUIRED_BROWSER_GATES.items():
+         print('  %s：%d runtime adapter checks required；本 aggregate 未驗；正式 reader/ZIP/history 待 owner。' % (rel, count))
 
-
- # ------------------------------------------------------------------ main
 diff --git a/tests/run_all.expected.json b/tests/run_all.expected.json
 --- a/tests/run_all.expected.json
 +++ b/tests/run_all.expected.json
-@@ -203,7 +203,7 @@
+@@ -208,7 +208,7 @@
    },
    "node:tests-js": {
     "mode": "count",
@@ -55,16 +55,16 @@ diff --git a/tests/run_all.expected.json b/tests/run_all.expected.json
 +   "count": 433,
     "unit": "node test"
    },
-   "node:model_viewer": {
-@@ -297,6 +297,11 @@
-   "py:test_assembly_native_diagnostics": {
+   "node:evidence_links": {
+@@ -312,6 +312,11 @@
+   "py:test_grid_subdivision_oracle": {
     "mode": "count",
-    "count": 8,
+    "count": 40,
 +   "unit": "test"
 +  },
 +  "py:test_scenario_verify": {
 +   "mode": "count",
-+   "count": 33,
++   "count": 35,
     "unit": "test"
    }
   }
@@ -81,7 +81,7 @@ diff --git a/tests/INTEGRATION-GATES.md b/tests/INTEGRATION-GATES.md
 +
 +snapshot/diff/review-native 三個 Node 檔（23／18／18）加入
 +NODE_TEST_FILES，完整 census 發現 Node 374 → 433；Python
-+test_scenario_verify 33 tests 加入 PY_NEEDS，要求 fresh bridge＋model-base。
++test_scenario_verify 35 tests 加入 PY_NEEDS，要求 fresh bridge＋model-base。
 +既有 floors 及 ALLOWED_SKIPS 不變；新增數量取自完整 census，不以空腳本或 skip 補足。
 +Linux cloud 的完整 candidate census 在 process-local 16 MiB stack 下實跑；
 +8 MiB stack 曾使未修改的 native integrity／subgrid 基線崩潰，不能用它的 fail／skip
@@ -117,6 +117,6 @@ diff --git a/tests/INTEGRATION-GATES.md b/tests/INTEGRATION-GATES.md
 +正式 saving adapter 合 main 後，owner 再把此檔移入 NODE_TEST_FILES、重做 census；
 +不能在本 patch 預先假算第 434 項。
 +
-+Linux cloud 的 scenario Python suite 為 33/33；Windows 目前有 8 個
++Linux cloud 的 scenario Python suite 為 35/35；Windows 目前有 8 個
 +temporary-shebang fixture skips。這些沒有平台豁免，Windows strict 會拒絕全過；
 +須由後續 test owner 解決 fixture portability，不能使用 allow-skip 冒充完整驗收。

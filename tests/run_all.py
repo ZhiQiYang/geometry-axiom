@@ -86,6 +86,7 @@ PY_NEEDS = {
     'test_source_inspector': ['bridge'],
     'test_source_inspector_transport': [],
     'test_runtime_version': [],
+    'test_scenario_verify': ['bridge', 'model-base'],
     'test_scene_import': ['bridge'],
     'test_serve': [],
     'test_space_modeling': ['model-base'],
@@ -114,6 +115,9 @@ NODE_TEST_FILES = [
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
     'tests/test_room_collection.js',
+    'tests/test_scenario_diff.js',
+    'tests/test_scenario_review_native.js',
+    'tests/test_scenario_snapshots.js',
     'tests/test_source_inspector.js',
     'tests/test_space_model_store.js',
     'tests/test_timber_schedule.js',
@@ -138,6 +142,8 @@ NODE_PURE_TEST_FILES = {
     'node:evidence_links': 'tests/test_evidence_links.js',
 }
 NODE_EXCLUDED = {
+    'tests/scenario_browser_check.cjs': 'Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)',
+    'tests/test_scenario_grid_interface.js': 'Required real GridDraft owner-validator compatibility; PR104 is not on main; execute with actual owner validator, never count missing-injection skip as pass (INTEGRATION-GATES.md)',
     'tests/issue77_attachment_fixture.js': 'Shared self-authored PDF/payload fixture; registers no tests',
     'tests/test_issue77_browser.js': 'Required real app/native/Chromium room acceptance; formal owner interfaces pending; see INTEGRATION-GATES.md',
     'tests/test_issue77_exit_browser.js': 'Required real app/native/Chromium room draft-exit gate; formal owner interfaces pending; see INTEGRATION-GATES.md',
@@ -703,12 +709,12 @@ def print_table(rows):
     print('-' * min(150, sum(sizes) + 12))
     print(fmt(body[-2]))
     print(fmt(body[-1]))
-    print('正式產品整合另驗（不計入上述 pass/skip）：')
+    print('必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：')
     for rel,count in REQUIRED_OWNER_GATES.items():
         print('  %s：%d項 required；source-rooms owner 接口未實作時 exit3/pending_implementation，不是環境 skip或pass。' % (rel,count))
     for rel in sorted(NODE_EXCLUDED):
-        if rel.startswith('tests/test_issue77_'):
-            print('  %s：required real app/native/Chromium，獨立執行；本 aggregate 未驗。' % rel)
+        if rel.startswith('tests/test_issue77_') or rel in ('tests/scenario_browser_check.cjs', 'tests/test_scenario_grid_interface.js'):
+            print('  %s：%s；獨立執行，本 aggregate 未驗。' % (rel, NODE_EXCLUDED[rel]))
     for rel, count in REQUIRED_BROWSER_GATES.items():
         print('  %s：%d runtime adapter checks required；本 aggregate 未驗；正式 reader/ZIP/history 待 owner。' % (rel, count))
 
