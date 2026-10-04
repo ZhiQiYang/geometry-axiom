@@ -1,6 +1,6 @@
 # #77 人工多房間切片：模組與 owner 接線交接
 
-範圍依使用者接受的第 8 項明文建議及 PR100（`0230e436870ec3ba06fcb0735ffabc3b7427979d`，已隨 main `b3c210791d128dc84c3222078df2472b70cc0e60` 合併）。程式驗證基底 `1075058be37d37b98a2a910f4f67b87583be85b3` 與 b3c2107 的相關程式 blob 相同；PR 分支已 fast-forward b3c2107。只有人工連續描房；沒有批准整包 Q37 舊 proposal、原生房間樹、3D parent、自動 transform 或 #54/#87 自動辨識。原生 geometry 唯一來源仍為 native boundary。此 PR 沒有修改共享 app、index、project-store、reference-workspace、ContextHistory 或格式號，不能單獨宣稱 #77 已在產品啟用。
+範圍依使用者接受的第 8 項明文建議及 PR100（`0230e436870ec3ba06fcb0735ffabc3b7427979d`，已隨 main `b3c210791d128dc84c3222078df2472b70cc0e60` 合併）。PR 分支已整合實際遠端 main `067cbdc08340536eaf1a2ec96cf923e7682a9afe`；下方記錄 exact-base 驗證。只有人工連續描房；沒有批准整包 Q37 舊 proposal、原生房間樹、3D parent、自動 transform 或 #54/#87 自動辨識。原生 geometry 唯一來源仍為 native boundary。此 PR 沒有修改共享 app、index、project-store、reference-workspace、ContextHistory 或格式號，不能單獨宣稱 #77 已在產品啟用。
 
 共用單 writer：thread `01a100b5-800b-75f2-9a02-71ee53e550ba`；#77 worker：`01a104fc-a75a-728a-8d74-2e323f84d08c`。共享附件框架依 PR100，不能將 TEMP 專用 prototype 的 `roomSources` 格式接入產品。
 
@@ -90,4 +90,12 @@ patch 載入三個模組、路由逐點外環至 new/edit、保存阻擋草稿�
 
 自製 PDF `tests/fixtures/issue77-two-rooms.pdf`，生成器 `tests/build_issue77_fixture.py`，600×400 viewport，A/B 分離矩形；200pt 校準為4000mm。SHA256 `7e63ee59ffafe7baed86847f849131f35baab4c9802679686351a8549cfd6e44`。沒有私人原圖。保存證據不得附帶使用者資產。
 
-完整 #77 驗收仍需 owner 正式附件分支、adoptLegacySource records 保全／無 basis shadow、同交易 metadata、未知能力拒絕、actual ContextHistory 與 fresh-context browser 全部通過，再交 root review 決定合併。此獨立模組 PR 是可審小 slice；Refs #77，不關 issue。
+## main 067cbdc 的模組合併交付
+
+root 已獨立 review `18ba1f859f8866ad43bbe520140f7efec24a1c71`，清除移除底圖、退出草稿與 receipt recovery 三項阻塞，並授權先合併獨立模組，由 root 執行 merge。`git ls-remote` 後 fetch 的實際 main 是 `067cbdc08340536eaf1a2ec96cf923e7682a9afe`，不是以訊息中的簡碼猜測。b3c2107→067cbdc 僅新增 14 個 rule_cases 模組／文件／測試檔，與 #77 的新增檔完全不交集；共享 web 入口、正式 store/history、native bridge 與核心來源沒有變動。
+
+合入 main 後重新執行 focused suite：46 tests＝41 pass、0 fail、5 owner-interface skip，log `/tmp/issue77-main067-focused.log`。上述五項 production owner gates 仍明文未完成，實際正式 registry/read/set/history/lease 接口仍不存在；不是測試環境阻擋。另驗自製 PDF deterministic bytes、JavaScript syntax、patch 對當前 main apply-check 與所有既有檔案 blob 相等；證據 `/tmp/issue77-main067-evidence.json`。
+
+這次 base 整合沒有改動三個房間模組、接線 patch、browser test harness 或 native/web 依賴 blob；現有 37＋21＋61＋71 TEMP browser assertions 的 provenance 保留在各原始 log，沒有將它們重標為新 head 的重新執行結果。未啟用 production UI，因此不為不相干 rule_cases 新增檔重跑 full CDP。若 owner 接線改動上述依賴，須在其整合 exact head 重跑正式 UI／保存驗收。
+
+此獨立模組 PR 可交 root 合併；Refs #77，不關 issue，也不開 production 入口。完整 #77 驗收仍需 owner 正式附件分支、adoptLegacySource records 保全／無 basis shadow、同交易 metadata、未知能力拒絕、actual ContextHistory 與 fresh-context browser 全部通過，再交 root review 確認產品啟用。
