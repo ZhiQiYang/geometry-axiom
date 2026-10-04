@@ -532,6 +532,12 @@ async function apiRequest(cmd) {
   const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let confirmation = null;
+  const featureToken=cmd.match(/^line confirm (\S+)$/)?.[1];
+  if(featureToken&&ReferenceWorkspace.hasFeatureConfirmation(featureToken)){
+    if(!requestId)return {ok:false,error:"請先確認服務連線，再確認網格草稿。"};
+    try{confirmation=ReferenceWorkspace.beginFeatureConfirmation(featureToken);}catch(error){return {ok:false,error:error.message};}
+    if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
+  }
   if (cmd.startsWith('assembly-confirm ')) {
     if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
     try { confirmation = ReferenceWorkspace.beginAssemblyConfirmation(); }
