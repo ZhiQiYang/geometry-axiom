@@ -6714,7 +6714,8 @@ async function main() {
     s62 = await cx62();
     ck62('P62-13 按住空白:hand 基底與獨立 Space 鍵',
       s62 && s62.arrowD === 'M7.5 11V6.8a1.4 1.4 0 0 1 2.8 0v3.4-5.6a1.4 1.4 0 0 1 2.8 0v5-4a1.4 1.4 0 0 1 2.8 0v4.6-2.4a1.4 1.4 0 0 1 2.8 0v5.1c0 4.3-2.5 7-6.6 7h-.8c-2.7 0-4.6-1.1-6.1-3L3 13.6a1.5 1.5 0 0 1 2.4-1.8Z' && s62.text === 'Space', s62);
-    ck62('P62-13b Space 鍵實際字樣無描邊且保留深字',s62?.modifierStyle?.stroke === 'none' && s62.modifierStyle.width === 0 && s62.modifierStyle.fill === 'rgb(89, 99, 118)',s62);
+    // SVG's unused default stroke-width is 1 even when stroke:none disables it.
+    ck62('P62-13b Space 鍵實際字樣無描邊且保留深字',s62?.modifierStyle?.stroke === 'none' && s62.modifierStyle.fill === 'rgb(89, 99, 118)',s62);
     await eval_(`fe.spaceDown=false;`);
 
     await eval_(`oc.busy=true; document.body.classList.add('oc-busy'); cxRefreshAll();`);

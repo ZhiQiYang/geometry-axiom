@@ -34,9 +34,11 @@
     return '';
   }
   const item = (act, label, iconName, reason = '', extra = {}) => ({act,label,iconName,reason,...extra});
+  const guidePrerequisite = () => !feSid(oc.edit?.bid) ? '游離面不能放參考線（先在檢視器「放置」）' : '';
   function model(target) {
     const sel = fe.sel, loops = feCurLoops();
     const blocked = writable();
+    const guideBlocked = blocked || guidePrerequisite();
     let title = '畫布', meta = `面外 · u ${target.point.x} · v ${target.point.y}`, chip = '', typeIcon = 'fit';
     let tiles = [], groups = [];
     const acts = feActionsFor(sel).map(a => item(a.act, a.label, a.iconName, blocked));
@@ -81,13 +83,13 @@
       groups = [unavailable, [props]];
     } else if (sel?.kind === 'point') {
       title = '面內一點'; meta = `u ${sel.x} · v ${sel.y}`; typeIcon = 'plus';
-      tiles = [...acts, item('guide-u','u 線','guide',blocked), item('guide-v','v 線','guide',blocked), item('timber-form','角材','timber',blocked || (!feSid(oc.edit.bid)?'請先放置這片面':'在右欄明選定位引用，不能以游標位置放角材'))];
+      tiles = [...acts, item('guide-u','u 線','guide',guideBlocked), item('guide-v','v 線','guide',guideBlocked), item('timber-form','角材','timber',blocked || (!feSid(oc.edit.bid)?'請先放置這片面':'在右欄明選定位引用，不能以游標位置放角材'))];
       groups = [unavailable, [view]];
     } else {
       tiles = [item('fit','顯示全部','fit'),item('grid','格點','grid')];
       groups = [unavailable,[create],[view]];
     }
-    const creations = [item('guide-u','u 線（水平）','guide',blocked),item('guide-v','v 線（垂直）','guide',blocked),
+    const creations = [item('guide-u','u 線（水平）','guide',guideBlocked),item('guide-v','v 線（垂直）','guide',guideBlocked),
       item('op:hole','在此開口…','hole',blocked || (sel?.kind === 'point'?'':'開口要點在面內'))];
     const views = [item('fit','顯示全部','fit'),item('z100','回到 100%',null),item('grid','顯示格點','grid','',{checked:$('faceGridToggle').checked}),item('snap','吸附格點',null,'',{checked:$('faceSnapToggle').checked})];
     return {title,meta,chip,typeIcon,tiles,groups,creations,views};
@@ -158,6 +160,8 @@
     const uiOnly = ['fit','z100','grid','snap','props'];
     const blocked = !uiOnly.includes(a.act) && writable();
     if (blocked) {reason(blocked); return;}
+    const prerequisite = ['guide-u','guide-v'].includes(a.act) && guidePrerequisite();
+    if (prerequisite) {reason(prerequisite); return;}
     try {
       if (a.act.startsWith('op:')) {
         const t = a.act.slice(3); if (!FE_OPS[t] || !feActionsFor(fe.sel).some(x=>x.act===a.act)) return;

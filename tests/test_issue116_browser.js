@@ -14,15 +14,15 @@ let checks=0;const errors=[];const records=[];
 function check(actual,expected,label){assert.deepEqual(actual,expected,label);checks++;console.log('PASS '+label);records.push(label);}
 const outer=[[0,0],[4000,0],[4000,3000],[0,3000]];
 async function dump(page){return page.evaluate(async()=>{const r=await api('dump');if(!r.ok)throw Error(r.error);return r.text;});}
-async function fixture(page,extra=[]){
-  await page.evaluate(async extra=>{
+async function fixture(page,extra=[],placed=true){
+  await page.evaluate(async ({extra,placed})=>{
     for(const d of document.querySelectorAll('dialog[open]'))d.close();resetSceneFocus();closePanels();
-    for(const cmd of ['reset','line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000',...extra]){
+    for(const cmd of ['reset',placed?'line surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000':'line boundary 1 outline 0,0 4000,0 4000,3000 0,3000',...extra]){
       const r=await apiRequest(cmd);if(!r.ok)throw Error(cmd+': '+r.error);
     }
     await renderObjects();await enterFocus('face',1);feSetTool('select');
     $('faceSnapToggle').checked=true;$('feZoomFit').click();drawFaceEditor();
-  },extra);
+  },{extra,placed});
 }
 async function at(page,u,v){return page.evaluate(([u,v])=>{const r=$('faceEditorSvg').getBoundingClientRect();return{x:r.left+fe.panX+u*fe.zoom,y:r.top+fe.panY+v*fe.zoom};},[u,v]);}
 async function right(page,u=4000,v=1000){const p=await at(page,u,v);await page.mouse.click(p.x,p.y,{button:'right'});await page.locator('#feCtxMenu').waitFor({state:'visible'});}
@@ -155,6 +155,22 @@ async function main(){
     await page.locator('#guide-editor-close').click();
     await page.locator('[data-face-tool="timber"]').click();const guidePoint=await at(page,2000,1700);await page.mouse.move(guidePoint.x,guidePoint.y);
     check(await page.locator('.cx-layer[data-cx-host="fe"] .cx-label').textContent(),'沿此線放置','reference-line hover describes the real placement source');
+    // Independent review P2: the existing guide command requires a placement.
+    await fixture(page,[],false);const freeBefore=await dump(page),eventStart=await page.evaluate(()=>window.geometryFeedback.events.length);
+    check(await page.locator('[data-face-tool="guide"]').isDisabled(),true,'unplaced face has the existing disabled reference-line tool');
+    await right(page,2000,1700);
+    check(await page.locator('.fcm-tiles [data-fe-act^="guide-"]').evaluateAll(nodes=>nodes.map(n=>[n.getAttribute('aria-disabled'),n.title.includes('放置')])),[['true',true],['true',true]],'unplaced point tiles share the real placement prerequisite');
+    let freeButton=await page.locator('.fcm-tiles [data-fe-act="guide-u"]').boundingBox();await page.mouse.click(freeButton.x+freeButton.width/2,freeButton.y+freeButton.height/2);
+    check(await page.evaluate(()=>!$('feCtxMenu').hidden&&document.querySelector('.fcm-footer').textContent.includes('放置')),true,'disabled unplaced tile keeps the menu and explains the prerequisite');
+    await page.locator('.fcm-search input').fill('線');
+    check(await page.locator('.fcm-list [data-fe-act^="guide-"]').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('aria-disabled'))),['true','true'],'search retains both unplaced guide refusals');
+    await page.keyboard.press('Escape');await right(page);await page.locator('#feCtxMenu [data-fe-act="create"]').click();
+    check(await page.locator('.fcm-submenu [data-fe-act^="guide-"]').evaluateAll(nodes=>nodes.map(n=>[n.getAttribute('aria-disabled'),n.title.includes('放置')])),[['true',true],['true',true]],'Create submenu shares the same unplaced guide prerequisite');
+    freeButton=await page.locator('.fcm-submenu [data-fe-act="guide-v"]').boundingBox();await page.mouse.click(freeButton.x+freeButton.width/2,freeButton.y+freeButton.height/2);
+    check(await page.evaluate(()=>!$('feCtxMenu').hidden&&document.querySelector('.fcm-footer').textContent.includes('放置')),true,'disabled Create guide keeps its explanation visible');
+    await shot(page,'unplaced-guide');
+    check(await dump(page),freeBefore,'all unplaced guide entries preserve the native dump byte for byte');
+    check(await page.evaluate(start=>window.geometryFeedback.events.slice(start).filter(e=>e.k==='api'&&/^line guide /.test(e.cmd)).map(e=>e.cmd),eventStart),[],'unplaced guide refusals send zero native guide commands');await page.keyboard.press('Escape');
     // Actual pointer cursor: expands on state change, shrinks after 1.2s, denial stays.
     await fixture(page);let p=await at(page,4000,1400);await page.mouse.move(p.x,p.y);
     check(await page.locator('.cx-layer[data-cx-host="fe"] .cx-label').textContent(),'推拉','real edge hover shows intent badge');
