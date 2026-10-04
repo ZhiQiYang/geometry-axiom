@@ -52,10 +52,24 @@ def preview(page):
  except Exception:
   print('PREVIEW_FAILURE '+json.dumps(js(page,"return {status:$('igStatus')?.textContent,trace:window.rawStatusTrace,raw:ReferenceWorkspace.readFeatureAttachment('grid-draft'),busy:oc.busy,referenceBusy:ReferenceWorkspace.busy,sourceButton:$('igSaveSource')?.disabled,dialogClass:$('infiniteGridWorkspace')?.className,projectState:ReferenceWorkspace.getProjectState(),featurePending:ReferenceWorkspace.featureConfirmationPending()};"),ensure_ascii=False),flush=True)
   raise
-def save_zip(page,width,label):
+def save_zip(page,width,label,delay=False):
     check(f'{width} {label} complete-project save enabled',not page.locator('#projectBar [data-project-action="save"]').is_disabled())
-    with page.expect_download() as info:page.locator('#projectBar [data-project-action="save"]').click()
+    if delay:
+        before=dump(page);raw=draft(page);history=js(page,'return ReferenceWorkspace.history.undo.length;')
+        js(page,"window.rawOriginalPack=GeometryProject.pack;window.rawSavedControl=$('igUStep');GeometryProject.pack=async(...args)=>{const bytes=await window.rawOriginalPack(...args);await new Promise(resolve=>window.rawReleasePack=resolve);return bytes;};")
+    with page.expect_download() as info:
+        page.locator('#projectBar [data-project-action="save"]').click()
+        if delay:
+            page.wait_for_function("typeof window.rawReleasePack==='function'")
+            check(f'{width} save locks raw while actual ZIP delivery is delayed',page.locator('#igUStep').is_disabled() and js(page,'return ReferenceWorkspace.busy;') and draft(page)==raw)
+            page.keyboard.press('Escape')
+            check(f'{width} trusted Escape retains saving editor and raw',js(page,"return InfiniteGridWorkspace.isOpen && $('igUStep')===window.rawSavedControl;") and draft(page)==raw and page.locator('#igUStep').is_disabled())
+            js(page,'await InfiniteGridWorkspace.create();')
+            check(f'{width} ordinary reopen during save retains same locked owner',js(page,"return InfiniteGridWorkspace.isOpen && $('igUStep')===window.rawSavedControl;") and draft(page)==raw and page.locator('#igUStep').is_disabled())
+            check(f'{width} saving owner race preserves native World and undo',dump(page)==before and js(page,'return ReferenceWorkspace.history.undo.length;')==history)
+            js(page,'window.rawReleasePack();GeometryProject.pack=window.rawOriginalPack;delete window.rawOriginalPack;delete window.rawReleasePack;delete window.rawSavedControl;')
     file=out/f'{width}-{label}.gcanvas';info.value.save_as(file);settled(page)
+    if delay:check(f'{width} finished save restores raw editing on same owner',not page.locator('#igUStep').is_disabled() and draft(page)==raw)
     with zipfile.ZipFile(file) as z:
         m=json.loads(z.read('manifest.json'))
         check(f'{width} {label} real ZIP native scene present','world.scene' in z.namelist())
@@ -95,8 +109,8 @@ try:
    check(f'{width} source captures incomplete/inactive/whitespace strings',raw['rawForm']['igUStep']=='1e' and raw['rawForm']['igUPhase']=='-' and raw['rawForm']['igName']=='  未完成網格  ' and raw['rawForm']['igUPanel']=='not-a-panel' and raw['rawForm']['igVStep']==' 00400 ')
    check(f'{width} source raw has no World side effect',dump(page)==before)
    page.locator('#igSaveSource').click();settled(page)
-   check(f'{width} invalid native publish refused without preview',not page.locator('dialog.reference-impact[open]').count() and dump(page)==before and draft(page)==raw)
-   archive=save_zip(page,width,'source')
+   check(f'{width} invalid raw refused before native preview',not page.locator('dialog.reference-impact[open]').count() and dump(page)==before and draft(page)==raw)
+   archive=save_zip(page,width,'source',delay=True)
    page.locator('#igClose').click();page.wait_for_function('!InfiniteGridWorkspace.isOpen')
    check(f'{width} returning to canvas retains raw',draft(page)==raw)
    context.close()
