@@ -1277,11 +1277,29 @@ typedef struct {
 
 #define WORLD_MAX_GRID_SYSTEMS 16
 #define GRID_SYSTEM_NAME_MAX 96
+#define GRID_MAX_SUBDIVISION_RULES 32
+#define GRID_SUBDIVISION_CAPABILITY "grid-subdivision-rules/1"
+typedef struct {
+    uint32_t key;
+    char name[GRID_SYSTEM_NAME_MAX+1];
+    bool all_cells;
+    int64_t cell[2];
+    unsigned divisions[2];
+} GridSubdivisionRule;
+typedef struct {
+    uint32_t grid_id,system_id,rule_key;
+    int64_t cell[2];
+    int axis;
+    uint32_t inner_index;
+} GridRuleLineRef;
 typedef struct {
     uint32_t id;
     char name[GRID_SYSTEM_NAME_MAX+1];
     GridAxisDef axis[2];
     int main_along;
+    GridSubdivisionRule rules[GRID_MAX_SUBDIVISION_RULES];
+    size_t rule_count;
+    uint32_t next_rule_key; /* 0=exhausted; whole World undo restores allocator. */
 } GridSystem;
 #define WORLD_MAX_GRID_BINDINGS 32
 typedef struct {
@@ -3610,7 +3628,8 @@ typedef enum {
     ANCHOR_AT_GUIDES,   /* at-guides 線1 線2：交點凍結 */
     ANCHOR_AT_GRID,     /* at-line grid 網id 軸 索引：中心線對齊格線 */
     ANCHOR_AT_EDGE,     /* at-face e3 / h1e2 / t7 */
-    ANCHOR_AT_LINE      /* at-line guide id */
+    ANCHOR_AT_LINE,     /* at-line guide id; preserve legacy enum value */
+    ANCHOR_AT_RULE      /* source-owned rule line, whole-cell scope */
 } AnchorKind;
 
 typedef enum {
@@ -3632,6 +3651,7 @@ typedef struct {
     int64_t ref_grid_index;
     bool ref_grid_has_band; /* D10b: set only for a staggered axis */
     int64_t ref_grid_band;
+    GridRuleLineRef ref_rule;
     int ref_hole;           /* ANCHOR_AT_EDGE：-1 外輪廓，否則孔 index */
     int ref_edge;           /* 邊 index */
     bool has_through;
@@ -8292,6 +8312,11 @@ static bool world_replace_object(
  */
 /* 公理 R20：重宣告/刪除連坐——刪除或移動任一角材後，對同面全部角材
  * 重驗 I19–I22 與 R18；任一不過 → 整筆拒絕回滾（I8 同軌）。 */
+static bool grid_rules_valid(const GridSystem *,char *,size_t);
+static bool grid_rules_world_valid(const World *,char *,size_t);
+static bool grid_rule_line(const World *,const GridRuleLineRef *,SurfaceId,Coord *,SurfaceRegion2 *,char *,size_t);
+static bool grid_rule_ref_text(const char *,GridRuleLineRef *);
+static bool grid_subdivision_used(const World *);
 #include "geometry-core/subgrid_world.inc"
 
 static bool world_validate_derived(const World *world)
@@ -8374,6 +8399,14 @@ static bool world_validate_derived(const World *world)
             }
         }
 
+        if (a->anchor_kind==ANCHOR_AT_RULE) {
+            SurfaceRegion2 cell,f; char error[256]="";
+            if(!grid_rule_line(world,&a->ref_rule,p->id,NULL,&cell,error,sizeof error) ||
+                !timber_a0_footprint_uv(p,t,a,&f) || f.min_u<cell.min_u || f.max_u>cell.max_u ||
+                f.min_v<cell.min_v || f.max_v>cell.max_v) {
+                set_revalidate_error(error[0]?error:"I13: rule anchor footprint exceeds parent cell");return false;
+            }
+        }
         Timber probe = *t;
         probe.placed = false;
 
@@ -8571,67 +8604,78 @@ static bool world_validate_derived(const World *world)
 /* D2/D7/D9：承載面 frame 改變後，角材的世界姿態與 Space 範圍必須
  * 從定義重建。只在候選世界上操作，全量驗證通過才一起提交；
  * 失敗不會留下部分更新。位置與長度重算，引用與格線索引保持原意。 */
-static bool world_revalidate(World *world)
+static bool world_revalidate_candidate(World *world,World *candidate)
 {
     g_revalidate_error[0] = '\0';
-    World candidate = *world;
     char grid_error[256]="";
-    if (!boundary_keys_reconcile(&candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
-        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    if (!boundary_keys_reconcile(candidate,g_subgrid_before,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
-    if (!parameters_rebuild(&candidate,grid_error,sizeof grid_error)) {
-        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    if (!parameters_rebuild(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
-    if (!engineering_rebuild(&candidate,grid_error,sizeof grid_error)) {
-        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    if (!engineering_rebuild(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
-    if (!assembly_rebuild(&candidate,grid_error,sizeof grid_error)) {
-        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    if (!assembly_rebuild(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
-    if (!grid_systems_rebuild(&candidate,grid_error,sizeof grid_error)) {
-        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    if (!grid_systems_rebuild(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
-    if (!grid_bindings_rebuild(&candidate,grid_error,sizeof grid_error)) {
-        set_revalidate_error(grid_error); reference_capture_trial(&candidate); return false;
+    if (!grid_bindings_rebuild(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
-    if (!assembly_generation_prepare(&candidate)) {
+    if (!assembly_generation_prepare(candidate)) {
         set_revalidate_error(g_engineering_error); return false;
     }
-    reference_capture_trial(&candidate);
-    if (!subgrid_world_valid(&candidate,grid_error,sizeof grid_error)) {
+    if (!grid_rules_world_valid(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+    }
+    reference_capture_trial(candidate);
+    if (!subgrid_world_valid(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error[0]?grid_error:"I25: grid dependency invalid");
         return false;
     }
 
-    bool rebuilt=reference_rebuild(&candidate);
+    bool rebuilt=reference_rebuild(candidate);
     char rebuild_error[256]; snprintf(rebuild_error,sizeof rebuild_error,"%s",g_revalidate_error);
-    bool all_checks=reference_check_all(&candidate);
+    bool all_checks=reference_check_all(candidate);
     if (!rebuilt || !all_checks) {
         if (!rebuilt && rebuild_error[0]) set_revalidate_error(rebuild_error);
         return false;
     }
 
-    for (size_t i = 0; i < candidate.space_count; ++i) {
+    for (size_t i = 0; i < candidate->space_count; ++i) {
         const Space *s = &world->spaces[i];
         if (s->boundary_count == 0) {
-            candidate.spaces[i] = (Space){0};
-            candidate.spaces[i].id = s->id;
-        } else if (!space_construct(&candidate, s->id, s->boundaries,
-                                    s->boundary_count, &candidate.spaces[i],
+            candidate->spaces[i] = (Space){0};
+            candidate->spaces[i].id = s->id;
+        } else if (!space_construct(candidate, s->id, s->boundaries,
+                                    s->boundary_count, &candidate->spaces[i],
                                     NULL)) {
             return false;
         }
     }
 
-    if (!world_validate_derived(&candidate)) {
+    if (!world_validate_derived(candidate)) {
         if (g_revalidate_error[0] == '\0') {
             set_revalidate_error("場景重驗失敗");
         }
         return false;
     }
-    if (!assembly_generation_check(&candidate)) { set_revalidate_error(g_engineering_error); return false; }
-    *world = candidate;
+    if (!assembly_generation_check(candidate)) { set_revalidate_error(g_engineering_error); return false; }
+    *world = *candidate;
     return true;
+}
+
+static bool world_revalidate(World *world)
+{
+    World *candidate=malloc(sizeof *candidate);
+    if(!candidate){set_revalidate_error("I32: candidate World allocation failed");return false;}
+    *candidate=*world;
+    bool ok=world_revalidate_candidate(world,candidate);
+    free(candidate);return ok;
 }
 
 /* ---- 共用小解析工具 ---- */
@@ -9967,6 +10011,8 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/engineering.inc"
 #include "geometry-core/boundary_vertex_keys.inc"
 #include "geometry-core/grid_bindings.inc"
+#include "geometry-core/grid_subdivision.inc"
+#include "geometry-core/grid_subdivision_query.inc"
 #include "geometry-core/engineering_commands.inc"
 #include "geometry-core/assembly.inc"
 #include "geometry-core/assembly_generation.inc"
@@ -11678,6 +11724,10 @@ static bool apply_delete_line(
             char error[160]; snprintf(error,sizeof error,"I37: grid-system %u is still referenced by grid %u",id,world->grids[i].id);
             scene_error(path,line_no,error); return false;
         }
+        if(g_parsing_scene_file){
+            memmove(g_rule_scene_highwater+si,g_rule_scene_highwater+si+1,(world->grid_system_count-si-1)*sizeof *g_rule_scene_highwater);
+            g_rule_scene_highwater[world->grid_system_count-1]=false;
+        }
         memmove(&world->grid_systems[si],&world->grid_systems[si+1],(world->grid_system_count-si-1)*sizeof(GridSystem));
         memset(&world->grid_systems[--world->grid_system_count],0,sizeof(GridSystem));
         world_drop_canvas_pos(world,CANVAS_POS_GRID_SYSTEM,id);
@@ -11705,8 +11755,8 @@ static bool apply_delete_line(
         }
         for (size_t i = 0; i < world->timber_count; ++i) {
             if (world->timbers[i].placed &&
-                world->anchors[i].anchor_kind == ANCHOR_AT_GRID &&
-                world->anchors[i].ref_grid == id) {
+                ((world->anchors[i].anchor_kind == ANCHOR_AT_GRID && world->anchors[i].ref_grid == id) ||
+                 (world->anchors[i].anchor_kind == ANCHOR_AT_RULE && world->anchors[i].ref_rule.grid_id == id))) {
                 scene_error(path, line_no,
                     "V_GRID_LOCKED：有角材錨在這個網格上，先刪角材（timber）");
                 return false;
@@ -11897,6 +11947,7 @@ static bool apply_reset_line(
     (void)tokens;
 
     *world = (World){ 0 };
+    if(g_parsing_scene_file)memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
     return true;
 }
 
@@ -12013,6 +12064,7 @@ static void world_dump_dsl(const World *world, FILE *out)
         fprintf(out, "spec %s %lld\n", world->specs[i].name, (long long)world->specs[i].value);
 
     boundary_keys_dump(world,out);
+    if(grid_subdivision_used(world)) fputs("requires " GRID_SUBDIVISION_CAPABILITY "\n",out);
     grid_systems_dump(world,out);
     grid_bindings_dump(world,out);
     engineering_dump_applications(world,out);
@@ -12258,6 +12310,8 @@ static const struct {
     { "grid-binding", 15, SCENE_MAX_TOKENS, false, "grid-binding id on-boundary id from-system id vertex-key key cell i j anchor nu du nv dv", apply_grid_binding_line },
     { "boundary-vertex-keys", 7, SCENE_MAX_TOKENS, false, "boundary-vertex-keys id outer keys [hole keys] next-key n", apply_boundary_keys_line },
     { "boundary-keyed", 9, SCENE_MAX_TOKENS, false, "boundary-keyed id geometry-hash hash outline key:u,v ...", apply_boundary_keyed_line },
+    { "grid-source-rule", 4, 16, false, "grid-source-rule SID create|key K name-hex HEX selector all-cells|cell I J divide U V", apply_grid_source_rule },
+    { "grid-source-rule-highwater", 4, 4, false, "grid-source-rule-highwater SID next K|exhausted (file only)", apply_grid_source_rule_highwater },
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
     { "owned", 5, 20, false, "owned timber|place instance member native-arguments", apply_assembly_owned_line },
     { "assembly", 2, 3, false, "assembly begin|record|data|commit|end", apply_assembly_line },
@@ -12313,7 +12367,7 @@ static const struct {
         apply_timber_line
     },
     {
-        "place", 8, 16, true,
+        "place", 8, 20, true,
         "place 角材id on 承載面id at-line guide 線id｜grid 網id u|v 索引 "
         "或 at-face e索引｜h孔e邊｜t角材，"
         "可加 through 座標 或 between 擋面 擋面）",
@@ -12419,6 +12473,8 @@ static bool parse_scene_file(const char *path, World *out_world)
     }
 
     g_parsing_scene_file = true;
+    memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
+    g_rule_scene_required=false;
     g_parameter_scene_loading = true;
 
     char line[SCENE_MAX_LINE];
@@ -12517,6 +12573,7 @@ static bool parse_scene_file(const char *path, World *out_world)
         }
     }
 
+    if (ok && !grid_rules_scene_integrity(out_world)) { scene_error(path,line_no,"I25a: source rule capability/highwater closure missing"); ok=false; }
     if (ok && !assembly_generation_integrity(out_world)) { scene_error(path,line_no,g_engineering_error); ok=false; }
 
     /* 全部擋面就位後才重驗（grid-ref / I19 / I23 都走這裡），失敗整份拒絕。 */

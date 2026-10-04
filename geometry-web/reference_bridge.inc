@@ -177,12 +177,13 @@ static void json_grid_dependencies(const World *w,const ReferenceGrid *g)
     }
     fputs("],\"guides\":[",stdout); first=true;
     for (size_t i=0;i<w->guide_count;++i) {
-        if (!reference_expression_uses_grid(w->guides[i].expression,g->id)) continue;
+        if (!reference_expression_uses_grid(w->guides[i].expression,g->id) && !grid_guide_references(&w->guides[i],g->id)) continue;
         printf("%s%u",first?"":",",w->guides[i].id); first=false;
     }
     fputs("],\"timbers\":[",stdout); first=true;
     for (size_t i=0;i<w->timber_count;++i) {
-        if (!w->timbers[i].placed || w->anchors[i].anchor_kind!=ANCHOR_AT_GRID || w->anchors[i].ref_grid!=g->id) continue;
+        if (!w->timbers[i].placed || !((w->anchors[i].anchor_kind==ANCHOR_AT_GRID && w->anchors[i].ref_grid==g->id) ||
+            (w->anchors[i].anchor_kind==ANCHOR_AT_RULE && w->anchors[i].ref_rule.grid_id==g->id))) continue;
         printf("%s%u",first?"":",",w->timbers[i].id); first=false;
     }
     fputs("]}",stdout);
@@ -355,6 +356,11 @@ static void json_reference_timber_definition(const Timber *t,const TimberAnchor 
             snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld band %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index,(long long)a->ref_grid_band);
         else
             snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
+    }
+    else if(a->anchor_kind==ANCHOR_AT_RULE){
+        const GridRuleLineRef *r=&a->ref_rule;
+        snprintf(anchor,sizeof anchor,"at-line rule %u %u %u %lld %lld %c %u",r->grid_id,r->system_id,r->rule_key,
+            (long long)r->cell[0],(long long)r->cell[1],r->axis?'v':'u',r->inner_index);
     }
     else {
         ReferenceFace ref={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber};

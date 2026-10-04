@@ -16,7 +16,7 @@ grid-source-rule SID delete K
 grid-source-rule-highwater SID next K|exhausted
 grid-rule-query system|binding|grid ID rule K cell I J
 grid-rule-query system|binding|grid ID rule K rect U0 V0 U1 V1 mode exact|sample limit N
-guide ID on PLACEMENT along u|v at gridrule:G:SID:K:I:J:u|v:INDEX
+guide ID PLACEMENT u|v gridrule:G:SID:K:I:J:u|v:INDEX
 place T on P at-line rule G SID K I J u|v INDEX +u|+v|-u|-v +n|-n
 ```
 
@@ -27,6 +27,8 @@ Ordinary legacy `grid-system` redeclaration preserves rules and highwater, then 
 `objects.gridSystems[]` adds `rules` and `nextRuleKey`. Each rule has `ruleKey`, `name`, `selector:{kind:"all-cells"}` or `{kind:"cell",cell:[decimal-string,decimal-string]}`, and `divisions:[U,V]`. No expanded cells enter `World.grids`.
 
 Cell query returns `systemId`, `ruleKey`, decimal-string `cell`, `bounds:[minU,minV,maxU,maxV]`, and `lines:[{axis,innerIndex,coordinate,segments,ref}]`. Each segment is `[[u,v],[u,v]]`. Only a real applied grid target has a placed `ref` with `kind:"grid-rule-line",appliedGridId,systemId,ruleKey,cellI,cellJ,axis,innerIndex`; system/binding queries return `ref:null`. Rectangular responses state completeness, required cell count and stride; capacity failures do not change World/history/pending preview. Native does all clipping and coordinates.
+
+Engineering budgets are 32 rules per source, 1024 returned cells and 4096 emitted segments per query. Exact mode refuses excess rather than truncating. Sample mode returns whole cells at a stated row-major stride and validates only those returned cells; it never presents omitted cells as verified. A query budget failure does not invalidate an otherwise legal source. Direct anchors may retain existing `through` or `between` placement clauses; the rule line remains a position reference and contributes no support.
 
 Rule use protects divisions/selector/delete whenever any formal guide or timber references it. Guide expressions take coordinates only; direct anchors also enforce whole footprint inside parent cell and retain real support checks. Every source candidate validates every configuration, application, manual conflict and finite reference atomically. Existing manual subgrid behavior remains separate.
 

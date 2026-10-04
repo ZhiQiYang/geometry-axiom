@@ -72,7 +72,8 @@ static bool reference_system_changed(const World *before,const World *after,uint
 {
     const GridSystem *a=world_find_grid_system(before,id),*z=world_find_grid_system(after,id);
     if (!a || !z) return a!=z;
-    return strcmp(a->name,z->name) || a->main_along!=z->main_along ||
+    return a->rule_count!=z->rule_count || a->next_rule_key!=z->next_rule_key ||
+        memcmp(a->rules,z->rules,sizeof a->rules) || strcmp(a->name,z->name) || a->main_along!=z->main_along ||
         !reference_axis_definition_equal(&a->axis[0],&z->axis[0]) ||
         !reference_axis_definition_equal(&a->axis[1],&z->axis[1]);
 }
@@ -331,6 +332,14 @@ static void reference_system_text(const World *w,uint32_t id,FILE *out)
         else fprintf(out," %s %lld gap %lld from %lld",a->source==GRID_SRC_REPEAT_PANEL?"repeat-panel":"panel",
             (long long)a->panel,(long long)a->gap,(long long)a->anchor);
     }
+    fprintf(out," rule-next %u",s->next_rule_key);
+    for(size_t k=0;k<s->rule_count;++k){
+        const GridSubdivisionRule *r=&s->rules[k];
+        fprintf(out," rule %u name %s selector",r->key,r->name);
+        if(r->all_cells)fputs(" all-cells",out);
+        else fprintf(out," cell [%lld,%lld]",(long long)r->cell[0],(long long)r->cell[1]);
+        fprintf(out," divide %u %u",r->divisions[0],r->divisions[1]);
+    }
 }
 
 static void reference_boundary_text(const World *w,uint32_t id,FILE *out)
@@ -438,7 +447,7 @@ static bool reference_may_affect(const World *w,char **tokens,int count)
     const char *c=tokens[0];
     if (!strcmp(c,"move") || !strcmp(c,"spec") || !strcmp(c,"datum") || !strcmp(c,"boundary") || !strcmp(c,"surface") ||
         !strcmp(c,"boundary-keyed") || !strcmp(c,"grid-binding") ||
-        !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"grid-system") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
+        !strcmp(c,"placement") || !strcmp(c,"grid") || !strcmp(c,"grid-system") || !strcmp(c,"grid-source-rule") || !strcmp(c,"subgrid") || !strcmp(c,"guide") || !strcmp(c,"apply-proj") || !strcmp(c,"delete")) return true;
     if ((!strcmp(c,"place") || !strcmp(c,"timber")) && count>1) {
         uint32_t id;
         if (parse_u32(tokens[1],&id)) { int i=reference_timber_index(w,id); return i>=0 && w->timbers[i].placed; }
@@ -530,7 +539,7 @@ static void reference_preview_text(void)
     }
 }
 
-static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
+static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens[],int count,World *world,World *candidate)
 {
     if (!count) return true;
     if (!strcmp(tokens[0],"cancel-preview")) {
@@ -559,7 +568,7 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
         if (count<2 || !strcmp(tokens[1],"preview") || !strcmp(tokens[1],"confirm")) return false;
         ++tokens; --count;
     }
-    World candidate=*world;
+    *candidate=*world;
     if (count>1 && (!strcmp(tokens[0],"grid") || !strcmp(tokens[0],"timber"))) {
         uint32_t id;
         if (parse_u32(tokens[1],&id) && eng_object_bound(world,!strcmp(tokens[0],"timber"),id)) {
@@ -567,25 +576,26 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
         }
     }
     g_scene_last_error[0]='\0'; g_engineering_error[0]='\0'; g_reference_issue_count=0;
-    g_reference_trial=candidate; g_reference_capturing=true;
+    g_reference_trial=*candidate; g_reference_capturing=true;
     const World *previous_baseline=g_subgrid_before;
     g_subgrid_before=world;
-    bool ok=apply_scene_line_unchecked(path,line_no,tokens,count,&candidate);
+    bool ok=apply_scene_line_unchecked(path,line_no,tokens,count,candidate);
     g_subgrid_before=previous_baseline;
     g_reference_capturing=false;
     bool affects=reference_may_affect(world,tokens,count);
-    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate.engineering,sizeof world->engineering) || memcmp(&world->assembly,&candidate.assembly,sizeof world->assembly));
+    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate->engineering,sizeof world->engineering) || memcmp(&world->assembly,&candidate->assembly,sizeof world->assembly));
     uint32_t system_edit_id;
     bool system_edit=!g_parsing_scene_file && count>1 && !strcmp(tokens[0],"grid-system") &&
         parse_u32(tokens[1],&system_edit_id) && world_find_grid_system(world,system_edit_id);
     bool application_edit=!g_parsing_scene_file && count>4 && !strcmp(tokens[0],"grid") &&
         (!strcmp(tokens[4],"from-system") || !strcmp(tokens[4],"from-binding"));
     bool binding_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-binding");
+    bool rule_edit=!g_parsing_scene_file && !strcmp(tokens[0],"grid-source-rule");
     bool keyed_edit=!g_parsing_scene_file && !strcmp(tokens[0],"boundary-keyed");
-    if (explicit_preview || (!g_preview_confirming &&
-        (engineering_edit || assembly_dimensions_changed(world,&candidate) || system_edit || application_edit || binding_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
-        (affects && (!ok || reference_geometry_changed(world,&candidate)))))) {
-        reference_stage(world,ok?&candidate:&g_reference_trial,tokens,count,ok);
+    if (explicit_preview || (!g_parsing_scene_file && !g_preview_confirming &&
+        (engineering_edit || assembly_dimensions_changed(world,candidate) || system_edit || application_edit || binding_edit || rule_edit || keyed_edit || parameter_reference_edit(world,tokens,count) ||
+        (affects && (!ok || reference_geometry_changed(world,candidate)))))) {
+        reference_stage(world,ok?candidate:&g_reference_trial,tokens,count,ok);
         reference_preview_text();
         if (explicit_preview) return true;
         scene_error(path,line_no,"I8a: impact preview required; inspect preview, then confirm token (World unchanged)");
@@ -595,9 +605,17 @@ static bool apply_scene_line(const char *path,int line_no,char *tokens[],int cou
         if (!g_scene_last_error[0]) scene_error(path,line_no,"I8: invalid definition/reference; World unchanged");
         return false;
     }
-    if (!g_parsing_scene_file && strcmp(tokens[0],"canvas-pos") && !world_definitions_equal(world,&candidate)) ++g_definition_revision;
-    *world=candidate;
+    if (!g_parsing_scene_file && strcmp(tokens[0],"canvas-pos") && !world_definitions_equal(world,candidate)) ++g_definition_revision;
+    *world=*candidate;
     return true;
+}
+
+static bool apply_scene_line(const char *path,int line_no,char *tokens[],int count,World *world)
+{
+    World *candidate=malloc(sizeof *candidate);
+    if(!candidate){scene_error(path,line_no,"I32: candidate World allocation failed");return false;}
+    bool ok=apply_scene_line_candidate(path,line_no,tokens,count,world,candidate);
+    free(candidate);return ok;
 }
 
 static bool reference_default_world(World *world)

@@ -16,11 +16,12 @@ static bool eng_definition_hash(const World *w,char hash[65])
 }
 static void json_engineering_capabilities(const World *w)
 {
-    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\"],\"required_capabilities\":[",stdout);
+    fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"grid-subdivision-rules/1\"],\"required_capabilities\":[",stdout);
     if(engineering_used(w))js_string("engineering-spec/1");
     if(w->parameters.card_count){if(engineering_used(w))putchar(',');js_string("parameters/1");}
     if(assembly_used(w)){if(engineering_used(w)||w->parameters.card_count)putchar(',');js_string(ASM_CAPABILITY);}
-    if(w->assembly.instance_count){if(engineering_used(w)||w->parameters.card_count||assembly_used(w))putchar(',');js_string(ASM_GENERATION_CAPABILITY);}putchar(']');
+    if(w->assembly.instance_count){if(engineering_used(w)||w->parameters.card_count||assembly_used(w))putchar(',');js_string(ASM_GENERATION_CAPABILITY);}
+    if(grid_subdivision_used(w)){if(engineering_used(w)||w->parameters.card_count||assembly_used(w)||w->assembly.instance_count)putchar(',');js_string(GRID_SUBDIVISION_CAPABILITY);}putchar(']');
 }
 static void json_engineering_sources(const World *w)
 {

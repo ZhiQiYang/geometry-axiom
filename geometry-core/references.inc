@@ -88,6 +88,7 @@ static int reference_timber_index(const World *w, uint32_t id)
     return -1;
 }
 
+static char g_rule_reference_error[256];
 static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const char *text, Coord *out)
 {
     World *w=ctx->world;
@@ -103,6 +104,11 @@ static bool reference_quantity(ReferenceEval *ctx, const GuideLine *g, const cha
     SpaceBoundarySurface effective;
     const SpaceBoundarySurface *b=placement_effective_boundary(p,world_placement_boundary(w,p),&effective);
     int axis=g->direction==GUIDE_ALONG_V?0:1;
+    if(!strncmp(text,"gridrule:",9)) {
+        GridRuleLineRef ref;
+        return grid_rule_ref_text(text,&ref) && ref.axis==axis &&
+            grid_rule_line(w,&ref,g->placement_id,out,NULL,g_rule_reference_error,sizeof g_rule_reference_error);
+    }
     char buf[REF_EXPR_MAX], *part[5]; int n=0;
     snprintf(buf,sizeof buf,"%s",text);
     char *cursor=buf;
@@ -244,6 +250,7 @@ static bool reference_eval_text(ReferenceEval *ctx, const GuideLine *g, const ch
 
 static bool reference_eval_expression(ReferenceEval *ctx, const GuideLine *g, Coord *out)
 {
+    g_rule_reference_error[0]=0;
     return reference_eval_text(ctx,g,g->expression,out);
 }
 
@@ -294,7 +301,7 @@ static bool reference_eval_guide(ReferenceEval *ctx, size_t i)
     }
     if (!p || !reference_eval_expression(ctx,g,&v)) {
         ctx->guides[i]=3;
-        char message[256];if(g_parameter_error[0])snprintf(message,sizeof message,"guide %u: %s",g->id,g_parameter_error);else snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,g->expression);
+        char message[256];if(g_rule_reference_error[0])snprintf(message,sizeof message,"guide %u: %.210s",g->id,g_rule_reference_error);else if(g_parameter_error[0])snprintf(message,sizeof message,"guide %u: %s",g->id,g_parameter_error);else snprintf(message,sizeof message,"guide %u: invalid/missing reference, axis/surface mismatch, cycle or rational overflow: %.120s",g->id,g->expression);
         utf8_trim_tail(message);
         return reference_issue(0,"D6a/I7/I9","existing same-surface/axis references; acyclic exact rational expression",message);
     }
@@ -326,7 +333,7 @@ static bool reference_place_geometry(World *w, size_t ti)
     bool along=a->length_direction==SURFACE_DIRECTION_POS_V || a->length_direction==SURFACE_DIRECTION_NEG_V;
     Coord widths[2][2], contacts[2][2]; int n=0; bool contact=false;
     SurfaceRegion2 child_scope; bool scoped=false;
-    if (a->anchor_kind==ANCHOR_AT_GRID || a->anchor_kind==ANCHOR_AT_LINE) {
+    if (a->anchor_kind==ANCHOR_AT_GRID || a->anchor_kind==ANCHOR_AT_LINE || a->anchor_kind==ANCHOR_AT_RULE) {
         Coord center;
         if (a->anchor_kind==ANCHOR_AT_GRID) {
             const ReferenceGrid *g=world_find_grid(w,a->ref_grid); char err[180]="";
@@ -340,6 +347,11 @@ static bool reference_place_geometry(World *w, size_t ti)
                     return reference_issue(t->id,"I25","valid parent cell",err);
                 scoped=true;
             }
+        } else if(a->anchor_kind==ANCHOR_AT_RULE) {
+            char err[180]="";
+            if((a->ref_rule.axis==0)!=along || !grid_rule_line(w,&a->ref_rule,p->id,&center,&child_scope,err,sizeof err))
+                return reference_issue(t->id,"I13/I25a","same-source rule line and axis",err[0]?err:"rule axis mismatch");
+            scoped=true;
         } else {
             const GuideLine *g=world_find_guide(w,a->ref_guide);
             if (!g || g->placement_id!=p->id || (g->direction==GUIDE_ALONG_V)!=along)
@@ -591,6 +603,13 @@ static bool apply_reference_place(const char *p,int n,char **tokens,int count,Wo
     if (!strcmp(tokens[4],"at-line")) {
         if (i<count && !strcmp(tokens[i],"guide") && i+1<count) {
             a.anchor_kind=ANCHOR_AT_LINE; if (!parse_u32(tokens[i+1],&a.ref_guide)) return false; i+=2;
+        } else if(i+7<count && !strcmp(tokens[i],"rule")) {
+            GridRuleLineRef *r=&a.ref_rule; a.anchor_kind=ANCHOR_AT_RULE;
+            if(!parse_u32(tokens[i+1],&r->grid_id) || !parse_u32(tokens[i+2],&r->system_id) ||
+                !parse_u32(tokens[i+3],&r->rule_key) || !r->rule_key || !parse_i64(tokens[i+4],&r->cell[0]) ||
+                !parse_i64(tokens[i+5],&r->cell[1]) || (strcmp(tokens[i+6],"u")&&strcmp(tokens[i+6],"v")) ||
+                !parse_u32(tokens[i+7],&r->inner_index))return false;
+            r->axis=!strcmp(tokens[i+6],"u")?0:1;i+=8;
         } else if (i+3<count && !strcmp(tokens[i],"grid")) {
             int64_t index; a.anchor_kind=ANCHOR_AT_GRID;
             if (!parse_u32(tokens[i+1],&a.ref_grid) || !parse_i64(tokens[i+3],&index) ||
@@ -691,6 +710,11 @@ static void reference_dump(const World *w,FILE *out)
         else if (a->anchor_kind==ANCHOR_AT_GRID) {
             fprintf(out,"at-line grid %u %c %lld",a->ref_grid,a->ref_grid_axis==0?'u':'v',(long long)a->ref_grid_index);
             if (a->ref_grid_has_band) fprintf(out," band %lld",(long long)a->ref_grid_band);
+        }
+        else if(a->anchor_kind==ANCHOR_AT_RULE) {
+            const GridRuleLineRef *r=&a->ref_rule;
+            fprintf(out,"at-line rule %u %u %u %lld %lld %c %u",r->grid_id,r->system_id,r->rule_key,
+                (long long)r->cell[0],(long long)r->cell[1],r->axis?'v':'u',r->inner_index);
         }
         else { ReferenceFace r={a->ref_is_timber?1:0,a->ref_hole,a->ref_edge,a->ref_timber}; fputs("at-face ",out); reference_face_format(out,&r); }
         if (a->has_through) fprintf(out," through %lld",(long long)a->through);
