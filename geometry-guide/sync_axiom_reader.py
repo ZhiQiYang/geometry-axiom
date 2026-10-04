@@ -136,6 +136,155 @@ COLOR_REWRITES = [
      ":root[data-theme=dark] .sheet .full-ref{color:var(--sheet-ref-ink)}"),
 ]
 
+# Completed color migrations remain compatible with exact historical input,
+# but current CSS is guarded by declarations, not historical full-rule spelling.
+COLOR_CONTRACTS = [
+    ("a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible", {"outline": "2px solid var(--accent)", "outline-offset": "4px"}),
+    (".review-save-state.dirty", {"color": "var(--note-strong)"}),
+    (".stale-note", {"color": "var(--note-strong)"}),
+    (".review-block.has-comments>.review-target", {"border-left": "3px solid var(--note)"}),
+    (".review-block.target-flash", {"outline": "2px solid var(--note)"}),
+    (".inline-note", {"border-left": "3px solid var(--note)"}),
+    (".recovery-banner", {"border": "1px solid var(--note)"}),
+    (".review-error", {"color": "var(--danger)"}),
+    (".proposal-before", {"border-left": "3px solid var(--proposal)"}),
+    (".ex figure img", {"background": "var(--figure-bg)"}),
+    (".witness-section figure img", {"background": "var(--figure-bg)"}),
+    (".image-viewport", {"background": "var(--figure-bg)"}),
+    (".ex.no .badge", {"background": "var(--reject-bg)", "color": "var(--reject-ink)"}),
+    (".ex.no .expect", {"background": "var(--reject-bg)"}),
+    (".ex.tr .badge", {"background": "var(--transcript-bg)", "color": "var(--transcript-ink)"}),
+    (".dsl>span.hit", {"background": "var(--hit-bg)", "border-left": "2px solid var(--hit-line)"}),
+    (".copy .reference-link", {"text-decoration-color": "var(--link-underline)"}),
+    (":root[data-theme=dark] .ex.no .badge,:root[data-theme=dark] .ex.no .expect", None),
+    (":root[data-theme=dark] .dsl>span.hit", None),
+    (":root[data-theme=dark] .sheet .full-ref", {"color": "var(--sheet-ref-ink)"}),
+]
+
+
+def color_property_overlaps(key: str, required: dict) -> bool:
+    """Conservative overlap table for the small set of guarded CSS properties."""
+    if key == "all":
+        return True
+    # Treat vendor aliases as overlaps too, without accepting them as the
+    # ordinary declaration required by the contract.
+    key = re.sub(r"^-(?:webkit|moz|ms|o)-", "", key)
+    if key in required:
+        return True
+    if "background" in required and key.startswith("background-"):
+        return True
+    if "outline" in required and key in {"outline-color", "outline-style", "outline-width"}:
+        return True
+    if "text-decoration-color" in required and key == "text-decoration":
+        return True
+    if "border" in required or "border-left" in required:
+        # Logical sides can map to the left edge depending on writing mode.
+        sides = ["block", "block-start", "block-end", "inline", "inline-start", "inline-end"]
+        sides += ["top", "right", "bottom", "left"] if "border" in required else ["left"]
+        overlaps = {"border", "border-width", "border-style", "border-color"}
+        overlaps.update("border-" + side for side in sides)
+        overlaps.update("border-" + side + "-" + part for side in sides for part in ("width", "style", "color"))
+        return key in overlaps
+    return False
+
+
+def color_contract_regressions(template: str) -> list[str]:
+    def selector_key(selector):
+        return re.sub(r"\s*([>,])\s*", r"\1", " ".join(selector.split()))
+
+    def value_key(value):
+        value = " ".join(value.strip().split())
+        return re.sub(r"var\(\s*(--[\w-]+)\s*\)", r"var(\1)", value)
+
+    # Restricted template guard, not a cascade engine: required declarations
+    # must be unconditional. Scoped or important overrides of those properties
+    # and overlapping shorthand/longhand/alias/all overrides are rejected
+    # conservatively, rather than guessed to be applicable.
+    brace_tokens = re.compile(r"'(?:\\.|[^'\\])*'|\"(?:\\.|[^\"\\])*\"|[{}]")
+
+    def blocks(css):
+        start = depth = 0
+        for token in brace_tokens.finditer(css):
+            if token[0] == "{":
+                if depth == 0:
+                    header, body_start = css[start:token.start()].strip(), token.end()
+                depth += 1
+            elif token[0] == "}":
+                depth -= 1
+                if depth < 0:
+                    raise ValueError("unbalanced CSS block")
+                if depth == 0:
+                    yield header, css[body_start:token.start()]
+                    start = token.end()
+        if depth or css[start:].strip():
+            raise ValueError("unsupported CSS block: " + css[start:].strip()[:80])
+
+    def walk(css, scoped):
+        for header, body in blocks(css):
+            nested = any(t[0] == "{" for t in brace_tokens.finditer(body))
+            if header.startswith("@"):
+                if nested:
+                    yield from walk(body, True)
+                else:
+                    yield header, body, True  # e.g. @page declarations
+            elif nested:
+                raise ValueError("unsupported nested selector block")
+            else:
+                yield header, body, scoped
+
+    contracts = {selector_key(s): required for selectors, required in COLOR_CONTRACTS
+                 for s in selectors.split(",")}
+    rules, bad = {}, []
+    parsed = []
+    try:
+        for style in re.finditer(r"<style\b([^>]*)>(.*?)</style>", template, re.S):
+            css = re.sub(r"/\*.*?\*/", "", style[2], flags=re.S)
+            # media/disabled/type modifiers are unsupported for guarded rules.
+            scoped = bool(re.search(r"\b(?:media|disabled|type)\b", style[1], re.I))
+            parsed.extend(walk(css, scoped))
+    except ValueError as error:
+        return [str(error)]
+    for selectors, body, scoped in parsed:
+        declarations = {}
+        parts = body.split(";")
+        for index, declaration in enumerate(parts):
+            if ":" in declaration:
+                key, value = declaration.split(":", 1)
+                key = key.strip().lower()
+                for selector in selectors.split(","):
+                    required = contracts.get(selector_key(selector))
+                    if required is not None and color_property_overlaps(key, required):
+                        # Current templates use these two base shorthands,
+                        # followed in the SAME ordinary rule by the guarded
+                        # longhand. Only that locally provable ordering is
+                        # supported; later/cross-rule aliases still fail.
+                        covered = {"border": "border-left", "text-decoration": "text-decoration-color"}.get(key)
+                        later = dict(part.split(":", 1) for part in parts[index + 1:] if ":" in part)
+                        later = {name.strip().lower(): value_key(value) for name, value in later.items()}
+                        safe_base = (covered in required and later.get(covered) == value_key(required[covered]))
+                        if key not in required and not safe_base:
+                            bad.append("overlapping color property unsupported: " + selector.strip() + ": " + key)
+                        if scoped:
+                            bad.append("scoped color declaration unsupported: " + selector.strip())
+                        if re.search(r"!\s*important\b", value, re.I):
+                            bad.append("important color declaration unsupported: " + selector.strip())
+                declarations[key] = value_key(value)
+        for selector in selectors.split(","):
+            key = selector_key(selector)
+            if key in contracts and contracts[key] is None:
+                bad.append("retired dark override: " + selector.strip())
+            if not scoped:
+                rules.setdefault(key, {}).update(declarations)
+    for selectors, required in COLOR_CONTRACTS:
+        for selector in selectors.split(","):
+            actual = rules.get(selector_key(selector))
+            if required is None:
+                if actual is not None:
+                    bad.append("retired dark override: " + selector)
+            elif actual is None or any(actual.get(key) != value_key(value) for key, value in required.items()):
+                bad.append("color declaration contract: " + selector)
+    return bad
+
 
 def apply_color_tokens(template: str) -> str:
     """把 token 定義併進 :root / :root[data-theme=dark],再把規則裡寫死的色碼換成 token。"""
@@ -163,7 +312,11 @@ def apply_color_tokens(template: str) -> str:
                 PATCHES.expect_present("色彩 token " + name,
                                        "%s:%s" % (name, pair[index]))
     for old_css, new_css in COLOR_REWRITES:
-        template = force(template, old_css, new_css, "色碼→token: " + new_css[:40])
+        if old_css in template:
+            template = force(template, old_css, new_css, "歷史色碼相容: " + new_css[:40])
+    regressions = color_contract_regressions(template)
+    if regressions:
+        raise ValueError("reader color contract: " + "; ".join(regressions))
     return template
 
 
@@ -686,6 +839,7 @@ def validate(source: str, axiom: str, plain: str) -> dict:
     for mark in ('badge-trace', 'badge-hub', 'trace-section', 'data-trace='):
         assert mark in source, "GEO-139 追溯類功能又丟失了(GEO-120 連帶約束): " + mark
     assert not hardcoded_colors(source), "GEO-141 規則裡仍有寫死的色碼: " + "; ".join(hardcoded_colors(source)[:6])
+    assert not color_contract_regressions(source), "reader color contract: " + "; ".join(color_contract_regressions(source))
     assert ".review-block>.block-tools{opacity:0" in source, "GEO-145 段落工具又變成常駐了"
     assert "pressTimer" in script_text(source, "reader-script"), "GEO-145 觸控長按沒了"
     assert 'class="toc-facets' in source, "GEO-149 篩選 chip 不見了"
