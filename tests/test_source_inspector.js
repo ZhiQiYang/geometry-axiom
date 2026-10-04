@@ -86,7 +86,7 @@ test('the navigation owner can cancel during render or the final native read bef
 });
 test('source app forwards native face targets to the common navigation entry and its cancellation guard',async()=>{
   const calls=[],current=()=>true,g=S.index(locationData()),context={groups:new Map([[1,{activePageId:'a'}]])};let options;
-  const sandbox={window:{SourceInspector:{...S,mount:(host,value)=>{options=value;return {detail:{isConnected:true},cancel(){}};}}},EngineeringAdapter:{navigateObject:(...args)=>calls.push(args)},ReferenceWorkspace:{context:()=>context},
+  const sandbox={window:{addEventListener(){},SourceInspector:{...S,mount:(host,value)=>{options=value;return {detail:{isConnected:true},cancel(){}};}}},EngineeringAdapter:{navigateObject:(...args)=>calls.push(args)},ReferenceWorkspace:{context:()=>context},
     oc:{selection:[],sel:null,edit:null},fe:{timberSelection:new Set()},document:{getElementById:()=>null},queueMicrotask(){},MutationObserver:function(){}};
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/source-inspector-app.js'),'utf8'),sandbox);
   for(const kind of ['timber','guide','grid','placement'])await sandbox.window.SourceInspectorApp.navigate({kind,id:'7'},g,{isCurrent:current});
