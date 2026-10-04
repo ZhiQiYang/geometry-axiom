@@ -11,6 +11,7 @@ const ReferenceWorkspace = (() => {
   let pdfLib, modal = null, busy = false, busyLabel = "", busyShort = "處理中", sequence = 0, pendingLoad = null;
   let importRenderingContext = null;
   let assemblyConfirmation = null, preparingSceneLoad = false;
+  const featureConfirmations=new Map();
   let presentedModelContext = null, presentedModels = null;
   let presentedProjectionContext = null, presentedProjections = null;
   let presentedDraftContext = null, presentedDrafts = null;
@@ -33,7 +34,7 @@ const ReferenceWorkspace = (() => {
   };
   function notifySceneChange(){recoveryChannel?.postMessage({peer:recoveryPeer,session:typeof connection!=="undefined"?connection.session:null});}
   function assertAssemblyIdle(){
-    if(assemblyConfirmation)throw new Error("組構確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
+    if(assemblyConfirmation)throw new Error((assemblyConfirmation.featureCommand?'網格變更':'組構')+"確認結果尚未取得，請先等候結果或重新連線，再編輯或切換專案。");
   }
   function assertWritableLease(){
     assertAssemblyIdle();
@@ -50,6 +51,31 @@ const ReferenceWorkspace = (() => {
     assemblyConfirmation={context:context(),frame:history.frame};schedulePresentation();return assemblyConfirmation;
   }
   function assemblyConfirmationCurrent(stamp){return context()===stamp.context && history.frame===stamp.frame;}
+  function featureTokenKey(token){
+    // Native preview emits a uint32 number; the confirm command carries its
+    // decimal text. Both representations must name the same prepared lease.
+    if(typeof token==='string'&&!/^[1-9]\d{0,9}$/.test(token))return null;
+    if(typeof token!=='number'&&typeof token!=='string')return null;
+    const value=Number(token);
+    return Number.isInteger(value)&&value>0&&value<=4294967295?String(value):null;
+  }
+  function prepareFeatureConfirmation(token,kind,value,expectedContextToken){
+    P.Features.assertKind(kind);P.Features.validateGridDraft(value);assertEditable();
+    const key=featureTokenKey(token);
+    if(key===null||getProjectState().contextToken!==expectedContextToken||
+       busy||history.group||pendingLoad||preparingSceneLoad||!sameModelData(readFeatureAttachment(kind),value))
+      throw new Error("草稿或專案已變更，請重新預覽確認。");
+    featureConfirmations.clear();
+    featureConfirmations.set(key,{context:context(),frame:history.frame,kind,value:JSON.parse(JSON.stringify(value))});
+  }
+  function beginFeatureConfirmation(token){
+    const key=featureTokenKey(token),prepared=featureConfirmations.get(key);if(!prepared)return null;
+    featureConfirmations.delete(key);assertEditable();
+    if(busy||history.group||pendingLoad||preparingSceneLoad||!assemblyConfirmationCurrent(prepared)||
+       !sameModelData(readFeatureAttachment(prepared.kind),prepared.value))throw new Error("草稿確認已過期，未套用。");
+    assemblyConfirmation={...prepared,featureCommand:"line confirm "+key};schedulePresentation();return assemblyConfirmation;
+  }
+  function cancelFeatureConfirmation(token){featureConfirmations.delete(featureTokenKey(token));}
   function finishAssemblyConfirmation(stamp){if(assemblyConfirmation===stamp){assemblyConfirmation=null;schedulePresentation();scheduleRecovery();}}
   const safe = fn => async (...args) => { try { return await fn(...args); } catch (e) { toast(e.message || "參考資料操作失敗"); } };
   function group(bid, create = false) {
@@ -289,6 +315,9 @@ const ReferenceWorkspace = (() => {
     const hadProjections = context().faceProjections.size || context().faceProjectionsDirty;
     const previousProjections = context().faceProjections;
     history.observe(cmd, result);
+    const feature=assemblyConfirmation;
+    if(result.ok&&feature?.featureCommand===cmd&&assemblyConfirmationCurrent(feature)&&sameModelData(readFeatureAttachment(feature.kind),feature.value))
+      context().featureAttachments=context().featureAttachments.filter(record=>record.kind!==feature.kind);
     if (hadModels && result.ok && /^line\s+(reset|default)\s*$/.test(cmd)) context().modelsDirty = true;
     if (hadProjections && result.ok && /^line\s+(reset|default)\s*$/.test(cmd)) context().faceProjectionsDirty = true;
     const edited = result.ok && cmd.match(/^line\s+(?:boundary|surface)\s+(\d+)\s/);
@@ -780,6 +809,7 @@ const ReferenceWorkspace = (() => {
   }
   async function exportSnapshot(c = context()) {
     window.AssemblyWorkspace?.flush();
+    window.InfiniteGridWorkspace?.flush();
     assertSaveReady(); await referencesReady(c); assertContext(c); assertSaveReady();
     const stamp = { context:c, frame:history.frame, revision:revision(c) };
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
@@ -797,6 +827,7 @@ const ReferenceWorkspace = (() => {
   async function save() {
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
     window.AssemblyWorkspace?.flush();
+    window.InfiniteGridWorkspace?.flush();
     const shellState=window.WorkspaceShell?.saveState();
     if(shellState?.blocked)throw new Error(shellState.reason || "請先套用或放棄目前視窗的草稿。");
     assertSaveReady();
@@ -804,6 +835,7 @@ const ReferenceWorkspace = (() => {
     const c=context(), suggested=c.name.replace(/[\\/:*?"<>|]/g,"_")+".gcanvas";
     const handlePromise=window.showSaveFilePicker ? window.showSaveFilePicker({suggestedName:suggested,types:[{description:"構形 Canvas 專案",accept:{"application/zip":[".gcanvas"]}}]}) : null;
     busy=true; busyLabel="正在保存專案…"; busyShort="保存中"; present();
+    window.InfiniteGridWorkspace?.setProjectBusy(true);
     try {
       let handle;
       try { handle=handlePromise && await handlePromise; } catch(e) { if(e.name==="AbortError")return;throw e; }
@@ -818,7 +850,7 @@ const ReferenceWorkspace = (() => {
           setStatus(context()===c?"檔案已寫入；保存期間的新變更尚未保存，請再次保存。":"先前專案的檔案已寫入；目前專案的保存狀態未變更。");
         }}
       else {assertSnapshot(stamp);download(bytes,suggested);c.downloaded=true;c.provenance.lastDownloadAt=new Date().toISOString();setStatus("已產生專案下載；請確認下載完成後再關閉。");}
-    } finally {busy=false;busyLabel="";busyShort="處理中";present();scheduleRecovery();}
+    } finally {busy=false;busyLabel="";busyShort="處理中";window.InfiniteGridWorkspace?.setProjectBusy(false);present();scheduleRecovery();}
   }
   function sameModelData(a, b) {
     const ordered = value => Array.isArray(value) ? value.map(ordered) : value && typeof value === "object"
@@ -1154,6 +1186,8 @@ const ReferenceWorkspace = (() => {
     readFeatureAttachment,setFeatureAttachment,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
+    prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
+    featureConfirmationPending:()=>!!assemblyConfirmation?.featureCommand,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
     manifest,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,

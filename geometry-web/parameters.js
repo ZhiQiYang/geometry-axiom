@@ -41,12 +41,12 @@ window.ParameterUI = (() => {
   function sourceRef(id) {
     const key=$(id+'Source')?.value;if(!key)return null;const [parameterId,fieldId]=key.split(':').map(Number);return {kind:'parameter',parameterId,fieldId};
   }
-  function bindSource(id,onChange) {
+  function bindSource(id,onChange,{preserveValue=false}={}) {
     const select=$(id+'Source'),input=$(id);if(!select||!input)return;
-    const sync=()=>{const ref=sourceRef(id);input.readOnly=!!ref;input.setAttribute('aria-readonly',String(!!ref));const jump=document.querySelector(`[data-param-jump-for="${id}Source"]`);if(jump)jump.hidden=!ref;
-      if(ref){const f=cards().find(c=>c.id===ref.parameterId)?.fields.find(f=>f.id===ref.fieldId);input.value=f?.value?.den==='1'?f.value.num:'';}
+    const sync=(resolveValue=true)=>{const ref=sourceRef(id);input.readOnly=!!ref;input.setAttribute('aria-readonly',String(!!ref));const jump=document.querySelector(`[data-param-jump-for="${id}Source"]`);if(jump)jump.hidden=!ref;
+      if(ref&&resolveValue){const f=cards().find(c=>c.id===ref.parameterId)?.fields.find(f=>f.id===ref.fieldId);input.value=f?.value?.den==='1'?f.value.num:'';}
     };
-    sync();select.addEventListener('change',()=>{sync();onChange?.();});
+    sync(!preserveValue);select.addEventListener('change',()=>{sync();onChange?.();});
   }
   function definition(c) {return {id:c.id,name:c.name,nextFieldId:c.nextFieldId,fields:c.fields.map(({id,name,type,expression})=>({id,name,type,expression}))};}
   function refs(ast,result=[]) {if(ast?.op==='ref')result.push(ast);if(ast?.left)refs(ast.left,result);if(ast?.right)refs(ast.right,result);return result;}

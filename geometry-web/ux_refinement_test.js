@@ -125,10 +125,13 @@ module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,e
   check('三視圖文字放在所有幾何上方的標註層',await read(`$('world').lastElementChild?.classList.contains('v3-annotation-layer')&&[...document.querySelectorAll('#cv text[data-timber-id]')].every(e=>!!e.closest('.v3-annotation-layer'))`));await shot('p74-three-view-labels');await ctl('#btnCanvasView');
 
   await ctl('#btnNewGridSystem');await wait(`$('infiniteGridWorkspace')?.open`);await shell('#infiniteGridWorkspace','#igClose','#igSaveSource');
-  await fill('#igName','第二輪尚未套用草稿');const gridBefore=await dump(),disabledSave=await point(saveSelector,true);await click(disabledSave.x,disabledSave.y);await sleep(120);
-  check('共用保存仍受網格草稿守門，不丟草稿或修改世界',disabledSave.disabled&&await read(`$('igName').value==='第二輪尚未套用草稿'&&$('infiniteGridWorkspace').open&&WorkspaceShell.saveState().blocked`)&&(await dump())===gridBefore);
-  const gridLeave='這個網格工作區有尚未建立或套用的草稿。離開會捨棄這些草稿；已保存到場景的網格保持不變。確定離開？';
-  await expectNativeDialog(()=>ctl('#igClose'),{message:gridLeave,accept:false});check('取消返回仍保留未套用草稿',await read(`$('infiniteGridWorkspace').open&&$('igName').value==='第二輪尚未套用草稿'`));await expectNativeDialog(()=>ctl('#igClose'),{message:gridLeave,accept:true});
+  await fill('#igName','第二輪尚未套用草稿');const gridBefore=await dump(),gridSave=await point(saveSelector,true);
+  await read(`window.__p74GridPicker=window.showSaveFilePicker;window.__p74GridWrite={bytes:null,closed:false};window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async bytes=>{__p74GridWrite.bytes=Array.from(bytes)},close:async()=>{__p74GridWrite.closed=true},abort:async()=>{}})});void 0`);
+  await click(gridSave.x,gridSave.y);await wait(`!ReferenceWorkspace.busy&&window.__p74GridWrite.closed`);
+  check('共用保存將完整網格原始草稿放入真ZIP，不丟草稿或修改世界',!gridSave.disabled&&await read(`(async()=>{const saved=await GeometryProject.unpack(Uint8Array.from(__p74GridWrite.bytes),fflate);return $('igName').value==='第二輪尚未套用草稿'&&$('infiniteGridWorkspace').open&&!WorkspaceShell.saveState().blocked&&JSON.stringify(saved.manifest.featureAttachments.records[0].value)===JSON.stringify(ReferenceWorkspace.readFeatureAttachment('grid-draft'))&&saved.scene===${JSON.stringify(gridBefore)};})()` )&&(await dump())===gridBefore);
+  await read(`window.showSaveFilePicker=window.__p74GridPicker;delete window.__p74GridPicker;delete window.__p74GridWrite;void 0`);
+  const gridLeave='捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。';
+  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:gridLeave,accept:false});check('取消明示捨棄仍保留未套用草稿',await read(`$('infiniteGridWorkspace').open&&$('igName').value==='第二輪尚未套用草稿'`));await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:gridLeave,accept:true});
   await ctl('#btnSpaceModelTrial');await wait(`$('smWorkspace')?.open&&SpaceModelWorkspace.snapshot().phase==='preview'&&SpaceModelWorkspace.snapshot().sourceKind==='example'&&!SpaceModelWorkspace.snapshot().stale`);
   check('空間範例入口確實完成來源與模型預覽',await read(`!!SpaceModelWorkspace.snapshot().resultSummary&&!!SpaceModelWorkspace.snapshot().viewer&&$('smResultBadge').dataset.state==='complete'`));await shell('#smWorkspace','#smClose','#smPreview');await ctl('#smClose');
 
@@ -141,11 +144,12 @@ module.exports = async function uxRefinement({send,eval_,sleep,click,waitForUI,e
   // Inspect the real save entry's transient activation and defer close(). Only
   // OS I/O is substituted; the application creates its actual .gcanvas bytes.
   await read(`window.__p74PickerDescriptor=Object.getOwnPropertyDescriptor(window,'showSaveFilePicker');window.__p74Write={picked:false,closed:false,activation:false,bytes:null};Object.defineProperty(window,'showSaveFilePicker',{configurable:true,value:async()=>{__p74Write.picked=true;__p74Write.activation=navigator.userActivation.isActive;return {createWritable:async()=>({write:async bytes=>{__p74Write.bytes=Array.from(bytes)},close:async()=>{await new Promise(r=>{__p74Write.finish=r});__p74Write.closed=true},abort:async()=>{}})}}});void 0`);
+  const priorSaveAt=await read('ReferenceWorkspace.getProjectInfo().lastSavedAt');
   await ctl(saveSelector,false);await wait(`typeof window.__p74Write?.finish==='function'`);
-  check('共用保存保留原生使用者手勢，寫入完成前不標已保存',await read(`__p74Write.activation&&ReferenceWorkspace.getProjectInfo().lastSavedAt===null&&ReferenceWorkspace.context().dirty`));
+  check('共用保存保留原生使用者手勢，寫入完成前保留待保存與前次保存時間',await read(`__p74Write.activation&&!__p74Write.closed&&ReferenceWorkspace.busy&&ReferenceWorkspace.getProjectInfo().lastSavedAt===${JSON.stringify(priorSaveAt)}&&ReferenceWorkspace.context().dirty`));
   await read(`__p74Write.finish();void 0`);await wait(`!ReferenceWorkspace.busy&&__p74Write.closed`);
   const savedAt=await read('ReferenceWorkspace.getProjectInfo().lastSavedAt');
-  check('僅在寫入close成功後記錄保存時間及完整專案',typeof savedAt==='string'&&!Number.isNaN(Date.parse(savedAt))&&await read(`ReferenceWorkspace.context().saved&&!ReferenceWorkspace.context().dirty&&__p74Write.bytes.length>0`));
+  check('僅在寫入close成功後記錄新保存時間及完整專案',typeof savedAt==='string'&&!Number.isNaN(Date.parse(savedAt))&&savedAt!==priorSaveAt&&await read(`ReferenceWorkspace.context().saved&&!ReferenceWorkspace.context().dirty&&__p74Write.bytes.length>0`));
   await ctl('[data-engineering-open]');await wait(`$('ewWorkspace')?.open&&$('ewPreview')?.disabled===false`);await ctl('.ew-nav [data-ew-section="materials"]');await fill('#ewField-material-A',30);await ctl('#ewClose');
   check('真實修改已保存草稿後待保存，仍保留前次檔案寫入時間',await read(`ReferenceWorkspace.context().dirty&&ReferenceWorkspace.getProjectInfo().lastSavedAt===${JSON.stringify(savedAt)}`));
   const downloads=fs.mkdtempSync(path.join(os.tmpdir(),'geometry-ux-refinement-download-'));await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:downloads});

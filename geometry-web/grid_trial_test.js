@@ -48,9 +48,9 @@ module.exports=async function({send,eval_,sleep,click,drag,waitForUI,expectNativ
   check('縮放不改試擺尺寸',await read(`$('igTrialWidth').value==='1234' && $('igTrialHeight').value==='567'`));
   check('所有試擺與來源草稿均未寫入 World',(await dump())===before);
   await ctl('#igTrialEnabled');check('隱藏試擺不留角材或矩形',await read(`!document.querySelector('[data-ig-trial-ghost],[data-ig-trial-boundary]')`));
-  await expectNativeDialog(()=>ctl('#igClose'),{message:'這個網格工作區有尚未建立或套用的草稿。離開會捨棄這些草稿；已保存到場景的網格保持不變。確定離開？',accept:false});
-  check('取消關閉仍保留試擺尺寸草稿',await read(`$('infiniteGridWorkspace').open && $('igTrialWidth').value==='1234'`));
-  await expectNativeDialog(()=>ctl('#igClose'),{message:'這個網格工作區有尚未建立或套用的草稿。離開會捨棄這些草稿；已保存到場景的網格保持不變。確定離開？',accept:true});
+  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:false});
+  check('取消明確捨棄仍保留試擺尺寸與原始草稿',await read(`$('infiniteGridWorkspace').open && $('igTrialWidth').value==='1234' && !!ReferenceWorkspace.readFeatureAttachment('grid-draft')`));
+  await expectNativeDialog(()=>ctl('#igDiscardDraft'),{message:'捨棄這份未發布的原始草稿？已保存到場景的網格保持不變。',accept:true});
   await ctl('#btnNewGridSystem');await wait(`$('infiniteGridWorkspace').open`);
   check('新開建立不復活上次試擺',await read(`!$('igTrialEnabled').checked && $('igTrialWidth').value==='2400' && !document.querySelector('[data-ig-trial-ghost]')`));
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await ctl('#igTrial summary');await ctl('#igTrialEnabled');await ready();await ctl('#igTrialFit');

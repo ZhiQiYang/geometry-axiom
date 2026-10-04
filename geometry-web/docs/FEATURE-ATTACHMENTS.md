@@ -1,8 +1,8 @@
-# 有界功能附件與單一網格草稿（#45，第一保存切片）
+# 有界功能附件與單一網格草稿（#45）
 
 `feature-attachments.js` 是有限種類的 plain JSON 驗證器；`project-store.js` 保存附件，`ReferenceWorkspace` 協調專案上下文及既有歷史。附件不宣告 World，不執行程式、不保存 preview token、DOM、快取 URL 或另一份 geometry。
 
-這一切片完成 adapter → 完整 `.gcanvas` ZIP → 重開 → undo/redo 的資料路徑。**尚未接入網格表單自動捕獲、save 前 flush、重開表單、來源失效提示、既有來源→邊界入口與 native confirm 清草稿同一步；#45 尚未完成。** 邊界頂點、四側擴大及承載面套用草稿也尚未纳入本 schema，現有工作區仍照原 save gate 阻擋，沒有假稱全部原始工作已可保存。
+第一保存切片完成 adapter → 完整 `.gcanvas` ZIP → 重開 → undo/redo 的資料路徑。後續 UI 切片接入既有網格來源與配置表單，自動捕獲原字串、保存前 flush、重開還原、來源內容／頂點身分核對，以及 native confirm 與清草稿的同一步歷史。來源→邊界沿用既有入口與顯示中的來源 pin；原草稿普通返回仍保留，明確「捨棄原始草稿」才清除。邊界頂點、四側擴大及承載面套用草稿仍未納入本 schema，現有工作區仍照原 save gate 阻擋。
 
 ## 保存格式與能力
 
@@ -74,3 +74,16 @@ setFeatureAttachment("grid-draft", validValue | null, expectedContextToken)
 現有 `test_project_store.js` 的可攜、版本拒絕、核對收據共存與 history 案例擴充來源／配置完整 raw 往返、能力分離、降版／剝除／未知 kind/schema/超限負例。`test_reference_workspace_races.js` 擴充真 adapter 的 clone/no-op/token/busy/group、ZIP、匯入與切案 undo、新案／清空及跨分頁拒寫；VM DOM/PDF 是 fakes，不能冒稱實際瀏覽器 UI。既有測試方法數不變。root另授權共用owner註冊已合 PR101 的四個 #49 Python suite，三個需真 bridge、一個純 validator；完整跑後新增四個 expected 計數，全部原凍結計數（scene139、integrity88等）、mutation/golden維持，不覆寫 #85 證據。
 
 原生 native/ZIP 能力與瀏覽器載入需在交付 exact head 執行；本文件不把舊 head 的 CI 或實體手機當作本切片證據。A24 實機仍未驗。
+
+`grid_portable_browser_test.py` 是必要獨立實際瀏覽器 gate，不計入非瀏覽器 registry。需在 frozen clean worktree、5個 native binaries fresh 的獨立服務上執行：
+
+```sh
+GEOMETRY_VERIFY_ROOT=/path/to/frozen-worktree \
+GEOMETRY_TEST_URL=http://127.0.0.1:18956/ \
+GEOMETRY_GRID_PORTABLE_BROWSER_OUT=/tmp/geometry45-evidence \
+python geometry-web/grid_portable_browser_test.py
+```
+
+入口核對服務 `/runtime` 的 root／fresh、Git head／tree，拒絕未指定服務、用戶8765埠及非TEMP證據路徑。1280／390 Chromium以實際表單、既有桌面／手機建立入口、確認與返回／重試，核對完整 ZIP 內原始 PDF bytes、無效／未啟用欄位原字串、配置來源／實際頂點 pin、重開、單步 undo/redo。初始化 gate 延遲真 native boundary 回覆；未知結果 gate 讓真 native confirm 成功後丟失回覆與第一份真回執，驗持鎖、同 request receipt 恢復與零重送。fixture 是 repo 自行產生的 PDF；setup／import／undo API 與 Playwright file-input／下載自動化不冒稱實體 OS chooser、IME 或手機驗收。
+
+另須跑既有實際 CDP 回歸：P70仍106、P78仍23；完整CDP的82段golden不改。完成度以PR中固定head的終態證據為準，任一中途失敗／未跑項都不能當pass。
