@@ -1,4 +1,68 @@
-# #44 F1b validation and delivery
+# #44 F1b independent module validation and handoff
+
+PR99 is delivered as independent module groundwork only. The existing UI index,
+serve routes, workspace entry, project store and history are not wired by this
+PR. Its adapter and wiring patch remain reviewable inputs for the integration
+owner. Neither merge readiness nor earlier isolated UI tests declare an
+integrated F1b product complete.
+
+## Approved-source integration with main `067cbdc`
+
+Root independently approved exact source `985c87e`. Main
+`067cbdc08340536eaf1a2ec96cf923e7682a9afe` was then merged into
+`aaf021a161dd07b3475ee62a33936a16211caf9f`. Relative to the previous base, it
+adds only documentation, the independent `rule_cases` module and its tests.
+There are no conflicts or implementation edits to the approved F1b source.
+The following Git blobs are equal in approved `985c87e` and merge head
+`aaf021a`; later handoff updates touch only these two documentation files.
+
+| Product / test file | Identical Git blob |
+|---|---|
+| `geometry-web/model_update.py` | `54e799a9f0b09a18c09e65ec983d2b7ed099678e` |
+| `geometry-web/model-update.js` | `e7bfb20729de53b679046536e7bffc0c2d651cbf` |
+| `geometry-web/model-update-app.js` | `fc8e69701a4d147d9dd4be28c80e8388dca15343` |
+| `geometry-web/model-update.css` | `681960780fac7594e8027aadc141810dae9ce31c` |
+| `geometry-web/model_update_browser_check.js` | `39058d76d332028084a797f2218a6b483d774c8f` |
+| `tests/test_model_update.py` | `92027da78540d7f50bb5103b4bd00011e5252c0e` |
+| `tests/test_model_update.js` | `c07e884312d308d673c6e6b6065f29f58932bfa1` |
+
+Focused verification on actual merge head `aaf021a`:
+
+| Gate | Result |
+|---|---|
+| `python3 -m unittest tests.test_model_update -v`, actual native executables | exit0; 22 pass, 0 fail/skip |
+| `node --test tests/test_model_update.js`, actual native executables | exit0; 39 pass, 0 fail/skip |
+| `python3 -m unittest tests.test_binaries tests.test_runtime_version -v` | exit0; 51 pass, 0 fail/skip |
+| `node --test tests/test_project_store.js` | exit0; 10 pass, 0 fail/skip |
+| `python3 tests/binaries.py status bridge model-base` | both fresh; source/binary SHA-256 match |
+| `git apply --check geometry-web/docs/MODEL-UPDATE-INTEGRATION.patch` | exit0 against main067 integration; no patch applied |
+
+Native focused commands use a 16 MiB stack and
+`GEOMETRY_MODEL_BASE=/tmp/geometry-tests/model-base`,
+`GEOMETRY_TEST_BRIDGE=/tmp/geometry-tests/bridge`. Logs are
+`/tmp/geometry-f1b-main067-producer.log`,
+`/tmp/geometry-f1b-main067-controller.log`,
+`/tmp/geometry-f1b-main067-freshness.log`,
+`/tmp/geometry-f1b-main067-schema.log`. Blob proof is retained at
+`/tmp/geometry-f1b/main067-blobs.json`.
+
+The new rule-case Python files enter the application's source fingerprint even
+though the F1b producer does not import them. A read-only actual-source
+`RuntimeSnapshot` at merge head captured all seven rule-case Python files,
+matched `source_version`, and returned fresh=true with version
+`3afcae0a151e30783903755a611631da77a382882b7ea1a61c8100fa95664c98`.
+Its response is retained at `/tmp/geometry-f1b/main067-source-freshness.json`.
+This is a source snapshot, not an HTTP/visible-UI acceptance run; no server or
+UI entry was started. Prior service probes are not reused for this new source.
+
+Against main067, this PR still only adds ten independent module/test/docs files;
+all existing tracked files are byte-identical, including schema/history/store,
+index/serve/space-workspace, native code, axioms and test registry. The unchanged
+product/UI/test blobs and absence of wiring changes justify the focused gates;
+the full CDP and broad old-head results below are not claimed as new runs.
+Final documentation updates do not change those validated blobs or runtime
+source bytes. Root retains the merge decision; actual product wiring and its
+entry gate remain a separate integration-owner step.
 
 Original validation on 2026-10-04 against main
 `1075058be37d37b98a2a910f4f67b87583be85b3`, with the four product modules at
@@ -15,7 +79,8 @@ implementation and its own evidence are recorded below.
 
 Draft PR: https://github.com/ZhiQiYang/geometry-axiom/pull/99.
 Shared owner contract compared at PR100 head
-`0230e436870ec3ba06fcb0735ffabc3b7427979d`; it is still a draft, not main.
+`0230e436870ec3ba06fcb0735ffabc3b7427979d` while it was a draft; its later
+accepted continuation documentation is now included in main067.
 The candidate mapping and owner-only wiring are in
 `MODEL-UPDATE-INTEGRATION.md` and `MODEL-UPDATE-INTEGRATION.patch`.
 

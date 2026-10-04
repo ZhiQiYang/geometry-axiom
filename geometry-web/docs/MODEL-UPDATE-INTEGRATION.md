@@ -1,10 +1,19 @@
-# #44 F1b ordinary single-plan integration contract
+# #44 F1b independent module foundation and integration contract
 
 User accepted item 3 of the eight decisions: explicitly select current sources,
 review an isolated candidate, replace the same model's complete record with one
 undo. This supersedes Q32's earlier pending status only for that finite scope.
 No durable incarnation ledger, new axiom, automatic update or version upgrade is
 introduced. F1a is already delivered and is not repeated here.
+
+## Delivery boundary
+
+PR99 delivers independently reviewed producer/controller modules, an unloaded
+UI adapter, dedicated tests and an owner-only wiring artifact. Merging this PR
+does not add a UI entry or HTTP route: existing index/serve/workspace/store files
+are untouched. This is a foundation for the approved F1b flow, not an integrated
+F1b product or completion of #44. The shared owner will separately wire and
+validate the real entry under its single-writer ownership.
 
 ## Ownership
 
@@ -14,6 +23,12 @@ Rebased onto main `1075058be37d37b98a2a910f4f67b87583be85b3` after the existing
 #85 owner's merge; this branch makes no changes to that work.
 Then incorporated main `8d08f1aceda7f26b6f05c64010f4b47a41df9c31` (#24's
 tests/evidence-only merge), rerunning its strengthened 35-test assembly suite.
+After independent source approval of `985c87e`, incorporated main
+`067cbdc08340536eaf1a2ec96cf923e7682a9afe` into merge head
+`aaf021a161dd07b3475ee62a33936a16211caf9f`. The seven product/test blobs remain
+identical to the approved source. Producer22/controller39 and required
+freshness/schema gates pass on that head; see the validation packet. The wiring
+patch still passes apply-check against this main and remains unapplied.
 
 This branch owns new files only: `model_update.py`, `model-update.js`,
 `model-update-app.js`, `model-update.css`, their dedicated acceptance tests and
