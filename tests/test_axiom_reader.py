@@ -213,42 +213,90 @@ class CanonicalReader(unittest.TestCase):
         # 深色不得再靠逐條選擇器補丁救色
         for patched in (":root[data-theme=dark] .ex.no .badge", ":root[data-theme=dark] .dsl>span.hit"):
             self.assertNotIn(patched, self.html, patched)
-        self.assertIn("outline:2px solid var(--accent);outline-offset:4px", self.html)
+        self.assertEqual(reader.color_contract_regressions(self.html), [])
         self.assertNotIn("#288b9c", self.html)
 
     def test_retired_color_migrations_keep_each_historical_input_compatible(self):
-        for old, new in reader.COLOR_REWRITES:
+        # Historical inputs are their own fixture, not substrings that the
+        # evolving canonical layout must continue to retain.
+        rules = "".join(selector + "{" + ";".join(key + ":" + value for key, value in required.items()) + "}"
+                        for selector, required in reader.COLOR_CONTRACTS if required is not None)
+        baseline = reader.apply_color_tokens('<style>:root{}:root[data-theme=dark]{}' + rules + '</style>')
+        for (old, new), (selector, _) in zip(reader.COLOR_REWRITES, reader.COLOR_CONTRACTS):
             with self.subTest(old=old):
-                if new:
-                    self.assertIn(new, self.html)
-                    historical = self.html.replace(new, old, 1)
+                if "{" not in old:
+                    prefix, suffix = selector + "{", "}"
                 else:
-                    historical = self.html.replace("</style>", old + "</style>", 1)
+                    prefix, suffix = "", "}" if old.count("{") > old.count("}") else ""
+                historical = baseline.replace("</style>", prefix + old + suffix + "</style>", 1)
+                expected = baseline.replace("</style>", prefix + new + suffix + "</style>", 1)
                 reader.PATCHES.reset()
                 current = reader.apply_color_tokens(historical)
-                self.assertEqual(current, self.html)
+                self.assertEqual(current, expected)
                 self.assertEqual(reader.PATCHES.verify(current), [])
                 self.assertTrue(any(label.startswith("歷史色碼相容:") for label, _ in reader.PATCHES.present + reader.PATCHES.absent))
 
     def test_retired_color_migrations_allow_format_and_unrelated_layout_changes(self):
-        formatted = self.html
-        for old, new in reader.COLOR_REWRITES:
-            if not new:
-                continue
-            # Format declarations only. Whitespace in a descendant selector has
-            # meaning and must not be blindly stripped or introduced.
-            if "{" in new:
-                selector, declarations = new.split("{", 1)
-                replacement = selector + "{ /* formatted declarations */ " + declarations.replace(":", ": ").replace(";", "; ")
-            else:
-                replacement = new.replace(":", ": ").replace(";", "; ")
-            self.assertIn(new, formatted)
-            formatted = formatted.replace(new, replacement, 1)
-        formatted = formatted.replace(".stale-note{ font-size: 12px;", ".stale-note{ font-size: 13px;", 1)
+        def selector_key(selector):
+            return re.sub(r"\s*([>,])\s*", r"\1", " ".join(selector.split()))
+        selectors = {selector_key(s) for group, required in reader.COLOR_CONTRACTS
+                     if required is not None for s in group.split(",")}
+        changed = []
+        def format_rule(match):
+            header, declarations = match[1], match[2]
+            if not any(selector_key(s) in selectors for s in header.split(",")):
+                return match[0]
+            changed.append(header)
+            if selector_key(header) == ".stale-note":
+                declarations = re.sub(r"font-size\s*:[^;]*", "font-size:13px", declarations)
+            return header + "{ /* formatted declarations */ " + declarations.replace(":", ": ").replace(";", "; ") + "}"
+        formatted = re.sub(r"(<style\b[^>]*>)(.*?)(</style>)",
+                           lambda m: m[1] + re.sub(r"([^{}]+)\{([^{}]*)\}", format_rule, m[2]) + m[3],
+                           self.html, flags=re.S)
+        self.assertTrue(changed)
         rebuilt = reader.rebuild(formatted, self.axiom, self.plain)
         self.assertEqual(formatted, rebuilt)
         self.assertEqual(reader.validate(rebuilt, self.axiom, self.plain)["five_asserts"], "pass")
         self.assertFalse(any(label.startswith("歷史色碼相容:") for label, _ in reader.PATCHES.present + reader.PATCHES.absent))
+
+    def test_current_layout_change_does_not_relock_historical_migration_tests(self):
+        changed = re.sub(r"(\.stale-note\s*\{[^}]*font-size\s*:)\s*[^;]*", r"\g<1>13px", self.html)
+        self.assertEqual(reader.color_contract_regressions(changed), [])
+        with mock.patch.object(type(self), "html", changed):
+            self.test_colors_are_tokenised()
+            self.test_retired_color_migrations_keep_each_historical_input_compatible()
+            self.test_retired_color_migrations_allow_format_and_unrelated_layout_changes()
+
+    def test_color_contract_rejects_print_only_and_scoped_declarations(self):
+        without = re.sub(r"(\.stale-note\s*\{)([^}]*)(})",
+                         lambda m: m[1] + re.sub(r"\bcolor\s*:[^;}]*(?:;|$)", "", m[2]) + m[3], self.html)
+        for rule in ('<style>@media print{.stale-note{color:var(--note-strong)}}</style>',
+                     '<style>@supports(display:grid){.stale-note{color:var(--note-strong)}}</style>',
+                     '<style media="print">.stale-note{color:var(--note-strong)}</style>'):
+            broken = without.replace('<script id="reader-counts"', rule + '<script id="reader-counts"', 1)
+            with self.subTest(rule=rule):
+                errors = reader.color_contract_regressions(broken)
+                self.assertTrue(errors)
+                self.assertTrue(all("stale-note" in error for error in errors), errors)
+                with self.assertRaisesRegex(ValueError, "reader color contract"):
+                    reader.rebuild(broken, self.axiom, self.plain)
+                with self.assertRaisesRegex(AssertionError, "reader color contract"):
+                    reader.validate(broken, self.axiom, self.plain)
+
+    def test_color_contract_rejects_important_overrides_before_normal_values(self):
+        for declarations in ("color:var(--ink)!important;color:var(--note-strong)",
+                             "color:var(--ink) ! IMPORTANT;color:var(--note-strong)",
+                             "color:var(--note-strong);color:var(--ink)!important",
+                             "color:var(--note-strong)!important"):
+            extra = '<style>.stale-note{' + declarations + '}</style>'
+            broken = self.html.replace('<script id="reader-counts"', extra + '<script id="reader-counts"', 1)
+            with self.subTest(declarations=declarations):
+                errors = reader.color_contract_regressions(broken)
+                self.assertTrue(any("important" in error for error in errors), errors)
+                with self.assertRaisesRegex(ValueError, "reader color contract"):
+                    reader.rebuild(broken, self.axiom, self.plain)
+                with self.assertRaisesRegex(AssertionError, "reader color contract"):
+                    reader.validate(broken, self.axiom, self.plain)
 
     def test_retired_color_contracts_reject_each_lost_or_wrong_declaration(self):
         for selector, required in reader.COLOR_CONTRACTS:

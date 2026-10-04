@@ -170,18 +170,73 @@ def color_contract_regressions(template: str) -> list[str]:
         value = " ".join(value.strip().split())
         return re.sub(r"var\(\s*(--[\w-]+)\s*\)", r"var(\1)", value)
 
-    css = "\n".join(re.findall(r"<style\b[^>]*>(.*?)</style>", template, re.S))
-    css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
-    rules = {}
-    for match in re.finditer(r"([^{}]+)\{([^{}]*)\}", css):
+    # Restricted template guard, not a cascade engine: required declarations
+    # must be unconditional. Scoped or important overrides of those properties
+    # are rejected conservatively, rather than guessed to be applicable.
+    brace_tokens = re.compile(r"'(?:\\.|[^'\\])*'|\"(?:\\.|[^\"\\])*\"|[{}]")
+
+    def blocks(css):
+        start = depth = 0
+        for token in brace_tokens.finditer(css):
+            if token[0] == "{":
+                if depth == 0:
+                    header, body_start = css[start:token.start()].strip(), token.end()
+                depth += 1
+            elif token[0] == "}":
+                depth -= 1
+                if depth < 0:
+                    raise ValueError("unbalanced CSS block")
+                if depth == 0:
+                    yield header, css[body_start:token.start()]
+                    start = token.end()
+        if depth or css[start:].strip():
+            raise ValueError("unsupported CSS block: " + css[start:].strip()[:80])
+
+    def walk(css, scoped):
+        for header, body in blocks(css):
+            nested = any(t[0] == "{" for t in brace_tokens.finditer(body))
+            if header.startswith("@"):
+                if nested:
+                    yield from walk(body, True)
+                else:
+                    yield header, body, True  # e.g. @page declarations
+            elif nested:
+                raise ValueError("unsupported nested selector block")
+            else:
+                yield header, body, scoped
+
+    contracts = {selector_key(s): required for selectors, required in COLOR_CONTRACTS
+                 for s in selectors.split(",")}
+    rules, bad = {}, []
+    parsed = []
+    try:
+        for style in re.finditer(r"<style\b([^>]*)>(.*?)</style>", template, re.S):
+            css = re.sub(r"/\*.*?\*/", "", style[2], flags=re.S)
+            # media/disabled/type modifiers are unsupported for guarded rules.
+            scoped = bool(re.search(r"\b(?:media|disabled|type)\b", style[1], re.I))
+            parsed.extend(walk(css, scoped))
+    except ValueError as error:
+        return [str(error)]
+    for selectors, body, scoped in parsed:
         declarations = {}
-        for declaration in match[2].split(";"):
+        for declaration in body.split(";"):
             if ":" in declaration:
                 key, value = declaration.split(":", 1)
-                declarations[key.strip()] = value_key(value)
-        for selector in match[1].split(","):
-            rules.setdefault(selector_key(selector), {}).update(declarations)
-    bad = []
+                key = key.strip().lower()
+                for selector in selectors.split(","):
+                    required = contracts.get(selector_key(selector))
+                    if required is not None and key in required:
+                        if scoped:
+                            bad.append("scoped color declaration unsupported: " + selector.strip())
+                        if re.search(r"!\s*important\b", value, re.I):
+                            bad.append("important color declaration unsupported: " + selector.strip())
+                declarations[key] = value_key(value)
+        for selector in selectors.split(","):
+            key = selector_key(selector)
+            if key in contracts and contracts[key] is None:
+                bad.append("retired dark override: " + selector.strip())
+            if not scoped:
+                rules.setdefault(key, {}).update(declarations)
     for selectors, required in COLOR_CONTRACTS:
         for selector in selectors.split(","):
             actual = rules.get(selector_key(selector))

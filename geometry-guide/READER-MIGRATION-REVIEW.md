@@ -12,6 +12,13 @@ PR92 先修 #81／#83 與重複見證事件；本後續只退出已完成的色�
 容許宣告空白、順序及無關版面属性改動。仍拒絕 token／效果遺失、錯誤宣告、退役深色 override 回來，
 及既有 `hardcoded_colors()` 找到的寫死色碼。格式已改的 OLD 不會被猜測性重寫；明示拒絕。
 
+獨立審查修正：歷史 OLD／NEW 使用獨立的最小 stylesheet fixture，不從現行 canonical
+尋找完整 NEW 字串再倒改。現行格式測試按 selector 處理當前宣告；調整字級後仍須通過整組測試。
+宣告守衛只支持列出的精確 selector 的無條件普通宣告，不充當完整 CSS cascade 引擎。
+它保持巢狀 at-rule 的 scope，拒絕受管 property 的條件式／style modifier 宣告及任何
+`!important`；不以 print-only 定義補足螢幕契約，也不猜测優先權／條件是否會作用。
+一般 scope 中的無關版面宣告仍可演化；未知巢狀 selector／不平衡結構保守拒絕。
+
 | 次序 | 基線行 | 用途 | 決定與理由／相容範圍 |
 |---|---:|---|---|
 |1|899|見證圖面板腳本|保留 live SVG 接線；PR92 只刪精確已知死 img 函式與重複 listener，未知歷史改動拒絕。|
@@ -65,6 +72,8 @@ PR92 先修 #81／#83 與重複見證事件；本後續只退出已完成的色�
 另一個 fixture 同時格式化全部現行 NEW 的宣告，並調整無關字級，實際 `rebuild()`／`validate()`
 仍須通過且保留原 bytes。這些案例只在記憶體中處理，不改公理／白話／圖／原始批註。
 26 個 JS 遷移保留完整 drift 保護，不聲稱所有互動任意格式改動都已解除限制。
+審查補強另釘住已改字級的 canonical 仍能跑歷史／格式測試、print／supports／style media
+不可充當普通宣告、以及錯誤 important 值先於普通 expected 值等覆蓋情境。
 
 ## 重跑
 
