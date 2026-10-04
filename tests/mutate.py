@@ -5,7 +5,7 @@
   file   預設 current_geometry.c;邏輯搬到 geometry-core/*.inc 時指名該檔。
          暫存複本把對應的 #include 行原地換成變異後的內容(只支援 current_geometry.c
          直接 #include 的檔),所以 #include 的相對路徑解析與 AGENTS.md 所述一致。
-  equivalent  等價變異(理由文字),不編譯,但錨點仍須存在。
+  equivalent  等價變異(理由文字),每輪仍編譯並跑完整 oracle;錨點須存在。
   retired     邏輯已從產品整個移除(寫明依據),不編譯;舊錨點若又出現會被判 invalid。
 
 結果: killed(某測試失敗) / crashed(基準通過後,同一夾具連續存取違規;
@@ -59,6 +59,7 @@ import sys
 import tempfile
 import time
 import types
+import binaries
 from run_tests import TESTS
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -68,7 +69,7 @@ SRC = ROOT / MAIN_REL
 # 每個變異一個獨立目錄,放在 %TEMP%:
 #   - repo 目錄的新編 exe 會被 Smart App Control 擋(WinError 4551),%TEMP% 不會(或機率低很多)
 #   - 平行跑兩個 mutate.py 不會互相覆蓋同一個 _mut.exe
-MUT_ROOT = pathlib.Path(tempfile.gettempdir()) / "geometry-tests" / "mutants"
+MUT_ROOT = pathlib.Path(os.environ.get("MUTATE_CACHE", str(pathlib.Path(tempfile.gettempdir()) / "geometry-tests" / "mutants")))
 # 結果檔:平行執行時各自寫到 MUTATE_RESULTS 指定的檔,由指揮官事後合併,避免競態。
 RESULTS = pathlib.Path(os.environ.get("MUTATE_RESULTS", str(HERE / "mutants_results.json")))
 
@@ -83,7 +84,6 @@ VERDICTS = ("killed", "crashed", "survived", "equivalent", "invalid", "stale", "
 MUTANTS = [
     # ---- poly_point_on_edge:邊上判定 ----
     dict(id="M01", desc="I5：邊上判定:含端點改嚴格(端點不在邊上)",
-         equivalent="等價變異(GEO-173 實證,與 2026-09-16 稽核一致):只變異直立邊分支的端點判定;軸平行多邊形的任一頂點必同時是一條直立邊與一條水平邊的端點,未變異的水平邊分支必接住。夾具 M01_hole_corner_touch(兩孔角對角相碰)原始版與變異版輸出逐字相同。",
          old="p.v >= coord_min(a.v, b.v) && p.v <= coord_max(a.v, b.v)",
          new="p.v > coord_min(a.v, b.v) && p.v < coord_max(a.v, b.v)"),
     # ---- poly_contains_point:射線法 ----
@@ -215,9 +215,9 @@ MUTANTS = [
          new="            (void)blank;   /* 重宣告 = 整軸換掉，不是疊加 */"),
     # ---- GEO-100:I23(b) 重驗時的索引存在性 ----
     dict(id="M56", desc="I23：I23(b) 不再檢查被錨定的索引是否仍推導得出",
-         equivalent="等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild 對每個 AT_GRID 角材已先跑同一個 grid_line_coord,索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
-         old="                !grid_line_coord_in(world->grids, world->grid_count, ag, ap,",
-         new="                (false) && grid_line_coord_in(world->grids, world->grid_count, ag, ap,"),
+         equivalent="等價變異(GEO-173 實證,更正 GEO-100 的舊結論):world_validate_derived 只在 reference_rebuild 成功後才跑,而 reference_rebuild → reference_place_geometry 對每個 AT_GRID 角材已先跑同一個 grid_anchor_line_coord(同 grids/count/grid/placement/axis/index/has_band/band;boundary 若為自帶 rect 的合成輪廓,其 bounds/area 與 NULL boundary 的 rect 路徑相同),索引消失會先在那裡失敗;被變異那行在現行語意(2026-09-18 反轉為重算)下永遠是 no-op。夾具 M56_grid_index_vanish(面縮到索引 7 消失)原始版與變異版輸出逐字相同。",
+         old="                !grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,",
+         new="                (false) && grid_anchor_line_coord(world->grids, world->grid_count, ag, ap,"),
     # ---- GEO-100:面材推導（D10a）----
     dict(id="M53", desc="D10a：縫中心線改成縫起點(少加 gap/2)",
          old="                     + def->panel + def->gap / 2;",
@@ -478,11 +478,7 @@ SIDECAR_SUFFIX = ".fingerprint.json"
 
 
 def _file_sha(path):
-    h = hashlib.sha256()
-    with open(path, "rb") as fh:
-        for chunk in iter(lambda: fh.read(1 << 20), b""):
-            h.update(chunk)
-    return h.hexdigest()
+    return binaries._binary_identity(pathlib.Path(path))["exe_sha256"]
 
 
 def sidecar_path(exe):
@@ -511,9 +507,13 @@ def cache_state(exe, fp):
         return "nosidecar"
     try:
         data = json.loads(sc.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            return "stale"
         if str(data.get("note", "")).startswith("adopted:"):
             return "stale"  # Legacy metadata was inferred from results, not from this build.
         if data.get("fingerprint") != fp:
+            return "stale"
+        if not isinstance(data.get("exe_sha256"), str) or not re.fullmatch(r"[0-9a-f]{64}", data["exe_sha256"]):
             return "stale"
         if data.get("exe_sha256") != _file_sha(exe):
             return "tampered"
@@ -527,15 +527,13 @@ def write_sidecar(exe, fp, note=""):
     data = {"fingerprint": fp, "exe_sha256": _file_sha(exe), "note": note,
             "written": datetime.datetime.now().isoformat(timespec="seconds")}
     sc = sidecar_path(exe)
-    tmp = sc.with_name(sc.name + ".tmp")
-    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
-    os.replace(tmp, sc)
+    binaries._write_json_atomic(sc, data)
 
 
 def prepare_mutant_exe(m, src, mut_dir, compile_fn, rec=None, compile_sha=None):
     """讓 mut_dir/_mut.exe 處於可用狀態。回傳 (status, exe, message)。
 
-    status: cached(沿用)/ built(重編)/ invalid(編譯失敗)。
+    status: cached(沿用)/ built(重編)/ invalid(編譯失敗)/ blocked(來源變更或身分發布失敗)。
     compile_fn(m, exe) -> (ok, message) 只在非 cached 時被呼叫。
     rec 是舊呼叫端的相容參數；結果紀錄不作為採用未驗證 exe 的證據。
     """
@@ -551,8 +549,12 @@ def prepare_mutant_exe(m, src, mut_dir, compile_fn, rec=None, compile_sha=None):
     ok, msg = compile_fn(m, exe)
     if not ok or not exe.exists():
         exe.unlink(missing_ok=True)
-        return "invalid", exe, msg
-    write_sidecar(exe, fp, "built")
+        return "blocked" if msg.startswith("INFRA ") else "invalid", exe, msg
+    try:
+        write_sidecar(exe, fp, "built")
+    except OSError as exc:
+        sidecar_path(exe).unlink(missing_ok=True)
+        return "blocked", exe, "cannot publish binary identity: " + str(exc)
     return "built", exe, msg
 
 
@@ -575,7 +577,11 @@ def prepare_baseline_exe(src, base_dir, compile_fn, compile_sha=None):
         return "invalid", exe, msg
     sidecar_path(exe).unlink(missing_ok=True)
     os.replace(tmp, exe)
-    write_sidecar(exe, fp, "built")
+    try:
+        write_sidecar(exe, fp, "built")
+    except OSError as exc:
+        sidecar_path(exe).unlink(missing_ok=True)
+        return "blocked", exe, "cannot publish baseline identity: " + str(exc)
     return "built", exe, msg
 
 
@@ -643,7 +649,102 @@ def build_mutant_source(m, src):
     return main.replace(line, body, 1)
 
 
-def make_record(m, src, verdict, why, today, oracle_sha, killed_by=None, crashed_on=None):
+def record_hash(rec):
+    """Integrity of the saved result; transient stale annotations preserve its original verdict.
+
+    This detects accidental edits, not an attacker who can rewrite the checksum.
+    """
+    body = {k: v for k, v in rec.items() if k not in ("record_sha256", "stale_from", "stale_why")}
+    if body.get("verdict") == "stale" and rec.get("stale_from"):
+        body["verdict"] = rec["stale_from"]
+    return _sha(json.dumps(body, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode())
+
+
+def attempt_receipt(proc, root):
+    """Keep the exact structured oracle outcome and raw output hashes without publishing cloud paths."""
+    rows = [s.removeprefix("GEOMETRY_TEST_RESULT ") for s in proc.stdout.splitlines()
+            if s.startswith("GEOMETRY_TEST_RESULT ")]
+    result = None
+    if len(rows) == 1:
+        try:
+            result = json.loads(rows[0].replace(str(pathlib.Path(root).resolve()), "<repo>"))
+        except ValueError:
+            pass
+    return {"exit_code": proc.returncode, "result": result,
+            "stdout_sha256": _sha(proc.stdout.encode()), "stderr_sha256": _sha(proc.stderr.encode())}
+
+
+def receipt_process(receipt):
+    return types.SimpleNamespace(returncode=receipt["exit_code"], stderr="",
+                                 stdout="GEOMETRY_TEST_RESULT " + json.dumps(receipt["result"]))
+
+
+def execution_problems(m, rec, verdict, src):
+    evidence = rec.get("execution")
+    if not isinstance(evidence, dict):
+        return ["missing execution receipt (binary/command/exit/oracle)"]
+    try:
+        if evidence["schema"] != "geometry-mutation-execution/1":
+            raise ValueError("execution schema")
+        for key in ("exe_sha256", "baseline_exe_sha256", "compile_sha256", "tool_sha256"):
+            if not re.fullmatch(r"[0-9a-f]{64}", evidence[key]):
+                raise ValueError(key)
+        if evidence["tool_sha256"] != tool_hash():
+            raise ValueError("mutation tool changed")
+        if not re.fullmatch(r"[0-9a-f]{40}", evidence["head"]):
+            raise ValueError("execution head")
+        if evidence["compile_command"] != portable_compile_command():
+            # Commands are portable receipts. Other OS/compiler runs stay explicit, not recertified locally.
+            if evidence["platform"] == os.name:
+                raise ValueError("compile command changed")
+        if evidence["platform"] == os.name and evidence["compile_sha256"] != compile_hash():
+            raise ValueError("compile fingerprint changed")
+        if evidence["test_command"] != ["<python>", "tests/run_tests.py", "<binary>"]:
+            raise ValueError("oracle command")
+        if evidence["compile_exit_code"] != 0:
+            raise ValueError("binary compilation did not succeed")
+        if classify_test_run(receipt_process(evidence["baseline"]))[0] != "survived":
+            raise ValueError("baseline did not pass all declared assertions")
+        attempts = []
+        for item in evidence["attempts"]:
+            for key in ("stdout_sha256", "stderr_sha256"):
+                if not re.fullmatch(r"[0-9a-f]{64}", item[key]):
+                    raise ValueError(key)
+            proc = receipt_process(item)
+            outcome, why = classify_test_run(proc)
+            attempts.append((outcome, why, access_violation_scenes(proc), failed_scenes(proc)))
+        actual, _, killers, crashes = verdict_from_attempts(attempts)
+        if actual != ("survived" if verdict == "equivalent" else verdict):
+            raise ValueError("saved verdict contradicts complete execution results")
+        if verdict == "killed" and rec.get("killed_by") != killers:
+            raise ValueError("killed_by contradicts assertion failures")
+        if verdict == "crashed" and rec.get("crashed_on") != crashes:
+            raise ValueError("crashed_on contradicts repeated access violations")
+        # Results remain usable on a clean checkout: executables are TEMP artifacts, not committed.
+        # If this platform's artifact exists, it must still be precisely the recorded executable.
+        if evidence["platform"] == os.name:
+            exe = MUT_ROOT / m["id"] / "_mut.exe"
+            if exe.exists() and (cache_state(exe, mutant_fingerprint(m, src)) != "hit"
+                                 or _file_sha(exe) != evidence["exe_sha256"]):
+                raise ValueError("cached binary differs from executed receipt")
+            baseline = MUT_ROOT / "_baseline" / "baseline.exe"
+            if baseline.exists() and (cache_state(baseline, baseline_fingerprint(src)) != "hit"
+                                      or _file_sha(baseline) != evidence["baseline_exe_sha256"]):
+                raise ValueError("cached baseline differs from executed receipt")
+    except (KeyError, TypeError, ValueError, OSError) as exc:
+        return ["execution receipt invalid: " + str(exc)]
+    return []
+
+
+def tool_hash():
+    return _sha((HERE / "mutate.py").read_bytes().replace(b"\r\n", b"\n"))
+
+
+def portable_compile_command():
+    return [s.replace(str(ROOT), "<repo>") for s in compile_command("<source>", "<output>")]
+
+
+def make_record(m, src, verdict, why, today, oracle_sha, killed_by=None, crashed_on=None, execution=None):
     rec = {"desc": m["desc"], "verdict": verdict, "why": why}
     if verdict == "killed" and killed_by:
         rec["killed_by"] = list(killed_by)
@@ -659,10 +760,13 @@ def make_record(m, src, verdict, why, today, oracle_sha, killed_by=None, crashed
         rec["closure_sha256"] = src.closure
         rec["oracle_sha256"] = oracle_sha
     rec["mutant_sha256"] = mutant_key(m)
+    if execution is not None:
+        rec["execution"] = execution
+    rec["record_sha256"] = record_hash(rec)
     return rec
 
 
-def effective_record(m, rec, src, today, oracle_sha):
+def effective_record(m, rec, src, today, oracle_sha, require_execution=False):
     """把一筆既有紀錄對照現行來源與變異定義,必要時標 stale。"""
     kind, why = definition_kind(m, src)
     if kind == "invalid":
@@ -674,6 +778,10 @@ def effective_record(m, rec, src, today, oracle_sha):
         return rec                       # invalid / blocked / 不認得的值:不因雜湊翻案
     want = ("killed", "survived", "crashed") if kind == "run" else (kind,)
     problems = []
+    if rec.get("record_sha256") != record_hash(rec):
+        problems.append("result checksum missing or changed")
+    if rec.get("desc") != m["desc"] or (kind in ("equivalent", "retired") and rec.get("why") != m[kind]):
+        problems.append("definition description/proof changed")
     if base not in want:
         problems.append(f"變異表現在把它定為 {kind},紀錄卻是 {base}")
     if rec.get("mutant_sha256") != mutant_key(m):
@@ -694,6 +802,10 @@ def effective_record(m, rec, src, today, oracle_sha):
                 problems.append("沒有裁判雜湊(oracle_sha256)")
             elif rec["oracle_sha256"] != oracle_sha:
                 problems.append("裁判已變(run_tests.py 或被 TESTS 引用的夾具內容不同)")
+        if require_execution:
+            if base == "equivalent" and rec.get("oracle_sha256") != oracle_sha:
+                problems.append("equivalence audit oracle changed")
+            problems.extend(execution_problems(m, rec, base, src))
     if problems:
         out = dict(rec)
         out.update(verdict="stale", stale_from=base, stale_why=";".join(problems))
@@ -707,14 +819,14 @@ def effective_record(m, rec, src, today, oracle_sha):
     return rec
 
 
-def evaluate_table(mutants, records, src, today, oracle_sha):
+def evaluate_table(mutants, records, src, today, oracle_sha, require_execution=False):
     """每個 id 的有效紀錄;沒有紀錄的 id 是 None(unrun);不在變異表的紀錄一律 stale。"""
     table = {}
     known = set()
     for m in mutants:
         known.add(m["id"])
         rec = records.get(m["id"])
-        table[m["id"]] = effective_record(m, rec, src, today, oracle_sha) if isinstance(rec, dict) else None
+        table[m["id"]] = effective_record(m, rec, src, today, oracle_sha, require_execution) if isinstance(rec, dict) else None
     for rid, rec in records.items():
         if rid in known or not isinstance(rec, dict):
             continue
@@ -773,10 +885,7 @@ def load_records(path):
 
 def save_records(path, records):
     path = pathlib.Path(path)
-    tmp = path.with_name(path.name + ".tmp")
-    tmp.write_text(json.dumps(dict(sorted(records.items())), ensure_ascii=False, indent=2),
-                   encoding="utf-8", newline="\n")
-    os.replace(tmp, path)
+    binaries._write_json_atomic(path, dict(sorted(records.items())))
 
 
 def print_stale(table, ids=None):
@@ -788,7 +897,7 @@ def print_stale(table, ids=None):
 # ============================================================
 # 主流程
 # ============================================================
-def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=None):
+def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=None, audit_equivalents=True):
     today = today or datetime.date.today().isoformat()
     root = pathlib.Path(root)
     src = Sources(root)
@@ -800,7 +909,7 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
     runnable = []
     for m in selected:
         kind, why = definition_kind(m, src)
-        if kind == "run":
+        if kind == "run" or (kind == "equivalent" and audit_equivalents):
             runnable.append(m)
             continue
         results[m["id"]] = make_record(m, src, kind, why, today, oracle_sha)
@@ -814,11 +923,22 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
         merged.update(results)
         if final:
             merged = {rid: rec for rid, rec in
-                      evaluate_table(mutants, merged, src, today, oracle_sha).items() if rec is not None}
+                      evaluate_table(mutants, merged, src, today, oracle_sha,
+                                     require_execution=audit_equivalents).items() if rec is not None}
         save_records(results_path, merged)
         return merged
 
     compile_sha = compile_hash()
+    execution_tool_sha = tool_hash()
+    head_proc = run_cmd(["git", "rev-parse", "HEAD"], cwd=root)
+    execution_head = head_proc.stdout.strip() if head_proc.returncode == 0 else ""
+    baseline_receipt = None
+    baseline_hash = None
+
+    def inputs_unchanged(exe, fp, exe_hash):
+        return (tool_hash() == execution_tool_sha and compile_hash() == compile_sha
+                and Sources(root).closure == src.closure and (oracle or oracle_hash()) == oracle_sha
+                and cache_state(exe, fp) == "hit" and _file_sha(exe) == exe_hash)
 
     def compile_baseline(exe):
         """編未變異的原始碼到 exe(參數分開傳:_cl.bat 用 %~1 %~2 剝引號)。"""
@@ -829,6 +949,8 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
             return False, str(exc)
         if build.returncode != 0 or not exe.exists():
             return False, "unmodified source could not be compiled"
+        if Sources(root).closure != src.closure:
+            return False, "INFRA source changed during baseline compilation"
         return True, ""
 
     def compile_mutant(m, exe):
@@ -844,11 +966,13 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
             build = run_cmd(compile_command(mut_src, exe),
                             cwd=exe.parent, timeout=300)
         except (OSError, subprocess.TimeoutExpired) as exc:
-            return False, "編譯失敗: " + str(exc)
+            return False, "INFRA compiler launch/timeout: " + str(exc)
         finally:
             mut_src.unlink(missing_ok=True)      # 成敗都清掉,不在 repo 留暫存
         if not exe.exists() or build.returncode != 0:
             return False, "編譯失敗: " + (build.stderr or build.stdout)[-200:]
+        if Sources(root).closure != src.closure:
+            return False, "INFRA source changed during mutant compilation"
         return True, ""
 
     if runnable:
@@ -857,15 +981,23 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
         try:
             b_status, baseline_exe, b_msg = prepare_baseline_exe(
                 src, MUT_ROOT / "_baseline", compile_baseline, compile_sha)
-            if b_status == "invalid":
+            if b_status in ("invalid", "blocked"):
                 print("BASELINE BLOCKED: " + b_msg)
                 return 2
             print("BASELINE exe " + {"cached": "沿用快取(來源與編譯指令沒變)", "built": "已重編"}[b_status])
+            baseline_hash = _file_sha(baseline_exe)
             baseline_verdict, baseline_reason = "blocked", "not executed"
             for attempt in range(RUN_RETRIES):
+                if not inputs_unchanged(baseline_exe, baseline_fingerprint(src, compile_sha), baseline_hash):
+                    print("BASELINE BLOCKED: source/oracle/binary changed before launch")
+                    return 2
                 result = run_cmd([sys.executable, str(HERE / "run_tests.py"), str(baseline_exe)],
                                  cwd=root, timeout=600)
+                if not inputs_unchanged(baseline_exe, baseline_fingerprint(src, compile_sha), baseline_hash):
+                    print("BASELINE BLOCKED: source/oracle/binary changed during oracle run")
+                    return 2
                 baseline_verdict, baseline_reason = classify_test_run(result)
+                baseline_receipt = attempt_receipt(result, root)
                 if baseline_verdict != "blocked":
                     break
                 if attempt + 1 < RUN_RETRIES:
@@ -881,9 +1013,9 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
     for m in runnable:
         status, MUT_EXE, msg = prepare_mutant_exe(
             m, src, MUT_ROOT / m["id"], compile_mutant, existing.get(m["id"]), compile_sha)
-        if status == "invalid":
-            results[m["id"]] = make_record(m, src, "invalid", msg, today, oracle_sha)
-            print(f"{m['id']}  INVALID  {msg}")
+        if status in ("invalid", "blocked"):
+            results[m["id"]] = make_record(m, src, status, msg, today, oracle_sha)
+            print(f"{m['id']}  {status.upper()}  {msg}")
             persist(False)
             continue
         print(f"{m['id']}  exe " + {"cached": "沿用快取",
@@ -893,10 +1025,19 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
         # 基準線已通過時,同一夾具連續存取違規則是 crashed:算被偵測到,但與斷言分開。
         # 存取違規不等 SAC,不必空等 12 秒;其他受阻仍等,讓新 exe 有機會被放行。
         attempts = []
+        receipts = []
+        executed_hash = _file_sha(MUT_EXE)
         for attempt in range(1, RUN_RETRIES + 1):
             try:
+                if not inputs_unchanged(MUT_EXE, mutant_fingerprint(m, src, compile_sha), executed_hash):
+                    attempts.append(("blocked", "source/oracle/binary changed before launch", None, []))
+                    break
                 test = run_cmd([sys.executable, str(HERE / "run_tests.py"),
                                 str(MUT_EXE)], cwd=root, timeout=600)
+                receipts.append(attempt_receipt(test, root))
+                if not inputs_unchanged(MUT_EXE, mutant_fingerprint(m, src, compile_sha), executed_hash):
+                    attempts.append(("blocked", "source/oracle/binary changed during oracle run", None, []))
+                    break
             except (OSError, subprocess.TimeoutExpired) as exc:
                 attempts.append(("blocked", f"啟動失敗: {exc}", None, []))
                 if attempt < RUN_RETRIES:
@@ -913,8 +1054,21 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
                 time.sleep(12)
 
         verdict, why, killers, crashed_on = verdict_from_attempts(attempts)
+        if m.get("equivalent") and verdict == "survived":
+            verdict, why = "equivalent", m["equivalent"]
+        elif m.get("equivalent") and verdict != "blocked":
+            verdict, why = "invalid", "current execution contradicts equivalence proof: " + why
+        why = why.replace(str(root.resolve()), "<repo>")
+        execution = {"schema": "geometry-mutation-execution/1", "head": execution_head,
+                     "platform": os.name, "tool_sha256": execution_tool_sha,
+                     "compile_exit_code": 0,
+                     "compile_sha256": compile_sha, "compile_command": portable_compile_command(),
+                     "test_command": ["<python>", "tests/run_tests.py", "<binary>"],
+                     "exe_sha256": executed_hash, "baseline_exe_sha256": baseline_hash,
+                     "baseline": baseline_receipt, "attempts": receipts}
         results[m["id"]] = make_record(
-            m, src, verdict, why, today, oracle_sha, killed_by=killers, crashed_on=crashed_on)
+            m, src, verdict, why, today, oracle_sha, killed_by=killers, crashed_on=crashed_on,
+            execution=execution)
         print(f"{m['id']}  {verdict.upper():<9} {m['desc']}"
               + (f"  <- {why}" if why else ""))
         persist(False)
@@ -940,11 +1094,11 @@ def run_pass(mutants, only, root=ROOT, results_path=RESULTS, today=None, oracle=
     return exit_code(counts, strict=not only)
 
 
-def check_pass(mutants, root=ROOT, results_path=RESULTS, killers=False, oracle=None):
+def check_pass(mutants, root=ROOT, results_path=RESULTS, killers=False, oracle=None, require_execution=True):
     """不編譯、不跑:把結果檔對照現行來源與變異表,彙總並給結束碼。"""
     src = Sources(root)
     today = datetime.date.today().isoformat()
-    table = evaluate_table(mutants, load_records(results_path), src, today, oracle or oracle_hash())
+    table = evaluate_table(mutants, load_records(results_path), src, today, oracle or oracle_hash(), require_execution)
     counts = tally(table)
     print(f"結果檔 {results_path}")
     print(f"變異表 {len(mutants)} 筆,紀錄 {len([r for r in table.values() if r is not None])} 筆")
@@ -1019,7 +1173,7 @@ def selftest():
         ok(build_mutant_source(ms[0], src).count("main_v = 2") == 1, "對主檔的單點替換")
 
         # 2) 新紀錄 -> 帶雜湊,且對現況有效
-        recs = {m["id"]: make_record(m, src, v, "w", today, oracle)
+        recs = {m["id"]: make_record(m, src, v, m.get(v, "w"), today, oracle)
                 for m, v in zip(ms, ("killed", "survived", "equivalent", "retired"))}
         ok(all(recs[i].get("source_sha256") for i in ("MA", "MB", "ME")), "非 retired 紀錄帶 source_sha256")
         ok("source_sha256" not in recs["MR"], "retired 紀錄不帶來源雜湊")
@@ -1034,7 +1188,7 @@ def selftest():
         # 3) 牙:原本 killed,現在錨點找不到 -> 必須是 invalid,不是 killed(走完整 run_pass 寫檔路徑)
         save_records(results, {"MA": recs["MA"], "MB": recs["MB"]})
         broken = defs(MA=dict(id="MA", desc="main", old="main_v = 1 /*不存在*/", new="main_v = 2"))
-        code = quiet(run_pass, broken, {"MA"}, root=root, results_path=results, today=today, oracle=oracle)
+        code = quiet(run_pass, broken, {"MA"}, root=root, results_path=results, today=today, oracle=oracle, audit_equivalents=False)
         saved = json.loads(results.read_text(encoding="utf-8"))
         ok(saved["MA"]["verdict"] == "invalid", "錨點壞掉的舊 killed 必須被 invalid 覆蓋,實得 " + saved["MA"]["verdict"])
         ok("錨點" in saved["MA"]["why"], "invalid 的理由要講錨點")
@@ -1044,18 +1198,18 @@ def selftest():
         # 3b) 錨點不唯一同樣 invalid
         dup = defs(MA=dict(id="MA", desc="main", old="int", new="long"))
         save_records(results, {"MA": recs["MA"]})
-        quiet(run_pass, dup, {"MA"}, root=root, results_path=results, today=today, oracle=oracle)
+        quiet(run_pass, dup, {"MA"}, root=root, results_path=results, today=today, oracle=oracle, audit_equivalents=False)
         saved = json.loads(results.read_text(encoding="utf-8"))
         ok(saved["MA"]["verdict"] == "invalid" and "出現" in saved["MA"]["why"], "錨點不唯一 -> invalid")
 
         # 4) 等價變異:錨點在 -> 保留理由;不在 -> invalid 且理由文字另存
         gone = defs(ME=dict(id="ME", desc="equiv", old="keep = 99", new="keep = 3", equivalent="等價理由原文"))
         save_records(results, {})
-        quiet(run_pass, gone, {"ME"}, root=root, results_path=results, today=today, oracle=oracle)
+        quiet(run_pass, gone, {"ME"}, root=root, results_path=results, today=today, oracle=oracle, audit_equivalents=False)
         saved = json.loads(results.read_text(encoding="utf-8"))
         ok(saved["ME"]["verdict"] == "invalid" and saved["ME"]["equivalent_why"] == "等價理由原文",
            "等價變異錨點不在 -> invalid,且保留等價理由文字")
-        quiet(run_pass, ms, {"ME"}, root=root, results_path=results, today=today, oracle=oracle)
+        quiet(run_pass, ms, {"ME"}, root=root, results_path=results, today=today, oracle=oracle, audit_equivalents=False)
         saved = json.loads(results.read_text(encoding="utf-8"))
         ok(saved["ME"]["verdict"] == "equivalent" and saved["ME"]["why"] == "等價理由原文", "等價變異錨點在 -> 理由原文")
 
@@ -1156,7 +1310,7 @@ def selftest():
         ok(oracle_hash() == oracle_hash() and all((ROOT / spec["scene"]).is_file() for spec in TESTS),
            "真正的 TESTS 引用的夾具都在(裁判雜湊沒有 MISSING 標記)")
 
-        orecs = {m["id"]: make_record(m, src, v, "w", today, h0, killed_by=["a.scene"] if v == "killed" else None)
+        orecs = {m["id"]: make_record(m, src, v, m.get(v, "w"), today, h0, killed_by=["a.scene"] if v == "killed" else None)
                  for m, v in zip(ms, ("killed", "survived", "equivalent", "retired"))}
         ok(orecs["MA"]["oracle_sha256"] == h0 and "runner_sha256" not in orecs["MA"], "新紀錄帶 oracle_sha256(沒有 runner_sha256)")
         ok(evaluate_table(ms, orecs, src, today, h0)["MA"]["verdict"] == "killed", "裁判沒變 -> killed 保留")
@@ -1193,7 +1347,7 @@ def selftest():
         save_records(results, {"MA": orecs["MA"]})
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
-            check_pass(ms, root=root, results_path=results, killers=True, oracle=h0)
+            check_pass(ms, root=root, results_path=results, killers=True, oracle=h0, require_execution=False)
         ok("KILLED MA  <- a.scene" in buf.getvalue(), "--check --killers 列出 killed_by")
 
         # 10b) crashed：連續同一夾具的存取違規，與 SAC / 其他異常結束分開
@@ -1283,7 +1437,7 @@ def selftest():
         save_records(results, {"MA": crec})
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
-            check_pass(ms, root=root, results_path=results, oracle=h0)
+            check_pass(ms, root=root, results_path=results, oracle=h0, require_execution=False)
         ok(f"CRASHED MA [{scene_a}]" in buf.getvalue(), "--check 列出 crashed_on")
 
         # 11) exe 指紋快取

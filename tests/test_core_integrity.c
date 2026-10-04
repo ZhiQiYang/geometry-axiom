@@ -155,8 +155,27 @@ static void test_partial_collinear_stop_is_not_duplicated(void)
     CHECK(pick_stop(faces,2,1000,40,120,&stop)==0);
 }
 
+static void test_collinear_vertex_rect_corner(void)
+{
+    /* I2 permits adjacent collinear edges; I5 includes their shared vertex. */
+    PolygonLoop2 loop = {.count=6,
+        .v={{0,0},{100,0},{100,50},{100,100},{0,100},{0,50}}};
+    for (size_t i=0; i<loop.count; ++i) loop.fixity[i]=EDGE_FIXED;
+    SpaceBoundarySurface boundary = {.id=1, .outline=loop};
+    PlacementSurface placement = {0};
+    CHECK(poly_loop_is_valid(&loop));
+    CHECK(boundary_is_valid(&boundary));
+    CHECK(poly_point_on_edge(&loop, (SurfacePoint2){100,50}));
+    CHECK(poly_contains_point(&loop, (SurfacePoint2){100,50}));
+    CHECK(poly_contains_rect(&loop,80,20,100,50));
+    CHECK(boundary_contains_rect(&boundary,80,20,100,50));
+    CHECK(surface_contains_rect(&placement,&boundary,80,20,100,50));
+    CHECK(!poly_contains_rect(&loop,80,20,101,50));
+}
+
 int main(void)
 {
+    test_collinear_vertex_rect_corner();
     test_partial_collinear_stop_is_not_duplicated();
     test_frame_updates();
     test_space_extents();

@@ -71,6 +71,7 @@ PY_NEEDS = {
     'test_modeling_degenerate': ['model-base'],
     'test_modeling_runtime': ['model-base'],
     'test_modeling_transport': ['bridge', 'model-base'],
+    'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_reference_contract': ['bridge'],
     'test_source_inspector': ['bridge'],
@@ -158,7 +159,7 @@ class Suite:
 
     @property
     def counted(self):
-        return self.kind != 'node-script'   # node-script suites only have an exit code, no test count
+        return self.kind not in ('node-script', 'mutation-check')
 
 
 class Row:
@@ -205,6 +206,8 @@ def build_suites():
     suites = [
         Suite('c:integrity', 'integrity', None, ['integrity'], 300, label='tests/test_core_integrity.c'),
         Suite('core:run_tests', 'run_tests', None, ['core'], 900, label='tests/run_tests.py <core>'),
+        Suite('mutation:check', 'mutation-check', [py, str(HERE / 'mutate.py'), '--check'], [], 120,
+              label='tests/mutate.py --check (saved current-source mutation receipts)'),
     ]
     for stem in sorted(PY_NEEDS):
         f = HERE / (stem + '.py')
@@ -383,6 +386,10 @@ def run_suite(suite, env, infos):
         json_path.unlink(missing_ok=True)
         res = run_process([*suite.cmd, '--json-out', str(json_path), '--log', str(log_file.with_suffix('.unittest.log'))],
                           env, suite.timeout)
+    elif suite.kind == 'mutation-check':
+        mutation_env = dict(env)
+        mutation_env['MUTATE_RESULTS'] = str(HERE / 'mutants_results.json')
+        res = run_process(suite.cmd, mutation_env, suite.timeout)
     elif suite.kind == 'node-canvas':
         shim = write_node_shim()
         marker = LOG_DIR / 'canvas_shim.marker'
@@ -402,6 +409,16 @@ def run_suite(suite, env, infos):
         row.failed = max(row.failed, 1)
         row.total = max(row.total, 1)
         row.note = '逾時（%d 秒）被終止，%s（%.1f 秒後收完）；日誌 %s' % (suite.timeout, res.reap_note, secs, log_file)
+        return row
+
+    if suite.kind == 'mutation-check':
+        row.failed = int(code not in (0, 2))
+        row.env_problem = code == 2
+        row.note = 'mutation inventory freshness (not test assertions); exit %s' % code
+        if code != 0:
+            row.details = [line.strip() for line in out.splitlines()
+                           if 'STALE ' in line or 'INVALID ' in line or 'BLOCKED ' in line][:10]
+            row.note += '；日誌 %s' % log_file
         return row
 
     if suite.kind == 'integrity':
@@ -544,7 +561,7 @@ def compare_expected(rows, suites, expected, err, full):
         e = entries.get(r.name)
         if e is None:
             msg = '沒有登記在 %s（新 suite 必須明確登記預期數；--update-expected）' % EXPECTED_FILE.name
-        elif s.kind == 'node-script':
+        elif not s.counted:
             msg = '' if e.get('mode') == 'exit-code-only' else 'expected 對這個「僅結束碼」suite 登記成 %r，應為 exit-code-only' % e.get('mode')
         elif e.get('mode') != 'count' or not isinstance(e.get('count'), int):
             msg = 'expected 登記的是 %r，但這個 suite 有計數，應為 {"mode":"count","count":N}' % e
@@ -570,6 +587,8 @@ def update_expected(rows, suites, registry_errors):
             blockers.append('%s 沒有跑（%s）' % (r.name, r.note))
         elif r.env_problem or r.crashed:
             blockers.append('%s 有環境問題／崩潰／逾時（%s）' % (r.name, r.note[:100]))
+        elif not r.counted and r.failed:
+            blockers.append('%s 僅結束碼驗收失敗（%s）' % (r.name, r.note[:100]))
         elif r.counted and r.total == 0:
             blockers.append('%s 發現 0 個測試' % r.name)
         elif r.skipped - r.allowed_skips > 0:
@@ -583,7 +602,7 @@ def update_expected(rows, suites, registry_errors):
     old_entries = old['suites'] if old else {}
     suites_out = {}
     for s, r in zip(suites, rows):
-        suites_out[s.name] = ({'mode': 'exit-code-only'} if s.kind == 'node-script'
+        suites_out[s.name] = ({'mode': 'exit-code-only'} if not s.counted
                               else {'mode': 'count', 'count': r.total, 'unit': UNIT.get(s.kind, '')})
     data = {
         '_說明': 'run_all.py 的各 suite「發現到的測試／斷言數」；完整跑時逐 suite 嚴格相等，不符即 fail。'
