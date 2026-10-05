@@ -37,15 +37,30 @@
     };
   }
 
-  async function createController(ports) {
+  function createController(ports) {
     if (!ports.transport || typeof ports.captureContext !== 'function')
       throw new Error('RuleCaseWorkbench requires transport and captureContext ports');
+    const opening = {active:true, original:clone(ports.captureContext()), controller:null, unsubscribe:null};
+    opening.cancel = () => {
+      opening.active = false;
+      if (opening.controller) opening.controller.teardown();
+      else if (opening.unsubscribe) {opening.unsubscribe(); opening.unsubscribe = null;}
+    };
+    if (ports.subscribeContext) opening.unsubscribe = ports.subscribeContext(opening.cancel);
+    if (!opening.active && opening.unsubscribe) {opening.unsubscribe(); opening.unsubscribe = null;}
+    const pending = initializeController(ports, opening).catch(error => {opening.cancel(); throw error;});
+    pending.teardown = opening.cancel;
+    return pending;
+  }
+
+  async function initializeController(ports, opening) {
+    if (!opening.active) throw new Error('案例初始化已退休');
     const transport = ports.transport;
     const opened = await transport.open();
-    if (!same(opened.context, ports.captureContext())) {
-      await transport.close(opened.sessionId); throw new Error('案例開啟時專案已變更');
+    if (!opening.active || !same(opened.context, opening.original) || !same(opening.original, ports.captureContext())) {
+      await transport.close(opened.sessionId).catch(() => {}); throw new Error('案例開啟時原始專案或操作已退休');
     }
-    let epoch = 0, live = true, active = null, unsubscribe = null;
+    let epoch = 0, live = true, active = null, mutation = null, unsubscribe = opening.unsubscribe;
     let entries = [], views = [], listeners = new Set();
     const state = {context:clone(opened.context), runtime:clone(opened.runtime),
       definitions:clone(opened.definitions), hashes:clone(opened.definitionHashes),
@@ -73,21 +88,44 @@
         // Retire server run even when HTTP abort hides the native completion.
         transport.cancel(opened.sessionId, retired.runId).catch(() => {});
       }
-      state.busy = false; state.editing = false; state.message = message; emit();
+      state.busy = false; state.editing = mutation !== null; state.message = message; emit();
+    }
+    function beginMutation(message) {
+      if (!live || mutation !== null) return null;
+      cancel(message); mutation = epoch; state.editing = true; state.error = null; emit(); return mutation;
+    }
+    function endMutation(ticket) {
+      if (mutation === ticket) mutation = null;
+      state.editing = mutation !== null;
+      // Release the cancelled operation's own control lock, without adopting
+      // its late data or message. A retired host never receives this repaint.
+      if (live && same(state.context, ports.captureContext())) emit();
+    }
+    function adoptViews(result) {
+      views = clone(result.views);
+      if (result.runtime) state.runtime = clone(result.runtime);
+      for (const [index, entry] of entries.entries())
+        if (views[index]?.receipt.status === 'stale') entry.controlled = false;
     }
     async function assess(ticket) {
       const result = await transport.assess(opened.sessionId, data());
       if (!matches(ticket) || !same(result.context, state.context)) return false;
-      views = clone(result.views); state.hashes = clone(result.definitionHashes); return true;
+      adoptViews(result); state.hashes = clone(result.definitionHashes); return true;
+    }
+    async function refresh() {
+      if (!live || state.busy || mutation !== null) return false;
+      const ticket = beginMutation('正在核對結果是否過期…');
+      try {if (!await assess(ticket)) return false; emit(); return true;}
+      catch (error) {if (matches(ticket)) {state.error = error.message; emit();} return false;}
+      finally {endMutation(ticket);}
     }
     function select(caseId) {
-      if (!live || !state.definitions.some(d => d.caseId === caseId)) return;
+      if (!live || mutation !== null || !state.definitions.some(d => d.caseId === caseId)) return;
       cancel('已切換所選案例。'); state.selected = caseId; state.error = null; emit();
     }
     async function edit(patch) {
-      if (!live) return false;
-      cancel('正在核對有限案例修改…');
-      const ticket = epoch, id = state.selected;
+      if (!live || mutation !== null) return false;
+      const id = state.selected;
       const original = state.definitions.find(d => d.caseId === id);
       const definition = clone(original);
       // Only editorial strings and candidate joint 101 side are editable.
@@ -100,43 +138,48 @@
         if (!joint) throw new Error('本案例沒有可編輯的接合 101');
         joint.side = patch.jointSide;
       }
-      state.editing = true; state.error = null; emit();
+      const ticket = beginMutation('正在核對有限案例修改…');
       try {
         const result = await transport.validate(opened.sessionId, definition);
         if (!matches(ticket) || state.selected !== id || !same(result.context, state.context)) return false;
-        // Receipt bytes remain unchanged; only a separate freshness view changes.
-        state.definitions = state.definitions.map(d => d.caseId === id ? clone(result.definition) : d);
+        const nextDefinitions = state.definitions.map(d => d.caseId === id ? clone(result.definition) : d);
+        const checked = await transport.assess(opened.sessionId, {...data(), definitions:nextDefinitions});
+        if (!matches(ticket) || state.selected !== id || !same(checked.context, state.context)) return false;
+        // Adopt the definition and freshness view together after both gates.
+        state.definitions = nextDefinitions; adoptViews(checked);
         if (state.hashes[id] !== result.definitionHash)
           for (const entry of entries) if (entry.definition.caseId === id) entry.controlled = false;
         state.hashes[id] = result.definitionHash;
-        if (!await assess(ticket)) return false;
         state.message = '案例修改已核對；先前結果保留為歷史。'; return true;
       } catch (error) {
         if (matches(ticket)) {state.error = error.message; state.message = '案例修改未採用。';}
         return false;
-      } finally { if (matches(ticket)) {state.editing = false; emit();} }
+      } finally {endMutation(ticket);}
     }
     async function reset() {
-      if (!live) return false;
-      cancel('正在還原所選模板…');
-      const ticket = epoch, id = state.selected;
+      if (!live || mutation !== null) return false;
+      const ticket = beginMutation('正在還原所選模板…'), id = state.selected;
       const definition = clone(state.templates.find(d => d.caseId === id));
       try {
         const result = await transport.validate(opened.sessionId, definition);
         if (!matches(ticket) || !same(result.context, state.context)) return false;
-        state.definitions = state.definitions.map(d => d.caseId === id ? definition : d);
+        const nextDefinitions = state.definitions.map(d => d.caseId === id ? definition : d);
+        const checked = await transport.assess(opened.sessionId, {...data(), definitions:nextDefinitions});
+        if (!matches(ticket) || !same(checked.context, state.context)) return false;
+        state.definitions = nextDefinitions; adoptViews(checked);
         state.hashes[id] = result.definitionHash;
-        if (!await assess(ticket)) return false;
         // Returning to identical data does not renew trust of an old run.
         for (const entry of entries) if (entry.definition.caseId === id) entry.controlled = false;
         state.message = '已還原模板；請重新執行核對。'; emit(); return true;
       } catch (error) {if (matches(ticket)) {state.error = error.message; emit();} return false;}
+      finally {endMutation(ticket);}
     }
     async function run() {
-      if (!live || state.busy || state.editing || !same(state.context, ports.captureContext())) return false;
+      if (!live || state.busy || mutation !== null || !same(state.context, ports.captureContext())) return false;
       cancel('正在隔離執行所選案例…');
       const ticket = epoch, context = clone(state.context), id = state.selected;
       const definition = clone(state.definitions.find(d => d.caseId === id)), hash = state.hashes[id];
+      for (const entry of entries) if (entry.definition.caseId === id) entry.controlled = false;
       const runId = (ports.newRunId || (() => globalThis.crypto.randomUUID()))();
       const abort = new AbortController(); active = {runId, abort}; state.busy = true;
       state.error = null; emit();
@@ -155,7 +198,7 @@
         const checked = await transport.assess(opened.sessionId, {schema:DATA_SCHEMA,
           definitions:state.definitions, receipts:next.map(({definition, receipt}) => ({definition, receipt}))});
         if (!matches(ticket, context) || active?.runId !== runId || !same(checked.context, context)) return false;
-        entries = next; views = clone(checked.views); state.message = labels[receipt.status] || '結果資料無法核對';
+        entries = next; adoptViews(checked); state.message = labels[receipt.status] || '結果資料無法核對';
         return true;
       } catch (error) {
         if (matches(ticket, context)) {state.error = error.message; state.message = '未取得可核對的本次結果。';}
@@ -163,32 +206,36 @@
       } finally {if (matches(ticket, context)) {active = null; state.busy = false; emit();}}
     }
     async function restore(value) {
-      if (!live) return false;
-      cancel('正在核對保存的案例資料…'); const ticket = epoch;
+      if (!live || mutation !== null) return false;
+      const ticket = beginMutation('正在核對保存的案例資料…');
       try {
         const result = await transport.importData(opened.sessionId, clone(value));
         if (!matches(ticket) || !same(result.context, state.context)) return false;
         state.definitions = clone(result.data.definitions); state.hashes = clone(result.definitionHashes);
         entries = result.data.receipts.map(entry => ({...clone(entry), controlled:false}));
-        views = clone(result.views);
+        adoptViews(result);
         if (!state.definitions.some(d => d.caseId === state.selected)) state.selected = state.definitions[0]?.caseId;
         state.error = null; state.message = '已載入歷史資料；受控重跑後才是本次核對。'; emit(); return true;
       } catch (error) {
         if (matches(ticket)) {state.error = error.message; state.message = '保存資料無法核對；目前資料保留。'; emit();}
         return false;
-      }
+      } finally {endMutation(ticket);}
     }
     async function retain() {
-      if (!live || state.busy || state.editing || !ports.retainCaseData) return false;
-      const ticket = epoch, context = clone(state.context), payload = data();
+      if (!live || state.busy || mutation !== null || !ports.retainCaseData) return false;
+      const ticket = beginMutation('正在保留案例資料…'), context = clone(state.context), payload = data();
+      const stamp = JSON.stringify(payload);
+      const isCurrent = () => matches(ticket, context) && JSON.stringify(data()) === stamp;
       try {
         if (!await assess(ticket)) return false;
+        if (!isCurrent()) return false;
         // Host must gate ORIGINAL context and atomically add exactly one metadata history step.
-        const result = await ports.retainCaseData(payload, context);
-        if (!matches(ticket, context)) return false;
+        const result = await ports.retainCaseData(payload, context, {isCurrent});
+        if (!isCurrent()) return false;
         if (result?.ok !== true) throw new Error(result?.error || '案例資料未保留');
         state.message = result.changed === false ? '案例資料未變更。' : '案例資料已明確保留。'; emit(); return true;
       } catch (error) {if (matches(ticket, context)) {state.error = error.message; emit();} return false;}
+      finally {endMutation(ticket);}
     }
     function invalidate() {
       if (!live) return;
@@ -198,22 +245,42 @@
       for (const listener of listeners) listener(clone({...state, live:false, receipts:[]}));
       if (unsubscribe) {unsubscribe(); unsubscribe = null;}
     }
-    function teardown() {invalidate(); listeners.clear();}
-    const controller = {snapshot, data, select, edit, reset, run, cancel, restore, retain,
+    function teardown() {opening.active = false; invalidate(); listeners.clear();}
+    const controller = {snapshot, data, select, edit, reset, run, cancel, restore, retain, refresh,
       invalidate, teardown, subscribe(listener) {listeners.add(listener); listener(snapshot()); return () => listeners.delete(listener);}};
-    if (ports.subscribeContext) unsubscribe = ports.subscribeContext(invalidate);
+    opening.controller = controller;
     if (ports.loadCaseData) {
       try {
         const ticket = epoch, value = await ports.loadCaseData(clone(state.context));
         if (value && matches(ticket)) await restore(value);
       } catch (error) {teardown(); throw error;}
     }
+    if (!opening.active || !live || !same(opening.original, ports.captureContext())) {
+      teardown(); throw new Error('案例初始化已退休');
+    }
     return controller;
   }
 
-  async function mount(root, ports) {
+  const mounts = new WeakMap();
+  function mount(root, ports) {
+    mounts.get(root)?.teardown();
+    const initialization = createController(ports);
+    const operation = {retired:false, controller:null, teardown() {
+      operation.retired = true; initialization.teardown(); operation.controller?.teardown();
+    }};
+    mounts.set(root, operation);
+    const pending = renderMount(root, ports, initialization, operation);
+    pending.teardown = operation.teardown;
+    return pending;
+  }
+
+  async function renderMount(root, ports, initialization, operation) {
     const document = root.ownerDocument;
-    const controller = await createController(ports);
+    const controller = await initialization;
+    if (operation.retired || mounts.get(root) !== operation || !same(controller.snapshot().context, ports.captureContext())) {
+      controller.teardown(); throw new Error('案例 mount 已退休');
+    }
+    operation.controller = controller;
     root.classList.add('rule-case-workbench');
     function node(tag, text, attrs = {}) {
       const el = document.createElement(tag); if (text !== null) el.textContent = text;
@@ -251,6 +318,9 @@
       if (!selected) return;
       const title = node('h3', selected.label, {tabindex:'-1','data-rcw':'selected-title'});
       detail.append(title);
+      detail.append(button('返回案例清單', () => {
+        root.querySelector('nav [aria-current="true"]')?.focus();
+      }, {class:'rcw-back','data-rcw':'back'}));
       const form = node('form', null, {'data-rcw':'edit'});
       function field(text, name, value) {
         const label = node('label', text), input = node('input', null, {name, value, maxlength:'96'});
@@ -284,7 +354,8 @@
       actions.append(run, cancel, reset, retain); detail.append(actions);
       const records = state.receipts.filter(e => e.definition.caseId === selected.caseId), latest = records.at(-1);
       const summary = node('dl', null, {'data-rcw':'result'});
-      for (const [term, value] of [['預期',outcome(selected.expect.outcome)], ['原生實際',outcome(latest?.view.actualOutcome)],
+      for (const [term, value] of [['預期',outcome(selected.expect.outcome)], ['原生實際',
+        (state.busy && latest ? '上次結果 · ' : '') + outcome(latest?.view.actualOutcome)],
         ['驗證狀態',state.busy ? '執行中' : latest ? `${latest.trust === 'controlled-run' ? '本次核對' : '歷史未核信'} · ${labels[latest.view.status] || '結果資料無法核對'}` : '尚未執行']]) {
         summary.append(node('dt',term),node('dd',value));
       }
@@ -304,7 +375,9 @@
       }
     });
     const originalTeardown = controller.teardown;
-    controller.teardown = () => {originalTeardown(); off(); root.replaceChildren(); root.classList.remove('rule-case-workbench');};
+    controller.teardown = () => {originalTeardown(); off();
+      if (mounts.get(root) === operation) {root.replaceChildren(); root.classList.remove('rule-case-workbench');}
+    };
     return controller;
   }
   return {PROTOCOL, DATA_SCHEMA, httpPort, createController, mount};

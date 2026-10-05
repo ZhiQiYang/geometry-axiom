@@ -25,17 +25,20 @@ PAGE = '''<!doctype html><html lang="zh-Hant"><meta charset="utf-8">
 <script>
 'use strict';
 const hostContext = __CONTEXT__;
-let component, saved = null, history = 0;
+let component, pending, openingSequence = 0, saved = null, history = 0;
 const ports = {captureContext:()=>structuredClone(hostContext),
   transport:RuleCaseWorkbench.httpPort(),
-  retainCaseData:async(data, original)=>{
-    if(JSON.stringify(original)!==JSON.stringify(hostContext))return {ok:false};
+  retainCaseData:async(data, original, lease)=>{
+    if(!lease.isCurrent()||JSON.stringify(original)!==JSON.stringify(hostContext))return {ok:false};
     if(JSON.stringify(saved)===JSON.stringify(data))return {ok:true,changed:false};
     saved=structuredClone(data);history++;
     document.getElementById('retained').textContent='metadata history: '+history;
     return {ok:true,changed:true};
   }};
-async function open(){component?.teardown();component=await RuleCaseWorkbench.mount(document.getElementById('workbench'),ports);}
+async function open(){const sequence=++openingSequence;pending?.teardown();component?.teardown();
+  const operation=RuleCaseWorkbench.mount(document.getElementById('workbench'),ports);pending=operation;
+  try{const result=await operation;if(sequence===openingSequence)component=result;else result.teardown();}
+  catch(error){if(sequence===openingSequence)showError(error);}}
 document.getElementById('reopen').onclick=()=>open().catch(showError);
 document.getElementById('restore').onclick=()=>{if(saved&&component)component.restore(saved).catch(showError);};
 function showError(error){document.getElementById('workbench').textContent=error.message;}
@@ -62,6 +65,8 @@ def make_handler(adapter, context):
                 pass
 
         def do_GET(self):
+            if not self._local_request():
+                self._send(403, b'{"ok":false,"code":"HOST_ORIGIN"}'); return
             if self.path == "/":
                 body = PAGE.replace("__CONTEXT__", json.dumps(context)).encode()
                 self._send(200, body, "text/html; charset=utf-8")
@@ -75,9 +80,8 @@ def make_handler(adapter, context):
                 self._send(404, b'{"ok":false}')
 
         def do_POST(self):
-            origin = self.headers.get("Origin")
-            if (origin and origin != "http://" + self.headers.get("Host", "")) or self.headers.get("Sec-Fetch-Site") == "cross-site":
-                self._send(403, b'{"ok":false,"code":"ORIGIN"}'); return
+            if not self._local_request():
+                self._send(403, b'{"ok":false,"code":"HOST_ORIGIN"}'); return
             length = self.headers.get("Content-Length", "")
             if (self.headers.get("Transfer-Encoding") or not length.isdecimal()
                     or int(length) > MAX_DATA_BYTES):
@@ -96,6 +100,13 @@ def make_handler(adapter, context):
 
         def log_message(self, *_):
             pass
+
+        def _local_request(self):
+            allowed = {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
+            host = self.headers.get("Host")
+            origin = self.headers.get("Origin")
+            return (host in allowed and (not origin or origin == "http://" + host)
+                    and self.headers.get("Sec-Fetch-Site") != "cross-site")
     return Handler
 
 

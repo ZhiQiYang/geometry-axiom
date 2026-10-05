@@ -5,6 +5,7 @@ dispatch() is shared by the owner's future route and the independent harness.
 """
 from copy import deepcopy
 import json
+import math
 import re
 import sys
 import threading
@@ -15,7 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "geometry-core"))
 from rule_cases.catalog import cases
 from rule_cases.definition import (CaseDefinitionError, MAX_CASE_BYTES, decode_case,
-                                   definition_hash, validate_cases)
+                                   canonical, definition_hash, digest, validate_cases, _operation, _ref)
 from rule_cases.executor import ReceiptValidationError, refresh_receipt
 from rule_cases.request import run_case_request
 from rule_cases.runtime import runtime_identity
@@ -101,6 +102,155 @@ def _context(value):
     return deepcopy(value)
 
 
+def _shape(value, required, optional=()):
+    if (type(value) is not dict or not set(required) <= value.keys()
+            or value.keys() - set(required) - set(optional)):
+        raise AdapterError("RECEIPT", "Unknown or missing portable receipt fields")
+
+
+def _text(value, maximum=4096):
+    if type(value) is not str or len(value.encode()) > maximum:
+        raise AdapterError("RECEIPT", "Invalid bounded receipt text")
+
+
+def _integer(value, maximum=2**53 - 1):
+    if type(value) is not int or not 0 <= value <= maximum:
+        raise AdapterError("RECEIPT", "Invalid bounded receipt integer")
+
+
+def _number(value, minimum, maximum):
+    if type(value) not in (int, float) or not math.isfinite(value) or not minimum <= value <= maximum:
+        raise AdapterError("RECEIPT", "Invalid bounded receipt number")
+
+
+def _hash(value):
+    if type(value) is not str or not re.fullmatch(r"[0-9a-f]{64}", value):
+        raise AdapterError("RECEIPT", "Invalid exact receipt hash")
+
+
+def _array(value, maximum):
+    if type(value) is not list or len(value) > maximum:
+        raise AdapterError("RECEIPT", "Invalid bounded receipt array")
+
+
+def _capabilities(value):
+    _array(value, 32)
+    for item in value:
+        if type(item) is not str or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,95}", item):
+            raise AdapterError("RECEIPT", "Invalid capability identity")
+    if len(set(value)) != len(value):
+        raise AdapterError("RECEIPT", "Duplicate receipt capabilities")
+
+
+def _diagnostics(value):
+    _array(value, 256)
+    for item in value:
+        # Preserve both typed authoring diagnostics and the native legacy I8
+        # invariant detail. Human text never creates a typed reference.
+        _shape(item, ("clause", "message"), ("code", "ref", "timber", "expected"))
+        for key in ("clause", "message", "code", "expected"):
+            if key in item:
+                _text(item[key], 64 if key in {"clause", "code"} else 4096)
+        if "timber" in item:
+            _integer(item["timber"], 4294967295)
+        if "ref" in item:
+            _ref(item["ref"], "receipt.diagnostic.ref", diagnostic=True)
+
+
+def _observed_state(value):
+    _shape(value, ("capabilities", "rules", "bindings", "instances"))
+    _capabilities(value["capabilities"])
+    # These six authoring cases cannot create construction instances.
+    if value["instances"] != []:
+        raise AdapterError("RECEIPT", "Authoring case observation contains unsupported instances")
+    for kind, operation in (("rules", "publish-rule"), ("bindings", "create-binding")):
+        _array(value[kind], 64)
+        for record in value[kind]:
+            required = ("value", "fingerprint") + (("complete", "effective") if kind == "bindings" else ())
+            _shape(record, required)
+            _hash(record["fingerprint"])
+            # Reuse the core's existing typed RECORD schema, without executing
+            # operations or inventing a second geometry/diagnostic validator.
+            _operation({"op": operation, "value": record["value"]}, "receipt.observation", [], set())
+            if kind == "bindings":
+                if type(record["complete"]) is not bool:
+                    raise AdapterError("RECEIPT", "Invalid native completeness flag")
+                _array(record["effective"], 8)
+                for slot in record["effective"]:
+                    _shape(slot, ("slotId", "A", "B"))
+                    _integer(slot["slotId"], 4294967295)
+                    for axis in ("A", "B"):
+                        effective = slot[axis]
+                        if effective is not None:
+                            _shape(effective, ("value", "path"))
+                            _number(effective["value"], -100000000, 100000000)
+                            # This is native source-description text, not an OS
+                            # path/assetref accepted at arbitrary receipt keys.
+                            _text(effective["path"], 2047)
+
+
+def _portable_receipt(receipt, original, identity):
+    # Existing core guard bounds bytes/nodes/depth and native pass evidence for
+    # EVERY receipt before this finite transport schema traverses nested data.
+    refresh_receipt(receipt, original, identity)
+    required = ("caseId", "definitionHash", "sourceHash", "executor", "context", "status",
+                "authorExpected", "actualOutcome", "actualDiagnostics", "assertionResults", "conditions")
+    _shape(receipt, required, ("reason", "detail", "recordedStatus", "staleReasons",
+                               "setupDiagnostics", "observations", "missingCapabilities"))
+    if (receipt["caseId"] != original["caseId"]
+            or receipt["definitionHash"] != definition_hash(original)
+            or receipt["sourceHash"] != digest(original["sourcePins"])
+            or canonical(receipt["authorExpected"]) != canonical(original["expect"])):
+        raise AdapterError("OWNERSHIP", "Receipt does not belong to its recorded original definition/pins")
+    _shape(receipt["context"], ("projectId", "generation"))
+    executor = receipt["executor"]
+    runtime_fields = ("nativeBinaryHash", "nativeSourceHash", "validatorVersion", "axiomHash", "assertionSchemaHash")
+    _shape(executor, ("known",) + (runtime_fields if executor["known"] else ("reason",)))
+    if executor["known"]:
+        for field in runtime_fields:
+            _hash(executor[field])
+    else:
+        _text(executor["reason"])
+    conditions = receipt["conditions"]
+    _shape(conditions, ("timeoutSeconds", "maxOutputBytes", "isolated", "nativePid", "privateDirectoryRemoved"),
+           ("capabilities", "elapsedSeconds"))
+    _number(conditions["timeoutSeconds"], .01, 30)
+    _integer(conditions["maxOutputBytes"], 2 * 1024 * 1024)
+    if conditions["maxOutputBytes"] < 1 or conditions["isolated"] is not True or type(conditions["privateDirectoryRemoved"]) is not bool:
+        raise AdapterError("RECEIPT", "Invalid isolated execution conditions")
+    if conditions["nativePid"] is not None:
+        _integer(conditions["nativePid"], 2**32 - 1)
+    if "elapsedSeconds" in conditions:
+        _number(conditions["elapsedSeconds"], 0, 60)
+    if "capabilities" in conditions:
+        _capabilities(conditions["capabilities"])
+    if receipt["actualOutcome"] not in (None, "accepted", "rejected"):
+        raise AdapterError("RECEIPT", "Unknown actual outcome")
+    _diagnostics(receipt["actualDiagnostics"])
+    if "setupDiagnostics" in receipt:
+        _diagnostics(receipt["setupDiagnostics"])
+    if "missingCapabilities" in receipt:
+        _capabilities(receipt["missingCapabilities"])
+    for key in ("reason", "detail"):
+        if key in receipt:
+            _text(receipt[key])
+    _array(receipt["assertionResults"], len(original["assertions"]))
+    for index, assertion in enumerate(receipt["assertionResults"]):
+        _shape(assertion, ("kind", "passed", "predicate"))
+        if (type(assertion["passed"]) is not bool or assertion["kind"] != original["assertions"][index]["kind"]
+                or canonical(assertion["predicate"]) != canonical(original["assertions"][index])):
+            raise AdapterError("RECEIPT", "Assertion differs from its original finite predicate")
+    if "observations" in receipt:
+        observed = receipt["observations"]
+        _shape(observed, ("before", "after", "beforeRevision", "afterRevision", "beforeDumpHash", "afterDumpHash"))
+        for key in ("before", "after"):
+            _observed_state(observed[key])
+        for key in ("beforeRevision", "afterRevision"):
+            _integer(observed[key])
+        for key in ("beforeDumpHash", "afterDumpHash"):
+            _hash(observed[key])
+
+
 def validate_case_data(data, identity, context):
     """Validate all before replacement; preserve raw receipt and its old definition.
 
@@ -127,11 +277,11 @@ freshness facts, never signatures or evidence that this adapter executed it.
         if case_id not in by_id or type(receipt) is not dict or receipt.get("caseId") != case_id:
             raise AdapterError("SCHEMA", "Receipt is outside the definition set")
         # Validate evidence against the recorded contract first, then assess drift.
-        refresh_receipt(receipt, original, identity)
+        _portable_receipt(receipt, original, identity)
         view = refresh_receipt(receipt, by_id[case_id], identity,
                                project_id=context["projectId"], generation=context["generation"])
         views.append({"trust": "historical-unverified", "receipt": view})
-    return {"data": deepcopy(data), "views": views,
+    return {"data": deepcopy(data), "views": views, "runtime": deepcopy(identity),
             "definitionHashes": {d["caseId"]: definition_hash(d) for d in definitions}}
 
 

@@ -16,7 +16,8 @@
 .rule-case-workbench input,.rule-case-workbench select {width:100%}
 .rule-case-workbench dl {display:grid;grid-template-columns:100px minmax(0,1fr);gap:8px}
 .rule-case-workbench dd {margin:0;overflow-wrap:anywhere}
+.rule-case-workbench .rcw-back {display:none}
 .rule-case-workbench details {border-top:1px solid #53627b;padding:12px 0}
 .rule-case-workbench summary {cursor:pointer;min-height:32px}
 .rule-case-workbench pre {font:13px/1.5 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;max-height:400px;overflow:auto;padding:12px;background:#111724;border-radius:4px}
-@media(max-width:650px) {.rule-case-workbench {padding:16px}.rcw-grid {grid-template-columns:1fr;gap:20px}.rule-case-workbench nav button {width:100%}.rcw-actions {display:grid;grid-template-columns:1fr 1fr}.rule-case-workbench dl {grid-template-columns:80px minmax(0,1fr)}}
+@media(max-width:650px) {.rule-case-workbench {padding:16px}.rcw-grid {grid-template-columns:1fr;gap:20px}.rule-case-workbench nav button {width:100%}.rule-case-workbench .rcw-back {display:block;margin:12px 0}.rcw-actions {display:grid;grid-template-columns:1fr 1fr}.rule-case-workbench dl {grid-template-columns:80px minmax(0,1fr)}}

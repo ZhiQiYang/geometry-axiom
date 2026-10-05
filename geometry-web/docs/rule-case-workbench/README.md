@@ -9,7 +9,12 @@ No C, axioms, security settings, deployment or private source materials change.
 
 ## Integration ports
 
-`RuleCaseWorkbench.mount(element, ports)` resolves to a controller. Host loads
+`RuleCaseWorkbench.mount(element, ports)` returns a promise with an immediate
+`teardown()` method and resolves to a controller. Keep that pending handle and
+call `teardown()` even if initialization is still waiting. Both controller and
+mount capture original context and subscribe before their first await; a late
+open session is closed precisely. A newer mount in the same element retires the
+previous pending/mounted operation and a late mount never paints. Host loads
 the scoped CSS and JS, chooses an existing AssemblyWorkspace disclosure/tab,
 and calls `teardown()` before close. This component adds no formal app entry.
 To satisfy GEO-219, the shared owner must merge its eventual entry into the
@@ -19,21 +24,25 @@ This branch is expressly authorized as an independent component/harness.
 - `captureContext()` synchronously returns `{projectId,generation,contextToken}`.
   Token is the original host token, not a new token obtained after an await.
 - `subscribeContext(invalidate)` returns an unsubscribe function. Notify on
-  project switch, generation/source changes, undo/redo, close and reopen, even
+  project switch, generation/source/runtime changes, undo/redo, close and reopen, even
   when restoring equal definitions. A retired controller must be remounted.
 - `transport`: `httpPort('/rule-cases/workbench')` or an equivalent scoped port.
   HTTP sessions must be isolated per native/project context by the serve owner.
 - `loadCaseData(originalContext)` optionally returns the complete attachment.
-- `retainCaseData(data, originalContext)` explicitly validates and atomically
+- `retainCaseData(data, originalContext, lease)` explicitly validates and atomically
   adds one metadata ContextHistory step, dirty state and detached attachment,
   returning `{ok:true,changed:true|false}`. Host rejects a mismatched ORIGINAL
-  context, including after a held write. A no-op creates no history step.
+  context, including after a held write, and MUST check `lease.isCurrent()`
+  immediately before atomic metadata commit. It includes the exact original
+  payload stamp and operation ownership. Reset/import/edit/refresh/retain are
+  serialized through completion, including cancellation cleanup. A no-op
+  creates no history step.
 - `onClose()` optionally closes the enclosing panel; no assembly invalidate is
   invoked. Host catalog/assets/history routing remains host-owned. Case pins
   are private source definitions, never assetrefs or live World selections.
 
 Controller: `select`, `edit({label,transactionName,jointSide?})`, `reset`, `run`,
-`cancel`, `restore`, `retain`, `snapshot`, `data`, `invalidate`, `teardown`.
+`cancel`, `restore`, `retain`, `refresh`, `snapshot`, `data`, `invalidate`, `teardown`.
 Editing changes only the selected finite definition. Expectations remain an
 independent oracle: changing a joint side can intentionally fail its assertion.
 No input is evaluated or rendered as executable code/markup by the UI.
@@ -82,6 +91,12 @@ belongs to #137. The shared owner allocates those formal identifiers and strict
 root format/capability gates. Definitions retain all input/setup/transaction,
 sourcePins, requiredCapabilities, author expectations and assertions. At most
 24 receipts and 8 MiB aggregate; each receipt has core's 4 MiB/node/depth bound.
+Portable receipt/context/executor/conditions/diagnostics/assertion/observation
+fields are finite whitelists for every status, including nonpass. Existing core
+receipt bounds/evidence checks run first; existing typed operation validation
+checks observed record data without adding a geometry engine. Each receipt's
+definitionHash/sourceHash/authorExpected must match its ORIGINAL accompanying
+definition; different CURRENT definitions legitimately produce stale views.
 Unknown fields/schema, wrong closure/pins, unknown case IDs and malformed
 receipts reject before replacement. No implicit eviction truncates history.
 
