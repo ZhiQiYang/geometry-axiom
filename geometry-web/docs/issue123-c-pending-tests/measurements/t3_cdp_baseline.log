@@ -1,0 +1,361 @@
+CDP_SCOPE {"mode":"partial","filters":["GEOMETRY_CDP_FROM_P31"],"modifiers":[],"url":"http://127.0.0.1:8861/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geo123c\\fb","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geo123c\\cdp-base-profile","cdpPort":9361,"browserPid":37708}
+P24 page identity ✓ ""
+P24 page identity 已知按鈕 title 文字 ✓ {"canvasView":"物件畫布","views3":"三視圖","fitAll":"顯示全部 (F)"}
+P31 form opens impact preview ✓ ""
+P31 preview leaves world unchanged ✓ ""
+P31 confirm updates dependent center ✓ ""
+P31 cancel keeps approved world ✓ ""
+P31 invalid impact cannot confirm ✓ ""
+=== P32. UI review v2: reachable panels, stable editing and complete slot workflow ===
+M2 new card avoids offset existing bbox ✓ [{"x":71,"y":81,"w":260,"h":220},{"x":440,"y":60,"w":260,"h":220}]
+M1 persistent library labels stay one line ✓ [{"id":"btnNewGridSystem","w":132,"scroll":132,"h":21.75,"text":"網格系統"},{"id":"btnQuickBoundary","w":120,"scroll":120,"h":21.75,"text":"邊界"}]
+M12 visible list selection does not pan ✓ ""
+M4 common properties precede the complete placement form ✓ ""
+M4 placement submit remains reachable by scrolling the property dock ✓ {"width":1035,"height":36,"top":727,"bottom":763,"panelTop":484,"panelBottom":764,"hit":true,"disabled":false,"wheelX":1352,"wheelY":624,"delta":15}
+M3 M5 M7 T3 contextual controls ✓ ""
+M7 command shortcut opens focused input ✓ ""
+M7 command executes ✓ ""
+M7 command Escape closes only command ✓ ""
+M10 toast above canvas, away from minimap ✓ [{"text":"畫布頂部驗證","classes":["toast","ok"],"visible":true,"bounds":{"left":581,"top":144.41473388671875,"right":801,"bottom":182.35223388671875},"state":null}]
+M8 explicit card entry ✓ ""
+F1 F3 F4 four tabs, seven tools, five persistent groups ✓ ""
+F2 real length edit retains next keyboard target ✓ {"focus":"edgeFixed0","a":"500","b":"500","status":"✓ boundary 1 outline 0,0 500,0 500,300 0,300","loops":[{"loop":-1,"verts":[[0,0],[500,0],[500,300],[0,300]],"fixity":[1,1,1,1],"vertices":[{"index":0,"key":null,"uv":[0,0]},{"index":1,"key":null,"uv":[500,0]},{"index":2,"key":null,"uv":[500,300]},{"index":3,"key":null,"uv":[0,300]}]}]}
+F2 form drafts survive redraw ✓ ""
+T4 workspace identity and scrollable tools occupy separate usable rows @1382 ✓ ""
+T4 workspace identity and scrollable tools occupy separate usable rows @1160 ✓ ""
+T4 workspace identity and scrollable tools occupy separate usable rows @900 ✓ ""
+T4 workspace identity and scrollable tools occupy separate usable rows @680 ✓ ""
+T4 workspace identity and scrollable tools occupy separate usable rows @600 ✓ ""
+T2 face drawer belongs to face workspace ✓ {"same":true,"hit":"<input id=\"edgeLength0\" class=\"edge-len\" data-edge-len=\"0\" aria-label=\"邊 0 長度 mm\" type=\"number\" step=\"1\" min=\"1\" value=\"500\">","rect":{"x":361,"y":392.75}}
+T2 drawer Escape retains workspace ✓ ""
+T2 face layer drawer hit target ✓ ""
+T2 main drawer exposes source creation ✓ ""
+S1 empty space exposes all six actions ✓ ""
+S1 empty slot starts visible guided creation ✓ ""
+S1 drawn face continues into intended placement ✓ {"focus":{"t":"face","id":1},"pending":{"space":1,"presetName":"地板","label":"地板","bid":1},"u":"+y","v":"+x","status":"空間 1 · 地板：確認尺寸與原點後放置"}
+S1 explicit placement returns to original space ✓ {"focus":{"t":"space","id":1},"faces":[{"kind":"boundary","boundaryKind":"unspecified","id":1,"placed":true,"bbox":[330,330,1130,930],"cx":330,"cy":330,"hasPos":true}],"spaces":[{"id":1,"members":[1],"closed":false,"cx":60,"cy":60,"hasPos":true}],"status":"✓ 地板已放置並收進空間 1"}
+S1 placement and membership undo together ✓ ""
+S1 changed orientation cannot silently fill wrong slot ✓ {"pending":{"space":1,"presetName":"地板","label":"地板","bid":1},"focus":{"t":"face","id":1},"u":"+x","v":"+y","disabled":true,"valid":"請維持地板的法向方位，或返回重新選擇槽位"}
+F5 timber form directly places with matching section ✓ {"tool":"select","tab":"timber","timbers":[{"id":1,"A":35,"role":"boundary"}],"status":"面 1 · 選取"}
+F9 both disclosures keep expanded state ✓ ""
+V1 V2 toolbar does not overlap drawing and empty inspector collapses ✓ ""
+V3 selecting three-view twice stays in three-view ✓ ""
+V3 canvas switch restores active main tools ✓ ""
+=== P33. 主畫布外環邊 · 尺寸確認清單(§5.A.1.10) ===
+P33-1 主畫布清單存在且列數=外環邊數 ✓ {"n":4,"title":true,"lens":["400","300","400","300"],"fx":[{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false}]}
+P33-2 每列顯示長度mm與F/X狀態(預設全F) ✓ {"n":4,"title":true,"lens":["400","300","400","300"],"fx":[{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false}]}
+P33-3 改長度後 outline 座標對應改變 ✓ {"w":500,"h":300}
+P33-4 切X後 fixity 對應改變 ✓ 0
+P33-5 切回F fixity 還原 ✓ 1
+P33-6 長度0被拒且世界不變 ✓ {"before":"[{\"loop\":-1,\"verts\":[[0,0],[500,0],[500,300],[0,300]],\"fixity\":[1,1,1,1],\"vertices\":[{\"index\":0,\"key\":null,\"uv\":[0,0]},{\"index\":1,\"key\":null,\"uv\":[500,0]},{\"index\":2,\"key\":null,\"uv\":[500,300]},{\"index\":3,\"key\":null,\"uv\":[0,300]}]}]","after":"[{\"loop\":-1,\"verts\":[[0,0],[500,0],[500,300],[0,300]],\"fixity\":[1,1,1,1],\"vertices\":[{\"index\":0,\"key\":null,\"uv\":[0,0]},{\"index\":1,\"key\":null,\"uv\":[500,0]},{\"index\":2,\"key\":null,\"uv\":[500,300]},{\"index\":3,\"key\":null,\"uv\":[0,300]}]}]"}
+P33-7 負長度被拒且世界不變 ✓ {"before":"[{\"loop\":-1,\"verts\":[[0,0],[500,0],[500,300],[0,300]],\"fixity\":[1,1,1,1],\"vertices\":[{\"index\":0,\"key\":null,\"uv\":[0,0]},{\"index\":1,\"key\":null,\"uv\":[500,0]},{\"index\":2,\"key\":null,\"uv\":[500,300]},{\"index\":3,\"key\":null,\"uv\":[0,300]}]}]","after":"[{\"loop\":-1,\"verts\":[[0,0],[500,0],[500,300],[0,300]],\"fixity\":[1,1,1,1],\"vertices\":[{\"index\":0,\"key\":null,\"uv\":[0,0]},{\"index\":1,\"key\":null,\"uv\":[500,0]},{\"index\":2,\"key\":null,\"uv\":[500,300]},{\"index\":3,\"key\":null,\"uv\":[0,300]}]}]"}
+P33-8 非數字長度被拒且世界不變 ✓ {"nanResult":false,"before":"[{\"loop\":-1,\"verts\":[[0,0],[500,0],[500,300],[0,300]],\"fixity\":[1,1,1,1],\"vertices\":[{\"index\":0,\"key\":null,\"uv\":[0,0]},{\"index\":1,\"key\":null,\"uv\":[500,0]},{\"index\":2,\"key\":null,\"uv\":[500,300]},{\"index\":3,\"key\":null,\"uv\":[0,300]}]}]","after":"[{\"loop\":-1,\"verts\":[[0,0],[500,0],[500,300],[0,300]],\"fixity\":[1,1,1,1],\"vertices\":[{\"index\":0,\"key\":null,\"uv\":[0,0]},{\"index\":1,\"key\":null,\"uv\":[500,0]},{\"index\":2,\"key\":null,\"uv\":[500,300]},{\"index\":3,\"key\":null,\"uv\":[0,300]}]}]"}
+P33-9 面內與主畫布清單對同一boundary顯示一致 ✓ {"feList":{"n":4,"lens":["500","300","500","300"],"fx":[{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false}]},"mainList2":{"n":4,"title":true,"lens":["500","300","500","300"],"fx":[{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false}]}}
+=== P34. P=建面卡→面內畫外環(GEO-186) ===
+P34-1 按 P 建面卡:面數+1、自動進入面內工作區、重畫外環就緒、新面被選取 ✓ {"faces":1,"id":1,"verts":[[0,0],[4000,0],[4000,3000],[0,3000]],"focus":{"t":"face","id":1},"tool":"redraw","sel":{"kind":"boundary","id":1},"st":"面 1 已建立預設矩形；逐點畫出外環，完成草稿後取代。Esc 返回會保留此面，Ctrl+Z 可復原建立。"}
+P34-1b 狀態列提示「逐點畫出外環」與 Esc 返回 ✓ "面 1 已建立預設矩形；逐點畫出外環，完成草稿後取代。Esc 返回會保留此面，Ctrl+Z 可復原建立。"
+P34-2 預設外環是 4000×3000 矩形佔位(進面內後被 redraw 整份取代) ✓ [[0,0],[4000,0],[4000,3000],[0,3000]]
+P34 測試所有落點都在可繪區內 ✓ ""
+P34-3 面內 redraw 以實際 mm 畫外環,點回起點閉合後世界 outline 更新 ✓ "[[100,100],[700,100],[700,400],[400,400],[400,700],[100,700]]"
+P34-4 Esc 回畫布:卡片可見、在視野內、維持選取 ✓ {"focus":null,"sel":{"kind":"boundary","id":1},"card":true,"inView":true}
+P34-5 槽位「＋放置」後按 P:新面帶入 pendingSlot、面內工作區直接開放置頁 ✓ {"armed34":{"focus":null,"drawTool":"rect","slot":{"space":1,"preset":"天花"}},"slotFlow":{"focus":{"t":"face","id":1},"bid":1,"tab":"prop"}}
+=== P35. 面內重畫外環逐點閉合(polydraft,diff#12 面內段) ===
+P35-1 面內按 e 後 fe.tool=redraw 且 #feDraftLayer 草稿層存在 ✓ {"tool":"redraw","layer":true}
+P35 切換外環工具保留使用者縮放 ✓ ""
+P35-2 吸附採樣點在可繪區內且無遮擋 ✓ {"x":273,"y":325}
+P35-2 點擊吸附到 B4 格距(zoom=1→25mm) ✓ {"fsnap2":[25,100],"gridStep2":25}
+P35-3 靠近既有頂點±8px 吸附該軸並畫參考線(對齊起點 x=100) ✓ {"guides":[{"axis":"x","value":100},{"axis":"y","value":400}],"cur":[100,400],"lines":2}
+P35-4 末點不同軸自動補直角(dump 頂點數=點擊數 3 + 1，且內容確實是新外環) ✓ [[100,100],[400,100],[400,400],[100,400]]
+P35-5a 面內與自身既有邊交叉時橡皮筋轉紅(CROSS) ✓ {"error":{"code":"CROSS","msg":"這段會與既有邊交叉"},"rubberError":true}
+P35-5b 交叉時點擊無效(頂點數不變)、世界不變 ✓ {"beforeCrossPts":4,"afterCrossPts":4,"worldUnchanged5":4}
+P35-6 Enter 閉合與點回起點閉合結果相同 ✓ {"closeFA":"[[100,100],[500,100],[500,400],[100,400]]","closeFB":"[[100,100],[500,100],[500,400],[100,400]]"}
+P35-7a 面內鍵入長度中 fe.lenBuf 非空 ✓ "42"
+P35-7b 第一次 Esc(第4級)只清鍵入長度，草稿與工作區不變 ✓ {"lenBuf":"","drag":true,"focus":true}
+P35-7c 第二次 Esc(第6級)清草稿並提示「再按」，仍在工作區 ✓ {"drag":false,"focus":true,"toast":"草稿已清除，原面保留；再按 Esc 返回"}
+P35-7d 第三次 Esc(第7級)離開工作區 ✓ false
+P35-8 閉合後面內右欄「外環邊 · 尺寸確認」清單列數=新邊數 ✓ {"n":4,"lens":["400","300","400","300"],"fx":[{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false},{"f":true,"x":false}]}
+=== P36. 對抗審查 finding 修正(面內段) ===
+P36-3b 面內鍵入會交叉的長度後 Enter,狀態列顯示警示文字、橡皮筋轉紅(面內沒有 .hint-context,狀態列+紅橡皮筋是對應的持久回饋;不再只有一次性 toast) ✓ {"statusText":"[X] 這段會與既有邊交叉","rubberError":true,"typed":"450","ptsLen":4}
+P36-3b2 面內清數字(Esc 第一階)後鍵入長度錯誤態消失(橡皮筋不再紅) ✓ {"rubberError":false,"typed":""}
+=== P37. 工作區狀態與手機操作回歸 ===
+P37 placement update refreshes header ✓ ""
+P37 placement undo refreshes form and header ✓ ""
+P37 placement redo refreshes form and header ✓ ""
+P37 inspector rebuild preserves unsubmitted placement draft and focus ✓ ""
+P37 pending multi-face refresh retains complete published cache ✓ {"same":true,"ids":["1","2"],"focus":2}
+P37 existing face edge remains interactive while boundary refresh waits ✓ ""
+P37 undo removes focused face and clears workspace ✓ {"focus":null,"edit":null,"hidden":true,"svg":0}
+P37 undo removes focused space and clears workspace ✓ {"focus":null,"edit":null,"hidden":true,"svg":0}
+P37 all visible topbar buttons fit and are reachable @390 ✓ [{"id":"mobileCreateObject","inside":true,"hit":true},{"id":"toggleLeft","inside":true,"hit":true},{"id":"btnUndo","inside":true,"hit":true},{"id":"btnRedo","inside":true,"hit":true},{"id":"btnCanvasView","inside":true,"hit":true},{"id":"btnObj","inside":true,"hit":true},{"id":"fileMenuBtn","inside":true,"hit":true},{"id":"projectInfoButton","inside":true,"hit":true},{"id":"","inside":true,"hit":true}]
+P37 search Escape closes drawer and restores toggle @390 ✓ ""
+P37 search Escape leaves background command panel open ✓ ""
+P37 all visible topbar buttons fit and are reachable @320 ✓ [{"id":"mobileCreateObject","inside":true,"hit":true},{"id":"toggleLeft","inside":true,"hit":true},{"id":"btnUndo","inside":true,"hit":true},{"id":"btnRedo","inside":true,"hit":true},{"id":"btnCanvasView","inside":true,"hit":true},{"id":"btnObj","inside":true,"hit":true},{"id":"fileMenuBtn","inside":true,"hit":true},{"id":"projectInfoButton","inside":true,"hit":true},{"id":"","inside":true,"hit":true}]
+P37 search Escape closes drawer and restores toggle @320 ✓ ""
+P37 drawer closes before opening #box6Dialog ✓ ""
+P37 drawer closes before opening #rcDialog ✓ ""
+P37 reference form opens native impact dialog ✓ ""
+P37 impact Escape cancels only dialog and retains face ✓ ""
+P37 impact Escape leaves model unchanged ✓ ""
+P30 no uncaught browser exceptions ✓ 0
+=== P38. 回報收件匣(GEO-183):F8 面板、Esc 不外洩、指出位置不觸發 app、送出寫檔、程式錯誤自動擷取 ===
+P38 黑盒子記下被拒的指令與錯誤 ✓ ""
+P38 回報鈕可見且不在頂列內 ✓ ""
+P38 F8 開面板且焦點在說明欄 ✓ ""
+P38 面板內 Esc 只關面板,不退出面工作區 ✓ ""
+P38 回報鈕開面板 ✓ ""
+P38 指出位置記下元素、且那一下沒有交給 app ✓ ""
+P38 Ctrl+Enter 送出後寫出一筆回報且面板關閉 ✓ ["F-20261006-001"]
+P38 回報帶分類、說明、指到的元素與畫面 ✓ {"id":"F-20261006-001","kind":"unexpected","status":"open","resolution":"","created":"2026-10-06 01:59:58","note":"P38 測試:這裡怪怪的","auto_reason":"","target":{"el":"button.fi-tab[data-fi-tab=\"components\"] < nav#faceInspectorTabs","text":"構件","rect":[1216,122,71,33]},"context":{"view":"面工作區 · 面 1(工具 select)","scene":"來源未確認的場景","viewport":"1382×900 @1x","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36","state":{"oc":{"on":true,"tool":"select","drawTool":null,"focus":{"t":"face","id":1},"stack":[],"sel":null,"zoom":1,"counts":{"faces":1,"spaces":0,"columns":0,"beams":0}},"fe":{"tool":"select","fiTab":"prop","draftPts":0,"lenBuf":""},"threeView":{"open":false,"tool":"view"},"pendingSlot":null,"dialogs":[],"bodyClass":"","activeElement":"textarea#fbNote"}},"t_mark":1791223198019,"version":{"commit":"unknown","dirty":false}}
+P38 回報帶被拒指令、世界與紅框畫面快照 ✓ ""
+P38 送出後面板欄位已清空 ✓ ""
+P38 規則拒絕(ok:false)不自動存 ✓ {"rejected":{"ok":false,"error":"line 93: 欄位數不對，用法：place 角材id on 承載面id at-line guide 線id｜grid 網id u|v 索引 或 at-face e索引｜h孔e邊｜t角材，可加 through 座標 或 between 擋面 擋面）"},"added":[]}
+[EXPECTED EXCEPTION] Error: fb-auto-probe
+    at eval (eval at <anonymous> (:1:142), <anonymous>:1:23)
+P38 未捕捉的 JS 例外自動存一筆 kind=auto ✓ ["F-20261006-002"]
+P38 預期的單次例外確實抵達 ✓ ""
+=== P39. 主畫布 Delete/Backspace 刪除選取的卡片 ===
+P39 Delete 刪除選取的面 ✓ ""
+P39 刪除後 toast 提示可復原 ✓ [{"text":"面 51 已刪除,可 Ctrl+Z 復原","classes":["toast","error"],"visible":true,"bounds":{"left":575.2890625,"top":189.3476104736328,"right":806.7109375,"bottom":227.2851104736328},"state":null}]
+P39 Ctrl+Z 復原被 Delete 刪掉的面 ✓ ""
+P39 Backspace 同樣刪除選取的面 ✓ ""
+P39 焦點在輸入框時 Backspace 不刪卡片 ✓ ""
+P39 矩形工具備妥時 Delete/Backspace 不刪卡片 ✓ ""
+P39 刪除被引用的面先跳影響預覽,不直接刪 ✓ ""
+P39 影響預覽 Esc 取消後世界不變 ✓ ""
+=== P40. 建面 UI/UX 審查修正(GEO-185 存活路徑;GEO-186 後) ===
+P40-1 一般模式格線 24 單位、無吸附格線類別 ✓ {"size":"24px","cls":false}
+P40-2 rect 浮標在 toast 出現時仍可見、toast 排在浮標下方 ✓ {"hintVis":true,"hintBottom":182,"toastTop":182.4146270751953,"toastText":"矩形：請拖出範圍"}
+P40-3 建面成功只跳一則 toast ✓ {"v":"+y","u":"+x","err":false,"toasts":1}
+P40-4 新面的放置表單預設 u=+x、v=+y,沒有「必須垂直」錯誤 ✓ {"v":"+y","u":"+x","err":false,"toasts":1}
+=== P41. 縮到很小後找回卡片(GEO-187) ===
+P41-1 縮到 2% 時格線間距不小於 8px(不再糊成灰色) ✓ ""
+P41-2 縮很小時「定位卡片」會放大回 100% 並把卡片放進畫面 ✓ {"w":260,"inside":true,"zoom":1}
+P41-3 點縮放比例回 100% 以畫面中心為準,中心的卡片不會飛出畫面 ✓ {"w":260,"inside":true,"zoom":1}
+=== P42. 面內底圖臨摹(GEO-190) ===
+P42-1 分頁 4 頁且順序正確(屬性/形狀/構件/底圖) ✓ ["prop","shape","components","underlay"]
+P42-1b 點「底圖」分頁顯示 #ulFile ✓ {"hidden":false,"hasFile":true}
+P42-2 #feUnderlay 存在、預設 mmPerPx=20(4000/200)、opacity 0.5 ✓ {"exists":true,"mmPerPx":20,"opacity":0.5}
+P42-3 校準套用:mmPerPx=10、x/y 不變、#ulScale 更新、#feUnderlayCalib 消失 ✓ {"applied":true,"mmPerPx":10,"xSame":true,"ySame":true,"scale":10,"calibGone":true}
+P42-4a #ulOpacity 改 0.8 → image opacity 0.8 ✓ 0.8
+P42-4b #ulLock 勾選 → image pointer-events none ✓ "none"
+P42-5 底圖分頁拖 100px → x 改變量換算 mm 後與 #ulX 一致(誤差 ≤1mm) ✓ {"beforeDrag":{"x":0},"afterDrag":{"x":100,"ulX":100},"dx5":100}
+P42-5b 切到「屬性」分頁後同樣拖曳 x 不變 ✓ {"beforeDrag2":100,"afterDrag2":100}
+P42-6 底圖存在時鍵盤重畫外環(3000→ 2000↓ Enter)仍成功 ✓ {"ok":true,"nverts":4,"tool":"select","hasUnderlay":true}
+P42-7 量比例尺進行中按 Esc → fe.ulCalib 為 null 且仍在工作區 ✓ {"startedCalib":true,"ul7":{"calib":null,"stillIn":true}}
+P42-8 離開面再進同一面底圖仍在;dump 不含底圖資訊 ✓ {"ul8":{"hasUnderlay":true,"imgExists":true},"dumpLen":78}
+P42-9 feUnderlayRemove 後底圖與調整欄位移除，保留匯入入口 ✓ {"imgGone":true,"othersLeft":0,"importKept":true}
+=== P43. 面內角材可選取(GEO-191) ===
+P43-1 畫布有 .face-timber[data-face-hit="t:10"] ✓ ""
+P43-2 點角材 → fe.sel=timber:10、矩形/左欄高亮、feActionBar 有編輯與刪除 ✓ {"sel":{"kind":"timber","id":10},"rectSel":true,"rowSel":true,"barHidden":false,"acts":["edit","delete"]}
+P43-3 點面內空白 → fe.sel.kind === "point" ✓ "point"
+P43-4 選角材後 Esc → fe.sel===null、矩形無 .sel、仍在工作區 ✓ {"sel":null,"rectSel":false,"stillIn":true}
+P43-5 hover 左欄列 → 矩形加 .hover;mouseleave → 沒有 ✓ {"hoverOn":true,"hoverOff":true}
+P43-6 點左欄列 → 選取(同畫布點選) ✓ {"sel":{"kind":"timber","id":10},"rectSel":true,"rowSel":true}
+P43-7a 角材頁 #tbSelected 顯示「角材 10」 ✓ "邊框材 · 角材 10長度 4000 mm · 外輪廓邊 0寬 A（沿面）厚 B（出面）延伸方向沿輪廓圖向右沿輪廓圖向左沿輪廓圖向下沿輪廓圖向上厚度朝朝上（+Z，+n）朝下（−Z，−n）角色主支邊框材副支自訂角色優先序定位引用— 需重選定位引用 —外輪廓邊 1外輪廓邊 2外輪廓邊 3角材 10 側面（須有唯一解）外輪廓邊 0(已有角材 10)詳細資料 · 精確定位與選段角材編號10角色代碼boundary定位：at-face e0 選段引用式（可留空）已帶入原定位引用與選段；只改尺寸可保留原定位。套用時會重新驗證。套用變更 刪除"
+P43-7a 刪 boundary 角材必須彈出 I8a 影響預覽對話框 ✓ true
+P43-7b 刪除後 fe.timbers 無 10、fe.sel===null ✓ {"hasTimber":false,"sel":null}
+P43-7c Ctrl+Z → 角材回來 ✓ true
+P43-7d Undo 後仍是面內版面，沒有主畫布底部樣式殘留 ✓ {"focus":{"t":"face","id":1},"composition":false,"topHeight":116,"viewportTop":116,"viewportHeight":752,"topBottom":116}
+P43-8 e 工具時點角材位置仍成功落點(角材不擋) ✓ {"len":1,"tool":"redraw","hit":{"point":{"x":661,"y":542.5},"hit":"<line x1=\"0\" y1=\"0\" x2=\"4000\" y2=\"0\" data-face-hit=\"e:0:0\" stroke=\"transparent\" stroke-width=\"66.4819944598338\"></line>","origin":{"x":260,"y":217},"previousOrigin":{"x":260,"y":116},"viewport":{"left":260,"top":217,"right":1062,"bottom":868},"timber":{"left":300,"top":540.063232421875,"right":1022,"bottom":544.936767578125},"timberMm":[0,0,4000,27],"bodyClass":"","focus":{"t":"face","id":1},"topbar":"116px"}}
+=== P44. 面內工作區的四種游標互動(GEO-192) ===
+[P44 pointer precondition] P44-1 drag start {"point":{"x":4260,"y":116},"expected":"v:0:1","actual":"v:0:1","element":"<circle cx=\"4000\" cy=\"0\" r=\"4.261363636363637\" data-face-hit=\"v:0:1\" class=\"face-vertex-handle\"></circle>","inViewport":true,"viewport":{"left":260,"top":116,"right":5080,"bottom":3768},"camera":{"zoom":1,"panX":0,"panY":0},"matrix":{"a":1,"b":0,"c":0,"d":1,"e":260,"f":116}}
+P44-1 不按 Alt 拖頂點:外環仍 4 頂點、尺寸變 3500×2500 ✓ {"n":4,"bb":[0,500,3500,3000],"hit":{"point":{"x":4260,"y":116},"expected":"v:0:1","actual":"v:0:1","element":"<circle cx=\"4000\" cy=\"0\" r=\"4.261363636363637\" data-face-hit=\"v:0:1\" class=\"face-vertex-handle\"></circle>","inViewport":true,"viewport":{"left":260,"top":116,"right":5080,"bottom":3768},"camera":{"zoom":1,"panX":0,"panY":0},"matrix":{"a":1,"b":0,"c":0,"d":1,"e":260,"f":116}}}
+P44-1u Ctrl+Z 復原回 4 頂點 ✓ 4
+[P44 pointer precondition] P44-2 drag start {"point":{"x":4260,"y":116},"expected":"v:0:1","actual":"v:0:1","element":"<circle cx=\"4000\" cy=\"0\" r=\"4.261363636363637\" data-face-hit=\"v:0:1\" class=\"face-vertex-handle\"></circle>","inViewport":true,"viewport":{"left":260,"top":116,"right":5080,"bottom":3768},"camera":{"zoom":1,"panX":0,"panY":0},"matrix":{"a":1,"b":0,"c":0,"d":1,"e":260,"f":116}}
+P44-2 Alt 拖頂點捏缺口:外環 6 頂點且形狀正確 ✓ {"verts":[[0,0],[3000,0],[3000,1000],[4000,1000],[4000,3000],[0,3000]],"feats":["corner"]}
+P44-2b fe.feats[1] 有一筆 type corner ✓ ["corner"]
+P44-2c 形狀頁列出這筆特徵 ✓ 1
+P44-2u Ctrl+Z 復原回 4 頂點 ✓ 4
+[P44 pointer precondition] P44-3 drag start {"point":{"x":4260,"y":116},"expected":"v:0:1","actual":"v:0:1","element":"<circle cx=\"4000\" cy=\"0\" r=\"4.261363636363637\" data-face-hit=\"v:0:1\" class=\"face-vertex-handle\"></circle>","inViewport":true,"viewport":{"left":260,"top":116,"right":5080,"bottom":3768},"camera":{"zoom":1,"panX":0,"panY":0},"matrix":{"a":1,"b":0,"c":0,"d":1,"e":260,"f":116}}
+P44-3 Alt 拖到一半按 Esc:外環不變、無 .fe-ghost、fe.drag 清空 ✓ {"before3":[[0,0],[4000,0],[4000,3000],[0,3000]],"after3":{"verts":[[0,0],[4000,0],[4000,3000],[0,3000]],"ghost":false,"drag":null}}
+[P44 pointer precondition] P44-4 edge selection {"point":{"x":4260,"y":1616},"expected":"e:0:1","actual":"e:0:1","element":"<line x1=\"4000\" y1=\"0\" x2=\"4000\" y2=\"3000\" data-face-hit=\"e:0:1\" stroke=\"transparent\" stroke-width=\"10.227272727272727\"></line>","inViewport":true,"viewport":{"left":260,"top":116,"right":5080,"bottom":3768},"camera":{"zoom":1,"panX":0,"panY":0},"matrix":{"a":1,"b":0,"c":0,"d":1,"e":260,"f":116}}
+P44-4a 拖預覽矩形「左」邊(depth 邊界)往左 200 → d 欄位 +200、其他欄位不變 ✓ {"before4":{"anchor":"center","dist":0,"w":600,"d":300},"after4":{"anchor":"center","dist":0,"w":600,"d":500}}
+P44-4b 套用後頂點數 8 ✓ 8
+P44-5a B 右鍵選邊：保留浮動列真命令並加入建立與檢視 ✓ {"sel":{"kind":"edge","loop":0,"i":1},"menuHidden":false,"barActs":["op:notch","op:extend","op:push","fixity","timber"],"menuActs":["op:notch","op:extend","op:push","timber","fixity","create","copy","paste","view","props"]}
+P44-5b B 凹口表單側接、選單保留 ✓ {"opType":"notch","menuHidden":false}
+P44-5c B Esc 兩下 → 面板與選單關，原邊選取保留 ✓ {"opPanelHidden":true,"menuHidden":true,"sel":{"kind":"edge","loop":0,"i":1}}
+P44-6a B 右鍵面外空白 → 檢視選單、fe.sel===null ✓ {"menuHidden":false,"sel":null}
+P44-6b 右鍵角材 → 選單保留「編輯」與「刪除」 ✓ ["edit","fit","delete","copy","paste","props"]
+P44-7a 雙擊右邊 → fe.op.type==="notch" 且面板可見 ✓ {"opType":"notch","panelHidden":false}
+P44-7b 雙擊右上角 → fe.op.type==="corner" ✓ "corner"
+P44-7c 雙擊面內空白 → fe.op.type==="hole" 且 fe.sel.kind==="point" ✓ {"opType":"hole","selKind":"point"}
+P44-7d 雙擊角材 → fe.fiTab==="timber" 且 fe.sel.kind==="timber" ✓ {"fiTab":"timber","selKind":"timber"}
+P44-8 雙擊後單擊面外空白 → 面板關、選取清 ✓ {"opPanelHidden":true,"barHidden":true,"sel":null}
+=== P45. 重畫外環閉合併點提示(GEO-193)===
+P45a 鍵盤 4000→1000↓1000← Enter → 外環4頂點4000×1000,狀態列含「(3000,1000)」與「併入直線」 ✓ {"verts":"0,0 4000,0 4000,1000 0,1000","status":"已閉合;補角時 (3000,1000) 併入直線——若要保留該轉折,Ctrl+Z 後把下一段畫完再閉合"}
+P45b 4000→3000↓ Enter(直接同軸補角無併點) → 外環4頂點4000×3000,狀態列不含「併入直線」 ✓ {"verts":"0,0 4000,0 4000,3000 0,3000","status":"工具：選取"}
+=== P46. 面內角材就地編輯(GEO-194) ===
+P46a #tbEditForm 出現且尺寸、方向及原定位引用皆正確帶入 ✓ {"exists":true,"A":"27","B":"33","dir":"+u","side":"+n","anchor":"at-face e0"}
+P46b 套用角材編輯必須彈出 I8a 影響預覽對話框 ✓ true
+P46b 套用 A=40/B=60/side=-n → fe.timbers 只有 id10、欄位如預期、fe.sel 仍是 timber 10 ✓ {"timbers":[10],"t10":{"id":10,"role":"boundary","definition":{"anchor":"at-face e0","selector":"","priority":1},"surface":1,"centerline":20,"length":4000,"u":0,"v":40,"dir":"+u","side":"-n","A":40,"B":60,"origin":[0,40,0],"axes":[[1,0,0],[0,-1,0],[0,0,-1]],"L":4000,"engineeringSources":[]},"sel":{"kind":"timber","id":10}}
+P46c Ctrl+Z 一次 → 回 A=27/B=33(mutate history 群組單步 undo) ✓ {"id":10,"role":"boundary","definition":{"anchor":"at-face e0","selector":"","priority":1},"surface":1,"centerline":13,"length":4000,"u":0,"v":0,"dir":"+u","side":"+n","A":27,"B":33,"origin":[0,0,0],"axes":[[1,0,0],[0,1,0],[0,0,1]],"L":4000,"engineeringSources":[]}
+P46d A=0 套用被擋、toast 出現、fe.timbers 不變 ✓ {"ok":false,"A":27,"toast":"角材截面 A/B 須為正整數 mm"}
+P46e 改定位引用必須彈出 I8a 影響預覽對話框 ✓ true
+P46e 明確改到對邊後回傳新定位並保持同一角材 ID ✓ {"id":10,"role":"boundary","definition":{"anchor":"at-face e2","selector":"","priority":1},"surface":1,"centerline":2986,"length":4000,"u":0,"v":3000,"dir":"+u","side":"-n","A":27,"B":60,"origin":[0,3000,0],"axes":[[1,0,0],[0,-1,0],[0,0,-1]],"L":4000,"engineeringSources":[]}
+=== P47. 面內「角材放置」表單 UX 止血(GEO-195) ===
+P47-1 #tbAnchor 預設值不是 e0/e2/guide 1,選項含已占用標記 ✓ {"value":"at-face e1","opts":["外輪廓邊 1","外輪廓邊 3","角材 1 側面（須有唯一解）","角材 2 側面（須有唯一解）","角材 3 側面（須有唯一解）","外輪廓邊 0(已有角材 1)","外輪廓邊 2(已有角材 2)","參考線 1 · 沿 v · u=500 mm(已有角材 3)"]}
+P47-2a 角材工具保留定位預示及即時定位與截面摘要 ✓ {"hi":1,"band":1,"hint":"目前定位：外輪廓邊 1 · 截面 27 × 33 mm點外輪廓邊、參考線或網格線可沿該線直接放置；點面內空白則沿目前定位放置。厚度朝向依右欄設定，點擊位置不作為尺寸輸入。知道了","status":"面 1 · 選取"}
+P47-2b 切回 select → 預示消失 ✓ {"hi":0,"band":0}
+P47-3a 方向 +u(垂直主支軸)→ primary disabled、boundary 可選 ✓ {"primary":true,"boundary":false,"secondary":false,"custom":false}
+P47-3b 方向 +v(平行主支軸)→ boundary/secondary disabled、primary 可選 ✓ {"primary":false,"boundary":true,"secondary":true,"custom":false}
+P47-4 e0 已被角材 1 占滿 → toast 含「已被角材 1 占滿」與「可用:」;仍 3 支;#tbAnchor invalid ✓ {"timbers":[1,2,3],"anchorInvalid":true,"toast":"外輪廓邊 0已被角材 1 占滿——請換定位引用(可用:外輪廓邊 1、外輪廓邊 3、角材 1 側面（須有唯一解）、角材 2 側面（須有唯一解）、角材 3 側面（須有唯一解）)\nline 187: R6/I5/I6 timber 4: 中線上沒有任何合法跨距"}
+P47-5 依預設值(自動挑到的空線)點面內 → 成功,fe.timbers 4 支 ✓ {"p47_5":[1,2,3,4],"p47_5line":{"constAxis":"u","value":4000},"p47_5runAxis":"v","p47_5role":"primary"}
+P47-5u Ctrl+Z → 回 3 支 ✓ [1,2,3]
+P47-6 強制 boundary + 方向 v(平行主支軸)→ toast 含「主支軸是 v」;仍 3 支 ✓ {"timbers":[1,2,3],"toast":"主支軸是 v(由既有 primary 推導)：沿主支軸放只能選主支；邊框材與副支要垂直於它\nline 196: V_PRIMARY_AXIS:角材 4（boundary）長度軸沿 v,與主支軸平行——boundary/secondary 必須垂直於主支軸"}
+=== P48. 角材工具下「點畫布上的線」直接放置(GEO-196) ===
+P48-1 真滑鼠點外輪廓邊 1 靠內側 → 4 支,新支 dir=+v/side=+n/role=primary,表單同步 ✓ {"ids":[1,2,3,4],"newT":{"id":4,"role":"primary","definition":{"anchor":"at-face e1","selector":"","priority":2},"surface":1,"centerline":3986,"length":2946,"u":4000,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[4000,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]],"L":2946,"engineeringSources":[]},"anchor":"at-face e1","role":"primary"}
+P48-1u Ctrl+Z → 回 3 支 ✓ [1,2,3]
+P48-2 點已占滿的外輪廓邊 0 → 照舊送出、引擎拒絕,toast 含「已被角材 1 占滿」;仍 3 支 ✓ {"ids":[1,2,3],"toast":"外輪廓邊 0已被角材 1 占滿——請換定位引用(可用:外輪廓邊 1、外輪廓邊 3、角材 1 側面（須有唯一解）、角材 2 側面（須有唯一解）、角材 3 側面（須有唯一解）)\nline 206: R6/I5/I6 timber 4: 中線上沒有任何合法跨距"}
+P48-3 點新參考線 → 4 支,新支 role=primary/side 依表單(+n),#tbAnchor 同步該參考線(G196-R02) ✓ {"p48_3":{"ids":[1,2,3,4],"newT":{"id":4,"role":"primary","definition":{"anchor":"at-line guide 2","selector":"","priority":2},"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]],"L":2946,"engineeringSources":[]},"anchor":"at-line guide 2","side":"+n"},"p48_3info":{"constAxis":"u","value":2000},"p48_3pt":{"x":1997,"y":1500}}
+P48-3u Ctrl+Z → 回 3 支 ✓ [1,2,3]
+P48-4 點面內空白 → 照舊走表單 e3，落在左外邊；共 4 支 ✓ {"ids":[1,2,3,4],"anchor":"at-face e3","centerline":13,"placeLine":""}
+P48-4u Ctrl+Z → 回 3 支 ✓ [1,2,3]
+P48-5a hover 邊 1(不點)→ .fe-anchor-hi 是 x=4000 的邊,fe.timberHoverAnchor=at-face e1 ✓ {"x1":"4000","x2":"4000","hoverAnchor":"at-face e1"}
+P48-5b 移開到面內空白 → hoverAnchor 清空,預示回到表單值(#tbAnchor=at-face e0,v=0) ✓ {"y1":"0","y2":"0","hoverAnchor":null,"side":"-n","hasHoverSide":false}
+P48-5c G196-R02:hover 過線不改 #tbSide(仍 -n)且 fe 無 timberHoverSide 殘留欄位 ✓ {"y1":"0","y2":"0","hoverAnchor":null,"side":"-n","hasHoverSide":false}
+P48-6a setup helper:不合法指令(不存在的 spec)→ 當步失敗、不繼續送後面的指令 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"guide 1 1 v spec:不存在","ok":false,"error":"line 220: 這個指令前面要先有 placement 或 surface","preview":false}]
+P48-6b F-HOLE setup 全部成功且無 preview ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1000,1000 2000,1000 2000,2000 1000,2000","ok":true,"error":null,"preview":false}]
+P48-6c 前置:孔存在(2 環)且 (1500,1000) elementFromPoint 命中孔邊 e:1:0 ✓ {"loops":2,"holeVerts":4,"hitAtPoint":"e:1:0","cx":1760,"cy":1116}
+P48-6d 點孔邊 → toast 說明快捷不支援並指路右欄、無 timber/place 指令送出、世界 dump 逐字不變、零角材 ✓ {"toast":"目前不支援直接點孔邊——請從右欄「定位引用」選孔邊(at-face h<i>e<j>)","sent":[],"bridgeTimbers":0}
+=== P49. 點線不暗改法線厚度方向(G196-R02 驗收) ===
+P49 setup(+n@1997) F-SUPPORT 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P49 side=+n 點u=1997 → place 帶 +n、cross u 1987..2014、長度 v 27..2973、Z 2500..2533 ✓ {"placeLine":"place 3 on 1 at-line guide 2  +v +n","g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]},"formSide":"+n"}
+P49 setup(+n@2003) F-SUPPORT 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P49 side=+n 點u=2003 → place 帶 +n、cross u 1987..2014、長度 v 27..2973、Z 2500..2533 ✓ {"placeLine":"place 3 on 1 at-line guide 2  +v +n","g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]},"formSide":"+n"}
+P49 setup(-n@1997) F-SUPPORT 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P49 side=-n 點u=1997 → place 帶 -n、cross u 1987..2014、長度 v 27..2973、Z 2467..2500 ✓ {"placeLine":"place 3 on 1 at-line guide 2  +v -n","g":{"surface":1,"centerline":2000,"length":2946,"u":1987,"v":27,"dir":"+v","side":"-n","A":27,"B":33,"origin":[1987,27,2500],"axes":[[0,1,0],[1,0,0],[0,0,-1]]},"formSide":"-n"}
+P49 setup(-n@2003) F-SUPPORT 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P49 side=-n 點u=2003 → place 帶 -n、cross u 1987..2014、長度 v 27..2973、Z 2467..2500 ✓ {"placeLine":"place 3 on 1 at-line guide 2  +v -n","g":{"surface":1,"centerline":2000,"length":2946,"u":1987,"v":27,"dir":"+v","side":"-n","A":27,"B":33,"origin":[1987,27,2500],"axes":[[0,1,0],[1,0,0],[0,0,-1]]},"formSide":"-n"}
+P49 wall setup(+n) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 3000 0 0 u +y v +z outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P49 wall side=+n 點線 → 厚度沿世界 X 3000..3033(非寫死 Z) ✓ {"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[3000,2014,27],"axes":[[0,0,1],[0,-1,0],[1,0,0]]},"formSide":"+n"}
+P49 wall setup(-n) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 3000 0 0 u +y v +z outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P49 wall side=-n 點線 → 厚度沿世界 X 2967..3000(非寫死 Z) ✓ {"g":{"surface":1,"centerline":2000,"length":2946,"u":1987,"v":27,"dir":"+v","side":"-n","A":27,"B":33,"origin":[3000,1987,27],"axes":[[0,0,1],[0,1,0],[-1,0,0]]},"formSide":"-n"}
+P49 e1 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P49 表單 -n 點外邊 e1 → place 行帶 -n(點擊側不覆寫) ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e1  +v -n"],"formSide":"-n"}
+P49 blank setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P49 空白點擊走表單:place 帶 at-face e3 -v -n,表單值不被重設 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e3  -v -n"],"formSide":"-n","formDir":"-v"}
+P49 hover 過線不送寫入指令、不改表單 side(仍 +n)、timberHoverAnchor 只記線 ✓ {"sent":[],"hover":"at-line guide 2","side":"+n"}
+=== P50. 吸附/格距/縮放不改變點線語意(G196-R03) ===
+P50 setup(snap=off@1997) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=off 點u=1997 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=off@2000) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=off 點u=2000 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=off@2003) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=off 點u=2003 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=10@1997) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=10 點u=1997 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=10@2000) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=10 點u=2000 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=10@2003) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=10 點u=2003 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=50@1997) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=50 點u=1997 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=50@2000) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=50 點u=2000 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=50@2003) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=50 點u=2003 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=100@1997) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=100 點u=1997 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=100@2000) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=100 點u=2000 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 setup(snap=100@2003) 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 snap=100 點u=2003 → 引用/dir/role/side 不變、cross 1987..2014 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P50 snap=50 點在線上(u=2000)+表單 -n → 仍送 -n(Z 2467..2500),不回 +n ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v -n"],"g":{"surface":1,"centerline":2000,"length":2946,"u":1987,"v":27,"dir":"+v","side":"-n","A":27,"B":33,"origin":[1987,27,2500],"axes":[[0,1,0],[1,0,0],[0,0,-1]]}}
+P50 off-grid guide setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2003","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P50 off-grid guide@2003,snap=50,點u=2000 → 命中引用仍 guide 2 ✓ ["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"]
+P50 off-grid guide@2003,snap=50,點u=2005 → 命中引用仍 guide 2 ✓ ["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"]
+P50 fit+zoom+pan(非100%)下點線 → 引用/dir/role/side 不變 ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"zoom":0.1805}
+P50 390px 窄視窗模擬:點線放置 smoke(非實體裝置驗收) ✓ {"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"vw":390}
+P50 失效引用前置:進面1+timber 工具+fe.guides 已清+命中層仍含 g:2:v+視窗已還原 ✓ {"pre":{"focus":1,"tool":"timber","guides":0,"hitNow":"g:2:v","iw":5400,"cx":2260,"cy":1616},"mres":"ok"}
+P50 真實點擊前仍命中失效參考線 g:2:v ✓ {"tag":"line","id":null,"inFevp":true,"hit":"g:2:v"}
+P50 命中線引用失效 → 報錯、不送指令、不退回表單引用 ✓ {"sent":[],"toastCalls":["這條線的定位引用已失效——請重新選擇"],"feDownCalls":[{"hit":"g:2:v","tool":"timber","busy":false,"guides":0}],"downs":[{"btn":0,"busy":false,"tool":"timber","ulCalib":false,"tag":"line","id":null,"overlay":false,"hitEl":"g:2:v"}],"docDowns":[{"ev":"pointerup","tag":"HEADER","id":null,"inFevp":false,"x":5,"y":5},{"ev":"pointerdown","tag":"line","id":null,"inFevp":true,"x":2260,"y":1616},{"ev":"pointerup","tag":"SECTION","id":"faceEditorViewport","inFevp":true,"x":2260,"y":1616}],"n":2,"toast":"這條線的定位引用已失效——請重新選擇","atClick":{"tag":"line","id":null,"inFevp":true,"hit":"g:2:v"},"disp":{"pd":{},"pu":{}},"instOk":"installed"}
+=== P51. D17 主支軸推導與自動角色(G196-R04) ===
+P51-1 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P51-1a F-SUPPORT 無 primary、兩支 boundary 沿 u → 主支軸推導 v(src=boundary) ✓ {"axis":"v","conflict":false,"src":"boundary"}
+P51-1b 點 e1 → 自動角色 primary、核心接受、cross u 3973..4000、長度 v 27..2973 ✓ {"sent":["dump","newid","history-begin","timber 3 27 33 role primary","place 3 on 1 at-face e1  +v +n","history-end","obstacles 1","references","dump","dump","references"],"g":{"surface":1,"centerline":3986,"length":2946,"u":4000,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[4000,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P51-2 setup 全過(垂直 boundary 於 e1/e3) ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e1 +v +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e3 +v +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 u spec:測試中線","ok":true,"error":null,"preview":false}]
+P51-2a boundary 沿 v → 主支軸推導 u ✓ {"axis":"u","conflict":false,"src":"boundary"}
+P51-2b 點 e0(平行主支軸 u)→ 角色 primary、核心接受、跨 u 27..3973(長度 3946) ✓ {"sent":["dump","newid","history-begin","timber 3 27 33 role primary","place 3 on 1 at-face e0  +u +n","history-end","obstacles 1","references","dump","references"],"g":{"surface":1,"centerline":13,"length":3946,"u":27,"v":0,"dir":"+u","side":"+n","A":27,"B":33,"origin":[27,0,2500],"axes":[[1,0,0],[0,1,0],[0,0,1]]}}
+P51-3a 空面 → 主支軸未定義(非矛盾) ✓ {"axis":null,"conflict":false,"src":"none"}
+P51-3b 只有 custom → 主支軸仍未定義(D15:custom 不定義軸) ✓ {"axis":null,"conflict":false,"src":"none"}
+P51-3c 空面 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P51-3d 空面點參考線 → 首支規則角色 primary ✓ ["dump","newid","history-begin","timber 1 27 33 role primary","place 1 on 1 at-line guide 2  +v +n","history-abort","dump"]
+P51-4 推導矛盾 → conflict 標記、feTimberRoleForClick 不自選(回 null) ✓ {"info":{"axis":"u","conflict":true,"src":"primary"},"role":null}
+P51-5 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P51-5 方向平行主支軸 v → boundary/secondary 停用、primary 與 custom 可選(D15) ✓ {"primary":false,"boundary":true,"secondary":true,"custom":false}
+=== P52. 預示帶橫向幾何符合 at-line/at-face 語意(G196-R05) ===
+P52 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000","ok":true,"error":null,"preview":false},{"line":"timber 1 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 1 on 1 at-face e0 +u +n","ok":true,"error":null,"preview":false},{"line":"timber 2 27 33 role boundary","ok":true,"error":null,"preview":false},{"line":"place 2 on 1 at-face e2 +u +n","ok":true,"error":null,"preview":false},{"line":"spec 測試中線 2000","ok":true,"error":null,"preview":false},{"line":"guide 2 1 v spec:測試中線","ok":true,"error":null,"preview":false}]
+P52-1 at-line 置中:A27 → u 1987..2014,A28 → 1986..2014 ✓ {"c27":{"constAxis":"u","lo":1987,"hi":2014},"c28":{"constAxis":"u","lo":1986,"hi":2014}}
+P52-2 at-face 貼材料側:e1 3973..4000、e3 0..27、e0 v0..27、e2 v2973..3000 ✓ {"cE1":{"constAxis":"u","lo":3973,"hi":4000},"cE3":{"constAxis":"u","lo":0,"hi":27},"cE0":{"constAxis":"v","lo":0,"hi":27},"cE2":{"constAxis":"v","lo":2973,"hi":3000}}
+P52-3 V(長度軸v) at-line guide 2 A27 +v+n ✓ {"band":{"x":1987,"y":-80,"w":27,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1987,2014],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"rng":[[1987,2014],[27,2973],[2500,2533]],"expLen":[27,2973],"expZ":[2500,2533]}
+P52-3 V(長度軸v) at-line guide 2 A27 +v-n ✓ {"band":{"x":1987,"y":-80,"w":27,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1987,2014],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +v -n"],"rng":[[1987,2014],[27,2973],[2467,2500]],"expLen":[27,2973],"expZ":[2467,2500]}
+P52-3 V(長度軸v) at-line guide 2 A27 -v+n ✓ {"band":{"x":1987,"y":-80,"w":27,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1987,2014],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  -v +n"],"rng":[[1987,2014],[27,2973],[2500,2533]],"expLen":[27,2973],"expZ":[2500,2533]}
+P52-3 V(長度軸v) at-line guide 2 A27 -v-n ✓ {"band":{"x":1987,"y":-80,"w":27,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1987,2014],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  -v -n"],"rng":[[1987,2014],[27,2973],[2467,2500]],"expLen":[27,2973],"expZ":[2467,2500]}
+P52-3 V(長度軸v) at-line guide 2 A28 +v+n ✓ {"band":{"x":1986,"y":-80,"w":28,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1986,2014],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-line guide 2  +v +n"],"rng":[[1986,2014],[27,2973],[2500,2533]],"expLen":[27,2973],"expZ":[2500,2533]}
+P52-3 V(長度軸v) at-line guide 2 A28 +v-n ✓ {"band":{"x":1986,"y":-80,"w":28,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1986,2014],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-line guide 2  +v -n"],"rng":[[1986,2014],[27,2973],[2467,2500]],"expLen":[27,2973],"expZ":[2467,2500]}
+P52-3 V(長度軸v) at-line guide 2 A28 -v+n ✓ {"band":{"x":1986,"y":-80,"w":28,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1986,2014],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-line guide 2  -v +n"],"rng":[[1986,2014],[27,2973],[2500,2533]],"expLen":[27,2973],"expZ":[2500,2533]}
+P52-3 V(長度軸v) at-line guide 2 A28 -v-n ✓ {"band":{"x":1986,"y":-80,"w":28,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1986,2014],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-line guide 2  -v -n"],"rng":[[1986,2014],[27,2973],[2467,2500]],"expLen":[27,2973],"expZ":[2467,2500]}
+P52-3 V(長度軸v) at-face e1 A27 +v+n ✓ {"band":{"x":3973,"y":-80,"w":27,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[3973,4000],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e1  +v +n"],"rng":[[3973,4000],[27,2973],[2500,2533]],"expLen":[27,2973],"expZ":[2500,2533]}
+P52-3 V(長度軸v) at-face e1 A27 +v-n ✓ {"band":{"x":3973,"y":-80,"w":27,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[3973,4000],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e1  +v -n"],"rng":[[3973,4000],[27,2973],[2467,2500]],"expLen":[27,2973],"expZ":[2467,2500]}
+P52-3 V(長度軸v) at-face e1 A27 -v+n ✓ {"band":{"x":3973,"y":-80,"w":27,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[3973,4000],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e1  -v +n"],"rng":[[3973,4000],[27,2973],[2500,2533]],"expLen":[27,2973],"expZ":[2500,2533]}
+P52-3 V(長度軸v) at-face e1 A27 -v-n ✓ {"band":{"x":3973,"y":-80,"w":27,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[3973,4000],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e1  -v -n"],"rng":[[3973,4000],[27,2973],[2467,2500]],"expLen":[27,2973],"expZ":[2467,2500]}
+P52-3 V(長度軸v) at-face e1 A28 +v+n ✓ {"band":{"x":3972,"y":-80,"w":28,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[3972,4000],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-face e1  +v +n"],"rng":[[3972,4000],[27,2973],[2500,2533]],"expLen":[27,2973],"expZ":[2500,2533]}
+P52-3 V(長度軸v) at-face e1 A28 +v-n ✓ {"band":{"x":3972,"y":-80,"w":28,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[3972,4000],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-face e1  +v -n"],"rng":[[3972,4000],[27,2973],[2467,2500]],"expLen":[27,2973],"expZ":[2467,2500]}
+P52-3 V(長度軸v) at-face e1 A28 -v+n ✓ {"band":{"x":3972,"y":-80,"w":28,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[3972,4000],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-face e1  -v +n"],"rng":[[3972,4000],[27,2973],[2500,2533]],"expLen":[27,2973],"expZ":[2500,2533]}
+P52-3 V(長度軸v) at-face e1 A28 -v-n ✓ {"band":{"x":3972,"y":-80,"w":28,"h":3160,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[3972,4000],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-face e1  -v -n"],"rng":[[3972,4000],[27,2973],[2467,2500]],"expLen":[27,2973],"expZ":[2467,2500]}
+P52-3 H(長度軸u) at-line guide 2 A27 +u+n ✓ {"band":{"x":-80,"y":1987,"w":4160,"h":27,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1987,2014],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +u +n"],"rng":[[27,3973],[1987,2014],[2500,2533]],"expLen":[27,3973],"expZ":[2500,2533]}
+P52-3 H(長度軸u) at-line guide 2 A27 +u-n ✓ {"band":{"x":-80,"y":1987,"w":4160,"h":27,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1987,2014],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  +u -n"],"rng":[[27,3973],[1987,2014],[2467,2500]],"expLen":[27,3973],"expZ":[2467,2500]}
+P52-3 H(長度軸u) at-line guide 2 A27 -u+n ✓ {"band":{"x":-80,"y":1987,"w":4160,"h":27,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1987,2014],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  -u +n"],"rng":[[27,3973],[1987,2014],[2500,2533]],"expLen":[27,3973],"expZ":[2500,2533]}
+P52-3 H(長度軸u) at-line guide 2 A27 -u-n ✓ {"band":{"x":-80,"y":1987,"w":4160,"h":27,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1987,2014],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-line guide 2  -u -n"],"rng":[[27,3973],[1987,2014],[2467,2500]],"expLen":[27,3973],"expZ":[2467,2500]}
+P52-3 H(長度軸u) at-line guide 2 A28 +u+n ✓ {"band":{"x":-80,"y":1986,"w":4160,"h":28,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1986,2014],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-line guide 2  +u +n"],"rng":[[27,3973],[1986,2014],[2500,2533]],"expLen":[27,3973],"expZ":[2500,2533]}
+P52-3 H(長度軸u) at-line guide 2 A28 +u-n ✓ {"band":{"x":-80,"y":1986,"w":4160,"h":28,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1986,2014],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-line guide 2  +u -n"],"rng":[[27,3973],[1986,2014],[2467,2500]],"expLen":[27,3973],"expZ":[2467,2500]}
+P52-3 H(長度軸u) at-line guide 2 A28 -u+n ✓ {"band":{"x":-80,"y":1986,"w":4160,"h":28,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1986,2014],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-line guide 2  -u +n"],"rng":[[27,3973],[1986,2014],[2500,2533]],"expLen":[27,3973],"expZ":[2500,2533]}
+P52-3 H(長度軸u) at-line guide 2 A28 -u-n ✓ {"band":{"x":-80,"y":1986,"w":4160,"h":28,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[1986,2014],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-line guide 2  -u -n"],"rng":[[27,3973],[1986,2014],[2467,2500]],"expLen":[27,3973],"expZ":[2467,2500]}
+P52-3 H(長度軸u) at-face e2 A27 +u+n ✓ {"band":{"x":-80,"y":2973,"w":4160,"h":27,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[2973,3000],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e2  +u +n"],"rng":[[27,3973],[2973,3000],[2500,2533]],"expLen":[27,3973],"expZ":[2500,2533]}
+P52-3 H(長度軸u) at-face e2 A27 +u-n ✓ {"band":{"x":-80,"y":2973,"w":4160,"h":27,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[2973,3000],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e2  +u -n"],"rng":[[27,3973],[2973,3000],[2467,2500]],"expLen":[27,3973],"expZ":[2467,2500]}
+P52-3 H(長度軸u) at-face e2 A27 -u+n ✓ {"band":{"x":-80,"y":2973,"w":4160,"h":27,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[2973,3000],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e2  -u +n"],"rng":[[27,3973],[2973,3000],[2500,2533]],"expLen":[27,3973],"expZ":[2500,2533]}
+P52-3 H(長度軸u) at-face e2 A27 -u-n ✓ {"band":{"x":-80,"y":2973,"w":4160,"h":27,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[2973,3000],"sent":["line timber 3 27 33 role primary","line place 3 on 1 at-face e2  -u -n"],"rng":[[27,3973],[2973,3000],[2467,2500]],"expLen":[27,3973],"expZ":[2467,2500]}
+P52-3 H(長度軸u) at-face e2 A28 +u+n ✓ {"band":{"x":-80,"y":2972,"w":4160,"h":28,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[2972,3000],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-face e2  +u +n"],"rng":[[27,3973],[2972,3000],[2500,2533]],"expLen":[27,3973],"expZ":[2500,2533]}
+P52-3 H(長度軸u) at-face e2 A28 +u-n ✓ {"band":{"x":-80,"y":2972,"w":4160,"h":28,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[2972,3000],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-face e2  +u -n"],"rng":[[27,3973],[2972,3000],[2467,2500]],"expLen":[27,3973],"expZ":[2467,2500]}
+P52-3 H(長度軸u) at-face e2 A28 -u+n ✓ {"band":{"x":-80,"y":2972,"w":4160,"h":28,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[2972,3000],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-face e2  -u +n"],"rng":[[27,3973],[2972,3000],[2500,2533]],"expLen":[27,3973],"expZ":[2500,2533]}
+P52-3 H(長度軸u) at-face e2 A28 -u-n ✓ {"band":{"x":-80,"y":2972,"w":4160,"h":28,"clip":"url(#face-material-clip)","label":"橫向定位示意","hoverNull":true},"expCross":[2972,3000],"sent":["line timber 3 28 33 role primary","line place 3 on 1 at-face e2  -u -n"],"rng":[[27,3973],[2972,3000],[2467,2500]],"expLen":[27,3973],"expZ":[2467,2500]}
+P52-4 DOM 帶畫 u 1987..2014 且套材料區裁切 ✓ {"x":1987,"w":27,"clip":"url(#face-material-clip)"}
+P52-5 真實放置的 cross 足跡(核心) = 預示帶範圍 1987..2014 ✓ {"g":{"surface":1,"centerline":2000,"length":2946,"u":2014,"v":27,"dir":"+v","side":"+n","A":27,"B":33,"origin":[2014,27,2500],"axes":[[0,1,0],[-1,0,0],[0,0,1]]}}
+P52 L形 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,1500 2500,1500 2500,3000 0,3000","ok":true,"error":null,"preview":false}]
+P52-6 L 形凹邊(u=2500,v 1500..3000)→ 材料側較小 u,帶 2473..2500 ✓ {"constAxis":"u","lo":2473,"hi":2500}
+P52 L形反環 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 0,3000 2500,3000 2500,1500 4000,1500 4000,0","ok":true,"error":null,"preview":false}]
+P52-7 L 形反環走向 → 同一凹邊材料側仍為較小 u,帶 2473..2500 ✓ {"constAxis":"u","lo":2473,"hi":2500}
+P52 孔場景 setup 全過 ✓ [{"line":"reset","ok":true,"error":null,"preview":false},{"line":"surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000 hole 1000,1000 2000,1000 2000,2000 1000,2000","ok":true,"error":null,"preview":false}]
+P52-8 孔頂邊 v=1000 → 材料側在孔外(v<1000),帶 v 973..1000 ✓ {"constAxis":"v","lo":973,"hi":1000}
+=== P53. 連線錯誤、重新載入與重試 ===
+P53 setup isolated connection fixture
+P53 reload with expected test-project leave protection
+P53 wait for injected connection error
+[TEST PAGE LEAVE] === P53. 連線錯誤、重新載入與重試 === 
+P53-1 初始 403 明示錯誤、未知數量、停用編輯 ✓ {"message":"此網址未獲服務允許（403）。請使用啟動服務時顯示的本機網址。 尚未取得場景，無法確認物件數量。","empty":true,"count":"—","inert":true}
+P53-2 失敗時快捷鍵不送建立指令 ✓ ""
+P53-3 重試只讀取，不重送修改 ✓ {"commands":["dump","dump","dump","objects","surfaces","boundary 1","surfaces"],"count":"1","hidden":true}
+P53-4 重試前後世界逐字相同 ✓ ""
+P53-5 部分讀取失敗保留整份舊快取 ✓ ""
+P53-6 malformed 留在可重試錯誤狀態 ✓ ""
+P53-6 network 留在可重試錯誤狀態 ✓ ""
+P53-6 bridge 留在可重試錯誤狀態 ✓ ""
+P54-1 開始就說明預設矩形、草稿與返回保留 ✓ ""
+P54-2 草稿操作列不遮蓋畫布 ✓ ""
+P54-3 畫草稿未改已建立面 ✓ ""
+P54-4 放棄只清草稿，按鈕不被算成落點 ✓ ""
+P54-5 完成後才更新外環、收起草稿列 ✓ ""
+P54-6 未落點就返回，已建立的面仍保留 ✓ ""
+P55-1 游離面不啟動放材、不顯示預示，提供直接入口 ✓ ""
+P55-2 一鍵到放置表單並聚焦 ✓ ""
+P56-1 新放置面預填外邊 boundary，與點線相同 ✓ ""
+P56-2 沿用預填設定點面內成功放第一支邊界材 ✓ ""
+P56-3 換定位邊同步建議方向與角色 ✓ ""
+P56-4 手選 custom 與截面深度在換邊、重繪後保留 ✓ ""
+P56-5 套用建議只改方向角色 ✓ ""
+P56-6 不合法手選仍交核心拒絕，不當作断線 ✗ ""
+FATAL: GEO-197 wait failed: fe.timbers.length===1
+FATAL_NETWORK: {"failures":[],"pendingAssets":[]}
+FATAL_UI: {"ready":"complete","focus":{"t":"face","id":1},"connection":{"phase":"ready","error":"橋接器連線中斷，請重新啟動服務"},"events":[{"k":"click","el":"svg#faceEditorSvg","text":"外輪廓第 1 邊 · 4000 mm4000外輪廓第 2 邊 · 3000 mm","x":670,"y":516,"t":1791223705725},{"k":"api","cmd":"newid","ok":true,"ms":400,"t":1791223705932},{"k":"click","el":"line[data-face-hit=\"e:0:0\"] < g#faceEditorRoot","text":"","x":670,"y":238.5,"t":1791223705972},{"k":"api","cmd":"newid","ok":true,"ms":486,"t":1791223706211},{"k":"api","cmd":"line history-begin","ok":true,"ms":584,"t":1791223706516},{"k":"api","cmd":"line timber 1 31 33 role primary","ok":true,"ms":379,"t":1791223706895},{"k":"api","cmd":"line place 1 on 1 at-face e0  +u -n","ok":false,"error":"line 999: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC","ms":942,"t":1791223707839},{"k":"api","cmd":"line history-abort","ok":true,"ms":1082,"t":1791223708933},{"k":"toast","type":"error","msg":"貼外輪廓邊的角材要選「邊框材」\nline 999: V_CUT_PRIORITY：角材 1 端面頂到外輪廓邊（RC）——那條邊還沒鋪邊界材；只有 boundary 可頂 RC","t":1791223708939},{"k":"api","cmd":"dump","ok":true,"ms":61,"t":1791223709386}],"dialogs":[],"active":"tbRole","feedback":true,"status":"面 1 · 選取"}
+CDP_RESULT {"schema":"geometry-cdp-result/1","scope":{"mode":"partial","filters":["GEOMETRY_CDP_FROM_P31"],"modifiers":[],"url":"http://127.0.0.1:8861/","feedbackDirectory":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geo123c\\fb","browserProfile":"C:\\Users\\Yang\\AppData\\Local\\Temp\\geo123c\\cdp-base-profile","cdpPort":9361,"browserPid":37708},"completed":false,"passedAssertions":322,"failedAssertions":1,"fatal":"GEO-197 wait failed: fe.timbers.length===1","skipped":[],"sections":{"(before first section)":7,"P32":34,"P33":9,"P34":7,"P35":14,"P36":2,"P37":19,"P38":13,"P39":8,"P40":4,"P41":3,"P42":12,"P43":12,"P44":19,"P45":2,"P46":7,"P47":9,"P48":14,"P49":17,"P50":33,"P51":13,"P52":43,"P53":21},"sectionsFailed":{"P53":1},"currentSection":"P53","goldenCompare":"not compared (run did not complete)"}
+EXIT=1 SECONDS=620
