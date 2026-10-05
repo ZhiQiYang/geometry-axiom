@@ -127,3 +127,69 @@ test('explicit retain passes original token and held host write rejects a change
     assert.equal(await pending,false);assert.equal(written,0);assert.notEqual(captured.contextToken,h.context.contextToken);
   }finally{h.controller.teardown();}
 });
+
+test('held initialization can be closed/context-retired before controller exists; precise late session closes',async()=>{
+  for(const reason of ['close','project','generation','undo','reopen']){
+    const probe=await host();const original=clone(probe.context);probe.controller.teardown();
+    const transport=httpPort(new URL('/rule-cases/workbench',url).href),closed=[];
+    const originalClose=transport.close;transport.close=async id=>{closed.push(id);return originalClose(id);};
+    const gate=hold(transport,'open');let current=clone(original),notify,unsubscribed=false;
+    const pending=createController({transport,captureContext:()=>clone(current),subscribeContext:fn=>{notify=fn;return()=>{unsubscribed=true;};}});
+    const opened=await gate.reached;
+    if(reason==='close')pending.teardown();else{
+      if(reason==='project')current.projectId='B';else if(reason==='generation')current.generation++;
+      else current.contextToken=reason+'-new-token';notify();
+    }
+    // The scope may even return to equal data; the retired operation stays dead.
+    current=clone(original);gate.release();await assert.rejects(pending,/退休/);
+    assert.deepEqual(closed,[opened.sessionId]);assert.equal(unsubscribed,true);
+    await assert.rejects(transport.validate(opened.sessionId,opened.definitions[0]),error=>error.code==='RETIRED');
+  }
+});
+test('load-data await is part of initialization and cannot outlive context retirement',async()=>{
+  const probe=await host();let current=clone(probe.context);probe.controller.teardown();
+  const entered=deferred(),release=deferred();let notify;
+  const pending=createController({transport:httpPort(new URL('/rule-cases/workbench',url).href),
+    captureContext:()=>current,subscribeContext:fn=>{notify=fn;return()=>{};},
+    loadCaseData:async()=>{entered.resolve();await release.promise;return null;}});
+  await entered.promise;notify();release.resolve();await assert.rejects(pending,/退休/);
+});
+test('an old A open cannot adopt server scope B even when response matches the new host scope',async()=>{
+  const probe=await host(), scopeB=clone(probe.context);probe.controller.teardown();
+  const release=deferred(),entered=deferred();let current={projectId:'original-A',generation:2,contextToken:'A-token'};
+  const transport=httpPort(new URL('/rule-cases/workbench',url).href), originalOpen=transport.open,closed=[];
+  const originalClose=transport.close;transport.close=async id=>{closed.push(id);return originalClose(id);};
+  transport.open=async()=>{entered.resolve();await release.promise;return originalOpen();};
+  const pending=createController({transport,captureContext:()=>current});
+  await entered.promise;current=scopeB;release.resolve();await assert.rejects(pending,/退休/);
+  assert.equal(closed.length,1); // Closes the precise real B session created by the late request.
+});
+test('held reset/import excludes retain and keeps exact old data until atomic adoption',async()=>{
+  for(const action of ['reset','restore']){
+    const h=await host();try{
+      await h.controller.run();await h.controller.edit({label:'edited definition'});
+      const before=h.controller.data(),gate=hold(h.transport,action==='reset'?'validate':'importData');
+      const next=clone(before);next.definitions[0].label='restored complete definition';
+      const pending=action==='reset'?h.controller.reset():h.controller.restore(next);
+      await gate.reached;
+      assert.equal(await h.controller.retain(),false);assert.equal(await h.controller.run(),false);
+      assert.deepEqual(h.controller.data(),before);assert.equal(h.writes.length,0);
+      gate.release();assert.equal(await pending,true);assert.equal(h.writes.length,0);
+      assert.equal(await h.controller.retain(),true);assert.deepEqual(h.writes[0].payload,h.controller.data());
+    }finally{h.controller.teardown();}
+  }
+});
+test('held retain serializes all replacements; cancelled host commit lease cannot write',async()=>{
+  const h=await host();try{
+    await h.controller.run();const before=h.controller.data(),entered=deferred(),release=deferred();let writes=0;
+    h.ports.retainCaseData=async(payload,original,lease)=>{entered.resolve();await release.promise;
+      if(!lease.isCurrent())return {ok:false};writes++;return {ok:true};};
+    const pending=h.controller.retain();await entered.promise;
+    assert.equal(await h.controller.reset(),false);assert.equal(await h.controller.restore(before),false);
+    assert.equal(await h.controller.edit({label:'not authorized overlapping edit'}),false);
+    h.controller.select('legal-rule');assert.equal(h.controller.snapshot().selected,before.definitions[0].caseId);
+    h.controller.cancel();release.resolve();assert.equal(await pending,false);assert.equal(writes,0);
+    assert.deepEqual(h.controller.data(),before);assert.equal(h.controller.snapshot().editing,false);
+    assert.equal(await h.controller.reset(),true);
+  }finally{h.controller.teardown();}
+});

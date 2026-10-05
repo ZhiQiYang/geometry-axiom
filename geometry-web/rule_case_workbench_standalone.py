@@ -20,7 +20,7 @@ PAGE = '''<!doctype html><html lang="zh-Hant"><meta charset="utf-8">
 <link rel="stylesheet" href="/rule-case-workbench.css">
 <style>body{margin:0;background:#111724;color:#e8edf5;font:15px system-ui}body>p,body>div{max-width:1200px;margin:16px auto;padding:0 16px}body>div>button{font:inherit;padding:10px;min-height:44px;margin:4px}</style>
 <p>獨立元件接線驗證；保留資料只在本頁記憶體，尚未接入正式專案 ZIP。</p>
-<div><button id="reopen">重新開啟案例</button><button id="restore">載回本頁保留資料</button><span id="retained">metadata history: 0</span></div>
+<div><button id="reopen">重新開啟案例</button><button id="cancelopen">取消開啟</button><button id="restore">載回本頁保留資料</button><span id="retained">metadata history: 0</span></div>
 <main id="workbench"></main><script src="/rule-case-workbench.js"></script>
 <script>
 'use strict';
@@ -40,6 +40,7 @@ async function open(){const sequence=++openingSequence;pending?.teardown();compo
   try{const result=await operation;if(sequence===openingSequence)component=result;else result.teardown();}
   catch(error){if(sequence===openingSequence)showError(error);}}
 document.getElementById('reopen').onclick=()=>open().catch(showError);
+document.getElementById('cancelopen').onclick=()=>{++openingSequence;pending?.teardown();component?.teardown();document.getElementById('workbench').replaceChildren();};
 document.getElementById('restore').onclick=()=>{if(saved&&component)component.restore(saved).catch(showError);};
 function showError(error){document.getElementById('workbench').textContent=error.message;}
 open().catch(showError);

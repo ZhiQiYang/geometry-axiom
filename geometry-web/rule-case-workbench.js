@@ -92,7 +92,8 @@
     }
     function beginMutation(message) {
       if (!live || mutation !== null) return null;
-      cancel(message); mutation = epoch; state.editing = true; state.error = null; emit(); return mutation;
+      mutation = epoch + 1; // Reserve before cancel emits to any host subscribers.
+      cancel(message); state.editing = true; state.error = null; emit(); return mutation;
     }
     function endMutation(ticket) {
       if (mutation === ticket) mutation = null;
@@ -267,6 +268,7 @@
     const initialization = createController(ports);
     const operation = {retired:false, controller:null, teardown() {
       operation.retired = true; initialization.teardown(); operation.controller?.teardown();
+      if (mounts.get(root) === operation) mounts.delete(root);
     }};
     mounts.set(root, operation);
     const pending = renderMount(root, ports, initialization, operation);
@@ -313,7 +315,7 @@
           controller.select(definition.caseId);
           root.querySelector('[data-rcw="selected-title"]')?.focus();
         }, {'data-case-id':definition.caseId,'aria-current':String(definition.caseId === state.selected)});
-        el.disabled = !state.live; list.append(el);
+        el.disabled = !state.live || state.editing; list.append(el);
       }
       if (!selected) return;
       const title = node('h3', selected.label, {tabindex:'-1','data-rcw':'selected-title'});
@@ -324,7 +326,7 @@
       const form = node('form', null, {'data-rcw':'edit'});
       function field(text, name, value) {
         const label = node('label', text), input = node('input', null, {name, value, maxlength:'96'});
-        input.disabled = !state.live; label.append(input); form.append(label); return input;
+        input.disabled = !state.live || state.editing; label.append(input); form.append(label); return input;
       }
       const labelInput = field('案例名稱', 'label', selected.label);
       const nameInput = field('交易記錄名稱', 'transactionName', selected.input.transaction[0].value.name);
@@ -334,7 +336,7 @@
         const label = node('label', '交易接合 101 的面向');
         sideInput = node('select', null, {name:'jointSide'});
         for (const side of ['+u','-u','+v','-v']) sideInput.append(node('option', side, {value:side}));
-        sideInput.value = joint.side; sideInput.disabled = !state.live; label.append(sideInput); form.append(label);
+        sideInput.value = joint.side; sideInput.disabled = !state.live || state.editing; label.append(sideInput); form.append(label);
       }
       const apply = node('button', '採用有限修改', {type:'submit'}); apply.disabled = !state.live || state.editing;
       form.append(apply);
@@ -348,7 +350,7 @@
       const run = button('隔離執行所選案例', controller.run, {'data-rcw':'run'});
       run.disabled = !state.live || state.busy || state.editing;
       const cancel = button('取消執行', controller.cancel, {'data-rcw':'cancel'}); cancel.disabled = !state.busy;
-      const reset = button('還原所選模板', controller.reset, {'data-rcw':'reset'}); reset.disabled = !state.live;
+      const reset = button('還原所選模板', controller.reset, {'data-rcw':'reset'}); reset.disabled = !state.live || state.editing;
       const retain = button('保留案例資料', controller.retain, {'data-rcw':'retain'});
       retain.disabled = !state.live || state.busy || state.editing || !ports.retainCaseData;
       actions.append(run, cancel, reset, retain); detail.append(actions);
@@ -376,7 +378,7 @@
     });
     const originalTeardown = controller.teardown;
     controller.teardown = () => {originalTeardown(); off();
-      if (mounts.get(root) === operation) {root.replaceChildren(); root.classList.remove('rule-case-workbench');}
+      if (mounts.get(root) === operation) {root.replaceChildren(); root.classList.remove('rule-case-workbench');mounts.delete(root);}
     };
     return controller;
   }

@@ -23,7 +23,34 @@ const gate=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {prom
       const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();
       const unexpected=[];page.on('pageerror',error=>unexpected.push(error.message));
       page.on('console',message=>{if(['error','warning'].includes(message.type()))unexpected.push(message.text());});
-      await page.goto(url);await page.locator('[data-rcw=run]').waitFor();
+      // A held initial open cannot overwrite a newer mount in the same root.
+      let first=true;const openingReached=gate(),openingRelease=gate();
+      await page.route('**/rule-cases/workbench',async route=>{
+        if(route.request().postDataJSON().action==='open'&&first){first=false;
+          const response=await route.fetch();openingReached.resolve(await response.json());await openingRelease.promise;
+          await route.fulfill({response});return;}
+        await route.continue();
+      });
+      await page.goto(url);const obsolete=await openingReached.promise;
+      await page.locator('#reopen').click();await page.locator('[data-rcw=run]').waitFor();
+      const currentMount=await page.locator('#workbench').innerText();openingRelease.resolve();
+      await page.waitForTimeout(100);
+      check(await page.locator('#workbench').innerText()===currentMount,'held old initialization cannot repaint newer mount');
+      const retired=await page.request.post(new URL('/rule-cases/workbench',url).href,{data:{protocol:'rule-case-workbench/1',
+        action:'validate',sessionId:obsolete.sessionId,definition:obsolete.definitions[0]}});
+      check(retired.status()===409,'precise late initial session closed');
+      await page.unroute('**/rule-cases/workbench');
+      // Close pending opening before a controller is available.
+      let heldOpen=false;const closeReached=gate(),closeRelease=gate();
+      await page.route('**/rule-cases/workbench',async route=>{
+        if(route.request().postDataJSON().action==='open'&&!heldOpen){heldOpen=true;
+          const response=await route.fetch();closeReached.resolve();await closeRelease.promise;await route.fulfill({response});return;}
+        await route.continue();
+      });
+      await page.locator('#reopen').click();await closeReached.promise;await page.locator('#cancelopen').click();
+      closeRelease.resolve();await page.waitForTimeout(100);
+      check(await page.locator('#workbench').innerText()==='','held initialization close remains empty');
+      await page.unroute('**/rule-cases/workbench');await page.locator('#reopen').click();await page.locator('[data-rcw=run]').waitFor();
       check(await page.title()==='規則案例 · 獨立接線驗證','page identity');
       check((await page.locator('nav [data-case-id]').count())===6,'six meaningful templates');
       check(!await page.locator('#__next-build-watcher,nextjs-portal,.vite-error-overlay').count(),'no framework overlay');

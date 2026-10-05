@@ -133,12 +133,72 @@ class WorkbenchHTTP(unittest.TestCase):
         self.assertEqual(result["data"], original)
         self.assertEqual(result["views"][0]["trust"], "historical-unverified")
         self.assertEqual(result["views"][0]["receipt"]["status"], "passed")
-        # Even fabricated process metadata with consistent core evidence cannot become current.
+        # Fabricated process metadata cannot authenticate consistent evidence.
         bundle["receipts"][0]["receipt"]["conditions"]["nativePid"] = 123456
         status, result = self.post("import", sessionId=self.session, data=bundle)
         self.assertEqual(status, 200, result)
         self.assertEqual(result["views"][0]["trust"], "historical-unverified")
 
+    def test_portable_nonpass_unknown_nested_fields_types_depth_bytes_and_original_pairing_reject(self):
+        _, native = self.run_case()
+        baseline = {"schema": DATA_SCHEMA, "definitions": cases(),
+                    "receipts": [{"definition": case("legal-rule"), "receipt": native["receipt"]}]}
+        paths = [("script",), ("contextToken",), ("path",), ("metadata",),
+                 ("context", "contextToken"), ("executor", "path"), ("conditions", "arbitrary"),
+                 ("observations", "metadata"), ("observations", "after", "metadata"),
+                 ("observations", "after", "rules", 0, "value", "metadata"),
+                 ("assertionResults", 0, "metadata")]
+        original_context = deepcopy(self.context)
+        for path in paths:
+            bundle = deepcopy(baseline); receipt = bundle["receipts"][0]["receipt"]
+            receipt["status"] = "blocked"  # Exercise the old helper's nonpass early return.
+            cursor = receipt
+            for key in path[:-1]:
+                cursor = cursor[key]
+            cursor[path[-1]] = {"script": "reset", "contextToken": "fake-new-token"}
+            for action in ("import", "assess"):
+                with self.subTest(path=path, action=action):
+                    status, result = self.post(action, sessionId=self.session, data=bundle)
+                    self.assertEqual(status, 400, result)
+                    self.assertNotIn("data", result)
+                    self.assertEqual(self.context, original_context)
+                    self.assertIsNone(self.adapter.active)
+        for key, value in [("definitionHash", "0" * 64), ("sourceHash", "0" * 64)]:
+            bundle = deepcopy(baseline); bundle["receipts"][0]["receipt"]["status"] = "blocked"
+            bundle["receipts"][0]["receipt"][key] = value
+            status, result = self.post("import", sessionId=self.session, data=bundle)
+            self.assertEqual((status, result["code"]), (400, "OWNERSHIP"))
+        bundle = deepcopy(baseline); bundle["receipts"][0]["definition"]["label"] = "unrelated original definition"
+        self.assertEqual(self.post("import", sessionId=self.session, data=bundle)[1]["code"], "OWNERSHIP")
+        for alter in [lambda r: r["conditions"].update({"isolated": 1}),
+                      lambda r: r["conditions"].update({"maxOutputBytes": True}),
+                      lambda r: r.update({"assertionResults": [{"kind": "record_exists", "passed": 1, "predicate": {}}]}),
+                      lambda r: r.update({"reason": "x" * (4 * 1024 * 1024 + 1)}),
+                      lambda r: r.update({"actualOutcome": []})]:
+            bundle = deepcopy(baseline); receipt = bundle["receipts"][0]["receipt"]; receipt["status"] = "blocked"; alter(receipt)
+            self.assertEqual(self.post("assess", sessionId=self.session, data=bundle)[0], 400)
+        nested = "leaf"
+        for _ in range(34):
+            nested = [nested]
+        bundle = deepcopy(baseline); bundle["receipts"][0]["receipt"]["metadata"] = nested
+        self.assertEqual(self.post("import", sessionId=self.session, data=bundle)[0], 400)
+
+    def test_exact_loopback_host_origin_gate_applies_to_get_and_post(self):
+        valid = json.dumps({"protocol": PROTOCOL, "action": "open"}).encode()
+        for host, origin in [("attacker.example", "http://attacker.example"),
+                             ("127.0.0.1:1", "http://127.0.0.1:1"),
+                             (f"localhost:{self.server.server_port}", "http://foreign.example")]:
+            headers = {"Content-Type": "application/json", "Host": host,
+                       "Origin": origin, "Sec-Fetch-Site": "same-origin"}
+            self.assertEqual(self.raw(valid, headers=headers)[0], 403)
+            request = urllib.request.Request(self.base + "/", headers=headers)
+            with self.assertRaises(urllib.error.HTTPError) as failure:
+                urllib.request.urlopen(request)
+            self.assertEqual(failure.exception.code, 403)
+            failure.exception.close()
+        for host in [f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"]:
+            headers = {"Content-Type": "application/json", "Host": host, "Origin": "http://" + host}
+            self.assertEqual(self.raw(valid, headers=headers)[0], 200)
     def test_drift_view_preserves_original_definition_runtime_and_scope(self):
         _, native = self.run_case()
         receipt = native["receipt"]
