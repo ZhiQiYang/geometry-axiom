@@ -318,9 +318,13 @@ async function openFixture(options={}) {
     await options.refreshGate?.promise;
   };
   f.env.fetch=async(url,request)=>{
-    requests.push({url,request});assert.ok(['/upload','/upload/prepare','/upload/confirm','/upload/cancel'].includes(url));
+    requests.push({url,request});assert.ok(['/upload','/upload/prepare','/upload/confirm','/upload/cancel','/scenarios/verify-native'].includes(url));
     return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[8],placements:[]}}:{ok:true,path:'opened.scene'})};
   };
+  // Execute the formal disposable-verifier adapter. Only this VM transport's
+  // native reply is fake; actual native/PDF/UI proof lives in the browser gates.
+  f.env.GeometryScenarioSnapshots=require('../geometry-web/scenario-snapshots.js');
+  vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/scenario-integration.js'),'utf8')+'\nglobalThis.ScenarioIntegration=window.ScenarioIntegration;',f.env);
   return {...f,bytes,requests,refreshed};
 }
 
@@ -368,9 +372,10 @@ test('changes during project reading or its pre-upload dump prevent replacement 
   }
 });
 
-test('late native candidate is cancelled before commit after a context or metadata change',async()=>{
+test('late native candidate blocks local metadata edits and cancels after external context or revision change',async()=>{
   for(const switchContext of [false,true]) {
-    const f=await openFixture(),gate=deferred(),reached=deferred(),old=f.w.context(),fetch=f.env.fetch;
+    let channel;const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}}}),gate=deferred(),reached=deferred(),old=f.w.context(),fetch=f.env.fetch;
+    f.env.connection.session='service-one';
     f.env.fetch=async(url,request)=>{
       const response=await fetch(url,request);
       if(url==='/upload/prepare'){reached.resolve();await gate.promise;}
@@ -379,12 +384,12 @@ test('late native candidate is cancelled before commit after a context or metada
     const opening=f.w.importBytes(f.bytes),rejected=assert.rejects(opening,/目前工程已有變更/);
     await reached.promise;
     if(switchContext)f.w.observe('line reset',{ok:true});
-    else f.w.calibrated(1,[[0,0],[10,0]],100);
+    else {assert.throws(()=>f.w.calibrated(1,[[0,0],[10,0]],100),/載入結果尚未確認/);channel.onmessage({data:{peer:'external-editor',session:'service-one'}});}
     const current=f.w.context(),history=f.w.history.undo.length;
     gate.resolve();await rejected;
     assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,history);
     assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
-    if(!switchContext){assert.equal(current,old);assert.equal(current.sources.size,1);assert.equal(f.w.active(1).calibration.distanceMm,100);}
+    if(!switchContext){assert.equal(current,old);assert.equal(current.sources.size,1);assert.equal(f.w.active(1).calibration,null);}
     assert.equal(f.w.busy,false);
   }
 });
@@ -405,19 +410,21 @@ test('missing final native targets cancel without losing source bytes, metadata 
   assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
 });
 
-test('late confirm preserves the newer context and metadata without appending import history',async()=>{
-  const f=await openFixture(),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
+test('late confirm rejects local metadata edits and preserves externally invalidated context without import history',async()=>{
+  let channel;const f=await openFixture({BroadcastChannel:class{constructor(){channel=this;}postMessage(){}}}),gate=deferred(),entered=deferred(),fetch=f.env.fetch;
+  f.env.connection.session='service-one';
   f.env.fetch=async(url,request)=>{
     const response=await fetch(url,request);
     if(url==='/upload/confirm'){entered.resolve();await gate.promise;}
     return response;
   };
   const opening=f.w.importBytes(f.bytes),rejected=assert.rejects(opening,/載入結果晚到/);
-  await entered.promise;f.w.calibrated(1,[[0,0],[10,0]],100);
+  await entered.promise;assert.throws(()=>f.w.calibrated(1,[[0,0],[10,0]],100),/載入結果尚未確認/);
+  channel.onmessage({data:{peer:'external-editor',session:'service-one'}});
   const current=f.w.context(),count=f.w.history.undo.length;
   gate.resolve();await rejected;
   assert.equal(f.w.context(),current);assert.equal(f.w.history.undo.length,count);
-  assert.equal(f.w.active(1).calibration.distanceMm,100);
+  assert.equal(f.w.active(1).calibration,null);
 });
 
 test('native prepare blocks direct scene upload reentry until its commit finishes',async()=>{
@@ -611,7 +618,7 @@ async function recoveryRecord(f,scene) {
 test('matching reload restores complete project context without uploading or inventing undo',async()=>{
   const f=await openFixture(),loaded=await P.unpack(f.bytes,zip),record=await recoveryRecord(f,loaded.scene);
   const records=recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
-  assert.equal((await f.w.restoreSession()).state,'restored');assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+  assert.equal((await f.w.restoreSession()).state,'restored');assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);
   assert.equal(f.w.context().id,'opened');assert.equal(f.w.context().name,'試用工程');assert.equal(f.w.context().dirty,true);
   assert.equal(f.w.getProjectInfo().sourceKind,'example');assert.equal(f.w.getProjectInfo().undoLabel,null);
   assert.match(f.w.getProjectInfo().historyNote,/較早/);
@@ -661,7 +668,7 @@ test('external mutation during final reload fingerprint cannot commit the earlie
   recoveryEnvironment(f,{records:new Map([['tab-one',record]])});f.env.api=async()=>({ok:true,text:loaded.scene});
   const restoring=f.w.restoreSession();await reached.promise;
   channel.onmessage({data:{peer:'other-tab',session:'service-one'}});gate.resolve();
-  assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.deepEqual(f.requests.map(r=>r.url),['/upload/prepare','/upload/cancel']);
+  assert.equal((await restoring).state,'external');assert.equal(f.w.context(),before);assert.deepEqual(f.requests.map(r=>r.url),['/scenarios/verify-native']);
   assert.equal(f.w.getProjectInfo().editingBlocked,true);
 });
 

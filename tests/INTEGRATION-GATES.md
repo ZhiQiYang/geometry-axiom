@@ -173,6 +173,40 @@ node geometry-web/evidence_links_integration_test.js
 
 #131 的 `tests/test_issue123_create_feedback_browser.py` 是需指定服務／TEMP輸出的獨立 Playwright 腳本，明確登錄在 `PY_BROWSER_GATES`，不冒充 unittest 的空測試。既有四個 store VM fixture 現提供瀏覽器原生 `structuredClone`，原 assertions 維持；新增三項 PDF 資源回歸使 494→497。#48 新增真 core-only fallback scope/bytes、undo/redo保存及新 context 重開；原 80 項全部保留，正式 gate 增至110。
 
+## #46 正式方案操作生命週期
+
+`tests/test_scenario_workflow_browser.js` 是必要的正常流程 gate，使用下列相同環境
+另指定自己的 TEMP output，必須與 lifecycle gate 串行。
+在 1280/390px 都以正常 UI 保存 A、fork B、同一正式 app 修改 B 的參數，核對 A
+完整記錄不變、比較、整體採用、一筆 history 的 undo/redo、真 ZIP Save，以及
+新空白 context 真重開。瀏覽器 download fallback 實際下載；OS 系統 picker 未在 headless 驗證。
+首次教學卡只按正常「知道了」關閉，不移除 DOM、不強迫點擊。
+
+`tests/test_scenario_lifecycle_browser.js` 是必要的獨立正式 app／native gate，
+登錄於 `NODE_EXCLUDED`；非瀏覽器 aggregate 不冒算其 assertions。
+以隔離 URL、TEMP feedback 與 `GEOMETRY_SCENARIO_OUT` 執行，凍結驗收另設
+`GEOMETRY_REQUIRE_CLEAN=1`。同一 native root 的瀏覽器測試必須串行。
+
+```sh
+GEOMETRY_TEST_URL=http://127.0.0.1:18991/ \
+GEOMETRY_FEEDBACK_DIR=/tmp/scenario-feedback \
+GEOMETRY_SCENARIO_OUT=/tmp/scenario-lifecycle \
+node tests/test_scenario_lifecycle_browser.js
+```
+
+它從正常 UI 建立 A、複製及隔離編輯 B，只持有真實 export、unpack 或 disposable
+verifier 的回覆，於正常 Cancel 後等候原按鈕 handler 的真正終態；要求
+World、catalog、dirty/saved、context/revision 與 undo/redo 完全不變。
+Capture 的真 native dump 等待涵蓋關窗及重開；原子採用涵蓋已提交 confirm
+回覆等待期間的關窗、新修改與雙向歷史阻擋，以及真 Undo/Redo。
+未知 confirm 結果沿正常 reconnect 重取精確終態，不重送 confirm。
+連續兩次建立／關閉回覆遺失仍須保留同一 request 身分、精確退休 context，並可再次正常編輯。
+所有材料是 synthetic；不把 timeout、未完成 Promise 或 memory DOM 結果當 pass。
+
+非瀏覽器 `test_scenario_project_store.js` 另驗真正 /14 ZIP 的完整 A/B 與
+evidence-only 原 PDF bytes closure、嚴格 schema/capability、雜湊、容量及
+ContextHistory 單步 undo/redo；其 fixture 不冒稱 native/PDF.js 或 UI 驗收。
+
 正式 gate 現也覆蓋 #77 shared-room 來源，沿既有原頁歷史／核對 disclosure 掛同一 `#refRecordDetails` host：手動框選／明選 field0、兩附件共存且原 PDF 一份、真 ZIP/new-context重開、覆核／重新綁定與 guarded canvas 定位。正常 native edit/delete/recreation 事件直接更新同一 host，測試不呼叫 `ui.refresh()`；未保存文字原樣保留。真 PDF Worker 計數包含三次 export 及 automatic recovery snapshot，要求 created=terminated 且 live reader document 仍可讀；純 VM 回歸另涵蓋成功／尺寸拒絕／取消／load失敗，不能以 fake PDF 冒稱實際 UI。
 
 ## #61 第一切片的正式 reader 與 orphan 入口

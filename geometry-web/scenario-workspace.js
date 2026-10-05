@@ -5,13 +5,13 @@ window.ScenarioWorkspace = (() => {
   let generation=0,working=false,edit=null,comparison=null;const retiring=new Map();
   function state(){const p=W.getEvidenceState(),m=W.getModelOperationState();return {contextToken:p.contextToken,revision:p.revision,
     nativeRevision:p.nativeRevision,session:p.session,frame:m.frame,undo:m.undo,redo:m.redo,blocked:p.blocked};}
-  function lease(){let before=state(),live=true;const id=generation;if(before.blocked)throw new Error('請先完成或取消目前操作。');
-    const owned=()=>{if(!live||id!==generation)throw new Error('方案操作已取消，這次結果未提交。');};
+  function lease(){let before=state();const cancel=new AbortController(),id=generation;if(before.blocked)throw new Error('請先完成或取消目前操作。');
+    const owned=()=>{if(cancel.signal.aborted||id!==generation)throw new Error('方案操作已取消，這次結果未提交。');};
     const guard=()=>{owned();const next=state(),expected={...before};delete next.blocked;delete expected.blocked;
       if(JSON.stringify(next)!==JSON.stringify(expected))throw new Error('專案或歷史已變更，這次方案結果未提交。');};
     // Only the synchronous, owned draft flush may renew the data stamp. No
     // asynchronous result can acquire a new operation or reopen a cancelled one.
-    guard.afterFlush=()=>{owned();before=state();};guard.cancel=()=>{live=false;};return guard;}
+    guard.afterFlush=()=>{owned();before=state();};guard.cancel=()=>cancel.abort();guard.signal=cancel.signal;return guard;}
   const message=text=>{$('scenarioStatus').textContent=text;};
   function controls(){for(const el of dialog.querySelectorAll('button:not([data-scenario-close]),input,select'))el.disabled=working;
     $('scenarioAdopt').disabled=working||!comparison;}
@@ -50,9 +50,11 @@ window.ScenarioWorkspace = (() => {
     const result=await r.json();if(!r.ok||result.ok!==true)throw new Error(result.error||result.message||'方案編輯服務未完成。');return result;}
   function childRequest(type,payload={}){const owner=edit,requestId=crypto.randomUUID();return new Promise((resolve,reject)=>{
     const timer=setTimeout(()=>finish(new Error('方案回應逾時；尚未保存試改。')),60000);
-    function finish(error,result){clearTimeout(timer);window.removeEventListener('message',listener);error?reject(error):resolve(result);}
+    const cancelled=()=>finish(new Error('方案編輯已取消。'));
+    function finish(error,result){clearTimeout(timer);window.removeEventListener('message',listener);owner.guard.signal.removeEventListener('abort',cancelled);error?reject(error):resolve(result);}
     function listener(e){if(e.origin!==location.origin||e.source!==owner.frame.contentWindow||e.data?.requestId!==requestId)return;
       if(edit!==owner)return finish(new Error('方案編輯已取消。'));e.data.ok===true?finish(null,e.data):finish(new Error(e.data.error||'方案編輯未完成。'));}
+    if(owner.guard.signal.aborted)return cancelled();owner.guard.signal.addEventListener('abort',cancelled,{once:true});
     window.addEventListener('message',listener);owner.frame.contentWindow.postMessage({type,requestId,...payload},location.origin);
   });}
   async function retireEditors(){for(const [id,owner] of retiring){await editorRequest({...owner.request,action:'close'});retiring.delete(id);}}

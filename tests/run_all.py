@@ -125,6 +125,7 @@ NODE_TEST_FILES = [
     'tests/test_scenario_diff.js',
     'tests/test_scenario_review_native.js',
     'tests/test_scenario_snapshots.js',
+    'tests/test_scenario_project_store.js',
     'tests/test_source_inspector.js',
     'tests/test_space_model_store.js',
     'tests/test_timber_schedule.js',
@@ -151,6 +152,8 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/test_scenario_workflow_browser.js': 'Required isolated formal A/B editing, compare/adopt, undo/redo, real ZIP Save/new-context reopen at 1280/390px; see INTEGRATION-GATES.md',
+    'tests/test_scenario_lifecycle_browser.js': 'Required isolated formal scenario/native lifecycle gate: held Cancel/Capture/confirm, unknown terminal recovery, lost create/close; see INTEGRATION-GATES.md',
     'tests/test_grid_rule_reader_browser.js': 'Required isolated /13 formal reader UI/native gate: canonical candidate, evidence snapshot, zero-confirm rejection and actual ZIP Save; see INTEGRATION-GATES.md',
     'tests/test_issue116_browser.js': 'Required isolated native/browser B-menu gate, full Save/reopen and visual evidence; see INTEGRATION-GATES.md',
     'tests/scenario_browser_check.cjs': 'Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)',
