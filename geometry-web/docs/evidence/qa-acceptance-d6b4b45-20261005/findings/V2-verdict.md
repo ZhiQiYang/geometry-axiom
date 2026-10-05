@@ -35,7 +35,7 @@ c. 只改不透明度/鎖定不標髒:重開後(「已保存」)改 0.8+鎖定,�
 - 已確認 reference-workspace.js:440-480 adoptRoomSource 把原頁自 g.pages 移除(:480 groups.delete),所以 g.pages 為空;:1093-1098 manifestData 只序列化 g.pages → faces=[]。T4 推論的 :1093-1098 是「現象點」,根因是共享 plane 契約沒有顯示欄位。
 - 已確認 顯示值存在哪:room-collection-workspace.js:115-127 sourcePage 的 per-context/per-bid 快取物件(oc.underlays[bid]);app.js:4717-4726 feChangeUnderlay 對 opacity/locked 只 Object.assign 到該快取,再呼叫 reference-workspace.js:833-835 changed()→RoomCollectionWorkspace.changeBasis(值未變);room-collection.js:154-157 change() 遇 no-op 不寫 metadata → 不標髒、不入 history。基準真的改變時 :123 以 materialize 覆寫快取 → b 項重置。
 - 開檔還原:planes 經 materialize 重建,顯示值必為預設(推論自上述,實測吻合)。
-- 預期依據:docs/REFERENCE-PROJECT.md:9(對位、旋轉、透明度與鎖定同屬「對位與顯示」)、:28(圖頁含 crop/opacity/locked)。公理層 I36/I39/I41 規範工程/參數/組構保存,不涵蓋底圖顯示;#77 公理層無條號 → 這是 #77 契約(issue #77 首則留言明列 plane 欄位)與 REFERENCE-PROJECT 的規格缺口,不是 SSOT 違反。
+- 預期依據:docs/REFERENCE-PROJECT.md:17(對位、旋轉、透明度與鎖定同屬「對位與顯示」)、:27-28(每 face 的圖頁含 crop/opacity/locked)。Q37 的已採納範圍只共用校準／對位(geometry-guide/IMPLEMENTATION-QUEUE-20261004.md:16),ISSUE77-HANDOFF.md:43 adopt 只移除所選頁舊 basis shadow。因此保留各 room/page 既有顯示 metadata 是最小變動的保存契約修復推論,不是新逐字授權或 SSOT 條文;不透明度／鎖定遺失已實测,非整頁 crop 仍只由讀碼／保存檔顯示風險,UI 未驗。
 
 ## 5. 已知與否
 - issue #77 五 gates(registry ZIP 往返/未知 envelope/source closure/attachment undo-redo/late-context)都不談顯示設定;且 registry 往返在 d6b4b45 已實際可用(plane/calibration/alignment 往返正確)。→ **新發現**(與 #77 範圍相鄰,建議掛 #77)。
@@ -43,11 +43,13 @@ c. 只改不透明度/鎖定不標髒:重開後(「已保存」)改 0.8+鎖定,�
 - PR #137(draft):改 reference-workspace.js:1101-1107 manifestData(加 scenarioCatalog)與 project-store.js(format /14 SCENARIO_FORMAT、keys 驗證),**沒有改 faces/g.pages 邏輯、source-plane、room-collection、app.js** → 未修 T4-01,不會改變行為;但與修正點同一函式/同一驗證器,有文字衝突風險。#135/#136 只動文件與 tests/binaries.py,無關。
 
 ## 6. 影響
-資料遺失(次要):遺失的是使用者的底圖顯示/鎖定偏好與(若曾裁切)取景範圍;幾何、校準、對位、房間關聯不受影響。鎖定遺失會讓「已鎖定對位」在重開後可被誤拖動 → 間接風險改到共享基準(並把所有同來源房間標需複核)。信度高。
+資料遺失(次要):實測确认使用者的底圖不透明度／鎖定偏好遺失;非整頁取景保存未經本輪 UI 驗證,其風險來自第 2／4 節讀碼與保存檔核對。幾何、校準、對位、房間關聯不受影響。鎖定遺失會讓「已鎖定對位」在重開後可被誤拖動 → 間接風險改到共享基準(並把所有同來源房間標需複核)。信度高只適用已實測範圍。
 
 ## 7. 建議修正範圍(未動手)
-- 最小點:在共享 plane 外另存「每房間或每 plane 的顯示設定」(opacity/locked,及 crop 是否要保留需產品決定),走 source-rooms 附件新欄位(schema 升版 + capability,舊 reader 拒)或獨立 view 欄;feChangeUnderlay 對共享房間的 opacity/locked 改走 metadata change(標髒、可 undo);materialize 以 view 帶入既有顯示值,基準變更不得重置;adopt 時沿用原頁 opacity/locked(crop 若不支援,adopt 前應拒絕或提示)。需先拍板:顯示設定是「每 plane 共用」還是「每房間」。
+- 原作者提出共享 plane 外另存顯示設定、附件新欄位／獨立 view 及 schema/capability 方案,並曾建議先拍板 per-plane 或 per-room;這是歷史建議,不是既有保存修復的前置阻擋。依第 4 節既有契約,最小修復應保留各 room/page 的 opacity/locked/crop,使顯示變更標髒、可 undo,materialize／adopt／基準變更不重置原值。schema/capability 必要性由整合 owner 審查;非整頁 crop 要補 UI 回歸。README §5 另保留作者「使用者拍板」回報,但本包未附原話,原始授權待核,不能當新增設計授權。
 - 回歸測試:共享路徑 保存→fresh context 開檔 斷言 opacity/locked(兩房各自)、adopt 前後值不變、旋轉/X 後值不變、只改不透明度會標髒且一步 undo;突變測試:拿掉新欄位序列化須紅。
-- 排序:**排在 #137 之後**(同 manifestData 與 project-store format/keys 驗證,且 #137 佔用 /14);與 #134 無檔案級衝突。
+- 排序:**排在 #137 之後**(同 manifestData 與 project-store format/keys 驗證,且 #137 佔用 /14)。更正原「與 #134 無檔案級衝突」:修正涉及 app.js,與 #134 同檔;reference-workspace.js/project-store.js 與 #137 同檔。即使當時 hunk 未重疊,仍須各檔 owner 協調,不宣稱必然無衝突。
+
+文件勘誤(2026-10-05 UTC):唯讀核對本包四份 .gcanvas manifest、既有契約與 PR 改檔清單;未重跑 UI,未改原始 ZIP／量測／截圖,保留原驗收歷史。
 
 證據(QA/evidence/V2/):s01–s15(建檔)、r01–r04(重開共享)、c01–c05/cr01(對照)、downloads/v2-shared-save1.gcanvas、v2-ctrl-save1.gcanvas、issue77.txt、pr134.diff、pr137*.diff、tools/。console/pageerror 全程 0。

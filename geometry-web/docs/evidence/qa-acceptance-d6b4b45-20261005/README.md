@@ -39,7 +39,7 @@
 | 5 多房間 | `#roomSourceCreate` → `#roomNew` 建 ROOM_L(26.00 m²、凹角正確);選取(單擊/Shift/左右框選/Ctrl+A/Esc);改房間 2 邊長不影響房間 1;刪除/Ctrl+Z;改名、解除列表關聯、基準變更標「需複核」 | `findings/T3-report.md`、`screens/T3/s08-L-applied.png`、`screens/T3/s53-selection.png`、`screens/T3/s51-f2-edge5-4500.png`、`screens/T3/s55-roomlist-after-delete.png`、`screens/T3/s13-unlinked.png`、`screens/T3/s18-list-after-ulX.png` |
 | 6 網格/子網格/參數 | 無限網格 700x500 綁面 1(DOM 量 700.0/500.0)、相位差 350;子網格 u7×v4 / u5×v2、不可整除拒絕;面內有限網格依 L 裁切;參數卡 PANEL 寬 915→1000 連動網格與子網格;容量上限拒絕不改世界 | `findings/T3-report.md`、`screens/T3/s70-face1-with-grid.png`、`screens/T3/s76-face1-stagger.png`、`screens/T3/s83-subgrid-created.png`、`screens/T3/s96-finite-grid-draft.png`、`screens/T3/s108-after-param-confirm.png`、`screens/T3/s43-box3-result.png` |
 | 7 取消/撤銷/重做 | 匯入=1 步(撤銷面消失、重做全回);面內三步編輯逐步退回;空間建立 Ctrl+Z/Y;子網格 31↔22↔27;參數 Ctrl+Z×2/Y×2;「開啟專案」可撤銷並在 2.5 s 內重做回來 | `screens/T1/32-undo2.png`、`screens/T1/36-reopen-after-redo.png`、`screens/T2/139-undo3.png`、`screens/T2/140-redo3.png`、`screens/T2/103-box6-undo-redo.png`、`screens/T3/s91-redo.png`、`screens/T3/s110-param-undo-redo.png`、`screens/T4/post1-undo-open.png`、`screens/T4/post1-redo-open.png` |
-| 8 保存/重開 | format `geometry-canvas/10`、PDF sha256 隨檔;全新環境開檔 22 項一致;第二輪改邊 + 新模型再存再開仍完整;「保存」與「另存」world.scene/manifest 位元組相同;守門:外環草稿/未套用校準拒存、dirty 開檔 confirm、4 種損毀檔拒絕且世界不變;十邊樓梯形(容量拒絕 → 取消牆 12 面 42 m³)存開一致 | `findings/T4-report.md`、`findings/T4-roundtrip-table.md`、`screens/T4/pre-cap-canvas.png`、`screens/T4/post1-cap-canvas.png`、`screens/T4/pre-cap-library.png`、`screens/T4/post1-cap-library.png`、`screens/T4/post2-cap-library.png`、`screens/T4/guard-1-draft-save.png`、`screens/T4/guard-2-calib-save.png`、`screens/T4/corrupt-corrupt-notzip.png`、`screens/T4/ten-10-reopened-lib.png` |
+| 8 保存/重開 | format `geometry-canvas/10`、PDF sha256 隨檔;全新環境開檔 22 項對照中,除 T4-01 不透明度與鎖定 2 項遺失外一致;第二輪改邊 + 新模型再存再開仍完整;「保存」與「另存」world.scene/manifest 位元組相同;守門:外環草稿/未套用校準拒存、dirty 開檔 confirm、4 種損毀檔拒絕且世界不變;十邊樓梯形(容量拒絕 → 取消牆 12 面 42 m³)存開一致 | `findings/T4-report.md`、`findings/T4-roundtrip-table.md`、`screens/T4/pre-cap-canvas.png`、`screens/T4/post1-cap-canvas.png`、`screens/T4/pre-cap-library.png`、`screens/T4/post1-cap-library.png`、`screens/T4/post2-cap-library.png`、`screens/T4/guard-1-draft-save.png`、`screens/T4/guard-2-calib-save.png`、`screens/T4/corrupt-corrupt-notzip.png`、`screens/T4/ten-10-reopened-lib.png` |
 | 窄螢幕 390x844 | 匯入→校準(抽屜自動收/開)→量測;多邊形面→改邊→放置→建空間 60 m³;雙房間 + 網格綁定;開同檔、保存鈕 44×44 下載成功;全程 scrollWidth=390 無橫向溢出 | `screens/T1/210-M-calibrated.png`、`screens/T1/212-M-measure.png`、`screens/T2/m12-preview-done.png`、`screens/T2/m14-created.png`、`screens/T3/m21-roomL-applied.png`、`screens/T3/m35-face1-grid-mobile.png`、`screens/T4/m-03-opened-canvas.png`、`screens/T4/m-08-face1-underlay.png`、`screens/T4/m-09-save.png` |
 
 console:全程除 PDF.js「Indexing all PDF objects」warning 與 ResizeObserver 良性訊息(見 G1)外,無 pageerror。
@@ -121,15 +121,15 @@ console:全程除 PDF.js「Indexing all PDF objects」warning 與 ResizeObserver
   | `downloads/ctrl-plain-import-op-lock.gcanvas`(T4 對照) | `geometry-canvas/1` | 1 | 有(0.84 / true / crop) |
 
   T4 的重開截圖:`screens/T4/ul-state.png`(保存前)、`screens/T4/ul-reopened-face1.png`(重開後)、`screens/T4/ctrl-ulset.png`(對照)。
-- **預期依據**:`geometry-web/docs/REFERENCE-PROJECT.md:9`(對位、旋轉、透明度與鎖定同屬「對位與顯示」)、`:28`(圖頁含 crop/opacity/locked)。公理層無對應條號(I36/I39/I41 不涵蓋底圖顯示)→ 是 #77 契約與 REFERENCE-PROJECT 的規格缺口,**不是 SSOT 違反**。
+- **預期依據**:`geometry-web/docs/REFERENCE-PROJECT.md:17`(對位、旋轉、透明度與鎖定同屬「對位與顯示」)、`:27-28`(每 face 的 pages 保存 crop/opacity/locked)。Q37 已採納範圍只共用比例尺／對位,見 `geometry-guide/IMPLEMENTATION-QUEUE-20261004.md:16`;`docs/ISSUE77-HANDOFF.md:43` 的 adopt 只移除所選頁舊獨立 basis 的保存影子,其餘原來源／證據保留。依此保留各 room/page 既有顯示 metadata 是最小變動的保存契約修復推論,不必等本報告所稱新授權的原話才修復已確認遺失。這是既有產品契約的核對,**不是新增 SSOT 條文或使用者逐字授權證據**。
 - **根因(V2 讀碼,已確認)**:
   - `geometry-web/source-plane.js:25`:plane 白名單只有 id/sourceId/page/coordinateSpace/pageSize/calibration/alignment/basisRevision;`:164-168` `fromPage` 丟掉 crop/opacity/locked;`:170-177` `materialize` 硬寫 crop=整頁、opacity 0.5、locked false、records []。
   - `geometry-web/reference-workspace.js:440-480` `adoptRoomSource` 把原頁自 `g.pages` 移除(:480);`:1093-1098` `manifestData` 只序列化 `g.pages` → `faces=[]`(這是現象點,根因是 plane 契約沒有顯示欄位)。
   - `geometry-web/room-collection-workspace.js:115-127`:顯示值只存在 per-context/per-bid 快取 `oc.underlays[bid]`;基準真的改變時 `:123` 以 `materialize` 覆寫 → (b)。
   - `geometry-web/app.js:4717-4726` `feChangeUnderlay` 對 opacity/locked 只 `Object.assign` 到快取,再經 `reference-workspace.js:833-835` → `RoomCollectionWorkspace.changeBasis`(值未變);`geometry-web/room-collection.js:154-157` `change()` 遇 no-op 不寫 metadata → 不標髒、不入 history → (c)。
-- **影響**:遺失使用者的底圖顯示/鎖定偏好與(若曾裁切)取景;幾何、校準、對位、房間關聯不受影響。鎖定遺失會讓重開後的對位可被誤拖,間接改到共享基準並把所有同來源房間標「需複核」。
-- **已知對照**:issue #77 五道 gate(registry 往返/未知 envelope/source closure/attachment undo-redo/late-context)都不談顯示設定 → **新發現,建議掛 #77**。PR #134 不碰相關碼;PR #137(草稿)改 `reference-workspace.js` 的 `manifestData`(加 scenarioCatalog)與 `project-store.js` format/keys 驗證,**未修 T4-01**,但與修正點同函式/同驗證器。
-- **使用者已拍板**:顯示設定**每間房各自一份(per-room)**,見 §5。
+- **影響**:實測確認底圖不透明度／鎖定偏好遺失;非整頁 crop 保存未經本輪 UI 驗證,其欄位遺失與 materialize 回整頁屬讀碼／保存檔核對,不能算已重現的取景 UI 遺失。幾何、校準、對位、房間關聯不受影響。鎖定遺失會讓重開後的對位可被誤拖,間接改到共享基準並把所有同來源房間標「需複核」。
+- **已知對照**:issue #77 五道 gate(registry 往返/未知 envelope/source closure/attachment undo-redo/late-context)都不談顯示設定 → **新發現,建議掛 #77**。PR #134 未修本項,但修正涉及 `app.js`,與 #134 **同檔**;PR #137(草稿)改 `reference-workspace.js` 的 `manifestData`(加 scenarioCatalog)與 `project-store.js` format/keys 驗證,**未修 T4-01**,但與修正點同函式/同驗證器。共檔需 ownership 協調,不代表必然同 hunk 衝突。
+- **作者回報的拍板**:顯示設定**每間房各自一份(per-room)**,原回報與授權證據界線見 §5;不以作者宣稱代替使用者原話。
 
 ### 3.2 T2-05 預設放置 → 俯視南北鏡像(待拍板)
 
@@ -203,19 +203,21 @@ console:全程除 PDF.js「Indexing all PDF objects」warning 與 ResizeObserver
 | G5 | T2-03、T1-02、T1-05(T2-04 文件) | `app.js:5376-5385`、`:5796-5801` 補 `setStatus("✗ "+msg)`+toast;`reference-workspace.js:999` 無效頁碼還原;`app.js:4782` 同點即提示 | 無 | 可並行 |
 | G6 | T1-03 | 最小案 `app.js:9633-9668` `doUndoRedo` 比對校準變化附提示;治本案讓 `reference-workspace.js:827` 校準自成一步(碰 `project-store.js:673-699`) | 治本案撞 #137(project-store.js 672-695) | 最小案可並行;**治本案排在 #137 之後** |
 | G7 | T2-05 | 由小到大:① `space-workspace.js:219` 提早警示;② 未對齊時閘門;③ `app.js:8516-8517` 改預設放置 | 無 PR;②③與 GEO-244 規格衝突 | **等 §6 (a) 拍板** |
-| T4-01 | T4-01(+V2 a/b/c) | 依 🔒 per-room:`source-rooms` 附件或房間 metadata 新增每房間顯示欄(opacity/locked/crop),schema 升版 + capability(舊 reader 拒);`feChangeUnderlay`(app.js:4717-4726)對共享房間改走 metadata change(標髒、可 undo);`materialize`(source-plane.js:170-177)帶入既有顯示值,基準變更不得重置;adopt(reference-workspace.js:440-480)沿用原頁值 | #137 佔用 `manifestData`(reference-workspace.js:1101-1107)與 project-store format /14、keys 驗證 | **排在 #137 之後**;格式版本號在 #137 之後再定 |
+| T4-01 | T4-01(+V2 a/b/c) | 依 §5 既有保存契約推論保留各 room/page 的 opacity/locked/crop(非整頁 crop UI 未驗);作者建議 `source-rooms` 附件或房間 metadata 保存顯示欄,`feChangeUnderlay`(app.js:4717-4726)走 metadata change(標髒、可 undo),`materialize`(source-plane.js:170-177)與 adopt(reference-workspace.js:440-480)沿用原頁值。schema／capability 方案必要性由整合 owner 審查,不是新授權已驗證的結論 | `app.js` 同 #134;#137 佔用 `manifestData`(reference-workspace.js:1101-1107)與 project-store format /14、keys 驗證 | **排在 #137 之後**;另與 #134 app.js owner 協調,格式版本號由整合 owner 核對 |
 | 其他 | T3-06、T2-06 | `space-workspace.js:663` 移除前 confirm/提示 + try/catch;`:326` 同名加序號 | 無 | 可並行 |
 
 **測試檔共通規則**:回歸測試請寫**獨立檔**(沿用 `room_outline_test.js` 由 cdp_test.js 呼叫的模式),**不要**直接加進 `cdp_test.js`、`cdp_sections.golden.json`、`tests/run_all.expected.json`、`tests/run_all.py` — 這幾個檔與 #134(以及 #136 的 run_all.expected.json)衝突;待 #134 合併後再統一登記。每個修正都要做突變測試:拿掉修正必須紅、失敗訊息指得出病因。
 **相鄰工作**:issue #123(UI 整合 S0–S6,尚無 PR)與 G2a(狀態列/toast 文案)、G3(返回)概念重疊,動手前對一次。停滯分支 `origin/feat/assembly-generation-minimal-20261002` 若重啟會碰 project-store.js / reference-workspace.js(低風險)。
 
-## 5. 使用者拍板紀錄 🔒
+## 5. 作者回報的拍板紀錄(原始授權待核)
+
+**本交接保留作者回報,整合前需核對原始授權。** 本包未附該次使用者原話,下列歷史日期與 per-room 回報不構成獨立授權證據;本次不採納也不否定作者回報,不轉寫 SSOT 或 `決策佇列.md`。
 
 | 日期 | 決定 | 狀態 |
 |---|---|---|
-| 2026-10-06 | 🔒 **T4-01:底圖顯示設定(不透明度/鎖定/取景)每間房各自一份(per-room),非同一 plane 共用。** | 已拍板;**待 dot 轉寫入 `決策佇列.md`**。本分支刻意不改 `決策佇列.md`,以免與 open PR #129(只改該檔)衝突 |
+| 2026-10-06 | 作者原回報:🔒 **T4-01:底圖顯示設定(不透明度/鎖定/取景)每間房各自一份(per-room),非同一 plane 共用。** | 作者稱已拍板及待 dot 轉寫;本包未附原話,**原始授權待核,不得據此直接轉寫 `決策佇列.md`**。本分支保留不改該檔 |
 
-影響:V2 建議的「先拍板 per-plane 或 per-room」已定案為 per-room;修正時共享 plane 只承載基準(校準/對位/旋轉),顯示設定進每房間的紀錄;回歸測試須斷言**兩房各自**的值在 adopt、基準變更、保存→全新環境開檔後都不變。
+**來源與推論分開**:既有 `REFERENCE-PROJECT.md:17,27-28` 明列每 face 的 ReferencePage 保存 crop/opacity/locked;Q37(`IMPLEMENTATION-QUEUE-20261004.md:16`)共用校準／對位,`ISSUE77-HANDOFF.md:43` adopt 只去舊 basis shadow。因此保留各 room/page 顯示 metadata 是最小變動的既有保存契約修復推論,不需因作者所稱新授權欠原話而卡住不透明度／鎖定遺失修復;這不等於核實上列逐字拍板或批准額外 schema 設計。回歸應核兩房各自的值在 adopt、基準變更、保存→全新環境開檔後保持。**目前僅實測確認既有 opacity/lock 遺失;非整頁 crop 尚未 UI 驗證**,讀碼顯示其遺失風險另列待驗。
 
 ## 6. 待拍板(紅燈;只列選項與建議,不替使用者決定)
 
@@ -261,7 +263,7 @@ console:全程除 PDF.js「Indexing all PDF objects」warning 與 ResizeObserver
 
 建議一組一張工單,優先序:
 
-1. **T4-01 per-room 底圖顯示設定**(資料遺失;🔒 已拍板)— 先把 §5 決定寫入 `決策佇列.md`(等 #129 合併或同步處理);**等 #137 合併後**再動 `manifestData`/project-store 格式。
+1. **T4-01 底圖顯示設定保存**(不透明度／鎖定遺失已確認;非整頁 crop UI 未驗)— 依 §5 既有契約做最小修復,不把作者拍板宣稱當新授權原話或先轉写 `決策佇列.md`;**等 #137 合併後**再動 `manifestData`/project-store 格式,並與 #134 的 app.js owner 協調。
 2. **G1 假警報過濾**(最便宜、可立即並行;順手移除 15 秒等待)。
 3. **G3 返回鍵**(只改 enterFocus 側;通知 #123)。
 4. **G5 拒絕文字 + 頁碼/同點提示**、**G4 卡片碰撞**、**G6 最小案提示**、**其他(T3-06、T2-06)**— 皆可並行。
