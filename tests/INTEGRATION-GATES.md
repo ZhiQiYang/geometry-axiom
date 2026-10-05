@@ -273,7 +273,7 @@ binding／adapter，不能關閉 native context 或使 live assembly candidate �
 | `tests/test_rule_case_workbench_http.py` | 19 | 真 native adapter、六案例、run/cancel、原始語義與歷史未核信；已加入 aggregate |
 | `tests/rule-case-workbench-controller.cjs` | 17 | standalone HTTP/native owner 控制器 lifecycle；需 `GEOMETRY_RULE_CASE_TEST_URL`，不是 formal app gate |
 | `tests/rule-case-workbench-browser.cjs` | 91 | 原 owner 元件 desktop45／390px46，需 standalone URL 與 `GEOMETRY_RULE_CASE_BROWSER_EVIDENCE`；不是保存流程 |
-| `tests/test_rule_case_app_browser.js` | 74 | 1280／390px 正常入口、六案例、真失敗與重跑、單步 retain／Undo/Redo、真 ZIP Save／新空白 context Open 及 root/A/B完整資料；需 `GEOMETRY_RULE_CASE_APP_OUT` |
+| `tests/test_rule_case_app_browser.js` | 76 | 1280／390px 正常入口、六案例、啟用控件文字對比、真失敗與重跑、單步 retain／Undo/Redo、真 ZIP Save／新空白 context Open 及 root/A/B完整資料；需 `GEOMETRY_RULE_CASE_APP_OUT` |
 | `tests/test_rule_case_app_races.js` | 30 | 兩寬度 held GET／create、取消晚到、retention／native／history／context、live assembly candidate、B退休410；需 `GEOMETRY_RULE_CASE_RACE_OUT` |
 
 formal 兩項另提供 `GEOMETRY_TEST_URL`、TEMP `GEOMETRY_FEEDBACK_DIR`，

@@ -182,11 +182,19 @@ REQUIRED_OWNER_GATES = {
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
     'tests/rule-case-workbench-browser.cjs': 91,
-    'tests/test_rule_case_app_browser.js': 74,
+    'tests/test_rule_case_app_browser.js': 76,
     'tests/test_rule_case_app_races.js': 30,
     'tests/test_grid_rule_reader_browser.js': 34,
     'geometry-web/evidence_links_browser_check.js': 67,
     'geometry-web/evidence_links_integration_test.js': 110,
+}
+BROWSER_GATE_SCOPES = {
+    'tests/rule-case-workbench-browser.cjs': 'standalone component/native',
+    'tests/test_rule_case_app_browser.js': 'formal app/native/ZIP/history',
+    'tests/test_rule_case_app_races.js': 'formal app/native/context races',
+    'tests/test_grid_rule_reader_browser.js': 'formal app/native/grid/ZIP',
+    'geometry-web/evidence_links_browser_check.js': 'independent injected-backend adapter',
+    'geometry-web/evidence_links_integration_test.js': 'formal app/PDF/ZIP/history',
 }
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
@@ -747,7 +755,7 @@ def print_table(rows):
         if rel.startswith('tests/test_issue77_') or rel in ('tests/scenario_browser_check.cjs', 'tests/test_scenario_grid_interface.js'):
             print('  %s：%s；獨立執行，本 aggregate 未驗。' % (rel, NODE_EXCLUDED[rel]))
     for rel, count in REQUIRED_BROWSER_GATES.items():
-        scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+        scope = BROWSER_GATE_SCOPES[rel]
         print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
 
 
@@ -800,7 +808,7 @@ def main(argv=None):
         print('必要正式整合入口：tests/integration/issue77_attachment_owner.js（5項；未實作時 exit3）')
         print('另外4個 #77 真瀏覽器入口：見 tests/INTEGRATION-GATES.md；本命令未驗。')
         for rel, count in REQUIRED_BROWSER_GATES.items():
-            scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+            scope = BROWSER_GATE_SCOPES[rel]
             print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
         for p in registry_errors:
             print('登記問題：%s' % p)

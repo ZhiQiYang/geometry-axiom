@@ -28,6 +28,11 @@ const gate=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {prom
   await page.goto(url);await ready();await newProject();await assembly();const before=await state();await cases();
   check('six finite cases inside the existing assembly workspace',await page.locator('#assemblyWorkspace [data-case-id]').count()===6);
   check('viewport fits without horizontal overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.querySelector('#assemblyWorkspace').scrollWidth<=document.querySelector('#assemblyWorkspace').clientWidth+1));
+  check('enabled case controls have readable text contrast',await page.evaluate(()=>{
+    const luminance=color=>{const c=color.match(/[\d.]+/g).slice(0,3).map(v=>+v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return c[0]*.2126+c[1]*.7152+c[2]*.0722;};
+    const controls=[...document.querySelectorAll('#asmCasePanel button:not(:disabled),#asmCasePanel input:not(:disabled),#asmCasePanel select:not(:disabled)')];
+    return controls.length>0&&controls.every(e=>{const s=getComputedStyle(e),a=luminance(s.color),b=luminance(s.backgroundColor);return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)>=4.5;});
+  }));
   check('opening is read-only',JSON.stringify(await state())===JSON.stringify(before));
   for(const id of ids){await page.locator(`[data-case-id="${id}"]`).click();await page.locator('[data-rcw=run]').click();await page.locator('[data-rcw=result]').filter({hasText:'本次核對 · 通過'}).waitFor();
     const dd=await page.locator('[data-rcw=result] dd').allTextContents(),expected=['wrong-type-dimension-reference','fixed-version-immutable'].includes(id)?'拒絕':'接受';
