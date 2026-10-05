@@ -1123,7 +1123,9 @@ body.oc-busy .face-layer-row { pointer-events: none; }
 .tool-select .face-rule-hit,.tool-grid .face-rule-hit,.tool-timber .face-rule-hit { pointer-events:stroke; cursor:pointer; }
 .fe-rule-label { fill:#572c87; pointer-events:none; }
 .fe-rule-density { position:absolute;top:42px;left:12px;max-width:calc(100% - 24px);padding:6px 10px;background:var(--panel,#fff);border-radius:6px;font-size:12px;pointer-events:none; }
-.grid-rule-focus { display:grid;grid-template-columns:1fr 1fr;gap:8px; }
+.grid-rule-focus { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px; }
+.grid-rule-focus label { min-width:0; }
+.grid-rule-focus input, .grid-rule-focus select { width:100%;min-width:0;box-sizing:border-box; }
 .grid-rule-details { border-top:1px solid var(--border,#ddd);padding-top:8px;margin-top:12px; }
 .face-editor-svg .face-grid-preview-line { fill: none; stroke: #376fcb; stroke-width: 1.5;
   stroke-dasharray: 6 3; vector-effect: non-scaling-stroke; pointer-events: none; }
@@ -2502,6 +2504,7 @@ body.v3-mode .sidebar-left { overflow-y: auto; }
   .reference-editor .calibration-task :is(.btn, input, select) { min-height: 44px; }
   .face-layer-del, .space-member-add { min-width: 44px; }
   .face-option-row, .face-option-row label, .reference-visibility-option { min-height: 44px; }
+  .grid-rule-details .grid-text-button { min-height:44px; }
   #fileMenuPop > .menu-item, #fileMenuPop #sceneMenuBtn { min-height: 44px; }
   body.canvas-composition .topbar { position: relative; }
   body.canvas-composition .main-project-status { position: absolute; top: 33px; left: 50px; max-width: 160px; }

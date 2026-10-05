@@ -2771,7 +2771,8 @@ const ReferenceVisibility = (() => {
   function anchorVisible(anchor) {
     const guide=/^at-line guide (\d+)$/.exec(anchor || "");
     const grid=gridAnchorParts(anchor || "");
-    return visible(guide ? guideKey(guide[1]) : grid ? gridKey(grid.id,grid.axis,grid.index) : "");
+    const rule=GridRuleLines.parseAnchor(anchor || '');
+    return visible(rule ? 'rule:'+GridRuleLines.key(rule) : guide ? guideKey(guide[1]) : grid ? gridKey(grid.id,grid.axis,grid.index) : "");
   }
   function groups() {
     const out=[];
@@ -2782,6 +2783,13 @@ const ReferenceVisibility = (() => {
     if(draft) {const i=grids.findIndex(g=>g.id===draft.id);if(i<0)grids.push(draft);else grids[i]=draft;}
     for(const g of grids) out.push({id:`grid:${g.id}`,label:`${g.kind === "subgrid" ? `子網格 ${g.id} · 主格 ${g.parentId}` : `主網格 ${g.id}`}${g === draft ? " · 草稿" : ""}`,items:
       ["u","v"].flatMap(axis=>gridLineEntries(g,axis).map(({coordinate:c,index:i})=>({key:gridKey(g.id,axis,i),label:`${gridLineLabel(g,axis,i)} · ${axis}=${c} mm`,axis,index:i}))) });
+    const ruleGroups=new Map();
+    for(const line of GridRuleLines.entries().filter(l=>l.segments.length)){
+      const id=`rule:${line.ref.appliedGridId}:${line.systemId}:${line.ruleKey}`;
+      if(!ruleGroups.has(id))ruleGroups.set(id,{id,label:`來源規則 ${line.systemId}/${line.ruleKey} · 套用 ${line.ref.appliedGridId}`,items:[]});
+      ruleGroups.get(id).items.push({key:'rule:'+GridRuleLines.key(line.ref),label:GridRuleLines.label(line.ref,line.name)+` · ${line.axis}=${line.coordinate} mm`});
+    }
+    out.push(...ruleGroups.values());
     return out;
   }
   function update() {
@@ -2822,7 +2830,9 @@ const ReferenceVisibility = (() => {
     const latticeIds=new Set(fe.grids.filter(g=>g.indexSpace==="lattice").map(g=>String(g.id)));
     const state=faces.get(oc.edit?.bid);if(state) for(const key of state) {
       const match=/^grid:(\d+):[uv]:-?\d+$/.exec(key);
-      if(!keys.has(key) && !(match && latticeIds.has(match[1])))state.delete(key);
+      const rule=key.startsWith('rule:')&&GridRuleLines.parseExpression('gridrule:'+key.slice(5));
+      const liveRule=rule&&fe.grids.some(g=>g.id===rule.appliedGridId&&g.sourceSystem===rule.systemId)&&oc.gridSystems.some(s=>s.id===rule.systemId&&s.rules?.some(r=>r.ruleKey===rule.ruleKey));
+      if(!keys.has(key) && !(match && latticeIds.has(match[1]))&&!liveRule)state.delete(key);
     }
   }
   function clear() {faces.clear();signature="";const box=$("faceReferenceVisibility");if(box){box.replaceChildren();box.hidden=true;}}
