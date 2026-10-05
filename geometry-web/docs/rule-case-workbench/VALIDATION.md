@@ -2,6 +2,12 @@
 
 Validated executable source: `b9ef20818eaccd4d72339b58e3935cc5e1e03b8c`.
 Base main: `6ee719d0e4ba3740e2f0b93223b323838f6a20f8`.
+Final upstream recheck: main advanced to
+`2437e4aa641759f727e2a79b0e4cba098016f011` by merging reviewed #138/#139/#140
+evidence/handoff documents. `git diff --exit-code 6ee719d origin/main -- .
+':!geometry-web/docs'` returned 0: production/core/tests/AGENTS/axioms unchanged.
+This add-only branch keeps its reviewed/tested base; no unrelated evidence
+files were copied, read for content or republished by this worker.
 Draft: [PR #141](https://github.com/ZhiQiYang/geometry-axiom/pull/141).
 The following documentation-only commit preserves all seven source/test file
 hashes below. This proves the tested bytes without treating an older checkpoint
