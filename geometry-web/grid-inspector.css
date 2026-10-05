@@ -7,8 +7,8 @@
 .gi-heading h2{margin:0;font-size:16px;line-height:1.35;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gi-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .gi-actions .btn{min-height:30px;padding:4px 10px;font-size:12px}
-.gi-actions .gi-delete{border-color:transparent;color:#78869a;background:transparent}
-.gi-actions .gi-delete:hover{color:#bd4b50;background:#fff1f1}
+.gi-actions .gi-delete{border-color:transparent;color:var(--muted,#596679);background:transparent;margin-inline-start:8px}
+.gi-actions .gi-delete:hover{color:var(--danger,#c2414f);background:var(--danger-soft,#fff0f2)}
 .gi-content{display:grid;min-width:0;flex:1;padding:13px 0 8px;align-items:start}
 .gi-binding-content{grid-template-columns:minmax(180px,1fr) minmax(310px,1.6fr) minmax(175px,.9fr)}
 .gi-source-content{grid-template-columns:minmax(190px,1fr) minmax(300px,1.45fr) minmax(175px,.9fr)}
