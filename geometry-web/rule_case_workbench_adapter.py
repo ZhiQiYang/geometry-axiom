@@ -303,6 +303,7 @@ also catches a change occurring while the native child is working.
         self.timeout = timeout_seconds
         self.output_limit = max_output_bytes
         self.lock = threading.RLock()
+        self.cleaned = threading.Condition(self.lock)
         self.sessions = {}
         self.active = None
         self.closed = False
@@ -318,6 +319,10 @@ also catches a change occurring while the native child is working.
         with self.lock:
             self.closed = True
             self.invalidate()
+            # Host shutdown must not exit Python while a daemon request still
+            # owns its disposable native process/private directory.
+            if not self.cleaned.wait_for(lambda: self.active is None, timeout=self.timeout + 5):
+                raise RuntimeError("Rule case child cleanup did not finish within the host shutdown bound")
 
     def _scope(self):
         return _context(self.capture_context())
@@ -428,6 +433,7 @@ also catches a change occurring while the native child is working.
                     with self.lock:
                         if self.active == (payload["sessionId"], run_id):
                             self.active = None
+                            self.cleaned.notify_all()
             with self.lock:
                 self._session(payload["sessionId"])
                 if captured != self._scope() or (action == "run" and event.is_set()):

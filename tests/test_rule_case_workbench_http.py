@@ -374,6 +374,17 @@ class WorkbenchHTTP(unittest.TestCase):
             self.assertNotEqual(new, self.session)
         self.held_child(action)
 
+    def test_host_shutdown_waits_for_real_child_cleanup_before_returning(self):
+        closing = []
+        def action():
+            thread = threading.Thread(target=self.adapter.close)
+            thread.start(); closing.append(thread)
+            self.assertTrue(self.adapter.closed)
+        self.held_child(action)
+        closing[0].join(5)
+        self.assertFalse(closing[0].is_alive())
+        self.assertEqual(self.post("open")[0], 400)
+
     def test_project_generation_undo_and_reopen_fence_original_scope(self):
         for key, value in [("projectId", "project-B"), ("generation", 8), ("contextToken", "undo-even-same-data")]:
             self.context = {"projectId": "http-workbench-project", "generation": 7,
