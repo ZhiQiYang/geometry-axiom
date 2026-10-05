@@ -158,6 +158,7 @@ NODE_PURE_TEST_FILES = {
 NODE_EXCLUDED = {
     'tests/rule-case-workbench-controller.cjs': 'Required actual standalone HTTP/native controller lifecycle suite; needs explicit isolated GEOMETRY_RULE_CASE_TEST_URL; not a generic node fixture',
     'tests/rule-case-workbench-browser.cjs': 'Required real standalone component browser gate at 1280/390 over native HTTP; formal ZIP flow is separate',
+    'tests/test_rule_case_app_races.js': 'Required formal original GET/create/retention/history/native/B-context races and live assembly candidate preservation; explicit isolated service/TEMP fixtures; see INTEGRATION-GATES.md',
     'tests/test_rule_case_app_browser.js': 'Required formal app/native six cases, races, metadata Undo/Redo, A/B closure and ZIP Save/blank-context reopen at 1280/390; see INTEGRATION-GATES.md',
 
     'tests/test_shared_room_display_browser.js': 'Required isolated shared-room view adoption, per-room dirty/history/basis, true Undo/Redo and real ZIP Save/new-context Open at 1280/390; see INTEGRATION-GATES.md',

@@ -208,7 +208,7 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 525,
+   "count": 535,
    "unit": "node test"
   },
   "node:evidence_project_store": {
@@ -327,6 +327,16 @@
   "py:test_scenario_verify": {
    "mode": "count",
    "count": 37,
+   "unit": "test"
+  },
+  "py:test_rule_case_host": {
+   "mode": "count",
+   "count": 11,
+   "unit": "test"
+  },
+  "py:test_rule_case_workbench_http": {
+   "mode": "count",
+   "count": 19,
    "unit": "test"
   }
  }

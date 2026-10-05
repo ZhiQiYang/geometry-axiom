@@ -412,7 +412,10 @@ const ReferenceWorkspace = (() => {
     assertEditable();assertCurrent();
     const before=getModelOperationState(),original=getEvidenceState();
     if(original.blocked||expectedContextToken!==original.contextToken)throw new Error('功能附件操作已過期。');
-    const proposal=featureProposal(kind,value),admitted=structuredClone(value);
+    // One detached input owns admission, validation and the eventual commit.
+    // Validate caller data before cloning; never retain its aliases across await.
+    const admitted=value===null?null:structuredClone(P.Features.record(kind,value).value);
+    const proposal=featureProposal(kind,admitted);
     const guard=()=>{assertCurrent();assertEditable();const next=getEvidenceState();
       if(getModelOperationState().frame!==before.frame||next.blocked||!sameModelData(original,next))throw new Error('功能附件驗證結果晚到，未寫入。');};
     await validateRuleCaseClosure({schema:P.Features.SCHEMA,records:proposal},guard);guard();
@@ -1143,7 +1146,7 @@ const ReferenceWorkspace = (() => {
   }
   function assertMetadataCapacity(overrides = {}, ids = history.frame.ids) {
     const c = {...context(),...overrides};
-    if (!c.scenarioCatalog && !c.featureAttachments?.some(record => record.kind === P.Features.ROOM_KIND || record.kind === E.KIND)) return;
+    if (!c.scenarioCatalog && !c.featureAttachments?.length) return;
     P.assertManifestCapacity(manifestData(c,ids));
   }
   function assertPageCapacity(bid,page,{append = false,replace = false,...overrides} = {}) {

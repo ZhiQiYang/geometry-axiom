@@ -95,6 +95,8 @@ class RuleCaseHost:
                 or type(data["revision"]) is not int or not 0 <= data["revision"] <= 2**53-1):
             raise AdapterError("SCHEMA", "Invalid binding identity or revision")
         context = _context(data["context"])
+        if context['generation'] != data['sequence']:
+            raise AdapterError('SCOPE', 'Generation must equal the controlled case binding sequence')
         with self.lock:
             if self.closed or self.native.closed or data["session"] != self.native.session or data["runtime"] != self.version or not self.fresh():
                 raise AdapterError("RETIRED", "Selected native session/runtime retired")
@@ -109,7 +111,9 @@ class RuleCaseHost:
                 self.requests[data["requestId"]] = previous
                 # High-water permanently rejects evicted old requests.
                 while len(self.requests) > 64:
-                    del self.requests[next(iter(self.requests))]
+                    active_id = self.binding['requestId'] if self.binding else None
+                    oldest = next(key for key in self.requests if key != active_id)
+                    del self.requests[oldest]
             if data["action"] != "create":
                 previous["closed"] = True
                 if self.binding and self.binding["requestId"] == data["requestId"]:

@@ -30,7 +30,7 @@ async function fixture(options = {}) {
   const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,structuredClone,JSON,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
     requestAnimationFrame:()=>1,CustomEvent:class {},ResizeObserver:class {observe(){}},File,Blob,
     pageRuntimeVersion:"vm-runtime",checkApiSession(){},
-    fetch:async url=>{if(url==="/rule-cases/prepare"&&options.casePrepare)return options.casePrepare();assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
+    fetch:async (url,request)=>{if(url==="/rule-cases/prepare"&&options.casePrepare)return options.casePrepare(request);assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
       assert.ok(options.legacyGate,'Unexpected fetch: '+url);return options.legacyGate.promise;},
     window:{dispatchEvent(){},addEventListener(){},showSaveFilePicker:()=>options.pickerGate?.promise || Promise.resolve(handle),confirm:()=>false},
     document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
@@ -807,4 +807,35 @@ test('formal cases no-op has zero history; equal data after Undo/Redo cannot rev
   assert.equal(W.commitPreparedFeatureAttachment(unchanged),false);assert.equal(W.history.undo.length,before);
   const stale=await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken);
   W.tryLocalHistory('line undo');W.tryLocalHistory('line redo');assert.throws(()=>W.commitPreparedFeatureAttachment(stale),/晚到/);assert.equal(W.history.undo.length,before);
+});
+test('case-only near-limit project rejects full manifest growth before HTTP, history or dirty changes',async()=>{
+  const data=caseData(),definition=data.definitions.find(d=>d.caseId==='legal-rule');
+  const digest=async value=>P.sha(new TextEncoder().encode(P.Features.Cases.canonical(value)));
+  const receipt={caseId:definition.caseId,definitionHash:await digest(definition),sourceHash:await digest(definition.sourcePins),
+    executor:{known:false,reason:'Synthetic nonpass capacity fixture'},context:{projectId:'capacity-fixture',generation:0},status:'not-run',
+    authorExpected:structuredClone(definition.expect),actualOutcome:null,actualDiagnostics:[],assertionResults:[],detail:'x'.repeat(4096),
+    conditions:{timeoutSeconds:5,maxOutputBytes:1048576,isolated:true,nativePid:null,privateDirectoryRemoved:true}};
+  data.receipts=Array.from({length:24},()=>({definition:structuredClone(definition),receipt:structuredClone(receipt)}));
+  P.Features.Cases.validate(data);await P.Features.Cases.verifyHashes(data);
+  let http=0;const f=await fixture({casePrepare:()=>{http++;return caseResponse(data);}}),W=f.w;
+  W.context().engineeringDrafts=Array.from({length:33},(_,i)=>({id:'capacity-'+i,kind:'material',base_ref:null,data:{raw:'x'.repeat(250000)},updated_at:'2026-10-05T00:00:00Z'}));
+  const base=await W.manifest();P.assertManifestCapacity(base,'boundary 1 outline 0,0 800,0 800,700 0,700\n');
+  const original=W.getProjectState(),before=W.history.undo.length;
+  await assert.rejects(W.prepareFeatureAttachment(P.Features.CASE_KIND,data,original.contextToken),/8 MB|容量/);
+  assert.equal(http,0);assert.deepEqual(W.getProjectState(),original);assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
+});
+test('caller mutation during real hashes cannot replace the detached snapshot verified by the core',async()=>{
+  const definition=caseData().definitions[0],receipt=JSON.parse(require('node:child_process').execFileSync('python',['-c',
+    "import sys,json;sys.path[:0]=['geometry-web','geometry-core'];from rule_cases.catalog import cases;from rule_cases.request import run_case_request;from tests._bridge import find_bridge;print(json.dumps(run_case_request(json.dumps(cases()[0]).encode(),project_id='snapshot-original',generation=1,binary=find_bridge())))"],
+    {cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8'}));
+  assert.equal(receipt.status,'passed');const data=caseData();data.receipts=[{definition,receipt}];
+  receipt.observations.after.rules[0].value.members[0].slotId=13;P.Features.Cases.validate(data);
+  const reached=deferred(),gate=deferred(),f=await fixture({projectOverride:{Features:{...P.Features,Cases:{...P.Features.Cases,
+    verifyHashes:async value=>{reached.resolve();await gate.promise;return P.Features.Cases.verifyHashes(value);}}}},
+    casePrepare:request=>{let result;try{result=JSON.parse(require('node:child_process').execFileSync('python',['-c',
+      "import sys,json;sys.path.insert(0,'geometry-web');from rule_case_host import prepare_data;print(json.dumps(prepare_data(sys.stdin.buffer.read())))"],
+      {cwd:require('node:path').resolve(__dirname,'..'),input:request.body,encoding:'utf8',stdio:['pipe','pipe','pipe']}));}catch(error){return {ok:false,json:async()=>({ok:false,error:'core rejected original native pass evidence'})};}return {ok:true,json:async()=>result};}});
+  const before=f.w.getProjectState(),undo=f.w.history.undo.length,pending=f.w.prepareFeatureAttachment(P.Features.CASE_KIND,data,before.contextToken),rejected=assert.rejects(pending,/core rejected/);
+  await reached.promise;receipt.observations.after.rules[0].value.members[0].slotId=7;gate.resolve();await rejected;
+  assert.equal(f.w.readFeatureAttachment(P.Features.CASE_KIND),null);assert.equal(f.w.history.undo.length,undo);assert.deepEqual(f.w.getProjectState(),before);
 });

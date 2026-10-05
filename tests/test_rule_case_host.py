@@ -59,7 +59,7 @@ class RuleCaseHostTests(unittest.TestCase):
         self.assertEqual(self.dispatch('open')[0], 200)
 
     def test_unknown_lower_sequence_is_permanently_rejected_after_finite_eviction(self):
-        for index in range(1,70): self.bind({**self.data,'action':'cancel','requestId':f'{index:032x}','sequence':index})
+        for index in range(1,70): self.bind({**self.data,'action':'cancel','requestId':f'{index:032x}','sequence':index,'context':{**self.data['context'],'generation':index}})
         self.assertEqual(len(self.host.requests),64)
         with self.assertRaises(AdapterError): self.bind({**self.data,'requestId':f'{1:032x}'})
 
@@ -83,7 +83,7 @@ class RuleCaseHostTests(unittest.TestCase):
     def test_expiry_and_runtime_retirement_never_yield_current_results(self):
         self.bind(); self.host.binding['started'] -= 301
         self.assertEqual(self.dispatch('open')[0],409)
-        self.bind({**self.data,'requestId':'b'*32,'sequence':2}); self.fresh=False
+        self.bind({**self.data,'requestId':'b'*32,'sequence':2,'context':{**self.data['context'],'generation':2}}); self.fresh=False
         self.assertEqual(self.dispatch('open')[0],409)
 
     def test_detached_prepare_preserves_data_and_never_creates_binding(self):
@@ -108,6 +108,20 @@ class RuleCaseHostTests(unittest.TestCase):
         for change in [{'sequence':True},{'revision':True},{'program':'echo arbitrary'}]:
             with self.subTest(change=change),self.assertRaises(AdapterError):self.bind({**self.data,**change})
         self.assertEqual(self.host.sequence,0)
+
+    def test_generation_is_the_controlled_sequence_before_any_allocation(self):
+        for generation in [0,999,True]:
+            data=deepcopy(self.data);data['context']['generation']=generation
+            with self.subTest(generation=generation),self.assertRaises(AdapterError):self.bind(data)
+            self.assertEqual(self.host.sequence,0);self.assertEqual(self.host.requests,{})
+            self.assertIsNone(self.host.binding);self.assertEqual(self.host.adapters,set())
+
+    def test_finite_cache_cannot_evict_a_still_active_binding_request(self):
+        self.bind();owner=self.host.binding
+        for index in range(2,70):self.bind({**self.data,'action':'cancel','requestId':f'{index:032x}','sequence':index,'context':{**self.data['context'],'generation':index}})
+        self.assertLessEqual(len(self.host.requests),64);self.assertIs(self.host.binding,owner)
+        self.bind({**self.data,'action':'close'});self.assertIsNone(self.host.binding)
+        self.assertEqual(self.host.dispatch(json.dumps({'protocol':'rule-case-workbench/1','action':'open'}).encode())[0],409)
 
 
 if __name__=='__main__': unittest.main()
