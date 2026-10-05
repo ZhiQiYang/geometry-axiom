@@ -72,6 +72,12 @@
     s.timer=setTimeout(()=>query(s),80);
   }
   const focusInputs=()=>JSON.stringify(['gridRuleFocusKey','gridRuleCellI','gridRuleCellJ'].map(id=>$(id)?.value));
+  function paintQuery(){
+    drawFaceEditor();
+    // Read completion owns rule presentation, not a nested editor that the
+    // user opened in the same face inspector while native reads were pending.
+    if($('faceInspectorContent')?.querySelector('.grid-rule-details,#tbAnchor,#refGuideSource'))renderFaceInspector();
+  }
   async function query(s,focus=null){
     const input=focus?focusInputs():null;
     const request=s.request=(s.request||0)+1,owns=()=>current(s)&&s.request===request&&(!focus||input===focusInputs());
@@ -92,8 +98,8 @@
       s.rows=out;s.messages=messages;s.loaded=true;s.graph=SourceInspector.index(after);
       s.focusStatus=focus?(messages.length?messages.join('；'):out.reduce((n,l)=>n+l.segments.length,0)===0?'完整原生 cell 已核對：本面零可見線段。':'完整原生 cell 已核對：'+out.reduce((n,l)=>n+l.segments.length,0)+' 段可見子線。'):'';
       if(fe.ruleSelection&&!out.some(l=>key(l.ref)===key(fe.ruleSelection)))fe.ruleSelection=null;
-      drawFaceEditor();renderFaceInspector();
-    }catch(error){if(owns()){s.messages=[error.message];s.focusStatus=focus?error.message:'';s.loaded=true;drawFaceEditor();renderFaceInspector();}}
+      paintQuery();
+    }catch(error){if(owns()){s.messages=[error.message];s.focusStatus=focus?error.message:'';s.loaded=true;paintQuery();}}
   }
   function select(r){if(!find(r))return;fe.ruleSelection=ref(r);fe.gridEditingId=r.appliedGridId;fe.sel=null;fe.timberSelection.clear();fiShowTab('grid');renderFaceInspector();drawFaceEditor();if(innerWidth<=680)openPanel('right',$('workspaceToggleRight'));}
   function draw(root,refRoot,z){
