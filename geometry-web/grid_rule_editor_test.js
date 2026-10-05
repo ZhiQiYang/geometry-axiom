@@ -124,4 +124,5 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   }
   check('本切片真 UI 沒有新增未捕捉瀏覽器錯誤',exceptionCount()===startExceptions);
   fs.writeFileSync(path.join(downloads,'rule-editor-roundtrip.json'),JSON.stringify({scene:sceneBefore,raw:rawBefore,manifest:loaded.manifest,sourceId:sid},null,2));console.log('P87 saved artifact '+file);
+  fs.writeFileSync(path.join(mobile.downloads,'rule-editor-roundtrip.json'),JSON.stringify({scene:mobileScene,raw:mobileRaw,manifest:mobileZip.manifest,sourceId:mobileSid},null,2));console.log('P87 mobile saved artifact '+mobile.file);
 };
