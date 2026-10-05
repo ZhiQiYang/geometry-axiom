@@ -4688,6 +4688,10 @@ function faceReferenceOperation(bid,inputIds) {
   const transactionCurrent=()=>sameOwner()&&group!==null&&group===ReferenceWorkspace.history.group;
   const ownsNativeTransaction=()=>context===ReferenceWorkspace.context()&&session===connection.session&&group!==null&&group===ReferenceWorkspace.history.group;
   return {current,sameOwner,transactionCurrent,ownsNativeTransaction,beginTransaction(){group=ReferenceWorkspace.history.group;return transactionCurrent();},
+    // Native rollback can advance its revision without changing World bytes.
+    // Refresh the existing owner snapshot after rejection, preserving raw form
+    // inputs and the strict revision pin for the next operation.
+    async reloadAfterRejection(){if(sameOwner())await feLoadGuides();},
     async verify(){if(!current())return false;const graph=await apiRequest('source-inspect');return current()&&graph.ok&&graph.revision===nativeRevision&&graph.sourceFingerprint===fingerprint;}};
 }
 async function fePlaceTimberFromForm(bid) {
@@ -4733,7 +4737,9 @@ async function fePlaceTimberFromForm(bid) {
     (role === "custom" ? ` priority ${pri}` : "");
   const surf = feSurf(bid);
   if (!(await mutate([decl, `place ${ids.timber} on ${sid} ${anchor} ${selector} ${dir} ${side}`],
-    {operation, friendlyError: err => feTimberPlaceErrorMessage(err, bid, surf, anchor) }))) return false;
+    {operation, friendlyError: err => feTimberPlaceErrorMessage(err, bid, surf, anchor) }))) {
+    await operation.reloadAfterRejection();return false;
+  }
   await feLoadGuides(); drawFaceEditor(); renderFaceLayers(); renderFaceInspector();
   return true;
 }
@@ -8374,6 +8380,7 @@ function renderFaceInspector() {
     const ids = await api("newid");
     if (!ids.ok || oc.edit !== edit || edit.contextId !== ReferenceWorkspace.context().id||!operation.current()||!await operation.verify()) return;
     if (await emitLine(`guide ${ids.guide} ${sid} ${axis} ${expr}`,{operation})) await feAfterChange();
+    else await operation.reloadAfterRejection();
   };
 
 
