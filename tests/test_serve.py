@@ -337,6 +337,146 @@ class BridgeServerTests(unittest.TestCase):
     def receipt_request(self, **fields):
         return {"session": self.server_module.root_context.session, **fields}
 
+    @contextlib.contextmanager
+    def isolated_context(self):
+        responses=queue.Queue();process=Mock();process.stdin=io.BytesIO()
+        process.stdout.readline.side_effect=responses.get
+        with patch('subprocess.Popen',return_value=process):
+            native=self.server_module.NativeContext(['isolated-test-bridge'])
+        try:
+            yield native,responses,process
+        finally:
+            self.server_module.request_context.native=self.server_module.root_context
+            responses.put(b'');native.reader.join(timeout=2)
+            self.assertFalse(native.reader.is_alive())
+            for path in native.upload_temps+([native.prepared_upload[1]] if native.prepared_upload else []):
+                pathlib.Path(path).unlink(missing_ok=True)
+
+    def test_unknown_or_retired_scenario_rejects_before_body_and_never_falls_back_to_live(self):
+        for key in ['unknown','a'*32]:
+            handler=self.post_handler('/api',b'{"cmd":"line reset"}')
+            handler.headers['X-Geometry-Scenario']=key
+            handler.do_POST();self.assertEqual(handler._send.call_args.kwargs,{'status':410})
+            handler.rfile.read.assert_not_called()
+        self.assertEqual(self.process.stdin.getvalue(),b'')
+
+    def test_isolated_bridge_and_receipts_do_not_acquire_or_overwrite_live_namespace(self):
+        mod=self.server_module;request_id=str(uuid.uuid4())
+        self.responses.put(b'{"ok":true,"marker":"A"}\n')
+        self.assertEqual(json.loads(mod.recorded_api(self.receipt_request(requestId=request_id,cmd='line reset')))['marker'],'A')
+        with self.isolated_context() as (native,responses,process):
+            mod.request_context.native=native
+            responses.put(b'{"ok":true,"marker":"B"}\n')
+            data={'session':native.session,'requestId':request_id,'cmd':'line reset'}
+            self.assertEqual(json.loads(mod.recorded_api(data))['marker'],'B')
+            self.assertFalse(json.loads(mod.recorded_api(self.receipt_request(receipt=request_id)))['ok'])
+            self.assertEqual(process.stdin.getvalue(),b'line reset\n')
+            mod.request_context.native=mod.root_context
+            recovered=json.loads(mod.recorded_api(self.receipt_request(receipt=request_id)))
+            self.assertEqual(recovered['result']['marker'],'A')
+            self.assertEqual(self.process.stdin.getvalue(),b'line reset\n')
+
+    def test_matching_numeric_upload_tokens_remain_owned_by_distinct_native_contexts(self):
+        mod=self.server_module
+        self.responses.put(b'{"ok":true,"token":1}\n')
+        self.assertTrue(json.loads(mod.upload_scene(b'root A','prepare'))['ok'])
+        root_candidate=mod.root_context.prepared_upload
+        try:
+            with self.isolated_context() as (native,responses,process):
+                mod.request_context.native=native;responses.put(b'{"ok":true,"token":1}\n')
+                self.assertTrue(json.loads(mod.upload_scene(b'isolated B','prepare'))['ok'])
+                self.assertNotEqual(native.prepared_upload[1],root_candidate[1])
+                responses.put(b'{"ok":true}\n')
+                self.assertEqual(json.loads(mod.upload_scene(b'1','cancel'))['state'],'cancelled')
+                self.assertEqual(mod.root_context.prepared_upload,root_candidate)
+                self.assertEqual(mod.root_context.upload_outcomes,{})
+                mod.request_context.native=mod.root_context
+                self.responses.put(b'{"ok":true,"revision":7}\n')
+                self.responses.put(b'{"ok":true,"text":"root A"}\n')
+                self.assertEqual(json.loads(mod.upload_scene(b'1','confirm'))['state'],'committed')
+                self.assertEqual(json.loads(native.upload_outcomes[1])['state'],'cancelled')
+                self.assertNotIn(b'load-confirm',process.stdin.getvalue())
+        finally:
+            for path in mod.root_context.upload_temps:pathlib.Path(path).unlink(missing_ok=True)
+            mod.root_context.upload_temps.clear()
+
+    def test_isolated_verification_route_never_calls_live_native_or_upload(self):
+        import scenario_verify
+        handler=self.post_handler('/scenarios/verify-native',b'{}')
+        with patch.object(scenario_verify,'verify_bytes',return_value={'ok':True}) as verify, \
+             patch.object(self.server_module,'ask_bridge',side_effect=AssertionError('live native')), \
+             patch.object(self.server_module,'upload_scene',side_effect=AssertionError('live upload')):
+            handler.do_POST()
+        verify.assert_called_once_with(b'{}',bridge_executable=self.server_module.BRIDGE_CMD[0])
+        self.assertEqual(json.loads(handler._send.call_args.args[0]),{'ok':True})
+
+    def test_editor_create_lost_response_retry_is_idempotent_and_retired_request_cannot_recreate(self):
+        import scenario_verify
+        mod=self.server_module;native=Mock();native.session='a'*32;native.closed=False
+        data={'action':'create','requestId':str(uuid.uuid4()),'sequence':1,'session':mod.root_context.session}
+        body=json.dumps(data).encode()
+        with patch.object(scenario_verify,'_program',return_value=('fresh-isolated-bridge','b'*64)), \
+             patch.object(mod,'NativeContext',return_value=native) as create, \
+             patch.object(mod,'ask_bridge',side_effect=AssertionError('live native')):
+            first=self.post_handler('/scenarios/editor',body);first.do_POST()
+            retry=self.post_handler('/scenarios/editor',body);retry.do_POST()
+            self.assertEqual(first._send.call_args,retry._send.call_args)
+            self.assertEqual(json.loads(first._send.call_args.args[0])['context'],native.session)
+            create.assert_called_once_with(['fresh-isolated-bridge'])
+            close=self.post_handler('/scenarios/editor',json.dumps({**data,'action':'close'}).encode());close.do_POST()
+            native.close.assert_called_once();self.assertNotIn(native.session,mod.scenario_contexts)
+            late=self.post_handler('/scenarios/editor',body);late.do_POST()
+            self.assertFalse(json.loads(late._send.call_args.args[0])['ok']);self.assertEqual(create.call_count,1)
+            retry_close=self.post_handler('/scenarios/editor',json.dumps({**data,'action':'close'}).encode());retry_close.do_POST()
+            self.assertEqual(close._send.call_args,retry_close._send.call_args)
+            native.close.assert_called_once();self.assertEqual(mod.root_context.editor_creations,{})
+
+    def test_editor_capacity_and_unknown_actions_reject_before_starting_any_new_native_process(self):
+        import scenario_verify
+        mod=self.server_module;mod.MAX_SCENARIO_EDITORS=1;mod.scenario_contexts['occupied']=Mock()
+        try:
+            valid={'action':'create','requestId':str(uuid.uuid4()),'sequence':1,'session':mod.root_context.session}
+            for data in [valid,{**valid,'requestId':'bad'},{**valid,'action':'unknown'},{'action':'close','context':{}},{**valid,'arbitrary':True},{**valid,'sequence':True},{**valid,'session':'old-session'}]:
+                with self.subTest(data=data),patch.object(scenario_verify,'_program',return_value=('fresh-isolated-bridge','b'*64)),patch.object(mod,'NativeContext') as create:
+                    handler=self.post_handler('/scenarios/editor',json.dumps(data).encode());handler.do_POST()
+                    self.assertFalse(json.loads(handler._send.call_args.args[0])['ok']);create.assert_not_called()
+        finally:
+            mod.scenario_contexts.clear()
+
+    def test_retired_editor_receipts_do_not_permanently_exhaust_normal_open_close(self):
+        import scenario_verify
+        mod=self.server_module
+        def context_factory(_):
+            native=Mock();native.session=uuid.uuid4().hex;native.closed=False;return native
+        with patch.object(scenario_verify,'_program',return_value=('fresh-isolated-bridge','b'*64)), \
+             patch.object(mod,'NativeContext',side_effect=context_factory):
+            for sequence in range(1,301):
+                data={'action':'create','requestId':str(uuid.uuid4()),'sequence':sequence,'session':mod.root_context.session}
+                handler=self.post_handler('/scenarios/editor',json.dumps(data).encode());handler.do_POST()
+                created=json.loads(handler._send.call_args.args[0])
+                self.assertTrue(created['ok'],f'normal edit {sequence}: {created}')
+                close=self.post_handler('/scenarios/editor',json.dumps({**data,'action':'close'}).encode());close.do_POST()
+                self.assertEqual(len(mod.scenario_contexts),0)
+                self.assertEqual(mod.root_context.editor_creations,{})
+                if sequence==1:first=data
+            late=self.post_handler('/scenarios/editor',json.dumps(first).encode());late.do_POST()
+            self.assertFalse(json.loads(late._send.call_args.args[0])['ok'])
+            terminal=self.post_handler('/scenarios/editor',json.dumps({**first,'action':'close'}).encode());terminal.do_POST()
+            self.assertEqual(json.loads(terminal._send.call_args.args[0]),{'ok':True,'state':'retired'})
+
+    def test_cancelled_create_cannot_arrive_late_or_change_another_active_editor(self):
+        import scenario_verify
+        mod=self.server_module
+        data={'action':'close','requestId':str(uuid.uuid4()),'sequence':1,'session':mod.root_context.session}
+        with patch.object(scenario_verify,'_program',return_value=('fresh-isolated-bridge','b'*64)),patch.object(mod,'NativeContext') as factory:
+            cancelled=self.post_handler('/scenarios/editor',json.dumps(data).encode());cancelled.do_POST()
+            self.assertEqual(json.loads(cancelled._send.call_args.args[0]),{'ok':True,'state':'retired'})
+            late=self.post_handler('/scenarios/editor',json.dumps({**data,'action':'create'}).encode());late.do_POST()
+            self.assertFalse(json.loads(late._send.call_args.args[0])['ok']);factory.assert_not_called()
+        with self.http_server() as base,urllib.request.urlopen(base+'/scenarios/editor') as response:
+            status=json.load(response)
+            self.assertEqual(status,{'ok':True,'sequence':2,'session':mod.root_context.session})
+
     def test_lost_api_response_is_recovered_without_repeating_command(self):
         request_id = str(uuid.uuid4())
         with self.http_server() as base:

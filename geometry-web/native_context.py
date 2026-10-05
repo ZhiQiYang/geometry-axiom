@@ -19,6 +19,7 @@ class NativeContext:
         self.session = uuid.uuid4().hex
         self.api_receipts = {}
         self.editor_creations = {}
+        self.editor_sequence = 0
         self.receipt_lock = threading.Lock()
         self.closed = False
         self.reader = threading.Thread(target=self._read, daemon=True)

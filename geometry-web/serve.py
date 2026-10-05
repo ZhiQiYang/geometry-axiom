@@ -321,6 +321,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
                                    'fresh': RUNTIME.fresh(), 'root': str(SCENE_DIR),
                                    'pid': os.getpid(), 'session': current_native_context().session}).encode())
             return
+        if self.path == '/scenarios/editor':
+            if current_native_context() is not root_context:
+                self._send(err_json('方案編輯只能由主方案建立或結束。'))
+                return
+            with scenario_context_lock:
+                self._send(json.dumps({'ok':True,'session':root_context.session,
+                                       'sequence':root_context.editor_sequence+1}).encode())
+            return
         if self.path == "/" or self.path == "/index.html":
             if not RUNTIME.fresh():
                 self._send(('<!doctype html><html lang="zh-Hant"><meta charset="utf-8">'
@@ -434,33 +442,52 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 data = json.loads(body)
                 if current_native_context() is not root_context:
                     raise ValueError('方案編輯只能由主方案建立或結束。')
-                if (type(data) is dict and set(data)=={'action','requestId'} and data['action']=='create' and
-                        isinstance(data['requestId'],str) and re.fullmatch(r'[a-f0-9-]{36}',data['requestId'])):
+                if not (type(data) is dict and set(data)=={'action','requestId','sequence','session'} and
+                        data['action'] in {'create','close'} and isinstance(data['requestId'],str) and
+                        re.fullmatch(r'[a-f0-9-]{36}',data['requestId']) and
+                        type(data['sequence']) is int and 0<data['sequence']<=9007199254740991 and
+                        data['session']==root_context.session):
+                    raise ValueError('無效的方案編輯請求。')
+                if data['action']=='create':
                     if BRIDGE_WSL or len(BRIDGE_CMD) != 1:
                         raise ValueError('目前環境缺少可隔離的原生執行器。')
                     command, _ = _program(BRIDGE_CMD[0])
                     with scenario_context_lock:
                         previous=root_context.editor_creations.get(data['requestId'])
-                        if previous and previous not in scenario_contexts:
+                        if previous and previous['sequence']!=data['sequence']:
+                            raise ValueError('方案編輯請求身分不一致。')
+                        if not previous and data['sequence']<=root_context.editor_sequence:
                             raise ValueError('這次方案編輯已結束，請重新開啟。')
-                        if not previous and (len(scenario_contexts) >= MAX_SCENARIO_EDITORS or len(root_context.editor_creations)>=MAX_RECEIPTS):
+                        if not previous and data['sequence']!=root_context.editor_sequence+1:
+                            raise ValueError('方案編輯序號已變更，請重新開啟。')
+                        if not previous and len(scenario_contexts) >= MAX_SCENARIO_EDITORS:
                             raise ValueError('方案編輯數量已達上限，請先結束其他編輯。')
                         if previous:
-                            native=scenario_contexts[previous]
+                            native=scenario_contexts[previous['context']]
                         else:
                             native = NativeContext([command])
                             scenario_contexts[native.session] = native
-                            root_context.editor_creations[data['requestId']]=native.session
+                            root_context.editor_sequence=data['sequence']
+                            root_context.editor_creations[data['requestId']]={'sequence':data['sequence'],'context':native.session}
                     self._send(canonical_bytes({'ok': True, 'context': native.session}))
-                elif (type(data) is dict and set(data) == {'action', 'context'} and
-                      data['action'] == 'close' and isinstance(data['context'], str)):
-                    with scenario_context_lock:
-                        native = scenario_contexts.pop(data['context'], None)
-                    if native:
-                        native.close()
-                    self._send(canonical_bytes({'ok': True}))
                 else:
-                    raise ValueError('無效的方案編輯請求。')
+                    with scenario_context_lock:
+                        previous=root_context.editor_creations.get(data['requestId'])
+                        if previous:
+                            if previous['sequence']!=data['sequence']:
+                                raise ValueError('方案編輯請求身分不一致。')
+                            native=scenario_contexts[previous['context']]
+                            native.close()
+                            scenario_contexts.pop(previous['context'])
+                            root_context.editor_creations.pop(data['requestId'])
+                        elif data['sequence']==root_context.editor_sequence+1:
+                            # Cancellation can arrive before an uncertain create.
+                            # The scalar high water rejects all later old creates;
+                            # no unbounded retired UUID ledger is necessary.
+                            root_context.editor_sequence=data['sequence']
+                        elif data['sequence']>root_context.editor_sequence:
+                            raise ValueError('無效的方案編輯序號。')
+                    self._send(canonical_bytes({'ok': True,'state':'retired'}))
             except (ValueError, TypeError, OSError) as exc:
                 self._send(err_json(str(exc)))
             except ModelError as exc:

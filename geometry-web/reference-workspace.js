@@ -11,7 +11,7 @@ const ReferenceWorkspace = (() => {
   const modelOperationIdentities = new WeakMap();
   let pdfLib, modal = null, busy = false, busyLabel = "", busyShort = "處理中", sequence = 0, pendingLoad = null;
   let importRenderingContext = null;
-  let assemblyConfirmation = null, preparingSceneLoad = false;
+  let assemblyConfirmation = null, preparingSceneLoad = false, sceneTransaction = null;
   let roomTransaction = null;
   const featureConfirmations=new Map();
   let presentedModelContext = null, presentedModels = null;
@@ -64,7 +64,9 @@ const ReferenceWorkspace = (() => {
     if(editorLeaseSession && connection.session!==editorLeaseSession)throw new Error("服務工作階段已變更，請重新連接後再編輯。");
   }
   function assertWritableLease(){assertAssemblyIdle();assertEditorLease();}
-  function assertEditable(){assertWritableLease();if(contextConflict)throw new Error("另一個分頁已變更目前場景。請先開啟正確的 .gcanvas 專案或建立新專案，再編輯或保存。");}
+  function assertEditable(){assertWritableLease();if(sceneTransaction||preparingSceneLoad||pendingLoad)throw new Error("場景載入結果尚未確認，請先等候結果或重新連線，再編輯或復原。");if(contextConflict)throw new Error("另一個分頁已變更目前場景。請先開啟正確的 .gcanvas 專案或建立新專案，再編輯或保存。");}
+  function beginSceneTransaction(){assertWritableLease();if(sceneTransaction||preparingSceneLoad||pendingLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");return sceneTransaction={};}
+  function finishSceneTransaction(owner){if(sceneTransaction===owner){sceneTransaction=null;schedulePresentation();}}
   const context = () => history.frame.context;
   // The native commit and its local history observation must finish before
   // another project or mutation can become the current history frame.
@@ -133,7 +135,7 @@ const ReferenceWorkspace = (() => {
   }
   function getModelOperationState() {
     const identity=value=>{if(!value)return null;if(!modelOperationIdentities.has(value))modelOperationIdentities.set(value,uuid());return modelOperationIdentities.get(value);};
-    let blocked=busy||!!oc.busy||preparingSceneLoad||!!pendingLoad||!!history.group;
+    let blocked=busy||!!oc.busy||!!sceneTransaction||preparingSceneLoad||!!pendingLoad||!!history.group;
     try{assertModelReady();}catch(_){blocked=true;}
     const project=getProjectState(),session=typeof connection==='undefined'?'':connection.session||'';
     // Only opaque scalar identities cross the model owner boundary. A caller
@@ -1144,24 +1146,26 @@ const ReferenceWorkspace = (() => {
     if (!unchanged(stamp)) throw new Error("專案在保存準備期間已變更，請重新保存。");
     assertSaveReady();
   }
-  async function exportSnapshot(c = context(),includeCatalog = true) {
+  async function exportSnapshot(c = context(),includeCatalog = true,assertCurrent=()=>{},afterFlush=()=>{}) {
+    assertCurrent();
     window.AssemblyWorkspace?.flush();
     window.InfiniteGridWorkspace?.flush();
-    assertSaveReady(); await referencesReady(c); assertContext(c); assertSaveReady();
+    afterFlush();assertCurrent();
+    assertSaveReady(); await referencesReady(c); assertCurrent();assertContext(c); assertSaveReady();
     const stamp = { context:c, frame:history.frame, revision:revision(c) };
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
-    assertSnapshot(stamp);
+    assertCurrent();assertSnapshot(stamp);
     const m=includeCatalog?await manifest(c,r.text):manifestData({...c,scenarioCatalog:null});
-    P.assertManifestCapacity(m,r.text);assertSnapshot(stamp);
-    await validateEvidenceClosure(c, m.featureAttachments, () => assertSnapshot(stamp)); assertSnapshot(stamp);
+    P.assertManifestCapacity(m,r.text);assertCurrent();assertSnapshot(stamp);
+    await validateEvidenceClosure(c, m.featureAttachments, () => {assertCurrent();assertSnapshot(stamp);}); assertCurrent();assertSnapshot(stamp);
     const data=new Map([...c.sources].map(([k,s])=>[k,s.bytes]));
-    const bytes=await P.pack(r.text,m,data,fflate); assertSnapshot(stamp);
+    const bytes=await P.pack(r.text,m,data,fflate); assertCurrent();assertSnapshot(stamp);
     return {bytes,stamp,scene:r.text};
   }
   async function exportBytes() { return (await exportSnapshot()).bytes; }
-  async function readScenarioProject() {
-    const {bytes,stamp}=await exportSnapshot(context(),false);
-    const project=await P.unpack(bytes,fflate);assertSnapshot(stamp);
+  async function readScenarioProject(assertCurrent=()=>{},afterFlush=()=>{}) {
+    const {bytes,stamp}=await exportSnapshot(context(),false,assertCurrent,afterFlush);assertCurrent();
+    const project=await P.unpack(bytes,fflate);assertCurrent();assertSnapshot(stamp);
     return {project,assertCurrent:()=>assertSnapshot(stamp)};
   }
   function readScenarioCatalog() {
@@ -1178,15 +1182,18 @@ const ReferenceWorkspace = (() => {
   }
   async function adoptScenario(project,assertCurrent=()=>{}) {
     assertSaveReady();assertCurrent();
+    const owner=beginSceneTransaction();busy=true;busyLabel='正在整體採用候選方案…';present();
+    try {
     const root=readScenarioCatalog(),bytes=await P.pack(project.scene,project.manifest,project.sources,fflate);
     assertCurrent();const {loaded,c,ids}=await readProjectContext(bytes,'候選方案',()=>{},assertCurrent,true);
     c.scenarioCatalog=root.catalog;
     for(const [hash,source] of root.sources)if(!c.sources.has(hash))c.sources.set(hash,source);
     c.dirty=true;c.saved=false;c.provenance={...context().provenance};
     P.assertManifestCapacity(manifestData(c,new Map(ids)),loaded.scene);assertCurrent();
-    const r=await uploadScene(loaded.scene,{context:c,ids,manifest:loaded.manifest,action:'整體採用候選方案'},assertCurrent);
+    const r=await uploadScene(loaded.scene,{context:c,ids,manifest:loaded.manifest,action:'整體採用候選方案'},assertCurrent,owner);
     if(!r.ok)throw new Error(r.error||'方案未採用。');
     resetSceneFocus();sync();await refreshActive();return true;
+    }finally{if(pendingLoad?.transaction!==owner)finishSceneTransaction(owner);busy=false;busyLabel='';present();scheduleRecovery();}
   }
   function download(bytes,name) {
     const url=URL.createObjectURL(new Blob([bytes],{type:"application/zip"})),a=document.createElement("a");
@@ -1430,15 +1437,16 @@ const ReferenceWorkspace = (() => {
       throw error;
     }
   }
-  function assertLoadContext(load) {
+  function assertLoadContext(load,result=null) {
     assertWritableLease();
-    if(context()!==load.guard.context || history.frame!==load.guard.frame || revision(context())!==load.guard.revision || contextConflict!==load.guard.conflict)
+    if(context()!==load.guard.context || history.frame!==load.guard.frame || revision(context())!==load.guard.revision || contextConflict!==load.guard.conflict || connection.session!==load.guard.session || result&&Number.isSafeInteger(result.revision)&&nativeRevision>result.revision)
       throw new Error("載入結果晚到，目前工程已有變更；未替換目前專案資料，請重新開啟。");
   }
-  async function uploadScene(text,replacement=null,assertCurrent=()=>{}) {
+  async function uploadScene(text,replacement=null,assertCurrent=()=>{},transaction=null) {
     assertWritableLease(); assertRoomDraftIdle();
     if(pendingLoad || preparingSceneLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");
     assertCurrent();
+    const owner=transaction||beginSceneTransaction();if(sceneTransaction!==owner)throw new Error('場景載入交易已過期。');
     preparingSceneLoad=true;
     let nextLoad;
     try {
@@ -1446,14 +1454,15 @@ const ReferenceWorkspace = (() => {
       assertWritableLease();assertCurrent();
       if (!before.ok) throw new Error(before.error || "無法讀取載入前的場景。");
       nextLoad = { text, before: before.text, beforeRevision:before.revision, manifest:replacement?.manifest, context: replacement?.context || fresh(), ids: replacement?.ids, action:replacement?.action || null, isolateHistory:contextConflict,
-        guard:{context:context(),frame:history.frame,revision:revision(context()),conflict:contextConflict} };
-    } catch(error) {preparingSceneLoad=false;throw error;}
+        transaction:owner,guard:{context:context(),frame:history.frame,revision:revision(context()),conflict:contextConflict,session:connection.session} };
+    } catch(error) {preparingSceneLoad=false;finishSceneTransaction(owner);throw error;}
     let result,token=null;
     try {
       if(replacement?.manifest)token=await prepareProjectScene(text,replacement.manifest,assertCurrent);
       assertWritableLease();assertCurrent();nextLoad.token=token;pendingLoad=nextLoad;
     } catch(error) {
       if(token!==null)try{await cancelProjectScene(token);}catch(_){}
+      finishSceneTransaction(owner);
       throw error;
     } finally {preparingSceneLoad=false;}
     try {
@@ -1465,10 +1474,10 @@ const ReferenceWorkspace = (() => {
       connectionFailed("無法確認載入結果，已暫停編輯。請確認服務後重試。");
       throw e;
     }
-    try{assertLoadContext(nextLoad);}catch(error){pendingLoad=null;contextConflict=true;sync();throw error;}
+    try{assertLoadContext(nextLoad,result);}catch(error){pendingLoad=null;finishSceneTransaction(owner);contextConflict=true;sync();throw error;}
     observeNativeRevision(result);
     if(result.ok){adoptLoadedContext();notifySceneChange();}
-    pendingLoad=null;sync();
+    pendingLoad=null;finishSceneTransaction(owner);sync();
     return result;
   }
   function adoptLoadedContext() {
@@ -1526,7 +1535,7 @@ const ReferenceWorkspace = (() => {
       document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
       markSceneItem();
     }
-    pendingLoad=null;sync();return true;
+    pendingLoad=null;finishSceneTransaction(load.transaction);sync();return true;
   }
   function mayLeave() {
     if (window.RoomCollectionWorkspace?.hasWork) {toast("請先完成、取消或恢復目前房間草稿，再切換專案。"); return false;}
