@@ -47,3 +47,19 @@ test('evidence coexistence with real subdivision scene uses /12 and keeps requir
   assert.equal(loaded.manifest.format,P.EVIDENCE_FORMAT);assert.ok(loaded.manifest.requiredCapabilities.includes(P.SUBDIVISION_CAPABILITY));
   await assert.rejects(P.pack(scene.replace('requires grid-subdivision-rules/1\n',''),f.manifest,f.sources,zip));
 });
+test('core-only history fallback preserves evidence scope and original source closure through undo/redo and ZIP',async()=>{
+  const f=await make(),create=()=>({id:'fresh-project',sources:new Map(),groups:new Map(),featureAttachments:[]}),h=new P.ContextHistory(create);
+  h.frame.context.id=f.manifest.projectId;
+  h.frame.context.sources.set(f.hash,{meta:f.manifest.sources[0],bytes:f.bytes});
+  h.frame.context.featureAttachments=structuredClone(f.manifest.featureAttachments.records);
+  const original=h.frame.context;
+  for(const command of ['line undo','line redo','line undo']){
+    h.observe(command,{ok:true});
+    const c=h.frame.context;assert.equal(c.id,f.manifest.projectId);assert.deepEqual(c.featureAttachments,f.manifest.featureAttachments.records);
+    assert.deepEqual(c.sources.get(f.hash).bytes,f.bytes);
+    const m={...f.manifest,projectId:c.id,sources:[...c.sources.values()].map(s=>s.meta),featureAttachments:{schema:P.Features.SCHEMA,records:c.featureAttachments}};
+    const loaded=await P.unpack(await P.pack('reset\n',m,new Map([...c.sources].map(([k,s])=>[k,s.bytes])),zip),zip);
+    assert.deepEqual(loaded.sources.get(f.hash),f.bytes);
+  }
+  assert.notEqual(h.frame.context,original);
+});

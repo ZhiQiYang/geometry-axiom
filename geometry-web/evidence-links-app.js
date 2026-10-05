@@ -3,7 +3,7 @@
   'use strict';
   const E=window.EvidenceLinks,R=ReferenceWorkspace,S=window.SourceInspector;
   let controller=null,owner=null,referenceUI=null,referenceHost=null,parameterHost=null;
-  let scheduled=false,sequence=0,parameterSequence=0,located=null,referencePage=null;
+  let scheduled=false,sequence=0,parameterSequence=0,located=null,referencePage=null,refreshReference=false;
   const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
   const stamp=()=>R.getEvidenceState();
   const current=s=>same(s,stamp())&&!s.blocked;
@@ -68,6 +68,7 @@
     const identity=JSON.stringify([pageIdentity(),stamp().contextToken]);
     if(referenceHost===host&&referencePage===identity&&host?.isConnected)return;
     const open=referenceHost?.closest('details')?.open;
+    const initialInput=referencePage===identity?referenceUI?.captureInput():null;
     referenceUI?.destroy();referenceUI=null;referenceHost=host;referencePage=identity;
     if(!host)return;
     if(open)host.closest('details').open=true;
@@ -75,7 +76,7 @@
       toPage:p=>feUlMmToImg(page(),...p),fromPage:p=>feUlImgToMm(page(),...p),pageIdentity,
       beginSelection(){if(innerWidth<=680)closePanels();},
       endSelection(){if(innerWidth<=680)openPanel('right',document.getElementById('workspaceToggleRight'));}};
-    referenceUI=EvidenceLinksUI.mount(host,{controller:getController(),getStamp:stamp,readSelection,canvas,
+    referenceUI=EvidenceLinksUI.mount(host,{controller:getController(),getStamp:stamp,readSelection,canvas,initialInput,
       filter:link=>{const p=page();return !!p&&(link.document.referencePageId===p.id||link.document.sourceHash===p.sourceId&&link.document.page===p.page);},locateTarget});
   }
   async function renderParameter(host) {
@@ -103,6 +104,7 @@
       if(stamp().nativeRevision===null){await apiRequest('source-inspect');if(request!==sequence)return;}
       getController();
       const host=document.querySelector('#refRecordDetails [data-evidence-host]');installReference(host);
+      if(refreshReference&&!stamp().blocked){refreshReference=false;referenceUI?.refresh({preserveInput:true});}
       const target=document.querySelector('#paramUsage [data-parameter-evidence-host]');
       if(parameterHost!==target){parameterHost=target;if(target)renderParameter(target);}
     }catch(error){/* A view can be temporarily unavailable during native loads. */}
@@ -112,7 +114,7 @@
     const host=document.getElementById(id);if(host)new MutationObserver(records=>{if(records.some(r=>!r.target.closest?.('[data-evidence-links],[data-parameter-evidence-host]')))queue();}).observe(host,{childList:true,subtree:true});
   }
   for(const name of ['project-local-history','geometry-definition-changed','evidence-links-changed','space-models-changed'])window.addEventListener(name,()=>{
-    if(name!=='evidence-links-changed')referenceUI?.cancel();parameterHost=null;queue();
+    if(name!=='evidence-links-changed'){referenceUI?.cancel();refreshReference=true;}parameterHost=null;queue();
   });
   window.EvidenceLinksApp={sync,queue,redraw,showRegion,locateTarget,getController,readSelection,getStamp:stamp,get ui(){return referenceUI;}};queue();
 })();

@@ -619,11 +619,17 @@ const ReferenceWorkspace = (() => {
         cMapUrl: "/vendor/pdfjs-dist/cmaps/", cMapPacked: true,
         standardFontDataUrl: "/vendor/pdfjs-dist/standard_fonts/", wasmUrl: "/vendor/pdfjs-dist/wasm/" });
       s.loadingTask = task;
+      s.documentTask = task;
       task.onPassword = () => { task.destroy().catch(()=>{}); };
-      try { s.doc = await task.promise; assertCurrent(); } catch (error) { assertCurrent(); throw new Error("無法讀取 PDF；請確認檔案完整且未加密。"); }
+      try { s.doc = await task.promise; assertCurrent(); } catch (error) { await releasePDFSource(s);assertCurrent();throw new Error("無法讀取 PDF；請確認檔案完整且未加密。"); }
       finally { if (s.loadingTask === task) s.loadingTask = null; }
     }
     return s.doc;
+  }
+  async function releasePDFSource(source) {
+    const task=source.loadingTask || source.documentTask || source.doc?.loadingTask;
+    source.doc=null;source.loadingTask=null;source.documentTask=null;
+    if(task)await task.destroy().catch(()=>{});
   }
   // Runtime-only immutable source features: never added to history or saved
   // project metadata. A late extraction only fills its source/page cache.
@@ -725,9 +731,7 @@ const ReferenceWorkspace = (() => {
       pageRender = await renderPage(source, document.page, 4, assertCurrent); assertCurrent();
       pageCount = source.doc.numPages;
     } finally {
-      const task = source.loadingTask || source.doc?.loadingTask;
-      if (task) await task.destroy().catch(()=>{});
-      source.doc=null;source.loadingTask=null;
+      await releasePDFSource(source);
     }
     assertCurrent();
     if (pageRender.width !== document.pageWidth || pageRender.height !== document.pageHeight) throw new Error("證據頁碼或尺寸不符。");
@@ -852,16 +856,20 @@ const ReferenceWorkspace = (() => {
   async function validateEvidenceClosure(c, attachments, assertCurrent) {
     const evidence = attachments && P.Features.evidenceLinks(attachments,c.sources,c.id);
     if (!evidence) return;
-    await E.validateSourceClosure(evidence, {
+    const detached = new Set();
+    try { await E.validateSourceClosure(evidence, {
       readSource:hash=>c.sources.get(hash),
       hashBytes:async bytes=>{const hash=await P.sha(bytes);assertCurrent();return hash;},
       readPage:async (source,number)=>{
+        detached.add(source);
         const pdf=await documentFor(source,assertCurrent);assertCurrent();
         if(number>pdf.numPages)throw new Error("證據 PDF 頁碼不存在。");
         const page=await pdf.getPage(number);assertCurrent();
         const size=page.getViewport({scale:1});return {width:size.width,height:size.height};
       }
     });assertCurrent();
+    } finally {await Promise.all([...detached].map(releasePDFSource));}
+    assertCurrent();
   }
   async function selectPage(bid, pageId) {
     assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
@@ -1077,9 +1085,7 @@ const ReferenceWorkspace = (() => {
     const source=modal?.source;modal=null;sequence++;document.getElementById("referenceDialog").close();
     if(source && context().sources.get(source.meta.id)!==source) {
       // PDF.js 6 exposes destruction on the loading task, not PDFDocumentProxy.
-      const task=source.loadingTask || source.doc?.loadingTask;
-      source.doc=null;source.loadingTask=null;
-      if(task)source.cleanup=task.destroy().catch(()=>{});
+      source.cleanup=releasePDFSource(source);
     }
   }
   function manifestData(c = context(), ids = history.frame.ids) {
@@ -1090,10 +1096,9 @@ const ReferenceWorkspace = (() => {
       faces.push({ bid,activePageId:g.activePageId,pages:g.pages.map(p=>{used.add(p.sourceId);return Object.fromEntries(["id","sourceId","page","imgW","imgH","crop","mmPerPx","x","y","rot","opacity","locked","calibration","reviewRequired","records"].map(key=>[key,p[key]]));}) });
       for (const p of g.pages) {const r=c.reconstructionReviews.get(key+":"+p.id);if (r) reconstructionReviews.push({bid,pageId:p.id,...r});}
     }
-    const roomSources = P.Features.sourceRooms({schema:P.Features.SCHEMA,records:c.featureAttachments || []},c.sources);
-    for (const plane of roomSources?.planes || []) used.add(plane.sourceId);
-    const evidence = P.Features.evidenceLinks({schema:P.Features.SCHEMA,records:c.featureAttachments || []},c.sources,c.id);
-    for (const hash of evidence ? E.references(evidence).sources : []) used.add(hash);
+    const envelope = {schema:P.Features.SCHEMA,records:c.featureAttachments || []};
+    P.Features.sourceRooms(envelope,c.sources);P.Features.evidenceLinks(envelope,c.sources,c.id);
+    for (const hash of P.Features.sourceIds(envelope)) used.add(hash);
     const data = { ...(reconstructionReviews.length?{reconstructionReviews}:{}),projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
       ...(c.models.length?{models:c.models}:{}),...(faceProjections.length?{faceProjections}:{}),
       ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:c.assemblyDrafts}}:{}),
@@ -1529,7 +1534,7 @@ const ReferenceWorkspace = (() => {
     const preview=document.getElementById("refPagePreview");
     preview.onpointerdown=e=>{if(!modal?.ready||modal.evidence||e.button!==0)return;e.preventDefault();modal.drag=cropPoint(e);preview.setPointerCapture(e.pointerId);};
     preview.onpointermove=e=>{if(!modal?.drag)return;const p=cropPoint(e),s=modal.drag;modal.crop=[Math.min(p[0],s[0]),Math.min(p[1],s[1]),Math.max(1,Math.abs(p[0]-s[0])),Math.max(1,Math.abs(p[1]-s[1]))];drawCrop();};
-    preview.onpointerup=()=>{if(modal){modal.drag=null;if(!modal.ready||!modal.crop)return;if(modal.crop[2]<2||modal.crop[3]<2)modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
+    preview.onpointerup=()=>{if(modal&&!modal.evidence){modal.drag=null;if(!modal.ready||!modal.crop)return;if(modal.crop[2]<2||modal.crop[3]<2)modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
     preview.onpointercancel=preview.onpointerup;
     document.getElementById("btnProjectName").onclick=safe(()=>{assertEditable();const n=prompt("專案名稱",context().name);if(n?.trim()){assertEditable();const name=n.trim().slice(0,200);assertMetadataCapacity({name});context().name=name;dirty();sync();}});
     window.addEventListener("beforeunload",e=>{if(context().dirty || Object.values(fe.feats || {}).some(items => items.length)){e.preventDefault();e.returnValue="";}});

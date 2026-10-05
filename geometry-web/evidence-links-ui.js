@@ -6,12 +6,15 @@
   const statusText={unchecked:'尚未核對','confirmed-content':'已核對內容','needs-reassociation':'物件身分需重新指定','source-missing':'原 PDF 缺失','source-changed':'原 PDF 已換版，需重新核對','target-missing':'參數欄位缺失'};
   const valueText=v=>v?`${v.num}${v.den==='1'?'':'/'+v.den}${v.unit==='mm'?' mm':''}`:'無現行正式值';
   const typed=t=>`${t.parameterId}:${t.fieldId}`;
-  function mount(host,{controller,readSelection,getStamp,canvas,filter=()=>true,locateTarget=null}){
+  function mount(host,{controller,readSelection,getStamp,canvas,filter=()=>true,locateTarget=null,initialInput=null}){
     if(!host||!controller||typeof readSelection!=='function'||typeof getStamp!=='function')throw Error('證據介面接線不完整。');
     const doc=host.ownerDocument,section=doc.createElement('section');section.dataset.evidenceLinks='';
     section.style.cssText='min-width:0;max-width:100%;overflow-wrap:anywhere';host.append(section);
     let sequence=0,destroyed=false,selection=null,selectionIdentity=null,view=null,region=null,selecting=false,drag=null,overlay=null,busy=false;
     let form=null,targetSelect=null,model=null,message=null,list=null,save=null,start=null,cancelButton=null,regionFields=null;
+    let pendingInput=initialInput;
+    function captureInput(){return {target:targetSelect?.value||'',fields:[...section.querySelectorAll('[data-evidence-input]')].filter(n=>!n.dataset.evidenceInput.startsWith('region-')).map(n=>[n.dataset.evidenceInput,n.value])};}
+    function restoreInput(raw){if(!raw)return;for(const [key,value]of raw.fields){const input=[...section.querySelectorAll('[data-evidence-input]')].find(n=>n.dataset.evidenceInput===key);if(input)input.value=value;}if(targetSelect&&[...targetSelect.options].some(o=>o.value===raw.target))targetSelect.value=raw.target;updateModel();}
     const disclosure=host.closest('details');
     const connected=()=>!destroyed&&section.isConnected&&disclosure?.open!==false;
     const stamp=()=>getStamp();
@@ -106,14 +109,15 @@
       }form.append(regionFields);
       list=element('div',null,{'data-evidence-list':''});section.append(list);renderLinks();
     }
-    async function refresh(){
+    async function refresh({preserveInput=false}={}){
       const request=++sequence,initial=stamp(),identity=pageIdentity();busy=false;resetRegion();
       try{
         const results=await Promise.all([controller.readView(),readSelection()]);
         if(request!==sequence||!live(initial)||!same(identity,pageIdentity()))return false;
         const [nextView,nextSelection]=results;
         if(!same(nextView.stamp,initial)||!same(nextSelection.stamp,initial))return false;
-        view=nextView;selection=nextSelection;selectionIdentity=identity;render();return true;
+        const raw=preserveInput?captureInput():pendingInput;pendingInput=null;
+        view=nextView;selection=nextSelection;selectionIdentity=identity;render();restoreInput(raw);return true;
       }catch(error){if(request===sequence&&live(initial)){section.replaceChildren(element('p',error.message||'證據來源尚未讀取。',{'data-evidence-error':''}));}return false;}
     }
     function point(event){const p=canvas.eventPoint(event),page=canvas.toPage(Array.isArray(p)?p:[p.x,p.y]);if(!Array.isArray(page)||page.length!==2||!page.every(Number.isFinite))throw Error('原頁座標無法讀取。');return page;}
@@ -140,7 +144,7 @@
     function pointerCancel(){if(selecting||drag)cancel();}
     if(canvas?.svg){canvas.svg.addEventListener('pointerdown',pointerDown,true);canvas.svg.addEventListener('pointermove',pointerMove,true);canvas.svg.addEventListener('pointerup',pointerUp,true);canvas.svg.addEventListener('pointercancel',pointerCancel,true);}
     disclosure?.addEventListener('toggle',toggle);refresh();
-    return {refresh,cancel,redraw(){if(region)draw(region);},destroy(){cancel();destroyed=true;disclosure?.removeEventListener('toggle',toggle);if(canvas?.svg){canvas.svg.removeEventListener('pointerdown',pointerDown,true);canvas.svg.removeEventListener('pointermove',pointerMove,true);canvas.svg.removeEventListener('pointerup',pointerUp,true);canvas.svg.removeEventListener('pointercancel',pointerCancel,true);}section.remove();},snapshot(){return {selecting,region:region&&[...region],links:view?.links.length??0};}};
+    return {refresh,cancel,captureInput,redraw(){if(region)draw(region);},destroy(){cancel();destroyed=true;disclosure?.removeEventListener('toggle',toggle);if(canvas?.svg){canvas.svg.removeEventListener('pointerdown',pointerDown,true);canvas.svg.removeEventListener('pointermove',pointerMove,true);canvas.svg.removeEventListener('pointerup',pointerUp,true);canvas.svg.removeEventListener('pointercancel',pointerCancel,true);}section.remove();},snapshot(){return {selecting,region:region&&[...region],links:view?.links.length??0};}};
   }
   return Object.freeze({mount,valueText,statusText:Object.freeze(statusText)});
 });

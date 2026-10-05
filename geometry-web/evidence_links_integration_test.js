@@ -16,7 +16,7 @@ function fixture(changed=false){
   return Buffer.from(text+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
 }
 const checks=[],errors=[];
-const check=(name,ok)=>{checks.push({name,pass:ok===true});console.log((ok?'PASS ':'FAIL ')+name);assert.equal(ok,true,name);};
+const check=(name,ok,details)=>{checks.push({name,pass:ok===true,...(details?{details}:{})});console.log((ok?'PASS ':'FAIL ')+name);assert.equal(ok,true,name);};
 (async()=>{
  const runtime=await (await fetch(new URL('runtime',url))).json();assert.equal(runtime.root,root);assert.equal(runtime.fresh,true);
  const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
@@ -26,16 +26,16 @@ const check=(name,ok)=>{checks.push({name,pass:ok===true});console.log((ok?'PASS
  try {
  for(const width of [1280,390]){
   const context=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:2,acceptDownloads:true}),page=await context.newPage();
-  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});page.on('dialog',d=>d.accept());
+  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});page.on('dialog',d=>d.type()==='prompt'?d.accept('Authored room A'):d.accept());
   await page.goto(url);await page.waitForFunction(()=>connection.phase==='ready');await page.evaluate(()=>window.showSaveFilePicker=undefined);
   const ev=async(body,arg)=>page.evaluate(body,arg);
   const native=()=>ev(async()=>({scene:(await apiRequest('dump')).text,revision:(await apiRequest('engineering-read')).revision}));
   const bundle=()=>ev(()=>ReferenceWorkspace.readFeatureAttachment(EvidenceLinks.KIND));
-  async function parameter(remove=false,input='457.5'){
-    await ev(async({remove,input})=>{
+  async function parameter(remove=false,input='457.5',render=true){
+    await ev(async({remove,input,render})=>{
       const read=await apiRequest('engineering-read'),operations=remove?[{op:'delete-parameter',id:0}]:[{op:'put-parameter',value:{id:0,name:'Authored card',fields:[{id:0,name:'Authored field',type:'dimension',input}]}}];
-      const p=await EngineeringAdapter.preview({operations,expectedRevision:read.revision});if(!p.valid)throw Error(JSON.stringify(p));await EngineeringAdapter.confirm({token:p.token});await renderObjects();
-    },{remove,input});
+      const p=await EngineeringAdapter.preview({operations,expectedRevision:read.revision});if(!p.valid)throw Error(JSON.stringify(p));if(render){await EngineeringAdapter.confirm({token:p.token});await renderObjects();}else{await apiRequest('engineering-confirm '+p.token);}
+    },{remove,input,render});
   }
   async function face(){await ev(async()=>{await enterFocus('face',1);fiShowTab('underlay');});await page.waitForSelector('#refRecordDetails',{state:'attached'});if(width<=680)await ev(()=>openPanel('right',document.getElementById('workspaceToggleRight')));await ev(()=>document.getElementById('refRecordDetails').open=true);await page.waitForSelector('[data-evidence-target]');}
   async function importPDF(number=1,changed=false){
@@ -72,7 +72,7 @@ const check=(name,ok)=>{checks.push({name,pass:ok===true});console.log((ok?'PASS
   check(width+' drawing/measurement/native exact rational kept separate and text safe',saved.links[0].observations.drawing.rawValue==='915/2'&&saved.links[0].observations.measurement.rawValue==='460.125'&&await page.locator('[data-evidence-value="model"]').innerText()==='915/2 mm'&&!await ev(()=>window.__unsafe)&&JSON.stringify(await native())===JSON.stringify(original));
   await page.locator('[data-evidence-reviewed]').check();await page.waitForSelector('[data-evidence-status="confirmed-content"]');
   saved=await bundle();check(width+' review annotation never changes native World',!!saved.links[0].humanConfirmation&&JSON.stringify(await native())===JSON.stringify(original));
-  await ev(async()=>{await apiRequest('line undo');await EvidenceLinksApp.ui.refresh();});check(width+' single undo restores unchecked evidence',!(await bundle()).links[0].humanConfirmation);
+  await ev(async()=>{await apiRequest('line undo');});await page.waitForFunction(()=>!document.querySelector('[data-evidence-reviewed]')?.checked);check(width+' single undo restores unchecked evidence',!(await bundle()).links[0].humanConfirmation);
   await ev(async()=>{await apiRequest('line redo');});await page.waitForSelector('[data-evidence-status="needs-reassociation"]');check(width+' redo preserves historical confirmation and requires reassociation',!!(await bundle()).links[0].humanConfirmation&&await page.locator('[data-evidence-status="needs-reassociation"]').count()===1);
   await page.locator('[data-evidence-rebind-target]').selectOption('0:0');await page.locator('[data-evidence-rebind]').click();await page.waitForSelector('[data-evidence-status="unchecked"]');await page.locator('[data-evidence-reviewed]').check();await page.waitForSelector('[data-evidence-status="confirmed-content"]');
   await page.screenshot({path:path.join(out,width+'-evidence.png'),fullPage:false});
@@ -144,7 +144,7 @@ const check=(name,ok)=>{checks.push({name,pass:ok===true});console.log((ok?'PASS
       check('formal import '+label+' rejects before native/project/assets/history replacement',rejected&&JSON.stringify(await native())===JSON.stringify(unchanged)&&await ev(before=>before===JSON.stringify({state:ReferenceWorkspace.getProjectState(),bundle:ReferenceWorkspace.readFeatureAttachment(EvidenceLinks.KIND),history:ReferenceWorkspace.history.undo.length}),beforeImport));
     }
   }
-  await face();await parameter(true);await ev(()=>EvidenceLinksApp.ui?.refresh());await page.waitForSelector('[data-evidence-status="target-missing"]');
+  await face();await parameter(true);await page.waitForSelector('[data-evidence-status="target-missing"]');
   check(width+' native target deletion preserves unresolved observations and remains saveable',(await bundle()).links.length===1&&!!await save('missing-target'));
   await parameter();await face();check(width+' exact ID recreation never inherits identity lease',await page.locator('[data-evidence-status="needs-reassociation"]').count()===1);
   // Evidence-only closure: remove reference linkage, save original source, and
@@ -154,6 +154,55 @@ const check=(name,ok)=>{checks.push({name,pass:ok===true});console.log((ok?'PASS
   await ev(async()=>{await ReferenceWorkspace.newProject();await renderObjects();});await open(only);
   await ev(()=>{resetSceneFocus();drawObjects();selectObject('parameter',0);document.getElementById('paramUsage').open=true;});await page.waitForSelector('[data-parameter-evidence-locate]');
   await page.locator('[data-parameter-evidence-locate]').click();await page.waitForFunction(()=>document.getElementById('referenceDialog').open);check(width+' evidence-only source locates after real ZIP reopen',await page.locator('#refPagePreview img').count()===1);await page.locator('#refClose').click();
+  const fallbackBundle=await bundle(),fallbackScope=await ev(()=>ReferenceWorkspace.getProjectState().id);
+  await ev(async()=>{ReferenceWorkspace.history.limit=0;await apiRequest('line boundary 2 outline 0,0 100,0 100,100 0,100');await renderObjects();});
+  let fallbackArchive;
+  for(const direction of ['undo','redo','undo']){
+    await ev(async direction=>{await apiRequest('line '+direction);await renderObjects();},direction);
+    fallbackArchive=await save('fallback-'+direction);
+    const packed=zip.unzipSync(fs.readFileSync(fallbackArchive)),m=JSON.parse(Buffer.from(packed['manifest.json']).toString());
+    check(width+' real core-history fallback '+direction+' keeps scoped evidence and original PDF ZIP',await ev(scope=>ReferenceWorkspace.getProjectState().id===scope,fallbackScope)&&JSON.stringify(await bundle())===JSON.stringify(fallbackBundle)&&m.sources.length===1&&Buffer.from(packed[m.sources[0].path]).equals(fixture()));
+  }
+  await ev(async()=>{await ReferenceWorkspace.newProject();await renderObjects();});await open(fallbackArchive);
+  check(width+' core-history fallback ZIP reopens scoped evidence and PDF in fresh context',JSON.stringify(await bundle())===JSON.stringify(fallbackBundle)&&await ev(({scope,hash})=>ReferenceWorkspace.getProjectState().id===scope&&ReferenceWorkspace.context().sources.get(hash).bytes.length>0,{scope:fallbackScope,hash:fallbackBundle.links[0].document.sourceHash}));
+  await ev(()=>ReferenceWorkspace.history.limit=32);
+  const tinyId=await ev(async()=>{const l=ReferenceWorkspace.readFeatureAttachment(EvidenceLinks.KIND).links[0],graph=SourceInspector.index(await apiRequest('source-inspect')),target=EvidenceLinks.targetFromNode(ReferenceWorkspace.getProjectState().id,graph.nodes.get(SourceInspector.key('parameter-field',0,0,0)));const tiny=await EvidenceLinksApp.getController().add({document:l.document,region:[30,40,1,1],target,observations:l.observations});return tiny.evidenceId;});
+  await ev(async id=>{await EvidenceLinksApp.getController().locate(id);},tinyId);
+  const tinyStyle=await page.locator('#refCropOverlay').getAttribute('style');await page.locator('#refPagePreview').click();
+  check(width+' tiny valid original rectangle survives read-only pointer-up',tinyStyle===await page.locator('#refCropOverlay').getAttribute('style'));await page.locator('#refClose').click();
+  await open(archive);await face();await page.locator('[data-evidence-rebind-target]').selectOption('0:0');await page.locator('[data-evidence-rebind]').click();await page.waitForSelector('[data-evidence-status="unchecked"]');await page.locator('[data-evidence-reviewed]').check();await page.waitForSelector('[data-evidence-status="confirmed-content"]');
+  await page.locator('[data-evidence-input="drawing-note"]').fill('unfinished authored note');await ev(()=>window.__evidenceHost=document.querySelector('[data-evidence-links]'));
+  await parameter(false,'458',false);await page.waitForTimeout(300);
+  check(width+' native event updates the unchanged source disclosure without manual refresh',await ev(()=>window.__evidenceHost===document.querySelector('[data-evidence-links]'))&&await page.locator('[data-evidence-value="model"]').innerText()==='458 mm'&&await page.locator('[data-evidence-status="needs-reassociation"]').count()===1&&await page.locator('[data-evidence-reviewed]').isDisabled());
+  check(width+' native refresh preserves unsaved exact observation input',await page.locator('[data-evidence-input="drawing-note"]').inputValue()==='unfinished authored note');
+  await parameter(true,'',false);await page.waitForSelector('[data-evidence-status="target-missing"]');check(width+' native delete event clears visible current value and prior confirmation',await page.locator('[data-evidence-value="model"]').innerText()==='無現行正式值'&&!await page.locator('[data-evidence-reviewed]').isChecked());
+  await parameter(false,'459',false);await page.waitForSelector('[data-evidence-status="needs-reassociation"]');check(width+' native recreation exposes explicit current-field reassociation',await page.locator('[data-evidence-rebind-target] option[value="0:0"]').count()===1&&await page.locator('[data-evidence-value="model"]').innerText()==='459 mm');
+  // Calibrated source is synthetic setup; adoption and evidence use actual UI.
+  await ev(()=>{const p=ReferenceWorkspace.active(1);p.calibration={points:[[0,0],[100,0]],distanceMm:2000,inputValue:2000,inputUnit:'mm'};p.mmPerPx=20;ReferenceWorkspace.changed(1);renderFaceInspector();feFit([0,0,6000,4000]);});
+  await page.locator('#roomSourceCreate').click();await page.waitForFunction(()=>RoomCollectionWorkspace.controller.state().rooms.length===1&&!RoomCollectionWorkspace.hasWork);
+  check(width+' shared-room original source exposes the same evidence disclosure',await page.locator('#refRecordDetails [data-evidence-host]').count()===1);
+  await face();const sharedBefore=await native(),sharedCount=await ev(()=>ReferenceWorkspace.history.undo.length),previous=(await bundle()).links.length;
+  await ev(()=>window.__sharedUndo=[...ReferenceWorkspace.history.undo]);
+  await region();await add();await page.waitForFunction(n=>ReferenceWorkspace.readFeatureAttachment(EvidenceLinks.KIND).links.length===n+1,previous);
+  const sharedAfter=await native(),singleHistory=await ev(()=>{const h=ReferenceWorkspace.history,before=window.__sharedUndo.slice(Math.max(0,window.__sharedUndo.length+1-h.limit));return h.undo.length===before.length+1&&h.undo.slice(0,-1).every((entry,i)=>entry===before[i])&&h.undo.at(-1).action==='編輯參數證據';});
+  check(width+' shared source manual rectangle/field creation remains one annotation-only history',singleHistory&&JSON.stringify(sharedAfter)===JSON.stringify(sharedBefore));
+  const sharedArchive=await save('shared-source'),sharedEntries=zip.unzipSync(fs.readFileSync(sharedArchive)),sharedManifest=JSON.parse(Buffer.from(sharedEntries['manifest.json']).toString());
+  check(width+' shared-room and evidence ZIP keeps one original PDF and no legacy calibration shadow',sharedManifest.faces.length===0&&sharedManifest.sources.length===1&&sharedManifest.featureAttachments.records.some(r=>r.kind==='source-rooms')&&sharedManifest.featureAttachments.records.find(r=>r.kind==='evidence-links').value.links.length===2&&Buffer.from(sharedEntries[sharedManifest.sources[0].path]).equals(fixture()));
+  await ev(async()=>{await ReferenceWorkspace.newProject();await renderObjects();});await open(sharedArchive);await face();
+  check(width+' shared source ZIP reopens evidence in existing source disclosure',await page.locator('[data-evidence-id]').count()===2&&await page.locator('#roomNew').count()===1);
+  await page.locator('[data-evidence-rebind-target]').last().selectOption('0:0');await page.locator('[data-evidence-rebind]').last().click();await page.waitForFunction(()=>[...document.querySelectorAll('[data-evidence-status]')].some(n=>n.dataset.evidenceStatus==='unchecked'));
+  await page.locator('[data-evidence-reviewed]').last().check();await page.waitForSelector('[data-evidence-status="confirmed-content"]');
+  await page.locator('[data-evidence-locate]').last().click();await page.waitForFunction(()=>!!document.querySelector('[data-evidence-located]'));
+  await page.waitForSelector('[data-evidence-status="confirmed-content"]');
+  check(width+' shared source reassociation/review uses guarded original-page canvas locator',await page.locator('[data-evidence-status="confirmed-content"]').count()===1&&await page.locator('[data-evidence-located]').count()===1);
+  const resources=await ev(async()=>{
+    const source=[...ReferenceWorkspace.context().sources.values()][0],live=source.doc,RealWorker=window.Worker;
+    let created=0,terminated=0;
+    window.Worker=class extends RealWorker{constructor(...args){super(...args);created++;const stop=this.terminate.bind(this);let closed=false;this.terminate=()=>{if(!closed){closed=true;terminated++;}return stop();};}};
+    try{for(let i=0;i<3;i++)await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.persistSession();await live.getPage(1);return {created,terminated,live:source.doc===live,recovery:ReferenceWorkspace.getProjectInfo().recovery.state};}
+    finally{window.Worker=RealWorker;}
+  });
+  check(width+' repeated real saves/recovery release detached PDF workers and retain live reader',resources.created>=3&&resources.created===resources.terminated&&resources.live&&resources.recovery==='ready',resources);
   check(width+' no horizontal overflow or runtime injection',await ev(()=>document.documentElement.scrollWidth<=innerWidth)&&!await ev(()=>window.__unsafe));
   await page.screenshot({path:path.join(out,width+'-reopened.png'),fullPage:false});await context.close();
  }

@@ -793,14 +793,18 @@
           const assemblyDrafts = copy(this.frame.context.assemblyDrafts || []);
           const featureAttachments = copy(this.frame.context.featureAttachments || []);
           const room = featureAttachments.find(record => record.kind === Features.ROOM_KIND);
-          const roomSources = room ? new Map([...new Set(room.value.planes.map(plane => plane.sourceId))]
-            .filter(id => this.frame.context.sources?.has(id)).map(id => [id, this.frame.context.sources.get(id)])) : null;
+          const sourceIds = Features.sourceIds({schema:Features.SCHEMA,records:featureAttachments});
+          const attachmentSources = new Map(sourceIds.filter(id => this.frame.context.sources?.has(id))
+            .map(id => [id, this.frame.context.sources.get(id)]));
           if (room) room.value = Features.unknownRoomHistory(room.value);
           const models = this.frame.context.models, engineeringDrafts = this.frame.context.engineeringDrafts;
           this.frame = { context: this.makeContext(), ids: new Map() };
+          // Core-only fallback remains in the same editor project. It retires
+          // native associations, while saved typed annotations retain their scope.
+          this.frame.context.id = before.context.id;
           this.frame.context.assemblyDrafts = assemblyDrafts;
           this.frame.context.featureAttachments = featureAttachments;
-          if (roomSources) this.frame.context.sources = roomSources;
+          this.frame.context.sources = attachmentSources;
           if (models) this.frame.context.models = copy(models);
           if (engineeringDrafts) this.frame.context.engineeringDrafts = copy(engineeringDrafts);
           const to = op === "undo" ? this.redo : this.undo;

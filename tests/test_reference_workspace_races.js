@@ -27,7 +27,7 @@ async function fixture(options = {}) {
   };
   const handle = {createWritable:async () => ({write:async bytes => {writes.push(bytes.slice());written.resolve();await writeGate.promise;},
     close:async()=>{closes++;closing.resolve();await options.closeGate?.promise;},abort:async()=>{aborts++;}})};
-  const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,structuredClone,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
+  const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,structuredClone,JSON,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
     requestAnimationFrame:()=>1,CustomEvent:class {},ResizeObserver:class {observe(){}},File,Blob,
     fetch:async url=>{assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
       assert.ok(options.legacyGate,'Unexpected fetch: '+url);return options.legacyGate.promise;},
@@ -38,7 +38,12 @@ async function fixture(options = {}) {
     api:async command=>{assert.equal(command,'dump');calls.push(command);return options.dumpGate ? options.dumpGate.promise : {ok:true,text:'boundary 1 outline 0,0 800,0 800,700 0,700\n'};},
     setStatus:s=>statuses.push(s),toast:s=>statuses.push(s),drawFaceEditor(){},renderFaceInspector(){},
     innerWidth:1280,feUlImgToMm:(_p,x,y)=>[x,y],feFit(){}};
-  vm.runInNewContext(fs.readFileSync(process.env.GEOMETRY_TEST_REFERENCE_WORKSPACE || require.resolve('../geometry-web/reference-workspace.js'),'utf8')+'\nglobalThis.workspace=ReferenceWorkspace;',env);
+  // Only the PDF library provider is faked here; production validation/cleanup
+  // and save code execute unchanged. Real PDF worker coverage is in the app gate.
+  env.__pdfLibrary=options.pdfLibrary;
+  const workspaceCode=fs.readFileSync(process.env.GEOMETRY_TEST_REFERENCE_WORKSPACE || require.resolve('../geometry-web/reference-workspace.js'),'utf8')
+    .replace('if (!pdfLib) pdfLib = import(', 'if (globalThis.__pdfLibrary) return globalThis.__pdfLibrary; if (!pdfLib) pdfLib = import(');
+  vm.runInNewContext(workspaceCode+'\nglobalThis.workspace=ReferenceWorkspace;',env);
   const w=env.workspace, bytes=new TextEncoder().encode('original PDF source bytes'),hash=await P.sha(bytes);
   const pageGates=new Map();
   const source={meta:{id:hash,hash,name:'圖.pdf',type:'application/pdf',size:bytes.length,path:'sources/'+hash},bytes,
@@ -79,6 +84,32 @@ test('production synchronous reader commit rejects unleased or forged prepared p
   const f=await fixture(),p=f.w.active(1),d=P.Features.Evidence.documentFromReference(p,f.source),before=f.w.getProjectState();
   const prepared={document:d,sourceMeta:{...f.source.meta},verifiedBytes:f.source.bytes.slice(),pageRender:{width:p.imgW,height:p.imgH,src:'data:image/png;base64,forged'}};
   assert.throws(()=>f.w.commitPreparedReferencePage(prepared,d,[10,20,30,40]),/過期/);assert.deepEqual(f.w.getProjectState(),before);assert.equal(p.src,'data:image/png;base64,old');
+});
+function countedPDF({gate=null,fail=false,width=100}={}){
+  const count={created:0,destroyed:0};
+  return {count,library:{getDocument(){count.created++;let dead=false;
+    const task={destroy:async()=>{if(!dead){dead=true;count.destroyed++;}}};
+    const doc={numPages:3,loadingTask:task,getPage:async()=>({getViewport:()=>({width,height:80})})};
+    task.promise=(async()=>{if(gate)await gate.promise;if(fail)throw Error('authored load failure');return doc;})();return task;
+  }}};
+}
+function evidenceEnvelope(f){const E=P.Features.Evidence;return {schema:P.Features.SCHEMA,records:[{kind:E.KIND,schema:E.SCHEMA,value:{schema:E.SCHEMA,links:[{evidenceId:'resource',document:E.documentFromReference(f.w.active(1),f.source),region:[10,20,30,40],target:{projectScope:f.w.context().id,kind:'parameter-field',parameterId:0,fieldId:0,definitionPin:'b'.repeat(64),incarnation:null},observations:{drawing:{rawText:'authored',rawValue:'915/2',unit:'mm',note:''},measurement:null},humanConfirmation:null}]}}]};}
+test('repeated evidence exports release every detached PDF while keeping the live reader document',async()=>{
+  const pdf=countedPDF(),f=await fixture({pdfLibrary:pdf.library}),live=f.source.doc,envelope=evidenceEnvelope(f);
+  f.w.setFeatureAttachment(P.Features.Evidence.KIND,envelope.records[0].value,f.w.getProjectState().contextToken);
+  for(let i=0;i<4;i++){await f.w.exportBytes();assert.deepEqual(pdf.count,{created:i+1,destroyed:i+1});assert.equal(f.source.doc,live);}
+});
+test('evidence page rejection releases detached validation handles without closing the live PDF',async()=>{
+  const pdf=countedPDF({width:101}),f=await fixture({pdfLibrary:pdf.library}),live=f.source.doc;
+  await assert.rejects(f.w.validateEvidenceClosure(f.w.context(),evidenceEnvelope(f),()=>{}),/尺寸/);
+  assert.deepEqual(pdf.count,{created:1,destroyed:1});assert.equal(f.source.doc,live);
+});
+test('cancelled and failed PDF loads release temporary validation tasks exactly once',async()=>{
+  for(const fail of [false,true]){const gate=deferred(),pdf=countedPDF({gate,fail}),f=await fixture({pdfLibrary:pdf.library}),live=f.source.doc;let cancelled=false;
+    const pending=f.w.validateEvidenceClosure(f.w.context(),evidenceEnvelope(f),()=>{if(cancelled)throw Error('cancelled');}),rejection=assert.rejects(pending,fail?/無法讀取/:/cancelled/);
+    while(!pdf.count.created)await new Promise(r=>setImmediate(r));cancelled=!fail;gate.resolve();await rejection;
+    assert.deepEqual(pdf.count,{created:1,destroyed:1});assert.equal(f.source.doc,live);
+  }
 });
 
 test('saving during PDF selection writes the selected page and its original bytes',async()=>{

@@ -239,6 +239,11 @@
   function validateNativeRefs(envelope, objects) {
     const value = sourceRooms(envelope); if (value) Rooms.validateNativeRefs(value, objects);
   }
+  function sourceIds(envelope) {
+    const rooms = sourceRooms(envelope), evidence = evidenceLinks(envelope);
+    return [...new Set([...(rooms?.planes || []).map(plane=>plane.sourceId),
+      ...(evidence ? Evidence.references(evidence).sources : [])])];
+  }
   function validateNativePins(envelope, definitions) {
     const value = sourceRooms(envelope); if (value) Rooms.validateNativePins(value, definitions);
   }
@@ -246,7 +251,7 @@
   function changedRoomBoundary(value, id) { return Rooms.boundaryChanged(validateRecord(record(ROOM_KIND, value)).value, id); }
   function unknownRoomHistory(value) { return Rooms.unknownHistory(validateRecord(record(ROOM_KIND, value)).value); }
   function references(value) { validateGridDraft(value); return JSON.parse(JSON.stringify([...(value.baseRef === null ? [] : [value.baseRef]), ...value.inputRefs])); }
-  return {Evidence, evidenceLinks, SCHEMA, GRID_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
+  return {Evidence, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
     sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields),
     validate, validateRecord, validateGridDraft, assertKind, record, capabilities, references, sourceRooms, validateNativeRefs, validateNativePins, jsonBytes, lifecycleReserve,

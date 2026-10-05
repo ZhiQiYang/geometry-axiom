@@ -97,6 +97,9 @@ PY_NEEDS = {
 }
 # Every tests/*.js|*.cjs|*.mjs MUST be in exactly one of these three (run by `node --test`, run as a script, or a
 # reasoned exclusion).  Unlisted files make run_all fail and name them.
+PY_BROWSER_GATES = {
+    'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
+}
 NODE_TEST_FILES = [
     'tests/test_assembly_project_store.js',
     'tests/test_assembly_transport_context.js',
@@ -163,7 +166,7 @@ REQUIRED_OWNER_GATES = {
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
     'geometry-web/evidence_links_browser_check.js': 67,
-    'geometry-web/evidence_links_integration_test.js': 80,
+    'geometry-web/evidence_links_integration_test.js': 110,
 }
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
@@ -225,9 +228,9 @@ def check_registry():
     """Problems (list of str) between what is on disk under tests/ and what this file registers."""
     problems = []
     disk_py = {p.stem for p in HERE.glob('test_*.py')}
-    for stem in sorted(disk_py - set(PY_NEEDS)):
+    for stem in sorted(disk_py - set(PY_NEEDS) - set(PY_BROWSER_GATES)):
         problems.append('tests/%s.py 沒有登記在 run_all.py 的 PY_NEEDS（沒有二進位需求也要明確登記成 []）；未登記的檔不會被跑' % stem)
-    for stem in sorted(set(PY_NEEDS) - disk_py):
+    for stem in sorted((set(PY_NEEDS) | set(PY_BROWSER_GATES)) - disk_py):
         problems.append('PY_NEEDS 登記了 %s，但 tests/%s.py 不存在' % (stem, stem))
     disk_js = {'tests/' + p.name for pattern in ('*.js', '*.cjs', '*.mjs') for p in HERE.glob(pattern)}
     known = (set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) |
@@ -716,13 +719,16 @@ def print_table(rows):
     print(fmt(body[-2]))
     print(fmt(body[-1]))
     print('必要 owner／browser 整合與模組驗證另驗（不計入上述 pass/skip）：')
+    for stem,reason in PY_BROWSER_GATES.items():
+        print('  tests/%s.py：%s；獨立執行，本 aggregate 未驗。' % (stem,reason))
     for rel,count in REQUIRED_OWNER_GATES.items():
         print('  %s：%d項 required；source-rooms owner 接口未實作時 exit3/pending_implementation，不是環境 skip或pass。' % (rel,count))
     for rel in sorted(NODE_EXCLUDED):
         if rel.startswith('tests/test_issue77_') or rel in ('tests/scenario_browser_check.cjs', 'tests/test_scenario_grid_interface.js'):
             print('  %s：%s；獨立執行，本 aggregate 未驗。' % (rel, NODE_EXCLUDED[rel]))
     for rel, count in REQUIRED_BROWSER_GATES.items():
-        print('  %s：%d runtime adapter checks required；本 aggregate 未驗；正式 reader/ZIP/history 待 owner。' % (rel, count))
+        scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+        print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
 
 
 # ------------------------------------------------------------------ main
@@ -774,7 +780,8 @@ def main(argv=None):
         print('必要正式整合入口：tests/integration/issue77_attachment_owner.js（5項；未實作時 exit3）')
         print('另外4個 #77 真瀏覽器入口：見 tests/INTEGRATION-GATES.md；本命令未驗。')
         for rel, count in REQUIRED_BROWSER_GATES.items():
-            print('  %s：%d runtime adapter checks required；本 aggregate 未驗；正式 reader/ZIP/history 待 owner。' % (rel, count))
+            scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+            print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
         for p in registry_errors:
             print('登記問題：%s' % p)
         return 1 if registry_errors else 0

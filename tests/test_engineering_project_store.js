@@ -123,7 +123,7 @@ test('unfinished drafts survive older core undo after the browser history window
 function workspace(validate = scene => ({ok:true,capabilities:['engineering-spec/1'],required_capabilities:P.sceneCapabilities(scene)}), backend = null, uploadResult = {ok:true,path:'loaded'}) {
   const calls=[],events=[],listeners={},elements=new Map();let scene=geometry,candidateScene=null,confirmations=0;
   const element=id=>{if(!elements.has(id))elements.set(id,{textContent:'',dataset:{},style:{},classList:{toggle(){}},addEventListener(){},querySelector(){return null;}});return elements.get(id);};
-  const env={GeometryProject:P,crypto,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,JSON,console,
+  const env={GeometryProject:P,crypto,structuredClone,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,JSON,console,
     requestAnimationFrame:()=>1,CustomEvent:class{constructor(type){this.type=type;}},ResizeObserver:class{observe(){}},
     window:{dispatchEvent:event=>events.push(event.type),confirm:()=>{confirmations++;return false;},addEventListener:(type,fn)=>listeners[type]=fn},
     document:{getElementById:element,querySelector:element,querySelectorAll:()=>[],addEventListener(){}},
