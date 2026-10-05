@@ -95,8 +95,8 @@ async function run(){
     const files=zip.unzipSync(fs.readFileSync(saved)),manifest=JSON.parse(new TextDecoder().decode(files['manifest.json']));
     check(manifest.requiredCapabilities.includes('source-room-display/1'),true,width+' true ZIP declares reader display capability');
     check(manifest.format,'geometry-canvas/14',width+' full A/B ZIP keeps shared display in existing /14');
-    const leaves=Object.keys(files).filter(k=>/^scenarios\/[^/]+\/manifest.json$/.test(k));check(leaves.length,2,width+' true ZIP has two complete leaf projects');
-    check(leaves.map(k=>JSON.parse(new TextDecoder().decode(files[k])).featureAttachments.records.find(r=>r.kind==='source-rooms').value),[basis.attachment,basis.attachment],width+' both leaves retain complete room views/history');
+    const leaves=manifest.scenarioCatalog.scenarios;check(leaves.length,2,width+' true ZIP has two complete inline leaf projects');
+    check(leaves.map(s=>s.snapshot.projectManifest.featureAttachments.records.find(r=>r.kind==='source-rooms').value),[basis.attachment,basis.attachment],width+' both leaves retain complete room views/history');
     const sources=Object.keys(files).filter(k=>k.startsWith('sources/'));check(sources.length,1,width+' true ZIP deduplicates original PDF once');check(Buffer.from(files[sources[0]]),PDF,width+' original PDF bytes exact');
     await blank(page);await open(page,saved);const reopened=await snapshot(page);
     check(reopened.views,basis.views,width+' new blank context normal Open preserves exact per-room views/basis');
