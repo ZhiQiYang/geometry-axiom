@@ -1,0 +1,534 @@
+{
+  "testedHead": "34a62225aefc9986c12b3f2582fa558cf523bedf",
+  "logs": [
+    {
+      "file": "logs/adapter.log.gz",
+      "uncompressedBytes": 5361,
+      "uncompressedSha256": "4080401775523fd9be01a0ca16d2b18cc3c1d32ecd9f256bd2002d7caf7287bd"
+    },
+    {
+      "file": "logs/aggregate.log.gz",
+      "uncompressedBytes": 12442,
+      "uncompressedSha256": "26e2883f1aea7101edc5bdafdbeff344e827b879f888acf201bd9baaf786e41c"
+    },
+    {
+      "file": "logs/binaries.log.gz",
+      "uncompressedBytes": 762,
+      "uncompressedSha256": "cc5bbedd61baba51d2de7db44b635cd84c12cbb293c69b244b17a28353ea5b4d"
+    },
+    {
+      "file": "logs/cdp.log.gz",
+      "uncompressedBytes": 192298,
+      "uncompressedSha256": "7bee4bf6e09f704036e9cb1b1c397986b90f37c37eb7bac54654174caf9e225e"
+    },
+    {
+      "file": "logs/formal.log.gz",
+      "uncompressedBytes": 7998,
+      "uncompressedSha256": "b0560c3028fb1b19f8971c92fa13efe2d1ee17711764b59f100cf0ee24774861"
+    },
+    {
+      "file": "logs/grid.log.gz",
+      "uncompressedBytes": 5759,
+      "uncompressedSha256": "fc13ef0e22b36b0c735b9c6bb71a7ba49c12ed6766f221e1838b3f8a9ecd23db"
+    },
+    {
+      "file": "logs/issue77_browser.log.gz",
+      "uncompressedBytes": 1880,
+      "uncompressedSha256": "687f0b66cd1ba88764ae7eff1cd38f20663a61a031d93b3f3c0ea0a986a1ae37"
+    },
+    {
+      "file": "logs/issue77_exit_browser.log.gz",
+      "uncompressedBytes": 3698,
+      "uncompressedSha256": "f4c5b6ff3c7b3525e36519133365c96b005d0f36c99a4b3216783c78cd7aa57f"
+    },
+    {
+      "file": "logs/issue77_recovery_browser.log.gz",
+      "uncompressedBytes": 6337,
+      "uncompressedSha256": "93d2b84a991f2353564a6573379b016f03b147661c9730835af641bda44e387b"
+    },
+    {
+      "file": "logs/issue77_remove_browser.log.gz",
+      "uncompressedBytes": 3113,
+      "uncompressedSha256": "07554efbbda9a68674928ad148ba30c84af360e1ef73d55fd1732e9272561370"
+    },
+    {
+      "file": "logs/mutation.log.gz",
+      "uncompressedBytes": 532,
+      "uncompressedSha256": "6923de5f59e78393c16847136953df8b2014871ce64d0aa59b50b7e7924b3212"
+    },
+    {
+      "file": "logs/owner.log.gz",
+      "uncompressedBytes": 4527,
+      "uncompressedSha256": "c9cd99918e00adf4e4d78268a70db10eec25573ea39b4bfada46c67c4beb84e3"
+    },
+    {
+      "file": "logs/scenario.log.gz",
+      "uncompressedBytes": 237,
+      "uncompressedSha256": "a562f9eb41f0a114c20f0e95d2e1c57ccddda0fb96f707b2d905cdf2bd0e4669"
+    },
+    {
+      "file": "logs/space.log.gz",
+      "uncompressedBytes": 18996,
+      "uncompressedSha256": "2c41c536ebc57ba2d8502ec15c48e3d0bba99b768877523a2709a485f7ca8767"
+    },
+    {
+      "file": "before/store-gap.log.gz",
+      "uncompressedBytes": 2462,
+      "uncompressedSha256": "46188f061154f58d70dc18c5fc591ea81ac0c79ae6d34c341757b32d72478dd3"
+    },
+    {
+      "file": "before/pdf-resource-gap.log.gz",
+      "uncompressedBytes": 2803,
+      "uncompressedSha256": "8eb3273d6c3a7a6da87056c4b6933694726b6b360382aa17fae787f2729862ad"
+    },
+    {
+      "file": "before/native-stale.log.gz",
+      "uncompressedBytes": 131,
+      "uncompressedSha256": "6a2092f1a25fb627409232e496df6a61dd2cf930ccffe45a5d73311626c11e72"
+    },
+    {
+      "file": "before/04abd6e-node-failure.log.gz",
+      "uncompressedBytes": 75585,
+      "uncompressedSha256": "27c14dc9fe15e33a5b47fc619481936affdc5740ab7ad79e78927976026f09ba"
+    }
+  ],
+  "archives": [
+    {
+      "file": "archives/1280-evidence-only.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "f1a6c9213c7f298d2f6b3545efaf956538662475ad51dd64740620c7e69d6138",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 423,
+          "sha256": "71dff03e541a0b47fed085c6b8c99ef8428a6205c4a2bf1548aaa1941471126b"
+        },
+        {
+          "path": "manifest.json",
+          "size": 1845,
+          "sha256": "ad31eaf6db61ff2656c14c20e89670882dc3f258b220b7fb4f73ef80037a34e2"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/1280-fallback-redo.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "32717b0b3a380b5feea3c65f0185445143346f6a3f39441e21750d4a7c7887d5",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 496,
+          "sha256": "a6bf0f7c19469d94576a109a5bb3f9fb191bc5872d84ab0e4a3720e256983273"
+        },
+        {
+          "path": "manifest.json",
+          "size": 1845,
+          "sha256": "d783d8974ff5323ee5e3ce5d41ff9ecde25441ce34979401cd491fbe00fa033d"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/1280-fallback-undo.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "a8711a543dd592913662df515a6256912a3fac07f2aab735e6e0e4abd593276c",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 423,
+          "sha256": "71dff03e541a0b47fed085c6b8c99ef8428a6205c4a2bf1548aaa1941471126b"
+        },
+        {
+          "path": "manifest.json",
+          "size": 1845,
+          "sha256": "ad31eaf6db61ff2656c14c20e89670882dc3f258b220b7fb4f73ef80037a34e2"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/1280-full.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "6ae87e47c3c2cb7a79df7c5f8d1db4f9c178676e07340202473cf309400ae30e",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "761ebd9f60629932aeca0feb9e9c33eaedef6afd16cc22436b7eb32039722e35"
+        },
+        {
+          "path": "manifest.json",
+          "size": 2227,
+          "sha256": "425ebba1bad25310d35af2e0caad19c71a891133d00fdcf3550065cd08bb4dce"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/1280-missing-target.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "2afd4d306044108f1c838f8bacee9e5bc42eb8788dcdee32b3733a36ea3f1832",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 75,
+          "sha256": "66ea940be85b01d039e1b91ab8d40cfdd4fd798919355d768969b52270c8ce18"
+        },
+        {
+          "path": "manifest.json",
+          "size": 2212,
+          "sha256": "3ed5b800b0330ed1fdddf4ca8107881a38f97bf00a00c6df8fd1385323401d3f"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/1280-shared-source.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "f910298ab00f51e461a32e8d13fcdd8874ee5c4842a11c388cf880384a85bd36",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 392,
+          "sha256": "7397a835ae74fb78a8b178e0a59f80e2781001372230805f2f2f07906cfdb817"
+        },
+        {
+          "path": "manifest.json",
+          "size": 3562,
+          "sha256": "9b9c657970163f114a5081edbefd6625e1ad36afd1157bedd42ae8c9cd902c3f"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/390-evidence-only.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "6ebdf5c09618f870e4e600c4d1e4ebf6b3196d92a833d0fbc5a4b56b936e2f5c",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "fd190fa7464dca24c8c4b742af178237aa0572f4719f1ece917c7f19569b1fee"
+        },
+        {
+          "path": "manifest.json",
+          "size": 1647,
+          "sha256": "814a1469b10ba43aaf1184f7171e70d73e74e220dff0184d8c8f37d7f45f00fd"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/390-fallback-redo.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "a5f62e047fe887757de54d5b25ccf65b8536e9c045882291010514bddf6185b5",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 494,
+          "sha256": "808335544c0b0339acdc1ffa55893f4fdd2b645d7f1cf648f023e67401010d9a"
+        },
+        {
+          "path": "manifest.json",
+          "size": 1647,
+          "sha256": "cd7749a9d6c959584d60a546efcf121e7e8f101e4774258bdab1ba059e60c066"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/390-fallback-undo.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "d924322bdef627fbae3b0a362d6fa36a8bb5425e85fc3e95f10106303e22debf",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "fd190fa7464dca24c8c4b742af178237aa0572f4719f1ece917c7f19569b1fee"
+        },
+        {
+          "path": "manifest.json",
+          "size": 1647,
+          "sha256": "814a1469b10ba43aaf1184f7171e70d73e74e220dff0184d8c8f37d7f45f00fd"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/390-full.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "0496a3c20c5553b68883f657df4e9c9c0def91dfa1c181cd0e3521b4b836ea49",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "fdd4d205f58cdffc47af2358b93c920333524d19eef87ec1e5e872e914f82797"
+        },
+        {
+          "path": "manifest.json",
+          "size": 2228,
+          "sha256": "6257bc3251002d23aa22dc76d36cda2ee8c56207885737681a80b2fc0896fbb8"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/390-missing-target.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "4ab29890454a993d8459a49633f5d5d574c320da01d4b37fe5a70f2c6520d4cd",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 75,
+          "sha256": "66ea940be85b01d039e1b91ab8d40cfdd4fd798919355d768969b52270c8ce18"
+        },
+        {
+          "path": "manifest.json",
+          "size": 2014,
+          "sha256": "506adca1786f29c55d724717b9816fed44e7433b43a81e5ba46713cbfb24e6c8"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/390-shared-source.gcanvas",
+      "purpose": "actual UI save download",
+      "sha256": "f756d82d86110ffd16a0f6348e07e031f2295d394a9e3eeb97e891a4d30b5625",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 392,
+          "sha256": "7397a835ae74fb78a8b178e0a59f80e2781001372230805f2f2f07906cfdb817"
+        },
+        {
+          "path": "manifest.json",
+          "size": 3593,
+          "sha256": "f7cc4f0e6b6028386654b03d9a05b513356facaf4f87dd91fa4e80d3701b5f1b"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/reject-capability-stripped.gcanvas",
+      "purpose": "deliberately invalid rejection fixture",
+      "sha256": "877a0dbfe86bd5dab7847467f11cde12751c286f9ff63eec7f2b6b3a8f25adf7",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "761ebd9f60629932aeca0feb9e9c33eaedef6afd16cc22436b7eb32039722e35"
+        },
+        {
+          "path": "manifest.json",
+          "size": 2185,
+          "sha256": "4df451142f59cd186d23d2ce6237e3843af3719922ff3f35e7d22ce9348268a9"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/reject-missing-original.gcanvas",
+      "purpose": "deliberately invalid rejection fixture",
+      "sha256": "bec0459ba4157134bd075169b685579ca31b92803a9687774bc9bb328fca30c0",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "761ebd9f60629932aeca0feb9e9c33eaedef6afd16cc22436b7eb32039722e35"
+        },
+        {
+          "path": "manifest.json",
+          "size": 1943,
+          "sha256": "1377e703704a2d66ca00ef0b4f43bc166021473688436ab1ac513e6b904d2bb3"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/reject-over-capacity.gcanvas",
+      "purpose": "deliberately invalid rejection fixture",
+      "sha256": "283925e80a451d8e683129a3b98877d492f2f8ae9dc67b787ad7ff98f20c6001",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "761ebd9f60629932aeca0feb9e9c33eaedef6afd16cc22436b7eb32039722e35"
+        },
+        {
+          "path": "manifest.json",
+          "size": 263461,
+          "sha256": "283e9e1226f3be8cb7f4af685b3340d648366696523553a89a2b36bf19284038"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/reject-unknown-format.gcanvas",
+      "purpose": "deliberately invalid rejection fixture",
+      "sha256": "0bd81a32bbc786cb10f86e71ef58617f4497c85d9c7e61c8bf596de3084a3ced",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "761ebd9f60629932aeca0feb9e9c33eaedef6afd16cc22436b7eb32039722e35"
+        },
+        {
+          "path": "manifest.json",
+          "size": 2228,
+          "sha256": "59c1d1fe4ee9965de85cde138301d6fe27e732ccb0517d4fbb54cb6cfe16d01e"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/reject-unknown-schema.gcanvas",
+      "purpose": "deliberately invalid rejection fixture",
+      "sha256": "b97afab2d57c6ccb6748dde97e8b968f2cd5b286fa650a7bcfba879ca8d64d37",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "761ebd9f60629932aeca0feb9e9c33eaedef6afd16cc22436b7eb32039722e35"
+        },
+        {
+          "path": "manifest.json",
+          "size": 2229,
+          "sha256": "ad8488aac860c8f87881bcc9271fa55d471ff349a33d20b730bfa42c3759ea25"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/reject-wrong-dimensions.gcanvas",
+      "purpose": "deliberately invalid rejection fixture",
+      "sha256": "4f18cc3762865c84890d8972ac3e557da1df81d2aa9ff62280b731a4cb44475f",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "761ebd9f60629932aeca0feb9e9c33eaedef6afd16cc22436b7eb32039722e35"
+        },
+        {
+          "path": "manifest.json",
+          "size": 2227,
+          "sha256": "83e556b59e373ad9df1f8ed451318a46a7907637c0b3716c7ea6562e8f8bd198"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    },
+    {
+      "file": "archives/reject-wrong-page.gcanvas",
+      "purpose": "deliberately invalid rejection fixture",
+      "sha256": "ec13c31d2c3c4b596a9f8665692cd6e4aa6d75bc806617e9f0ae40f8111469b1",
+      "members": [
+        {
+          "path": "world.scene",
+          "size": 422,
+          "sha256": "761ebd9f60629932aeca0feb9e9c33eaedef6afd16cc22436b7eb32039722e35"
+        },
+        {
+          "path": "manifest.json",
+          "size": 2228,
+          "sha256": "c7d0ddfdb9281d5ae2b994bcc8f1d5a1d6246398393423a91c5f8d71c93c4173"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "size": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "provenance": "fixture() in geometry-web/evidence_links_integration_test.js at tested head"
+        }
+      ]
+    }
+  ]
+}
