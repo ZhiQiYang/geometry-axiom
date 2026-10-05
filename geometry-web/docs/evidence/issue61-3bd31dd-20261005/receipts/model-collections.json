@@ -1,0 +1,36 @@
+{
+  "head": "3bd31dd4728dfac4b90d1ca96f17e47880018ac5",
+  "tree": "f254ed11e07e6d5ab03d6ad00802fad5a1889958",
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "d9cf950a7c196278d2b85548be0077493eba4d7f69d1d6e8842494a27e352175",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 167509,
+    "session": "ac41d2a57375477caf12f65d515186bf"
+  },
+  "passed": 4,
+  "checks": [
+    "actual exact-head Space UI Save contributes nonempty model and projection to /13",
+    "formal /13 chooser verifies and restores actual saved model alongside raw rule",
+    "formal /13 Save retains nonempty complete model and faceProjection values",
+    "actual nonempty collection gate has zero browser exceptions"
+  ],
+  "errors": [],
+  "sourceFile": "/tmp/issue61-3bd31dd/space/downloads/未命名專案.gcanvas",
+  "fixture": "/tmp/issue61-3bd31dd/model-collections/actual-space-plus-rule13.gcanvas",
+  "saved": "/tmp/issue61-3bd31dd/model-collections/actual-ui-resaved-model-rule13.gcanvas",
+  "models": 1,
+  "faceProjections": [
+    {
+      "bid": 311,
+      "placement_id": 311,
+      "projection": {
+        "kind": "space-boundary-plan",
+        "view": "bottom",
+        "region": "interior",
+        "wallSide": "outside"
+      }
+    }
+  ]
+}

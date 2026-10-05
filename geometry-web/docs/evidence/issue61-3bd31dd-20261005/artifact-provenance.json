@@ -1,0 +1,266 @@
+{
+  "testedProductHead": "3bd31dd4728dfac4b90d1ca96f17e47880018ac5",
+  "logs": [
+    {
+      "file": "logs/adapter48.log.gz",
+      "uncompressedSha256": "869f8a953c586ea5480edfaba650d4e2c53acf74a4e91b8af7619218778f55a1",
+      "uncompressedBytes": 5357
+    },
+    {
+      "file": "logs/aggregate.log.gz",
+      "uncompressedSha256": "a68973046d8230299a2ef7dcb90388902ba5976e789e3dab6ff7e1d6c87d8a71",
+      "uncompressedBytes": 12567
+    },
+    {
+      "file": "logs/cdp.log.gz",
+      "uncompressedSha256": "26a6746f5b062204b38addf5c87802449f1854136656e5a39c4d412d3b4eab7d",
+      "uncompressedBytes": 199942
+    },
+    {
+      "file": "logs/formal48.log.gz",
+      "uncompressedSha256": "b0560c3028fb1b19f8971c92fa13efe2d1ee17711764b59f100cf0ee24774861",
+      "uncompressedBytes": 7998
+    },
+    {
+      "file": "logs/grid-interaction.log.gz",
+      "uncompressedSha256": "41f73caa1a90d81e377726d2081bde70533675d991271153f439f7d50dad0988",
+      "uncompressedBytes": 20653
+    },
+    {
+      "file": "logs/grid.log.gz",
+      "uncompressedSha256": "73d6fdd9abc1536b82ac04dc60fed2443690d8ba3096c93c065e93470a7af325",
+      "uncompressedBytes": 5760
+    },
+    {
+      "file": "logs/issue77-exit.log.gz",
+      "uncompressedSha256": "95d78c975b66d34bfb7a3cfd3e8b2cf2d020aaf2c391b2a53890488f249866c2",
+      "uncompressedBytes": 3697
+    },
+    {
+      "file": "logs/issue77-main.log.gz",
+      "uncompressedSha256": "6c009081662abc7136cb40d707d393145502171c3e010e43b72ad83de338017e",
+      "uncompressedBytes": 1871
+    },
+    {
+      "file": "logs/issue77-recovery.log.gz",
+      "uncompressedSha256": "1baaa9979bea13e24e5af751889420ff856ffdfdcaa0952e26df9634cfc34383",
+      "uncompressedBytes": 6344
+    },
+    {
+      "file": "logs/issue77-remove.log.gz",
+      "uncompressedSha256": "e5baf959453641bcb56d79290edd9824c10d9a6bf5a70b058fce8df02dedc47f",
+      "uncompressedBytes": 3120
+    },
+    {
+      "file": "logs/model-collections.log.gz",
+      "uncompressedSha256": "b59acdec61f08400c4040796b066f1ef93b23e3becb80e5d166ff24801ba72af",
+      "uncompressedBytes": 448
+    },
+    {
+      "file": "logs/owner.log.gz",
+      "uncompressedSha256": "0256ca49c3c03be08eb4df05c0edb420701cc008c7bfc2d66e1c513451ebfb8b",
+      "uncompressedBytes": 4527
+    },
+    {
+      "file": "logs/reader.log.gz",
+      "uncompressedSha256": "985e6f8e71e3df5c8399c8a0caf04e362ff116657f015ea1c6465de4fb674e44",
+      "uncompressedBytes": 2205
+    },
+    {
+      "file": "logs/scenario.log.gz",
+      "uncompressedSha256": "58caabbd568524ad4f6dbbd7ca5981070ddbb136ba208379ad5004a92a08cda2",
+      "uncompressedBytes": 239
+    },
+    {
+      "file": "logs/space.log.gz",
+      "uncompressedSha256": "6567f4be277bf46ff176d16933e38dc86e583a3004ab3e82ceb2356b2bd50997",
+      "uncompressedBytes": 19004
+    },
+    {
+      "file": "before/issue61-original-gap-red.log.gz",
+      "uncompressedSha256": "ea0763bc73060a7e1891a8b0f56d3199b6ca93a03a3146b22c20ae2e6363f5d7",
+      "uncompressedBytes": 2157
+    },
+    {
+      "file": "before/issue61-original-shared-model-red.log.gz",
+      "uncompressedSha256": "7053dc334df84f70205896eafce1683b6b7b49cd84af39f5fb14b55b61574a4c",
+      "uncompressedBytes": 4809
+    },
+    {
+      "file": "before/issue61-orphan-original.log.gz",
+      "uncompressedSha256": "e0f6a2d1c4ebd7a538a79354850d576ba51ca5e5a40da46563598cc9037b71a8",
+      "uncompressedBytes": 3771
+    },
+    {
+      "file": "before/issue61-reader-original.log.gz",
+      "uncompressedSha256": "2a9ead55756d9992e4b7a290145b63d47595f0b55b882d797df825a95002adab",
+      "uncompressedBytes": 1121
+    }
+  ],
+  "archives": [
+    {
+      "file": "archives/reader-accepted-reader13.gcanvas",
+      "purpose": "actual UI Save",
+      "sha256": "b2086361b61aaaf77ca134059f78b3aa0aa212a0a14aa9e31d76f95baf357c18",
+      "members": [
+        {
+          "path": "world.scene",
+          "bytes": 688,
+          "sha256": "3dd00f16f05804ef092b2a4d7bf39d9802e40545e7d61dfc3c6d9dd4236aa69c"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 3212,
+          "sha256": "cf55ca960fc19dfa41bb8d4eea8ea4446a87b4e7ca85f6c575392122ceeb0250"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "bytes": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+        }
+      ]
+    },
+    {
+      "file": "archives/reader-authored-reader13.gcanvas",
+      "purpose": "authored reader fixture",
+      "sha256": "9f5faad0387d0c7ab82a4343945d68ba2006ac8390a8c5855100d7f7218b6874",
+      "members": [
+        {
+          "path": "world.scene",
+          "bytes": 655,
+          "sha256": "365d3cc4ca2165f2ed9fe249a8640ef7874fb8fa97593a374980628e440a79d4"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 3212,
+          "sha256": "c0c1cb7afbd90290d34981f9fe8025cac59cdb06f40a81dbf8d5ab2b87d9fdca"
+        },
+        {
+          "path": "sources/a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43",
+          "bytes": 1713,
+          "sha256": "a6f4a233d5c7b9a2483068313c45f049e2fea4166856305563798fbb52fd7b43"
+        }
+      ]
+    },
+    {
+      "file": "archives/rule-orphan-edit.gcanvas",
+      "purpose": "actual UI Save",
+      "sha256": "ac025343d2930796cc8f15e8af6b71baf36084a5f4b99a6e2d5a078a3428400f",
+      "members": [
+        {
+          "path": "world.scene",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 1374,
+          "sha256": "0e19c68676b8b97ea49993a1bcc358996db2ad21008d0b41aea121601cdaaee7"
+        }
+      ]
+    },
+    {
+      "file": "archives/rule-orphan-delete.gcanvas",
+      "purpose": "actual UI Save",
+      "sha256": "be15fccc37c6cadf81ff313c25d134a656d8b67fb87ef635a9912d9e08ebc084",
+      "members": [
+        {
+          "path": "world.scene",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 1372,
+          "sha256": "a16618a8324764b0257c2d03d027d701fb14ba5405b39d896c7da0adf0cc0745"
+        }
+      ]
+    },
+    {
+      "file": "archives/rule-1280.gcanvas",
+      "purpose": "actual UI Save",
+      "sha256": "32c661af3f6304de46036e21e4f33a3c96025fe3d07ec742c7c49606b5ca44b4",
+      "members": [
+        {
+          "path": "world.scene",
+          "bytes": 447,
+          "sha256": "162e2e52604f4fa36fb32e83080f4989d477c1c8486901724a7b03155feb7ace"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 1414,
+          "sha256": "e52ddf67c6188d9b987df537907333ac10cba8958d6310e9fa6b925a9fccde2f"
+        }
+      ]
+    },
+    {
+      "file": "archives/rule-390.gcanvas",
+      "purpose": "actual UI Save",
+      "sha256": "6b4fb9a8dd353ba24a3381d1a7d8ae2535c32106142eaff8f1af2854ceee2ea7",
+      "members": [
+        {
+          "path": "world.scene",
+          "bytes": 301,
+          "sha256": "d4d2f4d4bdbfd4470257f06e150cb4a8ff3e358b9b1628eb72f77e23072ebea1"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 1400,
+          "sha256": "d49f2c1eb8290b4149cc99e3a1c4d38747815deb79afdff7a2561992936a4ef3"
+        }
+      ]
+    },
+    {
+      "file": "archives/model-original-space-ui.gcanvas",
+      "purpose": "actual exact-head Space UI Save",
+      "sha256": "e0059fa8f421d9cea164f959b1b3055afc4eb01e11e5d52d34eeb15e73490646",
+      "members": [
+        {
+          "path": "world.scene",
+          "bytes": 135,
+          "sha256": "061573b4417eed3fd75994cfacefa13fa766022841481e37729d63be533405f3"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 36737,
+          "sha256": "8f80bf94722cd08f2cfb46254d79608a57e5970268baf148b86f764a45d231de"
+        }
+      ]
+    },
+    {
+      "file": "archives/model-plus-rule13-fixture.gcanvas",
+      "purpose": "derived from actual Space UI Save; native/raw rules authored in supplemental harness",
+      "sha256": "86fab8f8d3d10ee757481faa1e3d79d51b46a662e071de085bcc7a82ce75f330",
+      "members": [
+        {
+          "path": "world.scene",
+          "bytes": 368,
+          "sha256": "ac20621a77a0c3ee452e5962d5961edf9d27e51bfbe4b761adb952b9754dfa64"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 37832,
+          "sha256": "1cbcaeb0ccc97fe957085eea4ce85b7fc68938f5fdfd464649fd64f69fae14e8"
+        }
+      ]
+    },
+    {
+      "file": "archives/model-rule13-actual-ui-save.gcanvas",
+      "purpose": "actual /13 UI Save",
+      "sha256": "3354211900ce1653943c5aeba62befc24b4c8535709d82ec47df8e0cdf74b58f",
+      "members": [
+        {
+          "path": "world.scene",
+          "bytes": 401,
+          "sha256": "99bcaf6ff1bb761e57a4bed0c5db9b9694b67df4ed6202a4866a36c46645775b"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 37832,
+          "sha256": "19838b10757b079c1bbdc08dfefeef43516a65fe828402eab87c588899d4b409"
+        }
+      ]
+    }
+  ],
+  "PDFProvenance": "Only repo-authored issue48 fixture(), inherited via committed synthetic archive; no private PDF."
+}
