@@ -555,6 +555,9 @@ def verify_project(data, *, bridge_executable=None, base_executable=None):
         if required - available or native_required - scene_required:
             _fail("SCENARIO_CAPABILITY", "Native receipt does not support the original source requirements.", status="UNSUPPORTED")
         final = _final_objects(receipt.get("final_objects"))
+        final_scene = receipt.get("final_scene")
+        if type(final_scene) is not str or "\0" in final_scene or len(final_scene.encode("utf-8")) > MAX_OUTPUT_BYTES:
+            _fail("SCENARIO_NATIVE_PROTOCOL", "Native final definition receipt is missing or exceeds output capacity.", status="UNSUPPORTED")
         _object_refs(manifest, final)
         objects, inventory = _inventory(graph, final)
         if records:
@@ -577,7 +580,7 @@ def verify_project(data, *, bridge_executable=None, base_executable=None):
             pins != _validator_pins() or source_pins["bridge_source_sha256"] != _source_receipt(bridge) or
             (base and source_pins["base_source_sha256"] != _source_receipt(base, base=True))):
         _fail("SCENARIO_RUNTIME_CHANGED", "Executable, verifier or axiom changed during verification.", status="UNSUPPORTED")
-    return {"ok": True, "final_objects": deepcopy(final), "objects": objects, "inventory": inventory,
+    return {"ok": True, "final_objects": deepcopy(final), "final_scene": final_scene, "objects": objects, "inventory": inventory,
             "capabilities": sorted(available), "requiredCapabilities": sorted(required), "scene_sha256": scene_hash,
             "runtime": {"bridge_sha256": bridge_hash, "base_sha256": base_hash, **source_pins, **pins}}
 

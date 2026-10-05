@@ -6,6 +6,7 @@ read-only dump comparison alone cannot expose.
 """
 from copy import deepcopy
 import hashlib
+import base64
 import json
 import os
 from pathlib import Path
@@ -59,6 +60,28 @@ def fresh_model_base():
 
 
 class ScenarioNativeAcceptance(unittest.TestCase):
+    def test_final_definition_receipt_uses_native_replay_after_reset_redefinition_and_crlf(self):
+        def block(name, field, number):
+            values=[('card',{'id':1,'name':name,'nextFieldId':2}),('field',{'parameterId':1,'id':1,'name':field,'type':0,'expression':{'op':'literal','num':str(number),'den':'1','unit':'mm'}})]
+            return 'requires parameters/1\nparameters begin\n'+''.join('parameters '+kind+' '+base64.b64encode(json.dumps(value,ensure_ascii=False).encode()).decode()+'\n' for kind,value in values)+'parameters end\n'
+        old,new=block('Old','Width',200),block('New','Length',300)
+        for scene in (old+'reset\n',old+'reset\n'+new,old.replace('\n','\r\n')):
+            with self.subTest(scene=scene), tempfile.TemporaryDirectory(prefix='scenario-final-definition-') as directory:
+                source=Path(directory)/'original.scene';source.write_bytes(scene.encode())
+                with _bridge.BridgeSession(self.bridge,cwd=directory) as oracle:
+                    self.assertTrue(oracle.command('loadfile '+str(source))['ok'])
+                    expected=oracle.command('dump')['text']
+                    native_receipt=oracle.command('load-prepare '+str(source))
+                    graph=oracle.command('source-inspect-file '+str(source))
+                receipt=self.verify(project(scene,requiredCapabilities=['parameters/1']))
+                self.assertEqual(receipt['final_scene'],expected)
+                self.assertEqual(receipt['scene_sha256'],hashlib.sha256(scene.encode()).hexdigest())
+                for invalid in (None,[],{'fake':'scene'}):
+                    malformed={**native_receipt,'final_scene':invalid}
+                    raw=(json.dumps(malformed)+'\n'+json.dumps(graph)+'\n').encode()
+                    with mock.patch.object(verifier,'_run_bounded',return_value=raw):
+                        self.reject(project(scene,requiredCapabilities=['parameters/1']),'SCENARIO_NATIVE_PROTOCOL')
+
     def test_candidate_boundary_fingerprint_summary_is_optional_complete_typed_and_exact(self):
         old = {"boundaries": [1, 2], "placements": []}
         self.assertEqual(verifier._final_objects(deepcopy(old)), old)

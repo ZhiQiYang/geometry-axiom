@@ -100,6 +100,28 @@ const results=[];let runtime;
    fs.writeFileSync(out+'/complete-failure-'+width+'.json',JSON.stringify(await page.evaluate(async()=>({scene:(await api('dump')).text,state:ReferenceWorkspace.getEvidenceState(),history:ReferenceWorkspace.history.undo.map(s=>s.action),redo:ReferenceWorkspace.history.redo.map(s=>s.action),catalog:ReferenceWorkspace.readScenarioCatalog().catalog})),null,2));
    await page.screenshot({path:out+'/complete-failure-'+width+'.png'});throw e;}
   finally{await context.close();}
- }}finally{await browser.close();fs.writeFileSync(out+'/ui-complete-results.json',JSON.stringify({schema:'geometry-scenario-workflow-gate/1',head,tree,worktreeClean,runtime,results},null,2));}
+ }
+ // Archived input is a native command stream. The final state is obtained by
+ // the same disposable verifier; raw earlier declarations are never current.
+ const context=await browser.newContext({viewport:{width:1280,height:900}}),page=await context.newPage(),definitionErrors=[];
+ page.on('pageerror',e=>definitionErrors.push(e.message));page.on('console',m=>{if(m.type()==='error')definitionErrors.push(m.text());});
+ page.on('dialog',d=>d.accept());await page.goto(url);await page.waitForFunction(()=>connection.phase==='ready'&&!ReferenceWorkspace.busy);
+ const oldId=await page.evaluate(()=>ReferenceWorkspace.getProjectState().id);await page.locator('#fileMenuBtn').click();await page.locator('#btnNewProject').click();await page.waitForFunction(id=>ReferenceWorkspace.getProjectState().id!==id&&!ReferenceWorkspace.busy,oldId);
+ const block=(name,field,number)=>'requires parameters/1\nparameters begin\n'+[['card',{id:1,name,nextFieldId:2}],['field',{parameterId:1,id:1,name:field,type:0,expression:{op:'literal',num:String(number),den:'1',unit:'mm'}}]].map(([kind,value])=>'parameters '+kind+' '+Buffer.from(JSON.stringify(value)).toString('base64')+'\n').join('')+'parameters end\n';
+ const old=block('Old','Width',200),newer=block('New','Length',300),cases=[{label:'reset',scene:old+'reset\n',expected:'這份方案沒有參數定義。',absent:'Old'},{label:'recreated',scene:old+'reset\n'+newer,expected:'300 mm',absent:'200 mm'},{label:'CRLF',scene:old.replaceAll('\n','\r\n'),expected:'200 mm',absent:'300 mm'}];
+ const ids=await page.evaluate(async cases=>{const a=ScenarioIntegration.create(),scope=ReferenceWorkspace.getProjectState().id;
+  for(const c of cases){const project=await GeometryProject.unpack(await GeometryProject.pack(c.scene,{projectId:scope,name:c.label,faces:[],sources:[]},new Map(),fflate),fflate);await a.capture({manifest:project.manifest,scene:project.scene,sources:project.sources},{scenarioId:crypto.randomUUID(),label:c.label});}
+  ReferenceWorkspace.commitScenarioCatalog(ScenarioIntegration.exportCatalog(a),ScenarioIntegration.exportSources(a));return a.list().map(s=>s.scenarioId);},[...cases,{label:'baseline',scene:block('Baseline','Value',400)}]);
+ results.push({name:'all reset/recreated/CRLF archives accepted by real disposable native verification',passed:true});
+ await page.locator('#projectInfoButton').click();await page.locator('.project-concepts summary').click();await page.locator('#scenarioOpen').click();
+ const state=()=>page.evaluate(async()=>JSON.stringify({world:(await apiRequest('dump')).text,project:ReferenceWorkspace.getProjectState(),undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length,catalog:ReferenceWorkspace.readScenarioCatalog().catalog}));
+ for(const [index,c] of cases.entries()){const before=await state();await page.locator('#scenarioBefore').selectOption(ids[index]);await page.locator('#scenarioAfter').selectOption(ids[3]);await page.locator('#scenarioCompare').click();await page.waitForFunction(()=>!document.querySelector('#scenarioAdopt').disabled);
+  const visible=await page.locator('.scenario-diff-columns section').first().innerText();assert.ok(visible.includes(c.expected)&&!visible.includes(c.absent),c.label+' displays only the native final definitions');
+  assert.equal((visible.match(new RegExp(c.expected.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length,1,c.label+' has no duplicate historical field');
+  assert.equal(await state(),before,c.label+' read-only compare preserves full root state');
+  await page.locator('.scenario-parameter-definitions').first().scrollIntoViewIfNeeded();await page.screenshot({path:out+'/native-final-'+c.label+'.png'});
+  results.push({name:c.label+' native final definition and read-only state',passed:true});}
+ assert.deepEqual(definitionErrors,[]);await context.close();
+ }finally{await browser.close();fs.writeFileSync(out+'/ui-complete-results.json',JSON.stringify({schema:'geometry-scenario-workflow-gate/1',head,tree,worktreeClean,runtime,results},null,2));}
  console.log(JSON.stringify({passed:results.length,results}));
 })().catch(e=>{console.error(e.stack);process.exitCode=1;});

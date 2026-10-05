@@ -29,7 +29,7 @@ window.ScenarioWorkspace = (() => {
   async function fork(){const guard=lease(),a=await archive(guard);await a.fork($('scenarioBase').value,{scenarioId:crypto.randomUUID(),label:name()});
     commit(a,guard);message('已建立獨立副本。選取右側方案並隔離試改。');}
   const text=value=>typeof value==='string'?value:JSON.stringify(value,null,2);
-  // These are already native-verified declarations from one archived World.
+  // These are canonical final declarations from the disposable native verifier.
   // Each column uses its own catalog; this display neither pairs objects across
   // scenarios nor evaluates expressions or resolves them against the live A.
   function parameterDefinitions(scene){
@@ -40,8 +40,8 @@ window.ScenarioWorkspace = (() => {
       if(match[1]==='card')cards.set(value.id,{...value,fields:[]});else fields.push(value);
     }
     for(const field of fields)cards.get(field.parameterId)?.fields.push(field);
-    if(!cards.size)return null;
     const list=document.createElement('div'),catalog=[...cards.values()];list.className='scenario-parameter-definitions';
+    if(!cards.size){const empty=document.createElement('p');empty.textContent='這份方案沒有參數定義。';list.append(empty);return list;}
     for(const card of catalog){const heading=document.createElement('h4'),values=document.createElement('dl');heading.textContent=card.name;
       for(const field of card.fields){const label=document.createElement('dt'),definition=document.createElement('dd');label.textContent=field.name;definition.textContent=ParameterUI.formatDefinition(field.expression,catalog);values.append(label,definition);}
       list.append(heading,values);
@@ -60,9 +60,10 @@ window.ScenarioWorkspace = (() => {
     if(!diff.sections.length){const same=document.createElement('p');same.textContent='兩份完整定義相同。';result.append(same);}
     for(const s of diff.sections){const item=document.createElement('details'),title=document.createElement('summary');title.textContent=sectionLabels[s.field]||s.field;
       const columns=document.createElement('div');columns.className='scenario-diff-columns';
-      for(const [label,value] of [[before.label,s.before],[after.label,s.after]]){const col=document.createElement('section'),h=document.createElement('h3'),pre=document.createElement('pre');h.textContent=label;pre.textContent=text(value);col.append(h);
-        const parameters=s.field==='worldScene'?parameterDefinitions(value):null;
-        if(parameters){const storage=document.createElement('details'),summary=document.createElement('summary');summary.textContent='完整儲存定義';storage.append(summary,pre);col.append(parameters,storage);item.open=true;}
+      for(const [scenario,value] of [[before,s.before],[after,s.after]]){const col=document.createElement('section'),h=document.createElement('h3'),pre=document.createElement('pre');h.textContent=scenario.label;pre.textContent=text(value);col.append(h);
+        if(s.field==='worldScene'){const finalScene=I.finalScene(a,scenario.scenarioId),storage=document.createElement('details'),summary=document.createElement('summary');
+          summary.textContent='完整原生最終定義';pre.textContent=finalScene;storage.append(summary,pre);col.append(parameterDefinitions(finalScene),storage);item.open=true;
+          if(value!==finalScene){const original=document.createElement('details'),heading=document.createElement('summary'),raw=document.createElement('pre');heading.textContent='原始儲存內容';raw.textContent=text(value);original.append(heading,raw);col.append(original);}}
         else col.append(pre);columns.append(col);}
       item.append(title,columns);result.append(item);}
     comparison={after:right,guard,project:a.project(right)};message('已核對完整定義；整體採用可一步復原。');controls();}

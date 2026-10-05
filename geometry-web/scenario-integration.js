@@ -2,6 +2,7 @@
 "use strict";
 window.ScenarioIntegration = (() => {
   const P=GeometryProject, S=GeometryScenarioSnapshots, encoder=new TextEncoder();
+  const finalScenes=new WeakMap();
   async function verifyProject(project,assertCurrent=()=>{}) {
     P.validate(project.manifest);
     const data=structuredClone({manifest:project.manifest,scene:project.scene});
@@ -19,9 +20,14 @@ window.ScenarioIntegration = (() => {
     return receipt;
   }
   function create(assertCurrent=()=>{}) {
-    return S.create({project:P,featureAttachments:{validate:P.Features.validate,references:P.Features.sourceIds},
-      verifyProject:project=>verifyProject(project,assertCurrent)});
+    const scenes=new Map(),archive=S.create({project:P,featureAttachments:{validate:P.Features.validate,references:P.Features.sourceIds},
+      verifyProject:async project=>{const receipt=await verifyProject(project,assertCurrent);
+        if(typeof receipt.final_scene!=='string'||receipt.scene_sha256!==project.manifest.sceneHash)throw new Error('隔離方案缺少可核對的原生最終定義。');
+        scenes.set(receipt.scene_sha256,receipt.final_scene);return receipt;}});
+    finalScenes.set(archive,scenes);return archive;
   }
+  function finalScene(archive,id){const hash=archive.project(id).manifest.sceneHash,scenes=finalScenes.get(archive);
+    if(!scenes?.has(hash))throw new Error('方案尚未取得原生最終定義，請重新比較。');return scenes.get(hash);}
   async function read(catalog,sources,assertCurrent=()=>{}) {
     const archive=create(assertCurrent);
     if(!catalog)return archive;
@@ -53,5 +59,5 @@ window.ScenarioIntegration = (() => {
     }
     return sources;
   }
-  return {create,read,verifyProject,exportCatalog,exportSources};
+  return {create,read,verifyProject,finalScene,exportCatalog,exportSources};
 })();

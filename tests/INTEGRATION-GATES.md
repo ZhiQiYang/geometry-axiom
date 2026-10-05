@@ -206,6 +206,9 @@ Capture 的真 native dump 等待涵蓋關窗及重開；原子採用涵蓋已�
 正常 `test_scenario_workflow_browser.js` 另以真 PDF import、手動矩形與明選參數欄位建立證據，
 移除圖頁後保存 A/B，要求根專案與兩份 leaf closure 共用恰一份原始 PDF bytes。
 1280/390px 比較區必須可見左200 mm／右300 mm，不以 base64 原始內容充當可讀驗收。
+另外三份命令歷史 archive 先走真 disposable native 驗證，再用正式比較按鈕驗 reset、
+reset後同ID重建及CRLF；顯示必須來自該驗證的 `load-prepare.final_scene`，
+不能把原始歷史命令當成目前定義，也不能自行在前端重播命令或求值。
 
 `tests/integration/scenario_context_lifecycle.py` 在同來源的空閒隔離服務上逐次建立、
 原生修改、精確退休300個真 native contexts；另驗 idempotent replay、舊請求拒絕、
