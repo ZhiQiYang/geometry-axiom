@@ -109,8 +109,32 @@
     push({ k: "console", msg: a.map(x => (x && x.stack) || String(x)).join(" ").slice(0, 2000) });
     origErr(...a);
   };
+  /* 良性瀏覽器通知:ResizeObserver 一輪佈局放不完時,Chrome 會對 window 派一個 'error' 事件,
+   * 但它不是程式丟出的例外(沒有 Error 物件、沒有行列號)。三個條件必須「同時」成立才算,
+   * 任何一個不成立都照一般 JS 例外處理(程式自己 throw 同一句話、合成 ErrorEvent 都不會被吃掉):
+   *   1. e.isTrusted === true(瀏覽器自己派發;腳本 dispatchEvent 的一律 false)
+   *   2. e.error == null(真的 throw 一定帶 Error 物件)
+   *   3. message 與下列已知字串逐字全等(不 trim、不忽略大小寫、不用 includes)
+   * 第一句:Chrome 154 實測。第二句:較舊 Chrome 的措辭,依規格知識列入,未實測。 */
+  const BENIGN_BROWSER_NOTICES = [
+    "ResizeObserver loop completed with undelivered notifications.",
+    "ResizeObserver loop limit exceeded", /* 舊版 Chrome;未實測 */
+  ];
+  function isBenignBrowserNotice(e) {
+    return e.isTrusted === true && e.error == null && BENIGN_BROWSER_NOTICES.includes(e.message);
+  }
+  /* 黑盒子照記(可追溯),但記成 k:"notice" 而非 k:"error":feedback_store 只把 k==="error" 當「錯誤」
+   * 列進報告的「## 錯誤」節,notice 走通用格式列在操作紀錄裡。連續重複只累加 count、更新 t。 */
+  function noteBenign(e) {
+    const last = events[events.length - 1];
+    if (last && last.k === "notice" && last.benign === "resize-observer" && last.msg === e.message) {
+      last.count++; last.t = now(); return;
+    }
+    push({ k: "notice", benign: "resize-observer", msg: e.message, count: 1, first: now() });
+  }
   window.addEventListener("error", e => {
     if (!e.message) return;
+    if (isBenignBrowserNotice(e)) { noteBenign(e); return; } /* 不報、不碰 lastAuto/autoSeen/busy */
     push({ k: "error", msg: e.message, stack: (e.error && e.error.stack || `${e.filename}:${e.lineno}:${e.colno}`).slice(0, 4000) });
     autoReport("JS 例外:" + e.message);
   });
