@@ -1,0 +1,140 @@
+{
+  "head": "3bd31dd4728dfac4b90d1ca96f17e47880018ac5",
+  "runs": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "workflow_runs": [
+        {
+          "id": 37289563849,
+          "name": "Geometry integration",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 287,
+          "jobs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/37289563849/jobs",
+          "logs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/37289563849/logs",
+          "workflow_id": 372360895
+        }
+      ]
+    },
+    "isError": false
+  },
+  "jobs": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "jobs": [
+        {
+          "id": 111696509844,
+          "name": "native",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 37289563849,
+          "logs_url": null,
+          "steps": null
+        },
+        {
+          "id": 111696509966,
+          "name": "browser (documents)",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 37289563849,
+          "logs_url": null,
+          "steps": null
+        },
+        {
+          "id": 111696510088,
+          "name": "browser (space)",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 37289563849,
+          "logs_url": null,
+          "steps": null
+        },
+        {
+          "id": 111696510092,
+          "name": "browser (canvas)",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 37289563849,
+          "logs_url": null,
+          "steps": null
+        },
+        {
+          "id": 111696510103,
+          "name": "browser (grid)",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 37289563849,
+          "logs_url": null,
+          "steps": null
+        },
+        {
+          "id": 111696510119,
+          "name": "browser (assembly)",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 37289563849,
+          "logs_url": null,
+          "steps": null
+        },
+        {
+          "id": 111696510243,
+          "name": "browser (timber)",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 37289563849,
+          "logs_url": null,
+          "steps": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "steps": {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Action completed."
+        }
+      ],
+      "structuredContent": {
+        "steps": []
+      },
+      "isError": false
+    }
+  },
+  "logs": {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "GitHub API error 404: ﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.\nRequestId:bf0ea2ea-301e-0058-0eab-5443b5000000\nTime:2026-10-05T09:25:03.2767267Z</Message></Error>"
+        }
+      ],
+      "structuredContent": {
+        "error": "GitHub API error 404: ﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.\nRequestId:bf0ea2ea-301e-0058-0eab-5443b5000000\nTime:2026-10-05T09:25:03.2767267Z</Message></Error>",
+        "error_code": "NOT_FOUND",
+        "error_data": {
+          "error_str": "GitHub API error 404: ﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.\nRequestId:bf0ea2ea-301e-0058-0eab-5443b5000000\nTime:2026-10-05T09:25:03.2767267Z</Message></Error>"
+        }
+      },
+      "isError": true
+    }
+  },
+  "reason": "Not determined; empty steps and 404 BlobNotFound for authorized job log fetch.",
+  "combinedStatus": {
+    "statuses": []
+  }
+}

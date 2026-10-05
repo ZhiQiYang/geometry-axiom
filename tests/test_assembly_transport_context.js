@@ -22,7 +22,7 @@ function fixture(options={}){
       assert.equal(url,'/api');const body=JSON.parse(init.body);requests.push(body);
       let result={ok:true};
       if(body.receipt){receiptAttempts++;if(receiptAttempts<=(options.failedReceipts||0))throw Error('receipt unavailable');if(options.holdReceipt)await receiptGate.promise;result={ok:true,result:options.result||{ok:true,history_changed:true}};}
-      else if(body.cmd.startsWith('assembly-confirm ')){await gate.promise;if(options.lostResponse)throw TypeError('response lost');result=options.result||{ok:true,history_changed:true};}
+      else if(body.cmd.startsWith('assembly-confirm ')||options.feature&&body.cmd.startsWith('line confirm ')){await gate.promise;if(options.lostResponse)throw TypeError('response lost');result=options.result||{ok:true,history_changed:true};}
       else if(body.cmd==='dump'){if(options.holdDump)await dumpGate.promise;result={ok:true,text:'reset\n'};}
       return {ok:true,headers:{get:()=>options.session===false?null:'test-session'},json:async()=>result};
     }};
@@ -41,6 +41,49 @@ function replaceExternally(f){
   const next=f.w.history.makeContext();next.name='Unrelated new project';
   f.w.history.replace(next,[],'Open another project');f.events.length=0;return next;
 }
+function prepareRule(f){
+  const value={schema:P.Features.GRID_RULE_SCHEMA,draftId:'rule-raw',kind:'source',intent:'edit',baseRef:{kind:'grid-system',id:0,fingerprint:'a'.repeat(64)},inputRefs:[],
+    rawForm:Object.fromEntries(P.Features.sourceFields.map(key=>[key,''])),ruleDraft:{intent:'create',ruleKey:null,rawForm:{name:'draft',selector:'cell',cellI:'-9007199254740993',cellJ:'1',divisionsU:'3',divisionsV:'2'}}};
+  f.w.observeNativeRevision({revision:1});f.w.setFeatureAttachment('grid-draft',value,f.w.getProjectState().contextToken);
+  f.w.prepareFeatureConfirmation(7,'grid-draft',value,f.w.getProjectState().contextToken);return value;
+}
+test('rule confirmation removes raw draft in the same native ContextHistory step and undo/redo restores both',async()=>{
+  const f=fixture({feature:true}),value=prepareRule(f),count=f.w.history.undo.length;
+  const pending=f.api('line confirm 7');await tick();assert.equal(f.w.readFeatureAttachment('grid-draft').schema,P.Features.GRID_RULE_SCHEMA);
+  f.gate.resolve();assert.equal((await pending).ok,true);assert.equal(f.w.history.undo.length,count+1);assert.equal(f.w.readFeatureAttachment('grid-draft'),null);
+  f.w.observe('line undo',{ok:true});assert.deepEqual(JSON.parse(JSON.stringify(f.w.readFeatureAttachment('grid-draft'))),value);
+  f.w.observe('line redo',{ok:true});assert.equal(f.w.readFeatureAttachment('grid-draft'),null);
+});
+test('native rejection and preview cancellation keep rule raw and history unchanged',async()=>{
+  for(const result of [{ok:false,error:'STALE'}, {ok:false,error:'INVALID'}]){
+    const f=fixture({feature:true,result}),value=prepareRule(f),count=f.w.history.undo.length;
+    const pending=f.api('line confirm 7');f.gate.resolve();await pending;assert.equal(f.w.history.undo.length,count);assert.deepEqual(JSON.parse(JSON.stringify(f.w.readFeatureAttachment('grid-draft'))),value);
+  }
+  const f=fixture(),value=prepareRule(f),count=f.w.history.undo.length;f.w.cancelFeatureConfirmation(7);
+  assert.equal(f.w.hasFeatureConfirmation(7),false);assert.deepEqual(JSON.parse(JSON.stringify(f.w.readFeatureAttachment('grid-draft'))),value);assert.equal(f.w.history.undo.length,count);
+});
+test('rule prepared leases reject context, native revision, session, raw edit and history races before sending',async()=>{
+  for(const change of [f=>replaceExternally(f),f=>f.w.observeNativeRevision({revision:2}),f=>f.transport.connection.session='replacement',
+    f=>{const value=f.w.readFeatureAttachment('grid-draft');value.ruleDraft.rawForm.name='changed';f.w.setFeatureAttachment('grid-draft',value,f.w.getProjectState().contextToken);},
+    f=>f.w.observe('line undo',{ok:true}),f=>f.w.observe('line redo',{ok:true})]){
+    const f=fixture({feature:true});prepareRule(f);change(f);const count=f.w.history.undo.length,pending=f.api('line confirm 7');f.gate.resolve();
+    assert.equal((await pending).ok,false);assert.equal(f.requests.length,0);assert.equal(f.w.history.undo.length,count);assert.doesNotThrow(()=>f.w.assertEditable());
+  }
+});
+test('held rule confirmation blocks replacement and unknown receipt preserves raw until one exact recovery',async()=>{
+  const f=fixture({feature:true,lostResponse:true,failedReceipts:1}),value=prepareRule(f),count=f.w.history.undo.length;
+  const pending=f.api('line confirm 7');await tick();await assert.rejects(()=>f.w.newProject(),/網格.*確認/);
+  f.gate.resolve();assert.equal((await pending).transport,true);assert.deepEqual(JSON.parse(JSON.stringify(f.w.readFeatureAttachment('grid-draft'))),value);
+  await assert.rejects(()=>f.w.newProject(),/網格.*確認/);assert.equal(f.w.history.undo.length,count);
+  await f.recover();assert.equal(f.w.history.undo.length,count+1);assert.equal(f.w.readFeatureAttachment('grid-draft'),null);
+  await f.recover();assert.equal(f.w.history.undo.length,count+1);assert.equal(f.requests.filter(r=>r.cmd==='line confirm 7').length,1);
+});
+test('late rule reply cannot remove raw or append history in an externally replaced context',async()=>{
+  const f=fixture({feature:true}),value=prepareRule(f),old=f.w.context(),pending=f.api('line confirm 7');await tick();
+  const next=replaceExternally(f),count=f.w.history.undo.length;f.gate.resolve();await pending;
+  assert.equal(f.w.context(),next);assert.equal(next.dirty,false);assert.equal(f.w.history.undo.length,count);
+  assert.deepEqual(old.featureAttachments[0].value,value);assert.deepEqual(f.events,[]);
+});
 test('held assembly confirmation blocks public project replacement and all native mutations before sending',async()=>{
   const f=fixture(),old=f.w.context(),pending=f.api('assembly-confirm 7');await tick();
   try{

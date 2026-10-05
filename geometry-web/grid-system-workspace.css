@@ -211,3 +211,13 @@
   .ig-settings .ig-link, .ig-settings .ig-pf-main .param-jump { min-height: 44px; }
   .ig-footer-notes { max-height: 72px; overflow: auto; }
 }
+.ig-rules { border-top: 1px solid var(--border); margin-top: 16px; padding-top: 16px; }
+.ig-rules h2, .ig-rules h3 { font-size: 14px; margin: 0 0 8px; }
+.ig-rules label { display: grid; gap: 4px; margin-block: 8px; }
+.ig-rules input, .ig-rules select { width: 100%; box-sizing: border-box; min-height: 44px; }
+.ig-rule-pair { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 8px; }
+.ig-rule-pair[hidden] { display: none; }
+.ig-rule-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 4px; align-items: center; padding-block: 8px; border-bottom: 1px solid var(--border); }
+.ig-rule-row span { overflow-wrap: anywhere; }
+.ig-rules button { min-height: 44px; }
+.ig-rule-actions { display: flex; gap: 8px; flex-wrap: wrap; }

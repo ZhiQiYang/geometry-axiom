@@ -4,7 +4,7 @@
   const workspace = window.InfiniteGridWorkspace, esc = ReferenceWorkspace.escape;
   const axes = ['u', 'v'];
   let active = null;
-  const sourceKey = o => JSON.stringify(o && [o.id,o.name,o.mode,o.mainAlong,o.uDefinition,o.vDefinition]);
+  const sourceKey = o => GeometryProject.Features.gridSourceKey(o);
   const bindingKey = o => JSON.stringify(o && [o.id,o.system,o.boundary,o.vertexKey,o.cell,o.anchor]);
   const objectKey = o => o?.kind === 'grid-binding' ? bindingKey(o) : sourceKey(o);
   const current = s => active === s && s.pane.isConnected && s.node?.isConnected && s.pane.querySelector('#gridInlineInspector')===s.node && s.context === ReferenceWorkspace.context();

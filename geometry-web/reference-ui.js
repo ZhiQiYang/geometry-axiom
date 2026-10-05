@@ -113,7 +113,7 @@ async function confirmReferenceImpact(preview) {
    a placement exists. Keep signed indices and exact translations as strings. */
 function appendGridDefinitionImpact(dialog, preview) {
   const same = (a,b) => JSON.stringify(a) === JSON.stringify(b);
-  const sourceDefinition = g => g && [g.name,g.mode,g.mainAlong,g.uDefinition,g.vDefinition];
+  const sourceDefinition = g => GeometryProject.Features.gridSourceDefinition(g);
   const sources = (preview.gridSystems || []).filter(r => !same(sourceDefinition(r.before),sourceDefinition(r.after)));
   const boundaries = (preview.boundaries || []).filter(r => !same(r.before,r.after));
   const sourceIds = new Set(sources.map(r=>r.id)), boundaryIds = new Set(boundaries.map(r=>r.id));
@@ -142,6 +142,24 @@ function appendGridDefinitionImpact(dialog, preview) {
   section(sources,'網格來源','system',(item,row)=>{
     item.append(textNode('strong','網格系統 '+row.id));
     para(item,'原：'+source(row.before),'before');para(item,'新：'+source(row.after),'after');
+    for (const [side, value] of [['before',row.before],['after',row.after]]) {
+      if (!value) continue;
+      const details=document.createElement('div');details.dataset.impactRuleSide=side;
+      para(details,`${side==='before'?'原':'候選'}來源 ${row.id}：下一 ruleKey ${value.nextRuleKey===0?'已耗盡':value.nextRuleKey??1}；${(value.rules||[]).length} 項來源規則。`);
+      for (const rule of value.rules||[]) {
+        const line=document.createElement('p');line.dataset.impactRuleKey=rule.ruleKey;
+        const scope=rule.selector.kind==='all-cells'?'每個主格':`指定 cell (${rule.selector.cell.join(', ')})`;
+        line.textContent=`來源 ${row.id}／rule ${rule.ruleKey}「${rule.name}」：${scope}；u→ ${rule.divisions[0]} 等分，v↓ ${rule.divisions[1]} 等分。`;
+        // Display arithmetic only after the native candidate accepted its
+        // exact divisions. Never query live World as if it were pending data.
+        if (preview.valid && rule.divisions.every(n=>n>0) && [value.uDefinition,value.vDefinition].every(d=>d?.source==='repeat')) {
+          const sizes=[value.uDefinition,value.vDefinition].map((d,index)=>BigInt(d.step)/BigInt(rule.divisions[index]));
+          line.textContent+=` 每一主格為 ${rule.divisions[0]*rule.divisions[1]} 個 ${sizes[0]}×${sizes[1]} mm 小格；1 等分不加內線。`;
+        }
+        details.append(line);
+      }
+      item.append(details);
+    }
   });
   const loopName = l => l<0 ? '外環' : '孔 '+(l+1);
   const points = b => (b?.loops||[]).flatMap((l,li)=>(l.vertices||l.verts.map((uv,index)=>({uv,index,key:null}))).map(v=>({...v,loop:l.loop??li-1,fixity:l.fixity?.[v.index]})));

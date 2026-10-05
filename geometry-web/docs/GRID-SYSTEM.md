@@ -72,3 +72,13 @@ canvas-pos grid-binding 3 450 80
 ## 瀏覽器回歸入口
 
 `cdp_test.js` 的 P70／P71 保留無限網格完整工作區與面內引用流程；P72 `composition_canvas_test.js` 檢查來源／配置組合畫布、底部就地編輯及窄螢幕。`GEOMETRY_COMPOSITION_ONLY=1` 可單跑 P72，完整 CDP 也會執行。這些入口列出驗收範圍，不代替實際通過紀錄；DOM 識別與優先順序見 `DOM-CONTRACT.md` 的 2026-09-28 節。
+
+## #61：正式來源規則編輯（第一切片）
+
+在既有無限來源工作區的「來源子規則（共用）」新增、改名／編輯或刪除；選每個主格，或明選單一 cell。只有兩軸 REPEAT 且沒有相鄰格子相位差的來源可編輯規則。等分須由 native 候選驗證，不合法時保留原始輸入及目前場景。
+
+來源 ID＋ruleKey 是正式身分，名稱僅是文字。新增原始草稿的 ruleKey 為 null；native candidate 配 key，取消不耗正式高水位。cell 索引從欄位至 native 使用 decimal string／BigInt，不能轉 Number。影響摘要使用候選 before/after 的 rules/highwater，不能用 live World query 冒充 pending 線。
+
+`grid-draft` kind 的 `grid-editor-draft/2` 為一份有界 active source/rule 原始編輯設定；同 kind `/1` 仍支援讀取／原樣保存。新來源身分 pin 包含 rules/highwater，舊 pin 缺少這些證據時不能自動綁定目前同編號來源。含 `/2` 使用 `geometry-canvas/13`，requiredCapabilities 必須含 editor `/2`；已確認 native 規則另保留 native `/1` 能力與 .scene 宣告。沒有預覽 token、正式 key 預留或取樣線副本。
+
+一次確認及清除對應 raw draft 沿共用 feature confirmation lease 與 ContextHistory 同一步；context、frame、raw、revision、native revision、session 改變使候選失效。未知回覆保持鎖定，由同一 request receipt 恢復，不重送確認。完整操作證據與後續界線見 [第一切片紀錄](ISSUE61-SLICE1-20261005.md)。

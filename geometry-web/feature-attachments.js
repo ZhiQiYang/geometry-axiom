@@ -7,7 +7,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function (Rooms, Evidence) {
   "use strict";
   const SCHEMA = "geometry-feature-attachments/1";
-  const GRID_SCHEMA = "grid-editor-draft/1", GRID_KIND = "grid-draft";
+  const GRID_SCHEMA = "grid-editor-draft/1", GRID_RULE_SCHEMA = "grid-editor-draft/2", GRID_KIND = "grid-draft";
   const ROOM_KIND = "source-rooms", ROOM_SCHEMA = "source-rooms/1", ROOM_CAPABILITY = "source-room-collection/1";
   const ROOM_HISTORY_SCHEMA = "source-rooms/2", ROOM_HISTORY_CAPABILITY = "source-room-history/1";
   const MAX_BYTES = 128 * 1024, MAX_STRING = 4096;
@@ -16,6 +16,13 @@
     "Source", ...["Step", "Phase", "Panel", "Gap", "Anchor", "Stagger"].flatMap(field => [field, field + "Source"])
   ].map(field => "ig" + axis + field))];
   const bindingFields = ["igSystem", "igBoundary", "igVertex", "igCellI", "igCellJ", "igAnchorUN", "igAnchorUD", "igAnchorVN", "igAnchorVD"];
+  const ruleFields = ["name", "selector", "cellI", "cellJ", "divisionsU", "divisionsV"];
+  // One representation for current source identity. The legacy representation
+  // is retained solely for reading /1 draft pins; it cannot attest to rules.
+  const gridSourceDefinition = (row, legacy = false) => row && [row.id, row.mode, row.name, row.mainAlong,
+    row.uDefinition, row.vDefinition, ...(legacy ? [] : [row.nextRuleKey ?? 1, row.rules || []])];
+  const gridSourceKey = (row, legacy = false) => JSON.stringify(gridSourceDefinition(row, legacy));
+  const ruleAwareSource = row => !!row && ((row.rules || []).length > 0 || (row.nextRuleKey ?? 1) !== 1);
   const fail = message => { throw new Error(message); };
   const object = value => value !== null && typeof value === "object" && !Array.isArray(value);
   const keys = (value, required, optional = []) => object(value) && required.every(k => Object.hasOwn(value, k)) &&
@@ -156,8 +163,9 @@
   }
   function validateGridDraft(value) {
     boundedJSON(value);
-    if (!keys(value, ["schema", "draftId", "kind", "intent", "baseRef", "inputRefs", "rawForm"]) ||
-        value.schema !== GRID_SCHEMA || typeof value.draftId !== "string" || !/^[\w-]{1,100}$/.test(value.draftId) ||
+    const rules = value?.schema === GRID_RULE_SCHEMA;
+    if (!keys(value, ["schema", "draftId", "kind", "intent", "baseRef", "inputRefs", "rawForm", ...(rules ? ["ruleDraft"] : [])]) ||
+        ![GRID_SCHEMA, GRID_RULE_SCHEMA].includes(value.schema) || typeof value.draftId !== "string" || !/^[\w-]{1,100}$/.test(value.draftId) ||
         !["source", "binding"].includes(value.kind) || !["create", "edit"].includes(value.intent)) fail("網格編輯草稿版本或身分不合法。");
     if (value.intent === "create" && value.baseRef !== null || value.intent === "edit" &&
         (value.baseRef === null || validateReference(value.baseRef).kind !== (value.kind === "source" ? "grid-system" : "grid-binding")))
@@ -173,6 +181,14 @@
     const fields = value.kind === "source" ? sourceFields : bindingFields;
     if (!keys(value.rawForm, fields) || fields.some(field => typeof value.rawForm[field] !== "string" || value.rawForm[field].length > MAX_STRING))
       fail("網格草稿原始輸入欄位不完整或不合法。");
+    if (rules && value.ruleDraft !== null) {
+      const rule = value.ruleDraft;
+      if (value.kind !== "source" || value.intent !== "edit" ||
+          !keys(rule, ["intent", "ruleKey", "rawForm"]) || !["create", "edit", "delete"].includes(rule.intent) ||
+          (rule.intent === "create" ? rule.ruleKey !== null : !uint(rule.ruleKey) || rule.ruleKey === 0) ||
+          !keys(rule.rawForm, ruleFields) || ruleFields.some(field => typeof rule.rawForm[field] !== "string" || rule.rawForm[field].length > MAX_STRING))
+        fail("來源規則草稿的意圖、身分或原始欄位不合法。");
+    }
     // Empty, incorrect, inactive and whitespace-bearing fields are intentional.
     // The native preview validator alone decides whether they may be published.
     return value;
@@ -181,7 +197,8 @@
     const bytes = boundedJSON(record, true);
     if (!keys(record, ["kind", "schema", "value"]))
       fail("功能附件種類或版本不支援。");
-    if (record.kind === GRID_KIND && record.schema === GRID_SCHEMA) {
+    if (record.kind === GRID_KIND && [GRID_SCHEMA, GRID_RULE_SCHEMA].includes(record.schema)) {
+      if (record.value?.schema !== record.schema) fail("網格草稿附件版本不一致。");
       boundedJSON(record); validateGridDraft(record.value);
     } else if (record.kind === ROOM_KIND && [ROOM_SCHEMA,ROOM_HISTORY_SCHEMA].includes(record.schema)) {
       if (!Rooms || Rooms.SCHEMA !== ROOM_SCHEMA || Rooms.CAPABILITY !== ROOM_CAPABILITY || Rooms.HISTORY_SCHEMA !== ROOM_HISTORY_SCHEMA || Rooms.HISTORY_CAPABILITY !== ROOM_HISTORY_CAPABILITY) fail("房間來源驗證器尚未就緒。");
@@ -211,10 +228,10 @@
   function assertKind(kind) { if (![GRID_KIND, ROOM_KIND, Evidence.KIND].includes(kind)) fail("功能附件種類不支援。"); }
   function record(kind, value) {
     assertKind(kind);
-    const schema = kind === GRID_KIND ? GRID_SCHEMA : value !== null && typeof value === "object" ? Object.getOwnPropertyDescriptor(value,"schema")?.value : undefined;
+    const schema = value !== null && typeof value === "object" ? Object.getOwnPropertyDescriptor(value,"schema")?.value : undefined;
     return validateRecord({kind, schema, value});
   }
-  function capabilities(envelope) { validate(envelope); return envelope.records.flatMap(record => record.kind === GRID_KIND ? [GRID_SCHEMA] :
+  function capabilities(envelope) { validate(envelope); return envelope.records.flatMap(record => record.kind === GRID_KIND ? [record.schema] :
     record.kind === Evidence.KIND ? [Evidence.SCHEMA] :
     record.schema === ROOM_HISTORY_SCHEMA ? [ROOM_CAPABILITY,ROOM_HISTORY_CAPABILITY] : [ROOM_CAPABILITY]).sort(); }
   function evidenceLinks(envelope, sources, projectScope) {
@@ -251,9 +268,10 @@
   function changedRoomBoundary(value, id) { return Rooms.boundaryChanged(validateRecord(record(ROOM_KIND, value)).value, id); }
   function unknownRoomHistory(value) { return Rooms.unknownHistory(validateRecord(record(ROOM_KIND, value)).value); }
   function references(value) { validateGridDraft(value); return JSON.parse(JSON.stringify([...(value.baseRef === null ? [] : [value.baseRef]), ...value.inputRefs])); }
-  return {Evidence, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
+  return {Evidence, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_RULE_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
-    sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields),
+    sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields), ruleFields:Object.freeze(ruleFields),
+    gridSourceDefinition, gridSourceKey, ruleAwareSource,
     validate, validateRecord, validateGridDraft, assertKind, record, capabilities, references, sourceRooms, validateNativeRefs, validateNativePins, jsonBytes, lifecycleReserve,
     retireRoomBoundary, changedRoomBoundary, unknownRoomHistory};
 });

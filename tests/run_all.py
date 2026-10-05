@@ -108,6 +108,7 @@ NODE_TEST_FILES = [
     'tests/test_engineering_project_store.js',
     'tests/test_face_projection_store.js',
     'tests/test_grid_trial_geometry.js',
+    'tests/test_grid_rule_draft.js',
     'tests/test_issue77_attachment.js',
     'tests/test_issue77_history.js',
     'tests/test_issue77_workspace.js',
@@ -149,6 +150,7 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/test_grid_rule_reader_browser.js': 'Required isolated /13 formal reader UI/native gate: canonical candidate, evidence snapshot, zero-confirm rejection and actual ZIP Save; see INTEGRATION-GATES.md',
     'tests/test_issue116_browser.js': 'Required isolated native/browser B-menu gate, full Save/reopen and visual evidence; see INTEGRATION-GATES.md',
     'tests/scenario_browser_check.cjs': 'Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)',
     'tests/test_scenario_grid_interface.js': 'Required real GridDraft owner-validator compatibility; PR104 is not on main; execute with actual owner validator, never count missing-injection skip as pass (INTEGRATION-GATES.md)',
@@ -165,6 +167,7 @@ REQUIRED_OWNER_GATES = {
 }
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
+    'tests/test_grid_rule_reader_browser.js': 34,
     'geometry-web/evidence_links_browser_check.js': 67,
     'geometry-web/evidence_links_integration_test.js': 110,
 }

@@ -7007,6 +7007,8 @@ async function main() {
     await require('./marquee_test.js')({send, eval_, sleep, click, dblclick, drag, dragMod, pressDownMod, moveMod, waitForUI, exceptionCount:()=>excN});
   if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
     await require('./grid_system_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
+  if (scope.mode==='full' || process.env.GEOMETRY_GRID_SYSTEM_ONLY)
+    await require('./grid_rule_editor_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});
   if (process.env.GEOMETRY_INFINITE_FACE_ONLY)
     await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
   if (scope.mode==='full' || process.env.GEOMETRY_COMPOSITION_ONLY)
