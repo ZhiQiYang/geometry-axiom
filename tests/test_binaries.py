@@ -407,6 +407,128 @@ class BinaryFreshnessTests(unittest.TestCase):
             self.assertEqual(target.read_bytes(), bytes([data[0] ^ 1]) + data[1:])
             self.assertEqual(binaries.inspect_one(self.b).state, 'stale')
 
+    def test_stable_file_with_separate_write_time_keeps_its_hash(self):
+        path = self.root / 'neutral.bin'
+        payload = b'stable-bytes-v1'
+        path.write_bytes(payload)
+        created = path.stat()
+        os.utime(path, ns=(created.st_atime_ns, created.st_mtime_ns + 2_000_000_000))
+        if os.name == 'nt':
+            split = path.stat()
+            self.assertNotEqual(split.st_birthtime_ns, split.st_mtime_ns)
+            with path.open('rb') as fh:
+                opened = os.fstat(fh.fileno())
+            self.assertNotEqual(split.st_ctime_ns, opened.st_ctime_ns)
+            self.assertEqual(split.st_birthtime_ns, opened.st_birthtime_ns)
+        ident = binaries._binary_identity(path)
+        self.assertEqual(ident['exe_sha256'], hashlib.sha256(payload).hexdigest())
+        self.assertEqual(ident['exe_size'], len(payload))
+        self.assertEqual(ident['exe_mtime_ns'], path.stat().st_mtime_ns)
+
+    def test_metadata_or_size_change_during_hash_is_rejected(self):
+        path = self.root / 'neutral.bin'
+        payload = b'0123456789abcdef'
+        path.write_bytes(payload)
+        original = Path.open
+
+        class ChangingReader:
+            def __init__(self, fh, mutate):
+                self.fh, self.mutate, self.done = fh, mutate, False
+            def __enter__(self):
+                return self
+            def __exit__(self, *_):
+                self.fh.close()
+            def fileno(self):
+                return self.fh.fileno()
+            def read(self, size):
+                chunk = self.fh.read(size)
+                if chunk and not self.done:
+                    self.done = True
+                    self.mutate()
+                return chunk
+
+        def check(mutate):
+            path.write_bytes(payload)
+            def open_changing(self, *args, **kwargs):
+                fh = original(self, *args, **kwargs)
+                if self == path and args == ('rb',):
+                    return ChangingReader(fh, mutate)
+                return fh
+            with patch.object(Path, 'open', open_changing):
+                with self.assertRaises(OSError) as caught:
+                    binaries._binary_identity(path)
+            self.assertIn('during hashing', str(caught.exception))
+
+        stamped = path.stat()
+
+        def move_mtime():
+            os.utime(path, ns=(stamped.st_atime_ns, stamped.st_mtime_ns + 5_000_000_000))
+
+        def append():
+            with original(path, 'ab') as extra:
+                extra.write(b'MORE')
+
+        check(move_mtime)
+        check(append)
+
+    def test_replacement_during_hash_is_rejected(self):
+        path = self.root / 'neutral.bin'
+        payload = b'original-content'
+        path.write_bytes(payload)
+        other = self.root / 'other.bin'
+        other.write_bytes(b'replacement-content')
+        real_stat = Path.stat
+        calls = {'n': 0}
+
+        def stat_then_replace(self, *args, **kwargs):
+            if self == path:
+                calls['n'] += 1
+                if calls['n'] == 2 and other.exists():
+                    os.replace(other, path)
+            return real_stat(self, *args, **kwargs)
+
+        with patch.object(Path, 'stat', stat_then_replace):
+            with self.assertRaises(OSError) as caught:
+                binaries._binary_identity(path)
+        self.assertIn('replaced during hashing', str(caught.exception))
+        self.assertFalse(other.exists())
+        self.assertEqual(path.read_bytes(), b'replacement-content')
+
+        path.write_bytes(payload)
+        other.write_bytes(b'replacement-content')
+        original = Path.open
+
+        class ReplacingReader:
+            def __init__(self, fh):
+                self.fh, self.done = fh, False
+            def __enter__(self):
+                return self
+            def __exit__(self, *_):
+                self.fh.close()
+            def fileno(self):
+                return self.fh.fileno()
+            def read(self, size):
+                chunk = self.fh.read(size)
+                if chunk and not self.done:
+                    self.done = True
+                    os.replace(other, path)
+                return chunk
+
+        def open_replacing(self, *args, **kwargs):
+            fh = original(self, *args, **kwargs)
+            if self == path and args == ('rb',):
+                return ReplacingReader(fh)
+            return fh
+
+        with patch.object(Path, 'open', open_replacing):
+            with self.assertRaises(OSError) as caught:
+                binaries._binary_identity(path)
+        if other.exists():
+            self.assertEqual(path.read_bytes(), payload)
+        else:
+            self.assertEqual(path.read_bytes(), b'replacement-content')
+            self.assertTrue('replaced' in str(caught.exception) or 'during hashing' in str(caught.exception))
+
     def test_full_runner_refuses_tampered_binary_without_invoking_suite(self):
         self.build()
         self.tamper()

@@ -180,20 +180,38 @@ def _normalized_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 
 
+def _identity_signature(st):
+    """File identity that stat and fstat both report for one unchanged file.
+
+    Device, inode, size and mtime catch an in-place write or a replacement.
+    The last field has to be the same clock on both calls. On Windows, CPython
+    reports creation time in stat().st_ctime and a different time in
+    fstat().st_ctime, so a file whose creation time differs from its write
+    time was rejected before any byte was read. st_birthtime_ns is the
+    creation time on both calls there. Other platforms keep st_ctime so a
+    metadata update still fails this check.
+    """
+    if os.name == 'nt':
+        birth = getattr(st, 'st_birthtime_ns', None)
+        stamp = birth if isinstance(birth, int) else st.st_ctime_ns
+    else:
+        stamp = st.st_ctime_ns
+    return st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, stamp
+
+
 def _binary_identity(path: Path):
     """Hash raw bytes (same domain as mutate.py), rejecting a changing file."""
-    def signature(st):
-        return st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns
     before = path.stat()
+    before_sig = _identity_signature(before)
     h = hashlib.sha256()
     with path.open('rb') as fh:
-        if signature(os.fstat(fh.fileno())) != signature(before):
+        if _identity_signature(os.fstat(fh.fileno())) != before_sig:
             raise OSError('binary changed before hashing')
         for chunk in iter(lambda: fh.read(1 << 20), b''):
             h.update(chunk)
-        if signature(os.fstat(fh.fileno())) != signature(before):
+        if _identity_signature(os.fstat(fh.fileno())) != before_sig:
             raise OSError('binary changed during hashing')
-    if signature(path.stat()) != signature(before):
+    if _identity_signature(path.stat()) != before_sig:
         raise OSError('binary replaced during hashing')
     return {'exe_size': before.st_size, 'exe_mtime_ns': before.st_mtime_ns,
             'exe_sha256': h.hexdigest()}
