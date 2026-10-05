@@ -1,0 +1,642 @@
+{
+  "head": "ff279f2ab973d29586ada90f69d7fb62a1885973",
+  "url": "http://127.0.0.1:8879/",
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "7b21bdacea0fe96877cfbd0f20b90c55722f9c93f32f468c598f6fb4f546bbe3",
+    "fresh": true,
+    "root": "/workspace/geometry-issue123-baseline",
+    "pid": 5368,
+    "session": "38c7f1145dc84855a3f978a0c484d07e"
+  },
+  "browserPath": "Browser plugin not available; existing Playwright/Chromium",
+  "coverage": "Synthetic isolated reset; real mouse/touch/keyboard UI; no physical-phone claim",
+  "records": [
+    {
+      "label": "390-mouse page identity / meaningful shell / no framework overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse parameter field active immediately before Create",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-mouse menu owns its actual overlap with collapsed feedback",
+      "pass": false,
+      "detail": {
+        "overlap": true,
+        "ok": false,
+        "point": [
+          251.5,
+          131.3359375
+        ],
+        "hit": "fbButton"
+      }
+    },
+    {
+      "label": "390-mouse first center pointer and click each reach grid exactly once",
+      "pass": false,
+      "detail": {
+        "body": "canvas-composition drawer-right-open canvas-has-inspector parameter-editing",
+        "grid": {
+          "rect": {
+            "x": 131,
+            "y": 101.390625,
+            "width": 242,
+            "height": 56.890625
+          },
+          "style": {
+            "left": "auto",
+            "right": "auto",
+            "top": "auto",
+            "bottom": "auto",
+            "zIndex": "auto"
+          },
+          "hit": "fbButton",
+          "stack": [
+            "fbButton",
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "ocSelectionSummaryHelp",
+            "canvasDrawToolbar",
+            "rect",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "feedback": {
+          "rect": {
+            "x": 12,
+            "y": 117,
+            "width": 369,
+            "height": 28.671875
+          },
+          "style": {
+            "left": "12px",
+            "right": "9px",
+            "top": "117px",
+            "bottom": "698.328px",
+            "zIndex": "90"
+          },
+          "hit": "fbButton",
+          "stack": [
+            "fbButton",
+            "SMALL",
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "btnNewRect",
+            "canvasDrawToolbar",
+            "rect",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "menu": {
+          "rect": {
+            "x": 122,
+            "y": 58,
+            "width": 260,
+            "height": 580.40625
+          },
+          "style": {
+            "left": "122px",
+            "right": "8px",
+            "top": "58px",
+            "bottom": "205.594px",
+            "zIndex": "85"
+          },
+          "hit": "btnNewAssembly",
+          "stack": [
+            "STRONG",
+            "SPAN",
+            "btnNewAssembly",
+            "createObjectPop",
+            "paramName",
+            "HEADER",
+            "parameterEditor",
+            "inspectorContent",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "events": [
+          {
+            "type": "pointerdown",
+            "id": "fbButton",
+            "pointerType": "mouse",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "fbButton",
+            "pointerType": "mouse",
+            "trusted": true
+          }
+        ],
+        "gridOpen": false
+      }
+    },
+    {
+      "label": "390-mouse native unchanged; only the existing initial raw-draft history entry allowed",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "0ab5913d-62a6-4584-a425-7e73a90c78ff",
+            "frame": "cf711e2f-682b-4a66-a0bd-0c74fb32811a",
+            "undo": "1de2e1d5-8b13-46f2-9bfd-26b3ffdcec70",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "0ab5913d-62a6-4584-a425-7e73a90c78ff",
+            "frame": "cf711e2f-682b-4a66-a0bd-0c74fb32811a",
+            "undo": "1de2e1d5-8b13-46f2-9bfd-26b3ffdcec70",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "label": "390-touch page identity / meaningful shell / no framework overlay",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch parameter field active immediately before Create",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "label": "390-touch menu owns its actual overlap with collapsed feedback",
+      "pass": false,
+      "detail": {
+        "overlap": true,
+        "ok": false,
+        "point": [
+          251.5,
+          131.3359375
+        ],
+        "hit": "fbButton"
+      }
+    },
+    {
+      "label": "390-touch first center pointer and click each reach grid exactly once",
+      "pass": false,
+      "detail": {
+        "body": "canvas-composition drawer-right-open canvas-has-inspector parameter-editing",
+        "grid": {
+          "rect": {
+            "x": 131,
+            "y": 101.390625,
+            "width": 242,
+            "height": 56.890625
+          },
+          "style": {
+            "left": "auto",
+            "right": "auto",
+            "top": "auto",
+            "bottom": "auto",
+            "zIndex": "auto"
+          },
+          "hit": "fbButton",
+          "stack": [
+            "fbButton",
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "ocSelectionSummaryHelp",
+            "canvasDrawToolbar",
+            "rect",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "feedback": {
+          "rect": {
+            "x": 12,
+            "y": 117,
+            "width": 369,
+            "height": 28.671875
+          },
+          "style": {
+            "left": "12px",
+            "right": "9px",
+            "top": "117px",
+            "bottom": "698.328px",
+            "zIndex": "90"
+          },
+          "hit": "fbButton",
+          "stack": [
+            "fbButton",
+            "SMALL",
+            "SPAN",
+            "btnQuickGrid",
+            "createObjectPop",
+            "btnNewRect",
+            "canvasDrawToolbar",
+            "rect",
+            "ocv",
+            "canvasViewport",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "menu": {
+          "rect": {
+            "x": 122,
+            "y": 58,
+            "width": 260,
+            "height": 580.40625
+          },
+          "style": {
+            "left": "122px",
+            "right": "8px",
+            "top": "58px",
+            "bottom": "205.594px",
+            "zIndex": "85"
+          },
+          "hit": "btnNewAssembly",
+          "stack": [
+            "STRONG",
+            "SPAN",
+            "btnNewAssembly",
+            "createObjectPop",
+            "paramName",
+            "HEADER",
+            "parameterEditor",
+            "inspectorContent",
+            "ASIDE",
+            "MAIN",
+            "app",
+            "BODY",
+            "HTML"
+          ]
+        },
+        "events": [
+          {
+            "type": "pointerdown",
+            "id": "fbButton",
+            "pointerType": "touch",
+            "trusted": true
+          },
+          {
+            "type": "click",
+            "id": "fbButton",
+            "pointerType": "touch",
+            "trusted": true
+          }
+        ],
+        "gridOpen": false
+      }
+    },
+    {
+      "label": "390-touch native unchanged; only the existing initial raw-draft history entry allowed",
+      "pass": true,
+      "detail": {
+        "before": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "bfdb3f5d-8cc3-42f1-b4a8-5f61b2716a16",
+            "frame": "630e1e80-4015-496a-a139-795ac6abdb35",
+            "undo": "664878d4-874e-4c77-be8e-85e212a8d6a3",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        },
+        "after": {
+          "native": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iklzc3VlMTIzIGVkaXRlZCBwYXJhbWV0ZXIiLCJuZXh0RmllbGRJZCI6NH0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ncanvas-pos parameter 1 60 60\n",
+          "history": {
+            "context": "bfdb3f5d-8cc3-42f1-b4a8-5f61b2716a16",
+            "frame": "630e1e80-4015-496a-a139-795ac6abdb35",
+            "undo": "664878d4-874e-4c77-be8e-85e212a8d6a3",
+            "redo": null,
+            "undoLength": 2,
+            "redoLength": 0,
+            "entries": [
+              {
+                "kind": "core",
+                "action": null
+              },
+              {
+                "kind": "core",
+                "action": null
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "console": [],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"boundary 1\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"reset\",\"requestId\":\"650c1485-2e02-44e5-b4ed-93cd7d323370\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":11,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-confirm 1\",\"requestId\":\"10fe17b4-0cc6-45a2-a0c0-82cb755ab8f8\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[\"650c1485-2e02-44e5-b4ed-93cd7d323370\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 96\",\"requestId\":\"4578a2a7-36f5-4e15-9aa7-1b4ca8321ee9\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[\"10fe17b4-0cc6-45a2-a0c0-82cb755ab8f8\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 60\",\"requestId\":\"6766d5f7-76c7-45d0-b580-54eb626ee690\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[\"4578a2a7-36f5-4e15-9aa7-1b4ca8321ee9\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":12,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 edited parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-confirm 2\",\"requestId\":\"a6b7cff4-a425-4a3d-abca-53d5825dccdf\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[\"6766d5f7-76c7-45d0-b580-54eb626ee690\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"reset\",\"requestId\":\"17a6d6b0-5bbe-4858-9ffa-de6a2b46f2c5\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"newid\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":14,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-confirm 3\",\"requestId\":\"0c6a3706-9c90-4ad4-9086-cc0026c9b8c1\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[\"17a6d6b0-5bbe-4858-9ffa-de6a2b46f2c5\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 96\",\"requestId\":\"f85b303a-c736-44d2-8fbc-5bde78da705f\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[\"0c6a3706-9c90-4ad4-9086-cc0026c9b8c1\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"line canvas-pos parameter 1 60 60\",\"requestId\":\"ff520f72-2310-489d-a8e5-12fea515656f\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[\"f85b303a-c736-44d2-8fbc-5bde78da705f\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-read\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/engineering/preview",
+      "body": "{\"schema\":\"engineering-transaction/1\",\"expectedRevision\":15,\"operations\":[{\"op\":\"put-parameter\",\"value\":{\"id\":1,\"name\":\"Issue123 edited parameter\",\"nextFieldId\":4,\"fields\":[{\"id\":2,\"name\":\"寬\",\"type\":\"dimension\",\"input\":\"915\"},{\"id\":3,\"name\":\"長\",\"type\":\"dimension\",\"input\":\"1830\"}]}}]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"engineering-confirm 4\",\"requestId\":\"c666ec4a-348c-4b01-999a-92faaa618957\",\"session\":\"38c7f1145dc84855a3f978a0c484d07e\",\"ack\":[\"ff520f72-2310-489d-a8e5-12fea515656f\"]}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"objects\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"surfaces\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"dump\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"references\"}"
+    },
+    {
+      "url": "http://127.0.0.1:8879/api",
+      "body": "{\"cmd\":\"dump\"}"
+    }
+  ],
+  "completed": true,
+  "browserVersion": "151.0.7922.173",
+  "passed": 6,
+  "failed": 4
+}
