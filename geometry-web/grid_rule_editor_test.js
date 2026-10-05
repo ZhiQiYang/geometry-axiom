@@ -122,6 +122,32 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
     await fixture(`grid-system ${id} name-hex 556e737570706f72746564 main-along none ${axes}`);await open(id,false);const frozen=await dump();
     check(`不支援的來源 ${id} 明示原因並鎖住規則，不改其定義`,await read(`$('igRuleAdd').disabled&&$('igRuleReason').textContent.includes(${JSON.stringify(reason)})`)&&(await dump())===frozen);await leave();
   }
+  // Normal entry regression: preserve raw, delete its source through the card,
+  // resume from the empty-state button, then Save/new context/open/discard.
+  // No fixture API or render/cache refresh substitutes for these user actions.
+  for(const intent of ['edit','delete']){
+    await newProject();await ctl('#emptyNewGridSystem');await wait(`!!$('igName')&&!$('igName').disabled`);await fill('#igName',`Orphan authored ${intent}`);await ctl('#igSaveSource');await impact();await confirm();
+    await ctl('#igRuleAdd');await ctl('#igRulePreview');await impact();await confirm();
+    await ctl(`[data-ig-rule-key="1"] [data-ig-rule-action="${intent}"]`);if(intent==='edit')await fill('#igRuleName','Pending orphan raw');const ownedRaw=await raw(),ownedId=ownedRaw.baseRef.id;
+    await leave();await ctl(`.ocard[data-kind="grid-system"][data-id="${ownedId}"]`);await ctl('#gridObjectDelete');await settled();
+    if(await read(`!!document.querySelector('.reference-impact[open]')`))await confirm();await wait('oc.gridSystems.length===0');
+    const orphanScene=await dump(),orphanCount=await history();
+    check(`${intent} 正式卡片刪除來源保留原始 rule 草稿`,JSON.stringify(await raw())===JSON.stringify(ownedRaw));
+    await ctl('#emptyNewGridSystem');await wait(`!!$('infiniteGridWorkspace')?.open&&typeof $('igClose')?.onclick==='function'`);
+    check(`${intent} 空狀態續編 orphan 不改 World/raw/history`,(await dump())===orphanScene&&await history()===orphanCount&&JSON.stringify(await raw())===JSON.stringify(ownedRaw));
+    check(`${intent} orphan 明示遺失、鎖住發布與輸入，保存/返回/捨棄可用`,await read(`$('igTitle').textContent.includes('已遺失')&&$('igRulePreview').disabled&&$('igRuleName').disabled&&$('igSaveSource').disabled&&!$('igDiscardDraft').disabled&&!!document.querySelector('#infiniteGridWorkspace .workspace-project-header')&&!$('igClose').disabled`));
+    await shot(`rule-editor-orphan-${intent}`);const saved=await saveProject(),package_=await P.unpack(new Uint8Array(fs.readFileSync(saved.file)),zip);
+    check(`${intent} orphan 真 Save ZIP 保留原 pin、raw 及無來源 native`,package_.scene===orphanScene&&JSON.stringify(package_.manifest.featureAttachments.records[0].value)===JSON.stringify(ownedRaw)&&(await objects()).gridSystems.length===0);
+    await newProject();await send('Page.setInterceptFileChooserDialog',{enabled:true});
+    try{await ctl('#fileMenuBtn');await ctl('#btnOpenProject');const doc=await send('DOM.getDocument',{depth:0}),node=await send('DOM.querySelector',{nodeId:doc.result.root.nodeId,selector:'#projectFile'});await send('DOM.setFileInputFiles',{nodeId:node.result.nodeId,files:[saved.file]});await settled();await wait(`!!ReferenceWorkspace.readFeatureAttachment('grid-draft')`);}
+    finally{await send('Page.setInterceptFileChooserDialog',{enabled:false});}
+    await ctl('#emptyNewGridSystem');await wait(`!!$('igRuleName')&&$('igRuleName').disabled`);
+    check(`${intent} 新 context 真重開 orphan 仍唯讀，不默認新建或重關聯`,(await dump())===orphanScene&&JSON.stringify(await raw())===JSON.stringify(ownedRaw)&&(await objects()).gridSystems.length===0&&await read(`$('igRulePreview').disabled&&$('igTitle').textContent.includes('已遺失')`));
+    await leave();check(`${intent} orphan 真返回解除 modal 且保留 raw`,!await read(`$('infiniteGridWorkspace').open`)&&JSON.stringify(await raw())===JSON.stringify(ownedRaw));
+    await ctl('#emptyNewGridSystem');await wait(`!!$('igDiscardDraft')&&!$('igDiscardDraft').disabled`);await discard();await leave();
+    check(`${intent} orphan 明確捨棄只清 raw，不創建 native 來源`,await raw()===null&&(await dump())===orphanScene&&(await objects()).gridSystems.length===0);
+    console.log(`P87 orphan ${intent} saved artifact ${saved.file}`);
+  }
   check('本切片真 UI 沒有新增未捕捉瀏覽器錯誤',exceptionCount()===startExceptions);
   fs.writeFileSync(path.join(downloads,'rule-editor-roundtrip.json'),JSON.stringify({scene:sceneBefore,raw:rawBefore,manifest:loaded.manifest,sourceId:sid},null,2));console.log('P87 saved artifact '+file);
   fs.writeFileSync(path.join(mobile.downloads,'rule-editor-roundtrip.json'),JSON.stringify({scene:mobileScene,raw:mobileRaw,manifest:mobileZip.manifest,sourceId:mobileSid},null,2));console.log('P87 mobile saved artifact '+mobile.file);

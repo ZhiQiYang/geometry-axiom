@@ -18,7 +18,7 @@
   dialog.setAttribute('aria-labelledby', 'igTitle');
   document.body.append(dialog);
   const current = s => state === s && dialog.open && s.context === ReferenceWorkspace.context() && s.contextToken === ReferenceWorkspace.getProjectState().contextToken;
-  const canEdit=s=>current(s)&&!s.initializing&&!s.busy&&!s.heldControls&&!s.projectControls;
+  const canEdit=s=>current(s)&&!s.orphaned&&!s.initializing&&!s.busy&&!s.heldControls&&!s.projectControls;
   const F=GeometryProject.Features,rawKind='grid-draft',copy=value=>JSON.parse(JSON.stringify(value));
   const pinKey=ref=>ref.kind==='parameter-field'?`parameter-field:${ref.parameterId}:${ref.fieldId}`:`${ref.kind}:${ref.id}`;
   const samePin=(a,b)=>!!a&&!!b&&pinKey(a)===pinKey(b)&&a.fingerprint===b.fingerprint&&a.vertexKeysFingerprint===b.vertexKeysFingerprint;
@@ -185,6 +185,7 @@
     WorkspaceShell.refresh(dialog);
     syncDefinition(s);syncRuleEditor(s);
     if (s.mode === 'binding') $('igSaveBinding').disabled = s.busy || !s.bindingReady || (!!s.binding && bindingEditorKey(s) === s.initialBindingKey);
+    syncOrphanDraft(s);
   }
   function mayLeave(s) {
     return !s || !(draftState(s).boundary||draftState(s).application) || window.confirm('邊界頂點或承載面套用尚未確認。返回會捨棄這些設定；來源／配置原始輸入仍保留。確定返回？');
@@ -212,6 +213,7 @@
     return {...s.ruleDraft,rawForm:Object.fromEntries(F.ruleFields.map(field=>[field,rawField(s,ruleIds[field])]))};
   }
   function ruleUnsupported(s){
+    if(s.orphaned)return `草稿引用的${s.mode==='source'?'來源':'配置'} ${s.baseRef.id} 已遺失。原始輸入保留；可保存、返回或明確捨棄。`;
     if(!s.source)return '先確認建立網格來源，再在此來源新增規則。';
     if(s.source.mode!=='infinite')return '有限來源不支援來源子規則。';
     if(axes.some(a=>s.source[a+'Definition']?.source!=='repeat'))return '來源子規則需要兩軸固定間距 REPEAT；面材＋縫或缺軸來源保持原狀。';
@@ -240,7 +242,7 @@
     }catch(error){status(error.message,true);}
   }
   function mountRuleEditor(s){
-    const section=document.createElement('section');section.id='igRuleSection';section.className='ig-rules';section.hidden=s.mode!=='source'||!s.source;
+    const section=document.createElement('section');section.id='igRuleSection';section.className='ig-rules';section.hidden=s.mode!=='source'||!s.source&&!s.ruleDraft;
     section.innerHTML='<h2>來源子規則（共用）</h2><p id="igRuleContext"></p><div id="igRuleList"></div><button id="igRuleAdd" class="btn" type="button">新增來源子規則</button><p id="igRuleReason" role="status"></p><div id="igRuleEditor" hidden><h3 id="igRuleTitle"></h3><label>規則名稱<input id="igRuleName" maxlength="4096"></label><label>適用範圍<select id="igRuleSelector"><option value="all-cells">每個主格</option><option value="cell">指定主格</option></select></label><div id="igRuleCellFields" class="ig-rule-pair"><label>cell i<input id="igRuleCellI" inputmode="numeric" maxlength="4096"></label><label>cell j<input id="igRuleCellJ" inputmode="numeric" maxlength="4096"></label></div><button id="igRuleUseCell" class="btn" type="button">使用目前選取的主格</button><div class="ig-rule-pair"><label>u→ 等分<input id="igRuleU" inputmode="numeric" maxlength="4096"></label><label>v↓ 等分<input id="igRuleV" inputmode="numeric" maxlength="4096"></label></div><p id="igRuleNote">1 等分不加內線；預覽檢查整除與所有配置，確認才套用。</p><div class="ig-rule-actions"><button id="igRulePreview" class="btn primary" type="button">預覽規則變更</button><button id="igRuleCancel" class="btn" type="button">取消規則輸入</button></div></div>';
     $('igSourceForm').append(section);
     const list=$('igRuleList');
@@ -264,9 +266,9 @@
     if(!s.busy&&!s.initializing){$('igRuleAdd').disabled=!!unsupported;for(const button of $('igRuleList').querySelectorAll('button'))button.disabled=!!unsupported;}
     $('igRuleEditor').hidden=!s.ruleDraft;$('igRulePreview').hidden=!s.ruleDraft;
     $('igSaveSource').hidden=s.mode!=='source'||!!s.ruleDraft;if(!s.ruleDraft)return;
-    $('igRuleTitle').textContent=s.ruleDraft.intent==='create'?'新規則（key 只由確認的原生候選配發）':`${s.ruleDraft.intent==='delete'?'刪除':'編輯'}來源 ${s.source.id}／rule ${s.ruleDraft.ruleKey}`;
+    $('igRuleTitle').textContent=s.ruleDraft.intent==='create'?'新規則（key 只由確認的原生候選配發）':`${s.ruleDraft.intent==='delete'?'刪除':'編輯'}來源 ${s.source?.id??s.baseRef?.id}／rule ${s.ruleDraft.ruleKey}`;
     const cell=$('igRuleSelector').value==='cell';$('igRuleCellFields').hidden=!cell;$('igRuleUseCell').hidden=!cell;
-    if(!s.busy&&!s.initializing){for(const field of F.ruleFields)$(ruleIds[field]).disabled=s.ruleDraft.intent==='delete';$('igRuleUseCell').disabled=!s.sel||s.ruleDraft.intent==='delete';$('igRulePreview').disabled=!!unsupported;}
+    if(!s.busy&&!s.initializing){for(const field of F.ruleFields)$(ruleIds[field]).disabled=s.orphaned||s.ruleDraft.intent==='delete';$('igRuleUseCell').disabled=s.orphaned||!s.sel||s.ruleDraft.intent==='delete';$('igRulePreview').disabled=!!unsupported;}
     $('igRulePreview').textContent=s.ruleDraft.intent==='delete'?'預覽刪除規則':'預覽規則變更';
   }
   async function saveRule(s){
@@ -285,6 +287,16 @@
     }
     s.publishTarget={kind:'grid-system',id:s.source.id};
     if(await commit(s,command,`來源 ${s.source.id} 的共用子規則；確認才改全部配置`,null,true))await reopen(s);
+  }
+  function syncOrphanDraft(s){
+    if(!s.orphaned||!current(s))return;
+    // Retain owned raw fields and pins. Missing targets never turn an edit
+    // into a creation or acquire today's same-ID source.
+    for(const node of dialog.querySelectorAll('.ig-settings input,.ig-settings select,.ig-settings button,.ig-footer button'))
+      if(node.id!=='igDiscardDraft')node.disabled=true;
+    $('igTitle').textContent=`${s.mode==='source'?'來源':'配置'} ${s.baseRef.id} 已遺失 · 原始草稿`;
+    $('igDraftNote').textContent=ruleUnsupported(s);$('igStatus').classList.add('ig-error');
+    $('igStateText').textContent='保留原始草稿 · 目標已遺失';$('igStateLine').dataset.tone='error';
   }
   async function render(s) {
     s.initializing=true;
@@ -686,7 +698,7 @@
       const d=sourceDraft(s),defs=axes.map(a=>def(d[a+'Definition']));let sampled=false;s.defs=defs;
       trialCommand=sourceCommand(d,0);
       trialFingerprint=JSON.stringify(d);
-      if(s.mode==='source'){const dirty=!s.source||sourceFormKey(d)!==sourceFormKey(s.source);s.sourceDirty=dirty;if(!s.busy){$('igSaveSource').disabled=!dirty;if($('igNewBinding'))$('igNewBinding').disabled=dirty;}}
+      if(s.mode==='source'){const dirty=!s.source||sourceFormKey(d)!==sourceFormKey(s.source);s.sourceDirty=dirty;if(!s.busy){$('igSaveSource').disabled=s.orphaned||!dirty;if($('igNewBinding'))$('igNewBinding').disabled=s.orphaned||dirty;}}
       for(let a=0;a<2;a++){const v=defs[a];if(!v)continue;const other=defs[1-a],mag=other&&v.stagger?Math.abs(v.stagger):0;const first=Math.ceil((c[a]-mag-v.phase)/v.pitch),last=Math.floor((c[a+2]+mag-v.phase)/v.pitch),total=Math.max(0,last-first+1),stride=Math.max(1,Math.ceil(total/42));sampled ||= stride>1;
         // Choose samples by the true global k, never by a viewport-relative ordinal.
         const bs=BigInt(stride),fi=s.base[a]+BigInt(first),start=fi+((bs-fi%bs)%bs),end=s.base[a]+BigInt(last);
@@ -817,6 +829,7 @@
     return `grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong} ${parts.join(' ')}`;
   }
   async function saveSource(s) {
+    if(s.orphaned)throw Error(ruleUnsupported(s));
     requireOnlyDraft(s,'source');const d=sourceDraft(s);await validateDraftPins(s);await stillSame(s);
     const ids=s.source?null:await apiRequest('newid'),id=s.source?.id??ids?.gridSystem;
     if(id==null)throw Error('無法取得網格系統編號。');
@@ -933,7 +946,7 @@
     state?.trial?.dispose();
     const mode=restored?.kind||(binding?'binding':options.mode||'source');
     if(saved&&!restored&&!committed&&!(mode==='source'?!source:!binding))ReferenceWorkspace.setFeatureAttachment(rawKind,null,contextToken);
-    state={context,contextToken,source,binding,mode,pins,fullPins,draftSchema,ruleDraft:restored?.ruleDraft?copy(restored.ruleDraft):null,inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(ref)])),rawOverrides:new Map(),restored:restored&&copy(restored),draftId:restored?.draftId||crypto.randomUUID(),
+    state={context,contextToken,source,binding,mode,pins,fullPins,draftSchema,orphaned:!!restored&&restored.intent==='edit'&&(mode==='source'?!source:!binding),ruleDraft:restored?.ruleDraft?copy(restored.ruleDraft):null,inputPins:new Map((restored?.inputRefs||[]).map(ref=>[pinKey(ref),copy(ref)])),rawOverrides:new Map(),restored:restored&&copy(restored),draftId:restored?.draftId||crypto.randomUUID(),
       baseRef:restored?copy(restored.baseRef):mode==='source'?(source?pins.get('grid-system:'+source.id):null):(binding?pins.get('grid-binding:'+binding.id):null),
       systemRaw:restored?.rawForm.igSystem??String(source?.id??''),bindings:objects.gridBindings||[],boundaries:objects.faces.filter(b=>b.kind==='boundary'),surfaces:surfaces.surfaces,references,base:[0n,0n],camera:[-1800,-1200,2400,1600],vertices:[],boundarySerial:0,busy:false};
     if(!dialog.open)dialog.showModal();await render(state);if(!ownsEntry())return;

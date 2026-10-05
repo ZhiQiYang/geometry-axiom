@@ -174,3 +174,18 @@ node geometry-web/evidence_links_integration_test.js
 #131 的 `tests/test_issue123_create_feedback_browser.py` 是需指定服務／TEMP輸出的獨立 Playwright 腳本，明確登錄在 `PY_BROWSER_GATES`，不冒充 unittest 的空測試。既有四個 store VM fixture 現提供瀏覽器原生 `structuredClone`，原 assertions 維持；新增三項 PDF 資源回歸使 494→497。#48 新增真 core-only fallback scope/bytes、undo/redo保存及新 context 重開；原 80 項全部保留，正式 gate 增至110。
 
 正式 gate 現也覆蓋 #77 shared-room 來源，沿既有原頁歷史／核對 disclosure 掛同一 `#refRecordDetails` host：手動框選／明選 field0、兩附件共存且原 PDF 一份、真 ZIP/new-context重開、覆核／重新綁定與 guarded canvas 定位。正常 native edit/delete/recreation 事件直接更新同一 host，測試不呼叫 `ui.refresh()`；未保存文字原樣保留。真 PDF Worker 計數包含三次 export 及 automatic recovery snapshot，要求 created=terminated 且 live reader document 仍可讀；純 VM 回歸另涵蓋成功／尺寸拒絕／取消／load失敗，不能以 fake PDF 冒稱實際 UI。
+
+## #61 第一切片的正式 reader 與 orphan 入口
+
+`tests/test_grid_rule_reader_browser.js` 必跑 34 項，獨立於非瀏覽器 aggregate。
+提供隔離服務 `GEOMETRY_TEST_URL`、TEMP `GEOMETRY_FEEDBACK_DIR` 和
+`GEOMETRY_RULE_READER_OUT`，以現有 Playwright 執行；凍結驗收設 `GEOMETRY_REQUIRE_CLEAN=1`。
+真 native prepare 後只竄改 detached 回覆的 canonical scene、能力、snapshot 完整性或 field pin。
+實際 UI file chooser 的四個拒絕各需零 confirm、一次候選 cancel、原 World/context/raw/history frame 不變。
+合法 /13 ZIP 則須通過真 evidence snapshot、保留 rule/highwater/raw/evidence/PDF，沿正式 Save 保留 models/faceProjections。
+歷史證據 pin 的合法定義差異仍沿既有 needs-reassociation 語意，不增加拒絕條件。
+
+P87 的 60 項由無 scope full CDP 執行；新增的 14 項為 edit/delete 各自走正式
+「關閉 raw → 來源卡片刪除 → emptyNewGridSystem 續編 → 唯讀 Save → 新空白 context 真開檔 → 返回 → 明確捨棄」。
+這段不使用 fixture API 或 refresh/renderObjects 補 UI 狀態。83 段共 2054，原 82 段完全不變。
+34、60 是 assertions，並非端到端 scenario 數；實體手機／系統 chooser 仍有具名人工未驗界線。

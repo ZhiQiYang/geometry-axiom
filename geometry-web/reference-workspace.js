@@ -1107,7 +1107,7 @@ const ReferenceWorkspace = (() => {
       ...(c.featureAttachments?.length?{featureAttachments:{schema:P.Features.SCHEMA,records:c.featureAttachments}}:{}),
       ...(c.engineeringDrafts?.length?{engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:c.engineeringDrafts}}:{}) };
     const format = P.projectFormat(data);
-    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT,P.SUBDIVISION_FORMAT,P.EVIDENCE_FORMAT].includes(format)?{models:c.models,faceProjections}:{}) };
+    return { ...data,format,...(P.formatPolicy(format).modelCollections?{models:c.models,faceProjections}:{}) };
   }
   function assertMetadataCapacity(overrides = {}, ids = history.frame.ids) {
     const c = {...context(),...overrides};
@@ -1368,10 +1368,11 @@ const ReferenceWorkspace = (() => {
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
       P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
       P.validateProjectCapabilities(candidate.required_capabilities);
-      if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT,P.SUBDIVISION_FORMAT,P.EVIDENCE_FORMAT].includes(manifest.format)) {
-        if([P.SUBDIVISION_FORMAT,P.EVIDENCE_FORMAT].includes(manifest.format)&&typeof candidate.final_scene!=="string")
+      const policy=P.formatPolicy(manifest.format);
+      if (policy.engineeringCandidate) {
+        if(policy.canonicalScene&&typeof candidate.final_scene!=="string")
           throw new Error("服務未提供原生候選場景，未變更目前專案。");
-        const finalScene=[P.SUBDIVISION_FORMAT,P.EVIDENCE_FORMAT].includes(manifest.format)?candidate.final_scene:text;
+        const finalScene=policy.canonicalScene?candidate.final_scene:text;
         if (manifest.featureAttachments && P.Features.evidenceLinks(manifest.featureAttachments)) {
           const response = await fetch("/sources/snapshot",{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:finalScene,signal:AbortSignal.timeout(30000)}); assertCurrent();
           if (!response.ok) throw new Error("無法驗證候選參數證據，未變更目前專案。");
