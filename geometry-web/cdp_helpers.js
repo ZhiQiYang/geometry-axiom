@@ -59,6 +59,23 @@ function makeWait(waitForUI, timeout) {
   return expression => waitForUI(expression, timeout);
 }
 
+/* Keep entry identities in the browser: JSON copies and stack lengths cannot
+ * prove one commit when bounded history is full. These pins are test-only. */
+function isSingleHistoryStep(before,after,limit) {
+  const retained=before.slice(Math.max(0,before.length+1-limit));
+  return after.length===Math.min(before.length+1,limit)&&after.length===retained.length+1&&
+    after.slice(0,-1).every((entry,i)=>entry===retained[i])&&!before.includes(after.at(-1));
+}
+function makeHistoryOracle(read,namespace) {
+  let serial=0;
+  return {
+    async capture(){const pin=namespace+':'+(++serial);return read(`(()=>{const h=ReferenceWorkspace.history;(window.__cdpHistoryPins ||= new Map()).set(${JSON.stringify(pin)},{undo:h.undo.slice(),redo:h.redo.slice(),limit:h.limit,frame:h.frame});return {pin:${JSON.stringify(pin)},undo:h.undo.length,redo:h.redo.length,limit:h.limit};})()`);},
+    unchanged:({pin})=>read(`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(${JSON.stringify(pin)}),same=(a,z)=>a.length===z.length&&a.every((entry,i)=>entry===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo);})()`),
+    single:({pin})=>read(`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(${JSON.stringify(pin)});return h.limit===b.limit&&h.group===null&&h.redo.length===0&&(${isSingleHistoryStep.toString()})(b.undo,h.undo,h.limit);})()`),
+    release:({pin})=>read(`window.__cdpHistoryPins.delete(${JSON.stringify(pin)});void 0`),
+  };
+}
+
 /* ---- 輸入 ---------------------------------------------------------------- */
 
 /* 按鍵(keyDown+keyUp)。
@@ -153,4 +170,4 @@ function makeShot(send, envNames) {
   };
 }
 
-module.exports = { makeCheck, makeRead, makeWait, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot };
+module.exports = { makeCheck, makeRead, makeWait, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot, isSingleHistoryStep, makeHistoryOracle };

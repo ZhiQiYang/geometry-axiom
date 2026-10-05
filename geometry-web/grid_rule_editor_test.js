@@ -8,6 +8,7 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),check=cdp.makeCheck({prefix:'P87 ',throwOnFail:true}),startExceptions=exceptionCount();
   const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,missing:'Missing ',unreachable:(s,p)=>'Rule control unreachable '+s+' '+JSON.stringify(p)});
   const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:35});
+  const historyOracle=cdp.makeHistoryOracle(read,'P87');
   const query=cmd=>read(`apiRequest(${JSON.stringify(cmd)}).then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;})`);
   const dump=async()=>(await query('dump')).text,objects=()=>query('objects'),raw=()=>read(`ReferenceWorkspace.readFeatureAttachment('grid-draft')`),history=()=>read('ReferenceWorkspace.history.undo.length');
   const settled=()=>wait('!oc.busy&&!ReferenceWorkspace.busy'),impact=()=>wait(`!!document.querySelector('.reference-impact[open]')`);
@@ -35,16 +36,16 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   let source=(await objects()).gridSystems[0],sid=source.id;
   check('原有 2a 真 UI 建立雙 REPEAT 獨立來源',source.uDefinition.step===600&&source.vDefinition.step===400&&source.rules.length===0&&source.nextRuleKey===1);
   await ctl('#igRuleAdd');await fill('#igRuleName','All cells <authored>');
-  const before=await dump(),draft=await raw(),count=await history();await ctl('#igRulePreview');await impact();
+  const before=await dump(),draft=await raw(),count=await history(),historyPin=await historyOracle.capture();await ctl('#igRulePreview');await impact();
   check('建立草稿沒有保留正式 key/token，唯一主動作沿用固定頁尾',draft.schema===P.Features.GRID_RULE_SCHEMA&&draft.ruleDraft.ruleKey===null&&!Object.hasOwn(draft.ruleDraft,'token')&&await read(`$('igSaveSource').hidden&&$('igRulePreview').closest('.ig-footer')!==null`));
   const text=await read(`document.querySelector('.reference-impact').textContent`);
   check('native 候選原/新摘要含 source、rule、nextKey 與 200×200／6 小格',text.includes('下一 ruleKey 1')&&text.includes('下一 ruleKey 2')&&text.includes('rule 1')&&text.includes('200×200')&&text.includes('6 個'));
-  check('預覽沒有提前改 World 或歷史',(await dump())===before&&await history()===count);
+  check('預覽沒有提前改 World 或歷史',(await dump())===before&&await historyOracle.unchanged(historyPin));
   await shot('rule-editor-desktop-preview');await cancel();
-  check('取消保留逐字 World、raw 與歷史且不耗 ruleKey',(await dump())===before&&JSON.stringify(await raw())===JSON.stringify(draft)&&await history()===count&&(await objects()).gridSystems[0].nextRuleKey===1);
+  check('取消保留逐字 World、raw 與歷史且不耗 ruleKey',(await dump())===before&&JSON.stringify(await raw())===JSON.stringify(draft)&&await historyOracle.unchanged(historyPin)&&(await objects()).gridSystems[0].nextRuleKey===1);
   await ctl('#igRulePreview');await impact();await confirm();source=(await objects()).gridSystems[0];
   check('native 確認唯一新增 key1 並保留 all-cells 定義',source.rules.length===1&&source.rules[0].ruleKey===1&&source.rules[0].selector.kind==='all-cells'&&source.rules[0].divisions.join('/')==='3/2'&&source.nextRuleKey===2);
-  check('確認及清除對應 raw 同一 ContextHistory step',await history()===count+1&&await raw()===null);
+  check('確認及清除對應 raw 同一 ContextHistory step',await historyOracle.single(historyPin)&&await raw()===null,{beforeCount:count,limit:historyPin.limit});await historyOracle.release(historyPin);
   await leave();await ctl('#btnUndo');await settled();source=(await objects()).gridSystems[0];
   check('真復原同時恢復無規則 native 與確認前 raw',source.rules.length===0&&source.nextRuleKey===1&&JSON.stringify(await raw())===JSON.stringify(draft));
   await ctl('#btnRedo');await settled();check('真重做同時恢復規則及移除 raw',(await objects()).gridSystems[0].rules.length===1&&await raw()===null);

@@ -52,7 +52,7 @@
   if(typeof module!=='undefined')module.exports=api;
   if(typeof window==='undefined')return;
   window.GridRuleLines=api;
-  let owner=null,sequence=0;
+  let owner=null,sequence=0,reload=null;
   const presentationState=()=>{const {blocked,...state}=ReferenceWorkspace.getEvidenceState();return state;};
   const stamp=()=>JSON.stringify([presentationState(),ReferenceWorkspace.history.frame,
     [...ReferenceWorkspace.context().groups||[]].map(([id,g])=>[id,g.activePageId])]);
@@ -65,6 +65,8 @@
   function entries(){return owner&&current(owner)?owner.rows:[];}
   function find(r){const k=key(r);return k&&entries().find(l=>key(l.ref)===k);}
   function refresh(){
+    if(reload?.isCurrent())return;
+    reload=null;
     if(!oc.edit||oc.focus?.t!=='face')return;
     const k=viewportKey(),mark=stamp();if(owner&&current(owner))return;
     if(owner)clearTimeout(owner.timer);
@@ -78,9 +80,9 @@
     // user opened in the same face inspector while native reads were pending.
     if($('faceInspectorContent')?.querySelector('.grid-rule-details,#tbAnchor,#refGuideSource'))renderFaceInspector();
   }
-  async function query(s,focus=null){
+  async function query(s,focus=null,isCurrent=()=>true){
     const input=focus?focusInputs():null;
-    const request=s.request=(s.request||0)+1,owns=()=>current(s)&&s.request===request&&(!focus||input===focusInputs());
+    const request=s.request=(s.request||0)+1,owns=()=>isCurrent()&&current(s)&&s.request===request&&(!focus||input===focusInputs());
     try{
       const before=await apiRequest('source-inspect');if(!owns()||!before.ok)return;
       if(before.sourceFingerprint!==fe.timberReferenceData?.sourceFingerprint)return;
@@ -96,10 +98,24 @@
       }}
       const after=await apiRequest('source-inspect');if(!owns()||!after.ok||before.revision!==after.revision||before.sourceFingerprint!==after.sourceFingerprint)return;
       s.rows=out;s.messages=messages;s.loaded=true;s.graph=SourceInspector.index(after);
-      s.focusStatus=focus?(messages.length?messages.join('；'):out.reduce((n,l)=>n+l.segments.length,0)===0?'完整原生 cell 已核對：本面零可見線段。':'完整原生 cell 已核對：'+out.reduce((n,l)=>n+l.segments.length,0)+' 段可見子線。'):'';
+      s.focusStatus=focus&&focusInputs()===JSON.stringify([String(focus.rule),...focus.cell])?(messages.length?messages.join('；'):out.reduce((n,l)=>n+l.segments.length,0)===0?'完整原生 cell 已核對：本面零可見線段。':'完整原生 cell 已核對：'+out.reduce((n,l)=>n+l.segments.length,0)+' 段可見子線。'):'';
       if(fe.ruleSelection&&!out.some(l=>key(l.ref)===key(fe.ruleSelection)))fe.ruleSelection=null;
       paintQuery();
     }catch(error){if(owns()){s.messages=[error.message];s.focusStatus=focus?error.message:'';s.loaded=true;paintQuery();}}
+  }
+  /* A rollback changes the native revision. Keep the live form untouched
+   * while its snapshot and exact cell are read again; never rebuild selects
+   * from the temporary empty reference arrays inside the snapshot loader. */
+  async function reloadNative(load,isCurrent,reference=null){
+    if(!isCurrent())return;
+    const pin=reload={isCurrent},focus=fe.ruleFocus,selection=fe.ruleSelection;
+    try{
+      await load();if(reload!==pin||!isCurrent())return;
+      reload=null;refresh();const s=owner;if(!s||!current(s))return;
+      clearTimeout(s.timer);fe.ruleFocus=focus;fe.ruleSelection=selection;
+      const target=reference?{grid:reference.appliedGridId,rule:reference.ruleKey,cell:[reference.cellI,reference.cellJ]}:focus;
+      await query(s,target,isCurrent);
+    }finally{if(reload===pin)reload=null;}
   }
   function select(r){if(!find(r))return;fe.ruleSelection=ref(r);fe.gridEditingId=r.appliedGridId;fe.sel=null;fe.timberSelection.clear();fiShowTab('grid');renderFaceInspector();drawFaceEditor();if(innerWidth<=680)openPanel('right',$('workspaceToggleRight'));}
   function draw(root,refRoot,z){
@@ -145,5 +161,5 @@
     if(!isCurrent()||!after.ok||before.revision!==after.revision||before.sourceFingerprint!==after.sourceFingerprint)return null;
     return {rows:decoded,complete:result.complete!==false,requiredCells:result.requiredCells,stride:result.stride};
   }
-  Object.assign(api,{refresh,clear,entries,find,select,draw,html,bind,readNative,presentationState});
+  Object.assign(api,{refresh,clear,entries,find,select,draw,html,bind,readNative,presentationState,reloadNative});
 })();

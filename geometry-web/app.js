@@ -344,7 +344,7 @@ function inspectorState(pane, bid) {
     referencePage: pane.dataset.referencePage, calibrationPoints: pane.dataset.calibrationPoints,
     gridIdentity: pane.dataset.gridIdentity,
     drafts: [...pane.querySelectorAll("input[id],select[id]")]
-      .filter(e => /^(tb|ref|grid|subgrid|place[OUV]|ulCalib)/.test(e.id)).map(e => [e.id, e.value]),
+      .filter(e => /^(tb|ref|grid|subgrid|place[OUV]|ulCalib)/.test(e.id)).map(e => [e.id, e.value, e.selectedOptions?.[0]?.textContent]),
     details: [...pane.querySelectorAll("details[id]")].map(e => [e.id, e.open]) };
 }
 function restoreInspectorState(pane, state) {
@@ -352,7 +352,7 @@ function restoreInspectorState(pane, state) {
   pane.dataset.tbRoleManual = state.timberRoleManual || "false";
   pane.dataset.tbDirManual = state.timberDirManual || "false";
   pane.dataset.tbSectionManual = state.timberSectionManual || "false";
-  for (const [id, value] of state.drafts) {
+  for (const [id, value, label] of state.drafts) {
     /* A model change (including undo) replaces placement values; ordinary
        redraws still preserve an unfinished placement draft. */
     if (/^place[OUV]/.test(id) && state.placement !== pane.dataset.placement) continue;
@@ -360,7 +360,14 @@ function restoreInspectorState(pane, state) {
     if (/^(ref|ulCalib)/.test(id) && state.referencePage !== pane.dataset.referencePage) continue;
     if (/^ulCalib/.test(id) && state.calibrationPoints !== pane.dataset.calibrationPoints) continue;
     if (/^(grid|subgrid)/.test(id) && state.gridIdentity !== pane.dataset.gridIdentity) continue;
-    const e = pane.querySelector(`#${id}`); if (e) e.value = value;
+    const e = pane.querySelector(`#${id}`);
+    // A native rollback publishes metadata before its reference snapshot is
+    // reloaded. Retain the full typed raw reference as unavailable, rather
+    // than silently clearing it when rebuilding the select in that interval.
+    if(e?.tagName==='SELECT'&&(GridRuleLines.parseAnchor(value)||GridRuleLines.parseExpression(value))&&![...e.options].some(o=>o.value===value)){
+      const pending=new Option((label||value)+'（等待原生核對）',value);pending.disabled=true;e.add(pending);
+    }
+    if (e) e.value = value;
   }
   for (const [id, open] of state.details) {
     if (/^ref/.test(id) && state.referencePage !== pane.dataset.referencePage) continue;
@@ -4682,8 +4689,10 @@ function faceReferenceOperation(bid,inputIds) {
     session=connection.session,mark=JSON.stringify(ReferenceWorkspace.getModelOperationState()),
     nativeRevision=fe.referenceRevision,fingerprint=fe.timberReferenceData?.sourceFingerprint;
   const raw=()=>JSON.stringify(inputIds.map(id=>[id,$(id)?.value]));const inputs=raw();let group=null;
-  const sameOwner=()=>context===ReferenceWorkspace.context()&&edit===oc.edit&&edit?.bid===bid&&focus===oc.focus&&
-    frame===ReferenceWorkspace.history.frame&&session===connection.session&&inputs===raw();
+  const ruleReference=inputIds.map(id=>GridRuleLines.parseAnchor($(id)?.value)||GridRuleLines.parseExpression($(id)?.value)).find(Boolean);
+  const ownsPresentation=()=>context===ReferenceWorkspace.context()&&edit===oc.edit&&edit?.bid===bid&&focus===oc.focus&&
+    frame===ReferenceWorkspace.history.frame&&session===connection.session;
+  const sameOwner=()=>ownsPresentation()&&inputs===raw();
   const current=()=>sameOwner()&&mark===JSON.stringify(ReferenceWorkspace.getModelOperationState());
   const transactionCurrent=()=>sameOwner()&&group!==null&&group===ReferenceWorkspace.history.group;
   const ownsNativeTransaction=()=>context===ReferenceWorkspace.context()&&session===connection.session&&group!==null&&group===ReferenceWorkspace.history.group;
@@ -4691,7 +4700,7 @@ function faceReferenceOperation(bid,inputIds) {
     // Native rollback can advance its revision without changing World bytes.
     // Refresh the existing owner snapshot after rejection, preserving raw form
     // inputs and the strict revision pin for the next operation.
-    async reloadAfterRejection(){if(sameOwner())await feLoadGuides();},
+    async reloadAfterRejection(){await GridRuleLines.reloadNative(feLoadGuides,ownsPresentation,ruleReference);},
     async verify(){if(!current())return false;const graph=await apiRequest('source-inspect');return current()&&graph.ok&&graph.revision===nativeRevision&&graph.sourceFingerprint===fingerprint;}};
 }
 async function fePlaceTimberFromForm(bid) {
