@@ -340,7 +340,7 @@ function inspectorState(pane, bid) {
   return { focus: pane.contains(a) ? a.id : "", scroll: pane.parentElement.scrollTop,
     ownScroll: pane.scrollTop,
     placement: pane.dataset.placement, timberRoleManual: pane.dataset.tbRoleManual,
-    timberDirManual: pane.dataset.tbDirManual,
+    timberDirManual: pane.dataset.tbDirManual, timberSectionManual:pane.dataset.tbSectionManual,
     referencePage: pane.dataset.referencePage, calibrationPoints: pane.dataset.calibrationPoints,
     gridIdentity: pane.dataset.gridIdentity,
     drafts: [...pane.querySelectorAll("input[id],select[id]")]
@@ -351,6 +351,7 @@ function restoreInspectorState(pane, state) {
   if (!state) return;
   pane.dataset.tbRoleManual = state.timberRoleManual || "false";
   pane.dataset.tbDirManual = state.timberDirManual || "false";
+  pane.dataset.tbSectionManual = state.timberSectionManual || "false";
   for (const [id, value] of state.drafts) {
     /* A model change (including undo) replaces placement values; ordinary
        redraws still preserve an unfinished placement draft. */
@@ -2697,7 +2698,7 @@ function gridAnchorCoordinate(grid, axis, index, band) {
 }
 function feChooseTimberAnchor(anchor) {
   const select=$("tbAnchor");if(!select)return;
-  if(![...select.options].some(o=>o.value===anchor) && gridAnchorParts(anchor) && feAnchorLineInfo(oc.edit?.bid,anchor))
+  if(![...select.options].some(o=>o.value===anchor) && (gridAnchorParts(anchor)||GridRuleLines.parseAnchor(anchor)) && feAnchorLineInfo(oc.edit?.bid,anchor))
     select.add(new Option(feTimberAnchorLabel(oc.edit?.bid,feSurf(oc.edit?.bid),anchor),anchor));
   select.value=anchor;
 }
@@ -4197,6 +4198,7 @@ function feGuidePickShow(u, v, cx, cy) {
 }
 
 async function feLoadGuides() {
+  GridRuleLines.clear();
   const loadSeq = ++fe.guidesLoadSeq;
   fe.guides = []; fe.specs = []; fe.timbers = []; fe.timberReferenceData = null; fe.grids = []; fe.gridPreview = null; fe.obstacles = null;
   const edit = oc.edit, focus = oc.focus, context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame, session = connection.session;
@@ -4280,6 +4282,9 @@ function feAnchorLineInfo(bid, anchorValue) {
        周邊既有慣例(g.axis==="v" → u 固定在 g.off)。 */
     return { constAxis: g.axis === "v" ? "u" : "v", value: g.off };
   }
+  const ruleAnchor=GridRuleLines.parseAnchor(anchorValue),ruleLine=ruleAnchor&&GridRuleLines.find(ruleAnchor);
+  if(ruleAnchor)return ruleLine?{constAxis:ruleLine.axis,value:ruleLine.coordinate,
+    bounds:{u:[ruleLine.bounds[0],ruleLine.bounds[2]],v:[ruleLine.bounds[1],ruleLine.bounds[3]]}}:null;
   const gridAnchor = gridAnchorParts(anchorValue);
   if (gridAnchor) {
     const g = fe.grids.find(x => x.id === +gridAnchor.id);
@@ -4341,6 +4346,7 @@ function referenceAnchorEntries(bid, surf) {
       }
       options.push([`at-line grid ${g.id} ${axis} ${index}`, labelOf(value, null)]);
     });
+  for(const l of GridRuleLines.entries())if(l.segments.length)options.push([GridRuleLines.anchor(l.ref),GridRuleLines.label(l.ref,l.name)+` · ${l.axis}=${l.coordinate} mm`]);
   for (const t of fe.timbers) options.push([`at-face t${t.id}`, `角材 ${t.id} 側面（須有唯一解）`]);
   return options.map(([value, label]) => ({ value, label, occupied: feAnchorOccupied(bid, value) }));
 }
@@ -4365,6 +4371,7 @@ function referenceGuideSources(bid, along) {
     options.push([`guide:${guide.id}`, `參考線 ${guide.id} · ${guidePositionLabel(guide)}`]);
   for (const grid of fe.grids) for (const line of gridLineEntries(grid,coordinate))
     options.push([`grid:${grid.id}:${coordinate}:${line.index}`, `${grid.kind === "subgrid" ? "子網格" : "主網格"} ${grid.id} · ${gridLineLabel(grid,coordinate,line.index)} · ${line.coordinate} mm`]);
+  for(const l of GridRuleLines.entries())if(l.axis===coordinate&&l.segments.length)options.push([GridRuleLines.expression(l.ref),GridRuleLines.label(l.ref,l.name)+` · ${l.coordinate} mm`]);
   return options;
 }
 /* 目前 #tbAnchor 選中值對應的中文標籤,找不到就回傳原始引用式本身。 */
@@ -4494,6 +4501,7 @@ function feTimberSuggestion(bid, anchor) {
   const info = feAnchorLineInfo(bid, anchor || "");
   if (!info) return null;
   const dir = feAnchorDirFromInfo(info);
+  if(GridRuleLines.parseAnchor(anchor))return {dir,role:null,subgrid:true,sourceRule:true};
   const match = gridAnchorParts(anchor || "");
   if (match) {
     const grid = fe.grids.find(g => g.id === +match.id);
@@ -4507,7 +4515,7 @@ function feTimberSuggestForm({ direction = true, forceRole = false } = {}) {
   const suggestion = feTimberSuggestion(oc.edit?.bid, $("tbAnchor")?.value);
   if (forceRole) pane.dataset.tbRoleManual = "false";
   if (suggestion) {
-    if (direction) { $("tbDir").value = suggestion.dir; $("tbDir").classList.remove("invalid"); pane.dataset.tbDirManual = "false"; }
+    if (direction&&!suggestion.sourceRule) { $("tbDir").value = suggestion.dir; $("tbDir").classList.remove("invalid"); pane.dataset.tbDirManual = "false"; }
     if (suggestion.role && pane.dataset.tbRoleManual !== "true") {
       $("tbRole").innerHTML = feTimberRoleOptionsHTML(oc.edit.bid, $("tbDir").value, suggestion.role);
       $("tbRole").value = suggestion.role;
@@ -4655,6 +4663,12 @@ async function fePlaceTimberFromForm(bid) {
   }
   const anchor = $("tbAnchor")?.value;
   if (!anchor) { toast("請先選擇定位邊、參考線或格線"); feMarkInvalid($("tbAnchor")); return false; }
+  if(GridRuleLines.parseAnchor(anchor)){
+    if(!GridRuleLines.find(GridRuleLines.parseAnchor(anchor))){toast('來源規則子線已過期，請重新完整定位。');return false;}
+    if($("faceInspectorContent").dataset.tbRoleManual!=='true'||$("faceInspectorContent").dataset.tbSectionManual!=='true'){
+      toast('沿來源規則子線放置前，請明確選擇角色並輸入截面 A/B。');return false;
+    }
+  }
   if (anchor.startsWith("at-line grid ") && !feTimberSuggestion(bid, anchor)?.role &&
       $("faceInspectorContent")?.dataset.tbRoleManual !== "true") {
     toast("這座網格尚未設定主支方向，請明確選擇角材角色");
@@ -4919,6 +4933,7 @@ function drawFaceEditor() {
   const loops = fe.work || oc.bmap[e.bid];
   if (!loops) return;
   feRefreshLatticeViewport();
+  GridRuleLines.refresh();
   ReferenceVisibility.update();
   feCalibrationPrompt();
   const root = $("faceEditorRoot");
@@ -5095,6 +5110,7 @@ function drawFaceEditor() {
       }
     });
   }
+  GridRuleLines.draw(root,refRoot,z);
   GridEditor.draw(root, refRoot, gb, z);
   /* 角材 A0 足跡（Q3）：axis_a = axis_b × axis_length 的 uv 版
      GEO-191:加 data-face-hit="t:<id>" 可選取;select 工具下才吃事件(見 app.css
@@ -5425,6 +5441,11 @@ async function feDown(pt, ev) {
     if (hit && hit[0] === "e" && +hit[1] !== 0) {
       toast("目前不支援直接點孔邊——請從右欄「定位引用」選孔邊(at-face h<i>e<j>)"); return;
     }
+    if(hit?.[0]==='r'){
+      const rule=GridRuleLines.parseExpression('gridrule:'+hit.slice(1).join(':'));
+      if(!rule||!GridRuleLines.find(rule)){toast('這條來源規則子線已失效，請重新定位。');return;}
+      feChooseTimberAnchor(GridRuleLines.anchor(rule));await fePlaceTimberFromForm(e.bid);return;
+    }
     if (hit && (hit[0] === "e" || hit[0] === "g" || hit[0] === "k")) {
       const clickAnchor = hit[0] === "e" ? `at-face e${hit[2]}`
         : hit[0] === "g" ? `at-line guide ${+hit[1]}`
@@ -5594,6 +5615,7 @@ function feMove(pt, ev) {
       if (hitH[0] === "e" && +hitH[1] === 0) hoverAnchor = `at-face e${hitH[2]}`;
       else if (hitH[0] === "g") hoverAnchor = `at-line guide ${+hitH[1]}`;
       else if (hitH[0] === "k") hoverAnchor = `at-line grid ${+hitH[1]} ${hitH[2]} ${hitH[3]}${hitH[4]!=null&&hitH[4]!==""?` band ${hitH[4]}`:""}`;
+      else if(hitH[0]==='r')hoverAnchor=GridRuleLines.anchor(GridRuleLines.parseExpression('gridrule:'+hitH.slice(1).join(':')));
     }
     if (hoverAnchor !== fe.timberHoverAnchor) {
       fe.timberHoverAnchor = hoverAnchor;
@@ -7405,8 +7427,8 @@ const GridEditor = (() => {
   }
   function html(g, surf) {
     if(g?.kind === "subgrid" || fe.subgridDraftParent != null)return SubgridEditor.html(g,surf);
-    if(g?.bindingId != null)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block"><h3>無限網格配置 ${g.bindingId}</h3><p>格線由來源與邊界的對齊關係決定。畫面只顯示邊界內的部分，正負索引保持不變。</p><button type="button" class="btn" id="gridBindingOpen">編輯網格與邊界對齊</button><div class="grid-subgrid-note"><h4>局部等分</h4>${(g.uDefinition?.stagger || g.vDefinition?.stagger) ? `<p>有相位差的主格不能建立子網格。</p><button type="button" id="subgridNew" class="btn" disabled>建立子網格</button>` : `<p>選取原網格的一個完整 cell；邊界只裁切顯示範圍。</p><button type="button" id="subgridNew" class="btn">建立子網格</button>`}</div></div></section>`;
-    if(g?.sourceSystem != null)return GridSystemEditor.appliedHTML(g);
+    if(g?.bindingId != null)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block"><h3>無限網格配置 ${g.bindingId}</h3><p>格線由來源與邊界的對齊關係決定。畫面只顯示邊界內的部分，正負索引保持不變。</p><button type="button" class="btn" id="gridBindingOpen">編輯網格與邊界對齊</button>${GridRuleLines.html(g)}<div class="grid-subgrid-note"><h4>局部等分</h4>${(g.uDefinition?.stagger || g.vDefinition?.stagger) ? `<p>有相位差的主格不能建立子網格。</p><button type="button" id="subgridNew" class="btn" disabled>建立子網格</button>` : `<p>選取原網格的一個完整 cell；邊界只裁切顯示範圍。</p><button type="button" id="subgridNew" class="btn">建立子網格</button>`}</div></div></section>`;
+    if(g?.sourceSystem != null)return GridSystemEditor.appliedHTML(g)+GridRuleLines.html(g);
     if(g?.engineeringSources?.length)return `<section data-component-section="grid"><h2 class="component-heading">網格 ${g.id}</h2><div class="inspector-block engineering-grid-details"><h3>尺寸引用工程規格</h3><p>來源變更會重新檢查排格及引用它的角材。起算點保存在這個網格內。</p>${engineeringSourceSummary(g.engineeringSources)}<p>起算點：u ${esc(g.uDefinition?.anchor ?? '—')} · v ${esc(g.vDefinition?.anchor ?? '—')} mm</p><button type="button" class="btn primary-button" data-engineering-open data-placement-id="${surf.id}" data-grid-id="${g.id}">編輯工程來源與覆寫</button><div class="grid-subgrid-note"><h4>局部等分</h4><p>選擇這個主格的一格，建立子網格；主格的工程來源保持不變。</p><button type="button" id="subgridNew" class="btn">建立子網格</button></div></div></section>`;
     const dis = surf ? "" : " disabled";
     return `<section data-component-section="grid"><h2 class="component-heading">網格</h2><div class="inspector-block grid-editor">` +
@@ -7605,6 +7627,7 @@ const GridEditor = (() => {
   function bind(pane,bid,grid,surf) {
     if(dragCancel) dragCancel();if(active) {clearTimeout(active.timer);active=null;}
     SubgridEditor.clear();
+    if(grid)GridRuleLines.bind(pane,grid);
     if(grid?.kind === "subgrid" || fe.subgridDraftParent != null){SubgridEditor.bind(pane,bid,grid,surf);return;}
     pane.querySelector('#subgridNew')?.addEventListener('click',()=>{if(grid && !grid.uDefinition?.stagger && !grid.vDefinition?.stagger)SubgridEditor.begin(grid.id);});
     if(grid?.bindingId != null) {
@@ -8123,7 +8146,7 @@ function renderFaceInspector() {
   pane.dataset.bid = String(bid);
   pane.dataset.referencePage = ReferenceWorkspace.active(bid)?.id || "";
   pane.dataset.calibrationPoints = JSON.stringify(fe.ulCalib?.pts || null);
-  if (!saved) { pane.dataset.tbRoleManual = "false"; pane.dataset.tbDirManual = "false"; }
+  if (!saved) { pane.dataset.tbRoleManual = "false"; pane.dataset.tbDirManual = "false"; pane.dataset.tbSectionManual="false"; }
   const loops = oc.bmap[bid] || [];
   const surf = feSurf(bid);
   const placementSurf = fePlacementSurf(bid);
@@ -8369,6 +8392,7 @@ function renderFaceInspector() {
   for (const [id, evt] of [["tbA", "input"], ["tbB", "input"], ["tbSide", "change"]]) {
     const inp = pane.querySelector("#" + id);
     if (inp) inp.addEventListener(evt, () => {
+      if(id==='tbA'||id==='tbB')pane.dataset.tbSectionManual='true';
       feTimberHintRefresh();
       if (fe.tool === "timber" || fe.anchorPreview) drawFaceEditor();
     });

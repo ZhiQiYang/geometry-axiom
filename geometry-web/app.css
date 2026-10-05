@@ -1117,6 +1117,14 @@ body.oc-busy .face-layer-row { pointer-events: none; }
 .face-editor-svg .face-grid-line.role-secondary { stroke: #ad7950; }
 .face-editor-svg .face-grid-hit { pointer-events: none; }
 .face-editor-viewport.tool-timber .face-grid-hit { pointer-events: stroke; cursor: crosshair; }
+.face-rule-line { stroke:#8654b2; stroke-width:1.5; stroke-dasharray:3 3; vector-effect:non-scaling-stroke; pointer-events:none; }
+.face-rule-line.selected { stroke:#572c87; stroke-width:3; }
+.face-rule-hit { pointer-events:none; }
+.tool-select .face-rule-hit,.tool-grid .face-rule-hit,.tool-timber .face-rule-hit { pointer-events:stroke; cursor:pointer; }
+.fe-rule-label { fill:#572c87; pointer-events:none; }
+.fe-rule-density { position:absolute;top:42px;left:12px;max-width:calc(100% - 24px);padding:6px 10px;background:var(--panel,#fff);border-radius:6px;font-size:12px;pointer-events:none; }
+.grid-rule-focus { display:grid;grid-template-columns:1fr 1fr;gap:8px; }
+.grid-rule-details { border-top:1px solid var(--border,#ddd);padding-top:8px;margin-top:12px; }
 .face-editor-svg .face-grid-preview-line { fill: none; stroke: #376fcb; stroke-width: 1.5;
   stroke-dasharray: 6 3; vector-effect: non-scaling-stroke; pointer-events: none; }
 .grid-editor-help { margin: 0 0 10px; color: var(--muted); font-size: 11px; line-height: 1.55; }

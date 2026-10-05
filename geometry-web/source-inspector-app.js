@@ -13,6 +13,11 @@
   }
   async function navigate(n,g,{isCurrent=()=>true,beginNavigation=()=>true}={}){
     const id=Number(n.id);
+    if(n.kind==='grid-source-rule'){
+      if(!Number.isInteger(id)||id<0||id>4294967295||!Number.isInteger(n.fieldId)||n.fieldId<1||n.fieldId>4294967295)throw Error('來源規則身分不完整。');
+      if(!isCurrent())return false;
+      return InfiniteGridWorkspace.openSystem(id,{ruleKey:n.fieldId,sourceGraph:g,isCurrent,beginNavigation});
+    }
     if(['guide','grid','timber','placement'].includes(n.kind))return EngineeringAdapter.navigateObject({kind:n.kind,id},{sourceGraph:g,isCurrent,beginNavigation});
     if(n.kind==='parameter-field')n={...n,kind:'parameter',hasField:true};
     if(['boundary','placement','space','column','beam','grid-system','grid-binding','parameter','assembly-rule','assembly-binding'].includes(n.kind)){
