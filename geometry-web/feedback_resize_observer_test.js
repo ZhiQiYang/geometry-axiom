@@ -54,7 +54,9 @@ function killOwn(label, child, mustContain) {
 
 /* 在 feedback.js 之前注入:同為 window 的 capture 階段監聽(數量固定,不影響 g 的前後比較)、toast 觀察。 */
 const INJECT = `(() => {
-  const g = window.__g1t = { errors: [], toasts: [] };
+  const g = window.__g1t = { errors: [], late: [], toasts: [] };
+  /* late:在 feedback.js 之後才註冊(window 目標相位依註冊順序),用來偵測 stopImmediatePropagation / preventDefault */
+  window.addEventListener('DOMContentLoaded', () => window.addEventListener('error', e => g.late.push({ isTrusted: e.isTrusted, message: e.message, defaultPrevented: e.defaultPrevented })));
   window.addEventListener('error', e => g.errors.push({ isTrusted: e.isTrusted, message: e.message, errorNull: e.error === null,
     lineno: e.lineno, t: Date.now() }), true);
   new MutationObserver(ms => { for (const m of ms) for (const n of m.addedNodes)
@@ -124,7 +126,7 @@ async function main() {
     const roSeen = () => ev(`__g1t.errors.filter(e=>e.isTrusted===true&&e.errorNull&&e.message===${JSON.stringify(RO_MSG)}).length`);
     const toasts = () => ev('__g1t.toasts.slice()');
     const errorToasts = async () => (await toasts()).filter(t => t.includes('程式錯誤'));
-    const waitToast = async (n = 1, ms = 5000) => { for (let t = 0; t < ms && (await errorToasts()).length < n; t += 100) await sleep(100); };
+    const waitToast = async (n = 1, ms = 15000) => { for (let t = 0; t < ms && (await errorToasts()).length < n; t += 100) await sleep(100); };
     const noticeEvents = () => ev(`geometryFeedback.events.filter(e=>e.k==='notice')`);
     const errorEvents = () => ev(`geometryFeedback.events.filter(e=>e.k==='error').map(e=>e.msg)`);
     /* 真實匯入對話框:會讓 reference-workspace.js 的 ResizeObserver 回呼在同一幀改尺寸 → 瀏覽器派 RO 通知。 */
@@ -158,7 +160,8 @@ async function main() {
       notes.length >= 1 && notes.every(n => n.benign === 'resize-observer' && n.msg === RO_MSG && n.count >= 1 && n.first <= n.t), notes);
     check('a4 良性記錄次數合計 = 瀏覽器實際派發的 RO 通知數(合併不丟次數)', notes.reduce((s, n) => s + n.count, 0) === ro, { sum: notes.reduce((s, n) => s + n.count, 0), ro });
     check('a5 良性記錄不算錯誤:黑盒子沒有 k:error', (await errorEvents()).length === 0, await errorEvents());
-    check('a6 不吃掉事件:capture 階段仍看得到該 RO 事件(未 stopPropagation)', ro >= 1);
+    const late = await ev(`__g1t.late.filter(e=>e.isTrusted===true&&e.message===${JSON.stringify(RO_MSG)})`);
+    check('a6 不吃掉事件:註冊在 feedback.js 之後的監聽仍收到每個 RO 事件,且未被 preventDefault', late.length === ro && late.every(e => e.defaultPrevented === false), { ro, late });
 
     /* b. 真實 throw → toast + 回報 */
     await fresh(); before = reports().length;
@@ -193,6 +196,28 @@ async function main() {
     await ev(`window.dispatchEvent(new ErrorEvent('error',{message:'Uncaught Error: '+${JSON.stringify(RO_MSG)}}))`);
     now = await waitReports(before + 1);
     check('e2 帶前綴的近似字串仍回報', now.length === before + 1, now);
+
+    /* e3. 真實 throw null:瀏覽器派 isTrusted:true、error:null、message "Uncaught null"
+     *     — 只靠 isTrusted+error==null 會被誤當良性;訊息全等必須擋住它。 */
+    await fresh(); before = reports().length;
+    await ev(`setTimeout(()=>{throw null},0);void 0`);
+    now = await waitReports(before + 1); await waitToast();
+    const nullEv = await ev(`__g1t.errors.filter(e=>e.message.includes('null'))`);
+    check('e3a 前提:真實 throw null 派發 isTrusted:true、error:null', nullEv.length >= 1 && nullEv[0].isTrusted === true && nullEv[0].errorNull === true, nullEv);
+    check('e3b error==null 的真例外(throw null)被當良性吞掉了?應照常 toast + 回報', now.length === before + 1 && (await errorToasts()).length === 1 && (await noticeEvents()).length === 0, { newReports: now.slice(before), toasts: await toasts(), notice: await noticeEvents() });
+
+    /* e4. 真實跨來源 "Script error.":error:null、isTrusted:true,message 被瀏覽器淨化 */
+    await fresh(); before = reports().length;
+    let xs = null;
+    for (const f of ['room_outline_test.js', 'cdp_helpers.js', 'canvas_test.js']) { try { if ((await fetch(`http://127.0.0.1:${PORT}/${f}`)).ok) { xs = f; break; } } catch { } }
+    check('e4 前提:找得到可從另一個 origin(127.0.0.1)載入、且執行時會 throw 的腳本', !!xs, xs);
+    if (xs) {
+      await ev(`(()=>{const s=document.createElement('script');s.src='http://127.0.0.1:${PORT}/${xs}';document.head.appendChild(s);})();void 0`);
+      now = await waitReports(before + 1); await waitToast();
+      const xo = await ev(`__g1t.errors.filter(e=>e.message==='Script error.')`);
+      check('e4a 前提:真實跨來源錯誤派發 isTrusted:true、error:null、message "Script error."', xo.length >= 1 && xo[0].isTrusted === true && xo[0].errorNull === true, xo);
+      check('e4b error==null 的真例外(Script error.)被當良性吞掉了?應照常 toast + 回報', now.length === before + 1 && (await errorToasts()).length === 1 && (await noticeEvents()).length === 0, { newReports: now.slice(before), toasts: await toasts(), notice: await noticeEvents() });
+    }
 
     /* f. 先觸發真 RO,1 秒內再真 throw → 真錯仍回報(節流沒被 RO 吃掉) */
     await fresh(); before = reports().length;

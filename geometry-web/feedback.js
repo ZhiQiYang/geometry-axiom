@@ -113,7 +113,8 @@
    * 但它不是程式丟出的例外(沒有 Error 物件、沒有行列號)。三個條件必須「同時」成立才算,
    * 任何一個不成立都照一般 JS 例外處理(程式自己 throw 同一句話、合成 ErrorEvent 都不會被吃掉):
    *   1. e.isTrusted === true(瀏覽器自己派發;腳本 dispatchEvent 的一律 false)
-   *   2. e.error == null(真的 throw 一定帶 Error 物件)
+   *   2. e.error == null(丟 Error 物件時 error 非 null;但 throw null 等非 Error 值、跨來源的 "Script error." 也會是 null,
+   *      所以它只是必要條件、不是充分條件——不能單靠 1+2,訊息全等才是真正把範圍縮到 RO 的那一條)
    *   3. message 與下列已知字串逐字全等(不 trim、不忽略大小寫、不用 includes)
    * 第一句:Chrome 154 實測。第二句:較舊 Chrome 的措辭,依規格知識列入,未實測。 */
   const BENIGN_BROWSER_NOTICES = [
