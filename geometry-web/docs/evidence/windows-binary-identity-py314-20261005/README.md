@@ -63,3 +63,19 @@ OK
 harness 本身退出碼 0，stdout 含 11 行 `PASS bench injected-failure`（皆 `hits=1`）、2 行 `PASS bench success`、1 行 `PASS bench no-op`、`PASS actual Windows GDI count unchanged` 與 `PASS SVG ferror/fclose partial cleanup`。工作目錄留下 `complete.svg`（5280 bytes）。stderr 是注入失敗時 harness 自己印的資源取得失敗與釋放訊息，合約測試要求的是退出碼 0 與那些 PASS 行。
 
 這次啟動沒有被應用程式控制原則擋住。上一份基準裡的 WinError 4551 仍是當時那支 exe 的紀錄，不能被這次結果改寫。真實視窗、`geometry-web` 與整套驗收沒有跑。
+
+## 審查後的同一分支修正
+
+上面的修前失敗紀錄與當時的 30 項結果保留。這一節只記後續審查要求的兩項。
+
+穩定檔測試不再讀取 `st_birthtime_ns`，也不再要求 `stat` 與 `fstat` 的 `st_ctime` 必須不同。缺這個屬性時，Windows 簽名改回 `st_ctime`；其他平台即使物件帶有 birth time 仍使用 `st_ctime`。這段 fallback 用沒有該屬性的記憶體物件覆蓋，沒有拿舊版 Python 實機跑。
+
+同 inode、同尺寸、改內容、再把 mtime 設回去的中性檔，在只比 birth 的版本上實測如下。開啟當下 `stat().st_ctime` 已與 `fstat().st_ctime` 不同；改寫並還原 mtime 之後，inode、size、mtime、birth、`stat().st_ctime` 都沒變，`fstat().st_ctime` 有變。當時函式回傳改寫前內容的 SHA-256 `9f9f5111f7b27a781f1f1ddde5ebc2dd2b796bfc7365c9c28b548e564176929f`，與新內容不同。
+
+舊的跨 API `st_ctime` 在這個檔案開啟時就已經不相等，所以舊碼到不了雜湊中的檢查，它是在開啟時誤拒，不是靠雜湊中的 change time 抓到這次改寫。birth 跨 API 比對拿掉了 `fstat` 自己那次會移動的 `st_ctime`。後續修正把雜湊中的檢查改成兩次 `fstat` 互比，包含該次的 `st_ctime`。跨 API 仍只比雙方都有的時鐘，避免穩定檔在開啟時被誤拒。
+
+修正後的 `python tests/test_binaries.py`：32 個測試。第一次有 1 個失敗，`test_fresh_reuses_without_compile_smoke_or_metadata_write` 的 `st_atime` 差了 1 秒，mtime、ctime 與 sidecar bytes 沒變；立刻重跑 32 項退出碼 0，耗時 2.773 秒。同尺寸案例在重跑中被拒，訊息是 `binary changed during hashing`，而且拒絕之後跨 API 簽名仍與改寫前相同。
+
+這不表示所有競態保護都與改前完全相同。開啟後的 `fstat` 若看不到 `st_ctime`、mtime、size、inode 或 birth 的差異，雜湊仍可能返回已經讀到的 bytes。這次實測的同尺寸改寫有留下 `fstat().st_ctime` 差異，所以被拒絕。
+
+同一支已建好的 GDI harness（SHA-256 `de7dec1737e2d658dff1a7dcc7b8c2246254b586efd2efa816be07d4cf869676`）再用新核對跑 `python tests/test_gdi_contract.py`，退出碼 0，1 個測試，1.108 秒。沒有重編，也沒有改 Windows 安全設定。整套 `run_all.py`、真實視窗、PR #134，以及沒有 `st_birthtime_ns` 的舊版 Windows Python 都沒有實機跑。

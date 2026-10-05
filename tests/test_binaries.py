@@ -413,17 +413,31 @@ class BinaryFreshnessTests(unittest.TestCase):
         path.write_bytes(payload)
         created = path.stat()
         os.utime(path, ns=(created.st_atime_ns, created.st_mtime_ns + 2_000_000_000))
-        if os.name == 'nt':
-            split = path.stat()
-            self.assertNotEqual(split.st_birthtime_ns, split.st_mtime_ns)
-            with path.open('rb') as fh:
-                opened = os.fstat(fh.fileno())
-            self.assertNotEqual(split.st_ctime_ns, opened.st_ctime_ns)
-            self.assertEqual(split.st_birthtime_ns, opened.st_birthtime_ns)
         ident = binaries._binary_identity(path)
         self.assertEqual(ident['exe_sha256'], hashlib.sha256(payload).hexdigest())
         self.assertEqual(ident['exe_size'], len(payload))
         self.assertEqual(ident['exe_mtime_ns'], path.stat().st_mtime_ns)
+
+    def test_identity_stamp_falls_back_when_birth_time_is_absent(self):
+        class Sample:
+            def __init__(self, ctime, birth=None):
+                self.st_dev, self.st_ino, self.st_size, self.st_mtime_ns = 11, 22, 33, 44
+                self.st_ctime_ns = ctime
+                if birth is not None:
+                    self.st_birthtime_ns = birth
+
+        missing = Sample(5)
+        self.assertFalse(hasattr(missing, 'st_birthtime_ns'))
+        self.assertEqual(binaries._identity_signature(missing)[-1], 5)
+        born = Sample(5, birth=9)
+        other_ctime = Sample(8, birth=9)
+        if os.name == 'nt':
+            self.assertEqual(binaries._identity_signature(born)[-1], 9)
+            self.assertEqual(binaries._identity_signature(born), binaries._identity_signature(other_ctime))
+        else:
+            self.assertEqual(binaries._identity_signature(born)[-1], 5)
+            self.assertNotEqual(binaries._identity_signature(born), binaries._identity_signature(other_ctime))
+        self.assertNotEqual(binaries._observed_signature(born), binaries._observed_signature(other_ctime))
 
     def test_metadata_or_size_change_during_hash_is_rejected(self):
         path = self.root / 'neutral.bin'
@@ -528,6 +542,56 @@ class BinaryFreshnessTests(unittest.TestCase):
         else:
             self.assertEqual(path.read_bytes(), b'replacement-content')
             self.assertTrue('replaced' in str(caught.exception) or 'during hashing' in str(caught.exception))
+
+    def test_same_size_rewrite_restoring_mtime_is_not_published(self):
+        path = self.root / 'neutral.bin'
+        payload = b'0123456789abcdef'
+        path.write_bytes(payload)
+        created = path.stat()
+        os.utime(path, ns=(created.st_atime_ns, created.st_mtime_ns + 2_000_000_000))
+        before = path.stat()
+        before_sig = binaries._identity_signature(before)
+        original = Path.open
+
+        class Rewriter:
+            def __init__(self, fh):
+                self.fh, self.done = fh, False
+            def __enter__(self):
+                return self
+            def __exit__(self, *_):
+                self.fh.close()
+            def fileno(self):
+                return self.fh.fileno()
+            def read(self, size):
+                chunk = self.fh.read(size)
+                if chunk and not self.done:
+                    self.done = True
+                    held = path.stat()
+                    with original(path, 'r+b') as writer:
+                        first = writer.read(1)
+                        writer.seek(0)
+                        writer.write(bytes([first[0] ^ 0xff]))
+                        writer.flush()
+                        os.fsync(writer.fileno())
+                    os.utime(path, ns=(held.st_atime_ns, held.st_mtime_ns))
+                return chunk
+
+        def open_rewriting(self, *args, **kwargs):
+            fh = original(self, *args, **kwargs)
+            if self == path and args == ('rb',):
+                return Rewriter(fh)
+            return fh
+
+        with patch.object(Path, 'open', open_rewriting):
+            with self.assertRaises(OSError) as caught:
+                binaries._binary_identity(path)
+        self.assertIn('during hashing', str(caught.exception))
+        after = path.stat()
+        self.assertEqual(after.st_ino, before.st_ino)
+        self.assertEqual(after.st_size, before.st_size)
+        self.assertEqual(after.st_mtime_ns, before.st_mtime_ns)
+        self.assertEqual(binaries._identity_signature(after), before_sig)
+        self.assertNotEqual(path.read_bytes(), payload)
 
     def test_full_runner_refuses_tampered_binary_without_invoking_suite(self):
         self.build()
