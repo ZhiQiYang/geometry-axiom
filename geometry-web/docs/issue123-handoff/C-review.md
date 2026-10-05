@@ -4,17 +4,18 @@
 > 審查基準 `d6b4b450`;審查期間 main 前進至 `6ee719d`(#135 合併,僅文件),下列行號仍有效。
 > 協調者抽查 4 條並確認成立:app.css:11 / 2172-2176(accent 僅 composition 下為 #365bf5)、workspace-guidance.js:41(dynamic 狀態已讀後仍顯示)、app.js:3020/3023(feFit/feSetTool 行號)、app.js:609-611(刪除走 confirmReferenceImpact)。
 > 標 PLAUSIBLE 者為算術推導,未實測。
+> 2026-10-05 UTC 文件勘誤:下文只更正 fit 適用範圍與 F5 焦點證據的元件歸屬;原 C 轉存歷史、A/B 原檔與原始量測保留,未重跑實測。
 
 ## 一、確定缺陷(依嚴重度)
 
-1. **B 的 B6 修法只顧到首次進入**(B-fix-design.md:23)。按「知道了」後,選取角材卡片仍以 dynamic 狀態重現(workspace-guidance.js:41;`stage_x1 face/b6_1sel` open:false、233×62 @272,128),此後每次 fit 上緣保留只有 40px(app.js:2958),仍會蓋住外環頂與標註。issue S3 要的是「框選提示僅相關狀態顯示」,B 的方向是縮小圖。
+1. **B 的 B6 修法仍須核對卡片出現時序**(B-fix-design.md:23)。按「知道了」後,選取角材卡片仍可由 dynamic 狀態顯示(workspace-guidance.js:41;`stage_x1 face/b6_1sel` open:false、233×62 @272,128)。風險限於卡片在初次 fit 後才出現,且 `feResizeViewport()` 不因只有 top inset 變化就補 fit(app.js:2978-2989);此情境的遮蔽仍待實測。**明確呼叫 `feFit()` 會重算 inset**:summary 未 hidden 時,top 為 `max(40, summary.bottom - viewport.top + 40)`,再限於視口高度的 30%(app.js:2957-2961),不能稱此後每次 fit 都只留 40px。issue S3 要的是「框選提示僅相關狀態顯示」,B 的方向是縮小圖。
 2. **B 回歸步驟 1 跑錯對象**:直接 `node marquee_test.js` 只跑框選規則單元契約(marquee_test.js:442-446);S10 與 ResizeObserver 段只經 cdp_test.js:7007 執行。
 3. **B 回歸步驟 2 選擇器不存在,通過條件會自敗**:`.face-dimension-label` 只在 app.css:755 與原型;app.js 實際產生 `.fe-dim.fe-edge-dim`(app.js:4877)。標註距外環約 29px 加半字高(app.js:4850-4852),套 B 修法後標註頂只比卡片底低約 5px,達不到 B 自訂的 +8px。(PLAUSIBLE)
 4. **問題 3 的 B 案(sticky)無效**:`.ig-canvas` 父層 `.ig-main` 只包畫布(grid-system-workspace.js:307),sticky 範圍受父層限制,畫布不會進初始視口。
 5. **問題 3 的 Tab 順序推論方向相反**:DOM 中 `.ig-main` 在 `.ig-inspector` 之前(js:307),現行手機 `order:1/2`(css:198-199)**已經**讓視覺與 Tab 順序分家;A 案反而讓兩者恢復一致。
 6. **F5「全站 --accent:#365bf5」錯誤**:該值只在 `body.canvas-composition` 下(app.css:2172-2176),根層為 #4e67e8(app.css:11);進面內時 composition 關閉(app.js:9136),改 `var(--accent)` 會讓 3D 主色隨入口不同,無法達成「四處主要按鈕一致」。
 7. **A 判 B6「1 選不一致不成立」判錯**:`oc_1sel` 文字含「知道了」,即 state.open 為真(workspace-guidance.js:44),guidance-open 強制顯示(workspace-guidance.css:6);面內 1 選則在已讀後量(open:false),狀態不對等。已讀狀態下主畫布 1 選是隱藏的(app.css:2256、workspace-guidance.css:11、marquee_test.js:117)。結論:#138 README 數值錯,但「不一致」本身成立,且屬 GEO-216 刻意設計。
-8. **A 說 F5 的 2px「無檔案內證據」過度**:`stage_f.json tabOrder1382[6]`(smCanvas)量到 `2px solid rgba(78,103,232,0.55)`,即全域規則 app.css:66-67。
+8. **F5 的 2px 證據須區分元件**:`stage_f.json tabOrder1382[6]` 量到的是 3D `smCanvas` 的 `2px solid rgba(78,103,232,0.55)`(對應全域規則 app.css:66-67)。此值只支持 smCanvas 已量到 2px;**面內工具列 2px 仍無對應實測**,不能以不同元件的焦點值替代。歡迎 CTA 的 3px／offset 3px 另由 `focusOutlineWelcomeTry` 支持。
 9. **A 把 G3 判「實證重現」過度**:實測時刪除鈕旁是「建立配置」而非「完整工作區」;只有配置模式或非無限來源才緊鄰(grid-inspector.js:48),該情境未量。應改為「部分重現+程式推導」。
 10. **B 說刪除前「未見 confirm」不實**:`api()` 收到 preview 走 `confirmReferenceImpact`(app.js:609-611);grid_rule_editor_test.js:133 按 `#gridObjectDelete` 後處理 `.reference-impact[open]`;刪除後另有可 Ctrl+Z 的 toast。再加一層會變雙重確認。
 11. **F1 a 案會改到既有測試主視窗**:`max-height:900` 含 900,space_model_test.js 主視窗 1400×900(約 :391、:404)會換成緊湊版面,截圖基準跟著變,B 未提。
@@ -45,7 +46,7 @@
 | B6 README 與 JSON 數值矛盾 | 成立 | `stage_g oc_0sel` / `oc_1sel` |
 | F6 顏色 README 與 JSON 不符 | 成立 | `stage_f 1382x804/help[0]`、`help[8]` |
 | F5 鍵名不符 | 成立 | `stage_f` 頂層鍵為 controls、tabOrder1382 |
-| F5 2px 無證據 | 存疑(偏不成立) | `stage_f tabOrder1382[6].outline`;app.css:66 |
+| F5 面內工具列 2px 的實測證據 | 未量;3D smCanvas 2px 已量 | `stage_f tabOrder1382[6]` 的 id 為 smCanvas;app.css:66 是規則,不等於面內工具列實測 |
 | G3 實證重現 | 存疑 | grid-inspector.js:48;`stage_g gi/1382x804` 三鈕順序 |
 | B6 遮標註僅截圖目視 | 存疑 | `face/1382x804/#faceEditorViewport`(y116、h656)配合 app.js:2958-2971 可算出外環頂 156 < 卡片底 190 |
 | X6、F1、G4 數值、43 項計數與 P1/P2/P3 分級 | 成立 | 已逐鍵核對 JSON |
@@ -71,4 +72,4 @@
 - **有條件**:`space-workspace.css` 只做 F1 a/b 兩案,前提是 #119 負責人同意,且接受 1400×900 測試基準變動。F5、F6 等 S1 定案。
 - **待 dot 決定**:三視圖手機規則放哪個檔(不建議 workspace-shell.css)。
 
-**整體**:A 的數值索引大多正確,但 B6「不一致不成立」與 F5 2px 兩點有誤。B 的根因大致成立,但 B6 範圍、問題 3 sticky 與 Tab 推論、F5 accent、兩條回歸步驟有實錯;**以 C 的修正為準**,否則實作者會做錯。
+**整體**:A 的數值索引大多正確,但 B6「不一致不成立」需區分已讀／開啟狀態;F5 則須分清已量的 3D smCanvas 2px 與未量的面內工具列。B 的根因大致成立,但 B6 時序範圍、問題 3 sticky 與 Tab 推論、F5 accent、兩條回歸步驟有實錯;B6 明確 fit 會重算 inset,初次 fit 後卡片出現的風險仍待情境驗證。**以 C 的修正為準**,否則實作者會做錯。
