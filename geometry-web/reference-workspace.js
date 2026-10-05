@@ -449,11 +449,11 @@ const ReferenceWorkspace = (() => {
     const stamp = getModelOperationState(), original = readFeatureAttachment(P.Features.ROOM_KIND),
       incarnation = frame.ids.get(boundaryId);
     if (!sameModelData(GeometrySourcePlane.fromPage(page, source.meta.type, plane.id), plane)) throw new Error("共享來源基準與明選原頁不一致。");
-    const next = structuredClone(original || GeometrySourcePlane.empty());
+    const next = GeometrySourcePlane.upgradeDisplay(original || GeometrySourcePlane.empty());
     next.planes.push(structuredClone(plane)); next.collections.push({id:collectionId,planeId:plane.id,roomIds:[roomId]});
-    next.rooms.push({id:roomId,name,boundaryRef:{kind:"boundary",id:boundaryId,associationPin},acceptedBasisRevision:plane.basisRevision,reviewState:"confirmed"});
+    next.rooms.push({id:roomId,name,boundaryRef:{kind:"boundary",id:boundaryId,associationPin},acceptedBasisRevision:plane.basisRevision,reviewState:"confirmed",
+      display:{crop:structuredClone(page.crop),opacity:page.opacity,locked:page.locked}});
     if (page.records.length || originalReview !== null) {
-      next.schema = GeometrySourcePlane.HISTORY_SCHEMA;
       (next.legacyHistory ||= []).push({planeId:plane.id,boundaryId,pageId:page.id,records:page.records,reconstructionReview:originalReview});
     }
     // Validate the original JSON before taking detached snapshots; serialization
@@ -834,7 +834,7 @@ const ReferenceWorkspace = (() => {
   }
   function changed(bid, recheck = false) {
     assertEditable(); const p = active(bid);
-    if (sharedRoom(bid)) return RoomCollectionWorkspace.changeBasis(bid, {x:p.x,y:p.y,rot:p.rot,mmPerPx:p.mmPerPx});
+    if (sharedRoom(bid)) return RoomCollectionWorkspace.changeView(bid, {crop:p.crop,opacity:p.opacity,locked:p.locked,x:p.x,y:p.y,rot:p.rot,mmPerPx:p.mmPerPx});
     if (p) assertPageCapacity(bid,{...p,reviewRequired:recheck ? true : p.reviewRequired});
     if (p && recheck) p.reviewRequired = true; dirty();
   }

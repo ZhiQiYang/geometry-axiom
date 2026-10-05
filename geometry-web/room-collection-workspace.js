@@ -2,7 +2,7 @@
 const RoomCollectionWorkspace = (() => {
   "use strict";
   const S = GeometrySourcePlane, R = GeometryRoomCollection;
-  const pages = new Map();
+  const pages = new Map(),renders=new WeakMap();
   let overviewCollectionId = null, overviewContextToken = null;
   let instance = null, activeBid = null, lease = null, ownedPreviewToken = null, ownedPreviewCommand = null, currentDialog = null, retireDialog = null, integration = null, cleaningUI = false;
   const W = () => ReferenceWorkspace;
@@ -118,12 +118,14 @@ const RoomCollectionWorkspace = (() => {
     if (!room) return null;
     const plane = S.planeForRoom(data, room.id), contextToken = token();
     if (!pages.has(contextToken)) {pages.set(contextToken, new Map()); if(pages.size > 32)pages.delete(pages.keys().next().value);}
-    const cache = pages.get(contextToken), old = cache.get(bid), signature = JSON.stringify(plane);
+    const source=integration.readSource(plane.sourceId,contextToken),renderKey=JSON.stringify([plane.page,plane.pageSize]);
+    const render=renders.get(source)?.get(renderKey);
+    const display=S.displayForRoom(data,room.id),cache = pages.get(contextToken), old = cache.get(bid), signature = JSON.stringify([plane,display]);
     if (old && old.planeId === plane.id) {
-      if (old.signature !== signature) {Object.assign(old.page, S.materialize(plane, old.page)); old.signature = signature;}
+      if (old.signature !== signature) {Object.assign(old.page, S.materialize(plane, old.page,display)); old.signature = signature;}
       old.page.reviewRequired = room.reviewState !== "confirmed"; return old.page;
     }
-    const page = S.materialize(plane); page.reviewRequired = room.reviewState !== "confirmed";
+    const page = S.materialize(plane,render?{src:render}:{},display); page.reviewRequired = room.reviewState !== "confirmed";
     cache.set(bid, {planeId: plane.id, signature, page}); return page;
   }
   async function prepareSharedPages(contextToken = token()) {
@@ -134,6 +136,10 @@ const RoomCollectionWorkspace = (() => {
       const source = integration.readSource(p.sourceId, contextToken); if (!source) throw new Error("共享來源檔案已遺失。");
       await W().preparePage(p, source);
       if (token() !== contextToken || W().getProjectState().revision !== stamp.revision) throw new Error("共享來源載入晚到，未套用到目前專案。");
+      // Cache only the derived raster by its original source object/page. View
+      // metadata always comes from the current persisted room, including undo.
+      if(!renders.has(source))renders.set(source,new Map());
+      renders.get(source).set(JSON.stringify([p.page,[p.imgW,p.imgH]]),p.src);
     }
     W().sync();
   }
@@ -339,13 +345,18 @@ const RoomCollectionWorkspace = (() => {
     if (instance !== operation) return;
     activeBid = null; cleanDraft(); feSetTool("select"); renderFaceInspector();
   }
-  function changeBasis(bid, changes, calibration = undefined) {
+  function changeView(bid, changes, calibration = undefined) {
     const room = roomForBoundary(bid); if (!room) return false;
-    const plane = S.planeForRoom(state(), room.id), alignment = {...plane.alignment};
-    for (const [key, value] of Object.entries(changes)) if (["x", "y", "mmPerPx", "rot"].includes(key)) alignment[key === "rot" ? "rotation" : key] = value;
-    controller().basis(plane.id, calibration === undefined ? plane.calibration : calibration, alignment);
+    const data=state(),plane = S.planeForRoom(data, room.id), alignment = {...plane.alignment},display=S.displayForRoom(data,room.id);
+    for (const [key, value] of Object.entries(changes)) {
+      if (["x", "y", "mmPerPx", "rot"].includes(key)) alignment[key === "rot" ? "rotation" : key] = value;
+      else if(['crop','opacity','locked'].includes(key))display[key]=value;
+      else throw new Error('房間來源顯示欄位不支援。');
+    }
+    controller().sourceView(room.id, calibration === undefined ? plane.calibration : calibration, alignment,display);
     W().sync(); renderFaceInspector(); return true;
   }
+  const changeBasis=changeView;
   function observeNativeResult(command, result) {
     if (!lease || !result.ok) return;
     if (command === ownedPreviewCommand && result.preview?.valid === true && Number.isInteger(result.preview.token) && result.preview.token > 0)
@@ -376,7 +387,7 @@ const RoomCollectionWorkspace = (() => {
     if (settledLease) integration.endTransaction(settledLease);
     lease = null;
   }
-  return {configure, assertTransaction, paneHTML, bindPane, overviewHTML, bindOverview, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeBasis, observeNativeResult, settleRecoveredTransaction, recoveredTransaction,
+  return {configure, assertTransaction, paneHTML, bindPane, overviewHTML, bindOverview, sourcePage, prepareSharedPages, roomForBoundary, beginNew, beginEdit, commitDraft, cancel, changeView, changeBasis, observeNativeResult, settleRecoveredTransaction, recoveredTransaction,
     get cleaningUI() {return cleaningUI;}, get dialogOpen() {return !!currentDialog?.open;},
     get hasWork() {return !!instance?.intent || !!lease;}, get busy() {return !!instance?.busy || !!lease;}, get transactionLease() {return lease;}, get controller() {return controller();}};
 })();

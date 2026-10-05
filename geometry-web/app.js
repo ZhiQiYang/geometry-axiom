@@ -4785,8 +4785,8 @@ function feUnderlayEditable(bid, expected = null) {
 }
 function feChangeUnderlay(bid, ul, changes, recheck = false) {
   if (!feUnderlayEditable(bid, ul)) return false;
-  if (window.RoomCollectionWorkspace?.roomForBoundary(bid) && Object.keys(changes).some(key => ["x","y","rot","mmPerPx"].includes(key))) {
-    try {return RoomCollectionWorkspace.changeBasis(bid, changes);} catch(error) {toast(error.message); return false;}
+  if (window.RoomCollectionWorkspace?.roomForBoundary(bid)) {
+    try {return RoomCollectionWorkspace.changeView(bid, changes);} catch(error) {toast(error.message); return false;}
   }
   const previous = Object.fromEntries(Object.keys(changes).map(key => [key, ul[key]]));
   Object.assign(ul, changes);

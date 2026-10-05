@@ -270,15 +270,17 @@
   }
   // Editor capabilities are checked by this reader, never advertised as native
   // scene or model-producer capabilities.
+  const manifestCapabilities = [ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY];
   function validateManifestCapabilities(capabilities) {
-    // /1 and /2 share one active grid-draft kind; the existing maximum stays.
-    if (!Array.isArray(capabilities) || capabilities.length > 10 || new Set(capabilities).size !== capabilities.length ||
-        capabilities.some(capability => ![ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, ASSEMBLY_CAPABILITY, GENERATION_CAPABILITY, SUBDIVISION_CAPABILITY, Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY].includes(capability)))
+    // /1 and /2 share one active grid-draft kind; capacity follows the finite registry.
+    if (!Array.isArray(capabilities) || capabilities.length > manifestCapabilities.length-1 || new Set(capabilities).size !== capabilities.length ||
+        capabilities.includes(Features.GRID_SCHEMA) && capabilities.includes(Features.GRID_RULE_SCHEMA) ||
+        capabilities.some(capability => !manifestCapabilities.includes(capability)))
       fail("專案需要尚未支援的能力。");
     return capabilities;
   }
   function readerCapabilities(nativeCapabilities) {
-    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY];
+    return [...nativeReaderCapabilities(nativeCapabilities), Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY];
   }
   function projectCapabilities(manifest, scene) {
     const required = new Set([...(manifest.requiredCapabilities || []), ...sceneCapabilities(scene)]);
@@ -313,12 +315,13 @@
     if (manifest.requiredCapabilities?.includes(Features.GRID_SCHEMA) && !needed.includes(Features.GRID_SCHEMA)) fail("網格草稿能力缺少對應附件。");
     if (manifest.requiredCapabilities?.includes(Features.ROOM_CAPABILITY) && !Features.sourceRooms(manifest.featureAttachments || {schema:Features.SCHEMA,records:[]})) fail("房間來源能力缺少對應附件。");
     if (manifest.requiredCapabilities?.includes(Features.ROOM_HISTORY_CAPABILITY) && !needed.includes(Features.ROOM_HISTORY_CAPABILITY)) fail("來源歷史能力缺少對應附件。");
+    if (manifest.requiredCapabilities?.includes(Features.ROOM_DISPLAY_CAPABILITY) && !needed.includes(Features.ROOM_DISPLAY_CAPABILITY)) fail("逐房顯示能力缺少對應附件。");
     if(manifest.format===GENERATION_FORMAT&&!manifest.requiredCapabilities?.includes(GENERATION_CAPABILITY))fail("第 8 版專案缺少組構生成能力。");
     if (manifest.format === SUBDIVISION_FORMAT && !manifest.requiredCapabilities?.includes(SUBDIVISION_CAPABILITY)) fail("第 11 版專案缺少來源子規則能力。");
     if ((needed.includes(SUBDIVISION_CAPABILITY) || manifest.requiredCapabilities?.includes(SUBDIVISION_CAPABILITY)) && ![SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT].includes(manifest.format))
       fail("來源子規則須使用第 11 版格式並保留所需能力。");
     if (needed.some(c => !manifest.requiredCapabilities?.includes(c)) ||
-        (needed.some(capability => [Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY].includes(capability)) && ![FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT].includes(manifest.format)) ||
+        (needed.some(capability => [Features.GRID_SCHEMA, Features.GRID_RULE_SCHEMA, Features.ROOM_CAPABILITY, Features.ROOM_HISTORY_CAPABILITY, Features.ROOM_DISPLAY_CAPABILITY, EVIDENCE_CAPABILITY, SCENARIO_CAPABILITY].includes(capability)) && ![FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT].includes(manifest.format)) ||
         (needed.includes(PARAMETER_CAPABILITY) && ![PARAMETER_FORMAT, ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT].includes(manifest.format)) ||
         (needed.includes(ASSEMBLY_CAPABILITY) && ![ASSEMBLY_FORMAT, GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT].includes(manifest.format)) ||
         (needed.includes(GENERATION_CAPABILITY) && ![GENERATION_FORMAT, OUTLINE_FORMAT, FEATURE_FORMAT, SUBDIVISION_FORMAT, EVIDENCE_FORMAT, GRID_RULE_FORMAT, SCENARIO_FORMAT].includes(manifest.format)) ||
@@ -547,11 +550,9 @@
         if (!p || !id(p.id) || refs.has(p.id) || !sources.has(p.sourceId) || !Number.isInteger(p.page) || p.page < 1 || p.page > 100000 ||
             !finite(p.imgW, 1, 1e7) || !finite(p.imgH, 1, 1e7) || !finite(p.mmPerPx, 1e-9, 1e8) ||
             !finite(p.x, -1e8, 1e8) || !finite(p.y, -1e8, 1e8) || ![0,90,180,270].includes(p.rot) ||
-            !finite(p.opacity, 0, 1) || typeof p.locked !== "boolean" || typeof p.reviewRequired !== "boolean") fail("圖頁對位資料不合法。");
+            typeof p.reviewRequired !== "boolean") fail("圖頁對位資料不合法。");
         refs.add(p.id);
-        const c = p.crop;
-        if (!Array.isArray(c) || c.length !== 4 || !c.every(Number.isFinite) || c[0] < 0 || c[1] < 0 || c[2] <= 0 || c[3] <= 0 ||
-            c[0] + c[2] > p.imgW + 0.001 || c[1] + c[3] > p.imgH + 0.001) fail("圖頁取景範圍不合法。");
+        Features.ReferenceDisplay.validate({crop:p.crop,opacity:p.opacity,locked:p.locked},[p.imgW,p.imgH]);
         if (sources.get(p.sourceId).type !== "application/pdf" && p.page !== 1) fail("圖片只能使用第 1 頁。");
         if (p.calibration !== null) {
           const q = p.calibration;

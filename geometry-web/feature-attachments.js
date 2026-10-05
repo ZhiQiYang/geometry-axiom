@@ -10,6 +10,7 @@
   const GRID_SCHEMA = "grid-editor-draft/1", GRID_RULE_SCHEMA = "grid-editor-draft/2", GRID_KIND = "grid-draft";
   const ROOM_KIND = "source-rooms", ROOM_SCHEMA = "source-rooms/1", ROOM_CAPABILITY = "source-room-collection/1";
   const ROOM_HISTORY_SCHEMA = "source-rooms/2", ROOM_HISTORY_CAPABILITY = "source-room-history/1";
+  const ROOM_DISPLAY_SCHEMA = "source-rooms/3", ROOM_DISPLAY_CAPABILITY = "source-room-display/1";
   const MAX_BYTES = 128 * 1024, MAX_STRING = 4096;
   const MAX_ROOM_BYTES = 8 * 1024 * 1024;
   const sourceFields = ["igName", "igMainAlong", ...["U", "V"].flatMap(axis => [
@@ -95,8 +96,8 @@
   function boundedJSON(value, roomEnvelope = false) {
     const maxNodes = roomEnvelope ? 600000 : 4096, maxArray = roomEnvelope ? 10000 : 128;
     const ownValue = (node,key) => node !== null && typeof node === "object" ? Object.getOwnPropertyDescriptor(node,key)?.value : undefined;
-    const historyRecord = node => ownValue(node,"kind") === ROOM_KIND && ownValue(node,"schema") === ROOM_HISTORY_SCHEMA &&
-      ownValue(ownValue(node,"value"),"schema") === ROOM_HISTORY_SCHEMA;
+    const historyRecord = node => ownValue(node,"kind") === ROOM_KIND && [ROOM_HISTORY_SCHEMA,ROOM_DISPLAY_SCHEMA].includes(ownValue(node,"schema")) &&
+      ownValue(ownValue(node,"value"),"schema") === ownValue(node,"schema");
     function legacyGeometry(path) {
       if (!roomEnvelope) return false;
       const offset = path.length === 5 && historyRecord(value) ? 0 :
@@ -200,8 +201,8 @@
     if (record.kind === GRID_KIND && [GRID_SCHEMA, GRID_RULE_SCHEMA].includes(record.schema)) {
       if (record.value?.schema !== record.schema) fail("網格草稿附件版本不一致。");
       boundedJSON(record); validateGridDraft(record.value);
-    } else if (record.kind === ROOM_KIND && [ROOM_SCHEMA,ROOM_HISTORY_SCHEMA].includes(record.schema)) {
-      if (!Rooms || Rooms.SCHEMA !== ROOM_SCHEMA || Rooms.CAPABILITY !== ROOM_CAPABILITY || Rooms.HISTORY_SCHEMA !== ROOM_HISTORY_SCHEMA || Rooms.HISTORY_CAPABILITY !== ROOM_HISTORY_CAPABILITY) fail("房間來源驗證器尚未就緒。");
+    } else if (record.kind === ROOM_KIND && [ROOM_SCHEMA,ROOM_HISTORY_SCHEMA,ROOM_DISPLAY_SCHEMA].includes(record.schema)) {
+      if (!Rooms || Rooms.SCHEMA !== ROOM_SCHEMA || Rooms.CAPABILITY !== ROOM_CAPABILITY || Rooms.HISTORY_SCHEMA !== ROOM_HISTORY_SCHEMA || Rooms.HISTORY_CAPABILITY !== ROOM_HISTORY_CAPABILITY || Rooms.DISPLAY_SCHEMA !== ROOM_DISPLAY_SCHEMA || Rooms.DISPLAY_CAPABILITY !== ROOM_DISPLAY_CAPABILITY) fail("房間來源驗證器尚未就緒。");
       if (record.value?.schema !== record.schema) fail("房間來源附件版本不一致。");
       Rooms.validate(record.value);
       if (bytes + lifecycleReserve(record.value) > MAX_ROOM_BYTES) fail("功能附件未保留房間狀態更新所需容量。");
@@ -233,7 +234,8 @@
   }
   function capabilities(envelope) { validate(envelope); return envelope.records.flatMap(record => record.kind === GRID_KIND ? [record.schema] :
     record.kind === Evidence.KIND ? [Evidence.SCHEMA] :
-    record.schema === ROOM_HISTORY_SCHEMA ? [ROOM_CAPABILITY,ROOM_HISTORY_CAPABILITY] : [ROOM_CAPABILITY]).sort(); }
+    [ROOM_CAPABILITY,...(record.schema===ROOM_DISPLAY_SCHEMA?[ROOM_DISPLAY_CAPABILITY]:[]),
+      ...((record.schema===ROOM_HISTORY_SCHEMA||record.value.legacyHistory?.length)?[ROOM_HISTORY_CAPABILITY]:[])]).sort(); }
   function evidenceLinks(envelope, sources, projectScope) {
     validate(envelope);
     const value = envelope.records.find(record => record.kind === Evidence.KIND)?.value || null;
@@ -268,7 +270,7 @@
   function changedRoomBoundary(value, id) { return Rooms.boundaryChanged(validateRecord(record(ROOM_KIND, value)).value, id); }
   function unknownRoomHistory(value) { return Rooms.unknownHistory(validateRecord(record(ROOM_KIND, value)).value); }
   function references(value) { validateGridDraft(value); return JSON.parse(JSON.stringify([...(value.baseRef === null ? [] : [value.baseRef]), ...value.inputRefs])); }
-  return {Evidence, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_RULE_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
+  return {ReferenceDisplay:Rooms.Display,Evidence, evidenceLinks, sourceIds, SCHEMA, GRID_SCHEMA, GRID_RULE_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, ROOM_DISPLAY_SCHEMA, ROOM_DISPLAY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
     sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields), ruleFields:Object.freeze(ruleFields),
     gridSourceDefinition, gridSourceKey, ruleAwareSource,

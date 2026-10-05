@@ -73,6 +73,17 @@ checks 為額外 test cases。unknown-history 負例是未經本頁 observer 的
 
 ## #77 必需的四個真瀏覽器入口
 
+T4 逐房顯示修復另有必要的正式 gate：
+`tests/test_shared_room_display_browser.js`。以隔離 `GEOMETRY_TEST_URL`、TEMP
+`GEOMETRY_FEEDBACK_DIR` 與 `GEOMETRY_ROOM_DISPLAY_OUT` 執行；最終證據設定
+`GEOMETRY_REQUIRE_CLEAN=1`。使用 repo-authored `issue77-two-rooms.pdf`，API 僅作
+初始校準頁／原幾何夾具與唯讀裁判。真 UI 明選採用、取消／手動新房間、透明度／鎖定／對位、
+Undo/Redo、下載完整 ZIP、新空白 context Open 在 1280 與 390px 各跑；未知 schema、
+缺能力、錯型 display、8MiB manifest 超限檔從正常 Open 拒絕且保住整體狀態。
+初始 crop 是明示夾具 `[10,20,580,360]`，不冒稱此 gate 有 pointer crop import；
+真正 PDF import／手動矩形仍由 #48 formal gate 驗證。它不算入非瀏覽器 floor，
+不取代既有四項 #77 gates 或 full CDP／Space。
+
 以下四個腳本使用 Playwright、實際 Chromium、app 與 native；不是 `node --test` suites。
 它們在 `NODE_EXCLUDED` 逐檔登記具體原因，非瀏覽器合計**未執行、未驗證**，
 不把 script 未跑或臨時 prototype adapter 成功當產品整合完成。
