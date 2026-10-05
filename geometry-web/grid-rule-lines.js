@@ -68,6 +68,9 @@
     if(reload?.isCurrent())return;
     reload=null;
     if(!oc.edit||oc.focus?.t!=='face')return;
+    // Rule presentation owns only confirmed source rules. Empty reads on
+    // ordinary faces must not repaint their reference forms or grid drafts.
+    if(!fe.grids.some(g=>oc.gridSystems.some(s=>s.id===g.sourceSystem&&s.rules?.length))){if(owner)clear();return;}
     const k=viewportKey(),mark=stamp();if(owner&&current(owner))return;
     if(owner)clearTimeout(owner.timer);
     const s=owner={context:ReferenceWorkspace.context(),edit:oc.edit,focus:oc.focus,stamp:mark,key:k,rows:[],messages:[],ticket:++sequence};
