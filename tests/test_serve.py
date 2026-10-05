@@ -33,8 +33,8 @@ class BridgeServerTests(unittest.TestCase):
 
     def tearDown(self):
         self.responses.put(b"")
-        self.server_module.bridge_reader.join(timeout=2)
-        self.assertFalse(self.server_module.bridge_reader.is_alive())
+        self.server_module.root_context.reader.join(timeout=2)
+        self.assertFalse(self.server_module.root_context.reader.is_alive())
 
     def ask(self, cmd):
         return json.loads(self.server_module.ask_bridge(cmd))
@@ -153,7 +153,7 @@ class BridgeServerTests(unittest.TestCase):
     def test_busy_lock_has_bounded_wait(self):
         entered, release = threading.Event(), threading.Event()
         def hold_bridge():
-            with self.server_module.bridge_lock:
+            with self.server_module.root_context.bridge_lock:
                 entered.set()
                 release.wait(3)
         owner = threading.Thread(target=hold_bridge)
@@ -318,6 +318,7 @@ class BridgeServerTests(unittest.TestCase):
                 with self.subTest(route=route), patch.object(pathlib.Path, 'read_bytes',
                         side_effect=AssertionError('HTTP static request reread filesystem')):
                     handler = object.__new__(self.server_module.Handler)
+                    handler.headers = {}
                     handler.path = route
                     handler._send = Mock()
                     handler.send_error = Mock()
@@ -334,7 +335,7 @@ class BridgeServerTests(unittest.TestCase):
             handler.send_error.assert_called_once_with(404)
 
     def receipt_request(self, **fields):
-        return {"session": self.server_module.API_SESSION, **fields}
+        return {"session": self.server_module.root_context.session, **fields}
 
     def test_lost_api_response_is_recovered_without_repeating_command(self):
         request_id = str(uuid.uuid4())
@@ -343,7 +344,7 @@ class BridgeServerTests(unittest.TestCase):
                 request = urllib.request.Request(base + "/api", data=json.dumps(data).encode(),
                                                  headers={"Content-Type": "application/json"})
                 with urllib.request.urlopen(request, timeout=2) as response:
-                    self.assertEqual(response.headers["X-Geometry-Session"], self.server_module.API_SESSION)
+                    self.assertEqual(response.headers["X-Geometry-Session"], self.server_module.root_context.session)
                     return json.load(response)
             self.responses.put(b'{"ok":true}\n')
             command = self.receipt_request(requestId=request_id, cmd="line history-end")
@@ -377,8 +378,8 @@ class BridgeServerTests(unittest.TestCase):
         self.assertEqual(self.process.stdin.getvalue(), b"line invalid\n")
         self.responses.put(b'{"ok":true}\n')
         self.assertTrue(json.loads(self.server_module.recorded_api({**full, "ack": [first]}))["ok"])
-        self.assertNotIn(first, self.server_module.api_receipts)
-        self.assertEqual(len(self.server_module.api_receipts), 1)
+        self.assertNotIn(first, self.server_module.root_context.api_receipts)
+        self.assertEqual(len(self.server_module.root_context.api_receipts), 1)
 
     def test_wrong_server_session_cannot_execute_or_recover_operations(self):
         for key in ["requestId", "receipt"]:
@@ -434,7 +435,7 @@ class BridgeServerTests(unittest.TestCase):
         舊場景的來源檔必須活著,否則前端 curScene 指向一個已刪的路徑,
         「重新載入場景」從此壞掉。修好之前:舊暫存在新檔驗證前就被刪了。
         """
-        temps = self.server_module._upload_temps
+        temps = self.server_module.root_context.upload_temps
         with self.http_server() as base:
             good, first = self.upload(base, "spec 低 300\n", b'{"ok":true}\n')
             self.assertEqual(good["path"], first)
@@ -463,15 +464,15 @@ class BridgeServerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             prior = pathlib.Path(directory) / 'prior.scene'
             prior.write_bytes(b'prior')
-            mod._upload_temps[:] = [str(prior)]
+            mod.root_context.upload_temps[:] = [str(prior)]
             for rejected in ['cancel', 'stale', 'success']:
-                mod._upload_outcomes.clear()
+                mod.root_context.upload_outcomes.clear()
                 self.responses.put(b'{"ok":true,"token":7,"final_objects":{"boundaries":[1],"placements":[]}}\n')
                 prepared = json.loads(mod.upload_scene(b'boundary 1 outline 0,0 80,0 80,70 0,70\n', 'prepare'))
                 self.assertEqual(prepared['token'], 7)
-                path = mod._prepared_upload[1]
+                path = mod.root_context.prepared_upload[1]
                 self.assertTrue(os.path.exists(path))
-                self.assertEqual(mod._upload_temps, [str(prior)])
+                self.assertEqual(mod.root_context.upload_temps, [str(prior)])
                 self.assertTrue(prior.exists())
                 self.assertFalse(json.loads(mod.upload_scene(b'8', 'confirm'))['ok'])
                 self.assertTrue(os.path.exists(path))
@@ -481,17 +482,17 @@ class BridgeServerTests(unittest.TestCase):
                 if rejected == 'success':
                     self.responses.put(b'{"ok":true,"text":"committed scene\\n"}\n')
                 result = json.loads(mod.upload_scene(b'7', phase))
-                self.assertIsNone(mod._prepared_upload)
+                self.assertIsNone(mod.root_context.prepared_upload)
                 if rejected == 'success':
-                    self.assertEqual(mod._upload_temps, [path])
+                    self.assertEqual(mod.root_context.upload_temps, [path])
                     self.assertEqual(result['path'], path)
                     self.assertFalse(prior.exists())
                     os.unlink(path)
                 else:
                     self.assertFalse(os.path.exists(path))
                     self.assertTrue(prior.exists())
-                    self.assertEqual(mod._upload_temps, [str(prior)])
-            mod._upload_temps.clear()
+                    self.assertEqual(mod.root_context.upload_temps, [str(prior)])
+            mod.root_context.upload_temps.clear()
 
     def test_terminal_cancel_blocks_a_confirm_that_arrives_after_retry(self):
         mod = self.server_module
@@ -504,7 +505,7 @@ class BridgeServerTests(unittest.TestCase):
         self.assertFalse(json.loads(mod.upload_scene(b'31', 'confirm'))['ok'])
         self.assertEqual(json.loads(mod.upload_scene(b'31', 'cancel')), cancelled)
         self.assertEqual(self.process.stdin.getvalue(), commands)
-        self.assertEqual(mod._upload_temps, [])
+        self.assertEqual(mod.root_context.upload_temps, [])
 
     def test_lost_confirm_is_recovered_as_committed_without_a_second_native_load(self):
         mod = self.server_module
@@ -519,9 +520,9 @@ class BridgeServerTests(unittest.TestCase):
         self.assertEqual(json.loads(mod.upload_scene(b'32', 'cancel')), committed)
         self.assertEqual(json.loads(mod.upload_scene(b'32', 'confirm')), committed)
         self.assertEqual(self.process.stdin.getvalue(), commands)
-        for source in mod._upload_temps:
+        for source in mod.root_context.upload_temps:
             os.unlink(source)
-        mod._upload_temps.clear()
+        mod.root_context.upload_temps.clear()
 
     def test_concurrent_uploads_preserve_load_and_source_retirement_order(self):
         for reject_second in [False, True]:
@@ -530,7 +531,7 @@ class BridgeServerTests(unittest.TestCase):
                 mod.BRIDGE_TIMEOUT = 2
                 prior = pathlib.Path(directory) / "prior.scene"
                 prior.write_bytes(b"prior")
-                mod._upload_temps[:] = [str(prior)]
+                mod.root_context.upload_temps[:] = [str(prior)]
                 cleanup_entered, release_cleanup, second_started, second_loaded = (threading.Event() for _ in range(4))
                 loaded, world, results, failures = {}, [], {}, []
                 original_temp = tempfile.NamedTemporaryFile
@@ -591,15 +592,15 @@ class BridgeServerTests(unittest.TestCase):
                 active = loaded[b"A" if reject_second else b"B"]
                 retired = loaded[b"B" if reject_second else b"A"]
                 self.assertEqual(world, [active])
-                self.assertEqual(mod._upload_temps, [str(active)])
+                self.assertEqual(mod.root_context.upload_temps, [str(active)])
                 self.assertTrue(active.exists())
                 self.assertFalse(retired.exists())
                 self.assertFalse(prior.exists())
-                mod._upload_temps.clear()
+                mod.root_context.upload_temps.clear()
 
     def test_upload_busy_lock_has_bounded_wait_and_creates_no_file(self):
         mod = self.server_module
-        mod.upload_lock.acquire()
+        mod.root_context.upload_lock.acquire()
         try:
             handler = self.post_handler("/upload", b"scene")
             with patch.object(mod.tempfile, "NamedTemporaryFile") as temporary, patch.object(mod, "ask_bridge") as bridge:
@@ -610,7 +611,7 @@ class BridgeServerTests(unittest.TestCase):
                 temporary.assert_not_called()
                 bridge.assert_not_called()
         finally:
-            mod.upload_lock.release()
+            mod.root_context.upload_lock.release()
 
     def test_api_reload_waits_until_upload_source_retirement_finishes(self):
         mod = self.server_module
@@ -618,7 +619,7 @@ class BridgeServerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             prior = pathlib.Path(directory) / "prior.scene"
             prior.write_bytes(b"prior")
-            mod._upload_temps[:] = [str(prior)]
+            mod.root_context.upload_temps[:] = [str(prior)]
             cleanup_entered, release_cleanup, reload_started, reload_done = (threading.Event() for _ in range(4))
             results, failures = [], []
             original_temp, original_unlink = tempfile.NamedTemporaryFile, os.unlink
@@ -676,9 +677,9 @@ class BridgeServerTests(unittest.TestCase):
             result = json.loads(upload._send.call_args.args[0])
             self.assertTrue(result["ok"])
             self.assertTrue(pathlib.Path(result["path"]).exists())
-            self.assertEqual(mod._upload_temps, [result["path"]])
+            self.assertEqual(mod.root_context.upload_temps, [result["path"]])
             self.assertFalse(prior.exists())
-            mod._upload_temps.clear()
+            mod.root_context.upload_temps.clear()
 
     def test_failed_temp_write_removes_new_file_and_preserves_previous_source(self):
         mod = self.server_module
@@ -687,7 +688,7 @@ class BridgeServerTests(unittest.TestCase):
             prior.write_bytes(b"prior")
             created = pathlib.Path(directory) / "new.scene"
             created.touch()
-            mod._upload_temps[:] = [str(prior)]
+            mod.root_context.upload_temps[:] = [str(prior)]
             file = Mock(name=str(created))
             file.name = str(created)
             file.write.side_effect = OSError("disk full")
@@ -701,18 +702,18 @@ class BridgeServerTests(unittest.TestCase):
                 bridge.assert_not_called()
             self.assertFalse(created.exists())
             self.assertTrue(prior.exists())
-            self.assertEqual(mod._upload_temps, [str(prior)])
-            self.assertFalse(mod.upload_lock.locked())
-            mod._upload_temps.clear()
+            self.assertEqual(mod.root_context.upload_temps, [str(prior)])
+            self.assertFalse(mod.root_context.upload_lock.locked())
+            mod.root_context.upload_temps.clear()
 
     def test_upload_does_not_hold_lock_while_sending_response(self):
         mod = self.server_module
         handler = self.post_handler("/upload", b"invalid scene")
         def send(_):
-            acquired = mod.upload_lock.acquire(blocking=False)
+            acquired = mod.root_context.upload_lock.acquire(blocking=False)
             self.assertTrue(acquired)
             if acquired:
-                mod.upload_lock.release()
+                mod.root_context.upload_lock.release()
         handler._send.side_effect = send
         with patch.object(mod, "ask_bridge", return_value=b'{"ok":false,"error":"invalid scene"}'):
             handler.do_POST()

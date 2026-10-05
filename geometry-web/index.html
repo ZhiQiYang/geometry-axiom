@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="documents.css">
 <link rel="stylesheet" href="document-cases.css">
 <link rel="stylesheet" href="face-context-menu.css">
+<link rel="stylesheet" href="scenario-workspace.css">
 </head>
 <body class="connection-blocked">
 <section id="connectionNotice" class="connection-notice" role="status" aria-live="polite">
@@ -100,7 +101,7 @@
           <header><h2 id="projectInfoTitle">目前專案</h2><button type="button" class="text-button" popovertarget="projectInfoPanel" popovertargetaction="hide" aria-label="關閉專案資訊">關閉</button></header>
           <dl id="projectInfoDetails"></dl>
           <button id="projectRecoveryRetry" class="project-recovery-retry" type="button" hidden>重新連接此工作</button>
-          <details class="project-concepts"><summary>專案與場景有何不同？</summary><p><strong>專案 .gcanvas</strong> 包含場景、參考圖、工程草稿及已建立的空間模型。</p><p><strong>場景 .scene</strong> 包含幾何、放置與已發布工程定義。單獨匯出場景不會帶走完整專案。</p><p>本機暫存用於接續工作，不代表已保存到你的專案檔。</p></details>
+          <details class="project-concepts"><summary>完整專案與候選方案</summary><p><strong>專案 .gcanvas</strong> 包含場景、原圖、草稿、模型及完整候選方案；單獨的 .scene 只帶場景。本機暫存不代表已保存檔案。</p><button id="scenarioOpen" type="button">保存、試改與比較方案</button></details>
         </section>
         <span class="main-project-status" data-project-status role="status">尚未保存</span>
         <button class="project-save" type="button" data-project-action="save" aria-label="保存專案" title="保存完整專案"><span data-icon="save"></span><span>保存</span></button>
@@ -647,12 +648,30 @@
   <nav id="refThumbnails" aria-label="附近圖頁"></nav>
   <footer><label>加入位置<select id="refTarget"></select></label><button id="refApply" type="button" class="primary-button" disabled>加入參考頁</button></footer>
 </dialog>
+<dialog id="scenarioDialog" class="scenario-dialog" aria-labelledby="scenarioTitle">
+  <header><h2 id="scenarioTitle">完整候選方案</h2><button type="button" data-scenario-close>關閉</button></header>
+  <p>保存目前專案為基準，建立副本再隔離試改。每份方案的對位、草稿與模型各自保留。</p><p id="scenarioCount"></p>
+  <label>方案名稱 <input id="scenarioName" maxlength="200" value="方案 A"></label><button id="scenarioCapture" type="button">保存目前為方案</button>
+  <label>複製基準 <select id="scenarioBase"></select></label><button id="scenarioFork" type="button">建立獨立副本</button>
+  <div class="scenario-selectors"><label>左側方案 <select id="scenarioBefore"></select></label><label>右側方案 <select id="scenarioAfter"></select></label></div>
+  <div class="scenario-actions"><button id="scenarioEdit" type="button">隔離試改右側方案</button><button id="scenarioCompare" type="button">比較完整定義</button><button id="scenarioAdopt" type="button" disabled>整體採用右側方案</button></div>
+  <p id="scenarioStatus" role="status"></p><div id="scenarioDifference"></div>
+</dialog>
+<dialog id="scenarioEditorDialog" class="scenario-editor-dialog" aria-labelledby="scenarioEditorTitle">
+  <header><h2 id="scenarioEditorTitle">隔離試改</h2><button id="scenarioCancelEdit" type="button">取消試改</button><button id="scenarioFinishEdit" type="button" disabled>保存試改</button></header>
+  <p id="scenarioEditorStatus" role="status"></p><iframe id="scenarioEditorFrame" title="獨立方案編輯畫布"></iframe>
+</dialog>
+<script src="native-transport.js"></script>
 <script src="vendor/fflate/umd/index.js"></script>
 <script src="source-plane.js"></script>
 <script src="evidence-links.js"></script>
 <script src="evidence-links-ui.js"></script>
 <script src="feature-attachments.js"></script>
+<script src="scenario-catalog.js"></script>
 <script src="project-store.js"></script>
+<script src="scenario-snapshots.js"></script>
+<script src="scenario-diff.js"></script>
+<script src="scenario-integration.js"></script>
 <script src="reference-workspace.js"></script>
 <script src="project-ui.js"></script>
 <script src="workspace-guidance.js"></script>
@@ -686,6 +705,7 @@
 <script src="evidence-links-app.js"></script>
 <script src="model-update.js"></script>
 <script src="model-update-app.js"></script>
+<script src="scenario-workspace.js"></script>
 <script src="document-format.js"></script>
 <script src="document-cases.js"></script>
 <script src="documents.js"></script>

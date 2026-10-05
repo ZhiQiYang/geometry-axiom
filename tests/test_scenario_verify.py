@@ -574,7 +574,7 @@ class ScenarioNativeAcceptance(unittest.TestCase):
         self.assert_final_objects(receipt, {"boundaries": [3], "placements": []}, scene)
         self.assertEqual(receipt["scene_sha256"], hashlib.sha256(scene.encode()).hexdigest())
 
-    def test_actual_source_rule_scene_is_explicitly_unsupported_until_reader_owner_lands(self):
+    def test_actual_source_rule_scene_uses_current_reader_and_rejects_stripped_requirements(self):
         with tempfile.TemporaryDirectory(prefix="scenario-source-rule-") as directory:
             with _bridge.BridgeSession(self.bridge, cwd=directory) as native:
                 self.assertTrue(native.command("reset")["ok"])
@@ -594,9 +594,13 @@ class ScenarioNativeAcceptance(unittest.TestCase):
                 prepared = native.command("load-prepare " + str(source))
                 self.assertTrue(prepared["ok"], prepared)
                 self.assertIn("grid-subdivision-rules/1", prepared["required_capabilities"])
-                for required in ([], ["grid-subdivision-rules/1"]):
+                for required in ([], ["unknown-grid-subdivision/1"]):
                     error = self.reject(project(scene, requiredCapabilities=required), "SCENARIO_CAPABILITY")
                     self.assertEqual(error.status, "UNSUPPORTED")
+                receipt = self.verify(project(scene, requiredCapabilities=["grid-subdivision-rules/1"]))
+                self.assertTrue(receipt["ok"])
+                self.assertIn("grid-subdivision-rules/1", receipt["requiredCapabilities"])
+                self.assertEqual(receipt["scene_sha256"], hashlib.sha256(scene.encode("utf-8")).hexdigest())
                 without_marker = scene.replace("requires grid-subdivision-rules/1\n", "")
                 stripped = Path(directory) / "stripped.scene"
                 stripped.write_text(without_marker, encoding="utf-8")

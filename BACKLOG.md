@@ -1,5 +1,13 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## CONT-46-20261005 — 完整候選方案正式整合（進行中）
+
+- 授權依 #46／Q33；完整 A/B、原圖內容定址去重、隔離試改、比較後整體採用可復原。沒有逐物件 merge、搬舊 undo 或新的物件沿革公理。
+- UI 減項（GEO-219）：將原「專案與場景有何不同？」三段常駐說明合為既有專案資訊內的一段「完整專案與候選方案」，A/B 操作收在此 disclosure 及按需 dialog，不新增畫布常駐工具列。方案 dialog 一段用途說明；試改 dialog 一段狀態，均不超過三塊。
+- 共用模型：正式 root catalog／能力 geometry-scenario-snapshots/1 與空出的 geometry-canvas/14。leaf project 不可含目錄；projectId 與 scenarioId 分離，#48 的 target projectScope 保留原 projectId。每份完整 manifest、scene、固定基準與 typed origins 都驗；原圖只按 hash 儲存一份。完整 root manifest 沿用 8 MiB、ZIP 256 MiB、展開 512 MiB 上限，最多 8 方案／256 資產。
+- B 使用同一正式 app 的獨立 native context；共同 transport、receipt、upload 路徑綁 context，失效識別不回退至 live A。只讀驗證每次 disposable process；整體採用沿共用原子載入及一筆 ContextHistory，catalog／原圖／草稿／模型隨同一步 undo/redo。無部署或實體手機完成聲明。
+- 尚在實作與驗收，不宣稱 #46 完成；#134 產品凍結及 16 檔證據發布 hold 分別保留。
+
 ## CONT-20261004 — 八項採納與單writer整合
 
 - 使用者已明示接受八項建議，並授權自行安排順序／並行／批次；[目前接口／owner／採納範圍](geometry-guide/IMPLEMENTATION-QUEUE-20261004.md)。舊準備階段的「全部待採納」保留為歷史，不擴大未明寫條文，也不拿來阻塞已批准工作。

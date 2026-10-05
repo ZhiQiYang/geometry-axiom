@@ -1,0 +1,12 @@
+/* The A/B entry is merged into the existing project disclosure. */
+.scenario-dialog {width:min(980px,calc(100vw - 24px));max-height:calc(100dvh - 24px);box-sizing:border-box;overflow:auto;}
+.scenario-dialog header,.scenario-editor-dialog header,.scenario-actions {display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.scenario-dialog header h2,.scenario-editor-dialog header h2 {flex:1;min-width:0;}
+.scenario-dialog label {display:block;margin:10px 0;}
+.scenario-dialog select,.scenario-dialog input {max-width:100%;min-width:0;box-sizing:border-box;}
+.scenario-selectors,.scenario-diff-columns {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;}
+.scenario-diff-columns pre {white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto;}
+.scenario-editor-dialog {width:calc(100vw - 16px);max-width:none;height:calc(100dvh - 16px);max-height:none;padding:8px;box-sizing:border-box;}
+.scenario-editor-dialog[open] {display:flex;flex-direction:column;gap:6px;}
+.scenario-editor-dialog iframe {width:100%;min-height:0;flex:1;border:1px solid var(--border);}
+@media(max-width:600px){.scenario-selectors,.scenario-diff-columns {grid-template-columns:minmax(0,1fr);}.scenario-editor-dialog header h2 {flex-basis:100%;margin:0;}}

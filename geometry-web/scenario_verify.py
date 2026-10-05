@@ -41,8 +41,8 @@ BRIDGE_TIMEOUT = 20
 MODEL_TIMEOUT = 60
 NATIVE_CAPABILITIES = frozenset(("engineering-spec/1", "parameters/1",
                                "assembly-rule-authoring/1", "assembly-timber-generation/1"))
-# PR107's current bridge offers this capability even for legacy scenes. Its
-# portable reader/model adapter is pending, so it is not a supported input pin.
+# Scene capture follows the current portable reader. Model producer input
+# retains its own narrower capability contract below.
 BRIDGE_CAPABILITIES = NATIVE_CAPABILITIES | {"grid-subdivision-rules/1"}
 OBJECT_KINDS = frozenset(("boundary", "placement", "space", "column", "beam", "spec", "parameter",
                           "datum", "guide", "grid-system", "grid-binding", "grid", "material", "method",
@@ -520,9 +520,9 @@ def verify_project(data, *, bridge_executable=None, base_executable=None):
     scene_hash = hashlib.sha256(encoded).hexdigest()
     if "sceneHash" in manifest and manifest["sceneHash"] != scene_hash:
         _fail("SCENARIO_SCENE_HASH", "Manifest scene hash differs from the original scene bytes.")
-    required = _capabilities(manifest.get("requiredCapabilities", []), ("manifest", "requiredCapabilities"))
+    required = _capabilities(manifest.get("requiredCapabilities", []), ("manifest", "requiredCapabilities"), supported=BRIDGE_CAPABILITIES)
     scene_required = scene_required_capabilities(data["scene"])
-    if scene_required - NATIVE_CAPABILITIES or ("requiredCapabilities" in manifest and scene_required - required):
+    if scene_required - BRIDGE_CAPABILITIES or ("requiredCapabilities" in manifest and scene_required - required):
         _fail("SCENARIO_CAPABILITY", "Scene requires an unsupported or omitted native capability.", status="UNSUPPORTED")
     required.update(scene_required)
     records = manifest.get("models", [])
@@ -548,7 +548,7 @@ def verify_project(data, *, bridge_executable=None, base_executable=None):
         if receipt.get("ok") is not True:
             _fail("SCENARIO_SCENE_INVALID", "Native parser rejected the scene.")
         available = _capabilities(receipt.get("capabilities"), ("native", "capabilities"), supported=BRIDGE_CAPABILITIES)
-        native_required = _capabilities(receipt.get("required_capabilities"), ("native", "required_capabilities"))
+        native_required = _capabilities(receipt.get("required_capabilities"), ("native", "required_capabilities"), supported=BRIDGE_CAPABILITIES)
         # Native receipts report capabilities used by actual objects; an empty
         # scene may still explicitly require a supported capability. Preserve
         # that requirement from the original bytes without inventing objects.

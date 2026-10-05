@@ -19,6 +19,7 @@ import sys
 import tempfile
 import threading
 import uuid
+from urllib.parse import urlsplit, parse_qs
 
 HERE = pathlib.Path(__file__).resolve().parent
 SCENE_DIR = HERE.parent                      # *.scene 都在 knowledgebase 根目錄
@@ -48,6 +49,8 @@ POST_MAX_BYTES = {
     "/engineering/validate-project": 1024 * 1024,
     "/engineering/read": 1024 * 1024,
     "/sources/snapshot": 1024 * 1024,
+    "/scenarios/verify-native": 9 * 1024 * 1024,
+    "/scenarios/editor": 1024,
 }
 # 預設用同目錄的 Windows 橋接器。GEOMETRY_BRIDGE 可覆寫，且可帶參數，例如：
 #   GEOMETRY_BRIDGE="wsl.exe -d Ubuntu-24.04 --user root -- /opt/geometry/web_bridge"
@@ -60,37 +63,20 @@ BRIDGE_CMD = (shlex.split(_bridge_env, posix=False) if _bridge_env
 BRIDGE_WSL = os.environ.get("GEOMETRY_BRIDGE_WSL") == "1"
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
 
-bridge = subprocess.Popen(
-    BRIDGE_CMD,
-    stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-)
-bridge_lock = threading.RLock()
-bridge_responses = queue.Queue()
-bridge_failure = None
+from native_context import NativeContext
+
 BRIDGE_TIMEOUT = 30.0
-_upload_temps = []
-_prepared_upload = None
-_upload_outcomes = {}  # Bounded terminal receipts; unknown tokens never authorize a commit.
-upload_lock = threading.Lock()
-API_SESSION = uuid.uuid4().hex
-api_receipts = {}
-receipt_lock = threading.Lock()
 MAX_RECEIPTS = 256
+root_context = NativeContext(BRIDGE_CMD)
+request_context = threading.local()
+scenario_contexts = {}
+scenario_context_lock = threading.Lock()
+MAX_SCENARIO_EDITORS = 8
 
 
-def read_bridge_responses():
-    while True:
-        try:
-            response = bridge.stdout.readline()
-        except OSError:
-            response = b""
-        bridge_responses.put(response)
-        if not response:
-            return
+def current_native_context():
+    return getattr(request_context, "native", root_context)
 
-
-bridge_reader = threading.Thread(target=read_bridge_responses, daemon=True)
-bridge_reader.start()
 
 _WIN_PATH = re.compile(r"^([A-Za-z]):[\\/](.*)$")
 
@@ -111,7 +97,7 @@ def to_bridge_path(path: str) -> str:
 
 def ask_bridge(cmd: str) -> bytes:
     """送一行指令、收一行 JSON（原樣回傳 bytes，不再解析）。"""
-    global bridge_failure
+    native = current_native_context()
     if not isinstance(cmd, str) or not cmd.strip():
         return err_json("橋接指令不得為空")
     if any(c in cmd for c in "\r\n\0"):
@@ -123,26 +109,26 @@ def ask_bridge(cmd: str) -> bytes:
     payload = cmd.encode("utf-8")
     if len(payload) > BRIDGE_MAX_CMD:
         return err_json("指令超過單行上限")
-    if not bridge_lock.acquire(timeout=BRIDGE_TIMEOUT):
+    if not native.bridge_lock.acquire(timeout=BRIDGE_TIMEOUT):
         return err_json("橋接器忙碌，請稍後再試")
     try:
-        if bridge_failure is not None:
-            return err_json(bridge_failure)
+        if native.bridge_failure is not None:
+            return err_json(native.bridge_failure)
         try:
-            bridge.stdin.write(payload + b"\n")
-            bridge.stdin.flush()
-            response = bridge_responses.get(timeout=BRIDGE_TIMEOUT)
+            native.bridge.stdin.write(payload + b"\n")
+            native.bridge.stdin.flush()
+            response = native.bridge_responses.get(timeout=BRIDGE_TIMEOUT)
         except queue.Empty:
-            bridge_failure = "橋接器回應逾時，請重新啟動服務"
+            native.bridge_failure = "橋接器回應逾時，請重新啟動服務"
         except (OSError, ValueError):
-            bridge_failure = "橋接器連線中斷，請重新啟動服務"
+            native.bridge_failure = "橋接器連線中斷，請重新啟動服務"
         else:
             if response:
                 return response
-            bridge_failure = "橋接器已結束，請重新啟動服務"
-        return err_json(bridge_failure)
+            native.bridge_failure = "橋接器已結束，請重新啟動服務"
+        return err_json(native.bridge_failure)
     finally:
-        bridge_lock.release()
+        native.bridge_lock.release()
 
 
 # bridge stdin 緩衝 4096 bytes：fgets 上限 4095 字元含換行，
@@ -169,53 +155,55 @@ def recorded_api(data):
     before its command seals that id as cancelled, so a late command cannot run.
     Unacknowledged results are bounded; capacity failure never reaches the core.
     """
+    native = current_native_context()
     request_id = data.get("receipt", data.get("requestId"))
     if request_id is None:
         return ask_bridge(data["cmd"])
     if (not isinstance(request_id, str) or not re.fullmatch(r"[a-f0-9-]{36}", request_id)
-            or data.get("session") != API_SESSION):
+            or data.get("session") != native.session):
         return err_json("操作結果無法確認：服務已重啟或請求識別不合法。")
-    if not receipt_lock.acquire(timeout=BRIDGE_TIMEOUT):
+    if not native.receipt_lock.acquire(timeout=BRIDGE_TIMEOUT):
         return err_json("操作結果仍在處理，請稍後重試。")
     try:
         for ack in data.get("ack", [])[:MAX_RECEIPTS]:
-            if isinstance(ack, str) and api_receipts.get(ack, (None,))[0] is not None:
-                api_receipts.pop(ack, None)
-        cached = api_receipts.get(request_id)
+            if isinstance(ack, str) and native.api_receipts.get(ack, (None,))[0] is not None:
+                native.api_receipts.pop(ack, None)
+        cached = native.api_receipts.get(request_id)
         if cached is None:
-            if len(api_receipts) >= MAX_RECEIPTS:
+            if len(native.api_receipts) >= MAX_RECEIPTS:
                 return err_json("未確認的操作結果過多，已暫停新增操作。")
             if "receipt" in data:
                 cached = (None, err_json("操作未送達，場景未變更；請重新操作。"))
             else:
                 cached = (data["cmd"], ask_bridge(data["cmd"]))
-            api_receipts[request_id] = cached
+            native.api_receipts[request_id] = cached
         elif "receipt" not in data and cached[0] not in (None, data["cmd"]):
             return err_json("同一操作識別不得用於不同指令。")
         if "receipt" in data:
             return json.dumps({"ok": True, "result": json.loads(cached[1])}, ensure_ascii=False).encode("utf-8")
         return cached[1]
     finally:
-        receipt_lock.release()
+        native.receipt_lock.release()
 
 
 def remember_upload_outcome(token, result):
+    native = current_native_context()
     encoded = json.dumps(result, ensure_ascii=False).encode("utf-8")
-    _upload_outcomes[token] = encoded
-    if len(_upload_outcomes) > MAX_RECEIPTS:
-        del _upload_outcomes[next(iter(_upload_outcomes))]
+    native.upload_outcomes[token] = encoded
+    if len(native.upload_outcomes) > MAX_RECEIPTS:
+        del native.upload_outcomes[next(iter(native.upload_outcomes))]
     return encoded
 
 
 def upload_scene(body: bytes, phase=None) -> bytes:
     """Keep successful load order and source-file retirement in one transaction."""
-    global _prepared_upload
-    if not upload_lock.acquire(timeout=BRIDGE_TIMEOUT):
+    native = current_native_context()
+    if not native.upload_lock.acquire(timeout=BRIDGE_TIMEOUT):
         return err_json("場景上傳仍在處理，請稍後再試。")
     # Include ordinary /api reloads in the ordering. ask_bridge re-enters this
     # lock; no request may load an old source between success and its retirement.
-    if not bridge_lock.acquire(timeout=BRIDGE_TIMEOUT):
-        upload_lock.release()
+    if not native.bridge_lock.acquire(timeout=BRIDGE_TIMEOUT):
+        native.upload_lock.release()
         return err_json("橋接器忙碌，請稍後再試")
     tmp = None
     try:
@@ -226,15 +214,15 @@ def upload_scene(body: bytes, phase=None) -> bytes:
                     raise ValueError("Invalid import token")
             except (ValueError, UnicodeError):
                 return err_json("無效的專案載入確認識別。")
-            if token in _upload_outcomes:
-                terminal = _upload_outcomes[token]
+            if token in native.upload_outcomes:
+                terminal = native.upload_outcomes[token]
                 if phase == "confirm" and json.loads(terminal).get("state") == "cancelled":
                     return err_json("專案候選已取消，未變更目前專案。")
                 return terminal
-            if _prepared_upload is None or _prepared_upload[0] != token:
+            if native.prepared_upload is None or native.prepared_upload[0] != token:
                 return err_json("專案候選已失效，請重新開啟。")
-            tmp = _prepared_upload[1]
-            _prepared_upload = None
+            tmp = native.prepared_upload[1]
+            native.prepared_upload = None
             resp = ask_bridge(f"load-{phase} {token}")
             if phase == "cancel":
                 result = json.loads(resp)
@@ -244,13 +232,13 @@ def upload_scene(body: bytes, phase=None) -> bytes:
                     result["state"] = "unknown"
                 return remember_upload_outcome(token, result)
         else:
-            if _prepared_upload is not None:
-                old_token, old_path = _prepared_upload
+            if native.prepared_upload is not None:
+                old_token, old_path = native.prepared_upload
                 cancelled = json.loads(ask_bridge(f"load-cancel {old_token}"))
                 cancelled["state"] = "cancelled" if cancelled.get("ok") is True else "unknown"
                 remember_upload_outcome(old_token, cancelled)
                 os.unlink(old_path)
-                _prepared_upload = None
+                native.prepared_upload = None
         # Assign the path before writing, so a failed write also cleans its file.
             with tempfile.NamedTemporaryFile("wb", suffix=".scene", delete=False) as f:
                 tmp = f.name
@@ -268,16 +256,16 @@ def upload_scene(body: bytes, phase=None) -> bytes:
                 return remember_upload_outcome(token, rejected)
             return resp
         if phase == "prepare":
-            _prepared_upload = (merged["token"], tmp)
+            native.prepared_upload = (merged["token"], tmp)
             tmp = None
             return resp
-        while _upload_temps:
-            stale = _upload_temps.pop(0)
+        while native.upload_temps:
+            stale = native.upload_temps.pop(0)
             try:
                 os.unlink(stale)
             except OSError:
                 pass
-        _upload_temps.append(tmp)
+        native.upload_temps.append(tmp)
         merged["path"] = tmp
         tmp = None  # The successful scene owns this source until the next load.
         if phase == "confirm":
@@ -295,8 +283,8 @@ def upload_scene(body: bytes, phase=None) -> bytes:
                 os.unlink(tmp)
             except OSError:
                 pass
-        bridge_lock.release()
-        upload_lock.release()
+        native.bridge_lock.release()
+        native.upload_lock.release()
 
 
 class PreviewHTTPServer(http.server.ThreadingHTTPServer):
@@ -313,7 +301,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("X-Geometry-Session", API_SESSION)
+        self.send_header("X-Geometry-Session", current_native_context().session)
         self.send_header("X-Geometry-Version", RUNTIME.version)
         if status == 409:
             self.send_header("X-Geometry-Stale", "1")
@@ -323,10 +311,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        route = urlsplit(self.path)
+        self.path = route.path
+        query = parse_qs(route.query)
+        if not self._select_native(query.get('scenario', [None])[0]):
+            return
         if self.path == '/runtime':
             self._send(json.dumps({'schema': 'geometry-runtime/1', 'version': RUNTIME.version,
                                    'fresh': RUNTIME.fresh(), 'root': str(SCENE_DIR),
-                                   'pid': os.getpid(), 'session': API_SESSION}).encode())
+                                   'pid': os.getpid(), 'session': current_native_context().session}).encode())
             return
         if self.path == "/" or self.path == "/index.html":
             if not RUNTIME.fresh():
@@ -385,8 +378,23 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return True
         return False
 
+    def _select_native(self, query_context=None):
+        request_context.native = root_context
+        key = self.headers.get('X-Geometry-Scenario') or query_context
+        if key is None:
+            return True
+        with scenario_context_lock:
+            native = scenario_contexts.get(key)
+        if not native or native.closed:
+            self._send(err_json('方案編輯已失效，未使用目前主方案。'), status=410)
+            return False
+        request_context.native = native
+        return True
+
     def do_POST(self):
         if self._local_only():
+            return
+        if not self._select_native():
             return
         limit = POST_MAX_BYTES.get(self.path)
         if limit is None:
@@ -419,6 +427,57 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send(err_json(RESTART_MESSAGE), status=409)
             return
 
+        if self.path == '/scenarios/editor':
+            from scenario_verify import _program
+            from modeling import ModelError, canonical_bytes
+            try:
+                data = json.loads(body)
+                if current_native_context() is not root_context:
+                    raise ValueError('方案編輯只能由主方案建立或結束。')
+                if (type(data) is dict and set(data)=={'action','requestId'} and data['action']=='create' and
+                        isinstance(data['requestId'],str) and re.fullmatch(r'[a-f0-9-]{36}',data['requestId'])):
+                    if BRIDGE_WSL or len(BRIDGE_CMD) != 1:
+                        raise ValueError('目前環境缺少可隔離的原生執行器。')
+                    command, _ = _program(BRIDGE_CMD[0])
+                    with scenario_context_lock:
+                        previous=root_context.editor_creations.get(data['requestId'])
+                        if previous and previous not in scenario_contexts:
+                            raise ValueError('這次方案編輯已結束，請重新開啟。')
+                        if not previous and (len(scenario_contexts) >= MAX_SCENARIO_EDITORS or len(root_context.editor_creations)>=MAX_RECEIPTS):
+                            raise ValueError('方案編輯數量已達上限，請先結束其他編輯。')
+                        if previous:
+                            native=scenario_contexts[previous]
+                        else:
+                            native = NativeContext([command])
+                            scenario_contexts[native.session] = native
+                            root_context.editor_creations[data['requestId']]=native.session
+                    self._send(canonical_bytes({'ok': True, 'context': native.session}))
+                elif (type(data) is dict and set(data) == {'action', 'context'} and
+                      data['action'] == 'close' and isinstance(data['context'], str)):
+                    with scenario_context_lock:
+                        native = scenario_contexts.pop(data['context'], None)
+                    if native:
+                        native.close()
+                    self._send(canonical_bytes({'ok': True}))
+                else:
+                    raise ValueError('無效的方案編輯請求。')
+            except (ValueError, TypeError, OSError) as exc:
+                self._send(err_json(str(exc)))
+            except ModelError as exc:
+                self._send(canonical_bytes(exc.as_dict()))
+            return
+        if self.path == '/scenarios/verify-native':
+            from scenario_verify import verify_bytes
+            from modeling import ModelError, canonical_bytes
+            try:
+                if BRIDGE_WSL or len(BRIDGE_CMD) != 1:
+                    raise ValueError('目前環境缺少可隔離的原生執行器。')
+                self._send(canonical_bytes(verify_bytes(body, bridge_executable=BRIDGE_CMD[0])))
+            except ValueError as exc:
+                self._send(err_json(str(exc)))
+            except ModelError as exc:
+                self._send(canonical_bytes(exc.as_dict()))
+            return
         if self.path in {"/assembly/preview", "/assembly/generate-preview", "/engineering/preview", "/engineering/validate-project"}:
             from engineering_transport import file_request
             try:
@@ -516,9 +575,6 @@ if __name__ == "__main__":
         print(f"http://localhost:{PORT}  （Ctrl-C 結束；版本={RUNTIME.version[:12]}；bridge={BRIDGE_CMD[0]}）", flush=True)
         server.serve_forever()
     finally:
-        for path in _upload_temps:
-            try:
-                os.unlink(path)
-            except OSError:
-                pass
-        bridge.terminate()
+        root_context.close()
+        for context in list(scenario_contexts.values()):
+            context.close()

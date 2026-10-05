@@ -4,7 +4,7 @@ const ReferenceWorkspace = (() => {
   const P = GeometryProject, uuid = () => crypto.randomUUID();
   const escape = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
   const fresh = () => ({ id: uuid(), name: "未命名專案", sources: new Map(), groups: new Map(), models: [], modelsDirty: false,
-    reconstructionReviews: new Map(), faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], assemblyDrafts: [], featureAttachments: [], pending: new Set(), dirty: false,
+    reconstructionReviews: new Map(), faceProjections: new Map(), faceProjectionsDirty: false, engineeringDrafts: [], assemblyDrafts: [], featureAttachments: [], scenarioCatalog:null, pending: new Set(), dirty: false,
     provenance:{kind:"server",label:"服務目前保留的場景（來源未確認）",openedAt:null,lastSavedAt:null,lastDownloadAt:null} });
   const history = new P.ContextHistory(fresh);
   const revisions = new WeakMap(), selections = new WeakMap(), contextTokens = new WeakMap();
@@ -1101,7 +1101,9 @@ const ReferenceWorkspace = (() => {
     const envelope = {schema:P.Features.SCHEMA,records:c.featureAttachments || []};
     P.Features.sourceRooms(envelope,c.sources);P.Features.evidenceLinks(envelope,c.sources,c.id);
     for (const hash of P.Features.sourceIds(envelope)) used.add(hash);
+    for (const record of c.scenarioCatalog?.scenarios || []) for (const hash of record.snapshot.assetHashes) used.add(hash);
     const data = { ...(reconstructionReviews.length?{reconstructionReviews}:{}),projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
+      ...(c.scenarioCatalog?{scenarioCatalog:c.scenarioCatalog}:{}),
       ...(c.models.length?{models:c.models}:{}),...(faceProjections.length?{faceProjections}:{}),
       ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:c.assemblyDrafts}}:{}),
       ...(c.featureAttachments?.length?{featureAttachments:{schema:P.Features.SCHEMA,records:c.featureAttachments}}:{}),
@@ -1111,7 +1113,7 @@ const ReferenceWorkspace = (() => {
   }
   function assertMetadataCapacity(overrides = {}, ids = history.frame.ids) {
     const c = {...context(),...overrides};
-    if (!c.featureAttachments?.some(record => record.kind === P.Features.ROOM_KIND || record.kind === E.KIND)) return;
+    if (!c.scenarioCatalog && !c.featureAttachments?.some(record => record.kind === P.Features.ROOM_KIND || record.kind === E.KIND)) return;
     P.assertManifestCapacity(manifestData(c,ids));
   }
   function assertPageCapacity(bid,page,{append = false,replace = false,...overrides} = {}) {
@@ -1142,20 +1144,50 @@ const ReferenceWorkspace = (() => {
     if (!unchanged(stamp)) throw new Error("專案在保存準備期間已變更，請重新保存。");
     assertSaveReady();
   }
-  async function exportSnapshot(c = context()) {
+  async function exportSnapshot(c = context(),includeCatalog = true) {
     window.AssemblyWorkspace?.flush();
     window.InfiniteGridWorkspace?.flush();
     assertSaveReady(); await referencesReady(c); assertContext(c); assertSaveReady();
     const stamp = { context:c, frame:history.frame, revision:revision(c) };
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
     assertSnapshot(stamp);
-    const m=await manifest(c,r.text); assertSnapshot(stamp);
+    const m=includeCatalog?await manifest(c,r.text):manifestData({...c,scenarioCatalog:null});
+    P.assertManifestCapacity(m,r.text);assertSnapshot(stamp);
     await validateEvidenceClosure(c, m.featureAttachments, () => assertSnapshot(stamp)); assertSnapshot(stamp);
     const data=new Map([...c.sources].map(([k,s])=>[k,s.bytes]));
     const bytes=await P.pack(r.text,m,data,fflate); assertSnapshot(stamp);
     return {bytes,stamp,scene:r.text};
   }
   async function exportBytes() { return (await exportSnapshot()).bytes; }
+  async function readScenarioProject() {
+    const {bytes,stamp}=await exportSnapshot(context(),false);
+    const project=await P.unpack(bytes,fflate);assertSnapshot(stamp);
+    return {project,assertCurrent:()=>assertSnapshot(stamp)};
+  }
+  function readScenarioCatalog() {
+    return {catalog:structuredClone(context().scenarioCatalog),sources:new Map([...context().sources].map(([h,s])=>[h,{meta:structuredClone(s.meta),bytes:s.bytes.slice()}]))};
+  }
+  function commitScenarioCatalog(catalog,sources,assertCurrent=()=>{}) {
+    assertSaveReady();assertCurrent();P.ScenarioCatalog.validate(catalog);
+    const next=structuredClone(catalog),data=new Map(context().sources);
+    for(const [hash,source] of sources)data.set(hash,{meta:structuredClone(source.meta),bytes:source.bytes.slice()});
+    const c={...context(),scenarioCatalog:next,sources:data};P.assertManifestCapacity(manifestData(c));
+    if(JSON.stringify(context().scenarioCatalog)===JSON.stringify(next))return false;
+    assertCurrent();history.push(history.snapshot(),'local','保存候選方案');
+    context().scenarioCatalog=next;context().sources=data;dirty();sync();return true;
+  }
+  async function adoptScenario(project,assertCurrent=()=>{}) {
+    assertSaveReady();assertCurrent();
+    const root=readScenarioCatalog(),bytes=await P.pack(project.scene,project.manifest,project.sources,fflate);
+    assertCurrent();const {loaded,c,ids}=await readProjectContext(bytes,'候選方案',()=>{},assertCurrent,true);
+    c.scenarioCatalog=root.catalog;
+    for(const [hash,source] of root.sources)if(!c.sources.has(hash))c.sources.set(hash,source);
+    c.dirty=true;c.saved=false;c.provenance={...context().provenance};
+    P.assertManifestCapacity(manifestData(c,new Map(ids)),loaded.scene);assertCurrent();
+    const r=await uploadScene(loaded.scene,{context:c,ids,manifest:loaded.manifest,action:'整體採用候選方案'},assertCurrent);
+    if(!r.ok)throw new Error(r.error||'方案未採用。');
+    resetSceneFocus();sync();await refreshActive();return true;
+  }
   function download(bytes,name) {
     const url=URL.createObjectURL(new Blob([bytes],{type:"application/zip"})),a=document.createElement("a");
     a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
@@ -1274,6 +1306,17 @@ const ReferenceWorkspace = (() => {
     c.featureAttachments=JSON.parse(JSON.stringify(m.featureAttachments?.records||[]));
     c.engineeringDrafts=JSON.parse(JSON.stringify(m.engineeringDrafts?.records||[]));
     for(const meta of m.sources)c.sources.set(meta.id,{meta:structuredClone(meta),bytes:loaded.sources.get(meta.id).slice()});
+    if(m.scenarioCatalog){
+      stage('正在隔離驗證候選方案…','驗證中');
+      await ScenarioIntegration.read(m.scenarioCatalog,c.sources,assertCurrent);assertCurrent();
+      for(const record of m.scenarioCatalog.scenarios){
+        const project={manifest:record.snapshot.projectManifest,scene:record.snapshot.worldScene,
+          sources:new Map(record.snapshot.assetHashes.map(h=>[h,loaded.sources.get(h)]))};
+        const leafBytes=await P.pack(project.scene,project.manifest,project.sources,fflate);assertCurrent();
+        await readProjectContext(leafBytes,record.label,stage,assertCurrent,false);assertCurrent();
+      }
+      c.scenarioCatalog=structuredClone(m.scenarioCatalog);
+    }
     await validateEvidenceClosure(c,m.featureAttachments,assertCurrent); assertCurrent();
     async function verifySourcePage(sourceId, number, width, height) {
       const source = c.sources.get(sourceId);
@@ -1314,8 +1357,7 @@ const ReferenceWorkspace = (() => {
     }
     assertCurrent();
     if(verifyOnly){
-      const token=await prepareProjectScene(loaded.scene,m,assertCurrent);
-      await cancelProjectScene(token);assertCurrent();
+      await ScenarioIntegration.verifyProject(loaded,assertCurrent);assertCurrent();
     }
     return {loaded,c,ids};
   }
@@ -1555,6 +1597,6 @@ const ReferenceWorkspace = (() => {
     featureConfirmationPending:()=>!!assemblyConfirmation?.featureCommand,
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
-    manifest,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,
+    manifest,readScenarioProject,readScenarioCatalog,commitScenarioCatalog,adoptScenario,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,
     historyActionLabel:op=>history.actionLabel(op),get busy(){return busy;} };
 })();
