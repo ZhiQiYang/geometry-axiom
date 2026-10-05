@@ -609,6 +609,7 @@ window.ParameterUI = (() => {
       </section>` : '';
     const usageBox = !s.fresh ? `<details id="paramUsage" class="param-details"><summary>使用關係與交換</summary>
         <ul>${usage(c.id).map(u => `<li><button type="button" class="btn" data-param-use="${u.kind}:${u.id}">${esc(u.label)}</button></li>`).join('') || '<li>尚未被其他物件引用</li>'}</ul>
+        <div data-parameter-evidence-host></div>
         <div class="param-detail-actions"><button type="button" class="btn" id="paramExport">匯出參數包</button><button type="button" class="btn danger" id="paramDelete">預覽刪除卡片</button></div>
       </details>` : '';
     return `<section id="parameterEditor" class="parameter-editor" data-editor="card">

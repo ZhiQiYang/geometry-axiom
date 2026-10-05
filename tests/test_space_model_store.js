@@ -114,7 +114,7 @@ test('older core steps remain redoable after local entries evict their browser m
 });
 function workspace(verify, rebuild = () => model().result) {
   const events=[],calls=[],requests=[];
-  const env = { GeometryProject:P,crypto,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,console,
+  const env = { GeometryProject:P,crypto,structuredClone,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,console,
     requestAnimationFrame:()=>1, CustomEvent:class {constructor(type){this.type=type;}},
     window:{dispatchEvent:e=>events.push(e.type),confirm:()=>false},
     document:{getElementById:id=>id==='sceneMenuLabel'?{textContent:''}:null,querySelectorAll:()=>[]},oc:{busy:false},fe:{feats:{}},connection:{phase:'ready'},

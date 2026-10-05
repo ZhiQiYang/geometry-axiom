@@ -22,6 +22,26 @@ const ReferenceWorkspace = (() => {
   let releaseRecoveryLock = null, recoveryAttempted = false;
   let contextConflict = false, externalEpoch = 0;
   let editorLease = "unchecked", editorLeaseSession = null;
+  let nativeRevision = null, nativeSession = null, nativePending = 0;
+  const E = P.Features.Evidence, preparedReferences = new WeakMap();
+  function observeNativeRevision(result) {
+    const session = connection.session || "";
+    if (session !== nativeSession) {nativeSession = session; nativeRevision = null;}
+    if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
+  }
+  function beginNativeOperation(command) {
+    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(command)) return null;
+    nativePending++;
+    let ended = false;
+    return () => {if (!ended) {ended = true; nativePending--;}};
+  }
+  function getEvidenceState() {
+    const p = getProjectState(), operation = getModelOperationState();
+    return {projectScope:p.id,contextToken:p.contextToken,revision:p.revision,
+      nativeRevision:nativeSession === (connection.session || "") ? nativeRevision : null,
+      session:connection.session || "",undo:operation.undo,redo:operation.redo,
+      blocked:operation.blocked || nativePending > 0 || connection.phase !== "ready"};
+  }
   const recoveryPeer=uuid();
   const recoveryChannel=typeof BroadcastChannel!=="undefined"?new BroadcastChannel("geometry-canvas-project-recovery-v1"):null;
   if(recoveryChannel)recoveryChannel.onmessage=event=>{
@@ -330,6 +350,7 @@ const ReferenceWorkspace = (() => {
     }
   }
   function observe(cmd, result) {
+    observeNativeRevision(result);
     if (pendingLoad) return; // A lost load response must be resolved before reusing any face ids.
     if (cmd.startsWith("line ")) {
       cmd = "line " + cmd.slice(5).split("#", 1)[0].trim();
@@ -370,6 +391,7 @@ const ReferenceWorkspace = (() => {
     const next = (context().featureAttachments || []).filter(record => record.kind !== kind);
     if (record) next.push(record);
     P.Features.sourceRooms({schema:P.Features.SCHEMA,records:next},context().sources);
+    P.Features.evidenceLinks({schema:P.Features.SCHEMA,records:next},context().sources,context().id);
     assertMetadataCapacity({featureAttachments:next});
     return next;
   }
@@ -383,13 +405,14 @@ const ReferenceWorkspace = (() => {
     } else {assertEditable(); if (options.recordHistory === false) throw new Error("此功能附件不能略過復原紀錄。");}
     if (typeof expectedContextToken !== "string" || expectedContextToken !== getProjectState().contextToken)
       throw new Error("專案已切換或缺少編輯上下文，未寫入功能附件。");
-    if (busy || oc.busy || (!groupedRoom && history.group) || preparingSceneLoad || pendingLoad)
+    if (busy || oc.busy || (!groupedRoom && history.group) || preparingSceneLoad || pendingLoad || nativePending)
       throw new Error("請先完成目前操作，再變更功能附件。");
     const proposal = featureProposal(kind,value), previous = readFeatureAttachment(kind);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
+    if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
   }
   function assertRoomTransaction(lease) {
@@ -586,20 +609,27 @@ const ReferenceWorkspace = (() => {
     const hash = await P.sha(bytes);
     return { meta: { id: hash, hash, name: file.name || "參考圖片", type, size: bytes.length, path: "sources/" + hash }, bytes };
   }
-  async function documentFor(s) {
+  async function documentFor(s, assertCurrent = () => {}) {
     if (s.meta.type !== "application/pdf") return null;
-    if (s.cleanup) await s.cleanup;
+    if (s.cleanup) {await s.cleanup; assertCurrent();}
     if (!s.doc) {
       const lib = await library();
+      assertCurrent();
       const task = lib.getDocument({ data: s.bytes.slice(), isEvalSupported: false,
         cMapUrl: "/vendor/pdfjs-dist/cmaps/", cMapPacked: true,
         standardFontDataUrl: "/vendor/pdfjs-dist/standard_fonts/", wasmUrl: "/vendor/pdfjs-dist/wasm/" });
       s.loadingTask = task;
+      s.documentTask = task;
       task.onPassword = () => { task.destroy().catch(()=>{}); };
-      try { s.doc = await task.promise; } catch (_) { throw new Error("無法讀取 PDF；請確認檔案完整且未加密。"); }
+      try { s.doc = await task.promise; assertCurrent(); } catch (error) { await releasePDFSource(s);assertCurrent();throw new Error("無法讀取 PDF；請確認檔案完整且未加密。"); }
       finally { if (s.loadingTask === task) s.loadingTask = null; }
     }
     return s.doc;
+  }
+  async function releasePDFSource(source) {
+    const task=source.loadingTask || source.documentTask || source.doc?.loadingTask;
+    source.doc=null;source.loadingTask=null;source.documentTask=null;
+    if(task)await task.destroy().catch(()=>{});
   }
   // Runtime-only immutable source features: never added to history or saved
   // project metadata. A late extraction only fills its source/page cache.
@@ -630,18 +660,20 @@ const ReferenceWorkspace = (() => {
     });
     return s.image;
   }
-  async function renderPage(s, page, scale = 4) {
+  async function renderPage(s, page, scale = 4, assertCurrent = () => {}) {
     const canvas = document.createElement("canvas");
     let width, height;
     if (s.meta.type === "application/pdf") {
-      const doc = await documentFor(s);
+      const doc = await documentFor(s, assertCurrent); assertCurrent();
       if (page < 1 || page > doc.numPages) throw new Error("PDF 頁码不存在。");
       const p = await doc.getPage(page), base = p.getViewport({ scale: 1 });
+      assertCurrent();
       width = base.width; height = base.height;
       const k = Math.min(scale, 5000 / Math.max(width, height), Math.sqrt(16000000 / (width * height)));
       const viewport = p.getViewport({ scale: k });
       canvas.width = Math.ceil(viewport.width); canvas.height = Math.ceil(viewport.height);
       await p.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+      assertCurrent();
     } else {
       const img = await imageFor(s); width = img.naturalWidth; height = img.naturalHeight;
       const k = Math.min(1, 5000 / Math.max(width, height));
@@ -654,6 +686,109 @@ const ReferenceWorkspace = (() => {
     const r = await renderPage(s, p.page);
     if (Math.abs(p.imgW - r.width) > 0.01 || Math.abs(p.imgH - r.height) > 0.01) throw new Error("圖頁尺寸與來源不一致。");
     p.src = r.src; return p;
+  }
+  // Locate a recorded reference independently of the current face/page. An
+  // unlinked source remains usable through the same original PDF reader.
+  function evidenceReference(d) {
+    for (const [bid, key] of history.frame.ids) {
+      const g = context().groups.get(key), page = g?.pages.find(p => p.id === d.referencePageId);
+      if (page) return {bid, group:g, page, source:context().sources.get(page.sourceId)};
+    }
+    const rooms = P.Features.sourceRooms({schema:P.Features.SCHEMA,records:context().featureAttachments});
+    for (const room of rooms?.rooms || []) {
+      const page = active(room.boundaryRef.id);
+      if (page?.id === d.referencePageId) return {bid:room.boundaryRef.id,page,source:context().sources.get(page.sourceId)};
+    }
+    const source = context().sources.get(d.sourceHash);
+    return {bid:null, source, page:source ? {id:d.referencePageId,sourceId:d.sourceHash,page:d.page,imgW:d.pageWidth,imgH:d.pageHeight,rot:d.rotationBasis,crop:[...d.cropBasis]} : null};
+  }
+  function readEvidenceDocument(d) {
+    const r = evidenceReference(d);
+    return r.page && r.source && r.source.bytes instanceof Uint8Array && r.source.bytes.length === r.source.meta.size
+      ? E.documentFromReference(r.page, r.source) : null;
+  }
+  function getEvidenceNavigationStamp() {
+    return {focus:oc.focus ? {...oc.focus} : null,edit:oc.edit ? {...oc.edit} : null,
+      selected:oc.sel ? {...oc.sel} : null,panX:fe.panX ?? null,panY:fe.panY ?? null,zoom:fe.zoom ?? null,
+      objectPanX:oc.panX ?? null,objectPanY:oc.panY ?? null,objectZoom:oc.zoom ?? null,
+      modal:modal ? {sequence,page:modal.page,source:modal.source.meta.id} : null};
+  }
+  function getReferenceNavigationStamp(d) {
+    const r = evidenceReference(d), s = r.source;
+    if (!s || !r.page) throw new Error("證據原 PDF 缺失。");
+    return {...getEvidenceState(),...getEvidenceNavigationStamp(),sourceId:s.meta.id,sourceHash:s.meta.hash,sourceType:s.meta.type,sourceSize:s.meta.size,
+      document:E.documentFromReference(r.page,s),basis:r.bid === null ? null : P.reviewBasis(r.page),
+      activeReference:r.group?.activePageId ?? null,selection:r.group?.selection ?? null};
+  }
+  async function prepareReferencePage(document, region, {assertCurrent}) {
+    assertCurrent();
+    const expected = JSON.stringify(getReferenceNavigationStamp(document)), r = evidenceReference(document);
+    const source = {meta:structuredClone(r.source.meta),bytes:r.source.bytes.slice()};
+    const hash = await P.sha(source.bytes); assertCurrent();
+    if (hash !== document.sourceHash || source.meta.hash !== hash || source.meta.id !== hash || source.meta.type !== "application/pdf") throw new Error("證據原 PDF 已換版。");
+    let pageRender, pageCount;
+    try {
+      pageRender = await renderPage(source, document.page, 4, assertCurrent); assertCurrent();
+      pageCount = source.doc.numPages;
+    } finally {
+      await releasePDFSource(source);
+    }
+    assertCurrent();
+    if (pageRender.width !== document.pageWidth || pageRender.height !== document.pageHeight) throw new Error("證據頁碼或尺寸不符。");
+    const prepared = Object.freeze({document:structuredClone(document),sourceMeta:structuredClone(source.meta),verifiedBytes:source.bytes.slice(),pageCount,pageRender:Object.freeze({...pageRender})});
+    preparedReferences.set(prepared, {expected,source,region:[...region],document:JSON.stringify(document)});
+    return prepared;
+  }
+  function commitPreparedReferencePage(prepared, descriptor, region) {
+    const lease = preparedReferences.get(prepared);
+    if (!lease || lease.document !== JSON.stringify(descriptor) || JSON.stringify(region) !== JSON.stringify(lease.region) ||
+        lease.expected !== JSON.stringify(getReferenceNavigationStamp(descriptor)) ||
+        prepared.sourceMeta.id !== descriptor.sourceHash || prepared.sourceMeta.hash !== descriptor.sourceHash ||
+        prepared.pageRender.width !== descriptor.pageWidth || prepared.pageRender.height !== descriptor.pageHeight ||
+        !(prepared.verifiedBytes instanceof Uint8Array) || prepared.verifiedBytes.length !== lease.source.bytes.length ||
+        prepared.verifiedBytes.some((b,i) => b !== lease.source.bytes[i])) throw new Error("定位候選或上下文已過期，未變更畫面。");
+    assertEditable(); assertRoomDraftIdle();
+    if (getEvidenceState().blocked || fe.draft?.pts?.length || fe.ulCalib || window.ParameterUI?.pending) throw new Error("請先完成或取消目前草稿，再定位證據。");
+    const r = evidenceReference(descriptor), p = r.page;
+    if (!(r.source.bytes instanceof Uint8Array) || r.source.bytes.length !== lease.source.bytes.length ||
+        r.source.bytes.some((b,i)=>b!==lease.source.bytes[i])) throw new Error("證據原 PDF bytes 已變更，未定位。");
+    const [rx,ry,rw,rh]=region,crop=p.crop;
+    const visible=rx>=crop[0]&&ry>=crop[1]&&rx+rw<=crop[0]+crop[2]&&ry+rh<=crop[1]+crop[3];
+    if (r.bid !== null && oc.edit?.bid === r.bid && oc.focus?.t === "face" && visible) {
+      if (r.group) {
+        const groups = new Map(context().groups);groups.set(history.frame.ids.get(r.bid),{...r.group,activePageId:p.id});
+        assertMetadataCapacity({groups});
+      }
+      preparedReferences.delete(prepared);
+      p.src = prepared.pageRender.src;
+      if (r.group) {cancelSelection(context(),r.group);r.group.activePageId=p.id;dirty();}
+      fe.ulCalib=null;fe.ulDrag=null;sync();
+      window.EvidenceLinksApp?.showRegion(descriptor,region);
+      const [x,y,w,h]=region,pts=[[x,y],[x+w,y],[x+w,y+h],[x,y+h]].map(v=>feUlImgToMm(p,...v));
+      feFit([Math.min(...pts.map(v=>v[0])),Math.min(...pts.map(v=>v[1])),Math.max(...pts.map(v=>v[0])),Math.max(...pts.map(v=>v[1]))]);
+      drawFaceEditor();renderFaceInspector();
+    } else {
+      // Existing PDF preview, now in read-only evidence mode. No native face,
+      // source linkage or saved calibration is invented for unlinked evidence.
+      preparedReferences.delete(prepared);
+      modal={context:context(),source:lease.source,bid:null,page:descriptor.page,width:descriptor.pageWidth,height:descriptor.pageHeight,
+        crop:[...region],zoom:"page",ready:true,evidence:true,render:prepared.pageRender};sequence++;
+      const host=document.getElementById("refPagePreview");
+      host.innerHTML='<img alt="證據原 PDF 頁"><div id="refCropOverlay"></div>';
+      host.querySelector("img").src=prepared.pageRender.src;
+      document.getElementById("refThumbnails").replaceChildren();
+      document.getElementById("refPageNumber").value=descriptor.page;
+      document.getElementById("refSourceName").textContent=lease.source.meta.name;
+      document.getElementById("refZoom").value="page";
+      document.getElementById("refPageCount").textContent="／"+prepared.pageCount;
+      document.getElementById("refPreviewMessage").textContent="證據原頁範圍 · 唯讀核對";
+      document.getElementById("refApply").disabled=true;
+      document.getElementById("refApply").hidden=true;
+      document.getElementById("refTarget").disabled=true;
+      for (const id of ["refPageNumber","refPrev","refNext","refResetCrop"]) document.getElementById(id).disabled=true;
+      document.getElementById("referenceDialog").showModal();layoutPreview();drawCrop();
+    }
+    return {ok:true};
   }
   function addPage(bid, p) {
     assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
@@ -718,6 +853,24 @@ const ReferenceWorkspace = (() => {
     feFit([Math.min(...pts.map(v=>v[0])), Math.min(...pts.map(v=>v[1])), Math.max(...pts.map(v=>v[0])), Math.max(...pts.map(v=>v[1]))]);
     drawFaceEditor();
   }
+  async function validateEvidenceClosure(c, attachments, assertCurrent) {
+    const evidence = attachments && P.Features.evidenceLinks(attachments,c.sources,c.id);
+    if (!evidence) return;
+    const detached = new Set();
+    try { await E.validateSourceClosure(evidence, {
+      readSource:hash=>c.sources.get(hash),
+      hashBytes:async bytes=>{const hash=await P.sha(bytes);assertCurrent();return hash;},
+      readPage:async (source,number)=>{
+        detached.add(source);
+        const pdf=await documentFor(source,assertCurrent);assertCurrent();
+        if(number>pdf.numPages)throw new Error("證據 PDF 頁碼不存在。");
+        const page=await pdf.getPage(number);assertCurrent();
+        const size=page.getViewport({scale:1});return {width:size.width,height:size.height};
+      }
+    });assertCurrent();
+    } finally {await Promise.all([...detached].map(releasePDFSource));}
+    assertCurrent();
+  }
   async function selectPage(bid, pageId) {
     assertEditable(); assertLegacyTarget(bid); assertRoomDraftIdle();
     const g = group(bid), p = g?.pages.find(p => p.id === pageId); if (!p) return;
@@ -754,7 +907,7 @@ const ReferenceWorkspace = (() => {
     html += `</details><details class="ref-records ref-section" id="refRecordDetails"><summary>來源紀錄與待補資訊（${p.records.length}）</summary>`;
     for (const r of p.records) html += `<article class="ref-record"><strong>${escape(r.label || "未命名紀錄")}</strong><span>${r.value===null?"待補":escape(r.value)+" "+r.unit}</span><p>${escape(r.location)}${r.datum?" · 基準："+escape(r.datum):""}</p><small>第 ${p.page} 頁</small><button type="button" class="text-button" data-ref-remove-record="${r.id}" aria-label="移除 ${escape(r.label)} 紀錄">移除</button></article>`;
     html += `<label class="ib-row">項目<input id="refRecordLabel" maxlength="300" placeholder="例如：天花完成高度"></label><label class="ib-row">位置說明<input id="refRecordLocation" maxlength="1000" placeholder="例如：A202 主區域"></label><div class="place-form"><label>數值（留空表示待補）<input id="refRecordValue" type="number" step="any"></label><label>單位<select id="refRecordUnit"><option>mm</option><option>cm</option></select></label></div><label class="ib-row">基準<input id="refRecordDatum" maxlength="300" placeholder="例如：完成地坪 FFL"></label><button id="refRecordAdd" type="button" class="btn">新增來源紀錄</button><p class="fi-note">紀錄不會自動建立構件。天花完成高度與 RC 樑底高度請分開記錄。</p></details>`;
-    return html;
+    return html.replace('</p></details>', '</p><div data-evidence-host></div></details>');
   }
   function reviewKey(bid, page=active(bid)) { return history.frame.ids.get(bid)+":"+page?.id; }
   function reconstructionState(bid) {
@@ -841,7 +994,7 @@ const ReferenceWorkspace = (() => {
     }
   }
   async function previewPage(number) {
-    if (busy || !modal || !Number.isInteger(modal.count) || !Number.isInteger(number) || number < 1 || number > modal.count) return;
+    if (busy || !modal || modal.evidence || !Number.isInteger(modal.count) || !Number.isInteger(number) || number < 1 || number > modal.count) return;
     if (modal.page === number && modal.ready) return;
     const m = modal, request = ++sequence; m.token = request; m.ready = false; m.page = number; m.crop = null;
     document.getElementById("refApply").disabled = true;
@@ -888,7 +1041,7 @@ const ReferenceWorkspace = (() => {
   }
   async function applySource() {
     assertEditable(); assertRoomDraftIdle();
-    if (!modal?.ready || busy) return;
+    if (!modal?.ready || modal.evidence || busy) return;
     // Keep exactly the page and crop confirmed before asynchronous face creation.
     const m={...modal,crop:[...modal.crop]}, dialog=document.getElementById("referenceDialog");
     assertContext(m.context);
@@ -925,12 +1078,14 @@ const ReferenceWorkspace = (() => {
   }
   function closeSource(force = false) {
     if (busy && force !== true) return;
+    if (modal?.evidence) {
+      document.getElementById("refApply").hidden=false;document.getElementById("refTarget").disabled=false;
+      for (const id of ["refPageNumber","refPrev","refNext","refResetCrop"]) document.getElementById(id).disabled=false;
+    }
     const source=modal?.source;modal=null;sequence++;document.getElementById("referenceDialog").close();
-    if(source && !context().sources.has(source.meta.id)) {
+    if(source && context().sources.get(source.meta.id)!==source) {
       // PDF.js 6 exposes destruction on the loading task, not PDFDocumentProxy.
-      const task=source.loadingTask || source.doc?.loadingTask;
-      source.doc=null;source.loadingTask=null;
-      if(task)source.cleanup=task.destroy().catch(()=>{});
+      source.cleanup=releasePDFSource(source);
     }
   }
   function manifestData(c = context(), ids = history.frame.ids) {
@@ -941,19 +1096,20 @@ const ReferenceWorkspace = (() => {
       faces.push({ bid,activePageId:g.activePageId,pages:g.pages.map(p=>{used.add(p.sourceId);return Object.fromEntries(["id","sourceId","page","imgW","imgH","crop","mmPerPx","x","y","rot","opacity","locked","calibration","reviewRequired","records"].map(key=>[key,p[key]]));}) });
       for (const p of g.pages) {const r=c.reconstructionReviews.get(key+":"+p.id);if (r) reconstructionReviews.push({bid,pageId:p.id,...r});}
     }
-    const roomSources = P.Features.sourceRooms({schema:P.Features.SCHEMA,records:c.featureAttachments || []},c.sources);
-    for (const plane of roomSources?.planes || []) used.add(plane.sourceId);
+    const envelope = {schema:P.Features.SCHEMA,records:c.featureAttachments || []};
+    P.Features.sourceRooms(envelope,c.sources);P.Features.evidenceLinks(envelope,c.sources,c.id);
+    for (const hash of P.Features.sourceIds(envelope)) used.add(hash);
     const data = { ...(reconstructionReviews.length?{reconstructionReviews}:{}),projectId:c.id,name:c.name,sources:[...used].map(k=>c.sources.get(k).meta),faces,
       ...(c.models.length?{models:c.models}:{}),...(faceProjections.length?{faceProjections}:{}),
       ...(c.assemblyDrafts?.length?{assemblyDrafts:{schema:P.ASSEMBLY_DRAFT_SCHEMA,records:c.assemblyDrafts}}:{}),
       ...(c.featureAttachments?.length?{featureAttachments:{schema:P.Features.SCHEMA,records:c.featureAttachments}}:{}),
       ...(c.engineeringDrafts?.length?{engineeringDrafts:{schema:P.DRAFT_SCHEMA,records:c.engineeringDrafts}}:{}) };
     const format = P.projectFormat(data);
-    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT].includes(format)?{models:c.models,faceProjections}:{}) };
+    return { ...data,format,...([P.PROJECTION_FORMAT,P.TIMBER_FORMAT,P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT,P.SUBDIVISION_FORMAT,P.EVIDENCE_FORMAT].includes(format)?{models:c.models,faceProjections}:{}) };
   }
   function assertMetadataCapacity(overrides = {}, ids = history.frame.ids) {
     const c = {...context(),...overrides};
-    if (!c.featureAttachments?.some(record => record.kind === P.Features.ROOM_KIND)) return;
+    if (!c.featureAttachments?.some(record => record.kind === P.Features.ROOM_KIND || record.kind === E.KIND)) return;
     P.assertManifestCapacity(manifestData(c,ids));
   }
   function assertPageCapacity(bid,page,{append = false,replace = false,...overrides} = {}) {
@@ -992,6 +1148,7 @@ const ReferenceWorkspace = (() => {
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
     assertSnapshot(stamp);
     const m=await manifest(c,r.text); assertSnapshot(stamp);
+    await validateEvidenceClosure(c, m.featureAttachments, () => assertSnapshot(stamp)); assertSnapshot(stamp);
     const data=new Map([...c.sources].map(([k,s])=>[k,s.bytes]));
     const bytes=await P.pack(r.text,m,data,fflate); assertSnapshot(stamp);
     return {bytes,stamp,scene:r.text};
@@ -1098,7 +1255,11 @@ const ReferenceWorkspace = (() => {
   function importBytes(bytes,name="匯入專案") { return openProject(()=>bytes,name); }
   async function readProjectContext(bytes,name,stage,assertCurrent,verifyOnly=false) {
     stage("正在檢查專案完整性…","驗證中");
-    const loaded=await P.unpack(bytes,fflate),m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
+    const loaded=await P.unpack(bytes,fflate); assertCurrent();
+    // Detached, private copies are the exact values subsequently committed.
+    loaded.manifest=structuredClone(loaded.manifest);
+    loaded.sources=new Map([...loaded.sources].map(([hash,data])=>[hash,data.slice()]));
+    const m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
     assertCurrent();
     // Rebuild every embedded package before uploading anything. Stored definitions
     // are self-contained and do not depend on the current live source scene.
@@ -1110,13 +1271,15 @@ const ReferenceWorkspace = (() => {
     c.assemblyDrafts=JSON.parse(JSON.stringify(m.assemblyDrafts?.records||[]));
     c.featureAttachments=JSON.parse(JSON.stringify(m.featureAttachments?.records||[]));
     c.engineeringDrafts=JSON.parse(JSON.stringify(m.engineeringDrafts?.records||[]));
-    for(const meta of m.sources)c.sources.set(meta.id,{meta,bytes:loaded.sources.get(meta.id)});
+    for(const meta of m.sources)c.sources.set(meta.id,{meta:structuredClone(meta),bytes:loaded.sources.get(meta.id).slice()});
+    await validateEvidenceClosure(c,m.featureAttachments,assertCurrent); assertCurrent();
     async function verifySourcePage(sourceId, number, width, height) {
       const source = c.sources.get(sourceId);
       if (source.meta.type === "application/pdf") {
-        const doc = await documentFor(source);
+        const doc = await documentFor(source,assertCurrent); assertCurrent();
         if (number > doc.numPages) throw new Error("來源關聯的 PDF 頁碼不存在。");
-        const page = await doc.getPage(number), size = page.getViewport({scale:1});
+        const page = await doc.getPage(number); assertCurrent();
+        const size = page.getViewport({scale:1});
         if (Math.abs(size.width-width)>0.01 || Math.abs(size.height-height)>0.01) throw new Error("來源頁面尺寸不一致。");
       } else {
         const image = await imageFor(source);
@@ -1203,10 +1366,16 @@ const ReferenceWorkspace = (() => {
       P.validateProjectObjectRefs(manifest,candidate.final_objects);
       P.assertProjectCapabilities(manifest,P.readerCapabilities(candidate.capabilities));
       P.validateProjectCapabilities(candidate.required_capabilities);
-      if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT,P.SUBDIVISION_FORMAT].includes(manifest.format)) {
-        if(manifest.format===P.SUBDIVISION_FORMAT&&typeof candidate.final_scene!=="string")
+      if ([P.ENGINEERING_FORMAT,P.PARAMETER_FORMAT,P.ASSEMBLY_FORMAT,P.GENERATION_FORMAT,P.OUTLINE_FORMAT,P.FEATURE_FORMAT,P.SUBDIVISION_FORMAT,P.EVIDENCE_FORMAT].includes(manifest.format)) {
+        if([P.SUBDIVISION_FORMAT,P.EVIDENCE_FORMAT].includes(manifest.format)&&typeof candidate.final_scene!=="string")
           throw new Error("服務未提供原生候選場景，未變更目前專案。");
-        const finalScene=manifest.format===P.SUBDIVISION_FORMAT?candidate.final_scene:text;
+        const finalScene=[P.SUBDIVISION_FORMAT,P.EVIDENCE_FORMAT].includes(manifest.format)?candidate.final_scene:text;
+        if (manifest.featureAttachments && P.Features.evidenceLinks(manifest.featureAttachments)) {
+          const response = await fetch("/sources/snapshot",{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:finalScene,signal:AbortSignal.timeout(30000)}); assertCurrent();
+          if (!response.ok) throw new Error("無法驗證候選參數證據，未變更目前專案。");
+          const graph = await response.json(); assertCurrent();
+          P.validateEvidenceTargets(manifest,graph);
+        }
         if(!sameModelData([...candidate.required_capabilities].sort(),P.sceneCapabilities(finalScene)))
           throw new Error("工程場景能力與保存來源不一致，未變更目前專案。");
       }
@@ -1252,6 +1421,7 @@ const ReferenceWorkspace = (() => {
       throw e;
     }
     try{assertLoadContext(nextLoad);}catch(error){pendingLoad=null;contextConflict=true;sync();throw error;}
+    observeNativeRevision(result);
     if(result.ok){adoptLoadedContext();notifySceneChange();}
     pendingLoad=null;sync();
     return result;
@@ -1358,19 +1528,20 @@ const ReferenceWorkspace = (() => {
     document.getElementById("refPageNumber").onchange=safe(e=>previewPage(Number(e.target.value)));
     document.getElementById("refPrev").onclick=safe(()=>previewPage(modal.page-1));
     document.getElementById("refNext").onclick=safe(()=>previewPage(modal.page+1));
-    document.getElementById("refResetCrop").onclick=()=>{if(modal?.ready){modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
+    document.getElementById("refResetCrop").onclick=()=>{if(modal?.ready&&!modal.evidence){modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
     document.getElementById("refZoom").onchange=e=>{if(modal){modal.zoom=e.target.value === "page" ? "page" : Number(e.target.value);layoutPreview();}};
     new ResizeObserver(layoutPreview).observe(document.querySelector(".ref-preview-scroll"));
     const preview=document.getElementById("refPagePreview");
-    preview.onpointerdown=e=>{if(!modal?.ready||e.button!==0)return;e.preventDefault();modal.drag=cropPoint(e);preview.setPointerCapture(e.pointerId);};
+    preview.onpointerdown=e=>{if(!modal?.ready||modal.evidence||e.button!==0)return;e.preventDefault();modal.drag=cropPoint(e);preview.setPointerCapture(e.pointerId);};
     preview.onpointermove=e=>{if(!modal?.drag)return;const p=cropPoint(e),s=modal.drag;modal.crop=[Math.min(p[0],s[0]),Math.min(p[1],s[1]),Math.max(1,Math.abs(p[0]-s[0])),Math.max(1,Math.abs(p[1]-s[1]))];drawCrop();};
-    preview.onpointerup=()=>{if(modal){modal.drag=null;if(!modal.ready||!modal.crop)return;if(modal.crop[2]<2||modal.crop[3]<2)modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
+    preview.onpointerup=()=>{if(modal&&!modal.evidence){modal.drag=null;if(!modal.ready||!modal.crop)return;if(modal.crop[2]<2||modal.crop[3]<2)modal.crop=[0,0,modal.width,modal.height];drawCrop();}};
     preview.onpointercancel=preview.onpointerup;
     document.getElementById("btnProjectName").onclick=safe(()=>{assertEditable();const n=prompt("專案名稱",context().name);if(n?.trim()){assertEditable();const name=n.trim().slice(0,200);assertMetadataCapacity({name});context().name=name;dirty();sync();}});
     window.addEventListener("beforeunload",e=>{if(context().dirty || Object.values(fe.feats || {}).some(items => items.length)){e.preventDefault();e.returnValue="";}});
     present();
   }
-  return { init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,statusHTML,present,bindPane,active,group,context,history,
+  return { getEvidenceState,getEvidenceNavigationStamp,beginNativeOperation,observeNativeRevision,readEvidenceDocument,getReferenceNavigationStamp,prepareReferencePage,commitPreparedReferencePage,validateEvidenceClosure,
+    init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,statusHTML,present,bindPane,active,group,context,history,
     reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,tracingFeatures,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,

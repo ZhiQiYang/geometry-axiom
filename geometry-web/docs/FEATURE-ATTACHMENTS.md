@@ -87,3 +87,11 @@ python geometry-web/grid_portable_browser_test.py
 入口核對服務 `/runtime` 的 root／fresh、Git head／tree，拒絕未指定服務、用戶8765埠及非TEMP證據路徑。1280／390 Chromium以實際表單、既有桌面／手機建立入口、確認與返回／重試，核對完整 ZIP 內原始 PDF bytes、無效／未啟用欄位原字串、配置來源／實際頂點 pin、重開、單步 undo/redo。初始化 gate 延遲真 native boundary 回覆；未知結果 gate 讓真 native confirm 成功後丟失回覆與第一份真回執，驗持鎖、同 request receipt 恢復與零重送。fixture 是 repo 自行產生的 PDF；setup／import／undo API 與 Playwright file-input／下載自動化不冒稱實體 OS chooser、IME 或手機驗收。
 
 另須跑既有實際 CDP 回歸：P70仍106、P78仍23；完整CDP的82段golden不改。完成度以PR中固定head的終態證據為準，任一中途失敗／未跑項都不能當pass。
+
+## #48 正式證據附件
+
+有限白名單目前為 `grid-draft`、`source-rooms`、`evidence-links`，各最多一筆。證據 schema/capability 是 `geometry-evidence-links/1`，最多 256 個手動連結、2 MiB；既有 grid-draft 的 128 KiB 與整個 envelope 的 8 MiB 限制維持。未知 `rule-cases` 仍拒，#49 UI 不在本切片。
+
+有證據附件使用 `geometry-canvas/12`；已佔用的 `/11` 屬 native subdivision 能力，不重用。第 12 版可以同時保留既有附件及 subdivision，必要 native/reader 能力分離。降版、剝除／未知能力與未知 schema 均拒。PDF 原始 bytes 的 source closure 包括僅被證據引用、已解除面圖頁連結的来源；匯入在 detached 候選驗原 bytes/hash/page/dimensions 和最終原生 typed field refs，完成後才走既有原子 upload confirm。缺失／重建參數保留歷史標註為待重新關聯，不能使合法刪除變成不可保存。
+
+正式 UI 與完整驗證入口見 [EVIDENCE-LINKS-INTEGRATION-48.md](../../geometry-guide/EVIDENCE-LINKS-INTEGRATION-48.md)。先前段落的「目前只支持 grid-draft」描述 #45 第一保存切片；本節是已接線白名單現況。

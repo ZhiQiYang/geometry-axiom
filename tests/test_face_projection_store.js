@@ -32,7 +32,7 @@ function workspace() {
       parentElement:{clientWidth:100,clientHeight:100},addEventListener:()=>{},querySelector:()=>null});
     return elements.get(id);
   };
-  const env = { GeometryProject:P,crypto,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,console,
+  const env = { GeometryProject:P,crypto,structuredClone,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,console,
     requestAnimationFrame:()=>1, CustomEvent:class {constructor(type){this.type=type;}},
     ResizeObserver:class {observe(){}},
     window:{dispatchEvent:e=>events.push(e.type),confirm:()=>false,addEventListener:(type,fn)=>listeners[type]=fn},

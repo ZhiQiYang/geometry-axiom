@@ -114,6 +114,15 @@ test('cancelled view and late navigation callback cannot paint wrong context',as
   const {controller:c,state,options}=harness();const l=await c.add(input());const delay=deferred();state.read=async(d,t)=>{await delay.promise;return {document:d,target:t,modelValue:nativeValue};};const pending=c.readView();c.cancel();delay.resolve();await assert.rejects(pending,{code:'EVIDENCE_STALE'});
   state.read=async(d,t)=>({document:d,target:t,modelValue:nativeValue});const guard=deferred();let captured;const opts={...options,locateDocument:async(d,r,g)=>{captured=g;await guard.promise;return g.isCurrent();}};const n=E.createController(opts),locating=n.locate(l.evidenceId);await new Promise(r=>setImmediate(r));state.stamp.contextToken='ctx-b';guard.resolve();assert.equal(await locating,false);assert.equal(captured.isCurrent(),false);
 });
+test('navigation during the initial current read rejects before detached locator starts',async()=>{
+  const {state,options}=harness(),gate=deferred();let navigation=0,prepares=0;
+  options.getNavigationStamp=()=>({panX:navigation});
+  options.locateDocument=async()=>{prepares++;};
+  const c=E.createController(options);await c.add(input());
+  state.read=async(d,t)=>{await gate.promise;return {document:d,target:t,modelValue:copy(nativeValue)};};
+  const pending=c.locate('evidence-0');navigation++;gate.resolve();
+  await assert.rejects(pending,{code:'EVIDENCE_STALE'});assert.equal(prepares,0);assert.equal(state.writes,1);
+});
 test('staged locator guards every detached await and makes one synchronous navigation',async()=>{
   const stages=[deferred(),deferred()],state={basis:{sourceHash:hash,reviewBasis:'existing-owner-basis',activePage:'other',selection:0},current:true,nav:0,fit:0,paint:0};let stage=0;
   const locate=E.createLocator({getSourceStamp:()=>copy(state.basis),prepare:async(d,r,{assertCurrent})=>{for(const gate of stages){stage++;await gate.promise;assertCurrent();}return {render:'detached'};},commit:(prepared,d,r)=>{assert.equal(prepared.render,'detached');state.nav++;state.basis.activePage=d.referencePageId;state.current=false;state.fit++;state.paint++;return 'located';}});

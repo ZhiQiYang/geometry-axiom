@@ -156,14 +156,14 @@ const RoomCollectionWorkspace = (() => {
           `<button type="button" class="text-button" data-room-rename="${room.id}"${intent ? " disabled" : ""}>改名</button>` +
           `<button type="button" class="text-button" data-room-unlink="${room.id}"${intent ? " disabled" : ""}>解除列表關聯</button>` +
           (room.reviewState === "needs-review" ? `<button type="button" class="text-button" data-room-review="${room.id}"${intent ? " disabled" : ""}>已逐邊核對</button>` : "") + "</article>";
-      }).join("") + historyHTML(data, collection.planeId) + "</details>";
+      }).join("") + historyHTML(data, collection.planeId, true) + "</details>";
   }
-  function historyHTML(data, planeId) {
+  function historyHTML(data, planeId, evidence = false) {
     const entries = (data.legacyHistory || []).filter(entry => entry.planeId === planeId), plane = data.planes.find(plane => plane.id === planeId);
-    if (!entries.length) return "";
-    return `<details class="ref-section" data-room-source-history="${planeId}"><summary>原頁歷史紀錄與核對（${entries.length}）</summary>` +
-      `<label>歷史來源<select data-room-history-entry>${entries.map((entry,index) => `<option value="${index}">原邊界 ${entry.boundaryId} · 第 ${plane.page} 頁</option>`).join("")}</select></label>` +
-      `<div data-room-history-content></div></details>`;
+    if (!entries.length && !evidence) return "";
+    return `<details class="ref-section"${evidence ? ' id="refRecordDetails"' : ''}${entries.length ? ` data-room-source-history="${planeId}"` : ''}><summary>原頁歷史紀錄與核對（${entries.length}）</summary>` +
+      (entries.length ? `<label>歷史來源<select data-room-history-entry>${entries.map((entry,index) => `<option value="${index}">原邊界 ${entry.boundaryId} · 第 ${plane.page} 頁</option>`).join("")}</select></label><div data-room-history-content></div>` : '') +
+      (evidence ? '<div data-evidence-host></div>' : '') + '</details>';
   }
   function bindHistory(host) {
     const contextToken = token();

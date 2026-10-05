@@ -6,12 +6,15 @@
   const statusText={unchecked:'尚未核對','confirmed-content':'已核對內容','needs-reassociation':'物件身分需重新指定','source-missing':'原 PDF 缺失','source-changed':'原 PDF 已換版，需重新核對','target-missing':'參數欄位缺失'};
   const valueText=v=>v?`${v.num}${v.den==='1'?'':'/'+v.den}${v.unit==='mm'?' mm':''}`:'無現行正式值';
   const typed=t=>`${t.parameterId}:${t.fieldId}`;
-  function mount(host,{controller,readSelection,getStamp,canvas}){
+  function mount(host,{controller,readSelection,getStamp,canvas,filter=()=>true,locateTarget=null,initialInput=null}){
     if(!host||!controller||typeof readSelection!=='function'||typeof getStamp!=='function')throw Error('證據介面接線不完整。');
     const doc=host.ownerDocument,section=doc.createElement('section');section.dataset.evidenceLinks='';
     section.style.cssText='min-width:0;max-width:100%;overflow-wrap:anywhere';host.append(section);
     let sequence=0,destroyed=false,selection=null,selectionIdentity=null,view=null,region=null,selecting=false,drag=null,overlay=null,busy=false;
-    let form=null,targetSelect=null,model=null,message=null,list=null,save=null,start=null,cancelButton=null;
+    let form=null,targetSelect=null,model=null,message=null,list=null,save=null,start=null,cancelButton=null,regionFields=null;
+    let pendingInput=initialInput;
+    function captureInput(){return {target:targetSelect?.value||'',fields:[...section.querySelectorAll('[data-evidence-input]')].filter(n=>!n.dataset.evidenceInput.startsWith('region-')).map(n=>[n.dataset.evidenceInput,n.value])};}
+    function restoreInput(raw){if(!raw)return;for(const [key,value]of raw.fields){const input=[...section.querySelectorAll('[data-evidence-input]')].find(n=>n.dataset.evidenceInput===key);if(input)input.value=value;}if(targetSelect&&[...targetSelect.options].some(o=>o.value===raw.target))targetSelect.value=raw.target;updateModel();}
     const disclosure=host.closest('details');
     const connected=()=>!destroyed&&section.isConnected&&disclosure?.open!==false;
     const stamp=()=>getStamp();
@@ -57,7 +60,7 @@
     }
     function renderLinks(){
       list.replaceChildren();
-      for(const link of view.links){
+      for(const link of view.links.filter(filter)){
         const article=element('article',null,{'data-evidence-id':link.evidenceId});article.style.cssText='min-width:0;border-top:1px solid #ccc;padding:10px 0';
         const current=selection.targets.find(t=>t.target.projectScope===link.target.projectScope&&typed(t.target)===typed(link.target));
         article.append(element('strong',current?.label||`參數 #${link.target.parameterId} · 欄位 #${link.target.fieldId}`));
@@ -68,6 +71,7 @@
         }article.append(values);
         const locate=element('button','定位原頁範圍',{type:'button','data-evidence-locate':link.evidenceId});locate.className='btn';
         locate.addEventListener('click',()=>act(async()=>{await controller.locate(link.evidenceId);}));article.append(locate);
+        if(locateTarget){const target=element('button','定位參數欄位',{type:'button','data-evidence-locate-target':link.evidenceId});target.className='btn';target.disabled=['target-missing','needs-reassociation'].includes(link.status);target.addEventListener('click',()=>act(()=>locateTarget(link.evidenceId)));article.append(target);}
         const reviewedLabel=element('label',null);reviewedLabel.style.cssText='display:block;margin:10px 0';
         const reviewed=element('input',null,{type:'checkbox','data-evidence-reviewed':link.evidenceId});reviewed.checked=link.status==='confirmed-content';reviewed.disabled=!link.canConfirm;reviewed.dataset.canConfirm=String(link.canConfirm);
         reviewed.addEventListener('change',()=>act(()=>controller.setReviewed(link.evidenceId,reviewed.checked),()=>{reviewed.checked=link.status==='confirmed-content';reviewed.disabled=true;},true));reviewedLabel.append(reviewed,doc.createTextNode(' 已核對圖面與欄位'));article.append(reviewedLabel);
@@ -77,7 +81,7 @@
           rebind.addEventListener('click',()=>{if(!live(selection.stamp)||!same(selectionIdentity,pageIdentity())){cancel();tell('來源或欄位已變更，請重新讀取後明選。');return;}const selected=readTarget(select);if(!selected){tell('請明確指定參數欄位。');return;}act(()=>controller.rebind(link.evidenceId,selected.target),null,true);});article.append(rebind);
         }list.append(article);
       }
-      if(!view.links.length)list.append(element('p','此頁尚無參數證據連結。'));
+      if(!view.links.some(filter))list.append(element('p','此頁尚無參數證據連結。'));
     }
     function render(){
       resetRegion();section.replaceChildren();section.append(element('h4','參數證據連結'));
@@ -88,22 +92,32 @@
       observationFields('drawing','圖面標值');observationFields('measurement','現場量測');
       const actions=element('div',null);actions.style.cssText='display:flex;flex-wrap:wrap;gap:8px';
       start=element('button','在原頁框選區域',{type:'button','data-evidence-select':''});start.className='btn';start.disabled=!canvas||!selection.document;
-      start.addEventListener('click',()=>{if(!live(selection.stamp)||!same(selectionIdentity,pageIdentity())){cancel();tell('來源已變更，請重新讀取來源紀錄。');return;}resetRegion();selecting=true;drag=null;tell('在現有底圖按住拖曳框選；取消可保留原狀。');});
+      start.addEventListener('click',()=>{if(!live(selection.stamp)||!same(selectionIdentity,pageIdentity())){cancel();tell('來源已變更，請重新讀取來源紀錄。');return;}resetRegion();canvas?.beginSelection?.();selecting=true;drag=null;tell('在現有底圖按住拖曳框選；取消可保留原狀。');});
       save=element('button','保存證據連結',{type:'button','data-evidence-save':''});save.className='btn';save.disabled=true;
       save.addEventListener('click',()=>{const target=readTarget();if(!target){tell('請指定參數欄位。');return;}if(!live(selection.stamp)||!same(selectionIdentity,pageIdentity())){cancel();tell('來源已變更，請重新框選。');return;}
         const observations={drawing:observation('drawing'),measurement:observation('measurement')};if(!observations.drawing&&!observations.measurement){tell('請手動記錄至少一項圖面或現場觀察。');return;}
         act(()=>controller.add({document:selection.document,region,target:target.target,observations}));});
       cancelButton=element('button','取消',{type:'button','data-evidence-cancel':''});cancelButton.className='btn';cancelButton.addEventListener('click',cancel);actions.append(start,save,cancelButton);form.append(actions);
+      regionFields=element('fieldset',null,{'data-evidence-region-controls':''});regionFields.hidden=true;regionFields.style.cssText='min-width:0';regionFields.append(element('legend','調整原頁框選範圍'));
+      for(const [i,label]of ['X','Y','寬','高'].entries()){
+        const input=labelInput(regionFields,label,'region-'+i,32);input.type='number';input.step='any';
+        input.addEventListener('input',()=>{
+          const rect=[0,1,2,3].map(i=>Number(regionFields.querySelector(`[data-evidence-input="region-${i}"]`).value)),d=selection.document;
+          const valid=rect.every(Number.isFinite)&&rect[0]>=0&&rect[1]>=0&&rect[2]>0&&rect[3]>0&&rect[0]+rect[2]<=d.pageWidth&&rect[1]+rect[3]<=d.pageHeight;
+          save.disabled=!valid;if(valid){region=rect;draw(region);}else {region=null;removeOverlay();tell('範圍須在原 PDF 頁面內。');}
+        });
+      }form.append(regionFields);
       list=element('div',null,{'data-evidence-list':''});section.append(list);renderLinks();
     }
-    async function refresh(){
+    async function refresh({preserveInput=false}={}){
       const request=++sequence,initial=stamp(),identity=pageIdentity();busy=false;resetRegion();
       try{
         const results=await Promise.all([controller.readView(),readSelection()]);
         if(request!==sequence||!live(initial)||!same(identity,pageIdentity()))return false;
         const [nextView,nextSelection]=results;
         if(!same(nextView.stamp,initial)||!same(nextSelection.stamp,initial))return false;
-        view=nextView;selection=nextSelection;selectionIdentity=identity;render();return true;
+        const raw=preserveInput?captureInput():pendingInput;pendingInput=null;
+        view=nextView;selection=nextSelection;selectionIdentity=identity;render();restoreInput(raw);return true;
       }catch(error){if(request===sequence&&live(initial)){section.replaceChildren(element('p',error.message||'證據來源尚未讀取。',{'data-evidence-error':''}));}return false;}
     }
     function point(event){const p=canvas.eventPoint(event),page=canvas.toPage(Array.isArray(p)?p:[p.x,p.y]);if(!Array.isArray(page)||page.length!==2||!page.every(Number.isFinite))throw Error('原頁座標無法讀取。');return page;}
@@ -122,13 +136,15 @@
       if(!drag||event.pointerId!==drag.pointerId)return;pointerMove(event);if(!drag)return;release();selecting=false;
       const d=selection.document;
       if(!region||region[2]<=0||region[3]<=0||region[0]<0||region[1]<0||region[0]+region[2]>d.pageWidth||region[1]+region[3]>d.pageHeight){resetRegion();tell('請在原 PDF 頁面內框選有面積的區域。');return;}
-      save.disabled=false;tell(`原頁範圍：${region.map(n=>Number(n.toFixed(3))).join(', ')}。`);
+      save.disabled=false;regionFields.hidden=false;
+      region.forEach((n,i)=>regionFields.querySelector(`[data-evidence-input="region-${i}"]`).value=String(n));
+      canvas?.endSelection?.();tell(`原頁範圍：${region.map(n=>Number(n.toFixed(3))).join(', ')}。`);
     }
     function toggle(){if(disclosure.open)refresh();else cancel();}
     function pointerCancel(){if(selecting||drag)cancel();}
     if(canvas?.svg){canvas.svg.addEventListener('pointerdown',pointerDown,true);canvas.svg.addEventListener('pointermove',pointerMove,true);canvas.svg.addEventListener('pointerup',pointerUp,true);canvas.svg.addEventListener('pointercancel',pointerCancel,true);}
     disclosure?.addEventListener('toggle',toggle);refresh();
-    return {refresh,cancel,redraw(){if(region)draw(region);},destroy(){cancel();destroyed=true;disclosure?.removeEventListener('toggle',toggle);if(canvas?.svg){canvas.svg.removeEventListener('pointerdown',pointerDown,true);canvas.svg.removeEventListener('pointermove',pointerMove,true);canvas.svg.removeEventListener('pointerup',pointerUp,true);canvas.svg.removeEventListener('pointercancel',pointerCancel,true);}section.remove();},snapshot(){return {selecting,region:region&&[...region],links:view?.links.length??0};}};
+    return {refresh,cancel,captureInput,redraw(){if(region)draw(region);},destroy(){cancel();destroyed=true;disclosure?.removeEventListener('toggle',toggle);if(canvas?.svg){canvas.svg.removeEventListener('pointerdown',pointerDown,true);canvas.svg.removeEventListener('pointermove',pointerMove,true);canvas.svg.removeEventListener('pointerup',pointerUp,true);canvas.svg.removeEventListener('pointercancel',pointerCancel,true);}section.remove();},snapshot(){return {selecting,region:region&&[...region],links:view?.links.length??0};}};
   }
-  return Object.freeze({mount,valueText});
+  return Object.freeze({mount,valueText,statusText:Object.freeze(statusText)});
 });

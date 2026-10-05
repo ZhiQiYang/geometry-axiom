@@ -109,7 +109,7 @@ async function commit(line){
 async function upload(text){const r=await backend('/upload',{method:'POST',body:text});const data=await r.json();assert.equal(data.ok,true,JSON.stringify(data));}
 function workspace(customBackend=backend){
   const elements=new Map(),element=id=>{if(!elements.has(id))elements.set(id,{textContent:'',dataset:{},style:{},classList:{toggle(){}},addEventListener(){},querySelector(){return null;}});return elements.get(id);};
-  const env={GeometryProject:P,crypto,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,JSON,console,
+  const env={GeometryProject:P,crypto,structuredClone,fflate:zip,TextEncoder,TextDecoder,AbortSignal,Uint8Array,Map,Set,JSON,console,
     requestAnimationFrame:()=>1,CustomEvent:class{constructor(type){this.type=type;}},ResizeObserver:class{observe(){}},
     window:{dispatchEvent(){},confirm:()=>false,addEventListener(){}},
     document:{getElementById:element,querySelector:element,querySelectorAll:()=>[],addEventListener(){}},
