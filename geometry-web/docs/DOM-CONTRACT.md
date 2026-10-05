@@ -1031,3 +1031,11 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - 頁尾 `#igStateLine`（`data-tone=error|pending|ok`）＋`#igStateText` 顯示「N 個欄位需要修正／草稿 · 尚未建立／有變更，尚未預覽／已在目前場景」，`#igStateDetail` 為「至少設定一軸。」；來源徽章 `#igSourcePill`。`#igDraftNote` 與 `#igStatus` 不變。這些只是提示，不取代 `sourceDraft()` 與核心預覽的實際檢查。
 - 「進階」`#igTrial`（`<details>`）仍收納矩形與角材試擺，開啟試擺時標題列出現 `.ig-trial-badge`「試擺中」。
 - 綁定（配置）模式的對齊流程不在這一版範圍內。
+
+## #61 第一切片：來源規則編輯區
+
+沿 `#infiniteGridWorkspace #igSourceForm` 的 `#igRuleSection`，不替換 2a 軸卡／定義圖的 first-pointer DOM。`#igRuleList [data-ig-rule-key]` 以 native ruleKey 標識，`[data-ig-rule-action="edit"|"delete"]` 只開原始編輯；`#igRuleAdd` 建立未配 key 的 raw editor。
+
+`#igRuleName`、`#igRuleSelector`（all-cells／cell）、`#igRuleCellI`／`#igRuleCellJ`、`#igRuleU`／`#igRuleV` 均保存原始字串。`#igRuleUseCell` 明確使用目前選取主格；`#igRuleCancel` 取消規則輸入。`#igRulePreview` 併入既有 `.ig-footer`，active raw-rule 期間隱藏 `#igSaveSource`，只有一個主要動作。真正 native 確認仍是 `#impact-confirm`；關閉 impact 保留 raw。
+
+impact 的 `[data-impact-rule-side="before"|"after"]` 顯示 native source 候選規則／高水位，每條 `[data-impact-rule-key]` 展示 source ID＋ruleKey。拒絕、取消、轉 context 與 stale baseline 不寫入目前 native 場景。

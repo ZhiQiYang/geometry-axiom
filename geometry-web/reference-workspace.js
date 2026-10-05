@@ -89,12 +89,14 @@ const ReferenceWorkspace = (() => {
        busy||history.group||pendingLoad||preparingSceneLoad||!sameModelData(readFeatureAttachment(kind),value))
       throw new Error("草稿或專案已變更，請重新預覽確認。");
     featureConfirmations.clear();
-    featureConfirmations.set(key,{context:context(),frame:history.frame,kind,value:JSON.parse(JSON.stringify(value))});
+    featureConfirmations.set(key,{context:context(),frame:history.frame,kind,value:JSON.parse(JSON.stringify(value)),
+      revision:revision(context()),session:connection.session,nativeRevision});
   }
   function beginFeatureConfirmation(token){
     const key=featureTokenKey(token),prepared=featureConfirmations.get(key);if(!prepared)return null;
     featureConfirmations.delete(key);assertEditable();
     if(busy||history.group||pendingLoad||preparingSceneLoad||!assemblyConfirmationCurrent(prepared)||
+       prepared.revision!==revision(context())||prepared.session!==connection.session||prepared.nativeRevision!==nativeRevision||
        !sameModelData(readFeatureAttachment(prepared.kind),prepared.value))throw new Error("草稿確認已過期，未套用。");
     assemblyConfirmation={...prepared,featureCommand:"line confirm "+key};schedulePresentation();return assemblyConfirmation;
   }
