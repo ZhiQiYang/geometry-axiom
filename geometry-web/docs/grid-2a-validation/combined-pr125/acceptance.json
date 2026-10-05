@@ -1,0 +1,39 @@
+{
+  "schema": "geometry-pr125-pr130-combined-acceptance/1",
+  "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+  "testedTree": "e2543379f69e90a4743846ac204d09c9c46b4b73",
+  "runtime": "7b21bdacea0fe96877cfbd0f20b90c55722f9c93f32f468c598f6fb4f546bbe3",
+  "freshAtTests": true,
+  "grid": 145,
+  "infiniteFace": 9,
+  "selection": 37,
+  "bMenu": 87,
+  "firstPointer": {
+    "passed": 243,
+    "failed": 0,
+    "actualCases": 36,
+    "allFirstClicksDeliveredOnce": true
+  },
+  "diagram": 8,
+  "viewer": "canvas unit contract exit0",
+  "mixed": {
+    "passed": 64,
+    "failed": 0,
+    "viewports": [
+      [
+        1400,
+        1000
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "pageErrors": [],
+    "consoleWarningsErrors": []
+  },
+  "noProductionChangesAfterMerge": true,
+  "combinedFullRerun": false,
+  "priorFullEvidenceKeptAtOriginalExactHeads": true,
+  "HostedCIAndPhysicalDeviceStillTracked": true
+}

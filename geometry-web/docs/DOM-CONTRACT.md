@@ -953,7 +953,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 ## GEO-215 無限網格與配置
 
 - `#infiniteGridWorkspace` 為完整編輯工作區；建立新來源或配置時使用它，主畫布已選物件的常用修改另見上方 2026-09-28 就地編輯契約。`#igGridView` 可平移、縮放與拾取 cell；攝影機不寫入模型。`#igDensity` 明示抽樣。
-- `#igName`、`#igMainAlong`（GEO-222 起為 `role=radiogroup` 的分段選擇，內含 `input[name=igMainAlong][value=none|u|v]`，元素本身仍可讀寫 `.value`）與 `#igUSource`／`#igVSource` 定義來源；`#igSaveSource` 預覽後確認。只新增 repeat／repeat-panel／none，沒有條數。
+- `#igName`、`#igMainAlong`（GEO-222 起為 `role=radiogroup` 的分段選擇，內含 `input[name=igMainAlong][value=none|u|v]`，元素本身仍可讀寫 `.value`）與 `#igUSource`／`#igVSource` 定義來源（2a 起兩者與 `#igMainAlong` 一樣是 `role=radiogroup` 的分段選擇，內含 `input[name=igUSource|igVSource][value=repeat|repeat-panel|none]`，元素本身仍可讀寫 `.value`，未知的還原值照舊保留並要求明選）；`#igSaveSource` 預覽後確認。只新增 repeat／repeat-panel／none，沒有條數。
 - GEO-229：`#igUStagger`／`#igVStagger` 是「相鄰格子相位差 mm」。空白或 0 不寫入 stagger。非零時工作區把該軸畫成停在另一軸格子邊界的段，段帶 `data-ig-segment-band`。底部檢查器不加輸入欄；非零時既有「第 0 線座標」那一行帶出數字。不新增工作區或常駐說明。有相位差的主格上 `#subgridNew` 停用。
 - `#igNewBinding` 選邊界建立配置。`#igBoundaryView` 與 `#igVertex` 選實際外環或孔環頂點；`#igCellI`／`#igCellJ` 使用十進位字串及 BigInt，`[data-ig-anchor]` 選 cell 內九宮位置。`#igSaveBinding` 保存明確引用。
 - `#igResultView` 只繪核心 query 回傳的裁切線段。`#igApplyBinding` 明確套用到同邊界承載面；未套用配置不暗建面。
@@ -963,7 +963,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - lattice 子格使用 `[data-subgrid-cell="lattice:i:j"]` 真 cell；`#subgridCellI`／`#subgridCellJ`／`#subgridUseLatticeCell` 可直接指定密集格的索引。不以外接框或抽樣間距假造 cell。
 - `grid_system_test.js` 和 `infinite_grid_face_test.js` 由正式 CDP harness 執行，包含實際 SVG 拾取、signed 引用、保存重開及窄螢幕。
 - GEO-221：`#igGridView` 的 viewBox 等於元素實際像素，u、v 共用比例。`data-ig-camera="u0 v0 u1 v1"` 是目前（已貼合繪圖區）的模型矩形（mm，相對局部索引基準）；`[data-ig-plot]` 是繪圖區矩形，點擊只在其內選 cell。`[data-ig-ruler="u|v"][data-ig-ruler-index]` 為尺規索引（純數字、置中於格線），`[data-ig-origin]`／`[data-ig-origin-label]` 為基準點，`#igZoom` 顯示「1 格 U×V mm · N px」。
-- GEO-222：版面為單列 56px 標題（`.ig-header` 的 `#igClose`＋麵包屑 `.ig-crumb`，與共用 `#projectBar` 同列）、左側 `.ig-main`（`.ig-canvas` 內含 `#igGridView`、`#igViewNote` 浮動提示、`.ig-zoombar` 內的 `#igZoomOut`／`#igZoom`／`#igZoomIn`／`#igFit`）、右側 `.ig-inspector`（`.ig-settings` 捲動區＋底部 `.ig-footer`，`#igSaveSource`／`#igSaveBinding`／`#igStatus`／`#igDraftNote` 在 footer）。`#igCellPreview` 為格子縮圖；`#igInfo`（`#igInfoTitle`、`#igInfoCell`、`#igInfoRows`）顯示游標與已選取格。SVG 內 `[data-ig-hover="i,j"]`、`[data-ig-selected="i,j"]`（僅來源模式）與 `[data-ig-band=u|v]`（尺規高亮）。`#igDensity` 只在稀疏或大索引時顯示。麵包屑的專案名稱為 `.ig-crumb-project[data-project-name]`（390px 時為標題上方小字）；`[data-ig-origin-label]` 在第 0 線不在 0 mm 時附上 mm 位置。軸線查詢請用 `fieldset[data-ig-axis]`，`line[data-ig-axis]` 也帶同名屬性。
+- GEO-222：版面為單列 56px 標題（`.ig-header` 的 `#igClose`＋麵包屑 `.ig-crumb`，與共用 `#projectBar` 同列）、左側 `.ig-main`（`.ig-canvas` 內含 `#igGridView`、`#igViewNote` 浮動提示、`.ig-zoombar` 內的 `#igZoomOut`／`#igZoom`／`#igZoomIn`／`#igFit`）、右側 `.ig-inspector`（`.ig-settings` 捲動區＋底部 `.ig-footer`，`#igSaveSource`／`#igSaveBinding`／`#igStatus`／`#igDraftNote` 在 footer）。`#igInfo`（`#igInfoTitle`、`#igInfoCell`、`#igInfoRows`）顯示游標與已選取格。SVG 內 `[data-ig-hover="i,j"]`、`[data-ig-selected="i,j"]`（僅來源模式）與 `[data-ig-band=u|v]`（尺規高亮）。`#igDensity` 只在稀疏或大索引時顯示。麵包屑的專案名稱為 `.ig-crumb-project[data-project-name]`（390px 時為標題上方小字）；`[data-ig-origin-label]` 在第 0 線不在 0 mm 時附上 mm 位置。軸卡查詢請用 `.ig-axis[data-ig-axis]`，`line[data-ig-axis]` 也帶同名屬性。
 - GEO-227：`#paramGridLesson` 是「參數套到網格間距」的同一張圖。無限網格來源表單開啟時，它以靜態排版放進 `#igSourceForm` 裡、`#igName` 之後的 `#paramGridLessonSlot`，不蓋 `#igGridView`。`#paramGridLessonFrame1`／`#paramGridLessonFrame2` 切換兩張；`#paramGridLessonClose`（知道了）把目前這組事實寫進 `localStorage` 鍵 `geometry-param-grid-lesson`（值是事實 token）。舊鍵 `geometry-param-grid-lesson-v1` 的 `'1'` 只對應最初那組事實。之後只留 `#paramGridLessonOpen`（圖解）。配置模式隱藏 `#igSourceForm` 時不顯示。
 
 ## GEO-223 畫布參數卡
@@ -1019,3 +1019,15 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `.assembly-card[data-kind="assembly-rule"|"assembly-binding"][data-id]` 沿用畫布身分、拖曳、搜尋、小地圖和選取。規則檢查器的既有 `#asmInspectorOpen`（GEO-240）一對一改為「建立材料配置」：捕捉卡片原生 id/version/fingerprint，再由 `ContextOperations` 的 `assembly-binding.create` 核對 authoring 能力及固定來源，進入唯一 `#assemblyWorkspace` 的既有配置表單。缺材料／接觸面／擺向可保留合法未完成配置；不表示生成幾何。固定來源或能力不能核對時拒絕，保持舊工作區、草稿與預覽。非同步開啟綁定 project context、selection、owner、編輯代次及關閉序號，重複點擊只開一次。配置檢查器仍開啟既有配置；規則完整編輯沿用卡片雙擊、既有側欄或 `#btnNewAssembly`，Q19建立入口不變。
 - `#asmClose` 返回畫布，草稿留在專案；需使用共用保存寫入檔案。新建／開啟專案會關閉舊工作區。
 - 空間工作區在寬高皆 ≤720px 時收起 `.sm-source-actions` 的重複範例捷徑；設定區來源選擇、返回畫布與保存列仍保留，確認／建立按鈕須完整可見。
+
+## 2a 定義圖＋分軸卡片（來源模式）
+
+設計稿：`2a 設計稿.html` 的 `GridPanel` combo 變體。只改呈現與分組；原始輸入、`#igSaveSource` 預覽→確認→取消、參數引用、原始草稿保存與復原都沿用原機制，欄位 id 不變。
+
+- `#igDefStage` 是定義圖：只由目前表單的原始輸入畫出，不寫模型。`[data-ig-chip="u|v:step|phase|panel|gap|anchor"]` 為可點的尺寸與第 0 線標籤（`aria-pressed` 表示目前對應的欄位；參照到參數時帶 `.is-bound`）。格子縮圖 `#igCellPreview` 已由它取代。
+- 每軸一張 `.ig-axis[data-ig-axis=u|v]` 卡片：標題鈕 `[data-ig-pick-axis]`（點它與點圖上標籤相同，把該軸卡片加藍框 `.is-focus`、欄位反白）、摘要 `.ig-axis-sum`、主支／副支標記 `.ig-role`（由 `#igMainAlong` 推得，不另存）。欄位為 `.ig-pfield[data-ig-field=step|phase|panel|gap|anchor|stagger]`；欄位錯誤在 `#ig{U|V}{Step|Phase|Panel|Gap|Anchor|Stagger}Err` 就地顯示並設 `aria-invalid`。名稱的錯誤在 `#igNameErr`。
+- 參數引用收進欄位：`select#ig…Source`（沿用 `ParameterUI.sourceControl`）疊在欄位右端的圖示上，引用後欄位 `.ig-pf-main[data-bound]` 顯示來源名稱與核心值，輸入框唯讀；「查看來源」仍是 `.param-jump`。改回「直接輸入」即解除。
+- `[data-ig-add-stagger=u|v]` 加入、`[data-ig-remove-stagger=u|v]` 移除「相鄰格子相位差」；有值或已加入才顯示 `#igUStagger`／`#igVStagger`，移除會清空欄位並解除參數引用，空白不寫入 stagger（與 D10b 相同）。
+- 頁尾 `#igStateLine`（`data-tone=error|pending|ok`）＋`#igStateText` 顯示「N 個欄位需要修正／草稿 · 尚未建立／有變更，尚未預覽／已在目前場景」，`#igStateDetail` 為「至少設定一軸。」；來源徽章 `#igSourcePill`。`#igDraftNote` 與 `#igStatus` 不變。這些只是提示，不取代 `sourceDraft()` 與核心預覽的實際檢查。
+- 「進階」`#igTrial`（`<details>`）仍收納矩形與角材試擺，開啟試擺時標題列出現 `.ig-trial-badge`「試擺中」。
+- 綁定（配置）模式的對齊流程不在這一版範圍內。

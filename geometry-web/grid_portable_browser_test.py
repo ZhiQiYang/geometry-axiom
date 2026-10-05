@@ -102,7 +102,8 @@ try:
    js(page,"if(oc.focus)await leaveFocus();await renderObjects();")
    before=dump(page)
    create_entry(page);ready_editor(page)
-   page.locator('#igUSource').select_option('repeat-panel');page.locator('#igUPanel').fill('not-a-panel');page.locator('#igUSource').select_option('repeat')
+   page.locator('#igUSource input[value="repeat-panel"]').check();page.locator('#igUPanel').fill('not-a-panel');page.locator('#igUSource input[value="repeat"]').check()
+   page.locator('[data-ig-add-stagger="u"]').click()
    for selector,value in {'igName':'  未完成網格  ','igUStep':'1e','igUPhase':'-','igVStep':' 00400 ','igUStagger':'  '}.items():
     page.locator('#'+selector).fill(value)
    raw=draft(page)
@@ -121,7 +122,9 @@ try:
    check(f'{width} fresh browser import preserves raw exactly',draft(page)==raw)
    create_entry(page);ready_editor(page)
    check(f'{width} existing create entry resumes source raw',page.locator('#igUStep').input_value()=='1e' and page.locator('#igUPhase').input_value()=='-' and page.locator('#igName').input_value()=='  未完成網格  ')
-   for selector,value in {'igName':'正式網格','igUStep':'600','igUPhase':'0','igUStagger':'','igVStep':'400','igVPhase':'0','igVStagger':''}.items():page.locator('#'+selector).fill(value)
+   for selector,value in {'igName':'正式網格','igUStep':'600','igUPhase':'0','igUStagger':'','igVStep':'400','igVPhase':'0','igVStagger':''}.items():
+    if selector.endswith('Stagger') and not page.locator('#'+selector).is_visible():continue
+    page.locator('#'+selector).fill(value)
    publish_raw=draft(page);native_before=dump(page);undo_before=js(page,'return ReferenceWorkspace.history.undo.length;')
    js(page,"window.rawStatusTrace=[];new MutationObserver(records=>{for(const r of records)if(r.target.id==='igDraftNote')for(const n of r.addedNodes)window.rawStatusTrace.push(n.textContent);}).observe($('igDraftNote'),{childList:true});")
    page.locator('#igSaveSource').click();preview(page)

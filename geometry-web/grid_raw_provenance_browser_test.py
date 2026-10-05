@@ -156,7 +156,7 @@ try:
                 watch(page)
                 reject(page, label + ' reopened', reopened)
                 if case == 'unknown-enum':
-                    page.locator('#igUSource').select_option('repeat-panel')
+                    page.locator('#igUSource input[value="repeat-panel"]').check()
                 else:
                     page.locator('#igUStepSource').select_option('')
                     page.locator('#igUStepSource').select_option('801:1')

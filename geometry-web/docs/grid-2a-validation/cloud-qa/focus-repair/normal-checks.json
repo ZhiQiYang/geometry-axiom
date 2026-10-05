@@ -1,0 +1,693 @@
+[
+  {
+    "label": "1400 page identity / meaningful shell / no overlay",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 parameter preview does not commit",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 creates actual 915/1830 parameter card",
+    "pass": true,
+    "detail": {
+      "id": 1,
+      "name": "QA 板材尺寸",
+      "nextFieldId": 4,
+      "fields": [
+        {
+          "id": 2,
+          "name": "寬",
+          "type": "dimension",
+          "expression": {
+            "den": "1",
+            "num": "915",
+            "op": "literal",
+            "unit": "mm"
+          },
+          "value": {
+            "num": "915",
+            "den": "1",
+            "unit": "mm"
+          }
+        },
+        {
+          "id": 3,
+          "name": "長",
+          "type": "dimension",
+          "expression": {
+            "den": "1",
+            "num": "1830",
+            "op": "literal",
+            "unit": "mm"
+          },
+          "value": {
+            "num": "1830",
+            "den": "1",
+            "unit": "mm"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "label": "1400 inline parameter source and readonly native value",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 definition u spacing highlights actual u field",
+    "pass": true,
+    "detail": {
+      "chips": [
+        {
+          "key": "u:step",
+          "text": "間距 1830"
+        },
+        {
+          "key": "v:step",
+          "text": "間距 915"
+        },
+        {
+          "key": "u:phase",
+          "text": "u 0"
+        },
+        {
+          "key": "v:phase",
+          "text": "v 0"
+        }
+      ],
+      "focused": "igUStep",
+      "cards": [
+        {
+          "axis": "u",
+          "focus": true
+        },
+        {
+          "axis": "v",
+          "focus": false
+        }
+      ],
+      "sourcePill": "建立",
+      "status": "來源／配置原始輸入會隨專案保存，未確認前不改場景。",
+      "wide": false
+    }
+  },
+  {
+    "label": "1400 definition v zero focuses actual v input",
+    "pass": true,
+    "detail": {
+      "chips": [
+        {
+          "key": "u:step",
+          "text": "間距 1830"
+        },
+        {
+          "key": "v:step",
+          "text": "間距 915"
+        },
+        {
+          "key": "u:phase",
+          "text": "u 0"
+        },
+        {
+          "key": "v:phase",
+          "text": "v 0"
+        }
+      ],
+      "focused": "igVPhase",
+      "cards": [
+        {
+          "axis": "u",
+          "focus": false
+        },
+        {
+          "axis": "v",
+          "focus": true
+        }
+      ],
+      "sourcePill": "建立",
+      "status": "來源／配置原始輸入會隨專案保存，未確認前不改場景。",
+      "wide": false
+    }
+  },
+  {
+    "label": "1400 u card title focuses u axis",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 bound layout has no horizontal document overflow",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 creation preview leaves full native dump unchanged",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 cancel retains source tokens and native world",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 creation confirm commits both exact parameter refs",
+    "pass": true,
+    "detail": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlFBIOadv+adkOWwuuWvuCIsIm5leHRGaWVsZElkIjo0fQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 514120326120e7b6b2e6a0bc main-along none u repeat 0 param:1:3 v repeat 0 param:1:2\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 -101 -226\n"
+  },
+  {
+    "label": "1400 source modification preview leaves world unchanged",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 source modification cancel preserves draft and native",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 source modification confirms only chosen phase with refs",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 parameter source preview leaves saved grid unchanged",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 modifying upstream parameter recomputes without losing grid source",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 stagger confirms exact source token",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 stagger reopen retains visible field and exact source",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 removing stagger is draft only until confirm",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 draft removal reopen retains saved native source",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 removing stagger cancel leaves native source",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 explicit remove confirm omits stagger without losing step sources",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 Save button delivers real supported ZIP with formal refs",
+    "pass": true,
+    "detail": {
+      "format": "geometry-canvas/6",
+      "names": [
+        "world.scene",
+        "manifest.json"
+      ],
+      "sha256": "2aebb1a0dd32edc9540e8ed9110533a048779935c9bc46922818f24b0154c89d"
+    }
+  },
+  {
+    "label": "1400 fresh context actual file-input reopen restores exact native dump",
+    "pass": true,
+    "detail": {
+      "actual": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlFBIOadv+adkOWwuuWvuCIsIm5leHRGaWVsZElkIjo0fQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxOTAwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 514120326120e7b6b2e6a0bc main-along none u repeat 120 param:1:3 v repeat 0 param:1:2\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 -101 -226\n",
+      "expected": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlFBIOadv+adkOWwuuWvuCIsIm5leHRGaWVsZElkIjo0fQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxOTAwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 514120326120e7b6b2e6a0bc main-along none u repeat 120 param:1:3 v repeat 0 param:1:2\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 -101 -226\n"
+    }
+  },
+  {
+    "label": "1400 fresh reopen shows read-only refs / removed stagger",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 Undo actual button restores pre-edit full native dump",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 Redo actual button restores confirmed full native dump",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "1400 invalid field located inline, counted, native unchanged",
+    "pass": true,
+    "detail": {
+      "error": "u 間距須為 1 至 100000000 的整數。",
+      "state": {
+        "chips": [
+          {
+            "key": "v:step",
+            "text": "間距 915"
+          },
+          {
+            "key": "v:phase",
+            "text": "v 0"
+          }
+        ],
+        "focused": "igUStep",
+        "cards": [
+          {
+            "axis": "u",
+            "focus": true
+          },
+          {
+            "axis": "v",
+            "focus": false
+          }
+        ],
+        "sourcePill": "已變更",
+        "status": "u 間距須為 1 至 100000000 的整數。",
+        "wide": false
+      }
+    }
+  },
+  {
+    "label": "1400 D29 panel saves raw anchor and main plot labels effective zero 302",
+    "pass": true,
+    "detail": {
+      "kind": "grid-system",
+      "id": 1,
+      "name": "QA 2a 網格",
+      "mode": "infinite",
+      "mainAlong": null,
+      "uDefinition": {
+        "source": "repeat-panel",
+        "panel": 400,
+        "gap": 5,
+        "anchor": -100,
+        "anchorExplicit": true,
+        "stagger": 123
+      },
+      "vDefinition": {
+        "source": "repeat",
+        "phase": 0,
+        "step": 915,
+        "parameterRefs": {
+          "step": {
+            "kind": "parameter",
+            "parameterId": 1,
+            "fieldId": 2
+          }
+        }
+      },
+      "nextRuleKey": 1,
+      "rules": [],
+      "applications": [],
+      "bindings": [],
+      "cx": -101,
+      "cy": -226,
+      "hasPos": true
+    }
+  },
+  {
+    "label": "1400 panel definition zero chip matches effective phase",
+    "pass": true,
+    "detail": {
+      "shown": {
+        "key": "u:anchor",
+        "text": "u 302"
+      },
+      "expectedPhase": 302,
+      "focused": "igUAnchor"
+    }
+  },
+  {
+    "label": "1400 stagger definition contains shifted segment shapes",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 page identity / meaningful shell / no overlay",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 parameter preview does not commit",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 creates actual 915/1830 parameter card",
+    "pass": true,
+    "detail": {
+      "id": 1,
+      "name": "QA 板材尺寸",
+      "nextFieldId": 4,
+      "fields": [
+        {
+          "id": 2,
+          "name": "寬",
+          "type": "dimension",
+          "expression": {
+            "den": "1",
+            "num": "915",
+            "op": "literal",
+            "unit": "mm"
+          },
+          "value": {
+            "num": "915",
+            "den": "1",
+            "unit": "mm"
+          }
+        },
+        {
+          "id": 3,
+          "name": "長",
+          "type": "dimension",
+          "expression": {
+            "den": "1",
+            "num": "1830",
+            "op": "literal",
+            "unit": "mm"
+          },
+          "value": {
+            "num": "1830",
+            "den": "1",
+            "unit": "mm"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "label": "390 existing feedback overlay covers create-grid menu center; unobscured lower edge used",
+    "pass": true,
+    "detail": {
+      "centerHit": "fbButton",
+      "rect": {
+        "x": 131,
+        "y": 101.390625,
+        "width": 242,
+        "height": 56.890625
+      },
+      "click": {
+        "x": 40,
+        "y": 50.890625
+      }
+    }
+  },
+  {
+    "label": "390 inline parameter source and readonly native value",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 definition u spacing highlights actual u field",
+    "pass": true,
+    "detail": {
+      "chips": [
+        {
+          "key": "u:step",
+          "text": "間距 1830"
+        },
+        {
+          "key": "v:step",
+          "text": "間距 915"
+        },
+        {
+          "key": "u:phase",
+          "text": "u 0"
+        },
+        {
+          "key": "v:phase",
+          "text": "v 0"
+        }
+      ],
+      "focused": "igUStep",
+      "cards": [
+        {
+          "axis": "u",
+          "focus": true
+        },
+        {
+          "axis": "v",
+          "focus": false
+        }
+      ],
+      "sourcePill": "建立",
+      "status": "來源／配置原始輸入會隨專案保存，未確認前不改場景。",
+      "wide": false
+    }
+  },
+  {
+    "label": "390 definition v zero focuses actual v input",
+    "pass": true,
+    "detail": {
+      "chips": [
+        {
+          "key": "u:step",
+          "text": "間距 1830"
+        },
+        {
+          "key": "v:step",
+          "text": "間距 915"
+        },
+        {
+          "key": "u:phase",
+          "text": "u 0"
+        },
+        {
+          "key": "v:phase",
+          "text": "v 0"
+        }
+      ],
+      "focused": "igVPhase",
+      "cards": [
+        {
+          "axis": "u",
+          "focus": false
+        },
+        {
+          "axis": "v",
+          "focus": true
+        }
+      ],
+      "sourcePill": "建立",
+      "status": "來源／配置原始輸入會隨專案保存，未確認前不改場景。",
+      "wide": false
+    }
+  },
+  {
+    "label": "390 u card title focuses u axis",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 bound layout has no horizontal document overflow",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 creation preview leaves full native dump unchanged",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 cancel retains source tokens and native world",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 creation confirm commits both exact parameter refs",
+    "pass": true,
+    "detail": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlFBIOadv+adkOWwuuWvuCIsIm5leHRGaWVsZElkIjo0fQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 514120326120e7b6b2e6a0bc main-along none u repeat 0 param:1:3 v repeat 0 param:1:2\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 55 437\n"
+  },
+  {
+    "label": "390 source modification preview leaves world unchanged",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 source modification cancel preserves draft and native",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 source modification confirms only chosen phase with refs",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 parameter source preview leaves saved grid unchanged",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 modifying upstream parameter recomputes without losing grid source",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 stagger confirms exact source token",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 stagger reopen retains visible field and exact source",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 removing stagger is draft only until confirm",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 draft removal reopen retains saved native source",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 removing stagger cancel leaves native source",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 explicit remove confirm omits stagger without losing step sources",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 Save button delivers real supported ZIP with formal refs",
+    "pass": true,
+    "detail": {
+      "format": "geometry-canvas/6",
+      "names": [
+        "world.scene",
+        "manifest.json"
+      ],
+      "sha256": "60829f676a9ff9db0985eeb4c9eaf16c6285e9c186a75899a351fbf5f99526c4"
+    }
+  },
+  {
+    "label": "390 fresh context actual file-input reopen restores exact native dump",
+    "pass": true,
+    "detail": {
+      "actual": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlFBIOadv+adkOWwuuWvuCIsIm5leHRGaWVsZElkIjo0fQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxOTAwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 514120326120e7b6b2e6a0bc main-along none u repeat 120 param:1:3 v repeat 0 param:1:2\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 55 437\n",
+      "expected": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IlFBIOadv+adkOWwuuWvuCIsIm5leHRGaWVsZElkIjo0fQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjIsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjMsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxOTAwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex 514120326120e7b6b2e6a0bc main-along none u repeat 120 param:1:3 v repeat 0 param:1:2\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 55 437\n"
+    }
+  },
+  {
+    "label": "390 fresh reopen shows read-only refs / removed stagger",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 Undo actual button restores pre-edit full native dump",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 Redo actual button restores confirmed full native dump",
+    "pass": true,
+    "detail": null
+  },
+  {
+    "label": "390 invalid field located inline, counted, native unchanged",
+    "pass": true,
+    "detail": {
+      "error": "u 間距須為 1 至 100000000 的整數。",
+      "state": {
+        "chips": [
+          {
+            "key": "v:step",
+            "text": "間距 915"
+          },
+          {
+            "key": "v:phase",
+            "text": "v 0"
+          }
+        ],
+        "focused": "igUStep",
+        "cards": [
+          {
+            "axis": "u",
+            "focus": true
+          },
+          {
+            "axis": "v",
+            "focus": false
+          }
+        ],
+        "sourcePill": "已變更",
+        "status": "u 間距須為 1 至 100000000 的整數。",
+        "wide": false
+      }
+    }
+  },
+  {
+    "label": "390 D29 panel saves raw anchor and main plot labels effective zero 302",
+    "pass": true,
+    "detail": {
+      "kind": "grid-system",
+      "id": 1,
+      "name": "QA 2a 網格",
+      "mode": "infinite",
+      "mainAlong": null,
+      "uDefinition": {
+        "source": "repeat-panel",
+        "panel": 400,
+        "gap": 5,
+        "anchor": -100,
+        "anchorExplicit": true,
+        "stagger": 123
+      },
+      "vDefinition": {
+        "source": "repeat",
+        "phase": 0,
+        "step": 915,
+        "parameterRefs": {
+          "step": {
+            "kind": "parameter",
+            "parameterId": 1,
+            "fieldId": 2
+          }
+        }
+      },
+      "nextRuleKey": 1,
+      "rules": [],
+      "applications": [],
+      "bindings": [],
+      "cx": 55,
+      "cy": 437,
+      "hasPos": true
+    }
+  },
+  {
+    "label": "390 panel definition zero chip matches effective phase",
+    "pass": true,
+    "detail": {
+      "shown": {
+        "key": "u:anchor",
+        "text": "u 302"
+      },
+      "expectedPhase": 302,
+      "focused": "igUAnchor"
+    }
+  },
+  {
+    "label": "390 stagger definition contains shifted segment shapes",
+    "pass": true,
+    "detail": null
+  }
+]

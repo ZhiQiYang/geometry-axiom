@@ -18,6 +18,7 @@ module.exports = async function compositionCanvasTests({send,eval_,sleep,click,d
   const key=cdp.makeKey({send,sleep},{afterMs:50,enterText:true});
   const fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:90});
   const choose=async(selector,value)=>{
+    if(/^#ig[UV]Source$/.test(selector))return ctl(`${selector} input[value="${value}"]`);
     const index=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return [...e.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(String(value))});})()`);
     if(index<0)throw Error('No enabled option '+selector+'='+value);
     await ctl(selector);await key('Home','Home',36);for(let i=0;i<index;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);

@@ -1,0 +1,91 @@
+{
+  "schema": "geometry-pr130-focus-identity/1",
+  "testedHead": "ec4834eca6018b2506e2e822b53d82b02dc605fe",
+  "tree": "c0f2bf0e55b0433c31db7bdcc559041e8d9534d9",
+  "beforeHead": "07b844d3af8464a04d0d522c55e5d46382c320ae",
+  "capturedAtUTC": "2026-10-04T21:42:11.810753+00:00",
+  "runtime": {
+    "8822": {
+      "schema": "geometry-runtime/1",
+      "version": "af56c70a18b10975474542e5bbdc9f4d0b2de1a7301d4b1d539ef860f0573c3c",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 61217,
+      "session": "f0a1a2e2197a42c3ae39f0c43bb38ab4"
+    },
+    "8823": {
+      "schema": "geometry-runtime/1",
+      "version": "af56c70a18b10975474542e5bbdc9f4d0b2de1a7301d4b1d539ef860f0573c3c",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 61223,
+      "session": "84cc1ccef050449bab4c2985a039258b"
+    },
+    "8824": {
+      "schema": "geometry-runtime/1",
+      "version": "af56c70a18b10975474542e5bbdc9f4d0b2de1a7301d4b1d539ef860f0573c3c",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 61212,
+      "session": "865d759cd3ee4d0ba36a79df59c1e121"
+    },
+    "8825": {
+      "schema": "geometry-runtime/1",
+      "version": "af56c70a18b10975474542e5bbdc9f4d0b2de1a7301d4b1d539ef860f0573c3c",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 61227,
+      "session": "c742d70bfab040ee9f420ce54f860fb9"
+    },
+    "8826": {
+      "schema": "geometry-runtime/1",
+      "version": "af56c70a18b10975474542e5bbdc9f4d0b2de1a7301d4b1d539ef860f0573c3c",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 66672,
+      "session": "c3bc60ba08284cd891f0e4c129b0f6d8"
+    },
+    "8827": {
+      "schema": "geometry-runtime/1",
+      "version": "af56c70a18b10975474542e5bbdc9f4d0b2de1a7301d4b1d539ef860f0573c3c",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 73920,
+      "session": "c699470f6db246fca95a24b0b69ef4d1"
+    }
+  },
+  "binaries": {
+    "core": "4f57afe5bff192fee4eaee3e6a817dcc51e9e577946f8f07ebf3ef6b4e3012cb",
+    "web_bridge": "2c04785191a6216e8557a7776364abb927f068b8c352cd9084d817f331b5d2cf",
+    "model_base": "cf9272a5ca70a44c8f299f08c4a4282161b7f1b9221cd73ff1d64c8a0dfb4374"
+  },
+  "productJavaScriptDiff": "diff --git a/geometry-web/grid-system-workspace.js b/geometry-web/grid-system-workspace.js\nindex 0f77cff..f4eb343 100644\n--- a/geometry-web/grid-system-workspace.js\n+++ b/geometry-web/grid-system-workspace.js\n@@ -374,6 +374,21 @@\n   }\n   function drawDefinition(s, data) {\n     const stage = $('igDefStage'), PL = 76, PT = 52, PR = 320, PB = 210;\n+    // input has already rendered the current definition. A subsequent change\n+    // or focus update must keep its buttons alive through the native click.\n+    // The cache belongs to this stage, so a new editor always renders afresh.\n+    const drawingKey = JSON.stringify(data);\n+    if (stage.igDefinitionKey === drawingKey) {\n+      for (const node of stage.querySelectorAll('[data-ig-chip]')) {\n+        const [a, key] = node.dataset.igChip.split(':'), x = data.find(x => x.a === a);\n+        const on = s.defFocus.a === a && s.defFocus.key === key;\n+        node.classList.toggle('is-focus', on); node.setAttribute('aria-pressed', String(on));\n+        const field = x.all.find(f => f.key === key);\n+        node.classList.toggle('is-bound', !!(field && $(field.id + 'Source')?.value));\n+      }\n+      return;\n+    }\n+    stage.igDefinitionKey = drawingKey;\n     stage.replaceChildren();\n     const [U, V] = data, du = U.shape, dv = V.shape, both = !!(du && dv), put = (cls, style) => stage.append(mk('div', cls, {style}));\n     put('ig-def-plot', `left:${PL}px;top:${PT}px;right:0;bottom:0`);\n",
+  "unchangedSinceBefore": "",
+  "regression": {
+    "before": [
+      189,
+      54
+    ],
+    "after": [
+      243,
+      0
+    ],
+    "actualFirstPointerCases": 36
+  },
+  "normalFlow": {
+    "pass": 63,
+    "fail": 0,
+    "freshContexts": 2,
+    "emptyNativeAndByteExactRestoreChecks": 4
+  },
+  "fullCDP": {
+    "pass": 1994,
+    "fail": 0,
+    "skip": 0,
+    "sections": 82,
+    "golden": "matched",
+    "uncaughtBrowserExceptions": 1,
+    "expectedException": "Error: fb-auto-probe"
+  },
+  "coverage": "Synthetic grids and repository-authored fixtures only. No private Downloads/source HTML, browser profiles, or user attachments."
+}

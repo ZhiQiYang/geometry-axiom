@@ -3,7 +3,11 @@ const cdp=require('./cdp_helpers.js');
 module.exports=async function({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount}) {
   console.log('=== P78. 建立前矩形與角材試擺（不改世界） ===');
   const check=cdp.makeCheck({prefix:'P78 ',throwOnFail:true}),read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,20000),initialExceptions=exceptionCount();
-  const ctl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:80,settleMs:140});
+  const baseCtl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:80,settleMs:140});
+  // 2a: 相鄰格子相位差 is added on demand through its real control.
+  const ctl=async(selector,...rest)=>{const m=/^#ig([UV])Stagger/.exec(String(selector));
+    if(m&&await eval_(`(()=>{const n=document.getElementById('ig${m[1]}Stagger');return !!n&&n.getClientRects().length===0;})()`))await baseCtl(`[data-ig-add-stagger="${m[1].toLowerCase()}"]`);
+    return baseCtl(selector,...rest);};
   const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:60});
   const choose=async(selector,value)=>{const n=await read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return [...e.options].findIndex(o=>o.value===${JSON.stringify(value)});})()`);await ctl(selector);await key('Home','Home',36);for(let i=0;i<n;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);};
   const dump=()=>read(`apiRequest('dump').then(r=>r.text)`),ready=()=>wait(`$('igTrial')?.dataset.trialState==='ready' && !!document.querySelector('[data-ig-trial-boundary]')`);

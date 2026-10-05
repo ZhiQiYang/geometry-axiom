@@ -1,0 +1,41 @@
+{
+  "schema": "geometry-pr130-p3-identity/1",
+  "testedHead": "b824c0f7985ae5b245b4f06679966cd7737d2e79",
+  "tree": "82cca76fd5a1c161eee2bdbc9be9dc48f779a2f3",
+  "capturedAtUTC": "2026-10-04T20:58:12.071932+00:00",
+  "productionDiff": "diff --git a/geometry-web/grid-system-workspace.css b/geometry-web/grid-system-workspace.css\nindex 3f47c47..fb3ff47 100644\n--- a/geometry-web/grid-system-workspace.css\n+++ b/geometry-web/grid-system-workspace.css\n@@ -67,6 +67,7 @@\n .ig-def-zero-title { font-size: 10px; color: var(--muted); }\n .ig-def-phases { display: flex; gap: 3px; }\n .ig-workspace .ig-chip { position: relative; display: inline-flex; align-items: center; height: 22px; min-height: 0; padding: 0 7px; border: 1px solid var(--border-strong); border-radius: 6px; background: #fff; color: var(--ink); font: 600 11px/1 var(--ig-mono); white-space: nowrap; cursor: pointer; }\n+.ig-workspace .ig-def-stage > .ig-chip { position: absolute; }\n .ig-workspace .ig-def-stage .ig-chip-h { transform: translateX(-50%); }\n .ig-workspace .ig-def-stage .ig-chip-v { transform: translate(-50%, -50%); padding: 0 6px; }\n .ig-workspace .ig-chip-phase { position: relative; height: 20px; padding: 0 5px; border-radius: 5px; font-size: 10px; }\n",
+  "runtime": {
+    "8806": {
+      "schema": "geometry-runtime/1",
+      "version": "e4a3e719643839bf230c8d3cc536898936fa94dd9be29c52ccba05ad8ad257cd",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 51914,
+      "session": "afbfbb895b844cbca5aba182c00e3859"
+    },
+    "8807": {
+      "schema": "geometry-runtime/1",
+      "version": "e4a3e719643839bf230c8d3cc536898936fa94dd9be29c52ccba05ad8ad257cd",
+      "fresh": true,
+      "root": "/workspace/pr130-fix",
+      "pid": 51918,
+      "session": "2cc357c6fee7458faf8631aba8c29da0"
+    },
+    "8808": {
+      "schema": "geometry-runtime/1",
+      "version": "6582cf686aeab1c3ecac775bc4c3fbb046dd6705888f4fe6bfacbeca040983ba",
+      "fresh": true,
+      "root": "/workspace/pr130-p3-before",
+      "pid": 53719,
+      "session": "6b6a3a0397bd4344a366c0ac9491f28f"
+    }
+  },
+  "beforeHead": "fab77152deda0f876eb58b937369833732a045a9",
+  "binaries": {
+    "core": "4f57afe5bff192fee4eaee3e6a817dcc51e9e577946f8f07ebf3ef6b4e3012cb",
+    "web_bridge": "2c04785191a6216e8557a7776364abb927f068b8c352cd9084d817f331b5d2cf",
+    "model_base": "cf9272a5ca70a44c8f299f08c4a4282161b7f1b9221cd73ff1d64c8a0dfb4374"
+  },
+  "unchangedNativeAndJavaScriptSince": "0b2cbe34c571605f3c62aa652ee42815f747c96e",
+  "fullCDPScope": "Prior 1994 assertion receipt belongs to 0b2cbe3; no new full/native/portable/provenance run for this CSS-only change."
+}

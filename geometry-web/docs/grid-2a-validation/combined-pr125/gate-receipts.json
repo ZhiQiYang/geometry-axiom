@@ -1,0 +1,139 @@
+{
+  "grid": {
+    "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+    "receipt": {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_GRID_SYSTEM_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:8840/",
+        "feedbackDirectory": "/tmp/pr130-combined-20261004/feedback-grid",
+        "browserProfile": "/tmp/pr130-combined-20261004/chrome-grid",
+        "cdpPort": 9370,
+        "browserPid": 84028
+      },
+      "completed": true,
+      "passedAssertions": 145,
+      "failedAssertions": 0,
+      "skipped": [],
+      "sections": {
+        "P70": 113,
+        "P71": 9,
+        "P78": 23
+      },
+      "goldenCompare": "not compared (partial mode)",
+      "uncaughtBrowserExceptions": 0,
+      "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+    },
+    "lastLine": "CDP_RESULT {\"schema\":\"geometry-cdp-result/1\",\"scope\":{\"mode\":\"partial\",\"filters\":[\"GEOMETRY_GRID_SYSTEM_ONLY\"],\"modifiers\":[],\"url\":\"http://127.0.0.1:8840/\",\"feedbackDirectory\":\"/tmp/pr130-combined-20261004/feedback-grid\",\"browserProfile\":\"/tmp/pr130-combined-20261004/chrome-grid\",\"cdpPort\":9370,\"browserPid\":84028},\"completed\":true,\"passedAssertions\":145,\"failedAssertions\":0,\"skipped\":[],\"sections\":{\"P70\":113,\"P71\":9,\"P78\":23},\"goldenCompare\":\"not compared (partial mode)\",\"uncaughtBrowserExceptions\":0,\"coverage\":\"Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.\"}",
+    "exitCode": 0,
+    "log": "grid.log.gz"
+  },
+  "infinite-face": {
+    "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+    "receipt": {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_INFINITE_FACE_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:8841/",
+        "feedbackDirectory": "/tmp/pr130-combined-20261004/feedback-infinite-face",
+        "browserProfile": "/tmp/pr130-combined-20261004/chrome-infinite-face",
+        "cdpPort": 9371,
+        "browserPid": 84012
+      },
+      "completed": true,
+      "passedAssertions": 9,
+      "failedAssertions": 0,
+      "skipped": [],
+      "sections": {
+        "P71": 9
+      },
+      "goldenCompare": "not compared (partial mode)",
+      "uncaughtBrowserExceptions": 0,
+      "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+    },
+    "lastLine": "CDP_RESULT {\"schema\":\"geometry-cdp-result/1\",\"scope\":{\"mode\":\"partial\",\"filters\":[\"GEOMETRY_INFINITE_FACE_ONLY\"],\"modifiers\":[],\"url\":\"http://127.0.0.1:8841/\",\"feedbackDirectory\":\"/tmp/pr130-combined-20261004/feedback-infinite-face\",\"browserProfile\":\"/tmp/pr130-combined-20261004/chrome-infinite-face\",\"cdpPort\":9371,\"browserPid\":84012},\"completed\":true,\"passedAssertions\":9,\"failedAssertions\":0,\"skipped\":[],\"sections\":{\"P71\":9},\"goldenCompare\":\"not compared (partial mode)\",\"uncaughtBrowserExceptions\":0,\"coverage\":\"Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.\"}",
+    "exitCode": 0,
+    "log": "infinite-face.log.gz"
+  },
+  "selection": {
+    "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+    "receipt": {
+      "schema": "geometry-cdp-result/1",
+      "scope": {
+        "mode": "partial",
+        "filters": [
+          "GEOMETRY_SELECTION_CURSOR_ONLY"
+        ],
+        "modifiers": [],
+        "url": "http://127.0.0.1:8842/",
+        "feedbackDirectory": "/tmp/pr130-combined-20261004/feedback-selection",
+        "browserProfile": "/tmp/pr130-combined-20261004/chrome-selection",
+        "cdpPort": 9372,
+        "browserPid": 84029
+      },
+      "completed": true,
+      "passedAssertions": 37,
+      "failedAssertions": 0,
+      "skipped": [],
+      "sections": {
+        "P75": 37
+      },
+      "goldenCompare": "not compared (partial mode)",
+      "uncaughtBrowserExceptions": 0,
+      "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+    },
+    "lastLine": "CDP_RESULT {\"schema\":\"geometry-cdp-result/1\",\"scope\":{\"mode\":\"partial\",\"filters\":[\"GEOMETRY_SELECTION_CURSOR_ONLY\"],\"modifiers\":[],\"url\":\"http://127.0.0.1:8842/\",\"feedbackDirectory\":\"/tmp/pr130-combined-20261004/feedback-selection\",\"browserProfile\":\"/tmp/pr130-combined-20261004/chrome-selection\",\"cdpPort\":9372,\"browserPid\":84029},\"completed\":true,\"passedAssertions\":37,\"failedAssertions\":0,\"skipped\":[],\"sections\":{\"P75\":37},\"goldenCompare\":\"not compared (partial mode)\",\"uncaughtBrowserExceptions\":0,\"coverage\":\"Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts.\"}",
+    "exitCode": 0,
+    "log": "selection.log.gz"
+  },
+  "b-menu": {
+    "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+    "exitCode": 0,
+    "log": "b-menu.log.gz",
+    "passed": 87
+  },
+  "pointer": {
+    "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+    "exitCode": 0,
+    "log": "pointer.log.gz",
+    "passed": 243
+  },
+  "diagram": {
+    "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+    "exitCode": 0,
+    "log": "diagram.log.gz",
+    "passed": 8
+  },
+  "viewer": {
+    "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+    "exitCode": 0,
+    "log": "viewer.log.gz",
+    "passed": "canvas unit contract exit0"
+  },
+  "mixed": {
+    "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+    "exitCode": 0,
+    "completed": true,
+    "passed": 64,
+    "failed": 0,
+    "log": "mixed.log.gz",
+    "coverage": "Actual mouse/keyboard/UI/ZIP/chooser and history at desktop and 390px; synthetic native fixture setup only. No physical OS chooser/IME/phone claim."
+  },
+  "mixed-attempt1": {
+    "testedHead": "66d5bbd3b192d31cf4c6a88ba6b70341c5697203",
+    "exitCode": 1,
+    "completed": false,
+    "passed": 20,
+    "failed": 0,
+    "log": "mixed-attempt1.log.gz",
+    "classification": "Harness wait predicate used non-existent oc.objects; canonical correction uses actual oc.bmap and retains independent native dump empty-string assertion. Original receipts, errors and script preserved."
+  }
+}
