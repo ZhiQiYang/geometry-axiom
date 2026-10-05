@@ -1039,3 +1039,11 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 `#igRuleName`、`#igRuleSelector`（all-cells／cell）、`#igRuleCellI`／`#igRuleCellJ`、`#igRuleU`／`#igRuleV` 均保存原始字串。`#igRuleUseCell` 明確使用目前選取主格；`#igRuleCancel` 取消規則輸入。`#igRulePreview` 併入既有 `.ig-footer`，active raw-rule 期間隱藏 `#igSaveSource`，只有一個主要動作。真正 native 確認仍是 `#impact-confirm`；關閉 impact 保留 raw。
 
 impact 的 `[data-impact-rule-side="before"|"after"]` 顯示 native source 候選規則／高水位，每條 `[data-impact-rule-key]` 展示 source ID＋ruleKey。拒絕、取消、轉 context 與 stale baseline 不寫入目前 native 場景。
+
+## #61 第二切片：原生來源子線與完整定位
+
+既有面內 `components` 區的 `.grid-rule-details` 顯示 source → binding → applied grid。`[data-rule-source]` 是同一來源編輯區的 ruleKey 定位，讀取完成後才同步退出面內，保留 boundary loops 與孔快取。`.face-rule-line`、`.face-rule-hit`、`[data-rule-label]` 均來自同一筆 native `grid-rule-query` 線段；hit 同時受 parent cell 與 material clip 防護。
+
+`#gridRuleFocusKey`、`#gridRuleCellI`、`#gridRuleCellJ` 保留原始 signed 字串及焦點；`[data-rule-exact]` 完整查詢真正 cell，`[data-rule-focus-status]` 回報完成、零可見或 native 拒絕。遲到 exact 回應須仍擁有同一 editor、query generation 與 raw tuple；sampling 重繪沿用 inspector 保存規律。
+
+既有 `#tbAnchor`／`#refGuideSource` 使用含 applied grid、system、rule、signed cell、axis、inner index 的完整 RuleLineRef。來源與配置只讀視圖的 `[data-ig-source-rule]`／`[data-ig-result-rule]` 保持 `data-ig-rule-ref="none"`，不製造可放置引用。角材需手動截面及角色，`newid` 與 native 準備跨 await 都受共用 operation lease 防護。

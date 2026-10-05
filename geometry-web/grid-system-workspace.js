@@ -262,7 +262,7 @@
   }
   function syncRuleEditor(s){
     if(!current(s)||!$('igRuleSection'))return;
-    $('igRuleContext').textContent=s.source?`來源 ${s.source.id} · ${(s.source.bindings||[]).length} 個配置／${(s.source.applications||[]).length} 個套用；不是本面手動子格。`:'';
+    $('igRuleContext').textContent=s.source?`來源 ${s.source.id} · ${(s.source.bindings||[]).length} 個配置／${(s.source.applications||[]).length} 個套用；不是本面手動子格。${s.ruleDisplay?.note||''}`:'';
     const unsupported=ruleUnsupported(s);$('igRuleReason').textContent=unsupported;
     if(!s.busy&&!s.initializing){$('igRuleAdd').disabled=!!unsupported;for(const button of $('igRuleList').querySelectorAll('button'))button.disabled=!!unsupported;}
     $('igRuleEditor').hidden=!s.ruleDraft;$('igRulePreview').hidden=!s.ruleDraft;
@@ -719,6 +719,7 @@
       const note=[sampled?'稀疏顯示：部分格線暫時省略。點選仍依真正格距決定 cell，放大可看完整密度。':'',s.base.some(n=>n>9007199254740991n||n< -9007199254740991n)?'此為大索引的局部視窗，標籤保持精確整數。':''].filter(Boolean).join(' ');
       $('igDensity').textContent=note;$('igDensity').hidden=!note;
       cellExtras(s,defs,px,py,scale,plot,bands);
+      drawConfirmedRules(s,plot,px,py);
     } catch(e) { if($('igNewBinding'))$('igNewBinding').disabled=true;error=e.message;s.defs=null;s.sourceDirty=true;$('igInfoCell').textContent='';$('igInfoRows').replaceChildren(); } finally { quietDraft=false; }
     const trialVisible=s.trial?.render({svg,label,plot,px,py,scale},trialCommand,error,trialFingerprint);
     if(trialVisible)for(const node of plot.querySelectorAll('[data-ig-origin],[data-ig-origin-label],[data-ig-selected],[data-ig-hover]'))plot.append(node);
@@ -767,10 +768,11 @@
   }
   async function drawResult(s) {
     const view=$('igResultView');view.replaceChildren();if(!s.boundary||!s.binding)return;
+    const request=s.resultRequest=(s.resultRequest||0)+1;
     const boundary=s.boundary,t=boundaryTransform(boundary),r=t.rect;$('igResultSection').hidden=false;
     svg('path',{d:boundaryPath(s.boundary,t),fill:'#f4f9f7','fill-rule':'evenodd',stroke:'#4f8b7c','stroke-width':1.3},view);
     const result=await apiRequest(`grid-query binding ${s.binding.id} rect ${r.join(' ')} mode sample limit 48`);
-    if(!current(s)||s.boundary!==boundary)return;
+    if(!current(s)||s.boundary!==boundary||s.resultRequest!==request)return;
     if(!result.ok){$('igResultNote').textContent=result.error||'無法查詢配置結果；來源與配置保持保存。';return;}
     for(const a of axes)for(const line of result.axes?.[a]?.lines||[])for(const segment of line.segments||[]){const p=t.point(segment.a),q=t.point(segment.b);const n=svg('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:'#5182ae','stroke-width':1.2,'data-ig-result-axis':a,'data-ig-result-index':line.index,...(segment.band!=null?{'data-ig-result-band':segment.band}:{})},view);svg('title',{},n).textContent=`${a} 格線 ${line.index}${segment.band!=null?` · 格 ${segment.band}`:''} · ${segment.a[a==='u'?0:1]} mm`;}
     const selected=s.vertices.find(v=>v.key===s.binding.vertexKey);if(selected){const p=t.point([selected.u,selected.v]);svg('circle',{cx:p[0],cy:p[1],r:6,fill:'#c66b2c'},view);}
@@ -778,6 +780,33 @@
     const translation=s.binding.translationExact??s.binding.translation;
     $('igResultNote').textContent=`已按外環與孔裁切。${dense?'稀疏顯示，部分格線省略；':'抽樣檢視；'}u 每 ${result.axes?.u?.stride||'1'} 條、v 每 ${result.axes?.v?.stride||'1'} 條顯示一線。平移 ${translation ? '('+translation.join(', ')+') mm' : '超出整數平移顯示範圍，局部求值仍保持精確'}。`;
     view.dataset.queryMode=result.mode;view.dataset.exact=String(result.exact);
+    const mark=JSON.stringify(GridRuleLines.presentationState()),boundaryId=s.boundaryId;
+    const owns=()=>current(s)&&s.resultRequest===request&&s.boundary===boundary&&s.boundaryId===boundaryId&&view===$('igResultView')&&mark===JSON.stringify(GridRuleLines.presentationState());
+    for(const rule of s.source?.rules||[])try{
+      const q=await GridRuleLines.readNative({kind:'binding',id:s.binding.id,systemId:s.source.id,ruleKey:rule.ruleKey,sourceFingerprint:s.references.sourceFingerprint},`rect ${r.join(' ')} mode sample limit 32`,owns);
+      if(!q)return;
+      for(const l of q.rows)for(const segment of l.segments){const p=t.point(segment[0]),b=t.point(segment[1]),n=svg('line',{x1:p[0],y1:p[1],x2:b[0],y2:b[1],stroke:'#8654b2','stroke-width':1.5,'stroke-dasharray':'3 3','data-ig-result-rule':rule.ruleKey,'data-ig-rule-ref':'none'},view);svg('title',{},n).textContent=`來源 ${s.source.id}／rule ${rule.ruleKey} · cell (${l.cell.join(', ')}) · ${l.axis} 子線 ${l.innerIndex}；配置檢視未提供放置引用`;}
+      if(!q.complete)$('igResultNote').textContent+=` rule ${rule.ruleKey} 抽樣未完整，每 ${q.stride} 格顯示一格。`;
+    }catch(error){if(owns())$('igResultNote').textContent+=' '+error.message;}
+  }
+  function drawConfirmedRules(s,plot,px,py){
+    if(s.mode!=='source'||!s.source?.rules?.length||s.sourceDirty||s.base.some(n=>n!==0n))return;
+    const rect=s.camera.map((n,i)=>Math.max(-LIMIT,Math.min(LIMIT,i<2?Math.floor(n):Math.ceil(n)))),cell=s.sel?.map(String),mark=JSON.stringify(GridRuleLines.presentationState());
+    const key=JSON.stringify([rect,cell,sourceKey(s.source),mark,ReferenceWorkspace.history.frame]);
+    if(s.ruleDisplay?.key!==key){
+      clearTimeout(s.ruleDisplay?.timer);const query=s.ruleDisplay={key,rows:[],note:''};
+      const owns=()=>current(s)&&s.ruleDisplay===query&&mark===JSON.stringify(GridRuleLines.presentationState());
+      query.timer=setTimeout(async()=>{try{
+        const out=[],notes=[];
+        for(const rule of s.source.rules){
+          if(cell&&rule.selector.kind==='cell'&&rule.selector.cell.some((v,i)=>v!==cell[i]))continue;
+          const result=await GridRuleLines.readNative({kind:'system',id:s.source.id,systemId:s.source.id,ruleKey:rule.ruleKey,sourceFingerprint:s.references.sourceFingerprint,...(cell?{cell}:{})},cell?`cell ${cell.join(' ')}`:`rect ${rect.join(' ')} mode sample limit 32`,owns);if(!result)return;
+          out.push(...result.rows);if(!result.complete)notes.push(`rule ${rule.ruleKey} 抽樣未完整；點真正主格可完整檢視。`);
+        }
+        if(!owns())return;query.rows=out;query.note=notes.join(' ');drawGrid(s);syncRuleEditor(s);
+      }catch(error){if(owns()){query.note=error.message;syncRuleEditor(s);}}},80);
+    }
+    for(const l of s.ruleDisplay.rows)for(const segment of l.segments){const n=svg('line',{x1:px(segment[0][0]),y1:py(segment[0][1]),x2:px(segment[1][0]),y2:py(segment[1][1]),stroke:'#8654b2','stroke-width':1.5,'stroke-dasharray':'3 3','data-ig-source-rule':l.ruleKey,'data-ig-rule-ref':'none'},plot);svg('title',{},n).textContent=`來源 ${l.systemId}／rule ${l.ruleKey} · cell (${l.cell.join(', ')}) · ${l.axis} 子線 ${l.innerIndex}；來源檢視未提供放置引用`;}
   }
   function keyedEditor(s) {
     const hasKeys=s.vertices.length&&s.vertices.every(v=>v.key!=null);
@@ -943,6 +972,8 @@
     if((source&&sourceKey(checked.gridSystems.find(g=>g.id===source.id))!==sourceKey(source))||
        (binding&&bindingKey(checked.gridBindings?.find(b=>b.id===binding.id))!==bindingKey(binding))||
        JSON.stringify(final.parameters)!==JSON.stringify(checked.parameters)){toast('所選來源或參數在開啟期間已變更。請重新選取。');return;}
+    if(options.ruleKey==null){const graph=await apiRequest('source-inspect');if(!ownsEntry()||!graph.ok)return;
+      if(graph.sourceFingerprint!==references.sourceFingerprint){toast('來源在讀取期間已變更，請重新開啟。');return;}}
     if(options.ruleKey!=null){
       if(!source?.rules?.some(r=>r.ruleKey===options.ruleKey)||!ownsEntry())return false;
       const graph=await apiRequest('source-inspect');if(!ownsEntry()||!graph.ok)return false;
@@ -950,7 +981,7 @@
       if(view3)throw Error('請回到面內畫布後定位來源規則。');
       if(options.beginNavigation?.()===false||!ownsEntry())return false;
       // All reads finish before the synchronous navigation commit.
-      transferred=true;resetSceneFocus();$('objectWorkspace').hidden=true;drawObjects();
+      transferred=true;commitSourceCanvasNavigation();
     }
     setOcTool('select');oc.gridSystemCreating=false;oc.parameters=final.parameters||[];
     if(source&&source.mode!=='infinite'&&!restored){if(dialog.open)dialog.close();GridSystemEditor.open(source.id);return;}

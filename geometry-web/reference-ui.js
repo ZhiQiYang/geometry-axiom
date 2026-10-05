@@ -391,12 +391,13 @@ function referenceAnchorOptions(bid, surf) {
   const groups = new Map();
   for (const entry of [...free, ...busy]) {
     const match = /^at-line grid (\d+) ([uv]) (-?\d+)(?: band (-?\d+))?/.exec(entry.value);
+    const rule=GridRuleLines.parseAnchor(entry.value);
     const grid=match && fe.grids.find(g=>g.id===+match[1]);
     const group = (entry.occupied != null ? "已有角材 · " : "可用 · ") +
-      (match ? `${grid?.kind === 'subgrid' ? '子網格' : '主網格'} ${match[1]} · ${match[2]} 座標線` : entry.value.startsWith("at-line") ? "參考線" : entry.value.startsWith("at-face t") ? "角材側面" : "輪廓邊");
+      (rule ? `來源規則 ${rule.systemId}/${rule.ruleKey} · 套用 ${rule.appliedGridId}` : match ? `${grid?.kind === 'subgrid' ? '子網格' : '主網格'} ${match[1]} · ${match[2]} 座標線` : entry.value.startsWith("at-line") ? "參考線" : entry.value.startsWith("at-face t") ? "角材側面" : "輪廓邊");
     if (!groups.has(group)) groups.set(group, []);
     groups.get(group).push(entry);
   }
   return [...groups].map(([label, items]) => `<optgroup label="${label}">` + items.map(({value,label,occupied}) =>
-    `<option value="${value}">${label}${occupied != null ? `(已有角材 ${occupied})` : ""}</option>`).join('') + '</optgroup>').join('');
+    `<option value="${ReferenceWorkspace.escape(value)}">${ReferenceWorkspace.escape(label)}${occupied != null ? `(已有角材 ${occupied})` : ""}</option>`).join('') + '</optgroup>').join('');
 }
