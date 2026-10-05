@@ -181,6 +181,9 @@ REQUIRED_OWNER_GATES = {
 }
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
+    'tests/rule-case-workbench-browser.cjs': 91,
+    'tests/test_rule_case_app_browser.js': 74,
+    'tests/test_rule_case_app_races.js': 30,
     'tests/test_grid_rule_reader_browser.js': 34,
     'geometry-web/evidence_links_browser_check.js': 67,
     'geometry-web/evidence_links_integration_test.js': 110,

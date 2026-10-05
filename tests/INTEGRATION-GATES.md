@@ -247,3 +247,45 @@ P87 的 60 項由無 scope full CDP 執行；新增的 14 項為 edit/delete 各
 「關閉 raw → 來源卡片刪除 → emptyNewGridSystem 續編 → 唯讀 Save → 新空白 context 真開檔 → 返回 → 明確捨棄」。
 這段不使用 fixture API 或 refresh/renderObjects 補 UI 狀態。83 段共 2054，原 82 段完全不變。
 34、60 是 assertions，並非端到端 scenario 數；實體手機／系統 chooser 仍有具名人工未驗界線。
+
+## #49 正式規則案例與獨立 owner gates
+
+正式入口沿既有組構工作區按需開啟六個有限案例，不新增幾何求值器。
+`rule-cases` / `rule-case-workbench-data/1` 使用新的 `geometry-canvas/15`；
+`/1–14` 及其能力守門不變。完整 root/A/B manifest 仍受既有 8 MiB 與 room
+lifecycle reserve 限制。保留前以同一 detached snapshot 驗證閉包、hash、有限
+typed records／predicates 及原始 receipt，再同步核對原 context／lease，提交一筆
+共同 metadata history。no-op 為零筆；Undo/Redo 恢復整份原始資料。
+
+短命 case binding 捕獲第一個 await 前的 workspace stamp，核對 selected native
+session／revision／runtime，使用獨立 case counter、pending cancel tombstone 與
+high-water；logical project/frame 是 frontend host observation，不是 server 的
+logical project 身分認證。metadata commit 會改變 history／revision stamp，
+不保證 frame／token 旋轉；成功後明確 retire/remount。關閉案例只撤銷案例
+binding／adapter，不能關閉 native context 或使 live assembly candidate 失效。
+未知或已退休 B 回覆 410，不能 fallback root。
+
+以下入口均需獨立隔離 HTTP service、fresh verified bridge、TEMP output；
+同一 formal native root 串行，凍結驗收設定 `GEOMETRY_REQUIRE_CLEAN=1`。
+
+| 入口 | 實際 assertions | 範圍 |
+| --- | ---: | --- |
+| `tests/test_rule_case_workbench_http.py` | 19 | 真 native adapter、六案例、run/cancel、原始語義與歷史未核信；已加入 aggregate |
+| `tests/rule-case-workbench-controller.cjs` | 17 | standalone HTTP/native owner 控制器 lifecycle；需 `GEOMETRY_RULE_CASE_TEST_URL`，不是 formal app gate |
+| `tests/rule-case-workbench-browser.cjs` | 91 | 原 owner 元件 desktop45／390px46，需 standalone URL 與 `GEOMETRY_RULE_CASE_BROWSER_EVIDENCE`；不是保存流程 |
+| `tests/test_rule_case_app_browser.js` | 74 | 1280／390px 正常入口、六案例、真失敗與重跑、單步 retain／Undo/Redo、真 ZIP Save／新空白 context Open 及 root/A/B完整資料；需 `GEOMETRY_RULE_CASE_APP_OUT` |
+| `tests/test_rule_case_app_races.js` | 30 | 兩寬度 held GET／create、取消晚到、retention／native／history／context、live assembly candidate、B退休410；需 `GEOMETRY_RULE_CASE_RACE_OUT` |
+
+formal 兩項另提供 `GEOMETRY_TEST_URL`、TEMP `GEOMETRY_FEEDBACK_DIR`，
+結果記錄 exact head/tree、clean 與 `/runtime`。正常 Save 下載實際 `.gcanvas`
+ZIP，再從新的空白 context 使用正式檔案輸入重開；不以 memory-backend
+roundtrip 或舊 source 的 full receipt 代替。PR141 的九份 owner 檔案逐 blob 重用。
+所有保存或載回 receipts 均為歷史未核信，只有此次 controlled native run 可顯示
+本次核對；timeout、crash、缺輸出或未知 runtime 都不能冒算 pass。
+
+完整非瀏覽器 census 的既有 Node525 → 537：store七項、prepared history與
+原 stamp三項、full manifest／caller snapshot兩項。新 host13及owner HTTP19
+獨立登錄；原 floors、平台具名例外、未知格式／能力／容量拒絕都維持。
+瀏覽器三項在 `REQUIRED_BROWSER_GATES` 顯示必要數量，不併入 aggregate。
+共用 reader／history／registry 的受影響 gates，以及無 scope flag 的 full
+CDP／Space、timber partial、native300仍須另驗；本節本身不宣稱已全部通過。
