@@ -83,10 +83,17 @@ class BinaryFreshnessTests(unittest.TestCase):
         self.assertEqual(self.smoke.call_count, 1)  # only mock smoke before tamper
 
     def test_fresh_reuses_without_compile_smoke_or_metadata_write(self):
+        def snapshot(path):
+            stat = path.stat()
+            # Reading a fresh binary or its sidecar may update access time.
+            metadata = {name: getattr(stat, name) for name in dir(stat)
+                        if name.startswith('st_') and name not in ('st_atime', 'st_atime_ns')}
+            return metadata, path.read_bytes()
+
         self.assertEqual(self.build().status, 'built')
-        before = (self.b.path.stat(), self.b.sidecar.read_bytes(), self.b.sidecar.stat())
+        before = (snapshot(self.b.path), snapshot(self.b.sidecar))
         self.assertEqual(self.build().status, 'reused')
-        self.assertEqual(before, (self.b.path.stat(), self.b.sidecar.read_bytes(), self.b.sidecar.stat()))
+        self.assertEqual(before, (snapshot(self.b.path), snapshot(self.b.sidecar)))
         self.assertEqual(self.compile.call_count, 1)
         self.assertEqual(self.smoke.call_count, 1)
 
@@ -587,10 +594,13 @@ class BinaryFreshnessTests(unittest.TestCase):
                 binaries._binary_identity(path)
         self.assertIn('during hashing', str(caught.exception))
         after = path.stat()
+        self.assertEqual(after.st_dev, before.st_dev)
         self.assertEqual(after.st_ino, before.st_ino)
         self.assertEqual(after.st_size, before.st_size)
         self.assertEqual(after.st_mtime_ns, before.st_mtime_ns)
-        self.assertEqual(binaries._identity_signature(after), before_sig)
+        # Windows birth time stays fixed; POSIX change time moves on this write.
+        if os.name == 'nt' and isinstance(getattr(before, 'st_birthtime_ns', None), int):
+            self.assertEqual(binaries._identity_signature(after), before_sig)
         self.assertNotEqual(path.read_bytes(), payload)
 
     def test_full_runner_refuses_tampered_binary_without_invoking_suite(self):

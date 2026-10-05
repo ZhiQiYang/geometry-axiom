@@ -79,3 +79,13 @@ harness 本身退出碼 0，stdout 含 11 行 `PASS bench injected-failure`（�
 這不表示所有競態保護都與改前完全相同。開啟後的 `fstat` 若看不到 `st_ctime`、mtime、size、inode 或 birth 的差異，雜湊仍可能返回已經讀到的 bytes。這次實測的同尺寸改寫有留下 `fstat().st_ctime` 差異，所以被拒絕。
 
 同一支已建好的 GDI harness（SHA-256 `de7dec1737e2d658dff1a7dcc7b8c2246254b586efd2efa816be07d4cf869676`）再用新核對跑 `python tests/test_gdi_contract.py`，退出碼 0，1 個測試，1.108 秒。沒有重編，也沒有改 Windows 安全設定。整套 `run_all.py`、真實視窗、PR #134，以及沒有 `st_birthtime_ns` 的舊版 Windows Python 都沒有實機跑。
+
+## 雲端接續：兩項測試斷言的可移植性
+
+精確修前 head `d9eea1ca5860bc4d7a06a40b75147024d7f68d4b` 在 Linux／Python 3.12.14 首次跑 `python3 tests/test_binaries.py -v` 是 31 pass／1 fail、exit 1。失敗在同尺寸改寫測試的事後完整 signature 相等斷言：函式已以 `binary changed during hashing` 拒絕，inode／size／mtime 核對也通過；Linux signature 正確包含已改變的 ctime，所以最後相等斷言不成立。這個首次失敗收據保留，沒有用重跑覆寫。
+
+接續修正只改 `tests/test_binaries.py` 的兩項 oracle：同尺寸改寫仍在所有平台檢查拒絕、device／inode／size／restored mtime 與 bytes 確有修改；完整 signature 不變只在 Windows 且實際有整數 `st_birthtime_ns` 時核對。fresh reuse 的快照只排除 OS 讀取可更新的 `st_atime`／`st_atime_ns`，其餘可用的 `st_*` metadata（包括 ns 欄位）仍逐項保存；另外明確核 binary 與 sidecar 原始 bytes，保留 `reused` 與 compile／smoke 各只呼叫一次。沒有修改 `tests/binaries.py` 的 fresh／mtime／ctime／SHA-256 防線，沒有改 OS atime 設定或 Windows 安全策略。
+
+Linux 修後首次 `python3 tests/test_binaries.py -v` 是 32/32、exit 0；`python3 tests/test_mutation_freshness.py -v` 是 24/24、exit 0。原 27 項與預期數 32 都保留，沒有新增或刪除 suite，也沒有 sleep／重試到綠。另以中性 fixture 的真 Linux 讀取更新 atime，修後的同一 reuse 測試仍通過，mtime／ctime／inode／size、sidecar bytes 與 compile／smoke 核對不變。
+
+正式非瀏覽器 aggregate 沿 `ulimit -s 16384` 加 `python3 tests/run_all.py --build` 在凍結提交執行，實際命令／head／exit／逐 suite output 由本輪獨立雲端收據交付。這一節的 Linux 結果不替代 Windows／GDI 實測，也不外推到 PR #134／#137、瀏覽器或真實視窗；上面的作者 Windows 首次失敗與重跑紀錄維持原義。
