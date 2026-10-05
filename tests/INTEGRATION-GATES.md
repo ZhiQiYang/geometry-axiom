@@ -157,3 +157,16 @@ temporary-shebang fixture skips。這些沒有平台豁免，Windows strict 會�
 截圖／驗證專案只寫 TEMP；不寫使用者 feedback 或已提交 golden。
 另跑無 scope flag 的 `geometry-web/cdp_test.js`，包括原選取／游標及所有既有共用介面回歸。
 PR #114 正式多房間 owner 與實體 iOS／IME／系統選檔仍須 dot 整合後驗收，不能以本 gate 代替。
+
+## #48 正式 app 證據流程
+
+`geometry-web/evidence_links_integration_test.js` 的 80 個檢查獨立於非瀏覽器 aggregate；真 app/store/native、1280/390px、原圖手動矩形和欄位選擇、完整 ZIP 保存／新空白 context 重開、刪除／ID 重建、evidence-only bytes、undo/redo、32 個 staged navigation race 和非法匯入零提交。只使用自製 PDF。另保留既有 independent adapter 67 項，不把 memory-backend 結果當正式保存證據。
+
+```sh
+GEOMETRY_TEST_URL=http://127.0.0.1:18962/ \
+GEOMETRY_REQUIRE_CLEAN=1 \
+GEOMETRY_EVIDENCE_TEST_DIR=/tmp/issue48-formal \
+node geometry-web/evidence_links_integration_test.js
+```
+
+服務须是 exact head 的 fresh receipt-backed runtime；TEMP 結果記 head/tree/runtime，禁止用戶 8765。共用 app 行為另跑無 scope flag 的 CDP，82 段 golden 維持。非瀏覽器新增 evidence store 6 項、控制器 28→29、shared-reader races 48→51；補登錄 main 已存在的 grid definition diagram 8 項，沒有降低原 floors。

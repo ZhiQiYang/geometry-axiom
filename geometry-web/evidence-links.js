@@ -112,7 +112,7 @@
       return result;
     };
   }
-  function createController({readFeatureAttachment,setFeatureAttachment,getStamp,readCurrent,locateDocument,uuid=()=>crypto.randomUUID(),now=()=>new Date().toISOString()}){
+  function createController({readFeatureAttachment,setFeatureAttachment,getStamp,readCurrent,locateDocument,getNavigationStamp=()=>null,uuid=()=>crypto.randomUUID(),now=()=>new Date().toISOString()}){
     if(typeof setFeatureAttachment!=='function'||setFeatureAttachment.constructor?.name==='AsyncFunction')fail('EVIDENCE_ADAPTER','證據附件需要同步、原子的一步本地寫入接口。');
     let sequence=0;const leases=new Map();
     const stamp=()=>{const s=getStamp();if(!identity(s.projectScope)||!identity(s.contextToken)||!Number.isSafeInteger(s.revision)||s.revision<0||!Number.isSafeInteger(s.nativeRevision)||s.nativeRevision<0)fail('EVIDENCE_CONTEXT','目前專案上下文無法確認。');return clone(s);};
@@ -161,7 +161,10 @@
       l.target=clone(target);l.humanConfirmation=null;const c=await current(l,s,seq);if(!assess(l,c,{identityKnown:true}).canConfirm)fail('EVIDENCE_ASSOCIATION','來源或參數欄位已變更，請重新選擇。');commit(v,s,seq,l);return clone(l);
     }
     async function locate(evidenceId){
-      const seq=++sequence,s=stamp(),l=find(bundle(),evidenceId),c=await current(l,s,seq),status=assess(l,c).status;
+      const seq=++sequence,s=stamp(),l=find(bundle(),evidenceId);
+      const navigationStamp=()=>{const value=getNavigationStamp();boundedJSON(value);return JSON.stringify(value);},navigation=navigationStamp();
+      const c=await current(l,s,seq),status=assess(l,c).status;
+      if(navigationStamp()!==navigation)fail('EVIDENCE_STALE','定位期間畫面已變更，未定位。');
       if(['source-missing','source-changed'].includes(status))fail('EVIDENCE_RECHECK','原圖缺失或已換版，請重新核對。');guard(s,seq);
       return locateDocument(clone(l.document),clone(l.region),{isCurrent:()=>seq===sequence&&stable(s,stamp())});
     }

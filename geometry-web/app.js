@@ -532,6 +532,8 @@ async function apiRequest(cmd, roomLease = null) {
     return { ok: false, transport: true, error: connection.error || "場景尚未讀取完成" };
   const localHistory = ReferenceWorkspace.tryLocalHistory?.(cmd);
   if (localHistory) return localHistory;
+  const releaseNativeOperation = ReferenceWorkspace.beginNativeOperation?.(cmd);
+  try {
   const t0 = performance.now();
   const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
@@ -601,6 +603,7 @@ async function apiRequest(cmd, roomLease = null) {
   window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
     preview: res.preview ? true : undefined, ms: Math.round(performance.now() - t0) });
   return res;
+  } finally { releaseNativeOperation?.(); }
 }
 async function api(cmd) {
   const result = await apiRequest(cmd);
@@ -5226,6 +5229,7 @@ function drawFaceEditor() {
     annotations.appendChild(controls);
   root.appendChild(annotations);
   fePlaceOverlays();
+  window.EvidenceLinksApp?.redraw();
 }
 
 /* diff#4:面內草稿層渲染——只清空重繪 #feDraftLayer 這個 group，用 .draft-* 樣式

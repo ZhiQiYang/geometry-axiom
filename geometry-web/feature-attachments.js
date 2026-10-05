@@ -1,9 +1,10 @@
 /* Finite portable editor data. These records never declare native geometry. */
 (function (root, factory) {
-  const api = factory(typeof module === "object" && module.exports ? require("./source-plane.js") : root.GeometrySourcePlane);
+  const api = factory(typeof module === "object" && module.exports ? require("./source-plane.js") : root.GeometrySourcePlane,
+    typeof module === "object" && module.exports ? require("./evidence-links.js") : root.EvidenceLinks);
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.GeometryFeatureAttachments = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function (Rooms) {
+})(typeof globalThis !== "undefined" ? globalThis : this, function (Rooms, Evidence) {
   "use strict";
   const SCHEMA = "geometry-feature-attachments/1";
   const GRID_SCHEMA = "grid-editor-draft/1", GRID_KIND = "grid-draft";
@@ -187,12 +188,14 @@
       if (record.value?.schema !== record.schema) fail("房間來源附件版本不一致。");
       Rooms.validate(record.value);
       if (bytes + lifecycleReserve(record.value) > MAX_ROOM_BYTES) fail("功能附件未保留房間狀態更新所需容量。");
+    } else if (record.kind === Evidence.KIND && record.schema === Evidence.SCHEMA) {
+      Evidence.validate(record.value);
     } else fail("功能附件種類或版本不支援。");
     return record;
   }
   function validate(envelope) {
     const bytes = boundedJSON(envelope, true);
-    if (!keys(envelope, ["schema", "records"]) || envelope.schema !== SCHEMA || !Array.isArray(envelope.records) || envelope.records.length > 2)
+    if (!keys(envelope, ["schema", "records"]) || envelope.schema !== SCHEMA || !Array.isArray(envelope.records) || envelope.records.length > 3)
       fail("功能附件版本或清單不支援。");
     const kinds = new Set();
     for (const record of envelope.records) {
@@ -205,14 +208,28 @@
       fail("功能附件未保留房間狀態更新所需容量。");
     return envelope;
   }
-  function assertKind(kind) { if (![GRID_KIND, ROOM_KIND].includes(kind)) fail("功能附件種類不支援。"); }
+  function assertKind(kind) { if (![GRID_KIND, ROOM_KIND, Evidence.KIND].includes(kind)) fail("功能附件種類不支援。"); }
   function record(kind, value) {
     assertKind(kind);
     const schema = kind === GRID_KIND ? GRID_SCHEMA : value !== null && typeof value === "object" ? Object.getOwnPropertyDescriptor(value,"schema")?.value : undefined;
     return validateRecord({kind, schema, value});
   }
   function capabilities(envelope) { validate(envelope); return envelope.records.flatMap(record => record.kind === GRID_KIND ? [GRID_SCHEMA] :
+    record.kind === Evidence.KIND ? [Evidence.SCHEMA] :
     record.schema === ROOM_HISTORY_SCHEMA ? [ROOM_CAPABILITY,ROOM_HISTORY_CAPABILITY] : [ROOM_CAPABILITY]).sort(); }
+  function evidenceLinks(envelope, sources, projectScope) {
+    validate(envelope);
+    const value = envelope.records.find(record => record.kind === Evidence.KIND)?.value || null;
+    for (const link of value?.links || []) {
+      if (projectScope !== undefined && link.target.projectScope !== projectScope) fail("證據欄位屬於另一專案。");
+      if (sources) {
+        const entry = sources.get(link.document.sourceHash), meta = entry?.meta || entry;
+        if (!meta || meta.id !== link.document.sourceHash || meta.hash !== meta.id || meta.type !== "application/pdf")
+          fail("證據原 PDF 缺失或來源類型不符。");
+      }
+    }
+    return value;
+  }
   function sourceRooms(envelope, sources) {
     validate(envelope);
     const value = envelope.records.find(record => record.kind === ROOM_KIND)?.value || null;
@@ -229,7 +246,7 @@
   function changedRoomBoundary(value, id) { return Rooms.boundaryChanged(validateRecord(record(ROOM_KIND, value)).value, id); }
   function unknownRoomHistory(value) { return Rooms.unknownHistory(validateRecord(record(ROOM_KIND, value)).value); }
   function references(value) { validateGridDraft(value); return JSON.parse(JSON.stringify([...(value.baseRef === null ? [] : [value.baseRef]), ...value.inputRefs])); }
-  return {SCHEMA, GRID_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
+  return {Evidence, evidenceLinks, SCHEMA, GRID_SCHEMA, GRID_KIND, ROOM_KIND, ROOM_SCHEMA, ROOM_CAPABILITY, ROOM_HISTORY_SCHEMA, ROOM_HISTORY_CAPABILITY, MAX_BYTES, MAX_ROOM_BYTES,
     validateSourceRecords:Rooms.validateSourceRecords, validateReconstructionReviews:Rooms.validateReconstructionReviews,
     sourceFields:Object.freeze(sourceFields), bindingFields:Object.freeze(bindingFields),
     validate, validateRecord, validateGridDraft, assertKind, record, capabilities, references, sourceRooms, validateNativeRefs, validateNativePins, jsonBytes, lifecycleReserve,

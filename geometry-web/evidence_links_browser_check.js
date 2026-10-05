@@ -140,6 +140,9 @@ function fixture(changed=false){
     await page.evaluate(async()=>{const original=__evidenceLocatorOriginal,p=ReferenceWorkspace.group(1).pages.find(p=>p.id===original.id);if(p.sourceId!==original.sourceId&&!feChangeUnderlay(1,p,{sourceId:original.sourceId},true))throw Error('Unable to restore original recorded source');if(original.cold){p.src=original.src;await ReferenceWorkspace.selectPage(1,original.id);if(ReferenceWorkspace.active(1)!==p||oc.underlays[1]!==p)throw Error('Cold fixture restoration did not restore current underlay');}window.__evidenceLocatorOriginal=null;});
   }
   try{
+    // This independent adapter gate deliberately supplies its own backend.
+    // The separate formal integration gate loads the production adapter/store.
+    await page.route('**/evidence-links-app.js',route=>route.fulfill({contentType:'application/javascript',body:'/* isolated EvidenceLinksUI adapter harness */'}));
     await page.goto(url);await page.waitForFunction(()=>typeof connection!=='undefined'&&connection.phase==='ready');
     check('page identity, meaningful app, and no framework overlay',/幾何|Geometry|工程|物件/.test(await page.title())&&(await page.locator('body').innerText()).length>100&&await page.locator('nextjs-portal,vite-error-overlay').count()===0);
     await page.addScriptTag({path:path.join(__dirname,'evidence-links.js')});await page.addScriptTag({path:path.join(__dirname,'evidence-links-ui.js')});

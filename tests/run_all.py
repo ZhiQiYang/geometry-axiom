@@ -142,6 +142,8 @@ NODE_PURE_TEST_FILES = {
     'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
     'node:evidence_links': 'tests/test_evidence_links.js',
+    'node:evidence_project_store': 'tests/test_evidence_project_store.js',
+    'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
     'tests/test_issue116_browser.js': 'Required isolated native/browser B-menu gate, full Save/reopen and visual evidence; see INTEGRATION-GATES.md',
@@ -161,6 +163,7 @@ REQUIRED_OWNER_GATES = {
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
     'geometry-web/evidence_links_browser_check.js': 67,
+    'geometry-web/evidence_links_integration_test.js': 80,
 }
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
