@@ -23,11 +23,11 @@
 | 項 | 量測標的 | 結論 |
 |---|---|---|
 | X6 | 各工作區縮放列的位置、內容、尺寸 | 重現：四個畫布的縮放列位置與內容各異；390px 下網格工作區縮放列需捲動才可見 |
-| B6 | 面內 `#feSelectionSummary` 與主畫布 `#ocSelectionSummary` 的顯示行為 | 部分重現：首次進入的小卡會遮到畫面左上標註；按「知道了」後 0 選時隱藏；兩畫布在 1 選時行為不一致 |
+| B6 | 面內 `#feSelectionSummary` 與主畫布 `#ocSelectionSummary` 的顯示行為 | 部分重現：面內首次進入的小卡遮到畫面左上標註；面內按「知道了」後 0 選時隱藏；本次主畫布 0／1 選皆可見，與舊契約的差異待查 |
 | G3 | 網格檢查器 `#gridObjectDelete` 的樣式與位置 | 重現：與鄰鈕僅 8 px（390px 為 6 px），透明低對比樣式；是否跳確認未驗 |
 | G4 | 網格相關用語在三個位置的一致性 | 部分重現：工作區配置模式出現 `cell`／`對齊位置`，與面內 `主支/副支/子網格` 詞彙不連續；檢查器配置模式未渲染（受阻） |
 | F1 | 3D 建模歡迎畫面在四個視窗的溢出與重疊 | 重現：`scrollHeight` 超過 `clientHeight`、歡迎內容與下方工具帶重疊；但 CTA 未被遮擋（hit-test 通過） |
-| F5 | 3D 建模控制項的樣式一致性 | 重現：同一畫面兩種藍色主按鈕、teal 勾選框、圓角 5/6/8 px 混用、焦點框規格與其他工作區不同 |
+| F5 | 3D 建模控制項的樣式一致性 | 重現：同一畫面兩種藍色主按鈕、teal 勾選框、圓角 5/6/8 px 混用；已量到歡迎 CTA 焦點框，跨工作區焦點差異未驗 |
 | F6 | 3D 建模說明文字的字級與可讀性 | 重現：`.sm-help`／`.sm-guide`／`.sm-view-direction` 皆 11 px；單段 >100 字僅 `.sm-guide` 區塊整體成立 |
 
 「重現」= 在 `d6b4b450` 實際量到所述現象；「部分重現」= 部分面向成立；「受阻」= 需要但未完成的互動，見各節。
@@ -54,7 +54,7 @@
 
 ## B6 — 選取摘要
 
-`measurements/stage_x1.json`、`stage_h.json`；截圖 `X6-B6-face-*-firstvisit.png`、`B6-face-*.png`。
+`measurements/stage_x1.json`、`stage_g.json`、`stage_h.json`；截圖 `X6-B6-face-*-firstvisit.png`、`B6-face-*.png`。
 
 面內 `#feSelectionSummary`（data-guidance-key `face:select`）：
 
@@ -67,7 +67,7 @@
 | 390×844 首次 | 280×60 @ (8,130)，佔視窗 6.3% | — |
 | 框選拖曳中 | **未測** | — |
 
-主畫布 `#ocSelectionSummary` 對照（同場景）：0 選 `hidden`；1 選 `hidden=false` 但 `rendered=false`（被樣式隱藏）——與面內 1 選仍可見的**行為不一致**（實測，非推論）。
+主畫布 `#ocSelectionSummary` 對照（`stage_g.json` 的 `oc_0sel`／`oc_1sel`）：0／1 選皆為 `hidden=false, rendered=true`，`count` 分別為 `"0"`／`"1"`。因此本次 JSON **不支持兩畫布 1 選可見性不一致**。被測版本的 `DOM-CONTRACT.md:56`／`:88` 記載主畫布 0／1 選視覺隱藏；本次觀察與該既有契約的差異仍待查，不能將舊契約當作本次量測值。面內按「知道了」後的 0 選隱藏仍由 `stage_h.json/after_dismiss` 支持。
 
 ## G3 — 檢查器刪除鈕
 
@@ -110,27 +110,31 @@
 - `scrollHeight 237 > clientHeight 177`（溢出 60 px）；900px 時 `scrollHeight 211 / clientHeight 130`；390px 時 `177 / 130`。
 - `.sm-wire-cube` 與 `.sm-stage-head` 重疊；`#smWelcomeTry`（y503–547）與 `.sm-view-tools`（y518–590）重疊；900px 下說明小字還與 `.sm-view-direction` 重疊。
 - **CTA 未被遮擋**：在 `#smWelcomeTry` 高度 25/50/75/95% 處取 `elementFromPoint`，全部回 `smWelcomeTry`；且水平方向按鈕（x404–592）與視角分段按鈕（x28–280）不交會。
-- Tab 巡覽 22 站全部在視口內，焦點框 `3px solid rgb(139,157,236)`。
+- `stage_f.json/tabOrder1382` 有 40 筆 Tab 觀察（含循環重訪），皆為 `inView=true`；其中一筆是 `body`、`inDialog=false`，不宣稱完整焦點圈限已驗。`focusOutlineWelcomeTry` 獨立記錄歡迎 CTA 焦點框 `3px solid rgb(139,157,236)`、offset 3 px。
 
 ## F5 — 3D 控制項樣式
 
-`measurements/stage_f.json`（`styles`、`tab` 欄位）。
+`measurements/stage_f.json`（`1382x804/controls`、`tabOrder1382`、`focusOutlineWelcomeTry`）。
 
 1382×804 computed style 實測：
 
-- 全部按鈕與表單控制項高 **44 px**；圓角：一般按鈕 8 px、視角分段 5 px、表單欄位 6 px。
+- 已記錄的按鈕、文字／數值欄位與 select 高 **44 px**；勾選框本體高 15／16 px。圓角：一般按鈕 8 px、視角分段 5 px、表單欄位 6 px。
 - 主色混用：頂部「保存」`rgb(54,91,245)`；`#smCreate`、`#smWelcomeTry` `rgb(56,85,188)`——同一畫面兩種藍。
 - 勾選框 `accent-color: rgb(8,127,131)`（teal），與藍色系不同族。
-- 焦點框 `outline 3px solid rgb(139,157,236)`、offset 3 px；面內工具列焦點為 2 px——規格不一致。
+- 歡迎 CTA 焦點框 `outline 3px solid rgb(139,157,236)`、offset 3 px；本包沒有面內工具列 2 px 的對應實測，跨工作區焦點規格差異**未驗**。
 - 鍵盤可達性：Tab 序列涵蓋專案控制、範例鈕、畫布、CTA、視角分段、勾選、表單、dialog 控制項。
 
 ## F6 — 3D 說明文字
 
-`measurements/stage_f.json`（`texts` 欄位）。
+`measurements/stage_f.json`（`1382x804/help` 欄位）。
 
-- `.sm-help` 11 px / 行高 19.8 px / `rgb(75,93,124)`；`.sm-guide` 11 px / 18.7 px / `rgb(88,105,135)`；`.sm-view-direction` 11 px / 17.6 px。
+- `.sm-help` 11 px / 行高 19.8 px / `rgb(82,101,121)`；`.sm-guide` 11 px / 18.7 px / `rgb(82,106,133)`（其 `p` 子元素為 `rgb(82,101,121)`）；`.sm-view-direction` 11 px / 17.6 px / `rgb(100,119,136)`。
 - 長度：`.sm-guide` 區塊合計 220 字／4 行（單段最長 80 字）；`.sm-help` 最長 86 字／3 行。「單段超過 100 字」僅整區塊合計成立。
-- 對比：兩組文字色對白底分別約 5.9:1、5.3:1（自算）。
+- 撤回原依錯誤色值推算的 5.9:1／5.3:1；本次未另驗實際背景與對比比值，不作可讀性合格判定。
+
+### 文件勘誤（2026-10-05 UTC）
+
+上述 B6／F5／F6 與 Tab 筆數更正僅唯讀核對既有 JSON／契約文字；未重跑量測或修改原始 JSON、腳本、截圖。原量測日期、被測 SHA 與受阻紀錄保留。
 
 ## 仍受阻（需再一段互動）
 
