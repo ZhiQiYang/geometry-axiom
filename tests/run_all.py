@@ -79,6 +79,8 @@ PY_NEEDS = {
     'test_mutation_freshness': [],
     'test_parameters_core': ['bridge', 'model-base'],
     'test_reference_contract': ['bridge'],
+    'test_rule_case_workbench_http': ['bridge'],
+    'test_rule_case_host': ['bridge'],
     'test_rule_case_catalog': ['bridge'],
     'test_rule_case_definition': [],
     'test_rule_case_executor': ['bridge'],
@@ -127,6 +129,7 @@ NODE_TEST_FILES = [
     'tests/test_scenario_snapshots.js',
     'tests/test_scenario_project_store.js',
     'tests/test_shared_room_display.js',
+    'tests/test_rule_case_project_store.js',
     'tests/test_source_inspector.js',
     'tests/test_space_model_store.js',
     'tests/test_timber_schedule.js',
@@ -153,6 +156,10 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/rule-case-workbench-controller.cjs': 'Required actual standalone HTTP/native controller lifecycle suite; needs explicit isolated GEOMETRY_RULE_CASE_TEST_URL; not a generic node fixture',
+    'tests/rule-case-workbench-browser.cjs': 'Required real standalone component browser gate at 1280/390 over native HTTP; formal ZIP flow is separate',
+    'tests/test_rule_case_app_browser.js': 'Required formal app/native six cases, races, metadata Undo/Redo, A/B closure and ZIP Save/blank-context reopen at 1280/390; see INTEGRATION-GATES.md',
+
     'tests/test_shared_room_display_browser.js': 'Required isolated shared-room view adoption, per-room dirty/history/basis, true Undo/Redo and real ZIP Save/new-context Open at 1280/390; see INTEGRATION-GATES.md',
     'tests/test_scenario_workflow_browser.js': 'Required isolated formal A/B editing, compare/adopt, undo/redo, real ZIP Save/new-context reopen at 1280/390px; see INTEGRATION-GATES.md',
     'tests/test_scenario_lifecycle_browser.js': 'Required isolated formal scenario/native lifecycle gate: held Cancel/Capture/confirm, unknown terminal recovery, lost create/close; see INTEGRATION-GATES.md',

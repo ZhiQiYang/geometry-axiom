@@ -23,7 +23,7 @@ const ReferenceWorkspace = (() => {
   let contextConflict = false, externalEpoch = 0;
   let editorLease = "unchecked", editorLeaseSession = null;
   let nativeRevision = null, nativeSession = null, nativePending = 0;
-  const E = P.Features.Evidence, preparedReferences = new WeakMap();
+  const E = P.Features.Evidence, preparedReferences = new WeakMap(), preparedFeatures = new WeakMap(), caseCommitKey = Object.freeze({});
   function observeNativeRevision(result) {
     const session = connection.session || "";
     if (session !== nativeSession) {nativeSession = session; nativeRevision = null;}
@@ -399,8 +399,36 @@ const ReferenceWorkspace = (() => {
     assertMetadataCapacity({featureAttachments:next});
     return next;
   }
+  async function validateRuleCaseClosure(envelope, assertCurrent=()=>{}) {
+    for(const record of envelope?.records||[])if(record.kind===P.Features.CASE_KIND){
+      P.Features.Cases.validate(record.value);await P.Features.Cases.verifyHashes(record.value);assertCurrent();
+      const response=await fetch('/rule-cases/prepare',{method:'POST',headers:{'Content-Type':'application/json','X-Geometry-Version':pageRuntimeVersion},
+        body:JSON.stringify(record.value),signal:AbortSignal.timeout(30000)});assertCurrent();checkApiSession(response);
+      const result=await response.json();assertCurrent();
+      if(!response.ok||result.ok!==true||result.trust!=='historical-unverified'||!sameModelData(result.data,record.value))throw new Error(result.error||'規則案例尚未通過完整來源與結果驗證。');
+    }
+  }
+  async function prepareFeatureAttachment(kind,value,expectedContextToken,assertCurrent=()=>{}) {
+    assertEditable();assertCurrent();
+    const before=getModelOperationState(),original=getEvidenceState();
+    if(original.blocked||expectedContextToken!==original.contextToken)throw new Error('功能附件操作已過期。');
+    const proposal=featureProposal(kind,value),admitted=structuredClone(value);
+    const guard=()=>{assertCurrent();assertEditable();const next=getEvidenceState();
+      if(getModelOperationState().frame!==before.frame||next.blocked||!sameModelData(original,next))throw new Error('功能附件驗證結果晚到，未寫入。');};
+    await validateRuleCaseClosure({schema:P.Features.SCHEMA,records:proposal},guard);guard();
+    const handle=Object.freeze({});preparedFeatures.set(handle,{kind,value:admitted,expectedContextToken,guard});return handle;
+  }
+  function commitPreparedFeatureAttachment(handle,assertCurrent=()=>{}) {
+    const prepared=preparedFeatures.get(handle);if(!prepared)throw new Error('功能附件候選已取消或提交。');
+    prepared.guard();assertCurrent();const previous=readFeatureAttachment(prepared.kind);
+    // Recheck full root/leaf capacity synchronously immediately before history.
+    featureProposal(prepared.kind,prepared.value);prepared.guard();assertCurrent();
+    preparedFeatures.delete(handle);if(sameModelData(previous,prepared.value))return false;
+    setFeatureAttachment(prepared.kind,prepared.value,prepared.expectedContextToken,{caseAdmission:caseCommitKey});return true;
+  }
   function setFeatureAttachment(kind, value, expectedContextToken, options = {}) {
     P.Features.assertKind(kind);
+    if(kind===P.Features.CASE_KIND && options.caseAdmission!==caseCommitKey)throw new Error("規則案例必須先完成隔離資料驗證，再原子保留。");
     const groupedRoom = kind === P.Features.ROOM_KIND && options.recordHistory === false;
     if (groupedRoom) {
       assertRoomTransaction(options.roomLease);
@@ -414,7 +442,7 @@ const ReferenceWorkspace = (() => {
     const proposal = featureProposal(kind,value), previous = readFeatureAttachment(kind);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
@@ -1157,6 +1185,7 @@ const ReferenceWorkspace = (() => {
     assertCurrent();assertSnapshot(stamp);
     const m=includeCatalog?await manifest(c,r.text):manifestData({...c,scenarioCatalog:null});
     P.assertManifestCapacity(m,r.text);assertCurrent();assertSnapshot(stamp);
+    await validateRuleCaseClosure(m.featureAttachments,()=>{assertCurrent();assertSnapshot(stamp);});assertCurrent();assertSnapshot(stamp);
     await validateEvidenceClosure(c, m.featureAttachments, () => {assertCurrent();assertSnapshot(stamp);}); assertCurrent();assertSnapshot(stamp);
     const data=new Map([...c.sources].map(([k,s])=>[k,s.bytes]));
     const bytes=await P.pack(r.text,m,data,fflate); assertCurrent();assertSnapshot(stamp);
@@ -1324,6 +1353,7 @@ const ReferenceWorkspace = (() => {
       }
       c.scenarioCatalog=structuredClone(m.scenarioCatalog);
     }
+    await validateRuleCaseClosure(m.featureAttachments,assertCurrent);assertCurrent();
     await validateEvidenceClosure(c,m.featureAttachments,assertCurrent); assertCurrent();
     async function verifySourcePage(sourceId, number, width, height) {
       const source = c.sources.get(sourceId);
@@ -1599,7 +1629,7 @@ const ReferenceWorkspace = (() => {
     reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,tracingFeatures,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
     getFaceProjection,getFaceProjections,setFaceProjection,
-    readFeatureAttachment,setFeatureAttachment,getRoomIntegration:()=>roomIntegration,
+    readFeatureAttachment,setFeatureAttachment,prepareFeatureAttachment,commitPreparedFeatureAttachment,validateRuleCaseClosure,getRoomIntegration:()=>roomIntegration,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getModelOperationState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),

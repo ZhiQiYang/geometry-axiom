@@ -29,7 +29,8 @@ async function fixture(options = {}) {
     close:async()=>{closes++;closing.resolve();await options.closeGate?.promise;},abort:async()=>{aborts++;}})};
   const env = {GeometryProject:{...P,...options.projectOverride,...(options.packGate?{pack:async(...args)=>{await options.packGate.promise;return P.pack(...args);}}:{})},fflate:zip,crypto,structuredClone,JSON,TextEncoder,TextDecoder,Uint8Array,Map,Set,WeakMap,console,AbortSignal,BroadcastChannel:options.BroadcastChannel,
     requestAnimationFrame:()=>1,CustomEvent:class {},ResizeObserver:class {observe(){}},File,Blob,
-    fetch:async url=>{assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
+    pageRuntimeVersion:"vm-runtime",checkApiSession(){},
+    fetch:async url=>{if(url==="/rule-cases/prepare"&&options.casePrepare)return options.casePrepare();assert.equal(url,'data:image/png;base64,legacy');fetchReached.resolve();
       assert.ok(options.legacyGate,'Unexpected fetch: '+url);return options.legacyGate.promise;},
     window:{dispatchEvent(){},addEventListener(){},showSaveFilePicker:()=>options.pickerGate?.promise || Promise.resolve(handle),confirm:()=>false},
     document:{getElementById:element,querySelectorAll:()=>[],querySelector:()=>element('scroll'),addEventListener(){},
@@ -775,4 +776,35 @@ test('review receipts undo with core changes and local review without inheriting
   f.w.observe('line redo',{ok:true});assert.equal(f.w.context().reconstructionReviews.values().next().value.method,'pdf-vector');
   f.w.observe('line delete boundary 1',{ok:true});f.w.observe('line boundary 1 outline 0,0 800,0 800,700 0,700',{ok:true});
   assert.equal(f.w.reconstructionState(1),'unreviewed');
+});
+
+// Only HTTP timing is faked; these exercise the actual common metadata/history adapter.
+const caseData=()=>({schema:P.Features.CASE_SCHEMA,definitions:JSON.parse(require('node:child_process').execFileSync('python',['-c',"import sys,json;sys.path.insert(0,'geometry-core');from rule_cases.catalog import cases;print(json.dumps(cases()))"],{cwd:require('node:path').resolve(__dirname,'..'),encoding:'utf8'})),receipts:[]});
+const caseResponse=data=>({ok:true,json:async()=>({ok:true,data,trust:'historical-unverified'})});
+test('formal cases detached prepare commits one common metadata history and true Undo/Redo',async()=>{
+  const data=caseData(),f=await fixture({casePrepare:()=>caseResponse(data)}),W=f.w,token=W.getProjectState().contextToken,before=W.history.undo.length;
+  assert.throws(()=>W.setFeatureAttachment(P.Features.CASE_KIND,data,token),/隔離資料驗證/);
+  const prepared=await W.prepareFeatureAttachment(P.Features.CASE_KIND,data,token);
+  assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
+  assert.equal(W.commitPreparedFeatureAttachment(prepared),true);assert.equal(W.history.undo.length,before+1);assert.equal(W.getProjectState().dirty,true);
+  assert.match(W.history.actionLabel('undo'),/規則案例/);assert.equal(f.calls.length,0);
+  W.tryLocalHistory('line undo');assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
+  W.tryLocalHistory('line redo');assert.equal(JSON.stringify(W.readFeatureAttachment(P.Features.CASE_KIND)),JSON.stringify(data));
+  assert.throws(()=>W.commitPreparedFeatureAttachment(prepared),/取消或提交/);
+});
+test('formal cases cancellation or native operation after detached response produces zero writes',async()=>{
+  for(const change of ['cancel','native','metadata']){const data=caseData(),gate=deferred(),reached=deferred(),f=await fixture({casePrepare:async()=>{reached.resolve();await gate.promise;return caseResponse(data);}}),W=f.w;
+    let cancelled=false;const guard=()=>{if(cancelled)throw Error('cancelled');},before=W.history.undo.length;
+    const pending=W.prepareFeatureAttachment(P.Features.CASE_KIND,data,W.getProjectState().contextToken,guard),rejected=assert.rejects(pending);await reached.promise;
+    let release;if(change==='cancel')cancelled=true;if(change==='native')release=W.beginNativeOperation('reset');if(change==='metadata')W.changed(1);
+    gate.resolve();await rejected;release?.();assert.equal(W.history.undo.length,before);assert.equal(W.readFeatureAttachment(P.Features.CASE_KIND),null);
+  }
+});
+test('formal cases no-op has zero history; equal data after Undo/Redo cannot revive an old prepared lease',async()=>{
+  const data=caseData(),f=await fixture({casePrepare:()=>caseResponse(data)}),W=f.w,kind=P.Features.CASE_KIND;
+  W.commitPreparedFeatureAttachment(await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken));
+  const unchanged=await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken),before=W.history.undo.length;
+  assert.equal(W.commitPreparedFeatureAttachment(unchanged),false);assert.equal(W.history.undo.length,before);
+  const stale=await W.prepareFeatureAttachment(kind,data,W.getProjectState().contextToken);
+  W.tryLocalHistory('line undo');W.tryLocalHistory('line redo');assert.throws(()=>W.commitPreparedFeatureAttachment(stale),/晚到/);assert.equal(W.history.undo.length,before);
 });

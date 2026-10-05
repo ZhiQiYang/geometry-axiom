@@ -4219,3 +4219,11 @@ main d6b4b45 與 PR133 審查 tree 完全一致；接續原生規則子線顯示
 UI 減項（GEO-219）：規則線資訊併入既有 GridEditor 的來源／局部等分區；共用既有定位引用、guide 來源清單及來源規則編輯器。主格、来源規則子線、本面手動子格以既有區域內的文字／線型辨識，不新增工具列或獨立規則管理器。pending footer 合併提示已確認來源與未確認規則輸入；等分錯誤直接使用 1–65 的產品範圍。
 
 先釘住 main 缺口：同一 synthetic native cell 回傳 3 條子線，正式畫布、角材選項及 guide 來源均為 0。SR24 實體手機仍保留人工 gate；#61/#62 不關閉，尚未驗收範圍不能以顯示完成冒稱。
+
+
+## #49 正式案例接線 — shared integration checkpoint（2026-10-05）
+
+- 六個有限案例沿用 PR141 元件、HTTP adapter 與既有真 C executor；在組構工作區按需開啟。共同附件註冊 `rule-cases` / `rule-case-workbench-data/1`，核對未占用後新增 `geometry-canvas/15`，既有 /1–14 行為保留。原 definition / receipt 分存；匯入及保留後重掛載只顯示歷史未核信。
+- 以原始 ReferenceWorkspace stamp / frame / native revision / runtime 接短命 immutable binding；每 native context 獨立有限高水位与 late cancel tombstone，不能改 A/B editor allocator。關閉案例只撤銷其 adapter；不關 live native 或 AssemblyWorkspace 候選。保存沿共同 detached prepare 與同步 guarded metadata commit，完整 root/A/B manifest 容量與房間 lifecycle 預留均先驗；no-op 零 history，取消／晚到零寫入。
+- **拿掉／合併（GEO-219）**：移除預設組構內容重複的「新增規則後，依序建立槽位、構件與局部接合」常駐說明，沿用既有工作區首課；案例輸入、作者預期、實際結果與歷史明細合併同一按需面板，沒有新增頂層工作區。
+- 這是實作 checkpoint，完整 current-head aggregate／桌面及390px terminal 尚待完成；不宣稱 #49 完成，不借用 #137／#143 的舊 full receipts。產品／測試 source 可獨立審查，原始公開證據拒絕包維持 hold。

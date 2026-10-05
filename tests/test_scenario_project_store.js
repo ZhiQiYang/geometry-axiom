@@ -39,7 +39,7 @@ test('tampered scene, complete closure hashes and missing original bytes reject 
   await assert.rejects(P.pack(f.leaf.scene,f.root,new Map(),zip));
 });
 test('known formats /1 through /13 remain distinct and cannot contain the new root field',async()=>{
-  const f=await fixture();assert.equal(P.supportedFormats.length,14);assert.equal(new Set(P.supportedFormats).size,14);
+  const f=await fixture();assert.equal(P.supportedFormats.length,15);assert.equal(new Set(P.supportedFormats).size,15);
   for(let n=1;n<=13;n++){const m=clone(f.root);m.format='geometry-canvas/'+n;assert.throws(()=>P.validate(m));}
   assert.equal(f.leaf.manifest.format,P.EVIDENCE_FORMAT);assert.doesNotThrow(()=>P.validate(f.leaf.manifest));
   assert.throws(()=>P.validateProjectCapabilities([S.SCHEMA]));assert.ok(P.readerCapabilities([]).includes(S.SCHEMA));

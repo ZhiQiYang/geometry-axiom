@@ -51,6 +51,9 @@ POST_MAX_BYTES = {
     "/sources/snapshot": 1024 * 1024,
     "/scenarios/verify-native": 9 * 1024 * 1024,
     "/scenarios/editor": 1024,
+    "/rule-cases/binding": 2048,
+    "/rule-cases/workbench": 8 * 1024 * 1024,
+    "/rule-cases/prepare": 8 * 1024 * 1024,
 }
 # 預設用同目錄的 Windows 橋接器。GEOMETRY_BRIDGE 可覆寫，且可帶參數，例如：
 #   GEOMETRY_BRIDGE="wsl.exe -d Ubuntu-24.04 --user root -- /opt/geometry/web_bridge"
@@ -287,6 +290,16 @@ def upload_scene(body: bytes, phase=None) -> bytes:
         native.upload_lock.release()
 
 
+def case_host():
+    from rule_case_host import RuleCaseHost
+    native = current_native_context()
+    with native.bridge_lock:
+        if not hasattr(native, 'case_host'):
+            native.case_host = RuleCaseHost(native, read_native=lambda: json.loads(ask_bridge('assembly-read')),
+                version=RUNTIME.version, fresh=RUNTIME.fresh, binary=BRIDGE_CMD[0] if len(BRIDGE_CMD)==1 else None)
+        return native.case_host
+
+
 class PreviewHTTPServer(http.server.ThreadingHTTPServer):
     # Browser preload/reload bursts can exceed the default five pending handshakes.
     # Leave room for those connections while the server accepts each request.
@@ -320,6 +333,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send(json.dumps({'schema': 'geometry-runtime/1', 'version': RUNTIME.version,
                                    'fresh': RUNTIME.fresh(), 'root': str(SCENE_DIR),
                                    'pid': os.getpid(), 'session': current_native_context().session}).encode())
+            return
+        if self.path == '/rule-cases/binding':
+            from rule_case_workbench_adapter import AdapterError
+            try:
+                self._send(json.dumps(case_host().next_sequence()).encode())
+            except AdapterError as exc:
+                self._send(json.dumps({'ok':False,'code':exc.code,'error':str(exc)}).encode(), status=409)
             return
         if self.path == '/scenarios/editor':
             if current_native_context() is not root_context:
@@ -433,6 +453,23 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if (self.path != '/feedback' and not readonly and
                 (not RUNTIME.fresh() or client_version and client_version != RUNTIME.version)):
             self._send(err_json(RESTART_MESSAGE), status=409)
+            return
+
+        if self.path.startswith('/rule-cases/'):
+            from rule_case_host import prepare_data
+            from rule_case_workbench_adapter import AdapterError
+            from rule_cases.definition import CaseDefinitionError
+            from rule_cases.executor import ReceiptValidationError
+            try:
+                if self.path == '/rule-cases/binding':
+                    status, result = 200, case_host().bind(body)
+                elif self.path == '/rule-cases/prepare':
+                    status, result = 200, prepare_data(body, BRIDGE_CMD[0] if len(BRIDGE_CMD)==1 else None)
+                else:
+                    status, result = case_host().dispatch(body)
+                self._send(json.dumps(result,ensure_ascii=False,allow_nan=False).encode(),status=status)
+            except (AdapterError, CaseDefinitionError, ReceiptValidationError, ValueError) as exc:
+                self._send(json.dumps({'ok':False,'code':getattr(exc,'code','SCHEMA'),'error':str(exc)}).encode(),status=409)
             return
 
         if self.path == '/scenarios/editor':

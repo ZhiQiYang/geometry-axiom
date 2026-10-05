@@ -38,6 +38,8 @@ class NativeContext:
     def close(self):
         # Same ordering as a load transaction: no command or late confirm can
         # enter a retired context, and closing B never acquires A's locks.
+        if hasattr(self, "case_host"):
+            self.case_host.close()
         with self.upload_lock, self.bridge_lock:
             if self.closed:
                 return
