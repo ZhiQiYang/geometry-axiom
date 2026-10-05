@@ -2,7 +2,7 @@
 const RoomCollectionWorkspace = (() => {
   "use strict";
   const S = GeometrySourcePlane, R = GeometryRoomCollection;
-  const pages = new Map(),renders=new WeakMap();
+  const pages = new Map(),renders=new Map();
   let overviewCollectionId = null, overviewContextToken = null;
   let instance = null, activeBid = null, lease = null, ownedPreviewToken = null, ownedPreviewCommand = null, currentDialog = null, retireDialog = null, integration = null, cleaningUI = false;
   const W = () => ReferenceWorkspace;
@@ -118,8 +118,7 @@ const RoomCollectionWorkspace = (() => {
     if (!room) return null;
     const plane = S.planeForRoom(data, room.id), contextToken = token();
     if (!pages.has(contextToken)) {pages.set(contextToken, new Map()); if(pages.size > 32)pages.delete(pages.keys().next().value);}
-    const source=integration.readSource(plane.sourceId,contextToken),renderKey=JSON.stringify([plane.page,plane.pageSize]);
-    const render=renders.get(source)?.get(renderKey);
+    const renderKey=JSON.stringify([plane.sourceId,plane.page,plane.pageSize]),render=renders.get(renderKey);
     const display=S.displayForRoom(data,room.id),cache = pages.get(contextToken), old = cache.get(bid), signature = JSON.stringify([plane,display]);
     if (old && old.planeId === plane.id) {
       if (old.signature !== signature) {Object.assign(old.page, S.materialize(plane, old.page,display)); old.signature = signature;}
@@ -136,10 +135,10 @@ const RoomCollectionWorkspace = (() => {
       const source = integration.readSource(p.sourceId, contextToken); if (!source) throw new Error("共享來源檔案已遺失。");
       await W().preparePage(p, source);
       if (token() !== contextToken || W().getProjectState().revision !== stamp.revision) throw new Error("共享來源載入晚到，未套用到目前專案。");
-      // Cache only the derived raster by its original source object/page. View
+      // Cache only the derived raster by the original content hash/page. View
       // metadata always comes from the current persisted room, including undo.
-      if(!renders.has(source))renders.set(source,new Map());
-      renders.get(source).set(JSON.stringify([p.page,[p.imgW,p.imgH]]),p.src);
+      renders.set(JSON.stringify([p.sourceId,p.page,[p.imgW,p.imgH]]),p.src);
+      if(renders.size>S.MAX_PLANES)renders.delete(renders.keys().next().value);
     }
     W().sync();
   }

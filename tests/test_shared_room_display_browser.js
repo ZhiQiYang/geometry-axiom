@@ -15,7 +15,8 @@ const results=[],errors=[];fs.mkdirSync(out,{recursive:true});
 const check=(actual,expected,name)=>{assert.deepEqual(actual,expected,name);results.push({name,pass:true});console.log('PASS '+name);};
 async function snapshot(page){return page.evaluate(async()=>({scene:(await apiRequest('dump')).text,
   nativeRevision:connection.revision,state:ReferenceWorkspace.getProjectState(),history:ReferenceWorkspace.history.undo.length,
-  attachment:ReferenceWorkspace.readFeatureAttachment('source-rooms'),views:[1,2].map(id=>{const p=ReferenceWorkspace.active(id);return p?{crop:p.crop,opacity:p.opacity,locked:p.locked,x:p.x}:null;})}));}
+  attachment:ReferenceWorkspace.readFeatureAttachment('source-rooms'),catalog:ReferenceWorkspace.readScenarioCatalog().catalog,
+  sources:[...ReferenceWorkspace.context().sources.keys()].sort(),views:[1,2].map(id=>{const p=ReferenceWorkspace.active(id);return p?{crop:p.crop,opacity:p.opacity,locked:p.locked,x:p.x}:null;})}));}
 async function showPane(page){if(page.viewportSize().width<=680&&await page.locator('#workspaceToggleRight').getAttribute('aria-expanded')!=='true')await page.locator('#workspaceToggleRight').click();}
 async function hidePane(page){if(page.viewportSize().width<=680&&await page.locator('#workspaceToggleRight').getAttribute('aria-expanded')==='true')await page.locator('#faceWorkspaceLayout [data-close-panel="right"]').click();}
 async function focus(page,id){await page.evaluate(async id=>{await enterFocus('face',id);fiShowTab('underlay');},id);await showPane(page);}
@@ -82,13 +83,25 @@ async function run(){
     check(basis.views.map(p=>p.x),[123,123],width+' B normal alignment changes shared basis');
     check(basis.views.map(({x,...v})=>v),locked.views.map(({x,...v})=>v),width+' shared basis preserves separate crop/opacity/lock');
     check(basis.history,locked.history+1,width+' common basis one history');check(basis.scene,locked.scene,width+' basis metadata leaves native geometry');
+    await page.evaluate(()=>closePanels());await page.locator('#projectInfoButton').click();
+    if(!await page.locator('#scenarioOpen').isVisible())await page.locator('.project-concepts summary').click();
+    await page.locator('#scenarioOpen').click();await page.locator('#scenarioName').fill('顯示 A');await page.locator('#scenarioCapture').click();
+    await page.waitForFunction(()=>ReferenceWorkspace.readScenarioCatalog().catalog?.scenarios.length===1&&!document.getElementById('scenarioCapture').disabled,null,{timeout:60000});
+    await page.locator('#scenarioName').fill('顯示 B');await page.locator('#scenarioFork').click();
+    await page.waitForFunction(()=>ReferenceWorkspace.readScenarioCatalog().catalog?.scenarios.length===2&&!document.getElementById('scenarioCapture').disabled,null,{timeout:60000});
+    await page.locator('#scenarioDialog [data-scenario-close]').click();const catalog=(await snapshot(page)).catalog;
+    check(catalog.scenarios.length,2,width+' normal capture/fork accepts native-verified shared display leaves');
     const saved=path.join(out,'final-display-'+width+'.gcanvas');await save(page,saved);
     const files=zip.unzipSync(fs.readFileSync(saved)),manifest=JSON.parse(new TextDecoder().decode(files['manifest.json']));
     check(manifest.requiredCapabilities.includes('source-room-display/1'),true,width+' true ZIP declares reader display capability');
+    check(manifest.format,'geometry-canvas/14',width+' full A/B ZIP keeps shared display in existing /14');
+    const leaves=Object.keys(files).filter(k=>/^scenarios\/[^/]+\/manifest.json$/.test(k));check(leaves.length,2,width+' true ZIP has two complete leaf projects');
+    check(leaves.map(k=>JSON.parse(new TextDecoder().decode(files[k])).featureAttachments.records.find(r=>r.kind==='source-rooms').value),[basis.attachment,basis.attachment],width+' both leaves retain complete room views/history');
     const sources=Object.keys(files).filter(k=>k.startsWith('sources/'));check(sources.length,1,width+' true ZIP deduplicates original PDF once');check(Buffer.from(files[sources[0]]),PDF,width+' original PDF bytes exact');
     await blank(page);await open(page,saved);const reopened=await snapshot(page);
     check(reopened.views,basis.views,width+' new blank context normal Open preserves exact per-room views/basis');
     check(reopened.attachment,basis.attachment,width+' new blank context restores original history and complete attachment');check(reopened.scene,basis.scene,width+' true Open restores exact native');
+    check(reopened.catalog,catalog,width+' new blank context restores full A/B catalog and original source closure');
     await focus(page,1);await displayControls(page);check(await page.locator('#ulOpacity').inputValue(),'0.81',width+' reopened normal control shows stored opacity');
     check(await page.locator('#ulLock').isChecked(),true,width+' reopened normal control shows stored lock');
     check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,width+' no horizontal page overflow');
