@@ -68,8 +68,12 @@ module.exports=async function ruleEditorTests({send,eval_,sleep,click,waitForUI,
   check('真點主格後明選使用目前主格，以 signed 原字串填規則欄位',await read(`$('igRuleCellI').value==='-2'&&$('igRuleCellJ').value==='1'&&ReferenceWorkspace.readFeatureAttachment('grid-draft').ruleDraft.rawForm.cellI==='-2'`));const conflict=await dump(),conflictCount=await history();await ctl('#igRulePreview');await impact();
   check('同來源重疊 cell 真 native 拒絕並停用確認',await read(`$('impact-confirm').disabled&&document.querySelector('.impact-violation')!==null`)&&(await dump())===conflict&&await history()===conflictCount);await cancel();await ctl('#igRuleCancel');
   for(const [u,v] of [['0','2'],['66','2'],['1','1'],['7','2']]){
-    await ctl('#igRuleAdd');await fill('#igRuleU',u);await fill('#igRuleV',v);const world=await dump(),n=await history();await ctl('#igRulePreview');await impact();
-    check(`native 拒絕 U${u}/V${v}，沒有部分寫入或歷史`,await read(`$('impact-confirm').disabled&&!!document.querySelector('.impact-violation')`)&&(await dump())===world&&await history()===n);await cancel();await ctl('#igRuleCancel');
+    await ctl('#igRuleAdd');await fill('#igRuleU',u);await fill('#igRuleV',v);const world=await dump(),n=await history(),draft=await raw();
+    await read(`window.__ruleRangeApi=apiRequest;window.__ruleRangeWrites=[];apiRequest=async function(cmd,...rest){if(cmd.startsWith('line '))__ruleRangeWrites.push(cmd);return __ruleRangeApi(cmd,...rest);};void 0`);
+    try{await ctl('#igRulePreview');if(u==='0'||u==='66'){
+      await settled();check(`inline 1–65 拒絕 U${u}/V${v}，焦點/raw/World/history 保留且零 native mutation`,await read(`!document.querySelector('.reference-impact[open]')&&$('igDraftNote').textContent.includes('1 至 65')&&document.activeElement.id==='igRuleU'&&__ruleRangeWrites.length===0`)&&(await dump())===world&&await history()===n&&JSON.stringify(await raw())===JSON.stringify(draft));
+    }else{await impact();check(`native 拒絕 U${u}/V${v}，raw/World/history 保留`,await read(`$('impact-confirm').disabled&&!!document.querySelector('.impact-violation')&&__ruleRangeWrites.some(cmd=>cmd.startsWith('line preview grid-source-rule '))`)&&(await dump())===world&&await history()===n&&JSON.stringify(await raw())===JSON.stringify(draft));await cancel();}
+    }finally{await read(`apiRequest=__ruleRangeApi;delete window.__ruleRangeApi;delete window.__ruleRangeWrites;void 0`);}await ctl('#igRuleCancel');
   }
   await ctl('#igRuleAdd');await choose('#igRuleSelector','cell');await fill('#igRuleCellI','9007199254740993');await fill('#igRuleCellJ','-9007199254740995');await ctl('#igRulePreview');await impact();await confirm();source=(await objects()).gridSystems[0];
   check('大於 2^53 的正負索引一路原字串抵達 native',JSON.stringify(source.rules[1].selector.cell)==='["9007199254740993","-9007199254740995"]'&&source.rules[1].ruleKey===3);
