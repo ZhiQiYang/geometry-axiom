@@ -18,7 +18,7 @@ window.ScenarioWorkspace = (() => {
   async function run(action){if(working)return;working=true;controls();try{await action();}catch(e){message(e.message);}finally{working=false;controls();}}
   function render(){const list=W.readScenarioCatalog().catalog?.scenarios||[];
     for(const id of ['scenarioBase','scenarioBefore','scenarioAfter']){const select=$(id),selected=select.value;select.replaceChildren();
-      for(const s of list){const o=document.createElement('option');o.value=s.scenarioId;o.textContent=s.label+' · '+s.scenarioId;select.append(o);}
+      for(const [index,s] of list.entries()){const o=document.createElement('option');o.value=s.scenarioId;o.textContent=s.label+' · 第 '+(index+1)+' 份';select.append(o);}
       if(list.some(s=>s.scenarioId===selected))select.value=selected;}
     $('scenarioCount').textContent=list.length+' / 8 份完整快照';controls();}
   async function archive(guard){const root=W.readScenarioCatalog();return I.read(root.catalog,root.sources,guard);}
@@ -29,15 +29,41 @@ window.ScenarioWorkspace = (() => {
   async function fork(){const guard=lease(),a=await archive(guard);await a.fork($('scenarioBase').value,{scenarioId:crypto.randomUUID(),label:name()});
     commit(a,guard);message('已建立獨立副本。選取右側方案並隔離試改。');}
   const text=value=>typeof value==='string'?value:JSON.stringify(value,null,2);
+  // These are already native-verified declarations from one archived World.
+  // Each column uses its own catalog; this display neither pairs objects across
+  // scenarios nor evaluates expressions or resolves them against the live A.
+  function parameterDefinitions(scene){
+    const cards=new Map(),fields=[];
+    for(const line of scene.split('\n')){
+      const match=line.match(/^parameters (card|field) ([A-Za-z0-9+/]+={0,2})$/);if(!match)continue;
+      const value=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(atob(match[2]),c=>c.charCodeAt(0))));
+      if(match[1]==='card')cards.set(value.id,{...value,fields:[]});else fields.push(value);
+    }
+    for(const field of fields)cards.get(field.parameterId)?.fields.push(field);
+    if(!cards.size)return null;
+    const list=document.createElement('div'),catalog=[...cards.values()];list.className='scenario-parameter-definitions';
+    for(const card of catalog){const heading=document.createElement('h4'),values=document.createElement('dl');heading.textContent=card.name;
+      for(const field of card.fields){const label=document.createElement('dt'),definition=document.createElement('dd');label.textContent=field.name;definition.textContent=ParameterUI.formatDefinition(field.expression,catalog);values.append(label,definition);}
+      list.append(heading,values);
+    }return list;
+  }
+  const sectionLabels={worldScene:'模型與參數定義',assets:'原圖與來源檔案',requiredCapabilities:'所需功能',
+    'projectManifest.sceneHash':'資料校驗','projectManifest.sources':'原圖資料','projectManifest.faces':'圖頁與對位',
+    'projectManifest.models':'空間模型','projectManifest.faceProjections':'面投影','projectManifest.name':'專案名稱',
+    'projectManifest.engineeringDrafts':'工程草稿','projectManifest.assemblyDrafts':'組構草稿','projectManifest.featureAttachments':'工程附件與證據'};
+
   async function compare(){const guard=lease(),a=await archive(guard),list=a.list(),left=$('scenarioBefore').value,right=$('scenarioAfter').value;
     if(left===right)throw new Error('請選取兩份不同方案。');
     const before=list.find(s=>s.scenarioId===left),after=list.find(s=>s.scenarioId===right),diff=ScenarioDiff.compare(before,after);guard();
     const result=$('scenarioDifference');result.replaceChildren();const note=document.createElement('p');
     note.textContent='定義比較；幾何與料長尚未求值。可證明複製關係 '+diff.originPairs.length+' 組；未匹配 '+diff.unmatched.before.length+' / '+diff.unmatched.after.length+' 個物件，實物身分未知。';result.append(note);
     if(!diff.sections.length){const same=document.createElement('p');same.textContent='兩份完整定義相同。';result.append(same);}
-    for(const s of diff.sections){const item=document.createElement('details'),title=document.createElement('summary');title.textContent=s.field;
+    for(const s of diff.sections){const item=document.createElement('details'),title=document.createElement('summary');title.textContent=sectionLabels[s.field]||s.field;
       const columns=document.createElement('div');columns.className='scenario-diff-columns';
-      for(const [label,value] of [[before.label,s.before],[after.label,s.after]]){const col=document.createElement('section'),h=document.createElement('h3'),pre=document.createElement('pre');h.textContent=label;pre.textContent=text(value);col.append(h,pre);columns.append(col);}
+      for(const [label,value] of [[before.label,s.before],[after.label,s.after]]){const col=document.createElement('section'),h=document.createElement('h3'),pre=document.createElement('pre');h.textContent=label;pre.textContent=text(value);col.append(h);
+        const parameters=s.field==='worldScene'?parameterDefinitions(value):null;
+        if(parameters){const storage=document.createElement('details'),summary=document.createElement('summary');summary.textContent='完整儲存定義';storage.append(summary,pre);col.append(parameters,storage);item.open=true;}
+        else col.append(pre);columns.append(col);}
       item.append(title,columns);result.append(item);}
     comparison={after:right,guard,project:a.project(right)};message('已核對完整定義；整體採用可一步復原。');controls();}
   async function adopt(){if(!comparison)throw new Error('請先比較方案。');const candidate=comparison;candidate.guard();

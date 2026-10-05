@@ -203,6 +203,16 @@ Capture 的真 native dump 等待涵蓋關窗及重開；原子採用涵蓋已�
 連續兩次建立／關閉回覆遺失仍須保留同一 request 身分、精確退休 context，並可再次正常編輯。
 所有材料是 synthetic；不把 timeout、未完成 Promise 或 memory DOM 結果當 pass。
 
+正常 `test_scenario_workflow_browser.js` 另以真 PDF import、手動矩形與明選參數欄位建立證據，
+移除圖頁後保存 A/B，要求根專案與兩份 leaf closure 共用恰一份原始 PDF bytes。
+1280/390px 比較區必須可見左200 mm／右300 mm，不以 base64 原始內容充當可讀驗收。
+
+`tests/integration/scenario_context_lifecycle.py` 在同來源的空閒隔離服務上逐次建立、
+原生修改、精確退休300個真 native contexts；另驗 idempotent replay、舊請求拒絕、
+8個 active 上限、子 bridge 全部回收及 root dump/revision 不变。
+提供 `GEOMETRY_TEST_URL`、TEMP `GEOMETRY_SCENARIO_OUT`，凍結驗收加 `GEOMETRY_REQUIRE_CLEAN=1`。
+它是外部 HTTP/native gate，不加入 Python unit census，也不能用300輪 mock unit代替。
+
 非瀏覽器 `test_scenario_project_store.js` 另驗真正 /14 ZIP 的完整 A/B 與
 evidence-only 原 PDF bytes closure、嚴格 schema/capability、雜湊、容量及
 ContextHistory 單步 undo/redo；其 fixture 不冒稱 native/PDF.js 或 UI 驗收。

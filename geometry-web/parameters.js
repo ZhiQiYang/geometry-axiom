@@ -22,12 +22,12 @@ window.ParameterUI = (() => {
     const c=catalog.find(c=>c.id===ref.parameterId),f=c?.fields.find(f=>f.id===ref.fieldId);
     return `${c?.name || '遺失卡片'}.${f?.name || '遺失欄位'} · #${ref.parameterId}:${ref.fieldId}`;
   }
-  const refToken = ref => `⟦${sourceLabel(ref,state?.card?.fields?[...cards().filter(c=>c.id!==state.card.id),state.card]:cards()).replaceAll('⟦','[').replaceAll('⟧',']')}⟧`;
-  function expression(a) {
-    if(a.op==='ref')return refToken(a);
+  const refToken = (ref,catalog=state?.card?.fields?[...cards().filter(c=>c.id!==state.card.id),state.card]:cards()) => `⟦${sourceLabel(ref,catalog).replaceAll('⟦','[').replaceAll('⟧',']')}⟧`;
+  function expression(a,catalog) {
+    if(a.op==='ref')return refToken(a,catalog);
     if(a.op==='literal')return a.den==='1'?a.num+(a.unit==='mm'?' mm':''):`(${a.num}${a.unit==='mm'?' mm':''} / ${a.den})`;
-    if(a.op==='neg')return `-(${expression(a.left)})`;
-    return `(${expression(a.left)} ${{add:'+',sub:'−',mul:'×',div:'÷'}[a.op]} ${expression(a.right)})`;
+    if(a.op==='neg')return `-(${expression(a.left,catalog)})`;
+    return `(${expression(a.left,catalog)} ${{add:'+',sub:'−',mul:'×',div:'÷'}[a.op]} ${expression(a.right,catalog)})`;
   }
   const inputText = f => f.expression?.op==='literal' ? `${f.expression.num}${f.expression.den==='1'?'':'/'+f.expression.den}` : '='+expression(f.expression);
   const coreText = text => text.replaceAll('＝','=').replaceAll('−','-').replaceAll('×','*').replaceAll('÷','/').replace(/⟦[^⟦⟧]*#(\d+):(\d+)⟧/g,'@$1:$2');
@@ -896,7 +896,7 @@ window.ParameterUI = (() => {
     if (only?.length === 1 && only[0].kind === "parameter" && only[0].id === state.card?.id) return true;
     return mayLeave();
   });
-  return {value,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,panelTemplate,quickSample,get previewing(){return state?.previewRequest != null;},get pending(){return !!state&&(state.changed||state.busy||state.previewRequest != null);},get editingId(){return state?.card.id;}};
+  return {value,formatDefinition:expression,errorText,errorCodes:ERROR_TEXT,explainFailure,failureMarkup,drawDraft,sourceLabel,options,sourceControl,sourceRef,bindSource,card:svgCard,render,create,openLegacy,jump,usage,relations,mayLeave,discard,exportPackage,panelTemplate,quickSample,get previewing(){return state?.previewRequest != null;},get pending(){return !!state&&(state.changed||state.busy||state.previewRequest != null);},get editingId(){return state?.card.id;}};
 })();
 
 /* GEO-227：每張圖向 FeatureLessons 登記。檢查比對圖與功能當時的事實，失敗時帶教學 id。 */
