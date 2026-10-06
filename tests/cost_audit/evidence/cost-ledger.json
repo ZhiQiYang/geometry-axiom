@@ -1,0 +1,2757 @@
+{
+  "schema": "geometry-test-cost-ledger/1",
+  "source_sha": "5e0e92b850209e9e2895612148694c1d1e1e4815",
+  "aggregate_evidence_sha": "3019c036c74633a0379714180fa6d68af067d88e",
+  "command": {
+    "name": "08-aggregate",
+    "cwd": "/tmp/geometry-pr136-3019c036-20261005/repo",
+    "argv": [
+      "bash",
+      "-lc",
+      "ulimit -s 16384; exec python3 tests/run_all.py --build"
+    ],
+    "command": "bash -lc 'ulimit -s 16384; exec python3 tests/run_all.py --build'",
+    "started_utc": "2026-10-05T15:14:58.484322+00:00",
+    "ended_utc": "2026-10-05T15:21:01.597359+00:00",
+    "exit_code": 0,
+    "seconds": 363.113,
+    "log": "/tmp/geometry-pr136-3019c036-20261005/receipts/08-aggregate.log",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1"
+    }
+  },
+  "aggregate_process_seconds": 363.113,
+  "suite_process_sum_seconds_rounded": 332.1,
+  "outside_suite_gap_seconds_approximate": 31.013,
+  "outside_suite_gap_attribution": null,
+  "suites": [
+    {
+      "suite": "c:integrity",
+      "total": 88,
+      "passed": 88,
+      "failed": 0,
+      "skipped": 0,
+      "note": "C 檢查點數（非 test 級）",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 95,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "core:run_tests",
+      "total": 139,
+      "passed": 139,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 2.3,
+      "status": "reported-no-fail",
+      "line": 96,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "mutation:check",
+      "total": "-",
+      "passed": "-",
+      "failed": "-",
+      "skipped": "-",
+      "note": "mutation inventory freshness (not test assertions); exit 0",
+      "suite_process_seconds_rounded": 0.2,
+      "status": "reported-no-fail",
+      "line": 97,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "py:test_assembly_candidate_impact",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.5,
+      "status": "reported-no-fail",
+      "line": 98,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.42,
+      "unittest_run_seconds_including_fixtures": 0.346,
+      "reporter_counts": {
+        "total": 4,
+        "run": 4,
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 4,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_assembly_capacity",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 1.2,
+      "status": "reported-no-fail",
+      "line": 99,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.14,
+      "unittest_run_seconds_including_fixtures": 1.064,
+      "reporter_counts": {
+        "total": 5,
+        "run": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 5,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_assembly_generation",
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 2.4,
+      "status": "reported-no-fail",
+      "line": 100,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 2.33,
+      "unittest_run_seconds_including_fixtures": 2.246,
+      "reporter_counts": {
+        "total": 21,
+        "run": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 21,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_assembly_native_diagnostics",
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.5,
+      "status": "reported-no-fail",
+      "line": 101,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.43,
+      "unittest_run_seconds_including_fixtures": 0.353,
+      "reporter_counts": {
+        "total": 8,
+        "run": 8,
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 8,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_assembly_parameter_refs",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.6,
+      "status": "reported-no-fail",
+      "line": 102,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.54,
+      "unittest_run_seconds_including_fixtures": 0.448,
+      "reporter_counts": {
+        "total": 3,
+        "run": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 3,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_assembly_rules",
+      "total": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 2.0,
+      "status": "reported-no-fail",
+      "line": 103,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.92,
+      "unittest_run_seconds_including_fixtures": 1.838,
+      "reporter_counts": {
+        "total": 35,
+        "run": 35,
+        "passed": 35,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 35,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_axiom_reader",
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 87.7,
+      "status": "reported-no-fail",
+      "line": 104,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 87.6,
+      "unittest_run_seconds_including_fixtures": 87.465,
+      "reporter_counts": {
+        "total": 41,
+        "run": 41,
+        "passed": 41,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 41,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_binaries",
+      "total": 30,
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.3,
+      "status": "reported-no-fail",
+      "line": 105,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.22,
+      "unittest_run_seconds_including_fixtures": 0.095,
+      "reporter_counts": {
+        "total": 30,
+        "run": 30,
+        "passed": 30,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 30,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_bridge_integrity",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 11.7,
+      "status": "reported-no-fail",
+      "line": 106,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 11.65,
+      "unittest_run_seconds_including_fixtures": 11.581,
+      "reporter_counts": {
+        "total": 24,
+        "run": 24,
+        "passed": 24,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 24,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_cli_args",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.5,
+      "status": "reported-no-fail",
+      "line": 107,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.41,
+      "unittest_run_seconds_including_fixtures": 0.331,
+      "reporter_counts": {
+        "total": 6,
+        "run": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 6,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_datum_contract",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 3.6,
+      "status": "reported-no-fail",
+      "line": 108,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 3.5,
+      "unittest_run_seconds_including_fixtures": 3.424,
+      "reporter_counts": {
+        "total": 9,
+        "run": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 9,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_engineering_core",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 1.3,
+      "status": "reported-no-fail",
+      "line": 109,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.23,
+      "unittest_run_seconds_including_fixtures": 1.151,
+      "reporter_counts": {
+        "total": 18,
+        "run": 18,
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 18,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_engineering_json",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.3,
+      "status": "reported-no-fail",
+      "line": 110,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.26,
+      "unittest_run_seconds_including_fixtures": 0.188,
+      "reporter_counts": {
+        "total": 7,
+        "run": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 7,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_engineering_model_compatibility",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 2.5,
+      "status": "reported-no-fail",
+      "line": 111,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 2.45,
+      "unittest_run_seconds_including_fixtures": 2.333,
+      "reporter_counts": {
+        "total": 24,
+        "run": 24,
+        "passed": 24,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 24,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_engineering_model_sources",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.9,
+      "status": "reported-no-fail",
+      "line": 112,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.83,
+      "unittest_run_seconds_including_fixtures": 0.7,
+      "reporter_counts": {
+        "total": 4,
+        "run": 4,
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 4,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_engineering_transport",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 113,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.07,
+      "unittest_run_seconds_including_fixtures": 0.002,
+      "reporter_counts": {
+        "total": 6,
+        "run": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 6,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_evidence_link_native",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.5,
+      "status": "reported-no-fail",
+      "line": 114,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.48,
+      "unittest_run_seconds_including_fixtures": 0.409,
+      "reporter_counts": {
+        "total": 6,
+        "run": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 6,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_feedback_store",
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.3,
+      "status": "reported-no-fail",
+      "line": 115,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.26,
+      "unittest_run_seconds_including_fixtures": 0.148,
+      "reporter_counts": {
+        "total": 11,
+        "run": 11,
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 11,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_gdi_contract",
+      "total": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 1,
+      "note": "skip：requires compiled Windows GDI contract harness ×1（其中 1 個在具名允許清單，平台固有，不計入 exit 3）；日誌 /tmp/geometry-tests/run_all-logs/py_test_gdi_contract.log",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "skipped",
+      "line": 116,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.07,
+      "unittest_run_seconds_including_fixtures": 0.0,
+      "reporter_counts": {
+        "total": 1,
+        "run": 1,
+        "passed": 0,
+        "failed": 0,
+        "skipped": 1
+      },
+      "unittest_run_count": 1,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_grid_subdivision_oracle",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 4.1,
+      "status": "reported-no-fail",
+      "line": 117,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 4.07,
+      "unittest_run_seconds_including_fixtures": 3.979,
+      "reporter_counts": {
+        "total": 40,
+        "run": 40,
+        "passed": 40,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 40,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_grid_system_contract",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 1.2,
+      "status": "reported-no-fail",
+      "line": 118,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.13,
+      "unittest_run_seconds_including_fixtures": 1.053,
+      "reporter_counts": {
+        "total": 13,
+        "run": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 13,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_grid_trial_contract",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.3,
+      "status": "reported-no-fail",
+      "line": 119,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.27,
+      "unittest_run_seconds_including_fixtures": 0.189,
+      "reporter_counts": {
+        "total": 5,
+        "run": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 5,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_guide_panels",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.2,
+      "status": "reported-no-fail",
+      "line": 120,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.13,
+      "unittest_run_seconds_including_fixtures": 0.062,
+      "reporter_counts": {
+        "total": 1,
+        "run": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 1,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_infinite_grid_contract",
+      "total": 25,
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 2.4,
+      "status": "reported-no-fail",
+      "line": 121,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 2.29,
+      "unittest_run_seconds_including_fixtures": 2.208,
+      "reporter_counts": {
+        "total": 25,
+        "run": 25,
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 25,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_model_update",
+      "total": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 58.7,
+      "status": "reported-no-fail",
+      "line": 122,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 58.65,
+      "unittest_run_seconds_including_fixtures": 58.522,
+      "reporter_counts": {
+        "total": 26,
+        "run": 26,
+        "passed": 26,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 26,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_modeling_degenerate",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.6,
+      "status": "reported-no-fail",
+      "line": 123,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.55,
+      "unittest_run_seconds_including_fixtures": 0.435,
+      "reporter_counts": {
+        "total": 24,
+        "run": 24,
+        "passed": 24,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 24,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_modeling_runtime",
+      "total": 46,
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 1.9,
+      "status": "reported-no-fail",
+      "line": 124,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.85,
+      "unittest_run_seconds_including_fixtures": 1.734,
+      "reporter_counts": {
+        "total": 46,
+        "run": 46,
+        "passed": 46,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 46,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_modeling_transport",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 1.4,
+      "status": "reported-no-fail",
+      "line": 125,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.35,
+      "unittest_run_seconds_including_fixtures": 1.265,
+      "reporter_counts": {
+        "total": 2,
+        "run": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 2,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_mutation_freshness",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.5,
+      "status": "reported-no-fail",
+      "line": 126,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.45,
+      "unittest_run_seconds_including_fixtures": 0.316,
+      "reporter_counts": {
+        "total": 24,
+        "run": 24,
+        "passed": 24,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 24,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_parameters_core",
+      "total": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 1.6,
+      "status": "reported-no-fail",
+      "line": 127,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.53,
+      "unittest_run_seconds_including_fixtures": 1.453,
+      "reporter_counts": {
+        "total": 20,
+        "run": 20,
+        "passed": 20,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 20,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_reference_contract",
+      "total": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 2.6,
+      "status": "reported-no-fail",
+      "line": 128,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 2.56,
+      "unittest_run_seconds_including_fixtures": 2.483,
+      "reporter_counts": {
+        "total": 35,
+        "run": 35,
+        "passed": 35,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 35,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_rule_case_catalog",
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.7,
+      "status": "reported-no-fail",
+      "line": 129,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.59,
+      "unittest_run_seconds_including_fixtures": 0.496,
+      "reporter_counts": {
+        "total": 14,
+        "run": 14,
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 14,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_rule_case_definition",
+      "total": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.2,
+      "status": "reported-no-fail",
+      "line": 130,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.12,
+      "unittest_run_seconds_including_fixtures": 0.03,
+      "reporter_counts": {
+        "total": 27,
+        "run": 27,
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 27,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_rule_case_executor",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 2.0,
+      "status": "reported-no-fail",
+      "line": 131,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.9,
+      "unittest_run_seconds_including_fixtures": 1.788,
+      "reporter_counts": {
+        "total": 40,
+        "run": 40,
+        "passed": 40,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 40,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_rule_case_request",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.5,
+      "status": "reported-no-fail",
+      "line": 132,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.39,
+      "unittest_run_seconds_including_fixtures": 0.298,
+      "reporter_counts": {
+        "total": 5,
+        "run": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 5,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_runtime_version",
+      "total": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.5,
+      "status": "reported-no-fail",
+      "line": 133,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.41,
+      "unittest_run_seconds_including_fixtures": 0.297,
+      "reporter_counts": {
+        "total": 24,
+        "run": 24,
+        "passed": 24,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 24,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_scenario_verify",
+      "total": 36,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 18.2,
+      "status": "reported-no-fail",
+      "line": 134,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 18.07,
+      "unittest_run_seconds_including_fixtures": 17.937,
+      "reporter_counts": {
+        "total": 36,
+        "run": 36,
+        "passed": 36,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 36,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_scene_import",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 1.3,
+      "status": "reported-no-fail",
+      "line": 135,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.18,
+      "unittest_run_seconds_including_fixtures": 1.111,
+      "reporter_counts": {
+        "total": 10,
+        "run": 10,
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 10,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_serve",
+      "total": 34,
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 13.1,
+      "status": "reported-no-fail",
+      "line": 136,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 13.01,
+      "unittest_run_seconds_including_fixtures": 12.883,
+      "reporter_counts": {
+        "total": 34,
+        "run": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 34,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_source_inspector",
+      "total": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 1.5,
+      "status": "reported-no-fail",
+      "line": 137,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 1.46,
+      "unittest_run_seconds_including_fixtures": 1.369,
+      "reporter_counts": {
+        "total": 18,
+        "run": 18,
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 18,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_source_inspector_transport",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.2,
+      "status": "reported-no-fail",
+      "line": 138,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.1,
+      "unittest_run_seconds_including_fixtures": 0.001,
+      "reporter_counts": {
+        "total": 2,
+        "run": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 2,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_space_modeling",
+      "total": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 22.0,
+      "status": "reported-no-fail",
+      "line": 139,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 21.9,
+      "unittest_run_seconds_including_fixtures": 21.774,
+      "reporter_counts": {
+        "total": 35,
+        "run": 35,
+        "passed": 35,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 35,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_subgrid_contract",
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 2.7,
+      "status": "reported-no-fail",
+      "line": 140,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 2.58,
+      "unittest_run_seconds_including_fixtures": 2.505,
+      "reporter_counts": {
+        "total": 31,
+        "run": 31,
+        "passed": 31,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 31,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_timber_support_projection",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 10.3,
+      "status": "reported-no-fail",
+      "line": 141,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 10.25,
+      "unittest_run_seconds_including_fixtures": 10.161,
+      "reporter_counts": {
+        "total": 13,
+        "run": 13,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 13,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_witness_diagnostics",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.2,
+      "status": "reported-no-fail",
+      "line": 142,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.12,
+      "unittest_run_seconds_including_fixtures": 0.001,
+      "reporter_counts": {
+        "total": 2,
+        "run": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 2,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_witness_marks",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.3,
+      "status": "reported-no-fail",
+      "line": 143,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 0.18,
+      "unittest_run_seconds_including_fixtures": 0.072,
+      "reporter_counts": {
+        "total": 6,
+        "run": 6,
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 6,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "node:tests-js",
+      "total": 510,
+      "passed": 510,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 50.0,
+      "status": "reported-no-fail",
+      "line": 144,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:model_viewer",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 145,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:polydraft",
+      "total": 75,
+      "passed": 75,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 6.9,
+      "status": "reported-no-fail",
+      "line": 146,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:canvas_direct",
+      "total": 408,
+      "passed": 408,
+      "failed": 0,
+      "skipped": 0,
+      "note": "斷言數；preload 已把 web_bridge.exe 的 spawn 轉向 /tmp/geometry-tests/bridge（標記檔 1 筆為證）",
+      "suite_process_seconds_rounded": 3.1,
+      "status": "reported-no-fail",
+      "line": 147,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:document_format",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 148,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:document_cases",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "suite_process_seconds_rounded": 1.2,
+      "status": "reported-no-fail",
+      "line": 149,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:cdp_navigation",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 150,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:cdp_confirmation_gate",
+      "total": "-",
+      "passed": "ok",
+      "failed": "-",
+      "skipped": "-",
+      "note": "僅結束碼：腳本式，無 test 級計數，以 exit code 判定",
+      "suite_process_seconds_rounded": 0.0,
+      "status": "reported-no-fail",
+      "line": 151,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:space_test_floor",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 152,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:history_operation",
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 153,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:context_operations",
+      "total": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 154,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:cdp_evaluation",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 155,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:background_grid_viewport",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 156,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:hover_pick_scheduler",
+      "total": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.2,
+      "status": "reported-no-fail",
+      "line": 157,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:face_paint_scheduler",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 158,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:room_outline_worker",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.2,
+      "status": "reported-no-fail",
+      "line": 159,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:evidence_links",
+      "total": 29,
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.2,
+      "status": "reported-no-fail",
+      "line": 160,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:evidence_project_store",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.2,
+      "status": "reported-no-fail",
+      "line": 161,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "node:grid_definition_diagram",
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 0.1,
+      "status": "reported-no-fail",
+      "line": 162,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    }
+  ],
+  "largest_suites": [
+    {
+      "suite": "py:test_axiom_reader",
+      "total": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 87.7,
+      "status": "reported-no-fail",
+      "line": 104,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 87.6,
+      "unittest_run_seconds_including_fixtures": 87.465,
+      "reporter_counts": {
+        "total": 41,
+        "run": 41,
+        "passed": 41,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 41,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_model_update",
+      "total": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 58.7,
+      "status": "reported-no-fail",
+      "line": 122,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 58.65,
+      "unittest_run_seconds_including_fixtures": 58.522,
+      "reporter_counts": {
+        "total": 26,
+        "run": 26,
+        "passed": 26,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 26,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "node:tests-js",
+      "total": 510,
+      "passed": 510,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 50.0,
+      "status": "reported-no-fail",
+      "line": 144,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      }
+    },
+    {
+      "suite": "py:test_space_modeling",
+      "total": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 22.0,
+      "status": "reported-no-fail",
+      "line": 139,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 21.9,
+      "unittest_run_seconds_including_fixtures": 21.774,
+      "reporter_counts": {
+        "total": 35,
+        "run": 35,
+        "passed": 35,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 35,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_scenario_verify",
+      "total": 36,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 18.2,
+      "status": "reported-no-fail",
+      "line": 134,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 18.07,
+      "unittest_run_seconds_including_fixtures": 17.937,
+      "reporter_counts": {
+        "total": 36,
+        "run": 36,
+        "passed": 36,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 36,
+      "unittest_timing_status": "one-summary"
+    },
+    {
+      "suite": "py:test_serve",
+      "total": 34,
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "note": "",
+      "suite_process_seconds_rounded": 13.1,
+      "status": "reported-no-fail",
+      "line": 136,
+      "phases_seconds": {
+        "sleep": null,
+        "poll": null,
+        "native_execution": null,
+        "compilation": null,
+        "fingerprint": null,
+        "reader_rebuild": null
+      },
+      "reporter_inclusive_seconds": 13.01,
+      "unittest_run_seconds_including_fixtures": 12.883,
+      "reporter_counts": {
+        "total": 34,
+        "run": 34,
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0
+      },
+      "unittest_run_count": 34,
+      "unittest_timing_status": "one-summary"
+    }
+  ],
+  "browser_receipts": [
+    {
+      "file": {
+        "path": "/tmp/issue118-cost-audit-20261006/geometry-web/docs/issue123-c-pending-tests/measurements/t3_cdp_baseline.log",
+        "bytes": 77496,
+        "sha256": "3e81c70f6e10811165a63f13928cae0aaf320e7b9155392972778d8fb7272b77"
+      },
+      "declared_baseline_source_sha": "d6b4b450d741fcbbfd75c51631915d3082926990",
+      "source_identity_verified": false,
+      "source_limit": "Baseline label only; patch/native-byte identity is not verified by this ledger.",
+      "results": [
+        {
+          "line": 360,
+          "marker": "CDP_RESULT",
+          "schema": "geometry-cdp-result/1",
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_CDP_FROM_P31"
+          ],
+          "completed": false,
+          "passed": 322,
+          "failed": 1,
+          "golden_compare": "not compared (run did not complete)",
+          "browser_exception_count": 0,
+          "scope_omissions": null,
+          "sections": {
+            "(before first section)": 7,
+            "P32": 34,
+            "P33": 9,
+            "P34": 7,
+            "P35": 14,
+            "P36": 2,
+            "P37": 19,
+            "P38": 13,
+            "P39": 8,
+            "P40": 4,
+            "P41": 3,
+            "P42": 12,
+            "P43": 12,
+            "P44": 19,
+            "P45": 2,
+            "P46": 7,
+            "P47": 9,
+            "P48": 14,
+            "P49": 17,
+            "P50": 33,
+            "P51": 13,
+            "P52": 43,
+            "P53": 21
+          },
+          "groups": null
+        }
+      ],
+      "shell_exit": 1,
+      "shell_seconds": 620.0,
+      "status": "has-terminal-receipt",
+      "acceptance_claim": false
+    },
+    {
+      "file": {
+        "path": "/tmp/issue118-cost-audit-20261006/geometry-web/docs/issue123-c-pending-tests/measurements/t3_cdp_baseline2.log",
+        "bytes": 104733,
+        "sha256": "3f8644aecbb3a360032195f567dd42d7b746977335aa28c9f0eead9f6b9f52cc"
+      },
+      "declared_baseline_source_sha": "d6b4b450d741fcbbfd75c51631915d3082926990",
+      "source_identity_verified": false,
+      "source_limit": "Baseline label only; patch/native-byte identity is not verified by this ledger.",
+      "results": [
+        {
+          "line": 812,
+          "marker": "CDP_RESULT",
+          "schema": "geometry-cdp-result/1",
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_CDP_FROM_P31"
+          ],
+          "completed": true,
+          "passed": 761,
+          "failed": 0,
+          "golden_compare": "not compared (partial mode)",
+          "browser_exception_count": 1,
+          "scope_omissions": null,
+          "sections": {
+            "(before first section)": 7,
+            "P32": 34,
+            "P33": 9,
+            "P34": 7,
+            "P35": 14,
+            "P36": 2,
+            "P37": 19,
+            "P38": 13,
+            "P39": 8,
+            "P40": 4,
+            "P41": 3,
+            "P42": 12,
+            "P43": 12,
+            "P44": 19,
+            "P45": 2,
+            "P46": 7,
+            "P47": 9,
+            "P48": 14,
+            "P49": 17,
+            "P50": 33,
+            "P51": 13,
+            "P52": 43,
+            "P53": 23,
+            "P57": 56,
+            "P62": 38,
+            "P63": 18,
+            "P64": 24,
+            "P65": 5,
+            "P66": 4,
+            "P68": 36,
+            "P69": 160,
+            "P67": 96
+          },
+          "groups": null
+        }
+      ],
+      "shell_exit": 0,
+      "shell_seconds": 1055.0,
+      "status": "has-terminal-receipt",
+      "acceptance_claim": false
+    },
+    {
+      "file": {
+        "path": "/tmp/issue118-cost-audit-20261006/geometry-web/docs/issue123-c-pending-tests/measurements/t3_cdp_patched.log",
+        "bytes": 104716,
+        "sha256": "807365285b981c0f052c283c31de0320fdbe93889817ee485eae72157e19155c"
+      },
+      "declared_baseline_source_sha": "d6b4b450d741fcbbfd75c51631915d3082926990",
+      "source_identity_verified": false,
+      "source_limit": "Baseline label only; patch/native-byte identity is not verified by this ledger.",
+      "results": [
+        {
+          "line": 812,
+          "marker": "CDP_RESULT",
+          "schema": "geometry-cdp-result/1",
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_CDP_FROM_P31"
+          ],
+          "completed": true,
+          "passed": 761,
+          "failed": 0,
+          "golden_compare": "not compared (partial mode)",
+          "browser_exception_count": 1,
+          "scope_omissions": null,
+          "sections": {
+            "(before first section)": 7,
+            "P32": 34,
+            "P33": 9,
+            "P34": 7,
+            "P35": 14,
+            "P36": 2,
+            "P37": 19,
+            "P38": 13,
+            "P39": 8,
+            "P40": 4,
+            "P41": 3,
+            "P42": 12,
+            "P43": 12,
+            "P44": 19,
+            "P45": 2,
+            "P46": 7,
+            "P47": 9,
+            "P48": 14,
+            "P49": 17,
+            "P50": 33,
+            "P51": 13,
+            "P52": 43,
+            "P53": 23,
+            "P57": 56,
+            "P62": 38,
+            "P63": 18,
+            "P64": 24,
+            "P65": 5,
+            "P66": 4,
+            "P68": 36,
+            "P69": 160,
+            "P67": 96
+          },
+          "groups": null
+        }
+      ],
+      "shell_exit": 0,
+      "shell_seconds": 1089.0,
+      "status": "has-terminal-receipt",
+      "acceptance_claim": false
+    },
+    {
+      "file": {
+        "path": "/tmp/issue118-cost-audit-20261006/geometry-web/docs/issue123-c-pending-tests/measurements/t4_space-flow_baseline.log",
+        "bytes": 7641,
+        "sha256": "d0c427894f50a31fd76f696e225626464517c278e250df5a9c207366a27d392e"
+      },
+      "declared_baseline_source_sha": "d6b4b450d741fcbbfd75c51631915d3082926990",
+      "source_identity_verified": false,
+      "source_limit": "Baseline label only; patch/native-byte identity is not verified by this ledger.",
+      "results": [
+        {
+          "line": 55,
+          "marker": "SPACE_RESULT",
+          "schema": "geometry-space-result/1",
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_SPACE_FLOW_ONLY"
+          ],
+          "completed": true,
+          "passed": 43,
+          "failed": 0,
+          "golden_compare": null,
+          "browser_exception_count": 0,
+          "scope_omissions": [
+            "space-height-library",
+            "projection-lifecycle",
+            "projection-placement",
+            "font-layout",
+            "timber-material",
+            "timber-source-guards"
+          ],
+          "sections": null,
+          "groups": {
+            "setup": {
+              "expected": 2,
+              "passed": 2,
+              "failed": 0,
+              "completed": true
+            },
+            "space-flow": {
+              "expected": 39,
+              "passed": 39,
+              "failed": 0,
+              "completed": true
+            },
+            "browser-health": {
+              "expected": 2,
+              "passed": 2,
+              "failed": 0,
+              "completed": true
+            }
+          }
+        }
+      ],
+      "shell_exit": 0,
+      "shell_seconds": 58.0,
+      "status": "has-terminal-receipt",
+      "acceptance_claim": false
+    }
+  ],
+  "static_source_census": {
+    "registered_python_suites": 47,
+    "posix_native_overrides": {
+      "core": [
+        "GEOMETRY_TEST_CORE"
+      ],
+      "bridge": [
+        "GEOMETRY_TEST_BRIDGE",
+        "GEOMETRY_ENGINEERING_BRIDGE"
+      ],
+      "integrity": [],
+      "model-base": [
+        "GEOMETRY_MODEL_BASE"
+      ],
+      "engjson": [
+        "GEOMETRY_TEST_ENGINEERING_JSON"
+      ]
+    },
+    "all_fresh_preflight_checks_per_suite": 5,
+    "all_fresh_preflight_checks_static": 235,
+    "bridge_alias_rechecks_static": 47,
+    "declared_needs_only_checks_counterfactual": 63,
+    "counterfactual_validated": false,
+    "assumptions": [
+      "Every applicable native override is fresh and exported to each Python suite.",
+      "Declared-needs-only is an unvalidated dependency proposal, not an executed policy."
+    ]
+  },
+  "evidence_files": [
+    {
+      "path": "/workspace/pr136-3019c036-review/receipts/08-aggregate.log",
+      "bytes": 12688,
+      "sha256": "b8123079139ce08b66ce3e916a2830c96ec18d43de50a4094a93ba536b4b2b2a"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/receipts/08-aggregate.json",
+      "bytes": 546,
+      "sha256": "b6d1da7fee09ff25db29590f4542124cef1d6c6d14587698939d9df6f40f112d"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_candidate_impact.json",
+      "bytes": 308,
+      "sha256": "b81f3cd8e40e04682cd451140e3be3068a5493590c9b0f39a0d34d535138e559"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_candidate_impact.unittest.log",
+      "bytes": 102,
+      "sha256": "fee49c11bf0c019ab4056e22c93aef57fe0de710252251714a2708eca79ce25d"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_capacity.json",
+      "bytes": 300,
+      "sha256": "2f2fbd184ab511ce3def129bcbd65ba1980b8bc111cb560972e48d3e1b549273"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_capacity.unittest.log",
+      "bytes": 103,
+      "sha256": "0bcd2c5226d95e787c0ebdd65c06d7af5a7a9ff31281839291bcb8a7cdfadc88"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_generation.json",
+      "bytes": 305,
+      "sha256": "95a635a8456ffd6e81090f578f9884ed61c9921873b781cf2226039bdaf3dbbe"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_generation.unittest.log",
+      "bytes": 120,
+      "sha256": "ff5f89e183a7cbf5763805bebd4c7cd23341459c06f983f7ad7d35c5073a7182"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_native_diagnostics.json",
+      "bytes": 310,
+      "sha256": "3da3ba3bb6921040a15224213d0f5b3007b9eb41f63fb0ba1aeaf2d5698e134c"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_native_diagnostics.unittest.log",
+      "bytes": 106,
+      "sha256": "117b5dbb7114c9dc54d78aead81f5e2c90d8d08c6fbcd5926af520e843027978"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_parameter_refs.json",
+      "bytes": 306,
+      "sha256": "c858803749fc90f374312b9a9451f1c592861b910db536fbe56ede904a1a54e9"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_parameter_refs.unittest.log",
+      "bytes": 101,
+      "sha256": "5af2b9acef0f16ddfd9d6e4d6a9a9bdc66c81213b6311541145a65776318bbac"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_rules.json",
+      "bytes": 300,
+      "sha256": "f09ef0837ace567df090ab4de04ef7e0adf87e34afdca8e8e59ed40379128dcf"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_assembly_rules.unittest.log",
+      "bytes": 134,
+      "sha256": "8278ae26721205522590c6cef68342a5f02c2872e238dcb9f90f780f77dd4334"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_axiom_reader.json",
+      "bytes": 298,
+      "sha256": "a4416c8026b94b11ad0c9293e5fce1973a08742d4900b2580b18924468e7a9f2"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_axiom_reader.unittest.log",
+      "bytes": 141,
+      "sha256": "b8a41badf14fb00130d35a98422ae1a6abad9691a8a9141cf686ec79a0ac904f"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_binaries.json",
+      "bytes": 294,
+      "sha256": "c664d0204269a7dda358abb09bf86454f5724f61f9562aa5b9dd283dea4cbe44"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_binaries.unittest.log",
+      "bytes": 129,
+      "sha256": "4b20cd8a2483e6c45ae672216a34743bd4c23f58c566eba4e2d547dca39b0cb0"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_bridge_integrity.json",
+      "bytes": 303,
+      "sha256": "bb48073b00cb7a2aec725cb61090e262cd1bed9f255ad10eaa5226cc9b62e304"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_bridge_integrity.unittest.log",
+      "bytes": 124,
+      "sha256": "7c42a231f96202624f57086c72b756c31f6652f7b0d59970d1a380a891b344e4"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_cli_args.json",
+      "bytes": 291,
+      "sha256": "19b78b1b0a1c1321e05b9c65ed40f489e4138bc7b5f8ac1e2c0147325505f8c1"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_cli_args.unittest.log",
+      "bytes": 104,
+      "sha256": "ef2e95f822decc6c6a85d2066df58ed4740df4a1f53a5a77e4fa7a28024fea64"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_datum_contract.json",
+      "bytes": 296,
+      "sha256": "f42d0e655c6028e33e16435d3d8e41f909859ea31e821aba6f3c2d45c92db373"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_datum_contract.unittest.log",
+      "bytes": 107,
+      "sha256": "613e0a8c2e017a10d262f577ff718b718fc9cdd4e3a981ef5d80a2ba8f129196"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_core.json",
+      "bytes": 302,
+      "sha256": "46c417cfa99a4b9dd7f3e6574b1642920601bee128afec0aa992acdc631894a4"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_core.unittest.log",
+      "bytes": 117,
+      "sha256": "53a38c98785b2a973e5bc387c5cce180aba6d6e5167c5360e535ac0606df97fe"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_json.json",
+      "bytes": 299,
+      "sha256": "423856e55966dff4afd3bf03ae0ca06574b54a6f888c6226bced171ab90823b2"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_json.unittest.log",
+      "bytes": 105,
+      "sha256": "15aa24ce632610081b01a913b1127147b5bbf0dcf24ad9467d780f5f3cf99ab0"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_model_compatibility.json",
+      "bytes": 317,
+      "sha256": "640867b3e99439d6596c2bab6f84369d7cdfa185010704cad8d19a5bd23d836d"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_model_compatibility.unittest.log",
+      "bytes": 123,
+      "sha256": "90fe5695bf960bd7f0cd84cede4c399d6337c4c78efc89f7cc9a850552e4f793"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_model_sources.json",
+      "bytes": 308,
+      "sha256": "73b44d2107758b03828833a0a6bcc651df6a26870142a70dbd4fb0e70534cbc5"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_model_sources.unittest.log",
+      "bytes": 102,
+      "sha256": "b80272b7d624761afe2f9dc14b6e0419d96a8ec913707f49efe78e25d7c5b32c"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_transport.json",
+      "bytes": 304,
+      "sha256": "e32893c9408b0dcea545d7e1d171e70ad26740eff277fd2aea79d0496df35c7d"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_engineering_transport.unittest.log",
+      "bytes": 104,
+      "sha256": "62cfbeb2911bb226088bfb0918eb4b05008ea70b20bce854ee2ca8a564bd37a5"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_evidence_link_native.json",
+      "bytes": 303,
+      "sha256": "16cd1be968e0d5d61ec543d68caa666198414e019ed4691dd583e42f59098d88"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_evidence_link_native.unittest.log",
+      "bytes": 104,
+      "sha256": "debc35fedfd5c465702fce6a23b61745f6d31ebd945ced23676fc0ad960a0e12"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_feedback_store.json",
+      "bytes": 300,
+      "sha256": "8af07dd680d862333596f7c27e96f48343f1bf7cd990882eaab5991d57f9b9b0"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_feedback_store.unittest.log",
+      "bytes": 110,
+      "sha256": "5847e3778622e9f75ba8d9778d8dd20baac36d707086b00b372e60d35baad06e"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_gdi_contract.json",
+      "bytes": 549,
+      "sha256": "a9b9b8c456f8ffa35201127fc331e3658695bce8f964f7a22ab2d8e255a75c4a"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_gdi_contract.unittest.log",
+      "bytes": 110,
+      "sha256": "16ba752c32957f3b2943ad473825fe6f0c70e1f1be428ad10b951d3af1a90efe"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_grid_subdivision_oracle.json",
+      "bytes": 309,
+      "sha256": "8d587cb2b18c2486c9e60a4d4edcf63488578b9e7343c82beb3b96fe724999f3"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_grid_subdivision_oracle.unittest.log",
+      "bytes": 139,
+      "sha256": "a246dd91b291b92bed3d25269ae2a97cdeb67c40a07f8e2fcb3f74ca9909be59"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_grid_system_contract.json",
+      "bytes": 306,
+      "sha256": "2b274b5858ce2df7b50e09db6427a0cd638d84981aaf9afa067dd0a47d7783df"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_grid_system_contract.unittest.log",
+      "bytes": 112,
+      "sha256": "5b1749c385503fe48e541a06eeedcf8af1fa9efc520181fed19ef88cb01b2a82"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_grid_trial_contract.json",
+      "bytes": 302,
+      "sha256": "fbb0c41fb817011d94d4e22ea08a36f0d3bb2fd299c7794df3c77035440a8fb2"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_grid_trial_contract.unittest.log",
+      "bytes": 103,
+      "sha256": "6a6361e56795e1dbbe5a111155820d93cbe7e737ce000372110b46291001c484"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_guide_panels.json",
+      "bytes": 295,
+      "sha256": "e38839dac11152052a01b442d9100c41f5d15599a74527dac2735f46d0d528dd"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_guide_panels.unittest.log",
+      "bytes": 98,
+      "sha256": "000eb480d6a826ba1165ba4218b8c56cd4a906db0433189642462f79fea41803"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_infinite_grid_contract.json",
+      "bytes": 308,
+      "sha256": "cb4ee9e0ca71b777a517a3cec3f1ce39e8c898789be50713de5babf47bb004ff"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_infinite_grid_contract.unittest.log",
+      "bytes": 124,
+      "sha256": "7e84401343824dc2e323fea688858c48c0d7c6bc51b1b5b193e8d842746bfd78"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_model_update.json",
+      "bytes": 299,
+      "sha256": "42f9a8facba1a16ab4a89461ccd80fe9c80f36e41ccd1299ddf972261060ee66"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_model_update.unittest.log",
+      "bytes": 126,
+      "sha256": "83944070ec9fe763818fd6dcf4b0b95ffad4f69f572e7f5b79ca4188d48f03ed"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_modeling_degenerate.json",
+      "bytes": 305,
+      "sha256": "2b7558332e3263c4d7b481dc9e62aae04bdb93cafa5c16ce2dabb9df11d086e4"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_modeling_degenerate.unittest.log",
+      "bytes": 123,
+      "sha256": "40a16cfcfae338de6e743bfb76ceb377911adf47ed5a2d8382c649611d4b431c"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_modeling_runtime.json",
+      "bytes": 302,
+      "sha256": "7e3f88d57142730a3398598c4dc6b02e15e9325bc4d832c532ea618fd1fd57e1"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_modeling_runtime.unittest.log",
+      "bytes": 145,
+      "sha256": "5ac19401d0ea8f8e045e1d65e91eef126ec967e1ea02b7870323c9b5245f3695"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_modeling_transport.json",
+      "bytes": 301,
+      "sha256": "4f179ce7349b7f5c353dc01e5235058f2bab34d314b3e2f35ee98a8ec587f2fc"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_modeling_transport.unittest.log",
+      "bytes": 100,
+      "sha256": "2dcc4888f1273eb71c313b3bf4038d386294ade0c9fe51c567a0c19c2c656378"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_mutation_freshness.json",
+      "bytes": 304,
+      "sha256": "c8b4b2d7090310d077ba6fe8c74ddd0dc75e60ece44a4df51d2d40cb9e876387"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_mutation_freshness.unittest.log",
+      "bytes": 123,
+      "sha256": "878853a892228f009a74a802319a713f584a301e570cba5e29cc4f02e915c9ca"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_parameters_core.json",
+      "bytes": 301,
+      "sha256": "94fec0fc365627a3264dba1a4bcaeaccd9ac578a213b0f7298fd78a6b9d5314d"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_parameters_core.unittest.log",
+      "bytes": 119,
+      "sha256": "bc6e823898c2f83b751d6d801beb601e5867fea344d03b28ba045a1fccbfed07"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_reference_contract.json",
+      "bytes": 304,
+      "sha256": "b4cb9b10f4005a2349c6d3b52ae79701788eb1b71d3ac4fb9cbbc79dececf068"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_reference_contract.unittest.log",
+      "bytes": 134,
+      "sha256": "48cc68eff857139c282de0edfa994f7d0a555f3a52568dfb431b3e6dda1aaeee"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_rule_case_catalog.json",
+      "bytes": 303,
+      "sha256": "f49a642f3025433cb130b350d7f280524214f511d9325acc664d2f52d7a465eb"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_rule_case_catalog.unittest.log",
+      "bytes": 113,
+      "sha256": "8b584649c6beb3c7fe2f84e0dafc101ad4a36e98915400bccedd74ee46d772ce"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_rule_case_definition.json",
+      "bytes": 306,
+      "sha256": "65040ba8feb83347c77796f40bc17554cf11825c1d59ffad39ac938c593b95ae"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_rule_case_definition.unittest.log",
+      "bytes": 126,
+      "sha256": "678c3a1dd3452962c4c9a07bc4251f7ae855d38cdca48c6a5683a9108afe89c8"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_rule_case_executor.json",
+      "bytes": 303,
+      "sha256": "30c562c7397788282d9d90f84a29ae3868e2090341ca59680f3d42de0beff20f"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_rule_case_executor.unittest.log",
+      "bytes": 139,
+      "sha256": "19be70986f22561cb657f7f2344574f8326f7da33784537a26024319e8f91e99"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_rule_case_request.json",
+      "bytes": 300,
+      "sha256": "2414086aa326b54ade7677bd3818ae847424ee95bd4453c59231bc0c5ad67f1b"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_rule_case_request.unittest.log",
+      "bytes": 103,
+      "sha256": "b228a05dabe240ee9480a9994358cfdb406bb117ac7d97b293e383615b5fede5"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_runtime_version.json",
+      "bytes": 301,
+      "sha256": "b72b52f8408b6c8625d755ca82601eea8cec786f9c85fc6d4f0ad1910bd2eb35"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_runtime_version.unittest.log",
+      "bytes": 123,
+      "sha256": "d1ef57d13ba82ce9e3b149966dd8ae18192ec6e298ad06212c3bbcf8a4b02657"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_scenario_verify.json",
+      "bytes": 302,
+      "sha256": "2c4bad986fd5e441376bae8d84f06abbbc1bd35d50e97d0a316d07ffedce9269"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_scenario_verify.unittest.log",
+      "bytes": 136,
+      "sha256": "cfcce9f603103d94272c18173ccb997f639564fa76ca181657f845015d8be62c"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_scene_import.json",
+      "bytes": 298,
+      "sha256": "2079b2eed490536680134c5ae75b43005f7e2b7be2162a641c5f9381b0081ca8"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_scene_import.unittest.log",
+      "bytes": 109,
+      "sha256": "2f552321a46d05869d9da01d937e666082764d6bcf835bcf4d6dcca007ff2a55"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_serve.json",
+      "bytes": 292,
+      "sha256": "2ec0da85f3a05837f3ec69143948927c3acec6c18c474e17b3e49b7c2cea86ae"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_serve.unittest.log",
+      "bytes": 134,
+      "sha256": "8f4dc1d66bfef5197cdcc7d2abedc26f7719045d0a2f4a7b1e866cf4bfa4ae2c"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_source_inspector.json",
+      "bytes": 302,
+      "sha256": "e6c4171a714b156d46aad4cc8cc17ed6aecdb346f82dd04101640de091f01128"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_source_inspector.unittest.log",
+      "bytes": 117,
+      "sha256": "86657572e34335f9e54951dc949c1ad893456f4d2811e59b962c5ae1f6c0b50b"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_source_inspector_transport.json",
+      "bytes": 308,
+      "sha256": "51f1106b70f06afa4e1883d9bf51863e9d4c1636af8092c46845042fc679e05e"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_source_inspector_transport.unittest.log",
+      "bytes": 100,
+      "sha256": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_space_modeling.json",
+      "bytes": 300,
+      "sha256": "f6e48ce22b243974c5919cbb2dc3902cddccd934dba03fabe02f619b279958c7"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_space_modeling.unittest.log",
+      "bytes": 135,
+      "sha256": "7b02a8582340f58c57094351d1d5f6709674d10d346b0fb20509b055c94b0302"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_subgrid_contract.json",
+      "bytes": 302,
+      "sha256": "28415a8dd077bee585b37a83d19344f7ba53471be110e6c2611bb5b5a48fe43d"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_subgrid_contract.unittest.log",
+      "bytes": 130,
+      "sha256": "738c0563bc43946eec42d45a718235e5a389bc13a6af7123a63252a3ca75b58e"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_timber_support_projection.json",
+      "bytes": 312,
+      "sha256": "ebdfa499ccc16096a4d85277d771b24d1fbbc493e84232f1f76565a870843ea5"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_timber_support_projection.unittest.log",
+      "bytes": 113,
+      "sha256": "044a02cdfd8d68d9dd9bf54243df2850b1ce09ae7d20ec638034c88e82828252"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_witness_diagnostics.json",
+      "bytes": 302,
+      "sha256": "868056061f0ef6bd3e0e451775965cb06f88866a0080ef9063f84d1e62ed58b5"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_witness_diagnostics.unittest.log",
+      "bytes": 100,
+      "sha256": "fe008aab760eb03ccac7578e2b84665b1b50b0d7f855b17a0c7a8d039435b658"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_witness_marks.json",
+      "bytes": 296,
+      "sha256": "3a0db5603016d250fa245bb788d6807a0adc4d444d82171106bab59101122163"
+    },
+    {
+      "path": "/workspace/pr136-3019c036-review/suite-logs/py_test_witness_marks.unittest.log",
+      "bytes": 104,
+      "sha256": "652f1d38b0798185a3eec96b777a7c1eecedd12dd952d43ed9357eb2ae5a36a2"
+    }
+  ],
+  "limits": [
+    "Historical timing is not a run of source_sha.",
+    "Unittest timing includes setUp/tearDown/cleanup and any native execution inside the suite.",
+    "Unknown phase costs stay null. Sleeps/timeouts in source are not observed elapsed time.",
+    "Rounded console, reporter and unittest durations have distinct boundaries.",
+    "Node file concurrency and inclusive parent/subtest times prevent summing node item durations.",
+    "Browser partial, failed and completed receipts remain distinct; exit0 does not upgrade scope.",
+    "No test/build/native executable/browser/service was invoked by this ledger."
+  ]
+}

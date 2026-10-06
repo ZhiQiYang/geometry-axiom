@@ -1,0 +1,14 @@
+{
+  "schema": "issue118-browser-byte-equivalence/1",
+  "baselineHead": "11dc339152e05ea811972b8c0c15ff29520207cd",
+  "latestMainHead": "5e0e92b850209e9e2895612148694c1d1e1e4815",
+  "checkedBy": "read_bytes equality and SHA256; no build/native/browser/services",
+  "files": [
+    {"path": ".github/workflows/integration-tests.yml", "sameBytes": true, "sha256": "eaf3a2dc4a3b5bebadd9c98ebe058403959a62593916bef99d888c0970e20f9d"},
+    {"path": "package.json", "sameBytes": true, "sha256": "42d9decc53d359b8ef543c12ded3bee19f6bb8f72faaa49505fb63f47661a61e"},
+    {"path": "geometry-web/cdp_test.js", "sameBytes": true, "sha256": "87d79d48548d9002d245e149149d7f50dfa998a940fc7383c06668200ec5c8fe"},
+    {"path": "geometry-web/space_model_test.js", "sameBytes": true, "sha256": "1b9d995cc72b880635a91804df6002f8e49a52365ad1a76d580a01283326f425"},
+    {"path": "geometry-web/documents_browser_test.js", "sameBytes": true, "sha256": "0ab5cec0dd5f497e9501c68dce6970658f1d39c1f8a2c62183744b47b5826886"},
+    {"path": "geometry-web/parameter_workflow_test.js", "sameBytes": true, "sha256": "816c5c1cc0834d8f60eafba6392f96c0cf408fdbcf07d1abe23c438d966ad612"}
+  ]
+}

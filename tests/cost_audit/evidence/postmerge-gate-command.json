@@ -1,0 +1,17 @@
+{
+  "source_sha": "5e0e92b850209e9e2895612148694c1d1e1e4815",
+  "command": [
+    "python3",
+    "tests/_unittest_runner.py",
+    "tests/test_unittest_runner.py",
+    "--json-out",
+    "/workspace/issue118-postmerge-5e0e92b8-20261006/gate.json",
+    "--log",
+    "/workspace/issue118-postmerge-5e0e92b8-20261006/gate.unittest.log"
+  ],
+  "cwd": "/tmp/issue118-cost-audit-20261006",
+  "start_utc": "2026-10-06T00:45:20.797709+00:00",
+  "end_utc": "2026-10-06T00:45:23.622757+00:00",
+  "wall_seconds": 2.8250659000041196,
+  "exit": 0
+}

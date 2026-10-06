@@ -1,0 +1,98 @@
+{
+  "baseline_head": "11dc339152e05ea811972b8c0c15ff29520207cd",
+  "historical_head": "3019c036c74633a0379714180fa6d68af067d88e",
+  "aggregate_process_seconds": 363.113,
+  "aggregate_shell_exit": 0,
+  "suite_process_sum_seconds_rounded": 332.1,
+  "outside_suite_gap_seconds_approximate": 31.013,
+  "outside_suite_gap_attribution": null,
+  "source_records": [
+    {
+      "path": "tests/test_axiom_reader.py",
+      "historical_sha256": "111f113646dad5ecb08ce07baaa30f5e8d41c631b827fad1a2a84e05c9055375",
+      "baseline_sha256": "111f113646dad5ecb08ce07baaa30f5e8d41c631b827fad1a2a84e05c9055375",
+      "identical_bytes": true
+    },
+    {
+      "path": "tests/test_model_update.py",
+      "historical_sha256": "06b445d8d07a871f17ee5ed38fc9c90087ba439bd2dc6454925198f5cb55fa99",
+      "baseline_sha256": "06b445d8d07a871f17ee5ed38fc9c90087ba439bd2dc6454925198f5cb55fa99",
+      "identical_bytes": true
+    },
+    {
+      "path": "tests/test_serve.py",
+      "historical_sha256": "ff47d6847bbbddd46d8d2b04f402f6b3181c067725fb7e7c98f07d7628d2be61",
+      "baseline_sha256": "ff47d6847bbbddd46d8d2b04f402f6b3181c067725fb7e7c98f07d7628d2be61",
+      "identical_bytes": true
+    },
+    {
+      "path": "tests/_bridge.py",
+      "historical_sha256": "bb34d61a288772f9defa9136a58f9102effe40e6f325338ef2abc01862508df9",
+      "baseline_sha256": "bb34d61a288772f9defa9136a58f9102effe40e6f325338ef2abc01862508df9",
+      "identical_bytes": true
+    },
+    {
+      "path": "geometry-guide/sync_axiom_reader.py",
+      "historical_sha256": "ac3eee122090819b2470ea64e65cdc8c73a713be02deb4fc76641aaeae0089c4",
+      "baseline_sha256": "ac3eee122090819b2470ea64e65cdc8c73a713be02deb4fc76641aaeae0089c4",
+      "identical_bytes": true
+    },
+    {
+      "path": "geometry-web/model_update.py",
+      "historical_sha256": "c75454ebe398352a7d6c09d421fd6835b8c627ad9a08663cfb9c75103bb85ae6",
+      "baseline_sha256": "c75454ebe398352a7d6c09d421fd6835b8c627ad9a08663cfb9c75103bb85ae6",
+      "identical_bytes": true
+    },
+    {
+      "path": "geometry-web/runtime_version.py",
+      "historical_sha256": "f48624a2ed6528a01c36d6d7d44bde589ee11d5587da4681f052579c2cc7e955",
+      "baseline_sha256": "f48624a2ed6528a01c36d6d7d44bde589ee11d5587da4681f052579c2cc7e955",
+      "identical_bytes": true
+    }
+  ],
+  "timings": [
+    {
+      "suite": "py:test_axiom_reader",
+      "suite_process_seconds_rounded": 87.7,
+      "reporter_total_seconds": 87.6,
+      "unittest_run_seconds_including_fixtures": 87.465,
+      "unittest_count": 41,
+      "sleep_seconds": null,
+      "poll_seconds": null,
+      "stop_wait_seconds": null,
+      "test_body_seconds": null,
+      "reader_rebuild_seconds": null,
+      "reporter_path": "/workspace/pr136-3019c036-review/suite-logs/py_test_axiom_reader.json",
+      "unittest_path": "/workspace/pr136-3019c036-review/suite-logs/py_test_axiom_reader.unittest.log"
+    },
+    {
+      "suite": "py:test_model_update",
+      "suite_process_seconds_rounded": 58.7,
+      "reporter_total_seconds": 58.65,
+      "unittest_run_seconds_including_fixtures": 58.522,
+      "unittest_count": 26,
+      "sleep_seconds": null,
+      "poll_seconds": null,
+      "stop_wait_seconds": null,
+      "test_body_seconds": null,
+      "reader_rebuild_seconds": null,
+      "reporter_path": "/workspace/pr136-3019c036-review/suite-logs/py_test_model_update.json",
+      "unittest_path": "/workspace/pr136-3019c036-review/suite-logs/py_test_model_update.unittest.log"
+    },
+    {
+      "suite": "py:test_serve",
+      "suite_process_seconds_rounded": 13.1,
+      "reporter_total_seconds": 13.01,
+      "unittest_run_seconds_including_fixtures": 12.883,
+      "unittest_count": 34,
+      "sleep_seconds": null,
+      "poll_seconds": null,
+      "stop_wait_seconds": null,
+      "test_body_seconds": null,
+      "reader_rebuild_seconds": null,
+      "reporter_path": "/workspace/pr136-3019c036-review/suite-logs/py_test_serve.json",
+      "unittest_path": "/workspace/pr136-3019c036-review/suite-logs/py_test_serve.unittest.log"
+    }
+  ],
+  "new_suite_runs": 0
+}

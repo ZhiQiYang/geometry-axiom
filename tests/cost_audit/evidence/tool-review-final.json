@@ -1,0 +1,53 @@
+{
+  "status": "approved",
+  "blocking_findings": [],
+  "subjects": [
+    {
+      "path": "/tmp/issue118-cost-audit-20261006/tests/cost_audit/receipt_costs.py",
+      "sha256": "9ed2f2f354138d43306eb22481889bec1a27a348b90d553874515891014074bc",
+      "bytes": 13657
+    },
+    {
+      "path": "/tmp/issue118-cost-audit-20261006/tests/cost_audit/shutdown_poll_probe.py",
+      "sha256": "027918c33d7ee06b45b74bb7137ec7e9b8c77f33a5b41d6fa198fd777a6f354f",
+      "bytes": 4116
+    },
+    {
+      "path": "/tmp/issue118-cost-audit-20261006/tests/cost_audit/README.md",
+      "sha256": "cec7dc113ac905dd9e4d391edf274a3a063ad576aa801ddfc9c816bbf436aeba",
+      "bytes": 9837
+    }
+  ],
+  "ledger_observations": [
+    "not-run rows skip existing per-suite receipts",
+    "FAIL and malformed/duplicate result rows retain rejection behavior",
+    "phase seconds remain null and unittest clock includes fixtures",
+    "current source SHA, aggregate evidence SHA and unverified browser baseline labels remain distinct",
+    "partial/failed browser results never become acceptance claims",
+    "node item timings are not summed",
+    "235 static checks and 63 declared-needs counterfactual remain unvalidated counts"
+  ],
+  "probe_observations": [
+    "uses only stdlib BaseServer and socketpair, no TCP listening or product startup path",
+    "serve and shutdown workers are daemon threads",
+    "main and cleanup waits have finite joins; cleanup wake is nonblocking",
+    "normal synthetic medians do not claim measured test-suite savings",
+    "actual_test_serve_saved_seconds remains null"
+  ],
+  "independent_self_check": {
+    "command": "python tests/cost_audit/receipt_costs.py --self-check",
+    "shell_exit": 0,
+    "stdout": "self-check: table/exit-only-failure/unrun/duplicate/malformed/partial/incomplete/missing/nonfinite PASS"
+  },
+  "independent_stuck_shutdown_check": {
+    "receipt": "/tmp/issue118-wait-review/stuck-shutdown-receipt.json",
+    "shell_exit": 0,
+    "outer_deadline_seconds": 9,
+    "observed_rejection": "synthetic shutdown exceeded its bound",
+    "observed_elapsed_seconds": 4.007475903003069
+  },
+  "product_suite_runs": 0,
+  "native_executable_launches": 0,
+  "normal_probe_reruns": 0,
+  "remaining_blockers": []
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "geometry-test-shutdown-mechanism/1",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "stdlib_source_sha256": "bbe57587858d8d13ab22edfa3db4b7103c1dfd93303fec69c04e94396e00b167",
+  "listening_ports": 0,
+  "product_services": 0,
+  "samples": [
+    {
+      "configuration": "stdlib-default",
+      "shutdown_wait_seconds": 0.5005699530011043
+    },
+    {
+      "configuration": 0.01,
+      "shutdown_wait_seconds": 0.010206828999798745
+    },
+    {
+      "configuration": "stdlib-default",
+      "shutdown_wait_seconds": 0.5006862509981147
+    },
+    {
+      "configuration": 0.01,
+      "shutdown_wait_seconds": 0.010028272001363803
+    },
+    {
+      "configuration": "stdlib-default",
+      "shutdown_wait_seconds": 0.5006189490013639
+    },
+    {
+      "configuration": 0.01,
+      "shutdown_wait_seconds": 0.009921611999743618
+    }
+  ],
+  "median_shutdown_wait_seconds": {
+    "stdlib-default": 0.5006189490013639,
+    "0.01": 0.010028272001363803
+  },
+  "actual_test_serve_saved_seconds": null,
+  "limits": [
+    "Synthetic idle socketpair only; no HTTP requests or product test suite.",
+    "Demonstrates polling mechanism, not twelve real server shutdown costs.",
+    "The .01 configuration changes polling frequency, not any product/request/join timeout."
+  ]
+}

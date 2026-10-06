@@ -1,0 +1,38 @@
+{
+  "schema": "issue118-browser-cost-audit/1",
+  "baseHead": "11dc339152e05ea811972b8c0c15ff29520207cd",
+  "latestMainWithEquivalentBrowserBytes": "5e0e92b850209e9e2895612148694c1d1e1e4815",
+  "readOnlyRepository": true,
+  "executedBuildNativeBrowserOrServices": false,
+  "pullRequest149Unchanged": true,
+  "currentTimingMeasurement": null,
+  "staticFindings": {
+    "browserMatrixJobs": 6,
+    "nativeCompilerInvocationsPerBrowserJob": 3,
+    "browserNativeCompilerInvocations": 18,
+    "unusedBrowserCoreCompilerInvocations": 6,
+    "requiredPerRunnerBridgeBaseCompilerInvocations": 12,
+    "defaultDuplicateFocusedGroups": ["assembly", "grid"],
+    "duplicateAssemblyAssertions": 150,
+    "duplicateGridAssertions": 182,
+    "fullCdpGoldenSections": 83,
+    "fullCdpGoldenAssertions": 2054,
+    "fullSpaceAssertions": 202,
+    "independentTimberAssertions": 79,
+    "spaceTimberSharedFontAssertions": 19
+  },
+  "minimalDefaultBrowserMatrixProposal": ["documents", "canvas", "space", "timber"],
+  "smallestIndependentOwnerProposal": "Keep all six browser jobs; create a browser-only bridge/model-base build entry, removing six unused core compilations; implementation and current timings not performed",
+  "historicalMeasurements": [
+    {"source": "geometry-web/docs/issue123-c-pending-tests/measurements/t3_cdp_b6_patch.json", "head": "d6b4b450d741fcbbfd75c51631915d3082926990", "scope": "partial:GEOMETRY_CDP_FROM_P31=1", "attempt": "baseline_run1", "seconds": 620, "completed": false, "exit": 1, "classification": "failed attempt; rerun diagnosis must remain"},
+    {"source": "geometry-web/docs/issue123-c-pending-tests/measurements/t3_cdp_b6_patch.json", "head": "d6b4b450d741fcbbfd75c51631915d3082926990", "scope": "partial:GEOMETRY_CDP_FROM_P31=1", "attempt": "baseline_run2", "seconds": 1055, "completed": true, "passedAssertions": 761, "failedAssertions": 0, "rawBrowserExceptionCount": 1, "goldenCompared": false},
+    {"source": "geometry-web/docs/issue123-c-pending-tests/measurements/t3_cdp_b6_patch.json", "head": "d6b4b450d741fcbbfd75c51631915d3082926990 + temporary patch", "scope": "partial:GEOMETRY_CDP_FROM_P31=1", "attempt": "patched", "seconds": 1089, "completed": true, "passedAssertions": 761, "failedAssertions": 0, "rawBrowserExceptionCount": 1, "goldenCompared": false},
+    {"source": "geometry-web/docs/issue123-c-pending-tests/measurements/t4_space-flow_baseline.log:57", "scope": "partial:GEOMETRY_SPACE_FLOW_ONLY=1", "seconds": 58, "passedAssertions": 43, "fullSuite": false},
+    {"source": "geometry-web/docs/issue123-c-pending-tests/measurements/t4_space-flow_font12.log:57", "scope": "partial:GEOMETRY_SPACE_FLOW_ONLY=1", "seconds": 59, "passedAssertions": 43, "fullSuite": false},
+    {"source": "geometry-web/docs/assembly-validation/linux-core.fingerprint.json:6", "builtAt": "2026-10-01", "buildAndSmokeSeconds": 18.3, "currentCiComparable": false},
+    {"source": "geometry-web/docs/assembly-validation/linux-bridge.fingerprint.json:6", "builtAt": "2026-10-01", "buildAndSmokeSeconds": 22.0, "currentCiComparable": false},
+    {"source": "geometry-web/docs/assembly-validation/linux-model-base.fingerprint.json:6", "builtAt": "2026-10-01", "buildAndSmokeSeconds": 17.2, "currentCiComparable": false}
+  ],
+  "remainingImplementationVerification": ["required GitHub check names", "artifact exact binary/source/command identity and nanosecond metadata roundtrip", "current CI per-step wall and runner time"],
+  "rawPrivateEvidenceCopied": false
+}

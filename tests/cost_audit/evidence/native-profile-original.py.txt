@@ -1,0 +1,121 @@
+"""Bounded read-only native fingerprint profiling; never compiles or starts an exe."""
+import ast
+import collections
+import datetime
+import importlib.util
+import json
+from pathlib import Path
+import statistics
+import sys
+import time
+
+sys.dont_write_bytecode = True
+ROOT = Path(sys.argv[1] if len(sys.argv) > 1 else '/tmp/issue118-reporter-20261006/baseline')
+OUT = Path('/tmp/issue118-native-cost')
+SOURCE_SHA = sys.argv[2] if len(sys.argv) > 2 else '11dc339152e05ea811972b8c0c15ff29520207cd'
+OUTPUT_NAME = sys.argv[3] if len(sys.argv) > 3 else 'profile.json'
+spec = importlib.util.spec_from_file_location('issue118_profile_binaries', ROOT / 'tests/binaries.py')
+binaries = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(binaries)
+selected = [b for b in binaries.REGISTRY if b.applicable()]
+tree = ast.parse((ROOT / 'tests/run_all.py').read_text())
+registry = next(ast.literal_eval(n.value) for n in tree.body if isinstance(n, ast.Assign)
+                and any(isinstance(t, ast.Name) and t.id == 'PY_NEEDS' for t in n.targets))
+original_sha = binaries._normalized_sha
+original_scan = binaries._scan_shared
+source_reads = []
+scans = []
+def counted_sha(path):
+    started = time.perf_counter()
+    digest = original_sha(path)
+    source_reads.append({'file': path.relative_to(ROOT).as_posix(), 'bytes': path.stat().st_size,
+                         'seconds': time.perf_counter() - started})
+    return digest
+def counted_scan():
+    started = time.perf_counter()
+    files = original_scan()
+    scans.append({'seconds': time.perf_counter() - started, 'file_count': len(files)})
+    return files
+binaries._normalized_sha = counted_sha
+binaries._scan_shared = counted_scan
+samples = []
+fingerprints = collections.defaultdict(set)
+overall_started = time.perf_counter()
+for iteration in range(6):
+    for binary in selected:
+        source_reads.clear()
+        scans.clear()
+        started = time.perf_counter()
+        fingerprint, hashes, command = binaries.compute_fingerprint(binary)
+        elapsed = time.perf_counter() - started
+        fingerprints[binary.name].add(fingerprint)
+        reads = list(source_reads)
+        by_file = collections.Counter(read['file'] for read in reads)
+        samples.append({'iteration': iteration, 'warmup': iteration == 0, 'binary': binary.name,
+                        'seconds': elapsed, 'normalized_sha_seconds': sum(read['seconds'] for read in reads),
+                        'scan_seconds': sum(scan['seconds'] for scan in scans),
+                        'source_hash_calls': len(reads), 'source_raw_bytes_read': sum(read['bytes'] for read in reads),
+                        'hashes_keys': len(hashes), 'duplicate_file_reads': {f:n for f,n in by_file.items() if n > 1},
+                        'command': command, 'fingerprint': fingerprint, 'reads': reads})
+        if time.perf_counter() - overall_started > 20:
+            raise RuntimeError('Read-only profiling exceeded the 20 second bound')
+binary_hash_samples = []
+for binary in selected:
+    if not binary.path.is_file():
+        continue
+    for iteration in range(3):
+        started = time.perf_counter()
+        identity = binaries._binary_identity(binary.path)
+        binary_hash_samples.append({'binary': binary.name, 'path': str(binary.path), 'iteration': iteration,
+                                    'seconds': time.perf_counter() - started, **identity})
+
+historical_dir = Path('/workspace/pr136-3019c036-review/native-sidecars')
+historical = []
+for path in sorted(historical_dir.glob('*.json')):
+    data = json.loads(path.read_text())
+    historical.append({'receipt': str(path), **{k:data[k] for k in ('name','command','built_at','build_seconds','exe_size')},
+                       'source_file_count': len(data['files'])})
+shared = original_scan()
+summaries = []
+for binary in selected:
+    measured = [s for s in samples if s['binary'] == binary.name and not s['warmup']]
+    raw = [s for s in binary_hash_samples if s['binary'] == binary.name]
+    summaries.append({'binary': binary.name,
+                      'fingerprint_median_ms': round(1000 * statistics.median(s['seconds'] for s in measured), 3),
+                      'scan_median_ms': round(1000 * statistics.median(s['scan_seconds'] for s in measured), 3),
+                      'normalized_hash_median_ms': round(1000 * statistics.median(s['normalized_sha_seconds'] for s in measured), 3),
+                      'source_hash_calls_per_fingerprint': measured[0]['source_hash_calls'],
+                      'source_raw_bytes_per_fingerprint': measured[0]['source_raw_bytes_read'],
+                      'duplicate_file_reads': measured[0]['duplicate_file_reads'],
+                      'binary_raw_size_measured': raw[0]['exe_size'] if raw else None,
+                      'binary_identity_median_ms': round(1000 * statistics.median(s['seconds'] for s in raw), 3) if raw else None})
+env_checks = [{'binary': b.name, 'variables': list(b.envs), 'count_per_suite': len(b.envs)}
+              for b in selected if b.envs]
+source_bytes_per_preflight = sum(s['source_raw_bytes_per_fingerprint'] * len(binaries.BY_NAME[s['binary']].envs)
+                                 for s in summaries)
+source_reads_per_preflight = sum(s['source_hash_calls_per_fingerprint'] * len(binaries.BY_NAME[s['binary']].envs)
+                                 for s in summaries)
+summary = {'source_sha': SOURCE_SHA, 'root': str(ROOT),
+           'at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+           'scope': 'Warm page-cache read-only fingerprint and raw binary identity microprofile; no tests/native execution/build/services',
+           'registry_python_suites': len(registry), 'applicable_native_binaries': len(selected),
+           'shared_file_count': len(shared), 'shared_raw_bytes': sum(p.stat().st_size for p in shared if p.is_file()),
+           'fingerprints_stable_within_samples': all(len(values) == 1 for values in fingerprints.values()),
+           'samples_per_fingerprint': 5, 'samples_per_raw_binary_hash': 3,
+           'per_binary': summaries, 'preflight_checks': env_checks,
+           'all_fresh_full_posix_env_checks_per_suite': sum(item['count_per_suite'] for item in env_checks),
+           'all_fresh_full_posix_runner_preflight_checks': len(registry) * sum(item['count_per_suite'] for item in env_checks),
+           'runner_preflight_source_read_calls_per_suite': source_reads_per_preflight,
+           'runner_preflight_source_bytes_per_suite': source_bytes_per_preflight,
+           'runner_preflight_source_bytes_all_suites_static': source_bytes_per_preflight * len(registry),
+           'runner_preflight_binary_bytes_all_suites_static': len(registry) * sum(
+               s['binary_raw_size_measured'] * len(binaries.BY_NAME[s['binary']].envs)
+               for s in summaries if s['binary_raw_size_measured'] is not None),
+           'bridge_alias_duplicate_checks_full_posix_static': len(registry),
+           'bridge_alias_duplicate_source_bytes_static': len(registry) * next(s['source_raw_bytes_per_fingerprint'] for s in summaries if s['binary'] == 'bridge'),
+           'historical_registry_build_seconds_total': sum(item['build_seconds'] for item in historical),
+           'historical_builds': historical,
+           'total_profiling_seconds': round(time.perf_counter() - overall_started, 3)}
+(OUT / OUTPUT_NAME).write_text(json.dumps({'summary': summary, 'source_fingerprint_samples': samples,
+                                            'raw_binary_identity_samples': binary_hash_samples}, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps(summary, ensure_ascii=False, indent=2))

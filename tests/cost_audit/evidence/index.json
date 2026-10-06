@@ -1,0 +1,232 @@
+{
+  "schema": "geometry-test-cost-evidence-index/1",
+  "frozen_utc": "2026-10-06T01:04:46.516818+00:00",
+  "audit_source_sha": "5e0e92b850209e9e2895612148694c1d1e1e4815",
+  "historical_native_evidence_sha": "3019c036c74633a0379714180fa6d68af067d88e",
+  "browser_declared_baseline_sha": "d6b4b450d741fcbbfd75c51631915d3082926990",
+  "evidence_files": [
+    {
+      "path": "cost-ledger.json",
+      "original_new_artifact": "/workspace/issue118-cost-ledger-5e0e92b8-20261006-final.json",
+      "bytes": 80073,
+      "sha256": "de00cdf2c57e00a6f145d24e498f8a97e55ee888384f49f5bb4ea8e8870cd1bd"
+    },
+    {
+      "path": "native-profile.json",
+      "original_new_artifact": "/tmp/issue118-native-cost/profile-merged.json",
+      "bytes": 188187,
+      "sha256": "f0077170ae610f0f3f6dbfc6d0f7ec7ee39b91fad18f0ea6c10dd41b30d53c72"
+    },
+    {
+      "path": "native-profile-original.py.txt",
+      "original_new_artifact": "/tmp/issue118-native-cost/profile_readonly.py",
+      "bytes": 7625,
+      "sha256": "c29a57252bd83adb3950f07a59ff76b1b66e18d00c4429637320225609128cbf"
+    },
+    {
+      "path": "native-caller-review.md",
+      "original_new_artifact": "/tmp/issue118-native-cost/report.md",
+      "bytes": 13351,
+      "sha256": "d4b18eb584cb8616ee3adc230a2af67a174507ba574b7bf17abdc9265b3b6cf5"
+    },
+    {
+      "path": "wait-source-review.md",
+      "original_new_artifact": "/tmp/issue118-wait-review/cost-review.md",
+      "bytes": 4709,
+      "sha256": "2629ad93797f0378b402abf111a89bc94746d99533142649b6d5294fd93f03b4"
+    },
+    {
+      "path": "historical-source-timing.json",
+      "original_new_artifact": "/tmp/issue118-wait-review/source-and-timing.json",
+      "bytes": 4051,
+      "sha256": "1574d1ec696f60f3e9e7e5783c18ec4af62e18bec96fd964b32715296329a41e"
+    },
+    {
+      "path": "browser-source-review.md",
+      "original_new_artifact": "/tmp/issue118-browser-cost/AUDIT.md",
+      "bytes": 14575,
+      "sha256": "9bc376100099d946b18b4466a9c4372a661505d6e90d8a5e16be09a3b0f14e71"
+    },
+    {
+      "path": "browser-facts.json",
+      "original_new_artifact": "/tmp/issue118-browser-cost/facts.json",
+      "bytes": 3487,
+      "sha256": "d680e40411b844a884f56fb8a39e1acdb50d40157518003351af73f399a0c13c"
+    },
+    {
+      "path": "browser-source-equivalence.json",
+      "original_new_artifact": "/tmp/issue118-browser-cost/equivalence.json",
+      "bytes": 1154,
+      "sha256": "559b3e493029447cb40f6e02e423c6147f01f1893371954a45342393d75cd0d8"
+    },
+    {
+      "path": "tool-review-final.json",
+      "original_new_artifact": "/tmp/issue118-wait-review/cost-tool-review-final.json",
+      "bytes": 2241,
+      "sha256": "74d930a0b0c29e6277eacd38bc186fc510453c5dd38a10298c8fa4d573c71b5c"
+    },
+    {
+      "path": "shutdown-bound-negative.json",
+      "original_new_artifact": "/tmp/issue118-wait-review/stuck-shutdown-receipt.json",
+      "bytes": 486,
+      "sha256": "091ba893d7c2d24bf08099ee36b3510d1c79f574bb74716e571e69806a300bb3"
+    },
+    {
+      "path": "shutdown-bound-original.py.txt",
+      "original_new_artifact": "/tmp/issue118-wait-review/check_stuck_shutdown.py",
+      "bytes": 2151,
+      "sha256": "69b00109fea593dec06febe361803ec3bcdc031607a2d0794ef893408688770b"
+    },
+    {
+      "path": "shutdown-poll.json",
+      "original_new_artifact": "/workspace/issue118-shutdown-poll-20261006-bounded.json",
+      "bytes": 1306,
+      "sha256": "0cfd8efd8f1b2be90187d147d4baa3b0c58716cba8d68f0d5e2c77b9ad2de40b"
+    },
+    {
+      "path": "postmerge-gate-command.json",
+      "original_new_artifact": "/workspace/issue118-postmerge-5e0e92b8-20261006/receipt.json",
+      "bytes": 532,
+      "sha256": "5448d658dd5fa8fe4e775f93dfed79a9504d07916bc90d631ba43bda88e5314a"
+    },
+    {
+      "path": "postmerge-gate.json",
+      "original_new_artifact": "/workspace/issue118-postmerge-5e0e92b8-20261006/gate.json",
+      "bytes": 347,
+      "sha256": "9497e4c6137ba88fa08d5d6e4bd7bd0693587be9566a301686dbdd5b6fb347f1"
+    },
+    {
+      "path": "postmerge-gate.unittest.log",
+      "original_new_artifact": "/workspace/issue118-postmerge-5e0e92b8-20261006/gate.unittest.log",
+      "bytes": 98,
+      "sha256": "ccb3c7d4a1141b38f9b26ef29765accde29bf67557ab80aa91dbc7490ce111de"
+    },
+    {
+      "path": "postmerge-registry.json",
+      "original_new_artifact": "/workspace/issue118-postmerge-5e0e92b8-20261006/registry.json",
+      "bytes": 144,
+      "sha256": "267e76ef7937ab2e38cfa5df91ad576d546a777f08929c68def54db29c9399f3"
+    },
+    {
+      "path": "historical-main-equivalence.json",
+      "method": "read current source bytes and compare recorded historical/baseline SHA256",
+      "bytes": 5195,
+      "sha256": "51bd31fd4e3e0e773975a18af6248541f24651593ba51025ccc572e2b87583c7"
+    }
+  ],
+  "tool_files": [
+    {
+      "path": "../receipt_costs.py",
+      "bytes": 13657,
+      "sha256": "9ed2f2f354138d43306eb22481889bec1a27a348b90d553874515891014074bc"
+    },
+    {
+      "path": "../shutdown_poll_probe.py",
+      "bytes": 4116,
+      "sha256": "027918c33d7ee06b45b74bb7137ec7e9b8c77f33a5b41d6fa198fd777a6f354f"
+    }
+  ],
+  "executed_tool_commands": [
+    {
+      "argv": [
+        "python3",
+        "tests/cost_audit/receipt_costs.py",
+        "--self-check"
+      ],
+      "exit": 0,
+      "captured_result": "table/exit-only-failure/unrun/duplicate/malformed/partial/incomplete/missing/nonfinite PASS",
+      "cwd": "/tmp/issue118-cost-audit-20261006",
+      "explicit_env": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "recording": "Actual executed argv and exit transcribed from tool result; inherited environment snapshot not captured."
+    },
+    {
+      "argv": [
+        "python3",
+        "tests/cost_audit/receipt_costs.py",
+        "--evidence-sha",
+        "3019c036c74633a0379714180fa6d68af067d88e",
+        "--aggregate-log",
+        "/workspace/pr136-3019c036-review/receipts/08-aggregate.log",
+        "--aggregate-receipt",
+        "/workspace/pr136-3019c036-review/receipts/08-aggregate.json",
+        "--suite-dir",
+        "/workspace/pr136-3019c036-review/suite-logs",
+        "--browser-baseline-sha",
+        "d6b4b450d741fcbbfd75c51631915d3082926990",
+        "--browser-log",
+        "geometry-web/docs/issue123-c-pending-tests/measurements/t3_cdp_baseline.log",
+        "--browser-log",
+        "geometry-web/docs/issue123-c-pending-tests/measurements/t3_cdp_baseline2.log",
+        "--browser-log",
+        "geometry-web/docs/issue123-c-pending-tests/measurements/t3_cdp_patched.log",
+        "--browser-log",
+        "geometry-web/docs/issue123-c-pending-tests/measurements/t4_space-flow_baseline.log",
+        "--out",
+        "/workspace/issue118-cost-ledger-5e0e92b8-20261006-final.json"
+      ],
+      "exit": 0,
+      "output_artifact": "cost-ledger.json",
+      "cwd": "/tmp/issue118-cost-audit-20261006",
+      "explicit_env": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "recording": "Actual executed argv and exit transcribed from tool result; inherited environment snapshot not captured."
+    },
+    {
+      "argv": [
+        "python3",
+        "tests/cost_audit/shutdown_poll_probe.py",
+        "--out",
+        "/workspace/issue118-shutdown-poll-20261006-bounded.json"
+      ],
+      "exit": 0,
+      "output_artifact": "shutdown-poll.json",
+      "cwd": "/tmp/issue118-cost-audit-20261006",
+      "explicit_env": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "recording": "Actual executed argv and exit transcribed from tool result; inherited environment snapshot not captured."
+    },
+    {
+      "argv": [
+        "python3",
+        "/tmp/issue118-native-cost/profile_readonly.py",
+        "/tmp/issue118-cost-audit-20261006",
+        "5e0e92b850209e9e2895612148694c1d1e1e4815",
+        "profile-merged.json"
+      ],
+      "exit": 0,
+      "output_artifact": "native-profile.json",
+      "scratch_helper_only": true,
+      "cwd": "/tmp/issue118-cost-audit-20261006",
+      "explicit_env": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "recording": "Actual executed argv and exit transcribed from tool result; inherited environment snapshot not captured."
+    }
+  ],
+  "postmerge_command_receipt": "postmerge-gate-command.json",
+  "scope": {
+    "shared_source_modified": false,
+    "product_modified": false,
+    "reporter149_modified": false,
+    "workflow_modified": false,
+    "floors_or_golden_changed": false,
+    "old_held_packages_modified": false,
+    "new_full_suite_runs": 0,
+    "new_browser_runs": 0,
+    "native_executables_started_by_audit": 0,
+    "real_improvement_saved_seconds": null
+  },
+  "limits": [
+    "Old aggregate packages are read-only inputs and are not republished in this directory.",
+    "Native raw-hash microprofile does not verify current source/sidecar freshness.",
+    "Original native profiling helper is review-only text with hardcoded scratch output and overwrite behavior.",
+    "Browser reviewer optional matrix reduction is not adopted; this proposal preserves all six jobs.",
+    "Stdlib shutdown measurements use an idle socketpair; actual product/test-server savings remain unmeasured.",
+    "Exact shell wrapper for registry-only check was not captured; its derived result is postmerge-registry.json.",
+    "Source lineage labels do not turn historical or partial measurements into current acceptance."
+  ]
+}

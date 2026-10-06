@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/tmp/issue118-wait-review/check_stuck_shutdown.py",
+    "--child"
+  ],
+  "outer_deadline_seconds": 9,
+  "shell_exit": 0,
+  "outer_elapsed_seconds": 4.145972495003662,
+  "stdout": "{\"result\": \"bounded rejection\", \"error\": \"synthetic shutdown exceeded its bound\", \"elapsed_seconds\": 4.007475903003069, \"normal_probe_runs\": 0, \"product_suite_runs\": 0}\n",
+  "stderr": ""
+}
