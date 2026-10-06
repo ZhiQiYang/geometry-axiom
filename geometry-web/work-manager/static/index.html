@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Geometry 工作管理</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#work-queue">跳到工作佇列</a>
+  <header class="app-header">
+    <div class="identity">
+      <span class="brand-mark" aria-hidden="true">G</span>
+      <div><h1>Geometry 工作管理</h1><p>派工、交付與整合</p></div>
+    </div>
+    <div class="header-actions">
+      <button id="refresh-button" class="button primary" type="button">重新讀取狀態</button>
+      <a class="button" id="export-button" href="/api/export" download="geometry-work-manager-backup.json">匯出備份</a>
+      <button id="print-button" class="button" type="button">列印／存檔</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="fetch-error" class="notice error" role="alert" hidden></div>
+    <div id="status-message" class="sr-only" role="status" aria-live="polite"></div>
+    <section class="sync-band" aria-label="資料同步狀態">
+      <div class="sync-item"><span class="field-label">資料來源</span><strong id="source-mode">尚未讀取</strong></div>
+      <div class="sync-item"><span class="field-label">最後同步 · UTC</span><strong id="last-synced">待核</strong><span class="subtle" id="sync-age"></span></div>
+      <div class="sync-item"><span class="field-label">本次狀態計算 · UTC</span><span id="generated-at">待核</span></div>
+      <a href="#sources" class="text-link source-jump">查看來源與版本</a>
+    </section>
+
+    <section class="next-section" aria-labelledby="next-heading">
+      <div class="section-heading compact"><h2 id="next-heading">可進行的下一步</h2><span id="ready-count" class="count-label">待核</span><a href="#alerts" class="text-link alerts-jump">查看警示</a></div>
+      <div id="ready-list" class="ready-list"><p class="empty">正在讀取本機狀態…</p></div>
+    </section>
+
+    <div class="workspace-grid">
+      <section class="queue-section" id="work-queue" aria-labelledby="queue-heading">
+        <div class="section-heading"><h2 id="queue-heading">工作佇列 <span class="heading-count" id="task-count">—</span></h2><a href="#schedule" class="text-link">查看全部排程</a></div>
+        <div class="queue-tools">
+          <label class="search-field" for="search-input"><span class="sr-only">搜尋工作、編號、分支或檔案</span><input id="search-input" type="search" placeholder="搜尋工作、編號、分支或檔案" autocomplete="off"></label>
+          <label class="filter-field" for="status-filter"><span class="sr-only">篩選工作</span><select id="status-filter"><option value="all">全部狀態</option><option value="ready">可進行下一步</option><option value="attention">有警示</option><option value="review">待審／待整合</option><option value="blocked">明確阻塞</option><option value="stopped">執行者已停止</option><option value="unknown">狀態待核</option><option value="done">已完成並整合</option></select></label>
+        </div>
+        <p id="filter-summary" class="filter-summary" aria-live="polite">讀取後顯示工作</p>
+        <div class="queue-table-wrap">
+          <table class="queue-table">
+            <caption class="sr-only">每項工作的執行狀態、交付狀態與建議下一步；展開可查看證據及所有權紀錄。</caption>
+            <thead><tr><th scope="col">工作／來源</th><th scope="col">執行</th><th scope="col">交付</th><th scope="col">執行者／版本</th><th scope="col">下一步</th></tr></thead>
+            <tbody id="task-rows"></tbody>
+          </table>
+          <p id="queue-empty" class="empty" hidden>沒有符合條件的工作。</p>
+        </div>
+      </section>
+
+      <aside class="alerts-section" id="alerts" aria-labelledby="alerts-heading">
+        <div class="section-heading"><h2 id="alerts-heading">需要留意 <span class="heading-count" id="alert-count">—</span></h2></div>
+        <div id="alerts-list" role="region" aria-label="所有警示，可捲動查看" tabindex="0"><p class="empty">等待來源證據</p></div>
+      </aside>
+    </div>
+
+    <section id="schedule" class="lower-section" aria-labelledby="schedule-heading">
+      <div class="section-heading"><h2 id="schedule-heading">全部排程</h2><span class="subtle">依最早可開始時間排列 · UTC</span></div>
+      <div class="schedule-layout"><div><h3 class="minor-heading">已排時間</h3><ol id="dated-schedule" class="schedule-list"><li class="empty">等待狀態</li></ol></div><div><h3 class="minor-heading">未定日期</h3><ul id="undated-schedule" class="undated-list"><li class="empty">等待狀態</li></ul></div></div>
+    </section>
+
+    <section id="sources" class="lower-section" aria-labelledby="sources-heading">
+      <div class="section-heading"><h2 id="sources-heading">來源與可追溯性</h2><span class="subtle">匯入資料不等於即時連線</span></div>
+      <div id="sources-list" class="sources-list"><p class="empty">尚未載入來源。</p></div>
+      <div class="state-fingerprint"><div><span class="field-label">API／CLI 共用狀態 SHA-256</span><code id="state-hash">待核</code></div><button type="button" class="button small" id="copy-hash-button" disabled>複製雜湊</button></div>
+      <p class="subtle" id="schema-version">資料契約版本：待核</p>
+    </section>
+
+    <details class="operations-help">
+      <summary>操作方式、截圖與重啟</summary>
+      <div class="help-content">
+        <p>畫面唯讀。dot 透過同一份 CLI 匯入證據、登記派工與回收交付；建議下一步不會自動批准、派工或合併 PR。</p>
+        <p>在 repository 根目錄執行。JSON 輸入需符合工具的 schema；備份包含私有工作資料及 checksum，請保存在私有位置。</p>
+        <pre><code>python3 geometry-web/work-manager/cli.py --data-dir geometry-web/work-manager/.local import-snapshot SNAPSHOT.json
+python3 geometry-web/work-manager/cli.py --data-dir geometry-web/work-manager/.local reconcile
+python3 geometry-web/work-manager/cli.py --data-dir geometry-web/work-manager/.local list-ready
+python3 geometry-web/work-manager/cli.py --data-dir geometry-web/work-manager/.local list-alerts
+python3 geometry-web/work-manager/cli.py --data-dir geometry-web/work-manager/.local record-assignment ASSIGNMENT.json
+python3 geometry-web/work-manager/cli.py --data-dir geometry-web/work-manager/.local record-result RESULT.json
+python3 geometry-web/work-manager/cli.py --data-dir geometry-web/work-manager/.local export BACKUP.json
+python3 geometry-web/work-manager/cli.py --data-dir geometry-web/work-manager/.local restore BACKUP.json
+python3 geometry-web/work-manager/cli.py --data-dir geometry-web/work-manager/.local serve --port 8765</code></pre>
+        <p>截圖：使用瀏覽器擷取畫面；390px 驗證可在開發者工具設定寬度後擷取。「列印／存檔」可保留目前畫面及展開的證據。自動截圖指令見工具 README。</p>
+        <p>服務只在雲端環境執行期間可用，重啟後需重新啟動。環境可保留的檔案以平台規則為準；以匯出備份和 checksum 驗證恢復，不宣稱全天常駐。</p>
+      </div>
+    </details>
+  </main>
+  <footer class="app-footer"><span>Geometry · 工作管理工具</span><span>執行結束 ≠ 驗收完成 ≠ PR 已整合</span></footer>
+</body>
+</html>

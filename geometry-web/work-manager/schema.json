@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "geometry-work-manager/snapshot-v1",
+  "title": "Geometry work manager validated snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source", "events"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "version", "as_of", "status"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["manual_snapshot", "git", "github", "operator"]},
+        "version": {"type": "integer", "minimum": 1},
+        "as_of": {"type": "string", "format": "date-time"},
+        "status": {"enum": ["ok", "error"]},
+        "url": {"$ref": "#/$defs/url"}, "source_sha": {"$ref": "#/$defs/sha"},
+        "error": {"type": "string"}
+      }
+    },
+    "events": {"type": "array", "items": {"$ref": "#/$defs/event"}}
+  },
+  "$defs": {
+    "sha": {"type": ["string", "null"], "pattern": "^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$"},
+    "url": {"type": "string", "pattern": "^https?://", "maxLength": 2048},
+    "text": {"type": "string", "minLength": 1, "maxLength": 4000},
+    "textList": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "time": {"type": "string", "format": "date-time"},
+    "executionStatus": {"enum": ["unknown", "unassigned", "active", "stopped", "blocked", "finished"]},
+    "taskData": {
+      "type": "object", "additionalProperties": false, "minProperties": 1,
+      "properties": {
+        "title": {"$ref": "#/$defs/text"},
+        "scope": {"$ref": "#/$defs/text"},
+        "branch": {"$ref": "#/$defs/text"},
+        "files": {"$ref": "#/$defs/textList"},
+        "dependencies": {"$ref": "#/$defs/textList"},
+        "required_acceptance": {"$ref": "#/$defs/textList"},
+        "head_sha": {"$ref": "#/$defs/sha"},
+        "not_before": {"oneOf": [{"$ref": "#/$defs/time"}, {"type": "null"}]},
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["kind", "url"],
+            "properties": {"kind": {"$ref": "#/$defs/text"}, "url": {"$ref": "#/$defs/url"}, "number": {"type": "integer", "minimum": 1}}
+          }
+        },
+        "approval_constraints": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["action", "status"],
+            "properties": {
+              "action": {"$ref": "#/$defs/text"}, "status": {"enum": ["required", "granted", "denied"]},
+              "reason": {"$ref": "#/$defs/text"}
+            }
+          }
+        }
+      }
+    },
+    "assignmentData": {
+      "type": "object", "additionalProperties": false, "required": ["execution_status"],
+      "properties": {
+        "owner_thread": {"oneOf": [{"type": "string", "minLength": 1, "maxLength": 200}, {"type": "null"}]},
+        "execution_status": {"$ref": "#/$defs/executionStatus"},
+        "reserved": {"type": "boolean"}, "reason": {"$ref": "#/$defs/text"},
+        "files": {"$ref": "#/$defs/textList"}
+      },
+      "allOf": [{
+        "if": {"properties": {"execution_status": {"const": "active"}}},
+        "then": {"required": ["owner_thread"], "properties": {"owner_thread": {"type": "string", "minLength": 1}}}
+      }]
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "criterion", "kind", "timestamp", "sha", "result"],
+      "properties": {
+        "id": {"$ref": "#/$defs/text"}, "criterion": {"$ref": "#/$defs/text"},
+        "kind": {"$ref": "#/$defs/text"}, "timestamp": {"$ref": "#/$defs/time"},
+        "sha": {"$ref": "#/$defs/sha"}, "result": {"enum": ["passed", "failed", "unknown"]},
+        "url": {"$ref": "#/$defs/url"}, "runner_id": {"type": "integer", "minimum": 0},
+        "steps": {"type": "array"}, "expires_at": {"$ref": "#/$defs/time"},
+        "summary": {"$ref": "#/$defs/text"}
+      }
+    },
+    "ciJob": {
+      "type": "object", "additionalProperties": false, "required": ["name", "sha", "status", "conclusion"],
+      "properties": {
+        "name": {"$ref": "#/$defs/text"}, "sha": {"$ref": "#/$defs/sha"},
+        "status": {"type": ["string", "null"]}, "conclusion": {"type": ["string", "null"]},
+        "runner_id": {"type": "integer", "minimum": 0}, "steps": {"type": "array"},
+        "url": {"$ref": "#/$defs/url"}
+      }
+    },
+    "pr": {
+      "type": "object", "additionalProperties": false,
+      "required": ["number", "url", "head_sha", "merged", "review_state"],
+      "properties": {
+        "number": {"type": "integer", "minimum": 1}, "url": {"$ref": "#/$defs/url"},
+        "head_sha": {"$ref": "#/$defs/sha"}, "merged_head_sha": {"$ref": "#/$defs/sha"},
+        "merged": {"type": "boolean"}, "draft": {"type": "boolean"},
+        "review_state": {"enum": ["unknown", "pending", "approved", "changes_requested"]},
+        "ci": {"type": "array", "items": {"$ref": "#/$defs/ciJob"}}
+      }
+    },
+    "resultData": {
+      "type": "object", "additionalProperties": false, "minProperties": 1,
+      "properties": {
+        "head_sha": {"$ref": "#/$defs/sha"},
+        "pr": {"oneOf": [{"$ref": "#/$defs/pr"}, {"type": "null"}]},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+        "execution_status": {"$ref": "#/$defs/executionStatus"},
+        "owner_thread": {"oneOf": [{"type": "string", "minLength": 1, "maxLength": 200}, {"type": "null"}]},
+        "summary": {"$ref": "#/$defs/text"}
+      }
+    },
+    "event": {
+      "type": "object", "additionalProperties": false,
+      "required": ["event_id", "task_id", "kind", "version", "occurred_at", "data"],
+      "properties": {
+        "event_id": {"type": "string", "minLength": 1}, "task_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["task", "assignment", "result", "github"]},
+        "version": {"type": "integer", "minimum": 1},
+        "occurred_at": {"type": "string", "format": "date-time"},
+        "data": {"type": "object", "minProperties": 1}
+      },
+      "allOf": [
+        {"if": {"properties": {"kind": {"const": "task"}}}, "then": {"properties": {"data": {"$ref": "#/$defs/taskData"}}}},
+        {"if": {"properties": {"kind": {"const": "assignment"}}}, "then": {"properties": {"data": {"$ref": "#/$defs/assignmentData"}}}},
+        {"if": {"properties": {"kind": {"enum": ["result", "github"]}}}, "then": {"properties": {"data": {"$ref": "#/$defs/resultData"}}}}
+      ]
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"source": {"properties": {"status": {"const": "error"}}}}}, "then": {"properties": {"events": {"maxItems": 0}}}}
+  ],
+  "description": "store.py validate_snapshot / validate_event are the normative runtime validator; no JSON Schema dependency is required. They additionally reject unsafe URLs, noncanonical or absolute scope paths, timezone-free timestamps, control characters, stream version collisions and inputs over 8 MiB. Source and event versions are positive integers. Events are partial updates; omitted tasks or fields are never deleted. Unknown SHA is null, never a fabricated value. Failed source observations require events:[] and preserve previous tasks. Older source/as_of or stream/version/occurred_at observations remain audit history but cannot roll back current state. Identical event IDs are idempotent; conflicting IDs reject the entire transaction. Local record commands accept a full one-event snapshot or {event_id,task_id,version,occurred_at,source_id?,data}; source_id defaults to local-operator. Record-assignment checks current scope, approvals, dependencies, schedule and concurrent file owners. An exported checksum bundle may restore only an empty store or an identical already-restored store."
+}
