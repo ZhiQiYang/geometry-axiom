@@ -23,7 +23,8 @@
       // lease before asking; cancellation still changes no presentation.
       if(!beginNavigation()||!window.DraftGate.ask({selection:[{kind:n.kind,id}]})||!isCurrent())return;
       if(oc.focus){
-        await leaveFocus();if(!isCurrent()||oc.focus)return;
+        const navigation=await leaveFocus();
+        if(navigation!==oc.navigationSequence||!isCurrent()||oc.focus)return;
       }
       if(!selectObject(n.kind,id)||!isCurrent())return;
       centerOnNode(n.kind,id);
