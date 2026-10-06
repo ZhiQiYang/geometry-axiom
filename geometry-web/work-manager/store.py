@@ -19,9 +19,11 @@ SOURCE_KINDS = {"manual_snapshot", "git", "github", "operator"}
 EXECUTION_STATES = {"unknown", "unassigned", "active", "stopped", "blocked", "finished"}
 EVENT_KINDS = {"task", "assignment", "result", "github"}
 TASK_FIELDS = {"title", "refs", "scope", "files", "branch", "dependencies",
-               "approval_constraints", "required_acceptance", "not_before", "head_sha", "head_tree_sha"}
+               "approval_constraints", "required_acceptance", "not_before", "head_sha", "head_tree_sha",
+               "node_kind", "parent_id"}
 ASSIGNMENT_FIELDS = {"owner_thread", "execution_status", "reserved", "reason", "files"}
-RESULT_FIELDS = {"evidence", "pr", "head_sha", "execution_status", "owner_thread", "summary", "completed_actions"}
+RESULT_FIELDS = {"evidence", "pr", "pr_metadata", "head_sha", "execution_status", "owner_thread", "summary", "completed_actions"}
+PR_METADATA_FIELDS = {"number", "url", "head_sha", "merged", "draft", "ci", "ci_runs", "updated_at"}
 TRANSITION_ACTIONS = {"ready_for_review", "ready", "publish_bundle", "publish_pr", "create_pr"}
 RECEIPT_ACTIONS = {"review_pr", "review_integration", "verify_acceptance", "verify_scope",
                    "verify_source", "collect_result", "resolve_blocker", "continue_work"}
@@ -128,7 +130,7 @@ def _files(value):
 
 
 def _validate_ci(job):
-    _object(job, "CI job", {"name", "sha", "status", "conclusion", "runner_id", "steps", "url"},
+    _object(job, "CI job", {"name", "sha", "status", "conclusion", "runner_id", "steps", "url", "id", "run_id", "attempt"},
             {"name", "sha", "status", "conclusion"})
     _string(job["name"], "CI job name")
     _sha(job["sha"], "CI job SHA")
@@ -140,6 +142,63 @@ def _validate_ci(job):
         _integer(job["runner_id"], "runner_id", 0)
     if "steps" in job:
         _validate_steps(job["steps"])
+    for key in ("id", "run_id"):
+        if key in job:
+            _ci_identity(job[key], f"CI job {key}")
+    if "attempt" in job:
+        _integer(job["attempt"], "CI job attempt")
+
+
+def _ci_identity(value, label):
+    if type(value) is int:
+        _integer(value, label)
+    else:
+        _string(value, label, maximum=200)
+
+
+def _validate_ci_runs(runs):
+    if not isinstance(runs, list):
+        raise ValidationError("ci_runs must be an array")
+    identities = set()
+    for run in runs:
+        _object(run, "CI run", {"id", "sha", "status", "conclusion", "attempt", "url", "job_count"},
+                {"id", "sha", "status", "conclusion", "job_count"})
+        _ci_identity(run["id"], "CI run id")
+        _sha(run["sha"], "CI run SHA")
+        _enum(run["status"], CI_STATUSES, "CI run status", nullable=True)
+        _enum(run["conclusion"], CI_CONCLUSIONS, "CI run conclusion", nullable=True)
+        _integer(run["job_count"], "CI run job_count", 0)
+        if "attempt" in run:
+            _integer(run["attempt"], "CI run attempt")
+        if "url" in run:
+            _url(run["url"], "CI run URL")
+        identity = (str(run["id"]), run.get("attempt"))
+        if identity in identities:
+            raise ValidationError("duplicate CI run id/attempt")
+        identities.add(identity)
+
+
+def _validate_ci_fields(value, label):
+    if "ci" in value:
+        if not isinstance(value["ci"], list):
+            raise ValidationError(f"{label} ci must be an array")
+        for job in value["ci"]:
+            _validate_ci(job)
+    if "ci_runs" in value:
+        _validate_ci_runs(value["ci_runs"])
+
+
+def _validate_pr_metadata(pr):
+    _object(pr, "pr_metadata", PR_METADATA_FIELDS, {"number", "url", "updated_at"})
+    _integer(pr["number"], "PR number")
+    _url(pr["url"], "PR URL")
+    timestamp(pr["updated_at"], "PR updated_at")
+    if "head_sha" in pr:
+        _sha(pr["head_sha"], "PR head_sha")
+    for key in ("merged", "draft"):
+        if key in pr and type(pr[key]) is not bool:
+            raise ValidationError(f"PR {key} must be boolean")
+    _validate_ci_fields(pr, "PR metadata")
 
 
 def _validate_steps(steps):
@@ -169,6 +228,49 @@ def _validate_receipt(receipt):
     timestamp(receipt["timestamp"], "completed action timestamp")
     if "summary" in receipt:
         _string(receipt["summary"], "completed action summary")
+
+
+def _validate_inventory(inventory, kind):
+    rows_key = "issues" if kind == "issue" else "prs"
+    _object(inventory, f"{kind} inventory", {"repository", "complete", rows_key},
+            {"repository", "complete", rows_key})
+    repository = inventory["repository"]
+    if not isinstance(repository, str) or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
+        raise ValidationError("inventory repository must be owner/repo")
+    if type(inventory["complete"]) is not bool:
+        raise ValidationError("inventory complete must be boolean")
+    rows = inventory[rows_key]
+    if not isinstance(rows, list) or len(rows) > 5000:
+        raise ValidationError("inventory rows must be an array with at most 5000 entries")
+    allowed = {"number", "url", "task_ids", "title"}
+    if kind == "pr":
+        allowed |= {"head_sha", "base", "base_sha", "draft", "merged"}
+    normalized = {}
+    for entry in rows:
+        _object(entry, f"{kind} inventory row", allowed, {"number", "url", "task_ids"})
+        _integer(entry["number"], "inventory number")
+        _url(entry["url"], "inventory URL")
+        _strings(entry["task_ids"], "inventory task_ids")
+        if "title" in entry:
+            _string(entry["title"], "inventory title", nullable=True)
+        for key in ("head_sha", "base_sha"):
+            if key in entry:
+                _sha(entry[key], f"inventory {key}")
+        if "base" in entry:
+            _string(entry["base"], "inventory base", nullable=True)
+        for key in ("draft", "merged"):
+            if key in entry and entry[key] is not None and type(entry[key]) is not bool:
+                raise ValidationError(f"inventory {key} must be boolean or null")
+        previous = normalized.get(entry["number"])
+        if previous:
+            for key in (set(previous) & set(entry)) - {"task_ids"}:
+                if previous[key] != entry[key]:
+                    raise ValidationError("duplicate inventory number has conflicting metadata")
+            previous.update({key: copy.deepcopy(value) for key, value in entry.items() if key != "task_ids"})
+            previous["task_ids"] = sorted(set(previous["task_ids"]) | set(entry["task_ids"]))
+        else:
+            normalized[entry["number"]] = copy.deepcopy(entry)
+    return normalized
 
 
 def _validate_evidence(evidence):
@@ -217,6 +319,10 @@ def validate_event(event):
         for key in ("head_sha", "head_tree_sha"):
             if key in data:
                 _sha(data[key], key)
+        if "node_kind" in data:
+            _enum(data["node_kind"], {"work", "umbrella"}, "node_kind")
+        if "parent_id" in data:
+            _string(data["parent_id"], "parent_id", nullable=True, maximum=200)
         if "not_before" in data and data["not_before"] is not None:
             timestamp(data["not_before"], "not_before")
         if "refs" in data:
@@ -275,7 +381,7 @@ def validate_event(event):
         if "pr" in data and data["pr"] is not None:
             pr = data["pr"]
             _object(pr, "pr", {"number", "url", "head_sha", "merged", "merged_head_sha",
-                              "review_state", "reviewed_sha", "merge_commit_sha", "ci", "draft"},
+                              "review_state", "reviewed_sha", "merge_commit_sha", "ci", "ci_runs", "draft", "updated_at"},
                     {"number", "url", "head_sha", "merged", "review_state"})
             _integer(pr["number"], "PR number")
             _url(pr["url"], "PR URL")
@@ -286,22 +392,24 @@ def validate_event(event):
             if type(pr["merged"]) is not bool or ("draft" in pr and type(pr["draft"]) is not bool):
                 raise ValidationError("PR merged/draft must be boolean")
             _enum(pr["review_state"], {"unknown", "pending", "approved", "changes_requested"}, "PR review_state")
-            if "ci" in pr:
-                if not isinstance(pr["ci"], list):
-                    raise ValidationError("PR ci must be an array")
-                for job in pr["ci"]:
-                    _validate_ci(job)
+            if "updated_at" in pr:
+                timestamp(pr["updated_at"], "PR updated_at")
+            _validate_ci_fields(pr, "PR")
+        if "pr_metadata" in data:
+            if "pr" in data:
+                raise ValidationError("pr_metadata and pr are mutually exclusive")
+            _validate_pr_metadata(data["pr_metadata"])
     if not data:
         raise ValidationError("event data must not be empty")
 
 
 def validate_snapshot(snapshot):
-    _object(snapshot, "snapshot", {"schema_version", "source", "events"},
+    _object(snapshot, "snapshot", {"schema_version", "source", "events", "issue_inventory", "pr_inventory"},
             {"schema_version", "source", "events"})
     if type(snapshot["schema_version"]) is not int or snapshot["schema_version"] != SCHEMA_VERSION:
         raise ValidationError("unsupported schema_version")
     source = snapshot["source"]
-    _object(source, "source", {"id", "kind", "version", "as_of", "status", "url", "source_sha", "error"},
+    _object(source, "source", {"id", "kind", "version", "as_of", "status", "url", "source_sha", "error", "ci", "ci_runs"},
             {"id", "kind", "version", "as_of", "status"})
     _string(source["id"], "source id", maximum=200)
     _enum(source["kind"], SOURCE_KINDS, "source kind")
@@ -314,10 +422,19 @@ def validate_snapshot(snapshot):
         _sha(source["source_sha"], "source SHA")
     if "error" in source:
         _string(source["error"], "source error")
+    if "ci" in source or "ci_runs" in source:
+        if source["status"] == "error":
+            raise ValidationError("failed source cannot assert new CI results")
+        _validate_ci_fields(source, "source")
     if not isinstance(snapshot["events"], list):
         raise ValidationError("events must be an array")
     if source["status"] == "error" and snapshot["events"]:
         raise ValidationError("failed fetch must have events: []; old state is retained")
+    for kind in ("issue", "pr"):
+        if kind + "_inventory" in snapshot:
+            if source["status"] == "error":
+                raise ValidationError("failed fetch must omit inventory; previous coverage is retained")
+            _validate_inventory(snapshot[kind + "_inventory"], kind)
     ids = set()
     for event in snapshot["events"]:
         validate_event(event)
@@ -381,6 +498,93 @@ def evidence_binding(evidence, task):
     return "stale"
 
 
+def project_ci_job(original, expected_sha):
+    job = copy.deepcopy(original)
+    steps = ci_steps_result(job.get("runner_id"), job.get("steps"))
+    if expected_sha and job.get("sha") and not same_sha(job["sha"], expected_sha):
+        result = "stale"
+    elif steps == "not_run":
+        result = "not_run"
+    elif not expected_sha or not job.get("sha"):
+        result = "unknown"
+    elif not same_sha(job["sha"], expected_sha):
+        result = "stale"
+    elif steps != "passed":
+        result = steps
+    elif job["status"] == "completed" and job["conclusion"] in {"success", "passed"}:
+        result = "passed"
+    else:
+        result = "unknown" if job["status"] != "completed" else "failed"
+    job["effective_result"] = result
+    return job
+
+
+def project_ci_runs(originals, jobs, expected_sha):
+    """Runs attest their own outcome and actual jobs; neither list replaces the other."""
+    runs = []
+    for original in originals:
+        run = copy.deepcopy(original)
+        matching = [job for job in jobs if (
+            ("run_id" in job and str(job["run_id"]) == str(run["id"])
+             and ("attempt" not in run or job.get("attempt") == run["attempt"]))
+            or ("run_id" not in job and len(originals) == 1 and same_sha(job.get("sha"), run["sha"]))) ]
+        run["observed_job_count"] = len(matching)
+        if expected_sha and run.get("sha") and not same_sha(run["sha"], expected_sha):
+            result = "stale"
+        elif not expected_sha or not run.get("sha"):
+            result = "unknown"
+        elif run["status"] == "completed" and run["conclusion"] in {
+                "failure", "failed", "cancelled", "timed_out", "action_required", "startup_failure"}:
+            result = "failed"
+        elif run["job_count"] == 0 or not matching:
+            result = "not_run"
+        elif len(matching) != run["job_count"]:
+            result = "unknown"
+        elif any(job["effective_result"] != "passed" for job in matching):
+            outcomes = {job["effective_result"] for job in matching}
+            result = next((value for value in ("failed", "stale", "not_run") if value in outcomes), "unknown")
+        elif run["status"] == "completed" and run["conclusion"] in {"success", "passed"}:
+            result = "passed"
+        else:
+            result = "unknown"
+        run["effective_result"] = result
+        runs.append(run)
+    return runs
+
+
+def set_task_head(task, head_sha, changed_at, origin="work", guarded=False):
+    # A published PR head is a separate source fact. It cannot replace an
+    # explicitly recorded work head, even when the remote poll/update is newer.
+    if origin == "pr" and task.get("head_origin") == "work" and task["head_sha"]:
+        return
+    if same_sha(task["head_sha"], head_sha) or task["head_sha"] == head_sha:
+        if head_sha and origin == "work":
+            task["head_origin"] = "work"
+        return
+    previous_at = task.get("head_changed_at")
+    if guarded and previous_at and timestamp(changed_at) <= timestamp(previous_at):
+        return
+    task["head_sha"] = head_sha
+    task["head_changed_at"] = changed_at
+    task["head_origin"] = origin if head_sha else "unknown"
+
+
+def apply_pr_metadata(task, metadata):
+    previous = task.get("pr")
+    same_pr = (previous is not None and previous["number"] == metadata["number"]
+               and reference_key(previous["url"]) == reference_key(metadata["url"]))
+    pr = copy.deepcopy(previous) if same_pr else {
+        "number": metadata["number"], "url": metadata["url"], "head_sha": None,
+        "merged": False, "review_state": "unknown",
+    }
+    # Metadata cannot inject a review. Existing exact-head claims remain auditable
+    # and become stale naturally when either task or PR head changes.
+    pr.update(copy.deepcopy(metadata))
+    task["pr"] = pr
+    if metadata.get("head_sha"):
+        set_task_head(task, metadata["head_sha"], metadata["updated_at"], origin="pr", guarded=True)
+
+
 def action_input_pin(task, action, tasks):
     # Pin semantic inputs, not polling time, receipt history, old-head proofs,
     # source versions, or a newly repeated proof of the same result.
@@ -393,7 +597,7 @@ def action_input_pin(task, action, tasks):
                                          "equivalent_head_sha", "binding_kind", "validity", "effective_result")
     } for evidence in task["evidence"] if evidence["id"] in selected_ids]
     pr = task.get("pr")
-    return digest({
+    inputs = {
         "task_id": task["id"], "action": action,
         "head_sha": task["head_sha"], "head_tree_sha": task.get("head_tree_sha"),
         "scope": task["scope"], "files": sorted(task["files"]), "branch": task["branch"],
@@ -414,7 +618,157 @@ def action_input_pin(task, action, tasks):
                                   "delivery_status": tasks.get(dependency, {}).get("delivery_status", "unknown")}
                                  for dependency in task["dependencies"]), key=canonical),
         "not_before": task["not_before"],
-    })
+    }
+    # Keep existing receipt pins unchanged when old records have no run evidence.
+    if pr and "ci_runs" in pr:
+        inputs["ci_runs"] = sorted(({key: run.get(key) for key in (
+            "id", "sha", "status", "conclusion", "attempt", "job_count",
+            "observed_job_count", "effective_result")}
+            for run in task["ci_runs"]), key=canonical)
+    return digest(inputs)
+
+
+def empty_coverage():
+    return {"count": 0, "captured": 0, "missing_scope": 0, "repositories": [],
+            "pr_count": 0, "pr_captured": 0, "pr_missing_scope": 0,
+            "pr_repositories": [], "pr_links": []}
+
+
+def reference_key(url):
+    parsed = urlsplit(url)
+    path = parsed.path.rstrip("/")
+    if parsed.hostname and parsed.hostname.lower() in {"github.com", "www.github.com"}:
+        path = path.lower()
+    return ((parsed.hostname or "").lower(), path)
+
+
+def reference_number(url):
+    match = re.search(r"/(?:pull|issues)/([0-9]+)/?$", urlsplit(url).path)
+    return int(match.group(1)) if match else None
+
+
+def reference_repository(url):
+    match = re.fullmatch(r"/([^/]+)/([^/]+)/(?:pull|issues)/[0-9]+/?", urlsplit(url).path)
+    return f"{match.group(1)}/{match.group(2)}" if match else None
+
+
+def update_inventory(registries, snapshot):
+    header = snapshot["source"]
+    for kind in ("issue", "pr"):
+        inventory = snapshot.get(kind + "_inventory")
+        if inventory is None:
+            continue
+        repository = inventory["repository"]
+        key = repository.casefold()
+        old = registries[kind].get(key)
+        if old and timestamp(header["as_of"]) < timestamp(old["as_of"]):
+            continue
+        incoming = _validate_inventory(inventory, kind)
+        rows = {} if inventory["complete"] or old is None else copy.deepcopy(old["rows"])
+        for number, entry in incoming.items():
+            previous = rows.get(number, {})
+            rows[number] = {**previous, **copy.deepcopy(entry),
+                            "_source": {"id": header["id"], "version": header["version"], "as_of": header["as_of"]}}
+        registries[kind][key] = {
+            "repository": repository, "source_id": header["id"], "source_version": header["version"],
+            "as_of": header["as_of"], "complete": inventory["complete"], "rows": rows}
+
+
+def project_coverage(registries, tasks):
+    coverage, links = empty_coverage(), {}
+
+    def add_pr(url, number=None, repository=None):
+        key = reference_key(url)
+        if key not in links:
+            links[key] = {
+                "number": number if number is not None else reference_number(url), "url": url,
+                "repository": repository or reference_repository(url), "title": None,
+                "task_ids": [], "head_sha": None, "base": None, "base_sha": None,
+                "draft": None, "merged": None, "listed_in_current_inventory": False, "sources": [],
+            }
+        return links[key]
+
+    def add_source(link, source):
+        if source not in link["sources"]:
+            link["sources"].append(copy.deepcopy(source))
+
+    def scope_status(task_ids):
+        work = [tasks[task_id] for task_id in task_ids if tasks[task_id]["node_kind"] == "work"]
+        return "known" if work and all(task["scope"] and task["files"] for task in work) else "missing"
+
+    def validate_ids(task_ids):
+        if any(task_id not in tasks for task_id in task_ids):
+            raise ValidationError("inventory task_ids must reference existing tasks; whole snapshot rejected")
+        return sorted(set(task_ids))
+
+    for task in tasks.values():
+        references = [ref for ref in task["refs"] if ref["kind"] in {"pr", "pull_request"}]
+        if task["pr"]:
+            references.append({"url": task["pr"]["url"], "number": task["pr"]["number"]})
+        for ref in references:
+            link = add_pr(ref["url"], ref.get("number"))
+            if task["id"] not in link["task_ids"]:
+                link["task_ids"].append(task["id"])
+            for provenance in task["source_provenance"]:
+                add_source(link, {"id": provenance["id"], "version": provenance["version"], "as_of": provenance["as_of"]})
+            if task["pr"] and reference_key(task["pr"]["url"]) == reference_key(ref["url"]):
+                for field in ("head_sha", "draft", "merged"):
+                    if field in task["pr"]:
+                        link[field] = task["pr"][field]
+
+    for registry in sorted(registries["pr"].values(), key=lambda value: value["repository"].casefold()):
+        repo = {key: value for key, value in registry.items() if key != "rows"}
+        repo["prs"] = []
+        for entry in sorted(registry["rows"].values(), key=lambda value: value["number"]):
+            explicit_ids = validate_ids(entry["task_ids"])
+            link = add_pr(entry["url"], entry["number"], registry["repository"])
+            link["task_ids"] = sorted(set(link["task_ids"]) | set(explicit_ids))
+            link["listed_in_current_inventory"] = True
+            for field in ("title", "head_sha", "base", "base_sha", "draft", "merged"):
+                if field in entry:
+                    link[field] = entry[field]
+            add_source(link, entry["_source"])
+            row = {key: entry.get(key) for key in ("number", "url", "title", "head_sha", "base", "base_sha", "draft", "merged")}
+            row.update(task_ids=list(link["task_ids"]), captured=bool(link["task_ids"]),
+                       scope_status=scope_status(link["task_ids"]),
+                       source_id=entry["_source"]["id"], source_version=entry["_source"]["version"],
+                       as_of=entry["_source"]["as_of"])
+            repo["prs"].append(row)
+        repo.update(count=len(repo["prs"]), captured=sum(row["captured"] for row in repo["prs"]),
+                    missing_scope=sum(row["scope_status"] == "missing" for row in repo["prs"]))
+        coverage["pr_repositories"].append(repo)
+
+    for link in links.values():
+        link["task_ids"].sort()
+        link["sources"].sort(key=canonical)
+        link["captured"] = bool(link["task_ids"])
+        link["scope_status"] = scope_status(link["task_ids"])
+    coverage["pr_links"] = sorted(links.values(), key=lambda value: (value["repository"] or "", value["number"] or 0, value["url"]))
+
+    for registry in sorted(registries["issue"].values(), key=lambda value: value["repository"].casefold()):
+        repo = {key: value for key, value in registry.items() if key != "rows"}
+        repo["issues"] = []
+        for entry in sorted(registry["rows"].values(), key=lambda value: value["number"]):
+            associated = set(validate_ids(entry["task_ids"]))
+            for task in tasks.values():
+                if any(ref["kind"] == "issue" and reference_key(ref["url"]) == reference_key(entry["url"])
+                       for ref in task["refs"]):
+                    associated.add(task["id"])
+            task_ids = sorted(associated)
+            repo["issues"].append({
+                "number": entry["number"], "url": entry["url"], "title": entry.get("title"),
+                "task_ids": task_ids, "captured": bool(task_ids), "scope_status": scope_status(task_ids),
+                "pr_links": [copy.deepcopy(link) for link in coverage["pr_links"] if associated.intersection(link["task_ids"])],
+                "source_id": entry["_source"]["id"], "source_version": entry["_source"]["version"],
+                "as_of": entry["_source"]["as_of"],
+            })
+        repo.update(count=len(repo["issues"]), captured=sum(row["captured"] for row in repo["issues"]),
+                    missing_scope=sum(row["scope_status"] == "missing" for row in repo["issues"]))
+        coverage["repositories"].append(repo)
+    for key in ("count", "captured", "missing_scope"):
+        coverage[key] = sum(repo[key] for repo in coverage["repositories"])
+        coverage["pr_" + key] = sum(repo[key] for repo in coverage["pr_repositories"])
+    return coverage
 
 
 class Store:
@@ -462,6 +816,133 @@ class Store:
 
     def close(self):
         """Connections are deliberately short lived."""
+
+    def _ledger_health(self, db):
+        """Validate persisted rows too: earlier versions accepted unsafe inputs."""
+        issues, snapshots, evidence_ids = [], {}, {}
+        source_rows = db.execute("SELECT id,current,last_good FROM sources").fetchall()
+        snapshot_rows = db.execute("SELECT source_id,source_version,payload,checksum FROM snapshots ORDER BY ordinal").fetchall()
+        event_rows = db.execute("SELECT event_id,source_id,source_version,task_id,kind,version,payload,applied FROM events").fetchall()
+        registered_tasks = {row["task_id"] for row in event_rows if row["applied"] == 1}
+
+        def issue(code, message, row=None):
+            item = {"code": code, "message": message}
+            if row:
+                for key in ("event_id", "task_id", "source_id"):
+                    if key in row.keys():
+                        item[key] = row[key]
+            issues.append(item)
+
+        for row in source_rows:
+            try:
+                for column in ("current", "last_good"):
+                    if row[column] is None:
+                        continue
+                    header = json.loads(row[column])
+                    validate_snapshot({"schema_version": 1, "source": header, "events": []})
+                    if header["id"] != row["id"] or (column == "last_good" and header["status"] != "ok"):
+                        raise ValidationError("source row does not match its validated header")
+            except (ValueError, TypeError, KeyError):
+                issue("source_record_invalid", "來源紀錄未通過資料契約驗證；保留原始資料。")
+        for row in snapshot_rows:
+            try:
+                snapshot = json.loads(row["payload"])
+                validate_snapshot(snapshot)
+                if (snapshot["source"]["id"] != row["source_id"] or
+                        snapshot["source"]["version"] != row["source_version"] or
+                        digest(snapshot) != row["checksum"]):
+                    raise ValidationError("snapshot identity or checksum mismatch")
+                for kind in ("issue", "pr"):
+                    if kind + "_inventory" in snapshot:
+                        entries = _validate_inventory(snapshot[kind + "_inventory"], kind)
+                        if any(task_id not in registered_tasks for entry in entries.values() for task_id in entry["task_ids"]):
+                            raise ValidationError("inventory references an unregistered task")
+                snapshots[(row["source_id"], row["source_version"])] = snapshot
+            except (ValueError, TypeError, KeyError):
+                issue("snapshot_record_invalid", "快照內容或 checksum 未通過驗證；保留原始資料。", row)
+        for row in event_rows:
+            try:
+                event = json.loads(row["payload"])
+                validate_event(event)
+                if any(event[key] != row[key] for key in ("event_id", "task_id", "kind", "version")):
+                    raise ValidationError("event columns differ from immutable payload")
+                if row["applied"] not in (0, 1):
+                    raise ValidationError("event applied flag is invalid")
+                snapshot = snapshots.get((row["source_id"], row["source_version"]))
+                if snapshot is None or not any(canonical(item) == canonical(event) for item in snapshot["events"]):
+                    raise ValidationError("event does not match its source snapshot")
+                for evidence in event["data"].get("evidence", []):
+                    identity = (event["task_id"], evidence["id"])
+                    encoded = canonical(evidence)
+                    if identity in evidence_ids and evidence_ids[identity] != encoded:
+                        issue("evidence_identity_conflict", "相同證據 ID 存有互相衝突的內容，不能判定通過。", row)
+                    evidence_ids[identity] = encoded
+            except (ValueError, TypeError, KeyError):
+                issue("event_record_invalid", "事件內容未通過資料契約驗證，不能推導工作狀態。", row)
+        return {"status": "invalid" if issues else "ok", "issues": issues,
+                "read_only": bool(issues), "backup_preserved": False,
+                "row_count": {"sources": len(source_rows), "snapshots": len(snapshot_rows), "events": len(event_rows)}}
+
+    def _preserve_invalid_backup(self):
+        # Called while the SQLite read/write transaction holds a stable ledger.
+        # Never rewrite rows in an invalid database or disclose its local path.
+        original = self.path.read_bytes()
+        checksum = hashlib.sha256(original).hexdigest()
+        directory = self.data_dir / "backups"
+        directory.mkdir(mode=0o700, exist_ok=True)
+        directory.chmod(0o700)
+        destination = directory / ("invalid-ledger-" + checksum + ".sqlite3")
+        if not destination.exists() or hashlib.sha256(destination.read_bytes()).hexdigest() != checksum:
+            descriptor, temporary = tempfile.mkstemp(prefix=".invalid-ledger-", dir=directory)
+            try:
+                with os.fdopen(descriptor, "wb") as stream:
+                    stream.write(original)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                os.chmod(temporary, 0o600)
+                os.replace(temporary, destination)
+            finally:
+                if os.path.exists(temporary):
+                    os.unlink(temporary)
+        destination.chmod(0o600)
+        preserved = hashlib.sha256(destination.read_bytes()).hexdigest() == checksum
+        return preserved, checksum
+
+    def _assert_healthy(self, db):
+        health = self._ledger_health(db)
+        if health["status"] == "invalid":
+            try:
+                self._preserve_invalid_backup()
+            except OSError:
+                pass
+            raise ValidationError("existing ledger is invalid and read-only; inspect reconcile diagnostics; no rows were changed")
+        return health
+
+    def _read(self, db, now, strict=False):
+        health = self._ledger_health(db)
+        if health["status"] == "invalid":
+            if strict:
+                raise ValidationError("resulting ledger failed validation; transaction rejected")
+            try:
+                preserved, checksum = self._preserve_invalid_backup()
+                health.update(backup_preserved=preserved, backup_checksum=checksum)
+            except OSError:
+                health["issues"].append({"code": "backup_failed", "message": "私有備份尚未成功；原始資料庫仍未改寫。"})
+            state = {
+                "schema_version": SCHEMA_VERSION, "generated_at": iso(now), "last_synced_at": None,
+                "sources": [], "tasks": [], "ready": [], "ready_read_only": [], "ready_write": [],
+                "ready_counts": {"all": 0, "read_only": 0, "write": 0, "wait": 0},
+                "alerts": [{"code": "ledger_invalid", "severity": "error", "task_id": None,
+                            "message": "資料校驗失敗；原紀錄已保留，停止派工與完成判定。"}],
+                "store_health": health, "payload_hash": None,
+                "coverage": empty_coverage(),
+            }
+        else:
+            state = self._project(db, now)
+            state["store_health"] = health
+        state["state_hash"] = digest({key: value for key, value in state.items()
+                                     if key not in {"generated_at", "state_hash"}})
+        return state
 
     def _import(self, db, snapshot):
         validate_snapshot(snapshot)
@@ -528,13 +1009,14 @@ class Store:
         snapshot = json.loads(canonical(snapshot))
         with self._db() as db:
             db.execute("BEGIN IMMEDIATE")
+            self._assert_healthy(db)
             operation = self._import(db, snapshot)
             # Commit only after the entire resulting projection is usable.
-            state = self._read(db, utc_now())
+            state = self._read(db, utc_now(), strict=True)
         state["operation"] = operation
         return state
 
-    def _read(self, db, now):
+    def _project(self, db, now):
         source_rows = db.execute("SELECT current,last_good FROM sources ORDER BY id").fetchall()
         event_rows = db.execute("SELECT * FROM events").fetchall()
         # Read the original timestamp, including subsecond precision. Existing
@@ -542,7 +1024,8 @@ class Store:
         event_rows = sorted(event_rows, key=lambda row: (
             timestamp(json.loads(row["payload"])["occurred_at"]), row["version"],
             {"task": 0, "assignment": 1}.get(row["kind"], 2), row["event_id"]))
-        source_versions, observation_headers, observed_tasks = {}, {}, {}
+        source_versions, observation_headers, observed_tasks, ci_observations = {}, {}, {}, {}
+        inventories = {"issue": {}, "pr": {}}
         event_by_id = {row["event_id"]: row for row in event_rows}
         latest_stream_versions = {}
         for row in event_rows:
@@ -561,19 +1044,35 @@ class Store:
             observation_headers[header["id"]] = header
             if header["status"] != "ok":
                 continue
+            if "ci" in header or "ci_runs" in header:
+                observation = copy.deepcopy(ci_observations.get(header["id"], {}))
+                observation.update({key: copy.deepcopy(header[key]) for key in ("ci", "ci_runs") if key in header})
+                observation.update({"source_sha": header.get("source_sha"), "as_of": header["as_of"]})
+                ci_observations[header["id"]] = observation
+            update_inventory(inventories, snapshot)
             for event in snapshot["events"]:
                 original = event_by_id.get(event["event_id"])
                 stream = (header["id"], event["task_id"], event["kind"])
                 if (original is not None and original["applied"] and original["source_id"] == header["id"]
                         and event["version"] == latest_stream_versions.get(stream)):
                     observed_tasks[(event["task_id"], header["id"])] = header
-        sources, source_by_id = [], {}
+        sources, source_by_id, source_ci_inputs = [], {}, {}
         for row in source_rows:
             source = json.loads(row["current"])
             good = json.loads(row["last_good"]) if row["last_good"] else None
             source["last_success_at"] = good["as_of"] if good else None
             source["last_success_version"] = good["version"] if good else None
             source["last_success_sha"] = good.get("source_sha") if good else None
+            ci_observation = ci_observations.get(source["id"])
+            if ci_observation:
+                expected_sha = good.get("source_sha") if good else None
+                raw_jobs = copy.deepcopy(ci_observation.get("ci", []))
+                source["ci"] = [project_ci_job(job, expected_sha) for job in raw_jobs]
+                source["ci_observed_at"] = ci_observation["as_of"]
+                source_ci_inputs[source["id"]] = {"source_sha": expected_sha, "ci": raw_jobs}
+                if "ci_runs" in ci_observation:
+                    source["ci_runs"] = project_ci_runs(ci_observation["ci_runs"], source["ci"], expected_sha)
+                    source_ci_inputs[source["id"]]["ci_runs"] = copy.deepcopy(ci_observation["ci_runs"])
             age = (now - timestamp(good["as_of"])).total_seconds() if good else None
             source["freshness"] = ("error" if source["status"] == "error" else
                                    "future" if timestamp(source["as_of"]) > now else
@@ -590,10 +1089,12 @@ class Store:
                 "id": task_id, "title": task_id, "refs": [], "scope": "", "files": [],
                 "branch": None, "dependencies": [], "approval_constraints": [],
                 "required_acceptance": [], "not_before": None, "head_sha": None, "head_tree_sha": None,
+                "head_changed_at": None, "head_origin": "unknown",
                 "owner_thread": None, "execution_status": "unknown", "reserved": False,
                 "pr": None, "evidence": [], "assignment_history": [], "source_ids": [],
                 "source_provenance": [], "last_event_at": None, "metadata_known": False,
                 "completed_actions": [],
+                "node_kind": "work", "parent_id": None, "child_ids": [],
             })
             if row["source_id"] not in task["source_ids"]:
                 task["source_ids"].append(row["source_id"])
@@ -602,7 +1103,9 @@ class Store:
             task["last_event_at"] = event["occurred_at"]
             data = event["data"]
             if event["kind"] == "task":
-                task.update(copy.deepcopy(data))
+                if "head_sha" in data:
+                    set_task_head(task, data["head_sha"], event["occurred_at"])
+                task.update({key: copy.deepcopy(value) for key, value in data.items() if key != "head_sha"})
                 task["metadata_known"] = True
             elif event["kind"] == "assignment":
                 if "owner_thread" in data:
@@ -612,11 +1115,13 @@ class Store:
                 task["assignment_files"] = data.get("files", task["files"])
             else:
                 if "head_sha" in data:
-                    task["head_sha"] = data["head_sha"]
+                    set_task_head(task, data["head_sha"], event["occurred_at"])
                 if "pr" in data:
                     task["pr"] = copy.deepcopy(data["pr"])
                     if data["pr"] and data["pr"].get("head_sha"):
-                        task["head_sha"] = data["pr"]["head_sha"]
+                        set_task_head(task, data["pr"]["head_sha"], event["occurred_at"], origin="pr")
+                if "pr_metadata" in data:
+                    apply_pr_metadata(task, data["pr_metadata"])
                 if "execution_status" in data and (
                         "owner_thread" not in data or data["owner_thread"] == task["owner_thread"]):
                     task["execution_status"] = data["execution_status"]
@@ -650,6 +1155,19 @@ class Store:
                 alert(None, "source_future", f"來源 {source['id']} 的資料時間在未來，需核對時鐘。")
             elif source["freshness"] == "stale":
                 alert(None, "source_stale", f"來源 {source['id']} 超過 24 小時未同步。")
+            for job in source.get("ci", []):
+                if job["effective_result"] == "not_run":
+                    alert(None, "ci_not_run", f"來源 {source['id']} 的 CI {job['name']} 未實際執行，不算通過。")
+                elif job["effective_result"] == "stale":
+                    alert(None, "ci_stale", f"來源 {source['id']} 的 CI {job['name']} 並非來源的 exact SHA。")
+                elif job["effective_result"] == "unknown":
+                    alert(None, "ci_unknown", f"來源 {source['id']} 的 CI {job['name']} 缺少可核對的執行證據。")
+            if "ci_runs" in source and not source["ci_runs"]:
+                alert(None, "ci_unknown", f"來源 {source['id']} 尚未取得 CI run 紀錄。")
+            for run in source.get("ci_runs", []):
+                if run["effective_result"] != "passed":
+                    alert(None, "ci_" + run["effective_result"],
+                          f"來源 {source['id']} 的 CI run {run['id']} 為 {run['effective_result']}，不算通過。")
         for task in tasks.values():
             task["alerts"] = []
             task["source_ids"].sort()
@@ -674,7 +1192,7 @@ class Store:
                 alert(task, "event_future", "工作事件時間在未來，不能據此派工或完成。")
             if not task["metadata_known"]:
                 alert(task, "unknown_task", "缺少工作範圍資料，待核對。")
-            if not task["scope"] or not task["files"]:
+            if task["node_kind"] == "work" and (not task["scope"] or not task["files"]):
                 alert(task, "scope_unknown", "工作範圍或檔案清單待核；只可讀取審查，不可派出執行工作。")
             task["evidence"] = sorted(evidence_by_task.get(task["id"], {}).values(),
                                       key=lambda e: (timestamp(e["timestamp"]), e["id"]))
@@ -719,25 +1237,31 @@ class Store:
             if any(e["validity"] == "not_run" for e in task["evidence"]):
                 alert(task, "ci_not_run", "CI 沒有 steps 或 runner 為 0：未執行，不算通過。")
             ci_ok, pr = True, task["pr"]
+            task["published_head_sha"] = pr.get("head_sha") if pr else None
+            task["head_alignment"] = (
+                "unknown" if not task["head_sha"] or not task["published_head_sha"] else
+                "same" if same_sha(task["head_sha"], task["published_head_sha"]) else "different")
+            if task["head_alignment"] == "different":
+                alert(task, "head_conflict", "工作 head 與 PR 已發布 head 不同；需核對未發布變更或來源，不能視為已整合。")
+            task["ci_runs"] = []
             if pr:
-                task["ci"] = []
-                for original in pr.get("ci", []):
-                    job = copy.deepcopy(original)
-                    step_result = ci_steps_result(job.get("runner_id"), job.get("steps"))
-                    if step_result == "not_run":
-                        job["effective_result"] = step_result
+                task["ci"] = [project_ci_job(job, task["head_sha"]) for job in pr.get("ci", [])]
+                for job in task["ci"]:
+                    if job["effective_result"] == "not_run":
                         alert(task, "ci_not_run", f"CI {job['name']} 未執行（缺 steps 或 runner）。")
-                    elif not task["head_sha"] or not job.get("sha") or job["sha"].lower() != task["head_sha"].lower():
-                        job["effective_result"] = "stale"
+                    elif job["effective_result"] == "stale":
                         alert(task, "ci_stale", f"CI {job['name']} 並非目前 head。")
-                    elif step_result != "passed":
-                        job["effective_result"] = step_result
-                    elif job["status"] == "completed" and job["conclusion"] in {"success", "passed"}:
-                        job["effective_result"] = "passed"
-                    else:
-                        job["effective_result"] = "unknown" if job["status"] != "completed" else "failed"
                     ci_ok = ci_ok and job["effective_result"] == "passed"
-                    task["ci"].append(job)
+                if "ci_runs" in pr:
+                    task["ci_runs"] = project_ci_runs(pr["ci_runs"], task["ci"], task["head_sha"])
+                    ci_ok = ci_ok and bool(task["ci_runs"]) and all(
+                        run["effective_result"] == "passed" for run in task["ci_runs"])
+                    if not task["ci_runs"]:
+                        alert(task, "ci_unknown", "尚未取得 CI run 紀錄，不能視為全部通過。")
+                    for run in task["ci_runs"]:
+                        if run["effective_result"] != "passed":
+                            alert(task, "ci_" + run["effective_result"],
+                                  f"CI run {run['id']} 為 {run['effective_result']}，不算通過。")
                 is_merged_exact = merged_exact(task)
                 pr_head_exact = bool(task["head_sha"] and pr.get("head_sha")
                                      and pr["head_sha"].lower() == task["head_sha"].lower())
@@ -745,13 +1269,13 @@ class Store:
                 # validity separately so a stale approval is never shown as current.
                 pr["effective_review_state"] = pr["review_state"] if pr_head_exact else (
                     "stale" if task["head_sha"] and pr.get("head_sha") else "unknown")
-                if pr["review_state"] == "approved":
+                if pr["review_state"] in {"approved", "changes_requested"}:
                     if not pr.get("reviewed_sha"):
                         pr["effective_review_state"] = "unknown"
                     elif not pr_head_exact or not same_sha(pr["reviewed_sha"], task["head_sha"]):
                         pr["effective_review_state"] = "stale"
-                    if pr["effective_review_state"] != "approved":
-                        alert(task, "review_head_unknown", "彙總審查宣稱尚未綁定目前 reviewed_sha，不算本輪批准。")
+                    if pr["effective_review_state"] != pr["review_state"]:
+                        alert(task, "review_head_unknown", "彙總審查宣稱尚未綁定目前 reviewed_sha，不算本輪審查結論。")
                 if not pr_head_exact:
                     alert(task, "pr_head_stale", "PR head 未確認或不屬於目前 head；舊審查與 CI 不能當作整合依據。")
                 if pr["merged"] and not is_merged_exact:
@@ -761,6 +1285,8 @@ class Store:
                         and timestamp(task["last_event_at"]) <= now
                         and all(s["freshness"] != "future" for s in task["source_provenance"])):
                     task["delivery_status"] = "done"
+                elif not ci_ok or task["head_alignment"] == "different":
+                    task["delivery_status"] = "verification_pending"
                 elif pr["effective_review_state"] != "approved" and not pr["merged"]:
                     task["delivery_status"] = "awaiting_review"
                 elif (not acceptance_ok or not ci_ok or not pr_head_exact or
@@ -777,11 +1303,15 @@ class Store:
                                 if rule["status"] != "granted" and rule["action"] in TRANSITION_ACTIONS]
             if completion_holds or (transition_holds and not (pr and pr["merged"])):
                 task["delivery_status"] = "approval_blocked"
+            if task["node_kind"] == "umbrella":
+                task["delivery_status"] = "unknown"
+                if task["owner_thread"]:
+                    alert(task, "umbrella_owner", "彙總節點留有 owner 歷史；不可將它當作可派工的工作。")
             if task["execution_status"] == "blocked":
                 alert(task, "blocked", "工作明確受阻，不能算完成。")
             if task["execution_status"] in {"stopped", "finished"} and task["delivery_status"] != "done":
                 alert(task, "delivery_gap", "執行者已停止或結束；" + ("PR 仍需審查、驗收與整合。" if pr else "尚未記錄 PR，需接續交付。"))
-            if not task["owner_thread"] and task["delivery_status"] != "done":
+            if task["node_kind"] == "work" and not task["owner_thread"] and task["delivery_status"] != "done":
                 alert(task, "owner_missing", "尚未有執行者接手。", "info")
             if task["not_before"] and timestamp(task["not_before"]) > now:
                 alert(task, "not_before", "排程尚未到開始時間。", "info")
@@ -811,6 +1341,25 @@ class Store:
                     alert(task, "dependency_unknown", f"依賴 {dependency} 尚未匯入，待核。")
                 elif tasks[dependency]["delivery_status"] != "done":
                     alert(task, "dependency_incomplete", f"依賴 {dependency} 尚未完成驗收與整合。", "info")
+        for task in tasks.values():
+            parent_id = task["parent_id"]
+            if parent_id is not None:
+                if parent_id not in tasks:
+                    alert(task, "parent_unknown", f"關聯父節點 {parent_id} 尚未登記；這不是執行依賴。")
+                else:
+                    tasks[parent_id]["child_ids"].append(task["id"])
+        parent_cycles = set()
+        for task_id in tasks:
+            chain, current = [], task_id
+            while current in tasks and current not in chain:
+                chain.append(current)
+                current = tasks[current]["parent_id"]
+            if current in chain:
+                parent_cycles.update(chain[chain.index(current):])
+        for task in tasks.values():
+            task["child_ids"].sort()
+            if task["id"] in parent_cycles:
+                alert(task, "parent_cycle", "父子關聯形成循環；只提示關聯錯誤，不當作執行依賴。")
         active = [t for t in tasks.values() if t["owner_thread"] and t["execution_status"] == "active"
                   and t["delivery_status"] != "done"]
         for index, left in enumerate(active):
@@ -832,7 +1381,10 @@ class Store:
                            "file_conflict", "blocked"}
             task["ready"] = False
             mode = "wait"
-            if task["delivery_status"] == "done":
+            if task["node_kind"] == "umbrella":
+                code, action = "inspect_group", "檢視已關聯子工作；彙總節點不派工、不推算完成"
+                mode = "none"
+            elif task["delivery_status"] == "done":
                 code, action = "done", "已完成必要驗收與 exact head 整合"
                 mode = "none"
             elif task["execution_status"] == "active":
@@ -890,13 +1442,23 @@ class Store:
             "ready": [t for t in task_list if t["ready"]],
             "ready_read_only": [t for t in task_list if t["ready"] and t["next_action_mode"] == "read_only"],
             "ready_write": [t for t in task_list if t["ready"] and t["next_action_mode"] == "write"],
+            "coverage": project_coverage(inventories, tasks),
         }
         state["ready_counts"] = {"all": len(state["ready"]), "read_only": len(state["ready_read_only"]),
                                  "write": len(state["ready_write"]),
                                  "wait": sum(t["next_action_mode"] == "wait" for t in task_list)}
-        state["payload_hash"] = digest({"schema_version": SCHEMA_VERSION, "events": [
-            {"source_id": row["source_id"], **json.loads(row["payload"])}
-            for row in event_rows if row["applied"]]})
+        state["payload_hash"] = digest({
+            "schema_version": SCHEMA_VERSION, "events": [
+                {"source_id": row["source_id"], **json.loads(row["payload"])}
+                for row in event_rows if row["applied"]],
+            "inventories": {kind: {
+                repo: {"complete": registry["complete"], "rows": [
+                    {key: value for key, value in entry.items() if key != "_source"}
+                    for entry in sorted(registry["rows"].values(), key=lambda value: value["number"])]}
+                for repo, registry in sorted(inventories[kind].items())}
+                for kind in ("issue", "pr")},
+            "source_ci": source_ci_inputs,
+        })
         state["state_hash"] = digest({key: value for key, value in state.items() if key != "generated_at"})
         return state
 
@@ -915,6 +1477,7 @@ class Store:
         event_input = json.loads(canonical(event_input))
         with self._db() as db:
             db.execute("BEGIN IMMEDIATE")
+            self._assert_healthy(db)
             if "schema_version" in event_input:
                 snapshot = event_input
                 validate_snapshot(snapshot)
@@ -938,14 +1501,16 @@ class Store:
             if duplicate:
                 if duplicate["source_id"] != snapshot["source"]["id"] or duplicate["payload"] != canonical(event):
                     raise ValidationError("event_id collision: different record content")
-                result = self._read(db, utc_now())
+                result = self._read(db, utc_now(), strict=True)
                 result["operation"] = {"inserted": 0, "ignored": 0, "duplicates": 1, "source_updated": False}
                 return result
-            state = self._read(db, utc_now())
+            state = self._read(db, utc_now(), strict=True)
             tasks = {t["id"]: t for t in state["tasks"]}
             task = tasks.get(event["task_id"])
             if not task or not task["metadata_known"]:
                 raise ValidationError("record requires an existing task with a known scope")
+            if kind == "assignment" and task["node_kind"] == "umbrella":
+                raise ValidationError("umbrella nodes are associations, not assignable work")
             data = event["data"]
             if timestamp(event["occurred_at"]) > utc_now():
                 raise ValidationError("cannot record a future execution event")
@@ -993,7 +1558,7 @@ class Store:
             operation = self._import(db, snapshot)
             if operation["ignored"]:
                 raise ValidationError("record is out of order; use import-snapshot for historical observations")
-            result = self._read(db, utc_now())
+            result = self._read(db, utc_now(), strict=True)
             result["operation"] = operation
             return result
 
@@ -1021,13 +1586,14 @@ class Store:
             validate_snapshot(snapshot)
         with self._db() as db:
             db.execute("BEGIN IMMEDIATE")
+            self._assert_healthy(db)
             existing = [json.loads(row["payload"]) for row in db.execute("SELECT payload FROM snapshots ORDER BY ordinal")]
             if existing and existing != exported["snapshots"]:
                 raise ValidationError("restore requires an empty store; existing newer state cannot be replaced")
             if not existing:
                 for snapshot in exported["snapshots"]:
                     self._import(db, snapshot)
-            state = self._read(db, utc_now())
+            state = self._read(db, utc_now(), strict=True)
         return state
 
 

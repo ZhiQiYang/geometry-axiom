@@ -67,8 +67,8 @@ Initial **red** result: exit **1**, **9 tests / 13 failures**, reproducing the
 first six issues. The seventh freshness case was then added and independently
 ran **red** with exit **1**, one test / one failure, before its repair.
 
-The repaired contract is covered by **24 passing cases** (exit **0**, `Ran 24
-tests in 0.133s`, `OK`):
+The repaired contract and the later negative-review case are covered by **25
+passing cases** (exit **0**, `Ran 25 tests in 0.170s`, `OK`):
 
 1. Unscoped approval constraints default to completion gates and cannot release
    dependent work. Explicit action-only publication holds preserve already
@@ -107,6 +107,99 @@ remained unknown but the input pin changed. After the pin used only applicable
 current-head evidence, the full 24-case review suite exited **0**; old-head proof
 history was retained and the existing completed receipt stayed effective.
 
+## Negative review pins and legacy-ledger upgrade
+
+Both later findings were reproduced before their fixes. The negative-review
+case exited **1** with two failing subcases: `changes_requested` incorrectly
+remained current with an old or missing `reviewed_sha`. It now becomes stale or
+unknown respectively; a matching current-head pin still preserves the valid
+negative conclusion and its raw historical claim.
+
+The initial synthetic legacy-ledger suite exited **1** with **5 tests, 4 failures
+and 3 errors**. Nested CI shapes crashed reads, CLI commands produced tracebacks,
+the API returned a generic 503, and conflicting historical proof IDs could gain
+completion from a newly pinned review. Fixtures directly construct the earlier
+SQLite schema; they do not require git history or read a real database.
+
+```sh
+python3 -m unittest discover -s geometry-web/work-manager -p test_legacy_upgrade.py -v
+```
+
+After the repair, **6 tests passed**, exit **0** (`Ran 6 tests in 0.592s`, `OK`):
+
+- Invalid legacy stores return a readable `store_health` diagnostic through
+  reconciliation, `list-ready` and the loopback API, with no ready/done claims.
+- Import, assignment, result and restore attempts are rejected without changing
+  the original database bytes or removing conflicting rows.
+- An exact-byte private backup has the expected checksum and 0600 permissions;
+  API diagnostics do not expose its local path.
+- A healthy legacy store remains readable without a rewrite and can accept a
+  valid new review pin. The guard does not freeze all older databases.
+
+## Inventory and umbrella coverage
+
+```sh
+python3 -m unittest discover -s geometry-web/work-manager -p test_coverage.py -v
+```
+
+**9 tests passed**, exit **0** (`Ran 9 tests in 0.147s`, `OK`). All repositories,
+issue numbers, PR numbers and task mappings in these checks are synthetic.
+
+- A 26-issue fixture across two repositories counts repository/issue identities
+  correctly; multiple tasks or repeated observations do not inflate counts.
+- Umbrella nodes preserve their own historical facts but stay unknown and
+  unassignable; parent relationships do not become execution dependencies.
+- Missing scope, uncaptured issues and umbrella-only mappings remain visible.
+- New, older and failed inventory observations preserve leaf completion,
+  owners, proofs and completed-action pins. Partial and complete inventory
+  updates change coverage without deleting work records.
+- PR references deduplicate across task refs, PR facts and inventory mappings.
+  No mapping is inferred from a task ID that resembles an issue or PR number.
+- Unknown mappings and failed-source inventory payloads reject atomically.
+
+## Observation adapter review
+
+The adapter was reviewed independently using synthetic repositories and private
+temporary ledgers. Before any adapter repair, four regressions failed in one
+run (`Ran 4 tests in 0.025s`, **4 failures**, exit **1**): cross-repository numeric
+task ID collisions, same-name jobs from different runs hiding a failure, runs
+without jobs becoming an empty successful CI set, and failed run metadata being
+overridden by passing job details.
+
+A fifth focused regression then failed (`Ran 1 test in 0.010s`, exit **1**): a
+new poll of an unchanged older remote PR head rolled a newer task head backward,
+reviving the old review. The poll timestamp is not a new PR revision.
+
+Two further focused runs were red: a later independently recorded review
+changed the event generated from an unchanged observation (**1 failure**, exit
+**1**), and two issue aliases referring to one existing task produced duplicate
+event IDs (**1 error**, exit **1**).
+
+The same collision guard was also tested with an existing PR-only reference
+in the same repository (**1 failure** before repair). A newer remote metadata
+timestamp was tested separately and likewise could overwrite an explicitly
+recorded work head (**1 failure** before repair).
+
+Four independent positive cases also pass: unchanged observations reuse
+events and preserve completed receipts, aliases retain owner/review/approval and
+scope, partial observations retain unseen work, and malformed inputs leave the
+database bytes unchanged.
+
+```sh
+python3 -m unittest discover -s geometry-web/work-manager -p test_adapter_independent.py -v
+```
+
+After repair, all **13 tests passed**, exit **0** (`Ran 13 tests in 0.129s`,
+`OK`). CI run failures and missing execution detail remain in derived
+`ci_runs`; no fake job is required. Explicit work-head provenance remains
+separate from the PR's published head even when remote metadata is newer.
+Metadata events do not copy independently recorded review facts.
+
+Two existing review/receipt fixtures now supply explicit `head_sha` when
+intentionally advancing the work head. Their original approval, readiness and
+receipt invalidation assertions were preserved; an observed PR head alone no
+longer overwrites an explicit work-head record.
+
 ## Required checks
 
 - Idempotent imports; conflicting IDs; older source and event versions.
@@ -119,9 +212,30 @@ history was retained and the existing completed receipt stayed effective.
 - CLI/API/UI state hash consistency; loopback read-only API; XSS-safe rendering.
 - Actual desktop and 390 px browser verification and screenshots are owned by the parent.
 
-All 70 independent automated cases pass. No remaining blocker was found in this
-test scope. Private live inputs, final actual-state screenshots, commit identity,
-and draft PR delivery remain the integration owner's deliverables.
+All **99 independent automated cases pass**. No remaining blocker was found in
+this test scope. Private live inputs, final actual-state screenshots, commit
+identity, and draft PR delivery remain the integration owner's deliverables.
+
+The pre-adapter combined tool suite also passed, including the implementation owner's
+23 focused tests:
+
+```sh
+python3 -m unittest discover -s geometry-web/work-manager -p 'test_*.py' -v
+```
+
+Exit **0**: `Ran 109 tests in 2.158s`, `OK`. This run used synthetic temporary
+stores only and did not modify the live queue.
+
+After the adapter and explicit work-head provenance changes, the final combined
+suite includes the 99 independent cases and 43 implementation-owner cases:
+
+```sh
+python3 -m unittest discover -s geometry-web/work-manager -p 'test_*.py'
+```
+
+Exit **0**: `Ran 142 tests in 2.456s`, `OK`. The new review and receipt fixtures
+retain their original assertions with an explicitly supplied work head. All
+adapter checks and the previously passing legacy/coverage checks are included.
 
 ## Environment evidence
 

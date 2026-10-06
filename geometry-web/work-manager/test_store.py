@@ -160,7 +160,9 @@ class OperatorBoundaryTests(unittest.TestCase):
         self.assertEqual(current["pr"]["review_state"], "approved")
         self.assertEqual(current["pr"]["effective_review_state"], "stale")
         self.assertEqual(current["evidence"][0]["effective_result"], "unknown")
-        self.assertEqual(current["delivery_status"], "awaiting_review")
+        self.assertEqual(current["delivery_status"], "verification_pending")
+        self.assertEqual(current["head_alignment"], "different")
+        self.assertIn("head_conflict", {item["code"] for item in current["alerts"]})
 
     def test_postmerge_proof_preserves_actual_tested_merge_commit(self):
         merge_commit = "b" * 40
@@ -299,6 +301,206 @@ class OperatorBoundaryTests(unittest.TestCase):
         self.assertEqual(export_path.stat().st_mode & 0o777, 0o600)
         self.assertEqual(json.loads(export_path.read_text())["checksum"], bundle["checksum"])
         self.assertFalse(list(export_path.parent.glob(".backup.json.*")))
+
+    def test_source_ci_is_observation_not_a_passing_work_item(self):
+        source = {"id": "synthetic-main", "kind": "git", "version": 1, "as_of": WHEN,
+                  "status": "ok", "source_sha": HEAD, "ci": [{
+                      "name": "synthetic-main-check", "sha": HEAD, "status": "completed",
+                      "conclusion": "success", "runner_id": 0, "steps": []}]}
+        state = self.store.import_snapshot({"schema_version": 1, "source": source, "events": []})
+        self.assertEqual(state["tasks"], [])
+        self.assertEqual(state["sources"][0]["ci"][0]["effective_result"], "not_run")
+        self.assertEqual(state["sources"][0]["ci_observed_at"], WHEN)
+        self.assertIn("ci_not_run", {alert["code"] for alert in state["alerts"]})
+
+    def test_source_ci_requires_its_exact_sha_and_failed_fetch_preserves_observation(self):
+        source = {"id": "synthetic-main", "kind": "git", "version": 1, "as_of": WHEN,
+                  "status": "ok", "source_sha": HEAD, "ci": [{
+                      "name": "synthetic-main-check", "sha": "b" * 40, "status": "completed",
+                      "conclusion": "success", "runner_id": 1,
+                      "steps": [{"name": "test", "status": "completed", "conclusion": "success"}]}]}
+        first = self.store.import_snapshot({"schema_version": 1, "source": source, "events": []})
+        self.assertEqual(first["sources"][0]["ci"][0]["effective_result"], "stale")
+        failure = {"schema_version": 1, "source": {
+            "id": "synthetic-main", "kind": "git", "version": 2, "as_of": "2026-10-06T02:30:00Z",
+            "status": "error", "error": "Synthetic unavailable source"}, "events": []}
+        after = self.store.import_snapshot(failure)
+        self.assertEqual(after["sources"][0]["ci"], first["sources"][0]["ci"])
+        self.assertEqual(after["sources"][0]["ci_observed_at"], WHEN)
+        self.assertEqual(after["payload_hash"], first["payload_hash"])
+
+    def test_inventory_changes_payload_but_observation_refresh_does_not_reset_action(self):
+        self.ingest(self.task())
+        initial_task = self.view()
+        inventory = {"repository": "synthetic/example", "complete": True, "issues": [{
+            "number": 1, "url": "https://example.invalid/synthetic/example/issues/1",
+            "task_ids": ["SYNTHETIC"]}]}
+        payload = {"schema_version": 1, "source": {
+            "id": "synthetic-inventory", "kind": "manual_snapshot", "version": 1,
+            "as_of": WHEN, "status": "ok"}, "events": [], "issue_inventory": inventory}
+        first = self.store.import_snapshot(payload)
+        self.assertIsNone(first["coverage"]["repositories"][0]["issues"][0]["title"])
+        second_payload = copy.deepcopy(payload)
+        second_payload["source"].update(version=2, as_of="2026-10-06T02:30:00Z")
+        second = self.store.import_snapshot(second_payload)
+        self.assertEqual(first["payload_hash"], second["payload_hash"])
+        self.assertNotEqual(first["state_hash"], second["state_hash"])
+        second_payload["source"].update(version=3)
+        second_payload["issue_inventory"]["issues"][0]["title"] = "Synthetic observed title"
+        third = self.store.import_snapshot(second_payload)
+        self.assertNotEqual(second["payload_hash"], third["payload_hash"])
+        self.assertEqual(self.view()["next_action_pin"], initial_task["next_action_pin"])
+        self.assertEqual(len(third["tasks"]), 1)
+
+    def metadata(self, version=1, **updates):
+        pr = {"number": 1, "url": "https://example.invalid/synthetic/pull/1",
+              "head_sha": HEAD, "updated_at": "2026-10-06T02:20:00Z"}
+        pr.update(updates)
+        return self.event("github", {"pr_metadata": pr}, version=version,
+                          when="2026-10-06T02:30:00Z")
+
+    def ci_job(self, run_id=41, **updates):
+        job = {"id": run_id + 100, "run_id": run_id, "attempt": 1,
+               "name": "same-check-name", "sha": HEAD, "status": "completed", "conclusion": "success",
+               "runner_id": 1, "steps": [{"name": "test", "status": "completed", "conclusion": "success"}]}
+        job.update(updates)
+        return job
+
+    def ci_run(self, identity=41, **updates):
+        run = {"id": identity, "sha": HEAD, "status": "completed", "conclusion": "success",
+               "attempt": 1, "job_count": 1, "url": f"https://example.invalid/actions/runs/{identity}"}
+        run.update(updates)
+        return run
+
+    def test_metadata_preserves_review_and_completed_check_for_identical_inputs(self):
+        result = self.result([])
+        result["data"]["pr"].update(merged=False, merged_head_sha=None)
+        self.ingest(self.task(), result)
+        initial = self.view()
+        self.assertEqual(initial["next_action_code"], "verify_acceptance")
+        self.store.record_result(self.event("result", {"completed_actions": [{
+            "action": initial["next_action_code"], "input_pin": initial["next_action_pin"],
+            "timestamp": WHEN}]}, event_id="synthetic-check-receipt"))
+        self.ingest(self.metadata(), when="2026-10-06T02:30:00Z")
+        current = self.view()
+        self.assertEqual(current["pr"]["reviewed_sha"], HEAD)
+        self.assertEqual(current["pr"]["effective_review_state"], "approved")
+        self.assertEqual(current["head_changed_at"], WHEN)
+        self.assertEqual(current["next_action_pin"], initial["next_action_pin"])
+        self.assertTrue(current["next_action_completed"])
+        self.assertFalse(current["ready"])
+
+    def test_metadata_never_replaces_explicit_work_head_even_with_newer_remote_time(self):
+        result = self.result([])
+        result["data"]["pr"].update(merged=False, merged_head_sha=None)
+        self.ingest(self.task(), result)
+        newer = self.event("task", {"head_sha": "b" * 40}, version=2, when="2026-10-06T02:10:00Z")
+        self.ingest(newer, when="2026-10-06T02:10:00Z")
+        self.ingest(self.metadata(), when="2026-10-06T02:30:00Z")
+        current = self.view()
+        self.assertEqual(current["head_sha"], "b" * 40)
+        self.assertEqual(current["published_head_sha"], HEAD)
+        self.assertEqual(current["head_origin"], "work")
+        self.assertEqual(current["head_changed_at"], "2026-10-06T02:10:00Z")
+        self.assertEqual(current["head_alignment"], "different")
+        self.assertEqual(current["pr"]["effective_review_state"], "stale")
+        self.assertEqual(current["delivery_status"], "verification_pending")
+
+    def test_pr_inferred_head_can_advance_without_reusing_old_review(self):
+        result = self.result([])
+        result["data"]["pr"].update(merged=False, merged_head_sha=None)
+        self.ingest(self.task(head_sha=None), result)
+        self.assertEqual(self.view()["head_origin"], "pr")
+        self.ingest(self.metadata(head_sha="b" * 40), when="2026-10-06T02:30:00Z")
+        current = self.view()
+        self.assertEqual(current["head_sha"], "b" * 40)
+        self.assertEqual(current["published_head_sha"], "b" * 40)
+        self.assertEqual(current["pr"]["reviewed_sha"], HEAD)
+        self.assertEqual(current["pr"]["effective_review_state"], "stale")
+
+    def test_metadata_different_pr_does_not_carry_review_or_ci(self):
+        result = self.result([])
+        result["data"]["pr"].update(ci=[self.ci_job()], ci_runs=[self.ci_run()])
+        self.ingest(self.task(), result)
+        self.ingest(self.metadata(url="https://example.invalid/another-repo/pull/1"),
+                    when="2026-10-06T02:30:00Z")
+        current = self.view()
+        self.assertEqual(current["pr"]["review_state"], "unknown")
+        self.assertIsNone(current["pr"].get("reviewed_sha"))
+        self.assertEqual(current["ci"], [])
+        self.assertEqual(current["ci_runs"], [])
+
+    def test_metadata_cannot_inject_review_or_approval_and_is_atomic(self):
+        self.ingest(self.task())
+        before = self.store.reconcile()["state_hash"]
+        for field, value in (("review_state", "approved"), ("reviewed_sha", HEAD),
+                             ("owner_thread", "synthetic-owner"), ("approval_constraints", [])):
+            with self.subTest(field=field):
+                with self.assertRaises(ValidationError):
+                    self.ingest(self.metadata(**{field: value}))
+                self.assertEqual(self.store.reconcile()["state_hash"], before)
+
+    def test_run_failure_or_missing_jobs_cannot_be_replaced_by_passing_jobs(self):
+        self.ingest(self.task())
+        cases = [
+            ([self.ci_job()], [self.ci_run(conclusion="failure")], "failed"),
+            ([], [self.ci_run(job_count=0)], "not_run"),
+            ([self.ci_job(runner_id=0, steps=[])], [self.ci_run()], "not_run"),
+            ([self.ci_job()], [self.ci_run(job_count=2)], "unknown"),
+            ([self.ci_job()], [self.ci_run()], "passed"),
+        ]
+        for version, (jobs, runs, expected) in enumerate(cases, 1):
+            with self.subTest(expected=expected):
+                result = self.result([self.evidence("stable-proof")])
+                result["event_id"], result["version"] = f"synthetic-run-check-{version}", version
+                result["data"]["pr"].update(ci=jobs, ci_runs=runs)
+                self.ingest(result)
+                current = self.view()
+                self.assertEqual(current["ci_runs"][0]["effective_result"], expected)
+                self.assertEqual(current["ci_runs"][0]["observed_job_count"], len(jobs))
+                self.assertEqual(current["delivery_status"], "done" if expected == "passed" else "verification_pending")
+
+    def test_empty_run_list_is_unknown_not_vacuously_passing(self):
+        result = self.result([self.evidence("proof")])
+        result["data"]["pr"].update(ci=[], ci_runs=[])
+        self.ingest(self.task(), result)
+        current = self.view()
+        self.assertEqual(current["ci"], [])
+        self.assertEqual(current["ci_runs"], [])
+        self.assertEqual(current["delivery_status"], "verification_pending")
+        self.assertIn("ci_unknown", {alert["code"] for alert in current["alerts"]})
+
+    def test_same_named_jobs_keep_distinct_run_identity_and_run_semantics_pin(self):
+        result = self.result([self.evidence("proof")])
+        result["data"]["pr"].update(ci=[self.ci_job(41), self.ci_job(42)],
+                                   ci_runs=[self.ci_run(41), self.ci_run(42)])
+        self.ingest(self.task(), result)
+        initial = self.view()
+        self.assertEqual([job["run_id"] for job in initial["ci"]], [41, 42])
+        self.assertEqual([run["observed_job_count"] for run in initial["ci_runs"]], [1, 1])
+        self.assertEqual(initial["delivery_status"], "done")
+        result["event_id"], result["version"] = "synthetic-run-failed", 2
+        result["data"]["pr"]["ci_runs"][1]["conclusion"] = "failure"
+        self.ingest(result)
+        self.assertNotEqual(self.view()["next_action_pin"], initial["next_action_pin"])
+        self.assertEqual(self.view()["delivery_status"], "verification_pending")
+
+    def test_source_refresh_without_ci_retains_original_proof_time_and_stales_on_new_head(self):
+        source = {"id": "synthetic-main", "kind": "git", "version": 1, "as_of": WHEN,
+                  "status": "ok", "source_sha": HEAD, "ci": [self.ci_job()], "ci_runs": [self.ci_run()]}
+        initial = self.store.import_snapshot({"schema_version": 1, "source": source, "events": []})
+        source = {key: value for key, value in source.items() if key not in {"ci", "ci_runs"}}
+        source.update(version=2, as_of="2026-10-06T02:10:00Z")
+        refresh = self.store.import_snapshot({"schema_version": 1, "source": source, "events": []})
+        self.assertEqual(refresh["sources"][0]["ci"], initial["sources"][0]["ci"])
+        self.assertEqual(refresh["sources"][0]["ci_observed_at"], WHEN)
+        self.assertEqual(refresh["payload_hash"], initial["payload_hash"])
+        source.update(version=3, as_of="2026-10-06T02:20:00Z", source_sha="b" * 40)
+        changed = self.store.import_snapshot({"schema_version": 1, "source": source, "events": []})
+        self.assertEqual(changed["sources"][0]["ci"][0]["sha"], HEAD)
+        self.assertEqual(changed["sources"][0]["ci"][0]["effective_result"], "stale")
+        self.assertEqual(changed["sources"][0]["ci_runs"][0]["effective_result"], "stale")
+        self.assertEqual(changed["sources"][0]["ci_observed_at"], WHEN)
 
 
 if __name__ == "__main__":

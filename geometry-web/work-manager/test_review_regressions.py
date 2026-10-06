@@ -153,7 +153,7 @@ class ReviewRegressions(unittest.TestCase):
         self.ingest(task(), event("result", {"pr": pull_request(), "evidence": [proof()]}))
         aggregate = pull_request(head=HEAD_B)
         aggregate.pop("reviewed_sha")
-        newer = event("github", {"pr": aggregate,
+        newer = event("github", {"head_sha": HEAD_B, "pr": aggregate,
                                  "evidence": [proof(identity="new-head-proof", head=HEAD_B, minutes=1)]},
                       version=2, when=stamp(1))
         self.ingest(newer, minutes=1)
@@ -225,6 +225,17 @@ class ReviewRegressions(unittest.TestCase):
         self.assertNotEqual(current["delivery_status"], "awaiting_integration")
         self.assertNotEqual(current["next_action_code"], "review_integration")
 
+    def test_negative_review_requires_a_current_head_pin(self):
+        for index, (reviewed_sha, expected) in enumerate(((HEAD_A, "stale"), (None, "unknown"), (HEAD_B, "changes_requested"))):
+            with self.subTest(reviewed_sha=reviewed_sha):
+                isolated = Store(Path(self.temp.name) / f"negative-review-{index}")
+                result = event("result", {"pr": pull_request(head=HEAD_B, review="changes_requested", reviewed_sha=reviewed_sha),
+                                         "evidence": [proof(head=HEAD_B)]})
+                isolated.import_snapshot(self.payload([task(head_sha=HEAD_B), result], 1))
+                current = self.view(store=isolated)
+                self.assertEqual(current["pr"]["review_state"], "changes_requested")
+                self.assertEqual(current["pr"]["effective_review_state"], expected)
+
     def test_receipt_survives_source_refresh_and_irrelevant_stale_proof(self):
         initial = self.prepare_review(head=HEAD_B)
         self.complete_current_action()
@@ -261,7 +272,7 @@ class ReviewRegressions(unittest.TestCase):
     def test_new_head_invalidates_completed_receipt(self):
         initial = self.prepare_review()
         self.complete_current_action()
-        newer = event("github", {"pr": pull_request(head=HEAD_B),
+        newer = event("github", {"head_sha": HEAD_B, "pr": pull_request(head=HEAD_B),
                       "evidence": [proof(identity="reviewed-b-proof", head=HEAD_B, minutes=2)]}, when=stamp(2))
         self.ingest(newer, minutes=2)
         current = self.view()

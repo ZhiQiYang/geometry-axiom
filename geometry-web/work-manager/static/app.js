@@ -14,7 +14,7 @@
   let state = null;
   let busy = false;
   const expanded = new Set();
-  const dates = new Intl.DateTimeFormat("zh-TW", { timeZone: "UTC", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+  const dates = new Intl.DateTimeFormat("zh-TW", { timeZone: "UTC", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" });
 
   function text(value, fallback = "待核") {
     if (value === null || value === undefined || value === "") return fallback;
@@ -106,6 +106,9 @@
   function findTask(id) { return state?.tasks.find((task) => task.id === id); }
   function readyTasks() { return array(state?.ready).map((entry) => typeof entry === "string" ? findTask(entry) : findTask(entry.id) || entry).filter(Boolean); }
   function taskAlerts(task) { return array(task.alerts); }
+  function invalidStore() { return state?.store_health?.status === "invalid"; }
+  function isUmbrella(task) { return task.node_kind === "umbrella"; }
+  function childTasks(task) { return state.tasks.filter((candidate) => candidate.parent_id === task.id); }
 
   function openTask(id) {
     if (!findTask(id)) return;
@@ -127,10 +130,160 @@
     return button;
   }
 
+  function hierarchyLink(id) {
+    const parent = findTask(id);
+    if (parent) return taskButton(parent, "dependency-button");
+    return el("span", "subtle", `${text(id)}（來源待核）`);
+  }
+
+  function hierarchySummary(task) {
+    const summary = el("div", "hierarchy-hint");
+    if (isUmbrella(task)) summary.append(el("span", "node-kind", "彙總工單 · 不獨立派工"));
+    if (task.parent_id) { summary.append(el("span", "node-kind", "上層"), hierarchyLink(task.parent_id)); }
+    return summary;
+  }
+
+  function renderStoreHealth() {
+    const health = state.store_health;
+    $("store-health-error").hidden = !invalidStore();
+    if (!invalidStore()) return;
+    $("store-health-heading").textContent = "資料校驗失敗";
+    $("store-health-summary").textContent = health.backup_preserved === true
+      ? "原紀錄已保留；停止派工／完成判定。以下是資料診斷，不是沒有工作的正常空佇列。"
+      : "停止派工／完成判定。原紀錄保留狀態待核；以下是資料診斷，不是沒有工作的正常空佇列。";
+    const backup = [];
+    if (health.read_only === true) backup.push("唯讀診斷模式");
+    if (Number.isInteger(health.row_count)) backup.push(`原紀錄 ${health.row_count} 筆`);
+    else if (health.row_count && typeof health.row_count === "object") {
+      for (const [key, label] of [["sources", "來源"], ["snapshots", "快照"], ["events", "事件"]]) {
+        if (Number.isInteger(health.row_count[key])) backup.push(`${label} ${health.row_count[key]} 筆`);
+      }
+    }
+    if (health.backup_checksum) backup.push(`備份 SHA-256：${health.backup_checksum}`);
+    $("store-health-backup").textContent = backup.join(" · ");
+    const issues = document.createDocumentFragment();
+    for (const issue of array(health.issues)) {
+      const item = el("li");
+      item.append(el("strong", "", alertText(issue)));
+      if (typeof issue === "object" && issue !== null) {
+        const context = [issue.code, issue.event_id && `事件 ${issue.event_id}`, issue.task_id && `工作 ${issue.task_id}`, issue.source_id && `來源 ${issue.source_id}`].filter(Boolean);
+        if (context.length) item.append(el("p", "subtle", context.join(" · ")));
+      }
+      issues.append(item);
+    }
+    if (!issues.childNodes.length) issues.append(el("li", "", "診斷細節待核；請保留原資料與備份。"));
+    $("store-health-issues").replaceChildren(issues);
+  }
+
+  function renderCoverage() {
+    const coverage = state.coverage;
+    if (invalidStore()) {
+      $("coverage-overview-summary").textContent = "資料校驗失敗，來源覆蓋暫停判定。";
+      $("coverage-overview-time").textContent = "原紀錄保留狀態見上方診斷。";
+      $("coverage-repositories").replaceChildren(el("p", "empty", "資料校驗失敗，無法判定 issue／PR 覆蓋。"));
+      return;
+    }
+    if (!coverage || (!array(coverage.repositories).length && !array(coverage.pr_repositories).length && !array(coverage.pr_links).length)) {
+      $("coverage-overview-summary").textContent = "尚未匯入 issue 清單；登記工作數不代表完整覆蓋。";
+      $("coverage-overview-time").textContent = "來源清單與工作狀態分別核對。";
+      $("coverage-repositories").replaceChildren(el("p", "empty", "尚未匯入 issue 清單，完整來源覆蓋待核。"));
+      return;
+    }
+    $("coverage-overview-summary").textContent = array(coverage.repositories).length ? `快照內開啟 issue ${coverage.count} · 已映射 ${coverage.captured} · 範圍待核 ${coverage.missing_scope}` : "尚未匯入 issue 清單；登記工作數不代表完整覆蓋。";
+    $("coverage-overview-time").textContent = array(coverage.repositories).map((repo) => {
+      const source = state.sources.find((item) => item.id === repo.source_id);
+      return `${sourceKindLabels[source?.kind] || "來源模式待核"} · ${stamp(repo.as_of)} UTC${repo.complete === true ? "" : " · 部分清單"}`;
+    }).join("；");
+    const repositories = document.createDocumentFragment();
+    for (const repo of array(coverage.repositories)) {
+      const section = el("section", "coverage-repository");
+      const heading = el("div", "coverage-repo-heading");
+      heading.append(el("h3", "", repo.repository), el("span", "badge", repo.complete === true ? "完整 issue 清單快照" : "部分 issue 清單快照"), el("span", "subtle", `清單 ${repo.count} · 已映射 ${repo.captured} · 範圍待核 ${repo.missing_scope}`));
+      const source = state.sources.find((item) => item.id === repo.source_id);
+      section.append(heading, el("p", "coverage-source", `${sourceKindLabels[source?.kind] || "來源模式待核"} · ${repo.source_id} · 版本 ${text(repo.source_version)} · 截至 ${stamp(repo.as_of)} UTC`));
+      const wrap = el("div", "coverage-table-wrap");
+      const table = el("table", "coverage-table");
+      table.append(el("caption", "sr-only", `${repo.repository} 開啟 issue 與登記工作、PR 對照`));
+      const thead = el("thead"), header = el("tr");
+      for (const label of ["開啟 issue", "對應登記工作", "範圍", "所有關聯 PR"]) { const th = el("th", "", label); th.scope = "col"; header.append(th); }
+      thead.append(header); table.append(thead);
+      const body = el("tbody");
+      for (const issue of array(repo.issues)) {
+        const row = el("tr"); row.dataset.issueNumber = String(issue.number);
+        const issueCell = el("td");
+        issueCell.append(link(issue.url, `Issue #${issue.number}`), el("span", "coverage-issue-title", issue.title || "標題待核"));
+        const tasks = el("td"); tasks.dataset.label = "對應登記工作";
+        for (const id of array(issue.task_ids)) {
+          const task = findTask(id);
+          if (task) {
+            const button = taskButton(task, "coverage-task");
+            if (isUmbrella(task)) button.append(el("span", "node-kind", " · 彙總工單"));
+            tasks.append(button);
+          } else tasks.append(el("p", "subtle", `${id}（工作來源待核）`));
+        }
+        if (!tasks.childElementCount) tasks.append(el("span", "subtle", "尚未映射工作；範圍與 owner 待核"));
+        const scope = el("td"); scope.dataset.label = "範圍";
+        scope.append(el("span", `badge ${issue.scope_status === "missing" ? "amber" : ""}`, issue.scope_status === "known" ? "已登記範圍" : "範圍待核"));
+        if (issue.captured === false) scope.append(el("p", "subtle", "尚未映射"));
+        const prs = el("td"); prs.dataset.label = "所有關聯 PR";
+        const links = el("div", "coverage-pr-links");
+        for (const pr of array(issue.pr_links)) links.append(link(pr.url, pr.number ? `PR #${pr.number}` : "PR 連結"));
+        if (!links.childElementCount) links.append(el("span", "subtle", "尚無登記連結"));
+        prs.append(links); row.append(issueCell, tasks, scope, prs); body.append(row);
+      }
+      table.append(body); wrap.append(table); section.append(wrap); repositories.append(section);
+    }
+    if (array(coverage.pr_links).length || array(coverage.pr_repositories).length) repositories.append(prCoverageSection(coverage));
+    $("coverage-repositories").replaceChildren(repositories);
+  }
+
+  function prCoverageSection(coverage) {
+    const section = el("section", "coverage-repository");
+    const heading = el("div", "coverage-repo-heading coverage-catalog-heading");
+    heading.append(el("h3", "", "全部已知 PR 連結"), el("span", "subtle", `本次 PR 清單 ${text(coverage.pr_count)} · 已映射 ${text(coverage.pr_captured)} · 範圍待核 ${text(coverage.pr_missing_scope)} · 可追溯連結 ${array(coverage.pr_links).length}`));
+    section.append(heading);
+    for (const repo of array(coverage.pr_repositories)) {
+      const source = state.sources.find((item) => item.id === repo.source_id);
+      section.append(el("p", "coverage-source", `${repo.repository} · ${sourceKindLabels[source?.kind] || "來源模式待核"} · ${repo.source_id} 版本 ${text(repo.source_version)} · ${stamp(repo.as_of)} UTC · ${repo.complete === true ? "完整 PR 清單快照" : "部分 PR 清單快照"}`));
+    }
+    const wrap = el("div", "coverage-table-wrap");
+    const table = el("table", "coverage-table pr-coverage-table");
+    table.append(el("caption", "sr-only", "本次清單及歷史引用中的全部已知 PR 連結，保留來源時間與版本"));
+    const thead = el("thead"), header = el("tr");
+    for (const label of ["PR", "關聯登記工作", "版本／狀態", "來源快照"]) { const th = el("th", "", label); th.scope = "col"; header.append(th); }
+    thead.append(header); table.append(thead);
+    const body = el("tbody");
+    for (const pr of array(coverage.pr_links)) {
+      const row = el("tr"); row.dataset.prNumber = String(pr.number);
+      const identity = el("td");
+      identity.append(link(pr.url, pr.number ? `PR #${pr.number}` : "PR 連結"), el("span", "coverage-issue-title", pr.title || "標題待核"), el("p", "subtle", pr.listed_in_current_inventory === true ? "本次 PR 清單" : "清單外引用 · 狀態依證據"));
+      const tasks = el("td"); tasks.dataset.label = "關聯登記工作";
+      for (const id of array(pr.task_ids)) {
+        const task = findTask(id);
+        if (task) tasks.append(taskButton(task, "coverage-task")); else tasks.append(el("p", "subtle", `${id}（工作來源待核）`));
+      }
+      if (!tasks.childElementCount) tasks.append(el("span", "subtle", "尚未映射工作"));
+      if (pr.scope_status === "missing") tasks.append(el("p", "subtle", "範圍待核"));
+      const version = el("td"); version.dataset.label = "版本／狀態";
+      if (pr.merged === true) version.append(badge("merged"));
+      else version.append(el("span", "badge", pr.merged === false ? "尚未整合" : "整合狀態待核"));
+      if (pr.draft === true) version.append(badge("draft", { draft: "草稿 PR" }));
+      else version.append(el("span", "badge", pr.draft === false ? "非草稿 PR" : "草稿狀態待核"));
+      version.append(el("code", "", `head：${text(pr.head_sha)}`), el("p", "subtle", `base：${text(pr.base)}`));
+      if (pr.base_sha) version.append(el("code", "", pr.base_sha));
+      const sources = el("td"); sources.dataset.label = "來源快照";
+      for (const source of array(pr.sources)) sources.append(el("p", "subtle", `${source.id} · 版本 ${text(source.version)} · ${stamp(source.as_of)} UTC`));
+      if (!sources.childElementCount) sources.append(el("span", "subtle", "來源時間待核"));
+      row.append(identity, tasks, version, sources); body.append(row);
+    }
+    table.append(body); wrap.append(table); section.append(wrap);
+    return section;
+  }
+
   function renderSync() {
     const kinds = new Set(array(state.sources).map((source) => source.kind));
     const hasManual = [...kinds].some((kind) => !["git", "github", "github_live", "api", "live"].includes(kind));
-    $("source-mode").textContent = state.sources.length ? hasManual ? "含手動匯入快照" : "已讀取來源快照" : "尚無來源";
+    $("source-mode").textContent = invalidStore() ? "校驗失敗・來源待核" : state.sources.length ? hasManual ? "含手動匯入快照" : "已讀取來源快照" : "尚無來源";
     $("last-synced").textContent = stamp(state.last_synced_at);
     $("sync-age").textContent = age(state.last_synced_at);
     $("generated-at").textContent = stamp(state.generated_at);
@@ -140,6 +293,12 @@
   }
 
   function renderReady() {
+    if (invalidStore()) {
+      $("ready-count").textContent = "暫停判定";
+      $("ready-mode-counts").replaceChildren(el("span", "subtle", "資料校驗失敗，停止派工／完成判定。"));
+      $("ready-list").replaceChildren(el("p", "empty", "請先處理上方資料診斷；目前不提供可派工作或完成結論。"));
+      return;
+    }
     const tasks = readyTasks();
     $("ready-count").textContent = `${tasks.length} 項動作`;
     const counts = state.ready_counts;
@@ -300,11 +459,12 @@
       detailField("來源原始審查宣稱", ({ approved: "宣稱審查通過（須核對 SHA）", pending: "待審", changes_requested: "要求修改", unknown: "待核" })[pr.review_state] || text(pr.review_state)),
       detailField("審查綁定 SHA", el("code", "", text(pr.reviewed_sha)), true),
       detailField("PR 整合紀錄", pr.merged === true ? "已整合；工作驗收仍以交付狀態為準" : pr.merged === false ? "尚未整合" : "待核"),
-      detailField("PR head SHA", el("code", "", text(pr.head_sha))),
+      detailField("PR 已發布 head SHA", el("code", "", text(task.published_head_sha ?? pr.head_sha))),
       detailField("整合時 head SHA", el("code", "", text(pr.merged_head_sha)), true),
       detailField("合併 commit SHA", el("code", "", text(pr.merge_commit_sha)), true)
     );
     section.append(fields);
+    if (array(task.ci_runs ?? pr.ci_runs).length) section.append(ciRunsSection(task.ci_runs ?? pr.ci_runs));
     if (array(task.ci ?? pr.ci).length) {
       const list = el("ul", "audit-list");
       list.classList.add("audit-section");
@@ -315,6 +475,7 @@
         item.append(meta);
         item.append(el("p", "", `原始紀錄：${statusLabels[job.status] || text(job.status)} · ${statusLabels[job.conclusion] || text(job.conclusion)}；以有效判定為準。`));
         item.append(el("p", "", `SHA：${text(job.sha)}`), el("p", "", `Runner：${text(job.runner_id)} · 步驟數：${Array.isArray(job.steps) ? job.steps.length : text(job.steps)}`));
+        if (job.id !== undefined || job.run_id !== undefined || job.attempt !== undefined) item.append(el("p", "", `Job ID：${text(job.id)} · Workflow run：${text(job.run_id)} · 執行次數：${text(job.attempt)}`));
         if (job.validity) item.append(badge(job.validity, validityLabels));
         for (const [key, label] of [["tree_sha", "Git tree SHA"], ["equivalent_head_sha", "等價映射 head SHA"], ["bound_head_sha", "有效綁定 head SHA"], ["binding_kind", "綁定依據"]]) {
           if (job[key] !== undefined && job[key] !== null) item.append(el("p", "", `${label}：${text(job[key])}`));
@@ -325,6 +486,25 @@
       }
       section.append(list);
     }
+    return section;
+  }
+
+  function ciRunsSection(runs) {
+    const section = el("section", "ci-runs audit-section");
+    section.append(el("h4", "", "Workflow 整體結果"), el("p", "subtle", "整體結果與個別 job 分別列示；交付狀態依資料校驗結果判定。"));
+    const list = el("ul", "audit-list");
+    for (const run of array(runs)) {
+      const item = el("li", "ci-run-entry");
+      const meta = el("div", "audit-meta");
+      meta.append(el("strong", "", `Run ${text(run.id)}`), badge(run.effective_result || "unknown"));
+      item.append(meta, el("p", "", `實際 run SHA：${text(run.sha)}`), el("p", "", `執行次數：${text(run.attempt)} · 來源記錄 jobs：${text(run.job_count)}`));
+      if (run.observed_job_count !== undefined) item.append(el("p", "", `已對應的 job 紀錄：${text(run.observed_job_count)}`));
+      if (run.job_count === 0) item.append(el("p", "ci-no-jobs", "未取得 job 紀錄；請核對 workflow run 與來源觀測。"));
+      item.append(el("p", "", `原始 run 紀錄：${statusLabels[run.status] || text(run.status)} · ${statusLabels[run.conclusion] || text(run.conclusion)}；以上方有效結果為準。`));
+      if (run.url) item.append(link(run.url, "Workflow run 紀錄"));
+      list.append(item);
+    }
+    section.append(list);
     return section;
   }
 
@@ -383,7 +563,19 @@
     top.append(close);
     panel.append(top);
     const details = el("dl", "detail-grid");
-    details.append(detailField("範圍", task.scope, true), detailField("檔案範圍", listOf(task.files, "尚未登記檔案範圍", true), true), detailField("Owner thread", el("code", "", text(task.owner_thread, "未登記"))), detailField("分支", el("code", "", text(task.branch))), detailField("目前 head SHA", el("code", "", text(task.head_sha)), true), detailField("最早可開始 · UTC", task.not_before ? stamp(task.not_before) : "未定日期"), detailField("最近適用驗證 · UTC", task.last_verified_evidence?.timestamp ? stamp(task.last_verified_evidence.timestamp) : "尚無適用目前 head 的有效驗證紀錄"));
+    details.append(detailField("節點類型", isUmbrella(task) ? "彙總工單（不獨立派工）" : "工作"));
+    if (task.head_alignment === "different") details.append(detailField("版本待核", el("p", "head-alignment-warning", "工作與已發布 head 不同；待核是否有尚未發布變更。不推定哪個版本較新。"), true));
+    if (task.parent_id) details.append(detailField("父工單", hierarchyLink(task.parent_id)));
+    const children = childTasks(task);
+    if (isUmbrella(task) || children.length) {
+      const list = el("ul", "plain-list");
+      for (const child of children) { const item = el("li"); item.append(taskButton(child, "dependency-button")); list.append(item); }
+      if (!children.length) list.append(el("li", "subtle", "未登記子工作；不推斷已完成。"));
+      details.append(detailField("關聯子工作", list, true));
+    }
+    details.append(detailField("範圍", task.scope, true), detailField("檔案範圍", listOf(task.files, "尚未登記檔案範圍", true), true), detailField("Owner thread", el("code", "", text(task.owner_thread, "未登記"))), detailField("分支", el("code", "", text(task.branch))), detailField("工作 head SHA", el("code", "", text(task.head_sha)), true), detailField("PR 已發布 head SHA", el("code", "", text(task.published_head_sha ?? task.pr?.head_sha)), true));
+    if (task.head_origin) details.append(detailField("工作 head 來源", ({ work: "工作紀錄", pr: "PR metadata（尚無獨立工作 head 紀錄）", unknown: "待核" })[task.head_origin] || "待核", true));
+    details.append(detailField("最早可開始 · UTC", task.not_before ? stamp(task.not_before) : "未定日期"), detailField("最近適用驗證 · UTC", task.last_verified_evidence?.timestamp ? stamp(task.last_verified_evidence.timestamp) : "尚無適用目前 head 的有效驗證紀錄"));
     const dependencies = el("ul", "plain-list");
     for (const dependency of array(task.dependencies)) {
       const id = typeof dependency === "string" ? dependency : text(dependency.id ?? dependency.task_id, "");
@@ -401,6 +593,7 @@
     panel.append(details);
     const pr = prSection(task);
     if (pr) panel.append(pr);
+    else if (array(task.ci_runs).length) panel.append(ciRunsSection(task.ci_runs));
     panel.append(evidenceSection(task), completedActionsSection(task), historySection(task));
     return panel;
   }
@@ -424,6 +617,17 @@
 
   function renderQueue() {
     if (!state) return;
+    $("search-input").disabled = invalidStore();
+    $("status-filter").disabled = invalidStore();
+    if (invalidStore()) {
+      $("task-count").textContent = "待核";
+      $("filter-summary").textContent = "校驗診斷中；目前不判定工作數量或完成狀態。";
+      $("task-rows").replaceChildren();
+      $("queue-empty").textContent = "下列空白不代表沒有工作，請先處理上方資料診斷。";
+      $("queue-empty").hidden = false;
+      return;
+    }
+    $("queue-empty").textContent = "沒有符合條件的工作。";
     const query = $("search-input").value.trim().toLocaleLowerCase();
     const filter = $("status-filter").value;
     const readyIds = new Set(readyTasks().map((task) => task.id));
@@ -431,8 +635,9 @@
       const haystack = [task.id, task.title, task.branch, ...array(task.files), ...array(task.refs).map((ref) => `${ref.kind || ""} ${ref.number || ""}`)].map((value) => text(value, "")).join(" ").toLocaleLowerCase();
       return (!query || haystack.includes(query)) && matchesFilter(task, filter, readyIds);
     });
-    $("task-count").textContent = String(state.tasks.length);
-    $("filter-summary").textContent = `顯示 ${tasks.length} / ${state.tasks.length} 項 · 點工作名稱查看證據與派工紀錄`;
+    const umbrellas = state.tasks.filter(isUmbrella).length;
+    $("task-count").textContent = umbrellas ? `${state.tasks.length - umbrellas} 工作 · ${umbrellas} 彙總` : `${state.tasks.length} 工作`;
+    $("filter-summary").textContent = `顯示 ${tasks.length} / ${state.tasks.length} 筆登記紀錄 · 點名稱查看證據與關聯`;
     const fragment = document.createDocumentFragment();
     for (const [index, task] of tasks.entries()) {
       const isOpen = expanded.has(task.id);
@@ -445,7 +650,9 @@
       title.setAttribute("aria-expanded", String(isOpen));
       title.setAttribute("aria-controls", `task-detail-${index}`);
       title.addEventListener("click", () => { if (expanded.has(task.id)) expanded.delete(task.id); else expanded.add(task.id); renderQueue(); const next = [...$("task-rows").querySelectorAll(".task-row")].find((node) => node.dataset.taskId === task.id); next?.querySelector(".task-title")?.focus({ preventScroll: true }); });
-      work.append(title, refs(task), el("span", "detail-hint", isOpen ? "紀錄已展開" : "查看紀錄"));
+      work.append(title);
+      if (isUmbrella(task) || task.parent_id) work.append(hierarchySummary(task));
+      work.append(refs(task), el("span", "detail-hint", isOpen ? "紀錄已展開" : "查看紀錄"));
       row.append(work);
       const execution = el("td");
       execution.dataset.label = "執行";
@@ -455,7 +662,7 @@
       delivery.append(badge(task.delivery_status || "unknown", deliveryLabels));
       const owner = el("td");
       owner.dataset.label = "執行者／版本";
-      owner.append(el("span", "owner-state", task.owner_thread ? "已登記執行者" : "尚無執行者"));
+      owner.append(el("span", "owner-state", task.owner_thread ? "已登記執行者" : "未登記執行者"));
       const sha = el("code", "sha", task.head_sha ? String(task.head_sha).slice(0, 12) : "SHA 待核");
       sha.title = text(task.head_sha);
       owner.append(sha);
@@ -481,6 +688,11 @@
   }
 
   function renderAlerts() {
+    if (invalidStore()) {
+      $("alert-count").textContent = "待核";
+      $("alerts-list").replaceChildren(el("p", "empty", "工作警示暫停判定，資料診斷見上方。"));
+      return;
+    }
     const alerts = array(state.alerts);
     $("alert-count").textContent = String(alerts.length);
     const fragment = document.createDocumentFragment();
@@ -511,8 +723,13 @@
   }
 
   function renderSchedule() {
-    const dated = state.tasks.filter((task) => task.not_before).slice().sort((a, b) => Date.parse(a.not_before) - Date.parse(b.not_before) || a.id.localeCompare(b.id));
-    const undated = state.tasks.filter((task) => !task.not_before);
+    if (invalidStore()) {
+      $("dated-schedule").replaceChildren(el("li", "empty", "資料校驗失敗，排程暫停判定。"));
+      $("undated-schedule").replaceChildren(el("li", "empty", "資料校驗失敗，未定日期工作暫停判定。"));
+      return;
+    }
+    const dated = state.tasks.filter((task) => !isUmbrella(task) && task.not_before).slice().sort((a, b) => Date.parse(a.not_before) - Date.parse(b.not_before) || a.id.localeCompare(b.id));
+    const undated = state.tasks.filter((task) => !isUmbrella(task) && !task.not_before);
     const datedFragment = document.createDocumentFragment();
     const undatedFragment = document.createDocumentFragment();
     for (const task of dated) datedFragment.append(scheduleEntry(task, true));
@@ -539,10 +756,43 @@
       if (source.url) { const url = el("dd"); url.append(link(source.url, "開啟來源")); fields.append(el("dt", "", "來源連結"), url); }
       entry.append(fields);
       if (source.error) entry.append(el("p", "source-error", `讀取失敗：${text(source.error)}。保留上次已知資料，請重新核對。`));
+      if (array(source.ci).length || array(source.ci_runs).length) entry.append(sourceCI(source));
       fragment.append(entry);
     }
-    if (!state.sources.length) fragment.append(el("p", "empty", "尚無已登記來源，請先匯入通過校驗的快照。"));
+    if (!state.sources.length) fragment.append(el("p", "empty", invalidStore() ? "校驗未通過，來源紀錄暫停判定。" : "尚無已登記來源，請先匯入通過校驗的快照。"));
     $("sources-list").replaceChildren(fragment);
+  }
+
+  function sourceCI(source) {
+    const jobs = array(source.ci);
+    const runs = array(source.ci_runs);
+    const section = el("details", "source-ci");
+    const notRun = jobs.filter((job) => job.effective_result === "not_run").length;
+    const passed = jobs.filter((job) => job.effective_result === "passed").length;
+    const summary = el("summary");
+    summary.append(el("span", "", `CI jobs ${jobs.length} 項 · 未執行 ${notRun} · 通過 ${passed}`));
+    if (runs.length) {
+      const results = new Map();
+      for (const run of runs) { const result = run.effective_result || "unknown"; results.set(result, (results.get(result) || 0) + 1); }
+      const counts = [...results].map(([result, count]) => `${statusLabels[result] || result} ${count}`).join(" · ");
+      summary.append(el("span", "run-summary", `Workflow ${runs.length} 次：${counts}`));
+    }
+    section.append(summary);
+    section.append(el("p", "subtle", `CI 最近觀測：${stamp(source.ci_observed_at)} UTC。以下依有效結果列示。`));
+    if (runs.length) section.append(ciRunsSection(runs));
+    const list = el("ul", "audit-list");
+    for (const job of jobs) {
+      const item = el("li", "audit-entry");
+      const meta = el("div", "audit-meta");
+      meta.append(el("strong", "", text(job.name, "CI 工作")), badge(job.effective_result || "unknown"));
+      item.append(meta, el("p", "", `實際 CI SHA：${text(job.sha)}`), el("p", "", `Runner：${text(job.runner_id)} · 步驟數：${Array.isArray(job.steps) ? job.steps.length : text(job.steps)}`));
+      if (job.id !== undefined || job.run_id !== undefined || job.attempt !== undefined) item.append(el("p", "", `Job ID：${text(job.id)} · Workflow run：${text(job.run_id)} · 執行次數：${text(job.attempt)}`));
+      item.append(el("p", "", `原始紀錄：${statusLabels[job.status] || text(job.status)} · ${statusLabels[job.conclusion] || text(job.conclusion)}；以有效判定為準。`));
+      if (job.url) item.append(link(job.url, "CI 紀錄"));
+      list.append(item);
+    }
+    section.append(list);
+    return section;
   }
 
   function validateState(payload) {
@@ -556,16 +806,29 @@
       && optionalArray(task.source_provenance, object)
       && optionalArray(task.acceptance, object)
       && optionalArray(task.ci, object)
+      && optionalArray(task.ci_runs, object)
       && optionalArray(task.evidence, object)
       && optionalArray(task.completed_actions, (receipt) => object(receipt) && typeof receipt.action === "string" && typeof receipt.input_pin === "string" && /^[0-9a-f]{64}$/i.test(receipt.input_pin) && typeof receipt.timestamp === "string")
+      && (task.node_kind === undefined || ["work", "umbrella"].includes(task.node_kind))
+      && (task.parent_id === undefined || task.parent_id === null || typeof task.parent_id === "string")
+      && (task.head_alignment === undefined || ["same", "different", "unknown"].includes(task.head_alignment))
       && (task.next_action_pin === undefined || (typeof task.next_action_pin === "string" && /^[0-9a-f]{64}$/i.test(task.next_action_pin)))
       && (task.next_action_mode === undefined || Object.prototype.hasOwnProperty.call(modeLabels, task.next_action_mode))
-      && (!task.pr || (object(task.pr) && optionalArray(task.pr.ci, object))))) throw new Error("API 工作資料不符合資料契約");
+      && (!task.pr || (object(task.pr) && optionalArray(task.pr.ci, object) && optionalArray(task.pr.ci_runs, object))))) throw new Error("API 工作資料不符合資料契約");
     if (new Set(payload.tasks.map((task) => task.id)).size !== payload.tasks.length) throw new Error("API 工作 ID 重複，未套用此回應");
-    if (!payload.sources.every((source) => object(source) && typeof source.id === "string" && source.id && typeof source.kind === "string" && typeof source.status === "string")) throw new Error("API 來源資料不符合資料契約");
+    if (!payload.sources.every((source) => object(source) && typeof source.id === "string" && source.id && typeof source.kind === "string" && typeof source.status === "string" && optionalArray(source.ci, object) && optionalArray(source.ci_runs, object))) throw new Error("API 來源資料不符合資料契約");
     if (!payload.alerts.every((alert) => typeof alert === "string" || object(alert))) throw new Error("API 警示資料不符合資料契約");
     if (!payload.ready.every((entry) => typeof entry === "string" ? payload.tasks.some((task) => task.id === entry) : object(entry) && typeof entry.id === "string" && payload.tasks.some((task) => task.id === entry.id))) throw new Error("API 可接手工作缺少對應來源");
     if (payload.ready_counts !== undefined && (!object(payload.ready_counts) || !["all", "read_only", "write"].every((key) => Number.isInteger(payload.ready_counts[key]) && payload.ready_counts[key] >= 0))) throw new Error("API 操作類型計數不符合資料契約");
+    if (payload.store_health !== undefined && (!object(payload.store_health) || !["ok", "invalid"].includes(payload.store_health.status))) throw new Error("API 資料健康狀態不符合資料契約");
+    if (payload.coverage !== undefined && payload.store_health?.status !== "invalid") {
+      const nonnegative = (value) => Number.isInteger(value) && value >= 0;
+      const prLink = (value) => object(value) && typeof value.url === "string" && optionalArray(value.task_ids, (id) => typeof id === "string") && optionalArray(value.sources, object);
+      const issue = (value) => object(value) && Number.isInteger(value.number) && typeof value.url === "string" && optionalArray(value.task_ids, (id) => typeof id === "string") && optionalArray(value.pr_links, prLink);
+      const repository = (value) => object(value) && typeof value.repository === "string" && typeof value.source_id === "string" && optionalArray(value.issues, issue) && optionalArray(value.prs, prLink);
+      const coverage = payload.coverage;
+      if (!object(coverage) || !["count", "captured", "missing_scope"].every((key) => nonnegative(coverage[key])) || !optionalArray(coverage.repositories, repository) || !optionalArray(coverage.pr_repositories, repository) || !optionalArray(coverage.pr_links, prLink)) throw new Error("API 來源覆蓋資料不符合資料契約");
+    }
     return payload;
   }
 
@@ -583,14 +846,14 @@
       const previous = state;
       try {
         state = candidate;
-        renderSync(); renderReady(); renderQueue(); renderAlerts(); renderSchedule(); renderSources();
+        renderStoreHealth(); renderSync(); renderCoverage(); renderReady(); renderQueue(); renderAlerts(); renderSchedule(); renderSources();
       } catch (error) {
         state = previous;
-        if (state) { renderSync(); renderReady(); renderQueue(); renderAlerts(); renderSchedule(); renderSources(); }
+        if (state) { renderStoreHealth(); renderSync(); renderCoverage(); renderReady(); renderQueue(); renderAlerts(); renderSchedule(); renderSources(); }
         throw error;
       }
       $("fetch-error").hidden = true;
-      $("status-message").textContent = `已讀取 ${state.tasks.length} 項工作，${state.alerts.length} 項警示。`;
+      $("status-message").textContent = invalidStore() ? "資料校驗失敗，已切換唯讀診斷；停止派工／完成判定。" : `已讀取 ${state.tasks.length} 筆登記紀錄，${state.alerts.length} 項警示。`;
       document.documentElement.dataset.stateHash = state.state_hash;
       document.body.dataset.stateHash = state.state_hash;
       document.documentElement.dataset.stateLoaded = "true";
