@@ -1,0 +1,225 @@
+rules: sm=359 app=1790 gi=81 ig=220
+
+### F1 sm @media rules (all, selectors containing welcome/view/stage/canvas/steps/source-actions)
+.sm-header { display:flex; padding:20px 28px 16px }
+.sm-header h1 { margin:0 }
+.sm-header h1 span { margin-left:12px }
+.sm-source-actions { display:flex; padding:0 28px 17px; border-bottom:1px solid var(--sm-line) }
+.sm-source-actions .sm-button { min-height:40px }
+.sm-steps { display:flex; margin:0; padding:16px 28px; border-bottom:1px solid var(--sm-line) }
+.sm-steps li { display:flex }
+.sm-steps li>span { display:grid; height:27px; flex-shrink:0 }
+.sm-steps small { display:block; margin-top:3px }
+.sm-stage { display:flex; flex-direction:column; min-height:0; position:relative; overflow:hidden }
+.sm-stage-head { display:flex; padding:23px 25px 8px; position:relative }
+.sm-stage-head h2 { margin:0 }
+.sm-canvas-wrap { position:relative; flex:1; min-height:130px }
+.sm-canvas-wrap canvas { height:100%; display:block }
+.sm-welcome { position:absolute; display:flex; flex-direction:column; padding:20px }
+.sm-welcome h2 { margin:0 0 12px }
+.sm-welcome p { line-height:1.9; margin:0 0 22px }
+.sm-welcome small { margin-top:15px }
+.sm-view-tools { display:flex; padding:10px 24px }
+.sm-view-segment { display:flex; padding:3px }
+.sm-view-segment button { padding:9px 13px; min-height:40px }
+.sm-display-options { display:flex; flex-wrap:wrap; padding:0 24px 12px }
+.sm-display-options label { display:flex; min-height:32px }
+.sm-display-options input { height:15px }
+.sm-display-options small { flex-basis:100% }
+.sm-metrics { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid #d8e0e7; padding:17px 24px }
+.sm-metrics>div+div { padding-left:20px }
+.sm-metrics strong { display:block; margin:6px 0 }
+.sm-in-library .sm-steps { display:none }
+[@media(min-width:1400px)] .sm-stage-head { padding:28px 32px 10px }
+[@media(min-width:1400px)] .sm-metrics { padding:21px 32px }
+[@media(max-width:1000px)] .sm-header { padding:15px 20px }
+[@media(max-width:1000px)] .sm-source-actions { padding:0 20px 13px }
+[@media(max-width:1000px)] .sm-steps { padding:12px 20px }
+[@media(max-width:1000px)] .sm-steps small { display:none }
+[@media(max-width:1000px)] .sm-stage-head { padding:20px 18px 6px; align-items:flex-start; flex-direction:column }
+[@media(max-width:1000px)] .sm-metrics { padding:14px 16px }
+[@media(max-width:1000px)] .sm-metrics>div+div { padding-left:11px }
+[@media(max-width:1000px)] .sm-view-tools { padding:8px 15px }
+[@media(max-width:1000px)] .sm-display-options { padding:0 15px 9px }
+[@media(max-width:720px)] .sm-header { padding:13px 14px }
+[@media(max-width:720px)] .sm-header h1 span { display:block; margin:4px 0 0 }
+[@media(max-width:720px)] .sm-source-actions { padding:0 12px 11px; display:grid; grid-template-columns:1fr 1fr }
+[@media(max-width:720px)] .sm-source-actions .sm-button { padding:8px; min-height:44px }
+[@media(max-width:720px)] .sm-steps { padding:10px 13px }
+[@media(max-width:720px)] .sm-steps li>span { height:21px }
+[@media(max-width:720px)] .sm-stage,.sm-setup { flex:1 }
+[@media(max-width:720px)] .sm-layout[data-tab=preview] .sm-setup,.sm-layout[data-tab=setup] .sm-stage { display:none }
+[@media(max-width:720px)] .sm-stage-head { flex-direction:row; padding:15px 15px 3px }
+[@media(max-width:720px)] .sm-canvas-wrap { min-height:90px }
+[@media(max-width:720px)] .sm-welcome { padding:14px }
+[@media(max-width:720px)] .sm-welcome h2 { line-height:1.6 }
+[@media(max-width:720px)] .sm-welcome p { line-height:1.7; margin-bottom:12px }
+[@media(max-width:720px)] .sm-welcome small { margin-top:10px }
+[@media(max-width:720px)] .sm-view-tools { padding:6px 13px }
+[@media(max-width:720px)] .sm-view-segment button { min-height:44px; padding:7px 13px }
+[@media(max-width:720px)] .sm-display-options { padding:0 14px 7px }
+[@media(max-width:720px)] .sm-display-options label { min-height:44px }
+[@media(max-width:720px)] .sm-metrics { padding:12px 14px }
+[@media(max-width:720px)] .sm-metrics>div+div { padding-left:10px }
+[@media(max-width:720px)] .sm-metrics strong { margin:5px 0 }
+[@media(max-width:720px)] .sm-metrics small { line-height:1.5; display:block }
+[@media(max-width:720px)] .sm-display-options input { height:17px }
+.sm-source-actions .sm-button,.sm-view-segment button { min-height:44px }
+.sm-display-options label,.sm-check,.sm-edge,.sm-guide summary,.sm-obstacles summary { min-height:44px }
+[@media(min-width:721px) and (max-height:800px)] .sm-workspace.workspace-shell>.sm-header { padding:8px 20px; min-height:60px; flex-shrink:0 }
+[@media(min-width:721px) and (max-height:800px)] .sm-source-actions { padding:0 20px 8px; flex-shrink:0 }
+[@media(min-width:721px) and (max-height:800px)] .sm-steps { padding:7px 20px; flex-shrink:0 }
+[@media(min-width:721px) and (max-height:800px)] .sm-steps small { display:none }
+[@media(min-width:721px) and (max-height:800px)] .sm-steps li>span { height:25px }
+[@media(min-width:721px) and (max-height:800px)] .sm-stage-head { padding:12px 20px 4px; flex-direction:row; flex-shrink:0 }
+[@media(min-width:721px) and (max-height:800px)] .sm-stage-head .sm-eyebrow { margin-bottom:3px }
+[@media(min-width:721px) and (max-height:800px)] .sm-view-tools { padding:4px 20px 0; flex-shrink:0 }
+[@media(min-width:721px) and (max-height:800px)] .sm-view-segment { padding:2px }
+[@media(min-width:721px) and (max-height:800px)] .sm-view-segment button { padding:6px 12px; min-height:44px }
+[@media(min-width:721px) and (max-height:800px)] .sm-display-options { padding:0 20px 3px; flex-shrink:0 }
+[@media(min-width:721px) and (max-height:800px)] .sm-display-options small { flex-basis:auto; margin-left:auto; max-width:180px; line-height:1.5 }
+[@media(min-width:721px) and (max-height:800px)] .sm-metrics { padding:10px 20px; flex-shrink:0 }
+[@media(min-width:721px) and (max-height:800px)] .sm-metrics strong { margin:4px 0 }
+.sm-view-direction { margin:0; padding:0 24px 7px; line-height:1.6 }
+.sm-view-segment { flex-wrap:wrap }
+[@media(max-width:720px)] .sm-view-direction { padding:0 14px 5px }
+.sm-source-actions { flex-wrap:wrap }
+.sm-metrics { grid-template-columns:repeat(4,minmax(0,1fr)) }
+.sm-metrics>div+div { padding-left:12px }
+[@media(max-width:1000px)] .sm-metrics { grid-template-columns:repeat(2,minmax(0,1fr)) }
+[@media(max-width:1000px)] .sm-metrics>div+div { padding-left:0 }
+[@media(max-width:1000px)] .sm-metrics>div:nth-child(even) { padding-left:12px }
+[@media(max-width:720px)] .sm-source-actions { grid-template-columns:repeat(3,minmax(0,1fr)) }
+[@media(max-width:720px)] .sm-source-actions #smTryTimberFrame { grid-column:auto }
+[@media(max-width:720px)] .sm-source-actions #smLibrary { grid-column:2/4 }
+[@media(max-width:720px)] .sm-stage { overflow-y:auto }
+[@media(max-width:720px)] .sm-stage>* { flex-shrink:0 }
+[@media(max-width:720px)] .sm-canvas-wrap { flex:1 0 130px; min-height:130px }
+[@media(max-width:720px)] .sm-metrics { padding:8px 14px }
+[@media(max-width:720px)] .sm-metrics strong { margin:3px 0 }
+[@media(max-width:720px)] .sm-header h1 span { max-width:190px; line-height:1.4 }
+[@media(max-width:720px) and (max-height:720px)] .sm-steps { display:none }
+[@media(max-width:720px) and (max-height:720px)] .sm-source-actions { display:none }
+[@media(max-width:720px)] .sm-header { flex-shrink:0 }
+
+### F5 .sm-button / primary / checkbox / focus
+.sm-workspace button:focus-visible,.sm-workspace input:focus-visible,.sm-workspace select:focus-visible,.sm-wo { outline:3px solid #8b9dec; outline-offset:3px }
+.sm-eyebrow { letter-spacing:2px; color:#83909f }
+.sm-button { min-height:44px; padding:10px 15px; border-radius:8px; background:#fff; color:var(--sm-ink); line-height:1.4; transition:background .15s,border-color .15s }
+.sm-button:hover:not(:disabled) { background:#eef2f6; border-color:#9faec1 }
+.sm-button.sm-primary { background:var(--sm-primary); border-color:var(--sm-primary); color:#fff }
+.sm-button.sm-primary:hover:not(:disabled) { background:#2c46a7 }
+.sm-source-actions .sm-button { min-height:40px }
+.sm-display-options input { accent-color:var(--sm-teal); height:15px }
+.sm-export .sm-button { padding:8px }
+[@media(max-width:720px)] .sm-eyebrow { letter-spacing:1.5px }
+[@media(max-width:720px)] .sm-source-actions .sm-button { padding:8px; min-height:44px }
+[@media(max-width:720px)] .sm-footer-actions .sm-button { min-height:46px }
+[@media(max-width:720px)] .sm-display-options input { height:17px }
+.sm-source-actions .sm-button,.sm-view-segment button { min-height:44px }
+.sm-workspace .sm-review-jump:focus-visible { outline:3px solid #8b9dec }
+.sm-projection-callout .sm-button { min-height:44px }
+#smInlineProjection .sm-primary { color:#fff; background:var(--sm-primary); border-color:var(--sm-primary) }
+.sm-eyebrow,.sm-steps li,.sm-steps small,.sm-welcome small,.sm-gesture,.sm-display-options small,.sm-metrics s { color:#526579 }
+
+### F6 .sm-help / .sm-guide font-size & line-height
+.sm-steps small { font-size:11px; color:#85919e }
+.sm-welcome small { font-size:11px; color:#84929d }
+.sm-gesture { font-size:11px; color:#81909e }
+.sm-display-options small { font-size:11px; color:#8a949e }
+.sm-metrics small { font-size:11px; color:#96a0a9 }
+.sm-guide { color:#526a85; font-size:11px; line-height:1.7 }
+.sm-guide p { color:#778a9e; font-size:11px }
+.sm-section-heading h2 small { font-size:11px; color:#87919b }
+.sm-source-summary { font-size:12px; line-height:1.65 }
+.sm-source-summary span { color:#687c8e; font-size:11px }
+.sm-source-summary small { color:#95a0ab; font-size:11px }
+.sm-help { font-size:11px; line-height:1.8; color:#86929d }
+.sm-edge small { font-size:11px; color:#81919d }
+.sm-check small { font-size:11px; color:#8798a5 }
+.sm-model-card small { font-size:11px; color:#9ba7b0 }
+[@media(max-width:1000px)] .sm-metrics small { font-size:11px }
+[@media(max-width:720px)] .sm-welcome small { font-size:11px }
+[@media(max-width:720px)] .sm-display-options small { font-size:11px }
+[@media(max-width:720px)] .sm-metrics small { font-size:11px; line-height:1.5 }
+[@media(max-width:720px)] .sm-guide { font-size:12px }
+[@media(max-width:720px)] .sm-guide p,.sm-help { font-size:11px }
+.space-model-entry .reference-entry small { font-size:11px }
+[@media(min-width:721px) and (max-height:800px)] .sm-display-options small { line-height:1.5 }
+[@media(min-width:721px) and (max-height:800px)] .sm-metrics small { font-size:11px }
+.sm-view-direction { font-size:11px; line-height:1.6; color:#647788 }
+.sm-timber-list small { font-size:11px; color:#6c7c88 }
+[@media(max-width:720px)] .sm-metrics small { font-size:11px }
+.sm-eyebrow,.sm-steps li,.sm-steps small,.sm-welcome small,.sm-gesture,.sm-display-options small,.sm-metrics s { color:#526579 }
+
+### X6 app.css zoom bars
+.tool-button, .icon-button, .secondary-button, .primary-button, .text-button, .zoom-level { display: inline-flex; gap: 7px }
+.mini-toggle { display: grid }
+.canvas-controls { position: absolute; left: 14px; bottom: 14px; z-index: 7; display: flex; gap: 2px }
+.minimap-shell { position: absolute; right: 14px; bottom: 14px; z-index: 7 }
+.minimap-shell > span { position: absolute; left: 7px; bottom: 5px }
+.minimap-shell.collapsed canvas, .minimap-shell.collapsed > span { display: none }
+.minimap-shell.collapsed .minimap-toggle { position: static }
+[@media (max-width: 680px)] .minimap-shell { display: none }
+.face-canvas-controls { position: absolute; left: 14px; bottom: 14px; display: flex; gap: 2px }
+.face-canvas-controls button { display: grid }
+.face-coordinate-readout { position: absolute; right: 14px; bottom: 14px }
+[@media (max-width: 680px)] .face-coordinate-readout { display: none }
+.face-canvas-controls { z-index: 6 }
+.face-coordinate-readout { z-index: 6 }
+body.v3-mode .canvas-controls:not(#v3ZoomBar) { display: none }
+body.v3-mode .minimap-shell { display: none }
+.face-mini-opt.mini-toggle { position: relative }
+.face-mini-opt.mini-toggle input { position: absolute }
+[@media (max-width: 680px)] .face-canvas-controls { gap: 2px }
+[@media (max-width: 680px)] .face-coordinate-readout { bottom: 62px }
+body.canvas-composition .canvas-controls { left: auto; right: 18px; bottom: 18px; gap: 4px }
+body.canvas-composition .minimap-shell { left: 18px; right: auto; bottom: 18px }
+[@media (max-width: 900px)] body.canvas-composition .canvas-controls { right: 12px; bottom: 12px }
+[@media (max-width: 900px)] body.canvas-composition .minimap-shell { left: 12px; bottom: 12px }
+[@media (max-width: 680px)] body.canvas-composition .canvas-controls { right: 10px; bottom: 10px; gap: 3px }
+[@media (max-width: 400px)] body.canvas-composition .canvas-controls { gap: 2px }
+[@media (max-width: 400px)] body.canvas-composition .canvas-controls .toolbar-separator.vertical { margin-left: 3px; margin-right: 3px }
+[@media (max-width: 680px)] .face-canvas-controls { left: 8px; right: 8px; bottom: 8px; gap: 4px }
+[@media (max-width: 680px)] .face-canvas-controls .face-grid-size { margin-left: auto }
+[@media (max-width: 680px)] .face-canvas-controls .toolbar-separator { display: none }
+[@media (max-width: 680px)] body.canvas-composition .canvas-controls .toolbar-separator { display: none }
+
+### X6 grid ig-zoombar
+.ig-hint { position: absolute; left: 56px; bottom: 16px; display: flex; font-size: 12px }
+.ig-zoombar { position: absolute; right: 16px; bottom: 16px; display: flex; gap: 2px }
+.ig-zoombar button { min-width: 34px; font-size: 14px }
+.ig-zoombar #igFit { font-size: 12px; font-weight: 500 }
+.ig-zoom { min-width: 52px; font: 12px var(--ig-mono) }
+[@media (max-width: 760px)] .ig-hint { display: none }
+
+### X6 sm view tools / fit
+.sm-canvas-wrap { position:relative }
+.sm-canvas-wrap canvas { display:block }
+.sm-view-tools { display:flex; gap:10px }
+.sm-view-segment { display:flex; gap:3px }
+
+### G3 gi-delete / gi-actions
+.gi-header { display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 22px 10px;border-bottom:1px solid #edf0f5;flex-shrink:0 }
+.gi-actions { display:flex;align-items:center;gap:8px;flex-shrink:0 }
+.gi-actions .btn { min-height:30px;padding:4px 10px;font-size:12px }
+.gi-actions .gi-delete { border-color:transparent;color:#78869a;background:transparent }
+.gi-actions .gi-delete:hover { color:#bd4b50;background:#fff1f1 }
+.gi-footer { flex-shrink:0;padding:5px 22px 8px;min-width:0 }
+.gi-footer p { margin:0;font-size:12px;line-height:1.4;color:#61738a;overflow-wrap:anywhere }
+.gi-footer p.gi-error { color:#b44850 }
+[@media(max-width:1050px)] .gi-header { padding-left:14px;padding-right:14px }
+[@media(max-width:760px)] .gi-header { padding:12px 14px;gap:8px;flex-wrap:wrap }
+[@media(max-width:760px)] .gi-actions { gap:6px }
+[@media(max-width:760px)] .gi-actions .btn { min-height:36px }
+[@media(max-width:760px)] .gi-footer { padding:0 14px 12px }
+
+### B6 selection-summary visibility rules
+.selection-summary { position:absolute; top:12px; left:12px; right:12px; display:flex; max-width:calc(100% - 24px); pointer-events:none }
+.selection-copy { display:flex }
+.selection-summary button { pointer-events:auto; cursor:pointer }
+[@media(max-width:680px)] .selection-summary { top:8px; left:8px; right:8px; max-width:calc(100% - 16px) }
+[@media(max-width:680px)] .selection-copy small { max-width:240px }
+body.canvas-composition .selection-summary { top: 78px; left: 18px; right: auto; max-width: calc(100% - 36px) }
+[@media (max-width: 680px)] body.canvas-composition .selection-summary { top: 73px; left: 10px; max-width: calc(100% - 20px) }
+[@media (max-width: 680px)] body.canvas-composition .selection-copy small { max-width: 250px }
