@@ -60,7 +60,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Build current native executables
-        run: npm run build
+        run: |
+          python3 tests/integration/browser_build_contract.py --dependencies-only
+          npm run build:browser
       - name: Install Chinese fonts for visual verification
         # Bound stalled mirror connections; keep CJK installation mandatory.
         run: |
