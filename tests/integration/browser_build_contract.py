@@ -3,6 +3,10 @@
 The source gate follows a conservative textual superset of literal CommonJS
 requires. Unknown require expressions/packages and new child-process consumers
 fail review rather than silently authorizing removal of a needed executable.
+Arguments are bounded to 4096 characters, including multiline whitespace.
+Local files use Node's exact-file then appended-extension order. Directory
+packages with package.json and native addons require review rather than an
+incomplete interpretation of package main or executable code.
 It is not a general JavaScript parser or a security boundary.
 """
 import json
@@ -17,7 +21,8 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 ENTRIES = ('geometry-web/cdp_test.js', 'geometry-web/space_model_test.js',
            'geometry-web/documents_browser_test.js')
-REQUIRE = re.compile(r'\brequire\s*\(([^\n)]*)\)')
+REQUIRE_START = re.compile(r'\brequire\s*\(')
+MAX_REQUIRE_ARGUMENT = 4096
 LITERAL = re.compile(r'\s*([\'"])([^\'"]+)\1\s*')
 CORE = re.compile(r'\.build[\\/]+core\b|geometry-tests[\\/]+core\b|GEOMETRY_TEST_CORE')
 SPAWN = re.compile(r'(?<![\w.])spawn\s*\(\s*')
@@ -26,6 +31,38 @@ EXPECTED = {
     'geometry-web/web_bridge.c': ['-std=c11', '-O2', 'geometry-web/web_bridge.c', '-lm', '-o', '.build/web_bridge'],
     'geometry-core/model_base.c': ['-std=c11', '-O2', 'geometry-core/model_base.c', '-lm', '-o', '.build/model_base'],
 }
+
+
+def literal_requires(source, name):
+    for match in REQUIRE_START.finditer(source):
+        end = source.find(')', match.end(), match.end() + MAX_REQUIRE_ARGUMENT + 1)
+        argument = source[match.end():end] if end >= 0 else ''
+        value = LITERAL.fullmatch(argument)
+        if end < 0 or value is None:
+            raise ValueError('Unreviewed require expression in ' + name)
+        yield value[2]
+
+
+def local_dependency(caller, target):
+    candidate = caller.parent / target
+    # LOAD_AS_FILE appends an extension; it never replaces a dotted suffix.
+    for choice in [candidate, *(Path(str(candidate) + suffix) for suffix in ('.js', '.json', '.node'))]:
+        if choice.is_file():
+            resolved = choice.resolve()
+            if resolved.suffix not in {'', '.js', '.cjs', '.json'}:
+                raise ValueError('Unreviewed local dependency type: ' + target)
+            return resolved
+    if candidate.is_dir():
+        if (candidate / 'package.json').exists():
+            raise ValueError('Unreviewed directory package: ' + target)
+        for suffix in ('.js', '.json', '.node'):
+            choice = candidate / ('index' + suffix)
+            if choice.is_file():
+                resolved = choice.resolve()
+                if resolved.suffix not in {'', '.js', '.cjs', '.json'}:
+                    raise ValueError('Unreviewed local dependency type: ' + target)
+                return resolved
+    raise ValueError('Missing local dependency: ' + target)
 
 
 def dependency_closure(root):
@@ -49,24 +86,15 @@ def dependency_closure(root):
         if re.search(r'\bimport\s*\(', source):
             raise ValueError('Unreviewed dynamic import in ' + name)
         child_requires = 0
-        for match in REQUIRE.finditer(source):
-            value = LITERAL.fullmatch(match[1])
-            if not value:
-                raise ValueError('Unreviewed require expression in ' + name + ': ' + match[0])
-            target = value[2]
+        for target in literal_requires(source, name):
             if target.startswith('.'):
-                candidate = (path.parent / target).resolve()
-                choices = [candidate, candidate.with_suffix('.js'), candidate.with_suffix('.json'), candidate / 'index.js']
-                found = next((choice for choice in choices if choice.is_file()), None)
-                if found is None:
-                    raise ValueError('Missing local dependency: ' + target)
-                pending.append(found)
+                pending.append(local_dependency(path, target))
             elif target.removeprefix('node:') not in builtins:
                 raise ValueError('Unreviewed package dependency: ' + target)
             if target.removeprefix('node:') == 'child_process':
                 child_requires += 1
         if child_requires:
-            allowed = re.findall(r'\{\s*spawn\s*\}\s*=\s*require\([\'"](?:node:)?child_process[\'"]\)', source)
+            allowed = re.findall(r'\{\s*spawn\s*\}\s*=\s*require\(\s*[\'"](?:node:)?child_process[\'"]\s*\)', source)
             if name not in ENTRIES or child_requires != 1 or len(allowed) != 1:
                 raise ValueError('Unreviewed child-process consumer in ' + name)
         calls = list(SPAWN.finditer(source))
@@ -120,6 +148,83 @@ class Dependencies(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='browser-process-negative-') as directory:
             root = self.fixture(directory, "const {spawn}=require('child_process'); spawn(require('path').join('.build','core'), []);\n")
             with self.assertRaisesRegex(ValueError, 'Unreviewed child-process consumer'):
+                dependency_closure(root)
+
+    def test_multiline_require_cannot_hide_new_native_process_consumer(self):
+        with tempfile.TemporaryDirectory(prefix='browser-multiline-negative-') as directory:
+            root = self.fixture(directory, "const cp=require(\n'child_process'\n); cp.spawnSync(['.build','core'].join('/'));\n")
+            with self.assertRaisesRegex(ValueError, 'Unreviewed child-process consumer'):
+                dependency_closure(root)
+
+    def node_resolve(self, caller, target):
+        program = 'const {createRequire}=require("node:module"); console.log(createRequire(process.argv[1]).resolve(process.argv[2]));'
+        return Path(subprocess.check_output(['node', '-e', program, str(caller), target],
+                                            text=True, timeout=10).strip())
+
+    def test_dotted_specifier_uses_appended_extension_without_shadowing(self):
+        with tempfile.TemporaryDirectory(prefix='browser-suffix-negative-') as directory:
+            root = self.fixture(directory, "require('./late.test');\n")
+            actual = root / 'geometry-web/late.test.js'
+            actual.write_text("const cp=require('child_process'); cp.spawnSync(['.build','core'].join('/'));\n")
+            self.assertEqual(self.node_resolve(root / 'geometry-web/late.js', './late.test'), actual)
+            with self.assertRaisesRegex(ValueError, 'Unreviewed child-process consumer'):
+                dependency_closure(root)
+
+    def test_directory_package_main_cannot_be_hidden_by_benign_index(self):
+        with tempfile.TemporaryDirectory(prefix='browser-package-negative-') as directory:
+            root = self.fixture(directory, "require('./consumer');\n")
+            package = root / 'geometry-web/consumer'
+            package.mkdir()
+            (package / 'package.json').write_text('{"main":"actual.js"}')
+            (package / 'index.js').write_text('module.exports = {};\n')
+            actual = package / 'actual.js'
+            actual.write_text("const cp=require('child_process'); cp.spawnSync(['.build','core'].join('/'));\n")
+            self.assertEqual(self.node_resolve(root / 'geometry-web/late.js', './consumer'), actual)
+            with self.assertRaisesRegex(ValueError, 'Unreviewed directory package'):
+                dependency_closure(root)
+
+    def test_multiline_chrome_imports_and_builtin_require_are_supported(self):
+        with tempfile.TemporaryDirectory(prefix='browser-multiline-positive-') as directory:
+            root = self.fixture(directory, "require(\n 'path'\n);\n")
+            for name in ENTRIES:
+                path = root / name
+                path.write_text(path.read_text().replace("require('child_process')", "require(\n'child_process'\n)"))
+            self.assertIn('geometry-web/late.js', dependency_closure(root))
+
+    def test_multiline_nonliteral_require_is_rejected(self):
+        with tempfile.TemporaryDirectory(prefix='browser-expression-negative-') as directory:
+            root = self.fixture(directory, 'require(\nprocess.env.UNREVIEWED_MODULE\n);\n')
+            with self.assertRaisesRegex(ValueError, 'Unreviewed require expression'):
+                dependency_closure(root)
+
+    def test_oversized_require_is_rejected_instead_of_ignored(self):
+        with tempfile.TemporaryDirectory(prefix='browser-bound-negative-') as directory:
+            root = self.fixture(directory, "require(\n" + ' ' * 8192 + "'child_process');\n")
+            with self.assertRaisesRegex(ValueError, 'Unreviewed require expression'):
+                dependency_closure(root)
+
+    def test_dotted_extension_and_bare_directory_index_match_node(self):
+        with tempfile.TemporaryDirectory(prefix='browser-resolve-positive-') as directory:
+            root = self.fixture(directory, "require('./extra.test'); require('./plain');\n")
+            caller = root / 'geometry-web/late.js'
+            (root / 'geometry-web/extra.js').write_text('module.exports = {};\n')
+            actual = root / 'geometry-web/extra.test.js'
+            actual.write_text('module.exports = {};\n')
+            plain = root / 'geometry-web/plain'
+            plain.mkdir()
+            (plain / 'index.js').write_text('module.exports = {};\n')
+            for target in ('./extra.test', './plain'):
+                self.assertEqual(local_dependency(caller, target), self.node_resolve(caller, target))
+            files = dependency_closure(root)
+            self.assertIn('geometry-web/extra.test.js', files)
+            self.assertNotIn('geometry-web/extra.js', files)
+            self.assertIn('geometry-web/plain/index.js', files)
+
+    def test_unreviewed_native_addon_is_rejected(self):
+        with tempfile.TemporaryDirectory(prefix='browser-addon-negative-') as directory:
+            root = self.fixture(directory, "require('./addon');\n")
+            (root / 'geometry-web/addon.node').write_bytes(b'fixture only; never executed')
+            with self.assertRaisesRegex(ValueError, 'Unreviewed local dependency type'):
                 dependency_closure(root)
 
 
