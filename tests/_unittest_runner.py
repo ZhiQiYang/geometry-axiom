@@ -19,6 +19,10 @@ A setUpClass/setUpModule *error* is not a skip: those tests are reported in ``bl
 and counted as failed.  The module is loaded by file path with both the repo root and tests/ on
 sys.path, so ``from tests import x``, ``import test_reference_contract`` and ``from run_tests import``
 all resolve no matter how the file is normally started.  ``unittest.main()`` blocks are not executed.
+
+Each started parent test is classified once, even when several subtests or tearDown produce events.
+Failure/error/unexpected success takes precedence over skip. Expected failures are explicitly reported
+and counted as skipped, never passed; their scope cannot match run_all's platform-skip allowlist.
 """
 from __future__ import annotations
 
@@ -124,6 +128,56 @@ def _holder_info(test):
     return (match.group(1), match.group(2)) if match else (description, '')
 
 
+class _ParentResult(unittest.TextTestResult):
+    """Keep ordinary unittest event details, with one outcome per startTest occurrence."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.parent_outcomes = []
+        self.skip_events = []
+        self._current = None
+
+    def startTest(self, test):
+        super().startTest(test)
+        self._current = {'test': test, 'failed': False, 'skipped': False, 'expected': False}
+        self.parent_outcomes.append(self._current)
+
+    def stopTest(self, test):
+        super().stopTest(test)
+        self._current = None
+
+    def addFailure(self, test, err):
+        if self._current is not None:
+            self._current['failed'] = True
+        super().addFailure(test, err)
+
+    def addError(self, test, err):
+        if self._current is not None:
+            self._current['failed'] = True
+        super().addError(test, err)
+
+    def addSubTest(self, test, subtest, err):
+        if err is not None and self._current is not None:
+            self._current['failed'] = True
+        super().addSubTest(test, subtest, err)
+
+    def addSkip(self, test, reason):
+        if self._current is not None:
+            self._current['skipped'] = True
+        self.skip_events.append((test, reason, self._current))
+        super().addSkip(test, reason)
+
+    def addExpectedFailure(self, test, err):
+        if self._current is not None:
+            self._current['expected'] = True
+        super().addExpectedFailure(test, err)
+
+    def addUnexpectedSuccess(self, test):
+        if self._current is not None:
+            self._current['failed'] = True
+        super().addUnexpectedSuccess(test)
+
+
 def main(argv) -> int:
     args = list(argv)
     json_out = log_path = None
@@ -148,6 +202,7 @@ def main(argv) -> int:
         shown = str(target)
     report = {'file': shown, 'total': 0, 'run': 0, 'passed': 0, 'failed': 0,
               'skipped': 0, 'explicit_skipped': 0, 'unrun_skipped': 0, 'blocked_by_error': 0,
+              'expected_failed': 0, 'expected_failures': [],
               'failures': [], 'skip_reasons': {}, 'skip_items': [], 'import_error': None}
 
     def emit(code):
@@ -195,7 +250,7 @@ def main(argv) -> int:
     per_module = total
 
     log = open(log_path, 'w', encoding='utf-8') if log_path else io.StringIO()
-    runner = unittest.TextTestRunner(stream=log, verbosity=1)
+    runner = unittest.TextTestRunner(stream=log, verbosity=1, resultclass=_ParentResult)
     result = runner.run(suite)
     if log_path:
         log.close()
@@ -203,20 +258,32 @@ def main(argv) -> int:
     explicit_skips = collections.Counter()
     skip_items = []   # one entry per skip: the exact test id (scope 'test') or the class/module that blocked N tests
     unrun_skips = 0
-    for test, reason in result.skipped:
+    setup_errors = {_holder_info(test) for test, _ in result.errors
+                    if _holder_info(test) and _holder_info(test)[0] in ('setUpClass', 'setUpModule')}
+    counted_skips = set()
+    for test, reason, outcome in result.skip_events:
         holder = _holder_info(test)
         if holder is None:
-            explicit_skips[reason] += 1
-            skip_items.append({'test': test.id(), 'reason': reason, 'scope': 'test', 'count': 1})
+            key = id(outcome)
+            count = int(outcome is not None and not outcome['failed'] and not outcome['expected']
+                        and key not in counted_skips)
+            counted_skips.add(key)
+            explicit_skips[reason] += count
+            skip_items.append({'test': test.id(), 'reason': reason,
+                               'scope': 'test' if count else 'test-detail', 'count': count,
+                               'parent_test': outcome['test'].id() if outcome is not None else test.id()})
         else:
             kind, where = holder
-            n = per_module if kind == 'setUpModule' else per_class.get(where, 0)
+            n = (per_module if kind == 'setUpModule' else per_class.get(where, 0)) \
+                if holder not in setup_errors and holder not in counted_skips else 0
+            counted_skips.add(holder)
             unrun_skips += n
             explicit_skips[reason] += n
             skip_items.append({'test': where or kind, 'reason': reason, 'scope': kind, 'count': n})
 
-    test_level_failed = 0
+    test_level_failed = sum(outcome['failed'] for outcome in result.parent_outcomes)
     blocked = 0
+    counted_blocks = set()
     extra_errors = 0
     failures = []
     for kind, rows in (('failure', result.failures), ('error', result.errors)):
@@ -224,21 +291,29 @@ def main(argv) -> int:
             holder = _holder_info(test)
             entry = {'test': test.id() if holder is None else test.description, 'kind': kind, 'message': _first_line(trace)}
             failures.append(entry)
-            if holder is None:
-                test_level_failed += 1
-            elif holder[0] in ('setUpClass', 'setUpModule'):
-                blocked += per_module if holder[0] == 'setUpModule' else per_class.get(holder[1], 0)
-                entry['blocked_tests'] = per_module if holder[0] == 'setUpModule' else per_class.get(holder[1], 0)
-            else:
+            if holder is not None and holder[0] in ('setUpClass', 'setUpModule'):
+                n = (per_module if holder[0] == 'setUpModule' else per_class.get(holder[1], 0)) \
+                    if holder not in counted_blocks else 0
+                counted_blocks.add(holder)
+                blocked += n
+                entry['blocked_tests'] = n
+            elif holder is not None:
                 extra_errors += 1  # tearDownClass etc.: every test ran, but the suite is not clean
-    unexpected = len(result.unexpectedSuccesses)
-    test_level_failed += unexpected
     for test in result.unexpectedSuccesses:
         failures.append({'test': test.id(), 'kind': 'unexpected-success', 'message': 'expected failure passed'})
 
-    explicit_only = sum(1 for test, _ in result.skipped if _holder_info(test) is None)
+    expected_failures = [{'test': test.id(), 'message': _first_line(trace)}
+                         for test, trace in result.expectedFailures]
+    expected_failed = sum(outcome['expected'] and not outcome['failed'] for outcome in result.parent_outcomes)
+    expected_reason = 'expected failure (not a passing test)'
+    for entry in expected_failures:
+        skip_items.append({'test': entry['test'], 'reason': expected_reason, 'scope': 'expected-failure', 'count': 1})
+    if expected_failed:
+        explicit_skips[expected_reason] += expected_failed
+    explicit_only = sum(outcome['skipped'] and not outcome['failed'] and not outcome['expected']
+                        for outcome in result.parent_outcomes)
     residue = max(0, total - result.testsRun - unrun_skips - blocked)
-    skipped = explicit_only + unrun_skips + residue
+    skipped = explicit_only + expected_failed + unrun_skips + residue
     failed = test_level_failed + blocked + extra_errors
     passed = max(0, total - skipped - test_level_failed - blocked)
     if residue:
@@ -247,8 +322,9 @@ def main(argv) -> int:
                            'scope': 'never-started', 'count': residue})
     report.update(total=total, run=result.testsRun, passed=passed, failed=failed, skipped=skipped,
                   explicit_skipped=explicit_only, unrun_skipped=unrun_skips + residue, blocked_by_error=blocked,
-                  extra_errors=extra_errors, failures=failures[:40],
-                  skip_reasons=dict(explicit_skips.most_common(30)), skip_items=skip_items[:200])
+                  extra_errors=extra_errors, failures=failures,
+                  expected_failed=expected_failed, expected_failures=expected_failures,
+                  skip_reasons=dict(explicit_skips.most_common(30)), skip_items=skip_items)
     return emit(0 if result.wasSuccessful() else 1)
 
 
