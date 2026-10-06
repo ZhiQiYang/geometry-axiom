@@ -5732,7 +5732,6 @@ async function feUp(pt) {
     const axis = dx >= dy ? "u" : "v";
     const off = Math.round(axis === "u" ? d.y1 : d.x1);
     const sid = feSid(e.bid);
-    const ids = await api("newid");
     if (await createReferenceGuide(sid, axis, off))
       await feLoadGuides();
     drawFaceEditor();
@@ -10117,7 +10116,6 @@ for (const b of document.querySelectorAll("#feGuidePick button"))
     if (!sid) return;
     const axis = b.dataset.axis;
     const off = Math.round(+(axis === "u" ? pk.dataset.v : pk.dataset.u));
-    const ids = await api("newid");
     if (await createReferenceGuide(sid, axis, off))
       await feLoadGuides();
     drawFaceEditor(); renderFaceLayers();
