@@ -146,11 +146,15 @@ NODE_PURE_TEST_FILES = {
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
     'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
+    'node:room_outline_closeout': 'tests/test_room_outline_closeout.js',
     'node:evidence_links': 'tests/test_evidence_links.js',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/room_outline_acceptance_browser.js': 'Required isolated formal app/native PDF-image UI, actual Save/new-context Open and model continuation; installed Playwright/Chromium and dedicated service, default full scenarios; see INTEGRATION-GATES.md',
+    'tests/room_outline_pan_browser.js': 'Required isolated real keyboard/mouse pan and cancellation gate with native dump preservation; API-authored initial fixture and explicit pointercancel injection; see INTEGRATION-GATES.md',
+    'tests/room_outline_worker_browser.js': 'Required isolated native Worker computation and UI invalidation gate; API-authored setup and explicit late-consumer delivery injection; see INTEGRATION-GATES.md',
     'tests/test_grid_rule_reader_browser.js': 'Required isolated /13 formal reader UI/native gate: canonical candidate, evidence snapshot, zero-confirm rejection and actual ZIP Save; see INTEGRATION-GATES.md',
     'tests/test_issue116_browser.js': 'Required isolated native/browser B-menu gate, full Save/reopen and visual evidence; see INTEGRATION-GATES.md',
     'tests/scenario_browser_check.cjs': 'Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)',
@@ -168,9 +172,18 @@ REQUIRED_OWNER_GATES = {
 }
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
+    'tests/room_outline_acceptance_browser.js': 253,
+    'tests/room_outline_pan_browser.js': 32,
+    'tests/room_outline_worker_browser.js': 78,
     'tests/test_grid_rule_reader_browser.js': 34,
     'geometry-web/evidence_links_browser_check.js': 67,
     'geometry-web/evidence_links_integration_test.js': 110,
+}
+
+REQUIRED_BROWSER_GATE_SCOPES = {
+    'tests/room_outline_acceptance_browser.js': 'formal room app/PDF-image/UI/ZIP/model',
+    'tests/room_outline_pan_browser.js': 'real input/native preservation; API fixture and injected pointercancel',
+    'tests/room_outline_worker_browser.js': 'native Worker/UI invalidation with injected late-consumer delivery',
 }
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
@@ -731,7 +744,7 @@ def print_table(rows):
         if rel.startswith('tests/test_issue77_') or rel in ('tests/scenario_browser_check.cjs', 'tests/test_scenario_grid_interface.js'):
             print('  %s：%s；獨立執行，本 aggregate 未驗。' % (rel, NODE_EXCLUDED[rel]))
     for rel, count in REQUIRED_BROWSER_GATES.items():
-        scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+        scope = REQUIRED_BROWSER_GATE_SCOPES.get(rel, 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter')
         print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
 
 
@@ -784,7 +797,7 @@ def main(argv=None):
         print('必要正式整合入口：tests/integration/issue77_attachment_owner.js（5項；未實作時 exit3）')
         print('另外4個 #77 真瀏覽器入口：見 tests/INTEGRATION-GATES.md；本命令未驗。')
         for rel, count in REQUIRED_BROWSER_GATES.items():
-            scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+            scope = REQUIRED_BROWSER_GATE_SCOPES.get(rel, 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter')
             print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
         for p in registry_errors:
             print('登記問題：%s' % p)

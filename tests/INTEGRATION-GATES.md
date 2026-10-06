@@ -189,3 +189,47 @@ P87 的 60 項由無 scope full CDP 執行；新增的 14 項為 edit/delete 各
 「關閉 raw → 來源卡片刪除 → emptyNewGridSystem 續編 → 唯讀 Save → 新空白 context 真開檔 → 返回 → 明確捨棄」。
 這段不使用 fixture API 或 refresh/renderObjects 補 UI 狀態。83 段共 2054，原 82 段完全不變。
 34、60 是 assertions，並非端到端 scenario 數；實體手機／系統 chooser 仍有具名人工未驗界線。
+
+
+## #54 單房候選的純幾何與三個必要 browser gates
+
+`tests/test_room_outline_closeout.js` 登錄為獨立
+`node:room_outline_closeout` pure suite，實跑 24 tests；不需要 native binary。
+其中 VM 回呼測試只代表 cache／freshness 契約，真正 native dump 保全由下列 browser gates 驗。
+本次只新增這個 expected entry（24），原有各 suite floor／具名 skip／CDP golden 全不變。
+
+```sh
+python3 tests/run_all.py --list
+python3 tests/run_all.py --only node:room_outline_closeout
+```
+
+第二條是 **partial run**，不是完整非瀏覽器 census。第一條會拒絕未登錄檔案。
+三支 browser scripts 均在 `NODE_EXCLUDED` 記錄理由，並在
+`REQUIRED_BROWSER_GATES` 列為必跑；**aggregate 不會執行，不計入 pass／skip**。
+`--list` 及結束摘要顯示實際範圍，不能把未跑的 browser gate 當成功。
+
+| 必跑 script | 完整預設檢查數 | 真實範圍／明示測試接點 |
+|---|---:|---|
+| `room_outline_acceptance_browser.js` | 253 | 10 正常場景加反例；真 UI PDF／影像匯入、校準、修正及逐邊入值、取消／確認／undo／redo、實體下載、新空白 context Open、來源 bytes／校準／有序輪廓／receipt、boundary-only model 保存重開。只隱藏可選 OS Save capability，走產品真下載分支。 |
+| `room_outline_pan_browser.js` | 32 | 真鍵鼠 Space／中鍵／H 及取消後 pan、camera delta、完整草稿與 native dump 保全、接續選房。初始場景／來源／校準是 API fixture；pointercancel 為明示注入。 |
+| `room_outline_worker_browser.js` | 78 | 六個真 UI 失效情境、12 個真 native Workers；真計算結果在 consumer 處攔留／晚送，舊回呼不能復活或清新工作。初始 fixture 與晚 consumer 送達注入均明示。 |
+
+每個 gate 使用自己專屬的服務／native process／TEMP 輸出。
+以同份產品來源編譯 bridge/model-base，記錄編譯命令、binary hash、HEAD、
+`/runtime` 的 repository／fresh／fingerprint／session；安裝好的 Playwright 與 Chromium
+由執行環境提供。不得使用使用者服務、私人圖紙或共用 feedback 目錄。
+服務建立命令與完整原驗收映射見
+[`issue54-closeout-20261006.md`](../geometry-web/docs/issue54-closeout-20261006.md)。
+
+```sh
+GEOMETRY_TEST_URL=http://127.0.0.1:8896/ GEOMETRY_ROOM_ACCEPTANCE_DIR=/tmp/issue54/normal-final node tests/room_outline_acceptance_browser.js
+GEOMETRY_TEST_URL=http://127.0.0.1:8897/ GEOMETRY_WORKER_OUTPUT=/tmp/issue54/worker-final node tests/room_outline_worker_browser.js
+GEOMETRY_TEST_URL=http://127.0.0.1:8898/ GEOMETRY_PAN_OUTPUT=/tmp/issue54/pan-final node tests/room_outline_pan_browser.js
+```
+
+正式 UI 必須使用完整 default，不設 `GEOMETRY_ROOM_SCENARIOS` 或
+`GEOMETRY_ROOM_EXTRA_CASES=0`；focused development run 不能代替此 gate。
+修改 app pointer 路由另外依 AGENTS 跑無 scope flag 的 `geometry-web/cdp_test.js`，
+與 pan 共用服務時依序執行。此計數是 assertions，非 253／32／78 個 end-to-end scenarios。
+實機手機、IME、OS picker、真人時間與尚未取得的私人來源仍各自保持未驗。
+此 gate 驗既有單房流程，不能據此宣稱整個 #54 效率目標完成。

@@ -35,6 +35,7 @@ GEOMETRY_FEEDBACK_DIR=/tmp/issue54/fb-normal python3 geometry-web/serve.py 8896
 ```
 
 ```sh
+GEOMETRY_TEST_BRIDGE=/tmp/issue54/bin/web_bridge GEOMETRY_MODEL_BASE=/tmp/issue54/bin/model_base \
 node --test tests/test_room_outline.js tests/test_room_outline_worker.js \
   tests/test_room_outline_closeout.js tests/test_project_store.js tests/test_reference_workspace_races.js
 
