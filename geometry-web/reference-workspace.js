@@ -210,6 +210,7 @@ const ReferenceWorkspace = (() => {
     let initial={context:context(),frame:history.frame,revision:revision(context())},epoch=externalEpoch;
     const assertInitial=()=>{if(externalEpoch!==epoch || !unchanged(initial))throw new Error("檢查恢復資料期間目前專案已變更，未套用舊資料。");};
     busy=true;busyLabel="正在檢查本分頁的恢復資料…";present();
+    let preparedContext=null;
     try {
       const serviceSession=typeof connection!=="undefined"?connection.session:null;
       if(!serviceSession)throw new Error("尚未確認服務工作階段，請重新連接。");
@@ -256,6 +257,7 @@ const ReferenceWorkspace = (() => {
       }
       const stage=label=>{busyLabel=label;present();};
       const {loaded,c,ids}=await readProjectContext(record.bytes,"本機恢復專案",stage,assertInitial,true);
+      preparedContext=c;
       if(await sceneFingerprint(loaded.scene)!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
       const verify=await api("dump");assertInitial();
       if(!verify.ok || connection.session!==session || await sceneFingerprint(verify.text)!==record.sceneHash)throw new Error("恢復期間服務場景已變更，未恢復專案。");
@@ -264,13 +266,14 @@ const ReferenceWorkspace = (() => {
       if(!p || typeof p.provenance?.kind!=="string" || typeof p.provenance?.label!=="string")throw new Error("本機專案來源記錄不完整。");
       Object.assign(c,{dirty:!!p.dirty,dirtyReason:String(p.dirtyReason || ""),saved:!!p.saved,downloaded:!!p.downloaded,provenance:{...p.provenance}});
       history.frame={context:c,ids:new Map(ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
+      detachedPDFContexts.delete(c);
       recoveryReady=true;sync();
       recoveryMessage("restored","已核對同一服務及場景，恢復本分頁的專案、來源附件、空間模型與工程草稿。未套用的工具草稿及較早復原歷史無法恢復；檔案保存狀態維持原紀錄。");
       return {...recovery};
     } catch(error) {
       if(editorLease!=="owned")editorLease="unavailable";
       if(!contextConflict)recoveryMessage("unavailable","未恢復本機專案："+(error.message || "儲存空間不可用")+"目前場景未被覆寫，請開啟 .gcanvas 檔案。");return {...recovery};
-    } finally {busy=false;busyLabel="";present();if(recoveryReady)scheduleRecovery();}
+    } finally {await releaseDetachedPDFContext(preparedContext);busy=false;busyLabel="";present();if(recoveryReady)scheduleRecovery();}
   }
   async function retryRecovery() {
     if(busy)throw new Error("請先等目前操作完成。");
@@ -611,27 +614,60 @@ const ReferenceWorkspace = (() => {
     const hash = await P.sha(bytes);
     return { meta: { id: hash, hash, name: file.name || "參考圖片", type, size: bytes.length, path: "sources/" + hash }, bytes };
   }
+  const pdfLoads = new WeakMap(), pdfTaskCleanup = new WeakMap(), detachedPDFContexts = new WeakSet();
+  function destroyPDFTask(task) {
+    if (!task) return Promise.resolve();
+    if (!pdfTaskCleanup.has(task)) pdfTaskCleanup.set(task,Promise.resolve().then(()=>task.destroy()).catch(()=>{}));
+    return pdfTaskCleanup.get(task);
+  }
   async function documentFor(s, assertCurrent = () => {}) {
     if (s.meta.type !== "application/pdf") return null;
     if (s.cleanup) {await s.cleanup; assertCurrent();}
-    if (!s.doc) {
-      const lib = await library();
-      assertCurrent();
-      const task = lib.getDocument({ data: s.bytes.slice(), isEvalSupported: false,
-        cMapUrl: "/vendor/pdfjs-dist/cmaps/", cMapPacked: true,
-        standardFontDataUrl: "/vendor/pdfjs-dist/standard_fonts/", wasmUrl: "/vendor/pdfjs-dist/wasm/" });
-      s.loadingTask = task;
-      s.documentTask = task;
-      task.onPassword = () => { task.destroy().catch(()=>{}); };
-      try { s.doc = await task.promise; assertCurrent(); } catch (error) { await releasePDFSource(s);assertCurrent();throw new Error("無法讀取 PDF；請確認檔案完整且未加密。"); }
-      finally { if (s.loadingTask === task) s.loadingTask = null; }
-    }
-    return s.doc;
+    assertCurrent();
+    if (s.doc) return s.doc;
+    const reader = {assertCurrent};
+    let load = pdfLoads.get(s);
+    if (!load) {
+      load = {readers:new Set([reader]),task:null,cancelled:false};pdfLoads.set(s,load);
+      const assertOwned = () => {
+        if (!load.cancelled) for (const reader of load.readers) {
+          try {reader.assertCurrent();return;} catch (_) {}
+        }
+        throw new Error("PDF 讀取已取消。");
+      };
+      load.promise = (async()=>{
+        try {
+          const lib = await library();assertOwned();
+          const task = load.task = lib.getDocument({ data:s.bytes.slice(),isEvalSupported:false,
+            cMapUrl:"/vendor/pdfjs-dist/cmaps/",cMapPacked:true,
+            standardFontDataUrl:"/vendor/pdfjs-dist/standard_fonts/",wasmUrl:"/vendor/pdfjs-dist/wasm/" });
+          s.loadingTask=task;s.documentTask=task;
+          task.onPassword=()=>{destroyPDFTask(task);};
+          const doc=await task.promise;assertOwned();s.doc=doc;return doc;
+        } catch (error) {
+          if(pdfLoads.get(s)===load)pdfLoads.delete(s);
+          if(s.documentTask===load.task)s.documentTask=null;
+          if(s.doc?.loadingTask===load.task)s.doc=null;
+          await destroyPDFTask(load.task);
+          throw new Error("無法讀取 PDF；請確認檔案完整且未加密。");
+        } finally {if(s.loadingTask===load.task)s.loadingTask=null;}
+      })();
+    } else load.readers.add(reader);
+    try {
+      const doc=await load.promise;assertCurrent();return doc;
+    } catch (error) {assertCurrent();throw error;}
+    finally {load.readers.delete(reader);}
   }
   async function releasePDFSource(source) {
-    const task=source.loadingTask || source.documentTask || source.doc?.loadingTask;
+    const load=pdfLoads.get(source);if(load){load.cancelled=true;pdfLoads.delete(source);}
+    const task=load?.task || source.loadingTask || source.documentTask || source.doc?.loadingTask;
     source.doc=null;source.loadingTask=null;source.documentTask=null;
-    if(task)await task.destroy().catch(()=>{});
+    await destroyPDFTask(task);
+  }
+  async function releaseDetachedPDFContext(c) {
+    if (!c || !detachedPDFContexts.has(c) || pendingLoad?.context===c) return;
+    detachedPDFContexts.delete(c);
+    await Promise.all([...c.sources.values()].map(releasePDFSource));
   }
   // Runtime-only immutable source features: never added to history or saved
   // project metadata. A late extraction only fills its source/page cache.
@@ -968,6 +1004,7 @@ const ReferenceWorkspace = (() => {
   async function openSource(source, bid = null) {
     assertEditable(); assertRoomDraftIdle(); if (bid !== null && sharedRoom(bid)) bid = null;
     if (busy || oc.busy) throw new Error("操作進行中，請稍候。");
+    if (modal) closeSource();
     const dialog = document.getElementById("referenceDialog"), token = ++sequence;
     modal = { source, bid, context:context(), targets:new Map([...history.frame.ids].filter(([id]) => !sharedRoom(id))), page: 1, crop: null, width: 1, height: 1, token, zoom: "page", ready: false, drag: null };
     document.getElementById("refZoom").value = "page";
@@ -983,9 +1020,9 @@ const ReferenceWorkspace = (() => {
     target.innerHTML = `<option value="new">建立描繪用面（預設矩形）</option>` + oc.faces.filter(f=>f.kind==="boundary" && modal.targets.has(f.id)).map(f=>`<option value="${f.id}">套用至面 ${f.id}</option>`).join("");
     target.value = bid != null && modal.targets.has(bid) ? String(bid) : "new";
     if (!dialog.open) dialog.showModal();
+    const m=modal,assertCurrent=()=>{if(modal!==m || m.token!==token)throw new Error("PDF 讀取已取消。");assertContext(m.context);};
     try {
-      const doc = await documentFor(source); if (!modal || modal.token !== token) return;
-      assertContext(modal.context);
+      const doc = await documentFor(source,assertCurrent);assertCurrent();
       modal.count = doc?.numPages || 1;
       document.getElementById("refPageNumber").disabled = false;
       document.getElementById("refPageNumber").max = modal.count;
@@ -1262,6 +1299,8 @@ const ReferenceWorkspace = (() => {
     loaded.manifest=structuredClone(loaded.manifest);
     loaded.sources=new Map([...loaded.sources].map(([hash,data])=>[hash,data.slice()]));
     const m=loaded.manifest,c=fresh();c.id=m.projectId;c.name=m.name||name;c.saved=true;
+    detachedPDFContexts.add(c);
+    try {
     assertCurrent();
     // Rebuild every embedded package before uploading anything. Stored definitions
     // are self-contained and do not depend on the current live source scene.
@@ -1318,9 +1357,11 @@ const ReferenceWorkspace = (() => {
       await cancelProjectScene(token);assertCurrent();
     }
     return {loaded,c,ids};
+    } catch (error) {await releaseDetachedPDFContext(c);throw error;}
   }
   async function importProjectData(bytes,name,stage,assertCurrent,options={}) {
     const {loaded,c,ids}=await readProjectContext(bytes,name,stage,assertCurrent);
+    try {
     c.saved=options.source!=="example";
     c.provenance={kind:options.source==="example"?"example":"file",label:options.source==="example"?"內建範例「"+c.name+"」":"專案檔案「"+name+"」",openedAt:new Date().toISOString(),lastSavedAt:null,lastDownloadAt:null};
     assertCurrent();stage("正在載入專案場景…","載入中");
@@ -1332,6 +1373,7 @@ const ReferenceWorkspace = (() => {
     importRenderingContext=c;
     try {await refreshActive();} finally {importRenderingContext=null;}
     setStatus(c.dirtyReason ? "✓ 已開啟專案；畫布已自動排版，請保存以保留排列。" : "✓ 已開啟專案，場景、工程來源與草稿、參考資料及空間模型已還原");return loaded;
+    } finally {await releaseDetachedPDFContext(c);}
   }
   async function replaceWithEmpty(keepIdentity) {
     assertWritableLease(); assertRoomDraftIdle();
@@ -1437,6 +1479,7 @@ const ReferenceWorkspace = (() => {
       history.frame={context:fresh(),ids:new Map()};
     }
     history.replace(pendingLoad.context,pendingLoad.ids,pendingLoad.action);contextConflict=false;
+    detachedPDFContexts.delete(pendingLoad.context);
   }
   async function recoverLoad() {
     if (!pendingLoad) return true;
@@ -1484,7 +1527,7 @@ const ReferenceWorkspace = (() => {
       document.getElementById("sceneMenuLabel").textContent=sceneMenuDisplay(curScene.name);
       markSceneItem();
     }
-    pendingLoad=null;sync();return true;
+    pendingLoad=null;await releaseDetachedPDFContext(load.context);sync();return true;
   }
   function mayLeave() {
     if (window.RoomCollectionWorkspace?.hasWork) {toast("請先完成、取消或恢復目前房間草稿，再切換專案。"); return false;}

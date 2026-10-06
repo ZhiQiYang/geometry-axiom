@@ -88,8 +88,8 @@ test('production synchronous reader commit rejects unleased or forged prepared p
 function countedPDF({gate=null,fail=false,width=100}={}){
   const count={created:0,destroyed:0};
   return {count,library:{getDocument(){count.created++;let dead=false;
-    const task={destroy:async()=>{if(!dead){dead=true;count.destroyed++;}}};
-    const doc={numPages:3,loadingTask:task,getPage:async()=>({getViewport:()=>({width,height:80})})};
+    const task={destroy:async()=>{dead=true;count.destroyed++;}};
+    const doc={numPages:3,loadingTask:task,getPage:async()=>{assert.equal(dead,false,'retained reader is usable');return {getViewport:()=>({width,height:80}),render:()=>({promise:Promise.resolve()})};}};
     task.promise=(async()=>{if(gate)await gate.promise;if(fail)throw Error('authored load failure');return doc;})();return task;
   }}};
 }
@@ -109,6 +109,35 @@ test('cancelled and failed PDF loads release temporary validation tasks exactly 
     const pending=f.w.validateEvidenceClosure(f.w.context(),evidenceEnvelope(f),()=>{if(cancelled)throw Error('cancelled');}),rejection=assert.rejects(pending,fail?/無法讀取/:/cancelled/);
     while(!pdf.count.created)await new Promise(r=>setImmediate(r));cancelled=!fail;gate.resolve();await rejection;
     assert.deepEqual(pdf.count,{created:1,destroyed:1});assert.equal(f.source.doc,live);
+  }
+  const libraryGate=deferred(),late=countedPDF(),closed=await fixture({pdfLibrary:libraryGate.promise});closed.w.init();
+  delete closed.source.doc;closed.w.context().sources.delete(closed.source.meta.id);
+  const opening=closed.w.openSource(closed.source,1);await turn();closed.element('refClose').onclick();
+  libraryGate.resolve(late.library);await opening;
+  assert.deepEqual(late.count,{created:0,destroyed:0},'closing before the library arrives never starts an ownerless task');
+  assert.equal(closed.source.doc,null);assert.equal(closed.element('referenceDialog').open,false);
+  const pdf=countedPDF(),f=await fixture({pdfLibrary:pdf.library}),old=f.w.context(),requests=[];
+  const page=P.reference(f.w.active(1)),bytes=await P.pack('boundary 1 outline 0,0 800,0 800,700 0,700\n',
+    {projectId:'detached-import',name:'authored rejected PDF',sources:[f.source.meta],faces:[{bid:1,pages:[page],activePageId:page.id}]},new Map([[f.source.meta.id,f.source.bytes]]),zip);
+  f.env.fetch=async url=>{requests.push(url);return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[],placements:[]}}:{ok:true,state:'cancelled'})};};
+  for(let i=0;i<3;i++)await assert.rejects(f.w.importBytes(bytes),/來源關聯的面不存在/);
+  assert.deepEqual(pdf.count,{created:3,destroyed:3},'every rejected detached candidate releases its PDF');
+  assert.equal(f.w.context(),old);assert.equal(f.w.history.undo.length,0);
+  assert.deepEqual(requests,['/upload/prepare','/upload/cancel','/upload/prepare','/upload/cancel','/upload/prepare','/upload/cancel']);
+  for(const at of ['library','task']){
+    const gate=deferred(),shared=countedPDF({gate:at==='task'?gate:null}),g=await fixture({pdfLibrary:at==='library'?gate.promise:shared.library});
+    delete g.source.doc;let cancelled=false;
+    const first=g.w.documentFor(g.source,()=>{if(cancelled)throw Error('own cancellation');}),rejected=assert.rejects(first,/own cancellation/);
+    const sibling=g.w.documentFor(g.source);await turn();cancelled=true;gate.resolve(at==='library'?shared.library:undefined);
+    await rejected;assert.equal(await sibling,g.source.doc);await g.source.doc.getPage(1);
+    assert.deepEqual(shared.count,{created:1,destroyed:0},'a cancelled reader never destroys its valid sibling');
+    const reopenGate=deferred(),reopen=countedPDF({gate:at==='task'?reopenGate:null}),h=await fixture({pdfLibrary:at==='library'?reopenGate.promise:reopen.library});
+    h.w.init();delete h.source.doc;h.w.context().sources.delete(h.source.meta.id);
+    const earlier=h.w.openSource(h.source,1);await turn();h.element('refClose').onclick();
+    const newer=h.w.openSource(h.source,1);await turn();reopenGate.resolve(at==='library'?reopen.library:undefined);await Promise.all([earlier,newer]);
+    assert.equal(h.element('referenceDialog').open,true);assert.equal(h.element('refApply').disabled,false);await h.source.doc.getPage(1);
+    assert.deepEqual(reopen.count,at==='library'?{created:1,destroyed:0}:{created:2,destroyed:1});
+    h.element('refClose').onclick();await turn();assert.equal(reopen.count.destroyed,reopen.count.created,'old completion cannot clear the reopened document or destroy twice');
   }
 });
 
@@ -308,9 +337,10 @@ test('edits while obtaining the scene or packing prevent a mixed snapshot from r
 
 async function openFixture(options={}) {
   const f=await fixture(options),requests=[],refreshed=deferred();
-  const scene='boundary 8 outline 0,0 800,0 800,700 0,700\n';
-  const bytes=await P.pack(scene,{format:P.FORMAT,projectId:'opened',name:'試用工程',sources:[],faces:[],
-    ...(options.featureDraft?{featureAttachments:{schema:P.Features.SCHEMA,records:[P.Features.record('grid-draft',options.featureDraft)]}}:{})},new Map(),zip);
+  const scene='boundary '+(options.withPDF?1:8)+' outline 0,0 800,0 800,700 0,700\n';
+  const bytes=await P.pack(scene,{format:P.FORMAT,projectId:'opened',name:'試用工程',sources:options.withPDF?[f.source.meta]:[],
+    faces:options.withPDF?[{bid:1,pages:[P.reference(f.w.active(1))],activePageId:'page-1'}]:[],
+    ...(options.featureDraft?{featureAttachments:{schema:P.Features.SCHEMA,records:[P.Features.record('grid-draft',options.featureDraft)]}}:{})},new Map(options.withPDF?[[f.source.meta.id,f.source.bytes]]:[]),zip);
   f.env.curScene={};f.env.resetSceneFocus=()=>{};f.env.markSceneItem=()=>{};f.env.sceneMenuDisplay=name=>name;
   f.env.refreshActive=async()=>{
     if(options.autoLayout)f.w.observe('line canvas-pos boundary 8 60 60',{ok:true});
@@ -319,7 +349,7 @@ async function openFixture(options={}) {
   };
   f.env.fetch=async(url,request)=>{
     requests.push({url,request});assert.ok(['/upload','/upload/prepare','/upload/confirm','/upload/cancel'].includes(url));
-    return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[8],placements:[]}}:{ok:true,path:'opened.scene'})};
+    return {ok:true,json:async()=>(url==='/upload/prepare'?{ok:true,token:1,capabilities:nativeCapabilities,required_capabilities:[],final_objects:{boundaries:[options.withPDF?1:8],placements:[]}}:{ok:true,path:'opened.scene'})};
   };
   return {...f,bytes,requests,refreshed};
 }
@@ -353,6 +383,11 @@ test('opening owns the busy state from first byte read through rendering and ref
   assert.throws(()=>g.w.setFeatureAttachment('grid-draft',null,oldToken),/上下文/);
   assert.equal(JSON.stringify(g.w.getProjectState()),returnedState);assert.equal(g.w.history.undo.length,returnedUndo);
   g.w.observe('line redo',{ok:true});assert.equal(JSON.stringify(g.w.readFeatureAttachment('grid-draft')),JSON.stringify(rawGridDraft()));
+  const pdf=countedPDF(),h=await openFixture({withPDF:true,pdfLibrary:pdf.library}),before=h.w.context();await h.w.importBytes(h.bytes);
+  const adopted=h.w.context(),source=adopted.sources.get(h.source.meta.id);await source.doc.getPage(1);
+  h.w.observe('line undo',{ok:true});assert.equal(h.w.context(),before);assert.equal(before.sources.get(h.source.meta.id),h.source);
+  h.w.observe('line redo',{ok:true});assert.equal(h.w.context(),adopted);await source.doc.getPage(1);
+  assert.deepEqual(pdf.count,{created:1,destroyed:0},'adopted and history-owned documents must survive import finally');
 });
 
 test('changes during project reading or its pre-upload dump prevent replacement without swallowing edits',async()=>{
@@ -452,6 +487,15 @@ test('retry cancels the token before a delayed confirm can mutate old or identic
     assert.equal(f.w.context(),old);assert.equal(JSON.stringify(f.w.history),before);
     assert.equal(f.w.context().sources.get(f.source.meta.id),f.source);
   }
+  const pdf=countedPDF(),f=await openFixture({withPDF:true,pdfLibrary:pdf.library}),old=f.w.context(),original=f.env.fetch;let unavailable=true;
+  f.env.connectionFailed=()=>{};f.env.fetch=async(url,request)=>{
+    if(url==='/upload/confirm')throw Error('lost PDF commit reply');
+    if(url==='/upload/cancel')return unavailable?{ok:false}:{ok:true,json:async()=>({ok:true,state:'cancelled'})};
+    return original(url,request);
+  };
+  await assert.rejects(f.w.importBytes(f.bytes),/lost PDF commit reply/);assert.deepEqual(pdf.count,{created:1,destroyed:0});
+  await assert.rejects(f.w.recoverLoad(),/仍無法確認/);assert.deepEqual(pdf.count,{created:1,destroyed:0},'unknown native outcome retains its candidate');
+  unavailable=false;await f.w.recoverLoad();assert.equal(f.w.context(),old);assert.deepEqual(pdf.count,{created:1,destroyed:1});await f.source.doc.getPage(1);
 });
 
 test('retry uses the committed receipt for lost replies and refuses a later different World',async()=>{
@@ -468,6 +512,16 @@ test('retry uses the committed receipt for lost replies and refuses a later diff
     if(changed){await assert.rejects(()=>f.w.recoverLoad(),/已有其他變更/);assert.equal(f.w.context(),old);}
     else{await f.w.recoverLoad();assert.equal(f.w.context().id,'opened');assert.equal(f.w.history.undo.length,1);}
   }
+  const pdf=countedPDF(),f=await openFixture({withPDF:true,pdfLibrary:pdf.library}),original=f.env.fetch;
+  const scene=(await P.unpack(f.bytes,zip)).scene,hash=await P.sha(new TextEncoder().encode(scene));f.env.connectionFailed=()=>{};
+  f.env.fetch=async(url,request)=>{
+    if(url==='/upload/confirm'){f.env.api=async()=>({ok:true,text:scene,revision:7});throw Error('lost committed PDF reply');}
+    if(url==='/upload/cancel')return {ok:true,json:async()=>({ok:true,state:'committed',revision:7,path:'committed.scene',scene_sha256:hash})};
+    return original(url,request);
+  };
+  await assert.rejects(f.w.importBytes(f.bytes),/lost committed PDF reply/);await f.w.recoverLoad();
+  assert.equal(f.w.context().id,'opened');assert.equal(f.w.history.undo.length,1);await f.w.context().sources.get(f.source.meta.id).doc.getPage(1);
+  assert.deepEqual(pdf.count,{created:1,destroyed:0},'committed recovery transfers PDF ownership before candidate cleanup');
 });
 
 nodeTest('real native HTTP committed ABA keeps the old project bytes references and undo',{
@@ -617,6 +671,15 @@ test('matching reload restores complete project context without uploading or inv
   assert.match(f.w.getProjectInfo().historyNote,/較早/);
   await f.w.persistSession();assert.equal(records.get('tab-one').sceneHash,record.sceneHash);
   assert.equal((await P.unpack(records.get('tab-one').bytes,zip)).manifest.projectId,'opened');
+  for(const invalidProvenance of [false,true]){
+    const pdf=countedPDF(),g=await openFixture({withPDF:true,pdfLibrary:pdf.library}),old=g.w.context(),scene=(await P.unpack(g.bytes,zip)).scene;
+    const record=await recoveryRecord(g,scene);if(invalidProvenance)record.project.provenance={kind:'unrecognized'};
+    recoveryEnvironment(g,{records:new Map([['tab-one',record]])});g.env.api=async()=>({ok:true,text:scene});
+    assert.equal((await g.w.restoreSession()).state,invalidProvenance?'unavailable':'restored');
+    assert.deepEqual(pdf.count,{created:1,destroyed:invalidProvenance?1:0});
+    if(invalidProvenance){assert.equal(g.w.context(),old);await g.source.doc.getPage(1);}
+    else{assert.equal(g.w.context().id,'opened');await g.w.context().sources.get(g.source.meta.id).doc.getPage(1);assert.equal(g.w.history.undo.length,0);}
+  }
 });
 
 test('reload refuses different server or geometry and preserves the original backup',async()=>{
