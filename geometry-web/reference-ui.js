@@ -210,18 +210,33 @@ function appendGridDefinitionImpact(dialog, preview) {
   });
 }
 
+function referenceGuidePreparation(sid, guide = null) {
+  const edit=oc.edit,focus=oc.focus,state=ReferenceWorkspace.getEvidenceState();
+  if(!edit || focus?.t!=="face" || focus.id!==edit.bid || feSid(edit.bid)!==sid || state.blocked) return null;
+  const source=guide && JSON.stringify(guide);
+  return () => oc.edit===edit && oc.focus===focus && feSid(edit.bid)===sid &&
+    JSON.stringify(ReferenceWorkspace.getEvidenceState())===JSON.stringify(state) &&
+    (!guide || JSON.stringify(fe.guides.find(g=>g.id===guide.id))===source);
+}
 async function createReferenceGuide(sid, axis, off) {
+  const current=referenceGuidePreparation(sid);if(!current)return false;
   const snap = await api(`snap ${sid} ${axis} 0 ${off} ${Math.max(1, Math.round(12 / fe.zoom))}`);
+  if(!current())return false;
   if (!snap.ok) { toast(snap.error); return false; }
   const ids = await api('newid');
+  if(!current())return false;
+  if(!ids.ok || !Number.isInteger(ids.guide) || ids.guide<0 || ids.guide>4294967295){toast(ids.error || '無法取得參考線識別，未新增。');return false;}
   return emitLine(`guide ${ids.guide} ${sid} ${axis} ${snap.expression}`);
 }
 async function moveReferenceGuide(id, axis, off) {
-  if (fe.guides.find(g => g.id === id)?.source === 'datum') {
+  const guide=fe.guides.find(g=>g.id===id);
+  if (guide?.source === 'datum') {
     toast('這條線共用空間基準，請在「共用基準」修改來源'); return false;
   }
   const sid = oc.edit && feSid(oc.edit.bid);
+  const current=guide && referenceGuidePreparation(sid,guide);if(!current)return false;
   const snap = await api(`snap ${sid} ${axis} ${id} ${off} ${Math.max(1, Math.round(12 / fe.zoom))}`);
+  if(!current())return false;
   if (!snap.ok) { toast(snap.error); return false; }
   return emitLine(`move ${id} ${snap.expression}`);
 }

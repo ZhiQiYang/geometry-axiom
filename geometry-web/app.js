@@ -2255,7 +2255,8 @@ function drawObjects() {
   for (const card of cl.children) {
     const kind = card.dataset.kind, id = +card.dataset.id;
     const box = cardBox(ocFind(kind, id));
-    const verb = kindOpenMode(kind, ocFind(kind, id)) === "workspace" ? "進入" : "檢查";
+    const openMode = kindOpenMode(kind, ocFind(kind, id));
+    const verb = openMode === "workspace" ? "進入" : "檢查";
     const action = el("g", { class: "card-enter", tabindex: 0, role: "button",
       "aria-label": `${verb}${KIND_ZH[kind] || ""} ${id}` }, card);
     el("rect", { x: box.w - 67, y: box.h - 58, width: 58, height: 24, rx: 6, fill: "#fff", stroke: "#dfe4eb" }, action);
@@ -2265,12 +2266,12 @@ function drawObjects() {
     action.addEventListener("pointerdown", e => { if (!oc.drawTool) e.stopPropagation(); });
     const enter = e => {
       if (oc.drawTool) return;
-      e.stopPropagation(); closePanels();
+      e.stopPropagation(); if (openMode === "workspace") closePanels();
       if (kind === "boundary" || kind === "space") enterFocus(kind === "space" ? "space" : "face", id);
       else if (kind.startsWith("assembly-")) window.AssemblyWorkspace.open(kind,id);
       else if (kind === "grid-binding") window.InfiniteGridWorkspace.openBinding(id);
       else if (kind === "grid-system" && ocFind(kind,id)?.mode === "infinite") window.InfiniteGridWorkspace.openSystem(id);
-      else { selectObject(kind, id); if (["grid-system","parameter"].includes(kind) && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
+      else { if (!selectObject(kind, id)) return; closePanels(); if (["grid-system","parameter"].includes(kind) && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
     action.addEventListener("click", enter);
     action.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); enter(e); } });
     if (kind === "space") {
@@ -8811,10 +8812,10 @@ function ocSelected(kind, id) {
 function feTimberSelected(id) {
   return fe.timberSelection.has(id) || (!fe.timberSelection.size && fe.sel?.kind === "timber" && fe.sel.id === id);
 }
-function ocSetSelection(items) {
-  if (!window.DraftGate.ask({ selection: items })) return;
+function ocSetSelection(items, {clearGridCreation = false} = {}) {
+  if (!window.DraftGate.ask({ selection: items })) return false;
   if(items.length)oc.parameterCreating=false;
-  if(items.length)oc.gridSystemCreating=false;
+  if(items.length || clearGridCreation)oc.gridSystemCreating=false;
   const seen = new Set();
   oc.selection = items.filter(s => {
     const key = `${s.kind}:${s.id}`;
@@ -8827,12 +8828,12 @@ function ocSetSelection(items) {
   renderObjectList();
   renderInspector();
   drawMinimap(); renderSelectionSummary();
+  return true;
 }
 function selectObject(kind, id, additive = false) {
-  oc.gridSystemCreating = false;
   const previous = oc.selection.length ? oc.selection : oc.sel ? [oc.sel] : [];
   const exists = previous.some(s => s.kind === kind && s.id === id);
-  ocSetSelection(additive ? exists ? previous.filter(s => s.kind !== kind || s.id !== id) : [...previous,{kind,id}] : [{kind,id}]);
+  return ocSetSelection(additive ? exists ? previous.filter(s => s.kind !== kind || s.id !== id) : [...previous,{kind,id}] : [{kind,id}], {clearGridCreation:true});
 }
 function feSetTimberSelection(ids) {
   const live = new Set(fe.timbers.map(t => t.id));
