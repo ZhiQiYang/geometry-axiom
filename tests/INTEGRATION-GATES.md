@@ -233,3 +233,30 @@ GEOMETRY_TEST_URL=http://127.0.0.1:8898/ GEOMETRY_PAN_OUTPUT=/tmp/issue54/pan-fi
 與 pan 共用服務時依序執行。此計數是 assertions，非 253／32／78 個 end-to-end scenarios。
 實機手機、IME、OS picker、真人時間與尚未取得的私人來源仍各自保持未驗。
 此 gate 驗既有單房流程，不能據此宣稱整個 #54 效率目標完成。
+
+## #54 候選尺寸 Enter 等價套用
+
+`tests/room_outline_keyboard_browser.js` 是另一個必要的獨立 browser gate，
+已在 `NODE_EXCLUDED` 註明原因，並由 `REQUIRED_BROWSER_GATES` 登錄 **396 assertions**。
+aggregate 不執行、不計入 pass／skip；不改既有 floor 或 golden。
+
+```sh
+GEOMETRY_TEST_URL=http://127.0.0.1:8901/ GEOMETRY_ENTER_OUT=/tmp/room-keyboard node tests/room_outline_keyboard_browser.js
+```
+
+使用自己的服務、native process 和 feedback 目錄，依上節建立環境。
+完整預設包含 1440×1000 與 390×1000 的 64 個操作案例；
+`GEOMETRY_ENTER_CASES=core` 僅供釘紅或開發，不替代完整 gate。
+正式 UI 匯入自製 PDF、校準並選房後，對照同起點的 click／真鍵盤 Enter，
+驗非第 1 邊、完整有序座標、焦點／值／選邊、連按、同值套用、非法值、
+review／Confirm、source 與 native dump 保全。
+Shift／Ctrl／Alt／Meta 和 held-key repeat 均核對真事件的旗標；
+composition／229／defaultPrevented 與舊 DOM 晚投遞是明示合成事件。
+舊 input 暫接到隱藏 fixture 容器，用來驗 connected-but-not-current guard，
+finally 移除；不呼叫應用狀態 setter 或改幾何 API 製造通過。
+
+非法尺寸沿用按鈕拒絕後的原 review 狀態；成功套用才清 reviewed。
+相同尺寸再次 Enter 仍等價於再次按套用，不是去重。
+數字欄輸入 `1e309` 實際被 HTML 正規化成空值，不能聲稱 Infinity 到達 validator。
+實體 IME／手機與真人時間未驗。這只證明 Enter 可取代此步的按鈕點按，
+不代表整個流程操作數或完成時間已改善。

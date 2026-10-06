@@ -152,6 +152,7 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/room_outline_keyboard_browser.js': 'Required isolated real keyboard/click-equivalence gate with formal PDF import/calibration and exact candidate/native checks; composition and stale DOM delivery are explicit fault injection; see INTEGRATION-GATES.md',
     'tests/room_outline_acceptance_browser.js': 'Required isolated formal app/native PDF-image UI, actual Save/new-context Open and model continuation; installed Playwright/Chromium and dedicated service, default full scenarios; see INTEGRATION-GATES.md',
     'tests/room_outline_pan_browser.js': 'Required isolated real keyboard/mouse pan and cancellation gate with native dump preservation; API-authored initial fixture and explicit pointercancel injection; see INTEGRATION-GATES.md',
     'tests/room_outline_worker_browser.js': 'Required isolated native Worker computation and UI invalidation gate; API-authored setup and explicit late-consumer delivery injection; see INTEGRATION-GATES.md',
@@ -172,6 +173,7 @@ REQUIRED_OWNER_GATES = {
 }
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
+    'tests/room_outline_keyboard_browser.js': 396,
     'tests/room_outline_acceptance_browser.js': 253,
     'tests/room_outline_pan_browser.js': 32,
     'tests/room_outline_worker_browser.js': 78,
@@ -181,6 +183,7 @@ REQUIRED_BROWSER_GATES = {
 }
 
 REQUIRED_BROWSER_GATE_SCOPES = {
+    'tests/room_outline_keyboard_browser.js': 'real keyboard/click parity; synthetic composition and stale DOM guards',
     'tests/room_outline_acceptance_browser.js': 'formal room app/PDF-image/UI/ZIP/model',
     'tests/room_outline_pan_browser.js': 'real input/native preservation; API fixture and injected pointercancel',
     'tests/room_outline_worker_browser.js': 'native Worker/UI invalidation with injected late-consumer delivery',

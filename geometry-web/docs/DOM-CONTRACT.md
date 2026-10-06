@@ -30,6 +30,7 @@
 - `#refRoomMethod` 選向量優先／本地影像／人工描繪；`#refRoomMinWidth`、`#refRoomMinLength` 使用固定來源單位，`#refRoomPick` 啟動選房間。未校準停用。
 - `#refRoomHorizontal`／`#refRoomVertical` 與 `#refRoomClearBarriers` 是展開後的搜尋分隔控制，不寫正式牆。`#refRoomStatus` 明示取得失敗與過期。
 - `#roomCandidateOverlay` 疊在既有 `#feDraftLayer`；點仍是 `fe.draft.pts`。`#refRoomEdge`／`#refRoomLength`／`#refRoomSetLength` 核對入值，`#refRoomVertices`／`#refRoomApplyVertices` 局部補點，`#refRoomReviewed` 每次修正後清除。
+- `#refRoomLength` 的無修飾 Enter 沿用 `#refRoomSetLength` click 驗證；僅現行 pane 的連線輸入節點可套用。成功後清核對並保留焦點／選邊，非法值與 click 保持相同拒絕及原 review 狀態。組字／229、repeat、已阻止及修飾鍵不套用；組字不阻止預設事件，Escape 與其他欄位不攔。尺寸套用不等於正式 Confirm。
 - `#refRoomConfirm`／`#refRoomCancel` 與既有 `#faceDraftFinish`／`#faceDraftCancel` 操作同一草稿。確認走核心 `emitBoundary`，依賴沿用 `.reference-impact`；取消／拒絕保留原面。H／空白鍵平移不清候選。
 - `[data-reconstruction-state]` 依實際來源頁、校準／變換、核心輪廓顯示 `unreviewed|candidate|confirmed|recheck`。`#refConfirmChecked` 在此區記錄人工流程核對；任意頂點不算完成。
 - `window.RoomOutlineWorkspace` 接合狀態與生命週期；`room_outline_test.js` 由完整 `cdp_test.js` 呼叫 P79，`GEOMETRY_ROOM_OUTLINE_ONLY=1` 僅是部分驗證。

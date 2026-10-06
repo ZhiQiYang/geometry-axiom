@@ -139,6 +139,13 @@
 - GEO-219：沒有新增或搬動可見入口、說明或工作區；只修既有 Space 平移行為並補獨立回歸。
 - 私人來源已走本環境現行 Library consumer，取得 bytes 受阻：`hosted apps tools/list request failed: network`（helper exit 1），未猜 URL 或繞權限。合成證據不能替代實圖；實體手機、IME、OS picker 及真人操作時間保持未驗，機器操作次數／時間另列。
 
+### 單房尺寸鍵盤套用（2026-10-06，PR153 後續獨立切片）
+
+- 原版真键盤在候選第 2 邊輸入 1200 後按 Enter 不套用，按既有按鈕則正常。只在 `refRoomLength` 加 Enter 等價入口，沿用 click validator 與草稿更新；不改逐邊 review、正式 Confirm、核心或保存契約。
+- 同步檢查連線節點、現行 inspector pane 及現行 input，拒絕取消／重繪後的舊節點晚事件。組字不 preventDefault；repeat／修飾鍵不套用；Escape 保持原路由。
+- GEO-219：沿用同一尺寸欄與套用按鈕，沒有新增可見入口、常駐說明或工作區。只減少此步必須移到按鈕的需要，不宣稱整體效率已改善。
+- 正常與反例由獨立 `room_outline_keyboard_browser.js` 驗，完整命令／限制見 `tests/INTEGRATION-GATES.md`；精確最終 SHA 與實跑數據由此切片的 draft PR 記錄。PR153 的 pan head 保持凍結，實體 IME／手機未驗。
+
 ### 校準後輪廓入口熱修（2026-10-03）
 
 - 合成 PDF 重現 4000×3000 mm 既有外環；兩點 323.5 cm 校準只放大底圖，房間落在外環與舊視野外。辨識本來依來源取景，不被原外環裁切；候選確認本來就替換目前外環。
