@@ -92,6 +92,7 @@ PY_NEEDS = {
     'test_space_modeling': ['model-base'],
     'test_subgrid_contract': ['bridge'],
     'test_timber_support_projection': [],
+    'test_unittest_runner': [],
     'test_witness_diagnostics': [],
     'test_witness_marks': [],
 }

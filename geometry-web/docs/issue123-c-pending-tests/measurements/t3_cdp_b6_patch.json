@@ -1,0 +1,54 @@
+{
+ "sha": "d6b4b450d741fcbbfd75c51631915d3082926990",
+ "invocation": "GEOMETRY_CDP_FROM_P31=1 node cdp_test.js (略過 P1–P30;P35 含 :3976 waitForFaceViewport)",
+ "cap_seconds": 1200,
+ "baseline_run1": {
+  "log": "t3_cdp_baseline.log",
+  "P35_assertions": 14,
+  "P35_pass": 14,
+  "P35_fail": 0,
+  "fails": [
+   "P56-6 不合法手選仍交核心拒絕，不當作断線 ✗ \"\""
+  ],
+  "fatal": [
+   "FATAL: GEO-197 wait failed: fe.timbers.length===1"
+  ],
+  "exit": 1,
+  "seconds": 620,
+  "completed": false,
+  "passedAssertions": 322,
+  "failedAssertions": 1,
+  "lastFatal": "GEO-197 wait failed: fe.timbers.length===1",
+  "last_section": "[TEST PAGE LEAVE] === P53. 連線錯誤、重新載入與重試 === "
+ },
+ "baseline_run2": {
+  "log": "t3_cdp_baseline2.log",
+  "P35_assertions": 14,
+  "P35_pass": 14,
+  "P35_fail": 0,
+  "fails": [],
+  "fatal": [],
+  "exit": 0,
+  "seconds": 1055,
+  "completed": true,
+  "passedAssertions": 761,
+  "failedAssertions": 0,
+  "lastFatal": null,
+  "last_section": "=== P67. 畫布框選與角材多選 ==="
+ },
+ "patched": {
+  "log": "t3_cdp_patched.log",
+  "P35_assertions": 14,
+  "P35_pass": 14,
+  "P35_fail": 0,
+  "fails": [],
+  "fatal": [],
+  "exit": 0,
+  "seconds": 1089,
+  "completed": true,
+  "passedAssertions": 761,
+  "failedAssertions": 0,
+  "lastFatal": null,
+  "last_section": "=== P67. 畫布框選與角材多選 ==="
+ }
+}
