@@ -20,6 +20,69 @@ function navigationHarness(data=locationData()){
   vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/engineering-adapter.js'),'utf8'),sandbox);
   return {sandbox,calls,data,context,state,history,oc,fe,navigate:sandbox.window.EngineeringAdapter.navigateObject};
 }
+// Execute the shipped selection/camera functions and object-list closure. The
+// declined draft is a user decision, not a fabricated navigation result.
+function cardNavigationHarness({allow=true,current=true,focus=null,replacePane=false,cancelOnDiscard=false}={}){
+  const app=fs.readFileSync(require.resolve('../geometry-web/app.js'),'utf8'),calls=[];
+  const target={kind:'boundary',id:1,cx:1200,cy:700},selected={kind:'parameter',id:9};
+  const oc={selection:[selected],sel:selected,edit:null,focus,parameterCreating:false,gridSystemCreating:true,navigationSequence:0,
+    inspScroll:'original',panX:17,panY:23,zoom:1};
+  const owner={current,mounted:true,transferred:false};
+  const sandbox={window:{addEventListener(){},SourceInspector:S,DraftGate:{ask(){
+    calls.push('draft');if(allow&&replacePane)owner.mounted=false;if(allow&&cancelOnDiscard)owner.current=false;return allow;
+  }}},ReferenceWorkspace:{context:()=>({groups:new Map()})},oc,fe:{timberSelection:new Set()},r:target,
+    ocFind:(kind,id)=>kind===target.kind&&id===target.id?target:null,
+    OC_COMPACT_ZOOM:0.3,ocv:{getBoundingClientRect:()=>({width:1000,height:800})},
+    cardCenter:()=>({x:1300,y:760}),cardBox:()=>({x:1200,y:700,w:200,h:120}),
+    oroot:{querySelectorAll:()=>[]},ocSelected:()=>false,ocApply:()=>calls.push('camera'),
+    updateEdgeLabels(){},renderObjectList(){},renderInspector(){calls.push(['inspector',oc.gridSystemCreating]);},
+    drawMinimap(){},renderSelectionSummary(){},innerWidth:390,openPanel:()=>calls.push('drawer'),
+    document:{getElementById:()=>null,querySelector:()=>null},queueMicrotask(){},MutationObserver:function(){},
+    async leaveFocus(){calls.push('leave');oc.focus=null;return ++oc.navigationSequence;}};
+  for(const name of ['ocSetSelection','selectObject','centerOnNode']){
+    const found=app.match(new RegExp('^function '+name+'\\([^]*?(?=^function |^/\\* 左欄物件清單)','m'));
+    assert.ok(found,'shipped '+name);vm.runInNewContext(found[0],sandbox);
+  }
+  const list=app.slice(app.indexOf('function renderObjectList()'));
+  const closure=list.match(/row\.addEventListener\("click", (ev => \{[^]*?)\);\n    row\.addEventListener\("dblclick"/);
+  assert.ok(closure,'shipped object-list click');
+  vm.runInNewContext('window.listClick='+closure[1],sandbox);
+  vm.runInNewContext(fs.readFileSync(require.resolve('../geometry-web/source-inspector-app.js'),'utf8'),sandbox);
+  const lease={isCurrent:()=>owner.current&&(owner.transferred||owner.mounted),beginNavigation:()=>{
+    calls.push('handoff');if(!owner.current||!owner.mounted)return false;owner.transferred=true;return true;
+  }};
+  return {oc,calls,owner,sandbox,navigate:()=>sandbox.window.SourceInspectorApp.navigate(target,null,lease),
+    listClick:(badge=false)=>sandbox.window.listClick({shiftKey:false,target:{closest:()=>badge?{}:null}})};
+}
+function nestedSpaceNavigationHarness(){
+  const app=fs.readFileSync(require.resolve('../geometry-web/app.js'),'utf8'),calls=[],context={id:'same-project'},wait=deferred(),started=deferred();let renders=0;
+  const oc={focus:{t:'face',id:4},stack:[{t:'space',id:10}],edit:{bid:4,contextId:context.id},navigationSequence:0,
+    selection:[],sel:null,bmap:{},spaces:[],parameterCreating:false,gridSystemCreating:false,panX:17,panY:23,zoom:1};
+  const nodes=new Map(),$=key=>{if(!nodes.has(key))nodes.set(key,{hidden:false,textContent:'',innerHTML:'',setAttribute(){},
+    appendChild:child=>child,querySelector:()=>null,classList:{contains:()=>false}});return nodes.get(key);};
+  const sandbox={window:{DraftGate:{ask:()=>true}},ReferenceWorkspace:{context:()=>context},oc,ocSeq:0,connection:{phase:'ready'},
+    ocAllObjects:()=>[],cardBox:()=>[],fe:{guides:[],placementTarget:null},pendingSlot:null,$,
+    GridEditor:{clear(){}},clearCanvasSelections(){},closePanels(){},renderCanvasModeHint(){},PolyDraft:{createState:()=>({})},
+    feSyncDraftMirror(){},drawObjects:()=>calls.push(['draw',oc.focus?.id]),setStatus:value=>calls.push(['status',value]),
+    objectCanvasHelp:()=>'',ocApply(){},toast(){},syncCompositionLayout(){},icon:()=>'',syncSpaceStageTools(){},
+    updateWorkspaceKeyHints:()=>calls.push(['hints',oc.focus?.id]),document:{createElement:()=>({})},
+    renderSpaceInspector:sp=>calls.push(['inspector',sp.id]),renderSpaceRc:sp=>calls.push(['rc',sp.id]),renderSpacePlan:sp=>calls.push(['plan',sp.id]),
+    hoverPickScheduler:{cancel(){}},replay:()=>calls.push(['projection',oc.focus?.id]),el:()=>({}),bindProjectedGuideDrag(){},
+    api:async command=>{
+      if(command==='objects')return {ok:true,faces:[],spaces:[10,20].map(id=>({id,members:[],hasPos:true}))};
+      if(command==='surfaces')return {ok:true,surfaces:[]};
+      assert.equal(command,'render');if(++renders===1){started.resolve();await wait.promise;}
+      return {ok:true,layout:{views:[{bounds:[0,0,10,10],tx:0,ty:0}]},ops:[]};
+    },oroot:{querySelectorAll:()=>[]},updateEdgeLabels(){},renderObjectList(){},renderInspector(){},drawMinimap(){},renderSelectionSummary(){},
+    ocFind:(kind,id)=>({kind,id})};
+  const cuts=[['async function renderObjects(','function drawObjects()'],['async function enterFocus(','async function leaveFocus()'],
+    ['async function leaveFocus()','/* ---- 面內工作區'],['async function openSpaceWorkspace(','async function renderSpaceWorkspace()'],
+    ['async function renderSpaceWorkspace()','function spaceMemberThumbnail('],['async function renderSpaceProjection()','/* ---- 對話框'],
+    ['function ocSetSelection(','function feSetTimberSelection(']];
+  for(const [start,end] of cuts){const begin=app.indexOf(start),finish=app.indexOf(end,begin+start.length);assert.ok(begin>=0&&finish>begin);
+    vm.runInNewContext(app.slice(begin,finish),sandbox);}
+  return {sandbox,oc,calls,wait,started};
+}
 test('native typed location preserves the second placement of a shared boundary and ID0',()=>{
   for(const [pid,tid] of [[20,7],[0,0]]){
     const g=S.index(locationData(pid,tid));
@@ -84,7 +147,7 @@ test('the navigation owner can cancel during render or the final native read bef
     if(stage==='render')assert.ok(!h.calls.some(c=>Array.isArray(c)&&c[0]==='enter'));
   }
 });
-test('source app forwards native face targets to the common navigation entry and its cancellation guard',async()=>{
+test('source and list navigation honor selection cancellation and the existing owner handoff',async()=>{
   const calls=[],current=()=>true,g=S.index(locationData()),context={groups:new Map([[1,{activePageId:'a'}]])};let options;
   const sandbox={window:{addEventListener(){},SourceInspector:{...S,mount:(host,value)=>{options=value;return {detail:{isConnected:true},cancel(){}};}}},EngineeringAdapter:{navigateObject:(...args)=>calls.push(args)},ReferenceWorkspace:{context:()=>context},
     oc:{selection:[],sel:null,edit:null},fe:{timberSelection:new Set()},document:{getElementById:()=>null},queueMicrotask(){},MutationObserver:function(){}};
@@ -94,6 +157,76 @@ test('source app forwards native face targets to the common navigation entry and
   sandbox.oc.sel={kind:'boundary',id:1};sandbox.oc.selection=[sandbox.oc.sel];sandbox.ocFind=()=>({id:1});sandbox.document.getElementById=id=>id==='inspectorContent'?{}:null;
   sandbox.window.SourceInspectorApp.sync();const pin=options.stamp();context.groups.get(1).activePageId='b';
   assert.notEqual(options.stamp(),pin,'page context invalidates the initial source read before navigation owns it');
+  for(const entry of ['source','list']){
+    const h=cardNavigationHarness({allow:false}),before=JSON.stringify(h.oc);
+    if(entry==='source')await h.navigate();else h.listClick(true);
+    assert.equal(JSON.stringify(h.oc),before,entry+': Cancel preserves selection, camera and draft presentation');
+    assert.ok(!h.calls.includes('camera')&&!h.calls.includes('drawer'),entry+': no rejected-target presentation');
+  }
+  for(const mode of ['expired','handoff-denied','focus-cancel','discard-owner-cancel']){
+    const h=cardNavigationHarness({current:mode!=='expired',allow:mode!=='focus-cancel',
+      focus:mode==='focus-cancel'?{t:'face',id:4}:null,cancelOnDiscard:mode==='discard-owner-cancel'});
+    if(mode==='handoff-denied')h.owner.mounted=false;
+    const before=JSON.stringify(h.oc);await h.navigate();
+    assert.equal(JSON.stringify(h.oc),before,mode+': no presentation mutation');
+  }
+  for(const entry of ['source','list']){
+    const h=cardNavigationHarness({replacePane:true});
+    if(entry==='source')await h.navigate();else h.listClick();
+    assert.equal(h.oc.sel.kind,'boundary');assert.equal(h.oc.sel.id,1);
+    assert.ok(h.calls.includes('camera'),entry+': accepted discard still locates target');
+    assert.equal(h.oc.gridSystemCreating,false);
+    if(entry==='source')assert.ok(h.calls.indexOf('handoff')<h.calls.indexOf('draft'),'handoff survives its own pane replacement');
+  }
+  const additive=cardNavigationHarness();additive.oc.selection=[{kind:'boundary',id:1}];additive.oc.sel=additive.oc.selection[0];
+  assert.equal(additive.sandbox.selectObject('boundary',1,true),true);
+  assert.equal(additive.oc.selection.length,0);assert.equal(additive.oc.gridSystemCreating,false);
+  assert.ok(additive.calls.some(c=>Array.isArray(c)&&c[0]==='inspector'&&c[1]===false),'accepted empty additive selection renders after clearing creation');
+  const empty=cardNavigationHarness();assert.equal(empty.sandbox.ocSetSelection([]),true);
+  assert.equal(empty.oc.gridSystemCreating,true,'default empty selection keeps the existing creation presentation');
+  const acceptedExit=cardNavigationHarness({focus:{t:'face',id:4},replacePane:true});await acceptedExit.navigate();
+  assert.equal(acceptedExit.oc.sel.id,1);assert.ok(acceptedExit.calls.includes('drawer'),'an owned exit can finish transferred navigation');
+  for(const stop of ['late-owner','blocked-exit']){
+    const h=cardNavigationHarness({focus:{t:'face',id:4}});
+    h.sandbox.leaveFocus=async()=>{if(stop==='late-owner'){h.oc.focus=null;await Promise.resolve();h.owner.current=false;}};
+    await h.navigate();assert.equal(h.oc.sel.kind,'parameter');assert.ok(!h.calls.includes('camera')&&!h.calls.includes('drawer'));
+  }
+  for(const change of ['selection','focus','view','context','room-cancel']){
+    const h=cardNavigationHarness({focus:{t:'face',id:4}}),wait=deferred(),started=deferred();let context={id:'same-project'},opens=0;
+    h.oc.stack=[{t:'face',id:3}];h.oc.bmap={3:[]};
+    Object.assign(h.sandbox,{ReferenceWorkspace:{context:()=>context},pendingSlot:null,
+      ocFind:(kind,id)=>kind==='boundary'&&[1,2].includes(id)?{kind,id}:null,
+      clearCanvasSelections(){},GridEditor:{clear(){}},closePanels(){},renderCanvasModeHint(){},
+      PolyDraft:{createState:()=>({})},feSyncDraftMirror(){},drawObjects:()=>h.calls.push('draw'),
+      setStatus:()=>h.calls.push('status'),objectCanvasHelp:()=>'',toast(){},$:()=>({}),
+      syncCompositionLayout(){},api:async()=>({ok:true,loops:[]}),
+      openFaceWorkspace:async()=>{if(++opens===1){started.resolve();await wait.promise;}}});
+    if(change==='room-cancel')h.sandbox.window.RoomCollectionWorkspace=h.sandbox.RoomCollectionWorkspace={hasWork:true,
+      cancel:async()=>{started.resolve();await wait.promise;}};
+    const app=fs.readFileSync(require.resolve('../geometry-web/app.js'),'utf8');
+    vm.runInNewContext(app.slice(app.indexOf('async function enterFocus('),app.indexOf('async function leaveFocus()')),h.sandbox);
+    vm.runInNewContext(app.slice(app.indexOf('async function leaveFocus()'),app.indexOf('/* ---- 面內工作區')),h.sandbox);
+    vm.runInNewContext(app.slice(app.indexOf('async function setView3('),app.indexOf('$("btnObj").addEventListener("click"')),h.sandbox);
+    const pending=h.navigate();await started.promise;
+    if(change==='selection'){
+      await h.sandbox.leaveFocus();h.sandbox.selectObject('boundary',2);
+    }else if(change==='focus'){
+      await h.sandbox.enterFocus('face',8);
+    }else if(change==='view'){
+      h.sandbox.view3=false;await h.sandbox.setView3(false);
+    }else if(change==='context')context={id:'new-project'};
+    else h.sandbox.selectObject('boundary',2);
+    const after=JSON.stringify(h.oc),calls=h.calls.length;wait.resolve();await pending;
+    assert.equal(h.owner.current,true,'the transferred source lease remains valid');
+    assert.equal(JSON.stringify(h.oc),after,change+': normal newer navigation survives the old exit');
+    assert.equal(h.calls.length,calls,change+': no late redraw, selection, centering or drawer');
+  }
+  const nested=nestedSpaceNavigationHarness(),oldExit=nested.sandbox.leaveFocus();await nested.started.promise;
+  assert.equal(nested.oc.focus.id,10);
+  await nested.sandbox.leaveFocus();nested.sandbox.selectObject('space',20);await nested.sandbox.enterFocus('space',20);
+  assert.deepEqual(nested.calls.filter(c=>c[0]==='plan').at(-1),['plan',20]);
+  const count=nested.calls.length;nested.wait.resolve();assert.equal(await oldExit,null);
+  assert.equal(nested.oc.focus.id,20);assert.deepEqual(nested.calls.slice(count),[],'no old projection replay, Rc/Plan binding or outer repaint after a normal new space entry');
 });
 const node=(key,n=1)=>({key,definitionFingerprint:hash(n),valueFingerprint:hash(n),label:key});
 const edge=(from,to,relation='dimension',field='A',active=true)=>({from,to,relation,field,active});
