@@ -1682,6 +1682,7 @@ function markSceneItem() {
 }
 /* 換場景前清工作區焦點與面面內快取——舊場景的 guide/timber 殘影會誤刪新場景同號物件 */
 function resetSceneFocus() {
+  ++oc.navigationSequence;
   hoverPickScheduler.cancel();
   clearCanvasSelections();
   GridEditor.clear();
@@ -1841,6 +1842,7 @@ const oc = {
   tool: "select",         /* select | pan */
   sel: null,              /* 選取 {kind,id} */
   selection: [],          /* GEO-209:展示選取；多選時 sel=null，不把單物件編輯套給其中一張 */
+  navigationSequence: 0,  /* 暫時導航意圖；不屬於專案或 native identity */
   groupOn: { sources: true, bindings: true, structures: true },
   search: "",             /* 搜尋過濾字串 */
   surfs: [],              /* /surfaces 快照(法向→空間六槽) */
@@ -2531,6 +2533,7 @@ function drawCrumb() {
 async function enterFocus(t, id, options = {}) {
   if (window.RoomCollectionWorkspace?.hasWork && oc.focus && (oc.focus.t !== t || oc.focus.id !== id)) throw new Error("請先完成或取消目前房間草稿。");
   if (!window.DraftGate.ask()) return;
+  const navigation = ++oc.navigationSequence;
   const matchesTarget = oc.sel?.kind === (t === "space" ? "space" : "boundary") && oc.sel.id === id;
   clearCanvasSelections({keepSingleObject:matchesTarget});
   closePanels();
@@ -2538,6 +2541,7 @@ async function enterFocus(t, id, options = {}) {
   if (oc.focus) oc.stack.push(oc.focus);
   const contextId = ReferenceWorkspace.context().id;
   const focus = oc.focus = { t, id, ...(t==='face' && Number.isSafeInteger(options.placementId)?{placementId:options.placementId}:{}) };
+  const isCurrent = () => oc.navigationSequence === navigation && oc.focus === focus && ReferenceWorkspace.context().id === contextId;
   // Workspace fitting must measure its own columns, not the canvas dock layout.
   syncCompositionLayout();
   oc.rect = null; oc.edit = null; oc.drawTool = null;
@@ -2547,9 +2551,9 @@ async function enterFocus(t, id, options = {}) {
     // Publish the existing focus identity synchronously before source loading;
     // source-navigation owners retain that identity across this async work.
     if (window.RoomCollectionWorkspace) await RoomCollectionWorkspace.prepareSharedPages();
-    if (oc.focus !== focus || ReferenceWorkspace.context().id !== contextId) return;
+    if (!isCurrent()) return;
     const b = await api("boundary " + id);
-    if (oc.focus !== focus || ReferenceWorkspace.context().id !== contextId) return;
+    if (!isCurrent()) return;
     if (!b.ok) {
       /* 自帶矩形面沒有邊界可編輯——退回上一層 */
       oc.focus = oc.stack.pop() || null;
@@ -2560,36 +2564,44 @@ async function enterFocus(t, id, options = {}) {
     oc.bmap[id] = b.loops;
     oc.edit = { bid: id, contextId };
     await openFaceWorkspace(id);
+    if (!isCurrent()) return;
     drawObjects();
     return;
   } else {
     await openSpaceWorkspace(id);
+    if (!isCurrent()) return;
     drawObjects();
     return;
   }
 }
 
 async function leaveFocus() {
+  if (window.RoomCollectionWorkspace?.hasWork && (RoomCollectionWorkspace.busy || RoomCollectionWorkspace.dialogOpen)) {
+    toast("請先確認、取消或恢復目前房間交易，再返回。"); return null;
+  }
+  const navigation = ++oc.navigationSequence, context = ReferenceWorkspace.context(), contextId = context.id;
+  const isCurrent = () => oc.navigationSequence === navigation && ReferenceWorkspace.context() === context && context.id === contextId;
   if (window.RoomCollectionWorkspace?.hasWork) {
-    if (RoomCollectionWorkspace.busy || RoomCollectionWorkspace.dialogOpen) {toast("請先確認、取消或恢復目前房間交易，再返回。"); return;}
-    try {await RoomCollectionWorkspace.cancel();} catch (error) {toast(error.message); return;}
+    try {await RoomCollectionWorkspace.cancel();} catch (error) {if(isCurrent())toast(error.message); return null;}
+    if (!isCurrent()) return null;
   }
   finishFocusExit(oc.stack.pop() || null);
   if (oc.focus && oc.focus.t === "face") {
     /* 上層仍是面工作區（巢狀）：重開 */
-    const contextId = ReferenceWorkspace.context().id;
     const edit = oc.edit = { bid: oc.focus.id, contextId };
     if (!oc.bmap[oc.focus.id]) {
       const b = await api("boundary " + oc.focus.id);
-      if (oc.edit !== edit || ReferenceWorkspace.context().id !== contextId) return;
+      if (!isCurrent() || oc.edit !== edit) return null;
       if (b.ok) oc.bmap[edit.bid] = b.loops;
     }
     await openFaceWorkspace(edit.bid);
   } else if (oc.focus && oc.focus.t === "space") {
     await openSpaceWorkspace(oc.focus.id);
   } else finishObjectCanvasExit();
+  if (!isCurrent()) return null;
   drawObjects();
   if (!oc.focus)setStatus(objectCanvasHelp());
+  return navigation;
 }
 /* Shared normal navigation lifecycle: presentation exits preserve boundary
  * loops and authored face features. Only a project replacement resets them. */
@@ -2613,6 +2625,7 @@ function finishObjectCanvasExit() {
 }
 function commitSourceCanvasNavigation() {
   if(window.RoomCollectionWorkspace?.hasWork||oc.busy||ReferenceWorkspace.getEvidenceState().blocked)throw Error('請先完成目前操作，再定位來源。');
+  ++oc.navigationSequence;
   oc.stack=[];finishFocusExit(null);finishObjectCanvasExit();drawObjects();setStatus(objectCanvasHelp());
 }
 
@@ -3096,6 +3109,8 @@ function updateWorkspaceKeyHints() {
 
 /* ---- 空間工作區（Phase 4）：成員清單 + 面卡片格 + 檢視器 + 三視圖 ---- */
 async function openSpaceWorkspace(sid) {
+  const focus = oc.focus, context = ReferenceWorkspace.context(), navigation = oc.navigationSequence;
+  const isCurrent = () => oc.focus === focus && ReferenceWorkspace.context() === context && oc.navigationSequence === navigation;
   $("objectWorkspace").hidden = false;
   $("faceWorkspaceLayout").hidden = true;
   $("spaceWorkspaceLayout").hidden = false;
@@ -3112,12 +3127,16 @@ async function openSpaceWorkspace(sid) {
   /* 進工作區一律重取世界狀態——ocSeq 守衛可能讓先前排程的
      renderObjects 被丟棄,留下過期的 oc.columns/beams。 */
   await renderObjects();
+  if (!isCurrent()) return;
   await renderSpaceWorkspace();
+  if (!isCurrent()) return;
   updateWorkspaceKeyHints();
   setStatus(`空間 ${sid}：成員面清單 · 點面卡進入面編輯 · Esc 返回`);
 }
 
 async function renderSpaceWorkspace() {
+  const focus = oc.focus, context = ReferenceWorkspace.context(), navigation = oc.navigationSequence;
+  const isCurrent = () => oc.focus === focus && ReferenceWorkspace.context() === context && oc.navigationSequence === navigation;
   const sid = oc.focus && oc.focus.id;
   const sp = oc.spaces.find(s => s.id === sid);
   if (!sp) return;
@@ -3145,6 +3164,7 @@ async function renderSpaceWorkspace() {
   renderSpaceInspector(sp);
   /* 中上：三視圖全開（§5.6：整個 render 結果） */
   await renderSpaceProjection();
+  if (!isCurrent()) return;
   /* 構件清單 + 平面示意（RC Phase 5） */
   renderSpaceRc(sp);
   renderSpacePlan(sp);
@@ -3516,11 +3536,13 @@ function renderSpaceInspector(sp) {
 
 /* 三視圖全開：ops 的 begin/end 自帶 tx/ty,viewBox 取三視圖聯集 */
 async function renderSpaceProjection() {
+  const focus = oc.focus, context = ReferenceWorkspace.context(), navigation = oc.navigationSequence;
+  const isCurrent = () => oc.focus === focus && ReferenceWorkspace.context() === context && oc.navigationSequence === navigation;
   hoverPickScheduler.cancel();
   const svg = $("spaceProjSvg");
   svg.textContent = "";
   const r = await api("render");
-  if (!r.ok || !r.layout) return;
+  if (!isCurrent() || !r.ok || !r.layout) return;
   let x0 = 1e18, y0 = 1e18, x1 = -1e18, y1 = -1e18;
   for (const L of r.layout.views) {
     const b = L.bounds;
@@ -3545,8 +3567,9 @@ async function renderSpaceProjection() {
     return null;
   };
   const repaint = async () => {
+    if (!isCurrent()) return;
     const rr = await api("render");
-    if (!rr.ok) return;
+    if (!isCurrent() || !rr.ok) return;
     const kids = [...svg.childNodes];
     for (const k of kids) if (k !== overlay) svg.removeChild(k);
     replay(rr.ops, svg);
@@ -8892,10 +8915,11 @@ function ocSelected(kind, id) {
 function feTimberSelected(id) {
   return fe.timberSelection.has(id) || (!fe.timberSelection.size && fe.sel?.kind === "timber" && fe.sel.id === id);
 }
-function ocSetSelection(items) {
-  if (!window.DraftGate.ask({ selection: items })) return;
+function ocSetSelection(items, {clearGridCreation = false} = {}) {
+  if (!window.DraftGate.ask({ selection: items })) return false;
+  ++oc.navigationSequence;
   if(items.length)oc.parameterCreating=false;
-  if(items.length)oc.gridSystemCreating=false;
+  if(items.length || clearGridCreation)oc.gridSystemCreating=false;
   const seen = new Set();
   oc.selection = items.filter(s => {
     const key = `${s.kind}:${s.id}`;
@@ -8908,12 +8932,12 @@ function ocSetSelection(items) {
   renderObjectList();
   renderInspector();
   drawMinimap(); renderSelectionSummary();
+  return true;
 }
 function selectObject(kind, id, additive = false) {
-  oc.gridSystemCreating = false;
   const previous = oc.selection.length ? oc.selection : oc.sel ? [oc.sel] : [];
   const exists = previous.some(s => s.kind === kind && s.id === id);
-  ocSetSelection(additive ? exists ? previous.filter(s => s.kind !== kind || s.id !== id) : [...previous,{kind,id}] : [{kind,id}]);
+  return ocSetSelection(additive ? exists ? previous.filter(s => s.kind !== kind || s.id !== id) : [...previous,{kind,id}] : [{kind,id}], {clearGridCreation:true});
 }
 function feSetTimberSelection(ids) {
   const live = new Set(fe.timbers.map(t => t.id));
@@ -9175,9 +9199,10 @@ function renderObjectList() {
       `<small>${r.sub}</small></span>` +
       (free ? `<span class="row-badge" data-insp-scroll="place">未放置</span>` : "");
     row.addEventListener("click", ev => {
+      const previousScroll = oc.inspScroll;
       if (ev.target.closest('[data-insp-scroll="place"]'))
         oc.inspScroll = "place";
-      selectObject(r.kind, r.id, ev.shiftKey);
+      if (!selectObject(r.kind, r.id, ev.shiftKey)) {oc.inspScroll = previousScroll;return;}
       const card = ocFind(r.kind, r.id), box = card && cardBox(card), vp = ocv.getBoundingClientRect();
       if (box && (box.x * oc.zoom + oc.panX + box.w * oc.zoom < 0 || box.y * oc.zoom + oc.panY + box.h * oc.zoom < 0 ||
         box.x * oc.zoom + oc.panX > vp.width || box.y * oc.zoom + oc.panY > vp.height)) centerOnNode(r.kind, r.id);
@@ -9188,7 +9213,7 @@ function renderObjectList() {
       else if (r.kind === "grid-binding") window.InfiniteGridWorkspace.openBinding(r.id);
       else if (r.kind === "grid-system" && ocFind(r.kind,r.id)?.mode === "infinite") window.InfiniteGridWorkspace.openSystem(r.id);
       else if (r.kind === "column" || r.kind === "beam" || r.kind === "grid-system" || r.kind === "parameter") {
-        selectObject(r.kind, r.id);      /* 獨立物件開檢視器 */
+        if (!selectObject(r.kind, r.id)) return;      /* 獨立物件開檢視器 */
         if (innerWidth <= 900) openPanel("right", $("toggleRight"));
       }
       else enterFocus(r.kind === "space" ? "space" : "face", r.id);
@@ -10295,6 +10320,7 @@ function feHandleDblClick(pt, ev, onOverlay) {
 }
 
 async function setView3(on, { persistPositions = true } = {}) {
+  ++oc.navigationSequence;
   clearCanvasSelections();
   if (on === view3) return;
   hoverPickScheduler.cancel();

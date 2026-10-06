@@ -1,0 +1,322 @@
+{
+ "sha": "d6b4b450d741fcbbfd75c51631915d3082926990",
+ "sm_repeat": [
+  {
+   "id": "",
+   "tag": "body",
+   "cls": "canvas-composition",
+   "tool": "",
+   "text": "正在讀取場景連線完成後即可編",
+   "inDialog": false,
+   "inFaceTools": false,
+   "focusVisible": false,
+   "outline": "3px none rgb(23, 32, 51)",
+   "outlineOffset": "0px",
+   "boxShadow": "none",
+   "x": 0,
+   "y": 0,
+   "w": 1382,
+   "h": 804
+  },
+  {
+   "id": "projectInfoButton",
+   "tag": "button",
+   "cls": "project-info-button",
+   "tool": "",
+   "text": "專案資訊：尚未保存",
+   "inDialog": true,
+   "inFaceTools": false,
+   "focusVisible": true,
+   "outline": "3px solid rgb(139, 157, 236)",
+   "outlineOffset": "3px",
+   "boxShadow": "none",
+   "x": 1176,
+   "y": 10,
+   "w": 34,
+   "h": 44
+  },
+  {
+   "id": "",
+   "tag": "button",
+   "cls": "project-save",
+   "tool": "",
+   "text": "保存",
+   "inDialog": true,
+   "inFaceTools": false,
+   "focusVisible": true,
+   "outline": "3px solid rgb(139, 157, 236)",
+   "outlineOffset": "3px",
+   "boxShadow": "none",
+   "x": 1272,
+   "y": 10,
+   "w": 86,
+   "h": 44
+  }
+ ],
+ "face_entered": true,
+ "tool_buttons": [
+  {
+   "id": "",
+   "tool": "select",
+   "text": "選取/拖曳 (v)",
+   "vis": true
+  },
+  {
+   "id": "",
+   "tool": "redraw",
+   "text": "重畫外環 (e)",
+   "vis": true
+  },
+  {
+   "id": "shapeToolButton",
+   "tool": "",
+   "text": "形狀 ▾",
+   "vis": true
+  },
+  {
+   "id": "",
+   "tool": "",
+   "text": "凹口",
+   "vis": false
+  },
+  {
+   "id": "",
+   "tool": "",
+   "text": "外凸",
+   "vis": false
+  },
+  {
+   "id": "",
+   "tool": "",
+   "text": "推拉",
+   "vis": false
+  },
+  {
+   "id": "",
+   "tool": "",
+   "text": "切角",
+   "vis": false
+  },
+  {
+   "id": "",
+   "tool": "",
+   "text": "開口",
+   "vis": false
+  },
+  {
+   "id": "",
+   "tool": "guide",
+   "text": "參考線 (l)",
+   "vis": true
+  },
+  {
+   "id": "",
+   "tool": "hole",
+   "text": "開口 (r)",
+   "vis": true
+  },
+  {
+   "id": "",
+   "tool": "timber",
+   "text": "角材 (t)",
+   "vis": true
+  },
+  {
+   "id": "",
+   "tool": "grid",
+   "text": "網格 (g)",
+   "vis": true
+  },
+  {
+   "id": "",
+   "tool": "pan",
+   "text": "平移 (h/空白鍵)",
+   "vis": true
+  },
+  {
+   "id": "feSelectionSummaryHelp",
+   "tool": "",
+   "text": "工具說明",
+   "vis": true
+  },
+  {
+   "id": "faceCanvasHintHelp",
+   "tool": "",
+   "text": "工具說明",
+   "vis": false
+  }
+ ],
+ "toolbar_walk": [
+  {
+   "id": "",
+   "tag": "button",
+   "cls": "workspace-tool active",
+   "tool": "select",
+   "text": "選取V",
+   "inDialog": false,
+   "inFaceTools": true,
+   "focusVisible": true,
+   "outline": "2px solid rgba(78, 103, 232, 0.55)",
+   "outlineOffset": "2px",
+   "boxShadow": "rgba(22, 31, 50, 0.06) 0px 1px 2px 0px, rgba(22, 31, 50, 0.04) 0px 1px 5px 0px",
+   "x": 18,
+   "y": 64,
+   "w": 74,
+   "h": 34
+  },
+  {
+   "id": "",
+   "tag": "button",
+   "cls": "workspace-tool",
+   "tool": "redraw",
+   "text": "外環E",
+   "inDialog": false,
+   "inFaceTools": true,
+   "focusVisible": true,
+   "outline": "2px solid rgba(78, 103, 232, 0.55)",
+   "outlineOffset": "2px",
+   "boxShadow": "none",
+   "x": 95,
+   "y": 64,
+   "w": 74,
+   "h": 34
+  },
+  {
+   "id": "shapeToolButton",
+   "tag": "button",
+   "cls": "workspace-tool",
+   "tool": "",
+   "text": "形狀 ▾",
+   "inDialog": false,
+   "inFaceTools": true,
+   "focusVisible": true,
+   "outline": "2px solid rgba(78, 103, 232, 0.55)",
+   "outlineOffset": "2px",
+   "boxShadow": "none",
+   "x": 172,
+   "y": 64,
+   "w": 73,
+   "h": 34
+  },
+  {
+   "id": "",
+   "tag": "button",
+   "cls": "workspace-tool",
+   "tool": "guide",
+   "text": "參考線L",
+   "inDialog": false,
+   "inFaceTools": true,
+   "focusVisible": true,
+   "outline": "2px solid rgba(78, 103, 232, 0.55)",
+   "outlineOffset": "2px",
+   "boxShadow": "none",
+   "x": 248,
+   "y": 64,
+   "w": 85,
+   "h": 34
+  },
+  {
+   "id": "",
+   "tag": "button",
+   "cls": "workspace-tool",
+   "tool": "hole",
+   "text": "開口R",
+   "inDialog": false,
+   "inFaceTools": true,
+   "focusVisible": true,
+   "outline": "2px solid rgba(78, 103, 232, 0.55)",
+   "outlineOffset": "2px",
+   "boxShadow": "none",
+   "x": 336,
+   "y": 64,
+   "w": 74,
+   "h": 34
+  },
+  {
+   "id": "",
+   "tag": "button",
+   "cls": "workspace-tool",
+   "tool": "timber",
+   "text": "角材T",
+   "inDialog": false,
+   "inFaceTools": true,
+   "focusVisible": true,
+   "outline": "2px solid rgba(78, 103, 232, 0.55)",
+   "outlineOffset": "2px",
+   "boxShadow": "none",
+   "x": 413,
+   "y": 64,
+   "w": 74,
+   "h": 34
+  },
+  {
+   "id": "",
+   "tag": "button",
+   "cls": "workspace-tool",
+   "tool": "grid",
+   "text": "網格G",
+   "inDialog": false,
+   "inFaceTools": true,
+   "focusVisible": true,
+   "outline": "2px solid rgba(78, 103, 232, 0.55)",
+   "outlineOffset": "2px",
+   "boxShadow": "none",
+   "x": 490,
+   "y": 64,
+   "w": 74,
+   "h": 34
+  },
+  {
+   "id": "",
+   "tag": "button",
+   "cls": "workspace-tool",
+   "tool": "pan",
+   "text": "平移H",
+   "inDialog": false,
+   "inFaceTools": true,
+   "focusVisible": true,
+   "outline": "2px solid rgba(78, 103, 232, 0.55)",
+   "outlineOffset": "2px",
+   "boxShadow": "none",
+   "x": 567,
+   "y": 64,
+   "w": 74,
+   "h": 34
+  },
+  {
+   "id": "feSelectionSummaryHelp",
+   "tag": "button",
+   "cls": "tool-button guidance-help",
+   "tool": "",
+   "text": "工具說明",
+   "inDialog": false,
+   "inFaceTools": true,
+   "focusVisible": true,
+   "outline": "2px solid rgb(56, 89, 199)",
+   "outlineOffset": "2px",
+   "boxShadow": "none",
+   "x": 644,
+   "y": 64,
+   "w": 74,
+   "h": 34
+  },
+  {
+   "id": "faceUndoButton",
+   "tag": "button",
+   "cls": "workspace-icon-button",
+   "tool": "",
+   "text": "復原 (Ctrl+Z)",
+   "inDialog": false,
+   "inFaceTools": false,
+   "focusVisible": true,
+   "outline": "2px solid rgba(78, 103, 232, 0.55)",
+   "outlineOffset": "2px",
+   "boxShadow": "none",
+   "x": 741,
+   "y": 64,
+   "w": 33,
+   "h": 34
+  }
+ ],
+ "errors": []
+}
