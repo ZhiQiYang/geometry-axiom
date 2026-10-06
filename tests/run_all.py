@@ -92,6 +92,7 @@ PY_NEEDS = {
     'test_space_modeling': ['model-base'],
     'test_subgrid_contract': ['bridge'],
     'test_timber_support_projection': [],
+    'test_unittest_runner': [],
     'test_witness_diagnostics': [],
     'test_witness_marks': [],
 }
@@ -137,6 +138,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:feedback_events': 'tests/test_feedback_events.js',
     'node:space_test_floor': 'tests/test_space_test_floor.js',
     'node:history_operation': 'tests/test_history_operation.js',
     'node:context_operations': 'tests/test_context_operations.js',
@@ -167,9 +169,14 @@ REQUIRED_OWNER_GATES = {
 }
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
+    'geometry-web/feedback_resize_observer_test.js': 38,
     'tests/test_grid_rule_reader_browser.js': 34,
     'geometry-web/evidence_links_browser_check.js': 67,
     'geometry-web/evidence_links_integration_test.js': 110,
+}
+
+REQUIRED_BROWSER_GATE_SCOPES = {
+    'geometry-web/feedback_resize_observer_test.js': 'real ResizeObserver/error/manual-report events; owned fresh/root/source/runtime identity required',
 }
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
@@ -730,7 +737,7 @@ def print_table(rows):
         if rel.startswith('tests/test_issue77_') or rel in ('tests/scenario_browser_check.cjs', 'tests/test_scenario_grid_interface.js'):
             print('  %s：%s；獨立執行，本 aggregate 未驗。' % (rel, NODE_EXCLUDED[rel]))
     for rel, count in REQUIRED_BROWSER_GATES.items():
-        scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+        scope = REQUIRED_BROWSER_GATE_SCOPES.get(rel, 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter')
         print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
 
 
@@ -783,7 +790,7 @@ def main(argv=None):
         print('必要正式整合入口：tests/integration/issue77_attachment_owner.js（5項；未實作時 exit3）')
         print('另外4個 #77 真瀏覽器入口：見 tests/INTEGRATION-GATES.md；本命令未驗。')
         for rel, count in REQUIRED_BROWSER_GATES.items():
-            scope = 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter'
+            scope = REQUIRED_BROWSER_GATE_SCOPES.get(rel, 'formal app/PDF/ZIP/history' if rel.endswith('integration_test.js') else 'independent injected-backend adapter')
             print('  %s：%d %s checks required；本 aggregate 未驗。' % (rel, count, scope))
         for p in registry_errors:
             print('登記問題：%s' % p)

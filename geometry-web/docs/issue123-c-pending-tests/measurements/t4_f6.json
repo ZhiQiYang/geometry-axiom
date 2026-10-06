@@ -1,0 +1,113 @@
+{
+ "sha": "d6b4b450d741fcbbfd75c51631915d3082926990",
+ "test": "space_model_test.js GEOMETRY_SPACE_FLOW_ONLY=1 (43 assertions each run)",
+ "baseline": {
+  "690x668": {
+   "overflow": 0,
+   "settingsHeight": 368.3125,
+   "bottom": 570.3125,
+   "screen": 668,
+   "confirmTop": 465.8125,
+   "confirmBottom": 509.8125,
+   "settingsTop": 202,
+   "fonts": [
+    [
+     ".sm-guide",
+     "12px"
+    ],
+    [
+     ".sm-help",
+     "11px"
+    ],
+    [
+     ".sm-view-direction",
+     "11px"
+    ]
+   ],
+   "confirmBottom_le_bottom": true,
+   "slack": 60.5
+  },
+  "390x844": {
+   "overflow": 0,
+   "settingsHeight": 396.3125,
+   "bottom": 746.3125,
+   "screen": 844,
+   "confirmTop": 633.609375,
+   "confirmBottom": 677.609375,
+   "settingsTop": 350,
+   "fonts": [
+    [
+     ".sm-guide",
+     "12px"
+    ],
+    [
+     ".sm-help",
+     "11px"
+    ],
+    [
+     ".sm-view-direction",
+     "11px"
+    ]
+   ],
+   "confirmBottom_le_bottom": true,
+   "slack": 68.7
+  }
+ },
+ "font12": {
+  "690x668": {
+   "overflow": 0,
+   "settingsHeight": 368.3125,
+   "bottom": 570.3125,
+   "screen": 668,
+   "confirmTop": 467.609375,
+   "confirmBottom": 511.609375,
+   "settingsTop": 202,
+   "fonts": [
+    [
+     ".sm-guide",
+     "12px"
+    ],
+    [
+     ".sm-help",
+     "12px"
+    ],
+    [
+     ".sm-view-direction",
+     "12px"
+    ]
+   ],
+   "confirmBottom_le_bottom": true,
+   "slack": 58.7
+  },
+  "390x844": {
+   "overflow": 0,
+   "settingsHeight": 396.3125,
+   "bottom": 746.3125,
+   "screen": 844,
+   "confirmTop": 637.203125,
+   "confirmBottom": 681.203125,
+   "settingsTop": 350,
+   "fonts": [
+    [
+     ".sm-guide",
+     "12px"
+    ],
+    [
+     ".sm-help",
+     "12px"
+    ],
+    [
+     ".sm-view-direction",
+     "12px"
+    ]
+   ],
+   "confirmBottom_le_bottom": true,
+   "slack": 65.11
+  }
+ },
+ "suite_result": {
+  "baseline": "43 passed / 0 failed",
+  "font12": "43 passed / 0 failed"
+ },
+ "note": "instrumentation patch (patches/instrument-space-log.patch) only adds a console.log of the already-computed size object; both runs use it"
+}

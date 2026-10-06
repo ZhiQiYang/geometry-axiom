@@ -1,6 +1,6 @@
 /* G1 回歸:ResizeObserver 良性通知不得被當成 JS 例外自動回報,真錯照常回報。
  *
- * 獨立瀏覽器測試(不掛進 cdp_test.js / run_all):自己啟動 serve.py(隔離的 feedback 目錄,
+ * 獨立 required browser gate(不在非瀏覽器 aggregate 執行):自己啟動 serve.py(隔離的 feedback 目錄,
  * 在 TEMP 底下)與一個 headless Chrome,結束時只結束自己啟動、且命令列核對過的行程。
  *
  *   node geometry-web/feedback_resize_observer_test.js [--repo <repo 根>] [--keep]
@@ -16,13 +16,55 @@
 'use strict';
 const fs = require('fs'), path = require('path'), os = require('os'), net = require('net');
 const { spawn, spawnSync } = require('child_process');
+const { createHash } = require('crypto');
 
 const arg = (n, d) => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : d; };
 const REPO = path.resolve(arg('repo', path.join(__dirname, '..')));
 const RO_MSG = 'ResizeObserver loop completed with undelivered notifications.';
 const PDF = path.join(REPO, 'geometry-web/docs/fixtures/issue54-public-rooms.pdf');
 const CHROME = process.env.GEOMETRY_CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+const PYTHON = process.env.GEOMETRY_PYTHON || 'python';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function localIdentity(repo = REPO) {
+  const run = (cmd, args) => {
+    const r = spawnSync(cmd, args, { cwd: repo, encoding: 'utf8' });
+    if (r.error || r.status !== 0) throw Error('identity command failed: ' + (r.error?.message || r.stderr || cmd));
+    return r.stdout.trim();
+  };
+  const head = run('git', ['rev-parse', 'HEAD']);
+  if (!/^[0-9a-f]{40}$/.test(head) || run('git', ['status', '--porcelain'])) throw Error('browser gate requires an exact clean Git head');
+  const canonical = p => { const real = fs.realpathSync(p); return process.platform === 'win32' ? real.toLowerCase() : real; };
+  const repositoryRoot = canonical(repo);
+  if (canonical(run('git', ['rev-parse', '--show-toplevel'])) !== repositoryRoot) throw Error('Git top-level does not match the requested repository root');
+  const source = JSON.parse(run(PYTHON, ['-c', 'import sys,json;sys.path.insert(0,"geometry-web");import runtime_version as r;print(json.dumps({"root":str(r.ROOT),"version":r.source_version()}))']));
+  if (typeof source.root !== 'string' || !path.isAbsolute(source.root) || canonical(source.root) !== repositoryRoot || !/^[0-9a-f]{64}$/.test(source.version)) throw Error('runtime source root/version does not match the Git repository');
+  const hash = rel => createHash('sha256').update(fs.readFileSync(path.join(repo, rel))).digest('hex');
+  return { head, root: source.root, version: source.version, feedback: hash('geometry-web/feedback.js'), harness: hash('geometry-web/feedback_resize_observer_test.js') };
+}
+function assertRuntimeIdentity(status, expected, pid, previous = null) {
+  const canonical = p => process.platform === 'win32' ? path.resolve(p).toLowerCase() : path.resolve(p);
+  if (status?.schema !== 'geometry-runtime/1' || status.fresh !== true || !/^[0-9a-f]{64}$/.test(expected.version) || status.version !== expected.version ||
+      typeof status.root !== 'string' || !status.root || !path.isAbsolute(status.root) ||
+      typeof expected.root !== 'string' || !path.isAbsolute(expected.root) || canonical(status.root) !== canonical(expected.root) ||
+      !Number.isSafeInteger(pid) || pid <= 0 || status.pid !== pid || typeof status.session !== 'string' || !status.session ||
+      previous && (status.pid !== previous.pid || status.session !== previous.session || status.version !== previous.version))
+    throw Error('runtime identity mismatch (fresh/root/source/owned PID/session)');
+  return status;
+}
+function verifiedRuntime(port, expected, pid, previous = null, repo = REPO) {
+  if (JSON.stringify(localIdentity(repo)) !== JSON.stringify(expected)) throw Error('checkout identity changed during browser gate');
+  // Reuse the production probe: HTTP 200 alone must never authorize a test run.
+  const r = spawnSync(PYTHON, [path.join(repo, 'geometry-web/runtime_version.py'), '--probe', String(port)], { cwd: repo, encoding: 'utf8' });
+  if (r.error || r.status !== 0) throw Error('runtime probe failed: ' + (r.error?.message || r.stderr || r.stdout));
+  return assertRuntimeIdentity(JSON.parse(r.stdout), expected, pid, previous);
+}
+function freshBridgeIdentity(bridge, repo = REPO) {
+  const code = 'import sys,json;sys.path.insert(0,"tests");import binaries;b=binaries.require_fresh("bridge",sys.argv[1]);i=binaries.inspect_one(binaries.BY_NAME["bridge"],b);assert i.state=="fresh";print(json.dumps({"path":b,"state":i.state,"source_fingerprint":i.fingerprint}))';
+  const r = spawnSync(PYTHON, ['-c', code, bridge], { cwd: repo, encoding: 'utf8' });
+  if (r.error || r.status !== 0) throw Error('native bridge freshness is unproven: ' + (r.error?.message || r.stderr || r.stdout));
+  return JSON.parse(r.stdout);
+}
 
 function findBridge() {
   if (process.env.GEOMETRY_BRIDGE) return process.env.GEOMETRY_BRIDGE;
@@ -36,6 +78,9 @@ const results = [];
 function check(name, ok, detail) {
   results.push({ name, ok: ok === true });
   console.log((ok === true ? '✓ ' : '✗ ') + name + (ok === true || detail === undefined ? '' : '\n    ' + (typeof detail === 'string' ? detail : JSON.stringify(detail))));
+}
+function assertCompleteResults(values) {
+  if (values.length !== 38 || values.some(r => r.ok !== true)) throw Error(`required browser gate incomplete or failed: ${values.filter(r => r.ok === true).length}/${values.length}, expected 38`);
 }
 
 function cmdline(pid) {
@@ -64,8 +109,10 @@ const INJECT = `(() => {
 })();`;
 
 async function main() {
+  const identity = localIdentity();
   const bridge = findBridge();
   if (!bridge) throw Error('找不到 bridge:請設 GEOMETRY_BRIDGE');
+  const nativeIdentity = freshBridgeIdentity(bridge);
   if (!fs.existsSync(PDF)) throw Error('找不到公開夾具 ' + PDF);
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'geometry-fb-ro-'));
   const FB = path.join(tmp, 'feedback'), PROFILE = path.join(tmp, 'profile');
@@ -75,13 +122,15 @@ async function main() {
   const PORT = await freePort(), CDP = await freePort();
   let srv, chrome, ws;
   try {
-    srv = spawn('python', [path.join(REPO, 'geometry-web/serve.py'), String(PORT)], {
+    srv = spawn(PYTHON, [path.join(REPO, 'geometry-web/serve.py'), String(PORT)], {
       env: Object.assign({}, process.env, { GEOMETRY_BRIDGE: bridge, GEOMETRY_FEEDBACK_DIR: FB, PYTHONIOENCODING: 'utf-8' }),
       stdio: 'ignore', windowsHide: true, cwd: REPO });
     console.log(`[start] serve.py PID=${srv.pid} port=${PORT} feedback=${FB}`);
     let up = false;
     for (let i = 0; i < 80 && !up; i++) { try { up = (await fetch(`http://localhost:${PORT}/runtime`)).ok; } catch { } if (!up) await sleep(500); }
     if (!up) throw Error('serve.py 沒有啟動(bridge 可能被 Smart App Control 擋下,屬環境問題)');
+    const started = verifiedRuntime(PORT, identity, srv.pid);
+    console.log('[identity:start] ' + JSON.stringify({ ...identity, runtime: started, native: nativeIdentity }));
     chrome = spawn(CHROME, ['--headless=new', '--disable-gpu', '--no-first-run', `--remote-debugging-port=${CDP}`,
       '--window-size=1440,900', `--user-data-dir=${PROFILE}`, 'about:blank'], { stdio: 'ignore', windowsHide: true });
     console.log(`[start] chrome PID=${chrome.pid} cdp=${CDP}`);
@@ -99,6 +148,15 @@ async function main() {
     };
     const send = (method, params = {}) => new Promise((res, rej) => { const id = ++mid; pend.set(id, { res, rej }); ws.send(JSON.stringify({ id, method, params })); });
     const ev = async expr => { const r = await send('Runtime.evaluate', { expression: expr, returnByValue: true, awaitPromise: true }); if (r.exceptionDetails) throw Error(JSON.stringify(r.exceptionDetails).slice(0, 300)); return r.result.value; };
+    const verifyPage = async () => {
+      const current = verifiedRuntime(PORT, identity, srv.pid, started);
+      if (JSON.stringify(freshBridgeIdentity(bridge)) !== JSON.stringify(nativeIdentity)) throw Error('native bridge identity changed during browser gate');
+      const marker = await ev(`document.querySelector('meta[name="geometry-runtime-version"]')?.content`);
+      const response = await fetch(`http://127.0.0.1:${PORT}/feedback.js`, { cache: 'no-store' });
+      if (!response.ok || marker !== identity.version || createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex') !== identity.feedback)
+        throw Error('page/runtime marker or served feedback bytes do not match the frozen source');
+      return current;
+    };
     for (const d of ['Page', 'Runtime', 'DOM']) await send(d + '.enable');
     await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
     await send('Page.setInterceptFileChooserDialog', { enabled: true });
@@ -117,9 +175,13 @@ async function main() {
     const meta = id => JSON.parse(fs.readFileSync(path.join(FB, id, 'meta.json'), 'utf8'));
     const events = id => fs.readFileSync(path.join(FB, id, 'events.jsonl'), 'utf8').split('\n').filter(Boolean).map(JSON.parse);
     const fresh = async () => {
+      verifiedRuntime(PORT, identity, srv.pid, started);
       await send('Page.navigate', { url: 'about:blank' }); await sleep(300);
       await send('Page.navigate', { url: `http://localhost:${PORT}/` });
-      for (let i = 0; i < 80; i++) { try { if (await ev(`document.readyState==='complete'&&!!document.getElementById('fileMenuBtn')&&typeof ReferenceWorkspace!=='undefined'&&!!window.geometryFeedback`)) break; } catch { } await sleep(250); }
+      let ready = false;
+      for (let i = 0; i < 80; i++) { try { if (await ev(`document.readyState==='complete'&&!!document.getElementById('fileMenuBtn')&&typeof ReferenceWorkspace!=='undefined'&&!!window.geometryFeedback`)) { ready = true; break; } } catch { } await sleep(250); }
+      if (!ready) throw Error('formal application did not become ready');
+      await verifyPage();
       await sleep(800);
     };
     const waitReports = async (n, ms = 12000) => { for (let t = 0; t < ms && reports().length < n; t += 100) await sleep(100); return reports(); };
@@ -280,6 +342,7 @@ async function main() {
     await click('#fbButton');
     check('h9 右下「回報」鈕仍可開面板', await ev(`!document.querySelector('#fbPanel').hidden`));
     await key('Escape', 'Escape', 27);
+    console.log('[identity:end] ' + JSON.stringify({ ...identity, runtime: await verifyPage() }));
   } finally {
     try { ws && ws.close(); } catch { }
     killOwn('chrome', chrome, [`--user-data-dir=${PROFILE}`]);
@@ -288,8 +351,9 @@ async function main() {
     if (process.argv.includes('--keep')) console.log('[keep] ' + tmp); else { try { fs.rmSync(tmp, { recursive: true, force: true }); } catch { } }
   }
 }
-main().catch(e => { console.log('FATAL ' + (e.stack || e)); process.exitCode = 1; }).finally(() => {
+if (require.main === module) main().catch(e => { console.log('FATAL ' + (e.stack || e)); process.exitCode = 1; }).finally(() => {
   const bad = results.filter(r => !r.ok);
   console.log(`\nG1 ${results.length - bad.length}/${results.length} 通過` + (bad.length ? `;失敗:${bad.map(r => r.name.split(' ')[0]).join(', ')}` : ''));
-  if (bad.length) process.exitCode = 1;
+  try { assertCompleteResults(results); } catch(e) { console.log(e.message); process.exitCode = 1; }
 });
+module.exports = { assertRuntimeIdentity, assertCompleteResults, localIdentity, verifiedRuntime, freshBridgeIdentity };

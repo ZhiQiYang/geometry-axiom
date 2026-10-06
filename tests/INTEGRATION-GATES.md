@@ -5,6 +5,36 @@
 不代表尚未接上產品的模組或下列正式整合驗證已完成。
 既有 floors、具名平台 skip 清單與實際測試斷言維持。
 
+## #144 ResizeObserver 通知與真錯保全
+
+`node:feedback_events` 是 41 項受控 Node VM 測試：32 個獨立 event-shaped
+predicate 真值案例、三個單 guard 移除反證、notice 合併、真錯／rejection／console、
+原 20 秒／300 秒節流，以及 browser harness runtime 拒絕條件。這些值可明設
+`isTrusted`，不代表瀏覽器曾派出可信事件，不取代下列 38 項正式 browser gate。
+
+`geometry-web/feedback_resize_observer_test.js` 登記為必要獨立 browser gate，
+不在 aggregate 執行；它位於 geometry-web 而非 tests 的自動發現目錄。
+先在乾淨凍結 checkout 建立／核對當前 native binaries，再以已安裝的 Python、
+Chrome 執行（GEOMETRY_PYTHON 可指定同一 Python）：
+
+```sh
+python3 tests/run_all.py --build
+GEOMETRY_BRIDGE=/tmp/geometry-tests/bridge GEOMETRY_PYTHON=python3 \
+GEOMETRY_CHROME=/path/to/installed/chrome node geometry-web/feedback_resize_observer_test.js --keep
+```
+
+Windows 請將路徑換成當前已驗證的 bridge.exe／Python／Chrome；本命令不授權
+修改安全設定或改用他人正在操作的服務。Harness 自建隔離 TEMP feedback、profile
+與服務，沿用現有 38 個斷言與真 RO 前提，不以 synthetic ErrorEvent 冒充可信 RO。
+開始、每次重新載入及結束都要求 production runtime probe 的 fresh/root/source，
+比對自有 PID/session、乾淨 Git head 與來源指紋；每頁另核 runtime meta 與實際
+served feedback.js bytes。HTTP 200、跨服務 session 或 source 變更都不能算通過。
+identity 前後紀錄與 38 項結果應保留；若沒有真 browser，保持 required gate 未驗。
+Bridge 另透過既有 `binaries.require_fresh` 核對來源／SHA-256／sidecar，未證明 fresh
+即在啟動瀏覽器前拒絕；不以目錄中最近一支 exe 的名稱或成功啟動當來源證據。
+若 Windows binary 身分或 SAC 仍受阻，保留該環境結果，不能修改 registry 或安全設定繞過。
+實體手機／IME／OS picker、舊版 Chrome 第二句訊息及 Firefox/Safari 仍須分別標明。
+
 ## #44／#77 新增模組的實際登錄
 
 | 原測試檔 | 非瀏覽器實際測試數 | 執行方式／範圍 |
