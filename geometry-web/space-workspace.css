@@ -9,7 +9,7 @@
 .sm-display-options label,.sm-check,.sm-edge,.sm-guide summary,.sm-obstacles summary{min-height:44px}.sm-guide summary,.sm-obstacles summary{align-content:center}.sm-field input,.sm-field select,.sm-export select{min-height:44px}
 @media(max-width:720px){.sm-mobile-next{display:block;border-radius:0;border:0;min-height:47px;flex-shrink:0;padding-bottom:max(11px,env(safe-area-inset-bottom))}}
 /* Keep the model large on common laptop screens without shrinking hit targets. */
-@media(min-width:721px) and (max-height:800px){
+@media(min-width:721px) and (max-height:900px){
   .sm-workspace{height:calc(100dvh - 16px);width:min(1540px,calc(100vw - 24px));border-radius:12px}
   .sm-workspace.workspace-shell>.sm-header{padding:8px 20px;min-height:60px;flex-shrink:0}
   .sm-header h1{font-size:18px}.sm-header h1 span{font-size:11px}
