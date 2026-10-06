@@ -1,0 +1,142 @@
+{
+ "sha": "d6b4b450d741fcbbfd75c51631915d3082926990",
+ "viewport": "1382x804",
+ "steps": {
+  "src1_created": true,
+  "vertex_options": [
+   "",
+   "outer:0",
+   "outer:1",
+   "outer:2",
+   "outer:3"
+  ],
+  "save_binding_state": {
+   "dis": false,
+   "text": "預覽並建立配置",
+   "status": "來源／配置原始輸入會隨專案保存，未確認前不改場景。"
+  },
+  "binding_created": [
+   {
+    "kind": "grid-system",
+    "id": "1",
+    "t": "有配置來源網格來源 · 無限延伸有配置來源 u：無限重複 ·"
+   },
+   {
+    "kind": "grid-binding",
+    "id": "1",
+    "t": "網格配置 1有配置來源 · 面 1cell (0, 0)外環"
+   }
+  ],
+  "src2_created": true
+ },
+ "binding_create_impact_text": "確認連動變更\n\n建立配置：面 1 · 外環・頂點 1 ↔ cell (0, 0)\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\n進階：完整指令\n邊界與頂點 · 1\n面 1\n\n原：用途未設定；4 個外環頂點、0 個孔；尚未保存頂點身分\n\n新：用途未設定；4 個外環頂點、0 個孔；已保存頂點身分\n\n核對頂點座標與身分\n原頂點：",
+ "cards_before": [
+  {
+   "kind": "grid-system",
+   "id": "1",
+   "t": "有配置來源網格來源 · 無限延伸有配置來源 u：無限重複 ·"
+  },
+  {
+   "kind": "grid-system",
+   "id": "2",
+   "t": "無配置來源網格來源 · 無限延伸無配置來源 u：無限重複 ·"
+  },
+  {
+   "kind": "grid-binding",
+   "id": "1",
+   "t": "網格配置 1有配置來源 · 面 1cell (0, 0)外環"
+  }
+ ],
+ "sources": [
+  {
+   "kind": "grid-system",
+   "id": "1",
+   "t": "有配置來源網格來源 · 無限延伸有配置來源 u：無限重複 ·"
+  },
+  {
+   "kind": "grid-system",
+   "id": "2",
+   "t": "無配置來源網格來源 · 無限延伸無配置來源 u：無限重複 ·"
+  }
+ ],
+ "with_binding": {
+  "target": {
+   "kind": "grid-system",
+   "id": "1",
+   "t": "有配置來源網格來源 · 無限延伸有配置來源 u：無限重複 ·"
+  },
+  "inspector_actions": [
+   "gridObjectOpen:完整工作區",
+   "gridObjectNewBinding:建立配置",
+   "gridObjectDelete:刪除"
+  ],
+  "after_click_delete": {
+   "impact": true,
+   "impactText": "變更無法套用\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\ndelete grid-system 1\n角材／面\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1\t10 → 10\t4000 → 4000\t保持原狀\n91／面 1\t2990 → 2990\t4000 → 4000\t保持原狀\n1／面 1\t500 → 500\t2960 → 2960\t保持原狀\n\n場景 · I8\n預期：all world invariants pass\n實際：line 59: I37: grid-system is still referenced by a grid-binding\n\n返回修改\n確認套用",
+   "toasts": []
+  },
+  "confirm_disabled_first": true,
+  "cancel_label": "返回修改",
+  "after_cancel": {
+   "stillExists": true,
+   "impactOpen": false
+  },
+  "second_click_delete": {
+   "impact": true,
+   "impactText": "變更無法套用\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\ndelete grid-system 1\n角材／面\t中線：原 → 新\t長度：原 → 新\t世界位置／方向\n90／面 1\t10 → 10\t4000 → 4000\t保持原狀\n91／面 1\t2990 → 2990\t4000 → 4000\t保持原狀\n1／面 1\t500 → 500\t2960 → 2960\t保持原狀\n\n場景 · I8\n預期：all world invariants pass\n實際：line 63: I37: grid-system is still referenced by a grid-binding\n\n返回修改\n確認套用"
+  },
+  "confirm_disabled_second": true,
+  "blocked": true
+ },
+ "without_binding": {
+  "target": {
+   "kind": "grid-system",
+   "id": "2",
+   "t": "無配置來源網格來源 · 無限延伸無配置來源 u：無限重複 ·"
+  },
+  "inspector_actions": [
+   "gridObjectOpen:完整工作區",
+   "gridObjectNewBinding:建立配置",
+   "gridObjectDelete:刪除"
+  ],
+  "after_click_delete": {
+   "impact": false,
+   "impactText": "",
+   "toasts": [
+    {
+     "t": "網格系統 2 已刪除,可 Ctrl+Z 復原",
+     "cls": "toast error"
+    }
+   ]
+  },
+  "after_cancel": {
+   "stillExists": false,
+   "impactOpen": false
+  },
+  "deleted_without_dialog": true,
+  "after_ctrl_z": {
+   "exists": true,
+   "toasts": [],
+   "impact": false,
+   "cards": [
+    {
+     "kind": "grid-system",
+     "id": "1",
+     "t": "有配置來源網格來源 · 無限延伸有配置來源 u：無限重複 ·"
+    },
+    {
+     "kind": "grid-system",
+     "id": "2",
+     "t": "無配置來源網格來源 · 無限延伸無配置來源 u：無限重複 ·"
+    },
+    {
+     "kind": "grid-binding",
+     "id": "1",
+     "t": "網格配置 1有配置來源 · 面 1cell (0, 0)外環"
+    }
+   ]
+  }
+ },
+ "native_dialogs": [],
+ "errors": []
+}

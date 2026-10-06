@@ -21,9 +21,18 @@
     if(['guide','grid','timber','placement'].includes(n.kind))return EngineeringAdapter.navigateObject({kind:n.kind,id},{sourceGraph:g,isCurrent,beginNavigation});
     if(n.kind==='parameter-field')n={...n,kind:'parameter',hasField:true};
     if(['boundary','placement','space','column','beam','grid-system','grid-binding','parameter','assembly-rule','assembly-binding'].includes(n.kind)){
+      if(!isCurrent())return;
       if(n.kind==='assembly-rule'){const active=ocFind(n.kind,id);if(active?.version!==n.version)throw Error(`固定 v${n.version} 保留；目前卡片顯示其他版本，請於既有組構工作區核對。`);}
       if(!ocFind(n.kind,id))throw Error('來源尚未在目前畫布提供定位。');
-      if(oc.focus)leaveFocus();selectObject(n.kind,id);centerOnNode(n.kind,id);
+      // Accepted discard can replace this inspector. Transfer its existing
+      // lease before asking; cancellation still changes no presentation.
+      if(!beginNavigation()||!window.DraftGate.ask({selection:[{kind:n.kind,id}]})||!isCurrent())return;
+      if(oc.focus){
+        const navigation=await leaveFocus();
+        if(navigation!==oc.navigationSequence||!isCurrent()||oc.focus)return;
+      }
+      if(!selectObject(n.kind,id)||!isCurrent())return;
+      centerOnNode(n.kind,id);
       if(n.hasField){const row=document.querySelector(`[data-param-field="${n.fieldId}"]`);row?.scrollIntoView({block:'nearest'});row?.querySelector('[data-input]')?.focus({preventScroll:true});}
       if(innerWidth<=900)openPanel('right',document.getElementById('toggleRight'));return;
     }

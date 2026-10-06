@@ -61,6 +61,7 @@ wrong display and capacity rejection with complete-state equality. Original crop
 is an explicit repo-authored fixture; pointer crop import is covered separately
 by #48's formal evidence gate. OS pickers and physical mobile are not claimed.
 
-See tests/INTEGRATION-GATES.md for reproduction. A full aggregate census found
-five added Node tests, so the Node floor increases 520 to 525; other floors stay.
+See tests/INTEGRATION-GATES.md for reproduction. The original T4 census added
+five Node tests (520 to 525). On the recovered PR137 ticket baseline, retain its
+56 additional contracts as well: the combined Node floor is 576 to 581. Other floors stay.
 Each final acceptance report must name its exact source and own terminal results.
