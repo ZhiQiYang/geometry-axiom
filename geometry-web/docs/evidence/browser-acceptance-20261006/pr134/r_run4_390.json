@@ -1,0 +1,44 @@
+{
+ "R-09.guide": {
+  "ok": true,
+  "true_gridrule_guide": true,
+  "wrong_source_rejected": true,
+  "zero_write": true,
+  "history_unchanged_after_cancel": true
+ },
+ "R-10": {
+  "ok": true,
+  "rejected_zero_write": true,
+  "form_kept": true,
+  "retry_single_step": true,
+  "history_len_delta(unreliable if capped)": 0,
+  "timbers_with_undo_redo": [
+   5,
+   4,
+   5
+  ],
+  "geometry": true,
+  "summary": "#1 Native inner lines · 每個主格 · u 3／v 2 · 引用：1 參考線／1 角材"
+ },
+ "R-11": {
+  "ok": true,
+  "confirm_disabled": true,
+  "text": "變更無法套用\n\n更新無限網格「Authored shared rule 390」\n\n目前場景尚未改動。以下列出來源、邊界、網格配置及其依賴的連動結果；尺寸單位為 mm。確認後整筆套用，取消則保留原狀。\n\n進階：完整指令\n網格來源 · 1\n網格系統 1\n\n原：「Authored shared rule 390」；主支方向未設定；u 無限重複：間距 600 mm，第 0 線 0 mm；v 無限重複：間距 400 mm，第 0 線 0 mm\n\n新：「Authored shared rule 390」；主支方向未設定；u 無限重複：間距 500 mm，第 0 線 0 mm；v 無限重複：間距 400 "
+ },
+ "R-15.newid_back": {
+  "info_only": true,
+  "held_newid_requests": 0,
+  "world_unchanged": true,
+  "history_unchanged": true,
+  "note": "placement form may not use newid; held==0 means recipe did not exercise the guarded path"
+ },
+ "console_errors": [
+  "console.error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+ ],
+ "http_4xx": [
+  [
+   404,
+   "http://127.0.0.1:8872/null"
+  ]
+ ]
+}
