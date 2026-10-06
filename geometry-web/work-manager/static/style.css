@@ -66,6 +66,18 @@ main { max-width: 1680px; padding: 0 36px 36px; margin: 0 auto; }
 h2 { font-size: 17px; font-weight: 650; letter-spacing: .025em; }
 .heading-count { font-weight: 450; color: var(--muted); font-size: 13px; margin-left: 5px; }
 .count-label { color: var(--muted); font-size: 12px; }
+.ready-mode-counts { display: flex; flex-wrap: wrap; gap: 9px 18px; margin: 1px 0 13px; }
+.mode-count { padding: 0; border: 0; background: none; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.mode-count strong { color: var(--ink); margin-left: 5px; font-weight: 650; }
+.mode-count:hover { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.mode-tag { display: inline-block; font-size: 10px; font-weight: 550; color: var(--muted); background: #edf2f6; border-radius: 3px; padding: 2px 6px; line-height: 1.5; }
+.mode-tag.read_only { color: #496378; background: #edf2f6; }
+.mode-tag.write { color: var(--blue); background: var(--blue-bg); }
+.mode-tag.wait { color: var(--amber); background: var(--amber-bg); }
+.mode-tag.none { color: #536d5e; background: #edf4ef; }
+.ready-entry .mode-tag { margin: 0 0 6px; }
+.next-action > .mode-tag { display: table; margin-bottom: 5px; }
+.input-pin { display: block; margin-top: 4px; font-size: 10px; word-break: break-all; }
 .next-section { padding: 23px 0 26px; }
 .ready-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .ready-entry { display: block; text-align: left; border: 1px solid #c6d9eb; border-left: 3px solid var(--blue); border-radius: var(--radius); padding: 12px 15px; background: #f8fbff; color: var(--ink); min-width: 0; }

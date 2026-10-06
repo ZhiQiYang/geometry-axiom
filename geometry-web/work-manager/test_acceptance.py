@@ -94,6 +94,7 @@ def pr(sha=HEAD_A, merged=False, review="pending", **updates):
         "merged": merged,
         "merged_head_sha": sha if merged else None,
         "review_state": review,
+        "reviewed_sha": sha if review in {"approved", "changes_requested"} else None,
     }
     data.update(updates)
     return data
@@ -319,14 +320,14 @@ class AcceptanceTests(unittest.TestCase):
         for updates in ({"runner_id": 0, "steps": [{"name": "test", "conclusion": "success"}]}, {"runner_id": 123, "steps": []}):
             with self.subTest(updates=updates):
                 version = self.source_version + 1
-                self.ingest(task_event(version=version), result_event(version=version, evidence=[evidence(kind="ci", **updates)], pr=pr(merged=True, review="approved")))
+                self.ingest(task_event(version=version), result_event(version=version, evidence=[evidence(id=f"qa-ci-attempt-{version}", kind="ci", **updates)], pr=pr(merged=True, review="approved")))
                 self.assertNotEqual(self.task()["delivery_status"], "done")
                 self.assertIn("ci_not_run", self.codes())
 
     def test_malformed_ci_steps_cannot_certify_execution(self):
         malformed = [
-            {"evidence": [evidence(kind="ci", runner_id=123, steps=[{}])], "pr": pr(merged=True, review="approved")},
-            {"evidence": [evidence()], "pr": pr(merged=True, review="approved", ci=[{"name": "synthetic-ci", "sha": HEAD_A, "status": "completed", "conclusion": "success", "runner_id": 123, "steps": [{}]}])},
+            {"evidence": [evidence(id="qa-malformed-ci-proof", kind="ci", runner_id=123, steps=[{}])], "pr": pr(merged=True, review="approved")},
+            {"evidence": [evidence(id="qa-malformed-pr-ci-proof")], "pr": pr(merged=True, review="approved", ci=[{"name": "synthetic-ci", "sha": HEAD_A, "status": "completed", "conclusion": "success", "runner_id": 123, "steps": [{}]}])},
         ]
         self.ingest(task_event())
         for data in malformed:

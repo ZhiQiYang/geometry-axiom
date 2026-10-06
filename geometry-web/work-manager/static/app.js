@@ -3,11 +3,13 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const executionLabels = { unknown: "待核", unassigned: "未接手", active: "執行中", stopped: "已停止・待接續", blocked: "阻塞", finished: "執行已結束" };
-  const deliveryLabels = { no_pr: "尚未交 PR", awaiting_review: "待審", awaiting_integration: "待整合", verification_pending: "驗證待補", done: "已完成並整合", unknown: "待核" };
+  const deliveryLabels = { no_pr: "尚未交 PR", awaiting_review: "待審", awaiting_integration: "待整合", verification_pending: "驗證待補", approval_blocked: "待批准・交付阻塞", done: "已完成並整合", unknown: "待核" };
   const statusLabels = { ...executionLabels, ...deliveryLabels, approved: "已批准", granted: "已批准", required: "需要批准", pending: "待批准", denied: "未批准", held: "暫緩", hold: "暫緩", passed: "通過", pass: "通過", success: "成功", failed: "失敗", failure: "失敗", skipped: "未執行", not_run: "未執行", not_executed: "未執行", expired: "已過期", stale: "已過期", valid: "有效", invalid: "無效", merged: "已整合", error: "讀取失敗", ok: "已讀取", healthy: "已讀取", available: "可用", unavailable: "來源失聯", missing: "缺少資料", manual: "手動匯入", fetched: "已讀取", stopped: "已停止", completed: "執行已結束", cancelled: "已取消", assigned: "已派工", released: "已釋放", reserved: "曾保留", revoked: "已撤回", approved_review: "審查通過", changes_requested: "審查要求修改" };
-  const actionLabels = { work: "執行工作", assign: "登記派工", assignment: "登記派工", review: "審查", merge: "合併 PR", publish: "發布", retry: "重試", execute: "執行工作", integrate: "整合", approve: "批准", verify: "補驗證", wait: "等待", reconcile: "重新核對", resume: "接續工作" };
+  const actionLabels = { work: "執行工作", assign: "登記派工", assignment: "登記派工", review: "審查", merge: "合併 PR", publish: "發布", retry: "重試", execute: "執行工作", integrate: "整合", approve: "批准", verify: "補驗證", wait: "等待", reconcile: "重新核對", resume: "接續工作", review_pr: "核對 PR 與驗收證據", review_integration: "核對整合條件", verify_acceptance: "核對必要驗收", inspect_scope: "核對工作範圍", request_approval: "整理待批准事項", continue_work: "接續範圍內的工作" };
   const severityLabels = { critical: "必須處理", error: "需處理", warning: "請留意", warn: "請留意", info: "待確認" };
   const freshnessLabels = { current: "近期快照", stale: "超過同步期限", future: "時間在未來", error: "讀取失敗", unknown: "待核" };
+  const modeLabels = { read_only: "唯讀核對", write: "可寫入工作", wait: "等待／待批准", none: "無新動作" };
+  const validityLabels = { ...statusLabels, future: "時間在未來", ci_failed: "CI 失敗", ci_unknown: "CI 待核", merged_commit: "合併 commit 綁定", tree_equivalent: "已證明 tree 等價" };
   const sourceKindLabels = { github: "GitHub 讀取", github_live: "GitHub 讀取", git: "Git 版本讀取", operator: "CLI 手動登記", api: "API 讀取", live: "API 讀取", manual: "手動匯入", manual_snapshot: "手動匯入快照", snapshot: "手動匯入快照", parent_snapshot: "父任務快照（手動匯入）", parent: "父任務快照（手動匯入）" };
   let state = null;
   let busy = false;
@@ -73,8 +75,8 @@
   }
 
   function tone(status) {
-    if (["blocked", "denied", "failed", "failure", "error", "invalid", "unavailable"].includes(status)) return "red";
-    if (["stopped", "no_pr", "awaiting_review", "awaiting_integration", "verification_pending", "pending", "required", "held", "hold", "expired", "stale", "future", "not_run", "not_executed", "skipped"].includes(status)) return "amber";
+    if (["blocked", "denied", "failed", "failure", "ci_failed", "error", "invalid", "unavailable"].includes(status)) return "red";
+    if (["stopped", "no_pr", "awaiting_review", "awaiting_integration", "verification_pending", "approval_blocked", "draft", "pending", "required", "held", "hold", "expired", "stale", "future", "not_run", "not_executed", "skipped"].includes(status)) return "amber";
     if (["active", "assigned"].includes(status)) return "blue";
     if (["done", "approved", "granted", "passed", "pass", "success", "valid", "merged"].includes(status)) return "green";
     return "";
@@ -91,6 +93,15 @@
   }
 
   function alertText(value) { return typeof value === "string" ? value : text(value?.message ?? value?.reason ?? value?.description ?? value?.code, "待確認警示"); }
+  function actionMode(task) {
+    return el("span", `mode-tag ${modeLabels[task.next_action_mode] ? task.next_action_mode : ""}`, task.next_action_completed === true ? "已完成本輪核對" : modeLabels[task.next_action_mode] || "操作模式待核");
+  }
+  function setFilter(filter) {
+    $("search-input").value = "";
+    $("status-filter").value = filter;
+    renderQueue();
+    $("work-queue").scrollIntoView();
+  }
   function alertTaskId(value) { return typeof value === "object" && value ? text(value.task_id ?? value.task, "") : ""; }
   function findTask(id) { return state?.tasks.find((task) => task.id === id); }
   function readyTasks() { return array(state?.ready).map((entry) => typeof entry === "string" ? findTask(entry) : findTask(entry.id) || entry).filter(Boolean); }
@@ -130,20 +141,33 @@
 
   function renderReady() {
     const tasks = readyTasks();
-    $("ready-count").textContent = `${tasks.length} 項`;
+    $("ready-count").textContent = `${tasks.length} 項動作`;
+    const counts = state.ready_counts;
+    const modes = document.createDocumentFragment();
+    if (counts && Number.isInteger(counts.read_only) && Number.isInteger(counts.write)) {
+      const waitCount = Number.isInteger(counts.wait) ? counts.wait : state.tasks.filter((task) => task.next_action_mode === "wait").length;
+      for (const [mode, count, label] of [["read_only", counts.read_only, "唯讀核對"], ["write", counts.write, "可寫入"], ["wait", waitCount, "等待"]]) {
+        const button = el("button", "mode-count", label);
+        button.type = "button";
+        button.append(el("strong", "", String(count)));
+        button.addEventListener("click", () => setFilter(mode));
+        modes.append(button);
+      }
+    } else modes.append(el("span", "subtle", "操作類型待核；未推斷可派工數量。"));
+    $("ready-mode-counts").replaceChildren(modes);
     const fragment = document.createDocumentFragment();
-    if (!tasks.length) fragment.append(el("p", "empty", "目前沒有通過前置檢查的工作。先核對警示、依賴與批准條件。"));
+    if (!tasks.length) fragment.append(el("p", "empty", "目前沒有新的可進行動作；可查看等待狀態與已完成本輪核對紀錄。"));
     for (const task of tasks.slice(0, 3)) {
       const button = el("button", "ready-entry");
       button.type = "button";
-      button.append(el("span", "task-id", task.id), el("strong", "", text(task.title, task.id)), el("p", "", actionText(task.next_action)));
+      button.append(actionMode(task), el("span", "task-id", task.id), el("strong", "", text(task.title, task.id)), el("p", "", actionText(task.next_action)));
       button.addEventListener("click", () => openTask(task.id));
       fragment.append(button);
     }
     if (tasks.length > 1) {
       const button = el("button", `button small ready-more${tasks.length <= 3 ? " only-mobile" : ""}`, `查看全部 ${tasks.length} 項可進行的下一步`);
       button.type = "button";
-      button.addEventListener("click", () => { $("search-input").value = ""; $("status-filter").value = "ready"; renderQueue(); $("work-queue").scrollIntoView(); });
+      button.addEventListener("click", () => setFilter("ready"));
       fragment.append(button);
     }
     $("ready-list").replaceChildren(fragment);
@@ -159,6 +183,7 @@
       list.append(link(ref.url, label));
     }
     if (!list.childElementCount) list.append(el("span", "subtle", "來源引用待核"));
+    if (task.pr?.draft === true) list.append(badge("draft", { draft: "草稿 PR" }));
     return list;
   }
 
@@ -189,6 +214,7 @@
       else {
         const line = el("div", "approval-line");
         line.append(el("strong", "", actionLabels[approval.action] || text(approval.action, "行動待核")), badge(approval.status || "unknown"));
+        line.append(el("span", "subtle", approval.scope === "action" ? "限制此動作" : approval.scope === "completion" ? "完成所需批准" : approval.scope === undefined ? "完成所需批准（預設）" : "適用範圍待核"));
         li.append(line);
         if (approval.reason) li.append(el("span", "approval-reason", approval.reason));
       }
@@ -217,6 +243,7 @@
       const top = el("div", "audit-meta");
       top.append(el("strong", "", source.id), badge(source.freshness || "unknown", freshnessLabels));
       item.append(top, el("p", "", `${sourceKindLabels[source.kind] || text(source.kind)} · 版本 ${text(source.version)} · 截至 ${stamp(source.as_of)} UTC`));
+      if (source.last_verified_at) item.append(el("p", "", `最近觀測：${stamp(source.last_verified_at)} UTC · 觀測版本 ${text(source.observed_version)}`));
       if (source.source_sha) item.append(el("p", "", `來源 SHA：${source.source_sha}`));
       if (source.url) item.append(link(source.url, "開啟來源"));
       list.append(item);
@@ -236,14 +263,18 @@
       if (!item || typeof item !== "object") { entry.textContent = text(item); list.append(entry); continue; }
       const meta = el("div", "audit-meta");
       meta.append(el("strong", "", text(item.criterion ?? item.kind ?? item.acceptance_id ?? item.name ?? item.id, "證據")), badge(item.effective_result || "unknown"));
-      if (item.validity) meta.append(badge(item.validity, { ...statusLabels, future: "時間在未來" }));
+      if (item.validity) meta.append(badge(item.validity, validityLabels));
       if (item.status) meta.append(badge(item.status));
       if (item.expired === true || item.stale === true) meta.append(badge("expired"));
       meta.append(el("time", "", stamp(item.timestamp ?? item.verified_at ?? item.at)));
       entry.append(meta);
       const fields = el("ul", "plain-list");
       const sha = item.sha ?? item.head_sha ?? item.commit_sha;
-      fields.append(el("li", "", `驗證 SHA：${text(sha)}`));
+      fields.append(el("li", "", `實際驗證 SHA（原始）：${text(sha)}`));
+      for (const [key, label] of [["tree_sha", "Git tree SHA"], ["equivalent_head_sha", "等價映射的 PR head SHA"], ["bound_head_sha", "有效綁定的 head SHA"], ["binding_kind", "綁定依據"]]) {
+        if (item[key] !== undefined && item[key] !== null) fields.append(el("li", "", `${label}：${text(item[key])}`));
+      }
+      if (item.applicable_to_current_head !== undefined) fields.append(el("li", "", `適用目前 head：${item.applicable_to_current_head === true ? "是" : item.applicable_to_current_head === false ? "否" : "待核"}`));
       fields.append(el("li", "", `原始結果紀錄：${statusLabels[item.result] || text(item.result)}；有效判定以上方狀態為準。`));
       for (const [key, label] of [["criterion", "驗收條件"], ["acceptance_id", "驗收條件"], ["kind", "證據類型"], ["expires_at", "有效期限 UTC"], ["source_id", "來源"], ["source_version", "來源版本"], ["event_id", "事件 ID"], ["runner_count", "Runner 數"], ["runner_id", "Runner ID"], ["steps", "步驟"], ["step_count", "步驟數"], ["reason", "說明"]]) {
         if (item[key] !== undefined) fields.append(el("li", "", `${label}：${Array.isArray(item[key]) && key === "steps" ? item[key].length : text(item[key])}`));
@@ -262,7 +293,17 @@
     const section = el("section", "audit-section");
     section.append(el("h4", "", "PR 交付紀錄"));
     const fields = el("dl", "detail-grid");
-    fields.append(detailField("Pull request", link(pr.url, pr.number ? `PR #${pr.number}` : "開啟 PR")), detailField("目前 head 的審查", ({ approved: "審查通過", pending: "待審", changes_requested: "要求修改", unknown: "待核", stale: "舊 head 審查已過期" })[pr.effective_review_state] || "待核"), detailField("來源原始審查紀錄", ({ approved: "審查通過（須核對 head）", pending: "待審", changes_requested: "要求修改", unknown: "待核" })[pr.review_state] || text(pr.review_state)), detailField("PR 整合紀錄", pr.merged === true ? "已整合；工作驗收仍以交付狀態為準" : pr.merged === false ? "尚未整合" : "待核"), detailField("PR head SHA", el("code", "", text(pr.head_sha))), detailField("整合時 head SHA", el("code", "", text(pr.merged_head_sha)), true));
+    fields.append(
+      detailField("Pull request", link(pr.url, pr.number ? `PR #${pr.number}` : "開啟 PR")),
+      detailField("PR 草稿狀態", pr.draft === true ? "草稿 PR" : pr.draft === false ? "非草稿 PR" : "待核"),
+      detailField("目前 head 的有效審查", ({ approved: "目前 head 審查通過", pending: "待審", changes_requested: "要求修改", unknown: "審查綁定待核", stale: "舊 head 審查已過期" })[pr.effective_review_state] || "審查綁定待核"),
+      detailField("來源原始審查宣稱", ({ approved: "宣稱審查通過（須核對 SHA）", pending: "待審", changes_requested: "要求修改", unknown: "待核" })[pr.review_state] || text(pr.review_state)),
+      detailField("審查綁定 SHA", el("code", "", text(pr.reviewed_sha)), true),
+      detailField("PR 整合紀錄", pr.merged === true ? "已整合；工作驗收仍以交付狀態為準" : pr.merged === false ? "尚未整合" : "待核"),
+      detailField("PR head SHA", el("code", "", text(pr.head_sha))),
+      detailField("整合時 head SHA", el("code", "", text(pr.merged_head_sha)), true),
+      detailField("合併 commit SHA", el("code", "", text(pr.merge_commit_sha)), true)
+    );
     section.append(fields);
     if (array(task.ci ?? pr.ci).length) {
       const list = el("ul", "audit-list");
@@ -274,12 +315,35 @@
         item.append(meta);
         item.append(el("p", "", `原始紀錄：${statusLabels[job.status] || text(job.status)} · ${statusLabels[job.conclusion] || text(job.conclusion)}；以有效判定為準。`));
         item.append(el("p", "", `SHA：${text(job.sha)}`), el("p", "", `Runner：${text(job.runner_id)} · 步驟數：${Array.isArray(job.steps) ? job.steps.length : text(job.steps)}`));
+        if (job.validity) item.append(badge(job.validity, validityLabels));
+        for (const [key, label] of [["tree_sha", "Git tree SHA"], ["equivalent_head_sha", "等價映射 head SHA"], ["bound_head_sha", "有效綁定 head SHA"], ["binding_kind", "綁定依據"]]) {
+          if (job[key] !== undefined && job[key] !== null) item.append(el("p", "", `${label}：${text(job[key])}`));
+        }
         if (job.evaluation) item.append(el("p", "", text(job.evaluation)));
         if (job.url) item.append(link(job.url, "CI 紀錄"));
         list.append(item);
       }
       section.append(list);
     }
+    return section;
+  }
+
+  function completedActionsSection(task) {
+    const section = el("section", "audit-section");
+    section.append(el("h4", "", "已完成的操作紀錄"));
+    if (task.next_action_completed === true) section.append(el("p", "subtle", "已完成本輪核對；相同輸入版本不重複列為下一步，等待相關輸入更新。"));
+    const receipts = array(task.completed_actions);
+    if (!receipts.length) { section.append(el("p", "subtle", "尚未登記完成收據。")); return section; }
+    const list = el("ol", "audit-list");
+    for (const receipt of receipts) {
+      const item = el("li", "audit-entry");
+      const top = el("div", "audit-meta");
+      top.append(el("strong", "", actionLabels[receipt.action] || text(receipt.action, "操作待核")), el("time", "", stamp(receipt.timestamp)));
+      item.append(top, el("p", "", "本次操作綁定的輸入版本"), el("code", "input-pin", text(receipt.input_pin)));
+      if (receipt.summary) item.append(el("p", "", receipt.summary));
+      list.append(item);
+    }
+    section.append(list);
     return section;
   }
 
@@ -319,7 +383,7 @@
     top.append(close);
     panel.append(top);
     const details = el("dl", "detail-grid");
-    details.append(detailField("範圍", task.scope, true), detailField("檔案範圍", listOf(task.files, "尚未登記檔案範圍", true), true), detailField("Owner thread", el("code", "", text(task.owner_thread, "未登記"))), detailField("分支", el("code", "", text(task.branch))), detailField("目前 head SHA", el("code", "", text(task.head_sha)), true), detailField("最早可開始 · UTC", task.not_before ? stamp(task.not_before) : "未定日期"), detailField("最近有效驗證 · UTC", task.last_verified_evidence?.timestamp ? stamp(task.last_verified_evidence.timestamp) : "尚無目前 head 的有效驗證紀錄"));
+    details.append(detailField("範圍", task.scope, true), detailField("檔案範圍", listOf(task.files, "尚未登記檔案範圍", true), true), detailField("Owner thread", el("code", "", text(task.owner_thread, "未登記"))), detailField("分支", el("code", "", text(task.branch))), detailField("目前 head SHA", el("code", "", text(task.head_sha)), true), detailField("最早可開始 · UTC", task.not_before ? stamp(task.not_before) : "未定日期"), detailField("最近適用驗證 · UTC", task.last_verified_evidence?.timestamp ? stamp(task.last_verified_evidence.timestamp) : "尚無適用目前 head 的有效驗證紀錄"));
     const dependencies = el("ul", "plain-list");
     for (const dependency of array(task.dependencies)) {
       const id = typeof dependency === "string" ? dependency : text(dependency.id ?? dependency.task_id, "");
@@ -332,21 +396,25 @@
       dependencies.append(li);
     }
     if (!dependencies.childElementCount) dependencies.append(el("li", "subtle", "未登記依賴"));
-    details.append(detailField("工作依賴", dependencies), detailField("必須通過的驗收條件", acceptanceList(task), true), detailField("批准限制", approvalList(task), true), detailField("建議下一步", actionText(task.next_action), true), detailField("本工作來源與版本", provenanceList(task), true));
+    details.append(detailField("工作依賴", dependencies), detailField("必須通過的驗收條件", acceptanceList(task), true), detailField("批准限制", approvalList(task), true), detailField("下一步操作類型", actionMode(task)), detailField("下一步綁定的輸入版本", el("code", "input-pin", text(task.next_action_pin)), true), detailField("建議下一步", actionText(task.next_action), true), detailField("本工作來源與版本", provenanceList(task), true));
     if (taskAlerts(task).length) details.append(detailField("工作警示", listOf(taskAlerts(task).map(alertText)), true));
     panel.append(details);
     const pr = prSection(task);
     if (pr) panel.append(pr);
-    panel.append(evidenceSection(task), historySection(task));
+    panel.append(evidenceSection(task), completedActionsSection(task), historySection(task));
     return panel;
   }
 
   function matchesFilter(task, filter, readyIds) {
     switch (filter) {
       case "ready": return readyIds.has(task.id);
+      case "read_only": return readyIds.has(task.id) && task.next_action_mode === "read_only";
+      case "write": return readyIds.has(task.id) && task.next_action_mode === "write";
+      case "wait": return task.next_action_mode === "wait";
+      case "checked": return task.next_action_completed === true;
       case "attention": return taskAlerts(task).length > 0 || array(state.alerts).some((alert) => alertTaskId(alert) === task.id);
       case "review": return ["awaiting_review", "awaiting_integration"].includes(task.delivery_status);
-      case "blocked": return task.execution_status === "blocked";
+      case "blocked": return task.execution_status === "blocked" || task.delivery_status === "approval_blocked";
       case "stopped": return task.execution_status === "stopped";
       case "unknown": return !task.execution_status || task.execution_status === "unknown" || !task.delivery_status || task.delivery_status === "unknown";
       case "done": return task.delivery_status === "done";
@@ -393,7 +461,9 @@
       owner.append(sha);
       const manualSources = array(task.source_provenance).filter((source) => source.kind === "manual_snapshot" && source.as_of).sort((a, b) => Date.parse(a.as_of) - Date.parse(b.as_of));
       if (manualSources.length) owner.append(el("span", "source-asof", `${manualSources.length > 1 ? "最早" : "手動"}快照 ${stamp(manualSources[0].as_of)} UTC`));
-      const action = el("td", "next-action", actionText(task.next_action));
+      if (manualSources[0]?.last_verified_at && manualSources[0].last_verified_at !== manualSources[0].as_of) owner.append(el("span", "source-asof", `最近觀測 ${stamp(manualSources[0].last_verified_at)} UTC`));
+      const action = el("td", "next-action");
+      action.append(actionMode(task), el("span", "", actionText(task.next_action)));
       action.dataset.label = "下一步";
       if (taskAlerts(task).length) action.append(el("span", "row-alert", `${taskAlerts(task).length} 項警示`));
       row.append(execution, delivery, owner, action);
@@ -487,11 +557,15 @@
       && optionalArray(task.acceptance, object)
       && optionalArray(task.ci, object)
       && optionalArray(task.evidence, object)
+      && optionalArray(task.completed_actions, (receipt) => object(receipt) && typeof receipt.action === "string" && typeof receipt.input_pin === "string" && /^[0-9a-f]{64}$/i.test(receipt.input_pin) && typeof receipt.timestamp === "string")
+      && (task.next_action_pin === undefined || (typeof task.next_action_pin === "string" && /^[0-9a-f]{64}$/i.test(task.next_action_pin)))
+      && (task.next_action_mode === undefined || Object.prototype.hasOwnProperty.call(modeLabels, task.next_action_mode))
       && (!task.pr || (object(task.pr) && optionalArray(task.pr.ci, object))))) throw new Error("API 工作資料不符合資料契約");
     if (new Set(payload.tasks.map((task) => task.id)).size !== payload.tasks.length) throw new Error("API 工作 ID 重複，未套用此回應");
     if (!payload.sources.every((source) => object(source) && typeof source.id === "string" && source.id && typeof source.kind === "string" && typeof source.status === "string")) throw new Error("API 來源資料不符合資料契約");
     if (!payload.alerts.every((alert) => typeof alert === "string" || object(alert))) throw new Error("API 警示資料不符合資料契約");
     if (!payload.ready.every((entry) => typeof entry === "string" ? payload.tasks.some((task) => task.id === entry) : object(entry) && typeof entry.id === "string" && payload.tasks.some((task) => task.id === entry.id))) throw new Error("API 可接手工作缺少對應來源");
+    if (payload.ready_counts !== undefined && (!object(payload.ready_counts) || !["all", "read_only", "write"].every((key) => Number.isInteger(payload.ready_counts[key]) && payload.ready_counts[key] >= 0))) throw new Error("API 操作類型計數不符合資料契約");
     return payload;
   }
 

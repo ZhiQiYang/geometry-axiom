@@ -34,6 +34,7 @@
 
     <section class="next-section" aria-labelledby="next-heading">
       <div class="section-heading compact"><h2 id="next-heading">可進行的下一步</h2><span id="ready-count" class="count-label">待核</span><a href="#alerts" class="text-link alerts-jump">查看警示</a></div>
+      <div id="ready-mode-counts" class="ready-mode-counts" aria-label="下一步操作類型"><span class="subtle">操作類型待核</span></div>
       <div id="ready-list" class="ready-list"><p class="empty">正在讀取本機狀態…</p></div>
     </section>
 
@@ -42,7 +43,7 @@
         <div class="section-heading"><h2 id="queue-heading">工作佇列 <span class="heading-count" id="task-count">—</span></h2><a href="#schedule" class="text-link">查看全部排程</a></div>
         <div class="queue-tools">
           <label class="search-field" for="search-input"><span class="sr-only">搜尋工作、編號、分支或檔案</span><input id="search-input" type="search" placeholder="搜尋工作、編號、分支或檔案" autocomplete="off"></label>
-          <label class="filter-field" for="status-filter"><span class="sr-only">篩選工作</span><select id="status-filter"><option value="all">全部狀態</option><option value="ready">可進行下一步</option><option value="attention">有警示</option><option value="review">待審／待整合</option><option value="blocked">明確阻塞</option><option value="stopped">執行者已停止</option><option value="unknown">狀態待核</option><option value="done">已完成並整合</option></select></label>
+          <label class="filter-field" for="status-filter"><span class="sr-only">篩選工作</span><select id="status-filter"><option value="all">全部狀態</option><option value="ready">可進行下一步</option><option value="read_only">唯讀核對</option><option value="write">可寫入工作</option><option value="wait">等待／待批准</option><option value="checked">已完成本輪核對</option><option value="attention">有警示</option><option value="review">待審／待整合</option><option value="blocked">阻塞／待批准</option><option value="stopped">執行者已停止</option><option value="unknown">狀態待核</option><option value="done">已完成並整合</option></select></label>
         </div>
         <p id="filter-summary" class="filter-summary" aria-live="polite">讀取後顯示工作</p>
         <div class="queue-table-wrap">

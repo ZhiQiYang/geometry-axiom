@@ -19,9 +19,16 @@ SOURCE_KINDS = {"manual_snapshot", "git", "github", "operator"}
 EXECUTION_STATES = {"unknown", "unassigned", "active", "stopped", "blocked", "finished"}
 EVENT_KINDS = {"task", "assignment", "result", "github"}
 TASK_FIELDS = {"title", "refs", "scope", "files", "branch", "dependencies",
-               "approval_constraints", "required_acceptance", "not_before", "head_sha"}
+               "approval_constraints", "required_acceptance", "not_before", "head_sha", "head_tree_sha"}
 ASSIGNMENT_FIELDS = {"owner_thread", "execution_status", "reserved", "reason", "files"}
-RESULT_FIELDS = {"evidence", "pr", "head_sha", "execution_status", "owner_thread", "summary"}
+RESULT_FIELDS = {"evidence", "pr", "head_sha", "execution_status", "owner_thread", "summary", "completed_actions"}
+TRANSITION_ACTIONS = {"ready_for_review", "ready", "publish_bundle", "publish_pr", "create_pr"}
+RECEIPT_ACTIONS = {"review_pr", "review_integration", "verify_acceptance", "verify_scope",
+                   "verify_source", "collect_result", "resolve_blocker", "continue_work"}
+CI_STATUSES = {"queued", "in_progress", "completed", "pending", "waiting", "requested"}
+CI_CONCLUSIONS = {"success", "passed", "failure", "failed", "neutral", "cancelled",
+                  "skipped", "timed_out", "action_required", "stale", "startup_failure", "unknown"}
+VALID_BINDINGS = {"valid", "merged_commit", "tree_equivalent"}
 STALE_AFTER_HOURS = 24
 MAX_INPUT_BYTES = 8 * 1024 * 1024
 
@@ -82,6 +89,13 @@ def _integer(value, label, minimum=1):
         raise ValidationError(f"{label} must be an integer >= {minimum}")
 
 
+def _enum(value, allowed, label, nullable=False):
+    if nullable and value is None:
+        return
+    if not isinstance(value, str) or value not in allowed:
+        raise ValidationError(f"{label} must be one of {sorted(allowed)}")
+
+
 def _strings(value, label):
     if not isinstance(value, list):
         raise ValidationError(f"{label} must be an array")
@@ -118,35 +132,65 @@ def _validate_ci(job):
             {"name", "sha", "status", "conclusion"})
     _string(job["name"], "CI job name")
     _sha(job["sha"], "CI job SHA")
-    for key in ("status", "conclusion"):
-        if job[key] is not None:
-            _string(job[key], f"CI {key}")
+    _enum(job["status"], CI_STATUSES, "CI status", nullable=True)
+    _enum(job["conclusion"], CI_CONCLUSIONS, "CI conclusion", nullable=True)
     if "url" in job:
         _url(job["url"], "CI URL")
     if "runner_id" in job:
         _integer(job["runner_id"], "runner_id", 0)
-    if "steps" in job and not isinstance(job["steps"], list):
-        raise ValidationError("CI steps must be an array")
+    if "steps" in job:
+        _validate_steps(job["steps"])
+
+
+def _validate_steps(steps):
+    if not isinstance(steps, list) or len(steps) > 2000:
+        raise ValidationError("CI steps must be an array with at most 2000 entries")
+    for step in steps:
+        _object(step, "CI step", {"name", "status", "conclusion", "number", "started_at", "completed_at"})
+        if "name" in step:
+            _string(step["name"], "CI step name")
+        if "status" in step:
+            _enum(step["status"], CI_STATUSES, "CI step status", nullable=True)
+        if "conclusion" in step:
+            _enum(step["conclusion"], CI_CONCLUSIONS, "CI step conclusion", nullable=True)
+        if "number" in step:
+            _integer(step["number"], "CI step number", 0)
+        for key in ("started_at", "completed_at"):
+            if step.get(key) is not None:
+                timestamp(step[key], f"CI step {key}")
+
+
+def _validate_receipt(receipt):
+    _object(receipt, "completed action", {"action", "input_pin", "timestamp", "summary"},
+            {"action", "input_pin", "timestamp"})
+    _enum(receipt["action"], RECEIPT_ACTIONS, "completed action")
+    if not isinstance(receipt["input_pin"], str) or not re.fullmatch(r"[0-9a-f]{64}", receipt["input_pin"]):
+        raise ValidationError("completed action input_pin must be the exact lowercase SHA256 action pin")
+    timestamp(receipt["timestamp"], "completed action timestamp")
+    if "summary" in receipt:
+        _string(receipt["summary"], "completed action summary")
 
 
 def _validate_evidence(evidence):
     _object(evidence, "evidence", {"id", "criterion", "kind", "timestamp", "sha", "result", "url",
-                                 "runner_id", "steps", "expires_at", "summary"},
+                                 "runner_id", "steps", "expires_at", "summary", "tree_sha", "equivalent_head_sha"},
             {"id", "criterion", "kind", "timestamp", "sha", "result"})
     for key in ("id", "criterion", "kind"):
         _string(evidence[key], f"evidence {key}")
     timestamp(evidence["timestamp"], "evidence timestamp")
     _sha(evidence["sha"], "evidence SHA")
-    if evidence["result"] not in {"passed", "failed", "unknown"}:
-        raise ValidationError("evidence result must be passed, failed or unknown")
+    _enum(evidence["result"], {"passed", "failed", "unknown"}, "evidence result")
+    for key in ("tree_sha", "equivalent_head_sha"):
+        if key in evidence:
+            _sha(evidence[key], f"evidence {key}")
     if "expires_at" in evidence:
         timestamp(evidence["expires_at"], "evidence expires_at")
     if "url" in evidence:
         _url(evidence["url"], "evidence URL")
     if "runner_id" in evidence:
         _integer(evidence["runner_id"], "evidence runner_id", 0)
-    if "steps" in evidence and not isinstance(evidence["steps"], list):
-        raise ValidationError("evidence steps must be an array")
+    if "steps" in evidence:
+        _validate_steps(evidence["steps"])
     if "summary" in evidence:
         _string(evidence["summary"], "evidence summary")
 
@@ -156,8 +200,7 @@ def validate_event(event):
             {"event_id", "task_id", "kind", "version", "occurred_at", "data"})
     for key in ("event_id", "task_id"):
         _string(event[key], key, maximum=200)
-    if event["kind"] not in EVENT_KINDS:
-        raise ValidationError("unknown event kind")
+    _enum(event["kind"], EVENT_KINDS, "event kind")
     _integer(event["version"], "event version")
     timestamp(event["occurred_at"], "occurred_at")
     data = event["data"]
@@ -171,8 +214,9 @@ def validate_event(event):
                 _strings(data[key], key)
         if "files" in data:
             _files(data["files"])
-        if "head_sha" in data:
-            _sha(data["head_sha"], "head_sha")
+        for key in ("head_sha", "head_tree_sha"):
+            if key in data:
+                _sha(data[key], key)
         if "not_before" in data and data["not_before"] is not None:
             timestamp(data["not_before"], "not_before")
         if "refs" in data:
@@ -188,16 +232,16 @@ def validate_event(event):
             if not isinstance(data["approval_constraints"], list):
                 raise ValidationError("approval_constraints must be an array")
             for rule in data["approval_constraints"]:
-                _object(rule, "approval", {"action", "status", "reason"}, {"action", "status"})
+                _object(rule, "approval", {"action", "status", "reason", "scope"}, {"action", "status"})
                 _string(rule["action"], "approval action")
-                if rule["status"] not in {"required", "granted", "denied"}:
-                    raise ValidationError("unknown approval status")
+                _enum(rule["status"], {"required", "granted", "denied"}, "approval status")
+                if "scope" in rule:
+                    _enum(rule["scope"], {"action", "completion"}, "approval scope")
                 if "reason" in rule:
                     _string(rule["reason"], "approval reason")
     elif event["kind"] == "assignment":
         _object(data, "assignment data", ASSIGNMENT_FIELDS, {"execution_status"})
-        if data["execution_status"] not in EXECUTION_STATES:
-            raise ValidationError("unknown execution_status")
+        _enum(data["execution_status"], EXECUTION_STATES, "execution_status")
         if "owner_thread" in data:
             _string(data["owner_thread"], "owner_thread", nullable=True, maximum=200)
         if data["execution_status"] == "active" and not data.get("owner_thread"):
@@ -210,8 +254,8 @@ def validate_event(event):
             _files(data["files"])
     else:
         _object(data, "result data", RESULT_FIELDS)
-        if "execution_status" in data and data["execution_status"] not in EXECUTION_STATES:
-            raise ValidationError("unknown execution_status")
+        if "execution_status" in data:
+            _enum(data["execution_status"], EXECUTION_STATES, "execution_status")
         if "owner_thread" in data:
             _string(data["owner_thread"], "owner_thread", nullable=True, maximum=200)
         if "summary" in data:
@@ -223,20 +267,25 @@ def validate_event(event):
                 raise ValidationError("evidence must be an array")
             for evidence in data["evidence"]:
                 _validate_evidence(evidence)
+        if "completed_actions" in data:
+            if not isinstance(data["completed_actions"], list) or len(data["completed_actions"]) > 100:
+                raise ValidationError("completed_actions must be an array with at most 100 receipts")
+            for receipt in data["completed_actions"]:
+                _validate_receipt(receipt)
         if "pr" in data and data["pr"] is not None:
             pr = data["pr"]
             _object(pr, "pr", {"number", "url", "head_sha", "merged", "merged_head_sha",
-                              "review_state", "ci", "draft"},
+                              "review_state", "reviewed_sha", "merge_commit_sha", "ci", "draft"},
                     {"number", "url", "head_sha", "merged", "review_state"})
             _integer(pr["number"], "PR number")
             _url(pr["url"], "PR URL")
             _sha(pr["head_sha"], "PR head_sha")
-            if "merged_head_sha" in pr:
-                _sha(pr["merged_head_sha"], "PR merged_head_sha")
+            for key in ("merged_head_sha", "merge_commit_sha", "reviewed_sha"):
+                if key in pr:
+                    _sha(pr[key], f"PR {key}")
             if type(pr["merged"]) is not bool or ("draft" in pr and type(pr["draft"]) is not bool):
                 raise ValidationError("PR merged/draft must be boolean")
-            if pr["review_state"] not in {"unknown", "pending", "approved", "changes_requested"}:
-                raise ValidationError("unknown PR review_state")
+            _enum(pr["review_state"], {"unknown", "pending", "approved", "changes_requested"}, "PR review_state")
             if "ci" in pr:
                 if not isinstance(pr["ci"], list):
                     raise ValidationError("PR ci must be an array")
@@ -255,12 +304,10 @@ def validate_snapshot(snapshot):
     _object(source, "source", {"id", "kind", "version", "as_of", "status", "url", "source_sha", "error"},
             {"id", "kind", "version", "as_of", "status"})
     _string(source["id"], "source id", maximum=200)
-    if source["kind"] not in SOURCE_KINDS:
-        raise ValidationError("unknown source kind; previous state has not been changed")
+    _enum(source["kind"], SOURCE_KINDS, "source kind")
     _integer(source["version"], "source version")
     timestamp(source["as_of"], "source as_of")
-    if source["status"] not in {"ok", "error"}:
-        raise ValidationError("source status must be ok or error")
+    _enum(source["status"], {"ok", "error"}, "source status")
     if "url" in source:
         _url(source["url"], "source URL")
     if "source_sha" in source:
@@ -305,6 +352,69 @@ def ci_steps_result(runner_id, steps):
     if not all(value in {"success", "passed", "skipped", "neutral"} for value in conclusions):
         return "unknown"
     return "passed" if any(value in {"success", "passed"} for value in conclusions) else "unknown"
+
+
+def same_sha(left, right):
+    return bool(left and right and left.lower() == right.lower())
+
+
+def merged_exact(task):
+    pr = task.get("pr") or {}
+    return bool(pr.get("merged") and same_sha(pr.get("head_sha"), task["head_sha"])
+                and same_sha(pr.get("merged_head_sha"), task["head_sha"]))
+
+
+def evidence_binding(evidence, task):
+    """Preserve the tested SHA; only these explicit bindings may satisfy a gate."""
+    pr = task.get("pr") or {}
+    if not evidence.get("sha") or not task["head_sha"]:
+        return "unknown"
+    if evidence["kind"] == "postmerge_test":
+        return ("merged_commit" if merged_exact(task)
+                and same_sha(pr.get("merge_commit_sha"), evidence["sha"]) else "stale")
+    if same_sha(evidence["sha"], task["head_sha"]):
+        return "valid"
+    if (evidence["kind"] == "local_test"
+            and same_sha(evidence.get("tree_sha"), task.get("head_tree_sha"))
+            and same_sha(evidence.get("equivalent_head_sha"), task["head_sha"])):
+        return "tree_equivalent"
+    return "stale"
+
+
+def action_input_pin(task, action, tasks):
+    # Pin semantic inputs, not polling time, receipt history, old-head proofs,
+    # source versions, or a newly repeated proof of the same result.
+    applicable_ids = {evidence["id"] for evidence in task["evidence"]
+                      if evidence["applicable_to_current_head"]}
+    selected_ids = {entry["evidence_id"] for entry in task["acceptance"]
+                    if entry["evidence_id"] in applicable_ids}
+    selected = [{
+        key: evidence.get(key) for key in ("criterion", "kind", "sha", "tree_sha",
+                                         "equivalent_head_sha", "binding_kind", "validity", "effective_result")
+    } for evidence in task["evidence"] if evidence["id"] in selected_ids]
+    pr = task.get("pr")
+    return digest({
+        "task_id": task["id"], "action": action,
+        "head_sha": task["head_sha"], "head_tree_sha": task.get("head_tree_sha"),
+        "scope": task["scope"], "files": sorted(task["files"]), "branch": task["branch"],
+        "owner_thread": task["owner_thread"], "execution_status": task["execution_status"],
+        "reserved": task["reserved"], "delivery_status": task["delivery_status"],
+        "pr": {key: pr.get(key) for key in ("number", "head_sha", "reviewed_sha",
+               "effective_review_state", "merged", "merged_head_sha", "merge_commit_sha", "draft")} if pr else None,
+        "ci": sorted(({key: job.get(key) for key in ("name", "sha", "effective_result")}
+                      for job in task["ci"]), key=canonical),
+        "required_acceptance": sorted(task["required_acceptance"]),
+        "acceptance": sorted(selected, key=canonical),
+        "missing_acceptance": sorted(entry["criterion"] for entry in task["acceptance"]
+                                     if entry["evidence_id"] not in applicable_ids),
+        "constraints": sorted(({"action": rule["action"], "status": rule["status"],
+                                "scope": rule.get("scope", "completion")}
+                               for rule in task["approval_constraints"]), key=canonical),
+        "dependencies": sorted(({"id": dependency, "head_sha": tasks.get(dependency, {}).get("head_sha"),
+                                  "delivery_status": tasks.get(dependency, {}).get("delivery_status", "unknown")}
+                                 for dependency in task["dependencies"]), key=canonical),
+        "not_before": task["not_before"],
+    })
 
 
 class Store:
@@ -370,6 +480,17 @@ class Store:
         source_newer = not current or (
             source["version"] > current["version"] and timestamp(source["as_of"]) >= timestamp(current["as_of"]))
         counts = {"inserted": 0, "ignored": 0, "duplicates": 0, "source_updated": source_newer}
+        evidence_identities = {}
+        for row in db.execute("SELECT task_id,payload FROM events WHERE kind IN ('result','github')"):
+            for evidence in json.loads(row["payload"])["data"].get("evidence", []):
+                evidence_identities[(row["task_id"], evidence["id"])] = canonical(evidence)
+        for event in snapshot["events"]:
+            for evidence in event["data"].get("evidence", []):
+                identity = (event["task_id"], evidence["id"])
+                encoded_evidence = canonical(evidence)
+                if identity in evidence_identities and evidence_identities[identity] != encoded_evidence:
+                    raise ValidationError("evidence_id collision: proof identity is immutable; use a new id for a new attempt")
+                evidence_identities[identity] = encoded_evidence
         for event in sorted(snapshot["events"], key=lambda e: (e["version"], timestamp(e["occurred_at"]), e["event_id"])):
             known = db.execute("SELECT source_id,payload FROM events WHERE event_id=?", (event["event_id"],)).fetchone()
             if known:
@@ -408,7 +529,8 @@ class Store:
         with self._db() as db:
             db.execute("BEGIN IMMEDIATE")
             operation = self._import(db, snapshot)
-        state = self.reconcile()
+            # Commit only after the entire resulting projection is usable.
+            state = self._read(db, utc_now())
         state["operation"] = operation
         return state
 
@@ -420,9 +542,31 @@ class Store:
         event_rows = sorted(event_rows, key=lambda row: (
             timestamp(json.loads(row["payload"])["occurred_at"]), row["version"],
             {"task": 0, "assignment": 1}.get(row["kind"], 2), row["event_id"]))
-        source_versions = {}
-        for row in db.execute("SELECT source_id,source_version,payload FROM snapshots"):
-            source_versions[(row["source_id"], row["source_version"])] = json.loads(row["payload"])["source"]
+        source_versions, observation_headers, observed_tasks = {}, {}, {}
+        event_by_id = {row["event_id"]: row for row in event_rows}
+        latest_stream_versions = {}
+        for row in event_rows:
+            if row["applied"]:
+                key = (row["source_id"], row["task_id"], row["kind"])
+                latest_stream_versions[key] = max(latest_stream_versions.get(key, 0), row["version"])
+        for row in db.execute("SELECT source_id,source_version,payload FROM snapshots ORDER BY ordinal"):
+            snapshot = json.loads(row["payload"])
+            header = snapshot["source"]
+            source_versions[(row["source_id"], row["source_version"])] = header
+            previous = observation_headers.get(header["id"])
+            newer = not previous or (header["version"] > previous["version"]
+                                    and timestamp(header["as_of"]) >= timestamp(previous["as_of"]))
+            if not newer:
+                continue
+            observation_headers[header["id"]] = header
+            if header["status"] != "ok":
+                continue
+            for event in snapshot["events"]:
+                original = event_by_id.get(event["event_id"])
+                stream = (header["id"], event["task_id"], event["kind"])
+                if (original is not None and original["applied"] and original["source_id"] == header["id"]
+                        and event["version"] == latest_stream_versions.get(stream)):
+                    observed_tasks[(event["task_id"], header["id"])] = header
         sources, source_by_id = [], {}
         for row in source_rows:
             source = json.loads(row["current"])
@@ -437,7 +581,7 @@ class Store:
             source["mode"] = "手動匯入快照" if source["kind"] == "manual_snapshot" else "已記錄的來源快照"
             sources.append(source)
             source_by_id[source["id"]] = source
-        tasks, evidence_by_task, task_provenance = {}, {}, {}
+        tasks, evidence_by_task, task_provenance, receipts_by_task = {}, {}, {}, {}
         for row in event_rows:
             event, task_id = json.loads(row["payload"]), row["task_id"]
             if not row["applied"]:
@@ -445,10 +589,11 @@ class Store:
             task = tasks.setdefault(task_id, {
                 "id": task_id, "title": task_id, "refs": [], "scope": "", "files": [],
                 "branch": None, "dependencies": [], "approval_constraints": [],
-                "required_acceptance": [], "not_before": None, "head_sha": None,
+                "required_acceptance": [], "not_before": None, "head_sha": None, "head_tree_sha": None,
                 "owner_thread": None, "execution_status": "unknown", "reserved": False,
                 "pr": None, "evidence": [], "assignment_history": [], "source_ids": [],
                 "source_provenance": [], "last_event_at": None, "metadata_known": False,
+                "completed_actions": [],
             })
             if row["source_id"] not in task["source_ids"]:
                 task["source_ids"].append(row["source_id"])
@@ -476,9 +621,15 @@ class Store:
                         "owner_thread" not in data or data["owner_thread"] == task["owner_thread"]):
                     task["execution_status"] = data["execution_status"]
                 for item in data.get("evidence", []):
-                    existing = evidence_by_task.setdefault(task_id, {}).get(item["id"])
-                    if not existing or timestamp(item["timestamp"]) >= timestamp(existing["timestamp"]):
-                        evidence_by_task[task_id][item["id"]] = copy.deepcopy(item)
+                    evidence_by_task.setdefault(task_id, {})[item["id"]] = copy.deepcopy(item)
+                for receipt in data.get("completed_actions", []):
+                    key = (receipt["action"], receipt["input_pin"])
+                    previous = receipts_by_task.setdefault(task_id, {}).get(key)
+                    if (previous is None or
+                            (timestamp(previous["timestamp"]) > now >= timestamp(receipt["timestamp"])) or
+                            (timestamp(previous["timestamp"]) <= now and timestamp(receipt["timestamp"]) <= now
+                             and timestamp(receipt["timestamp"]) >= timestamp(previous["timestamp"]))):
+                        receipts_by_task[task_id][key] = copy.deepcopy(receipt)
         for row in event_rows:
             if row["kind"] == "assignment" and row["task_id"] in tasks:
                 event = json.loads(row["payload"])
@@ -505,15 +656,17 @@ class Store:
             task["source_provenance"] = []
             for sid in task["source_ids"]:
                 contributing = task_provenance[task["id"]][sid]
+                observed = observed_tasks.get((task["id"], sid), contributing)
                 freshness = ("error" if source_by_id[sid]["status"] == "error" else
-                             "future" if timestamp(contributing["as_of"]) > now else
-                             "stale" if (now - timestamp(contributing["as_of"])).total_seconds() >
+                             "future" if timestamp(observed["as_of"]) > now else
+                             "stale" if (now - timestamp(observed["as_of"])).total_seconds() >
                              STALE_AFTER_HOURS * 3600 else "current")
                 task["source_provenance"].append({
                     "id": sid, "kind": contributing["kind"], "version": contributing["version"],
                     "as_of": contributing["as_of"], "status": source_by_id[sid]["status"],
                     "source_sha": contributing.get("source_sha"), "url": contributing.get("url"),
-                    "freshness": freshness,
+                    "freshness": freshness, "last_verified_at": observed["as_of"],
+                    "observed_version": observed["version"],
                 })
                 if freshness in {"error", "future", "stale"}:
                     alert(task, "source_" + freshness, f"來源 {sid} {'失聯，保留舊資料' if freshness == 'error' else '需要重新核對時間與資料'}。")
@@ -525,32 +678,36 @@ class Store:
                 alert(task, "scope_unknown", "工作範圍或檔案清單待核；只可讀取審查，不可派出執行工作。")
             task["evidence"] = sorted(evidence_by_task.get(task["id"], {}).values(),
                                       key=lambda e: (timestamp(e["timestamp"]), e["id"]))
+            task["completed_actions"] = sorted(
+                receipts_by_task.get(task["id"], {}).values(), key=lambda receipt: timestamp(receipt["timestamp"]))[-100:]
             latest_by_criterion = {}
             for evidence in task["evidence"]:
-                validity = "valid"
-                if not task["head_sha"] or not evidence.get("sha"):
-                    validity = "unknown"
-                elif evidence["sha"].lower() != task["head_sha"].lower():
-                    validity = "stale"
-                elif evidence.get("expires_at") and timestamp(evidence["expires_at"]) <= now:
+                binding = evidence_binding(evidence, task)
+                applicable = binding in VALID_BINDINGS
+                validity = binding
+                if applicable and evidence.get("expires_at") and timestamp(evidence["expires_at"]) <= now:
                     validity = "expired"
-                elif timestamp(evidence["timestamp"]) > now:
+                elif applicable and timestamp(evidence["timestamp"]) > now:
                     validity = "future"
-                elif evidence["kind"] in {"ci", "ci_job", "github_actions"}:
+                elif applicable and evidence["kind"] in {"ci", "ci_job", "github_actions"}:
                     step_result = ci_steps_result(evidence.get("runner_id"), evidence.get("steps"))
                     if step_result != "passed":
                         validity = "not_run" if step_result == "not_run" else "ci_" + step_result
+                evidence["binding_kind"] = binding
+                evidence["applicable_to_current_head"] = applicable
+                evidence["bound_head_sha"] = task["head_sha"] if applicable else None
                 evidence["validity"] = validity
                 evidence["effective_result"] = ("failed" if validity == "ci_failed" else
-                                                  evidence["result"] if validity == "valid" else "unknown")
+                                                  evidence["result"] if validity in VALID_BINDINGS else "unknown")
                 previous = latest_by_criterion.get(evidence["criterion"])
-                rank = lambda e: (timestamp(e["timestamp"]), {"passed": 0, "unknown": 1, "failed": 2}[e["effective_result"]])
+                rank = lambda e: (e["applicable_to_current_head"], timestamp(e["timestamp"]),
+                                   {"passed": 0, "unknown": 1, "failed": 2}[e["effective_result"]])
                 if previous is None or rank(evidence) >= rank(previous):
                     latest_by_criterion[evidence["criterion"]] = evidence
-            valid_attempts = [e for e in task["evidence"] if e["validity"] == "valid"]
+            valid_attempts = [e for e in task["evidence"] if e["validity"] in VALID_BINDINGS | {"ci_failed"}]
             task["last_verified_evidence"] = copy.deepcopy(max(
                 valid_attempts, key=lambda e: (timestamp(e["timestamp"]),
-                                               {"passed": 0, "unknown": 1, "failed": 2}[e["result"]])
+                                               {"passed": 0, "unknown": 1, "failed": 2}[e["effective_result"]])
             )) if valid_attempts else None
             task["acceptance"] = [{"criterion": criterion,
                                    "result": latest_by_criterion.get(criterion, {}).get("effective_result", "unknown"),
@@ -581,32 +738,45 @@ class Store:
                         job["effective_result"] = "unknown" if job["status"] != "completed" else "failed"
                     ci_ok = ci_ok and job["effective_result"] == "passed"
                     task["ci"].append(job)
-                merged_exact = bool(pr["merged"] and task["head_sha"] and pr.get("merged_head_sha")
-                                    and pr["merged_head_sha"].lower() == task["head_sha"].lower()
-                                    and pr.get("head_sha") and pr["head_sha"].lower() == task["head_sha"].lower())
+                is_merged_exact = merged_exact(task)
                 pr_head_exact = bool(task["head_sha"] and pr.get("head_sha")
                                      and pr["head_sha"].lower() == task["head_sha"].lower())
                 # Preserve the imported review claim, but expose its current-head
                 # validity separately so a stale approval is never shown as current.
                 pr["effective_review_state"] = pr["review_state"] if pr_head_exact else (
                     "stale" if task["head_sha"] and pr.get("head_sha") else "unknown")
+                if pr["review_state"] == "approved":
+                    if not pr.get("reviewed_sha"):
+                        pr["effective_review_state"] = "unknown"
+                    elif not pr_head_exact or not same_sha(pr["reviewed_sha"], task["head_sha"]):
+                        pr["effective_review_state"] = "stale"
+                    if pr["effective_review_state"] != "approved":
+                        alert(task, "review_head_unknown", "彙總審查宣稱尚未綁定目前 reviewed_sha，不算本輪批准。")
                 if not pr_head_exact:
                     alert(task, "pr_head_stale", "PR head 未確認或不屬於目前 head；舊審查與 CI 不能當作整合依據。")
-                if pr["merged"] and not merged_exact:
+                if pr["merged"] and not is_merged_exact:
                     alert(task, "merge_head_unknown", "PR 已合併的紀錄未證明包含目前 exact head，待核。")
-                if (merged_exact and acceptance_ok and ci_ok and task["execution_status"] != "blocked"
+                if (is_merged_exact and acceptance_ok and ci_ok and pr["effective_review_state"] == "approved"
+                        and task["execution_status"] != "blocked"
                         and timestamp(task["last_event_at"]) <= now
                         and all(s["freshness"] != "future" for s in task["source_provenance"])):
                     task["delivery_status"] = "done"
-                elif pr["review_state"] in {"pending", "unknown", "changes_requested"} and not pr["merged"]:
+                elif pr["effective_review_state"] != "approved" and not pr["merged"]:
                     task["delivery_status"] = "awaiting_review"
-                elif not acceptance_ok or not ci_ok or not pr_head_exact or (pr["merged"] and not merged_exact):
+                elif (not acceptance_ok or not ci_ok or not pr_head_exact or
+                      pr["effective_review_state"] != "approved" or (pr["merged"] and not is_merged_exact)):
                     task["delivery_status"] = "verification_pending"
                 else:
                     task["delivery_status"] = "awaiting_integration"
             else:
                 task["ci"] = []
                 task["delivery_status"] = "no_pr" if task["execution_status"] != "unknown" else "unknown"
+            completion_holds = [rule for rule in task["approval_constraints"]
+                                if rule["status"] != "granted" and rule.get("scope", "completion") == "completion"]
+            transition_holds = [rule for rule in task["approval_constraints"]
+                                if rule["status"] != "granted" and rule["action"] in TRANSITION_ACTIONS]
+            if completion_holds or (transition_holds and not (pr and pr["merged"])):
+                task["delivery_status"] = "approval_blocked"
             if task["execution_status"] == "blocked":
                 alert(task, "blocked", "工作明確受阻，不能算完成。")
             if task["execution_status"] in {"stopped", "finished"} and task["delivery_status"] != "done":
@@ -661,33 +831,54 @@ class Store:
                            "not_before", "dependency_cycle", "dependency_unknown", "dependency_incomplete",
                            "file_conflict", "blocked"}
             task["ready"] = False
+            mode = "wait"
             if task["delivery_status"] == "done":
                 code, action = "done", "已完成必要驗收與 exact head 整合"
+                mode = "none"
+            elif task["execution_status"] == "active":
+                code, action = "collect_result", "目前執行者仍在工作；等待回收其交付，不重複派出另一輪工作"
+            elif task["delivery_status"] == "approval_blocked":
+                code, action = "request_approval", "等待所列批准條件明確解除；請求紀錄不等於批准"
             elif codes & {"source_error", "source_stale", "source_future", "event_future", "unknown_task"}:
                 code, action = "verify_source", "核對來源並匯入新快照（僅讀取）"
+                mode = "read_only"
             elif codes & hard_blocks:
                 code, action = "resolve_blocker", "釐清警示或依賴後再接續；不自動擴大權限"
             elif task["delivery_status"] == "awaiting_review":
                 code, action = "review_pr", "讀取 PR 與驗收證據，提出審查意見（不代為批准）"
+                mode = "read_only"
                 task["ready"] = True
             elif task["delivery_status"] == "verification_pending":
-                code, action = "verify_acceptance", "補核目前 exact head 的必要驗收"
-                task["ready"] = not execution_denied and task["execution_status"] != "active"
+                code, action = "verify_acceptance", "讀取並核對目前 head 的必要驗收證據；不隱含執行新測試"
+                mode = "read_only"
+                task["ready"] = True
             elif task["delivery_status"] == "awaiting_integration":
                 code, action = ("request_approval", "整理整合前證據，等待明示批准") if external_denied else (
                     "review_integration", "核對整合條件並交負責人決定；工具不自動 merge")
-                task["ready"] = True
-            elif task["execution_status"] == "active":
-                code, action = "collect_result", "向目前執行者回收交付與驗收證據"
+                mode = "wait" if external_denied else "read_only"
+                task["ready"] = not external_denied
             elif execution_denied or task["reserved"]:
                 code, action = "request_approval", "整理執行前條件，等待明示批准或解除保留"
             elif "scope_unknown" in codes:
                 code, action = "verify_scope", "核對工作範圍與檔案清單（僅讀取，不派工）"
+                mode = "read_only"
                 task["ready"] = True
+            elif task["owner_thread"] and task["execution_status"] not in {"stopped", "finished", "unassigned"}:
+                code, action = "collect_result", "確認已記錄執行者的狀態與交付，再決定接續派工"
+                mode = "read_only"
             else:
                 code, action = "continue_work", "在已記錄範圍內接續工作並回收 PR 交付"
+                mode = "write"
                 task["ready"] = True
             task["next_action_code"], task["next_action"] = code, action
+            task["next_action_mode"] = mode
+            task["next_action_pin"] = action_input_pin(task, code, tasks)
+            receipt = receipts_by_task.get(task["id"], {}).get((code, task["next_action_pin"]))
+            task["next_action_completed"] = bool(receipt and timestamp(receipt["timestamp"]) <= now)
+            if task["next_action_completed"]:
+                task["ready"] = False
+                task["next_action_mode"] = "none"
+                task["next_action"] = "已完成這組輸入的本輪核對；等待 head 或相關條件更新"
             task["automatic_actions"] = []
         task_list = sorted(tasks.values(), key=lambda task: task["id"])
         alerts.sort(key=lambda alert: (alert["task_id"] or "", alert["code"], alert["message"]))
@@ -697,7 +888,15 @@ class Store:
                                   key=timestamp, default=None),
             "sources": sources, "tasks": task_list, "alerts": alerts,
             "ready": [t for t in task_list if t["ready"]],
+            "ready_read_only": [t for t in task_list if t["ready"] and t["next_action_mode"] == "read_only"],
+            "ready_write": [t for t in task_list if t["ready"] and t["next_action_mode"] == "write"],
         }
+        state["ready_counts"] = {"all": len(state["ready"]), "read_only": len(state["ready_read_only"]),
+                                 "write": len(state["ready_write"]),
+                                 "wait": sum(t["next_action_mode"] == "wait" for t in task_list)}
+        state["payload_hash"] = digest({"schema_version": SCHEMA_VERSION, "events": [
+            {"source_id": row["source_id"], **json.loads(row["payload"])}
+            for row in event_rows if row["applied"]]})
         state["state_hash"] = digest({key: value for key, value in state.items() if key != "generated_at"})
         return state
 
@@ -785,6 +984,12 @@ class Store:
                 raise ValidationError("result owner does not match current assignment")
             if kind == "result" and data.get("execution_status") == "active" and task["execution_status"] != "active":
                 raise ValidationError("record-result cannot start execution; use checked record-assignment")
+            for receipt in data.get("completed_actions", []):
+                if (receipt["action"] != task["next_action_code"] or
+                        receipt["input_pin"] != task["next_action_pin"]):
+                    raise ValidationError("completed action does not match the current action/input pin")
+                if timestamp(receipt["timestamp"]) > utc_now():
+                    raise ValidationError("completed action cannot have a future timestamp")
             operation = self._import(db, snapshot)
             if operation["ignored"]:
                 raise ValidationError("record is out of order; use import-snapshot for historical observations")
@@ -822,7 +1027,8 @@ class Store:
             if not existing:
                 for snapshot in exported["snapshots"]:
                     self._import(db, snapshot)
-        return self.reconcile()
+            state = self._read(db, utc_now())
+        return state
 
 
 def atomic_write_json(path, payload):

@@ -1,6 +1,8 @@
 """Focused operator-boundary tests. All records and paths are synthetic."""
 import copy
+import contextlib
 import datetime as dt
+import io
 import json
 from pathlib import Path
 import tempfile
@@ -8,6 +10,7 @@ import unittest
 from unittest.mock import patch
 
 from store import Store, ValidationError, atomic_write_json
+from cli import main as cli_main
 
 HEAD = "a" * 40
 NOW = dt.datetime(2026, 10, 6, 3, 0, tzinfo=dt.timezone.utc)
@@ -125,7 +128,8 @@ class OperatorBoundaryTests(unittest.TestCase):
     def result(self, evidence):
         return self.event("result", {"evidence": evidence, "pr": {
             "number": 1, "url": "https://example.invalid/synthetic/pull/1",
-            "head_sha": HEAD, "merged_head_sha": HEAD, "merged": True, "review_state": "approved"}})
+            "head_sha": HEAD, "merged_head_sha": HEAD, "merged": True,
+            "review_state": "approved", "reviewed_sha": HEAD}})
 
     def test_simultaneous_failed_proof_wins_over_alphabetically_later_pass(self):
         self.ingest(self.task(), self.result([
@@ -156,7 +160,134 @@ class OperatorBoundaryTests(unittest.TestCase):
         self.assertEqual(current["pr"]["review_state"], "approved")
         self.assertEqual(current["pr"]["effective_review_state"], "stale")
         self.assertEqual(current["evidence"][0]["effective_result"], "unknown")
-        self.assertEqual(current["delivery_status"], "verification_pending")
+        self.assertEqual(current["delivery_status"], "awaiting_review")
+
+    def test_postmerge_proof_preserves_actual_tested_merge_commit(self):
+        merge_commit = "b" * 40
+        result = self.result([self.evidence("synthetic-merge-test", kind="postmerge_test", sha=merge_commit)])
+        result["data"]["pr"]["merge_commit_sha"] = merge_commit
+        self.ingest(self.task(), result)
+        task = self.view()
+        self.assertEqual(task["delivery_status"], "done")
+        self.assertEqual(task["evidence"][0]["sha"], merge_commit)
+        self.assertEqual(task["evidence"][0]["bound_head_sha"], HEAD)
+        self.assertEqual(task["evidence"][0]["validity"], "merged_commit")
+
+    def test_postmerge_binding_requires_exact_merged_pr_and_commit(self):
+        result = self.result([self.evidence("wrong-merge-proof", kind="postmerge_test", sha="b" * 40)])
+        result["data"]["pr"]["merge_commit_sha"] = "c" * 40
+        self.ingest(self.task(), result)
+        self.assertNotEqual(self.view()["delivery_status"], "done")
+        self.assertEqual(self.view()["evidence"][0]["validity"], "stale")
+        second = self.result([self.evidence("unmerged-postmerge-proof", kind="postmerge_test", sha=HEAD)])
+        second["event_id"], second["version"] = "synthetic-unmerged-postmerge", 2
+        second["data"]["pr"].update(merged=False, merge_commit_sha=HEAD)
+        self.ingest(second)
+        self.assertEqual(self.view()["acceptance"][0]["result"], "unknown")
+
+    def test_generic_test_cannot_use_merge_commit_as_head_alias(self):
+        result = self.result([self.evidence("generic-merge-alias", sha="b" * 40)])
+        result["data"]["pr"]["merge_commit_sha"] = "b" * 40
+        self.ingest(self.task(), result)
+        self.assertEqual(self.view()["evidence"][0]["effective_result"], "unknown")
+        self.assertNotEqual(self.view()["delivery_status"], "done")
+
+    def test_local_tree_equivalence_is_explicit_and_preserves_tested_sha(self):
+        tested, tree = "b" * 40, "c" * 40
+        result = self.result([self.evidence("local-tree-proof", kind="local_test", sha=tested,
+                                           tree_sha=tree, equivalent_head_sha=HEAD)])
+        self.ingest(self.task(head_tree_sha=tree), result)
+        task = self.view()
+        self.assertEqual(task["delivery_status"], "done")
+        self.assertEqual(task["evidence"][0]["sha"], tested)
+        self.assertEqual(task["evidence"][0]["validity"], "tree_equivalent")
+        self.assertEqual(task["acceptance"][0]["result"], "passed")
+
+    def test_tree_change_or_new_target_head_invalidates_equivalence(self):
+        self.ingest(self.task(head_tree_sha="c" * 40), self.result([
+            self.evidence("mapped-proof", kind="local_test", sha="b" * 40,
+                          tree_sha="c" * 40, equivalent_head_sha=HEAD)]))
+        for version, updates in ((2, {"head_tree_sha": "d" * 40}), (3, {"head_sha": "e" * 40, "head_tree_sha": "c" * 40})):
+            with self.subTest(updates=updates):
+                self.ingest(self.event("task", updates, version=version))
+                self.assertEqual(self.view()["acceptance"][0]["result"], "unknown")
+                self.assertNotEqual(self.view()["delivery_status"], "done")
+
+    def test_ci_and_review_never_use_tree_equivalence(self):
+        for kind in ("ci", "review"):
+            with self.subTest(kind=kind):
+                task_id = "SYNTHETIC-" + kind
+                proof = self.evidence("not-local-proof", kind=kind, sha="b" * 40,
+                    tree_sha="c" * 40, equivalent_head_sha=HEAD,
+                    runner_id=12, steps=[{"name": "test", "status": "completed", "conclusion": "success"}])
+                result = self.result([proof])
+                result["task_id"], result["event_id"] = task_id, "synthetic-result-" + kind
+                self.ingest(self.task(task_id, head_tree_sha="c" * 40), result)
+                self.assertEqual(self.view(task_id)["evidence"][0]["effective_result"], "unknown")
+
+    def test_transition_approval_request_is_waiting_not_permission(self):
+        for action in ("ready", "ready_for_review", "publish_bundle", "publish_pr", "create_pr"):
+            with self.subTest(action=action):
+                task_id = "HOLD-" + action
+                self.ingest(self.task(task_id, approval_constraints=[{
+                    "action": action, "scope": "action", "status": "required", "reason": "合成批准請求待答覆"}]))
+                task = self.view(task_id)
+                self.assertEqual(task["delivery_status"], "approval_blocked")
+                self.assertEqual(task["next_action_mode"], "wait")
+                self.assertFalse(task["ready"])
+                self.assertEqual(task["approval_constraints"][0]["status"], "required")
+
+    def test_merge_action_hold_waits_without_repeating_approved_review(self):
+        result = self.result([self.evidence("approved-proof")])
+        result["data"]["pr"].update(merged=False, merged_head_sha=None)
+        self.ingest(self.task(approval_constraints=[{"action": "merge", "scope": "action", "status": "required"}]), result)
+        task = self.view()
+        self.assertEqual(task["delivery_status"], "awaiting_integration")
+        self.assertEqual(task["next_action_code"], "request_approval")
+        self.assertEqual(task["next_action_mode"], "wait")
+        self.assertFalse(task["ready"])
+
+    def test_active_owner_collects_result_while_completion_merge_hold_remains(self):
+        self.ingest(self.task(approval_constraints=[
+            {"action": "execute", "scope": "action", "status": "granted"},
+            {"action": "merge", "scope": "completion", "status": "required"}]))
+        # An integration hold must not reject explicitly permitted execution.
+        self.store.record_assignment(self.assignment())
+        task = self.view()
+        self.assertEqual(task["execution_status"], "active")
+        self.assertEqual(task["delivery_status"], "approval_blocked")
+        self.assertEqual(task["next_action_code"], "collect_result")
+        self.assertEqual(task["next_action_mode"], "wait")
+        self.assertFalse(task["ready"])
+
+    def test_cli_ready_modes_separate_inspection_from_new_work(self):
+        self.ingest(self.task("WRITE"))
+        review = self.result([self.evidence("review-proof")])
+        review["task_id"], review["event_id"] = "READ", "synthetic-read-result"
+        review["data"]["pr"].update(merged=False, merged_head_sha=None, review_state="pending", reviewed_sha=None)
+        self.ingest(self.task("READ"), review)
+        for mode, expected in (("write", ["WRITE"]), ("read_only", ["READ"])):
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                exit_code = cli_main(["--data-dir", str(self.store.data_dir), "list-ready", "--mode", mode])
+            payload = json.loads(output.getvalue())
+            self.assertEqual(exit_code, 0)
+            self.assertEqual([item["id"] for item in payload["ready"]], expected)
+            self.assertEqual(payload["ready_counts"]["all"], 2)
+            self.assertEqual(payload["state_hash"], self.store.reconcile()["state_hash"])
+
+    def test_projection_failure_rolls_back_import_and_restore(self):
+        self.ingest(self.task())
+        before = self.store.reconcile()["state_hash"]
+        with patch.object(self.store, "_read", side_effect=ValidationError("synthetic projection rejection")):
+            with self.assertRaises(ValidationError):
+                self.ingest(self.task("SECOND"))
+        self.assertEqual(Store(self.store.path).reconcile()["state_hash"], before)
+        empty = Store(Path(self.temp.name) / "restore")
+        with patch.object(empty, "_read", side_effect=ValidationError("synthetic projection rejection")):
+            with self.assertRaises(ValidationError):
+                empty.restore(self.store.export_snapshot())
+        self.assertEqual(Store(empty.path).reconcile()["tasks"], [])
 
     def test_private_database_and_atomic_export_permissions(self):
         self.ingest(self.task())

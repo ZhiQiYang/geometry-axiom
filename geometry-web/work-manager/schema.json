@@ -29,6 +29,26 @@
     "textList": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
     "time": {"type": "string", "format": "date-time"},
     "executionStatus": {"enum": ["unknown", "unassigned", "active", "stopped", "blocked", "finished"]},
+    "ciStatus": {"enum": [null, "queued", "in_progress", "completed", "pending", "waiting", "requested"]},
+    "ciConclusion": {"enum": [null, "success", "passed", "failure", "failed", "neutral", "cancelled", "skipped", "timed_out", "action_required", "stale", "startup_failure", "unknown"]},
+    "ciStep": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "name": {"$ref": "#/$defs/text"}, "status": {"$ref": "#/$defs/ciStatus"},
+        "conclusion": {"$ref": "#/$defs/ciConclusion"}, "number": {"type": "integer", "minimum": 0},
+        "started_at": {"oneOf": [{"$ref": "#/$defs/time"}, {"type": "null"}]},
+        "completed_at": {"oneOf": [{"$ref": "#/$defs/time"}, {"type": "null"}]}
+      }
+    },
+    "ciSteps": {"type": "array", "maxItems": 2000, "items": {"$ref": "#/$defs/ciStep"}},
+    "completedAction": {
+      "type": "object", "additionalProperties": false, "required": ["action", "input_pin", "timestamp"],
+      "properties": {
+        "action": {"enum": ["review_pr", "review_integration", "verify_acceptance", "verify_scope", "verify_source", "collect_result", "resolve_blocker", "continue_work"]},
+        "input_pin": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "timestamp": {"$ref": "#/$defs/time"}, "summary": {"$ref": "#/$defs/text"}
+      }
+    },
     "taskData": {
       "type": "object", "additionalProperties": false, "minProperties": 1,
       "properties": {
@@ -39,6 +59,7 @@
         "dependencies": {"$ref": "#/$defs/textList"},
         "required_acceptance": {"$ref": "#/$defs/textList"},
         "head_sha": {"$ref": "#/$defs/sha"},
+        "head_tree_sha": {"$ref": "#/$defs/sha"},
         "not_before": {"oneOf": [{"$ref": "#/$defs/time"}, {"type": "null"}]},
         "refs": {
           "type": "array",
@@ -53,6 +74,7 @@
             "type": "object", "additionalProperties": false, "required": ["action", "status"],
             "properties": {
               "action": {"$ref": "#/$defs/text"}, "status": {"enum": ["required", "granted", "denied"]},
+              "scope": {"enum": ["action", "completion"], "default": "completion"},
               "reason": {"$ref": "#/$defs/text"}
             }
           }
@@ -79,8 +101,9 @@
         "id": {"$ref": "#/$defs/text"}, "criterion": {"$ref": "#/$defs/text"},
         "kind": {"$ref": "#/$defs/text"}, "timestamp": {"$ref": "#/$defs/time"},
         "sha": {"$ref": "#/$defs/sha"}, "result": {"enum": ["passed", "failed", "unknown"]},
+        "tree_sha": {"$ref": "#/$defs/sha"}, "equivalent_head_sha": {"$ref": "#/$defs/sha"},
         "url": {"$ref": "#/$defs/url"}, "runner_id": {"type": "integer", "minimum": 0},
-        "steps": {"type": "array"}, "expires_at": {"$ref": "#/$defs/time"},
+        "steps": {"$ref": "#/$defs/ciSteps"}, "expires_at": {"$ref": "#/$defs/time"},
         "summary": {"$ref": "#/$defs/text"}
       }
     },
@@ -88,8 +111,8 @@
       "type": "object", "additionalProperties": false, "required": ["name", "sha", "status", "conclusion"],
       "properties": {
         "name": {"$ref": "#/$defs/text"}, "sha": {"$ref": "#/$defs/sha"},
-        "status": {"type": ["string", "null"]}, "conclusion": {"type": ["string", "null"]},
-        "runner_id": {"type": "integer", "minimum": 0}, "steps": {"type": "array"},
+        "status": {"$ref": "#/$defs/ciStatus"}, "conclusion": {"$ref": "#/$defs/ciConclusion"},
+        "runner_id": {"type": "integer", "minimum": 0}, "steps": {"$ref": "#/$defs/ciSteps"},
         "url": {"$ref": "#/$defs/url"}
       }
     },
@@ -99,6 +122,7 @@
       "properties": {
         "number": {"type": "integer", "minimum": 1}, "url": {"$ref": "#/$defs/url"},
         "head_sha": {"$ref": "#/$defs/sha"}, "merged_head_sha": {"$ref": "#/$defs/sha"},
+        "reviewed_sha": {"$ref": "#/$defs/sha"}, "merge_commit_sha": {"$ref": "#/$defs/sha"},
         "merged": {"type": "boolean"}, "draft": {"type": "boolean"},
         "review_state": {"enum": ["unknown", "pending", "approved", "changes_requested"]},
         "ci": {"type": "array", "items": {"$ref": "#/$defs/ciJob"}}
@@ -110,6 +134,7 @@
         "head_sha": {"$ref": "#/$defs/sha"},
         "pr": {"oneOf": [{"$ref": "#/$defs/pr"}, {"type": "null"}]},
         "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+        "completed_actions": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/completedAction"}},
         "execution_status": {"$ref": "#/$defs/executionStatus"},
         "owner_thread": {"oneOf": [{"type": "string", "minLength": 1, "maxLength": 200}, {"type": "null"}]},
         "summary": {"$ref": "#/$defs/text"}
@@ -135,5 +160,5 @@
   "allOf": [
     {"if": {"properties": {"source": {"properties": {"status": {"const": "error"}}}}}, "then": {"properties": {"events": {"maxItems": 0}}}}
   ],
-  "description": "store.py validate_snapshot / validate_event are the normative runtime validator; no JSON Schema dependency is required. They additionally reject unsafe URLs, noncanonical or absolute scope paths, timezone-free timestamps, control characters, stream version collisions and inputs over 8 MiB. Source and event versions are positive integers. Events are partial updates; omitted tasks or fields are never deleted. Unknown SHA is null, never a fabricated value. Failed source observations require events:[] and preserve previous tasks. Older source/as_of or stream/version/occurred_at observations remain audit history but cannot roll back current state. Identical event IDs are idempotent; conflicting IDs reject the entire transaction. Local record commands accept a full one-event snapshot or {event_id,task_id,version,occurred_at,source_id?,data}; source_id defaults to local-operator. Record-assignment checks current scope, approvals, dependencies, schedule and concurrent file owners. An exported checksum bundle may restore only an empty store or an identical already-restored store."
+  "description": "store.py validate_snapshot / validate_event are normative, dependency-free validators. They also enforce canonical relative paths, safe URLs, timezone-aware times, scalar enums, stream version gates and the 8 MiB snapshot bound. Entire projection validation occurs before transaction commit. Unknown SHA is null. Events are partial updates; omitted tasks/fields are retained. Evidence identity (task_id,id) is immutable; exact duplicates are idempotent, conflicting bodies reject the whole transaction. New attempts need new IDs. Completion-scoped unmet approvals (the default) block done and dependency release; explicit action scope preserves historical integration while retaining the future action hold. Requests never grant approval. Aggregate approved requires exact pr.reviewed_sha before it is effective. Every required acceptance, exact merged head and effective review must hold for done. Only local_test can bind a different tested SHA via exact task.head_tree_sha = evidence.tree_sha and current head = equivalent_head_sha. Only postmerge_test can bind to pr.merge_commit_sha when the merged PR head also exactly matches the current head. Original evidence.sha is never rewritten. CI/review do not use tree equivalence. The latest applicable current-head proof wins; stale-head history cannot displace it, while a newer applicable failed/future/expired proof fails closed. completed_actions receipts bind known actions to next_action_pin, suppress only identical meaningful inputs and never grant permissions; local record-result requires the current action/pin. The projection displays the most recent 100 unique receipts per task while the append-only ledger retains all. New successful source observations repeating current immutable event IDs advance per-task last_verified_at without adding events; absent tasks and failed fetches are not refreshed. payload_hash covers applied immutable semantic records, excluding observation/freshness; state_hash covers the full projection except generated_at. next_action_mode distinguishes read_only/write/wait/none, and list-ready --mode filters only actionable items. Local record commands accept a full one-event snapshot or {event_id,task_id,version,occurred_at,source_id?,data}; source_id defaults to local-operator. Record-assignment checks scope/approval/dependency/schedule/owner conflicts. Restore permits only an empty or identical destination and validates checksum and full projection atomically."
 }

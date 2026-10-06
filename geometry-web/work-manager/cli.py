@@ -24,8 +24,10 @@ def main(argv=None):
     for name in ("import-snapshot", "record-assignment", "record-result", "export", "restore"):
         command = commands.add_parser(name)
         command.add_argument("file", type=Path)
-    for name in ("reconcile", "list-ready", "list-alerts"):
+    for name in ("reconcile", "list-alerts"):
         commands.add_parser(name)
+    ready_parser = commands.add_parser("list-ready")
+    ready_parser.add_argument("--mode", choices=["all", "read_only", "write"], default="all")
     inspect_parser = commands.add_parser("inspect")
     inspect_parser.add_argument("task_id", nargs="?")
     server_parser = commands.add_parser("serve")
@@ -55,7 +57,11 @@ def main(argv=None):
         else:
             state = store.reconcile()
             if args.command == "list-ready":
-                result = {key: state[key] for key in ("state_hash", "last_synced_at", "ready")}
+                result = {key: state[key] for key in ("state_hash", "payload_hash", "last_synced_at",
+                          "ready", "ready_read_only", "ready_write", "ready_counts")}
+                result["mode"] = args.mode
+                if args.mode != "all":
+                    result["ready"] = state["ready_" + args.mode]
             elif args.command == "list-alerts":
                 result = {key: state[key] for key in ("state_hash", "last_synced_at", "alerts")}
             elif args.command == "inspect" and args.task_id:
