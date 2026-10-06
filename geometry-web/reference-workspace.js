@@ -19,10 +19,14 @@ const ReferenceWorkspace = (() => {
   let presentedDraftContext = null, presentedDrafts = null;
   let recovery = {state:"pending",message:"尚未檢查本分頁的恢復資料。"};
   let recoveryKey = null, recoveryDB = null, recoveryTimer = null, recoveryWriting = false, recoveryAgain = false, recoveryReady = false;
+  let recoveryFinishReceipt = null;
   let releaseRecoveryLock = null, recoveryAttempted = false;
   let contextConflict = false, externalEpoch = 0;
   let editorLease = "unchecked", editorLeaseSession = null;
   let nativeRevision = null, nativeSession = null, nativePending = 0;
+  const scenarioContext = () => window.GeometryNativeContext?.scenario || null;
+  let scenarioBootstrap = "blocked", scenarioInitializationAttempted = false, scenarioInitializationPermit = null;
+  let scenarioFreeze = null, lastScenarioRelease = null;
   const E = P.Features.Evidence, preparedReferences = new WeakMap();
   function observeNativeRevision(result) {
     const session = connection.session || "";
@@ -62,9 +66,11 @@ const ReferenceWorkspace = (() => {
   function assertEditorLease(){
     if(editorLease==="readonly" || editorLease==="unavailable")throw new Error("另一個分頁正在編輯這份工作，或瀏覽器無法確認編輯權限。本分頁僅供查看；請關閉原編輯分頁，再從專案資訊重新連接。");
     if(editorLeaseSession && connection.session!==editorLeaseSession)throw new Error("服務工作階段已變更，請重新連接後再編輯。");
+    if(scenarioContext() && scenarioBootstrap!=="ready" && !scenarioInitializationPermit)
+      throw new Error("這份試改尚未取得可核對的完整資料，原生內容已保留；不能重新匯入舊方案覆蓋它。");
   }
   function assertWritableLease(){assertAssemblyIdle();assertEditorLease();}
-  function assertEditable(){assertWritableLease();if(sceneTransaction||preparingSceneLoad||pendingLoad)throw new Error("場景載入結果尚未確認，請先等候結果或重新連線，再編輯或復原。");if(contextConflict)throw new Error("另一個分頁已變更目前場景。請先開啟正確的 .gcanvas 專案或建立新專案，再編輯或保存。");}
+  function assertEditable(transactionOwner=null){assertWritableLease();if((sceneTransaction&&sceneTransaction!==transactionOwner)||preparingSceneLoad||pendingLoad)throw new Error("場景載入結果尚未確認，請先等候結果或重新連線，再編輯或復原。");if(contextConflict)throw new Error("另一個分頁已變更目前場景。請先開啟正確的 .gcanvas 專案或建立新專案，再編輯或保存。");}
   function beginSceneTransaction(){assertWritableLease();if(sceneTransaction||preparingSceneLoad||pendingLoad)throw new Error("請先確認上一筆場景載入結果再開啟。");return sceneTransaction={};}
   function finishSceneTransaction(owner){if(sceneTransaction===owner){sceneTransaction=null;schedulePresentation();}}
   const context = () => history.frame.context;
@@ -154,7 +160,7 @@ const ReferenceWorkspace = (() => {
       lastSavedAt:p.lastSavedAt || null,lastDownloadAt:p.lastDownloadAt || null,statusText:statusText(c),
       undoLabel:history.actionLabel("undo") || (history.undo.length ? "上一步模型修改" : null),
       historyNote:history.undo.length ? "可復原本頁已記錄的操作；開啟專案、新專案及清空內容也各算一步。" : "本頁尚無可確認的復原記錄；服務較早的幾何歷史不保證能恢復附件與工程草稿。",
-      recovery:{...recovery},editingBlocked:!!assemblyConfirmation || contextConflict || editorLease==="readonly" || editorLease==="unavailable"};
+      recovery:{...recovery},editingBlocked:!!assemblyConfirmation || contextConflict || editorLease==="readonly" || editorLease==="unavailable" || !!scenarioContext()&&scenarioBootstrap!=="ready"};
   }
   function markSceneSource(label,kind="scene") {
     assertWritableLease();
@@ -181,7 +187,7 @@ const ReferenceWorkspace = (() => {
   async function persistSession() {
     if(!recoveryReady)return;
     if(recoveryWriting){recoveryAgain=true;return;}
-    if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation){scheduleRecovery();return;}
+    if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation || sceneTransaction){scheduleRecovery();return;}
     if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || window.WorkspaceShell?.saveState().blocked){
       recoveryMessage("draft","本次外環、校準或工作區草稿尚未套用；恢復資料只保留上次完成的工作內容。");return;
     }
@@ -192,6 +198,7 @@ const ReferenceWorkspace = (() => {
       const {bytes,stamp,scene}=await exportSnapshot(),c=stamp.context;
       const record={version:1,session,sceneHash:await sceneFingerprint(scene),bytes,updatedAt:new Date().toISOString(),
         project:{dirty:!!c.dirty,dirtyReason:c.dirtyReason || "",saved:!!c.saved,downloaded:!!c.downloaded,provenance:{...c.provenance}}};
+      if(recoveryFinishReceipt?.session===session&&recoveryFinishReceipt.key===recoveryKey)record.finishReceipt=recoveryFinishReceipt.hash;
       assertSnapshot(stamp);
       if(!recoveryReady || connection.session!==session)throw new Error("服務或其他分頁已變更，未更新恢復資料。");
       await recoveryStore("readwrite",store=>store.put(record,recoveryKey));
@@ -234,10 +241,15 @@ const ReferenceWorkspace = (() => {
         }
       }
       if(typeof indexedDB==="undefined"){recoveryMessage("unavailable","此瀏覽器無法保留本分頁的完整專案。重新整理前請保存 .gcanvas 檔案。");return {...recovery};}
-      const storageKey="geometry-canvas-recovery-tab-v1";
-      if(!window.sessionStorage)throw new Error("本分頁儲存空間不可用。");
-      recoveryKey=window.sessionStorage.getItem(storageKey);
-      if(!recoveryKey){recoveryKey=uuid();window.sessionStorage.setItem(storageKey,recoveryKey);}
+      const storageKey="geometry-canvas-recovery-tab-v1",scenario=scenarioContext();
+      if(scenario){
+        if(scenario!==serviceSession)throw new Error("試改來源與原生工作階段不符，未開啟恢復資料。");
+        recoveryKey="geometry-scenario-recovery-"+serviceSession;
+      }else{
+        if(!window.sessionStorage)throw new Error("本分頁儲存空間不可用。");
+        recoveryKey=window.sessionStorage.getItem(storageKey);
+        if(!recoveryKey){recoveryKey=uuid();window.sessionStorage.setItem(storageKey,recoveryKey);}
+      }
       const locked=await new Promise((resolve,reject)=>{
         navigator.locks.request("geometry-canvas-recovery-"+recoveryKey,{ifAvailable:true},async lock=>{
           if(!lock){resolve(false);return;}
@@ -250,7 +262,29 @@ const ReferenceWorkspace = (() => {
         request.onupgradeneeded=()=>request.result.createObjectStore("projects");
         request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);request.onblocked=()=>reject(new Error("本機恢復資料庫被其他視窗占用。"));
       });
-      const record=await recoveryStore("readonly",store=>store.get(recoveryKey));assertInitial();
+      if(scenario){
+        // A surviving native B is not enough to prove its latest browser-only
+        // metadata. Bootstrap never restores or overwrites an old B checkpoint.
+        // Only the exact fresh initializing ticket can authorize first import.
+        recoveryReady=false;
+        recoveryMessage("scenario-blocked","試改原生內容與既有恢復資料已保留。中斷的試改尚不能證明完整恢復，請回原方案核對或明確捨棄。");
+        return {...recovery};
+      }
+      let record=await recoveryStore("readonly",store=>store.get(recoveryKey)),finishPin=null;assertInitial();
+      // A Finish can commit in storage before its local UI acknowledgement.
+      // Its immutable receipt takes precedence over an older debounce record,
+      // but only in the original parent recovery namespace and native session.
+      const ticket=await readStoredScenarioTicket(serviceSession);assertInitial();
+      if(ticket?.phase==="retiring"&&ticket.retirement.reason==="finish"&&ticket.retirement.checkpoint.parentKey===recoveryKey){
+        const pin=ticket.retirement.checkpoint;
+        const saved=await recoveryStore("readonly",store=>store.get(pin.key));assertInitial();
+        if(!saved||saved.session!==serviceSession||saved.sceneHash!==pin.sceneHash||await P.sha(saved.bytes)!==pin.packageHash)
+          throw new Error("試改完成收據不完整，未覆寫原方案或試改資料。");
+        // A successful restore/commit establishes a descendant epoch. Later
+        // acknowledged A edits must win over its older immutable Finish copy.
+        // An unknown-outcome writer still holding pre-Finish A has no marker.
+        if(record?.finishReceipt!==pin.packageHash){record=saved;finishPin=pin;}
+      }
       if(!record){recoveryReady=true;recoveryMessage("empty","本分頁尚無恢復資料。服務上的既有幾何來源未知，不能據此推定已保存專案。");return {...recovery};}
       const session=typeof connection!=="undefined"?connection.session:null,dump=await api("dump");assertInitial();
       if(record.version!==1 || !session || record.session!==session || !dump.ok || record.sceneHash!==await sceneFingerprint(dump.text)){
@@ -259,6 +293,8 @@ const ReferenceWorkspace = (() => {
       const stage=label=>{busyLabel=label;present();};
       const {loaded,c,ids}=await readProjectContext(record.bytes,"本機恢復專案",stage,assertInitial,true);
       if(await sceneFingerprint(loaded.scene)!==record.sceneHash)throw new Error("本機恢復資料的場景指紋不一致。");
+      if(finishPin&&(loaded.manifest.projectId!==finishPin.projectId||!loaded.manifest.scenarioCatalog?.scenarios.some(s=>s.scenarioId===ticket.scenarioId)))
+        throw new Error("試改完成收據與原方案身份不符，資料已保留。");
       const verify=await api("dump");assertInitial();
       if(!verify.ok || connection.session!==session || await sceneFingerprint(verify.text)!==record.sceneHash)throw new Error("恢復期間服務場景已變更，未恢復專案。");
       assertInitial();
@@ -266,6 +302,7 @@ const ReferenceWorkspace = (() => {
       if(!p || typeof p.provenance?.kind!=="string" || typeof p.provenance?.label!=="string")throw new Error("本機專案來源記錄不完整。");
       Object.assign(c,{dirty:!!p.dirty,dirtyReason:String(p.dirtyReason || ""),saved:!!p.saved,downloaded:!!p.downloaded,provenance:{...p.provenance}});
       history.frame={context:c,ids:new Map(ids)};history.undo=[];history.redo=[];history.group=null;history.blockCoreRedo=false;
+      if(record.finishReceipt&&/^[a-f0-9]{64}$/.test(record.finishReceipt))recoveryFinishReceipt={session,key:recoveryKey,hash:record.finishReceipt};
       recoveryReady=true;sync();
       recoveryMessage("restored","已核對同一服務及場景，恢復本分頁的專案、來源附件、空間模型與工程草稿。未套用的工具草稿及較早復原歷史無法恢復；檔案保存狀態維持原紀錄。");
       return {...recovery};
@@ -1130,11 +1167,12 @@ const ReferenceWorkspace = (() => {
     const data = manifestData(c);P.assertManifestCapacity(data,scene);
     return JSON.parse(JSON.stringify(data));
   }
-  function assertSaveReady() {
+  function assertSaveReady(transactionOwner=null) {
+    if(nativePending>0)throw new Error("原生操作結果尚未取得，請等候完成後再保存或凍結試改。");
     if(window.RoomCollectionWorkspace?.hasWork)throw new Error("房間草稿尚未確認。請確認、取消或恢復結果，再保存專案。");
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
-    assertEditable();
+    assertEditable(transactionOwner);
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
     if (fe.draft?.pts?.length) throw new Error("外環草稿尚未套用。請先完成外環或放棄草稿，再保存專案。");
     if (fe.ulCalib?.pts?.length) throw new Error("校準尚未套用。請先套用比例尺或取消取點，再保存專案。");
@@ -1142,25 +1180,24 @@ const ReferenceWorkspace = (() => {
   function unchanged(stamp) {
     return context() === stamp.context && history.frame === stamp.frame && revision(stamp.context) === stamp.revision && !pendingLoad;
   }
-  function assertSnapshot(stamp) {
+  function assertSnapshot(stamp,transactionOwner=null) {
     if (!unchanged(stamp)) throw new Error("專案在保存準備期間已變更，請重新保存。");
-    assertSaveReady();
+    assertSaveReady(transactionOwner);
   }
-  async function exportSnapshot(c = context(),includeCatalog = true,assertCurrent=()=>{},afterFlush=()=>{}) {
+  async function exportSnapshot(c = context(),includeCatalog = true,assertCurrent=()=>{},afterFlush=()=>{},transactionOwner=null,proposal=null) {
     assertCurrent();
-    window.AssemblyWorkspace?.flush();
-    window.InfiniteGridWorkspace?.flush();
+    if(!transactionOwner){window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();}
     afterFlush();assertCurrent();
-    assertSaveReady(); await referencesReady(c); assertCurrent();assertContext(c); assertSaveReady();
+    assertSaveReady(transactionOwner); await referencesReady(c); assertCurrent();assertContext(c); assertSaveReady(transactionOwner);
     const stamp = { context:c, frame:history.frame, revision:revision(c) };
     const r=await api("dump"); if (!r.ok) throw new Error(r.error||"無法讀取場景。");
-    assertCurrent();assertSnapshot(stamp);
-    const m=includeCatalog?await manifest(c,r.text):manifestData({...c,scenarioCatalog:null});
-    P.assertManifestCapacity(m,r.text);assertCurrent();assertSnapshot(stamp);
-    await validateEvidenceClosure(c, m.featureAttachments, () => {assertCurrent();assertSnapshot(stamp);}); assertCurrent();assertSnapshot(stamp);
-    const data=new Map([...c.sources].map(([k,s])=>[k,s.bytes]));
-    const bytes=await P.pack(r.text,m,data,fflate); assertCurrent();assertSnapshot(stamp);
-    return {bytes,stamp,scene:r.text};
+    assertCurrent();assertSnapshot(stamp,transactionOwner);
+    const snapshot=proposal||c,m=includeCatalog?proposal?manifestData(snapshot):await manifest(c,r.text):manifestData({...snapshot,scenarioCatalog:null});
+    P.assertManifestCapacity(m,r.text);assertCurrent();assertSnapshot(stamp,transactionOwner);
+    await validateEvidenceClosure(snapshot, m.featureAttachments, () => {assertCurrent();assertSnapshot(stamp,transactionOwner);}); assertCurrent();assertSnapshot(stamp,transactionOwner);
+    const data=new Map([...snapshot.sources].map(([k,s])=>[k,s.bytes]));
+    const bytes=await P.pack(r.text,m,data,fflate); assertCurrent();assertSnapshot(stamp,transactionOwner);
+    return {bytes,stamp,scene:r.text,nativeRevision:r.revision??null};
   }
   async function exportBytes() { return (await exportSnapshot()).bytes; }
   async function readScenarioProject(assertCurrent=()=>{},afterFlush=()=>{}) {
@@ -1171,14 +1208,217 @@ const ReferenceWorkspace = (() => {
   function readScenarioCatalog() {
     return {catalog:structuredClone(context().scenarioCatalog),sources:new Map([...context().sources].map(([h,s])=>[h,{meta:structuredClone(s.meta),bytes:s.bytes.slice()}]))};
   }
-  function commitScenarioCatalog(catalog,sources,assertCurrent=()=>{}) {
-    assertSaveReady();assertCurrent();P.ScenarioCatalog.validate(catalog);
+  function commitScenarioCatalog(catalog,sources,assertCurrent=()=>{},transactionOwner=null) {
+    assertSaveReady(transactionOwner);assertCurrent();P.ScenarioCatalog.validate(catalog);
     const next=structuredClone(catalog),data=new Map(context().sources);
     for(const [hash,source] of sources)data.set(hash,{meta:structuredClone(source.meta),bytes:source.bytes.slice()});
     const c={...context(),scenarioCatalog:next,sources:data};P.assertManifestCapacity(manifestData(c));
     if(JSON.stringify(context().scenarioCatalog)===JSON.stringify(next))return false;
     assertCurrent();history.push(history.snapshot(),'local','保存候選方案');
     context().scenarioCatalog=next;context().sources=data;dirty();sync();return true;
+  }
+  const scenarioTicketSchema="scenario-editor-ticket/1";
+  const scenarioTicketKey=session=>"geometry-scenario-editor-ticket-"+session;
+  const nativeSessionId=value=>typeof value==="string"&&/^[a-f0-9]{32}$/.test(value);
+  function storedScenarioTicket(value,count){
+    if(count===0)return null;
+    if(count!==1||value==null)throw new Error("試改恢復記錄已損壞，保留原資料且不配置新工作階段。");
+    return validateScenarioTicket(value);
+  }
+  async function readStoredScenarioTicket(session){
+    let count;const value=await recoveryStore("readonly",store=>{count=store.count(scenarioTicketKey(session));return store.get(scenarioTicketKey(session));});
+    return storedScenarioTicket(value,count.result);
+  }
+  function validateScenarioTicket(value) {
+    if(value==null)return null;
+    const keys="context,eligible,label,parentCheckpoint,phase,request,retirement,rootSession,scenarioId,schema";
+    if(typeof value!=="object"||Array.isArray(value)||Object.keys(value).sort().join(",")!==keys||
+       value.schema!==scenarioTicketSchema||!nativeSessionId(value.rootSession)||value.eligible!==false||
+       !["creating","initializing","active","retiring"].includes(value.phase)||
+       typeof value.scenarioId!=="string"||!value.scenarioId||value.scenarioId.length>4096||
+       typeof value.label!=="string"||!value.label||value.label.length>4096||
+       !(value.context===null||nativeSessionId(value.context)))throw new Error("試改恢復記錄不完整，原資料已保留。");
+    const pin=value.parentCheckpoint;
+    if(!pin||Object.keys(pin).sort().join(",")!=="key,packageHash,projectId,sceneHash"||
+       typeof pin.key!=="string"||!pin.key||typeof pin.projectId!=="string"||!pin.projectId||
+       !/^[a-f0-9]{64}$/.test(pin.sceneHash)||!/^[a-f0-9]{64}$/.test(pin.packageHash))
+      throw new Error("試改缺少原方案完整保存位置，未配置工作階段。");
+    const r=value.request;
+    if(!r||Object.keys(r).sort().join(",")!=="action,requestId,sequence,session"||r.action!=="create"||
+       typeof r.requestId!=="string"||!/^[a-f0-9-]{36}$/.test(r.requestId)||!Number.isSafeInteger(r.sequence)||r.sequence<1||
+       r.session!==value.rootSession)throw new Error("試改請求身分不完整，未建立或退休任何工作階段。");
+    if(value.phase==="creating"&&value.context!==null||["initializing","active"].includes(value.phase)&&!value.context)
+      throw new Error("試改階段與原生身分不符，原資料已保留。");
+    if(value.phase==="retiring"){
+      const retirement=value.retirement;
+      if(!retirement||!["cancel","finish"].includes(retirement.reason))throw new Error("試改沒有明確的結束記錄。");
+      if(retirement.reason==="cancel"){
+        if(Object.keys(retirement).join(",")!=="reason")throw new Error("試改捨棄記錄不完整。");
+      }else{
+        const p=retirement.checkpoint;
+        if(Object.keys(retirement).sort().join(",")!=="checkpoint,reason"||!p||
+           Object.keys(p).sort().join(",")!=="key,packageHash,parentKey,projectId,sceneHash"||
+           p.key!=="geometry-scenario-finish-receipt-"+value.rootSession||p.parentKey!==pin.key||p.projectId!==pin.projectId||!value.context||
+           !/^[a-f0-9]{64}$/.test(p.sceneHash)||!/^[a-f0-9]{64}$/.test(p.packageHash))
+          throw new Error("已完成試改缺少可恢復的原方案完整包，未退休B。");
+      }
+    }else if(value.retirement!==null)throw new Error("試改結束記錄與階段不符。");
+    return structuredClone(value);
+  }
+  function assertScenarioJournalReady() {
+    if(scenarioContext())throw new Error("試改記錄只能由原方案管理。");
+    assertEditorLease();
+    if(editorLease!=="owned"||editorLeaseSession!==connection.session||!nativeSessionId(connection.session)||!recoveryDB||!recoveryKey)
+      throw new Error("原方案的編輯權限或本機恢復儲存尚未就緒；未配置試改工作階段。");
+  }
+  async function readScenarioEditorTicket() {
+    assertScenarioJournalReady();const session=connection.session;
+    const ticket=await readStoredScenarioTicket(session);
+    assertScenarioJournalReady();if(connection.session!==session)throw new Error("服務已變更，試改記錄未轉移。");
+    return ticket;
+  }
+  function scenarioTicketTransaction(expected,next,checkpoint=null,transactionOwner=null) {
+    assertScenarioJournalReady();
+    const before=validateScenarioTicket(expected),after=validateScenarioTicket(next),session=connection.session;
+    if(sceneTransaction&&sceneTransaction!==transactionOwner)throw new Error("原方案資料保全尚未完成，請稍候再結束試改。");
+    if((before&&before.rootSession!==session)||(after&&after.rootSession!==session))throw new Error("試改屬於另一服務，未改綁原請求。");
+    const key=scenarioTicketKey(session);
+    return new Promise((resolve,reject)=>{
+      // Acknowledgement is transaction completion, with the strongest standard
+      // durability hint. Storage refusal must fail before native allocation.
+      const tx=recoveryDB.transaction("projects","readwrite",{durability:"strict"}),store=tx.objectStore("projects");let failure=null;
+      const abort=error=>{failure=error;try{tx.abort();}catch(_){reject(error);}};
+      tx.onabort=()=>reject(failure||tx.error||new Error("試改恢復記錄交易已中止。"));
+      tx.onerror=()=>{failure ||= tx.error||new Error("試改恢復記錄寫入失敗。");};
+      tx.oncomplete=()=>{try{assertScenarioJournalReady();if(connection.session!==session)throw new Error("服務已變更，保留原試改記錄。");resolve(after&&structuredClone(after));}catch(error){reject(error);}};
+      if(tx.durability!=="strict"){abort(new Error("此瀏覽器未確認嚴格儲存提交，未配置或退休試改工作階段。"));return;}
+      const count=store.count(key),request=store.get(key);
+      request.onsuccess=()=>{try{
+        assertScenarioJournalReady();if(connection.session!==session)throw new Error("服務已變更。");
+        const current=storedScenarioTicket(request.result,count.result);
+        if(JSON.stringify(current)!==JSON.stringify(before))throw new Error("試改記錄已變更；未覆寫較新的取消或完成決定。");
+        if(checkpoint){store.put(checkpoint.record,checkpoint.key);if(checkpoint.receiptKey)store.put(checkpoint.record,checkpoint.receiptKey);}
+        if(after)store.put(after,key);else store.delete(key);
+      }catch(error){abort(error);}};
+      request.onerror=()=>abort(request.error||new Error("無法核對試改恢復記錄。"));
+    });
+  }
+  async function createScenarioEditorTicket({request,scenarioId,label},assertCurrent=()=>{}) {
+    assertScenarioJournalReady();assertCurrent();assertSaveReady();
+    if(!recoveryReady)throw new Error("原方案完整恢復資料尚未核對，未建立試改。");
+    const owner=beginSceneTransaction(),session=connection.session,key=recoveryKey;busy=true;busyLabel="正在保全原方案，再開啟試改…";present();
+    try{
+      const snapshot=await exportSnapshot(context(),true,assertCurrent,()=>{},owner),c=snapshot.stamp.context;
+      const sceneHash=await sceneFingerprint(snapshot.scene),packageHash=await P.sha(snapshot.bytes);assertCurrent();assertSnapshot(snapshot.stamp,owner);
+      const record={version:1,session,sceneHash,bytes:snapshot.bytes,updatedAt:new Date().toISOString(),
+        project:{dirty:!!c.dirty,dirtyReason:c.dirtyReason||"",saved:!!c.saved,downloaded:!!c.downloaded,provenance:{...c.provenance}}};
+      const ticket=validateScenarioTicket({schema:scenarioTicketSchema,rootSession:request?.session,request:structuredClone(request),
+        scenarioId,label,parentCheckpoint:{key,sceneHash,packageHash,projectId:c.id},phase:"creating",context:null,eligible:false,retirement:null});
+      return await scenarioTicketTransaction(null,ticket,{key,record},owner);
+    }finally{finishSceneTransaction(owner);busy=false;busyLabel="";present();scheduleRecovery();}
+  }
+  async function updateScenarioEditorTicket(expected,patch) {
+    const ticket=validateScenarioTicket(expected);
+    if(!patch||Object.keys(patch).some(key=>!["phase","context"].includes(key))||
+       !(ticket?.phase==="creating"&&patch.phase==="initializing"||ticket?.phase==="initializing"&&patch.phase==="active"))
+      throw new Error("試改階段不可倒退或重開。");
+    if(ticket.context&&patch.context!==undefined&&patch.context!==ticket.context)throw new Error("不能把試改改綁另一原生工作階段。");
+    return scenarioTicketTransaction(ticket,{...ticket,...patch});
+  }
+  async function markScenarioEditorRetiring(expected,{reason}={}) {
+    if(reason!=="cancel")throw new Error("完成試改須先持久保存原方案完整包。");
+    const ticket=validateScenarioTicket(expected);
+    if(!ticket)throw new Error("沒有可核對的試改記錄。");
+    return scenarioTicketTransaction(ticket,{...ticket,phase:"retiring",retirement:{reason:"cancel"}});
+  }
+  async function verifyScenarioEditorRetirement(expected) {
+    const ticket=validateScenarioTicket(expected),current=await readScenarioEditorTicket();
+    if(!ticket||ticket.phase!=="retiring"||JSON.stringify(ticket)!==JSON.stringify(current))throw new Error("試改尚未取得相符的結束記錄。");
+    if(ticket.retirement.reason==="cancel")return true;
+    const pin=ticket.retirement.checkpoint;
+    if(pin.parentKey!==recoveryKey||context().id!==pin.projectId)throw new Error("請先核對原分頁的完整專案，B及恢復資料仍保留。");
+    const record=await recoveryStore("readonly",store=>store.get(pin.key));
+    if(!record||record.session!==ticket.rootSession||record.sceneHash!==pin.sceneHash||await P.sha(record.bytes)!==pin.packageHash)
+      throw new Error("原方案完整保存收據不符，未退休B。");
+    const project=await P.unpack(record.bytes,fflate),dump=await api("dump");
+    if(project.manifest.projectId!==pin.projectId||JSON.stringify(project.manifest.scenarioCatalog)!==JSON.stringify(context().scenarioCatalog)||
+       !dump.ok||await sceneFingerprint(dump.text)!==pin.sceneHash||connection.session!==ticket.rootSession)
+      throw new Error("原方案或服務已變更，B及完整保存收據仍保留。");
+    return true;
+  }
+  async function clearScenarioEditorTicket(expected) {
+    const ticket=validateScenarioTicket(expected);
+    if(!ticket||ticket.phase!=="retiring")throw new Error("不能清除尚未結束的試改身份。");
+    return scenarioTicketTransaction(ticket,null);
+  }
+  async function initializeScenarioProject(bytes,name,ticketValue) {
+    const ticket=validateScenarioTicket(ticketValue),native=scenarioContext();
+    if(!native||native!==connection.session||editorLease!=="owned"||!recoveryDB||scenarioInitializationAttempted||
+       ticket?.phase!=="initializing"||ticket.context!==native)throw new Error("試改初始化身份不符；未重新匯入舊方案。");
+    const stored=await readStoredScenarioTicket(ticket.rootSession);
+    if(JSON.stringify(stored)!==JSON.stringify(ticket))throw new Error("試改已取消或身份已更新；未匯入。");
+    scenarioInitializationAttempted=true;scenarioInitializationPermit={};
+    try{
+      await importBytes(bytes,name);
+      const current=await readStoredScenarioTicket(ticket.rootSession);
+      if(connection.session!==native||JSON.stringify(current)!==JSON.stringify(ticket))throw new Error("試改初始化終態不再屬於原請求，保留資料等待核對。");
+      scenarioBootstrap="ready";recoveryReady=true;scheduleRecovery();return {ok:true,context:native};
+    }finally{scenarioInitializationPermit=null;if(scenarioBootstrap!=="ready")recoveryReady=false;}
+  }
+  async function freezeScenarioProject() {
+    if(!scenarioContext()||scenarioFreeze)throw new Error("試改尚未就緒或已在保全中。");
+    window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertSaveReady();
+    const owner=beginSceneTransaction(),session=connection.session,token=uuid();busy=true;busyLabel="正在凍結完整試改資料…";present();
+    try{
+      const snapshot=await exportSnapshot(context(),true,()=>{if(connection.session!==session||sceneTransaction!==owner)throw new Error("試改工作階段已變更。");},()=>{},owner);
+      scenarioFreeze={owner,session,token,...snapshot,sceneHash:await sceneFingerprint(snapshot.scene)};
+      return {bytes:snapshot.bytes,freezeToken:token};
+    }catch(error){finishSceneTransaction(owner);busy=false;busyLabel="";present();throw error;}
+  }
+  async function assertScenarioFrozen(token) {
+    const frozen=scenarioFreeze;
+    if(!frozen||frozen.token!==token||frozen.owner!==sceneTransaction||frozen.session!==connection.session||!unchanged(frozen.stamp))throw new Error("試改保全已過期。");
+    const dump=await api("dump");
+    if(scenarioFreeze!==frozen||!dump.ok||!unchanged(frozen.stamp)||frozen.session!==connection.session||
+       await sceneFingerprint(dump.text)!==frozen.sceneHash||frozen.nativeRevision!==null&&dump.revision!==frozen.nativeRevision)
+      throw new Error("試改在保全期間已變更，未完成或退休它。");
+    return {ok:true};
+  }
+  function releaseScenarioProject(token) {
+    if(!scenarioFreeze){if(token===lastScenarioRelease)return {ok:true,state:"released"};throw new Error("試改保全身份不符。");}
+    if(scenarioFreeze.token!==token)throw new Error("不能解除另一筆試改保全。");
+    finishSceneTransaction(scenarioFreeze.owner);scenarioFreeze=null;lastScenarioRelease=token;busy=false;busyLabel="";present();scheduleRecovery();return {ok:true,state:"released"};
+  }
+  async function finishScenarioEditor(catalog,sources,expected,assertCurrent=()=>{}) {
+    assertScenarioJournalReady();assertCurrent();
+    window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertCurrent.afterFlush?.();assertCurrent();assertSaveReady();
+    const ticket=validateScenarioTicket(expected);
+    if(ticket?.phase!=="active")throw new Error("試改尚未完整開啟，不能完成。");
+    P.ScenarioCatalog.validate(catalog);
+    if(!catalog.scenarios.some(s=>s.scenarioId===ticket.scenarioId)||context().id!==ticket.parentCheckpoint.projectId||recoveryKey!==ticket.parentCheckpoint.key)
+      throw new Error("試改與原方案保存身份不符，未變更或退休任何資料。");
+    const next=structuredClone(catalog),data=new Map(context().sources);
+    for(const [hash,source] of sources)data.set(hash,{meta:structuredClone(source.meta),bytes:source.bytes.slice()});
+    const proposal={...context(),scenarioCatalog:next,sources:data};P.assertManifestCapacity(manifestData(proposal));
+    const owner=beginSceneTransaction(),session=connection.session,key=recoveryKey;busy=true;busyLabel="正在持久保存原方案與試改…";present();
+    try{
+      const snapshot=await exportSnapshot(context(),true,assertCurrent,()=>{},owner,proposal),c=snapshot.stamp.context;
+      const sceneHash=await sceneFingerprint(snapshot.scene),packageHash=await P.sha(snapshot.bytes);assertCurrent();assertSnapshot(snapshot.stamp,owner);
+      const record={version:1,session,sceneHash,bytes:snapshot.bytes,updatedAt:new Date().toISOString(),
+        project:{dirty:true,dirtyReason:"保存候選方案",saved:!!c.saved,downloaded:false,provenance:{...c.provenance}}};
+      record.finishReceipt=packageHash;
+      // One bounded immutable Finish backup per root service session. Ordinary
+      // recovery never writes here. Replace it only with a later atomic Finish;
+      // retain the last backup after retirement instead of deleting user data.
+      const receiptKey="geometry-scenario-finish-receipt-"+session;
+      const retiring={...ticket,phase:"retiring",retirement:{reason:"finish",checkpoint:{key:receiptKey,parentKey:key,sceneHash,packageHash,projectId:c.id}}};
+      const persisted=await scenarioTicketTransaction(ticket,retiring,{key,record,receiptKey},owner);
+      // No async gap between the durable commit and the owned in-memory commit.
+      assertCurrent();assertSnapshot(snapshot.stamp,owner);
+      commitScenarioCatalog(next,data,assertCurrent,owner);
+      recoveryFinishReceipt={session,key,hash:packageHash};
+      return {ticket:persisted,checkpoint:structuredClone(persisted.retirement.checkpoint)};
+    }finally{finishSceneTransaction(owner);busy=false;busyLabel="";present();scheduleRecovery();}
   }
   async function adoptScenario(project,assertCurrent=()=>{}) {
     assertSaveReady();assertCurrent();
@@ -1607,5 +1847,7 @@ const ReferenceWorkspace = (() => {
     newProject:()=>replaceWithEmpty(false),clearContents:()=>replaceWithEmpty(true),
     noteSceneSource:({name,kind="scene-file"})=>markSceneSource(name,kind),
     manifest,readScenarioProject,readScenarioCatalog,commitScenarioCatalog,adoptScenario,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,
+    readScenarioEditorTicket,createScenarioEditorTicket,updateScenarioEditorTicket,markScenarioEditorRetiring,verifyScenarioEditorRetirement,clearScenarioEditorTicket,
+    initializeScenarioProject,freezeScenarioProject,assertScenarioFrozen,releaseScenarioProject,finishScenarioEditor,
     historyActionLabel:op=>history.actionLabel(op),get busy(){return busy;} };
 })();

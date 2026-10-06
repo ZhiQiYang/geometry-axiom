@@ -200,8 +200,41 @@ World、catalog、dirty/saved、context/revision 與 undo/redo 完全不變。
 Capture 的真 native dump 等待涵蓋關窗及重開；原子採用涵蓋已提交 confirm
 回覆等待期間的關窗、新修改與雙向歷史阻擋，以及真 Undo/Redo。
 未知 confirm 結果沿正常 reconnect 重取精確終態，不重送 confirm。
-連續兩次建立／關閉回覆遺失仍須保留同一 request 身分、精確退休 context，並可再次正常編輯。
+中斷 ticket 修補後，建立回覆連續遺失兩次必須保留同一 request 身分與 native B，
+**不再自動捨棄**。原本「lost create 立即 close」的斷言已由下列恢復／保全 gates 取代：
+
+- create 前以真 IndexedDB strict transaction 同時完成完整 A checkpoint 與 exact ticket，
+  未確認的 creating ticket 經十次真 reload／Edit（超過未改動的 cap8）仍不產生新 tuple、
+  import 或隱含 close
+- 真 child import 已在 native confirm、回覆仍被持有，以及 active B 原生修改後，
+  reload 保留 ticket 與 B；既有 Edit 明示中斷 Resume 不可用，不重匯舊 catalog
+- B 在第一次 native request 前已阻擋一般編輯；同源 standalone B 的真 bootstrap
+  同樣不 import／reset／覆寫恢復包。它不是 metadata-only Resume 的實作或驗收
+- 真瀏覽器讀取 A／B1／B2 的 IndexedDB keys 與 Web Locks；B 使用 native-context
+  專屬 namespace，第二次 B 不覆寫第一份恢復包，也不污染 A
+- 真 identified discard prompt 先拒絕再同意；拒絕保留 ticket／B，同意才 exact close。
+  Cancel 的兩次 close 回覆遺失保留 durable retiring identity；reload 後第一次 Edit
+  只重試原 close，下一次獨立 Edit 才能配置新 context
+- export／unpack／verifier，以及 durable Finish checkpoint 後、close 發送前的持有區間，
+  B 的原生修改、Undo／Redo、metadata owner 寫入都必須拒絕，iframe 維持 inert
+- Finish 的真 strict IndexedDB transaction 同時寫入一般 A recovery、獨立完整 immutable
+  receipt 與 retiring ticket；交易 complete 以前不能發 native close。核對 receipt digest、
+  manifest／source closure／B scene，A native World 不變且恰增加一筆「保存候選方案」history
+- Finish close 回覆遺失後，ticket／immutable receipt 保留；一般 recovery 不改 receipt，
+  reload 恢復完成的完整 A，且已確認的較新 A metadata 不被舊 receipt 回滾。exact close
+  重試不得再新增 history、create 或丟失完整 A
+
+原 Capture／Cancel／whole-adopt／unknown-confirm／Undo／Redo gates 保留。
+reload 的比較只要求可持久保存的 project identity、World、catalog、草稿及 dirty／saved；
+不把本來只屬於該文件的 context token、revision 或 Undo history 冒稱為 reload 後復原。
 所有材料是 synthetic；不把 timeout、未完成 Promise 或 memory DOM 結果當 pass。
+
+**本次中斷 ticket 修補的瀏覽器狀態：未執行。** 環境的 browser／AF_UNIX EPERM
+限制未解除，本次只做腳本語法與 diff whitespace 檢查，沒有啟動 Chromium。
+上述所有新增／改寫路徑以及保留的 lifecycle 路徑，均須在可用的真 browser／native
+環境另跑；Node storage fixture 或 HTTP/native 等價結果不替代 IndexedDB／Web Locks／
+reload／iframe UI 驗收。BFCache、取消 beforeunload、跨 profile／origin、實體手機及
+OS 系統 picker 不在本腳本已編寫的 coverage 內，仍屬另行待驗；不算 pass／skip。
 
 正常 `test_scenario_workflow_browser.js` 另以真 PDF import、手動矩形與明選參數欄位建立證據，
 移除圖頁後保存 A/B，要求根專案與兩份 leaf closure 共用恰一份原始 PDF bytes。
