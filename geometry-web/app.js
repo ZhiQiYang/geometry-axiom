@@ -8811,10 +8811,10 @@ function ocSelected(kind, id) {
 function feTimberSelected(id) {
   return fe.timberSelection.has(id) || (!fe.timberSelection.size && fe.sel?.kind === "timber" && fe.sel.id === id);
 }
-function ocSetSelection(items) {
-  if (!window.DraftGate.ask({ selection: items })) return;
+function ocSetSelection(items, {clearGridCreation = false} = {}) {
+  if (!window.DraftGate.ask({ selection: items })) return false;
   if(items.length)oc.parameterCreating=false;
-  if(items.length)oc.gridSystemCreating=false;
+  if(items.length || clearGridCreation)oc.gridSystemCreating=false;
   const seen = new Set();
   oc.selection = items.filter(s => {
     const key = `${s.kind}:${s.id}`;
@@ -8827,12 +8827,12 @@ function ocSetSelection(items) {
   renderObjectList();
   renderInspector();
   drawMinimap(); renderSelectionSummary();
+  return true;
 }
 function selectObject(kind, id, additive = false) {
-  oc.gridSystemCreating = false;
   const previous = oc.selection.length ? oc.selection : oc.sel ? [oc.sel] : [];
   const exists = previous.some(s => s.kind === kind && s.id === id);
-  ocSetSelection(additive ? exists ? previous.filter(s => s.kind !== kind || s.id !== id) : [...previous,{kind,id}] : [{kind,id}]);
+  return ocSetSelection(additive ? exists ? previous.filter(s => s.kind !== kind || s.id !== id) : [...previous,{kind,id}] : [{kind,id}], {clearGridCreation:true});
 }
 function feSetTimberSelection(ids) {
   const live = new Set(fe.timbers.map(t => t.id));
@@ -9094,9 +9094,10 @@ function renderObjectList() {
       `<small>${r.sub}</small></span>` +
       (free ? `<span class="row-badge" data-insp-scroll="place">未放置</span>` : "");
     row.addEventListener("click", ev => {
+      const previousScroll = oc.inspScroll;
       if (ev.target.closest('[data-insp-scroll="place"]'))
         oc.inspScroll = "place";
-      selectObject(r.kind, r.id, ev.shiftKey);
+      if (!selectObject(r.kind, r.id, ev.shiftKey)) {oc.inspScroll = previousScroll;return;}
       const card = ocFind(r.kind, r.id), box = card && cardBox(card), vp = ocv.getBoundingClientRect();
       if (box && (box.x * oc.zoom + oc.panX + box.w * oc.zoom < 0 || box.y * oc.zoom + oc.panY + box.h * oc.zoom < 0 ||
         box.x * oc.zoom + oc.panX > vp.width || box.y * oc.zoom + oc.panY > vp.height)) centerOnNode(r.kind, r.id);
@@ -9107,7 +9108,7 @@ function renderObjectList() {
       else if (r.kind === "grid-binding") window.InfiniteGridWorkspace.openBinding(r.id);
       else if (r.kind === "grid-system" && ocFind(r.kind,r.id)?.mode === "infinite") window.InfiniteGridWorkspace.openSystem(r.id);
       else if (r.kind === "column" || r.kind === "beam" || r.kind === "grid-system" || r.kind === "parameter") {
-        selectObject(r.kind, r.id);      /* 獨立物件開檢視器 */
+        if (!selectObject(r.kind, r.id)) return;      /* 獨立物件開檢視器 */
         if (innerWidth <= 900) openPanel("right", $("toggleRight"));
       }
       else enterFocus(r.kind === "space" ? "space" : "face", r.id);
