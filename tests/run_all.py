@@ -94,6 +94,7 @@ PY_NEEDS = {
     'test_space_modeling': ['model-base'],
     'test_subgrid_contract': ['bridge'],
     'test_timber_support_projection': [],
+    'test_unittest_runner': [],
     'test_witness_diagnostics': [],
     'test_witness_marks': [],
 }
@@ -128,6 +129,8 @@ NODE_TEST_FILES = [
     'tests/test_scenario_review_native.js',
     'tests/test_scenario_snapshots.js',
     'tests/test_scenario_project_store.js',
+    'tests/test_scenario_editor_tickets.js',
+    'tests/test_scenario_recovery_owner.js',
     'tests/test_shared_room_display.js',
     'tests/test_rule_case_project_store.js',
     'tests/test_source_inspector.js',

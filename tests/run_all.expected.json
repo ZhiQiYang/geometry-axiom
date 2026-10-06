@@ -1,6 +1,11 @@
 {
  "_說明": "run_all.py 的各 suite「發現到的測試／斷言數」；完整跑時逐 suite 嚴格相等，不符即 fail。新增或刪除測試後請在一次完整跑之後用 --update-expected 明確更新（並在 commit 中說明）。exit-code-only 表示該 suite 只有結束碼、沒有可數的 test。",
  "suites": {
+  "py:test_unittest_runner": {
+   "mode": "count",
+   "count": 1,
+   "unit": "test"
+  },
   "node:space_test_floor": {
    "mode": "count",
    "count": 10,
@@ -208,7 +213,7 @@
   },
   "node:tests-js": {
    "mode": "count",
-   "count": 537,
+   "count": 593,
    "unit": "node test"
   },
   "node:evidence_project_store": {
