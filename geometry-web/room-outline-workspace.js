@@ -157,6 +157,19 @@ const RoomOutlineWorkspace=(()=>{
       const edge=Number(pane.querySelector('#refRoomEdge').value),length=Number(pane.querySelector('#refRoomLength').value);
       const points=R.resizeEdge(fe.draft.pts,edge,length);editPoints(points,[{edge,length,kind:'user-confirmed-mm'}]);
     }));
+    pane.querySelector('#refRoomLength')?.addEventListener('keydown',e=>{
+      if(e.key!=='Enter')return;
+      if(!e.currentTarget.isConnected||
+          pane!==document.getElementById('faceInspectorContent')||
+          pane.querySelector('#refRoomLength')!==e.currentTarget)return;
+      e.stopPropagation();
+      if(e.defaultPrevented||e.isComposing||e.keyCode===229)return;
+      e.preventDefault();
+      if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;
+      // Reuse validation without moving focus to the button: inspectorState
+      // restores the ref* values, selected edge and input focus after refresh.
+      pane.querySelector('#refRoomSetLength')?.click();
+    });
     pane.querySelector('#refRoomReviewed')?.addEventListener('change',safe(()=>{W.assertEditable();if(!current(draft))throw Error('候選已過期。');draft.reviewed=pane.querySelector('#refRoomReviewed').checked;pane.querySelector('#refRoomConfirm').disabled=!draft.reviewed;document.getElementById('faceDraftFinish').disabled=!draft.reviewed;}));
     pane.querySelector('#refRoomConfirm')?.addEventListener('click',safe(()=>feDraftTryClose()));
   }

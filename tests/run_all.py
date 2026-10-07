@@ -156,6 +156,7 @@ NODE_PURE_TEST_FILES = {
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
     'node:face_paint_scheduler': 'tests/test_face_paint_scheduler.js',
     'node:room_outline_worker': 'tests/test_room_outline_worker.js',
+    'node:room_outline_closeout': 'tests/test_room_outline_closeout.js',
     'node:evidence_links': 'tests/test_evidence_links.js',
     'node:evidence_project_store': 'tests/test_evidence_project_store.js',
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
@@ -169,6 +170,10 @@ NODE_EXCLUDED = {
     'tests/test_shared_room_display_browser.js': 'Required isolated shared-room view adoption, per-room dirty/history/basis, true Undo/Redo and real ZIP Save/new-context Open at 1280/390; see INTEGRATION-GATES.md',
     'tests/test_scenario_workflow_browser.js': 'Required isolated formal A/B editing, compare/adopt, undo/redo, real ZIP Save/new-context reopen at 1280/390px; see INTEGRATION-GATES.md',
     'tests/test_scenario_lifecycle_browser.js': 'Required isolated formal scenario/native lifecycle gate: held Cancel/Capture/confirm, unknown terminal recovery, lost create/close; see INTEGRATION-GATES.md',
+    'tests/room_outline_keyboard_browser.js': 'Required isolated real keyboard/click-equivalence gate with formal PDF import/calibration and exact candidate/native checks; composition and stale DOM delivery are explicit fault injection; see INTEGRATION-GATES.md',
+    'tests/room_outline_acceptance_browser.js': 'Required isolated formal app/native PDF-image UI, actual Save/new-context Open and model continuation; installed Playwright/Chromium and dedicated service, default full scenarios; see INTEGRATION-GATES.md',
+    'tests/room_outline_pan_browser.js': 'Required isolated real keyboard/mouse pan and cancellation gate with native dump preservation; API-authored initial fixture and explicit pointercancel injection; see INTEGRATION-GATES.md',
+    'tests/room_outline_worker_browser.js': 'Required isolated native Worker computation and UI invalidation gate; API-authored setup and explicit late-consumer delivery injection; see INTEGRATION-GATES.md',
     'tests/test_grid_rule_reader_browser.js': 'Required isolated /13 formal reader UI/native gate: canonical candidate, evidence snapshot, zero-confirm rejection and actual ZIP Save; see INTEGRATION-GATES.md',
     'tests/test_issue116_browser.js': 'Required isolated native/browser B-menu gate, full Save/reopen and visual evidence; see INTEGRATION-GATES.md',
     'tests/scenario_browser_check.cjs': 'Required isolated scenario-module Chromium/ZIP harness; fresh receipt-backed native adapters and Playwright; run separately (INTEGRATION-GATES.md)',
@@ -189,6 +194,10 @@ REQUIRED_BROWSER_GATES = {
     'tests/rule-case-workbench-browser.cjs': 91,
     'tests/test_rule_case_app_browser.js': 76,
     'tests/test_rule_case_app_races.js': 30,
+    'tests/room_outline_keyboard_browser.js': 396,
+    'tests/room_outline_acceptance_browser.js': 253,
+    'tests/room_outline_pan_browser.js': 32,
+    'tests/room_outline_worker_browser.js': 78,
     'tests/test_grid_rule_reader_browser.js': 34,
     'geometry-web/evidence_links_browser_check.js': 67,
     'geometry-web/evidence_links_integration_test.js': 110,
@@ -201,6 +210,13 @@ BROWSER_GATE_SCOPES = {
     'geometry-web/evidence_links_browser_check.js': 'independent injected-backend adapter',
     'geometry-web/evidence_links_integration_test.js': 'formal app/PDF/ZIP/history',
 }
+
+BROWSER_GATE_SCOPES.update({
+    'tests/room_outline_keyboard_browser.js': 'real keyboard/click parity; synthetic composition and stale DOM guards',
+    'tests/room_outline_acceptance_browser.js': 'formal room app/PDF-image/UI/ZIP/model',
+    'tests/room_outline_pan_browser.js': 'real input/native preservation; API fixture and injected pointercancel',
+    'tests/room_outline_worker_browser.js': 'native Worker/UI invalidation with injected late-consumer delivery',
+})
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
 # Any other skip (even one whose reason mentions POSIX) stays a skip.

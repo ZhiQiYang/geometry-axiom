@@ -356,3 +356,73 @@ roundtrip 或舊 source 的 full receipt 代替。PR141 的九份 owner 檔案�
 瀏覽器三項在 `REQUIRED_BROWSER_GATES` 顯示必要數量，不併入 aggregate。
 共用 reader／history／registry 的受影響 gates，以及無 scope flag 的 full
 CDP／Space、timber partial、native300仍須另驗；本節本身不宣稱已全部通過。
+
+## #54 單房候選的純幾何與三個必要 browser gates
+
+`tests/test_room_outline_closeout.js` 登錄為獨立
+`node:room_outline_closeout` pure suite，實跑 24 tests；不需要 native binary。
+其中 VM 回呼測試只代表 cache／freshness 契約，真正 native dump 保全由下列 browser gates 驗。
+本次只新增這個 expected entry（24），原有各 suite floor／具名 skip／CDP golden 全不變。
+
+```sh
+python3 tests/run_all.py --list
+python3 tests/run_all.py --only node:room_outline_closeout
+```
+
+第二條是 **partial run**，不是完整非瀏覽器 census。第一條會拒絕未登錄檔案。
+三支 browser scripts 均在 `NODE_EXCLUDED` 記錄理由，並在
+`REQUIRED_BROWSER_GATES` 列為必跑；**aggregate 不會執行，不計入 pass／skip**。
+`--list` 及結束摘要顯示實際範圍，不能把未跑的 browser gate 當成功。
+
+| 必跑 script | 完整預設檢查數 | 真實範圍／明示測試接點 |
+|---|---:|---|
+| `room_outline_acceptance_browser.js` | 253 | 10 正常場景加反例；真 UI PDF／影像匯入、校準、修正及逐邊入值、取消／確認／undo／redo、實體下載、新空白 context Open、來源 bytes／校準／有序輪廓／receipt、boundary-only model 保存重開。只隱藏可選 OS Save capability，走產品真下載分支。 |
+| `room_outline_pan_browser.js` | 32 | 真鍵鼠 Space／中鍵／H 及取消後 pan、camera delta、完整草稿與 native dump 保全、接續選房。初始場景／來源／校準是 API fixture；pointercancel 為明示注入。 |
+| `room_outline_worker_browser.js` | 78 | 六個真 UI 失效情境、12 個真 native Workers；真計算結果在 consumer 處攔留／晚送，舊回呼不能復活或清新工作。初始 fixture 與晚 consumer 送達注入均明示。 |
+
+每個 gate 使用自己專屬的服務／native process／TEMP 輸出。
+以同份產品來源編譯 bridge/model-base，記錄編譯命令、binary hash、HEAD、
+`/runtime` 的 repository／fresh／fingerprint／session；安裝好的 Playwright 與 Chromium
+由執行環境提供。不得使用使用者服務、私人圖紙或共用 feedback 目錄。
+服務建立命令與完整原驗收映射見
+[`issue54-closeout-20261006.md`](../geometry-web/docs/issue54-closeout-20261006.md)。
+
+```sh
+GEOMETRY_TEST_URL=http://127.0.0.1:8896/ GEOMETRY_ROOM_ACCEPTANCE_DIR=/tmp/issue54/normal-final node tests/room_outline_acceptance_browser.js
+GEOMETRY_TEST_URL=http://127.0.0.1:8897/ GEOMETRY_WORKER_OUTPUT=/tmp/issue54/worker-final node tests/room_outline_worker_browser.js
+GEOMETRY_TEST_URL=http://127.0.0.1:8898/ GEOMETRY_PAN_OUTPUT=/tmp/issue54/pan-final node tests/room_outline_pan_browser.js
+```
+
+正式 UI 必須使用完整 default，不設 `GEOMETRY_ROOM_SCENARIOS` 或
+`GEOMETRY_ROOM_EXTRA_CASES=0`；focused development run 不能代替此 gate。
+修改 app pointer 路由另外依 AGENTS 跑無 scope flag 的 `geometry-web/cdp_test.js`，
+與 pan 共用服務時依序執行。此計數是 assertions，非 253／32／78 個 end-to-end scenarios。
+實機手機、IME、OS picker、真人時間與尚未取得的私人來源仍各自保持未驗。
+此 gate 驗既有單房流程，不能據此宣稱整個 #54 效率目標完成。
+
+## #54 候選尺寸 Enter 等價套用
+
+`tests/room_outline_keyboard_browser.js` 是另一個必要的獨立 browser gate，
+已在 `NODE_EXCLUDED` 註明原因，並由 `REQUIRED_BROWSER_GATES` 登錄 **396 assertions**。
+aggregate 不執行、不計入 pass／skip；不改既有 floor 或 golden。
+
+```sh
+GEOMETRY_TEST_URL=http://127.0.0.1:8901/ GEOMETRY_ENTER_OUT=/tmp/room-keyboard node tests/room_outline_keyboard_browser.js
+```
+
+使用自己的服務、native process 和 feedback 目錄，依上節建立環境。
+完整預設包含 1440×1000 與 390×1000 的 64 個操作案例；
+`GEOMETRY_ENTER_CASES=core` 僅供釘紅或開發，不替代完整 gate。
+正式 UI 匯入自製 PDF、校準並選房後，對照同起點的 click／真鍵盤 Enter，
+驗非第 1 邊、完整有序座標、焦點／值／選邊、連按、同值套用、非法值、
+review／Confirm、source 與 native dump 保全。
+Shift／Ctrl／Alt／Meta 和 held-key repeat 均核對真事件的旗標；
+composition／229／defaultPrevented 與舊 DOM 晚投遞是明示合成事件。
+舊 input 暫接到隱藏 fixture 容器，用來驗 connected-but-not-current guard，
+finally 移除；不呼叫應用狀態 setter 或改幾何 API 製造通過。
+
+非法尺寸沿用按鈕拒絕後的原 review 狀態；成功套用才清 reviewed。
+相同尺寸再次 Enter 仍等價於再次按套用，不是去重。
+數字欄輸入 `1e309` 實際被 HTML 正規化成空值，不能聲稱 Infinity 到達 validator。
+實體 IME／手機與真人時間未驗。這只證明 Enter 可取代此步的按鈕點按，
+不代表整個流程操作數或完成時間已改善。

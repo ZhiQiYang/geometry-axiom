@@ -5672,8 +5672,10 @@ function feClickSelectHit(k, a, b) {
 }
 
 function feMove(pt, ev) {
-  if (window.RoomOutlineWorkspace?.move(pt)) return;
-  if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid) && fe.tool === "redraw") return;
+  if (fe.drag?.kind !== "pan") {
+    if (window.RoomOutlineWorkspace?.move(pt)) return;
+    if (window.RoomOutlineWorkspace?.pending(oc.edit?.bid) && fe.tool === "redraw") return;
+  }
   const d = fe.drag;
   /* diff#4/#6(§5.A.1.4/.6):redraw 工具的 pointermove 優先分派給 feDraftPreviewMove，
      涵蓋「尚未落第一點」(d 為 null)與「已落點」(d.kind==="redraw"，此時 d 只是
@@ -5795,7 +5797,7 @@ async function feAfterChange() {
 }
 
 async function feUp(pt) {
-  if (await window.RoomOutlineWorkspace?.up(pt)) return;
+  if (fe.drag?.kind !== "pan" && await window.RoomOutlineWorkspace?.up(pt)) return;
   const e = oc.edit;
   const d = fe.drag; fe.drag = null;
   if (!e || !d) { fe.panHold = null; drawFaceEditor(); return; }
