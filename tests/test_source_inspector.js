@@ -97,15 +97,23 @@ function guidePreparationHarness(waitFor='snap') {
   vm.runInNewContext(source.slice(start,source.indexOf('/* D6c:',start)),sandbox);
   return {sandbox,state,calls,commits,reached,release};
 }
-function guideCallerHarness(kind) {
-  const g=guidePreparationHarness('newid'),pick={hidden:false,dataset:{u:'700',v:'1500'}};
+function guideCallerHarness(kind,{holdReload=false}={}) {
+  const g=guidePreparationHarness(kind==='move'?'snap':'newid'),pick={hidden:false,dataset:{u:'700',v:'1500'}};
+  g.context={id:'same-project'};g.history={frame:{}};g.connection={session:'original-service'};
+  g.renders=[];g.reloads=0;g.reloadStarted=deferred();g.reloadWait=deferred();
+  g.refreshedGuide={id:kind==='move'?7:0,source:'local',axis:'u',off:kind==='move'?1700:1500,expression:'spec:authored'};
+  Object.assign(g.sandbox.ReferenceWorkspace,{context:()=>g.context,history:g.history});
   Object.assign(g.sandbox,{window:{RoomOutlineWorkspace:{up:async()=>false}},$:()=>pick,
-    drawFaceEditor(){},renderFaceLayers(){},feLoadGuides:async()=>{}});
+    connection:g.connection,drawFaceEditor:()=>g.renders.push({kind:'canvas'}),renderFaceLayers:()=>g.renders.push({kind:'layers'}),
+    renderFaceInspector:()=>g.renders.push({kind:'inspector',guides:structuredClone(g.sandbox.fe.guides)}),
+    feLoadGuides:async()=>{g.reloads++;g.reloadStarted.resolve();if(holdReload)await g.reloadWait.promise;g.sandbox.fe.guides=[g.refreshedGuide];}});
   const source=fs.readFileSync(process.env.GEOMETRY_GUIDE_APP_JS||require.resolve('../geometry-web/app.js'),'utf8');
-  if(kind==='drag'){
+  const helper=source.indexOf('function feGuidePresentationRefresh()');
+  if(helper>=0)vm.runInNewContext(source.slice(helper,source.indexOf('async function feUp(pt) {',helper)),g.sandbox);
+  if(kind==='drag'||kind==='move'){
     const start=source.indexOf('async function feUp(pt) {');
     vm.runInNewContext(source.slice(start,source.indexOf('function fePinchRect(',start)),g.sandbox);
-    g.sandbox.fe.drag={kind:'guideNew',x0:700,y0:1500,x1:1700,y1:1500};
+    g.sandbox.fe.drag=kind==='move'?{kind:'guide',id:7,axis:'u',off:1700,moved:true}:{kind:'guideNew',x0:700,y0:1500,x1:1700,y1:1500};
     g.call=()=>g.sandbox.feUp({x:1700,y:1500});
   }else{
     g.sandbox.document={querySelectorAll:()=>[{dataset:{axis:'u'},addEventListener:(_,callback)=>g.call=callback}]};
@@ -192,15 +200,48 @@ test('draft cancellation leaves the current workspace intact and source changes 
   assert.equal(await rejected.sandbox.createReferenceGuide(10,'u',1500),false);assert.deepEqual(rejected.commits,[]);
   // Execute the shipped callers too: their first read must already belong to
   // the departed gesture, including reentry with the same face/surface IDs.
-  for(const kind of ['drag','picker'])for(const expired of ['World','same-face reentry','replacement context']){
+  for(const kind of ['drag','move','picker'])for(const expired of ['World','same-face reentry','replacement context']){
     const g=guideCallerHarness(kind),pending=g.call();await g.reached;
     g.sandbox.oc.edit=expired==='World'?null:{bid:1};g.sandbox.oc.focus=expired==='World'?null:{t:'face',id:1};
     if(expired==='replacement context')g.state.contextToken='replacement-frame';
     g.release();await pending;assert.deepEqual(g.commits,[],kind+': '+expired);
+    assert.deepEqual(g.renders,[],kind+': a departed gesture cannot repaint its replacement');
   }
-  for(const kind of ['drag','picker']){
+  for(const kind of ['drag','move','picker']){
     const g=guideCallerHarness(kind),pending=g.call();await g.reached;g.release();await pending;
-    assert.deepEqual(g.commits,['guide 0 10 u spec:authored'],kind+': current gesture preserves native reference and ID0');
+    assert.deepEqual(g.commits,[kind==='move'?'move 7 spec:authored':'guide 0 10 u spec:authored'],kind+': current gesture preserves native reference and ID0');
+  }
+});
+test('guide drag, move and picker refresh the existing inspector after their new cache arrives',async()=>{
+  for(const kind of ['drag','move','picker']){
+    const g=guideCallerHarness(kind,{holdReload:true}),emit=g.sandbox.emitLine;
+    g.sandbox.emitLine=async command=>{const changed=await emit(command);g.state.nativeRevision++;g.state.undo='committed-undo';return changed;};
+    const pending=g.call();await g.reached;g.release();await g.reloadStarted.promise;
+    assert.deepEqual(g.renders,[],kind+': never render stale guide data before reload settles');
+    g.reloadWait.resolve();await pending;
+    assert.equal(g.reloads,1,kind);
+    assert.deepEqual(g.renders,[{kind:'canvas'},{kind:'layers'},{kind:'inspector',guides:[g.refreshedGuide]}],kind+': one source-list refresh with the committed position');
+  }
+});
+test('guide reload cannot repaint a departed or replaced presentation owner',async()=>{
+  for(const kind of ['drag','move','picker'])for(const expired of ['World','same-face reentry','project','history frame','session']){
+    const g=guideCallerHarness(kind,{holdReload:true}),pending=g.call();await g.reached;g.release();await g.reloadStarted.promise;
+    if(expired==='World'){g.sandbox.oc.edit=null;g.sandbox.oc.focus=null;}
+    if(expired==='same-face reentry'){g.sandbox.oc.edit={bid:1};g.sandbox.oc.focus={t:'face',id:1};}
+    if(expired==='project')g.context={id:'same-project'};
+    if(expired==='history frame')g.history.frame={};
+    if(expired==='session')g.connection.session='replacement-service';
+    g.reloadWait.resolve();await pending;
+    assert.equal(g.commits.length,1,kind+': the accepted native edit is not retried or erased');
+    assert.deepEqual(g.renders,[],kind+': '+expired+' keeps its own presentation');
+  }
+});
+test('declined guide changes remove only the gesture preview without replacing inspector input',async()=>{
+  for(const kind of ['drag','move','picker']){
+    const g=guideCallerHarness(kind);g.sandbox.emitLine=async()=>false;
+    const pending=g.call();await g.reached;g.release();await pending;
+    assert.equal(g.reloads,0,kind+': no uncommitted cache reload');
+    assert.deepEqual(g.renders,[{kind:'canvas'},{kind:'layers'}],kind+': no inspector replacement after rejection');
   }
 });
 test('the navigation owner can cancel during render or the final native read before enter/select',async()=>{

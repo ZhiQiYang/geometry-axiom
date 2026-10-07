@@ -6356,11 +6356,61 @@ async function main() {
     check('P56-4 手選 custom 與截面深度在換邊、重繪後保留', await eval_(`$('tbRole').value==='custom' && $('tbPri').value==='7' && $('tbSide').value==='-n' && $('tbA').value==='31'`));
     await ctl('#tbUseSuggestion');
     check('P56-5 套用建議只改方向角色', await eval_(`$('tbRole').value==='boundary' && $('tbSide').value==='-n' && $('tbA').value==='31'`));
-    await field('tbRole','primary'); await ctl('#tbPlace'); await facePoint(2000,1500);
-    await until(`!oc.busy`);
-    check('P56-6 不合法手選仍交核心拒絕，不當作断線', await eval_(`fe.timbers.length===0 && $('tbRole').classList.contains('invalid') && connection.phase==='ready'`));
-    await facePoint(2000,0); await until(`fe.timbers.length===1`);
-    check('P56-7 改用點線成功後移除角色錯誤標示', await eval_(`$('tbRole').value==='boundary' && !$('tbRole').classList.contains('invalid')`));
+    // Hold only the real native snapshot returned after a rejected or committed
+    // transaction. Busy must cover that refresh, not merely the DSL response.
+    const holdTimberSettlement = async mode => eval_(`(()=>{
+      const nativeFetch=window.fetch;
+      const g=window.__g197Settlement={mode:${JSON.stringify(mode)},commands:[],events:[],settled:false,held:false};
+      const released=new Promise(resolve=>g.release=resolve);
+      const observe=e=>{if(e.type==='pointerdown'||e.key==='Enter')g.events.push({type:e.type,key:e.key,trusted:e.isTrusted,id:e.target.id,hit:e.target.closest?.('[data-face-hit]')?.dataset.faceHit});};
+      window.addEventListener('pointerdown',observe,true);window.addEventListener('keydown',observe,true);
+      g.cleanup=()=>{g.release();window.fetch=nativeFetch;window.removeEventListener('pointerdown',observe,true);window.removeEventListener('keydown',observe,true);};
+      window.fetch=async(input,init)=>{
+        const cmd=input==='/api'?JSON.parse(init.body).cmd:null;if(cmd)g.commands.push(cmd);
+        const response=await nativeFetch(input,init);if(!cmd)return response;
+        const result=await response.clone().json();
+        if(g.mode==='rejected'&&cmd.startsWith('line place ')&&!result.ok){g.settled=true;g.error=result.error;}
+        if(g.mode==='committed'&&cmd==='line history-end'&&result.ok)g.settled=true;
+        if(g.settled&&!g.held&&cmd==='source-inspect'){
+          g.held=true;g.native=result;g.raw=JSON.stringify(['tbA','tbB','tbAnchor','tbSelector','tbDir','tbSide','tbRole','tbPri'].map(id=>[id,$(id)?.value]));
+          g.requestsAtHold=g.commands.length;await released;
+        }
+        return response;
+      };
+    })()`);
+    const settlementState = () => eval_(`(()=>{const g=__g197Settlement;return {busy:oc.busy,held:g.held,mode:g.mode,native:g.native,error:g.error,referenceRevision:fe.referenceRevision,fingerprint:fe.timberReferenceData?.sourceFingerprint??null};})()`);
+    const attemptSettlementReentry = async () => {
+      await facePoint(2000,0);
+      await eval_(`$('tbPlace').focus()`);
+      await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r',unmodifiedText:'\r'});
+      await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+      await sleep(150);
+      return eval_(`(()=>{const g=__g197Settlement,raw=JSON.stringify(['tbA','tbB','tbAnchor','tbSelector','tbDir','tbSide','tbRole','tbPri'].map(id=>[id,$(id)?.value]));
+        const writes=g.commands.slice(g.requestsAtHold).filter(c=>/^(newid(?:\\s|$)|line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(c));
+        return {busy:oc.busy,unchanged:raw===g.raw,writes,pointer:g.events.some(e=>e.type==='pointerdown'&&e.trusted&&e.hit==='e:0:0'),enter:g.events.some(e=>e.type==='keydown'&&e.trusted&&e.key==='Enter'&&e.id==='tbPlace')};})()`);
+    };
+    await field('tbRole','primary');await holdTimberSettlement('rejected');
+    try {
+      await ctl('#tbPlace');await until(`__g197Settlement.held`);
+      const held=await settlementState();
+      check('P56-6a 真拒絕後來源重讀尚未完成時維持 busy',held.busy&&held.held&&held.native?.ok===true&&held.fingerprint===null&&held.error.includes('V_CUT_PRIORITY'),held);
+      await facePoint(2000,1500);
+      const reentry=await attemptSettlementReentry();
+      check('P56-6b 拒絕後重讀期間真點線與 Enter 不再入或改輸入',reentry.busy&&reentry.unchanged&&reentry.writes.length===0&&reentry.pointer&&reentry.enter,reentry);
+      await eval_(`__g197Settlement.release()`);await until(`!oc.busy`);
+      check('P56-6c 解除 busy 前完成同一原生 revision 與 fingerprint 重讀',await eval_(`fe.referenceRevision===__g197Settlement.native.revision&&fe.timberReferenceData?.sourceFingerprint===__g197Settlement.native.sourceFingerprint`));
+      check('P56-6 不合法手選仍交核心拒絕，不當作断線',await eval_(`fe.timbers.length===0 && $('tbRole').classList.contains('invalid') && connection.phase==='ready'`));
+    } finally {await eval_(`__g197Settlement.cleanup()`);}
+    await holdTimberSettlement('committed');
+    try {
+      await facePoint(2000,0);await until(`__g197Settlement.held`);
+      const held=await settlementState();
+      check('P56-7a 真成功後來源重讀尚未完成時也維持 busy',held.busy&&held.held&&held.native?.ok===true&&held.fingerprint===null,held);
+      const reentry=await attemptSettlementReentry();
+      check('P56-7b 成功後重讀期間真點線與 Enter 不重複放置或改輸入',reentry.busy&&reentry.unchanged&&reentry.writes.length===0&&reentry.pointer&&reentry.enter,reentry);
+      await eval_(`__g197Settlement.release()`);await until(`!oc.busy&&fe.timbers.length===1`);
+      check('P56-7 改用點線成功後移除角色錯誤標示',await eval_(`$('tbRole').value==='boundary' && !$('tbRole').classList.contains('invalid')`));
+    } finally {await eval_(`__g197Settlement.cleanup()`);}
   }
 
   { // GEO-198: portable references, browser PDF rendering and context isolation.

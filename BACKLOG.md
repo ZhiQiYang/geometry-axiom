@@ -6,6 +6,9 @@
 - 第一輪獨立交叉審查找到 #137＋#154 的 PDF ownership 整合缺口：A/B leaf 驗證後遺留 reader；adopt 讀取完成後取消／拒絕也未釋放 detached reader。先用兩條正式 reader VM 回歸釘紅，再以真 PDF／真 capture＋fork／新 profile filechooser Open 重現 created 3、terminated 0，只有一個 reader 有 live owner。
 - 修正僅釋放成功驗證後即丟棄的 leaf context，以及未被 live/history/pending native load 接管的 adopt context；未知 native 結果仍保留候選等待原 terminal receipt，已採用及原 A 的 reader 保持可讀。真瀏覽器修正後 created 3、terminated 2、live 1；VM完整 61/61，新增兩項涵蓋拒絕／遲到取消／未知後取消或提交／同 ID Undo/Redo。未變更 PDF bytes、保存格式或幾何行為。
 - 新增 `tests/release_gate.py`，對既有命令記錄 clean head/tree、runtime/root/source、native freshness、完整 log及exit；失敗／中斷同樣保留收據，CDP／Space另核既有完整 census，partial不冒充full。21項負例與真子行程自測登錄；其餘原floor不降低。
+- 第一輪完整 CDP 在 P53 部分執行後停住，未計為通過。真 held-response 重現：角材交易已解鎖、來源快取仍刷新時，下一次點擊或 Enter 讀到半套 snapshot。`mutate` 現在持有輸入鎖直到 success/rejection 的來源刷新結束；回呼例外必定釋鎖且不回滾已提交交易，退休畫面與新 raw 不受遲到重畫影響。新增 18 項 production-closure 測試，正式 P53 增加 5 項真 pointer/Enter assertions，原有 floor 保留。
+- 第二輪完整使用流程的視覺複審發現參考線建立／移動後右側仍顯示舊摘要。三個既有入口共用帶 context/frame/session 所有權的刷新，更新現有檢視器並沿用 raw 保存；晚回覆不得刷新已替換畫面。未新增 UI 控制項。
+- 交付全新 checkout 檢查發現舊 Linux 配方缺少 native build receipts，首頁正常卻拒絕含 A/B 的完整專案。統一正式 Linux 建置與啟動入口，使用專用 TEMP、版本收據、16 MiB stack 與一致 native transports；既有服務占用連接埠時直接拒絕，不接管或停止它。
 - 本次拿掉／合併（GEO-219）：無新增產品入口、按鈕或常駐說明；整合各分支既有控制項，交付說明與歷史驗收文件明確區分。完整候選流程仍須依同版收據驗收，不借舊 PR 數字宣稱完成。
 
 ## CONT-46-20261005 — 完整候選方案正式整合（進行中）

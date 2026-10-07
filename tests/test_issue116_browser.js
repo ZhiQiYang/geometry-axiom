@@ -1,6 +1,8 @@
 /* #116 B real/native acceptance. Requires an explicitly isolated service and
  * TEMP feedback/evidence directories. No production service is ever reset.
  * NODE_PATH may point to the desktop's bundled Playwright (no new dependency).
+ * GEOMETRY_CHROME overrides the default Chrome channel; GEOMETRY_CHROME_FLAGS
+ * supplies whitespace-separated browser flags (for example --no-sandbox).
  */
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os');
@@ -40,7 +42,10 @@ async function main(){
   const runtime=await fetch(new URL('/runtime',url)).then(r=>r.json());
   check(runtime.fresh,true,'runtime fresh before mutation');
   check(path.resolve(runtime.root),path.resolve(__dirname,'..'),'runtime belongs to this worktree');
-  const browser=await chromium.launch({headless:true,channel:'chrome'});
+  const executablePath=process.env.GEOMETRY_CHROME;
+  const args=(process.env.GEOMETRY_CHROME_FLAGS||'').split(/\s+/).filter(Boolean);
+  const browser=await chromium.launch({headless:true,
+    ...(executablePath?{executablePath}:{channel:'chrome'}),...(args.length?{args}:{})});
   const context=await browser.newContext({viewport:{width:1440,height:900},deviceScaleFactor:1});
   // Exercise the shipping download-save branch; the OS picker cannot be
   // automated here and stays a named external gate, not a simulated pass.

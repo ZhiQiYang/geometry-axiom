@@ -4720,7 +4720,7 @@ function faceReferenceOperation(bid,inputIds) {
   const current=()=>sameOwner()&&mark===JSON.stringify(ReferenceWorkspace.getModelOperationState());
   const transactionCurrent=()=>sameOwner()&&group!==null&&group===ReferenceWorkspace.history.group;
   const ownsNativeTransaction=()=>context===ReferenceWorkspace.context()&&session===connection.session&&group!==null&&group===ReferenceWorkspace.history.group;
-  return {current,sameOwner,transactionCurrent,ownsNativeTransaction,beginTransaction(){group=ReferenceWorkspace.history.group;return transactionCurrent();},
+  return {current,sameOwner,ownsPresentation,transactionCurrent,ownsNativeTransaction,beginTransaction(){group=ReferenceWorkspace.history.group;return transactionCurrent();},
     // Native rollback can advance its revision without changing World bytes.
     // Refresh the existing owner snapshot after rejection, preserving raw form
     // inputs and the strict revision pin for the next operation.
@@ -4728,6 +4728,7 @@ function faceReferenceOperation(bid,inputIds) {
     async verify(){if(!current())return false;const graph=await apiRequest('source-inspect');return current()&&graph.ok&&graph.revision===nativeRevision&&graph.sourceFingerprint===fingerprint;}};
 }
 async function fePlaceTimberFromForm(bid) {
+  if (oc.busy) return false;
   const sid = feSid(bid);
   if (!sid) { toast("請先放置這片面，再放角材"); return false; }
   const A = Number($("tbA")?.value), B = Number($("tbB")?.value);
@@ -4770,10 +4771,12 @@ async function fePlaceTimberFromForm(bid) {
     (role === "custom" ? ` priority ${pri}` : "");
   const surf = feSurf(bid);
   if (!(await mutate([decl, `place ${ids.timber} on ${sid} ${anchor} ${selector} ${dir} ${side}`],
-    {operation, friendlyError: err => feTimberPlaceErrorMessage(err, bid, surf, anchor) }))) {
-    await operation.reloadAfterRejection();return false;
-  }
-  await feLoadGuides(); drawFaceEditor(); renderFaceLayers(); renderFaceInspector();
+    {operation, friendlyError: err => feTimberPlaceErrorMessage(err, bid, surf, anchor),
+      async afterSettlement(committed) {
+        if (committed) { if (operation.ownsPresentation()) await feLoadGuides(); }
+        else await operation.reloadAfterRejection();
+      } }))) return false;
+  if (operation.sameOwner()) { drawFaceEditor(); renderFaceLayers(); renderFaceInspector(); }
   return true;
 }
 
@@ -5797,6 +5800,21 @@ async function feAfterChange() {
   renderFaceInspector();
 }
 
+// Pin the presentation before guide preparation can yield. Its native edit may
+// update history, but a replacement face/project must never receive this repaint.
+function feGuidePresentationRefresh() {
+  const edit = oc.edit, focus = oc.focus, context = ReferenceWorkspace.context(),
+    frame = ReferenceWorkspace.history.frame, session = connection.session;
+  const current = () => oc.edit === edit && oc.focus === focus && ReferenceWorkspace.context() === context &&
+    ReferenceWorkspace.history.frame === frame && connection.session === session;
+  return async changed => {
+    if (!current()) return;
+    if (changed) await feLoadGuides();
+    if (!current()) return;
+    drawFaceEditor(); renderFaceLayers();
+    if (changed) renderFaceInspector();
+  };
+}
 async function feUp(pt) {
   if (fe.drag?.kind !== "pan" && await window.RoomOutlineWorkspace?.up(pt)) return;
   const e = oc.edit;
@@ -5838,17 +5856,13 @@ async function feUp(pt) {
     const axis = dx >= dy ? "u" : "v";
     const off = Math.round(axis === "u" ? d.y1 : d.x1);
     const sid = feSid(e.bid);
-    if (await createReferenceGuide(sid, axis, off))
-      await feLoadGuides();
-    drawFaceEditor();
-    renderFaceLayers();
+    const refresh = feGuidePresentationRefresh();
+    await refresh(await createReferenceGuide(sid, axis, off));
     return;
   }
   if (d.kind === "guide") {
-    if (d.moved && await moveReferenceGuide(d.id, d.axis, d.off))
-      await feLoadGuides();
-    drawFaceEditor();
-    renderFaceLayers();
+    const refresh = feGuidePresentationRefresh();
+    await refresh(d.moved && await moveReferenceGuide(d.id, d.axis, d.off));
     return;
   }
   /* GEO-192 B:拖預覽矩形邊——放開不套用(仍要 Enter/#feOpApply),只是結束這次拖曳。 */
@@ -9884,6 +9898,7 @@ async function mutate(lines, opts) {
   const trigger = document.activeElement?.closest("button");
   trigger?.classList.add("is-busy");
   const busyTimer = setTimeout(() => { if (busyEl) busyEl.hidden = false; }, 400);
+  let committed = false;
   try {
     const b = await api("line history-begin");
     if (!b.ok) { toast(b.error || "指令失敗"); return false; }
@@ -9907,15 +9922,21 @@ async function mutate(lines, opts) {
     }
     const e = await api("line history-end");
     if (!e.ok) { toast(e.error || "指令失敗"); return false; }
+    committed = true;
     return true;
   } catch (err) {
     try { if(!opts?.operation||opts.operation.ownsNativeTransaction())await api("line history-abort"); } catch (_) { }
     throw err;
   } finally {
-    clearTimeout(busyTimer); trigger?.classList.remove("is-busy");
-    oc.busy = false;
-    document.body.classList.remove("oc-busy");
-    if (busyEl) busyEl.hidden = true;
+    // Keep the transaction's input lock through its derived native refresh.
+    // A refresh failure must release the lock without aborting a committed edit.
+    try { await opts?.afterSettlement?.(committed); }
+    finally {
+      clearTimeout(busyTimer); trigger?.classList.remove("is-busy");
+      oc.busy = false;
+      document.body.classList.remove("oc-busy");
+      if (busyEl) busyEl.hidden = true;
+    }
   }
 }
 /* 快速六面盒對話框(§5.6) */
@@ -10237,9 +10258,8 @@ for (const b of document.querySelectorAll("#feGuidePick button"))
     if (!sid) return;
     const axis = b.dataset.axis;
     const off = Math.round(+(axis === "u" ? pk.dataset.v : pk.dataset.u));
-    if (await createReferenceGuide(sid, axis, off))
-      await feLoadGuides();
-    drawFaceEditor(); renderFaceLayers();
+    const refresh = feGuidePresentationRefresh();
+    await refresh(await createReferenceGuide(sid, axis, off));
   });
 fevp.addEventListener("wheel", e => {
   if (e.target.closest?.("#feCtxMenu, #feOpPanel")) return;

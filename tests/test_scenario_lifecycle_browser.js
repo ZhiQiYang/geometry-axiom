@@ -106,7 +106,15 @@ async function traceTransactions(page){await page.evaluate(()=>{
    await discardRetained(page,pending,context);check('explicit discard after lost create preserves recovered A',same(durable(before),durable(await snapshot(page))));
   }finally{await page.context().close();}}
   for(const phase of ['initializing','active']){const page=await fresh(browser);let standalone;try{
-   assert.equal((await page.evaluate(()=>apiRequest('line spec syntheticInitial 41'))).ok,true);await fork(page);const before=await snapshot(page),calls=auditRequests(page);
+   // Direct synthetic writes omit a native revision in their reply. Observe the
+   // finished fixture before capture so its lease pins the actual native state.
+   assert.equal((await page.evaluate(async()=>{
+    const result=await apiRequest('line spec syntheticInitial 41');
+    const observed=await apiRequest('dump');
+    if(!observed.ok||!Number.isSafeInteger(observed.revision)||ReferenceWorkspace.getEvidenceState().nativeRevision!==observed.revision)
+     throw new Error('Synthetic fixture native revision was not observed');
+    return result;
+   })).ok,true);await fork(page);const before=await snapshot(page),calls=auditRequests(page);
    await page.context().addInitScript(({holdImport})=>{if(!new URL(location.href).searchParams.has('scenario'))return;const original=window.fetch;window.__importGate={held:false};window.__bootstrapGate={checked:false,blocked:false,metadataBlocked:false};window.fetch=async function(input,init){const request=input instanceof Request?input:new Request(input,init),route=new URL(request.url).pathname;
     if(route==='/api'&&!__bootstrapGate.checked){__bootstrapGate.checked=true;try{ReferenceWorkspace.assertEditable();}catch(error){__bootstrapGate.blocked=error.message.includes('完整資料');}try{ReferenceWorkspace.removeEngineeringDraft('synthetic-bootstrap-probe');}catch(error){__bootstrapGate.metadataBlocked=error.message.includes('完整資料');}}
     const response=await original.call(this,input,init);if(holdImport&&route==='/upload/confirm'){__importGate.terminal=await response.clone().json();__importGate.held=true;await new Promise(()=>{});}return response;};},{holdImport:phase==='initializing'});
