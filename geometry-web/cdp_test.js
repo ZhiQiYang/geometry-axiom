@@ -2420,6 +2420,9 @@ async function main() {
     "| 游標類",explicitVerdict(fbTool.cls.includes("tool-referenceLine") ? "✓" : "✗ " + fbTool.cls));
   /* (b) 參考線只點沒拖 → u/v 小選單 → 選 v → dump 出現 guide */
   await eval_(`(async()=>{const r=document.getElementById("faceEditorViewport").getBoundingClientRect();const p=feSnap(fePoint({clientX:r.left+r.width/2,clientY:r.top+r.height/2}));await api('line spec 點放定位 '+Math.round(p.x))})()`);
+  // Raw spec acknowledgements have no revision: synchronize this fixture before
+  // the gesture, so a later autosave dump cannot retire its prepared source stamp.
+  await eval_(`api('dump')`);
   await click(fbVp.cx, fbVp.cy);
   await sleep(400);
   const pkShown = await eval_(`!document.getElementById("feGuidePick").hidden`);
