@@ -240,6 +240,46 @@ module.exports = async function gridSystemTests({send,eval_,sleep,click,drag,wai
   await close();await ctl('#btnZoom');await ctl(card('grid-system',staggered));
   const inspector=await read(`({text:document.querySelector('#giVStep')?.closest('label')?.innerText||'',extra:!!$('giUStagger')||!!$('giVStagger')})`);
   check('底部檢查器沿用第 0 線那一行帶出相位差，不加輸入欄',inspector.text.includes('第 0 線座標 0 mm')&&inspector.text.includes('相鄰格子相位差 400 mm')&&!inspector.extra,inspector);
+
+  // The lesson is shared DOM. A successful grid confirmation replaces its
+  // editor owner, then the same lesson moves to the parameter canvas. Exercise
+  // this after the original geometry/archive oracles, without committing a
+  // parameter or changing their fixtures.
+  await open('grid-system',staggered);
+  await read(`(()=>{const node=$('paramGridLesson'),buttons=[...node.querySelectorAll('button')],events=[];
+    const observe=e=>{const b=e.target.closest?.('button');if(b&&node.contains(b))events.push({id:b.id,trusted:e.isTrusted});};
+    window.addEventListener('click',observe,true);window.__p70SharedLesson={node,buttons,events,observe};})()`);
+  const lessonHistory=cdp.makeHistoryOracle(read,'p70-shared-lesson');
+  const lessonState=()=>read(`(()=>{const pin=__p70SharedLesson,n=$('paramGridLesson');return {same:n===pin.node&&pin.buttons.every(b=>n.contains(b)),parent:n?.parentElement?.id,enabled:pin.buttons.every(b=>!b.disabled),open:n?.classList.contains('is-open'),frame:n?.dataset.frame,events:pin.events.slice()};})()`);
+  const lessonRaw=selector=>read(`JSON.stringify([...document.querySelectorAll(${JSON.stringify(selector)})].map(n=>[n.id,n.getAttribute('data-input'),n.value,n.checked,n.disabled]))`);
+  const cycleLesson=async()=>{
+    if((await lessonState()).open)await ctl('#paramGridLessonClose');
+    await ctl('#paramGridLessonOpen');await ctl('#paramGridLessonFrame2');const second=(await lessonState()).frame==='2';
+    await ctl('#paramGridLessonClose');const collapsed=!(await lessonState()).open;
+    await ctl('#paramGridLessonOpen');const after=await lessonState(),events=after.events.slice(-4);
+    return second&&collapsed&&after.open&&after.frame==='1'&&events.every(e=>e.trusted)&&
+      events.map(e=>e.id).join(',')==='paramGridLessonOpen,paramGridLessonFrame2,paramGridLessonClose,paramGridLessonOpen';
+  };
+  const pins=[];
+  try {
+    await fill('#igName','交丁 1830 · 共用圖解');await saveSource();
+    const replaced=await lessonState();
+    check('網格確認更換編輯狀態後，同一份共用圖解全部控制仍可操作',replaced.same&&replaced.enabled&&replaced.parent==='paramGridLessonSlot'&&(await objects()).gridSystems.find(g=>g.id===staggered)?.name==='交丁 1830 · 共用圖解',replaced);
+    const gridScene=await dump(),gridRaw=await lessonRaw('#igSourceForm input,#igSourceForm select'),gridHistory=await lessonHistory.capture();pins.push(gridHistory);
+    const gridCycle=await cycleLesson();
+    check('網格圖解真實展開換頁關閉重開，不改世界、歷史或原始欄位',gridCycle&&(await dump())===gridScene&&(await lessonRaw('#igSourceForm input,#igSourceForm select'))===gridRaw&&await lessonHistory.unchanged(gridHistory));
+    await close();await ctl('#btnCreateObject');await ctl('#btnNewParameter');await wait(`!!$('paramQuick')&&$('paramName')?.value==='參數'`);
+    const transferred=await lessonState();
+    check('網格圖解移回參數畫布仍是同一節點且沒有舊編輯器的停用狀態',transferred.same&&transferred.enabled&&transferred.parent==='canvasViewport'&&(await dump())===gridScene&&await lessonHistory.unchanged(gridHistory),transferred);
+    await fill('#paramName','圖解保全中的參數');await fill('[data-param-field] [data-input]','00027');await ctl('#paramPreview');await wait(`!ParameterUI.previewing&&!$('paramConfirm').disabled`);
+    const parameterScene=await dump(),parameterRaw=await lessonRaw('#parameterEditor input,#parameterEditor select'),parameterHistory=await lessonHistory.capture();pins.push(parameterHistory);
+    const parameterCycle=await cycleLesson();
+    check('參數圖解真實展開換頁關閉重開，保留未提交原稿與候選歷史',parameterCycle&&(await dump())===parameterScene&&(await lessonRaw('#parameterEditor input,#parameterEditor select'))===parameterRaw&&await lessonHistory.unchanged(parameterHistory)&&await read(`ParameterUI.pending&&document.querySelector('[data-param-field] [data-input]').value==='00027'`));
+    await ctl('#paramDiscard');
+  } finally {
+    for(const pin of pins)await lessonHistory.release(pin);
+    await read(`window.removeEventListener('click',__p70SharedLesson.observe,true);delete window.__p70SharedLesson;void 0`);
+  }
   await require('./infinite_grid_face_test.js')({send,eval_,sleep,click,waitForUI});
   await require('./grid_trial_test.js')({send,eval_,sleep,click,drag,waitForUI,expectNativeDialog,exceptionCount});
 };

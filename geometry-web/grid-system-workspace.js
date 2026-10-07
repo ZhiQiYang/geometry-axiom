@@ -19,6 +19,9 @@
   document.body.append(dialog);
   const current = s => state === s && dialog.open && s.context === ReferenceWorkspace.context() && s.contextToken === ReferenceWorkspace.getProjectState().contextToken;
   const canEdit=s=>current(s)&&!s.orphaned&&!s.initializing&&!s.busy&&!s.heldControls&&!s.projectControls;
+  // The lesson moves between editors and only changes its presentation. A
+  // retired grid operation must not leave those shared buttons locked.
+  const workspaceControls=(selector='input,select,button')=>[...dialog.querySelectorAll(selector)].filter(node=>!node.closest('#paramGridLesson'));
   const F=GeometryProject.Features,rawKind='grid-draft',copy=value=>JSON.parse(JSON.stringify(value));
   const pinKey=ref=>ref.kind==='parameter-field'?`parameter-field:${ref.parameterId}:${ref.fieldId}`:`${ref.kind}:${ref.id}`;
   const samePin=(a,b)=>!!a&&!!b&&pinKey(a)===pinKey(b)&&a.fingerprint===b.fingerprint&&a.vertexKeysFingerprint===b.vertexKeysFingerprint;
@@ -100,7 +103,7 @@
   }
   function setProjectBusy(locked){
     const s=state;if(!current(s))return;
-    if(locked&&!s.projectControls){s.projectControls=[...dialog.querySelectorAll('input,select,button')].map(n=>[n,n.disabled]);for(const [n] of s.projectControls)n.disabled=true;}
+    if(locked&&!s.projectControls){s.projectControls=workspaceControls().map(n=>[n,n.disabled]);for(const [n] of s.projectControls)n.disabled=true;}
     if(!locked&&s.projectControls){for(const [n,disabled] of s.projectControls)n.disabled=disabled;s.projectControls=null;capture(s);syncDraftState(s);}
   }
   const svg = (tag, attrs, parent) => {
@@ -293,7 +296,7 @@
     if(!s.orphaned||!current(s))return;
     // Retain owned raw fields and pins. Missing targets never turn an edit
     // into a creation or acquire today's same-ID source.
-    for(const node of dialog.querySelectorAll('.ig-settings input,.ig-settings select,.ig-settings button,.ig-footer button'))
+    for(const node of workspaceControls('.ig-settings input,.ig-settings select,.ig-settings button,.ig-footer button'))
       if(node.id!=='igDiscardDraft')node.disabled=true;
     $('igTitle').textContent=`${s.mode==='source'?'來源':'配置'} ${s.baseRef.id} 已遺失 · 原始草稿`;
     $('igDraftNote').textContent=ruleUnsupported(s);$('igStatus').classList.add('ig-error');
@@ -398,7 +401,7 @@
     for(const a of axes)for(const key of ['Step','Phase','Panel','Gap','Anchor','Stagger'])window.ParameterUI?.bindSource('ig'+a.toUpperCase()+key,()=>{drawGrid(s);syncDraftState(s);},{preserveValue:!!s.restored});
     s.initialSourceKey=sourceEditorKey();
     syncFields(); drawGrid(s); syncDefinition(s);
-    const loadingControls=[...dialog.querySelectorAll('input,select,button')].map(node=>[node,node.disabled]);
+    const loadingControls=workspaceControls().map(node=>[node,node.disabled]);
     for(const [node] of loadingControls)node.disabled=true;
     if(s.mode==='binding'&&$('igBoundary').value){await loadBoundary(s,Number($('igBoundary').value),!!s.binding,!s.restored);
       if(!current(s))return;if(s.restored){restoreRaw(s,{igVertex:s.restored.rawForm.igVertex});
@@ -908,7 +911,7 @@
   }
   async function operation(s,run) {
     if(!canEdit(s)||oc.busy)return;s.busy=true;oc.busy=true;dialog.classList.add('ig-busy');
-    const controls=[...dialog.querySelectorAll('button,input,select')].map(n=>[n,n.disabled]);controls.forEach(([n])=>n.disabled=true);invalidField=null;
+    const controls=workspaceControls().map(n=>[n,n.disabled]);controls.forEach(([n])=>n.disabled=true);invalidField=null;
     let failure=null;
     try{await run();}catch(e){failure=e.message;if(current(s))status(failure,true);}
     finally{s.busy=false;oc.busy=false;if(current(s)){
