@@ -15,7 +15,7 @@ from .common import (ModelError, canonical_bytes, digest, strict_json_loads,
 
 # The source commit contains the adopted axiom bytes identified by this digest.
 # Update only after committing the corresponding SSOT change (MODELING-CONTRACT).
-AXIOM_REVISION = "73b9ba1d417c1b6c9885951b24139b67f8550312"
+AXIOM_REVISION = "3ad8012b6f01f9f46795a28a410ee444c5cce1a0"
 AXIOM_SHA256 = "29ad0c657e53d364347862fddac23ba26a248a4fd8f83487d86f9e648bd1eaf2"
 # D35-D40 / I43-I51 / R36-R40 only add section-profile/1, which this executor
 # does not implement; packages built under the previous adopted text stay valid.
