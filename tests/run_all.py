@@ -147,6 +147,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
 }
 NODE_PURE_TEST_FILES = {
     'node:workspace_shell_history': 'tests/test_workspace_shell_history.js',
+    'node:feedback_events': 'tests/test_feedback_events.js',
     'node:space_test_floor': 'tests/test_space_test_floor.js',
     'node:history_operation': 'tests/test_history_operation.js',
     'node:context_operations': 'tests/test_context_operations.js',
@@ -198,6 +199,7 @@ REQUIRED_BROWSER_GATES = {
     'tests/room_outline_acceptance_browser.js': 253,
     'tests/room_outline_pan_browser.js': 32,
     'tests/room_outline_worker_browser.js': 78,
+    'geometry-web/feedback_resize_observer_test.js': 38,
     'tests/test_grid_rule_reader_browser.js': 34,
     'geometry-web/evidence_links_browser_check.js': 67,
     'geometry-web/evidence_links_integration_test.js': 110,
@@ -216,6 +218,10 @@ BROWSER_GATE_SCOPES.update({
     'tests/room_outline_acceptance_browser.js': 'formal room app/PDF-image/UI/ZIP/model',
     'tests/room_outline_pan_browser.js': 'real input/native preservation; API fixture and injected pointercancel',
     'tests/room_outline_worker_browser.js': 'native Worker/UI invalidation with injected late-consumer delivery',
+})
+
+BROWSER_GATE_SCOPES.update({
+    'geometry-web/feedback_resize_observer_test.js': 'real ResizeObserver/error/manual-report events; owned fresh/root/source/runtime identity required',
 })
 
 # Platform-inherent skips: exempt only when suite + exact test id + reason substring + platform ALL match.
