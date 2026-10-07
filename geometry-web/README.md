@@ -54,17 +54,23 @@ guide 2 2 datum 1
 
 ## Linux 雲端開發基線
 
-需要 gcc、Python 3；managed preview 的啟動器另需 npm，不需下載套件。
-`npm run build` 編譯當前 core、bridge 與 model-base 到忽略的 `.build/`。
-從 repository 根目錄啟動本機開發服務：
+需要 gcc／cc、Python 3；npm 指令和 managed preview 另需 npm，不需下載套件。
+從 repository 根目錄啟動完整本機服務：
 
 ```sh
-ulimit -s 16384
-GEOMETRY_BRIDGE=.build/web_bridge GEOMETRY_MODEL_BASE=.build/model_base python3 geometry-web/serve.py 8765
+python3 geometry-web/start_local.py --port 8765
 ```
 
-另在同一 repository 執行 `python3 geometry-web/runtime_version.py --probe 8765` 核對版本。
-正式驗收使用 `tests/binaries.py` 的來源收據，不能以 `.build/` 檔名代替 freshness 證據。
+入口自動設定至少 16 MiB stack，使用 `tests/binaries.py` 的建置鎖、來源與二進位收據，
+只編譯過期／缺少的 core、bridge、model-base。產物放在 TEMP 下按 checkout 路徑隔離的
+`geometry-runtime/<root-hash>/`，不覆寫其他 checkout 的執行檔；可用
+`--binary-dir /tmp/geometry-my-runtime` 指定專用目錄。輸出 `LOCAL_RUNTIME` 列出實際路徑。
+畫布、模型更新與 A/B 方案驗證使用同組已核對的執行檔，不能只用無收據的 `.build/`
+產物：含 A/B 的完整專案必須核對來源與二進位身分，缺收據會拒絕開啟。
+
+連接埠已有服務時會拒絕啟動，不會停止其他程序。另在同一 repository 執行
+`python3 geometry-web/runtime_version.py --probe 8765` 核對版本；Ctrl+C 結束本次服務。
+`npm run build` 與 `python3 geometry-web/start_local.py --build-only` 使用同一入口，只建置及驗證。
 受管開發環境從 repo 根執行 `sites-preview start "$PWD"`；它使用 `npm run dev`。
 受管模式只在環境變數 `GEOMETRY_MANAGED_PREVIEW=1` 且埠為 4173 時
 額外接受 `terminal.local` 並綁定開發環境入口。預設仍只接受 localhost，沒有公開部署。
