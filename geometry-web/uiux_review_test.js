@@ -3,6 +3,42 @@
  * response is mocked. All evidence is written outside the checkout.
  */
 const cdp=require('./cdp_helpers.js');
+function installParameterSettlementGate(scope) {
+  const original=scope.fetch,commands=[],events=[];
+  const evidence=scope.__parameterSettlementGate={phase:'armed',claimed:0,held:0,confirmations:0,commands,events};
+  let release;const settled=new Promise(resolve=>release=resolve);
+  let owner;
+  const raw=()=>JSON.stringify([...document.querySelectorAll('#parameterEditor input,#parameterEditor select,#parameterEditor textarea')].map(e=>[e.id,e.getAttribute('data-input'),e.value]));
+  const same=(a,b)=>a.length===b.length&&a.every((entry,i)=>entry===b[i]);
+  const observe=event=>{if(event.type==='pointerdown'||event.key==='Enter')events.push({type:event.type,key:event.key,trusted:event.isTrusted,confirm:event.target.id==='paramConfirm',card:!!event.target.closest?.('.card-enter')});};
+  scope.addEventListener('pointerdown',observe,true);scope.addEventListener('keydown',observe,true);
+  const intercepted=async(...args)=>{
+    let command;try{if(String(args[0])==='/api')command=JSON.parse(args[1]?.body||'{}').cmd;}catch(_){}
+    if(command){commands.push(command);if(command.startsWith('engineering-confirm '))evidence.confirmations++;}
+    const caller=new Error().stack||'';
+    // EngineeringAdapter also refreshes. Claim only the final direct refresh
+    // owned by parameter confirm, before another asynchronous response can win.
+    const targeted=evidence.phase==='armed'&&command==='objects'&&caller.includes('/parameters.js:')&&
+      !caller.includes('/engineering-adapter.js:')&&/(?:^|\n)\s*at (?:async )?confirm\s*\(/.test(caller);
+    if(targeted){evidence.phase='requested';evidence.claimed++;evidence.caller=caller;}
+    const response=await original(...args);
+    if(targeted){const json=response.json.bind(response);response.json=async()=>{
+      const data=await json();evidence.nativeOK=data.ok===true;evidence.phase='held';evidence.held++;
+      owner={context:ReferenceWorkspace.context(),frame:ReferenceWorkspace.history.frame,focus:oc.focus,edit:oc.edit,
+        navigation:oc.navigationSequence,undo:ReferenceWorkspace.history.undo.slice(),redo:ReferenceWorkspace.history.redo.slice(),raw:raw(),commands:commands.length};
+      await settled;evidence.held--;evidence.phase='released';return data;
+    };}
+    return response;
+  };
+  scope.fetch=intercepted;
+  evidence.snapshot=()=>({phase:evidence.phase,claimed:evidence.claimed,held:evidence.held,nativeOK:evidence.nativeOK,caller:evidence.caller,
+    pending:ParameterUI.pending,locked:$('parameterEditor')?.getAttribute('aria-busy')==='true'&&[...$('parameterEditor').querySelectorAll('button,input,select,textarea')].every(e=>e.disabled),
+    confirmations:evidence.confirmations,events:events.slice(),sameOwner:!!owner&&owner.context===ReferenceWorkspace.context()&&owner.frame===ReferenceWorkspace.history.frame&&owner.focus===oc.focus&&owner.edit===oc.edit&&owner.navigation===oc.navigationSequence,
+    sameHistory:!!owner&&same(owner.undo,ReferenceWorkspace.history.undo)&&same(owner.redo,ReferenceWorkspace.history.redo),rawUnchanged:!!owner&&owner.raw===raw(),
+    writes:owner?commands.slice(owner.commands).filter(cmd=>/^(newid(?:\s|$)|line |drag |reset$|default$|undo$|redo$|loadfile |engineering-preview |engineering-confirm |assembly-confirm )/.test(cmd)):[]});
+  evidence.release=release;
+  evidence.cleanup=()=>{release();if(scope.fetch===intercepted)scope.fetch=original;scope.removeEventListener('pointerdown',observe,true);scope.removeEventListener('keydown',observe,true);};
+}
 module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,captureNewToasts,expectNativeDialog,exceptionCount}) {
   console.log('=== P73. UI/UX 審查：可見動作、視角、空狀態與專案回饋 ===');
   const fs=require('fs'),path=require('path'),errors=exceptionCount();
@@ -114,9 +150,31 @@ module.exports = async function uiuxReview({send,eval_,sleep,click,waitForUI,cap
   check('參考線預設提供位置來源選擇，完整語法收在進階',await read(`$('refGuideMode').value==='source' && !$('refGuideSourceFields').hidden && $('refGuideExprLabel').hidden && $('refGuideSource').options.length>0`));
   const parameterFace=await read('oc.focus.id');
   await ctl('#refParameterOpen');await ctl('#paramNewFromLegacy');await wait(`!!$('paramName')`);
-  await fill('#paramName','審查定位');await fill('[data-input]','1700');await ctl('#paramPreview');await wait(`!$('paramConfirm').disabled`);await ctl('#paramConfirm');await wait('!ParameterUI.pending');
-  const parameterSource=await read(`(()=>{const c=oc.parameters.find(p=>p.name==='審查定位').card;return 'param:'+c.id+':'+c.fields[0].id;})()`);
-  await read(`enterFocus('face',${parameterFace})`);await ctl('[data-fi-tab="components"]');
+  if(await visible('#paramGridLessonClose'))await ctl('#paramGridLessonClose');
+  await fill('#paramName','審查定位');await fill('[data-input]','1700');await ctl('#paramPreview');await wait(`!$('paramConfirm').disabled`);
+  await read('('+installParameterSettlementGate.toString()+')(window)');
+  const faceEntry='.ocard[data-kind="boundary"][data-id="'+parameterFace+'"] .card-enter';
+  let parameterSource;
+  try {
+    await ctl('#paramConfirm');await wait(`__parameterSettlementGate.phase==='held'`);
+    const held=await read('__parameterSettlementGate.snapshot()');
+    check('參數確認末段真原生回覆延遲時仍保留 pending 與表單鎖',held.phase==='held'&&held.claimed===1&&held.held===1&&held.nativeOK&&held.pending&&held.locked&&held.confirmations===1,held);
+    const settledWorld=await dump();
+    // A disabled confirmation still has a real hit target. Attempt it, then
+    // exercise the actual face-card pointer and keyboard navigation handlers.
+    const confirmTarget=await point('#paramConfirm');await click(confirmTarget.x,confirmTarget.y);
+    await ctl('#btnZoom');await ctl(faceEntry);
+    await read(`document.querySelector(${JSON.stringify(faceEntry)}).focus();void 0`);await key('Enter','Enter',13);await sleep(180);
+    const blocked=await read('__parameterSettlementGate.snapshot()');
+    check('確認末段真卡片點擊與 Enter 不改導航或重送交易',blocked.pending&&blocked.locked&&blocked.sameOwner&&blocked.sameHistory&&blocked.rawUnchanged&&blocked.confirmations===1&&blocked.writes.length===0&&blocked.events.some(e=>e.trusted&&e.type==='pointerdown'&&e.card)&&blocked.events.some(e=>e.trusted&&e.type==='keydown'&&e.key==='Enter'&&e.card)&&(await dump())===settledWorld,blocked);
+    await read('__parameterSettlementGate.release();void 0');await wait('!ParameterUI.pending');
+    const completed=await read(`(async()=>{const r=await apiRequest('engineering-read'),cards=r.state?.parameters.filter(p=>p.name==='審查定位')||[];return {phase:__parameterSettlementGate.phase,confirmations:__parameterSettlementGate.confirmations,pending:ParameterUI.pending,cards:cards.length,value:cards[0]?.fields[0]?.value?.num,selected:oc.sel?.kind==='parameter'&&oc.sel.id===cards[0]?.id};})()`);
+    check('參數確認末段完成後只結束一次並保留正式值',completed.phase==='released'&&completed.confirmations===1&&!completed.pending&&completed.cards===1&&completed.value==='1700'&&completed.selected&&(await dump())===settledWorld,completed);
+    parameterSource=await read(`(()=>{const c=oc.parameters.find(p=>p.name==='審查定位').card;return 'param:'+c.id+':'+c.fields[0].id;})()`);
+    await ctl('#btnZoom');await ctl(faceEntry);await ctl('[data-fi-tab="components"]');
+    check('參數確認完成後真卡片進面顯示構件且不被晚選取關閉',await visible('[data-fi-tab="components"]')&&await read(`oc.focus?.t==='face'&&oc.focus.id===${parameterFace}&&oc.edit?.bid===${parameterFace}&&!$('objectWorkspace').hidden&&!ParameterUI.pending`));
+    await shot('03b-parameter-settlement-face');
+  } finally {await read('__parameterSettlementGate.cleanup();void 0');}
   await choose('#refGuideSource',parameterSource);await choose('#refGuideAxis','u');await ctl('#refGuideCreate');await wait(`!!$('impact-confirm')`);await ctl('#impact-confirm');await wait('!oc.busy');await sleep(180);
   check('共用參數入口建立引用，核心保存來源與軸向',await read(`apiRequest('references').then(r=>r.guides.some(g=>g.expression===${JSON.stringify(parameterSource)} && g.axis==='u' && g.off===1700))`));
   await choose('#refGuideAxis','v');await choose('#refGuideSource','edge:e1:u');await choose('#refGuideRatio','1/2');await ctl('#refGuideCreate');await wait('!oc.busy');await sleep(180);

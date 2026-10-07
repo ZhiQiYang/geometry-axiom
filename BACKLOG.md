@@ -9,6 +9,8 @@
 - 第一輪完整 CDP 在 P53 部分執行後停住，未計為通過。真 held-response 重現：角材交易已解鎖、來源快取仍刷新時，下一次點擊或 Enter 讀到半套 snapshot。`mutate` 現在持有輸入鎖直到 success/rejection 的來源刷新結束；回呼例外必定釋鎖且不回滾已提交交易，退休畫面與新 raw 不受遲到重畫影響。新增 18 項 production-closure 測試，正式 P53 增加 5 項真 pointer/Enter assertions，原有 floor 保留。
 - 第二輪完整使用流程的視覺複審發現參考線建立／移動後右側仍顯示舊摘要。三個既有入口共用帶 context/frame/session 所有權的刷新，更新現有檢視器並沿用 raw 保存；晚回覆不得刷新已替換畫面。未新增 UI 控制項。
 - 交付全新 checkout 檢查發現舊 Linux 配方缺少 native build receipts，首頁正常卻拒絕含 A/B 的完整專案。統一正式 Linux 建置與啟動入口，使用專用 TEMP、版本收據、16 MiB stack 與一致 native transports；既有服務占用連接埠時直接拒絕，不接管或停止它。
+- 第二次完整 CDP 走過角材修正後，在 P73 的快速返回面編輯中再重現參數確認競態：`pending` 在最後畫布刷新前提前解除，晚到的參數選取取消新的面導航。真卡片點擊＋兩筆真原生回覆的 held-response 已釘紅；確認現在保留原 busy state 到刷新終態，沿 context/navigation 所有權更新畫面，已消耗 token 不因呈現失敗再次提交。沒有新增可見入口或幾何語義。
+- 驗收夾具另修兩個取樣缺口：Space 的泛用 `dump` gate 會誤攔自動备份而非來源載入，現精確辨識 owner 並驗證 loading/context/single hold，原五項條件及 228 floor 保留；TEMP 模型庫流程的初始 World 改在原生卡片位置與畫面一致後取樣，仍逐字核對全部 World，不忽略位置差異。原紅、因果反例與修正後收據均保留。
 - 本次拿掉／合併（GEO-219）：無新增產品入口、按鈕或常駐說明；整合各分支既有控制項，交付說明與歷史驗收文件明確區分。完整候選流程仍須依同版收據驗收，不借舊 PR 數字宣稱完成。
 
 ## CONT-46-20261005 — 完整候選方案正式整合（進行中）

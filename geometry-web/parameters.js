@@ -570,17 +570,28 @@ window.ParameterUI = (() => {
     clearTimeout(timer);
     lockConfirmation(s);
     const p = s.preview;
+    const navigation = oc.navigationSequence;
+    const ownsPresentation = () => current(s) && navigation === oc.navigationSequence;
+    let committed = false;
     status('正在套用…');
     try {
-      const id = s.card.id, context = s.context;
+      const id = s.card.id;
       await EngineeringAdapter.confirm({token: p.token});
-      if (state !== s || context !== ReferenceWorkspace.context()) return;
+      committed = true;
+      // The native token has been consumed. A later presentation failure must
+      // not leave it available for a second confirmation.
+      s.preview = null;
+      if (!ownsPresentation()) return;
       /* 真卡落在草稿卡的位置（同一份座標，不受確認前平移或欄寬變化影響）。 */
       if (s.fresh && s.draftPos) await api(`line canvas-pos parameter ${id} ${s.draftPos.cx} ${s.draftPos.cy}`);
+      if (!ownsPresentation()) return;
+      // Keep pending/mayLeave locked through the final refresh. Clearing state
+      // earlier lets a new face navigation race the late parameter selection.
+      await renderObjects();
+      if (!ownsPresentation()) return;
       state = null;
       oc.parameterCreating = false;
       clearTimeout(timer);
-      await renderObjects();
       if (ocFind('parameter', id)) {
         selectObject('parameter', id);
         centerOnNode('parameter', id);
@@ -589,10 +600,18 @@ window.ParameterUI = (() => {
     } catch (e) {
       if (current(s)) {
         s.preview = null;
-        status(e.message, true);
-        $('paramConfirm').disabled = true;
+        if (committed) toast('參數已套用，但畫面更新未完成，請重新選取參數卡。' + e.message, 'error');
+        else {
+          status(e.message, true);
+          if ($('paramConfirm')) $('paramConfirm').disabled = true;
+        }
       }
     } finally {
+      if (committed && current(s)) {
+        state = null;
+        oc.parameterCreating = false;
+        clearTimeout(timer);
+      }
       s.busy = false;
       unlockConfirmation(s);
       if (current(s) && $('paramConfirm')) $('paramConfirm').disabled = !s.preview?.valid;
