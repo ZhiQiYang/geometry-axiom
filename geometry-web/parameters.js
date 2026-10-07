@@ -587,8 +587,9 @@ window.ParameterUI = (() => {
       if (!ownsPresentation()) return;
       // Keep pending/mayLeave locked through the final refresh. Clearing state
       // earlier lets a new face navigation race the late parameter selection.
-      await renderObjects();
+      const refreshed = await renderObjects();
       if (!ownsPresentation()) return;
+      if (refreshed !== true) throw new Error('未能重新讀取畫布。');
       state = null;
       oc.parameterCreating = false;
       clearTimeout(timer);
@@ -598,22 +599,33 @@ window.ParameterUI = (() => {
       } else renderInspector();
       toast('參數與引用物件已整筆更新，可復原。', 'success');
     } catch (e) {
+      if (e.engineeringConfirmation?.ok === true) committed = true;
       if (current(s)) {
         s.preview = null;
-        if (committed) toast('參數已套用，但畫面更新未完成，請重新選取參數卡。' + e.message, 'error');
-        else {
+        if (committed && ownsPresentation()) {
+          const message = '參數已套用，但畫面更新未完成，請重新選取參數卡。' + e.message;
+          status(message, true);
+          toast(message, 'error');
+        } else if (!committed && ownsPresentation()) {
           status(e.message, true);
           if ($('paramConfirm')) $('paramConfirm').disabled = true;
         }
       }
     } finally {
-      if (committed && current(s)) {
+      const retireState = committed && current(s);
+      const retiredRoot = retireState ? s.confirmRoot : null;
+      if (retireState) {
         state = null;
         oc.parameterCreating = false;
         clearTimeout(timer);
       }
       s.busy = false;
       unlockConfirmation(s);
+      // A failed refresh can leave the retired editor in the DOM. Its status
+      // explains the committed result; do not accept input into ownerless raw.
+      if (retiredRoot && !state && retiredRoot === $('parameterEditor')) {
+        for (const control of retiredRoot.querySelectorAll('button,input,select,textarea')) control.disabled = true;
+      }
       if (current(s) && $('paramConfirm')) $('paramConfirm').disabled = !s.preview?.valid;
     }
   }
@@ -911,6 +923,7 @@ window.ParameterUI = (() => {
   $('btnNewParameter').onclick=()=>{ $('createObjectPop').hidden=true;create(); };
   window.DraftGate?.register(intent => {
     if (!state) return true;
+    if (state.busy) return false;
     const only = intent?.selection;
     if (only?.length === 1 && only[0].kind === "parameter" && only[0].id === state.card?.id) return true;
     return mayLeave();
