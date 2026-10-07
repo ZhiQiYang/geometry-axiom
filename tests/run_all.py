@@ -138,6 +138,7 @@ NODE_DOCUMENT_SCRIPT_FILES = {
     'node:cdp_confirmation_gate': 'tests/test_cdp_confirmation_gate.js',
 }
 NODE_PURE_TEST_FILES = {
+    'node:workspace_shell_history': 'tests/test_workspace_shell_history.js',
     'node:space_test_floor': 'tests/test_space_test_floor.js',
     'node:history_operation': 'tests/test_history_operation.js',
     'node:context_operations': 'tests/test_context_operations.js',

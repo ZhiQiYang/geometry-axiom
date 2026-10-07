@@ -8,7 +8,7 @@ window.SpaceModelWorkspace = (() => {
   const EXAMPLE_PROJECTION = {kind:"space-boundary-plan",view:"top",region:"interior",wallSide:"outside"};
   const state = { source: null, result: null, input: null, revision: 0, previewRevision: -1, sequence: 0, phase: "empty", createdId: null, examples: null, viewer: null, controller: null, readonly: false, editing: null, committingId: null, recordSignature: null, projectionPending: false, projectionSequence: 0 };
   let draft = null, viewerLoad = null, viewerOpenSequence = 0;
-  let savedContext=null, snapshotNavigation=null;
+  let savedContext=null, snapshotNavigation=null, libraryLease=null;
   function clearSnapshotNavigation(){snapshotNavigation=null;state.viewer?.setSelectableRoots([]);state.viewer?.selectRoot(null);}
   function snapshotRecord(){
     if(!dialog.open||$('smMain').hidden||!state.readonly||state.editing||savedContext!==ReferenceWorkspace.context())return null;
@@ -157,7 +157,7 @@ window.SpaceModelWorkspace = (() => {
     state.controller?.abort();state.sequence++;state.phase=state.source?"ready":"empty";state.previewRevision=-1;$("smConfirmFaces").checked=false;
     $("smResultBadge").textContent="建模操作已取消";updateActions();
   }
-  function close() { viewerOpenSequence++;clearSnapshotNavigation();rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(dialog.open)dialog.close();WorkspaceShell.detach(dialog); }
+  function close() { libraryLease=null;viewerOpenSequence++;clearSnapshotNavigation();rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(dialog.open)dialog.close();WorkspaceShell.detach(dialog); }
   function setTab(tab) { $("smMain").dataset.tab = tab; for (const [id, key] of [["smTabPreview", "preview"], ["smTabSetup", "setup"]]) $(id).setAttribute("aria-selected", String(tab === key)); }
   function viewChanged(viewState) {
     for(const button of dialog.querySelectorAll("[data-sm-view]")){const active=button.dataset.smView===viewState.view;button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active));}
@@ -178,10 +178,58 @@ window.SpaceModelWorkspace = (() => {
     }).finally(() => { viewerLoad = null; });
     return viewerLoad;
   }
+  function libraryHistoryState() {
+    const visible = dialog.open && !$('smLibraryPanel').hidden;
+    const operation = ReferenceWorkspace.getModelOperationState?.(), evidence = ReferenceWorkspace.getEvidenceState?.();
+    const project = ReferenceWorkspace.getProjectInfo?.();
+    const remembered = !!draft && draft.context_id === contextId() && sameSourceHistory(draft.history_token) &&
+      [...ReferenceWorkspace.history.frame.ids.values()].includes(draft.face_key);
+    const pendingDraft = !!(remembered || window.RoomCollectionWorkspace?.hasWork || window.RoomOutlineWorkspace?.hasWork || window.ParameterUI?.pending ||
+      fe.draft?.pts?.length || fe.ulCalib || fe.ulDrag || fe.work || fe.op);
+    // A removed saved model is stale, not an unpublished model-building draft.
+    const building = !!state.source && !state.readonly && !state.createdId && state.phase !== 'stale';
+    const staleOwner = !libraryLease || libraryLease.context !== ReferenceWorkspace.context() || libraryLease.frame !== operation?.frame ||
+      libraryLease.contextToken !== operation?.contextToken || libraryLease.session !== evidence?.session;
+    const blocked = staleOwner || !operation || !evidence || operation.blocked || evidence.blocked || project?.editingBlocked || pendingDraft || building ||
+      state.viewerLoading || state.projectionPending || !!state.editing || ['loading','previewing','creating'].includes(state.phase) ||
+      [...document.querySelectorAll('dialog[open]')].some(other => other !== dialog);
+    const owner = operation && evidence ? JSON.stringify([operation.contextToken, operation.frame, operation.revision, operation.undo, operation.redo,
+      evidence.contextToken, evidence.session, evidence.nativeRevision]) : null;
+    return {visible, blocked:!!blocked, owner, undo:!!ReferenceWorkspace.history?.undo.length, redo:!!ReferenceWorkspace.history?.redo.length,
+      reason:'目前操作或草稿尚未完成，或專案僅供查看；請先完成原操作，再復原或重做。'};
+  }
+  function captureLibraryLease() {
+    const operation = ReferenceWorkspace.getModelOperationState?.(), evidence = ReferenceWorkspace.getEvidenceState?.();
+    return operation && evidence ? {context:ReferenceWorkspace.context(), frame:operation.frame, contextToken:operation.contextToken, session:evidence.session} : null;
+  }
+  async function runLibraryHistory(verb, owner) {
+    const current = libraryHistoryState(), lease = libraryLease;
+    if (!['undo','redo'].includes(verb) || !current.visible || current.blocked || !current[verb] || current.owner !== owner)
+      throw new Error('目前專案或操作已改變，未執行復原或重做。');
+    await doUndoRedo(verb);
+    // Only this admitted history operation may advance its existing view lease.
+    // Closing/reopening or another project/session never revives the former owner.
+    if (libraryLease === lease && dialog.open && !$('smLibraryPanel').hidden) {
+      const next = captureLibraryLease();
+      if (next?.context === lease.context && next.session === lease.session) libraryLease = next;
+    }
+  }
+  function libraryActionAllowed(action = 'remove') {
+    const current = libraryHistoryState();
+    const running = WorkspaceShell.historyBusy(dialog) || ReferenceWorkspace.busy || oc.busy;
+    // Viewing an existing saved model remains available in read-only projects.
+    if (current.visible && !running && (action !== 'remove' || !current.blocked)) return true;
+    toast(current.reason); return false;
+  }
+  function syncLibraryActions() {
+    const current = libraryHistoryState(), running = WorkspaceShell.historyBusy(dialog) || ReferenceWorkspace.busy || oc.busy;
+    for (const button of $('smLibraryList').querySelectorAll('button')) button.disabled = !!(running || button.hasAttribute('data-sm-remove-model') && current.blocked);
+  }
   function show(resume) {
     if (!dialog.open) dialog.showModal();
     WorkspaceShell.attach(dialog, {saveBlocked:()=>state.viewerLoading || state.projectionPending || ['loading','previewing','creating'].includes(state.phase),
-      saveReason:()=> '正在處理空間變更，完成後即可保存。', onProjectState:updateActions});
+      saveReason:()=> '正在處理空間變更，完成後即可保存。', onProjectState:updateActions,
+      history:{state:libraryHistoryState, run:runLibraryHistory, onError:error=>toast(error.message || '無法復原或重做。')}});
     if (!window.GeometryModelViewer?.create) {
       const sequence = ++viewerOpenSequence, sourceContextId = contextId();
       state.viewerLoading = true; message("正在載入 3D 檢視器…"); $("smResultBadge").textContent = "檢視器載入中"; updateActions();
@@ -238,10 +286,11 @@ window.SpaceModelWorkspace = (() => {
     if(holes&&$('smHoles').value==='none')warnings.push(`有 ${holes} 個孔洞，請先指定下方孔洞用途，才可預覽。`);
     $('smBoundaryWarning').hidden=!warnings.length;$('smBoundaryWarning').textContent=warnings.join(' ');
   }
-  function buildView() { $("smLibraryPanel").hidden = true; $("smMain").hidden = false; dialog.classList.remove("sm-in-library");window.dispatchEvent(new Event('space-model-view-changed')); }
+  function buildView() { libraryLease=null;$("smLibraryPanel").hidden = true; $("smMain").hidden = false; dialog.classList.remove("sm-in-library");WorkspaceShell.refresh(dialog);window.dispatchEvent(new Event('space-model-view-changed')); }
   function updateActions() {
     const busy = state.viewerLoading || !state.viewer || state.projectionPending || state.phase === "loading" || state.phase === "previewing" || state.phase === "creating";
     WorkspaceShell.refresh(dialog);
+    syncLibraryActions();
     const missingProjection=needsProjection()&&!validProjection(state.source.projection);
     $("smPreview").disabled = !state.source || busy || missingProjection || (state.readonly && !state.editing);
     $("smCreate").disabled = busy || missingProjection || !state.result || wallRequirementMissing(state.input,state.result) || state.previewRevision !== state.revision || !$("smConfirmFaces").checked || !!state.createdId;
@@ -587,7 +636,7 @@ window.SpaceModelWorkspace = (() => {
     const models=ReferenceWorkspace.getSpaceModels?.()||[]; $("smModelCount").textContent=String(models.length); if($("spaceModelCount"))$("spaceModelCount").textContent=String(models.length);
     $("smLibraryList").innerHTML=models.length?models.map(m=>`<article class="sm-model-card"><div class="sm-model-symbol" aria-hidden="true">▱</div><div><h3>${esc(m.name)}</h3><p>${wallRequirementMissing(m.input,m.result)?"材料牆缺失 · 未滿足要求":m.result.summary.closed?"封閉空間":"開放空間"} · ${m.result.summary.face_count} 個面 · ${esc(metric(m.result.summary.volume_mm3))} · 角材 ${esc(m.result.summary.timber_count||0)} 支</p><small>${esc(new Date(m.created_at).toLocaleString("zh-TW"))} · 來源${m.source.kind==="example"?"範例":"面 #"+m.source.boundary_id}</small></div><div class="sm-model-actions"><button class="sm-button" data-sm-open-model="${esc(m.id)}" type="button">開啟 3D</button>${m.input.mode==="plan"?`<button class="sm-button" data-sm-edit-height="${esc(m.id)}" type="button">修改模型</button>`:""}<button class="sm-button sm-danger" data-sm-remove-model="${esc(m.id)}" type="button">移除</button></div></article>`).join(""):'<div class="sm-library-empty"><h3>還沒有建立空間</h3><p>選一個範例，核對預覽後按「建立空間」，它就會出現在這裡。</p><button class="sm-button sm-primary" data-sm-library-trial type="button">試用矩形範例 →</button></div>';
   }
-  function openLibrary(){clearSnapshotNavigation();if(state.editing)cancelHeightEdit();if(!show(openLibrary))return;libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;dialog.classList.add("sm-in-library");window.dispatchEvent(new Event('space-model-view-changed'));}
+  function openLibrary(){clearSnapshotNavigation();if(state.editing)cancelHeightEdit();if(!show(openLibrary))return;libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;libraryLease=captureLibraryLease();dialog.classList.add("sm-in-library");WorkspaceShell.refresh(dialog);syncLibraryActions();window.dispatchEvent(new Event('space-model-view-changed'));}
   function openRecord(id, display = true) {
     const record=ReferenceWorkspace.getSpaceModels().find(m=>m.id===id); if(!record)return;
     const ctx=ReferenceWorkspace.context(),pin=JSON.stringify(record);
@@ -629,11 +678,12 @@ window.SpaceModelWorkspace = (() => {
   }
   function refresh() {
     libraryList();
+    syncLibraryActions(); WorkspaceShell.refresh(dialog);
     if(state.editing && state.committingId!==state.editing.record.id) {
       try { assertEditableRecord(); }
       catch(e) {state.controller?.abort();state.sequence++;state.editing=null;state.source=null;state.result=null;state.input=null;state.createdId=null;state.previewRevision=-1;state.phase="stale";state.viewer?.setObjects([]);$("smPreviewDetails").hidden=true;$("smSourceSummary").textContent="這次修改已失效。請從「已建立空間」重新開啟模型。";$("smResultBadge").textContent="模型已變更，請重新開啟";for(const id of ["smVolume","smClearance","smWallVolume","smTimberVolume"])$(id).textContent="—";message(e.message,"warning");updateActions();}
     }
-    if(state.createdId && state.recordSignature && dialog.open) {
+    if(state.createdId && state.recordSignature && dialog.open && !$('smMain').hidden) {
       const current=ReferenceWorkspace.getSpaceModels().find(m=>m.id===state.createdId);
       if(current && JSON.stringify(current)!==state.recordSignature){openRecord(current.id);message("模型已更新或復原，目前顯示專案中的最新保存內容。");return;}
     }
@@ -651,7 +701,7 @@ window.SpaceModelWorkspace = (() => {
   $('smProjectionView').onchange=()=>{const pending=state.projectionPending;cancelProjectionConfirmation();updateActions();if(pending)message('觀看方向已變更，請重新確認用途與觀看方向。');};
   $('smBottomZero').onclick=()=>{$('smBottom').value='0';stale();message('牆底已明確設為 0 mm；圖面維持原來的 z。確認設定後按「更新預覽」。');$('smBottom').focus();};
   dialog.addEventListener("cancel",()=>{viewerOpenSequence++;state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();});
-  dialog.addEventListener("close",()=>{viewerOpenSequence++;clearSnapshotNavigation();state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(state.editing)cancelHeightEdit();window.dispatchEvent(new Event('space-model-view-changed'));});
+  dialog.addEventListener("close",()=>{libraryLease=null;viewerOpenSequence++;clearSnapshotNavigation();state.viewerLoading=false;rememberDraft();cancelProjectionConfirmation();cancelSourceLoad();if(state.editing)cancelHeightEdit();window.dispatchEvent(new Event('space-model-view-changed'));});
   const reviewJump=()=>{setTab("setup");if(state.result&&state.previewRevision===state.revision){$('smReviewFaces').open=true;$("smPreviewDetails").scrollIntoView({block:"start"});}};$("smReviewJump").onclick=reviewJump;
   $('smMobileNext').onclick=()=>{setTab('setup');if(state.result&&state.previewRevision===state.revision&&!state.createdId)$('smConfirmFaces').focus({preventScroll:true});};
   $("smSourceSelect").onchange=()=>openCurrentFace($("smSourceSelect").value);$("smMode").onchange=()=>toggleMode();$("smFit").onclick=()=>state.viewer?.fit();
@@ -660,7 +710,7 @@ window.SpaceModelWorkspace = (() => {
   $("smSettings").addEventListener("input",()=>{stale();$("smObstacleCount").textContent=String(dialog.querySelectorAll("[data-sm-obstacle]:checked").length);});
   $("smModelName").addEventListener("input",()=>{if(state.createdId)message("若要以新名稱建立模型，請重新選擇來源。此處不會改動已保存的模型。","warning");});
   $("smExport").onclick=exportModel;
-  $("smLibraryList").addEventListener("click",e=>{const open=e.target.closest("[data-sm-open-model]"),edit=e.target.closest("[data-sm-edit-height]"),remove=e.target.closest("[data-sm-remove-model]");if(open)openRecord(open.dataset.smOpenModel);else if(edit)beginHeightEdit(edit.dataset.smEditHeight);else if(remove){ReferenceWorkspace.removeSpaceModel(remove.dataset.smRemoveModel);refresh();}else if(e.target.closest("[data-sm-library-trial]"))openExample();});
+  $("smLibraryList").addEventListener("click",e=>{const open=e.target.closest("[data-sm-open-model]"),edit=e.target.closest("[data-sm-edit-height]"),remove=e.target.closest("[data-sm-remove-model]"),trial=e.target.closest("[data-sm-library-trial]");if(!(open||edit||remove||trial)||!libraryActionAllowed(remove?'remove':'view'))return;if(open)openRecord(open.dataset.smOpenModel);else if(edit)beginHeightEdit(edit.dataset.smEditHeight);else if(remove){ReferenceWorkspace.removeSpaceModel(remove.dataset.smRemoveModel);refresh();}else if(trial)openExample();});
   window.addEventListener("space-models-changed",refresh);
   window.addEventListener("face-projections-changed",projectionChanged);
   $("btnSpaceModelTrial")?.addEventListener("click",()=>openExample());$("btnSpaceModels")?.addEventListener("click",openLibrary);

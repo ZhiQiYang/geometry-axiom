@@ -5,6 +5,33 @@
 不代表尚未接上產品的模組或下列正式整合驗證已完成。
 既有 floors、具名平台 skip 清單與實際測試斷言維持。
 
+## #123 S1 模型庫歷史入口（browser gate 待執行）
+
+非瀏覽器：`node --test tests/test_workspace_shell_history.js`，另由
+`python tests/run_all.py --only workspace_shell_history` 登錄執行。
+fixture 執行正式 shell／owner admission 函式，涵蓋同節點移入／還原、ID唯一、
+鍵盤與可見入口同路由、busy／Save／readonly、零點校準、nested modal及owner重入。
+它沒有真實DOM layout、native bridge、瀏覽器focus或`.gcanvas`往返證據。
+
+本切片的正式驗收須在 exact candidate、fresh native/runtime、隔離服务／profile／TEMP 執行，
+不可使用使用者正在編輯的服務。以下全部仍 pending，不能由 nonbrowser green 代替：
+
+1. 1382×804與390×844，正式範例→預覽→建立→關閉→模型庫；移除後不離開庫，
+   真點同一 `#btnUndo` 還原相同模型ID，再 `#btnRedo`，以及Ctrl+Z/Y/Shift+Z。
+   模型庫按鈕可見、中心hit-test可達、至少44px、無水平溢出，保存狀態仍可讀。
+2. pending native Undo 期間，再按Undo/Redo、模型移除、保存均不另發mutation；
+   source/context/session切換或關閉／重開後，舊回覆不復活舊owner。零點校準、
+   參數／房間／面草稿與nested confirmation不被自動取消或捨棄。
+3. 真readonly lease下不可Undo/Redo／移除，但仍能開啟既有3D查看；
+   modal內文字輸入保留原生文字復原，Esc與原生confirm/cancel行為不變。
+4. 退出模型庫／切網格或工程工作區後，原按鈕移回、ID各僅一份，其他殼層沒有新增history能力；
+   新增入口不能改保存按鈕的原生user activation。保存取消零副作用；真`.gcanvas`保存、
+   新專案與重開保留模型ID及資料，Undo的dirty狀態不能冒稱已寫檔。
+5. 另跑原`cdp_test.js`及`space_model_test.js`正式範圍，保留各自scope、count、
+   native身份、terminal exit與未驗項。不得降低既有floor／golden補過。
+
+實體手機、IME與OS picker人工驗證另列；source-only／VM不作替代。
+
 ## #44／#77 新增模組的實際登錄
 
 | 原測試檔 | 非瀏覽器實際測試數 | 執行方式／範圍 |

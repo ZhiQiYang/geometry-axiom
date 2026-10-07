@@ -1,5 +1,15 @@
 # DOM 合約(測試依賴清單)
 
+## #123 S1 模型庫的既有歷史入口
+
+- 僅 `#smWorkspace` 的 `#smLibraryPanel` 顯示時 opt-in：`WorkspaceShell.attach` 的 `history.state/run/onError` 介面將原 `#btnUndo`／`#btnRedo` 搬入同一 `#projectBar`；不是複製按鈕。保留 ID、圖示、文案與 `doUndoRedo`，沿用 44px 最小觸控尺寸；離開模型庫、關閉或切到其他殼層即還原原 DOM 位置與屬性。面內既有按鈕不動。
+- 這兩個按鈕及模型庫內 Ctrl+Z／Ctrl+Y／Ctrl+Shift+Z 共用原 `doUndoRedo` → `apiRequest` → `ReferenceWorkspace.tryLocalHistory` 路由；不新增 history 或改原生交易。輸入／contenteditable、repeat、composition、其他 modal 不借這條捷徑；全域 dialog 鍵盤守門不變。
+- 模型庫在明確開啟時記目前 context／frame／session。外來 context、frame 或 session 變更使舊 owner 失效；只有同一次已准入的歷史操作可更新同 context/session 的 view lease。關閉／重開後，舊回覆不得續租。
+- 啟用狀態同時讀 `getModelOperationState()` 與 `getEvidenceState()`，後者涵蓋 nativePending。readonly、busy、房間／參數／面內草稿、零點校準、建模預覽／編輯及巢狀 modal 均不放行 history；仍屬目前 context/history/面身份的可恢復建模草稿也保留，過期cache不鎖庫。庫內 `remove` dispatch 同樣核對 gate，避免等待 native Undo 時插入另一筆 local history；唯讀專案的「開啟 3D」仍可用。
+- `WorkspaceShell.historyBusy(dialog)` 只表示這個殼層的 in-flight command，不是新 history。執行中拒絕再次送出及保存；完成後依當前 owner 重新呈現。原保存節點與直接 user gesture／file picker 時點不變。
+- 模型庫中的已保存模型更新只刷新清單，不自動跳回 3D viewer。可見 viewer 仍沿用原自動追新。
+- 非瀏覽器 gate：`tests/test_workspace_shell_history.js`（registry `node:workspace_shell_history`）。此 DOM/event fixture 不證明真實版面、inert、手機可達或完整保存重開；正式 browser gate 見 `tests/INTEGRATION-GATES.md`，此切片尚待執行。
+
 ## 參數確認期間輸入保全（GEO-233）
 
 `#parameterEditor[aria-busy="true"]` 代表正式確認尚未完成；其 input/select/textarea/button 同步 disabled，包含 `loadLegacy` 遲到後插入的既有具名規格控制，不能先接受新輸入再被舊回覆清掉。補鎖不重置已捕捉的原 disabled 狀態。成功或原生拒絕後恢復這次捕捉的控制，拒絕時 `#paramConfirm` 仍停用、草稿保留，編輯後可重新試算。`parameter_confirmation_test.js` 由完整 P76 呼叫，以真鍵盤、延遲具名規格／成功回覆與真過期 token 驗證十項。

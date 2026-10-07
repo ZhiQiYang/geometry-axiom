@@ -1,5 +1,12 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## #123 S1 — 模型庫的既有歷史入口（2026-10-06，待正式瀏覽器驗收）
+
+- 有界範圍：閒置3D模型庫中的 Undo/Redo 可見入口與同路徑快捷鍵；沿用唯一 `ContextHistory`、原 `doUndoRedo` 與原DOM按鈕，不改核心、公理、app.js或ReferenceWorkspace。
+- UI減項（GEO-219）：把原本留在modal背景、不可操作的主Undo/Redo控制搬入同一專案列，退出即還原；不新增第二份控制、history、工具列或常駐教學。模型庫移除後不必先退出才到達同一復原操作。
+- 保全：readonly／busy／native pending／草稿／巢狀modal／owner換代拒絕；保存節點與原生手勢不變，readonly仍可查看既有3D。參見 [DOM契約](geometry-web/docs/DOM-CONTRACT.md) 與 [待驗gate](tests/INTEGRATION-GATES.md)。
+- 非瀏覽器有獨立正式registry，不降低既有floor／golden；手機可達、真保存重開、native/browser owner races仍待exact-tree驗收，不宣稱#123或S1全部完成。
+
 ## CONT-20261004 — 八項採納與單writer整合
 
 - 使用者已明示接受八項建議，並授權自行安排順序／並行／批次；[目前接口／owner／採納範圍](geometry-guide/IMPLEMENTATION-QUEUE-20261004.md)。舊準備階段的「全部待採納」保留為歷史，不擴大未明寫條文，也不拿來阻塞已批准工作。
