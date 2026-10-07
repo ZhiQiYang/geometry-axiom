@@ -1,5 +1,9 @@
 # geometry-web — 幾何模型 Web 介面
 
+交付候選的整合範圍、完整驗收矩陣與未驗平台見
+[交付候選紀錄](docs/RELEASE-CANDIDATE.md)。保存或搬移完整工作請使用 `.gcanvas`；
+它包含原生場景及目前功能要求的來源、模型、草稿與方案資料，`.scene` 只含原生幾何。
+
 ## 畫布參數卡（GEO-223）
 
 「建立 → 參數」可建立單值、寬×長或 W×H 卡片，也可先輸入 `(915,1830)`、`W27H33` 轉成草稿。欄位支援尺寸、數量、比例、精確分數與跨卡算式；修改後先看核心試算及物件影響，再按「確認套用」。
@@ -51,8 +55,16 @@ guide 2 2 datum 1
 ## Linux 雲端開發基線
 
 需要 gcc、Python 3；managed preview 的啟動器另需 npm，不需下載套件。
-`npm run build` 編譯當前 core 與 bridge 到忽略的 `.build/`。
-本機可直接執行 `GEOMETRY_BRIDGE=.build/web_bridge python3 geometry-web/serve.py 8765`。
+`npm run build` 編譯當前 core、bridge 與 model-base 到忽略的 `.build/`。
+從 repository 根目錄啟動本機開發服務：
+
+```sh
+ulimit -s 16384
+GEOMETRY_BRIDGE=.build/web_bridge GEOMETRY_MODEL_BASE=.build/model_base python3 geometry-web/serve.py 8765
+```
+
+另在同一 repository 執行 `python3 geometry-web/runtime_version.py --probe 8765` 核對版本。
+正式驗收使用 `tests/binaries.py` 的來源收據，不能以 `.build/` 檔名代替 freshness 證據。
 受管開發環境從 repo 根執行 `sites-preview start "$PWD"`；它使用 `npm run dev`。
 受管模式只在環境變數 `GEOMETRY_MANAGED_PREVIEW=1` 且埠為 4173 時
 額外接受 `terminal.local` 並綁定開發環境入口。預設仍只接受 localhost，沒有公開部署。
@@ -296,6 +308,10 @@ update bridge 與 model-base，預設 WSL transport 未支援這個更新流程�
 - 舊的「凹口」工具（點邊開對話框、`i` 快捷鍵、`#notchDialog`）已移除，凹口只走上面的流程；「外環」重畫與形狀庫保留。
 
 ## 面內底圖臨摹（GEO-190）
+
+以下是 GEO-190 當時的記憶體底圖實作紀錄；現行正式參考來源透過
+`ReferenceWorkspace` 隨完整 `.gcanvas` 保存，並有同服務、同場景的本機恢復核對。
+不能把本節早期「重新整理就消失」的描述套用到所有現行來源；未保存工作也不保證能在任意中斷後恢復。
 
 檢視器右欄第 6 分頁「底圖」：放一張掃描/照片平面圖在面內底下，照著描外環。**只存在本次瀏覽器工作階段的記憶體**（`oc.underlays[bid]`）——不寫進 `.scene`、不寫 `localStorage`；離開這片面再進來仍在，重新整理瀏覽器就沒了。核心（`web_bridge.c`、`.scene` 格式）不動，純前端功能。
 

@@ -1,5 +1,11 @@
 # #49 isolated workbench and host handoff
 
+> Historical standalone-owner handoff for #141. The current app integrates these
+> components through #146, including the registered `rule-cases` attachment and
+> `geometry-canvas/15`. Statements below about pending host routes or format
+> allocation describe that earlier checkpoint. Current formal app, history and
+> ZIP acceptance requirements are in [INTEGRATION-GATES.md](../../../tests/INTEGRATION-GATES.md).
+
 Base: actual main `6ee719d0e4ba3740e2f0b93223b323838f6a20f8`.
 The branch owns only new `rule-case-workbench*` JS/CSS, `rule_case_workbench*`
 Python files, its new tests and this documentation directory. Open #137 owns

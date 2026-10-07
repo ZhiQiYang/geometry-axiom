@@ -5,6 +5,26 @@
 不代表尚未接上產品的模組或下列正式整合驗證已完成。
 既有 floors、具名平台 skip 清單與實際測試斷言維持。
 
+## 可重複的交付命令收據
+
+`tests/release_gate.py` 在既有隔離服務上執行一個正式 gate；服務由呼叫端管理。
+先設定 receipt-backed `GEOMETRY_TEST_BRIDGE`／`GEOMETRY_MODEL_BASE` 及與服務相同的
+TEMP `GEOMETRY_FEEDBACK_DIR`，再執行：
+
+```sh
+python3 tests/release_gate.py --url http://127.0.0.1:18970/ \
+  --output /tmp/new-release-evidence -- node geometry-web/cdp_test.js
+```
+
+输出必須是 checkout 之外的新目錄，不覆蓋舊收據。前後核對 clean Git head/tree、
+當前來源／runtime root、fresh、session、PID，以及設定的 native 檔案和 sidecar。
+每次保存完整命令日誌及 machine-readable receipt；失敗、超時、中斷與缺完整結果均非成功。
+CDP／Space另核正式 completed/scope/floor；partial只屬其明示範圍。
+其他命令只記錄 execution verified，不把 exit 0 說成完整產品驗收。
+Native收據證明設定的檔案，`/runtime` 尚未直接證明正在執行的 native process；
+呼叫端仍必須自行建立並核對專屬服務。整體矩陣見
+[`RELEASE-CANDIDATE.md`](../geometry-web/docs/RELEASE-CANDIDATE.md)。
+
 ## #123 S1 模型庫歷史入口（#159 瀏覽器收尾）
 
 非瀏覽器：`node --test tests/test_workspace_shell_history.js`，另由

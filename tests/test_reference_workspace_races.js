@@ -359,6 +359,107 @@ async function openFixture(options={}) {
   return {...f,bytes,requests,refreshed};
 }
 
+// Cross-PR ownership: the scenario reader validates complete leaf projects,
+// creating disposable PDF tasks even though it keeps only their saved bytes.
+// Execute production archive/reader/transaction code; only native/PDF transports
+// remain the explicitly fake VM seams used by this suite.
+async function scenarioPDFFixture() {
+  const pdf=countedPDF(),f=await openFixture({withPDF:true,pdfLibrary:pdf.library});
+  const originalFetch=f.env.fetch,project=await P.unpack(f.bytes,zip);
+  f.env.fetch=async(url,request)=>{
+    if(url==='/scenarios/verify-native'){
+      const candidate=JSON.parse(request.body);
+      return {ok:true,json:async()=>({ok:true,capabilities:nativeCapabilities,
+        final_objects:{boundaries:[1],placements:[]},objects:[],
+        final_scene:candidate.scene,scene_sha256:candidate.manifest.sceneHash})};
+    }
+    if(url==='/upload/prepare'){
+      const response=await originalFetch(url,request),value=await response.json();
+      return {ok:response.ok,json:async()=>({...value,final_scene:request.body})};
+    }
+    return originalFetch(url,request);
+  };
+  return {...f,pdf,project};
+}
+
+test('scenario catalog validation releases disposable PDF leaves without releasing adopted history readers',async()=>{
+  for(const rejected of [false,true]){
+    const f=await scenarioPDFFixture(),old=f.w.context(),live=f.source.doc;
+    const archive=f.env.ScenarioIntegration.create();
+    await archive.capture(f.project,{scenarioId:'A',label:'A'});
+    await archive.fork('A',{scenarioId:'B',label:'B'});
+    const scenarioCatalog=f.env.ScenarioIntegration.exportCatalog(archive);
+    const bytes=await P.pack(f.project.scene,{...f.project.manifest,scenarioCatalog},f.project.sources,zip);
+    if(rejected){const fetch=f.env.fetch;f.env.fetch=async(url,request)=>{
+      if(url==='/upload/prepare')return {ok:true,json:async()=>({ok:false,error:'authored catalog native rejection'})};
+      return fetch(url,request);
+    };}
+    for(let i=1;i<=2;i++){
+      if(rejected)await assert.rejects(f.w.importBytes(bytes),/authored catalog native rejection/);
+      else await f.w.importBytes(bytes);
+      assert.deepEqual(f.pdf.count,{created:3*i,destroyed:(rejected?3:2)*i},
+        'each A/B validation task is released; only adopted outer project tasks remain history-owned');
+      assert.equal(f.source.doc,live);await live.getPage(1);
+    }
+    if(rejected){assert.equal(f.w.context(),old);assert.equal(f.w.history.undo.length,0);}
+    else{
+      const adopted=f.w.context(),source=adopted.sources.get(f.source.meta.id);
+      await source.doc.getPage(1);f.w.observe('line undo',{ok:true});
+      await f.w.context().sources.get(f.source.meta.id).doc.getPage(1);
+      f.w.observe('line redo',{ok:true});assert.equal(f.w.context(),adopted);await source.doc.getPage(1);
+      assert.deepEqual(f.pdf.count,{created:6,destroyed:4});
+    }
+  }
+});
+
+test('scenario adoption releases rejected PDF candidates and preserves live and uncertain owners',async()=>{
+  for(const outcome of ['late-cancel','rejected','success','cancelled-recovery','committed-recovery']){
+    const f=await scenarioPDFFixture(),old=f.w.context(),live=f.source.doc,original=f.env.fetch;
+    const extraBytes=new TextEncoder().encode('live A source that is absent from candidate'),extraHash=await P.sha(extraBytes),extraPDF=countedPDF();
+    const task=extraPDF.library.getDocument(),extraDoc=await task.promise;
+    const extra={meta:{id:extraHash,hash:extraHash,name:'only-A.pdf',type:'application/pdf',size:extraBytes.length,path:'sources/'+extraHash},bytes:extraBytes,doc:extraDoc,documentTask:task};
+    old.sources.set(extraHash,extra);
+    let verified=false,verifiedChecks=0,terminal=false;
+    const verify=f.env.ScenarioIntegration.verifyProject;
+    f.env.ScenarioIntegration.verifyProject=async(...args)=>{const result=await verify(...args);verified=true;return result;};
+    f.env.fetch=async(url,request)=>{
+      if(url==='/upload/confirm'){
+        if(outcome==='rejected')return {ok:true,json:async()=>({ok:false,error:'authored adoption rejection'})};
+        if(outcome.endsWith('-recovery'))throw Error('authored lost adoption reply');
+      }
+      if(url==='/upload/cancel'&&outcome.endsWith('-recovery')){
+        if(!terminal)return {ok:false};
+        return {ok:true,json:async()=>outcome==='cancelled-recovery'?{ok:true,state:'cancelled'}:
+          {ok:true,state:'committed',revision:7,path:'adopted.scene',scene_sha256:f.project.manifest.sceneHash}};
+      }
+      return original(url,request);
+    };
+    f.env.connectionFailed=()=>{};
+    const adopting=f.w.adoptScenario(f.project,()=>{
+      // The first post-verifier check is still inside readProjectContext; the
+      // second is the adoption caller after it received the detached context.
+      if(outcome==='late-cancel'&&verified&&++verifiedChecks===2)throw Error('authored late adoption cancellation');
+    });
+    if(outcome==='success')await adopting;
+    else await assert.rejects(adopting,/authored (?:late adoption cancellation|adoption rejection|lost adoption reply)/);
+    if(outcome.endsWith('-recovery')){
+      assert.deepEqual(f.pdf.count,{created:1,destroyed:0},'unknown native result retains detached candidate');
+      await assert.rejects(f.w.recoverLoad(),/仍無法確認/);
+      assert.deepEqual(f.pdf.count,{created:1,destroyed:0});terminal=true;
+      if(outcome==='committed-recovery')f.env.api=async()=>({ok:true,text:f.project.scene,revision:7});
+      await f.w.recoverLoad();
+    }
+    const adopted=outcome==='success'||outcome==='committed-recovery';
+    assert.deepEqual(f.pdf.count,{created:1,destroyed:adopted?0:1},outcome);
+    assert.equal(old.sources.get(extraHash),extra);assert.equal(extra.doc,extraDoc);await extraDoc.getPage(1);
+    assert.deepEqual(extraPDF.count,{created:1,destroyed:0},'candidate cleanup cannot destroy the original A reader');
+    assert.deepEqual(extra.bytes,extraBytes);assert.equal(f.source.doc,live);await live.getPage(1);
+    if(adopted){assert.notEqual(f.w.context(),old);await f.w.context().sources.get(f.source.meta.id).doc.getPage(1);assert.equal(f.w.history.undo.length,1);}
+    else{assert.equal(f.w.context(),old);assert.equal(f.w.history.undo.length,0);}
+    assert.equal(f.w.busy,false);assert.doesNotThrow(()=>f.w.assertEditable());
+  }
+});
+
 test('opening owns the busy state from first byte read through rendering and refuses reentry',async()=>{
   const readGate=deferred(),refreshGate=deferred(),afterGate=deferred(),f=await openFixture({refreshGate});
   const opening=f.w.openProject(()=>readGate.promise,'example',()=>afterGate.promise);

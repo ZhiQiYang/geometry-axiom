@@ -1492,9 +1492,11 @@ const ReferenceWorkspace = (() => {
   async function adoptScenario(project,assertCurrent=()=>{}) {
     assertSaveReady();assertCurrent();
     const owner=beginSceneTransaction();busy=true;busyLabel='正在整體採用候選方案…';present();
+    let preparedContext=null;
     try {
     const root=readScenarioCatalog(),bytes=await P.pack(project.scene,project.manifest,project.sources,fflate);
     assertCurrent();const {loaded,c,ids}=await readProjectContext(bytes,'候選方案',()=>{},assertCurrent,true);
+    preparedContext=c;
     c.scenarioCatalog=root.catalog;
     for(const [hash,source] of root.sources)if(!c.sources.has(hash))c.sources.set(hash,source);
     c.dirty=true;c.saved=false;c.provenance={...context().provenance};
@@ -1502,7 +1504,7 @@ const ReferenceWorkspace = (() => {
     const r=await uploadScene(loaded.scene,{context:c,ids,manifest:loaded.manifest,action:'整體採用候選方案'},assertCurrent,owner);
     if(!r.ok)throw new Error(r.error||'方案未採用。');
     resetSceneFocus();sync();await refreshActive();return true;
-    }finally{if(pendingLoad?.transaction!==owner)finishSceneTransaction(owner);busy=false;busyLabel='';present();scheduleRecovery();}
+    }finally{await releaseDetachedPDFContext(preparedContext);if(pendingLoad?.transaction!==owner)finishSceneTransaction(owner);busy=false;busyLabel='';present();scheduleRecovery();}
   }
   function download(bytes,name) {
     const url=URL.createObjectURL(new Blob([bytes],{type:"application/zip"})),a=document.createElement("a");
@@ -1631,7 +1633,8 @@ const ReferenceWorkspace = (() => {
         const project={manifest:record.snapshot.projectManifest,scene:record.snapshot.worldScene,
           sources:new Map(record.snapshot.assetHashes.map(h=>[h,loaded.sources.get(h)]))};
         const leafBytes=await P.pack(project.scene,project.manifest,project.sources,fflate);assertCurrent();
-        await readProjectContext(leafBytes,record.label,stage,assertCurrent,false);assertCurrent();
+        const child=await readProjectContext(leafBytes,record.label,stage,assertCurrent,false);
+        try {assertCurrent();} finally {await releaseDetachedPDFContext(child.c);}
       }
       c.scenarioCatalog=structuredClone(m.scenarioCatalog);
     }

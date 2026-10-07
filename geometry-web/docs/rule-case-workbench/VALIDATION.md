@@ -1,5 +1,10 @@
 # #49 independent component validation
 
+> Historical evidence for the standalone #141 component, at the exact source
+> recorded below. It is not an acceptance receipt for the integrated release
+> candidate. Current formal app/ZIP/race gates are listed in
+> [INTEGRATION-GATES.md](../../../tests/INTEGRATION-GATES.md).
+
 Validated executable source: `b9ef20818eaccd4d72339b58e3935cc5e1e03b8c`.
 Base main: `6ee719d0e4ba3740e2f0b93223b323838f6a20f8`.
 Final upstream recheck: main advanced to

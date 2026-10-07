@@ -1,5 +1,13 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 交付候選整合與反覆驗收（2026-10-07，進行中）
+
+- 依使用者本輪授權自主規劃、實作及重複功能／使用者流程審查，以正式交付可運作為目標。已批准來源、必要閘門與未驗平台集中於 `geometry-web/docs/RELEASE-CANDIDATE.md`；獨立候選分支保留原 PR ancestry，不改公理或原生幾何。
+- 第一輪獨立交叉審查找到 #137＋#154 的 PDF ownership 整合缺口：A/B leaf 驗證後遺留 reader；adopt 讀取完成後取消／拒絕也未釋放 detached reader。先用兩條正式 reader VM 回歸釘紅，再以真 PDF／真 capture＋fork／新 profile filechooser Open 重現 created 3、terminated 0，只有一個 reader 有 live owner。
+- 修正僅釋放成功驗證後即丟棄的 leaf context，以及未被 live/history/pending native load 接管的 adopt context；未知 native 結果仍保留候選等待原 terminal receipt，已採用及原 A 的 reader 保持可讀。真瀏覽器修正後 created 3、terminated 2、live 1；VM完整 61/61，新增兩項涵蓋拒絕／遲到取消／未知後取消或提交／同 ID Undo/Redo。未變更 PDF bytes、保存格式或幾何行為。
+- 新增 `tests/release_gate.py`，對既有命令記錄 clean head/tree、runtime/root/source、native freshness、完整 log及exit；失敗／中斷同樣保留收據，CDP／Space另核既有完整 census，partial不冒充full。21項負例與真子行程自測登錄；其餘原floor不降低。
+- 本次拿掉／合併（GEO-219）：無新增產品入口、按鈕或常駐說明；整合各分支既有控制項，交付說明與歷史驗收文件明確區分。完整候選流程仍須依同版收據驗收，不借舊 PR 數字宣稱完成。
+
 ## CONT-46-20261005 — 完整候選方案正式整合（進行中）
 
 - 授權依 #46／Q33；完整 A/B、原圖內容定址去重、隔離試改、比較後整體採用可復原。沒有逐物件 merge、搬舊 undo 或新的物件沿革公理。
