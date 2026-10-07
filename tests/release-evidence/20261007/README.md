@@ -1,8 +1,8 @@
 # Geometry Axiom 交付證據
 
-本地候選驗收完成，遠端 CI 另見 PR，不代表 merge、deploy 或全平台批准。
+主要本地回歸已有通過收據；整體候選驗收尚未完成，仍待補齊下列模型庫證據。遠端 CI 另見 PR，平台驗證另列，不代表 merge、deploy 或全平台批准。
 
-- 候選狀態：`local-candidate-acceptance-complete`；候選受測 source head：`66a4c89d985e5e7a34f602ff1d085c7a9943c883`。
+- 候選狀態：`acceptance-incomplete`；候選受測 source head：`66a4c89d985e5e7a34f602ff1d085c7a9943c883`。
 - 9712006 是先前受測版本；完整 CDP 第四輪為 `command-failed`。
 - 每個 scope 的原始 head、runtime、結果、限制與失敗前序均保留，沒有把舊結果重標為新 head。
 - 精確來源、每檔大小與 SHA256 見 [manifest.json](manifest.json)；原始資料見 [evidence.tar.gz](evidence.tar.gz)。
@@ -38,6 +38,15 @@ tar -xzf evidence.tar.gz -C evidence-unpacked
 
 ## 限制與待補
 
+1. PR161 模型庫十項 browser guards 的既有腳本、逐例原始結果及來源／終態收據尚未收錄，包含 pending native Undo 重入、Save／remove 拒絕、close／reopen／context／session 遲到回覆及真 readonly lease。
+2. `historical/model-a49d/ui-settled-v2/ui` 的 155 項通過紀錄保留原受測版本；其 `browser_ui.py`、完整 oracle 結果及 initial-world 失敗→fixture settling 修正前序尚未收錄。
+
+以上優先取回既有紀錄；Space 228 的一般模型庫檢查與 #123 的 138 項 Create／grid 流程不能代替這些缺口。若原紀錄已不可取得，只補缺少的有界 browser cases，不重跑已通過的全庫。
+
+`manifest.json` 與壓縮包內的 `local-candidate-acceptance-complete` 是收集時作者記錄，保留原 bytes 作歷史來源，不作目前驗收完成結論。[限定獨立審查](https://github.com/ZhiQiYang/geometry-axiom/pull/162#issuecomment-6040383490) 明列上述缺口。
+
+既有 Windows QA 的 390px 規則線控制項間歇不可達另列診斷；本包 Linux 窄 viewport 的通過不代表該平台問題已解除。
+
 不包含 Chrome profiles/cache、原生執行檔或使用者收件匣。窄視窗／模擬觸控不代表實體手機或 IME；Linux 測試不代表 Windows、GDI/SAC 或原生 Save picker。混合 assertions、native cycles、component 和真使用者流程的計數不合併成單一驗收數。
 
-所有配置的終態檔已收集；是否符合交付條件仍依各原始結果判斷。
+本包已收集其配置範圍內的終態檔；整體驗收仍待上述缺件與相應驗證完成。
