@@ -52,17 +52,37 @@ window.WorkspaceShell = (() => {
       if (title === null) button.removeAttribute('title'); else button.setAttribute('title', title);
     }
   }
+  function retainHistoryFocus(entry, owner) {
+    const focused = document.activeElement;
+    if (!historyHomes.has(focused) || !bar()?.contains(focused)) return () => {};
+    let interrupted = false;
+    const interrupt = event => { if (event.type !== 'focusin' || event.target !== document.body) interrupted = true; };
+    const events = ['focusin', 'pointerdown', 'keydown'];
+    for (const type of events) document.addEventListener(type, interrupt, true);
+    return () => {
+      for (const type of events) document.removeEventListener(type, interrupt, true);
+      const state = historyState(entry);
+      if (interrupted || active() !== entry || entry.options.history !== owner || !state.visible || state.blocked ||
+          document.activeElement !== document.body || !historyHomes.has(focused) || !bar()?.contains(focused)) return;
+      // Native disabled buttons blur to BODY. Keep shortcuts inside the modal;
+      // after the final step, its available reverse action is the keyboard target.
+      const target = focused.disabled ? document.getElementById(focused.id === 'btnUndo' ? 'btnRedo' : 'btnUndo') : focused;
+      if (target && historyHomes.has(target) && bar().contains(target) && !target.disabled && target.getClientRects().length)
+        target.focus({preventScroll:true});
+    };
+  }
   async function runHistory(entry, verb) {
     const state = historyState(entry);
     if (entry !== active() || !state.visible || state.blocked || !state[verb]) { refresh(); return; }
-    const owner = entry.options.history, ticket = {owner:state.owner};
+    const owner = entry.options.history, ticket = {owner:state.owner}, restoreFocus = retainHistoryFocus(entry, owner);
     entry.historyRun = ticket;
     try { refresh(); entry.options.onProjectState?.(); await owner.run(verb, ticket.owner); }
     catch (error) {
       if (active() === entry && historyState(entry).owner === ticket.owner) owner.onError?.(error);
     } finally {
       if (entry.historyRun === ticket) entry.historyRun = null;
-      refresh(); active()?.options.onProjectState?.();
+      try { refresh(); active()?.options.onProjectState?.(); }
+      finally { restoreFocus(); }
     }
   }
   function refresh(dialog) {

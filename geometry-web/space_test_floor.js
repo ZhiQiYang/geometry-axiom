@@ -5,7 +5,7 @@
 const FULL_SPACE_GROUPS = Object.freeze(['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow']);
 const EXPECTED = Object.freeze({
   setup: 2,
-  'space-height-library': 86,
+  'space-height-library': 112,
   'projection-lifecycle': 18,
   'projection-placement': 36,
   'font-layout': 19,

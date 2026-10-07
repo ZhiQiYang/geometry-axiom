@@ -187,7 +187,9 @@ window.SpaceModelWorkspace = (() => {
     const pendingDraft = !!(remembered || window.RoomCollectionWorkspace?.hasWork || window.RoomOutlineWorkspace?.hasWork || window.ParameterUI?.pending ||
       fe.draft?.pts?.length || fe.ulCalib || fe.ulDrag || fe.work || fe.op);
     // A removed saved model is stale, not an unpublished model-building draft.
-    const building = !!state.source && !state.readonly && !state.createdId && state.phase !== 'stale';
+    const building = !!state.source && !state.readonly && !state.createdId && state.phase !== 'stale' &&
+      (state.source.kind !== 'scene' || state.source.context_id === contextId() &&
+        state.source.face_key === faceKey(state.source.boundary_id) && sameSourceHistory(state.source.history_token));
     const staleOwner = !libraryLease || libraryLease.context !== ReferenceWorkspace.context() || libraryLease.frame !== operation?.frame ||
       libraryLease.contextToken !== operation?.contextToken || libraryLease.session !== evidence?.session;
     const blocked = staleOwner || !operation || !evidence || operation.blocked || evidence.blocked || project?.editingBlocked || pendingDraft || building ||
@@ -206,12 +208,26 @@ window.SpaceModelWorkspace = (() => {
     const current = libraryHistoryState(), lease = libraryLease;
     if (!['undo','redo'].includes(verb) || !current.visible || current.blocked || !current[verb] || current.owner !== owner)
       throw new Error('目前專案或操作已改變，未執行復原或重做。');
+    const history = ReferenceWorkspace.history, reverse = verb === 'undo' ? 'redo' : 'undo';
+    const from = history[verb], to = history[reverse], beforeFrom = from.slice(), beforeTo = to.slice();
+    const target = beforeFrom.at(-1), targetContext = target?.context, frame = history.frame, limit = history.limit;
+    const kind = target?.kind || 'core', action = target?.action || null;
+    if (!targetContext || frame.context !== lease.context || !Number.isInteger(limit) || limit < 1)
+      throw new Error('目前歷史目標無法確認，未執行復原或重做。');
     await doUndoRedo(verb);
-    // Only this admitted history operation may advance its existing view lease.
-    // Closing/reopening or another project/session never revives the former owner.
+    // Follow only the one pinned history target, including a project-switch undo.
+    // Closing/reopening, a different session or another step never renews this lease.
     if (libraryLease === lease && dialog.open && !$('smLibraryPanel').hidden) {
-      const next = captureLibraryLease();
-      if (next?.context === lease.context && next.session === lease.session) libraryLease = next;
+      const next = captureLibraryLease(), returned = to.at(-1);
+      const same = (a, b) => a.length === b.length && a.every((entry, index) => entry === b[index]);
+      const retained = beforeTo.slice(Math.max(0, beforeTo.length + 1 - limit));
+      if (ReferenceWorkspace.history === history && history.limit === limit && !history.group &&
+          history[verb] === from && history[reverse] === to && history.frame !== frame &&
+          history.frame.context === targetContext && next?.context === targetContext && next.session === lease.session &&
+          ReferenceWorkspace.getEvidenceState?.().blocked === false && same(from, beforeFrom.slice(0, -1)) &&
+          to.length === Math.min(beforeTo.length + 1, limit) && same(to.slice(0, -1), retained) &&
+          returned?.context === lease.context && returned.kind === kind && returned.action === action &&
+          !beforeFrom.includes(returned) && !beforeTo.includes(returned)) libraryLease = next;
     }
   }
   function libraryActionAllowed(action = 'remove') {

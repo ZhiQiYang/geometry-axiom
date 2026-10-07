@@ -4,11 +4,12 @@
 
 - 僅 `#smWorkspace` 的 `#smLibraryPanel` 顯示時 opt-in：`WorkspaceShell.attach` 的 `history.state/run/onError` 介面將原 `#btnUndo`／`#btnRedo` 搬入同一 `#projectBar`；不是複製按鈕。保留 ID、圖示、文案與 `doUndoRedo`，沿用 44px 最小觸控尺寸；離開模型庫、關閉或切到其他殼層即還原原 DOM 位置與屬性。面內既有按鈕不動。
 - 這兩個按鈕及模型庫內 Ctrl+Z／Ctrl+Y／Ctrl+Shift+Z 共用原 `doUndoRedo` → `apiRequest` → `ReferenceWorkspace.tryLocalHistory` 路由；不新增 history 或改原生交易。輸入／contenteditable、repeat、composition、其他 modal 不借這條捷徑；全域 dialog 鍵盤守門不變。
-- 模型庫在明確開啟時記目前 context／frame／session。外來 context、frame 或 session 變更使舊 owner 失效；只有同一次已准入的歷史操作可更新同 context/session 的 view lease。關閉／重開後，舊回覆不得續租。
+- 模型庫在明確開啟時記目前 context／frame／session。外來 context、frame 或 session 變更使舊 owner 失效；只有同一次已准入的歷史操作，精確消耗事前固定的頂端 entry 並產生對應反向 entry，才可在同 session 續租到目標 context／新 frame。這包含復原新建或開啟專案；無步進、多步進、外來專案與關閉／重開的舊回覆均不得續租。
+- 按鈕執行中停用造成原生 blur 時，完成後只在同一庫／owner、焦點仍在 BODY 且等待中沒有另行移焦、點擊或按鍵，才以 `preventScroll` 還原原按鈕焦點。最後一步使該按鈕停用時，改停在可用的反向按鈕，讓 Ctrl+Z／Y 繼續在 modal 內生效；離開／重開庫與其他操作不搶焦點。
 - 啟用狀態同時讀 `getModelOperationState()` 與 `getEvidenceState()`，後者涵蓋 nativePending。readonly、busy、房間／參數／面內草稿、零點校準、建模預覽／編輯及巢狀 modal 均不放行 history；仍屬目前 context/history/面身份的可恢復建模草稿也保留，過期cache不鎖庫。庫內 `remove` dispatch 同樣核對 gate，避免等待 native Undo 時插入另一筆 local history；唯讀專案的「開啟 3D」仍可用。
 - `WorkspaceShell.historyBusy(dialog)` 只表示這個殼層的 in-flight command，不是新 history。執行中拒絕再次送出及保存；完成後依當前 owner 重新呈現。原保存節點與直接 user gesture／file picker 時點不變。
 - 模型庫中的已保存模型更新只刷新清單，不自動跳回 3D viewer。可見 viewer 仍沿用原自動追新。
-- 非瀏覽器 gate：`tests/test_workspace_shell_history.js`（registry `node:workspace_shell_history`）。此 DOM/event fixture 不證明真實版面、inert、手機可達或完整保存重開；正式 browser gate 見 `tests/INTEGRATION-GATES.md`，此切片尚待執行。
+- 非瀏覽器 gate：`tests/test_workspace_shell_history.js`（registry `node:workspace_shell_history`），28 cases，包含正式 `ContextHistory` 的目標步進與失效拒絕。此 DOM/event fixture 不證明真實版面、inert、手機可達或完整保存重開；正式 `space_model_test.js` 另含 26 項模型庫回歸，完整條件見 `tests/INTEGRATION-GATES.md`，本次實跑範圍與限制記於 `BACKLOG.md`。
 
 ## 參數確認期間輸入保全（GEO-233）
 

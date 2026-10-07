@@ -14,7 +14,7 @@
 |群組|獨立盤點|預期|
 |---|---|---:|
 |setup|服務 release 與 capabilities 各一|2|
-|space-height-library|run 的建模／保存／legacy／既有面流程 74；wallHeightEditingRegression 12|86|
+|space-height-library|run 的建模／保存／legacy／既有面流程 74；wallHeightEditingRegression 12；#159 libraryHistoryRegression 的 desktop／390px 各 11，迴圈後有效／過期 builder 歷史 4|112|
 |projection-lifecycle|projectionLifecycleRegression 18|18|
 |projection-placement|projectionPlacementRegression 14；source race 兩次各一，closeFirst 額外一；GEO-244 原圖方向、保存重開及拒絕／取消 13；正式投影方向與未確認選單同步 6|36|
 |font-layout|固定 check 8；fontCheck 六次各一；header width 1382/1160/900/680/600 各一|19|
@@ -24,8 +24,10 @@
 |timber-history-guard|既有 HISTORY_ONLY 前段，原提前返回仍保留|5|
 |browser-health|uncaught exceptions 與 console errors 各一|2|
 
-預設 **full-space-suite = 202**：五個 space 功能群組 198，加 setup／health 4。原 GEO-244 的 196 保留，另增方向同步 6。
+預設 **full-space-suite = 228**：五個 space 功能群組 224，加 setup／health 4。原 GEO-244 的 196 保留，另增方向同步 6，再增 #159 模型庫歷史回歸 26。
 它原本就不含 timber-material／timber-source-guards，不新增這些執行責任。
+
+#159 的正式回歸重用 first create 的真 native producer 模型；1400×900 與 390×844 各 11 個獨立 `check`，合計 22。逐項為原 Undo／Redo／Save DOM 身分、44px 實際 hit target 與無溢出、庫內移除的一步 history、Undo 完整模型原值、Undo 焦點保留、真 Ctrl+Y、真 Ctrl+Z、真 Tab 至 Redo、Enter 啟動及 disabled 後轉可用 Undo、再次鍵盤復原、原 Save 節點和控制不被替換。兩個 viewport 迴圈後另有單次 4 個 `check`：真「使用目前面」讀取唯一 surface 101 並輸入 raw height 3210 後，有效 builder 禁止庫內 Undo／Redo／移除與快捷鍵，保留 draft／source／model；返回畫布 Undo 撤銷原模型建立而不改 world；來源 history 過期後重新進庫仍可 Redo 且保留 raw；庫內 Redo 完整恢復 first model、world 與 raw 3210。每輪最後復原移除，末段復原建立模型的原 undo 步；後續既有 core edit 正常清除剩餘 redo，原本混合 native／metadata 的 undo 次序不變。模型完整 JSON、所有 raw 設定、來源 dump 與 native revision 同時核對。新增合計 26 檢查只屬預設 height/library 群；跨專案 lease 的延遲回覆拒絕另由獨立 guard 瀏覽器驗收，不能把此群說成已覆蓋。
 
 所有既有 primary filter 與 HISTORY_ONLY 的範圍保持：
 

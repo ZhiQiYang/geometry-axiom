@@ -175,6 +175,84 @@ async function create() {
   await wait(`!!SpaceModelWorkspace.snapshot().createdId`, 'created model');
   return snapshot();
 }
+async function libraryHistoryRegression(modelId, originalScene) {
+  // Reuse the first real producer model. End each viewport with its deletion
+  // undone; then undo/redo creation once after the source cache becomes stale.
+  // The following original core edit naturally clears the remaining redo entry.
+  // The original creation remains in undo, so Undo itself stays focusable.
+  const capture = () => evaluate(`(async()=>({models:JSON.stringify(ReferenceWorkspace.getSpaceModels()),
+    scene:(await api('dump')).text,nativeRevision:ReferenceWorkspace.getEvidenceState().nativeRevision,
+    context:ReferenceWorkspace.context().id,undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length}))()`);
+  const sameSource = (value, baseline) => value.scene===originalScene && value.nativeRevision===baseline.nativeRevision && value.context===baseline.context;
+  const exactModel = (value, baseline) => value.models===baseline.models && sameSource(value,baseline);
+  const identity = () => evaluate(`(()=>{const n=window.__issue159SpaceNodes,b=$('projectBar');return n.undo===$('btnUndo')&&n.redo===$('btnRedo')&&n.save===b.querySelector('[data-project-action="save"]')&&
+    [$('btnUndo'),$('btnRedo'),n.save].every(e=>b.contains(e))&&['btnUndo','btnRedo','projectBar'].every(id=>document.querySelectorAll('#'+id).length===1)&&$('smWorkspace').contains(b);})()`);
+  const idle = async () => {await wait(`!WorkspaceShell.historyBusy($('smWorkspace'))&&!ReferenceWorkspace.busy&&!oc.busy`,'library history idle');await settle();};
+  const present = () => `ReferenceWorkspace.getSpaceModels().some(m=>m.id===${JSON.stringify(modelId)})`;
+  await evaluate(`window.__issue159SpaceNodes={undo:$('btnUndo'),redo:$('btnRedo'),save:$('projectBar').querySelector('[data-project-action="save"]')};void 0`);
+  await click('#smLibrary');
+  await wait(`$('smWorkspace').open&&!$('smLibraryPanel').hidden&&${present()}`,'first saved model library');
+  for (const [width,height] of [[1400,900],[390,844]]) {
+    await viewport(width,height);
+    const label=width+'px', baseline=await capture();
+    if(baseline.undo<1)throw Error('Library history fixture must retain the real model creation in undo');
+    check('ISSUE159 '+label+' library retains the original Undo, Redo and native Save nodes',await identity());
+    const layout=await evaluate(`(()=>{const d=$('smWorkspace'),b=$('projectBar'),controls=[$('btnUndo'),$('btnRedo'),b.querySelector('[data-project-action="save"]')];return {width:innerWidth,doc:document.documentElement.scrollWidth,dialog:d.scrollWidth,bar:b.scrollWidth,barWidth:b.clientWidth,
+      controls:controls.map(e=>{const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {width:r.width,height:r.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,hit:hit===e||e.contains(hit)};})};})()`);
+    check('ISSUE159 '+label+' library history controls have 44px real hit targets without overflow',layout.doc<=width+1&&layout.dialog<=width+1&&layout.bar<=layout.barWidth+1&&layout.controls.every(r=>r.width>=44&&r.height>=44&&r.left>=-1&&r.right<=width+1&&r.top>=0&&r.bottom<=height+1&&r.hit),layout);
+    await click('[data-sm-remove-model="'+modelId+'"]');
+    await wait(`!(${present()})`,'library model removed');await idle();
+    let current=await capture();
+    check('ISSUE159 '+label+' real library removal is one local history step and preserves native source',await evaluate(`$('smWorkspace').open&&!$('smLibraryPanel').hidden&&!$('btnUndo').disabled`)&&sameSource(current,baseline)&&current.undo===baseline.undo+1&&JSON.parse(current.models).length===JSON.parse(baseline.models).length-1,current);
+    await click('#btnUndo');await wait(present(),'library Undo restores saved model');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' Undo restores the complete saved model bytes and creation history',exactModel(current,baseline)&&current.undo===baseline.undo&&current.redo===1,current);
+    check('ISSUE159 '+label+' completed Undo retains its original enabled keyboard focus',await evaluate(`document.activeElement===$('btnUndo')&&!$('btnUndo').disabled`));
+    await key('y','KeyY',89,2);await wait(`!(${present()})`,'focused library Ctrl+Y');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' trusted Ctrl+Y redoes removal once from the retained Undo focus',sameSource(current,baseline)&&current.undo===baseline.undo+1&&current.redo===0&&await evaluate(`document.activeElement===$('btnUndo')`),current);
+    await key('z','KeyZ',90,2);await wait(present(),'focused library Ctrl+Z');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' trusted Ctrl+Z restores the exact model while keeping Undo focused',exactModel(current,baseline)&&current.undo===baseline.undo&&current.redo===1&&await evaluate(`document.activeElement===$('btnUndo')`),current);
+    await key('Tab','Tab',9);
+    check('ISSUE159 '+label+' real Tab reaches the available original Redo button',await evaluate(`document.activeElement===$('btnRedo')&&!$('btnRedo').disabled`));
+    await key('Enter','Enter',13);await wait(`!(${present()})`,'keyboard library Redo');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' Enter redoes removal and hands focus to the remaining enabled Undo',sameSource(current,baseline)&&current.undo===baseline.undo+1&&current.redo===0&&await evaluate(`$('btnRedo').disabled&&!$('btnUndo').disabled&&document.activeElement===$('btnUndo')`),current);
+    await key('z','KeyZ',90,2);await wait(present(),'library keyboard restoration');await idle();
+    current=await capture();
+    check('ISSUE159 '+label+' restored keyboard focus can undo again without changing saved source or mesh',exactModel(current,baseline)&&current.undo===baseline.undo&&current.redo===1,current);
+    check('ISSUE159 '+label+' all history refreshes preserve the same Save handler node and original controls',await identity()&&await evaluate(`!$('projectBar').querySelector('[data-project-action="save"]').disabled`));
+    await shot('issue159-library-history-'+width);
+  }
+  await viewport(1400,900);
+  const beforeBuilder=await capture();
+  const raw=()=>evaluate(`JSON.stringify([...document.querySelectorAll('#smSettings input,#smSettings select,#smMode,#smModelName,#smProjectionView')].map(el=>({id:el.id,dataset:{...el.dataset},value:el.value,checked:el.checked})))`);
+  await click('#smUseCurrent');
+  await wait(`SpaceModelWorkspace.snapshot().phase==='ready'&&SpaceModelWorkspace.snapshot().sourceKind==='scene'&&$('smSourceSelect').value==='101'`,'library regression reads the unique real surface 101');
+  await input('#smHeight','3210');
+  const builderRaw=await raw();
+  await click('#smLibrary');
+  const builderBlocked=await evaluate(`$('smWorkspace').open&&!$('smLibraryPanel').hidden&&$('btnUndo').disabled&&$('btnRedo').disabled&&$('smHeight').value==='3210'&&
+    document.querySelector('[data-sm-remove-model="'+${JSON.stringify(modelId)}+'"]')?.disabled===true`);
+  await key('z','KeyZ',90,2);await idle();
+  const blockedUndo=await capture(),blockedUndoRaw=await raw();
+  await key('y','KeyY',89,2);await idle();
+  let current=await capture();
+  check('ISSUE159 a valid current-face builder blocks library history and removal without changing raw draft, source or saved model',builderBlocked&&exactModel(blockedUndo,beforeBuilder)&&blockedUndo.undo===beforeBuilder.undo&&blockedUndo.redo===beforeBuilder.redo&&blockedUndoRaw===builderRaw&&exactModel(current,beforeBuilder)&&current.undo===beforeBuilder.undo&&current.redo===beforeBuilder.redo&&await raw()===builderRaw,{blockedUndo,current});
+  await click('#smClose');await wait(`!$('smWorkspace').open`,'close valid source builder');
+  await click('#btnUndo');await wait(`!(${present()})`,'canvas Undo of the real model creation');await idle();
+  current=await capture();
+  check('ISSUE159 canvas Undo removes the original model creation while preserving the exact native world and raw height',JSON.parse(current.models).length===0&&sameSource(current,beforeBuilder)&&current.undo===beforeBuilder.undo-1&&current.redo===beforeBuilder.redo+1&&await raw()===builderRaw,current);
+  await click('#btnSpaceModels');await wait(`$('smWorkspace').open&&!$('smLibraryPanel').hidden`,'reopen library with stale source history');
+  current=await capture();
+  check('ISSUE159 stale source history leaves the real library Redo available without discarding raw height',await evaluate(`!$('btnRedo').disabled&&$('smHeight').value==='3210'&&$('smLibraryPanel').querySelectorAll('[data-sm-remove-model]').length===0`)&&sameSource(current,beforeBuilder)&&JSON.parse(current.models).length===0&&current.redo===beforeBuilder.redo+1&&await raw()===builderRaw,current);
+  await click('#btnRedo');await wait(present(),'library Redo of the original model creation');await idle();
+  current=await capture();
+  check('ISSUE159 library Redo restores the complete first model and world while retaining raw height 3210',exactModel(current,beforeBuilder)&&current.undo===beforeBuilder.undo&&current.redo===beforeBuilder.redo&&await raw()===builderRaw&&await evaluate(`$('smHeight').value==='3210'&&!$('btnUndo').disabled`),current);
+  await shot('issue159-stale-builder-history');
+  await evaluate(`delete window.__issue159SpaceNodes;void 0`);
+}
 async function example(id) {
   await click(id);
   await wait(`SpaceModelWorkspace.snapshot().resultSummary!=null && !SpaceModelWorkspace.snapshot().stale`, 'example preview');
@@ -1185,6 +1263,7 @@ async function run() {
   const leaveGuard = await evaluate(`(()=>{const old=window.confirm;let asked='';window.confirm=s=>{asked=s;return false;};try{return {allowed:ReferenceWorkspace.mayLeave(),asked};}finally{window.confirm=old;}})()`);
   check('model-only unsaved project requests leave confirmation', leaveGuard.allowed === false && leaveGuard.asked.length > 0, leaveGuard);
 
+  await libraryHistoryRegression(first.createdId, originalScene);
   await closeWorkspace();
   const coreEdit = await evaluate(`api('line boundary 202 outline 0,0 500,0 500,500 0,500')`);
   check('core edit after model creation succeeds', coreEdit.ok === true, coreEdit);

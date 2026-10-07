@@ -5,16 +5,17 @@
 不代表尚未接上產品的模組或下列正式整合驗證已完成。
 既有 floors、具名平台 skip 清單與實際測試斷言維持。
 
-## #123 S1 模型庫歷史入口（browser gate 待執行）
+## #123 S1 模型庫歷史入口（#159 瀏覽器收尾）
 
 非瀏覽器：`node --test tests/test_workspace_shell_history.js`，另由
 `python tests/run_all.py --only workspace_shell_history` 登錄執行。
-fixture 執行正式 shell／owner admission 函式，涵蓋同節點移入／還原、ID唯一、
+28-case fixture 執行正式 shell／owner admission 函式及 `ContextHistory`，涵蓋同節點移入／還原、ID唯一、
 鍵盤與可見入口同路由、busy／Save／readonly、零點校準、nested modal及owner重入。
 它沒有真實DOM layout、native bridge、瀏覽器focus或`.gcanvas`往返證據。
 
 本切片的正式驗收須在 exact candidate、fresh native/runtime、隔離服务／profile／TEMP 執行，
-不可使用使用者正在編輯的服務。以下全部仍 pending，不能由 nonbrowser green 代替：
+不可使用使用者正在編輯的服務。以下是正式驗收條件，不能由 nonbrowser green 代替；
+本次實跑結果與平台限制見 `BACKLOG.md` 的 #159 條目：
 
 1. 1382×804與390×844，正式範例→預覽→建立→關閉→模型庫；移除後不離開庫，
    真點同一 `#btnUndo` 還原相同模型ID，再 `#btnRedo`，以及Ctrl+Z/Y/Shift+Z。
@@ -29,6 +30,12 @@ fixture 執行正式 shell／owner admission 函式，涵蓋同節點移入／�
    新專案與重開保留模型ID及資料，Undo的dirty狀態不能冒稱已寫檔。
 5. 另跑原`cdp_test.js`及`space_model_test.js`正式範圍，保留各自scope、count、
    native身份、terminal exit與未驗項。不得降低既有floor／golden補過。
+
+`space_model_test.js` 的既有 height/library 群新增 26 個正式斷言：1400×900／390×844
+各 11 項庫內移除、鍵盤、焦點、同節點及完整模型／原生來源檢查，另有 4 項有效 scene
+草稿保護、metadata Undo 後失效來源快取不鎖庫、Redo 復原模型並保留 raw 設定。
+獨立盤點為 height/library 86→112、預設 full Space 202→228；其他群與 timber 範圍不變，
+不是從成功執行回填預期數。跨專案、延遲回覆、真 download／filechooser 另用隔離瀏覽器驗收。
 
 實體手機、IME與OS picker人工驗證另列；source-only／VM不作替代。
 
