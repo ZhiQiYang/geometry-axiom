@@ -2266,7 +2266,8 @@ function drawObjects() {
   for (const card of cl.children) {
     const kind = card.dataset.kind, id = +card.dataset.id;
     const box = cardBox(ocFind(kind, id));
-    const verb = kindOpenMode(kind, ocFind(kind, id)) === "workspace" ? "進入" : "檢查";
+    const openMode = kindOpenMode(kind, ocFind(kind, id));
+    const verb = openMode === "workspace" ? "進入" : "檢查";
     const action = el("g", { class: "card-enter", tabindex: 0, role: "button",
       "aria-label": `${verb}${KIND_ZH[kind] || ""} ${id}` }, card);
     el("rect", { x: box.w - 67, y: box.h - 58, width: 58, height: 24, rx: 6, fill: "#fff", stroke: "#dfe4eb" }, action);
@@ -2276,12 +2277,12 @@ function drawObjects() {
     action.addEventListener("pointerdown", e => { if (!oc.drawTool) e.stopPropagation(); });
     const enter = e => {
       if (oc.drawTool) return;
-      e.stopPropagation(); closePanels();
+      e.stopPropagation(); if (openMode === "workspace") closePanels();
       if (kind === "boundary" || kind === "space") enterFocus(kind === "space" ? "space" : "face", id);
       else if (kind.startsWith("assembly-")) window.AssemblyWorkspace.open(kind,id);
       else if (kind === "grid-binding") window.InfiniteGridWorkspace.openBinding(id);
       else if (kind === "grid-system" && ocFind(kind,id)?.mode === "infinite") window.InfiniteGridWorkspace.openSystem(id);
-      else { selectObject(kind, id); if (["grid-system","parameter"].includes(kind) && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
+      else { if (!selectObject(kind, id)) return; closePanels(); if (["grid-system","parameter"].includes(kind) && innerWidth <= 900) openPanel("right", $("toggleRight")); } };
     action.addEventListener("click", enter);
     action.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); enter(e); } });
     if (kind === "space") {
@@ -5837,7 +5838,6 @@ async function feUp(pt) {
     const axis = dx >= dy ? "u" : "v";
     const off = Math.round(axis === "u" ? d.y1 : d.x1);
     const sid = feSid(e.bid);
-    const ids = await api("newid");
     if (await createReferenceGuide(sid, axis, off))
       await feLoadGuides();
     drawFaceEditor();
@@ -10237,7 +10237,6 @@ for (const b of document.querySelectorAll("#feGuidePick button"))
     if (!sid) return;
     const axis = b.dataset.axis;
     const off = Math.round(+(axis === "u" ? pk.dataset.v : pk.dataset.u));
-    const ids = await api("newid");
     if (await createReferenceGuide(sid, axis, off))
       await feLoadGuides();
     drawFaceEditor(); renderFaceLayers();
