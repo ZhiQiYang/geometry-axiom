@@ -449,6 +449,23 @@ GEOMETRY_TEST_URL=http://127.0.0.1:8898/ GEOMETRY_PAN_OUTPUT=/tmp/issue54/pan-fi
 實機手機、IME、OS picker、真人時間與尚未取得的私人來源仍各自保持未驗。
 此 gate 驗既有單房流程，不能據此宣稱整個 #54 效率目標完成。
 
+## 網格原始草稿的未知選項與來源身分
+
+`geometry-web/grid_raw_provenance_browser_test.py` 是獨立的正式 Chromium/native
+gate，由 `REQUIRED_BROWSER_GATES` 登錄 207 assertions，不納入非瀏覽器 aggregate。
+在 clean frozen checkout 啟動專屬、版本收據 fresh 的服務後執行：
+
+```sh
+GEOMETRY_VERIFY_ROOT="$PWD" GEOMETRY_TEST_URL=http://127.0.0.1:8964/ GEOMETRY_RAW_PIN_OUT=/tmp/grid-raw-review python3 geometry-web/grid_raw_provenance_browser_test.py
+```
+
+需安裝 Python Playwright 並設定可用的 `GEOMETRY_CHROME`。1280px／390px 各跑
+未知排格、空選項、未知主支方向、遺失／不符／同 ID 重建來源六種情境。
+前置 ZIP 使用合成 raw，正式選檔重開；被動呈現及拒絕須保留原始字元、來源證據、
+World、history 與 revision。真實重新選取後才允許 native 預覽／確認，並核對
+取消、單步 Undo／Redo 與新瀏覽器重開。無效選項不可被顯示成面材模式或有效主支。
+此 gate 不證明實體手機、IME 或 OS 原生選檔器。
+
 ## #54 候選尺寸 Enter 等價套用
 
 `tests/room_outline_keyboard_browser.js` 是另一個必要的獨立 browser gate，

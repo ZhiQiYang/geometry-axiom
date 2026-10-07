@@ -444,17 +444,18 @@
   function readAxes(s) {
     return axes.map(a => {
       const p = 'ig' + a.toUpperCase(), mode = $(p + 'Source').value;
-      const fields = (MODE_KEYS[mode] || []).map(key => ({key, id: p + FIELD[key][0], raw: rawField(s, p + FIELD[key][0]).trim()}));
+      const modeError = Object.hasOwn(MODE_KEYS, mode) ? '' : '請重新選取排格方式；原始值仍保留。';
+      const fields = (modeError ? [] : MODE_KEYS[mode]).map(key => ({key, id: p + FIELD[key][0], raw: rawField(s, p + FIELD[key][0]).trim()}));
       const raw = mode === 'none' ? '' : rawField(s, p + 'Stagger').trim();
       const stagger = mode !== 'none' && (raw !== '' || s.staggerOpen?.[a]) ? {key: 'stagger', id: p + 'Stagger', raw} : null;
       const all = stagger ? [...fields, stagger] : fields;
       for (const f of all) f.error = fieldProblem(a, f.key, f.raw);
-      const ok = all.every(f => !f.error), n = key => Number(fields.find(f => f.key === key)?.raw);
+      const ok = !modeError && all.every(f => !f.error), n = key => Number(fields.find(f => f.key === key)?.raw);
       let shape = null;
       if (ok && mode === 'repeat') shape = {phase: n('phase'), pitch: n('step')};
       if (ok && mode === 'repeat-panel') shape = {phase: n('anchor') + n('panel') + Math.floor(n('gap') / 2), pitch: n('panel') + n('gap')};
       if (shape) shape.stagger = stagger && stagger.raw !== '' ? Number(stagger.raw) : 0;
-      return {a, p, mode, fields, stagger, all, ok, shape, errors: all.filter(f => f.error).map(f => f.error)};
+      return {a, p, mode, modeError, fields, stagger, all, ok, shape, errors: [...(modeError ? [modeError] : []), ...all.filter(f => f.error).map(f => f.error)]};
     });
   }
   const bindingName = id => {
@@ -556,13 +557,16 @@
   function syncDefinition(s) {
     if (!current(s) || s.mode !== 'source' || !$('igDefStage')) return;
     s.mainAlongValue = $('igMainAlong').value;
-    const data = readAxes(s), roleOf = x => (s.mainAlongValue === 'none' || x.mode === 'none') ? '' : ((s.mainAlongValue === 'u') === (x.a === 'v') ? '主支線' : '副支線');
+    const mainError = ['none','u','v'].includes(s.mainAlongValue) ? '' : '請明確重新選取主支方向；原始值仍保留。';
+    $('igMainAlong').setAttribute('aria-invalid', String(!!mainError));
+    const data = readAxes(s), roleOf = x => (mainError || x.modeError || s.mainAlongValue === 'none' || x.mode === 'none') ? '' : ((s.mainAlongValue === 'u') === (x.a === 'v') ? '主支線' : '副支線');
     const focus = s.defFocus, owner = data.find(x => x.a === focus.a);
     if (owner && !owner.all.some(f => f.key === focus.key)) focus.key = owner.fields[0]?.key || '';
     for (const x of data) {
       const card = dialog.querySelector(`.ig-axis[data-ig-axis="${x.a}"]`), rawOf = key => x.fields.find(f => f.key === key)?.raw;
       card.classList.toggle('is-focus', focus.a === x.a);
-      card.querySelector('.ig-axis-sum').textContent = x.mode === 'none' ? '不設此軸' : x.mode === 'repeat' ? `每 ${rawOf('step')} mm` : `面材 ${rawOf('panel')} ＋ 縫 ${rawOf('gap')}`;
+      card.querySelector('.ig-axis-sum').textContent = x.modeError ? '請重新選取排格方式' : x.mode === 'none' ? '不設此軸' : x.mode === 'repeat' ? `每 ${rawOf('step')} mm` : `面材 ${rawOf('panel')} ＋ 縫 ${rawOf('gap')}`;
+      $(x.p + 'Source').setAttribute('aria-invalid', String(!!x.modeError));
       const role = roleOf(x), badge = card.querySelector('.ig-role');
       badge.hidden = !role; badge.textContent = role; badge.dataset.role = role === '主支線' ? 'main' : 'sub';
       for (const node of card.querySelectorAll('[data-ig-field]')) {
@@ -576,13 +580,13 @@
     const nameRaw = rawField(s, 'igName').trim(), bytes = new TextEncoder().encode(nameRaw);
     const nameError = !bytes.length || bytes.length > 96 || /[\u0000-\u001f\u007f]/.test(nameRaw) ? '名稱需為 1–96 個 UTF-8 位元組，且不可包含控制字元。' : '';
     $('igNameErr').textContent = nameError; $('igName').setAttribute('aria-invalid', String(!!nameError));
-    const noAxis = data.every(x => x.mode === 'none'), count = data.reduce((n, x) => n + x.errors.length, 0) + (nameError ? 1 : 0) + (noAxis ? 1 : 0);
+    const noAxis = data.every(x => x.mode === 'none'), count = data.reduce((n, x) => n + x.errors.length, 0) + (nameError ? 1 : 0) + (mainError ? 1 : 0) + (noAxis ? 1 : 0);
     const dirty = !s.source || !!s.sourceDirty, tone = count ? 'error' : dirty||s.ruleDraft ? 'pending' : 'ok';
     const pill = $('igSourcePill'); pill.dataset.tone = !s.source ? 'idle' : dirty ? 'pending' : 'ok'; pill.textContent = !s.source ? '建立' : dirty ? '已變更' : '已在場景';
     $('igStateLine').dataset.tone = tone;
     $('igStateText').textContent = count ? `${count} 個欄位需要修正` : !s.source ? '草稿 · 尚未建立' : dirty ? '有變更，尚未預覽' : s.ruleDraft ? '來源已在場景 · 規則輸入尚未確認' : '已在目前場景';
     $('igStateDetail').hidden = !noAxis; $('igStateDetail').textContent = noAxis ? '至少設定一軸。' : '';
-    $('igMainNote').textContent = s.mainAlongValue === 'u' ? '沿 u 的主支來自 v 座標線。' : s.mainAlongValue === 'v' ? '沿 v 的主支來自 u 座標線。' : '';
+    $('igMainNote').textContent = mainError || (s.mainAlongValue === 'u' ? '沿 u 的主支來自 v 座標線。' : s.mainAlongValue === 'v' ? '沿 v 的主支來自 u 座標線。' : '');
     drawDefinition(s, data);
   }
   function sourceDraft(s) {

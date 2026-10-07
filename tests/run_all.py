@@ -208,6 +208,7 @@ REQUIRED_BROWSER_GATES = {
     'tests/test_grid_rule_reader_browser.js': 34,
     'geometry-web/evidence_links_browser_check.js': 67,
     'geometry-web/evidence_links_integration_test.js': 110,
+    'geometry-web/grid_raw_provenance_browser_test.py': 207,
 }
 BROWSER_GATE_SCOPES = {
     'tests/rule-case-workbench-browser.cjs': 'standalone component/native',
@@ -216,6 +217,7 @@ BROWSER_GATE_SCOPES = {
     'tests/test_grid_rule_reader_browser.js': 'formal app/native/grid/ZIP',
     'geometry-web/evidence_links_browser_check.js': 'independent injected-backend adapter',
     'geometry-web/evidence_links_integration_test.js': 'formal app/PDF/ZIP/history',
+    'geometry-web/grid_raw_provenance_browser_test.py': 'formal raw enum/pin provenance, ZIP cold reopen, explicit correction and native Undo/Redo',
 }
 
 BROWSER_GATE_SCOPES.update({
