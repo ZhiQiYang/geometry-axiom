@@ -102,7 +102,7 @@ def prepare_binaries(directory, registry=None):
 def runtime_environment(paths, *, managed=False, environ=None):
     env = dict(os.environ if environ is None else environ)
     bridge, base = paths["bridge"], paths["model-base"]
-    env.update(GEOMETRY_BRIDGE=bridge, GEOMETRY_TEST_BRIDGE=bridge,
+    env.update(GEOMETRY_BRIDGE=bridge, GEOMETRY_BRIDGE_EXECUTABLE=bridge, GEOMETRY_TEST_BRIDGE=bridge,
                GEOMETRY_MODEL_UPDATE_BRIDGE=bridge, GEOMETRY_SCENARIO_BRIDGE=bridge,
                GEOMETRY_MODEL_BASE=base, GEOMETRY_SCENARIO_BASE=base,
                GEOMETRY_TEST_CORE=paths["core"])

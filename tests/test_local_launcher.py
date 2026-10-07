@@ -2,13 +2,20 @@
 from contextlib import nullcontext
 import importlib.util
 import io
+import json
 import os
 from pathlib import Path
+import shutil
+import signal
 import socket
+import subprocess
+import sys
 import tempfile
+import time
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
+import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("local_launcher", ROOT / "geometry-web/start_local.py")
@@ -37,7 +44,7 @@ class LauncherTests(unittest.TestCase):
         inherited={"GEOMETRY_BRIDGE":"old", "GEOMETRY_SCENARIO_BASE":"old", "GEOMETRY_BRIDGE_WSL":"1",
                    "GEOMETRY_MODEL_BASE_WSL_DISTRO":"OldDistro", "GEOMETRY_MANAGED_PREVIEW":"1", "OTHER":"keep"}
         env=launcher.runtime_environment(self.paths,environ=inherited)
-        for name in ["GEOMETRY_BRIDGE","GEOMETRY_TEST_BRIDGE","GEOMETRY_MODEL_UPDATE_BRIDGE","GEOMETRY_SCENARIO_BRIDGE"]:
+        for name in ["GEOMETRY_BRIDGE","GEOMETRY_BRIDGE_EXECUTABLE","GEOMETRY_TEST_BRIDGE","GEOMETRY_MODEL_UPDATE_BRIDGE","GEOMETRY_SCENARIO_BRIDGE"]:
             self.assertEqual(env[name],self.paths["bridge"])
         for name in ["GEOMETRY_MODEL_BASE","GEOMETRY_SCENARIO_BASE"]:
             self.assertEqual(env[name],self.paths["model-base"])
@@ -145,7 +152,77 @@ class LauncherTests(unittest.TestCase):
         program,argv,env=execute.call_args.args
         self.assertEqual(argv,[program,"-u",str(ROOT/"geometry-web/serve.py"),"8982"])
         self.assertEqual(env["GEOMETRY_SCENARIO_BRIDGE"],env["GEOMETRY_BRIDGE"])
+        self.assertEqual(env["GEOMETRY_BRIDGE_EXECUTABLE"],env["GEOMETRY_BRIDGE"])
         self.assertEqual(env["GEOMETRY_SCENARIO_BASE"],env["GEOMETRY_MODEL_BASE"])
+
+    def test_space_paths_build_and_serve_real_native_requests(self):
+        if not sys.platform.startswith("linux"):
+            # The launcher explicitly rejects unsupported platforms; no Linux
+            # process-start claim or permissive skip is made on Windows.
+            with patch('sys.stderr',new_callable=io.StringIO),self.assertRaises(SystemExit) as error:
+                launcher.main(["--build-only"])
+            self.assertEqual(error.exception.code,2)
+            return
+        registry=launcher.load_registry()
+        keys={"core":"GEOMETRY_TEST_CORE","bridge":"GEOMETRY_TEST_BRIDGE","model-base":"GEOMETRY_MODEL_BASE"}
+        originals={name:Path(registry.require_fresh(name,os.environ.get(key) or registry.BY_NAME[name].path))
+                   for name,key in keys.items()}
+        for mode in ("explicit", "temp"):
+            with self.subTest(mode=mode):
+                temporary=self.temp/(mode+" temporary files");temporary.mkdir()
+                target=(temporary/"native path with spaces" if mode=="explicit" else
+                        launcher.binary_directory(root=ROOT,temp=temporary))
+                target.mkdir(parents=True)
+                # Copy the genuine registry products and receipts, retaining
+                # mtime. The child must revalidate them; no stand-in executable.
+                for name,original in originals.items():
+                    shutil.copy2(original,target/registry.BY_NAME[name].exe)
+                    shutil.copy2(original.with_name(original.name+registry.SIDECAR_SUFFIX),
+                                 target/(registry.BY_NAME[name].exe+registry.SIDECAR_SUFFIX))
+                env=dict(os.environ,PYTHONDONTWRITEBYTECODE="1",GEOMETRY_FEEDBACK_DIR=str(temporary/"feedback"))
+                if mode=="temp":env["TMPDIR"]=str(temporary)
+                options=["--binary-dir",str(target)] if mode=="explicit" else []
+                command=[sys.executable,str(ROOT/"geometry-web/start_local.py")]
+                build=subprocess.run(command+["--build-only",*options],cwd=temporary,env=env,
+                                     capture_output=True,text=True,timeout=60)
+                self.assertEqual(build.returncode,0,build.stdout+build.stderr)
+                info=json.loads(next(line[14:] for line in build.stdout.splitlines() if line.startswith("LOCAL_RUNTIME ")))
+                self.assertEqual(Path(info["binaryDirectory"]),target)
+                self.assertTrue(all(name+": reused" in build.stdout for name in launcher.NATIVE_NAMES),build.stdout)
+                with socket.socket() as probe:
+                    probe.bind(("127.0.0.1",0));port=probe.getsockname()[1]
+                url=f"http://127.0.0.1:{port}/"
+                logpath=temporary/"serve.log"
+                with logpath.open("wb") as log:
+                    child=subprocess.Popen(command+["--port",str(port),*options],cwd=temporary,env=env,
+                                           stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+                    try:
+                        observed=None
+                        for _ in range(100):
+                            self.assertIsNone(child.poll(),logpath.read_text())
+                            try:
+                                with urllib.request.urlopen(url+"runtime",timeout=1) as response:
+                                    observed=json.load(response)
+                                break
+                            except OSError:time.sleep(.05)
+                        self.assertIsNotNone(observed,"owned service did not start")
+                        self.assertEqual(observed["pid"],child.pid)
+                        self.assertEqual(Path(observed["root"]),ROOT)
+                        self.assertIs(observed["fresh"],True)
+                        native="line boundary 17 outline 0,0 100,0 100,100 0,100"
+                        for cmd in (native,"dump"):
+                            request=urllib.request.Request(url+"api",data=json.dumps({"cmd":cmd}).encode(),
+                                                           headers={"Content-Type":"application/json"})
+                            with urllib.request.urlopen(request,timeout=5) as response:result=json.load(response)
+                            self.assertIs(result.get("ok"),True,result)
+                        self.assertIn("boundary 17 outline 0,0 100,0 100,100 0,100",result["text"])
+                        print("LOCAL_LAUNCHER_PATH_CHECK "+json.dumps({"mode":mode,"binaryDirectory":str(target),
+                              "runtime":observed,"nativeMutationAndDump":True}),flush=True)
+                    finally:
+                        if child.poll() is None:
+                            child.send_signal(signal.SIGINT)
+                            try:child.wait(timeout=10)
+                            except subprocess.TimeoutExpired:os.killpg(child.pid,signal.SIGKILL);child.wait(timeout=5)
 
 
 if __name__ == "__main__":

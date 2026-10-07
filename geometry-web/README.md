@@ -67,6 +67,8 @@ python3 geometry-web/start_local.py --port 8765
 `--binary-dir /tmp/geometry-my-runtime` 指定專用目錄。輸出 `LOCAL_RUNTIME` 列出實際路徑。
 畫布、模型更新與 A/B 方案驗證使用同組已核對的執行檔，不能只用無收據的 `.build/`
 產物：含 A/B 的完整專案必須核對來源與二進位身分，缺收據會拒絕開啟。
+啟動器以 `GEOMETRY_BRIDGE_EXECUTABLE` 傳遞單一原生路徑，TEMP 或 `--binary-dir`
+含空白也不會被拆成指令參數；既有 Windows／WSL 的 `GEOMETRY_BRIDGE` 指令字串介面保留。
 
 連接埠已有服務時會拒絕啟動，不會停止其他程序。另在同一 repository 執行
 `python3 geometry-web/runtime_version.py --probe 8765` 核對版本；Ctrl+C 結束本次服務。

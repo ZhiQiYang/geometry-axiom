@@ -80,7 +80,7 @@ PY_NEEDS = {
     'test_parameters_core': ['bridge', 'model-base'],
     'test_reference_contract': ['bridge'],
     'test_release_gate': [],
-    'test_local_launcher': [],
+    'test_local_launcher': ['core', 'bridge', 'model-base'],
     'test_rule_case_workbench_http': ['bridge'],
     'test_rule_case_host': ['bridge'],
     'test_rule_case_catalog': ['bridge'],

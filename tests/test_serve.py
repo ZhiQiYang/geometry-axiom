@@ -39,6 +39,26 @@ class BridgeServerTests(unittest.TestCase):
     def ask(self, cmd):
         return json.loads(self.server_module.ask_bridge(cmd))
 
+    def test_literal_bridge_path_is_not_split_and_takes_explicit_precedence(self):
+        literal = '/tmp/geometry runtime/"quoted" bridge'
+        command = self.server_module.bridge_command({
+            "GEOMETRY_BRIDGE_EXECUTABLE": literal,
+            "GEOMETRY_BRIDGE": "wsl.exe -d old -- /old/bridge"})
+        self.assertEqual(command, [literal])
+
+    def test_invalid_literal_bridge_never_falls_back_to_legacy_command(self):
+        for literal in ("", "\n", "bridge\rpath", "bridge\0path"):
+            with self.subTest(literal=literal), self.assertRaises(ValueError):
+                self.server_module.bridge_command({"GEOMETRY_BRIDGE_EXECUTABLE": literal,
+                                                   "GEOMETRY_BRIDGE": "wsl.exe -- /valid/bridge"})
+
+    def test_windows_wsl_command_transport_and_native_default_are_preserved(self):
+        self.assertEqual(self.server_module.bridge_command({"GEOMETRY_BRIDGE":
+            "wsl.exe -d Ubuntu-24.04 --user root -- /tmp/geometry-tests/web_bridge"}),
+            ["wsl.exe", "-d", "Ubuntu-24.04", "--user", "root", "--", "/tmp/geometry-tests/web_bridge"])
+        self.assertEqual(self.server_module.bridge_command({}),
+                         [str(self.server_module.HERE / "web_bridge.exe")])
+
     def post_handler(self, route, body=b"", length=None):
         handler = object.__new__(self.server_module.Handler)
         handler.path = route

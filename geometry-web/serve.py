@@ -60,9 +60,21 @@ POST_MAX_BYTES = {
 # 讓 serve.py 跑在 Windows（瀏覽器連得到 localhost），橋接器跑在 WSL——
 # Windows 端 web_bridge.exe 被 Smart App Control 封鎖時的解法，
 # 且用的是當前核心而非舊二進位。搭配 GEOMETRY_BRIDGE_WSL=1 開啟路徑翻譯。
-_bridge_env = os.environ.get("GEOMETRY_BRIDGE")
-BRIDGE_CMD = (shlex.split(_bridge_env, posix=False) if _bridge_env
-              else [str(HERE / "web_bridge.exe")])
+def bridge_command(environ=None):
+    env = os.environ if environ is None else environ
+    # A native executable path is one argv element, including spaces and quotes.
+    # Keep the older command-string transport for Windows/WSL callers unchanged.
+    # An explicitly invalid literal must not fall back to a different executable.
+    literal = env.get("GEOMETRY_BRIDGE_EXECUTABLE")
+    if literal is not None:
+        if not literal or any(c in literal for c in "\r\n\0"):
+            raise ValueError("GEOMETRY_BRIDGE_EXECUTABLE must be a nonempty literal executable path")
+        return [literal]
+    command = env.get("GEOMETRY_BRIDGE")
+    return shlex.split(command, posix=False) if command else [str(HERE / "web_bridge.exe")]
+
+
+BRIDGE_CMD = bridge_command()
 BRIDGE_WSL = os.environ.get("GEOMETRY_BRIDGE_WSL") == "1"
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
 
