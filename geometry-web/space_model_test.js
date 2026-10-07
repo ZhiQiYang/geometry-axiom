@@ -17,6 +17,54 @@ const path = require('path');
 const { installConfirmationDumpGate } = require('./cdp_confirmation_gate.js');
 const { createRetainedEvaluator } = require('./cdp_evaluation.js');
 const { FULL_SPACE_GROUPS, createGroupCensus } = require('./space_test_floor.js');
+function installSourceDumpGate(scope, context) {
+  const original = scope.fetch;
+  const evidence = { phase: 'armed', context, caller: null, claimed: 0, held: 0, nativeOK: false, ignored: [] };
+  scope.__sourceDumpGate = evidence;
+  scope.__sourceDumpHeld = false;
+  const gate = new Promise(resolve => { scope.__releaseSourceDump = resolve; });
+  const interceptedFetch = async (...args) => {
+    // Recovery also reads dump. Select the source owner before network I/O and
+    // reserve it immediately, so a concurrent background response cannot win.
+    const caller = new Error().stack || '';
+    let command;
+    try { command = JSON.parse(args[1]?.body || '{}').cmd; } catch (_) {}
+    const dump = String(args[0]) === '/api' && command === 'dump';
+    const targeted = evidence.phase === 'armed' && dump &&
+      /(?:^|\n)\s*at (?:async )?(?:Object\.)?openCurrentFace\s*\(/.test(caller);
+    if (targeted) {
+      evidence.phase = 'requested'; evidence.caller = caller; evidence.claimed++;
+      scope.fetch = original;
+    } else if (dump) evidence.ignored.push(caller);
+    try {
+      const response = await original(...args);
+      if (targeted) {
+        const json = response.json.bind(response);
+        response.json = async () => {
+          try {
+            const data = await json();
+            evidence.nativeOK = data.ok === true;
+            evidence.phase = 'held'; evidence.held++;
+            scope.__sourceDumpHeld = true;
+            await gate;
+            evidence.held--; evidence.phase = 'released';
+            scope.__sourceDumpHeld = false;
+            return data;
+          } catch (error) { evidence.phase = 'failed'; throw error; }
+        };
+      }
+      return response;
+    } catch (error) {
+      if (targeted) evidence.phase = 'failed';
+      throw error;
+    }
+  };
+  scope.fetch = interceptedFetch;
+  scope.__cleanupSourceDumpGate = () => {
+    scope.__releaseSourceDump();
+    if (scope.fetch === interceptedFetch) scope.fetch = original;
+  };
+}
 function spaceRunConfiguration(env = process.env) {
   if(!env.GEOMETRY_TEST_URL)throw Error('GEOMETRY_TEST_URL is required; use an explicitly isolated test service. No browser or reset was started.');
   const target=new globalThis.URL(env.GEOMETRY_TEST_URL);
@@ -681,16 +729,25 @@ async function projectionSourceRaceRegression() {
     await closeWorkspace();
     await setup(['surface 84 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000']);
     await evaluate(`enterFocus('face',84)`);
-    await evaluate(`(()=>{window.__raceContext=ReferenceWorkspace.context().id;window.__sourceDumpHeld=false;const original=window.fetch,gate=new Promise(resolve=>window.__releaseSourceDump=resolve);window.fetch=async(...args)=>{const response=await original(...args);let cmd;try{cmd=JSON.parse(args[1]?.body||'{}').cmd}catch{}if(String(args[0]).includes('/api')&&cmd==='dump'){window.fetch=original;const json=response.json.bind(response);response.json=async()=>{const data=await json();window.__sourceDumpHeld=true;await gate;window.__sourceDumpHeld=false;return data;};}return response;};})()`);
-    await openFaceModel();
-    await wait(`window.__sourceDumpHeld===true`, 'delayed original-context source dump');
-    if(closeFirst)await closeWorkspace();
-    await evaluate(`(async()=>{resetSceneFocus();await ReferenceWorkspace.newProject();await api('line surface 84 origin 0 0 4500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');await renderObjects();})()`);
-    await evaluate(`window.__releaseSourceDump()`);
-    await wait(`window.__sourceDumpHeld===false`, 'late source dump delivered');
-    await settle();
-    check((closeFirst?'closing a loading source and switching project':'switching project during source load')+' cannot bind the old response to the new project',await evaluate(`ReferenceWorkspace.context().id!==window.__raceContext && SpaceModelWorkspace.snapshot().sourceKind===null && document.querySelector('#smPreview').disabled && document.querySelector('#smCreate').disabled && ReferenceWorkspace.getSpaceModels().length===0`));
-    if(closeFirst)check('a late old-project response cannot reopen the closed workspace',await evaluate(`!document.querySelector('#smWorkspace').open`));
+    await evaluate(`window.__raceContext=ReferenceWorkspace.context().id;(${installSourceDumpGate.toString()})(window,window.__raceContext)`);
+    try {
+      await openFaceModel();
+      await wait(`window.__sourceDumpHeld===true`, 'delayed original-context source dump');
+      const evidence=await evaluate(`({gate:window.__sourceDumpGate,context:ReferenceWorkspace.context().id,snapshot:SpaceModelWorkspace.snapshot(),open:document.querySelector('#smWorkspace').open})`);
+      console.log('SOURCE_LOAD_GATE',JSON.stringify({closeFirst,...evidence}));
+      if(evidence.gate?.phase!=='held'||evidence.gate.claimed!==1||evidence.gate.held!==1||!evidence.gate.nativeOK||
+        !/(?:^|\n)\s*at (?:async )?(?:Object\.)?openCurrentFace\s*\(/.test(evidence.gate.caller||'')||
+        evidence.context!==evidence.gate.context||evidence.snapshot.phase!=='loading'||evidence.snapshot.sourceKind!==null||!evidence.open)
+        throw Error('Original-context source load was not exclusively held: '+JSON.stringify(evidence));
+      if(closeFirst)await closeWorkspace();
+      await evaluate(`(async()=>{resetSceneFocus();await ReferenceWorkspace.newProject();await api('line surface 84 origin 0 0 4500 u +x v +y outline 0,0 2000,0 2000,2000 0,2000');await renderObjects();})()`);
+      await evaluate(`window.__releaseSourceDump()`);
+      await wait(`window.__sourceDumpHeld===false`, 'late source dump delivered');
+      await settle();
+      const actual=await evaluate(`({contextChanged:ReferenceWorkspace.context().id!==window.__raceContext,sourceKind:SpaceModelWorkspace.snapshot().sourceKind,previewDisabled:document.querySelector('#smPreview').disabled,createDisabled:document.querySelector('#smCreate').disabled,models:ReferenceWorkspace.getSpaceModels().length,snapshot:SpaceModelWorkspace.snapshot(),open:document.querySelector('#smWorkspace').open,gate:window.__sourceDumpGate})`);
+      check((closeFirst?'closing a loading source and switching project':'switching project during source load')+' cannot bind the old response to the new project',await evaluate(`ReferenceWorkspace.context().id!==window.__raceContext && SpaceModelWorkspace.snapshot().sourceKind===null && document.querySelector('#smPreview').disabled && document.querySelector('#smCreate').disabled && ReferenceWorkspace.getSpaceModels().length===0`),actual);
+      if(closeFirst)check('a late old-project response cannot reopen the closed workspace',await evaluate(`!document.querySelector('#smWorkspace').open`));
+    } finally { await evaluate(`window.__cleanupSourceDumpGate()`); }
   }
   await closeWorkspace();
 }
