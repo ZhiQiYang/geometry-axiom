@@ -18,6 +18,23 @@
 - 嚴格完整非瀏覽器登錄回歸：70 suites，69 成功、1 Windows GDI 專用在 Linux 具名略過、零失敗、exit 0。`node:tests-js` 533／0／0，expected 僅 513→533；其中 production exact handler 23 tests 及 8 種 guard removal 反例通過。
 - 獨立 Playwright：1280×900／390×900 六個原生 rule／面外 guide 預覽與下載 Save／選檔 Open 流程，188／188；World／history／非空 raw 保持不變，console／pageerror 零。另驗真 Enter 與延遲回應改欄位、點空白、離面不搶焦點。面外 guide 空交集未冒充舊普通 grid v0 精確 fixture，未驗實體手機或 OS Save picker。
 - Windows #158 的偶發 `Rule line control unreachable` 本輪 Linux 尚未重現，未將焦點修補當作其根因已查明；仍保留待查。基底 `b88545e0` partial 310／0 及兩次未完成全量保留為診斷紀錄，不併入最終完整結果。
+## #159 模型庫歷史的瀏覽器收尾（2026-10-07）
+
+- 真瀏覽器先重現三個缺陷：Undo 按鈕停用後失焦到 BODY，使下一個 Ctrl+Y 無反應；Undo 新建專案回到舊 context 後 view lease 永久拒絕；已失效的 scene builder cache 被當成有效草稿鎖庫。
+- 修正只在同 owner／同工作區、無等待中移焦或另行操作時，以 preventScroll 還原原歷史按鈕焦點；最後一步可移至可用的反向按鈕。只有事前固定的目標 entry 精確一步轉移、新 frame、同 session／UI lease 才續租，支援合法跨專案 Undo/Redo；過期 scene cache 不再守門，但不清除 raw/source，真正有效草稿仍阻擋。
+- UI 減項（GEO-219）：延續 #159 將背景原 Undo/Redo 搬入同一專案列的合併方案；沒有新增可見入口、history、工具列或常駐說明。產品只改 `workspace-shell.js`／`space-workspace.js`，公理、核心、app.js、ReferenceWorkspace 與專案格式不變。
+- 回歸：正式 shell／ContextHistory unit 28/28（原 15 + 新增 13，含失效及 guard-removal oracle）；正式 Space 新增 26 個獨立斷言，height/library 86→112、full Space 202→228，其他 floor 不變。Full Space 228/0、獨立 timber-only 79/0 均 exit 0、completed true，browser exceptions／console errors 0。完整 CDP 的原 2054／83 段 golden 維持，最終結果記於後續 PR 收據。
+- 嚴格非瀏覽器 registry 70 suites 全執行：69 成功、0 失敗、1 既定 Windows GDI 平台 skip，exit 0；Node aggregate 510/510，raw mixed-unit census 2186 pass／0 fail／1 skip。只提高 `workspace_shell_history` expected 15→28，沒有使用 update-expected 代替 compare_expected。
+- 獨立 Playwright／Chromium 四 viewport（1382×804、390×844、1280×900、390×900）283/283：真 Tab/Enter／Ctrl+Z/Y/Shift+Z、44px hit／inert／焦點、原 DOM 與 Save 還原、8 次真下載保存及 4 次 filechooser 重開的完整模型／World 比對。另有 10 項完整重跑的 guards、有效／過期 builder 與跨專案專項，均 exit 0。Readonly 使用真 navigator.locks lease＋明列正式 metadata fixture；nested source modal 有正式 API setup，不冒充自然匯入流程。
+- 最終執行來源 runtime `87c07563c038d049e5398eea432bf74184ece6da99fb827a321e20ad2ae91ac6`；原紅例、修正後證據及中途 harness oracle/setup 失敗保留於 `/tmp/geometry-159/`，不混算。首次 recover 的展示座標不持久化；非空 World QA 先真 UI 切換完成合法 layout，再固定事前 oracle，不忽略 `canvas-pos` 差異。
+- 限制：390 是 Linux Chromium viewport，實體手機／IME／Windows 或 macOS 原生 Save picker 未驗；真保存採 download fallback。Hosted CI 依後續 PR 的 exact head 另記，保持 draft，不關閉 #123 的其他工單，也不 merge／deploy。
+
+## #123 S1 — 模型庫的既有歷史入口（2026-10-06，待正式瀏覽器驗收）
+
+- 有界範圍：閒置3D模型庫中的 Undo/Redo 可見入口與同路徑快捷鍵；沿用唯一 `ContextHistory`、原 `doUndoRedo` 與原DOM按鈕，不改核心、公理、app.js或ReferenceWorkspace。
+- UI減項（GEO-219）：把原本留在modal背景、不可操作的主Undo/Redo控制搬入同一專案列，退出即還原；不新增第二份控制、history、工具列或常駐教學。模型庫移除後不必先退出才到達同一復原操作。
+- 保全：readonly／busy／native pending／草稿／巢狀modal／owner換代拒絕；保存節點與原生手勢不變，readonly仍可查看既有3D。參見 [DOM契約](geometry-web/docs/DOM-CONTRACT.md) 與 [待驗gate](tests/INTEGRATION-GATES.md)。
+- 非瀏覽器有獨立正式registry，不降低既有floor／golden；手機可達、真保存重開、native/browser owner races仍待exact-tree驗收，不宣稱#123或S1全部完成。
 
 ## CONT-20261004 — 八項採納與單writer整合
 
