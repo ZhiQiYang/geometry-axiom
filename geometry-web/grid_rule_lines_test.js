@@ -6,7 +6,7 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
   console.log('=== P88. 原生來源子線顯示、完整引用、兩面及正式重開 ===');
   const fs=require('fs'),os=require('os'),path=require('path'),P=require('./project-store.js'),zip=require('./vendor/fflate/umd/index.js');
   const read=cdp.makeRead(eval_),wait=cdp.makeWait(waitForUI,25000),check=cdp.makeCheck({prefix:'P88 ',throwOnFail:true}),exceptions=exceptionCount();
-  const baseCtl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,missing:'Missing ',unreachable:(s,p)=>'Rule line control unreachable '+s+' '+JSON.stringify(p)});
+  const baseCtl=cdp.makeCtl({eval_,sleep,click},{scroll:'center',attempts:12,pollMs:70,settleMs:100,hitElement:true,missing:'Missing ',unreachable:(s,p)=>'Rule line control unreachable '+s+' '+JSON.stringify(p)});
   const ctl=async selector=>{if(await read('innerWidth<=900')){
     const root=await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});return n?.closest('#objectList')?'left':n?.closest('#inspectorContent')?'right':n?.closest('.face-inspector-panel')?'face':n?.closest('.face-layer-panel')?'face-left':null;})()`);
     if(root==='left'&&!await read(`document.body.classList.contains('drawer-left-open')`))await baseCtl('#toggleLeft');
@@ -15,12 +15,17 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     if(root==='face-left'&&!await read(`document.body.classList.contains('drawer-left-open')`))await baseCtl('#workspaceToggleLeft');
     if(selector.startsWith('.face-rule-hit')&&await read(`document.body.classList.contains('drawer-right-open')`))await baseCtl('#workspaceToggleRight');
   }if(await read(`document.querySelector(${JSON.stringify(selector)})?.closest('#createObjectPop')?.hidden===true`))await baseCtl(await read(`innerWidth<=900?'#mobileCreateObject':'#btnCreateObject'`));return baseCtl(selector);};
-  const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl,key,send,sleep},{afterMs:35});
+  // A default-valued select must not pass after a click reached another
+  // element. Check the actual keyboard target before sending input.
+  const focusedCtl=async selector=>{await ctl(selector);await wait(`document.activeElement===document.querySelector(${JSON.stringify(selector)})`);};
+  const key=cdp.makeKey({send,sleep}),fill=cdp.makeFill({ctl:focusedCtl,key,send,sleep},{afterMs:35});
+  // Native button activation also needs Enter's character event in Chromium.
+  const activateKey=cdp.makeKey({send,sleep},{enterText:true});
   const historyOracle=cdp.makeHistoryOracle(read,'P88');
   const shot=cdp.makeShot(send,['GEOMETRY_GRID_RULE_SCREENSHOT_DIR']);
   const query=cmd=>read(`apiRequest(${JSON.stringify(cmd)}).then(r=>{if(!r.ok)throw Error(JSON.stringify(r));return r;})`),dump=async()=>(await query('dump')).text,objects=()=>query('objects'),settled=()=>wait('!oc.busy&&!ReferenceWorkspace.busy');
   const impact=()=>wait(`!!document.querySelector('.reference-impact[open]')`),confirm=async()=>{await ctl('#impact-confirm');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();},cancel=async()=>{await ctl('.reference-impact .impact-actions button:first-child');await wait(`!document.querySelector('.reference-impact[open]')`);await settled();};
-  const choose=async(selector,value)=>{const n=await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});return [...n.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(value)});})()`);if(n<0)throw Error('Missing enabled option '+selector+' '+value);await ctl(selector);await key('Home','Home',36);for(let i=0;i<n;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)}).value===${JSON.stringify(value)}`);};
+  const choose=async(selector,value)=>{const n=await read(`(()=>{const n=document.querySelector(${JSON.stringify(selector)});return [...n.options].filter(o=>!o.disabled).findIndex(o=>o.value===${JSON.stringify(value)});})()`);if(n<0)throw Error('Missing enabled option '+selector+' '+value);await focusedCtl(selector);await key('Home','Home',36);for(let i=0;i<n;i++)await key('ArrowDown','ArrowDown',40);await key('Enter','Enter',13);await wait(`document.querySelector(${JSON.stringify(selector)}).value===${JSON.stringify(value)}`);};
   const fixture=async cmd=>read(`(async()=>{let r=await apiRequest('line '+${JSON.stringify(cmd)});if(r.preview){if(!r.preview.valid)throw Error(JSON.stringify(r));r=await apiRequest('line confirm '+r.preview.token);}if(!r.ok)throw Error(JSON.stringify(r));await renderObjects();return true;})()`);
   const leave=async()=>{if(await read(`$('infiniteGridWorkspace').open`))await ctl('#igClose');if(await read(`!!oc.focus`))await ctl('#workspaceBackButton');await settled();};
   const newSource=async()=>ctl(await read(`innerWidth<=900?'#btnQuickGrid':'#btnNewGridSystem'`));
@@ -47,6 +52,18 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     for(let index=0;index<2;index++){
       await face(index+1);await focusCell(cells[index]);const lines=await read(`GridRuleLines.entries().map(l=>({ref:l.ref,segments:l.segments,bounds:l.bounds}))`),native=await query(`grid-rule-query grid ${grids[index]} rule 1 cell ${cells[index].join(' ')}`);
       check(`${width} 面 ${index} exact cell 線段與 native 相同，完整 tuple 含真正大索引`,lines.length===3&&lines.every(l=>l.ref.appliedGridId===grids[index]&&l.ref.systemId===sid&&l.ref.cellI===cells[index][0]&&l.ref.cellJ===cells[index][1])&&JSON.stringify(lines.map(l=>l.segments))===JSON.stringify(native.lines.map(l=>l.segments)));
+      if(index===0){
+        const keyboardWorld=await dump(),keyboardHistory=await historyOracle.capture(),keyboardRaw=await read(`ReferenceWorkspace.readFeatureAttachment('grid-draft')`);
+        // Input clears the previous receipt; Tab and Enter activate the real
+        // next button. Wait for a new native result, not the previous value.
+        await fill('[data-rule-cell-j]',cells[index][1]);
+        await wait(`document.querySelector('[data-rule-focus-status]').textContent===''`);
+        await key('Tab','Tab',9);
+        await wait(`document.activeElement===document.querySelector('[data-rule-exact]')`);
+        await activateKey('Enter','Enter',13);await wait(`document.querySelector('[data-rule-focus-status]').textContent.includes('已核對')`);
+        check(`${width} 真 Tab/Enter 完整定位保留按鈕焦點且 World/raw/history 零寫入`,await read(`document.activeElement===$('gridRuleExact')&&!$('gridRuleExact').disabled`)&&(await dump())===keyboardWorld&&await historyOracle.unchanged(keyboardHistory)&&JSON.stringify(await read(`ReferenceWorkspace.readFeatureAttachment('grid-draft')`))===JSON.stringify(keyboardRaw));
+        await historyOracle.release(keyboardHistory);
+      }
       for(const axis of ['u','v']){
         await choose('#tbAnchor',`at-line rule ${grids[index]} ${sid} 1 ${cells[index].join(' ')} ${axis} 0`);await fill('#tbA','20');await fill('#tbB','20');await ctl('#tbAnchor');
         const preview=await read(`(()=>{const nodes=[...document.querySelectorAll('.fe-anchor-hi,.fe-anchor-band,.fe-anchor-band-label')],info=feAnchorLineInfo(${index+1},$('tbAnchor').value),rect=document.querySelector('.fe-anchor-band');return {info,finite:nodes.length===3&&nodes.every(n=>[...n.attributes].filter(a=>['x','y','x1','y1','x2','y2','width','height'].includes(a.name)).every(a=>Number.isFinite(Number(a.value)))),rect:rect&&['x','y','width','height'].map(a=>Number(rect.getAttribute(a))),materialClip:nodes.every(n=>n.closest('[clip-path="url(#face-material-clip)"]'))};})()`);

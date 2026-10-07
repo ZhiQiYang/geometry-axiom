@@ -8,6 +8,17 @@
 - B 使用同一正式 app 的獨立 native context；共同 transport、receipt、upload 路徑綁 context，失效識別不回退至 live A。只讀驗證每次 disposable process；整體採用沿共用原子載入及一筆 ContextHistory，catalog／原圖／草稿／模型隨同一步 undo/redo。無部署或實體手機完成聲明。
 - 尚在實作與驗收，不宣稱 #46 完成；#134 產品凍結及 16 檔證據發布 hold 分別保留。
 
+## #134 — 完整定位查詢保留鍵盤焦點（2026-10-07，候選驗證完成）
+
+- 在隔離 Chromium 的 390px 真 Enter 操作重現：`data-rule-exact` 按鈕被 disabled 時先失焦，原生只讀回應重建檢查器後焦點仍停在 BODY。單加 DOM id 不足以修復。
+- 沿用既有完整定位入口，增加穩定 `gridRuleExact` id；查詢發起時保存焦點意圖，僅在 editor／request／raw tuple 仍新鮮且使用者未另行操作時還原，不搶回其他欄位或畫面的焦點。查詢保持只讀，不改核心、公理、保存格式或歷史。
+- 本次拿掉／合併（GEO-219）：沒有新增可見入口或常駐說明；合併到原完整定位按鈕與其既有忙碌流程。
+- P88 新增桌面與 390px 真 Tab／Enter 回歸，先確認舊 receipt 清空及實際焦點，再用含 Enter 字元事件的可信輸入觸發新原生查詢，避免預設值或舊結果掩蓋誤點。現有 reachability 與回歸門檻保留。
+- 修正版完整 CDP：2161／0、零略過、84 段；golden 僅 P88 105→107、total 2159→2161。P38 有一筆預期 `fb-auto-probe`，非預期例外零。另跑網格 partial 312／0、P88 107／0、零瀏覽器例外；兩者分開記錄。runtime 前後 fresh，產品及 harness 來源 hash 不變。
+- 嚴格完整非瀏覽器登錄回歸：70 suites，69 成功、1 Windows GDI 專用在 Linux 具名略過、零失敗、exit 0。`node:tests-js` 533／0／0，expected 僅 513→533；其中 production exact handler 23 tests 及 8 種 guard removal 反例通過。
+- 獨立 Playwright：1280×900／390×900 六個原生 rule／面外 guide 預覽與下載 Save／選檔 Open 流程，188／188；World／history／非空 raw 保持不變，console／pageerror 零。另驗真 Enter 與延遲回應改欄位、點空白、離面不搶焦點。面外 guide 空交集未冒充舊普通 grid v0 精確 fixture，未驗實體手機或 OS Save picker。
+- Windows #158 的偶發 `Rule line control unreachable` 本輪 Linux 尚未重現，未將焦點修補當作其根因已查明；仍保留待查。基底 `b88545e0` partial 310／0 及兩次未完成全量保留為診斷紀錄，不併入最終完整結果。
+
 ## CONT-20261004 — 八項採納與單writer整合
 
 - 使用者已明示接受八項建議，並授權自行安排順序／並行／批次；[目前接口／owner／採納範圍](geometry-guide/IMPLEMENTATION-QUEUE-20261004.md)。舊準備階段的「全部待採納」保留為歷史，不擴大未明寫條文，也不拿來阻塞已批准工作。

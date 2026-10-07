@@ -145,16 +145,38 @@
     const source=oc.gridSystems.find(s=>s.id===g?.sourceSystem);if(!source?.rules?.length)return '';
     const esc=ReferenceWorkspace.escape,selected=fe.ruleSelection?.appliedGridId===g.id?find(fe.ruleSelection):null;
     const rule=source.rules.find(r=>r.ruleKey===fe.ruleFocus?.rule)||source.rules[0],cell=fe.ruleFocus?.grid===g.id?fe.ruleFocus.cell:oc.gridBindings.find(b=>b.id===g.bindingId)?.cell||['0','0'];
-    return `<div class="grid-rule-details"><h4>來源規則子線 · 共用</h4><p>來源 ${source.id} → ${g.bindingId!=null?'配置 '+g.bindingId+' → ':''}套用 ${g.id}。手動子網格另列於局部等分。</p>${source.rules.map(r=>{const u=usage(fe.timberReferenceData,source.id,r.ruleKey);return `<p data-rule-summary="${r.ruleKey}"><button type="button" class="grid-text-button" data-rule-source="${r.ruleKey}">#${r.ruleKey} ${esc(r.name)}</button> · ${r.selector.kind==='all-cells'?'每個主格':'cell ('+esc(r.selector.cell.join(', '))+')'} · u ${r.divisions[0]}／v ${r.divisions[1]} · 引用：${u.guides.length} 參考線／${u.timbers.length} 角材</p>`;}).join('')}<div class="grid-rule-focus"><label>規則<select id="gridRuleFocusKey" data-rule-focus-key>${source.rules.map(r=>`<option value="${r.ruleKey}"${r.ruleKey===rule.ruleKey?' selected':''}>#${r.ruleKey} ${esc(r.name)}</option>`).join('')}</select></label><label>cell i<input id="gridRuleCellI" data-rule-cell-i value="${esc(cell[0])}" inputmode="numeric" maxlength="4096"></label><label>cell j<input id="gridRuleCellJ" data-rule-cell-j value="${esc(cell[1])}" inputmode="numeric" maxlength="4096"></label><button type="button" class="btn" data-rule-exact>完整定位這一格</button></div><p data-rule-focus-status role="status">${esc(owner?.focusStatus||'')}</p>${selected?`<p data-rule-selected>${esc(label(selected.ref,selected.name))} · ${selected.axis}=${selected.coordinate} mm · 可見 ${selected.segments.length} 段</p>`:''}</div>`;
+    return `<div class="grid-rule-details"><h4>來源規則子線 · 共用</h4><p>來源 ${source.id} → ${g.bindingId!=null?'配置 '+g.bindingId+' → ':''}套用 ${g.id}。手動子網格另列於局部等分。</p>${source.rules.map(r=>{const u=usage(fe.timberReferenceData,source.id,r.ruleKey);return `<p data-rule-summary="${r.ruleKey}"><button type="button" class="grid-text-button" data-rule-source="${r.ruleKey}">#${r.ruleKey} ${esc(r.name)}</button> · ${r.selector.kind==='all-cells'?'每個主格':'cell ('+esc(r.selector.cell.join(', '))+')'} · u ${r.divisions[0]}／v ${r.divisions[1]} · 引用：${u.guides.length} 參考線／${u.timbers.length} 角材</p>`;}).join('')}<div class="grid-rule-focus"><label>規則<select id="gridRuleFocusKey" data-rule-focus-key>${source.rules.map(r=>`<option value="${r.ruleKey}"${r.ruleKey===rule.ruleKey?' selected':''}>#${r.ruleKey} ${esc(r.name)}</option>`).join('')}</select></label><label>cell i<input id="gridRuleCellI" data-rule-cell-i value="${esc(cell[0])}" inputmode="numeric" maxlength="4096"></label><label>cell j<input id="gridRuleCellJ" data-rule-cell-j value="${esc(cell[1])}" inputmode="numeric" maxlength="4096"></label><button id="gridRuleExact" type="button" class="btn" data-rule-exact>完整定位這一格</button></div><p data-rule-focus-status role="status">${esc(owner?.focusStatus||'')}</p>${selected?`<p data-rule-selected>${esc(label(selected.ref,selected.name))} · ${selected.axis}=${selected.coordinate} mm · 可見 ${selected.segments.length} 段</p>`:''}</div>`;
   }
   function bind(pane,g){
     for(const input of pane.querySelectorAll('[data-rule-focus-key],[data-rule-cell-i],[data-rule-cell-j]'))input.addEventListener('input',()=>{if(owner&&current(owner)){owner.focusStatus='';pane.querySelector('[data-rule-focus-status]').textContent='';}});
     for(const button of pane.querySelectorAll('[data-rule-source]'))button.onclick=async()=>{const s=owner,mark=stamp(),r=Number(button.dataset.ruleSource);if(!s?.loaded||!current(s))return;
       button.disabled=true;try{await SourceInspectorApp.navigate({kind:'grid-source-rule',id:String(g.sourceSystem),fieldId:r},s.graph,{isCurrent:()=>current(s)&&stamp()===mark,beginNavigation:()=>current(s)&&stamp()===mark});}catch(error){toast(error.message);}finally{if(button.isConnected)button.disabled=false;}};
-    const button=pane.querySelector('[data-rule-exact]');if(button)button.onclick=async()=>{const captured=owner,feedback=text=>{if(captured===owner&&current(captured))$('faceInspectorContent').querySelector('[data-rule-focus-status]').textContent=text;};try{
-      const cell=['i','j'].map(a=>pane.querySelector('[data-rule-cell-'+a+']').value.trim());if(!cell.every(signed))throw Error('cell 須為 signed 64 位元整數；不使用抽樣序號。');
-      refresh();const s=owner;if(!current(s))return;fe.ruleFocus={grid:g.id,rule:Number(pane.querySelector('[data-rule-focus-key]').value),cell};button.disabled=true;await query(s,fe.ruleFocus);
-    }catch(error){feedback(error.message);}finally{if(button.isConnected)button.disabled=false;}};
+    const button=pane.querySelector('[data-rule-exact]');if(button)button.onclick=async()=>{
+      const captured=owner,feedback=text=>{if(captured===owner&&current(captured))$('faceInspectorContent').querySelector('[data-rule-focus-status]').textContent=text;};
+      // Native disabled buttons lose focus before the readonly response can
+      // rebuild the inspector. Retain the initiating keyboard target only
+      // while this exact request, raw tuple and user interaction still own it.
+      const retainFocus=document.activeElement===button;
+      let interrupted=false,focusOwner=null,focusInput=null,focusRequest=null;
+      const interrupt=()=>{interrupted=true;};
+      const focusEvents=['focusin','pointerdown','keydown'];
+      if(retainFocus)for(const type of focusEvents)document.addEventListener(type,interrupt,true);
+      try{
+        const cell=['i','j'].map(a=>pane.querySelector('[data-rule-cell-'+a+']').value.trim());if(!cell.every(signed))throw Error('cell 須為 signed 64 位元整數；不使用抽樣序號。');
+        refresh();const s=owner;if(!current(s))return;
+        fe.ruleFocus={grid:g.id,rule:Number(pane.querySelector('[data-rule-focus-key]').value),cell};
+        focusOwner=s;focusInput=focusInputs();button.disabled=true;
+        const pending=query(s,fe.ruleFocus);focusRequest=s.request;await pending;
+      }catch(error){feedback(error.message);}finally{
+        if(retainFocus)for(const type of focusEvents)document.removeEventListener(type,interrupt,true);
+        if(button.isConnected)button.disabled=false;
+        const target=$('gridRuleExact');
+        if(retainFocus&&!interrupted&&focusOwner&&focusOwner===owner&&current(focusOwner)&&
+           focusOwner.request===focusRequest&&focusInput===focusInputs()&&
+           document.activeElement===document.body&&target&&!target.disabled&&target.getClientRects().length)
+          target.focus({preventScroll:true});
+      }
+    };
   }
   async function readNative(target,selector,isCurrent=()=>true){
     const before=await apiRequest('source-inspect');if(!isCurrent()||!before.ok)return null;

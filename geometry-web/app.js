@@ -5229,14 +5229,18 @@ function drawFaceEditor() {
       const A2 = Number($("tbA")?.value) || 0;
       const cr = feAnchorCrossRange(e.bid, anchorVal, A2);
       if (cr) {
-        const bandG = el("g", { "clip-path": "url(#face-material-clip)" }, root);
         const br = cr.constAxis === "u" ? [Math.max(cr.lo,localBounds[0]), localBounds[1], Math.min(cr.hi,localBounds[2]), localBounds[3]]
                                         : [localBounds[0], Math.max(cr.lo,localBounds[1]), localBounds[2], Math.min(cr.hi,localBounds[3])];
-        el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
-          class: "fe-anchor-band" }, bandG);
-        el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
-          "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
-          class: "fe-dim fe-anchor-band-label" }, el("g", {"clip-path":"url(#face-material-clip)"}, annotations)).textContent = "橫向定位示意";
+        // A disjoint or merely touching intersection has no material area.
+        // Keep the reference highlight, but do not emit an invalid/empty band.
+        if (br[2] > br[0] && br[3] > br[1]) {
+          const bandG = el("g", { "clip-path": "url(#face-material-clip)" }, root);
+          el("rect", { x: br[0], y: br[1], width: br[2] - br[0], height: br[3] - br[1],
+            class: "fe-anchor-band" }, bandG);
+          el("text", { x: (br[0] + br[2]) / 2, y: (br[1] + br[3]) / 2,
+            "font-size": 10.5 / z, "text-anchor": "middle", "dominant-baseline": "middle",
+            class: "fe-dim fe-anchor-band-label" }, el("g", {"clip-path":"url(#face-material-clip)"}, annotations)).textContent = "橫向定位示意";
+        }
       }
     }
   }

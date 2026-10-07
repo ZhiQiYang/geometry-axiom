@@ -1044,6 +1044,6 @@ impact 的 `[data-impact-rule-side="before"|"after"]` 顯示 native source 候�
 
 既有面內 `components` 區的 `.grid-rule-details` 顯示 source → binding → applied grid。`[data-rule-source]` 是同一來源編輯區的 ruleKey 定位，讀取完成後才同步退出面內，保留 boundary loops 與孔快取。`.face-rule-line`、`.face-rule-hit`、`[data-rule-label]` 均來自同一筆 native `grid-rule-query` 線段；hit 同時受 parent cell 與 material clip 防護。
 
-`#gridRuleFocusKey`、`#gridRuleCellI`、`#gridRuleCellJ` 保留原始 signed 字串及焦點；`[data-rule-exact]` 完整查詢真正 cell，`[data-rule-focus-status]` 回報完成、零可見或 native 拒絕。遲到 exact 回應須仍擁有同一 editor、query generation 與 raw tuple；sampling 重繪沿用 inspector 保存規律。
+`#gridRuleFocusKey`、`#gridRuleCellI`、`#gridRuleCellJ` 保留原始 signed 字串及焦點；`#gridRuleExact[data-rule-exact]` 完整查詢真正 cell，`[data-rule-focus-status]` 回報完成、零可見或 native 拒絕。由該按鈕發起的鍵盤查詢，在原生 disabled 與檢查器重建後，只有同一 editor、query generation、raw tuple 且使用者未另行操作時才以 `preventScroll` 還原按鈕焦點；切換欄位、點其他位置、按鍵或離開畫面後不搶回焦點。遲到 exact 回應須仍擁有同一 editor、query generation 與 raw tuple；sampling 重繪沿用 inspector 保存規律。
 
 既有 `#tbAnchor`／`#refGuideSource` 使用含 applied grid、system、rule、signed cell、axis、inner index 的完整 RuleLineRef。來源與配置只讀視圖的 `[data-ig-source-rule]`／`[data-ig-result-rule]` 保持 `data-ig-rule-ref="none"`，不製造可放置引用。角材需手動截面及角色，`newid` 與 native 準備跨 await 都受共用 operation lease 防護。
