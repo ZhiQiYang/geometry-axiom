@@ -189,9 +189,13 @@ def main():
                 cleanup_errors.append('fixture.doCleanups() returned False without an exception traceback')
         metadata['cleanup_errors'] = cleanup_errors
         for session in sessions:
-            session.stop()
+            try:
+                session.stop()
+            except BaseException:
+                cleanup_errors.append(traceback.format_exc())
+                metadata['passed'] = False
         metadata['sessions'] = [s.details for s in sessions]
-        if any(s.details['exit_code'] != 0 for s in sessions):
+        if any(s.details.get('exit_code') != 0 for s in sessions):
             metadata['passed'] = False
         metadata['errors'] = errors
         metadata['finished'] = datetime.now(timezone.utc).isoformat()
