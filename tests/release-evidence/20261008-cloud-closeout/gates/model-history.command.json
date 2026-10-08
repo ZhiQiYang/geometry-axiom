@@ -1,0 +1,32 @@
+{
+  "gate": "model-history",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "tests/release_gate.py",
+    "--url",
+    "http://127.0.0.1:18971/",
+    "--output",
+    "/workspace/closure-evidence/gates/model-history",
+    "--timeout",
+    "600",
+    "--",
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "tests/integration/model_library_history_browser.py"
+  ],
+  "environment": {
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18971/",
+    "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_BRIDGE": "/tmp/geometry-tests/bridge",
+    "GEOMETRY_MODEL_BASE": "/tmp/geometry-tests/model-base",
+    "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-closeout-r2-feedback",
+    "GEOMETRY_CHROME": "/usr/bin/chromium",
+    "GEOMETRY_REQUIRE_CLEAN": "1",
+    "GEOMETRY_VERIFY_ROOT": "/workspace/geometry-axiom",
+    "GEOMETRY_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "PYTHONPATH": "/workspace/closure-evidence/python-launch",
+    "NODE_OPTIONS": "--require=/workspace/closure-evidence/sandbox-launch.cjs",
+    "GEOMETRY_MODEL_HISTORY_OUT": "/tmp/geometry-closeout-r2-gates/model-history"
+  },
+  "exit_code": 0,
+  "finished": "2026-10-08T17:41:23.566696+00:00"
+}

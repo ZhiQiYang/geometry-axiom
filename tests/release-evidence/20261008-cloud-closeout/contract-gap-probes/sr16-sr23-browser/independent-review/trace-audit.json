@@ -1,0 +1,202 @@
+{
+  "schema": "geometry-sr16-sr23-trace-independent-audit/1",
+  "passed": true,
+  "widths": [
+    {
+      "width": 1400,
+      "passed": true,
+      "httpRows": 602,
+      "unmatchedHttpRows": [],
+      "identityReferenceEqualityCalls": [
+        {
+          "trace": "trace-1.zip",
+          "callId": "call@3386",
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),same=(a,z)=>a.length===z.length&&a.every((e,i)=>e===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo)}",
+          "result": {
+            "value": {
+              "b": true
+            }
+          },
+          "error": null
+        },
+        {
+          "trace": "trace-1.zip",
+          "callId": "call@3432",
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),same=(a,z)=>a.length===z.length&&a.every((e,i)=>e===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo)}",
+          "result": {
+            "value": {
+              "b": true
+            }
+          },
+          "error": null
+        },
+        {
+          "trace": "trace-1.zip",
+          "callId": "call@3592",
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),same=(a,z)=>a.length===z.length&&a.every((e,i)=>e===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo)}",
+          "result": {
+            "value": {
+              "b": true
+            }
+          },
+          "error": null
+        }
+      ],
+      "singleTransactionCalls": [
+        {
+          "trace": "trace-1.zip",
+          "callId": "call@3702",
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),r=b.undo.slice(Math.max(0,b.undo.length+1-h.limit));return h.limit===b.limit&&h.group===null&&h.redo.length===0&&h.undo.length===r.length+1&&h.undo.slice(0,-1).every((v,i)=>v===r[i])&&!b.undo.includes(h.undo.at(-1))}",
+          "result": {
+            "value": {
+              "b": true
+            }
+          },
+          "error": null
+        }
+      ],
+      "downloadEvents": [
+        {
+          "trace": "trace-1.zip",
+          "event": {
+            "type": "event",
+            "time": 44679.549,
+            "class": "BrowserContext",
+            "method": "download",
+            "params": {
+              "pageId": "page@60c133fccb7ad629b423388271510950",
+              "url": "blob:http://127.0.0.1:18971/1a68c609-c264-43ec-bc33-7e09f0ec44ad",
+              "suggestedFilename": "未命名專案.gcanvas"
+            }
+          }
+        }
+      ],
+      "setInputFiles": [
+        {
+          "trace": "trace-2.zip",
+          "callId": "call@4530",
+          "params": {
+            "localPaths": [
+              "/workspace/closure-evidence/sr16-sr23-browser-r1/1400/sr23-project.gcanvas"
+            ],
+            "timeout": 30000
+          },
+          "error": null
+        }
+      ],
+      "privateTraces": [
+        {
+          "path": "trace-1.zip",
+          "sha256": "08fdf349f86b6616b5af5d3998dcce1c27cce918dc1be3d673932736326d11a4",
+          "traceMemberSha256": "0f025e80666a378015520deaa4c21b137fc9190ce3a8b19a7a7444559beb9d3d",
+          "networkMemberSha256": "0773b8b7c8c028cd2e3abce98c750dacd02ef6074ee85bfd1891db86c45d39b4"
+        },
+        {
+          "path": "trace-2.zip",
+          "sha256": "ec04b7fca71201af7b6284fd6d86058f1371980db660dd19e28e43cfe74a5be7",
+          "traceMemberSha256": "6afe448dd7ed8ba747667c9c46e49d8df50e2c3814b7c549ad6022c077255f82",
+          "networkMemberSha256": "afe44eaf4ae5b8fc486055119140c11c1cd77789c22937c004723476742a4097"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "passed": true,
+      "httpRows": 604,
+      "unmatchedHttpRows": [],
+      "identityReferenceEqualityCalls": [
+        {
+          "trace": "trace-3.zip",
+          "callId": "call@8540",
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),same=(a,z)=>a.length===z.length&&a.every((e,i)=>e===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo)}",
+          "result": {
+            "value": {
+              "b": true
+            }
+          },
+          "error": null
+        },
+        {
+          "trace": "trace-3.zip",
+          "callId": "call@8588",
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),same=(a,z)=>a.length===z.length&&a.every((e,i)=>e===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo)}",
+          "result": {
+            "value": {
+              "b": true
+            }
+          },
+          "error": null
+        },
+        {
+          "trace": "trace-3.zip",
+          "callId": "call@8748",
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),same=(a,z)=>a.length===z.length&&a.every((e,i)=>e===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo)}",
+          "result": {
+            "value": {
+              "b": true
+            }
+          },
+          "error": null
+        }
+      ],
+      "singleTransactionCalls": [
+        {
+          "trace": "trace-3.zip",
+          "callId": "call@8866",
+          "expression": "id=>{const h=ReferenceWorkspace.history,b=__srPins.get(id),r=b.undo.slice(Math.max(0,b.undo.length+1-h.limit));return h.limit===b.limit&&h.group===null&&h.redo.length===0&&h.undo.length===r.length+1&&h.undo.slice(0,-1).every((v,i)=>v===r[i])&&!b.undo.includes(h.undo.at(-1))}",
+          "result": {
+            "value": {
+              "b": true
+            }
+          },
+          "error": null
+        }
+      ],
+      "downloadEvents": [
+        {
+          "trace": "trace-3.zip",
+          "event": {
+            "type": "event",
+            "time": 97888.365,
+            "class": "BrowserContext",
+            "method": "download",
+            "params": {
+              "pageId": "page@7a11a003cbf9b37ee926a72a2889bab7",
+              "url": "blob:http://127.0.0.1:18971/ccaf0f79-182e-4753-b742-92b2dd2fbb90",
+              "suggestedFilename": "未命名專案.gcanvas"
+            }
+          }
+        }
+      ],
+      "setInputFiles": [
+        {
+          "trace": "trace-4.zip",
+          "callId": "call@9784",
+          "params": {
+            "localPaths": [
+              "/workspace/closure-evidence/sr16-sr23-browser-r1/390/sr23-project.gcanvas"
+            ],
+            "timeout": 30000
+          },
+          "error": null
+        }
+      ],
+      "privateTraces": [
+        {
+          "path": "trace-3.zip",
+          "sha256": "07e368d2d16cb5b197bc5dc68290fdf46ca364741bdc573499f8129af9f37c22",
+          "traceMemberSha256": "7177b6c52a9d7fd1dd4cc755e0a47be309c281012f3cd2bf43b159fc4b14aa54",
+          "networkMemberSha256": "08d07413d0add68d7d3c1297a34bd98cca4351fffcefdba12b16c68d2fa556c8"
+        },
+        {
+          "path": "trace-4.zip",
+          "sha256": "6fff7f7df1e82c7878d47e0614ae69641a82a13d423e2422ee9a7a908e46d723",
+          "traceMemberSha256": "ec10aeaf4e6de4ac487967bcef1dd25644a8bf357d35b32b171065c043c91bd4",
+          "networkMemberSha256": "7d8b1212ead59b9bb9d320cbfd7550405265a3af9a2cabb7062a36937a6d6c8d"
+        }
+      ]
+    }
+  ],
+  "noProductExecution": true,
+  "publication": "Trace ZIP files remain private; only hashes and bounded audit statements may publish."
+}

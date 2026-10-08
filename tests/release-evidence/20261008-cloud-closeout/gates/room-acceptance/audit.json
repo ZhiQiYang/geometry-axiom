@@ -1,0 +1,506 @@
+{
+  "gate": "room-acceptance",
+  "auditedAt": "2026-10-08T18:42:20.917415+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "observed": 253,
+    "passed": 253,
+    "failed": 0,
+    "basis": "individual canonical result records"
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "node",
+    "tests/room_outline_acceptance_browser.js"
+  ],
+  "canonicalSource": "/tmp/geometry-closeout-r2-gates/room-acceptance/results.json",
+  "terminalLogRecord": {
+    "prefix": "ACCEPTANCE_RESULT",
+    "value": {
+      "ok": true,
+      "checks": 253,
+      "failures": 0,
+      "out": "/tmp/geometry-closeout-r2-gates/room-acceptance"
+    }
+  },
+  "limitations": [
+    "Single-room authored fixtures, PDF/image calibration and save/reopen; not private missing attachment visual comparison.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": null,
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/room-acceptance/command.log",
+      "public": "room-acceptance/command.log",
+      "bytes": 38208,
+      "sha256": "3a891ec33c34313f0bb3b88812a6ab39d0294b67d53b0f2d9b65f2d5a354703c"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-acceptance/receipt.json",
+      "public": "room-acceptance/receipt.json",
+      "bytes": 5214,
+      "sha256": "3984fb4ce2b310fb5e6244118f813b8539c049ef042e0936eaa19c520ab8dff1"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-acceptance.command.json",
+      "public": "room-acceptance.command.json",
+      "bytes": 1223,
+      "sha256": "a987758d3b08bbdd42fd19b42e9c48d2ab4821bd0daf88acbfaeca3034c3811a"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-acceptance.stdout",
+      "public": "room-acceptance.stdout",
+      "bytes": 179,
+      "sha256": "1e127b460cb4fc8810e0a566da7e6e8221b7e952e880bbeac971bce0063240a6"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-acceptance.stderr",
+      "public": "room-acceptance.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/gap.png",
+      "relative": "gap.png",
+      "bytes": 1149,
+      "sha256": "2022ae551a0cd6ad0401f534e4a996a7fb23b21fb77a21fbd38f588b203edef3",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-l-candidate.png",
+      "relative": "image-l-candidate.png",
+      "bytes": 230079,
+      "sha256": "bf2849eeabdf693c6cc05df3c50bb27de5d7f55b69e4c5d9c5ed61f43895fc68",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-l-reopened.png",
+      "relative": "image-l-reopened.png",
+      "bytes": 171493,
+      "sha256": "28a537c1d4c6bd45ae23b5e18bf8f7e762b2ea055e8b32085fffe07b3f6a1eb8",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-l.gcanvas",
+      "relative": "image-l.gcanvas",
+      "bytes": 3565,
+      "sha256": "9d64fe88a92b8c53df182f4deb9438500d0448e8ff3ed7403f0f2e63feac1e16",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-neighbor.png",
+      "relative": "image-neighbor.png",
+      "bytes": 234023,
+      "sha256": "e8ab677dd1d1e83478de14bf4929f510f71ca7c166edfaf6c22667bb70ac2f08",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-notch-candidate.png",
+      "relative": "image-notch-candidate.png",
+      "bytes": 234119,
+      "sha256": "0e77aad83cb6e9640c94b1e5d58f354eaae2e605425cbb33e6fef84335a34bf2",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-notch-mobile-candidate-canvas.png",
+      "relative": "image-notch-mobile-candidate-canvas.png",
+      "bytes": 61547,
+      "sha256": "7950d10e2723d86294c0176ff21d6fb312bf0a77f42458dac12ad0af61e50087",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-notch-mobile-candidate.png",
+      "relative": "image-notch-mobile-candidate.png",
+      "bytes": 110073,
+      "sha256": "ddb1e09a81db33db7bb2a5bb7907e72988e1d33f09ddb346c43f1727924414da",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-notch-mobile-reopened.png",
+      "relative": "image-notch-mobile-reopened.png",
+      "bytes": 80857,
+      "sha256": "ba6765c6e51d7363d9824a876a5dd09ca146703f034da7a592f892c505714802",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-notch-mobile.gcanvas",
+      "relative": "image-notch-mobile.gcanvas",
+      "bytes": 3823,
+      "sha256": "e0b50beb69e0acc634a1c8f9ec6ff77200e06ef44ee35107c5b8f18665abef23",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-notch-reopened.png",
+      "relative": "image-notch-reopened.png",
+      "bytes": 173643,
+      "sha256": "19e85583acc1e8418b5692c03b3b3a188c4809be3602edff43396ca569c11b9c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-notch.gcanvas",
+      "relative": "image-notch.gcanvas",
+      "bytes": 3838,
+      "sha256": "bae1ca46bf9ccf3d7fbc1ec05934db39c55eb8a292e8ee2e1495d3fa15ee2ea6",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-open-doorway.png",
+      "relative": "image-open-doorway.png",
+      "bytes": 197854,
+      "sha256": "98123f4bd303cb6c57bad78b01d23870f52efad6647dd2d303dfb87e3fb76101",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-rectangle-box-candidate.png",
+      "relative": "image-rectangle-box-candidate.png",
+      "bytes": 228918,
+      "sha256": "85c91958f020489b0911993e0ffd06227456951e3c2eb96b436d5a328aae07d6",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-rectangle-box-reopened.png",
+      "relative": "image-rectangle-box-reopened.png",
+      "bytes": 169042,
+      "sha256": "232e9d8b5976c414fd0569c7d62f4aeaaaa7eba122ff6ff08040e055a029ade4",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-rectangle-box.gcanvas",
+      "relative": "image-rectangle-box.gcanvas",
+      "bytes": 3497,
+      "sha256": "227c09ad50648642c9bb5b29bf209ae48ab068433bd444707740fc31c8da3c84",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-rectangle-candidate.png",
+      "relative": "image-rectangle-candidate.png",
+      "bytes": 227755,
+      "sha256": "715f15614a07082c87699fcfdc50ff08b94867f60c6e9b57bb03873540195608",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-rectangle-reopened.png",
+      "relative": "image-rectangle-reopened.png",
+      "bytes": 169042,
+      "sha256": "232e9d8b5976c414fd0569c7d62f4aeaaaa7eba122ff6ff08040e055a029ade4",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/image-rectangle.gcanvas",
+      "relative": "image-rectangle.gcanvas",
+      "bytes": 3497,
+      "sha256": "4a43afd21df889e1894ce8c8e3f0754cb341a6f658e636adb78aca212ad0159c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/initial-desktop.png",
+      "relative": "initial-desktop.png",
+      "bytes": 97818,
+      "sha256": "b800cba12a8bd46caa2caea66694528101c70a6dd51197714dc7a10ba4402ca6",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/l.png",
+      "relative": "l.png",
+      "bytes": 1163,
+      "sha256": "927b84b1aac70e5e6966b10d4246e8c4cead2201a2be3fc5bf460de3f9d4e28c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/native-rejected.png",
+      "relative": "native-rejected.png",
+      "bytes": 247257,
+      "sha256": "217f34096377c5f6a7cf86e8a9363da6b0d3ed638acb02c47e774ecbcbb765e4",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/neighbor.png",
+      "relative": "neighbor.png",
+      "bytes": 1142,
+      "sha256": "d9fa122a16b6f43d02f1c151ada215f0da3a7f4febcff6b6ff5794bc5bb2e701",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/notch.png",
+      "relative": "notch.png",
+      "bytes": 1380,
+      "sha256": "e19c9fa5ea9af8d6b94d743fe72c6ab390f7e0c14e06abca11512507b28f5d59",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l-candidate.png",
+      "relative": "pdf-l-candidate.png",
+      "bytes": 228018,
+      "sha256": "03e0574d260428f77bfbcfda0dc3b6ad8ca20f428cb9fded4181133dd04e2ffd",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l-mobile-candidate-canvas.png",
+      "relative": "pdf-l-mobile-candidate-canvas.png",
+      "bytes": 60157,
+      "sha256": "2c6d57c56456d2af1e0dd490d18353c862270a0cb1f91f73c928188db2db667c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l-mobile-candidate.png",
+      "relative": "pdf-l-mobile-candidate.png",
+      "bytes": 108693,
+      "sha256": "caa9fea73590bec164c0f27d84bc057d92a2cf249f23237d8c5322692eb50e7c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l-mobile-reopened.png",
+      "relative": "pdf-l-mobile-reopened.png",
+      "bytes": 80284,
+      "sha256": "5e3418a78dcf912d04cb1a87effae091cd98ed54790b5f6ca6a2a31fd2cb4d02",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l-mobile.gcanvas",
+      "relative": "pdf-l-mobile.gcanvas",
+      "bytes": 7465,
+      "sha256": "6067b545d0814abb58a22ba8680c4e93ed59f29bae5f0df0f93ec726f64fd474",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l-reopened.png",
+      "relative": "pdf-l-reopened.png",
+      "bytes": 177794,
+      "sha256": "11d4334bc696cf52ddd872e9a1109db22e7a2170827c4c32950d710830350a12",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l-transform-candidate.png",
+      "relative": "pdf-l-transform-candidate.png",
+      "bytes": 205691,
+      "sha256": "03e5ae51ef428546fa8d41ff4c4d80b03b2a5cf4d61a5868797a45190aa34a62",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l-transform-reopened.png",
+      "relative": "pdf-l-transform-reopened.png",
+      "bytes": 179183,
+      "sha256": "20a5c140d8ceb87f0da0adac8f2ceef00a73d456c1559df081cd3a0bfa22b7b2",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l-transform.gcanvas",
+      "relative": "pdf-l-transform.gcanvas",
+      "bytes": 7496,
+      "sha256": "6e007d286f6f0309f28d82a48f87d386d6c229be75d39c704d3d0c538690195c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-l.gcanvas",
+      "relative": "pdf-l.gcanvas",
+      "bytes": 7480,
+      "sha256": "6a164ff25c6b8be7e9451ec77554af73bbffdfd7c73ed0b73e56e727c14fdae7",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-notch-candidate.png",
+      "relative": "pdf-notch-candidate.png",
+      "bytes": 232252,
+      "sha256": "2595f1f3b86c82f93764dbbbef1e25ea6658f8eb21b83c9ccf452cc71bcb9129",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-notch-reopened.png",
+      "relative": "pdf-notch-reopened.png",
+      "bytes": 181323,
+      "sha256": "2eebe1752e39f1fe9d6c4fc1c4834d8ea0f50673e42a8cffd5ec529119d5c644",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-notch-space.png",
+      "relative": "pdf-notch-space.png",
+      "bytes": 156901,
+      "sha256": "df8d973c90c8321962415e0523196699c4f8be416e5abe3776144919409bb524",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-notch-with-model.gcanvas",
+      "relative": "pdf-notch-with-model.gcanvas",
+      "bytes": 50334,
+      "sha256": "8e6f83c51c26d6b7f6995b6722a31509a6329bede069829d07230e3d3ec851b1",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-notch.gcanvas",
+      "relative": "pdf-notch.gcanvas",
+      "bytes": 7532,
+      "sha256": "60b25d6dea625a0d3c4a0940bad4ab0b6a1726803ff64aec1966322178757926",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-rectangle-candidate.png",
+      "relative": "pdf-rectangle-candidate.png",
+      "bytes": 227799,
+      "sha256": "6cf9cb54013bdc0948e592b6d6187c5900e52238aaa320b0d8368ff6648ef83f",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-rectangle-reopened.png",
+      "relative": "pdf-rectangle-reopened.png",
+      "bytes": 178359,
+      "sha256": "2371887f627dda7061d141eabf869212e8c1519e9fbdfff4da5450ed676ca91e",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/pdf-rectangle.gcanvas",
+      "relative": "pdf-rectangle.gcanvas",
+      "bytes": 7436,
+      "sha256": "b17535b35b9df3c3288cc3fa3d0eac3731f15540ca2ff6859432715cb8f2551a",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/rectangle.png",
+      "relative": "rectangle.png",
+      "bytes": 1131,
+      "sha256": "12eee7286181a61983a140d80644ccada83eb928166f020096f96008578f65c4",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/results.json",
+      "relative": "results.json",
+      "bytes": 115106,
+      "sha256": "15b908a9cc9a73095d353df951e22da5760feac13e87655fc8a5d5ae771ee69a",
+      "public": "room-acceptance/artifacts/results.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/rooms.pdf",
+      "relative": "rooms.pdf",
+      "bytes": 5081,
+      "sha256": "f1d30a10eb1caa557fa083c051d09ada7b006c8e9012942c933e67a5d81b9677",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-acceptance/source-replaced-original-retained.png",
+      "relative": "source-replaced-original-retained.png",
+      "bytes": 172310,
+      "sha256": "f14df84044d2e729b3a3096a64200aeca0eceae4ac72fc650d29d3759c67fc80",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    }
+  ],
+  "sources": [
+    {
+      "source": "tests/room_outline_acceptance_browser.js",
+      "sha256": "77bc8e52d9ed812372e74b6e0922a44715c655fc59d5bf332e194d2546af471e",
+      "public": "room-acceptance/sources/tests/room_outline_acceptance_browser.js",
+      "binding": "git object at recorded head, copied after execution; clean before/after receipt binds checkout, cannot exclude transient edits"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "room-acceptance/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "room-acceptance/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "room-acceptance/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ]
+}

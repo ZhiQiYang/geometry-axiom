@@ -1,0 +1,111 @@
+{
+  "schema": "geometry-q38-service-restart-recovery/1",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/closure-evidence/ci-source-audit/save-reopen-gate-review/q38_restart_probe.py",
+    "--binding",
+    "/workspace/closure-evidence/q38-restart-r1/binding.json"
+  ],
+  "harnessSha256": "365673cf8f0793d5788f9b9f832b4f2725d7eb04416a9d1e81fa9b2b9f060fe4",
+  "root": "/workspace/geometry-axiom",
+  "url": "http://127.0.0.1:18973/",
+  "archive": "/workspace/closure-evidence/q38-restart-r1/producer/q38-full.gcanvas",
+  "baseline": "/workspace/closure-evidence/q38-restart-r1/producer/original-model.json",
+  "expectedChecks": [
+    "archive bytes match the previously recorded formal SHA256",
+    "same clean product starts in the explicitly new native-service process and session",
+    "restarted native World equals the committed built-in default and has no Q38 records without seeding",
+    "fresh browser reaches the actual product and preserves the original default World without Q38 records",
+    "no fixture creation reset or import occurs before the trusted Open action",
+    "trusted Open invokes the actual project file chooser",
+    "complete manifest from the recovered World and metadata equals the original archive manifest",
+    "full reopened World equals original archive and formal model source bytes",
+    "all typed profiles members runs and copied-host details match original source records",
+    "seven rebuilt meshes including all geometry metadata equal the complete formal baseline package",
+    "reopened native-run UI displays copied-host world model and local sibling correctly",
+    "archive and baseline files are unchanged after recovery",
+    "clean head tree runtime process session and browser health remain stable"
+  ],
+  "priorDelivery": "/workspace/closure-evidence/q38-restart-r1/producer-binding.json",
+  "restartIdentity": "/workspace/closure-evidence/q38-restart-r1/binding.json",
+  "limitations": [
+    "This is a new 13-check restart-recovery run, not a rerun or recount of the prior 18-check gate.",
+    "The unchanged archive contains one copied host and two unplaced runs; it contains no live placement host.",
+    "Native state starts at reference_default_world from committed transactions.inc, with no Q38 records. Only actual Open imports the original archive; no fixture is seeded.",
+    "The web_bridge comment naming room_a.scene is historical; actual initialization uses reference_default_world and differs from that file.",
+    "Linux Chromium file chooser only. No Save or native OS save-picker operation occurs."
+  ],
+  "archiveSha256Before": "49e3e05519cd696665d113d18c9839a58f3f04a2ca14422558542f1f9cb3d22b",
+  "baselineSha256Before": "9cb060c49b421aa37c6be360674190e639c0e8c26665cd7be8fa1243d1506ae7",
+  "fixtureScope": {
+    "profiles": 3,
+    "members": 2,
+    "runs": 3,
+    "copiedHosts": 1,
+    "livePlacementHosts": 0,
+    "unplacedRuns": 2
+  },
+  "before": {
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+    "status": "",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 221122,
+      "session": "21e670e3a32841caad25238d11463694"
+    }
+  },
+  "sinceOriginalArchive": {
+    "formalHead": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "formalTree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+    "changedFiles": []
+  },
+  "worldBeforeBrowser": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支中線 500\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\nguide 1 1 v spec:主支中線\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\n",
+  "startupDefinition": {
+    "source": "geometry-core/transactions.inc:629",
+    "sourceSha256": "f959d4d571c7bbb9295f91bc24a689de6848c9ff59f7c411b61d61d203b4cb43",
+    "declaredLines": [
+      "surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+      "timber 1 27 33 role boundary",
+      "place 1 on 1 at-face e0 +u +n",
+      "timber 2 27 33 role boundary",
+      "place 2 on 1 at-face e2 +u +n",
+      "spec 主支中線 500",
+      "guide 1 1 v spec:主支中線",
+      "timber 3 27 33 role primary",
+      "place 3 on 1 at-line guide 1 +v +n"
+    ],
+    "typedState": {
+      "profiles": [],
+      "members": [],
+      "runs": []
+    },
+    "expectedCanonicalWorld": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec 主支中線 500\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\nguide 1 1 v spec:主支中線\nplace 1 on 1 at-face e0 +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=0\nplace 2 on 1 at-face e2 +u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=2\nplace 3 on 1 at-line guide 1 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=-1\n"
+  },
+  "browser": {
+    "version": "151.0.7922.173",
+    "executable": "/usr/bin/chromium",
+    "sandbox": true,
+    "profile": "new Playwright-owned temporary browser process/profile; no persisted context"
+  },
+  "archiveSha256After": "49e3e05519cd696665d113d18c9839a58f3f04a2ca14422558542f1f9cb3d22b",
+  "baselineSha256After": "9cb060c49b421aa37c6be360674190e639c0e8c26665cd7be8fa1243d1506ae7",
+  "after": {
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+    "status": "",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+      "fresh": true,
+      "root": "/workspace/geometry-axiom",
+      "pid": 221122,
+      "session": "21e670e3a32841caad25238d11463694"
+    }
+  },
+  "exitCode": 0,
+  "phase": "verify-recovered-data"
+}

@@ -1,0 +1,778 @@
+{
+  "schema": "geometry-async-new-head-publication/1",
+  "assembledUtc": "2026-10-08T17:06:29.402796+00:00",
+  "main": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "pr174Head": "5083a456b1caff33fbc56c5fa10927582432a283",
+  "testedIntegrationCandidate": "458779f003e1f57fdc0f4420564a0b295227843e",
+  "status": "Held-proj narrow regression PASS; held-bhit ownership/gesture-lifetime defect FAIL. Overall #174/await closeout is not ready.",
+  "copiedOriginals": [
+    {
+      "path": "browser-handles-integration-5083/handles-1400.json",
+      "sourceRelativePath": "browser-handles-integration-5083/handles-1400.json",
+      "bytes": 3928,
+      "sha256": "08ee794d68d60e86f15c31b097a7ec4baba0fb30d41d83031156af5bb91d69e3",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083/handles-1400-world-before.scene",
+      "sourceRelativePath": "browser-handles-integration-5083/handles-1400-world-before.scene",
+      "bytes": 271,
+      "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083/handles-1400-world-after.scene",
+      "sourceRelativePath": "browser-handles-integration-5083/handles-1400-world-after.scene",
+      "bytes": 271,
+      "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083/handles-390.json",
+      "sourceRelativePath": "browser-handles-integration-5083/handles-390.json",
+      "bytes": 3927,
+      "sha256": "4fb23b602183b34bc7bbd229572405e53e941001c953b77939eaae593b82a1a4",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083/handles-390-world-before.scene",
+      "sourceRelativePath": "browser-handles-integration-5083/handles-390-world-before.scene",
+      "bytes": 271,
+      "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083/handles-390-world-after.scene",
+      "sourceRelativePath": "browser-handles-integration-5083/handles-390-world-after.scene",
+      "bytes": 271,
+      "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083/receipt.json",
+      "sourceRelativePath": "browser-handles-integration-5083/receipt.json",
+      "bytes": 513,
+      "sha256": "5b013f881bab84c0a7e016071f381581c3bb2a521324e7c1d9c26b4cae6d3151",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083/browser.json",
+      "sourceRelativePath": "browser-handles-integration-5083/browser.json",
+      "bytes": 87,
+      "sha256": "d5e2af1806ee02c2e3daea19bb57874e4ac7147fb58b216c6950fb28d1f40803",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083.command.json",
+      "sourceRelativePath": "browser-handles-integration-5083.command.json",
+      "bytes": 349,
+      "sha256": "5adc0b6a4dc55e315935106702954f3146de195dd39ec01f24e8a53971546615",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083.stdout",
+      "sourceRelativePath": "browser-handles-integration-5083.stdout",
+      "bytes": 117,
+      "sha256": "2891c032d5b993aa0c999db63d19975cdbbc6f66b443d1c275863b46beaed7d3",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083.stderr",
+      "sourceRelativePath": "browser-handles-integration-5083.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-1400.json",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-1400.json",
+      "bytes": 7460,
+      "sha256": "77f718481114d44a20b34353165223b448e7a8a0a001add81b7dd473f7c1e598",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-1400-world-before.scene",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-1400-world-before.scene",
+      "bytes": 271,
+      "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-1400-world-after.scene",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-1400-world-after.scene",
+      "bytes": 271,
+      "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-390.json",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-390.json",
+      "bytes": 7457,
+      "sha256": "e527bb4c2f396f1b288774dcab59b96a39e62e8a0c70b0fe118a4bab3bd9ac82",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-390-world-before.scene",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-390-world-before.scene",
+      "bytes": 271,
+      "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-390-world-after.scene",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-390-world-after.scene",
+      "bytes": 271,
+      "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/receipt.json",
+      "sourceRelativePath": "browser-bhit-integration-5083/receipt.json",
+      "bytes": 416,
+      "sha256": "db8fd1a926afbc31a90c610b6827541c8bb544a5e131caa6fb21033a20588681",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/browser.json",
+      "sourceRelativePath": "browser-bhit-integration-5083/browser.json",
+      "bytes": 87,
+      "sha256": "d5e2af1806ee02c2e3daea19bb57874e4ac7147fb58b216c6950fb28d1f40803",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083.command.json",
+      "sourceRelativePath": "browser-bhit-integration-5083.command.json",
+      "bytes": 314,
+      "sha256": "88055c0f6e2560db6e92b291f8ea5d858ffa53ae608867fa3a6ff1348b133264",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083.stdout",
+      "sourceRelativePath": "browser-bhit-integration-5083.stdout",
+      "bytes": 113,
+      "sha256": "febc6495894bb53c95a9b1e8982f0a11098ed79098019d35a11d08bfdf6ab0cb",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083.stderr",
+      "sourceRelativePath": "browser-bhit-integration-5083.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser_probe.py",
+      "sourceRelativePath": "browser_probe.py",
+      "bytes": 10743,
+      "sha256": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser_instrumentation.js",
+      "sourceRelativePath": "browser_instrumentation.js",
+      "bytes": 2427,
+      "sha256": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "run_browser.py",
+      "sourceRelativePath": "run_browser.py",
+      "bytes": 625,
+      "sha256": "099efe265f5e78ff1df051dba688240372899deddf5ad8c3ded5493d2fe2421f",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "bhit_probe.py",
+      "sourceRelativePath": "bhit_probe.py",
+      "bytes": 7986,
+      "sha256": "d5356561996121097fd2101473066d8937a7ae4aeefa00848b8875ac44a8ef1f",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "bhit_instrumentation.js",
+      "sourceRelativePath": "bhit_instrumentation.js",
+      "bytes": 2677,
+      "sha256": "2381dc71c645dba6a45c52cb0baf3d0b289d9903797e0b466c25b4cf3e47a64d",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "run_bhit_probe.py",
+      "sourceRelativePath": "run_bhit_probe.py",
+      "bytes": 622,
+      "sha256": "f41212a88142caa928776d164fe76ebca3e7a3ab3695543a79b70e3af7f4552c",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083/handles-1400-after-A.png",
+      "sourceRelativePath": "browser-handles-integration-5083/handles-1400-after-A.png",
+      "bytes": 62129,
+      "sha256": "cabad214142995ceeb37192d8170d59bcb7c2803e4494ad5a02a3b3e6f491731",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-handles-integration-5083/handles-390-after-A.png",
+      "sourceRelativePath": "browser-handles-integration-5083/handles-390-after-A.png",
+      "bytes": 34533,
+      "sha256": "a3e809629459e153620e5b98859920c837fd0b53c539ea73a93a476c4b8b04d9",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-1400-B-before.png",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-1400-B-before.png",
+      "bytes": 62126,
+      "sha256": "fa0d185cb22c67eeace9203db650cb5407f969ee662c987e67615496f7f04283",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-1400-after-A.png",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-1400-after-A.png",
+      "bytes": 60422,
+      "sha256": "dde2bd32b5c59b3032147b3ca59b27e66699f11bcb9d0df1b6c9a7da996b9e5d",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-390-B-before.png",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-390-B-before.png",
+      "bytes": 34533,
+      "sha256": "a3e809629459e153620e5b98859920c837fd0b53c539ea73a93a476c4b8b04d9",
+      "method": "byte-identical original copy"
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-390-after-A.png",
+      "sourceRelativePath": "browser-bhit-integration-5083/bhit-390-after-A.png",
+      "bytes": 34056,
+      "sha256": "7ce0fb9ac154bee776fdbed4b8b8120db29f0753d5c0e63fb2e93420aa30aab7",
+      "method": "byte-identical original copy"
+    }
+  ],
+  "rounds": [
+    {
+      "round": "browser-handles-integration-5083",
+      "outcome": "PASS",
+      "exitCode": 0,
+      "before": {
+        "utc": "2026-10-08T16:50:22.089563+00:00",
+        "head": "458779f003e1f57fdc0f4420564a0b295227843e",
+        "commands": [
+          {
+            "argv": [
+              "pwd"
+            ],
+            "stdout": "/workspace/geometry-axiom\n",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "status",
+              "--short"
+            ],
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "rev-parse",
+              "HEAD"
+            ],
+            "stdout": "458779f003e1f57fdc0f4420564a0b295227843e\n",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "diff",
+              "--binary"
+            ],
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "rev-parse",
+              "origin/main"
+            ],
+            "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+            "stderr": "",
+            "exitCode": 0
+          }
+        ],
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "698ec7948e8cad9b310290d559c1cbe58b9d04c44c05a3ec9db8883b9f588d8d",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "after": {
+        "utc": "2026-10-08T16:50:27.957095+00:00",
+        "head": "458779f003e1f57fdc0f4420564a0b295227843e",
+        "commands": [
+          {
+            "argv": [
+              "pwd"
+            ],
+            "stdout": "/workspace/geometry-axiom\n",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "status",
+              "--short"
+            ],
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "rev-parse",
+              "HEAD"
+            ],
+            "stdout": "458779f003e1f57fdc0f4420564a0b295227843e\n",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "diff",
+              "--binary"
+            ],
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "rev-parse",
+              "origin/main"
+            ],
+            "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+            "stderr": "",
+            "exitCode": 0
+          }
+        ],
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "698ec7948e8cad9b310290d559c1cbe58b9d04c44c05a3ec9db8883b9f588d8d",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "browser_probe.py": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd",
+          "browser_instrumentation.js": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+        }
+      },
+      "tests": [
+        {
+          "name": "handles-1400",
+          "ok": true,
+          "traceSha256": "1eaed9a18c79368dba96b9bfa3ccb1cb0004f60bc5fb7f199071e90282620fef",
+          "sceneDumps": [
+            {
+              "file": "handles-1400-world-before.scene",
+              "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+              "traceCallId": "call@24"
+            },
+            {
+              "file": "handles-1400-world-after.scene",
+              "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+              "traceCallId": "call@50"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "executedPythonRecoveredSha256": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd"
+        },
+        {
+          "name": "handles-390",
+          "ok": true,
+          "traceSha256": "d3ef1f122bce92be50ee1f11f85ddd50ac1c4adb0f8f1d08101c788437bdf8b4",
+          "sceneDumps": [
+            {
+              "file": "handles-390-world-before.scene",
+              "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+              "traceCallId": "call@96"
+            },
+            {
+              "file": "handles-390-world-after.scene",
+              "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+              "traceCallId": "call@136"
+            }
+          ],
+          "rawDumpComparisonMatchesRecorded": true,
+          "executedPythonRecoveredSha256": "624db4fca454832bb9fbe3b0837571472ce6360baffef172486b2a27826e9dfd"
+        }
+      ],
+      "browser": {
+        "version": "151.0.7922.173",
+        "sandbox": true,
+        "launchArgumentsRequested": []
+      },
+      "probeUnchangedFromFinalPreviousRound": true,
+      "handlesFunctionUnchangedFromEarlierFailure": true,
+      "probeDifferenceFromEarlierFailure": "Only the already-recorded right inline inspector drawer precondition accommodation from browser-edges-mobile-2; handles use the left drawer. handle_test and JS instrumentation are unchanged.",
+      "postRunHttpBodies": [
+        {
+          "file": "postrun-http-app.js",
+          "status": 200,
+          "sha256": "698ec7948e8cad9b310290d559c1cbe58b9d04c44c05a3ec9db8883b9f588d8d",
+          "runtimeVersion": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+          "matchesProbeFilesystemBeforeAfter": true,
+          "privatePath": "browser-handles-integration-5083/postrun-http-app.js",
+          "includedPublicly": false
+        },
+        {
+          "file": "postrun-http-space-workspace.js",
+          "status": 200,
+          "sha256": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+          "runtimeVersion": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+          "matchesProbeFilesystemBeforeAfter": true,
+          "privatePath": "browser-handles-integration-5083/postrun-http-space-workspace.js",
+          "includedPublicly": false
+        }
+      ],
+      "httpBodyLimitation": "Trace captured actual browser JS response URLs/status/runtime/session but did not retain JS bodies. Separate post-run HTTP body capture matches both probe filesystem hashes; it is not relabeled an actual browser response body.",
+      "completion": "Raw audit records the original drawEditHandles promises settled; bhit additionally records the original canvasDown and preceding canvasUp promises and trusted pointer events. No fixed sleep is the operation-completion oracle."
+    },
+    {
+      "round": "browser-bhit-integration-5083",
+      "outcome": "FAIL",
+      "exitCode": 1,
+      "before": {
+        "utc": "2026-10-08T17:01:10.525880+00:00",
+        "head": "458779f003e1f57fdc0f4420564a0b295227843e",
+        "commands": [
+          {
+            "argv": [
+              "pwd"
+            ],
+            "stdout": "/workspace/geometry-axiom\n",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "status",
+              "--short"
+            ],
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "rev-parse",
+              "HEAD"
+            ],
+            "stdout": "458779f003e1f57fdc0f4420564a0b295227843e\n",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "diff",
+              "--binary"
+            ],
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "rev-parse",
+              "origin/main"
+            ],
+            "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+            "stderr": "",
+            "exitCode": 0
+          }
+        ],
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "698ec7948e8cad9b310290d559c1cbe58b9d04c44c05a3ec9db8883b9f588d8d",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "bhit_probe.py": "d5356561996121097fd2101473066d8937a7ae4aeefa00848b8875ac44a8ef1f",
+          "bhit_instrumentation.js": "2381dc71c645dba6a45c52cb0baf3d0b289d9903797e0b466c25b4cf3e47a64d"
+        }
+      },
+      "after": {
+        "utc": "2026-10-08T17:01:16.830780+00:00",
+        "head": "458779f003e1f57fdc0f4420564a0b295227843e",
+        "commands": [
+          {
+            "argv": [
+              "pwd"
+            ],
+            "stdout": "/workspace/geometry-axiom\n",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "status",
+              "--short"
+            ],
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "rev-parse",
+              "HEAD"
+            ],
+            "stdout": "458779f003e1f57fdc0f4420564a0b295227843e\n",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "diff",
+              "--binary"
+            ],
+            "stdout": "",
+            "stderr": "",
+            "exitCode": 0
+          },
+          {
+            "argv": [
+              "git",
+              "rev-parse",
+              "origin/main"
+            ],
+            "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+            "stderr": "",
+            "exitCode": 0
+          }
+        ],
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+          "fresh": true
+        },
+        "sourceSha256": {
+          "geometry-web/app.js": "698ec7948e8cad9b310290d559c1cbe58b9d04c44c05a3ec9db8883b9f588d8d",
+          "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868"
+        },
+        "scriptSha256": {
+          "bhit_probe.py": "d5356561996121097fd2101473066d8937a7ae4aeefa00848b8875ac44a8ef1f",
+          "bhit_instrumentation.js": "2381dc71c645dba6a45c52cb0baf3d0b289d9903797e0b466c25b4cf3e47a64d"
+        }
+      },
+      "tests": [
+        {
+          "name": "bhit-1400",
+          "ok": false,
+          "traceSha256": "549c79ee83f0b188c1409a8877c4fa8e268b0d28ddcedc1e00dcb04cad9fac7a",
+          "sceneDumps": [
+            {
+              "file": "bhit-1400-world-before.scene",
+              "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+              "traceCallId": "call@28"
+            },
+            {
+              "file": "bhit-1400-world-after.scene",
+              "sha256": "1161c1f4a567165a8aa520425fbda9748121c5452f7a9d591ad21d62e0ecd405",
+              "traceCallId": "call@72"
+            }
+          ],
+          "dumpBooleanMatchesRaw": true,
+          "fullDumpUnchanged": true,
+          "executedPythonRecoveredSha256": "d5356561996121097fd2101473066d8937a7ae4aeefa00848b8875ac44a8ef1f"
+        },
+        {
+          "name": "bhit-390",
+          "ok": false,
+          "traceSha256": "7d7bd24c10315c53f3632a40cb37a2cb22fab73db1aa7e9dff2decf78c63f9d6",
+          "sceneDumps": [
+            {
+              "file": "bhit-390-world-before.scene",
+              "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+              "traceCallId": "call@120"
+            },
+            {
+              "file": "bhit-390-world-after.scene",
+              "sha256": "58f70175e4fa933ee820f4a49c4097c4237d56cb3c8b2f8b6d799496012b070d",
+              "traceCallId": "call@176"
+            }
+          ],
+          "dumpBooleanMatchesRaw": true,
+          "fullDumpUnchanged": true,
+          "executedPythonRecoveredSha256": "d5356561996121097fd2101473066d8937a7ae4aeefa00848b8875ac44a8ef1f"
+        }
+      ],
+      "browser": {
+        "version": "151.0.7922.173",
+        "sandbox": true,
+        "launchArgumentsRequested": []
+      },
+      "identityChecks": {
+        "headExactExpected": true,
+        "headUnchanged": true,
+        "bothClean": true,
+        "identityCommandsSucceeded": true,
+        "runtimeUnchanged": true,
+        "runtimeFresh": true,
+        "productUnchanged": true,
+        "probeUnchanged": true,
+        "productMatchesCommittedHead": true
+      },
+      "completion": "Raw audit records the original drawEditHandles promises settled; bhit additionally records the original canvasDown and preceding canvasUp promises and trusted pointer events. No fixed sleep is the operation-completion oracle."
+    }
+  ],
+  "retainedPrivate": [
+    {
+      "path": "browser-handles-integration-5083/before.json",
+      "sha256": "c402c2cfe3d76444709d5991203412d6cae91df12f55bf39cfbde211ac6c2f2c",
+      "kind": "original full identity",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-handles-integration-5083/after.json",
+      "sha256": "caf8692efc5eeb052a97d9d06425ed03f1e332264c4a55bcbc6998cc9f8d6def",
+      "kind": "original full identity",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-handles-integration-5083/integration-binding.json",
+      "sha256": "ede4be24ce2a304c42564227de229c9e47803d0b9e4ad555e5f3f07ab3238b2b",
+      "kind": "private full trace/identity binding",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-handles-integration-5083/handles-1400-trace.zip",
+      "sha256": "1eaed9a18c79368dba96b9bfa3ccb1cb0004f60bc5fb7f199071e90282620fef",
+      "bytes": 818782,
+      "kind": "original Playwright trace",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-handles-integration-5083/handles-390-trace.zip",
+      "sha256": "d3ef1f122bce92be50ee1f11f85ddd50ac1c4adb0f8f1d08101c788437bdf8b4",
+      "bytes": 794332,
+      "kind": "original Playwright trace",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-bhit-integration-5083/before.json",
+      "sha256": "4050d4d051c64c4d131b20ed5f64e64d98a4347f53ed298a779c0045de8fd021",
+      "kind": "original full identity",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-bhit-integration-5083/after.json",
+      "sha256": "d6e2c86825f13cfbfcf293418b2918f555f3758c6e3687b044357190d01b2d69",
+      "kind": "original full identity",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-bhit-integration-5083/integration-binding.json",
+      "sha256": "8924034a9e666acb2c23b7b89bf28ffaf434d0078ae9ce38b6245812f076444e",
+      "kind": "private full trace/identity binding",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-1400-trace.zip",
+      "sha256": "549c79ee83f0b188c1409a8877c4fa8e268b0d28ddcedc1e00dcb04cad9fac7a",
+      "bytes": 905841,
+      "kind": "original Playwright trace",
+      "includedPublicly": false
+    },
+    {
+      "path": "browser-bhit-integration-5083/bhit-390-trace.zip",
+      "sha256": "7d7bd24c10315c53f3632a40cb37a2cb22fab73db1aa7e9dff2decf78c63f9d6",
+      "bytes": 892066,
+      "kind": "original Playwright trace",
+      "includedPublicly": false
+    },
+    {
+      "path": "new-head-bridge-binding.json",
+      "sha256": "544471bfdcca041e36ecfe0a48ab14d76d69c91623e4efb82a79a961e0586068",
+      "kind": "post-run running bridge binary identity",
+      "includedPublicly": false
+    },
+    {
+      "path": "bhit-independent-review.json",
+      "sha256": "7022f986362cdf3ce152e41a74032176f58aa3ac11174cd17c3fb07f8ee021ba",
+      "kind": "original independent raw review",
+      "includedPublicly": false
+    }
+  ],
+  "screens": [
+    "browser-handles-integration-5083/handles-1400-after-A.png",
+    "browser-handles-integration-5083/handles-390-after-A.png",
+    "browser-bhit-integration-5083/bhit-1400-B-before.png",
+    "browser-bhit-integration-5083/bhit-1400-after-A.png",
+    "browser-bhit-integration-5083/bhit-390-B-before.png",
+    "browser-bhit-integration-5083/bhit-390-after-A.png"
+  ],
+  "omittedOperationalFields": [
+    "runtime.session",
+    "runtime.pid",
+    "runtime.root",
+    "response.session",
+    "process.pid",
+    "process.commandLine"
+  ],
+  "omissionReason": "Whole-session traces and operational identity remain private. Public version/freshness/head/source/diff and original SHA-256 links preserve the tested identity without republishing service-session identifiers.",
+  "derivations": {
+    "binding.json": "Explicit derived index from immutable private before/after, trace extraction and bridge receipt; not original output.",
+    "independent-bhit-review.json": "Derived copy of independent original with runtime session/pid/root omitted; other fields unchanged.",
+    "README.md": "New bounded outcome/index/owner handoff for these two exact runs."
+  },
+  "bridge": {
+    "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+    "scope": "Post-run read-only check of still-running same service session; not a claim of pre-run binary observation.",
+    "runtimeVersion": "5f7efb63220523dd481660f8dc092ca9f40f35e896cbe172d7694e61f308eb66",
+    "sameRuntimeAsBothBrowserRounds": true,
+    "originalPrivateReceiptSha256": "544471bfdcca041e36ecfe0a48ab14d76d69c91623e4efb82a79a961e0586068",
+    "ownerRestartEvidenceSha256": "04106aaecc27518e8782af2e5232cbd3342420e86150c6c8133397648b9b5139",
+    "originalBuildReceiptSha256": "4d9c0bc88a89a216244a30c828c6f9e24bfca697e1abb5f9d34165f0513dc66e"
+  },
+  "addedOriginalResults": [
+    {
+      "path": "browser-handles-integration-5083/results.json",
+      "sha256": "7e61a310609ff4d1d42a7d0599ca2f93dc07532ec8d5cd4234f2a10b2186ad3f",
+      "kind": "exact original aggregate result"
+    },
+    {
+      "path": "browser-bhit-integration-5083/results.json",
+      "sha256": "7d685d5081012be1f61c2fc959642b12ab43e324e088f948f583ead2d02e8def",
+      "kind": "exact original aggregate result"
+    }
+  ]
+}

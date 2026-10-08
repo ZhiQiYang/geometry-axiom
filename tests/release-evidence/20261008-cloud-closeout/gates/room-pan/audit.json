@@ -1,0 +1,153 @@
+{
+  "gate": "room-pan",
+  "auditedAt": "2026-10-08T18:42:20.933854+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "observed": 32,
+    "passed": 32,
+    "failed": 0,
+    "basis": "individual canonical result records"
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "node",
+    "tests/room_outline_pan_browser.js"
+  ],
+  "canonicalSource": "/tmp/geometry-closeout-r2-gates/room-pan/results.json",
+  "terminalLogRecord": {
+    "prefix": "",
+    "value": {
+      "pass": 32,
+      "fail": 0,
+      "output": "/tmp/geometry-closeout-r2-gates/room-pan"
+    }
+  },
+  "limitations": [
+    "Gesture and exact native/state preservation on synthetic single-room fixture.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": null,
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/room-pan/command.log",
+      "public": "room-pan/command.log",
+      "bytes": 2184,
+      "sha256": "a52cdcc356422efda8989fe9a71bb5b4b0e37615209e4ed1795c131f69c89bc5"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-pan/receipt.json",
+      "public": "room-pan/receipt.json",
+      "bytes": 5199,
+      "sha256": "8d1438f8060ce1483ca63be1d41ba6552fcfa35d58985123788c2a30c62d2e77"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-pan.command.json",
+      "public": "room-pan.command.json",
+      "bytes": 1186,
+      "sha256": "32e18e226e1c9cbd4e706b385cc304688f68c419dc2def453bae3b49ef9b75ff"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-pan.stdout",
+      "public": "room-pan.stdout",
+      "bytes": 172,
+      "sha256": "30a2c52932e52182728f7b1c93fb084f9574956a85f19718549f2d984fd48a57"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/room-pan.stderr",
+      "public": "room-pan.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-pan/candidate-pan.png",
+      "relative": "candidate-pan.png",
+      "bytes": 193714,
+      "sha256": "36145b3a6b45968bdec11979ba08cbb87abd3e9f4721d97489747ffa43ef29d5",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/room-pan/results.json",
+      "relative": "results.json",
+      "bytes": 55573,
+      "sha256": "7650fab54568475837b8708888d58d1f28e51a5beefc9841dc08786e0d754419",
+      "public": "room-pan/artifacts/results.json"
+    }
+  ],
+  "sources": [
+    {
+      "source": "tests/room_outline_pan_browser.js",
+      "sha256": "41681f5da66565e91a8039c2e1ad6949072733e831678fc0bb14b5e5ad0e4bc7",
+      "public": "room-pan/sources/tests/room_outline_pan_browser.js",
+      "binding": "git object at recorded head, copied after execution; clean before/after receipt binds checkout, cannot exclude transient edits"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "room-pan/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "room-pan/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "room-pan/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ]
+}

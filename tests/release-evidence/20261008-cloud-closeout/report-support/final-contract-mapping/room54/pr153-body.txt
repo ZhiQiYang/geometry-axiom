@@ -1,0 +1,13 @@
+## Current delivery
+
+Draft head 349e2a590f98ab783b7d3eeb952e95151db8e39e, tree 5fa9292be9eb5db2e41d1598c3a2f78ffb75c017. Preserves original PR153 and main 6562fa53 ancestry. Not merged into main.
+
+The bounded single-room candidate closeout retains the original feMove/feUp pan-priority fix (+5/-3 product lines) with current navigation guards. No #87 multiroom expansion, scenario stack, PDF-cleanup branch, or unpublished PR134 clipping fix is included.
+
+## Exact-tree evidence
+
+Complete tree equals local 90e500eca6660632e0bf437c5809f3ab7c9baa4d. 70-suite strict aggregate: 2182 passed, 0 failed, 1 named Windows GDI platform skip; exit 0. Focused native/Node checks: 112 passed, zero skips. Independent production-handler VM review: 16 passed; original main has eight expected negative cases and move-only repair has three, demonstrating both routing changes are required.
+
+Current-source browser acceptance remains pending. Historical browser/keyboard/private-source evidence is not transferred to this head. Physical devices, private PDFs and real user-efficiency acceptance remain unverified; do not claim #54 fully complete or faster than manual work. Hosted CI status must be checked for this exact head; absent runners/steps are not passing tests.
+
+No ready, merge, deployment or full-feature-completion claim. Refs #54.

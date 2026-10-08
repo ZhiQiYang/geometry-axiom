@@ -1,0 +1,118 @@
+{
+  "reviewedAt": "2026-10-08T17:38:07.661194+00:00",
+  "decision": "authorized engineering; full Resume cannot yet be certified within only the three proposed modules; retain guards until a coordinated durable prewrite protocol is implemented and verified",
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "proposalBase": "458779f003e1f57fdc0f4420564a0b295227843e",
+  "threeModuleDiffEmpty": true,
+  "repoReadOnly": true,
+  "productTestsExecuted": false,
+  "newProductDefectClaim": false,
+  "scope": "existing safe fail-closed behavior is retained; assessment of the remaining implementation, not a browser failure claim",
+  "findings": [
+    {
+      "id": "R1",
+      "severity": "implementation_scope_blocker",
+      "path": "geometry-web/app.js",
+      "lines": [
+        573,
+        576,
+        584,
+        586,
+        608,
+        4858,
+        4871,
+        4946,
+        10290
+      ],
+      "finding": "Synchronous guards/local Undo/native hook and shared underlay writes cannot await an asynchronous IDB revocation by changing only the callee."
+    },
+    {
+      "id": "R2",
+      "severity": "interface_dependency",
+      "path": "geometry-web/space-workspace.js",
+      "lines": [
+        641,
+        652,
+        755
+      ],
+      "finding": "Existing synchronous setters are followed immediately by success/clear-draft/refresh; changing them to async requires coordinated callers."
+    },
+    {
+      "id": "R3",
+      "severity": "explicit_contract",
+      "path": "geometry-web/evidence-links.js",
+      "lines": [
+        115,
+        116,
+        127,
+        130,
+        131
+      ],
+      "finding": "Attachment commit requires synchronous atomic setter and rejects AsyncFunction/Promise; a durable prewrite preparation must precede its final synchronous guard/commit."
+    },
+    {
+      "id": "R4",
+      "severity": "protocol_missing",
+      "path": "geometry-web/reference-workspace.js",
+      "lines": [
+        181,
+        185,
+        204,
+        206,
+        245,
+        250,
+        266,
+        1306,
+        1359,
+        1363,
+        1364
+      ],
+      "finding": "Debounced package + native equality cannot establish latest browser metadata; no existing contracted synchronous durable latch found. sessionStorage is only namespace selection, strict IDB is async."
+    },
+    {
+      "id": "R5",
+      "severity": "read_only_resolve_design",
+      "path": "geometry-web/serve.py",
+      "lines": [
+        507,
+        510,
+        522,
+        533,
+        534,
+        538
+      ],
+      "finding": "Exact status can be bounded and read-only; UUID records are removed on close, so scalar highwater cannot prove a particular missing UUID was retired. This is a prerequisite, not complete Resume."
+    }
+  ],
+  "writerStatus": "Explicit current handoff of app/space synchronous mutation entry points is not established by available historical queue or PR body; root is coordinating owner. No write authorization assumed by reviewer.",
+  "minimumNextStep": "Coordinate one writer with current app/space/evidence owners for a versioned durable prewrite qualification protocol and scoped caller changes; retain unsafe guards. Integrate exact resolve and same-B metadata-only attach in that complete slice, then real lifecycle/workflow oracle.",
+  "forbiddenShortcut": [
+    "Deleting B bootstrap/recovered Finish guards",
+    "Await-free async setter change",
+    "Replacing native evidence with source inference",
+    "Inventing localStorage durability semantics",
+    "Counting status endpoint alone as complete Resume"
+  ],
+  "oracles": [
+    "Durable revocation held/abort/quota: no native send, metadata/history write or success UI before transaction completion; recheck ownership after awaits.",
+    "Eligible B0 plus acknowledged World-preserving metadata B1 then reload must never restore stale B0; old snapshot completion cannot re-enable eligibility.",
+    "Exact resolve leaves contexts, highwater, receipts, child processes and complete root/B data unchanged including unknown/fenced/dead states.",
+    "Successful same-B resume from real iframe/reload preserves full package/source bytes/models/drafts/references/dirty-saved and native dump with no upload/reset/loadfile/create.",
+    "Wrong session/newer B/other-tab lock/corrupt or missing package/uncertain initialization retains package/ticket/native B and blocks; do not count rejection as successful Resume.",
+    "Existing Cancel/Finish/lost-reply/retiring and newer-A immutable receipt behavior stays valid on the integrated candidate."
+  ],
+  "artifacts": [
+    {
+      "path": "/workspace/closure-evidence/inventory/resume-independent-review.md",
+      "sha256": "9f96fb42c5e2d3137512500e3ac35d1df763f67d3f3d3dd5fd30a2cd6c2d15d8"
+    },
+    {
+      "path": "/workspace/closure-evidence/inventory/resume-independent-raw/receipt.json",
+      "sha256": "39b37052bcfcaf2ab12c448665c0bd884d3d4cc7fa8eface22826663c03ed132"
+    },
+    {
+      "path": "/workspace/closure-evidence/inventory/resume-contract-ownership-review.json",
+      "sha256": "812c847f16384a556378486544f6b8799879bd97ed498243ae6cc0c27181f3b5"
+    }
+  ]
+}

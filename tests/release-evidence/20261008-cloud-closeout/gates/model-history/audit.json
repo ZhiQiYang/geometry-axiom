@@ -1,0 +1,274 @@
+{
+  "gate": "model-history",
+  "auditedAt": "2026-10-08T18:42:20.869085+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "observed": 35,
+    "passed": 35,
+    "failed": 0,
+    "basis": "individual canonical result records"
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "tests/integration/model_library_history_browser.py"
+  ],
+  "canonicalSource": "/tmp/geometry-closeout-r2-gates/model-history/result.json",
+  "terminalLogRecord": {
+    "prefix": "MODEL_LIBRARY_HISTORY_RESULT",
+    "value": {
+      "schema": "geometry-model-library-history-browser/1",
+      "expectedAssertions": 35,
+      "completed": true,
+      "passed": 35,
+      "failed": 0,
+      "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+      "development": false
+    }
+  },
+  "limitations": [
+    "Bounded 35-assertion history/lease suite; does not reconstruct missing historical 10/155 evidence.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": [
+    "New bounded acceptance only; does not recreate missing historical 10/155-case evidence.",
+    "Chromium Linux; no Windows, physical phone, OS picker or IME certification.",
+    "Foreign context/session cases inject transitions after native history observation but before native command completion returns to doUndoRedo; the separate nativePending cases hold real response JSON before observation.",
+    "Readonly tab uses real Web Locks contention plus actual producer metadata and nonempty ContextHistory fixtures; no readonly import claim.",
+    "Native commands and archive import use public APIs for fixture setup. Zero-point calibration and face-outline guard fixtures seed raw draft state; the parameter editor and room picker use actual UI entry/actions, with public-API image/calibration fixture setup."
+  ],
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/model-history/command.log",
+      "public": "model-history/command.log",
+      "bytes": 3293,
+      "sha256": "fa9884b850b0634d1b9afa5e44e69a43be27d90c8a9ad2df0b5f9c95f6ff9bd6"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/model-history/receipt.json",
+      "public": "model-history/receipt.json",
+      "bytes": 5290,
+      "sha256": "83b260e22e481e1a2eb508dfea4b15effca98f3a773f7fea7b0533e870cf8c20"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/model-history.command.json",
+      "public": "model-history.command.json",
+      "bytes": 1294,
+      "sha256": "340c9a6fe41109cf803e1d517a9129249f9922937847b7f2b36636a75e5fbc3f"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/model-history.stdout",
+      "public": "model-history.stdout",
+      "bytes": 177,
+      "sha256": "31f0d61721c12527616332f392a73e9b4e0fc40dabdc4bd51bbfed5ef9c6036c"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/model-history.stderr",
+      "public": "model-history.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH01-1382-pending.png",
+      "relative": "MH01-1382-pending.png",
+      "bytes": 51489,
+      "sha256": "bedbb1faa7f1ec1b300b73358d832f27239cccc03641257d252a61b00b99fb46",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH01-1382-states.json",
+      "relative": "MH01-1382-states.json",
+      "bytes": 498206,
+      "sha256": "b9e5bfb95ba16d200a3e539624cb6bc6da8f0afeaf63bc86362ed2f162e535cb",
+      "public": "model-history/artifacts/MH01-1382-states.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH01-390-pending.png",
+      "relative": "MH01-390-pending.png",
+      "bytes": 42695,
+      "sha256": "f9296dd79ec9c213b5da8063563fa8b97e49f457a76c3051494f843374f4c8ea",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH01-390-states.json",
+      "relative": "MH01-390-states.json",
+      "bytes": 498206,
+      "sha256": "14f589695454eca0a34f281378099a0f5dc85c1b0170cf7a45d9dbe79c74d5f4",
+      "public": "model-history/artifacts/MH01-390-states.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH02-reopened-stale-owner.png",
+      "relative": "MH02-reopened-stale-owner.png",
+      "bytes": 52041,
+      "sha256": "cb2c91cd07b5a6b016e8c974ed01bbdc546e267c5fa3cbb2223765dd5ba4def3",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH03-cross-project.json",
+      "relative": "MH03-cross-project.json",
+      "bytes": 251118,
+      "sha256": "445c324bf3559fa983bf8702dfe6c4ace57da5ca5103fb0372616556a3653767",
+      "public": "model-history/artifacts/MH03-cross-project.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH04-context-invalidated.png",
+      "relative": "MH04-context-invalidated.png",
+      "bytes": 52041,
+      "sha256": "cb2c91cd07b5a6b016e8c974ed01bbdc546e267c5fa3cbb2223765dd5ba4def3",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH04-context-states.json",
+      "relative": "MH04-context-states.json",
+      "bytes": 498021,
+      "sha256": "f52d3010e0d51b158a80cb135afe5d16413a9306f32239b7343cb87f2263af39",
+      "public": "model-history/artifacts/MH04-context-states.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH04-session-invalidated.png",
+      "relative": "MH04-session-invalidated.png",
+      "bytes": 52044,
+      "sha256": "fc770d12d89159974a3ecc1cad7181d28d153e6a01879f9cdc47d120abfe4de5",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH04-session-states.json",
+      "relative": "MH04-session-states.json",
+      "bytes": 498137,
+      "sha256": "12ecc01179107df6cf1936da2c14afeedbe1a01032a3cff88651abcd83423011",
+      "public": "model-history/artifacts/MH04-session-states.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH04-source-state.json",
+      "relative": "MH04-source-state.json",
+      "bytes": 126171,
+      "sha256": "b815ffc201f19de85f5c653a4929260b162c9c5fa3ee22d1ebbc4b533bd2d9c1",
+      "public": "model-history/artifacts/MH04-source-state.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH07-genuine-readonly-3d.png",
+      "relative": "MH07-genuine-readonly-3d.png",
+      "bytes": 153976,
+      "sha256": "b587f6c907e8a92aadbb7f7fe3b3117b7866fa9398d32e959333ff8fec6a2c9f",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/MH07-readonly-states.json",
+      "relative": "MH07-readonly-states.json",
+      "bytes": 249481,
+      "sha256": "3606649d30151d3d2b0461b4415b110d91f6aa26a1f55747bcd49512b93a39f5",
+      "public": "model-history/artifacts/MH07-readonly-states.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/fixture-models.json",
+      "relative": "fixture-models.json",
+      "bytes": 108499,
+      "sha256": "f4c7aef4389cfd013ed9a41503d27bf409c06fe8151a0f555aa929b9af363d89",
+      "public": "model-history/artifacts/fixture-models.json"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/fixture-world.scene",
+      "relative": "fixture-world.scene",
+      "bytes": 142,
+      "sha256": "baf6e2e34435cdcfb6366fde6e7ca8ead8bb81c39eef452694717f1e13ce643a",
+      "public": "model-history/artifacts/fixture-world.scene"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/fixture.gcanvas",
+      "relative": "fixture.gcanvas",
+      "bytes": 37002,
+      "sha256": "192e0b97e41190a912444800bac2741982336b714aeafe7d4b54dbad33c111b3",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/tmp/geometry-closeout-r2-gates/model-history/result.json",
+      "relative": "result.json",
+      "bytes": 8838,
+      "sha256": "ed083910bebb999f63694d53a7fde440178db4ef9658dd42b79ec0b4185ba81c",
+      "public": "model-history/artifacts/result.json"
+    }
+  ],
+  "sources": [
+    {
+      "source": "tests/integration/model_library_history_browser.py",
+      "sha256": "97bac45e716827c1d3f4fe75eabbbada5ad34c57be22b83e57f4b34c0a042bcb",
+      "public": "model-history/sources/tests/integration/model_library_history_browser.py",
+      "binding": "git object at recorded head, copied after execution; clean before/after receipt binds checkout, cannot exclude transient edits"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "model-history/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "model-history/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "model-history/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ]
+}

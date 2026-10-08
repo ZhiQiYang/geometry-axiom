@@ -1,0 +1,162 @@
+[
+  {
+    "index": 0,
+    "name": "intended page renders a fresh application",
+    "ok": true
+  },
+  {
+    "index": 1,
+    "name": "picking Space moves camera by pointer delta",
+    "ok": true
+  },
+  {
+    "index": 2,
+    "name": "picking Space preserves draft, source, review and picking state",
+    "ok": true
+  },
+  {
+    "index": 3,
+    "name": "picking Space restores gesture and preserves native scene",
+    "ok": true
+  },
+  {
+    "index": 4,
+    "name": "picking middle moves camera by pointer delta",
+    "ok": true
+  },
+  {
+    "index": 5,
+    "name": "picking middle preserves draft, source, review and picking state",
+    "ok": true
+  },
+  {
+    "index": 6,
+    "name": "picking middle restores gesture and preserves native scene",
+    "ok": true
+  },
+  {
+    "index": 7,
+    "name": "picking still produces the complete ordered room ring",
+    "ok": true
+  },
+  {
+    "index": 8,
+    "name": "pending Space moves camera by pointer delta",
+    "ok": true
+  },
+  {
+    "index": 9,
+    "name": "pending Space preserves draft, source, review and picking state",
+    "ok": true
+  },
+  {
+    "index": 10,
+    "name": "pending Space restores gesture and preserves native scene",
+    "ok": true
+  },
+  {
+    "index": 11,
+    "name": "pending middle moves camera by pointer delta",
+    "ok": true
+  },
+  {
+    "index": 12,
+    "name": "pending middle preserves draft, source, review and picking state",
+    "ok": true
+  },
+  {
+    "index": 13,
+    "name": "pending middle restores gesture and preserves native scene",
+    "ok": true
+  },
+  {
+    "index": 14,
+    "name": "reviewed Space released before pointerup moves camera by pointer delta",
+    "ok": true
+  },
+  {
+    "index": 15,
+    "name": "reviewed Space released before pointerup preserves draft, source, review and picking state",
+    "ok": true
+  },
+  {
+    "index": 16,
+    "name": "reviewed Space released before pointerup restores gesture and preserves native scene",
+    "ok": true
+  },
+  {
+    "index": 17,
+    "name": "pending hand tool moves camera by pointer delta",
+    "ok": true
+  },
+  {
+    "index": 18,
+    "name": "pending hand tool preserves draft, source, review and picking state",
+    "ok": true
+  },
+  {
+    "index": 19,
+    "name": "pending hand tool restores gesture and preserves native scene",
+    "ok": true
+  },
+  {
+    "index": 20,
+    "name": "cancel fixture actually started a room selection",
+    "ok": true
+  },
+  {
+    "index": 21,
+    "name": "cancel fixture leaves picking active before new gesture",
+    "ok": true
+  },
+  {
+    "index": 22,
+    "name": "outside driver release does not reach room pointerup",
+    "ok": true
+  },
+  {
+    "index": 23,
+    "name": "cancelled selection then Space moves camera by pointer delta",
+    "ok": true
+  },
+  {
+    "index": 24,
+    "name": "cancelled selection then Space preserves draft, source, review and picking state",
+    "ok": true
+  },
+  {
+    "index": 25,
+    "name": "cancelled selection then Space restores gesture and preserves native scene",
+    "ok": true
+  },
+  {
+    "index": 26,
+    "name": "following pan has a real canvas pointerup without native drag-and-drop",
+    "ok": true
+  },
+  {
+    "index": 27,
+    "name": "cancelled selection does not acquire a room on pan release",
+    "ok": true
+  },
+  {
+    "index": 28,
+    "name": "selection continues after cancelled selection and pan with exact room ring",
+    "ok": true
+  },
+  {
+    "index": 29,
+    "name": "no browser or console errors",
+    "ok": true
+  },
+  {
+    "index": 30,
+    "name": "runtime remains fresh with identical source identity",
+    "ok": true
+  },
+  {
+    "index": 31,
+    "name": "checkout retains tested HEAD and source hashes",
+    "ok": true
+  }
+]

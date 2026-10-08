@@ -1,0 +1,199 @@
+{
+  "schema": "formal-rule-case-races/1",
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+  "worktreeClean": true,
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "results": [
+    {
+      "width": 1280,
+      "name": "held old GET cannot repaint the newer binding",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "cold close/open stays read-only",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "terminal retired old cleanup never permanently blocks the next reopen",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "cancel-before-create tombstone rejects the late allocation",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "late create cannot replace a newer owner or write metadata",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "close during detached retain causes no later metadata/history write",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "closing case retain keeps assembly open and native World unchanged",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "native during detached retain causes no later metadata/history write",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "history during detached retain causes no later metadata/history write",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "equal restored values cannot revive the previous frame lease",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "context during detached retain causes no later metadata/history write",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "case close leaves the real pending assembly candidate and native process available",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "the original assembly candidate can still confirm through its normal UI",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "B cases use its independent native session and local binding counter",
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "name": "retired B fails closed with 410 and no root fallback",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "held old GET cannot repaint the newer binding",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "cold close/open stays read-only",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "terminal retired old cleanup never permanently blocks the next reopen",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "cancel-before-create tombstone rejects the late allocation",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "late create cannot replace a newer owner or write metadata",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "close during detached retain causes no later metadata/history write",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "closing case retain keeps assembly open and native World unchanged",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "native during detached retain causes no later metadata/history write",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "history during detached retain causes no later metadata/history write",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "equal restored values cannot revive the previous frame lease",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "context during detached retain causes no later metadata/history write",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "case close leaves the real pending assembly candidate and native process available",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "the original assembly candidate can still confirm through its normal UI",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "B cases use its independent native session and local binding counter",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "name": "retired B fails closed with 410 and no root fallback",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "terminalRequests": [
+    {
+      "width": 1280,
+      "originalSequence": 7,
+      "kind": "held-GET/new-bind/terminal-old-cleanup"
+    },
+    {
+      "width": 1280,
+      "kind": "late-create",
+      "status": 409,
+      "body": {
+        "ok": false,
+        "code": "RETIRED",
+        "error": "Binding was cancelled before completion"
+      }
+    },
+    {
+      "width": 390,
+      "originalSequence": 17,
+      "kind": "held-GET/new-bind/terminal-old-cleanup"
+    },
+    {
+      "width": 390,
+      "kind": "late-create",
+      "status": 409,
+      "body": {
+        "ok": false,
+        "code": "RETIRED",
+        "error": "Binding was cancelled before completion"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+--- a/geometry-core/grid_subdivision.inc
++++ b/geometry-core/grid_subdivision.inc
+@@ -148,7 +148,7 @@
+     ReferenceGrid derived;const GridSystem *s;const GridSubdivisionRule *r;SurfaceRegion2 cell;
+     const PlacementSurface *p;const SpaceBoundarySurface *b;
+     if(!grid_rule_cell(w,"grid",ref->grid_id,ref->rule_key,ref->cell,&derived,&s,&r,&cell,&p,&b,err,cap))return false;
+-    if(s->id!=ref->system_id || !p || p->id!=pid)return grid_rule_error(err,cap,"WRONG_SOURCE",ref->system_id,ref->rule_key);
++    if(!p || p->id!=pid)return grid_rule_error(err,cap,"WRONG_SOURCE",ref->system_id,ref->rule_key);
+     if(ref->axis<0 || ref->axis>1 || ref->inner_index>=r->divisions[ref->axis]-1)
+         return grid_rule_error(err,cap,"INDEX_RANGE",s->id,r->key);
+     Coord lo=ref->axis?cell.min_v:cell.min_u,pitch=grid_axis_pitch(&s->axis[ref->axis]);

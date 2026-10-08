@@ -1,0 +1,60 @@
+{
+  "schema": "geometry-sgr62-original-oracle/1",
+  "tests": [
+    "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world"
+  ],
+  "testsRun": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": [],
+  "unexpectedSuccesses": 0,
+  "expectedFailures": 0,
+  "details": [
+    {
+      "kind": "failure",
+      "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world",
+      "exception": "AssertionError",
+      "frames": [
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 58,
+          "function": "testPartExecutor"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 634,
+          "function": "run"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 589,
+          "function": "_callTestMethod"
+        },
+        {
+          "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+          "line": 918,
+          "function": "test_native_save_requires_capability_and_load_failures_preserve_live_world"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 1152,
+          "function": "assertIn"
+        },
+        {
+          "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+          "line": 715,
+          "function": "fail"
+        }
+      ],
+      "traceback": "Traceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 918, in test_native_save_requires_capability_and_load_failures_preserve_live_world\n    self.assertIn(\"grid-source-rule 0 key 1\", before[0])\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 1152, in assertIn\n    self.fail(self._formatMessage(msg, standardMsg))\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 715, in fail\n    raise self.failureException(msg)\nAssertionError: 'grid-source-rule 0 key 1' not found in 'requires grid-subdivision-rules/1\\ngrid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 400\\ngrid-source-rule-highwater 0 next 2\\n'\n"
+    }
+  ],
+  "sessions": 1,
+  "unhealthySessions": [],
+  "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+  "binarySha256": "273da63982b7bcb382406318046982ef0204eb1ffb840dd76920da34857834dd",
+  "sanitizerEnvironment": {
+    "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  }
+}

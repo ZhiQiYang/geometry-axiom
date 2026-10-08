@@ -1,0 +1,83 @@
+I8a preview 1: valid; confirm token to apply
+grid 10 unavailable -> grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@1000{[1000,0]-[1000,3000]} k=1@2000{[2000,0]-[2000,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]}
+input:4: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 2: valid; confirm token to apply
+grid 20 unavailable -> grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 2: k=0@1100{[1100,0]-[1100,3000]} k=1@2100{[2100,0]-[2100,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]}
+input:6: I8a: impact preview required; inspect preview, then confirm token (World unchanged)
+I8a preview 3: valid; confirm token to apply
+grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 1000 2000 v explicit 1000 rule-next 1 -> grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 1200 2400 v explicit 1000 rule-next 1
+grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@1000{[1000,0]-[1000,3000]} k=1@2000{[2000,0]-[2000,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]} -> grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@1200{[1200,0]-[1200,3000]} k=1@2400{[2400,0]-[2400,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]}
+grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 2: k=0@1100{[1100,0]-[1100,3000]} k=1@2100{[2100,0]-[2100,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]} -> grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 2: k=0@1300{[1300,0]-[1300,3000]} k=1@2500{[2500,0]-[2500,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]}
+subgrid 11 parent 10 cell [1000,0]-[2000,1000] sample (not complete geometry) u stride 1 total 1: k=0@1500{[1500,0]-[1500,1000]} v stride 1 total 0: -> subgrid 11 parent 10 cell [1200,0]-[2400,1000] sample (not complete geometry) u stride 1 total 1: k=0@1800{[1800,0]-[1800,1000]} v stride 1 total 0:
+ timber 90 center 10 -> 10 length 4000 -> 4000
+  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 91 center 2990 -> 2990 length 4000 -> 4000
+  surface 1 origin [0,2980,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> surface 1 origin [0,2980,0] axes [1,0,0]/[0,1,0]/[0,0,1]
+ timber 1 center 1000 -> 1200 length 2960 -> 2960
+  surface 1 origin [1014,20,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> surface 1 origin [1214,20,0] axes [0,1,0]/[-1,0,0]/[0,0,1]
+ guide 1: surface 1 u=1000 world [1000,0,0] direction [0,1,0] -> surface 1 u=1200 world [1200,0,0] direction [0,1,0]
+ visible: {[1000,0]-[1000,3000]} -> {[1200,0]-[1200,3000]}
+input:18: I25：子格 11（父格 10）u 軸跨度 1201 mm 無法精確分成 2 等分；等分數須為 1…65
+I8a preview 4: invalid; cannot apply
+grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 1200 2400 v explicit 1000 rule-next 1 -> grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 1200 2401 v explicit 1000 rule-next 1
+grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@1200{[1200,0]-[1200,3000]} k=1@2400{[2400,0]-[2400,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]} -> grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@1200{[1200,0]-[1200,3000]} k=1@2401{[2401,0]-[2401,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]}
+grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 2: k=0@1300{[1300,0]-[1300,3000]} k=1@2500{[2500,0]-[2500,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]} -> grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 2: k=0@1300{[1300,0]-[1300,3000]} k=1@2501{[2501,0]-[2501,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]}
+subgrid 11 parent 10 cell [1200,0]-[2400,1000] sample (not complete geometry) u stride 1 total 1: k=0@1800{[1800,0]-[1800,1000]} v stride 1 total 0: -> subgrid 11 parent 10 cell [1200,0]-[2401,1000] sample unavailable: I25：子格 11（父格 10）u 軸跨度 1201 mm 無法精確分成 2 等分；等分數須為 1…65
+ timber 90 center 10 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 91 center 2990 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,2980,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 1 center 1200 -> 0 length 2960 -> 0 (unavailable/deleted)
+  surface 1 origin [1214,20,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ guide 1: surface 1 u=1200 world [1200,0,0] direction [0,1,0] -> unavailable
+ visible: {[1200,0]-[1200,3000]} -> unavailable
+ timber 0 I8 expected: all world invariants pass; actual: line 18: I25：子格 11（父格 10）u 軸跨度 1201 mm 無法精確分成 2 等分；等分數須為 1…65
+input:19: I8a: missing/invalid preview token; cannot apply
+input:20: I23：父網格 10 仍有子格，u 軸線數不可從 2 改成 1；請先處理子格與引用
+I8a preview 5: invalid; cannot apply
+grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 1200 2400 v explicit 1000 rule-next 1 -> grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 1200 v explicit 1000 rule-next 1
+grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@1200{[1200,0]-[1200,3000]} k=1@2400{[2400,0]-[2400,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]} -> grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 1: k=0@1200{[1200,0]-[1200,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]}
+grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 2: k=0@1300{[1300,0]-[1300,3000]} k=1@2500{[2500,0]-[2500,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]} -> grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 1: k=0@1300{[1300,0]-[1300,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]}
+subgrid 11 parent 10 cell [1200,0]-[2400,1000] sample (not complete geometry) u stride 1 total 1: k=0@1800{[1800,0]-[1800,1000]} v stride 1 total 0: -> subgrid 11 unavailable
+ timber 90 center 10 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 91 center 2990 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,2980,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 1 center 1200 -> 0 length 2960 -> 0 (unavailable/deleted)
+  surface 1 origin [1214,20,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ guide 1: surface 1 u=1200 world [1200,0,0] direction [0,1,0] -> unavailable
+ visible: {[1200,0]-[1200,3000]} -> unavailable
+ timber 0 I8 expected: all world invariants pass; actual: line 20: I23：父網格 10 仍有子格，u 軸線數不可從 2 改成 1；請先處理子格與引用
+input:21: I8a: missing/invalid preview token; cannot apply
+input:22: I25：子格 11 的父格 10 u 軸兩界須存在、採標準參照且彼此相鄰
+I8a preview 6: invalid; cannot apply
+grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 1200 2400 v explicit 1000 rule-next 1 -> grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 0 1200 v explicit 1000 rule-next 1
+grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@1200{[1200,0]-[1200,3000]} k=1@2400{[2400,0]-[2400,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]} -> grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@0{[0,0]-[0,3000]} k=1@1200{[1200,0]-[1200,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]}
+grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 2: k=0@1300{[1300,0]-[1300,3000]} k=1@2500{[2500,0]-[2500,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]} -> grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 2: k=0@100{[100,0]-[100,3000]} k=1@1300{[1300,0]-[1300,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]}
+subgrid 11 parent 10 cell [1200,0]-[2400,1000] sample (not complete geometry) u stride 1 total 1: k=0@1800{[1800,0]-[1800,1000]} v stride 1 total 0: -> subgrid 11 unavailable
+ timber 90 center 10 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 91 center 2990 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,2980,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 1 center 1200 -> 0 length 2960 -> 0 (unavailable/deleted)
+  surface 1 origin [1214,20,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ guide 1: surface 1 u=1200 world [1200,0,0] direction [0,1,0] -> unavailable
+ visible: {[1200,0]-[1200,3000]} -> unavailable
+ timber 0 I8 expected: all world invariants pass; actual: line 22: I25：子格 11 的父格 10 u 軸兩界須存在、採標準參照且彼此相鄰
+input:23: I8a: missing/invalid preview token; cannot apply
+input:24: I10：主網格 20 的來源或主支方向不合法
+I8a preview 7: invalid; cannot apply
+grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 1200 2400 v explicit 1000 rule-next 1 -> grid-system 0 name 天花 網格 A mode legacy-finite main-along none u explicit 3900 4000 v explicit 1000 rule-next 1
+grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@1200{[1200,0]-[1200,3000]} k=1@2400{[2400,0]-[2400,3000]} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]} -> grid 10 on 1 from-system 0 origin 0 0 sample (not complete geometry) u stride 1 total 2: k=0@3900{[3900,0]-[3900,3000]} k=1@4000{} v stride 1 total 1: k=0@1000{[0,1000]-[4000,1000]}
+grid 20 on 2 from-system 0 origin 100 200 sample (not complete geometry) u stride 1 total 2: k=0@1300{[1300,0]-[1300,3000]} k=1@2500{[2500,0]-[2500,3000]} v stride 1 total 1: k=0@1200{[0,1200]-[4000,1200]} -> grid 20 on 2 from-system 0 origin 100 200 sample unavailable: 座標要落在承載面外接範圍內
+subgrid 11 parent 10 cell [1200,0]-[2400,1000] sample (not complete geometry) u stride 1 total 1: k=0@1800{[1800,0]-[1800,1000]} v stride 1 total 0: -> subgrid 11 unavailable
+ timber 90 center 10 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,0,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 91 center 2990 -> 0 length 4000 -> 0 (unavailable/deleted)
+  surface 1 origin [0,2980,0] axes [1,0,0]/[0,1,0]/[0,0,1] -> unavailable
+ timber 1 center 1200 -> 0 length 2960 -> 0 (unavailable/deleted)
+  surface 1 origin [1214,20,0] axes [0,1,0]/[-1,0,0]/[0,0,1] -> unavailable
+ guide 1: surface 1 u=1200 world [1200,0,0] direction [0,1,0] -> unavailable
+ visible: {[1200,0]-[1200,3000]} -> unavailable
+ timber 0 I8 expected: all world invariants pass; actual: line 24: I10：主網格 20 的來源或主支方向不合法
+input:25: I8a: missing/invalid preview token; cannot apply

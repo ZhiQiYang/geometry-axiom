@@ -1,0 +1,1015 @@
+{
+  "schema": "geometry-sgr62-sanitizer-mutation-run/1",
+  "preparedHead": "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+  "planSha256": "0470f60a70a67ee50c850db7c55793ece7b82dafc9fd6a772aa02496afe11cf9",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "mutations": [
+    {
+      "id": "M62-1",
+      "expectedSemanticFailure": "600/7 accepted instead of DIVISION_NOT_EXACT; original subTest divisions=(7, 2)",
+      "verdict": "OTHER_FAILURE_NOT_A_KILL",
+      "diffSha256": "b0d81ab3e75b5670ba62023277541a3fa20b5307bb937b110d4d467f2b578cfd",
+      "compile": {
+        "command": [
+          "/usr/bin/cc",
+          "-std=c11",
+          "-O1",
+          "-g",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-fno-pie",
+          "-no-pie",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-1-source/geometry-web/web_bridge.c",
+          "-o",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "-lm"
+        ],
+        "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-1-source",
+        "startedAt": "2026-10-08T20:01:20.685996+00:00",
+        "timeoutSeconds": 300,
+        "stackBytes": null,
+        "environment": {
+          "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+          "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        },
+        "exitCode": 0,
+        "elapsedSeconds": 20.578113605000908,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "mutantBinarySha256": "abcee15b9c6fe262b47a6077e0ad1b04f3a00e213d26b16e757651f85a16a193",
+      "oracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "abcee15b9c6fe262b47a6077e0ad1b04f3a00e213d26b16e757651f85a16a193",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-1",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:01:41.277256+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 1,
+          "elapsedSeconds": 0.4175272960001166,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "e96c8f5b4e6a40f8bda155d7523680dce3a3299d1e486e578c4b392c1a8f70cd"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state"
+          ],
+          "testsRun": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [
+            {
+              "kind": "failure",
+              "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state (divisions=(7, 2))",
+              "exception": "AssertionError",
+              "frames": [
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 58,
+                  "function": "testPartExecutor"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 539,
+                  "function": "subTest"
+                },
+                {
+                  "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+                  "line": 379,
+                  "function": "test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state"
+                },
+                {
+                  "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+                  "line": 189,
+                  "function": "reject"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 721,
+                  "function": "assertFalse"
+                }
+              ],
+              "traceback": "Traceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 539, in subTest\n    yield\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 379, in test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state\n    self.reject(self.rule(divisions=divisions), reason)\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 189, in reject\n    self.assertFalse(result[\"preview\"][\"valid\"], result)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 721, in assertFalse\n    raise self.failureException(msg)\nAssertionError: True is not false : {'ok': False, 'error': 'line 4: I8a: impact preview required; inspect preview, then confirm token (World unchanged)', 'preview': {'token': 1, 'valid': True, 'command': 'grid-source-rule 0 create name-hex 6f7261636c652072756c65 selector all-cells divide 7 2', 'timbers': [], 'guides': [], 'grids': [], 'datums': [], 'gridSystems': [{'id': 0, 'before': {'kind': 'grid-system', 'id': 0, 'name': 'oracle 0', 'mode': 'infinite', 'mainAlong': None, 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'nextRuleKey': 1, 'rules': [], 'applications': [], 'bindings': [], 'cx': 0, 'cy': 0, 'hasPos': False}, 'after': {'kind': 'grid-system', 'id': 0, 'name': 'oracle 0', 'mode': 'infinite', 'mainAlong': None, 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'nextRuleKey': 2, 'rules': [{'ruleKey': 1, 'name': 'oracle rule', 'selector': {'kind': 'all-cells'}, 'divisions': [7, 2]}], 'applications': [], 'bindings': [], 'cx': 0, 'cy': 0, 'hasPos': False}}], 'gridBindings': [], 'boundaries': [], 'assembly': {'before': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'after': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}}, 'sectionProfiles': {'before': {'profiles': [], 'members': [], 'runs': []}, 'after': {'profiles': [], 'members': [], 'runs': []}, 'warnings': [], 'diagnosticsComplete': True, 'violations': []}, 'violations': []}}\n"
+            }
+          ],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "abcee15b9c6fe262b47a6077e0ad1b04f3a00e213d26b16e757651f85a16a193",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": false
+      },
+      "restoredBinarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+      "restoredOracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-1-restored",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:01:41.710275+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 0.36749027499899967,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "a68df53e71d72e6c5281708b5996b909f5b169f5e12f59371ba9c09a21346ed3"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_invalid_divisions_source_and_cell_guards_refuse_without_partial_state"
+          ],
+          "testsRun": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": true
+      }
+    },
+    {
+      "id": "M62-2",
+      "expectedSemanticFailure": "saved native dump lacks source rule identity; fails before a falsely successful roundtrip",
+      "verdict": "SEMANTIC_ASSERTION_KILL",
+      "diffSha256": "3c6bfa4953e94ed74d300fa7e0f094063fb779f71db5f9564eeb257e921e4a19",
+      "compile": {
+        "command": [
+          "/usr/bin/cc",
+          "-std=c11",
+          "-O1",
+          "-g",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-fno-pie",
+          "-no-pie",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-2-source/geometry-web/web_bridge.c",
+          "-o",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "-lm"
+        ],
+        "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-2-source",
+        "startedAt": "2026-10-08T20:01:42.084790+00:00",
+        "timeoutSeconds": 300,
+        "stackBytes": null,
+        "environment": {
+          "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+          "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        },
+        "exitCode": 0,
+        "elapsedSeconds": 20.124451177000083,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "mutantBinarySha256": "273da63982b7bcb382406318046982ef0204eb1ffb840dd76920da34857834dd",
+      "oracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "273da63982b7bcb382406318046982ef0204eb1ffb840dd76920da34857834dd",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-2",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:02:02.221935+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 1,
+          "elapsedSeconds": 0.2670240229999763,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "4b88ff032860e4d38b9496980fa656ec861c411ca664d15dec88ed4badea1a6a"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world"
+          ],
+          "testsRun": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [
+            {
+              "kind": "failure",
+              "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world",
+              "exception": "AssertionError",
+              "frames": [
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 58,
+                  "function": "testPartExecutor"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 634,
+                  "function": "run"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 589,
+                  "function": "_callTestMethod"
+                },
+                {
+                  "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+                  "line": 918,
+                  "function": "test_native_save_requires_capability_and_load_failures_preserve_live_world"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 1152,
+                  "function": "assertIn"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 715,
+                  "function": "fail"
+                }
+              ],
+              "traceback": "Traceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 918, in test_native_save_requires_capability_and_load_failures_preserve_live_world\n    self.assertIn(\"grid-source-rule 0 key 1\", before[0])\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 1152, in assertIn\n    self.fail(self._formatMessage(msg, standardMsg))\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 715, in fail\n    raise self.failureException(msg)\nAssertionError: 'grid-source-rule 0 key 1' not found in 'requires grid-subdivision-rules/1\\ngrid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 400\\ngrid-source-rule-highwater 0 next 2\\n'\n"
+            }
+          ],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "273da63982b7bcb382406318046982ef0204eb1ffb840dd76920da34857834dd",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": false
+      },
+      "restoredBinarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+      "restoredOracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-2-restored",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:02:02.504000+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 0.4168167839998205,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "ad386024427ac2774b863f5cb24ae945a63664ba7ac8e42967a03a1a980c5ac2"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world"
+          ],
+          "testsRun": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": true
+      }
+    },
+    {
+      "id": "M62-3",
+      "expectedSemanticFailure": "same ruleKey in source 1 accepts rebinding a source 0 formal guide",
+      "verdict": "OTHER_FAILURE_NOT_A_KILL",
+      "diffSha256": "5ad9ad9e75535deaf7c5d140c926e8d5f6b04fbe261d856d218e70c7045cb85f",
+      "compile": {
+        "command": [
+          "/usr/bin/cc",
+          "-std=c11",
+          "-O1",
+          "-g",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-fno-pie",
+          "-no-pie",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-3-source/geometry-web/web_bridge.c",
+          "-o",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "-lm"
+        ],
+        "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-3-source",
+        "startedAt": "2026-10-08T20:02:02.926508+00:00",
+        "timeoutSeconds": 300,
+        "stackBytes": null,
+        "environment": {
+          "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+          "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        },
+        "exitCode": 0,
+        "elapsedSeconds": 20.626359665000564,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "mutantBinarySha256": "475f693706a3d38327dc68126460467e8791e5629e1882d942554e5d727a2ff0",
+      "oracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "475f693706a3d38327dc68126460467e8791e5629e1882d942554e5d727a2ff0",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-3",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_same_rule_key_in_another_source_cannot_rebind_an_existing_reference"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:02:23.564753+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 1,
+          "elapsedSeconds": 0.3163016569997126,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "8e68c63a73e6b8aab117594a7154da44392f90c248627c75abb0dc8989710b61"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_same_rule_key_in_another_source_cannot_rebind_an_existing_reference"
+          ],
+          "testsRun": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [
+            {
+              "kind": "failure",
+              "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_same_rule_key_in_another_source_cannot_rebind_an_existing_reference",
+              "exception": "AssertionError",
+              "frames": [
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 58,
+                  "function": "testPartExecutor"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 634,
+                  "function": "run"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 589,
+                  "function": "_callTestMethod"
+                },
+                {
+                  "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+                  "line": 519,
+                  "function": "test_same_rule_key_in_another_source_cannot_rebind_an_existing_reference"
+                },
+                {
+                  "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+                  "line": 189,
+                  "function": "reject"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 721,
+                  "function": "assertFalse"
+                }
+              ],
+              "traceback": "Traceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 519, in test_same_rule_key_in_another_source_cannot_rebind_an_existing_reference\n    self.reject(\"grid-binding 0 on-boundary 1 from-system 1 vertex outer 0 geometry-hash \"\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 189, in reject\n    self.assertFalse(result[\"preview\"][\"valid\"], result)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 721, in assertFalse\n    raise self.failureException(msg)\nAssertionError: True is not false : {'ok': False, 'error': 'line 15: I8a: impact preview required; inspect preview, then confirm token (World unchanged)', 'preview': {'token': 5, 'valid': True, 'command': 'grid-binding 0 on-boundary 1 from-system 1 vertex outer 0 geometry-hash 89cc7c66c46e592101d98301fa67b32a3b2b0dea688007e5b43360363ad6373e cell -2 1 anchor 0 1 0 1', 'timbers': [], 'guides': [{'id': 1, 'before': {'id': 1, 'surface': 1, 'source': 'local', 'datum': 0, 'axis': 'v', 'off': 300, 'expression': 'gridrule:10:0:1:-2:1:u:0', 'worldPoint': [300, 0, 0], 'worldDirection': [0, 1, 0], 'segments': [[[300, 200], [300, 1800]]]}, 'after': {'id': 1, 'surface': 1, 'source': 'local', 'datum': 0, 'axis': 'v', 'off': 300, 'expression': 'gridrule:10:0:1:-2:1:u:0', 'worldPoint': [300, 0, 0], 'worldDirection': [0, 1, 0], 'segments': [[[300, 200], [300, 1800]]]}}], 'grids': [{'id': 10, 'before': {'id': 10, 'surface': 1, 'bindingId': 0, 'indexSpace': 'lattice', 'sourceSystem': 0, 'origin': [0, 0], 'kind': 'main', 'parentId': None, 'cell': None, 'divisions': None, 'bounds': {'u': [100, 2100], 'v': [200, 1800]}, 'mainAlong': None, 'geometryMode': 'sample', 'geometryExact': False, 'query': {'ok': True, 'mode': 'sample', 'exact': False, 'rect': [100, 200, 2100, 1800], 'axes': {'u': {'defined': True, 'firstIndex': '-2', 'lastIndex': '1', 'total': '4', 'stride': '1', 'lines': [{'index': '-2', 'coordinate': 100, 'segments': [{'a': [100, 200], 'b': [100, 1800]}]}, {'index': '-1', 'coordinate': 700, 'segments': [{'a': [700, 200], 'b': [700, 1800]}]}, {'index': '0', 'coordinate': 1300, 'segments': [{'a': [1300, 200], 'b': [1300, 1800]}]}, {'index': '1', 'coordinate': 1900, 'segments': [{'a': [1900, 200], 'b': [1900, 1800]}]}]}, 'v': {'defined': True, 'firstIndex': '1', 'lastIndex': '5', 'total': '5', 'stride': '1', 'lines': [{'index': '1', 'coordinate': 200, 'segments': [{'a': [100, 200], 'b': [2100, 200]}]}, {'index': '2', 'coordinate': 600, 'segments': [{'a': [100, 600], 'b': [2100, 600]}]}, {'index': '3', 'coordinate': 1000, 'segments': [{'a': [100, 1000], 'b': [2100, 1000]}]}, {'index': '4', 'coordinate': 1400, 'segments': [{'a': [100, 1400], 'b': [2100, 1400]}]}, {'index': '5', 'coordinate': 1800, 'segments': []}]}}}, 'u': [100, 700, 1300, 1900], 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'v': [200, 600, 1000, 1400, 1800], 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'indices': {'u': ['-2', '-1', '0', '1'], 'v': ['1', '2', '3', '4', '5']}, 'lattice': {'u': {'defined': True, 'pitch': 600, 'baseIndex': '-2', 'baseCoordinate': 100}, 'v': {'defined': True, 'pitch': 400, 'baseIndex': '1', 'baseCoordinate': 200}}, 'lines': [{'axis': 'u', 'index': '-2', 'coordinate': 100, 'role': None, 'priority': None, 'segments': [[[100, 200], [100, 1800]]]}, {'axis': 'u', 'index': '-1', 'coordinate': 700, 'role': None, 'priority': None, 'segments': [[[700, 200], [700, 1800]]]}, {'axis': 'u', 'index': '0', 'coordinate': 1300, 'role': None, 'priority': None, 'segments': [[[1300, 200], [1300, 1800]]]}, {'axis': 'u', 'index': '1', 'coordinate': 1900, 'role': None, 'priority': None, 'segments': [[[1900, 200], [1900, 1800]]]}, {'axis': 'v', 'index': '1', 'coordinate': 200, 'role': None, 'priority': None, 'segments': [[[100, 200], [2100, 200]]]}, {'axis': 'v', 'index': '2', 'coordinate': 600, 'role': None, 'priority': None, 'segments': [[[100, 600], [2100, 600]]]}, {'axis': 'v', 'index': '3', 'coordinate': 1000, 'role': None, 'priority': None, 'segments': [[[100, 1000], [2100, 1000]]]}, {'axis': 'v', 'index': '4', 'coordinate': 1400, 'role': None, 'priority': None, 'segments': [[[100, 1400], [2100, 1400]]]}, {'axis': 'v', 'index': '5', 'coordinate': 1800, 'role': None, 'priority': None, 'segments': []}], 'dependencies': {'children': [], 'guides': [1], 'timbers': []}}, 'after': {'id': 10, 'surface': 1, 'bindingId': 0, 'indexSpace': 'lattice', 'sourceSystem': 1, 'origin': [0, 0], 'kind': 'main', 'parentId': None, 'cell': None, 'divisions': None, 'bounds': {'u': [100, 2100], 'v': [200, 1800]}, 'mainAlong': None, 'geometryMode': 'sample', 'geometryExact': False, 'query': {'ok': True, 'mode': 'sample', 'exact': False, 'rect': [100, 200, 2100, 1800], 'axes': {'u': {'defined': True, 'firstIndex': '-2', 'lastIndex': '1', 'total': '4', 'stride': '1', 'lines': [{'index': '-2', 'coordinate': 100, 'segments': [{'a': [100, 200], 'b': [100, 1800]}]}, {'index': '-1', 'coordinate': 700, 'segments': [{'a': [700, 200], 'b': [700, 1800]}]}, {'index': '0', 'coordinate': 1300, 'segments': [{'a': [1300, 200], 'b': [1300, 1800]}]}, {'index': '1', 'coordinate': 1900, 'segments': [{'a': [1900, 200], 'b': [1900, 1800]}]}]}, 'v': {'defined': True, 'firstIndex': '1', 'lastIndex': '5', 'total': '5', 'stride': '1', 'lines': [{'index': '1', 'coordinate': 200, 'segments': [{'a': [100, 200], 'b': [2100, 200]}]}, {'index': '2', 'coordinate': 600, 'segments': [{'a': [100, 600], 'b': [2100, 600]}]}, {'index': '3', 'coordinate': 1000, 'segments': [{'a': [100, 1000], 'b': [2100, 1000]}]}, {'index': '4', 'coordinate': 1400, 'segments': [{'a': [100, 1400], 'b': [2100, 1400]}]}, {'index': '5', 'coordinate': 1800, 'segments': []}]}}}, 'u': [100, 700, 1300, 1900], 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'v': [200, 600, 1000, 1400, 1800], 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'indices': {'u': ['-2', '-1', '0', '1'], 'v': ['1', '2', '3', '4', '5']}, 'lattice': {'u': {'defined': True, 'pitch': 600, 'baseIndex': '-2', 'baseCoordinate': 100}, 'v': {'defined': True, 'pitch': 400, 'baseIndex': '1', 'baseCoordinate': 200}}, 'lines': [{'axis': 'u', 'index': '-2', 'coordinate': 100, 'role': None, 'priority': None, 'segments': [[[100, 200], [100, 1800]]]}, {'axis': 'u', 'index': '-1', 'coordinate': 700, 'role': None, 'priority': None, 'segments': [[[700, 200], [700, 1800]]]}, {'axis': 'u', 'index': '0', 'coordinate': 1300, 'role': None, 'priority': None, 'segments': [[[1300, 200], [1300, 1800]]]}, {'axis': 'u', 'index': '1', 'coordinate': 1900, 'role': None, 'priority': None, 'segments': [[[1900, 200], [1900, 1800]]]}, {'axis': 'v', 'index': '1', 'coordinate': 200, 'role': None, 'priority': None, 'segments': [[[100, 200], [2100, 200]]]}, {'axis': 'v', 'index': '2', 'coordinate': 600, 'role': None, 'priority': None, 'segments': [[[100, 600], [2100, 600]]]}, {'axis': 'v', 'index': '3', 'coordinate': 1000, 'role': None, 'priority': None, 'segments': [[[100, 1000], [2100, 1000]]]}, {'axis': 'v', 'index': '4', 'coordinate': 1400, 'role': None, 'priority': None, 'segments': [[[100, 1400], [2100, 1400]]]}, {'axis': 'v', 'index': '5', 'coordinate': 1800, 'role': None, 'priority': None, 'segments': []}], 'dependencies': {'children': [], 'guides': [1], 'timbers': []}}}], 'datums': [], 'gridSystems': [{'id': 0, 'before': {'kind': 'grid-system', 'id': 0, 'name': 'oracle 0', 'mode': 'infinite', 'mainAlong': None, 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'nextRuleKey': 2, 'rules': [{'ruleKey': 1, 'name': 'oracle rule', 'selector': {'kind': 'all-cells'}, 'divisions': [3, 2]}], 'applications': [{'grid': 10, 'surface': 1}], 'bindings': [0], 'cx': 0, 'cy': 0, 'hasPos': False}, 'after': {'kind': 'grid-system', 'id': 0, 'name': 'oracle 0', 'mode': 'infinite', 'mainAlong': None, 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'nextRuleKey': 2, 'rules': [{'ruleKey': 1, 'name': 'oracle rule', 'selector': {'kind': 'all-cells'}, 'divisions': [3, 2]}], 'applications': [], 'bindings': [], 'cx': 0, 'cy': 0, 'hasPos': False}}, {'id': 1, 'before': {'kind': 'grid-system', 'id': 1, 'name': 'oracle 1', 'mode': 'infinite', 'mainAlong': None, 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'nextRuleKey': 2, 'rules': [{'ruleKey': 1, 'name': 'oracle rule', 'selector': {'kind': 'all-cells'}, 'divisions': [3, 2]}], 'applications': [], 'bindings': [], 'cx': 0, 'cy': 0, 'hasPos': False}, 'after': {'kind': 'grid-system', 'id': 1, 'name': 'oracle 1', 'mode': 'infinite', 'mainAlong': None, 'uDefinition': {'source': 'repeat', 'phase': 0, 'step': 600}, 'vDefinition': {'source': 'repeat', 'phase': 0, 'step': 400}, 'nextRuleKey': 2, 'rules': [{'ruleKey': 1, 'name': 'oracle rule', 'selector': {'kind': 'all-cells'}, 'divisions': [3, 2]}], 'applications': [{'grid': 10, 'surface': 1}], 'bindings': [0], 'cx': 0, 'cy': 0, 'hasPos': False}}], 'gridBindings': [{'id': 0, 'before': {'kind': 'grid-binding', 'id': 0, 'boundary': 1, 'system': 0, 'vertexKey': 1, 'cell': ['-2', '1'], 'anchor': [{'num': 0, 'den': 1}, {'num': 0, 'den': 1}], 'translation': [1300, -200], 'translationExact': ['1300', '-200'], 'translationRepresentable': True, 'applications': [{'grid': 10, 'surface': 1}], 'cx': 0, 'cy': 0, 'hasPos': False, 'preview': {'ok': True, 'mode': 'sample', 'exact': False, 'rect': [100, 200, 2100, 1800], 'axes': {'u': {'defined': True, 'firstIndex': '-2', 'lastIndex': '1', 'total': '4', 'stride': '1', 'lines': [{'index': '-2', 'coordinate': 100, 'segments': [{'a': [100, 200], 'b': [100, 1800]}]}, {'index': '-1', 'coordinate': 700, 'segments': [{'a': [700, 200], 'b': [700, 1800]}]}, {'index': '0', 'coordinate': 1300, 'segments': [{'a': [1300, 200], 'b': [1300, 1800]}]}, {'index': '1', 'coordinate': 1900, 'segments': [{'a': [1900, 200], 'b': [1900, 1800]}]}]}, 'v': {'defined': True, 'firstIndex': '1', 'lastIndex': '5', 'total': '5', 'stride': '1', 'lines': [{'index': '1', 'coordinate': 200, 'segments': [{'a': [100, 200], 'b': [2100, 200]}]}, {'index': '2', 'coordinate': 600, 'segments': [{'a': [100, 600], 'b': [2100, 600]}]}, {'index': '3', 'coordinate': 1000, 'segments': [{'a': [100, 1000], 'b': [2100, 1000]}]}, {'index': '4', 'coordinate': 1400, 'segments': [{'a': [100, 1400], 'b': [2100, 1400]}]}, {'index': '5', 'coordinate': 1800, 'segments': []}]}}}}, 'after': {'kind': 'grid-binding', 'id': 0, 'boundary': 1, 'system': 1, 'vertexKey': 1, 'cell': ['-2', '1'], 'anchor': [{'num': 0, 'den': 1}, {'num': 0, 'den': 1}], 'translation': [1300, -200], 'translationExact': ['1300', '-200'], 'translationRepresentable': True, 'applications': [{'grid': 10, 'surface': 1}], 'cx': 0, 'cy': 0, 'hasPos': False, 'preview': {'ok': True, 'mode': 'sample', 'exact': False, 'rect': [100, 200, 2100, 1800], 'axes': {'u': {'defined': True, 'firstIndex': '-2', 'lastIndex': '1', 'total': '4', 'stride': '1', 'lines': [{'index': '-2', 'coordinate': 100, 'segments': [{'a': [100, 200], 'b': [100, 1800]}]}, {'index': '-1', 'coordinate': 700, 'segments': [{'a': [700, 200], 'b': [700, 1800]}]}, {'index': '0', 'coordinate': 1300, 'segments': [{'a': [1300, 200], 'b': [1300, 1800]}]}, {'index': '1', 'coordinate': 1900, 'segments': [{'a': [1900, 200], 'b': [1900, 1800]}]}]}, 'v': {'defined': True, 'firstIndex': '1', 'lastIndex': '5', 'total': '5', 'stride': '1', 'lines': [{'index': '1', 'coordinate': 200, 'segments': [{'a': [100, 200], 'b': [2100, 200]}]}, {'index': '2', 'coordinate': 600, 'segments': [{'a': [100, 600], 'b': [2100, 600]}]}, {'index': '3', 'coordinate': 1000, 'segments': [{'a': [100, 1000], 'b': [2100, 1000]}]}, {'index': '4', 'coordinate': 1400, 'segments': [{'a': [100, 1400], 'b': [2100, 1400]}]}, {'index': '5', 'coordinate': 1800, 'segments': []}]}}}}}], 'boundaries': [], 'assembly': {'before': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}, 'after': {'capabilities': ['assembly-rule-authoring/1', 'assembly-timber-generation/1'], 'rules': [], 'bindings': [], 'instances': []}}, 'sectionProfiles': {'before': {'profiles': [], 'members': [], 'runs': []}, 'after': {'profiles': [], 'members': [], 'runs': []}, 'warnings': [], 'diagnosticsComplete': True, 'violations': []}, 'violations': []}}\n"
+            }
+          ],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "475f693706a3d38327dc68126460467e8791e5629e1882d942554e5d727a2ff0",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": false
+      },
+      "restoredBinarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+      "restoredOracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-3-restored",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_same_rule_key_in_another_source_cannot_rebind_an_existing_reference"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:02:23.895694+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 0.3160900849998143,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "134c9373dbef8ce61dbd47e9a855adcf85816a0dab8a61d5d2cbfc62f99b050d"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_same_rule_key_in_another_source_cannot_rebind_an_existing_reference"
+          ],
+          "testsRun": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": true
+      }
+    },
+    {
+      "id": "M62-4",
+      "expectedSemanticFailure": "literal expected hole-split endpoint multiset differs from an unclipped cell line",
+      "verdict": "SEMANTIC_ASSERTION_KILL",
+      "diffSha256": "4394814cdf5335b097fe12e31b99fcbd59cc58ef190b6513be45d4e0700c4d04",
+      "compile": {
+        "command": [
+          "/usr/bin/cc",
+          "-std=c11",
+          "-O1",
+          "-g",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-fno-pie",
+          "-no-pie",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-4-source/geometry-web/web_bridge.c",
+          "-o",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "-lm"
+        ],
+        "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-4-source",
+        "startedAt": "2026-10-08T20:02:24.217634+00:00",
+        "timeoutSeconds": 300,
+        "stackBytes": null,
+        "environment": {
+          "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+          "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        },
+        "exitCode": 0,
+        "elapsedSeconds": 20.93858551499943,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "mutantBinarySha256": "b24e1ef828876644effd726e80a23fe367b7fb3fa96c99a013d898612f377e4d",
+      "oracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "b24e1ef828876644effd726e80a23fe367b7fb3fa96c99a013d898612f377e4d",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-4",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_hole_clipping_preserves_line_identity_and_all_visible_segments"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:02:45.169451+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 1,
+          "elapsedSeconds": 0.26781490400026087,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "bce3a48aa256c5c27d9dc18cb9491e8fd48020dcd58678a99ad0490f3cea7a5f"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_hole_clipping_preserves_line_identity_and_all_visible_segments"
+          ],
+          "testsRun": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [
+            {
+              "kind": "failure",
+              "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_hole_clipping_preserves_line_identity_and_all_visible_segments",
+              "exception": "AssertionError",
+              "frames": [
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 58,
+                  "function": "testPartExecutor"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 634,
+                  "function": "run"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 589,
+                  "function": "_callTestMethod"
+                },
+                {
+                  "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+                  "line": 537,
+                  "function": "test_hole_clipping_preserves_line_identity_and_all_visible_segments"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 885,
+                  "function": "assertEqual"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 1091,
+                  "function": "assertListEqual"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 1073,
+                  "function": "assertSequenceEqual"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 715,
+                  "function": "fail"
+                }
+              ],
+              "traceback": "Traceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 537, in test_hole_clipping_preserves_line_identity_and_all_visible_segments\n    self.assertEqual(normalized(segments), normalized(by_line[identity][\"segments\"]))\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 885, in assertEqual\n    assertion_func(first, second, msg=msg)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 1091, in assertListEqual\n    self.assertSequenceEqual(list1, list2, msg, seq_type=list)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 1073, in assertSequenceEqual\n    self.fail(msg)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 715, in fail\n    raise self.failureException(msg)\nAssertionError: Lists differ: [((300, 200), (300, 250)), ((300, 550), (300, 600))] != [((300, 200), (300, 600))]\n\nFirst differing element 0:\n((300, 200), (300, 250))\n((300, 200), (300, 600))\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n((300, 550), (300, 600))\n\n- [((300, 200), (300, 250)), ((300, 550), (300, 600))]\n+ [((300, 200), (300, 600))]\n"
+            }
+          ],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "b24e1ef828876644effd726e80a23fe367b7fb3fa96c99a013d898612f377e4d",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": false
+      },
+      "restoredBinarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+      "restoredOracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-4-restored",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_hole_clipping_preserves_line_identity_and_all_visible_segments"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:02:45.453632+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 0.26771085200016387,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "69dd38e2771f65080baed4bc1629891e282011dac8310565ebe522c6d0a1b868"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_hole_clipping_preserves_line_identity_and_all_visible_segments"
+          ],
+          "testsRun": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": true
+      }
+    },
+    {
+      "id": "M62-5",
+      "expectedSemanticFailure": "new highwater syntax without requires marker replaces live World despite default resulting allocator",
+      "verdict": "SEMANTIC_ASSERTION_KILL",
+      "diffSha256": "a7b6b7646f700dce180986a945e9797fac8cea2ee2950853b7cd2beff683136d",
+      "compile": {
+        "command": [
+          "/usr/bin/cc",
+          "-std=c11",
+          "-O1",
+          "-g",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "-fno-pie",
+          "-no-pie",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-5-source/geometry-web/web_bridge.c",
+          "-o",
+          "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "-lm"
+        ],
+        "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-5-source",
+        "startedAt": "2026-10-08T20:02:45.727512+00:00",
+        "timeoutSeconds": 300,
+        "stackBytes": null,
+        "environment": {
+          "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+          "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+          "PYTHONDONTWRITEBYTECODE": "1"
+        },
+        "exitCode": 0,
+        "elapsedSeconds": 20.142160995999802,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "mutantBinarySha256": "a55cc70bcc1f5f4ae5ea5359319807978a40152773c103f008662a9da6cbe8ae",
+      "oracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "a55cc70bcc1f5f4ae5ea5359319807978a40152773c103f008662a9da6cbe8ae",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-5",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:03:05.881772+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 1,
+          "elapsedSeconds": 0.2664137430001574,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "537ea2c230d2712f3897cdf88d6d8a8ff89327babffc1e032727327adac6368f"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default"
+          ],
+          "testsRun": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [
+            {
+              "kind": "failure",
+              "test": "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default",
+              "exception": "AssertionError",
+              "frames": [
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 58,
+                  "function": "testPartExecutor"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 634,
+                  "function": "run"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 589,
+                  "function": "_callTestMethod"
+                },
+                {
+                  "file": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py",
+                  "line": 955,
+                  "function": "test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default"
+                },
+                {
+                  "file": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py",
+                  "line": 721,
+                  "function": "assertFalse"
+                }
+              ],
+              "traceback": "Traceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 58, in testPartExecutor\n    yield\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 634, in run\n    self._callTestMethod(testMethod)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 589, in _callTestMethod\n    if method() is not None:\n       ^^^^^^^^\n  File \"/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py\", line 955, in test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default\n    self.assertFalse(rejected[\"ok\"], rejected)\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/case.py\", line 721, in assertFalse\n    raise self.failureException(msg)\nAssertionError: True is not false : {'ok': True, 'revision': 14, 'capabilities': ['engineering-spec/1', 'parameters/1', 'assembly-rule-authoring/1', 'assembly-timber-generation/1', 'grid-subdivision-rules/1', 'section-profile/1'], 'required_capabilities': [], 'native_capabilities': ['section-profile-native/1'], 'definition_sha256': 'c7a84e3e8cad953edf0f5e3d9c58472e1bc9fddea70a052a5e8cc9dec9eb226e'}\n"
+            }
+          ],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "a55cc70bcc1f5f4ae5ea5359319807978a40152773c103f008662a9da6cbe8ae",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": false
+      },
+      "restoredBinarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+      "restoredOracle": {
+        "command": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+            "--source",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+            "--binary",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+            "--binary-sha256",
+            "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+            "--out",
+            "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/M62-5-restored",
+            "--test",
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default"
+          ],
+          "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+          "startedAt": "2026-10-08T20:03:06.162287+00:00",
+          "timeoutSeconds": 300,
+          "stackBytes": 67108864,
+          "environment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "exitCode": 0,
+          "elapsedSeconds": 0.31626887699894723,
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "b75caeabf88ed1134c0969aaa9c886813c926cd8852745f76cc9d6909fd7411e"
+        },
+        "result": {
+          "schema": "geometry-sgr62-original-oracle/1",
+          "tests": [
+            "tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_new_allocator_input_syntax_requires_capability_even_when_final_state_is_default"
+          ],
+          "testsRun": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": [],
+          "unexpectedSuccesses": 0,
+          "expectedFailures": 0,
+          "details": [],
+          "sessions": 1,
+          "unhealthySessions": [],
+          "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+          "binarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+          "sanitizerEnvironment": {
+            "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+          }
+        },
+        "passed": true
+      }
+    }
+  ],
+  "complete": true,
+  "passed": false,
+  "historical152Reproduced": false,
+  "liveHead": "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+  "liveStatusBefore": "",
+  "baselineCompile": {
+    "command": [
+      "/usr/bin/cc",
+      "-std=c11",
+      "-O1",
+      "-g",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-fno-pie",
+      "-no-pie",
+      "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/geometry-web/web_bridge.c",
+      "-o",
+      "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-bridge",
+      "-lm"
+    ],
+    "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+    "startedAt": "2026-10-08T20:00:46.365327+00:00",
+    "timeoutSeconds": 300,
+    "stackBytes": null,
+    "environment": {
+      "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+      "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exitCode": 0,
+    "elapsedSeconds": 20.278225549000126,
+    "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "pristineBinarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+  "baseline": {
+    "command": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/closure-evidence/final-contract-probes/native-sanitizer-mutations/oracle_runner.py",
+        "--source",
+        "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+        "--binary",
+        "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+        "--binary-sha256",
+        "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+        "--out",
+        "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/baseline",
+        "--test",
+        "tests.test_grid_subdivision_oracle",
+        "--test",
+        "tests.test_grid_system_contract"
+      ],
+      "cwd": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source",
+      "startedAt": "2026-10-08T20:01:06.660878+00:00",
+      "timeoutSeconds": 300,
+      "stackBytes": 67108864,
+      "environment": {
+        "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+        "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exitCode": 0,
+      "elapsedSeconds": 14.019761386000027,
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "4b52843d5b90ffcc2105e42fd88d8cf387bd8991cdd4dcaa2c9d7d3ba92925fe"
+    },
+    "result": {
+      "schema": "geometry-sgr62-original-oracle/1",
+      "tests": [
+        "tests.test_grid_subdivision_oracle",
+        "tests.test_grid_system_contract"
+      ],
+      "testsRun": 54,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "unexpectedSuccesses": 0,
+      "expectedFailures": 0,
+      "details": [],
+      "sessions": 45,
+      "unhealthySessions": [],
+      "binary": "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/active-bridge",
+      "binarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+      "sanitizerEnvironment": {
+        "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1:abort_on_error=1",
+        "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+      }
+    },
+    "passed": true
+  },
+  "finalRestoredBinarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+  "restorationEvidence": "All five original target methods passed after restoring the same private binary path; pristine source was never mutated.",
+  "liveStatusAfter": "",
+  "finallyRestoredBinarySha256": "d7961d7878f701b1035c5542ce70fcd7a4c0e43282962c33ccb02434f2e51e7f",
+  "finishedAt": "2026-10-08T20:03:06.502553+00:00"
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "geometry-sr16-sr23-independent-review/1",
+  "reviewer": "/root/remote_inventory",
+  "verdict": "PASS_FOR_BOUNDED_SR16_SR23_FLOWS",
+  "rawRoot": "/workspace/closure-evidence/sr16-sr23-browser-r1",
+  "candidate": "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+  "testedProductSource": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "scriptSha256": "b694cd73cdd53d50dff49eb907a3faea1a96834772f6a1b4cb891690512eda8c",
+  "runtimeVersion": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+  "bridgeSha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "reviewerExecutedProduct": false,
+  "widths": [1400, 390],
+  "evidence": [
+    "artifact-audit.json independently compares saved native definitions, complete references, project payload, intermediate authoring order, exact descendant coordinates, actual ZIP manifest/world, true empty states, before/after runtime and running-child binary identity. No check failed.",
+    "trace-audit.json matches all 602 desktop and 604 narrow HTTP request/response bodies exactly against original Playwright trace network resources. Each width has three original history-reference equality returns true, one exact single-transaction return true, one actual download event and one successful setInputFiles call.",
+    "390-independent.json independently checks the narrow workflow's click/file-chooser events, displayed UI capture, raw before/after data, actual typed descendant references and transaction history, without relying on the author check count.",
+    "Original b694 source matches executed bytes; only the previously reviewed cleanup correction differentiates it from the unexecuted e176 preparation. Terminal case records are written after owned browser closure and contain no page, network-capture or cleanup errors.",
+    "Two representative screenshots were visually inspected: desktop invalid preview shows actual timber104 R6/I5/I6 diagnostic and disabled confirmation; narrow positive preview shows both guide updates and enabled confirmation. Both are synthetic geometry and contain no private drawing."
+  ],
+  "conclusions": [
+    "In both widths, face1 guide23 and direct timber103 are created through UI before face2 binding2. Face2 guide24 and direct timber104 then exist before any source modification.",
+    "SR16 changes U600 to300. The sole violation is timber104 with the actual R6/I5/I6 between-endpoints diagnostic; timber103 retains a valid candidate geometry. Both bindings appear, Confirm is disabled, and pending/cancel snapshots preserve full raw native responses including revision and exact existing history references.",
+    "SR23 changes U600/V400 to U900/V600. Positive Cancel preserves full data. Confirm is one common transaction; guide offsets on both faces change300 to400, direct timber centerlines400 to500, formal tuples and physical-support lengths240/540 remain. One Undo/Redo restores complete native data. The serialized definition changes only the two existing source pitches.",
+    "Real download Save preserves full native/project payload. Both actual archives are geometry-canvas/11 with exactly manifest.json and world.scene, correct scene hash and grid-subdivision-rules/1 capability. New empties every native definition/reference and project payload; a new browser profile observes that empty World before formal file-chooser Open. Open and its Undo/Redo restore full payloads, excluding only native transaction revision for successful transitions."
+  ],
+  "limits": [
+    "The observed SR16 refusal is R6/I5/I6; it must not be relabeled a specific I25a/CELL_SCOPE diagnostic.",
+    "The fixture seeds boundaries, placements and actual physical supports with API calls. The source/rule/binding/applied-grid/formal-guide/direct-reference and save/reopen workflow uses UI.",
+    "The actual manifests here are /11. The prepared script's /13 branch is not independently exercised by these results.",
+    "390px Chromium is not physical-mobile or IME acceptance. Save uses an explicitly selected download fallback, not a native OS save dialog. No service restart or full suite rerun is claimed.",
+    "Full Playwright trace ZIP files remain private; public evidence may contain their hashes and bounded audit statements. This bounded pass does not clear unrelated async defects, full safe Resume, missing historical sanitizer raw or all #62 requirements."
+  ],
+  "remainingBlockersForThisBoundedEvidence": []
+}

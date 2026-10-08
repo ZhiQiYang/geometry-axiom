@@ -1,0 +1,12 @@
+{
+  "case": "beam",
+  "width": 390,
+  "started": "2026-10-08T18:37:42.340162+00:00",
+  "passed": false,
+  "error": "Traceback (most recent call last):\n  File \"/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py\", line 336, in main\n    if kind == 'beam':check_beam()\n                      ^^^^^^^^^^^^\n  File \"/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py\", line 202, in check_beam\n    setup(BEAM)\n  File \"/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py\", line 186, in setup\n    enter_space()\n  File \"/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py\", line 167, in enter_space\n    assert len(downs)==2 and all(e['trusted'] and e['button']==0 for e in downs), downs\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: [{'type': 'pointerdown', 'key': None, 'trusted': True, 'id': None, 'tag': 'g', 'slot': None, 'card': 'space', 'cardId': '1', 'detail': 0, 'button': 0, 'pointerId': 1, 'pointerType': 'mouse', 'x': 193.10000610351562, 'y': 555.8699951171875, 'timeStamp': 2304.800000000745}]\n",
+  "failed_phase": "beam-390",
+  "finished": "2026-10-08T18:37:45.120873+00:00",
+  "page_errors": [],
+  "network_capture_errors": [],
+  "cleanup_errors": []
+}

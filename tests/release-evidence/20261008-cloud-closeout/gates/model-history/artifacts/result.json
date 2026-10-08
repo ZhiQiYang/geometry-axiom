@@ -1,0 +1,274 @@
+{
+  "schema": "geometry-model-library-history-browser/1",
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+  "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "gitStatus": "",
+  "development": false,
+  "harnessSha256": "97bac45e716827c1d3f4fe75eabbbada5ad34c57be22b83e57f4b34c0a042bcb",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "tests/integration/model_library_history_browser.py"
+  ],
+  "environment": {
+    "GEOMETRY_VERIFY_ROOT": "/workspace/geometry-axiom",
+    "GEOMETRY_TEST_URL": "http://127.0.0.1:18971/",
+    "GEOMETRY_MODEL_HISTORY_OUT": "/tmp/geometry-closeout-r2-gates/model-history",
+    "GEOMETRY_ACCEPT_DIRTY": null,
+    "GEOMETRY_CHROME": "/usr/bin/chromium"
+  },
+  "expectedCases": {
+    "MH00": 1,
+    "MH01-1382": 6,
+    "MH01-390": 6,
+    "MH02": 3,
+    "MH03": 1,
+    "MH03-cross-project": 2,
+    "MH04-context": 1,
+    "MH04-session": 1,
+    "MH04-source": 1,
+    "MH05-zero-calibration": 1,
+    "MH05-face-outline": 1,
+    "MH05-parameter": 1,
+    "MH05-room": 1,
+    "MH06": 2,
+    "MH07": 5,
+    "MH08": 1,
+    "MH09": 1
+  },
+  "expectedAssertions": 35,
+  "limitations": [
+    "New bounded acceptance only; does not recreate missing historical 10/155-case evidence.",
+    "Chromium Linux; no Windows, physical phone, OS picker or IME certification.",
+    "Foreign context/session cases inject transitions after native history observation but before native command completion returns to doUndoRedo; the separate nativePending cases hold real response JSON before observation.",
+    "Readonly tab uses real Web Locks contention plus actual producer metadata and nonempty ContextHistory fixtures; no readonly import claim.",
+    "Native commands and archive import use public APIs for fixture setup. Zero-point calibration and face-outline guard fixtures seed raw draft state; the parameter editor and room picker use actual UI entry/actions, with public-API image/calibration fixture setup."
+  ],
+  "browserVersion": "151.0.7922.173",
+  "platform": "linux",
+  "browserExecutable": "/usr/bin/chromium",
+  "browserProfile": "Playwright-owned isolated temporary profile; no existing user profile",
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 174658,
+    "session": "86b719350c9d4e3b90536403b05f9dcc"
+  },
+  "sourceAfter": {
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "tree": "1c0fb168f2854f37c10370f1c65d4a155a83620b",
+    "gitStatus": "",
+    "harnessSha256": "97bac45e716827c1d3f4fe75eabbbada5ad34c57be22b83e57f4b34c0a042bcb"
+  },
+  "completed": true,
+  "checks": [
+    {
+      "case": "MH00",
+      "label": "actual preview/confirmation produces a model over a nonempty native fixture",
+      "pass": true
+    },
+    {
+      "case": "MH01-1382",
+      "label": "fixture pins a distinct real native top history entry",
+      "pass": true
+    },
+    {
+      "case": "MH01-1382",
+      "label": "server Undo completed but frontend history is still pending",
+      "pass": true
+    },
+    {
+      "case": "MH01-1382",
+      "label": "Undo/Redo/remove/Save are disabled while native Undo is pending",
+      "pass": true
+    },
+    {
+      "case": "MH01-1382",
+      "label": "trusted reentry sends exactly one native Undo and creates no download",
+      "pass": true
+    },
+    {
+      "case": "MH01-1382",
+      "label": "released Undo restores exact World/models and consumes one fixed entry",
+      "pass": true
+    },
+    {
+      "case": "MH01-1382",
+      "label": "real Redo remains operable and restores exact pre-Undo native World",
+      "pass": true
+    },
+    {
+      "case": "MH01-390",
+      "label": "fixture pins a distinct real native top history entry",
+      "pass": true
+    },
+    {
+      "case": "MH01-390",
+      "label": "server Undo completed but frontend history is still pending",
+      "pass": true
+    },
+    {
+      "case": "MH01-390",
+      "label": "Undo/Redo/remove/Save are disabled while native Undo is pending",
+      "pass": true
+    },
+    {
+      "case": "MH01-390",
+      "label": "trusted reentry sends exactly one native Undo and creates no download",
+      "pass": true
+    },
+    {
+      "case": "MH01-390",
+      "label": "released Undo restores exact World/models and consumes one fixed entry",
+      "pass": true
+    },
+    {
+      "case": "MH01-390",
+      "label": "real Redo remains operable and restores exact pre-Undo native World",
+      "pass": true
+    },
+    {
+      "case": "MH02",
+      "label": "close/reopen is a new library owner while old delivery is held",
+      "pass": true
+    },
+    {
+      "case": "MH02",
+      "label": "late reply cannot renew reopened owner or remove saved models",
+      "pass": true
+    },
+    {
+      "case": "MH02",
+      "label": "an explicit fresh opening after completion restores history availability",
+      "pass": true
+    },
+    {
+      "case": "MH03",
+      "label": "real project switch is refused during pending Undo with no extra mutation",
+      "pass": true
+    },
+    {
+      "case": "MH03-cross-project",
+      "label": "Undo New inside library restores the pinned nonempty World/models/context in exactly one step",
+      "pass": true
+    },
+    {
+      "case": "MH03-cross-project",
+      "label": "retained library focus permits real Ctrl+Y back to the exact new project",
+      "pass": true
+    },
+    {
+      "case": "MH04-context",
+      "label": "late native completion cannot renew or overwrite a foreign context owner",
+      "pass": true
+    },
+    {
+      "case": "MH04-session",
+      "label": "late native completion cannot renew or overwrite a foreign session owner",
+      "pass": true
+    },
+    {
+      "case": "MH04-source",
+      "label": "trusted source switch survives late native Undo without reviving the previous model view",
+      "pass": true
+    },
+    {
+      "case": "MH05-zero-calibration",
+      "label": "blocked library history preserves raw draft and complete World/models/history",
+      "pass": true
+    },
+    {
+      "case": "MH05-face-outline",
+      "label": "blocked library history preserves raw draft and complete World/models/history",
+      "pass": true
+    },
+    {
+      "case": "MH05-parameter",
+      "label": "actual pending parameter editor retains raw values and unchanged project history",
+      "pass": true
+    },
+    {
+      "case": "MH05-room",
+      "label": "actual pending room picker retains source calibration/raw draft and complete history",
+      "pass": true
+    },
+    {
+      "case": "MH06",
+      "label": "nested modal keeps native text Undo and leaves project history unchanged",
+      "pass": true
+    },
+    {
+      "case": "MH06",
+      "label": "Escape closes only the nested modal and preserves the library",
+      "pass": true
+    },
+    {
+      "case": "MH07",
+      "label": "second real tab has a genuine readonly editor lease under Web Locks contention",
+      "pass": true,
+      "detail": {
+        "held": [
+          {
+            "clientId": "567B6E8645157F0519FFD9079AB975EB",
+            "mode": "exclusive",
+            "name": "geometry-canvas-recovery-b4b4ebe1-3606-4842-b37b-25920b466727"
+          },
+          {
+            "clientId": "567B6E8645157F0519FFD9079AB975EB",
+            "mode": "exclusive",
+            "name": "geometry-canvas-service-editor-86b719350c9d4e3b90536403b05f9dcc"
+          }
+        ],
+        "pending": []
+      }
+    },
+    {
+      "case": "MH07",
+      "label": "readonly fixture has meaningful nonempty Undo and Redo stacks",
+      "pass": true
+    },
+    {
+      "case": "MH07",
+      "label": "real readonly lease disables original Undo/Redo/remove but permits saved 3D entry",
+      "pass": true
+    },
+    {
+      "case": "MH07",
+      "label": "trusted shortcuts/clicks and direct mutation API all preserve readonly data",
+      "pass": true
+    },
+    {
+      "case": "MH07",
+      "label": "readonly opens the actual saved 3D mesh without modifying World or metadata",
+      "pass": true
+    },
+    {
+      "case": "MH08",
+      "label": "no unexpected downloads, console errors or uncaught browser exceptions",
+      "pass": true,
+      "detail": {
+        "page": [],
+        "console": []
+      }
+    },
+    {
+      "case": "MH09",
+      "label": "source, harness and fresh runtime identity are unchanged through the complete run",
+      "pass": true
+    }
+  ],
+  "passed": 35,
+  "failed": 0,
+  "browserErrors": [],
+  "consoleErrors": [],
+  "downloads": []
+}

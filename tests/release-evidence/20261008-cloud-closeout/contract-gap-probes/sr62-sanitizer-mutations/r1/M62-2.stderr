@@ -1,0 +1,14 @@
+test_native_save_requires_capability_and_load_failures_preserve_live_world (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world) ... FAIL
+
+======================================================================
+FAIL: test_native_save_requires_capability_and_load_failures_preserve_live_world (tests.test_grid_subdivision_oracle.NativeSubdivisionOracle.test_native_save_requires_capability_and_load_failures_preserve_live_world)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/closure-evidence/sr62-sanitizer-mutations-r1/pristine-source/tests/test_grid_subdivision_oracle.py", line 918, in test_native_save_requires_capability_and_load_failures_preserve_live_world
+    self.assertIn("grid-source-rule 0 key 1", before[0])
+AssertionError: 'grid-source-rule 0 key 1' not found in 'requires grid-subdivision-rules/1\ngrid-system 0 name-hex 6f7261636c652030 main-along none u repeat 0 600 v repeat 0 400\ngrid-source-rule-highwater 0 next 2\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.123s
+
+FAILED (failures=1)

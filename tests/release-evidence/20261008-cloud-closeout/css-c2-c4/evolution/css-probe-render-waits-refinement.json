@@ -1,0 +1,30 @@
+{
+  "utc": "2026-10-08T17:39:21.312396+00:00",
+  "authorization": "Root explicitly delegated only private probe render-completion preconditions after contract agent completed; attempted followup returned thread limit.",
+  "old": {
+    "path": "/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe-before-render-waits.py",
+    "sha256": "2f1ccaeab57dac082b2c7d579de53340071663a2be12f98deae53699680adfad"
+  },
+  "new": {
+    "path": "/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py",
+    "sha256": "997c3b9a657fe1b2f1eec3840dd6c99e97d030b791e896f7355a1a65f2d59f5b"
+  },
+  "patch": {
+    "path": "/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css-probe-render-waits.patch",
+    "sha256": "4824ac53502f04d0a5866d3b3d957367ee00ea5050acc9f6a84aaddc251c35c8"
+  },
+  "changeClass": "Only bounded renderer/slot handler terminal-state waits before observation; fixed RGB, labels, aria, preset, trusted input and native World/objects/references/revision assertions unchanged.",
+  "syntax": {
+    "argv": [
+      "python",
+      "-m",
+      "py_compile",
+      "/workspace/closure-evidence/contracts/remaining-product-scope-20261008/css_c2_c4_browser_probe.py"
+    ],
+    "stdout": "",
+    "stderr": "",
+    "exitCode": 0
+  },
+  "browserStarted": false,
+  "repoProductWritten": false
+}

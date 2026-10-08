@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python",
+    "/workspace/closure-evidence/inventory/review_contract_browser_artifacts.py"
+  ],
+  "script_sha256": "039f8d5f2888ed9a4535a012da4e326f098872913fed5107d11eb722d4d866fd",
+  "checked_at": "2026-10-08T16:58:49.190431+00:00",
+  "correction": "Audit optional empty models key treated as empty per existing manifest contract; no change to product or executed harness",
+  "stdout": "{\"receipt\": \"/workspace/closure-evidence/contracts/browser-run-02-independent-review.json\", \"sha256\": \"83f51e0fd70f84cf0804b674bce6ec6dcd475aa0e5cc7369c2fc863718aa5106\", \"cases\": 4, \"manifest_entries\": 144, \"blocking_findings\": []}\n",
+  "stderr": "",
+  "exit_code": 0
+}

@@ -1,0 +1,710 @@
+{
+  "gate": "compound-project",
+  "auditedAt": "2026-10-08T18:53:40.553762+00:00",
+  "verdict": "bounded-pass",
+  "counts": {
+    "viewports": 2,
+    "observed": 22,
+    "passed": 22,
+    "failed": 0,
+    "basis": "all 11 check records per viewport; both complete case verdicts separately verified"
+  },
+  "commandExitCode": 0,
+  "gateExitCode": 0,
+  "controllerExitCode": 0,
+  "identityVerifiedByReceipt": true,
+  "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+  "mainAtAudit": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "dirtyBefore": "",
+  "dirtyAfter": "",
+  "dirtyDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "runtimeBefore": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "runtimeAfter": {
+    "schema": "geometry-runtime/1",
+    "version": "82b45ea9cf53c10b2c4fd6591ce0dd45d055a9d8f0e7e4fb5765eeaf64075200",
+    "fresh": true,
+    "root": "/workspace/geometry-axiom",
+    "pid": 196578,
+    "session": "ca31be77efb542b89d45d5a88c3b1b45"
+  },
+  "nativeConfiguredFiles": {
+    "bridge": {
+      "name": "bridge",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:17+00:00）",
+      "path": "/tmp/geometry-tests/bridge",
+      "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+      "sha256": "b76a6da590512722d6eda64cfc946392ccc2636f82ab187ef822c1e1606d68b5",
+      "sidecarSha256": "557a324f01866a47f3123f08511b0bc46941c06c45ac804bc01447a65166eaaf"
+    },
+    "model-base": {
+      "name": "model-base",
+      "state": "fresh",
+      "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T15:41:31+00:00）",
+      "path": "/tmp/geometry-tests/model-base",
+      "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+      "sha256": "1b350a7d54aac1d410e87f2a74010515739f3e2b8fc4b8c5216ff413b153662e",
+      "sidecarSha256": "e5dad713990793ed6c7b096bd4c2c6579ac3fbc527f7b9d545421be6550f6673"
+    }
+  },
+  "command": [
+    "python3",
+    "-B",
+    "/workspace/closure-evidence/ci-source-audit/save-reopen-gate-review/compound_project_probe.py",
+    "--url",
+    "http://127.0.0.1:18971/",
+    "--head",
+    "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "--out",
+    "/workspace/closure-evidence/compound-r1"
+  ],
+  "canonicalSource": "/workspace/closure-evidence/compound-r1/receipt.json",
+  "terminalLogRecord": {
+    "prefix": "",
+    "value": {
+      "out": "/workspace/closure-evidence/compound-r1",
+      "exitCode": 0,
+      "cases": [
+        {
+          "width": 1400,
+          "passed": true,
+          "checks": 11
+        },
+        {
+          "width": 390,
+          "passed": true,
+          "checks": 11
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Two viewport cases / 22 assertions: API-seeded nonempty model + unpublished rule draft + native assembly instance; true Save/New/full empty/fresh-profile Open and scene-only Export/New/Open. No UI authoring, cross-project merge, or service restart claim.",
+    "Linux Chromium, not physical phone/IME/native OS picker certification.",
+    "The command.log combines child stdout/stderr; separate gate-wrapper stdout/stderr are preserved.",
+    "A native file hash alone is not proof of which live native process was loaded; consult separate live-service binding."
+  ],
+  "canonicalLimitations": [
+    "API fixture seeding; no UI authoring or cross-project merge claim",
+    "Current model endpoint verification; historical model record used only as fixture",
+    "New Chromium process/profile per reopen; HTTP/native service is intentionally unchanged",
+    "Explicit download fallback and automated real chooser; no OS save picker/IME/physical-device claim",
+    "Successful import revision counters may advance; all other World fields are compared",
+    "Scene-only import follows New and does not assert a nonempty-project merge policy"
+  ],
+  "rawFiles": [
+    {
+      "source": "/workspace/closure-evidence/gates/compound-project/command.log",
+      "public": "compound-project/command.log",
+      "bytes": 2152,
+      "sha256": "473892e205377b2437a4bea695f586e02d75e7065146021ea88ab0806a7fed9b"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/compound-project/receipt.json",
+      "public": "compound-project/receipt.json",
+      "bytes": 5447,
+      "sha256": "9679b0811ec5d2af6e391d0ccd925abf3b9b340e0f7992eeff99c7b7a4a22af8"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/compound-project.command.json",
+      "public": "compound-project.command.json",
+      "bytes": 1371,
+      "sha256": "f1459a5c084dc52571c0c052971005c2a145bce1e922e7bb610086a6cb4f89ac"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/compound-project.stdout",
+      "public": "compound-project.stdout",
+      "bytes": 180,
+      "sha256": "915188346e8c37f8eaa9a9796a1abb2d5d4c2f88d796aab99db4293ffb040f36"
+    },
+    {
+      "source": "/workspace/closure-evidence/gates/compound-project.stderr",
+      "public": "compound-project.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "artifacts": [
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/after-owned-refusal.json",
+      "relative": "1400/after-owned-refusal.json",
+      "bytes": 296002,
+      "sha256": "161db1ebe7bbaf92c160e13583abc3d008089f0e3fe81516e7ce1e60fa30a4d1",
+      "public": "compound-project/artifacts/1400/after-owned-refusal.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/after-owned-refusal.scene",
+      "relative": "1400/after-owned-refusal.scene",
+      "bytes": 3744,
+      "sha256": "7adf9c2c564ac59875f81665322caa24b9cda39818751dc8f7bdcc26eebd374c",
+      "public": "compound-project/artifacts/1400/after-owned-refusal.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/archive-manifest.json",
+      "relative": "1400/archive-manifest.json",
+      "bytes": 116685,
+      "sha256": "2db4ecc2b9f7d160e2e95b8de794ac5b7121ec8f2bb65058334fa1edd3ce880a",
+      "public": "compound-project/artifacts/1400/archive-manifest.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/before-fresh-browser-empty.json",
+      "relative": "1400/before-fresh-browser-empty.json",
+      "bytes": 2206,
+      "sha256": "a808959f93b170ba493d58c925e2230a9cbd1588259c50d016d86af4520b7214",
+      "public": "compound-project/artifacts/1400/before-fresh-browser-empty.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/before-fresh-browser-empty.scene",
+      "relative": "1400/before-fresh-browser-empty.scene",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public": "compound-project/artifacts/1400/before-fresh-browser-empty.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/before-scene-open-empty.json",
+      "relative": "1400/before-scene-open-empty.json",
+      "bytes": 2206,
+      "sha256": "1d56544c6fd09c01ced4987df62874908c0a69ff7f4e6307eb606d05c23a7b1f",
+      "public": "compound-project/artifacts/1400/before-scene-open-empty.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/before-scene-open-empty.scene",
+      "relative": "1400/before-scene-open-empty.scene",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public": "compound-project/artifacts/1400/before-scene-open-empty.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/compound-fixture.json",
+      "relative": "1400/compound-fixture.json",
+      "bytes": 296002,
+      "sha256": "97f76b9733e3864e8b59ee19ca059ab224e391b14d3ceb0d2cfac6265d706d4c",
+      "public": "compound-project/artifacts/1400/compound-fixture.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/compound-fixture.scene",
+      "relative": "1400/compound-fixture.scene",
+      "bytes": 3744,
+      "sha256": "7adf9c2c564ac59875f81665322caa24b9cda39818751dc8f7bdcc26eebd374c",
+      "public": "compound-project/artifacts/1400/compound-fixture.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/compound-reopened.png",
+      "relative": "1400/compound-reopened.png",
+      "bytes": 125509,
+      "sha256": "21d259b880cd5ec52641b1d8d208abeab63cab4e46da2d61b10d73487982b322",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/compound-world.scene",
+      "relative": "1400/compound-world.scene",
+      "bytes": 3744,
+      "sha256": "7adf9c2c564ac59875f81665322caa24b9cda39818751dc8f7bdcc26eebd374c",
+      "public": "compound-project/artifacts/1400/compound-world.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/compound.gcanvas",
+      "relative": "1400/compound.gcanvas",
+      "bytes": 40950,
+      "sha256": "2b9b07ecad9c1f4932a5164c73a05b56400b308701f0b74760028faa81fea5c8",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/current-model-verification.json",
+      "relative": "1400/current-model-verification.json",
+      "bytes": 199017,
+      "sha256": "620b0787c025a493ad59578c81927104b7288887bb524b8fe53e61bd93388683",
+      "public": "compound-project/artifacts/1400/current-model-verification.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/dialogs.jsonl",
+      "relative": "1400/dialogs.jsonl",
+      "bytes": 897,
+      "sha256": "17182ec6c4881d27c2cc98b8b7d97b5c1cdfa014bdf3250d158a5a95fdaf5344",
+      "public": "compound-project/artifacts/1400/dialogs.jsonl"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/explicit-native.jsonl",
+      "relative": "1400/explicit-native.jsonl",
+      "bytes": 141316,
+      "sha256": "c6c204637e6985cdebaf4656d6ce576f236d6d241493b21f33746aae2c82583c",
+      "public": "compound-project/artifacts/1400/explicit-native.jsonl"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/fresh-profile-empty.json",
+      "relative": "1400/fresh-profile-empty.json",
+      "bytes": 2206,
+      "sha256": "40e1ec7bcae76e603f44f07fd84ea8c7bd4480455779148367a84a0609598786",
+      "public": "compound-project/artifacts/1400/fresh-profile-empty.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/fresh-profile-empty.scene",
+      "relative": "1400/fresh-profile-empty.scene",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public": "compound-project/artifacts/1400/fresh-profile-empty.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/http-raw.jsonl",
+      "relative": "1400/http-raw.jsonl",
+      "bytes": 572096,
+      "sha256": "e71686d05a5c7052d2aa8b0f92324baec01db67b74a6cc7e3f226c40bc2b39dc",
+      "public": "compound-project/artifacts/1400/http-raw.jsonl"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/initial-empty.json",
+      "relative": "1400/initial-empty.json",
+      "bytes": 2206,
+      "sha256": "58ab0317bb339b78aef054adfa714a70909061f9ce24ae030f2506c6d70df5d0",
+      "public": "compound-project/artifacts/1400/initial-empty.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/initial-empty.scene",
+      "relative": "1400/initial-empty.scene",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public": "compound-project/artifacts/1400/initial-empty.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/native-fixture.json",
+      "relative": "1400/native-fixture.json",
+      "bytes": 41201,
+      "sha256": "809e852538aaefa3401786a3915eb6512c0fc18e648da908d87a5a218a7d72f7",
+      "public": "compound-project/artifacts/1400/native-fixture.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/native-fixture.scene",
+      "relative": "1400/native-fixture.scene",
+      "bytes": 3744,
+      "sha256": "7adf9c2c564ac59875f81665322caa24b9cda39818751dc8f7bdcc26eebd374c",
+      "public": "compound-project/artifacts/1400/native-fixture.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/project-reopened.json",
+      "relative": "1400/project-reopened.json",
+      "bytes": 296002,
+      "sha256": "161db1ebe7bbaf92c160e13583abc3d008089f0e3fe81516e7ce1e60fa30a4d1",
+      "public": "compound-project/artifacts/1400/project-reopened.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/project-reopened.scene",
+      "relative": "1400/project-reopened.scene",
+      "bytes": 3744,
+      "sha256": "7adf9c2c564ac59875f81665322caa24b9cda39818751dc8f7bdcc26eebd374c",
+      "public": "compound-project/artifacts/1400/project-reopened.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/result.json",
+      "relative": "1400/result.json",
+      "bytes": 2294,
+      "sha256": "8b65e06c8c09560bc154dee156cb9fefe4bd9130aad68a5b8d58ca7842e0d7a3",
+      "public": "compound-project/artifacts/1400/result.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/saved.json",
+      "relative": "1400/saved.json",
+      "bytes": 296001,
+      "sha256": "3ad86653e26ef5e466b28b1ce33c9659da4acce500b17a64b5cfb6549f9af353",
+      "public": "compound-project/artifacts/1400/saved.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/saved.scene",
+      "relative": "1400/saved.scene",
+      "bytes": 3744,
+      "sha256": "7adf9c2c564ac59875f81665322caa24b9cda39818751dc8f7bdcc26eebd374c",
+      "public": "compound-project/artifacts/1400/saved.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/scene-only-reopened.png",
+      "relative": "1400/scene-only-reopened.png",
+      "bytes": 134049,
+      "sha256": "98f0164c437ac97802c7b369a98855a05669fba4a22f7e6f853ab5d8e62283e9",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/scene-reopened.json",
+      "relative": "1400/scene-reopened.json",
+      "bytes": 41201,
+      "sha256": "cc628f158db7fa7b13f2646f2cba08b711d12498ae1f1b128556df22350da4e6",
+      "public": "compound-project/artifacts/1400/scene-reopened.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/scene-reopened.scene",
+      "relative": "1400/scene-reopened.scene",
+      "bytes": 3744,
+      "sha256": "7adf9c2c564ac59875f81665322caa24b9cda39818751dc8f7bdcc26eebd374c",
+      "public": "compound-project/artifacts/1400/scene-reopened.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/trace-1.zip",
+      "relative": "1400/trace-1.zip",
+      "bytes": 2076877,
+      "sha256": "2810f003b8b6bede4b1461bdae2acc64cc750fad67e3ed5f9bbbac6ccbec59e5",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/1400/trace-2.zip",
+      "relative": "1400/trace-2.zip",
+      "bytes": 5970425,
+      "sha256": "4ce619a67fb2b8fd60075699fc42f435e422215f9b92668946c7bd746d8afe3b",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/after-owned-refusal.json",
+      "relative": "390/after-owned-refusal.json",
+      "bytes": 296002,
+      "sha256": "4bb7b1d17516acb8be10a38c091237fead101563ec36ae4fcd96f21163c2f377",
+      "public": "compound-project/artifacts/390/after-owned-refusal.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/after-owned-refusal.scene",
+      "relative": "390/after-owned-refusal.scene",
+      "bytes": 3744,
+      "sha256": "ee99f44d8a1ee9518b8713eb63c42017c3d521e3837583d5e64e4984df1e3723",
+      "public": "compound-project/artifacts/390/after-owned-refusal.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/archive-manifest.json",
+      "relative": "390/archive-manifest.json",
+      "bytes": 116685,
+      "sha256": "f059a64aba55753bf1bdb1c86cd8fe633a5055108cf45acd71db3ce19b5eae88",
+      "public": "compound-project/artifacts/390/archive-manifest.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/before-fresh-browser-empty.json",
+      "relative": "390/before-fresh-browser-empty.json",
+      "bytes": 2206,
+      "sha256": "767a64d6fd3171d529c71f7bbffe1eeb680c9f79dfea88bdca497afcbd08f936",
+      "public": "compound-project/artifacts/390/before-fresh-browser-empty.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/before-fresh-browser-empty.scene",
+      "relative": "390/before-fresh-browser-empty.scene",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public": "compound-project/artifacts/390/before-fresh-browser-empty.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/before-scene-open-empty.json",
+      "relative": "390/before-scene-open-empty.json",
+      "bytes": 2206,
+      "sha256": "6ea4a5029f84e1e98b98e53e61b9bb5797ef25043821aec5c5f881ee60c59a39",
+      "public": "compound-project/artifacts/390/before-scene-open-empty.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/before-scene-open-empty.scene",
+      "relative": "390/before-scene-open-empty.scene",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public": "compound-project/artifacts/390/before-scene-open-empty.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/compound-fixture.json",
+      "relative": "390/compound-fixture.json",
+      "bytes": 296002,
+      "sha256": "955575706973a7d0b55ecd0fb012931b8ae3e6afd198da22156e539ff1269c6d",
+      "public": "compound-project/artifacts/390/compound-fixture.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/compound-fixture.scene",
+      "relative": "390/compound-fixture.scene",
+      "bytes": 3744,
+      "sha256": "ee99f44d8a1ee9518b8713eb63c42017c3d521e3837583d5e64e4984df1e3723",
+      "public": "compound-project/artifacts/390/compound-fixture.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/compound-reopened.png",
+      "relative": "390/compound-reopened.png",
+      "bytes": 64332,
+      "sha256": "0bed0d6186d7c8145692fd9334b5ada15b7019b9943e874542aabd31b98fe156",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/compound-world.scene",
+      "relative": "390/compound-world.scene",
+      "bytes": 3744,
+      "sha256": "ee99f44d8a1ee9518b8713eb63c42017c3d521e3837583d5e64e4984df1e3723",
+      "public": "compound-project/artifacts/390/compound-world.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/compound.gcanvas",
+      "relative": "390/compound.gcanvas",
+      "bytes": 40950,
+      "sha256": "2852d3230713af431dd8bd8e5020c2788fa4ba40000ec496a6c5ed7dbb329e60",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/current-model-verification.json",
+      "relative": "390/current-model-verification.json",
+      "bytes": 199017,
+      "sha256": "620b0787c025a493ad59578c81927104b7288887bb524b8fe53e61bd93388683",
+      "public": "compound-project/artifacts/390/current-model-verification.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/dialogs.jsonl",
+      "relative": "390/dialogs.jsonl",
+      "bytes": 897,
+      "sha256": "94e9745ae30c1adc1fe68b96650f1d96e123caa29c90e0698f500dcf02e19ffb",
+      "public": "compound-project/artifacts/390/dialogs.jsonl"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/explicit-native.jsonl",
+      "relative": "390/explicit-native.jsonl",
+      "bytes": 141316,
+      "sha256": "77c64deb66cf88f7f5a0b9b66c78d9e0b92b748ab445fc38b86a742b5be3d3b5",
+      "public": "compound-project/artifacts/390/explicit-native.jsonl"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/fresh-profile-empty.json",
+      "relative": "390/fresh-profile-empty.json",
+      "bytes": 2206,
+      "sha256": "43c4563918800802e1be3558cac4656c56502de4d9021ccec85110e83e60c4c5",
+      "public": "compound-project/artifacts/390/fresh-profile-empty.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/fresh-profile-empty.scene",
+      "relative": "390/fresh-profile-empty.scene",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public": "compound-project/artifacts/390/fresh-profile-empty.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/http-raw.jsonl",
+      "relative": "390/http-raw.jsonl",
+      "bytes": 580378,
+      "sha256": "9495b6fd02649f03b14694984735c51fef560d51564223477605ac765fad8fa6",
+      "public": "compound-project/artifacts/390/http-raw.jsonl"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/initial-empty.json",
+      "relative": "390/initial-empty.json",
+      "bytes": 2206,
+      "sha256": "76ea76d2e315e9930bc179abe60c546b1c37a1b2de59c5dd520647b806bd2309",
+      "public": "compound-project/artifacts/390/initial-empty.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/initial-empty.scene",
+      "relative": "390/initial-empty.scene",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public": "compound-project/artifacts/390/initial-empty.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/native-fixture.json",
+      "relative": "390/native-fixture.json",
+      "bytes": 41201,
+      "sha256": "d80f52a5ea9a3d778caea50a9725c58f6dfa20bf6b7595c66bca2a6887d62d57",
+      "public": "compound-project/artifacts/390/native-fixture.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/native-fixture.scene",
+      "relative": "390/native-fixture.scene",
+      "bytes": 3744,
+      "sha256": "ee99f44d8a1ee9518b8713eb63c42017c3d521e3837583d5e64e4984df1e3723",
+      "public": "compound-project/artifacts/390/native-fixture.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/project-reopened.json",
+      "relative": "390/project-reopened.json",
+      "bytes": 296002,
+      "sha256": "4bb7b1d17516acb8be10a38c091237fead101563ec36ae4fcd96f21163c2f377",
+      "public": "compound-project/artifacts/390/project-reopened.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/project-reopened.scene",
+      "relative": "390/project-reopened.scene",
+      "bytes": 3744,
+      "sha256": "ee99f44d8a1ee9518b8713eb63c42017c3d521e3837583d5e64e4984df1e3723",
+      "public": "compound-project/artifacts/390/project-reopened.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/result.json",
+      "relative": "390/result.json",
+      "bytes": 2293,
+      "sha256": "161aefa7d6c3bf79d4d3b93087eadc6c56d6d6f1bb0634c4b6a7e5f4f5076ab5",
+      "public": "compound-project/artifacts/390/result.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/saved.json",
+      "relative": "390/saved.json",
+      "bytes": 296001,
+      "sha256": "490d05a3aca527ef311956ddfbf66e28a4093a4557e0802fffd1c87fae9bfd96",
+      "public": "compound-project/artifacts/390/saved.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/saved.scene",
+      "relative": "390/saved.scene",
+      "bytes": 3744,
+      "sha256": "ee99f44d8a1ee9518b8713eb63c42017c3d521e3837583d5e64e4984df1e3723",
+      "public": "compound-project/artifacts/390/saved.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/scene-only-reopened.png",
+      "relative": "390/scene-only-reopened.png",
+      "bytes": 69419,
+      "sha256": "0624a4edd2e65d0845d0ae9fe448db4cc6411b472120992d41fc6418f80d4a32",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/scene-reopened.json",
+      "relative": "390/scene-reopened.json",
+      "bytes": 41201,
+      "sha256": "73b3076681636f92993dc2c7086ddf9a2ec1d312085f7bb74a7a31c4ae23fbcf",
+      "public": "compound-project/artifacts/390/scene-reopened.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/scene-reopened.scene",
+      "relative": "390/scene-reopened.scene",
+      "bytes": 3744,
+      "sha256": "ee99f44d8a1ee9518b8713eb63c42017c3d521e3837583d5e64e4984df1e3723",
+      "public": "compound-project/artifacts/390/scene-reopened.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/trace-3.zip",
+      "relative": "390/trace-3.zip",
+      "bytes": 1807466,
+      "sha256": "b3f36904ea96fbfc404d40666c31b388105bc28cfce96d9e3b46ff9c004ff42c",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/390/trace-4.zip",
+      "relative": "390/trace-4.zip",
+      "bytes": 5315759,
+      "sha256": "3b4823a4220aadb914f46c052c6e2cca8a27f64d389e6cd64a093cb533978bd4",
+      "public": null,
+      "disposition": "hash only; original remains local"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/after-commands.json",
+      "relative": "after-commands.json",
+      "bytes": 980,
+      "sha256": "db7247973e347160f45379f3d24ae11460f4e35a9fc76cab3d771da0c4014d00",
+      "public": "compound-project/artifacts/after-commands.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/after-identity.json",
+      "relative": "after-identity.json",
+      "bytes": 1609,
+      "sha256": "745c6f48c0c62ead52133b377f622390490c4604f8070028118eacf6fb79a06a",
+      "public": "compound-project/artifacts/after-identity.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/after-live-bridge.json",
+      "relative": "after-live-bridge.json",
+      "bytes": 167,
+      "sha256": "20319cb32a3309f3c0a7d270f2586fdcfab600252e96a94746c9e7b053eba6b7",
+      "public": "compound-project/artifacts/after-live-bridge.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/after-processes.json",
+      "relative": "after-processes.json",
+      "bytes": 5244,
+      "sha256": "ae1fcde699dc5fb14715cd988819b2b40594e187a444d65b1e23ddc7b1e6829a",
+      "public": "compound-project/artifacts/after-processes.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/assembly-fixture.scene",
+      "relative": "assembly-fixture.scene",
+      "bytes": 3645,
+      "sha256": "d96abc77b028e805b5cb68b4ba648cc60ac89f46320c1143f1cc911d8168c54f",
+      "public": "compound-project/artifacts/assembly-fixture.scene"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/before-commands.json",
+      "relative": "before-commands.json",
+      "bytes": 980,
+      "sha256": "db7247973e347160f45379f3d24ae11460f4e35a9fc76cab3d771da0c4014d00",
+      "public": "compound-project/artifacts/before-commands.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/before-identity.json",
+      "relative": "before-identity.json",
+      "bytes": 1609,
+      "sha256": "8f947b235e2c9aa10c03515e7b2dbf206e7eaf892e035ced5b8b66cb8f3143df",
+      "public": "compound-project/artifacts/before-identity.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/before-live-bridge.json",
+      "relative": "before-live-bridge.json",
+      "bytes": 167,
+      "sha256": "20319cb32a3309f3c0a7d270f2586fdcfab600252e96a94746c9e7b053eba6b7",
+      "public": "compound-project/artifacts/before-live-bridge.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/before-processes.json",
+      "relative": "before-processes.json",
+      "bytes": 4972,
+      "sha256": "b9b81aebb90367f5e8357a666e741c727da299cf430dd4efe972cd52e99cee32",
+      "public": "compound-project/artifacts/before-processes.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/draft-fixture.json",
+      "relative": "draft-fixture.json",
+      "bytes": 265,
+      "sha256": "da09876bc6b1a1817a08106c1cc76c6beca22995b95cbbde50ec165b009aaa27",
+      "public": "compound-project/artifacts/draft-fixture.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/model-fixture.json",
+      "relative": "model-fixture.json",
+      "bytes": 101115,
+      "sha256": "63651f2b69a81ae4c55dd9f207f3505cb19ef9852711b829ebb97189997745a5",
+      "public": "compound-project/artifacts/model-fixture.json"
+    },
+    {
+      "source": "/workspace/closure-evidence/compound-r1/receipt.json",
+      "relative": "receipt.json",
+      "bytes": 12139,
+      "sha256": "e62947530c1f52011ed8ca3bc687d46d9d086bf2f4dd1b99ef0cae2ee4e7ad64",
+      "public": "compound-project/artifacts/receipt.json"
+    }
+  ],
+  "sources": [
+    {
+      "source": "/workspace/closure-evidence/ci-source-audit/save-reopen-gate-review/compound_project_probe.py",
+      "public": "compound-project/sources/compound_project_probe.py",
+      "bytes": 29906,
+      "sha256": "9c99a3e8ad5947cc3ae33aefd5f4751fbb6325a0acc958ca85b91367631fa41e",
+      "binding": "post-run source snapshot; verify against canonical script hashes where present"
+    },
+    {
+      "source": "/workspace/closure-evidence/sandbox-launch.cjs",
+      "public": "compound-project/sources/launch-adapters/sandbox-launch.cjs",
+      "bytes": 912,
+      "sha256": "c917611c821f63cea2e5ef3ed1c0ddde128dcf47fde65d1a7ace8ff24fba2b1e",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/closure-evidence/python-launch/sitecustomize.py",
+      "public": "compound-project/sources/launch-adapters/sitecustomize.py",
+      "bytes": 748,
+      "sha256": "e49545951bb661db0169e3d466c96321ee67c5f8a39fac3f7f0ed6954c22a7be",
+      "binding": "post-run adapter copy; launch policy only, no action/oracle changes"
+    },
+    {
+      "source": "/workspace/geometry-axiom/tests/release_gate.py",
+      "public": "compound-project/sources/tests/release_gate.py",
+      "bytes": 17583,
+      "sha256": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+      "binding": "post-run clean tested-head release identity wrapper"
+    }
+  ],
+  "independentEvidenceReview": "compound-project/independent-review.json",
+  "independentEvidenceReviewSha256": "89f66440b95529205a79418b9a7af568a79b826327d6eb1d2dc27c11492f9ca8"
+}

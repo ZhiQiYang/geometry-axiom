@@ -1,0 +1,48 @@
+{
+  "started_at": "2026-10-08T19:23:15.220876+00:00",
+  "finished_at": "2026-10-08T19:23:16.177278+00:00",
+  "main": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "priorMain": "5cc1ffa1ee85120eca14258b86b715151cad274f",
+  "openPRCount": 32,
+  "pages": [
+    {
+      "page": 1,
+      "count": 32,
+      "observed_at": "2026-10-08T19:23:16.128694+00:00"
+    }
+  ],
+  "headDelta": [],
+  "metadataDelta": [
+    {
+      "pr": 137,
+      "changes": {
+        "bodySHA256": {
+          "before": "a3956bbaa871d489397e0a5f65ad649dd649e5d58598626ad26ab8f16386e3e0",
+          "after": "ea9854331582a37f27f1cf087873abec50ed1109ecf3e56b5c202a236e351610"
+        },
+        "updated_at": {
+          "before": "2026-10-06T09:47:28Z",
+          "after": "2026-10-08T19:01:31Z"
+        }
+      },
+      "rootOwnKnownBodyUpdate": true
+    }
+  ],
+  "closedOrAbsentPrevious": [],
+  "pr173": {
+    "head": "181fc76049b2b2d001957d2ee0008448bbf5b024",
+    "updated_at": "2026-10-08T17:43:43Z",
+    "ownerRelease": "unknown; no new writer handoff inferred from unchanged head/body"
+  },
+  "localIdentity": {
+    "pwd": "/workspace/geometry-axiom",
+    "head": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+    "status": ""
+  },
+  "ci": "Not polled for unchanged heads. Final evidence commit E exact-head CI remains later step.",
+  "limits": [
+    "Single read window; complete paginated PR list, no issue refresh requested for this delta.",
+    "Root own PR137 body correction is only metadata update; not re-reviewed or backfilled into v5.",
+    "No external write or git mutation."
+  ]
+}

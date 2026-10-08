@@ -1,0 +1,271 @@
+{
+  "schema": "geometry-frozen-contract-mapping-files/1",
+  "scope": "source/evidence mapping only; later sr15/sr18/browser probes deliberately excluded",
+  "portableDestination": "public-candidate/report-support/final-contract-mapping",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1699,
+      "sha256": "10ccf475f5830302038ac4f721f812efad548ee861e155d8a1123e672ba50cf6"
+    },
+    {
+      "path": "assembly/P77-excerpt.txt",
+      "bytes": 8454,
+      "sha256": "c8d7190353bc78fa4f0b128becdd1e0d52dcd299dbcafa5463eb0b286da1f452"
+    },
+    {
+      "path": "assembly/README.md",
+      "bytes": 51772,
+      "sha256": "1a020a50e2d1aedafecbe68ddd7940575e8539c85aa1d51997393f644b5bc379"
+    },
+    {
+      "path": "assembly/artifact-hashes.json",
+      "bytes": 3909,
+      "sha256": "4367feffcc447129ecfaa29a4257cdbc8c9f8f9c6c16770a50b75d9d0106d281"
+    },
+    {
+      "path": "assembly/build_mapping.py",
+      "bytes": 31047,
+      "sha256": "dba92158e90879dc3d88c06310f8e578409cd8d0cf640a8df8385cc72f6ec940"
+    },
+    {
+      "path": "assembly/execution-bindings.json",
+      "bytes": 32701,
+      "sha256": "6127c18c5d3cc239368118cfabb110809ef04ad8e84859870507bd3791fa05e5"
+    },
+    {
+      "path": "assembly/issue-24-body.md",
+      "bytes": 21361,
+      "sha256": "f9f8e6b01dae22e91658c50721f7607b3ab90007c7fe7e3783e2354472be19d1"
+    },
+    {
+      "path": "assembly/issue-24-source.json",
+      "bytes": 408,
+      "sha256": "b9fba75a85cb04f7cc0edfb0efc1dbede37c026749a2fa13d30566a9a94e5748"
+    },
+    {
+      "path": "assembly/mapping.json",
+      "bytes": 117293,
+      "sha256": "653be6ff4f599233b9f42ccc664753429b48836d5e6a38d22c3f08e9d2c56ee7"
+    },
+    {
+      "path": "assembly/native-method-census.json",
+      "bytes": 33636,
+      "sha256": "e68c981fc1003ef4e3e710a1709da6a147ab1f02aa0d569343fc5a54599f92e1"
+    },
+    {
+      "path": "assembly/raw-native/extraction.json",
+      "bytes": 3358,
+      "sha256": "57b4d38f74c306a671fd966a426b95beacfb21af2bbb031b0b8acecdba3eeb77"
+    },
+    {
+      "path": "assembly/raw-native/node_tests-js.log",
+      "bytes": 66190,
+      "sha256": "a5f7287fa7f445574f9f7a7bac5ebba6032b967117bd795b537aad70714e7c10"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_capacity.json",
+      "bytes": 349,
+      "sha256": "d5e1bad87f6a414803ab5184d46de67fbfa074b4d0ef12c0cbcd2cd43d50fcac"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_capacity.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_capacity.unittest.log",
+      "bytes": 103,
+      "sha256": "b6cb6ac11d38dc3b6c381f89c829a7aef2fef5d0cf49e33e97dc8b19d24b2eec"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_generation.json",
+      "bytes": 354,
+      "sha256": "88ce4034a06cfc0b760547e10e0be9712e76641e8c44b4cf164f1da209c531ad"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_generation.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_generation.unittest.log",
+      "bytes": 121,
+      "sha256": "d95112733cb0607e1bb22442b737ad2cf7aba835f0f89bb29c34d43211d477a9"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_parameter_refs.json",
+      "bytes": 355,
+      "sha256": "d7c9140cde5c93e49005638bbf5fca7bf2b0547bbc9cde598d80e6536a34abd5"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_parameter_refs.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_parameter_refs.unittest.log",
+      "bytes": 101,
+      "sha256": "bc36c6bf87f0533c038cdf44cc07dff3a44505720b9bafd9252c7d3c95603275"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_rules.json",
+      "bytes": 349,
+      "sha256": "45586687c4df0e81b00478a10943c32c6c4662769cd374b66ea19dcbf9bbcdd9"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_rules.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assembly/raw-native/py_test_assembly_rules.unittest.log",
+      "bytes": 134,
+      "sha256": "368c7defe9c72e39dc73cb3d77ac5e62b50825857fa4797780512790a8179763"
+    },
+    {
+      "path": "assembly/source-identities.json",
+      "bytes": 17999,
+      "sha256": "1c35730947d740557be274eb0a87ecd9c4d67113809e7c7e80b31ae3a95c81f8"
+    },
+    {
+      "path": "freeze_manifest.py",
+      "bytes": 1852,
+      "sha256": "f4d4fe1ef9593093006c4da07b50c4b66636b67aae4bf774f1039b4cc8f1ef8f"
+    },
+    {
+      "path": "room54/README.md",
+      "bytes": 13968,
+      "sha256": "be83c99179dc994606668f55cfebd697b47297cfacdac181d3e14bfc053b42e8"
+    },
+    {
+      "path": "room54/acceptance-cost-measurements.json",
+      "bytes": 5157,
+      "sha256": "db2f11d0595757af66bb8f8026e2caabd96ab4face5fb68dfa4b2ecc29cb911f"
+    },
+    {
+      "path": "room54/build_mapping.py",
+      "bytes": 4633,
+      "sha256": "fa385cb289b3b1b09e0c08ba7f147bb1a6854f205695b8808b987a1fd4a92d5e"
+    },
+    {
+      "path": "room54/full-cdp-p79-cost-measurements.json",
+      "bytes": 2920,
+      "sha256": "202c3282d81518b380ca07dd3bbe45fba5d420a14044efe904a9a9c4a419d85e"
+    },
+    {
+      "path": "room54/gates.json",
+      "bytes": 8832,
+      "sha256": "c83e214c137d02fdf8eca8251144574038e014dc4dc8480aef4179c2ad967199"
+    },
+    {
+      "path": "room54/issue54-body.txt",
+      "bytes": 13901,
+      "sha256": "279f776a296ff254560d8646ea99b32afdfd3bbafb2afa81607d8c0bd0edaa95"
+    },
+    {
+      "path": "room54/manifest.json",
+      "bytes": 2531,
+      "sha256": "86e8c1de96d1d8b14872dcf9db185cc5596a1ccc1fa4e845e8af8aa8d2619fcb"
+    },
+    {
+      "path": "room54/pr153-body.txt",
+      "bytes": 1330,
+      "sha256": "fa00279c6651ba6f70c122e6c61357fd8979266dc6a04bc320a31d917c17c7bc"
+    },
+    {
+      "path": "room54/pr153-pr155-deliveries.json",
+      "bytes": 3391,
+      "sha256": "381e63bbcfe6aeb1d4645814cb57f11568e4af495612bc526e28622b47516f9f"
+    },
+    {
+      "path": "room54/pr155-body.txt",
+      "bytes": 1337,
+      "sha256": "b63aafdcb80679cebdef833acffde53ed2024e4a11a2f7c001ae22bc08eebcbf"
+    },
+    {
+      "path": "room54/review-command-evidence.json",
+      "bytes": 967,
+      "sha256": "373f10ac42a47166b245e4273e4774bc556905e5f3914099f7185dbd5b3d7674"
+    },
+    {
+      "path": "room54/room-acceptance-oracle-index.json",
+      "bytes": 28466,
+      "sha256": "2af9a91300eb3f0ac977c5ac05072232e1071819c0ac6294c8da30b8681cc755"
+    },
+    {
+      "path": "room54/room-keyboard-oracle-index.json",
+      "bytes": 48492,
+      "sha256": "a199e1c4502341f093945749677ae738360f6211857448c9e07f35cd56231d78"
+    },
+    {
+      "path": "room54/room-keyboard-r2-oracle-index.json",
+      "bytes": 51542,
+      "sha256": "455ee69530d693a87496ac5dab9e3a3b4a43d6fbdd23d16fe5e974b73a450249"
+    },
+    {
+      "path": "room54/room-pan-oracle-index.json",
+      "bytes": 3685,
+      "sha256": "4ee1a98b2bc3b8e8a595a8bd625d26aa6064b06cd2afc9ca833d36036db9f5f1"
+    },
+    {
+      "path": "room54/room-worker-oracle-index.json",
+      "bytes": 9663,
+      "sha256": "6c75c98a08089401fa82a15293011d350e8ac25a829be3da704615129de269a3"
+    },
+    {
+      "path": "room54/script-equivalence.json",
+      "bytes": 1454,
+      "sha256": "d34810b11e62c7ba46d6b186d29921f48fce9bd84a7475ca6f2beef996431183"
+    },
+    {
+      "path": "room54/source-manifest.json",
+      "bytes": 10109,
+      "sha256": "703d17e23764f5e73f59f9c4419332fe542f0d21b554b7a9d4e5cd92b15f0bca"
+    },
+    {
+      "path": "subdivision/README.md",
+      "bytes": 14807,
+      "sha256": "e8fe497bb89d08574ecb89f96511932d7f8df69c0ef2ecaefda69c42095e3158"
+    },
+    {
+      "path": "subdivision/browser-named-oracles.json",
+      "bytes": 36135,
+      "sha256": "57376aaf9c12be60014e77f9becf273332e735b21c51e1613b5faccf9966814f"
+    },
+    {
+      "path": "subdivision/issue62-source.json",
+      "bytes": 15674,
+      "sha256": "2e06d0d9382acceb5a5b1f4d076ebece709b59c1a7b2e0d9d14e8f4d849218cc"
+    },
+    {
+      "path": "subdivision/mapping-commands.json",
+      "bytes": 1565,
+      "sha256": "4c5f0cd59583b86c6c28fa36e1a1c10455385460c314abb04493d5bff8ab7e4f"
+    },
+    {
+      "path": "subdivision/native-method-census.json",
+      "bytes": 9871,
+      "sha256": "b5f2e8e894c3d001bd541ef0abe37427688637f46e6f128c6149f13fe3ca4e60"
+    },
+    {
+      "path": "subdivision/sr01-sr24.json",
+      "bytes": 108839,
+      "sha256": "0b0217783a84169d1f9ecd76b4df89708cd6991fc8054e71e7ed3a99b5db94b8"
+    },
+    {
+      "path": "subdivision/status-addendum.md",
+      "bytes": 2922,
+      "sha256": "12adefacd7ac62ee357b679c8b43e72da4e02c70e543cc413b9d11bf727b3b21"
+    },
+    {
+      "path": "subdivision_mapping.py",
+      "bytes": 20696,
+      "sha256": "42c98a6a995db6d315d5802ff60c34cbf339fa7c924dc46e54cbf58ecfe14a6c"
+    }
+  ],
+  "markdownLinkCheck": {
+    "missing": [],
+    "result": "pass"
+  }
+}

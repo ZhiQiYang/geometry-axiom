@@ -1,0 +1,62 @@
+{
+  "argv": [
+    "/workspace/closure-evidence/inventory/final-contract-mapping/subdivision_mapping.py"
+  ],
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "stdout": "d8642b2e684038cbb8e24aba057c44e7aac1b231\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "stdout": " M geometry-web/docs/RELEASE-CANDIDATE.md\n?? tests/release-evidence/20261008-cloud-closeout/\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "origin/main"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "stdout": "5cc1ffa1ee85120eca14258b86b715151cad274f\n",
+      "stderr": "",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--name-status",
+        "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+        "d8642b2e684038cbb8e24aba057c44e7aac1b231",
+        "--",
+        "tests/test_grid_subdivision_oracle.py",
+        "geometry-web/grid_rule_editor_test.js",
+        "geometry-web/grid_rule_lines_test.js",
+        "tests/test_grid_rule_draft.js",
+        "tests/test_subdivision_project_store.js",
+        "公理層.md"
+      ],
+      "cwd": "/workspace/geometry-axiom",
+      "stdout": "",
+      "stderr": "",
+      "exitCode": 0
+    }
+  ],
+  "readOnly": true
+}

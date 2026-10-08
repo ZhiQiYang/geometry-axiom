@@ -1,0 +1,36 @@
+--- css_c2_c4_browser_probe-before-render-waits.py
++++ css_c2_c4_browser_probe.py
+@@ -183,6 +183,11 @@
+ 
+     def check_beam():
+         setup(BEAM)
++        # openSpaceWorkspace publishes focus/layout before awaited rendering.
++        # Wait for the actual beam/list artifacts, not that early navigation flag.
++        page.wait_for_function("""()=>{const b=document.querySelector('#spacePlanSvg .space-plan-beam');
++          const r=b?.getBoundingClientRect();return document.querySelectorAll('#spacePlanSvg .space-plan-beam').length===1
++          &&document.querySelectorAll('#spaceRcList .type-icon.beam').length===1&&r.width>0&&r.height>0;}""", timeout=30000)
+         baseline = snapshot('before')
+         assert len(baseline['objects']['beams']) == 1 and baseline['objects']['beams'][0]['id'] == 1
+         drawer('left', True)
+@@ -203,7 +208,11 @@
+         return page.locator('#spaceInspectorContent .slot-empty[data-slot-label="前牆"]')
+ 
+     def assert_slot_open(label):
+-        page.wait_for_function("oc.focus?.t==='face'&&oc.focus.id===3&&oc.edit?.bid===3&&document.querySelector('#placeU')&&document.querySelector('#placeV')", timeout=30000)
++        page.wait_for_function("""oc.focus?.t==='face'&&oc.focus.id===3&&oc.edit?.bid===3
++          &&document.querySelector('#placeU')&&document.querySelector('#placeV')
++          &&pendingSlot?.space===1&&pendingSlot.bid===3&&pendingSlot.label==='前牆'
++          &&document.querySelector('#status').textContent.includes('前牆')
++          &&document.querySelector('#status').textContent.includes('面 3')""", timeout=30000)
+         ready()
+         actual = page.evaluate('''()=>({u:document.querySelector('#placeU').value,v:document.querySelector('#placeV').value,
+             preset:PLACE_PRESETS['y=0 牆'],status:document.querySelector('#status').textContent,
+@@ -216,6 +225,8 @@
+ 
+     def check_slots():
+         setup(SLOTS)
++        page.wait_for_function("""document.querySelectorAll('#spaceInspectorContent .slot-empty').length===4
++          &&!!document.querySelector('#spaceInspectorContent .slot-empty[data-slot-label="前牆"]')""", timeout=30000)
+         baseline = snapshot('before')
+         drawer('right', True)
+         page.mouse.move(0, 0)

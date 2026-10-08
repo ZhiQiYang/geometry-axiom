@@ -1,0 +1,39 @@
+CLOSEOUT_BROWSER_LAUNCH {"sandbox":true,"args":[]}
+PASS correct app identity
+PASS meaningful app shell is present
+PASS one shared source plane
+PASS existing boundary is explicitly named and associated
+PASS empty new-room draft can be cancelled
+PASS pending room draft blocks project save
+PASS empty draft cancellation leaves project untouched
+PASS real pointer drafting has expected UV vertices
+PASS cancel leaves native geometry and attachment untouched
+PASS real pointer drafting has expected UV vertices
+PASS new preview does not replace A
+PASS two independent native boundary IDs
+PASS new B preserves A
+PASS new B equals independent oracle
+PASS both rooms use shared initial basis
+PASS rename changes only selected room metadata
+PASS metadata undo restores room name
+PASS real pointer drafting has expected UV vertices
+PASS explicit edit replaces only selected B outer boundary
+PASS explicit B edit preserves A
+PASS basis change marks existing rooms for review
+PASS basis change never transforms native geometry
+PASS explicit review acknowledges only selected room
+PASS explicit review changes no native geometry
+PASS real pointer drafting has expected UV vertices
+PASS new room accepts new basis
+PASS new basis room preserves A geometry
+PASS adopted source saves no legacy independent basis shadow
+PASS shared PDF stored once in ZIP
+PASS true ZIP fresh-context import preserves full native scene
+PASS true ZIP fresh-context import preserves source basis and room records
+PASS unlink removes selected room list record
+PASS unlink keeps native geometry
+PASS undo restores room association
+PASS 390px has visible continuous-room entry
+PASS 390px lists all room records
+PASS no app page or console errors
+{"checks":37,"evidence":"/tmp/geometry-closeout-r2-gates/issue77-browser","viewports":["1440x1000","390x844"],"browser":"Chromium via Playwright; Browser plugin unavailable","ownerAdapter":"official owner API","iOS":"not tested"}

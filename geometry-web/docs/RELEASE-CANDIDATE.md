@@ -1,11 +1,17 @@
 # 交付候選與反覆驗收（2026-10-08）
 
+現行整合草稿為 [#176](https://github.com/ZhiQiYang/geometry-axiom/pull/176)，
+分支 `codex/integration-closeout-20261008-r2`，產品驗證候選
+`5174a8dafd8c48329d7166abbd3d104e3c28c0c4`。完整版本、命令、原件、
+已完成部分與內部／外部未完成项見[本次交付報告](../../tests/release-evidence/20261008-cloud-closeout/README.md)。
+候選保持 draft；未合併 main。本頁下方 #169 的數字與環境敘述保留為歷史，不改標本輪。
+
 本輪以已批准功能在同一版本正常運作為目標，不增加未定案幾何語義。公理仍以
 `公理層.md` 為準；正式交付狀態取決於下列實際收據，不取決於 PR 數量或單一 CI 綠燈。
 
 ## 候選範圍
 
-目前整合分支為 `codex/final-release-closeout-20261008`，包含 main `5cc1ffa`、
+#169 歷史整合分支為 `codex/final-release-closeout-20261008`，包含 main `5cc1ffa`、
 下列原 PR162 候選及新一輪收尾。以下先保留 `codex/release-readiness-20261007`
 由 main `6562fa5` 整合的歷史來源，不把舊收據改標成新版執行：
 
@@ -18,7 +24,8 @@
 | PDF 資源釋放、非同步 guide 所有權 | #154 `83769b9`、#156 `2a7d9cb` |
 | 瀏覽器通知分類、Windows binary 身分核對 | #144 `7cfa1a8`、#136 `cc3c1c4` |
 
-#141 的九個元件檔已逐 blob 包含在 #146。本輪另整合：
+#141 的七份實作／測試檔已逐 blob 包含在 #146，另兩份文件分開核對，
+不能稱九個可執行元件。#169 當輪另整合：
 
 | 功能／修正 | 保留的精確來源 |
 | --- | --- |
@@ -66,7 +73,7 @@ zero-room first collection 與跨 reload 未接受草稿不屬於本 session sli
 測試只使用專屬服務、native process、feedback/profile 和合成來源；不使用使用者正在編輯的服務。
 所有原始日誌、畫面、下載檔與前後 runtime 收據保存於本次 TEMP evidence 目錄。
 
-## 本輪實測結果與可核查證據
+## #169 歷史實測結果與可核查證據
 
 原整合產品／完整測試凍結為 `459478e9f68fe8ee9252a5f6b4a1ffb2213a5207`。
 驗收保留各次實跑版本；後續文件與證據提交另核對差異，不將舊收據改標為新版執行。
@@ -129,7 +136,7 @@ focused Node 30（新 helper 21、既有 CDP evaluator 9）；四種卡片實際
 PR168 原 Windows 205 項使用較舊 bridge 與 main 基底，只保留原有限範圍，
 不替代最新 Windows P70／P88 或完整平台驗收。
 
-最後遠端核對的 24 個來源 PR 中，只有 PR165 自原覆蓋快照前進到 `354bad2`。
+#169 當輪最後遠端核對的 24 個來源 PR 中，只有 PR165 自原覆蓋快照前進到 `354bad2`。
 該提交僅為 [AUX 審查文件](AUX-REVIEW-20261008.md) 新增 26 行，已另行保留來源；
 其中「未驗」與未完成紀錄均屬文中指定的舊候選／Windows 執行，不改標成本輪結果。
 實際文件合併與發布差異見
@@ -140,8 +147,13 @@ PR168 原 Windows 205 項使用較舊 bridge 與 main 基底，只保留原有�
 - Linux Chromium 的窄 viewport 不能證明實體手機、IME、Windows GDI/SAC 或 OS 原生 Save picker。
 - Windows 一般入口仍為 `geometry-web/start.ps1`；啟動前後須核對 `/runtime`，不能以首頁 HTTP 200 代替。
 - A/B active B 中斷目前保全 ticket/native B 並拒絕不安全續接；明確捨棄與已完成 Finish 的恢復須實測，不能宣稱任意中斷均可續編。
+  #176 已另核 Finish／捨棄及生命週期；完整 Resume 仍需修改前持久化資格、metadata／World／ticket
+  的同一工作歸屬，見[獨立審查](../../tests/release-evidence/20261008-cloud-closeout/report-support/resume-independent-review.md)。
+  `tests/INTEGRATION-GATES.md` 中 AF_UNIX／未啟動 browser 段落只描述舊輪；
+  現行實跑以[閘門矩陣](../../tests/release-evidence/20261008-cloud-closeout/gates/matrix.md)為準。
+  該命令檔仍由 #175 owner 維護，精確過期段落已列交接，未競寫或把舊結果改綁。
 - 遠端 CI 若在任何 step 前失敗，記錄為基礎設施阻塞；本地實測結果與遠端結果分開。
 - `.scene` 僅是原生幾何，不是包含來源、模型、草稿和方案的完整專案备份；交付及搬移使用 `.gcanvas`。
 
-本輪逐輪結果、精確受測版本、原始收據位置及未解除阻塞記錄於候選 PR 的驗收說明。
+現行 #176 的逐輪結果、精確受測版本、原始收據及未解除阻塞以本頁頂端交付報告為準。
 此文件定義範圍與停止條件，本身不是正式發佈聲明。
