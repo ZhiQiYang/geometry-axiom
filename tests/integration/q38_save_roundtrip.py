@@ -3,6 +3,8 @@
 Fixture creation uses public native preview/confirm APIs. Save, New, Open and
 history use real browser controls. It complements the UI authoring gate, the
 35-case model-library gate and the 33-case ordinary save gate; counts stay separate.
+The unavailable headless OS save dialog is explicitly disabled to exercise the
+product's download fallback; no native OS picker claim is made.
 """
 import base64
 from contextlib import contextmanager
@@ -123,12 +125,15 @@ def launch(driver):
         "executable": os.environ.get("GEOMETRY_CHROME", "/usr/bin/chromium"),
         "profile": "new Playwright-owned temporary browser profile; no persisted user context"})
     context = browser.new_context(viewport={"width": 1440, "height": 1000}, accept_downloads=True)
+    context.add_init_script("window.__q38OriginalSavePicker=typeof window.showSaveFilePicker;Object.defineProperty(window,'showSaveFilePicker',{configurable:true,writable:true,value:undefined});")
     page = context.new_page()
     page.on("dialog", lambda dialog: dialog.accept())
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.on("console", lambda message: errors.append(message.text) if message.type == "error" else None)
     page.goto(URL)
     ready()
+    receipt["browserLaunches"][-1]["savePicker"] = js("return {originalType:window.__q38OriginalSavePicker,testType:typeof window.showSaveFilePicker,mode:'explicit-download-fallback'};")
+    assert receipt["browserLaunches"][-1]["savePicker"]["testType"] == "undefined"
 
 
 @contextmanager
@@ -174,7 +179,7 @@ receipt = {"schema": "geometry-q38-save-roundtrip/1", "command": [sys.executable
            "harnessSha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
            "environment": {key: os.environ.get(key) for key in ("GEOMETRY_TEST_URL", "GEOMETRY_Q38_SAVE_OUT", "GEOMETRY_CHROME")},
            "limitations": ["Native public preview/confirm APIs create the fixture; UI authoring belongs to the separate Q38 browser gate.",
-                           "Real Chromium download and file chooser; no physical mobile, native OS picker or IME claim.",
+                           "showSaveFilePicker is explicitly disabled before page load to select the product download fallback; real Chromium download and file chooser are exercised, with no native OS save picker, physical mobile or IME claim.",
                            "All native Q38 definitions are covered; reference image/PDF attachments and draft payloads are outside this fixture."]}
 code = 1
 try:
