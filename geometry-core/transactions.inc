@@ -585,7 +585,8 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     g_subgrid_before=previous_baseline;
     g_reference_capturing=false;
     bool affects=reference_may_affect(world,tokens,count);
-    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate->engineering,sizeof world->engineering) || memcmp(&world->assembly,&candidate->assembly,sizeof world->assembly) || memcmp(&world->section_profiles,&candidate->section_profiles,sizeof world->section_profiles));
+    const World *impact_candidate=ok?candidate:&g_reference_trial;
+    bool engineering_edit=!g_parsing_scene_file && (!strcmp(tokens[0],"engineering") || memcmp(&world->engineering,&candidate->engineering,sizeof world->engineering) || memcmp(&world->assembly,&candidate->assembly,sizeof world->assembly) || memcmp(&world->section_profiles,&impact_candidate->section_profiles,sizeof world->section_profiles));
     uint32_t system_edit_id;
     bool system_edit=!g_parsing_scene_file && count>1 && !strcmp(tokens[0],"grid-system") &&
         parse_u32(tokens[1],&system_edit_id) && world_find_grid_system(world,system_edit_id);

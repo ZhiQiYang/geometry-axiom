@@ -99,7 +99,9 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
         ok=operation(candidate,&j,eng_json_at(&j,operations,i));
         if(ok)ok=assembly_versions_immutable(&g_world,candidate);
     }
-    if(ok){const World *previous=g_subgrid_before;g_subgrid_before=&g_world;ok=world_revalidate(candidate);g_subgrid_before=previous;if(!ok&&!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}
+    if(ok){const World *previous=g_subgrid_before;bool capturing=g_reference_capturing;g_reference_capturing=true;g_reference_trial=*candidate;
+        g_subgrid_before=&g_world;ok=world_revalidate(candidate);g_subgrid_before=previous;g_reference_capturing=capturing;
+        if(!ok){*candidate=g_reference_trial;if(!g_engineering_error[0])eng_fail(g_revalidate_error[0]?g_revalidate_error:"I35: candidate geometry is invalid");}}
     for(size_t i=0;i<candidate->timber_count&&ok;++i)if(!candidate->timbers[i].placed){ok=eng_fail("I9: candidate still contains an unplaced timber");}
     char *stage_label=(char *)label;reference_stage(&g_world,candidate,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
