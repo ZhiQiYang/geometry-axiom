@@ -78,8 +78,9 @@ class ModelingTransport(unittest.TestCase):
 
     def test_http_models_are_isolated_and_reconstructible(self):
         self.assertIn("engineering-spec/1", self.capabilities["capabilities"])
-        self.assertEqual(len(self.capabilities["capabilities"]), 7)
+        self.assertEqual(len(self.capabilities["capabilities"]), 8)
         self.assertIn("parameters/1", self.capabilities["capabilities"])
+        self.assertIn("section-profile/1", self.capabilities["capabilities"])
         self.assertTrue(self.post("/api", {"cmd": "line spec transport_sentinel 419"})["ok"])
         def world():
             dump = self.post("/api", {"cmd": "dump"})
@@ -140,6 +141,34 @@ class ModelingTransport(unittest.TestCase):
         self.assertEqual(failed.returncode, 3)
         self.assertEqual(json.loads(failed.stderr)["status"], "INCOMPLETE")
         self.assertEqual(package_path.read_bytes(), previous)
+
+    def test_section_profile_http_and_cli_keep_frames_identity_and_atomic_exports(self):
+        from tests.test_section_profile_modeling import scene, run, request
+        source = {"definitions": {"base_scene": scene(), "extensions": []}, "request": request()}
+        before = self.post("/api", {"cmd": "dump"})["text"]
+        package = self.post("/model", source)
+        self.assertEqual(package["derived"]["status"], "COMPLETE")
+        self.assertEqual([obj["volume_mm3"] for obj in package["derived"]["objects"]], ["84960000", "2138400", "2138400", "2138400"])
+        self.assertEqual([obj["member_path"] for obj in package["derived"]["objects"]], [[], [1], [2], [3]])
+        self.assertEqual(self.post("/model/verify", package)["derived"], package["derived"])
+        self.assertEqual(self.post("/api", {"cmd": "dump"})["text"], before)
+        source_path = self.directory / "profile-source.json"
+        package_path = self.directory / "profile.model.json"
+        obj_path = self.directory / "profile.obj"
+        source_path.write_text(json.dumps(source), encoding="utf-8")
+        command = [sys.executable, str(CLI), "build", str(source_path), "-o", str(package_path), "--obj", str(obj_path)]
+        result = subprocess.run(command, cwd=ROOT, env=self.environment, capture_output=True, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stderr.decode())
+        self.assertEqual(json.loads(package_path.read_bytes()), package)
+        self.assertIn("coordinates: local (u,v,n)", obj_path.read_text())
+        previous = package_path.read_bytes(), obj_path.read_bytes()
+        source["definitions"]["base_scene"] = scene(runs=[run(), run(2)])
+        source["request"] = request(1, 2)
+        source_path.write_text(json.dumps(source), encoding="utf-8")
+        result = subprocess.run(command, cwd=ROOT, env=self.environment, capture_output=True, timeout=60)
+        self.assertEqual(result.returncode, 4)
+        self.assertEqual(json.loads(result.stderr)["diagnostics"][0]["code"], "OBJ_COORDINATE_SPACE")
+        self.assertEqual((package_path.read_bytes(), obj_path.read_bytes()), previous)
 
 
 if __name__ == "__main__":

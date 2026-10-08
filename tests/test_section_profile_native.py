@@ -225,7 +225,7 @@ class SectionProfileNative(unittest.TestCase):
         state = self.read()
         self.assertTrue(state["simplePlacementSupported"])
         self.assertTrue(state["diagnosticsComplete"])
-        self.assertNotIn("section-profile/1", state["capabilities"])
+        self.assertIn("section-profile/1", state["capabilities"])
         self.assertIn("section-profile/1", state["required_capabilities"])
         self.assertIn("section-profile-native/1", state["native_capabilities"])
         records = state["state"]["members"]
