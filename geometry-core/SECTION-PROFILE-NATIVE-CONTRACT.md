@@ -117,3 +117,18 @@ node --test tests/test_section_profile_compat.js
 永久測試核對固定數字、真核心負例、完整 dump／fresh-process roundtrip、零 id、固定來源、不同 token、取消與過期、undo/redo、容量、舊消費端拒絕。
 外部 oracle、aggregate／變異及最終 commit／binary 指紋另外記錄。
 早期 dirty tree 結果保留原 head／狀態；可用完整受驗來源雜湊等值綁定後續 commit，但不得把原收據改標成當時已在最終 clean commit 上執行。
+
+### 2026-10-08 本地驗證
+
+產品提交 `569b229` 的永久原生測試 13／13、獨立外部原生 oracle 18／18、
+舊 JS／Python／C 消費端拒絕檢查 6／6 均通過。
+完整非瀏覽器 aggregate 實跑 **70 suites：2174 pass、0 fail、1 個具名 Windows GDI skip，exit 0**。
+以該次完整執行更新 expected：只新增原生 suite 13 項，Node 共用 suite 由 510 增至 513；既有 floor 不降低。
+這不是 CDP、實體裝置、Windows 或上述未完成產品層的驗收。
+
+核心來源變更後也實際重新編譯／執行 mutation inventory，未只改收據雜湊：
+未變異 baseline 139／139；48 筆為 40 killed、1 crashed、4 equivalent、3 retired，
+0 survived／invalid／stale／blocked，exit 0。等價項亦經原 runner 的實跑核對。
+工具保留執行當時的 HEAD `5cc1ffa`（加凍結中的本切片修改）；
+收據的 source／closure 指紋與 `569b229` 核心來源相符，不能解讀為未修改 main 的測試。
+提交中的 `tests/mutants_results.json` 是實跑生成的收據；`mutate.py --check` 是其後的 freshness 核對。
