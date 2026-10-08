@@ -216,6 +216,36 @@ function multiPDF(){
 }
 const session=()=>read('RoomCollectionWorkspace.candidateSnapshot()');
 const attachment=()=>read(`ReferenceWorkspace.readFeatureAttachment('source-rooms',ReferenceWorkspace.getProjectState().contextToken)`);
+// Hold genuine native Worker events at the consumer seam. Release after
+// terminate is explicitly injected; it does not simulate the geometry engine.
+function workerGate(){
+ const Native=window.Worker,entries=[];
+ window.__multiWorkers={entries,release:i=>{const e=entries[i];if(!e?.event||e.delivered)throw Error('missing held result');e.delivered=true;e.callback.call(e.owner,e.event);},restore:()=>{window.Worker=Native;}};
+ window.Worker=class {
+  constructor(script,options){
+   if(new URL(script,location.href).pathname!=='/room-outline-worker.js')return new Native(script,options);
+   const e={owner:this,delivered:false,terminated:0};entries.push(e);this.entry=e;this.native=new Native(script,options);
+   this.native.addEventListener('message',event=>{e.event=event;e.callback=this.onmessage;});
+   this.native.addEventListener('error',event=>this.onerror?.(event));this.native.addEventListener('messageerror',event=>this.onmessageerror?.(event));
+  }
+  postMessage(data,transfer){this.native.postMessage(data,transfer);}
+  terminate(){this.entry.terminated++;this.native.terminate();}
+ };
+}
+async function workerRaces(){
+ await page.setViewportSize({width:1440,height:1000});await panel();await page.evaluate(workerGate);
+ const scene=await native();await ctl('#roomNew');await wait(`window.__multiWorkers.entries[0]?.event`);
+ await ctl('#refRoomCancel');await ctl('#roomNew');await wait(`window.__multiWorkers.entries[1]?.event`);
+ await page.evaluate(()=>window.__multiWorkers.release(0));
+ await check('late cancelled real Worker cannot clear new batch consumer',await read(`RoomOutlineWorkspace.hasWork&&RoomCollectionWorkspace.candidateSnapshot()===null&&window.__multiWorkers.entries[0].terminated===1&&window.__multiWorkers.entries[1].terminated===0`) && await native()===scene);
+ await page.evaluate(()=>window.__multiWorkers.release(1));await wait(`RoomCollectionWorkspace.candidateSnapshot()?.total===3`);
+ await check('new batch survives late predecessor and uses actual native Worker result',await read(`!RoomOutlineWorkspace.hasWork&&window.__multiWorkers.entries[1].terminated===1`) && await native()===scene);
+ await ctl('#roomNew');await wait(`window.__multiWorkers.entries[2]?.event`);
+ await disclose('#ulOpacity');await page.locator('#ulOpacity').focus();await page.locator('#ulOpacity').press('ArrowLeft');await settle();
+ await page.evaluate(()=>window.__multiWorkers.release(2));await wait(`!RoomOutlineWorkspace.hasWork`);
+ await check('changed source display/history refuses old batch result and keeps native rooms', (await session()).stale && await native()===scene && await read(`$('refRoomStatus').textContent.includes('變更')`));
+ await ctl('#roomCandidatesDiscard');await page.evaluate(()=>window.__multiWorkers.restore());
+}
 async function main(){
  run.browser='Browser plugin not available';run.runtimeBefore=await runtime();
  await check('fresh isolated exact checkout',run.runtimeBefore.fresh===true&&path.resolve(run.runtimeBefore.root)===ROOT);
@@ -230,6 +260,8 @@ async function main(){
  await select('#roomNewMethod','candidates');await ctl('#roomNew');
  await wait(`RoomCollectionWorkspace.candidateSnapshot()?.total===3`);
  let s=await session();await check('three independent candidate regions, A exact duplicate suppressed',s.total===3&&s.candidates[0].existing&&s.candidates[1].status==='pending'&&s.candidates[2].status==='pending',s);
+ const expectedMm=[[[640,640],[4560,640],[4560,3360],[640,3360]],[[5640,640],[10760,640],[10760,1760],[8760,1760],[8760,3360],[5640,3360]],[[1040,4440],[4960,4440],[4960,7360],[1040,7360]]];
+ await check('all ordered candidate millimetres match independent PDF/calibration oracle',s.candidates.every((c,i)=>equal(c.points,expectedMm[i])));
  await shot('desktop-list');const old=await native();
  current='candidate-B';await ctl('[data-room-candidate="1"]');
  await check('B uses new-room intent and cannot accept without reviewed',await read(`RoomCollectionWorkspace.controller.intent.roomId===null&&$('refRoomConfirm').disabled`));
@@ -268,7 +300,7 @@ async function main(){
  await history('undo');await wait(`RoomCollectionWorkspace.candidateSnapshot()?.stale`);
  await check('undo invalidates parked session and atomically removes B',(await attachment()).rooms.length===1&&(await session()).stale);
  await history('redo');await check('redo restores B with stale candidate list',(await attachment()).rooms.length===2&&(await session()).stale);
- await panel();await ctl('#roomCandidatesDiscard');
+ await panel();await ctl('#roomCandidatesDiscard');await workerRaces();
  current='accept-C';await ctl('#roomNew');await wait(`RoomCollectionWorkspace.candidateSnapshot()?.total===3`);
  await ctl('[data-room-candidate="2"]');await ctl('#refRoomReviewed');await ctl('#refRoomConfirm');await wait(`$('roomConfirm')`);await ctl('#roomConfirm');
  await wait(`!RoomCollectionWorkspace.hasWork&&!RoomOutlineWorkspace.hasWork`);
