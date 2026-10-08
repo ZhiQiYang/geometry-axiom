@@ -500,6 +500,7 @@ window.ParameterUI = (() => {
     paintResults(s);
     $('paramResult').removeAttribute('data-stale');
     $('paramResult').innerHTML = impactHtml(s, p);
+    appendSectionProfileImpact($('paramResult'), p);
     $('paramConfirm').disabled = !p.valid;
     if (p.valid) status(s.previewKind !== 'put' ? '試算完成，確認後整筆套用。' : s.fresh ? '全部欄位有效，可建立卡片' : '全部欄位有效，可套用', false, 'ok');
     else status(s.failure?.fieldId != null ? '請修正標紅的欄位' : '未套用：請修正欄位或引用。', true, 'error');
