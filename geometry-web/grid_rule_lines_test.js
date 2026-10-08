@@ -155,7 +155,9 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
         apiRequest=async function(cmd,...rest){const r=await __ruleApi(cmd,...rest);const g=window.__ruleGate;if(g&&g.phase==='arming'&&cmd.startsWith('grid-rule-query ')){g.phase='held';await new Promise(resolve=>window.__ruleRelease=resolve);g.phase='released';g.seqAtRelease=fe.gridPreviewSeq;}return r;};void 0`);
       const done=mode==='rebuild'
         ?`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true&&window.__ruleGate.rebuilt>window.__ruleGate.seqAtRelease`
-        :`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true&&window.__ruleGate.rebuilt==null&&fe.gridPreviewSeq===window.__ruleGate.seqAtRelease`;
+        :mode==='dropped'
+        ?`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true&&window.__ruleGate.rebuilt==null&&fe.gridPreviewSeq===window.__ruleGate.seqAtRelease`
+        :`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true`;
       try{
         await ctl('[data-rule-exact]');await wait(`window.__ruleGate.phase==='held'&&!!window.__ruleRelease&&window.__ruleGate.clickSettled===false`);
         await move();
@@ -165,6 +167,8 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
         check(`${width} ${label} 搶回引用式會被判失敗`,await read(`(()=>{const stole=id=>id==='refGuideExpr';return stole('refGuideExpr')===true&&stole(document.activeElement?.id||'')===false;})()`)===true);
         await read(`if(window.__ruleRelease)window.__ruleRelease();window.__ruleRelease=null;void 0`);
         await wait(done);
+        const observed=await read(`window.__ruleGate.rebuilt==null?'沒有再重建檢查器':'釋放後重建 '+window.__ruleGate.rebuilt`);
+        check(`${width} ${label} 處理結束時${observed}`,await read(`window.__ruleGate.clickSettled===true&&(window.__ruleGate.rebuilt==null||window.__ruleGate.rebuilt>window.__ruleGate.seqAtRelease)`));
         const after=await guideTarget();
         check(`${width} ${label} 舊查詢不搶回焦點`,await read(`document.activeElement?.id!=='refGuideExpr'`)&&await settle(before,after));
       }finally{await read(`if(window.__ruleRelease)window.__ruleRelease();window.__ruleRelease=null;if(window.__ruleOrigRender)renderFaceInspector=window.__ruleOrigRender;if(window.__ruleExact&&window.__ruleOrigClick)window.__ruleExact.onclick=window.__ruleOrigClick;if(window.__ruleApi)apiRequest=window.__ruleApi;delete window.__ruleApi;delete window.__ruleRelease;delete window.__ruleOrigRender;delete window.__ruleOrigClick;delete window.__ruleExact;delete window.__ruleGate;void 0`);}
@@ -175,7 +179,11 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     await lateGuide(await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')`)?'關閉抽屜':'其他對話框',async()=>{
       if(await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')&&$('workspaceToggleRight').getClientRects().length>0`)){await ctl('#workspaceToggleRight');await wait(`document.activeElement===$('workspaceToggleRight')`);}
       else{await ctl('#refParameterOpen');await wait(`!!$('paramSpecValue')`);await focusedCtl('#paramSpecValue');}
-    },async before=>before.includes('workspaceToggleRight')||before.includes('paramSpecValue'),sameTarget,await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')`)?'dropped':'rebuild');
+    // Opening the parameter editor removes the rule details, and closing the
+    // 390 drawer can change the viewport key. Either way paintQuery may not
+    // call renderFaceInspector again. Wait until the click handler finishes;
+    // a rebuild after release is still recorded and must not steal focus.
+    },async before=>before.includes('workspaceToggleRight')||before.includes('paramSpecValue'),sameTarget,'settled');
     if(await read(`!!$('paramLegacyBack')`))await ctl('#paramLegacyBack');
     await lateGuide('切換選取並離開面',async()=>{
       await ctl('#workspaceBackButton');await wait(`!oc.edit`);
