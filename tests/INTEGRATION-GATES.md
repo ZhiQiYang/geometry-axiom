@@ -100,6 +100,26 @@ GEOMETRY_SAVE_EVIDENCE=/tmp/geometry-closeout-save GEOMETRY_CDP_PORT=9422 \
 另驗 New／Undo／Redo、損壞 ZIP 零提交。取消與磁碟寫入失敗為明示故障注入；
 成功保存走下載備援，不冒充 OS 原生 Save picker 驗收。
 
+取消／寫入失敗比較完整 fixture snapshot，包含保存旗標及目前 history owner；
+picker stub 在被呼叫的當下記錄 `navigator.userActivation.isActive`。
+拒絕案例另外比較既有 opaque context／frame／頂端 Undo／頂端 Redo／group 身分，
+避免等長置換頂端 entry 漏過。`blocked` 為暫態，不要求保持；這不是全歷史內容深比對。
+兩個完整 gate 的固定 census 仍為 **35／33**，只強化原斷言並保存取消／失敗快照與 callback 紀錄。
+
+以下獨立 **16 項 oracle controls** 直接讀取這兩支 harness 的觀察器／stub，
+以真 browser 中的一次性 entry／保存旗標變異，證明舊比較漏、新比較能抓，
+每次在 `finally` 還原原物件。另有明標的純觀察值 owner 欄位與暫態控制。
+activation 負例等到真正失效後，以 CDP `userGesture:false` 呼叫原保存入口；
+合法取消／寫入失敗用真按鈕。刻意注入的 fault 不等於產品缺陷，也不替代上述兩個完整 gate。
+基底 `bc1f6fea2f1d10b29d1e6db1917b2781377d8864` 用來讀回舊 oracle，須保留該 Git 物件。
+
+```sh
+python3 tests/integration/oracle_observer_controls.py --root "$PWD" \
+  --url "$GEOMETRY_TEST_URL" --out /tmp/geometry-oracle-controls
+```
+
+保存 gate 也明確拒絕 8765；URL 檢查不代表服務獨占，仍須保存自己的服務與 native 收據。
+
 兩個入口須到達各自完整結果且 exit 0；`release_gate.py` 對這些命令只驗執行身分，
 不替它們推論 assertion 完整性。前後 head/tree、clean status、runtime source／PID／session、
 原始日誌、逐例結果與截圖一起保留。原測試門檻／golden 不因新增入口而降低。

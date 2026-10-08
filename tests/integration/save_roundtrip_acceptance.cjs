@@ -1,11 +1,13 @@
 // Focused acceptance: real UI commands/forms, Save download, chooser reopen.
 // Runtime.evaluate only observes state except explicitly named save-error injection.
+// Save-error snapshots include current frame/top history identity and saved status;
+// they do not claim deep comparison of every historical entry or OS picker coverage.
 const fs=require('fs'),path=require('path'),os=require('os'),net=require('net'),crypto=require('crypto'),assert=require('assert/strict'),{execFileSync}=require('child_process');
 const ROOT=path.resolve(__dirname,'../..'),ENV=process.env;
 const URL=ENV.GEOMETRY_TEST_URL,feedback=ENV.GEOMETRY_FEEDBACK_DIR;
 if(!URL||!feedback||!path.isAbsolute(feedback)||!path.resolve(feedback).startsWith(os.tmpdir()+path.sep))throw Error('Explicit isolated GEOMETRY_TEST_URL and dedicated TEMP GEOMETRY_FEEDBACK_DIR required');
 const targetURL=new globalThis.URL(URL);
-if(!['http:','https:'].includes(targetURL.protocol)||!['127.0.0.1','localhost','[::1]'].includes(targetURL.hostname)||!targetURL.port||targetURL.pathname!=='/'||targetURL.username||targetURL.password||targetURL.search||targetURL.hash)throw Error('Expected an explicit isolated loopback HTTP(S) URL with a non-default port and root path');
+if(!['http:','https:'].includes(targetURL.protocol)||!['127.0.0.1','localhost','[::1]'].includes(targetURL.hostname)||!targetURL.port||targetURL.port==='8765'||targetURL.pathname!=='/'||targetURL.username||targetURL.password||targetURL.search||targetURL.hash)throw Error('Expected an explicit isolated loopback HTTP(S) URL with a non-default port and root path');
 const expectedRoot=path.resolve(ENV.GEOMETRY_RUNTIME_ROOT||ROOT);
 const helper=path.join(ROOT,'geometry-web/docs/evidence/qa-acceptance-d6b4b45-20261005/tools/qa_cdp.js');
 const qa=require(helper);
@@ -31,7 +33,10 @@ async function fill(selector,value){await b.fill(selector,String(value));await b
 async function command(value){await click('#cmdToggle');await b.fill('#cmd',value,{enter:true});await b.press('Escape');await idle();}
 async function menu(selector){await click('#fileMenuBtn');await click(selector);}
 async function choose(selector,value){const opts=await read(`Array.from(document.querySelector(${JSON.stringify(selector)}).options).filter(o=>!o.disabled).map(o=>o.value)`);assert.ok(opts.includes(value));await click(selector);await b.press('Escape');await b.send('Input.dispatchKeyEvent',{type:'keyDown',key:'Home',code:'Home',windowsVirtualKeyCode:36});await b.send('Input.dispatchKeyEvent',{type:'keyUp',key:'Home',code:'Home',windowsVirtualKeyCode:36});for(let i=0;i<opts.indexOf(value);i++)await b.press('ArrowDown');await b.press('Tab');check('select '+selector,await b.readValue(selector),value);}
-async function snap(){return {world:await dump(),project:await read(`(async()=>{const c=ReferenceWorkspace.context(),m=await ReferenceWorkspace.manifest();return {id:c.id,name:c.name,manifest:m,models:ReferenceWorkspace.getSpaceModels(),sources:Array.from(c.sources,([key,v])=>[key,Array.from(v.bytes)]),undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length,dirty:c.dirty};})()`)};}
+async function snap(){return {world:await dump(),project:await read(`(async()=>{const c=ReferenceWorkspace.context(),m=await ReferenceWorkspace.manifest();return {id:c.id,name:c.name,manifest:m,models:ReferenceWorkspace.getSpaceModels(),sources:Array.from(c.sources,([key,v])=>[key,Array.from(v.bytes)]),undo:ReferenceWorkspace.history.undo.length,redo:ReferenceWorkspace.history.redo.length,dirty:c.dirty,
+saveState:{dirty:!!c.dirty,dirtyReason:c.dirtyReason||'',saved:!!c.saved,downloaded:!!c.downloaded,
+modelsDirty:!!c.modelsDirty,faceProjectionsDirty:!!c.faceProjectionsDirty,provenance:{...c.provenance}},
+historyOwner:(()=>{const s=ReferenceWorkspace.getModelOperationState();return Object.fromEntries(['context','frame','undo','redo','group'].map(k=>[k,s[k]]));})()};})()`)};}
 function semantic(s){return {world:s.world,id:s.project.id,name:s.project.name,manifest:s.project.manifest,models:s.project.models,sources:s.project.sources};}
 async function launch(n){
  const port=Number(ENV.GEOMETRY_CDP_PORT||9422);assert.ok(Number.isInteger(port)&&port>=1024&&port<=65535,'CDP port must be explicit valid unprivileged port');
@@ -68,11 +73,11 @@ await b.screenshot(path.join(OUT,'01-model-library.png'));
 phase='save';await click('#projectBar [data-project-action="save"]');const download=await b.waitForDownload(null,'.gcanvas',30000);check('real Save downloads a nonempty complete project ZIP',download.size>1000);fs.copyFileSync(download.file,path.join(OUT,'saved.gcanvas'));
 check('download branch honestly reports completion still needs user confirmation',await read("ReferenceWorkspace.context().downloaded===true&&ReferenceWorkspace.context().dirty===true"));
 const saved=await snap();write('saved-state.json',saved);await b.screenshot(path.join(OUT,'02-saved.png'));
-phase='save-errors';const beforeFailed=semantic(await snap());
-await read(`window.__cancelCalled=false;Object.defineProperty(window,'showSaveFilePicker',{configurable:true,writable:true,value:async()=>{window.__cancelCalled=true;throw new DOMException('test cancel','AbortError')}});void 0`);await click('#projectBar [data-project-action="save"]');check('cancelled picker was actually invoked',await read('window.__cancelCalled'));check('cancelled picker preserves exact native/model/projection fixture and full manifest',semantic(await snap()),beforeFailed);
-await read(`window.__saveAborted=false;window.showSaveFilePicker=async()=>({createWritable:async()=>({write:async()=>{throw Error('injected disk full')},abort:async()=>{window.__saveAborted=true}})});void 0`);await click('#projectBar [data-project-action="save"]');
-check('injected write failure aborts and keeps unsaved state',await read('window.__saveAborted&&ReferenceWorkspace.context().dirty&&!ReferenceWorkspace.busy'));
-check('injected write failure preserves exact native/model/projection fixture and full manifest',semantic(await snap()),beforeFailed);await read('window.showSaveFilePicker=undefined;void 0');
+phase='save-errors';const beforeFailed=await snap();write('before-save-errors.json',beforeFailed);
+await read(`window.__cancelCalled=false;window.__cancelActivation=false;Object.defineProperty(window,'showSaveFilePicker',{configurable:true,writable:true,value:async()=>{window.__cancelCalled=true;window.__cancelActivation=navigator.userActivation.isActive;throw new DOMException('test cancel','AbortError')}});void 0`);await click('#projectBar [data-project-action="save"]');check('cancelled picker was invoked with active user activation',await read('window.__cancelCalled&&window.__cancelActivation'));const afterCancelled=await snap();write('after-cancelled-save.json',afterCancelled);check('cancelled picker preserves full fixture, history owner and saved status',afterCancelled,beforeFailed);
+await read(`window.__saveAborted=false;window.__writeActivation=false;window.showSaveFilePicker=async()=>{window.__writeActivation=navigator.userActivation.isActive;return {createWritable:async()=>({write:async()=>{throw Error('injected disk full')},abort:async()=>{window.__saveAborted=true}})}};void 0`);await click('#projectBar [data-project-action="save"]');
+check('injected write failure aborts and keeps unsaved state',await read('window.__writeActivation&&window.__saveAborted&&ReferenceWorkspace.context().dirty&&!ReferenceWorkspace.busy'));
+const afterWriteFailed=await snap();write('after-write-failed-save.json',afterWriteFailed);write('save-error-callbacks.json',await read('({cancelCalled:window.__cancelCalled,cancelActivation:window.__cancelActivation,writeActivation:window.__writeActivation,writeAborted:window.__saveAborted})'));check('injected write failure preserves full fixture, history owner and saved status',afterWriteFailed,beforeFailed);await read('window.showSaveFilePicker=undefined;void 0');
 await click('#smClose');phase='new-history';await menu('#btnNewProject');await waitDump('');check('New project clears models in a distinct context',await read(`ReferenceWorkspace.getSpaceModels().length===0&&ReferenceWorkspace.context().id!==${JSON.stringify(saved.project.id)}`));
 await history('undo');await waitDump(BASE);check('New project Undo restores nonempty full World and full model/projection fixture manifest',semantic(await snap()),semantic(saved));
 await history('redo');await waitDump('');check('New project Redo restores empty project',await read('ReferenceWorkspace.getSpaceModels().length'),0);
