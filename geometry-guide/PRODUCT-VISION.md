@@ -3,7 +3,7 @@
 > 2026-10-01 整理草案，供使用者審閱是否忠實表達方向。本文以意譯整理使用者描述，不是逐字引言。
 > **願景不是現行功能清單、已採納公理、實作授權或交付承諾。**
 > 行為驗收仍以 [公理層.md](../公理層.md) 為唯一準則；開發先讀 [AGENTS.md](../AGENTS.md)。本文與現行條文不一致時，標記待討論，不自行放寬或改寫公理。
-> 2026-10-08 狀態同步：§5 對照 main `5cc1ffa`；保留 10/01 願景的探索範圍，明列其後已採納的有限契約。Q38 1A 的第一個原生核心子切片正在開發；完整 1A（含 modeler／UI 等）尚未交付。
+> 2026-10-08 整合候選狀態：以 main `5cc1ffa` 為基底，保留 10/01 願景的探索範圍。本分支已接上 Q38 原生、模型產生器、2D／3D 工作區、完整專案及兩種簡易定位；驗收與發布仍按交付候選矩陣分別核對，不宣稱 main 已合併。
 
 ## 1. 要做成什麼
 
@@ -52,7 +52,7 @@
 - **authoring 與有限生成分開**：`assembly-rule-authoring/1` 是規則編輯／發布／綁定能力，綁定本身不生成角材；其後採納的 D34／I42／R35 與[生成契約](../geometry-core/ASSEMBLY-GENERATION-PROPOSAL.md)另定義兩支 primary 加一支 secondary 的有限組構實例，不表示任意規則都能生成或已通過施工／力學驗證
 - **向量與嵌套尚未納入目前能力**：D31／R33 的尺寸欄位不代表幾何向量；當前參數能力不新增物件嵌套，組構 authoring 也拒絕巢狀規則引用
 - **流程與反向推演尚待定義**：D32 排除施工順序；公理「明確不在本層」列出完成面及施工順序等邊界。不能據本願景直接越過這些限制
-- **已採納的斷面拉伸範圍**：[PR164](https://github.com/ZhiQiYang/geometry-axiom/pull/164) 已寫入 D35–D40／I43–I51／R36–R40；[Q38 提案](../geometry-core/SECTION-PROFILE-EXTRUSION-PROPOSAL.md)的採納範圍與[決策紀錄](../決策佇列.md)可逐條對照。斷面中的面材是幾何矩形，不是完成面或施工排板。1A 的第一個原生核心子切片正在獨立分支開發；完整 1A（含 modeler／UI 等）尚未交付或合入。本 main 的條文更新不等於產品已支援 `section-profile/1`
+- **已採納的斷面拉伸範圍**：[PR164](https://github.com/ZhiQiYang/geometry-axiom/pull/164) 已寫入 D35–D40／I43–I51／R36–R40；[Q38 提案](../geometry-core/SECTION-PROFILE-EXTRUSION-PROPOSAL.md)的採納範圍與[決策紀錄](../決策佇列.md)可逐條對照。斷面中的面材是幾何矩形，不是完成面或施工排板。本整合分支接上 1A 與 1B：完整影響診斷、來源圖、模型產生器、2D／3D 工作區、`/16` 完整專案、live 承載面與 copied 空間面取值、無損模式轉換。接口與限制見[原生契約](../geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md)及[模型契約](../geometry-core/SECTION-PROFILE-MODELING.md)；正式驗收與 main／發布狀態另核，不以願景或能力字串代替通過收據
 - **部分決策採納不等於整包願景採納**：Q31–Q37 僅依[八項採納範圍](IMPLEMENTATION-QUEUE-20261004.md)推進；[完成面／鋪板 #128](https://github.com/ZhiQiYang/geometry-axiom/issues/128)的方向與參數決策仍需 PF-0 正式條文差異，不能套用 Q38 斷面拉伸的採納。流程、任意嵌套、向量變數及一般反向尋優仍維持探索狀態
 
 已有規格的能力是否在某個執行器實作、通過哪些驗收，須再查相應實作契約、能力宣告與測試證據。過時的 [ARCHITECTURE.md](../ARCHITECTURE.md) 已明示不可作為現況地圖。
