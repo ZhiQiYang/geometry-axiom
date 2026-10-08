@@ -108,6 +108,118 @@ class SectionProfileNative(unittest.TestCase):
         values = [member(), member(2, 373), member(3, 0, 223, orientation="A-v")]
         self.apply([put("profile", profile()), *[put("member", m) for m in values], put("run", run())])
 
+    def legacy_source_fixture(self, source):
+        for line in ("surface 7 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+                     "timber 11 27 33 role boundary", "place 11 on 7 at-face e0 +u +n",
+                     "timber 12 27 33 role boundary", "place 12 on 7 at-face e2 +u +n",
+                     "guide 19 7 v " + source, "timber 23 27 33 role primary",
+                     "place 23 on 7 at-line guide 19 +v +n"):
+            result = self.command("line " + line)
+            if line == "guide 19 7 v " + source and source.startswith("param:"):
+                self.assertFalse(result["ok"], result)
+                self.assertTrue(result["preview"]["valid"], result)
+                result = self.command(f'line confirm {result["preview"]["token"]}')
+            self.assertTrue(result["ok"], result)
+
+    def assert_legacy_impact(self, state, center):
+        geometry = state["geometry"]
+        guide = next(g for g in geometry["guides"] if g["id"] == 19)
+        timber = next(t for t in geometry["timbers"] if t["id"] == 23)["geometry"]
+        self.assertEqual(center, guide["off"])
+        self.assertEqual([center, 0, 2500], guide["worldPoint"])
+        self.assertEqual(center, timber["centerline"])
+        self.assertEqual([center + 14, 27, 2500], timber["origin"])
+        self.assertEqual(2946, timber["length"])
+
+    def assert_live_matches_preview(self, state):
+        references = self.command("references")
+        self.assertEqual(state["geometry"]["guides"], references["guides"])
+        self.assertEqual([(t["id"], t["geometry"]) for t in state["geometry"]["timbers"]],
+                         [(t["id"], t["geometry"]) for t in references["timbers"]])
+        self.assertEqual(state["sectionProfiles"], self.read()["state"])
+        current = self.command("engineering-read")["state"]
+        for key in ("specs", "parameters", "materials", "methods", "applications", "sources"):
+            self.assertEqual(state[key], current[key])
+
+    def test_named_spec_preview_discloses_legacy_geometry_without_profiles(self):
+        self.assertTrue(self.command("line spec SharedAxis 500")["ok"])
+        self.legacy_source_fixture("spec:SharedAxis")
+        before = self.snapshot()
+        preview = self.preview([{"op": "put-spec", "name": "SharedAxis", "value": 600}])
+        self.assertTrue(preview["valid"], preview)
+        self.assertEqual(before, self.snapshot())
+        self.assertEqual([{"name": "SharedAxis", "value": 500}], preview["before"]["specs"])
+        self.assertEqual([{"name": "SharedAxis", "value": 600}], preview["after"]["specs"])
+        self.assert_legacy_impact(preview["before"], 500)
+        self.assert_legacy_impact(preview["after"], 600)
+        self.assertEqual([], preview["after"]["sectionProfiles"]["profiles"])
+        self.assertTrue(self.command(f'section-profile-confirm {preview["token"]}')["ok"])
+        self.assert_live_matches_preview(preview["after"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assert_live_matches_preview(preview["before"])
+        self.assertEqual(before[0], self.command("dump")["text"])
+
+    def test_shared_parameter_preview_cancel_tokens_and_history_both_domains(self):
+        parameter = {"id": 37, "name": "shared dimension", "fields":
+                     [{"id": 5, "name": "value", "type": "dimension", "input": "500"}]}
+        source = {"kind": "parameter", "parameterId": 37, "fieldId": 5}
+        self.apply([{"op": "put-parameter", "value": parameter},
+                    put("profile", profile(3, [[0, 0], [1000, 0], [1000, 1000], [0, 1000]])),
+                    put("member", member(17, profileId=3, A=source)),
+                    put("run", run(29, profileId=3, length=source))])
+        self.legacy_source_fixture("param:37:5")
+        before = self.snapshot()
+        changed = deepcopy(parameter)
+        changed["fields"][0]["input"] = "600"
+        operations = [{"op": "put-parameter", "value": changed}]
+        preview = self.preview(operations)
+        self.assertTrue(preview["valid"], preview)
+        self.assertEqual(before, self.snapshot())
+        self.assert_legacy_impact(preview["before"], 500)
+        self.assert_legacy_impact(preview["after"], 600)
+        for key, size in (("before", 500), ("after", 600)):
+            state = preview[key]
+            self.assertEqual({"op": "literal", "num": str(size), "den": "1", "unit": "mm"},
+                             state["parameters"][0]["fields"][0]["expression"])
+            self.assertEqual([0, 0, size, 33], state["sectionProfiles"]["members"][0]["rect"])
+            self.assertEqual(size, state["sectionProfiles"]["runs"][0]["length"])
+            self.assertEqual([[0, 0, 0], [size, 33, size]],
+                             state["sectionProfiles"]["runs"][0]["members"][0]["bounds"])
+        for command in ("engineering-confirm", "assembly-confirm", "line confirm"):
+            self.assertFalse(self.command(f'{command} {preview["token"]}')["ok"])
+            self.assertEqual(before, self.snapshot())
+        self.assertTrue(self.command(f'section-profile-cancel {preview["token"]}')["cancelled"])
+        self.assertEqual(before, self.snapshot())
+        self.assert_live_matches_preview(preview["before"])
+        preview = self.preview(operations)
+        done = self.command(f'section-profile-confirm {preview["token"]}')
+        self.assertTrue(done["ok"], done)
+        self.assertEqual(before[1] + 1, done["revision"])
+        self.assert_live_matches_preview(preview["after"])
+        complete = self.command("dump")["text"]
+        stale = self.preview(operations)
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(before[0], self.command("dump")["text"])
+        self.assert_live_matches_preview(preview["before"])
+        undone = self.snapshot()
+        self.assertFalse(self.command(f'section-profile-confirm {stale["token"]}')["ok"])
+        self.assertEqual(undone, self.snapshot())
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(complete, self.command("dump")["text"])
+        self.assert_live_matches_preview(preview["after"])
+
+    def test_source_only_native_preview_discloses_material_publication(self):
+        material = {"id": "preview-only", "version": 1, "kind": "timber",
+                    "name": "source without consumers", "A": 27, "B": 33}
+        before = self.snapshot()
+        preview = self.preview([{"op": "publish-material", "value": material}])
+        self.assertTrue(preview["valid"], preview)
+        self.assertEqual([], preview["before"]["materials"])
+        self.assertEqual(material, {k: preview["after"]["materials"][0][k] for k in material})
+        self.assertEqual(before, self.snapshot())
+        self.assertTrue(self.command(f'section-profile-confirm {preview["token"]}')["ok"])
+        self.assert_live_matches_preview(preview["after"])
+
     def test_ac01_03_08_independent_rectangles_volumes_and_scope(self):
         self.fixture()
         state = self.read()
