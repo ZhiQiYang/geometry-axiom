@@ -146,34 +146,43 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
       await key('Enter','Enter',13);await wait(`document.activeElement===document.querySelector('#refGuideExpr')`);
       await key('Tab','Tab',9);await wait(`document.activeElement===document.querySelector('#refGuideCreate')`);
     };
-    const lateGuide=async(label,move,accept,settle)=>{
+    const lateGuide=async(label,move,accept,settle,mode)=>{
       await armGuide();
-      await read(`window.__ruleApi=apiRequest;window.__ruleRelease=null;apiRequest=async function(cmd,...rest){const r=await __ruleApi(cmd,...rest);if(cmd.startsWith('grid-rule-query ')&&!window.__ruleRelease)await new Promise(resolve=>window.__ruleRelease=resolve);return r;};void 0`);
+      await read(`window.__ruleApi=apiRequest;window.__ruleRelease=null;window.__ruleOrigRender=renderFaceInspector;window.__ruleGate={phase:'arming',rebuilt:null,clickSettled:false,seqAtRelease:null};
+        renderFaceInspector=function(){const out=window.__ruleOrigRender.apply(this,arguments);const g=window.__ruleGate;if(g&&g.phase==='released'&&g.seqAtRelease!=null&&fe.gridPreviewSeq!==g.seqAtRelease)g.rebuilt=fe.gridPreviewSeq;return out;};
+        const exact=document.querySelector('[data-rule-exact]');const origClick=exact&&exact.onclick;window.__ruleExact=exact;window.__ruleOrigClick=origClick;
+        if(exact)exact.onclick=async function(...args){try{return await origClick.apply(this,args);}finally{if(window.__ruleGate)window.__ruleGate.clickSettled=true;}};
+        apiRequest=async function(cmd,...rest){const r=await __ruleApi(cmd,...rest);const g=window.__ruleGate;if(g&&g.phase==='arming'&&cmd.startsWith('grid-rule-query ')){g.phase='held';await new Promise(resolve=>window.__ruleRelease=resolve);g.phase='released';g.seqAtRelease=fe.gridPreviewSeq;}return r;};void 0`);
+      const done=mode==='rebuild'
+        ?`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true&&window.__ruleGate.rebuilt>window.__ruleGate.seqAtRelease`
+        :`window.__ruleGate.phase==='released'&&window.__ruleGate.clickSettled===true&&window.__ruleGate.rebuilt==null&&fe.gridPreviewSeq===window.__ruleGate.seqAtRelease`;
       try{
-        await ctl('[data-rule-exact]');await wait(`!!window.__ruleRelease`);
+        await ctl('[data-rule-exact]');await wait(`window.__ruleGate.phase==='held'&&!!window.__ruleRelease&&window.__ruleGate.clickSettled===false`);
         await move();
         const before=await guideTarget();
         check(`${width} ${label} 已離開引用式`,await accept(before));
+        check(`${width} ${label} 回覆未完成前不得判斷焦點`,await read(done)===false);
+        check(`${width} ${label} 搶回引用式會被判失敗`,await read(`(()=>{const stole=id=>id==='refGuideExpr';return stole('refGuideExpr')===true&&stole(document.activeElement?.id||'')===false;})()`)===true);
         await read(`if(window.__ruleRelease)window.__ruleRelease();window.__ruleRelease=null;void 0`);
-        await sleep(400);
+        await wait(done);
         const after=await guideTarget();
         check(`${width} ${label} 舊查詢不搶回焦點`,await read(`document.activeElement?.id!=='refGuideExpr'`)&&await settle(before,after));
-      }finally{await read(`if(window.__ruleRelease)window.__ruleRelease();window.__ruleRelease=null;if(window.__ruleApi)apiRequest=window.__ruleApi;delete window.__ruleApi;void 0`);}
+      }finally{await read(`if(window.__ruleRelease)window.__ruleRelease();window.__ruleRelease=null;if(window.__ruleOrigRender)renderFaceInspector=window.__ruleOrigRender;if(window.__ruleExact&&window.__ruleOrigClick)window.__ruleExact.onclick=window.__ruleOrigClick;if(window.__ruleApi)apiRequest=window.__ruleApi;delete window.__ruleApi;delete window.__ruleRelease;delete window.__ruleOrigRender;delete window.__ruleOrigClick;delete window.__ruleExact;delete window.__ruleGate;void 0`);}
     };
     const sameTarget=(before,after)=>before===after&&before!=='';
-    await lateGuide('檢查器外',async()=>{await ctl('#fileMenuBtn');await wait(`document.activeElement===$('fileMenuBtn')`);},async()=>read(`document.activeElement===$('fileMenuBtn')`),sameTarget);
+    await lateGuide('檢查器外',async()=>{await ctl('#fileMenuBtn');await wait(`document.activeElement===$('fileMenuBtn')`);},async()=>read(`document.activeElement===$('fileMenuBtn')`),sameTarget,'rebuild');
     if(!await read(`$('fileMenuPop').hidden`))await ctl('#fileMenuBtn');
     await lateGuide(await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')`)?'關閉抽屜':'其他對話框',async()=>{
       if(await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')&&$('workspaceToggleRight').getClientRects().length>0`)){await ctl('#workspaceToggleRight');await wait(`document.activeElement===$('workspaceToggleRight')`);}
       else{await ctl('#refParameterOpen');await wait(`!!$('paramSpecValue')`);await focusedCtl('#paramSpecValue');}
-    },async before=>before.includes('workspaceToggleRight')||before.includes('paramSpecValue'),sameTarget);
+    },async before=>before.includes('workspaceToggleRight')||before.includes('paramSpecValue'),sameTarget,await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')`)?'dropped':'rebuild');
     if(await read(`!!$('paramLegacyBack')`))await ctl('#paramLegacyBack');
     await lateGuide('切換選取並離開面',async()=>{
       await ctl('#workspaceBackButton');await wait(`!oc.edit`);
       await ctl('#objectList .object-row[data-kind="boundary"][data-id="2"]');
       await wait(`oc.selection.some(s=>s.kind==='boundary'&&s.id===2)`);
       await key('Enter','Enter',13);
-    },async()=>read(`!oc.edit&&oc.selection.some(s=>s.kind==='boundary'&&s.id===2)&&document.activeElement?.id!=='refGuideExpr'`),async()=>read(`!oc.edit&&oc.selection.some(s=>s.kind==='boundary'&&s.id===2)`));
+    },async()=>read(`!oc.edit&&oc.selection.some(s=>s.kind==='boundary'&&s.id===2)&&document.activeElement?.id!=='refGuideExpr'`),async()=>read(`!oc.edit&&oc.selection.some(s=>s.kind==='boundary'&&s.id===2)`),'dropped');
     // The leave case opens the 390 object drawer to click a row. Leave it closed
     // before the next scenario opens the file menu; the drawer otherwise covers
     // #btnNewProject. Same toggle click the suite already uses.
