@@ -82,6 +82,30 @@
       "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
       "stop": "通過後主動停止",
       "processExit": 1
+    },
+    {
+      "role": "乾淨 163c575，參數路徑逾時",
+      "port": 8913,
+      "runtimeVersion": "1d1fc4931086a75c3f728de9bab88b6dd90dcba9671e80916fa24412ea18baa5",
+      "fresh": true,
+      "serverPid": 36160,
+      "bridgePid": 35108,
+      "session": "c5a22fd385d64853b82933d5519d859a",
+      "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+      "stop": "逾時後主動停止，以改測試的完成條件",
+      "processExit": 1
+    },
+    {
+      "role": "乾淨 8982605，限定格線通過",
+      "port": 8913,
+      "runtimeVersion": "168bfaecbe12bf0adbf8def1ca67834fc1177305c76a72cd75045b36794388a6",
+      "fresh": true,
+      "serverPid": 24988,
+      "bridgePid": 38552,
+      "session": "bad0b27f24634522904140e09c45562e",
+      "bridgeSha256": "aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d",
+      "stop": "通過後主動停止",
+      "processExit": 1
     }
   ]
 }

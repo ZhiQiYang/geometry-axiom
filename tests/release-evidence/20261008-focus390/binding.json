@@ -92,6 +92,31 @@
       "sections": {"P70": 117, "P71": 9, "P78": 23, "P87": 60, "P88": 119},
       "receipt": "runs/grid-system-170-regress-2/receipt.json"
     },
+    "grid-system-163c": {
+      "role": "乾淨 163c575。參數對話框要求重建而逾時。結束碼 1。",
+      "head": "163c575756dedf31efff7842cdeb2f9de9726ba2",
+      "gitStatusAtStart": "",
+      "harnessSha256": "04ba411d82881d6e94ae58b133c286d581856d1c1b70d4a8184dd3eb731c4684",
+      "runtimeVersion": "1d1fc4931086a75c3f728de9bab88b6dd90dcba9671e80916fa24412ea18baa5",
+      "nodeExit": 1,
+      "completed": false,
+      "passedAssertions": 266,
+      "receipt": "runs/grid-system-163c/receipt.json"
+    },
+    "grid-system-8982605": {
+      "role": "乾淨 8982605 的限定格線流程。346／0。不是 316，也不是 328。",
+      "head": "8982605c83d0f27cec27790c0b407d946b0093fe",
+      "gitStatusAtStart": "",
+      "harnessSha256": "bf7b648d6d367446b9bf12f7b08e9c9957d4c0d0913e357d0c9684d594ded9b3",
+      "runtimeVersion": "168bfaecbe12bf0adbf8def1ca67834fc1177305c76a72cd75045b36794388a6",
+      "runtimeFresh": true,
+      "nodeExit": 0,
+      "completed": true,
+      "passedAssertions": 346,
+      "failedAssertions": 0,
+      "sections": {"P70": 117, "P71": 9, "P78": 23, "P87": 60, "P88": 137},
+      "receipt": "runs/grid-system-8982605/receipt.json"
+    },
     "focus390-verify-4": {
       "role": "補丁後通過輪。當時工作樹是 a7bff8f 加未提交的 app.js，該 diff 隨後原樣成為 3574b47。",
       "productHeadAtProbe": "a7bff8f4c7a0d61a3133b6e42d0d513dfe96367e",
