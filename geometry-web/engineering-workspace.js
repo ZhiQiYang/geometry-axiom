@@ -682,8 +682,16 @@ window.EngineeringWorkspace = (() => {
     const rows=[];
     for(const collection of ['materials','methods','applications','sources','bindings','grids','guides','timbers']){
       if(before?.[collection]==null&&after?.[collection]==null)continue;
+      const previousRecords=list(before?.[collection]),nextRecords=list(after?.[collection]);
+      // Failed native trials can retain an unresolved geometry slot as null.
+      // Keep that incomplete collection visible without inventing a deletion
+      // or treating an unresolved slot as an identified object.
+      if([...previousRecords,...nextRecords].some(record=>record==null)){
+        rows.push({label:`${uiLabels[collection]} · 候選資料尚未完整求值`,before:{[collection]:previousRecords},after:{[collection]:nextRecords},unresolved:true});
+        continue;
+      }
       const key=r=>r.target?JSON.stringify(r.target):JSON.stringify([r.id,r.version??null]);
-      const previous=new Map(list(before?.[collection]).map(r=>[key(r),r])),next=new Map(list(after?.[collection]).map(r=>[key(r),r]));
+      const previous=new Map(previousRecords.map(r=>[key(r),r])),next=new Map(nextRecords.map(r=>[key(r),r]));
       for(const identity of new Set([...previous.keys(),...next.keys()])){
         const old=previous.get(identity)??null,value=next.get(identity)??null;if(JSON.stringify(old)===JSON.stringify(value))continue;
         const record=value||old;
@@ -711,6 +719,7 @@ window.EngineeringWorkspace = (() => {
       if(result.ok===false)throw new Error(result.error||'核心未接受此預覽，工程保持不變。');
       const normalized=result.preview?{...result.preview,diagnostics:result.preview.violations??result.diagnostics}:result;
       if(!normalized.rows && (normalized.before||normalized.after))normalized.rows=diffSnapshots(normalized.before,normalized.after);
+      if(normalized.valid&&normalized.rows?.some(row=>row.unresolved))throw new Error('核心候選資料尚未完整求值，不能確認套用。');
       const selected=intent.action==='grid'?[intent.draft.placementId]:intent.action==='apply'?Object.values(intent.draft.targets).map(t=>t.placement_id):intent.action==='sources'?[intent.draft.placement_id]:null;
       if(selected)normalized.outsideScope=(normalized.rows||[]).filter(row=>row.placement_id!=null&&!selected.includes(row.placement_id)).map(row=>({name:row.label,placement_id:row.placement_id}));
       if(normalized.before&&normalized.after){
