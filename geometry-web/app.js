@@ -1072,6 +1072,7 @@ let tool = "view";
 let workSurfaces = [];        /* /surfaces 快取 */
 let rectStart = null;         /* 矩形起點 {u,v} */
 let editLoops = null;         /* 編輯中邊界 loops（[{verts,fixity}]） */
+let editToken = 0;            /* enterEdit 這一次的代號；離開或重進編輯即失效 */
 let editBid = 0;
 let editDrag = null;          /* {loop,index,kind} */
 let affineCache = {};         /* "v:sid" → uv↔view-mm 仿射映射 */
@@ -1235,6 +1236,7 @@ function syncV3PlaneControls() {
 
 /* ---- 編輯工具 ---- */
 async function enterEdit() {
+  const token = ++editToken;
   editLoops = null; editBid = 0; editDrag = null; previewClear();
   const s = curSurf();
   if (!s || s.isNew || !s.boundary) {
@@ -1242,17 +1244,21 @@ async function enterEdit() {
     return;
   }
   const b = await api("boundary " + s.boundary);
+  if (token !== editToken || tool !== "edit") return;
   if (!b.ok) { setStatus("✗ " + (b.error || "")); return; }
+  if (token !== editToken || tool !== "edit") return;
   editLoops = b.loops; editBid = s.boundary;
   setStatus(`編輯邊界 ${editBid}：拖頂點拉角、拖邊平移；完成即重宣告`);
-  await drawEditHandles();
+  if (token !== editToken || tool !== "edit") { editLoops = null; editBid = 0; return; }
+  await drawEditHandles(token);
 }
 
-async function drawEditHandles() {
-  if (!editLoops) return;
+async function drawEditHandles(token = editToken) {
+  if (token !== editToken || tool !== "edit" || !editLoops) return;
   previewClear();
   for (let v = 0; v < 3; ++v) {
     const m = await uvMap(v);
+    if (token !== editToken || tool !== "edit" || !editLoops) { previewClear(); return; }
     if (!m) continue;                     /* det=0：此視圖看這面是線 */
     const g = previewIn(v);
     for (const loop of editLoops) {
@@ -1423,6 +1429,7 @@ async function canvasUp(e, sv) {
 }
 
 async function v3SetTool(t) {
+  if (t === "edit" || tool === "edit") editToken++;
   tool = t;
   $("tool").value = t;
   for (const b of document.querySelectorAll("[data-v3-tool]"))
