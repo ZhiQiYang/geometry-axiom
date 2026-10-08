@@ -2,6 +2,32 @@
 
 本檔分開記錄原 PR165 核對與後續 PR162 收尾證據。以下狀態截至 2026-10-08；不宣告整體產品交付、合併或部署，也不取代 `公理層.md`。
 
+## 同日再核對（main `5cc1ffa`、候選 `8b9b6f8`）
+
+這節只記這次重新讀到的文字與本機跑過的檢查。上方 Linux 35／33 與等同性仍止於 `bc1f6fe`；本回合沒有重跑那些 gate。
+
+| 項目 | 這次讀到的完整 SHA |
+| --- | --- |
+| main = origin/main | `5cc1ffa1ee85120eca14258b86b715151cad274f` |
+| PR #165（本檔所在分支，更新前） | `794569e809216b14c4956da5a50ccd4b4a368a43` |
+| PR #162 head | `8b9b6f80078c17238286e43da54b751e8d3b5b23` |
+| P70 測試修復 | [PR #168](https://github.com/ZhiQiYang/geometry-axiom/pull/168) `a1b2f785e1bdcf13380c56b3b4c8c95093ea615c`，基底 main，draft |
+
+`8b9b6f8` 相對 `bc1f6fe` 只改 `tests/INTEGRATION-GATES.md`、`model_library_history_browser.py`、`oracle_observer_controls.py`、`save_roundtrip_acceptance.cjs`。那些新 oracle 本回合未跑，記未驗。
+
+四句狀態句在 `8b9b6f8` 再讀一次，沒有把舊提案重貼上去：
+
+1. `BACKLOG.md` 驗收夾具那則仍寫初始 World 在原生卡片位置與畫面一致後取樣，且「原紅、因果反例與修正後收據均保留。」文字沒有改，本 PR 不動 #162。
+2. `tests/release-evidence/20261007/README.md` 開頭仍寫每個 scope 的失敗前序均保留。同檔後段已經寫十項與 155 前序尚未收錄。開頭那句沒有改。
+3. 同 README 已寫 `local-candidate-acceptance-complete` 是收集時作者記錄，不作目前驗收完成結論。沒有改 manifest 或 tar。
+4. PR #162 正文已寫 run `37751080937`（head `8b9b6f8`）與 `37709064278`：7 個 jobs 都在 step 開始前失敗，annotation 是付款失敗或 spending limit。這次有讀到該句。沒有改付費設定。
+
+原十項的第十個案例 id 仍未找到，沒有新造一筆叫做原十項的測試。155 的缺檔沒有重跑。
+
+P70：正常拖曳會提交 `canvas-pos`。測試在往返結束前讀座標。修復與修前／修後證據在 PR #168，不放進本文件 PR 的程式。
+
+390px 規則線另在候選 `8b9b6f8` 上加了同一個等待後本地執行，沒有推上 #162。`GEOMETRY_GRID_SYSTEM_ONLY` exit 1。P70 那句通過。P88 在 1280 走完；390 走到進階引用式欄位時停住，不是「Rule line control unreachable」。點擊已落在 `input#refGuideExpr`，25 秒內 `document.activeElement` 沒有停在該欄。同時有一筆 389ms 的 `grid-rule-query`。這次沒有改產品。390 在該點之後的晚回覆、離開與存檔重開未跑。日誌：`C:\Users\Yang\AppData\Local\Temp\geometry-aux-20261008\grid-rule-390.log`。runtime `2d734d8bfd89dfc17b21922a823c56582450e1bcb531c6852d954531bc11aba1`，root `D:\geometry-axiom-rule390`，fresh true。bridge 仍是 `bridge-c5955d469b13.exe`。`git diff c0e58e2f..8b9b6f8` 的 `current_geometry.c`、`geometry-core` C 來源與 `web_bridge.c` 沒有差異；`binaries.py` 現在算出的 fingerprint 與舊 sidecar 不同，本回合沒有重編。
+
 ## 目前文件分支與候選的範圍
 
 本文件分支以 PR165 原 head `45ccd3be721fe32fac468ab7cba6d88657c810b3` 為基礎，正常合入 main `5cc1ffa1ee85120eca14258b86b715151cad274f`，再同步文件與四筆測試排除原因文字。沒有把 PR162 的產品程式或新增 gate 登錄搬進 main。main 已含 PR163／164；Q38 的採納條文已生效，1A 的第一個原生核心子切片在別的分支開發，完整 1A（含 modeler／UI 等）尚未交付。
