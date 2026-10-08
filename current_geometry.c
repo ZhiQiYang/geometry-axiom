@@ -3789,6 +3789,7 @@ static bool eng_object_bound(const World *,int,uint32_t);
 static uint64_t g_definition_revision;
 static char g_engineering_error[256];
 static bool sp_rebuild(World *,char *,size_t);
+static void sp_capture_diagnostics(World *);
 static bool assembly_rebuild(World *,char *,size_t);
 static bool assembly_owned(const World *,uint32_t);
 static void assembly_owned_prefix(const World *,uint32_t,const char *,FILE *);
