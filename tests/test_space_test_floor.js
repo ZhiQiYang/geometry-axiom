@@ -106,6 +106,8 @@ test('real configuration declares full scope separately from every existing part
     ['GEOMETRY_PROJECTION_PLACEMENT_ONLY', ['projection-placement', 'font-layout']],
     ['GEOMETRY_TIMBER_ONLY', ['timber-material', 'timber-source-guards', 'font-layout']],
     ['GEOMETRY_TIMBER_GUARDS_ONLY', ['timber-source-guards']],
+    ['GEOMETRY_ASYNC_REPLY_ONLY', ['async-reply-ui']],
+    ['GEOMETRY_SAVE_REOPEN_ONLY', ['save-reopen-grid']],
   ]) {
     const scope = configuration({...env, [flag]: '1'});
     assert.equal(scope.mode, 'partial');
