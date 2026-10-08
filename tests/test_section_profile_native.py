@@ -1,6 +1,6 @@
 """Q38 native slice: independent numeric oracles against the real C bridge.
 
-This gate does not certify the model renderer, UI, .gcanvas or simple placement.
+This gate certifies native definitions, geometry, simple placement and history; UI/model gates are separate.
 """
 import base64
 from copy import deepcopy
@@ -223,8 +223,8 @@ class SectionProfileNative(unittest.TestCase):
     def test_ac01_03_08_independent_rectangles_volumes_and_scope(self):
         self.fixture()
         state = self.read()
-        self.assertFalse(state["rendererSupported"])
-        self.assertFalse(state["simplePlacementSupported"])
+        self.assertTrue(state["simplePlacementSupported"])
+        self.assertTrue(state["diagnosticsComplete"])
         self.assertNotIn("section-profile/1", state["capabilities"])
         self.assertIn("section-profile/1", state["required_capabilities"])
         self.assertIn("section-profile-native/1", state["native_capabilities"])
@@ -251,7 +251,8 @@ class SectionProfileNative(unittest.TestCase):
     def test_touch_edges_points_and_cross_kind_overlap(self):
         self.apply([put("profile", profile()), put("member", member())])
         self.apply([put("member", member(2, 27)), put("member", member(3, 27, 33, A=literal(1), B=literal(1)))])
-        self.reject([put("member", member(2, 26))], "intersection [26,27]x[0,33]")
+        preview=self.reject([put("member", member(2, 26))], "V_PROFILE_OVERLAP")
+        self.assertEqual([26,0,27,33],preview["violations"][0]["intersection"])
         self.reject([put("member", panel(u=20, width=30))], "V_PROFILE_OVERLAP")
         self.apply([put("profile", profile(2)), put("member", member(4, profileId=2))])
 
@@ -291,7 +292,7 @@ class SectionProfileNative(unittest.TestCase):
         self.assertEqual([[1000, 2000, 2667], [1027, 4400, 2700]], r["members"][0]["bounds"])
         self.reject([put("run", run(placement={**placement, "N": "-Z"}))], "I48")
         self.reject([put("run", run(placement={**placement, "origin": [100000000, 0, 0]}))], "I47/I48/D1")
-        self.reject([put("run", run(placement={"kind": "simple"}))], "UNSUPPORTED")
+        self.reject([put("run", run(placement={"kind": "simple"}))], "explicit")
         self.reject_fractional_json([put("run", run(length=literal(1.5)))])
         for length in (0, -1, 100000001):
             self.reject([put("run", run(length=literal(length)))], "I")
@@ -414,24 +415,209 @@ class SectionProfileNative(unittest.TestCase):
         self.assertTrue(self.command("loadfile " + str(path))["ok"])
         self.assertEqual(expected, self.command("dump")["text"])
 
-    def test_legacy_consumers_refuse_or_report_incomplete(self):
-        from tests import binaries
-        binary = os.environ.get("GEOMETRY_MODEL_BASE") or str(binaries.BY_NAME["model-base"].path)
-        self.apply([put("profile", profile())])
-        self.assertFalse(self.command("source-inspect")["complete"])
-        path = self.directory / "legacy.scene"
-        complete = self.command("dump")["text"]
-        for content in (complete, complete.replace("requires section-profile/1\n", ""), "requires section-profile/1\n"):
-            path.write_text(content, encoding="utf-8")
-            result = subprocess.run([binary, str(path)], capture_output=True, text=True)
-            self.assertEqual(1, result.returncode, result.stderr)
-            reply = json.loads(result.stdout)
-            self.assertEqual(("UNSUPPORTED", "CAPABILITY", "I32"), (reply["status"], reply["code"], reply["clause"]))
-        path.write_text("spec old 27\n", encoding="utf-8")
-        result = subprocess.run([binary, str(path)], capture_output=True, text=True)
-        self.assertEqual(0, result.returncode, result.stderr)
-        self.command("reset")
-        self.assertTrue(self.command("source-inspect")["complete"])
+    def test_source_index_typed_closure_and_display_identity(self):
+        a = member(A={"kind": "spec", "name": "a"})
+        self.apply([{"op":"put-spec","name":"a","value":27}, put("profile",profile()), put("member",a), put("member",panel()), put("run",run())])
+        graph = self.command("source-inspect")
+        self.assertTrue(graph["complete"], graph)
+        nodes = {n["key"]:n for n in graph["nodes"]}
+        edges = {(e["from"],e["to"]) for e in graph["edges"]}
+        self.assertTrue({"section-profile:1","profile-member:1","profile-member:4","profile-run:1","panel-spec:calcium-silicate-6"} <= nodes.keys())
+        self.assertTrue({("profile-member:1","spec:a"),("profile-member:1","section-profile:1"),("profile-member:4","panel-spec:calcium-silicate-6"),("profile-run:1","profile-member:1"),("profile-run:1","profile-member:4")} <= edges)
+        value = profile(); value["name"] = "display only"
+        self.apply([put("profile",value)])
+        changed = {n["key"]:n for n in self.command("source-inspect")["nodes"]}
+        self.assertEqual(nodes["section-profile:1"]["definitionFingerprint"], changed["section-profile:1"]["definitionFingerprint"])
+        self.assertEqual(nodes["profile-run:1"]["valueFingerprint"], changed["profile-run:1"]["valueFingerprint"])
+        self.apply([{"op":"put-spec","name":"a","value":26}])
+        changed = {n["key"]:n for n in self.command("source-inspect")["nodes"]}
+        self.assertNotEqual(nodes["profile-member:1"]["valueFingerprint"], changed["profile-member:1"]["valueFingerprint"])
+        self.assertNotEqual(nodes["profile-run:1"]["valueFingerprint"], changed["profile-run:1"]["valueFingerprint"])
+
+    def host(self, holes=None):
+        return {"kind":"space-wall-values","sourceDescription":"依某空間牆取值，不隨空間變動",
+                "frame":{"origin":[0,0,2700],"U":"+X","V":"+Y","N":"+Z"},
+                "region":{"outline":[[0,0],[5000,0],[5000,5000],[0,5000]],"holes":holes or []}}
+
+    def simple(self, host=None, **extra):
+        return {"kind":"simple","host":host or self.host(),"dir":"+v","p":1000,"q":2000,"up":"+Z",**extra}
+
+    def live_host(self, origin=2700):
+        self.assertTrue(self.command("line boundary 9 outline 0,0 5000,0 5000,5000 0,5000")["ok"])
+        reply=self.command(f"line placement 9 on boundary 9 origin 0 0 {origin} u +x v +y")
+        self.assertTrue(reply["ok"],reply)
+        if reply.get("preview"):
+            self.assertTrue(self.command("line confirm "+str(reply["preview"]["token"]))["ok"])
+        return {"kind":"placement","placementId":9}
+
+    def test_all_violations_exact_regions_and_retained_rectangles(self):
+        outline=[[0,0],[100,0],[100,100],[60,100],[60,40],[40,40],[40,100],[0,100]]
+        self.apply([put("profile",profile(outline=outline))])
+        invalid=[member(1,20,20,A=literal(60),B=literal(60)), member(2,90,90,A=literal(20),B=literal(20)), member(3,25,25,A=literal(10),B=literal(10))]
+        preview=self.reject([put("member",m) for m in invalid],"V_PROFILE_OUTSIDE")
+        self.assertTrue(preview["diagnosticsComplete"])
+        violations=preview["violations"]
+        self.assertEqual(violations,preview["sectionProfiles"]["violations"])
+        outside={v["memberId"]:v for v in violations if v["code"]=="V_PROFILE_OUTSIDE"}
+        self.assertEqual({1,2},set(outside))
+        self.assertEqual([[40,40,60,80]],outside[1]["outsideRegions"])
+        self.assertEqual([[100,90,110,100],[90,100,110,110]],outside[2]["outsideRegions"])
+        overlap=next(v for v in violations if v["code"]=="V_PROFILE_OVERLAP")
+        self.assertEqual((1,3,[25,25,35,35]),(overlap["memberId"],overlap["otherMemberId"],overlap["intersection"]))
+        self.assertEqual([[20,20,80,80],[90,90,110,110],[25,25,35,35]],[m["rect"] for m in preview["sectionProfiles"]["after"]["members"]])
+        self.assertEqual([],self.read()["state"]["members"])
+
+    def test_simple_copied_host_ac24_and_fresh_scene_roundtrip(self):
+        self.fixture()
+        value=run(placement=self.simple())
+        self.apply([put("run",value)])
+        item=self.read()["state"]["runs"][0]
+        self.assertEqual({"origin":[1000,2000,2700],"U":[1,0,0],"V":[0,0,-1],"N":[0,1,0]},item["frame"])
+        self.assertEqual([[1000,2000,2667],[1027,4400,2700]],item["members"][0]["bounds"])
+        graph=self.command("source-inspect")
+        self.assertFalse(any(e["from"]=="profile-run:1" and e["to"].startswith(("space:","placement:")) for e in graph["edges"]))
+        dump=self.command("dump")["text"];path=self.directory/"copied.scene";path.write_text(dump)
+        with BridgeSession(self.binary,cwd=self.directory) as fresh:
+            self.assertTrue(fresh.command("loadfile "+str(path))["ok"])
+            self.assertEqual(dump,fresh.command("dump")["text"])
+            self.assertEqual(item,fresh.command("section-profile-read")["state"]["runs"][0])
+        renamed=self.host();renamed["sourceDescription"]="另一個顯示名稱"
+        self.apply([put("run",run(placement=self.simple(renamed)))])
+        after=self.command("source-inspect")
+        a=next(n for n in graph["nodes"] if n["key"]=="profile-run:1")
+        b=next(n for n in after["nodes"] if n["key"]=="profile-run:1")
+        self.assertEqual((a["definitionFingerprint"],a["valueFingerprint"]),(b["definitionFingerprint"],b["valueFingerprint"]))
+
+    def test_simple_holes_closed_boundary_vertical_direction_and_invalid_up(self):
+        self.apply([put("profile",profile())])
+        host=self.host([[[900,1900],[1100,1900],[1100,2100],[900,2100]]])
+        self.reject([put("run",run(placement=self.simple(host)))],"outside closed host range")
+        self.apply([put("run",run(placement=self.simple(host,p=900)))])
+        self.reject([put("run",run(placement=self.simple(up="+Y")))],"perpendicular")
+        self.reject([put("run",run(placement=self.simple(p=5001)))],"outside closed host range")
+        vertical=self.host();vertical["frame"]={"origin":[0,0,0],"U":"+X","V":"+Z","N":"-Y"}
+        self.apply([put("run",run(placement=self.simple(vertical,up="+X")))])
+        self.assertEqual([0,0,1],self.read()["state"]["runs"][0]["frame"]["N"])
+        bad=self.simple(vertical);del bad["up"]
+        self.reject([put("run",run(placement=bad))],"explicit")
+
+    def test_live_host_follow_detach_conversion_and_atomic_delete(self):
+        host=self.live_host();self.fixture()
+        self.apply([put("run",run(placement=self.simple(host)))])
+        graph=self.command("source-inspect")
+        self.assertTrue(any(e["from"]=="profile-run:1" and e["to"]=="placement:9" for e in graph["edges"]))
+        before=self.read()["state"]["runs"][0]
+        reply=self.command("line placement 9 on boundary 9 origin 0 0 2800 u +x v +y")
+        self.assertFalse(reply["ok"],reply)
+        self.assertTrue(reply["preview"]["valid"],reply)
+        self.assertTrue(self.command("line confirm "+str(reply["preview"]["token"]))["ok"])
+        self.assertEqual([1000,2000,2800],self.read()["state"]["runs"][0]["frame"]["origin"])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(before,self.read()["state"]["runs"][0])
+        self.reject([{"op":"delete-placement","id":9}],"missing or invalid")
+        preview,_=self.apply([{"op":"convert-run-to-advanced","id":1}])
+        self.assertIn("RUN_HOST_DETACHED",[w["code"] for w in preview["sectionProfiles"]["warnings"]])
+        detached=self.read()["state"]["runs"][0]
+        self.assertEqual(before["frame"],detached["frame"])
+        self.assertEqual(before["members"],detached["members"])
+        self.apply([{"op":"convert-run-to-simple","id":1,"host":host}])
+        self.assertEqual(before,self.read()["state"]["runs"][0])
+        self.apply([{"op":"convert-run-to-advanced","id":1},{"op":"delete-placement","id":9}])
+        self.assertEqual(detached,self.read()["state"]["runs"][0])
+        self.assertTrue(self.command("line undo")["ok"])
+        self.assertEqual(before,self.read()["state"]["runs"][0])
+        self.assertTrue(self.command("line redo")["ok"])
+        self.assertEqual(detached,self.read()["state"]["runs"][0])
+
+    def test_conversion_reports_all_unsatisfied_conditions_and_zero_writes(self):
+        self.apply([put("profile",profile()),put("run",run(placement={"kind":"advanced","origin":[6000,6000,2800],"N":"+Z","V":"+Y"}))])
+        preview=self.reject([{"op":"convert-run-to-simple","id":1,"host":self.host()}],"origin not in host plane")
+        text=json.dumps(preview)
+        self.assertIn("N not a host-plane direction",text)
+        self.assertIn("p,q outside host range",text)
+
+    def test_all_bad_dimension_dependents_are_diagnosed(self):
+        self.apply([{"op":"put-spec","name":"a","value":27},put("profile",profile()),
+                    put("member",member(A={"kind":"spec","name":"a"})),
+                    put("member",member(2,373,A={"kind":"spec","name":"a"}))])
+        preview=self.reject([{"op":"delete-spec","name":"a"}],"MEMBER_DIMENSION_INVALID")
+        errors=[v for v in preview["violations"] if v["code"]=="MEMBER_DIMENSION_INVALID"]
+        self.assertEqual({1,2},{v["memberId"] for v in errors})
+
+    def test_upstream_engineering_and_parameter_failure_still_lists_each_profile_dependent(self):
+        for line in ("surface 7 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000",
+                     "timber 11 27 33 role boundary","place 11 on 7 at-face e0 +u +n"):
+            self.assertTrue(self.command("line "+line)["ok"])
+        source={"kind":"spec","name":"shared"}
+        self.apply([{"op":"put-spec","name":"shared","value":27},
+                    {"op":"set-source","target":{"kind":"timber","id":11,"field":"A"},"source":source},
+                    put("profile",profile()),put("member",member(A=source)),put("member",member(2,373,A=source))])
+        preview=self.reject([{"op":"delete-spec","name":"shared"}],"MEMBER_DIMENSION_INVALID")
+        self.assertEqual({1,2},{v["memberId"] for v in preview["violations"] if v["code"]=="MEMBER_DIMENSION_INVALID"})
+        parameter={"id":0,"name":"source","fields":[{"id":0,"name":"A","type":"dimension","input":"27"}]}
+        source={"kind":"parameter","parameterId":0,"fieldId":0}
+        self.apply([{"op":"put-parameter","value":parameter},put("member",member(A=source)),put("member",member(2,373,A=source))])
+        del parameter["fields"][0]["input"]
+        parameter["fields"][0]["expression"]={"op":"ref","parameterId":0,"fieldId":0}
+        preview=self.reject([{"op":"put-parameter","value":parameter}],"MEMBER_DIMENSION_INVALID")
+        self.assertEqual({1,2},{v["memberId"] for v in preview["violations"] if v["code"]=="MEMBER_DIMENSION_INVALID"})
+
+    def test_live_host_shrink_lists_each_run_and_pending_reads_preserve_token(self):
+        host=self.live_host()
+        self.apply([put("profile",profile()),put("run",run(1,placement=self.simple(host))),
+                    put("run",run(2,placement=self.simple(host,p=3000)))])
+        before=self.snapshot()
+        rejected=self.command("line boundary 9 outline 0,0 500,0 500,500 0,500")
+        self.assertFalse(rejected["ok"],rejected)
+        self.assertFalse(rejected["preview"]["valid"],rejected)
+        errors=rejected["preview"]["sectionProfiles"]["violations"]
+        self.assertEqual({1,2},{v["runId"] for v in errors if v["code"]=="RUN_PLACEMENT_INVALID"})
+        self.assertEqual(before,self.snapshot())
+        preview=self.preview([put("run",run(1,placement=self.simple(host,p=1200)))])
+        self.assertTrue(preview["valid"])
+        path=self.directory/"snapshot.scene";path.write_text(before[0])
+        self.assertTrue(self.command("source-inspect-file "+str(path))["complete"])
+        self.assertTrue(self.command("section-profile-confirm "+str(preview["token"]))["ok"])
+        self.assertEqual([1200,2000,2700],self.read()["state"]["runs"][0]["frame"]["origin"])
+
+    def test_all_cardinal_frames_and_four_host_directions_are_exact(self):
+        self.apply([put("profile",profile())])
+        axes={"+X":[1,0,0],"-X":[-1,0,0],"+Y":[0,1,0],"-Y":[0,-1,0],"+Z":[0,0,1],"-Z":[0,0,-1]}
+        def cross(a,b):
+            return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]
+        for uname,u in axes.items():
+            for vname,v in axes.items():
+                if sum(a*b for a,b in zip(u,v)):continue
+                n=cross(u,v);nname=next(k for k,a in axes.items() if a==n)
+                host=self.host();host["frame"]={"origin":[0,0,0],"U":uname,"V":vname,"N":nname}
+                for direction,expected in [("+u",u),("-u",[-a for a in u]),("+v",v),("-v",[-a for a in v])]:
+                    placement=self.simple(host,dir=direction,p=0,q=0,up=nname)
+                    self.apply([put("run",run(placement=placement))])
+                    state=self.read()["state"]["runs"][0]
+                    self.assertEqual(expected,state["frame"]["N"])
+                    self.assertEqual([-a for a in n],state["frame"]["V"])
+                    self.assertEqual(cross([-a for a in n],expected),state["frame"]["U"])
+                    self.apply([{"op":"convert-run-to-advanced","id":1}])
+                    self.assertEqual(state["frame"],self.read()["state"]["runs"][0]["frame"])
+                    self.apply([{"op":"convert-run-to-simple","id":1,"host":host}])
+                    self.assertEqual(state,self.read()["state"]["runs"][0])
+
+    def test_maximum_pair_diagnostics_and_copied_host_capacity_roundtrip(self):
+        self.apply([put("profile",profile())])
+        capacity=self.read()["capacity"]["members"]
+        preview=self.reject([put("member",member(i)) for i in range(capacity)],"V_PROFILE_OVERLAP")
+        self.assertEqual(capacity*(capacity-1)//2,len(preview["violations"]))
+        self.assertTrue(preview["diagnosticsComplete"])
+        holes=[[[100+i*300,100],[200+i*300,100],[200+i*300,200],[100+i*300,200]] for i in range(8)]
+        host=self.host(holes)
+        self.apply([put("run",run(i,placement=self.simple(host))) for i in range(self.read()["capacity"]["runs"])])
+        expected=self.command("dump")["text"]
+        path=self.directory/"hosts.scene";path.write_text(expected)
+        with BridgeSession(self.binary,cwd=self.directory) as fresh:
+            self.assertTrue(fresh.command("loadfile "+str(path))["ok"])
+            self.assertEqual(expected,fresh.command("dump")["text"])
+        host["region"]["holes"].append([[3000,100],[3100,100],[3100,200],[3000,200]])
+        self.reject([put("run",run(placement=self.simple(host)))],"bounded effective region")
 
 
 if __name__ == "__main__":

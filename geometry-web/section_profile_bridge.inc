@@ -67,6 +67,7 @@ static bool sp_contact_lost(const SectionProfile *p,const ProfileMember *m,const
     }
     return false;
 }
+#include "section_profile_diagnostics.inc"
 static void json_section_profile_impact(const World *before,const World *after)
 {
     fputs(",\"sectionProfiles\":{\"before\":",stdout);json_section_profile_state(before);fputs(",\"after\":",stdout);json_section_profile_state(after);
@@ -77,25 +78,26 @@ static void json_section_profile_impact(const World *before,const World *after)
         if(old&&now&&memcmp(&old->outline,&now->outline,sizeof old->outline)&&sp_contact_lost(old,a,now,z)){
             printf("%s{\"code\":\"PROFILE_CONTACT_LOST\",\"clause\":\"I49\",\"memberId\":%u,\"profileId\":%u}",first?"":",",z->id,z->profile_id);first=false;}
     }
-    fputs("]}",stdout);
+    for(size_t i=0;i<before->section_profiles.run_count;++i){const ProfileRun *a=&before->section_profiles.runs[i],*z=sp_run((World*)after,a->id);
+        if(a->simple&&z&&!z->simple&&z->placed){printf("%s{\"code\":\"RUN_HOST_DETACHED\",\"clause\":\"I48\",\"runId\":%u,\"message\":\"進階定位保存目前座標，解除宿主聯動\"}",first?"":",",a->id);first=false;}}
+    fputs("],\"diagnosticsComplete\":true,\"violations\":",stdout);sp_json_violations(before,after,!g_preview.valid);putchar('}');
 }
 static void json_section_profile_preview(void)
 {
-    /* Mixed source operations can affect existing geometry as well as profiles.
-     * Reuse the complete engineering candidate state for I8a disclosure. */
-    char error[512];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
-    printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":false,\"validationStrategy\":\"first-error\"",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
+    /* Source operations disclose both existing geometry and Q38 dependencies. */
+    char error[sizeof g_engineering_error];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
+    printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":true,\"validationStrategy\":\"all-section-profile-violations\"",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
     fputs(",\"before\":",stdout);json_engineering_state(&g_preview.before,true);
     fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);
-    json_section_profile_impact(&g_preview.before,&g_preview.after);fputs(",\"violations\":[",stdout);
-    if(!g_preview.valid){fputs("{\"code\":\"SECTION_PROFILE_INVALID\",\"clause\":\"I43-I49\",\"message\":",stdout);js_string(error);putchar('}');}
-    fputs("]}",stdout);
+    snprintf(g_engineering_error,sizeof g_engineering_error,"%s",error);
+    json_section_profile_impact(&g_preview.before,&g_preview.after);fputs(",\"violations\":",stdout);
+    sp_json_violations(&g_preview.before,&g_preview.after,!g_preview.valid);putchar('}');
 }
 static void cmd_section_profile_read(void)
 {
-    printf("{\"ok\":true,\"schema\":\"section-profile-native/1\",\"revision\":%llu,\"rendererSupported\":false,\"simplePlacementSupported\":false,\"capacity\":{\"profiles\":%d,\"members\":%d,\"runs\":%d,\"vertices\":%d,\"recordBytes\":%d},\"nativeBytes\":{\"world\":%zu,\"sectionProfiles\":%zu},",(unsigned long long)g_definition_revision,SP_PROFILE_MAX,SP_MEMBER_MAX,SP_RUN_MAX,POLY_MAX_VERTICES,SP_RECORD_MAX-1,sizeof(World),sizeof(SectionProfileState));
+    printf("{\"ok\":true,\"schema\":\"section-profile-native/1\",\"revision\":%llu,\"simplePlacementSupported\":true,\"capacity\":{\"profiles\":%d,\"members\":%d,\"runs\":%d,\"vertices\":%d,\"recordBytes\":%d,\"runRecordBytes\":%d},\"nativeBytes\":{\"world\":%zu,\"sectionProfiles\":%zu},",(unsigned long long)g_definition_revision,SP_PROFILE_MAX,SP_MEMBER_MAX,SP_RUN_MAX,POLY_MAX_VERTICES,SP_RECORD_MAX-1,SP_RUN_RECORD_MAX-1,sizeof(World),sizeof(SectionProfileState));
     json_engineering_capabilities(&g_world);
-    fputs(",\"diagnosticsComplete\":false,\"validationStrategy\":\"first-error\"",stdout);
+    fputs(",\"diagnosticsComplete\":true,\"validationStrategy\":\"all-section-profile-violations\"",stdout);
     printf(",\"panelSpecs\":[{\"id\":\"%s\",\"name\":\"%s\",\"thickness\":%lld,\"widthMaxExclusive\":%lld,\"sheetLength\":%lld}]",sp_panel_spec.id,sp_panel_spec.name,(long long)sp_panel_spec.thickness,(long long)sp_panel_spec.width_max,(long long)sp_panel_spec.sheet_length);
     fputs(",\"state\":",stdout);json_section_profile_state(&g_world);fputs("}\n",stdout);
 }

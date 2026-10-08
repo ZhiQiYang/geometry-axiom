@@ -133,9 +133,10 @@ static void si_rule_parts(SiIndex *s,const AsmRuleVersion *r)
     const char *parts[2]={"members","joints"};for(int kind=0;kind<2;++kind){int list=eng_json_member(&j,0,parts[kind]);for(int k=0;k<eng_json_size(&j,list);++k){int at=eng_json_at(&j,list,k);int64_t id=0;if(!eng_json_integer(&j,eng_json_member(&j,at,"id"),&id)){s->complete=false;continue;}char text[ASM_RECORD_MAX],key[240],label[100];if(!eng_json_canonical(&j,at,text,sizeof text)){s->complete=false;continue;}const char *type=kind?"assembly-joint":"assembly-member";si_numkey(key,type,r->id,r->version,(uint32_t)id);si_reset(s);si_text(s,"%s",text);snprintf(label,sizeof label,"%s #%lld",kind?"接合定義":"規則構件",(long long)id);si_nnode(s,type,r->id,r->version,(uint32_t)id,label);si_edge(s,root,key,kind?"joint-definition":"member",parts[kind],true);}}
     eng_json_free(&j);
 }
+#include "section_profile_source_index.inc"
 static SiIndex *si_build(const World *w)
 {
-    SiIndex *s=calloc(1,sizeof *s);if(!s)return NULL;s->complete=!sp_used(w);char from[240],label[200];SiNode *n;
+    SiIndex *s=calloc(1,sizeof *s);if(!s)return NULL;s->complete=true;char from[240],label[200];SiNode *n;
     for(size_t i=0;i<w->boundary_count;++i){const SpaceBoundarySurface *b=&w->boundaries[i];si_reset(s);si_text(s,"%d;",b->kind);si_loop(s,&b->outline);for(size_t k=0;k<b->hole_count;++k)si_loop(s,&b->holes[k]);
         const BoundaryVertexKeys *keys=world_find_vertex_keys(w,b->id);if(keys){for(size_t k=0;k<keys->loop_count;++k)for(size_t v=0;v<keys->counts[k];++v)si_text(s,"key:%zu:%zu:%u;",k,v,keys->keys[k][v]);}
         si_nnode(s,"boundary",b->id,0,0,"邊界");}
@@ -179,6 +180,7 @@ static SiIndex *si_build(const World *w)
     for(size_t i=0;i<w->assembly.rule_count;++i){const AsmRuleVersion *r=&w->assembly.rules[i];si_reset(s);si_text(s,"%s",r->fingerprint);n=si_nnode(s,"assembly-rule",r->id,r->version,0,si_name(r->content,label,"組構規則"));if(n){snprintf(n->definition,65,"%s",r->fingerprint);snprintf(n->value,65,"%s",r->fingerprint);}si_rule_parts(s,r);}
     for(size_t i=0;i<w->assembly.binding_count;++i){const AsmBinding *b=&w->assembly.bindings[i];si_numkey(from,"assembly-binding",b->id,0,0);si_reset(s);si_content(s,b->content,"name");si_nnode(s,"assembly-binding",b->id,0,0,b->name);si_ref(s,from,"assembly-rule",b->rule_id,b->rule_version,0,"rule-version","rule");si_binding_sources(s,from,b->content);}
     for(size_t i=0;i<w->assembly.instance_count;++i){const AsmInstance *a=&w->assembly.instances[i];si_numkey(from,"assembly-instance",a->id,0,0);si_reset(s);si_content(s,a->content,"");si_nnode(s,"assembly-instance",a->id,0,0,a->name);si_ref(s,from,"assembly-binding",a->binding_id,0,0,"dimension","binding");si_ref(s,from,"assembly-rule",a->rule_id,a->rule_version,0,"rule-version",a->rule_hash);si_ref(s,from,"placement",a->surface_id,0,0,"position","surface");for(int k=0;k<3;++k){char key[240],detail[100];si_numkey(key,"timber",a->timber[k],0,0);snprintf(detail,sizeof detail,"member:%u",a->member[k]);si_edge(s,key,from,"member",detail,true);}}
+    si_profile_sources(s,w);
     return s;
 }
 static void si_json(SiIndex *s,const World *w,bool live)
