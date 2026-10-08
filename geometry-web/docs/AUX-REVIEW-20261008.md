@@ -13,7 +13,7 @@
 | 範圍 | 結果 | 實際執行 head／可重跑入口 |
 | --- | --- | --- |
 | 模型庫 history／中途操作保護 | 35／35，完整、0 fail、exit 0 | `bc1f6fe`；[固定 35 項腳本](https://github.com/ZhiQiYang/geometry-axiom/blob/bc1f6fea2f1d10b29d1e6db1917b2781377d8864/tests/integration/model_library_history_browser.py) |
-| 保存與新 profile 重開往返 | 33／33，完整、0 fail、exit 0 | `bc1f6fe`；[固定 33 項腳本](https://github.com/ZhiQiYang/geometry-axiom/blob/bc1f6fea2f1d10b29d1e6db1917b2781377d8864/tests/integration/save_roundtrip_acceptance.cjs) |
+| 保存與全新瀏覽器 profile 重開往返 | 33／33，完整、0 fail、exit 0 | `bc1f6fe`；[固定 33 項腳本](https://github.com/ZhiQiYang/geometry-axiom/blob/bc1f6fea2f1d10b29d1e6db1917b2781377d8864/tests/integration/save_roundtrip_acceptance.cjs) |
 | 完整非瀏覽器 aggregate | 80 suites；2507 pass、0 fail、1 個具名 Windows GDI skip；exit 0 | `bc1f6fe`；process-local 16 MiB stack |
 | 完整 CDP | 2175 pass、0 fail／skip；84 sections 與 golden 相符；exit 0 | `751471e60d86496cde3e06d0298923c4f9cbdd3b` |
 | Space | 228／228，完整、0 fail、exit 0 | `751471e` |
@@ -25,7 +25,7 @@
 
 35 項涵蓋真 native Undo pending、Save／Undo／Redo／remove 與快捷鍵重入拒絕、關閉／重開、跨專案與切換來源的晚回覆、草稿／參數／房間控制，以及第二個 browser tab 取得真 Web Locks readonly lease。context／session 遲到回覆以明示故障注入檢查新目標 durable state 與 owner frame 不變；部分草稿／readonly 歷史以 fixture 或公開 API 建立，並非每步都由指標輸入。
 
-33 項以獨立完整 World（包含 `canvas-pos`）作 oracle，等 native dump 完全相等才取樣；驗真正下載、全新 profile 正式開檔、模型體積及高度、New／Undo／Redo、損壞 ZIP 零提交。取消 picker／磁碟失敗是明示注入；此 fixture 沒有附圖／PDF 或任意草稿 payload，不聲稱覆蓋那些全部往返。
+33 項以獨立完整 World（包含 `canvas-pos`）作 oracle，等 native dump 完全相等才取樣；驗真正下載、全新瀏覽器 profile 正式開檔、模型體積及高度、New／Undo／Redo、損壞 ZIP 零提交。取消 picker／磁碟失敗是明示注入；此 fixture 沒有附圖／PDF 或任意草稿 payload，不聲稱覆蓋那些全部往返。
 
 新 35／33 項是獨立限定範圍驗收，**沒有找回或重建原十項及 155 項的完整腳本與失敗前序**。原 155 的過早取樣風險已由新完整 World fence 補驗，不能據此聲稱舊 155 全數重跑。原十項第十個 id 未知，也不阻止新增測試用自己的 case ID 誠實記錄範圍。
 
