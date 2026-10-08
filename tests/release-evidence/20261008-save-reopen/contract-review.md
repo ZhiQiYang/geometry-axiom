@@ -77,7 +77,7 @@
 
 1. 沒有一條案例串起：一面 D30 錨點、該面一條 D19a 正式線上的角材、該角材這一步的 undo／redo、然後像 `test_grid_system_contract.py:123–132` 先清空再載入。`611–638` 有引用與 roundtrip，但沒有這支角材的 undo。`1036–1090` 有角材引用指紋，沒有 roundtrip。
 2. 來源規則成功路徑的 `roundtrip()`（`test_grid_subdivision_oracle.py:303–309`）載入前不 `reset`。載入若被做成 no-op 仍會相等。它弱於網格系統那個先清空的重載。
-3. 同 ruleKey 不得暗接只在同一檔的 `wrong-source`（`931` 起）被拒絕。沒有兩個專案身分的交換。公理對此已定案（`公理層.md:277–279`），測試未覆蓋跨專案。
+3. 同 ruleKey 不得暗接，已由同一檔的 `wrong-source`（`931` 起）拒絕。定案的是換成另一來源也不得暗接（`公理層.md:277`）。`279` 寫明此邊界不新增跨專案永久身分；兩個專案如何交換、匯入後 id 必須留或必須改，條文未定，不得寫成規格，也不補那個測試。
 4. 沒有斷言網格編輯之後的 `projectId`、名稱、`dirty`／`saved`／`downloaded`。這些旗標公理未定案，所以缺口是「產品旗標未被此流程斷言」，不是缺一條公理。
 5. 沒有「只匯出 `.scene` 再打開，底圖與未發布草稿仍不在」與這條網格鏈放在同一次斷言。省略本身是已知邊界。
 
@@ -90,10 +90,11 @@
 - 系統：u `repeat 0 200`，v `repeat 0 100`，無 stagger，名稱「假格網」。
 - 配置：面 A 左上頂點，cell `(0,0)`，比例 `0/1,0/1`。
 - 規則：`all-cells`，`2×2`，名稱「假規則」。預期正式 key＝1，next＝2。
-- 角材：左右邊界材 `20×20`；副支 `20×30`，`at-line rule` 加 `between`，不要把中線毫米寫進來源。
+- 角材不要用「左右邊界材跨接副支」這組合成。面寬 600、u 間距 200 會切成三格，左右外輪廓不在同一格；副支若 `between` 這兩支，footprint 超出單一 cell。直接引用 D19a 線時，完整 footprint 必須留在該線所屬 cell（`公理層.md:645`），格邊不是擋面。
+- 角材改指向既有合法夾具，不另造：`tests/test_grid_subdivision_oracle.py` 的 `test_direct_line_needs_real_support_and_complete_cell_scope_while_guide_is_coordinate_only`。`real_supports` 用上下邊界材承接格內兩支主支；副支是格內 `between t1 t2`（約 `631`），已斷言長度 540、中線 400。
 - 專案顯示名只作產品層夾具：「假專案甲」。幾何斷言不得依賴這個名字。
 
-手算檢查：u 線 `…,-200,0,200,400,600,…`；規則內線在 cell 寬 200 的一半處。改 step 為 300 後，cell 索引與 vertexKey 必須仍是原值，只有推導座標變。
+手算檢查只核格線與索引，不是角材夾具：u 線 `…,-200,0,200,400,600,…`；規則內線在 cell 寬 200 的一半處。改 step 為 300 後，cell 索引與 vertexKey 必須仍是原值，只有推導座標變。跨出該格的副支不在這組建議裡。
 
 ## 2. 組構規則＋角材
 
@@ -123,8 +124,9 @@
 - authoring 不因此能生成：`538` 起。
 - 三支 owned 角材、預覽不改 World：`tests/test_assembly_generation.py:43–47`。
 - 改名改序不改 member→timber：`125` 起 `test_reorder_rename_keeps_member_to_timber_mapping`。
-- owned 拒絕獨立 place／delete／改尺寸：`169–173`。
-- 新行程 roundtrip 保留來源、mapping、幾何 dump：`174–177`。
+- owned 拒絕獨立 place／delete／改尺寸：`169–173`。這是保存前。
+- 新行程 roundtrip 保留來源、mapping、幾何 dump：`174–177`。這條沒有重寫，載入後仍不刪。
+- 重開後 owned 仍拒絕直接 `delete timber`：`214` 起 `test_reopened_owned_member_refuses_direct_delete`。沿用同一組生成夾具的主支承接與端接副支，fresh process 只做 `loadfile` 後拒絕刪除且 dump 不變。不是 4000×3000 空間模型 oracle，也沒有另測 undo／redo／reset。
 - 拿掉能力或改 owned 尺寸的檔拒絕，且不修好：`178–181`。
 - 外部 guide 擋住刪除；清掉 guide 後 undo／redo：`182–184`。
 - 參數改值重算長度但不重新配置 timber id：`187–193`。
@@ -134,7 +136,7 @@
 
 ### 最小缺口
 
-1. 原生 roundtrip 沒有在載入後再執行一次「owned 角材仍拒絕刪除」。保存前後的拒絕與重開後的拒絕是兩件事，現在只做了前一件（`169–177` 分開）。
+1. 既有 fresh-process roundtrip（`174–177`）仍只比來源、mapping 與 dump，沒有重寫。載入後「owned 角材仍拒絕直接刪除」由 `test_reopened_owned_member_refuses_direct_delete`（`214` 起）補上；undo、redo、reset 之後的同一拒絕沒有加進這條。
 2. 沒有一條案例同時含：未發布草稿、已發布版本、未完成綁定、已生成 instance，然後只拿 `.scene` 打開時草稿消失、拿 `.gcanvas` 打開時草稿還在且不變成可引用版本。A15／A23 蓋住封包重開，沒有對照 `.scene` 省略。
 3. 跨專案組構身分未定案，因此也沒有合法測試可寫「匯入後 id 必須改或必須留」。缺的是條文，不是再補一個 UI 案例。在條文出現前，不得用 A15 的同包重開代替。
 4. 沒有把組構確認之後的產品 `dirty`／名稱／`projectId` 和原生 dump 分欄斷言。`assembly-confirm` 在實作裡會標髒（`reference-workspace.js:420`），這不是公理，也尚未被這組原生測試看見。
@@ -190,7 +192,7 @@
 - 驗證失敗不換專案：`137`、`233`。
 - 角材模型 v4、高度更新不讀即時定義：`182`、`248`。
 - 瀏覽器同一包重開、竄改幾何拒絕且 context 不變：`geometry-web/space_model_test.js:1426–1437`。
-- 33 項真實下載／新設定檔重開／新專案 undo／損壞 ZIP：`tests/integration/save_roundtrip_acceptance.cjs:50–99`。幾何 oracle 是 `boundary 311` 的 4000×3000，牆高 3000→3200，體積字串 `36000000000`／`38400000000`（`61–66`）。重開比對完整 manifest、模型與來源 bytes（`40`、`86–87`），不是截圖。
+- 33 項真實下載／新設定檔重開／新專案 undo／損壞 ZIP：`tests/integration/save_roundtrip_acceptance.cjs:50–99`。幾何 oracle 是 `boundary 311` 的 4000×3000，牆高 3000→3200，體積字串 `36000000000`／`38400000000`（`61–66`）。重開用 `semantic()` 比對 world、id、name、manifest、模型與來源 bytes（`40`、`87`），不是截圖。名稱跟的是保存快照，不是另寫的預期字面。
 - 模型庫 35 項：`tests/integration/model_library_history_browser.py:50–69`。MH00 建立模型（`245–247`）；MH01 暫停中的 Undo 不改模型，放開後 World 與 models 回到原值（`269–276`）；MH02 關閉再開後晚到回覆不得刪模型（`289–296`）；MH03 暫停中拒絕換檔（`303–309`）；MH03-cross-project 是庫內 Undo「新專案」一步回到原 context（`312–332`）；MH04 外來 context／session 不覆寫（`337–352`）。限制寫明不重建歷史 10／155（`63–64`）。
 - 非瀏覽器 28 項只走 shell 函式：`tests/test_workspace_shell_history.js:223–228` 讓假 history 的 Undo 跟到另一個 context。檔頭契約說它沒有 `.gcanvas` 往返（`tests/INTEGRATION-GATES.md:30–34`）。
 - Q38 斷面七個 mesh 的 `.gcanvas` 往返與 undo：`tests/integration/q38_save_roundtrip.py:202–250`。它證明的是斷面定義，不是模型庫跨專案合併。附圖與草稿被它自己標成範圍外（`183`）。
@@ -199,7 +201,7 @@
 
 1. 沒有「專案甲存一筆模型，專案乙已經有自己的面與另一筆模型，再把甲的模型併入乙」的案例。現有跨專案是本頁歷史裡 Undo 新專案（`model_library_history_browser.py:321–332`、`save_roundtrip_acceptance.cjs:81–83`），身分跟著整包回去，不是拷貝所有權。
 2. 公理未寫這次合併要不要新 model id、要不要重算 source hash。缺口先是未定案，不能用測試補規格。
-3. 33 項重開斷言了 id、manifest、models、sources（`save_roundtrip_acceptance.cjs:40`、`86`），沒有斷言名稱仍是建立時的字，也沒有斷言重開後 undo 長度為 0 或僅剩「開啟」一步。產品說堆疊不進檔（`REFERENCE-PROJECT.md:63`）。`snap()` 讀了 undo 長度，`semantic()` 比較時丟掉它。
+3. 33 項重開的 `semantic()` 已含 `name`（`save_roundtrip_acceptance.cjs:40`、`87`），會跟保存快照比名稱，不是完全沒測名稱保存。缺的是獨立預期名稱字面。`snap()` 讀了 undo／redo 長度（`36–39`），`semantic()` 比較時丟掉它們，所以沒有斷言重開後歷史堆疊為 0 或僅剩「開啟」一步。產品說堆疊不進檔（`REFERENCE-PROJECT.md:63`）。
 4. 沒有斷言：同一幾何看起來一樣時，模型 source 仍是舊 scene hash，畫布 D5 卡片張數不變。`SPACE-MODELING.md:58` 寫了不跟隨原面，儲存測試蓋的是牆高更新不改 native dump（`save_roundtrip_acceptance.cjs:68–70`），沒有在重開後改面再證明模型 result 不動。
 5. `.scene` 不得冒充含模型的專案：文件已寫（`SPACE-MODELING.md:61`），沒有與上述 4000×3000 模型鏈放在同一次「只存 scene → 模型清單為空」斷言。
 
