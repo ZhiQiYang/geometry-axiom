@@ -2,7 +2,7 @@
 
 > 協調註記：盤點讀取時 #175 是 `1372650f764f71f89a85ce97829fe5c1350289b8`。其後 `e6642c6` 把三份索引與兩份合成探針收進同一文件分支，沒有改產品。
 >
-> 2026-10-08 接續：遠端核對時 main 仍是 `5cc1ffa`，#170 仍是 `ce0958c`，#174 遠端仍是 `4e6ab44`。#171 已是 `fd5b8c8`，#173 已是 `457eade18`（產品提交仍是 `d44ad7f`）。下面的 head 改成這次讀到的值。沒有重跑 GRID 346／P88 137，沒有重造歷史 10／155。
+> 2026-10-08 接續：當時核對 main 仍是 `5cc1ffa`，#170 仍是 `ce0958c`，#174 遠端曾是 `4e6ab44`。#171 已是 `fd5b8c8`，#173 已是 `457eade18`（產品提交仍是 `d44ad7f`）。瀏覽器擁有者結束後，#174 遠端改為 `b0ef9bc`，產品 blob 仍是 `4e6ab44`。沒有重跑 GRID 346／P88 137，沒有重造歷史 10／155。
 
 
 只讀 `D:\geometry-axiom-focus390`，HEAD `ce0958ca700753172338fe291a17e781da89465a`。main 與 `origin/main` 都是 `5cc1ffa1ee85120eca14258b86b715151cad274f`。沒有關 issue、沒有合併、沒有刪紀錄、沒有讀 #168 已取消的審查留言或 #169 尚未批准的審查留言。
@@ -26,7 +26,7 @@ GitHub 的 issue 與 PR 共用編號。`gh issue view 137` 與 `152` 回的是 P
 
 | 工作樹 | 遠端 | 可寫範圍 | 禁止 |
 | --- | --- | --- | --- |
-| `D:\geometry-axiom-async-qa` | PR #174 遠端 `4e6ab4421e0e634ff4fd06356dadb7d8eaf4feb3`。工作樹另有未提交的保存重開檔 | 唯一瀏覽器與 `app.js`、`space-workspace.js` 產品寫入者 | 其他人不得提交那四個未提交路徑，不關埠 8921 |
+| `D:\geometry-axiom-async-qa` | PR #174 `b0ef9bcfb6133e6463c859952270231f8e740363`。工作樹乾淨。`app.js` 與 `space-workspace.js` 的 blob 與 `4e6ab44` 相同 | 唯一瀏覽器擁有者。`b0ef9bc` 只加保存重開測試與證據 | 不改產品，不重跑這輪，不關已結束的 8921 以外的服務 |
 | `D:\geometry-axiom-inspector-draft` | PR #173 `457eade180add835e6b9fc854835844c7515281e`。產品仍是 `d44ad7f` | 外環邊長，以及已推上的第三階段證據 | 其他人不再改 `app.js` 的檢查器區，也不改那包證據 |
 | `D:\geometry-axiom-save171` | PR #171 `fd5b8c8c2ca65111bdc1cc33a2b9e6bb0a1ff44d` | `tests/test_assembly_generation.py`、`tests/test_grid_subdivision_oracle.py`、保存契約說明 | 不改 `app.js`、`space-workspace.js`，不決定跨專案身分 |
 | `D:\geometry-axiom-docs-index` | PR #175。盤點時 `e6642c6`；本提交更新索引 | 命令索引與這份收尾清單 | 不改產品語意，不另開報告 |
@@ -97,12 +97,12 @@ GitHub 的 issue 與 PR 共用編號。`gh issue view 137` 與 `152` 回的是 P
 
 ### #174 晚回覆不得蓋過較新的使用者動作
 
-- 成果：head `4e6ab4421e0e634ff4fd06356dadb7d8eaf4feb3`。`app.js` +10/−3、`space-workspace.js` +6/−1，另加 `async_reply_ui_test.js` 與 `space_model_test.js`。證據目錄只有 `before/` 與 `after/`。
-- 已進 main：否。
-- 負責者：瀏覽器 QA，`D:\geometry-axiom-async-qa`。
-- 依賴：#170。不要碰到 #173 的那兩個檢查器函式。
-- 下一步：不要第二個人再修同一晚回覆。Temp 的 `run-negative` 沒有進這棵樹，見驗收索引。
-- 驗收：投影確認回來時，設定欄焦點還在；不再是目前編輯工具的邊界讀取不得畫回手把。負控制要留在收據裡，不能只留通過輪。
+- 成果：產品仍是 `4e6ab4421e0e634ff4fd06356dadb7d8eaf4feb3`。`b0ef9bcfb6133e6463c859952270231f8e740363` 只加測試與證據，7 個路徑、+391/−5。`async_reply_ui_test.js` 沒有再改。
+- 已進 main：否。仍是 draft，基底 #170。
+- 負責者：瀏覽器 QA。這次結束後工作樹乾淨。
+- 依賴：#170。不要碰到 #173 的檢查器區。
+- 下一步：不要第二個人重跑同一輪，也不要補寫成完整主 UI。
+- 驗收：晚回覆收據仍是 `before/` 與 `after/`。保存重開收據是 `tests/release-evidence/20261008-async-repro/save-reopen/record.json`：結束碼 0、通過 24、失敗 0，寬度 1400 與 390，runtime `f0c9f4c72d601dde34476ee0b763f29fceeb0a5dd70488b04fd1fa59abef92c4`，fresh true，bridge SHA-256 `aa2cc6ae4fd47277c4620bf08bbc99ccae0ee48757c0728785528cfd1357736d`，沒有重編。這是讀提交內容，不是本索引重跑。CI run `37805163066` 是 7 jobs、0 steps。腳本沒有 undo／redo。重開前有等到新專案的 faces 與 gridSystems 為 0。下載備援不是作業系統存檔對話框。同專案組構沒有在這輪瀏覽器執行，見 `cannot-test.json`。
 
 ### #175 啟動與測試命令索引
 
@@ -273,8 +273,8 @@ open 不等於未做。下面「已在 main」只指正文點名、且祖先檢�
 | 檔案 | owner | 遠端 | 其他人 |
 | --- | --- | --- | --- |
 | `tests/test_assembly_generation.py`、`tests/test_grid_subdivision_oracle.py` | 本輪非瀏覽器測試 | #171 `fd5b8c8` | 不競寫。共用 `roundtrip()` 故意沒改 |
-| `geometry-web/app.js`、`geometry-web/space-workspace.js` | 唯一瀏覽器擁有者，#174 | 遠端 `4e6ab44`；工作樹還有未提交檔 | 不改 |
-| `geometry-web/space_model_test.js`、`geometry-web/space_test_floor.js`、`tests/test_space_test_floor.js`、`geometry-web/save_reopen_synthetic_test.js` | 同一個瀏覽器擁有者，尚未提交 | 不在 `4e6ab44` | 不提交、不覆寫 |
+| `geometry-web/app.js`、`geometry-web/space-workspace.js` | 唯一瀏覽器擁有者，#174 | 產品 blob 停在 `4e6ab44`，`b0ef9bc` 沒有改這兩個檔 | 不改 |
+| `geometry-web/save_reopen_synthetic_test.js`、`geometry-web/space_model_test.js`、`geometry-web/space_test_floor.js`、`tests/test_space_test_floor.js` | 同一個瀏覽器擁有者 | 已在 `b0ef9bc` | 不覆寫、不重跑 |
 | `geometry-web/grid_rule_lines_test.js` | 瀏覽器擁有者（缺口 3） | 尚未另開分支 | 不改 |
 | `tests/release-evidence/20261008-phase3-formal/` | #173 的證據提交 | `457eade18` | 不複製 log、不覆寫 |
 | 本目錄 | 文件索引 | #175 | 不另開報告 |
@@ -300,12 +300,12 @@ open 不等於未做。下面「已在 main」只指正文點名、且祖先檢�
 
 ### 依賴
 
-main `5cc1ffa` ← #169 `a7bff8f` ← #170 `ce0958c`。#171 `fd5b8c8`、#172 `f8225f7`、#173 `457eade18`、#174 `4e6ab44`、#175 都還是疊在 #170 上的 draft。#173 與 #174 的 `app.js` 都還沒合併。沒有關閉 issue。
+main `5cc1ffa` ← #169 `a7bff8f` ← #170 `ce0958c`。#171 `fd5b8c8`、#172 `f8225f7`、#173 `457eade18`、#174 `b0ef9bc`、#175 都還是疊在 #170 上的 draft。#173 與 #174 的 `app.js` 產品內容都還沒合併；`b0ef9bc` 沒有再改 `app.js`。沒有關閉 issue。
 
 ### 未完成
 
-- 瀏覽器擁有者仍在跑。三視圖的 uvMap 暫停、edit→view→edit、狀態文字、面 id、`navigationSequence`／`view3` 沒有由本輪核對成已完成。
-- 工作樹裡的保存重開檔未提交。第三階段沒有蓋掉那份未提交工作。
+- 瀏覽器擁有者已結束，#174 遠端與工作樹都是 `b0ef9bc`。三視圖的 uvMap 暫停、edit→view→edit、狀態文字、面 id、`navigationSequence` 仍沒有加進 `async_reply_ui_test.js`。
+- 瀏覽器保存重開沒有 undo／redo。它證明的是新專案後面與格網為空，不是原生那條規則線角材的 400／540。同專案組構這輪標 `not-executed`。
 - 缺口 2（`space_model_test.js` 重開未先看到空世界）與缺口 3（`sleep(250)`）沒改。
 - 子規則共用 `roundtrip()` 仍不先 `reset`。owned 刪除沒有再加 undo／redo／reset 後的同一拒絕。
 - 作業系統存檔對話框、實體滑鼠、真機、IME、完整 CDP 2177、同一 head 的完整原生套件都沒有。
