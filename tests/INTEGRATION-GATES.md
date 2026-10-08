@@ -571,7 +571,7 @@ finally 移除；不呼叫應用狀態 setter 或改幾何 API 製造通過。
 `tests/test_section_profile_modeling.py`；aggregate 登錄它們，但不因此宣稱 UI 已驗。
 正式介面 gate `tests/test_section_profile_browser.js` 另驗桌面與 390px、真鍵盤、
 typed sources、2D／3D、非法預覽與取消、兩方向定位轉換、共享歷史及正常 Save／Open。
-必須使用其固定完整 census，保留各個通過名稱與錯誤，不能只讀最後一個 exit code。
+必須使用其固定完整 **68 checks** census，保留各個通過名稱與錯誤，不能只讀最後一個 exit code。
 
 以下命令沿用本頁的專屬 fresh runtime、receipt-backed native 與 TEMP feedback 設定；
 每個 OUT 及 release-gate output 都須是新的 checkout 外目錄：
