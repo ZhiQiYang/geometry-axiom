@@ -228,6 +228,11 @@ def adapt_observation(store, observation, source_id="github-read-observation"):
         task = tasks.get(task_id, {})
         if not task:
             emit(task_id, "task", {"title": row["title"], "refs": [{"kind": "pr", "number": row["number"], "url": row["url"]}]})
+        elif (task_id, "task") in streams and (task_id, "task") not in pending:
+            # Retain this source's original task event after its first import.
+            # Copying the current projection would absorb independent scope or
+            # approval changes; omitting it makes an identical poll a new source.
+            emit(task_id, "task", streams[(task_id, "task")]["data"])
         raw_pr = {"number": row["number"], "url": row["url"], "head_sha": row["head_sha"],
                   "draft": row["draft"], "merged": False, "updated_at": row["updated_at"]}
         if row["number"] in ci_groups:
