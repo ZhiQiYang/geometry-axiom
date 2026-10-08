@@ -552,14 +552,15 @@ async function main() {
     const c = document.querySelector(".ocard");
     if (!c) return null;
     const r = c.getBoundingClientRect();
-    return {x: r.left + r.width/2, y: r.top + 20};
+    const local = ocFind(c.dataset.kind, +c.dataset.id);
+    return {x: r.left + r.width/2, y: r.top + 20, kind:c.dataset.kind, id:+c.dataset.id, cx:local?local.cx:null, cy:local?local.cy:null};
   })()`);
   if (cardBox) {
     const posBefore = await eval_(`JSON.stringify(oc.faces.map(f=>[f.id,f.cx,f.cy]))`);
     await drag(cardBox.x, cardBox.y, cardBox.x + 120, cardBox.y + 60);
-    await sleep(1200);
+    const commit = await cdp.waitCardCanvasPos(eval_, {kind:cardBox.kind, id:cardBox.id, beforeCx:cardBox.cx, beforeCy:cardBox.cy});
     const posAfter = await eval_(`JSON.stringify(oc.faces.map(f=>[f.id,f.cx,f.cy]))`);
-    console.log("card pos:", posBefore, "->", posAfter,explicitVerdict(posBefore !== posAfter ? "✓ 拖卡片有效" : "✗ 拖卡片無效"));
+    console.log("card pos:", posBefore, "->", posAfter,explicitVerdict(commit.ok && posBefore !== posAfter ? "✓ 拖卡片有效" : "✗ 拖卡片無效"), JSON.stringify(commit));
   }
 
   console.log("=== 6. 點卡=選取(檢視器);雙擊=進入面編輯 ===");
@@ -2138,14 +2139,15 @@ async function main() {
   console.log("柱卡片:",explicitVerdict(colCard ? "✓" : "✗"));
   /* 拖卡片 → canvas-pos 持久化 */
   if (colCard) {
+    const columnBefore = await eval_(`api("objects").then(r=>{const c=r.columns[0];return c?{id:c.id,cx:c.cx,cy:c.cy}:null;})`);
     await drag(colCard.x, colCard.y, colCard.x + 130, colCard.y + 80);
-    await sleep(800);
+    const commit = columnBefore ? await cdp.waitCardCanvasPos(eval_, {kind:'column', id:columnBefore.id, beforeCx:columnBefore.cx, beforeCy:columnBefore.cy}) : {ok:false};
     const dragR = await eval_(`api("objects").then(r=>({
       has: r.columns[0] && r.columns[0].hasPos }))`);
     const dumpPos = await eval_(
       `api("dump").then(d=>/canvas-pos column/.test(d.text))`);
-    console.log("拖卡片→canvas-pos:",explicitVerdict(dragR.has && dumpPos ? "✓" : "✗"),
-      "| dump 有記錄:", dumpPos);
+    console.log("拖卡片→canvas-pos:",explicitVerdict(commit.ok && dragR.has && dumpPos ? "✓" : "✗"),
+      "| dump 有記錄:", dumpPos, JSON.stringify(commit));
   }
   /* 空間→柱 障礙連線 */
   const rcEdgeLabels = await eval_(
