@@ -564,3 +564,35 @@ finally 移除；不呼叫應用狀態 setter 或改幾何 API 製造通過。
 數字欄輸入 `1e309` 實際被 HTML 正規化成空值，不能聲稱 Infinity 到達 validator。
 實體 IME／手機與真人時間未驗。這只證明 Enter 可取代此步的按鈕點按，
 不代表整個流程操作數或完成時間已改善。
+
+## Q38 斷面、模型與完整專案
+
+原生／模型的永久 suites 為 `tests/test_section_profile_native.py` 與
+`tests/test_section_profile_modeling.py`；aggregate 登錄它們，但不因此宣稱 UI 已驗。
+正式介面 gate `tests/test_section_profile_browser.js` 另驗桌面與 390px、真鍵盤、
+typed sources、2D／3D、非法預覽與取消、兩方向定位轉換、共享歷史及正常 Save／Open。
+必須使用其固定完整 census，保留各個通過名稱與錯誤，不能只讀最後一個 exit code。
+
+以下命令沿用本頁的專屬 fresh runtime、receipt-backed native 與 TEMP feedback 設定；
+每個 OUT 及 release-gate output 都須是新的 checkout 外目錄：
+
+```sh
+GEOMETRY_SECTION_EVIDENCE=/tmp/q38-ui-evidence \
+  python3 tests/release_gate.py --url "$GEOMETRY_TEST_URL" \
+  --output /tmp/q38-ui-receipt -- node tests/test_section_profile_browser.js
+
+GEOMETRY_Q38_SAVE_OUT=/tmp/q38-fresh-save-evidence \
+  python3 tests/release_gate.py --url "$GEOMETRY_TEST_URL" \
+  --output /tmp/q38-fresh-save-receipt -- python3 tests/integration/q38_save_roundtrip.py
+```
+
+第二個 gate 固定 **18 checks**。使用公開原生 preview／confirm 建立明示 fixture，
+包含未定位 runs、零構件／未使用 profiles、角材／面材及完整 copied-host frame、holes、
+sourceDescription。真下載完整 `/16` ZIP，New 後以全新 Chromium process 正式選檔重開，
+逐字核對完整 canonical World、七個 mesh 的獨立精確體積／bounds 與 Undo／Redo。
+初始化夾具不是 UI authoring 覆蓋；模型預期數值不是由受測模型產生器回填。
+此 gate 明確關閉 `showSaveFilePicker` 以選用產品 download fallback，記錄原能力與限制；
+它不宣稱 OS 原生 picker、實體手機或 Windows 已驗。兩個新 gate 不替代原 35／33 gate，
+也不替代 full CDP／Space。公理、格式、模型與來源圖的責任見
+[`SECTION-PROFILE-NATIVE-CONTRACT.md`](../geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md) 與
+[`SECTION-PROFILE-MODELING.md`](../geometry-core/SECTION-PROFILE-MODELING.md)。

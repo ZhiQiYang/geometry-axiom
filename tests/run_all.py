@@ -201,6 +201,7 @@ REQUIRED_OWNER_GATES = {
 }
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
+    'tests/integration/q38_save_roundtrip.py': 18,
     'tests/integration/model_library_history_browser.py': 35,
     'tests/integration/save_roundtrip_acceptance.cjs': 33,
     'tests/rule-case-workbench-browser.cjs': 91,
@@ -217,6 +218,7 @@ REQUIRED_BROWSER_GATES = {
     'geometry-web/grid_raw_provenance_browser_test.py': 207,
 }
 BROWSER_GATE_SCOPES = {
+    'tests/integration/q38_save_roundtrip.py': 'native-authored complete section fixture; real download/fresh-browser chooser, full World and exact mesh oracle; explicit download fallback, not OS picker',
     'tests/integration/model_library_history_browser.py': 'real model-library/native Undo, Web Locks, drafts and explicit late-owner injections',
     'tests/integration/save_roundtrip_acceptance.cjs': 'real form/native/model/download/file-chooser roundtrip and explicit save-failure injection',
     'tests/rule-case-workbench-browser.cjs': 'standalone component/native',
