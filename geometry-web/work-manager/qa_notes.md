@@ -4,6 +4,43 @@ Scope: the work-manager tool only. All committed tests use synthetic records;
 they do not read product feedback, credentials, actual task transcripts, or
 private queue snapshots. Product files and product runtime tests are untouched.
 
+## 2026-10-08: W19 and keyboard acceptance closeout
+
+The existing PR152 branch was merged normally with main `5cc1ffa`; no main
+merge or deployment was performed. The old AF_UNIX browser restriction does
+not apply to this environment. Browser plugin not available: verification used
+installed Chromium through Python Playwright and the actual loopback server.
+
+The original `a15d73a` reproduced one W14 defect at both 1382×804 and 390×844:
+Tab reached the visible skip link, but Enter left focus on `BODY` after scrolling.
+Adding `tabindex="-1"` to its existing `#work-queue` target repairs native
+fragment focus. Enter now focuses the queue and the next Tab reaches its link;
+the existing 18px scroll margin is preserved. W05 title/close-button Enter and
+Space focus restoration already worked. Escape is not a W05/W14 requirement.
+
+Final real-browser receipt: **66/66 checks, zero failures, exit 0**, fixed case
+census complete, 2026-10-08 04:58 UTC. Fresh relative-UTC synthetic inventory
+was imported by the CLI, served without API mocks, and verified at desktop,
+390px and 1440px. W19 covers issue/PR deduplication, missing scope, parent/child
+navigation, a completed child not completing its umbrella, umbrella exclusion
+from scheduling/dispatch, future work not ready, filters and search. UI, API
+and CLI state hashes and source times agree. Real keyboard navigation,
+focus-visible styling, overflow and console checks passed. UI downloads were
+restored with the CLI and retained both state and payload hashes. The print
+button fired native `beforeprint`; print-media PDF content passed, while the
+OS print dialog and physical mobile devices remain untested.
+
+The receipt pins merge `47750677` plus the one-line HTML fix, with unchanged
+before/after executable source hashes and actual served static bytes. Its
+six-file served-tool fingerprint is
+`d2d3714f6ada841b5703f43148b9ed9345a04b9a26f108c99d5382e994692cee`;
+the private harness hash is
+`c2eeea2f5baf253d3af75666d5adbfd497fc1d1f2daeebea339c9f6a1ee8f6a9`.
+Original failures, harness corrections, raw HTTP headers, relative-time fixture,
+commands and screenshots remain private, separate from repository sources.
+Harness selector and scroll-position oracle corrections are not product defects.
+The complete tool-only unit suite also passed: **142 tests, exit 0**.
+
 ## Execution record
 
 Executed against the current tool implementation:
