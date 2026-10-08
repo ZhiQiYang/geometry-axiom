@@ -1,6 +1,60 @@
 # 2026-10-08 輔助核對
 
-本檔記錄當次開工時的 SHA、之後 main 被合併推進的事實、證據缺口與 390px 窄畫面補驗。它不宣告產品驗收完成，也不取代 `公理層.md`。
+本檔分開記錄原 PR165 核對與後續 PR162 收尾證據。以下狀態截至 2026-10-08；不宣告整體產品交付、合併或部署，也不取代 `公理層.md`。
+
+## 目前文件分支與候選的範圍
+
+本文件分支以 PR165 原 head `45ccd3be721fe32fac468ab7cba6d88657c810b3` 為基礎，正常合入 main `5cc1ffa1ee85120eca14258b86b715151cad274f`，再同步文件與四筆測試排除原因文字。沒有把 PR162 的產品程式或新增 gate 登錄搬進 main。main 已含 PR163／164；Q38 的採納條文已生效，1A 的第一個原生核心子切片在別的分支開發，完整 1A（含 modeler／UI 等）尚未交付。
+
+[PR162 收尾報告與執行摘要](https://github.com/ZhiQiYang/geometry-axiom/pull/162)對應候選 `bc1f6fea2f1d10b29d1e6db1917b2781377d8864`，tree `a59b81086a1b40b920a872f048704b63d6f10da8`，runtime source `e4150cc8b506e08b8d7ec1ac4a6440cde719fb3ae0e057c76cf1ab5274acd874`。候選已推送，PR 仍為 OPEN／draft，未合併。本頁的 main 文件同步與該候選的產品驗收是兩個範圍。
+
+## 後續 Linux 收尾驗收
+
+| 範圍 | 結果 | 實際執行 head／可重跑入口 |
+| --- | --- | --- |
+| 模型庫 history／中途操作保護 | 35／35，完整、0 fail、exit 0 | `bc1f6fe`；[固定 35 項腳本](https://github.com/ZhiQiYang/geometry-axiom/blob/bc1f6fea2f1d10b29d1e6db1917b2781377d8864/tests/integration/model_library_history_browser.py) |
+| 保存與新 profile 重開往返 | 33／33，完整、0 fail、exit 0 | `bc1f6fe`；[固定 33 項腳本](https://github.com/ZhiQiYang/geometry-axiom/blob/bc1f6fea2f1d10b29d1e6db1917b2781377d8864/tests/integration/save_roundtrip_acceptance.cjs) |
+| 完整非瀏覽器 aggregate | 80 suites；2507 pass、0 fail、1 個具名 Windows GDI skip；exit 0 | `bc1f6fe`；process-local 16 MiB stack |
+| 完整 CDP | 2175 pass、0 fail／skip；84 sections 與 golden 相符；exit 0 | `751471e60d86496cde3e06d0298923c4f9cbdd3b` |
+| Space | 228／228，完整、0 fail、exit 0 | `751471e` |
+| timber | 79／79，完整、0 fail、exit 0 | `751471e` |
+
+各 gate 的數量是斷言 census，含共用 setup／browser-health 等檢查，不相加成獨立使用情境數。完整 aggregate 沒有執行所有獨立 owner／browser gates。完整 CDP 原始 `uncaughtBrowserExceptions` 是 1，屬 P38 刻意拋出的 `[EXPECTED EXCEPTION] Error: fb-auto-probe`，不能把原始計數寫成 0。
+
+基準 `751471e` 到候選 `bc1f6fe` 的 Git tree／blob 逐筆比對及 `run_all.py` AST 比對顯示：差異只有兩個新增 browser 腳本、`tests/INTEGRATION-GATES.md` 與兩筆新 gate 登錄；產品及既有測試來源未變，沒有降低 floor。[完整提交差異](https://github.com/ZhiQiYang/geometry-axiom/compare/751471e60d86496cde3e06d0298923c4f9cbdd3b...bc1f6fea2f1d10b29d1e6db1917b2781377d8864)可核對。因此基準 CDP／Space／timber 可由來源等同性支援這個候選，但它們沒有在 `bc1f6fe` 重跑，收據 head 不改標。這項等同性不涵蓋 main `5cc1ffa`。
+
+35 項涵蓋真 native Undo pending、Save／Undo／Redo／remove 與快捷鍵重入拒絕、關閉／重開、跨專案與切換來源的晚回覆、草稿／參數／房間控制，以及第二個 browser tab 取得真 Web Locks readonly lease。context／session 遲到回覆以明示故障注入檢查新目標 durable state 與 owner frame 不變；部分草稿／readonly 歷史以 fixture 或公開 API 建立，並非每步都由指標輸入。
+
+33 項以獨立完整 World（包含 `canvas-pos`）作 oracle，等 native dump 完全相等才取樣；驗真正下載、全新 profile 正式開檔、模型體積及高度、New／Undo／Redo、損壞 ZIP 零提交。取消 picker／磁碟失敗是明示注入；此 fixture 沒有附圖／PDF 或任意草稿 payload，不聲稱覆蓋那些全部往返。
+
+新 35／33 項是獨立限定範圍驗收，**沒有找回或重建原十項及 155 項的完整腳本與失敗前序**。原 155 的過早取樣風險已由新完整 World fence 補驗，不能據此聲稱舊 155 全數重跑。原十項第十個 id 未知，也不阻止新增測試用自己的 case ID 誠實記錄範圍。
+
+自訂 35／33 wrapper 的 `executionVerified=true` 只證明執行身分；其 `completionVerified=false`、`releaseApproved=false` 保留不改。完成數來自各腳本固定 census、`completed=true`、0 fail 與 exit 0。重跑條件及注入範圍見[候選 INTEGRATION-GATES](https://github.com/ZhiQiYang/geometry-axiom/blob/bc1f6fea2f1d10b29d1e6db1917b2781377d8864/tests/INTEGRATION-GATES.md)。完整外部 QA 報告、日誌、收據、fixture、截圖與來源比對已另行交付；證據包 `geometry-closeout-evidence.tar.gz` 的 SHA-256 為 `748086c26aaad1430f1bbd5052ccb41404ce85cb7c28124123519a7d75176375`。此包未上傳到本 repo，這個雜湊是交付檔身分，不是 GitHub 下載位置。
+
+## 已存在的 A/B 與案例工作台歷史驗收
+
+PR162 候選內的[歷史證據 archive](https://github.com/ZhiQiYang/geometry-axiom/blob/bc1f6fea2f1d10b29d1e6db1917b2781377d8864/tests/release-evidence/20261007/evidence.tar.gz)保留 `geometry-release-evidence/historical/queue-a49d/summary.json`，以及各 gate 的 `gate.log`、`terminal.json`、`runtime-before.json`、`runtime-after.json`。
+
+| 歷史 gate | 結果 | 實際執行 head |
+| --- | --- | --- |
+| A/B lifecycle | 82／82，exit 0 | `a49d2a5470abf6e9db4e14573535476d05647c21` |
+| A/B workflow | 34／34，exit 0 | 同上 |
+| cases-app | 76／76，exit 0 | 同上 |
+
+lifecycle 記錄含中斷 ticket、strict IndexedDB、10 次 reload、active B／B namespace、discard 與 Finish receipt，前後 runtime root／PID／session／version 相符。此次只核查其中六個來源 blobs 與 `bc1f6fe` 相同（兩個 harness、scenario-workspace、reference-workspace、project-store、serve），不是完整依賴閉包證明，也不是新 head 重跑。不能把這些 gate 改稱從未驗證，亦不能套用到 main `5cc1ffa`：main 仍沒有候選的 A/B／cases 產品接線、`geometry-canvas/14`／`geometry-canvas/15` 與 `source-rooms/3` 顯示契約。
+
+## 外部限制與尚未驗證的平台
+
+最終候選推送觸發的 [Actions run 37709064278](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37709064278)已結束為 failure；七個 jobs 的 `steps=[]`，均註記付款失敗或 spending limit 無法啟動。沒有實際執行遠端測試；Linux 本地通過不等於 hosted CI 通過。
+
+後續收尾環境沒有 browser plugin，使用 Chromium／CDP 與 Python Playwright。390px 是 Linux 虛擬 viewport；Windows／GDI／Smart App Control、實體手機觸控、IME、原生 OS picker 尚未驗證。下面舊 Windows 嘗試的 P70 中止與 P88 未達紀錄仍保留；後續基準 `751471e` 完整 CDP 已走完 84 sections，不能再用舊中止推定現在的候選未跑到 P88，也不能反過來抹去舊失敗或聲稱已補驗 Windows。
+
+## 原 PR165 核對紀錄（原樣保留其時間與 head）
+
+<details>
+<summary>原 PR165 head 45ccd3b 的核對：候選 c0e58e2f，歷史缺口與 390px 嘗試</summary>
+
+以下「本回合」「目前」「下一步」與建議都指原核對時點；後續狀態以上方摘要為準。舊的「等待第十個 id 才補測」是當時的補件方案，不是新限定範圍測試的前置條件。
 
 ## 能力與協作
 
@@ -103,3 +157,5 @@ PR #161 正文把通過證據放在 `/tmp/geometry-159/guard-qa/candidate-final/
 重現到停住點：候選 tree、上述 bridge、`GEOMETRY_GRID_SYSTEM_ONLY=1`、headless Chrome、`http://127.0.0.1:8891/`。下一步要先讓這次拖曳真的改變卡片 `cx/cy` 且不改錨點，套件才能走到 390 的 `[data-rule-cell-i]`。走到之後只看一次 `scrollIntoView` 後的捲動父層、`getBoundingClientRect`、`elementFromPoint` 與焦點，不要用強制點擊、無限重試或只加長 delay 當作修好。
 
 服務 pid 17636 與其 bridge 子行程已停止。沒有停止其他程序。
+
+</details>

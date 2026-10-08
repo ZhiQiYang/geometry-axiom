@@ -5,6 +5,13 @@
 不代表尚未接上產品的模組或下列正式整合驗證已完成。
 既有 floors、具名平台 skip 清單與實際測試斷言維持。
 
+2026-10-08 狀態範圍：本頁所在文件分支已合入 main `5cc1ffa`。
+#77 正式 owner／adapter 已在本來源內，但獨立 owner／browser gates 仍須各自執行，
+不能由 aggregate 通過推定。A/B／cases 等產品接線及新增的 35／33 項驗收腳本
+屬於尚未合併的 PR162 候選 `bc1f6fe`；本文件同步沒有預先登錄不存在的候選入口。
+候選收尾與歷史 A/B 82／34、cases 76 的受測 head、收據範圍及限制，見
+[輔助核對摘要](../geometry-web/docs/AUX-REVIEW-20261008.md)。
+
 ## #44／#77 新增模組的實際登錄
 
 | 原測試檔 | 非瀏覽器實際測試數 | 執行方式／範圍 |
@@ -41,7 +48,7 @@ node tests/integration/issue77_attachment_owner.js
 這表示五項尚未透過正式 adapter 執行，不能用它判定目前產品 owner 是否已實作；也不是 skip 或 pass，不加入 `ALLOWED_SKIPS`。
 `run_all.py` 顯示這個必需入口與範圍，不在非瀏覽器合計中假算五項。
 
-owner 實作後，以 test-only shim **映射真產品 registry／envelope／pack／unpack／history／transaction API**：
+本 repo 已有正式 owner 與下方實際 adapter。自訂 test-only shim 時，必須**映射真產品 registry／envelope／pack／unpack／history／transaction API**：
 
 ```sh
 GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER=/tmp/real-owner-shim.js \
