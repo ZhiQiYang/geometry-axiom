@@ -442,6 +442,12 @@ class SectionProfileNative(unittest.TestCase):
         self.assertTrue({("section-profile",1),("profile-member",1),("profile-member",4),("profile-run",1),("panel-spec","calcium-silicate-6")} <= {(o["kind"],o["id"]) for o in objects})
         self.assertEqual(len(graph["edges"]),len(inventory["references"]))
         self.assertIn("section-profile/1",scenario_verify._capabilities(["section-profile/1"],()))
+        complete=scenario_verify.verify_project(
+            {"manifest":{"requiredCapabilities":["section-profile/1"],"faces":[],
+                         "faceProjections":[],"reconstructionReviews":[],"models":[]},
+             "scene":path.read_text()},bridge_executable=self.binary)
+        self.assertEqual(path.read_text(),complete["final_scene"])
+        self.assertEqual(objects,complete["objects"])
 
     def host(self, holes=None):
         return {"kind":"space-wall-values","sourceDescription":"依某空間牆取值，不隨空間變動",
