@@ -40,14 +40,15 @@ MAX_MODELS = 64
 BRIDGE_TIMEOUT = 20
 MODEL_TIMEOUT = 60
 NATIVE_CAPABILITIES = frozenset(("engineering-spec/1", "parameters/1",
-                               "assembly-rule-authoring/1", "assembly-timber-generation/1"))
+                               "assembly-rule-authoring/1", "assembly-timber-generation/1", "section-profile/1"))
 # Scene capture follows the current portable reader. Model producer input
 # retains its own narrower capability contract below.
 BRIDGE_CAPABILITIES = NATIVE_CAPABILITIES | {"grid-subdivision-rules/1"}
 OBJECT_KINDS = frozenset(("boundary", "placement", "space", "column", "beam", "spec", "parameter",
                           "datum", "guide", "grid-system", "grid-binding", "grid", "material", "method",
-                          "application", "timber", "assembly-rule", "assembly-binding", "assembly-instance"))
-STRING_ID_KINDS = frozenset(("spec", "material", "method", "application", "application-field"))
+                          "application", "timber", "assembly-rule", "assembly-binding", "assembly-instance",
+                          "section-profile", "profile-member", "profile-run", "panel-spec"))
+STRING_ID_KINDS = frozenset(("spec", "material", "method", "application", "application-field", "panel-spec"))
 FIELD_KINDS = frozenset(("parameter-field", "application-field", "assembly-member", "assembly-joint"))
 HASH = re.compile(r"[a-f0-9]{64}\Z")
 IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,100}\Z")
