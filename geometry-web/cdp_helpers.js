@@ -187,25 +187,47 @@ const CARD_NATIVE_LIST = {
 function waitCardCanvasPos(eval_, { kind, id, beforeCx, beforeCy, timeoutMs = 4000, pollMs = 50 } = {}) {
   if (typeof eval_ !== 'function') throw new TypeError('waitCardCanvasPos: eval_ is required');
   if (typeof kind !== 'string' || !Number.isInteger(id)) throw new TypeError('waitCardCanvasPos: kind and integer id are required');
+  if (![beforeCx, beforeCy].every(Number.isFinite)) throw new TypeError('waitCardCanvasPos: finite prior coordinates are required');
+  if (![timeoutMs, pollMs].every(n => Number.isFinite(n) && n >= 0)) throw new TypeError('waitCardCanvasPos: nonnegative finite timing is required');
   const list = Object.prototype.hasOwnProperty.call(CARD_NATIVE_LIST, kind) ? CARD_NATIVE_LIST[kind] : null;
-  const same = (a, b) => (a == null ? null : a) === (b == null ? null : b);
   const expression = `(async()=>{
     const r = await apiRequest('objects');
-    const list = ${list ? `r[${JSON.stringify(list)}]` : 'r.faces'} || [];
+    if (!r || r.ok !== true) return {readOK:false, error:r?.error || 'objects read failed'};
+    const records = ${list ? `r[${JSON.stringify(list)}]` : 'r.faces'};
+    const list = Array.isArray(records) ? records : [];
     const native = list.find(o => o.id === ${id}${list ? '' : ` && o.kind === ${JSON.stringify(kind)}`}) || null;
     const local = typeof ocFind === 'function' ? ocFind(${JSON.stringify(kind)}, ${id}) : null;
-    return {nativeCx: native ? native.cx : null, nativeCy: native ? native.cy : null, hasPos: !!(native && native.hasPos), localCx: local ? local.cx : null, localCy: local ? local.cy : null};
+    return {readOK:true, nativeExists:!!native, localExists:!!local,
+      nativeCx:native?.cx, nativeCy:native?.cy, hasPos:native?.hasPos === true,
+      localCx:local?.cx, localCy:local?.cy, localHasPos:local?.hasPos === true};
   })()`;
-  const started = Date.now();
+  const started = Date.now(), deadline = started + timeoutMs;
   return (async () => {
     let last = null;
+    const finish = (ok, reason) => ({...(last || {}), ok, reason, elapsedMs:Date.now()-started, kind, id, beforeCx, beforeCy});
     for (;;) {
-      last = await eval_(expression);
-      const changed = last && (!same(last.nativeCx, beforeCx) || !same(last.nativeCy, beforeCy));
-      const localMatches = last && same(last.localCx, last.nativeCx) && same(last.localCy, last.nativeCy);
-      if (changed && localMatches) return { ok: true, elapsedMs: Date.now() - started, kind, id, beforeCx, beforeCy, ...last };
-      if (Date.now() - started >= timeoutMs) return { ok: false, elapsedMs: Date.now() - started, kind, id, beforeCx, beforeCy, ...(last || {}) };
-      await new Promise(resolve => setTimeout(resolve, pollMs));
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) return finish(false, 'timeout');
+      let timer, observation;
+      try {
+        // A read may itself hang or finish after the deadline. Never issue a
+        // second read while it is pending or let a late reply turn timeout green.
+        observation = await Promise.race([
+          Promise.resolve().then(() => eval_(expression)).then(value => ({value})),
+          new Promise(resolve => { timer = setTimeout(() => resolve(null), remaining); }),
+        ]);
+      } finally { clearTimeout(timer); }
+      if (observation === null) return finish(false, 'timeout');
+      last = observation.value;
+      if (Date.now() >= deadline) return finish(false, 'timeout');
+      if (!last || last.readOK !== true || last.nativeExists !== true || last.localExists !== true ||
+          last.hasPos !== true || last.localHasPos !== true ||
+          ![last.nativeCx, last.nativeCy, last.localCx, last.localCy].every(Number.isFinite))
+        return finish(false, 'invalid-position-record');
+      const changed = last.nativeCx !== beforeCx || last.nativeCy !== beforeCy;
+      const localMatches = last.localCx === last.nativeCx && last.localCy === last.nativeCy;
+      if (changed && localMatches) return finish(true, 'committed');
+      await new Promise(resolve => setTimeout(resolve, Math.min(pollMs, Math.max(0, deadline - Date.now()))));
     }
   })();
 }

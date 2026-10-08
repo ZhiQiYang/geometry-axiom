@@ -161,6 +161,7 @@ NODE_PURE_TEST_FILES = {
     'node:history_operation': 'tests/test_history_operation.js',
     'node:context_operations': 'tests/test_context_operations.js',
     'node:cdp_evaluation': 'tests/test_cdp_evaluation.js',
+    'node:cdp_card_position': 'tests/test_cdp_card_position.js',
     'node:background_grid_viewport': 'tests/test_background_grid_viewport.js',
     'node:anchor_band_clip': 'tests/test_anchor_band_clip.js',
     'node:hover_pick_scheduler': 'tests/test_hover_pick_scheduler.js',
