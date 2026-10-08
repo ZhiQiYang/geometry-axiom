@@ -376,6 +376,17 @@ function restoreInspectorState(pane, state) {
   if (state.focus) pane.querySelector(`#${state.focus}`)?.focus({ preventScroll: true });
   pane.parentElement.scrollTop = state.scroll; pane.scrollTop = state.ownScroll;
 }
+/* Some fields, including the advanced guide expression, are hidden until later
+   in the same rebuild. Focusing them above does not stick. Reapply the
+   snapshot target only after its visibility is final, and leave a different
+   control in this pane alone so a late read cannot take the keyboard back. */
+function reapplyInspectorFocus(pane, state) {
+  if (!state?.focus) return;
+  const target = pane.querySelector("#" + state.focus);
+  if (!target || target.disabled || !target.getClientRects().length || document.activeElement === target) return;
+  if (pane.contains(document.activeElement)) return;
+  target.focus({ preventScroll: true });
+}
 
 /* DrawStyle 外觀表：與 STYLE_SPEC + SVG 後端的 CSS 同一份值。 */
 const STYLE = [
@@ -8544,6 +8555,7 @@ function renderFaceInspector() {
   else feTimberShowSuggestion();
   updatePlaceValid(pane);
   const pri = pane.querySelector("#tbPriLabel"); if (pri) pri.hidden = pane.querySelector("#tbRole").value !== "custom";
+  reapplyInspectorFocus(pane, saved);
 }
 
 /* 放置表單（主畫布右欄與面內檢視器共用，§5.5.3a） */
