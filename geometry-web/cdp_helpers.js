@@ -153,4 +153,44 @@ function makeShot(send, envNames) {
   };
 }
 
-module.exports = { makeCheck, makeRead, makeWait, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot };
+/* 卡片 pointerup 會先清掉 oc.card，而且在 await `line canvas-pos` 期間不設 oc.busy。
+ * settled() 因此立刻返回；短 sleep 會在原生座標寫入前讀到舊位置。
+ * 這裡輪詢 objects()，直到該卡片的原生 cx/cy 離開拖曳前的值，且頁面副本與原生一致。
+ * 逾時就帶回最後一次讀數，不另一次點擊、不改寫座標、也不把固定 sleep 加長當成通過。 */
+const CARD_NATIVE_LIST = {
+  'grid-binding': 'gridBindings',
+  'grid-system': 'gridSystems',
+  column: 'columns',
+  beam: 'beams',
+  space: 'spaces',
+  'assembly-rule': 'assemblyRules',
+  'assembly-binding': 'assemblyBindings',
+  parameter: 'parameters',
+};
+function waitCardCanvasPos(eval_, { kind, id, beforeCx, beforeCy, timeoutMs = 4000, pollMs = 50 } = {}) {
+  if (typeof eval_ !== 'function') throw new TypeError('waitCardCanvasPos: eval_ is required');
+  if (typeof kind !== 'string' || !Number.isInteger(id)) throw new TypeError('waitCardCanvasPos: kind and integer id are required');
+  const list = Object.prototype.hasOwnProperty.call(CARD_NATIVE_LIST, kind) ? CARD_NATIVE_LIST[kind] : null;
+  const same = (a, b) => (a == null ? null : a) === (b == null ? null : b);
+  const expression = `(async()=>{
+    const r = await apiRequest('objects');
+    const list = ${list ? `r[${JSON.stringify(list)}]` : 'r.faces'} || [];
+    const native = list.find(o => o.id === ${id}${list ? '' : ` && o.kind === ${JSON.stringify(kind)}`}) || null;
+    const local = typeof ocFind === 'function' ? ocFind(${JSON.stringify(kind)}, ${id}) : null;
+    return {nativeCx: native ? native.cx : null, nativeCy: native ? native.cy : null, hasPos: !!(native && native.hasPos), localCx: local ? local.cx : null, localCy: local ? local.cy : null};
+  })()`;
+  const started = Date.now();
+  return (async () => {
+    let last = null;
+    for (;;) {
+      last = await eval_(expression);
+      const changed = last && (!same(last.nativeCx, beforeCx) || !same(last.nativeCy, beforeCy));
+      const localMatches = last && same(last.localCx, last.nativeCx) && same(last.localCy, last.nativeCy);
+      if (changed && localMatches) return { ok: true, elapsedMs: Date.now() - started, kind, id, beforeCx, beforeCy, ...last };
+      if (Date.now() - started >= timeoutMs) return { ok: false, elapsedMs: Date.now() - started, kind, id, beforeCx, beforeCy, ...(last || {}) };
+      await new Promise(resolve => setTimeout(resolve, pollMs));
+    }
+  })();
+}
+
+module.exports = { makeCheck, makeRead, makeWait, makeKey, makeFill, openCreateObjectMenu, makeCtl, makeShot, waitCardCanvasPos };
