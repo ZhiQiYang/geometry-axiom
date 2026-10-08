@@ -54,3 +54,8 @@ test('per-component vertex budget accepts 256 and rejects the next orthogonal co
  assert.equal(R.regions(obstacles([comb(63)]),[0,0,1320,120]).candidates[0].points.length,256);
  assert.throws(()=>R.regions(obstacles([comb(64)]),[0,0,1320,120]),e=>e.code==='capacity');
 });
+test('total vertex budget also counts internal obstacle cycles before display truncation',()=>{
+ const o=obstacles([rect(10,10,1220,1070)]);
+ for(let i=0;i<1400;i++){const x=30+i%40*30,y=30+Math.floor(i/40)*30;o.boxes.push([x-10,y-2,x+10,y+2],[x-2,y-10,x+2,y+10]);}
+ assert.throws(()=>R.regions(o,[0,0,1250,1100]),e=>e.code==='capacity');
+});

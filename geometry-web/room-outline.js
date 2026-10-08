@@ -182,7 +182,8 @@
     if(outer.length!==1)throw error('ambiguous','存在多個可能外環，請縮小範圍／加分隔後重取。');
     const warnings=[...(obstacles.warnings||[]),'此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。'];
     if(loops.length>1)warnings.push('內部有孤立障礙／線條；本次只取外環，不把它們猜成孔洞或柱體。');
-    return {points:outer[0],method:obstacles.method,warnings,holes:loops.length-1};
+    return {points:outer[0],method:obstacles.method,warnings,holes:loops.length-1,
+      ...(multiple?{vertexCount:loops.reduce((n,p)=>n+p.length,0)}:{})};
     }
     if(!multiple) {
       const sx=x.findIndex((v,i)=>i<nx&&seed[0]>=v&&seed[0]<x[i+1]),sy=y.findIndex((v,i)=>i<ny&&seed[1]>=v&&seed[1]<y[i+1]);
@@ -191,7 +192,7 @@
     let vertices=0;
     for(let start=0;start<blocked.length;start++)if(!blocked[start]&&!visited[start]) {
       const c=component(start);if(!c)continue;
-      vertices+=c.points.length;
+      vertices+=c.vertexCount;
       if(components.length===64||c.points.length>256||vertices>16384)throw error('capacity','同頁候選超過 64 個封閉分量、每區 256 頂點或總 16384 頂點；請縮小來源取景後重取。');
       components.push(c);
     }
