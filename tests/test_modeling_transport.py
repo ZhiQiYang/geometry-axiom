@@ -160,7 +160,7 @@ class ModelingTransport(unittest.TestCase):
         result = subprocess.run(command, cwd=ROOT, env=self.environment, capture_output=True, timeout=60)
         self.assertEqual(result.returncode, 0, result.stderr.decode())
         self.assertEqual(json.loads(package_path.read_bytes()), package)
-        self.assertIn("coordinates: local (u,v,n)", obj_path.read_text())
+        self.assertIn("coordinates: local (u,v,w)", obj_path.read_text())
         previous = package_path.read_bytes(), obj_path.read_bytes()
         source["definitions"]["base_scene"] = scene(runs=[run(), run(2)])
         source["request"] = request(1, 2)

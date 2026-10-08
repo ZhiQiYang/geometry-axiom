@@ -39,11 +39,11 @@
 
 ## 座標與唯一化
 
-未定位 run 的頂點是 `(u,v,n)`，不能解讀為已有世界原點或世界 up。每個未定位 run 是獨立 local 範圍；只在該 run 的材料與包絡之間共享 R29 切分網格。其他 local run 或 world 物件不增加它的切分座標。
+未定位 run 的頂點是 D39 的 `(u,v,w)`，不能解讀為已有世界原點或世界 up。每個未定位 run 是獨立 local 範圍；只在該 run 的材料與包絡之間共享 R29 切分網格。其他 local run 或 world 物件不增加它的切分座標。
 
 已定位 run 使用原生已求值 `O/U/V/N` 生成世界 XYZ；簡易定位與進階定位都用同一個 native frame。世界根按既有 R29 規則共享選定幾何依賴閉包的網格；live placement 宿主的有效面參與，複製的 `space-wall-values` 保留 snapshot 來源、輪廓和孔，沒有偷加對原 Space 的 live 引用。
 
-manifest 仍用標準右手 mm、世界 up=+Z 的座標協定；它不覆蓋 `coordinate_space="local"` 的明示局部範圍。閱讀器必先按此欄位分開呈現，不能把多個 local 原點疊成世界場景。JSON 可存多個範圍。OBJ 單一 local run 會明寫 local `(u,v,n)`，世界輸出明寫 world XYZ；混合 world/local 或多個獨立 local run 明確 `UNSUPPORTED/OBJ_COORDINATE_SPACE`，不輸出誤導的合併世界模型。OBJ 物件前另註明構件／包絡身分及材料體積；語意完整交換仍使用 JSON。
+manifest 仍用標準右手 mm、世界 up=+Z 的座標協定；它不覆蓋 `coordinate_space="local"` 的明示局部範圍。閱讀器必先按此欄位分開呈現，不能把多個 local 原點疊成世界場景。JSON 可存多個範圍。OBJ 單一 local run 會明寫 local `(u,v,w)`，世界輸出明寫 world XYZ；混合 world/local 或多個獨立 local run 明確 `UNSUPPORTED/OBJ_COORDINATE_SPACE`，不輸出誤導的合併世界模型。OBJ 物件前另註明構件／包絡身分及材料體積；語意完整交換仍使用 JSON。
 
 ## 拒絕與重建
 

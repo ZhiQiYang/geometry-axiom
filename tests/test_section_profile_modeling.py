@@ -159,6 +159,73 @@ class SectionProfileModeling(unittest.TestCase):
         self.assertEqual(obj["section_profile"]["coordinate_space"], "world")
         self.assertEqual(obj["section_profile"]["dimensions_mm"], [27, 33, 2400])
 
+    def test_simple_live_host_rebuilds_native_frame_and_retains_dependency_grid(self):
+        placement = {"kind": "simple", "host": {"kind": "placement", "placementId": 7},
+                     "dir": "+v", "p": 20, "q": 30, "up": "+Z"}
+        prefix = ("boundary 7 outline 0,0 5000,0 5000,5000 0,5000 hole 40,3000 50,3000 50,3100 40,3100\n"
+                  "placement 7 on boundary 7 origin 0 0 2500 u +x v +y\n")
+        source = scene(prefix=prefix, members=[member()], runs=[run(placement=placement)])
+        snapshot = load_base(source, executable=self.base)
+        deps = next(d for d in snapshot["dependencies"] if d["kind"] == "profile-run")
+        self.assertIn({"kind": "placement", "id": 7}, deps["refs"])
+        package = self.build(source)
+        obj = next(o for o in package["derived"]["objects"] if o["role"] == "geometry")
+        self.mesh(obj, 2138400, [[20, 30, 2467], [47, 2430, 2500]])
+        self.assertIn(40, {point[0] for point in obj["vertices_mm"]}, "live host hole edges must contribute to the exact dependency grid")
+        updated = self.build(source.replace("origin 0 0 2500", "origin 100 200 2700"))
+        obj = next(o for o in updated["derived"]["objects"] if o["role"] == "geometry")
+        self.mesh(obj, 2138400, [[120, 230, 2667], [147, 2630, 2700]])
+        self.assertEqual(obj["section_profile"]["coordinate_space"], "world")
+        self.assertEqual(verify_package(updated, base_executable=self.base), updated)
+
+    def test_copied_host_keeps_holes_description_and_no_live_space_dependency(self):
+        host = {"kind": "space-wall-values", "sourceDescription": "已刪空間／天花板取值，不隨空間變動",
+                "frame": {"origin": [100, 200, 300], "U": "+X", "V": "+Y", "N": "+Z"},
+                "region": {"outline": [[0, 0], [5000, 0], [5000, 5000], [0, 5000]],
+                           "holes": [[[1000, 1000], [1100, 1000], [1100, 1100], [1000, 1100]]]}}
+        placement = {"kind": "simple", "host": host, "dir": "+v", "p": 20, "q": 30, "up": "+Z"}
+        source = scene(members=[member()], runs=[run(placement=placement)])
+        package = self.build(source)
+        obj = next(o for o in package["derived"]["objects"] if o["role"] == "geometry")
+        self.mesh(obj, 2138400, [[120, 230, 267], [147, 2630, 300]])
+        snapshot = load_base(package["definitions"]["base_scene"], executable=self.base)
+        self.assertEqual(snapshot["profile_runs"][0]["definition"]["placement"]["host"], host)
+        self.assertEqual(next(d for d in snapshot["dependencies"] if d["kind"] == "profile-run")["refs"], [])
+        unrelated = "surface 9 origin 800 900 1000 u +x v +y rect 0 0 5000 5000\n"
+        self.assertEqual(self.build(source + unrelated)["derived"], package["derived"])
+        self.assertEqual(verify_package(package, base_executable=self.base), package)
+        invalid = deepcopy(placement); invalid.update(p=1050, q=1050)
+        with self.assertRaises(ModelError) as caught:
+            self.build(scene(members=[member()], runs=[run(placement=invalid)]))
+        self.assertEqual(caught.exception.status, "INVALID")
+
+    def test_space_model_update_retains_unselected_native_profile_sources(self):
+        sys.path.insert(0, str(ROOT / "geometry-web"))
+        import model_update
+        import space_modeling
+        prefix = ("boundary 7 outline 0,0 4000,0 4000,3000 0,3000 kind room_plan\n"
+                  "placement 7 on boundary 7 origin 0 0 2500 u +x v +y\n")
+        original_scene = scene(prefix=prefix, members=[member()])
+        current_scene = scene(prefix=prefix, members=[member(A=literal(29))])
+        inputs = {"mode": "plan", "base_scene": original_scene, "placement_id": 7, "obstacles": [],
+                  "settings": {"bottom": 0, "height": 3000, "edges": [0, 1, 2, 3], "floor": "boundary",
+                               "ceiling": "boundary", "holes": "none", "wall_thickness": None}}
+        result = space_modeling.preview(inputs, base_executable=self.base)
+        record_value = {"id": "space-q38", "name": "空間與未定位斷面", "created_at": "2026-10-08T00:00:00.000Z",
+                        "source": {"kind": "scene", "placement_id": 7, "boundary_id": 7, "scene_hash": result["source_sha256"]},
+                        "input": inputs, "result": result}
+        candidate = model_update.prepare_update({"record": record_value, "current_scene": current_scene,
+            "selection": {"placement_id": 7, "boundary_id": 7, "edges": [0, 1, 2, 3], "obstacles": [], "timbers": [], "projection": None}},
+            base_executable=self.base, bridge_executable=_bridge.find_bridge())
+        self.assertEqual(candidate["record"]["result"]["summary"]["volume_mm3"], "36000000000")
+        preserved = load_base(candidate["record"]["input"]["base_scene"], executable=self.base)
+        self.assertEqual(preserved["profile_runs"][0]["members"][0]["dimensions_mm"], [29, 33, 2400])
+        for key in ("space", "volume", "clearance"):
+            package = candidate["record"]["result"][key]
+            self.assertIn("section-profile/1", package["manifest"]["capabilities"])
+            self.assertTrue(all(o["root"]["kind"] != "profile-run" for o in package["derived"]["objects"]))
+            self.assertEqual(verify_package(package, base_executable=self.base), package)
+
     def test_zero_members_and_unused_profiles_are_preserved(self):
         source = scene(profiles=[profile(), profile(2)], members=[], runs=[run()])
         package = self.build(source)
@@ -308,7 +375,7 @@ class SectionProfileModeling(unittest.TestCase):
 
     def test_obj_labels_local_reference_material_and_rejects_mixed_frames(self):
         local = obj_bytes(self.build()).decode()
-        self.assertIn("coordinates: local (u,v,n) of profile-run 1", local)
+        self.assertIn("coordinates: local (u,v,w) of profile-run 1", local)
         self.assertIn("kind envelope; material-volume-mm3 0", local)
         self.assertNotIn("coordinates: world", local)
         source = scene(runs=[run(), run(2, placement={"kind": "advanced", "origin": [1000, 2000, 2700], "N": "+Y", "V": "-Z"})])
