@@ -13,6 +13,6 @@ self.onmessage=({data})=>{
     } else throw Error('未知的輪廓分析方式。');
     obstacles.boxes.push(...data.barriers);
     obstacles.warnings=[...(data.prefixWarnings||[]),...obstacles.warnings,...data.warnings];
-    self.postMessage({ok:true,result:RoomOutline.region(obstacles,data.seed,data.crop)});
+    self.postMessage({ok:true,result:data.multiple?RoomOutline.regions(obstacles,data.crop):RoomOutline.region(obstacles,data.seed,data.crop)});
   } catch(error) {self.postMessage({ok:false,error:{message:error.message,code:error.code}});}
 };

@@ -127,9 +127,9 @@
     scan(false);scan(true);
     return {boxes,fills:[],warnings:['影像暗線不是精確量測；薄線、文字與弧線可能被排除，需逐邊核對室內淨範圍。'],method:'image-lines'};
   }
-  function region(obstacles,seed,crop) {
+  function region(obstacles,seed,crop,multiple=false) {
     const [left,top,width,height]=crop,right=left+width,bottom=top+height;
-    if(!crop.every(Number.isFinite)||width<=0||height<=0||seed[0]<=left||seed[0]>=right||seed[1]<=top||seed[1]>=bottom)throw error('seed','請點選取景範圍內的房間空白處。');
+    if(!crop.every(Number.isFinite)||width<=0||height<=0||!multiple&&(seed[0]<=left||seed[0]>=right||seed[1]<=top||seed[1]>=bottom))throw error('seed','請點選取景範圍內的房間空白處。');
     const boxes=obstacles.boxes.filter(b=>b[2]>left&&b[0]<right&&b[3]>top&&b[1]<bottom).map(b=>[Math.max(left,b[0]),Math.max(top,b[1]),Math.min(right,b[2]),Math.min(bottom,b[3])]);
     const fills=obstacles.fills||[];
     const xs=new Set([left,right]),ys=new Set([top,bottom]);
@@ -137,7 +137,7 @@
     for(const p of fills.flat()){if(p[0]>left&&p[0]<right)xs.add(p[0]);if(p[1]>top&&p[1]<bottom)ys.add(p[1]);}
     const x=[...xs].sort((a,b)=>a-b),y=[...ys].sort((a,b)=>a-b),nx=x.length-1,ny=y.length-1;
     if(nx*ny>150000||boxes.length>12000||fills.length>2000||nx*ny*fills.reduce((n,p)=>n+p.length,0)>5000000)throw error('capacity','目標區域線段過多，請縮小取景或提高線寬／最短線門檻。');
-    const blocked=new Uint8Array(nx*ny),seen=new Uint8Array(nx*ny),queue=[];
+    const blocked=new Uint8Array(nx*ny);
     const xi=new Map(x.map((v,i)=>[v,i])),yi=new Map(y.map((v,i)=>[v,i]));
     // Exact union on the same compressed coordinates: four updates per box
     // and one prefix pass, rather than repainting every overlapped cell.
@@ -153,20 +153,23 @@
       blocked[j*nx+i]=coverage[n]>0?1:0;
     }
     if(fills.length)for(let j=0;j<ny;j++)for(let i=0;i<nx;i++)if(fills.some(p=>contains(p,[(x[i]+x[i+1])/2,(y[j]+y[j+1])/2])))blocked[j*nx+i]=1;
-    const sx=x.findIndex((v,i)=>i<nx&&seed[0]>=v&&seed[0]<x[i+1]),sy=y.findIndex((v,i)=>i<ny&&seed[1]>=v&&seed[1]<y[i+1]),start=sy*nx+sx;
+    const visited=new Uint8Array(nx*ny),components=[];
+    function component(start) {
+    const seen=new Set(),queue=[];
     if(blocked[start])throw error('wall','選點落在線條／牆體上，請改點房間內空白處。');
-    seen[start]=1;queue.push(start);
+    seen.add(start);visited[start]=1;queue.push(start);let open=false;
     for(let at=0;at<queue.length;at++) {
       const n=queue[at],i=n%nx,j=Math.floor(n/nx);
-      if(i===0||j===0||i===nx-1||j===ny-1)throw error('open-region','區域連到取景邊緣：可能有門洞、漏邊或斜／弧牆。未補牆；請補明確分隔線後重取，或人工描繪。');
-      for(const nn of [n-1,n+1,n-nx,n+nx])if(!blocked[nn]&&!seen[nn]){seen[nn]=1;queue.push(nn);}
+      if(i===0||j===0||i===nx-1||j===ny-1)open=true;
+      for(const nn of [i>0?n-1:-1,i+1<nx?n+1:-1,j>0?n-nx:-1,j+1<ny?n+nx:-1])if(nn>=0&&!blocked[nn]&&!seen.has(nn)){seen.add(nn);visited[nn]=1;queue.push(nn);}
     }
+    if(open){if(multiple)return null;throw error('open-region','區域連到取景邊緣：可能有門洞、漏邊或斜／弧牆。未補牆；請補明確分隔線後重取，或人工描繪。');}
     // Oriented boundary of the exact connected cells; preserve every reentrant corner.
     const edges=new Map();
     const add=(a,b)=>{const key=a.join(',');if(edges.has(key))throw error('ambiguous','候選在角點分岔，請修正分隔後重取。');edges.set(key,b);};
     for(const n of queue) {
       const i=n%nx,j=Math.floor(n/nx),a=[x[i],y[j]],b=[x[i+1],y[j]],c=[x[i+1],y[j+1]],d=[x[i],y[j+1]];
-      if(!seen[n-nx])add(a,b);if(!seen[n+1])add(b,c);if(!seen[n+nx])add(c,d);if(!seen[n-1])add(d,a);
+      if(!seen.has(n-nx))add(a,b);if(!seen.has(n+1))add(b,c);if(!seen.has(n+nx))add(c,d);if(!seen.has(n-1))add(d,a);
     }
     const loops=[];
     while(edges.size) {
@@ -174,11 +177,35 @@
       do {loop.push(key.split(',').map(Number));const next=edges.get(key);if(!next)throw error('open-loop','候選未閉合。');edges.delete(key);key=next.join(',');}while(key!==first);
       loops.push(simplify(loop));
     }
-    const outer=loops.filter(p=>contains(p,seed));
+    const sample=[(x[start%nx]+x[start%nx+1])/2,(y[Math.floor(start/nx)]+y[Math.floor(start/nx)+1])/2];
+    const outer=loops.filter(p=>contains(p,multiple?sample:seed));
     if(outer.length!==1)throw error('ambiguous','存在多個可能外環，請縮小範圍／加分隔後重取。');
-    const warnings=[...obstacles.warnings,'此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。'];
+    const warnings=[...(obstacles.warnings||[]),'此區域可能包含連通的相鄰房間；請逐邊核對門洞、凹口及牆內緣。'];
     if(loops.length>1)warnings.push('內部有孤立障礙／線條；本次只取外環，不把它們猜成孔洞或柱體。');
     return {points:outer[0],method:obstacles.method,warnings,holes:loops.length-1};
+    }
+    if(!multiple) {
+      const sx=x.findIndex((v,i)=>i<nx&&seed[0]>=v&&seed[0]<x[i+1]),sy=y.findIndex((v,i)=>i<ny&&seed[1]>=v&&seed[1]<y[i+1]);
+      return component(sy*nx+sx);
+    }
+    let vertices=0;
+    for(let start=0;start<blocked.length;start++)if(!blocked[start]&&!visited[start]) {
+      const c=component(start);if(!c)continue;
+      vertices+=c.points.length;
+      if(components.length===64||c.points.length>256||vertices>16384)throw error('capacity','同頁候選超過 64 個封閉分量、每區 256 頂點或總 16384 頂點；請縮小來源取景後重取。');
+      components.push(c);
+    }
+    // A frame inside another enclosed component is an obstacle, not evidence
+    // of another room. Examine the complete set before applying the display cap.
+    const rooms=components.filter(c=>!components.some(other=>other!==c&&contains(other.points,c.points[0])));
+    const unique=[...new Map(rooms.map(c=>[canonicalLoop(c.points),{...c,key:canonicalLoop(c.points)}])).values()];
+    unique.sort((a,b)=>Math.min(...a.points.map(p=>p[1]))-Math.min(...b.points.map(p=>p[1]))||Math.min(...a.points.map(p=>p[0]))-Math.min(...b.points.map(p=>p[0]))||a.key.localeCompare(b.key));
+    return {candidates:unique.slice(0,12),total:unique.length,complete:unique.length<=12,ignoredNested:components.length-rooms.length,method:obstacles.method,crop:[...crop]};
+  }
+  function canonicalLoop(points) {
+    const versions=[];
+    for(const p of [points,[...points].reverse()])for(let i=0;i<p.length;i++)versions.push(JSON.stringify([...p.slice(i),...p.slice(0,i)]));
+    return versions.sort()[0];
   }
   function integerProposal(points) {
     if(!orthogonal(points))throw error('diagonal','候選含斜邊／零長邊，不能偷偷正交化。');
@@ -272,5 +299,5 @@
     candidates.sort((a,b)=>a.distance-b.distance);
     return candidates[0]||null;
   }
-  return {pdfSnapFeatures,nearestSnap,pdfObstacles,imageObstacles,region,integerProposal,resizeEdge,orthogonal,contains,multiply,point};
+  return {pdfSnapFeatures,nearestSnap,pdfObstacles,imageObstacles,region,regions:(obstacles,crop)=>region(obstacles,null,crop,true),canonicalLoop,integerProposal,resizeEdge,orthogonal,contains,multiply,point};
 });
