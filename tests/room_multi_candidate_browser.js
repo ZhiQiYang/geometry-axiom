@@ -33,7 +33,7 @@ const run={
     extractor:fileHash(path.join(ROOT,'geometry-web/room-outline.js'))
   }
 };
-let browser,context,page,bid,actions=0,current='startup';
+let browser,context,page,bid,actions=0,current='startup',cancelNextPrompt=false;
 const read=expression=>page.evaluate(expression);
 async function wait(expression) {
   await page.waitForFunction(expression,null,{timeout:20000});
@@ -203,6 +203,7 @@ async function attachPage() {
   });
   page.on('dialog',async dialog=>{
     dialogs.push({step:current,type:dialog.type(),message:dialog.message()});
+    if(dialog.type()==='prompt'&&cancelNextPrompt){cancelNextPrompt=false;await dialog.dismiss();return;}
     await dialog.accept(dialog.type()==='prompt'?'Room '+dialogs.length:undefined);
   });
   await page.goto(URL);
@@ -292,6 +293,9 @@ async function main(){
  await shot('desktop-list');const old=await native();
  current='candidate-B';await ctl('[data-room-candidate="1"]');
  await check('B uses new-room intent and cannot accept without reviewed',await read(`RoomCollectionWorkspace.controller.intent.roomId===null&&$('refRoomConfirm').disabled`));
+ await ctl('#refRoomReviewed');cancelNextPrompt=true;await ctl('#refRoomConfirm');
+ await check('cancelled room naming retires the real intent and preserves pending candidate',await read(`!RoomCollectionWorkspace.hasWork&&!RoomOutlineWorkspace.hasWork&&fe.draft.pts.length===0`) && await native()===old && (await session()).candidates[1].status==='pending');
+ await ctl('[data-room-candidate="1"]');
  const oldInput=await page.locator('#refRoomLength').elementHandle(),oldApply=await page.locator('#refRoomSetLength').elementHandle();
  await fill('#refRoomLength','1234');await fill('#refRoomVertices','unapplied B raw');
  await ctl('[data-room-candidate="2"]');const cBefore=await read('RoomOutlineWorkspace.snapshot()');

@@ -418,7 +418,16 @@ const RoomCollectionWorkspace = (() => {
     s.committing=true;
     try {
       const old=s.stamp,ok=await commitRoomDraft(pts);
-      if(!ok){if(!lease){RoomOutlineWorkspace.reset();s.active=null;}return false;}
+      if(!ok){
+        if(s!==candidateSession)return false;
+        if(!lease){
+          // Dismissing the name prompt returns before prepare/cancel. Retire
+          // that real intent as well; clearing its UI alone leaves a blocker.
+          if(instance?.intent)await releaseCandidateEditor(s);
+          else {RoomOutlineWorkspace.reset();s.active=null;}
+        }
+        return false;
+      }
       if(s!==candidateSession)return true;
       const next=candidateStamp(s.bid),oldIds=new Set(old.rooms.map(r=>r.id)),added=next.rooms.filter(r=>!oldIds.has(r.id));
       // Only a uniquely proven native + metadata success may renew the batch.
