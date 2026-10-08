@@ -98,7 +98,13 @@ def state(page):
 
 
 def durable(value):
-    return {key: value[key] for key in ('world', 'models', 'context', 'undo', 'redo', 'project')}
+    result = {key: value[key] for key in ('world', 'models', 'context', 'undo', 'redo', 'project')}
+    # Existing product-owned opaque identities detect equal-length replacement
+    # of the current frame/top entries. blocked is deliberately transient while
+    # a response is held; successful Undo/Redo use separate transition assertions.
+    result['historyOwner'] = {key: value['operation'][key]
+                              for key in ('context', 'frame', 'undo', 'redo', 'group')}
+    return result
 
 
 def native(page, command):
