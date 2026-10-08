@@ -30,6 +30,7 @@ static bool sp_source(EngJson *j,int t,EngDimensionSource *out,bool length,int f
     if(out->kind==ENG_MATERIAL && out->field!=(field?ENG_B:ENG_A))return sp_error("D36: material source must retain matching A/B field identity");
     return true;
 }
+#include "section_profile_placement.inc"
 static bool sp_put_profile(World *w,EngJson *j,int t)
 {
     SectionProfile p={0};int loop=eng_json_member(j,t,"outline");
@@ -76,17 +77,8 @@ static bool sp_put_run(World *w,EngJson *j,int t)
     if(!eng_json_keys(j,t,"id,profileId,length,placement","")||!eng_u32(j,eng_json_member(j,t,"id"),&r.id,false)||
        !eng_u32(j,eng_json_member(j,t,"profileId"),&r.profile_id,false))return sp_error("D37: run needs id, profileId, length source and placement (null for unplaced)");
     if(!sp_source(j,eng_json_member(j,t,"length"),&r.length_source,true,0))return false;
-    if(!eng_json_is_null(j,place)){
-        char kind[16];int origin=eng_json_member(j,place,"origin");
-        if(!eng_json_string(j,eng_json_member(j,place,"kind"),kind,sizeof kind)||strcmp(kind,"advanced"))return sp_error("UNSUPPORTED D38: native slice supports unplaced or advanced placement; simple placement requires slice 1B");
-        if(!eng_json_keys(j,place,"kind,origin,N,V","")||!eng_json_is_array(j,origin)||eng_json_size(j,origin)!=3||
-           !sp_coord(j,eng_json_at(j,origin,0),&r.frame.origin.x)||!sp_coord(j,eng_json_at(j,origin,1),&r.frame.origin.y)||!sp_coord(j,eng_json_at(j,origin,2),&r.frame.origin.z)||
-           !sp_axis(j,eng_json_member(j,place,"N"),&r.frame.normal)||!sp_axis(j,eng_json_member(j,place,"V"),&r.frame.axis_v))return sp_error("I48: advanced placement requires integer O and signed cardinal N,V");
-        r.frame.axis_u=vector_cross(r.frame.axis_v,r.frame.normal);
-        if(!surface_frame_is_valid(&r.frame))return sp_error("I48: V and N must be orthogonal; U is derived as V cross N");
-        r.placed=true;
-    }
-    if(!eng_json_canonical(j,t,r.content,sizeof r.content))return sp_error("I51 CAPACITY: run record exceeds 2047 bytes");
+    if(!sp_placement_json(j,place,&r))return false;
+    if(!eng_json_canonical(j,t,r.content,sizeof r.content))return sp_error("I51 CAPACITY: run record exceeds 8191 bytes");
     ProfileRun *target=sp_run(w,r.id);
     if(!target){if(w->section_profiles.run_count==SP_RUN_MAX)return sp_error("I51 CAPACITY: run limit is %d",SP_RUN_MAX);target=&w->section_profiles.runs[w->section_profiles.run_count++];}
     *target=r;return true;
@@ -99,41 +91,20 @@ static Point3 sp_point(const ProfileRun *r,Coord u,Coord v,Coord along)
         f->origin.y+u*f->axis_u.y+v*f->axis_v.y+along*f->normal.y,
         f->origin.z+u*f->axis_u.z+v*f->axis_v.z+along*f->normal.z};
 }
-static bool sp_rebuild(World *w,char *error,size_t capacity)
-{
-    SectionProfileState *s=&w->section_profiles;bool ok=true;
-    for(size_t i=0;i<s->member_count;++i)s->members[i].resolved=false;
-    for(size_t i=0;i<s->run_count;++i)s->runs[i].resolved=false;
-    for(size_t i=0;i<s->member_count&&ok;++i){
-        ProfileMember *m=&s->members[i];SectionProfile *p=sp_profile(w,m->profile_id);
-        if(!p){ok=sp_error("I49: member %u references missing profile %u",m->id,m->profile_id);break;}
-        if(m->panel){m->a=m->width;m->b=sp_panel_spec.thickness;}
-        else {EngTarget target={1,0,0,0};if(!eng_resolve(w,&m->a_source,&target,UINT32_MAX,0,&m->a,NULL,0)){ok=false;break;}
-            target.field=1;if(!eng_resolve(w,&m->b_source,&target,UINT32_MAX,0,&m->b,NULL,0)){ok=false;break;}}
-        Coord width=m->rotated?m->b:m->a,height=m->rotated?m->a:m->b;
-        m->rect=(SurfaceRegion2){m->u0,m->v0,m->u0+width,m->v0+height};
-        if(!coord_in_range(m->rect.max_u)||!coord_in_range(m->rect.max_v)){ok=sp_error("I46/D1: member %u rectangle endpoint exceeds coordinate range",m->id);break;}
-        m->resolved=true;
-        if(!poly_contains_rect(&p->outline,m->rect.min_u,m->rect.min_v,m->rect.max_u,m->rect.max_v)){
-            ok=sp_error("V_PROFILE_OUTSIDE I44: member %u profile %u rectangle [%lld,%lld]x[%lld,%lld] is not contained",m->id,p->id,(long long)m->rect.min_u,(long long)m->rect.max_u,(long long)m->rect.min_v,(long long)m->rect.max_v);break;}
-        for(size_t j=0;j<i;++j){const ProfileMember *n=&s->members[j];if(n->profile_id!=m->profile_id)continue;
-            Coord u0=coord_max(m->rect.min_u,n->rect.min_u),u1=coord_min(m->rect.max_u,n->rect.max_u),v0=coord_max(m->rect.min_v,n->rect.min_v),v1=coord_min(m->rect.max_v,n->rect.max_v);
-            if(u0<u1&&v0<v1){ok=sp_error("V_PROFILE_OVERLAP I45: members %u,%u intersection [%lld,%lld]x[%lld,%lld]",n->id,m->id,(long long)u0,(long long)u1,(long long)v0,(long long)v1);break;}}
-    }
-    for(size_t i=0;i<s->run_count&&ok;++i){
-        ProfileRun *r=&s->runs[i];SectionProfile *p=sp_profile(w,r->profile_id);EngTarget target={1,0,0,0};
-        if(!p){ok=sp_error("I49: run %u references missing profile %u",r->id,r->profile_id);break;}
-        if(!eng_resolve(w,&r->length_source,&target,UINT32_MAX,0,&r->length,NULL,0)){char cause[180];snprintf(cause,sizeof cause,"%s",g_engineering_error);ok=sp_error("I47: run %u length invalid: %s",r->id,cause);break;}
-        for(size_t v=0;v<p->outline.count&&ok;++v)for(int end=0;end<2;++end){
-            Point3 point=sp_point(r,p->outline.v[v].u,p->outline.v[v].v,end?r->length:0);
-            if(!coord_in_range(point.x)||!coord_in_range(point.y)||!coord_in_range(point.z)){ok=sp_error("I47/I48/D1: run %u generated vertex [%lld,%lld,%lld] exceeds range",r->id,(long long)point.x,(long long)point.y,(long long)point.z);break;}}
-        r->resolved=ok;
-    }
-    if(!ok)snprintf(error,capacity,"%s",g_engineering_error);return ok;
-}
+#include "section_profile_validation.inc"
+#include "section_profile_conversion.inc"
 static bool sp_operation(World *w,EngJson *j,int t)
 {
     char op[32];if(!eng_json_string(j,eng_json_member(j,t,"op"),op,sizeof op))return sp_error("I49: section-profile operation needs op");
+    if(!strcmp(op,"convert-run-to-advanced")||!strcmp(op,"convert-run-to-simple"))return sp_convert_run(w,j,t,!strcmp(op,"convert-run-to-simple"));
+    if(!strcmp(op,"delete-placement")){
+        uint32_t id;if(!eng_json_keys(j,t,"op,id","")||!eng_u32(j,eng_json_member(j,t,"id"),&id,false))return sp_error("I49: invalid placement identity");
+        size_t i=0;while(i<w->placement_count&&w->placements[i].id!=id)++i;
+        if(i==w->placement_count)return sp_error("I49: placement does not exist");
+        memmove(w->placements+i,w->placements+i+1,(w->placement_count-i-1)*sizeof w->placements[0]);memset(&w->placements[--w->placement_count],0,sizeof w->placements[0]);
+        for(i=0;i<w->canvas_pos_count;++i)if(w->canvas_pos[i].kind==CANVAS_POS_PLACEMENT&&w->canvas_pos[i].id==id){memmove(w->canvas_pos+i,w->canvas_pos+i+1,(w->canvas_pos_count-i-1)*sizeof w->canvas_pos[0]);memset(&w->canvas_pos[--w->canvas_pos_count],0,sizeof w->canvas_pos[0]);break;}
+        return true;
+    }
     if(!strcmp(op,"put-profile")||!strcmp(op,"put-member")||!strcmp(op,"put-run")){
         if(!eng_json_keys(j,t,"op,value",""))return sp_error("I49: invalid put operation fields");int value=eng_json_member(j,t,"value");
         return !strcmp(op,"put-profile")?sp_put_profile(w,j,value):!strcmp(op,"put-member")?sp_put_member(w,j,value):sp_put_run(w,j,value);
@@ -162,7 +133,7 @@ static bool sp_operation(World *w,EngJson *j,int t)
 static void sp_dump(const World *w,FILE *out)
 {
     if(!sp_used(w))return;fputs("requires section-profile/1\n",out);
-    const SectionProfileState *s=&w->section_profiles;char encoded[SP_RECORD_MAX*2];size_t n;
+    const SectionProfileState *s=&w->section_profiles;char encoded[SP_RUN_RECORD_MAX*2];size_t n;
     for(int kind=0;kind<3;++kind){size_t count=kind==0?s->profile_count:kind==1?s->member_count:s->run_count;
         for(size_t i=0;i<count;++i){const char *text=kind==0?s->profiles[i].content:kind==1?s->members[i].content:s->runs[i].content;
             if(!eng_base64_encode(text,strlen(text),encoded,sizeof encoded,&n)){fputs("requires section-profile-record-capacity-error\n",out);return;}
@@ -170,7 +141,7 @@ static void sp_dump(const World *w,FILE *out)
 }
 static bool apply_section_profile_line(const char *path,int line_no,char **tokens,int count,World *w)
 {
-    (void)count;bool ok=false;unsigned char decoded[SP_RECORD_MAX];size_t n;uint32_t id;EngJson j={0};
+    (void)count;bool ok=false;unsigned char decoded[SP_RUN_RECORD_MAX];size_t n;uint32_t id;EngJson j={0};
     if(!g_parsing_scene_file){scene_error(path,line_no,"I49: section-profile records require atomic scene load; use section-profile-preview/confirm");return false;}
     if(!sp_scene_required){scene_error(path,line_no,"I51: section-profile records require section-profile/1 declaration first");return false;}
     if(eng_base64_decode(tokens[2],strlen(tokens[2]),decoded,sizeof decoded-1,&n)){

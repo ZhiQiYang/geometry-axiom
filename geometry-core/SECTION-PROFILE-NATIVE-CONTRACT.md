@@ -70,6 +70,8 @@ material 欄位必須與 A/B 身分相符，旋轉不交换來源；run 不收 m
 同一 batch 可用既有 engineering operations 修改參數／發布固定材料版本；另提供 `{"op":"put-spec","name":"A","value":27}`、`{"op":"delete-spec","name":"A"}`。
 spec／parameter 改動須重新驗證既有斷面依賴；改來源造成出界或碰撞時完整 World 回滾。
 既有 engineering-preview 及普通 DSL spec preview 也回傳 section-profile before/after，不私自凍結舊值。
+native preview 的頂層 `before`／`after` 重用完整 engineering 候選狀態，包含具名 `specs`、材料／做法／套用、參數來源與既有幾何；原有 `sectionProfiles` 影響與提示仍保留。
+同一來源也被既有 guide／角材使用時，預覽列出其新舊座標、姿態與長度，不能只顯示斷面影響；沒有斷面使用者的來源操作同樣須揭露來源變更。
 
 run `placement:null` 合法且只回傳局部範圍，沒有世界位置。
 進階定位保存 `{"kind":"advanced","origin":[1000,2000,2700],"N":"+Y","V":"-Z"}`；軸只收 `±X/±Y/±Z`，U 由 V×N 求得，不作另一份可編輯來源。
