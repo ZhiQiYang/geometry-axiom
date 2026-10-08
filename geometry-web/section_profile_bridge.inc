@@ -80,11 +80,16 @@ static void json_section_profile_impact(const World *before,const World *after)
     }
     for(size_t i=0;i<before->section_profiles.run_count;++i){const ProfileRun *a=&before->section_profiles.runs[i],*z=sp_run((World*)after,a->id);
         if(a->simple&&z&&!z->simple&&z->placed){printf("%s{\"code\":\"RUN_HOST_DETACHED\",\"clause\":\"I48\",\"runId\":%u,\"message\":\"進階定位保存目前座標，解除宿主聯動\"}",first?"":",",a->id);first=false;}}
-    fputs("],\"diagnosticsComplete\":true,\"violations\":",stdout);sp_json_violations(before,after,false);putchar('}');
+    fputs("],\"diagnosticsComplete\":true,\"violations\":",stdout);sp_json_violations(before,after,!g_preview.valid);putchar('}');
 }
 static void json_section_profile_preview(void)
 {
+    /* Source operations disclose both existing geometry and Q38 dependencies. */
+    char error[sizeof g_engineering_error];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":true,\"validationStrategy\":\"all-section-profile-violations\"",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
+    fputs(",\"before\":",stdout);json_engineering_state(&g_preview.before,true);
+    fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);
+    snprintf(g_engineering_error,sizeof g_engineering_error,"%s",error);
     json_section_profile_impact(&g_preview.before,&g_preview.after);fputs(",\"violations\":",stdout);
     sp_json_violations(&g_preview.before,&g_preview.after,!g_preview.valid);putchar('}');
 }
