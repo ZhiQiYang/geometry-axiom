@@ -81,9 +81,14 @@ static void json_section_profile_impact(const World *before,const World *after)
 }
 static void json_section_profile_preview(void)
 {
+    /* Mixed source operations can affect existing geometry as well as profiles.
+     * Reuse the complete engineering candidate state for I8a disclosure. */
+    char error[512];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:scene_last_error());
     printf("{\"token\":%u,\"valid\":%s,\"revision\":%llu,\"diagnosticsComplete\":false,\"validationStrategy\":\"first-error\"",g_preview.token,g_preview.valid?"true":"false",(unsigned long long)g_preview.revision);
+    fputs(",\"before\":",stdout);json_engineering_state(&g_preview.before,true);
+    fputs(",\"after\":",stdout);json_engineering_state(&g_preview.after,true);
     json_section_profile_impact(&g_preview.before,&g_preview.after);fputs(",\"violations\":[",stdout);
-    if(!g_preview.valid){fputs("{\"code\":\"SECTION_PROFILE_INVALID\",\"clause\":\"I43-I49\",\"message\":",stdout);js_string(g_engineering_error[0]?g_engineering_error:scene_last_error());putchar('}');}
+    if(!g_preview.valid){fputs("{\"code\":\"SECTION_PROFILE_INVALID\",\"clause\":\"I43-I49\",\"message\":",stdout);js_string(error);putchar('}');}
     fputs("]}",stdout);
 }
 static void cmd_section_profile_read(void)

@@ -37,7 +37,9 @@ static void json_engineering_sources(const World *w)
 static void json_assembly_state(const World *w,bool geometry);
 static void json_engineering_state(const World *w,bool geometry)
 {
-    putchar('{');json_engineering_capabilities(w);fputs(",\"materials\":[",stdout);
+    putchar('{');json_engineering_capabilities(w);fputs(",\"specs\":[",stdout);
+    for(size_t i=0;i<w->spec_count;++i){if(i)putchar(',');fputs("{\"name\":",stdout);js_string(w->specs[i].name);printf(",\"value\":%lld}",(long long)w->specs[i].value);}
+    fputs("],\"materials\":[",stdout);
     for(size_t i=0;i<w->engineering.material_count;++i){const EngMaterialVersion *m=&w->engineering.materials[i];printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
     fputs("],\"methods\":[",stdout);
     for(size_t i=0;i<w->engineering.method_count;++i){const EngMethodVersion *m=&w->engineering.methods[i];printf("%s%.*s,\"fingerprint\":\"%s\",\"archived\":%s}",i?",":"",(int)strlen(m->content)-1,m->content,m->fingerprint,m->archived?"true":"false");}
