@@ -522,7 +522,7 @@ const RoomCollectionWorkspace = (() => {
     // A settled native receipt retires the whole room operation. Clear its
     // editor state while the owner lease still blocks unrelated mutations;
     // otherwise Finish could reinterpret a New-room outline as an old-room edit.
-    const settledLease = lease;
+    const settledLease = lease, recoveringCandidate = !!candidateSession && candidateSession.active !== null;
     if(candidateSession){candidateSession.stale=true;candidateSession.reason='房間交易經回執恢復；請重新分析候選。已恢復的正式房間依專案現況保留。';candidateSession.active=null;candidateSession.generation=++candidateGeneration;}
     cleaningUI = true;
     try {
@@ -530,6 +530,7 @@ const RoomCollectionWorkspace = (() => {
       if (currentDialog) {currentDialog.close(); currentDialog.remove(); currentDialog = null;}
       instance = null; activeBid = null; ownedPreviewToken = null; ownedPreviewCommand = null;
       fe.panHold = null; fe.newOutline = null;
+      if(recoveringCandidate)RoomOutlineWorkspace.reset(false);
       cleanDraft(); feSetTool("select"); renderFaceInspector();
     } finally {cleaningUI = false;}
     if (settledLease) integration.endTransaction(settledLease);
