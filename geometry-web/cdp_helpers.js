@@ -221,12 +221,13 @@ function waitCardCanvasPos(eval_, { kind, id, beforeCx, beforeCy, timeoutMs = 40
       last = observation.value;
       if (Date.now() >= deadline) return finish(false, 'timeout');
       if (!last || last.readOK !== true || last.nativeExists !== true || last.localExists !== true ||
-          last.hasPos !== true || last.localHasPos !== true ||
           ![last.nativeCx, last.nativeCy, last.localCx, last.localCy].every(Number.isFinite))
         return finish(false, 'invalid-position-record');
       const changed = last.nativeCx !== beforeCx || last.nativeCy !== beforeCy;
       const localMatches = last.localCx === last.nativeCx && last.localCy === last.nativeCy;
-      if (changed && localMatches) return finish(true, 'committed');
+      // A first drag may be committing a card rendered without persisted
+      // placement. Existing finite records are pending until both flags settle.
+      if (last.hasPos === true && last.localHasPos === true && changed && localMatches) return finish(true, 'committed');
       await new Promise(resolve => setTimeout(resolve, Math.min(pollMs, Math.max(0, deadline - Date.now()))));
     }
   })();

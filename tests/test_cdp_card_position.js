@@ -27,8 +27,18 @@ for (const [name,state] of [
   ['nonfinite local coordinate',{native:record(),local:record(NaN)}],
   ['wrong native identity',{native:{...record(),id:2},local:record()}],
 ]) test('rejects '+name,async()=>{
-  const f=fixture([state]),result=await cdp.waitCardCanvasPos(f.read,options);
-  assert.equal(result.ok,false);assert.equal(result.reason,'invalid-position-record');assert.equal(f.calls.length,1);
+  const pending=state.native?.hasPos===false||state.local?.hasPos===false;
+  const f=fixture([state]),result=await cdp.waitCardCanvasPos(f.read,{...options,timeoutMs:pending?20:options.timeoutMs});
+  assert.equal(result.ok,false);assert.equal(result.reason,pending?'timeout':'invalid-position-record');
+  if(!pending)assert.equal(f.calls.length,1);
+});
+test('first native position may settle from unpersisted to persisted',async()=>{
+  const f=fixture([{native:record(0,0,false),local:record(60,60)},{native:record(),local:record()}]);
+  assert.equal((await cdp.waitCardCanvasPos(f.read,options)).ok,true);assert.equal(f.calls.length,2);
+});
+test('local position may settle after native persistence',async()=>{
+  const f=fixture([{native:record(),local:record(120,100,false)},{native:record(),local:record()}]);
+  assert.equal((await cdp.waitCardCanvasPos(f.read,options)).ok,true);assert.equal(f.calls.length,2);
 });
 test('unchanged native position cannot be replaced by optimistic local movement',async()=>{
   const f=fixture([{native:record(60,60),local:record()}]);
