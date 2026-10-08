@@ -1,0 +1,17 @@
+SPACE_SCOPE {"mode":"partial","filters":["GEOMETRY_ASYNC_REPLY_ONLY"],"included":["async-reply-ui"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","timber-material","timber-source-guards"],"url":"http://127.0.0.1:8924/","feedbackDirectory":"C:\\Users\\<local-user>\\AppData\\Local\\Temp\\geometry-async-held-20261009\\feedback-before"}
+PASS server serves the intended space-model release
+PASS current release explicitly supports timber preview and engineering sources
+PASS 1400px confirming projection without editing a field still moves focus to the empty wall bottom
+PASS 1400px a wall-height edit during projection confirmation keeps focus and the typed height
+PASS 1400px a view click during an edit boundary read leaves no edit handles and keeps view
+FAIL 1400px releasing an older edit projection does not clear the newer edit handles {"newer":{"tool":"edit","active":"edit","select":"edit","handles":5,"editLoops":1},"released":{"tool":"edit","active":"edit","select":"edit","handles":0,"editLoops":1}}
+PASS 390px confirming projection without editing a field still moves focus to the empty wall bottom
+PASS 390px a wall-height edit during projection confirmation keeps focus and the typed height
+PASS 390px a view click during an edit boundary read leaves no edit handles and keeps view
+FAIL 390px releasing an older edit projection does not clear the newer edit handles {"newer":{"tool":"edit","active":"edit","select":"edit","handles":5,"editLoops":1},"released":{"tool":"edit","active":"edit","select":"edit","handles":0,"editLoops":1}}
+PASS no uncaught browser exceptions
+PASS no browser console errors
+FAIL space group completeness ["Group async-reply-ui did not complete","Group async-reply-ui: expected 8 passed assertions, got 6 passed / 2 failed"]
+SPACE_RESULT {"schema":"geometry-space-result/1","scope":{"mode":"partial","filters":["GEOMETRY_ASYNC_REPLY_ONLY"],"included":["async-reply-ui"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","timber-material","timber-source-guards"],"url":"http://127.0.0.1:8924/","feedbackDirectory":"C:\\Users\\<local-user>\\AppData\\Local\\Temp\\geometry-async-held-20261009\\feedback-before"},"completed":false,"groups":{"setup":{"expected":2,"passed":2,"failed":0,"completed":true},"async-reply-ui":{"expected":8,"passed":6,"failed":2,"completed":false},"browser-health":{"expected":2,"passed":2,"failed":0,"completed":true}},"completenessProblems":["Group async-reply-ui did not complete","Group async-reply-ui: expected 8 passed assertions, got 6 passed / 2 failed"],"passed":10,"failed":3,"exceptions":[],"consoleErrors":[]}
+RESULT 10 passed / 3 failed; completed: false; scope: partial; omitted groups: space-height-library,projection-lifecycle,projection-placement,font-layout,space-flow,timber-material,timber-source-guards; artifacts: C:\Users\<local-user>\AppData\Local\Temp\geometry-async-held-20261009\space-before
+NODE_EXIT 1

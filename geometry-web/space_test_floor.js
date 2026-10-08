@@ -13,7 +13,7 @@ const EXPECTED = Object.freeze({
   'timber-material': 48,
   'timber-source-guards': 8,
   'timber-history-guard': 5,
-  'async-reply-ui': 6,
+  'async-reply-ui': 8,
   'save-reopen-grid': 20,
   'browser-health': 2,
 });

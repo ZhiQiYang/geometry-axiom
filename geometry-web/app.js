@@ -1258,7 +1258,9 @@ async function drawEditHandles(token = editToken) {
   previewClear();
   for (let v = 0; v < 3; ++v) {
     const m = await uvMap(v);
-    if (token !== editToken || tool !== "edit" || !editLoops) { previewClear(); return; }
+    /* 這次投影對應已經過期。較新的編輯擁有目前手把，過期回覆不得清掉。 */
+    if (token !== editToken || tool !== "edit") return;
+    if (!editLoops) { previewClear(); return; }
     if (!m) continue;                     /* det=0：此視圖看這面是線 */
     const g = previewIn(v);
     for (const loop of editLoops) {

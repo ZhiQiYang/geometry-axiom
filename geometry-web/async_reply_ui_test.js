@@ -1,5 +1,6 @@
 /* Late-reply UI races. The harness holds one reply, then uses normal clicks and
- * keyboard input. Assertions describe the state after that reply is applied. */
+ * keyboard input. Assertions describe the state after that reply is applied.
+ * The held-proj case starts a newer edit while the older proj reply is held. */
 'use strict';
 const { installConfirmationDumpGate } = require('./cdp_confirmation_gate.js');
 
@@ -29,6 +30,43 @@ function installEditBoundaryGate(scope, callerStack = () => new Error().stack ||
           evidence.phase = 'held'; scope.__editBoundaryHeld = true;
           await gate;
           evidence.phase = 'released'; scope.__editBoundaryHeld = false;
+          return data;
+        };
+      }
+      return response;
+    } catch (error) {
+      if (targeted) evidence.phase = 'failed';
+      throw error;
+    }
+  };
+}
+
+function installHandleProjectionGate(scope, callerStack = () => new Error().stack || '') {
+  const original = scope.fetch;
+  const evidence = { phase: 'armed', caller: null, command: null, matched: false };
+  scope.__handleProjectionHeld = false;
+  scope.__handleProjectionGate = evidence;
+  const gate = new Promise(resolve => { scope.__releaseHandleProjection = resolve; });
+  scope.fetch = async (...args) => {
+    const caller = callerStack();
+    let command;
+    try { command = JSON.parse(args[1]?.body || '{}').cmd; } catch (_) {}
+    const targeted = evidence.phase === 'armed' && String(args[0]) === '/api' &&
+      /^proj \d+ /.test(command || '') &&
+      /(?:^|\n)\s*at (?:async )?drawEditHandles\s*\(/.test(caller);
+    if (targeted) {
+      evidence.phase = 'requested'; evidence.caller = caller; evidence.command = command; evidence.matched = true;
+      scope.fetch = original;
+    }
+    try {
+      const response = await original(...args);
+      if (targeted) {
+        const json = response.json.bind(response);
+        response.json = async () => {
+          const data = await json();
+          evidence.phase = 'held'; scope.__handleProjectionHeld = true;
+          await gate;
+          evidence.phase = 'released'; scope.__handleProjectionHeld = false;
           return data;
         };
       }
@@ -124,8 +162,50 @@ function asyncReplyUiRegression(h) {
       const late = await h.evaluate(`({tool,active:document.querySelector('[data-v3-tool].active')?.dataset.v3Tool,select:document.querySelector('#tool').value,handles:document.querySelectorAll('#world polygon[stroke-dasharray="8 4"],#world circle[fill="#c0392b"]').length,editLoops:typeof editLoops==='undefined'?null:editLoops&&editLoops.length})`);
       const after = await h.scene();
       h.check(label + ' a view click during an edit boundary read leaves no edit handles and keeps view', late.tool === 'view' && late.active === 'view' && late.select === 'view' && late.handles === 0 && late.editLoops == null && after === world, late);
+
+      await h.closeWorkspace();
+      await h.viewport(width, height);
+      const heldId = width === 1400 ? 414 : 424;
+      await h.setup([rect(heldId)]);
+      const heldWorld = await h.scene();
+      await h.click('#btnObj');
+      await h.wait(`view3===true && document.body.classList.contains('v3-mode') && !document.querySelector('#cv').hasAttribute('hidden') && document.querySelector('#viewToolbar').hidden===false`, 'view3 open held-proj '+label);
+      const heldSurface = String(heldId);
+      const heldListed = await h.evaluate(`[...document.querySelectorAll('#workSurf option')].map(o=>o.value)`);
+      if (!heldListed.includes(heldSurface)) throw Error('Work surface was not listed for held-proj '+label+': '+JSON.stringify(heldListed));
+      if (await h.evaluate(`document.querySelector('#workSurf').value!==${JSON.stringify(heldSurface)}`)) {
+        if (width <= 900 && await h.evaluate(`!document.body.classList.contains('drawer-left-open')`)) {
+          await h.click('#toggleLeft');
+          await h.wait(`document.body.classList.contains('drawer-left-open')`, 'left drawer held-proj '+label);
+        }
+        await h.select('#workSurf', heldSurface);
+        if (width <= 900) {
+          await h.click('.sidebar-left [data-close-panel="left"]');
+          await h.wait(`!document.body.classList.contains('drawer-left-open')`, 'left drawer closed held-proj '+label);
+        }
+      }
+      await h.wait(`document.querySelector('#workSurf').value===${JSON.stringify(heldSurface)} && document.querySelector('[data-v3-tool="edit"]').disabled!==true`, 'view3 surface held-proj '+label);
+      await h.evaluate(`(${installHandleProjectionGate.toString()})(window)`);
+      await h.click('[data-v3-tool="edit"]');
+      await h.wait(`window.__handleProjectionHeld===true`, 'held edit projection '+label);
+      const heldProj = await h.evaluate(`window.__handleProjectionGate`);
+      if (!heldProj?.matched || heldProj.phase !== 'held' || !/^proj \d+ /.test(heldProj.command || '')) throw Error('Edit projection reply was not held for '+label+': '+JSON.stringify(heldProj));
+      const older = await h.evaluate(`({tool,handles:document.querySelectorAll('#world polygon[stroke-dasharray="8 4"],#world circle[fill="#c0392b"]').length})`);
+      if (older.tool !== 'edit' || older.handles !== 0) throw Error('Older edit drew handles before its projection returned: '+JSON.stringify(older));
+      await h.click('[data-v3-tool="view"]');
+      await h.click('[data-v3-tool="edit"]');
+      await h.wait(`window.__handleProjectionHeld===true && tool==='edit' && document.querySelector('[data-v3-tool].active')?.dataset.v3Tool==='edit' && document.querySelectorAll('#world polygon[stroke-dasharray="8 4"],#world circle[fill="#c0392b"]').length>0`, 'newer edit handles while older projection is held '+label);
+      const newer = await h.evaluate(`({tool,active:document.querySelector('[data-v3-tool].active')?.dataset.v3Tool,select:document.querySelector('#tool').value,handles:document.querySelectorAll('#world polygon[stroke-dasharray="8 4"],#world circle[fill="#c0392b"]').length,editLoops:editLoops&&editLoops.length||0})`);
+      const newerScene = await h.scene();
+      if (!(newer.handles > 0) || newer.tool !== 'edit' || newerScene !== heldWorld) throw Error('Newer edit did not keep its handles and scene while the older projection was held: '+JSON.stringify(newer));
+      await h.evaluate(`window.__releaseHandleProjection()`);
+      await h.wait(`window.__handleProjectionHeld===false && window.__handleProjectionGate.phase==='released'`, 'older projection applied '+label);
+      await h.settle();
+      const released = await h.evaluate(`({tool,active:document.querySelector('[data-v3-tool].active')?.dataset.v3Tool,select:document.querySelector('#tool').value,handles:document.querySelectorAll('#world polygon[stroke-dasharray="8 4"],#world circle[fill="#c0392b"]').length,editLoops:editLoops&&editLoops.length||0})`);
+      const releasedScene = await h.scene();
+      h.check(label + ' releasing an older edit projection does not clear the newer edit handles', released.handles === newer.handles && released.handles > 0 && released.tool === 'edit' && released.active === 'edit' && released.select === 'edit' && released.editLoops > 0 && releasedScene === newerScene, { newer, released });
     }
   };
 }
 
-module.exports = { installEditBoundaryGate, asyncReplyUiRegression };
+module.exports = { installEditBoundaryGate, installHandleProjectionGate, asyncReplyUiRegression };
