@@ -133,6 +133,12 @@ Bridge 另透過既有 `binaries.require_fresh` 核對來源／SHA-256／sidecar
 即在啟動瀏覽器前拒絕；不以目錄中最近一支 exe 的名稱或成功啟動當來源證據。
 若 Windows binary 身分或 SAC 仍受阻，保留該環境結果，不能修改 registry 或安全設定繞過。
 實體手機／IME／OS picker、舊版 Chrome 第二句訊息及 Firefox/Safari 仍須分別標明。
+2026-10-08 狀態範圍：本整合分支包含 main `5cc1ffa` 與 PR162 候選 `bc1f6fe`。
+#77 正式 owner／adapter 已在本來源內，但獨立 owner／browser gates 仍須各自執行，
+不能由 aggregate 通過推定。A/B／cases 等產品接線及新增的 35／33 項驗收腳本
+已包含於本整合分支；這不代表已合入 main 或在本次整合來源重跑。
+候選收尾與歷史 A/B 82／34、cases 76 的受測 head、收據範圍及限制，見
+[輔助核對摘要](../geometry-web/docs/AUX-REVIEW-20261008.md)。
 
 ## #44／#77 新增模組的實際登錄
 
@@ -170,7 +176,7 @@ node tests/integration/issue77_attachment_owner.js
 這表示五項尚未透過正式 adapter 執行，不能用它判定目前產品 owner 是否已實作；也不是 skip 或 pass，不加入 `ALLOWED_SKIPS`。
 `run_all.py` 顯示這個必需入口與範圍，不在非瀏覽器合計中假算五項。
 
-owner 實作後，以 test-only shim **映射真產品 registry／envelope／pack／unpack／history／transaction API**：
+本 repo 已有正式 owner 與下方實際 adapter。自訂 test-only shim 時，必須**映射真產品 registry／envelope／pack／unpack／history／transaction API**：
 
 ```sh
 GEOMETRY_ISSUE77_ATTACHMENT_TEST_ADAPTER=/tmp/real-owner-shim.js \
