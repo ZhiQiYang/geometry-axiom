@@ -36,7 +36,7 @@ def obj_bytes(package):
         spaces.add(("local", profile["run_id"]) if profile.get("coordinate_space") == "local" else ("world",))
     if len(spaces) > 1:
         raise ModelError("UNSUPPORTED", "OBJ_COORDINATE_SPACE", "I48", "OBJ cannot combine independent local and world frames; export the JSON package or select one frame")
-    coordinate = ("# coordinates: local (u,v,n) of profile-run " + str(next(iter(spaces))[1]) + "; no world position or world up"
+    coordinate = ("# coordinates: local (u,v,w) of profile-run " + str(next(iter(spaces))[1]) + "; no world position or world up"
                   if spaces and next(iter(spaces))[0] == "local" else "# coordinates: world XYZ; up: +Z")
     lines = ["# geometry-axiom orthogonal-model/1", "# units: millimetres; right handed", coordinate,
              "# Definitions, references and partial status are in the companion JSON package.",
