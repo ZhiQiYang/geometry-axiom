@@ -246,6 +246,33 @@ async function workerRaces(){
  await check('changed source display/history refuses old batch result and keeps native rooms', (await session()).stale && await native()===scene && await read(`$('refRoomStatus').textContent.includes('變更')`));
  await ctl('#roomCandidatesDiscard');await page.evaluate(()=>window.__multiWorkers.restore());
 }
+async function previewRecovery(){
+ const before=await native();
+ await page.evaluate(()=>{
+  const original=window.fetch.bind(window);window.__multiLoss={lost:false,block:true,commands:[],receipts:[],restore:()=>{window.fetch=original;}};
+  window.fetch=async(input,options)=>{
+   let body;try{body=JSON.parse(options?.body||'null');}catch{}
+   const loss=window.__multiLoss;
+   if(body?.receipt){loss.receipts.push(body.receipt);if(body.receipt===loss.requestId&&loss.block)throw new TypeError('Injected unavailable receipt');}
+   if(body?.cmd){
+    loss.commands.push({cmd:body.cmd,requestId:body.requestId});
+    if(!loss.lost&&/^line preview boundary \d+ /.test(body.cmd)){
+     const response=await original(input,options);loss.result=await response.clone().json();loss.requestId=body.requestId;loss.lost=true;
+     if(!response.ok||!loss.result.ok)throw Error('Expected successfully executed native preview');
+     throw new TypeError('Injected executed preview reply loss');
+    }
+   }
+   return original(input,options);
+  };
+ });
+ await ctl('#refRoomReviewed');await page.locator('#refRoomConfirm').click();await wait(`connection.phase==='error'&&RoomCollectionWorkspace.busy`);
+ await check('lost executed preview keeps real lease and prevents unsafe parking',await read(`(async()=>{let refused=false;try{await RoomCollectionWorkspace.parkCandidates();}catch(_){refused=true;}return refused&&!!RoomCollectionWorkspace.transactionLease&&__multiLoss.result.ok;})()`));
+ await page.evaluate(()=>{window.__multiLoss.block=false;});await page.locator('#connectionRetry').click();
+ await wait(`connection.phase==='ready'&&!RoomCollectionWorkspace.busy`);
+ await check('receipt recovery retires stale batch without replacing original room',await native()===before&&(await session()).stale&&await read(`!RoomOutlineWorkspace.hasWork&&!RoomCollectionWorkspace.hasWork&&fe.draft.pts.length===0`));
+ await check('recovery reads original receipt and never resends executed preview',await read(`__multiLoss.commands.filter(c=>c.requestId===__multiLoss.requestId).length===1&&__multiLoss.receipts.length===2`));
+ await page.evaluate(()=>window.__multiLoss.restore());await ctl('#roomCandidatesDiscard');await ctl('#roomNew');await wait(`RoomCollectionWorkspace.candidateSnapshot()?.total===3`);await ctl('[data-room-candidate="1"]');
+}
 async function main(){
  run.browser='Browser plugin not available';run.runtimeBefore=await runtime();
  await check('fresh isolated exact checkout',run.runtimeBefore.fresh===true&&path.resolve(run.runtimeBefore.root)===ROOT);
@@ -285,7 +312,7 @@ async function main(){
  await fill('#refRoomVertices',s.candidates[1].points.map(p=>p.join(',')).join('\n'));await ctl('#refRoomApplyVertices');
  await ctl('#refRoomReviewed');await ctl('#refRoomConfirm');await wait(`$('roomConfirm')`);await page.keyboard.press('Escape');await wait(`!RoomCollectionWorkspace.hasWork`);
  await check('cancelled native preview leaves A and pending B intact',await native()===old&&(await session()).candidates[1].status==='pending');
- await ctl('[data-room-candidate="1"]');
+ await ctl('[data-room-candidate="1"]');await previewRecovery();
  await ctl('#refRoomReviewed');await ctl('#refRoomConfirm');await wait(`$('roomConfirm')`);
  await ctl('#roomConfirm');await wait(`!RoomCollectionWorkspace.hasWork&&!RoomOutlineWorkspace.hasWork`);
  s=await session();await check('B accepted, A preserved, C still available',s.candidates[1].status==='accepted'&&!s.stale&&s.candidates[2].status==='pending'&&(await attachment()).rooms.length===2&&equal(await read(`api('boundary ${bid}')`),aNative),s);

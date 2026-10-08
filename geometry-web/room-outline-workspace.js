@@ -195,7 +195,7 @@ const RoomOutlineWorkspace=(()=>{
       // restores the ref* values, selected edge and input focus after refresh.
       pane.querySelector('#refRoomSetLength')?.click();
     });
-    for(const id of ['refRoomVertices','refRoomLength','refRoomEdge'])pane.querySelector('#'+id)?.addEventListener('input',safe(()=>{if(!draft)return;draft.rawInputs={...(draft.rawInputs||{}),[id]:pane.querySelector('#'+id).value};draft.reviewed=false;draft.revision=(draft.revision||0)+1;pane.querySelector('#refRoomReviewed').checked=false;pane.querySelector('#refRoomConfirm').disabled=true;document.getElementById('faceDraftFinish').disabled=true;}));
+    for(const id of ['refRoomVertices','refRoomLength','refRoomEdge'])pane.querySelector('#'+id)?.addEventListener('input',safe(()=>{if(!draft?.collectionCandidate)return;draft.rawInputs={...(draft.rawInputs||{}),[id]:pane.querySelector('#'+id).value};draft.reviewed=false;draft.revision=(draft.revision||0)+1;pane.querySelector('#refRoomReviewed').checked=false;pane.querySelector('#refRoomConfirm').disabled=true;document.getElementById('faceDraftFinish').disabled=true;}));
     pane.querySelector('#refRoomReviewed')?.addEventListener('change',safe(()=>{W.assertEditable();if(!current(draft))throw Error('候選已過期。');draft.reviewed=pane.querySelector('#refRoomReviewed').checked;pane.querySelector('#refRoomConfirm').disabled=!draft.reviewed;document.getElementById('faceDraftFinish').disabled=!draft.reviewed;}));
     pane.querySelector('#refRoomConfirm')?.addEventListener('click',safe(()=>feDraftTryClose()));
   }
