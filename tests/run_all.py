@@ -129,6 +129,7 @@ NODE_TEST_FILES = [
     'tests/test_subdivision_project_store.js',
     'tests/test_reference_workspace_races.js',
     'tests/test_room_outline.js',
+    'tests/test_room_multi_candidate.js',
     'tests/test_room_collection.js',
     'tests/test_scenario_diff.js',
     'tests/test_scenario_review_native.js',
@@ -171,6 +172,7 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/room_multi_candidate_browser.js': 'Required isolated same-page candidate sessions through actual room owner, Worker/source invalidation, interrupted replies, history and fresh-context ZIP reopen',
     'tests/test_section_profile_browser.js': 'Required isolated Q38 native/UI model, desktop/390, keyboard, preview/cancel, placement and real project Save/new/Open gate; run separately, not a node unit suite',
     'tests/rule-case-workbench-controller.cjs': 'Required actual standalone HTTP/native controller lifecycle suite; needs explicit isolated GEOMETRY_RULE_CASE_TEST_URL; not a generic node fixture',
     'tests/rule-case-workbench-browser.cjs': 'Required real standalone component browser gate at 1280/390 over native HTTP; formal ZIP flow is separate',
@@ -201,6 +203,7 @@ REQUIRED_OWNER_GATES = {
 }
 # Runtime adapter checks, separate from non-browser source suites and formal owner completion.
 REQUIRED_BROWSER_GATES = {
+    'tests/room_multi_candidate_browser.js': 34,
     'tests/test_section_profile_browser.js': 68,
     'tests/integration/q38_save_roundtrip.py': 18,
     'tests/integration/model_library_history_browser.py': 35,
@@ -219,6 +222,7 @@ REQUIRED_BROWSER_GATES = {
     'geometry-web/grid_raw_provenance_browser_test.py': 207,
 }
 BROWSER_GATE_SCOPES = {
+    'tests/room_multi_candidate_browser.js': 'real same-page multiroom import/calibration/select/review/accept/park/save/new/Open; explicit late Worker and lost-response injections',
     'tests/test_section_profile_browser.js': 'real desktop/390 Q38 authoring, typed sources, exact models, source impact/cancel, placement conversion, shared history and /16 Save/Open',
     'tests/integration/q38_save_roundtrip.py': 'native-authored complete section fixture; real download/fresh-browser chooser, full World and exact mesh oracle; explicit download fallback, not OS picker',
     'tests/integration/model_library_history_browser.py': 'real model-library/native Undo, Web Locks, drafts and explicit late-owner injections',

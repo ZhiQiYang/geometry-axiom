@@ -1,11 +1,13 @@
-# 交付候選與反覆驗收（2026-10-07）
+# 交付候選與反覆驗收（2026-10-08）
 
 本輪以已批准功能在同一版本正常運作為目標，不增加未定案幾何語義。公理仍以
 `公理層.md` 為準；正式交付狀態取決於下列實際收據，不取決於 PR 數量或單一 CI 綠燈。
 
 ## 候選範圍
 
-獨立分支 `codex/release-readiness-20261007`，由 main `6562fa5` 的已批准工作整合：
+目前整合分支為 `codex/final-release-closeout-20261008`，包含 main `5cc1ffa`、
+下列原 PR162 候選及新一輪收尾。以下先保留 `codex/release-readiness-20261007`
+由 main `6562fa5` 整合的歷史來源，不把舊收據改標成新版執行：
 
 | 功能／修正 | 保留的 PR 與精確來源 |
 | --- | --- |
@@ -16,8 +18,23 @@
 | PDF 資源釋放、非同步 guide 所有權 | #154 `83769b9`、#156 `2a7d9cb` |
 | 瀏覽器通知分類、Windows binary 身分核對 | #144 `7cfa1a8`、#136 `cc3c1c4` |
 
-#141 的九個元件檔已逐 blob 包含在 #146。獨立 work-manager、未定案多房自動辨識
-及施工反向推演不加入這次候選。此表是來源紀錄，並非借用上述各分支的驗收結果。
+#141 的九個元件檔已逐 blob 包含在 #146。本輪另整合：
+
+| 功能／修正 | 保留的精確來源 |
+| --- | --- |
+| PR162 保存／歷史 oracle 的 A/B/C 補強與負控制 | `8b9b6f8` |
+| work-manager 真瀏覽器收尾與鍵盤焦點修正 | #152 `43bf056` |
+| 文件與方向同步 | #165 `794569e` |
+| Q38 原生完整診斷、typed 來源圖、兩種簡易宿主與轉換 | `fb82d0a`，包含使用者 #167 `fb6ef45` 的跨物件影響揭露 |
+| Q38 真模型產生器與完整來源保存 | `4346a50` |
+| Q38 2D／3D、共用模型庫、完整 `/16`、late response／history 保護 | `fb619cc` |
+| #87 已校準同頁的有界多房 session 與逐房交易 | `87af8b4` |
+| 原 Windows／舊分支驗收原件 | #158 `06343d8`；保留原 head、成功及失敗範圍 |
+
+#128 完成面／鋪板的 [PF-0 逐條差異](../../geometry-core/PANEL-FILL-AXIOM-DIFF.md)
+仍待使用者採納新精確語意，未提前寫入 SSOT 或實作。#87 未接受候選不進 ZIP，
+zero-room first collection 與跨 reload 未接受草稿不屬於本 session slice。
+此表是來源紀錄；實際通過與未驗項必須各自附原始收據。
 
 ## 每輪的停止條件
 
@@ -38,6 +55,8 @@
 | A/B 及來源顯示 | native 300 次生命週期、scenario workflow/lifecycle、shared-room display；B 不改 A、整體採用、Undo/Redo、完整 ZIP |
 | 保存與來源 | #77 正式 owner 五項及四個 browser gates、#116、#48 evidence、#61 reader；原圖 bytes／身份／raw 草稿完整保留 |
 | 單房 | acceptance、pan、worker、keyboard 四個完整 gates；PDF／圖片、校準、尺寸、確認、取消及真保存重開 |
+| 多房 session | 固定 34 項正式 gate，並保留 #77／shared-room display／#54 受影響回歸；命名取消與回覆遺失不得殘留 owner |
+| 斷面拉伸 | 原生 26／模型 19、UI 68、fresh-browser 完整保存 18 各自記錄；兩種宿主、精確模型、來源圖、所有影響與取消／歷史 |
 | 規則案例 | formal app 及 races；六有限案例、retention 單步 history、歷史未核信、來源變更過期、B 退休隔離 |
 | 回報 | 真瀏覽器 ResizeObserver／真錯誤／人工回報 gate；非預期 exception 不忽略 |
 | 使用者操作 | 桌面、390px、短高度，真滑鼠與鍵盤；建立→編輯→確認→復原→重做→下載→新專案→選檔重開 |

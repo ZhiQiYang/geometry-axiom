@@ -596,3 +596,22 @@ sourceDescription。真下載完整 `/16` ZIP，New 後以全新 Chromium proces
 也不替代 full CDP／Space。公理、格式、模型與來源圖的責任見
 [`SECTION-PROFILE-NATIVE-CONTRACT.md`](../geometry-core/SECTION-PROFILE-NATIVE-CONTRACT.md) 與
 [`SECTION-PROFILE-MODELING.md`](../geometry-core/SECTION-PROFILE-MODELING.md)。
+
+## #87 同頁多房候選
+
+`tests/test_room_multi_candidate.js` 的 12 個純函式 tests 登錄於 Node suite，
+涵蓋共用 flood 算法、去重、座標、巢狀分量及容量。它不代替以下固定 **34 checks**：
+
+```sh
+GEOMETRY_MULTIROOM_OUT=/tmp/multiroom-evidence \
+  python3 tests/release_gate.py --url "$GEOMETRY_TEST_URL" \
+  --output /tmp/multiroom-receipt -- node tests/room_multi_candidate_browser.js
+```
+
+此 gate 使用正式自製來源匯入／校準、同頁逐房取得、選擇／核對／接受／暫停，
+保留已接受房間，並驗失敗保存、preview 取消、回覆遺失 recovery、命名取消、
+source／history／Worker 晚到隔離及全新 profile 真 Open。晚回覆與保存失敗為明示故障注入。
+未接受候選是 session 資料，不進 World 或 ZIP；沒有聲稱支援零房 first-collection
+建立或 reload 後恢復未接受候選。既有 #77 owner／四 browser gates、shared-room display，
+以及 #54 pan／worker／keyboard 仍分別驗，不把新 34 項充作它們的替代。
+契約見[多房邊界](../geometry-guide/ROOM-MULTI-CANDIDATE-IMPLEMENTATION-BOUNDARY.md)。
