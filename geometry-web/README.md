@@ -104,10 +104,12 @@ python3 geometry-web/start_local.py --port 8765
 會影響已放角材時，畫面列出新舊中線、長度與違規；按「確認套用」才改場景。
 有違規或取消都保留原狀。詳見 [語法與驗收紀錄](../geometry-core/README.md)。
 
-Windows 如被 Smart App Control 擋住未簽章程式，使用已安裝的 WSL：
+Windows 如被 Smart App Control 擋住未簽章程式，使用已安裝的 WSL。
+從 repository 根目錄執行；`start.ps1` 在 `geometry-web\`，根目錄沒有這支腳本。
+`start_local.py` 只接受 Linux，不能拿來代替這條。
 
 ```powershell
-powershell -File .\start.ps1 -Port 8765
+powershell -NoProfile -File .\geometry-web\start.ps1 -Port 8765
 ```
 
 此啟動器重新編譯目前原始碼，在 WSL 跑核心、Windows 跑網頁服務；不更動系統安全設定。
@@ -172,25 +174,32 @@ agent 端：
 python geometry-web/feedback_cli.py list              # 未處理
 python geometry-web/feedback_cli.py show <id>         # 摘要 + 最後 40 筆操作
 python geometry-web/feedback_cli.py events <id> -n 300
-python geometry-web/feedback_cli.py replay <id>       # 列出改世界的指令,並用 core.exe 載回當下世界
+python geometry-web/feedback_cli.py replay <id>       # 列出改世界的指令；core 看 GEOMETRY_CORE，預設 %TEMP%\geometry-tests\core.exe（不是 GEOMETRY_TEST_CORE）
 python geometry-web/feedback_cli.py close <id> "已修 <commit>"   # 或 --status wontfix / cannot-reproduce
 ```
 
 ## 測試
 
 測試分別驗證核心、前端整合與實際輸入；通過斷言數不等於獨立的端到端情境數。必須記錄實際執行範圍，略過或環境阻擋不算通過。
+啟動與測試命令的工作目錄、TEMP 與尚未執行的項目見 [命令索引](../tests/release-evidence/20261008-command-index/README.md)。那份索引不是產品說明，也不表示命令已跑過。
 
 ```bat
+:: 工作目錄是 geometry-web。這三支腳本不在 repository 根目錄。
+cd geometry-web
+
 :: 1) 橋接器／幾何測試（不執行畫布 DOM）
+:: direct 會 spawn 同目錄 web_bridge.exe，不讀 GEOMETRY_TEST_BRIDGE，也不檢查 fresh。
 node canvas_test.js direct
 
-:: 2) headless Chrome 混合整合測試（先用相同 feedback 目錄啟動獨立測試服務）
+:: 2) headless Chrome 混合整合測試
+:: 先在別的終端、用同一個 GEOMETRY_FEEDBACK_DIR 啟動獨立埠。不要沿用正在使用的服務。
 set GEOMETRY_TEST_URL=http://127.0.0.1:8799/
 set GEOMETRY_FEEDBACK_DIR=%TEMP%\geometry-tests\fb-cdp
 node cdp_test.js
 
-:: reference_smoke.js 已退役(GEO-225)：過期夾具及預設重置 8765 的入口已移除；由 cdp_test.js 驗證引用流程。
-:: 未設 GEOMETRY_TEST_URL 時它會連 8765 並重置場景——那是你正在用的服務。
+:: reference_smoke.js 已不在工作區（GEO-225 退役）。
+:: 現行 cdp_test.js 未設 GEOMETRY_TEST_URL 或 TEMP 下的 GEOMETRY_FEEDBACK_DIR 時，
+:: 在開啟瀏覽器前拒絕，不會連到 8765，也不會重置場景。
 
 :: 3) 伺服器輸入與故障處理（不需要真實 bridge 或瀏覽器）
 python -B -m unittest discover -s ../tests -p test_serve.py -v
@@ -215,7 +224,7 @@ Smart App Control 強制模式會封鎖新編譯的未簽章執行檔，`web_bri
 sudo apt-get install -y gcc
 # Node 官方 tarball 解到 /opt/node；Chrome 用 dl.google.com 的 .deb
 
-# 每次：建置 Linux 版 bridge，起 server，跑測試
+# 每次：工作目錄是 geometry-web。/opt/geometry 須已存在；這段沒有 mkdir。
 gcc -O2 -o /opt/geometry/web_bridge web_bridge.c -lm
 GEOMETRY_BRIDGE=/opt/geometry/web_bridge GEOMETRY_FEEDBACK_DIR=/tmp/geometry-tests/fb-cdp python3 serve.py 8799 &
 
