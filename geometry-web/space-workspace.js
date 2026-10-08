@@ -648,13 +648,32 @@ window.SpaceModelWorkspace = (() => {
     }catch(e){if(seq===state.sequence){state.phase="error";state.previewRevision=-1;message(e.message,"error");}}
     finally{updateActions();}
   }
+  function sectionProfileLibraryList() {
+    const list = $("smLibraryList"), models = ReferenceWorkspace.getSpaceModels?.() || [], runs = window.SectionProfileWorkspace?.runCount || 0;
+    $("smModelCount").textContent = String(models.length + runs);
+    if ($("spaceModelCount")) $("spaceModelCount").textContent = String(models.length + runs);
+    // A late profile read must not replace saved-model cards or their open source inspectors.
+    for (const button of list.querySelectorAll("[data-sp-open-run]")) button.closest(".sm-model-card")?.remove();
+    list.querySelector(".sm-library-empty")?.remove();
+    if (runs) {
+      list.insertAdjacentHTML("beforeend", SectionProfileWorkspace.libraryMarkup());
+      for (const button of list.querySelectorAll("[data-sp-open-run]")) {
+        button.disabled = !!(WorkspaceShell.historyBusy(dialog) || ReferenceWorkspace.busy || oc.busy);
+        button.onclick = () => {
+          if (!libraryActionAllowed("view")) return;
+          const profile = Number(button.dataset.spProfile), run = Number(button.dataset.spOpenRun);
+          close(); SectionProfileWorkspace.open(profile, run).catch(error => toast(error.message));
+        };
+      }
+    } else if (!models.length) list.innerHTML = '<div class="sm-library-empty"><h3>還沒有建立空間</h3><p>選一個範例，核對預覽後按「建立空間」，它就會出現在這裡。</p><button class="sm-button sm-primary" data-sm-library-trial type="button">試用矩形範例 →</button></div>';
+  }
   function libraryList() {
-    const models=ReferenceWorkspace.getSpaceModels?.()||[]; $("smModelCount").textContent=String(models.length+(window.SectionProfileWorkspace?.runCount||0)); if($("spaceModelCount"))$("spaceModelCount").textContent=String(models.length+(window.SectionProfileWorkspace?.runCount||0));
-    $("smLibraryList").innerHTML=models.length?models.map(m=>`<article class="sm-model-card"><div class="sm-model-symbol" aria-hidden="true">▱</div><div><h3>${esc(m.name)}</h3><p>${wallRequirementMissing(m.input,m.result)?"材料牆缺失 · 未滿足要求":m.result.summary.closed?"封閉空間":"開放空間"} · ${m.result.summary.face_count} 個面 · ${esc(metric(m.result.summary.volume_mm3))} · 角材 ${esc(m.result.summary.timber_count||0)} 支</p><small>${esc(new Date(m.created_at).toLocaleString("zh-TW"))} · 來源${m.source.kind==="example"?"範例":"面 #"+m.source.boundary_id}</small></div><div class="sm-model-actions"><button class="sm-button" data-sm-open-model="${esc(m.id)}" type="button">開啟 3D</button>${m.input.mode==="plan"?`<button class="sm-button" data-sm-edit-height="${esc(m.id)}" type="button">修改模型</button>`:""}<button class="sm-button sm-danger" data-sm-remove-model="${esc(m.id)}" type="button">移除</button></div></article>`).join(""):'<div class="sm-library-empty"><h3>還沒有建立空間</h3><p>選一個範例，核對預覽後按「建立空間」，它就會出現在這裡。</p><button class="sm-button sm-primary" data-sm-library-trial type="button">試用矩形範例 →</button></div>';
-    if(window.SectionProfileWorkspace?.runCount){$("smLibraryList").querySelector(".sm-library-empty")?.remove();$("smLibraryList").insertAdjacentHTML("beforeend",SectionProfileWorkspace.libraryMarkup());$("smLibraryList").querySelectorAll("[data-sp-open-run]").forEach(button=>button.onclick=()=>{const profile=Number(button.dataset.spProfile),run=Number(button.dataset.spOpenRun);close();SectionProfileWorkspace.open(profile,run).catch(error=>toast(error.message));});}
+    const models = ReferenceWorkspace.getSpaceModels?.() || [];
+    $("smLibraryList").innerHTML=models.length?models.map(m=>`<article class="sm-model-card"><div class="sm-model-symbol" aria-hidden="true">▱</div><div><h3>${esc(m.name)}</h3><p>${wallRequirementMissing(m.input,m.result)?"材料牆缺失 · 未滿足要求":m.result.summary.closed?"封閉空間":"開放空間"} · ${m.result.summary.face_count} 個面 · ${esc(metric(m.result.summary.volume_mm3))} · 角材 ${esc(m.result.summary.timber_count||0)} 支</p><small>${esc(new Date(m.created_at).toLocaleString("zh-TW"))} · 來源${m.source.kind==="example"?"範例":"面 #"+m.source.boundary_id}</small></div><div class="sm-model-actions"><button class="sm-button" data-sm-open-model="${esc(m.id)}" type="button">開啟 3D</button>${m.input.mode==="plan"?`<button class="sm-button" data-sm-edit-height="${esc(m.id)}" type="button">修改模型</button>`:""}<button class="sm-button sm-danger" data-sm-remove-model="${esc(m.id)}" type="button">移除</button></div></article>`).join(""):"";
+    sectionProfileLibraryList();
   }
   function openLibrary(){void window.SectionProfileWorkspace?.refreshLibrary();clearSnapshotNavigation();if(state.editing)cancelHeightEdit();if(!show(openLibrary))return;libraryList();$("smLibraryPanel").hidden=false;$("smMain").hidden=true;libraryLease=captureLibraryLease();dialog.classList.add("sm-in-library");WorkspaceShell.refresh(dialog);syncLibraryActions();window.dispatchEvent(new Event('space-model-view-changed'));}
-  window.addEventListener("section-profile-library-changed",libraryList);
+  window.addEventListener("section-profile-library-changed",sectionProfileLibraryList);
   function openRecord(id, display = true) {
     const record=ReferenceWorkspace.getSpaceModels().find(m=>m.id===id); if(!record)return;
     const ctx=ReferenceWorkspace.context(),pin=JSON.stringify(record);
