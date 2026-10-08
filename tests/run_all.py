@@ -53,6 +53,7 @@ PY_NEEDS = {
     'test_assembly_parameter_refs': ['bridge'],
     'test_assembly_native_diagnostics': ['bridge'],
     'test_assembly_rules': ['bridge'],
+    'test_section_profile_native': ['bridge', 'model-base'],
     'test_assembly_generation': ['bridge'],
     'test_axiom_reader': [],
     'test_binaries': [],
@@ -106,6 +107,7 @@ PY_BROWSER_GATES = {
     'test_issue123_create_feedback_browser': 'Explicit isolated Playwright mouse/touch first-center gate from #131; run with --url/--out, not a unittest suite',
 }
 NODE_TEST_FILES = [
+    'tests/test_section_profile_compat.js',
     'tests/test_assembly_project_store.js',
     'tests/test_assembly_transport_context.js',
     'tests/test_assembly_workspace.js',

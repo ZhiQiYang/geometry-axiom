@@ -42,7 +42,7 @@ static int model_error(const char *status, const char *code,
  * This also guards the legacy fgets/strlen reader against embedded NULs.
  * The core still validates every allowed command and every dependency.
  */
-static bool model_source_check(const char *path, bool *capacity, char *error, size_t cap)
+static bool model_source_check(const char *path, bool *capacity, bool *unsupported, char *error, size_t cap)
 {
     static const char *allowed[] = {
         "spec", "boundary", "placement", "surface", "space", "datum", "guide",
@@ -86,6 +86,10 @@ static bool model_source_check(const char *path, bool *capacity, char *error, si
             *capacity = true; snprintf(error, cap, "Line %d exceeds legacy token capacity.", line_no); ok = false; break;
         }
         if (count) {
+            if (!strcmp(tokens[0], "section-profile") ||
+                (!strcmp(tokens[0], "requires") && count == 2 && !strcmp(tokens[1], SP_CAPABILITY))) {
+                *unsupported=true;snprintf(error, cap, "I32: section-profile/1 renderer is unsupported by this legacy adapter."); ok = false; break;
+            }
             bool found = false;
             for (size_t i = 0; allowed[i]; ++i) if (!strcmp(tokens[0], allowed[i])) found = true;
             if (!found) {
@@ -304,9 +308,9 @@ static void model_dependencies(const World *world)
 int main(int argc, char **argv)
 {
     if (argc != 2) return model_error("INVALID", "BASE_ARGUMENT", "D25", "Expected one scene file path.");
-    char error[512] = ""; bool capacity = false;
-    if (!model_source_check(argv[1], &capacity, error, sizeof error))
-        return model_error(capacity ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : "BASE_SOURCE", capacity ? "I33" : "I9", error);
+    char error[512] = ""; bool capacity = false, unsupported = false;
+    if (!model_source_check(argv[1], &capacity, &unsupported, error, sizeof error))
+        return model_error(capacity||unsupported ? "UNSUPPORTED" : "INVALID", capacity ? "BASE_CAPACITY" : unsupported ? "CAPABILITY" : "BASE_SOURCE", capacity ? "I33" : unsupported ? "I32" : "I9", error);
     World world = {0};
     if (!parse_scene_file(argv[1], &world)) {
         const char *why = scene_last_error();
