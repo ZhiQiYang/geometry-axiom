@@ -10,16 +10,17 @@ from copy import deepcopy
 from dataclasses import replace
 import heapq
 
-from .common import ModelError, canonical_bytes, ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY
+from .common import (ModelError, canonical_bytes, ENGINEERING_CAPABILITY,
+                     PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY)
 
 CAPABILITIES = (
     "composite-space/1", "extrusion/1", "model-export/1", "shell/1",
-    "solid-composition/1", ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY,
+    "solid-composition/1", ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY,
 )
 _EXTENSION_KINDS = {"extrusion", "shell", "composite_space", "composition"}
 _PRIMITIVE_SOLIDS = {"column", "beam", "timber", "extrusion"}
 _GEOMETRY_KINDS = {"placement", "shell", "composition"} | _PRIMITIVE_SOLIDS
-_ROOT_KINDS = _GEOMETRY_KINDS | {"composite_space"}
+_ROOT_KINDS = _GEOMETRY_KINDS | {"composite_space", "profile-run"}
 _KIND_CAPABILITY = {
     "extrusion": "extrusion/1", "shell": "shell/1",
     "composite_space": "composite-space/1", "composition": "solid-composition/1",
@@ -274,6 +275,10 @@ def _source(key):
 
 
 def _root_types(key, records, target, role, path=()):
+    if key[0] == "profile-run":
+        if role != "geometry" or target != "solid-set":
+            _fail("TARGET_TYPE", "R39", "ProfileRun requires geometry role and solid-set target", path, root=_as_ref(key))
+        return
     if key[0] == "composite_space":
         if role not in ("enclosure", "clearance"):
             _fail("TARGET_TYPE", "D24", "CompositeSpace requires enclosure or clearance role", path, root=_as_ref(key))
@@ -297,6 +302,7 @@ def evaluate(definitions, request, *, capabilities=None, max_cells=200000,
     """
     from .base import load_base
     from . import geometry as geo
+    from . import section_profile as profile_geo
 
     canonical_bytes(definitions)
     canonical_bytes(request)
@@ -310,8 +316,9 @@ def evaluate(definitions, request, *, capabilities=None, max_cells=200000,
     records, dependencies, ordered, canonical, paths = _parse_extensions(definitions["extensions"], base)
     placements = {("placement", item["id"]): item for item in base["placements"]}
     solids = {(item["kind"], item["id"]): item for item in base["solids"]}
+    profile_runs = {("profile-run", item["id"]): item for item in base.get("profile_runs", [])}
     specs = {item["name"]: item["value"] for item in base["specs"]}
-    available = set(placements) | set(solids) | set(records)
+    available = set(placements) | set(solids) | set(records) | set(profile_runs)
     roots = [(item["kind"], item["id"]) for item in canonical_request["roots"]]
     errors = []
     for key in roots:
@@ -420,10 +427,21 @@ def evaluate(definitions, request, *, capabilities=None, max_cells=200000,
             pending.append(("placement", solids[key]["placement_id"]))
     selected_geometries = [geometries[key] for key in sorted(selected) if key in geometries]
     selected_geometries += [composite_clearance[key] for key in sorted(selected) if key in composite_clearance]
+    profile_items = {key: profile_geo.geometries(profile_runs[key]) for key in roots if key in profile_runs}
+    # Placed runs share the request's R29 world arrangement. Each unplaced run
+    # has its own local frame and never contributes coordinates to world roots.
+    selected_geometries += [geometry for key, items in profile_items.items()
+                            if profile_runs[key]["coordinate_space"] == "world"
+                            for geometry, _ in items]
     grid = geo.build_grid(selected_geometries, max_cells=max_cells)
     objects, diagnostics, incomplete = [], [], []
 
     def output(key, root, member_path=(), operation_path=()):
+        if key in profile_runs:
+            run = profile_runs[key]
+            profile_grid = (grid if run["coordinate_space"] == "world" else
+                            geo.build_grid([g for g, _ in profile_items[key]], max_cells=max_cells))
+            return profile_geo.output(run, profile_items[key], profile_grid, max_cells=max_cells)
         if key[0] == "composition" and records[key]["op"] == "KEEP":
             result = []
             for i, ref in enumerate(records[key]["inputs"]):

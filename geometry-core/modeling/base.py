@@ -14,7 +14,8 @@ import subprocess
 import sys
 import tempfile
 
-from .common import ModelError, ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, scene_required_capabilities
+from .common import (ModelError, ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY,
+                     SECTION_PROFILE_CAPABILITY, scene_required_capabilities)
 
 _BUILD_DIRS: list[tempfile.TemporaryDirectory] = []
 _MAX_SCENE_BYTES = 1024 * 1024
@@ -101,7 +102,8 @@ def load_base(scene_text: str, executable=None) -> dict:
     if len(encoded) > _MAX_SCENE_BYTES:
         raise ModelError("UNSUPPORTED", "BASE_CAPACITY", "I33", "Scene exceeds adapter 1 MiB capacity.")
     source_capabilities = scene_required_capabilities(scene_text)
-    if source_capabilities - {ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY}:
+    supported = {ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY, SECTION_PROFILE_CAPABILITY}
+    if source_capabilities - supported:
         raise ModelError("UNSUPPORTED", "CAPABILITY", "I32", "Unsupported required scene capability")
     program = executable or os.environ.get("GEOMETRY_MODEL_BASE") or _build_adapter()
     wsl_distro = (os.environ.get("GEOMETRY_MODEL_BASE_WSL_DISTRO")
@@ -138,9 +140,11 @@ def load_base(scene_text: str, executable=None) -> dict:
         raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned an incomplete snapshot.")
     capabilities = snapshot.get("required_capabilities", [])
     if (not isinstance(capabilities, list) or any(type(item) is not str for item in capabilities)
-            or len(capabilities) != len(set(capabilities)) or set(capabilities) - {ENGINEERING_CAPABILITY, PARAMETER_CAPABILITY}):
+            or len(capabilities) != len(set(capabilities)) or set(capabilities) - supported):
         raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I32", "C scene adapter returned unsupported source capabilities.")
     canonical_capabilities = scene_required_capabilities(snapshot["base_scene"])
     if source_capabilities != set(capabilities) or canonical_capabilities != set(capabilities):
         raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I36", "C scene adapter did not preserve engineering source definitions and capability.")
+    if SECTION_PROFILE_CAPABILITY in source_capabilities and not isinstance(snapshot.get("profile_runs"), list):
+        raise ModelError("UNSUPPORTED", "BASE_PROTOCOL", "I51", "C scene adapter omitted section-profile definitions.")
     return snapshot
