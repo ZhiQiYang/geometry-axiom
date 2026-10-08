@@ -32,6 +32,8 @@ def scene_required_capabilities(scene):
             result.add("assembly-timber-generation/1")
         if tokens[0] == "assembly":
             result.add("assembly-rule-authoring/1")
+        if tokens[0] == "section-profile":
+            result.add("section-profile/1")
         if tokens[0] == "parameters" or "param:" in " ".join(tokens):
             result.add(PARAMETER_CAPABILITY)
     return result

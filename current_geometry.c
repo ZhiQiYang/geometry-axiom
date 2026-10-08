@@ -1037,6 +1037,7 @@ typedef enum {
 #include "geometry-core/parameter_types.h"
 #include "geometry-core/engineering_types.h"
 #include "geometry-core/assembly_types.h"
+#include "geometry-core/section_profile_types.h"
 
 typedef struct {
     GuideLineId id;
@@ -3730,6 +3731,7 @@ typedef struct World {
 
     CanvasPos canvas_pos[WORLD_MAX_CANVAS_POS];
     size_t canvas_pos_count;
+    SectionProfileState section_profiles;
     AssemblyState assembly;
     EngineeringState engineering;
     ParameterState parameters;
@@ -3786,6 +3788,7 @@ static bool grid_systems_rebuild(World *,char *,size_t);
 static bool eng_object_bound(const World *,int,uint32_t);
 static uint64_t g_definition_revision;
 static char g_engineering_error[256];
+static bool sp_rebuild(World *,char *,size_t);
 static bool assembly_rebuild(World *,char *,size_t);
 static bool assembly_owned(const World *,uint32_t);
 static void assembly_owned_prefix(const World *,uint32_t,const char *,FILE *);
@@ -8623,6 +8626,9 @@ static bool world_revalidate_candidate(World *world,World *candidate)
     if (!assembly_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
+    if (!sp_rebuild(candidate,grid_error,sizeof grid_error)) {
+        set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
+    }
     if (!grid_systems_rebuild(candidate,grid_error,sizeof grid_error)) {
         set_revalidate_error(grid_error); reference_capture_trial(candidate); return false;
     }
@@ -10019,6 +10025,7 @@ static bool apply_move_line(const char *p, int n, char **t, int c, World *w)
 #include "geometry-core/engineering_commands.inc"
 #include "geometry-core/assembly.inc"
 #include "geometry-core/assembly_generation.inc"
+#include "geometry-core/section_profiles.inc"
 
 
 /* space <id> boundary <面id> <面id> [面id ...]：建構子吃邊界面清單，
@@ -12192,6 +12199,7 @@ static void world_dump_dsl(const World *world, FILE *out)
     }
 
     assembly_dump(world,out);
+    sp_dump(world,out);
     /* 畫布座標最後寫：它引用的物件要先存在。 */
     for (size_t i = 0; i < world->canvas_pos_count; ++i) {
         const CanvasPos *p = &world->canvas_pos[i];
@@ -12317,6 +12325,7 @@ static const struct {
     { "grid-source-rule-highwater", 4, 4, false, "grid-source-rule-highwater SID next K|exhausted (file only)", apply_grid_source_rule_highwater },
     { "grid-system", 10, SCENE_MAX_TOKENS, false, "grid-system id name-hex utf8hex main-along u|v|none u definition v definition", apply_grid_system_line },
     { "owned", 5, 20, false, "owned timber|place instance member native-arguments", apply_assembly_owned_line },
+    { "section-profile", 3, 3, false, "section-profile profile|member|run base64-json (atomic scene only)", apply_section_profile_line },
     { "assembly", 2, 3, false, "assembly begin|record|data|commit|end", apply_assembly_line },
     { "parameters", 2, 3, false, "parameters begin|card|field|end", apply_parameters_line },
     { "requires", 2, 2, false, "requires engineering-spec/1", apply_requires_line },
@@ -12478,6 +12487,7 @@ static bool parse_scene_file(const char *path, World *out_world)
     g_parsing_scene_file = true;
     memset(g_rule_scene_highwater,0,sizeof g_rule_scene_highwater);
     g_rule_scene_required=false;
+    sp_scene_required=false;
     g_rule_scene_encountered=false;
     g_parameter_scene_loading = true;
 

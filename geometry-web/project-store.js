@@ -138,6 +138,7 @@
     let usesSubdivision = false;
     for (const raw of scene.replace(/\r\n/g, "\n").split("\n")) {
       const line = raw.split("#", 1)[0].trim();
+      if (/^section-profile(?:\s|$)/.test(line)) fail("此完整專案讀寫器尚未支援 section-profile/1；不能省略或展平斷面資料。");
       if (/^grid-source-rule(?:-highwater)?\b/.test(line) || /(?:^|\s)gridrule:/.test(line) || /\bat-line\s+rule\b/.test(line)) {
         result.add(SUBDIVISION_CAPABILITY); usesSubdivision = true;
       }

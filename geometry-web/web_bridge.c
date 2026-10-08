@@ -30,6 +30,8 @@ static int g_input_line_no = 0;
 static void json_engineering_sources(const World *);
 static void json_engineering_capabilities(const World *);
 static bool eng_definition_hash(const World *,char[65]);
+static void json_section_profile_state(const World *);
+static void json_section_profile_impact(const World *,const World *);
 
 /* ---------------- JSON 輸出小工具 ---------------- */
 
@@ -857,6 +859,7 @@ static void cmd_dump(void)
 }
 
 #include "engineering_bridge.inc"
+#include "section_profile_bridge.inc"
 #include "scene-import-bridge.inc"
 #include "assembly_bridge.inc"
 #include "source-inspector-bridge.inc"
@@ -913,6 +916,14 @@ int main(void)
             fputs("{\"ok\":true}\n", stdout);
         } else if (strcmp(line, "line") == 0 && arg != NULL) {
             cmd_line(arg);
+        } else if (strcmp(line,"section-profile-read")==0) {
+            cmd_section_profile_read();
+        } else if (strcmp(line,"section-profile-preview")==0 && arg) {
+            cmd_section_profile_preview(arg);
+        } else if (strcmp(line,"section-profile-confirm")==0) {
+            cmd_section_profile_confirm(arg);
+        } else if (strcmp(line,"section-profile-cancel")==0) {
+            cmd_section_profile_cancel(arg);
         } else if (strcmp(line,"assembly-generation-preview")==0 && arg) {
             cmd_assembly_generation_preview(arg);
         } else if (strcmp(line,"assembly-read")==0 && !arg) {

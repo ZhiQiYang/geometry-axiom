@@ -135,7 +135,7 @@ static void si_rule_parts(SiIndex *s,const AsmRuleVersion *r)
 }
 static SiIndex *si_build(const World *w)
 {
-    SiIndex *s=calloc(1,sizeof *s);if(!s)return NULL;s->complete=true;char from[240],label[200];SiNode *n;
+    SiIndex *s=calloc(1,sizeof *s);if(!s)return NULL;s->complete=!sp_used(w);char from[240],label[200];SiNode *n;
     for(size_t i=0;i<w->boundary_count;++i){const SpaceBoundarySurface *b=&w->boundaries[i];si_reset(s);si_text(s,"%d;",b->kind);si_loop(s,&b->outline);for(size_t k=0;k<b->hole_count;++k)si_loop(s,&b->holes[k]);
         const BoundaryVertexKeys *keys=world_find_vertex_keys(w,b->id);if(keys){for(size_t k=0;k<keys->loop_count;++k)for(size_t v=0;v<keys->counts[k];++v)si_text(s,"key:%zu:%zu:%u;",k,v,keys->keys[k][v]);}
         si_nnode(s,"boundary",b->id,0,0,"邊界");}
