@@ -519,7 +519,12 @@ window.SpaceModelWorkspace = (() => {
       ReferenceWorkspace.setFaceProjection(source.boundary_id,source.placement_id,{kind:'space-boundary-plan',view,region:'interior',wallSide:'outside'});
       projectionChanged();
       message('已確認用途與觀看方向，現有設定已保留。指定牆底後按「更新預覽」；定義會隨專案保存。','success');
-      const next=$('smBottom').value.trim()?$('smPreview'):$('smBottom');next.scrollIntoView({block:'center'});next.focus();
+      const next=$('smBottom').value.trim()?$('smPreview'):$('smBottom');
+      const field=document.activeElement;
+      if(!(field && $('smSettings').contains(field) && field.matches('input,select,textarea'))){
+        next.scrollIntoView({block:'center'});
+        next.focus();
+      }
     } catch(e) {if(active()){state.previewRevision=-1;message(e.message,'error');}}
     finally {if(serial===state.projectionSequence){state.projectionPending=false;updateActions();}}
   }
