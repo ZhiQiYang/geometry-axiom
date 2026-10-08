@@ -171,6 +171,7 @@ NODE_PURE_TEST_FILES = {
     'node:grid_definition_diagram': 'tests/test_grid_definition_diagram.js',
 }
 NODE_EXCLUDED = {
+    'tests/test_section_profile_browser.js': 'Required isolated Q38 native/UI model, desktop/390, keyboard, preview/cancel, placement and real project Save/new/Open gate; run separately, not a node unit suite',
     'tests/rule-case-workbench-controller.cjs': 'Required actual standalone HTTP/native controller lifecycle suite; needs explicit isolated GEOMETRY_RULE_CASE_TEST_URL; not a generic node fixture',
     'tests/rule-case-workbench-browser.cjs': 'Required real standalone component browser gate at 1280/390 over native HTTP; formal ZIP flow is separate',
     'tests/test_rule_case_app_races.js': 'Required formal original GET/create/retention/history/native/B-context races and live assembly candidate preservation; explicit isolated service/TEMP fixtures; see INTEGRATION-GATES.md',
