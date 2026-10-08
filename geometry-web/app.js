@@ -387,6 +387,27 @@ function reapplyInspectorFocus(pane, state) {
   if (pane.contains(document.activeElement)) return;
   target.focus({ preventScroll: true });
 }
+/* Edge lengths are outside the face draft filter. Keep a typed value only
+   when the same boundary is rebuilt and that edge's model length is unchanged. */
+function captureDirtyInputs(pane) {
+  if (!pane) return null;
+  const active = document.activeElement;
+  const edits = [];
+  for (const input of pane.querySelectorAll("input[data-edge-len][id]")) {
+    if (!/^[A-Za-z][\w-]*$/.test(input.id) || input.value === input.defaultValue) continue;
+    edits.push({ id: input.id, value: input.value, model: input.defaultValue, focus: active === input });
+  }
+  return { owner: pane.dataset.redrawOwner || "", edits };
+}
+function restoreDirtyInputs(pane, snap) {
+  if (!pane || !snap?.owner || pane.dataset.redrawOwner !== snap.owner) return;
+  for (const edit of snap.edits) {
+    const input = pane.querySelector("#" + edit.id);
+    if (!input || input.value !== edit.model) continue;
+    input.value = edit.value;
+    if (edit.focus && !pane.contains(document.activeElement)) input.focus({ preventScroll: true });
+  }
+}
 
 /* DrawStyle 外觀表：與 STYLE_SPEC + SVG 後端的 CSS 同一份值。 */
 const STYLE = [
@@ -8246,9 +8267,11 @@ function renderFaceInspector() {
   if (e.contextId !== ReferenceWorkspace.context().id) { resetSceneFocus(); return; }
   if (fe.timberSelection.size > 1) {
     GridEditor.clear();
+    pane.dataset.redrawOwner = "";
     pane.innerHTML = selectionMultiHTML([...fe.timberSelection].map(id => ({id})), true);
     return;
   }
+  const dirtyInputs = captureDirtyInputs(pane);
   ++fe.gridPreviewSeq;
   const bid = e.bid;
   const saved = inspectorState(pane, bid);
@@ -8376,6 +8399,7 @@ function renderFaceInspector() {
   html += feShapePaneHTML(bid);
   /* GEO-190:底圖頁 */
   html += feUnderlayPaneHTML(bid);
+  pane.dataset.redrawOwner = "boundary:" + bid;
   pane.innerHTML = html;
   const editTimber = fe.sel?.kind === 'timber' && fe.timbers.find(t => t.id === fe.sel.id);
   if (editTimber?.definition && pane.querySelector('#tbEditAnchor')) {
@@ -8461,7 +8485,10 @@ function renderFaceInspector() {
     inp.addEventListener("change", async () => {
       const i = +inp.dataset.edgeLen, len = Math.round(+inp.value);
       if (await commitEdgeLength(bid, oc.bmap[bid], i, len)) await feAfterChange();
-      else renderFaceInspector();
+      else {
+        if (inp.isConnected) inp.value = inp.defaultValue;
+        renderFaceInspector();
+      }
     });
   bindPlaceForm(pane, bid);
   /* GEO-090:priority 欄只在 custom 角色時顯示 */
@@ -8556,6 +8583,7 @@ function renderFaceInspector() {
   updatePlaceValid(pane);
   const pri = pane.querySelector("#tbPriLabel"); if (pri) pri.hidden = pane.querySelector("#tbRole").value !== "custom";
   reapplyInspectorFocus(pane, saved);
+  restoreDirtyInputs(pane, dirtyInputs);
 }
 
 /* 放置表單（主畫布右欄與面內檢視器共用，§5.5.3a） */
@@ -9319,13 +9347,16 @@ function syncParameterEditingLayout() {
 function renderInspectorBody() {
   syncCompositionLayout();
   const pane = $("inspectorContent"); if (!pane) return;
+  const dirtyInputs = captureDirtyInputs(pane);
   const empty = $("inspectorEmpty");
-  if(oc.parameterCreating){if(empty)empty.hidden=true;pane.hidden=false;window.ParameterUI?.render(pane);return;}
+  if(oc.parameterCreating){pane.dataset.redrawOwner="";if(empty)empty.hidden=true;pane.hidden=false;window.ParameterUI?.render(pane);return;}
   if (oc.gridSystemCreating && !oc.selection.length) {
+    pane.dataset.redrawOwner="";
     if (empty) empty.hidden = true;
     pane.hidden = false; GridSystemEditor.render(pane, null); return;
   }
   if (oc.selection.length > 1) {
+    pane.dataset.redrawOwner="";
     if (empty) empty.hidden = true;
     pane.hidden = false; pane.innerHTML = selectionMultiHTML(oc.selection);
     return;
@@ -9333,18 +9364,20 @@ function renderInspectorBody() {
   const sel = oc.sel && ocFind(oc.sel.kind, oc.sel.id) ? oc.sel : null;
   if (empty) empty.hidden = !!sel;
   pane.hidden = !sel;
-  if (!sel) { pane.innerHTML = ""; return; }
+  if (!sel) { pane.dataset.redrawOwner=""; pane.innerHTML = ""; return; }
   const o = ocFind(sel.kind, sel.id);
-  if (sel.kind === "grid-binding" || sel.kind === "grid-system" && o.mode === "infinite") {renderGridObjectInspector(pane,o);return;}
-  if (sel.kind === "grid-system") { GridSystemEditor.render(pane, o); return; }
-  if (sel.kind.startsWith("assembly-")) { window.AssemblyWorkspace?.inspector(pane,o);return; }
-  if (sel.kind === "parameter") { window.ParameterUI?.render(pane, o); return; }
+  if (sel.kind === "grid-binding" || sel.kind === "grid-system" && o.mode === "infinite") {pane.dataset.redrawOwner="";renderGridObjectInspector(pane,o);return;}
+  if (sel.kind === "grid-system") { pane.dataset.redrawOwner=""; GridSystemEditor.render(pane, o); return; }
+  if (sel.kind.startsWith("assembly-")) { pane.dataset.redrawOwner=""; window.AssemblyWorkspace?.inspector(pane,o);return; }
+  if (sel.kind === "parameter") { pane.dataset.redrawOwner=""; window.ParameterUI?.render(pane, o); return; }
   pane.textContent = "";
   /* RC 構件檢視器(B-3):欄位表單 → DSL 重宣告(交易式);雙擊也只到這裡(Q10)。 */
   if (sel.kind === "column" || sel.kind === "beam") {
+    pane.dataset.redrawOwner="";
     renderRcInspector(pane, sel.kind, o);
     return;
   }
+  pane.dataset.redrawOwner = sel.kind === "boundary" ? "boundary:" + sel.id : "";
   const name = sel.kind === "space" ? `空間 ${o.id}`
     : `${KIND_ZH[sel.kind] || "面"} ${o.id}`;
   const state = sel.kind === "space"
@@ -9415,7 +9448,10 @@ function renderInspectorBody() {
     for (const inp of pane.querySelectorAll("[data-edge-len]"))
       inp.addEventListener("change", async () => {
         const i = +inp.dataset.edgeLen, len = Math.round(+inp.value);
-        if (!(await commitEdgeLength(sel.id, oc.bmap[sel.id], i, len))) renderInspector();
+        if (!(await commitEdgeLength(sel.id, oc.bmap[sel.id], i, len))) {
+          if (inp.isConnected) inp.value = inp.defaultValue;
+          renderInspector();
+        }
       });
   }
   const be = pane.querySelector("#inspEnter");
@@ -9434,6 +9470,7 @@ function renderInspectorBody() {
     const t = pane.querySelector(".place-block") || pane.querySelector("#placeFlow");
     if (t) t.scrollIntoView({ block: "nearest" });
   }
+  if (sel.kind === "boundary") restoreDirtyInputs(pane, dirtyInputs);
 }
 
 /* RC 柱/樑檢視器:box=[xlo,ylo,zlo,xhi,yhi,zhi] → 欄位表單;
