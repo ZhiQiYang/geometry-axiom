@@ -13,6 +13,11 @@
   }
   async function navigate(n,g,{isCurrent=()=>true,beginNavigation=()=>true}={}){
     const id=Number(n.id);
+    if(['section-profile','profile-member','profile-run'].includes(n.kind)){
+      if(!isCurrent()||!beginNavigation())return false;
+      await SectionProfileWorkspace.openObject(n.kind,id);return true;
+    }
+    if(n.kind==='panel-spec')throw Error('矽酸鈣板固定規格：厚 6 mm，斷面寬度小於 915 mm，板長 1830 mm；此規格僅供查看。');
     if(n.kind==='grid-source-rule'){
       if(!Number.isInteger(id)||id<0||id>4294967295||!Number.isInteger(n.fieldId)||n.fieldId<1||n.fieldId>4294967295)throw Error('來源規則身分不完整。');
       if(!isCurrent())return false;

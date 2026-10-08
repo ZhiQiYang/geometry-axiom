@@ -24,7 +24,7 @@ def _constant(value):
     raise ValueError('JSON 不接受非有限數值')
 
 
-def file_request(body, ask_bridge, *, validate_scene=False, assembly=False, generation=False):
+def file_request(body, ask_bridge, *, validate_scene=False, assembly=False, generation=False, section_profile=False):
     """No caller-provided paths, rewritten dimensions, or catalog authority here."""
     if not isinstance(body, bytes) or len(body) > MAX_BYTES:
         return _error('工程資料必須是完整位元組，且不得超過 1 MiB')
@@ -37,14 +37,14 @@ def file_request(body, ask_bridge, *, validate_scene=False, assembly=False, gene
         if not validate_scene:
             data = json.loads(text, object_pairs_hook=_pairs, parse_constant=_constant)
             if (not isinstance(data, dict) or set(data) - {'schema', 'operations', 'expectedRevision'}
-                    or data.get('schema') != ('assembly-generation-transaction/1' if generation else 'assembly-transaction/1' if assembly else 'engineering-transaction/1')
+                    or data.get('schema') != ('section-profile-transaction/1' if section_profile else 'assembly-generation-transaction/1' if generation else 'assembly-transaction/1' if assembly else 'engineering-transaction/1')
                     or not isinstance(data.get('operations'), list)
                     or not 1 <= len(data['operations']) <= 256
                     or type(data.get('expectedRevision')) is not int or data['expectedRevision'] < 0):
                 raise ValueError('工程交易需要正確版本、1–256 個操作及預覽來源版本')
     except (ValueError, UnicodeError) as error:
         return _error(str(error))
-    command = 'engineering-validate' if validate_scene else ('assembly-generation-preview' if generation else 'assembly-preview' if assembly else 'engineering-preview')
+    command = 'engineering-validate' if validate_scene else ('section-profile-preview' if section_profile else 'assembly-generation-preview' if generation else 'assembly-preview' if assembly else 'engineering-preview')
     path = None
     try:
         with tempfile.NamedTemporaryFile('wb', suffix='.scene' if validate_scene else '.json', delete=False) as stream:

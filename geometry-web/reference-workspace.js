@@ -34,7 +34,7 @@ const ReferenceWorkspace = (() => {
     if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
   }
   function beginNativeOperation(command) {
-    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm )/.test(command)) return null;
+    if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
     return () => {if (!ended) {ended = true; nativePending--;}};
@@ -416,8 +416,8 @@ const ReferenceWorkspace = (() => {
     if (edited && active(+edited[1])?.calibration) active(+edited[1]).reviewRequired = true;
     if (result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))
       dirty(importRenderingContext === context() && /^line canvas-pos\s/.test(cmd) ? "畫布已自動排版 · 尚未保存" : "");
-    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
-    if (result.ok && /^(engineering-confirm|assembly-confirm) /.test(cmd) && result.history_changed !== false) dirty();
+    if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd))notifySceneChange();
+    if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm) /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
     sync();
   }
@@ -1240,6 +1240,7 @@ const ReferenceWorkspace = (() => {
     if(window.RoomCollectionWorkspace?.hasWork)throw new Error("房間草稿尚未確認。請確認、取消或恢復結果，再保存專案。");
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
+    if(window.SectionProfileWorkspace?.hasWork)throw new Error("斷面修改尚未套用。請先確認或取消，再保存專案。");
     assertEditable(transactionOwner);
     if (oc.busy || fe.ulDrag || history.group || pendingLoad) throw new Error("請先完成目前的操作再保存。");
     if (fe.draft?.pts?.length) throw new Error("外環草稿尚未套用。請先完成外環或放棄草稿，再保存專案。");
@@ -1858,6 +1859,8 @@ const ReferenceWorkspace = (() => {
   }
   function mayLeave() {
     if (window.RoomCollectionWorkspace?.hasWork) {toast("請先完成、取消或恢復目前房間草稿，再切換專案。"); return false;}
+    if (window.RoomCollectionWorkspace?.hasUnacceptedCandidates && !window.confirm("未接受的房間候選只留在本分頁，離開後無法恢復。要離開嗎？")) return false;
+    if (window.SectionProfileWorkspace?.hasWork) {toast("請先確認或取消斷面修改，再切換專案。"); return false;}
     if(window.DraftGate && !window.DraftGate.ask())return false;
     if (Object.values(fe.feats || {}).some(items => items.length) &&
       !window.confirm("目前有只能在本次工作階段修改數字的形狀特徵。切換場景後仍保留輪廓，但特徵參數會消失。要繼續嗎？")) return false;

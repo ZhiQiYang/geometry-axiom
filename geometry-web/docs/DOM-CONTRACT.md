@@ -1,5 +1,17 @@
 # DOM 合約(測試依賴清單)
 
+## Q38 斷面與拉伸工作區
+
+既有建立選單的 `#btnNewSectionProfile` 開啟唯一 `#sectionProfileWorkspace`。`#spProfileSelect` 切換輪廓；`#spNewProfile`、`#spNewMember`、`#spNewRun` 只建立未套用表單。`#spOutline` 每行輸入一對整數 u,v；`#spU/#spV` 是直接座標。2D 圖的 `[data-sp-pick]` 可用滑鼠或 Enter／Space 選構件。
+
+`#spASource/#spBSource/#spLengthSource` 保存具型別來源，直接數值使用相應 `Value` 欄位。`#spPlacement` 切換未定位、進階與簡易；`#spHost/#spHostFace` 明選即時承載面或已保存空間面的框架取值。`#spConvertHost/#spToSimple` 由原生反解簡易參數；`#spToAdvanced` 由原生解除宿主。來源值不由前端反算。
+
+`#spPreview/#spConfirm/#spCancel` 是原生兩段交易。`#spImpact` 顯示前後矩形／範圍、違規與失去貼邊提醒。修改中禁止保存及切換；確認沿用原 `#btnUndo/#btnRedo` 與保存按鈕。取消不改 World；失效 token 不得提交。
+
+`#spBuildModel` 使用真模型執行器，`#spModelCanvas` 重用 GeometryModelViewer。`#spTimbers/#spPanels/#spEnvelope` 各自切換呈現；包絡不计材料量，局部軸明標 u,v,w。`#spModelSummary` 核對構件身分、尺寸、方位及範圍。既有「3D 模型庫」的 `[data-sp-open-run]` 只列已定位拉伸件，唯讀專案仍可開啟 3D；編輯及交易控制禁用。未定位件在斷面工作區開啟。
+
+完整場景使用 `geometry-canvas/16` 與 `section-profile/1`。工作區不另存材料網格副本；重開依原生來源重建。`#spTeach` 是可關閉並記住的首次教學卡，沒有新增常駐工具列。
+
 ## #123 S1 模型庫的既有歷史入口
 
 - 僅 `#smWorkspace` 的 `#smLibraryPanel` 顯示時 opt-in：`WorkspaceShell.attach` 的 `history.state/run/onError` 介面將原 `#btnUndo`／`#btnRedo` 搬入同一 `#projectBar`；不是複製按鈕。保留 ID、圖示、文案與 `doUndoRedo`，沿用 44px 最小觸控尺寸；離開模型庫、關閉或切到其他殼層即還原原 DOM 位置與屬性。面內既有按鈕不動。
