@@ -217,9 +217,14 @@ class Generation(unittest.TestCase):
         with BridgeSession(find_bridge(),cwd=self.directory) as fresh:
             loaded=fresh.command('loadfile '+str(path));self.assertTrue(loaded['ok'],loaded)
             self.assertEqual(scene,fresh.command('dump')['text'])
-            self.assertEqual(self.read()['state'],fresh.command('assembly-read')['state'])
+            owned=fresh.command('assembly-read')
+            self.assertEqual(self.read()['state'],owned['state'])
             refused=fresh.command('line delete timber '+str(tid))
             self.assertFalse(refused['ok'],refused)
+            violations=(refused.get('preview') or {}).get('violations') or []
+            reason='\n'.join([str(refused.get('error') or '')]+[str(v.get('actual') or v.get('message') or '') for v in violations])
+            self.assertIn('I42: delete the owning assembly instance',reason)
             self.assertEqual(scene,fresh.command('dump')['text'])
+            self.assertEqual(owned,fresh.command('assembly-read'))
 
 if __name__=='__main__':unittest.main()

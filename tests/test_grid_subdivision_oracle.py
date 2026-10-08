@@ -637,6 +637,46 @@ class NativeSubdivisionOracle(unittest.TestCase):
         self.reject("grid-source-rule 0 delete 1", "RULE_REFERENCED")
         self.roundtrip()
 
+    def test_formal_rule_line_timber_undo_redo_survives_reset_load(self):
+        """D30 formal rule-line timber: undo, redo, then reset before load.
+
+        The shared roundtrip() helper is intentionally not used. It loads
+        without proving the world was cleared, so a no-op load could pass.
+        """
+        self.commit(self.source())
+        self.commit(self.rule())
+        self.boundary()
+        self.binding()
+        self.apply_grid()
+        self.real_supports()
+        self.commit("timber 10 20 20 role secondary")
+        before = self.snapshot()
+        self.commit("place 10 on 1 at-line rule 10 0 1 -2 1 v 0 between t1 t2 +u +n")
+        self.assertEqual(400, self.timber(10)["geometry"]["centerline"])
+        self.assertEqual(540, self.timber(10)["geometry"]["length"])
+        placed = self.snapshot()
+        self.assertNotEqual(before, placed)
+        self.commit("undo")
+        self.assertEqual(before, self.snapshot())
+        self.commit("redo")
+        self.assertEqual(placed, self.snapshot())
+        self.assertEqual(400, self.timber(10)["geometry"]["centerline"])
+        self.assertEqual(540, self.timber(10)["geometry"]["length"])
+        path = Path(self.directory.name) / "formal-rule-timber.scene"
+        path.write_text(placed[0], encoding="utf-8")
+        self.assertTrue(self.command("reset")["ok"])
+        cleared = self.snapshot()
+        self.assertNotEqual(placed, cleared)
+        for key in ("faces", "spaces", "gridSystems"):
+            self.assertEqual([], cleared[1][key], key)
+        for key in ("guides", "grids", "timbers", "specs", "datums"):
+            self.assertEqual([], cleared[2][key], key)
+        self.assertNotIn("timber 10", cleared[0])
+        self.assertNotIn("at-line rule", cleared[0])
+        loaded = self.command("loadfile " + str(path))
+        self.assertTrue(loaded["ok"], loaded)
+        self.assertEqual(placed, self.snapshot())
+
     def test_only_second_actual_component_invalidates_complete_source_candidate(self):
         self.commit(self.source())
         self.commit(self.rule())

@@ -1,6 +1,8 @@
 # 保存與重開契約審查（唯讀）
 
 > 協調註記：審查讀取 `e176681f34c634d0fdd2dca364a8d7d44cc51808`。其後 `ce0958ca700753172338fe291a17e781da89465a` 只改焦點證據用詞，不屬於本契約。歷史 10／155 缺失收據仍缺。本文件不是驗收通過。
+>
+> 後續實測（2026-10-08）：原始審查仍是來源核對，沒有執行。其後只實跑兩支，輸出是 `native-contract-run.log`。第一次指向登錄庫預設 bridge（無 sidecar，SHA-256 `453d689db7bb6f90b1ee10948c02dc179c3e23aefd3b586eba9615a223fce2a5`，729088 bytes）時，unittest 結束碼 0，但原文是 `Ran 1 test in 0.160s`、`OK (skipped=2)`，斷言沒有執行。那份 log 已被第二次覆寫，這裡只留當時讀到的結論，不另造一份原始檔。第二次才算數：bridge 來源指紋 `0c1e19603546dab1c18a887debbc25298eb4c57b0e694525fb1777c14658baed`，exe SHA-256 `507ae331edea9f530b3b22af5f8d46eee8d6d26a95f947f742ed96144ebada1b`，783872 bytes，建於 `2026-10-08T23:20:38+08:00`，指令 `cl /nologo /utf-8 /O2 /W3 /U_WIN32 geometry-web/web_bridge.c /link /STACK:16777216 -> bridge.exe`。沒有重編。`Ran 2 tests in 1.087s`，`OK`，結束碼 0。
 
 
 - 基底：`D:\geometry-axiom-focus390`
@@ -68,15 +70,16 @@
 - 缺能力／缺高水位載入失敗且不傷既有歷史：`873–904`。
 - 缺規則、換系統、錯 innerIndex 的 guide 引用整筆拒絕：`931` 起。
 - uint32 高水位耗盡經刪除、undo／redo、roundtrip 仍耗盡：`1010–1034`。
-- 角材 `at-line rule …` 寫在 dump，roundtrip：`611–638`。第二面越界則整份來源拒絕：`640–663`。
+- 角材 `at-line rule …` 寫在 dump，roundtrip：`611–638`。第二面越界則整份來源拒絕，行號已隨新增測試下移。
+- 正式規則線角材 undo、redo、先 `reset` 證明清空再 `loadfile`：`640` 起 `test_formal_rule_line_timber_undo_redo_survives_reset_load`。共用 `roundtrip()`（`303–309`）沒有改。
 - 手動子格父先於子、再先於 guide，undo／redo 後 roundtrip：`tests/test_subgrid_contract.py:635–646`；整組 history：`656` 起。
 
 `test_grid_system_contract.py` 是 legacy `from-system origin`，不能拿來證明 D30。`test_infinite_grid_contract.py:1–6` 已寫明兩者分開。
 
 ### 最小缺口
 
-1. 沒有一條案例串起：一面 D30 錨點、該面一條 D19a 正式線上的角材、該角材這一步的 undo／redo、然後像 `test_grid_system_contract.py:123–132` 先清空再載入。`611–638` 有引用與 roundtrip，但沒有這支角材的 undo。`1036–1090` 有角材引用指紋，沒有 roundtrip。
-2. 來源規則成功路徑的 `roundtrip()`（`test_grid_subdivision_oracle.py:303–309`）載入前不 `reset`。載入若被做成 no-op 仍會相等。它弱於網格系統那個先清空的重載。
+1. 正式規則線角材的 undo／redo／清空後載入已由 `test_formal_rule_line_timber_undo_redo_survives_reset_load` 補上。它重用既有合法夾具（系統、規則、面、配置、主格、`real_supports`、角材 10、`between t1 t2`），中線 400、長度 540。放置後 undo 回到放置前快照，redo 回到放置後快照；`reset` 後先證明 faces、spaces、gridSystems、guides、grids、timbers、specs、datums 都是空的，而且 dump 沒有 `timber 10` 與 `at-line rule`，然後才 `loadfile`。沒有改跨專案身分。
+2. 來源規則成功路徑的 `roundtrip()`（`test_grid_subdivision_oracle.py:303–309`）仍載入前不 `reset`。這支共用助手沒有改寫；上面那條新測試不經過它。其他呼叫點的 no-op load 風險還在。
 3. 同 ruleKey 不得暗接，已由同一檔的 `wrong-source`（`931` 起）拒絕。定案的是換成另一來源也不得暗接（`公理層.md:277`）。`279` 寫明此邊界不新增跨專案永久身分；兩個專案如何交換、匯入後 id 必須留或必須改，條文未定，不得寫成規格，也不補那個測試。
 4. 沒有斷言網格編輯之後的 `projectId`、名稱、`dirty`／`saved`／`downloaded`。這些旗標公理未定案，所以缺口是「產品旗標未被此流程斷言」，不是缺一條公理。
 5. 沒有「只匯出 `.scene` 再打開，底圖與未發布草稿仍不在」與這條網格鏈放在同一次斷言。省略本身是已知邊界。
@@ -126,7 +129,7 @@
 - 改名改序不改 member→timber：`125` 起 `test_reorder_rename_keeps_member_to_timber_mapping`。
 - owned 拒絕獨立 place／delete／改尺寸：`169–173`。這是保存前。
 - 新行程 roundtrip 保留來源、mapping、幾何 dump：`174–177`。這條沒有重寫，載入後仍不刪。
-- 重開後 owned 仍拒絕直接 `delete timber`：`214` 起 `test_reopened_owned_member_refuses_direct_delete`。沿用同一組生成夾具的主支承接與端接副支，fresh process 只做 `loadfile` 後拒絕刪除且 dump 不變。不是 4000×3000 空間模型 oracle，也沒有另測 undo／redo／reset。
+- 重開後 owned 仍拒絕直接 `delete timber`：`214` 起 `test_reopened_owned_member_refuses_direct_delete`。沿用同一組生成夾具。fresh process `loadfile` 後，拒絕原因必須含 `I42: delete the owning assembly instance`（`current_geometry.c` 的刪除句），dump 不變，而且拒絕前後整份 `assembly-read` 相等。不是 4000×3000 空間模型 oracle，也沒有另測 undo／redo／reset。
 - 拿掉能力或改 owned 尺寸的檔拒絕，且不修好：`178–181`。
 - 外部 guide 擋住刪除；清掉 guide 後 undo／redo：`182–184`。
 - 參數改值重算長度但不重新配置 timber id：`187–193`。
@@ -136,7 +139,7 @@
 
 ### 最小缺口
 
-1. 既有 fresh-process roundtrip（`174–177`）仍只比來源、mapping 與 dump，沒有重寫。載入後「owned 角材仍拒絕直接刪除」由 `test_reopened_owned_member_refuses_direct_delete`（`214` 起）補上；undo、redo、reset 之後的同一拒絕沒有加進這條。
+1. 既有 fresh-process roundtrip（`174–177`）仍只比來源、mapping 與 dump，沒有重寫。載入後「owned 角材仍拒絕直接刪除」已鎖拒絕原因與拒絕後整份 `assembly-read`。undo、redo、reset 之後的同一拒絕沒有加進這條。
 2. 沒有一條案例同時含：未發布草稿、已發布版本、未完成綁定、已生成 instance，然後只拿 `.scene` 打開時草稿消失、拿 `.gcanvas` 打開時草稿還在且不變成可引用版本。A15／A23 蓋住封包重開，沒有對照 `.scene` 省略。
 3. 跨專案組構身分未定案，因此也沒有合法測試可寫「匯入後 id 必須改或必須留」。缺的是條文，不是再補一個 UI 案例。在條文出現前，不得用 A15 的同包重開代替。
 4. 沒有把組構確認之後的產品 `dirty`／名稱／`projectId` 和原生 dump 分欄斷言。`assembly-confirm` 在實作裡會標髒（`reference-workspace.js:420`），這不是公理，也尚未被這組原生測試看見。
