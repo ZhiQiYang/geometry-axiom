@@ -270,7 +270,10 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   await read(`(async()=>{const r=await api('line spec EngineeringStale 100');if(!r.ok)throw Error(JSON.stringify(r));})()`);
   await wait(`$('ewReview').hidden && $('ewConfirm').disabled && !$('ewContent').inert`,'definition change invalidates review');
   await sleep(220);
-  check('預覽後定義變更，介面撤銷舊確認且工程來源未改',same(await state(),beforeStale));
+  // engineering-read now includes named specs. The deliberate invalidation
+  // above must add exactly this spec while preserving every other state field.
+  const expectedStale={...beforeStale,specs:[...beforeStale.specs,{name:'EngineeringStale',value:100}]};
+  check('預覽後定義變更，介面撤銷舊確認且工程來源未改',same(await state(),expectedStale));
 
   // Face 3 exceeds the axis line capacity. Face 2 must not partially succeed.
   await details('套用目標');await checked('[data-ew-target="2"]',true);
