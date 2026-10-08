@@ -1,0 +1,793 @@
+{
+  "schema": "geometry-independent-bundle-review/1",
+  "mode": "final",
+  "started": "2026-10-08T11:19:00.584764+00:00",
+  "finished": "2026-10-08T11:19:01.434693+00:00",
+  "command": [
+    "python3",
+    "/workspace/scratch/geometry-delivery-20261008/review_bundle.py",
+    "--mode",
+    "final"
+  ],
+  "harnessSha256": "c662c80946e884505014b489f2b245fb5070585ccbd3519bf31c217fbaed6a0b",
+  "finalizerSha256": "bbdc1f9686c3d7f48a9332ad0f0abbc30d78c044aa3c334278f7202b2d05c018",
+  "manifestPath": "/workspace/scratch/geometry-delivery-20261008/machine-manifest.json",
+  "manifestSha256": "900d938a47c6f5fe988987ad7a092bedf89f862a03ffdf20ee65097d0def20f3",
+  "filesReviewed": 1437,
+  "scopesReviewed": 84,
+  "passed": 37,
+  "failed": 1,
+  "checks": [
+    {
+      "name": "Exact freeze and clean repository",
+      "passed": false
+    },
+    {
+      "name": "Manifest targets exact freeze",
+      "passed": true
+    },
+    {
+      "name": "No inferred whole-product equivalence",
+      "passed": true
+    },
+    {
+      "name": "Exact five-path bounded change review",
+      "passed": true
+    },
+    {
+      "name": "Every record assigned once to declared main or full-CDP bundle and size census matches",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Public names preserve original historical PR162 identity",
+      "passed": true
+    },
+    {
+      "name": "Archive paths unique and traversal-free",
+      "passed": true
+    },
+    {
+      "name": "No raw WM, DB, profile, cache, feedback or native paths",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "No native executable or SQLite bytes including project ZIP members",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "All planned bytes match original source and scope head",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Only explicitly public WM summaries selected",
+      "passed": true,
+      "detail": [
+        {
+          "source": "/workspace/scratch/geometry-all-closeout/work-manager-unit-final/public-summary.json",
+          "archive": "accepted-evidence/work-manager-unit-public/geometry-all-closeout/work-manager-unit-final/public-summary.json"
+        },
+        {
+          "source": "/workspace/scratch/geometry-delivery-20261008/work-manager-public-history.json",
+          "archive": "supporting-records/work-manager-history-document/delivery-documents/work-manager-public-history.json"
+        }
+      ]
+    },
+    {
+      "name": "Historical PR162 archive not nested in main",
+      "passed": true
+    },
+    {
+      "name": "PR162 original archive byte-for-byte preserved separately",
+      "passed": true
+    },
+    {
+      "name": "Original historical native executables are explicitly disclosed",
+      "passed": true,
+      "detail": [
+        "oracle/native/bridge",
+        "oracle/native/core",
+        "oracle/native/model-base"
+      ]
+    },
+    {
+      "name": "failed-full-cdp-original remains failed with original head",
+      "passed": true
+    },
+    {
+      "name": "failed-full-cdp-retry5c remains failed with original head",
+      "passed": true
+    },
+    {
+      "name": "failed-full-cdp-f23 remains failed with original head",
+      "passed": true
+    },
+    {
+      "name": "Controlled baseline and dirty development retain exact historical identity",
+      "passed": true
+    },
+    {
+      "name": "Exploratory promise failures remain explicitly incomplete failures",
+      "passed": true
+    },
+    {
+      "name": "Transformed driver and lifecycle probes stay supplemental",
+      "passed": true
+    },
+    {
+      "name": "New affected gates are separate complete clean final-head executions",
+      "passed": true,
+      "detail": {
+        "q38-ui": 68,
+        "model-history": 35,
+        "save-roundtrip": 33,
+        "q38-save": 18,
+        "room-canonical120": 120,
+        "space-full": 228,
+        "timber-source-schedule68": 68
+      }
+    },
+    {
+      "name": "Diagnostic36 has exactly the disclosed three driver changes and unchanged assertions",
+      "passed": true
+    },
+    {
+      "name": "Room120, diagnostic36 and full Space228 raw receipts substantiate distinct scope labels",
+      "passed": true,
+      "detail": [
+        {
+          "scope": "canonical-room",
+          "count": 120,
+          "passed": true
+        },
+        {
+          "scope": "diagnostic-model-tail",
+          "count": 36,
+          "passed": true
+        },
+        {
+          "scope": "canonical-space-full",
+          "count": 228,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "All83 selected review artifact copies match their real temporary originals",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Superseded successful runs retain prior heads in historical namespace",
+      "passed": true
+    },
+    {
+      "name": "Final manifest and completion approval explicit",
+      "passed": true
+    },
+    {
+      "name": "No final held gates or sensitive flags",
+      "passed": true
+    },
+    {
+      "name": "Delivery receipt names exactly the declared bundles and final manifest",
+      "passed": true
+    },
+    {
+      "name": "geometry-full-cdp-evidence-459478e9.tar.gz hash and size match receipt",
+      "passed": true
+    },
+    {
+      "name": "geometry-full-cdp-evidence-459478e9.tar.gz exact member list without extra members or symlinks",
+      "passed": true
+    },
+    {
+      "name": "Every tar member matches manifest and original source bytes",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "geometry-main-evidence-459478e9.tar.gz hash and size match receipt",
+      "passed": true
+    },
+    {
+      "name": "geometry-main-evidence-459478e9.tar.gz exact member list without extra members or symlinks",
+      "passed": true
+    },
+    {
+      "name": "Every tar member matches manifest and original source bytes",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Final full CDP executed at actual final head",
+      "passed": true
+    },
+    {
+      "name": "Full canonical2177 has exact84 committed sections and only named expected exception",
+      "passed": true
+    },
+    {
+      "name": "Root packaging approval binds real sealed matrix and full receipt hashes",
+      "passed": true
+    },
+    {
+      "name": "All14 logged download originals retained under their own final or failed scope",
+      "passed": true
+    }
+  ],
+  "issues": [
+    "Exact freeze and clean repository"
+  ],
+  "nestedProjectArchives": [
+    {
+      "archive": "accepted-evidence/model-history/geometry-all-closeout/model-history-459478e-01/fixture.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/3"
+    },
+    {
+      "archive": "historical-prior-passes/prior-model-history-3c/geometry-all-closeout/model-history-release-01/fixture.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/3"
+    },
+    {
+      "archive": "accepted-evidence/save-roundtrip/geometry-all-closeout/save-roundtrip-459478e-01/corrupt.gcanvas",
+      "malformedFixture": "BadZipFile",
+      "classification": "accepted-gate"
+    },
+    {
+      "archive": "accepted-evidence/save-roundtrip/geometry-all-closeout/save-roundtrip-459478e-01/downloads-1/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/3"
+    },
+    {
+      "archive": "accepted-evidence/save-roundtrip/geometry-all-closeout/save-roundtrip-459478e-01/saved.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/3"
+    },
+    {
+      "archive": "historical-prior-passes/prior-save-roundtrip-3c/geometry-all-closeout/save-roundtrip-release-01/corrupt.gcanvas",
+      "malformedFixture": "BadZipFile",
+      "classification": "historical-prior-pass"
+    },
+    {
+      "archive": "historical-prior-passes/prior-save-roundtrip-3c/geometry-all-closeout/save-roundtrip-release-01/downloads-1/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/3"
+    },
+    {
+      "archive": "historical-prior-passes/prior-save-roundtrip-3c/geometry-all-closeout/save-roundtrip-release-01/saved.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/3"
+    },
+    {
+      "archive": "accepted-evidence/q38-save/geometry-all-closeout/q38-save-459478e-01/q38-full.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    },
+    {
+      "archive": "historical-prior-passes/prior-q38-save-3c/geometry-all-closeout/q38-save-release-01/q38-full.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    },
+    {
+      "archive": "accepted-evidence/q38-ui/geometry-all-closeout/q38-ui/integrated-459478e-01/section-1440.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    },
+    {
+      "archive": "accepted-evidence/q38-ui/geometry-all-closeout/q38-ui/integrated-459478e-01/section-390.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    },
+    {
+      "archive": "accepted-evidence/q38-independent-browser/geometry-all-closeout/q38-review/browser-final/B07-section.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/1280-evidence-only.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/1280-fallback-redo.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/1280-fallback-undo.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/1280-full.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/1280-missing-target.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/1280-shared-source.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/390-evidence-only.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/390-fallback-redo.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/390-fallback-undo.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/390-full.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/390-missing-target.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/390-shared-source.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/reject-capability-stripped.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/reject-missing-original.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/reject-over-capacity.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/reject-unknown-format.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/999"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/reject-unknown-schema.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/reject-wrong-dimensions.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/evidence-formal110/geometry-all-closeout/q38-review/evidence-formal110/reject-wrong-page.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/12"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-empty-enum-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-empty-enum.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-missing-pin-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-missing-pin.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-recreated-pin-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-recreated-pin.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-unknown-enum-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-unknown-enum.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-unknown-main-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-unknown-main.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-wrong-pin-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/1280-wrong-pin.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-empty-enum-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-empty-enum.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-missing-pin-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-missing-pin.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-recreated-pin-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-recreated-pin.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-unknown-enum-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-unknown-enum.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-unknown-main-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-unknown-main.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-wrong-pin-persisted.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-raw207/geometry-all-closeout/q38-review/grid-raw207/390-wrong-pin.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/grid-reader34/geometry-all-closeout/q38-review/grid-reader34/accepted-reader13.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "accepted-evidence/grid-reader34/geometry-all-closeout/q38-review/grid-reader34/authored-reader13.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/image-l.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/image-notch-mobile.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/image-notch.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/image-rectangle-box.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/image-rectangle.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/pdf-l-mobile.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/pdf-l-transform.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/pdf-l.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/pdf-notch-with-model.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/pdf-notch.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-acceptance/geometry-final-room-ui-3c65cedc/acceptance/pdf-rectangle.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/9"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/before-display-1280.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/before-display-390.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/capacity-1280.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/capacity-390.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/final-display-1280.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/final-display-390.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/invalid-display-1280.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/invalid-display-390.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/missing-capability-1280.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/missing-capability-390.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/unknown-schema-1280.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-display/geometry-final-room-ui-3c65cedc/display/unknown-schema-390.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/room-multiroom/geometry-final-room-ui-3c65cedc/multiroom/A-B-pending-C.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/room-multiroom/geometry-final-room-ui-3c65cedc/multiroom/all-accepted.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/room-multiroom/geometry-final-room-ui-3c65cedc/multiroom/parked-A.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/10"
+    },
+    {
+      "archive": "accepted-evidence/rule-case-app/geometry-final-crossflow/rule-case-app/formal-cases-1280.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/15"
+    },
+    {
+      "archive": "accepted-evidence/rule-case-app/geometry-final-crossflow/rule-case-app/formal-cases-390.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/15"
+    },
+    {
+      "archive": "accepted-evidence/scenario-workflow/geometry-final-crossflow/scenario-workflow/scenarios-1280.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "accepted-evidence/scenario-workflow/geometry-final-crossflow/scenario-workflow/scenarios-390.gcanvas",
+      "members": 3,
+      "format": "geometry-canvas/14"
+    },
+    {
+      "archive": "historical-prior-passes/prior-space-full-5c/geometry-all-closeout/space-timber-final/space-full-artifacts/space/downloads/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/3"
+    },
+    {
+      "archive": "accepted-evidence/space-full/geometry-all-closeout/multiroom/final-room-tail-459478e/canonical-space-full/artifacts/space/downloads/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/3"
+    },
+    {
+      "archive": "accepted-evidence/full-cdp459/delivery-documents/scattered-originals/full-cdp459/geometry-infinite-grid-download-l4GVJF/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/6"
+    },
+    {
+      "archive": "accepted-evidence/full-cdp459/delivery-documents/scattered-originals/full-cdp459/geometry-rule-editor-umTABe/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "accepted-evidence/full-cdp459/delivery-documents/scattered-originals/full-cdp459/geometry-rule-editor-crXQsC/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "accepted-evidence/full-cdp459/delivery-documents/scattered-originals/full-cdp459/geometry-rule-editor-EpphJV/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "accepted-evidence/full-cdp459/delivery-documents/scattered-originals/full-cdp459/geometry-rule-editor-WqRaaL/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "accepted-evidence/full-cdp459/delivery-documents/scattered-originals/full-cdp459/geometry-rule-lines-qxoc4c/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "accepted-evidence/full-cdp459/delivery-documents/scattered-originals/full-cdp459/geometry-rule-lines-LuEZ6z/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "failure-attempts/failed-full-cdp-f23/delivery-documents/scattered-originals/failed-full-cdp-f23/geometry-infinite-grid-download-g9e6Wb/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/6"
+    },
+    {
+      "archive": "failure-attempts/failed-full-cdp-f23/delivery-documents/scattered-originals/failed-full-cdp-f23/geometry-rule-editor-CqX5CZ/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "failure-attempts/failed-full-cdp-f23/delivery-documents/scattered-originals/failed-full-cdp-f23/geometry-rule-editor-SatNA2/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "failure-attempts/failed-full-cdp-f23/delivery-documents/scattered-originals/failed-full-cdp-f23/geometry-rule-editor-Pbqylo/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "failure-attempts/failed-full-cdp-f23/delivery-documents/scattered-originals/failed-full-cdp-f23/geometry-rule-editor-r2sW9C/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "failure-attempts/failed-full-cdp-f23/delivery-documents/scattered-originals/failed-full-cdp-f23/geometry-rule-lines-9WpDEV/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "failure-attempts/failed-full-cdp-f23/delivery-documents/scattered-originals/failed-full-cdp-f23/geometry-rule-lines-2idE6i/未命名專案.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/13"
+    },
+    {
+      "archive": "historical-prior-passes/prior-q38-ui-3c/geometry-all-closeout/q38-ui/integrated-3c65ced-01/section-1440.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    },
+    {
+      "archive": "historical-prior-passes/prior-q38-ui-3c/geometry-all-closeout/q38-ui/integrated-3c65ced-01/section-390.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    },
+    {
+      "archive": "historical-prior-passes/prior-q38-ui-f23/geometry-all-closeout/q38-ui/integrated-f23a65a-01/section-1440.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    },
+    {
+      "archive": "historical-prior-passes/prior-q38-ui-f23/geometry-all-closeout/q38-ui/integrated-f23a65a-01/section-390.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    },
+    {
+      "archive": "failure-attempts/q38-review-history-browser-candidate5/geometry-all-closeout/q38-review/browser-candidate5/B07-section.gcanvas",
+      "members": 2,
+      "format": "geometry-canvas/16"
+    }
+  ],
+  "finalArchive": {
+    "archives": [
+      {
+        "path": "/workspace/scratch/geometry-delivery-20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+        "bytes": 15356034,
+        "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2",
+        "files": 169,
+        "members": 170
+      },
+      {
+        "path": "/workspace/scratch/geometry-delivery-20261008/geometry-main-evidence-459478e9.tar.gz",
+        "bytes": 39046314,
+        "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203",
+        "files": 1268,
+        "members": 1269
+      }
+    ],
+    "manifestSha256": "900d938a47c6f5fe988987ad7a092bedf89f862a03ffdf20ee65097d0def20f3"
+  },
+  "holdsObserved": [],
+  "claim": "Byte/scope/exclusion audit only. Preserves actual execution heads and failed records; no whole-product equivalence or new test execution."
+}

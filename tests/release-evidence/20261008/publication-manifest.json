@@ -55,8 +55,19 @@
       "path": "tests/release-evidence/20261008/pr162-oracle-evidence.tar.gz",
       "bytes": 3043564,
       "sha256": "d557783696db1112ae5636150b89929a36c8b2feee4f0029af045838b160c4be"
+    },
+    {
+      "path": "tests/release-evidence/20261008/integration-evidence-publication-review.json",
+      "bytes": 32820,
+      "sha256": "876a5d0e2d511986f70cc3d4de50218490c1d37e2ea3f5a50586afa1c1091aac"
+    },
+    {
+      "path": "tests/release-evidence/20261008/integration-evidence-publication-interrupted.json",
+      "bytes": 29347,
+      "sha256": "ff926a26da7bd9e1e0d5088140ec76d44f5fe9e76115e3337ae8d576cad815a5"
     }
   ],
   "selfHashExcluded": "This manifest does not recursively hash itself; the publication commit binds it.",
-  "matrixPending": []
+  "matrixPending": [],
+  "publicationAuditFollowup": "The original35-check clean-freeze archive review is preserved. A later audit observed documentation staging; its37/38 record is retained separately, and a38/38 followup verifies publication-only changes and unchanged product source."
 }
