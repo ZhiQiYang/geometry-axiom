@@ -1064,6 +1064,14 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 
 impact 的 `[data-impact-rule-side="before"|"after"]` 顯示 native source 候選規則／高水位，每條 `[data-impact-rule-key]` 展示 source ID＋ruleKey。拒絕、取消、轉 context 與 stale baseline 不寫入目前 native 場景。
 
+## #87 同頁多房候選
+
+`#roomNewMethod`（manual／candidates）沿 `#roomNew` 的同一新增入口；`#roomCandidates`、`[data-room-candidate]`、`[data-room-exclude]` 承載最多 12 列同頁 session 候選。核對仍用既有 `refRoom*` 尺寸／頂點表單及共享校準 collection。`#roomCandidatesPark` 必須退休 #77 intent 與唯一 editor，才允許正式保存；`#roomCandidatesDiscard` 捨棄候選。未接受候選不進 ZIP，離開時透過共用退出守門提醒。
+
+## Q38 共用影響預覽
+
+DSL、工程規格、參數卡及斷面工作區沿同一 `appendSectionProfileImpact` 呈現原生 `sectionProfiles.before/after/violations/warnings`。`[data-impact-profile-violation]` 列出問題 ID、條款、原／候選矩形、交集或超出區域及預期／實際；不得因一般預覽只在 nested 欄位回傳而省略。3D 模型庫的非同步刷新須核對 context 與最新 request，舊成功／失敗回覆不可覆蓋新快取。
+
 ## #61 第二切片：原生來源子線與完整定位
 
 既有面內 `components` 區的 `.grid-rule-details` 顯示 source → binding → applied grid。`[data-rule-source]` 是同一來源編輯區的 ruleKey 定位，讀取完成後才同步退出面內，保留 boundary loops 與孔快取。`.face-rule-line`、`.face-rule-hit`、`[data-rule-label]` 均來自同一筆 native `grid-rule-query` 線段；hit 同時受 parent cell 與 material clip 防護。

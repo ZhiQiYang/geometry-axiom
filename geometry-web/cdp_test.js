@@ -7017,9 +7017,9 @@ async function main() {
     const check=bodyCheck();
     await eval_(`leaveFocus();setView3(false)`);await sleep(200);
     check('P65-1 正式版本載入建模模組並提供現成範例入口',await eval_(`typeof SpaceModelWorkspace==='object' && typeof SpaceModelWorkspace.openCurrentFace==='function' && !!$('btnSpaceModelTrial') && !!$('btnSpaceModels') && $('btnSpaceModelTrial').textContent.includes('現成範例')`));
-    /* 牙齒:入口存在但工作區點擊前必須是關的、入口標籤是真內容(空間模型 <n>),否則 P65-1 只證明 id 在。 */
+    /* 牙齒:入口存在但工作區點擊前必須是關的、入口標籤是真內容(3D 模型 <n>),否則 P65-1 只證明 id 在。 */
     const p65Entry=await eval_(`({open:document.getElementById('smWorkspace')?.open,count:document.getElementById('spaceModelCount')?.textContent,library:document.getElementById('btnSpaceModels')?.textContent})`);
-    check('P65-1b 點擊前建模工作區關閉,模型庫入口顯示「空間模型 <數量>」',p65Entry.open!==true && /^\d+$/.test(p65Entry.count||'') && /^空間模型\s*\d+$/.test((p65Entry.library||'').trim()),p65Entry);
+    check('P65-1b 點擊前建模工作區關閉,模型庫入口顯示「3D 模型 <數量>」',p65Entry.open!==true && /^\d+$/.test(p65Entry.count||'') && /^3D 模型\s*\d+$/.test((p65Entry.library||'').trim()),p65Entry);
     await clickControl('#btnSpaceModelTrial');await sleep(200);
     check('P65-2 三步操作、範例與明示高度欄位皆在正式工作區',await eval_(`$('smWorkspace').open && !!$('smTryRectangle') && !!$('smTryLShape') && !!$('smBottom') && !!$('smHeight') && !!$('smPreview') && !!$('smConfirmFaces') && !!$('smCreate')`));
     /* 牙齒:點「現成範例」的可觀察結果(DOM-CONTRACT:96-100)——載入矩形範例並自動預覽:來源 example、牆高預設 3000、
