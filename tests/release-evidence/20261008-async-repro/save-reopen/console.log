@@ -1,0 +1,27 @@
+SPACE_SCOPE {"mode":"partial","filters":["GEOMETRY_SAVE_REOPEN_ONLY"],"included":["save-reopen-grid"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","timber-material","timber-source-guards"],"url":"http://127.0.0.1:8921/","feedbackDirectory":"<local-user>\\AppData\\Local\\Temp\\geometry-async-qa-20261008\\feedback"}
+PASS server serves the intended space-model release
+PASS current release explicitly supports timber preview and engineering sources
+PASS 1400 宿主面：11 放置在原點，12 沒有放置
+PASS 1400 系統身分：假格網 u repeat 0 200、v repeat 0 100、無 stagger
+PASS 1400 規則屬於系統：key 1、next 2、all-cells、2×2、名稱假規則
+PASS 1400 配置身分：邊界 11、頂點 (0,0)、cell 0,0、比例 0/1,0/1、vertexKey 為正整數
+PASS 1400 套用主格引用同一邊界的配置與系統，未放置邊界 12 沒有主格
+PASS 1400 上下邊界材 20×20 指向 e0 與 e2，格內主支指向參考線 31 與 32
+PASS 1400 副支 20×30 的 at-line rule 引用完整 tuple，between 指向那兩支主支
+PASS 1400 u 間距改 300 後 cell、vertexKey、ruleKey、角材引用不變，推導 u 線改變
+PASS 1400 .gcanvas 的 world.scene 與當時 dump 全等，含規則能力與 next-key，不含 translation
+PASS 1400 重開保留 projectId、scene hash、vertexKey、ruleKey 與 owned 角材引用
+PASS 390 宿主面：11 放置在原點，12 沒有放置
+PASS 390 系統身分：假格網 u repeat 0 200、v repeat 0 100、無 stagger
+PASS 390 規則屬於系統：key 1、next 2、all-cells、2×2、名稱假規則
+PASS 390 配置身分：邊界 11、頂點 (0,0)、cell 0,0、比例 0/1,0/1、vertexKey 為正整數
+PASS 390 套用主格引用同一邊界的配置與系統，未放置邊界 12 沒有主格
+PASS 390 上下邊界材 20×20 指向 e0 與 e2，格內主支指向參考線 31 與 32
+PASS 390 副支 20×30 的 at-line rule 引用完整 tuple，between 指向那兩支主支
+PASS 390 u 間距改 300 後 cell、vertexKey、ruleKey、角材引用不變，推導 u 線改變
+PASS 390 .gcanvas 的 world.scene 與當時 dump 全等，含規則能力與 next-key，不含 translation
+PASS 390 重開保留 projectId、scene hash、vertexKey、ruleKey 與 owned 角材引用
+PASS no uncaught browser exceptions
+PASS no browser console errors
+SPACE_RESULT {"schema":"geometry-space-result/1","scope":{"mode":"partial","filters":["GEOMETRY_SAVE_REOPEN_ONLY"],"included":["save-reopen-grid"],"omitted":["space-height-library","projection-lifecycle","projection-placement","font-layout","space-flow","timber-material","timber-source-guards"],"url":"http://127.0.0.1:8921/","feedbackDirectory":"<local-user>\\AppData\\Local\\Temp\\geometry-async-qa-20261008\\feedback"},"completed":true,"groups":{"setup":{"expected":2,"passed":2,"failed":0,"completed":true},"save-reopen-grid":{"expected":20,"passed":20,"failed":0,"completed":true},"browser-health":{"expected":2,"passed":2,"failed":0,"completed":true}},"completenessProblems":[],"passed":24,"failed":0,"exceptions":[],"consoleErrors":[]}
+RESULT 24 passed / 0 failed; completed: true; scope: partial; omitted groups: space-height-library,projection-lifecycle,projection-placement,font-layout,space-flow,timber-material,timber-source-guards; artifacts: <local-user>\AppData\Local\Temp\geometry-async-qa-20261008\run-save
