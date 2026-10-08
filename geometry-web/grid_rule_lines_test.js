@@ -137,6 +137,47 @@ module.exports=async function({send,eval_,sleep,click,waitForUI,expectNativeDial
     try{await ctl('[data-rule-exact]');await wait(`!!window.__ruleRelease`);await ctl('#workspaceBackButton');const scene=await dump();await read(`__ruleRelease();void 0`);await sleep(300);check(`${width} 延遲 exact query 返回時不改新 view/native`,await read(`!oc.edit&&$('objectWorkspace').hidden&&GridRuleLines.entries().length===0`)&&(await dump())===scene);}finally{await read(`apiRequest=__ruleApi;delete window.__ruleApi;delete window.__ruleHold;delete window.__ruleRelease;void 0`);}
     await face(1);await focusCell(cells[0]);await read(`window.__ruleApi=apiRequest;window.__ruleRelease=null;apiRequest=async function(cmd,...rest){const r=await __ruleApi(cmd,...rest);if(cmd==='objects'&&!window.__ruleRelease)await new Promise(resolve=>window.__ruleRelease=resolve);return r;};void 0`);
     try{await ctl('[data-rule-source="1"]');await wait(`!!window.__ruleRelease`);check(`${width} detached source jump 讀取尚未提前離開 face`,await read(`oc.edit?.bid===1&&!$('infiniteGridWorkspace').open`));await ctl('#workspaceBackButton');await read(`__ruleRelease();void 0`);await sleep(300);check(`${width} 延遲 source jump 對換 view 零定位`,await read(`!oc.edit&&!$('infiniteGridWorkspace').open`));}finally{await read(`apiRequest=__ruleApi;delete window.__ruleApi;delete window.__ruleRelease;void 0`);}
+    // A late rule reply rebuilds the inspector. Keyboard targets the user has
+    // already moved must survive that rebuild. Click, Tab and Enter only.
+    const guideTarget=()=>read(`(()=>{const e=document.activeElement;return e?[e.tagName,e.id||'',e.getAttribute('aria-label')||'',e.dataset.kind||'',e.dataset.id||''].join('|'):'';})()`);
+    const armGuide=async()=>{
+      await face(1);await focusCell(cells[0]);await ctl('#faceInspectorTabs [data-fi-tab="components"]');
+      await choose('#refGuideMode','advanced');await focusedCtl('#refGuideExpr');
+      await key('Enter','Enter',13);await wait(`document.activeElement===document.querySelector('#refGuideExpr')`);
+      await key('Tab','Tab',9);await wait(`document.activeElement===document.querySelector('#refGuideCreate')`);
+    };
+    const lateGuide=async(label,move,accept,settle)=>{
+      await armGuide();
+      await read(`window.__ruleApi=apiRequest;window.__ruleRelease=null;apiRequest=async function(cmd,...rest){const r=await __ruleApi(cmd,...rest);if(cmd.startsWith('grid-rule-query ')&&!window.__ruleRelease)await new Promise(resolve=>window.__ruleRelease=resolve);return r;};void 0`);
+      try{
+        await ctl('[data-rule-exact]');await wait(`!!window.__ruleRelease`);
+        await move();
+        const before=await guideTarget();
+        check(`${width} ${label} 已離開引用式`,await accept(before));
+        await read(`if(window.__ruleRelease)window.__ruleRelease();window.__ruleRelease=null;void 0`);
+        await sleep(400);
+        const after=await guideTarget();
+        check(`${width} ${label} 舊查詢不搶回焦點`,await read(`document.activeElement?.id!=='refGuideExpr'`)&&await settle(before,after));
+      }finally{await read(`if(window.__ruleRelease)window.__ruleRelease();window.__ruleRelease=null;if(window.__ruleApi)apiRequest=window.__ruleApi;delete window.__ruleApi;void 0`);}
+    };
+    const sameTarget=(before,after)=>before===after&&before!=='';
+    await lateGuide('檢查器外',async()=>{await ctl('#fileMenuBtn');await wait(`document.activeElement===$('fileMenuBtn')`);},async()=>read(`document.activeElement===$('fileMenuBtn')`),sameTarget);
+    if(!await read(`$('fileMenuPop').hidden`))await ctl('#fileMenuBtn');
+    await lateGuide(await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')`)?'關閉抽屜':'其他對話框',async()=>{
+      if(await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')&&$('workspaceToggleRight').getClientRects().length>0`)){await ctl('#workspaceToggleRight');await wait(`document.activeElement===$('workspaceToggleRight')`);}
+      else{await ctl('#refParameterOpen');await wait(`!!$('paramSpecValue')`);await focusedCtl('#paramSpecValue');}
+    },async before=>before.includes('workspaceToggleRight')||before.includes('paramSpecValue'),sameTarget);
+    if(await read(`!!$('paramLegacyBack')`))await ctl('#paramLegacyBack');
+    await lateGuide('切換選取並離開面',async()=>{
+      await ctl('#workspaceBackButton');await wait(`!oc.edit`);
+      await ctl('#objectList .object-row[data-kind="boundary"][data-id="2"]');
+      await wait(`oc.selection.some(s=>s.kind==='boundary'&&s.id===2)`);
+      await key('Enter','Enter',13);
+    },async()=>read(`!oc.edit&&oc.selection.some(s=>s.kind==='boundary'&&s.id===2)&&document.activeElement?.id!=='refGuideExpr'`),async()=>read(`!oc.edit&&oc.selection.some(s=>s.kind==='boundary'&&s.id===2)`));
+    // The leave case opens the 390 object drawer to click a row. Leave it closed
+    // before the next scenario opens the file menu; the drawer otherwise covers
+    // #btnNewProject. Same toggle click the suite already uses.
+    if(await read(`document.body.classList.contains('drawer-left-open')`))await ctl('#toggleLeft');
     // Cell selectors are a separate native scenario: all-cells and cell rules
     // cannot overlap within a source (I25a), so do not invent a UI exception.
     await fresh();await fixture('boundary 1 outline 0,0 1200,0 1200,800 800,800 800,600 0,600 hole 170,80 170,280 230,280 230,80');await fixture('placement 1 on boundary 1 origin 0 0 0 u +x v +y');
