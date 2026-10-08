@@ -58,6 +58,52 @@ Native收據證明設定的檔案，`/runtime` 尚未直接證明正在執行的
 不是從成功執行回填預期數。跨專案、延遲回覆、真 download／filechooser 另用隔離瀏覽器驗收。
 
 實體手機、IME與OS picker人工驗證另列；source-only／VM不作替代。
+
+### 模型庫與保存收尾的可重跑入口（2026-10-08）
+
+下列兩個限定 browser gates 補驗目前候選的行為，不重建或改標 PR161 遺失的
+歷史十項腳本、舊 155 項 UI oracle。它們與完整 CDP／Space／timber 各自保留範圍。
+使用 Python Playwright（模型庫）、Node 22+（保存）及已安裝 Chromium；
+只操作明確指定的隔離服務，結果目錄必須在 checkout 外且不能重用舊結果。
+
+```sh
+# 在另一個終端啟動專屬服務；不要沿用使用者的服務。
+GEOMETRY_FEEDBACK_DIR=/tmp/geometry-closeout-feedback \
+  python3 geometry-web/start_local.py --port 18971 --binary-dir /tmp/geometry-closeout-native
+# 以下命令在測試終端執行。
+export GEOMETRY_TEST_URL=http://127.0.0.1:18971/
+export GEOMETRY_FEEDBACK_DIR=/tmp/geometry-closeout-feedback
+export GEOMETRY_CHROME=/usr/bin/chromium
+export GEOMETRY_CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage'
+export GEOMETRY_TEST_BRIDGE=/tmp/geometry-closeout-native/bridge
+export GEOMETRY_MODEL_BASE=/tmp/geometry-closeout-native/model-base
+
+GEOMETRY_VERIFY_ROOT="$PWD" GEOMETRY_MODEL_HISTORY_OUT=/tmp/geometry-closeout-model \
+  python3 tests/release_gate.py --url "$GEOMETRY_TEST_URL" \
+  --output /tmp/geometry-closeout-model-receipt -- \
+  python3 tests/integration/model_library_history_browser.py
+
+GEOMETRY_SAVE_EVIDENCE=/tmp/geometry-closeout-save GEOMETRY_CDP_PORT=9422 \
+  python3 tests/release_gate.py --url "$GEOMETRY_TEST_URL" \
+  --output /tmp/geometry-closeout-save-receipt -- \
+  node tests/integration/save_roundtrip_acceptance.cjs
+```
+
+模型庫入口保留真 native Undo 回覆，再以滑鼠／鍵盤驗證重入、移除及 Save 拒絕；
+另驗跨專案正向 Undo／Redo、真 Web Locks 唯讀及草稿／modal 保護。
+外來 context／session 的生命週期注入與 readonly 頁面的真實模型 metadata fixture
+必須在結果中明示，不能宣稱為自然 UI 切換或唯讀匯入成功。
+
+保存入口從正式命令／建模表單建立非空 World，等待 native dump 與獨立指定的
+完整字串（含 canvas-pos）一致，再固定完整 manifest、模型及來源 bytes 的 oracle。
+以真下載、全新 browser profile、正式開檔按鈕／file chooser 驗證 `.gcanvas` 往返，
+另驗 New／Undo／Redo、損壞 ZIP 零提交。取消與磁碟寫入失敗為明示故障注入；
+成功保存走下載備援，不冒充 OS 原生 Save picker 驗收。
+
+兩個入口須到達各自完整結果且 exit 0；`release_gate.py` 對這些命令只驗執行身分，
+不替它們推論 assertion 完整性。前後 head/tree、clean status、runtime source／PID／session、
+原始日誌、逐例結果與截圖一起保留。原測試門檻／golden 不因新增入口而降低。
+
 ## #144 ResizeObserver 通知與真錯保全
 
 `node:feedback_events` 是 41 項受控 Node VM 測試：32 個獨立 event-shaped
