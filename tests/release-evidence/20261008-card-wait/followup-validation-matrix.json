@@ -1,0 +1,1819 @@
+{
+  "schema": "geometry-pr168-followup-validation-matrix/1",
+  "createdAt": "2026-10-08T11:34:36.330271+00:00",
+  "reviewer": "/root/wm_browser",
+  "status": "verified-and-sealed-b822-followup",
+  "sealed": true,
+  "preparationIdentity": {
+    "head": "c364591dd30afa666940be1858d48329ea2c9e1a",
+    "tree": "9bfacc91968ad7764f6ba5af18d5d683d8358522",
+    "status": "",
+    "meaning": "Observed preparation checkout, not declared the eventual gate freeze."
+  },
+  "trigger": "PR168 opened after original 23-PR coverage snapshot; appended review of additional test-harness changes.",
+  "originalSealedMatrix": {
+    "path": "/workspace/scratch/geometry-all-closeout/final-validation-matrix.json",
+    "sha256": "633881d18e39fc14edcea51cb069e1d6739ad3ea8313b640d9a9a332a6fa0d9c",
+    "readOnly": true,
+    "rows": 44,
+    "pending": []
+  },
+  "originalFullCDP": {
+    "executionHead": "459478e9f68fe8ee9252a5f6b4a1ffb2213a5207",
+    "executionTree": "91e24ea18dba0800d9782109d91884fc408c4196",
+    "runtime": {
+      "schema": "geometry-runtime/1",
+      "version": "4f89407fd3b542efa28b5eb5837657105f1244442bd9ee7b6a848e22ab0b65e3",
+      "fresh": true,
+      "root": "/workspace/geometry-final",
+      "pid": 224200,
+      "session": "08dae5df0739419c8ecf8fa51b8b78ca"
+    },
+    "passed": 2177,
+    "failed": 0,
+    "sections": 84,
+    "goldenCompare": "matched",
+    "releaseReceipt": {
+      "path": "/workspace/scratch/geometry-all-closeout/root-browser-final-459478e/cdp-full-receipt/receipt.json",
+      "sha256": "917b128b661f6da41c2dc947367a056b670bbb243e17ab32922ec9330b41de10"
+    },
+    "rawLog": {
+      "path": "/workspace/scratch/geometry-all-closeout/root-browser-final-459478e/cdp-full-receipt/command.log",
+      "sha256": "18598b87e345846ae3fee2eb8c23cb248c2db36476205e79b61fc20a78477a5e"
+    },
+    "scope": {
+      "mode": "full",
+      "filters": [],
+      "modifiers": [],
+      "url": "http://127.0.0.1:8825/",
+      "feedbackDirectory": "/tmp/geometry-final-feedback-8825",
+      "browserProfile": "/workspace/scratch/geometry-all-closeout/root-browser-final-459478e/cdp-full-artifacts/chrome-profile",
+      "cdpPort": 9455,
+      "browserPid": 224970
+    },
+    "meaning": "Valid original product execution at 459478e. Its original test harness and execution identity remain unchanged; never a full rerun of the PR168 harness."
+  },
+  "integrationObservation": {
+    "latestPublishedHeadReportedByRoot": "5fddf18",
+    "ordinaryMergeHead": "c364591dd30afa666940be1858d48329ea2c9e1a",
+    "changedPathsSincePublished": [
+      "geometry-web/assembly_workflow_test.js",
+      "geometry-web/cdp_helpers.js",
+      "geometry-web/cdp_test.js",
+      "geometry-web/composition_canvas_test.js",
+      "geometry-web/grid_system_test.js"
+    ],
+    "scope": "Historical observation at ordinary merge c364591 before subsequent strict test fixes; final eight changed paths are in productClosureReview."
+  },
+  "productClosureReview": {
+    "status": "verified",
+    "owner": "/root/github_progress",
+    "receipt": {
+      "path": "/workspace/scratch/geometry-all-closeout/pr168-review/strictfix-b822a9f/tail-source-proof-b822a9f.json",
+      "sha256": "7d5a21a9b550b242e16af59dd876d9db5be13c9610079b7afb47e9b0d143e94f",
+      "bytes": 726130
+    },
+    "scope": "Read-only exact Git tree and runtime-source catalog comparison. Application/native/SSOT/reader product bytes and prior evidence are unchanged; five browser harness assets and three test/control/registry paths differ. Product evidence retains its original execution identity. This proof does not turn changed test harnesses into a new full CDP or 83-suite aggregate execution.",
+    "expectedAdditiveRegistration": {
+      "newSuiteChecks": 21,
+      "existingFloorChanges": 0,
+      "aggregateRerunClaimed": false
+    },
+    "coverageRequiresPR168As24th": true,
+    "checks": 23,
+    "passed": 23,
+    "failed": 0,
+    "executionHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+    "capturedAt": "2026-10-08T11:47:04.839198+00:00",
+    "classification": {
+      "productSourceEquivalentTo5fdd": true,
+      "wholeRuntimeEquivalentTo5fdd": false,
+      "browserHarnessFiles": [
+        "geometry-web/assembly_workflow_test.js",
+        "geometry-web/cdp_helpers.js",
+        "geometry-web/cdp_test.js",
+        "geometry-web/composition_canvas_test.js",
+        "geometry-web/grid_system_test.js"
+      ],
+      "newControlFiles": [
+        "tests/test_cdp_card_position.js"
+      ],
+      "registryOrFloorFiles": [
+        "tests/run_all.expected.json",
+        "tests/run_all.py"
+      ],
+      "rationale": "All exact Git tree changes are test harness/control/registration/floor files. Application/native/SSOT/reader blobs and old evidence artifacts are unchanged. Runtime identity includes the five browser harness JavaScript assets and therefore changes."
+    },
+    "runtimeSummary": {
+      "versions": {
+        "5fddf18d18cb70b3bfc5f3d39ad2684eec97aa39": "4f89407fd3b542efa28b5eb5837657105f1244442bd9ee7b6a848e22ab0b65e3",
+        "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "459478e9f68fe8ee9252a5f6b4a1ffb2213a5207": "4f89407fd3b542efa28b5eb5837657105f1244442bd9ee7b6a848e22ab0b65e3"
+      },
+      "catalogCount": 430,
+      "unchangedCatalogExcludingChangedHarnessCount": 425,
+      "method": "Runtime source_files catalog430; exact Git blobs; existing runtime_version identity normalization. Unchanged catalog subset excludes these five changed browser test assets; it contains product sources and other unchanged test assets, so its count is not a pure product-file count."
+    },
+    "registration": {
+      "oldFloorEntries": 82,
+      "newFloorEntries": 83,
+      "added": {
+        "node:cdp_card_position": {
+          "mode": "count",
+          "count": 21,
+          "unit": "node test"
+        }
+      },
+      "removed": [],
+      "changedOldEntries": {},
+      "oldAggregateActualExecutionHead": "07bca2991ec7984b18b11792bbdbd2e7616dc0c1",
+      "noNewCompleteAggregateExecutionClaim": true,
+      "note": "The new21-case Node gate was registered separately. This does not relabel the old82-suite native aggregate as a new83-suite execution; unrelated browser harness assets have changed since07b."
+    },
+    "changedPaths": [
+      "geometry-web/assembly_workflow_test.js",
+      "geometry-web/cdp_helpers.js",
+      "geometry-web/cdp_test.js",
+      "geometry-web/composition_canvas_test.js",
+      "geometry-web/grid_system_test.js",
+      "tests/run_all.expected.json",
+      "tests/run_all.py",
+      "tests/test_cdp_card_position.js"
+    ],
+    "unchangedTrackedEntryCount": 1984,
+    "matrixIndependentAudit": {
+      "reviewer": "/root/wm_browser/oracle_review",
+      "exactChangesAndGitBlobArtifactHashesVerified": true,
+      "runtimeCatalogIndependentlyRebuiltFromGit": true,
+      "runtimeVersionsAllThreeMatch": true,
+      "existing82FloorsUnchanged": true,
+      "new83rdFloor": 21,
+      "PR168ExactAncestorVerified": true,
+      "prior20ExactAncestorsVerified": true,
+      "old23SnapshotHashUnchanged": true
+    }
+  },
+  "rows": [
+    {
+      "id": "pr168-grid",
+      "expectedChecks": 316,
+      "owner": "/root/multiroom_closeout",
+      "scope": "Canonical partial GRID scope: infinite grid sources, independent boundaries and cell alignment; face-local references and true cells; pre-creation rectangle/timber trials; source-rule CRUD, typed baseline and raw drafts; native source sub-lines, complete references, two faces and save/reopen at desktop/mobile sizes. The exact committed b822 harness is unmodified during this execution. Assertions mix trusted input, programmatic integration and native API checks; no full-suite rerun is claimed.",
+      "status": "verified",
+      "executionHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "fresh": true,
+        "root": "/workspace/geometry-final",
+        "pid": 262720,
+        "session": "1ab3c3cafcd04e25a99122c0d9cdcf0e"
+      },
+      "harnessSha256": "59804f52ae7df139352afa4899014596f14effea86c0839cdc8bfd020f672af1",
+      "exitCode": 0,
+      "completed": true,
+      "targetHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "passed": 316,
+      "failed": 0,
+      "skipped": 0,
+      "executionTree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+      "scopeSourceSHA256": {
+        "geometry-web/cdp_test.js": "59804f52ae7df139352afa4899014596f14effea86c0839cdc8bfd020f672af1",
+        "geometry-web/cdp_helpers.js": "46d1a55c082f6a10571721370a709cfbf8aebb9df5661c04f51d18238d8befff",
+        "geometry-web/cdp_floor.js": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
+        "geometry-web/cdp_sections.golden.json": "5fb79bf46d3fb8168a864024ecd290b8963b52bc0e528d34ee7ef6df03ec3344",
+        "geometry-web/cdp_evaluation.js": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e",
+        "geometry-web/cdp_navigation.js": "64be1d676aec784f275a27f621b17a5e5440fdb4f56a0c786036b2e3708692ae",
+        "geometry-web/grid_system_test.js": "dbc0dcc0707dbf1eee7a4643c65da69498b4a9d8c772c3185391c49855ef01ec",
+        "geometry-web/infinite_grid_face_test.js": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
+        "geometry-web/grid_trial_test.js": "5a6d5192f0895f7940290115bd527386f6dac0e1a65151dac40ff2ec0e6f3116",
+        "geometry-web/grid_rule_editor_test.js": "1e9d59355cc638c2c9089a82db92cc777c0b736599385f88c6dc1b8f436ce4ad",
+        "geometry-web/grid_rule_lines_test.js": "6aca5014d3b8ff199a849a960959859e0798e6910578305b50ad945c5c2191a7",
+        "geometry-web/assembly_workflow_test.js": "be1eaf009660cf8e7d05a6a643040a62abc4af11fdd01ae665d96e48bab048a7",
+        "geometry-web/assembly_review_test.js": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+        "geometry-web/assembly_id_test.js": "6d7c8ebb721b0f697016a8eb12e1ba5b16e6298745a8f85acb259e8261b931ad",
+        "geometry-web/assembly_generation_test.js": "5889de038059b3e5d5e875c90246c1cf9dcb1399335f74fafb3fb79403a7905a",
+        "geometry-web/assembly_candidate_impact_test.js": "7110fd3c71d901465d2697c09723ece7fa4f3e38133edadf995fc3e2cf975c37",
+        "geometry-web/assembly_context_entry_test.js": "a02e10d6b53dd2f63efba797333057bf18a029c680a1dfb905c42a6899fe7bc7",
+        "geometry-web/composition_canvas_test.js": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea"
+      },
+      "orchestrationSHA256": {
+        "/workspace/scratch/geometry-all-closeout/multiroom/run_card_wait_scopes.py": "bd8773f555b42ba5497d670b7d9c0d3ff1b725707856e24690a42d6588e0eee7",
+        "/workspace/scratch/geometry-all-closeout/multiroom/run_cdp_room_tail.py": "5c93b85ba4f9e2dc6ea55f9857c144503f77df667daea228f65737830ab704a5",
+        "/workspace/scratch/geometry-all-closeout/launch_final_service.py": "bad74e92f2b4714f1c75eb49b2fd7a863e851ab2b096af50bae1e221370dbf96"
+      },
+      "command": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ],
+      "cwd": "/workspace/geometry-final",
+      "environment": {
+        "GEOMETRY_TEST_URL": "http://127.0.0.1:8835/",
+        "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-final-feedback-8835",
+        "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_MODEL_BASE": "/tmp/geometry-final-native/model-base",
+        "GEOMETRY_CHROME": "/usr/bin/chromium",
+        "GEOMETRY_CHROME_FLAGS": "--no-sandbox --disable-dev-shm-usage",
+        "GEOMETRY_CDP_PORT": "9495",
+        "GEOMETRY_CHROME_PROFILE": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/artifacts/chrome-profile",
+        "GEOMETRY_TEST_SCREENSHOT": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/artifacts/shell.png",
+        "GEOMETRY_GRID_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/artifacts/grid",
+        "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/artifacts/grid-system",
+        "GEOMETRY_GRID_RULE_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/artifacts/grid-rule",
+        "GEOMETRY_REPAIR_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/artifacts/repair",
+        "GEOMETRY_COMPOSITION_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/artifacts/composition",
+        "GEOMETRY_ASSEMBLY_CONTEXT_SCREENSHOTS": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/artifacts/assembly-context",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "GEOMETRY_GRID_SYSTEM_ONLY": "1"
+      },
+      "before": {
+        "at": "2026-10-08T11:46:07.861799+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262720,
+          "session": "1ab3c3cafcd04e25a99122c0d9cdcf0e"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "after": {
+        "at": "2026-10-08T11:51:20.189727+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262720,
+          "session": "1ab3c3cafcd04e25a99122c0d9cdcf0e"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "execution": {
+        "started": "2026-10-08T11:46:07.954815+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "interrupted": false,
+        "pid": 262740,
+        "finished": "2026-10-08T11:51:20.189703+00:00"
+      },
+      "releaseReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/release-receipt/receipt.json",
+        "sha256": "e8d3f379b08af71c0c5d78197ed5f74cc2d0ad1868117f2d97e3776e536399f0",
+        "bytes": 6670
+      },
+      "scopeReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/scope-receipt.json",
+        "sha256": "c168ffd1c54d89cf222736ae4802bfdb9011b6fff155bdb35f8136cf48f6beff",
+        "bytes": 8660
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/release-receipt/command.log",
+        "bytes": 29682,
+        "sha256": "c5d6a114b5df719bb183c587f72caa9706e41329ed3975893da4be42bdd5d146"
+      },
+      "canonicalResult": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_GRID_SYSTEM_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:8835/",
+          "feedbackDirectory": "/tmp/geometry-final-feedback-8835",
+          "browserProfile": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/grid-system/artifacts/chrome-profile",
+          "cdpPort": 9495,
+          "browserPid": 262747
+        },
+        "completed": true,
+        "passedAssertions": 316,
+        "failedAssertions": 0,
+        "skipped": [],
+        "sections": {
+          "P70": 117,
+          "P71": 9,
+          "P78": 23,
+          "P87": 60,
+          "P88": 107
+        },
+        "goldenCompare": "not compared (partial mode)",
+        "uncaughtBrowserExceptions": 0,
+        "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+      },
+      "expectedSections": {
+        "P70": 117,
+        "P71": 9,
+        "P78": 23,
+        "P87": 60,
+        "P88": 107
+      },
+      "independentSectionCountMatchesCommittedGolden": true,
+      "wrapperExecutionVerified": true,
+      "wrapperCompletionVerified": true,
+      "rawStructuredResultExactlyMatchesReceipt": true,
+      "limitations": [
+        "Three unchanged canonical partial CDP scopes only; prior full CDP 2177 remains bound to its original executed head.",
+        "Existing Chromium via canonical CDP harness; mixed trusted input, programmatic fixture and native API assertions.",
+        "Source and harness were not modified during execution; golden was only read, never updated.",
+        "Archive excludes browser profile caches; includes complete logs, receipts, screenshots, and captured native ZIP/save downloads.",
+        "Temporary download directories captured by exact known fixture prefixes and before/after discovery; original paths are recorded.",
+        "Only this command is covered; independent delivery gates remain separate.",
+        "Native receipts attest configured files; /runtime does not attest the running native process.",
+        "Before/after identity checks do not prove absence of transient source changes."
+      ]
+    },
+    {
+      "id": "pr168-assembly",
+      "expectedChecks": 150,
+      "owner": "/root/multiroom_closeout",
+      "scope": "Canonical partial ASSEMBLY scope: rule authoring and material configurations, review/rendering, stable identities and draft allocation, generation, mobile blank authoring, save/reopen, and single-selection context entry for fixed published rules. The exact committed b822 harness is unmodified during this execution. Assertions mix trusted input, programmatic integration and native API checks; no full-suite rerun is claimed.",
+      "status": "verified",
+      "executionHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "fresh": true,
+        "root": "/workspace/geometry-final",
+        "pid": 262720,
+        "session": "1ab3c3cafcd04e25a99122c0d9cdcf0e"
+      },
+      "harnessSha256": "59804f52ae7df139352afa4899014596f14effea86c0839cdc8bfd020f672af1",
+      "exitCode": 0,
+      "completed": true,
+      "targetHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "passed": 150,
+      "failed": 0,
+      "skipped": 0,
+      "executionTree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+      "scopeSourceSHA256": {
+        "geometry-web/cdp_test.js": "59804f52ae7df139352afa4899014596f14effea86c0839cdc8bfd020f672af1",
+        "geometry-web/cdp_helpers.js": "46d1a55c082f6a10571721370a709cfbf8aebb9df5661c04f51d18238d8befff",
+        "geometry-web/cdp_floor.js": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
+        "geometry-web/cdp_sections.golden.json": "5fb79bf46d3fb8168a864024ecd290b8963b52bc0e528d34ee7ef6df03ec3344",
+        "geometry-web/cdp_evaluation.js": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e",
+        "geometry-web/cdp_navigation.js": "64be1d676aec784f275a27f621b17a5e5440fdb4f56a0c786036b2e3708692ae",
+        "geometry-web/grid_system_test.js": "dbc0dcc0707dbf1eee7a4643c65da69498b4a9d8c772c3185391c49855ef01ec",
+        "geometry-web/infinite_grid_face_test.js": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
+        "geometry-web/grid_trial_test.js": "5a6d5192f0895f7940290115bd527386f6dac0e1a65151dac40ff2ec0e6f3116",
+        "geometry-web/grid_rule_editor_test.js": "1e9d59355cc638c2c9089a82db92cc777c0b736599385f88c6dc1b8f436ce4ad",
+        "geometry-web/grid_rule_lines_test.js": "6aca5014d3b8ff199a849a960959859e0798e6910578305b50ad945c5c2191a7",
+        "geometry-web/assembly_workflow_test.js": "be1eaf009660cf8e7d05a6a643040a62abc4af11fdd01ae665d96e48bab048a7",
+        "geometry-web/assembly_review_test.js": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+        "geometry-web/assembly_id_test.js": "6d7c8ebb721b0f697016a8eb12e1ba5b16e6298745a8f85acb259e8261b931ad",
+        "geometry-web/assembly_generation_test.js": "5889de038059b3e5d5e875c90246c1cf9dcb1399335f74fafb3fb79403a7905a",
+        "geometry-web/assembly_candidate_impact_test.js": "7110fd3c71d901465d2697c09723ece7fa4f3e38133edadf995fc3e2cf975c37",
+        "geometry-web/assembly_context_entry_test.js": "a02e10d6b53dd2f63efba797333057bf18a029c680a1dfb905c42a6899fe7bc7",
+        "geometry-web/composition_canvas_test.js": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea"
+      },
+      "orchestrationSHA256": {
+        "/workspace/scratch/geometry-all-closeout/multiroom/run_card_wait_scopes.py": "bd8773f555b42ba5497d670b7d9c0d3ff1b725707856e24690a42d6588e0eee7",
+        "/workspace/scratch/geometry-all-closeout/multiroom/run_cdp_room_tail.py": "5c93b85ba4f9e2dc6ea55f9857c144503f77df667daea228f65737830ab704a5",
+        "/workspace/scratch/geometry-all-closeout/launch_final_service.py": "bad74e92f2b4714f1c75eb49b2fd7a863e851ab2b096af50bae1e221370dbf96"
+      },
+      "command": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ],
+      "cwd": "/workspace/geometry-final",
+      "environment": {
+        "GEOMETRY_TEST_URL": "http://127.0.0.1:8835/",
+        "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-final-feedback-8835",
+        "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_MODEL_BASE": "/tmp/geometry-final-native/model-base",
+        "GEOMETRY_CHROME": "/usr/bin/chromium",
+        "GEOMETRY_CHROME_FLAGS": "--no-sandbox --disable-dev-shm-usage",
+        "GEOMETRY_CDP_PORT": "9495",
+        "GEOMETRY_CHROME_PROFILE": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/artifacts/chrome-profile",
+        "GEOMETRY_TEST_SCREENSHOT": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/artifacts/shell.png",
+        "GEOMETRY_GRID_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/artifacts/grid",
+        "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/artifacts/grid-system",
+        "GEOMETRY_GRID_RULE_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/artifacts/grid-rule",
+        "GEOMETRY_REPAIR_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/artifacts/repair",
+        "GEOMETRY_COMPOSITION_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/artifacts/composition",
+        "GEOMETRY_ASSEMBLY_CONTEXT_SCREENSHOTS": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/artifacts/assembly-context",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "GEOMETRY_ASSEMBLY_ONLY": "1"
+      },
+      "before": {
+        "at": "2026-10-08T11:51:20.385075+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262720,
+          "session": "1ab3c3cafcd04e25a99122c0d9cdcf0e"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "after": {
+        "at": "2026-10-08T11:53:29.187921+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262720,
+          "session": "1ab3c3cafcd04e25a99122c0d9cdcf0e"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "execution": {
+        "started": "2026-10-08T11:51:20.477648+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "interrupted": false,
+        "pid": 268102,
+        "finished": "2026-10-08T11:53:29.187886+00:00"
+      },
+      "releaseReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/release-receipt/receipt.json",
+        "sha256": "85a0c8d4be9d4dba80d2404fa37f43a9c6b806bf2bdb8cff784351281121a5e7",
+        "bytes": 6595
+      },
+      "scopeReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/scope-receipt.json",
+        "sha256": "27e909f41a3f4eb38d9843e767917c9d1ec99bf71673767e2dc4579e30489a03",
+        "bytes": 8413
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/release-receipt/command.log",
+        "bytes": 10210,
+        "sha256": "261574f60b1fa64e0d9cfb6d03d750063509e1486cfdde0105096c63697b4264"
+      },
+      "canonicalResult": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_ASSEMBLY_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:8835/",
+          "feedbackDirectory": "/tmp/geometry-final-feedback-8835",
+          "browserProfile": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/assembly/artifacts/chrome-profile",
+          "cdpPort": 9495,
+          "browserPid": 268109
+        },
+        "completed": true,
+        "passedAssertions": 150,
+        "failedAssertions": 0,
+        "skipped": [],
+        "sections": {
+          "P77": 134,
+          "P82": 16
+        },
+        "goldenCompare": "not compared (partial mode)",
+        "uncaughtBrowserExceptions": 0,
+        "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+      },
+      "expectedSections": {
+        "P77": 134,
+        "P82": 16
+      },
+      "independentSectionCountMatchesCommittedGolden": true,
+      "wrapperExecutionVerified": true,
+      "wrapperCompletionVerified": true,
+      "rawStructuredResultExactlyMatchesReceipt": true,
+      "limitations": [
+        "Three unchanged canonical partial CDP scopes only; prior full CDP 2177 remains bound to its original executed head.",
+        "Existing Chromium via canonical CDP harness; mixed trusted input, programmatic fixture and native API assertions.",
+        "Source and harness were not modified during execution; golden was only read, never updated.",
+        "Archive excludes browser profile caches; includes complete logs, receipts, screenshots, and captured native ZIP/save downloads.",
+        "Temporary download directories captured by exact known fixture prefixes and before/after discovery; original paths are recorded.",
+        "Only this command is covered; independent delivery gates remain separate.",
+        "Native receipts attest configured files; /runtime does not attest the running native process.",
+        "Before/after identity checks do not prove absence of transient source changes."
+      ]
+    },
+    {
+      "id": "pr168-composition",
+      "expectedChecks": 52,
+      "owner": "/root/multiroom_closeout",
+      "scope": "Canonical partial COMPOSITION scope: sources, bindings and lower editor panel; source/instance selection, actual card drag with saved-position convergence, desktop/mobile controls and save/reopen. The exact committed b822 harness is unmodified during this execution. Assertions mix trusted input, programmatic integration and native API checks; no full-suite rerun is claimed.",
+      "status": "verified",
+      "executionHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "fresh": true,
+        "root": "/workspace/geometry-final",
+        "pid": 262720,
+        "session": "1ab3c3cafcd04e25a99122c0d9cdcf0e"
+      },
+      "harnessSha256": "59804f52ae7df139352afa4899014596f14effea86c0839cdc8bfd020f672af1",
+      "exitCode": 0,
+      "completed": true,
+      "targetHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "passed": 52,
+      "failed": 0,
+      "skipped": 0,
+      "executionTree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+      "scopeSourceSHA256": {
+        "geometry-web/cdp_test.js": "59804f52ae7df139352afa4899014596f14effea86c0839cdc8bfd020f672af1",
+        "geometry-web/cdp_helpers.js": "46d1a55c082f6a10571721370a709cfbf8aebb9df5661c04f51d18238d8befff",
+        "geometry-web/cdp_floor.js": "01a45d7881d583a7d328e579b457c959baa2b8d3570c3e3fbe66e8781c5f679e",
+        "geometry-web/cdp_sections.golden.json": "5fb79bf46d3fb8168a864024ecd290b8963b52bc0e528d34ee7ef6df03ec3344",
+        "geometry-web/cdp_evaluation.js": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e",
+        "geometry-web/cdp_navigation.js": "64be1d676aec784f275a27f621b17a5e5440fdb4f56a0c786036b2e3708692ae",
+        "geometry-web/grid_system_test.js": "dbc0dcc0707dbf1eee7a4643c65da69498b4a9d8c772c3185391c49855ef01ec",
+        "geometry-web/infinite_grid_face_test.js": "b41ab1cbb739ab8c827201c84ee6d881af61894dd8078200a2244e3829cd15bf",
+        "geometry-web/grid_trial_test.js": "5a6d5192f0895f7940290115bd527386f6dac0e1a65151dac40ff2ec0e6f3116",
+        "geometry-web/grid_rule_editor_test.js": "1e9d59355cc638c2c9089a82db92cc777c0b736599385f88c6dc1b8f436ce4ad",
+        "geometry-web/grid_rule_lines_test.js": "6aca5014d3b8ff199a849a960959859e0798e6910578305b50ad945c5c2191a7",
+        "geometry-web/assembly_workflow_test.js": "be1eaf009660cf8e7d05a6a643040a62abc4af11fdd01ae665d96e48bab048a7",
+        "geometry-web/assembly_review_test.js": "52f153475b7a85c197f8850b4026a576ade9c5ef81d3579382753d54078df950",
+        "geometry-web/assembly_id_test.js": "6d7c8ebb721b0f697016a8eb12e1ba5b16e6298745a8f85acb259e8261b931ad",
+        "geometry-web/assembly_generation_test.js": "5889de038059b3e5d5e875c90246c1cf9dcb1399335f74fafb3fb79403a7905a",
+        "geometry-web/assembly_candidate_impact_test.js": "7110fd3c71d901465d2697c09723ece7fa4f3e38133edadf995fc3e2cf975c37",
+        "geometry-web/assembly_context_entry_test.js": "a02e10d6b53dd2f63efba797333057bf18a029c680a1dfb905c42a6899fe7bc7",
+        "geometry-web/composition_canvas_test.js": "ef6e9c4a94e32e39099e939ba93f8b3e62abd869c695891f37003415f4969dea"
+      },
+      "orchestrationSHA256": {
+        "/workspace/scratch/geometry-all-closeout/multiroom/run_card_wait_scopes.py": "bd8773f555b42ba5497d670b7d9c0d3ff1b725707856e24690a42d6588e0eee7",
+        "/workspace/scratch/geometry-all-closeout/multiroom/run_cdp_room_tail.py": "5c93b85ba4f9e2dc6ea55f9857c144503f77df667daea228f65737830ab704a5",
+        "/workspace/scratch/geometry-all-closeout/launch_final_service.py": "bad74e92f2b4714f1c75eb49b2fd7a863e851ab2b096af50bae1e221370dbf96"
+      },
+      "command": [
+        "node",
+        "geometry-web/cdp_test.js"
+      ],
+      "cwd": "/workspace/geometry-final",
+      "environment": {
+        "GEOMETRY_TEST_URL": "http://127.0.0.1:8835/",
+        "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-final-feedback-8835",
+        "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_MODEL_BASE": "/tmp/geometry-final-native/model-base",
+        "GEOMETRY_CHROME": "/usr/bin/chromium",
+        "GEOMETRY_CHROME_FLAGS": "--no-sandbox --disable-dev-shm-usage",
+        "GEOMETRY_CDP_PORT": "9495",
+        "GEOMETRY_CHROME_PROFILE": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/artifacts/chrome-profile",
+        "GEOMETRY_TEST_SCREENSHOT": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/artifacts/shell.png",
+        "GEOMETRY_GRID_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/artifacts/grid",
+        "GEOMETRY_GRID_SYSTEM_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/artifacts/grid-system",
+        "GEOMETRY_GRID_RULE_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/artifacts/grid-rule",
+        "GEOMETRY_REPAIR_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/artifacts/repair",
+        "GEOMETRY_COMPOSITION_SCREENSHOT_DIR": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/artifacts/composition",
+        "GEOMETRY_ASSEMBLY_CONTEXT_SCREENSHOTS": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/artifacts/assembly-context",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "GEOMETRY_COMPOSITION_ONLY": "1"
+      },
+      "before": {
+        "at": "2026-10-08T11:53:29.374150+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262720,
+          "session": "1ab3c3cafcd04e25a99122c0d9cdcf0e"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "after": {
+        "at": "2026-10-08T11:53:54.751577+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262720,
+          "session": "1ab3c3cafcd04e25a99122c0d9cdcf0e"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "execution": {
+        "started": "2026-10-08T11:53:29.466820+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "interrupted": false,
+        "pid": 273080,
+        "finished": "2026-10-08T11:53:54.751543+00:00"
+      },
+      "releaseReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/release-receipt/receipt.json",
+        "sha256": "e45e6f24951249f3503c1cb3aaa080b262667e3077f875d6d90097e553597fe3",
+        "bytes": 6591
+      },
+      "scopeReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/scope-receipt.json",
+        "sha256": "b316e2d00f2541602a4b2445c5a66d1f75f30b3edb41a770ae63ee3fb52dd4c1",
+        "bytes": 6593
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/release-receipt/command.log",
+        "bytes": 4838,
+        "sha256": "63715bdb3697939f5e954d0d383c499bb086b8ce7e8f824ee9ad9dd8ddc4b539"
+      },
+      "canonicalResult": {
+        "schema": "geometry-cdp-result/1",
+        "scope": {
+          "mode": "partial",
+          "filters": [
+            "GEOMETRY_COMPOSITION_ONLY"
+          ],
+          "modifiers": [],
+          "url": "http://127.0.0.1:8835/",
+          "feedbackDirectory": "/tmp/geometry-final-feedback-8835",
+          "browserProfile": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/composition/artifacts/chrome-profile",
+          "cdpPort": 9495,
+          "browserPid": 273087
+        },
+        "completed": true,
+        "passedAssertions": 52,
+        "failedAssertions": 0,
+        "skipped": [],
+        "sections": {
+          "P72": 52
+        },
+        "goldenCompare": "not compared (partial mode)",
+        "uncaughtBrowserExceptions": 0,
+        "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+      },
+      "expectedSections": {
+        "P72": 52
+      },
+      "independentSectionCountMatchesCommittedGolden": true,
+      "wrapperExecutionVerified": true,
+      "wrapperCompletionVerified": true,
+      "rawStructuredResultExactlyMatchesReceipt": true,
+      "limitations": [
+        "Three unchanged canonical partial CDP scopes only; prior full CDP 2177 remains bound to its original executed head.",
+        "Existing Chromium via canonical CDP harness; mixed trusted input, programmatic fixture and native API assertions.",
+        "Source and harness were not modified during execution; golden was only read, never updated.",
+        "Archive excludes browser profile caches; includes complete logs, receipts, screenshots, and captured native ZIP/save downloads.",
+        "Temporary download directories captured by exact known fixture prefixes and before/after discovery; original paths are recorded.",
+        "Only this command is covered; independent delivery gates remain separate.",
+        "Native receipts attest configured files; /runtime does not attest the running native process.",
+        "Before/after identity checks do not prove absence of transient source changes."
+      ]
+    },
+    {
+      "id": "pr168-wait-helper-node",
+      "expectedChecks": 30,
+      "owner": "/root/model_browser",
+      "scope": "Targeted Node30 = helper21 plus existing evaluator9. Legal hasPos=false transient polls until deadline; missing/API/malformed cases reject. Additive new21 floor is not an aggregate rerun.",
+      "status": "verified",
+      "executionHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "runtime": null,
+      "harnessSha256": "2929b04ac505e5118c6abaad6e8fd3ea1dee6b38164ebbb21f390e8670b6a3af",
+      "exitCode": 0,
+      "completed": true,
+      "targetHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "expectedSuites": {
+        "new-wait-helper": 21,
+        "existing-evaluator": 9
+      },
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "executionTree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+      "monitoredRuntime": {
+        "schema": "geometry-runtime/1",
+        "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "fresh": true,
+        "root": "/workspace/geometry-final",
+        "pid": 262707,
+        "session": "fc5c4cf862bc4395b4012aee298d88c2"
+      },
+      "runtimeNotApplicableReason": "Node VM/unit command; wrapper also monitors the local server identity but no browser execution is claimed.",
+      "sourceFiles": [
+        {
+          "path": "tests/test_cdp_card_position.js",
+          "atHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "sha256": "2929b04ac505e5118c6abaad6e8fd3ea1dee6b38164ebbb21f390e8670b6a3af",
+          "bytes": 6303
+        },
+        {
+          "path": "tests/test_cdp_evaluation.js",
+          "atHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "sha256": "fc882ae41caba20b646ac3da7bceee68a1493764c23f0d76f20e163f606f3a53",
+          "bytes": 4807
+        },
+        {
+          "path": "geometry-web/cdp_helpers.js",
+          "atHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "sha256": "46d1a55c082f6a10571721370a709cfbf8aebb9df5661c04f51d18238d8befff",
+          "bytes": 13742
+        },
+        {
+          "path": "geometry-web/cdp_evaluation.js",
+          "atHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "sha256": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e",
+          "bytes": 1407
+        }
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/test_cdp_card_position.js",
+        "tests/test_cdp_evaluation.js"
+      ],
+      "cwd": "/workspace/geometry-final",
+      "environment": {
+        "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-pr168-feedback-8834",
+        "GEOMETRY_MODEL_BASE": "/tmp/geometry-final-native/model-base",
+        "GEOMETRY_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_TEST_URL": "http://127.0.0.1:8834/"
+      },
+      "before": {
+        "at": "2026-10-08T11:47:11.771829+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262707,
+          "session": "fc5c4cf862bc4395b4012aee298d88c2"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "after": {
+        "at": "2026-10-08T11:47:12.079000+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262707,
+          "session": "fc5c4cf862bc4395b4012aee298d88c2"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "execution": {
+        "started": "2026-10-08T11:47:11.864687+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "interrupted": false,
+        "pid": 264006,
+        "finished": "2026-10-08T11:47:12.078969+00:00"
+      },
+      "releaseReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/node30-b822-receipt/receipt.json",
+        "sha256": "ab68ca59197767d59cdeae7155eeb8fb92cb758b9e308efdf8b87876b0b21b10",
+        "bytes": 5284
+      },
+      "census": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/node30-b822-census.json",
+        "sha256": "cff9fae758dce50cdb2e03d35731d976470346a6446feb81c4bbb9a40d1a8b25",
+        "bytes": 3543
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/node30-b822-receipt/command.log",
+        "bytes": 2282,
+        "sha256": "94a2691037b403768ce1e75204c99159a5a06bfe8ded5575c73b574b68357412"
+      },
+      "rawCounts": {
+        "tests": 30,
+        "pass": 30,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "caseNames": [
+        "rejects missing both records",
+        "rejects missing native record",
+        "rejects missing local record",
+        "rejects failed native read",
+        "rejects unpersisted native coordinates",
+        "rejects unpositioned local record",
+        "rejects nonfinite native coordinate",
+        "rejects nonfinite local coordinate",
+        "rejects wrong native identity",
+        "first native position may settle from unpersisted to persisted",
+        "local position may settle after native persistence",
+        "unchanged native position cannot be replaced by optimistic local movement",
+        "waits for the same native move and then the local copy to converge",
+        "one-axis native movement is a valid persisted commit",
+        "deadline bounds an unresolved read without retrying it",
+        "a read that completes beyond deadline is never accepted",
+        "zero deadline issues no read",
+        "evaluation rejection remains an error instead of becoming a commit",
+        "requires finite prior positions and bounded timing arguments",
+        "all typed native lists and boundary identity are read through real expressions",
+        "merge preserves exact history-step helper and its browser identity oracle",
+        "preserves global lexical lookup, statements and synchronous values",
+        "holds the exact pending promise until the CDP response then releases it",
+        "concurrent evaluations retain independent roots and release only their own entry",
+        "rejected browser work propagates its original error and releases the root",
+        "syntax errors release even the empty registry created before evaluation",
+        "protocol failure never repeats an expression that already mutated state",
+        "cleanup failure cannot replace the original evaluation failure",
+        "cleanup failure after a successful evaluation is not hidden",
+        "a replaced document is not populated or stripped of unrelated retained work"
+      ],
+      "wrapperCompletionVerified": false,
+      "completionEvidence": "Thirty unique raw passing lines equal fixed census names; Node summary exactly 30 tests/pass, zero fail/cancelled/skipped/todo.",
+      "limitations": [
+        "Each scope is independent; their counts must not be summed into a single product acceptance count.",
+        "Four-card probe covers actual trusted boundary/column/grid-binding/assembly drag, native commit and local convergence semantics; it does not execute the complete canonical P5/P11 sections or their exact new helper callsites.",
+        "Canonical GRID 316, ASSEMBLY 150 and COMPOSITION 52 are separately owned and recorded; this index makes no assertion about their current completion.",
+        "Browser fixture uses native DSL/API and an official assembly fixture. Gates hold real native dispatch/response, never fabricate geometry replies.",
+        "The first-position native false-to-true transition is a true browser case; local false-to-true transition is covered by Node controls only.",
+        "Original full CDP 2177 at 459 and aggregate 82 receipts remain immutable. No new full CDP 2177 or aggregate 83 execution is claimed here.",
+        "Initial fixture-overlap exploratory attempt is incomplete. Its result preserves the original harness hash; that earlier harness source snapshot is unavailable and the current harness is not claimed identical.",
+        "Only this command is covered; independent delivery gates remain separate.",
+        "Native receipts attest configured files; /runtime does not attest the running native process.",
+        "Before/after identity checks do not prove absence of transient source changes."
+      ]
+    },
+    {
+      "id": "pr168-four-card-drag",
+      "expectedChecks": 20,
+      "expectedCardTypes": 4,
+      "owner": "/root/model_browser",
+      "scope": "Supplemental 1440x1000 real Chromium trusted pointer drag of boundary, column, grid-binding and assembly-rule cards: five fixed checks per type. Genuine native request dispatch and then response are held to verify pending state, saved native/local/DOM convergence, an exact single canvas-pos dump change and unchanged opaque history identities. It does not execute all canonical P5/P11 sections or their exact changed helper callsites.",
+      "status": "verified",
+      "executionHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "fresh": true,
+        "root": "/workspace/geometry-final",
+        "pid": 262707,
+        "session": "fc5c4cf862bc4395b4012aee298d88c2"
+      },
+      "harnessSha256": "26c6742c95f7f8b5caf03b35fdab5bcf6518aede5b182b18f02d5832d4bd5255",
+      "exitCode": 0,
+      "completed": true,
+      "targetHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "passed": 20,
+      "failed": 0,
+      "executionTree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+      "command": [
+        "node",
+        "/workspace/scratch/geometry-all-closeout/pr168-independent/card-drag-browser.cjs",
+        "/workspace/scratch/geometry-all-closeout/pr168-independent/card-drag-b822"
+      ],
+      "cwd": "/workspace/geometry-final",
+      "environment": {
+        "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-pr168-feedback-8834",
+        "GEOMETRY_MODEL_BASE": "/tmp/geometry-final-native/model-base",
+        "GEOMETRY_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_TEST_URL": "http://127.0.0.1:8834/"
+      },
+      "before": {
+        "at": "2026-10-08T11:47:12.626521+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262707,
+          "session": "fc5c4cf862bc4395b4012aee298d88c2"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "after": {
+        "at": "2026-10-08T11:47:16.217248+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262707,
+          "session": "fc5c4cf862bc4395b4012aee298d88c2"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "execution": {
+        "started": "2026-10-08T11:47:12.739448+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "interrupted": false,
+        "pid": 264055,
+        "finished": "2026-10-08T11:47:16.217218+00:00"
+      },
+      "releaseReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/card-drag-b822-receipt/receipt.json",
+        "sha256": "5390baac68c18a351fffbf87ff7b3f48fa34cce794529d16272381db355fc24f",
+        "bytes": 5368
+      },
+      "result": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/card-drag-b822/result.json",
+        "sha256": "9664d89f261549e38645e18e17232dc381084c4d9478133948c87895948997c4",
+        "bytes": 65592
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/card-drag-b822-receipt/command.log",
+        "bytes": 58735,
+        "sha256": "4cd14ef34d19784d2f36898013f95d280d8a4d2ff15220d25c6a20a81de6bfb1"
+      },
+      "harness": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/card-drag-browser.cjs",
+        "sha256": "26c6742c95f7f8b5caf03b35fdab5bcf6518aede5b182b18f02d5832d4bd5255",
+        "bytes": 10265
+      },
+      "helperSha256": "46d1a55c082f6a10571721370a709cfbf8aebb9df5661c04f51d18238d8befff",
+      "wrapperCompletionVerified": false,
+      "completionEvidence": "Independently parsed exactly one structured raw-log result equal to result.json; expected unique cases all true, explicit completed and stable identity, exit 0.",
+      "caseNames": [
+        "boundary persisted initial identity",
+        "boundary pending native write stays uncommitted",
+        "boundary pending reply waits for local convergence",
+        "boundary actual committed position and DOM agree",
+        "boundary exact single position change preserves definitions and history",
+        "column persisted initial identity",
+        "column pending native write stays uncommitted",
+        "column pending reply waits for local convergence",
+        "column actual committed position and DOM agree",
+        "column exact single position change preserves definitions and history",
+        "grid-binding persisted initial identity",
+        "grid-binding pending native write stays uncommitted",
+        "grid-binding pending reply waits for local convergence",
+        "grid-binding actual committed position and DOM agree",
+        "grid-binding exact single position change preserves definitions and history",
+        "assembly-rule persisted initial identity",
+        "assembly-rule pending native write stays uncommitted",
+        "assembly-rule pending reply waits for local convergence",
+        "assembly-rule actual committed position and DOM agree",
+        "assembly-rule exact single position change preserves definitions and history"
+      ],
+      "browserErrors": [],
+      "consoleErrors": [],
+      "limitations": [
+        "Each scope is independent; their counts must not be summed into a single product acceptance count.",
+        "Four-card probe covers actual trusted boundary/column/grid-binding/assembly drag, native commit and local convergence semantics; it does not execute the complete canonical P5/P11 sections or their exact new helper callsites.",
+        "Canonical GRID 316, ASSEMBLY 150 and COMPOSITION 52 are separately owned and recorded; this index makes no assertion about their current completion.",
+        "Browser fixture uses native DSL/API and an official assembly fixture. Gates hold real native dispatch/response, never fabricate geometry replies.",
+        "The first-position native false-to-true transition is a true browser case; local false-to-true transition is covered by Node controls only.",
+        "Original full CDP 2177 at 459 and aggregate 82 receipts remain immutable. No new full CDP 2177 or aggregate 83 execution is claimed here.",
+        "Initial fixture-overlap exploratory attempt is incomplete. Its result preserves the original harness hash; that earlier harness source snapshot is unavailable and the current harness is not claimed identical.",
+        "Only this command is covered; independent delivery gates remain separate.",
+        "Native receipts attest configured files; /runtime does not attest the running native process.",
+        "Before/after identity checks do not prove absence of transient source changes."
+      ]
+    },
+    {
+      "id": "pr168-independent-helper-vm",
+      "status": "verified",
+      "owner": "/root/github_progress",
+      "expectedControlCases": 14,
+      "targetHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "executionHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "runtime": null,
+      "harnessSha256": "cb1f3d6fd900f0afa589898de4b098dbbc1f543721ee80f902325f1b45ea299e",
+      "exitCode": 0,
+      "completed": true,
+      "scope": "Fourteen independent explicit controls against the original a1 helper and final b822 helper, including separate native/local transient hasPos=false to true convergence. Exact generated browser expressions execute in a second VM. Seven original-helper counterexamples are deliberate; this is bounded helper decision and deadline evidence, not actual drag, native persistence, real-browser or aggregate evidence.",
+      "passed": 14,
+      "failed": 0,
+      "runtimeNotApplicableReason": "Exact helper in Node VM with virtual clock and generated browser expression in second VM; no runtime server or real browser executed.",
+      "command": [
+        "node",
+        "/workspace/scratch/geometry-all-closeout/pr168-review/independent_helper_vm_v2.cjs",
+        "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+        "/workspace/scratch/geometry-all-closeout/pr168-review/independent-helper-vm-b822a9f.json"
+      ],
+      "cwd": "/workspace",
+      "executionReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-review/strictfix-b822a9f/independent-vm-execution.json",
+        "sha256": "fecd82c870d414c51a26eb3c7a69f8cef1a86dd2d46a1a33a6e941739d5d3e4d",
+        "bytes": 1123
+      },
+      "result": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-review/strictfix-b822a9f/independent-helper-vm-b822a9f.json",
+        "sha256": "11ee90ee46b25b7d4fa1951135c25b256b82ecbb9a68fba7426c4a2dfd14cb55",
+        "bytes": 37993
+      },
+      "harness": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-review/strictfix-b822a9f/independent_helper_vm_v2.cjs",
+        "sha256": "cb1f3d6fd900f0afa589898de4b098dbbc1f543721ee80f902325f1b45ea299e",
+        "bytes": 7859
+      },
+      "source": {
+        "originalHead": "a1b2f785e1bdcf13380c56b3b4c8c95093ea615c",
+        "finalHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+        "originalHelperSha256": "e7e7806d9b60df7a6f18fb9a807f3a4850ea7d800d99974f340f9cf6771a78be",
+        "finalHelperSha256": "46d1a55c082f6a10571721370a709cfbf8aebb9df5661c04f51d18238d8befff",
+        "harnessSha256": "cb1f3d6fd900f0afa589898de4b098dbbc1f543721ee80f902325f1b45ea299e"
+      },
+      "capturedAt": "2026-10-08T11:46:17.677Z",
+      "recordedAt": "2026-10-08T11:46:55.043662+00:00",
+      "baselineCounterexamples": [
+        "missing-both-native-and-local",
+        "api-not-ok-even-with-coordinate-shaped-payload",
+        "native-hasPos-false",
+        "transient-native-hasPos-false-eventually-persisted",
+        "transient-local-hasPos-false-eventually-converged",
+        "late-converged-response-after-deadline",
+        "read-never-resolves"
+      ],
+      "limitations": [
+        "Virtual elapsed times are injected control evidence, not measured network latency.",
+        "A thrown error is fail-closed; it is recorded and is not converted into a success.",
+        "The external120ms watchdog is a control that distinguishes an unbounded pending read from helper rejection by40ms.",
+        "This does not prove drag hit-testing, trusted CDP gestures or application persistence; those require separate real-browser evidence."
+      ],
+      "matrixAudit": {
+        "resultAndHarnessHashesMatchExecution": true,
+        "bothExactHelperGitBlobHashesMatch": true,
+        "fixedUniqueControlCensus": 14,
+        "allFinalResultsCorrectAndSettled": true,
+        "allReadsObjectsOnly": true,
+        "unexpectedTimerErrors": 0,
+        "finalWatchdogFirings": 0,
+        "baselineCounterexamples": 7,
+        "actualBrowserExecution": false
+      }
+    },
+    {
+      "id": "pr168-first-position",
+      "status": "verified",
+      "owner": "/root/model_browser",
+      "targetHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "expectedChecks": 5,
+      "expectedScenarios": 1,
+      "executionHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+      "runtime": {
+        "schema": "geometry-runtime/1",
+        "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "fresh": true,
+        "root": "/workspace/geometry-final",
+        "pid": 262707,
+        "session": "fc5c4cf862bc4395b4012aee298d88c2"
+      },
+      "harnessSha256": "59830b87959000b043d1fddd50a21fdfd6e2179853c19c1b8c1b508558d1f98e",
+      "exitCode": 0,
+      "completed": true,
+      "scope": "Supplemental 1440x1000 genuine first-position boundary card drag: five fixed checks. Native DSL fixture renders with persistPositions=false; genuine canvas-pos dispatch is held while native hasPos=false. Helper stays pending, then a single release commits native/local coordinates, changes only the new dump position line and preserves history. Local hasPos=false to true is Node-only coverage.",
+      "passed": 5,
+      "failed": 0,
+      "executionTree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+      "command": [
+        "node",
+        "/workspace/scratch/geometry-all-closeout/pr168-independent/first-position-final.cjs",
+        "/workspace/scratch/geometry-all-closeout/pr168-independent/first-position-b822"
+      ],
+      "cwd": "/workspace/geometry-final",
+      "environment": {
+        "GEOMETRY_TEST_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_FEEDBACK_DIR": "/tmp/geometry-pr168-feedback-8834",
+        "GEOMETRY_MODEL_BASE": "/tmp/geometry-final-native/model-base",
+        "GEOMETRY_BRIDGE": "/tmp/geometry-final-native/bridge",
+        "GEOMETRY_TEST_URL": "http://127.0.0.1:8834/"
+      },
+      "before": {
+        "at": "2026-10-08T11:47:33.212986+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262707,
+          "session": "fc5c4cf862bc4395b4012aee298d88c2"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "after": {
+        "at": "2026-10-08T11:47:34.678875+00:00",
+        "root": "/workspace/geometry-final",
+        "problems": [],
+        "git": {
+          "root": "/workspace/geometry-final",
+          "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+          "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+          "status": ""
+        },
+        "sourceVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+        "runtime": {
+          "schema": "geometry-runtime/1",
+          "version": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+          "fresh": true,
+          "root": "/workspace/geometry-final",
+          "pid": 262707,
+          "session": "fc5c4cf862bc4395b4012aee298d88c2"
+        },
+        "native": {
+          "bridge": {
+            "name": "bridge",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:18+00:00）",
+            "path": "/tmp/geometry-final-native/bridge",
+            "fingerprint": "74103e06f8ea1109d9d896d217683a2b22882cbdc0c10b4419c60224ffaf645e",
+            "sha256": "386b3549bdc1bfbf251a6eb9ef9ef9ece0f3ecc5c2aa331f725f9d93fe1387b3",
+            "sidecarSha256": "2650c6b09ff8736c35dba0bdc7ff147692f5088db0cf64758c769f42f37a0365"
+          },
+          "model-base": {
+            "name": "model-base",
+            "state": "fresh",
+            "reason": "來源與 binary SHA-256 相符（建於 2026-10-08T09:01:22+00:00）",
+            "path": "/tmp/geometry-final-native/model-base",
+            "fingerprint": "0f8d47fd14ae9e3500001bbdde363b114e27dfc7eca2d049efe2091382dcd17b",
+            "sha256": "d9678e5b27a76803518dbf3bb60c91ba02146ca237ba5ec21f680b65be515ac3",
+            "sidecarSha256": "2a8bf9a762dc93067aefb915c78738bc67d4b1cf14461b221be1933d9b3db888"
+          }
+        }
+      },
+      "execution": {
+        "started": "2026-10-08T11:47:33.308101+00:00",
+        "exitCode": 0,
+        "timedOut": false,
+        "interrupted": false,
+        "pid": 264713,
+        "finished": "2026-10-08T11:47:34.678842+00:00"
+      },
+      "releaseReceipt": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/first-position-b822-receipt/receipt.json",
+        "sha256": "911ae02d4c409e117c3469b07d4295b944ba4dbbddc81aca300f6db4f79f4ec2",
+        "bytes": 5380
+      },
+      "result": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/first-position-b822/result.json",
+        "sha256": "e48f8a53bb3dc18c8ee2f0ab32c596c1f7cc9785d0bbd51f7d4bdbba3abe0644",
+        "bytes": 4382
+      },
+      "rawLog": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/first-position-b822-receipt/command.log",
+        "bytes": 3274,
+        "sha256": "f63024744785ee13fd043afb6098b4d6454a6002301cbd305811cb722d6c2e6f"
+      },
+      "harness": {
+        "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/first-position-final.cjs",
+        "sha256": "59830b87959000b043d1fddd50a21fdfd6e2179853c19c1b8c1b508558d1f98e",
+        "bytes": 6105
+      },
+      "helperSha256": "46d1a55c082f6a10571721370a709cfbf8aebb9df5661c04f51d18238d8befff",
+      "wrapperCompletionVerified": false,
+      "completionEvidence": "Independently parsed exactly one structured raw-log result equal to result.json; expected unique cases all true, explicit completed and stable identity, exit 0.",
+      "caseNames": [
+        "real rendered card has no persisted native position",
+        "first unpersisted position remains pending while actual write is held",
+        "single released drag persists and converges before helper succeeds",
+        "only the new position line changes and history stays intact",
+        "browser has no uncaught exceptions"
+      ],
+      "browserErrors": [],
+      "consoleErrors": null,
+      "limitations": [
+        "Each scope is independent; their counts must not be summed into a single product acceptance count.",
+        "Four-card probe covers actual trusted boundary/column/grid-binding/assembly drag, native commit and local convergence semantics; it does not execute the complete canonical P5/P11 sections or their exact new helper callsites.",
+        "Canonical GRID 316, ASSEMBLY 150 and COMPOSITION 52 are separately owned and recorded; this index makes no assertion about their current completion.",
+        "Browser fixture uses native DSL/API and an official assembly fixture. Gates hold real native dispatch/response, never fabricate geometry replies.",
+        "The first-position native false-to-true transition is a true browser case; local false-to-true transition is covered by Node controls only.",
+        "Original full CDP 2177 at 459 and aggregate 82 receipts remain immutable. No new full CDP 2177 or aggregate 83 execution is claimed here.",
+        "Initial fixture-overlap exploratory attempt is incomplete. Its result preserves the original harness hash; that earlier harness source snapshot is unavailable and the current harness is not claimed identical.",
+        "Only this command is covered; independent delivery gates remain separate.",
+        "Native receipts attest configured files; /runtime does not attest the running native process.",
+        "Before/after identity checks do not prove absence of transient source changes."
+      ],
+      "consoleCollectionLimitation": "First-position harness records pageerror only; it does not collect console.error events."
+    }
+  ],
+  "pending": [],
+  "limits": [
+    "This is an appended validation matrix; original sealed matrix, tar archives and public documents remain untouched.",
+    "New partial scopes retain their actual freeze head, runtime, harness hash, command, exit and canonical census once complete.",
+    "No new full2177 execution is claimed for the changed PR168 test harness.",
+    "Full original CDP includes exactly one intentional P38 fb-auto-probe exception; zero unexpected exceptions.",
+    "No release approval, push, merge-to-main or external clearance is granted by this matrix.",
+    "This sealed tail covers exact b822 executions. PR165 remote head 354bad248180c6bb1c69735830b75827ab30b70e contains a later 26-line documentation addendum and is not claimed to be an ancestor of b822. Its review and hypothetical merge proof are supplemental; the planned actual post-seal docs merge needs a separate metadata-equivalence receipt.",
+    "Seven validation rows and the 23-check source proof have different scopes; do not sum their counts into a single product acceptance total.",
+    "The new canonical partial harnesses have actually run only their recorded GRID/ASSEMBLY/COMPOSITION filters; four-card supplemental coverage does not relabel full P5/P11 or full CDP as rerun."
+  ],
+  "releaseApproved": false,
+  "updatedAt": "2026-10-08T11:59:16.801598+00:00",
+  "targetFreeze": {
+    "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+    "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+    "status": "",
+    "runtimeVersion": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379"
+  },
+  "integrationCoverage": {
+    "expectedTotalPRs": 24,
+    "additionalPR": 168,
+    "priorPublishedCoveragePRs": 23,
+    "status": "verified as of b822 source-proof capture; later remote PR165 update separately pending",
+    "limitation": "PR168 is the additional 24th source-work item at the source-proof capture, not a timeless all-latest-heads claim. The original 23-PR snapshot and original 459478e full2177 remain immutable; a subsequent remote PR165 docs head is recorded separately.",
+    "sourceProof": {
+      "path": "/workspace/scratch/geometry-all-closeout/pr168-review/strictfix-b822a9f/tail-source-proof-b822a9f.json",
+      "sha256": "7d5a21a9b550b242e16af59dd876d9db5be13c9610079b7afb47e9b0d143e94f",
+      "bytes": 726130
+    },
+    "sourceCoverageTail": {
+      "old23Snapshot": {
+        "path": "/workspace/scratch/geometry-all-closeout/final-pr-coverage/final-pr-source-coverage.json",
+        "bytes": 24589,
+        "sha256": "c994ed3cb239d06dd180810d1c10da2f65aba479d37b8da5b7c77bb72f584ace"
+      },
+      "oldSnapshotNotModified": true,
+      "additionalWorkItemOrdinal": 24,
+      "number": 168,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/168",
+      "head": "a1b2f785e1bdcf13380c56b3b4c8c95093ea615c",
+      "coverageKind": "exact_commit_ancestor_with_additional_strict_test_fix",
+      "ordinaryMergeHead": "c364591dd30afa666940be1858d48329ea2c9e1a",
+      "inNewFreeze": true,
+      "priorExactAncestorChecks": [
+        {
+          "number": 167,
+          "head": "fb6ef45cf651235250523aa88a7fa89d0e6acb34",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 165,
+          "head": "794569e809216b14c4956da5a50ccd4b4a368a43",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 162,
+          "head": "8b9b6f80078c17238286e43da54b751e8d3b5b23",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 161,
+          "head": "92ded635e01aa42ea8a999e70da41b736c8b5a92",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 160,
+          "head": "2228da155b49d349a616b1e2737074f299e1d57d",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 159,
+          "head": "e3ddd74e5a17b55b97c164cf7f69b6f0aeedab41",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 158,
+          "head": "06343d8c0d7d195c30cc34832cd092cf980e1d50",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 156,
+          "head": "2a7d9cba8d199a33f703e721553034400c0c5764",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 155,
+          "head": "f1e020cba5051a331dd150d567698060bf1642b1",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 154,
+          "head": "83769b9baef0ba23d3fd41f1058de90cf1f360ac",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 153,
+          "head": "349e2a590f98ab783b7d3eeb952e95151db8e39e",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 152,
+          "head": "43bf0566546e61ceb9a002ee4f511d9591ce86e9",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 148,
+          "head": "aa91cd25c62a67e2587e7ddd0cb0a6f96dd55d21",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 147,
+          "head": "fb321eb1a998db47a9cd808b6df9ee36f68b3d15",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 146,
+          "head": "d0c5671c5cb009e2549c0c4829dd4ca2a5a21369",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 144,
+          "head": "7cfa1a87082e04908f10628485f975125dd8df9b",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 143,
+          "head": "6ae8e11d74b12f21fc4294e3bd068fbbc539a209",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 137,
+          "head": "38975775cf42e9dc454aab2e25fc186d9fbd759d",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 136,
+          "head": "cc3c1c40e3fcfccfca35b305b0cbf5fab700c81e",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        },
+        {
+          "number": 134,
+          "head": "b88545e00c13ccf5e238d4caec1c7b0d78cdc639",
+          "priorClassification": "exact_commit_ancestor",
+          "headInNewFreeze": true
+        }
+      ],
+      "scopeNote": "This is an additional source-work item, not a fresh claim that current total openPR count is24; PR169 is the integration PR. Old23 snapshot remains as-of its capture; old #141/#129/#157 classifications remain semantic/blob-based."
+    }
+  },
+  "historicalFreezes": [
+    {
+      "head": "25032605c866aedd4b16b2563ef350d7af37b018",
+      "status": "superseded-after-real-browser-helper-false-negative",
+      "priorTargetIdentity": {
+        "head": "25032605c866aedd4b16b2563ef350d7af37b018",
+        "tree": "49db648603ba44689166031223b8522cd05ccaca",
+        "status": ""
+      },
+      "node28": {
+        "expected": 28,
+        "passed": 28,
+        "failed": 0,
+        "exitCode": 0,
+        "executionHead": "25032605c866aedd4b16b2563ef350d7af37b018",
+        "releaseReceipt": {
+          "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/node28-receipt/receipt.json",
+          "sha256": "9bcf3921be4d50fc3d16b426ec780d14f5e7914adc2adb2d4a5acabe2fbf29a2"
+        },
+        "rawLog": {
+          "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/node28-receipt/command.log",
+          "sha256": "981690a7b644ff1f312a9dd07f0a04681dc5ba1d629bdddc24d8b2820aec66b3"
+        },
+        "scope": "Node19+existing evaluator9 at original250 freeze; not relabeled as new21+9."
+      },
+      "independentVM12": {
+        "cases": 12,
+        "passed": 12,
+        "executionHead": "25032605c866aedd4b16b2563ef350d7af37b018",
+        "receipt": {
+          "path": "/workspace/scratch/geometry-all-closeout/pr168-review/independent-helper-vm-2503260.json",
+          "sha256": "90b5c453744bbe66f8353111f12c3fcb19e96dd6ddcb09f6e881457da86f80f2"
+        },
+        "scope": "Original12 control expectations were met; did not establish lawful transient hasPos=false behavior."
+      },
+      "sourceProof23": {
+        "checks": 23,
+        "passed": 23,
+        "executionHead": "25032605c866aedd4b16b2563ef350d7af37b018",
+        "receipt": {
+          "path": "/workspace/scratch/geometry-all-closeout/pr168-review/tail-source-proof-2503260.json",
+          "sha256": "a229c78af801946f17a9f19a20648840899da5a6f326b754e3a0477b4794e9da"
+        },
+        "scope": "Historical250 source/census proof; not a new-freeze proof or whole new-harness full-CDP execution."
+      },
+      "trueFirstPositionCounterexample": {
+        "receipt": {
+          "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/first-position-2503260/result.json",
+          "sha256": "159827a49056ca41a2775bf5bfa6a74615e86f55394af194ae1ccdfa63ccfb19"
+        },
+        "observed": {
+          "readOK": true,
+          "nativeExists": true,
+          "localExists": true,
+          "nativeCx": 0,
+          "nativeCy": 0,
+          "hasPos": false,
+          "localCx": 60,
+          "localCy": 60,
+          "localHasPos": true,
+          "ok": false,
+          "reason": "invalid-position-record",
+          "elapsedMs": 14,
+          "kind": "boundary",
+          "id": 902,
+          "beforeCx": 60,
+          "beforeCy": 60
+        },
+        "classification": "Real first drag remains legitimately unpersisted while canvas-pos dispatch is held. Old helper falsely rejected in14ms. Reproducer exits0 because it successfully reproduced this test-harness defect."
+      },
+      "interruptedGrid": {
+        "receipt": {
+          "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-2503260/interruption.json",
+          "sha256": "9a4abd3028b6ad719b1b5b4932b4f551959adfbc3163483b78ef9788bfef5124"
+        },
+        "manifest": {
+          "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-2503260/interruption-manifest.json",
+          "sha256": "0d5efbd5a63fcbf443a27b714948bd562909610f27b2bde045ba9e7985a93c9c"
+        },
+        "releaseReceipt": {
+          "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-2503260/grid-system/release-receipt/receipt.json",
+          "sha256": "0319cba8b4d65c37dd0b17f08e61b85c64606e78c21fb3451c5a13db4bf849d0"
+        },
+        "completed": false,
+        "exitCode": -15,
+        "canonicalResultPresent": false,
+        "scope": "Parent-requested interruption. No completed GRID316 and no subsequent assembly/composition claim."
+      }
+    }
+  ],
+  "helperSemanticsCorrection": "Finite existing native/local records with hasPos=false are legal pending placement; poll until commit/convergence or deadline. Missing records, API errors and malformed data still reject.",
+  "focusedEvidenceIndex": {
+    "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/evidence-index-b822.json",
+    "sha256": "542e25d6aeca016e007b1b657c5dcaec694939a146eac223f92c638ad32a653e",
+    "bytes": 10304,
+    "matrixAuditedArtifactRefs": 32
+  },
+  "remoteHeadChanges": {
+    "status": "Separate docs-only PR165 update recorded; parent plans ordinary merge after this b822 evidence is sealed and archived.",
+    "pr": 165,
+    "previousIntegratedHead": "794569e809216b14c4956da5a50ccd4b4a368a43",
+    "newRemoteHead": "354bad248180c6bb1c69735830b75827ab30b70e",
+    "review": {
+      "path": "/workspace/scratch/geometry-all-closeout/pr168-review/remote-final-readback/pr165-new-head-review.json",
+      "sha256": "2ba5c9e004a0092c6957dddf3dca5f3cb6f43b6e0f681698fa8804632bcc1d93",
+      "bytes": 5688
+    },
+    "mergePreview": {
+      "path": "/workspace/scratch/geometry-all-closeout/pr168-review/remote-final-readback/pr165-merge-preview.json",
+      "sha256": "3a13b4d6864821da9f79cd50de2d9c7f3133079217ec455e64aa3e5da5ca5e88",
+      "bytes": 2492
+    },
+    "scope": "Read-only remote snapshot and hypothetical merge-tree are not an actual merge or fresh browser execution. Windows partial author claims remain historical and bounded by their original source/native limits.",
+    "productChange": false,
+    "testsChange": false,
+    "runtimeHypotheticalSame": true
+  },
+  "canonicalScopeSummary": {
+    "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/summary.json",
+    "sha256": "8e66fcba00f7309e2f4a9a59f4f7a87b5114930d598e3c919018101030228e1c",
+    "bytes": 20165
+  },
+  "canonicalArtifactManifest": {
+    "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/artifact-manifest.json",
+    "sha256": "172b79ca9461925e0c5297ccf6cbc19edd6ae264104ebdc693a1143785146225",
+    "bytes": 10907
+  },
+  "canonicalScopeArchive": {
+    "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/evidence.tar.gz",
+    "sha256": "7e2832f8db21f11241f0e33bfe54b0477d0f976280d12e0e455d0a3ff04c9d2e",
+    "bytes": 2892383
+  },
+  "canonicalArtifactAudit": {
+    "manifestFiles": 63,
+    "allRawHashAndByteLengthsMatch": true,
+    "tarRegularFilesIncludingManifest": 64,
+    "tarContentFilesVerifiedAgainstManifest": 63,
+    "manifestBytesInTarMatch": true,
+    "browserProfilesExcluded": true
+  },
+  "serviceCleanup": {
+    "canonicalScopes": {
+      "path": "/workspace/scratch/geometry-all-closeout/multiroom/final-card-wait-b822a9f/service-cleanup.json",
+      "sha256": "e1b40738924788472a486a2a498b78e485267a2d5c8c2c1e3a73ffcaa2a949bb",
+      "bytes": 88
+    },
+    "supplementalScopes": {
+      "path": "/workspace/scratch/geometry-all-closeout/pr168-independent/service-b822-stop.json",
+      "sha256": "8f6285d213f3837e9b51ddb9b4b8d01f4cbb77ebaea063187376356fe9f62d36",
+      "bytes": 620
+    }
+  },
+  "postSealDeliveryActions": [
+    "pr165-latest-docs-integration-and-post-merge-equivalence"
+  ],
+  "allValidationGatesComplete": true,
+  "sealedAt": "2026-10-08T11:59:16.801598+00:00",
+  "sealAudit": {
+    "reviewer": "/root/wm_browser",
+    "rows": 7,
+    "pending": [],
+    "artifactReferenceOccurrencesVerified": 69,
+    "uniqueArtifactPathsVerified": 46,
+    "original44MatrixHashUnchanged": true,
+    "oldFullCDPExecutionHeadRetained": "459478e9f68fe8ee9252a5f6b4a1ffb2213a5207",
+    "currentRepoCleanAtSeal": true,
+    "currentRepoHeadAtSeal": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+    "noTestsRerunByMatrixReviewer": true,
+    "noRepositoryOrGitHubWrites": true,
+    "postSealMetadataIntegrationExcluded": true
+  }
+}

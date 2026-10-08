@@ -1,0 +1,114 @@
+{
+  "schema": "geometry-card-wait-delivery/1",
+  "completed": true,
+  "createdAt": "2026-10-08T12:03:03.383913+00:00",
+  "freeze": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+  "before": {
+    "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+    "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+    "status": ""
+  },
+  "after": {
+    "head": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+    "tree": "fb528657190ebdf39733a71bdaea6f908ff72a48",
+    "status": ""
+  },
+  "archive": {
+    "name": "geometry-card-wait-evidence-b822a9ff.tar.gz",
+    "bytes": 7859803,
+    "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e"
+  },
+  "manifestSha256": "0554de392131f7a40ac3192c5a28f2901262432146f7b0b03f0a79f9a19d30e3",
+  "sidecars": [
+    {
+      "name": "manifest.json",
+      "bytes": 108258,
+      "sha256": "0554de392131f7a40ac3192c5a28f2901262432146f7b0b03f0a79f9a19d30e3"
+    },
+    {
+      "name": "followup-validation-matrix.json",
+      "bytes": 95754,
+      "sha256": "346169bb73f513d2a43aee84c52f4b39b8e436e8bddfe336dd5764541cc2a8e8"
+    },
+    {
+      "name": "source-equivalence.json",
+      "bytes": 726130,
+      "sha256": "7d5a21a9b550b242e16af59dd876d9db5be13c9610079b7afb47e9b0d143e94f"
+    }
+  ],
+  "fileCount": 234,
+  "claims": {
+    "canonicalPartial": {
+      "GRID": 316,
+      "ASSEMBLY": 150,
+      "COMPOSITION": 52
+    },
+    "focusedNode": {
+      "cardPosition": 21,
+      "evaluation": 9,
+      "total": 30
+    },
+    "fourCardBrowser": 20,
+    "firstPositionBrowser": 5,
+    "independentSourceChecks": 23,
+    "independentVM": 14,
+    "oldSameVMViolations": 7
+  },
+  "authorization": {
+    "path": "/workspace/scratch/geometry-delivery-20261008-card-wait/root-completion-authorization.json",
+    "sha256": "8095f5bdc5b951f319db3af86904e5908c00fef2b85db30704d8692d116f0bce"
+  },
+  "checks": [
+    {
+      "name": "original-artifacts-unchanged",
+      "pass": true
+    },
+    {
+      "name": "source-vm-and-doc-preview",
+      "pass": true
+    },
+    {
+      "name": "focused-30-20-5",
+      "pass": true
+    },
+    {
+      "name": "canonical-316-150-52",
+      "pass": true
+    },
+    {
+      "name": "independent-matrix-sealed",
+      "pass": true
+    },
+    {
+      "name": "historical-outcomes-preserved",
+      "pass": true
+    }
+  ],
+  "independentReview": "independent-review.json required before publication; separate immutable result",
+  "publicFiles": [
+    "geometry-card-wait-evidence-b822a9ff.tar.gz",
+    "manifest.json",
+    "delivery-receipt.json",
+    "followup-validation-matrix.json",
+    "source-equivalence.json",
+    "independent-review.json"
+  ],
+  "repositoryWrites": false,
+  "originalArtifactsUnchanged": true,
+  "laterPublicationContract": "Root may merge docs-only165 and stage metadata after this clean-freeze archive audit. Do not rerun freeze-gated sealing after publication staging.",
+  "releaseApproved": false,
+  "limits": [
+    "This appendix preserves actual execution identities and separate scopes; no summed product-acceptance total is claimed.",
+    "GRID316, ASSEMBLY150 and COMPOSITION52 are canonical partial modes, not a new full2177 run.",
+    "Focused Node30 means 21 card-position controls plus 9 evaluator controls; no new full aggregate execution is claimed.",
+    "Original full CDP2177 and aggregate82/2571 remain at their original execution heads and in unchanged original archives.",
+    "Four-card20 is supplemental actual drag coverage for four types; it is not the complete P5/P11 canonical sections.",
+    "First-position5 covers native false-to-true persistence; local flag transition is covered by Node controls.",
+    "Original PR168 Windows205 is limited documentary history, not latest-head Windows verification.",
+    "Candidate250 GRID was interrupted without CDP_RESULT; ASSEMBLY/COMPOSITION were not started. Its raw evidence is historical.",
+    "Original helper counterexamples and exploratory failures retain original outcomes and source lineage limits.",
+    "The PR165 remote-head review and hypothetical docs merge are previews only; actual merge belongs to later publication metadata.",
+    "No WM raw data, profiles, private databases, credentials or native executables are included.",
+    "Packaging approval is internal evidence preparation; it does not grant global release or external-publication approval."
+  ]
+}

@@ -68,7 +68,7 @@ zero-room first collection 與跨 reload 未接受草稿不屬於本 session sli
 
 ## 本輪實測結果與可核查證據
 
-最新產品／測試凍結為 `459478e9f68fe8ee9252a5f6b4a1ffb2213a5207`。
+原整合產品／完整測試凍結為 `459478e9f68fe8ee9252a5f6b4a1ffb2213a5207`。
 驗收保留各次實跑版本；後續文件與證據提交另核對差異，不將舊收據改標為新版執行。
 
 - `07bca299`：完整非瀏覽器登錄 82 suites，2571 pass、0 fail、1 具名 Windows GDI skip；
@@ -103,6 +103,37 @@ command wrapper 的執行證明與各 harness 的完整結果數分開核收。
 Linux Chromium 不涵蓋 Windows P70／P88、GDI／SAC、實體手機／IME、OS 原生 Save picker
 或私人實圖。PR161 原十項腳本與舊 155 的完整重現來源仍缺件，現存歷史通過收據照原版本保留。
 #128 PF-0 的新精確語意仍待採納，SSOT 與唯一閱讀器未變；以上未宣稱合入 main 或部署。
+
+## 追加 PR168：等待卡片位置確實保存
+
+原整合證據封存後新增的 [PR168](https://github.com/ZhiQiYang/geometry-axiom/pull/168)
+已以普通 merge 保留 `a1b2f785` 來源，再於 `b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5`
+補強共用測試 helper。卡片拖曳須等到原生位置改變且頁面副本一致；原生或本地物件不存在、
+API 失敗、未保存位置、非有限座標或逾時均不能判為成功，未回覆的讀取也受 deadline 限制。
+首次拖曳尚未保存時則繼續等待，不會提早判成功或失敗；舊 helper 的過早拒絕已有真瀏覽器重現。
+這一輪僅改測試與其登錄，產品、原生核心、SSOT 及唯一閱讀器保持原內容。
+
+此 clean head 的追加驗收：canonical GRID 316、ASSEMBLY 150、COMPOSITION 52；
+focused Node 30（新 helper 21、既有 CDP evaluator 9）；四種卡片實際拖曳 20、
+首次保存等待 5，以及獨立 VM 對照 14，各自附收據且不相加為不重複使用情境。
+四種卡片 probe 不冒充早段 P5／P11 整段 canonical 執行。
+各範圍完整結果及實跑身分見
+[追加矩陣](../../tests/release-evidence/20261008-card-wait/followup-validation-matrix.json)、
+[來源同一性與新增 PR 覆蓋](../../tests/release-evidence/20261008-card-wait/source-equivalence.json)、
+[封包清單](../../tests/release-evidence/20261008-card-wait/manifest.json)及
+[獨立核對](../../tests/release-evidence/20261008-card-wait/independent-review.json)。
+
+原 full 2177 保留 `459478e` 的原 harness 與執行身分；此次沒有把 partial scopes 改稱新版 full 重跑。
+新增 Node suite 已登記獨立 21 項 floor，所有原有 suites 的 floors 未降低；原 82 suites／2571 pass
+仍是 `07bca299` 的實跑紀錄，未宣稱新版 aggregate 已重跑。
+PR168 原 Windows 205 項使用較舊 bridge 與 main 基底，只保留原有限範圍，
+不替代最新 Windows P70／P88 或完整平台驗收。
+
+最後遠端核對的 24 個來源 PR 中，只有 PR165 自原覆蓋快照前進到 `354bad2`。
+該提交僅為 [AUX 審查文件](AUX-REVIEW-20261008.md) 新增 26 行，已另行保留來源；
+其中「未驗」與未完成紀錄均屬文中指定的舊候選／Windows 執行，不改標成本輪結果。
+實際文件合併與發布差異見
+[發布清單](../../tests/release-evidence/20261008-card-wait/publication-manifest.json)。
 
 ## 仍須明列的交付限制
 

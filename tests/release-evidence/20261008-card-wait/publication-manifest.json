@@ -1,0 +1,91 @@
+{
+  "schema": "geometry-card-wait-publication/1",
+  "testedHead": "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+  "testedRuntime": "6afef13e28d609e5d785c6b90d08e924d948a0cf11a40088e54639fa48283379",
+  "metadataMergeHead": "0e7a3571788a59ac822d838a0e5db3f19437f386",
+  "metadataMergeParents": [
+    "b822a9ff7c0deb74f7d6f05e70aa43d6f00dd8d5",
+    "354bad248180c6bb1c69735830b75827ab30b70e"
+  ],
+  "incomingPR165Head": "354bad248180c6bb1c69735830b75827ab30b70e",
+  "incomingPR168Head": "a1b2f785e1bdcf13380c56b3b4c8c95093ea615c",
+  "metadataMergeTree": "11e5990082e8a75916bf5eca6503aa9eca09f45d",
+  "scope": "PR165 adds 26 historical review lines; all other changes after the tested head are delivery documentation and immutable evidence copies.",
+  "runtimeUnchangedAfterMetadata": true,
+  "files": [
+    {
+      "path": "geometry-web/docs/RELEASE-CANDIDATE.md",
+      "bytes": 11667,
+      "sha256": "a2f3905a16434ebabf30f0c09a9aa56b96937f47d29b78301b076ce183c99d46"
+    },
+    {
+      "path": "geometry-web/docs/AUX-REVIEW-20261008.md",
+      "bytes": 21455,
+      "sha256": "a3279a40796f68ae5437623415595c51f307aa8692b3dca8543bc415dd5c372b"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/geometry-card-wait-evidence-b822a9ff.tar.gz",
+      "bytes": 7859803,
+      "sha256": "72fc05df87dd70ee74182b19bfcf56a66d0403c102116bcdc71bde30abeee53e"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/manifest.json",
+      "bytes": 108258,
+      "sha256": "0554de392131f7a40ac3192c5a28f2901262432146f7b0b03f0a79f9a19d30e3"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/delivery-receipt.json",
+      "bytes": 4342,
+      "sha256": "e80aad9d19df546a5f4e5a5ca582cb739fede5c4e515637ecbe68d06a1d1673e"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/followup-validation-matrix.json",
+      "bytes": 95754,
+      "sha256": "346169bb73f513d2a43aee84c52f4b39b8e436e8bddfe336dd5764541cc2a8e8"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/source-equivalence.json",
+      "bytes": 726130,
+      "sha256": "7d5a21a9b550b242e16af59dd876d9db5be13c9610079b7afb47e9b0d143e94f"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/independent-review.json",
+      "bytes": 15661,
+      "sha256": "f61afd936cf79c514bd70ade7107c7e339edebd0131595b1fe5b06f4c7a6af59"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/root-artifact-review.json",
+      "bytes": 681,
+      "sha256": "b2c9a7e3f067c5e6713bd12c8b2a8d1e117c8863e97dfe660b56d1b5871ac54a"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/independent-review-attempt01.json",
+      "bytes": 9693,
+      "sha256": "10f566a306ec7eca4e189c0690933b02dfb13ddc1a5e5ae2742b16531a20eb49"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/review-card-wait-v2.py",
+      "bytes": 19337,
+      "sha256": "05a4575e3dd00613b2dbb0e7e8368e74e29c18475601949e3eb91db777341fb1"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/review-correction-details.json",
+      "bytes": 10432,
+      "sha256": "e7edb1c6f8b1fb9190e3635ad3d1fbd1933dba6ba060da2132dba59ec54f6d11"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/independent-review-pass-before-diff.json",
+      "bytes": 10125,
+      "sha256": "7bcb9acbd90669ab1519972f8d511abde13e3ad2d535197ce1af7cd3de069f10"
+    },
+    {
+      "path": "tests/release-evidence/20261008-card-wait/review-card-wait-v3.py",
+      "bytes": 20764,
+      "sha256": "6e7c8e908b55b958704ba8c3092fd3af858ff4e8e133757aa5713e87f078fdee"
+    }
+  ],
+  "selfHashExcluded": "The Git publication commit binds this manifest; it does not recursively hash itself.",
+  "originalArtifactsGuardSha256": "d9ab1f9d925c15f0df8ad081b2c5acc1fda55fe1ec96092cf6d917bc3ffb04ef",
+  "releaseApproved": false,
+  "originalFullCDPExecutionHead": "459478e9f68fe8ee9252a5f6b4a1ffb2213a5207"
+}
