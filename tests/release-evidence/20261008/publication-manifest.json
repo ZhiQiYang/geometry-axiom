@@ -1,0 +1,62 @@
+{
+  "schema": "geometry-publication-metadata/1",
+  "testedHead": "459478e9f68fe8ee9252a5f6b4a1ffb2213a5207",
+  "runtimeVersionBeforeAndAfter": "4f89407fd3b542efa28b5eb5837657105f1244442bd9ee7b6a848e22ab0b65e3",
+  "productChangedSinceTestedHead": false,
+  "scope": "Documentation and immutable evidence copies only; does not claim merge, deployment, Windows/device acceptance or hosted CI execution.",
+  "releaseApproved": false,
+  "files": [
+    {
+      "path": "geometry-web/docs/RELEASE-CANDIDATE.md",
+      "bytes": 9241,
+      "sha256": "a48dbec08f50394d0f1260398439c8a678272c780e4e4e03b3f794cb4b641445"
+    },
+    {
+      "path": "tests/release-evidence/20261008/geometry-main-evidence-459478e9.tar.gz",
+      "bytes": 39046314,
+      "sha256": "3bd6f83ec9bcdc9cfc70e88091ba46db215e6ad374e261248e227d1eda9a9203"
+    },
+    {
+      "path": "tests/release-evidence/20261008/geometry-full-cdp-evidence-459478e9.tar.gz",
+      "bytes": 15356034,
+      "sha256": "30c623444e1bfb65187f9e3f9b482dcf4ff8716621bdb7dd0d6537d939212dd2"
+    },
+    {
+      "path": "tests/release-evidence/20261008/integration-evidence-manifest.json",
+      "bytes": 2740095,
+      "sha256": "900d938a47c6f5fe988987ad7a092bedf89f862a03ffdf20ee65097d0def20f3"
+    },
+    {
+      "path": "tests/release-evidence/20261008/integration-delivery-receipt.json",
+      "bytes": 768,
+      "sha256": "3954fa451c35f1b8f6cfb2ce8380f6f73ea9d6c17ee76aa7b0550744a649989d"
+    },
+    {
+      "path": "tests/release-evidence/20261008/integration-evidence-review.json",
+      "bytes": 28914,
+      "sha256": "645f0f0b3ee15d61cfdbfb4986d928282bde4cac8b35f300fe01061d66dbfd81"
+    },
+    {
+      "path": "tests/release-evidence/20261008/final-validation-matrix.json",
+      "bytes": 203676,
+      "sha256": "633881d18e39fc14edcea51cb069e1d6739ad3ea8313b640d9a9a332a6fa0d9c"
+    },
+    {
+      "path": "tests/release-evidence/20261008/final-pr-source-coverage.json",
+      "bytes": 24589,
+      "sha256": "c994ed3cb239d06dd180810d1c10da2f65aba479d37b8da5b7c77bb72f584ace"
+    },
+    {
+      "path": "tests/release-evidence/20261008/pr162-oracle-inventory.json",
+      "bytes": 38050,
+      "sha256": "ceac70a73a3af659be497ad5bbb087843dea5c18496b71daefb6d18ba25f43cd"
+    },
+    {
+      "path": "tests/release-evidence/20261008/pr162-oracle-evidence.tar.gz",
+      "bytes": 3043564,
+      "sha256": "d557783696db1112ae5636150b89929a36c8b2feee4f0029af045838b160c4be"
+    }
+  ],
+  "selfHashExcluded": "This manifest does not recursively hash itself; the publication commit binds it.",
+  "matrixPending": []
+}
