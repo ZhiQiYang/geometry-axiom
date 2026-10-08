@@ -387,15 +387,23 @@ function reapplyInspectorFocus(pane, state) {
   if (pane.contains(document.activeElement)) return;
   target.focus({ preventScroll: true });
 }
-/* Edge lengths are outside the face draft filter. Keep a typed value only
-   when the same boundary is rebuilt and that edge's model length is unchanged. */
+/* Edge lengths are outside the face draft filter. Keep a typed value when the
+   same boundary is rebuilt and the model length is unchanged. Also keep a
+   keystroke typed while a commit is in flight: edgePending is that submission,
+   and the rebuilt field shows it after the commit lands. */
+/* Removing a focused edge field fires change. That event is the redraw, not a
+   new submission, so the handler must ignore it. */
+function disarmEdgeInputs(pane) {
+  if (!pane) return;
+  for (const input of pane.querySelectorAll("input[data-edge-len]")) input.dataset.edgeSuppress = "1";
+}
 function captureDirtyInputs(pane) {
   if (!pane) return null;
   const active = document.activeElement;
   const edits = [];
   for (const input of pane.querySelectorAll("input[data-edge-len][id]")) {
     if (!/^[A-Za-z][\w-]*$/.test(input.id) || input.value === input.defaultValue) continue;
-    edits.push({ id: input.id, value: input.value, model: input.defaultValue, focus: active === input });
+    edits.push({ id: input.id, value: input.value, model: input.defaultValue, pending: input.dataset.edgePending || "", focus: active === input });
   }
   return { owner: pane.dataset.redrawOwner || "", edits };
 }
@@ -403,7 +411,10 @@ function restoreDirtyInputs(pane, snap) {
   if (!pane || !snap?.owner || pane.dataset.redrawOwner !== snap.owner) return;
   for (const edit of snap.edits) {
     const input = pane.querySelector("#" + edit.id);
-    if (!input || input.value !== edit.model) continue;
+    if (!input) continue;
+    const modelUnchanged = input.value === edit.model;
+    const appliedPending = edit.pending !== "" && input.value === edit.pending && edit.value !== edit.pending;
+    if (!modelUnchanged && !appliedPending) continue;
     input.value = edit.value;
     if (edit.focus && !pane.contains(document.activeElement)) input.focus({ preventScroll: true });
   }
@@ -8273,6 +8284,7 @@ function renderFaceInspector() {
   const e = oc.edit;
   const pane = $("faceInspectorContent");
   if (!e || !pane) return;
+  disarmEdgeInputs(pane);
   if (e.contextId !== ReferenceWorkspace.context().id) { resetSceneFocus(); return; }
   if (fe.timberSelection.size > 1) {
     GridEditor.clear();
@@ -8492,10 +8504,16 @@ function renderFaceInspector() {
   /* Phase 2 邊長輸入:commitEdgeLength 內部呼叫 applyEdgeLen 傳播後重宣告 */
   for (const inp of pane.querySelectorAll("[data-edge-len]"))
     inp.addEventListener("change", async () => {
-      const i = +inp.dataset.edgeLen, len = Math.round(+inp.value);
+      if (inp.dataset.edgeSuppress === "1") return;
+      const i = +inp.dataset.edgeLen, submitted = inp.value, len = Math.round(+submitted);
+      inp.dataset.edgePending = submitted;
       if (await commitEdgeLength(bid, oc.bmap[bid], i, len)) await feAfterChange();
-      else {
-        if (inp.isConnected) inp.value = inp.defaultValue;
+      else if (inp.isConnected) {
+        /* 只清掉仍停在被拒內容的欄位。等待期間鍵入的新值要留下來。 */
+        if (inp.value === submitted) {
+          inp.value = inp.defaultValue;
+          delete inp.dataset.edgePending;
+        }
         renderFaceInspector();
       }
     });
@@ -9356,6 +9374,7 @@ function syncParameterEditingLayout() {
 function renderInspectorBody() {
   syncCompositionLayout();
   const pane = $("inspectorContent"); if (!pane) return;
+  disarmEdgeInputs(pane);
   const dirtyInputs = captureDirtyInputs(pane);
   const empty = $("inspectorEmpty");
   if(oc.parameterCreating){pane.dataset.redrawOwner="";if(empty)empty.hidden=true;pane.hidden=false;window.ParameterUI?.render(pane);return;}
@@ -9445,7 +9464,7 @@ function renderInspectorBody() {
   /* §5.A.1.10:外環邊清單事件——commitEdgeFixity/commitEdgeLength 成功時
      已經透過 emitBoundary→emitLine→renderObjects() 自動重繪本檢視器(oc.focus
      為空時 drawObjects() 會呼叫 renderInspector());只有失敗(驗證擋下或核心
-     拒絕)才需要自己重繪一次,把輸入框重置回真實值。 */
+     拒絕)才需要自己重繪一次。被拒內容還留在欄位才重置，較新的鍵入不清除。 */
   if (sel.kind === "boundary" && bLoops && bLoops.length) {
     for (const b of pane.querySelectorAll("[data-fix-edge]"))
       b.addEventListener("click", async () => {
@@ -9456,9 +9475,15 @@ function renderInspectorBody() {
       });
     for (const inp of pane.querySelectorAll("[data-edge-len]"))
       inp.addEventListener("change", async () => {
-        const i = +inp.dataset.edgeLen, len = Math.round(+inp.value);
+        if (inp.dataset.edgeSuppress === "1") return;
+        const i = +inp.dataset.edgeLen, submitted = inp.value, len = Math.round(+submitted);
+        inp.dataset.edgePending = submitted;
         if (!(await commitEdgeLength(sel.id, oc.bmap[sel.id], i, len))) {
-          if (inp.isConnected) inp.value = inp.defaultValue;
+          if (!inp.isConnected) return;
+          if (inp.value === submitted) {
+            inp.value = inp.defaultValue;
+            delete inp.dataset.edgePending;
+          }
           renderInspector();
         }
       });
