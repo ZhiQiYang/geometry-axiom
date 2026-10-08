@@ -9,14 +9,16 @@
 
 `tests/release_gate.py` 在既有隔離服務上執行一個正式 gate；服務由呼叫端管理。
 先設定 receipt-backed `GEOMETRY_TEST_BRIDGE`／`GEOMETRY_MODEL_BASE` 及與服務相同的
-TEMP `GEOMETRY_FEEDBACK_DIR`，再執行：
+TEMP `GEOMETRY_FEEDBACK_DIR`，再執行。下列路徑是 Linux：`/tmp` 不是 Windows 的 `%TEMP%`，
+Windows bridge 檔名是 `bridge.exe`。`release_gate.py` 會把 `--url` 寫進子行程的
+`GEOMETRY_TEST_URL`；回報目錄與兩支 native 路徑仍要呼叫端自己設，且 `--output` 必須在 checkout 外。
 
 ```sh
 python3 tests/release_gate.py --url http://127.0.0.1:18970/ \
   --output /tmp/new-release-evidence -- node geometry-web/cdp_test.js
 ```
 
-输出必須是 checkout 之外的新目錄，不覆蓋舊收據。前後核對 clean Git head/tree、
+輸出必須是 checkout 之外的新目錄，不覆蓋舊收據。前後核對 clean Git head/tree、
 當前來源／runtime root、fresh、session、PID，以及設定的 native 檔案和 sidecar。
 每次保存完整命令日誌及 machine-readable receipt；失敗、超時、中斷與缺完整結果均非成功。
 CDP／Space另核正式 completed/scope/floor；partial只屬其明示範圍。
@@ -67,6 +69,8 @@ Native收據證明設定的檔案，`/runtime` 尚未直接證明正在執行的
 只操作明確指定的隔離服務，結果目錄必須在 checkout 外且不能重用舊結果。
 
 ```sh
+# 僅 Linux。geometry-web/start_local.py 在非 Linux 直接拒絕。
+# Windows 用 geometry-web/start.ps1；不要把 /tmp 與 python3 原樣貼到 PowerShell。
 # 在另一個終端啟動專屬服務；不要沿用使用者的服務。
 GEOMETRY_FEEDBACK_DIR=/tmp/geometry-closeout-feedback \
   python3 geometry-web/start_local.py --port 18971 --binary-dir /tmp/geometry-closeout-native
