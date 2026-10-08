@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="project-ui.css">
 <link rel="stylesheet" href="workspace-shell.css">
 <link rel="stylesheet" href="assembly-workspace.css">
+<link rel="stylesheet" href="section-profile-workspace.css">
 <link rel="stylesheet" href="rule-case-workbench.css">
 <link rel="stylesheet" href="documents.css">
 <link rel="stylesheet" href="document-cases.css">
@@ -76,7 +77,7 @@
             <h3 class="file-section-label">工程與範例</h3>
             <button id="btnDatums" class="menu-item" type="button">共用基準</button>
             <button id="btnEngineeringSpecs" class="menu-item" type="button" data-engineering-open>工程規格 · 面材與角材</button>
-            <button id="btnModelLibraryMenu" class="menu-item" type="button">空間模型庫</button>
+            <button id="btnModelLibraryMenu" class="menu-item" type="button">3D 模型庫</button>
             <div id="exampleMenu" class="menu menu-nested">
               <button id="exampleMenuBtn" class="menu-item" type="button" aria-haspopup="menu">範例 <span aria-hidden="true">▸</span></button>
               <div id="exampleMenuPop" class="menu-pop" role="menu" hidden>
@@ -132,7 +133,7 @@
       </section>
 
       <section class="sidebar-section project-library-entry" aria-label="專案資料庫">
-        <button id="btnSpaceModels" type="button" class="text-button"><span data-icon="space"></span>空間模型 <span id="spaceModelCount">0</span></button>
+        <button id="btnSpaceModels" type="button" class="text-button"><span data-icon="space"></span>3D 模型 <span id="spaceModelCount">0</span></button>
         <span class="space-model-release" hidden>正在確認建模服務版本…</span>
       </section>
 
@@ -323,6 +324,7 @@
     <button id="btnCreatePoly" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon face"><span data-icon="vertex"></span></span><span><strong>多邊形邊界</strong><small>逐點描繪輪廓</small></span></button>
     <button id="btnNewParameter" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">ƒ</span><span><strong>參數</strong><small>建立可重用的尺寸與算式</small></span></button>
     <button id="btnNewAssembly" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">⋈</span><span><strong>組構規則</strong><small>定義局部接合與材料配置</small></span></button>
+    <button id="btnNewSectionProfile" class="create-menu-entry menu-item" type="button" role="menuitem"><span class="type-icon">⌞</span><span><strong>斷面與拉伸</strong><small>編輯輪廓與構件，預覽直線拉伸</small></span></button>
           <button id="btnNewSpace" type="button" class="create-menu-entry menu-item" role="menuitem" title="＋空間:空容器">
             <span class="type-icon space"><span data-icon="space"></span></span>
             <span><strong>空間</strong><small>空容器</small></span>
@@ -705,6 +707,7 @@
 <script src="rule-case-workbench.js"></script>
 <script src="rule-case-host.js"></script>
 <script src="assembly-workspace.js"></script>
+<script src="section-profile-workspace.js"></script>
 <script src="source-inspector.js"></script>
 <script src="source-inspector-app.js"></script>
 <script src="evidence-links-app.js"></script>

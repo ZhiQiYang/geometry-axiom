@@ -10,7 +10,8 @@
   const identifier=v=>typeof v==='string'&&ID.test(v);
   const KINDS = new Set(['boundary','placement','space','column','beam','timber','grid','grid-system','grid-binding',
     'parameter','assembly-rule','assembly-binding','material','method','application','datum','model',
-    'engineering-draft','assembly-draft','reference-page','grid-draft','spec','guide','assembly-instance']);
+    'engineering-draft','assembly-draft','reference-page','grid-draft','spec','guide','assembly-instance',
+    'section-profile','profile-member','profile-run','panel-spec']);
   function fail(code, message) { throw Object.assign(new Error(message), {code}); }
   const exact = (v, required, optional=[]) => v && typeof v === 'object' && !Array.isArray(v) &&
     required.every(k => Object.hasOwn(v,k)) && Object.keys(v).every(k => required.includes(k)||optional.includes(k));
