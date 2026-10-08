@@ -433,6 +433,15 @@ class SectionProfileNative(unittest.TestCase):
         changed = {n["key"]:n for n in self.command("source-inspect")["nodes"]}
         self.assertNotEqual(nodes["profile-member:1"]["valueFingerprint"], changed["profile-member:1"]["valueFingerprint"])
         self.assertNotEqual(nodes["profile-run:1"]["valueFingerprint"], changed["profile-run:1"]["valueFingerprint"])
+        # Scenario verification preserves the same exact native inventory.
+        sys.path.insert(0,str(ROOT/"geometry-web"))
+        import scenario_verify
+        path=self.directory/"inventory.scene";path.write_text(self.command("dump")["text"])
+        graph=self.command("source-inspect-file "+str(path))
+        objects,inventory=scenario_verify._inventory(graph,{"boundaries":[],"placements":[]})
+        self.assertTrue({("section-profile",1),("profile-member",1),("profile-member",4),("profile-run",1),("panel-spec","calcium-silicate-6")} <= {(o["kind"],o["id"]) for o in objects})
+        self.assertEqual(len(graph["edges"]),len(inventory["references"]))
+        self.assertIn("section-profile/1",scenario_verify._capabilities(["section-profile/1"],()))
 
     def host(self, holes=None):
         return {"kind":"space-wall-values","sourceDescription":"依某空間牆取值，不隨空間變動",
