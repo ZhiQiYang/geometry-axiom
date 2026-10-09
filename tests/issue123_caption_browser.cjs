@@ -97,7 +97,17 @@ async function newProject(){await click('#fileMenuBtn');await expectedConfirm(()
 const fixture=['boundary 1 outline 0,0 4000,0 4000,3000 0,3000','placement 1 on boundary 1 origin 0 0 2500 u +x v +y','canvas-pos boundary 1 280 100'];
 const gridFixture=[...fixture,'grid-system 1 name-hex 7461696c20736f75726365 main-along u u repeat 0 600 v repeat 0 400','canvas-pos grid-system 1 560 100'];
 async function setup(lines=fixture){await newProject();const responses=await read(`(async()=>{const rows=[];for(const line of ${JSON.stringify(lines)}){const r=await api('line '+line);rows.push({line,response:r});if(!r.ok)throw Error(JSON.stringify(rows));}await renderObjects();return rows;})()`);fs.writeFileSync(path.join(OUT,current+'-context-'+contextOrdinal+'-fixture.json'),JSON.stringify(responses,null,2)+'\n');await click('#btnZoom');await settle();}
-async function enterFace(){await page.locator('.ocard[data-kind="boundary"][data-id="1"]').dblclick();await wait(`oc.edit?.bid===1&&!$('objectWorkspace').hidden`);await settle();}
+async function enterFace(){
+  const lesson='#ocSelectionSummary [data-guidance-dismiss]';
+  if(await visible(lesson)){
+    const original=await dump();
+    const actual=await read(`(()=>{const rows=[...document.querySelectorAll('${lesson}')],e=rows[0],r=e?.getBoundingClientRect();return {count:rows.length,hit:!!r&&e.contains(document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)),width:r?.width,height:r?.height};})()`);
+    check('initial canvas lesson has one normal reachable dismissal',actual.count===1&&actual.hit&&actual.width>0&&actual.height>0,actual);
+    await click(lesson);
+    check('normal first-use dismissal hides lesson and preserves exact native source',!await visible(lesson)&&(await dump())===original);
+  }
+  await page.locator('.ocard[data-kind="boundary"][data-id="1"]').dblclick();await wait(`oc.edit?.bid===1&&!$('objectWorkspace').hidden`);await settle();
+}
 async function sourceGrid(){
   // Return restores the object camera to 100%; fit the declared x560 card once
   // through the normal shortcut before a narrow-viewport pointer double-click.
@@ -138,7 +148,7 @@ async function runtime(label){const response=await fetch(new globalThis.URL('/ru
 function nativeIdentity(runtime){const bridge=process.env.GEOMETRY_TEST_BRIDGE,model=process.env.GEOMETRY_MODEL_BASE;if(!bridge||!model)throw Error('Explicit GEOMETRY_TEST_BRIDGE and GEOMETRY_MODEL_BASE required for executable identity');const script="import sys,json;from pathlib import Path;sys.path.insert(0,sys.argv[1]+'/tests');import binaries;rows=[]\nfor name,p in [('bridge',sys.argv[2]),('model-base',sys.argv[3])]:\n i=binaries.inspect_one(binaries.BY_NAME[name],path=Path(p));r=i.as_dict();r['fingerprint']=i.fingerprint;rows.append(r)\nprint(json.dumps(rows))";const infos=JSON.parse(execFileSync('python',['-c',script,ROOT,bridge,model],{cwd:ROOT,encoding:'utf8'}));check('native binary closure fingerprints are fresh',infos.every(r=>r.state==='fresh'),infos);const children=execFileSync('ps',['--ppid',String(runtime.pid),'-o','pid='],{encoding:'utf8'}).trim().split(/\s+/).filter(Boolean).map(Number);const live=children.map(pid=>{try{const executable=fs.realpathSync('/proc/'+pid+'/exe');return {pid,executable,sha256:sha(executable),command:fs.readFileSync('/proc/'+pid+'/cmdline').toString().replaceAll('\0',' ')};}catch(e){return {pid,error:e.message};}});check('live direct-child bridge matches recorded native executable bytes',live.some(r=>r.sha256===sha(bridge)),live);return {bridge:{path:path.resolve(bridge),sha256:sha(bridge)},modelBase:{path:path.resolve(model),sha256:sha(model)},infos,liveDirectChildren:live};}
 
 
-// Added standalone scope. Existing six group bodies, helpers and footer stay exact.
+// Standalone scope retains the six group bodies and footer; face entry normally dismisses the existing first-use lesson.
 if(!equal(requested,['caption']))throw Error('This independent candidate permits caption only; use the formal test for the original six');
 run.scope.mode='caption-only-seven-width-normal-input';
 run.scope.fixture='Exact original full Space font six-surface/space1 fixture; normal boundary1 card dblclick enters face';
