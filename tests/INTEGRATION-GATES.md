@@ -399,12 +399,16 @@ reload 的比較只要求可持久保存的 project identity、World、catalog�
 不把本來只屬於該文件的 context token、revision 或 Undo history 冒稱為 reload 後復原。
 所有材料是 synthetic；不把 timeout、未完成 Promise 或 memory DOM 結果當 pass。
 
-**本次中斷 ticket 修補的瀏覽器狀態：未執行。** 環境的 browser／AF_UNIX EPERM
-限制未解除，本次只做腳本語法與 diff whitespace 檢查，沒有啟動 Chromium。
-上述所有新增／改寫路徑以及保留的 lifecycle 路徑，均須在可用的真 browser／native
-環境另跑；Node storage fixture 或 HTTP/native 等價結果不替代 IndexedDB／Web Locks／
-reload／iframe UI 驗收。BFCache、取消 beforeunload、跨 profile／origin、實體手機及
-OS 系統 picker 不在本腳本已編寫的 coverage 內，仍屬另行待驗；不算 pass／skip。
+**歷史中斷 ticket 修補當時的瀏覽器狀態：未執行。** 當時 browser／AF_UNIX EPERM
+限制下只做腳本語法與 diff whitespace 檢查，沒有啟動 Chromium；該失敗紀錄保留。
+後續在乾淨 `5174a8dafd8c48329d7166abbd3d104e3c28c0c4` 已實跑真 browser／native：
+[scenario lifecycle 82 項](release-evidence/20261008-cloud-closeout/gates/scenario-lifecycle/receipt.json)
+與 [scenario workflow 34 項](release-evidence/20261008-cloud-closeout/gates/scenario-workflow/receipt.json)
+各自退出碼 0，原始 log 隨各收據保留。兩份結果各限原腳本範圍，不合併為完整 Resume
+驗收，也不把原受測版本改綁後續文件提交。Node storage fixture 或 HTTP/native 等價
+結果仍不替代 IndexedDB／Web Locks／reload／iframe UI 驗收。BFCache、取消
+beforeunload、跨 profile／origin、實體手機及 OS 系統 picker 不在上述腳本的 coverage
+內，仍屬另行待驗；不算 pass／skip。
 
 正常 `test_scenario_workflow_browser.js` 另以真 PDF import、手動矩形與明選參數欄位建立證據，
 移除圖頁後保存 A/B，要求根專案與兩份 leaf closure 共用恰一份原始 PDF bytes。
@@ -471,7 +475,10 @@ binding／adapter，不能關閉 native context 或使 live assembly candidate �
 formal 兩項另提供 `GEOMETRY_TEST_URL`、TEMP `GEOMETRY_FEEDBACK_DIR`，
 結果記錄 exact head/tree、clean 與 `/runtime`。正常 Save 下載實際 `.gcanvas`
 ZIP，再從新的空白 context 使用正式檔案輸入重開；不以 memory-backend
-roundtrip 或舊 source 的 full receipt 代替。PR141 的九份 owner 檔案逐 blob 重用。
+roundtrip 或舊 source 的 full receipt 代替。PR141 的九份來源檔包含七份實作／測試
+與兩份文件；全部九檔在 PR146 均逐 blob 重用，後續候選的兩份文件另有演進。
+[原九檔 blob 核對](release-evidence/20261008/final-pr-source-coverage.json)保留來源身份，
+不得把九份檔案皆稱為可執行元件。
 所有保存或載回 receipts 均為歷史未核信，只有此次 controlled native run 可顯示
 本次核對；timeout、crash、缺輸出或未知 runtime 都不能冒算 pass。
 
