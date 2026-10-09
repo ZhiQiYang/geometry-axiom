@@ -8539,8 +8539,8 @@ function renderFaceInspector() {
       if (inp.dataset.edgeSuppress === "1") return;
       const i = +inp.dataset.edgeLen, submitted = beginEdgeSubmission(pane, inp), len = Math.round(+submitted.value);
       if (await commitEdgeLength(bid, oc.bmap[bid], i, len)) {
-        finishEdgeSubmission(submitted);
         await feAfterChange();
+        finishEdgeSubmission(submitted);
       } else if (finishEdgeSubmission(submitted, true)) renderFaceInspector();
     });
   }
