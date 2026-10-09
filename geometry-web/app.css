@@ -2370,7 +2370,9 @@ body.canvas-composition #fbButton { top: calc(var(--topbar-h) + 18px); left: aut
   body.canvas-composition .canvas-controls .icon-button { width: 30px; height: 32px; }
   body.canvas-composition .canvas-controls .zoom-level { min-width: 44px; }
   body.canvas-composition .canvas-controls .mini-toggle { flex-basis: 44px; width: 44px; min-width: 44px; white-space: nowrap; }
-  body.canvas-composition.canvas-has-inspector .sidebar-right { display: block; position: relative; inset: auto; width: auto; max-height: min(310px, 40dvh); margin: 0 8px 8px; z-index: 11; }
+  /* Selection must not shrink the canvas between the two pointer downs.
+     Keep the existing inspector above the unchanged zoom/control row. */
+  body.canvas-composition.canvas-has-inspector .sidebar-right { display: block; position: fixed; inset: auto 8px calc(var(--statusbar-h) + 62px); width: auto; max-height: min(310px, 40dvh); margin: 0; z-index: 11; }
   body.canvas-composition .sidebar-right .inspector-content { min-height: 0; }
   body.canvas-composition .inspector-content > .inspector-hero { padding: 14px 16px; }
   body.canvas-composition .inspector-content .inspector-section { padding: 12px 16px; }
