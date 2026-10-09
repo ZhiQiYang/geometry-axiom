@@ -1,5 +1,16 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-10-09 收尾核收更新（各 scope 分列）
+
+完整候選 SHA f3b8285729b42cd22451c98cba1e2ec4514517f3，核對時 clean；各 scope 的受測版本、執行身分及原始證據見[收尾總索引](tests/evidence/cloud-takeover-20261009/UI-CLOSEOUT.md)。
+
+- 本候選縮窄三個 compact project-row selectors；不新增入口／常駐說明（GEO-219），不改保存／返回 handlers、state、56／96px或Grid契約。原 Assembly150／0／0及Standalone Space228／0已核收；Space兩 timber groups仍 omitted。
+- 9eb原七寬 caption329／0與六組198／0各自完整，caption保留原73 checksites，另加正常首次教學bbox／hit與hidden／native same兩個正前提（不僅註解）；原102ff／bb7／59失敗、9eb1842／0未完成及兩份noReceipt中斷按具名版本保留在總索引。
+- 本候選原完整 CDP2207／0／0、completed:true、84段golden matched已核收；實際Node／gate／controller0、stop0、全部source／native／live actor及clean前後吻合。前次同版無收據／actual actor未知仍分列，不相加或補造舊exits。同版四案正常返回40／0、Node／gate／controller0、completed:true、有界probeVerified已核收；原16／1保留。P38原EXPECTED fb-auto-probe1不另造零例外門檻。
+- 既有243四UI327／0與#54完整273／0、640投影十案10／0及同owner兩案2／0、128 Resume四案4／0（56 assertions）均保原SHA與範圍；單房direct12／14／16對manual16／20／24為同起點／精確同終點。
+- 43來源盤點保持source-only；B8／C5／C6／C7／G1／G2私人稿件、未採納或政策需原決策來源，沒有自造規格。工作管理原ledger／export仍unknown，reconcile／list-ready／list-alerts未執行；Windows原件未核收，不要求已停止作者重做。
+
+
 ## #123 正常鍵盤可達與 390px 參數畫布保全（2026-10-09，待新候選實跑）
 
 - 保留原 Tab／Shift+Tab 順序、焦點及工具 handlers；當既有面工具取得真焦點卻被 nav 裁切，只同步捲動該 nav 以露出整顆按鈕。邊距依 nav 與按鈕的剩餘寬度計算，最寬按鈕不額外佔用所需寬度。不接管鍵盤或焦點、不捲祖先、不觸發原生幾何。原 102ff caption 27／1、單次只讀診斷與 bb7 的 600px 199／1 失敗各自保留；同一強 oracle 留為 `tests/issue123_caption_browser.cjs`，只有首行註解更新。

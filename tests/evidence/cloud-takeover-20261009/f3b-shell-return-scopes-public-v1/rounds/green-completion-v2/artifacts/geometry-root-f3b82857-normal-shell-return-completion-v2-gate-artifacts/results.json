@@ -1,0 +1,1172 @@
+{
+  "schema": "geometry-shared-row-normal-return-probe/1",
+  "startedSource": {
+    "head": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "dirty": "",
+    "sourceSHA256": "020f542a86fd5d3fd581575acbce5e05e3d634775875cd4b4467843477527cee",
+    "expectedSHA": "f3b8285729b42cd22451c98cba1e2ec4514517f3"
+  },
+  "finishedSource": {
+    "head": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "dirty": ""
+  },
+  "checks": [
+    {
+      "name": "unique visible original Create entry",
+      "ok": true,
+      "detail": [
+        "#btnCreateObject"
+      ]
+    },
+    {
+      "name": "one normal physical click precondition #btnCreateObject",
+      "ok": true,
+      "detail": {
+        "selector": "btnCreateObject",
+        "rect": {
+          "left": 16,
+          "right": 261,
+          "top": 74,
+          "bottom": 120,
+          "width": 245,
+          "height": 46
+        },
+        "center": {
+          "x": 138.5,
+          "y": 97
+        },
+        "position": "static",
+        "display": "inline-flex",
+        "hit": true,
+        "hitElement": "BUTTON#btnCreateObject",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "one normal physical click precondition #btnNewAssembly",
+      "ok": true,
+      "detail": {
+        "selector": "btnNewAssembly",
+        "rect": {
+          "left": 25,
+          "right": 267,
+          "top": 406.953125,
+          "bottom": 463.84375,
+          "width": 242,
+          "height": 56.890625
+        },
+        "center": {
+          "x": 146,
+          "y": 435.3984375
+        },
+        "position": "static",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "SPAN#",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "1400 ASM shared original row stays normal flow",
+      "ok": true,
+      "detail": {
+        "row": {
+          "selector": "",
+          "rect": {
+            "left": 0,
+            "right": 1400,
+            "top": 0,
+            "bottom": 64,
+            "width": 1400,
+            "height": 64
+          },
+          "center": {
+            "x": 700,
+            "y": 32
+          },
+          "position": "relative",
+          "display": "flex",
+          "hit": true,
+          "hitElement": "STRONG#",
+          "disabled": false,
+          "insideViewport": true
+        },
+        "identity": {
+          "barSame": true,
+          "oneBar": true,
+          "insideActive": true
+        }
+      }
+    },
+    {
+      "name": "1400 ASM actual return center hits original control",
+      "ok": true,
+      "detail": {
+        "row": {
+          "selector": "",
+          "rect": {
+            "left": 0,
+            "right": 1400,
+            "top": 0,
+            "bottom": 64,
+            "width": 1400,
+            "height": 64
+          },
+          "center": {
+            "x": 700,
+            "y": 32
+          },
+          "position": "relative",
+          "display": "flex",
+          "hit": true,
+          "hitElement": "STRONG#",
+          "disabled": false,
+          "insideViewport": true
+        },
+        "button": {
+          "selector": "asmClose",
+          "rect": {
+            "left": 1306,
+            "right": 1380,
+            "top": 76,
+            "bottom": 120,
+            "width": 74,
+            "height": 44
+          },
+          "center": {
+            "x": 1343,
+            "y": 98
+          },
+          "position": "static",
+          "display": "block",
+          "hit": true,
+          "hitElement": "BUTTON#asmClose",
+          "disabled": false,
+          "insideViewport": true
+        }
+      }
+    },
+    {
+      "name": "one normal physical click precondition #asmClose",
+      "ok": true,
+      "detail": {
+        "selector": "asmClose",
+        "rect": {
+          "left": 1306,
+          "right": 1380,
+          "top": 76,
+          "bottom": 120,
+          "width": 74,
+          "height": 44
+        },
+        "center": {
+          "x": 1343,
+          "y": 98
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#asmClose",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "1400 ASM one original trusted return gesture",
+      "ok": true,
+      "detail": [
+        {
+          "type": "pointerdown",
+          "isTrusted": true,
+          "id": "asmClose"
+        },
+        {
+          "type": "pointerup",
+          "isTrusted": true,
+          "id": "asmClose"
+        },
+        {
+          "type": "click",
+          "isTrusted": true,
+          "id": "asmClose"
+        }
+      ]
+    },
+    {
+      "name": "1400 ASM exact native full dump unchanged",
+      "ok": true
+    },
+    {
+      "name": "1400 ASM same original project bar returns home",
+      "ok": true
+    },
+    {
+      "name": "unique visible original Create entry",
+      "ok": true,
+      "detail": [
+        "#btnCreateObject"
+      ]
+    },
+    {
+      "name": "one normal physical click precondition #btnCreateObject",
+      "ok": true,
+      "detail": {
+        "selector": "btnCreateObject",
+        "rect": {
+          "left": 16,
+          "right": 261,
+          "top": 74,
+          "bottom": 120,
+          "width": 245,
+          "height": 46
+        },
+        "center": {
+          "x": 138.5,
+          "y": 97
+        },
+        "position": "static",
+        "display": "inline-flex",
+        "hit": true,
+        "hitElement": "BUTTON#btnCreateObject",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "one normal physical click precondition #btnNewSectionProfile",
+      "ok": true,
+      "detail": {
+        "selector": "btnNewSectionProfile",
+        "rect": {
+          "left": 25,
+          "right": 267,
+          "top": 465.84375,
+          "bottom": 522.734375,
+          "width": 242,
+          "height": 56.890625
+        },
+        "center": {
+          "x": 146,
+          "y": 494.2890625
+        },
+        "position": "static",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "SPAN#",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "1400 SP shared original row stays normal flow",
+      "ok": true,
+      "detail": {
+        "row": {
+          "selector": "",
+          "rect": {
+            "left": 1,
+            "right": 1371,
+            "top": 1,
+            "bottom": 65,
+            "width": 1370,
+            "height": 64
+          },
+          "center": {
+            "x": 686,
+            "y": 33
+          },
+          "position": "relative",
+          "display": "flex",
+          "hit": true,
+          "hitElement": "STRONG#",
+          "disabled": false,
+          "insideViewport": true
+        },
+        "identity": {
+          "barSame": true,
+          "oneBar": true,
+          "insideActive": true
+        }
+      }
+    },
+    {
+      "name": "1400 SP actual return center hits original control",
+      "ok": true,
+      "detail": {
+        "row": {
+          "selector": "",
+          "rect": {
+            "left": 1,
+            "right": 1371,
+            "top": 1,
+            "bottom": 65,
+            "width": 1370,
+            "height": 64
+          },
+          "center": {
+            "x": 686,
+            "y": 33
+          },
+          "position": "relative",
+          "display": "flex",
+          "hit": true,
+          "hitElement": "STRONG#",
+          "disabled": false,
+          "insideViewport": true
+        },
+        "button": {
+          "selector": "spClose",
+          "rect": {
+            "left": 1267,
+            "right": 1349,
+            "top": 85.640625,
+            "bottom": 129.640625,
+            "width": 82,
+            "height": 44
+          },
+          "center": {
+            "x": 1308,
+            "y": 107.640625
+          },
+          "position": "static",
+          "display": "block",
+          "hit": true,
+          "hitElement": "BUTTON#spClose",
+          "disabled": false,
+          "insideViewport": true
+        }
+      }
+    },
+    {
+      "name": "one normal physical click precondition #spCancel",
+      "ok": true,
+      "detail": {
+        "selector": "spCancel",
+        "rect": {
+          "left": 1091,
+          "right": 1173,
+          "top": 805.875,
+          "bottom": 849.875,
+          "width": 82,
+          "height": 44
+        },
+        "center": {
+          "x": 1132,
+          "y": 827.875
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#spCancel",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "1400 SP original Cancel preserves exact native dump",
+      "ok": true
+    },
+    {
+      "name": "one normal physical click precondition #spClose",
+      "ok": true,
+      "detail": {
+        "selector": "spClose",
+        "rect": {
+          "left": 1267,
+          "right": 1349,
+          "top": 85.640625,
+          "bottom": 129.640625,
+          "width": 82,
+          "height": 44
+        },
+        "center": {
+          "x": 1308,
+          "y": 107.640625
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#spClose",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "1400 SP one original trusted return gesture",
+      "ok": true,
+      "detail": [
+        {
+          "type": "pointerdown",
+          "isTrusted": true,
+          "id": "spClose"
+        },
+        {
+          "type": "pointerup",
+          "isTrusted": true,
+          "id": "spClose"
+        },
+        {
+          "type": "click",
+          "isTrusted": true,
+          "id": "spClose"
+        }
+      ]
+    },
+    {
+      "name": "1400 SP exact native full dump unchanged",
+      "ok": true
+    },
+    {
+      "name": "1400 SP same original project bar returns home",
+      "ok": true
+    },
+    {
+      "name": "unique visible original Create entry",
+      "ok": true,
+      "detail": [
+        "#mobileCreateObject"
+      ]
+    },
+    {
+      "name": "one normal physical click precondition #mobileCreateObject",
+      "ok": true,
+      "detail": {
+        "selector": "mobileCreateObject",
+        "rect": {
+          "left": 307.984375,
+          "right": 382,
+          "top": 4,
+          "bottom": 48,
+          "width": 74.015625,
+          "height": 44
+        },
+        "center": {
+          "x": 344.9921875,
+          "y": 26
+        },
+        "position": "static",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "SPAN#",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "one normal physical click precondition #btnNewAssembly",
+      "ok": true,
+      "detail": {
+        "selector": "btnNewAssembly",
+        "rect": {
+          "left": 131,
+          "right": 373,
+          "top": 334.953125,
+          "bottom": 391.84375,
+          "width": 242,
+          "height": 56.890625
+        },
+        "center": {
+          "x": 252,
+          "y": 363.3984375
+        },
+        "position": "static",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "SPAN#",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "390 ASM shared original row stays normal flow",
+      "ok": true,
+      "detail": {
+        "row": {
+          "selector": "",
+          "rect": {
+            "left": 0,
+            "right": 390,
+            "top": 0,
+            "bottom": 96,
+            "width": 390,
+            "height": 96
+          },
+          "center": {
+            "x": 195,
+            "y": 48
+          },
+          "position": "relative",
+          "display": "flex",
+          "hit": true,
+          "hitElement": "STRONG#",
+          "disabled": false,
+          "insideViewport": true
+        },
+        "identity": {
+          "barSame": true,
+          "oneBar": true,
+          "insideActive": true
+        }
+      }
+    },
+    {
+      "name": "390 ASM actual return center hits original control",
+      "ok": true,
+      "detail": {
+        "row": {
+          "selector": "",
+          "rect": {
+            "left": 0,
+            "right": 390,
+            "top": 0,
+            "bottom": 96,
+            "width": 390,
+            "height": 96
+          },
+          "center": {
+            "x": 195,
+            "y": 48
+          },
+          "position": "relative",
+          "display": "flex",
+          "hit": true,
+          "hitElement": "STRONG#",
+          "disabled": false,
+          "insideViewport": true
+        },
+        "button": {
+          "selector": "asmClose",
+          "rect": {
+            "left": 302,
+            "right": 376,
+            "top": 106,
+            "bottom": 150,
+            "width": 74,
+            "height": 44
+          },
+          "center": {
+            "x": 339,
+            "y": 128
+          },
+          "position": "static",
+          "display": "block",
+          "hit": true,
+          "hitElement": "BUTTON#asmClose",
+          "disabled": false,
+          "insideViewport": true
+        }
+      }
+    },
+    {
+      "name": "one normal physical click precondition #asmClose",
+      "ok": true,
+      "detail": {
+        "selector": "asmClose",
+        "rect": {
+          "left": 302,
+          "right": 376,
+          "top": 106,
+          "bottom": 150,
+          "width": 74,
+          "height": 44
+        },
+        "center": {
+          "x": 339,
+          "y": 128
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#asmClose",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "390 ASM one original trusted return gesture",
+      "ok": true,
+      "detail": [
+        {
+          "type": "pointerdown",
+          "isTrusted": true,
+          "id": "asmClose"
+        },
+        {
+          "type": "pointerup",
+          "isTrusted": true,
+          "id": "asmClose"
+        },
+        {
+          "type": "click",
+          "isTrusted": true,
+          "id": "asmClose"
+        }
+      ]
+    },
+    {
+      "name": "390 ASM exact native full dump unchanged",
+      "ok": true
+    },
+    {
+      "name": "390 ASM same original project bar returns home",
+      "ok": true
+    },
+    {
+      "name": "unique visible original Create entry",
+      "ok": true,
+      "detail": [
+        "#mobileCreateObject"
+      ]
+    },
+    {
+      "name": "one normal physical click precondition #mobileCreateObject",
+      "ok": true,
+      "detail": {
+        "selector": "mobileCreateObject",
+        "rect": {
+          "left": 307.984375,
+          "right": 382,
+          "top": 4,
+          "bottom": 48,
+          "width": 74.015625,
+          "height": 44
+        },
+        "center": {
+          "x": 344.9921875,
+          "y": 26
+        },
+        "position": "static",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "SPAN#",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "one normal physical click precondition #btnNewSectionProfile",
+      "ok": true,
+      "detail": {
+        "selector": "btnNewSectionProfile",
+        "rect": {
+          "left": 131,
+          "right": 373,
+          "top": 393.84375,
+          "bottom": 450.734375,
+          "width": 242,
+          "height": 56.890625
+        },
+        "center": {
+          "x": 252,
+          "y": 422.2890625
+        },
+        "position": "static",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "SPAN#",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "390 SP shared original row stays normal flow",
+      "ok": true,
+      "detail": {
+        "row": {
+          "selector": "",
+          "rect": {
+            "left": 1,
+            "right": 389,
+            "top": 1,
+            "bottom": 97,
+            "width": 388,
+            "height": 96
+          },
+          "center": {
+            "x": 195,
+            "y": 49
+          },
+          "position": "relative",
+          "display": "flex",
+          "hit": true,
+          "hitElement": "BUTTON#projectInfoButton",
+          "disabled": false,
+          "insideViewport": true
+        },
+        "identity": {
+          "barSame": true,
+          "oneBar": true,
+          "insideActive": true
+        }
+      }
+    },
+    {
+      "name": "390 SP actual return center hits original control",
+      "ok": true,
+      "detail": {
+        "row": {
+          "selector": "",
+          "rect": {
+            "left": 1,
+            "right": 389,
+            "top": 1,
+            "bottom": 97,
+            "width": 388,
+            "height": 96
+          },
+          "center": {
+            "x": 195,
+            "y": 49
+          },
+          "position": "relative",
+          "display": "flex",
+          "hit": true,
+          "hitElement": "BUTTON#projectInfoButton",
+          "disabled": false,
+          "insideViewport": true
+        },
+        "button": {
+          "selector": "spClose",
+          "rect": {
+            "left": 293,
+            "right": 375,
+            "top": 111.46875,
+            "bottom": 155.46875,
+            "width": 82,
+            "height": 44
+          },
+          "center": {
+            "x": 334,
+            "y": 133.46875
+          },
+          "position": "static",
+          "display": "block",
+          "hit": true,
+          "hitElement": "BUTTON#spClose",
+          "disabled": false,
+          "insideViewport": true
+        }
+      }
+    },
+    {
+      "name": "one normal physical click precondition #spCancel",
+      "ok": true,
+      "detail": {
+        "selector": "spCancel",
+        "rect": {
+          "left": 11,
+          "right": 128.328125,
+          "top": 945,
+          "bottom": 989,
+          "width": 117.328125,
+          "height": 44
+        },
+        "center": {
+          "x": 69.6640625,
+          "y": 967
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#spCancel",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "390 SP original Cancel preserves exact native dump",
+      "ok": true
+    },
+    {
+      "name": "one normal physical click precondition #spClose",
+      "ok": true,
+      "detail": {
+        "selector": "spClose",
+        "rect": {
+          "left": 293,
+          "right": 375,
+          "top": 111.46875,
+          "bottom": 155.46875,
+          "width": 82,
+          "height": 44
+        },
+        "center": {
+          "x": 334,
+          "y": 133.46875
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#spClose",
+        "disabled": false,
+        "insideViewport": true
+      }
+    },
+    {
+      "name": "390 SP one original trusted return gesture",
+      "ok": true,
+      "detail": [
+        {
+          "type": "pointerdown",
+          "isTrusted": true,
+          "id": "spClose"
+        },
+        {
+          "type": "pointerup",
+          "isTrusted": true,
+          "id": "spClose"
+        },
+        {
+          "type": "click",
+          "isTrusted": true,
+          "id": "spClose"
+        }
+      ]
+    },
+    {
+      "name": "390 SP exact native full dump unchanged",
+      "ok": true
+    },
+    {
+      "name": "390 SP same original project bar returns home",
+      "ok": true
+    }
+  ],
+  "results": [
+    {
+      "width": 1400,
+      "family": "ASM",
+      "completed": true
+    },
+    {
+      "width": 1400,
+      "family": "SP",
+      "completed": true
+    },
+    {
+      "width": 390,
+      "family": "ASM",
+      "completed": true
+    },
+    {
+      "width": 390,
+      "family": "SP",
+      "completed": true
+    }
+  ],
+  "measurements": [
+    {
+      "width": 1400,
+      "family": "ASM",
+      "row": {
+        "selector": "",
+        "rect": {
+          "left": 0,
+          "right": 1400,
+          "top": 0,
+          "bottom": 64,
+          "width": 1400,
+          "height": 64
+        },
+        "center": {
+          "x": 700,
+          "y": 32
+        },
+        "position": "relative",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "STRONG#",
+        "disabled": false,
+        "insideViewport": true
+      },
+      "button": {
+        "selector": "asmClose",
+        "rect": {
+          "left": 1306,
+          "right": 1380,
+          "top": 76,
+          "bottom": 120,
+          "width": 74,
+          "height": 44
+        },
+        "center": {
+          "x": 1343,
+          "y": 98
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#asmClose",
+        "disabled": false,
+        "insideViewport": true
+      },
+      "identity": {
+        "barSame": true,
+        "oneBar": true,
+        "insideActive": true
+      }
+    },
+    {
+      "width": 1400,
+      "family": "SP",
+      "row": {
+        "selector": "",
+        "rect": {
+          "left": 1,
+          "right": 1371,
+          "top": 1,
+          "bottom": 65,
+          "width": 1370,
+          "height": 64
+        },
+        "center": {
+          "x": 686,
+          "y": 33
+        },
+        "position": "relative",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "STRONG#",
+        "disabled": false,
+        "insideViewport": true
+      },
+      "button": {
+        "selector": "spClose",
+        "rect": {
+          "left": 1267,
+          "right": 1349,
+          "top": 85.640625,
+          "bottom": 129.640625,
+          "width": 82,
+          "height": 44
+        },
+        "center": {
+          "x": 1308,
+          "y": 107.640625
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#spClose",
+        "disabled": false,
+        "insideViewport": true
+      },
+      "identity": {
+        "barSame": true,
+        "oneBar": true,
+        "insideActive": true
+      }
+    },
+    {
+      "width": 390,
+      "family": "ASM",
+      "row": {
+        "selector": "",
+        "rect": {
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "bottom": 96,
+          "width": 390,
+          "height": 96
+        },
+        "center": {
+          "x": 195,
+          "y": 48
+        },
+        "position": "relative",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "STRONG#",
+        "disabled": false,
+        "insideViewport": true
+      },
+      "button": {
+        "selector": "asmClose",
+        "rect": {
+          "left": 302,
+          "right": 376,
+          "top": 106,
+          "bottom": 150,
+          "width": 74,
+          "height": 44
+        },
+        "center": {
+          "x": 339,
+          "y": 128
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#asmClose",
+        "disabled": false,
+        "insideViewport": true
+      },
+      "identity": {
+        "barSame": true,
+        "oneBar": true,
+        "insideActive": true
+      }
+    },
+    {
+      "width": 390,
+      "family": "SP",
+      "row": {
+        "selector": "",
+        "rect": {
+          "left": 1,
+          "right": 389,
+          "top": 1,
+          "bottom": 97,
+          "width": 388,
+          "height": 96
+        },
+        "center": {
+          "x": 195,
+          "y": 49
+        },
+        "position": "relative",
+        "display": "flex",
+        "hit": true,
+        "hitElement": "BUTTON#projectInfoButton",
+        "disabled": false,
+        "insideViewport": true
+      },
+      "button": {
+        "selector": "spClose",
+        "rect": {
+          "left": 293,
+          "right": 375,
+          "top": 111.46875,
+          "bottom": 155.46875,
+          "width": 82,
+          "height": 44
+        },
+        "center": {
+          "x": 334,
+          "y": 133.46875
+        },
+        "position": "static",
+        "display": "block",
+        "hit": true,
+        "hitElement": "BUTTON#spClose",
+        "disabled": false,
+        "insideViewport": true
+      },
+      "identity": {
+        "barSame": true,
+        "oneBar": true,
+        "insideActive": true
+      }
+    }
+  ],
+  "trusted": [
+    {
+      "width": 1400,
+      "family": "ASM",
+      "events": [
+        {
+          "type": "pointerdown",
+          "isTrusted": true,
+          "id": "asmClose"
+        },
+        {
+          "type": "pointerup",
+          "isTrusted": true,
+          "id": "asmClose"
+        },
+        {
+          "type": "click",
+          "isTrusted": true,
+          "id": "asmClose"
+        }
+      ]
+    },
+    {
+      "width": 1400,
+      "family": "SP",
+      "events": [
+        {
+          "type": "pointerdown",
+          "isTrusted": true,
+          "id": "spClose"
+        },
+        {
+          "type": "pointerup",
+          "isTrusted": true,
+          "id": "spClose"
+        },
+        {
+          "type": "click",
+          "isTrusted": true,
+          "id": "spClose"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "family": "ASM",
+      "events": [
+        {
+          "type": "pointerdown",
+          "isTrusted": true,
+          "id": "asmClose"
+        },
+        {
+          "type": "pointerup",
+          "isTrusted": true,
+          "id": "asmClose"
+        },
+        {
+          "type": "click",
+          "isTrusted": true,
+          "id": "asmClose"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "family": "SP",
+      "events": [
+        {
+          "type": "pointerdown",
+          "isTrusted": true,
+          "id": "spClose"
+        },
+        {
+          "type": "pointerup",
+          "isTrusted": true,
+          "id": "spClose"
+        },
+        {
+          "type": "click",
+          "isTrusted": true,
+          "id": "spClose"
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "completed": true,
+  "scope": {
+    "families": [
+      "ASM",
+      "SP"
+    ],
+    "widths": [
+      1400,
+      390
+    ],
+    "input": "Original normal Create/entry/optional existing SP Cancel/return pointer controls",
+    "fixture": "Existing isolated native world; no geometry mutation or injected UI state",
+    "notCovered": [
+      "full ASM workflows or save/reopen beyond original formal harness",
+      "full CDP/golden",
+      "full standalone Space",
+      "physical touch/IME",
+      "all43/privateZIP"
+    ]
+  }
+}

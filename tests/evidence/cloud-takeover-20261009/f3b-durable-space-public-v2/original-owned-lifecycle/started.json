@@ -1,0 +1,40 @@
+{
+  "schema": "geometry-root-owned-integration-lifecycle/1",
+  "startedUtc": "2026-10-09T19:12:37.894038+00:00",
+  "mode": "space",
+  "expectedFullSHA": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "dirtyBefore": "",
+  "serviceCommand": [
+    "<execution-runtime-path>",
+    "<workspace-path>",
+    "<workspace-path>",
+    "19180",
+    "<isolated-test-directory>"
+  ],
+  "testCommand": [
+    "<execution-runtime-path>",
+    "<workspace-path>",
+    "--root",
+    "<workspace-path>",
+    "--url",
+    "http://127.0.0.1:19180/",
+    "--output",
+    "<workspace-path>",
+    "--expected-head",
+    "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "--bridge",
+    "<isolated-test-directory>",
+    "--model-base",
+    "<isolated-test-directory>",
+    "--feedback-dir",
+    "<isolated-test-directory>",
+    "--timeout",
+    "2400"
+  ],
+  "actualPython": "<execution-runtime-path>",
+  "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "controllerSHA256": "5a33421c7b84919c212ebf3c444bed22a950177462cd87c073e4d99fdda0e5ae",
+  "runnerSHA256": "8b9729cb300347361b2f6bf507e08fd6fab662ec2bc9f0fca107fb2da02dadae",
+  "launchSHA256": "d2dbdd3c30631874c63a3fdaac763868f9a5809588c085cf12baed61bed33631",
+  "reason": "Necessary original assembly partial and full CDP/standalone Space regression on frozen clean minimal shared-header repair; preserve prior incomplete failures and original assertions/golden."
+}

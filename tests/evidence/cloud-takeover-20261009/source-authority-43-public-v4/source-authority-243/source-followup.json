@@ -1,0 +1,1873 @@
+{
+  "schema": "geometry-issue123-43-source-followup/1",
+  "sourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d",
+  "historicalAuditSHA": "640a81443b3d070dba3d8a0aa52adb2d64cebe0b",
+  "fiveCorrectionSHA": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+  "items": [
+    {
+      "id": "X1",
+      "portablePhase": "S1",
+      "sourceStatus": "SOURCE_WIRED_WITH_UNKNOWN",
+      "currentSourceNote": "共用主要 accent／ink／muted／border 切片維持；四處 computed background 是待同版實測條件，不能以宣告字串取代。私人全部色票／label 像素未知。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.css",
+          "line": 11,
+          "needle": "--accent:",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L11",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/space-workspace.css",
+          "line": 1,
+          "needle": "--sm-primary",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.css#L1",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "X1",
+        "source": "Common accent/ink/muted/border tokens in app.css; four-primary consistency in formal six",
+        "status": "Implemented clear four-primary slice; exact every private label/palette pixel unknown",
+        "rawLine": "| X1 | Common accent/ink/muted/border tokens in app.css; four-primary consistency in formal six | Implemented clear four-primary slice; exact every private label/palette pixel unknown |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "X2",
+      "portablePhase": "S1",
+      "sourceStatus": "SOURCE_PENDING",
+      "currentSourceNote": "56／96px 共用標頭、原 projectBar、右 history 接線維持；243 的 bounded navscroll 已接。另有標題垂直越界待修：不能以 titleWidth 通過或 nav 框正常取代 title top/bottom。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.css",
+          "line": 2424,
+          "needle": ".workspace-tools-row .face-workspace-tools",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L2424",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.css",
+          "line": 545,
+          "needle": ".workspace-title-copy small",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L545",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 26,
+          "needle": "頂列",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L26",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "X2",
+        "source": "Shared WorkspaceShell/header/project bar, left return and right actions",
+        "status": "Implemented, formal six640 actual receipt reported198/0, independent receipt pending when audit prepared",
+        "rawLine": "| X2 | Shared WorkspaceShell/header/project bar, left return and right actions | Implemented, formal six640 actual receipt reported198/0, independent receipt pending when audit prepared |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "X3",
+      "portablePhase": "S1",
+      "sourceStatus": "SOURCE_WIRED_WITH_UNKNOWN",
+      "currentSourceNote": "既有控制與手機 44px 規則維持，243 nav 不縮字級／hit target。32／36／44 與私人40、input32／36歧義仍須原稿核對，不新增一律尺寸。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.css",
+          "line": 1334,
+          "needle": "min-height:44px",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L1334",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.css",
+          "line": 211,
+          "needle": "min-height: 44px",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.css#L211",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "X3",
+        "source": "Common control rules and 44px mobile workspace/header controls",
+        "status": "Implemented clear portable rules; issue explicitly records 32/36/44 vs40 ambiguity, not every private size proven",
+        "rawLine": "| X3 | Common control rules and 44px mobile workspace/header controls | Implemented clear portable rules; issue explicitly records 32/36/44 vs40 ambiguity, not every private size proven |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "X4",
+      "portablePhase": "S1/S3",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "共用分段控制及一次一構件表單維持；原 guide／timber／grid 路由、raw 與焦點契約不變。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.js",
+          "line": 8533,
+          "needle": "faceComponentSwitch",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L8533",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 30,
+          "needle": "[data-component-tab]",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L30",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "X4",
+        "source": "Face component switch, current shared tab/segment styling, one active form",
+        "status": "Implemented common visible control slice; replacing every internal implementation is not required by source contract",
+        "rawLine": "| X4 | Face component switch, current shared tab/segment styling, one active form | Implemented common visible control slice; replacing every internal implementation is not required by source contract |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "X5",
+      "portablePhase": "S1",
+      "sourceStatus": "SOURCE_WIRED_FIVE",
+      "currentSourceNote": "0b37 已把網格返回／縮小／放大接到既有 arrowLeft／minus／plus SVG；ID、aria-label、handlers 維持，不宣稱全面私人圖示像素相符。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 311,
+          "needle": "icon('arrowLeft')",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L311",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 311,
+          "needle": "icon('minus')",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L311",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 311,
+          "needle": "icon('plus')",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L311",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.css",
+          "line": 150,
+          "needle": ".ig-zoombar button svg",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.css#L150",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "X5",
+        "source": "Existing shared SVG icon library, grid text icon exceptions",
+        "status": "Clear remaining icon merge above; no wholesale icon redesign",
+        "rawLine": "| X5 | Existing shared SVG icon library, grid text icon exceptions | Clear remaining icon merge above; no wholesale icon redesign |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "X6",
+      "portablePhase": "S1/S2/S4",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "縮放仍在實際 viewport，390 網格 preview先於 settings；243 nav變成有界scroll但正常 last/first tool pointer／Tab 尚待本版。網格實際格距／像素讀值保留。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-system-workspace.css",
+          "line": 206,
+          "needle": ".ig-main { order: 0",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.css#L206",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 742,
+          "needle": "$('igZoom')",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L742",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.css",
+          "line": 2424,
+          "needle": ".workspace-tools-row .face-workspace-tools",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L2424",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "X6",
+        "source": "Zoom controls within all actual viewports, mobile full workspace targets",
+        "status": "Implemented reachable controls; preserve meaningful grid spacing/pixel readout",
+        "rawLine": "| X6 | Zoom controls within all actual viewports, mobile full workspace targets | Implemented reachable controls; preserve meaningful grid spacing/pixel readout |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "X7",
+      "portablePhase": "S1/S4",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "柱／樑／網格色彩來源維持共用型別 token；樑實名是--beam／--beam-soft，顏色呈現不改 typed/native 幾何。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.css",
+          "line": 23,
+          "needle": "--beam:",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L23",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.css",
+          "line": 2003,
+          "needle": ".type-icon.beam, .object-row .row-icon.beam",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L2003",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "X7",
+        "source": "Shared column/beam/grid type variables; actual beam renderers use common token",
+        "status": "Implemented source slice",
+        "rawLine": "| X7 | Shared column/beam/grid type variables; actual beam renderers use common token | Implemented source slice |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "B1",
+      "portablePhase": "S1/S3",
+      "sourceStatus": "SOURCE_PENDING",
+      "currentSourceNote": "桌面56px、<=560px96px與viewport原要求維持；243 bounded navscroll 已接，尚有原標題 small換行垂直越界缺口。需保持56／44與11／13字級，另驗真正 top/bottom／正常scroll。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.css",
+          "line": 29,
+          "needle": "--topbar-h: 56px",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L29",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.css",
+          "line": 2424,
+          "needle": ".workspace-tools-row .face-workspace-tools",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L2424",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 28,
+          "needle": "viewport−88px",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L28",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "B1",
+        "source": "Desktop single 56px workspace header and original viewport requirement",
+        "status": "Implemented; original formal six responsive geometry source oracle retained",
+        "rawLine": "| B1 | Desktop single 56px workspace header and original viewport requirement | Implemented; original formal six responsive geometry source oracle retained |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "B2",
+      "portablePhase": "S3",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "左欄維持純圖層／定位／顯示；唯一 BOM在右構件→角材，投影表單在右Shape。移位不複製提交、料單或 native來源。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.js",
+          "line": 7224,
+          "needle": "faceTimberSchedule",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L7224",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.js",
+          "line": 7057,
+          "needle": "faceProjectionEditor",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L7057",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 77,
+          "needle": "原生角材料單",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L77",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "B2",
+        "source": "Pure left face layers, BOM and projection form moved to right",
+        "status": "Implemented; projection rows preserve real nodes and handlers",
+        "rawLine": "| B2 | Pure left face layers, BOM and projection form moved to right | Implemented; projection rows preserve real nodes and handlers |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "BOM supplement44/0完成桌面／390：僅原scope，不借成投影完整回歸。",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "B3",
+      "portablePhase": "S3",
+      "sourceStatus": "EXISTING_CONTRACT_NOT_NEW_POLICY",
+      "currentSourceNote": "五個persistent layer groups及真可建立的empty入口保留。原完整CDP明確依賴五組／>=3 .fl-empty及實際empty點擊；portable S3沒有採納hide-all-empty，不刪它們冒充去重。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/cdp_test.js",
+          "line": 3753,
+          "needle": "five persistent groups",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/cdp_test.js#L3753",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/cdp_test.js",
+          "line": 3753,
+          "needle": "#faceLayerList .fl-empty",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/cdp_test.js#L3753",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.js",
+          "line": 7237,
+          "needle": "className = \"fl-empty\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L7237",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "B3",
+        "source": "Five persistent layer groups and real empty-group entry buttons",
+        "status": "Preserve existing contract: cdp_test.js:3753 requires five groups and >=3 .fl-empty; :3771 actually clicks an empty entry. Portable S3 does not adopt hide-all-empty groups. No new policy",
+        "rawLine": "| B3 | Five persistent layer groups and real empty-group entry buttons | Preserve existing contract: cdp_test.js:3753 requires five groups and >=3 .fl-empty; :3771 actually clicks an empty entry. Portable S3 does not adopt hide-all-empty groups. No new policy |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "B4",
+      "portablePhase": "S3/S6",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "guide／timber／grid一次一表單及BOM在timber維持。243的direct-room raw由exact-draft pendingRows擁有、從泛ref備份排除；其他表單raw/焦點保全不變，#54旁帶修復不當成多房新規格。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.js",
+          "line": 8533,
+          "needle": "faceComponentSwitch",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L8533",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.js",
+          "line": 347,
+          "needle": "!e.matches(\"[data-room-edge-length]\")",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L347",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/room-outline-workspace.js",
+          "line": 9,
+          "needle": "const pendingRows=new WeakMap()",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/room-outline-workspace.js#L9",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "B4",
+        "source": "[data-component-tab] guide/timber/grid shows one form; BOM under timber",
+        "status": "Implemented; supplemental BOM normal confirmation precondition still under verification",
+        "rawLine": "| B4 | [data-component-tab] guide/timber/grid shows one form; BOM under timber | Implemented; supplemental BOM normal confirmation precondition still under verification |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "row-blur32/1，desktop第33停止；direct retirement/native-after/new-candidate及390未到。",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "B5",
+      "portablePhase": "S1/S3",
+      "sourceStatus": "SOURCE_WIRED_WITH_UNKNOWN",
+      "currentSourceNote": "既有desktop/mobile控制來源維持；沒有因nav／標題修復縮小44px hit target。私人未指定控制尺寸未知。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.css",
+          "line": 2530,
+          "needle": ".object-workspace :is(.btn",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L2530",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.css",
+          "line": 1334,
+          "needle": "min-height:44px",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L1334",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "B5",
+        "source": "Global desktop >=28px and mobile44 workspace rules",
+        "status": "Implemented clear token slice; private unspecified controls need original visuals, not invented blanket dimensions",
+        "rawLine": "| B5 | Global desktop >=28px and mobile44 workspace rules | Implemented clear token slice; private unspecified controls need original visuals, not invented blanket dimensions |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "B6",
+      "portablePhase": "S3",
+      "sourceStatus": "EXISTING_CONTRACT_WITH_UNVERIFIED_TIMING",
+      "currentSourceNote": "GEO216 first-visit／dynamic summary與已讀狀態区分維持；C-review的首次fit後出現卡片／真.fe-dim.fe-edge-dim／重進場景時序仍須實測，不把main/face不同選取狀態抹平。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/workspace-guidance.js",
+          "line": 12,
+          "needle": "dynamic",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/workspace-guidance.js#L12",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.js",
+          "line": 3154,
+          "needle": "feViewportInsets",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L3154",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 6,
+          "needle": "選取",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L6",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "B6",
+        "source": "Existing GEO216 first-visit dismissible hint and state-specific summary",
+        "status": "Implemented relevant-state behavior; C-review explicitly rejects conflating unrelated main/face selection state",
+        "rawLine": "| B6 | Existing GEO216 first-visit dismissible hint and state-specific summary | Implemented relevant-state behavior; C-review explicitly rejects conflating unrelated main/face selection state |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "B7",
+      "portablePhase": "S3",
+      "sourceStatus": "SOURCE_WIRED_FIVE",
+      "currentSourceNote": "0b37 移除只做同一feSetTool(hole)的重複shape-menu hole入口；standalone [data-face-tool=hole]、R、其餘不同shape操作及native孔洞契約維持。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/index.html",
+          "line": 384,
+          "needle": "data-shape-action=\"notch\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L384",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/index.html",
+          "line": 388,
+          "needle": "data-face-tool=\"hole\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L388",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.js",
+          "line": 10304,
+          "needle": "feSetTool(\"hole\")",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L10304",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "B7",
+        "source": "Duplicate same feSetTool('hole') menu vs R toolbar",
+        "status": "Clear remaining merge above; retain R and all existing distinct operation contracts",
+        "rawLine": "| B7 | Duplicate same feSetTool('hole') menu vs R toolbar | Clear remaining merge above; retain R and all existing distinct operation contracts |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "B8",
+      "portablePhase": "S3",
+      "sourceStatus": "UNKNOWN_PRIVATE_TARGET",
+      "currentSourceNote": "目前decorative origin stroke不新增永久caption。A-map自寫摘要不是已採納的精確對比值；保留來源現況，私人視覺要求／額外policy未知。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 22,
+          "needle": "#123 已採納介面切片",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L22",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "B8",
+        "source": "Existing decorative origin strokes; no permanent origin caption",
+        "status": "Source is already uncluttered. A-map summary supplies no adopted exact decorative-contrast target; no invented geometry/style policy",
+        "rawLine": "| B8 | Existing decorative origin strokes; no permanent origin caption | Source is already uncluttered. A-map summary supplies no adopted exact decorative-contrast target; no invented geometry/style policy |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "C1",
+      "portablePhase": "S4",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "實名是#spacePlanMetrics、.space-plan-strip、data-plan-grid-step／[data-plan-grid]與12px螢幕label；spacePlanReadout是原issue提議名。尺寸／座標／格線僅呈現，不新增吸附或改World。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.js",
+          "line": 10671,
+          "needle": "planMetrics.id='spacePlanMetrics'",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L10671",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/index.html",
+          "line": 500,
+          "needle": "class=\"space-plan-strip\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L500",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 32,
+          "needle": "空間平面圖",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L32",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "C1",
+        "source": "spacePlanReadout, independently derived world dimensions, stable screen-font labels/grid",
+        "status": "Implemented clear source slice; normal supplemental plan actual result requires its own receipt",
+        "rawLine": "| C1 | spacePlanReadout, independently derived world dimensions, stable screen-font labels/grid | Implemented clear source slice; normal supplemental plan actual result requires its own receipt |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "Plan supplement16/0完成桌面／390：僅原scope，不是C1私人全部對照或all43。",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "C2",
+      "portablePhase": "S1/S4",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "既有樑卡及plan renderer共用--beam／--beam-soft，243沒有重造另一樑顏色系統。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.css",
+          "line": 23,
+          "needle": "--beam:",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L23",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.css",
+          "line": 888,
+          "needle": ".space-plan-beam",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L888",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 32,
+          "needle": "空間平面圖",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L32",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "C2",
+        "source": "Shared --type-beam across cards and plan",
+        "status": "Already implemented, do not rework",
+        "rawLine": "| C2 | Shared --type-beam across cards and plan | Already implemented, do not rework |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "C3",
+      "portablePhase": "S4",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "原#spaceWorkspaceTools及#spaceSizeTools位於同一.space-plan-strip平面工具列，proj不顯示放置控制；不是另造spacePlanToolbar ID。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.js",
+          "line": 10670,
+          "needle": "document.querySelector('.space-plan-strip').prepend",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L10670",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/index.html",
+          "line": 396,
+          "needle": "id=\"spaceSizeTools\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L396",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 221,
+          "needle": "#spaceSizeTools",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L221",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "C3",
+        "source": "Column/beam placement + actual size fields in single spacePlanToolbar",
+        "status": "Implemented source slice",
+        "rawLine": "| C3 | Column/beam placement + actual size fields in single spacePlanToolbar | Implemented source slice |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "Plan supplement16/0完成桌面／390：僅原scope。",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "C4",
+      "portablePhase": "S4",
+      "sourceStatus": "EXISTING_CONTRACT",
+      "currentSourceNote": "既有常駐空槽入口及slot名稱／axis／action區分維持；不改slot allocation或native語意。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.js",
+          "line": 3660,
+          "needle": "slot-empty",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L3660",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 281,
+          "needle": "槽",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L281",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "C4",
+        "source": "Permanent slot action, differentiated slot-name/axis/action",
+        "status": "Already implemented, do not rework",
+        "rawLine": "| C4 | Permanent slot action, differentiated slot-name/axis/action | Already implemented, do not rework |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "C5",
+      "portablePhase": "S4",
+      "sourceStatus": "UNKNOWN_UNADOPTED_REMOVAL",
+      "currentSourceNote": "spaceAddMembers／spEditMembers仍是兩個位置的同openMemberDialog，RC有hover／focus／coarse呈現。portable S4未指定刪除哪個member入口或滑鼠RCalways-visible policy；列決策，不自行移除。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/index.html",
+          "line": 484,
+          "needle": "id=\"spaceAddMembers\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L484",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.js",
+          "line": 3666,
+          "needle": "spEditMembers",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L3666",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.js",
+          "line": 3465,
+          "needle": "openMemberDialog",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L3465",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "C5",
+        "source": "spaceAddMembers and spEditMembers both call same openMemberDialog; RC hover has focus-within and hover:none visibility",
+        "status": "A-map reports duplicate; portable S4 does not adopt exact removal of these member-edit locations or always-visible mouse RC policy. Report source fact/decision, not unambiguously missing adopted fix",
+        "rawLine": "| C5 | spaceAddMembers and spEditMembers both call same openMemberDialog; RC hover has focus-within and hover:none visibility | A-map reports duplicate; portable S4 does not adopt exact removal of these member-edit locations or always-visible mouse RC policy. Report source fact/decision, not unambiguously missing adopted fix |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "C6",
+      "portablePhase": "S4",
+      "sourceStatus": "POLICY_UNKNOWN",
+      "currentSourceNote": "free RC仍列既有未擁有成員來源。附近過濾需新增距離／範圍／優先規則，portable adopted scope未定，不擴張成新空間policy。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.js",
+          "line": 3381,
+          "needle": "spaceRcFreeList",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L3381",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "C6",
+        "source": "Free RC list is all unowned project members",
+        "status": "Nearby filtering requires new spatial policy; not adopted portable scope",
+        "rawLine": "| C6 | Free RC list is all unowned project members | Nearby filtering requires new spatial policy; not adopted portable scope |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "C7",
+      "portablePhase": "S4",
+      "sourceStatus": "UNKNOWN_UNADOPTED_REMOVAL",
+      "currentSourceNote": "title ID／closed tag及詳細ID/status行是既有source。portable S4未定精確刪哪列，A-map重複摘要不構成新採納規格；私人稿件對照未知。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.js",
+          "line": 3626,
+          "needle": "function renderSpaceInspector",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L3626",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 14,
+          "needle": "空間",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L14",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "C7",
+        "source": "Inspector shows title ID/closed tag and explicit ID/status rows",
+        "status": "A-map reports repetition; portable S4 gives no adopted exact row-removal. Source fact/decision, not private attachment reproduction",
+        "rawLine": "| C7 | Inspector shows title ID/closed tag and explicit ID/status rows | A-map reports repetition; portable S4 gives no adopted exact row-removal. Source fact/decision, not private attachment reproduction |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "D1",
+      "portablePhase": "S4",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "#workSurf隱藏相容consumer維持；唯一可見#v3ToolbarSurf在rect-only #v3PlaneControls，由syncV3PlaneControls同步。不刪native select值／原change路徑。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/index.html",
+          "line": 159,
+          "needle": "id=\"workSurf\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L159",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/index.html",
+          "line": 255,
+          "needle": "id=\"v3ToolbarSurf\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L255",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.js",
+          "line": 1339,
+          "needle": "function syncV3PlaneControls",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.js#L1339",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "D1",
+        "source": "Hidden compatible workSurf; v3ToolbarSurf in rect-only v3PlaneControls",
+        "status": "Implemented while preserving original ID/native values",
+        "rawLine": "| D1 | Hidden compatible workSurf; v3ToolbarSurf in rect-only v3PlaneControls | Implemented while preserving original ID/native values |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "D2",
+      "portablePhase": "S4",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "桌面右欄固定240px及unselected空態維持；v3-picked只標selection，mobile沿原drawer。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/app.css",
+          "line": 1585,
+          "needle": "--right-w: 240px",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L1585",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 33,
+          "needle": "body.v3-picked",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L33",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "D2",
+        "source": "v3 right pane constant240px + empty state",
+        "status": "Implemented; no selection-induced width jump",
+        "rawLine": "| D2 | v3 right pane constant240px + empty state | Implemented; no selection-induced width jump |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "D3",
+      "portablePhase": "S4",
+      "sourceStatus": "SOURCE_WIRED_FIVE",
+      "currentSourceNote": "0b37 可見三視圖view/hole及native option詞彙統一為選取／開口；data-v3-tool=view/hole、values、ID／handler維持。rect/redraw是不同原操作，不合併成同工具。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/index.html",
+          "line": 243,
+          "needle": "data-v3-tool=\"view\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L243",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/index.html",
+          "line": 245,
+          "needle": "data-v3-tool=\"hole\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L245",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/index.html",
+          "line": 263,
+          "needle": "id=\"btnHole2\"",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L263",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "D3",
+        "source": "Visible view/hole vocabulary differs",
+        "status": "Clear remaining terminology above",
+        "rawLine": "| D3 | Visible view/hole vocabulary differs | Clear remaining terminology above |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "D4",
+      "portablePhase": "S1/S4",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "整列view／layer labels及手機44px入口維持真label/Space行為；不能由同名label推論新native行為。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/index.html",
+          "line": 161,
+          "needle": "v3-check-col",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/index.html#L161",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/app.css",
+          "line": 1451,
+          "needle": ".v3-check-col label",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/app.css#L1451",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 33,
+          "needle": "視圖／圖層整列",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L33",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "D4",
+        "source": "Entire actual labels clickable with mobile44",
+        "status": "Implemented, exact unchanged native view/layer checks in original formal six",
+        "rawLine": "| D4 | Entire actual labels clickable with mobile44 | Implemented, exact unchanged native view/layer checks in original formal six |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "E1",
+      "portablePhase": "S2",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "唯一原#igBoundarySection／#igBoundaryView已移右binding step2；640既有SVG screen-coordinate／vertex-focus修復保留，typed outer/hole/key與native dropdown不變。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 312,
+          "needle": "$('igVertexSummary').after($('igBoundarySection'))",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L312",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 778,
+          "needle": "function drawBoundary(s)",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L778",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 24,
+          "needle": "#igBoundarySection",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L24",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "E1",
+        "source": "Exact original igBoundarySection/diagram moved into right step2, no duplicated node",
+        "status": "Implemented; normal S2 extra scope verifies pointer/keyboard/dropdown identity",
+        "rawLine": "| E1 | Exact original igBoundarySection/diagram moved into right step2, no duplicated node | Implemented; normal S2 extra scope verifies pointer/keyboard/dropdown identity |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "S2 desktop84/0完成；390只2個setup通過，hidden #toggleRight失敗，後段未到。",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "E2",
+      "portablePhase": "S2/S6",
+      "sourceStatus": "SOURCE_WIRED_NEW_GUARD",
+      "currentSourceNote": "discard左／primary右及同workspace inline question維持；243 close走stored one-shot discardCleanup，不再click被inert的Cancel。原current／pending guard、正常Cancel焦點與原World/attachment語意維持，same-ID retired callback待本版。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 1023,
+          "needle": "function confirmDiscard(s,trigger)",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L1023",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 1031,
+          "needle": "let cleaned=false",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L1031",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 1044,
+          "needle": "state?.discardCleanup?.()",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L1044",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "E2",
+        "source": "Main action right, original discard left; actual same-workspace confirmation",
+        "status": "Implemented, pending/busy/owner guard source unchanged",
+        "rawLine": "| E2 | Main action right, original discard left; actual same-workspace confirmation | Implemented, pending/busy/owner guard source unchanged |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "S2 desktop84/0含same-ID detach／原oldcallback／B continuation；390後段未到。",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "E3",
+      "portablePhase": "S1/S2",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "source-save共用accent，native scene套用與full-project保存提示區分維持，raw draft不冒充已確認World。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 107,
+          "needle": "syncDraftState(s)",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L107",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.css",
+          "line": 40,
+          "needle": ".primary-button",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.css#L40",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 20,
+          "needle": "網格",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L20",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "E3",
+        "source": "Primary source-save accent, native scene-vs-full-project save hints",
+        "status": "Implemented source slice",
+        "rawLine": "| E3 | Primary source-save accent, native scene-vs-full-project save hints | Implemented source slice |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "E4",
+      "portablePhase": "S1/S2",
+      "sourceStatus": "SOURCE_WIRED_FIVE",
+      "currentSourceNote": "返回左位及共用header source维持；0b37 返回改既有arrowLeft圖示而保留#igClose／aria／handler。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 311,
+          "needle": "icon('arrowLeft')",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L311",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 1056,
+          "needle": "標頭",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L1056",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "E4",
+        "source": "Shared left return/header styling",
+        "status": "Implemented clear position slice; icon merge above",
+        "rawLine": "| E4 | Shared left return/header styling | Implemented clear position slice; icon merge above |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "E5",
+      "portablePhase": "S2",
+      "sourceStatus": "SOURCE_WIRED_FIVE",
+      "currentSourceNote": "共用GridAnchorPositions九名与0／1、1／2、1／1精確分數、custom1/3保留；0b37 compact vertex/preset重繪restore同typed focused node preventScroll，原current/busy守門不變。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-anchor-positions.js",
+          "line": 3,
+          "needle": "window.GridAnchorPositions",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-anchor-positions.js#L3",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-inspector.js",
+          "line": 117,
+          "needle": "focusedVertex",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.js#L117",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-inspector.js",
+          "line": 132,
+          "needle": "focusedAnchor",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.js#L132",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "E5",
+        "source": "Shared GridAnchorPositions exact nine names/fractions and custom1/3 preservation",
+        "status": "Implemented; compact keyboard-continuity fix above still required",
+        "rawLine": "| E5 | Shared GridAnchorPositions exact nine names/fractions and custom1/3 preservation | Implemented; compact keyboard-continuity fix above still required |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "S2 desktop84/0；390後段未到，不借桌面成手機focus驗收。",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "E6",
+      "portablePhase": "S1/S2",
+      "sourceStatus": "SOURCE_WIRED_FIVE",
+      "currentSourceNote": "0b37 minus／plus共用SVG圖示已接，縮放位置與格距／像素readout保留。沒有percentage替換或privatepixel重設規格。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 311,
+          "needle": "icon('minus')",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L311",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.js",
+          "line": 742,
+          "needle": "$('igZoom')",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.js#L742",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-system-workspace.css",
+          "line": 150,
+          "needle": ".ig-zoombar button svg",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-system-workspace.css#L150",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "E6",
+        "source": "Reachable zoom with meaningful native grid scale",
+        "status": "Clear shared-icon part remains; percentage replacement is explicitly excluded",
+        "rawLine": "| E6 | Reachable zoom with meaningful native grid scale | Clear shared-icon part remains; percentage replacement is explicitly excluded |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "G1",
+      "portablePhase": "S1/S2",
+      "sourceStatus": "UNKNOWN_PRIVATE_CONTRAST",
+      "currentSourceNote": "compact既有readable stylesheet、focus及語境文字source維持。私人全部label對比／像素未核，不能以四primary契約宣称每個label相同。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-inspector.css",
+          "line": 5,
+          "needle": ".gi-heading",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.css#L5",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/issue123-handoff/C-review.md",
+          "line": 70,
+          "needle": "G3 文字對比",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/issue123-handoff/C-review.md#L70",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "G1",
+        "source": "Actual labels using current readable compact stylesheet",
+        "status": "Exact private contrast target unknown; issue four-primary contract does not claim all labels identical",
+        "rawLine": "| G1 | Actual labels using current readable compact stylesheet | Exact private contrast target unknown; issue four-primary contract does not claim all labels identical |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "G2",
+      "portablePhase": "S1/S2",
+      "sourceStatus": "UNKNOWN_PRIVATE_HEIGHT",
+      "currentSourceNote": "compact/full可有既有不同密度；保留focus／mobile目標／native编辑。原issue尺寸歧義未定，不把所有compact40自行判錯或統一44。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-inspector.css",
+          "line": 9,
+          "needle": ".gi-actions .btn",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.css#L9",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-inspector.css",
+          "line": 14,
+          "needle": "@media(max-width:680px)",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.css#L14",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "G2",
+        "source": "Compact vs full have distinct density, common primary accent/focus/native editing",
+        "status": "Portable issue records height ambiguity; cannot declare unspecified compact40 wrong by inventing44 for every context",
+        "rawLine": "| G2 | Compact vs full have distinct density, common primary accent/focus/native editing | Portable issue records height ambiguity; cannot declare unspecified compact40 wrong by inventing44 for every context |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "G3",
+      "portablePhase": "S2",
+      "sourceStatus": "SOURCE_WIRED_FIVE",
+      "currentSourceNote": "0b37 將原#gridObjectDelete唯一node放進closed footer .gi-delete-section，與open/new-binding隔離；原onclick/current/busy及deleteObject→native impact不變，不加第二confirm。normal caller已加一次summary導覽，行為斷言保留。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-inspector.js",
+          "line": 48,
+          "needle": "gi-delete-section",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.js#L48",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-inspector.js",
+          "line": 52,
+          "needle": "gridObjectDelete').onclick",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.js#L52",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-inspector.css",
+          "line": 10,
+          "needle": ".gi-delete-section",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.css#L10",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid_rule_editor_test.js",
+          "line": 151,
+          "needle": ".gi-delete-section",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid_rule_editor_test.js#L151",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "G3",
+        "source": "Compact delete still adjacent to navigation",
+        "status": "Confirmed adopted remaining; minimal patch ready",
+        "rawLine": "| G3 | Compact delete still adjacent to navigation | Confirmed adopted remaining; minimal patch ready |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "S2 desktop84/0含原delete路徑；390後段未到。",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "G4",
+      "portablePhase": "S2",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "source/binding不同native概念及同九點詞彙維持；0b37焦點保全不把compact未保存選擇當成已保存配置。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/grid-inspector.js",
+          "line": 48,
+          "needle": "gi-eyebrow",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.js#L48",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/grid-inspector.js",
+          "line": 136,
+          "needle": "GridAnchorPositions",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/grid-inspector.js#L136",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 24,
+          "needle": "GridAnchorPositions",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L24",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "G4",
+        "source": "Actual source vs binding terminology retained, shared nine-point names",
+        "status": "Implemented clear source/context distinction; do not rename native source and binding into one concept",
+        "rawLine": "| G4 | Actual source vs binding terminology retained, shared nine-point names | Implemented clear source/context distinction; do not rename native source and binding into one concept |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "S2 desktop84/0；390後段未到。",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "F1",
+      "portablePhase": "S5",
+      "sourceStatus": "SOURCE_WIRED_NEW_GUARD",
+      "currentSourceNote": "welcome置stage且controls按真result顯隱維持；243 valid source render後收起#smOtherExamples picker，保留原範例／確認入口，不靠縮小44px控制騰位。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 395,
+          "needle": "function renderSource(source",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L395",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 398,
+          "needle": "$(\"smOtherExamples\").open=false",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L398",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 317,
+          "needle": ".sm-view-tools",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L317",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "F1",
+        "source": "Welcome contained in stage, genuine preview controls gated",
+        "status": "Implemented source slice and formal six normal preview",
+        "rawLine": "| F1 | Welcome contained in stage, genuine preview controls gated | Implemented source slice and formal six normal preview |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "F2",
+      "portablePhase": "S1/S5",
+      "sourceStatus": "SOURCE_WIRED_WITH_OPEN_VERIFICATION",
+      "currentSourceNote": "共用header／3step form／stage／short-height900來源維持；243 chooser收起已接，390 projection Confirm完整inside-scroll及共享header垂直界線仍待真新版驗收。舊fullSpace titleWidth pass只證明寬度。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/space-workspace.css",
+          "line": 16,
+          "needle": "max-height:900px",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.css#L16",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 398,
+          "needle": "$(\"smOtherExamples\").open=false",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L398",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 63,
+          "needle": "function organizeSetup()",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L63",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "F2",
+        "source": "Shared header, right three-step form, viewport-based stage and short-height900",
+        "status": "Implemented; preserve original #119 integrity/results",
+        "rawLine": "| F2 | Shared header, right three-step form, viewport-based stage and short-height900 | Implemented; preserve original #119 integrity/results |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "F3",
+      "portablePhase": "S5",
+      "sourceStatus": "SOURCE_WIRED_NEW_GUARD",
+      "currentSourceNote": "welcome一個primary／其他原範例在disclosure維持；243 renderSource valid選妥後關disclosure，不刪例子，不宣稱永遠可見或自動重建preview。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 65,
+          "needle": "smOtherExamples",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L65",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 398,
+          "needle": "$(\"smOtherExamples\").open=false",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L398",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "F3",
+        "source": "One main welcome example, other original examples in disclosure",
+        "status": "Implemented without deleting original examples",
+        "rawLine": "| F3 | One main welcome example, other original examples in disclosure | Implemented without deleting original examples |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "F4",
+      "portablePhase": "S5",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "唯一三step編號，原各節duplicate numbers移除；既有source／geometry／preview/build順序與#119診斷維持。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 63,
+          "needle": "function organizeSetup()",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L63",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 50,
+          "needle": "sm-section-heading",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L50",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "F4",
+        "source": "One three-step number sequence; section duplicate numbers removed",
+        "status": "Implemented",
+        "rawLine": "| F4 | One three-step number sequence; section duplicate numbers removed | Implemented |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "F5",
+      "portablePhase": "S1/S5",
+      "sourceStatus": "SOURCE_WIRED_WITH_UNKNOWN",
+      "currentSourceNote": "主要accent／focus／控制source維持；C-review的已量smCanvas和未量face toolbar焦點不能互借。私人像素對照未知。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/space-workspace.css",
+          "line": 1,
+          "needle": "--sm-primary",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.css#L1",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/issue123-handoff/C-review.md",
+          "line": 18,
+          "needle": "F5 的 2px",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/issue123-handoff/C-review.md#L18",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "F5",
+        "source": "Shared accents/focus/control styles",
+        "status": "Implemented clear primary slice; no private pixel-perfect claim",
+        "rawLine": "| F5 | Shared accents/focus/control styles | Implemented clear primary slice; no private pixel-perfect claim |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "F6",
+      "portablePhase": "S5",
+      "sourceStatus": "SOURCE_WIRED_WITH_OPEN_VERIFICATION",
+      "currentSourceNote": "既有guide/help/direction最終12px override來源保留，早期11px只作歷史；GEO210的confirmBottom<=setup-scroll.bottom與完整44px須核本版實測範圍，不以舊文字尺寸或titleWidth替代。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/space-workspace.css",
+          "line": 83,
+          "needle": ".sm-guide,.sm-guide p,.sm-help,.sm-view-direction{font-size:12px}",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.css#L83",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/issue123-handoff/C-review.md",
+          "line": 38,
+          "needle": "confirmBottom<=bottom",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/issue123-handoff/C-review.md#L38",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "F6",
+        "source": "Existing guide/help/direction text final computed source override12px",
+        "status": "Implemented, historic11px evidence retained",
+        "rawLine": "| F6 | Existing guide/help/direction text final computed source override12px | Implemented, historic11px evidence retained |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    },
+    {
+      "id": "F7",
+      "portablePhase": "S1/S5",
+      "sourceStatus": "SOURCE_WIRED",
+      "currentSourceNote": "原#smClose左置與返回／focus路由維持；正常Tab首停焦點需本版核收，沒有新增另一個返回入口。",
+      "sourceReferences": [
+        {
+          "path": "geometry-web/space-workspace.js",
+          "line": 37,
+          "needle": "smClose",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/space-workspace.js#L37",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        },
+        {
+          "path": "geometry-web/docs/DOM-CONTRACT.md",
+          "line": 35,
+          "needle": "#smClose",
+          "url": "https://github.com/ZhiQiYang/geometry-axiom/blob/243326b512896ace70e068f62c8f3d6397f6000d/geometry-web/docs/DOM-CONTRACT.md#L35",
+          "fullSourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d"
+        }
+      ],
+      "historical640": {
+        "id": "F7",
+        "source": "Actual smClose relocated left",
+        "status": "Implemented",
+        "rawLine": "| F7 | Actual smClose relocated left | Implemented |"
+      },
+      "browserAcceptanceAt243": {
+        "entireItemAccepted": false,
+        "limitedReadReceipt": "No new item-wide acceptance; see separate bounded243 receipts.",
+        "sourceOnlyChangesNotAutomaticallyAccepted": true
+      },
+      "privateZIPCompared": false
+    }
+  ],
+  "sourcePending": {
+    "status": "SOURCE_PENDING",
+    "reportedHistoricalSHA": "0b37d8d8d4ee501fe6208e3e88440b3d078d7c0b",
+    "measuresReportedByRoot": [
+      {
+        "width": 900,
+        "titleBottom": 61.328,
+        "headerHeight": 56
+      },
+      {
+        "width": 680,
+        "titleBottom": 69.297,
+        "headerHeight": 56
+      },
+      {
+        "width": 600,
+        "titleBottom": 69.297,
+        "headerHeight": 56
+      }
+    ],
+    "rawDiagnosticOriginalReceivedByThisSubtask": false,
+    "rawDiagnosticPath": "unknown to this subtask; parent reported original 0b37 diagnostic JSON",
+    "next": "Root intends shared small nowrap/overflow hidden/text-overflow ellipsis after frozen243 verification; preserve11/13px text,56px header,44px controls. Do not mark this implemented at243 or use historical titleWidth pass as vertical-bound proof."
+  },
+  "limited243ReadEvidence": {
+    "sourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirty": "",
+    "originalPassed": 185,
+    "originalFailed": 2,
+    "exitCode": 1,
+    "acceptanceCompleted": false,
+    "allDeclaredGroupsAttempted": true,
+    "groupCensus": {
+      "plan": {
+        "passed": 16,
+        "failed": 0,
+        "desktopAnd390Completed": true
+      },
+      "bom": {
+        "passed": 44,
+        "failed": 0,
+        "desktopAnd390Completed": true
+      },
+      "row-blur": {
+        "passed": 32,
+        "failed": 1,
+        "desktopStoppedAtCheck": 33,
+        "mobile390NotReached": true
+      },
+      "s2": {
+        "passed": 86,
+        "failed": 1,
+        "desktopPassed": 84,
+        "desktopCompleted": true,
+        "mobile390PassedSetupChecks": 2,
+        "mobile390Failure": "hidden #toggleRight normal click",
+        "mobile390DownstreamNotReached": true
+      }
+    },
+    "rowLimit": "Failed zero-all-API assertion observed only source-inspect and engineering-read. Direct retirement/native-after/new-candidate/390 checks were not reached. Preserve original failure; no retrofit oracle.",
+    "evidence": [
+      {
+        "path": "<workspace-path>",
+        "sha256": "72314c2a9ff61d77cd6e7f1073e5cd1f5da94b7c1b0613ebeb4b67dfbbfb4074",
+        "retainedPath": "<workspace-path>"
+      },
+      {
+        "path": "<isolated-test-directory>",
+        "sha256": "1d2126a9cc62bc50015de3aa409f23a1cbb60d903b8edc756cc33593d33061b1",
+        "retainedPath": "<workspace-path>"
+      },
+      {
+        "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/receipt.json",
+        "sha256": "2f4f712f2caf1adc775cde1e11d6104c969c8f2e17abd446b9d505c87928e3c1",
+        "bytes": 41139,
+        "retainedPath": "<workspace-path>"
+      },
+      {
+        "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/space-artifacts/result.json",
+        "sha256": "687c82739d8dc3f7a74cadca37e50dff076d8684aa3987362640984133e64fe8",
+        "bytes": 36476,
+        "retainedPath": "<workspace-path>"
+      },
+      {
+        "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/command.log",
+        "sha256": "81dfd5af1fc439332c8d428ffc55c3358adb95ac9c38314b4c342e94f4b86972",
+        "bytes": 23485,
+        "retainedPath": "<workspace-path>"
+      }
+    ],
+    "newBrowserExecutionByThisSubtask": false,
+    "all43Accepted": false,
+    "fullCDPAccepted": false,
+    "additionalCheckCensus": {
+      "preflight": {
+        "passed": 4,
+        "failed": 0
+      },
+      "final": {
+        "passed": 3,
+        "failed": 0
+      }
+    }
+  },
+  "fullSpace243": {
+    "sourceSHA": "243326b512896ace70e068f62c8f3d6397f6000d",
+    "dirtyBefore": "",
+    "dirtyAfter": "",
+    "originalReceiptReceivedByThisSubtask": true,
+    "passed": 228,
+    "failed": 0,
+    "completed": true,
+    "exitCode": 0,
+    "command": [
+      "node",
+      "geometry-web/space_model_test.js"
+    ],
+    "cwd": "<workspace-path>",
+    "scope": {
+      "mode": "full-space-suite",
+      "filters": [],
+      "included": [
+        "space-height-library",
+        "projection-lifecycle",
+        "projection-placement",
+        "font-layout",
+        "space-flow"
+      ],
+      "omitted": [
+        "timber-material",
+        "timber-source-guards"
+      ],
+      "url": "http://127.0.0.1:19184/",
+      "feedbackDirectory": "<isolated-test-directory>"
+    },
+    "fontLayout": {
+      "expected": 19,
+      "passed": 19,
+      "failed": 0,
+      "completed": true
+    },
+    "canonicalLogCount": 1,
+    "evidence": [
+      {
+        "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/receipt.json",
+        "sha256": "2f4f712f2caf1adc775cde1e11d6104c969c8f2e17abd446b9d505c87928e3c1",
+        "bytes": 41139,
+        "retainedPath": "<workspace-path>"
+      },
+      {
+        "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/space-artifacts/result.json",
+        "sha256": "687c82739d8dc3f7a74cadca37e50dff076d8684aa3987362640984133e64fe8",
+        "bytes": 36476,
+        "retainedPath": "<workspace-path>"
+      },
+      {
+        "path": "<original-evidence-root>/after-final-243326b5-full-space-20261009/command.log",
+        "sha256": "81dfd5af1fc439332c8d428ffc55c3358adb95ac9c38314b4c342e94f4b86972",
+        "bytes": 23485,
+        "retainedPath": "<workspace-path>"
+      }
+    ],
+    "executionIdentityRetainedFromOriginalReceipt": {
+      "liveBinding": {
+        "observedUtc": "2026-10-09T15:50:27.198372+00:00",
+        "scope": "Observed actual owned Space Chromium ELF and its live canonical Node parent; launcher stages excluded",
+        "processes": [
+          {
+            "role": "actual owned Space browser",
+            "pid": 139337,
+            "exe": "/usr/lib/chromium/chromium",
+            "sha256": "d387400aaf740ccb75e5e996a34aa0940e6e97683a4eabd6ae34c1eed6804723",
+            "executableMagicHex": "7f454c46",
+            "cmdline": [
+              "/usr/lib/chromium/chromium",
+              "--show-component-extension-options",
+              "--enable-gpu-rasterization",
+              "--no-default-browser-check",
+              "--disable-pings",
+              "--media-router=0",
+              "--enable-remote-extensions",
+              "--load-extension=",
+              "about:blank",
+              "--headless=new",
+              "--disable-gpu",
+              "--no-first-run",
+              "--no-default-browser-check",
+              "--remote-debugging-port=40515",
+              "--window-size=1400,900",
+              "--user-data-dir=<isolated-test-directory>"
+            ],
+            "cwd": "<workspace-path>"
+          },
+          {
+            "role": "actual browser parent Node",
+            "pid": 139319,
+            "exe": "<node-runtime>/bin/node",
+            "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+            "executableMagicHex": "7f454c46",
+            "cmdline": [
+              "node",
+              "geometry-web/space_model_test.js"
+            ],
+            "cwd": "<workspace-path>"
+          }
+        ]
+      },
+      "errors": [],
+      "excludedLauncherStages": []
+    },
+    "doesNotVerifyTitleVerticalBounds": true,
+    "newBrowserExecutedByThisSubtask": false,
+    "notAll43OrFullCDP": true
+  },
+  "portableOriginalPhases": {
+    "S0": "- [ ] S0 逐項將43項對照最新main，標實證/已解/待核；記錄原規格與修正稿衝突，盤點DOM/command/transaction依賴",
+    "S1": "- [ ] S1 共用tokens與標頭：accent/文字/框線/柱樑/網格顏色；按鈕/輸入/分段/圖示/kbd/縮放列；SVG使用computed styles。桌面56px單列WorkspaceHeader，左返回/麵包屑/狀態，中工具，右undo/redo/保存狀態/檔案；既有projectBar整合而非再加一列，<=560px才雙列",
+    "S2": "- [ ] S2 網格流程：對齊頂點圖移到右欄step2、主要操作靠右、捨棄置左並工作區內確認、預覽後保存提示、共用九點選擇與術語、隔離刪除操作",
+    "S3": "- [ ] S3 面內：左欄純圖層；底圖入口納入圖層；料單移構件→角材；參考線/角材/網格子分段一次一表單；去重工具但保留R及現有操作契約；框選提示僅相關狀態顯示",
+    "S4": "- [ ] S4 空間/三視圖：柱樑放置與尺寸移平面工具列；尺寸/格線/座標/吸附呈現；常駐空槽入口；三視圖右欄240px和空狀態；工作面選擇按工具顯示、工具術語/整列點擊統一。新增吸附若超出現有幾何契約需另提案，不假借UI改公理",
+    "S5": "- [ ] S5 3D建模：共用標頭；歡迎區單主要範例；右欄1來源/2幾何/3預覽與建立；無來源隱藏視角/顯示/指標，預覽後顯示；短高度斷點900px；保留#119完整性診斷",
+    "S6": "- [ ] S6 DOM-CONTRACT文件、響應式、真正常流程/中斷流程、保存重開/undo/redo及設計對照截圖，分段PR獨審合併"
+  },
+  "originalIssueURL": "https://github.com/ZhiQiYang/geometry-axiom/issues/123",
+  "authorityQualification": "Retained portable original issue and historic handoff/self-authored summaries; private ZIP not received",
+  "browserAcceptedAt243": false,
+  "all43ProductAccepted": false,
+  "nativeContractsChanged": false
+}

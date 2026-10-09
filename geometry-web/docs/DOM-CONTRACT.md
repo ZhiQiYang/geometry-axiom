@@ -1,5 +1,16 @@
 # DOM 合約(測試依賴清單)
 
+## 2026-10-09 收尾核收更新（各 scope 分列）
+
+完整候選 SHA f3b8285729b42cd22451c98cba1e2ec4514517f3，核對時 clean；各 scope 的受測版本、執行身分及原始證據見[收尾總索引](../../tests/evidence/cloud-takeover-20261009/UI-CLOSEOUT.md)。
+
+- 共用 #projectBar 原節點與 handlers 保留；compact slot 只套用原 .ew-header/.sm-header 家族及原手機分支，Assembly／Section Profile 沿原流式保存列，Grid 原契約保留。
+- 乾淨 9eb670110379ec0d726914f3e5b2d8e7237f2b9c 的 committed caption 七寬329／0、原六組198／0各自完整；caption 保留原73 checksites，首次教學可見時新增真bbox／hit及關閉後hidden／full native same兩個正前提，沿原入口；沒有source override，不是only-comment修改或43項全驗。
+- 本候選原 Assembly partial150／0／0、原 standalone Space228／0已核收；Space 僅五 declared groups，兩個 timber groups omitted。Assembly 舊停止 wrapper 的 lifecycle 退出1與原 Node／gate0分列。
+- 本候選原完整 CDP2207／0／0、completed:true、84段golden matched；實際Node／gate／controller0、stop0，clean前後與live actor／native／來源身分均已核收。P38原EXPECTED fb-auto-probe例外1分清；前次同版無收據的actor／exits缺口保留。
+- 同版 ASM／SP 四案（1400／390×兩家族）40／0、Node／gate／controller0、completed:true、有界probeVerified已核收；僅等原SP Cancel正常完成再Close，原16／1保留。原gate仍command-only、非full；其餘有界結果與43 source-only詳總索引。
+
+
 ## #123 最後採納合併（2026-10-09）
 
 - 簡式檢查器的原 `#gridObjectDelete` 位於 footer 的閉合 `.gi-delete-section`；正常展開 summary 後才可點原刪除按鈕。原 owner／busy／核心預覽確認保持，不新增第二重確認。`#gridObjectOpen/#gridObjectNewBinding` 的原 ID、功能及位置保留。

@@ -1,0 +1,42 @@
+{
+  "schema": "geometry-durable-census-preparation/1",
+  "checkedUTC": "2026-10-09T19:22:09.320618+00:00",
+  "testedFullSHA": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "dirty": "",
+  "actualReviewCommand": [
+    "python",
+    "-B",
+    "<workspace-path>"
+  ],
+  "actualPython": "<execution-runtime-path>",
+  "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "sourceFiles": {
+    "<workspace-path>|basename=validate_f3b_full_integration.py|originalKeySha256=13075ac5194c682b103d94459c541337db865a0742e12134ec88c12074cea049": "f12b4a3163dbeee6fa854e96a7924970633bc79b07b7d331242bbd4880c14c7b",
+    "<workspace-path>|basename=validate_f3b_durable_integration.py|originalKeySha256=3411e8749098fb2597f27651e43554fd5638019dd3fa63b6a91969a7de96a726": "d0916c681be83ead7aaf82f7a8ee790b7414ce472dda3e3755c800ac47133830",
+    "<workspace-path>|basename=prepare_durable_full_census.py|originalKeySha256=fd867917e699d8d869a7e04af02ba903ae9b06b3bdb4cfb959f4c0d3d1822e5a": "5cdcb89e927a7c9d279bea7bd705a0d3fb1a051d0758728f16d86a14eb8b9715",
+    "<workspace-path>|basename=release_gate.py|originalKeySha256=6659a53d2dada7965bdbcfdb4918f9f80ffbee0feed4d2b419765db631aa7e46": "ad460ddbdd52c48995188079339bc224e7f39b3d01e3147091a858ba8f541389",
+    "<workspace-path>|basename=cdp_test.js|originalKeySha256=11ff9d18ab104270056c50d51d3b70d49f5aa9186d6ff8fb8822ad18bf2627d1": "45558fc343020367d5c582a6e3a0edba93c94990dab19be78943f9eeb7468f05"
+  },
+  "checks": {
+    "only explicit exception classification delta": true,
+    "original gate never imposed exception-count zero": true,
+    "original P38 arms exact expected exception": true,
+    "original P38 injects exactly named probe": true,
+    "original callback counts expected exceptions": true,
+    "no product/browser/service execution in preparer": false,
+    "exact expected P38 accepts": true,
+    "zero count with expected raw rejects": true,
+    "unexplained second exception rejects": true,
+    "unexpected exception rejects": true,
+    "wrong expected message rejects": true,
+    "missing expected rows rejects": true
+  },
+  "allStaticChecksPassed": false,
+  "productTestsExecuted": false,
+  "actualFullAcceptance": "pending terminal and sealed original receipt",
+  "limits": [
+    "Source/delta and counterexample review only; not browser or product assertions.",
+    "Preserves original gate/observer, all source/native/actor/golden/scope checks.",
+    "Expected exception 1 is original P38 behavior, not a new product failure."
+  ]
+}

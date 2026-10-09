@@ -1,0 +1,40 @@
+{
+  "schema": "geometry-root-owned-integration-lifecycle/1",
+  "startedUtc": "2026-10-09T19:29:13.675157+00:00",
+  "mode": "shell",
+  "expectedFullSHA": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "dirtyBefore": "",
+  "serviceCommand": [
+    "<execution-runtime-path>",
+    "<workspace-path>",
+    "<workspace-path>",
+    "19180",
+    "<isolated-test-directory>"
+  ],
+  "testCommand": [
+    "<execution-runtime-path>",
+    "<workspace-path>",
+    "--root",
+    "<workspace-path>",
+    "--url",
+    "http://127.0.0.1:19180/",
+    "--output",
+    "<workspace-path>",
+    "--expected-head",
+    "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "--bridge",
+    "<isolated-test-directory>",
+    "--model-base",
+    "<isolated-test-directory>",
+    "--feedback-dir",
+    "<isolated-test-directory>",
+    "--timeout",
+    "2400"
+  ],
+  "actualPython": "<execution-runtime-path>",
+  "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "controllerSHA256": "4248ad90c49a0512dee5e314e5b4c5c23e5a005bb0c91f2a52b1105b527d9990",
+  "runnerSHA256": "6b525912621763298485c39cb0e6eecf34e16e7bb33d69361dbbe9c532df40cf",
+  "launchSHA256": "d2dbdd3c30631874c63a3fdaac763868f9a5809588c085cf12baed61bed33631",
+  "reason": "Bounded normal ASM/SP return supplement after shared-header scope repair; four original normal cases with exact native preservation, separate from full CDP/Space. Original assertions and golden unchanged."
+}

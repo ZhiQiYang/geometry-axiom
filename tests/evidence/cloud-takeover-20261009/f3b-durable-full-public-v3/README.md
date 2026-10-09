@@ -1,0 +1,9 @@
+# Formal durable original full CDP
+
+Clean f3b8285729b42cd22451c98cba1e2ec4514517f3: original unfiltered canonical node geometry-web/cdp_test.js completed2207/0/0, actual Node/gate0, execution identity verified, original golden84matched. Original EXPECTED P38fb-auto-probe1 retained. This is one newly sealed durable run, not a combination or a repaired receipt for the earlier noReceiptraw2207.
+
+Original gate/lifecycle/launcher/service/ownedstop and source/executable/native/runtime records remain original. Source/public hashes and paths are separate; publiccopies are notexecuted.125actual capturedweb files are distinct from7exact frozen Git Pythonreference files and vendor/goldenreferences. No overwritten temporaryASM screenshot is used. Privatequeue/feedback/profile/nativebinarybytes and standalonebigPNG are excluded. Different-actor metadatareview counts never add to product2207.
+
+StandaloneSpace228, partialASM150, boundednormal40, earliercaption329/SIX198, Resume4/#54273 and historicalfull5174 remain separate scopes. Historical full2207 on5174 stays immutable; no result is rebound to publication docs.
+
+Fresh v3 additionally retains six exact frozen Git dependency/synthetic fixture references for the original modules, separate from the125captured web files and7Pythonreferences. The original wrapper source-snapshot directory was absent; retained hash-matching actors supply source bytes with that limit. The original detached launch records final controller exit as null; only the later samePID/starttime kernel observation proves actualcontroller0. Node/gate/stop0 and service−15 are separate outcomes; zombieZ never means absent. Publication classifier preserves generic detector code prefixes and all non-token characters; the adapter and config source identities are explicit. No product rerun or original receipt alteration occurs.

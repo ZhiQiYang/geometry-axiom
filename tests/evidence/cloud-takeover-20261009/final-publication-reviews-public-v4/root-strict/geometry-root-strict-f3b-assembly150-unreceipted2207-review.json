@@ -1,0 +1,49 @@
+{
+  "schema": "geometry-root-strict-readonly-packet-review/1",
+  "reviewedUtc": "2026-10-09T19:32:35.576743+00:00",
+  "reviewer": "/root",
+  "repositoryWrites": false,
+  "productExecution": false,
+  "repositoryBefore": {
+    "root": "<workspace-path>",
+    "head": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "dirty": ""
+  },
+  "repositoryAfter": {
+    "root": "<workspace-path>",
+    "head": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+    "dirty": ""
+  },
+  "executionIdentity": {
+    "script": "<workspace-path>",
+    "scriptSHA256": "2c9d965f77f30f57a4331428547588f141a836bde19c3b123737d776fe4b1b2f",
+    "actualPythonExecutable": "<execution-runtime-path>",
+    "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "argv": [
+      "<workspace-path>",
+      "<workspace-path>",
+      "<workspace-path>"
+    ],
+    "cwd": "/workspace"
+  },
+  "records": [
+    {
+      "folder": "<workspace-path>",
+      "manifestSHA256": "bebeec6f3074b2c8cad4ab71c90d7decd3287db7b1b5dfa25444d83b6add9d64",
+      "verifiedPublicFiles": 199,
+      "verifiedBytes": 6185128,
+      "strictJSONFiles": 12,
+      "strictJSONLRows": 0,
+      "strictTraceJSONRows": 0
+    },
+    {
+      "folder": "<workspace-path>",
+      "manifestSHA256": "5279b00e7b2425e582af5c8ce62cea2675eb7f54aeffa85e86a40049ee7b5ea8",
+      "verifiedPublicFiles": 45,
+      "verifiedBytes": 3311342,
+      "strictJSONFiles": 16,
+      "strictJSONLRows": 0,
+      "strictTraceJSONRows": 0
+    }
+  ]
+}

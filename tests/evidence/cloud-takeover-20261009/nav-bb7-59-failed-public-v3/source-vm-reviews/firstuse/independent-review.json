@@ -1,0 +1,387 @@
+{
+  "schema": "geometry-caption-first-use-source-review/1",
+  "checkedUTC": "2026-10-09T17:18:39.509Z",
+  "executor": {
+    "path": "<node-runtime>/bin/node",
+    "sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+    "version": "v24.19.0",
+    "command": [
+      "<node-runtime>/bin/node",
+      "<workspace-path>"
+    ],
+    "scriptSHA256": "f8d8dfd9d8b0e4ea39bc9e6dab175ce0ffccdac971548faa4efa2390f285b2f6",
+    "parser": {
+      "origin": "Node bundled internal Acorn",
+      "version": "8.17.0",
+      "builtinSourceSHA256": "b373ccd10e9deb63654289f73216eeefcaf0405d9ee24289aabf596b91b4c318"
+    }
+  },
+  "before": {
+    "head": "59c736066a97ca044c3a47c0ecdcb5245a59efab",
+    "dirty": "M tests/issue123_caption_browser.cjs"
+  },
+  "after": {
+    "head": "59c736066a97ca044c3a47c0ecdcb5245a59efab",
+    "dirty": "M tests/issue123_caption_browser.cjs"
+  },
+  "originalExecutedSource": {
+    "fullSHA": "59c736066a97ca044c3a47c0ecdcb5245a59efab",
+    "path": "tests/issue123_caption_browser.cjs",
+    "sha256": "01355f60d7a7a817f99a58ab088cf1a4609c020d94ba93fc0c325392b6754252"
+  },
+  "reviewedUncommittedSource": {
+    "path": "<workspace-path>",
+    "sha256": "7ee40cb53fb1f561d0e7d33282b641bc3a4850f8cbdc9fa6105994bd3d43d765"
+  },
+  "patch": {
+    "path": "<workspace-path>",
+    "sha256": "40c7d1b7f4a9d99134842afcce44a63e1c2de7ae2814aa1445c908e898572b0d"
+  },
+  "checks": [
+    {
+      "name": "root held final7ee bytes exact",
+      "ok": true
+    },
+    {
+      "name": "old executed01355 remains exact Git original",
+      "ok": true
+    },
+    {
+      "name": "exact final patch40c7 identity",
+      "ok": true
+    },
+    {
+      "name": "every Program AST node except entry unchanged",
+      "ok": true
+    },
+    {
+      "name": "original entry dblclick/wait/settle AST retained as exact final three steps",
+      "ok": true
+    },
+    {
+      "name": "all original73 check AST bodies/order exact; only2 positive additions",
+      "ok": true,
+      "detail": {
+        "old": 73,
+        "new": 75
+      }
+    },
+    {
+      "name": "new checks exact unique positive names",
+      "ok": true
+    },
+    {
+      "name": "entry conditional visible existing lesson and one normal click; no retries/force/DOMpatch",
+      "ok": true
+    },
+    {
+      "name": "one readonly measurement expression",
+      "ok": true
+    },
+    {
+      "name": "measurement interpolation is only fixed lesson identifier",
+      "ok": true
+    },
+    {
+      "name": "embedded page expression parses under real JS parser",
+      "ok": true
+    },
+    {
+      "name": "measurement includes uniqueness and real center hit without mutation",
+      "ok": true
+    },
+    {
+      "name": "f608 intermediate is recoverable by comment-only inverse",
+      "ok": true
+    },
+    {
+      "name": "finalcomment describes retained bodies/footer and new premise truthfully",
+      "ok": true
+    },
+    {
+      "name": "exact patch equals only entry replacement and truth comment",
+      "ok": true
+    },
+    {
+      "name": "seven widths/fixture/source/footer block bytes unchanged",
+      "ok": true
+    },
+    {
+      "name": "all product/SIX/floor/golden untouched",
+      "ok": true
+    },
+    {
+      "name": "measurement zero element safely rejects",
+      "ok": true
+    },
+    {
+      "name": "positive premise rejects duplicate",
+      "ok": true,
+      "detail": {
+        "count": 2,
+        "hit": true,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "name": "positive premise rejects occluded",
+      "ok": true,
+      "detail": {
+        "count": 1,
+        "hit": false,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "name": "positive premise rejects zero width",
+      "ok": true,
+      "detail": {
+        "count": 1,
+        "hit": true,
+        "width": 0,
+        "height": 44
+      }
+    },
+    {
+      "name": "positive premise rejects zero height",
+      "ok": true,
+      "detail": {
+        "count": 1,
+        "hit": true,
+        "width": 44,
+        "height": 0
+      }
+    },
+    {
+      "name": "positive premise rejects negative width",
+      "ok": true,
+      "detail": {
+        "count": 1,
+        "hit": true,
+        "width": -1,
+        "height": 44
+      }
+    },
+    {
+      "name": "normal visible lesson dismissed exactly once then original card doubleclick",
+      "ok": true,
+      "detail": {
+        "actions": [
+          {
+            "action": "click",
+            "args": [
+              "#ocSelectionSummary [data-guidance-dismiss]"
+            ]
+          },
+          {
+            "action": "dblclick",
+            "selector": ".ocard[data-kind=\"boundary\"][data-id=\"1\"]",
+            "args": []
+          },
+          {
+            "action": "wait",
+            "expression": "oc.edit?.bid===1&&!$('objectWorkspace').hidden"
+          },
+          {
+            "action": "settle"
+          }
+        ],
+        "predicates": [
+          {
+            "name": "initial canvas lesson has one normal reachable dismissal",
+            "ok": true
+          },
+          {
+            "name": "normal first-use dismissal hides lesson and preserves exact native source",
+            "ok": true
+          }
+        ],
+        "reads": 2,
+        "rejected": false
+      }
+    },
+    {
+      "name": "normal premise verifies hidden and full native source equal before card",
+      "ok": true,
+      "detail": {
+        "actions": [
+          {
+            "action": "click",
+            "args": [
+              "#ocSelectionSummary [data-guidance-dismiss]"
+            ]
+          },
+          {
+            "action": "dblclick",
+            "selector": ".ocard[data-kind=\"boundary\"][data-id=\"1\"]",
+            "args": []
+          },
+          {
+            "action": "wait",
+            "expression": "oc.edit?.bid===1&&!$('objectWorkspace').hidden"
+          },
+          {
+            "action": "settle"
+          }
+        ],
+        "predicates": [
+          {
+            "name": "initial canvas lesson has one normal reachable dismissal",
+            "ok": true
+          },
+          {
+            "name": "normal first-use dismissal hides lesson and preserves exact native source",
+            "ok": true
+          }
+        ],
+        "reads": 2,
+        "rejected": false
+      }
+    },
+    {
+      "name": "already dismissed lesson stays untouched; original card path exact",
+      "ok": true,
+      "detail": {
+        "actions": [
+          {
+            "action": "dblclick",
+            "selector": ".ocard[data-kind=\"boundary\"][data-id=\"1\"]",
+            "args": []
+          },
+          {
+            "action": "wait",
+            "expression": "oc.edit?.bid===1&&!$('objectWorkspace').hidden"
+          },
+          {
+            "action": "settle"
+          }
+        ],
+        "predicates": [],
+        "reads": 0,
+        "rejected": false
+      }
+    },
+    {
+      "name": "workflow rejects duplicate before card action",
+      "ok": true,
+      "detail": {
+        "actions": [],
+        "predicates": [
+          {
+            "name": "initial canvas lesson has one normal reachable dismissal",
+            "ok": false
+          }
+        ],
+        "reads": 1,
+        "rejected": true
+      }
+    },
+    {
+      "name": "workflow rejects occluded before card action",
+      "ok": true,
+      "detail": {
+        "actions": [],
+        "predicates": [
+          {
+            "name": "initial canvas lesson has one normal reachable dismissal",
+            "ok": false
+          }
+        ],
+        "reads": 1,
+        "rejected": true
+      }
+    },
+    {
+      "name": "workflow rejects zero rect before card action",
+      "ok": true,
+      "detail": {
+        "actions": [],
+        "predicates": [
+          {
+            "name": "initial canvas lesson has one normal reachable dismissal",
+            "ok": false
+          }
+        ],
+        "reads": 1,
+        "rejected": true
+      }
+    },
+    {
+      "name": "workflow rejects fails to close before card action",
+      "ok": true,
+      "detail": {
+        "actions": [
+          {
+            "action": "click",
+            "args": [
+              "#ocSelectionSummary [data-guidance-dismiss]"
+            ]
+          }
+        ],
+        "predicates": [
+          {
+            "name": "initial canvas lesson has one normal reachable dismissal",
+            "ok": true
+          },
+          {
+            "name": "normal first-use dismissal hides lesson and preserves exact native source",
+            "ok": false
+          }
+        ],
+        "reads": 1,
+        "rejected": true
+      }
+    },
+    {
+      "name": "workflow rejects native changes before card action",
+      "ok": true,
+      "detail": {
+        "actions": [
+          {
+            "action": "click",
+            "args": [
+              "#ocSelectionSummary [data-guidance-dismiss]"
+            ]
+          }
+        ],
+        "predicates": [
+          {
+            "name": "initial canvas lesson has one normal reachable dismissal",
+            "ok": true
+          },
+          {
+            "name": "normal first-use dismissal hides lesson and preserves exact native source",
+            "ok": false
+          }
+        ],
+        "reads": 2,
+        "rejected": true
+      }
+    },
+    {
+      "name": "actual finaltest Node syntax",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "only root-owned pending test dirty beforeafter; reviewer repo unchanged",
+      "ok": true
+    }
+  ],
+  "passed": 33,
+  "failed": 0,
+  "total": 33,
+  "rawLog": "<workspace-path>",
+  "rawLogSHA256": "789a72bdc5216bb626db3d51a56d9bc1775f7934e2ee0e1a7572febf82689272",
+  "browserExecuted": false,
+  "productWritten": false,
+  "formalTestWritten": false,
+  "productAcceptanceClaim": false,
+  "limits": [
+    "Only AST/isolated DOM/workflow counterexamples; native API and browser/trusted pointer are not run",
+    "Actual7width acceptance requires new committed frozen sourceSHA with final7ee identity;01355 original59 failure stays228/1",
+    "f608 intermediate reconstructed by exactcomment inverse is expressly unexecuted; it is not a receipt of the executed01355 bytes"
+  ]
+}

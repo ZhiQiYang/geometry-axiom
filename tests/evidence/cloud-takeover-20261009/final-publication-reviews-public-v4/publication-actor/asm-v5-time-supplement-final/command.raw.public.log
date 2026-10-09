@@ -1,0 +1,21 @@
+PASS prioractual629/1 exit1 preserved
+PASS prioractualsource/raw hashes preserved
+PASS sole difference outside role metadata/census is fresh preparedUtc
+PASS new preparedUtc is later valid UTC preparation time
+PASS exact historical execution/byte associations unchanged rounds
+PASS exact historical execution/byte associations unchanged historyReviewsAndExecutorSources
+PASS exact historical execution/byte associations unchanged fullTestedCommitSourceCopies
+PASS exact historical execution/byte associations unchanged testedProductHead
+PASS exact historical execution/byte associations unchanged productGate
+PASS exact historical execution/byte associations unchanged originalLifecycle
+PASS exact historical execution/byte associations unchanged separateStopRecovery
+PASS exact historical execution/byte associations unchanged independentMetadataReview
+PASS exact historical execution/byte associations unchanged sourceClosure
+PASS exact historical execution/byte associations unchanged sourceAndArtifactByteBindings
+PASS exact historical execution/byte associations unchanged limits
+PASS exact historical execution/byte associations unchanged omissions
+PASS exact historical execution/byte associations unchanged independentOtherScopes
+PASS fresh metadata time never changes original testedfullSHA
+PASS actual metadata-role correction remains specificgenerator vs genericdep
+PASS v5 immutable final-ready manifest identity
+PASS v4 withdrawn mother immutable exact identity

@@ -1,0 +1,26 @@
+{
+  "schema": "geometry-cdp-result/1",
+  "scope": {
+    "mode": "partial",
+    "filters": [
+      "GEOMETRY_ASSEMBLY_ONLY"
+    ],
+    "modifiers": [],
+    "url": "http://127.0.0.1:19182/",
+    "feedbackDirectory": "<isolated-test-directory>",
+    "browserProfile": "<isolated-test-directory>",
+    "cdpPort": 57193,
+    "browserPid": 252403
+  },
+  "completed": true,
+  "passedAssertions": 150,
+  "failedAssertions": 0,
+  "skipped": [],
+  "sections": {
+    "P77": 134,
+    "P82": 16
+  },
+  "goldenCompare": "not compared (partial mode)",
+  "uncaughtBrowserExceptions": 0,
+  "coverage": "Mixed trusted input, DOM/programmatic integration and native API checks; assertion counts are not end-to-end scenario counts."
+}

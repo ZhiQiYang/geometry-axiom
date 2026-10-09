@@ -1,0 +1,69 @@
+{
+  "schema": "geometry-durable-space-launch-independent-addendum/1",
+  "checkedUTC": "2026-10-09T19:23:16.873877+00:00",
+  "testedFullSHA": "f3b8285729b42cd22451c98cba1e2ec4514517f3",
+  "actualReviewCommand": [
+    "python",
+    "-B",
+    "<workspace-path>"
+  ],
+  "actualPython": "<execution-runtime-path>",
+  "actualPythonSHA256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+  "exitCode": 0,
+  "checks": {
+    "sealed Space independently accepted": true,
+    "exact frozen candidate launch and terminal": true,
+    "unchanged owned controller source pinned by both phases": true,
+    "unchanged launcher source recorded at launch": true,
+    "exact launcher command mode and stem": true,
+    "exact controller command same Python source and mode": true,
+    "actual Python hash consistent": true,
+    "launch PID PGID SID own fresh group": true,
+    "launch raw stat hash unchanged": true,
+    "launcher explicitly detached stdout stderr and session": true,
+    "launcher launch-only pending metadata honest": true,
+    "terminal actual gate and stop zero": true,
+    "terminal exact candidate stop source": true,
+    "controller stdout final structured terminal matches sealed file": true,
+    "controller stderr empty": true,
+    "controller successful final exit is exactly original actual gate return": true,
+    "preparer AST contains no product/browser/service call": true,
+    "all other previous exception delta and mock checks passed": true,
+    "retained controller kernel exit actually zero": true
+  },
+  "allChecksPassed": true,
+  "sourceHashes": {
+    "<workspace-path>|basename=supplementary-validation-f3b-durable-full-space.json|originalKeySha256=20028106d6e7f3710fa3272f3d33a2ec0697ed2c958dc6073d5c3f0891116b3d": "1cadc0c1a180ab102af416479d363da8d200c30a8d11e6cf1a3c22b35005d0f2",
+    "<workspace-path>|basename=launch.json|originalKeySha256=93219902088761233af27e538dc4f0f21930a3ff04237240e6948154aa1915bf": "91c02e0a1c6a4011aa1a0e0e3d0c9cac62879df943b5688ee575a005013eebf3",
+    "<workspace-path>|basename=launched-controller.stat.raw|originalKeySha256=7266ee23dc6be8a24654e0113855675ecf522798a4e7278c6bf5a1cff16aed85": "b466ade2ad9e2330fa8c054f2728bc63ab81bd0bf230db2166ff649f7889efde",
+    "<workspace-path>|basename=controller.stdout.raw.log|originalKeySha256=2fb5672d78e66a30ecf5faf92d9ee4177facc3229af12ca003fa4bcd574a1360": "2a5349886b374bbcdacce6b4c17ff787931d7e31129335092ab1b27ce831ebbe",
+    "<workspace-path>|basename=controller.stderr.raw.log|originalKeySha256=5e22056a5327ee139ed7a7ad08c2fb3d198f375a4a89bef71d55fd0a9ec3f722": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "<workspace-path>|basename=geometry-launch-detached-owned-integration-f3b.py|originalKeySha256=ba457264ca8e782aff572d7b86366e7a55ff1ac46dde3ebf8f61b4b5ed39476e": "1bd4791d7745744634a093b9df3bbb31901ffbe4723e5858712b1ca3d11d6333",
+    "<workspace-path>|basename=geometry-owned-integration-lifecycle-f3b-v2.py|originalKeySha256=e40a006ff16b2e5c08b519d72b5b06ca8b56c24b343f8bab6d42ae7efb1f609c": "5a33421c7b84919c212ebf3c444bed22a950177462cd87c073e4d99fdda0e5ae",
+    "<workspace-path>|basename=geometry-stop-with-terminal-receipt-f3b.py|originalKeySha256=9cf76a57c2e85eda1ac87f430f60506eba649a6dbbd4b7b7e4628e274ba8697b": "cc505b94c1011bed31d350a8670422808ded123e6b058e54e3c7853ff79286a2",
+    "<workspace-path>|basename=started.json|originalKeySha256=6f7357e9a65bc851c6f207e1a672b190947525329af14afcd51bebbd87cee3b3": "0ea3fcbee98847a13f06816ed35074d1b475c7208adaa665327ca7978dd1864d",
+    "<workspace-path>|basename=terminal.json|originalKeySha256=43fbdd348844d79434264ce3afe709908c403eb8877e4164a37261fa677a65d6": "e126fee4d98195eab86f16f51fe20bcc3f9d019fc1e33397a368998f8dba47ad",
+    "<workspace-path>|basename=prepare_durable_full_census.py|originalKeySha256=fd867917e699d8d869a7e04af02ba903ae9b06b3bdb4cfb959f4c0d3d1822e5a": "5cdcb89e927a7c9d279bea7bd705a0d3fb1a051d0758728f16d86a14eb8b9715",
+    "<workspace-path>|basename=durable-census-preparation-review.json|originalKeySha256=3542f21bcafc0bb1418bc6ccb67a89687c91dc3cf93d5b3adb87e6f239884e38": "d1b4ad3cf2e5c9b47df5446db88da6f6e829cf4ce573aebb39a17239256db2e4",
+    "<workspace-path>|basename=review_durable_space_launch_and_census.py|originalKeySha256=e991372252cd0be68c3a78d2ee2b4b8a1e780871bdd77e82e95c6729ac9f7953": "0b3a68354b8a3dfab5728103538b5094dc1934a13dacb3f9f1623fd4f2c53254"
+  },
+  "rawReviewLogSHA256": "26cbd0ae96522776f8a082e1570403accd071cfb638c780ea3f11e1ecf29bb78",
+  "currentControllerKernelObservation": {
+    "path": "/proc/280637/stat",
+    "exists": true,
+    "actualControllerExitFromKernel": 0,
+    "raw": "280637 (python3.12) Z 1 280637 280637 0 -1 4227340 12084 7050461 0 0 7 7 2128 867 20 0 1 0 2346732 0 0 18446744073709551615 0 0 0 0 0 0 0 16781312 0 1 0 0 17 3 0 0 0 0 0 0 0 0 0 0 0 0 0\n",
+    "sha256": "83912792b5f12a5f523d96fd5d63e0394bc94fb52388272e9d9390ec85c92019",
+    "state": "Z",
+    "kernelWaitStatus": 0,
+    "kernelSignal": 0
+  },
+  "actualControllerExitReportedByRoot": 0,
+  "actualControllerExitRecordedByOriginalLaunch": null,
+  "limits": [
+    "Independent metadata/source/kernel observation only; no browser/service/product execution.",
+    "Launch-time stdout/stderr hashes attest then-empty files, not their subsequent final contents; current sealed hashes recorded separately.",
+    "Original static preparation failure retained: literal search matched its own token; AST correction separately proves no product launch.",
+    "Space228 applies only five declared groups; two timber groups stay omitted."
+  ]
+}
