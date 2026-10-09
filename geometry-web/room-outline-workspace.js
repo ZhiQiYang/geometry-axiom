@@ -150,10 +150,22 @@ const RoomOutlineWorkspace=(()=>{
     refresh();
     for(const [id,value] of Object.entries(draft.rawInputs)){const input=document.getElementById(id);if(input)input.value=value;}
   }
-  function editPoints(points,dimensions=[]) {
+  function editPoints(points,dimensions=[],keepRows=false) {
     W.assertEditable();if(!current(draft))throw Error('候選已過期，請重新取得。');
     if(points.length<4||points.length>256||!points.every(p=>p.length===2&&p.every(n=>Number.isSafeInteger(n)&&Math.abs(n)<=1e8))||!R.orthogonal(points))throw Error('頂點須為整數 mm、至少四點且每邊正交，不能偷偷修整斜邊。');
-    fe.draft={...fe.draft,pts:points.map(p=>[...p])};draft.dimensions=dimensions;draft.reviewed=false;draft.revision=(draft.revision||0)+1;draft.rawInputs={...(draft.rawInputs||{}),refRoomVertices:points.map(p=>p.join(',')).join('\n')};fe.draftPreview=null;feSyncDraftMirror();refresh();
+    fe.draft={...fe.draft,pts:points.map(p=>[...p])};draft.dimensions=dimensions;draft.reviewed=false;draft.revision=(draft.revision||0)+1;draft.rawInputs={...(draft.rawInputs||{}),refRoomVertices:points.map(p=>p.join(',')).join('\n')};fe.draftPreview=null;feSyncDraftMirror();
+    if(!keepRows){refresh();return;}
+    // Keep the real pointer/Tab target connected while an input loses focus.
+    // Resizing retains the vertex count, so these rows can update in place.
+    const pane=document.getElementById('faceInspectorContent');
+    for(const input of pane.querySelectorAll('[data-room-edge-length]')){
+      const edge=Number(input.dataset.roomEdgeLength),a=points[edge],b=points[(edge+1)%points.length],length=Math.abs(b[0]-a[0])+Math.abs(b[1]-a[1]);
+      input.parentElement.firstChild.textContent=`邊 ${edge+1}：擬提交 ${length} mm${dimensions.some(d=>d.edge===edge)?'（人工核對入值）':''}`;
+      if(!input.dataset.rowDirty)input.value=String(length);
+    }
+    pane.querySelector('#refRoomVertices').value=draft.rawInputs.refRoomVertices;
+    pane.querySelector('#refRoomReviewed').checked=false;pane.querySelector('#refRoomConfirm').disabled=true;
+    document.getElementById('faceDraftFinish').disabled=true;drawFaceEditor();W.present();
   }
   function paneHTML(bid,collection=false) {
     const p=W.active(bid);if(!p)return '';
@@ -179,9 +191,12 @@ const RoomOutlineWorkspace=(()=>{
     pane.querySelector('#refRoomCancel')?.addEventListener('click',cancel);
     pane.querySelector('#refRoomApplyVertices')?.addEventListener('click',safe(()=>editPoints(pane.querySelector('#refRoomVertices').value.trim().split(/\n/).map(line=>line.trim().split(',').map(Number)))));
     for(const input of pane.querySelectorAll('[data-room-edge-length]')){
-      const apply=safe(()=>{if(!input.isConnected||pane.querySelector('#'+input.id)!==input||!current(boundDraft))throw Error('候選已過期。');
+      input.addEventListener('input',()=>{if(!input.isConnected||boundDraft!==draft||!current(boundDraft))return;
+        input.dataset.rowDirty='1';draft.reviewed=false;pane.querySelector('#refRoomReviewed').checked=false;pane.querySelector('#refRoomConfirm').disabled=true;document.getElementById('faceDraftFinish').disabled=true;});
+      const apply=safe(()=>{if(!input.dataset.rowDirty)return;if(!input.isConnected||pane.querySelector('#'+input.id)!==input||!current(boundDraft))throw Error('候選已過期。');
         const edge=Number(input.dataset.roomEdgeLength),length=Number(input.value);
-        editPoints(R.resizeEdge(fe.draft.pts,edge,length),[{edge,length,kind:'user-confirmed-mm'}]);});
+        const points=R.resizeEdge(fe.draft.pts,edge,length);delete input.dataset.rowDirty;
+        editPoints(points,[{edge,length,kind:'user-confirmed-mm'}],true);});
       input.addEventListener('blur',apply);
       input.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.defaultPrevented||e.isComposing||e.keyCode===229)return;
         e.stopPropagation();e.preventDefault();if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;apply();});
@@ -210,6 +225,7 @@ const RoomOutlineWorkspace=(()=>{
   function beforeCommit() {
     if(!draft)return null;
     W.assertEditable();if(!current(draft)||!draft.reviewed)throw Error('請重新核對室內淨輪廓、尺寸與警告，再確認候選。');
+    if(document.querySelector('[data-room-edge-length][data-row-dirty]'))throw Error('逐邊尺寸尚未完成入值，請先核對或取消。');
     if(!R.orthogonal(fe.draft.pts)||!fe.draft.pts.every(p=>p.every(Number.isSafeInteger)))throw Error('候選須為正交整數 mm。');
     draft.committing=true;return draft;
   }
