@@ -1,0 +1,774 @@
+{
+  "schema": "geometry-bounded-public-evidence/2",
+  "preparedAtUtc": "2026-10-09T13:06:43.506354+00:00",
+  "preparedAtAsiaTaipei": "2026-10-09T21:06:43.506354+08:00",
+  "scope": "Original 16-case replacement probe plus four independent committed EDGE browser harness rounds at 1400/390; no aggregation and no full CDP/Space/Windows/golden acceptance.",
+  "rounds": [
+    {
+      "name": "baseline",
+      "created": "2026-10-09T12:58:53.390092+00:00",
+      "finished": "2026-10-09T12:59:16.676757+00:00",
+      "testedHead": "9029a8f6bc00a9ff8de1d2b0deb844f331e032e3",
+      "beforeStatus": "",
+      "afterStatus": "",
+      "command": [
+        "<python-directory>/python3",
+        "<evidence-root>/portable/replacement/browser_probe.py",
+        "--url",
+        "http://127.0.0.1:19176/",
+        "--out",
+        "<evidence-root>/baseline-20261009/replacement-artifacts",
+        "--only",
+        "edges"
+      ],
+      "exitCode": 1,
+      "gateExitCode": 1,
+      "probeCensus": {
+        "resultsPath": "<evidence-root>/baseline-20261009/replacement-artifacts/results.json",
+        "resultsSha256": "834917bf76c09a335985ee814d0a9aa4e28f232a072bac4dcfb87380b304aa45",
+        "expectedCases": 16,
+        "actualCases": 16,
+        "pass": 12,
+        "fail": 4,
+        "completed": true,
+        "cases": [
+          {
+            "name": "edges-1400-main-same-input-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-main-replacement-rejected-value",
+            "ok": false,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-main-replacement-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-main-success-sibling",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-face-same-input-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-face-replacement-rejected-value",
+            "ok": false,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-face-replacement-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-face-success-sibling",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-main-same-input-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-main-replacement-rejected-value",
+            "ok": false,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-main-replacement-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-main-success-sibling",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-face-same-input-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-face-replacement-rejected-value",
+            "ok": false,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-face-replacement-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-face-success-sibling",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          }
+        ]
+      },
+      "probeVerified": false,
+      "receipt": "baseline/receipt.public.json",
+      "originalReceiptSha256": "f33ccfb500fe5ddb12989e106aab9ef559c2d7b4a40405cf5669417e4d3bb7c1"
+    },
+    {
+      "name": "after",
+      "created": "2026-10-09T13:02:07.692915+00:00",
+      "finished": "2026-10-09T13:02:30.686859+00:00",
+      "testedHead": "bd6294ea2ea5bfe77c1611c479becbdff80c3372",
+      "beforeStatus": "",
+      "afterStatus": "",
+      "command": [
+        "python3",
+        "<evidence-root>/portable/replacement/browser_probe.py",
+        "--url",
+        "http://127.0.0.1:19176/",
+        "--out",
+        "<evidence-root>/after-edge-20261009/replacement-artifacts",
+        "--only",
+        "edges"
+      ],
+      "exitCode": 0,
+      "gateExitCode": 0,
+      "probeCensus": {
+        "resultsPath": "<evidence-root>/after-edge-20261009/replacement-artifacts/results.json",
+        "resultsSha256": "ee9b7815e86a1b887d9b04eb08c7a22e94d5b36e724adc99e811df0d75148427",
+        "expectedCases": 16,
+        "actualCases": 16,
+        "pass": 16,
+        "fail": 0,
+        "completed": true,
+        "cases": [
+          {
+            "name": "edges-1400-main-same-input-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-main-replacement-rejected-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-main-replacement-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-main-success-sibling",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-face-same-input-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-face-replacement-rejected-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-face-replacement-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-1400-face-success-sibling",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-main-same-input-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-main-replacement-rejected-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-main-replacement-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-main-success-sibling",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-face-same-input-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-face-replacement-rejected-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-face-replacement-new-value",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          },
+          {
+            "name": "edges-390-face-success-sibling",
+            "ok": true,
+            "harnessError": null,
+            "pageErrors": []
+          }
+        ]
+      },
+      "probeVerified": true,
+      "receipt": "after/receipt.public.json",
+      "originalReceiptSha256": "c6d5533ac65af800ee771e7eb57787b5ac3a69a5f362419eabf14e9271d40fed"
+    }
+  ],
+  "remoteReadOnly": {
+    "169": {
+      "number": 169,
+      "state": "open",
+      "draft": true,
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/169",
+      "updated_at": "2026-10-08T12:12:11Z",
+      "head": {
+        "ref": "codex/final-release-closeout-20261008",
+        "sha": "a7bff8f4c7a0d61a3133b6e42d0d513dfe96367e"
+      },
+      "base": {
+        "ref": "main",
+        "sha": "5cc1ffa1ee85120eca14258b86b715151cad274f"
+      }
+    },
+    "176": {
+      "number": 176,
+      "state": "open",
+      "draft": true,
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom/pull/176",
+      "updated_at": "2026-10-08T20:25:26Z",
+      "head": {
+        "ref": "codex/integration-closeout-20261008-r2",
+        "sha": "9029a8f6bc00a9ff8de1d2b0deb844f331e032e3"
+      },
+      "base": {
+        "ref": "codex/final-release-closeout-20261008",
+        "sha": "a7bff8f4c7a0d61a3133b6e42d0d513dfe96367e"
+      }
+    }
+  },
+  "existingBaseCi": {
+    "available": true,
+    "run": 37839005928,
+    "url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/37839005928",
+    "jobs": [
+      {
+        "id": 113523319231,
+        "name": "native",
+        "status": "completed",
+        "conclusion": "failure",
+        "runner_id": 0,
+        "runner_name": "",
+        "steps": []
+      },
+      {
+        "id": 113523319575,
+        "name": "browser (documents)",
+        "status": "completed",
+        "conclusion": "failure",
+        "runner_id": 0,
+        "runner_name": "",
+        "steps": []
+      },
+      {
+        "id": 113523319577,
+        "name": "browser (timber)",
+        "status": "completed",
+        "conclusion": "failure",
+        "runner_id": 0,
+        "runner_name": "",
+        "steps": []
+      },
+      {
+        "id": 113523319605,
+        "name": "browser (canvas)",
+        "status": "completed",
+        "conclusion": "failure",
+        "runner_id": 0,
+        "runner_name": "",
+        "steps": []
+      },
+      {
+        "id": 113523319655,
+        "name": "browser (space)",
+        "status": "completed",
+        "conclusion": "failure",
+        "runner_id": 0,
+        "runner_name": "",
+        "steps": []
+      },
+      {
+        "id": 113523319672,
+        "name": "browser (assembly)",
+        "status": "completed",
+        "conclusion": "failure",
+        "runner_id": 0,
+        "runner_name": "",
+        "steps": []
+      },
+      {
+        "id": 113523319761,
+        "name": "browser (grid)",
+        "status": "completed",
+        "conclusion": "failure",
+        "runner_id": 0,
+        "runner_name": "",
+        "steps": []
+      }
+    ],
+    "productTestsExecuted": false
+  },
+  "publicFiles": [
+    {
+      "path": "README.md",
+      "bytes": 6310,
+      "sha256": "d9ddadafd5d821a9201a5d0ed41ea07c13c9cba3085fcf115978af474883b353"
+    },
+    {
+      "path": "after/raw.log",
+      "bytes": 1328,
+      "sha256": "aa1bcafd4c38da99b6ae3df4ca7d779d4f3bd8017e639b3e4caff2eff097e20f"
+    },
+    {
+      "path": "after/receipt.public.json",
+      "bytes": 11167,
+      "sha256": "6d9f7a39c4a9ca3748f772fa15c59675f312eae31c2049ee62dccc8bc0a87e38"
+    },
+    {
+      "path": "after/results.json",
+      "bytes": 55954,
+      "sha256": "ee9b7815e86a1b887d9b04eb08c7a22e94d5b36e724adc99e811df0d75148427"
+    },
+    {
+      "path": "baseline/raw.log",
+      "bytes": 1332,
+      "sha256": "38451c279961b2cefe736d216887a1336e80788f0ce65ba319f2e85e37c07484"
+    },
+    {
+      "path": "baseline/receipt.public.json",
+      "bytes": 11238,
+      "sha256": "fbe18aba5c47b0b56fcb00db1bea69201cb2dbc33dee6d5fda969dca5611ebb2"
+    },
+    {
+      "path": "baseline/results.json",
+      "bytes": 55188,
+      "sha256": "834917bf76c09a335985ee814d0a9aa4e28f232a072bac4dcfb87380b304aa45"
+    },
+    {
+      "path": "formal/after-992e1f7/assertions.raw.log",
+      "bytes": 3345,
+      "sha256": "3220421b37593936741faaebf61576a44628e49f082dc869896dec4c6df32447"
+    },
+    {
+      "path": "formal/after-992e1f7/log.public.log",
+      "bytes": 3669,
+      "sha256": "28f2c713d13084317ff2c22745edbb0d1aa2c96a1fa316517967a0d54e0050ad"
+    },
+    {
+      "path": "formal/after-992e1f7/receipt.public.json",
+      "bytes": 8259,
+      "sha256": "c7fab7d76c6920536d082426d70ccb12addc9847185a0aea6fe0e93ce2398c0d"
+    },
+    {
+      "path": "formal/after-992e1f7/result.raw.json",
+      "bytes": 4939,
+      "sha256": "ed0b1cc774f8492b87c142f347852a6bc06777fe202162a0883819b24f36f26f"
+    },
+    {
+      "path": "formal/after-bd6294e/assertions.raw.log",
+      "bytes": 3458,
+      "sha256": "32d2c68f8ec9c65aeaf470676adb4ca5ddd0f3cb350ebf494faa3e4847accf92"
+    },
+    {
+      "path": "formal/after-bd6294e/log.public.log",
+      "bytes": 3782,
+      "sha256": "928d0ca116b5d774be2999fe8da17ed86407a57ab13fc1838e9fa62053da58ba"
+    },
+    {
+      "path": "formal/after-bd6294e/receipt.public.json",
+      "bytes": 8201,
+      "sha256": "d1f74c50eb76628c25c20f0f7344b645266b3184126f3db2246494de8e67d21d"
+    },
+    {
+      "path": "formal/after-bd6294e/result.raw.json",
+      "bytes": 5231,
+      "sha256": "0e8a49d1538840475384d0aeac59c9d0276f59f6d4a98e98766b930bb2a8991c"
+    },
+    {
+      "path": "formal/after-c15f14b/assertions.raw.log",
+      "bytes": 3402,
+      "sha256": "7a23a2281c62bea2b8fe9b1138cbff84ee15ab95416e74817ba6d860fc90a470"
+    },
+    {
+      "path": "formal/after-c15f14b/log.public.log",
+      "bytes": 3726,
+      "sha256": "2dce399bc6f99865a1fd3ae9c728a64489a3464319edf8d13e539acb480017ca"
+    },
+    {
+      "path": "formal/after-c15f14b/receipt.public.json",
+      "bytes": 8094,
+      "sha256": "6671cd9fb77716779de0557329f430e5120d3ed60ffc2614d2f682447f0ba4b9"
+    },
+    {
+      "path": "formal/after-c15f14b/result.raw.json",
+      "bytes": 5085,
+      "sha256": "6a75d23890837113f6be17d11fbac08df3589ae345fd7ac36411c9382c0e7b50"
+    },
+    {
+      "path": "formal/baseline-9029/assertions.raw.log",
+      "bytes": 2136,
+      "sha256": "6419e6f1b05ea575e817b4c976b890821d93a58361d4c06c087a6e76e6737f8a"
+    },
+    {
+      "path": "formal/baseline-9029/log.public.log",
+      "bytes": 2469,
+      "sha256": "5b2f9871993604193a10852990b4de90cd9a7a690132d85580910e8c07820b97"
+    },
+    {
+      "path": "formal/baseline-9029/receipt.public.json",
+      "bytes": 8152,
+      "sha256": "a4d618e9b8e123b764b05e8bd0119c92a0996e0be253e1a2265a3a3ff5839bc3"
+    },
+    {
+      "path": "formal/baseline-9029/result.raw.json",
+      "bytes": 3315,
+      "sha256": "c598724dad2107e2f025f3bc72fd41281a76cdc28d669d3e3e7278148d810595"
+    },
+    {
+      "path": "formal/edge_draft_redraw_test-baseline-26.js",
+      "bytes": 19514,
+      "sha256": "70c9fb4f8797ccf76408eb028029fe073929d3a78b90f64733e658fe1cfedb87"
+    },
+    {
+      "path": "formal/edge_draft_redraw_test-expanded-38.js",
+      "bytes": 21105,
+      "sha256": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775"
+    },
+    {
+      "path": "probe/browser_instrumentation.js",
+      "bytes": 2427,
+      "sha256": "83e8f28a97b4d03339d27f7646756e8d6bedd4e7f7f9745984d51e1dee54fb44"
+    },
+    {
+      "path": "probe/browser_probe.py",
+      "bytes": 10766,
+      "sha256": "c0b80e75c31ffa487524a7404c5013519eb16a6dee64212b30bfa34ae44dc9b9"
+    },
+    {
+      "path": "probe/provenance.public.json",
+      "bytes": 3523,
+      "sha256": "9379cc9693e5b645282e47c4b661e9c92d640f1316128eb1e3fe89f4f764f99e"
+    },
+    {
+      "path": "probe/run_gate.py",
+      "bytes": 5929,
+      "sha256": "69507aaceaa8cc18859c02fc447fc7986b2bf4e4a06f3e8372f7b22c9d0f0444"
+    }
+  ],
+  "omittedOriginals": [
+    {
+      "kind": "original gate receipt",
+      "label": "baseline",
+      "bytes": 11333,
+      "sha256": "f33ccfb500fe5ddb12989e106aab9ef559c2d7b4a40405cf5669417e4d3bb7c1",
+      "privateRetained": true
+    },
+    {
+      "kind": "original gate receipt",
+      "label": "after",
+      "bytes": 11127,
+      "sha256": "c6d5533ac65af800ee771e7eb57787b5ac3a69a5f362419eabf14e9271d40fed",
+      "privateRetained": true
+    }
+  ],
+  "omittedKinds": [
+    "Machine path originals",
+    "Private feedback",
+    "Images and browser traces/profiles",
+    "Native executables and sidecars",
+    "Private work-manager database/import/events/owner threads"
+  ],
+  "historicalEvidence": {
+    "fullCdp": {
+      "testedHead": "5174a8dafd8c48329d7166abbd3d104e3c28c0c4",
+      "dirty": false,
+      "pass": 2207,
+      "fail": 0,
+      "unexpected": 0,
+      "completed": true,
+      "belongsToLaterDocsHead": false
+    },
+    "windows173": {
+      "pass": 1692,
+      "fail": 2,
+      "exitCode": 1,
+      "completed": false,
+      "rawAcceptedInCloud": false,
+      "partialPassesMayBeAdded": false,
+      "goldenComparedByThisTask": false
+    }
+  },
+  "releaseApproved": false,
+  "extendedAtUtc": "2026-10-09T13:14:49.872188+00:00",
+  "currentTestedProductHead": "992e1f788ea6f8f88f8de2cad49dc4c2df5c98e7",
+  "formalRounds": [
+    {
+      "name": "baseline-9029",
+      "testedHead": "9029a8f6bc00a9ff8de1d2b0deb844f331e032e3",
+      "dirty": false,
+      "created": "2026-10-09T13:08:27.741256+00:00",
+      "finished": "2026-10-09T13:08:38.177776+00:00",
+      "command": [
+        "node",
+        "geometry-web/edge_draft_redraw_test.js"
+      ],
+      "executionExitCode": 1,
+      "gateExitCode": 1,
+      "passed": 24,
+      "failed": 2,
+      "completed": false,
+      "checks": 26,
+      "formalVerified": false,
+      "harnessSha256": "70c9fb4f8797ccf76408eb028029fe073929d3a78b90f64733e658fe1cfedb87",
+      "runnerSha256": "e7acbd3fac10455784ea1f181758d9c79b55df98700fee70d65541094709375f",
+      "sourceSha256": {
+        "geometry-web/app.js": "02f92b848407172f1b52e1d1903017886d095e75a37e969d1e838ffc4f4c545c",
+        "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+        "geometry-web/edge_draft_redraw_test.js": "70c9fb4f8797ccf76408eb028029fe073929d3a78b90f64733e658fe1cfedb87"
+      },
+      "receipt": "formal/baseline-9029/receipt.public.json",
+      "originalReceiptSha256": "f1fbd95c45d242d7bed292c7b48ca87aee6f9a6a484e321b5c2287ccee4b7a4e",
+      "originalRawLogSha256": "62c1beb175c84f2684a859e13e0e6bf724ccb4ff45e769b03ec6084384ffcd4c",
+      "rawResultSha256": "c598724dad2107e2f025f3bc72fd41281a76cdc28d669d3e3e7278148d810595",
+      "failures": [
+        {
+          "name": "1400px a three-view round trip keeps the unsent length and does not apply it",
+          "ok": false,
+          "detail": {
+            "value": "777",
+            "width": 777
+          }
+        },
+        {
+          "name": "390px a three-view round trip keeps the unsent length and does not apply it",
+          "ok": false,
+          "detail": {
+            "value": "777",
+            "width": 777
+          }
+        }
+      ],
+      "explanation": "Original committed 26-check harness: existing view-navigation blur applies unsent 777 at both widths."
+    },
+    {
+      "name": "after-bd6294e",
+      "testedHead": "bd6294ea2ea5bfe77c1611c479becbdff80c3372",
+      "dirty": false,
+      "created": "2026-10-09T13:05:07.670766+00:00",
+      "finished": "2026-10-09T13:05:25.566155+00:00",
+      "command": [
+        "node",
+        "geometry-web/edge_draft_redraw_test.js"
+      ],
+      "executionExitCode": 1,
+      "gateExitCode": 1,
+      "passed": 34,
+      "failed": 4,
+      "completed": false,
+      "checks": 38,
+      "formalVerified": false,
+      "harnessSha256": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775",
+      "runnerSha256": "ef9964d19f9490174538f7d280098e1d8ebc3053efe8a17de744aac2403d780e",
+      "sourceSha256": {
+        "geometry-web/app.js": "106654a6f355a54b206b7434706630603b2c4b09be686e191e637f28efd87049",
+        "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+        "geometry-web/edge_draft_redraw_test.js": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775"
+      },
+      "receipt": "formal/after-bd6294e/receipt.public.json",
+      "originalReceiptSha256": "4cb0c584648d2e212318f5d77145a87a00c57d58532c06018469347f2f9a1976",
+      "originalRawLogSha256": "1f15be82265f8bb8cbd50c1cf09a701cb798143713fa25a0773da9f3dc8dc67c",
+      "rawResultSha256": "0e8a49d1538840475384d0aeac59c9d0276f59f6d4a98e98766b930bb2a8991c",
+      "failures": [
+        {
+          "name": "1400px a three-view round trip keeps the unsent length and does not apply it",
+          "ok": false,
+          "detail": {
+            "value": "777",
+            "width": 777
+          }
+        },
+        {
+          "name": "1400px face a newer value typed during a successful commit stays, and the committed length is kept",
+          "ok": false,
+          "detail": {
+            "value": "500",
+            "width": 500
+          }
+        },
+        {
+          "name": "390px a three-view round trip keeps the unsent length and does not apply it",
+          "ok": false,
+          "detail": {
+            "value": "777",
+            "width": 777
+          }
+        },
+        {
+          "name": "390px face a newer value typed during a successful commit stays, and the committed length is kept",
+          "ok": false,
+          "detail": {
+            "value": "500",
+            "width": 500
+          }
+        }
+      ],
+      "explanation": "Expanded 38-check harness: two existing view-navigation failures plus two introduced successful-face pending-identity regressions; original 16 replacement probe had passed separately."
+    },
+    {
+      "name": "after-c15f14b",
+      "testedHead": "c15f14b288389a60483993980bab5012e40b9539",
+      "dirty": false,
+      "created": "2026-10-09T13:09:23.361580+00:00",
+      "finished": "2026-10-09T13:09:41.320176+00:00",
+      "command": [
+        "node",
+        "geometry-web/edge_draft_redraw_test.js"
+      ],
+      "executionExitCode": 1,
+      "gateExitCode": 1,
+      "passed": 36,
+      "failed": 2,
+      "completed": false,
+      "checks": 38,
+      "formalVerified": false,
+      "harnessSha256": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775",
+      "runnerSha256": "e7acbd3fac10455784ea1f181758d9c79b55df98700fee70d65541094709375f",
+      "sourceSha256": {
+        "geometry-web/app.js": "d6da764558fd27e518b1638efcd7d9e5b2d3ee146dc6834ee44958b4b31f6d11",
+        "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+        "geometry-web/edge_draft_redraw_test.js": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775"
+      },
+      "receipt": "formal/after-c15f14b/receipt.public.json",
+      "originalReceiptSha256": "e2f8d4b0fadbd8e8cbfdd2ef86509ebae8f8a7c5627f27c84924f928ccc099e6",
+      "originalRawLogSha256": "65bfaf699fae2bb7d8c74c929013f6f92e15caced141e75c7d7701a98f29180a",
+      "rawResultSha256": "6a75d23890837113f6be17d11fbac08df3589ae345fd7ac36411c9382c0e7b50",
+      "failures": [
+        {
+          "name": "1400px a three-view round trip keeps the unsent length and does not apply it",
+          "ok": false,
+          "detail": {
+            "value": "777",
+            "width": 777
+          }
+        },
+        {
+          "name": "390px a three-view round trip keeps the unsent length and does not apply it",
+          "ok": false,
+          "detail": {
+            "value": "777",
+            "width": 777
+          }
+        }
+      ],
+      "explanation": "Same 38-check harness: successful-face pending-identity regression corrected; two existing view-navigation failures remain."
+    },
+    {
+      "name": "after-992e1f7",
+      "testedHead": "992e1f788ea6f8f88f8de2cad49dc4c2df5c98e7",
+      "dirty": false,
+      "created": "2026-10-09T13:11:55.532241+00:00",
+      "finished": "2026-10-09T13:12:12.952878+00:00",
+      "command": [
+        "node",
+        "geometry-web/edge_draft_redraw_test.js"
+      ],
+      "executionExitCode": 0,
+      "gateExitCode": 0,
+      "passed": 38,
+      "failed": 0,
+      "completed": true,
+      "checks": 38,
+      "formalVerified": true,
+      "harnessSha256": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775",
+      "runnerSha256": "e7acbd3fac10455784ea1f181758d9c79b55df98700fee70d65541094709375f",
+      "sourceSha256": {
+        "geometry-web/app.js": "794bded59a3c341ed7974f7dfe422235f15625f4ffdf3be0e6628ecd41e2e5b8",
+        "geometry-web/space-workspace.js": "a735338f5cc14f3ae743578986750ace3c7389e0d73fd44c21773d82c2503868",
+        "geometry-web/edge_draft_redraw_test.js": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775"
+      },
+      "receipt": "formal/after-992e1f7/receipt.public.json",
+      "originalReceiptSha256": "ae645130a013ad636281d720b7178cbcb6ffcaee4edb760cc7f7b37a90a3dfd3",
+      "originalRawLogSha256": "54bf245cbe11bf4546e3d684c14baa894233fbf70a6b6dfa7e55c4dc9a4bc4fe",
+      "rawResultSha256": "ed0b1cc774f8492b87c142f347852a6bc06777fe202162a0883819b24f36f26f",
+      "failures": [],
+      "explanation": "Same 38-check harness: view navigation preserves unsubmitted drafts and does not apply them; final scoped EDGE pass."
+    }
+  ],
+  "formalHarnessSources": [
+    {
+      "path": "formal/edge_draft_redraw_test-baseline-26.js",
+      "sha256": "70c9fb4f8797ccf76408eb028029fe073929d3a78b90f64733e658fe1cfedb87",
+      "sourceRepositoryPath": "geometry-web/edge_draft_redraw_test.js",
+      "sourceHead": "9029a8f6bc00a9ff8de1d2b0deb844f331e032e3",
+      "copy": "byte-identical committed harness, not modified for publication"
+    },
+    {
+      "path": "formal/edge_draft_redraw_test-expanded-38.js",
+      "sha256": "ad44ff567644391ecfd8bca20b21726d158bcf67f44197569f897227d706c775",
+      "sourceRepositoryPath": "geometry-web/edge_draft_redraw_test.js",
+      "sourceHead": "992e1f788ea6f8f88f8de2cad49dc4c2df5c98e7",
+      "copy": "byte-identical committed harness, not modified for publication"
+    }
+  ],
+  "formalComparison": "Baseline committed harness has 26 checks. First repair adds 12 checks (38 total). Counts from different versions/rounds are kept separate; only final clean 992e1f7 has 38/0 completed true."
+}

@@ -1,0 +1,118 @@
+{
+  "passed": 24,
+  "failed": 2,
+  "results": [
+    {
+      "name": "1400px a successful edge length stays after another redraw",
+      "ok": true
+    },
+    {
+      "name": "1400px redraw after success does not restore the old length",
+      "ok": true
+    },
+    {
+      "name": "1400px main a newer value typed during a successful commit stays, and the committed length is kept",
+      "ok": true
+    },
+    {
+      "name": "1400px main a newer value typed during rejection stays, and the rejected value is not applied",
+      "ok": true
+    },
+    {
+      "name": "1400px rejecting zero restores the model length and does not apply it",
+      "ok": true
+    },
+    {
+      "name": "1400px typing the same field again after rejection applies the new length",
+      "ok": true
+    },
+    {
+      "name": "1400px switching boundary does not carry the unsent length",
+      "ok": true
+    },
+    {
+      "name": "1400px returning to the first boundary does not revive the unsent length",
+      "ok": true
+    },
+    {
+      "name": "1400px a three-view round trip does not revive the rejected length",
+      "ok": true
+    },
+    {
+      "name": "1400px a three-view round trip keeps the unsent length and does not apply it",
+      "ok": false,
+      "detail": {
+        "value": "777",
+        "width": 777
+      }
+    },
+    {
+      "name": "1400px face a newer value typed during a successful commit stays, and the committed length is kept",
+      "ok": true
+    },
+    {
+      "name": "1400px face a newer value typed during rejection stays, and the rejected value is not applied",
+      "ok": true
+    },
+    {
+      "name": "390px a successful edge length stays after another redraw",
+      "ok": true
+    },
+    {
+      "name": "390px redraw after success does not restore the old length",
+      "ok": true
+    },
+    {
+      "name": "390px main a newer value typed during a successful commit stays, and the committed length is kept",
+      "ok": true
+    },
+    {
+      "name": "390px main a newer value typed during rejection stays, and the rejected value is not applied",
+      "ok": true
+    },
+    {
+      "name": "390px rejecting zero restores the model length and does not apply it",
+      "ok": true
+    },
+    {
+      "name": "390px typing the same field again after rejection applies the new length",
+      "ok": true
+    },
+    {
+      "name": "390px switching boundary does not carry the unsent length",
+      "ok": true
+    },
+    {
+      "name": "390px returning to the first boundary does not revive the unsent length",
+      "ok": true
+    },
+    {
+      "name": "390px a three-view round trip does not revive the rejected length",
+      "ok": true
+    },
+    {
+      "name": "390px a three-view round trip keeps the unsent length and does not apply it",
+      "ok": false,
+      "detail": {
+        "value": "777",
+        "width": 777
+      }
+    },
+    {
+      "name": "390px face a newer value typed during a successful commit stays, and the committed length is kept",
+      "ok": true
+    },
+    {
+      "name": "390px face a newer value typed during rejection stays, and the rejected value is not applied",
+      "ok": true
+    },
+    {
+      "name": "no uncaught browser exceptions",
+      "ok": true
+    },
+    {
+      "name": "no browser console errors",
+      "ok": true
+    }
+  ]
+}
