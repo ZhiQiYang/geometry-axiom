@@ -7281,7 +7281,8 @@ function renderFaceLayers() {
       r.classList.toggle('sel',feTimberSelected(timber.id));
       const pick=document.createElement('button');pick.type='button';pick.className='grid-layer-open';
       pick.append(r.querySelector('.face-layer-icon'),r.querySelector('.face-layer-copy'));r.prepend(pick);
-      pick.onclick=ev=>{feSelectTimber(timber.id,ev.shiftKey);const box=feTimberRect(timber),vp=$('faceEditorViewport');
+      r.querySelector('.face-layer-del').disabled=fe.timberSelection.size>1;
+      r.onclick=ev=>{if(ev.target.closest('.face-layer-del'))return;feSelectTimber(timber.id,ev.shiftKey);const box=feTimberRect(timber),vp=$('faceEditorViewport');
         fe.panX=vp.clientWidth/2-(box[0]+box[2])/2*fe.zoom;fe.panY=vp.clientHeight/2-(box[1]+box[3])/2*fe.zoom;feApplyZoom();};
       r.onmouseenter=()=>{fe.hoverTimber=timber.id;drawFaceEditor();};r.onmouseleave=()=>{fe.hoverTimber=null;drawFaceEditor();};
     }
@@ -7311,6 +7312,7 @@ function renderFaceLayers() {
       const selT = feTimberSelected(t2.id);
       const r = document.createElement("div");
       r.className = "timber-schedule-row" + (selT ? " sel" : "");
+      r.dataset.timberId=t2.id;
       const copy=document.createElement('span');copy.className='face-layer-copy';
       const pick=document.createElement('button');pick.type='button';pick.className='timber-schedule-pick';pick.dataset.scheduleTimber=item.id;
       pick.setAttribute('aria-pressed',String(selT));pick.setAttribute('aria-label',`定位角材 ${item.id}`);
