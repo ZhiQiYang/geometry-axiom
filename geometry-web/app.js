@@ -397,13 +397,39 @@ function disarmEdgeInputs(pane) {
   if (!pane) return;
   for (const input of pane.querySelectorAll("input[data-edge-len]")) input.dataset.edgeSuppress = "1";
 }
+let edgeInputSequence = 0;
+function trackEdgeInput(input) {
+  input.addEventListener("input", () => { input.dataset.edgeRevision = String(++edgeInputSequence); });
+}
+function beginEdgeSubmission(pane, input) {
+  const submission = String(++edgeInputSequence);
+  input.dataset.edgePending = input.value;
+  input.dataset.edgeSubmission = submission;
+  return { pane, owner: pane.dataset.redrawOwner, id: input.id, submission,
+    revision: input.dataset.edgeRevision || "", value: input.value };
+}
+function finishEdgeSubmission(submitted, rejected = false) {
+  const { pane, owner, id, submission, revision, value } = submitted;
+  if (pane.dataset.redrawOwner !== owner) return false;
+  const input = pane.querySelector("#" + id);
+  if (!input || input.dataset.edgeSubmission !== submission) return false;
+  // The DOM node may have been replaced. Submission and input generations
+  // travel with its draft; typing the same string again is still a new draft.
+  if (rejected && (input.dataset.edgeRevision || "") === revision && input.value === value)
+    input.value = input.defaultValue;
+  delete input.dataset.edgePending;
+  delete input.dataset.edgeSubmission;
+  return true;
+}
 function captureDirtyInputs(pane) {
   if (!pane) return null;
   const active = document.activeElement;
   const edits = [];
   for (const input of pane.querySelectorAll("input[data-edge-len][id]")) {
-    if (!/^[A-Za-z][\w-]*$/.test(input.id) || input.value === input.defaultValue) continue;
-    edits.push({ id: input.id, value: input.value, model: input.defaultValue, pending: input.dataset.edgePending || "", focus: active === input });
+    if (!/^[A-Za-z][\w-]*$/.test(input.id) || (input.value === input.defaultValue && !input.dataset.edgeSubmission)) continue;
+    edits.push({ id: input.id, value: input.value, model: input.defaultValue,
+      pending: input.dataset.edgePending || "", submission: input.dataset.edgeSubmission || "",
+      revision: input.dataset.edgeRevision || "", focus: active === input });
   }
   return { owner: pane.dataset.redrawOwner || "", edits };
 }
@@ -416,6 +442,11 @@ function restoreDirtyInputs(pane, snap) {
     const appliedPending = edit.pending !== "" && input.value === edit.pending && edit.value !== edit.pending;
     if (!modelUnchanged && !appliedPending) continue;
     input.value = edit.value;
+    input.dataset.edgeRevision = edit.revision;
+    if (edit.submission) {
+      input.dataset.edgePending = edit.pending;
+      input.dataset.edgeSubmission = edit.submission;
+    }
     if (edit.focus && !pane.contains(document.activeElement)) input.focus({ preventScroll: true });
   }
 }
@@ -8502,21 +8533,17 @@ function renderFaceInspector() {
       if (await commitEdgeFixity(bid, oc.bmap[bid], i, val)) await feAfterChange();
     });
   /* Phase 2 邊長輸入:commitEdgeLength 內部呼叫 applyEdgeLen 傳播後重宣告 */
-  for (const inp of pane.querySelectorAll("[data-edge-len]"))
+  for (const inp of pane.querySelectorAll("[data-edge-len]")) {
+    trackEdgeInput(inp);
     inp.addEventListener("change", async () => {
       if (inp.dataset.edgeSuppress === "1") return;
-      const i = +inp.dataset.edgeLen, submitted = inp.value, len = Math.round(+submitted);
-      inp.dataset.edgePending = submitted;
-      if (await commitEdgeLength(bid, oc.bmap[bid], i, len)) await feAfterChange();
-      else if (inp.isConnected) {
-        /* 只清掉仍停在被拒內容的欄位。等待期間鍵入的新值要留下來。 */
-        if (inp.value === submitted) {
-          inp.value = inp.defaultValue;
-          delete inp.dataset.edgePending;
-        }
-        renderFaceInspector();
-      }
+      const i = +inp.dataset.edgeLen, submitted = beginEdgeSubmission(pane, inp), len = Math.round(+submitted.value);
+      if (await commitEdgeLength(bid, oc.bmap[bid], i, len)) {
+        finishEdgeSubmission(submitted);
+        await feAfterChange();
+      } else if (finishEdgeSubmission(submitted, true)) renderFaceInspector();
     });
+  }
   bindPlaceForm(pane, bid);
   /* GEO-090:priority 欄只在 custom 角色時顯示 */
   const tbRole = pane.querySelector("#tbRole");
@@ -9473,20 +9500,15 @@ function renderInspectorBody() {
           : (oc.bmap[sel.id][0].fixity[i] ? 0 : 1);
         await commitEdgeFixity(sel.id, oc.bmap[sel.id], i, val);
       });
-    for (const inp of pane.querySelectorAll("[data-edge-len]"))
+    for (const inp of pane.querySelectorAll("[data-edge-len]")) {
+      trackEdgeInput(inp);
       inp.addEventListener("change", async () => {
         if (inp.dataset.edgeSuppress === "1") return;
-        const i = +inp.dataset.edgeLen, submitted = inp.value, len = Math.round(+submitted);
-        inp.dataset.edgePending = submitted;
-        if (!(await commitEdgeLength(sel.id, oc.bmap[sel.id], i, len))) {
-          if (!inp.isConnected) return;
-          if (inp.value === submitted) {
-            inp.value = inp.defaultValue;
-            delete inp.dataset.edgePending;
-          }
-          renderInspector();
-        }
+        const i = +inp.dataset.edgeLen, submitted = beginEdgeSubmission(pane, inp), len = Math.round(+submitted.value);
+        if (await commitEdgeLength(sel.id, oc.bmap[sel.id], i, len)) finishEdgeSubmission(submitted);
+        else if (finishEdgeSubmission(submitted, true)) renderInspector();
       });
+    }
   }
   const be = pane.querySelector("#inspEnter");
   if (sel.kind === "placement") { be.disabled = true; be.title = "placement 面沒有邊界可編輯"; }

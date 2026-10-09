@@ -195,12 +195,13 @@ async function main() {
       await wait(`window.__edgeCommitHeld===false`, 'released ' + label);
       await wait(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});return !!e&&e!==window.__edgeNode&&e.isConnected;})()`, 'redrawn ' + label);
       let stable = null, count = 0;
-      while (count < 3) {
+      for (let observation = 0; observation < 25 && count < 3; observation++) {
         const next = await field(selector);
         count = next === stable ? count + 1 : 0;
         stable = next;
         await sleep(80);
       }
+      if (count < 3) throw Error("field did not settle within bounded observation: " + label);
     }
     /* 500 is a real accepted length. 100000001 passes the local positive-integer
      * check and applyEdgeLen, then the core rejects the vertex past ±100 km. */
@@ -223,6 +224,20 @@ async function main() {
       const value = await field(selector);
       const width = await widthOf(id);
       check(label + ' a newer value typed during rejection stays, and the rejected value is not applied', value === '620' && width === 400, { value, width });
+    }
+
+    async function heldReplacementReject(selector, label, id, redraw, retype) {
+      await armHold();
+      await typeInto(selector, '100000001', true);
+      await wait(`window.__edgeCommitHeld===true`, 'held replacement ' + label);
+      await evaluate(`window.__replacedEdge=document.querySelector(${JSON.stringify(selector)});${redraw}()`);
+      await wait(`!window.__replacedEdge.isConnected`, 'replacement ' + label);
+      if (retype) await typeInto(selector, retype, false);
+      await releaseHold(selector, label + ' replacement rejection');
+      const expected = retype || '400';
+      check(label + ' rejection reconciles the replacement field and preserves newer input generations',
+        await field(selector) === expected && await widthOf(id) === 400,
+        { value: await field(selector), expected, width: await widthOf(id) });
     }
 
     async function attempt(name, fn) {
@@ -298,6 +313,16 @@ async function main() {
         await showFace(width);
         await heldReject('#edgeLength0', label + ' face', 1);
       });
+      for (const scope of ['main', 'face']) {
+        for (const retype of ['', '620', '100000001']) {
+          await attempt(label + ' ' + scope + ' replacement reject ' + (retype || 'unchanged'), async () => {
+            if (scope === 'main') await showMain(width, 1); else await showFace(width);
+            await heldReplacementReject(scope === 'main' ? '#mainEdgeLength0' : '#edgeLength0',
+              label + ' ' + scope + ' ' + (retype || 'unchanged'), 1,
+              scope === 'main' ? 'renderInspector' : 'renderFaceInspector', retype);
+          });
+        }
+      }
     }
     check('no uncaught browser exceptions', exceptions.length === 0, exceptions);
     check('no browser console errors', consoleErrors.length === 0, consoleErrors);
