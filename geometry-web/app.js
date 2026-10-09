@@ -895,9 +895,11 @@ function replay(ops, root) {
 }
 
 /* ---- 重繪 ---- */
-async function render() {
+async function render(current = presentationCurrent()) {
+  if (!current()) return;
   hoverPickScheduler.cancel();
   const r = await api("render");
+  if (!current()) return;
   if (!r.ok) { layout = null; world.textContent = ""; setStatus("✗ " + (r.error || "場景沒有可畫的表面")); toast(r.error || "場景沒有可畫的表面"); return; }
   layout = r.layout;
   world.textContent = "";
@@ -1220,16 +1222,34 @@ function previewPoly(m, pts, close, g) {
 function vertsStr(pts) { return pts.map(p => `${p[0]},${p[1]}`).join(" "); }
 function fixityStr(fx) { return fx.map(f => f ? "F" : "X").join(" "); }
 
+// A native edit may finish after its initiating workspace or tool was left.
+// Its result remains real, but only that presentation may consume the reply.
+function presentationCurrent() {
+  const context = ReferenceWorkspace.context(), frame = ReferenceWorkspace.history.frame,
+    session = connection.session, focus = oc.focus, edit = oc.edit, objectMode = oc.on,
+    navigation = oc.navigationSequence, threeView = view3, activeTool = tool,
+    token = editToken, surface = $("workSurf").value;
+  return () => ReferenceWorkspace.context() === context && ReferenceWorkspace.history.frame === frame &&
+    connection.session === session && oc.focus === focus && oc.edit === edit && oc.on === objectMode &&
+    oc.navigationSequence === navigation && view3 === threeView && tool === activeTool &&
+    editToken === token && $("workSurf").value === surface;
+}
 async function emitLine(text, options = {}) {
   if (oc.busy) return false;
   if(options.operation&&!options.operation.current())return false;
+  const owner = presentationCurrent();
+  const current = () => owner() && (!options.operation?.ownsPresentation || options.operation.ownsPresentation());
   const r = await api("line " + text);
+  if (!current()) return r.ok;
   if (r.ok) {
     setStatus("✓ " + (options.successText || text));
     rectStart = null; previewClear();
     selected = null;
-    if (oc.on) await renderObjects();
-    else { await render(); await refreshSurfaces(); }
+    if (oc.on) await renderObjects({ current });
+    else {
+      await render(current);
+      if (current()) await refreshSurfaces(current);
+    }
   } else {
     setStatus("✗ " + (r.error || ""));
     toast(r.error || "指令失敗");
@@ -1266,9 +1286,10 @@ async function emitBoundary(bid, loops) {
   return emitLine(s);
 }
 
-async function refreshSurfaces() {
+async function refreshSurfaces(current = presentationCurrent()) {
+  if (!current()) return;
   const r = await api("surfaces");
-  if (!r.ok) return;
+  if (!r.ok || !current()) return;
   workSurfaces = r.surfaces;
   const sel = $("workSurf"), keep = sel.value;
   sel.textContent = "";
@@ -2218,23 +2239,24 @@ function rcCard(o, kind) {
 }
 
 /* ---- 渲染 ---- */
-async function renderObjects({ persistPositions = true } = {}) {
+async function renderObjects({ persistPositions = true, current = () => true } = {}) {
+  if (!current()) return false;
   const seq = ++ocSeq;
   const r = await api("objects");
-  if (!r.ok || seq !== ocSeq) return;
+  if (!r.ok || seq !== ocSeq || !current()) return;
   const sf = await api("surfaces");
-  if (!sf.ok || seq !== ocSeq) return false;
+  if (!sf.ok || seq !== ocSeq || !current()) return false;
   if (!Array.isArray(r.faces) || !Array.isArray(r.spaces) || !Array.isArray(sf.surfaces)) {
     connectionFailed("服務回傳的場景資料不完整，請重試。"); return false;
   }
   const boundaries = {};
   for (const f of r.faces.filter(f => f.kind === "boundary")) {
-    if (seq !== ocSeq) return false;
+    if (seq !== ocSeq || !current()) return false;
     const b = await api("boundary " + f.id);
     if (!b.ok || !Array.isArray(b.loops)) return false;
     boundaries[f.id] = b.loops;
   }
-  if (seq !== ocSeq || connection.phase === "error") return false;
+  if (seq !== ocSeq || !current() || connection.phase === "error") return false;
   oc.faces = r.faces; oc.spaces = r.spaces;
   oc.columns = r.columns || []; oc.beams = r.beams || [];
   oc.gridSystems = r.gridSystems || [];
@@ -2254,13 +2276,14 @@ async function renderObjects({ persistPositions = true } = {}) {
                     ...oc.gridSystems.filter(g => !g.hasPos),
                     ...oc.gridBindings.filter(g => !g.hasPos), ...oc.parameters.filter(g => !g.hasPos), ...oc.assemblyRules.filter(g=>!g.hasPos), ...oc.assemblyBindings.filter(g=>!g.hasPos)];
   for (const o of homeless) {
+    if (seq !== ocSeq || !current()) return false;
     const [cx, cy] = nextCardPosition(o, occupied);
     o.cx = cx; o.cy = cy;
     o.hasPos = true;
     const kind = o.members ? "space" : o.kind;
     if (persistPositions && connection.phase === "ready") {
       const placed = await api(`line canvas-pos ${kind} ${o.id} ${cx} ${cy}`);
-      if (!placed.ok) return false;
+      if (!placed.ok || seq !== ocSeq || !current()) return false;
     }
   }
 
@@ -2268,7 +2291,7 @@ async function renderObjects({ persistPositions = true } = {}) {
      HTTP connections when a projection creates many faces, and abandon an
      obsolete refresh before it can overwrite the current boundary cache.
      Keep the published cache usable until its complete replacement is ready. */
-  if (seq !== ocSeq) return;
+  if (seq !== ocSeq || !current()) return;
   drawObjects();
   /* C5:任何 mutate 成功後,空間工作區(含三視圖投影)自動重繪 */
   if (oc.focus && oc.focus.t === "space") await renderSpaceWorkspace();
@@ -5862,9 +5885,10 @@ function feMove(pt, ev) {
 }
 
 /* 邊界變更成功後：重拉 loops + guides + 面板 */
-async function feAfterChange() {
+async function feAfterChange(owner = presentationCurrent()) {
+  if (!owner()) return;
   const edit = oc.edit, focus = oc.focus, frame = ReferenceWorkspace.history.frame, session = connection.session;
-  const current = () => oc.edit === edit && oc.focus === focus && ReferenceWorkspace.history.frame === frame && connection.session === session;
+  const current = () => owner() && oc.edit === edit && oc.focus === focus && ReferenceWorkspace.history.frame === frame && connection.session === session;
   // Undo restores saved room metadata into a fresh history frame. Rebuild its
   // derived PDF/image pages before redrawing the still-focused face workspace.
   if (window.RoomCollectionWorkspace) await RoomCollectionWorkspace.prepareSharedPages();
@@ -8530,16 +8554,18 @@ function renderFaceInspector() {
       const i = +b.dataset.fixEdge;
       const val = b.dataset.fixVal != null ? +b.dataset.fixVal
         : (oc.bmap[bid][0].fixity[i] ? 0 : 1);
-      if (await commitEdgeFixity(bid, oc.bmap[bid], i, val)) await feAfterChange();
+      const owner = presentationCurrent();
+      if (await commitEdgeFixity(bid, oc.bmap[bid], i, val)) await feAfterChange(owner);
     });
   /* Phase 2 邊長輸入:commitEdgeLength 內部呼叫 applyEdgeLen 傳播後重宣告 */
   for (const inp of pane.querySelectorAll("[data-edge-len]")) {
     trackEdgeInput(inp);
     inp.addEventListener("change", async () => {
       if (inp.dataset.edgeSuppress === "1") return;
-      const i = +inp.dataset.edgeLen, submitted = beginEdgeSubmission(pane, inp), len = Math.round(+submitted.value);
+      const i = +inp.dataset.edgeLen, submitted = beginEdgeSubmission(pane, inp), len = Math.round(+submitted.value),
+        owner = presentationCurrent();
       if (await commitEdgeLength(bid, oc.bmap[bid], i, len)) {
-        await feAfterChange();
+        await feAfterChange(owner);
         finishEdgeSubmission(submitted);
       } else if (finishEdgeSubmission(submitted, true)) renderFaceInspector();
     });
